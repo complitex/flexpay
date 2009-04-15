@@ -54,11 +54,6 @@
 		<put-attribute name="body" value="/WEB-INF/jsp/eirc/quittances/print_quittances.jsp" />
 	</definition>
 
-	<definition name="eirc.quittances.find_quittance" extends="eirc.quittances">
-		<put-attribute name="title" value="eirc.menu34.quittances.find_quittance" />
-		<put-attribute name="body" value="/WEB-INF/jsp/eirc/quittances/find_quittance.jsp" />
-	</definition>
-
     <definition name="eirc.quittances.quittance_pay_search" extends="eirc.quittances">
         <put-attribute name="title" value="eirc.quittances.quittance_pay_search.title"/>
         <put-attribute name="body" value="/WEB-INF/jsp/eirc/quittances/quittance_pay_search.jsp"/>
@@ -68,16 +63,6 @@
         <put-attribute name="title" value="eirc.quittances.quittance_pay.title"/>
         <put-attribute name="body" value="/WEB-INF/jsp/eirc/quittances/quittance_pay.jsp"/>
     </definition>
-
-	<definition name="eirc.quittances.eirc_account.list" extends="eirc.dictionaries">
-		<put-attribute name="title" value="eirc.quittances.apartment_search" />
-		<put-attribute name="body" value="/WEB-INF/jsp/eirc/quittances/eirc_account_list.jsp" />
-	</definition>
-
-	<definition name="eirc.quittances.eirc_account.find" extends="eirc.dictionaries">
-		<put-attribute name="title" value="eirc.quittances.account_search" />
-		<put-attribute name="body" value="/WEB-INF/jsp/eirc/quittances/eirc_account_search.jsp" />
-	</definition>
 
 	<definition name="eirc.quittances.quittances_list" extends="eirc.dictionaries">
 		<put-attribute name="title" value="eirc.quittances.quittances_list" />

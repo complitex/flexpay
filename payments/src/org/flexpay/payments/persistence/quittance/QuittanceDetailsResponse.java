@@ -12,10 +12,13 @@ import java.util.Date;
 public class QuittanceDetailsResponse implements Serializable {
 
 	public static final int CODE_SUCCESS = 1;
+
+	public static final int CODE_ERROR_UNKNOWN_REQUEST = 9;
 	public static final int CODE_ERROR_QUITTANCE_NOT_FOUND = 10;
 	public static final int CODE_ERROR_ACCOUNT_NOT_FOUND = 11;
 	public static final int CODE_ERROR_APARTMENT_NOT_FOUND = 12;
 	public static final int CODE_ERROR_INVALID_QUITTANCE_NUMBER = 13;
+	public static final int CODE_ERROR_INTERNAL_ERROR = 14;
 
 	/**
 	 * Response error code
@@ -60,26 +63,38 @@ public class QuittanceDetailsResponse implements Serializable {
 
 	public static class QuittanceInfo implements Serializable {
 
+		private String quittanceNumber;
+		private String accountNumber;
 		private Date creationDate;
 		private String serviceOrganizationMasterIndex;
 		private Integer orderNumber;
 		private Date dateFrom;
 		private Date dateTill;
-		private String accountNumber;
 		private String personFirstName;
 		private String personMiddleName;
 		private String personLastName;
+		private String personMasterIndex;
 		private String apartmentMasterIndex;
 		private String country;
 		private String region;
 		private String town;
-		private String street;
-		private String building;
+		private String streetName;
+		private String streetType;
+		private String buildingNumber;
+		private String buildingBulk;
 		private String apartmentNumber;
 
 		private BigDecimal totalPayed;
 		private BigDecimal totalToPay;
 		private ServiceDetails[] detailses;
+
+		public String getQuittanceNumber() {
+			return quittanceNumber;
+		}
+
+		public void setQuittanceNumber(String quittanceNumber) {
+			this.quittanceNumber = quittanceNumber;
+		}
 
 		public Date getCreationDate() {
 			return creationDate;
@@ -153,6 +168,14 @@ public class QuittanceDetailsResponse implements Serializable {
 			this.personLastName = personLastName;
 		}
 
+		public String getPersonMasterIndex() {
+			return personMasterIndex;
+		}
+
+		public void setPersonMasterIndex(String personMasterIndex) {
+			this.personMasterIndex = personMasterIndex;
+		}
+
 		public String getApartmentMasterIndex() {
 			return apartmentMasterIndex;
 		}
@@ -185,20 +208,36 @@ public class QuittanceDetailsResponse implements Serializable {
 			this.town = town;
 		}
 
-		public String getStreet() {
-			return street;
+		public String getStreetName() {
+			return streetName;
 		}
 
-		public void setStreet(String street) {
-			this.street = street;
+		public void setStreetName(String streetName) {
+			this.streetName = streetName;
 		}
 
-		public String getBuilding() {
-			return building;
+		public String getStreetType() {
+			return streetType;
 		}
 
-		public void setBuilding(String building) {
-			this.building = building;
+		public void setStreetType(String streetType) {
+			this.streetType = streetType;
+		}
+
+		public String getBuildingNumber() {
+			return buildingNumber;
+		}
+
+		public void setBuildingNumber(String buildingNumber) {
+			this.buildingNumber = buildingNumber;
+		}
+
+		public String getBuildingBulk() {
+			return buildingBulk;
+		}
+
+		public void setBuildingBulk(String buildingBulk) {
+			this.buildingBulk = buildingBulk;
 		}
 
 		public String getApartmentNumber() {
@@ -236,21 +275,25 @@ public class QuittanceDetailsResponse implements Serializable {
 		@Override
 		public String toString() {
 			return new ToStringBuilder(this).
+					append("quittanceNumber", quittanceNumber).
+					append("accountNumber", accountNumber).
 					append("creationDate", creationDate).
 					append("serviceOrganizationMasterIndex", serviceOrganizationMasterIndex).
 					append("orderNumber", orderNumber).
 					append("dateFrom", dateFrom).
 					append("dateTill", dateTill).
-					append("accountNumber", accountNumber).
 					append("personFirstName", personFirstName).
 					append("personMiddleName", personMiddleName).
 					append("personLastName", personLastName).
+					append("personMasterIndex", personMasterIndex).
 					append("apartmentMasterIndex", apartmentMasterIndex).
 					append("country", country).
 					append("region", region).
 					append("town", town).
-					append("street", street).
-					append("building", building).
+					append("streetName", streetName).
+					append("streetType", streetType).
+					append("buildingNumber", buildingNumber).
+					append("buildingBulk", buildingBulk).
 					append("apartmentNumber", apartmentNumber).
 					append("totalPayed", totalPayed).
 					append("totalToPay", totalToPay).
