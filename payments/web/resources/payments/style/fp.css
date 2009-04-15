@@ -16,10 +16,34 @@
 	font-size: 1.2em;
 }
 
-.btn-exit {	
+.btn-exit {
 	height: 25px;
 }
 
 .form-search {
-	font-size:0.7em;
+	font-size: 0.7em;
+}
+
+.col_oper {
+	background: #ecf6f6;
+	font-family: tahoma, sans-serif;
+	font-size: 0.8em;
+}
+
+.col_doc {
+	background-color: lavender;
+	font-family: tahoma, sans-serif;
+	font-size: 0.8em;
+}
+
+.col_red {
+	color: red;
+}
+
+.col_black {
+	color: black;
+}
+
+.col_blue {
+	color: blue;
 }

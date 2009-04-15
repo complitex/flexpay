@@ -36,7 +36,8 @@
 
 			<tr>
 				<td colspan="5">
-					<input type="submit" name="submitted" class="btn-exit" value="<s:text name="payments.operations.list.submit"/>"/>
+					<input type="submit" name="submitted" class="btn-exit"
+						   value="<s:text name="payments.operations.list.submit"/>"/>
 					<input type="button" class="btn-exit" value="<s:text name="payments.operations.list.detailed"/>"/>
 				</td>
 				<td colspan="5">
@@ -57,27 +58,50 @@
 				<td class="th" style="display: none;"><s:text name="payments.operations.list.provider"/></td>
 			</tr>
 
-			<s:iterator value="operations" status="operationStatus">
-				<tr valign="middle" class="cols_1">
-					<td class="col" align="right"><s:property value="%{#operationStatus.index + 1}"/></td>
-					<td class="col" nowrap="nowrap">
-						<input type="radio" name="selected_operation" value="<s:property value="%{#operationStatus.index + 1}"/>"/>
+			<s:iterator value="operations" status="opStatus">
+				<tr valign="middle"
+					<s:if test="%{isOperationRegistered(operationStatus.code)}"> class="col_black"</s:if>
+					<s:elseif test="%{isOperationCreated(operationStatus.code) || isOperationError(operationStatus.code)}"> class="col_blue"</s:elseif>
+					<s:elseif test="%{isOperationReturned(operationStatus.code)}"> class="col_red"</s:elseif>>
+
+					<td class="col_oper" align="right"><s:property value="%{#opStatus.index + 1}"/></td>
+					<td class="col_oper" nowrap="nowrap">
+						<input type="radio" name="selected_operation" value="<s:property value="%{#opStatus.index + 1}"/>"/>
 					</td>
-					<td class="col" nowrap="nowrap"><s:date name="creationDate" format="HH:mm"/></td>					
-					<td class="col" nowrap="nowrap"><s:property value="address"/></td>
-					<td class="col" nowrap="nowrap"><s:property value="payerFIO"/></td>
-					<td class="col" nowrap="nowrap"><s:property value="operationSumm"/></td>
-					<td class="col" nowrap="nowrap"><s:property value="operationInputSumm"/></td>
-					<td class="col" nowrap="nowrap"><s:property value="change"/></td>
-					<td class="col" nowrap="nowrap" style="display: none;"><%-- TODO extract from document --%></td>
-					<td class="col" nowrap="nowrap" style="display: none;"><%-- TODO extract from document --%></td>
+					<td class="col_oper" nowrap="nowrap"><s:date name="creationDate" format="HH:mm"/></td>
+					<td class="col_oper" nowrap="nowrap"><s:property value="address"/></td>
+					<td class="col_oper" nowrap="nowrap"><s:property value="payerFIO"/></td>
+					<td class="col_oper" nowrap="nowrap"><s:property value="operationSumm"/></td>
+					<td class="col_oper" nowrap="nowrap"><s:property value="operationInputSumm"/></td>
+					<td class="col_oper" nowrap="nowrap"><s:property value="change"/></td>
+					<td class="col_oper" nowrap="nowrap" style="display: none;">&nbsp;</td>
+					<td class="col_oper" nowrap="nowrap" style="display: none;">&nbsp;</td>
 				</tr>
+
+				<s:iterator value="documents">
+					<s:if test="%{!isDocumentDeleted(documentStatus.code)}">
+						<tr <s:if test="%{isDocumentRegistered(documentStatus.code)}"> class="col_black"</s:if>
+							<s:elseif test="%{isDocumentCreated(documentStatus.code) || isDocumentError(documentStatus.code)}"> class="col_blue"</s:elseif>
+							<s:elseif test="%{isDocumentReturned(documentStatus.code)}"> class="col_red"</s:elseif>>
+
+							<td class="col_doc" nowrap="nowrap">&nbsp;</td>
+							<td class="col_doc" nowrap="nowrap">&nbsp;</td>
+							<td class="col_doc" nowrap="nowrap">&nbsp;</td>
+							<td class="col_doc" nowrap="nowrap"><s:property value="address"/></td>
+							<td class="col_doc" nowrap="nowrap"><s:property value="payerFIO"/></td>
+							<td class="col_doc" nowrap="nowrap"><s:property value="summ"/></td>
+							<td class="col_doc" nowrap="nowrap">&nbsp;</td>
+							<td class="col_doc" nowrap="nowrap">&nbsp;</td>
+							<td class="col_doc" nowrap="nowrap" style="display: none;"><s:property value="service.serviceType.name"/></td>
+							<td class="col_doc" nowrap="nowrap" style="display: none;"><s:property value="service.serviceProvider.name"/></td>
+						</tr>
+					</s:if>
+				</s:iterator>
 			</s:iterator>
 
 			<tr>
 				<td colspan="5">
-					<input type="submit" name="submitted" class="btn-exit"
-						   value="<s:text name="payments.operations.list.submit"/>"/>
+					<input type="submit" name="submitted" class="btn-exit" value="<s:text name="payments.operations.list.submit"/>"/>
 					<input type="button" class="btn-exit" value="<s:text name="payments.operations.list.detailed"/>"/>
 				</td>
 				<td colspan="5">
