@@ -2,10 +2,14 @@ package org.flexpay.payments.persistence;
 
 import org.apache.commons.lang.StringUtils;
 import org.flexpay.common.persistence.DomainObjectWithStatus;
+import org.flexpay.common.util.TranslationUtil;
+import org.flexpay.common.util.config.ApplicationConfig;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.Locale;
 
 public class ServiceType extends DomainObjectWithStatus {
 
@@ -87,6 +91,14 @@ public class ServiceType extends DomainObjectWithStatus {
 
 		nameTranslation.setTranslatable(this);
 		typeNames.add(nameTranslation);
+	}
+
+	public String getName(@NotNull Locale locale) {
+		return TranslationUtil.getTranslation(typeNames, locale).getName();
+	}
+
+	public String getName() {
+		return getName(ApplicationConfig.getDefaultLocale());
 	}
 
 	@Override

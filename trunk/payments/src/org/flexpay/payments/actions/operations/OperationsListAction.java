@@ -7,6 +7,8 @@ import org.flexpay.common.persistence.filter.BeginDateFilter;
 import org.flexpay.common.persistence.filter.EndDateFilter;
 import org.flexpay.payments.service.OperationService;
 import org.flexpay.payments.persistence.Operation;
+import org.flexpay.payments.persistence.OperationStatus;
+import org.flexpay.payments.persistence.DocumentStatus;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 import org.apache.commons.lang.time.DateUtils;
@@ -75,6 +77,42 @@ public class OperationsListAction extends FPActionWithPagerSupport<Operation> {
 
 	public int getTotalOperations() {
 		return getPager().getTotalNumberOfElements();
+	}
+
+	public boolean isOperationCreated(int status) {
+		return status == OperationStatus.CREATED;
+	}
+
+	public boolean isOperationRegistered(int status) {
+		return status == OperationStatus.REGISTERED;		
+	}
+
+	public boolean isOperationReturned(int status) {
+		return status == OperationStatus.RETURNED;
+	}
+
+	public boolean isOperationError(int status) {
+		return status == OperationStatus.ERROR;
+	}
+
+	public boolean isDocumentCreated(int status) {
+		return status == DocumentStatus.CREATED;
+	}
+
+	public boolean isDocumentRegistered(int status) {
+		return status == DocumentStatus.REGISTERED;
+	}
+
+	public boolean isDocumentReturned(int status) {
+		return status == DocumentStatus.RETURNED;
+	}
+
+	public boolean isDocumentError(int status) {
+		return status == DocumentStatus.ERROR;
+	}
+
+	public boolean isDocumentDeleted(int status) {
+		return status == DocumentStatus.DELETED;
 	}
 
 	// form data

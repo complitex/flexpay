@@ -136,7 +136,7 @@ public class Operation extends DomainObject {
 
 	public OperationStatus getOperationStatus() {
 		return operationStatus;
-	}
+	}	
 
 	public void setOperationStatus(OperationStatus operationStatus) {
 		this.operationStatus = operationStatus;
