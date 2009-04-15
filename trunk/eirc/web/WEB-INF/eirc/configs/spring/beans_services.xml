@@ -61,6 +61,10 @@
 		  p:sessionUtils-ref="sessionUtils"
 		  p:propertiesFactory-ref="propertiesFactory" />
 
+    <bean id="mbRegistryFileValidator"
+          class="org.flexpay.eirc.sp.MbRegistryFileValidator"
+          />
+
     <bean id="mbRegistryFileParser"
           class="org.flexpay.eirc.sp.MbRegistryFileParser"
           p:registryTypeService-ref="registryTypeService"
@@ -72,6 +76,7 @@
           p:spRegistryRecordStatusService-ref="registryRecordStatusService"
           p:registryArchiveStatusService-ref="registryArchiveStatusService"
           p:propertiesFactory-ref="eircPropertiesFactory"
+          p:validator-ref="mbRegistryFileValidator"
             />
 
 	<bean id="eircAccountService"
