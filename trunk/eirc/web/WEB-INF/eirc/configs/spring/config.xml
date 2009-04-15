@@ -10,6 +10,7 @@
 	<import resource="beans-reports.xml" />
     <import resource="beans_struts.xml" />
     <import resource="data_export.xml" />
+    <import resource="beans-jms.xml" />
 
 	<import resource="beans_self_testing.xml" />
 	<import resource="stand-alone-tasks.xml" />
