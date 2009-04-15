@@ -7,12 +7,14 @@ import org.flexpay.eirc.actions.TestSpFileCreateAction;
 import org.flexpay.eirc.service.RegistryService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.transaction.annotation.Transactional;
 
 public class TestMbRegistryFileParser extends TestSpFileCreateAction {
 
 	@Autowired
-	private MbRegistryFileParser parser;
+	@Qualifier("mbRegistryFileParser")
+	private FileParser parser;
 	@Autowired
 	private RegistryService registryService;
 
@@ -23,10 +25,7 @@ public class TestMbRegistryFileParser extends TestSpFileCreateAction {
 		FPFile newFile = createSpFile("org/flexpay/eirc/sp/01033_122008.nac");
 
 		try {
-			Registry registry = parser.parse(newFile);
-			if (registry == null) {
-				log.error("Error with parsing file");
-			}
+			Registry registry = (Registry) parser.parse(newFile);
 			registryService.deleteRecords(new Stub<Registry>(registry));
 			registryService.delete(registry);
 		} catch (Exception e) {
