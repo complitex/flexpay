@@ -10,12 +10,12 @@ import java.util.*;
 public class CollectionUtils {
 
 	@NotNull
-	public static <T> T[] ar(@NonNls T... ts) {
+	public static <T> T[] ar(T... ts) {
 		return ts;
 	}
 
 	@NotNull
-	public static <T> List<T> list(@NonNls @NotNull T... ts) {
+	public static <T> List<T> list(@NotNull T... ts) {
 		return list(Arrays.asList(ts));
 	}
 

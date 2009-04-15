@@ -33,16 +33,6 @@
 			<result name="redirectError" type="redirect-action">quittancePacketList</result>
 		</action>
 
-		<action name="quittanceSearch" class="quittanceSearchAction">
-			<result name="input" type="tiles">eirc.quittances.find_quittance</result>
-			<result name="redirectSuccess" type="redirect-action">
-				<param name="actionName">quittancePay</param>
-				<param name="parse">true</param>
-				<param name="quittance.id">${quittance.id}</param>
-				<param name="packet.id">${packet.id}</param>
-			</result>
-		</action>
-
 		<action name="quittancePaySearch" class="quittancePaySearchAction">
 			<result name="input" type="tiles">eirc.quittances.quittance_pay_search</result>
 			<result name="redirectSuccess" type="redirect-action">
@@ -50,26 +40,6 @@
 				<param name="parse">true</param>
 				<param name="quittance.id">${quittanceId}</param>
 				<param name="source">number</param>
-			</result>
-		</action>
-
-		<action name="findQuittanceByAddress" class="quittanceSearchByAddressAction">
-			<result name="success" type="tiles">eirc.quittances.eirc_account.list</result>
-			<result name="redirectSuccess" type="redirect-action">
-				<param name="actionName">quittancePay</param>
-				<param name="parse">true</param>
-				<param name="quittance.id">${quittance.id}</param>
-				<param name="source">address</param>
-			</result>
-		</action>
-
-		<action name="findQuittanceByAccountNumber" class="quittanceSearchByAccountAction">
-			<result name="input" type="tiles">eirc.quittances.eirc_account.find</result>
-			<result name="redirectSuccess" type="redirect-action">
-				<param name="actionName">quittancePay</param>
-				<param name="parse">true</param>
-				<param name="quittance.id">${quittance.id}</param>
-				<param name="source">account</param>
 			</result>
 		</action>
 
