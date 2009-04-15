@@ -1,6 +1,19 @@
 <%@ include file="/WEB-INF/jsp/common/taglibs.jsp" %>
 <%@include file="/WEB-INF/jsp/payments/include/stylesheet.jsp" %>
 
+<script type="text/javascript">
+	function showDetails() {
+		$('td.service_column').show();
+		$('td.service_provider_column').show();
+
+		$('tr.full_operation_header_row').show();
+
+		$('tr.brief_operation_header_row').show();
+		$('tr.document_row').show();
+		$('tr.operation_footer_row').show();
+	}
+</script>
+
 <s:actionerror/>
 
 <s:form action="operationsList">
@@ -36,9 +49,8 @@
 
 			<tr>
 				<td colspan="5">
-					<input type="submit" name="submitted" class="btn-exit"
-						   value="<s:text name="payments.operations.list.submit"/>"/>
-					<input type="button" class="btn-exit" value="<s:text name="payments.operations.list.detailed"/>"/>
+					<input type="submit" name="submitted" class="btn-exit" value="<s:text name="payments.operations.list.submit"/>"/>
+					<input type="button" class="btn-exit" onclick="showDetails();" value="<s:text name="payments.operations.list.detailed"/>"/>
 				</td>
 				<td colspan="5">
 					<%@include file="/WEB-INF/jsp/common/filter/pager/pager.jsp" %>
@@ -54,15 +66,17 @@
 				<td class="th"><s:text name="payments.operations.list.summ"/></td>
 				<td class="th"><s:text name="payments.operations.list.pay_summ"/></td>
 				<td class="th"><s:text name="payments.operations.list.change"/></td>
-				<td class="th" style="display: none;"><s:text name="payments.operations.list.service"/></td>
-				<td class="th" style="display: none;"><s:text name="payments.operations.list.provider"/></td>
+				<td class="th service_column" style="display: none;"><s:text name="payments.operations.list.service"/></td>
+				<td class="th service_provider_column" style="display: none;"><s:text name="payments.operations.list.provider"/></td>
 			</tr>
 
+			<%-- operation rows --%>
 			<s:iterator value="operations" status="opStatus">
-				<tr valign="middle"
-					<s:if test="%{isOperationRegistered(operationStatus.code)}"> class="col_black"</s:if>
-					<s:elseif test="%{isOperationCreated(operationStatus.code) || isOperationError(operationStatus.code)}"> class="col_blue"</s:elseif>
-					<s:elseif test="%{isOperationReturned(operationStatus.code)}"> class="col_red"</s:elseif>>
+
+				<%-- full operation header--%>
+				<tr valign="middle" class="full_operation_header_row<s:if test="%{isOperationRegistered(operationStatus.code)}"> col_black</s:if>
+					<s:elseif test="%{isOperationCreated(operationStatus.code) || isOperationError(operationStatus.code)}"> col_blue</s:elseif>
+					<s:elseif test="%{isOperationReturned(operationStatus.code)}"> col_red</s:elseif>">
 
 					<td class="col_oper" align="right"><s:property value="%{#opStatus.index + 1}"/></td>
 					<td class="col_oper" nowrap="nowrap">
@@ -74,15 +88,35 @@
 					<td class="col_oper" nowrap="nowrap"><s:property value="operationSumm"/></td>
 					<td class="col_oper" nowrap="nowrap"><s:property value="operationInputSumm"/></td>
 					<td class="col_oper" nowrap="nowrap"><s:property value="change"/></td>
-					<td class="col_oper" nowrap="nowrap" style="display: none;">&nbsp;</td>
-					<td class="col_oper" nowrap="nowrap" style="display: none;">&nbsp;</td>
+					<td class="col_oper service_column" nowrap="nowrap" style="display: none;">&nbsp;</td>
+					<td class="col_oper service_provider_column" nowrap="nowrap" style="display: none;">&nbsp;</td>
 				</tr>
 
+				<%-- brief operation header (is not shown by default, appears in 'detailed' view) --%>
+				<tr valign="middle" style="display: none;" class="brief_operation_header_row<s:if test="%{isOperationRegistered(operationStatus.code)}"> col_black</s:if>
+					<s:elseif test="%{isOperationCreated(operationStatus.code) || isOperationError(operationStatus.code)}"> col_blue</s:elseif>
+					<s:elseif test="%{isOperationReturned(operationStatus.code)}"> col_red</s:elseif>">
+
+					<td class="col_oper" align="right"><s:property value="%{#opStatus.index + 1}"/></td>
+					<td class="col_oper" nowrap="nowrap">
+						<input type="radio" name="selected_operation" value="<s:property value="%{#opStatus.index + 1}"/>"/>
+					</td>
+					<td class="col_oper" nowrap="nowrap"><s:date name="creationDate" format="HH:mm"/></td>
+					<td class="col_oper" nowrap="nowrap">&nbsp;</td>
+					<td class="col_oper" nowrap="nowrap">&nbsp;</td>
+					<td class="col_oper" nowrap="nowrap">&nbsp;</td>
+					<td class="col_oper" nowrap="nowrap">&nbsp;</td>
+					<td class="col_oper" nowrap="nowrap">&nbsp;</td>
+					<td class="col_oper service_column" nowrap="nowrap" style="display: none;">&nbsp;</td>
+					<td class="col_oper service_provider_column" nowrap="nowrap" style="display: none;">&nbsp;</td>
+				</tr>
+
+				<%-- document rows (are not shown by default, appear in 'detailed' view) --%>
 				<s:iterator value="documents">
 					<s:if test="%{!isDocumentDeleted(documentStatus.code)}">
-						<tr <s:if test="%{isDocumentRegistered(documentStatus.code)}"> class="col_black"</s:if>
-							<s:elseif test="%{isDocumentCreated(documentStatus.code) || isDocumentError(documentStatus.code)}"> class="col_blue"</s:elseif>
-							<s:elseif test="%{isDocumentReturned(documentStatus.code)}"> class="col_red"</s:elseif>>
+						<tr style="display: none;" class="document_row<s:if test="%{isDocumentRegistered(documentStatus.code)}"> col_black</s:if>
+							<s:elseif test="%{isDocumentCreated(documentStatus.code) || isDocumentError(documentStatus.code)}"> col_blue</s:elseif>
+							<s:elseif test="%{isDocumentReturned(documentStatus.code)}"> col_red</s:elseif>">
 
 							<td class="col_doc" nowrap="nowrap">&nbsp;</td>
 							<td class="col_doc" nowrap="nowrap">&nbsp;</td>
@@ -92,17 +126,35 @@
 							<td class="col_doc" nowrap="nowrap"><s:property value="summ"/></td>
 							<td class="col_doc" nowrap="nowrap">&nbsp;</td>
 							<td class="col_doc" nowrap="nowrap">&nbsp;</td>
-							<td class="col_doc" nowrap="nowrap" style="display: none;"><s:property value="service.serviceType.name"/></td>
-							<td class="col_doc" nowrap="nowrap" style="display: none;"><s:property value="service.serviceProvider.name"/></td>
+							<td class="col_doc service_column" nowrap="nowrap" style="display: none;"><s:property value="service.serviceType.name"/></td>
+							<td class="col_doc service_provider_column" nowrap="nowrap" style="display: none;"><s:property value="service.serviceProvider.name"/></td>
 						</tr>
 					</s:if>
 				</s:iterator>
+
+				<%-- operation footer (is not shown by default, but appears in 'detailed' view) --%>
+				<tr valign="middle" style="display: none;" class="operation_footer_row
+					<s:if test="%{isOperationRegistered(operationStatus.code)}"> col_black</s:if>
+					<s:elseif test="%{isOperationCreated(operationStatus.code) || isOperationError(operationStatus.code)}"> col_blue</s:elseif>
+					<s:elseif test="%{isOperationReturned(operationStatus.code)}"> col_red</s:elseif>">
+
+					<td class="col_oper" align="right">&nbsp;</td>
+					<td class="col_oper" nowrap="nowrap">&nbsp;</td>
+					<td class="col_oper" nowrap="nowrap">&nbsp;</td>
+					<td class="col_oper" nowrap="nowrap"><s:property value="address"/></td>
+					<td class="col_oper" nowrap="nowrap"><s:property value="payerFIO"/></td>
+					<td class="col_oper" nowrap="nowrap"><s:property value="operationSumm"/></td>
+					<td class="col_oper" nowrap="nowrap"><s:property value="operationInputSumm"/></td>
+					<td class="col_oper" nowrap="nowrap"><s:property value="change"/></td>
+					<td class="col_oper service_column" nowrap="nowrap" style="display: none;">&nbsp;</td>
+					<td class="col_oper service_provider_column" nowrap="nowrap" style="display: none;">&nbsp;</td>
+				</tr>
 			</s:iterator>
 
 			<tr>
 				<td colspan="5">
 					<input type="submit" name="submitted" class="btn-exit" value="<s:text name="payments.operations.list.submit"/>"/>
-					<input type="button" class="btn-exit" value="<s:text name="payments.operations.list.detailed"/>"/>
+					<input type="button" class="btn-exit" onclick="showDetails();" value="<s:text name="payments.operations.list.detailed"/>"/>
 				</td>
 				<td colspan="5">
 					<%@include file="/WEB-INF/jsp/common/filter/pager/pager.jsp" %>

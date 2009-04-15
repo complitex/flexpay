@@ -178,7 +178,7 @@ SELECT @operation_2:=last_insert_id();
 INSERT INTO payments_operations_tbl (version, address, payer_fio, level_id, status_id, type_id,
 		creator, creation_date, creator_organization_id, register_user, register_date, register_organization_id,
 		operation_summ, operation_input_summ, change_summ, registry_record_id, reference_operation_id)
-		VALUES (0, 'ул. Иванова, д.27, кв.330', 'Федько М.А.', @operation_level_3, @operation_status_2, @operation_type_1,
+		VALUES (0, 'ул. Иванова, д.27, кв.330', 'Федько М.А.', @operation_level_3, @operation_status_4, @operation_type_1,
 				'asemenov', '2009-04-14 14:20', 1, 'asemenov', '2009-04-14 14:21', @payment_point_1,
 				220.00, 500.00, 280.00, null, null);
 SELECT @operation_3:=last_insert_id();
@@ -204,7 +204,7 @@ INSERT INTO payments_documents_tbl (version, operation_id, address, payer_fio, t
 		service_id, summ, creditor_id, debtor_id, creditor_organization_id, debtor_organization_id,
 		reference_document_id, registry_record_id)
 		VALUES (0, @operation_1, 'ул. Иванова, д.27, кв.330', 'Федько М.А.', @doc_type_1, @doc_status_1,
-				@service_10, 70.00, null, null, @organization_zhko, @organization_tszh,
+				@service_20, 70.00, null, null, @organization_zhko, @organization_tszh,
 				null, null);
 SELECT @document_3:=last_insert_id();
 
@@ -219,7 +219,7 @@ SELECT @document_4:=last_insert_id();
 INSERT INTO payments_documents_tbl (version, operation_id, address, payer_fio, type_id, status_id,
 		service_id, summ, creditor_id, debtor_id, creditor_organization_id, debtor_organization_id,
 		reference_document_id, registry_record_id)
-		VALUES (0, @operation_3, 'ул. Иванова, д.27, кв.330', 'Федько М.А.', @doc_type_1, @doc_status_2,
+		VALUES (0, @operation_3, 'ул. Иванова, д.27, кв.330', 'Федько М.А.', @doc_type_1, @doc_status_4,
 				@service_50, 220.00, null, null, @organization_zhko, @organization_tszh,
 				null, null);
 SELECT @document_5:=last_insert_id();
