@@ -65,8 +65,8 @@
 
 		<many-to-one name="referenceDocument" class="Document"
 					 foreign-key="FK_payments_documents_tbl_ref_doc_id">
-			<column name="reference_document_id" not-null="true">
-				<comment>Reference docume reference</comment>
+			<column name="reference_document_id">
+				<comment>Reference document reference</comment>
 			</column>
 		</many-to-one>
 
