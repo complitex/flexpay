@@ -104,7 +104,7 @@
 		where d.id between ? and ? and d.instanceId=?
 	</query>
 
-	<query name="HistoryConsumer.findConsumers">
+	<query name="HistoryConsumer.listConsumers">
 		select distinct c
 		from HistoryConsumer c
 			inner join fetch c.outTransportConfig
