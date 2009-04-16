@@ -217,7 +217,7 @@
 
 <s:actionerror/>
 
-<s:form id="quittancePayForm" action="quittancePay">
+<s:form id="quittancePayForm" action="paymentsQuittancePay">
 
 	<s:if test="%{resultsAreNotEmpty()}">
 		<table cellpadding="3" cellspacing="1" border="0" width="100%">

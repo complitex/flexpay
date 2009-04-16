@@ -22,7 +22,7 @@
 			<result>/WEB-INF/jsp/payments/quittance/search_results.jsp</result>
 		</action>
 
-		<action name="quittancePay" class="quittancePayAction">
+		<action name="paymentsQuittancePay" class="paymentsQuittancePayAction">
 			<result type="tiles">payments.quittance.quittance_pay</result>			
 		</action>
 
