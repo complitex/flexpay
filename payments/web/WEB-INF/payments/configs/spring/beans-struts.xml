@@ -9,14 +9,10 @@
 	<!-- Define module payments struts actions beans -->
 
 	<!-- search-related actions -->
-	<bean id="searchByQuittanceNumberAction" scope="prototype"
-		  class="org.flexpay.payments.actions.search.SearchByQuittanceNumberAction" />
-
-	<bean id="searchByAdressAction" scope="prototype"
-		  class="org.flexpay.payments.actions.search.SearchByAddressAction" />
-
-	<bean id="searchByEircAccountAction" scope="prototype"
-		  class="org.flexpay.payments.actions.search.SearchByEircAccountAction" />
+	<bean id="searchQuittanceAction" scope="prototype"
+		  class="org.flexpay.payments.actions.search.SearchQuittanceAction"
+		  p:quittanceDetailsFinder-ref="jmsQuittanceDetailsFinder"
+		  p:spService-ref="spService" />
 
 	<!-- operation-related actions -->
 	<bean id="operationsListAction" scope="prototype"
