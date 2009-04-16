@@ -20,12 +20,26 @@ public class TownFilterAjaxAction extends FilterAjaxAction {
 	@NotNull
 	public String doExecute() throws FlexPayException {
 
-		Long regionIdLong;
+		Long regionIdLong = null;
 
 		try {
-			regionIdLong = Long.parseLong(parents[0]);
+			if (parents != null) {
+				regionIdLong = Long.parseLong(parents[0]);
+			} else {
+				UserPreferences prefs = UserPreferences.getPreferences(request);
+				if (prefs.getRegionFilterValue() == null) {
+					prefs.setRegionFilterValue(ApplicationConfig.getDefaultRegionStub().getId() + "");
+					regionIdLong = ApplicationConfig.getDefaultRegionStub().getId();
+				} else {
+					regionIdLong = Long.parseLong(prefs.getRegionFilterValue());
+				}
+			}
 		} catch (Exception e) {
 			log.warn("Incorrect region id in filter ({})", parents[0]);
+			return SUCCESS;
+		}
+		if (regionIdLong == null) {
+			log.warn("Can't get region id in filter ({})");
 			return SUCCESS;
 		}
 
@@ -48,7 +62,7 @@ public class TownFilterAjaxAction extends FilterAjaxAction {
 		if (filterValueLong == null) {
 			UserPreferences prefs = UserPreferences.getPreferences(request);
 			if (prefs.getRegionFilterValue() != null
-					&&!prefs.getRegionFilterValue().equals(ApplicationConfig.getDefaultRegionStub().getId() + "")) {
+					&& !prefs.getRegionFilterValue().equals(ApplicationConfig.getDefaultRegionStub().getId() + "")) {
 				filterValue = "";
 			} else {
 				filterValue = ApplicationConfig.getDefaultTownStub().getId() + "";

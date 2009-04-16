@@ -23,9 +23,23 @@ public class RegionFilterAjaxAction extends FilterAjaxAction {
 		Long countryIdLong;
 
 		try {
-			countryIdLong = Long.parseLong(parents[0]);
+			if (parents != null) {
+				countryIdLong = Long.parseLong(parents[0]);
+			} else {
+				UserPreferences prefs = UserPreferences.getPreferences(request);
+				if (prefs.getCountryFilterValue() == null) {
+					prefs.setCountryFilterValue(ApplicationConfig.getDefaultCountryStub().getId() + "");
+					countryIdLong = ApplicationConfig.getDefaultCountryStub().getId();
+				} else {
+					countryIdLong = Long.parseLong(prefs.getCountryFilterValue());
+				}
+			}
 		} catch (Exception e) {
 			log.warn("Incorrect country id in filter ({})", parents[0]);
+			return SUCCESS;
+		}
+		if (countryIdLong == null) {
+			log.warn("Can't get country id in filter ({})");
 			return SUCCESS;
 		}
 
