@@ -6,12 +6,14 @@ import org.flexpay.common.persistence.history.HistoryConsumptionGroup;
 import org.flexpay.common.util.CollectionUtils;
 
 import java.util.Map;
+import java.util.List;
 
 public class HistoryPackingContext {
 
-	private HistoryConsumptionGroup group;
+	private List<HistoryConsumptionGroup> groups = CollectionUtils.list();
 	private HistoryConsumer consumer;
 	private FetchRange range;
+	private int lastNumberOfDiffs;
 	private int numberOfDiffs;
 	private int numberOfRecords;
 
@@ -25,12 +27,16 @@ public class HistoryPackingContext {
 		this.parameters = parameters;
 	}
 
-	public HistoryConsumptionGroup getGroup() {
-		return group;
+	public List<HistoryConsumptionGroup> getGroups() {
+		return groups;
 	}
 
-	public void setGroup(HistoryConsumptionGroup group) {
-		this.group = group;
+	public void addGroup(HistoryConsumptionGroup group) {
+		groups.add(group);
+	}
+
+	public HistoryConsumptionGroup getLastGroup() {
+		return groups.get(groups.size() - 1);
 	}
 
 	public HistoryConsumer getConsumer() {
@@ -47,6 +53,15 @@ public class HistoryPackingContext {
 
 	public void addDiff() {
 		++numberOfDiffs;
+		++lastNumberOfDiffs;
+	}
+
+	public int getLastNumberOfDiffs() {
+		return lastNumberOfDiffs;
+	}
+
+	public void resetLastNumberOfDiffs() {
+		lastNumberOfDiffs = 0;
 	}
 
 	public int getNumberOfRecords() {

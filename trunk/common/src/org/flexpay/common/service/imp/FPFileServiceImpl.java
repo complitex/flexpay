@@ -76,6 +76,24 @@ public class FPFileServiceImpl implements FPFileService {
 	}
 
 	/**
+	 * Update existing files in database
+	 *
+	 * @param files files to update
+	 * @return updated files
+	 * @throws org.flexpay.common.exception.FlexPayException
+	 *          if failure occurs
+	 */
+	@NotNull
+	@Transactional (readOnly = false)
+	public List<FPFile> update(@NotNull List<FPFile> files) throws FlexPayException {
+		for (FPFile file : files) {
+			update(file);
+		}
+
+		return files;
+	}
+
+	/**
 	 * Delete FPFile entity from database and also delete file from file system
 	 *
 	 * @param file file to delete
