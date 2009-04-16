@@ -10,20 +10,25 @@
 	</definition>
 
 	<!-- search-related definitions -->
-	<definition name="payments.search" extends="ab.layout.standart">
-		<put-attribute name="title" value="payments.search.title" />
+	<definition name="payments.quittance.search" extends="ab.layout.standart">
+		<put-attribute name="title" value="payments.quittance.search.title" />
 	</definition>
 
-	<definition name="payments.search.quittance_number" extends="payments.search">		
-		<put-attribute name="body" value="/WEB-INF/jsp/payments/search/search_by_quittance_number.jsp" />
+	<definition name="payments.quittance.search.quittance_number" extends="payments.quittance.search">
+		<put-attribute name="body" value="/WEB-INF/jsp/payments/quittance/search_by_quittance_number.jsp" />
 	</definition>
 
-	<definition name="payments.search.eirc_account" extends="payments.search">
-		<put-attribute name="body" value="/WEB-INF/jsp/payments/search/search_by_eirc_account.jsp" />
+	<definition name="payments.quittance.search.eirc_account" extends="payments.quittance.search">
+		<put-attribute name="body" value="/WEB-INF/jsp/payments/quittance/search_by_eirc_account.jsp" />
 	</definition>
 
-	<definition name="payments.search.address" extends="payments.search">
-		<put-attribute name="body" value="/WEB-INF/jsp/payments/search/search_by_address.jsp" />
+	<definition name="payments.quittance.search.address" extends="payments.quittance.search">
+		<put-attribute name="body" value="/WEB-INF/jsp/payments/quittance/search_by_address.jsp" />
+	</definition>
+
+	<definition name="payments.quittance.quittance_pay" extends="ab.layout.standart">
+		<put-attribute name="title" value="payments.quittance.quittance_pay.title" />
+		<put-attribute name="body" value="/WEB-INF/jsp/payments/quittance/quittance_pay.jsp" />
 	</definition>
 
 	<!-- operation-related definitions -->

@@ -54,10 +54,12 @@ public class QuittanceDetailsFinderStubImpl implements QuittanceDetailsFinder {
 		QuittanceDetailsResponse.QuittanceInfo.ServiceDetails serviceDetails1 = new QuittanceDetailsResponse.QuittanceInfo.ServiceDetails();		
 		serviceDetails1.setPayed(new BigDecimal("10.00"));
 		serviceDetails1.setOutgoingBalance(new BigDecimal("100.00"));
+		serviceDetails1.setServiceMasterIndex("1");
 
 		QuittanceDetailsResponse.QuittanceInfo.ServiceDetails serviceDetails2 = new QuittanceDetailsResponse.QuittanceInfo.ServiceDetails();
 		serviceDetails2.setPayed(new BigDecimal("20.00"));
 		serviceDetails2.setOutgoingBalance(new BigDecimal("200.00"));
+		serviceDetails2.setServiceMasterIndex("2");
 
 		quittanceInfo1.setDetailses(new QuittanceDetailsResponse.QuittanceInfo.ServiceDetails[] { serviceDetails1, serviceDetails2 });
 

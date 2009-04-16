@@ -1,8 +1,7 @@
-package org.flexpay.payments.actions.search;
+package org.flexpay.payments.actions.quittance;
 
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.exception.FlexPayException;
-import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.payments.service.QuittanceDetailsFinder;
 import org.flexpay.payments.service.SPService;
@@ -25,7 +24,7 @@ public class SearchQuittanceAction extends FPActionSupport {
 	// form data
 	private String searchType;
 	private String searchCriteria;
-	private QuittanceDetailsResponse.QuittanceInfo[] quittanceInfos;
+	private QuittanceDetailsResponse.QuittanceInfo[] quittanceInfos;	
 
 	// required services
 	private QuittanceDetailsFinder quittanceDetailsFinder;
@@ -35,13 +34,10 @@ public class SearchQuittanceAction extends FPActionSupport {
 	protected String doExecute() throws Exception {
 
 		// TODO get rid of stub implementation
-		//quittanceDetailsFinder = new QuittanceDetailsFinderStubImpl();
+		quittanceDetailsFinder = new QuittanceDetailsFinderStubImpl();
 
 		QuittanceDetailsRequest request = buildQuittanceRequest();
 		QuittanceDetailsResponse response = quittanceDetailsFinder.findQuittance(request);
-
-		log.debug("Request: {}", request);
-		log.debug("Response: {}", response);
 
 		if (response.isSuccess()) {
 			quittanceInfos = response.getInfos();
