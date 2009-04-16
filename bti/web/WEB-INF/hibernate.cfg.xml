@@ -13,6 +13,7 @@
 		<mapping resource="org/flexpay/common/persistence/DataSourceDescription.hbm.xml" />
 		<mapping resource="org/flexpay/common/persistence/history/Diff.hbm.xml" />
 		<mapping resource="org/flexpay/common/persistence/history/HistoryConsumer.hbm.xml" />
+		<mapping resource="org/flexpay/common/persistence/history/TransportConfig.hbm.xml" />
 		<mapping resource="org/flexpay/common/persistence/Process.hbm.xml" />
 		<mapping resource="org/flexpay/common/persistence/Dual.hbm.xml" />
 		<mapping resource="org/flexpay/common/persistence/MeasureUnit.hbm.xml" />

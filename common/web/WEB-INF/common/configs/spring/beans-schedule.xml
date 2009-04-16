@@ -15,15 +15,32 @@
 		</property>
 	</bean>
 
+	<bean name="jobHistoryBroadcastBean" class="org.springframework.scheduling.quartz.JobDetailBean">
+		<property name="jobClass" value="org.flexpay.common.persistence.history.HistoryBroadcastQuartzJob" />
+		<property name="jobDataAsMap">
+			<map>
+				<entry key="lockManager" value-ref="lockManager" />
+				<entry key="historyPacker" value-ref="xmlHistoryPacker" />
+				<entry key="historyConsumerService" value-ref="historyConsumerService" /> 
+			</map>
+		</property>
+	</bean>
+
 	<bean id="jobObjectsSyncTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
 		<property name="jobDetail" ref="jobObjectsSyncDetailBean" />
 		<property name="cronExpression" value="${common.sync.cron.schedule}" />
+	</bean>
+
+	<bean id="jobHistoryBroadcastTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="jobHistoryBroadcastBean" />
+		<property name="cronExpression" value="${common.history_broadcast.cron.schedule}" />
 	</bean>
 
 	<bean id="schedulerFactoryBean" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
 		<property name="triggers">
 			<list>
 				<ref bean="jobObjectsSyncTrigger" />
+				<ref bean="jobHistoryBroadcastTrigger" />
 			</list>
 		</property>
 		<property name="quartzProperties">

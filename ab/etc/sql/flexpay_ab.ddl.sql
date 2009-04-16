@@ -420,6 +420,7 @@
         name varchar(255) comment 'Consumer name',
         description varchar(255) comment 'Optional consumer description',
         last_diff_id bigint comment 'Last packed diff reference',
+        out_transport_config_id bigint not null comment 'Out transport config reference',
         primary key (id)
     ) comment='Some abstract history records consumer';
 
@@ -505,6 +506,14 @@
         primary key (id),
         unique (language_id, measure_unit_id)
     ) comment='Measure unit translation';
+
+    create table common_out_transport_configs_tbl (
+        id bigint not null auto_increment,
+        config_type varchar(255) not null comment 'Class hierarchy descriminator',
+        version integer not null comment 'Optimistic lock version',
+        ws_url varchar(255) comment 'Web service url',
+        primary key (id)
+    ) comment='Out transport configs';
 
     create table common_registries_tbl (
         id bigint not null auto_increment,
@@ -983,6 +992,12 @@
         add constraint FK_common_history_consumers_tbl_last_diff_id 
         foreign key (last_diff_id) 
         references common_diffs_tbl (id);
+
+    alter table common_history_consumers_tbl 
+        add index FK_common_history_consumers_tbl_out_transport_config_id (out_transport_config_id), 
+        add constraint FK_common_history_consumers_tbl_out_transport_config_id 
+        foreign key (out_transport_config_id) 
+        references common_out_transport_configs_tbl (id);
 
     alter table common_history_consumption_groups_tbl 
         add index FK_common_history_consumption_groups_tbl_consumer_id (consumer_id), 

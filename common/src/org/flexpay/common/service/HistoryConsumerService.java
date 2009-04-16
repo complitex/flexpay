@@ -83,4 +83,11 @@ public interface HistoryConsumerService {
 	 */
 	@Nullable
 	HistoryConsumer readFull(@NotNull Stub<HistoryConsumer> stub);
+
+	/**
+	 * List all history consumers
+	 *
+	 * @return List of consumers
+	 */
+	List<HistoryConsumer> listConsumers();
 }

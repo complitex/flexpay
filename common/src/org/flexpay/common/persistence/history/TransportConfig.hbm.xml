@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+		"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="org.flexpay.common.persistence.history">
+
+	<class name="OutTransportConfig" abstract="true" table="common_out_transport_configs_tbl"
+		   optimistic-lock="version" discriminator-value="base">
+		<comment>Out transport configs</comment>
+		<id name="id" column="id">
+			<generator class="native" />
+		</id>
+
+		<discriminator type="string">
+			<column name="config_type" not-null="true">
+				<comment>Class hierarchy descriminator</comment>
+			</column>
+		</discriminator>
+		<version name="version" access="field">
+			<column name="version" not-null="true">
+				<comment>Optimistic lock version</comment>
+			</column>
+		</version>
+
+		<subclass name="WSOutTransportConfig" discriminator-value="ws">
+			<property name="url">
+				<column name="ws_url" not-null="false">
+					<comment>Web service url</comment>
+				</column>
+			</property>
+		</subclass>
+	</class>
+
+</hibernate-mapping>

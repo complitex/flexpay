@@ -31,6 +31,12 @@
 				<comment>Last packed diff reference</comment>
 			</column>
 		</many-to-one>
+		<many-to-one name="outTransportConfig" class="OutTransportConfig" unique="true"
+					 foreign-key="FK_common_history_consumers_tbl_out_transport_config_id">
+			<column name="out_transport_config_id" not-null="true">
+				<comment>Out transport config reference</comment>
+			</column>
+		</many-to-one>
 	</class>
 
 	<class name="HistoryConsumption" table="common_history_consumptions_tbl">
@@ -94,8 +100,15 @@
 	<query name="HistoryConsumer.findNewRecords">
 		select distinct d
 		from Diff d
-			left join fetch d.historyRecords
+		left join fetch d.historyRecords
 		where d.id between ? and ? and d.instanceId=?
+	</query>
+
+	<query name="HistoryConsumer.findConsumers">
+		select distinct c
+		from HistoryConsumer c
+			inner join fetch c.outTransportConfig
+		where c.status=0
 	</query>
 
 </hibernate-mapping>
