@@ -95,7 +95,7 @@ public class XmlHistoryPacker extends HistoryPackerBase {
 			oos.writeObject(clone);
 			context.addDiff();
 
-			consumerService.addConsumptions(context.getGroup(), records);
+			consumerService.addConsumptions(context.getLastGroup(), records);
 		}
 	}
 

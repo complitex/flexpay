@@ -43,6 +43,16 @@ public interface FPFileService {
     FPFile update(@NotNull FPFile file) throws FlexPayException;
 
 	/**
+	 * Update existing files in database
+	 *
+	 * @param files files to update
+	 * @return updated files
+	 * @throws FlexPayException if failure occurs
+	 */
+	@NotNull
+    List<FPFile> update(@NotNull List<FPFile> files) throws FlexPayException;
+
+	/**
 	 * Delete FPFile entity from database
 	 * and also delete file from file system
 	 *

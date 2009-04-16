@@ -10,9 +10,11 @@ import org.flexpay.common.persistence.history.HistoryRecord;
 import org.flexpay.common.persistence.history.impl.XmlHistoryUnPacker;
 import org.flexpay.common.service.HistoryConsumerService;
 import org.flexpay.common.test.SpringBeanAwareTestCase;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertFalse;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.List;
 
 public class TestUnpackTownHistory extends SpringBeanAwareTestCase {
 
@@ -37,8 +39,8 @@ public class TestUnpackTownHistory extends SpringBeanAwareTestCase {
 		historyConsumerService.deleteConsumptions(consumer);
 
 		// third, dump history to the file
-		FPFile history = historyPacker.packHistory(consumer);
-		assertNotNull("history packing failed", history);
+		List<FPFile> history = historyPacker.packHistory(consumer);
+		assertFalse("history packing failed", history.isEmpty());
 
 		// forth, clean up generated packes
 		historyConsumerService.deleteConsumptions(consumer);
@@ -56,6 +58,8 @@ public class TestUnpackTownHistory extends SpringBeanAwareTestCase {
 		});
 
 		// finally, unpack history
-		historyUnPacker.unpackHistory(history);
+		for (FPFile file : history) {
+			historyUnPacker.unpackHistory(file);
+		}
 	}
 }

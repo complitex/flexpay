@@ -6,11 +6,11 @@ import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.history.HistoryConsumer;
 import org.flexpay.common.persistence.history.HistoryPacker;
 import org.flexpay.common.persistence.history.impl.SoapOutHistoryTransport;
+import org.flexpay.common.process.Process;
+import org.flexpay.common.process.ProcessManager;
 import org.flexpay.common.service.HistoryConsumerService;
 import org.flexpay.common.test.SpringBeanAwareTestCase;
-import org.flexpay.common.process.ProcessManager;
-import org.flexpay.common.process.Process;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,13 +53,15 @@ public class TestSoapHistoryTransport extends SpringBeanAwareTestCase {
 		historyConsumerService.deleteConsumptions(consumer);
 
 		// third, dump history to the file
-		FPFile history = historyPacker.packHistory(consumer);
-		assertNotNull("history packing failed", history);
+		List<FPFile> history = historyPacker.packHistory(consumer);
+		assertFalse("history packing failed", history.isEmpty());
 
 		// forth, clean up generated packes
 		historyConsumerService.deleteConsumptions(consumer);
 
-		outTransport.send(history);
+		for (FPFile file : history) {
+			outTransport.send(file);
+		}
 
 		// wait while process manager ends
 		List<Process> processes = processManager.getProcesses();
