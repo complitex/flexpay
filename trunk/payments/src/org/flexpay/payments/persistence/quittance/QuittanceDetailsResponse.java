@@ -28,6 +28,10 @@ public class QuittanceDetailsResponse implements Serializable {
 
 	private QuittanceInfo[] infos;
 
+	public boolean isSuccess() {
+		return errorCode == CODE_SUCCESS;
+	}
+
 	public int getErrorCode() {
 		return errorCode;
 	}

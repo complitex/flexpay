@@ -6,18 +6,22 @@
 
 	<package name="search" namespace="/payments" extends="common">
 
-		<action name="searchByQuittanceNumber" class="searchByQuittanceNumberAction">
+		<action name="searchByQuittanceNumber" class="staticPageAction">
 			<result type="tiles">payments.search.quittance_number</result>
 		</action>
 
-		<action name="searchByEircAccount" class="searchByEircAccountAction">
+		<action name="searchByEircAccount" class="staticPageAction">
 			<result type="tiles">payments.search.eirc_account</result>
 		</action>
 
-		<action name="searchByAddress" class="searchByAdressAction">
+		<action name="searchByAddress" class="staticPageAction">
 			<result type="tiles">payments.search.address</result>
 		</action>
 
+		<action name="searchResults" class="searchQuittanceAction">
+			<result>/WEB-INF/jsp/payments/search/search_results.jsp</result>
+		</action>
+		
 	</package>
 
 </struts>
