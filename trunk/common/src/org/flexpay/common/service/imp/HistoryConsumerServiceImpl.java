@@ -162,6 +162,15 @@ public class HistoryConsumerServiceImpl implements HistoryConsumerService {
 		return consumerDao.read(stub.getId());
 	}
 
+	/**
+	 * List all history consumers
+	 *
+	 * @return List of consumers
+	 */
+	public List<HistoryConsumer> listConsumers() {
+		return consumerDao.listConsumers();
+	}
+
 	@Required
 	public void setConsumerDao(HistoryConsumerDao consumerDao) {
 		this.consumerDao = consumerDao;

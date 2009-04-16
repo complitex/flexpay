@@ -16,6 +16,8 @@ public class HistoryConsumer extends DomainObjectWithStatus {
 	private String description;
 	// last diff packed
 	private Diff lastPackedDiff;
+	// out transport config
+	private OutTransportConfig outTransportConfig;
 
 	/**
 	 * Constructs a new DomainObject.
@@ -53,6 +55,14 @@ public class HistoryConsumer extends DomainObjectWithStatus {
 
 	public void setLastPackedDiff(Diff lastPackedDiff) {
 		this.lastPackedDiff = lastPackedDiff;
+	}
+
+	public OutTransportConfig getOutTransportConfig() {
+		return outTransportConfig;
+	}
+
+	public void setOutTransportConfig(OutTransportConfig outTransportConfig) {
+		this.outTransportConfig = outTransportConfig;
 	}
 
 	@Override
