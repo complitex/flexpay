@@ -668,6 +668,27 @@
         <role-name>ROLE_MENU_EIRC_QUITTANCES_PACKETS</role-name>
     </security-role>
 
+	<security-role>
+		<role-name>ROLE_PAYMENTS_OPERATION_ADD</role-name>
+	</security-role>
+
+	<security-role>
+		<role-name>ROLE_PAYMENTS_OPERATION_CHANGE</role-name>
+	</security-role>
+
+	<!-- organization roles -->
+	<security-role>
+		<role-name>ROLE_PAYMENTS_OPERATION_READ</role-name>
+	</security-role>		
+
+	<security-role>
+		<role-name>ROLE_PAYMENTS_DOCUMENT_TYPE_READ</role-name>
+	</security-role>
+
+	<security-role>
+		<role-name>ROLE_PAYMENTS_SERVICE_READ</role-name>
+	</security-role>
+
 	<!--<login-config>-->
 		<!--<auth-method>BASIC</auth-method>-->
 	<!--</login-config>-->

@@ -14,7 +14,7 @@
 		  p:quittanceDetailsFinder-ref="jmsQuittanceDetailsFinder"
 		  p:spService-ref="spService" />
 
-	<bean id="quittancePayAction" scope="prototype"
+	<bean id="paymentsQuittancePayAction" scope="prototype"
 		  class="org.flexpay.payments.actions.quittance.QuittancePayAction"
 			p:documentStatusService-ref="documentStatusService"
 			p:documentTypeService-ref="documentTypeService"
