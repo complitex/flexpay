@@ -254,7 +254,7 @@
 						<td class="col" id="paySumm_<s:property value="%{#status.index + 1}"/>"><s:property value="outgoingBalance"/></td>
 						<td class="col"><s:property value="payed"/></td>
 						<td class="col">
-							<s:textfield name="servicePayments[%{getServiceId(serviceMasterIndex)}]" value="%{outgoingBalance - payed}" cssStyle="width: 100%; text-align: right;"/>							
+							<s:textfield name="paymentsMap[%{serviceMasterIndex}]" value="%{outgoingBalance - payed}" cssStyle="width: 100%; text-align: right;"/>							
 						</td>
 					</tr>
 				</s:iterator>

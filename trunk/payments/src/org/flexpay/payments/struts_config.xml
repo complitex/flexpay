@@ -14,7 +14,7 @@
 	<package name="payments" namespace="/payments" extends="common">
 
 		<action name="main" class="staticPageAction">			
-			<result type="tiles">payments.search.address</result>
+			<result type="tiles">payments.quittance.search.address</result>
 		</action>
 
 	</package>
@@ -31,6 +31,6 @@
 	<include file="org/flexpay/payments/actions/operations/struts.xml" />
 	<include file="org/flexpay/payments/actions/registry/struts.xml" />
 	<include file="org/flexpay/payments/actions/reports/struts.xml" />
-	<include file="org/flexpay/payments/actions/search/struts.xml" />
+	<include file="org/flexpay/payments/actions/quittance/struts.xml" />
 
 </struts>
