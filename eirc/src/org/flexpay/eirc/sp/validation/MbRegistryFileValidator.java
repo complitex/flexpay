@@ -37,23 +37,34 @@ public class MbRegistryFileValidator implements Validator {
 			reader = new BufferedReader(new InputStreamReader(new FileInputStream(file), REGISTRY_FILE_ENCODING), 500);
 
 			for (int lineNum = 0;;lineNum++) {
-				String l = reader.readLine();
-				if (l == null) {
+				String line = reader.readLine();
+				if (line == null) {
 					throw new FlexPayException("Can't read file line");
 				}
-				String line = new String(l.getBytes("UTF-8"));
 				if (lineNum == 0) {
 					if (!FIRST_FILE_STRING.equals(line)) {
 						throw new FlexPayException("First line must be equals 300 spaces");
 					}
 				} else if (lineNum == 1) {
-					validateHeader(line);
+					try {
+						validateHeader(line);
+					} catch (Exception e) {
+						throw new FlexPayException("Incorrect header in file. Line number = " + lineNum, e);
+					}
 				} else if (line.startsWith(LAST_FILE_STRING_BEGIN)) {
 					fileValues.setLines(lineNum - 2);
-					validateFooter(line, fileValues);
+					try {
+						validateFooter(line, fileValues);
+					} catch (Exception e) {
+						throw new FlexPayException("Incorrect footer in file. Line number = " + lineNum, e);
+					}
 					break;
 				} else {
-					validateRecord(line, fileValues);
+					try {
+						validateRecord(line, fileValues);
+					} catch (Exception e) {
+						throw new FlexPayException("Incorrect record in file. Line number = " + lineNum + ". Line = " + line, e);
+					}
 				}
 			}
 		} catch (IOException e) {
@@ -73,7 +84,7 @@ public class MbRegistryFileValidator implements Validator {
 	private void validateHeader(String line) throws FlexPayException {
 		String[] fields = line.split("=");
 		if (fields.length != 4) {
-			throw new FlexPayException("Incorrect header line (not 4 fields)");
+			throw new FlexPayException("Not 4 fields");
 		}
 		if (fields[0].length() > 20) {
 			throw new FlexPayException("Organization name length can't be more 20 symbols");
@@ -81,70 +92,70 @@ public class MbRegistryFileValidator implements Validator {
 		try {
 			Long.parseLong(fields[1]);
 		} catch (Exception e) {
-			throw new FlexPayException("Incorrect header line (can't parse organization code " + fields[1] + ")", e);
+			throw new FlexPayException("Can't parse organization code " + fields[1]);
 		}
 		try {
 			INCOME_PERIOD_DATE_FORMAT.parse(fields[2]);
 		} catch (Exception e) {
-			throw new FlexPayException("Incorrect header line (can't parse income period " + fields[2] + ")");
+			throw new FlexPayException("Can't parse income period " + fields[2]);
 		}
 		try {
 			FILE_CREATION_DATE_FORMAT.parse(fields[3]);
 		} catch (Exception e) {
-			throw new FlexPayException("Incorrect header line (can't parse file creation date " + fields[3] + ")");
+			throw new FlexPayException("Can't parse file creation date " + fields[3]);
 		}
 	}
 
 	private void validateRecord(String line, FileValues fileValues) throws FlexPayException {
 		String[] fields = line.split("=");
 		if (fields.length != 6) {
-			throw new FlexPayException("Incorrect record in file (not 6 fields)");
+			throw new FlexPayException("Not 6 fields");
 		}
 		try {
 			fileValues.addIncome(Long.parseLong(fields[1]));
 		} catch (Exception e) {
-			throw new FlexPayException("Incorrect record in file (can't parse summ " + fields[1] + ")");
+			throw new FlexPayException("Can't parse summ " + fields[1]);
 		}
 		try {
 			fileValues.addSaldo(Long.parseLong(fields[2]));
 		} catch (Exception e) {
-			throw new FlexPayException("Incorrect record in file (can't parse saldo summ " + fields[2] + ")");
+			throw new FlexPayException("Can't parse saldo summ " + fields[2]);
 		}
 		try {
 			OPERATION_DATE_FORMAT.parse(fields[5]);
 		} catch (Exception e) {
-			throw new FlexPayException("Incorrect record in file (can't parse operation date " + fields[5] + ")");
+			throw new FlexPayException("Can't parse operation date " + fields[5]);
 		}
 	}
 
 	private void validateFooter(String line, FileValues fileValues) throws FlexPayException {
 		String[] fields = line.split("=");
 		if (fields.length != 4) {
-			throw new FlexPayException("Incorrect footer line (not 4 fields)");
+			throw new FlexPayException("Not 4 fields");
 		}
 		if (!fields[0].equals(LAST_FILE_STRING_BEGIN)) {
-			throw new FlexPayException("Incorrect footer line (first field must be equals 999999999)");
+			throw new FlexPayException("First field must be equals 999999999");
 		}
 		try {
 			if (fileValues.getIncomeSumm() != Long.parseLong(fields[1])) {
 				throw new FlexPayException("Invalid data in file (total income summ in footer not equals with summ of incomes in all lines - " + fields[1] + ", but were " + fileValues.getIncomeSumm() + ")");
 			}
 		} catch (NumberFormatException e) {
-			throw new FlexPayException("Incorrect footer line (can't parse total income summ " + fields[1] + ")");
+			throw new FlexPayException("Can't parse total income summ " + fields[1]);
 		}
 		try {
 			if (fileValues.getSaldoSumm() != Long.parseLong(fields[2])) {
 				throw new FlexPayException("Invalid data in file (total saldo summ in footer not equals with summ of saldos in all lines - " + fields[2] + ", but were" + fileValues.getSaldoSumm() + ")");
 			}
 		} catch (NumberFormatException e) {
-			throw new FlexPayException("Incorrect footer line (can't parse total saldo summ " + fields[2] + ")");
+			throw new FlexPayException("Can't parse total saldo summ " + fields[2]);
 		}
 		try {
 			if (fileValues.getLines() != Integer.parseInt(fields[3])) {
 				throw new FlexPayException("Invalid data in file (incorrect records number in file - " + fields[3] + ", but were " + fileValues.getLines() + ")");
 			}
 		} catch (NumberFormatException e) {
-			throw new FlexPayException("Incorrect footer line (can't parse total amount of lines in file - " + fields[3] + ")");
+			throw new FlexPayException("Can't parse total amount of lines in file - " + fields[3]);
 		}
 	}
 

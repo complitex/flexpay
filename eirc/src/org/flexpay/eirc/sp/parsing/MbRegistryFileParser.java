@@ -8,32 +8,24 @@ import org.flexpay.eirc.persistence.Consumer;
 import org.flexpay.eirc.persistence.EircRegistryProperties;
 import org.flexpay.eirc.persistence.EircRegistryRecordProperties;
 import org.flexpay.eirc.service.*;
-import org.flexpay.eirc.sp.Validator;
-import org.flexpay.eirc.sp.FileParser;
+import org.flexpay.eirc.sp.MbFileParser;
 import org.flexpay.orgs.persistence.ServiceProvider;
 import org.flexpay.orgs.service.ServiceProviderService;
 import org.jetbrains.annotations.NotNull;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.math.BigDecimal;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.text.DateFormat;
 import java.util.Date;
 
 @Transactional (readOnly = true)
-public class MbRegistryFileParser implements FileParser {
-
-	private Logger log = LoggerFactory.getLogger(getClass());
-
-	public final static String LAST_FILE_STRING_BEGIN = "999999999";
-	public final static String REGISTRY_FILE_ENCODING = "Cp866";
-	public final static DateFormat OPERATION_DATE_FORMAT = new SimpleDateFormat("MMyy");
+public class MbRegistryFileParser extends MbFileParser<Registry> {
 
 	private RegistryRecordStatus statusLoaded;
 
@@ -46,26 +38,9 @@ public class MbRegistryFileParser implements FileParser {
 	private SpRegistryStatusService spRegistryStatusService;
 	private RegistryArchiveStatusService registryArchiveStatusService;
 	private PropertiesFactory propertiesFactory;
-	private Validator validator;
 
 	@Transactional(propagation = Propagation.NOT_SUPPORTED, readOnly = false)
-	public Registry parse(@NotNull FPFile spFile) throws FlexPayException {
-
-		if (validator != null) {
-			log.info("Starting validation MB registry file...");
-			validator.validate(spFile);
-			log.info("MB registry file validation completed");
-		}
-
-		log.info("Starting parsing file: {}", spFile.getOriginalName());
-
-		long beginTime = System.currentTimeMillis();
-
-		File file = spFile.getFile();
-		if (file == null) {
-			log.debug("Incorrect spFile: can't find file on server (spFile.id = {})", spFile.getId());
-			throw new FlexPayException("For FPFile (id = " + spFile.getId() + ") not found temp file: " + spFile.getNameOnServer());
-		}
+	public Registry parseFile(@NotNull FPFile spFile) throws FlexPayException {
 
 		Registry registry = new Registry();
 
@@ -73,7 +48,7 @@ public class MbRegistryFileParser implements FileParser {
 
 		try {
 
-			reader = new BufferedReader(new InputStreamReader(new FileInputStream(file), REGISTRY_FILE_ENCODING), 500);
+			reader = new BufferedReader(new InputStreamReader(new FileInputStream(spFile.getFile()), REGISTRY_FILE_ENCODING), 500);
 
 			statusLoaded = spRegistryRecordStatusService.findByCode(RegistryRecordStatus.LOADED);
 			if (statusLoaded == null) {
@@ -89,12 +64,11 @@ public class MbRegistryFileParser implements FileParser {
 			ServiceProvider serviceProvider = null;
 
 			for (int lineNum = 0;;lineNum++) {
-				String l = reader.readLine();
-				if (l == null) {
+				String line = reader.readLine();
+				if (line == null) {
 					log.debug("End of file, lineNum = {}", lineNum);
 					break;
 				}
-				String line = new String(l.getBytes("UTF-8"));
 				if (lineNum == 0) {
 				} else if (lineNum == 1) {
 					serviceProvider = parseHeader(line);
@@ -126,11 +100,6 @@ public class MbRegistryFileParser implements FileParser {
 				// do nothing
 			}
 		}
-
-		long endTime = System.currentTimeMillis();
-		long time = (endTime - beginTime) / 1000;
-
-		log.info("Parsing file {} finished in {}", spFile.getOriginalName(), (time / 60 + "m " + time % 60 + "s"));
 
 		return registry;
 
@@ -220,10 +189,6 @@ public class MbRegistryFileParser implements FileParser {
 	@Required
 	public void setPropertiesFactory(PropertiesFactory propertiesFactory) {
 		this.propertiesFactory = propertiesFactory;
-	}
-
-	public void setValidator(Validator validator) {
-		this.validator = validator;
 	}
 
 }

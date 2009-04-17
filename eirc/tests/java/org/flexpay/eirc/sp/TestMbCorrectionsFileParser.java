@@ -13,7 +13,7 @@ public class TestMbCorrectionsFileParser extends TestSpFileCreateAction {
 
 	@Autowired
 	@Qualifier("mbCorrectionsFileParser")
-	private FileParser parser;
+	private MbFileParser<Registry> parser;
 	@Autowired
 	private RegistryService registryService;
 
@@ -24,7 +24,7 @@ public class TestMbCorrectionsFileParser extends TestSpFileCreateAction {
 		FPFile newFile = createSpFile("org/flexpay/eirc/sp/01033_122008.kor");
 
 		try {
-			Registry registry = (Registry) parser.parse(newFile);
+			Registry registry = parser.parse(newFile);
 //			registryService.deleteRecords(new Stub<Registry>(registry));
 //			registryService.delete(registry);
 		} catch (Exception e) {
