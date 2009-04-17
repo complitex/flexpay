@@ -1,9 +1,10 @@
-package org.flexpay.eirc.sp;
+package org.flexpay.eirc.sp.validation;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.FPFile;
+import org.flexpay.eirc.sp.Validator;
 
 import java.io.*;
 import java.text.DateFormat;
@@ -11,9 +12,11 @@ import java.text.SimpleDateFormat;
 
 public class MbRegistryFileValidator implements Validator {
 
+	public final static DateFormat INCOME_PERIOD_DATE_FORMAT = new SimpleDateFormat("MMyy");
+	public final static DateFormat FILE_CREATION_DATE_FORMAT = new SimpleDateFormat("ddMMyy");
+	public final static DateFormat OPERATION_DATE_FORMAT = new SimpleDateFormat("MMyy");
 	public final static String LAST_FILE_STRING_BEGIN = "999999999";
 	public final static String REGISTRY_FILE_ENCODING = "Cp866";
-	public final static DateFormat OPERATION_DATE_FORMAT = new SimpleDateFormat("MMyy");
 	public final static String FIRST_FILE_STRING =
 			"                                                                                                    "
 			+ "                                                                                                    "
@@ -72,12 +75,23 @@ public class MbRegistryFileValidator implements Validator {
 		if (fields.length != 4) {
 			throw new FlexPayException("Incorrect header line (not 4 fields)");
 		}
+		if (fields[0].length() > 20) {
+			throw new FlexPayException("Organization name length can't be more 20 symbols");
+		}
 		try {
 			Long.parseLong(fields[1]);
-			Long.parseLong(fields[2]);
-			Long.parseLong(fields[3]);
 		} catch (Exception e) {
-			throw new FlexPayException("Can't parse numeric field in header", e);
+			throw new FlexPayException("Incorrect header line (can't parse organization code " + fields[1] + ")", e);
+		}
+		try {
+			INCOME_PERIOD_DATE_FORMAT.parse(fields[2]);
+		} catch (Exception e) {
+			throw new FlexPayException("Incorrect header line (can't parse income period " + fields[2] + ")");
+		}
+		try {
+			FILE_CREATION_DATE_FORMAT.parse(fields[3]);
+		} catch (Exception e) {
+			throw new FlexPayException("Incorrect header line (can't parse file creation date " + fields[3] + ")");
 		}
 	}
 
