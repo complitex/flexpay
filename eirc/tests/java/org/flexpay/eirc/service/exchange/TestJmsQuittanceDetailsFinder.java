@@ -8,12 +8,13 @@ import org.flexpay.payments.persistence.quittance.QuittanceDetailsResponse;
 import org.flexpay.eirc.persistence.account.Quittance;
 import org.flexpay.eirc.service.QuittanceService;
 import org.flexpay.eirc.process.QuittanceNumberService;
+import org.flexpay.eirc.test.EircSpringBeanAwareTestCase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import static org.junit.Assert.assertNotNull;
 import org.junit.Test;
 
-public class TestJmsQuittanceDetailsFinder extends SpringBeanAwareTestCase {
+public class TestJmsQuittanceDetailsFinder extends EircSpringBeanAwareTestCase {
 
 	@Autowired
 	private QuittanceService quittanceService;

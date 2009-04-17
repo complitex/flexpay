@@ -20,12 +20,12 @@ public abstract class Security {
 	/**
 	 * History sync process user
 	 */
-	public static final String USER_HISTORY_SYNCER = "history-syncer";
+	private static final String USER_HISTORY_SYNCER = "history-syncer";
 
 	/**
 	 * Set of authorities names for syncer process user
 	 */
-	public static final List<String> USER_HISTORY_SYNCER_AUTHORITIES = CollectionUtils.list(
+	protected static final List<String> USER_HISTORY_SYNCER_AUTHORITIES = CollectionUtils.list(
 			Roles.BASIC
 	);
 

@@ -35,7 +35,7 @@ public class Apartment extends DomainObjectWithStatus {
 		super(stub.getId());
 	}
 
-	@NotNull
+	@Nullable
 	public Building getBuilding() {
 		return building;
 	}

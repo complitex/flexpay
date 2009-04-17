@@ -43,7 +43,7 @@ public class BuildingHistoryBuilder extends HistoryBuilderBase<Building> {
 
 		Building buildingOld = b1 == null ? new Building() : b1;
 
-		// create town reference diff
+		// create district reference diff
 		buildDistrictReferenceDiff(buildingOld, b2, diff);
 
 		buildAddressDiff(buildingOld, b2, diff);

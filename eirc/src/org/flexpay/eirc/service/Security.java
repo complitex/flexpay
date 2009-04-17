@@ -1,0 +1,26 @@
+package org.flexpay.eirc.service;
+
+import org.flexpay.common.util.CollectionUtils;
+import org.flexpay.common.util.SecurityUtil;
+
+import java.util.List;
+
+public abstract class Security extends org.flexpay.ab.service.Security {
+
+	/**
+	 * Quittance finder process user
+	 */
+	private static final String USER_QUITTANCE_FINDER = "history-syncer";
+
+	/**
+	 * Set of authorities names for quittance finder process user
+	 */
+	private static final List<String> USER_QUITTANCE_FINDER_AUTHORITIES = CollectionUtils.list(
+			org.flexpay.common.service.Roles.BASIC,
+			Roles.QUITTANCE_READ
+	);
+
+	public static void authenticateQuittanceFinder() {
+		SecurityUtil.authenticate(USER_QUITTANCE_FINDER, USER_QUITTANCE_FINDER_AUTHORITIES);
+	}
+}

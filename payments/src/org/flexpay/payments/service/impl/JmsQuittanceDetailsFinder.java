@@ -4,6 +4,7 @@ import org.flexpay.common.util.config.ApplicationConfig;
 import org.flexpay.payments.persistence.quittance.QuittanceDetailsRequest;
 import org.flexpay.payments.persistence.quittance.QuittanceDetailsResponse;
 import org.flexpay.payments.service.QuittanceDetailsFinder;
+import org.flexpay.payments.service.Security;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,6 +30,7 @@ public class JmsQuittanceDetailsFinder implements QuittanceDetailsFinder {
 	 */
 	@NotNull
 	public QuittanceDetailsResponse findQuittance(final QuittanceDetailsRequest request) {
+
 		request.setRequestId(ApplicationConfig.getInstanceId() + System.currentTimeMillis());
 
 		jmsTemplate.send(requestQueue, new MessageCreator() {
