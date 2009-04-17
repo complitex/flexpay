@@ -1,9 +1,9 @@
 package org.flexpay.common.util;
 
-import org.springframework.security.context.SecurityContextHolder;
 import org.springframework.security.Authentication;
 import org.springframework.security.GrantedAuthority;
 import org.springframework.security.GrantedAuthorityImpl;
+import org.springframework.security.context.SecurityContextHolder;
 import org.springframework.security.providers.anonymous.AnonymousAuthenticationToken;
 import org.springframework.security.userdetails.User;
 
@@ -13,7 +13,7 @@ public abstract class SecurityUtil {
 
 	/**
 	 * Retrive current user name
-	 * 
+	 *
 	 * @return Current authenticated user name
 	 */
 	public static String getUserName() {
@@ -24,7 +24,7 @@ public abstract class SecurityUtil {
 	/**
 	 * Authenticate user with a list of authorities
 	 *
-	 * @param userName User name to authenticate
+	 * @param userName	User name to authenticate
 	 * @param authorities List of authorities
 	 */
 	public static void authenticate(String userName, List<String> authorities) {
@@ -39,5 +39,18 @@ public abstract class SecurityUtil {
 		User user = new User(userName, "", true, true, true, true, grantedAuthorities);
 		Authentication auth = new AnonymousAuthenticationToken("key", user, grantedAuthorities);
 		SecurityContextHolder.getContext().setAuthentication(auth);
+	}
+
+	public static GrantedAuthority auth(String authName) {
+		return new GrantedAuthorityImpl(authName);
+	}
+
+	public static GrantedAuthority[] auths(String... authNames) {
+		List<GrantedAuthority> authorities = CollectionUtils.list();
+		for (String auth : authNames) {
+			authorities.add(auth(auth));
+		}
+
+		return authorities.toArray(new GrantedAuthority[authorities.size()]);
 	}
 }

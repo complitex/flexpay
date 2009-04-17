@@ -30,6 +30,7 @@ import java.util.Map;
  */
 @ContextConfiguration (locations = {
 		"file:WEB-INF/applicationContext.xml"
+		, "applicationContext-security.xml"
 		, "file:WEB-INF/common/configs/spring/history/beans-ws-server-test.xml"
 })
 public abstract class SpringBeanAwareTestCase extends AbstractJUnit4SpringContextTests {

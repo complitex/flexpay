@@ -1,17 +1,16 @@
 package org.flexpay.common.persistence.history;
 
-import org.springframework.scheduling.quartz.QuartzJobBean;
-import org.springframework.beans.factory.annotation.Required;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.flexpay.common.service.DiffService;
+import org.flexpay.common.locking.LockManager;
+import org.flexpay.common.persistence.FPFile;
+import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.service.HistoryConsumerService;
 import org.flexpay.common.service.transport.OutTransport;
-import org.flexpay.common.locking.LockManager;
-import static org.flexpay.common.persistence.Stub.stub;
-import org.flexpay.common.persistence.FPFile;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Required;
+import org.springframework.scheduling.quartz.QuartzJobBean;
 
 import java.util.List;
 
@@ -53,7 +52,7 @@ public class HistoryBroadcastQuartzJob extends QuartzJobBean {
 					transport.send(file);
 				}
 			}
-		} catch (Exception ex){
+		} catch (Exception ex) {
 			throw new JobExecutionException("Failed history broadcast", ex);
 		} finally {
 			lockManager.releaseLock(LOCK_NAME);

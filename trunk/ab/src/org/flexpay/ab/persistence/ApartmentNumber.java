@@ -11,7 +11,7 @@ import java.util.Date;
 /**
  * ApartmentNumber
  */
-public class ApartmentNumber extends DomainObject {
+public class ApartmentNumber extends DomainObject implements Comparable<ApartmentNumber> {
 
 	private Apartment apartment;
 	private Date begin;
@@ -52,6 +52,10 @@ public class ApartmentNumber extends DomainObject {
 
 	public void setValue(@NotNull String value) {
 		this.value = value;
+	}
+
+	public int compareTo(ApartmentNumber o) {
+		return begin.compareTo(o.begin);
 	}
 
 	public String toString() {
