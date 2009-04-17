@@ -25,7 +25,7 @@
 			<td colspan="3" height="3" bgcolor="#4a4f4f"/>
 		<tr>
 			<td colspan="3">
-				<input type="submit" class="btn-exit" value="<s:text name="common.save"/>"/>
+				<input type="submit" class="btn-exit" name="submitted" value="<s:text name="common.save"/>"/>
 			</td>
 		</tr>
 		<s:hidden name="temporal.id" value="%{temporal.id}" />

@@ -25,7 +25,7 @@
 		</s:iterator>
 
 		<tr>
-			<td colspan="2"><input type="submit" class="btn-exit"
+			<td colspan="2"><input type="submit" class="btn-exit" name="submitted"
 								   value="<s:text name="common.save"/>"/>
 			</td>
 		</tr>
