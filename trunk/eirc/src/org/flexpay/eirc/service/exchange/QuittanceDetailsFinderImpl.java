@@ -15,6 +15,7 @@ import org.flexpay.eirc.persistence.EircAccount;
 import org.flexpay.eirc.persistence.account.Quittance;
 import org.flexpay.eirc.service.EircAccountService;
 import org.flexpay.eirc.service.QuittanceService;
+import org.flexpay.eirc.service.Security;
 import org.flexpay.payments.persistence.quittance.QuittanceDetailsRequest;
 import static org.flexpay.payments.persistence.quittance.QuittanceDetailsRequest.*;
 import org.flexpay.payments.persistence.quittance.QuittanceDetailsResponse;
@@ -45,6 +46,8 @@ public class QuittanceDetailsFinderImpl implements QuittanceDetailsFinder {
 	 */
 	@NotNull
 	public QuittanceDetailsResponse findQuittance(QuittanceDetailsRequest request) {
+
+		Security.authenticateQuittanceFinder();
 
 		QuittanceDetailsResponse response;
 		switch (request.getType()) {

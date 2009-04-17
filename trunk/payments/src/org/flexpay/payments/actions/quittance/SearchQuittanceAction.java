@@ -34,7 +34,7 @@ public class SearchQuittanceAction extends FPActionSupport {
 	protected String doExecute() throws Exception {
 
 		// TODO get rid of stub implementation
-		quittanceDetailsFinder = new QuittanceDetailsFinderStubImpl();
+//		quittanceDetailsFinder = new QuittanceDetailsFinderStubImpl();
 
 		QuittanceDetailsRequest request = buildQuittanceRequest();
 		QuittanceDetailsResponse response = quittanceDetailsFinder.findQuittance(request);

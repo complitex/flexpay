@@ -17,7 +17,11 @@ public abstract class Security extends org.flexpay.ab.service.Security {
 	 */
 	private static final List<String> USER_QUITTANCE_FINDER_AUTHORITIES = CollectionUtils.list(
 			org.flexpay.common.service.Roles.BASIC,
-			Roles.QUITTANCE_READ
+			Roles.QUITTANCE_READ,
+			Roles.QUITTANCE_PAYMENT_READ,
+			Roles.ACCOUNT_READ,
+			org.flexpay.ab.service.Roles.APARTMENT_READ,
+			org.flexpay.ab.service.Roles.PERSON_READ
 	);
 
 	public static void authenticateQuittanceFinder() {
