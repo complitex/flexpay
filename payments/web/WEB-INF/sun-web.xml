@@ -67,16 +67,19 @@
 		<group-name>PAYMENTS_FULL_ACCESS</group-name>
 	</security-role-mapping>
 
+	<!-- document roles -->
 	<security-role-mapping>
 		<role-name>ROLE_PAYMENTS_DOCUMENT_TYPE_READ</role-name>
 		<group-name>PAYMENTS_FULL_ACCESS</group-name>
 	</security-role-mapping>
 
+	<!-- service roles -->
 	<security-role-mapping>
 		<role-name>ROLE_PAYMENTS_SERVICE_READ</role-name>
 		<group-name>PAYMENTS_FULL_ACCESS</group-name>
 	</security-role-mapping>
 
+	<!-- organization roles -->
 	<security-role-mapping>
 		<role-name>ROLE_ORGS_SERVICE_PROVIDER_READ</role-name>
 		<group-name>PAYMENTS_FULL_ACCESS</group-name>
