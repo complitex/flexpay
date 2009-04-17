@@ -14,6 +14,8 @@ import org.jetbrains.annotations.NotNull;
 import static org.flexpay.payments.persistence.quittance.QuittanceDetailsResponse.*;
 import org.flexpay.payments.persistence.Service;
 import org.flexpay.payments.util.config.ApplicationConfig;
+import org.flexpay.orgs.service.ServiceProviderService;
+import org.flexpay.orgs.persistence.ServiceProvider;
 
 public class SearchQuittanceAction extends FPActionSupport {
 
@@ -24,17 +26,15 @@ public class SearchQuittanceAction extends FPActionSupport {
 	// form data
 	private String searchType;
 	private String searchCriteria;
-	private QuittanceDetailsResponse.QuittanceInfo[] quittanceInfos;	
+	private QuittanceDetailsResponse.QuittanceInfo[] quittanceInfos;
 
 	// required services
 	private QuittanceDetailsFinder quittanceDetailsFinder;
 	private SPService spService;
+	private ServiceProviderService serviceProviderService;
 
 	@NotNull
 	protected String doExecute() throws Exception {
-
-		// TODO get rid of stub implementation
-//		quittanceDetailsFinder = new QuittanceDetailsFinderStubImpl();
 
 		QuittanceDetailsRequest request = buildQuittanceRequest();
 		QuittanceDetailsResponse response = quittanceDetailsFinder.findQuittance(request);
@@ -44,7 +44,7 @@ public class SearchQuittanceAction extends FPActionSupport {
 		} else {
 			addActionError(getErrorMessage(response.getErrorCode()));
 		}
-		
+
 		return SUCCESS;
 	}
 
@@ -104,13 +104,13 @@ public class SearchQuittanceAction extends FPActionSupport {
 
 		Long serviceId = getServiceId(serviceMasterIndex);
 		Service service = spService.read(new Stub<Service>(serviceId));
-		return service.getServiceProvider().getName();		
+		ServiceProvider serviceProvider = serviceProviderService.read(new Stub<ServiceProvider>(service.getServiceProvider().getId()));
+		return serviceProvider.getName();
 	}
 
 	public Long getServiceId(String serviceMasterIndex) {
-	
-		return Long.parseLong(serviceMasterIndex.substring(ApplicationConfig.getInstanceId().length()));
-		
+
+		return Long.parseLong(serviceMasterIndex.substring(ApplicationConfig.getInstanceId().length() + 1)); // +1 is for '-' delimeter
 	}
 
 	// form data
@@ -134,5 +134,10 @@ public class SearchQuittanceAction extends FPActionSupport {
 	@Required
 	public void setSpService(SPService spService) {
 		this.spService = spService;
+	}
+
+	@Required
+	public void setServiceProviderService(ServiceProviderService serviceProviderService) {
+		this.serviceProviderService = serviceProviderService;
 	}
 }

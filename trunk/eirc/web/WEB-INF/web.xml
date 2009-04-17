@@ -688,6 +688,7 @@
 	<security-role>
 		<role-name>ROLE_PAYMENTS_SERVICE_READ</role-name>
 	</security-role>
+	
 
 	<!--<login-config>-->
 		<!--<auth-method>BASIC</auth-method>-->
