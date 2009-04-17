@@ -102,8 +102,7 @@ public class MbCorrectionsFileValidator implements Validator {
 					try {
 						validateRecord(line);
 					} catch (Exception e) {
-						log.debug("Incorrect record in file. Line number = {}", lineNum);
-						//throw new FlexPayException("Incorrect record in file. Line number = " + lineNum + ". Line = " + line, e);
+						throw new FlexPayException("Incorrect record in file. Line number = " + lineNum + ". Line = " + line, e);
 					}
 				}
 			}
@@ -126,20 +125,18 @@ public class MbCorrectionsFileValidator implements Validator {
 		if (fields.length != 3) {
 			throw new FlexPayException("Not 3 fields");
 		}
-/*
 		if (fields[0].length() > 20) {
 			throw new FlexPayException("Organization name length can't be more 20 symbols (was " + fields[0].length() + ", " + fields[0] + ")");
 		}
-*/
 		try {
 			Long.parseLong(fields[1]);
 		} catch (Exception e) {
-			throw new FlexPayException("Can't parse organization code " + fields[1], e);
+			throw new FlexPayException("Can't parse organization code " + fields[1]);
 		}
 		try {
 			FILE_CREATION_DATE_FORMAT.parse(fields[2]);
 		} catch (Exception e) {
-			throw new FlexPayException("Can't parse file creation date " + fields[2], e);
+			throw new FlexPayException("Can't parse file creation date " + fields[2]);
 		}
 	}
 
@@ -151,62 +148,62 @@ public class MbCorrectionsFileValidator implements Validator {
 		try {
 			Long.parseLong(fields[3]);
 		} catch (Exception e) {
-			throw new FlexPayException("Can't parse city id " + fields[3], e);
+			throw new FlexPayException("Can't parse city id " + fields[3]);
 		}
 		try {
 			Long.parseLong(fields[4]);
 		} catch (Exception e) {
-			throw new FlexPayException("Can't parse ERC street id " + fields[4], e);
+			throw new FlexPayException("Can't parse ERC street id " + fields[4]);
 		}
 		try {
 			Long.parseLong(fields[5]);
 		} catch (Exception e) {
-			throw new FlexPayException("Can't parse organization street id " + fields[5], e);
+			throw new FlexPayException("Can't parse organization street id " + fields[5]);
 		}
 		try {
 			Double.parseDouble(fields[10]);
 		} catch (Exception e) {
-			throw new FlexPayException("Can't parse full square " + fields[10], e);
+			throw new FlexPayException("Can't parse full square " + fields[10]);
 		}
 		try {
 			Double.parseDouble(fields[11]);
 		} catch (Exception e) {
-			throw new FlexPayException("Can't parse living space " + fields[11], e);
+			throw new FlexPayException("Can't parse living space " + fields[11]);
 		}
 		try {
 			Double.parseDouble(fields[12]);
 		} catch (Exception e) {
-			throw new FlexPayException("Can't parse balcony square " + fields[12], e);
+			throw new FlexPayException("Can't parse balcony square " + fields[12]);
 		}
 		try {
 			Double.parseDouble(fields[13]);
 		} catch (Exception e) {
-			throw new FlexPayException("Can't parse loggia square " + fields[13], e);
+			throw new FlexPayException("Can't parse loggia square " + fields[13]);
 		}
 		try {
 			Long.parseLong(fields[14]);
 		} catch (Exception e) {
-			throw new FlexPayException("Can't parse registered persons quantity " + fields[14], e);
+			throw new FlexPayException("Can't parse registered persons quantity " + fields[14]);
 		}
 		try {
 			Long.parseLong(fields[15]);
 		} catch (Exception e) {
-			throw new FlexPayException("Can't parse residents persons quantity " + fields[15], e);
+			throw new FlexPayException("Can't parse residents persons quantity " + fields[15]);
 		}
 		try {
 			Long.parseLong(fields[16]);
 		} catch (Exception e) {
-			throw new FlexPayException("Can't parse privileged persons quantity " + fields[16], e);
+			throw new FlexPayException("Can't parse privileged persons quantity " + fields[16]);
 		}
 		try {
 			Long.parseLong(fields[17]);
 		} catch (Exception e) {
-			throw new FlexPayException("Can't parse privileged persons quantity " + fields[17], e);
+			throw new FlexPayException("Can't parse privileged persons quantity " + fields[17]);
 		}
 		try {
 			MODIFICATIONS_BEGIN_DATE_FORMAT.parse(fields[19]);
 		} catch (Exception e) {
-			throw new FlexPayException("Can't parse modifications begin date " + fields[19], e);
+			throw new FlexPayException("Can't parse modifications begin date " + fields[19]);
 		}
 		if (!fields[21].equals("0") && !fields[21].equals("1")) {
 			throw new FlexPayException("Invalid sign of lift availability " + fields[21]);
@@ -214,7 +211,7 @@ public class MbCorrectionsFileValidator implements Validator {
 		try {
 			Long.parseLong(fields[22]);
 		} catch (Exception e) {
-			throw new FlexPayException("Can't parse rooms quantity " + fields[22], e);
+			throw new FlexPayException("Can't parse rooms quantity " + fields[22]);
 		}
 		if (!fields[23].equals("0") && !fields[23].equals("1")) {
 			throw new FlexPayException("Invalid sign of lift availability " + fields[23]);

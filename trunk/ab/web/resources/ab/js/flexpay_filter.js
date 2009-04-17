@@ -217,6 +217,7 @@ var FF = {
             if (!filter2.isArray) {
                 filter2.autocompleter.setExtraParams({parents : this.getParentParams(filter2)});
             } else {
+                filter2.string.addClass("ac_loading");
                 var params = this.getParentParams(filter2);
                 var filled = false;
                 for (var n in params) {
@@ -226,6 +227,7 @@ var FF = {
                     }
                 }
                 if (!filled && params.length > 0) {
+                    filter2.string.removeClass("ac_loading");
                     return;
                 }
                 $.post(filter2.action, {parents : params},
@@ -245,6 +247,7 @@ var FF = {
                         if (parentsFilled) {
                             filter2.string.focus();
                         }
+                        filter2.string.removeClass("ac_loading");
                     });
             }
         }

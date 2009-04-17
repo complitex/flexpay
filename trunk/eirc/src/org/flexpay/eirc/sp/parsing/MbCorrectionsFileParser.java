@@ -1,37 +1,20 @@
 package org.flexpay.eirc.sp.parsing;
 
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.transaction.annotation.Propagation;
-import org.flexpay.eirc.sp.FileParser;
-import org.flexpay.eirc.sp.Validator;
-import org.flexpay.common.persistence.registry.Registry;
-import org.flexpay.common.persistence.FPFile;
 import org.flexpay.common.exception.FlexPayException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.flexpay.common.persistence.FPFile;
+import org.flexpay.common.persistence.registry.Registry;
+import org.flexpay.eirc.sp.MbFileParser;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 @Transactional(readOnly = true)
-public class MbCorrectionsFileParser implements FileParser {
-
-	private Logger log = LoggerFactory.getLogger(getClass());
-
-	private Validator validator;
+public class MbCorrectionsFileParser extends MbFileParser<Registry> {
 
 	@Transactional(propagation = Propagation.NOT_SUPPORTED, readOnly = false)
-	public Registry parse(@NotNull FPFile spFile) throws FlexPayException {
-
-		if (validator != null) {
-			log.info("Starting validation MB corrections file...");
-			validator.validate(spFile);
-			log.info("MB corrections file validation completed");
-		}
+	public Registry parseFile(@NotNull FPFile spFile) throws FlexPayException {
 
 		return null;
-	}
-
-	public void setValidator(Validator validator) {
-		this.validator = validator;
 	}
 
 }
