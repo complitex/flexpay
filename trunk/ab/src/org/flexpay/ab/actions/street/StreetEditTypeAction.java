@@ -26,7 +26,7 @@ public class StreetEditTypeAction extends FPActionSupport {
 		temporal.setObject(object);
 
 		// for get request set initial data from existing temporal
-		if (!isPost()) {
+		if (!isSubmit()) {
 			if (temporal.getId() > 0) {
 				for (StreetTypeTemporal typeTemporal : object.getTypeTemporals()) {
 					if (typeTemporal.getId().equals(temporal.getId())) {
@@ -49,7 +49,7 @@ public class StreetEditTypeAction extends FPActionSupport {
 		}
 
 		// do save 
-		if (isPost()) {
+		if (isSubmit()) {
 			object.addTypeTemporal(temporal);
 
 			log.debug("Types: {}", object.getTypeTemporals());

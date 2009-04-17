@@ -50,7 +50,7 @@
 			<td colspan="3" height="3" bgcolor="#4a4f4f"/>
 		<tr>
 			<td colspan="3">
-				<input type="submit" class="btn-exit"
+				<input type="submit" class="btn-exit" name="submitted"
 					   value="<s:text name="common.create"/>"/>
 			</td>
 		</tr>
