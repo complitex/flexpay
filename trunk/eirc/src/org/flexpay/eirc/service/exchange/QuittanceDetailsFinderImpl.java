@@ -21,7 +21,6 @@ import static org.flexpay.payments.persistence.quittance.QuittanceDetailsRequest
 import org.flexpay.payments.persistence.quittance.QuittanceDetailsResponse;
 import static org.flexpay.payments.persistence.quittance.QuittanceDetailsResponse.*;
 import org.flexpay.payments.service.QuittanceDetailsFinder;
-import org.flexpay.payments.util.config.ApplicationConfig;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,6 +49,8 @@ public class QuittanceDetailsFinderImpl implements QuittanceDetailsFinder {
 
 		Security.authenticateQuittanceFinder();
 
+		log.debug("Request for quittance details recieved: {}", request);
+
 		QuittanceDetailsResponse response;
 		switch (request.getType()) {
 			case TYPE_QUITTANCE_NUMBER:
@@ -76,8 +77,7 @@ public class QuittanceDetailsFinderImpl implements QuittanceDetailsFinder {
 				apartmentMasterIndex, Apartment.class, masterIndexService.getMasterSourceDescription());
 		if (stub == null) {
 			// todo remove this hack
-			stub = new Stub<Apartment>(Long.parseLong(apartmentMasterIndex.substring(
-					ApplicationConfig.getInstanceId().length() + 1)));
+			stub = new Stub<Apartment>(Long.parseLong(apartmentMasterIndex));
 		}
 		if (stub == null) {
 			return getError(CODE_ERROR_APARTMENT_NOT_FOUND);
