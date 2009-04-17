@@ -14,8 +14,16 @@
 
 	<bean id="findQuittanceListener"
 		  class="org.springframework.jms.listener.adapter.MessageListenerAdapter"
-		  p:defaultListenerMethod="findQuittance">
+		  p:defaultListenerMethod="findQuittance"
+		  p:messageConverter-ref="requestIdSetMessageConverter">
 		<constructor-arg ref="eircQuittanceDetailsFinder" />
+	</bean>
+
+	<bean id="requestIdSetMessageConverter"
+		  class="org.flexpay.payments.service.impl.RequestIdSetMessageConverter">
+		<property name="delegate">
+			<bean class="org.springframework.jms.support.converter.SimpleMessageConverter" />
+		</property>
 	</bean>
 
 </beans>

@@ -19,6 +19,7 @@ public class QuittanceDetailsResponse implements Serializable {
 	public static final int CODE_ERROR_APARTMENT_NOT_FOUND = 12;
 	public static final int CODE_ERROR_INVALID_QUITTANCE_NUMBER = 13;
 	public static final int CODE_ERROR_INTERNAL_ERROR = 14;
+	public static final int CODE_ERROR_RECIEVE_TIMEOUT = 15;
 
 	/**
 	 * Response error code

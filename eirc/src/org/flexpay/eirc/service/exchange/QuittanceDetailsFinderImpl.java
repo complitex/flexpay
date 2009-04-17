@@ -65,6 +65,7 @@ public class QuittanceDetailsFinderImpl implements QuittanceDetailsFinder {
 			default:
 				response = getError(CODE_ERROR_UNKNOWN_REQUEST);
 		}
+		response.setRequestId(request.getRequestId());
 
 		log.debug("Response to return: {}", response);
 
