@@ -1,7 +1,6 @@
 package org.flexpay.eirc.service.exchange;
 
 import org.flexpay.common.persistence.Stub;
-import org.flexpay.common.util.config.ApplicationConfig;
 import org.flexpay.eirc.persistence.account.Quittance;
 import org.flexpay.eirc.process.QuittanceNumberService;
 import org.flexpay.eirc.service.QuittanceService;
@@ -28,22 +27,46 @@ public class TestJmsQuittanceDetailsFinder extends EircSpringBeanAwareTestCase {
 	private static final Stub<Quittance> quittanceStub = new Stub<Quittance>(1L);
 
 	@Test
-	public void testGetQuittanceDetails() {
+	public void testGetQuittanceDetails() throws Exception {
 
 		Quittance q = quittanceService.readFull(quittanceStub);
 		assertNotNull("Not found quittance: " + quittanceStub, q);
 
 		String number = quittanceNumberService.getNumber(q);
 
-		QuittanceDetailsResponse response = detailsFinder.findQuittance(quittanceNumberRequest(number));
+		Requester r1 = new Requester(number);
+		Requester r2 = new Requester(number);
+		Thread thr1 =  new Thread(r1);
+		Thread thr2 =  new Thread(r2);
 
-		log.info("Got response {}", response);
+		thr1.start();
+		Thread.sleep(1);
+		thr2.start();
+
+		thr1.join();
+		thr2.join();
+
+		log.info("Got responses:\n{}\n{}", r1.response, r2.response);
+	}
+
+	private class Requester implements Runnable {
+
+		private QuittanceDetailsResponse response;
+		private String number;
+
+		private Requester(String number) {
+			this.number = number;
+		}
+
+		public void run() {
+			response = detailsFinder.findQuittance(quittanceNumberRequest(number));
+		}
 	}
 
 	@Test
 	public void testGetQuittanceDetailsByApartment() {
 
-		String number = ApplicationConfig.getInstanceId() + "-" + 1L;
+		String number = String.valueOf(1L);
 		QuittanceDetailsResponse response = detailsFinder.findQuittance(apartmentNumberRequest(number));
 
 		log.info("Got response {}", response);

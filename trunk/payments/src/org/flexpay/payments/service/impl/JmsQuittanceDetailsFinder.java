@@ -4,7 +4,6 @@ import org.flexpay.common.util.config.ApplicationConfig;
 import org.flexpay.payments.persistence.quittance.QuittanceDetailsRequest;
 import org.flexpay.payments.persistence.quittance.QuittanceDetailsResponse;
 import org.flexpay.payments.service.QuittanceDetailsFinder;
-import org.flexpay.payments.service.Security;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,12 +41,15 @@ public class JmsQuittanceDetailsFinder implements QuittanceDetailsFinder {
 			}
 		});
 
-		QuittanceDetailsResponse response = (QuittanceDetailsResponse) jmsTemplate
-				.receiveAndConvert(responseQueue);
-//		QuittanceDetailsResponse response = (QuittanceDetailsResponse) jmsTemplate.receiveSelectedAndConvert(
-//				responseQueue, String.format("requestId = '%s'", request.getRequestId()));
+		QuittanceDetailsResponse response = (QuittanceDetailsResponse) jmsTemplate.receiveSelectedAndConvert(
+				responseQueue, String.format("requestId = '%s'", request.getRequestId()));
 
-		log.debug("Response recieved: ");
+		log.debug("Response recieved: {}", response);
+
+		if (response == null) {
+			response = new QuittanceDetailsResponse();
+			response.setErrorCode(QuittanceDetailsResponse.CODE_ERROR_RECIEVE_TIMEOUT);
+		}
 
 		return response;
 	}
