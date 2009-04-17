@@ -83,6 +83,7 @@ public interface EircAccountService {
 	 * @param accountNumber EircAccount number to lookup
 	 * @return EircAccount if found, or <code>null</code> otherwise
 	 */
+	@Secured (Roles.ACCOUNT_READ)
 	@Nullable
 	EircAccount findAccount(String accountNumber);
 }
