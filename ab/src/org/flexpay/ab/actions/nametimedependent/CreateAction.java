@@ -56,7 +56,7 @@ public abstract class CreateAction<
 		ArrayStack filters = parentService.initFilters(filterArrayStack,
 				userPreferences.getLocale());
 		setFilters(filters);
-		if (isPost()) {
+		if (isSubmit()) {
 			object = nameTimeDependentService.create(null,
 					nameTranslations, filters, date);
 
