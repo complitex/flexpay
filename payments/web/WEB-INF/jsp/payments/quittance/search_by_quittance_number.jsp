@@ -5,7 +5,7 @@
 
 	function doSearch() {
 		var quittanceNumber = $('#searchByQuittanceNumber_quittanceNumber').val();
-		$('#searchResultsDiv').load('<s:url action="searchResults"/>', { 'searchType' : 'EIRC_ACCOUNT', 'searchCriteria': quittanceNumber });
+		$('#searchResultsDiv').load('<s:url action="searchResults"/>', { 'searchType' : 'QUITTANCE_NUMBER', 'searchCriteria': quittanceNumber });
 		$('#searchResultsDiv').show();
 	}
 

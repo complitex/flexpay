@@ -5,7 +5,7 @@
 
 	function doSearch() {
 		var apartmentId = $('#selected_apartment_id').val();
-		$('#searchResultsDiv').load('<s:url action="searchResults"/>', { 'searchType' : 'EIRC_ACCOUNT', 'searchCriteria': apartmentId });
+		$('#searchResultsDiv').load('<s:url action="searchResults"/>', { 'searchType' : 'ADDRESS', 'searchCriteria': apartmentId });
 		$('#searchResultsDiv').show();
 	}
 
