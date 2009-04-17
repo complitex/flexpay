@@ -3,14 +3,17 @@
 
 <script type="text/javascript">
 	function showDetails() {
-		$('td.service_column').show();
-		$('td.service_provider_column').show();
+		$('tr.full_operation_header_row').toggle();
+		$('tr.brief_operation_header_row').toggle();
+		$('tr.document_row').toggle();
+		$('tr.operation_footer_row').toggle();
 
-		$('tr.full_operation_header_row').show();
-
-		$('tr.brief_operation_header_row').show();
-		$('tr.document_row').show();
-		$('tr.operation_footer_row').show();
+		// because of nesting the normal toggle will not work like we need it
+		// so here is a little trick (let me do a little bit monkey business)
+		$('td.service_column:hidden').show();
+		$('td.service_provider_column:hidden').show();
+		$('td.service_column:visible').hide();
+		$('td.service_provider_column:visible').hide();
 	}
 </script>
 
