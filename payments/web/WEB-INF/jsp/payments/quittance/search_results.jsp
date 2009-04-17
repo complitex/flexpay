@@ -232,6 +232,7 @@
 
 			<s:iterator value="quittanceInfos">
 				<s:iterator value="detailses" status="status">
+					<s:if test="%{isNotSubservice(serviceMasterIndex)}">
 					<tr class="cols_1_error" style="display:none;">
 						<td colspan="6"/>
 					</tr>
@@ -257,6 +258,7 @@
 							<s:textfield name="paymentsMap[%{serviceMasterIndex}]" value="%{outgoingBalance - payed}" cssStyle="width: 100%; text-align: right;"/>							
 						</td>
 					</tr>
+					</s:if>
 				</s:iterator>
 
 				<tr class="cols_1">

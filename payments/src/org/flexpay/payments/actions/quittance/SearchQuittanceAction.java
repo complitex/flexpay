@@ -112,6 +112,13 @@ public class SearchQuittanceAction extends FPActionSupport {
 		return Long.parseLong(serviceMasterIndex.substring(ApplicationConfig.getInstanceId().length() + 1)); // +1 is for '-' delimeter
 	}
 
+	public boolean isNotSubservice(String serviceMasterIndex) {
+
+		Long serviceId = getServiceId(serviceMasterIndex);
+		Service service = spService.read(new Stub<Service>(serviceId));
+		return service.isNotSubservice();
+	}
+
 	// form data
 	public void setSearchType(String searchType) {
 		this.searchType = searchType;
