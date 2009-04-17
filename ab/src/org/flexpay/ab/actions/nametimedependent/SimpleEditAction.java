@@ -56,7 +56,7 @@ public abstract class SimpleEditAction<
 
 		Map<Long, T> langToTranslationMap = getTranslations(temporalId);
 
-		if (!isSubmit()) {
+		if (!isPost()) {
 			DI temporal = nameTimeDependentService.readTemporalName(temporalId);
 			log.info("Temporal: {}", temporal);
 			date = temporal != null ? temporal.getBegin() : null;
@@ -71,7 +71,7 @@ public abstract class SimpleEditAction<
 				nameTranslation = nameTimeDependentService.getEmptyNameTranslation();
 				nameTranslation.setLang(lang);
 			}
-			if (isSubmit()) {
+			if (isPost()) {
 				nameTranslation.setName(request.getParameter("translation." + lang.getId()));
 			}
 			nameTranslations.add(nameTranslation);
@@ -83,7 +83,7 @@ public abstract class SimpleEditAction<
 	@SuppressWarnings ({"unchecked"})
 	public String doExecute() throws Exception {
 
-		if (isSubmit()) {
+		if (isPost()) {
 			object = nameTimeDependentService.updateNameTranslations(object, temporalId, nameTranslations, date);
 			session.put(ObjectViewAction.ATTRIBUTE_OBJECT, object);
 

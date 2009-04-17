@@ -44,7 +44,7 @@ public class StreetDistrictEditAction extends FPActionSupport {
 		log.info("Street loaded: {}", street.getCurrentName());
 
 		// save street districts
-		if (isSubmit()) {
+		if (isPost()) {
 			street = streetService.saveDistricts(street, objectIds);
 			return SUCCESS;
 		}
