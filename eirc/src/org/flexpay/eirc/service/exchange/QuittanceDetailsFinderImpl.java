@@ -21,6 +21,7 @@ import static org.flexpay.payments.persistence.quittance.QuittanceDetailsRequest
 import org.flexpay.payments.persistence.quittance.QuittanceDetailsResponse;
 import static org.flexpay.payments.persistence.quittance.QuittanceDetailsResponse.*;
 import org.flexpay.payments.service.QuittanceDetailsFinder;
+import org.flexpay.payments.util.config.ApplicationConfig;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -73,6 +74,10 @@ public class QuittanceDetailsFinderImpl implements QuittanceDetailsFinder {
 
 		Stub<Apartment> stub = correctionsService.findCorrection(
 				apartmentMasterIndex, Apartment.class, masterIndexService.getMasterSourceDescription());
+		if (stub == null) {
+			// todo remove this hack
+			stub = new Stub<Apartment>(Long.parseLong(apartmentMasterIndex.substring(ApplicationConfig.getInstanceId().length())));
+		}
 		if (stub == null) {
 			return getError(CODE_ERROR_APARTMENT_NOT_FOUND);
 		}
