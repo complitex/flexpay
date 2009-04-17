@@ -10,10 +10,13 @@
 
 		// because of nesting the normal toggle will not work like we need it
 		// so here is a little trick (let me do a little bit monkey business)
-		$('td.service_column:hidden').show();
-		$('td.service_provider_column:hidden').show();
-		$('td.service_column:visible').hide();
-		$('td.service_provider_column:visible').hide();
+		if ($('#service_column_header:hidden').length > 0) {
+			$('td.service_column:hidden').show();
+			$('td.service_provider_column:hidden').show();
+		} else {
+			$('td.service_column:visible').hide();
+			$('td.service_provider_column:visible').hide();
+		}
 	}
 </script>
 
@@ -69,7 +72,7 @@
 				<td class="th"><s:text name="payments.operations.list.summ"/></td>
 				<td class="th"><s:text name="payments.operations.list.pay_summ"/></td>
 				<td class="th"><s:text name="payments.operations.list.change"/></td>
-				<td class="th service_column" style="display: none;"><s:text name="payments.operations.list.service"/></td>
+				<td class="th service_column" id="service_column_header" style="display: none;"><s:text name="payments.operations.list.service"/></td>
 				<td class="th service_provider_column" style="display: none;"><s:text name="payments.operations.list.provider"/></td>
 			</tr>
 
