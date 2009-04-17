@@ -3,10 +3,10 @@
 
 <script type="text/javascript">
 
-	function showSearchResults() {
-		// here we can check form data
+	function doSearch() {
+		var apartmentId = $('#selected_apartment_id').val();
+		$('#searchResultsDiv').load('<s:url action="searchResults"/>', { 'searchType' : 'EIRC_ACCOUNT', 'searchCriteria': apartmentId });
 		$('#searchResultsDiv').show();
-		return false;
 	}
 
 </script>
@@ -42,21 +42,12 @@
 
 	<table width="100%">
 		<tr>
-				<%--<td class="filter"><s:text name="payments.country"/></td>--%>
-				<%--<td>--%>
-				<%--<%@include file="/WEB-INF/jsp/ab/filters/ajax/country_search_filter.jsp" %>--%>
-				<%--</td>--%>
-				<%--<td class="filter"><s:text name="payments.region"/></td>--%>
-				<%--<td>--%>
-				<%--<%@include file="/WEB-INF/jsp/ab/filters/ajax/region_search_filter.jsp" %>--%>
-				<%--</td>--%>
 			<td class="filter"><s:text name="payments.town"/></td>
 			<td>
 				<%@include file="/WEB-INF/jsp/ab/filters/ajax/town_search_filter.jsp" %>
 			</td>
 			<td class="filter"><s:text name="payments.street"/></td>
 			<td>
-					<%--<%@include file="/WEB-INF/jsp/ab/filters/ajax/street_search_filter.jsp" %>--%>
 				<s:if test="streetFilter.showSearchString && streetFilter.searchString != null">
 					<s:set name="streetFilter.field.value" value="streetFilter.searchString"/>
 				</s:if>
@@ -74,14 +65,13 @@
 			</td>
 			<td class="filter"><s:text name="payments.apartment"/></td>
 			<td>
-				<%@include file="/WEB-INF/jsp/ab/filters/ajax/apartment_search_filter.jsp" %>
+				<input type="hidden" id="selected_apartment_id" name="apartmentFilter.selectedId" value="<s:text name="%{userPreferences.apartmentFilterValue}" />"/>
+				<input type="text" class="form-search" id="apartment_filter" name="apartmentFilter.searchString" value=""/>
 			</td>
 		</tr>
 	</table>
 
-	<input type="button" value="<s:text name="common.search" />" class="btn-exit" onclick="showSearchResults();"/>
+	<input type="button" value="<s:text name="common.search" />" class="btn-exit" onclick="doSearch();"/>
 </s:form>
 
-<div id="searchResultsDiv" style="display: none;">
-	<%@ include file="search_results.jsp" %>
-</div>
+<div id="searchResultsDiv" style="display: none;"/>
