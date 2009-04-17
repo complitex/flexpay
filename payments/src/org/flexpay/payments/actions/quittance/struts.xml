@@ -23,7 +23,10 @@
 		</action>
 
 		<action name="paymentsQuittancePay" class="paymentsQuittancePayAction">
-			<result type="tiles">payments.quittance.quittance_pay</result>			
+			<result name="redirectSuccess" type="redirect-action">
+				<param name="actionName">${actionName}</param>
+				<param name="parse">true</param>
+			</result>
 		</action>
 
 	</package>
