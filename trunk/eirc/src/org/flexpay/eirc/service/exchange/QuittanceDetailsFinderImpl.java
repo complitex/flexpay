@@ -76,7 +76,8 @@ public class QuittanceDetailsFinderImpl implements QuittanceDetailsFinder {
 				apartmentMasterIndex, Apartment.class, masterIndexService.getMasterSourceDescription());
 		if (stub == null) {
 			// todo remove this hack
-			stub = new Stub<Apartment>(Long.parseLong(apartmentMasterIndex.substring(ApplicationConfig.getInstanceId().length())));
+			stub = new Stub<Apartment>(Long.parseLong(apartmentMasterIndex.substring(
+					ApplicationConfig.getInstanceId().length() + 1)));
 		}
 		if (stub == null) {
 			return getError(CODE_ERROR_APARTMENT_NOT_FOUND);
