@@ -5,7 +5,6 @@ import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.payments.service.QuittanceDetailsFinder;
 import org.flexpay.payments.service.SPService;
-import org.flexpay.payments.service.impl.stub.QuittanceDetailsFinderStubImpl;
 import org.flexpay.payments.persistence.quittance.QuittanceDetailsRequest;
 import org.flexpay.payments.persistence.quittance.QuittanceDetailsResponse;
 import org.springframework.beans.factory.annotation.Required;
