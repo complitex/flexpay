@@ -1,4 +1,4 @@
-package org.flexpay.eirc.sp;
+package org.flexpay.eirc.sp.parsing;
 
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.FPFile;
@@ -8,6 +8,8 @@ import org.flexpay.eirc.persistence.Consumer;
 import org.flexpay.eirc.persistence.EircRegistryProperties;
 import org.flexpay.eirc.persistence.EircRegistryRecordProperties;
 import org.flexpay.eirc.service.*;
+import org.flexpay.eirc.sp.Validator;
+import org.flexpay.eirc.sp.FileParser;
 import org.flexpay.orgs.persistence.ServiceProvider;
 import org.flexpay.orgs.service.ServiceProviderService;
 import org.jetbrains.annotations.NotNull;
