@@ -5,7 +5,7 @@
 
 	function doSearch() {
 		var accountNumber = $('#searchByEircAccount_accountNumber').val();
-		$('#searchResultsDiv').load('<s:url action="searchResults"/>', { 'searchType' : 'EIRC_ACCOUNT', 'searchCriteria': accountNumber });
+		$('#searchResultsDiv').load('<s:url action="searchResults"/>', { 'searchType' : 'EIRC_ACCOUNT', 'searchCriteria': accountNumber, 'actionName': 'searchByEircAccount' });
 		$('#searchResultsDiv').show();
 	}
 
@@ -22,7 +22,8 @@
 			<td><input type="button" value="<s:text name="common.search" />" class="btn-exit" onclick="doSearch();"/></td>
 		</tr>
 	</table>
-
-	<div id="searchResultsDiv" style="display: none;"/>
-
 </s:form>
+
+<div id="searchResultsDiv" style="display: none;"/>
+
+

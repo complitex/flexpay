@@ -27,6 +27,8 @@ public class SearchQuittanceAction extends FPActionSupport {
 	private String searchCriteria;
 	private QuittanceDetailsResponse.QuittanceInfo[] quittanceInfos;
 
+	private String actionName;
+
 	// required services
 	private QuittanceDetailsFinder quittanceDetailsFinder;
 	private SPService spService;
@@ -86,6 +88,10 @@ public class SearchQuittanceAction extends FPActionSupport {
 		return SUCCESS;
 	}
 
+	public String getRedirectActionName() {
+		return actionName;
+	}
+
 	// rendering utility methods
 	public boolean resultsAreNotEmpty() {
 
@@ -130,6 +136,14 @@ public class SearchQuittanceAction extends FPActionSupport {
 
 	public QuittanceInfo[] getQuittanceInfos() {
 		return quittanceInfos;
+	}
+
+	public String getActionName() {
+		return actionName;
+	}
+
+	public void setActionName(String actionName) {
+		this.actionName = actionName;
 	}
 
 	@Required

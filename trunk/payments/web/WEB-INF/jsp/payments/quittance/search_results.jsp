@@ -222,7 +222,6 @@
 	<s:if test="%{resultsAreNotEmpty()}">
 		<table cellpadding="3" cellspacing="1" border="0" width="100%">
 			<tr>
-				<td class="th" width="1%">&nbsp;</td>
 				<td class="th" nowrap="nowrap"><s:text name="payments.quittances.quittance_pay.service"/></td>
 				<td class="th" nowrap="nowrap"><s:text name="payments.quittances.quittance_pay.service_supplier"/></td>
 				<td class="th" nowrap="nowrap"><s:text name="payments.quittances.quittance_pay.payable"/></td>
@@ -230,11 +229,14 @@
 				<td class="th" nowrap="nowrap"><s:text name="payments.quittances.quittance_pay.pay"/></td>
 			</tr>
 
-			<s:iterator value="quittanceInfos">
+			<s:iterator value="quittanceInfos" id="qi">
+				<s:hidden name="payerFio" value="%{#qi.personFio}"/>
+				<s:hidden name="address" value="%{#qi.address}"/>
+
 				<s:iterator value="detailses" status="status">
 					<s:if test="%{isNotSubservice(serviceMasterIndex)}">
 					<tr class="cols_1_error" style="display:none;">
-						<td colspan="6"/>
+						<td colspan="5"/>
 					</tr>
 
 					<tr class="cols_1">
@@ -249,7 +251,6 @@
 						</script>
 
 						<%-- render details --%>
-						<td class="col" align="right"><s:property value="%{#status.index + 1}"/></td>
 						<td class="col" nowrap="nowrap"><s:property value="%{getServiceName(serviceMasterIndex)}"/></td>
 						<td class="col"><s:property value="%{getProviderName(serviceMasterIndex)}"/></td>
 						<td class="col" id="paySumm_<s:property value="%{#status.index + 1}"/>"><s:property value="outgoingBalance"/></td>
@@ -262,14 +263,15 @@
 				</s:iterator>
 
 				<tr class="cols_1">
-					<td class="col" colspan="3" style="text-align:right;font-weight:bold;"><s:text name="payments.quittances.quittance_pay.total_payable"/></td>
+					<td class="col" colspan="2" style="text-align:right;font-weight:bold;"><s:text name="payments.quittances.quittance_pay.total_payable"/></td>
 					<td class="col" style="font-weight:bold;"><s:property value="%{totalPayed + totalToPay}"/> </td>
 					<td class="col" style="font-weight:bold;"><s:property value="totalPayed"/></td>
 					<td class="col"><input type="text" id="quittancePayForm_totalToPay" name="totalPayed" value="<s:property value="totalToPay"/>" style="width: 100%; text-align: right;" readonly="readonly"/></td>
 				</tr>
 
 				<tr>
-					<td colspan="2" style="text-align:left;">
+					<td colspan="1" style="text-align:left;">
+						<s:hidden name="actionName" value="%{actionName}"/>
 						<input type="submit" name="submitted" value="<s:text name="payments.quittances.quittance_pay.pay"/>" class="btn-exit" style="width: 100%;"/>
 					</td>
 					<td colspan="4" style="text-align:right;">

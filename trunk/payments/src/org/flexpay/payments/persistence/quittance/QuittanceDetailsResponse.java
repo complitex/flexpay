@@ -1,6 +1,7 @@
 package org.flexpay.payments.persistence.quittance;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.StringUtils;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -92,6 +93,50 @@ public class QuittanceDetailsResponse implements Serializable {
 		private BigDecimal totalPayed;
 		private BigDecimal totalToPay;
 		private ServiceDetails[] detailses;
+
+		public String getPersonFio() {
+			StringBuilder fioBuilder = new StringBuilder();
+
+			if (StringUtils.isNotEmpty(personLastName)) {
+				fioBuilder.append(personLastName);
+			}
+
+			if (StringUtils.isNotEmpty(personFirstName)) {
+				fioBuilder.append(" ").append(personFirstName.charAt(0)).append(".");
+			}
+
+			if (StringUtils.isNotEmpty(personMiddleName)) {
+				fioBuilder.append(" ").append(personMiddleName.charAt(0)).append(".");
+			}
+
+			return fioBuilder.toString();
+		}
+
+		public String getAddress() {
+
+			StringBuilder addressBuilder = new StringBuilder();
+			if (StringUtils.isNotEmpty(streetType)) {
+				addressBuilder.append(streetType).append(". ");
+			}
+
+			if (StringUtils.isNotEmpty(streetName)) {
+				addressBuilder.append(streetName).append(", ");
+			}
+
+			if (StringUtils.isNotEmpty(buildingNumber)) {
+				addressBuilder.append(buildingNumber);
+			}
+
+			if (StringUtils.isNotEmpty(buildingBulk)) {
+				addressBuilder.append("/").append(buildingBulk);
+			}
+
+			if (StringUtils.isNotEmpty(apartmentNumber)) {
+				addressBuilder.append(" ").append(apartmentNumber);
+			}
+			
+			return addressBuilder.toString();
+		}
 
 		public String getQuittanceNumber() {
 			return quittanceNumber;

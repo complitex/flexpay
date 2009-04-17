@@ -16,12 +16,16 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Map;
 
-
+// FIXME WARN: full of hacks and other shit. By now this class is big piece of shit
 public class QuittancePayAction extends FPActionSupport {
+
+	private String actionName;
 
 	// form data
 	private QuittanceDetailsResponse.QuittanceInfo quittanceInfo = new QuittanceDetailsResponse.QuittanceInfo();
 	private Map<String, BigDecimal> paymentsMap = CollectionUtils.map(); // maps serviceMasterIndex to payment value
+	private String payerFio;
+	private String address;
 
 	// required services
 	private DocumentTypeService documentTypeService;
@@ -55,6 +59,8 @@ public class QuittancePayAction extends FPActionSupport {
 			document.setDocumentStatus(documentStatusService.read(DocumentStatus.CREATED));
 			document.setDocumentType(documentTypeService.read(DocumentType.CASH_PAYMENT));
 			document.setSumm(documentSumm);
+			document.setAddress(address);
+			document.setPayerFIO(payerFio);
 			document.setDebtorOrganization(org); // TODO where to get?
 			document.setDebtorId("debtorId"); // TODO where to get? account.getAccountNumber()
 			document.setService(service); // TODO where to get? doc.setService(qdPayment.getQuittanceDetails().getConsumer().getService());
@@ -63,6 +69,8 @@ public class QuittancePayAction extends FPActionSupport {
 			operation.addDocument(document);
 		}
 
+		operation.setAddress(address);
+		operation.setPayerFIO(payerFio);
 		operation.setOperationSumm(operationSumm);
 		operation.setOperationInputSumm(operationSumm);
 		operation.setChange(BigDecimal.ZERO);
@@ -76,7 +84,7 @@ public class QuittancePayAction extends FPActionSupport {
 		// save documents and operation
 		operationService.save(operation);
 
-		return SUCCESS;
+		return REDIRECT_SUCCESS;
 	}
 
 	@NotNull
@@ -99,6 +107,30 @@ public class QuittancePayAction extends FPActionSupport {
 
 	public void setPaymentsMap(Map<String, BigDecimal> paymentsMap) {
 		this.paymentsMap = paymentsMap;
+	}
+
+	public String getPayerFio() {
+		return payerFio;
+	}
+
+	public void setPayerFio(String payerFio) {
+		this.payerFio = payerFio;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	public String getActionName() {
+		return actionName;
+	}
+
+	public void setActionName(String actionName) {
+		this.actionName = actionName;
 	}
 
 	// required services

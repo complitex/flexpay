@@ -5,7 +5,7 @@
 
 	function doSearch() {
 		var apartmentId = $('#selected_apartment_id').val();
-		$('#searchResultsDiv').load('<s:url action="searchResults"/>', { 'searchType' : 'ADDRESS', 'searchCriteria': apartmentId });
+		$('#searchResultsDiv').load('<s:url action="searchResults"/>', { 'searchType' : 'ADDRESS', 'searchCriteria': apartmentId, 'actionName': 'searchByAddress' });
 		$('#searchResultsDiv').show();
 	}
 
@@ -14,6 +14,7 @@
 <s:actionerror/>
 
 <s:form action="searchByAddress">
+
 	<%@include file="/WEB-INF/jsp/ab/includes/flexpay_filter.jsp" %>
 
 	<script type="text/javascript">

@@ -5,7 +5,7 @@
 
 	function doSearch() {
 		var quittanceNumber = $('#searchByQuittanceNumber_quittanceNumber').val();
-		$('#searchResultsDiv').load('<s:url action="searchResults"/>', { 'searchType' : 'QUITTANCE_NUMBER', 'searchCriteria': quittanceNumber });
+		$('#searchResultsDiv').load('<s:url action="searchResults"/>', { 'searchType' : 'QUITTANCE_NUMBER', 'searchCriteria': quittanceNumber, 'actionName': 'searchByQuittanceNumber' });
 		$('#searchResultsDiv').show();
 	}
 
@@ -23,7 +23,8 @@
 		</tr>
 
 	</table>
-
-	<div id="searchResultsDiv" style="display: none;"/>
-	
 </s:form>
+
+<div id="searchResultsDiv" style="display: none;"/>
+	
+
