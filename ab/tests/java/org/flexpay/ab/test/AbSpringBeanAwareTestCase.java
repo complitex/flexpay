@@ -1,8 +1,8 @@
-package org.flexpay.eirc.test;
+package org.flexpay.ab.test;
 
-import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
+import org.flexpay.common.test.SpringBeanAwareTestCase;
 import org.flexpay.common.util.SecurityUtil;
-import org.flexpay.eirc.service.Roles;
+import static org.flexpay.ab.service.Roles.*;
 import org.junit.BeforeClass;
 import org.springframework.security.Authentication;
 import org.springframework.security.GrantedAuthority;
@@ -10,7 +10,7 @@ import org.springframework.security.context.SecurityContextHolder;
 import org.springframework.security.providers.anonymous.AnonymousAuthenticationToken;
 import org.springframework.security.userdetails.User;
 
-public class EircSpringBeanAwareTestCase extends AbSpringBeanAwareTestCase {
+public class AbSpringBeanAwareTestCase extends SpringBeanAwareTestCase {
 
 	/**
 	 * Authenticate test user
@@ -18,7 +18,12 @@ public class EircSpringBeanAwareTestCase extends AbSpringBeanAwareTestCase {
 	@BeforeClass
 	public static void authenticateTestUser() {
 		GrantedAuthority[] authorities = SecurityUtil.auths(
-				Roles.QUITTANCE_READ
+				APARTMENT_READ,
+				BUILDING_ATTRIBUTE_TYPE_READ,
+				BUILDING_READ,
+				STREET_READ,
+				TOWN_READ,
+				REGION_READ
 		);
 		User user = new User("test", "test", true, true, true, true, authorities);
 		Authentication auth = new AnonymousAuthenticationToken("key", user, authorities);
