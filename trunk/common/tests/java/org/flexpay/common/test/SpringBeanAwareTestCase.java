@@ -1,6 +1,7 @@
 package org.flexpay.common.test;
 
-import org.flexpay.common.service.Roles;
+import static org.flexpay.common.service.Roles.*;
+import org.flexpay.common.util.SecurityUtil;
 import org.jetbrains.annotations.NonNls;
 import org.junit.BeforeClass;
 import org.junit.Before;
@@ -68,9 +69,12 @@ public abstract class SpringBeanAwareTestCase extends AbstractJUnit4SpringContex
 	 */
 	@BeforeClass
 	public static void authenticateTestUser() {
-		GrantedAuthority[] BASIC_AUTHORITIES = {new GrantedAuthorityImpl(Roles.BASIC)};
-		User user = new User("test", "test", true, true, true, true, BASIC_AUTHORITIES);
-		Authentication auth = new AnonymousAuthenticationToken("key", user, BASIC_AUTHORITIES);
+		GrantedAuthority[] authorities = SecurityUtil.auths(
+				BASIC,
+				PROCESS_DEFINITION_UPLOAD_NEW
+		);
+		User user = new User("test", "test", true, true, true, true, authorities);
+		Authentication auth = new AnonymousAuthenticationToken("key", user, authorities);
 		SecurityContextHolder.getContext().setAuthentication(auth);
 	}
 }
