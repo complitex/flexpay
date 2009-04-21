@@ -3,18 +3,17 @@ package org.flexpay.payments.actions.quittance;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
-import org.flexpay.payments.service.QuittanceDetailsFinder;
-import org.flexpay.payments.service.SPService;
+import org.flexpay.orgs.persistence.ServiceProvider;
+import org.flexpay.orgs.service.ServiceProviderService;
+import org.flexpay.payments.persistence.Service;
 import org.flexpay.payments.persistence.quittance.QuittanceDetailsRequest;
 import org.flexpay.payments.persistence.quittance.QuittanceDetailsResponse;
-import org.springframework.beans.factory.annotation.Required;
-import org.jetbrains.annotations.NotNull;
-
 import static org.flexpay.payments.persistence.quittance.QuittanceDetailsResponse.*;
-import org.flexpay.payments.persistence.Service;
+import org.flexpay.payments.service.QuittanceDetailsFinder;
+import org.flexpay.payments.service.SPService;
 import org.flexpay.payments.util.config.ApplicationConfig;
-import org.flexpay.orgs.service.ServiceProviderService;
-import org.flexpay.orgs.persistence.ServiceProvider;
+import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Required;
 
 public class SearchQuittanceAction extends FPActionSupport {
 

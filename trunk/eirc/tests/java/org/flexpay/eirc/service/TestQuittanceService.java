@@ -59,7 +59,7 @@ public class TestQuittanceService extends SpringBeanAwareTestCase {
 	}
 
 	@Test
-	public void testShowAllQuitanceNumbers() {
+	public void testShowAllQuittanceNumbers() {
 
 		List<Quittance> quittances = Collections.emptyList();
 
@@ -70,4 +70,5 @@ public class TestQuittanceService extends SpringBeanAwareTestCase {
 			log.info("{}", quittanceNumber);
 		}
 	}
+
 }

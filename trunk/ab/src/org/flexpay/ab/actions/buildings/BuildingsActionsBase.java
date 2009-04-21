@@ -7,6 +7,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
 
+@Deprecated
 public abstract class BuildingsActionsBase extends FPActionWithPagerSupport {
 
 	public String getBuildingNumber(@Nullable Collection<AddressAttribute> attributes) {

@@ -26,7 +26,7 @@ import java.util.Set;
 
 public class GenerateQuittancesPDFJasperJob extends Job {
 
-	public static final String JOB_NAME = "generateQuitancesPDFJob";
+	public static final String JOB_NAME = "generateQuittancesPDFJob";
 
 	public final static String RESULT_FILE_NAME = "RESULT_FILE_NAME";
 	public static final String PARAM_DATE_FROM = "dateFrom";

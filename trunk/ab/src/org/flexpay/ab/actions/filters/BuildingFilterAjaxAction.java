@@ -3,6 +3,7 @@ package org.flexpay.ab.actions.filters;
 import org.flexpay.ab.persistence.BuildingAddress;
 import org.flexpay.ab.persistence.Street;
 import org.flexpay.ab.service.BuildingService;
+import org.flexpay.ab.util.TranslationUtil;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.util.config.UserPreferences;
@@ -35,18 +36,18 @@ public class BuildingFilterAjaxAction extends FilterAjaxAction {
 		for (BuildingAddress address : addresses) {
 			FilterObject object = new FilterObject();
 			object.setValue(address.getId() + "");
-			object.setName(getBuildingNumber(address.getBuildingAttributes()));
+			object.setName(TranslationUtil.getBuildingNumber(address.getBuildingAttributes(), userPreferences.getLocale()));
 			foundObjects.add(object);
 		}
 
 		return SUCCESS;
 	}
 
-	public void readFilterString() {
+	public void readFilterString() throws FlexPayException {
 		if (filterValueLong != null) {
 			BuildingAddress address = buildingService.readFull(new Stub<BuildingAddress>(filterValueLong));
 			if (address != null) {
-				filterString = getBuildingNumber(address.getBuildingAttributes());
+				filterString = TranslationUtil.getBuildingNumber(address.getBuildingAttributes(), userPreferences.getLocale());
 			} else {
 				filterString = "";
 			}
