@@ -3,10 +3,11 @@ package org.flexpay.common.test;
 import static org.flexpay.common.service.Roles.*;
 import org.flexpay.common.util.SecurityUtil;
 import org.jetbrains.annotations.NonNls;
-import org.junit.BeforeClass;
-import org.junit.Before;
-import org.junit.Test;
 import static org.junit.Assert.assertTrue;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
+import org.quartz.Scheduler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,16 +16,13 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.security.Authentication;
 import org.springframework.security.GrantedAuthority;
-import org.springframework.security.GrantedAuthorityImpl;
 import org.springframework.security.context.SecurityContextHolder;
 import org.springframework.security.providers.anonymous.AnonymousAuthenticationToken;
 import org.springframework.security.userdetails.User;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
-import org.quartz.Scheduler;
 
 import java.io.InputStream;
-import java.util.Map;
 
 /**
  * Base class for all SpringFramework initialised beans aware tests
@@ -71,7 +69,8 @@ public abstract class SpringBeanAwareTestCase extends AbstractJUnit4SpringContex
 	public static void authenticateTestUser() {
 		GrantedAuthority[] authorities = SecurityUtil.auths(
 				BASIC,
-				PROCESS_DEFINITION_UPLOAD_NEW
+				PROCESS_DEFINITION_UPLOAD_NEW,
+				PROCESS_READ
 		);
 		User user = new User("test", "test", true, true, true, true, authorities);
 		Authentication auth = new AnonymousAuthenticationToken("key", user, authorities);
