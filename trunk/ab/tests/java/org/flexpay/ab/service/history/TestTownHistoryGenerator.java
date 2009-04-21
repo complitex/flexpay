@@ -1,11 +1,11 @@
 package org.flexpay.ab.service.history;
 
-import org.flexpay.common.test.SpringBeanAwareTestCase;
 import org.flexpay.ab.persistence.Town;
+import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public class TestTownHistoryGenerator extends SpringBeanAwareTestCase {
+public class TestTownHistoryGenerator extends AbSpringBeanAwareTestCase {
 
 	@Autowired
 	private TownHistoryGenerator generator;

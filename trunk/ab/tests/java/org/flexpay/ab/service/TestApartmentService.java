@@ -4,9 +4,9 @@ import org.flexpay.ab.dao.ApartmentDao;
 import org.flexpay.ab.persistence.Apartment;
 import org.flexpay.ab.persistence.ApartmentNumber;
 import org.flexpay.ab.persistence.Building;
-import org.flexpay.common.test.SpringBeanAwareTestCase;
-import org.flexpay.common.util.config.ApplicationConfig;
+import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
 import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.util.config.ApplicationConfig;
 import static org.junit.Assert.assertNotNull;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.HashSet;
 import java.util.Set;
 
-public class TestApartmentService extends SpringBeanAwareTestCase {
+public class TestApartmentService extends AbSpringBeanAwareTestCase {
 
 	@Autowired
 	protected ApartmentService apartmentService;
@@ -37,7 +37,7 @@ public class TestApartmentService extends SpringBeanAwareTestCase {
 		numbers.add(number);
 		apartment.setApartmentNumbers(numbers);
 
-		apartmentDao.create(apartment);
+		apartmentService.create(apartment);
 
 		assertNotNull("Apartment create failed", apartment.getId());
 		assertNotNull("Apartment number create failed", number.getId());

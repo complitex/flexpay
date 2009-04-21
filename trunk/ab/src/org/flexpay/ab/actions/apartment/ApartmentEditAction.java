@@ -46,7 +46,12 @@ public class ApartmentEditAction extends BuildingsFilterDependentAction {
 		if (isSubmit()) {
 			apartment.setBuilding(building);
 			apartment.setNumber(apartmentNumber);
-			apartmentService.save(apartment);
+
+			if (apartment.isNew()) {
+				apartmentService.create(apartment);
+			} else {
+				apartmentService.update(apartment);
+			}
 			return REDIRECT_SUCCESS;
 		}
 
