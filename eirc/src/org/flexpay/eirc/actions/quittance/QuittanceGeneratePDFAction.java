@@ -41,7 +41,7 @@ public class QuittanceGeneratePDFAction extends FPActionSupport {
 				contextVariables.put("dateFrom", beginDateFilter.getDate());
 				contextVariables.put("dateTill", endDateFilter.getDate());
 
-				processManager.createProcess("GenerateQuitancePDF", contextVariables);
+				processManager.createProcess("GenerateQuittancePDF", contextVariables);
 
 				addActionError(getText("eirc.quittance.printing_started"));
 			}

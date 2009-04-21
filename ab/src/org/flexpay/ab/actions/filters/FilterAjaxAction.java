@@ -1,25 +1,49 @@
 package org.flexpay.ab.actions.filters;
 
 import org.apache.struts2.interceptor.ServletRequestAware;
-import org.flexpay.ab.actions.buildings.BuildingsActionsBase;
+import org.flexpay.common.actions.FPActionSupport;
+import org.flexpay.common.exception.FlexPayException;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
-public abstract class FilterAjaxAction extends BuildingsActionsBase implements ServletRequestAware {
+/**
+ * Abstract class for address filter-classes
+ *
+ * Parameters:
+ *
+ * q - this is a query string for search objects
+ * 	   (ex.: "iva" - may found {"Ivanova", "Migivana"} -
+ * 	   but don't forget, this is just example!)
+ * parents - values of parents filters or some values, which can use for search
+ * filterValue - value of filter hidden input (hidden-value). Uses for preRequest actions
+ * filterValueLong - parsed filterValue to Long value
+ * filterString - string value (for text filter input, also may call view-value). 
+ * 				  Uses for preRequest actions
+ * saveFilterValues - if true, that this is a request for save values
+ * 					  for userPreferences - call saveFilterValues() method
+ * preRequest - true - if this is a pre-request action. That we want to read
+ * 				string value (view-value) for filter by its value (hidden-value) -
+ * 				call readFilterString() method.
+ * 				false or null - for else
+ * PREREQUEST_RESPONSE - this is a name of result in struts config,
+ * 						 which returned after pre-request action finished
+ */
+public abstract class FilterAjaxAction extends FPActionSupport implements ServletRequestAware {
 
 	protected final static String PREREQUEST_RESPONSE = "prerequestResponse";
 
 	protected String[] parents;
-	protected Long filterValueLong;
-	protected String filterValue;
-	protected String filterString;
 	protected String q;
-	protected List<FilterObject> foundObjects;
+	protected String filterValue;
+	protected Long filterValueLong;
+	protected String filterString;
 	protected Boolean preRequest;
 	protected Boolean saveFilterValue;
+	protected List<FilterObject> foundObjects;
+
 	@NonNls
 	protected HttpServletRequest request;
 
@@ -43,8 +67,19 @@ public abstract class FilterAjaxAction extends BuildingsActionsBase implements S
 		return super.execute();
 	}
 
-	protected abstract void readFilterString();
+	/**
+	 * This method call if we know hidden-value
+	 * (or some else values) and want to get view-value
+	 *
+	 * @throws FlexPayException FlexPayException
+	 */
+	protected abstract void readFilterString() throws FlexPayException;
 
+	/**
+	 * All filters values saving to session object
+	 * userPreferences. This method call when we want
+	 * to sate new values to this object
+	 */
 	protected abstract void saveFilterValue();
 
 	/**

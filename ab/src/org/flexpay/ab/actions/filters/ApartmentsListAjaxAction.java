@@ -6,12 +6,13 @@ import org.flexpay.ab.persistence.BuildingAddress;
 import org.flexpay.ab.service.ApartmentService;
 import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.util.CollectionUtils.list;
+import org.flexpay.common.actions.FPActionWithPagerSupport;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.util.List;
 
-public class ApartmentsListAjaxAction extends BuildingsActionsBase {
+public class ApartmentsListAjaxAction extends FPActionWithPagerSupport {
 
 	private String[] parents;
 	private List<Apartment> apartments = list();

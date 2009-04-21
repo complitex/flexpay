@@ -7,6 +7,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Locale;
+import java.util.Collection;
 
 public class TranslationUtil {
 
@@ -83,4 +84,31 @@ public class TranslationUtil {
 		}
 		return streetTypeStr;
 	}
+
+	public static String getBuildingNumber(@Nullable Collection<AddressAttribute> attributes, @Nullable Locale locale) throws FlexPayException {
+
+		if (attributes == null) {
+			return null;
+		}
+
+		StringBuilder number = new StringBuilder();
+		for (AddressAttribute attribute : attributes) {
+			if (attribute == null) {
+				continue;
+			}
+			AddressAttributeTypeTranslation attributeTypeTranslation =
+					locale == null ? getTranslation(attribute.getBuildingAttributeType().getTranslations()) :
+							getTranslation(attribute.getBuildingAttributeType().getTranslations(), locale);
+			if (attributeTypeTranslation.getShortName() != null) {
+				number.append(attributeTypeTranslation.getShortName()).append(' ');
+			} else {
+				number.append(attributeTypeTranslation.getName()).append(' ');
+			}
+
+			number.append(attribute.getValue()).append(' ');
+		}
+
+		return number.toString().trim();
+	}
+
 }
