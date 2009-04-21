@@ -42,11 +42,36 @@
 		</many-to-one>
 	</class>
 
+	<query name="Apartment.findObjects.count">
+		SELECT count(o)
+		FROM Apartment o
+			inner join o.building b
+			left join b.buildingses bs
+		WHERE o.status=0 and bs.id=?
+	</query>
+
 	<query name="Apartment.findObjects"><![CDATA[
 		select distinct o
 		FROM Apartment o
+			inner join fetch o.building b
+			left join b.buildingses bs
 			LEFT JOIN FETCH o.apartmentNumbers n
-		WHERE o.status=0 and o.building.id=? and n.begin <= current_date() and current_date <= n.end
+		WHERE o.status=0 and bs.id=? and n.begin <= current_date() and current_date() <= n.end
+	]]></query>
+
+	<query name="Apartment.findByBuilding.count">
+		SELECT count(o)
+		FROM Apartment o
+			inner join o.building b
+		WHERE o.status=0 and b.id=?
+	</query>
+
+	<query name="Apartment.findByBuilding"><![CDATA[
+		select distinct o
+		from Apartment o
+			inner join fetch o.building b
+			left join fetch o.apartmentNumbers n
+		where o.status=0 and b.id=? and n.begin <= current_date() and current_date() <= n.end
 	]]></query>
 
 	<query name="Apartment.readFull">
@@ -55,10 +80,6 @@
 			LEFT JOIN FETCH a.apartmentNumbers
 			LEFT JOIN FETCH a.personRegistrations r
 		WHERE a.id=?
-	</query>
-
-	<query name="Apartment.findObjects.count">
-		SELECT count(*) FROM Apartment o WHERE o.status=0 and o.building.id=?
 	</query>
 
 	<query name="Apartment.findByNumber">
@@ -71,6 +92,7 @@
 	<query name="Apartment.findWithPersonsFull">
 		SELECT DISTINCT a
 		FROM Apartment a
+			inner join fetch a.building 
 			LEFT JOIN FETCH a.apartmentNumbers
 			LEFT JOIN FETCH a.personRegistrations r
 			LEFT JOIN FETCH r.person p

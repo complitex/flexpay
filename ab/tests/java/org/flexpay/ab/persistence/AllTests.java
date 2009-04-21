@@ -7,7 +7,8 @@ import org.junit.runners.Suite;
 @Suite.SuiteClasses({
 		TestCountry.class,
 		TestPerson.class,
-		TestNameTimeDependent.class
+		TestNameTimeDependent.class,
+		TestApartment.class
 		})
 public class AllTests {
 

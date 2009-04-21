@@ -11,19 +11,19 @@ public interface ApartmentDao extends GenericDao<Apartment, Long> {
 	/**
 	 * Find apartments in the building
 	 *
-	 * @param buildingId Building identifier
+	 * @param buildingsId Building address identifier
 	 * @param pager	  Page instance
 	 * @return list of apartments in the building
 	 */
-	List<Apartment> findObjects(Long buildingId, Page pager);
+	List<Apartment> findObjects(Long buildingsId, Page pager);
 	
 	/**
 	 * Find apartments in the building
 	 *
-	 * @param buildingId Building identifier
+	 * @param buildingsId Building address identifier
 	 * @return list of apartments in the building
 	 */
-	List<Apartment> findObjects(Long buildingId);
+	List<Apartment> findObjects(Long buildingsId);
 
 	/**
 	 * Read apartment with registered persons
@@ -32,4 +32,21 @@ public interface ApartmentDao extends GenericDao<Apartment, Long> {
 	 * @return List of apartments
 	 */
 	List<Apartment> findWithPersonsFull(Long apartmentId);
+
+	/**
+	 * Find all apartments in the building
+	 *
+	 * @param buildingId Building identifier
+	 * @return list of apartments in the building
+	 */
+	List<Apartment> findByBuilding(Long buildingId);
+
+	/**
+	 * Find apartments in the building
+	 *
+	 * @param buildingId Building identifier
+	 * @param pager	  Page instance
+	 * @return list of apartments in the building
+	 */
+	List<Apartment> findByBuilding(Long buildingId, Page<Apartment> pager);
 }

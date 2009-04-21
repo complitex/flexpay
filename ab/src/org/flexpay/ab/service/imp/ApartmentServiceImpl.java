@@ -1,8 +1,6 @@
 package org.flexpay.ab.service.imp;
 
 import org.apache.commons.collections.ArrayStack;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.flexpay.ab.dao.ApartmentDao;
 import org.flexpay.ab.dao.ApartmentDaoExt;
 import org.flexpay.ab.persistence.Apartment;
@@ -17,14 +15,19 @@ import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Stub;
+import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.persistence.filter.ObjectFilter;
 import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
+import org.flexpay.common.persistence.history.ModificationListener;
 import org.flexpay.common.service.ParentService;
+import org.flexpay.common.service.internal.SessionUtils;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.springframework.transaction.annotation.Transactional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
@@ -38,6 +41,9 @@ public class ApartmentServiceImpl implements ApartmentService {
 	private ApartmentDaoExt apartmentDaoExt;
 
 	private ParentService<BuildingsFilter> parentService;
+
+	private SessionUtils sessionUtils;
+	private ModificationListener<Apartment> modificationListener;
 
 	@NotNull
 	public String getAddress(@NotNull Stub<Apartment> stub) throws FlexPayException {
@@ -87,31 +93,61 @@ public class ApartmentServiceImpl implements ApartmentService {
 	 * @param objectIds Apartments identifiers
 	 */
 	@Transactional (readOnly = false)
-	public void disable(@NotNull Set<Long> objectIds) {
+	public void disable(@NotNull Collection<Long> objectIds) {
 		for (Long id : objectIds) {
 			Apartment apartment = apartmentDao.read(id);
 			if (apartment != null) {
 				apartment.disable();
 				apartmentDao.update(apartment);
+
+				modificationListener.onDelete(apartment);
 			}
 		}
 	}
 
 	/**
-	 * Create or update apartment
+	 * Create new apartment
 	 *
 	 * @param apartment Apartment to save
+	 * @return persisted object back
 	 * @throws FlexPayExceptionContainer if validation fails
 	 */
 	@Transactional (readOnly = false)
-	public void save(@NotNull Apartment apartment) throws FlexPayExceptionContainer {
+	@NotNull
+	public Apartment create(@NotNull Apartment apartment) throws FlexPayExceptionContainer {
 		validate(apartment);
-		if (apartment.isNew()) {
-			apartment.setId(null);
-			apartmentDao.create(apartment);
-		} else {
-			apartmentDao.update(apartment);
+		apartment.setId(null);
+		apartmentDao.create(apartment);
+
+		modificationListener.onCreate(apartment);
+
+		return apartment;
+	}
+
+	/**
+	 * Update apartment
+	 *
+	 * @param apartment Apartment to update
+	 * @return updated object back
+	 * @throws FlexPayExceptionContainer if validation fails
+	 */
+	@SuppressWarnings ({"ThrowableInstanceNeverThrown"})
+	@Transactional (readOnly = false)
+	@NotNull
+	public Apartment update(@NotNull Apartment apartment) throws FlexPayExceptionContainer {
+		validate(apartment);
+
+		Apartment old = readWithPersons(stub(apartment));
+		if (old == null) {
+			throw new FlexPayExceptionContainer(
+					new FlexPayException("No object found to update " + apartment));
 		}
+		sessionUtils.evict(old);
+		modificationListener.onUpdate(old, apartment);
+
+		apartmentDao.update(apartment);
+
+		return apartment;
 	}
 
 	@SuppressWarnings ({"ThrowableInstanceNeverThrown"})
@@ -253,8 +289,8 @@ public class ApartmentServiceImpl implements ApartmentService {
 	}
 
 	/**
-	 * Initialize filters. <p>Filters are coming from the most significant to less significant ones order, like CountryFilter,
-	 * RegionFilter, TownFilter for example</p>
+	 * Initialize filters. <p>Filters are coming from the most significant to less significant ones order, like
+	 * CountryFilter, RegionFilter, TownFilter for example</p>
 	 *
 	 * @param filters Filters to init
 	 * @param locale  Locale to get parent names in
@@ -273,7 +309,7 @@ public class ApartmentServiceImpl implements ApartmentService {
 		}
 
 		ApartmentFilter parentFilter = filters.isEmpty() ? null
-									   : (ApartmentFilter) filters.pop();
+														 : (ApartmentFilter) filters.pop();
 
 		filters = parentService.initFilters(filters, locale);
 		BuildingsFilter forefatherFilter = (BuildingsFilter) filters.peek();
@@ -338,6 +374,16 @@ public class ApartmentServiceImpl implements ApartmentService {
 		return apartmentDao.findObjects(stub.getId());
 	}
 
+	/**
+	 * Find all apartments in the building
+	 *
+	 * @param stub Building stub
+	 * @return list of apartments in the building
+	 */
+	public List<Apartment> getBuildingApartments(@NotNull Stub<Building> stub) {
+		return apartmentDao.findByBuilding(stub.getId());
+	}
+
 	@Required
 	public void setApartmentDao(ApartmentDao apartmentDao) {
 		this.apartmentDao = apartmentDao;
@@ -353,4 +399,13 @@ public class ApartmentServiceImpl implements ApartmentService {
 		this.parentService = parentService;
 	}
 
+	@Required
+	public void setSessionUtils(SessionUtils sessionUtils) {
+		this.sessionUtils = sessionUtils;
+	}
+
+	@Required
+	public void setModificationListener(ModificationListener<Apartment> modificationListener) {
+		this.modificationListener = modificationListener;
+	}
 }

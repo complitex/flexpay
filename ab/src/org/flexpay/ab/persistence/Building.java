@@ -28,6 +28,10 @@ public class Building extends DomainObjectWithStatus {
 		super(id);
 	}
 
+	public Building(Stub<Building> stub) {
+		super(stub.getId());
+	}
+
 	public District getDistrict() {
 		return district;
 	}

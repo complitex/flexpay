@@ -22,8 +22,12 @@ public class AbSpringBeanAwareTestCase extends SpringBeanAwareTestCase {
 				BUILDING_ATTRIBUTE_TYPE_READ,
 				BUILDING_READ,
 				STREET_READ,
+				DISTRICT_READ,
 				TOWN_READ,
-				REGION_READ
+				REGION_READ,
+				TOWN_TYPE_READ,
+				STREET_TYPE_READ,
+				APARTMENT_ADD
 		);
 		User user = new User("test", "test", true, true, true, true, authorities);
 		Authentication auth = new AnonymousAuthenticationToken("key", user, authorities);

@@ -7,6 +7,7 @@ import org.junit.runners.Suite;
 @Suite.SuiteClasses ({
 		TestTownTypeHistoryBuilder.class,
 		TestTownHistoryBuilder.class, // this test should go after town type builder, as depends on master correction
+		TestApartmentHistoryBuilder.class,
 		TestTownHistoryGenerator.class,
 		TestPackTownHistory.class
 })

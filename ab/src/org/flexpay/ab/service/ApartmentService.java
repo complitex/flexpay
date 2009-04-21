@@ -15,8 +15,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.security.annotation.Secured;
 
+import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 import java.util.Locale;
 
 public interface ApartmentService extends ParentService<ApartmentFilter> {
@@ -60,13 +60,26 @@ public interface ApartmentService extends ParentService<ApartmentFilter> {
 	Building getBuilding(Stub<Apartment> apartment) throws FlexPayException;
 
 	/**
-	 * Create or update apartment
+	 * Create new apartment
 	 *
 	 * @param apartment Apartment to save
+	 * @return persisted object back
 	 * @throws FlexPayExceptionContainer if validation fails
 	 */
-	@Secured ({Roles.APARTMENT_ADD, Roles.APARTMENT_CHANGE})
-	void save(Apartment apartment) throws FlexPayExceptionContainer;
+	@Secured (Roles.APARTMENT_ADD)
+	@NotNull
+	Apartment create(@NotNull Apartment apartment) throws FlexPayExceptionContainer;
+
+	/**
+	 * Update apartment
+	 *
+	 * @param apartment Apartment to update
+	 * @return updated object back
+	 * @throws FlexPayExceptionContainer if validation fails
+	 */
+	@Secured (Roles.APARTMENT_CHANGE)
+	@NotNull
+	Apartment update(@NotNull Apartment apartment) throws FlexPayExceptionContainer;
 
 	/**
 	 * Get apartment display address
@@ -98,7 +111,7 @@ public interface ApartmentService extends ParentService<ApartmentFilter> {
 	 * @param objectIds Apartments identifiers
 	 */
 	@Secured (Roles.APARTMENT_DELETE)
-	void disable(@NotNull Set<Long> objectIds);
+	void disable(@NotNull Collection<Long> objectIds);
 
 	/**
 	 * Initialize parent filter. Possibly taking in account upper level forefather filter
@@ -129,5 +142,14 @@ public interface ApartmentService extends ParentService<ApartmentFilter> {
 
 	@Secured (Roles.APARTMENT_READ)
 	List<Apartment> getApartments(@NotNull Stub<BuildingAddress> stub);
+
+	/**
+	 * Find all apartments in the building
+	 *
+	 * @param stub Building stub
+	 * @return list of apartments in the building
+	 */
+	@Secured (Roles.APARTMENT_READ)
+	List<Apartment> getBuildingApartments(@NotNull Stub<Building> stub);
 
 }

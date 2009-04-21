@@ -1,14 +1,13 @@
 package org.flexpay.ab.persistence;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.builder.ToStringBuilder;
-import org.apache.commons.lang.builder.ToStringStyle;
 import org.flexpay.ab.util.config.ApplicationConfig;
 import org.flexpay.common.persistence.DomainObjectWithStatus;
 import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.util.CollectionUtils;
-import static org.flexpay.common.util.CollectionUtils.set;
+import static org.flexpay.common.util.CollectionUtils.*;
+import org.flexpay.common.util.DateIntervalUtil;
 import org.flexpay.common.util.DateUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -40,7 +39,7 @@ public class Apartment extends DomainObjectWithStatus {
 		return building;
 	}
 
-	public void setBuilding(@NotNull Building building) {
+	public void setBuilding(Building building) {
 		this.building = building;
 	}
 
@@ -64,7 +63,7 @@ public class Apartment extends DomainObjectWithStatus {
 		for (ApartmentNumber number : apartmentNumbers) {
 			Date begin = number.getBegin();
 			Date end = number.getEnd();
-			if (begin.compareTo(dt) <= 0 && dt.compareTo(end) < 0) {
+			if (begin.compareTo(dt) <= 0 && dt.compareTo(end) <= 0) {
 				return number.getValue();
 			}
 		}
@@ -148,13 +147,6 @@ public class Apartment extends DomainObjectWithStatus {
 		}
 
 		return result;
-	}
-
-	public String toString() {
-		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE)
-				.append("id", getId())
-				.append("numbers", apartmentNumbers.toArray())
-				.toString();
 	}
 
 	/**
@@ -260,5 +252,61 @@ public class Apartment extends DomainObjectWithStatus {
 	@NotNull
 	public Stub<Building> getBuildingStub() {
 		return stub(building);
+	}
+
+	public void setNumberForDate(Date begin, String value) {
+		setNumberForDates(begin, ApplicationConfig.getFutureInfinite(), value);
+	}
+
+	public void setNumberForDates(Date begin, Date end, String value) {
+
+		SortedSet<ApartmentNumber> numbers = treeSet(getApartmentNumbers());
+		List<ApartmentNumber> intersectingNumbers = list();
+		for (ApartmentNumber number : apartmentNumbers) {
+			if (DateIntervalUtil.areIntersecting(number.getBegin(), number.getEnd(), begin, end)) {
+				intersectingNumbers.add(number);
+			}
+		}
+
+		if (numbers.isEmpty()) {
+			addNumber(begin, end, value);
+			return;
+		}
+
+		// check first intersecting interval and add new apartment number with old value
+		ApartmentNumber first = intersectingNumbers.get(0);
+		if (first.getBegin().before(begin)) {
+			addNumber(first.getBegin(), DateUtil.previous(begin), first.getValue());
+		}
+		// check last intersecting interval and add new apartment number with old value
+		ApartmentNumber last = intersectingNumbers.get(intersectingNumbers.size() - 1);
+		if (last.getEnd().after(end)) {
+			addNumber(DateUtil.next(end), last.getEnd(), last.getValue());
+		}
+
+		// add interval with required boundaries
+		addNumber(begin, end, value);
+
+		// remove old intervals
+		apartmentNumbers.removeAll(intersectingNumbers);
+	}
+
+	private void addNumber(Date begin, Date end, String value) {
+
+		if (StringUtils.isBlank(value)) {
+			return;
+		}
+
+		//noinspection CollectionsFieldAccessReplaceableByMethodCall
+		if (apartmentNumbers == Collections.EMPTY_SET) {
+			apartmentNumbers = set();
+		}
+
+		ApartmentNumber number = new ApartmentNumber();
+		number.setBegin(begin);
+		number.setEnd(end);
+		number.setValue(value);
+		number.setApartment(this);
+		apartmentNumbers.add(number);
 	}
 }

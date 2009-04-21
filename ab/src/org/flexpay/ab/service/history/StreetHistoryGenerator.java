@@ -46,7 +46,6 @@ public class StreetHistoryGenerator implements HistoryGenerator<Street> {
 		}
 
 		if (!diffService.hasDiffs(street)) {
-
 			Diff diff = historyBuilder.diff(null, street);
 			diff.setProcessingStatus(ProcessingStatus.STATUS_PROCESSED);
 			diffService.create(diff);

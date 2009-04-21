@@ -1740,6 +1740,10 @@ SELECT @buildings_ivanova_27:=1;
 INSERT INTO ab_building_address_attributes_tbl (value, status, attribute_type_id, buildings_id)
 	VALUES ('27', 0, @attr_type_home_number_id, @buildings_ivanova_27);
 
+-- add master correction for the first building
+insert into common_data_corrections_tbl (internal_object_id, object_type, external_object_id, data_source_description_id)
+	values (@building_ivanova_27_id, 0x1000 + 0x0A, concat('COMMON_INSTANCE-', @building_ivanova_27_id), @source_description_master_index);
+
 INSERT INTO ab_buildings_tbl (building_type, district_id) VALUES ('ab', @district_id_nsk_sovetskiy);
 SELECT @building_id:=last_insert_id();
 INSERT INTO ab_building_addresses_tbl (status, primary_status, street_id, building_id)
