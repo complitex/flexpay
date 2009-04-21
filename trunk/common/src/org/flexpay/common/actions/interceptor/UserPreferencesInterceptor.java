@@ -11,13 +11,21 @@ public class UserPreferencesInterceptor extends AbstractInterceptor {
 
 	public String intercept(ActionInvocation invocation) throws Exception {
 		Object action = invocation.getAction();
+		UserPreferences userPreferences = null;
 		if (action instanceof UserPreferencesAware) {
 			HttpServletRequest request = ServletActionContext.getRequest();
-			UserPreferences userPreferences = UserPreferences.getPreferences(request);
+			userPreferences = UserPreferences.getPreferences(request);
 			((UserPreferencesAware) action).setUserPreferences(userPreferences);
 		}
 
-		return invocation.invoke();
+		String result = invocation.invoke();
+
+		if (action instanceof UserPreferencesAware) {
+			HttpServletRequest request = ServletActionContext.getRequest();
+			UserPreferences.setPreferences(request, userPreferences);
+		}
+
+		return result;
 	}
 
 }
