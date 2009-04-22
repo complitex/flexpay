@@ -110,7 +110,7 @@ public abstract class HistoryPackerBase implements HistoryPacker {
 		}
 
 		if (context.getNumberOfRecords() == 0) {
-			log.info("No history records to share, cleaning up");
+			log.debug("No history records to share, cleaning up");
 			clear(files, context);
 			return Collections.emptyList();
 		}

@@ -6,13 +6,15 @@ import org.springframework.web.util.WebUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Locale;
+import java.io.Serializable;
 
-public class UserPreferences {
+public class UserPreferences implements Serializable {
 
 	private String userName = "";
 	private Locale locale;
 
 	private Integer pageSize = 20;
+	private String testProp = "setup-me";
 
 	private MenuComponent menuComponent = new MenuComponent();
 
@@ -151,4 +153,11 @@ public class UserPreferences {
 		this.apartmentFilterValue = apartmentFilterValue;
 	}
 
+	public String getTestProp() {
+		return testProp;
+	}
+
+	public void setTestProp(String testProp) {
+		this.testProp = testProp;
+	}
 }

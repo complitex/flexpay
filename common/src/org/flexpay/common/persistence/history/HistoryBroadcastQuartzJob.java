@@ -4,6 +4,7 @@ import org.flexpay.common.locking.LockManager;
 import org.flexpay.common.persistence.FPFile;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.service.HistoryConsumerService;
+import org.flexpay.common.service.Security;
 import org.flexpay.common.service.transport.OutTransport;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
@@ -44,6 +45,8 @@ public class HistoryBroadcastQuartzJob extends QuartzJobBean {
 		log.debug("Starting history broadcast");
 
 		try {
+			Security.authenticateHistoryBroadcaster();
+
 			List<HistoryConsumer> consumers = historyConsumerService.listConsumers();
 			for (HistoryConsumer consumer : consumers) {
 				List<FPFile> history = historyPacker.packHistory(stub(consumer));

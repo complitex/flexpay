@@ -1,11 +1,9 @@
 package org.flexpay.common.actions;
 
 import org.apache.struts2.ServletActionContext;
-import org.apache.struts2.interceptor.SessionAware;
-import org.flexpay.common.actions.interceptor.UserPreferencesAware;
 import org.jetbrains.annotations.NotNull;
 
-public class StaticPageAction extends FPActionSupport implements UserPreferencesAware, SessionAware {
+public class StaticPageAction extends FPActionSupport {
 
 	@NotNull
 	protected String doExecute() throws Exception {
@@ -17,5 +15,4 @@ public class StaticPageAction extends FPActionSupport implements UserPreferences
 	protected String getErrorResult() {
 		return SUCCESS;
 	}
-
 }
