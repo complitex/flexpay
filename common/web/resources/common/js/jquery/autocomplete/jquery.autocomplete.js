@@ -62,6 +62,16 @@ jQuery.autocomplete = function(input, options) {
 
 			// if the length is zero, don't add to list
 			if( row[0].length > 0 ){
+
+////////////////////////////////////////////////////
+                sFirstChar = row[0].substring(0, 1).toLowerCase();
+                if (!stMatchSets[sFirstChar]) {
+                    stMatchSets[sFirstChar] = [];
+                }
+                stMatchSets[sFirstChar].push(row);
+////////////////////////////////////////////////////
+
+/*
 				// get the first character
                 for (var n = 1; n <= row[0].length; n++) {
                     sFirstChar = row[0].substring(n - 1, n).toLowerCase();
@@ -70,6 +80,7 @@ jQuery.autocomplete = function(input, options) {
                     // if the match is a string
                     stMatchSets[sFirstChar].push(row);
                 }
+*/
 			}
 		}
 
