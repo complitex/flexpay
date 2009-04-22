@@ -64,8 +64,9 @@
 			</tr>
 
 			<tr>
-				<td class="th" width="1%"><s:text name="payments.operations.list.number_symbol"/></td>
 				<td class="th" width="1%">&nbsp;</td>
+				<td class="th" width="1%"><s:text name="payments.operations.list.number_symbol"/></td>
+				<td class="th" width="1%"><s:text name="payments.operations.list.uno"/></td>
 				<td class="th"><s:text name="payments.operations.list.creation_date"/></td>
 				<td class="th"><s:text name="payments.operations.list.address"/></td>
 				<td class="th"><s:text name="payments.operations.list.fio"/></td>
@@ -84,10 +85,11 @@
 					<s:elseif test="%{isOperationCreated(operationStatus.code) || isOperationError(operationStatus.code)}"> col_blue</s:elseif>
 					<s:elseif test="%{isOperationReturned(operationStatus.code)}"> col_red</s:elseif>">
 
-					<td class="col_oper" align="right"><s:property value="%{#opStatus.index + 1}"/></td>
 					<td class="col_oper" nowrap="nowrap">
 						<input type="radio" name="selected_operation" value="<s:property value="%{#opStatus.index + 1}"/>"/>
 					</td>
+					<td class="col_oper" align="right"><s:property value="%{#opStatus.index + 1}"/></td>
+					<td class="col_oper" nowrap="nowrap"><s:property value="id"/></td>
 					<td class="col_oper" nowrap="nowrap"><s:date name="creationDate" format="HH:mm"/></td>
 					<td class="col_oper" nowrap="nowrap"><s:property value="address"/></td>
 					<td class="col_oper" nowrap="nowrap"><s:property value="payerFIO"/></td>
@@ -103,10 +105,11 @@
 					<s:elseif test="%{isOperationCreated(operationStatus.code) || isOperationError(operationStatus.code)}"> col_blue</s:elseif>
 					<s:elseif test="%{isOperationReturned(operationStatus.code)}"> col_red</s:elseif>">
 
-					<td class="col_oper" align="right"><s:property value="%{#opStatus.index + 1}"/></td>
 					<td class="col_oper" nowrap="nowrap">
 						<input type="radio" name="selected_operation" value="<s:property value="%{#opStatus.index + 1}"/>"/>
 					</td>
+					<td class="col_oper" align="right"><s:property value="%{#opStatus.index + 1}"/></td>
+					<td class="col_oper" nowrap="nowrap"><s:property value="id"/></td>
 					<td class="col_oper" nowrap="nowrap"><s:date name="creationDate" format="HH:mm"/></td>
 					<td class="col_oper" nowrap="nowrap">&nbsp;</td>
 					<td class="col_oper" nowrap="nowrap">&nbsp;</td>
@@ -124,6 +127,7 @@
 							<s:elseif test="%{isDocumentCreated(documentStatus.code) || isDocumentError(documentStatus.code)}"> col_blue</s:elseif>
 							<s:elseif test="%{isDocumentReturned(documentStatus.code)}"> col_red</s:elseif>">
 
+							<td class="col_doc" nowrap="nowrap">&nbsp;</td>
 							<td class="col_doc" nowrap="nowrap">&nbsp;</td>
 							<td class="col_doc" nowrap="nowrap">&nbsp;</td>
 							<td class="col_doc" nowrap="nowrap">&nbsp;</td>
@@ -145,6 +149,7 @@
 					<s:elseif test="%{isOperationReturned(operationStatus.code)}"> col_red</s:elseif>">
 
 					<td class="col_oper" align="right">&nbsp;</td>
+					<td class="col_oper" nowrap="nowrap">&nbsp;</td>
 					<td class="col_oper" nowrap="nowrap">&nbsp;</td>
 					<td class="col_oper" nowrap="nowrap">&nbsp;</td>
 					<td class="col_oper" nowrap="nowrap"><s:property value="address"/></td>
