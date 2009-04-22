@@ -15,7 +15,7 @@
 	</appender>
 
 	<category name="org.flexpay" additivity="false">
-		<priority value="debug" />
+		<priority value="info" />
 		<appender-ref ref="flexpay" />
 	</category>
 
@@ -30,4 +30,3 @@
 	</root>
 
 </log4j:configuration>
-    

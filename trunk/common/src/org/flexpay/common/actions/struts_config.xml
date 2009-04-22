@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+		"-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+		"http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+
+	<constant name="struts.custom.i18n.resources"
+			  value="org/flexpay/common/i18n/common-messages,
+			  org/flexpay/ab/i18n/errors,org/flexpay/ab/i18n/messages" />
+
+	<package name="common1" namespace="/common" extends="common">
+
+		<action name="updateUserPrefs" class="org.flexpay.common.actions.UserPreferencesUpdateAction">
+			<result>/WEB-INF/jsp/common/user_prefs.jsp</result>
+		</action>
+
+	</package>
+
+</struts>

@@ -16,6 +16,7 @@
 
 	</package>
 
+	<include file="org/flexpay/common/actions/struts_config.xml" />
 	<include file="org/flexpay/ab/actions/person/struts.xml" />
 	<include file="org/flexpay/ab/actions/identity/struts.xml" />
     <include file="org/flexpay/ab/actions/country/struts.xml" />

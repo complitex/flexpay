@@ -4,28 +4,44 @@ import com.opensymphony.xwork2.ActionInvocation;
 import com.opensymphony.xwork2.interceptor.AbstractInterceptor;
 import org.apache.struts2.ServletActionContext;
 import org.flexpay.common.util.config.UserPreferences;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 
 public class UserPreferencesInterceptor extends AbstractInterceptor {
 
+	private static final Logger log = LoggerFactory.getLogger(UserPreferencesInterceptor.class);
+
 	public String intercept(ActionInvocation invocation) throws Exception {
-		Object action = invocation.getAction();
+
+		log.warn("User preferences interceptor");
+
 		UserPreferences userPreferences = null;
-		if (action instanceof UserPreferencesAware) {
+		Object action;
+		try {
+			action = invocation.getAction();
 			HttpServletRequest request = ServletActionContext.getRequest();
-			userPreferences = UserPreferences.getPreferences(request);
-			((UserPreferencesAware) action).setUserPreferences(userPreferences);
+			if (action instanceof UserPreferencesAware) {
+				userPreferences = UserPreferences.getPreferences(request);
+				((UserPreferencesAware) action).setUserPreferences(userPreferences);
+			}
+
+			String result = invocation.invoke();
+
+			if (action instanceof UserPreferencesAware) {
+				UserPreferences.setPreferences(request, userPreferences);
+			}
+
+			log.warn("User preferences: {}", userPreferences);
+
+			return result;
+		} catch (Exception ex) {
+			log.error("Failure", ex);
+			throw ex;
+		} catch (Throwable t) {
+			log.error("Failure", t);
+			throw new RuntimeException(t);
 		}
-
-		String result = invocation.invoke();
-
-		if (action instanceof UserPreferencesAware) {
-			HttpServletRequest request = ServletActionContext.getRequest();
-			UserPreferences.setPreferences(request, userPreferences);
-		}
-
-		return result;
 	}
-
 }
