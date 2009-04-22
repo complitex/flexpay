@@ -11,8 +11,6 @@
 }
 
 .columns .main-content table td {
-	width: 66%;
-	margin-right: -100%;
 	font-size: 1.2em;
 }
 
@@ -24,16 +22,22 @@
 	font-size: 0.7em;
 }
 
-.col_oper {
-	background: #ecf6f6;
-	font-family: tahoma, sans-serif;
-	font-size: 0.8em;
+.columns .main-content table.operations td.th {	
+	font-size: 1.0em;
 }
 
-.col_doc {
+.columns .main-content table.operations td.col_oper {
+	background: #ecf6f6;
+	font-family: tahoma, sans-serif;
+	font-size: 1.0em;
+	font-weight: bold;
+}
+
+.columns .main-content table.operations td.col_doc {
 	background-color: lavender;
 	font-family: tahoma, sans-serif;
-	font-size: 0.8em;
+	font-size: 1.0em;
+	font-weight: bold;
 }
 
 .col_red {
