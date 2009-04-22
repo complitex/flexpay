@@ -271,12 +271,12 @@
 
 				<tr class="cols_1">
 					<td colspan="4" style="font-weight: bold; text-align: right; "><s:text name="payments.quittance.payment.input"/></td>
-					<td><s:textfield name="input" cssStyle="text-align: right;"/></td>
+					<td><s:textfield name="input" cssStyle="text-align: right;" value="totalToPay"/></td>
 				</tr>
 
 				<tr class="cols_1">
 					<td colspan="4" style="font-weight: bold; text-align: right;"><s:text name="payments.quittance.payment.change"/></td>
-					<td><s:textfield name="change" cssStyle="text-align: right;" readonly="true"/></td>
+					<td><s:textfield name="change" cssStyle="text-align: right;" value="0.00" readonly="true"/></td>
 				</tr>
 
 				<tr>					
