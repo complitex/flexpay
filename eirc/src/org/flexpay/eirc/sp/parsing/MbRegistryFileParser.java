@@ -27,14 +27,11 @@ import java.util.Date;
 @Transactional (readOnly = true)
 public class MbRegistryFileParser extends MbFileParser<Registry> {
 
-	private RegistryRecordStatus statusLoaded;
-
 	private RegistryService registryService;
 	private RegistryRecordService registryRecordService;
 	private SpRegistryTypeService registryTypeService;
 	private ServiceProviderService serviceProviderService;
 	private ConsumerService consumerService;
-	private SpRegistryRecordStatusService spRegistryRecordStatusService;
 	private SpRegistryStatusService spRegistryStatusService;
 	private RegistryArchiveStatusService registryArchiveStatusService;
 	private PropertiesFactory propertiesFactory;
@@ -49,11 +46,6 @@ public class MbRegistryFileParser extends MbFileParser<Registry> {
 		try {
 
 			reader = new BufferedReader(new InputStreamReader(new FileInputStream(spFile.getFile()), REGISTRY_FILE_ENCODING), 500);
-
-			statusLoaded = spRegistryRecordStatusService.findByCode(RegistryRecordStatus.LOADED);
-			if (statusLoaded == null) {
-				throw new FlexPayException("Can't get registry record status \"loaded\" from database");
-			}
 
 			registry.setCreationDate(new Date());
 			registry.setSpFile(spFile);
@@ -169,11 +161,6 @@ public class MbRegistryFileParser extends MbFileParser<Registry> {
 	@Required
 	public void setConsumerService(ConsumerService consumerService) {
 		this.consumerService = consumerService;
-	}
-
-	@Required
-	public void setSpRegistryRecordStatusService(SpRegistryRecordStatusService spRegistryRecordStatusService) {
-		this.spRegistryRecordStatusService = spRegistryRecordStatusService;
 	}
 
 	@Required

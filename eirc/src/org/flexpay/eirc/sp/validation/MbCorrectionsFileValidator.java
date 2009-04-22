@@ -1,43 +1,33 @@
 package org.flexpay.eirc.sp.validation;
 
-import org.flexpay.common.persistence.FPFile;
-import org.flexpay.common.exception.FlexPayException;
-import org.flexpay.eirc.sp.Validator;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.flexpay.common.exception.FlexPayException;
+import org.flexpay.common.persistence.FPFile;
+import org.flexpay.eirc.sp.MbFileValidator;
+import org.jetbrains.annotations.NotNull;
 
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.io.*;
 
-public class MbCorrectionsFileValidator implements Validator {
+public class MbCorrectionsFileValidator extends MbFileValidator {
 
-	private Logger log = LoggerFactory.getLogger(getClass());
+	public static final String ACCOUNT_CLOSED = "ЛИЦЕВОЙ ЗАКРЫТ";
+	public static final DateFormat MODIFICATIONS_BEGIN_DATE_FORMAT = new SimpleDateFormat("ddMMyy");
 
-	public final static DateFormat FILE_CREATION_DATE_FORMAT = new SimpleDateFormat("ddMMyy");
-	public final static DateFormat MODIFICATIONS_BEGIN_DATE_FORMAT = new SimpleDateFormat("ddMMyy");
-	public final static String LAST_FILE_STRING_BEGIN = "999999999";
-	public final static String REGISTRY_FILE_ENCODING = "Cp866";
-	public final static String FIRST_FILE_STRING =
-			"                                                                                                    "
-			+ "                                                                                                    "
-			+ "                                                                                                    ";
-
-	public void validate(FPFile spFile) throws FlexPayException {
-
-		File file = spFile.getFile();
-		if (file == null) {
-			throw new FlexPayException("For FPFile (id = " + spFile.getId() + ") not found temp file: " + spFile.getNameOnServer());
-		}
+	protected boolean validateFile(@NotNull FPFile spFile) throws FlexPayException {
 
 		FileValues fileValues = new FileValues();
 
 		BufferedReader reader = null;
+		boolean ret = true;
 
 		try {
-			reader = new BufferedReader(new InputStreamReader(new FileInputStream(file), REGISTRY_FILE_ENCODING), 500);
+			reader = new BufferedReader(new InputStreamReader(new FileInputStream(spFile.getFile()), REGISTRY_FILE_ENCODING), 500);
 
 			for (int lineNum = 0;;lineNum++) {
 				String line = reader.readLine();
@@ -52,8 +42,11 @@ public class MbCorrectionsFileValidator implements Validator {
 					try {
 						validateHeader(line);
 					} catch (Exception e) {
-						throw new FlexPayException("Incorrect header in file. Line number = " + lineNum, e);
+						log.debug("Incorrect header in file. Line number = {}, error: {}\nLine = {}", new Object[] {lineNum, e.getMessage(), line});
+						ret = false;
+//						throw new FlexPayException("Incorrect header in file. Line number = " + lineNum, e);
 					}
+/*
 				} else if (lineNum == 19340 || lineNum == 19439
 						|| lineNum == 19450 || lineNum == 19492
 						|| lineNum == 25492 || lineNum == 25495
@@ -89,20 +82,26 @@ public class MbCorrectionsFileValidator implements Validator {
 						|| lineNum == 320595 || lineNum == 320612
 						|| lineNum == 320622 || lineNum == 320710
 						|| lineNum == 320727 || lineNum == 355126) {
+*/
 
 				} else if (line.startsWith(LAST_FILE_STRING_BEGIN)) {
 					fileValues.setLines(lineNum - 2);
 					try {
 						validateFooter(line, fileValues);
 					} catch (Exception e) {
-						throw new FlexPayException("Incorrect footer in file. Line number = " + lineNum, e);
+						log.debug("Incorrect footer in file. Line number = {}, error: {}\nLine = {}", new Object[] {lineNum, e.getMessage(), line});
+						ret = false;
+//						throw new FlexPayException("Incorrect footer in file. Line number = " + lineNum, e);
 					}
+					log.debug("Validated {} records in file", lineNum - 2);
 					break;
 				} else {
 					try {
 						validateRecord(line);
 					} catch (Exception e) {
-						throw new FlexPayException("Incorrect record in file. Line number = " + lineNum + ". Line = " + line, e);
+						log.debug("Incorrect record in file. Line number = {}, error: {}\nLine = {}", new Object[] {lineNum, e.getMessage(), line});
+						ret = false;
+//						throw new FlexPayException("Incorrect record in file. Line number = " + lineNum + ". Line = " + line, e);
 					}
 				}
 			}
@@ -117,6 +116,8 @@ public class MbCorrectionsFileValidator implements Validator {
 				// do nothing
 			}
 		}
+
+		return ret;
 
 	}
 
@@ -205,6 +206,14 @@ public class MbCorrectionsFileValidator implements Validator {
 		} catch (Exception e) {
 			throw new FlexPayException("Can't parse modifications begin date " + fields[19]);
 		}
+/*
+		if (fields[20].equals("0")) {
+			log.debug("{}", line);
+		}
+		if (fields[2].equals(ACCOUNT_CLOSED)) {
+			log.debug("{} - {}", fields[2], fields[20]);
+		}
+*/
 		if (!fields[21].equals("0") && !fields[21].equals("1")) {
 			throw new FlexPayException("Invalid sign of lift availability " + fields[21]);
 		}
@@ -214,7 +223,7 @@ public class MbCorrectionsFileValidator implements Validator {
 			throw new FlexPayException("Can't parse rooms quantity " + fields[22]);
 		}
 		if (!fields[23].equals("0") && !fields[23].equals("1")) {
-			throw new FlexPayException("Invalid sign of lift availability " + fields[23]);
+			throw new FlexPayException("Invalid sign of floor electric furnaces availability " + fields[23]);
 		}
 		if (!fields[24].equals("0") && !fields[24].equals("1")
 				&& !fields[24].equals("2") && !fields[24].equals("3")) {

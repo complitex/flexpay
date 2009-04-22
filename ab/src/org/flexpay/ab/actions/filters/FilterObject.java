@@ -5,6 +5,13 @@ import org.apache.commons.lang.builder.ToStringStyle;
 
 import java.io.Serializable;
 
+/**
+ * Simple class for results of search in filters
+ *
+ * value - field for hidden-value (for example - found object id)
+ * name - field for view-value (for example - found object name)
+ *
+ */
 public class FilterObject implements Serializable {
 
 	private String value;
