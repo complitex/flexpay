@@ -4,37 +4,30 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.FPFile;
-import org.flexpay.eirc.sp.Validator;
+import org.flexpay.eirc.sp.MbFileValidator;
+import org.jetbrains.annotations.NotNull;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
-public class MbRegistryFileValidator implements Validator {
+public class MbRegistryFileValidator extends MbFileValidator {
 
-	public final static DateFormat INCOME_PERIOD_DATE_FORMAT = new SimpleDateFormat("MMyy");
-	public final static DateFormat FILE_CREATION_DATE_FORMAT = new SimpleDateFormat("ddMMyy");
-	public final static DateFormat OPERATION_DATE_FORMAT = new SimpleDateFormat("MMyy");
-	public final static String LAST_FILE_STRING_BEGIN = "999999999";
-	public final static String REGISTRY_FILE_ENCODING = "Cp866";
-	public final static String FIRST_FILE_STRING =
-			"                                                                                                    "
-			+ "                                                                                                    "
-			+ "                                                                                                    ";
+	public static final DateFormat OPERATION_DATE_FORMAT = new SimpleDateFormat("MMyy");
+	public static final DateFormat INCOME_PERIOD_DATE_FORMAT = new SimpleDateFormat("MMyy");
 
-	public void validate(FPFile spFile) throws FlexPayException {
-
-		File file = spFile.getFile();
-		if (file == null) {
-			throw new FlexPayException("For FPFile (id = " + spFile.getId() + ") not found temp file: " + spFile.getNameOnServer());
-		}
+	protected boolean validateFile(@NotNull FPFile spFile) throws FlexPayException {
 
 		FileValues fileValues = new FileValues();
 
 		BufferedReader reader = null;
+		boolean ret = true;
 
 		try {
-			reader = new BufferedReader(new InputStreamReader(new FileInputStream(file), REGISTRY_FILE_ENCODING), 500);
+			reader = new BufferedReader(new InputStreamReader(new FileInputStream(spFile.getFile()), REGISTRY_FILE_ENCODING), 500);
 
 			for (int lineNum = 0;;lineNum++) {
 				String line = reader.readLine();
@@ -49,21 +42,28 @@ public class MbRegistryFileValidator implements Validator {
 					try {
 						validateHeader(line);
 					} catch (Exception e) {
-						throw new FlexPayException("Incorrect header in file. Line number = " + lineNum, e);
+						log.debug("Incorrect header in file. Line number = {}, line = {}. Error: {}", new Object[] {lineNum, line, e.getMessage()});
+						ret = false;
+//						throw new FlexPayException("Incorrect header in file. Line number = " + lineNum, e);
 					}
 				} else if (line.startsWith(LAST_FILE_STRING_BEGIN)) {
 					fileValues.setLines(lineNum - 2);
 					try {
 						validateFooter(line, fileValues);
 					} catch (Exception e) {
-						throw new FlexPayException("Incorrect footer in file. Line number = " + lineNum, e);
+						log.debug("Incorrect footer in file. Line number = {}, line = {}. Error: {}", new Object[] {lineNum, line, e.getMessage()});
+						ret = false;
+//						throw new FlexPayException("Incorrect footer in file. Line number = " + lineNum, e);
 					}
+					log.debug("Validated {} records in file", lineNum - 2);
 					break;
 				} else {
 					try {
 						validateRecord(line, fileValues);
 					} catch (Exception e) {
-						throw new FlexPayException("Incorrect record in file. Line number = " + lineNum + ". Line = " + line, e);
+						log.debug("Incorrect record in file. Line number = {}, line = {}. Error: {}", new Object[] {lineNum, line, e.getMessage()});
+						ret = false;
+//						throw new FlexPayException("Incorrect record in file. Line number = " + lineNum + ". Line = " + line, e);
 					}
 				}
 			}
@@ -78,6 +78,8 @@ public class MbRegistryFileValidator implements Validator {
 				// do nothing
 			}
 		}
+
+		return ret;
 
 	}
 
