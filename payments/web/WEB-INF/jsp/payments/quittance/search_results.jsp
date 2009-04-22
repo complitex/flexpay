@@ -269,16 +269,27 @@
 					<td class="col"><input type="text" id="quittancePayForm_totalToPay" name="totalPayed" value="<s:property value="totalToPay"/>" style="width: 100%; text-align: right;" readonly="readonly"/></td>
 				</tr>
 
-				<tr>
-					<td colspan="1" style="text-align:left;">
-						<s:hidden name="actionName" value="%{actionName}"/>
-						<input type="submit" name="submitted" value="<s:text name="payments.quittances.quittance_pay.pay"/>" class="btn-exit" style="width: 100%;"/>
-					</td>
+				<tr class="cols_1">
+					<td colspan="4" style="font-weight: bold; text-align: right; "><s:text name="payments.quittance.payment.input"/></td>
+					<td><s:textfield name="input" cssStyle="text-align: right;"/></td>
+				</tr>
+
+				<tr class="cols_1">
+					<td colspan="4" style="font-weight: bold; text-align: right;"><s:text name="payments.quittance.payment.change"/></td>
+					<td><s:textfield name="change" cssStyle="text-align: right;" readonly="true"/></td>
+				</tr>
+
+				<tr>					
 					<td colspan="4" style="text-align:right;">
 						<input type="button" value="<s:text name="payments.quittance.payment.pay_asc"/>" class="btn-exit" onclick="divideAscending();"/>
 						<input type="button" value="<s:text name="payments.quittance.payment.pay_by_ratio"/>" class="btn-exit" onclick="divideByRatio();"/>
 					</td>
+					<td colspan="1" style="text-align:left;">
+						<s:hidden name="actionName" value="%{actionName}"/>
+						<input type="submit" name="submitted" value="<s:text name="payments.quittances.quittance_pay.pay"/>" class="btn-exit" style="width: 100%;"/>
+					</td>
 				</tr>
+				
 			</s:iterator>
 
 		</table>
