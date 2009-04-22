@@ -24,7 +24,7 @@
 
 <s:form action="operationsList">
 
-	<table cellpadding="3" cellspacing="1" border="0" width="100%">
+	<table cellpadding="3" cellspacing="1" border="0" width="100%" class="operations">
 
 		<tr>
 			<td colspan="10" nowrap="nowrap">
