@@ -57,6 +57,7 @@
 			left join b.buildingses bs
 			LEFT JOIN FETCH o.apartmentNumbers n
 		WHERE o.status=0 and bs.id=? and n.begin <= current_date() and current_date() <= n.end
+		order by n.value
 	]]></query>
 
 	<query name="Apartment.findByBuilding.count">

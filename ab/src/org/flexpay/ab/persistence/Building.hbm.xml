@@ -195,6 +195,7 @@
 		LEFT JOIN FETCH attrTypeTr.lang langAttr
 		LEFT JOIN FETCH langAttr.translations
 		WHERE o.status = 0 AND o.street.id = ?
+        order by attrTypeTr.shortName, attrs.value
 	</query>
 
 	<query name="BuildingAddress.findBuilding">
