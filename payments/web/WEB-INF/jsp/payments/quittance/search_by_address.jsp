@@ -58,6 +58,9 @@
 				<input type="text" class="form-search" id="street_filter" name="streetFilter.searchString" value=""
 					   style="width: 200px;"/>
 			</td>
+			<td rowspan="2">
+				<input type="button" value="<s:text name="common.search" />" class="btn-exit" onclick="doSearch();"/>
+			</td>			 
 		</tr>
 		<tr>
 			<td class="filter"><s:text name="payments.building"/></td>
@@ -72,7 +75,6 @@
 		</tr>
 	</table>
 
-	<input type="button" value="<s:text name="common.search" />" class="btn-exit" onclick="doSearch();"/>
 </s:form>
 
 <div id="searchResultsDiv" style="display: none;"/>
