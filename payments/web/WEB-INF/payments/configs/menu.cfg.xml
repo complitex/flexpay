@@ -135,6 +135,13 @@
 		  p:action="generateReport"
 		  p:parent-ref="payments.quittance.search_quittance.reports"/>
 
+	<bean name="payments.report.generatePaymentsReport"
+		  parent="payments.quittance.search_quittance.reports"
+		  p:name="payments.report.generatePaymentsReport"
+		  p:title="payments.menu4.payments_report"
+		  p:action="generatePaymentsReport"
+		  p:parent-ref="payments.quittance.search_quittance.reports"/>
+
 	<!-- level 4 registries -->
 	<!--<bean name="payments.quittance.search_address.registries.generate" parent="payments.quittance.search_address.registries"-->
 		  <!--p:name="payments.quittance.search_address.registries.generate"-->

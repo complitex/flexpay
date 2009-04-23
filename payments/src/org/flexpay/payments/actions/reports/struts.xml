@@ -10,6 +10,16 @@
 			<result type="tiles">payments.report.generate</result>
 		</action>
 
+		<action name="generatePaymentsReport" class="paymentsReportAction">
+			<result name="input" type="tiles">payments.report.generatePaymentsReport</result>
+			<result type="stream">
+				<param name="contentType">text/csv</param>
+				<param name="inputName">inputStream</param>
+				<param name="contentDisposition">filename="${file.originalName}"</param>
+				<param name="bufferSize">1024</param>
+			</result>
+		</action>
+
 	</package>
 
 </struts>

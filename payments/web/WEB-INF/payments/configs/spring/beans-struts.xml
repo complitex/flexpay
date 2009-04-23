@@ -37,6 +37,11 @@
 	<bean id="generateReportAction" scope="prototype"
 		  class="org.flexpay.payments.actions.reports.GenerateReportAction" />
 
+	<bean id="paymentsReportAction" scope="prototype"
+		  class="org.flexpay.payments.actions.reports.PaymentsReportAction"
+		  p:fpFileService-ref="fpFileService"
+		  p:paymentsReporter-ref="paymentsReporter" />
+
 	<!-- registry-related actions -->
 	<bean id="generateRegistryAction" scope="prototype"
 		  class="org.flexpay.payments.actions.registry.GenerateRegistryAction" />

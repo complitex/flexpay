@@ -125,6 +125,13 @@ public class Organization extends DomainObjectWithStatus {
 		return name != null ? name.getName() : null;
 	}
 
+	@Nullable
+	public String getName() {
+
+		OrganizationName name = TranslationUtil.getTranslation(getNames());
+		return name != null ? name.getName() : null;
+	}
+
 	public void setName(OrganizationName name) {
 		names = TranslationUtil.setTranslation(names, this, name);
 	}

@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+		"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="org.flexpay.payments.service.statistics">
+
+	<query name="ServicePaymentsStatistics.collect"><![CDATA[
+		select o.creatorOrganization.id, d.service.id,
+		 	(select sum(dd.summ)
+		 	from Document dd
+		 		inner join dd.operation op
+		 	 	inner join dd.documentStatus ss
+		 		inner join dd.documentType cashPayment
+		 	where op.creationDate>=? and op.creationDate<=? and cashPayment.code=1 and ss.code=2
+		 		and op.creatorOrganization.id=o.creatorOrganization.id and dd.service.id=d.service.id),
+		 	0,
+		 	0,
+		 	0
+		from Document d
+			inner join d.documentStatus s
+			inner join d.operation o
+		where s.code=2 and o.creationDate>=? and o.creationDate<=?
+		order by o.creatorOrganization.id, d.service.id 
+	]]></query>
+</hibernate-mapping>

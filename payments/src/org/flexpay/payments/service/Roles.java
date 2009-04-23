@@ -41,4 +41,6 @@ public abstract class Roles {
 	public static final String SERVICE_TYPE_ADD = PREFIX + "SERVICE_TYPE_ADD";
 	public static final String SERVICE_TYPE_DELETE = PREFIX + "SERVICE_TYPE_DELETE";
 
+	public static final String PAYMENTS_REPORT = PREFIX + "PAYMENTS_REPORT";
+
 }

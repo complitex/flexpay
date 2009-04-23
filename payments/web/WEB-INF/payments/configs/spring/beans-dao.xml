@@ -89,6 +89,9 @@
 	<bean id="serviceDaoExt" class="org.flexpay.payments.dao.impl.ServiceDaoExtImpl"
 		  p:hibernateTemplate-ref="hibernateTemplate" />
 
+	<bean id="paymentStatisticsDaoExt" class="org.flexpay.payments.dao.impl.PaymentStatisticsDaoExtImpl"
+		  p:hibernateTemplate-ref="hibernateTemplate" />
+
 	<bean id="serviceDao" parent="abstractDao">
 		<property name="proxyInterfaces"
 				  value="org.flexpay.payments.dao.ServiceDao" />

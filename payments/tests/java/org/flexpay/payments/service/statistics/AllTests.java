@@ -1,13 +1,10 @@
-package org.flexpay.payments.service;
+package org.flexpay.payments.service.statistics;
 
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
 @RunWith (Suite.class)
 @Suite.SuiteClasses ({
-		org.flexpay.payments.service.statistics.AllTests.class,
-		TestDocumentService.class,
-		TestServiceDao.class
 })
 public class AllTests {
 
