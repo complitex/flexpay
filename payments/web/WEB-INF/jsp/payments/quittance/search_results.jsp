@@ -293,8 +293,5 @@
 			</s:iterator>
 
 		</table>
-	</s:if>
-	<s:else>
-		<s:text name="payments.quittances.quittance_pay.no_quittances_found"/>
-	</s:else>
+	</s:if>	
 </s:form>

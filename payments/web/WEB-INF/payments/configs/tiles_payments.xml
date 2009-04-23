@@ -26,11 +26,6 @@
 		<put-attribute name="body" value="/WEB-INF/jsp/payments/quittance/search_by_address.jsp" />
 	</definition>
 
-	<definition name="payments.quittance.quittance_pay" extends="ab.layout.standart">
-		<put-attribute name="title" value="payments.quittance.quittance_pay.title" />
-		<put-attribute name="body" value="/WEB-INF/jsp/payments/quittance/quittance_pay.jsp" />
-	</definition>
-
 	<!-- operation-related definitions -->
 	<definition name="payments.operations.list" extends="ab.layout.standart">
 		<put-attribute name="title" value="payments.operations.list.title"/>
