@@ -7,7 +7,7 @@
     <table cellpadding="3" cellspacing="1" border="0" width="100%">
         <tr valign="middle" class="cols_1">
             <td class="col">
-                <%@include file="../filters/service_organization_filter.jsp" %>
+                <%@include file="/WEB-INF/jsp/orgs/filters/service_organization_filter.jsp" %>
             </td>
         </tr>
         <tr class="cols_1">
