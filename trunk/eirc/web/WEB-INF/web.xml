@@ -688,7 +688,11 @@
 	<security-role>
 		<role-name>ROLE_PAYMENTS_SERVICE_READ</role-name>
 	</security-role>
-	
+
+	<!-- payments developer role -->
+	<security-role>
+		<role-name>ROLE_PAYMENTS_DEVELOPER</role-name>
+	</security-role>
 
 	<!--<login-config>-->
 		<!--<auth-method>BASIC</auth-method>-->
