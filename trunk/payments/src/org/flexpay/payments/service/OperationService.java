@@ -44,6 +44,7 @@ public interface OperationService {
 	 *
 	 * @param beginDate lower bound for operation creation date
 	 * @param endDate higher bound for operation creation date
+	 * @param pager Page
 	 * @return list of operations
 	 */
 	@Secured(Roles.OPERATION_READ)

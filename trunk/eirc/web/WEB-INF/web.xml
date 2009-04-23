@@ -694,6 +694,10 @@
 		<role-name>ROLE_PAYMENTS_DEVELOPER</role-name>
 	</security-role>
 
+	<security-role>
+		<role-name>ROLE_PAYMENTS_PAYMENTS_REPORT</role-name>
+	</security-role>
+
 	<!--<login-config>-->
 		<!--<auth-method>BASIC</auth-method>-->
 	<!--</login-config>-->

@@ -16,27 +16,27 @@
 	<bean id="operationAdditionTypeService" class="org.flexpay.payments.service.impl.OperationAdditionTypeServiceImpl"
 		  p:typeDao-ref="operationAdditionTypeDao" />
 
-    <bean id="documentTypeServiceTarget"
+	<bean id="documentTypeServiceTarget"
 		  autowire-candidate="false"
 		  class="org.flexpay.payments.service.impl.DocumentTypeServiceImpl"
-          p:documentTypeDao-ref="documentTypeDao" />
+		  p:documentTypeDao-ref="documentTypeDao" />
 
-    <bean id="documentStatusServiceTarget"
+	<bean id="documentStatusServiceTarget"
 		  autowire-candidate="false"
 		  class="org.flexpay.payments.service.impl.DocumentStatusServiceImpl"
-          p:documentStatusDao-ref="documentStatusDao" />
+		  p:documentStatusDao-ref="documentStatusDao" />
 
-    <bean id="operationService" class="org.flexpay.payments.service.impl.OperationServiceImpl"
-          p:operationDao-ref="operationDao" />
+	<bean id="operationService" class="org.flexpay.payments.service.impl.OperationServiceImpl"
+		  p:operationDao-ref="operationDao" />
 
-    <bean id="operationTypeService" class="org.flexpay.payments.service.impl.OperationTypeServiceImpl"
-          p:operationTypeDao-ref="operationTypeDao" />
+	<bean id="operationTypeService" class="org.flexpay.payments.service.impl.OperationTypeServiceImpl"
+		  p:operationTypeDao-ref="operationTypeDao" />
 
-    <bean id="operationStatusService" class="org.flexpay.payments.service.impl.OperationStatusServiceImpl"
-          p:operationStatusDao-ref="operationStatusDao" />
+	<bean id="operationStatusService" class="org.flexpay.payments.service.impl.OperationStatusServiceImpl"
+		  p:operationStatusDao-ref="operationStatusDao" />
 
-    <bean id="operationLevelService" class="org.flexpay.payments.service.impl.OperationLevelServiceImpl"
-          p:levelDao-ref="operationLevelDao" />
+	<bean id="operationLevelService" class="org.flexpay.payments.service.impl.OperationLevelServiceImpl"
+		  p:levelDao-ref="operationLevelDao" />
 
 	<bean id="serviceTypeService"
 		  class="org.flexpay.payments.service.impl.ServiceTypeServiceImpl"
@@ -50,5 +50,15 @@
 		  p:serviceDaoExt-ref="serviceDaoExt"
 		  p:sessionUtils-ref="sessionUtils"
 		  p:measureUnitService-ref="measureUnitService" />
+
+	<bean id="paymentsStatisticsService"
+		  class="org.flexpay.payments.service.statistics.impl.PaymentsStatisticsServiceImpl"
+		  p:statisticsDao-ref="paymentStatisticsDaoExt" />
+
+	<bean id="paymentsReporter"
+		  class="org.flexpay.payments.reports.payments.impl.PaymentsReporterImpl"
+		  p:organizationService-ref="organizationService"
+		  p:spService-ref="spService"
+		  p:paymentsStatisticsService-ref="paymentsStatisticsService" />
 
 </beans>

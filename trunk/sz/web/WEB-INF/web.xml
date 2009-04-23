@@ -721,6 +721,10 @@
         <role-name>ROLE_MENU_SZ_IMPORT_UPLOAD</role-name>
     </security-role>
 
+	<security-role>
+		<role-name>ROLE_PAYMENTS_PAYMENTS_REPORT</role-name>
+	</security-role>
+
 	<login-config>
 		<auth-method>FORM</auth-method>
 		<form-login-config>
