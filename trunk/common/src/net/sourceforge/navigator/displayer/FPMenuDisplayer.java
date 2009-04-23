@@ -117,11 +117,14 @@ public class FPMenuDisplayer extends AbstractMenuDisplayer {
 			return;
 		}
 
+		boolean firstHasOut = true;
+
 		for (MenuComponent component : components) {
 			if (hasMenuAccess(component)) {
 				if (level == 3) {
-					if (component.isFirst()) {
+					if (component.isFirst() || !firstHasOut) {
 						out.println(displayStrings.getMessage("left.menu.top", getTitle(menu)));
+						firstHasOut = true;
 					}
 					out.println(displayStrings.getMessage("left.menu.top_item.top", getTitle(component)));
 				}
@@ -135,6 +138,10 @@ public class FPMenuDisplayer extends AbstractMenuDisplayer {
 				}
 				if (level == 3) {
 					out.println(displayStrings.getMessage("left.menu.top_item.bottom"));
+				}
+			} else {
+				if (component.isFirst()) {
+					firstHasOut = false;
 				}
 			}
 		}
