@@ -6,7 +6,6 @@ import org.flexpay.ab.service.RegionService;
 import org.flexpay.ab.util.config.ApplicationConfig;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
-import org.flexpay.common.util.config.UserPreferences;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
@@ -26,12 +25,11 @@ public class RegionFilterAjaxAction extends FilterAjaxAction {
 			if (parents != null) {
 				countryIdLong = Long.parseLong(parents[0]);
 			} else {
-				UserPreferences prefs = UserPreferences.getPreferences(request);
-				if (prefs.getCountryFilterValue() == null) {
-					prefs.setCountryFilterValue(ApplicationConfig.getDefaultCountryStub().getId() + "");
+				if (userPreferences.getCountryFilterValue() == null) {
+					userPreferences.setCountryFilterValue(ApplicationConfig.getDefaultCountryStub().getId() + "");
 					countryIdLong = ApplicationConfig.getDefaultCountryStub().getId();
 				} else {
-					countryIdLong = Long.parseLong(prefs.getCountryFilterValue());
+					countryIdLong = Long.parseLong(userPreferences.getCountryFilterValue());
 				}
 			}
 		} catch (Exception e) {
@@ -60,9 +58,8 @@ public class RegionFilterAjaxAction extends FilterAjaxAction {
 	public void readFilterString() {
 		Region region = null;
 		if (filterValueLong == null) {
-			UserPreferences prefs = UserPreferences.getPreferences(request);
-			if (prefs.getCountryFilterValue() != null
-					&& !prefs.getCountryFilterValue().equals(ApplicationConfig.getDefaultCountryStub().getId() + "")) {
+			if (userPreferences.getCountryFilterValue() != null
+					&& !userPreferences.getCountryFilterValue().equals(ApplicationConfig.getDefaultCountryStub().getId() + "")) {
 				filterValue = "";
 			} else {
 				filterValue = ApplicationConfig.getDefaultRegionStub().getId() + "";
@@ -79,14 +76,12 @@ public class RegionFilterAjaxAction extends FilterAjaxAction {
 	}
 
 	public void saveFilterValue() {
-		UserPreferences prefs = UserPreferences.getPreferences(request);
-		prefs.setRegionFilterValue(filterValue);
-		prefs.setTownFilterValue("");
-		prefs.setDistrictFilterValue("");
-		prefs.setStreetFilterValue("");
-		prefs.setBuildingFilterValue("");
-		prefs.setApartmentFilterValue("");
-		UserPreferences.setPreferences(request, prefs);
+		userPreferences.setRegionFilterValue(filterValue);
+		userPreferences.setTownFilterValue("");
+		userPreferences.setDistrictFilterValue("");
+		userPreferences.setStreetFilterValue("");
+		userPreferences.setBuildingFilterValue("");
+		userPreferences.setApartmentFilterValue("");
 	}
 
 	@Required

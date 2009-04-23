@@ -61,11 +61,9 @@ public class StreetFilterAjaxAction extends FilterAjaxAction {
 	}
 
 	public void saveFilterValue() {
-		UserPreferences prefs = UserPreferences.getPreferences(request);
-		prefs.setStreetFilterValue(filterValue);
-		prefs.setBuildingFilterValue("");
-		prefs.setApartmentFilterValue("");
-		UserPreferences.setPreferences(request, prefs);
+		userPreferences.setStreetFilterValue(filterValue);
+		userPreferences.setBuildingFilterValue("");
+		userPreferences.setApartmentFilterValue("");
 	}
 
 	@Required

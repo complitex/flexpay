@@ -56,11 +56,9 @@ public class DistrictFilterAjaxAction extends FilterAjaxAction {
 	}
 
 	public void saveFilterValue() {
-		UserPreferences prefs = UserPreferences.getPreferences(request);
-		prefs.setDistrictFilterValue(filterValue);
-		prefs.setBuildingFilterValue("");
-		prefs.setApartmentFilterValue("");
-		UserPreferences.setPreferences(request, prefs);
+		userPreferences.setDistrictFilterValue(filterValue);
+		userPreferences.setBuildingFilterValue("");
+		userPreferences.setApartmentFilterValue("");
 	}
 
 	@Required

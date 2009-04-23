@@ -4,7 +4,6 @@ import org.flexpay.ab.persistence.Country;
 import org.flexpay.ab.service.CountryService;
 import org.flexpay.ab.util.config.ApplicationConfig;
 import org.flexpay.common.exception.FlexPayException;
-import org.flexpay.common.util.config.UserPreferences;
 import org.flexpay.common.persistence.Stub;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
@@ -48,15 +47,13 @@ public class CountryFilterAjaxAction extends FilterAjaxAction {
 	}
 
 	public void saveFilterValue() {
-		UserPreferences prefs = UserPreferences.getPreferences(request);
-		prefs.setCountryFilterValue(filterValue);
-		prefs.setRegionFilterValue("");
-		prefs.setTownFilterValue("");
-		prefs.setDistrictFilterValue("");
-		prefs.setStreetFilterValue("");
-		prefs.setBuildingFilterValue("");
-		prefs.setApartmentFilterValue("");
-		UserPreferences.setPreferences(request, prefs);
+		userPreferences.setCountryFilterValue(filterValue);
+		userPreferences.setRegionFilterValue("");
+		userPreferences.setTownFilterValue("");
+		userPreferences.setDistrictFilterValue("");
+		userPreferences.setStreetFilterValue("");
+		userPreferences.setBuildingFilterValue("");
+		userPreferences.setApartmentFilterValue("");
 	}
 
 	@Required

@@ -1,12 +1,9 @@
 package org.flexpay.ab.actions.filters;
 
-import org.apache.struts2.interceptor.ServletRequestAware;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.exception.FlexPayException;
-import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 /**
@@ -31,7 +28,7 @@ import java.util.List;
  * PREREQUEST_RESPONSE - this is a name of result in struts config,
  * 						 which returned after pre-request action finished
  */
-public abstract class FilterAjaxAction extends FPActionSupport implements ServletRequestAware {
+public abstract class FilterAjaxAction extends FPActionSupport {
 
 	protected final static String PREREQUEST_RESPONSE = "prerequestResponse";
 
@@ -43,9 +40,6 @@ public abstract class FilterAjaxAction extends FPActionSupport implements Servle
 	protected Boolean preRequest;
 	protected Boolean saveFilterValue;
 	protected List<FilterObject> foundObjects;
-
-	@NonNls
-	protected HttpServletRequest request;
 
 	public String execute() throws Exception {
 
@@ -78,7 +72,7 @@ public abstract class FilterAjaxAction extends FPActionSupport implements Servle
 	/**
 	 * All filters values saving to session object
 	 * userPreferences. This method call when we want
-	 * to sate new values to this object
+	 * to set new values to this object
 	 */
 	protected abstract void saveFilterValue();
 
@@ -92,10 +86,6 @@ public abstract class FilterAjaxAction extends FPActionSupport implements Servle
 	@NotNull
 	protected String getErrorResult() {
 		return SUCCESS;
-	}
-
-	public void setServletRequest(HttpServletRequest request) {
-		this.request = request;
 	}
 
 	public void setParents(String[] parents) {
