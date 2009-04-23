@@ -85,7 +85,6 @@ function Filter(name, options) {
                     {
                         delay:10,
                         minChars:3,
-                        matchSubset:true,
                         selectOnly:1,
                         matchContains:1,
                         cacheLength:10,
@@ -236,9 +235,7 @@ var FF = {
                                 FF.parseAutocompleterData(data),
                                 {
                                     delay:10,
-                                    matchSubset:1,
                                     selectOnly:1,
-                                    matchContains:1,
                                     maxItemsToShow:10,
                                     cacheLength:10,
                                     formatItem:filter2.formatItem,
