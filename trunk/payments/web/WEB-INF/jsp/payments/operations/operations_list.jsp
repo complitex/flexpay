@@ -40,6 +40,14 @@
 		</tr>
 		</sec:authorize>
 
+		<tr>
+			<%-- filtering by time --%>
+
+			<%-- filtering by service type --%>
+
+			<%-- filtering by summ --%>
+		</tr>
+
 		<s:if test="%{operationsListIsEmpty()}">
 			<tr>
 				<td colspan="10">
