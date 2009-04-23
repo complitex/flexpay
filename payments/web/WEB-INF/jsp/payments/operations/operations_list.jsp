@@ -26,6 +26,7 @@
 
 	<table cellpadding="3" cellspacing="1" border="0" width="100%" class="operations">
 
+		<sec:authorize ifAllGranted="ROLE_PAYMENTS_DEVELOPER">
 		<tr>
 			<td colspan="10" nowrap="nowrap">
 				<s:text name="payments.report.generate.date_from"/>
@@ -37,6 +38,7 @@
 				<s:submit name="submitted" cssClass="btn-exit" value="%{getText('payments.operations.list.filter')}"/>
 			</td>
 		</tr>
+		</sec:authorize>
 
 		<s:if test="%{operationsListIsEmpty()}">
 			<tr>

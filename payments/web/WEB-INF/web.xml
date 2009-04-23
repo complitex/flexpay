@@ -181,6 +181,10 @@
 		<role-name>ROLE_ORGS_SERVICE_PROVIDER_READ</role-name>
 	</security-role>
 
+	<security-role>
+		<role-name>ROLE_PAYMENTS_DEVELOPER</role-name>
+	</security-role>
+
 	<login-config>
 		<auth-method>FORM</auth-method>
 		<form-login-config>
