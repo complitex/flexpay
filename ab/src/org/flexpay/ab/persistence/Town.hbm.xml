@@ -103,7 +103,8 @@
             left join fetch nt.value v
             left join fetch v.translations tr
             left join fetch tr.lang l
-        where t.parent.id=?
+        where t.status = 0
+              and t.parent.id=?
               and nt.invalidDate='2100-12-31'
               and lower(tr.name) like ?
     </query>

@@ -191,7 +191,8 @@
             left join fetch s.typeTemporals tt
             left join fetch tt.value tv
             left join fetch tv.translations ttr
-        where s.parent.id=?
+        where s.status = 0
+              and s.parent.id = ?
               and t.invalidDate='2100-12-31'
               and lower(tr.name) like ?
     </query>
