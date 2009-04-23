@@ -57,10 +57,8 @@ public class BuildingFilterAjaxAction extends FilterAjaxAction {
 	}
 
 	public void saveFilterValue() {
-		UserPreferences prefs = UserPreferences.getPreferences(request);
-		prefs.setBuildingFilterValue(filterValue);
-		prefs.setApartmentFilterValue("");
-		UserPreferences.setPreferences(request, prefs);
+		userPreferences.setBuildingFilterValue(filterValue);
+		userPreferences.setApartmentFilterValue("");
 	}
 
 	@Required

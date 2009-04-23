@@ -56,9 +56,7 @@ public class ApartmentFilterAjaxAction extends FilterAjaxAction {
 	}
 
 	public void saveFilterValue() {
-		UserPreferences prefs = UserPreferences.getPreferences(request);
-		prefs.setApartmentFilterValue(filterValue);
-		UserPreferences.setPreferences(request, prefs);
+		userPreferences.setApartmentFilterValue(filterValue);
 	}
 
 	@Required

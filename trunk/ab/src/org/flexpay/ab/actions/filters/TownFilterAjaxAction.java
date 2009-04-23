@@ -6,7 +6,6 @@ import org.flexpay.ab.service.TownService;
 import org.flexpay.ab.util.config.ApplicationConfig;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
-import org.flexpay.common.util.config.UserPreferences;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
@@ -26,12 +25,11 @@ public class TownFilterAjaxAction extends FilterAjaxAction {
 			if (parents != null) {
 				regionIdLong = Long.parseLong(parents[0]);
 			} else {
-				UserPreferences prefs = UserPreferences.getPreferences(request);
-				if (prefs.getRegionFilterValue() == null) {
-					prefs.setRegionFilterValue(ApplicationConfig.getDefaultRegionStub().getId() + "");
+				if (userPreferences.getRegionFilterValue() == null) {
+					userPreferences.setRegionFilterValue(ApplicationConfig.getDefaultRegionStub().getId() + "");
 					regionIdLong = ApplicationConfig.getDefaultRegionStub().getId();
 				} else {
-					regionIdLong = Long.parseLong(prefs.getRegionFilterValue());
+					regionIdLong = Long.parseLong(userPreferences.getRegionFilterValue());
 				}
 			}
 		} catch (Exception e) {
@@ -60,9 +58,8 @@ public class TownFilterAjaxAction extends FilterAjaxAction {
 	public void readFilterString() {
 		Town town = null;
 		if (filterValueLong == null) {
-			UserPreferences prefs = UserPreferences.getPreferences(request);
-			if (prefs.getRegionFilterValue() != null
-					&& !prefs.getRegionFilterValue().equals(ApplicationConfig.getDefaultRegionStub().getId() + "")) {
+			if (userPreferences.getRegionFilterValue() != null
+					&& !userPreferences.getRegionFilterValue().equals(ApplicationConfig.getDefaultRegionStub().getId() + "")) {
 				filterValue = "";
 			} else {
 				filterValue = ApplicationConfig.getDefaultTownStub().getId() + "";
@@ -79,13 +76,11 @@ public class TownFilterAjaxAction extends FilterAjaxAction {
 	}
 
 	public void saveFilterValue() {
-		UserPreferences prefs = UserPreferences.getPreferences(request);
-		prefs.setTownFilterValue(filterValue);
-		prefs.setDistrictFilterValue("");
-		prefs.setStreetFilterValue("");
-		prefs.setBuildingFilterValue("");
-		prefs.setApartmentFilterValue("");
-		UserPreferences.setPreferences(request, prefs);
+		userPreferences.setTownFilterValue(filterValue);
+		userPreferences.setDistrictFilterValue("");
+		userPreferences.setStreetFilterValue("");
+		userPreferences.setBuildingFilterValue("");
+		userPreferences.setApartmentFilterValue("");
 	}
 
 	@Required
