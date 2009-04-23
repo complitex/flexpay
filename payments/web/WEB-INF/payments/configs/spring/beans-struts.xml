@@ -13,7 +13,9 @@
 		  class="org.flexpay.payments.actions.quittance.SearchQuittanceAction"
 		  p:quittanceDetailsFinder-ref="jmsQuittanceDetailsFinder"
 		  p:spService-ref="spService"
-		  p:serviceProviderService-ref="serviceProviderService" />
+		  p:serviceProviderService-ref="serviceProviderService"
+		  p:apartmentService-ref="apartmentService"
+		  p:personService-ref="personService" />
 
 	<bean id="paymentsQuittancePayAction" scope="prototype"
 		  class="org.flexpay.payments.actions.quittance.QuittancePayAction"

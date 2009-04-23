@@ -230,8 +230,8 @@
 			</tr>
 
 			<s:iterator value="quittanceInfos" id="qi">
-				<s:hidden name="payerFio" value="%{#qi.personFio}"/>
-				<s:hidden name="address" value="%{#qi.address}"/>
+				<s:hidden name="payerFio" value="%{getPersonFio(#qi)}"/>
+				<s:hidden name="address" value="%{getApartmentAddress(#qi)}"/>
 
 				<s:iterator value="detailses" status="status">
 					<s:if test="%{isNotSubservice(serviceMasterIndex)}">
@@ -271,7 +271,7 @@
 
 				<tr class="cols_1">
 					<td colspan="4" style="font-weight: bold; text-align: right; "><s:text name="payments.quittance.payment.input"/></td>
-					<td><s:textfield name="input" cssStyle="text-align: right;" value="totalToPay"/></td>
+					<td><s:textfield name="input" cssStyle="text-align: right;" value="%{totalToPay}"/></td>
 				</tr>
 
 				<tr class="cols_1">
@@ -280,11 +280,11 @@
 				</tr>
 
 				<tr>					
-					<td colspan="4" style="text-align:right;">
+					<td colspan="4"  style="text-align:left;">
 						<input type="button" value="<s:text name="payments.quittance.payment.pay_asc"/>" class="btn-exit" onclick="divideAscending();"/>
 						<input type="button" value="<s:text name="payments.quittance.payment.pay_by_ratio"/>" class="btn-exit" onclick="divideByRatio();"/>
 					</td>
-					<td colspan="1" style="text-align:left;">
+					<td colspan="1"  style="text-align:right;">
 						<s:hidden name="actionName" value="%{actionName}"/>
 						<input type="submit" name="submitted" value="<s:text name="payments.quittances.quittance_pay.pay"/>" class="btn-exit" style="width: 100%;"/>
 					</td>

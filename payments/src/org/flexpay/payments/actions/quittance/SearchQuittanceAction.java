@@ -12,6 +12,10 @@ import static org.flexpay.payments.persistence.quittance.QuittanceDetailsRespons
 import org.flexpay.payments.service.QuittanceDetailsFinder;
 import org.flexpay.payments.service.SPService;
 import org.flexpay.payments.util.config.ApplicationConfig;
+import org.flexpay.ab.service.ApartmentService;
+import org.flexpay.ab.service.PersonService;
+import org.flexpay.ab.persistence.Apartment;
+import org.flexpay.ab.persistence.Person;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
@@ -25,6 +29,8 @@ public class SearchQuittanceAction extends FPActionSupport {
 	private String searchType;
 	private String searchCriteria;
 	private QuittanceDetailsResponse.QuittanceInfo[] quittanceInfos;
+	private ApartmentService apartmentService;
+	private PersonService personService;
 
 	private String actionName;
 
@@ -41,6 +47,14 @@ public class SearchQuittanceAction extends FPActionSupport {
 
 		if (response.isSuccess()) {
 			quittanceInfos = response.getInfos();
+
+			// TODO remove print debug
+			for (QuittanceInfo quittanceInfo : quittanceInfos) {
+
+				log.debug("[!!!] qi.apartmentMasterIndex {}", quittanceInfo.getApartmentMasterIndex());
+				log.debug("[!!!] qi.personMasterIndex {}", quittanceInfo.getPersonMasterIndex());
+			}
+
 		} else {
 			addActionError(getErrorMessage(response.getErrorCode()));
 		}
@@ -114,7 +128,36 @@ public class SearchQuittanceAction extends FPActionSupport {
 
 	public Long getServiceId(String serviceMasterIndex) {
 
-		return Long.parseLong(serviceMasterIndex.substring(ApplicationConfig.getInstanceId().length() + 1)); // +1 is for '-' delimeter
+		return getLocalId(serviceMasterIndex);
+	}
+
+	public String getPersonFio(QuittanceInfo quittanceInfo) {
+
+		String personMasterIndex = quittanceInfo.getPersonMasterIndex();
+		if (personMasterIndex != null) {
+			Long personId = getLocalId(personMasterIndex);
+			Person person = personService.read(new Stub<Person>(personId));
+			return person.getFIO();
+		} else {
+			return quittanceInfo.getPersonFio();
+		}
+	}
+
+	public String getApartmentAddress(QuittanceInfo quittanceInfo) throws FlexPayException {
+
+		String apartmentMasterIndex = quittanceInfo.getApartmentMasterIndex();
+		if (apartmentMasterIndex != null) {
+			Long apartmentId = getLocalId(apartmentMasterIndex);
+			return apartmentService.getAddress(new Stub<Apartment>(apartmentId));
+		} else {
+			return quittanceInfo.getAddress();
+		}
+	}
+
+	private Long getLocalId(String masterIndex) {
+
+		// TODO how to properly get service id by index? current implementation is hack
+		return Long.parseLong(masterIndex.substring(ApplicationConfig.getInstanceId().length() + 1)); // +1 is for '-' delimeter
 	}
 
 	public boolean isNotSubservice(String serviceMasterIndex) {
@@ -158,5 +201,15 @@ public class SearchQuittanceAction extends FPActionSupport {
 	@Required
 	public void setServiceProviderService(ServiceProviderService serviceProviderService) {
 		this.serviceProviderService = serviceProviderService;
+	}
+
+	@Required
+	public void setApartmentService(ApartmentService apartmentService) {
+		this.apartmentService = apartmentService;
+	}
+
+	@Required
+	public void setPersonService(PersonService personService) {
+		this.personService = personService;
 	}
 }
