@@ -6,7 +6,6 @@ import org.flexpay.ab.service.BuildingService;
 import org.flexpay.ab.util.TranslationUtil;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
-import org.flexpay.common.util.config.UserPreferences;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
@@ -36,7 +35,7 @@ public class BuildingFilterAjaxAction extends FilterAjaxAction {
 		for (BuildingAddress address : addresses) {
 			FilterObject object = new FilterObject();
 			object.setValue(address.getId() + "");
-			object.setName(TranslationUtil.getBuildingNumber(address.getBuildingAttributes(), userPreferences.getLocale()));
+			object.setName(TranslationUtil.getBuildingNumberWithoutHouseType(address.getBuildingAttributes(), userPreferences.getLocale()));
 			foundObjects.add(object);
 		}
 
@@ -47,7 +46,7 @@ public class BuildingFilterAjaxAction extends FilterAjaxAction {
 		if (filterValueLong != null) {
 			BuildingAddress address = buildingService.readFull(new Stub<BuildingAddress>(filterValueLong));
 			if (address != null) {
-				filterString = TranslationUtil.getBuildingNumber(address.getBuildingAttributes(), userPreferences.getLocale());
+				filterString = TranslationUtil.getBuildingNumberWithoutHouseType(address.getBuildingAttributes(), userPreferences.getLocale());
 			} else {
 				filterString = "";
 			}

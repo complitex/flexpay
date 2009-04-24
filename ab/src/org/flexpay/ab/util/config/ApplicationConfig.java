@@ -15,6 +15,7 @@ public class ApplicationConfig extends org.flexpay.common.util.config.Applicatio
 	private Region defaultRegion;
 	private Town defaultTown;
 
+	private AddressAttributeType buildingHouseType;
 	private AddressAttributeType addressAttributeTypeNumber;
 	private AddressAttributeType addressAttributeTypeBulk;
 
@@ -56,6 +57,10 @@ public class ApplicationConfig extends org.flexpay.common.util.config.Applicatio
 		return getInstance().addressAttributeTypeBulk;
 	}
 
+	public static AddressAttributeType getBuildingHouseType() {
+		return getInstance().buildingHouseType;
+	}
+
 	/**
 	 * TODO: perform lookup by name, not id
 	 *
@@ -83,6 +88,10 @@ public class ApplicationConfig extends org.flexpay.common.util.config.Applicatio
 		defaultCountry = new Country(Long.valueOf(countryId));
 	}
 
+	public void setBuildingHouseTypeId(String buildingHouseTypeId) {
+		buildingHouseType = new AddressAttributeType(Long.valueOf(buildingHouseTypeId));
+	}
+
 	public void setBuildingAttributeTypeNumberId(String numberTypeId) {
 		addressAttributeTypeNumber = new AddressAttributeType(Long.valueOf(numberTypeId));
 	}
@@ -94,4 +103,5 @@ public class ApplicationConfig extends org.flexpay.common.util.config.Applicatio
 	protected static ApplicationConfig getInstance() {
 		return (ApplicationConfig) org.flexpay.common.util.config.ApplicationConfig.getInstance();
 	}
+
 }

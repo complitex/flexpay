@@ -236,7 +236,6 @@ var FF = {
                                 {
                                     delay:10,
                                     selectOnly:1,
-                                    maxItemsToShow:10,
                                     cacheLength:10,
                                     formatItem:filter2.formatItem,
                                     onItemSelect:filter2.selectItem

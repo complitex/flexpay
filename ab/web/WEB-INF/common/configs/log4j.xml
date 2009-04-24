@@ -19,6 +19,13 @@
 		<appender-ref ref="flexpay" />
 	</category>
 
+<!--
+    <category name="org.flexpay.ab.actions" additivity="false">
+        <priority value="debug" />
+        <appender-ref ref="flexpay" />
+    </category>
+-->
+
     <category name="org.hibernate" additivity="false">
         <priority value="info" />
         <appender-ref ref="flexpay" />

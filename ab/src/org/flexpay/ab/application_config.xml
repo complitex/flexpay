@@ -12,6 +12,8 @@
 	<defaultRegion id="1">Харьковская область</defaultRegion>
 	<defaultTown id="1">Харьков</defaultTown>
 
+    <buildingHouseType id="1" />
+
 	<buildingAttributeTypeNumber id="1" />
 	<buildingAttributeTypeBulk id="2" />
 
