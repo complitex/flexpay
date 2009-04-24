@@ -246,6 +246,22 @@
 
 	<s:if test="%{resultsAreNotEmpty()}">
 		<table cellpadding="3" cellspacing="1" border="0" width="100%">
+
+		<s:iterator value="quittanceInfos" id="qi">
+			<tr>
+				<td colspan="5">
+					<s:property value="getPersonFio(#qi)"/>
+				</td>
+			</tr>
+
+			<s:if test="%{actionName == '' || actionName == ''}">
+			<tr>
+				<td>
+					<s:property value="getApartmentAddress(#qi)"/>
+				</td>
+			</tr>
+			</s:if>
+
 			<tr>
 				<td class="th" nowrap="nowrap"><s:text name="payments.quittances.quittance_pay.service"/></td>
 				<td class="th" nowrap="nowrap"><s:text name="payments.quittances.quittance_pay.service_supplier"/></td>
@@ -254,7 +270,7 @@
 				<td class="th" nowrap="nowrap"><s:text name="payments.quittances.quittance_pay.pay"/></td>
 			</tr>
 
-			<s:iterator value="quittanceInfos" id="qi">
+
 				<s:hidden name="payerFio" value="%{getPersonFio(#qi)}"/>
 				<s:hidden name="address" value="%{getApartmentAddress(#qi)}"/>
 

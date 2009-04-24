@@ -21,8 +21,6 @@
 
 	function showButtons(state) {
 
-		alert('state ' + state);
-
 		switch (state) {
 			case 1:
 				enableButtons('.btn-register');
