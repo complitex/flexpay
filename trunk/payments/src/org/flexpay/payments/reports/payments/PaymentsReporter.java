@@ -15,6 +15,6 @@ public interface PaymentsReporter {
 	 * @param end report period end timestamp
 	 * @return List of payment report data
 	 */
-//	@Secured(Roles.PAYMENTS_REPORT)
+	@Secured(Roles.PAYMENTS_REPORT)
 	List<PaymentReportData> getPaymentsData(Date begin, Date end);
 }
