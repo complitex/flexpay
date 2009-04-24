@@ -243,6 +243,18 @@
         <role-name>ROLE_MENU_PAYMENTS_OPERATIONS_TAKEN_REPORTS_QUITTANCE</role-name>
         <group-name>OPERATOR_ACCESS</group-name>
     </security-role-mapping>
+    <security-role-mapping>
+        <role-name>ROLE_MENU_PAYMENTS_TAKEN_REPORTS_ADDRESS</role-name>
+        <group-name>OPERATOR_ACCESS</group-name>
+    </security-role-mapping>
+    <security-role-mapping>
+        <role-name>ROLE_MENU_PAYMENTS_TAKEN_REPORTS_ACCOUNT</role-name>
+        <group-name>OPERATOR_ACCESS</group-name>
+    </security-role-mapping>
+    <security-role-mapping>
+        <role-name>ROLE_MENU_PAYMENTS_TAKEN_REPORTS_QUITTANCE</role-name>
+        <group-name>OPERATOR_ACCESS</group-name>
+    </security-role-mapping>
 
     <!-- Menu for accountant -->
     <security-role-mapping>

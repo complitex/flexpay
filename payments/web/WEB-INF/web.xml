@@ -253,6 +253,15 @@
     <security-role>
         <role-name>ROLE_MENU_PAYMENTS_IMPORT_PAYMENTS</role-name>
     </security-role>
+    <security-role>
+        <role-name>ROLE_MENU_PAYMENTS_TAKEN_REPORTS_ADDRESS</role-name>
+    </security-role>
+    <security-role>
+        <role-name>ROLE_MENU_PAYMENTS_TAKEN_REPORTS_ACCOUNT</role-name>
+    </security-role>
+    <security-role>
+        <role-name>ROLE_MENU_PAYMENTS_TAKEN_REPORTS_QUITTANCE</role-name>
+    </security-role>
 
 	<login-config>
 		<auth-method>FORM</auth-method>
