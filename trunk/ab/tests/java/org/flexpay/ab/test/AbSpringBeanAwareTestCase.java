@@ -27,6 +27,9 @@ public class AbSpringBeanAwareTestCase extends SpringBeanAwareTestCase {
 				REGION_READ,
 				TOWN_TYPE_READ,
 				STREET_TYPE_READ,
+				STREET_TYPE_ADD,
+				STREET_TYPE_CHANGE,
+				IDENTITY_TYPE_READ,
 				APARTMENT_ADD
 		);
 		User user = new User("test", "test", true, true, true, true, authorities);

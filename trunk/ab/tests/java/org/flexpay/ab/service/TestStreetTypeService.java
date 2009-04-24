@@ -12,7 +12,6 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.test.annotation.NotTransactional;
 
 import java.util.HashSet;
 import java.util.List;
@@ -27,7 +26,6 @@ public class TestStreetTypeService extends AbSpringBeanAwareTestCase {
 	protected StreetTypeDao streetTypeDao;
 
 	@Test
-	@NotTransactional
 	public void testGetStreetTypes() {
 
 		List<StreetType> streetTypes = service.getEntities();
