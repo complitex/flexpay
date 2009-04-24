@@ -35,7 +35,7 @@ public class StreetHistoryBuilder extends HistoryBuilderBase<Street> {
 	 */
 	protected void doDiff(@Nullable Street s1, @NotNull Street s2, @NotNull Diff diff) {
 
-		log.debug("creating new towns diff");
+		log.debug("creating new streets diff");
 
 		if (!s2.isActive()) {
 			diff.setOperationType(HistoryOperationType.TYPE_DELETE);
