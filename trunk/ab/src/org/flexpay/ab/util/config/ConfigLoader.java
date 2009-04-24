@@ -34,7 +34,9 @@ public class ConfigLoader extends org.flexpay.common.util.config.ConfigLoader {
 		d.addSetProperties("flexpay/defaultRegion", "id", "defaultRegionId");
 		d.addSetProperties("flexpay/defaultTown", "id", "defaultTownId");
 
+		d.addSetProperties("flexpay/buildingHouseType", "id", "buildingHouseTypeId");
 		d.addSetProperties("flexpay/buildingAttributeTypeNumber", "id", "buildingAttributeTypeNumberId");
 		d.addSetProperties("flexpay/buildingAttributeTypeBulk", "id", "buildingAttributeTypeBulkId");
 	}
+
 }
