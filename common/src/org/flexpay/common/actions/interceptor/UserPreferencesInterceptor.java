@@ -15,7 +15,7 @@ public class UserPreferencesInterceptor extends AbstractInterceptor {
 
 	public String intercept(ActionInvocation invocation) throws Exception {
 
-		log.warn("User preferences interceptor");
+		log.debug("User preferences interceptor");
 
 		UserPreferences userPreferences = null;
 		Object action;
@@ -33,7 +33,7 @@ public class UserPreferencesInterceptor extends AbstractInterceptor {
 				UserPreferences.setPreferences(request, userPreferences);
 			}
 
-			log.warn("User preferences: {}", userPreferences);
+			log.debug("User preferences: {}", userPreferences);
 
 			return result;
 		} catch (Exception ex) {
