@@ -1,13 +1,14 @@
 package org.flexpay.ab.persistence;
 
-import org.flexpay.ab.util.config.ApplicationConfig;
 import org.flexpay.ab.service.IdentityTypeService;
-import org.flexpay.common.test.SpringBeanAwareTestCase;
-import org.springframework.beans.factory.annotation.Autowired;
-import static org.junit.Assert.assertNotNull;import static org.junit.Assert.assertEquals;
+import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
+import org.flexpay.ab.util.config.ApplicationConfig;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
-public class TestPerson extends SpringBeanAwareTestCase {
+public class TestPerson extends AbSpringBeanAwareTestCase {
 
 	@Autowired
 	protected IdentityTypeService identityTypeService;

@@ -1,10 +1,10 @@
 package org.flexpay.ab.service;
 
 import org.flexpay.ab.persistence.*;
+import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
 import org.flexpay.ab.util.config.ApplicationConfig;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import static org.flexpay.common.persistence.Stub.stub;
-import org.flexpay.common.test.SpringBeanAwareTestCase;
 import org.flexpay.common.util.DateUtil;
 import static org.junit.Assert.assertEquals;
 import org.junit.Ignore;
@@ -15,7 +15,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
-public class TestTownService extends SpringBeanAwareTestCase {
+public class TestTownService extends AbSpringBeanAwareTestCase {
 
 	@Autowired
 	@Qualifier ("townService")

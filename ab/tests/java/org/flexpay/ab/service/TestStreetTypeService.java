@@ -4,9 +4,9 @@ import org.apache.commons.lang.StringUtils;
 import org.flexpay.ab.dao.StreetTypeDao;
 import org.flexpay.ab.persistence.StreetType;
 import org.flexpay.ab.persistence.StreetTypeTranslation;
+import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Language;
-import org.flexpay.common.test.SpringBeanAwareTestCase;
 import org.flexpay.common.util.config.ApplicationConfig;
 import static org.junit.Assert.*;
 import org.junit.Test;
@@ -18,7 +18,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class TestStreetTypeService extends SpringBeanAwareTestCase {
+public class TestStreetTypeService extends AbSpringBeanAwareTestCase {
 
 	@Autowired
 	@Qualifier ("streetTypeService")

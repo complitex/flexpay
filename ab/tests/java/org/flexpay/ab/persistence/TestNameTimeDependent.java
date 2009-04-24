@@ -1,14 +1,13 @@
 package org.flexpay.ab.persistence;
 
-import org.junit.Test;
+import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
 import static org.junit.Assert.assertEquals;
-import org.flexpay.common.persistence.Language;
-import org.flexpay.common.test.SpringBeanAwareTestCase;
+import org.junit.Test;
 
 import java.util.Date;
 import java.util.GregorianCalendar;
 
-public class TestNameTimeDependent extends SpringBeanAwareTestCase {
+public class TestNameTimeDependent extends AbSpringBeanAwareTestCase {
 
 	private Date dt_08_08_08 = new GregorianCalendar(2008, 7, 8).getTime();
 	private Date dt_08_09_08 = new GregorianCalendar(2008, 8, 8).getTime();

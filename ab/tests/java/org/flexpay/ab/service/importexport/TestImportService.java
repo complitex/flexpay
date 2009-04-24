@@ -1,19 +1,19 @@
 package org.flexpay.ab.service.importexport;
 
 import org.flexpay.ab.persistence.Town;
+import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
 import org.flexpay.ab.util.config.ApplicationConfig;
 import org.flexpay.common.persistence.DataSourceDescription;
-import org.flexpay.common.test.SpringBeanAwareTestCase;
 import org.junit.Before;
-import org.junit.Test;
 import org.junit.Ignore;
+import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.annotation.NotTransactional;
 
-public class TestImportService extends SpringBeanAwareTestCase {
+public class TestImportService extends AbSpringBeanAwareTestCase {
 
 	protected ImportService importService;
 	protected JdbcTemplate template;
@@ -22,12 +22,12 @@ public class TestImportService extends SpringBeanAwareTestCase {
 	private Town town;
 
 	@Autowired
-	public void setService(@Qualifier ("importServiceAb")ImportService service) {
+	public void setService(@Qualifier ("importServiceAb") ImportService service) {
 		this.importService = service;
 	}
 
 	@Autowired
-	public void setTemplate(@Qualifier ("dataExportJdbcTemplate")JdbcTemplate template) {
+	public void setTemplate(@Qualifier ("dataExportJdbcTemplate") JdbcTemplate template) {
 		this.template = template;
 	}
 

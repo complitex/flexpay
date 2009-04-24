@@ -2,10 +2,10 @@ package org.flexpay.ab.service;
 
 import org.flexpay.ab.dao.StreetDao;
 import org.flexpay.ab.persistence.*;
+import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
 import org.flexpay.ab.util.config.ApplicationConfig;
-import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.persistence.Stub;
-import org.flexpay.common.test.TransactionalSpringBeanAwareTestCase;
+import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.util.DateUtil;
 import static org.junit.Assert.assertNotNull;
 import org.junit.Test;
@@ -13,17 +13,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.annotation.NotTransactional;
 
-public class TestStreetService extends TransactionalSpringBeanAwareTestCase {
+public class TestStreetService extends AbSpringBeanAwareTestCase {
 
 	private final Stub<Town> TOWN = new Stub<Town>(2L);
 
 	@Autowired
 	private StreetDao streetDao;
-	@Autowired @Qualifier("streetService")
+	@Autowired
+	@Qualifier ("streetService")
 	private StreetService streetService;
 	@Autowired
 	private TownService townService;
-	@Autowired @Qualifier("streetTypeService")
+	@Autowired
+	@Qualifier ("streetTypeService")
 	private StreetTypeService streetTypeService;
 
 	@Test

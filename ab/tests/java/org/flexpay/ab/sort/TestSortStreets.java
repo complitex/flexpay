@@ -2,8 +2,8 @@ package org.flexpay.ab.sort;
 
 import org.apache.commons.lang.time.StopWatch;
 import org.flexpay.ab.persistence.Town;
+import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
 import org.flexpay.common.persistence.Stub;
-import org.flexpay.common.test.SpringBeanAwareTestCase;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import static org.junit.Assert.assertNotSame;
@@ -12,7 +12,7 @@ import org.springframework.orm.hibernate3.HibernateCallback;
 
 import java.util.List;
 
-public class TestSortStreets extends SpringBeanAwareTestCase {
+public class TestSortStreets extends AbSpringBeanAwareTestCase {
 
 	public static final Stub<Town> TOWN = new Stub<Town>(2L);
 

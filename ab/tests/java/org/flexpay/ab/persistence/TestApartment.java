@@ -1,6 +1,6 @@
 package org.flexpay.ab.persistence;
 
-import org.flexpay.common.test.SpringBeanAwareTestCase;
+import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
@@ -8,7 +8,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
-public class TestApartment extends SpringBeanAwareTestCase {
+public class TestApartment extends AbSpringBeanAwareTestCase {
 
 	public void testSetupApartmentNumber() {
 

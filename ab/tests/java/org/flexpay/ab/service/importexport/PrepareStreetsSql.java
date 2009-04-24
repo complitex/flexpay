@@ -1,12 +1,12 @@
 package org.flexpay.ab.service.importexport;
 
 import org.apache.commons.io.IOUtils;
-import org.flexpay.common.test.SpringBeanAwareTestCase;
+import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
 import org.junit.Test;
 
 import java.io.*;
 
-public class PrepareStreetsSql extends SpringBeanAwareTestCase {
+public class PrepareStreetsSql extends AbSpringBeanAwareTestCase {
 
 	public static final String charsetName = "UTF-8";
 

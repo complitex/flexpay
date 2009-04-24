@@ -4,12 +4,12 @@ import org.flexpay.ab.persistence.Town;
 import org.flexpay.ab.persistence.TownName;
 import org.flexpay.ab.persistence.TownType;
 import org.flexpay.ab.service.TownService;
+import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
 import org.flexpay.common.persistence.DataCorrection;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.history.Diff;
 import org.flexpay.common.service.importexport.CorrectionsService;
 import org.flexpay.common.service.importexport.MasterIndexService;
-import org.flexpay.common.test.SpringBeanAwareTestCase;
 import org.junit.After;
 import static org.junit.Assert.*;
 import org.junit.Before;
@@ -17,7 +17,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
-public class TestTownHistoryBuilder extends SpringBeanAwareTestCase {
+public class TestTownHistoryBuilder extends AbSpringBeanAwareTestCase {
 
 	@Autowired
 	private TownHistoryBuilder historyBuilder;

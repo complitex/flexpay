@@ -5,20 +5,20 @@ import org.flexpay.ab.dao.AddressAttributeDao;
 import org.flexpay.ab.dao.BuildingDao;
 import org.flexpay.ab.dao.BuildingsDao;
 import org.flexpay.ab.persistence.*;
+import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
 import org.flexpay.ab.util.config.ApplicationConfig;
-import org.flexpay.common.test.SpringBeanAwareTestCase;
 import static org.flexpay.common.persistence.Stub.stub;
 import static org.flexpay.common.util.CollectionUtils.set;
 import static org.junit.Assert.*;
 import org.junit.Before;
-import org.junit.Test;
 import org.junit.Ignore;
+import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.test.annotation.NotTransactional;
+import org.springframework.transaction.annotation.Transactional;
 
-public class TestBuildingService extends SpringBeanAwareTestCase {
+public class TestBuildingService extends AbSpringBeanAwareTestCase {
 
 	@Autowired
 	protected BuildingDao buildingDao;
@@ -57,7 +57,7 @@ public class TestBuildingService extends SpringBeanAwareTestCase {
 
 	@NotTransactional
 	@Test
-    public void testDeleteAttributeNotTx() throws Throwable {
+	public void testDeleteAttributeNotTx() throws Throwable {
 
 		Building building = newBuilding();
 		BuildingAddress buildingAddress = newBuildings(building);
@@ -85,7 +85,7 @@ public class TestBuildingService extends SpringBeanAwareTestCase {
 	@Transactional
 	@Test
 	@Ignore
-    public void testDeleteAttributeTx() throws Throwable {
+	public void testDeleteAttributeTx() throws Throwable {
 
 		Building building = newBuilding();
 		BuildingAddress buildingAddress = newBuildings(building);

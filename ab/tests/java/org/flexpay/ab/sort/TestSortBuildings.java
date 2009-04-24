@@ -1,13 +1,13 @@
 package org.flexpay.ab.sort;
 
-import org.flexpay.common.test.SpringBeanAwareTestCase;
 import org.apache.commons.lang.time.StopWatch;
-import org.junit.Test;
+import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
 import static org.junit.Assert.assertNotSame;
+import org.junit.Test;
 
 import java.util.List;
 
-public class TestSortBuildings extends SpringBeanAwareTestCase {
+public class TestSortBuildings extends AbSpringBeanAwareTestCase {
 
 	@Test
 	public void testSortBuildings() {

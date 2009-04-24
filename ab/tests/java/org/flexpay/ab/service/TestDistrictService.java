@@ -5,14 +5,14 @@ import org.flexpay.ab.persistence.District;
 import org.flexpay.ab.persistence.DistrictName;
 import org.flexpay.ab.persistence.DistrictNameTranslation;
 import org.flexpay.ab.persistence.Town;
+import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
 import org.flexpay.ab.util.config.ApplicationConfig;
-import org.flexpay.common.test.SpringBeanAwareTestCase;
-import org.flexpay.common.util.DateUtil;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
+import org.flexpay.common.util.DateUtil;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public class TestDistrictService extends SpringBeanAwareTestCase {
+public class TestDistrictService extends AbSpringBeanAwareTestCase {
 
 	@Autowired
 	private DistrictDao districtDao;

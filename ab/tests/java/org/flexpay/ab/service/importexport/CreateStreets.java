@@ -1,21 +1,21 @@
 package org.flexpay.ab.service.importexport;
 
-import org.flexpay.common.test.SpringBeanAwareTestCase;
+import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.RowCallbackHandler;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class CreateStreets extends SpringBeanAwareTestCase {
+public class CreateStreets extends AbSpringBeanAwareTestCase {
 
 	private final Logger log = LoggerFactory.getLogger(getClass());
 
@@ -56,7 +56,7 @@ public class CreateStreets extends SpringBeanAwareTestCase {
 				Long internalTypeId = rs.getLong("int_id");
 
 				log.info("inserting street (name, cn_obj_id, int_id) values ({}, {}, {})",
-						new Object[] {name, cnObjectId, internalTypeId});
+						new Object[]{name, cnObjectId, internalTypeId});
 
 				KeyHolder keyHolder = new GeneratedKeyHolder();
 				jdbcTemplate.update(new StreetInsertCreator(), keyHolder);
