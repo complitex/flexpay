@@ -56,7 +56,7 @@ public class QuittancePayAction extends FPActionSupport {
 			operationSumm = operationSumm.add(documentSumm);
 
 			Document document = new Document();
-			document.setDocumentStatus(documentStatusService.read(DocumentStatus.CREATED));
+			document.setDocumentStatus(documentStatusService.read(DocumentStatus.REGISTERED));
 			document.setDocumentType(documentTypeService.read(DocumentType.CASH_PAYMENT));
 			document.setSumm(documentSumm);
 			document.setAddress(address);
@@ -77,7 +77,7 @@ public class QuittancePayAction extends FPActionSupport {
 		operation.setCreationDate(new Date());
 		operation.setCreatorOrganization(org); // TODO where to get? org
 		operation.setCreatorUserName(SecurityUtil.getUserName());
-		operation.setOperationStatus(operationStatusService.read(OperationStatus.CREATED));
+		operation.setOperationStatus(operationStatusService.read(OperationStatus.REGISTERED));
 		operation.setOperationLevel(operationLevelService.read(OperationLevel.AVERAGE));
 		operation.setOperationType(operationTypeService.read(OperationType.SERVICE_CASH_PAYMENT));
 
