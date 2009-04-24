@@ -7,10 +7,10 @@ import org.flexpay.ab.persistence.filters.TownFilter;
 import org.flexpay.ab.persistence.sorter.StreetSorterByName;
 import org.flexpay.ab.persistence.sorter.StreetSorterByType;
 import org.flexpay.ab.service.StreetService;
+import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.sorter.ObjectSorter;
-import org.flexpay.common.test.SpringBeanAwareTestCase;
 import org.flexpay.common.util.CollectionUtils;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -20,7 +20,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 
 import java.util.List;
 
-public class TestHQLSortStreets extends SpringBeanAwareTestCase {
+public class TestHQLSortStreets extends AbSpringBeanAwareTestCase {
 
 	public static final Stub<Town> TOWN = TestSortStreets.TOWN;
 

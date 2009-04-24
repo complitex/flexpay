@@ -1,6 +1,7 @@
 package org.flexpay.ab.service.history;
 
 import org.flexpay.ab.persistence.Town;
+import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
 import org.flexpay.common.persistence.FPFile;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.history.HistoryConsumer;
@@ -9,7 +10,6 @@ import org.flexpay.common.persistence.history.impl.SoapOutHistoryTransport;
 import org.flexpay.common.process.Process;
 import org.flexpay.common.process.ProcessManager;
 import org.flexpay.common.service.HistoryConsumerService;
-import org.flexpay.common.test.SpringBeanAwareTestCase;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import org.junit.Test;
@@ -19,7 +19,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.List;
 
-public class TestSoapHistoryTransport extends SpringBeanAwareTestCase {
+public class TestSoapHistoryTransport extends AbSpringBeanAwareTestCase {
 
 	@Autowired
 	private HistoryPacker historyPacker;

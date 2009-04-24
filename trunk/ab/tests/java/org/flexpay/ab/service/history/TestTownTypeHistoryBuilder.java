@@ -2,13 +2,13 @@ package org.flexpay.ab.service.history;
 
 import org.flexpay.ab.persistence.TownType;
 import org.flexpay.ab.persistence.TownTypeTranslation;
+import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
 import org.flexpay.common.persistence.history.Diff;
-import org.flexpay.common.test.SpringBeanAwareTestCase;
 import static org.junit.Assert.*;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public class TestTownTypeHistoryBuilder extends SpringBeanAwareTestCase {
+public class TestTownTypeHistoryBuilder extends AbSpringBeanAwareTestCase {
 
 	@Autowired
 	private TownTypeHistoryBuilder historyBuilder;

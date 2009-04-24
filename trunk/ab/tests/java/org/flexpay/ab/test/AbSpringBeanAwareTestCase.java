@@ -1,8 +1,8 @@
 package org.flexpay.ab.test;
 
+import static org.flexpay.ab.service.Roles.*;
 import org.flexpay.common.test.SpringBeanAwareTestCase;
 import org.flexpay.common.util.SecurityUtil;
-import static org.flexpay.ab.service.Roles.*;
 import org.junit.BeforeClass;
 import org.springframework.security.Authentication;
 import org.springframework.security.GrantedAuthority;

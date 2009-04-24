@@ -1,6 +1,7 @@
 package org.flexpay.ab.service.history;
 
 import org.flexpay.ab.persistence.Town;
+import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
 import org.flexpay.common.persistence.FPFile;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.history.Diff;
@@ -9,14 +10,13 @@ import org.flexpay.common.persistence.history.HistoryPacker;
 import org.flexpay.common.persistence.history.HistoryRecord;
 import org.flexpay.common.persistence.history.impl.XmlHistoryUnPacker;
 import org.flexpay.common.service.HistoryConsumerService;
-import org.flexpay.common.test.SpringBeanAwareTestCase;
 import static org.junit.Assert.assertFalse;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
-public class TestUnpackTownHistory extends SpringBeanAwareTestCase {
+public class TestUnpackTownHistory extends AbSpringBeanAwareTestCase {
 
 	@Autowired
 	private XmlHistoryUnPacker historyUnPacker;
