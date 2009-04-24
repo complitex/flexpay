@@ -194,6 +194,9 @@
         <role-name>ROLE_MENU_PAYMENTS</role-name>
     </security-role>
     <security-role>
+        <role-name>ROLE_MENU_PAYMENTS_ACCOUNTANT</role-name>
+    </security-role>
+    <security-role>
         <role-name>ROLE_MENU_PAYMENTS_ADDRESS</role-name>
     </security-role>
     <security-role>

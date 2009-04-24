@@ -246,7 +246,7 @@
 
     <!-- Menu for accountant -->
     <security-role-mapping>
-        <role-name>ROLE_MENU_PAYMENTS</role-name>
+        <role-name>ROLE_MENU_PAYMENTS_ACCOUNTANT</role-name>
         <group-name>ACCOUNTANT_ACCESS</group-name>
     </security-role-mapping>
     <security-role-mapping>

@@ -22,6 +22,16 @@
             <util:constant static-field="org.flexpay.payments.service.Roles.ROLE_MENU_PAYMENTS" />
         </property>
     </bean>
+    <bean name="payments.acc" parent="fpMenu"
+          p:name="payments.acc"
+          p:title="payments.menu1.title"
+          p:namespace="/payments"
+          p:action="emptyPage"
+          p:parent-ref="fpMenu">
+        <property name="userRole">
+            <util:constant static-field="org.flexpay.payments.service.Roles.ROLE_MENU_PAYMENTS_ACCOUNTANT" />
+        </property>
+    </bean>
 
 	<!-- level 2 -->
 	<bean name="payments.quittance.search_address" parent="payments"
@@ -57,23 +67,23 @@
         </property>
     </bean>
 
-    <bean name="payments.registers" parent="payments"
+    <bean name="payments.registers" parent="payments.acc"
           p:name="payments.registers"
           p:title="payments.menu2.registry"
           p:namespace="/payments"
           p:action="emptyPage"
-          p:parent-ref="payments">
+          p:parent-ref="payments.acc">
         <property name="userRole">
             <util:constant static-field="org.flexpay.payments.service.Roles.ROLE_MENU_PAYMENTS_REGISTERS" />
         </property>
     </bean>
 
-    <bean name="payments.reports" parent="payments"
+    <bean name="payments.reports" parent="payments.acc"
           p:name="payments.reports"
           p:title="payments.menu2.reports"
           p:namespace="/payments"
           p:action="emptyPage"
-          p:parent-ref="payments">
+          p:parent-ref="payments.acc">
         <property name="userRole">
             <util:constant static-field="org.flexpay.payments.service.Roles.ROLE_MENU_PAYMENTS_REPORTS" />
         </property>
