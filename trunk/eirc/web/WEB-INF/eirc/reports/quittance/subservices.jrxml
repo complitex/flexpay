@@ -51,7 +51,7 @@
 	<parameter name="recalculationTotal" isForPrompting="false" class="java.math.BigDecimal"/>
 
 	<field name="serviceTypeName" class="java.lang.String"/>
-	<field name="tarif" class="java.math.BigDecimal"/>
+	<field name="tariff" class="java.math.BigDecimal"/>
 	<field name="recalculation" class="java.math.BigDecimal"/>
 
 		<background>
@@ -202,7 +202,7 @@
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font size="5"/>
 					</textElement>
-				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{tarif}]]></textFieldExpression>
+				<textFieldExpression   class="java.math.BigDecimal"><![CDATA[$F{tariff}]]></textFieldExpression>
 				</textField>
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
