@@ -250,14 +250,14 @@
 		<s:iterator value="quittanceInfos" id="qi">
 			<tr>
 				<td colspan="5">
-					<s:property value="getPersonFio(#qi)"/>
+					<s:property value="%{getPersonFio(#qi)}"/>
 				</td>
 			</tr>
 
-			<s:if test="%{actionName == '' || actionName == ''}">
+			<s:if test="%{actionName == 'searchByEircAccount' || actionName == 'searchByQuittanceNumber'}">
 			<tr>
-				<td>
-					<s:property value="getApartmentAddress(#qi)"/>
+				<td colspan="5">
+					<s:property value="%{getApartmentAddress(#qi)}"/>
 				</td>
 			</tr>
 			</s:if>
