@@ -17,6 +17,6 @@ public interface PaymentsStatisticsService {
 	 * @param endDate   higher bound for operation creation date
 	 * @return list of service statistics
 	 */
-//	@Secured (Roles.PAYMENTS_REPORT)
+	@Secured (Roles.PAYMENTS_REPORT)
 	List<ServicePaymentsStatistics> servicePaymentStatistics(Date beginDate, Date endDate);
 }
