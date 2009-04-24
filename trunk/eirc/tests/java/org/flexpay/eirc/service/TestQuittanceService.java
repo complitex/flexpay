@@ -2,9 +2,9 @@ package org.flexpay.eirc.service;
 
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
-import org.flexpay.common.test.SpringBeanAwareTestCase;
 import org.flexpay.eirc.persistence.account.Quittance;
 import org.flexpay.eirc.process.QuittanceNumberService;
+import org.flexpay.eirc.test.EircSpringBeanAwareTestCase;
 import static org.junit.Assert.*;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +13,7 @@ import java.util.Collections;
 import java.util.GregorianCalendar;
 import java.util.List;
 
-public class TestQuittanceService extends SpringBeanAwareTestCase {
+public class TestQuittanceService extends EircSpringBeanAwareTestCase {
 
 	@Autowired
 	private QuittanceService quittanceService;
