@@ -189,6 +189,68 @@
 		<role-name>ROLE_PAYMENTS_PAYMENTS_REPORT</role-name>
 	</security-role>
 
+    <!-- Menu -->
+    <security-role>
+        <role-name>ROLE_MENU_PAYMENTS</role-name>
+    </security-role>
+    <security-role>
+        <role-name>ROLE_MENU_PAYMENTS_ADDRESS</role-name>
+    </security-role>
+    <security-role>
+        <role-name>ROLE_MENU_PAYMENTS_ACCOUNT</role-name>
+    </security-role>
+    <security-role>
+        <role-name>ROLE_MENU_PAYMENTS_QUITTANCE</role-name>
+    </security-role>
+    <security-role>
+        <role-name>ROLE_MENU_PAYMENTS_REGISTERS</role-name>
+    </security-role>
+    <security-role>
+        <role-name>ROLE_MENU_PAYMENTS_REPORTS</role-name>
+    </security-role>
+    <security-role>
+        <role-name>ROLE_MENU_PAYMENTS_OPERATIONS_ADDRESS</role-name>
+    </security-role>
+    <security-role>
+        <role-name>ROLE_MENU_PAYMENTS_OPERATIONS_ACCOUNT</role-name>
+    </security-role>
+    <security-role>
+        <role-name>ROLE_MENU_PAYMENTS_OPERATIONS_QUITTANCE</role-name>
+    </security-role>
+    <security-role>
+        <role-name>ROLE_MENU_PAYMENTS_OPERATIONS_REPORTS_ADDRESS</role-name>
+    </security-role>
+    <security-role>
+        <role-name>ROLE_MENU_PAYMENTS_OPERATIONS_REPORTS_ACCOUNT</role-name>
+    </security-role>
+    <security-role>
+        <role-name>ROLE_MENU_PAYMENTS_OPERATIONS_REPORTS_QUITTANCE</role-name>
+    </security-role>
+    <security-role>
+        <role-name>ROLE_MENU_PAYMENTS_REPORTS_REPORTS</role-name>
+    </security-role>
+    <security-role>
+        <role-name>ROLE_MENU_PAYMENTS_OPERATIONS_LIST_ADDRESS</role-name>
+    </security-role>
+    <security-role>
+        <role-name>ROLE_MENU_PAYMENTS_OPERATIONS_LIST_ACCOUNT</role-name>
+    </security-role>
+    <security-role>
+        <role-name>ROLE_MENU_PAYMENTS_OPERATIONS_LIST_QUITTANCE</role-name>
+    </security-role>
+    <security-role>
+        <role-name>ROLE_MENU_PAYMENTS_OPERATIONS_TAKEN_REPORTS_ADDRESS</role-name>
+    </security-role>
+    <security-role>
+        <role-name>ROLE_MENU_PAYMENTS_OPERATIONS_TAKEN_REPORTS_ACCOUNT</role-name>
+    </security-role>
+    <security-role>
+        <role-name>ROLE_MENU_PAYMENTS_OPERATIONS_TAKEN_REPORTS_QUITTANCE</role-name>
+    </security-role>
+    <security-role>
+        <role-name>ROLE_MENU_PAYMENTS_IMPORT_PAYMENTS</role-name>
+    </security-role>
+
 	<login-config>
 		<auth-method>FORM</auth-method>
 		<form-login-config>

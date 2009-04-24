@@ -17,6 +17,10 @@
 			<result type="tiles">payments.quittance.search.address</result>
 		</action>
 
+        <action name="emptyPage" class="staticPageAction">			
+            <result type="tiles">payments.main</result>
+        </action>
+
 	</package>
 
 	<package name="ajax" namespace="dicts" extends="common">

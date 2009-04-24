@@ -15,6 +15,7 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.apache.commons.io.IOUtils;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -84,13 +85,7 @@ public class MbRegistryFileParser extends MbFileParser<Registry> {
 		} catch (IOException e) {
 			log.error("Error with reading file", e);
 		} finally {
-			try {
-				if (reader != null) {
-					reader.close();
-				}
-			} catch (IOException e) {
-				// do nothing
-			}
+			IOUtils.closeQuietly(reader);
 		}
 
 		return registry;

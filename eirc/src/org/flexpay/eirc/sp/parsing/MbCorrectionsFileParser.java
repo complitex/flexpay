@@ -13,6 +13,7 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.Required;
+import org.apache.commons.io.IOUtils;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -88,13 +89,7 @@ public class MbCorrectionsFileParser extends MbFileParser<Registry> {
 		} catch (IOException e) {
 			log.error("Error with reading file", e);
 		} finally {
-			try {
-				if (reader != null) {
-					reader.close();
-				}
-			} catch (IOException e) {
-				// do nothing
-			}
+			IOUtils.closeQuietly(reader);
 		}
 
 		return registry;
@@ -127,20 +122,14 @@ public class MbCorrectionsFileParser extends MbFileParser<Registry> {
 		String[] serviceCodes = fields[20].split(";");
 
 		for (String serviceCode : serviceCodes) {
-			createRecord(serviceProvider, registry, fields, serviceCode);
+//			createRecord(serviceProvider, registry, fields, serviceCode);
+			createAccountRecord(serviceProvider, registry, fields, serviceCode);
 		}
 
 		return serviceCodes.length;
 	}
 
-	private RegistryRecord createRecord(ServiceProvider serviceProvider, Registry registry, String[] fields, String serviceCode) throws FlexPayException {
-
-		Consumer consumer = consumerService.findConsumer(serviceProvider, fields[1], serviceCode);
-		if (consumer == null) {
-			log.debug("Can't find consumer for serviceProvider.id = {}, account = {}, service.code = {}",
-					new Object[] {serviceProvider.getId(), fields[1], serviceCode});
-			throw new FlexPayException("Incorrect record in file (can't find consumer)");
-		}
+	private RegistryRecord createAccountRecord(ServiceProvider serviceProvider, Registry registry, String[] fields, String serviceCode) throws FlexPayException {
 
 		String modificationStartDate = "";
 		try {
@@ -149,12 +138,38 @@ public class MbCorrectionsFileParser extends MbFileParser<Registry> {
 			// do nothing
 		}
 
-		ConsumerInfo consumerInfo = consumer.getConsumerInfo();
-		consumerInfo.setLastName(fields[2]);
-		consumerInfo.setStreetTypeName(fields[6]);
-		consumerInfo.setStreetName(fields[7]);
-		consumerInfo.setBuildingNumber(fields[8]);
-		consumerInfo.setApartmentNumber(fields[9]);
+		RegistryRecordContainer container = new RegistryRecordContainer();
+		container.setOrder(1);
+		container.setData("1:" + modificationStartDate + "::");
+
+		RegistryRecord record = new RegistryRecord();
+		record.getContainers().add(container);
+		record.setServiceCode(serviceCode);
+		record.setPersonalAccountExt(fields[1]);
+
+		record.setLastName(fields[2]);
+		record.setStreetType(fields[6]);
+		record.setStreetName(fields[7]);
+		record.setBuildingNum(fields[8]);
+		record.setApartmentNum(fields[9]);
+		record.setOperationDate(new Date());
+		record.setRecordStatus(statusLoaded);
+
+		record.setRegistry(registry);
+		record = registryRecordService.create(record);
+
+		return record;
+
+	}
+
+	private RegistryRecord createRecord(ServiceProvider serviceProvider, Registry registry, String[] fields, String serviceCode) throws FlexPayException {
+
+		String modificationStartDate = "";
+		try {
+			modificationStartDate = new SimpleDateFormat("ddMMyyyy").format(MODIFICATIONS_START_DATE_FORMAT.parse(fields[19]));
+		} catch (ParseException e) {
+			// do nothing
+		}
 
 		List<RegistryRecordContainer> containers = new ArrayList<RegistryRecordContainer>();
 
@@ -205,12 +220,15 @@ public class MbCorrectionsFileParser extends MbFileParser<Registry> {
 		record.setContainers(containers);
 		record.setPersonalAccountExt(fields[1]);
 
-		EircRegistryRecordProperties recordProperties = (EircRegistryRecordProperties) propertiesFactory.newRecordProperties();
-		recordProperties.setConsumer(consumer);
-		record.setProperties(recordProperties);
+		record.setLastName(fields[2]);
+		record.setStreetType(fields[6]);
+		record.setStreetName(fields[7]);
+		record.setBuildingNum(fields[8]);
+		record.setApartmentNum(fields[9]);
+		record.setOperationDate(new Date());
 
 		record.setRegistry(registry);
-		registryRecordService.create(record);
+		record = registryRecordService.create(record);
 
 		return record;
 	}
