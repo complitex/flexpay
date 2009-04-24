@@ -45,6 +45,7 @@ public abstract class Roles {
 
 	public static final String MENU_PAYMENTS_PREFIX = "ROLE_MENU_PAYMENTS";
 	public static final String ROLE_MENU_PAYMENTS = MENU_PAYMENTS_PREFIX;
+	public static final String ROLE_MENU_PAYMENTS_ACCOUNTANT = MENU_PAYMENTS_PREFIX + "_ACCOUNTANT";
 
 	public static final String ROLE_MENU_PAYMENTS_ADDRESS = MENU_PAYMENTS_PREFIX + "_ADDRESS";
 	public static final String ROLE_MENU_PAYMENTS_ACCOUNT = MENU_PAYMENTS_PREFIX + "_ACCOUNT";
