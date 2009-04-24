@@ -6,7 +6,7 @@
 <hibernate-mapping package="org.flexpay.payments.service.statistics">
 
 	<query name="ServicePaymentsStatistics.collect"><![CDATA[
-		select o.creatorOrganization.id, d.service.id,
+		select distinct o.creatorOrganization.id, d.service.id,
 		 	(select sum(dd.summ)
 		 	from Document dd
 		 		inner join dd.operation op
