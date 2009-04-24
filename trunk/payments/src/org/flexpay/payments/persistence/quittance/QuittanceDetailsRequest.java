@@ -1,5 +1,6 @@
 package org.flexpay.payments.persistence.quittance;
 
+import org.apache.commons.lang.builder.ToStringBuilder;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
@@ -88,5 +89,14 @@ public class QuittanceDetailsRequest implements Serializable {
 	 */
 	public static QuittanceDetailsRequest apartmentNumberRequest(@NotNull String apartmentNumber) {
 		return new QuittanceDetailsRequest(apartmentNumber, TYPE_APARTMENT_NUMBER);
+	}
+
+	@Override
+	public String toString() {
+		return new ToStringBuilder(this).
+				append("requestId", requestId).
+				append("request", request).
+				append("type", type).
+				toString();
 	}
 }
