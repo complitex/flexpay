@@ -47,14 +47,6 @@ public class SearchQuittanceAction extends FPActionSupport {
 
 		if (response.isSuccess()) {
 			quittanceInfos = response.getInfos();
-
-			// TODO remove print debug
-			for (QuittanceInfo quittanceInfo : quittanceInfos) {
-
-				log.debug("[!!!] qi.apartmentMasterIndex {}", quittanceInfo.getApartmentMasterIndex());
-				log.debug("[!!!] qi.personMasterIndex {}", quittanceInfo.getPersonMasterIndex());
-			}
-
 		} else {
 			addActionError(getErrorMessage(response.getErrorCode()));
 		}

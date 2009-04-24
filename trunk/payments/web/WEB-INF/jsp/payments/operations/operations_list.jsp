@@ -18,6 +18,58 @@
 			$('td.service_provider_column:visible').hide();
 		}
 	}
+
+	function showButtons(state) {
+
+		alert('state ' + state);
+
+		switch (state) {
+			case 1:
+				enableButtons('.btn-register');
+				disableButtons('.btn-return');
+				enableButtons('.btn-delete');
+				break;
+			case 2:
+				disableButtons('.btn-register');
+				enableButtons('.btn-return');
+				disableButtons('.btn-delete');
+				break;
+			case 4:
+				disableButtons('.btn-register');
+				disableButtons('.btn-return');
+				enableButtons('.btn-delete');
+				break;
+			case 5:
+				disableButtons('.btn-register');
+				disableButtons('.btn-return');
+				enableButtons('.btn-delete');
+				break;
+			default:
+				disableButtons('.btn-register');
+				disableButtons('.btn-return');
+				disableButtons('.btn-delete');
+				break;
+		}
+	}
+
+	function enableButtons(selector) {
+		$(selector).removeAttr('disabled');
+		$(selector).removeClass('btn-search');
+		$(selector).addClass('btn-exit');
+	}
+
+	function disableButtons(selector) {
+		$(selector).attr('disabled', 'disabled');
+		$(selector).removeClass('btn-exit');
+		$(selector).addClass('btn-search');
+	}
+
+	$(function() {
+		disableButtons('.btn-register');
+		disableButtons('.btn-return');
+		disableButtons('.btn-delete');
+	});
+
 </script>
 
 <s:actionerror/>
@@ -65,7 +117,10 @@
 
 			<tr>
 				<td colspan="5">
-					<input type="submit" name="submitted" class="btn-exit" value="<s:text name="payments.operations.list.submit"/>"/>
+					<input type="button" name="register" class="btn-exit btn-register" value="<s:text name="payments.operations.list.register"/>"/>
+					<input type="button" name="return" class="btn-exit btn-return" value="<s:text name="payments.operations.list.return"/>"/>
+					<input type="button" name="delete" style="" class="btn-exit btn-delete" value="<s:text name="payments.operations.list.delete"/>"/>
+					
 					<input type="button" class="btn-exit" onclick="showDetails();" value="<s:text name="payments.operations.list.detailed"/>"/>
 				</td>
 				<td colspan="5">
@@ -96,7 +151,7 @@
 					<s:elseif test="%{isOperationReturned(operationStatus.code)}"> col_red</s:elseif>">
 
 					<td class="col_oper" nowrap="nowrap">
-						<input type="radio" name="selected_operation" value="<s:property value="%{#opStatus.index + 1}"/>"/>
+						<input type="radio" name="selected_operation" value="<s:property value="%{#opStatus.index + 1}"/>" onclick="showButtons(<s:property value="operationStatus.code"/>);"/>
 					</td>
 					<td class="col_oper" align="right"><s:property value="%{#opStatus.index + 1}"/></td>
 					<td class="col_oper" nowrap="nowrap"><s:property value="id"/></td>
@@ -116,7 +171,7 @@
 					<s:elseif test="%{isOperationReturned(operationStatus.code)}"> col_red</s:elseif>">
 
 					<td class="col_oper" nowrap="nowrap">
-						<input type="radio" name="selected_operation" value="<s:property value="%{#opStatus.index + 1}"/>"/>
+						<input type="radio" name="selected_operation" value="<s:property value="%{#opStatus.index + 1}"/>"  onclick="showButtons(<s:property value="operationStatus.code"/>);"/>
 					</td>
 					<td class="col_oper" align="right"><s:property value="%{#opStatus.index + 1}"/></td>
 					<td class="col_oper" nowrap="nowrap"><s:property value="id"/></td>
@@ -174,7 +229,10 @@
 
 			<tr>
 				<td colspan="5">
-					<input type="submit" name="submitted" class="btn-exit" value="<s:text name="payments.operations.list.submit"/>"/>
+					<input type="button" name="register" class="btn-exit btn-register" value="<s:text name="payments.operations.list.register"/>"/>
+					<input type="button" name="return" class="btn-exit btn-return" value="<s:text name="payments.operations.list.return"/>"/>
+					<input type="button" name="delete" style="" class="btn-exit btn-delete" value="<s:text name="payments.operations.list.delete"/>"/>
+
 					<input type="button" class="btn-exit" onclick="showDetails();" value="<s:text name="payments.operations.list.detailed"/>"/>
 				</td>
 				<td colspan="5">
