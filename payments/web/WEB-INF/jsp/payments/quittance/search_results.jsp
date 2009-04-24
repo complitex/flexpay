@@ -215,6 +215,31 @@
 <%--}--%>
 <%--</script>--%>
 
+<script type="text/javascript">
+
+	function replaceCommaWithDot(value) {
+
+		return value.replace(",", ".");
+	}
+
+	function updateChange() {
+
+		var totalPaySumm = $('#quittancePayForm_totalToPay').val();
+		var inputSumm = $('#quittancePayForm_input').val();
+		var changeSumm = inputSumm - totalPaySumm;
+
+		if (changeSumm < 0) {
+			alert('<s:text name="payments.quittances.quittance_pay.input_summ_is_too_small"/>');
+			$('#quittancePayForm_input').val('');
+			$('#quittancePayForm_change').val('0.00');
+			return;
+		}
+		
+		$('#quittancePayForm_change').val(replaceCommaWithDot(changeSumm.toFixed(2)));
+	}
+
+</script>
+
 <s:actionerror/>
 
 <s:form id="quittancePayForm" action="paymentsQuittancePay">
@@ -266,12 +291,12 @@
 					<td class="col" colspan="2" style="text-align:right;font-weight:bold;"><s:text name="payments.quittances.quittance_pay.total_payable"/></td>
 					<td class="col" style="font-weight:bold;"><s:property value="%{totalPayed + totalToPay}"/> </td>
 					<td class="col" style="font-weight:bold;"><s:property value="totalPayed"/></td>
-					<td class="col"><input type="text" id="quittancePayForm_totalToPay" name="totalPayed" value="<s:property value="totalToPay"/>" style="width: 100%; text-align: right;" readonly="readonly"/></td>
+					<td class="col"><input type="text" id="quittancePayForm_totalToPay" name="totalToPay" value="<s:property value="totalToPay"/>" style="width: 100%; text-align: right;" readonly="readonly"/></td>
 				</tr>
 
 				<tr class="cols_1">
 					<td colspan="4" style="font-weight: bold; text-align: right; "><s:text name="payments.quittance.payment.input"/></td>
-					<td><s:textfield name="input" cssStyle="text-align: right;" value="%{totalToPay}"/></td>
+					<td><s:textfield name="input" cssStyle="text-align: right;" value="%{totalToPay}" onchange="updateChange();"/></td>
 				</tr>
 
 				<tr class="cols_1">
