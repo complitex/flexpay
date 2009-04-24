@@ -210,7 +210,7 @@
 	<!-- Apartments -->
 	<definition name="ab.apartment.list" extends="ab.layout.standart">
 		<put-attribute name="title" value="ab.apartments.list.title" />
-		<put-attribute name="body" value="/WEB-INF/jsp/ab/apartments_list_ajax.jsp" />
+		<put-attribute name="body" value="/WEB-INF/jsp/ab/apartments_list.jsp" />
 	</definition>
 	<definition name="ab.apartment.edit" extends="ab.layout.standart">
 		<put-attribute name="title" value="ab.apartment.edit.title" />
