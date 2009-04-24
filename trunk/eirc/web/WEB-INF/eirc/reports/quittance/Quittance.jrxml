@@ -406,7 +406,7 @@
 						<subreportParameterExpression><![CDATA[$P{SUBREPORT_DIR}]]></subreportParameterExpression>
 					</subreportParameter>
 					<subreportParameter  name="tarifTotal">
-						<subreportParameterExpression><![CDATA[((ServiceTotals)$F{servicesTotalsList}.get(0)).getTarif()]]></subreportParameterExpression>
+						<subreportParameterExpression><![CDATA[((ServiceTotals)$F{servicesTotalsList}.get(0)).getTariff()]]></subreportParameterExpression>
 					</subreportParameter>
 					<subreportParameter  name="recalculationTotal">
 						<subreportParameterExpression><![CDATA[((ServiceTotals)$F{servicesTotalsList}.get(0)).getRecalculation()]]></subreportParameterExpression>
