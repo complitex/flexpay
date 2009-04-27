@@ -1,12 +1,11 @@
 package org.flexpay.eirc.sp.parsing;
 
+import org.apache.commons.io.IOUtils;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.FPFile;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.registry.*;
-import org.flexpay.eirc.persistence.Consumer;
 import org.flexpay.eirc.persistence.EircRegistryProperties;
-import org.flexpay.eirc.persistence.EircRegistryRecordProperties;
 import org.flexpay.eirc.service.*;
 import org.flexpay.eirc.sp.MbFileParser;
 import org.flexpay.orgs.persistence.ServiceProvider;
@@ -15,7 +14,6 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.apache.commons.io.IOUtils;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -32,7 +30,6 @@ public class MbRegistryFileParser extends MbFileParser<Registry> {
 	private RegistryRecordService registryRecordService;
 	private SpRegistryTypeService registryTypeService;
 	private ServiceProviderService serviceProviderService;
-	private ConsumerService consumerService;
 	private SpRegistryStatusService spRegistryStatusService;
 	private RegistryArchiveStatusService registryArchiveStatusService;
 	private PropertiesFactory propertiesFactory;
@@ -122,14 +119,6 @@ public class MbRegistryFileParser extends MbFileParser<Registry> {
 			// do nothing
 		}
 
-		Consumer consumer = consumerService.findConsumer(serviceProvider, fields[4], fields[3]);
-		if (consumer == null) {
-			throw new FlexPayException("Incorrect record in file (can't parse external account number  " + fields[4] + ")");
-		}
-		EircRegistryRecordProperties recordProperties = (EircRegistryRecordProperties) propertiesFactory.newRecordProperties();
-		recordProperties.setConsumer(consumer);
-		record.setProperties(recordProperties);
-
 		return record;
 	}
 
@@ -151,11 +140,6 @@ public class MbRegistryFileParser extends MbFileParser<Registry> {
 	@Required
 	public void setServiceProviderService(ServiceProviderService serviceProviderService) {
 		this.serviceProviderService = serviceProviderService;
-	}
-
-	@Required
-	public void setConsumerService(ConsumerService consumerService) {
-		this.consumerService = consumerService;
 	}
 
 	@Required

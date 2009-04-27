@@ -7,7 +7,7 @@ import org.flexpay.eirc.service.RegistryService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.test.annotation.NotTransactional;
 
 public class TestMbCorrectionsFileParser extends TestSpFileCreateAction {
 
@@ -18,7 +18,7 @@ public class TestMbCorrectionsFileParser extends TestSpFileCreateAction {
 	private RegistryService registryService;
 
 	@Test
-	@Transactional
+	@NotTransactional
 	public void testParseFile() throws Throwable {
 
 		FPFile newFile = createSpFile("org/flexpay/eirc/sp/01033_122008.kor");

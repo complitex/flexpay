@@ -47,7 +47,6 @@ public class MbCorrectionsFileValidator extends MbFileValidator {
 						ret = false;
 //						throw new FlexPayException("Incorrect header in file. Line number = " + lineNum, e);
 					}
-/*
 				} else if (lineNum == 19340 || lineNum == 19439
 						|| lineNum == 19450 || lineNum == 19492
 						|| lineNum == 25492 || lineNum == 25495
@@ -83,7 +82,6 @@ public class MbCorrectionsFileValidator extends MbFileValidator {
 						|| lineNum == 320595 || lineNum == 320612
 						|| lineNum == 320622 || lineNum == 320710
 						|| lineNum == 320727 || lineNum == 355126) {
-*/
 
 				} else if (line.startsWith(LAST_FILE_STRING_BEGIN)) {
 					fileValues.setLines(lineNum - 2);

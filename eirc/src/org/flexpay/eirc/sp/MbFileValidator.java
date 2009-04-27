@@ -30,7 +30,7 @@ public abstract class MbFileValidator {
 			throw new FlexPayException("For FPFile (id = " + spFile.getId() + ") not found temp file: " + spFile.getNameOnServer());
 		}
 
-		log.info("Starting validation file: {}", spFile.getOriginalName());
+		log.info("Validation file {} started", spFile.getOriginalName());
 
 		long beginTime = System.currentTimeMillis();
 
@@ -39,7 +39,7 @@ public abstract class MbFileValidator {
 		long endTime = System.currentTimeMillis();
 		long time = (endTime - beginTime) / 1000;
 
-		log.info("Validating file {} finished in {}", spFile.getOriginalName(), (time / 60 + "m " + time % 60 + "s"));
+		log.info("Validation file {} finished in {}", spFile.getOriginalName(), (time / 60 + "m " + time % 60 + "s"));
 
 		return ret;
 	}
