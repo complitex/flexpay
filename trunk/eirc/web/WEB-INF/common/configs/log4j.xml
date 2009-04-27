@@ -45,6 +45,11 @@
 		<appender-ref ref="flexpay" />
 	</category>
 
+    <category name="org.flexpay.eirc.sp" additivity="false">
+        <priority value="debug" />
+        <appender-ref ref="flexpay" />
+    </category>
+
 	<category name="org.flexpay.payments.service" additivity="false">
 		<priority value="debug" />
 		<appender-ref ref="flexpay" />

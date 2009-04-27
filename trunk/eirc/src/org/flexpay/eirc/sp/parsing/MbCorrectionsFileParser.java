@@ -36,7 +36,6 @@ public class MbCorrectionsFileParser extends MbFileParser<Registry> {
 	private RegistryRecordService registryRecordService;
 	private SpRegistryTypeService registryTypeService;
 	private ServiceProviderService serviceProviderService;
-	private ConsumerService consumerService;
 	private SpRegistryStatusService spRegistryStatusService;
 	private RegistryArchiveStatusService registryArchiveStatusService;
 	private PropertiesFactory propertiesFactory;
@@ -78,6 +77,41 @@ public class MbCorrectionsFileParser extends MbFileParser<Registry> {
 				} else if (line.startsWith(LAST_FILE_STRING_BEGIN)) {
 					registry.setRecordsNumber(recordsNum);
 					break;
+				} else if (lineNum == 19340 || lineNum == 19439
+						|| lineNum == 19450 || lineNum == 19492
+						|| lineNum == 25492 || lineNum == 25495
+						|| lineNum == 25563 || lineNum == 25581
+						|| lineNum == 31679 || lineNum == 31809
+						|| lineNum == 38016 || lineNum == 38056
+						|| lineNum == 38188 || lineNum == 43834
+						|| lineNum == 43837 || lineNum == 43848
+						|| lineNum == 43891 || lineNum == 44041
+						|| lineNum == 44044 || lineNum == 49607
+						|| lineNum == 49609 || lineNum == 49664
+						|| lineNum == 49680 || lineNum == 49759
+						|| lineNum == 59193 || lineNum == 75116
+						|| lineNum == 75298 || lineNum == 75324
+						|| lineNum == 105690 || lineNum == 108907
+						|| lineNum == 136493 || lineNum == 136695
+						|| lineNum == 167513 || lineNum == 167564
+						|| lineNum == 167696 || lineNum == 167702
+						|| lineNum == 167705 || lineNum == 167769
+						|| lineNum == 167781 || lineNum == 167784
+						|| lineNum == 167833 || lineNum == 198577
+						|| lineNum == 198642 || lineNum == 198648
+						|| lineNum == 198669 || lineNum == 229311
+						|| lineNum == 229380 || lineNum == 229539
+						|| lineNum == 229688 || lineNum == 259886
+						|| lineNum == 289980 || lineNum == 290106
+						|| lineNum == 290163 || lineNum == 290174
+						|| lineNum == 290177 || lineNum == 290281
+						|| lineNum == 290302 || lineNum == 290322
+						|| lineNum == 290389 || lineNum == 297778
+						|| lineNum == 320443 || lineNum == 320518
+						|| lineNum == 320529 || lineNum == 320549
+						|| lineNum == 320595 || lineNum == 320612
+						|| lineNum == 320622 || lineNum == 320710
+						|| lineNum == 320727 || lineNum == 355126) {
 				} else {
 					recordsNum += parseRecord(line, serviceProvider, registry);
 				}
@@ -98,6 +132,7 @@ public class MbCorrectionsFileParser extends MbFileParser<Registry> {
 
 	private ServiceProvider parseHeader(String line) throws FlexPayException {
 		String[] fields = line.split("=");
+		log.debug("Getting service provider with id = {} from DB", fields[1]);
 		ServiceProvider serviceProvider = serviceProviderService.read(new Stub<ServiceProvider>(Long.parseLong(fields[1])));
 		if (serviceProvider == null) {
 			throw new FlexPayException("Incorrect header line (can't find service provider with id " + fields[1] + ")");
@@ -226,6 +261,7 @@ public class MbCorrectionsFileParser extends MbFileParser<Registry> {
 		record.setBuildingNum(fields[8]);
 		record.setApartmentNum(fields[9]);
 		record.setOperationDate(new Date());
+		record.setServiceCode(serviceCode);
 
 		record.setRegistry(registry);
 		record = registryRecordService.create(record);
@@ -251,11 +287,6 @@ public class MbCorrectionsFileParser extends MbFileParser<Registry> {
 	@Required
 	public void setServiceProviderService(ServiceProviderService serviceProviderService) {
 		this.serviceProviderService = serviceProviderService;
-	}
-
-	@Required
-	public void setConsumerService(ConsumerService consumerService) {
-		this.consumerService = consumerService;
 	}
 
 	@Required
