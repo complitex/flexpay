@@ -55,6 +55,8 @@ public class BuildingHistoryGenerator implements HistoryGenerator<Building> {
 
 		log.debug("Ended generating history for building {}", obj);
 
+// Commented untill perfomance issues fix
+/*
 		log.debug("starting generating history for building apartments {}", obj);
 		List<Apartment> apartments = apartmentService.getBuildingApartments(stub(obj));
 		for (Apartment apartment : apartments) {
@@ -62,6 +64,7 @@ public class BuildingHistoryGenerator implements HistoryGenerator<Building> {
 			apartmentHistoryGenerator.generateFor(apartment);
 		}
 		log.debug("Ended generating history for building apartments {}", obj);
+ */
 	}
 
 	@Required
