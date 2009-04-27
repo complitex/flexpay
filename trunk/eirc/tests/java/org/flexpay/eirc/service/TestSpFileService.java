@@ -23,4 +23,5 @@ public class TestSpFileService extends SpringBeanAwareTestCase {
 		pager.setPageNumber(pager.getPageNumber() + 1);
 		fileService.getRecordsForProcessing(new Stub<Registry>(33L), pager, CollectionUtils.ar(0L, 21000L));
 	}
+
 }
