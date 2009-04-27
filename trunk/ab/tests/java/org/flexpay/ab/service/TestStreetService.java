@@ -1,17 +1,21 @@
 package org.flexpay.ab.service;
 
+import org.apache.commons.collections.ArrayStack;
 import org.flexpay.ab.dao.StreetDao;
 import org.flexpay.ab.persistence.*;
+import org.flexpay.ab.persistence.filters.TownFilter;
 import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
 import org.flexpay.ab.util.config.ApplicationConfig;
 import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.persistence.Stub.stub;
+import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.DateUtil;
 import static org.junit.Assert.assertNotNull;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.test.annotation.NotTransactional;
+
+import java.util.List;
 
 public class TestStreetService extends AbSpringBeanAwareTestCase {
 
@@ -29,7 +33,6 @@ public class TestStreetService extends AbSpringBeanAwareTestCase {
 	private StreetTypeService streetTypeService;
 
 	@Test
-	@NotTransactional
 	public void testCreateStreet() throws Throwable {
 
 		Town town = ApplicationConfig.getDefaultTown();
@@ -82,11 +85,13 @@ public class TestStreetService extends AbSpringBeanAwareTestCase {
 		Town town = townService.readFull(TOWN);
 		assertNotNull("No default town", town);
 
-		if (town.getStreets().isEmpty()) {
+		ArrayStack filters = CollectionUtils.arrayStack(new TownFilter(TOWN));
+		List<Street> streets = streetService.find(filters);
+		if (streets.isEmpty()) {
 			System.err.println("No streets in default town!");
 			return;
 		}
-		Street street = town.getStreets().iterator().next();
+		Street street = streets.iterator().next();
 		streetService.format(stub(street), ApplicationConfig.getDefaultLocale(), true);
 	}
 }

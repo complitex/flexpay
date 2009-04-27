@@ -32,7 +32,6 @@ public class TestTownService extends AbSpringBeanAwareTestCase {
 	}
 
 	@Test (expected = FlexPayExceptionContainer.class)
-	@Ignore
 	public void testCreateTownWithOutType() throws Exception {
 
 		Town town = new Town();
