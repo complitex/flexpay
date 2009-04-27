@@ -4,9 +4,9 @@ import com.opensymphony.xwork2.ActionSupport;
 import org.apache.commons.io.IOUtils;
 import org.flexpay.common.persistence.FPFile;
 import org.flexpay.common.service.FPFileService;
-import org.flexpay.common.test.SpringBeanAwareTestCase;
 import org.flexpay.common.util.StringUtil;
 import org.flexpay.common.util.config.UserPreferences;
+import org.flexpay.eirc.test.EircSpringBeanAwareTestCase;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import static org.junit.Assert.assertEquals;
@@ -28,7 +28,7 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-public class TestSpFileCreateAction extends SpringBeanAwareTestCase {
+public class TestSpFileCreateAction extends EircSpringBeanAwareTestCase {
 
 	@Autowired
 	protected FPFileService FPFileService;
