@@ -25,8 +25,10 @@ public class TestMbCorrectionsFileParser extends TestSpFileCreateAction {
 
 		try {
 			Registry registry = parser.parse(newFile);
-//			registryService.deleteRecords(new Stub<Registry>(registry));
-//			registryService.delete(registry);
+/*
+			registryService.deleteRecords(new Stub<Registry>(registry));
+			registryService.delete(registry);
+*/
 		} catch (Exception e) {
 			log.error("Error with parsing file", e);
 		}

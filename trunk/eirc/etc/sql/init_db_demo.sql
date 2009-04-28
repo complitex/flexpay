@@ -7,7 +7,7 @@ SELECT @identity_type_fio_id:=1;
 select @eirc_registry_rec:=1;
 select @service_garazh_id:=21;
 select @service_zhivotnoe_id:=26;
-select @service_kvarplata_id:=1;
+select @service_kvartplata_id:=1;
 select @service_pogreba_id:=25;
 select @service_saray_id:=24;
 select @attr_type_home_number_id:=1;
@@ -19,7 +19,7 @@ SELECT @district_id_kharkov_central:=last_insert_id();
 INSERT INTO ab_district_names_tbl (district_id) VALUES (@district_id_kharkov_central);
 SELECT @district_name_id:=last_insert_id();
 INSERT INTO ab_district_name_translations_tbl (name, district_name_id, language_id)
-	VALUES ('Центральный', @district_name_id, @ru_id);
+	VALUES ('пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ', @district_name_id, @ru_id);
 INSERT INTO ab_district_names_temporal_tbl (district_id, district_name_id, begin_date, end_date, create_date, invalid_date)
 	VALUES (@district_id_kharkov_central, @district_name_id, '1900-01-01', '2100-12-31', '2008-01-17', '2100-12-31');
 
@@ -28,7 +28,7 @@ SELECT @street_id_aptekarskiy_per:=last_insert_id();
 INSERT INTO ab_street_names_tbl (street_id) VALUES (@street_id_aptekarskiy_per);
 SELECT @street_name_id:=last_insert_id();
 INSERT INTO ab_street_name_translations_tbl (name, street_name_id, language_id)
-	VALUES ('Аптекарский', @street_name_id, @ru_id);
+	VALUES ('пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ', @street_name_id, @ru_id);
 INSERT INTO ab_street_names_temporal_tbl (street_id, street_name_id, begin_date, end_date, create_date, invalid_date)
 	VALUES (@street_id_aptekarskiy_per, @street_name_id, '1900-01-01', '2100-12-31', '2008-01-17', '2100-12-31');
 INSERT INTO ab_street_types_temporal_tbl (street_id, street_type_id, begin_date, end_date, create_date, invalid_date)
@@ -40,7 +40,7 @@ SELECT @street_id_aptekarskiy_viaduk:=last_insert_id();
 INSERT INTO ab_street_names_tbl (street_id) VALUES (@street_id_aptekarskiy_viaduk);
 SELECT @street_name_id:=last_insert_id();
 INSERT INTO ab_street_name_translations_tbl (name, street_name_id, language_id)
-	VALUES ('Аптекарский', @street_name_id, @ru_id);
+	VALUES ('пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ', @street_name_id, @ru_id);
 INSERT INTO ab_street_names_temporal_tbl (street_id, street_name_id, begin_date, end_date, create_date, invalid_date)
 	VALUES (@street_id_aptekarskiy_viaduk, @street_name_id, '1900-01-01', '2100-12-31', '2008-01-17', '2100-12-31');
 INSERT INTO ab_street_types_temporal_tbl (street_id, street_type_id, begin_date, end_date, create_date, invalid_date)
@@ -132,12 +132,12 @@ INSERT INTO ab_person_identities_tbl (status, sex, begin_date, end_date, birth_d
 	document_number, first_name, middle_name, last_name, organization,
 	is_default, identity_type_id, person_id)
 	VALUES (0, 2, '1983-01-25', '2100-12-31', '1983-01-25', 0,
-	0, 'А', 'А', 'Гаруст', '',
+	0, 'пїЅ', 'пїЅ', 'пїЅпїЅпїЅпїЅпїЅпїЅ', '',
 	0, @identity_type_fio_id, @person_id_garust);
 insert into eirc_consumer_infos_tbl (status, first_name, middle_name, last_name,
 	city_name, street_type_name, street_name, building_number, building_bulk, apartment_number)
-	values (0, 'А', 'А', 'Гаруст',
-	'Харьков', 'в-д', 'Аптекарский', '4', '', '1');
+	values (0, 'пїЅ', 'пїЅ', 'пїЅпїЅпїЅпїЅпїЅпїЅ',
+	'пїЅпїЅпїЅпїЅпїЅпїЅпїЅ', 'пїЅ-пїЅ', 'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ', '4', '', '1');
 select @consumer_info_garust:=last_insert_id();
 
 INSERT INTO eirc_eirc_accounts_tbl (version, status, apartment_id, person_id, account_number, consumer_info_id)
@@ -146,7 +146,7 @@ SELECT @account_id_garust:=last_insert_id();
 
 insert into eirc_consumers_tbl ( status, external_account_number, service_id,
 	person_id, apartment_id, eirc_account_id, begin_date, end_date, consumer_info_id)
-	values ( 0, '1000164839', @service_kvarplata_id,
+	values ( 0, '1000164839', @service_kvartplata_id,
 	@person_id_garust, @apartment_id, @account_id_garust, '2000-01-01', '2020-12-31', @consumer_info_garust);
 select @consumer_garust_kvartplata:=last_insert_id();
 
@@ -185,12 +185,12 @@ INSERT INTO ab_person_identities_tbl (status, sex, begin_date, end_date, birth_d
 	document_number, first_name, middle_name, last_name, organization,
 	is_default, identity_type_id, person_id)
 	VALUES (0, 2, '1983-01-25', '2100-12-31', '1983-01-25', 0,
-	0, 'А', 'М', 'Афоничев', '',
+	0, 'пїЅ', 'пїЅ', 'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ', '',
 	0, @identity_type_fio_id, @person_id_afonichev);
 insert into eirc_consumer_infos_tbl ( status, first_name, middle_name, last_name,
 	city_name, street_type_name, street_name, building_number, building_bulk, apartment_number)
-	values (0, 'А', 'М', 'Афоничев',
-	'Харьков', 'в-д', 'Аптекарский', '4', '', '2');
+	values (0, 'пїЅ', 'пїЅ', 'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ',
+	'пїЅпїЅпїЅпїЅпїЅпїЅпїЅ', 'пїЅ-пїЅ', 'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ', '4', '', '2');
 select @consumer_info_afonichev:=last_insert_id();
 
 INSERT INTO eirc_eirc_accounts_tbl (version, status, apartment_id, person_id, account_number, consumer_info_id)
@@ -199,7 +199,7 @@ SELECT @account_id_afonichev:=last_insert_id();
 
 insert into eirc_consumers_tbl ( status, external_account_number, service_id,
 	person_id, apartment_id, eirc_account_id, begin_date, end_date, consumer_info_id)
-	values ( 0, '1000164840', @service_kvarplata_id,
+	values ( 0, '1000164840', @service_kvartplata_id,
 	@person_id_afonichev, @apartment_id, @account_id_afonichev, '2000-01-01', '2020-12-31', @consumer_info_afonichev);
 select @consumer_afonichev_kvartplata:=last_insert_id();
 
@@ -236,12 +236,12 @@ INSERT INTO ab_person_identities_tbl (status, sex, begin_date, end_date, birth_d
 	document_number, first_name, middle_name, last_name, organization,
 	is_default, identity_type_id, person_id)
 	VALUES (0, 2, '1983-01-25', '2100-12-31', '1983-01-25', 0,
-	0, 'Г', 'А', 'Турчин', '',
+	0, 'пїЅ', 'пїЅ', 'пїЅпїЅпїЅпїЅпїЅпїЅ', '',
 	0, @identity_type_fio_id, @person_id_turchin);
 insert into eirc_consumer_infos_tbl (status, first_name, middle_name, last_name,
 	city_name, street_type_name, street_name, building_number, building_bulk, apartment_number)
-	values (0, 'Г', 'А', 'Турчин',
-	'Харьков', 'пер.', 'Аптекарский', '9', 'ч. 1', '12');
+	values (0, 'пїЅ', 'пїЅ', 'пїЅпїЅпїЅпїЅпїЅпїЅ',
+	'пїЅпїЅпїЅпїЅпїЅпїЅпїЅ', 'пїЅпїЅпїЅ.', 'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ', '9', 'пїЅ. 1', '12');
 select @consumer_info_turchin:=last_insert_id();
 
 INSERT INTO eirc_eirc_accounts_tbl (version, status, apartment_id, person_id, account_number, consumer_info_id)
@@ -250,7 +250,7 @@ SELECT @account_id_turchin:=last_insert_id();
 
 insert into eirc_consumers_tbl ( status, external_account_number, service_id,
 	person_id, apartment_id, eirc_account_id, begin_date, end_date, consumer_info_id)
-	values ( 0, '1000163986', @service_kvarplata_id,
+	values ( 0, '1000163986', @service_kvartplata_id,
 	@person_id_turchin, @apartment_id, @account_id_turchin, '2000-01-01', '2020-12-31', @consumer_info_turchin);
 select @consumer_turchin_kvartplata:=last_insert_id();
 
@@ -287,12 +287,12 @@ INSERT INTO ab_person_identities_tbl (status, sex, begin_date, end_date, birth_d
 	document_number, first_name, middle_name, last_name, organization,
 	is_default, identity_type_id, person_id)
 	VALUES (0, 2, '1983-01-25', '2100-12-31', '1983-01-25', 0,
-	0, 'В', 'А', 'Зайцев', '',
+	0, 'пїЅ', 'пїЅ', 'пїЅпїЅпїЅпїЅпїЅпїЅ', '',
 	0, @identity_type_fio_id, @person_id_zaicev);
 insert into eirc_consumer_infos_tbl ( status, first_name, middle_name, last_name,
 	city_name, street_type_name, street_name, building_number, building_bulk, apartment_number)
-	values (0, 'В', 'А', 'Зайцев',
-	'Харьков', 'пер.', 'Аптекарский', '9', 'ч. 1', '16');
+	values (0, 'пїЅ', 'пїЅ', 'пїЅпїЅпїЅпїЅпїЅпїЅ',
+	'пїЅпїЅпїЅпїЅпїЅпїЅпїЅ', 'пїЅпїЅпїЅ.', 'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ', '9', 'пїЅ. 1', '16');
 select @consumer_info_zaicev:=last_insert_id();
 
 INSERT INTO eirc_eirc_accounts_tbl (version, status, apartment_id, person_id, account_number, consumer_info_id)
@@ -301,7 +301,7 @@ SELECT @account_id_zaicev:=last_insert_id();
 
 insert into eirc_consumers_tbl ( status, external_account_number, service_id,
 	person_id, apartment_id, eirc_account_id, begin_date, end_date, consumer_info_id)
-	values ( 0, '1000163990', @service_kvarplata_id,
+	values ( 0, '1000163990', @service_kvartplata_id,
 	@person_id_zaicev, @apartment_id, @account_id_zaicev, '2000-01-01', '2020-12-31', @consumer_info_zaicev);
 select @consumer_zaicev_kvartplata:=last_insert_id();
 
@@ -338,12 +338,12 @@ INSERT INTO ab_person_identities_tbl (status, sex, begin_date, end_date, birth_d
 	document_number, first_name, middle_name, last_name, organization,
 	is_default, identity_type_id, person_id)
 	VALUES (0, 2, '1983-01-25', '2100-12-31', '1983-01-25', 0,
-	0, 'Т', 'В', 'Цапко', '',
+	0, 'пїЅ', 'пїЅ', 'пїЅпїЅпїЅпїЅпїЅ', '',
 	0, @identity_type_fio_id, @person_id_capko);
 insert into eirc_consumer_infos_tbl ( status, first_name, middle_name, last_name,
 	city_name, street_type_name, street_name, building_number, building_bulk, apartment_number)
-	values (0, 'Т', 'В', 'Цапко',
-	'Харьков', 'пер.', 'Аптекарский', '9', 'ч. 1', '37');
+	values (0, 'пїЅ', 'пїЅ', 'пїЅпїЅпїЅпїЅпїЅ',
+	'пїЅпїЅпїЅпїЅпїЅпїЅпїЅ', 'пїЅпїЅпїЅ.', 'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ', '9', 'пїЅ. 1', '37');
 select @consumer_info_capko:=last_insert_id();
 
 INSERT INTO eirc_eirc_accounts_tbl (version, status, apartment_id, person_id, account_number, consumer_info_id)
@@ -352,7 +352,7 @@ SELECT @account_id_capko:=last_insert_id();
 
 insert into eirc_consumers_tbl ( status, external_account_number, service_id,
 	person_id, apartment_id, eirc_account_id, begin_date, end_date, consumer_info_id)
-	values ( 0, '1000164013', @service_kvarplata_id,
+	values ( 0, '1000164013', @service_kvartplata_id,
 	@person_id_capko, @apartment_id, @account_id_capko, '2000-01-01', '2020-12-31', @consumer_info_capko);
 select @consumer_capko_kvartplata:=last_insert_id();
 
@@ -389,12 +389,12 @@ INSERT INTO ab_person_identities_tbl (status, sex, begin_date, end_date, birth_d
 	document_number, first_name, middle_name, last_name, organization,
 	is_default, identity_type_id, person_id)
 	VALUES (0, 2, '1983-01-25', '2100-12-31', '1983-01-25', 0,
-	0, 'В', 'М', 'Гончарова', '',
+	0, 'пїЅ', 'пїЅ', 'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ', '',
 	0, @identity_type_fio_id, @person_id_goncharova);
 insert into eirc_consumer_infos_tbl ( status, first_name, middle_name, last_name,
 	city_name, street_type_name, street_name, building_number, building_bulk, apartment_number)
-	values (0, 'В', 'М', 'Гончарова',
-	'Харьков', 'пер.', 'Аптекарский', '9', 'ч. 1', '62');
+	values (0, 'пїЅ', 'пїЅ', 'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ',
+	'пїЅпїЅпїЅпїЅпїЅпїЅпїЅ', 'пїЅпїЅпїЅ.', 'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ', '9', 'пїЅ. 1', '62');
 select @consumer_info_goncharova:=last_insert_id();
 
 INSERT INTO eirc_eirc_accounts_tbl (version, status, apartment_id, person_id, account_number, consumer_info_id, consumer_info_id)
@@ -403,7 +403,7 @@ SELECT @account_id_goncharova:=last_insert_id();
 
 insert into eirc_consumers_tbl ( status, external_account_number, service_id,
 	person_id, apartment_id, eirc_account_id, begin_date, end_date, consumer_info_id)
-	values ( 0, '1000164041', @service_kvarplata_id,
+	values ( 0, '1000164041', @service_kvartplata_id,
 	@person_id_goncharova, @apartment_id, @account_id_goncharova, '2000-01-01', '2020-12-31', @consumer_info_goncharova);
 select @consumer_goncharova_kvartplata:=last_insert_id();
 
@@ -455,12 +455,12 @@ INSERT INTO ab_person_identities_tbl (status, sex, begin_date, end_date, birth_d
 	document_number, first_name, middle_name, last_name, organization,
 	is_default, identity_type_id, person_id)
 	VALUES (0, 2, '1983-01-25', '2100-12-31', '1983-01-25', 0,
-	0, 'А', 'В', 'Панченко', '',
+	0, 'пїЅ', 'пїЅ', 'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ', '',
 	0, @identity_type_fio_id, @person_id_panchenko);
 insert into eirc_consumer_infos_tbl ( status, first_name, middle_name, last_name,
 	city_name, street_type_name, street_name, building_number, building_bulk, apartment_number)
-	values (0, 'А', 'В', 'Панченко',
-	'Харьков', 'пер.', 'Аптекарский', '9', 'ч. 1', '59');
+	values (0, 'пїЅ', 'пїЅ', 'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ',
+	'пїЅпїЅпїЅпїЅпїЅпїЅпїЅ', 'пїЅпїЅпїЅ.', 'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ', '9', 'пїЅ. 1', '59');
 select @consumer_info_panchenko:=last_insert_id();
 
 INSERT INTO eirc_eirc_accounts_tbl (version, status, apartment_id, person_id, account_number, consumer_info_id)
@@ -469,7 +469,7 @@ SELECT @account_id_panchenko:=last_insert_id();
 
 insert into eirc_consumers_tbl ( status, external_account_number, service_id,
 	person_id, apartment_id, eirc_account_id, begin_date, end_date, consumer_info_id)
-	values ( 0, '1000164037', @service_kvarplata_id,
+	values ( 0, '1000164037', @service_kvartplata_id,
 	@person_id_panchenko, @apartment_id, @account_id_panchenko, '2000-01-01', '2020-12-31', @consumer_info_panchenko);
 select @consumer_panchenko_kvartplata:=last_insert_id();
 
@@ -507,12 +507,12 @@ INSERT INTO ab_person_identities_tbl (status, sex, begin_date, end_date, birth_d
 	document_number, first_name, middle_name, last_name, organization,
 	is_default, identity_type_id, person_id)
 	VALUES (0, 2, '1983-01-25', '2100-12-31', '1983-01-25', 0,
-	0, 'С', 'А', 'Юдин', '',
+	0, 'пїЅ', 'пїЅ', 'пїЅпїЅпїЅпїЅ', '',
 	0, @identity_type_fio_id, @person_id_yudin);
 insert into eirc_consumer_infos_tbl ( status, first_name, middle_name, last_name,
 	city_name, street_type_name, street_name, building_number, building_bulk, apartment_number)
-	values (0, 'С', 'А', 'Юдин',
-	'Харьков', 'пер.', 'Аптекарский', '9', 'ч. 1', '70');
+	values (0, 'пїЅ', 'пїЅ', 'пїЅпїЅпїЅпїЅ',
+	'пїЅпїЅпїЅпїЅпїЅпїЅпїЅ', 'пїЅпїЅпїЅ.', 'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ', '9', 'пїЅ. 1', '70');
 select @consumer_info_yudin:=last_insert_id();
 
 INSERT INTO eirc_eirc_accounts_tbl (version, status, apartment_id, person_id, account_number, consumer_info_id)
@@ -521,7 +521,7 @@ SELECT @account_id_yudin:=last_insert_id();
 
 insert into eirc_consumers_tbl ( status, external_account_number, service_id,
 	person_id, apartment_id, eirc_account_id, begin_date, end_date, consumer_info_id)
-	values ( 0, '1000164050', @service_kvarplata_id,
+	values ( 0, '1000164050', @service_kvartplata_id,
 	@person_id_yudin, @apartment_id, @account_id_yudin, '2000-01-01', '2020-12-31', @consumer_info_yudin);
 select @consumer_yudin_kvartplata:=last_insert_id();
 
@@ -558,12 +558,12 @@ INSERT INTO ab_person_identities_tbl (status, sex, begin_date, end_date, birth_d
 	document_number, first_name, middle_name, last_name, organization,
 	is_default, identity_type_id, person_id)
 	VALUES (0, 2, '1983-01-25', '2100-12-31', '1983-01-25', 0,
-	0, 'Галина', 'Николаевна', 'Мирошниченко', '',
+	0, 'пїЅпїЅпїЅпїЅпїЅпїЅ', 'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ', 'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ', '',
 	0, @identity_type_fio_id, @person_id_miroshnichenko);
 insert into eirc_consumer_infos_tbl ( status, first_name, middle_name, last_name,
 	city_name, street_type_name, street_name, building_number, building_bulk, apartment_number)
-	values (0, 'Галина', 'Николаевна', 'Мирошниченко',
-	'Харьков', 'пер.', 'Аптекарский', '9', 'ч. 1', '59');
+	values (0, 'пїЅпїЅпїЅпїЅпїЅпїЅ', 'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ', 'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ',
+	'пїЅпїЅпїЅпїЅпїЅпїЅпїЅ', 'пїЅпїЅпїЅ.', 'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ', '9', 'пїЅ. 1', '59');
 select @consumer_info_miroshnichenko:=last_insert_id();
 
 INSERT INTO eirc_eirc_accounts_tbl (version, status, apartment_id, person_id, account_number, consumer_info_id)
@@ -572,7 +572,7 @@ SELECT @account_id_miroshnichenko:=last_insert_id();
 
 insert into eirc_consumers_tbl ( status, external_account_number, service_id,
 	person_id, apartment_id, eirc_account_id, begin_date, end_date, consumer_info_id)
-	values ( 0, '1000164090', @service_kvarplata_id,
+	values ( 0, '1000164090', @service_kvartplata_id,
 	@person_id_miroshnichenko, @apartment_id, @account_id_miroshnichenko, '2000-01-01', '2020-12-31', @consumer_info_miroshnichenko);
 select @consumer_miroshnichenko_kvartplata:=last_insert_id();
 
@@ -609,12 +609,12 @@ INSERT INTO ab_person_identities_tbl (status, sex, begin_date, end_date, birth_d
 	document_number, first_name, middle_name, last_name, organization,
 	is_default, identity_type_id, person_id)
 	VALUES (0, 2, '1983-01-25', '2100-12-31', '1983-01-25', 0,
-	0, 'А', 'М', 'Климко', '',
+	0, 'пїЅ', 'пїЅ', 'пїЅпїЅпїЅпїЅпїЅпїЅ', '',
 	0, @identity_type_fio_id, @person_id_klimko);
 insert into eirc_consumer_infos_tbl ( status, first_name, middle_name, last_name,
 	city_name, street_type_name, street_name, building_number, building_bulk, apartment_number)
-	values (0, 'А', 'М', 'Климко',
-	'Харьков', 'пер.', 'Аптекарский', '9', 'ч. 1', '103');
+	values (0, 'пїЅ', 'пїЅ', 'пїЅпїЅпїЅпїЅпїЅпїЅ',
+	'пїЅпїЅпїЅпїЅпїЅпїЅпїЅ', 'пїЅпїЅпїЅ.', 'пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ', '9', 'пїЅ. 1', '103');
 select @consumer_info_klimko:=last_insert_id();
 
 INSERT INTO eirc_eirc_accounts_tbl (version, status, apartment_id, person_id, account_number, consumer_info_id)
@@ -623,7 +623,7 @@ SELECT @account_id_klimko:=last_insert_id();
 
 insert into eirc_consumers_tbl ( status, external_account_number, service_id,
 	person_id, apartment_id, eirc_account_id, begin_date, end_date, consumer_info_id)
-	values ( 0, '1000163981', @service_kvarplata_id,
+	values ( 0, '1000163981', @service_kvartplata_id,
 	@person_id_klimko, @apartment_id, @account_id_klimko, '2000-01-01', '2020-12-31', @consumer_info_klimko);
 select @consumer_klimko_kvartplata:=last_insert_id();
 

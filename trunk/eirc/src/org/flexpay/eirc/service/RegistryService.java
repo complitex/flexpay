@@ -24,7 +24,7 @@ public interface RegistryService {
 	 * @return created SpRegistry object
 	 * @throws FlexPayException if failure occurs
 	 */
-	public Registry create(Registry registry) throws FlexPayException;
+	Registry create(Registry registry) throws FlexPayException;
 
 	/**
 	 * Get all SpRegistry by spFile id in page mode

@@ -36,9 +36,13 @@ public class RegistryRecordContainer extends DomainObject {
 
 	@Override
 	public String toString() {
-		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE)
-				.append("order", order)
-				.append("data", data)
-				.toString();
+		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
+				append("RegistryRecordContainer {").
+				append("id", getId()).
+				append("order", order).
+				append("data", data).
+				append("record.id", record.getId()).
+				append("}").toString();
 	}
+
 }

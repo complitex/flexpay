@@ -254,7 +254,7 @@ public class JRQuittanceDataSource implements JRRewindableDataSource {
 
 		info.setServiceOrganizationName(org.getName());
 
-		// kvarplata
+		// kvartplata
 		ServiceType defaultService = serviceTypeService.getServiceType(1);
 		for (QuittanceDetails details : q.getQuittanceDetails()) {
 			if (details.getConsumer().getService().getServiceType().equals(defaultService)) {

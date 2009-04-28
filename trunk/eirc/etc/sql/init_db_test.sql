@@ -31,7 +31,7 @@ insert into common_registry_record_properties_tbl (version, props_type, record_i
 -- Init consumers
 insert into eirc_consumers_tbl (id, status, external_account_number, service_id,
 	person_id, apartment_id, eirc_account_id, begin_date, end_date, consumer_info_id)
-	values (1, 0, '123123123', @service_kvarplata_id,
+	values (1, 0, '123123123', @service_kvartplata_id,
 	@person_id, @apartment_ivanova_330_id, @account_id_1, '2000-01-01', '2020-12-31', @consumer_info);
 select @consumer_1_1:=1;
 insert into eirc_consumers_tbl (id, status, external_account_number, service_id,
@@ -102,18 +102,18 @@ select @consumer_1_80:=13;
 
 insert into eirc_consumers_tbl (id, status, external_account_number, service_id,
 	person_id, apartment_id, eirc_account_id, begin_date, end_date, consumer_info_id)
-	values (2, 0, '67676767', @service_kvarplata_id,
+	values (2, 0, '67676767', @service_kvartplata_id,
 	@person_id, @apartment_ivanova_329_id, @account_id_1, '2000-01-01', '2020-12-31', @consumer_info);
 select @consumer_2:=2;
 
 -- Init quittance details
--- Quittance details for consumer_1 (kvarplata)
+-- Quittance details for consumer_1 (kvartplata)
 insert into eirc_quittance_details_tbl (id, consumer_id, registry_record_id,
 	incoming_balance, outgoing_balance, amount, expence, rate, recalculation, benefit, subsidy, payment, month)
 	values (1, @consumer_1_1, @eirc_registry_rec,
 	'0.00', '40.34', '40.34', '50.34', '1.1', '-4.0', '-5.0', '-1.0', '0.0', '2007-12-01');
 select @quittance_details_1:=1;
--- Quittance details for consumer_1_1 (kvarplata)
+-- Quittance details for consumer_1_1 (kvartplata)
 insert into eirc_quittance_details_tbl (id, consumer_id, registry_record_id,
 	incoming_balance, outgoing_balance, amount, expence, rate, recalculation, benefit, subsidy, payment, month)
 	values (2, @consumer_1_1, @eirc_registry_rec,

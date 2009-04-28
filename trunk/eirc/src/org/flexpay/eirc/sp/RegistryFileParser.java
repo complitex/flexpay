@@ -342,7 +342,7 @@ public class RegistryFileParser {
 				record.setAmount(new BigDecimal(amountStr));
 			}
 
-			// setup containers
+			// setupcon containers
 			String containersStr = messageFieldList.get(++n);
 			if (StringUtils.isNotEmpty(containersStr)) {
 				record.setContainers(parseContainers(record, containersStr));

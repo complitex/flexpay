@@ -99,9 +99,9 @@ public class TestQuittanceInfoGenerator extends TransactionalSpringBeanAwareTest
 		// now setup services totals
 		QuittanceInfoGenerator.buildServicesTotals(groups, servicesTotals, serviceTypesTotals);
 
-		// only kvarplata
+		// only kvartplata
 		assertEquals("Invalid services totals", 1, servicesTotals.size());
-		// only kvarplata
+		// only kvartplata
 		assertEquals("Invalid service types totals", 1, serviceTypesTotals.size());
 	}
 
@@ -111,7 +111,7 @@ public class TestQuittanceInfoGenerator extends TransactionalSpringBeanAwareTest
 
 		Quittance q = list(dt_2007_12_01, dt_2008_02_01).get(0);
 
-		// two kvarplata + one teritory cleanup
+		// two kvartplata + one teritory cleanup
 		assertEquals("Invalid number of QuittanceDetails fetched", 3, q.getQuittanceDetails().size());
 
 		Map<Service, ServiceGroup> groups = QuittanceInfoGenerator.makeServiceGroups(q);
@@ -121,9 +121,9 @@ public class TestQuittanceInfoGenerator extends TransactionalSpringBeanAwareTest
 		// now setup services totals
 		QuittanceInfoGenerator.buildServicesTotals(groups, servicesTotals, serviceTypesTotals);
 
-		// only kvarplata
+		// only kvartplata
 		assertEquals("Invalid services totals", 1, servicesTotals.size());
-		// kvarplata only here
+		// kvartplata only here
 		assertEquals("Invalid service types totals", 1, serviceTypesTotals.size());
 
 		ServiceTotals serviceTotals = servicesTotals.values().iterator().next();
@@ -135,7 +135,7 @@ public class TestQuittanceInfoGenerator extends TransactionalSpringBeanAwareTest
 
 		Quittance q = list(dt_2007_12_01, dt_2008_01_01).get(0);
 
-		// two kvarplata + one teritory cleanup
+		// two kvartplata + one teritory cleanup
 		assertEquals("Invalid number of QuittanceDetails fetched", 14, q.getQuittanceDetails().size());
 
 		Map<Service, ServiceGroup> groups = QuittanceInfoGenerator.makeServiceGroups(q);
@@ -148,9 +148,9 @@ public class TestQuittanceInfoGenerator extends TransactionalSpringBeanAwareTest
 		// now setup subservices totals and add them to services totals
 		QuittanceInfoGenerator.buildSubservicesTotals(groups, servicesTotals, serviceTypesTotals);
 
-		// only kvarplata
+		// only kvartplata
 		assertEquals("Invalid services totals", 6, servicesTotals.size());
-		// kvarplata and territory cleanup subservice
+		// kvartplata and territory cleanup subservice
 		assertEquals("Invalid service types totals", 14, serviceTypesTotals.size());
 
 		// check if there are actually subservice totals
