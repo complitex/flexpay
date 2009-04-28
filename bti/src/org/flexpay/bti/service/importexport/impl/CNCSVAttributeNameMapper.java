@@ -269,9 +269,9 @@ public class CNCSVAttributeNameMapper implements AttributeNameMapper {
 			// 127 DW диспетчеризация в месяц с КП «Жилкомсервис», грн. DV * 1.214263
 			ATTR_COST_DISPETCHIRING_ZHILKOMSERVIS,
 			// 128 DX освещение мест общего пользования (в части КСП «Харьковгорлифт»), грн.
-			ATTR_COST_COMMON_PLACES_LIGHTENING_HARKOVGORLIFT,
+			ATTR_COST_COMMON_PLACES_LIGHTENING_KHARKOVGORLIFT,
 			// 129 DY освещение мест общего пользования (в части КСП «Харьковгорлифт») с КП «Жилкомсервис», грн. DX * 1.214263
-			ATTR_COST_COMMON_PLACES_LIGHTENING_HARKOVGORLIFT_ZHILKOMSERVIS
+			ATTR_COST_COMMON_PLACES_LIGHTENING_KHARKOVGORLIFT_ZHILKOMSERVIS
 	);
 
 	static {

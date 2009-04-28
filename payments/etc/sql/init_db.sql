@@ -62,11 +62,11 @@ SELECT @service_type_250:=last_insert_id();
 INSERT INTO payments_service_type_name_translations_tbl (name, description, language_id, service_type_id)
 	VALUES ('Содержание животных', '', @ru_id, @service_type_250);
 
--- kvarplata
+-- kvartplata
 INSERT INTO payments_service_types_tbl (status, code) VALUES (0, 1);
-SELECT @service_kvarplata:=last_insert_id();
+SELECT @service_kvartplata:=last_insert_id();
 INSERT INTO payments_service_type_name_translations_tbl (name, description, language_id, service_type_id)
-	VALUES ('Кварплата', '', @ru_id, @service_kvarplata);
+	VALUES ('Квартплата', '', @ru_id, @service_kvartplata);
 
 INSERT INTO payments_service_types_tbl (status, code) VALUES (0, 10);
 SELECT @service_territory_cleaning:=last_insert_id();

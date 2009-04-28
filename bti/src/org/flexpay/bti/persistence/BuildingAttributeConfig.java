@@ -248,8 +248,8 @@ public class BuildingAttributeConfig {
 	// 127 DW диспетчеризация в месяц с КП «Жилкомсервис», грн. DV * 1.214263
 	public static final String ATTR_COST_DISPETCHIRING_ZHILKOMSERVIS = "ATTR_COST_DISPETCHIRING_ZHILKOMSERVIS";
 	// 128 DX освещение мест общего пользования (в части КСП «Харьковгорлифт»), грн.
-	public static final String ATTR_COST_COMMON_PLACES_LIGHTENING_HARKOVGORLIFT = "ATTR_COST_COMMON_PLACES_LIGHTENING_HARKOVGORLIFT";
+	public static final String ATTR_COST_COMMON_PLACES_LIGHTENING_KHARKOVGORLIFT = "ATTR_COST_COMMON_PLACES_LIGHTENING_KHARKOVGORLIFT";
 	// 129 DY освещение мест общего пользования (в части КСП «Харьковгорлифт») с КП «Жилкомсервис», грн. DX * 1.214263
-	public static final String ATTR_COST_COMMON_PLACES_LIGHTENING_HARKOVGORLIFT_ZHILKOMSERVIS = "ATTR_COST_COMMON_PLACES_LIGHTENING_HARKOVGORLIFT_ZHILKOMSERVIS";
+	public static final String ATTR_COST_COMMON_PLACES_LIGHTENING_KHARKOVGORLIFT_ZHILKOMSERVIS = "ATTR_COST_COMMON_PLACES_LIGHTENING_KHARKOVGORLIFT_ZHILKOMSERVIS";
 
 }

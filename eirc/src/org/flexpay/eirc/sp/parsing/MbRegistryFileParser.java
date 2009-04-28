@@ -6,8 +6,10 @@ import org.flexpay.common.persistence.FPFile;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.registry.*;
 import org.flexpay.eirc.persistence.EircRegistryProperties;
+import org.flexpay.eirc.persistence.EircRegistryRecordProperties;
 import org.flexpay.eirc.service.*;
 import org.flexpay.eirc.sp.MbFileParser;
+import org.flexpay.eirc.util.config.ApplicationConfig;
 import org.flexpay.orgs.persistence.ServiceProvider;
 import org.flexpay.orgs.service.ServiceProviderService;
 import org.jetbrains.annotations.NotNull;
@@ -21,7 +23,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.math.BigDecimal;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Transactional (readOnly = true)
 public class MbRegistryFileParser extends MbFileParser<Registry> {
@@ -53,6 +57,8 @@ public class MbRegistryFileParser extends MbFileParser<Registry> {
 
 			ServiceProvider serviceProvider = null;
 
+			long recordsNum = 0;
+
 			for (int lineNum = 0;;lineNum++) {
 				String line = reader.readLine();
 				if (line == null) {
@@ -64,15 +70,19 @@ public class MbRegistryFileParser extends MbFileParser<Registry> {
 					serviceProvider = parseHeader(line);
 					EircRegistryProperties registryProperties = (EircRegistryProperties) propertiesFactory.newRegistryProperties();
 					registryProperties.setServiceProvider(serviceProvider);
+					registryProperties.setRegistry(registry);
+					registry.setSenderCode(serviceProvider.getOrganization().getId());
+					registry.setRecipientCode(ApplicationConfig.getSelfOrganization().getId());
 					registry.setProperties(registryProperties);
 					registry = registryService.create(registry);
 				} else if (line.startsWith(LAST_FILE_STRING_BEGIN)) {
-					registry.setRecordsNumber((long) lineNum - 2);
+					registry.setRecordsNumber(recordsNum);
 					break;
 				} else {
-					RegistryRecord record = parseRecord(line, serviceProvider);
-					record.setRegistry(registry);
-					registryRecordService.create(record);
+					recordsNum += parseRecord(registry, line);
+					if (recordsNum % 1000 == 0) {
+						log.info("{} records created", recordsNum);
+					}
 				}
 
 			}
@@ -91,6 +101,7 @@ public class MbRegistryFileParser extends MbFileParser<Registry> {
 
 	private ServiceProvider parseHeader(String line) throws FlexPayException {
 		String[] fields = line.split("=");
+		log.debug("Getting service provider with id = {} from DB", fields[1]);
 		ServiceProvider serviceProvider = serviceProviderService.read(new Stub<ServiceProvider>(Long.parseLong(fields[1])));
 		if (serviceProvider == null) {
 			throw new FlexPayException("Incorrect header line (can't find service provider with id " + fields[1] + ")");
@@ -98,28 +109,38 @@ public class MbRegistryFileParser extends MbFileParser<Registry> {
 		return serviceProvider;
 	}
 
-	private RegistryRecord parseRecord(String line, ServiceProvider serviceProvider) throws FlexPayException {
+	private long parseRecord(Registry registry, String line) throws FlexPayException {
 		String[] fields = line.split("=");
-		Long income = Long.parseLong(fields[1]);
-		Long saldo = Long.parseLong(fields[2]);
-
-		RegistryRecordContainer container = new RegistryRecordContainer();
-		container.setOrder(0);
-		container.setData("100::0:" + saldo +":::" + income + ":::");
 
 		RegistryRecord record = new RegistryRecord();
 		record.setRecordStatus(statusLoaded);
-		record.setAmount(BigDecimal.valueOf(saldo));
-		record.getContainers().add(container);
+		record.setAmount(new BigDecimal(fields[2]));
 		record.setServiceCode(fields[3]);
 		record.setPersonalAccountExt(fields[4]);
+		record.setRegistry(registry);
+
 		try {
 			record.setOperationDate(OPERATION_DATE_FORMAT.parse(fields[5]));
 		} catch (ParseException e) {
 			// do nothing
 		}
 
-		return record;
+		List<RegistryRecordContainer> containers = new ArrayList<RegistryRecordContainer>();
+
+		RegistryRecordContainer container = new RegistryRecordContainer();
+		container.setOrder(0);
+		container.setData("100::0:" + fields[2] +":::" + fields[1] + ":::");
+		container.setRecord(record);
+		containers.add(container);
+
+		record.setContainers(containers);
+
+		EircRegistryRecordProperties registryProperties = (EircRegistryRecordProperties) propertiesFactory.newRecordProperties();
+		registryProperties.setRecord(record);
+		record.setProperties(registryProperties);
+		registryRecordService.create(record);
+
+		return 1;
 	}
 
 	@Required

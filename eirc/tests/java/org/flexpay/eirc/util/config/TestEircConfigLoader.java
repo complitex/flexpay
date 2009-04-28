@@ -11,10 +11,9 @@ public class TestEircConfigLoader extends TestCommonConfigLoader {
 
 	@Test
 	public void testEircConfigLoader() throws Exception {
-
-
 		assertNotNull("Default town setup failed", ApplicationConfig.getDefaultTown());
 		assertNotNull("Default region setup failed", ApplicationConfig.getDefaultRegion());
 		assertNotNull("Default country setup failed", ApplicationConfig.getDefaultCountry());
 	}
+
 }

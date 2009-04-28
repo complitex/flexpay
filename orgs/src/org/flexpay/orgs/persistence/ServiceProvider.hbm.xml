@@ -75,9 +75,9 @@
 	<query name="ServiceProvider.readFull">
 		select distinct o
 		from ServiceProvider o
-		 	left join fetch o.descriptions
-		 	inner join fetch o.organization org
-		 	left join fetch org.names
+            left join fetch o.descriptions
+            inner join fetch o.organization org
+            left join fetch org.names
 		where o.id=?
 	</query>
 
