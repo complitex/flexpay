@@ -19,6 +19,8 @@ import org.flexpay.ab.persistence.Person;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
+import java.math.BigDecimal;
+
 public class SearchQuittanceAction extends FPActionSupport {
 
 	private static final String SEARCH_TYPE_EIRC_ACCOUNT = "EIRC_ACCOUNT";
@@ -157,6 +159,27 @@ public class SearchQuittanceAction extends FPActionSupport {
 		Long serviceId = getServiceId(serviceMasterIndex);
 		Service service = spService.read(new Stub<Service>(serviceId));
 		return service.isNotSubservice();
+	}
+
+	public BigDecimal getTotalPayable() {
+
+		BigDecimal total = new BigDecimal("0.00");
+
+		if (quittanceInfos.length > 0) {
+			for (QuittanceInfo.ServiceDetails serviceDetails : quittanceInfos[0].getDetailses()) {
+				total = total.add(serviceDetails.getOutgoingBalance());
+			}
+		}
+
+
+
+//		for (QuittanceDetails qd : quittance.getQuittanceDetails()) {
+//			if (!qd.getConsumer().getService().isSubService()) {
+//				total = total.add(qd.getOutgoingBalance());
+//			}
+//		}
+
+		return total;
 	}
 
 	// form data
