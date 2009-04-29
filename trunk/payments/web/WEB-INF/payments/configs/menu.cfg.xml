@@ -9,8 +9,7 @@
 		   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd
 		   http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.5.xsd">
 
-	<!-- TODO inject proper user roles -->
-
+	<!-- operator menu -->
 	<!-- level 1 -->
 	<bean name="payments" parent="fpMenu"
 		  p:name="payments"
@@ -20,16 +19,6 @@
 		  p:parent-ref="fpMenu">
         <property name="userRole">
             <util:constant static-field="org.flexpay.payments.service.Roles.ROLE_MENU_PAYMENTS" />
-        </property>
-    </bean>
-    <bean name="payments.acc" parent="fpMenu"
-          p:name="payments.acc"
-          p:title="payments.menu1.title"
-          p:namespace="/payments"
-          p:action="emptyPage"
-          p:parent-ref="fpMenu">
-        <property name="userRole">
-            <util:constant static-field="org.flexpay.payments.service.Roles.ROLE_MENU_PAYMENTS_ACCOUNTANT" />
         </property>
     </bean>
 
@@ -67,28 +56,6 @@
         </property>
     </bean>
 
-    <bean name="payments.registers" parent="payments.acc"
-          p:name="payments.registers"
-          p:title="payments.menu2.registry"
-          p:namespace="/payments"
-          p:action="emptyPage"
-          p:parent-ref="payments.acc">
-        <property name="userRole">
-            <util:constant static-field="org.flexpay.payments.service.Roles.ROLE_MENU_PAYMENTS_REGISTERS" />
-        </property>
-    </bean>
-
-    <bean name="payments.reports" parent="payments.acc"
-          p:name="payments.reports"
-          p:title="payments.menu2.reports"
-          p:namespace="/payments"
-          p:action="emptyPage"
-          p:parent-ref="payments.acc">
-        <property name="userRole">
-            <util:constant static-field="org.flexpay.payments.service.Roles.ROLE_MENU_PAYMENTS_REPORTS" />
-        </property>
-    </bean>
-
 	<!-- level 3 -->
 	<!-- level 3 search address-->
 	<bean name="payments.quittance.search_address.operations" parent="payments.quittance.search_address"
@@ -97,7 +64,7 @@
 		  p:action="main"
 		  p:parent-ref="payments.quittance.search_address">
         <property name="userRole">
-            <util:constant static-field="org.flexpay.payments.service.Roles.ROLE_MENU_PAYMENTS_OPERATIONS_ADDRESS" />
+            <util:constant static-field="org.flexpay.payments.service.Roles.ROLE_MENU_PAYMENTS_OPERATIONS" />
         </property>
     </bean>
 
@@ -107,7 +74,7 @@
 		  p:action="main"
 		  p:parent-ref="payments.quittance.search_address">
         <property name="userRole">
-            <util:constant static-field="org.flexpay.payments.service.Roles.ROLE_MENU_PAYMENTS_REPORTS_ADDRESS" />
+            <util:constant static-field="org.flexpay.payments.service.Roles.ROLE_MENU_PAYMENTS_REPORTS" />
         </property>
     </bean>
 
@@ -126,7 +93,7 @@ s-->
 		  p:action="main"
 		  p:parent-ref="payments.quittance.search_eircaccount">
         <property name="userRole">
-            <util:constant static-field="org.flexpay.payments.service.Roles.ROLE_MENU_PAYMENTS_OPERATIONS_ACCOUNT" />
+            <util:constant static-field="org.flexpay.payments.service.Roles.ROLE_MENU_PAYMENTS_OPERATIONS" />
         </property>
     </bean>
 
@@ -136,7 +103,7 @@ s-->
 		  p:action="main"
 		  p:parent-ref="payments.quittance.search_eircaccount">
         <property name="userRole">
-            <util:constant static-field="org.flexpay.payments.service.Roles.ROLE_MENU_PAYMENTS_REPORTS_ACCOUNT" />
+            <util:constant static-field="org.flexpay.payments.service.Roles.ROLE_MENU_PAYMENTS_REPORTS" />
         </property>
     </bean>
 
@@ -155,7 +122,7 @@ s-->
 		  p:action="main"
 		  p:parent-ref="payments.quittance.search_quittance">
         <property name="userRole">
-            <util:constant static-field="org.flexpay.payments.service.Roles.ROLE_MENU_PAYMENTS_OPERATIONS_QUITTANCE" />
+            <util:constant static-field="org.flexpay.payments.service.Roles.ROLE_MENU_PAYMENTS_OPERATIONS" />
         </property>
     </bean>
 
@@ -165,7 +132,7 @@ s-->
 		  p:action="main"
 		  p:parent-ref="payments.quittance.search_quittance">
         <property name="userRole">
-            <util:constant static-field="org.flexpay.payments.service.Roles.ROLE_MENU_PAYMENTS_REPORTS_QUITTANCE" />
+            <util:constant static-field="org.flexpay.payments.service.Roles.ROLE_MENU_PAYMENTS_REPORTS" />
         </property>
     </bean>
 
@@ -177,17 +144,6 @@ s-->
 		  p:parent-ref="payments.quittance.search_quittance"/>
 -->
 
-    <!-- level 3 reports -->
-    <bean name="payments.reports.reports" parent="payments.reports"
-          p:name="payments.reports2"
-          p:title="payments.menu3.reports"
-          p:action="emptyPage"
-          p:parent-ref="payments.reports">
-        <property name="userRole">
-            <util:constant static-field="org.flexpay.payments.service.Roles.ROLE_MENU_PAYMENTS_REPORTS_REPORTS" />
-        </property>
-    </bean>
-
 	<!-- level 4 -->
 	<!-- level 4 operations -->
 	<bean name="payments.quittance.search_address.operations.list" parent="payments.quittance.search_address.operations"
@@ -196,7 +152,7 @@ s-->
 		  p:action="operationsList"
 		  p:parent-ref="payments.quittance.search_address.operations">
         <property name="userRole">
-            <util:constant static-field="org.flexpay.payments.service.Roles.ROLE_MENU_PAYMENTS_OPERATIONS_LIST_ADDRESS" />
+            <util:constant static-field="org.flexpay.payments.service.Roles.ROLE_MENU_PAYMENTS_OPERATIONS_LIST" />
         </property>
     </bean>
 
@@ -206,7 +162,7 @@ s-->
 		  p:action="operationsList"
 		  p:parent-ref="payments.quittance.search_eircaccount.operations">
         <property name="userRole">
-            <util:constant static-field="org.flexpay.payments.service.Roles.ROLE_MENU_PAYMENTS_OPERATIONS_LIST_ACCOUNT" />
+            <util:constant static-field="org.flexpay.payments.service.Roles.ROLE_MENU_PAYMENTS_OPERATIONS_LIST" />
         </property>
     </bean>
 
@@ -216,73 +172,38 @@ s-->
 		  p:action="operationsList"
 		  p:parent-ref="payments.quittance.search_quittance.operations">
         <property name="userRole">
-            <util:constant static-field="org.flexpay.payments.service.Roles.ROLE_MENU_PAYMENTS_OPERATIONS_LIST_QUITTANCE" />
+            <util:constant static-field="org.flexpay.payments.service.Roles.ROLE_MENU_PAYMENTS_OPERATIONS_LIST" />
         </property>
     </bean>
 
 	<!-- level 4 reports -->
-	<bean name="payments.quittance.search_address.reports.generate" parent="payments.quittance.search_address.reports"
-		  p:name="payments.quittance.search_address.reports.generate"
-		  p:title="payments.menu4.generate_report"
+	<bean name="payments.quittance.search_address.reports.received" parent="payments.quittance.search_address.reports"
+		  p:name="payments.quittance.search_address.reports.received"
+		  p:title="payments.menu4.received_payments"
 		  p:action="generateReport"
 		  p:parent-ref="payments.quittance.search_address.reports">
         <property name="userRole">
-            <util:constant static-field="org.flexpay.payments.service.Roles.ROLE_MENU_PAYMENTS_TAKEN_REPORTS_ADDRESS" />
+            <util:constant static-field="org.flexpay.payments.service.Roles.ROLE_MENU_PAYMENTS_TAKEN_REPORTS" />
         </property>
     </bean>
 
-<!--
-	<bean parent="payments.quittance.search_quittance.reports"
-		  p:name="payments.report.generatePaymentsReport"
-		  p:title="payments.menu4.payments_import_report"
-		  p:action="generatePaymentsReport"
-		  p:parent-ref="payments.quittance.search_address.reports"/>
--->
-
-	<bean name="payments.quittance.search_eircaccount.reports.generate" parent="payments.quittance.search_eircaccount.reports"
-		  p:name="payments.quittance.search_eircaccount.reports.generate"
-		  p:title="payments.menu4.generate_report"
+	<bean name="payments.quittance.search_eircaccount.reports.received" parent="payments.quittance.search_eircaccount.reports"
+		  p:name="payments.quittance.search_eircaccount.reports.received"
+		  p:title="payments.menu4.received_payments"
 		  p:action="generateReport"
 		  p:parent-ref="payments.quittance.search_eircaccount.reports">
         <property name="userRole">
-            <util:constant static-field="org.flexpay.payments.service.Roles.ROLE_MENU_PAYMENTS_TAKEN_REPORTS_ACCOUNT" />
+            <util:constant static-field="org.flexpay.payments.service.Roles.ROLE_MENU_PAYMENTS_TAKEN_REPORTS" />
         </property>
     </bean>
 
-<!--
-	<bean parent="payments.quittance.search_quittance.reports"
-		  p:name="payments.report.generatePaymentsReport"
-		  p:title="payments.menu4.payments_import_report"
-		  p:action="generatePaymentsReport"
-		  p:parent-ref="payments.quittance.search_eircaccount.reports"/>
--->
-
-	<bean name="payments.quittance.search_quittance.reports.generate" parent="payments.quittance.search_quittance.reports"
-		  p:name="payments.quittance.search_quittance.reports.generate"
-		  p:title="payments.menu4.generate_report"
+	<bean name="payments.quittance.search_quittance.reports.received" parent="payments.quittance.search_quittance.reports"
+		  p:name="payments.quittance.search_quittance.reports.received"
+		  p:title="payments.menu4.received_payments"
 		  p:action="generateReport"
 		  p:parent-ref="payments.quittance.search_quittance.reports">
         <property name="userRole">
-            <util:constant static-field="org.flexpay.payments.service.Roles.ROLE_MENU_PAYMENTS_TAKEN_REPORTS_QUITTANCE" />
-        </property>
-    </bean>
-
-<!--
-	<bean parent="payments.quittance.search_quittance.reports"
-		  p:name="payments.report.generatePaymentsReport"
-		  p:title="payments.menu4.payments_import_report"
-		  p:action="generatePaymentsReport"
-		  p:parent-ref="payments.quittance.search_quittance.reports"/>
--->
-
-    <!-- level 4 reports -->
-    <bean name="payments.reports.reports.import" parent="payments.reports.reports"
-          p:name="payments.reports2.import"
-          p:title="payments.menu4.payments_import_report"
-          p:action="generatePaymentsReport"
-          p:parent-ref="payments.reports.reports">
-        <property name="userRole">
-            <util:constant static-field="org.flexpay.payments.service.Roles.ROLE_MENU_PAYMENTS_IMPORT_PAYMENTS" />
+            <util:constant static-field="org.flexpay.payments.service.Roles.ROLE_MENU_PAYMENTS_TAKEN_REPORTS" />
         </property>
     </bean>
 
@@ -306,5 +227,63 @@ s-->
 		  p:action="generateRegistry"
 		  p:parent-ref="payments.quittance.search_quittance.registries"/>
 -->
+
+	<!-- accountant menu -->
+	<!-- level 1 -->
+	<bean name="payments.acc" parent="fpMenu"
+          p:name="payments.acc"
+          p:title="payments.menu1.title"
+          p:namespace="/payments"
+          p:action="emptyPage"
+          p:parent-ref="fpMenu">
+        <property name="userRole">
+            <util:constant static-field="org.flexpay.payments.service.Roles.ROLE_MENU_PAYMENTS_ACCOUNTANT" />
+        </property>
+    </bean>
+
+	<!-- level 2 -->
+	<bean name="payments.registers" parent="payments.acc"
+          p:name="payments.registers"
+          p:title="payments.menu2.registry"
+          p:namespace="/payments"
+          p:action="emptyPage"
+          p:parent-ref="payments.acc">
+        <property name="userRole">
+            <util:constant static-field="org.flexpay.payments.service.Roles.ROLE_MENU_PAYMENTS_REGISTERS" />
+        </property>
+    </bean>
+
+    <bean name="payments.reports" parent="payments.acc"
+          p:name="payments.reports"
+          p:title="payments.menu2.reports"
+          p:namespace="/payments"
+          p:action="emptyPage"
+          p:parent-ref="payments.acc">
+        <property name="userRole">
+            <util:constant static-field="org.flexpay.payments.service.Roles.ROLE_MENU_PAYMENTS_REPORTS" />
+        </property>
+    </bean>
+
+	<!--level 3 -->
+	<bean name="payments.reports.reports" parent="payments.reports"
+          p:name="payments.reports2"
+          p:title="payments.menu3.reports"
+          p:action="emptyPage"
+          p:parent-ref="payments.reports">
+        <property name="userRole">
+            <util:constant static-field="org.flexpay.payments.service.Roles.ROLE_MENU_PAYMENTS_REPORTS" />
+        </property>
+    </bean>
+
+	<!-- level 4 -->
+	<bean name="payments.reports.reports.import" parent="payments.reports.reports"
+          p:name="payments.reports2.import"
+          p:title="payments.menu4.payments_import_report"
+          p:action="generatePaymentsReport"
+          p:parent-ref="payments.reports.reports">
+        <property name="userRole">
+            <util:constant static-field="org.flexpay.payments.service.Roles.ROLE_MENU_PAYMENTS_IMPORT_PAYMENTS" />
+        </property>
+    </bean>
 
 </beans>
