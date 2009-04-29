@@ -227,11 +227,11 @@
     </security-role>
 
 	<security-role>
-        <role-name>ROLE_MENU_PAYMENTS_TAKEN_REPORTS</role-name>
+        <role-name>ROLE_MENU_PAYMENTS_REPORTS_RECEIVED</role-name>
     </security-role>
 
     <security-role>
-        <role-name>ROLE_MENU_PAYMENTS_IMPORT_PAYMENTS</role-name>
+        <role-name>ROLE_MENU_PAYMENTS_REPORTS_IMPORT</role-name>
     </security-role>
 	
 	<login-config>

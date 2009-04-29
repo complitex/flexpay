@@ -822,7 +822,7 @@
     </security-role-mapping>
 
     <security-role-mapping>
-        <role-name>ROLE_MENU_PAYMENTS_TAKEN_REPORTS</role-name>
+        <role-name>ROLE_MENU_PAYMENTS_REPORTS_RECEIVED</role-name>
         <group-name>PAYMENTS_FULL_ACCESS</group-name>
     </security-role-mapping>
 
@@ -842,7 +842,7 @@
     </security-role-mapping>
 
     <security-role-mapping>
-        <role-name>ROLE_MENU_PAYMENTS_IMPORT_PAYMENTS</role-name>
+        <role-name>ROLE_MENU_PAYMENTS_REPORTS_IMPORT</role-name>
         <group-name>PAYMENTS_FULL_ACCESS</group-name>
     </security-role-mapping>
 
@@ -878,7 +878,7 @@
     </security-role-mapping>
 
     <security-role-mapping>
-        <role-name>ROLE_MENU_PAYMENTS_TAKEN_REPORTS</role-name>
+        <role-name>ROLE_MENU_PAYMENTS_REPORTS_RECEIVED</role-name>
         <group-name>PAYMENTS_OPERATOR_ACCESS</group-name>
     </security-role-mapping>
 
@@ -900,7 +900,7 @@
         <group-name>PAYMENTS_ACCOUNTANT_ACCESS</group-name>
     </security-role-mapping>
     <security-role-mapping>
-        <role-name>ROLE_MENU_PAYMENTS_IMPORT_PAYMENTS</role-name>
+        <role-name>ROLE_MENU_PAYMENTS_REPORTS_IMPORT</role-name>
         <group-name>PAYMENTS_ACCOUNTANT_ACCESS</group-name>
     </security-role-mapping>
 
