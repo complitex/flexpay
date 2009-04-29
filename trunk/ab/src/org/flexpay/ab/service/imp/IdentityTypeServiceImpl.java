@@ -4,13 +4,18 @@ import org.apache.commons.lang.StringUtils;
 import org.flexpay.ab.dao.IdentityTypeDao;
 import org.flexpay.ab.persistence.IdentityType;
 import org.flexpay.ab.persistence.IdentityTypeTranslation;
+import org.flexpay.ab.persistence.StreetType;
 import org.flexpay.ab.service.IdentityTypeService;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Language;
+import static org.flexpay.common.persistence.Stub.stub;
+import org.flexpay.common.persistence.history.ModificationListener;
 import static org.flexpay.common.util.CollectionUtils.list;
 import org.flexpay.common.util.LanguageUtil;
+import org.flexpay.common.util.TranslationUtil;
 import org.flexpay.common.util.config.ApplicationConfig;
+import org.flexpay.common.service.internal.SessionUtils;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -23,15 +28,15 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
 
-@Transactional (readOnly = true, rollbackFor = Exception.class)
+@Transactional (readOnly = true)
 public class IdentityTypeServiceImpl implements IdentityTypeService {
 
-	@NonNls
 	private Logger log = LoggerFactory.getLogger(getClass());
 
 	private IdentityTypeDao identityTypeDao;
 
-	private List<IdentityType> identityTypes;
+	private SessionUtils sessionUtils;
+	private ModificationListener<IdentityType> modificationListener;
 
 	/**
 	 * Get IdentityType translations for specified locale, if translation is not found check for translation in default
@@ -49,40 +54,21 @@ public class IdentityTypeServiceImpl implements IdentityTypeService {
 
 		Language language = LanguageUtil.getLanguage(locale);
 		Language defaultLang = ApplicationConfig.getDefaultLanguage();
-		List<IdentityType> types = identityTypeDao.listIdentityTypes(IdentityType.STATUS_ACTIVE);
+		List<IdentityType> types = getEntities();
 		List<IdentityTypeTranslation> translations = list();
 
 		log.debug("IdentityTypes: {}", types);
 
 		for (IdentityType identityType : types) {
-			IdentityTypeTranslation translation = getTypeTranslation(identityType, language, defaultLang);
+			IdentityTypeTranslation translation = TranslationUtil.getTranslation(identityType.getTranslations());
 			if (translation == null) {
-				log.error("No name for identity type: "
-						  + language.getLangIsoCode() + " : "
-						  + defaultLang.getLangIsoCode() + ", " + identityType);
+				log.error("No name for identity type: {}", identityType);
 				continue;
 			}
 			translations.add(translation);
 		}
 
 		return translations;
-	}
-
-	private IdentityTypeTranslation getTypeTranslation(IdentityType identityType,
-													   Language lang, Language defaultLang) {
-		IdentityTypeTranslation defaultTranslation = null;
-
-		Collection<IdentityTypeTranslation> names = identityType.getTranslations();
-		for (IdentityTypeTranslation translation : names) {
-			if (lang.equals(translation.getLang())) {
-				return translation;
-			}
-			if (defaultLang.equals(translation.getLang())) {
-				defaultTranslation = translation;
-			}
-		}
-
-		return defaultTranslation;
 	}
 
 	/**
@@ -93,13 +79,7 @@ public class IdentityTypeServiceImpl implements IdentityTypeService {
 	 */
 	@Nullable
 	public IdentityType read(@NotNull Long id) {
-		if (identityTypes != null) {
-			for (IdentityType type : identityTypes) {
-				if (id.equals(type.getId())) {
-					return type;
-				}
-			}
-		}
+
 		return identityTypeDao.readFull(id);
 	}
 
@@ -111,10 +91,13 @@ public class IdentityTypeServiceImpl implements IdentityTypeService {
 	@Transactional (readOnly = false)
 	public void disable(Collection<IdentityType> identityTypes) {
 		log.info("{} types to disable", identityTypes.size());
-		for (IdentityType identityType : identityTypes) {
-			identityType.setStatus(IdentityType.STATUS_DISABLED);
-			identityTypeDao.update(identityType);
-			log.info("Disabled: {}", identityType);
+		for (IdentityType type : identityTypes) {
+			type.disable();
+			identityTypeDao.update(type);
+
+			modificationListener.onDelete(type);
+
+			log.info("Disabled: {}", type);
 		}
 	}
 
@@ -133,6 +116,8 @@ public class IdentityTypeServiceImpl implements IdentityTypeService {
 		identityType.setId(null);
 		identityTypeDao.create(identityType);
 
+		modificationListener.onCreate(identityType);
+
 		return identityType;
 	}
 
@@ -147,6 +132,15 @@ public class IdentityTypeServiceImpl implements IdentityTypeService {
 	public IdentityType update(@NotNull IdentityType identityType) throws FlexPayExceptionContainer {
 
 		validate(identityType);
+
+		IdentityType old = read(identityType.getId());
+		if (old == null) {
+			throw new FlexPayExceptionContainer(
+					new FlexPayException("No object found to update " + identityType));
+		}
+		sessionUtils.evict(old);
+		modificationListener.onUpdate(old, identityType);
+
 		identityTypeDao.update(identityType);
 
 		return identityType;
@@ -181,24 +175,16 @@ public class IdentityTypeServiceImpl implements IdentityTypeService {
 	 * @param typeId Type id
 	 * @return IdentityType if found, or <code>null</code> otherwise
 	 */
+	@Nullable
 	public IdentityType getType(int typeId) {
-		initTypesCache();
-		for (IdentityType type : identityTypes) {
+
+		for (IdentityType type : getEntities()) {
 			if (type.getTypeId() == typeId) {
 				return type;
 			}
 		}
 
 		return null;
-	}
-
-	/**
-	 * @deprecated replace with external caching
-	 */
-	private void initTypesCache() {
-		if (identityTypes == null) {
-			identityTypes = getEntities();
-		}
 	}
 
 	/**
@@ -226,12 +212,21 @@ public class IdentityTypeServiceImpl implements IdentityTypeService {
 	 */
 	@NotNull
 	public List<IdentityType> getEntities() {
-		identityTypes = identityTypeDao.listIdentityTypes(IdentityType.STATUS_ACTIVE);
-		return identityTypes;
+		return identityTypeDao.listIdentityTypes(IdentityType.STATUS_ACTIVE);
 	}
 
 	@Required
 	public void setIdentityTypeDao(IdentityTypeDao identityTypeDao) {
 		this.identityTypeDao = identityTypeDao;
+	}
+
+	@Required
+	public void setSessionUtils(SessionUtils sessionUtils) {
+		this.sessionUtils = sessionUtils;
+	}
+
+	@Required
+	public void setModificationListener(ModificationListener<IdentityType> modificationListener) {
+		this.modificationListener = modificationListener;
 	}
 }
