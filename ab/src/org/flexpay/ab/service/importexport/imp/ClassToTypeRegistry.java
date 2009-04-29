@@ -44,6 +44,9 @@ public class ClassToTypeRegistry implements org.flexpay.common.service.importexp
 		if (Country.class.isAssignableFrom(clazz)) {
 			return MODULE_BASE + 0x01;
 		}
+		if (IdentityType.class.isAssignableFrom(clazz)) {
+			return MODULE_BASE + 0x0C;
+		}
 
 		throw new IllegalArgumentException("Class " + clazz + " has no assigned type");
 	}

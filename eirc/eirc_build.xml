@@ -60,7 +60,7 @@
 		eirc.runtests.nobuild - Run all module tests but skip build steps (added to speed up development process)
 			same test.class.name option applies to this target
 		eirc.war.production.tomcat_mysql5 - Build production war for Tomcat and MySQL5
-		eirc.war.production.flassfish_mysql5 - Build production war for Glassfish and MySQL5
+		eirc.war.production.glassfish_mysql5 - Build production war for Glassfish and MySQL5
 		</echo>
 	</target>
 
