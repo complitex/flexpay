@@ -41,6 +41,13 @@ public interface OrganizationService {
 	List<Organization> listOrganizations(Page<Organization> pager);
 
 	/**
+	 * List registered organizations which have any {@link org.flexpay.orgs.persistence.PaymentsCollector}s
+	 * @return list of organiztions which has collectors
+	 */
+	@Secured (Roles.ORGANIZATION_READ)
+	List<Organization> listOrganizationsWithCollectors();
+
+	/**
 	 * Disable organizations
 	 *
 	 * @param objectIds Organizations identifiers to disable

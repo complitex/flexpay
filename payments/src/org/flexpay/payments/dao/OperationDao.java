@@ -18,4 +18,13 @@ public interface OperationDao extends GenericDao<Operation, Long> {
 	 * @return list of operations
 	 */
 	List<Operation> listPaymentOperations(Date beginDate, Date endDate, Page<Operation> pager);
+
+	/**
+	 * List of all payment operations which has status REGISTERED inside time interval and organization
+	 * @param organizationId organization id
+	 * @param beginDate lower bound for operation registration date
+	 * @param endDate higher bound for operation registration date
+	 * @return list of payment operations
+	 */
+	List<Operation> listReceivedPayments(Long organizationId, Date beginDate, Date endDate);
 }

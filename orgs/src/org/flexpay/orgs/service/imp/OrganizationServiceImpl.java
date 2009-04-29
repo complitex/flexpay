@@ -48,8 +48,18 @@ public class OrganizationServiceImpl implements OrganizationService {
 		log.debug("Init organizations filter: {}", organizations);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public List<Organization> listOrganizations(Page<Organization> pager) {
 		return organizationDao.findOrganizations(pager);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public List<Organization> listOrganizationsWithCollectors() {
+		return organizationDao.findOrganizationsWithCollectors();
 	}
 
 	/**

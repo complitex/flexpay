@@ -35,7 +35,7 @@
 	<!-- reports-related definitions -->
 	<definition name="payments.report.generate" extends="ab.layout.standart">
 		<put-attribute name="title" value="payments.report.generate.title"/>
-		<put-attribute name="body" value="/WEB-INF/jsp/payments/reports/generate_report.jsp"/>
+		<put-attribute name="body" value="/WEB-INF/jsp/payments/reports/received_payments_report.jsp"/>
 	</definition>
 
 	<definition name="payments.report.generatePaymentsReport" extends="ab.layout.standart">
