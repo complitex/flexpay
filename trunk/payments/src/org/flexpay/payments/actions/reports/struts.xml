@@ -6,7 +6,7 @@
 
 	<package name="reports" namespace="/payments" extends="common">
 
-		<action name="generateReport" class="generateReportAction">
+		<action name="receivedPaymentsReport" class="generateReportAction">
 			<result type="tiles">payments.report.generate</result>
 		</action>
 

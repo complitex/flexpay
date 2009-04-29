@@ -31,4 +31,9 @@ public interface OrganizationDao extends GenericDao<Organization, Long> {
 	 */
 	List<Organization> findOrganizations(Page<Organization> pager);
 
+	/**
+	 * Find organizations which have any {@link org.flexpay.orgs.persistence.PaymentsCollector}s
+	 * @return list of organizations
+	 */
+	List<Organization> findOrganizationsWithCollectors();
 }
