@@ -9,6 +9,8 @@
 		   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd
 		   http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.5.xsd">
 
+	<!-- payments menu coniguration -->
+
 	<!-- operator menu -->
 	<!-- level 1 -->
 	<bean name="payments" parent="fpMenu"
@@ -68,24 +70,6 @@
         </property>
     </bean>
 
-	<bean name="payments.quittance.search_address.reports" parent="payments.quittance.search_address"
-		  p:name="payments.quittance.search_address.reports"
-		  p:title="payments.menu3.reports"
-		  p:action="main"
-		  p:parent-ref="payments.quittance.search_address">
-        <property name="userRole">
-            <util:constant static-field="org.flexpay.payments.service.Roles.ROLE_MENU_PAYMENTS_REPORTS" />
-        </property>
-    </bean>
-
-<!--
-	<bean name="payments.quittance.search_address.registries" parent="payments.quittance.search_address"
-		  p:name="payments.quittance.search_address.registries"
-		  p:title="payments.menu3.registries"
-		  p:action="main"
-		  p:parent-ref="payments.quittance.search_address"/>
-s-->
-
 	<!-- level 3 search eirc account-->
 	<bean name="payments.quittance.search_eircaccount.operations" parent="payments.quittance.search_eircaccount"
 		  p:name="payments.quittance.search_eircaccount.operations"
@@ -97,24 +81,6 @@ s-->
         </property>
     </bean>
 
-	<bean name="payments.quittance.search_eircaccount.reports" parent="payments.quittance.search_eircaccount"
-		  p:name="payments.quittance.search_eircaccount.reports"
-		  p:title="payments.menu3.reports"
-		  p:action="main"
-		  p:parent-ref="payments.quittance.search_eircaccount">
-        <property name="userRole">
-            <util:constant static-field="org.flexpay.payments.service.Roles.ROLE_MENU_PAYMENTS_REPORTS" />
-        </property>
-    </bean>
-
-<!--
-	<bean name="payments.quittance.search_eircaccount.registries" parent="payments.quittance.search_eircaccount"
-		  p:name="payments.quittance.search_eircaccount.registries"
-		  p:title="payments.menu3.registries"
-		  p:action="main"
-		  p:parent-ref="payments.quittance.search_eircaccount"/>
--->
-
 	<!-- level 3 search quittance-->
 	<bean name="payments.quittance.search_quittance.operations" parent="payments.quittance.search_quittance"
 		  p:name="payments.quittance.search_quittance.operations"
@@ -125,24 +91,6 @@ s-->
             <util:constant static-field="org.flexpay.payments.service.Roles.ROLE_MENU_PAYMENTS_OPERATIONS" />
         </property>
     </bean>
-
-	<bean name="payments.quittance.search_quittance.reports" parent="payments.quittance.search_quittance"
-		  p:name="payments.quittance.search_quittance.reports"
-		  p:title="payments.menu3.reports"
-		  p:action="main"
-		  p:parent-ref="payments.quittance.search_quittance">
-        <property name="userRole">
-            <util:constant static-field="org.flexpay.payments.service.Roles.ROLE_MENU_PAYMENTS_REPORTS" />
-        </property>
-    </bean>
-
-<!--
-	<bean name="payments.quittance.search_quittance.registries" parent="payments.quittance.search_quittance"
-		  p:name="payments.quittance.search_quittance.registries"
-		  p:title="payments.menu3.registries"
-		  p:action="main"
-		  p:parent-ref="payments.quittance.search_quittance"/>
--->
 
 	<!-- level 4 -->
 	<!-- level 4 operations -->
@@ -175,58 +123,6 @@ s-->
             <util:constant static-field="org.flexpay.payments.service.Roles.ROLE_MENU_PAYMENTS_OPERATIONS_LIST" />
         </property>
     </bean>
-
-	<!-- level 4 reports -->
-	<bean name="payments.quittance.search_address.reports.received" parent="payments.quittance.search_address.reports"
-		  p:name="payments.quittance.search_address.reports.received"
-		  p:title="payments.menu4.received_payments"
-		  p:action="generateReport"
-		  p:parent-ref="payments.quittance.search_address.reports">
-        <property name="userRole">
-            <util:constant static-field="org.flexpay.payments.service.Roles.ROLE_MENU_PAYMENTS_TAKEN_REPORTS" />
-        </property>
-    </bean>
-
-	<bean name="payments.quittance.search_eircaccount.reports.received" parent="payments.quittance.search_eircaccount.reports"
-		  p:name="payments.quittance.search_eircaccount.reports.received"
-		  p:title="payments.menu4.received_payments"
-		  p:action="generateReport"
-		  p:parent-ref="payments.quittance.search_eircaccount.reports">
-        <property name="userRole">
-            <util:constant static-field="org.flexpay.payments.service.Roles.ROLE_MENU_PAYMENTS_TAKEN_REPORTS" />
-        </property>
-    </bean>
-
-	<bean name="payments.quittance.search_quittance.reports.received" parent="payments.quittance.search_quittance.reports"
-		  p:name="payments.quittance.search_quittance.reports.received"
-		  p:title="payments.menu4.received_payments"
-		  p:action="generateReport"
-		  p:parent-ref="payments.quittance.search_quittance.reports">
-        <property name="userRole">
-            <util:constant static-field="org.flexpay.payments.service.Roles.ROLE_MENU_PAYMENTS_TAKEN_REPORTS" />
-        </property>
-    </bean>
-
-	<!-- level 4 registries -->
-<!--
-	<bean name="payments.quittance.search_address.registries.generate" parent="payments.quittance.search_address.registries"
-		  p:name="payments.quittance.search_address.registries.generate"
-		  p:title="payments.menu4.generate_registry"
-		  p:action="generateRegistry"
-		  p:parent-ref="payments.quittance.search_address.registries"/>
-
-	<bean name="payments.quittance.search_eircaccount.registries.generate" parent="payments.quittance.search_eircaccount.registries"
-		  p:name="payments.quittance.search_eircaccount.registries.generate"
-		  p:title="payments.menu4.generate_registry"
-		  p:action="generateRegistry"
-		  p:parent-ref="payments.quittance.search_eircaccount.registries"/>
-
-	<bean name="payments.quittance.search_quittance.registries.generate" parent="payments.quittance.search_quittance.registries"
-		  p:name="payments.quittance.search_quittance.registries.generate"
-		  p:title="payments.menu4.generate_registry"
-		  p:action="generateRegistry"
-		  p:parent-ref="payments.quittance.search_quittance.registries"/>
--->
 
 	<!-- accountant menu -->
 	<!-- level 1 -->
@@ -282,7 +178,17 @@ s-->
           p:action="generatePaymentsReport"
           p:parent-ref="payments.reports.reports">
         <property name="userRole">
-            <util:constant static-field="org.flexpay.payments.service.Roles.ROLE_MENU_PAYMENTS_IMPORT_PAYMENTS" />
+            <util:constant static-field="org.flexpay.payments.service.Roles.ROLE_MENU_PAYMENTS_REPORTS_IMPORT" />
+        </property>
+    </bean>
+
+	<bean name="payments.reports.reports.received" parent="payments.reports.reports"
+          p:name="payments.reports2.received"
+          p:title="payments.menu4.received_payments"
+          p:action="generateReport"
+          p:parent-ref="payments.reports.reports">
+        <property name="userRole">
+            <util:constant static-field="org.flexpay.payments.service.Roles.ROLE_MENU_PAYMENTS_REPORTS_RECEIVED" />
         </property>
     </bean>
 
