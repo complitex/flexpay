@@ -170,6 +170,10 @@
 		  parent="abHistoryBuilderBase"
 		  class="org.flexpay.ab.service.history.TownTypeHistoryBuilder" />
 
+	<bean id="identityTypeHistoryBuilder"
+		  parent="abHistoryBuilderBase"
+		  class="org.flexpay.ab.service.history.IdentityTypeHistoryBuilder" />
+
 	<bean id="townHistoryBuilder"
 		  parent="abHistoryBuilderBase"
 		  class="org.flexpay.ab.service.history.TownHistoryBuilder" />
@@ -206,6 +210,12 @@
 		  p:historyBuilder-ref="townTypeHistoryBuilder"
 		  p:townTypeService-ref="townTypeService" />
 
+	<bean id="identityTypeHistoryGenerator"
+		  class="org.flexpay.ab.service.history.IdentityTypeHistoryGenerator"
+		  p:diffService-ref="diffService"
+		  p:historyBuilder-ref="identityTypeHistoryBuilder"
+		  p:identityTypeService-ref="identityTypeService" />
+
 	<bean id="townHistoryGenerator"
 		  class="org.flexpay.ab.service.history.TownHistoryGenerator"
 		  p:diffService-ref="diffService"
@@ -220,7 +230,9 @@
 		  p:streetService-ref="streetService"
 		  p:streetHistoryGenerator-ref="streetHistoryGenerator"
 		  p:addressAttributeTypeService-ref="addressAttributeTypeService"
-		  p:addressAttributeTypeHistoryGenerator-ref="addressAttributeTypeHistoryGenerator" />
+		  p:addressAttributeTypeHistoryGenerator-ref="addressAttributeTypeHistoryGenerator"
+		  p:identityTypeService-ref="identityTypeService"
+		  p:identityTypeHistoryGenerator-ref="identityTypeHistoryGenerator" />
 
 	<bean id="districtHistoryGenerator"
 		  class="org.flexpay.ab.service.history.DistrictHistoryGenerator"
@@ -281,6 +293,12 @@
 		  p:townTypeService-ref="townTypeService"
 		  p:historyBuilder-ref="townTypeHistoryBuilder" />
 
+	<bean id="identityTypeHistoryHandler"
+		  parent="abHistoryHandlerBase"
+		  class="org.flexpay.ab.service.history.IdentityTypeHistoryHandler"
+		  p:identityTypeService-ref="identityTypeService"
+		  p:historyBuilder-ref="townTypeHistoryBuilder" />
+
 	<bean id="streetTypeHistoryHandler"
 		  parent="abHistoryHandlerBase"
 		  class="org.flexpay.ab.service.history.StreetTypeHistoryHandler"
@@ -328,6 +346,7 @@
 				<ref bean="townTypeHistoryHandler" />
 				<ref bean="streetTypeHistoryHandler" />
 				<ref bean="addressAttributeTypeHistoryHandler" />
+				<ref bean="identityTypeHistoryHandler" />
 			</list>
 		</property>
 	</bean>

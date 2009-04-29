@@ -38,6 +38,9 @@ public class TownHistoryGenerator implements HistoryGenerator<Town> {
 	private AddressAttributeTypeService addressAttributeTypeService;
 	private AddressAttributeTypeHistoryGenerator addressAttributeTypeHistoryGenerator;
 
+	private IdentityTypeService identityTypeService;
+	private IdentityTypeHistoryGenerator identityTypeHistoryGenerator;
+
 	/**
 	 * Do generation
 	 *
@@ -67,6 +70,13 @@ public class TownHistoryGenerator implements HistoryGenerator<Town> {
 			addressAttributeTypeHistoryGenerator.generateFor(type);
 		}
 		log.debug("ended generating history for address attribute types");
+
+		log.debug("starting generating history for identity types");
+		// generate history for all identity types
+		for (IdentityType type : identityTypeService.getEntities()) {
+			identityTypeHistoryGenerator.generateFor(type);
+		}
+		log.debug("ended generating history for identity types");
 
 		// now create town history
 		Town town = townService.readFull(stub(obj));
@@ -166,5 +176,15 @@ public class TownHistoryGenerator implements HistoryGenerator<Town> {
 	@Required
 	public void setAddressAttributeTypeHistoryGenerator(AddressAttributeTypeHistoryGenerator addressAttributeTypeHistoryGenerator) {
 		this.addressAttributeTypeHistoryGenerator = addressAttributeTypeHistoryGenerator;
+	}
+
+	@Required
+	public void setIdentityTypeService(IdentityTypeService identityTypeService) {
+		this.identityTypeService = identityTypeService;
+	}
+
+	@Required
+	public void setIdentityTypeHistoryGenerator(IdentityTypeHistoryGenerator identityTypeHistoryGenerator) {
+		this.identityTypeHistoryGenerator = identityTypeHistoryGenerator;
 	}
 }

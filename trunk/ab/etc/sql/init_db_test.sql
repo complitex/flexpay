@@ -1,3 +1,25 @@
+-- Init Identity types
+INSERT INTO ab_identity_types_tbl (status, type_enum) VALUES (0, 1);
+SELECT @identity_type_fio_id:=last_insert_id();
+INSERT INTO ab_identity_type_translations_tbl (name, language_id, identity_type_id)
+	VALUES ('ФИО', @ru_id, @identity_type_fio_id);
+INSERT INTO ab_identity_type_translations_tbl (name, language_id, identity_type_id)
+	VALUES ('FIO', @en_id, @identity_type_fio_id);
+
+INSERT INTO ab_identity_types_tbl (status, type_enum) VALUES (0, 2);
+SELECT @identity_type_passport_id:=last_insert_id();
+INSERT INTO ab_identity_type_translations_tbl (name, language_id, identity_type_id)
+	VALUES ('Паспорт', @ru_id, @identity_type_passport_id);
+INSERT INTO ab_identity_type_translations_tbl (name, language_id, identity_type_id)
+	VALUES ('Passport', @en_id, @identity_type_passport_id);
+
+INSERT INTO ab_identity_types_tbl (status, type_enum) VALUES (0, 3);
+SELECT @identity_type_foreign_passport_id:=last_insert_id();
+INSERT INTO ab_identity_type_translations_tbl (name, language_id, identity_type_id)
+	VALUES ('Заграничный паспорт', @ru_id, @identity_type_foreign_passport_id);
+INSERT INTO ab_identity_type_translations_tbl (name, language_id, identity_type_id)
+	VALUES ('ForeignPassport', @en_id, @identity_type_foreign_passport_id);
+
 -- Init Town Types table
 INSERT INTO ab_town_types_tbl (id, status) VALUES (1, 0);
 SELECT @town_type_town_id:=1;
