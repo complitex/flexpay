@@ -19,8 +19,9 @@ public interface MultilangEntityService<Entity, T extends Translation> {
 	 *
 	 * @param id Entity key
 	 * @return Entity object, or <code>null</code> if object not found
+	 * @deprecated refactore to use {@link Stub}
 	 */
-	public Entity read(Long id);
+	Entity read(Long id);
 
 	/**
 	 * Get Entity translations for specified locale, if translation is not found check for

@@ -15,6 +15,8 @@ import org.flexpay.common.persistence.history.ModificationListener;
 import org.flexpay.common.service.importexport.CorrectionsService;
 import org.flexpay.common.service.internal.SessionUtils;
 import org.flexpay.common.util.LanguageUtil;
+import org.flexpay.common.util.TranslationUtil;
+import static org.flexpay.common.util.CollectionUtils.list;
 import org.flexpay.common.util.config.ApplicationConfig;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -46,59 +48,28 @@ public class StreetTypeServiceImpl implements StreetTypeService {
 	 *
 	 * @param locale Locale to get translations for
 	 * @return List of StreetTypes
-	 * @throws org.flexpay.common.exception.FlexPayException
-	 *          if failure occurs
 	 */
-	public List<StreetTypeTranslation> getTranslations(Locale locale)
-			throws FlexPayException {
+	public List<StreetTypeTranslation> getTranslations(Locale locale) {
 
 		log.debug("Getting list of StreetTypes");
 
 		Language language = LanguageUtil.getLanguage(locale);
 		Language defaultLang = ApplicationConfig.getDefaultLanguage();
-		List<StreetType> streetTypes = streetTypeDao
-				.listStreetTypes(StreetType.STATUS_ACTIVE);
-		List<StreetTypeTranslation> translations = new ArrayList<StreetTypeTranslation>(
-				streetTypes.size());
+		List<StreetType> streetTypes = getEntities();
+		List<StreetTypeTranslation> translations = list();
 
 		log.debug("StreetTypes: {}", streetTypes);
 
-		for (StreetType streetType : streetTypes) {
-			StreetTypeTranslation translation = getTypeTranslation(streetType,
-					language, defaultLang);
+		for (StreetType type : streetTypes) {
+			StreetTypeTranslation translation = TranslationUtil.getTranslation(type.getTranslations());
 			if (translation == null) {
-				log.error("No name for street type: "
-						  + language.getLangIsoCode() + " : "
-						  + defaultLang.getLangIsoCode() + ", " + streetType);
+				log.error("No name for street type: {}", type);
 				continue;
 			}
 			translations.add(translation);
 		}
 
 		return translations;
-	}
-
-	private StreetTypeTranslation getTypeTranslation(StreetType streetType,
-													 Language lang, Language defaultLang) {
-		StreetTypeTranslation defaultTranslation = null;
-
-		Collection<StreetTypeTranslation> names = streetType
-				.getTranslations();
-		log.debug("Gettting translation: {} : {}", lang.getLangIsoCode(), names);
-		for (StreetTypeTranslation translation : names) {
-			if (lang.equals(translation.getLang())) {
-				log.debug("Found translation: {}", translation);
-				return translation;
-			}
-			if (defaultLang.equals(translation.getLang())) {
-				log.debug("Found default translation: {}", translation);
-				defaultTranslation = translation;
-			}
-
-			log.debug("Translation is invalid: {}", translation);
-		}
-
-		return defaultTranslation;
 	}
 
 	/**
@@ -139,7 +110,6 @@ public class StreetTypeServiceImpl implements StreetTypeService {
 		}
 	}
 
-	@Transactional (readOnly = true)
 	@Nullable
 	public StreetType findTypeByName(@NotNull String typeName) throws FlexPayException {
 		for (StreetType type : getEntities()) {

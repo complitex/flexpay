@@ -63,9 +63,10 @@ public interface StreetTypeService extends
 	 * @return List of Translation
 	 * @throws org.flexpay.common.exception.FlexPayException
 	 *          if failure occurs
+	 * @deprecated remove me
 	 */
 	@Secured (Roles.STREET_TYPE_READ)
-	List<StreetTypeTranslation> getTranslations(Locale locale) throws FlexPayException;
+	List<StreetTypeTranslation> getTranslations(Locale locale);
 
 	/**
 	 * Get a list of available street types

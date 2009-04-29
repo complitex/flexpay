@@ -146,8 +146,15 @@
 		  p:sessionUtils-ref="sessionUtils"
 		  p:modificationListener-ref="streetTypeHistoryChangesListener" />
 
-	<bean id="identityTypeService"
+	<bean id="identityTypeHistoryChangesListener"
+		  parent="historyChangesListenerBase"
+		  p:historyBuilder-ref="identityTypeHistoryBuilder" />
+
+	<bean id="identityTypeServiceTarget"
+		  autowire-candidate="false"
 		  class="org.flexpay.ab.service.imp.IdentityTypeServiceImpl"
+		  p:sessionUtils-ref="sessionUtils"
+		  p:modificationListener-ref="identityTypeHistoryChangesListener"
 		  p:identityTypeDao-ref="identityTypeDao" />
 
 	<bean id="personService"
