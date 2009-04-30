@@ -6,17 +6,11 @@ import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.exception.FlexPayException;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Required;
 
 import java.util.*;
 
 public class ApartmentRegistrationAction extends FPActionSupport {
-
-	private ApartmentService apartmentService;
-	private BuildingService buildingService;
-	private StreetService streetService;
-	private TownService townService;
-	private RegionService regionService;
-	private CountryService countryService;
 
 	private Apartment apartment = new Apartment();
 	private BuildingAddress buildings;
@@ -24,6 +18,13 @@ public class ApartmentRegistrationAction extends FPActionSupport {
 	private Town town;
 	private Region region;
 	private Country country;
+
+	private ApartmentService apartmentService;
+	private BuildingService buildingService;
+	private StreetService streetService;
+	private TownService townService;
+	private RegionService regionService;
+	private CountryService countryService;
 
 	@NotNull
 	public String doExecute() throws FlexPayException {
@@ -63,16 +64,10 @@ public class ApartmentRegistrationAction extends FPActionSupport {
 		return result;
 	}
 
-	/**
-	 * @return the apartment
-	 */
 	public Apartment getApartment() {
 		return apartment;
 	}
 
-	/**
-	 * @param apartment the apartment to set
-	 */
 	public void setApartment(Apartment apartment) {
 		this.apartment = apartment;
 	}
@@ -81,77 +76,54 @@ public class ApartmentRegistrationAction extends FPActionSupport {
 		return street;
 	}
 
-	/**
-	 * @return the buildings
-	 */
 	public BuildingAddress getBuildings() {
 		return buildings;
 	}
 
-	/**
-	 * @return the town
-	 */
 	public Town getTown() {
 		return town;
 	}
 
-	/**
-	 * @return the region
-	 */
 	public Region getRegion() {
 		return region;
 	}
 
-	/**
-	 * @return the country
-	 */
 	public Country getCountry() {
 		return country;
 	}
 
-	/**
-	 * @param buildingAddress the buildings to set
-	 */
 	public void setBuildings(BuildingAddress buildingAddress) {
 		this.buildings = buildingAddress;
 	}
 
-	/**
-	 * @param apartmentService the apartmentService to set
-	 */
+	@Required
 	public void setApartmentService(ApartmentService apartmentService) {
 		this.apartmentService = apartmentService;
 	}
 
-	/**
-	 * @param buildingService the buildingService to set
-	 */
+	@Required
 	public void setBuildingService(BuildingService buildingService) {
 		this.buildingService = buildingService;
 	}
 
+	@Required
 	public void setStreetService(StreetService streetService) {
 		this.streetService = streetService;
 	}
 
-	/**
-	 * @param townService the townService to set
-	 */
+	@Required
 	public void setTownService(TownService townService) {
 		this.townService = townService;
 	}
 
-	/**
-	 * @param regionService the regionService to set
-	 */
+	@Required
 	public void setRegionService(RegionService regionService) {
 		this.regionService = regionService;
 	}
 
-	/**
-	 * @param countryService the countryService to set
-	 */
+	@Required
 	public void setCountryService(CountryService countryService) {
 		this.countryService = countryService;
 	}
+
 }

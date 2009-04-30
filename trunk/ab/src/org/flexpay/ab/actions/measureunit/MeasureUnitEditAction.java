@@ -9,15 +9,17 @@ import org.flexpay.common.service.MeasureUnitService;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.config.ApplicationConfig;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Required;
 
 import java.util.Map;
 
 public class MeasureUnitEditAction extends FPActionSupport {
 
-	private MeasureUnitService measureUnitService;
-
 	private MeasureUnit measureUnit = new MeasureUnit();
 	private Map<Long, String> names = CollectionUtils.treeMap();
+
+	private String crumbCreateKey;
+	private MeasureUnitService measureUnitService;
 
 	/**
 	 * Perform action execution.
@@ -46,7 +48,7 @@ public class MeasureUnitEditAction extends FPActionSupport {
 
 		log.debug("Unit names before: {}", unit.getUnitNames());
 
-		if (!isSubmit()) {
+		if (isNotSubmit()) {
 			measureUnit = unit;
 			initNames();
 			return INPUT;
@@ -80,6 +82,14 @@ public class MeasureUnitEditAction extends FPActionSupport {
 		return INPUT;
 	}
 
+	@Override
+	protected void setBreadCrumbs() {
+		if (measureUnit.isNew()) {
+			crumbNameKey = crumbCreateKey;
+		}
+		super.setBreadCrumbs();
+	}
+
 	private void initNames() {
 		for (MeasureUnitName name : measureUnit.getUnitNames()) {
 			names.put(name.getLang().getId(), name.getName());
@@ -109,7 +119,13 @@ public class MeasureUnitEditAction extends FPActionSupport {
 		this.names = names;
 	}
 
+	public void setCrumbCreateKey(String crumbCreateKey) {
+		this.crumbCreateKey = crumbCreateKey;
+	}
+
+	@Required
 	public void setMeasureUnitService(MeasureUnitService measureUnitService) {
 		this.measureUnitService = measureUnitService;
 	}
+
 }

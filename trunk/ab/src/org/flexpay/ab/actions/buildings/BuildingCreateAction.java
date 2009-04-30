@@ -22,11 +22,6 @@ import java.util.Map;
 
 public class BuildingCreateAction extends FPActionSupport {
 
-	private ParentService<StreetFilter> parentService;
-	private BuildingService buildingService;
-	private AddressAttributeTypeService addressAttributeTypeService;
-	private DistrictService districtService;
-
 	private CountryFilter countryFilter = new CountryFilter();
 	private RegionFilter regionFilter = new RegionFilter();
 	private TownFilter townFilter = new TownFilter();
@@ -38,6 +33,11 @@ public class BuildingCreateAction extends FPActionSupport {
 
 	// type id to value mapping
 	private Map<Long, String> attributeMap = CollectionUtils.treeMap();
+
+	private ParentService<StreetFilter> parentService;
+	private BuildingService buildingService;
+	private AddressAttributeTypeService addressAttributeTypeService;
+	private DistrictService districtService;
 
 	public BuildingCreateAction() {
 		streetNameFilter.setShowSearchString(true);
@@ -134,11 +134,6 @@ public class BuildingCreateAction extends FPActionSupport {
 		return getTranslation(type.getTranslations()).getName();
 	}
 
-	/**
-	 * Getter for property 'filters'.
-	 *
-	 * @return Value for property 'filters'.
-	 */
 	public ArrayStack getFilters() {
 
 		ArrayStack filters = new ArrayStack();
@@ -150,11 +145,6 @@ public class BuildingCreateAction extends FPActionSupport {
 		return filters;
 	}
 
-	/**
-	 * Setter for property 'filters'.
-	 *
-	 * @param filters Value to set for property 'filters'.
-	 */
 	public void setFilters(ArrayStack filters) {
 		countryFilter = (CountryFilter) filters.peek(3);
 		regionFilter = (RegionFilter) filters.peek(2);
@@ -162,91 +152,46 @@ public class BuildingCreateAction extends FPActionSupport {
 		streetNameFilter = (StreetNameFilter) filters.peek(0);
 	}
 
-	/**
-	 * Getter for property 'countryFilter'.
-	 *
-	 * @return Value for property 'countryFilter'.
-	 */
 	public CountryFilter getCountryFilter() {
 		return countryFilter;
 	}
 
-	/**
-	 * Setter for property 'countryFilter'.
-	 *
-	 * @param countryFilter Value to set for property 'countryFilter'.
-	 */
 	public void setCountryFilter(CountryFilter countryFilter) {
 		this.countryFilter = countryFilter;
 	}
 
-	/**
-	 * Getter for property 'regionFilter'.
-	 *
-	 * @return Value for property 'regionFilter'.
-	 */
 	public RegionFilter getRegionFilter() {
 		return regionFilter;
 	}
 
-	/**
-	 * Setter for property 'regionFilter'.
-	 *
-	 * @param regionFilter Value to set for property 'regionFilter'.
-	 */
 	public void setRegionFilter(RegionFilter regionFilter) {
 		this.regionFilter = regionFilter;
 	}
 
-	/**
-	 * Getter for property 'townFilter'.
-	 *
-	 * @return Value for property 'townFilter'.
-	 */
 	public TownFilter getTownFilter() {
 		return townFilter;
 	}
 
-	/**
-	 * Setter for property 'townFilter'.
-	 *
-	 * @param townFilter Value to set for property 'townFilter'.
-	 */
 	public void setTownFilter(TownFilter townFilter) {
 		this.townFilter = townFilter;
 	}
 
-	/**
-	 * @param buildingId the buildingId to set
-	 */
 	public void setBuildingId(Long buildingId) {
 		this.buildingId = buildingId;
 	}
 
-	/**
-	 * @return the buildingId
-	 */
 	public Long getBuildingId() {
 		return buildingId;
 	}
 
-	/**
-	 * @return the createdBuildings
-	 */
 	public BuildingAddress getBuildings() {
 		return buildings;
 	}
 
-	/**
-	 * @return the attributeMap
-	 */
 	public Map<Long, String> getAttributeMap() {
 		return attributeMap;
 	}
 
-	/**
-	 * @param attributeMap the attributeMap to set
-	 */
 	public void setAttributeMap(Map<Long, String> attributeMap) {
 		this.attributeMap = attributeMap;
 	}
@@ -286,4 +231,5 @@ public class BuildingCreateAction extends FPActionSupport {
 	public void setBuildingAttributeTypeService(AddressAttributeTypeService addressAttributeTypeService) {
 		this.addressAttributeTypeService = addressAttributeTypeService;
 	}
+
 }

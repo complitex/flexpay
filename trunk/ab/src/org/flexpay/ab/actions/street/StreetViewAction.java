@@ -12,4 +12,5 @@ public class StreetViewAction extends ObjectViewAction<
 	public StreetViewAction() {
 		setObject(new Street());
 	}
+
 }

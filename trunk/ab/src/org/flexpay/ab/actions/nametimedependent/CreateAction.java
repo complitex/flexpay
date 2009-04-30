@@ -33,8 +33,7 @@ public abstract class CreateAction<
 		HttpServletRequest request = ServletActionContext.getRequest();
 		List<Language> langs = ApplicationConfig.getLanguages();
 		for (Language lang : langs) {
-			T nameTranslation = nameTimeDependentService
-					.getEmptyNameTranslation();
+			T nameTranslation = nameTimeDependentService.getEmptyNameTranslation();
 			nameTranslation.setLang(lang);
 			String name = request.getParameter("translation." + lang.getId());
 			if (name != null) {
@@ -51,14 +50,13 @@ public abstract class CreateAction<
 	public String doExecute() throws Exception {
 		ArrayStack filterArrayStack = getFilters();
 		for (Object filter : filterArrayStack) {
-			((PrimaryKeyFilter) filter).initFilter(session);
+			((PrimaryKeyFilter<?>) filter).initFilter(session);
 		}
 		ArrayStack filters = parentService.initFilters(filterArrayStack,
 				userPreferences.getLocale());
 		setFilters(filters);
 		if (isSubmit()) {
-			object = nameTimeDependentService.create(null,
-					nameTranslations, filters, date);
+			object = nameTimeDependentService.create(null, nameTranslations, filters, date);
 
 			return SUCCESS;
 		}
@@ -73,45 +71,25 @@ public abstract class CreateAction<
 	 * @return {@link #ERROR} by default
 	 */
 	@NotNull
-	@Override
 	protected String getErrorResult() {
 		return INPUT;
 	}
 
-	/**
-	 * Getter for property 'nameTranslations'.
-	 *
-	 * @return Value for property 'nameTranslations'.
-	 */
 	public List<T> getNameTranslations() {
 		return nameTranslations;
 	}
 
-	/**
-	 * Getter for property 'date'.
-	 *
-	 * @return Value for property 'date'.
-	 */
 	public String getDate() {
 		String dt = DateUtil.format(date);
 		return "-".equals(dt) ? "" : dt;
 	}
 
-	/**
-	 * Setter for property 'date'.
-	 *
-	 * @param dt Value to set for property 'date'.
-	 */
 	public void setDate(String dt) {
 		date = DateUtil.parseDate(dt, ApplicationConfig.getPastInfinite());
 	}
 
-	/**
-	 * Getter for property 'region'.
-	 *
-	 * @return Value for property 'region'.
-	 */
 	public NTD getObject() {
 		return object;
 	}
+
 }

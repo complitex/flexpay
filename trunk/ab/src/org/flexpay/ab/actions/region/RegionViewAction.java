@@ -12,4 +12,5 @@ public class RegionViewAction extends ObjectViewAction<
 	public RegionViewAction() {
 		setObject(new Region());
 	}
+
 }

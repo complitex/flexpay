@@ -15,4 +15,5 @@ public class RegionEditSimpleAction extends SimpleEditAction<
 	public RegionEditSimpleAction() {
 		setObject(new Region());
 	}
+
 }

@@ -1,7 +1,7 @@
 package org.flexpay.ab.actions.country;
 
-import org.apache.struts2.interceptor.ServletRequestAware;
 import org.apache.commons.lang.StringUtils;
+import org.apache.struts2.ServletActionContext;
 import org.flexpay.ab.persistence.CountryNameTranslation;
 import org.flexpay.ab.service.CountryService;
 import org.flexpay.common.actions.FPActionSupport;
@@ -12,7 +12,6 @@ import org.flexpay.common.util.LanguageUtil;
 import org.flexpay.common.util.TranslationUtil;
 import org.flexpay.common.util.config.ApplicationConfig;
 import org.flexpay.common.util.config.UserPreferences;
-import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
@@ -20,15 +19,15 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CountryCreateAction extends FPActionSupport implements ServletRequestAware {
+public class CountryCreateAction extends FPActionSupport {
 
 	private CountryService countryService;
-	@NonNls
-	private HttpServletRequest request;
 
 	@NotNull
 	public String doExecute() throws FlexPayException {
 		List<CountryNameTranslation> countryNames = initCountryNames();
+
+		HttpServletRequest request = ServletActionContext.getRequest();
 
 		// Need to create new Country
 		if (isSubmit()) {
@@ -46,6 +45,8 @@ public class CountryCreateAction extends FPActionSupport implements ServletReque
 	}
 
     private boolean doValidate(List<CountryNameTranslation> countryNames) throws FlexPayException {
+
+		HttpServletRequest request = ServletActionContext.getRequest();
 
         // validate default language country name
         CountryNameTranslation defaultTranslation = TranslationUtil.getTranslation(countryNames);
@@ -87,7 +88,6 @@ public class CountryCreateAction extends FPActionSupport implements ServletReque
 	 * @return {@link #ERROR} by default
 	 */
 	@NotNull
-	@Override
 	protected String getErrorResult() {
 		return INPUT;
 	}
@@ -99,6 +99,9 @@ public class CountryCreateAction extends FPActionSupport implements ServletReque
 	 * @throws FlexPayException if failure occurs
 	 */
 	private List<CountryNameTranslation> initCountryNames() throws FlexPayException {
+
+		HttpServletRequest request = ServletActionContext.getRequest();
+
 		List<Language> langs = ApplicationConfig.getLanguages();
 		UserPreferences prefs = UserPreferences.getPreferences(request);
 		List<CountryNameTranslation> countryNames = new ArrayList<CountryNameTranslation>();
@@ -118,15 +121,6 @@ public class CountryCreateAction extends FPActionSupport implements ServletReque
 		}
 
 		return countryNames;
-	}
-
-	/**
-	 * Sets the HTTP request object in implementing classes.
-	 *
-	 * @param request the HTTP request.
-	 */
-	public void setServletRequest(HttpServletRequest request) {
-		this.request = request;
 	}
 
 	@Required

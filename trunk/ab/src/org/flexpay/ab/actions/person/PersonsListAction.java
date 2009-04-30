@@ -7,22 +7,20 @@ import org.flexpay.ab.service.PersonService;
 import org.flexpay.common.actions.FPActionWithPagerSupport;
 import org.flexpay.common.service.ParentService;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Required;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class PersonsListAction extends FPActionWithPagerSupport<Person> {
 
-	private ParentService parentService;
-	private PersonService personService;
-
 	private List<Person> persons = new ArrayList<Person>();
-
-
 	private PersonSearchFilter personSearchFilter = new PersonSearchFilter();
 
+	private ParentService<?> parentService;
+	private PersonService personService;
+
 	@NotNull
-	@Override
 	protected String doExecute() throws Exception {
 
 		if (!personSearchFilter.needFilter()) {
@@ -54,29 +52,6 @@ public class PersonsListAction extends FPActionWithPagerSupport<Person> {
 		return new ArrayStack();
 	}
 
-	/**
-	 * Setter for property 'parentService'.
-	 *
-	 * @param parentService Value to set for property 'parentService'.
-	 */
-	public void setParentService(ParentService parentService) {
-		this.parentService = parentService;
-	}
-
-	/**
-	 * Setter for property 'personService'.
-	 *
-	 * @param personService Value to set for property 'personService'.
-	 */
-	public void setPersonService(PersonService personService) {
-		this.personService = personService;
-	}
-
-	/**
-	 * Getter for property 'persons'.
-	 *
-	 * @return Value for property 'persons'.
-	 */
 	public List<Person> getPersons() {
 		return persons;
 	}
@@ -87,6 +62,15 @@ public class PersonsListAction extends FPActionWithPagerSupport<Person> {
 
 	public void setPersonSearchFilter(PersonSearchFilter personSearchFilter) {
 		this.personSearchFilter = personSearchFilter;
+	}
+
+	public void setParentService(ParentService<?> parentService) {
+		this.parentService = parentService;
+	}
+
+	@Required
+	public void setPersonService(PersonService personService) {
+		this.personService = personService;
 	}
 
 }

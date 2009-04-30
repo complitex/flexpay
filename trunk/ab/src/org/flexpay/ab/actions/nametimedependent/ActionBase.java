@@ -8,6 +8,7 @@ import org.flexpay.common.persistence.TemporaryValue;
 import org.flexpay.common.persistence.Translation;
 import org.flexpay.common.service.NameTimeDependentService;
 import org.flexpay.common.service.ParentService;
+import org.springframework.beans.factory.annotation.Required;
 
 public abstract class ActionBase<
 		TV extends TemporaryValue<TV>,
@@ -16,37 +17,19 @@ public abstract class ActionBase<
 		T extends Translation> extends FPActionWithPagerSupport {
 
 	protected NameTimeDependentService<TV, DI, NTD, T> nameTimeDependentService;
-	protected ParentService parentService;
+	protected ParentService<?> parentService;
 
-	/**
-	 * Setter for property 'service'.
-	 *
-	 * @param nameTimeDependentService Value to set for property 'service'.
-	 */
+	protected abstract ArrayStack getFilters();
+
+	protected abstract void setFilters(ArrayStack filters);
+
+	@Required
 	public void setNameTimeDependentService(NameTimeDependentService<TV, DI, NTD, T> nameTimeDependentService) {
 		this.nameTimeDependentService = nameTimeDependentService;
 	}
 
-	/**
-	 * Setter for property 'parentService'.
-	 *
-	 * @param parentService Value to set for property 'parentService'.
-	 */
-	public void setParentService(ParentService parentService) {
+	public void setParentService(ParentService<?> parentService) {
 		this.parentService = parentService;
 	}
 
-	/**
-	 * Get initial set of filters for action
-	 *
-	 * @return Collection of filters
-	 */
-	protected abstract ArrayStack getFilters();
-
-	/**
-	 * Set filters for action
-	 *
-	 * @param filters collection of filters
-	 */
-	protected abstract void setFilters(ArrayStack filters);
 }

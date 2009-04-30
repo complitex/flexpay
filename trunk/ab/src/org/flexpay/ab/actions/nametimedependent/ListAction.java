@@ -17,7 +17,7 @@ public abstract class ListAction<
 		NTD extends NameTimeDependentChild<TV, DI>,
 		T extends Translation> extends ActionBase<TV, DI, NTD, T> {
 
-	protected List objectNames;
+	protected List<?> objectNames;
 
 	/**
 	 * {@inheritDoc}
@@ -30,16 +30,14 @@ public abstract class ListAction<
 
 		ArrayStack filterArrayStack = getFilters();
 		for (Object filter : filterArrayStack) {
-			((PrimaryKeyFilter) filter).initFilter(session);
+			((PrimaryKeyFilter<?>) filter).initFilter(session);
 		}
 		ArrayStack filters = parentService.initFilters(filterArrayStack, userPreferences.getLocale());
 		setFilters(filters);
 
 		initObjects(filters);
 
-		if (log.isInfoEnabled()) {
-			log.info("Listing {} ms", (System.currentTimeMillis() - start));
-		}
+		log.info("Listing {} ms", (System.currentTimeMillis() - start));
 
 		return SUCCESS;
 	}
@@ -52,7 +50,6 @@ public abstract class ListAction<
 	 * @return {@link #ERROR} by default
 	 */
 	@NotNull
-	@Override
 	protected String getErrorResult() {
 		return SUCCESS;
 	}
@@ -61,12 +58,7 @@ public abstract class ListAction<
 		objectNames = nameTimeDependentService.findNames(filters, getPager());
 	}
 
-	/**
-	 * Getter for property 'objectNames'.
-	 *
-	 * @return Value for property 'objectNames'.
-	 */
-	public List getObjectNames() {
+	public List<?> getObjectNames() {
 		return objectNames;
 	}
 

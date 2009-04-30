@@ -8,16 +8,18 @@ import org.flexpay.common.persistence.Language;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.config.ApplicationConfig;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Required;
 
 import java.util.Map;
 
 public class TownTypeEditAction extends FPActionSupport {
 
-	private TownTypeService townTypeService;
-
 	private TownType townType = new TownType();
 	private Map<Long, String> names = CollectionUtils.treeMap();
 	private Map<Long, String> shortNames = CollectionUtils.treeMap();
+
+	private String crumbCreateKey;
+	private TownTypeService townTypeService;
 
 	@NotNull
 	public String doExecute() throws Exception {
@@ -63,7 +65,6 @@ public class TownTypeEditAction extends FPActionSupport {
 	 * @return {@link #ERROR} by default
 	 */
 	@NotNull
-	@Override
 	protected String getErrorResult() {
 		return INPUT;
 	}
@@ -82,6 +83,15 @@ public class TownTypeEditAction extends FPActionSupport {
 			shortNames.put(lang.getId(), "");
 		}
 	}
+
+	@Override
+	protected void setBreadCrumbs() {
+		if (townType.isNew()) {
+			crumbNameKey = crumbCreateKey;
+		}
+		super.setBreadCrumbs();
+	}
+
 
 	public TownType getTownType() {
 		return townType;
@@ -107,12 +117,13 @@ public class TownTypeEditAction extends FPActionSupport {
 		this.shortNames = shortNames;
 	}
 
-	/**
-	 * Setter for property 'townTypeService'.
-	 *
-	 * @param townTypeService Value to set for property 'townTypeService'.
-	 */
+	public void setCrumbCreateKey(String crumbCreateKey) {
+		this.crumbCreateKey = crumbCreateKey;
+	}
+
+	@Required
 	public void setTownTypeService(TownTypeService townTypeService) {
 		this.townTypeService = townTypeService;
 	}
+
 }

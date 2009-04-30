@@ -64,38 +64,19 @@ public abstract class ObjectViewAction<
 		return REDIRECT_ERROR;
 	}
 
-	/**
-	 * Getter for property 'object'.
-	 *
-	 * @return Value for property 'object'.
-	 */
 	public NTD getObject() {
 		return object;
 	}
 
-	/**
-	 * Setter for property 'object'.
-	 *
-	 * @param object Value to set for property 'object'.
-	 */
 	public void setObject(NTD object) {
 		this.object = object;
 	}
 
-	/**
-	 * Get initial set of filters for action
-	 *
-	 * @return Collection of filters
-	 */
 	protected ArrayStack getFilters() {
 		return null;
 	}
 
-	/**
-	 * Set filters for action
-	 *
-	 * @param filters collection of filters
-	 */
 	protected void setFilters(ArrayStack filters) {
 	}
+
 }

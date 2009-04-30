@@ -39,7 +39,7 @@ public class ApartmentsListAction extends BuildingsActionsBase {
 
 		ArrayStack filters = getFilters();
 		for (Object filter : filters) {
-			((PrimaryKeyFilter) filter).initFilter(session);
+			((PrimaryKeyFilter<?>) filter).initFilter(session);
 		}
 
 		filters = parentService.initFilters(filters, userPreferences.getLocale());
@@ -58,16 +58,10 @@ public class ApartmentsListAction extends BuildingsActionsBase {
 	 * @return {@link #ERROR} by default
 	 */
 	@NotNull
-	@Override
 	protected String getErrorResult() {
 		return SUCCESS;
 	}
 
-	/**
-	 * Getter for property 'filters'.
-	 *
-	 * @return Value for property 'filters'.
-	 */
 	public ArrayStack getFilters() {
 
 		ArrayStack filters = new ArrayStack();
@@ -80,11 +74,6 @@ public class ApartmentsListAction extends BuildingsActionsBase {
 		return filters;
 	}
 
-	/**
-	 * Setter for property 'filters'.
-	 *
-	 * @param filters Value to set for property 'filters'.
-	 */
 	public void setFilters(ArrayStack filters) {
 		countryFilter = (CountryFilter) filters.peek(4);
 		regionFilter = (RegionFilter) filters.peek(3);

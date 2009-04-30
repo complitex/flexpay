@@ -10,9 +10,9 @@ import java.util.List;
 
 public class AddressAttributeTypesListAction extends FPActionSupport {
 
-	private AddressAttributeTypeService addressAttributeTypeService;
-
 	private List<AddressAttributeType> types;
+
+	private AddressAttributeTypeService addressAttributeTypeService;
 
 	@NotNull
 	public String doExecute() {
@@ -29,14 +29,10 @@ public class AddressAttributeTypesListAction extends FPActionSupport {
 	 * @return {@link #ERROR} by default
 	 */
 	@NotNull
-	@Override
 	protected String getErrorResult() {
 		return SUCCESS;
 	}
 
-	/**
-	 * @return the types
-	 */
 	public List<AddressAttributeType> getTypes() {
 		return types;
 	}
@@ -45,4 +41,5 @@ public class AddressAttributeTypesListAction extends FPActionSupport {
 	public void setBuildingAttributeTypeService(AddressAttributeTypeService addressAttributeTypeService) {
 		this.addressAttributeTypeService = addressAttributeTypeService;
 	}
+
 }

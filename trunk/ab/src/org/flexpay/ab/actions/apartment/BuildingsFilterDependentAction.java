@@ -16,8 +16,6 @@ import java.util.Collection;
 
 public abstract class BuildingsFilterDependentAction extends FPActionSupport {
 
-	private ParentService parentService;
-
 	protected CountryFilter countryFilter = new CountryFilter();
 	protected RegionFilter regionFilter = new RegionFilter();
 	protected TownFilter townFilter = new TownFilter();
@@ -27,11 +25,13 @@ public abstract class BuildingsFilterDependentAction extends FPActionSupport {
 
 	private String filtersError;
 
+	private ParentService<?> parentService;
+
 	protected void initFilters() {
 		try {
 			ArrayStack filterArrayStack = getFilters();
 			for (Object filter : filterArrayStack) {
-				((PrimaryKeyFilter) filter).initFilter(session);
+				((PrimaryKeyFilter<?>) filter).initFilter(session);
 			}
 			ArrayStack filters = parentService.initFilters(filterArrayStack, userPreferences.getLocale());
 			setFilters(filters);
@@ -40,11 +40,6 @@ public abstract class BuildingsFilterDependentAction extends FPActionSupport {
 		}
 	}
 
-	/**
-	 * Getter for property 'filters'.
-	 *
-	 * @return Value for property 'filters'.
-	 */
 	public ArrayStack getFilters() {
 
 		if (streetNameFilter.needFilter() && !streetFilter.needFilter()) {
@@ -88,13 +83,7 @@ public abstract class BuildingsFilterDependentAction extends FPActionSupport {
 		return number.toString().trim();
 	}
 
-	/**
-	 * Setter for property 'filters'.
-	 *
-	 * @param filters Value to set for property 'filters'.
-	 */
 	public void setFilters(ArrayStack filters) {
-
 		setFilters(filters, 5);
 	}
 
@@ -160,7 +149,7 @@ public abstract class BuildingsFilterDependentAction extends FPActionSupport {
 	}
 
 	@Required
-	public void setParentService(ParentService parentService) {
+	public void setParentService(ParentService<?> parentService) {
 		this.parentService = parentService;
 	}
 

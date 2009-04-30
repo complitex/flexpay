@@ -12,4 +12,5 @@ public class DistrictEditSimpleAction extends SimpleEditAction<
 	public DistrictEditSimpleAction() {
 		setObject(new District());
 	}
+
 }

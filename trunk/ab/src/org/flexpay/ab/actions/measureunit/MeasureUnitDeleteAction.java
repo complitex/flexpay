@@ -5,14 +5,15 @@ import org.flexpay.common.persistence.MeasureUnit;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.service.MeasureUnitService;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Required;
 
 import java.util.List;
 
 public class MeasureUnitDeleteAction extends FPActionSupport {
 
-	private MeasureUnitService measureUnitService;
-
 	private List<Long> objectIds;
+
+	private MeasureUnitService measureUnitService;
 
 	/**
 	 * Perform action execution.
@@ -50,6 +51,11 @@ public class MeasureUnitDeleteAction extends FPActionSupport {
 		return REDIRECT_SUCCESS;
 	}
 
+	@Override
+	protected void setBreadCrumbs() {
+
+	}
+
 	public List<Long> getObjectIds() {
 		return objectIds;
 	}
@@ -58,7 +64,9 @@ public class MeasureUnitDeleteAction extends FPActionSupport {
 		this.objectIds = objectIds;
 	}
 
+	@Required
 	public void setMeasureUnitService(MeasureUnitService measureUnitService) {
 		this.measureUnitService = measureUnitService;
 	}
+
 }

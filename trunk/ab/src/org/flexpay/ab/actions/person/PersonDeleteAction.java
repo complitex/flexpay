@@ -10,8 +10,9 @@ import java.util.Set;
 
 public class PersonDeleteAction extends FPActionSupport {
 
-	private PersonService personService;
 	private Set<Long> objectIds = set();
+
+	private PersonService personService;
 
 	@NotNull
 	public String doExecute() throws Exception {
@@ -29,6 +30,11 @@ public class PersonDeleteAction extends FPActionSupport {
 	@NotNull
 	protected String getErrorResult() {
 		return REDIRECT_SUCCESS;
+	}
+
+	@Override
+	protected void setBreadCrumbs() {
+		
 	}
 
 	public Set<Long> getObjectIds() {

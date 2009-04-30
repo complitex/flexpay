@@ -10,11 +10,12 @@ import org.springframework.beans.factory.annotation.Required;
 
 public class ApartmentEditAction extends BuildingsFilterDependentAction {
 
-	private BuildingService buildingService;
-	private ApartmentService apartmentService;
-
 	private Apartment apartment = new Apartment();
 	private String apartmentNumber;
+
+	private String crumbCreateKey;
+	private BuildingService buildingService;
+	private ApartmentService apartmentService;
 
 	@NotNull
 	public String doExecute() throws Exception {
@@ -59,6 +60,14 @@ public class ApartmentEditAction extends BuildingsFilterDependentAction {
 		return INPUT;
 	}
 
+	@Override
+	protected void setBreadCrumbs() {
+		if (apartment.isNew()) {
+			crumbNameKey = crumbCreateKey;
+		}
+		super.setBreadCrumbs();
+	}
+
 	/**
 	 * Get default error execution result
 	 * <p/>
@@ -85,6 +94,10 @@ public class ApartmentEditAction extends BuildingsFilterDependentAction {
 
 	public String getApartmentNumber() {
 		return apartmentNumber;
+	}
+
+	public void setCrumbCreateKey(String crumbCreateKey) {
+		this.crumbCreateKey = crumbCreateKey;
 	}
 
 	@Required

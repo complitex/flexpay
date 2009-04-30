@@ -6,13 +6,14 @@ import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.exception.FlexPayException;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Required;
 
 public class BuildingSetPrimaryStatusAction extends FPActionSupport {
 
-	private BuildingService buildingService;
-
 	private BuildingAddress buildings;
 	private Long redirectBuildingsId;
+
+	private BuildingService buildingService;
 
 	@NotNull
 	public String doExecute() throws FlexPayException {
@@ -37,41 +38,30 @@ public class BuildingSetPrimaryStatusAction extends FPActionSupport {
 		return REDIRECT_SUCCESS;
 	}
 
-	/**
-	 * @param buildingService
-	 *            the buildingService to set
-	 */
-	public void setBuildingService(BuildingService buildingService) {
-		this.buildingService = buildingService;
+	@Override
+	protected void setBreadCrumbs() {
+
 	}
 
-	/**
-	 * @return the buildings
-	 */
 	public BuildingAddress getBuildings() {
 		return buildings;
 	}
 
-	/**
-	 * @param buildingAddress
-	 *            the buildings to set
-	 */
 	public void setBuildings(BuildingAddress buildingAddress) {
 		this.buildings = buildingAddress;
 	}
 
-	/**
-	 * @return the redirectBuildingsId
-	 */
 	public Long getRedirectBuildingsId() {
 		return redirectBuildingsId;
 	}
 
-	/**
-	 * @param redirectBuildingsId the redirectBuildingsId to set
-	 */
 	public void setRedirectBuildingsId(Long redirectBuildingsId) {
 		this.redirectBuildingsId = redirectBuildingsId;
+	}
+
+	@Required
+	public void setBuildingService(BuildingService buildingService) {
+		this.buildingService = buildingService;
 	}
 
 }

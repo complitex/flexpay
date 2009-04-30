@@ -10,11 +10,6 @@ public abstract class ApartmentFilterDependent2Action extends BuildingsFilterDep
 
 	protected ApartmentFilter apartmentFilter = new ApartmentFilter();
 
-	/**
-	 * Getter for property 'filters'.
-	 *
-	 * @return Value for property 'filters'.
-	 */
 	@Override
 	public ArrayStack getFilters() {
 		ArrayStack filters = super.getFilters();
@@ -23,14 +18,8 @@ public abstract class ApartmentFilterDependent2Action extends BuildingsFilterDep
 		return filters;
 	}
 
-	/**
-	 * Setter for property 'filters'.
-	 *
-	 * @param filters Value to set for property 'filters'.
-	 */
 	@Override
 	public void setFilters(ArrayStack filters) {
-
 		setFilters(filters, 6);
 	}
 
@@ -49,4 +38,5 @@ public abstract class ApartmentFilterDependent2Action extends BuildingsFilterDep
 	public void setApartmentFilter(ApartmentFilter apartmentFilter) {
 		this.apartmentFilter = apartmentFilter;
 	}
+
 }

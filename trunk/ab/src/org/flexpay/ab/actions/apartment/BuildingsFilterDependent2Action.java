@@ -10,6 +10,7 @@ import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.filter.ObjectFilter;
 import org.flexpay.common.service.ParentService;
 import org.jetbrains.annotations.Nullable;
+import org.springframework.beans.factory.annotation.Required;
 
 import java.util.Collection;
 
@@ -18,13 +19,13 @@ import java.util.Collection;
  */
 public abstract class BuildingsFilterDependent2Action extends FPActionWithPagerSupport {
 
-	private ParentService parentService;
-
 	protected CountryFilter countryFilter = new CountryFilter();
 	protected RegionFilter regionFilter = new RegionFilter();
 	protected TownFilter townFilter = new TownFilter();
 	protected StreetNameFilter streetNameFilter = new StreetNameFilter();
 	protected BuildingsFilter buildingsFilter = new BuildingsFilter();
+
+	private ParentService<?> parentService;
 
 	protected void initFilters() {
 		try {
@@ -43,11 +44,6 @@ public abstract class BuildingsFilterDependent2Action extends FPActionWithPagerS
 		}
 	}
 
-	/**
-	 * Getter for property 'filters'.
-	 *
-	 * @return Value for property 'filters'.
-	 */
 	public ArrayStack getFilters() {
 
 		ArrayStack filters = new ArrayStack();
@@ -91,13 +87,7 @@ public abstract class BuildingsFilterDependent2Action extends FPActionWithPagerS
 		return false;
 	}
 
-	/**
-	 * Setter for property 'filters'.
-	 *
-	 * @param filters Value to set for property 'filters'.
-	 */
 	public void setFilters(ArrayStack filters) {
-
 		setFilters(filters, 5);
 	}
 
@@ -110,44 +100,26 @@ public abstract class BuildingsFilterDependent2Action extends FPActionWithPagerS
 		return n;
 	}
 
-	/**
-	 * @return the countryFilter
-	 */
 	public CountryFilter getCountryFilter() {
 		return countryFilter;
 	}
 
-	/**
-	 * @param countryFilter the countryFilter to set
-	 */
 	public void setCountryFilter(CountryFilter countryFilter) {
 		this.countryFilter = countryFilter;
 	}
 
-	/**
-	 * @return the regionFilter
-	 */
 	public RegionFilter getRegionFilter() {
 		return regionFilter;
 	}
 
-	/**
-	 * @param regionFilter the regionFilter to set
-	 */
 	public void setRegionFilter(RegionFilter regionFilter) {
 		this.regionFilter = regionFilter;
 	}
 
-	/**
-	 * @return the townFilter
-	 */
 	public TownFilter getTownFilter() {
 		return townFilter;
 	}
 
-	/**
-	 * @param townFilter the townFilter to set
-	 */
 	public void setTownFilter(TownFilter townFilter) {
 		this.townFilter = townFilter;
 	}
@@ -160,26 +132,17 @@ public abstract class BuildingsFilterDependent2Action extends FPActionWithPagerS
 		this.streetNameFilter = streetNameFilter;
 	}
 
-	/**
-	 * @return the buildingsFilter
-	 */
 	public BuildingsFilter getBuildingsFilter() {
 		return buildingsFilter;
 	}
 
-	/**
-	 * @param buildingsFilter the buildingsFilter to set
-	 */
 	public void setBuildingsFilter(BuildingsFilter buildingsFilter) {
 		this.buildingsFilter = buildingsFilter;
 	}
 
-	/**
-	 * Setter for property 'parentService'.
-	 *
-	 * @param parentService Value to set for property 'parentService'.
-	 */
-	public void setParentService(ParentService parentService) {
+	@Required
+	public void setParentService(ParentService<?> parentService) {
 		this.parentService = parentService;
 	}
+
 }

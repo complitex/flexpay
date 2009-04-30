@@ -8,16 +8,17 @@ import org.flexpay.common.exception.FlexPayException;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.util.DateUtil;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Required;
 
 import java.util.Date;
 
 public class SetPersonRegistrationAction extends ApartmentFilterDependentAction {
 
-	private PersonService personService;
-
 	private Person person = new Person();
 	private Date beginDate;
 	private Date endDate;
+
+	private PersonService personService;
 
 	@NotNull
 	public String doExecute() throws Exception {
@@ -47,37 +48,27 @@ public class SetPersonRegistrationAction extends ApartmentFilterDependentAction 
 	 * @return {@link #ERROR} by default
 	 */
 	@NotNull
-	@Override
 	protected String getErrorResult() {
 		return ERROR;
 	}
 
-	/**
-	 * @return the person
-	 */
+	@Override
+	protected void setBreadCrumbs() {
+
+	}
+
 	public Person getPerson() {
 		return person;
 	}
 
-	/**
-	 * @param person the person to set
-	 */
 	public void setPerson(Person person) {
 		this.person = person;
 	}
 
-
-	/**
-	 * @return the beginDate
-	 */
 	public String getBeginDate() {
 		return format(beginDate);
 	}
 
-
-	/**
-	 * @param beginDate the beginDate to set
-	 */
 	public void setBeginDate(String beginDate) {
 		this.beginDate = DateUtil.parseBeginDate(beginDate);
 	}
@@ -90,25 +81,17 @@ public class SetPersonRegistrationAction extends ApartmentFilterDependentAction 
 		this.endDate = endDate;
 	}
 
-	/**
-	 * @return the endDate
-	 */
 	public String getEndDate() {
 		return format(endDate);
 	}
 
-
-	/**
-	 * @param endDate the endDate to set
-	 */
 	public void setEndDate(String endDate) {
 		this.endDate = DateUtil.parseEndDate(endDate);
 	}
 
-	/**
-	 * @param personService the personService to set
-	 */
+	@Required
 	public void setPersonService(PersonService personService) {
 		this.personService = personService;
 	}
+
 }

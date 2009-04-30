@@ -56,6 +56,7 @@ public abstract class FPActionSupport extends ActionSupport implements UserPrefe
 	protected Map session = CollectionUtils.map();
 	protected String submitted;
 	protected String menu;
+	protected String crumbNameKey;
 	protected Stack<Crumb> crumbs = new Stack<Crumb>();
 
 	public boolean isSubmit() {
@@ -137,8 +138,6 @@ public abstract class FPActionSupport extends ActionSupport implements UserPrefe
 	protected abstract String doExecute() throws Exception;
 
 	protected void setBreadCrumbs() {
-
-/*
 		crumbs = (Stack<Crumb>) WebUtils.getSessionAttribute(ServletActionContext.getRequest(), BREADCRUMBS);
 		if (crumbs == null) {
 			crumbs = new Stack<Crumb>();
@@ -154,8 +153,6 @@ public abstract class FPActionSupport extends ActionSupport implements UserPrefe
 		crumbs.add(curCrumb);
 
 		WebUtils.setSessionAttribute(ServletActionContext.getRequest(), BREADCRUMBS, crumbs);
-*/
-
 	}
 
 	protected Crumb getCurrentCrumb(HttpServletRequest request) {
@@ -171,7 +168,7 @@ public abstract class FPActionSupport extends ActionSupport implements UserPrefe
 			deleteOldCrumbs(crumbs.indexOf(crumbToReplace));
 		}
 
-		Crumb curCrumb = new Crumb(actionName, nameSpace, wildPortionOfName);
+		Crumb curCrumb = new Crumb(actionName, nameSpace, crumbNameKey != null ? crumbNameKey : wildPortionOfName);
 		curCrumb.setRequestParams(request.getParameterMap());
 
 		return curCrumb;
@@ -320,6 +317,10 @@ public abstract class FPActionSupport extends ActionSupport implements UserPrefe
 	@SuppressWarnings ({"RawUseOfParameterizedType"})
 	public void setSession(Map session) {
 		this.session = session;
+	}
+
+	public void setCrumbNameKey(String crumbNameKey) {
+		this.crumbNameKey = crumbNameKey;
 	}
 
 }

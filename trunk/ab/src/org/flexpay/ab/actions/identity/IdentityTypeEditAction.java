@@ -8,16 +8,17 @@ import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.persistence.Language;
 import static org.flexpay.common.util.CollectionUtils.treeMap;
 import org.jetbrains.annotations.NotNull;
-import org.hibernate.Hibernate;
+import org.springframework.beans.factory.annotation.Required;
 
 import java.util.Map;
 
 public class IdentityTypeEditAction extends FPActionSupport {
 
-	private IdentityTypeService identityTypeService;
-
 	private IdentityType identityType = new IdentityType();
 	private Map<Long, String> names = treeMap();
+
+	private String crumbCreateKey;
+	private IdentityTypeService identityTypeService;
 
 	@NotNull
 	public String doExecute() throws Exception {
@@ -29,7 +30,7 @@ public class IdentityTypeEditAction extends FPActionSupport {
 
 		IdentityType type = identityType.isNew() ? identityType : identityTypeService.read(identityType.getId());
 
-		if (!isSubmit()) {
+		if (isNotSubmit()) {
 			identityType = type;            
 			initTranslations();
 			return INPUT;
@@ -75,9 +76,16 @@ public class IdentityTypeEditAction extends FPActionSupport {
 	 * @return {@link #ERROR} by default
 	 */
 	@NotNull
-	@Override
 	protected String getErrorResult() {
 		return INPUT;
+	}
+
+	@Override
+	protected void setBreadCrumbs() {
+		if (identityType.isNew()) {
+			crumbNameKey = crumbCreateKey;
+		}
+		super.setBreadCrumbs();
 	}
 
 	public IdentityType getIdentityType() {
@@ -96,7 +104,13 @@ public class IdentityTypeEditAction extends FPActionSupport {
 		this.names = names;
 	}
 
+	public void setCrumbCreateKey(String crumbCreateKey) {
+		this.crumbCreateKey = crumbCreateKey;
+	}
+
+	@Required
 	public void setIdentityTypeService(IdentityTypeService identityTypeService) {
 		this.identityTypeService = identityTypeService;
 	}
+
 }

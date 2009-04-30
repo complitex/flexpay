@@ -8,16 +8,18 @@ import org.flexpay.common.persistence.Language;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.config.ApplicationConfig;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Required;
 
 import java.util.Map;
 
 public class StreetTypeEditAction extends FPActionSupport {
 
-	private StreetTypeService streetTypeService;
-
 	private StreetType streetType = new StreetType();
 	private Map<Long, String> names = CollectionUtils.treeMap();
 	private Map<Long, String> shortNames = CollectionUtils.treeMap();
+
+	private String crumbCreateKey;
+	private StreetTypeService streetTypeService;
 
 	@NotNull
 	public String doExecute() throws Exception {
@@ -29,7 +31,7 @@ public class StreetTypeEditAction extends FPActionSupport {
 
 		StreetType type = streetType.isNew() ? streetType : streetTypeService.read(streetType.getId());
 
-		if (!isSubmit()) {
+		if (isNotSubmit()) {
 			streetType = type;
 			initNames();
 			return INPUT;
@@ -63,7 +65,6 @@ public class StreetTypeEditAction extends FPActionSupport {
 	 * @return {@link #ERROR} by default
 	 */
 	@NotNull
-	@Override
 	protected String getErrorResult() {
 		return INPUT;
 	}
@@ -81,6 +82,14 @@ public class StreetTypeEditAction extends FPActionSupport {
 			names.put(lang.getId(), "");
 			shortNames.put(lang.getId(), "");
 		}
+	}
+
+	@Override
+	protected void setBreadCrumbs() {
+		if (streetType.isNew()) {
+			crumbNameKey = crumbCreateKey;
+		}
+		super.setBreadCrumbs();
 	}
 
 	public StreetType getStreetType() {
@@ -107,12 +116,13 @@ public class StreetTypeEditAction extends FPActionSupport {
 		this.shortNames = shortNames;
 	}
 
-	/**
-	 * Setter for property 'streetTypeService'.
-	 *
-	 * @param streetTypeService Value to set for property 'streetTypeService'.
-	 */
+	public void setCrumbCreateKey(String crumbCreateKey) {
+		this.crumbCreateKey = crumbCreateKey;
+	}
+
+	@Required
 	public void setStreetTypeService(StreetTypeService streetTypeService) {
 		this.streetTypeService = streetTypeService;
 	}
+
 }

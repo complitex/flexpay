@@ -4,13 +4,15 @@ import org.flexpay.ab.persistence.IdentityTypeTranslation;
 import org.flexpay.ab.service.IdentityTypeService;
 import org.flexpay.common.actions.FPActionSupport;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Required;
 
 import java.util.List;
 
 public class IdentityTypesListAction extends FPActionSupport {
 
-	private IdentityTypeService identityTypeService;
 	private List<IdentityTypeTranslation> translationList;
+
+	private IdentityTypeService identityTypeService;
 
 	@NotNull
 	public String doExecute() throws Exception {
@@ -27,22 +29,17 @@ public class IdentityTypesListAction extends FPActionSupport {
 	 * @return {@link #ERROR} by default
 	 */
 	@NotNull
-	@Override
 	protected String getErrorResult() {
 		return SUCCESS;
 	}
 
-	/**
-	 * Setter for property 'identityTypeService'.
-	 *
-	 * @param identityTypeService Value to set for property 'identityTypeService'.
-	 */
-	public void setIdentityTypeService(IdentityTypeService identityTypeService) {
-		this.identityTypeService = identityTypeService;
-	}
-
 	public List<IdentityTypeTranslation> getTranslationList() {
 		return translationList;
+	}
+
+	@Required
+	public void setIdentityTypeService(IdentityTypeService identityTypeService) {
+		this.identityTypeService = identityTypeService;
 	}
 
 }

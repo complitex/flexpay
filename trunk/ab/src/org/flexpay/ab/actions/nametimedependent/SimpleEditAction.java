@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 
 /**
- * Region simple editor
+ * Dictionary-object simple editor
  */
 public abstract class SimpleEditAction<
 		TV extends TemporaryValue<TV>,
@@ -47,8 +47,6 @@ public abstract class SimpleEditAction<
 		return map;
 	}
 
-
-
 	public void prepare() {
 		@NonNls
 		HttpServletRequest request = ServletActionContext.getRequest();
@@ -56,7 +54,7 @@ public abstract class SimpleEditAction<
 
 		Map<Long, T> langToTranslationMap = getTranslations(temporalId);
 
-		if (!isSubmit()) {
+		if (isNotSubmit()) {
 			DI temporal = nameTimeDependentService.readTemporalName(temporalId);
 			log.info("Temporal: {}", temporal);
 			date = temporal != null ? temporal.getBegin() : null;
@@ -101,7 +99,6 @@ public abstract class SimpleEditAction<
 	 * @return {@link #ERROR} by default
 	 */
 	@NotNull
-	@Override
 	protected String getErrorResult() {
 		return INPUT;
 	}
@@ -118,65 +115,31 @@ public abstract class SimpleEditAction<
 		date = DateUtil.parseDate(dt, ApplicationConfig.getPastInfinite());
 	}
 
-	/**
-	 * Getter for property 'nameTranslations'.
-	 *
-	 * @return Value for property 'nameTranslations'.
-	 */
 	public List<T> getNameTranslations() {
 		return nameTranslations;
 	}
 
-	/**
-	 * Getter for property 'temporalId'.
-	 *
-	 * @return Value for property 'temporalId'.
-	 */
 	public Long getTemporalId() {
 		return temporalId;
 	}
 
-	/**
-	 * Setter for property 'temporalId'.
-	 *
-	 * @param temporalId Value to set for property 'temporalId'.
-	 */
 	public void setTemporalId(Long temporalId) {
 		this.temporalId = temporalId;
 	}
 
-	/**
-	 * Getter for property 'region'.
-	 *
-	 * @return Value for property 'region'.
-	 */
 	public NTD getObject() {
 		return object;
 	}
 
-	/**
-	 * Setter for property 'region'.
-	 *
-	 * @param object Value to set for property 'region'.
-	 */
 	public void setObject(NTD object) {
 		this.object = object;
 	}
 
-	/**
-	 * Get initial set of filters for action
-	 *
-	 * @return Collection of filters
-	 */
 	protected ArrayStack getFilters() {
 		return null;
 	}
 
-	/**
-	 * Set filters for action
-	 *
-	 * @param filters collection of filters
-	 */
 	protected void setFilters(ArrayStack filters) {
 	}
+
 }

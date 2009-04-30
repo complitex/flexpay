@@ -11,21 +11,22 @@ import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.util.DateUtil;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Required;
 
 import java.util.Date;
 
 public class PersonEditAction extends ApartmentFilterDependentAction {
-
-	private PersonService personService;
-	private ApartmentService apartmentService;
-
-	private SetPersonRegistrationAction setPersonRegistrationAction;
 
 	private Person person = new Person();
 	private Date beginDate = DateUtil.now();
 	private Date endDate = ApplicationConfig.getFutureInfinite();
 	@NonNls
 	private String editType;
+
+	private String crumbCreateKey;
+	private SetPersonRegistrationAction setPersonRegistrationAction;
+	private PersonService personService;
+	private ApartmentService apartmentService;
 
     @NotNull
 	public String doExecute() throws Exception {
@@ -104,17 +105,16 @@ public class PersonEditAction extends ApartmentFilterDependentAction {
 	 * @return {@link #ERROR} by default
 	 */
 	@NotNull
-	@Override
 	protected String getErrorResult() {
 		return INPUT;
 	}
 
-	public Person getPerson() {
-		return person;
-	}
-
-	public void setPerson(Person person) {
-		this.person = person;
+	@Override
+	protected void setBreadCrumbs() {
+		if (person.isNew()) {
+			crumbNameKey = crumbCreateKey;
+		}
+		super.setBreadCrumbs();
 	}
 
 	public PersonIdentity getFIOIdentity() {
@@ -123,6 +123,14 @@ public class PersonEditAction extends ApartmentFilterDependentAction {
 		log.debug("Person FIO: {}", fio);
 
 		return fio != null ? fio : new PersonIdentity();
+	}
+
+	public Person getPerson() {
+		return person;
+	}
+
+	public void setPerson(Person person) {
+		this.person = person;
 	}
 
 	public Date getBeginDate() {
@@ -153,17 +161,23 @@ public class PersonEditAction extends ApartmentFilterDependentAction {
 		this.editType = editType;
 	}
 
-	public void setPersonService(PersonService personService) {
-		this.personService = personService;
-	}
-
-	public void setApartmentService(ApartmentService apartmentService) {
-		this.apartmentService = apartmentService;
+	public void setCrumbCreateKey(String crumbCreateKey) {
+		this.crumbCreateKey = crumbCreateKey;
 	}
 
 	public void setSetPersonRegistrationAction(SetPersonRegistrationAction setPersonRegistrationAction) {
 		log.debug("Setting setPersonRegistrationAction");
 		this.setPersonRegistrationAction = setPersonRegistrationAction;
+	}
+
+	@Required
+	public void setPersonService(PersonService personService) {
+		this.personService = personService;
+	}
+
+	@Required
+	public void setApartmentService(ApartmentService apartmentService) {
+		this.apartmentService = apartmentService;
 	}
 
 }

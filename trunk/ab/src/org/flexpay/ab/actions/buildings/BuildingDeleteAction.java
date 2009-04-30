@@ -5,16 +5,17 @@ import org.flexpay.ab.service.BuildingService;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.persistence.Stub;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Required;
 
 import java.util.Collections;
 import java.util.List;
 
 public class BuildingDeleteAction extends FPActionSupport {
 
-	private BuildingService buildingService;
-
 	private List<Long> objectIds = Collections.emptyList();
 	private Long redirectBuildingsId;
+
+	private BuildingService buildingService;
 
 	@NotNull
 	public String doExecute() {
@@ -42,32 +43,26 @@ public class BuildingDeleteAction extends FPActionSupport {
 		return REDIRECT_SUCCESS;
 	}
 
-	/**
-	 * @param buildingService the buildingService to set
-	 */
-	public void setBuildingService(BuildingService buildingService) {
-		this.buildingService = buildingService;
+	@Override
+	protected void setBreadCrumbs() {
+
 	}
 
-	/**
-	 * @param objectIds the objectIds to set
-	 */
 	public void setObjectIds(List<Long> objectIds) {
 		this.objectIds = objectIds;
 	}
 
-	/**
-	 * @return the redirectBuildingsId
-	 */
 	public Long getRedirectBuildingsId() {
 		return redirectBuildingsId;
 	}
 
-	/**
-	 * @param redirectBuildingsId the redirectBuildingsId to set
-	 */
 	public void setRedirectBuildingsId(Long redirectBuildingsId) {
 		this.redirectBuildingsId = redirectBuildingsId;
+	}
+
+	@Required
+	public void setBuildingService(BuildingService buildingService) {
+		this.buildingService = buildingService;
 	}
 
 }
