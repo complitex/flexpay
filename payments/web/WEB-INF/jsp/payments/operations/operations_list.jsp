@@ -68,11 +68,22 @@
 		disableButtons('.btn-delete');
 	});
 
+	function setOperationId(id) {
+		$('#operationsList_selectedOperationId').val(id);
+	}
+
+	function setStatus(status) {
+		$('#operationsList_status').val(status);
+		return true;
+	}
+
 </script>
 
 <s:actionerror/>
 
 <s:form action="operationsList">
+	<s:hidden name="status"/>
+	<s:hidden name="selectedOperationId"/>
 
 	<table cellpadding="3" cellspacing="1" border="0" width="100%" class="operations">
 
@@ -85,7 +96,7 @@
 				<s:text name="payments.report.generate.date_till"/>
 				<%@include file="/WEB-INF/jsp/common/filter/end_date_filter.jsp" %>
 
-				<s:submit name="submitted" cssClass="btn-exit" value="%{getText('payments.operations.list.filter')}"/>
+				<s:submit name="dateSubmitted" cssClass="btn-exit" value="%{getText('payments.operations.list.filter')}"/>
 			</td>
 		</tr>
 		</sec:authorize>
@@ -115,9 +126,9 @@
 
 			<tr>
 				<td colspan="5">
-					<input type="button" name="register" class="btn-exit btn-register" value="<s:text name="payments.operations.list.register"/>"/>
-					<input type="button" name="return" class="btn-exit btn-return" value="<s:text name="payments.operations.list.return"/>"/>
-					<input type="button" name="delete" style="" class="btn-exit btn-delete" value="<s:text name="payments.operations.list.delete"/>"/>
+					<s:submit name="registerSubmitted" onclick="setStatus(2);" cssClass="btn-exit btn-register" value="%{getText('payments.operations.list.register')}"/>
+					<s:submit name="returnSubmitted" onclick="setStatus(4);" cssClass="btn-exit btn-return" value="%{getText('payments.operations.list.return')}"/>
+					<s:submit name="deleteSubmitted" onclick="setStatus(3);" cssClass="btn-exit btn-delete" value="%{getText('payments.operations.list.delete')}"/>
 					
 					<input type="button" class="btn-exit" onclick="showDetails();" value="<s:text name="payments.operations.list.detailed"/>"/>
 				</td>
@@ -149,7 +160,7 @@
 					<s:elseif test="%{isOperationReturned(operationStatus.code)}"> col_red</s:elseif>">
 
 					<td class="col_oper" nowrap="nowrap">
-						<input type="radio" name="selected_operation" value="<s:property value="%{#opStatus.index + 1}"/>" onclick="showButtons(<s:property value="operationStatus.code"/>);"/>
+						<input type="radio" onclick="showButtons(<s:property value="operationStatus.code"/>);setOperationId(<s:property value="id"/>);"/>
 					</td>
 					<td class="col_oper" align="right"><s:property value="%{#opStatus.index + 1}"/></td>
 					<td class="col_oper" nowrap="nowrap"><s:property value="id"/></td>
@@ -169,7 +180,7 @@
 					<s:elseif test="%{isOperationReturned(operationStatus.code)}"> col_red</s:elseif>">
 
 					<td class="col_oper" nowrap="nowrap">
-						<input type="radio" name="selected_operation" value="<s:property value="%{#opStatus.index + 1}"/>"  onclick="showButtons(<s:property value="operationStatus.code"/>);"/>
+						<input type="radio" onclick="showButtons(<s:property value="operationStatus.code"/>);setOperationId(<s:property value="id"/>);"/>
 					</td>
 					<td class="col_oper" align="right"><s:property value="%{#opStatus.index + 1}"/></td>
 					<td class="col_oper" nowrap="nowrap"><s:property value="id"/></td>
@@ -227,9 +238,9 @@
 
 			<tr>
 				<td colspan="5">
-					<input type="button" name="register" class="btn-exit btn-register" value="<s:text name="payments.operations.list.register"/>"/>
-					<input type="button" name="return" class="btn-exit btn-return" value="<s:text name="payments.operations.list.return"/>"/>
-					<input type="button" name="delete" style="" class="btn-exit btn-delete" value="<s:text name="payments.operations.list.delete"/>"/>
+					<s:submit name="registerSubmitted" onclick="setStatus(2);" cssClass="btn-exit btn-register" value="%{getText('payments.operations.list.register')}"/>
+					<s:submit name="returnSubmitted" onclick="setStatus(4);" cssClass="btn-exit btn-return" value="%{getText('payments.operations.list.return')}"/>
+					<s:submit name="deleteSubmitted" onclick="setStatus(3);" cssClass="btn-exit btn-delete" value="%{getText('payments.operations.list.delete')}"/>
 
 					<input type="button" class="btn-exit" onclick="showDetails();" value="<s:text name="payments.operations.list.detailed"/>"/>
 				</td>
