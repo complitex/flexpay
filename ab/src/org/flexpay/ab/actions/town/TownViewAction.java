@@ -12,4 +12,5 @@ public class TownViewAction extends ObjectViewAction<
 	public TownViewAction() {
 		setObject(new Town());
 	}
+
 }

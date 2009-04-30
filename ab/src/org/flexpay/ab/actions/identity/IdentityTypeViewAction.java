@@ -4,13 +4,14 @@ import org.flexpay.ab.persistence.IdentityType;
 import org.flexpay.ab.service.IdentityTypeService;
 import org.flexpay.common.actions.FPActionSupport;
 import org.jetbrains.annotations.NotNull;
-import org.hibernate.Hibernate;
+import org.springframework.beans.factory.annotation.Required;
 
 public class IdentityTypeViewAction extends FPActionSupport {
 
     private Long id;
-    private IdentityTypeService identityTypeService;
     private IdentityType identityType;
+
+	private IdentityTypeService identityTypeService;
 
     @NotNull
     public String doExecute() throws Exception {
@@ -27,7 +28,6 @@ public class IdentityTypeViewAction extends FPActionSupport {
      * @return {@link #ERROR} by default
      */
     @NotNull
-    @Override
     protected String getErrorResult() {
         return SUCCESS;
     }
@@ -40,7 +40,9 @@ public class IdentityTypeViewAction extends FPActionSupport {
         return identityType;
     }
 
+	@Required
     public void setIdentityTypeService(IdentityTypeService identityTypeService) {
         this.identityTypeService = identityTypeService;
     }
+
 }

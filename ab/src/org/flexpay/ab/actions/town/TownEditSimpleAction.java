@@ -17,29 +17,25 @@ import org.flexpay.common.persistence.filter.BeginDateFilter;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Required;
 
 import java.util.Map;
 
 public class TownEditSimpleAction extends FPActionSupport {
 
-    // filters
     private CountryFilter countryFilter = new CountryFilter();
     private RegionFilter regionFilter = new RegionFilter();
     private TownTypeFilter townTypeFilter = new TownTypeFilter();
     private BeginDateFilter beginDateFilter = new BeginDateFilter();
 
-    // form data
     private Map<Long, String> names = CollectionUtils.treeMap();
     private Town town = new Town();
 
-    // required services
+	private String crumbCreateKey;
     private RegionService regionService;
     private TownTypeService townTypeService;
     private TownService townService;
 
-    /**
-     * Constructor TownEditSimpleAction creates a new TownEditSimpleAction instance.
-     */
     public TownEditSimpleAction() {
         // disable automatic form submit on region filter change
         regionFilter.setNeedAutoChange(false);
@@ -180,7 +176,14 @@ public class TownEditSimpleAction extends FPActionSupport {
         }
     }
 
-    // filters
+	@Override
+	protected void setBreadCrumbs() {
+		if (town.isNew()) {
+			crumbNameKey = crumbCreateKey;
+		}
+		super.setBreadCrumbs();
+	}
+
     public CountryFilter getCountryFilter() {
         return countryFilter;
     }
@@ -213,7 +216,6 @@ public class TownEditSimpleAction extends FPActionSupport {
         this.beginDateFilter = beginDateFilter;
     }
 
-    // form data
     public Map<Long, String> getNames() {
         return names;
     }
@@ -230,16 +232,23 @@ public class TownEditSimpleAction extends FPActionSupport {
         this.town = town;
     }
 
-    // required services
+	public void setCrumbCreateKey(String crumbCreateKey) {
+		this.crumbCreateKey = crumbCreateKey;
+	}
+
+	@Required
     public void setRegionService(RegionService regionService) {
         this.regionService = regionService;
     }
 
+	@Required
     public void setTownTypeService(TownTypeService townTypeService) {
         this.townTypeService = townTypeService;
     }
 
+	@Required
     public void setTownService(TownService townService) {
         this.townService = townService;
     }
+
 }

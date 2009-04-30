@@ -16,10 +16,11 @@ import java.util.Map;
 
 public class AddressAttributeTypeEditAction extends FPActionSupport {
 
-	private AddressAttributeTypeService addressAttributeTypeService;
-
 	private AddressAttributeType attributeType = new AddressAttributeType();
 	private Map<Long, String> names = treeMap();
+
+	private String crumbCreateKey;
+	private AddressAttributeTypeService addressAttributeTypeService;
 
 	@NotNull
 	public String doExecute() throws Exception {
@@ -37,7 +38,7 @@ public class AddressAttributeTypeEditAction extends FPActionSupport {
 			return REDIRECT_SUCCESS;
 		}
 
-		if (!isSubmit()) {
+		if (isNotSubmit()) {
 			attributeType = type;
 			initTranslations();
 			return INPUT;
@@ -87,6 +88,14 @@ public class AddressAttributeTypeEditAction extends FPActionSupport {
 		return INPUT;
 	}
 
+	@Override
+	protected void setBreadCrumbs() {
+		if (attributeType.isNew()) {
+			crumbNameKey = crumbCreateKey;
+		}
+		super.setBreadCrumbs();
+	}
+
 	public AddressAttributeType getAttributeType() {
 		return attributeType;
 	}
@@ -103,8 +112,13 @@ public class AddressAttributeTypeEditAction extends FPActionSupport {
 		this.names = names;
 	}
 
+	public void setCrumbCreateKey(String crumbCreateKey) {
+		this.crumbCreateKey = crumbCreateKey;
+	}
+
 	@Required
 	public void setBuildingAttributeTypeService(AddressAttributeTypeService addressAttributeTypeService) {
 		this.addressAttributeTypeService = addressAttributeTypeService;
 	}
+
 }

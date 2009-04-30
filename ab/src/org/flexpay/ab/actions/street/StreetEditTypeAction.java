@@ -10,6 +10,7 @@ import org.flexpay.common.actions.FPActionSupport;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.util.DateUtil;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Required;
 
 public class StreetEditTypeAction extends FPActionSupport {
 
@@ -26,7 +27,7 @@ public class StreetEditTypeAction extends FPActionSupport {
 		temporal.setObject(object);
 
 		// for get request set initial data from existing temporal
-		if (!isSubmit()) {
+		if (isNotSubmit()) {
 			if (temporal.getId() > 0) {
 				for (StreetTypeTemporal typeTemporal : object.getTypeTemporals()) {
 					if (typeTemporal.getId().equals(temporal.getId())) {
@@ -80,14 +81,6 @@ public class StreetEditTypeAction extends FPActionSupport {
 		return SUCCESS;
 	}
 
-	public void setStreetService(StreetService streetService) {
-		this.streetService = streetService;
-	}
-
-	public void setStreetTypeService(StreetTypeService streetTypeService) {
-		this.streetTypeService = streetTypeService;
-	}
-
 	public Street getObject() {
 		return object;
 	}
@@ -123,4 +116,15 @@ public class StreetEditTypeAction extends FPActionSupport {
 	public void setDate(String dt) {
 		temporal.setBegin(DateUtil.parseBeginDate(dt));
 	}
+
+	@Required
+	public void setStreetService(StreetService streetService) {
+		this.streetService = streetService;
+	}
+
+	@Required
+	public void setStreetTypeService(StreetTypeService streetTypeService) {
+		this.streetTypeService = streetTypeService;
+	}
+
 }

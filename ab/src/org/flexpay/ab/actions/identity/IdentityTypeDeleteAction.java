@@ -2,13 +2,21 @@ package org.flexpay.ab.actions.identity;
 
 import org.flexpay.ab.persistence.IdentityType;
 import org.flexpay.ab.service.IdentityTypeService;
+import org.springframework.beans.factory.annotation.Required;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
 
+//TODO: This class has a out-of-date structure. Must be remake
 public class IdentityTypeDeleteAction {
-	private IdentityTypeService identityTypeService;
+
+	private Logger log = LoggerFactory.getLogger(getClass());
+
 	private List<Long> idList;
+
+	private IdentityTypeService identityTypeService;
 
 	public String execute() throws Exception {
 		List<IdentityType> identityTypeToDelete = new ArrayList<IdentityType>(idList.size());
@@ -18,20 +26,10 @@ public class IdentityTypeDeleteAction {
 		try {
 			identityTypeService.disable(identityTypeToDelete);
 		} catch (RuntimeException e) {
-			// TODO
+			log.error("Failed disabling identity types", e);
 		}
 
 		return "afterSubmit";
-	}
-
-	/**
-	 * Setter for property 'identityTypeService'.
-	 * 
-	 * @param identityTypeService
-	 *            Value to set for property 'identityTypeService'.
-	 */
-	public void setIdentityTypeService(IdentityTypeService identityTypeService) {
-		this.identityTypeService = identityTypeService;
 	}
 
 	public List<Long> getIdList() {
@@ -40,6 +38,11 @@ public class IdentityTypeDeleteAction {
 
 	public void setIdList(List<Long> idList) {
 		this.idList = idList;
+	}
+
+	@Required
+	public void setIdentityTypeService(IdentityTypeService identityTypeService) {
+		this.identityTypeService = identityTypeService;
 	}
 
 }

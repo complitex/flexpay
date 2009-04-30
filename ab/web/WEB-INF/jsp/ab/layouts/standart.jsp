@@ -46,6 +46,10 @@
         <menu:displayMenu name="FPMenu" levelBegin="2" levelEnd="2" />
     </menu:useMenuDisplayer>
 
+    <div class="breadCrumbs">
+        <tiles:insertAttribute name="breadCrumbs" />
+    </div>
+
 <!--
 <div class="gradusnik">
     <div class="gradusnik-padding">
@@ -62,7 +66,6 @@
 
     <div class="main">
         <div class="main-content">
-            <tiles:insertAttribute name="breadCrumbs" /><br>
             <tiles:insertAttribute name="body" ignore="true" />
         </div>
 

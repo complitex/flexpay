@@ -20,13 +20,13 @@ import java.util.Map;
 
 public class BuildingEditAction extends FPActionSupport {
 
-	private BuildingService buildingService;
-	private AddressAttributeTypeService addressAttributeTypeService;
-	private AddressService addressService;
-
 	private BuildingAddress buildings = new BuildingAddress();
 	private List<BuildingAddress> alternateBuildingsList = new ArrayList<BuildingAddress>();
 	private Map<Long, String> attributeMap = CollectionUtils.treeMap();
+
+	private BuildingService buildingService;
+	private AddressAttributeTypeService addressAttributeTypeService;
+	private AddressService addressService;
 
 	public void prepareAttributes() {
 
@@ -96,37 +96,22 @@ public class BuildingEditAction extends FPActionSupport {
 		return INPUT;
 	}
 
-	/**
-	 * @return the buildings
-	 */
 	public BuildingAddress getBuildings() {
 		return buildings;
 	}
 
-	/**
-	 * @param buildingAddress the buildings to set
-	 */
 	public void setBuildings(BuildingAddress buildingAddress) {
 		this.buildings = buildingAddress;
 	}
 
-	/**
-	 * @return the alternateBuildingsList
-	 */
 	public List<BuildingAddress> getAlternateBuildingsList() {
 		return alternateBuildingsList;
 	}
 
-	/**
-	 * @return the attributeMap
-	 */
 	public Map<Long, String> getAttributeMap() {
 		return attributeMap;
 	}
 
-	/**
-	 * @param attributeMap the attributeMap to set
-	 */
 	public void setAttributeMap(Map<Long, String> attributeMap) {
 		this.attributeMap = attributeMap;
 	}
@@ -145,4 +130,5 @@ public class BuildingEditAction extends FPActionSupport {
 	public void setBuildingAttributeTypeService(AddressAttributeTypeService addressAttributeTypeService) {
 		this.addressAttributeTypeService = addressAttributeTypeService;
 	}
+
 }

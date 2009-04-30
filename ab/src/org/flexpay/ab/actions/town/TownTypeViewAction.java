@@ -4,11 +4,15 @@ import org.flexpay.ab.persistence.TownType;
 import org.flexpay.ab.service.TownTypeService;
 import org.flexpay.common.actions.FPActionSupport;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Required;
 
+//TODO: This class has a out-of-date structure. Must be remake
 public class TownTypeViewAction extends FPActionSupport {
+
 	private Long id;
-	private TownTypeService townTypeService;
 	private TownType townType;
+
+	private TownTypeService townTypeService;
 
 	@NotNull
 	public String doExecute() throws Exception {
@@ -25,7 +29,6 @@ public class TownTypeViewAction extends FPActionSupport {
 	 * @return {@link #ERROR} by default
 	 */
 	@NotNull
-	@Override
 	protected String getErrorResult() {
 		return SUCCESS;
 	}
@@ -38,6 +41,7 @@ public class TownTypeViewAction extends FPActionSupport {
 		return townType;
 	}
 
+	@Required
 	public void setTownTypeService(TownTypeService townTypeService) {
 		this.townTypeService = townTypeService;
 	}

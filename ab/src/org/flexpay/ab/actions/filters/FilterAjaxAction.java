@@ -75,6 +75,10 @@ public abstract class FilterAjaxAction extends FPActionSupport {
 	 * to set new values to this object
 	 */
 	protected abstract void saveFilterValue();
+	
+	protected void setBreadCrumbs() {
+	}
+
 
 	/**
 	 * Get default error execution result

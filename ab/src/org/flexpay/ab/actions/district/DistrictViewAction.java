@@ -12,4 +12,5 @@ public class DistrictViewAction extends ObjectViewAction<
 	public DistrictViewAction() {
 		setObject(new District());
 	}
+
 }

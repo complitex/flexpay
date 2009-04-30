@@ -55,26 +55,21 @@ public abstract class DeleteAction<
 	 * @return {@link #ERROR} by default
 	 */
 	@NotNull
-	@Override
 	protected String getErrorResult() {
 		return REDIRECT_SUCCESS;
 	}
 
-	/**
-	 * Getter for property 'townTypeIds'.
-	 *
-	 * @return Value for property 'townTypeIds'.
-	 */
+	@Override
+	protected void setBreadCrumbs() {
+		
+	}
+
 	public Set<Long> getObjectIds() {
 		return objectIds;
 	}
 
-	/**
-	 * Setter for property 'townTypeIds'.
-	 *
-	 * @param objectIds Value to set for property 'townTypeIds'.
-	 */
 	public void setObjectIds(Set<Long> objectIds) {
 		this.objectIds = objectIds;
 	}
+
 }

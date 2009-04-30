@@ -12,4 +12,5 @@ public class StreetEditSimpleAction extends SimpleEditAction<
 	public StreetEditSimpleAction() {
 		setObject(new Street());
 	}
+
 }

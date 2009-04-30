@@ -1,12 +1,11 @@
 package org.flexpay.ab.actions.filters;
 
-import org.flexpay.ab.actions.buildings.BuildingsActionsBase;
 import org.flexpay.ab.persistence.Apartment;
 import org.flexpay.ab.persistence.BuildingAddress;
 import org.flexpay.ab.service.ApartmentService;
+import org.flexpay.common.actions.FPActionWithPagerSupport;
 import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.util.CollectionUtils.list;
-import org.flexpay.common.actions.FPActionWithPagerSupport;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
@@ -46,9 +45,13 @@ public class ApartmentsListAjaxAction extends FPActionWithPagerSupport {
 	 * @return {@link #ERROR} by default
 	 */
 	@NotNull
-	@Override
 	protected String getErrorResult() {
 		return SUCCESS;
+	}
+
+	@Override
+	protected void setBreadCrumbs() {
+
 	}
 
 	public void setParents(String[] parents) {

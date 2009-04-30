@@ -8,6 +8,7 @@ import org.flexpay.ab.service.PersonService;
 import org.flexpay.common.actions.FPActionSupport;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Required;
 
 public class PersonSaveFIOAction extends FPActionSupport {
 
@@ -18,10 +19,9 @@ public class PersonSaveFIOAction extends FPActionSupport {
 	private IdentityTypeService identityTypeService;
 
 	@NotNull
-	@Override
 	public String doExecute() throws Exception {
 
-		if (!isSubmit()) {
+		if (isNotSubmit()) {
 			return REDIRECT_SUCCESS;
 		}
 
@@ -70,9 +70,13 @@ public class PersonSaveFIOAction extends FPActionSupport {
 	 * @return {@link #ERROR} by default
 	 */
 	@NotNull
-	@Override
 	protected String getErrorResult() {
 		return REDIRECT_ERROR;
+	}
+
+	@Override
+	protected void setBreadCrumbs() {
+
 	}
 
 	public Person getPerson() {
@@ -91,11 +95,14 @@ public class PersonSaveFIOAction extends FPActionSupport {
 		this.identity = identity;
 	}
 
+	@Required
 	public void setPersonService(PersonService personService) {
 		this.personService = personService;
 	}
 
+	@Required
 	public void setIdentityTypeService(IdentityTypeService identityTypeService) {
 		this.identityTypeService = identityTypeService;
 	}
+
 }

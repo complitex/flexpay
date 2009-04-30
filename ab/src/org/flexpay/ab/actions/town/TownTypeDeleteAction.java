@@ -4,11 +4,14 @@ import org.flexpay.ab.persistence.TownType;
 import org.flexpay.ab.service.TownTypeService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Required;
 
 import java.util.ArrayList;
 import java.util.List;
 
+//TODO: This class has a out-of-date structure. Must be remake
 public class TownTypeDeleteAction {
+
     protected Logger log = LoggerFactory.getLogger(getClass());
 
     private TownTypeService townTypeService;
@@ -28,22 +31,17 @@ public class TownTypeDeleteAction {
 		return "afterSubmit";
 	}
 
-	/**
-	 * Setter for property 'townTypeService'.
-	 * 
-	 * @param townTypeService
-	 *            Value to set for property 'townTypeService'.
-	 */
-	public void setTownTypeService(TownTypeService townTypeService) {
-		this.townTypeService = townTypeService;
-	}
-
 	public List<Long> getIdList() {
 		return idList;
 	}
 
 	public void setIdList(List<Long> idList) {
 		this.idList = idList;
+	}
+
+	@Required
+	public void setTownTypeService(TownTypeService townTypeService) {
+		this.townTypeService = townTypeService;
 	}
 
 }

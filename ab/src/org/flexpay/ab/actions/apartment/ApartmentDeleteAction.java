@@ -4,16 +4,19 @@ import org.flexpay.ab.service.ApartmentService;
 import org.flexpay.common.actions.FPActionSupport;
 import static org.flexpay.common.util.CollectionUtils.set;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Required;
 
 import java.util.Set;
 
 public class ApartmentDeleteAction extends FPActionSupport {
 
-	private ApartmentService apartmentService;
 	private Set<Long> objectIds = set();
+
+	private ApartmentService apartmentService;
 
 	@NotNull
 	public String doExecute() throws Exception {
+
 		apartmentService.disable(objectIds);
 
 		return REDIRECT_SUCCESS;
@@ -31,6 +34,11 @@ public class ApartmentDeleteAction extends FPActionSupport {
 		return REDIRECT_SUCCESS;
 	}
 
+	@Override
+	public void setBreadCrumbs() {
+
+	}
+
 	public Set<Long> getObjectIds() {
 		return objectIds;
 	}
@@ -39,7 +47,9 @@ public class ApartmentDeleteAction extends FPActionSupport {
 		this.objectIds = objectIds;
 	}
 
+	@Required
 	public void setApartmentService(ApartmentService apartmentService) {
 		this.apartmentService = apartmentService;
 	}
+
 }

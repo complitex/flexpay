@@ -27,8 +27,6 @@ import java.util.Locale;
 
 public class StreetsListAction extends FPActionWithPagerSupport<Street> {
 
-	private StreetService streetService;
-
 	// filters
 	private CountryFilter countryFilter = new CountryFilter();
 	private RegionFilter regionFilter = new RegionFilter();
@@ -40,6 +38,8 @@ public class StreetsListAction extends FPActionWithPagerSupport<Street> {
 	private StreetSorterByType streetSorterByType = new StreetSorterByType();
 
 	protected List<Street> streets = Collections.emptyList();
+
+	private StreetService streetService;
 
 	public StreetsListAction() {
 //		streetSorterByName.activate();
@@ -160,11 +160,6 @@ public class StreetsListAction extends FPActionWithPagerSupport<Street> {
 		this.streetNameFilter = streetNameFilter;
 	}
 
-	/**
-	 * Get initial set of filters for action
-	 *
-	 * @return Collection of filters
-	 */
 	protected ArrayStack getFilters() {
 		ArrayStack filters = new ArrayStack();
 		filters.push(countryFilter);
@@ -174,11 +169,6 @@ public class StreetsListAction extends FPActionWithPagerSupport<Street> {
 		return filters;
 	}
 
-	/**
-	 * Set filters for action
-	 *
-	 * @param filters collection of filters
-	 */
 	protected void setFilters(ArrayStack filters) {
 		int n = 0;
 		streetNameFilter = (StreetNameFilter) filters.peek(n++);

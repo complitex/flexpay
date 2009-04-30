@@ -11,16 +11,17 @@ import org.flexpay.ab.service.DistrictService;
 import org.flexpay.ab.service.TownService;
 import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Required;
 
 public class DistrictCreateAction extends CreateAction<
 		DistrictName, DistrictNameTemporal, District, DistrictNameTranslation> {
 
-	private TownService townService;
-	private DistrictService districtService;
-
 	private CountryFilter countryFilter = new CountryFilter();
 	private RegionFilter regionFilter = new RegionFilter();
 	private TownFilter townFilter = new TownFilter();
+
+	private TownService townService;
+	private DistrictService districtService;
 
 	public DistrictCreateAction() {
 		object = new District();
@@ -35,7 +36,7 @@ public class DistrictCreateAction extends CreateAction<
 	public String doExecute() throws Exception {
 		ArrayStack filterArrayStack = getFilters();
 		for (Object filter : filterArrayStack) {
-			((PrimaryKeyFilter) filter).initFilter(session);
+			((PrimaryKeyFilter<?>) filter).initFilter(session);
 		}
 		ArrayStack filters = parentService.initFilters(filterArrayStack, userPreferences.getLocale());
 		setFilters(filters);
@@ -78,65 +79,30 @@ public class DistrictCreateAction extends CreateAction<
 		return !hasActionErrors();
 	}
 
-	/**
-	 * Getter for property 'countryFilter'.
-	 *
-	 * @return Value for property 'countryFilter'.
-	 */
 	public CountryFilter getCountryFilter() {
 		return countryFilter;
 	}
 
-	/**
-	 * Setter for property 'countryFilter'.
-	 *
-	 * @param countryFilter Value to set for property 'countryFilter'.
-	 */
 	public void setCountryFilter(CountryFilter countryFilter) {
 		this.countryFilter = countryFilter;
 	}
 
-	/**
-	 * Getter for property 'regionFilter'.
-	 *
-	 * @return Value for property 'regionFilter'.
-	 */
 	public RegionFilter getRegionFilter() {
 		return regionFilter;
 	}
 
-	/**
-	 * Setter for property 'regionFilter'.
-	 *
-	 * @param regionFilter Value to set for property 'regionFilter'.
-	 */
 	public void setRegionFilter(RegionFilter regionFilter) {
 		this.regionFilter = regionFilter;
 	}
 
-	/**
-	 * Getter for property 'townFilter'.
-	 *
-	 * @return Value for property 'townFilter'.
-	 */
 	public TownFilter getTownFilter() {
 		return townFilter;
 	}
 
-	/**
-	 * Setter for property 'townFilter'.
-	 *
-	 * @param townFilter Value to set for property 'townFilter'.
-	 */
 	public void setTownFilter(TownFilter townFilter) {
 		this.townFilter = townFilter;
 	}
 
-	/**
-	 * Get initial set of filters for action
-	 *
-	 * @return Collection of filters
-	 */
 	protected ArrayStack getFilters() {
 		ArrayStack filters = new ArrayStack();
 		filters.push(countryFilter);
@@ -145,22 +111,20 @@ public class DistrictCreateAction extends CreateAction<
 		return filters;
 	}
 
-	/**
-	 * Set filters for action
-	 *
-	 * @param filters collection of filters
-	 */
 	protected void setFilters(ArrayStack filters) {
 		townFilter = (TownFilter) filters.peek(0);
 		regionFilter = (RegionFilter) filters.peek(1);
 		countryFilter = (CountryFilter) filters.peek(2);
 	}
 
+	@Required
 	public void setTownService(TownService townService) {
 		this.townService = townService;
 	}
 
+	@Required
 	public void setDistrictService(DistrictService districtService) {
 		this.districtService = districtService;
 	}
+
 }
