@@ -47,32 +47,32 @@ public class ConsumerServiceImpl implements ConsumerService {
 	/**
 	 * Find consumer by service provider, account number and subservice code
 	 *
-	 * @param serviceProvider ServiceProvider stub
+	 * @param serviceProviderStub ServiceProvider stub
 	 * @param accountNumber   External account number
-	 * @param serviceId	   Service code
+	 * @param serviceCode     Service code
 	 * @return Consumer if found, or <code>null</code> otherwise
 	 */
-	public Consumer findConsumer(ServiceProvider serviceProvider, String accountNumber, String serviceId) {
-		if (serviceId.startsWith("#")) {
+	public Consumer findConsumer(Stub<ServiceProvider> serviceProviderStub, String accountNumber, String serviceCode) {
+		if (serviceCode.startsWith("#")) {
 			return consumerDaoExt.findConsumerByProviderServiceCode(
-					serviceProvider.getId(), accountNumber, serviceId.substring(1));
+					serviceProviderStub.getId(), accountNumber, serviceCode.substring(1));
 		}
-		return consumerDaoExt.findConsumerByTypeCode(serviceProvider.getId(), accountNumber, Long.valueOf(serviceId));
+		return consumerDaoExt.findConsumerByTypeCode(serviceProviderStub.getId(), accountNumber, Long.valueOf(serviceCode));
 	}
 
 	/**
 	 * Find Service by service provider and subservice code
 	 *
-	 * @param serviceProvider ServiceProvider stub
-	 * @param serviceId	   Subservice code
+	 * @param serviceProviderStub ServiceProvider stub
+	 * @param serviceCode	   Subservice code
 	 * @return Service if found, or <code>null</code> otherwise
 	 */
-	public Service findService(ServiceProvider serviceProvider, String serviceId) {
+	public Service findService(Stub<ServiceProvider> serviceProviderStub, String serviceCode) {
 		List<Service> services;
-		if (serviceId.startsWith("#")) {
-			services = serviceDao.findServicesByProviderCode(serviceProvider.getId(), serviceId.substring(1));
+		if (serviceCode.startsWith("#")) {
+			services = serviceDao.findServicesByProviderCode(serviceProviderStub.getId(), serviceCode.substring(1));
 		} else {
-			services = serviceDao.findServicesByTypeCode(serviceProvider.getId(), Long.valueOf(serviceId));
+			services = serviceDao.findServicesByTypeCode(serviceProviderStub.getId(), Long.valueOf(serviceCode));
 		}
 
 		if (services.isEmpty()) {
@@ -80,7 +80,7 @@ public class ConsumerServiceImpl implements ConsumerService {
 		}
 
 		if (services.size() > 1) {
-			log.error("Internal error, several services found for service code: {}", serviceId);
+			log.error("Internal error, several services found for service code: {}", serviceCode);
 			return null;
 		}
 

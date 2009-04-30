@@ -4,6 +4,7 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
+import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.persistence.registry.RegistryRecord;
 import org.flexpay.eirc.persistence.Consumer;
@@ -85,7 +86,7 @@ public class BaseContainerOperation extends ContainerOperation {
 			EircRegistryProperties props = (EircRegistryProperties) registry.getProperties();
 			ServiceProvider provider = factory.getServiceProviderService().read(props.getServiceProviderStub());
 			consumer = consumerService.findConsumer(
-					provider, record.getPersonalAccountExt(), serviceId);
+					new Stub<ServiceProvider>(provider), record.getPersonalAccountExt(), serviceId);
 			if (consumer == null) {
 				throw new FlexPayException("Cannot find consumer: SP-id=" + props.getServiceProvider().getId() +
 										   ", account=" + record.getPersonalAccountExt() + ", code=" + serviceId);

@@ -137,7 +137,7 @@ public class OpenSubserviceAccountOperation extends ContainerOperation {
 		ConsumerService consumerService = factory.getConsumerService();
 		EircRegistryProperties props = (EircRegistryProperties) registry.getProperties();
 		ServiceProvider provider = factory.getServiceProviderService().read(props.getServiceProviderStub());
-		Service service = consumerService.findService(provider, subserviceId);
+		Service service = consumerService.findService(new Stub<ServiceProvider>(provider), subserviceId);
 		if (service == null) {
 			throw new FlexPayException("Cannot find subservice for provider " + provider +
 									   " code: " + subserviceId);

@@ -289,8 +289,9 @@
 	<query name="RegistryRecord.listRecordsForImport"><![CDATA[
 		select rr
 		from RegistryRecord rr
-		inner join fetch rr.recordStatus rrs
-		left join fetch rr.importError
+			inner join fetch rr.properties
+            inner join fetch rr.recordStatus rrs
+            left join fetch rr.importError
 		where rr.registry.id=? and rr.id>=? and rr.id<=? and rrs.code NOT IN (4)
 	]]></query>
 

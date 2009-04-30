@@ -57,7 +57,7 @@ public class MbCorrectionsFileParser extends MbFileParser<Registry> {
 			registry.setSpFile(spFile);
 			registry.setRegistryType(registryTypeService.findByCode(RegistryType.TYPE_QUITTANCE));
 			registry.setArchiveStatus(registryArchiveStatusService.findByCode(RegistryArchiveStatus.NONE));
-			registry.setRegistryStatus(spRegistryStatusService.findByCode(RegistryStatus.CREATED));
+			registry.setRegistryStatus(spRegistryStatusService.findByCode(RegistryStatus.LOADING));
 
 			ServiceProvider serviceProvider = null;
 
@@ -81,7 +81,9 @@ public class MbCorrectionsFileParser extends MbFileParser<Registry> {
 					registry = registryService.create(registry);
 				} else if (line.startsWith(LAST_FILE_STRING_BEGIN)) {
 					registry.setRecordsNumber(recordsNum);
+					log.info("Total {} records created", recordsNum);
 					break;
+/*
 				} else if (lineNum == 19340 || lineNum == 19439
 						|| lineNum == 19450 || lineNum == 19492
 						|| lineNum == 25492 || lineNum == 25495
@@ -117,15 +119,17 @@ public class MbCorrectionsFileParser extends MbFileParser<Registry> {
 						|| lineNum == 320595 || lineNum == 320612
 						|| lineNum == 320622 || lineNum == 320710
 						|| lineNum == 320727 || lineNum == 355126) {
+*/
 				} else {
 					recordsNum += parseRecord(line, serviceProvider, registry);
 					if (recordsNum % 1000 == 0) {
-						log.info("{} records created", recordsNum);
+						log.info("{} records created, {} lines processed", recordsNum, lineNum - 2);
 					}
 				}
 
 			}
 
+			registry.setRegistryStatus(spRegistryStatusService.findByCode(RegistryStatus.LOADED));
 			registry = registryService.update(registry);
 
 		} catch (IOException e) {
@@ -164,8 +168,8 @@ public class MbCorrectionsFileParser extends MbFileParser<Registry> {
 			if (serviceCode == null || serviceCode.length() == 0 || serviceCode.equals("0")) {
 				return 0;
 			}
-//			createRecord(registry, fields, serviceCode);
-			createAccountRecord(registry, fields, serviceCode);
+			createRecord(registry, fields, serviceCode);
+//			createAccountRecord(registry, fields, serviceCode);
 		}
 
 		return serviceCodes.length;
@@ -181,12 +185,15 @@ public class MbCorrectionsFileParser extends MbFileParser<Registry> {
 		}
 
 		RegistryRecord record = new RegistryRecord();
-		record.setServiceCode(serviceCode);
+		record.setServiceCode("#" + serviceCode);
 		record.setPersonalAccountExt(fields[1]);
 		record.setOperationDate(new Date());
 		record.setRegistry(registry);
 
 		record.setLastName(fields[2]);
+		record.setMiddleName("");
+		record.setFirstName("");
+		record.setCity("ХАРЬКОВ");
 		record.setStreetType(fields[6]);
 		record.setStreetName(fields[7]);
 		record.setBuildingNum(fields[8]);
@@ -222,12 +229,15 @@ public class MbCorrectionsFileParser extends MbFileParser<Registry> {
 		}
 
 		RegistryRecord record = new RegistryRecord();
-		record.setServiceCode(serviceCode);
+		record.setServiceCode("#" + serviceCode);
 		record.setPersonalAccountExt(fields[1]);
 		record.setOperationDate(new Date());
 		record.setRegistry(registry);
 
 		record.setLastName(fields[2]);
+		record.setMiddleName("");
+		record.setFirstName("");
+		record.setCity("ХАРЬКОВ");
 		record.setStreetType(fields[6]);
 		record.setStreetName(fields[7]);
 		record.setBuildingNum(fields[8]);
