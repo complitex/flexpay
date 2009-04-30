@@ -56,7 +56,7 @@ public class QuittancePayAction extends FPActionSupport {
 			operationSumm = operationSumm.add(documentSumm);
 
 			Document document = new Document();
-			document.setDocumentStatus(documentStatusService.read(DocumentStatus.REGISTERED));
+			document.setDocumentStatus(documentStatusService.read(DocumentStatus.CREATED));
 			document.setDocumentType(documentTypeService.read(DocumentType.CASH_PAYMENT));
 			document.setSumm(documentSumm);
 			document.setAddress(address);
