@@ -33,7 +33,7 @@ public class TestMbCorrectionsFileParser extends TestSpFileCreateAction {
 			log.error("Error with parsing file", e);
 		}
 
-		deleteFile(newFile);
+//		deleteFile(newFile);
 	}
 
 }

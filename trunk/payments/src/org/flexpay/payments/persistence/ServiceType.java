@@ -16,9 +16,6 @@ public class ServiceType extends DomainObjectWithStatus {
 	private int code;
 	private Set<ServiceTypeNameTranslation> typeNames = Collections.emptySet();
 
-	/**
-	 * Constructs a new DomainObject.
-	 */
 	public ServiceType() {
 	}
 
@@ -26,38 +23,18 @@ public class ServiceType extends DomainObjectWithStatus {
 		super(id);
 	}
 
-	/**
-	 * Getter for property 'typeNames'.
-	 *
-	 * @return Value for property 'typeNames'.
-	 */
 	public Set<ServiceTypeNameTranslation> getTypeNames() {
 		return typeNames;
 	}
 
-	/**
-	 * Setter for property 'typeNames'.
-	 *
-	 * @param typeNames Value to set for property 'typeNames'.
-	 */
 	public void setTypeNames(Set<ServiceTypeNameTranslation> typeNames) {
 		this.typeNames = typeNames;
 	}
 
-	/**
-	 * Getter for property 'code'.
-	 *
-	 * @return Value for property 'code'.
-	 */
 	public int getCode() {
 		return code;
 	}
 
-	/**
-	 * Setter for property 'code'.
-	 *
-	 * @param code Value to set for property 'code'.
-	 */
 	public void setCode(int code) {
 		this.code = code;
 	}
@@ -103,7 +80,7 @@ public class ServiceType extends DomainObjectWithStatus {
 
 	@Override
 	public boolean equals(Object obj) {
-
 		return obj instanceof ServiceType && super.equals(obj);
 	}
+
 }

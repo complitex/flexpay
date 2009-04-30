@@ -23,9 +23,6 @@ public class Service extends DomainObject {
 	private Service parentService;
 	private Set<Service> childServices = Collections.emptySet();
 
-	/**
-	 * Constructs a new DomainObject.
-	 */
 	public Service() {
 	}
 
@@ -158,4 +155,5 @@ public class Service extends DomainObject {
 		ServiceDescription description = TranslationUtil.getTranslation(descriptions, locale);
 		return description != null ? description.getName() : "";
 	}
+
 }

@@ -116,7 +116,7 @@ public class OpenAccountOperation extends AbstractChangePersonalAccountOperation
 		ConsumerService consumerService = factory.getConsumerService();
 		EircRegistryProperties props = (EircRegistryProperties) registry.getProperties();
 		ServiceProvider provider = factory.getServiceProviderService().read(props.getServiceProviderStub());
-		Service service = consumerService.findService(provider, record.getServiceCode());
+		Service service = consumerService.findService(new Stub<ServiceProvider>(provider), record.getServiceCode());
 		if (service == null) {
 			throw new FlexPayException("Cannot find service for provider " + provider +
 									   " and code: " + record.getServiceCode());

@@ -60,6 +60,9 @@ public class UploadFileAction extends FPActionSupport {
 		return SUCCESS;
 	}
 
+	protected void setBreadCrumbs() {
+	}
+
 	/**
 	 * Get default error execution result
 	 * <p/>

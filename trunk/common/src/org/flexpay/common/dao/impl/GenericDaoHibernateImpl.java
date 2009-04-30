@@ -206,4 +206,5 @@ public class GenericDaoHibernateImpl<T, PK extends Serializable>
 	public void setArgumentTypeFactory(FinderArgumentTypeFactory argumentTypeFactory) {
 		this.argumentTypeFactory = argumentTypeFactory;
 	}
+
 }

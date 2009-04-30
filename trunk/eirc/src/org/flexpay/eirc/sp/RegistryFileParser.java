@@ -4,12 +4,14 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.FPFile;
+import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.registry.*;
 import org.flexpay.common.process.ProcessLogger;
 import org.flexpay.common.service.internal.SessionUtils;
 import org.flexpay.common.util.FileSource;
 import org.flexpay.common.util.StringUtil;
-import org.flexpay.eirc.persistence.*;
+import org.flexpay.eirc.persistence.EircRegistryProperties;
+import org.flexpay.eirc.persistence.EircRegistryRecordProperties;
 import org.flexpay.eirc.persistence.exchange.Operation;
 import org.flexpay.eirc.persistence.workflow.RegistryRecordWorkflowManager;
 import org.flexpay.eirc.persistence.workflow.RegistryWorkflowManager;
@@ -292,7 +294,7 @@ public class RegistryFileParser {
 			EircRegistryProperties props = (EircRegistryProperties) registry.getProperties();
 			EircRegistryRecordProperties recordProps = (EircRegistryRecordProperties) record.getProperties();
 			Service service = consumerService.findService(
-					props.getServiceProvider(), record.getServiceCode());
+					new Stub<ServiceProvider>(props.getServiceProvider()), record.getServiceCode());
 			if (service == null) {
 				log.warn("Unknown service code: {}", record.getServiceCode());
 			}

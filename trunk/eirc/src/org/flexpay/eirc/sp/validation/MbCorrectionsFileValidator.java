@@ -1,8 +1,8 @@
 package org.flexpay.eirc.sp.validation;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
-import org.apache.commons.io.IOUtils;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.FPFile;
 import org.flexpay.eirc.sp.MbFileValidator;
@@ -14,6 +14,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MbCorrectionsFileValidator extends MbFileValidator {
 
@@ -26,6 +28,8 @@ public class MbCorrectionsFileValidator extends MbFileValidator {
 
 		BufferedReader reader = null;
 		boolean ret = true;
+
+		List<String> services = new ArrayList<String>();
 
 		try {
 			reader = new BufferedReader(new InputStreamReader(new FileInputStream(spFile.getFile()), REGISTRY_FILE_ENCODING), 500);
@@ -47,6 +51,7 @@ public class MbCorrectionsFileValidator extends MbFileValidator {
 						ret = false;
 //						throw new FlexPayException("Incorrect header in file. Line number = " + lineNum, e);
 					}
+/*
 				} else if (lineNum == 19340 || lineNum == 19439
 						|| lineNum == 19450 || lineNum == 19492
 						|| lineNum == 25492 || lineNum == 25495
@@ -82,6 +87,7 @@ public class MbCorrectionsFileValidator extends MbFileValidator {
 						|| lineNum == 320595 || lineNum == 320612
 						|| lineNum == 320622 || lineNum == 320710
 						|| lineNum == 320727 || lineNum == 355126) {
+*/
 
 				} else if (line.startsWith(LAST_FILE_STRING_BEGIN)) {
 					fileValues.setLines(lineNum - 2);
@@ -96,7 +102,7 @@ public class MbCorrectionsFileValidator extends MbFileValidator {
 					break;
 				} else {
 					try {
-						validateRecord(line);
+						validateRecord(line,services);
 					} catch (Exception e) {
 						log.debug("Incorrect record in file. Line number = {}, error: {}\nLine = {}", new Object[] {lineNum, e.getMessage(), line});
 						ret = false;
@@ -109,6 +115,8 @@ public class MbCorrectionsFileValidator extends MbFileValidator {
 		} finally {
 			IOUtils.closeQuietly(reader);
 		}
+
+//		log.debug("Services: {}", services);
 
 		return ret;
 
@@ -134,7 +142,7 @@ public class MbCorrectionsFileValidator extends MbFileValidator {
 		}
 	}
 
-	private void validateRecord(String line) throws FlexPayException {
+	private void validateRecord(String line, List<String> services) throws FlexPayException {
 		String[] fields = line.split("=");
 		if (fields.length != 28) {
 			throw new FlexPayException("Not 28 fields");
@@ -200,6 +208,11 @@ public class MbCorrectionsFileValidator extends MbFileValidator {
 			throw new FlexPayException("Can't parse modifications begin date " + fields[19]);
 		}
 /*
+		for (String s : fields[20].split(";")) {
+			if (!services.contains(s) && !s.equals("0")) {
+				services.add(s);
+			}
+		}
 		if (fields[20].equals("0")) {
 			log.debug("{}", line);
 		}

@@ -12,10 +12,11 @@ import org.flexpay.common.service.importexport.RawDataSource;
 import org.flexpay.eirc.persistence.Consumer;
 import org.flexpay.eirc.persistence.EircRegistryProperties;
 import org.flexpay.eirc.persistence.EircRegistryRecordProperties;
-import org.flexpay.payments.persistence.Service;
 import org.flexpay.eirc.persistence.workflow.RegistryRecordWorkflowManager;
 import org.flexpay.eirc.persistence.workflow.TransitionNotAllowed;
 import org.flexpay.eirc.service.ConsumerService;
+import org.flexpay.orgs.persistence.ServiceProvider;
+import org.flexpay.payments.persistence.Service;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Required;
@@ -124,8 +125,9 @@ public class EircImportServiceTx extends ImportService {
 				// set service if not found
 				EircRegistryProperties regProps = (EircRegistryProperties) data.getRegistryRecord().getRegistry().getProperties();
 				Service service = props.getService();
+				Stub<ServiceProvider> spStub = new Stub<ServiceProvider>(regProps.getServiceProvider());
 				if (service == null) {
-					service = consumerService.findService(regProps.getServiceProvider(), data.getServiceCode());
+					service = consumerService.findService(spStub, data.getServiceCode());
 					if (service == null) {
 						log.warn("Unknown service code: {}", data.getServiceCode());
 						ImportError error = addImportError(sd, data.getExternalSourceId(), Service.class, dataSource);
@@ -138,8 +140,7 @@ public class EircImportServiceTx extends ImportService {
 				}
 
 				// try to find consumer (correction lost or service code came in a different format?)
-				Consumer consumer = consumerService.findConsumer(
-						regProps.getServiceProvider(), data.getAccountNumber(), data.getServiceCode());
+				Consumer consumer = consumerService.findConsumer(spStub, data.getAccountNumber(), data.getServiceCode());
 				if (consumer != null) {
 					// consumer found save correction
 					DataCorrection corr = correctionsService.getStub(data.getShortConsumerId(), consumer, sd);
@@ -166,10 +167,8 @@ public class EircImportServiceTx extends ImportService {
 
 		if (!inited) {
 			dataSource.initialize();
-
 			log.debug("Inited");
 		}
-
 
 		List<RawConsumerData> result = dataSource.nextPage();
 		log.debug("Listing records for update");

@@ -29,21 +29,21 @@ public interface ConsumerService {
 	/**
 	 * Find consumer by service provider, account number and subservice code
 	 *
-	 * @param serviceProvider ServiceProvider stub
+	 * @param serviceProviderStub ServiceProvider stub
 	 * @param accountNumber   External account number
-	 * @param serviceId	   Service code
+	 * @param serviceCode     Service code
 	 * @return Consumer if found, or <code>null</code> otherwise
 	 */
-	Consumer findConsumer(ServiceProvider serviceProvider, String accountNumber, String serviceId);
+	Consumer findConsumer(Stub<ServiceProvider> serviceProviderStub, String accountNumber, String serviceCode);
 
 	/**
 	 * Find Service by service provider and subservice code
 	 *
-	 * @param serviceProvider ServiceProvider stub
-	 * @param serviceId	   Service code
+	 * @param serviceProviderStub ServiceProvider stub
+	 * @param serviceCode	   Service code
 	 * @return Service if found, or <code>null</code> otherwise
 	 */
-	Service findService(ServiceProvider serviceProvider, String serviceId);
+	Service findService(Stub<ServiceProvider> serviceProviderStub, String serviceCode);
 
 	/**
 	 * Read consumer info
