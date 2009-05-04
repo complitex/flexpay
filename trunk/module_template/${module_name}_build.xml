@@ -113,6 +113,9 @@
 
     <target name="${module_name}.prepare.war">
 		<antcall target="${module_name}.prepare.war.internal" />
+		<antcall target="template.switch_log_name">
+			<param name="log_name" value="${module_name}" />
+		</antcall>
 		<antcall target="template.copy.classes" />
 	</target>
 

@@ -120,6 +120,9 @@
 
     <target name="eirc.prepare.war">
 		<antcall target="eirc.prepare.war.internal" />
+		<antcall target="template.switch_log_name">
+			<param name="log_name" value="eirc" />
+		</antcall>
 		<antcall target="template.copy.classes" />
 	</target>
 

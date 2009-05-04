@@ -115,6 +115,9 @@
 
     <target name="bti.prepare.war">
 		<antcall target="bti.prepare.war.internal" />
+		<antcall target="template.switch_log_name">
+			<param name="log_name" value="bti" />
+		</antcall>
 		<antcall target="template.copy.classes" />
 	</target>
 

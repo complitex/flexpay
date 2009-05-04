@@ -66,20 +66,6 @@ public class IdentityType extends DomainObjectWithStatus {
 		this.typeId = typeId;
 	}
 
-	/**
-	 * Returns a string representation of the object.
-	 *
-	 * @return a string representation of the object.
-	 */
-	@Override
-	public String toString() {
-		return new ToStringBuilder(this, ToStringStyle.SIMPLE_STYLE)
-				.append("Id", getId())
-				.append("Status", getStatus())
-				.append("Translations", translations.toArray())
-				.toString();
-	}
-
 	public boolean isFIO() {
 		return typeId == TYPE_FIO;
 	}

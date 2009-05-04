@@ -3,14 +3,30 @@
 
 <log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
 
-	<appender name="flexpay" class="org.apache.log4j.RollingFileAppender">
-		<param name="MaxFileSize" value="52428800" />
-		<param name="MaxBackupIndex" value="3" />
+	<appender name="flexpay" class="org.apache.log4j.QpidCompositeRollingAppender">
+		<!-- Ensure that logs allways have the dateFormat set-->
+		<param name="StaticLogFileName" value="false" />
+		<param name="File" value="${java.io.tmpdir}/logs/flexpay_log_LOG_NAME" />
 		<param name="Append" value="false" />
-		<param name="File" value="${java.io.tmpdir}/logs/flexpay_log_common.txt" />
+		<!-- Change the direction so newer files have bigger numbers -->
+		<!-- So log.1 is written then log.2 etc This prevents a lot of file renames at log rollover -->
+		<param name="CountDirection" value="1" />
+		<!-- Use 50MB -->
+		<param name="MaxFileSize" value="52428800" />
+		<param name="DatePattern" value="'.'yyyy-MM-dd-HH" />
+		<!-- Unlimited number of backups -->
+		<param name="MaxSizeRollBackups" value="-1" />
+		<!-- Compress(gzip) the backup files-->
+		<param name="CompressBackupFiles" value="true" />
+		<!-- Compress the backup files using a second thread -->
+		<param name="CompressAsync" value="true" />
+		<!-- Start at zero numbered files-->
+		<param name="ZeroBased" value="true" />
+		<!-- Backup Location -->
+		<!--<param name="backupFilesToPath" value="${java.io.tmpdir}/logs/backup" />-->
+
 		<layout class="org.apache.log4j.PatternLayout">
-			<param name="ConversionPattern"
-				   value="%d %5p [%t] (%c %F:%L) - %m%n" />
+			<param name="ConversionPattern" value="%d %-5p [%t] %C{2} (%F:%L) - %m%n" />
 		</layout>
 	</appender>
 
@@ -18,11 +34,6 @@
 		<priority value="debug" />
 		<appender-ref ref="flexpay" />
 	</category>
-
-    <category name="org.hibernate" additivity="false">
-        <priority value="debug" />
-        <appender-ref ref="flexpay" />
-    </category>
 
 	<root>
 		<priority value="info" />
