@@ -27,7 +27,7 @@ public class TestPackTownHistory extends AbSpringBeanAwareTestCase {
 	public void testPackNskHistory() throws Exception {
 
 		// first, generate some history if needed
-		townHistoryGenerator.generateFor(new Town(2L));
+		townHistoryGenerator.generateFor(new Town(1L));
 
 		Stub<HistoryConsumer> consumer = new Stub<HistoryConsumer>(1L);
 

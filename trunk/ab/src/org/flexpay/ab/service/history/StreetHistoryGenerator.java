@@ -50,7 +50,7 @@ public class StreetHistoryGenerator implements HistoryGenerator<Street> {
 			diff.setProcessingStatus(ProcessingStatus.STATUS_PROCESSED);
 			diffService.create(diff);
 		} else {
-			log.info("Street already has history, do nothing {}", street);
+			log.debug("Street already has history, do nothing {}", street);
 		}
 		log.debug("Ended generating history for street {}", obj);
 

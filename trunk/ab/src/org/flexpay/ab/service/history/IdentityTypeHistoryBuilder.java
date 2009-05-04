@@ -63,6 +63,8 @@ public class IdentityTypeHistoryBuilder extends HistoryBuilderBase<IdentityType>
 
 			log.debug("Completed Diff for lang {}", lang);
 		}
+
+		buildCodeDiff(t1, t2, diff);
 	}
 
 	private void buildCodeDiff(@Nullable IdentityType t1, @NotNull IdentityType t2, @NotNull Diff diff) {
@@ -111,7 +113,7 @@ public class IdentityTypeHistoryBuilder extends HistoryBuilderBase<IdentityType>
 					break;
 				case FIELD_CODE:
 					Integer code = record.getNewIntValue();
-					t.setTypeId(code == null ? IdentityType.TYPE_UNKNOWN : code.intValue());
+					t.setTypeId(code == null ? IdentityType.TYPE_UNKNOWN : code);
 					break;
 				default:
 					log.info("Unsupported record: {}", record);
