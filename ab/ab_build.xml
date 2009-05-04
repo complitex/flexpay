@@ -126,6 +126,9 @@
 
 	<target name="ab.prepare.war">
 		<antcall target="ab.prepare.war.internal" />
+		<antcall target="template.switch_log_name">
+			<param name="log_name" value="ab" />
+		</antcall>
 		<antcall target="template.copy.classes" />
 	</target>
 

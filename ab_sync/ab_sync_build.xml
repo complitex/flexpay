@@ -126,6 +126,11 @@
             <param name="src.i18n.dir" value="${ab_sync.dir}/${src.dir}" />
             <reference refid="ab_sync.classes.resources" torefid="resources" />
         </antcall>
+
+		<antcall target="template.switch_log_name">
+			<param name="log_name" value="ab_sync" />
+		</antcall>
+
     </target>
 
     <!-- Build production web-archive -->

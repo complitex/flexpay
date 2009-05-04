@@ -118,6 +118,9 @@
 
 	<target name="tc.prepare.war">
 		<antcall target="tc.prepare.war.internal" />
+		<antcall target="template.switch_log_name">
+			<param name="log_name" value="tc" />
+		</antcall>
 		<antcall target="template.copy.classes" />
 	</target>
 

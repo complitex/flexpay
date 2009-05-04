@@ -371,4 +371,13 @@
 		</replaceregexp>
 	</target>
 
+	<target name="template.switch_log_name">
+		<replaceregexp encoding="UTF-8" flags="g"
+					   match="LOG_NAME" replace="${log_name}">
+			<fileset dir="${build.dir}">
+				<include name="web/WEB-INF/common/configs/log4j.xml" />
+			</fileset>
+		</replaceregexp>
+	</target>
+
 </project>

@@ -113,6 +113,9 @@
 
     <target name="orgs.prepare.war">
 		<antcall target="orgs.prepare.war.internal" />
+		<antcall target="template.switch_log_name">
+			<param name="log_name" value="orgs" />
+		</antcall>
 		<antcall target="template.copy.classes" />
 	</target>
 

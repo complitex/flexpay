@@ -118,6 +118,9 @@
 
     <target name="payments.prepare.war">
 		<antcall target="payments.prepare.war.internal" />
+		<antcall target="template.switch_log_name">
+			<param name="log_name" value="payments" />
+		</antcall>
 		<antcall target="template.copy.classes" />
 	</target>
 
