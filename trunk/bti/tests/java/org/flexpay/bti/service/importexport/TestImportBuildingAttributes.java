@@ -2,10 +2,10 @@ package org.flexpay.bti.service.importexport;
 
 import org.apache.commons.io.IOUtils;
 import org.flexpay.bti.process.BuildingAttributesImportJob;
+import org.flexpay.bti.test.BtiSpringBeanAwareTestCase;
 import org.flexpay.common.persistence.FPFile;
 import org.flexpay.common.process.job.Job;
 import org.flexpay.common.service.FPFileService;
-import org.flexpay.common.test.SpringBeanAwareTestCase;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.DateUtil;
 import org.flexpay.common.util.FPFileUtil;
@@ -20,7 +20,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.Map;
 
-public class TestImportBuildingAttributes extends SpringBeanAwareTestCase {
+public class TestImportBuildingAttributes extends BtiSpringBeanAwareTestCase {
 
 	@Autowired
 	private BuildingAttributesImportJob job;
