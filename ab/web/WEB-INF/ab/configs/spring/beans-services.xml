@@ -278,8 +278,7 @@
 	<bean id="apartmentHistoryGenerator"
 		  class="org.flexpay.ab.service.history.ApartmentHistoryGenerator"
 		  p:diffService-ref="diffService"
-		  p:historyBuilder-ref="apartmentHistoryBuilder"
-		  p:apartmentService-ref="apartmentService" />
+		  p:historyBuilder-ref="apartmentHistoryBuilder" />
 
 	<!-- History handlers -->
 	<bean id="abHistoryHandlerBase"

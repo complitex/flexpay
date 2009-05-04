@@ -43,20 +43,13 @@ public class BuildingHistoryGenerator implements HistoryGenerator<Building> {
 			return;
 		}
 
-		if (!diffService.hasDiffs(building)) {
-
-			Diff diff = historyBuilder.diff(null, building);
-			diff.setProcessingStatus(ProcessingStatus.STATUS_PROCESSED);
-			diffService.create(diff);
-
-		} else {
-			log.info("Building already has history, do nothing {}", building);
-		}
+		Diff diff = historyBuilder.diff(null, building);
+		diff.setProcessingStatus(ProcessingStatus.STATUS_PROCESSED);
+		diffService.create(diff);
 
 		log.debug("Ended generating history for building {}", obj);
 
-// Commented untill perfomance issues fix
-/*
+		// Commented untill perfomance issues fix
 		log.debug("starting generating history for building apartments {}", obj);
 		List<Apartment> apartments = apartmentService.getBuildingApartments(stub(obj));
 		for (Apartment apartment : apartments) {
@@ -64,7 +57,6 @@ public class BuildingHistoryGenerator implements HistoryGenerator<Building> {
 			apartmentHistoryGenerator.generateFor(apartment);
 		}
 		log.debug("Ended generating history for building apartments {}", obj);
- */
 	}
 
 	@Required

@@ -56,7 +56,7 @@ public class ApartmentServiceImpl implements ApartmentService {
 		BuildingAddress buildingAddress = building.getDefaultBuildings();
 		if (buildingAddress == null) {
 			throw new FlexPayException("No building attributes",
-					"error.ab.building.no_attributes", apartment.getBuilding().getId());
+					"error.ab.building.no_attributes", building.getId());
 		}
 		Street street = buildingAddress.getStreet();
 		String streetNameStr = getNameTranslation(street);

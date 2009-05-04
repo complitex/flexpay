@@ -72,7 +72,7 @@
 		from Apartment o
 			inner join fetch o.building b
 			left join fetch o.apartmentNumbers n
-		where o.status=0 and b.id=? and n.begin <= current_date() and current_date() <= n.end
+		where o.status=0 and b.id=?
 	]]></query>
 
 	<query name="Apartment.readFull">
