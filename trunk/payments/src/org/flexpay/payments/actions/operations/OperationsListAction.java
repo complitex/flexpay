@@ -1,6 +1,7 @@
 package org.flexpay.payments.actions.operations;
 
 import org.apache.commons.lang.time.DateUtils;
+import org.apache.commons.lang.StringUtils;
 import org.flexpay.common.actions.FPActionWithPagerSupport;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
@@ -11,55 +12,120 @@ import org.flexpay.common.util.DateUtil;
 import org.flexpay.payments.persistence.DocumentStatus;
 import org.flexpay.payments.persistence.Operation;
 import org.flexpay.payments.persistence.OperationStatus;
+import org.flexpay.payments.persistence.ServiceType;
 import org.flexpay.payments.service.OperationService;
 import org.flexpay.payments.service.OperationStatusService;
+import org.flexpay.payments.service.ServiceTypeService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.util.Date;
 import java.util.List;
+import java.math.BigDecimal;
 
 public class OperationsListAction extends FPActionWithPagerSupport<Operation> {
 
 	// form data
+	private List<ServiceType> serviceTypes = CollectionUtils.list();
+
+	// date filters
 	private BeginDateFilter beginDateFilter = new BeginDateFilter();
 	private EndDateFilter endDateFilter = new EndDateFilter();
-	private String status;
-	private Long selectedOperationId;
+
+	// time boundaries
+	private String beginTime;
+	private String endTime;
+
+	// summ boundaries
+	private String minimalSumm;
+	private String maximalSumm;
+
+	// selected service type id
+	private Long serviceTypeId;
 
 	// submit flags
-	private String dateSubmitted;
+	private String filterSubmitted;
 	private String registerSubmitted;
 	private String returnSubmitted;
 	private String deleteSubmitted;
 
+	// document search flag
+	private String documentSearchEnabled;
+
+	// status provider operations
+	private String status;
+	private Long selectedOperationId;
+
+	// search results data
 	private List<Operation> operations = CollectionUtils.list();
+	private List<Long> highlightedDocumentIds = CollectionUtils.list();
 
 	// required services
 	private OperationService operationService;
 	private OperationStatusService operationStatusService;
+	private ServiceTypeService serviceTypeService;
 
 	@NotNull
 	protected String doExecute() throws Exception {
 
-		if (isDateSubmitted()) { // operations filtering by date submitted
-			if (doValidate()) {
+		//loadServiceTypes();
+
+		if (dateFiltersAreEmpty()) {
+			initFiltersWithDefaults();
+		}
+
+		if (isFilterSubmitted()) { // operations filtering by date submitted
+			if (doFilterValidation()) {
 				loadOperations();
 			}
 			return SUCCESS;
-		}
-
-		if (isStatusSubmitted()) { // if status change submitted
-			if (doValidate()) {
-				updateOperationStatus();				
-				loadOperations();
-			}
+		} else if (isStatusSubmitted()) { // if status change submitted
+			updateOperationStatus();
+			loadOperations();
+			return SUCCESS;
+		} else { // nothing is submitted
+			loadOperations();
 			return SUCCESS;
 		}
+	}
 
-		initFiltersWithDefaults();
-		loadOperations();
-		return SUCCESS;
+	private void loadOperations() {
+
+		// FIXME old code placed here to make working demo MUST BE ELIMINATED
+		Date beginDate = DateUtil.truncateDay(beginDateFilter.getDate());
+		Date endDate = DateUtil.truncateDay(endDateFilter.getDate());
+		endDate = DateUtils.addDays(endDate, 1);
+		operations = operationService.listPaymentOperations(beginDate, endDate, getPager());
+		// FIXME end of old code
+
+		/*
+		BigDecimal minSumm = new BigDecimal(minimalSumm);
+		BigDecimal maxSumm = new BigDecimal(maximalSumm);
+
+		// service type id is field named serviceTypeId
+
+		if (documentSearchEnabled()) {
+
+			// TODO refactor
+			Date beginDate = DateUtil.truncateDay(beginDateFilter.getDate());
+			Date endDate = DateUtil.truncateDay(endDateFilter.getDate());
+			endDate = DateUtils.setHours(endDate, 23);
+			endDate = DateUtils.setMinutes(endDate, 59);
+			endDate = DateUtils.setSeconds(endDate, 59);
+
+			//List<Operation> searchResults = operationService.listPaymentsOperations(serviceTypeId, beginDate, endDate, minSumm, maxSumm, getPager())
+
+			// TODO save highlighted document identifiers here
+
+			// TODO read full operations data and putting them into operations
+		} else {
+			//Date beginDate = DateUtil.getFullDate(beginDateFilter.getDate(), beginTime);
+			//Date endDate = DateUtil.getFullDate(endDateFilter.getDate(), endTime);
+
+			// TODO implement
+			//operations = operationService.listPaymentOperations(beginDate, endDate, minSumm, maxSumm, getPager());
+		}
+		*/
 	}
 
 	private void updateOperationStatus() throws FlexPayException {
@@ -69,12 +135,8 @@ public class OperationsListAction extends FPActionWithPagerSupport<Operation> {
 		operationService.save(operation);
 	}
 
-	private void loadOperations() {
-		Date beginDate = DateUtil.truncateDay(beginDateFilter.getDate());
-		Date endDate = DateUtil.truncateDay(endDateFilter.getDate());
-		endDate = DateUtils.addDays(endDate, 1);
-
-		operations = operationService.listPaymentOperations(beginDate, endDate, getPager());
+	private void loadServiceTypes() {
+		serviceTypes = serviceTypeService.listAllServiceTypes();
 	}
 
 	@NotNull
@@ -83,14 +145,21 @@ public class OperationsListAction extends FPActionWithPagerSupport<Operation> {
 		return SUCCESS;
 	}
 
-	private boolean doValidate() {
+	private boolean doFilterValidation() {
 
+		// dates validation
 		Date beginDate = beginDateFilter.getDate();
 		Date endDate = endDateFilter.getDate();
 
 		if (beginDate.after(endDate)) {
 			addActionError(getText("payments.error.operations.list.begin_date_must_be_before_end_date"));
 		}
+
+		// time validation
+		// TODO implement
+
+		// summs validation
+		// TODO implement
 
 		return !hasActionErrors();
 	}
@@ -100,8 +169,16 @@ public class OperationsListAction extends FPActionWithPagerSupport<Operation> {
 		endDateFilter.setDate(DateUtil.now());
 	}
 
-	private boolean isDateSubmitted() {
-		return dateSubmitted != null;
+	private boolean dateFiltersAreEmpty() {
+		return beginDateFilter.dateIsEmpty() && endDateFilter.dateIsEmpty();
+	}
+
+	private boolean documentSearchEnabled() {
+		return StringUtils.isNotEmpty(documentSearchEnabled);
+	}
+
+	private boolean isFilterSubmitted() {
+		return filterSubmitted != null;
 	}
 
 	private boolean isStatusSubmitted() {
@@ -162,8 +239,44 @@ public class OperationsListAction extends FPActionWithPagerSupport<Operation> {
 		return endDateFilter;
 	}
 
+	public String getBeginTime() {
+		return beginTime;
+	}
+
+	public void setBeginTime(String beginTime) {
+		this.beginTime = beginTime;
+	}
+
+	public String getEndTime() {
+		return endTime;
+	}
+
+	public void setEndTime(String endTime) {
+		this.endTime = endTime;
+	}
+
 	public List<Operation> getOperations() {
 		return operations;
+	}
+
+	public List<ServiceType> getServiceTypes() {
+		return serviceTypes;
+	}
+
+	public String getMinimalSumm() {
+		return minimalSumm;
+	}
+
+	public void setMinimalSumm(String minimalSumm) {
+		this.minimalSumm = minimalSumm;
+	}
+
+	public String getMaximalSumm() {
+		return maximalSumm;
+	}
+
+	public void setMaximalSumm(String maximalSumm) {
+		this.maximalSumm = maximalSumm;
 	}
 
 	public String getStatus() {
@@ -174,6 +287,10 @@ public class OperationsListAction extends FPActionWithPagerSupport<Operation> {
 		this.status = status;
 	}
 
+	public void setServiceTypeId(Long serviceTypeId) {
+		this.serviceTypeId = serviceTypeId;
+	}
+
 	public Long getSelectedOperationId() {
 		return selectedOperationId;
 	}
@@ -182,8 +299,8 @@ public class OperationsListAction extends FPActionWithPagerSupport<Operation> {
 		this.selectedOperationId = selectedOperationId;
 	}
 
-	public void setDateSubmitted(String dateSubmitted) {
-		this.dateSubmitted = dateSubmitted;
+	public void setFilterSubmitted(String filterSubmitted) {
+		this.filterSubmitted = filterSubmitted;
 	}
 
 	public void setRegisterSubmitted(String registerSubmitted) {
@@ -198,6 +315,14 @@ public class OperationsListAction extends FPActionWithPagerSupport<Operation> {
 		this.deleteSubmitted = deleteSubmitted;
 	}
 
+	public String getDocumentSearchEnabled() {
+		return documentSearchEnabled;
+	}
+
+	public void setDocumentSearchEnabled(String documentSearchEnabled) {
+		this.documentSearchEnabled = documentSearchEnabled;
+	}
+
 	// required services
 	@Required
 	public void setOperationService(OperationService operationService) {
@@ -207,5 +332,10 @@ public class OperationsListAction extends FPActionWithPagerSupport<Operation> {
 	@Required
 	public void setOperationStatusService(OperationStatusService operationStatusService) {
 		this.operationStatusService = operationStatusService;
+	}
+
+	@Required
+	public void setServiceTypeService(ServiceTypeService serviceTypeService) {
+		this.serviceTypeService = serviceTypeService;
 	}
 }
