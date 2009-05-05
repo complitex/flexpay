@@ -227,7 +227,7 @@
 					</td>
 					<td class="col_oper" align="right"><s:property value="%{#opStatus.index + 1}"/></td>
 					<td class="col_oper" nowrap="nowrap"><s:property value="id"/></td>
-					<td class="col_oper" nowrap="nowrap"><s:date name="creationDate" format="HH:mm"/></td>
+					<td class="col_oper" nowrap="nowrap"><s:date name="creationDate" format="HH:mm:ss"/></td>
 					<td class="col_oper" nowrap="nowrap"><s:property value="address"/></td>
 					<td class="col_oper" nowrap="nowrap"><s:property value="payerFIO"/></td>
 					<td class="col_oper" nowrap="nowrap"><s:property value="operationSumm"/></td>
@@ -247,7 +247,7 @@
 					</td>
 					<td class="col_oper" align="right"><s:property value="%{#opStatus.index + 1}"/></td>
 					<td class="col_oper" nowrap="nowrap"><s:property value="id"/></td>
-					<td class="col_oper" nowrap="nowrap"><s:date name="creationDate" format="HH:mm"/></td>
+					<td class="col_oper" nowrap="nowrap"><s:date name="creationDate" format="HH:mm:ss"/></td>
 					<td class="col_oper" nowrap="nowrap">&nbsp;</td>
 					<td class="col_oper" nowrap="nowrap">&nbsp;</td>
 					<td class="col_oper" nowrap="nowrap">&nbsp;</td>
