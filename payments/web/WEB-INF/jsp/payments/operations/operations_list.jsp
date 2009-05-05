@@ -2,7 +2,27 @@
 <%@include file="/WEB-INF/jsp/payments/include/stylesheet.jsp" %>
 
 <script type="text/javascript">
+
+	function isDetailedView() {
+		return $('#service_column_header:hidden').length == 0;
+	}
+
+	function enableDocumentSearch() {
+		$('#operationsList_beginTime').attr('disabled', 'disabled');
+		$('#operationsList_endTime').attr('disabled', 'disabled');
+		$('#operationsList_serviceType').removeAttr('disabled');
+	}
+
+	function enableOperationSearch() {
+		$('#operationsList_beginTime').removeAttr('disabled');
+		$('#operationsList_endTime').removeAttr('disabled');
+		$('#operationsList_serviceType').attr('disabled', 'disabled');
+	}
+
+	// detailed view functionality
 	function showDetails() {
+
+		// toggling rows/columns
 		$('tr.full_operation_header_row').toggle();
 		$('tr.brief_operation_header_row').toggle();
 		$('tr.document_row').toggle();
@@ -10,15 +30,29 @@
 
 		// because of nesting the normal toggle will not work like we need it
 		// so here is a little trick (let me do a little bit monkey business)
-		if ($('#service_column_header:hidden').length > 0) {
-			$('td.service_column:hidden').show();
-			$('td.service_provider_column:hidden').show();
-		} else {
+		if (isDetailedView()) {
 			$('td.service_column:visible').hide();
 			$('td.service_provider_column:visible').hide();
+		} else {
+			$('td.service_column:hidden').show();
+			$('td.service_provider_column:hidden').show();
+		}
+
+		// enabling/disabling search fields
+		if (isDetailedView()) {
+			enableDocumentSearch();
+		} else {
+			enableOperationSearch();
 		}
 	}
 
+	// operation serach is initially enabled
+	$(function() {
+		enableOperationSearch();
+	});
+
+
+	// displays status changing buttons against selected operation status
 	function showButtons(state) {
 
 		switch (state) {
@@ -62,52 +96,81 @@
 		$(selector).addClass('btn-search');
 	}
 
+	// sets up initial button states
 	$(function() {
 		disableButtons('.btn-register');
 		disableButtons('.btn-return');
 		disableButtons('.btn-delete');
 	});
 
+	// sets selected operation id proper value against selected operation
 	function setOperationId(id) {
 		$('#operationsList_selectedOperationId').val(id);
 	}
 
+	// sets status proper value
 	function setStatus(status) {
 		$('#operationsList_status').val(status);
 		return true;
 	}
 
+	// setting up timepickers
+	$(function() {
+		$('#operationsList_beginTime').timepickr({ convention: 24 });
+		$('#operationsList_endTime').timepickr({ convention: 24 });
+	});
 </script>
 
 <s:actionerror/>
 
 <s:form action="operationsList">
+
 	<s:hidden name="status"/>
 	<s:hidden name="selectedOperationId"/>
 
-	<table cellpadding="3" cellspacing="1" border="0" width="100%" class="operations">
+	<%--<s:hidden name="documentSearchEnabled"/>--%>
+
 
 		<sec:authorize ifAllGranted="ROLE_PAYMENTS_DEVELOPER">
-		<tr>
-			<td colspan="10" nowrap="nowrap">
-				<s:text name="payments.report.generate.date_from"/>
-				<%@include file="/WEB-INF/jsp/common/filter/begin_date_filter.jsp" %>
+			<table cellpadding="3" cellspacing="1" border="0" width="100%" class="operations">
+			<tr>
+				<td nowrap="nowrap"><s:text name="payments.report.generate.date_from"/></td>
+				<td nowrap="nowrap"><%@include file="/WEB-INF/jsp/common/filter/begin_date_filter.jsp" %></td>
 
-				<s:text name="payments.report.generate.date_till"/>
-				<%@include file="/WEB-INF/jsp/common/filter/end_date_filter.jsp" %>
+				<td nowrap="nowrap"><s:text name="payments.report.generate.date_till"/></td>
+				<td nowrap="nowrap"><%@include file="/WEB-INF/jsp/common/filter/end_date_filter.jsp" %></td>
 
-				<s:submit name="dateSubmitted" cssClass="btn-exit" value="%{getText('payments.operations.list.filter')}"/>
-			</td>
-		</tr>
+				<%-- TODO place it properly --%>
+				<td nowrap="nowrap"><s:submit name="filterSubmitted" cssClass="btn-exit" value="%{getText('payments.operations.list.filter')}"/></td>
+			</tr>
+			</table>
 		</sec:authorize>
 
-		<tr>
-			<%-- filtering by time --%>
+		<%--<tr>--%>
+			<%--<td nowrap="nowrap"><s:text name="payments.operations.list.service_type"/></td>--%>
+			<%--<td colspan="2" nowrap="nowrap"><s:select name="serviceTypeId" list="serviceTypes" listKey="id" listValue="name"/></td>--%>
+			<%--<td nowrap="nowrap"><s:submit name="filterSubmitted" cssClass="btn-exit" value="%{getText('payments.operations.list.filter')}"/></td>--%>
+		<%--</tr>--%>
 
-			<%-- filtering by service type --%>
+		<%--<tr>--%>
+			<%--<td nowrap="nowrap"><s:text name="payments.operations.list.time_from"/></td>--%>
+			<%--<td nowrap="nowrap"><s:textfield name="beginTime" readonly="true"/></td>--%>
+		<%--</tr>--%>
 
-			<%-- filtering by summ --%>
-		</tr>
+		<%--<tr>--%>
+			<%--<td nowrap="nowrap"><s:text name="payments.operations.list.time_till"/></td>--%>
+			<%--<td nowrap="nowrap"><s:textfield name="endTime" readonly="true"/></td>--%>
+		<%--</tr>--%>
+
+		<%--<tr>--%>
+			<%--<td nowrap="nowrap"><s:text name="payments.operations.list.summ_from"/></td>--%>
+			<%--<td nowrap="nowrap"><s:textfield name="summFrom"/></td>--%>
+			<%--<td nowrap="nowrap"><s:text name="payments.operations.list.summ_up_to"/></td>--%>
+			<%--<td nowrap="nowrap"><s:textfield name="summUpTo"/></td>--%>
+		<%--</tr>--%>
+
+
+	<table cellpadding="3" cellspacing="1" border="0" width="100%" class="operations">
 
 		<s:if test="%{operationsListIsEmpty()}">
 			<tr>
@@ -126,10 +189,10 @@
 
 			<tr>
 				<td colspan="5">
-					<s:submit name="registerSubmitted" onclick="setStatus(2);" cssClass="btn-exit btn-register" value="%{getText('payments.operations.list.register')}"/>
+					<%--<s:submit name="registerSubmitted" onclick="setStatus(2);" cssClass="btn-exit btn-register" value="%{getText('payments.operations.list.register')}"/>--%>
 					<s:submit name="returnSubmitted" onclick="setStatus(4);" cssClass="btn-exit btn-return" value="%{getText('payments.operations.list.return')}"/>
 					<s:submit name="deleteSubmitted" onclick="setStatus(3);" cssClass="btn-exit btn-delete" value="%{getText('payments.operations.list.delete')}"/>
-					
+
 					<input type="button" class="btn-exit" onclick="showDetails();" value="<s:text name="payments.operations.list.detailed"/>"/>
 				</td>
 				<td colspan="5">
@@ -238,7 +301,7 @@
 
 			<tr>
 				<td colspan="5">
-					<s:submit name="registerSubmitted" onclick="setStatus(2);" cssClass="btn-exit btn-register" value="%{getText('payments.operations.list.register')}"/>
+					<%--<s:submit name="registerSubmitted" onclick="setStatus(2);" cssClass="btn-exit btn-register" value="%{getText('payments.operations.list.register')}"/>--%>
 					<s:submit name="returnSubmitted" onclick="setStatus(4);" cssClass="btn-exit btn-return" value="%{getText('payments.operations.list.return')}"/>
 					<s:submit name="deleteSubmitted" onclick="setStatus(3);" cssClass="btn-exit btn-delete" value="%{getText('payments.operations.list.delete')}"/>
 
