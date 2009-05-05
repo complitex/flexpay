@@ -5,8 +5,14 @@
 	/*
 		Common functions
 	*/
+	// replaces all the commas in string with dots
+	function replaceCommaWithDot(value) {
+		return value.replace(",", ".");
+	}
+
 	// Convert from big decimal format
 	function dotted2Int(i) {
+		i = replaceCommaWithDot(i);
 		var dotpos = i.indexOf(".");
 		return dotpos != -1 ? i.substring(0, dotpos)*100 + i.substring(dotpos + 1)*1 : i*100; //noinspection PointlessArithmeticExpressionJS
 	}
@@ -18,11 +24,6 @@
 		return ((i-mod)/divider).toString() + "." + (mod < 10 ? "0" + mod : mod);
 	}
 	
-	function replaceCommaWithDot(value) {
-
-		return value.replace(",", ".");
-	}
-
 	/*
 		Validation functions
 	*/
@@ -35,20 +36,20 @@
 	// validator rules initializing
 	$(function() {
 		$.validator.addMethod('validPayValue', function(value, element) {
-			return isValidPayValue(replaceCommaWithDot(value));
+			return isValidPayValue(value);
 		}, '<s:text name="eirc.error.quittances.quittance_pay.invalid_pay_value"/>');
 
 		<s:iterator value="quittanceInfos">
 			<s:iterator value="%{detailses}" id="qd">
 				<s:set name="serviceId" value="%{getServiceId(serviceMasterIndex)}"/>
 		$.validator.addMethod('payValue_<s:property value="#serviceId"/>_is_not_too_big', function(value, element) {
-			return dotted2Int(replaceCommaWithDot(value)) <= dotted2Int('<s:property value="%{outgoingBalance}"/>');
+			return dotted2Int(value) <= dotted2Int('<s:property value="%{outgoingBalance}"/>');
 		}, '<s:text name="eirc.error.quittances.quittance_pay.pay_value_too_big"/>');
 			</s:iterator>
 		</s:iterator>
 
 		$.validator.addMethod('totalPaymentIsSumm', function(value, element) {
-			var totalPaySumm = dotted2Int(replaceCommaWithDot($('#quittancePayForm_totalToPay').val()));
+			var totalPaySumm = dotted2Int($('#quittancePayForm_totalToPay').val());
 			var actualSumm = 0;
 
 			<s:iterator value="quittanceInfos">
@@ -61,7 +62,7 @@
 		}, '<s:text name="payments.quittances.quittance_pay.total_pay_is_not_summ"/>');
 
 		$.validator.addMethod('inputIsEnough', function(value, element) {
-			var totalPaySumm = dotted2Int(replaceCommaWithDot($('#quittancePayForm_totalToPay').val()));
+			var totalPaySumm = dotted2Int($('#quittancePayForm_totalToPay').val());
 			var inputSumm = dotted2Int(value);
 			return totalPaySumm <= inputSumm;
 		}, '<s:text name="payments.quittances.quittance_pay.input_summ_is_too_small"/>');
@@ -92,7 +93,8 @@
 				label.remove();
 
 				if (validator.numberOfInvalids() == 0) {
-					updateChange();
+					updateTotal();
+					updateChange();					
 				}
 			},
 			showErrors: function(errorMap, errorList) {
@@ -115,98 +117,98 @@
 		Total summ division functions
 	 */
 
-	// Quittance details object
-	function QD(id, serviceId, title, provider, toPay, payed) {
-		this.id = id;
-		this.serviceId = serviceId;
-		this.title = title;
-		this.provider = provider;
-		this.toPay = dotted2Int(toPay);
-		this.payed = dotted2Int(payed);
+	<%--// Quittance details object--%>
+	<%--function QD(id, serviceId, title, provider, toPay, payed) {--%>
+		<%--this.id = id;--%>
+		<%--this.serviceId = serviceId;--%>
+		<%--this.title = title;--%>
+		<%--this.provider = provider;--%>
+		<%--this.toPay = dotted2Int(toPay);--%>
+		<%--this.payed = dotted2Int(payed);--%>
 
-		this.toString = function() {
-			return "id : " + this.id + ", " +
-				   "serviceId : " + this.serviceId + ", " +
-				   "title : " + this.title + ", " +
-				   "provider : " + this.provider + ", " +
-				   "toPay : " + int2Dotted(this.toPay) + " (" + this.toPay+ "), " +
-				   "payed : " + int2Dotted(this.payed);
-		};
-	}
+		<%--this.toString = function() {--%>
+			<%--return "id : " + this.id + ", " +--%>
+				   <%--"serviceId : " + this.serviceId + ", " +--%>
+				   <%--"title : " + this.title + ", " +--%>
+				   <%--"provider : " + this.provider + ", " +--%>
+				   <%--"toPay : " + int2Dotted(this.toPay) + " (" + this.toPay+ "), " +--%>
+				   <%--"payed : " + int2Dotted(this.payed);--%>
+		<%--};--%>
+	<%--}--%>
 
-	var DETAILS = $.protify([]);
+	<%--var DETAILS = $.protify([]);--%>
 
-	// divides total summ between services in ascending order
-	function divideAscending() {
-		var totalSumm = dotted2Int(replaceCommaWithDot($('#quittancePayForm_totalToPay').val()));
-		var sortBySumm = DETAILS.sort(function (qd1, qd2) {
-			return qd2.toPay - qd1.toPay;
-		});
+	<%--// divides total summ between services in ascending order--%>
+	<%--function divideAscending() {--%>
+		<%--var totalSumm = dotted2Int($('#quittancePayForm_totalToPay').val());--%>
+		<%--var sortBySumm = DETAILS.sort(function (qd1, qd2) {--%>
+			<%--return qd2.toPay - qd1.toPay;--%>
+		<%--});--%>
 
-		var summs = {};
+		<%--var summs = {};--%>
 
-		// set summs to zero
-		for (var i = 0; i < sortBySumm.length; ++i) {
-			var qd = sortBySumm[i];
-			summs[qd.serviceId] = 0;
-		}
+		<%--// set summs to zero--%>
+		<%--for (var i = 0; i < sortBySumm.length; ++i) {--%>
+			<%--var qd = sortBySumm[i];--%>
+			<%--summs[qd.serviceId] = 0;--%>
+		<%--}--%>
 
-		// divide summs
-		while (totalSumm > 0) {
-			for (i = 0; i < sortBySumm.length && totalSumm > 0; ++i) {
-				qd = sortBySumm[i];
-				var nextSumm = totalSumm >= qd.toPay ? qd.toPay : totalSumm;
-				summs[qd.serviceId] += nextSumm;
-				totalSumm -= nextSumm;
-			}
-		}
-		
-		// set summs to their values
-		for (var serviceId in summs) {
-			$("#quittancePayForm_paymentsMap_" + serviceId + "_").val(int2Dotted(summs[serviceId]));
-		}
+		<%--// divide summs--%>
+		<%--while (totalSumm > 0) {--%>
+			<%--for (i = 0; i < sortBySumm.length && totalSumm > 0; ++i) {--%>
+				<%--qd = sortBySumm[i];--%>
+				<%--var nextSumm = totalSumm >= qd.toPay ? qd.toPay : totalSumm;--%>
+				<%--summs[qd.serviceId] += nextSumm;--%>
+				<%--totalSumm -= nextSumm;--%>
+			<%--}--%>
+		<%--}--%>
+		<%----%>
+		<%--// set summs to their values--%>
+		<%--for (var serviceId in summs) {--%>
+			<%--$("#quittancePayForm_paymentsMap_" + serviceId + "_").val(int2Dotted(summs[serviceId]));--%>
+		<%--}--%>
 
-		// updating validation message
-		validator.form();
-	}
+		<%--// updating validation message--%>
+		<%--validator.form();--%>
+	<%--}--%>
 
-	// divides total pay summ between services proportionally
-	function divideByRatio() {
-		var totalSumm = dotted2Int(replaceCommaWithDot($('#quittancePayForm_totalToPay').val()));
-		var nonZeroSumms = DETAILS.findAll(function (qd) {
-			return qd.toPay > 0;
-		});
+	<%--// divides total pay summ between services proportionally--%>
+	<%--function divideByRatio() {--%>
+		<%--var totalSumm = dotted2Int($('#quittancePayForm_totalToPay').val());--%>
+		<%--var nonZeroSumms = DETAILS.findAll(function (qd) {--%>
+			<%--return qd.toPay > 0;--%>
+		<%--});--%>
 
-		var summs = {};
-		// set summs to zero
-		DETAILS.each(function (qd) {
-			summs[qd.serviceId] = 0;
-		});
+		<%--var summs = {};--%>
+		<%--// set summs to zero--%>
+		<%--DETAILS.each(function (qd) {--%>
+			<%--summs[qd.serviceId] = 0;--%>
+		<%--});--%>
 
-		var last = nonZeroSumms.last();
-		var summ = 0;
-		var totalToPay = dotted2Int(replaceCommaWithDot('<s:property value="%{getTotalPayable()}"/>'));
-		nonZeroSumms.each(function (qd) {
-			if (qd.id != last.id) {
-				// http://msmvps.com/blogs/rexiology/archive/2006/01/09/80628.aspx
-				// cast float to integer trick
-				var nextSumm = (totalSumm * qd.toPay) / totalToPay | 0;
-				summ += nextSumm;
-				summs[qd.serviceId] = nextSumm;
-			}
-		});
+		<%--var last = nonZeroSumms.last();--%>
+		<%--var summ = 0;--%>
+		<%--var totalToPay = dotted2Int('<s:property value="%{getTotalPayable()}"/>');--%>
+		<%--nonZeroSumms.each(function (qd) {--%>
+			<%--if (qd.id != last.id) {--%>
+				<%--// http://msmvps.com/blogs/rexiology/archive/2006/01/09/80628.aspx--%>
+				<%--// cast float to integer trick--%>
+				<%--var nextSumm = (totalSumm * qd.toPay) / totalToPay | 0;--%>
+				<%--summ += nextSumm;--%>
+				<%--summs[qd.serviceId] = nextSumm;--%>
+			<%--}--%>
+		<%--});--%>
 
-		// set last element summ
-		summs[last.serviceId] = totalSumm - summ;
+		<%--// set last element summ--%>
+		<%--summs[last.serviceId] = totalSumm - summ;--%>
 
-		// set summs to their values
-		for (var serviceId in summs) {
-			$("#quittancePayForm_paymentsMap_" + serviceId + "_").val(int2Dotted(summs[serviceId]));
-		}
+		<%--// set summs to their values--%>
+		<%--for (var serviceId in summs) {--%>
+			<%--$("#quittancePayForm_paymentsMap_" + serviceId + "_").val(int2Dotted(summs[serviceId]));--%>
+		<%--}--%>
 
-		// updating validation message
-		validator.form();
-	}
+		<%--// updating validation message--%>
+		<%--validator.form();--%>
+	<%--}--%>
 
 	/*
 		Change calculation change
@@ -214,11 +216,30 @@
 
 	// change calculation
 	function updateChange() {
-		var totalPaySumm = dotted2Int(replaceCommaWithDot($('#quittancePayForm_totalToPay').val()));
-		var inputSumm = dotted2Int(replaceCommaWithDot($('#quittancePayForm_input').val()));
+		
+		var totalPaySumm = dotted2Int($('#quittancePayForm_totalToPay').val());
+		var inputSumm = dotted2Int($('#quittancePayForm_input').val());
 		var changeSumm = inputSumm - totalPaySumm;
 
 		$('#quittancePayForm_change').val(int2Dotted(changeSumm));
 	}
 
+	// total payment summ calculation
+	function updateTotal() {
+
+		var total = 0;
+		var elements = $("input[id^=quittancePayForm_paymentsMap_]");
+
+		for (var i = 0; i < elements.length; i++) {
+			if (!isValidPayValue($(elements[i]).val())) {
+				$('#quittancePayForm_totalToPay').val('<s:text name="payments.quittances.quittance_pay.unaccessible"/>');
+				$('#quittancePayForm_change').val('<s:text name="payments.quittances.quittance_pay.unaccessible"/>');
+				return;
+			}
+
+			total += dotted2Int($(elements[i]).val());
+		}
+
+		$('#quittancePayForm_totalToPay').val(int2Dotted(total));
+	}
 </script>

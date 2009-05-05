@@ -87,8 +87,8 @@
 
 				<tr>					
 					<td colspan="3"  style="text-align:left;">
-						<input type="button" value="<s:text name="payments.quittance.payment.pay_asc"/>" class="btn-exit" onclick="divideAscending();"/>
-						<input type="button" value="<s:text name="payments.quittance.payment.pay_by_ratio"/>" class="btn-exit" onclick="divideByRatio();"/>
+						<%--<input type="button" value="<s:text name="payments.quittance.payment.pay_asc"/>" class="btn-exit" onclick="divideAscending();"/>--%>
+						<%--<input type="button" value="<s:text name="payments.quittance.payment.pay_by_ratio"/>" class="btn-exit" onclick="divideByRatio();"/>--%>
 					</td>
 					<td colspan="1"  style="text-align:right;">
 						<s:hidden name="actionName" value="%{actionName}"/>
