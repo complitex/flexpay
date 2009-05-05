@@ -7,6 +7,8 @@ import org.flexpay.common.persistence.FPFile;
 import org.flexpay.common.persistence.FPModule;
 import org.flexpay.common.persistence.filter.BeginDateFilter;
 import org.flexpay.common.persistence.filter.EndDateFilter;
+import org.flexpay.common.persistence.filter.BeginTimeFilter;
+import org.flexpay.common.persistence.filter.EndTimeFilter;
 import org.flexpay.common.service.FPFileService;
 import org.flexpay.common.util.DateUtil;
 import org.flexpay.common.util.FPFileUtil;
@@ -25,6 +27,8 @@ public class PaymentsReportAction extends FPActionSupport {
 
 	private BeginDateFilter beginDateFilter = new BeginDateFilter(DateUtil.now());
 	private EndDateFilter endDateFilter = new EndDateFilter(DateUtil.now());
+	private BeginTimeFilter beginTimeFilter = new BeginTimeFilter();
+	private EndTimeFilter endTimeFilter = new EndTimeFilter();
 
 	private FPFile file;
 
@@ -38,15 +42,16 @@ public class PaymentsReportAction extends FPActionSupport {
 			return INPUT;
 		}
 
-		Date begin = beginDateFilter.getDate();
-		Date end = endDateFilter.getDate();
+		Date begin = beginTimeFilter.setTime(beginDateFilter.getDate());
+		Date end = endTimeFilter.setTime(endDateFilter.getDate());
 		if (begin.after(end)) {
 			addActionError(getText("error.from_after_till_tm"));
 			return INPUT;
 		}
 
-		List<PaymentReportData> datum = paymentsReporter.getPaymentsData(
-				beginDateFilter.getDate(), endDateFilter.getDate());
+		log.debug("Time interval: {} - {}", begin, end);
+
+		List<PaymentReportData> datum = paymentsReporter.getPaymentsData(begin, end);
 
 		file = new FPFile();
 		FPModule module = fpFileService.getModuleByName("payments");
@@ -54,9 +59,8 @@ public class PaymentsReportAction extends FPActionSupport {
 			throw new Exception("Unknown module payments");
 		}
 		file.setModule(module);
-		SimpleDateFormat df = new SimpleDateFormat("yyyyMMdd");
-		file.setOriginalName("payments_" + df.format(beginDateFilter.getDate()) +
-							 "_" + df.format(endDateFilter.getDate()) + ".csv");
+		SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmmss");
+		file.setOriginalName("payments_" + df.format(begin) + "_" + df.format(end) + ".csv");
 		file.setUserName(SecurityUtil.getUserName());
 		FPFileUtil.createEmptyFile(file);
 
@@ -114,6 +118,22 @@ public class PaymentsReportAction extends FPActionSupport {
 
 	public InputStream getInputStream() throws IOException {
 		return file.getInputStream();
+	}
+
+	public BeginTimeFilter getBeginTimeFilter() {
+		return beginTimeFilter;
+	}
+
+	public void setBeginTimeFilter(BeginTimeFilter beginTimeFilter) {
+		this.beginTimeFilter = beginTimeFilter;
+	}
+
+	public EndTimeFilter getEndTimeFilter() {
+		return endTimeFilter;
+	}
+
+	public void setEndTimeFilter(EndTimeFilter endTimeFilter) {
+		this.endTimeFilter = endTimeFilter;
 	}
 
 	@Required
