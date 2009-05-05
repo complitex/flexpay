@@ -15,4 +15,10 @@ public interface ServiceTypeDao extends GenericDao<ServiceType, Long> {
 	 * @return List of Service Types on current page
 	 */
 	List<ServiceType> findServiceTypes(Page<ServiceType> pager);
+
+	/**
+	 * List all service types
+	 * @return list of service types
+	 */
+	List<ServiceType> findAllServiceTypes();
 }
