@@ -35,6 +35,31 @@
 		<appender-ref ref="flexpay" />
 	</category>
 
+	<category name="org.flexpay.common.actions.interceptor" additivity="false">
+		<priority value="info" />
+		<appender-ref ref="flexpay" />
+	</category>
+
+	<category name="org.flexpay.common.persistence.history" additivity="false">
+		<priority value="info" />
+		<appender-ref ref="flexpay" />
+	</category>
+
+	<category name="org.flexpay.common.dao" additivity="false">
+		<priority value="info" />
+		<appender-ref ref="flexpay" />
+	</category>
+
+	<category name="org.flexpay.common.locking" additivity="false">
+		<priority value="info" />
+		<appender-ref ref="flexpay" />
+	</category>
+
+	<category name="org.springframework.ws" additivity="false">
+		<priority value="warn" />
+		<appender-ref ref="flexpay" />
+	</category>
+
 	<root>
 		<priority value="info" />
 		<appender-ref ref="flexpay" />
