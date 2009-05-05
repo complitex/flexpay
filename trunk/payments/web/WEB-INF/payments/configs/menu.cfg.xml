@@ -182,14 +182,14 @@
         </property>
     </bean>
 
-	<bean name="payments.reports.reports.received" parent="payments.reports.reports"
-          p:name="payments.reports2.received"
-          p:title="payments.menu4.received_payments"
-          p:action="receivedPaymentsReport"
-          p:parent-ref="payments.reports.reports">
-        <property name="userRole">
-            <util:constant static-field="org.flexpay.payments.service.Roles.ROLE_MENU_PAYMENTS_REPORTS_RECEIVED" />
-        </property>
-    </bean>
+	<!--<bean name="payments.reports.reports.received" parent="payments.reports.reports"-->
+          <!--p:name="payments.reports2.received"-->
+          <!--p:title="payments.menu4.received_payments"-->
+          <!--p:action="receivedPaymentsReport"-->
+          <!--p:parent-ref="payments.reports.reports">-->
+        <!--<property name="userRole">-->
+            <!--<util:constant static-field="org.flexpay.payments.service.Roles.ROLE_MENU_PAYMENTS_REPORTS_RECEIVED" />-->
+        <!--</property>-->
+    <!--</bean>-->
 
 </beans>
