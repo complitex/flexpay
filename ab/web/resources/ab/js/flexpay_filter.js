@@ -201,6 +201,13 @@ var FF = {
                     filter.result.html(data);
                 });
         }
+        if (filters.length == 0) {
+            var tab = $('a[tabindex="1"],input[tabindex="1"],button[tabindex="1"],textarea[tabindex="1"],select[tabindex="1"]');
+            if (tab != null && tab.size() > 0) {
+                tab.get(0).focus();
+            }
+            return;
+        }
         for (var i in filters) {
             var filter2 = filters[i];
             var parentsFilled = true;
