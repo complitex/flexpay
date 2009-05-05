@@ -58,11 +58,7 @@ public class PaymentsReportAction extends FPActionSupport {
 			//noinspection IOResourceOpenedButNotSafelyClosed
 			w = new OutputStreamWriter(os, "UTF-8");
 
-			if (datum.isEmpty()) {
-				df = new SimpleDateFormat("yyyy-MM-dd");
-				String[] params = {df.format(beginDateFilter.getDate()), df.format(beginDateFilter.getDate())};
-				w.write(getText("payments.report.no_data_for_period", params));
-			} else {
+			if (!datum.isEmpty()) {
 				CSVWriter writer = new CSVWriter(w);
 				for (PaymentReportData data : datum) {
 					String[] row = {
