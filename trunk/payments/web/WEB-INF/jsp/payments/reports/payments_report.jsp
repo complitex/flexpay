@@ -1,7 +1,21 @@
 <%@ include file="/WEB-INF/jsp/common/taglibs.jsp" %>
 <%@include file="/WEB-INF/jsp/payments/include/stylesheet.jsp"%>
 
-<s:form action="generatePaymentsReport" target="_blank">
+<script type="text/javascript">
+
+	function validateBeginAfterEnd () {
+		if (new Date($("#beginDateFilter").val()) > new Date($("#endDateFilter").val())) {
+			alert("'<s:text name="error.from_after_till_tm"/>'");
+			return false;
+			}
+		return true;
+	};
+
+</script>
+
+<s:actionerror />
+
+<form action="<s:url action="generatePaymentsReport" />" onsubmit="return validateBeginAfterEnd();">
 	<table>
 		<tr>
 			<td nowrap="nowrap">
@@ -18,4 +32,4 @@
 			</td>
 		</tr>
 	</table>
-</s:form>
+</form>

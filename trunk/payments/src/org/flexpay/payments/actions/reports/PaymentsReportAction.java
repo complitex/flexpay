@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Required;
 import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Date;
 
 public class PaymentsReportAction extends FPActionSupport {
 
@@ -34,6 +35,13 @@ public class PaymentsReportAction extends FPActionSupport {
 	protected String doExecute() throws Exception {
 
 		if (!isSubmit()) {
+			return INPUT;
+		}
+
+		Date begin = beginDateFilter.getDate();
+		Date end = endDateFilter.getDate();
+		if (begin.after(end)) {
+			addActionError(getText("error.from_after_till_tm"));
 			return INPUT;
 		}
 
