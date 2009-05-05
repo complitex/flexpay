@@ -255,6 +255,7 @@
             <lib dir="${common.dir}/lib/xstream" />
             <lib dir="${common.dir}/lib/spring-ws" />
             <lib dir="${common.dir}/lib/openmq" />
+			<lib dir="${common.dir}/lib/jdbc" />
 			<lib dir="${build.dir}/lib" />
 		</war>
 	</target>
