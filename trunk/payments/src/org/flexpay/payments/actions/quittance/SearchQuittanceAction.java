@@ -109,12 +109,17 @@ public class SearchQuittanceAction extends FPActionSupport {
 	private void filterNegativeSumms() {
 
 		for (QuittanceInfo info : quittanceInfos) {
+			BigDecimal total = new BigDecimal("0.00");
 
 			for (QuittanceInfo.ServiceDetails sd : info.getDetailses()) {
 				if (sd.getOutgoingBalance().compareTo(BigDecimal.ZERO) < 0) {
 					sd.setOutgoingBalance(new BigDecimal("0.00"));
+				} else {
+					total = total.add(sd.getOutgoingBalance());
 				}
 			}
+
+			info.setTotalToPay(total);
 		}
 	}
 
