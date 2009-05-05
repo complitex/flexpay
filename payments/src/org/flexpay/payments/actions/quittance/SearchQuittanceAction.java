@@ -110,20 +110,11 @@ public class SearchQuittanceAction extends FPActionSupport {
 
 		for (QuittanceInfo info : quittanceInfos) {
 
-			BigDecimal totalPayDelta = new BigDecimal("0.00");
-
 			for (QuittanceInfo.ServiceDetails sd : info.getDetailses()) {
 				if (sd.getOutgoingBalance().compareTo(BigDecimal.ZERO) < 0) {
-					log.debug("[!!!] Negative balance: {}", sd.getOutgoingBalance());
-
-					totalPayDelta = totalPayDelta.add(sd.getOutgoingBalance());
-					log.debug("[!!!] Total pay delta: {}", totalPayDelta);
-
 					sd.setOutgoingBalance(new BigDecimal("0.00"));
 				}
 			}
-
-			//info.setTotalToPay(info.getTotalToPay().add(totalPayDelta));
 		}
 	}
 
