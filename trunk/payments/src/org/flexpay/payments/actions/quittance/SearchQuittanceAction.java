@@ -49,6 +49,7 @@ public class SearchQuittanceAction extends FPActionSupport {
 
 		if (response.isSuccess()) {
 			quittanceInfos = response.getInfos();
+			filterNegativeSumms();
 		} else {
 			addActionError(getErrorMessage(response.getErrorCode()));
 		}
@@ -103,6 +104,27 @@ public class SearchQuittanceAction extends FPActionSupport {
 	public boolean resultsAreNotEmpty() {
 
 		return quittanceInfos.length > 0;
+	}
+
+	private void filterNegativeSumms() {
+
+		for (QuittanceInfo info : quittanceInfos) {
+
+			BigDecimal totalPayDelta = new BigDecimal("0.00");
+
+			for (QuittanceInfo.ServiceDetails sd : info.getDetailses()) {
+				if (sd.getOutgoingBalance().compareTo(BigDecimal.ZERO) < 0) {
+					log.debug("[!!!] Negative balance: {}", sd.getOutgoingBalance());
+
+					totalPayDelta = totalPayDelta.add(sd.getOutgoingBalance());
+					log.debug("[!!!] Total pay delta: {}", totalPayDelta);
+
+					sd.setOutgoingBalance(new BigDecimal("0.00"));
+				}
+			}
+
+			//info.setTotalToPay(info.getTotalToPay().add(totalPayDelta));
+		}
 	}
 
 	public String getServiceName(String serviceMasterIndex) {
