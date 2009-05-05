@@ -59,6 +59,14 @@ public class ServiceTypeServiceImpl implements ServiceTypeService {
 		return types;
 	}
 
+	public List<ServiceType> listAllServiceTypes() {
+
+		List<ServiceType> types = serviceTypeDao.findAllServiceTypes();
+		updateCaches(types);
+
+		return types;
+	}
+
 	/**
 	 * Read full service type info
 	 *

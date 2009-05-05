@@ -32,7 +32,8 @@
 	<bean id="operationsListAction" scope="prototype"
 		  class="org.flexpay.payments.actions.operations.OperationsListAction"
 		  p:operationService-ref="operationService"
-		  p:operationStatusService-ref="operationStatusService" />
+		  p:operationStatusService-ref="operationStatusService"
+		  p:serviceTypeService-ref="serviceTypeService" />
 
 	<!-- reports-related actions -->
 	<bean id="generateReportAction" scope="prototype"

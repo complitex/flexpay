@@ -29,6 +29,13 @@ public interface ServiceTypeService {
 	List<ServiceType> listServiceTypes(Page<ServiceType> pager);
 
 	/**
+	 * List all service types
+	 * @return list of service types
+	 */
+	@Secured (Roles.SERVICE_TYPE_READ)
+	List<ServiceType> listAllServiceTypes();
+
+	/**
 	 * Read full service type info
 	 *
 	 * @param serviceType ServiceType stub
