@@ -107,8 +107,24 @@ jQuery.autocomplete = function(input, options) {
 				moveSelect(1);
 				break;
 			case 9:  // tab
+                var lis = $("li", results);
+                if (!lis) {
+                    break;
+                }
+                if (selectCurrent()) {
+                    $input.get(0).blur();
+                    e.preventDefault();
+                } else {
+                    if (!selectCurrent() && $results.is(":visible")) {
+                        return false;
+                    }
+                }
+                break;
+            case 27: // esc
+                hideResultsNow();
+                break;
 			case 13: // return
-				if( selectCurrent() ){
+				if (selectCurrent()) {
 					// make sure to blur off the current field
 					$input.get(0).blur();
 					e.preventDefault();
@@ -137,7 +153,7 @@ jQuery.autocomplete = function(input, options) {
 
 	function onChange() {
 		// ignore if the following keys are pressed: [del] [shift] [capslock]
-		if( lastKeyPressCode == 46 || (lastKeyPressCode > 8 && lastKeyPressCode < 32) ) return $results.hide();
+		if( lastKeyPressCode == 46/* || (lastKeyPressCode > 8 && lastKeyPressCode < 32)*/ ) return $results.hide();
 		var v = $input.val();
 		if (v == prev) return;
 		prev = v;
@@ -213,16 +229,16 @@ jQuery.autocomplete = function(input, options) {
 	function createSelection(start, end){
 		// get a reference to the input element
 		var field = $input.get(0);
-		if( field.createTextRange ){
+		if (field.createTextRange) {
 			var selRange = field.createTextRange();
 			selRange.collapse(true);
 			selRange.moveStart("character", start);
 			selRange.moveEnd("character", end);
 			selRange.select();
-		} else if( field.setSelectionRange ){
+		} else if (field.setSelectionRange) {
 			field.setSelectionRange(start, end);
 		} else {
-			if( field.selectionStart ){
+			if (field.selectionStart) {
 				field.selectionStart = start;
 				field.selectionEnd = end;
 			}
@@ -241,7 +257,7 @@ jQuery.autocomplete = function(input, options) {
 		}
 	};
 
-	function showResults() {
+	function showResults(data) {
 		// get the position of the input field right now (in case the DOM is shifted)
 		var pos = findPos(input);
 		// either use the specified width, or autocalculate based on form element
@@ -252,6 +268,10 @@ jQuery.autocomplete = function(input, options) {
 			top: (pos.y + input.offsetHeight) + "px",
 			left: pos.x + "px"
 		}).show();
+        if (data[0][0] == $input.val() || data.length == 1) {
+            active = 0;
+            moveSelect(0);
+        }
 	};
 
 	function hideResults() {
@@ -299,7 +319,7 @@ jQuery.autocomplete = function(input, options) {
 			results.appendChild(dataToDom(data));
 			// autofill in the complete box w/the first match as long as the user hasn't entered in more data
 			if( options.autoFill && ($input.val().toLowerCase() == q.toLowerCase()) ) autoFill(data[0][0]);
-			showResults();
+			showResults(data);
 		} else {
 			hideResultsNow();
 		}
