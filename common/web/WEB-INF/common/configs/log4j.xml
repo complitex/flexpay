@@ -60,6 +60,31 @@
 		<appender-ref ref="flexpay" />
 	</category>
 
+	<category name="jdbc.sqlonly" additivity="false">
+		<priority value="FATAL" />
+		<appender-ref ref="flexpay" />
+	</category>
+
+	<category name="jdbc.sqltiming" additivity="false">
+		<priority value="FATAL" />
+		<appender-ref ref="flexpay" />
+	</category>
+
+	<category name="jdbc.audit" additivity="false">
+		<priority value="FATAL" />
+		<appender-ref ref="flexpay" />
+	</category>
+
+	<category name="jdbc.resultset" additivity="false">
+		<priority value="FATAL" />
+		<appender-ref ref="flexpay" />
+	</category>
+
+	<category name="jdbc.connection" additivity="false">
+		<priority value="FATAL" />
+		<appender-ref ref="flexpay" />
+	</category>
+
 	<root>
 		<priority value="info" />
 		<appender-ref ref="flexpay" />
