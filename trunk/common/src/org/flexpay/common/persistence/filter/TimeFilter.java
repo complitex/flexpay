@@ -1,5 +1,8 @@
 package org.flexpay.common.persistence.filter;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Date;
@@ -7,6 +10,9 @@ import java.text.SimpleDateFormat;
 import java.text.ParseException;
 
 public abstract class TimeFilter extends ObjectFilter {
+
+	private static final Logger log = LoggerFactory.getLogger(TimeFilter.class);
+
 	protected int hours;
 	protected int minutes;
 	protected int seconds;
@@ -29,7 +35,7 @@ public abstract class TimeFilter extends ObjectFilter {
 
 	private void init(Calendar calendar) {
 
-		hours = calendar.get(Calendar.HOUR);
+		hours = calendar.get(Calendar.HOUR_OF_DAY);
 		minutes = calendar.get(Calendar.MINUTE);
 		seconds = calendar.get(Calendar.SECOND);
 	}
@@ -52,15 +58,17 @@ public abstract class TimeFilter extends ObjectFilter {
 	}
 
 	public void setStringDate(String date) {
+
+		log.debug("Parsing date: {}", date);
+
 		Calendar calendar = new GregorianCalendar();
 		try {
 			Date dt = new SimpleDateFormat("HH:mm:ss").parse(date);
 			calendar.setTime(dt);
+			init(calendar);
 		} catch (ParseException ex) {
 			initDefaults();
 		}
-
-		init(calendar);
 	}
 
 	protected abstract void initDefaults();
