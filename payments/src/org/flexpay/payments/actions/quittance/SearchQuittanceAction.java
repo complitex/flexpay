@@ -3,6 +3,7 @@ package org.flexpay.payments.actions.quittance;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.orgs.persistence.ServiceProvider;
 import org.flexpay.orgs.service.ServiceProviderService;
 import org.flexpay.payments.persistence.Service;
@@ -20,6 +21,7 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 public class SearchQuittanceAction extends FPActionSupport {
 
@@ -49,6 +51,7 @@ public class SearchQuittanceAction extends FPActionSupport {
 
 		if (response.isSuccess()) {
 			quittanceInfos = response.getInfos();
+			filterSubservices();
 			filterNegativeSumms();
 		} else {
 			addActionError(getErrorMessage(response.getErrorCode()));
@@ -69,6 +72,56 @@ public class SearchQuittanceAction extends FPActionSupport {
 			throw new FlexPayException("Bad search request: type must be one of: " + SEARCH_TYPE_ADDRESS + ", "
 									   + SEARCH_TYPE_EIRC_ACCOUNT + ", " + SEARCH_TYPE_QUITTANCE_NUMBER);
 		}
+	}
+
+	private void filterNegativeSumms() {
+
+		for (QuittanceInfo info : quittanceInfos) {
+			BigDecimal total = new BigDecimal("0.00");
+
+			for (QuittanceInfo.ServiceDetails sd : info.getDetailses()) {
+				if (sd.getOutgoingBalance().compareTo(BigDecimal.ZERO) < 0) {
+					sd.setOutgoingBalance(new BigDecimal("0.00"));
+				} else {
+					total = total.add(sd.getOutgoingBalance());
+				}
+			}
+
+			info.setTotalToPay(total);
+		}
+	}
+
+	private void filterSubservices() {
+
+		for (QuittanceInfo quittanceInfo : quittanceInfos) {
+			List<QuittanceInfo.ServiceDetails> filtered = CollectionUtils.list();
+			BigDecimal totalToPay = new BigDecimal("0.00");
+
+			for (QuittanceInfo.ServiceDetails details : quittanceInfo.getDetailses()) {
+				if (isNotSubservice(details.getServiceMasterIndex())) {
+					filtered.add(details);
+					totalToPay = totalToPay.add(details.getOutgoingBalance());
+				} else {
+					log.info("Service '{}' (masterindex) filtered out", details.getServiceMasterIndex());
+				}
+			}
+
+			quittanceInfo.setDetailses(filtered.toArray(new QuittanceInfo.ServiceDetails[filtered.size()]));
+			quittanceInfo.setTotalToPay(totalToPay);
+		}
+	}
+
+	public boolean isNotSubservice(String serviceMasterIndex) {
+
+		Long serviceId = getServiceId(serviceMasterIndex);
+		Service service = spService.read(new Stub<Service>(serviceId));
+		return service.isNotSubservice();
+	}
+
+	private Long getLocalId(String masterIndex) {
+
+		// TODO how to properly get service id by index? current implementation is hack
+		return Long.parseLong(masterIndex.substring(ApplicationConfig.getInstanceId().length() + 1)); // +1 is for '-' delimeter
 	}
 
 	private String getErrorMessage(int errorCode) {
@@ -96,31 +149,10 @@ public class SearchQuittanceAction extends FPActionSupport {
 		return SUCCESS;
 	}
 
-	public String getRedirectActionName() {
-		return actionName;
-	}
-
 	// rendering utility methods
 	public boolean resultsAreNotEmpty() {
 
 		return quittanceInfos.length > 0;
-	}
-
-	private void filterNegativeSumms() {
-
-		for (QuittanceInfo info : quittanceInfos) {
-			BigDecimal total = new BigDecimal("0.00");
-
-			for (QuittanceInfo.ServiceDetails sd : info.getDetailses()) {
-				if (sd.getOutgoingBalance().compareTo(BigDecimal.ZERO) < 0) {
-					sd.setOutgoingBalance(new BigDecimal("0.00"));
-				} else {
-					total = total.add(sd.getOutgoingBalance());
-				}
-			}
-
-			info.setTotalToPay(total);
-		}
 	}
 
 	public String getServiceName(String serviceMasterIndex) {
@@ -166,41 +198,11 @@ public class SearchQuittanceAction extends FPActionSupport {
 		}
 	}
 
-	private Long getLocalId(String masterIndex) {
-
-		// TODO how to properly get service id by index? current implementation is hack
-		return Long.parseLong(masterIndex.substring(ApplicationConfig.getInstanceId().length() + 1)); // +1 is for '-' delimeter
-	}
-
-	public boolean isNotSubservice(String serviceMasterIndex) {
-
-		Long serviceId = getServiceId(serviceMasterIndex);
-		Service service = spService.read(new Stub<Service>(serviceId));
-		return service.isNotSubservice();
-	}
-
-	public BigDecimal getTotalPayable() {
-
-		BigDecimal total = new BigDecimal("0.00");
-
-		if (quittanceInfos.length > 0) {
-			for (QuittanceInfo.ServiceDetails serviceDetails : quittanceInfos[0].getDetailses()) {
-				total = total.add(serviceDetails.getOutgoingBalance());
-			}
-		}
-
-
-
-//		for (QuittanceDetails qd : quittance.getQuittanceDetails()) {
-//			if (!qd.getConsumer().getService().isSubService()) {
-//				total = total.add(qd.getOutgoingBalance());
-//			}
-//		}
-
-		return total;
-	}
-
 	// form data
+	public String getRedirectActionName() {
+		return actionName;
+	}
+
 	public void setSearchType(String searchType) {
 		this.searchType = searchType;
 	}
@@ -221,6 +223,7 @@ public class SearchQuittanceAction extends FPActionSupport {
 		this.actionName = actionName;
 	}
 
+	// required services
 	@Required
 	public void setQuittanceDetailsFinder(QuittanceDetailsFinder quittanceDetailsFinder) {
 		this.quittanceDetailsFinder = quittanceDetailsFinder;
