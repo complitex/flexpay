@@ -10,7 +10,7 @@
              xmlns:xsd="http://www.w3.org/2001/XMLSchema"
              targetNamespace="caHistoryBroadcast"
              xmlns:tns="caHistoryBroadcast" xmlns:ns="http://j2ee.netbeans.org/wsdl/HistoryBroadcast/saveHistory" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
-    <import namespace="http://j2ee.netbeans.org/wsdl/HistoryBroadcast/saveHistory" location="../jbiServiceUnits/HistoryBroadcast/saveHistory.wsdl"/>
+    <import namespace="http://j2ee.netbeans.org/wsdl/HistoryBroadcast/saveHistory" location="HistoryBroadcast/saveHistory.wsdl"/>
     <portType name="dummyCasaPortType"/>
     <binding name="casaBinding1" type="ns:saveHistoryPortType">
         <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>

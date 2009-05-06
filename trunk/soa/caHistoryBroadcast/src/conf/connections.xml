@@ -14,10 +14,6 @@
                 <consumer endpoint-name="saveHistoryPortTypeRole_partnerRole" service-name="ns2:historyConsumer1"/>
                 <provider endpoint-name="consumer1Endpoint" service-name="ns1:casaService2"/>
             </connection>
-            <connection>
-                <consumer endpoint-name="saveHistoryPortTypeRole_partnerRole" service-name="ns2:historyConsumer2"/>
-                <provider endpoint-name="consumer2Endpoint" service-name="ns1:casaService3"/>
-            </connection>
         </connections>
     </service-assembly>
 </jbi>
