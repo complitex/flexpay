@@ -74,6 +74,7 @@ public class MbCorrectionsFileParser extends MbFileParser<Registry> {
 					registry.setRecordsNumber(recordsNum);
 					log.info("Total {} records created", recordsNum);
 					break;
+/*
 				} else if (lineNum == 19340 || lineNum == 19439
 						|| lineNum == 19450 || lineNum == 19492
 						|| lineNum == 25492 || lineNum == 25495
@@ -109,6 +110,7 @@ public class MbCorrectionsFileParser extends MbFileParser<Registry> {
 						|| lineNum == 320595 || lineNum == 320612
 						|| lineNum == 320622 || lineNum == 320710
 						|| lineNum == 320727 || lineNum == 355126) {
+*/
 				} else {
 					recordsNum += parseRecord(line, registry);
 					if (recordsNum % 1000 == 0) {
