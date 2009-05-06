@@ -400,6 +400,9 @@
 	<security-role>
 		<role-name>ROLE_ACC_DOCUMENT_DELETE</role-name>
 	</security-role>
+	<security-role>
+		<role-name>ROLE_PAYMENTS_DOCUMENT_CHANGE</role-name>
+	</security-role>
 
 	<security-role>
 		<role-name>ROLE_ACC_DOCUMENT_TYPE_READ</role-name>

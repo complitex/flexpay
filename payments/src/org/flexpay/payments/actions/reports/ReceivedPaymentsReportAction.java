@@ -41,6 +41,8 @@ public class ReceivedPaymentsReportAction extends FPActionSupport {
 			endDate = DateUtils.setSeconds(endDate, 59);
 
 			operations = operationService.listReceivedPayments(organizationId, beginDate, endDate);
+		} else {
+			beginDateFilter.setDate(DateUtil.now());
 		}
 
 		return SUCCESS;
