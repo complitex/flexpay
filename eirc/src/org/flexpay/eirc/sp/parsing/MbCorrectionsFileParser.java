@@ -59,8 +59,6 @@ public class MbCorrectionsFileParser extends MbFileParser<Registry> {
 			registry.setArchiveStatus(registryArchiveStatusService.findByCode(RegistryArchiveStatus.NONE));
 			registry.setRegistryStatus(spRegistryStatusService.findByCode(RegistryStatus.LOADING));
 
-			ServiceProvider serviceProvider = null;
-
 			long recordsNum = 0;
 
 			for (int lineNum = 0;;lineNum++) {
@@ -71,19 +69,11 @@ public class MbCorrectionsFileParser extends MbFileParser<Registry> {
 				}
 				if (lineNum == 0) {
 				} else if (lineNum == 1) {
-					serviceProvider = parseHeader(line);
-					EircRegistryProperties registryProperties = (EircRegistryProperties) propertiesFactory.newRegistryProperties();
-					registryProperties.setServiceProvider(serviceProvider);
-					registryProperties.setRegistry(registry);
-					registry.setSenderCode(serviceProvider.getOrganization().getId());
-					registry.setRecipientCode(ApplicationConfig.getSelfOrganization().getId());
-					registry.setProperties(registryProperties);
-					registry = registryService.create(registry);
+					registry = registryService.create(parseHeader(line, registry));
 				} else if (line.startsWith(LAST_FILE_STRING_BEGIN)) {
 					registry.setRecordsNumber(recordsNum);
 					log.info("Total {} records created", recordsNum);
 					break;
-/*
 				} else if (lineNum == 19340 || lineNum == 19439
 						|| lineNum == 19450 || lineNum == 19492
 						|| lineNum == 25492 || lineNum == 25495
@@ -119,11 +109,10 @@ public class MbCorrectionsFileParser extends MbFileParser<Registry> {
 						|| lineNum == 320595 || lineNum == 320612
 						|| lineNum == 320622 || lineNum == 320710
 						|| lineNum == 320727 || lineNum == 355126) {
-*/
 				} else {
-					recordsNum += parseRecord(line, serviceProvider, registry);
+					recordsNum += parseRecord(line, registry);
 					if (recordsNum % 1000 == 0) {
-						log.info("{} records created, {} lines processed", recordsNum, lineNum - 2);
+						log.info("{} records created, {} lines processed", recordsNum, lineNum - 1);
 					}
 				}
 
@@ -142,17 +131,32 @@ public class MbCorrectionsFileParser extends MbFileParser<Registry> {
 
 	}
 
-	private ServiceProvider parseHeader(String line) throws FlexPayException {
+	private Registry parseHeader(String line, Registry registry) throws FlexPayException {
 		String[] fields = line.split("=");
 		log.debug("Getting service provider with id = {} from DB", fields[1]);
 		ServiceProvider serviceProvider = serviceProviderService.read(new Stub<ServiceProvider>(Long.parseLong(fields[1])));
 		if (serviceProvider == null) {
 			throw new FlexPayException("Incorrect header line (can't find service provider with id " + fields[1] + ")");
 		}
-		return serviceProvider;
+
+		EircRegistryProperties registryProperties = (EircRegistryProperties) propertiesFactory.newRegistryProperties();
+		registryProperties.setServiceProvider(serviceProvider);
+		registryProperties.setRegistry(registry);
+		registry.setSenderCode(serviceProvider.getOrganization().getId());
+		registry.setRecipientCode(ApplicationConfig.getSelfOrganization().getId());
+		registry.setProperties(registryProperties);
+
+		try {
+			registry.setFromDate(FILE_CREATION_DATE_FORMAT.parse(fields[2]));
+			registry.setTillDate(FILE_CREATION_DATE_FORMAT.parse(fields[2]));
+		} catch (Exception e) {
+			// do nothing
+		}
+
+		return registry;
 	}
 
-	private long parseRecord(String line, ServiceProvider serviceProvider, Registry registry) throws FlexPayException {
+	private long parseRecord(String line, Registry registry) throws FlexPayException {
 		String[] fields = line.split("=");
 
 /*

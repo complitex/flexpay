@@ -43,7 +43,7 @@ public class MbRegistryFileValidator extends MbFileValidator {
 					try {
 						validateHeader(line);
 					} catch (Exception e) {
-						log.debug("Incorrect header in file. Line number = {}, line = {}. Error: {}", new Object[] {lineNum, line, e.getMessage()});
+						log.debug("Incorrect header in file. Line number = {}, error: {}\nLine = {}", new Object[] {lineNum, e.getMessage(), line});
 						ret = false;
 //						throw new FlexPayException("Incorrect header in file. Line number = " + lineNum, e);
 					}
@@ -52,7 +52,7 @@ public class MbRegistryFileValidator extends MbFileValidator {
 					try {
 						validateFooter(line, fileValues);
 					} catch (Exception e) {
-						log.debug("Incorrect footer in file. Line number = {}, line = {}. Error: {}", new Object[] {lineNum, line, e.getMessage()});
+						log.debug("Incorrect footer in file. Line number = {}, error: {}\nLine = {}", new Object[] {lineNum, e.getMessage(), line});
 						ret = false;
 //						throw new FlexPayException("Incorrect footer in file. Line number = " + lineNum, e);
 					}
@@ -62,7 +62,7 @@ public class MbRegistryFileValidator extends MbFileValidator {
 					try {
 						validateRecord(line, fileValues);
 					} catch (Exception e) {
-						log.debug("Incorrect record in file. Line number = {}, line = {}. Error: {}", new Object[] {lineNum, line, e.getMessage()});
+						log.debug("Incorrect record in file. Line number = {}, error: {}\nLine = {}", new Object[] {lineNum, e.getMessage(), line});
 						ret = false;
 //						throw new FlexPayException("Incorrect record in file. Line number = " + lineNum + ". Line = " + line, e);
 					}
@@ -119,6 +119,11 @@ public class MbRegistryFileValidator extends MbFileValidator {
 			throw new FlexPayException("Can't parse saldo summ " + fields[2]);
 		}
 		try {
+			Integer.parseInt(fields[3]);
+		} catch (Exception e) {
+			throw new FlexPayException("Can't parse service code " + fields[3]);
+		}
+		try {
 			OPERATION_DATE_FORMAT.parse(fields[5]);
 		} catch (Exception e) {
 			throw new FlexPayException("Can't parse operation date " + fields[5]);
@@ -142,7 +147,7 @@ public class MbRegistryFileValidator extends MbFileValidator {
 		}
 		try {
 			if (fileValues.getSaldoSumm() != Long.parseLong(fields[2])) {
-				throw new FlexPayException("Invalid data in file (total saldo summ in footer not equals with summ of saldos in all lines - " + fields[2] + ", but were" + fileValues.getSaldoSumm() + ")");
+				throw new FlexPayException("Invalid data in file (total saldo summ in footer not equals with summ of saldos in all lines - " + fields[2] + ", but were " + fileValues.getSaldoSumm() + ")");
 			}
 		} catch (NumberFormatException e) {
 			throw new FlexPayException("Can't parse total saldo summ " + fields[2]);
