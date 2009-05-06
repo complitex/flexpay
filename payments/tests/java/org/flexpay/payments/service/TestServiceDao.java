@@ -7,6 +7,7 @@ import org.flexpay.payments.persistence.Service;
 import org.flexpay.payments.persistence.ServiceType;
 import org.flexpay.payments.service.ServiceTypeService;
 import org.flexpay.payments.service.SPService;
+import org.flexpay.payments.test.PaymentsSpringBeanAwareTestCase;
 import org.flexpay.orgs.persistence.ServiceProvider;
 import org.flexpay.orgs.service.ServiceProviderService;
 import static org.junit.Assert.assertEquals;
@@ -17,7 +18,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 
 import java.util.List;
 
-public class TestServiceDao extends SpringBeanAwareTestCase {
+public class TestServiceDao extends PaymentsSpringBeanAwareTestCase {
 
 	@Autowired
 	protected ServiceDaoExt serviceDaoExt;
