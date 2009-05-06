@@ -198,6 +198,7 @@ public class MbCorrectionsFileParser extends MbFileParser<Registry> {
 		record.setMiddleName("");
 		record.setFirstName("");
 		record.setCity("ХАРЬКОВ");
+		record.setBuildingBulkNum("");
 		record.setStreetType(fields[6]);
 		record.setStreetName(fields[7]);
 		record.setBuildingNum(fields[8]);
@@ -242,6 +243,7 @@ public class MbCorrectionsFileParser extends MbFileParser<Registry> {
 		record.setMiddleName("");
 		record.setFirstName("");
 		record.setCity("ХАРЬКОВ");
+		record.setBuildingBulkNum("");
 		record.setStreetType(fields[6]);
 		record.setStreetName(fields[7]);
 		record.setBuildingNum(fields[8]);
