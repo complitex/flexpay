@@ -26,7 +26,8 @@
 		  p:operationTypeService-ref="operationTypeService"
 		  p:operationService-ref="operationService"
 		  p:organizationService-ref="organizationService"
-		  p:spService-ref="spService" />
+		  p:spService-ref="spService"
+		  p:serviceProviderService-ref="serviceProviderService" />
 
 	<!-- operation-related actions -->
 	<bean id="operationsListAction" scope="prototype"

@@ -86,6 +86,7 @@ public class QuittanceInfoBuilder {
 
 			ServiceDetails serviceDetails = new ServiceDetails();
 			serviceDetails.setServiceMasterIndex(masterIndexService.getMasterIndex(service));
+			serviceDetails.setServiceProviderAccount(details.getConsumer().getExternalAccountNumber());
 			serviceDetails.setIncomingBalance(details.getIncomingBalance());
 			serviceDetails.setOutgoingBalance(details.getOutgoingBalance());
 			serviceDetails.setAmount(details.getAmount());

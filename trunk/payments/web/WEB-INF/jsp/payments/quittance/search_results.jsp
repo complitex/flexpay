@@ -23,9 +23,12 @@
 
 				<s:hidden name="payerFio" value="%{getPersonFio(#qi)}"/>
 				<s:hidden name="address" value="%{getApartmentAddress(#qi)}"/>
+				<s:hidden name="eircAccount" value="%{getEircAccount(#qi)}"/>
 
 				<s:iterator value="detailses" status="status">
 					<s:set name="serviceId" value="%{getServiceId(serviceMasterIndex)}"/>
+					<s:hidden name="serviceProviderAccountsMap[%{#serviceId}]" value="%{serviceProviderAccount}"/>
+					
 					<tr class="cols_1_error" style="display:none;"><td colspan="4"/></tr>
 
 					<tr class="cols_1">
@@ -49,12 +52,12 @@
 				<tr class="cols_1_error" style="display:none;"><td colspan="4"/></tr>
 				<tr class="cols_1">
 					<td colspan="3" style="font-weight: bold; text-align: right; "><s:text name="payments.quittance.payment.input"/></td>
-					<td><s:textfield name="input" cssStyle="width: 100%; text-align: right;" value="%{totalToPay}"/></td>
+					<td><s:textfield name="inputSumm" cssStyle="width: 100%; text-align: right;" value="%{totalToPay}"/></td>
 				</tr>
 
 				<tr class="cols_1">
 					<td colspan="3" style="font-weight: bold; text-align: right;"><s:text name="payments.quittance.payment.change"/></td>
-					<td><s:textfield name="change" cssStyle="width: 100%; text-align: right;" value="0.00" readonly="true"/></td>
+					<td><s:textfield name="changeSumm" cssStyle="width: 100%; text-align: right;" value="0.00" readonly="true"/></td>
 				</tr>
 
 				<tr>

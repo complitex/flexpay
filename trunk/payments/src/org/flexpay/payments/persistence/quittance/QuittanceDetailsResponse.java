@@ -364,6 +364,7 @@ public class QuittanceDetailsResponse implements Serializable {
 			private BigDecimal payment;
 			private BigDecimal payed;
 			private String serviceMasterIndex;
+			private String serviceProviderAccount;
 
 			public BigDecimal getIncomingBalance() {
 				return incomingBalance;
@@ -453,6 +454,14 @@ public class QuittanceDetailsResponse implements Serializable {
 				this.serviceMasterIndex = serviceMasterIndex;
 			}
 
+			public String getServiceProviderAccount() {
+				return serviceProviderAccount;
+			}
+
+			public void setServiceProviderAccount(String serviceProviderAccount) {
+				this.serviceProviderAccount = serviceProviderAccount;
+			}
+
 			@Override
 			public String toString() {
 				return new ToStringBuilder(this).
@@ -467,6 +476,7 @@ public class QuittanceDetailsResponse implements Serializable {
 						append("payment", payment).
 						append("payed", payed).
 						append("serviceMasterIndex", serviceMasterIndex).
+						append("serviceProviderAccount", serviceProviderAccount).
 						toString();
 			}
 		}

@@ -82,7 +82,7 @@
 				},
 			</s:iterator>
 			</s:iterator>
-				'input': 'inputIsEnough',
+				'inputSumm': 'inputIsEnough',
 				'totalToPay': 'totalPaymentIsSumm'				
 			},
 			messages: {},
@@ -218,10 +218,10 @@
 	function updateChange() {
 		
 		var totalPaySumm = dotted2Int($('#quittancePayForm_totalToPay').val());
-		var inputSumm = dotted2Int($('#quittancePayForm_input').val());
+		var inputSumm = dotted2Int($('#quittancePayForm_inputSumm').val());
 		var changeSumm = inputSumm - totalPaySumm;
 
-		$('#quittancePayForm_change').val(int2Dotted(changeSumm));
+		$('#quittancePayForm_changeSumm').val(int2Dotted(changeSumm));
 	}
 
 	// total payment summ calculation
@@ -233,7 +233,7 @@
 		for (var i = 0; i < elements.length; i++) {
 			if (!isValidPayValue($(elements[i]).val())) {
 				$('#quittancePayForm_totalToPay').val('<s:text name="payments.quittances.quittance_pay.unaccessible"/>');
-				$('#quittancePayForm_change').val('<s:text name="payments.quittances.quittance_pay.unaccessible"/>');
+				$('#quittancePayForm_changeSumm').val('<s:text name="payments.quittances.quittance_pay.unaccessible"/>');
 				return;
 			}
 
