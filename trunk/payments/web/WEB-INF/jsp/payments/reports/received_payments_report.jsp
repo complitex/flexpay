@@ -15,7 +15,7 @@
 				<%@include file="/WEB-INF/jsp/common/filter/begin_date_filter.jsp" %>
 			</td>
 			<td nowrap="nowrap">
-				<s:submit name="submitted" cssClass="btn-exit" value="%{getText('payments.reports.generate.generate')}"/>
+				<input type="submit" name="submitted" class="btn-exit" value="<s:text name="payments.reports.generate.generate"/>"/>				
 			</td>
 		</tr>
 	</table>
