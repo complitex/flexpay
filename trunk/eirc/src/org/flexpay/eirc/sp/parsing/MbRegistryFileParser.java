@@ -22,13 +22,19 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.math.BigDecimal;
+import java.text.DateFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
 @Transactional (readOnly = true)
 public class MbRegistryFileParser extends MbFileParser<Registry> {
+
+	public static final DateFormat OPERATION_DATE_FORMAT = new SimpleDateFormat("MMyy");
+	public static final DateFormat INCOME_PERIOD_DATE_FORMAT = new SimpleDateFormat("MMyy");
 
 	private RegistryService registryService;
 	private RegistryRecordService registryRecordService;
@@ -53,9 +59,7 @@ public class MbRegistryFileParser extends MbFileParser<Registry> {
 			registry.setSpFile(spFile);
 			registry.setRegistryType(registryTypeService.findByCode(RegistryType.TYPE_QUITTANCE));
 			registry.setArchiveStatus(registryArchiveStatusService.findByCode(RegistryArchiveStatus.NONE));
-			registry.setRegistryStatus(spRegistryStatusService.findByCode(RegistryStatus.CREATED));
-
-			ServiceProvider serviceProvider = null;
+			registry.setRegistryStatus(spRegistryStatusService.findByCode(RegistryStatus.LOADING));
 
 			long recordsNum = 0;
 
@@ -67,26 +71,21 @@ public class MbRegistryFileParser extends MbFileParser<Registry> {
 				}
 				if (lineNum == 0) {
 				} else if (lineNum == 1) {
-					serviceProvider = parseHeader(line);
-					EircRegistryProperties registryProperties = (EircRegistryProperties) propertiesFactory.newRegistryProperties();
-					registryProperties.setServiceProvider(serviceProvider);
-					registryProperties.setRegistry(registry);
-					registry.setSenderCode(serviceProvider.getOrganization().getId());
-					registry.setRecipientCode(ApplicationConfig.getSelfOrganization().getId());
-					registry.setProperties(registryProperties);
-					registry = registryService.create(registry);
+					registry = registryService.create(parseHeader(line, registry));
 				} else if (line.startsWith(LAST_FILE_STRING_BEGIN)) {
 					registry.setRecordsNumber(recordsNum);
+					log.info("Total {} records created", recordsNum);
 					break;
 				} else {
-					recordsNum += parseRecord(registry, line);
+					recordsNum += parseRecord(line, registry);
 					if (recordsNum % 1000 == 0) {
-						log.info("{} records created", recordsNum);
+						log.info("{} records created, {} lines processed", recordsNum, lineNum - 1);
 					}
 				}
 
 			}
 
+			registry.setRegistryStatus(spRegistryStatusService.findByCode(RegistryStatus.LOADED));
 			registry = registryService.update(registry);
 
 		} catch (IOException e) {
@@ -99,25 +98,56 @@ public class MbRegistryFileParser extends MbFileParser<Registry> {
 
 	}
 
-	private ServiceProvider parseHeader(String line) throws FlexPayException {
+	private Registry parseHeader(String line, Registry registry) throws FlexPayException {
 		String[] fields = line.split("=");
 		log.debug("Getting service provider with id = {} from DB", fields[1]);
 		ServiceProvider serviceProvider = serviceProviderService.read(new Stub<ServiceProvider>(Long.parseLong(fields[1])));
 		if (serviceProvider == null) {
 			throw new FlexPayException("Incorrect header line (can't find service provider with id " + fields[1] + ")");
 		}
-		return serviceProvider;
+
+		EircRegistryProperties registryProperties = (EircRegistryProperties) propertiesFactory.newRegistryProperties();
+		registryProperties.setServiceProvider(serviceProvider);
+		registryProperties.setRegistry(registry);
+		registry.setSenderCode(serviceProvider.getOrganization().getId());
+		registry.setRecipientCode(ApplicationConfig.getSelfOrganization().getId());
+		registry.setProperties(registryProperties);
+
+		try {
+			Date dateFrom = INCOME_PERIOD_DATE_FORMAT.parse(fields[2]);
+			registry.setFromDate(dateFrom);
+			Calendar c = Calendar.getInstance();
+			c.setTime(dateFrom);
+			c.set(Calendar.MONTH, c.get(Calendar.MONTH) + 1);
+			c.setTime(new Date(c.getTime().getTime() - 24*60*60*1000));
+			registry.setTillDate(c.getTime());
+		} catch (Exception e) {
+			// do nothing
+		}
+
+		return registry;
 	}
 
-	private long parseRecord(Registry registry, String line) throws FlexPayException {
+	private long parseRecord(String line, Registry registry) throws FlexPayException {
 		String[] fields = line.split("=");
 
 		RegistryRecord record = new RegistryRecord();
 		record.setRecordStatus(statusLoaded);
 		record.setAmount(new BigDecimal(fields[2]));
-		record.setServiceCode(fields[3]);
+		record.setServiceCode("#" + fields[3]);
 		record.setPersonalAccountExt(fields[4]);
+		record.setOperationDate(new Date());
 		record.setRegistry(registry);
+
+		record.setLastName("");
+		record.setMiddleName("");
+		record.setFirstName("");
+		record.setCity("");
+		record.setStreetType("");
+		record.setStreetName("");
+		record.setBuildingNum("");
+		record.setBuildingBulkNum("");
+		record.setApartmentNum("");
 
 		try {
 			record.setOperationDate(OPERATION_DATE_FORMAT.parse(fields[5]));

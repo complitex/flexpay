@@ -67,6 +67,9 @@ public class ServiceOperationsFactory {
 		// get a list of operations
 		List<Operation> operations = new ArrayList<Operation>();
 		for (RegistryRecordContainer container : containers) {
+			if (container == null) {
+				continue;
+			}
 			Operation operation = fromSingleContainerData(registry, container.getData());
 			operations.add(operation);
 		}

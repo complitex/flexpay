@@ -1,7 +1,6 @@
 package org.flexpay.eirc.sp;
 
 import org.flexpay.common.persistence.FPFile;
-import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.eirc.actions.TestSpFileCreateAction;
 import org.flexpay.eirc.service.RegistryService;
@@ -26,13 +25,15 @@ public class TestMbRegistryFileParser extends TestSpFileCreateAction {
 
 		try {
 			Registry registry = parser.parse(newFile);
+/*
 			registryService.deleteRecords(new Stub<Registry>(registry));
 			registryService.delete(registry);
+*/
 		} catch (Exception e) {
 			log.error("Error with parsing file", e);
 		}
 
-		deleteFile(newFile);
+//		deleteFile(newFile);
 	}
 
 }

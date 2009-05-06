@@ -19,7 +19,7 @@ public abstract class MbFileParser<T> {
 
 	public static final String LAST_FILE_STRING_BEGIN = "999999999";
 	public static final String REGISTRY_FILE_ENCODING = "Cp866";
-	public static final DateFormat OPERATION_DATE_FORMAT = new SimpleDateFormat("MMyy");
+	public static final DateFormat FILE_CREATION_DATE_FORMAT = new SimpleDateFormat("ddMMyy");
 
 	protected RegistryRecordStatus statusLoaded;
 
