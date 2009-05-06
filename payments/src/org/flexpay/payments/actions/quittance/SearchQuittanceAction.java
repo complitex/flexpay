@@ -187,6 +187,10 @@ public class SearchQuittanceAction extends FPActionSupport {
 		}
 	}
 
+	public String getEircAccount(QuittanceInfo quittanceInfo) {
+		return quittanceInfo.getAccountNumber();
+	}
+
 	public String getApartmentAddress(QuittanceInfo quittanceInfo) throws FlexPayException {
 
 		String apartmentMasterIndex = quittanceInfo.getApartmentMasterIndex();

@@ -4,11 +4,14 @@ import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.util.SecurityUtil;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.payments.persistence.*;
 import org.flexpay.payments.persistence.quittance.QuittanceDetailsResponse;
 import org.flexpay.payments.service.*;
 import org.flexpay.orgs.persistence.Organization;
+import org.flexpay.orgs.persistence.ServiceProvider;
 import org.flexpay.orgs.service.OrganizationService;
+import org.flexpay.orgs.service.ServiceProviderService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
@@ -16,16 +19,21 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Map;
 
-// FIXME WARN: full of hacks and other shit. By now this class is big piece of shit
+
 public class QuittancePayAction extends FPActionSupport {
 
 	private String actionName;
 
 	// form data
 	private QuittanceDetailsResponse.QuittanceInfo quittanceInfo = new QuittanceDetailsResponse.QuittanceInfo();
-	private Map<String, BigDecimal> paymentsMap = CollectionUtils.map(); // maps serviceMasterIndex to payment value
+	private Map<String, BigDecimal> paymentsMap = CollectionUtils.map();
+	private Map<String, String> serviceProviderAccountsMap = CollectionUtils.map();
 	private String payerFio;
 	private String address;
+	private String eircAccount;
+	private BigDecimal changeSumm;
+	private BigDecimal inputSumm;
+	private BigDecimal totalToPay;
 
 	// required services
 	private DocumentTypeService documentTypeService;
@@ -36,55 +44,75 @@ public class QuittancePayAction extends FPActionSupport {
 	private OperationTypeService operationTypeService;
 	private OrganizationService organizationService;
 	private SPService spService;
+	private ServiceProviderService serviceProviderService;
 
 	@NotNull
 	protected String doExecute() throws Exception {
 
-		// FIXME I am small but very dirt fucking hack!
-		Organization org = organizationService.readFull(new Stub<Organization>(1L));
-		Service service = spService.read(new Stub<Service>(1L));
+		Operation operation = createOperation();
+		operationService.save(operation);
+		return REDIRECT_SUCCESS;
+	}
 
-		// construct operations
-		Operation operation = new Operation();
-		BigDecimal operationSumm = new BigDecimal("0.00");
+	private Operation createOperation() throws FlexPayException {
 
-		//for (QuittanceDetailsResponse.QuittanceInfo.ServiceDetails serviceDetails : quittanceInfo.getDetailses()) {
-		//	BigDecimal documentSumm = paymentsMap.get(serviceDetails.getServiceMasterIndex());
 
-		for (String serviceMasterIndex : paymentsMap.keySet()) { // FIXME hack
-			BigDecimal documentSumm = paymentsMap.get(serviceMasterIndex);
-			operationSumm = operationSumm.add(documentSumm);
+		Organization creatorOrganization = getCreatorOrganization();
 
-			Document document = new Document();
-			document.setDocumentStatus(documentStatusService.read(DocumentStatus.REGISTERED));
-			document.setDocumentType(documentTypeService.read(DocumentType.CASH_PAYMENT));
-			document.setSumm(documentSumm);
-			document.setAddress(address);
-			document.setPayerFIO(payerFio);
-			document.setDebtorOrganization(org); // TODO where to get?
-			document.setDebtorId("debtorId"); // TODO where to get? account.getAccountNumber()
-			document.setService(service); // TODO where to get? doc.setService(qdPayment.getQuittanceDetails().getConsumer().getService());
-			document.setCreditorOrganization(org); // TODO where to get? doc.setCreditorOrganization(service.getServiceProvider().getOrganization());
-			document.setCreditorId("creditorId"); // TODO where to get? doc.setCreditorId(qdPayment.getQuittanceDetails().getConsumer().getExternalAccountNumber());
+		Operation operation = buildOperation(creatorOrganization);
+		for (String serviceId : paymentsMap.keySet()) {
+			Document document = buildDocument(creatorOrganization, serviceId);
 			operation.addDocument(document);
 		}
 
+		return operation;
+
+	}
+
+	private Organization getCreatorOrganization() {
+
+		// TODO get organization id from cookies (FP-539)
+		Organization creatorOrganization = organizationService.readFull(new Stub<Organization>(1L));
+		return creatorOrganization;
+	}
+
+	private Operation buildOperation(Organization creatorOrganization) throws FlexPayException {
+		Operation operation = new Operation();
 		operation.setAddress(address);
 		operation.setPayerFIO(payerFio);
-		operation.setOperationSumm(operationSumm);
-		operation.setOperationInputSumm(operationSumm);
-		operation.setChange(BigDecimal.ZERO);
+		operation.setOperationSumm(totalToPay);
+		operation.setOperationInputSumm(inputSumm);
+		operation.setChange(changeSumm);
 		operation.setCreationDate(new Date());
-		operation.setCreatorOrganization(org); // TODO where to get? org
+		operation.setCreatorOrganization(creatorOrganization);
 		operation.setCreatorUserName(SecurityUtil.getUserName());
 		operation.setOperationStatus(operationStatusService.read(OperationStatus.REGISTERED));
 		operation.setOperationLevel(operationLevelService.read(OperationLevel.AVERAGE));
 		operation.setOperationType(operationTypeService.read(OperationType.SERVICE_CASH_PAYMENT));
+		return operation;
+	}
 
-		// save documents and operation
-		operationService.save(operation);
+	private Document buildDocument(Organization creatorOrganization, String serviceId) throws FlexPayException {
+		BigDecimal documentSumm = paymentsMap.get(serviceId);
 
-		return REDIRECT_SUCCESS;
+		Service service = spService.read(new Stub<Service>(Long.parseLong(serviceId)));
+		ServiceProvider serviceProvider = serviceProviderService.read(new Stub<ServiceProvider>(service.getServiceProvider().getId()));
+		Organization serviceProviderOrganization = serviceProvider.getOrganization();
+
+		String serviceProviderAccount = serviceProviderAccountsMap.get(serviceId);
+
+		Document document = new Document();
+		document.setService(service);
+		document.setDocumentStatus(documentStatusService.read(DocumentStatus.REGISTERED));
+		document.setDocumentType(documentTypeService.read(DocumentType.CASH_PAYMENT));
+		document.setSumm(documentSumm);
+		document.setAddress(address);
+		document.setPayerFIO(payerFio);
+		document.setDebtorOrganization(creatorOrganization);
+		document.setDebtorId(eircAccount);
+		document.setCreditorOrganization(serviceProviderOrganization);
+		document.setCreditorId(serviceProviderAccount);
+		return document;
 	}
 
 	@NotNull
@@ -133,6 +161,38 @@ public class QuittancePayAction extends FPActionSupport {
 		this.actionName = actionName;
 	}
 
+	public BigDecimal getChangeSumm() {
+		return changeSumm;
+	}
+
+	public void setChangeSumm(BigDecimal changeSumm) {
+		this.changeSumm = changeSumm;
+	}
+
+	public BigDecimal getInputSumm() {
+		return inputSumm;
+	}
+
+	public void setInputSumm(BigDecimal inputSumm) {
+		this.inputSumm = inputSumm;
+	}
+
+	public void setTotalToPay(BigDecimal totalToPay) {
+		this.totalToPay = totalToPay;
+	}
+
+	public void setEircAccount(String eircAccount) {
+		this.eircAccount = eircAccount;
+	}
+
+	public Map<String, String> getServiceProviderAccountsMap() {
+		return serviceProviderAccountsMap;
+	}
+
+	public void setServiceProviderAccountsMap(Map<String, String> serviceProviderAccountsMap) {
+		this.serviceProviderAccountsMap = serviceProviderAccountsMap;
+	}
+
 	// required services
 	@Required
 	public void setDocumentTypeService(DocumentTypeService documentTypeService) {
@@ -172,5 +232,10 @@ public class QuittancePayAction extends FPActionSupport {
 	@Required
 	public void setSpService(SPService spService) {
 		this.spService = spService;
+	}
+
+	@Required
+	public void setServiceProviderService(ServiceProviderService serviceProviderService) {
+		this.serviceProviderService = serviceProviderService;
 	}
 }
