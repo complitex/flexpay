@@ -3,16 +3,13 @@
     <endpoints>
         <endpoint endpoint-name="historySourceEndpoint" interface-name="ns2:saveHistoryPortType" name="endpoint1" service-name="ns1:casaService1"/>
         <endpoint endpoint-name="consumer1Endpoint" interface-name="ns2:saveHistoryPortType" name="endpoint2" service-name="ns1:casaService2"/>
-        <endpoint endpoint-name="consumer2Endpoint" interface-name="ns2:saveHistoryPortType" name="endpoint3" service-name="ns1:casaService3"/>
-        <endpoint display-name="historySource" endpoint-name="saveHistoryPortTypeRole_myRole" file-path="broadcastHistoryApplication.bpel" interface-name="ns2:saveHistoryPortType" name="endpoint4" process-name="broadcastHistoryApplication" service-name="ns3:historySource"/>
-        <endpoint display-name="historyConsumer1" endpoint-name="saveHistoryPortTypeRole_partnerRole" file-path="broadcastHistoryApplication.bpel" interface-name="ns2:saveHistoryPortType" name="endpoint5" process-name="broadcastHistoryApplication" service-name="ns3:historyConsumer1"/>
-        <endpoint display-name="historyConsumer2" endpoint-name="saveHistoryPortTypeRole_partnerRole" file-path="broadcastHistoryApplication.bpel" interface-name="ns2:saveHistoryPortType" name="endpoint6" process-name="broadcastHistoryApplication" service-name="ns3:historyConsumer2"/>
+        <endpoint display-name="historySource" endpoint-name="saveHistoryPortTypeRole_myRole" file-path="broadcastHistoryApplication.bpel" interface-name="ns2:saveHistoryPortType" name="endpoint3" process-name="broadcastHistoryApplication" service-name="ns3:historySource"/>
+        <endpoint display-name="historyConsumer1" endpoint-name="saveHistoryPortTypeRole_partnerRole" file-path="broadcastHistoryApplication.bpel" interface-name="ns2:saveHistoryPortType" name="endpoint4" process-name="broadcastHistoryApplication" service-name="ns3:historyConsumer1"/>
     </endpoints>
     <service-units>
         <service-engine-service-unit artifacts-zip="HistoryBroadcast.jar" component-name="sun-bpel-engine" defined="true" description="Represents this Service Unit" internal="true" name="caHistoryBroadcast-HistoryBroadcast" unit-name="HistoryBroadcast" unknown="false" x="127" y="180">
-            <provides endpoint="endpoint4"/>
-            <consumes endpoint="endpoint5"/>
-            <consumes endpoint="endpoint6"/>
+            <provides endpoint="endpoint3"/>
+            <consumes endpoint="endpoint4"/>
         </service-engine-service-unit>
         <binding-component-service-unit artifacts-zip="sun-http-binding.jar" component-name="sun-http-binding" description="Represents this Service Unit" name="caHistoryBroadcast-sun-http-binding" unit-name="sun-http-binding">
             <ports>
@@ -26,20 +23,13 @@
                     <consumes endpoint="endpoint2"/>
                     <provides endpoint="endpoint2"/>
                 </port>
-                <port bindingType="soap" x="67" y="479">
-                    <link xlink:href="../jbiasa/caHistoryBroadcast.wsdl#xpointer(/definitions/service[@name='casaService3']/port[@name='consumer2Endpoint'])" xlink:type="simple"/>
-                    <consumes endpoint="endpoint3"/>
-                    <provides endpoint="endpoint3"/>
-                </port>
             </ports>
         </binding-component-service-unit>
     </service-units>
     <connections>
-        <connection consumer="endpoint1" provider="endpoint4" state="new"/>
-        <connection consumer="endpoint5" provider="endpoint2" state="new"/>
-        <connection consumer="endpoint6" provider="endpoint3" state="new"/>
-        <connection consumer="endpoint5" provider="endpoint4" state="deleted"/>
-        <connection consumer="endpoint6" provider="endpoint4" state="deleted"/>
+        <connection consumer="endpoint1" provider="endpoint3" state="new"/>
+        <connection consumer="endpoint4" provider="endpoint2" state="new"/>
+        <connection consumer="endpoint4" provider="endpoint3" state="deleted"/>
     </connections>
     <porttypes>
         <link xlink:href="../jbiasa/caHistoryBroadcast.wsdl#xpointer(/definitions/portType[@name='dummyCasaPortType'])" xlink:type="simple"/>
@@ -49,18 +39,14 @@
     <bindings>
         <link xlink:href="../jbiasa/caHistoryBroadcast.wsdl#xpointer(/definitions/binding[@name='casaBinding1'])" xlink:type="simple"/>
         <link xlink:href="../jbiasa/caHistoryBroadcast.wsdl#xpointer(/definitions/binding[@name='casaBinding2'])" xlink:type="simple"/>
-        <link xlink:href="../jbiasa/caHistoryBroadcast.wsdl#xpointer(/definitions/binding[@name='casaBinding3'])" xlink:type="simple"/>
         <link xlink:href="../jbiServiceUnits/caHistoryBroadcast.wsdl#xpointer(/definitions/binding[@name='casaBinding1'])" xlink:type="simple"/>
         <link xlink:href="../jbiServiceUnits/caHistoryBroadcast.wsdl#xpointer(/definitions/binding[@name='casaBinding2'])" xlink:type="simple"/>
-        <link xlink:href="../jbiServiceUnits/caHistoryBroadcast.wsdl#xpointer(/definitions/binding[@name='casaBinding3'])" xlink:type="simple"/>
     </bindings>
     <services>
         <link xlink:href="../jbiasa/caHistoryBroadcast.wsdl#xpointer(/definitions/service[@name='casaService1'])" xlink:type="simple"/>
         <link xlink:href="../jbiasa/caHistoryBroadcast.wsdl#xpointer(/definitions/service[@name='casaService2'])" xlink:type="simple"/>
-        <link xlink:href="../jbiasa/caHistoryBroadcast.wsdl#xpointer(/definitions/service[@name='casaService3'])" xlink:type="simple"/>
         <link xlink:href="../jbiServiceUnits/caHistoryBroadcast.wsdl#xpointer(/definitions/service[@name='casaService1'])" xlink:type="simple"/>
         <link xlink:href="../jbiServiceUnits/caHistoryBroadcast.wsdl#xpointer(/definitions/service[@name='casaService2'])" xlink:type="simple"/>
-        <link xlink:href="../jbiServiceUnits/caHistoryBroadcast.wsdl#xpointer(/definitions/service[@name='casaService3'])" xlink:type="simple"/>
     </services>
     <regions>
         <region name="WSDL Endpoints" width="150"/>

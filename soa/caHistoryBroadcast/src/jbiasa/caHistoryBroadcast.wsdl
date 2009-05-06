@@ -36,18 +36,6 @@
             </output>
         </operation>
     </binding>
-    <binding name="casaBinding3" type="ns:saveHistoryPortType">
-        <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
-        <operation name="saveHistory">
-            <soap:operation/>
-            <input name="input1">
-                <soap:body use="literal"/>
-            </input>
-            <output name="status">
-                <soap:body use="literal"/>
-            </output>
-        </operation>
-    </binding>
     <service name="casaService1">
         <port name="historySourceEndpoint" binding="tns:casaBinding1">
             <soap:address location="http://localhost:${HttpDefaultPort}/historyBroadcast/sourceEndpoint"/>
@@ -55,12 +43,7 @@
     </service>
     <service name="casaService2">
         <port name="consumer1Endpoint" binding="tns:casaBinding2">
-            <soap:address location="http://localhost:48080/eirc/ws/ShareHistory"/>
-        </port>
-    </service>
-    <service name="casaService3">
-        <port name="consumer2Endpoint" binding="tns:casaBinding3">
-            <soap:address location="http://localhost:48080/tc/ws/ShareHistory"/>
+            <soap:address location="http://localhost:8080/eirc/ws/ShareHistory"/>
         </port>
     </service>
 </definitions>
