@@ -130,7 +130,6 @@
 
 	<%--<s:hidden name="documentSearchEnabled"/>--%>
 
-
 		<sec:authorize ifAllGranted="ROLE_PAYMENTS_DEVELOPER">
 			<table cellpadding="3" cellspacing="1" border="0" width="100%" class="operations">
 			<tr>
@@ -141,7 +140,10 @@
 				<td nowrap="nowrap"><%@include file="/WEB-INF/jsp/common/filter/end_date_filter.jsp" %></td>
 
 				<%-- TODO place it properly --%>
-				<td nowrap="nowrap"><s:submit name="filterSubmitted" cssClass="btn-exit" value="%{getText('payments.operations.list.filter')}"/></td>
+				<td nowrap="nowrap">
+					<input type="submit" name="filterSubmitted" class="btn-exit" value="<s:text name="payments.operations.list.filter"/>"/>
+					<%--<s:submit name="filterSubmitted" cssClass="btn-exit" value="%{getText('payments.operations.list.filter')}"/>--%>
+				</td>
 			</tr>
 			</table>
 		</sec:authorize>
@@ -189,9 +191,9 @@
 
 			<tr>
 				<td colspan="5">
-					<%--<s:submit name="registerSubmitted" onclick="setStatus(2);" cssClass="btn-exit btn-register" value="%{getText('payments.operations.list.register')}"/>--%>
-					<s:submit name="returnSubmitted" onclick="setStatus(4);" cssClass="btn-exit btn-return" value="%{getText('payments.operations.list.return')}"/>
-					<s:submit name="deleteSubmitted" onclick="setStatus(3);" cssClass="btn-exit btn-delete" value="%{getText('payments.operations.list.delete')}"/>
+					<%--<input type="submit" name="registerSubmitted" onclick="setStatus(2);" class="btn-exit btn-register" value="<s:text name="payments.operations.list.register"/>"/>--%>
+					<input type="submit" name="returnSubmitted" onclick="setStatus(4);" class="btn-exit btn-return" value="<s:text name="payments.operations.list.return"/>"/>
+					<input type="submit" name="deleteSubmitted" onclick="setStatus(3);" class="btn-exit btn-delete" value="<s:text name="payments.operations.list.delete"/>"/>
 
 					<input type="button" class="btn-exit" onclick="showDetails();" value="<s:text name="payments.operations.list.detailed"/>"/>
 				</td>
@@ -301,9 +303,9 @@
 
 			<tr>
 				<td colspan="5">
-					<%--<s:submit name="registerSubmitted" onclick="setStatus(2);" cssClass="btn-exit btn-register" value="%{getText('payments.operations.list.register')}"/>--%>
-					<s:submit name="returnSubmitted" onclick="setStatus(4);" cssClass="btn-exit btn-return" value="%{getText('payments.operations.list.return')}"/>
-					<s:submit name="deleteSubmitted" onclick="setStatus(3);" cssClass="btn-exit btn-delete" value="%{getText('payments.operations.list.delete')}"/>
+					<%--<input type="submit" name="registerSubmitted" onclick="setStatus(2);" class="btn-exit btn-register" value="<s:text name="payments.operations.list.register"/>"/>--%>
+					<input type="submit" name="returnSubmitted" onclick="setStatus(4);" class="btn-exit btn-return" value="<s:text name="payments.operations.list.return"/>"/>
+					<input type="submit" name="deleteSubmitted" onclick="setStatus(3);" class="btn-exit btn-delete" value="<s:text name="payments.operations.list.delete"/>"/>
 
 					<input type="button" class="btn-exit" onclick="showDetails();" value="<s:text name="payments.operations.list.detailed"/>"/>
 				</td>

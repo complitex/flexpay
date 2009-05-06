@@ -43,7 +43,7 @@
 		<tr>
 			<td nowrap="nowrap">
 				<input type="submit" name="submitted" class="btn-exit"
-					   value="<s:property value="%{getText('payments.reports.generate.generate')}"/>" />
+					   value="<s:text name="payments.reports.generate.generate"/>"/>
 			</td>
 		</tr>
 	</table>
