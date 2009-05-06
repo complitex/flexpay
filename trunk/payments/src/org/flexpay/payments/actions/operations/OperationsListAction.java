@@ -9,13 +9,8 @@ import org.flexpay.common.persistence.filter.BeginDateFilter;
 import org.flexpay.common.persistence.filter.EndDateFilter;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.DateUtil;
-import org.flexpay.payments.persistence.DocumentStatus;
-import org.flexpay.payments.persistence.Operation;
-import org.flexpay.payments.persistence.OperationStatus;
-import org.flexpay.payments.persistence.ServiceType;
-import org.flexpay.payments.service.OperationService;
-import org.flexpay.payments.service.OperationStatusService;
-import org.flexpay.payments.service.ServiceTypeService;
+import org.flexpay.payments.persistence.*;
+import org.flexpay.payments.service.*;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
@@ -63,6 +58,8 @@ public class OperationsListAction extends FPActionWithPagerSupport<Operation> {
 	// required services
 	private OperationService operationService;
 	private OperationStatusService operationStatusService;
+	private DocumentStatusService documentStatusService;
+	private DocumentService documentService;
 	private ServiceTypeService serviceTypeService;
 
 	@NotNull
@@ -132,6 +129,14 @@ public class OperationsListAction extends FPActionWithPagerSupport<Operation> {
 		OperationStatus operationStatus = operationStatusService.read(Integer.parseInt(status));
 		Operation operation = operationService.read(new Stub<Operation>(selectedOperationId));
 		operation.setOperationStatus(operationStatus);
+
+		// setting documents status
+		for (Document document : operation.getDocuments()) {
+			DocumentStatus documentStatus = documentStatusService.read(Integer.parseInt(status));
+			document.setDocumentStatus(documentStatus);
+			documentService.save(document);
+		}
+
 		operationService.save(operation);
 	}
 
@@ -337,5 +342,15 @@ public class OperationsListAction extends FPActionWithPagerSupport<Operation> {
 	@Required
 	public void setServiceTypeService(ServiceTypeService serviceTypeService) {
 		this.serviceTypeService = serviceTypeService;
+	}
+
+	@Required
+	public void setDocumentStatusService(DocumentStatusService documentStatusService) {
+		this.documentStatusService = documentStatusService;
+	}
+
+	@Required
+	public void setDocumentService(DocumentService documentService) {
+		this.documentService = documentService;
 	}
 }

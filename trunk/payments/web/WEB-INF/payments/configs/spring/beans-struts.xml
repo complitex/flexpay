@@ -34,7 +34,9 @@
 		  class="org.flexpay.payments.actions.operations.OperationsListAction"
 		  p:operationService-ref="operationService"
 		  p:operationStatusService-ref="operationStatusService"
-		  p:serviceTypeService-ref="serviceTypeService" />
+		  p:serviceTypeService-ref="serviceTypeService"
+		  p:documentService-ref="documentService"
+		  p:documentStatusService-ref="documentStatusService" />
 
 	<!-- reports-related actions -->
 	<bean id="generateReportAction" scope="prototype"
