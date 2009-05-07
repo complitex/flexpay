@@ -133,7 +133,7 @@ public class Person extends DomainObjectWithStatus {
 
 		PersonIdentity candidate = null;
 		for (PersonIdentity identity : personIdentities) {
-			if (identity.getId().equals(personIdentity.getId())) {
+			if (identity.equals(personIdentity)) {
 				candidate = identity;
 				break;
 			}

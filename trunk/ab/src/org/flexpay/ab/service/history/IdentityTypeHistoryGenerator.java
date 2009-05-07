@@ -28,7 +28,7 @@ public class IdentityTypeHistoryGenerator implements HistoryGenerator<IdentityTy
 	public void generateFor(@NotNull IdentityType obj) {
 
 		if (diffService.hasDiffs(obj)) {
-			log.info("Identity type already has history, do nothing {}", obj);
+			log.debug("Identity type already has history, do nothing {}", obj);
 			return;
 		}
 

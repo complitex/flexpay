@@ -17,7 +17,7 @@ import java.util.Set;
 /**
  * Person Identity
  */
-public class PersonIdentity extends DomainObjectWithStatus {
+public class PersonIdentity extends DomainObjectWithStatus implements Comparable<PersonIdentity> {
 
 	public static final short SEX_UNKNOWN = 0;
 	public static final short SEX_MAN = 1;
@@ -327,5 +327,9 @@ public class PersonIdentity extends DomainObjectWithStatus {
 
 		person.addIdentity(identity);
 		return identity;
+	}
+
+	public int compareTo(PersonIdentity o) {
+		return beginDate.compareTo(o.beginDate);
 	}
 }

@@ -4,6 +4,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.flexpay.common.persistence.DomainObjectWithStatus;
 import org.flexpay.common.persistence.Language;
+import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.util.TranslationUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -14,7 +15,7 @@ import java.util.Set;
 /**
  * IdentityType entity class holds a general representation of various types of identities.
  */
-public class IdentityType extends DomainObjectWithStatus {
+public class IdentityType extends DomainObjectWithStatus implements Comparable<IdentityType> {
 
 	public static int TYPE_UNKNOWN = 0;
 	public static int TYPE_FIO = 1;
@@ -38,6 +39,10 @@ public class IdentityType extends DomainObjectWithStatus {
 
 	public IdentityType(Long id) {
 		super(id);
+	}
+
+	public IdentityType(Stub<IdentityType> stub) {
+		super(stub.getId());
 	}
 
 	/**
@@ -89,5 +94,9 @@ public class IdentityType extends DomainObjectWithStatus {
 		}
 
 		return null;
+	}
+
+	public int compareTo(IdentityType o) {
+		return getId().compareTo(o.getId());
 	}
 }

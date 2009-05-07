@@ -70,7 +70,7 @@ public class ApartmentHistoryBuilder extends HistoryBuilderBase<Apartment> {
 			Date end1 = n1 != null ? n1.getEnd() : ApplicationConfig.getFutureInfinite();
 			Date end2 = n2 != null ? n2.getEnd() : ApplicationConfig.getFutureInfinite();
 
-			// setup lower and upper bound for a next pair ov intervals to build diffs on
+			// setup lower and upper bound for a next pair of intervals to build diffs on
 			Date beginMin = min(list(begin1, begin2));
 			Date beginMax = max(list(begin1, begin2));
 			Date end = min(list(end1, end2));
@@ -162,6 +162,8 @@ public class ApartmentHistoryBuilder extends HistoryBuilderBase<Apartment> {
 				null :
 				masterIndexService.getMasterIndex(b2));
 		diff.addRecord(rec);
+
+		log.debug("Biolding ref diff {}", rec);
 	}
 
 	/**
