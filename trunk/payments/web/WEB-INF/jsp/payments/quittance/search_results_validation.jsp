@@ -82,19 +82,28 @@
 				},
 			</s:iterator>
 			</s:iterator>
-				'inputSumm': 'inputIsEnough',
+				'inputSumm': {
+					'inputIsEnough': true,
+					'validPayValue': true
+				},
 				'totalToPay': 'totalPaymentIsSumm'				
 			},
 			messages: {},
 			errorClass: "cols_1_error",
 			errorElement: "span",
 			success: function(label) {
+				var nextRow = label.parent('td').parent('tr.cols_1_error').next('tr.cols_1');
 				label.parent("td").parent("tr.cols_1_error").css("display", "none");
 				label.remove();
 
 				if (validator.numberOfInvalids() == 0) {
 					updateTotal();
-					updateChange();					
+					updateChange();
+
+					// if the updated field is a payment we should update input
+					if (nextRow.hasClass('service_payment')) {
+						updateInput();
+					}
 				}
 			},
 			showErrors: function(errorMap, errorList) {
@@ -241,5 +250,11 @@
 		}
 
 		$('#quittancePayForm_totalToPay').val(int2Dotted(total));
+	}
+
+	// sets input summ value equal to the total summ
+	function updateInput() {
+		$('#quittancePayForm_inputSumm').val($('#quittancePayForm_totalToPay').val());
+		updateChange();
 	}
 </script>
