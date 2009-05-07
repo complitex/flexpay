@@ -31,7 +31,7 @@
 					
 					<tr class="cols_1_error" style="display:none;"><td colspan="4"/></tr>
 
-					<tr class="cols_1">
+					<tr class="cols_1 service_payment">
 						<script type="text/javascript">
 							DETAILS.push(new QD("<s:property value="%{#status.index + 1}"/>", "<s:property value="#serviceId"/>", "<s:property value="%{getServiceName(serviceMasterIndex)}"/>", "<s:property value="%{getProviderName(serviceMasterIndex)}"/>", "<s:property value="outgoingBalance"/>", "<s:property value="payed"/>"));
 						</script>
