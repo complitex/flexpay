@@ -93,8 +93,23 @@ jQuery.autocomplete = function(input, options) {
 		}
 	}
 
-	$input
-	.keydown(function(e) {
+    function tabKeyDown(e) {
+        var lis = $("li", results);
+        if (!lis) {
+            return true;
+        }
+        if (selectCurrent()) {
+            $input.get(0).blur();
+            e.preventDefault();
+        } else {
+            if (!selectCurrent() && $results.is(":visible")) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+	$input.keydown(function(e) {
 		// track last key pressed
 		lastKeyPressCode = e.keyCode;
 		switch(e.keyCode) {
@@ -107,22 +122,7 @@ jQuery.autocomplete = function(input, options) {
 				moveSelect(1);
 				break;
 			case 9:  // tab
-                var lis = $("li", results);
-                if (!lis) {
-                    break;
-                }
-                if (selectCurrent()) {
-                    $input.get(0).blur();
-                    e.preventDefault();
-                } else {
-                    if (!selectCurrent() && $results.is(":visible")) {
-                        return false;
-                    }
-                }
-                break;
-            case 27: // esc
-                hideResultsNow();
-                break;
+                return tabKeyDown(e);
 			case 13: // return
 				if (selectCurrent()) {
 					// make sure to blur off the current field
@@ -130,6 +130,9 @@ jQuery.autocomplete = function(input, options) {
 					e.preventDefault();
 				}
 				break;
+            case 27: // esc
+                hideResultsNow();
+                break;
 			default:
 				active = -1;
 				if (timeout) clearTimeout(timeout);
@@ -441,6 +444,11 @@ jQuery.autocomplete = function(input, options) {
 		if (i == -1) return false;
 		return i == 0 || options.matchContains;
 	};
+
+    this.getResultsElement = function() {
+        return $results;
+    };
+
 
 	this.flushCache = function() {
 		flushCache();
