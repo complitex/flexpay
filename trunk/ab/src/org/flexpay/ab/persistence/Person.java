@@ -161,6 +161,7 @@ public class Person extends DomainObjectWithStatus {
 			personIdentities = CollectionUtils.set();
 		}
 
+		identity.setPerson(this);
 		personIdentities.add(identity);
 	}
 
