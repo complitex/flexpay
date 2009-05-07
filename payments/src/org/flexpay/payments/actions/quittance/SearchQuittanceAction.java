@@ -135,7 +135,7 @@ public class SearchQuittanceAction extends FPActionSupport {
 			case CODE_ERROR_INVALID_QUITTANCE_NUMBER:
 				return getText("payments.errors.search.invalid_quittance_number");
 			case CODE_ERROR_QUITTANCE_NOT_FOUND:
-				return getText("payments.errors.search.quittance_not_found");
+				return getText("payments.errors.search.debts_not_found");
 			case CODE_ERROR_UNKNOWN_REQUEST:
 				return getText("payments.errors.search.unknown_request");
 			default:
