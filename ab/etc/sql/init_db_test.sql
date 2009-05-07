@@ -1691,8 +1691,8 @@ INSERT INTO ab_streets_districts_tbl (street_id, district_id) VALUES (@street_id
 INSERT INTO ab_streets_districts_tbl (street_id, district_id) VALUES (@street_id_krasniy, @district_id_nsk_zaelcovskiy);
 
 -- Init Persons
-INSERT INTO ab_persons_tbl (status) VALUES (0);
-SELECT @person_id:=last_insert_id();
+INSERT INTO ab_persons_tbl (id, status) VALUES (1, 0);
+SELECT @person_id:=1;
 
 INSERT INTO ab_person_attributes_tbl (name, value, language_id, person_id)
 	VALUES('Кол-во детей', '12', @ru_id, @person_id);
@@ -2329,15 +2329,15 @@ INSERT INTO ab_building_address_attributes_tbl (value, status, attribute_type_id
 INSERT INTO ab_apartments_tbl (id, status, building_id) VALUES (1, 0, @building_ivanova_27_id);
 SELECT @apartment_ivanova_329_id:=1;
 INSERT INTO ab_apartment_numbers_tbl (begin_date, end_date, value, apartment_id)
-	VALUES ('1900-01-01', '2100-12-31', '329', @apartment_ivanova_329_id);
+	VALUES ('1960-01-01', '2100-12-31', '329', @apartment_ivanova_329_id);
 
 INSERT INTO ab_apartments_tbl (id, status, building_id) VALUES (2, 0, @building_ivanova_27_id);
 SELECT @apartment_ivanova_330_id:=2;
 INSERT INTO ab_apartment_numbers_tbl (begin_date, end_date, value, apartment_id)
 	VALUES ('1900-01-01', '2100-12-31', '330', @apartment_ivanova_330_id);
 
-INSERT INTO ab_apartments_tbl (status, building_id) VALUES (0, @building_ivanova_27_id);
-SELECT @apartment_ivanova_1_id:=last_insert_id();
+INSERT INTO ab_apartments_tbl (id, status, building_id) VALUES (3, 0, @building_ivanova_27_id);
+SELECT @apartment_ivanova_1_id:=3;
 INSERT INTO ab_apartment_numbers_tbl (begin_date, end_date, value, apartment_id)
 	VALUES ('1900-01-01', '2100-12-31', '1', @apartment_ivanova_1_id);
 

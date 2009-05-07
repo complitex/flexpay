@@ -152,6 +152,16 @@
 				<comment>Optional key for field value</comment>
 			</column>
 		</property>
+		<property name="fieldKey2">
+			<column name="field_key2" not-null="false">
+				<comment>Optional second key for field value</comment>
+			</column>
+		</property>
+		<property name="fieldKey3">
+			<column name="field_key3" not-null="false">
+				<comment>Optional third key for field value</comment>
+			</column>
+		</property>
 		<property name="processingStatus">
 			<column name="processing_status" not-null="true" default="0">
 				<comment>Processing status</comment>

@@ -18,6 +18,7 @@ public class AbSpringBeanAwareTestCase extends SpringBeanAwareTestCase {
 	@BeforeClass
 	public static void authenticateTestUser() {
 		GrantedAuthority[] authorities = SecurityUtil.auths(
+				PERSON_READ,
 				APARTMENT_READ,
 				BUILDING_ATTRIBUTE_TYPE_READ,
 				BUILDING_READ,

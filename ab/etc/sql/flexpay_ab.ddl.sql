@@ -459,6 +459,8 @@
         begin_date date comment 'Optional begin date for temporal fields',
         end_date date comment 'Optional end date for temporal fields',
         field_key varchar(255) comment 'Optional key for field value',
+        field_key2 varchar(255) comment 'Optional second key for field value',
+        field_key3 varchar(255) comment 'Optional third key for field value',
         processing_status integer default 0 not null comment 'Processing status',
         diff_id bigint not null comment 'Diff (set of records) reference',
         primary key (id)

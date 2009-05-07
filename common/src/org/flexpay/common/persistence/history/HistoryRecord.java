@@ -33,6 +33,8 @@ public class HistoryRecord extends DomainObject {
 	private Date beginDate;
 	private Date endDate;
 	private String fieldKey;
+	private String fieldKey2;
+	private String fieldKey3;
 	private int processingStatus;
 	private Diff diff;
 
@@ -205,6 +207,22 @@ public class HistoryRecord extends DomainObject {
 		this.fieldKey = fieldKey;
 	}
 
+	public String getFieldKey2() {
+		return fieldKey2;
+	}
+
+	public void setFieldKey2(String fieldKey2) {
+		this.fieldKey2 = fieldKey2;
+	}
+
+	public String getFieldKey3() {
+		return fieldKey3;
+	}
+
+	public void setFieldKey3(String fieldKey3) {
+		this.fieldKey3 = fieldKey3;
+	}
+
 	public int getProcessingStatus() {
 		return processingStatus;
 	}
@@ -225,6 +243,8 @@ public class HistoryRecord extends DomainObject {
 	public String toString() {
 		return new ToStringBuilder(this).
 				append("id", getId()).
+				append("oldBoolValue", oldBoolValue).
+				append("newBoolValue", newBoolValue).
 				append("oldIntValue", oldIntValue).
 				append("newIntValue", newIntValue).
 				append("oldLongValue", oldLongValue).
@@ -241,6 +261,8 @@ public class HistoryRecord extends DomainObject {
 				append("beginDate", beginDate).
 				append("endDate", endDate).
 				append("fieldKey", fieldKey).
+				append("fieldKey2", fieldKey2).
+				append("fieldKey3", fieldKey3).
 				append("processingStatus", processingStatus).
 				append("diff", diff).
 				toString();
