@@ -62,7 +62,7 @@
 					   style="width: 200px;"/>
 			</td>
 			<td rowspan="2">
-				<input type="button" value="<s:text name="common.search" />" class="btn-exit" onclick="doSearch();" tabindex="1" />
+				<input type="button" value="<s:text name="common.search" />" class="btn-exit" onclick="doSearch();" tabindex="2" />
 			</td>
 		</tr>
 		<tr>

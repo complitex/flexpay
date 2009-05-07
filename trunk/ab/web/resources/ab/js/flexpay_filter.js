@@ -13,11 +13,11 @@ function Filter(name, options) {
 
     options.name = name;
 
-    if (options.filterId == undefined) {
+    if (!options.filterId) {
         options.filterId = options.name + "_filter";
     }
 
-    if (options.valueId == undefined) {
+    if (!options.valueId) {
         options.valueId = "selected_" + options.name + "_id";
     }
 
@@ -121,16 +121,44 @@ var FF = {
         var ret = [];
         for (var i in this.filters) {
             var filter = this.filters[i];
-            if (filter.parents[parentName] != undefined) {
+            if (filter.parents[parentName]) {
                 ret.push(filter);
             }
         }
         return ret;
     },
 
+    setFocusByTabIndex : function(filters) {
+        if (filters.length == 0) {
+            var tab = $('a[tabindex="2"],input[tabindex="2"],button[tabindex="2"],textarea[tabindex="2"],select[tabindex="2"]');
+            if (tab != null && tab.size() > 0) {
+                tab.get(0).focus();
+            }
+            return true;
+        }
+        return false;
+    },
+
+    onKeyDown : function(e, filterName) {
+        var filter = this.filters[filterName].autocompleter;
+        if (filter != null && filter.getResultsElement().is(":visible")) {
+            return;
+        }
+        if ((window.event && window.event.keyCode == 13)
+                || (e.keyCode == 13 || e.which == 13)) {
+            var filters = this.getFiltersByParentName(filterName);
+            if (this.setFocusByTabIndex(filters)) {
+                return;
+            }
+            filters[0].string.focus();
+        }
+    },
+
     createFilter : function (name, options) {
         var filter = new Filter(name, options);
-        filter.string.attr("onChange", "FF.onChange2('" + name + "');");
+        filter.string.attr("onchange", "FF.onChange2('" + name + "');");
+        filter.string.attr("onkeydown", "FF.onKeyDown(event, '" + name + "');");
+        filter.string.attr("tabIndex", "1");
         this.filters[name] = filter;
         this.filters.splice(this.filters.length - 1, 1);
         if (filter.preRequest) {
@@ -201,8 +229,11 @@ var FF = {
                     filter.result.html(data);
                 });
         }
+        if (this.setFocusByTabIndex(filters)) {
+            return;
+        }
         if (filters.length == 0) {
-            var tab = $('a[tabindex="1"],input[tabindex="1"],button[tabindex="1"],textarea[tabindex="1"],select[tabindex="1"]');
+            var tab = $('a[tabindex="2"],input[tabindex="2"],button[tabindex="2"],textarea[tabindex="2"],select[tabindex="2"]');
             if (tab != null && tab.size() > 0) {
                 tab.get(0).focus();
             }
