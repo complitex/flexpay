@@ -1,23 +1,23 @@
 package org.flexpay.eirc.dao.imp;
 
 import org.flexpay.common.dao.paging.Page;
+import org.flexpay.common.dao.registry.impl.RegistryDaoExtImpl;
 import org.flexpay.common.persistence.filter.RegistryTypeFilter;
 import org.flexpay.common.persistence.registry.Registry;
-import org.flexpay.eirc.dao.RegistryDaoExt;
+import org.flexpay.eirc.dao.EircRegistryDaoExt;
 import org.flexpay.orgs.persistence.filters.OrganizationFilter;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.orm.hibernate3.HibernateCallback;
-import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.orm.hibernate3.HibernateCallback;
 
 import java.util.*;
 
-public class RegistryDaoExtImpl extends HibernateDaoSupport implements RegistryDaoExt {
+public class EircRegistryDaoExtImpl extends RegistryDaoExtImpl implements EircRegistryDaoExt {
 
 	private Logger log = LoggerFactory.getLogger(getClass());
 
@@ -104,39 +104,6 @@ public class RegistryDaoExtImpl extends HibernateDaoSupport implements RegistryD
 						.setMaxResults(pager.getPageSize()).list();
 			}
 		});
-	}
-
-	/**
-	 * Find registries by identifiers
-	 *
-	 * @param objectIds Set of registry identifiers
-	 * @return collection of registries
-	 */
-	@SuppressWarnings ({"unchecked"})
-	public Collection<Registry> findRegistries(@NotNull final Set<Long> objectIds) {
-		return getHibernateTemplate().executeFind(new HibernateCallback() {
-			public Object doInHibernate(@NonNls Session session) throws HibernateException {
-				return session.createQuery("select distinct r from Registry r " +
-										   "inner join fetch r.properties " +
-										   "inner join fetch r.registryType " +
-										   "inner join fetch r.registryStatus " +
-										   "left join fetch r.containers " +
-										   "where r.id in (:ids)")
-						.setParameterList("ids", objectIds).list();
-			}
-		});
-	}
-
-	/**
-	 * Check if registry has more records to process
-	 *
-	 * @param registryId Registry id
-	 * @return <code>true</code> if registry has records for processing, or <code>false</code> otherwise
-	 */
-	public boolean hasMoreRecordsToProcess(Long registryId) {
-		List<?> value = getHibernateTemplate().findByNamedQuery("RegistryType.haveNotProcessedRecords", registryId);
-
-		return !value.isEmpty();
 	}
 
 	public void deleteQuittances(final Long registryId) {

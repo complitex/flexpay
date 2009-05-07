@@ -3,7 +3,7 @@ package org.flexpay.eirc.sp;
 import org.flexpay.common.persistence.FPFile;
 import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.eirc.actions.TestSpFileCreateAction;
-import org.flexpay.eirc.service.RegistryService;
+import org.flexpay.common.service.RegistryService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;

@@ -7,7 +7,7 @@ import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.persistence.registry.RegistryRecord;
 import org.flexpay.common.service.importexport.CorrectionsService;
 import org.flexpay.eirc.dao.importexport.RawConsumersDataSource;
-import org.flexpay.eirc.service.RegistryRecordService;
+import org.flexpay.common.service.RegistryRecordService;
 import org.flexpay.eirc.service.importexport.RawConsumerData;
 import org.flexpay.eirc.persistence.EircRegistryProperties;
 import org.flexpay.orgs.persistence.ServiceProvider;

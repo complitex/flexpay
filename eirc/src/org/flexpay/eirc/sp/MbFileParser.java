@@ -3,7 +3,7 @@ package org.flexpay.eirc.sp;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.FPFile;
 import org.flexpay.common.persistence.registry.RegistryRecordStatus;
-import org.flexpay.eirc.service.SpRegistryRecordStatusService;
+import org.flexpay.common.service.RegistryRecordStatusService;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,7 +24,7 @@ public abstract class MbFileParser<T> {
 	protected RegistryRecordStatus statusLoaded;
 
 	private MbFileValidator validator;
-	private SpRegistryRecordStatusService spRegistryRecordStatusService;
+	private RegistryRecordStatusService registryRecordStatusService;
 
 	public T parse(FPFile spFile) throws FlexPayException {
 
@@ -47,7 +47,7 @@ public abstract class MbFileParser<T> {
 			throw new FlexPayException("For FPFile (id = " + spFile.getId() + ") not found temp file: " + spFile.getNameOnServer());
 		}
 
-		statusLoaded = spRegistryRecordStatusService.findByCode(RegistryRecordStatus.LOADED);
+		statusLoaded = registryRecordStatusService.findByCode(RegistryRecordStatus.LOADED);
 		if (statusLoaded == null) {
 			throw new FlexPayException("Can't get registry record status \"loaded\" from database");
 		}
@@ -70,8 +70,8 @@ public abstract class MbFileParser<T> {
 	}
 
 	@Required
-	public void setSpRegistryRecordStatusService(SpRegistryRecordStatusService spRegistryRecordStatusService) {
-		this.spRegistryRecordStatusService = spRegistryRecordStatusService;
+	public void setSpRegistryRecordStatusService(RegistryRecordStatusService registryRecordStatusService) {
+		this.registryRecordStatusService = registryRecordStatusService;
 	}
 
 }

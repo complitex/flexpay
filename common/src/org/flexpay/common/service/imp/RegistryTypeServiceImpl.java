@@ -1,9 +1,9 @@
-package org.flexpay.eirc.service.imp;
+package org.flexpay.common.service.imp;
 
 import org.flexpay.common.dao.registry.RegistryTypeDao;
 import org.flexpay.common.persistence.filter.RegistryTypeFilter;
 import org.flexpay.common.persistence.registry.RegistryType;
-import org.flexpay.eirc.service.SpRegistryTypeService;
+import org.flexpay.common.service.RegistryTypeService;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Transactional (readOnly = true)
-public class RegistryTypeServiceImpl implements SpRegistryTypeService {
+public class RegistryTypeServiceImpl implements RegistryTypeService {
 
 	private Logger log = LoggerFactory.getLogger(getClass());
 
@@ -56,5 +56,4 @@ public class RegistryTypeServiceImpl implements SpRegistryTypeService {
 	public void setSpRegistryTypeDao(RegistryTypeDao registryTypeDao) {
 		this.registryTypeDao = registryTypeDao;
 	}
-
 }

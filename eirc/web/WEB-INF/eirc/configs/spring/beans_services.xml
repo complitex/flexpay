@@ -6,51 +6,16 @@
 		   http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
 		   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
-	<bean id="registryFileService"
-		  class="org.flexpay.eirc.service.imp.RegistryFileServiceImpl"
-		  p:registryDao-ref="spRegistryDao"
-		  p:registryRecordDao-ref="spRegistryRecordDao"
-		  p:registryRecordDaoExt-ref="spRegistryRecordDaoExt"
-		  p:registryFileDaoExt-ref="registryFileDaoExt" />
-
-	<bean id="registryService"
-		  class="org.flexpay.eirc.service.imp.RegistryServiceImpl"
-		  p:spRegistryDao-ref="spRegistryDao"
-		  p:registryDaoExt-ref="spRegistryDaoExt"
+	<bean id="eircRegistryService" parent="registryService"
+		  class="org.flexpay.eirc.service.imp.EircRegistryServiceImpl"
+		  p:registryDaoExt-ref="eircRegistryDaoExt"
 		  p:spRegistryRecordService-ref="registryRecordService"
-		  p:organizationDao-ref="organizationDao"
-		  p:registryContainerDao-ref="registryContainerDao"
-			/>
-
-	<bean id="registryRecordService"
-		  class="org.flexpay.eirc.service.imp.RegistryRecordServiceImpl"
-		  p:spRegistryRecordDao-ref="spRegistryRecordDao"
-		  p:spRegistryRecordDaoExt-ref="spRegistryRecordDaoExt"
-		  p:recordContainerDao-ref="registryRecordContainerDao"
-		  p:workflowManager-ref="registryRecordWorkflowManager"
-			/>
-
-	<bean id="registryTypeService"
-		  class="org.flexpay.eirc.service.imp.RegistryTypeServiceImpl"
-		  p:spRegistryTypeDao-ref="spRegistryTypeDao" />
-
-	<bean id="registryWorkflowManager"
-		  class="org.flexpay.eirc.persistence.workflow.RegistryWorkflowManager"
-		  p:registryDao-ref="spRegistryDao"
-		  p:registryDaoExt-ref="spRegistryDaoExt"
-		  p:statusService-ref="spRegistryStatusService" />
-
-	<bean id="registryRecordWorkflowManager"
-		  class="org.flexpay.eirc.persistence.workflow.RegistryRecordWorkflowManager"
-		  p:errorDao-ref="importErrorDao"
-		  p:recordDao-ref="spRegistryRecordDao"
-		  p:statusService-ref="registryRecordStatusService"
-		  p:registryWorkflowManager-ref="registryWorkflowManager" />
+		  p:registryContainerDao-ref="registryContainerDao" />
 
 	<bean id="registryFileParser"
 		  class="org.flexpay.eirc.sp.RegistryFileParser"
 		  p:consumerService-ref="consumerService"
-		  p:registryService-ref="registryService"
+		  p:registryService-ref="eircRegistryService"
 		  p:registryArchiveStatusService-ref="registryArchiveStatusService"
 		  p:registryRecordService-ref="registryRecordService"
 		  p:registryTypeService-ref="registryTypeService"
@@ -61,35 +26,35 @@
 		  p:sessionUtils-ref="sessionUtils"
 		  p:propertiesFactory-ref="propertiesFactory" />
 
-	<bean id="mbRegistryFileValidator" class="org.flexpay.eirc.sp.validation.MbRegistryFileValidator" />
+	<bean id="mbRegistryFileValidator"
+		  class="org.flexpay.eirc.sp.validation.MbRegistryFileValidator" />
 
-    <bean id="mbCorrectionsFileValidator" class="org.flexpay.eirc.sp.validation.MbCorrectionsFileValidator" />
+    <bean id="mbCorrectionsFileValidator"
+		  class="org.flexpay.eirc.sp.validation.MbCorrectionsFileValidator" />
 
 	<bean id="mbRegistryFileParser"
 		  class="org.flexpay.eirc.sp.parsing.MbRegistryFileParser"
 		  p:registryTypeService-ref="registryTypeService"
 		  p:serviceProviderService-ref="serviceProviderService"
-		  p:registryService-ref="registryService"
+		  p:registryService-ref="eircRegistryService"
 		  p:registryRecordService-ref="registryRecordService"
-		  p:spRegistryStatusService-ref="spRegistryStatusService"
+		  p:spRegistryStatusService-ref="registryStatusService"
 		  p:spRegistryRecordStatusService-ref="registryRecordStatusService"
 		  p:registryArchiveStatusService-ref="registryArchiveStatusService"
 		  p:propertiesFactory-ref="eircPropertiesFactory"
-		  p:validator-ref="mbRegistryFileValidator"
-			/>
+		  p:validator-ref="mbRegistryFileValidator" />
 
     <bean id="mbCorrectionsFileParser"
           class="org.flexpay.eirc.sp.parsing.MbCorrectionsFileParser"
           p:registryTypeService-ref="registryTypeService"
           p:serviceProviderService-ref="serviceProviderService"
-          p:registryService-ref="registryService"
+          p:registryService-ref="eircRegistryService"
           p:registryRecordService-ref="registryRecordService"
-          p:spRegistryStatusService-ref="spRegistryStatusService"
+          p:spRegistryStatusService-ref="registryStatusService"
           p:spRegistryRecordStatusService-ref="registryRecordStatusService"
           p:registryArchiveStatusService-ref="registryArchiveStatusService"
           p:propertiesFactory-ref="eircPropertiesFactory"
-          p:validator-ref="mbCorrectionsFileValidator"
-          />
+          p:validator-ref="mbCorrectionsFileValidator" />
 
 	<bean id="eircAccountService"
 		  class="org.flexpay.eirc.service.imp.EircAccountServiceImpl"
@@ -198,7 +163,7 @@
 		  p:processorTx-ref="serviceProviderFileProcessorTx"
 		  p:serviceOperationsFactory-ref="serviceOperationsFactory"
 		  p:registryFileService-ref="registryFileService"
-		  p:registryService-ref="registryService"
+		  p:registryService-ref="eircRegistryService"
 		  p:importService-ref="importServiceEirc"
 		  p:rawConsumersDataSource-ref="consumersDataSource"
 		  p:errorsSupport-ref="importErrorSupport"
@@ -207,18 +172,6 @@
 		  p:recordWorkflowManager-ref="registryRecordWorkflowManager"
 		  p:registryWorkflowManager-ref="registryWorkflowManager"
 		  p:serviceProviderService-ref="serviceProviderService" />
-
-	<bean id="spRegistryStatusService"
-		  class="org.flexpay.eirc.service.imp.SpRegistryStatusServiceImpl"
-		  p:spRegistryStatusDao-ref="spRegistryStatusDao" />
-
-	<bean id="registryArchiveStatusServiceTarget"
-		  autowire-candidate="false"
-		  class="org.flexpay.eirc.service.imp.RegistryArchiveStatusServiceImpl"
-		  p:registryArchiveStatusDao-ref="registryArchiveStatusDao" />
-
-	<bean id="registryRecordStatusService" class="org.flexpay.eirc.service.imp.SpRegistryRecordStatusServiceImpl"
-		  p:spRegistryRecordStatusDao-ref="spRegistryRecordStatusDao" />
 
 	<bean id="processManagerEirc" parent="processManager" autowire-candidate="false">
 		<property name="definitionPaths">

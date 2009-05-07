@@ -1,15 +1,16 @@
-package org.flexpay.eirc.persistence.workflow;
+package org.flexpay.common.persistence.registry.workflow;
 
-import org.flexpay.common.util.CollectionUtils;
-import org.flexpay.common.persistence.registry.RegistryStatus;
-import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.dao.registry.RegistryDao;
-import org.flexpay.eirc.dao.RegistryDaoExt;
+import org.flexpay.common.dao.registry.RegistryDaoExt;
+import org.flexpay.common.persistence.registry.Registry;
+import org.flexpay.common.persistence.registry.RegistryStatus;
 import static org.flexpay.common.persistence.registry.RegistryStatus.*;
-import org.flexpay.eirc.service.SpRegistryStatusService;
+import org.flexpay.common.service.RegistryStatusService;
+import org.flexpay.common.util.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.beans.factory.annotation.Required;
 
 import java.util.Collections;
 import java.util.List;
@@ -24,7 +25,7 @@ public class RegistryWorkflowManager {
 
 	private Logger log = LoggerFactory.getLogger(getClass());
 
-	private SpRegistryStatusService statusService;
+	private RegistryStatusService statusService;
 	private RegistryDao registryDao;
 	private RegistryDaoExt registryDaoExt;
 
@@ -138,7 +139,7 @@ public class RegistryWorkflowManager {
 	 * Set next error registry status
 	 *
 	 * @param registry Registry to update
-	 * @throws org.flexpay.eirc.persistence.workflow.TransitionNotAllowed
+	 * @throws org.flexpay.common.persistence.registry.workflow.TransitionNotAllowed
 	 *          if error transition is not allowed
 	 */
 	@Transactional (readOnly = false, rollbackFor = Exception.class)
@@ -155,7 +156,7 @@ public class RegistryWorkflowManager {
 	 * Set next success registry status
 	 *
 	 * @param registry Registry to update
-	 * @throws org.flexpay.eirc.persistence.workflow.TransitionNotAllowed
+	 * @throws org.flexpay.common.persistence.registry.workflow.TransitionNotAllowed
 	 *          if success transition is not allowed
 	 */
 	@Transactional (readOnly = false, rollbackFor = Exception.class)
@@ -174,7 +175,7 @@ public class RegistryWorkflowManager {
 	 *
 	 * @param registry Registry to update
 	 * @return SpRegistry back
-	 * @throws org.flexpay.eirc.persistence.workflow.TransitionNotAllowed
+	 * @throws org.flexpay.common.persistence.registry.workflow.TransitionNotAllowed
 	 *          if registry already has a status
 	 */
 	@Transactional (readOnly = false, rollbackFor = Exception.class)
@@ -196,7 +197,7 @@ public class RegistryWorkflowManager {
 	 *
 	 * @param registry Registry to update
 	 * @param code	 Next status code to set
-	 * @throws org.flexpay.eirc.persistence.workflow.TransitionNotAllowed
+	 * @throws org.flexpay.common.persistence.registry.workflow.TransitionNotAllowed
 	 *          if transition from old to a new status is not allowed
 	 */
 	private void setNextStatus(Registry registry, Integer code) throws TransitionNotAllowed {
@@ -209,7 +210,7 @@ public class RegistryWorkflowManager {
 	 *
 	 * @param registry Registry to update
 	 * @param status   Next status to set
-	 * @throws org.flexpay.eirc.persistence.workflow.TransitionNotAllowed
+	 * @throws org.flexpay.common.persistence.registry.workflow.TransitionNotAllowed
 	 *          if transition from old to a new status is not allowed
 	 */
 	@Transactional (readOnly = false, rollbackFor = Exception.class)
@@ -222,25 +223,13 @@ public class RegistryWorkflowManager {
 		registryDao.update(registry);
 	}
 
-	public void setStatusService(SpRegistryStatusService statusService) {
-		this.statusService = statusService;
-	}
-
-	public void setRegistryDao(RegistryDao registryDao) {
-		this.registryDao = registryDao;
-	}
-
-	public void setRegistryDaoExt(RegistryDaoExt registryDaoExt) {
-		this.registryDaoExt = registryDaoExt;
-	}
-
 	/**
 	 * Set registry processing status to {@link org.flexpay.common.persistence.registry.RegistryStatus#PROCESSING_WITH_ERROR}
 	 *
 	 * @param registry Registry to update
-	 * @throws org.flexpay.eirc.persistence.workflow.TransitionNotAllowed
-	 *          if registry status is not {@link org.flexpay.common.persistence.registry.RegistryStatus#PROCESSING} or {@link
-	 *          org.flexpay.common.persistence.registry.RegistryStatus#PROCESSING_WITH_ERROR}
+	 * @throws org.flexpay.common.persistence.registry.workflow.TransitionNotAllowed
+	 *          if registry status is not {@link org.flexpay.common.persistence.registry.RegistryStatus#PROCESSING} or
+	 *          {@link org.flexpay.common.persistence.registry.RegistryStatus#PROCESSING_WITH_ERROR}
 	 */
 	@Transactional (readOnly = false, rollbackFor = Exception.class)
 	void markProcessingHasError(Registry registry) throws TransitionNotAllowed {
@@ -257,5 +246,20 @@ public class RegistryWorkflowManager {
 		} else {
 			log.debug("Not updating registry status, current is {}", code);
 		}
+	}
+
+	@Required
+	public void setStatusService(RegistryStatusService statusService) {
+		this.statusService = statusService;
+	}
+
+	@Required
+	public void setRegistryDao(RegistryDao registryDao) {
+		this.registryDao = registryDao;
+	}
+
+	@Required
+	public void setRegistryDaoExt(RegistryDaoExt registryDaoExt) {
+		this.registryDaoExt = registryDaoExt;
 	}
 }

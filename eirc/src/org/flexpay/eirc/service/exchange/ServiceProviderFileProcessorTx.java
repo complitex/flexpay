@@ -4,7 +4,7 @@ import org.flexpay.common.persistence.registry.RegistryRecord;
 import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.eirc.persistence.exchange.Operation;
 import org.flexpay.eirc.persistence.exchange.ServiceOperationsFactory;
-import org.flexpay.eirc.persistence.workflow.RegistryRecordWorkflowManager;
+import org.flexpay.common.persistence.registry.workflow.RegistryRecordWorkflowManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;

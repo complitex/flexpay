@@ -1,12 +1,12 @@
-package org.flexpay.eirc.service;
+package org.flexpay.common.service;
 
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.filter.RegistryRecordStatusFilter;
+import org.flexpay.common.persistence.filter.ImportErrorTypeFilter;
 import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.persistence.registry.RegistryRecord;
 import org.flexpay.common.persistence.registry.RegistryRecordContainer;
-import org.flexpay.eirc.persistence.filters.ImportErrorTypeFilter;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
@@ -90,5 +90,4 @@ public interface RegistryRecordService {
 	 * @return List of containers
 	 */
 	List<RegistryRecordContainer> getRecordContainers(RegistryRecord stub);
-
 }

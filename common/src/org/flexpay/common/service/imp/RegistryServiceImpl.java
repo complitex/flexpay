@@ -1,20 +1,15 @@
-package org.flexpay.eirc.service.imp;
+package org.flexpay.common.service.imp;
 
 import org.flexpay.common.dao.paging.Page;
-import org.flexpay.common.exception.FlexPayException;
-import org.flexpay.common.persistence.Stub;
-import org.flexpay.orgs.dao.OrganizationDao;
 import org.flexpay.common.dao.registry.RegistryContainerDao;
 import org.flexpay.common.dao.registry.RegistryDao;
-import org.flexpay.eirc.dao.RegistryDaoExt;
-import org.flexpay.orgs.persistence.Organization;
-import org.flexpay.common.persistence.registry.RegistryContainer;
+import org.flexpay.common.dao.registry.RegistryDaoExt;
+import org.flexpay.common.exception.FlexPayException;
+import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.registry.Registry;
-import org.flexpay.orgs.persistence.filters.OrganizationFilter;
-import org.flexpay.common.persistence.filter.RegistryTypeFilter;
-import org.flexpay.eirc.service.RegistryRecordService;
-import org.flexpay.eirc.service.RegistryService;
-import org.flexpay.eirc.persistence.EircRegistryProperties;
+import org.flexpay.common.persistence.registry.RegistryContainer;
+import org.flexpay.common.service.RegistryRecordService;
+import org.flexpay.common.service.RegistryService;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
@@ -22,7 +17,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -31,10 +25,9 @@ public class RegistryServiceImpl implements RegistryService {
 
 	private Logger log = LoggerFactory.getLogger(getClass());
 
-	private RegistryDao registryDao;
+	protected RegistryDao registryDao;
 	private RegistryDaoExt registryDaoExt;
 	private RegistryContainerDao registryContainerDao;
-	private OrganizationDao organizationDao;
 
 	private RegistryRecordService registryRecordService;
 
@@ -46,9 +39,7 @@ public class RegistryServiceImpl implements RegistryService {
 	 */
 	@Transactional (readOnly = false)
 	public Registry create(Registry registry) throws FlexPayException {
-		EircRegistryProperties props = (EircRegistryProperties) registry.getProperties();
-		props.setRecipient(organizationDao.read(props.getRecipientStub().getId()));
-		props.setSender(organizationDao.read(props.getSenderStub().getId()));
+
 		registryDao.create(registry);
 
 		for (RegistryContainer container : registry.getContainers()) {
@@ -135,23 +126,6 @@ public class RegistryServiceImpl implements RegistryService {
 	}
 
 	/**
-	 * Find registries
-	 *
-	 * @param senderFilter	sender organization filter
-	 * @param recipientFilter recipient organization filter
-	 * @param typeFilter	  registry type filter
-	 * @param fromDate		registry generation start date
-	 * @param tillDate		registry generation end date
-	 * @param pager		   Page
-	 * @return list of registries matching specified criteria
-	 */
-	public List<Registry> findObjects(OrganizationFilter senderFilter, OrganizationFilter recipientFilter,
-										RegistryTypeFilter typeFilter, Date fromDate, Date tillDate, Page pager) {
-		return registryDaoExt.findRegistries(senderFilter, recipientFilter,
-				typeFilter, fromDate, tillDate, pager);
-	}
-
-	/**
 	 * Find registries by identifiers
 	 *
 	 * @param objectIds Set of registry identifiers
@@ -161,26 +135,6 @@ public class RegistryServiceImpl implements RegistryService {
 		return registryDaoExt.findRegistries(objectIds);
 	}
 
-	/**
-	 * Find registry recieved from specified sender with a specified number
-	 *
-	 * @param registryNumber Registry number to search for
-	 * @param senderStub	 Sender organization stub
-	 * @return Registry reference if found, or <code>null</code> otherwise
-	 */
-	public Registry getRegistryByNumber(@NotNull Long registryNumber, @NotNull Stub<Organization> senderStub) {
-
-		List<Registry> registries = registryDao.findRegistriesByNumber(registryNumber, senderStub.getId());
-		if (registries.isEmpty()) {
-			return null;
-		}
-
-		return registries.get(0);
-	}
-
-	/**
-	 * @param registryDao the spRegistryDao to set
-	 */
 	public void setSpRegistryDao(RegistryDao registryDao) {
 		this.registryDao = registryDao;
 	}
@@ -191,10 +145,6 @@ public class RegistryServiceImpl implements RegistryService {
 
 	public void setSpRegistryRecordService(RegistryRecordService registryRecordService) {
 		this.registryRecordService = registryRecordService;
-	}
-
-	public void setOrganizationDao(OrganizationDao organizationDao) {
-		this.organizationDao = organizationDao;
 	}
 
 	public void setRegistryContainerDao(RegistryContainerDao registryContainerDao) {

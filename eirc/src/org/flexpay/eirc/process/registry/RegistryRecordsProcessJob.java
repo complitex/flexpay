@@ -4,7 +4,7 @@ import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.process.job.Job;
-import org.flexpay.eirc.service.RegistryService;
+import org.flexpay.common.service.RegistryService;
 import org.flexpay.eirc.service.exchange.RegistryProcessor;
 import org.springframework.beans.factory.annotation.Required;
 

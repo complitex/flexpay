@@ -1,10 +1,10 @@
-package org.flexpay.eirc.service;
+package org.flexpay.common.service;
 
 import org.flexpay.common.persistence.filter.RegistryTypeFilter;
 import org.flexpay.common.persistence.registry.RegistryType;
 import org.jetbrains.annotations.NotNull;
 
-public interface SpRegistryTypeService {
+public interface RegistryTypeService {
 
 	/**
 	 * Read SpRegistryType object by its unique id

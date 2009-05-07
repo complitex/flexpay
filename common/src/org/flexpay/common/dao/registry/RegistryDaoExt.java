@@ -9,20 +9,6 @@ import java.util.Set;
 public interface RegistryDaoExt {
 
 	/**
-	 * Find registries
-	 *
-	 * @param senderFilter	sender organization filter
-	 * @param recipientFilter recipient organization filter
-	 * @param typeFilter	  registry type filter
-	 * @param fromDate		registry generation start date
-	 * @param tillDate		registry generation end date
-	 * @param pager		   Page
-	 * @return list of registries matching specified criteria
-	 */
-//	List<Registry> findRegistries(OrganizationFilter senderFilter, OrganizationFilter recipientFilter,
-//									RegistryTypeFilter typeFilter, Date fromDate, Date tillDate, Page pager);
-
-	/**
 	 * Find registries by identifiers
 	 *
 	 * @param objectIds Set of registry identifiers

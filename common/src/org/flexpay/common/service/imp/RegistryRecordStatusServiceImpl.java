@@ -1,14 +1,14 @@
-package org.flexpay.eirc.service.imp;
+package org.flexpay.common.service.imp;
 
 import org.flexpay.common.dao.registry.RegistryRecordStatusDao;
 import org.flexpay.common.persistence.registry.RegistryRecordStatus;
-import org.flexpay.eirc.service.SpRegistryRecordStatusService;
+import org.flexpay.common.service.RegistryRecordStatusService;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class SpRegistryRecordStatusServiceImpl implements SpRegistryRecordStatusService {
+public class RegistryRecordStatusServiceImpl implements RegistryRecordStatusService {
 
 	private RegistryRecordStatusDao registryRecordStatusDao;
 	private Map<Integer, RegistryRecordStatus> code2StatusCache;

@@ -1,4 +1,4 @@
-package org.flexpay.eirc.service.imp;
+package org.flexpay.common.service.imp;
 
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.persistence.FPFile;
@@ -9,7 +9,7 @@ import org.flexpay.common.dao.registry.RegistryRecordDao;
 import org.flexpay.common.dao.registry.RegistryRecordDaoExt;
 import org.flexpay.common.persistence.registry.RegistryRecord;
 import org.flexpay.common.persistence.registry.Registry;
-import org.flexpay.eirc.service.RegistryFileService;
+import org.flexpay.common.service.RegistryFileService;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

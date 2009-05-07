@@ -38,30 +38,86 @@
 		  p:consumptionDao-ref="historyConsumptionDao"
 		  p:consumptionGroupDao-ref="historyConsumptionGroupDao" />
 
-	<bean class="org.flexpay.common.service.imp.FPFileServiceImpl" id="fpFileService"
+	<bean id="fpFileService"
+		  class="org.flexpay.common.service.imp.FPFileServiceImpl"
 		  p:fpFileDao-ref="fpFileDao"
 		  p:fpFileStatusDao-ref="fpFileStatusDao"
 		  p:fpFileTypeDao-ref="fpFileTypeDao"
 		  p:fpModuleDao-ref="fpModuleDao" />
 
-	<bean class="org.flexpay.common.service.imp.MeasureUnitServiceImpl" id="measureUnitServiceTarget"
+	<bean id="measureUnitServiceTarget"
+		  class="org.flexpay.common.service.imp.MeasureUnitServiceImpl"
 		  autowire-candidate="false"
 		  p:measureUnitDao-ref="measureUnitDao" />
 
-	<bean class="org.flexpay.common.service.internal.SessionUtils" id="sessionUtils"
+	<bean id="registryFileService"
+		  class="org.flexpay.common.service.imp.RegistryFileServiceImpl"
+		  p:registryDao-ref="spRegistryDao"
+		  p:registryRecordDao-ref="spRegistryRecordDao"
+		  p:registryRecordDaoExt-ref="spRegistryRecordDaoExt"
+		  p:registryFileDaoExt-ref="registryFileDaoExt" />
+
+	<bean id="registryTypeService"
+		  class="org.flexpay.common.service.imp.RegistryTypeServiceImpl"
+		  p:spRegistryTypeDao-ref="spRegistryTypeDao" />
+
+	<bean id="registryStatusService"
+		  class="org.flexpay.common.service.imp.RegistryStatusServiceImpl"
+		  p:spRegistryStatusDao-ref="spRegistryStatusDao" />
+
+	<bean id="registryArchiveStatusServiceTarget"
+		  autowire-candidate="false"
+		  class="org.flexpay.common.service.imp.RegistryArchiveStatusServiceImpl"
+		  p:registryArchiveStatusDao-ref="registryArchiveStatusDao" />
+
+	<bean id="registryRecordStatusService"
+		  class="org.flexpay.common.service.imp.RegistryRecordStatusServiceImpl"
+		  p:spRegistryRecordStatusDao-ref="registryRecordStatusDao" />
+
+	<bean id="registryWorkflowManager"
+		  class="org.flexpay.common.persistence.registry.workflow.RegistryWorkflowManager"
+		  p:registryDao-ref="spRegistryDao"
+		  p:registryDaoExt-ref="registryDaoExt"
+		  p:statusService-ref="registryStatusService" />
+
+	<bean id="registryRecordWorkflowManager"
+		  class="org.flexpay.common.persistence.registry.workflow.RegistryRecordWorkflowManager"
+		  p:errorDao-ref="importErrorDao"
+		  p:recordDao-ref="spRegistryRecordDao"
+		  p:statusService-ref="registryRecordStatusService"
+		  p:registryWorkflowManager-ref="registryWorkflowManager" />
+
+	<bean id="registryRecordService"
+		  class="org.flexpay.common.service.imp.RegistryRecordServiceImpl"
+		  p:spRegistryRecordDao-ref="spRegistryRecordDao"
+		  p:spRegistryRecordDaoExt-ref="spRegistryRecordDaoExt"
+		  p:recordContainerDao-ref="registryRecordContainerDao"
+		  p:workflowManager-ref="registryRecordWorkflowManager" />
+
+	<bean id="registryService"
+		  class="org.flexpay.common.service.imp.RegistryServiceImpl"
+		  p:spRegistryDao-ref="spRegistryDao"
+		  p:spRegistryRecordService-ref="registryRecordService"
+		  p:registryContainerDao-ref="registryContainerDao" />
+
+	<bean class="org.flexpay.common.service.internal.SessionUtils"
+		  id="sessionUtils"
 		  p:hibernateTemplate-ref="hibernateTemplate" />
 
-	<bean class="org.flexpay.common.service.reporting.ReportUtil" id="reportUtil"
+	<bean class="org.flexpay.common.service.reporting.ReportUtil"
+		  id="reportUtil"
 		  p:sessionFactory-ref="flexpaySessionFactory"
 		  p:dataSource-ref="dataSource" />
 
-	<bean class="org.flexpay.common.process.ProcessHelper" id="processHelper"
+	<bean class="org.flexpay.common.process.ProcessHelper"
+		  id="processHelper"
 		  p:processManager-ref="processManager" />
 
 	<bean id="correctionsServiceFactory"
 		  class="org.flexpay.common.service.importexport.imp.CorrectionsServiceFactory" />
 
-	<bean id="classToTypeRegistryCommon" class="org.flexpay.common.service.importexport.imp.ClassToTypeRegistryStub" />
+	<bean id="classToTypeRegistryCommon"
+		  class="org.flexpay.common.service.importexport.imp.ClassToTypeRegistryStub" />
 
 	<bean id="correctionsService"
 		  factory-bean="correctionsServiceFactory"
