@@ -83,6 +83,7 @@ public class MbRegistryFileValidator extends MbFileValidator {
 		if (fields.length != 4) {
 			throw new FlexPayException("Not 4 fields");
 		}
+		validateFields(fields);
 		if (fields[0].length() > 20) {
 			throw new FlexPayException("Organization name length can't be more 20 symbols");
 		}
@@ -108,6 +109,7 @@ public class MbRegistryFileValidator extends MbFileValidator {
 		if (fields.length != 6) {
 			throw new FlexPayException("Not 6 fields");
 		}
+		validateFields(fields);
 		try {
 			fileValues.addIncome(Long.parseLong(fields[1]));
 		} catch (Exception e) {
@@ -135,6 +137,7 @@ public class MbRegistryFileValidator extends MbFileValidator {
 		if (fields.length != 4) {
 			throw new FlexPayException("Not 4 fields");
 		}
+		validateFields(fields);
 		if (!fields[0].equals(LAST_FILE_STRING_BEGIN)) {
 			throw new FlexPayException("First field must be equals " + LAST_FILE_STRING_BEGIN);
 		}

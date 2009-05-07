@@ -90,9 +90,9 @@
 	<!-- Registries -->
 	<bean id="registriesListAction" scope="prototype"
 		  class="org.flexpay.eirc.actions.registry.RegistriesListAction"
-		  p:registryService-ref="registryService"
+		  p:eircRegistryService-ref="eircRegistryService"
 		  p:organizationService-ref="organizationService"
-		  p:registryTypeService-ref="registryTypeService" registryService-ref="eircRegistryService" />
+		  p:registryTypeService-ref="registryTypeService" />
 
 	<bean id="registriesProcessAction" scope="prototype"
 		  class="org.flexpay.eirc.actions.registry.RegistriesProcessAction"
@@ -107,7 +107,7 @@
 		  p:registryService-ref="registryService"
 		  p:registryRecordService-ref="registryRecordService"
 		  p:classToTypeRegistry-ref="typeRegistryEirc"
-		  p:serviceTypeService-ref="serviceTypeService" registryService-ref="eircRegistryService" />
+		  p:serviceTypeService-ref="serviceTypeService" />
 
 	<!-- Served buildings actions -->
 	<bean id="serviceOrganizationListServedBuildingsAction" scope="prototype"

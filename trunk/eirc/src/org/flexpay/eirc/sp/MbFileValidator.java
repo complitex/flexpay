@@ -46,4 +46,16 @@ public abstract class MbFileValidator {
 
 	protected abstract boolean validateFile(@NotNull FPFile spFile) throws FlexPayException;
 
+	protected void validateFields(String[] fields) throws FlexPayException {
+		String errorFields = "";
+		for (int i = 0; i < fields.length; i++) {
+			if (fields[i].startsWith(" ") || fields[i].endsWith(" ")) {
+				errorFields += (errorFields.length() > 0 ? ", " : "") + (i + 1);
+			}
+		}
+		if (errorFields.length() > 0) {
+			throw new FlexPayException("Incorrect fields in records. Detect spaces after or before \"=\" (fields: " + errorFields + ")");
+		}
+	}
+
 }

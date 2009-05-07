@@ -2,8 +2,8 @@ package org.flexpay.eirc.sp;
 
 import org.flexpay.common.persistence.FPFile;
 import org.flexpay.common.persistence.registry.Registry;
-import org.flexpay.common.service.RegistryService;
 import org.flexpay.eirc.actions.TestSpFileCreateAction;
+import org.flexpay.eirc.service.EircRegistryService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -15,7 +15,7 @@ public class TestMbRegistryFileParser extends TestSpFileCreateAction {
 	@Qualifier("mbRegistryFileParser")
 	private MbFileParser<Registry> parser;
 	@Autowired
-	private RegistryService registryService;
+	private EircRegistryService eircRegistryService;
 
 	@Test
 	@NotTransactional
@@ -26,8 +26,8 @@ public class TestMbRegistryFileParser extends TestSpFileCreateAction {
 		try {
 			Registry registry = parser.parse(newFile);
 /*
-			registryService.deleteRecords(new Stub<Registry>(registry));
-			registryService.delete(registry);
+			eircRegistryService.deleteRecords(new Stub<Registry>(registry));
+			eircRegistryService.delete(registry);
 */
 		} catch (Exception e) {
 			log.error("Error with parsing file", e);
