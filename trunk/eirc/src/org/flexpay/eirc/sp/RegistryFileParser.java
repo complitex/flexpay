@@ -52,7 +52,7 @@ public class RegistryFileParser {
 
 	private static final int MAX_CONTAINER_SIZE = 2048;
 
-	private RegistryService registryService;
+	private EircRegistryService registryService;
 	private RegistryRecordService registryRecordService;
 	private RegistryTypeService registryTypeService;
 	private RegistryArchiveStatusService registryArchiveStatusService;
@@ -436,7 +436,7 @@ public class RegistryFileParser {
 	}
 
 	@Required
-	public void setRegistryService(RegistryService registryService) {
+	public void setRegistryService(EircRegistryService registryService) {
 		this.registryService = registryService;
 	}
 
