@@ -1,4 +1,4 @@
-package org.flexpay.eirc.persistence.workflow;
+package org.flexpay.common.persistence.registry.workflow;
 
 import org.flexpay.common.dao.ImportErrorDao;
 import org.flexpay.common.dao.registry.RegistryRecordDao;
@@ -7,7 +7,7 @@ import org.flexpay.common.persistence.registry.RegistryRecord;
 import org.flexpay.common.persistence.registry.RegistryRecordStatus;
 import org.flexpay.common.util.CollectionUtils;
 import static org.flexpay.common.persistence.registry.RegistryRecordStatus.*;
-import org.flexpay.eirc.service.SpRegistryRecordStatusService;
+import org.flexpay.common.service.RegistryRecordStatusService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,7 +26,7 @@ public class RegistryRecordWorkflowManager {
 	private Logger log = LoggerFactory.getLogger(getClass());
 	private RegistryWorkflowManager registryWorkflowManager;
 
-	private SpRegistryRecordStatusService statusService;
+	private RegistryRecordStatusService statusService;
 	private RegistryRecordDao recordDao;
 	private ImportErrorDao errorDao;
 
@@ -70,7 +70,7 @@ public class RegistryRecordWorkflowManager {
 	 * Check if registry record is in state that allows processing, or moves it to an allowed one.
 	 *
 	 * @param record Registry record to start
-	 * @throws org.flexpay.eirc.persistence.workflow.TransitionNotAllowed
+	 * @throws org.flexpay.common.persistence.registry.workflow.TransitionNotAllowed
 	 *          if record processing is not possible
 	 */
 	@Transactional (readOnly = false)
@@ -98,7 +98,7 @@ public class RegistryRecordWorkflowManager {
 	 * Set next error registry record status
 	 *
 	 * @param record Registry record to update
-	 * @throws org.flexpay.eirc.persistence.workflow.TransitionNotAllowed
+	 * @throws org.flexpay.common.persistence.registry.workflow.TransitionNotAllowed
 	 *          if error transition is not allowed
 	 */
 	@Transactional (readOnly = false)
@@ -122,7 +122,7 @@ public class RegistryRecordWorkflowManager {
 	 *
 	 * @param record Registry record to update
 	 * @param error  ImportError
-	 * @throws org.flexpay.eirc.persistence.workflow.TransitionNotAllowed
+	 * @throws org.flexpay.common.persistence.registry.workflow.TransitionNotAllowed
 	 *          if error transition is not allowed
 	 */
 	@Transactional (readOnly = false)
@@ -149,7 +149,7 @@ public class RegistryRecordWorkflowManager {
 	 * Set next success registry record status
 	 *
 	 * @param record Registry record to update
-	 * @throws org.flexpay.eirc.persistence.workflow.TransitionNotAllowed
+	 * @throws org.flexpay.common.persistence.registry.workflow.TransitionNotAllowed
 	 *          if success transition is not allowed
 	 */
 	@Transactional (readOnly = false)
@@ -194,7 +194,7 @@ public class RegistryRecordWorkflowManager {
 	 *
 	 * @param record Registry record to update
 	 * @return SpRegistryRecord back
-	 * @throws org.flexpay.eirc.persistence.workflow.TransitionNotAllowed
+	 * @throws org.flexpay.common.persistence.registry.workflow.TransitionNotAllowed
 	 *          if registry already has a status
 	 */
 	@Transactional (readOnly = false)
@@ -216,7 +216,7 @@ public class RegistryRecordWorkflowManager {
 	 *
 	 * @param record Registry record to update
 	 * @param code   Next status code to set
-	 * @throws org.flexpay.eirc.persistence.workflow.TransitionNotAllowed
+	 * @throws org.flexpay.common.persistence.registry.workflow.TransitionNotAllowed
 	 *          if transition from old to a new status is not allowed
 	 */
 	private void setNextStatus(RegistryRecord record, Integer code) throws TransitionNotAllowed {
@@ -229,7 +229,7 @@ public class RegistryRecordWorkflowManager {
 	 *
 	 * @param record Registry record to update
 	 * @param status Next status to set
-	 * @throws org.flexpay.eirc.persistence.workflow.TransitionNotAllowed
+	 * @throws org.flexpay.common.persistence.registry.workflow.TransitionNotAllowed
 	 *          if transition from old to a new status is not allowed
 	 */
 	@Transactional (readOnly = false)
@@ -242,7 +242,7 @@ public class RegistryRecordWorkflowManager {
 		recordDao.update(record);
 	}
 
-	public void setStatusService(SpRegistryRecordStatusService statusService) {
+	public void setStatusService(RegistryRecordStatusService statusService) {
 		this.statusService = statusService;
 	}
 

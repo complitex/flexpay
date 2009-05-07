@@ -1,4 +1,4 @@
-package org.flexpay.eirc.persistence.workflow;
+package org.flexpay.common.persistence.registry.workflow;
 
 public class TransitionNotAllowed extends Exception {
 

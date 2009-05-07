@@ -2,7 +2,7 @@ package org.flexpay.eirc.service.exchange;
 
 import org.flexpay.common.persistence.FPFile;
 import org.flexpay.common.persistence.registry.Registry;
-import org.flexpay.eirc.persistence.workflow.TransitionNotAllowed;
+import org.flexpay.common.persistence.registry.workflow.TransitionNotAllowed;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;

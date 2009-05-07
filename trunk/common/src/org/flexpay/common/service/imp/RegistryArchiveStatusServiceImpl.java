@@ -1,8 +1,8 @@
-package org.flexpay.eirc.service.imp;
+package org.flexpay.common.service.imp;
 
 import org.flexpay.common.dao.registry.RegistryArchiveStatusDao;
 import org.flexpay.common.persistence.registry.RegistryArchiveStatus;
-import org.flexpay.eirc.service.RegistryArchiveStatusService;
+import org.flexpay.common.service.RegistryArchiveStatusService;
 
 import java.util.List;
 

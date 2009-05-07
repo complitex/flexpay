@@ -7,67 +7,9 @@
 		   http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
 		   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
-	<bean id="spRegistryDaoExt" class="org.flexpay.eirc.dao.imp.RegistryDaoExtImpl"
-		  p:hibernateTemplate-ref="hibernateTemplate" />
-
-	<bean id="registryFileDaoExt" class="org.flexpay.common.dao.registry.impl.RegistryFileDaoExtImpl"
-		  p:hibernateTemplate-ref="hibernateTemplate" />
-
-
-	<bean id="spRegistryDao" parent="abstractDao">
-		<property name="proxyInterfaces"
-				  value="org.flexpay.common.dao.registry.RegistryDao" />
-		<property name="target">
-			<bean parent="abstractDaoTarget">
-				<constructor-arg value="org.flexpay.common.persistence.registry.Registry" />
-			</bean>
-		</property>
-	</bean>
-
-	<bean id="registryContainerDao" parent="abstractDao">
-		<property name="proxyInterfaces"
-				  value="org.flexpay.common.dao.registry.RegistryContainerDao" />
-		<property name="target">
-			<bean parent="abstractDaoTarget">
-				<constructor-arg value="org.flexpay.common.persistence.registry.RegistryContainer" />
-			</bean>
-		</property>
-	</bean>
-
-	<bean id="registryRecordContainerDao" parent="abstractDao">
-		<property name="proxyInterfaces"
-				  value="org.flexpay.common.dao.registry.RegistryRecordContainerDao" />
-		<property name="target">
-			<bean parent="abstractDaoTarget">
-				<constructor-arg value="org.flexpay.common.persistence.registry.RegistryRecordContainer" />
-			</bean>
-		</property>
-	</bean>
-
-	<bean id="spRegistryRecordDao" parent="abstractDao">
-		<property name="proxyInterfaces"
-				  value="org.flexpay.common.dao.registry.RegistryRecordDao" />
-		<property name="target">
-			<bean parent="abstractDaoTarget">
-				<constructor-arg value="org.flexpay.common.persistence.registry.RegistryRecord" />
-			</bean>
-		</property>
-	</bean>
-
-	<bean id="spRegistryRecordDaoExt"
-		  class="org.flexpay.common.dao.registry.impl.RegistryRecordDaoExtImpl">
-		<property name="hibernateTemplate" ref="hibernateTemplate" />
-	</bean>
-
-	<bean id="spRegistryTypeDao" parent="abstractDao">
-		<property name="proxyInterfaces"
-				  value="org.flexpay.common.dao.registry.RegistryTypeDao" />
-		<property name="target">
-			<bean parent="abstractDaoTarget">
-				<constructor-arg value="org.flexpay.common.persistence.registry.RegistryType" />
-			</bean>
-		</property>
-	</bean>
+	<bean id="eircRegistryDaoExt"
+		  parent="registryDaoExt"
+		  class="org.flexpay.eirc.dao.imp.EircRegistryDaoExtImpl" />
 
 	<bean id="consumerDao" parent="abstractDao">
 		<property name="proxyInterfaces"
@@ -79,14 +21,17 @@
 		</property>
 	</bean>
 
-	<bean id="consumerDaoExt" class="org.flexpay.eirc.dao.imp.ConsumersDaoExtJdbcImpl"
+	<bean id="consumerDaoExt"
+		  class="org.flexpay.eirc.dao.imp.ConsumersDaoExtJdbcImpl"
 		  p:dataSource-ref="dataSource"
 		  p:hibernateTemplate-ref="hibernateTemplate" />
 
-	<bean id="eircAccountDaoExt" class="org.flexpay.eirc.dao.imp.EircAccountDaoExtImpl"
+	<bean id="eircAccountDaoExt"
+		  class="org.flexpay.eirc.dao.imp.EircAccountDaoExtImpl"
 		  p:hibernateTemplate-ref="hibernateTemplate" />
 
-	<bean id="quittanceDaoExt" class="org.flexpay.eirc.dao.imp.QuittanceDaoExtImpl"
+	<bean id="quittanceDaoExt"
+		  class="org.flexpay.eirc.dao.imp.QuittanceDaoExtImpl"
 		  p:jdbcTemplate-ref="jdbcTemplate" />
 
 	<bean id="eircAccountDao" parent="abstractDao">
@@ -149,7 +94,8 @@
 		</property>
 	</bean>
 
-	<bean id="quittancePacketDaoExt" class="org.flexpay.eirc.dao.imp.QuittancePacketDaoExtImpl"
+	<bean id="quittancePacketDaoExt"
+		  class="org.flexpay.eirc.dao.imp.QuittancePacketDaoExtImpl"
 		  p:hibernateTemplate-ref="hibernateTemplate" />
 
 	<bean id="quittancePaymentDao" parent="abstractDao">
@@ -168,36 +114,6 @@
 		<property name="target">
 			<bean parent="abstractDaoTarget">
 				<constructor-arg value="org.flexpay.eirc.persistence.QuittancePaymentStatus" />
-			</bean>
-		</property>
-	</bean>
-
-	<bean id="spRegistryStatusDao" parent="abstractDao">
-		<property name="proxyInterfaces"
-				  value="org.flexpay.common.dao.registry.RegistryStatusDao" />
-		<property name="target">
-			<bean parent="abstractDaoTarget">
-				<constructor-arg value="org.flexpay.common.persistence.registry.RegistryStatus" />
-			</bean>
-		</property>
-	</bean>
-
-	<bean id="registryArchiveStatusDao" parent="abstractDao">
-		<property name="proxyInterfaces"
-				  value="org.flexpay.common.dao.registry.RegistryArchiveStatusDao" />
-		<property name="target">
-			<bean parent="abstractDaoTarget">
-				<constructor-arg value="org.flexpay.common.persistence.registry.RegistryArchiveStatus" />
-			</bean>
-		</property>
-	</bean>
-
-	<bean id="spRegistryRecordStatusDao" parent="abstractDao">
-		<property name="proxyInterfaces"
-				  value="org.flexpay.common.dao.registry.RegistryRecordStatusDao" />
-		<property name="target">
-			<bean parent="abstractDaoTarget">
-				<constructor-arg value="org.flexpay.common.persistence.registry.RegistryRecordStatus" />
 			</bean>
 		</property>
 	</bean>

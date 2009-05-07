@@ -1,4 +1,4 @@
-package org.flexpay.eirc.service;
+package org.flexpay.common.service;
 
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.persistence.FPFile;

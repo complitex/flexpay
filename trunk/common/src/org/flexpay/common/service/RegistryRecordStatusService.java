@@ -1,8 +1,8 @@
-package org.flexpay.eirc.service;
+package org.flexpay.common.service;
 
 import org.flexpay.common.persistence.registry.RegistryRecordStatus;
 
-public interface SpRegistryRecordStatusService {
+public interface RegistryRecordStatusService {
 
 	/**
 	 * Read SpRegistryStatus object by its unique code

@@ -5,9 +5,9 @@ import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.FPFile;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.registry.*;
+import org.flexpay.common.service.*;
 import org.flexpay.eirc.persistence.EircRegistryProperties;
 import org.flexpay.eirc.persistence.EircRegistryRecordProperties;
-import org.flexpay.eirc.service.*;
 import org.flexpay.eirc.sp.MbFileParser;
 import org.flexpay.eirc.util.config.ApplicationConfig;
 import org.flexpay.orgs.persistence.ServiceProvider;
@@ -38,9 +38,9 @@ public class MbRegistryFileParser extends MbFileParser<Registry> {
 
 	private RegistryService registryService;
 	private RegistryRecordService registryRecordService;
-	private SpRegistryTypeService registryTypeService;
+	private RegistryTypeService registryTypeService;
 	private ServiceProviderService serviceProviderService;
-	private SpRegistryStatusService spRegistryStatusService;
+	private RegistryStatusService registryStatusService;
 	private RegistryArchiveStatusService registryArchiveStatusService;
 	private PropertiesFactory propertiesFactory;
 
@@ -59,7 +59,7 @@ public class MbRegistryFileParser extends MbFileParser<Registry> {
 			registry.setSpFile(spFile);
 			registry.setRegistryType(registryTypeService.findByCode(RegistryType.TYPE_INCOME));
 			registry.setArchiveStatus(registryArchiveStatusService.findByCode(RegistryArchiveStatus.NONE));
-			registry.setRegistryStatus(spRegistryStatusService.findByCode(RegistryStatus.LOADING));
+			registry.setRegistryStatus(registryStatusService.findByCode(RegistryStatus.LOADING));
 
 			long recordsNum = 0;
 
@@ -85,7 +85,7 @@ public class MbRegistryFileParser extends MbFileParser<Registry> {
 
 			}
 
-			registry.setRegistryStatus(spRegistryStatusService.findByCode(RegistryStatus.LOADED));
+			registry.setRegistryStatus(registryStatusService.findByCode(RegistryStatus.LOADED));
 			registry = registryService.update(registry);
 
 		} catch (IOException e) {
@@ -184,7 +184,7 @@ public class MbRegistryFileParser extends MbFileParser<Registry> {
 	}
 
 	@Required
-	public void setRegistryTypeService(SpRegistryTypeService registryTypeService) {
+	public void setRegistryTypeService(RegistryTypeService registryTypeService) {
 		this.registryTypeService = registryTypeService;
 	}
 
@@ -194,8 +194,8 @@ public class MbRegistryFileParser extends MbFileParser<Registry> {
 	}
 
 	@Required
-	public void setSpRegistryStatusService(SpRegistryStatusService spRegistryStatusService) {
-		this.spRegistryStatusService = spRegistryStatusService;
+	public void setSpRegistryStatusService(RegistryStatusService registryStatusService) {
+		this.registryStatusService = registryStatusService;
 	}
 
 	@Required

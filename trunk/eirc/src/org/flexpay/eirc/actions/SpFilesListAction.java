@@ -5,7 +5,7 @@ import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.FPFile;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.service.FPFileService;
-import org.flexpay.eirc.service.RegistryFileService;
+import org.flexpay.common.service.RegistryFileService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 

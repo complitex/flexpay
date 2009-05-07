@@ -8,9 +8,9 @@ import org.flexpay.common.persistence.registry.RegistryProperties;
 import org.flexpay.orgs.persistence.filters.OrganizationFilter;
 import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.common.persistence.filter.RegistryTypeFilter;
+import org.flexpay.common.service.RegistryService;
 import org.flexpay.orgs.service.OrganizationService;
-import org.flexpay.eirc.service.RegistryService;
-import org.flexpay.eirc.service.SpRegistryTypeService;
+import org.flexpay.common.service.RegistryTypeService;
 import org.flexpay.eirc.persistence.EircRegistryProperties;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
@@ -30,7 +30,7 @@ public class RegistriesListAction extends FPActionWithPagerSupport {
 
 	private OrganizationService organizationService;
 	private RegistryService registryService;
-	private SpRegistryTypeService registryTypeService;
+	private RegistryTypeService registryTypeService;
 
 	@NotNull
 	public String doExecute() throws Exception {
@@ -130,7 +130,7 @@ public class RegistriesListAction extends FPActionWithPagerSupport {
 	}
 
 	@Required
-	public void setRegistryTypeService(SpRegistryTypeService registryTypeService) {
+	public void setRegistryTypeService(RegistryTypeService registryTypeService) {
 		this.registryTypeService = registryTypeService;
 	}
 }

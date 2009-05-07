@@ -8,13 +8,17 @@ import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.registry.*;
 import org.flexpay.common.process.ProcessLogger;
 import org.flexpay.common.service.internal.SessionUtils;
+import org.flexpay.common.service.RegistryService;
+import org.flexpay.common.service.RegistryRecordService;
+import org.flexpay.common.service.RegistryTypeService;
+import org.flexpay.common.service.RegistryArchiveStatusService;
 import org.flexpay.common.util.FileSource;
 import org.flexpay.common.util.StringUtil;
 import org.flexpay.eirc.persistence.EircRegistryProperties;
 import org.flexpay.eirc.persistence.EircRegistryRecordProperties;
 import org.flexpay.eirc.persistence.exchange.Operation;
-import org.flexpay.eirc.persistence.workflow.RegistryRecordWorkflowManager;
-import org.flexpay.eirc.persistence.workflow.RegistryWorkflowManager;
+import org.flexpay.common.persistence.registry.workflow.RegistryRecordWorkflowManager;
+import org.flexpay.common.persistence.registry.workflow.RegistryWorkflowManager;
 import org.flexpay.eirc.service.*;
 import org.flexpay.eirc.sp.SpFileReader.Message;
 import org.flexpay.eirc.util.config.ApplicationConfig;
@@ -50,7 +54,7 @@ public class RegistryFileParser {
 
 	private RegistryService registryService;
 	private RegistryRecordService registryRecordService;
-	private SpRegistryTypeService registryTypeService;
+	private RegistryTypeService registryTypeService;
 	private RegistryArchiveStatusService registryArchiveStatusService;
 	private SessionUtils sessionUtils;
 
@@ -442,7 +446,7 @@ public class RegistryFileParser {
 	}
 
 	@Required
-	public void setRegistryTypeService(SpRegistryTypeService registryTypeService) {
+	public void setRegistryTypeService(RegistryTypeService registryTypeService) {
 		this.registryTypeService = registryTypeService;
 	}
 

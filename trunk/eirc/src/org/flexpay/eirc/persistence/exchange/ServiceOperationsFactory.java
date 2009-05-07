@@ -9,6 +9,7 @@ import org.flexpay.common.service.importexport.CorrectionsService;
 import org.flexpay.common.service.importexport.ImportErrorService;
 import org.flexpay.common.service.importexport.ImportErrorsSupport;
 import org.flexpay.common.service.importexport.RawDataSource;
+import org.flexpay.common.service.RegistryFileService;
 import org.flexpay.common.util.StringUtil;
 import org.flexpay.common.dao.registry.RegistryRecordDao;
 import org.flexpay.eirc.persistence.exchange.conditions.ConditionsFactory;

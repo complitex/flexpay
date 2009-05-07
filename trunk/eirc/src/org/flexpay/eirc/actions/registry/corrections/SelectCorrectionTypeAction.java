@@ -7,7 +7,7 @@ import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.persistence.ImportError;
 import org.flexpay.common.persistence.registry.RegistryRecord;
 import org.flexpay.common.service.importexport.ClassToTypeRegistry;
-import org.flexpay.eirc.service.RegistryRecordService;
+import org.flexpay.common.service.RegistryRecordService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 

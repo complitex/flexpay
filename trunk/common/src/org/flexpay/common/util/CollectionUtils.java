@@ -93,13 +93,13 @@ public class CollectionUtils {
 	 * @return Map
 	 */
 	@NotNull
-	public static <K, V> Map<K, V> treeMap() {
+	public static <K, V> SortedMap<K, V> treeMap() {
 		return new TreeMap<K,V>();
 	}
 
 	@NotNull
-	public static <K, V> Map<K, V> treeMap(@NotNull K[] keys, @NotNull V[] values) {
-		Map<K, V> map = treeMap();
+	public static <K, V> SortedMap<K, V> treeMap(@NotNull K[] keys, @NotNull V[] values) {
+		SortedMap<K, V> map = treeMap();
 		int n = 0;
 		for (K k : keys) {
 			V v = n < values.length ? values[n] : null;

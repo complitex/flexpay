@@ -14,7 +14,7 @@
 		  p:spRegistryDao-ref="spRegistryDao"
           p:fpFileService-ref="fpFileService"
 		  p:registryService-ref="registryService"
-		  p:registryProcessor-ref="registryProcessor" />
+		  p:registryProcessor-ref="registryProcessor" registryService-ref="eircRegistryService" />
 
 	<bean class="org.flexpay.common.util.standalone.StandaloneTasksHolder"
 		  factory-method="getInstance">
