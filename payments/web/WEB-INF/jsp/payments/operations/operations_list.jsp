@@ -106,6 +106,8 @@
 	// sets selected operation id proper value against selected operation
 	function setOperationId(id) {
 		$('#operationsList_selectedOperationId').val(id);
+		$('#operationsList_operation_' + id).attr("checked", "checked");
+		$('#operationsList_operationDetailed_' + id).attr("checked", "checked");
 	}
 
 	// sets status proper value
@@ -225,7 +227,8 @@
 					<s:elseif test="%{isOperationReturned(operationStatus.code)}"> col_red</s:elseif>">
 
 					<td class="col_oper" nowrap="nowrap">
-						<input type="radio" onclick="showButtons(<s:property value="operationStatus.code"/>);setOperationId(<s:property value="id"/>);"/>
+						<input type="radio" name="operation" id="operationsList_operation_<s:property value="id"/>"
+							   onclick="showButtons(<s:property value="operationStatus.code"/>);setOperationId(<s:property value="id"/>);"/>
 					</td>
 					<td class="col_oper" align="right"><s:property value="%{#opStatus.index + 1}"/></td>
 					<td class="col_oper" nowrap="nowrap"><s:property value="id"/></td>
@@ -245,7 +248,8 @@
 					<s:elseif test="%{isOperationReturned(operationStatus.code)}"> col_red</s:elseif>">
 
 					<td class="col_oper" nowrap="nowrap">
-						<input type="radio" onclick="showButtons(<s:property value="operationStatus.code"/>);setOperationId(<s:property value="id"/>);"/>
+						<input type="radio" name="operationDetailed" id="operationsList_operationDetailed_<s:property value="id"/>"
+							   onclick="showButtons(<s:property value="operationStatus.code"/>);setOperationId(<s:property value="id"/>);"/>
 					</td>
 					<td class="col_oper" align="right"><s:property value="%{#opStatus.index + 1}"/></td>
 					<td class="col_oper" nowrap="nowrap"><s:property value="id"/></td>
