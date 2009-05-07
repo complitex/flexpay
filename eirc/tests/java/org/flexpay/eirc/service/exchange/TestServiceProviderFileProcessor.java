@@ -4,13 +4,13 @@ import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.FPFile;
 import org.flexpay.common.persistence.ImportError;
-import org.flexpay.common.persistence.registry.RegistryRecord;
+import org.flexpay.common.persistence.filter.RegistryRecordStatusFilter;
 import org.flexpay.common.persistence.registry.Registry;
+import org.flexpay.common.persistence.registry.RegistryRecord;
+import org.flexpay.common.service.RegistryRecordService;
 import org.flexpay.eirc.actions.TestSpFileAction;
 import org.flexpay.eirc.persistence.filters.ImportErrorTypeFilter;
-import org.flexpay.common.persistence.filter.RegistryRecordStatusFilter;
-import org.flexpay.common.service.RegistryService;
-import org.flexpay.common.service.RegistryRecordService;
+import org.flexpay.eirc.service.EircRegistryService;
 import org.flexpay.payments.service.SPService;
 import static org.junit.Assert.*;
 import org.junit.Test;
@@ -32,7 +32,7 @@ public class TestServiceProviderFileProcessor extends TestSpFileAction {
 	@Autowired
 	protected RegistryRecordService registryRecordService;
 	@Autowired
-	protected RegistryService registryService;
+	protected EircRegistryService eircRegistryService;
 
 	@Test
 	@NotTransactional
@@ -60,7 +60,7 @@ public class TestServiceProviderFileProcessor extends TestSpFileAction {
 		try {
 			registryProcessor.processFile(file);
 
-			List<Registry> registries = registryService.findObjects(new Page<Registry>(), file.getId());
+			List<Registry> registries = eircRegistryService.findObjects(new Page<Registry>(), file.getId());
 			assertEquals("Expected 1 registry", 1, registries.size());
 			Registry registry = registries.get(0);
 			List<RegistryRecord> records = registryRecordService.listRecords(

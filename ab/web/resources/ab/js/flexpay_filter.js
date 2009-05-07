@@ -232,13 +232,6 @@ var FF = {
         if (this.setFocusByTabIndex(filters)) {
             return;
         }
-        if (filters.length == 0) {
-            var tab = $('a[tabindex="2"],input[tabindex="2"],button[tabindex="2"],textarea[tabindex="2"],select[tabindex="2"]');
-            if (tab != null && tab.size() > 0) {
-                tab.get(0).focus();
-            }
-            return;
-        }
         for (var i in filters) {
             var filter2 = filters[i];
             var parentsFilled = true;

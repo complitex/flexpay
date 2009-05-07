@@ -2,16 +2,16 @@ package org.flexpay.eirc.actions.registry;
 
 import org.apache.commons.lang.time.DateUtils;
 import org.flexpay.common.actions.FPActionWithPagerSupport;
-import org.flexpay.common.util.DateUtil;
+import org.flexpay.common.persistence.filter.RegistryTypeFilter;
 import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.persistence.registry.RegistryProperties;
-import org.flexpay.orgs.persistence.filters.OrganizationFilter;
-import org.flexpay.orgs.persistence.Organization;
-import org.flexpay.common.persistence.filter.RegistryTypeFilter;
-import org.flexpay.common.service.RegistryService;
-import org.flexpay.orgs.service.OrganizationService;
 import org.flexpay.common.service.RegistryTypeService;
+import org.flexpay.common.util.DateUtil;
 import org.flexpay.eirc.persistence.EircRegistryProperties;
+import org.flexpay.eirc.service.EircRegistryService;
+import org.flexpay.orgs.persistence.Organization;
+import org.flexpay.orgs.persistence.filters.OrganizationFilter;
+import org.flexpay.orgs.service.OrganizationService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
@@ -29,7 +29,7 @@ public class RegistriesListAction extends FPActionWithPagerSupport {
 	private List<Registry> registries;
 
 	private OrganizationService organizationService;
-	private RegistryService registryService;
+	private EircRegistryService eircRegistryService;
 	private RegistryTypeService registryTypeService;
 
 	@NotNull
@@ -40,7 +40,7 @@ public class RegistriesListAction extends FPActionWithPagerSupport {
 
 		registryTypeService.initFilter(registryTypeFilter);
 
-		registries = registryService.findObjects(senderOrganizationFilter, recipientOrganizationFilter,
+		registries = eircRegistryService.findObjects(senderOrganizationFilter, recipientOrganizationFilter,
 				registryTypeFilter, fromDate, tillDate, getPager());
 
 		return SUCCESS;
@@ -120,8 +120,8 @@ public class RegistriesListAction extends FPActionWithPagerSupport {
 	}
 
 	@Required
-	public void setRegistryService(RegistryService registryService) {
-		this.registryService = registryService;
+	public void setEircRegistryService(EircRegistryService eircRegistryService) {
+		this.eircRegistryService = eircRegistryService;
 	}
 
 	@Required

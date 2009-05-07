@@ -13,11 +13,11 @@
 
 	<bean name="registryProcessJob" class="org.flexpay.eirc.process.registry.RegistryProcessJob" scope="prototype"
 		  p:registryProcessor-ref="registryProcessor"
-		  p:registryService-ref="registryService" registryService-ref="eircRegistryService" />
+		  p:registryService-ref="registryService" />
 
 	<bean name="registryRecordsProcessJob" class="org.flexpay.eirc.process.registry.RegistryRecordsProcessJob" scope="prototype"
 		  p:registryProcessor-ref="registryProcessor"
-		  p:registryService-ref="registryService" registryService-ref="eircRegistryService" />
+		  p:registryService-ref="registryService" />
 
 	<bean name="generateQuittancesPDFJob" scope="prototype"
 		  class="org.flexpay.eirc.process.quittance.GenerateQuittancesPDFJasperJob"
