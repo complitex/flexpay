@@ -4,24 +4,22 @@ import org.apache.commons.lang.StringUtils;
 import org.flexpay.ab.persistence.Apartment;
 import org.flexpay.ab.persistence.ApartmentNumber;
 import org.flexpay.ab.persistence.Building;
+import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.history.Diff;
 import org.flexpay.common.persistence.history.HistoryRecord;
 import org.flexpay.common.persistence.history.ProcessingStatus;
+import org.flexpay.common.persistence.history.TemporalObjectsHistoryBuildHelper;
+import org.flexpay.common.persistence.history.TemporalObjectsHistoryBuildHelper.TemporalDataExtractor;
 import org.flexpay.common.persistence.history.impl.HistoryBuilderBase;
-import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.util.CollectionUtils.list;
-import static org.flexpay.common.util.CollectionUtils.treeSet;
-import org.flexpay.common.util.config.ApplicationConfig;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static java.util.Collections.max;
-import static java.util.Collections.min;
+import java.util.Collections;
 import java.util.Date;
-import java.util.Iterator;
-import java.util.SortedSet;
+import java.util.List;
 
 public class ApartmentHistoryBuilder extends HistoryBuilderBase<Apartment> {
 
@@ -51,71 +49,27 @@ public class ApartmentHistoryBuilder extends HistoryBuilderBase<Apartment> {
 	private void buildAddressDiff(@NotNull Apartment a1, @NotNull Apartment a2, @NotNull Diff diff) {
 
 		// compare sorted by begin date apartment numbers and build according diffs if found
-		SortedSet<ApartmentNumber> addresses1 = treeSet(a1.getApartmentNumbers());
-		SortedSet<ApartmentNumber> addresses2 = treeSet(a2.getApartmentNumbers());
-		Iterator<ApartmentNumber> it1 = addresses1.iterator();
-		Iterator<ApartmentNumber> it2 = addresses2.iterator();
+		List<ApartmentNumber> addresses1 = list(a1.getApartmentNumbers());
+		Collections.sort(addresses1);
+		List<ApartmentNumber> addresses2 = list(a2.getApartmentNumbers());
+		Collections.sort(addresses2);
 
-		Date cursor = ApplicationConfig.getPastInfinite();
-		ApartmentNumber n1 = null;
-		ApartmentNumber n2 = null;
-
-		while (it1.hasNext() || it2.hasNext()) {
-			n1 = n1 == null && it1.hasNext() ? it1.next() : n1;
-			n2 = n2 == null && it2.hasNext() ? it2.next() : n2;
-
-			// setup next intervals boundaries
-			Date begin1 = n1 != null ? n1.getBegin() : ApplicationConfig.getFutureInfinite();
-			Date begin2 = n2 != null ? n2.getBegin() : ApplicationConfig.getFutureInfinite();
-			Date end1 = n1 != null ? n1.getEnd() : ApplicationConfig.getFutureInfinite();
-			Date end2 = n2 != null ? n2.getEnd() : ApplicationConfig.getFutureInfinite();
-
-			// setup lower and upper bound for a next pair of intervals to build diffs on
-			Date beginMin = min(list(begin1, begin2));
-			Date beginMax = max(list(begin1, begin2));
-			Date end = min(list(end1, end2));
-			Date beginLower = min(list(beginMax, end));
-
-			// add diff in interval from cursor to min among begins
-			addAddressDiff(cursor, beginMin, n1, n2, diff);
-
-			// set cursor to next point - first begin, or cursor if it was after begin
-			cursor = max(list(beginMin, cursor));
-			// now add diff from cursor to lower value of bigger begin and two ends
-			addAddressDiff(cursor, beginLower, n1, n2, diff);
-
-			cursor = beginLower;
-			// if not reached any of ends, add diff from max begin to min end
-			if (cursor.before(end)) {
-				addAddressDiff(cursor, end, n1, n2, diff);
-				cursor = end;
+		TemporalObjectsHistoryBuildHelper.buildDiff(new TemporalDataExtractor<ApartmentNumber>() {
+			public Date getBeginDate(ApartmentNumber obj) {
+				return obj.getBegin();
 			}
 
-			// if the first end was reached - fetch next value
-			if (cursor.compareTo(end1) >= 0) {
-				n1 = null;
+			public Date getEndDate(ApartmentNumber obj) {
+				return obj.getEnd();
 			}
-			// if the second end was reached - fetch next value
-			if (cursor.compareTo(end2) >= 0) {
-				n2 = null;
+
+			public void buildDiff(Date begin, Date end, ApartmentNumber t1, ApartmentNumber t2, Diff df) {
+				addAddressDiff(begin, end, t1, t2, df);
 			}
-		}
+		}, addresses1, addresses2, diff);
 	}
 
 	private void addAddressDiff(Date begin, Date end, ApartmentNumber n1, ApartmentNumber n2, Diff diff) {
-
-		if (begin.compareTo(ApplicationConfig.getFutureInfinite()) >= 0) {
-			return;
-		}
-		if (end.compareTo(ApplicationConfig.getPastInfinite()) <= 0) {
-			return;
-		}
-		if (begin.after(end) || (empty(n1) && empty(n2))) {
-			return;
-		}
-		if (n1 != null && n2 != null && n1.getValue().equals(n2.getValue())) {
-			return;
-		}
 
 		HistoryRecord rec = new HistoryRecord();
 		rec.setFieldType(FIELD_NUMBER_VALUE);
@@ -188,14 +142,14 @@ public class ApartmentHistoryBuilder extends HistoryBuilderBase<Apartment> {
 		}
 	}
 
-	private void patchAddress(@NotNull  Apartment apartment, @NotNull HistoryRecord record) {
+	private void patchAddress(@NotNull Apartment apartment, @NotNull HistoryRecord record) {
 
 		log.debug("Patching number {}", record);
 		apartment.setNumberForDates(record.getBeginDate(), record.getEndDate(), record.getNewStringValue());
 		record.setProcessingStatus(ProcessingStatus.STATUS_PROCESSED);
 	}
 
-	private void patchBuildingReference(@NotNull  Apartment apartment, @NotNull HistoryRecord record) {
+	private void patchBuildingReference(@NotNull Apartment apartment, @NotNull HistoryRecord record) {
 		log.debug("Patching building reference {}", record);
 
 		Building building = null;
