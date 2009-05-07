@@ -6,11 +6,11 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Date;
 
 public class PersonRegistration extends DomainObject {
+
 	private Person person;
 	private Apartment apartment;
 	private Date beginDate;
 	private Date endDate;
-
 
 	/**
 	 * @return the person
