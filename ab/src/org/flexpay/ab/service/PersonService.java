@@ -4,6 +4,7 @@ import org.apache.commons.collections.ArrayStack;
 import org.flexpay.ab.persistence.Person;
 import org.flexpay.ab.persistence.Apartment;
 import org.flexpay.common.dao.paging.Page;
+import org.flexpay.common.dao.paging.FetchRange;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Stub;
 import org.jetbrains.annotations.Nullable;
@@ -24,6 +25,15 @@ public interface PersonService {
 	 */
 	@Secured (Roles.PERSON_READ)
 	List<Person> findPersons(ArrayStack filters, Page<Person> pager);
+
+	/**
+	 * List persons with identities
+	 *
+	 * @param range FetchRange 
+	 * @return List of persons
+	 */
+	@Secured (Roles.PERSON_READ)
+	List<Person> listPersonsWithIdentities(FetchRange range);
 
 	/**
 	 * Read person information

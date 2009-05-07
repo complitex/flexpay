@@ -13,13 +13,18 @@ import org.flexpay.ab.persistence.Apartment;
 import org.flexpay.ab.service.IdentityTypeService;
 import org.flexpay.ab.service.PersonService;
 import org.flexpay.common.dao.paging.Page;
+import org.flexpay.common.dao.paging.FetchRange;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.DomainObjectWithStatus;
 import org.flexpay.common.persistence.Stub;
+import static org.flexpay.common.persistence.Stub.stub;
+import org.flexpay.common.persistence.history.ModificationListener;
+import org.flexpay.common.service.internal.SessionUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.beans.factory.annotation.Required;
 
 import java.util.List;
 import java.util.Set;
@@ -34,25 +39,8 @@ public class PersonServiceImpl implements PersonService {
 
 	private IdentityTypeService identityTypeService;
 
-	public void setPersonDao(PersonDao personDao) {
-		this.personDao = personDao;
-	}
-
-	public void setPersonDaoExt(PersonDaoExt personDaoExt) {
-		this.personDaoExt = personDaoExt;
-	}
-
-	public void setPersonAttributeDao(PersonAttributeDao personAttributeDao) {
-		this.personAttributeDao = personAttributeDao;
-	}
-
-	public void setPersonRegistrationDao(PersonRegistrationDao personRegistrationDao) {
-		this.personRegistrationDao = personRegistrationDao;
-	}
-
-	public void setIdentityTypeService(IdentityTypeService identityTypeService) {
-		this.identityTypeService = identityTypeService;
-	}
+	private SessionUtils sessionUtils;
+	private ModificationListener<Person> modificationListener;
 
 	/**
 	 * List persons
@@ -63,6 +51,16 @@ public class PersonServiceImpl implements PersonService {
 	 */
 	public List<Person> findPersons(ArrayStack filters, Page<Person> pager) {
 		return personDao.findObjects(pager, DomainObjectWithStatus.STATUS_ACTIVE);
+	}
+
+	/**
+	 * List persons with identities
+	 *
+	 * @param range FetchRange
+	 * @return List of persons
+	 */
+	public List<Person> listPersonsWithIdentities(FetchRange range) {
+		return personDaoExt.listPersonsWithIdentities(range);
 	}
 
 	/**
@@ -111,10 +109,20 @@ public class PersonServiceImpl implements PersonService {
 	 * @throws org.flexpay.common.exception.FlexPayExceptionContainer
 	 *          if validation fails
 	 */
+	@SuppressWarnings ({"ThrowableInstanceNeverThrown"})
 	@Transactional (readOnly = false)
 	public Person update(@NotNull Person person) throws FlexPayExceptionContainer {
 
 		validate(person);
+
+		Person old = read(stub(person));
+		if (old == null) {
+			throw new FlexPayExceptionContainer(
+					new FlexPayException("No object found to update " + person));
+		}
+		sessionUtils.evict(old);
+		modificationListener.onUpdate(old, person);
+
 		personDao.update(person);
 
 		return person;
@@ -132,6 +140,8 @@ public class PersonServiceImpl implements PersonService {
 			if (person != null) {
 				person.disable();
 				personDao.update(person);
+
+				modificationListener.onDelete(person);
 			}
 		}
     }
@@ -150,6 +160,8 @@ public class PersonServiceImpl implements PersonService {
 		validate(person);
 		person.setId(null);
 		personDao.create(person);
+
+		modificationListener.onCreate(person);
 
 		return person;
 
@@ -203,5 +215,40 @@ public class PersonServiceImpl implements PersonService {
 	@NotNull
 	public List<Person> findRegisteredPersons(@NotNull Stub<Apartment> stub) {
 		return personRegistrationDao.listRegistrants(stub.getId());
+	}
+
+	@Required
+	public void setSessionUtils(SessionUtils sessionUtils) {
+		this.sessionUtils = sessionUtils;
+	}
+
+	@Required
+	public void setModificationListener(ModificationListener<Person> modificationListener) {
+		this.modificationListener = modificationListener;
+	}
+
+	@Required
+	public void setPersonDao(PersonDao personDao) {
+		this.personDao = personDao;
+	}
+
+	@Required
+	public void setPersonDaoExt(PersonDaoExt personDaoExt) {
+		this.personDaoExt = personDaoExt;
+	}
+
+	@Required
+	public void setPersonAttributeDao(PersonAttributeDao personAttributeDao) {
+		this.personAttributeDao = personAttributeDao;
+	}
+
+	@Required
+	public void setPersonRegistrationDao(PersonRegistrationDao personRegistrationDao) {
+		this.personRegistrationDao = personRegistrationDao;
+	}
+
+	@Required
+	public void setIdentityTypeService(IdentityTypeService identityTypeService) {
+		this.identityTypeService = identityTypeService;
 	}
 }

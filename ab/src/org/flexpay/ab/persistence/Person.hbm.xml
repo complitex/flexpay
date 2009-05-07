@@ -256,4 +256,18 @@
 		WHERE o.person.id=?
 	</query>
 
+	<query name="Person.listPersonsWithIdentities.stats"><![CDATA[
+		select min(d.id), max(d.id), count(d.id)
+		from Person d
+		where d.status=0
+	]]></query>
+
+	<query name="Person.listPersonsWithIdentities"><![CDATA[
+		select distinct d
+		from Person d
+			left join fetch d.personIdentities pi
+			left join fetch pi.identityType 
+		where d.id between ? and ? and d.status=0
+	]]></query>
+
 </hibernate-mapping>

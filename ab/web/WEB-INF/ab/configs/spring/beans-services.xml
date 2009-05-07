@@ -157,13 +157,19 @@
 		  p:modificationListener-ref="identityTypeHistoryChangesListener"
 		  p:identityTypeDao-ref="identityTypeDao" />
 
+	<bean id="personHistoryChangesListener"
+		  parent="historyChangesListenerBase"
+		  p:historyBuilder-ref="personHistoryBuilder" />
+
 	<bean id="personService"
 		  class="org.flexpay.ab.service.imp.PersonServiceImpl"
 		  p:personAttributeDao-ref="personAttributeDao"
 		  p:identityTypeService-ref="identityTypeService"
 		  p:personRegistrationDao-ref="personRegistrationDao"
 		  p:personDao-ref="personDao"
-		  p:personDaoExt-ref="personDaoExt" />
+		  p:personDaoExt-ref="personDaoExt"
+		  p:sessionUtils-ref="sessionUtils"
+		  p:modificationListener-ref="personHistoryChangesListener" />
 
 	<!-- History builders -->
 	<bean id="abHistoryBuilderBase"
@@ -285,6 +291,16 @@
 		  p:diffService-ref="diffService"
 		  p:historyBuilder-ref="apartmentHistoryBuilder" />
 
+	<bean id="personHistoryGenerator"
+		  class="org.flexpay.ab.service.history.PersonHistoryGenerator"
+		  p:diffService-ref="diffService"
+		  p:historyBuilder-ref="personHistoryBuilder" />
+
+	<bean id="personsHistoryGenerator"
+		  class="org.flexpay.ab.service.history.PersonsHistoryGenerator"
+		  p:historyGenerator-ref="personHistoryGenerator"
+		  p:personService-ref="personService" />
+
 	<!-- History handlers -->
 	<bean id="abHistoryHandlerBase"
 		  abstract="true"
@@ -334,6 +350,12 @@
 		  p:apartmentService-ref="apartmentService"
 		  p:historyBuilder-ref="apartmentHistoryBuilder" />
 
+	<bean id="personHistoryHandler"
+		  parent="abHistoryHandlerBase"
+		  class="org.flexpay.ab.service.history.PersonHistoryHandler"
+		  p:personService-ref="personService"
+		  p:historyBuilder-ref="personHistoryBuilder" />
+
 	<bean id="districtHistoryHandler"
 		  parent="abHistoryHandlerBase"
 		  class="org.flexpay.ab.service.history.DistrictHistoryHandler"
@@ -349,6 +371,7 @@
 	<bean id="abObjectsSyncer" parent="objectsSyncer">
 		<property name="handlers">
 			<list merge="true">
+				<ref bean="personHistoryHandler" />
 				<ref bean="apartmentHistoryHandler" />
 				<ref bean="buildingHistoryHandler" />
 				<ref bean="streetHistoryHandler" />
