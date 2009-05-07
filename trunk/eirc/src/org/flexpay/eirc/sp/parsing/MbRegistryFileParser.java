@@ -57,7 +57,7 @@ public class MbRegistryFileParser extends MbFileParser<Registry> {
 
 			registry.setCreationDate(new Date());
 			registry.setSpFile(spFile);
-			registry.setRegistryType(registryTypeService.findByCode(RegistryType.TYPE_QUITTANCE));
+			registry.setRegistryType(registryTypeService.findByCode(RegistryType.TYPE_INCOME));
 			registry.setArchiveStatus(registryArchiveStatusService.findByCode(RegistryArchiveStatus.NONE));
 			registry.setRegistryStatus(spRegistryStatusService.findByCode(RegistryStatus.LOADING));
 

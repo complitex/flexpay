@@ -1,8 +1,8 @@
 package org.flexpay.eirc.sp.validation;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
-import org.apache.commons.io.IOUtils;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.FPFile;
 import org.flexpay.eirc.sp.MbFileValidator;
@@ -136,7 +136,7 @@ public class MbRegistryFileValidator extends MbFileValidator {
 			throw new FlexPayException("Not 4 fields");
 		}
 		if (!fields[0].equals(LAST_FILE_STRING_BEGIN)) {
-			throw new FlexPayException("First field must be equals 999999999");
+			throw new FlexPayException("First field must be equals " + LAST_FILE_STRING_BEGIN);
 		}
 		try {
 			if (fileValues.getIncomeSumm() != Long.parseLong(fields[1])) {

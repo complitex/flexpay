@@ -247,7 +247,7 @@ public class MbCorrectionsFileValidator extends MbFileValidator {
 			throw new FlexPayException("Not 2 fields)");
 		}
 		if (!fields[0].equals(LAST_FILE_STRING_BEGIN)) {
-			throw new FlexPayException("First field must be equals 999999999");
+			throw new FlexPayException("First field must be equals " + LAST_FILE_STRING_BEGIN);
 		}
 		try {
 			if (fileValues.getLines() != Integer.parseInt(fields[1])) {

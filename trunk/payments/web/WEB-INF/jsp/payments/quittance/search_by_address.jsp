@@ -25,17 +25,20 @@
 			});
 			FF.createFilter("street", {
 				action: "<s:url action="streetFilterAjax" namespace="/dicts" includeParams="none"/>",
-				parents: ["town"]
+				parents: ["town"],
+                preRequest:false
 			});
 			FF.createFilter("building", {
 				action: "<s:url action="buildingFilterAjax" namespace="/dicts" includeParams="none"/>",
 				isArray: true,
-				parents: ["street"]
+				parents: ["street"],
+                preRequest:false
 			});
 			FF.createFilter("apartment", {
 				action: "<s:url action="apartmentFilterAjax" namespace="/dicts" includeParams="none"/>",
 				isArray: true,
-				parents: ["building"]
+				parents: ["building"],
+                preRequest:false
 			});
 		});
 
