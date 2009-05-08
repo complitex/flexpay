@@ -34,6 +34,20 @@ public class Document extends DomainObject {
 	private String address;
 	private String payerFIO;
 
+	// creditor internal data
+	private String firstName;
+	private String middleName;
+	private String lastName;
+	private String country;
+	private String region;
+	private String town;
+	private String streetName;
+	private String streetType;
+	private String buildingNumber;
+	private String buildingBulk;
+	private String apartmentNumber;
+
+
 	private Set<DocumentAddition> additions = Collections.emptySet();
 
 	public BigDecimal getSumm() {
@@ -156,16 +170,114 @@ public class Document extends DomainObject {
 		this.referencedDocuments = referencedDocuments;
 	}
 
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public String getMiddleName() {
+		return middleName;
+	}
+
+	public void setMiddleName(String middleName) {
+		this.middleName = middleName;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+
+	public String getCountry() {
+		return country;
+	}
+
+	public void setCountry(String country) {
+		this.country = country;
+	}
+
+	public String getRegion() {
+		return region;
+	}
+
+	public void setRegion(String region) {
+		this.region = region;
+	}
+
+	public String getTown() {
+		return town;
+	}
+
+	public void setTown(String town) {
+		this.town = town;
+	}
+
+	public String getStreetName() {
+		return streetName;
+	}
+
+	public void setStreetName(String streetName) {
+		this.streetName = streetName;
+	}
+
+	public String getStreetType() {
+		return streetType;
+	}
+
+	public void setStreetType(String streetType) {
+		this.streetType = streetType;
+	}
+
+	public String getBuildingNumber() {
+		return buildingNumber;
+	}
+
+	public void setBuildingNumber(String buildingNumber) {
+		this.buildingNumber = buildingNumber;
+	}
+
+	public String getBuildingBulk() {
+		return buildingBulk;
+	}
+
+	public void setBuildingBulk(String buildingBulk) {
+		this.buildingBulk = buildingBulk;
+	}
+
+	public String getApartmentNumber() {
+		return apartmentNumber;
+	}
+
+	public void setApartmentNumber(String apartmentNumber) {
+		this.apartmentNumber = apartmentNumber;
+	}
+
 	@Override
 	public String toString() {
 		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
-				append("Document {").
 				append("id", getId()).
 				append("summ", summ).
 				append("operation.id", operation.getId()).
 				append("registryRecord", registryRecord).
 				append("documentType", documentType).
 				append("documentStatus", documentStatus).
-				append("}").toString();
+				append("firstName", firstName).
+				append("middleName", middleName).
+				append("lastName", lastName).
+				append("country", country).
+				append("region", region).
+				append("town", town).
+				append("streetName", streetName).
+				append("streetType", streetType).
+				append("buildingNumber", buildingNumber).
+				append("buildingBulk", buildingBulk).
+				append("apartmentNumber", apartmentNumber).
+				toString();
 	}
 }

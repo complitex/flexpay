@@ -1,7 +1,7 @@
 package org.flexpay.payments.persistence.quittance;
 
-import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.builder.ToStringBuilder;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -366,6 +366,19 @@ public class QuittanceDetailsResponse implements Serializable {
 			private String serviceMasterIndex;
 			private String serviceProviderAccount;
 
+			// service provider internal data
+			private String firstName;
+			private String middleName;
+			private String lastName;
+			private String country;
+			private String region;
+			private String town;
+			private String streetName;
+			private String streetType;
+			private String buildingNumber;
+			private String buildingBulk;
+			private String apartmentNumber;
+
 			public BigDecimal getIncomingBalance() {
 				return incomingBalance;
 			}
@@ -462,6 +475,94 @@ public class QuittanceDetailsResponse implements Serializable {
 				this.serviceProviderAccount = serviceProviderAccount;
 			}
 
+			public String getFirstName() {
+				return firstName;
+			}
+
+			public void setFirstName(String firstName) {
+				this.firstName = firstName;
+			}
+
+			public String getMiddleName() {
+				return middleName;
+			}
+
+			public void setMiddleName(String middleName) {
+				this.middleName = middleName;
+			}
+
+			public String getLastName() {
+				return lastName;
+			}
+
+			public void setLastName(String lastName) {
+				this.lastName = lastName;
+			}
+
+			public String getCountry() {
+				return country;
+			}
+
+			public void setCountry(String country) {
+				this.country = country;
+			}
+
+			public String getRegion() {
+				return region;
+			}
+
+			public void setRegion(String region) {
+				this.region = region;
+			}
+
+			public String getTown() {
+				return town;
+			}
+
+			public void setTown(String town) {
+				this.town = town;
+			}
+
+			public String getStreetName() {
+				return streetName;
+			}
+
+			public void setStreetName(String streetName) {
+				this.streetName = streetName;
+			}
+
+			public String getStreetType() {
+				return streetType;
+			}
+
+			public void setStreetType(String streetType) {
+				this.streetType = streetType;
+			}
+
+			public String getBuildingNumber() {
+				return buildingNumber;
+			}
+
+			public void setBuildingNumber(String buildingNumber) {
+				this.buildingNumber = buildingNumber;
+			}
+
+			public String getBuildingBulk() {
+				return buildingBulk;
+			}
+
+			public void setBuildingBulk(String buildingBulk) {
+				this.buildingBulk = buildingBulk;
+			}
+
+			public String getApartmentNumber() {
+				return apartmentNumber;
+			}
+
+			public void setApartmentNumber(String apartmentNumber) {
+				this.apartmentNumber = apartmentNumber;
+			}
+
 			@Override
 			public String toString() {
 				return new ToStringBuilder(this).
@@ -477,6 +578,17 @@ public class QuittanceDetailsResponse implements Serializable {
 						append("payed", payed).
 						append("serviceMasterIndex", serviceMasterIndex).
 						append("serviceProviderAccount", serviceProviderAccount).
+						append("firstName", firstName).
+						append("middleName", middleName).
+						append("lastName", lastName).
+						append("country", country).
+						append("region", region).
+						append("town", town).
+						append("streetName", streetName).
+						append("streetType", streetType).
+						append("buildingNumber", buildingNumber).
+						append("buildingBulk", buildingBulk).
+						append("apartmentNumber", apartmentNumber).
 						toString();
 			}
 		}
