@@ -3,6 +3,7 @@ package org.flexpay.common.persistence.history;
 import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.common.util.config.ApplicationConfig;
 import static org.flexpay.common.util.CollectionUtils.list;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Date;
 import java.util.List;
@@ -39,10 +40,10 @@ public class TemporalObjectsHistoryBuildHelper {
 			n2 = n2 == null && it2.hasNext() ? it2.next() : n2;
 
 			// setup next intervals boundaries
-			Date begin1 = n1 != null ? extractor.getBeginDate(n1) : ApplicationConfig.getFutureInfinite();
-			Date begin2 = n2 != null ? extractor.getBeginDate(n2) : ApplicationConfig.getFutureInfinite();
-			Date end1 = n1 != null ? extractor.getEndDate(n1) : ApplicationConfig.getFutureInfinite();
-			Date end2 = n2 != null ? extractor.getEndDate(n2) : ApplicationConfig.getFutureInfinite();
+			@NotNull Date begin1 = n1 != null ? extractor.getBeginDate(n1) : ApplicationConfig.getFutureInfinite();
+			@NotNull Date begin2 = n2 != null ? extractor.getBeginDate(n2) : ApplicationConfig.getFutureInfinite();
+			@NotNull Date end1 = n1 != null ? extractor.getEndDate(n1) : ApplicationConfig.getFutureInfinite();
+			@NotNull Date end2 = n2 != null ? extractor.getEndDate(n2) : ApplicationConfig.getFutureInfinite();
 
 			// setup lower and upper bound for a next pair of intervals to build diffs on
 			Date beginMin = min(list(begin1, begin2));
