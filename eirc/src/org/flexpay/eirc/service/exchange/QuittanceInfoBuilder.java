@@ -10,6 +10,7 @@ import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.eirc.persistence.ConsumerInfo;
 import org.flexpay.eirc.persistence.QuittancePayment;
 import org.flexpay.eirc.persistence.QuittanceDetailsPayment;
+import org.flexpay.eirc.persistence.Consumer;
 import org.flexpay.eirc.persistence.account.Quittance;
 import org.flexpay.eirc.persistence.account.QuittanceDetails;
 import org.flexpay.eirc.process.QuittanceNumberService;
@@ -82,7 +83,8 @@ public class QuittanceInfoBuilder {
 		// prepare summs to pay
 		for (QuittanceDetails details : q.getQuittanceDetails()) {
 
-			Service service = details.getConsumer().getService();
+			Consumer consumer = details.getConsumer();
+			Service service = consumer.getService();
 
 			ServiceDetails serviceDetails = new ServiceDetails();
 			serviceDetails.setServiceMasterIndex(masterIndexService.getMasterIndex(service));
@@ -97,6 +99,17 @@ public class QuittanceInfoBuilder {
 			serviceDetails.setSubsidy(details.getSubsidy());
 			serviceDetails.setPayment(details.getPayment());
 			serviceDetails.setPayed(getPayedSumm(details, payments));
+
+			ConsumerInfo cinfo = consumer.getConsumerInfo();
+			serviceDetails.setFirstName(cinfo.getFirstName());
+			serviceDetails.setMiddleName(cinfo.getMiddleName());
+			serviceDetails.setLastName(cinfo.getMiddleName());
+			serviceDetails.setTown(cinfo.getCityName());
+			serviceDetails.setStreetName(cinfo.getStreetName());
+			serviceDetails.setStreetType(cinfo.getStreetTypeName());
+			serviceDetails.setBuildingNumber(cinfo.getBuildingNumber());
+			serviceDetails.setBuildingBulk(cinfo.getBuildingBulk());
+			serviceDetails.setApartmentNumber(cinfo.getApartmentNumber());
 
 			detailses.add(serviceDetails);
 		}
