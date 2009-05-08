@@ -41,7 +41,7 @@ public class AddressServiceImpl implements AddressService {
 			locale = ApplicationConfig.getDefaultLocale();
 		}
 
-		Apartment apartment = apartmentService.readWithPersons(stub);
+		Apartment apartment = apartmentService.readFull(stub);
 		if (apartment == null) {
 			throw new Exception("Invalid apartment stub: " + stub);
 		}

@@ -52,7 +52,7 @@ public class QuittanceInfoBuilder {
 		ConsumerInfo consumerInfo = q.getEircAccount().getConsumerInfo();
 
 		Apartment apartment = q.getEircAccount().getApartment();
-		apartment = apartment != null ? apartmentService.readWithPersons(stub(apartment)) : null;
+		apartment = apartment != null ? apartmentService.readFull(stub(apartment)) : null;
 		if (apartment != null) {
 			info.setApartmentMasterIndex(masterIndexService.getMasterIndex(apartment));
 		} else {

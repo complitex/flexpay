@@ -102,6 +102,16 @@ public interface ApartmentService extends ParentService<ApartmentFilter> {
 	@Nullable
 	Apartment readWithPersons(@NotNull Stub<Apartment> stub);
 
+	/**
+	 * Read apartment
+	 *
+	 * @param stub Apartment stub
+	 * @return Object if found, or <code>null</code> otherwise
+	 */
+	@Secured ({Roles.APARTMENT_READ})
+	@Nullable
+	Apartment readFull(@NotNull Stub<Apartment> stub);
+
 	@Secured (Roles.APARTMENT_READ)
 	void fillFilterIds(@NotNull Stub<Apartment> stub, ArrayStack filters) throws FlexPayException;
 

@@ -270,4 +270,17 @@
 		where d.id between ? and ? and d.status=0
 	]]></query>
 
+	<query name="Person.listPersonsWithRegistrations.stats"><![CDATA[
+		select min(d.id), max(d.id), count(d.id)
+		from Person d
+		where d.status=0
+	]]></query>
+
+	<query name="Person.listPersonsWithRegistrations"><![CDATA[
+		select distinct d
+		from Person d
+			left join fetch d.personRegistrations pr
+		where d.id between ? and ? and d.status=0
+	]]></query>
+
 </hibernate-mapping>

@@ -39,7 +39,7 @@ public class ApartmentHistoryBuilder extends HistoryBuilderBase<Apartment> {
 
 		log.debug("creating new buildings diff");
 
-		Apartment apartmentOld = a1 == null ? new Apartment() : a2;
+		Apartment apartmentOld = a1 == null ? new Apartment() : a1;
 
 		buildBuildingReferenceDiff(apartmentOld, a2, diff);
 

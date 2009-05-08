@@ -219,7 +219,8 @@
 	<bean id="personHistoryBuilder"
 		  parent="abHistoryBuilderBase"
 		  class="org.flexpay.ab.service.history.PersonHistoryBuilder"
-		  p:identityTypeService-ref="identityTypeService" />
+		  p:identityTypeService-ref="identityTypeService"
+		  p:apartmentService-ref="apartmentService" />
 
 	<!-- History generators -->
 	<bean id="townTypeHistoryGenerator"

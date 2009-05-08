@@ -17,4 +17,6 @@ public interface PersonDaoExt {
 	Stub<Person> findPersonStub(Person person);
 
 	List<Person> listPersonsWithIdentities(FetchRange range);
+
+	List<Person> listPersonsWithRegistrations(FetchRange range);
 }

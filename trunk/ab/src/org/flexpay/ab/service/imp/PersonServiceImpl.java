@@ -64,6 +64,16 @@ public class PersonServiceImpl implements PersonService {
 	}
 
 	/**
+	 * List persons with registrations
+	 *
+	 * @param range FetchRange
+	 * @return List of persons
+	 */
+	public List<Person> listPersonsWithRegistrations(FetchRange range) {
+		return personDaoExt.listPersonsWithRegistrations(range);
+	}
+
+	/**
 	 * Read person information
 	 *
 	 * @param stub Person stub

@@ -105,4 +105,28 @@ public class PersonDaoExtImpl extends HibernateDaoSupport implements PersonDaoEx
 		//noinspection unchecked
 		return getHibernateTemplate().findByNamedQuery("Person.listPersonsWithIdentities", params);
 	}
+
+	public List<Person> listPersonsWithRegistrations(FetchRange range) {
+
+		if (!range.wasInitialized()) {
+			Object[] stats = (Object[]) DataAccessUtils.uniqueResult(
+					getHibernateTemplate().findByNamedQuery("Person.listPersonsWithRegistrations.stats"));
+			range.setMinId((Long) stats[0]);
+			range.setMaxId((Long) stats[1]);
+			range.setCount(((Long) stats[2]).intValue());
+			range.setLowerBound(range.getMinId());
+			range.setUpperBound(range.getLowerBound() != null ? range.getLowerBound() + range.getPageSize() : null);
+
+			log.debug("initialized range: {}", range);
+		}
+
+		if (!range.wasInitialized()) {
+			log.debug("No records in range");
+			return Collections.emptyList();
+		}
+
+		Object[] params = {range.getLowerBound(), range.getUpperBound()};
+		//noinspection unchecked
+		return getHibernateTemplate().findByNamedQuery("Person.listPersonsWithRegistrations", params);
+	}
 }

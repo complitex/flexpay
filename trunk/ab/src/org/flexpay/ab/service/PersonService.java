@@ -36,6 +36,15 @@ public interface PersonService {
 	List<Person> listPersonsWithIdentities(FetchRange range);
 
 	/**
+	 * List persons with registrations
+	 *
+	 * @param range FetchRange
+	 * @return List of persons
+	 */
+	@Secured (Roles.PERSON_READ)
+	List<Person> listPersonsWithRegistrations(FetchRange range);
+
+	/**
 	 * Read person information
 	 *
 	 * @param stub Person stub

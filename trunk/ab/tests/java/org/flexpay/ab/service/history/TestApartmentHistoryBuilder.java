@@ -37,7 +37,7 @@ public class TestApartmentHistoryBuilder extends AbSpringBeanAwareTestCase {
 	public void testBuildDiff4() {
 
 		Stub<Apartment> stub = new Stub<Apartment>(3L);
-		Apartment apartment = apartmentService.readWithPersons(stub);
+		Apartment apartment = apartmentService.readFull(stub);
 		if (apartment == null) {
 			throw new IllegalStateException("No apartment " + stub + " found");
 		}
@@ -50,7 +50,7 @@ public class TestApartmentHistoryBuilder extends AbSpringBeanAwareTestCase {
 	public void testPatch() {
 
 		Stub<Apartment> stub = new Stub<Apartment>(3L);
-		Apartment apartment = apartmentService.readWithPersons(stub);
+		Apartment apartment = apartmentService.readFull(stub);
 		if (apartment == null) {
 			throw new IllegalStateException("No apartment " + stub + " found");
 		}

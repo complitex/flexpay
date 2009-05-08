@@ -204,7 +204,7 @@ public class Person extends DomainObjectWithStatus {
 		setPersonRegistration(apartment, null, null);
 	}
 
-	public void setPersonRegistration(Apartment apartment, Date beginDate, Date endDate) throws FlexPayException {
+	public void setPersonRegistration(Apartment apartment, Date beginDate, Date endDate) {
 		if (beginDate == null || beginDate.before(ApplicationConfig.getPastInfinite())) {
 			beginDate = ApplicationConfig.getPastInfinite();
 		}
@@ -214,10 +214,6 @@ public class Person extends DomainObjectWithStatus {
 
 		beginDate = DateUtils.truncate(beginDate, Calendar.DAY_OF_MONTH);
 		endDate = DateUtils.truncate(endDate, Calendar.DAY_OF_MONTH);
-
-		if (beginDate.after(endDate)) {
-			throw new FlexPayException("beginDate after endDate", "ab.person.registration.error.begin_after_end");
-		}
 
 		//todo move it to registration action instead
 //		Date[] dateInterval = getBeginValidInterval();
@@ -375,4 +371,11 @@ public class Person extends DomainObjectWithStatus {
 		return pi.getLastName() + " " + pi.getFirstName() + " " + pi.getMiddleName();
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		return obj instanceof Person && super.equals(obj);
+	}
 }
