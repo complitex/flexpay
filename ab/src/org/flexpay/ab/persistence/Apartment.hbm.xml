@@ -79,7 +79,6 @@
 		SELECT DISTINCT a
 		FROM Apartment a
 			LEFT JOIN FETCH a.apartmentNumbers
-			LEFT JOIN FETCH a.personRegistrations r
 		WHERE a.id=?
 	</query>
 

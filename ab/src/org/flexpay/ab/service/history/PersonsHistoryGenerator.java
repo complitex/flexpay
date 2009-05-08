@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.util.List;
+import java.util.Iterator;
 
 /**
  * Generator of history of all persons
@@ -32,7 +33,17 @@ public class PersonsHistoryGenerator {
 		range.setPageSize(pageSize);
 		do {
 			List<Person> persons = personService.listPersonsWithIdentities(range);
+			List<Person> personRegistrations = personService.listPersonsWithRegistrations(range);
+			Iterator<Person> regsIt = personRegistrations.iterator();
+			Person lastRegistrations = regsIt.hasNext() ? regsIt.next() : null;
 			for (Person person : persons) {
+				// replace person registrations stub with a fetched set
+				if (lastRegistrations != null) {
+					if (person.equals(lastRegistrations)) {
+						person.setPersonRegistrations(lastRegistrations.getPersonRegistrations());
+						lastRegistrations = regsIt.hasNext() ? regsIt.next() : null;
+					}
+				}
 				historyGenerator.generateFor(person);
 			}
 			range.nextPage();

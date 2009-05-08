@@ -1,10 +1,9 @@
 package org.flexpay.ab.service.history;
 
 import org.apache.commons.lang.StringUtils;
-import org.flexpay.ab.persistence.IdentityType;
-import org.flexpay.ab.persistence.Person;
-import org.flexpay.ab.persistence.PersonIdentity;
+import org.flexpay.ab.persistence.*;
 import org.flexpay.ab.service.IdentityTypeService;
+import org.flexpay.ab.service.ApartmentService;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.history.Diff;
 import org.flexpay.common.persistence.history.HistoryRecord;
@@ -14,6 +13,7 @@ import org.flexpay.common.persistence.history.TemporalObjectsHistoryBuildHelper.
 import org.flexpay.common.persistence.history.impl.HistoryBuilderBase;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.DateUtil;
+import static org.flexpay.common.util.CollectionUtils.list;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
@@ -25,6 +25,7 @@ import java.util.*;
 public class PersonHistoryBuilder extends HistoryBuilderBase<Person> {
 
 	public static final int FIELD_IDENTITY = 1;
+	public static final int FIELD_REGISTRATION = 2;
 
 	public static final String KEY_IDENTITY_ID = "IDENTITY_ID";
 	public static final String KEY_BIRTH_DATE = "BIRTH_DATE";
@@ -36,9 +37,11 @@ public class PersonHistoryBuilder extends HistoryBuilderBase<Person> {
 	public static final String KEY_DOCUMENT_NUMBER = "DOCUMENT_NUMBER";
 	public static final String KEY_SEX = "SEX";
 	public static final String KEY_DEFAULT_FLAG = "DEFAULT_FLAG";
+	public static final String KEY_APARTMENT_ID = "APARTMENT_ID";
 
 	private Logger log = LoggerFactory.getLogger(getClass());
 
+	private ApartmentService apartmentService;
 	private IdentityTypeService identityTypeService;
 
 	/**
@@ -52,9 +55,56 @@ public class PersonHistoryBuilder extends HistoryBuilderBase<Person> {
 
 		log.debug("creating new persons diff");
 
-		Person old = a1 == null ? new Person() : a2;
+		Person old = a1 == null ? new Person() : a1;
 
 		buildIdentitiesDiff(old, a2, diff);
+		buildRegistrationDiff(old, a2, diff);
+	}
+
+	private void buildRegistrationDiff(@NotNull Person a1, @NotNull Person a2, @NotNull Diff diff) {
+
+		List<PersonRegistration> regs1 = list(a1.getPersonRegistrations());
+		Collections.sort(regs1);
+		List<PersonRegistration> regs2 = list(a2.getPersonRegistrations());
+		Collections.sort(regs2);
+
+		TemporalObjectsHistoryBuildHelper.buildDiff(new TemporalDataExtractor<PersonRegistration>() {
+
+			public Date getBeginDate(PersonRegistration obj) {
+				return obj.getBeginDate();
+			}
+
+			public Date getEndDate(PersonRegistration obj) {
+				return obj.getEndDate();
+			}
+
+			public void buildDiff(Date begin, Date end, PersonRegistration t1, PersonRegistration t2, Diff df) {
+				addRegistrationDiff(begin, end, t1, t2, df);
+			}
+		}, regs1, regs2, diff);
+
+	}
+
+	private void addRegistrationDiff(Date begin, Date end, PersonRegistration n1, PersonRegistration n2, Diff diff) {
+
+		if (log.isDebugEnabled()) {
+			log.debug("Adding identity diff in interval: {} - {}", DateUtil.format(begin), DateUtil.format(end));
+		}
+
+		Apartment a1 = n1 == null ? null : n1.getApartment();
+		Apartment a2 = n2 == null ? null : n2.getApartment();
+		if (!equals(a1, a2)) {
+			HistoryRecord rec = new HistoryRecord();
+			rec.setFieldType(FIELD_REGISTRATION);
+			rec.setFieldKey(KEY_APARTMENT_ID);
+			rec.setOldStringValue(a1 == null ? null : masterIndexService.getMasterIndex(a1));
+			rec.setNewStringValue(a2 == null ? null : masterIndexService.getMasterIndex(a2));
+			rec.setBeginDate(begin);
+			rec.setEndDate(end);
+			diff.addRecord(rec);
+
+			log.debug("Added registration record {}", rec);
+		}
 	}
 
 	private void buildIdentitiesDiff(@NotNull Person a1, @NotNull Person a2, @NotNull Diff diff) {
@@ -273,6 +323,9 @@ public class PersonHistoryBuilder extends HistoryBuilderBase<Person> {
 				case FIELD_IDENTITY:
 					patchIdentity(context, person, record);
 					break;
+				case FIELD_REGISTRATION:
+					patchRegistration(person, record);
+					break;
 				default:
 					log.warn("Unsupported field type {}", record);
 					record.setProcessingStatus(ProcessingStatus.STATUS_IGNORED);
@@ -281,6 +334,22 @@ public class PersonHistoryBuilder extends HistoryBuilderBase<Person> {
 
 		if (context.lastIdentity != null) {
 			person.setIdentity(context.lastIdentity);
+		}
+	}
+
+	private void patchRegistration(Person person, HistoryRecord record) {
+
+		if (KEY_APARTMENT_ID.equals(record.getFieldKey())) {
+			String externalId = record.getNewStringValue();
+			Stub<Apartment> stub = correctionsService.findCorrection(
+					externalId, Apartment.class, masterIndexService.getMasterSourceDescription());
+			if (stub == null) {
+				throw new IllegalStateException("Cannot find identity type by master index: " + externalId);
+			}
+			Apartment apartment = apartmentService.readFull(stub);
+			person.setPersonRegistration(apartment, record.getBeginDate(), record.getEndDate());
+			record.setProcessingStatus(ProcessingStatus.STATUS_PROCESSED);
+			log.debug("Set person registration");
 		}
 	}
 
@@ -381,5 +450,10 @@ public class PersonHistoryBuilder extends HistoryBuilderBase<Person> {
 	@Required
 	public void setIdentityTypeService(IdentityTypeService identityTypeService) {
 		this.identityTypeService = identityTypeService;
+	}
+
+	@Required
+	public void setApartmentService(ApartmentService apartmentService) {
+		this.apartmentService = apartmentService;
 	}
 }

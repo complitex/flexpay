@@ -5,7 +5,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Date;
 
-public class PersonRegistration extends DomainObject {
+public class PersonRegistration extends DomainObject implements Comparable<PersonRegistration> {
 
 	private Person person;
 	private Apartment apartment;
@@ -71,5 +71,9 @@ public class PersonRegistration extends DomainObject {
 
 	public boolean isValid(@NotNull Date date) {
 		return beginDate.compareTo(date) <= 0 && date.compareTo(endDate) <= 0;
+	}
+
+	public int compareTo(PersonRegistration o) {
+		return beginDate.compareTo(o.beginDate);
 	}
 }

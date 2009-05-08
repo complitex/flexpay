@@ -137,7 +137,7 @@ public class ApartmentServiceImpl implements ApartmentService {
 	public Apartment update(@NotNull Apartment apartment) throws FlexPayExceptionContainer {
 		validate(apartment);
 
-		Apartment old = readWithPersons(stub(apartment));
+		Apartment old = readFull(stub(apartment));
 		if (old == null) {
 			throw new FlexPayExceptionContainer(
 					new FlexPayException("No object found to update " + apartment));
@@ -204,6 +204,16 @@ public class ApartmentServiceImpl implements ApartmentService {
 	public Apartment readWithPersons(@NotNull Stub<Apartment> stub) {
 		List<Apartment> apartments = apartmentDao.findWithPersonsFull(stub.getId());
 		return apartments.isEmpty() ? null : apartments.get(0);
+	}
+
+	/**
+	 * Read apartment
+	 *
+	 * @param stub Apartment stub
+	 * @return Object if found, or <code>null</code> otherwise
+	 */
+	public Apartment readFull(@NotNull Stub<Apartment> stub) {
+		return apartmentDao.readFull(stub.getId());
 	}
 
 	public void fillFilterIds(@NotNull Stub<Apartment> stub, ArrayStack filters) throws FlexPayException {

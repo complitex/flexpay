@@ -40,7 +40,7 @@ public class ApartmentHistoryHandler extends HistoryHandlerBase<Apartment> {
 		if (diff.getOperationType() == HistoryOperationType.TYPE_CREATE) {
 			if (stub != null) {
 				log.info("Request for object creation, but it already exists {}", diff);
-				object = apartmentService.readWithPersons(stub);
+				object = apartmentService.readFull(stub);
 			} else {
 				object = new Apartment();
 			}
@@ -49,7 +49,7 @@ public class ApartmentHistoryHandler extends HistoryHandlerBase<Apartment> {
 				log.warn("Requested for object update/delete, but not found {}", diff);
 				throw new IllegalStateException("Requested for object update/delete, but not found " + masterIndex);
 			}
-			object = apartmentService.readWithPersons(stub);
+			object = apartmentService.readFull(stub);
 		}
 
 		if (object == null) {
