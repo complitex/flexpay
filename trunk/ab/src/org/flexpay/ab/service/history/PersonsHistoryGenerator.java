@@ -35,6 +35,7 @@ public class PersonsHistoryGenerator {
 			for (Person person : persons) {
 				historyGenerator.generateFor(person);
 			}
+			range.nextPage();
 		} while (range.hasMore());
 
 		log.debug("Ended generating history for persons");

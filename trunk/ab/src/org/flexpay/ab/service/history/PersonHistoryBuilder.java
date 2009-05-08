@@ -85,11 +85,11 @@ public class PersonHistoryBuilder extends HistoryBuilderBase<Person> {
 
 		TemporalObjectsHistoryBuildHelper.buildDiff(new TemporalDataExtractor<PersonIdentity>() {
 			public Date getBeginDate(PersonIdentity obj) {
-				return null;
+				return obj.getBeginDate();
 			}
 
 			public Date getEndDate(PersonIdentity obj) {
-				return null;
+				return obj.getEndDate();
 			}
 
 			public void buildDiff(Date begin, Date end, PersonIdentity t1, PersonIdentity t2, Diff df) {
