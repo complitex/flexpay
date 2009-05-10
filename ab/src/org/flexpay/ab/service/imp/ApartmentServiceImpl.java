@@ -31,7 +31,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
-@Transactional (readOnly = true, rollbackFor = Exception.class)
+@Transactional (readOnly = true)
 public class ApartmentServiceImpl implements ApartmentService {
 
 	@NonNls

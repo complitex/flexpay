@@ -15,6 +15,7 @@
 			<result type="stream">
 				<param name="contentType">text/csv</param>
 				<param name="inputName">inputStream</param>
+				<param name="contentLength">${file.size}</param>
 				<param name="contentDisposition">filename="${file.originalName}"</param>
 				<param name="bufferSize">1024</param>
 			</result>
