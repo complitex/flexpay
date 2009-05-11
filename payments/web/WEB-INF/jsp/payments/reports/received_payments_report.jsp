@@ -87,7 +87,17 @@
 				<td class="col_oper" nowrap="nowrap">&nbsp;</td>
 				<td class="col_oper" nowrap="nowrap">&nbsp;</td>
 			</tr>
-
 		</s:iterator>
+
+		<tr>
+			<td class="th" colspan="10">
+				<s:text name="payments.reports.received.totals">
+					<s:param value="paymentsCount" />
+					<s:param value="paymentsSumm" />
+					<s:param value="returnsCount" />
+					<s:param value="returnsSumm" />
+				</s:text>
+			</td>
+		</tr>
 	</table>
 </s:elseif>

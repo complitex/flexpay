@@ -23,4 +23,14 @@
 		where s.code=2 and o.creationDate>=? and o.creationDate<=?
 		order by o.creatorOrganization.id, d.service.id 
 	]]></query>
+
+	<query name="OperationTypeStatistics.collect"><![CDATA[
+		select type.code, count(o), sum(o.operationSumm)
+		from Operation o
+			inner join o.operationStatus status
+			inner join o.operationType type
+		where status.code=2 and o.registerOrganization.id=? and o.creationDate>=? and o.creationDate<=?
+		group by type.code
+	]]></query>
+
 </hibernate-mapping>
