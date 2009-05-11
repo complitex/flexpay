@@ -1,14 +1,14 @@
 package org.flexpay.payments.dao.impl;
 
-import org.flexpay.payments.dao.PaymentStatisticsDaoExt;
-import org.flexpay.payments.service.statistics.ServicePaymentsStatistics;
 import org.flexpay.common.util.CollectionUtils;
+import org.flexpay.payments.dao.PaymentStatisticsDaoExt;
+import org.flexpay.payments.service.statistics.OperationTypeStatistics;
+import org.flexpay.payments.service.statistics.ServicePaymentsStatistics;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
-import java.util.List;
-import java.util.Date;
-import java.util.ArrayList;
 import java.math.BigDecimal;
+import java.util.Date;
+import java.util.List;
 
 public class PaymentStatisticsDaoExtImpl extends HibernateDaoSupport implements PaymentStatisticsDaoExt {
 
@@ -35,6 +35,32 @@ public class PaymentStatisticsDaoExtImpl extends HibernateDaoSupport implements 
 			stats.setPayedCachelessSumm(BigDecimal.ZERO);
 			stats.setReturnedCacheSumm(BigDecimal.ZERO);
 			stats.setReturnedCachelessSumm(BigDecimal.ZERO);
+			result.add(stats);
+		}
+
+		return result;
+	}
+
+	/**
+	 * Build payment operations statistics
+	 *
+	 * @param organizationId Register organization
+	 * @param begin		  Report period begin timestamp
+	 * @param end			Report period end timestamp
+	 * @return List of payment operation statistics
+	 */
+	public List<OperationTypeStatistics> getOperationTypeStatistics(Long organizationId, Date begin, Date end) {
+		Object[] params = {organizationId, begin, end};
+		List<?> data = getHibernateTemplate()
+				.findByNamedQuery("OperationTypeStatistics.collect", params);
+
+		List<OperationTypeStatistics> result = CollectionUtils.list();
+		for (Object obj : data) {
+			Object[] row = (Object[]) obj;
+			OperationTypeStatistics stats = new OperationTypeStatistics();
+			stats.setOperationTypeCode((Integer) row[0]);
+			stats.setCount((Long) row[1]);
+			stats.setSumm((BigDecimal) row[2]);
 			result.add(stats);
 		}
 

@@ -45,7 +45,8 @@
 		  p:operationService-ref="operationService"
 		  p:spService-ref="spService"
 		  p:serviceTypeService-ref="serviceTypeService"
-		  p:serviceProviderService-ref="serviceProviderService" />
+		  p:serviceProviderService-ref="serviceProviderService"
+		  p:statisticsService-ref="paymentsStatisticsService" />
 
 	<bean id="paymentsReportAction" scope="prototype"
 		  class="org.flexpay.payments.actions.reports.PaymentsReportAction"

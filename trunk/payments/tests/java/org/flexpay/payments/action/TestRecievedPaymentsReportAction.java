@@ -4,14 +4,19 @@ import org.flexpay.payments.test.PaymentsSpringBeanAwareTestCase;
 import org.flexpay.payments.actions.reports.ReceivedPaymentsReportAction;
 import org.flexpay.payments.persistence.Operation;
 import org.flexpay.common.persistence.filter.BeginDateFilter;
+import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.util.config.ApplicationConfig;
+import org.flexpay.orgs.persistence.Organization;
+import org.flexpay.orgs.persistence.TestData;
 import org.springframework.beans.factory.annotation.Autowired;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
 import java.util.List;
 import java.util.Date;
+import java.math.BigDecimal;
 
 public class TestRecievedPaymentsReportAction extends PaymentsSpringBeanAwareTestCase {
 
@@ -23,7 +28,7 @@ public class TestRecievedPaymentsReportAction extends PaymentsSpringBeanAwareTes
 		BeginDateFilter filter = new BeginDateFilter();
 		filter.setStringDate("2009/04/14");
 		action.setBeginDateFilter(filter);
-		action.setOrganizationId(1L);
+		action.setOrganizationId(TestData.ORG_TSZH.getId());
 		action.setSubmitted("submitted");
 
 		action.execute();
@@ -37,5 +42,11 @@ public class TestRecievedPaymentsReportAction extends PaymentsSpringBeanAwareTes
 			assertTrue("Invalid operations sort", minDate.compareTo(operation.getCreationDate()) <= 0);
 			minDate = operation.getCreationDate();
 		}
+
+		// check if statistics collected correctly
+		assertEquals("Invalid payments count", 1, action.getPaymentsCount());
+		assertEquals("Invalid returns count", 0, action.getReturnsCount());
+		assertEquals("Invalid payments summ", "113.00", action.getPaymentsSumm());
+		assertEquals("Invalid returns summ", "0.00", action.getReturnsSumm());
 	}
 }
