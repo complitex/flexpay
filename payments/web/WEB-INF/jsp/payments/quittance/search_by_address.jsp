@@ -4,10 +4,42 @@
 <script type="text/javascript">
 
 	function doSearch() {
-		var apartmentId = $('#selected_apartment_id').val();
-		$('#searchResultsDiv').load('<s:url action="searchResults"/>', { 'searchType' : 'ADDRESS', 'searchCriteria': apartmentId, 'actionName': 'searchByAddress' });
-		$('#searchResultsDiv').show();
+        if (validateAdress()){
+            document.getElementById("searchBtn").disabled = true;
+            var apartmentId = $('#selected_apartment_id').val();
+            $('#searchResultsDiv').load('<s:url action="searchResults"/>', { 'searchType' : 'ADDRESS', 'searchCriteria': apartmentId, 'actionName': 'searchByAddress' }, enableSearchBtn());
+            $('#searchResultsDiv').show();
+        }
 	}
+
+    function enableSearchBtn(){
+        document.getElementById("searchBtn").disabled = false;
+    }
+
+    function validateAdress(){
+        //validate town
+        if (document.getElementById("selected_town_id").value.length ==0){
+            alert("'<s:text name="error.town_is_not_selected"/>'");
+            return flase;
+        }
+
+        //validate street
+        if (document.getElementById("selected_street_id").value.length ==0){
+            alert("'<s:text name="error.street_is_not_selected"/>'");
+            return flase;
+        }
+        //validate house
+        if (document.getElementById("selected_building_id").value.length ==0){
+            alert("'<s:text name="error.building_is_not_selected"/>'");
+            return flase;
+        }
+        //validate appartment
+        if (document.getElementById("selected_apartment_id").value.length ==0){
+            alert("'<s:text name="error.apartment_is_not_selected"/>'");
+            return flase;
+        }
+        return true;
+    }
 
 </script>
 
@@ -62,7 +94,7 @@
 					   style="width: 200px;"/>
 			</td>
 			<td rowspan="2">
-				<input type="button" value="<s:text name="common.search" />" class="btn-exit" onclick="doSearch();" tabindex="2" />
+				<input id="searchBtn" type="button" value="<s:text name="common.search" />" class="btn-exit" onclick="doSearch();" tabindex="2" />
 			</td>
 		</tr>
 		<tr>
