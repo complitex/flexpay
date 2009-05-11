@@ -42,7 +42,10 @@
 	<bean id="generateReportAction" scope="prototype"
 		  class="org.flexpay.payments.actions.reports.ReceivedPaymentsReportAction"
 		  p:organizationService-ref="organizationService"
-		  p:operationService-ref="operationService" />
+		  p:operationService-ref="operationService"
+		  p:spService-ref="spService"
+		  p:serviceTypeService-ref="serviceTypeService"
+		  p:serviceProviderService-ref="serviceProviderService" />
 
 	<bean id="paymentsReportAction" scope="prototype"
 		  class="org.flexpay.payments.actions.reports.PaymentsReportAction"

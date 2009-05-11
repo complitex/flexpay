@@ -68,8 +68,8 @@
 						<td class="col_doc" nowrap="nowrap"><s:property value="summ"/></td>
 						<td class="col_doc" nowrap="nowrap">&nbsp;</td>
 						<td class="col_doc" nowrap="nowrap">&nbsp;</td>
-						<td class="col_doc" nowrap="nowrap"><s:property value="service.serviceType.name"/></td>
-						<td class="col_doc" nowrap="nowrap"><s:property value="service.serviceProvider.name"/></td>
+						<td class="col_doc" nowrap="nowrap"><s:property value="%{getServiceTypeName(service)}"/></td>
+						<td class="col_doc" nowrap="nowrap"><s:property value="%{getServiceProviderName(service)}"/></td>
 					</tr>
 				</s:if>
 			</s:iterator>

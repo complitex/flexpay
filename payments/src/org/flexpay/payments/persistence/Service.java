@@ -156,4 +156,7 @@ public class Service extends DomainObject {
 		return description != null ? description.getName() : "";
 	}
 
+	public Stub<ServiceType> getServiceTypeStub() {
+		return new Stub<ServiceType>(serviceType);
+	}
 }
