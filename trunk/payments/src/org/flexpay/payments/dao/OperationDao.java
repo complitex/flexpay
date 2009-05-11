@@ -15,6 +15,7 @@ public interface OperationDao extends GenericDao<Operation, Long> {
 	 * 
 	 * @param beginDate lower bound for operation creation date
 	 * @param endDate higher bound for operation creation date
+	 * @param pager Page
 	 * @return list of operations
 	 */
 	List<Operation> listPaymentOperations(Date beginDate, Date endDate, Page<Operation> pager);

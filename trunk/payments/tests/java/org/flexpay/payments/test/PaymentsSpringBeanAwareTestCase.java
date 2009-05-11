@@ -32,7 +32,9 @@ public class PaymentsSpringBeanAwareTestCase extends SpringBeanAwareTestCase {
 				APARTMENT_ADD,
 				PAYMENTS_REPORT,
 				SERVICE_PROVIDER_READ,
-				SERVICE_TYPE_READ
+				SERVICE_TYPE_READ,
+				ORGANIZATION_READ,
+				OPERATION_READ
 		);
 		User user = new User("test", "test", true, true, true, true, authorities);
 		Authentication auth = new AnonymousAuthenticationToken("key", user, authorities);

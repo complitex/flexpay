@@ -466,8 +466,7 @@
 		left join fetch serviceProvider.organization organization
 		left join fetch organization.names names
 		where (o.creationDate >= ? and o.creationDate < ?)
-			and (o.operationType.code = 1 or o.operationType.code = 2
-			or o.operationType.code = 5 or o.operationType.code = 6)
+			and (o.operationType.code in (1, 2, 5, 6))
 			and (status.code <> 3)		
 	]]></query>
 
@@ -475,8 +474,7 @@
 		select count(*)
 		from Operation o
 		where (o.creationDate >= ? and o.creationDate < ?)
-			and (o.operationType.code = 1 or o.operationType.code = 2
-			or o.operationType.code = 5 or o.operationType.code = 6)
+			and (o.operationType.code in (1, 2, 5, 6))
 			and (o.operationStatus.code <> 3)
 	]]></query>
 
@@ -489,16 +487,11 @@
 		left join fetch doc.documentStatus docStatus
 		left join fetch doc.documentType docType
 		left join fetch doc.service service
-		left join fetch service.serviceType serviceType
-		left join fetch serviceType.typeNames
-		left join fetch service.serviceProvider serviceProvider
-		left join fetch serviceProvider.organization organization
-		left join fetch organization.names names
 		where o.registerOrganization.id = ?
 		 	and (o.registerDate >= ? and o.registerDate <= ?)
-			and (o.operationType.code = 1 or o.operationType.code = 2
-			or o.operationType.code = 5 or o.operationType.code = 6)
+			and (o.operationType.code in (1, 2, 5, 6))
 			and (status.code = 2)
+		order by o.creationDate
 	]]></query>
 
 </hibernate-mapping>
