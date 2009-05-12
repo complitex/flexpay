@@ -81,8 +81,18 @@ var FP = {
                 });
             }
         });
-    }
+    },
 
+	/**
+	 * Disable enter key event
+	 *
+	 * Usage: <input type=”text” name=”mytext” onKeyPress=”return disableEnterKey(event)”>
+	 *
+	 * @param e Event
+	 */
+	disableEnterKey : function(e) {
+		return e.keyCode != 13;
+	}
 };
 
 // Array Remove - By John Resig (MIT Licensed)

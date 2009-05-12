@@ -50,6 +50,7 @@
 						<td class="col"><s:property value="payed" /></td>
 						<td class="col"><s:textfield name="paymentsMap[%{#serviceId}]" value="%{outgoingBalance}"
 													 onchange="onPaymentUpdate(this.form)"
+													 onkeypress="return FP.disableEnterKey(event);"
 													 cssStyle="width: 100%; text-align: right;" /></td>
 					</tr>
 				</s:iterator>
@@ -61,6 +62,7 @@
 					<td class="col" colspan="3" style="text-align:right;font-weight:bold;"><s:text
 							name="payments.quittances.quittance_pay.total_payable" /></td>
 					<td class="col"><s:textfield name="totalToPay" readonly="true" value="%{totalToPay}"
+												 onkeypress="return FP.disableEnterKey(event);"
 												 cssStyle="width: 100%; text-align: right;" /></td>
 				</tr>
 
@@ -79,6 +81,7 @@
 					<td colspan="3" style="font-weight: bold; text-align: right;"><s:text
 							name="payments.quittance.payment.change" /></td>
 					<td><s:textfield name="changeSumm" cssStyle="width: 100%; text-align: right;" value="0.00"
+									 onkeypress="return FP.disableEnterKey(event);"
 									 readonly="true" /></td>
 				</tr>
 
