@@ -68,7 +68,9 @@ public class QuittancePayAction extends FPActionSupport {
 				operation.setPayerFIO(document.getPayerFIO());
 			}
 
-			operation.addDocument(document);
+			if (document.getSumm().compareTo(BigDecimal.ZERO) > 0) {
+				operation.addDocument(document);
+			}
 		}
 
 		return operation;
