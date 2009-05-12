@@ -313,3 +313,7 @@ ul.docs
 	margin: 0 2px -2px 2px;
 	cursor: pointer;
 }
+
+input[readonly]{
+	color:gray
+}
