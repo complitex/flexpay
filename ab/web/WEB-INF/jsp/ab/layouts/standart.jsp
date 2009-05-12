@@ -48,17 +48,12 @@
         <menu:displayMenu name="FPMenu" levelBegin="2" levelEnd="2" />
     </menu:useMenuDisplayer>
 
-    <div class="breadCrumbs">
-        <tiles:insertAttribute name="breadCrumbs" />
-    </div>
 
-<!--
 <div class="gradusnik">
     <div class="gradusnik-padding">
-        <tiles:insertAttribute name="gradusnik" />
+        <tiles:insertAttribute name="breadCrumbs" />
     </div>
 </div>
--->
 
 <div class="columns">
 
