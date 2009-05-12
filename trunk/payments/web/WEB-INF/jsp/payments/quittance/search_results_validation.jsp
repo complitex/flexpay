@@ -91,21 +91,6 @@
 			messages: {},
 			errorClass: "cols_1_error",
 			errorElement: "span",
-			success: function(label) {
-				var nextRow = label.parent('td').parent('tr.cols_1_error').next('tr.cols_1');
-				label.parent("td").parent("tr.cols_1_error").css("display", "none");
-				label.remove();
-
-				if (validator<s:property value="%{#nQI.index}"/>.numberOfInvalids() == 0) {
-					updateTotal($('#quittancePayForm<s:property value="%{#nQI.index}"/>'));
-					updateChange($('#quittancePayForm<s:property value="%{#nQI.index}"/>'));
-
-					// if the updated field is a payment we should update input
-					if (nextRow.hasClass('service_payment')) {
-						updateInput($('#quittancePayForm<s:property value="%{#nQI.index}"/>'));
-					}
-				}
-			},
 			showErrors: function(errorMap, errorList) {
 				this.defaultShowErrors();
 			},
@@ -224,8 +209,8 @@
 		Change calculation change
 	 */
 
-	// change calculation
-	function updateChange(form) {
+	// change modification
+	function onInputUpdate(form) {
 
 		var totalPaySumm = dotted2Int($('#totalToPay', form).val());
 		var inputSumm = dotted2Int($('#inputSumm', form).val());
@@ -235,7 +220,7 @@
 	}
 
 	// total payment summ calculation
-	function updateTotal(form) {
+	function onPaymentUpdate(form) {
 
 		var total = 0;
 		var elements = $("input[id^=paymentsMap_]", form);
@@ -251,11 +236,7 @@
 		}
 
 		$('#totalToPay', form).val(int2Dotted(total));
-	}
-
-	// sets input summ value equal to the total summ
-	function updateInput(form) {
-		$('#inputSumm', form).val($('#totalToPay', form).val());
-		updateChange(form);
+		$('#inputSumm', form).val(int2Dotted(total));
+		$('#changeSumm', form).val(int2Dotted(0));
 	}
 </script>

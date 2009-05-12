@@ -49,6 +49,7 @@
 						<td class="col"><s:property value="%{getProviderName(serviceMasterIndex)}" /></td>
 						<td class="col"><s:property value="payed" /></td>
 						<td class="col"><s:textfield name="paymentsMap[%{#serviceId}]" value="%{outgoingBalance}"
+													 onchange="onPaymentUpdate(this.form)"
 													 cssStyle="width: 100%; text-align: right;" /></td>
 					</tr>
 				</s:iterator>
@@ -70,6 +71,7 @@
 					<td colspan="3" style="font-weight: bold; text-align: right; "><s:text
 							name="payments.quittance.payment.input" /></td>
 					<td><s:textfield name="inputSumm" cssStyle="width: 100%; text-align: right;"
+									 onchange="onInputUpdate(this.form)"
 									 value="%{totalToPay}" /></td>
 				</tr>
 
