@@ -61,11 +61,9 @@ public class QuittancePayAction extends FPActionSupport {
 		Operation operation = buildOperation();
 		for (String serviceIndx : payments.keySet()) {
 
-			log.debug("[!!!]serviceIndx {}", serviceIndx);
-
 			Document document = buildDocument(serviceIndx);
 
-			if (StringUtils.isNotEmpty(operation.getAddress())) {
+			if (StringUtils.isEmpty(operation.getAddress())) {
 				operation.setAddress(document.getAddress());
 				operation.setPayerFIO(document.getPayerFIO());
 			}
