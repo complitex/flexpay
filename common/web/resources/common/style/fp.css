@@ -315,5 +315,5 @@ ul.docs
 }
 
 input[readonly]{
-	color:gray
+	background-color: #eeeeee;
 }
