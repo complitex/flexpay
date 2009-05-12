@@ -12,6 +12,7 @@
 
 .columns .main-content table td {
 	font-size: 1.2em;
+	font-weight: bold;
 }
 
 .btn-exit {
@@ -24,6 +25,10 @@
 
 .form-search {
 	font-size: 0.7em;
+}
+
+.columns .main-content table.search_results td {
+	font-size: 0.8em;
 }
 
 .columns .main-content table.operations td.th {	
