@@ -101,3 +101,6 @@
 		</form>
 	</s:iterator>
 </s:if>
+<s:else>
+	<s:text name="payments.quittances.quittance_pay.no_debts_found"/>
+</s:else>
