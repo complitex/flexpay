@@ -118,8 +118,14 @@
 
 	// setting up timepickers
 	$(function() {
-		$('#operationsList_beginTime').timepickr({ convention: 24 });
-		$('#operationsList_endTime').timepickr({ convention: 24 });
+		$('#operationsList_beginTime').timeEntry({
+				show24Hours: true,
+				showSeconds: true
+			});
+		$('#operationsList_endTime').timeEntry({
+				show24Hours: true,
+				showSeconds: true
+			});
 	});
 </script>
 
