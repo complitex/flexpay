@@ -13,6 +13,7 @@ import static org.flexpay.payments.persistence.quittance.QuittanceDetailsRespons
 import org.flexpay.payments.service.QuittanceDetailsFinder;
 import org.flexpay.payments.service.SPService;
 import org.flexpay.payments.util.config.ApplicationConfig;
+import org.flexpay.payments.util.ServiceFullIndexUtil;
 import org.flexpay.ab.service.ApartmentService;
 import org.flexpay.ab.service.PersonService;
 import org.flexpay.ab.persistence.Apartment;
@@ -212,6 +213,23 @@ public class SearchQuittanceAction extends FPActionSupport {
 			return quittanceInfo.getAddress();
 		}
 	}
+
+	public BigDecimal getTotalToPay() {
+
+		BigDecimal total = new BigDecimal("0.00");
+		for (QuittanceInfo info : quittanceInfos) {
+			for (QuittanceInfo.ServiceDetails details : info.getDetailses()) {
+				total = total.add(details.getOutgoingBalance());
+			}
+		}
+
+		return total;
+	}
+
+	public String getServiceFullIndex(String quittanceId, String serviceId) {
+
+		ServiceFullIndexUtil.getServiceFullIndex(quittanceId, serviceId);
+	}	
 
 	// form data
 	public String getRedirectActionName() {
