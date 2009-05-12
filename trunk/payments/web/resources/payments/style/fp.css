@@ -31,6 +31,10 @@
 	font-size: 0.8em;
 }
 
+.columns .main-content table.search_results td input.btn-exit {
+	font-size: 1.0em;
+}
+
 .columns .main-content table.operations td.th {	
 	font-size: 0.8em;
 }
