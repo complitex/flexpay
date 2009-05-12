@@ -467,7 +467,8 @@
 		left join fetch organization.names names
 		where (o.creationDate >= ? and o.creationDate < ?)
 			and (o.operationType.code in (1, 2, 5, 6))
-			and (status.code <> 3)		
+			and (status.code <> 3)
+		order by o.creationDate 
 	]]></query>
 
 	<query name="Operation.listPaymentOperations.count"><![CDATA[
