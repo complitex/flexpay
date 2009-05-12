@@ -56,25 +56,6 @@
 	color: blue;
 }
 
-/* customized timepicker style */
-.ui-timepickr ol {
-	margin: 2px;
-}
-
-.ui-timepickr ol li.hour {
-	padding: 1px;
-	margin-bottom: 0;
-}
-
-.ui-timepickr ol li.minute {
-	padding: 1px;
-	margin-bottom: 0;
-}
-
-.ui-timepickr ol li span {
-	padding: 1px;
-}
-
 input[readonly]{
 	color:gray
 }
