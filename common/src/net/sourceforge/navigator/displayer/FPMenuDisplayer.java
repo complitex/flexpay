@@ -175,8 +175,14 @@ public class FPMenuDisplayer extends AbstractMenuDisplayer {
 								getMenuTarget(component), getMenuToolTip(component), getTitle(component)));
 					}
 				} else {
-					out.println(displayStrings.getMessage("tab.menu.level" + level + ".item", component.getUrl() != null ? component.getUrl() : component.getAction(),
+					out.println(displayStrings.getMessage("tab.menu.level2" + (i == 1 ? ".first_item" : ".item"), 
+							component.getUrl() != null ? component.getUrl() : component.getAction(),
 							getMenuTarget(component), getMenuToolTip(component), getTitle(component)));
+					if (i < len) {
+						out.println(displayStrings.getMessage("tab.menu.level2.separator"));
+					} else {
+						out.println(displayStrings.getMessage("tab.menu.level2.last_item"));
+					}
 				}
 			}
             i++;
