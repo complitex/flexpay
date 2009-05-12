@@ -126,14 +126,24 @@ public class FPMenuDisplayer extends AbstractMenuDisplayer {
 						out.println(displayStrings.getMessage("left.menu.top", getTitle(menu)));
 						firstHasOut = true;
 					}
-					out.println(displayStrings.getMessage("left.menu.top_item.top", getTitle(component)));
+					if (activeMenuBranch != null && component.isActive(activeMenuBranch)) {
+						out.println(displayStrings.getMessage("left.menu.top_item.top_active",
+								component.getUrl() != null ? component.getUrl() : component.getAction(), getMenuToolTip(component), getTitle(component)));
+					} else {
+						out.println(displayStrings.getMessage("left.menu.top_item.top",
+								component.getUrl() != null ? component.getUrl() : component.getAction(), getMenuToolTip(component), getTitle(component)));
+					}
 				}
 				if (component.getMenuComponents().length > 0) {
 					displayComponents(component, level + 1);
 				} else {
 					if (component.getRequiredAuthority() == null || rolesGranted.contains(component.getRequiredAuthority())) {
-						out.println(displayStrings.getMessage("left.menu.item", component.getUrl() != null ? component.getUrl() : component.getAction(),
-								getMenuTarget(component), getMenuToolTip(component), getTitle(component)));
+						if (activeMenuBranch != null && component.isActive(activeMenuBranch)) {
+							out.println(displayStrings.getMessage("left.menu.item_active", getTitle(component)));
+						} else {
+							out.println(displayStrings.getMessage("left.menu.item", component.getUrl() != null ? component.getUrl() : component.getAction(),
+									getMenuTarget(component), getMenuToolTip(component), getTitle(component)));
+						}
 					}
 				}
 				if (level == 3) {

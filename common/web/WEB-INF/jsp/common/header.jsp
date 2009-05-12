@@ -13,10 +13,18 @@
         </td>
 		<sec:authorize ifAnyGranted="ROLE_BASIC">
             <td align="right">
-                <span class="text-small">
-                    <s:text name="login.username" />: <sec:authentication property="principal.username"/>
-                    <a href="<s:url value="/logout" includeParams="none" />"><s:text name="logout.link.title" /></a>
-                </span>
+                <table cellpadding="0" cellspacing="0" border="0" width="100%">
+                <tr>
+                    <td width="100%" align="right">
+                        <span class="text-small">
+                            <a href="#"><s:text name="login.user" /></a>: <sec:authentication property="principal.username"/>
+                        </span>
+                    </td>
+                    <td><img src="<s:url value="/resources/common/img/p.gif" includeParams="none" />" width="10" height="25" alt="" /></td>
+                    <td><input type="button" value="<s:text name="logout.link.title" />" class="btn-exit" onclick="location.href='<s:url value="/logout" includeParams="none" />';" /></td>
+                    <td><img src="<s:url value="/resources/common/img/p.gif" includeParams="none" />" width="25" height="25" alt="" /></td>
+                </tr>
+                </table>
             </td>
 		</sec:authorize>
     </tr>
