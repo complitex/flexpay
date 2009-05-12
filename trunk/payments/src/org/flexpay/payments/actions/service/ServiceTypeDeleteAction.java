@@ -34,6 +34,11 @@ public class ServiceTypeDeleteAction extends FPActionSupport {
 		return REDIRECT_SUCCESS;
 	}
 
+	@Override
+	protected void setBreadCrumbs() {
+
+	}
+
 	public Set<Long> getObjectIds() {
 		return objectIds;
 	}
@@ -46,4 +51,5 @@ public class ServiceTypeDeleteAction extends FPActionSupport {
 	public void setServiceTypeService(ServiceTypeService serviceTypeService) {
 		this.serviceTypeService = serviceTypeService;
 	}
+
 }

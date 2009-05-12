@@ -38,6 +38,7 @@ public class ServiceEditAction extends FPActionSupport {
 
 	private Map<Long, String> descriptions = map();
 
+	private String crumbCreateKey;
 	private SPService spService;
 	private ServiceProviderService providerService;
 	private ServiceTypeService serviceTypeService;
@@ -138,6 +139,14 @@ public class ServiceEditAction extends FPActionSupport {
 		}
 	}
 
+	@Override
+	protected void setBreadCrumbs() {
+		if (service.isNew()) {
+			crumbNameKey = crumbCreateKey;
+		}
+		super.setBreadCrumbs();
+	}
+
 	public Service getService() {
 		return service;
 	}
@@ -202,6 +211,10 @@ public class ServiceEditAction extends FPActionSupport {
 		this.descriptions = descriptions;
 	}
 
+	public void setCrumbCreateKey(String crumbCreateKey) {
+		this.crumbCreateKey = crumbCreateKey;
+	}
+
 	@Required
 	public void setSpService(SPService spService) {
 		this.spService = spService;
@@ -221,4 +234,5 @@ public class ServiceEditAction extends FPActionSupport {
 	public void setProviderService(ServiceProviderService providerService) {
 		this.providerService = providerService;
 	}
+
 }
