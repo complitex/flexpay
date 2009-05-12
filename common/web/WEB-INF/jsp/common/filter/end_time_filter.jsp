@@ -3,16 +3,13 @@
 <s:if test="endTimeFilter.readOnly">
 	<s:property value="endTimeFilter.stringDate"/>
 </s:if><s:else>
+	<style type="text/css">@import "<s:url value="/resources/common/js/jquery/timeentry/jquery.timeentry.css" includeParams="none"/>";</style>
+	<script type="text/javascript" src="<s:url value="/resources/common/js/jquery/timeentry/jquery.timeentry.js" includeParams="none"/>"></script>
 	<script type="text/javascript">
 		$(function() {
-			$('#endTimeFilter').timepickr({
-				convention: 24,
-				hours: true,
-				minutes: true,
-				seconds: true,
-				rangeMin: [0, 15, 30, 45, 59],
-				rangeSec: [0, 30, 59],
-				format24: "{h:02.d}:{m:02.d}:{s:02.d}"
+			$('#endTimeFilter').timeEntry({
+				show24Hours: true,
+				showSeconds: true
 			});
 		});
 	</script>
