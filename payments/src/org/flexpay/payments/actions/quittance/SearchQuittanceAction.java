@@ -74,23 +74,32 @@ public class SearchQuittanceAction extends FPActionSupport {
 		}
 	}
 
+	// eliminates services with non-positive outgiong balances
 	private void filterNegativeSumms() {
 
+		List<QuittanceInfo> filteredInfos = CollectionUtils.list();
 		for (QuittanceInfo info : quittanceInfos) {
 			BigDecimal total = new BigDecimal("0.00");
 
+			List<QuittanceInfo.ServiceDetails> filteredDetails = CollectionUtils.list();
 			for (QuittanceInfo.ServiceDetails sd : info.getDetailses()) {
-				if (sd.getOutgoingBalance().compareTo(BigDecimal.ZERO) < 0) {
-					sd.setOutgoingBalance(new BigDecimal("0.00"));
-				} else {
+				if (sd.getOutgoingBalance().compareTo(BigDecimal.ZERO) > 0) {
+					filteredDetails.add(sd);
 					total = total.add(sd.getOutgoingBalance());
 				}
 			}
 
-			info.setTotalToPay(total);
+			if (filteredDetails.size() > 0) {
+				info.setDetailses(filteredDetails.toArray(new QuittanceInfo.ServiceDetails[filteredDetails.size()]));
+				info.setTotalToPay(total);
+				filteredInfos.add(info);
+			}
 		}
+
+		this.quittanceInfos = filteredInfos.toArray(new QuittanceInfo[filteredInfos.size()]);
 	}
 
+	// eliminates subservices information from quittances info
 	private void filterSubservices() {
 
 		for (QuittanceInfo quittanceInfo : quittanceInfos) {
@@ -109,6 +118,8 @@ public class SearchQuittanceAction extends FPActionSupport {
 			quittanceInfo.setDetailses(filtered.toArray(new QuittanceInfo.ServiceDetails[filtered.size()]));
 			quittanceInfo.setTotalToPay(totalToPay);
 		}
+
+
 	}
 
 	public boolean isNotSubservice(String serviceMasterIndex) {
