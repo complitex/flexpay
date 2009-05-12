@@ -50,8 +50,8 @@
     </menu:useMenuDisplayer>
 
 
-<div class="gradusnik">
-    <div class="gradusnik-padding">
+<div class="crumbs">
+    <div class="crumbs-padding">
         <tiles:insertAttribute name="breadCrumbs" />
     </div>
 </div>
