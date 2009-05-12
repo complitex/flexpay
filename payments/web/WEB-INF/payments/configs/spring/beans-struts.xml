@@ -9,15 +9,17 @@
 	<!-- Define module payments struts actions beans -->
 
 	<!-- quittance-related actions -->
-	<bean id="searchQuittanceAction" scope="prototype"
+	<bean id="searchQuittanceAction"
 		  class="org.flexpay.payments.actions.quittance.SearchQuittanceAction"
 		  p:quittanceDetailsFinder-ref="jmsQuittanceDetailsFinder"
 		  p:spService-ref="spService"
 		  p:serviceProviderService-ref="serviceProviderService"
 		  p:apartmentService-ref="apartmentService"
-		  p:personService-ref="personService" />
+		  p:personService-ref="personService"
+          p:crumbNameKey="payments.crumbs.search_quittances"
+          scope="prototype" />
 
-	<bean id="paymentsQuittancePayAction" scope="prototype"
+	<bean id="paymentsQuittancePayAction"
 		  class="org.flexpay.payments.actions.quittance.QuittancePayAction"
 		  p:documentStatusService-ref="documentStatusService"
 		  p:documentTypeService-ref="documentTypeService"
@@ -27,59 +29,80 @@
 		  p:operationService-ref="operationService"
 		  p:organizationService-ref="organizationService"
 		  p:spService-ref="spService"
-		  p:serviceProviderService-ref="serviceProviderService" />
+		  p:serviceProviderService-ref="serviceProviderService"
+          p:crumbNameKey="payments.crumbs.quittances_pay"
+          scope="prototype" />
 
 	<!-- operation-related actions -->
-	<bean id="operationsListAction" scope="prototype"
+	<bean id="operationsListAction"
 		  class="org.flexpay.payments.actions.operations.OperationsListAction"
 		  p:operationService-ref="operationService"
 		  p:operationStatusService-ref="operationStatusService"
 		  p:serviceTypeService-ref="serviceTypeService"
 		  p:documentService-ref="documentService"
-		  p:documentStatusService-ref="documentStatusService" />
+		  p:documentStatusService-ref="documentStatusService"
+          p:crumbNameKey="payments.crumbs.operations_list"
+          scope="prototype" />
 
 	<!-- reports-related actions -->
-	<bean id="generateReportAction" scope="prototype"
+	<bean id="generateReportAction"
 		  class="org.flexpay.payments.actions.reports.ReceivedPaymentsReportAction"
 		  p:organizationService-ref="organizationService"
 		  p:operationService-ref="operationService"
 		  p:spService-ref="spService"
 		  p:serviceTypeService-ref="serviceTypeService"
 		  p:serviceProviderService-ref="serviceProviderService"
-		  p:statisticsService-ref="paymentsStatisticsService" />
+		  p:statisticsService-ref="paymentsStatisticsService"
+          p:crumbNameKey="payments.crumbs.received_payments_report"
+          scope="prototype" />
 
-	<bean id="paymentsReportAction" scope="prototype"
+	<bean id="paymentsReportAction"
 		  class="org.flexpay.payments.actions.reports.PaymentsReportAction"
 		  p:fpFileService-ref="fpFileService"
-		  p:paymentsReporter-ref="paymentsReporter" />
+		  p:paymentsReporter-ref="paymentsReporter"
+          p:crumbNameKey="payments.crumbs.payments_report"
+          scope="prototype" />
 
 	<!-- registry-related actions -->
-	<bean id="generateRegistryAction" scope="prototype"
-		  class="org.flexpay.payments.actions.registry.GenerateRegistryAction" />
+	<bean id="generateRegistryAction"
+		  class="org.flexpay.payments.actions.registry.GenerateRegistryAction"
+          p:crumbNameKey="payments.crumbs.generate_registry"
+          scope="prototype" />
 
 	<!-- Services -->
-	<bean id="serviceTypesListAction" scope="prototype"
+	<bean id="serviceTypesListAction"
 		  class="org.flexpay.payments.actions.service.ServiceTypesListAction"
-		  p:serviceTypeService-ref="serviceTypeService" />
+		  p:serviceTypeService-ref="serviceTypeService"
+          p:crumbNameKey="payments.crumbs.service_types_list"
+          scope="prototype" />
 
-	<bean id="serviceTypeDeleteAction" scope="prototype"
+	<bean id="serviceTypeDeleteAction"
 		  class="org.flexpay.payments.actions.service.ServiceTypeDeleteAction"
-		  p:serviceTypeService-ref="serviceTypeService" />
+		  p:serviceTypeService-ref="serviceTypeService"
+          scope="prototype" />
 
-	<bean id="serviceTypeEditAction" scope="prototype"
+	<bean id="serviceTypeEditAction"
 		  class="org.flexpay.payments.actions.service.ServiceTypeEditAction"
-		  p:serviceTypeService-ref="serviceTypeService" />
+		  p:serviceTypeService-ref="serviceTypeService"
+          p:crumbNameKey="payments.crumbs.service_type_edit"
+          p:crumbCreateKey="payments.crumbs.service_type_create"
+          scope="prototype" />
 
-	<bean id="servicesListAction" scope="prototype"
+	<bean id="servicesListAction"
 		  class="org.flexpay.payments.actions.service.ServicesListAction"
 		  p:providerService-ref="serviceProviderService"
-		  p:spService-ref="spService" />
+		  p:spService-ref="spService"
+          p:crumbNameKey="payments.crumbs.services_list"
+          scope="prototype" />
 
-	<bean id="serviceEditAction" scope="prototype"
+	<bean id="serviceEditAction"
 		  class="org.flexpay.payments.actions.service.ServiceEditAction"
 		  p:serviceTypeService-ref="serviceTypeService"
 		  p:measureUnitService-ref="measureUnitService"
 		  p:providerService-ref="serviceProviderService"
-		  p:spService-ref="spService" />
+		  p:spService-ref="spService"
+          p:crumbNameKey="payments.crumbs.service_edit"
+          p:crumbCreateKey="payments.crumbs.service_create"
+          scope="prototype" />
 
 </beans>

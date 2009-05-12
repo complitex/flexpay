@@ -3,11 +3,11 @@ package org.flexpay.payments.actions.reports;
 import au.com.bytecode.opencsv.CSVWriter;
 import org.apache.commons.io.IOUtils;
 import org.flexpay.common.actions.FPActionSupport;
-import org.flexpay.common.persistence.FPFile;
 import org.flexpay.common.persistence.FPModule;
+import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.persistence.filter.BeginDateFilter;
-import org.flexpay.common.persistence.filter.EndDateFilter;
 import org.flexpay.common.persistence.filter.BeginTimeFilter;
+import org.flexpay.common.persistence.filter.EndDateFilter;
 import org.flexpay.common.persistence.filter.EndTimeFilter;
 import org.flexpay.common.service.FPFileService;
 import org.flexpay.common.util.DateUtil;
@@ -20,8 +20,8 @@ import org.springframework.beans.factory.annotation.Required;
 
 import java.io.*;
 import java.text.SimpleDateFormat;
-import java.util.List;
 import java.util.Date;
+import java.util.List;
 
 public class PaymentsReportAction extends FPActionSupport {
 
@@ -145,4 +145,5 @@ public class PaymentsReportAction extends FPActionSupport {
 	public void setPaymentsReporter(PaymentsReporter paymentsReporter) {
 		this.paymentsReporter = paymentsReporter;
 	}
+
 }
