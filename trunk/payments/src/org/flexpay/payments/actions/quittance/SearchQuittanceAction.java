@@ -87,6 +87,9 @@ public class SearchQuittanceAction extends FPActionSupport {
 				if (sd.getOutgoingBalance().compareTo(BigDecimal.ZERO) > 0) {
 					filteredDetails.add(sd);
 					total = total.add(sd.getOutgoingBalance());
+				} else {
+					sd.setOutgoingBalance(new BigDecimal("0.00"));
+					filteredDetails.add(sd);
 				}
 			}
 
@@ -228,7 +231,7 @@ public class SearchQuittanceAction extends FPActionSupport {
 
 	public String getServiceFullIndex(String quittanceId, String serviceId) {
 
-		ServiceFullIndexUtil.getServiceFullIndex(quittanceId, serviceId);
+		return ServiceFullIndexUtil.getServiceFullIndex(quittanceId, serviceId);
 	}	
 
 	// form data
