@@ -1,42 +1,45 @@
 package org.flexpay.payments.actions.operations;
 
-import org.apache.commons.lang.time.DateUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.time.DateUtils;
 import org.flexpay.common.actions.FPActionWithPagerSupport;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.filter.BeginDateFilter;
+import org.flexpay.common.persistence.filter.BeginTimeFilter;
 import org.flexpay.common.persistence.filter.EndDateFilter;
+import org.flexpay.common.persistence.filter.EndTimeFilter;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.DateUtil;
+import org.flexpay.common.util.SecurityUtil;
+import org.flexpay.orgs.persistence.Organization;
+import org.flexpay.orgs.service.OrganizationService;
 import org.flexpay.payments.persistence.*;
 import org.flexpay.payments.service.*;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
-import java.math.BigDecimal;
 
 public class OperationsListAction extends FPActionWithPagerSupport<Operation> {
 
 	// form data
 	private List<ServiceType> serviceTypes = CollectionUtils.list();
 
-	// date filters
-	private BeginDateFilter beginDateFilter = new BeginDateFilter();
-	private EndDateFilter endDateFilter = new EndDateFilter();
-
-	// time boundaries
-	private String beginTime;
-	private String endTime;
-
-	// summ boundaries
-	private String minimalSumm;
-	private String maximalSumm;
-
 	// selected service type id
 	private Long serviceTypeId;
+
+	// date/time filters
+	private BeginDateFilter beginDateFilter = new BeginDateFilter();
+	private EndDateFilter endDateFilter = new EndDateFilter();
+	private BeginTimeFilter beginTimeFilter = new BeginTimeFilter();
+	private EndTimeFilter endTimeFilter = new EndTimeFilter();
+
+	// summ filter limits
+	private BigDecimal minimalSumm;
+	private BigDecimal maximalSumm;
 
 	// submit flags
 	private String filterSubmitted;
@@ -45,7 +48,7 @@ public class OperationsListAction extends FPActionWithPagerSupport<Operation> {
 	private String deleteSubmitted;
 
 	// document search flag
-	private String documentSearchEnabled;
+	private String documentSearchEnabled = "false";
 
 	// status provider operations
 	private String status;
@@ -61,11 +64,12 @@ public class OperationsListAction extends FPActionWithPagerSupport<Operation> {
 	private DocumentStatusService documentStatusService;
 	private DocumentService documentService;
 	private ServiceTypeService serviceTypeService;
+	private OrganizationService organizationService;
 
 	@NotNull
 	protected String doExecute() throws Exception {
 
-		//loadServiceTypes();
+		loadServiceTypes();
 
 		if (dateFiltersAreEmpty()) {
 			initFiltersWithDefaults();
@@ -86,49 +90,63 @@ public class OperationsListAction extends FPActionWithPagerSupport<Operation> {
 		}
 	}
 
+	// load operations according to search criteria
 	private void loadOperations() {
 
-		// FIXME old code placed here to make working demo MUST BE ELIMINATED
-		Date beginDate = DateUtil.truncateDay(beginDateFilter.getDate());
-		Date endDate = DateUtil.truncateDay(endDateFilter.getDate());
-		endDate = DateUtils.addDays(endDate, 1);
-		operations = operationService.listPaymentOperations(beginDate, endDate, getPager());
-		// FIXME end of old code
-
-		/*
-		BigDecimal minSumm = new BigDecimal(minimalSumm);
-		BigDecimal maxSumm = new BigDecimal(maximalSumm);
-
-		// service type id is field named serviceTypeId
-
 		if (documentSearchEnabled()) {
+			Date begin = beginDateFilter.getDate();
+			Date end = endDateFilter.getDate();
+			end = DateUtils.setHours(end, 23);
+			end = DateUtils.setMinutes(end, 59);
+			end = DateUtils.setSeconds(end, 59);
 
-			// TODO refactor
-			Date beginDate = DateUtil.truncateDay(beginDateFilter.getDate());
-			Date endDate = DateUtil.truncateDay(endDateFilter.getDate());
-			endDate = DateUtils.setHours(endDate, 23);
-			endDate = DateUtils.setMinutes(endDate, 59);
-			endDate = DateUtils.setSeconds(endDate, 59);
-
-			//List<Operation> searchResults = operationService.listPaymentsOperations(serviceTypeId, beginDate, endDate, minSumm, maxSumm, getPager())
-
-			// TODO save highlighted document identifiers here
-
-			// TODO read full operations data and putting them into operations
+			List<Operation> searchResults = operationService.searchDocuments(serviceTypeId, begin, end, minimalSumm, maximalSumm, getPager());
+			loadFullOperationsData(searchResults);
+			highlightedDocumentIds = getHighlightedDocumentIds(searchResults);
 		} else {
-			//Date beginDate = DateUtil.getFullDate(beginDateFilter.getDate(), beginTime);
-			//Date endDate = DateUtil.getFullDate(endDateFilter.getDate(), endTime);
-
-			// TODO implement
-			//operations = operationService.listPaymentOperations(beginDate, endDate, minSumm, maxSumm, getPager());
+			Date begin = beginTimeFilter.setTime(beginDateFilter.getDate());
+			Date end = endTimeFilter.setTime(endDateFilter.getDate());
+			List<Operation> searchResults = operationService.searchOperations(begin, end, minimalSumm, maximalSumm, getPager());
+			loadFullOperationsData(searchResults);
 		}
-		*/
 	}
 
+	private void loadFullOperationsData(List<Operation> searchResults) {
+		for (Operation operation : searchResults) {
+			operations.add(operationService.read(new Stub<Operation>(operation.getId())));
+		}
+	}
+
+	private List<Long> getHighlightedDocumentIds(List<Operation> operations) {
+
+		List<Long> result = CollectionUtils.list();
+		for (Operation operation : operations) {
+			List<Document> docs = documentService.searchDocuments(operation, serviceTypeId, minimalSumm, maximalSumm);
+			for (Document doc : docs) {
+				result.add(doc.getId());
+			}
+		}
+		return result;
+	}
+
+	private Organization getSelfOrganization() {
+
+		// TODO get organization id from cookies (FP-539)
+		return organizationService.readFull(new Stub<Organization>(1L));
+	}
+
+	// updates status for selected operation and it's documents
 	private void updateOperationStatus() throws FlexPayException {
+
 		OperationStatus operationStatus = operationStatusService.read(Integer.parseInt(status));
 		Operation operation = operationService.read(new Stub<Operation>(selectedOperationId));
 		operation.setOperationStatus(operationStatus);
+
+		if (operationStatus.getCode() == OperationStatus.REGISTERED) {
+			operation.setRegisterDate(new Date());
+			operation.setRegisterOrganization(getSelfOrganization());
+			operation.setRegisterUserName(SecurityUtil.getUserName());
+		}
 
 		// setting documents status
 		for (Document document : operation.getDocuments()) {
@@ -160,12 +178,6 @@ public class OperationsListAction extends FPActionWithPagerSupport<Operation> {
 			addActionError(getText("payments.error.operations.list.begin_date_must_be_before_end_date"));
 		}
 
-		// time validation
-		// TODO implement
-
-		// summs validation
-		// TODO implement
-
 		return !hasActionErrors();
 	}
 
@@ -179,7 +191,7 @@ public class OperationsListAction extends FPActionWithPagerSupport<Operation> {
 	}
 
 	private boolean documentSearchEnabled() {
-		return StringUtils.isNotEmpty(documentSearchEnabled);
+		return "true".equals(documentSearchEnabled);
 	}
 
 	private boolean isFilterSubmitted() {
@@ -193,6 +205,10 @@ public class OperationsListAction extends FPActionWithPagerSupport<Operation> {
 	// rendering utility methods
 	public boolean operationsListIsEmpty() {
 		return operations.isEmpty();
+	}
+
+	public boolean isHighlighted(Document document) {
+		return highlightedDocumentIds.contains(document.getId());
 	}
 
 	public int getTotalOperations() {
@@ -244,20 +260,12 @@ public class OperationsListAction extends FPActionWithPagerSupport<Operation> {
 		return endDateFilter;
 	}
 
-	public String getBeginTime() {
-		return beginTime;
+	public BeginTimeFilter getBeginTimeFilter() {
+		return beginTimeFilter;
 	}
 
-	public void setBeginTime(String beginTime) {
-		this.beginTime = beginTime;
-	}
-
-	public String getEndTime() {
-		return endTime;
-	}
-
-	public void setEndTime(String endTime) {
-		this.endTime = endTime;
+	public EndTimeFilter getEndTimeFilter() {
+		return endTimeFilter;
 	}
 
 	public List<Operation> getOperations() {
@@ -269,19 +277,29 @@ public class OperationsListAction extends FPActionWithPagerSupport<Operation> {
 	}
 
 	public String getMinimalSumm() {
-		return minimalSumm;
+		return minimalSumm != null ? minimalSumm.toString() : "";
 	}
 
 	public void setMinimalSumm(String minimalSumm) {
-		this.minimalSumm = minimalSumm;
+		try {
+			this.minimalSumm = new BigDecimal(minimalSumm);
+		} catch (NumberFormatException e) {
+			log.warn("Minimal summ is not set because of bad string parameter value");
+			this.minimalSumm = null;
+		}
 	}
 
 	public String getMaximalSumm() {
-		return maximalSumm;
+		return maximalSumm != null ? maximalSumm.toString() : "";
 	}
 
 	public void setMaximalSumm(String maximalSumm) {
-		this.maximalSumm = maximalSumm;
+		try {
+			this.maximalSumm = new BigDecimal(maximalSumm);
+		} catch (NumberFormatException e) {
+			log.warn("Maximal summ is not set because of bad string parameter value");
+			this.maximalSumm = null;
+		}
 	}
 
 	public String getStatus() {
@@ -292,8 +310,17 @@ public class OperationsListAction extends FPActionWithPagerSupport<Operation> {
 		this.status = status;
 	}
 
-	public void setServiceTypeId(Long serviceTypeId) {
-		this.serviceTypeId = serviceTypeId;
+	public void setServiceTypeId(String serviceTypeId) {
+		try {
+			this.serviceTypeId = Long.parseLong(serviceTypeId);
+		} catch (NumberFormatException e) {
+			log.warn("Service type id is not set because of bad string parameter value");
+			this.serviceTypeId = null;
+		}
+	}
+
+	public String getServiceTypeId() {
+		return serviceTypeId != null ? serviceTypeId.toString() : "";
 	}
 
 	public Long getSelectedOperationId() {
@@ -352,5 +379,10 @@ public class OperationsListAction extends FPActionWithPagerSupport<Operation> {
 	@Required
 	public void setDocumentService(DocumentService documentService) {
 		this.documentService = documentService;
+	}
+
+	@Required
+	public void setOrganizationService(OrganizationService organizationService) {
+		this.organizationService = organizationService;
 	}
 }

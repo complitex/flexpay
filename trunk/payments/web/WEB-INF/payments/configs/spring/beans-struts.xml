@@ -41,6 +41,7 @@
 		  p:serviceTypeService-ref="serviceTypeService"
 		  p:documentService-ref="documentService"
 		  p:documentStatusService-ref="documentStatusService"
+		  p:organizationService-ref="organizationService"
           p:crumbNameKey="payments.crumbs.operations_list"
           scope="prototype" />
 

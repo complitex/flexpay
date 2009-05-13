@@ -947,8 +947,18 @@
 	</security-role-mapping>
 
 	<security-role-mapping>
+		<role-name>ROLE_PAYMENTS_DOCUMENT_READ</role-name>
+		<group-name>PAYMENTS_FULL_ACCESS</group-name>
+	</security-role-mapping>
+
+	<security-role-mapping>
 		<role-name>ROLE_PAYMENTS_DOCUMENT_CHANGE</role-name>
 		<group-name>PAYMENTS_FULL_ACCESS</group-name>
+	</security-role-mapping>
+
+	<security-role-mapping>
+		<role-name>ROLE_PAYMENTS_DOCUMENT_READ</role-name>
+		<group-name>PAYMENTS_OPERATOR_ACCESS</group-name>
 	</security-role-mapping>
 
 	<security-role-mapping>
@@ -965,7 +975,11 @@
 		<role-name>ROLE_PAYMENTS_SERVICE_READ</role-name>
 		<group-name>PAYMENTS_ACCOUNTANT_ACCESS</group-name>
 	</security-role-mapping>
-
+	<security-role-mapping>
+		<role-name>ROLE_PAYMENTS_SERVICE_TYPE_READ</role-name>
+		<group-name>PAYMENTS_OPERATOR_ACCESS</group-name>
+	</security-role-mapping>
+	
 	<!-- organization roles -->
 	<security-role-mapping>
 		<role-name>ROLE_ORGS_SERVICE_PROVIDER_READ</role-name>

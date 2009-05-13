@@ -171,6 +171,10 @@
 
 	<!-- document roles-->
 	<security-role>
+		<role-name>ROLE_PAYMENTS_DOCUMENT_READ</role-name>
+	</security-role>
+
+	<security-role>
 		<role-name>ROLE_PAYMENTS_DOCUMENT_TYPE_READ</role-name>
 	</security-role>
 
@@ -178,8 +182,13 @@
 		<role-name>ROLE_PAYMENTS_DOCUMENT_CHANGE</role-name>
 	</security-role>
 
+	<!-- service roles -->
 	<security-role>
 		<role-name>ROLE_PAYMENTS_SERVICE_READ</role-name>
+	</security-role>
+	
+	<security-role>
+		<role-name>ROLE_PAYMENTS_SERVICE_TYPE_READ</role-name>
 	</security-role>
 
 	<security-role>

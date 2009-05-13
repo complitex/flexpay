@@ -2,6 +2,15 @@
 <%@include file="/WEB-INF/jsp/payments/include/stylesheet.jsp" %>
 
 <script type="text/javascript">
+	$(function() {
+		if ($('#operationsList_documentSearchEnabled').val() == 'true') {
+			showDetails();
+			enableDocumentSearch();
+		} else {
+			enableOperationSearch();
+		}
+	});
+
 
 	function isDetailedView() {
 		return $('#service_column_header:hidden').length == 0;
@@ -10,13 +19,17 @@
 	function enableDocumentSearch() {
 		$('#operationsList_beginTime').attr('disabled', 'disabled');
 		$('#operationsList_endTime').attr('disabled', 'disabled');
-		$('#operationsList_serviceType').removeAttr('disabled');
+		$('#operationsList_serviceTypeId').removeAttr('disabled');
+
+		$('#operationsList_documentSearchEnabled').val('true');
 	}
 
 	function enableOperationSearch() {
 		$('#operationsList_beginTime').removeAttr('disabled');
 		$('#operationsList_endTime').removeAttr('disabled');
-		$('#operationsList_serviceType').attr('disabled', 'disabled');
+		$('#operationsList_serviceTypeId').attr('disabled', 'disabled');
+
+		$('#operationsList_documentSearchEnabled').val('false');
 	}
 
 	// detailed view functionality
@@ -45,12 +58,6 @@
 			enableOperationSearch();
 		}
 	}
-
-	// operation serach is initially enabled
-	$(function() {
-		enableOperationSearch();
-	});
-
 
 	// displays status changing buttons against selected operation status
 	function showButtons(state) {
@@ -136,49 +143,43 @@
 	<s:hidden name="status"/>
 	<s:hidden name="selectedOperationId"/>
 
-	<%--<s:hidden name="documentSearchEnabled"/>--%>
+	<s:hidden name="documentSearchEnabled"/>
 
+	<table cellpadding="3" cellspacing="1" border="0" width="100%" class="operations">
 		<sec:authorize ifAllGranted="ROLE_PAYMENTS_DEVELOPER">
-			<table cellpadding="3" cellspacing="1" border="0" width="100%" class="operations">
+
 			<tr>
 				<td nowrap="nowrap"><s:text name="payments.report.generate.date_from"/></td>
 				<td nowrap="nowrap"><%@include file="/WEB-INF/jsp/common/filter/begin_date_filter.jsp" %></td>
 
 				<td nowrap="nowrap"><s:text name="payments.report.generate.date_till"/></td>
-				<td nowrap="nowrap"><%@include file="/WEB-INF/jsp/common/filter/end_date_filter.jsp" %></td>
-
-				<%-- TODO place it properly --%>
-				<td nowrap="nowrap">
-					<input type="submit" name="filterSubmitted" class="btn-exit" value="<s:text name="payments.operations.list.filter"/>"/>
-					<%--<s:submit name="filterSubmitted" cssClass="btn-exit" value="%{getText('payments.operations.list.filter')}"/>--%>
-				</td>
+				<td nowrap="nowrap"><%@include file="/WEB-INF/jsp/common/filter/end_date_filter.jsp" %></td>																	
 			</tr>
-			</table>
 		</sec:authorize>
 
-		<%--<tr>--%>
-			<%--<td nowrap="nowrap"><s:text name="payments.operations.list.service_type"/></td>--%>
-			<%--<td colspan="2" nowrap="nowrap"><s:select name="serviceTypeId" list="serviceTypes" listKey="id" listValue="name"/></td>--%>
-			<%--<td nowrap="nowrap"><s:submit name="filterSubmitted" cssClass="btn-exit" value="%{getText('payments.operations.list.filter')}"/></td>--%>
-		<%--</tr>--%>
+		<tr>
+			<td nowrap="nowrap"><s:text name="payments.operations.list.service_type"/></td>
+			<td colspan="2" nowrap="nowrap"><s:select name="serviceTypeId" list="serviceTypes" listKey="id" listValue="name" emptyOption="true"/></td>
+			<td nowrap="nowrap"><input type="submit" name="filterSubmitted" class="btn-exit" value="<s:text name="payments.operations.list.filter"/>"/></td>
+		</tr>
 
-		<%--<tr>--%>
-			<%--<td nowrap="nowrap"><s:text name="payments.operations.list.time_from"/></td>--%>
-			<%--<td nowrap="nowrap"><s:textfield name="beginTime" readonly="true"/></td>--%>
-		<%--</tr>--%>
+		<tr>
+			<td nowrap="nowrap"><s:text name="payments.operations.list.time_from"/></td>
+			<td nowrap="nowrap"><%@ include file="/WEB-INF/jsp/common/filter/begin_time_filter.jsp" %></td>
+		</tr>
 
-		<%--<tr>--%>
-			<%--<td nowrap="nowrap"><s:text name="payments.operations.list.time_till"/></td>--%>
-			<%--<td nowrap="nowrap"><s:textfield name="endTime" readonly="true"/></td>--%>
-		<%--</tr>--%>
+		<tr>
+			<td nowrap="nowrap"><s:text name="payments.operations.list.time_till"/></td>
+			<td nowrap="nowrap"><%@ include file="/WEB-INF/jsp/common/filter/end_time_filter.jsp" %></td>
+		</tr>
 
-		<%--<tr>--%>
-			<%--<td nowrap="nowrap"><s:text name="payments.operations.list.summ_from"/></td>--%>
-			<%--<td nowrap="nowrap"><s:textfield name="summFrom"/></td>--%>
-			<%--<td nowrap="nowrap"><s:text name="payments.operations.list.summ_up_to"/></td>--%>
-			<%--<td nowrap="nowrap"><s:textfield name="summUpTo"/></td>--%>
-		<%--</tr>--%>
-
+		<tr>
+			<td nowrap="nowrap"><s:text name="payments.operations.list.summ_from"/></td>
+			<td nowrap="nowrap"><s:textfield name="minimalSumm"/></td>
+			<td nowrap="nowrap"><s:text name="payments.operations.list.summ_up_to"/></td>
+			<td nowrap="nowrap"><s:textfield name="maximalSumm"/></td>
+		</tr>
+	</table>
 
 	<table cellpadding="3" cellspacing="1" border="0" width="100%" class="operations">
 
@@ -228,7 +229,7 @@
 			<s:iterator value="operations" status="opStatus">
 
 				<%-- full operation header--%>
-				<tr valign="middle" class="full_operation_header_row<s:if test="%{isOperationRegistered(operationStatus.code)}"> col_black</s:if>
+				<tr valign="middle" class="col_oper full_operation_header_row<s:if test="%{isOperationRegistered(operationStatus.code)}"> col_black</s:if>
 					<s:elseif test="%{isOperationCreated(operationStatus.code) || isOperationError(operationStatus.code)}"> col_blue</s:elseif>
 					<s:elseif test="%{isOperationReturned(operationStatus.code)}"> col_red</s:elseif>">
 
@@ -236,78 +237,79 @@
 						<input type="radio" name="operation" id="operationsList_operation_<s:property value="id"/>"
 							   onclick="showButtons(<s:property value="operationStatus.code"/>);setOperationId(<s:property value="id"/>);"/>
 					</td>
-					<td class="col_oper" align="right"><s:property value="%{#opStatus.index + 1}"/></td>
-					<td class="col_oper" nowrap="nowrap"><s:property value="id"/></td>
-					<td class="col_oper" nowrap="nowrap"><s:date name="creationDate" format="HH:mm:ss"/></td>
-					<td class="col_oper" nowrap="nowrap"><s:property value="address"/></td>
-					<td class="col_oper" nowrap="nowrap"><s:property value="payerFIO"/></td>
-					<td class="col_oper" nowrap="nowrap"><s:property value="operationSumm"/></td>
-					<td class="col_oper" nowrap="nowrap"><s:property value="operationInputSumm"/></td>
-					<td class="col_oper" nowrap="nowrap"><s:property value="change"/></td>
-					<td class="col_oper service_column" nowrap="nowrap" style="display: none;">&nbsp;</td>
-					<td class="col_oper service_provider_column" nowrap="nowrap" style="display: none;">&nbsp;</td>
+					<td align="right"><s:property value="%{#opStatus.index + 1}"/></td>
+					<td nowrap="nowrap"><s:property value="id"/></td>
+					<td nowrap="nowrap"><s:date name="creationDate" format="HH:mm:ss"/></td>
+					<td nowrap="nowrap"><s:property value="address"/></td>
+					<td nowrap="nowrap"><s:property value="payerFIO"/></td>
+					<td nowrap="nowrap"><s:property value="operationSumm"/></td>
+					<td nowrap="nowrap"><s:property value="operationInputSumm"/></td>
+					<td nowrap="nowrap"><s:property value="change"/></td>
+					<td class="service_column" nowrap="nowrap" style="display: none;">&nbsp;</td>
+					<td class="service_provider_column" nowrap="nowrap" style="display: none;">&nbsp;</td>
 				</tr>
 
 				<%-- brief operation header (is not shown by default, appears in 'detailed' view) --%>
-				<tr valign="middle" style="display: none;" class="brief_operation_header_row<s:if test="%{isOperationRegistered(operationStatus.code)}"> col_black</s:if>
+				<tr valign="middle" style="display: none;" class="col_oper brief_operation_header_row<s:if test="%{isOperationRegistered(operationStatus.code)}"> col_black</s:if>
 					<s:elseif test="%{isOperationCreated(operationStatus.code) || isOperationError(operationStatus.code)}"> col_blue</s:elseif>
 					<s:elseif test="%{isOperationReturned(operationStatus.code)}"> col_red</s:elseif>">
 
-					<td class="col_oper" nowrap="nowrap">
+					<td class="" nowrap="nowrap">
 						<input type="radio" name="operationDetailed" id="operationsList_operationDetailed_<s:property value="id"/>"
 							   onclick="showButtons(<s:property value="operationStatus.code"/>);setOperationId(<s:property value="id"/>);"/>
 					</td>
-					<td class="col_oper" align="right"><s:property value="%{#opStatus.index + 1}"/></td>
-					<td class="col_oper" nowrap="nowrap"><s:property value="id"/></td>
-					<td class="col_oper" nowrap="nowrap"><s:date name="creationDate" format="HH:mm:ss"/></td>
-					<td class="col_oper" nowrap="nowrap">&nbsp;</td>
-					<td class="col_oper" nowrap="nowrap">&nbsp;</td>
-					<td class="col_oper" nowrap="nowrap">&nbsp;</td>
-					<td class="col_oper" nowrap="nowrap">&nbsp;</td>
-					<td class="col_oper" nowrap="nowrap">&nbsp;</td>
-					<td class="col_oper service_column" nowrap="nowrap" style="display: none;">&nbsp;</td>
-					<td class="col_oper service_provider_column" nowrap="nowrap" style="display: none;">&nbsp;</td>
+					<td align="right"><s:property value="%{#opStatus.index + 1}"/></td>
+					<td nowrap="nowrap"><s:property value="id"/></td>
+					<td nowrap="nowrap"><s:date name="creationDate" format="HH:mm:ss"/></td>
+					<td nowrap="nowrap">&nbsp;</td>
+					<td nowrap="nowrap">&nbsp;</td>
+					<td nowrap="nowrap">&nbsp;</td>
+					<td nowrap="nowrap">&nbsp;</td>
+					<td nowrap="nowrap">&nbsp;</td>
+					<td class="service_column" nowrap="nowrap" style="display: none;">&nbsp;</td>
+					<td class="service_provider_column" nowrap="nowrap" style="display: none;">&nbsp;</td>
 				</tr>
 
 				<%-- document rows (are not shown by default, appear in 'detailed' view) --%>
-				<s:iterator value="documents">
+				<s:iterator value="documents" id="document">
 					<s:if test="%{!isDocumentDeleted(documentStatus.code)}">
-						<tr style="display: none;" class="document_row<s:if test="%{isDocumentRegistered(documentStatus.code)}"> col_black</s:if>
+						<tr style="display: none;" class="col_doc document_row<s:if test="%{isDocumentRegistered(documentStatus.code)}"> col_black</s:if>
 							<s:elseif test="%{isDocumentCreated(documentStatus.code) || isDocumentError(documentStatus.code)}"> col_blue</s:elseif>
-							<s:elseif test="%{isDocumentReturned(documentStatus.code)}"> col_red</s:elseif>">
+							<s:elseif test="%{isDocumentReturned(documentStatus.code)}"> col_red</s:elseif>
+							 <s:if test="%{isHighlighted(#document)}"> highlighted</s:if>">
 
-							<td class="col_doc" nowrap="nowrap">&nbsp;</td>
-							<td class="col_doc" nowrap="nowrap">&nbsp;</td>
-							<td class="col_doc" nowrap="nowrap">&nbsp;</td>
-							<td class="col_doc" nowrap="nowrap">&nbsp;</td>
-							<td class="col_doc" nowrap="nowrap"><s:property value="address"/></td>
-							<td class="col_doc" nowrap="nowrap"><s:property value="payerFIO"/></td>
-							<td class="col_doc" nowrap="nowrap"><s:property value="summ"/></td>
-							<td class="col_doc" nowrap="nowrap">&nbsp;</td>
-							<td class="col_doc" nowrap="nowrap">&nbsp;</td>
-							<td class="col_doc service_column" nowrap="nowrap" style="display: none;"><s:property value="service.serviceType.name"/></td>
-							<td class="col_doc service_provider_column" nowrap="nowrap" style="display: none;"><s:property value="service.serviceProvider.name"/></td>
+							<td nowrap="nowrap">&nbsp;</td>
+							<td nowrap="nowrap">&nbsp;</td>
+							<td nowrap="nowrap">&nbsp;</td>
+							<td nowrap="nowrap">&nbsp;</td>
+							<td nowrap="nowrap"><s:property value="address"/></td>
+							<td nowrap="nowrap"><s:property value="payerFIO"/></td>
+							<td nowrap="nowrap"><s:property value="summ"/></td>
+							<td nowrap="nowrap">&nbsp;</td>
+							<td nowrap="nowrap">&nbsp;</td>
+							<td class="service_column" nowrap="nowrap" style="display: none;"><s:property value="service.serviceType.name"/></td>
+							<td class="service_provider_column" nowrap="nowrap" style="display: none;"><s:property value="service.serviceProvider.name"/></td>
 						</tr>
 					</s:if>
 				</s:iterator>
 
 				<%-- operation footer (is not shown by default, but appears in 'detailed' view) --%>
-				<tr valign="middle" style="display: none;" class="operation_footer_row
+				<tr valign="middle" style="display: none;" class="col_oper operation_footer_row
 					<s:if test="%{isOperationRegistered(operationStatus.code)}"> col_black</s:if>
 					<s:elseif test="%{isOperationCreated(operationStatus.code) || isOperationError(operationStatus.code)}"> col_blue</s:elseif>
 					<s:elseif test="%{isOperationReturned(operationStatus.code)}"> col_red</s:elseif>">
 
-					<td class="col_oper" align="right">&nbsp;</td>
-					<td class="col_oper" nowrap="nowrap">&nbsp;</td>
-					<td class="col_oper" nowrap="nowrap">&nbsp;</td>
-					<td class="col_oper" nowrap="nowrap">&nbsp;</td>
-					<td class="col_oper" nowrap="nowrap"><s:property value="address"/></td>
-					<td class="col_oper" nowrap="nowrap"><s:property value="payerFIO"/></td>
-					<td class="col_oper" nowrap="nowrap"><s:property value="operationSumm"/></td>
-					<td class="col_oper" nowrap="nowrap"><s:property value="operationInputSumm"/></td>
-					<td class="col_oper" nowrap="nowrap"><s:property value="change"/></td>
-					<td class="col_oper service_column" nowrap="nowrap" style="display: none;">&nbsp;</td>
-					<td class="col_oper service_provider_column" nowrap="nowrap" style="display: none;">&nbsp;</td>
+					<td align="right">&nbsp;</td>
+					<td nowrap="nowrap">&nbsp;</td>
+					<td nowrap="nowrap">&nbsp;</td>
+					<td nowrap="nowrap">&nbsp;</td>
+					<td nowrap="nowrap"><s:property value="address"/></td>
+					<td nowrap="nowrap"><s:property value="payerFIO"/></td>
+					<td nowrap="nowrap"><s:property value="operationSumm"/></td>
+					<td nowrap="nowrap"><s:property value="operationInputSumm"/></td>
+					<td nowrap="nowrap"><s:property value="change"/></td>
+					<td class="service_column" nowrap="nowrap" style="display: none;">&nbsp;</td>
+					<td class="service_provider_column" nowrap="nowrap" style="display: none;">&nbsp;</td>
 				</tr>
 			</s:iterator>
 

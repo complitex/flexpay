@@ -14,77 +14,83 @@
 		</property>
 	</bean>
 
-    <bean id="documentTypeDao" parent="abstractDao">
-        <property name="proxyInterfaces" value="org.flexpay.payments.dao.DocumentTypeDao" />
-        <property name="target">
-            <bean parent="abstractDaoTarget">
-                <constructor-arg value="org.flexpay.payments.persistence.DocumentType" />
-            </bean>
-        </property>
-    </bean>
+	<bean id="documentDaoExt" class="org.flexpay.payments.dao.impl.DocumentDaoExtImpl"
+		  p:hibernateTemplate-ref="hibernateTemplate" />
 
-    <bean id="documentStatusDao" parent="abstractDao">
-        <property name="proxyInterfaces" value="org.flexpay.payments.dao.DocumentStatusDao" />
-        <property name="target">
-            <bean parent="abstractDaoTarget">
-                <constructor-arg value="org.flexpay.payments.persistence.DocumentStatus" />
-            </bean>
-        </property>
-    </bean>
+	<bean id="documentTypeDao" parent="abstractDao">
+		<property name="proxyInterfaces" value="org.flexpay.payments.dao.DocumentTypeDao" />
+		<property name="target">
+			<bean parent="abstractDaoTarget">
+				<constructor-arg value="org.flexpay.payments.persistence.DocumentType" />
+			</bean>
+		</property>
+	</bean>
 
-    <bean id="documentAdditionTypeDao" parent="abstractDao">
-        <property name="proxyInterfaces" value="org.flexpay.payments.dao.DocumentAdditionTypeDao" />
-        <property name="target">
-            <bean parent="abstractDaoTarget">
-                <constructor-arg value="org.flexpay.payments.persistence.DocumentAdditionType" />
-            </bean>
-        </property>
-    </bean>
+	<bean id="documentStatusDao" parent="abstractDao">
+		<property name="proxyInterfaces" value="org.flexpay.payments.dao.DocumentStatusDao" />
+		<property name="target">
+			<bean parent="abstractDaoTarget">
+				<constructor-arg value="org.flexpay.payments.persistence.DocumentStatus" />
+			</bean>
+		</property>
+	</bean>
 
-    <bean id="operationDao" parent="abstractDao">
-        <property name="proxyInterfaces" value="org.flexpay.payments.dao.OperationDao" />
-        <property name="target">
-            <bean parent="abstractDaoTarget">
-                <constructor-arg value="org.flexpay.payments.persistence.Operation" />
-            </bean>
-        </property>
-    </bean>
+	<bean id="documentAdditionTypeDao" parent="abstractDao">
+		<property name="proxyInterfaces" value="org.flexpay.payments.dao.DocumentAdditionTypeDao" />
+		<property name="target">
+			<bean parent="abstractDaoTarget">
+				<constructor-arg value="org.flexpay.payments.persistence.DocumentAdditionType" />
+			</bean>
+		</property>
+	</bean>
 
-    <bean id="operationTypeDao" parent="abstractDao">
-        <property name="proxyInterfaces" value="org.flexpay.payments.dao.OperationTypeDao" />
-        <property name="target">
-            <bean parent="abstractDaoTarget">
-                <constructor-arg value="org.flexpay.payments.persistence.OperationType" />
-            </bean>
-        </property>
-    </bean>
+	<bean id="operationDao" parent="abstractDao">
+		<property name="proxyInterfaces" value="org.flexpay.payments.dao.OperationDao" />
+		<property name="target">
+			<bean parent="abstractDaoTarget">
+				<constructor-arg value="org.flexpay.payments.persistence.Operation" />
+			</bean>
+		</property>
+	</bean>
 
-    <bean id="operationStatusDao" parent="abstractDao">
-        <property name="proxyInterfaces" value="org.flexpay.payments.dao.OperationStatusDao" />
-        <property name="target">
-            <bean parent="abstractDaoTarget">
-                <constructor-arg value="org.flexpay.payments.persistence.OperationStatus" />
-            </bean>
-        </property>
-    </bean>
+	<bean id="operationDaoExt" class="org.flexpay.payments.dao.impl.OperationDaoExtImpl"
+		  p:hibernateTemplate-ref="hibernateTemplate" />
 
-    <bean id="operationLevelDao" parent="abstractDao">
-        <property name="proxyInterfaces" value="org.flexpay.payments.dao.OperationLevelDao" />
-        <property name="target">
-            <bean parent="abstractDaoTarget">
-                <constructor-arg value="org.flexpay.payments.persistence.OperationLevel" />
-            </bean>
-        </property>
-    </bean>
+	<bean id="operationTypeDao" parent="abstractDao">
+		<property name="proxyInterfaces" value="org.flexpay.payments.dao.OperationTypeDao" />
+		<property name="target">
+			<bean parent="abstractDaoTarget">
+				<constructor-arg value="org.flexpay.payments.persistence.OperationType" />
+			</bean>
+		</property>
+	</bean>
 
-    <bean id="operationAdditionTypeDao" parent="abstractDao">
-        <property name="proxyInterfaces" value="org.flexpay.payments.dao.OperationAdditionTypeDao" />
-        <property name="target">
-            <bean parent="abstractDaoTarget">
-                <constructor-arg value="org.flexpay.payments.persistence.OperationAdditionType" />
-            </bean>
-        </property>
-    </bean>
+	<bean id="operationStatusDao" parent="abstractDao">
+		<property name="proxyInterfaces" value="org.flexpay.payments.dao.OperationStatusDao" />
+		<property name="target">
+			<bean parent="abstractDaoTarget">
+				<constructor-arg value="org.flexpay.payments.persistence.OperationStatus" />
+			</bean>
+		</property>
+	</bean>
+
+	<bean id="operationLevelDao" parent="abstractDao">
+		<property name="proxyInterfaces" value="org.flexpay.payments.dao.OperationLevelDao" />
+		<property name="target">
+			<bean parent="abstractDaoTarget">
+				<constructor-arg value="org.flexpay.payments.persistence.OperationLevel" />
+			</bean>
+		</property>
+	</bean>
+
+	<bean id="operationAdditionTypeDao" parent="abstractDao">
+		<property name="proxyInterfaces" value="org.flexpay.payments.dao.OperationAdditionTypeDao" />
+		<property name="target">
+			<bean parent="abstractDaoTarget">
+				<constructor-arg value="org.flexpay.payments.persistence.OperationAdditionType" />
+			</bean>
+		</property>
+	</bean>
 
 	<bean id="serviceDaoExt" class="org.flexpay.payments.dao.impl.ServiceDaoExtImpl"
 		  p:hibernateTemplate-ref="hibernateTemplate" />
@@ -109,5 +115,5 @@
 			</bean>
 		</property>
 	</bean>
-	
+
 </beans>

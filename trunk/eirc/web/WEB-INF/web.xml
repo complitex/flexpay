@@ -688,6 +688,10 @@
 		<role-name>ROLE_PAYMENTS_DOCUMENT_TYPE_READ</role-name>
 	</security-role>
 
+	<security-role>
+		<role-name>ROLE_PAYMENTS_DOCUMENT_READ</role-name>
+	</security-role>
+
 	<!-- payments developer role -->
 	<security-role>
 		<role-name>ROLE_PAYMENTS_DEVELOPER</role-name>

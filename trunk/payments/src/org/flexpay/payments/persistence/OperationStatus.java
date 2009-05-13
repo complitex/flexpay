@@ -30,5 +30,5 @@ public class OperationStatus extends DomainObject {
 
 	public void setCode(int code) {
 		this.code = code;
-	}
+	}	
 }
