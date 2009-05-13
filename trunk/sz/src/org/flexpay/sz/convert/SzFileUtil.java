@@ -3,7 +3,7 @@ package org.flexpay.sz.convert;
 import com.linuxense.javadbf.DBFException;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
-import org.flexpay.common.persistence.FPFile;
+import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.service.FPFileService;
 import org.flexpay.sz.dbf.DBFInfo;
 import org.flexpay.sz.dbf.SzDbfWriter;

@@ -1,7 +1,7 @@
 package org.flexpay.sz.actions;
 
 import org.apache.commons.io.IOUtils;
-import org.flexpay.common.persistence.FPFile;
+import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.util.FPFileUtil;
 import org.flexpay.sz.persistence.SzFile;
 import org.flexpay.sz.service.SzFileService;

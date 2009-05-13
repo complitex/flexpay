@@ -2,7 +2,7 @@ package org.flexpay.eirc.sp.parsing;
 
 import org.apache.commons.io.IOUtils;
 import org.flexpay.common.exception.FlexPayException;
-import org.flexpay.common.persistence.FPFile;
+import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.registry.*;
 import org.flexpay.common.service.*;

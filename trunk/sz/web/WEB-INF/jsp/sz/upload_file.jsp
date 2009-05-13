@@ -30,6 +30,37 @@
 
 <script type="text/javascript">
 
+    function FPFileUploadForm(name, options) {
+
+        options = options || {};
+
+        options.name = name;
+
+        options = $.extend({
+            action: "",
+            filterId: "",
+            valueId: "",
+            isArray: false,
+            extraParams: {},
+            resultId: "result",
+            preRequest: true,
+            parents: []
+        }, options);
+
+        this.options = options;
+
+    }
+
+    var FPFileUtils = {
+
+        createFileUploadForm : function (name, options) {
+            var form = new FPFileUploadForm(name, options);
+        }
+
+
+
+    };
+
     var file = null;
 
     var unsuccess = 0;

@@ -1,8 +1,8 @@
 package org.flexpay.tc.actions.tariff;
 
 import org.flexpay.common.actions.FPActionSupport;
-import org.flexpay.common.persistence.FPFile;
-import org.flexpay.common.persistence.FPFileType;
+import org.flexpay.common.persistence.file.FPFile;
+import org.flexpay.common.persistence.file.FPFileType;
 import org.flexpay.common.persistence.Language;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.service.FPFileService;

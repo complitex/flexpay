@@ -3,9 +3,9 @@ package org.flexpay.sz.persistence;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.flexpay.common.persistence.DomainObject;
-import org.flexpay.common.persistence.FPFile;
-import org.flexpay.common.persistence.FPFileStatus;
-import org.flexpay.common.persistence.FPFileType;
+import org.flexpay.common.persistence.file.FPFile;
+import org.flexpay.common.persistence.file.FPFileStatus;
+import org.flexpay.common.persistence.file.FPFileType;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

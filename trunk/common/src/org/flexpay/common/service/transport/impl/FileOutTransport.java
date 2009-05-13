@@ -1,7 +1,7 @@
 package org.flexpay.common.service.transport.impl;
 
 import org.apache.commons.io.IOUtils;
-import org.flexpay.common.persistence.FPFile;
+import org.flexpay.common.persistence.file.FPFile;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.io.InputStream;

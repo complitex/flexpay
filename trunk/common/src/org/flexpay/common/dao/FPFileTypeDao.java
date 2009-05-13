@@ -1,6 +1,6 @@
 package org.flexpay.common.dao;
 
-import org.flexpay.common.persistence.FPFileType;
+import org.flexpay.common.persistence.file.FPFileType;
 
 import java.util.List;
 

@@ -2,9 +2,7 @@ package org.flexpay.tc.service.importexport;
 
 import org.apache.commons.io.IOUtils;
 import org.flexpay.bti.process.BuildingAttributesImportJob;
-import org.flexpay.bti.test.BtiSpringBeanAwareTestCase;
-import org.flexpay.bti.service.importexport.TestImportBuildingAttributes;
-import org.flexpay.common.persistence.FPFile;
+import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.process.job.Job;
 import org.flexpay.common.service.FPFileService;
 import org.flexpay.common.util.CollectionUtils;

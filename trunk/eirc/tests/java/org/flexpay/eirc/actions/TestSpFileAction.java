@@ -1,6 +1,6 @@
 package org.flexpay.eirc.actions;
 
-import org.flexpay.common.persistence.FPFile;
+import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.persistence.registry.Registry;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.process.ProcessManager;

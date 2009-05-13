@@ -1,8 +1,8 @@
 package org.flexpay.sz.process.szfile;
 
 import org.flexpay.common.exception.FlexPayException;
-import org.flexpay.common.persistence.FPFile;
-import org.flexpay.common.persistence.FPFileStatus;
+import org.flexpay.common.persistence.file.FPFile;
+import org.flexpay.common.persistence.file.FPFileStatus;
 import org.flexpay.common.process.job.Job;
 import org.flexpay.common.process.ProcessLogger;
 import org.flexpay.common.service.FPFileService;

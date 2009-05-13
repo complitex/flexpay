@@ -1,7 +1,7 @@
 package org.flexpay.common.persistence.history;
 
 import org.flexpay.common.locking.LockManager;
-import org.flexpay.common.persistence.FPFile;
+import org.flexpay.common.persistence.file.FPFile;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.service.HistoryConsumerService;
 import org.flexpay.common.service.Security;

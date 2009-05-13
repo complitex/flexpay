@@ -1,6 +1,6 @@
 package org.flexpay.eirc.sp;
 
-import org.flexpay.common.persistence.FPFile;
+import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.eirc.actions.TestSpFileCreateAction;
 import org.flexpay.eirc.service.EircRegistryService;

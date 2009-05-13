@@ -1,7 +1,6 @@
 .columns {
 	clear: both;
 	width: 99%;
-	font-size: 1.2em;
 }
 
 .columns .main-content {
@@ -13,10 +12,6 @@
 .columns .main-content table td {
 	font-size: 1.2em;
 	font-weight: bold;
-}
-
-.btn-exit {
-	height: 25px;
 }
 
 .btn-search {

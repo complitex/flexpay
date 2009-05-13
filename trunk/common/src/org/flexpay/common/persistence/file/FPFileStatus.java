@@ -1,12 +1,13 @@
-package org.flexpay.common.persistence;
+package org.flexpay.common.persistence.file;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
+import org.flexpay.common.persistence.DomainObject;
+import org.flexpay.common.persistence.FPModule;
 
-public class FPFileType extends DomainObject {
+public class FPFileStatus extends DomainObject {
 
     private Long code;
-    private String fileMask;
 	private String name;
 	private String description;
     private FPModule module;
@@ -17,14 +18,6 @@ public class FPFileType extends DomainObject {
 
     public void setCode(Long code) {
         this.code = code;
-    }
-
-    public String getFileMask() {
-        return fileMask;
-    }
-
-    public void setFileMask(String fileMask) {
-        this.fileMask = fileMask;
     }
 
 	public String getName() {
@@ -54,10 +47,9 @@ public class FPFileType extends DomainObject {
 	@Override
 	public String toString() {
 		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
-				append("FPFileType {").
+				append("FPFileStatus {").
 				append("id", getId()).
 				append("code", code).
-				append("fileMask", fileMask).
 				append("name", name).
 				append("description", description).
 				append("}").toString();

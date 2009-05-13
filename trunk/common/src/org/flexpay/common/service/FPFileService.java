@@ -2,6 +2,9 @@ package org.flexpay.common.service;
 
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.*;
+import org.flexpay.common.persistence.file.FPFile;
+import org.flexpay.common.persistence.file.FPFileStatus;
+import org.flexpay.common.persistence.file.FPFileType;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;

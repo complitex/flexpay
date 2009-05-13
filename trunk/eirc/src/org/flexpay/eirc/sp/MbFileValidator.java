@@ -1,7 +1,7 @@
 package org.flexpay.eirc.sp;
 
 import org.flexpay.common.exception.FlexPayException;
-import org.flexpay.common.persistence.FPFile;
+import org.flexpay.common.persistence.file.FPFile;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,12 +49,12 @@ public abstract class MbFileValidator {
 	protected void validateFields(String[] fields) throws FlexPayException {
 		String errorFields = "";
 		for (int i = 0; i < fields.length; i++) {
-			if (fields[i].startsWith(" ") || fields[i].endsWith(" ")) {
+			if (fields[i].startsWith(" ") || (fields[i].endsWith(" ") && i < fields.length - 1)) {
 				errorFields += (errorFields.length() > 0 ? ", " : "") + (i + 1);
 			}
 		}
 		if (errorFields.length() > 0) {
-			throw new FlexPayException("Incorrect fields in records. Detect spaces after or before \"=\" (fields: " + errorFields + ")");
+			throw new FlexPayException("Incorrect fields in record. Detect spaces after or before \"=\" (fields: " + errorFields + ")");
 		}
 	}
 

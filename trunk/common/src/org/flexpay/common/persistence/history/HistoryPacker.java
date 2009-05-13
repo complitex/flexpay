@@ -1,13 +1,13 @@
 package org.flexpay.common.persistence.history;
 
-import org.flexpay.common.persistence.FPFile;
+import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.persistence.Stub;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
 /**
- * History packer generates {@link org.flexpay.common.persistence.FPFile} with a set of history records
+ * History packer generates {@link org.flexpay.common.persistence.file.FPFile} with a set of history records
  */
 public interface HistoryPacker {
 

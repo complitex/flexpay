@@ -3,7 +3,7 @@ package org.flexpay.common.persistence.registry;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.flexpay.common.persistence.DomainObject;
-import org.flexpay.common.persistence.FPFile;
+import org.flexpay.common.persistence.file.FPFile;
 
 import java.math.BigDecimal;
 import java.util.Collections;

@@ -1,7 +1,7 @@
 package org.flexpay.eirc.actions;
 
 import org.flexpay.common.actions.FPActionSupport;
-import org.flexpay.common.persistence.FPFile;
+import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.service.FPFileService;
 import org.flexpay.common.util.FPFileUtil;
 import org.flexpay.common.util.SecurityUtil;

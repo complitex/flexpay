@@ -1,7 +1,7 @@
 package org.flexpay.common.persistence.history.impl;
 
 import org.flexpay.common.exception.FlexPayException;
-import org.flexpay.common.persistence.FPFile;
+import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.history.HistoryUnPacker;
 import org.flexpay.common.process.job.Job;

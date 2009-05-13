@@ -31,7 +31,7 @@
 		</many-to-one>
 
 		<many-to-one name="spFile" foreign-key="FK_common_registries_tbl_file_id"
-					 class="org.flexpay.common.persistence.FPFile">
+					 class="org.flexpay.common.persistence.file.FPFile">
 			<column name="file_id" not-null="false">
 				<comment>Registry file reference</comment>
 			</column>

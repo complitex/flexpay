@@ -1,6 +1,6 @@
 package org.flexpay.common.actions;
 
-import org.flexpay.common.persistence.FPFile;
+import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.persistence.FPModule;
 import org.flexpay.common.service.FPFileService;
 import org.flexpay.common.util.FPFileUtil;

@@ -197,10 +197,10 @@
 			</column>
 		</property>
 
-		<many-to-one name="file" class="org.flexpay.common.persistence.FPFile" column="file_id" unique="true"
+		<many-to-one name="file" class="org.flexpay.common.persistence.file.FPFile" column="file_id" unique="true"
 					 cascade="all" />
 
-		<many-to-one name="type" class="org.flexpay.common.persistence.FPFileType" not-null="true">
+		<many-to-one name="type" class="org.flexpay.common.persistence.file.FPFileType" not-null="true">
 			<column name="type_id">
 				<comment>Tariff calculation rules file type reference</comment>
 			</column>
