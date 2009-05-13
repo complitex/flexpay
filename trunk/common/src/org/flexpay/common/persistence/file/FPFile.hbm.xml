@@ -3,7 +3,7 @@
 		"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
 		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 
-<hibernate-mapping package="org.flexpay.common.persistence">
+<hibernate-mapping package="org.flexpay.common.persistence.file">
 
 	<class name="FPFile" table="common_files_tbl" optimistic-lock="version">
         <comment>Table, where store information about all flexpay files</comment>
