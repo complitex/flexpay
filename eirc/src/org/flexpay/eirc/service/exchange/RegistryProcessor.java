@@ -1,6 +1,6 @@
 package org.flexpay.eirc.service.exchange;
 
-import org.flexpay.common.persistence.FPFile;
+import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.persistence.registry.workflow.TransitionNotAllowed;
 import org.jetbrains.annotations.NotNull;

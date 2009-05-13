@@ -4,7 +4,7 @@ import au.com.bytecode.opencsv.CSVWriter;
 import org.apache.commons.io.IOUtils;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.persistence.FPModule;
-import org.flexpay.common.persistence.FPFile;
+import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.persistence.filter.BeginDateFilter;
 import org.flexpay.common.persistence.filter.BeginTimeFilter;
 import org.flexpay.common.persistence.filter.EndDateFilter;

@@ -2,7 +2,7 @@ package org.flexpay.payments.service.export;
 
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
-import org.flexpay.common.persistence.FPFile;
+import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.persistence.filter.ImportErrorTypeFilter;
 import org.flexpay.common.persistence.filter.RegistryRecordStatusFilter;
 import org.flexpay.common.persistence.registry.*;
@@ -127,7 +127,7 @@ public class TestGenerateRegistry {
             if (nextLine == null)
                 return;
 
-            log.debug("Write line:" + nextLine);
+            log.debug("Write line:{}", nextLine);
             bos.write(nextLine);
             bos.write(lineEnd.getBytes(getFileEncoding()));
         }

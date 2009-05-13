@@ -1,6 +1,6 @@
 package org.flexpay.sz.dao.impl;
 
-import org.flexpay.common.persistence.FPFileStatus;
+import org.flexpay.common.persistence.file.FPFileStatus;
 import org.flexpay.sz.dao.SzFileDaoExt;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;

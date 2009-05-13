@@ -2,7 +2,7 @@ package org.flexpay.eirc.actions;
 
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.commons.io.IOUtils;
-import org.flexpay.common.persistence.FPFile;
+import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.service.FPFileService;
 import org.flexpay.common.util.StringUtil;
 import org.flexpay.common.util.config.UserPreferences;

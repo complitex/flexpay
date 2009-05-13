@@ -1,7 +1,7 @@
 package org.flexpay.sz.actions;
 
 import org.flexpay.common.actions.FPActionWithPagerSupport;
-import org.flexpay.common.persistence.FPFileStatus;
+import org.flexpay.common.persistence.file.FPFileStatus;
 import org.flexpay.common.process.ProcessManager;
 import org.flexpay.common.service.FPFileService;
 import org.flexpay.common.util.CollectionUtils;

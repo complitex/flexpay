@@ -9,7 +9,7 @@ import org.flexpay.common.process.ProcessLogger;
 import org.flexpay.common.process.job.Job;
 import org.flexpay.common.service.FPFileService;
 import org.flexpay.common.util.config.ApplicationConfig;
-import org.flexpay.common.persistence.FPFile;
+import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.persistence.Stub;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Required;

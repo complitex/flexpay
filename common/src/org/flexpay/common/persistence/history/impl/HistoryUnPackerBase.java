@@ -1,7 +1,7 @@
 package org.flexpay.common.persistence.history.impl;
 
 import org.apache.commons.io.IOUtils;
-import org.flexpay.common.persistence.FPFile;
+import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.persistence.history.Diff;
 import org.flexpay.common.persistence.history.HistoryUnPacker;
 import org.flexpay.common.service.DiffService;

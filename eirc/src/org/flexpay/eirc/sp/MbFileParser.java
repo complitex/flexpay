@@ -1,7 +1,7 @@
 package org.flexpay.eirc.sp;
 
 import org.flexpay.common.exception.FlexPayException;
-import org.flexpay.common.persistence.FPFile;
+import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.persistence.registry.RegistryRecordStatus;
 import org.flexpay.common.service.RegistryRecordStatusService;
 import org.jetbrains.annotations.NotNull;

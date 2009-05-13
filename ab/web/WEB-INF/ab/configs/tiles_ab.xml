@@ -10,7 +10,7 @@
 		<!--<put-attribute name="body" value="/WEB-INF/jsp/ab/main.jsp" />-->
         <put-attribute name="breadCrumbs" value="/WEB-INF/jsp/common/layouts/bread_crumbs.jsp" />
         <put-attribute name="language" value="/WEB-INF/jsp/common/layouts/language_switch.jsp" />
-		<put-attribute name="tip" value="/WEB-INF/jsp/ab/menu/tip.jsp" />
+		<put-attribute name="tip" value="/WEB-INF/jsp/common/includes/tip.jsp" />
 		<put-attribute name="footer" value="/WEB-INF/jsp/common/footer.jsp" />
 	</definition>
 

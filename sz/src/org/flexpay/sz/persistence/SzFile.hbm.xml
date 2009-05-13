@@ -42,12 +42,12 @@
                 <comment>File to download reference</comment>
             </column>
         </many-to-one>
-        <many-to-one name="type" class="org.flexpay.common.persistence.FPFileType" foreign-key="sz_files_tbl_type_id">
+        <many-to-one name="type" class="org.flexpay.common.persistence.file.FPFileType" foreign-key="sz_files_tbl_type_id">
             <column name="type_id" not-null="true">
                 <comment>SZ file type reference</comment>
             </column>
         </many-to-one>
-        <many-to-one name="status" class="org.flexpay.common.persistence.FPFileStatus" foreign-key="sz_files_tbl_status_id">
+        <many-to-one name="status" class="org.flexpay.common.persistence.file.FPFileStatus" foreign-key="sz_files_tbl_status_id">
             <column name="status_id" not-null="true">
                 <comment>SZ file status reference</comment>
             </column>

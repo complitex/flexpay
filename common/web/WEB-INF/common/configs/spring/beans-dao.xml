@@ -79,7 +79,7 @@
 				  value="org.flexpay.common.dao.FPFileDao" />
 		<property name="target">
 			<bean parent="abstractDaoTarget">
-				<constructor-arg value="org.flexpay.common.persistence.FPFile" />
+				<constructor-arg value="org.flexpay.common.persistence.file.FPFile" />
 			</bean>
 		</property>
 	</bean>
@@ -89,7 +89,7 @@
 				  value="org.flexpay.common.dao.FPFileStatusDao" />
 		<property name="target">
 			<bean parent="abstractDaoTarget">
-				<constructor-arg value="org.flexpay.common.persistence.FPFileStatus" />
+				<constructor-arg value="org.flexpay.common.persistence.file.FPFileStatus" />
 			</bean>
 		</property>
 	</bean>
@@ -99,7 +99,7 @@
 				  value="org.flexpay.common.dao.FPFileTypeDao" />
 		<property name="target">
 			<bean parent="abstractDaoTarget">
-				<constructor-arg value="org.flexpay.common.persistence.FPFileType" />
+				<constructor-arg value="org.flexpay.common.persistence.file.FPFileType" />
 			</bean>
 		</property>
 	</bean>

@@ -1,6 +1,6 @@
 package org.flexpay.common.service.transport;
 
-import org.flexpay.common.persistence.FPFile;
+import org.flexpay.common.persistence.file.FPFile;
 
 /**
  * Outgoing transport

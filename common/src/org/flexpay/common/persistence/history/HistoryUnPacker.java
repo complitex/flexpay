@@ -1,10 +1,10 @@
 package org.flexpay.common.persistence.history;
 
-import org.flexpay.common.persistence.FPFile;
+import org.flexpay.common.persistence.file.FPFile;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * History unpacker parses {@link org.flexpay.common.persistence.FPFile} containing set of history records
+ * History unpacker parses {@link org.flexpay.common.persistence.file.FPFile} containing set of history records
  */
 public interface HistoryUnPacker {
 

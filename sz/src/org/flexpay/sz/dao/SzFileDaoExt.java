@@ -1,6 +1,6 @@
 package org.flexpay.sz.dao;
 
-import org.flexpay.common.persistence.FPFileStatus;
+import org.flexpay.common.persistence.file.FPFileStatus;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;

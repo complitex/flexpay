@@ -1,7 +1,7 @@
 package org.flexpay.common.service;
 
 import org.flexpay.common.dao.paging.Page;
-import org.flexpay.common.persistence.FPFile;
+import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.registry.RegistryRecord;
 import org.flexpay.common.persistence.registry.Registry;

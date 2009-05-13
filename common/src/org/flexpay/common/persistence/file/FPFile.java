@@ -1,8 +1,10 @@
-package org.flexpay.common.persistence;
+package org.flexpay.common.persistence.file;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.flexpay.common.util.FPFileUtil;
+import org.flexpay.common.persistence.DomainObject;
+import org.flexpay.common.persistence.FPModule;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.*;
@@ -12,9 +14,9 @@ public class FPFile extends DomainObject {
 
 	private String nameOnServer;
 	private String originalName;
-	private Long size = 0L;
 	private String userName;
 	private String description;
+	private Long size = 0L;
 	private Date creationDate = new Date();
 	private FPModule module;
 
@@ -32,10 +34,6 @@ public class FPFile extends DomainObject {
 
 	public void setOriginalName(String originalName) {
 		this.originalName = originalName;
-	}
-
-	public File getFile() {
-		return new File(FPFileUtil.getFileLocalPath(this));
 	}
 
 	public Long getSize() {
@@ -78,18 +76,6 @@ public class FPFile extends DomainObject {
 		this.module = module;
 	}
 
-	@Override
-	public String toString() {
-		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
-				append("id", getId()).
-				append("nameOnServer", nameOnServer).
-				append("originalName", originalName).
-				append("size", size).
-				append("userName", userName).
-				append("creationDate", creationDate).
-				toString();
-	}
-
 	/**
 	 * Create output stream for this file
 	 *
@@ -110,7 +96,24 @@ public class FPFile extends DomainObject {
 		return new BufferedInputStream(new FileInputStream(FPFileUtil.getFileOnServer(this)));
 	}
 
+	public File getFile() {
+		return new File(FPFileUtil.getFileLocalPath(this));
+	}
+
 	public void updateSize() {
 		size = getFile().length();
 	}
+
+	@Override
+	public String toString() {
+		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
+				append("id", getId()).
+				append("nameOnServer", nameOnServer).
+				append("originalName", originalName).
+				append("size", size).
+				append("userName", userName).
+				append("creationDate", creationDate).
+				toString();
+	}
+
 }
