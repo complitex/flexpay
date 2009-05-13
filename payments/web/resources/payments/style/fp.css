@@ -30,32 +30,41 @@
 	font-size: 1.0em;
 }
 
+.columns .main-content table.operations td {
+	font-size: 1.0em;
+	font-weight: bold;
+}
+
 .columns .main-content table.operations td.th {	
 	font-size: 0.8em;
 }
 
-.columns .main-content table.operations td.col_oper {
+.columns .main-content table.operations tr.col_oper {
 	background: #ecf6f6;
 	font-family: tahoma, sans-serif;
 	font-size: 0.8em;
 	font-weight: bold;
 }
 
-.columns .main-content table.operations td.col_doc {
+.columns .main-content table.operations tr.col_doc {
 	background-color: lavender;
 	font-family: tahoma, sans-serif;
 	font-size: 0.8em;
 	font-weight: bold;
 }
 
-.col_red {
+.columns .main-content table.operations tr.col_red {
 	color: red;
 }
 
-.col_black {
+.columns .main-content table.operations tr.col_black {
 	color: black;
 }
 
-.col_blue {
+.columns .main-content table.operations tr.col_blue {
 	color: blue;
+}
+
+.columns .main-content table.operations tr.highlighted {
+	background-color: #cc6699;
 }

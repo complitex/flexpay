@@ -2,7 +2,9 @@ package org.flexpay.payments.service.impl;
 
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.payments.dao.DocumentDao;
+import org.flexpay.payments.dao.DocumentDaoExt;
 import org.flexpay.payments.persistence.Document;
+import org.flexpay.payments.persistence.Operation;
 import org.flexpay.payments.service.DocumentService;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -11,12 +13,16 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.math.BigDecimal;
+
 @Transactional (readOnly = true)
 public class DocumentServiceImpl implements DocumentService {
 
 	private Logger log = LoggerFactory.getLogger(getClass());
 
 	private DocumentDao documentDao;
+	private DocumentDaoExt documentDaoExt;
 
 	/**
 	 * Read Document object by Stub
@@ -61,9 +67,17 @@ public class DocumentServiceImpl implements DocumentService {
 		documentDao.delete(document);
 	}
 
+	public List<Document> searchDocuments(@NotNull Operation operation, Long serviceTypeId, BigDecimal minimalSumm, BigDecimal maximalSumm) {
+		return documentDaoExt.searchDocuments(operation, serviceTypeId, minimalSumm, maximalSumm);
+	}
+
 	@Required
 	public void setDocumentDao(DocumentDao documentDao) {
 		this.documentDao = documentDao;
 	}
 
+	@Required
+	public void setDocumentDaoExt(DocumentDaoExt documentDaoExt) {
+		this.documentDaoExt = documentDaoExt;
+	}
 }

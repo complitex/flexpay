@@ -8,7 +8,8 @@
 		   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
 	<bean id="documentService" class="org.flexpay.payments.service.impl.DocumentServiceImpl"
-		  p:documentDao-ref="documentDao" />
+		  p:documentDao-ref="documentDao"
+			p:documentDaoExt-ref="documentDaoExt"/>
 
 	<bean id="documentAdditionTypeService" class="org.flexpay.payments.service.impl.DocumentAdditionTypeServiceImpl"
 		  p:typeDao-ref="documentAdditionTypeDao" />
@@ -27,7 +28,8 @@
 		  p:documentStatusDao-ref="documentStatusDao" />
 
 	<bean id="operationService" class="org.flexpay.payments.service.impl.OperationServiceImpl"
-		  p:operationDao-ref="operationDao" />
+		  p:operationDao-ref="operationDao"
+		  p:operationDaoExt-ref="operationDaoExt" />
 
 	<bean id="operationTypeService" class="org.flexpay.payments.service.impl.OperationTypeServiceImpl"
 		  p:operationTypeDao-ref="operationTypeDao" />

@@ -26,5 +26,5 @@ public interface OperationStatusService {
 	 *          if lookup by code fails
 	 */
 	@NotNull
-	OperationStatus read(int code) throws FlexPayException;
+	OperationStatus read(int code) throws FlexPayException;	
 }

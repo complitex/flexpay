@@ -1,11 +1,14 @@
 package org.flexpay.payments.dao;
 
 import org.flexpay.payments.persistence.Operation;
+import org.flexpay.payments.service.Roles;
 import org.flexpay.common.dao.GenericDao;
 import org.flexpay.common.dao.paging.Page;
+import org.springframework.security.annotation.Secured;
 
 import java.util.List;
 import java.util.Date;
+import java.math.BigDecimal;
 
 public interface OperationDao extends GenericDao<Operation, Long> {
 
