@@ -1,4 +1,3 @@
-
 <%@include file="/WEB-INF/jsp/common/taglibs.jsp"%>
 
 <div class="tip">
@@ -12,20 +11,19 @@
 </div>
 
 <div class="tip-close">
-    <a href="close"><img src="img/i_tip_close.gif" align="left" border="0" alt=""/><strong>Не показывать совет</strong></a>
+    <a href="#"><img src="img/i_tip_close.gif" align="left" border="0" alt=""/><strong>Не показывать совет</strong></a>
 </div>
 
 <br/>
 
 <div class="text-small">
 
-    <a href="doc"><img src="img/i_doc_word.gif" width="16" height="16" alt="" align="left" border="0"/>Документ1.doc</a>
+    <a href="#"><img src="img/i_doc_word.gif" width="16" height="16" alt="" align="left" border="0"/>Документ1.doc</a>
     <br clear="all"/>
 
     <br/>
 
-    <a href="doc"><img src="img/i_doc_excel.gif" width="16" height="16" alt="" align="left"
-                       border="0"/>Документ3.xls</a>
+    <a href="#"><img src="img/i_doc_excel.gif" width="16" height="16" alt="" align="left" border="0"/>Документ3.xls</a>
     <br clear="all"/>
 
 </div>
