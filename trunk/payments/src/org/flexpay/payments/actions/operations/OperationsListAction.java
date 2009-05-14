@@ -178,6 +178,10 @@ public class OperationsListAction extends FPActionWithPagerSupport<Operation> {
 			addActionError(getText("payments.error.operations.list.begin_date_must_be_before_end_date"));
 		}
 
+		if (minimalSumm != null && maximalSumm != null && minimalSumm.compareTo(maximalSumm) > 0) {
+			addActionError(getText("payments.error.operations.list.minimal_summ_must_be_not_greater_than_maximal"));
+		}
+
 		return !hasActionErrors();
 	}
 
