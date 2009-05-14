@@ -22,6 +22,26 @@
 		<put-attribute name="title" value="ab.main.title" />
 	</definition>
 
+    <definition name="ab.main.dicts" extends="ab.layout.standart">
+        <put-attribute name="title" value="ab.main.title" />
+    </definition>
+
+    <definition name="ab.main.address_dicts" extends="ab.layout.standart">
+        <put-attribute name="title" value="ab.main.title" />
+    </definition>
+
+    <definition name="ab.main.person_dicts" extends="ab.layout.standart">
+        <put-attribute name="title" value="ab.main.title" />
+    </definition>
+
+    <definition name="ab.main.type_dicts" extends="ab.layout.standart">
+        <put-attribute name="title" value="ab.main.title" />
+    </definition>
+
+    <definition name="ab.main.other_dicts" extends="ab.layout.standart">
+        <put-attribute name="title" value="ab.main.title" />
+    </definition>
+
 	<definition name="ab.country.list" extends="ab.layout.standart">
 		<put-attribute name="title" value="ab.country.list.title" />
 		<put-attribute name="body" value="/WEB-INF/jsp/ab/countries_list.jsp" />

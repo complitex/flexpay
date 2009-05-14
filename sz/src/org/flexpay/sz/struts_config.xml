@@ -19,9 +19,21 @@
 			<result type="tiles">sz.dictionaries</result>
 		</action>
 
-		<action name="import" class="staticPageAction">
-			<result type="tiles">sz.import</result>
-		</action>
+        <action name="mainDicts" class="staticPageAction">
+            <result type="tiles">sz.main.dics</result>
+        </action>
+
+        <action name="mainImport" class="staticPageAction">
+            <result type="tiles">sz.main.import</result>
+        </action>
+
+        <action name="mainOtherDicts" class="staticPageAction">
+            <result type="tiles">sz.main.other_dics</result>
+        </action>
+
+        <action name="mainImportImport" class="staticPageAction">
+            <result type="tiles">sz.main.import_import</result>
+        </action>
 
         <action name="doSzFileUploadAjax" class="szFileUploadAjaxAction">
             <result>/WEB-INF/jsp/sz/response.jsp</result>

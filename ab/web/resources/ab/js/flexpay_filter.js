@@ -140,26 +140,30 @@ var FF = {
     },
 
     onKeyDown : function(e, filterName) {
-        var filter = this.filters[filterName].autocompleter;
-        if (filter != null && filter.getResultsElement().is(":visible")) {
-            return;
-        }
+
         if ((window.event && window.event.keyCode == 13)
-                || (e.keyCode == 13 || e.which == 13)) {
+                || e.keyCode == 13 || e.which == 13) {
+
+            if( e.stopPropagation ) { e.stopPropagation(); }
+
+//            this.filters[filterName].string.simulate("keypress", {keyCode: 9});
+
+/*
             var filters = this.getFiltersByParentName(filterName);
             if (this.setFocusByTabIndex(filters)) {
                 return;
             }
             filters[0].string.focus();
+*/
         }
     },
 
     createFilter : function (name, options) {
         var filter = new Filter(name, options);
-        filter.string.attr("onchange", "FF.onChange2('" + name + "');");
-        filter.string.attr("onkeydown", "FF.onKeyDown(event, '" + name + "');");
-        filter.string.attr("tabIndex", "1");
         this.filters[name] = filter;
+        filter.string.attr("onchange", "FF.onChange2('" + name + "');");
+//        filter.string.attr("onkeydown", "FF.onKeyDown(event, '" + name + "');");
+        filter.string.attr("tabIndex", "1");
         this.filters.splice(this.filters.length - 1, 1);
         if (filter.preRequest) {
             var k = 0;

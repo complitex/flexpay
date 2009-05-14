@@ -9,6 +9,30 @@
 		<put-attribute name="body" value="/WEB-INF/jsp/payments/include/stylesheet.jsp"/>
 	</definition>
 
+    <definition name="payments.main.by_address.operations" extends="ab.layout.standart">
+        <put-attribute name="title" value="payments.main.title" />
+    </definition>
+
+    <definition name="payments.main.by_address.reports" extends="ab.layout.standart">
+        <put-attribute name="title" value="payments.main.title" />
+    </definition>
+
+    <definition name="payments.main.by_eircaccount.operations" extends="ab.layout.standart">
+        <put-attribute name="title" value="payments.main.title" />
+    </definition>
+
+    <definition name="payments.main.by_eircaccount.reports" extends="ab.layout.standart">
+        <put-attribute name="title" value="payments.main.title" />
+    </definition>
+
+    <definition name="payments.main.by_quittance.operations" extends="ab.layout.standart">
+        <put-attribute name="title" value="payments.main.title" />
+    </definition>
+
+    <definition name="payments.main.by_quittance.reports" extends="ab.layout.standart">
+        <put-attribute name="title" value="payments.main.title" />
+    </definition>
+
 	<!-- search-related definitions -->
 	<definition name="payments.quittance.search" extends="ab.layout.standart">
 		<put-attribute name="title" value="payments.quittance.search.title" />

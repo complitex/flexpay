@@ -63,7 +63,7 @@
 	<bean name="payments.quittance.search_address.operations" parent="payments.quittance.search_address"
 		  p:name="payments.quittance.search_address.operations"
 		  p:title="payments.menu3.operations"
-		  p:action="main"
+		  p:action="mainByAddressOperations"
 		  p:parent-ref="payments.quittance.search_address">
         <property name="userRole">
             <util:constant static-field="org.flexpay.payments.service.Roles.ROLE_MENU_PAYMENTS_OPERATIONS" />
@@ -73,7 +73,7 @@
 	<bean name="payments.quittance.search_address.reports" parent="payments.quittance.search_address"
 		  p:name="payments.quittance.search_address.reports"
 		  p:title="payments.menu3.reports"
-		  p:action="main"
+          p:action="mainByAddressReports"
 		  p:parent-ref="payments.quittance.search_address">
         <property name="userRole">
             <util:constant static-field="org.flexpay.payments.service.Roles.ROLE_MENU_PAYMENTS_REPORTS" />
@@ -84,7 +84,7 @@
 	<bean name="payments.quittance.search_eircaccount.operations" parent="payments.quittance.search_eircaccount"
 		  p:name="payments.quittance.search_eircaccount.operations"
 		  p:title="payments.menu3.operations"
-		  p:action="main"
+		  p:action="mainByEircaccountOperations"
 		  p:parent-ref="payments.quittance.search_eircaccount">
         <property name="userRole">
             <util:constant static-field="org.flexpay.payments.service.Roles.ROLE_MENU_PAYMENTS_OPERATIONS" />
@@ -94,7 +94,7 @@
 	<bean name="payments.quittance.search_eircaccount.reports" parent="payments.quittance.search_eircaccount"
 		  p:name="payments.quittance.search_eircaccount.reports"
 		  p:title="payments.menu3.reports"
-		  p:action="main"
+		  p:action="mainByEircaccountReports"
 		  p:parent-ref="payments.quittance.search_eircaccount">
         <property name="userRole">
             <util:constant static-field="org.flexpay.payments.service.Roles.ROLE_MENU_PAYMENTS_REPORTS" />
@@ -105,7 +105,7 @@
 	<bean name="payments.quittance.search_quittance.operations" parent="payments.quittance.search_quittance"
 		  p:name="payments.quittance.search_quittance.operations"
 		  p:title="payments.menu3.operations"
-		  p:action="main"
+		  p:action="mainByQuittanceOperations"
 		  p:parent-ref="payments.quittance.search_quittance">
         <property name="userRole">
             <util:constant static-field="org.flexpay.payments.service.Roles.ROLE_MENU_PAYMENTS_REPORTS" />
@@ -115,7 +115,7 @@
 	<bean name="payments.quittance.search_quittance.reports" parent="payments.quittance.search_quittance"
 		  p:name="payments.quittance.search_quittance.reports"
 		  p:title="payments.menu3.reports"
-		  p:action="main"
+          p:action="mainByQuittanceReports"
 		  p:parent-ref="payments.quittance.search_quittance">
         <property name="userRole">
             <util:constant static-field="org.flexpay.payments.service.Roles.ROLE_MENU_PAYMENTS_REPORTS" />
