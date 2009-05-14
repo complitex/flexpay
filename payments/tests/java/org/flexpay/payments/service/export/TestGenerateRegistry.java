@@ -3,11 +3,21 @@ package org.flexpay.payments.service.export;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.file.FPFile;
+import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.filter.ImportErrorTypeFilter;
 import org.flexpay.common.persistence.filter.RegistryRecordStatusFilter;
 import org.flexpay.common.persistence.registry.*;
 import org.flexpay.common.service.*;
+import org.flexpay.common.service.transport.OutTransport;
+import org.flexpay.common.process.job.Job;
+import org.flexpay.common.process.ProcessManager;
+import org.flexpay.common.process.exception.ProcessInstanceException;
+import org.flexpay.common.process.exception.ProcessDefinitionException;
+import org.flexpay.common.util.SecurityUtil;
+import org.flexpay.common.util.FPFileUtil;
 import org.flexpay.orgs.persistence.Organization;
+import org.flexpay.orgs.service.OrganisationInstanceService;
+import org.flexpay.orgs.service.OrganizationService;
 import org.flexpay.payments.persistence.Document;
 import org.flexpay.payments.persistence.Operation;
 import org.flexpay.payments.service.OperationService;
@@ -16,7 +26,15 @@ import org.jetbrains.annotations.Nullable;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.scheduling.quartz.QuartzJobBean;
+import org.quartz.JobExecutionContext;
+import org.quartz.JobExecutionException;
 
+import javax.mail.internet.MimeMessage;
 import java.io.*;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
@@ -29,6 +47,8 @@ public class TestGenerateRegistry {
         private final Logger log = LoggerFactory.getLogger(getClass());
 
         private BufferedOutputStream bos;
+
+        private File file;
 
         private char separator;
 
@@ -75,6 +95,7 @@ public class TestGenerateRegistry {
 
         public RegistryWriter(@NotNull File file, char separator, char quotechar, char escapechar, @NotNull String lineEnd) throws FileNotFoundException {
             FileOutputStream fos = new FileOutputStream(file);
+            this.file = file;
             this.bos = new BufferedOutputStream(fos);
             this.separator = separator;
             this.quotechar = quotechar;
@@ -162,7 +183,12 @@ public class TestGenerateRegistry {
                 sb.append(quotechar);
         }
 
-        public void flush() throws IOException, FlexPayException {
+        public long getFileSize() throws FlexPayException {
+            flush();
+            return file.length();
+        }
+
+        public void flush() throws FlexPayException {
             try {
                 log.info("flush stream");
                 bos.flush();
@@ -194,6 +220,8 @@ public class TestGenerateRegistry {
 
     public class GeneratePaymentsMBRegistry {
         private final Logger log = LoggerFactory.getLogger(getClass());
+
+        private static final long FLASH_FILE = 100;
 
         private final SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy"); //TODO make static
         private final SimpleDateFormat paymentDateFormat = new SimpleDateFormat("yyyyMMdd"); //TODO make static
@@ -248,10 +276,10 @@ public class TestGenerateRegistry {
         private RegistryStatusService registryStatusService;
         private RegistryRecordService registryRecordService;
 
-        public void exportToMegaBank(@NotNull Registry registry, @NotNull FPFile spFile, @NotNull Organization organization, @NotNull Date startDate, @NotNull Date endDate) throws FlexPayException {
+        public void exportToMegaBank(@NotNull Registry registry, @NotNull File file, @NotNull Organization organization) throws FlexPayException {
             RegistryWriter rg = null;
             try {
-                rg = new RegistryWriter(spFile.getFile());
+                rg = new RegistryWriter(file);
 
                 // служебные строки
                 log.info("Writing service lines");
@@ -282,6 +310,8 @@ public class TestGenerateRegistry {
                 }
                 rg.writeLine(bf.toString());
 
+                rg.flush();
+
                 // информационные строки
                 log.info("Write info lines");
                 log.info("Total info lines: " + registry.getRecordsNumber());
@@ -291,11 +321,16 @@ public class TestGenerateRegistry {
                 registry.setRegistryStatus(registryStatusService.findByCode(RegistryStatus.PROCESSING));
                 registryService.update(registry);
                 int i = 0;
+                int k = 0;
                 try {
                     for (RegistryRecord registryRecord : registryRecords) {
                         String[] infoLine = createInfoLine(registryRecord);
                         rg.writeLine(infoLine);
                         log.info("Writed line " + String.valueOf(++i));
+                        if (++k >= FLASH_FILE) {
+                            rg.flush();
+                            k = 0;
+                        }
                     }
                 } catch (Exception e) {
                     registry.setRegistryStatus(registryStatusService.findByCode(RegistryStatus.PROCESSING_WITH_ERROR));
@@ -530,7 +565,9 @@ public class TestGenerateRegistry {
             return RegistryType.TYPE_CASH_PAYMENTS;
         }
 
-        private OperationService operationService;public void setRegistryService(RegistryService registryService) {
+        private OperationService operationService;
+
+        public void setRegistryService(RegistryService registryService) {
             this.registryService = registryService;
         }
 
@@ -552,6 +589,229 @@ public class TestGenerateRegistry {
 
         public void setOperationService(OperationService operationService) {
             this.operationService = operationService;
+        }
+    }
+
+    public class SendFileToEmail implements OutTransport {
+        private JavaMailSender sender;
+        private String email;
+
+        public void send(FPFile file) throws Exception {
+            sender = new JavaMailSenderImpl();
+
+            MimeMessage message = sender.createMimeMessage();
+
+            MimeMessageHelper helper = new MimeMessageHelper(message, true);
+            helper.setTo(email);
+
+            FileSystemResource resourceFile = new FileSystemResource(file.getFile());
+            helper.addAttachment(file.getOriginalName(), resourceFile);
+
+            sender.send(message);
+        }
+
+        public void setSender(JavaMailSender sender) {
+            this.sender = sender;
+        }
+
+        public void setEmail(String email) {
+            this.email = email;
+        }
+    }
+
+    // Jobs
+
+    public class CreateFPFileJob extends Job {
+        private String moduleName;
+        private String userName;
+
+        private FPFileService fpFileService;
+
+        public String execute(Map<Serializable, Serializable> parameters) throws FlexPayException {
+            FPFile fpFile = null;
+            try {
+                fpFile = new FPFile();
+                fpFile.setModule(fpFileService.getModuleByName(moduleName));
+                fpFile.setUserName(userName);
+                FPFileUtil.createEmptyFile(fpFile);
+
+                fpFileService.create(fpFile);
+                parameters.put("FileId", fpFile.getId());
+                log.info("File created {}", fpFile);
+            } catch (Exception e) {
+                log.error("Unknown file type", e);
+                if (fpFile != null) {
+                    if (fpFile.getId() != null) {
+                        fpFileService.delete(fpFile);
+                    } else {
+                        fpFileService.deleteFromFileSystem(fpFile);
+                    }
+                }
+                return RESULT_ERROR;
+            }
+            return RESULT_NEXT;
+        }
+
+        public void setModuleName(String moduleName) {
+            this.moduleName = moduleName;
+        }
+
+        public void setUserName(String userName) {
+            this.userName = userName;
+        }
+
+        public void setFpFileService(FPFileService fpFileService) {
+            this.fpFileService = fpFileService;
+        }
+    }
+
+    public class GeneratePaymentsDBRegistryJob extends Job {
+        private FPFileService fpFileService;
+        private GeneratePaymentsDBRegistry generatePaymentsDBRegistry;
+        private OrganizationService organizationService;
+
+        public String execute(Map<Serializable, Serializable> parameters) throws FlexPayException {
+            Long fileId = (Long) parameters.get("FileId");
+            Long organizationId = (Long) parameters.get("OrganizationId");
+
+            FPFile spFile = fpFileService.read(new Stub<FPFile>(fileId));
+            if (spFile == null) {
+                log.warn("Invalid File Id");
+                return RESULT_ERROR;
+            }
+
+            Organization organization = organizationService.readFull(new Stub<Organization>(organizationId));
+            if (organization == null) {
+                log.warn("Invalid Organization Id");
+                return RESULT_ERROR;
+            }
+            // TODO get last date generated registry
+            Registry registry = generatePaymentsDBRegistry.createDBRegestry(spFile, organization, new Date(), new Date()); //TODO set range date
+            // TODO set last date generated registry
+            parameters.put("RegistryId", registry.getId());
+            return RESULT_NEXT;
+        }
+
+        public void setFpFileService(FPFileService fpFileService) {
+            this.fpFileService = fpFileService;
+        }
+
+        public void setGeneratePaymentsDBRegistry(GeneratePaymentsDBRegistry generatePaymentsDBRegistry) {
+            this.generatePaymentsDBRegistry = generatePaymentsDBRegistry;
+        }
+
+        public void setOrganizationService(OrganizationService organizationService) {
+            this.organizationService = organizationService;
+        }
+    }
+
+    public class GeneratePaymentsMBRegistryJob extends Job {
+        private FPFileService fpFileService;
+        private GeneratePaymentsMBRegistry generatePaymentsMBRegistry;
+        private OrganizationService organizationService;
+        private RegistryService registryService;
+
+        public String execute(Map<Serializable, Serializable> parameters) throws FlexPayException {
+            Long fileId = (Long) parameters.get("FileId");
+            Long organizationId = (Long) parameters.get("OrganizationId");
+            Long registryId = (Long) parameters.get("RegistryId");
+
+            FPFile spFile = fpFileService.read(new Stub<FPFile>(fileId));
+            if (spFile == null) {
+                log.warn("Invalid File Id");
+                return RESULT_ERROR;
+            }
+
+            Organization organization = organizationService.readFull(new Stub<Organization>(organizationId));
+            if (organization == null) {
+                log.warn("Invalid Organization Id");
+                return RESULT_ERROR;
+            }
+
+            Registry registry = registryService.read(new Stub<Registry>(registryId));
+            if (registry == null) {
+                log.warn("Invalid Registry Id");
+                return RESULT_ERROR;
+            }
+            File file = spFile.getFile();
+            long currentLength = file.length();
+            generatePaymentsMBRegistry.exportToMegaBank(registry, file, organization);
+            if (file.length() > currentLength) {
+                spFile.setSize(file.length());
+                fpFileService.update(spFile);
+            }
+            return RESULT_NEXT;
+        }
+
+        public void setFpFileService(FPFileService fpFileService) {
+            this.fpFileService = fpFileService;
+        }
+
+        public void setGeneratePaymentsMBRegistry(GeneratePaymentsMBRegistry generatePaymentsMBRegistry) {
+            this.generatePaymentsMBRegistry = generatePaymentsMBRegistry;
+        }
+
+        public void setOrganizationService(OrganizationService organizationService) {
+            this.organizationService = organizationService;
+        }
+
+        public void setRegistryService(RegistryService registryService) {
+            this.registryService = registryService;
+        }
+    }
+
+    public class SendRegistryJob extends Job {
+        private FPFileService fpFileService;
+        private OutTransport outTransport;
+
+        public String execute(Map<Serializable, Serializable> parameters) throws FlexPayException {
+            Long fileId = (Long) parameters.get("FileId");
+
+            FPFile spFile = fpFileService.read(new Stub<FPFile>(fileId));
+            if (spFile == null) {
+                log.warn("Invalid File Id");
+                return RESULT_ERROR;
+            }
+            try {
+                outTransport.send(spFile);
+            } catch (Exception e) {
+                log.warn("Send file exception", e);
+			    return RESULT_ERROR;
+            }
+            return RESULT_NEXT;
+        }
+
+        public void setFpFileService(FPFileService fpFileService) {
+            this.fpFileService = fpFileService;
+        }
+
+        public void setOutTransport(OutTransport outTransport) {
+            this.outTransport = outTransport;
+        }
+    }
+
+    public class GeneratePaymentsRegistry extends QuartzJobBean {
+        private Logger log = LoggerFactory.getLogger(getClass());
+        private ProcessManager processManager;
+        
+        protected void executeInternal(JobExecutionContext context) throws JobExecutionException {
+            if (log.isDebugEnabled()) {
+                log.debug("Starting process generate payments registry at {}", new Date());
+            }
+            try {
+                Map<Serializable, Serializable> parameters = context.getMergedJobDataMap().getWrappedMap();
+                processManager.createProcess("GeneratePaymentsRegisryProcess", parameters); //TODO change process name
+            } catch (ProcessInstanceException e) {
+                log.error("Failed run process generate payments registry", e);
+                throw new JobExecutionException(e);
+            } catch (ProcessDefinitionException e) {
+                log.error("Process generate payments registry not started", e);
+                throw new JobExecutionException(e);
+            }
+        }
+
+        public void setProcessManager(ProcessManager processManager) {
+            this.processManager = processManager;
         }
     }
 
