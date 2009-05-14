@@ -1,6 +1,7 @@
 package org.flexpay.payments.actions.reports;
 
 import org.apache.commons.lang.time.DateUtils;
+import org.apache.commons.lang.StringUtils;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.filter.BeginDateFilter;
@@ -54,7 +55,7 @@ public class ReceivedPaymentsReportAction extends FPActionSupport {
 		organizations = organizationService.listOrganizationsWithCollectors();
 
 		if (isSubmit()) {
-			if (organizationId == null) {
+			if (StringUtils.isEmpty(organizationId)) {
 				addActionError(getText("payments.errors.reports.received.no_org_selected"));
 				return SUCCESS;
 			}
