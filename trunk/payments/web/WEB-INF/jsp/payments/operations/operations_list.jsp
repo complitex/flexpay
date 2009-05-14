@@ -142,8 +142,10 @@
 
 	<s:hidden name="status"/>
 	<s:hidden name="selectedOperationId"/>
-
 	<s:hidden name="documentSearchEnabled"/>
+
+	<%-- filters are temporary hidden! --%>
+	<sec:authorize ifAllGranted="ROLE_PAYMENTS_DEVELOPER">
 
 	<table cellpadding="3" cellspacing="1" border="0" width="100%" class="operations">
 		<sec:authorize ifAllGranted="ROLE_PAYMENTS_DEVELOPER">
@@ -156,7 +158,7 @@
 				<td nowrap="nowrap"><%@include file="/WEB-INF/jsp/common/filter/end_date_filter.jsp" %></td>																	
 			</tr>
 		</sec:authorize>
-
+	
 		<tr>
 			<td nowrap="nowrap"><s:text name="payments.operations.list.service_type"/></td>
 			<td colspan="2" nowrap="nowrap"><s:select name="serviceTypeId" list="serviceTypes" listKey="id" listValue="name" emptyOption="true"/></td>
@@ -180,6 +182,7 @@
 			<td nowrap="nowrap"><s:textfield name="maximalSumm"/></td>
 		</tr>
 	</table>
+	</sec:authorize>
 
 	<table cellpadding="3" cellspacing="1" border="0" width="100%" class="operations">
 
