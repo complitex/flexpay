@@ -99,7 +99,7 @@ public class MenuComponent extends MenuBase implements Serializable {
 	}
 
     public boolean isActive(Set<String> menuNames) {
-        return menuNames.contains(name);
+        return menuNames != null && menuNames.contains(name);
     }
 
 	public int getLevel() {

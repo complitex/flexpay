@@ -4,6 +4,54 @@
 
 <tiles-definitions>
 
+    <definition name="eirc.main" extends="ab.layout.standart">
+        <put-attribute name="title" value="ab.main.title" />
+    </definition>
+
+    <definition name="eirc.main.dicts" extends="ab.layout.standart">
+        <put-attribute name="title" value="ab.main.title" />
+    </definition>
+
+    <definition name="eirc.main.import" extends="ab.layout.standart">
+        <put-attribute name="title" value="ab.main.title" />
+    </definition>
+
+    <definition name="eirc.main.processing" extends="ab.layout.standart">
+        <put-attribute name="title" value="ab.main.title" />
+    </definition>
+
+    <definition name="eirc.main.quittances" extends="ab.layout.standart">
+        <put-attribute name="title" value="ab.main.title" />
+    </definition>
+
+    <definition name="eirc.main.organizations_dicts" extends="ab.layout.standart">
+        <put-attribute name="title" value="ab.main.title" />
+    </definition>
+
+    <definition name="eirc.main.services_dicts" extends="ab.layout.standart">
+        <put-attribute name="title" value="ab.main.title" />
+    </definition>
+
+    <definition name="eirc.main.import_import" extends="ab.layout.standart">
+        <put-attribute name="title" value="ab.main.title" />
+    </definition>
+
+    <definition name="eirc.main.processing_processing" extends="ab.layout.standart">
+        <put-attribute name="title" value="ab.main.title" />
+    </definition>
+
+    <definition name="eirc.main.quittances_quittances" extends="ab.layout.standart">
+        <put-attribute name="title" value="ab.main.title" />
+    </definition>
+
+    <definition name="eirc.main.quittances_payment" extends="ab.layout.standart">
+        <put-attribute name="title" value="ab.main.title" />
+    </definition>
+
+    <definition name="eirc.main.quittances_packets" extends="ab.layout.standart">
+        <put-attribute name="title" value="ab.main.title" />
+    </definition>
+
 	<!-- Import -->
 	<definition name="eirc.import" extends="ab.layout.standart">
 		<put-attribute name="title" value="eirc.menu2.import" />

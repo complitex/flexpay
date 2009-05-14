@@ -21,6 +21,30 @@
             <result type="tiles">payments.main</result>
         </action>
 
+        <action name="mainByAddressOperations" class="staticPageAction">
+            <result type="tiles">payments.main.by_address.operations</result>
+        </action>
+
+        <action name="mainByAddressReports" class="staticPageAction">
+            <result type="tiles">payments.main.by_address.reports</result>
+        </action>
+
+        <action name="mainByEircaccountOperations" class="staticPageAction">
+            <result type="tiles">payments.main.by_eircaccount.operations</result>
+        </action>
+
+        <action name="mainByEircaccountReports" class="staticPageAction">
+            <result type="tiles">payments.main.by_eircaccount.reports</result>
+        </action>
+
+        <action name="mainByQuittanceOperations" class="staticPageAction">
+            <result type="tiles">payments.main.by_quittance.operations</result>
+        </action>
+
+        <action name="mainByQuittanceReports" class="staticPageAction">			
+            <result type="tiles">payments.main.by_quittance.reports</result>
+        </action>
+
 	</package>
 
 	<package name="ajax" namespace="dicts" extends="common">

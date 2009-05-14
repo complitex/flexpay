@@ -14,7 +14,31 @@
 			<result type="tiles">ab.main</result>
 		</action>
 
+        <action name="mainDicts" class="staticPageAction">
+            <result type="tiles">ab.main.dicts</result>
+        </action>
+
 	</package>
+
+    <package name="dicts" namespace="/dicts" extends="common">
+
+        <action name="mainAddressDicts" class="staticPageAction">
+            <result type="tiles">ab.main.address_dicts</result>
+        </action>
+
+        <action name="mainPersonDicts" class="staticPageAction">
+            <result type="tiles">ab.main.person_dicts</result>
+        </action>
+
+        <action name="mainTypeDicts" class="staticPageAction">
+            <result type="tiles">ab.main.type_dicts</result>
+        </action>
+
+        <action name="mainOtherDicts" class="staticPageAction">
+            <result type="tiles">ab.main.other_dicts</result>
+        </action>
+
+    </package>
 
 	<include file="org/flexpay/common/actions/struts_config.xml" />
 	<include file="org/flexpay/ab/actions/person/struts.xml" />

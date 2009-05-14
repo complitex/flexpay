@@ -59,6 +59,9 @@ public class FPMenuDisplayer extends AbstractMenuDisplayer {
 	}
 
     private boolean addLevelComponent(MenuComponent menu, int level) {
+		if (level > 2) {
+			return true;
+		}
 		MenuComponent component = null;
 		List<MenuComponent> components = menu.getComponents();
 		for (MenuComponent m : components) {
@@ -117,16 +120,16 @@ public class FPMenuDisplayer extends AbstractMenuDisplayer {
 			return;
 		}
 
-		boolean firstHasOut = true;
+//		boolean firstHasOut = true;
 
 		for (MenuComponent component : components) {
 			if (hasMenuAccess(component)) {
 				if (level == 3) {
-					if (component.isFirst() || !firstHasOut) {
+					if (component.isFirst()) {
 						out.println(displayStrings.getMessage("left.menu.top", getTitle(menu)));
-						firstHasOut = true;
+//						firstHasOut = true;
 					}
-					if (activeMenuBranch != null && component.isActive(activeMenuBranch)) {
+					if (component.isActive(activeMenuBranch)) {
 						out.println(displayStrings.getMessage("left.menu.top_item.top_active",
 								component.getUrl() != null ? component.getUrl() : component.getAction(), getMenuToolTip(component), getTitle(component)));
 					} else {
@@ -138,7 +141,7 @@ public class FPMenuDisplayer extends AbstractMenuDisplayer {
 					displayComponents(component, level + 1);
 				} else {
 					if (component.getRequiredAuthority() == null || rolesGranted.contains(component.getRequiredAuthority())) {
-						if (activeMenuBranch != null && component.isActive(activeMenuBranch)) {
+						if (component.isActive(activeMenuBranch)) {
 							out.println(displayStrings.getMessage("left.menu.item_active", getTitle(component)));
 						} else {
 							out.println(displayStrings.getMessage("left.menu.item", component.getUrl() != null ? component.getUrl() : component.getAction(),
@@ -149,10 +152,12 @@ public class FPMenuDisplayer extends AbstractMenuDisplayer {
 				if (level == 3) {
 					out.println(displayStrings.getMessage("left.menu.top_item.bottom"));
 				}
+/*
 			} else {
 				if (component.isFirst()) {
 					firstHasOut = false;
 				}
+*/
 			}
 		}
 
@@ -178,7 +183,7 @@ public class FPMenuDisplayer extends AbstractMenuDisplayer {
 		for (MenuComponent component : menu.getMenuComponents()) {
 			if (hasMenuAccess(component)) {
 				if (level == 1) {
-					if ((activeMenuBranch == null && i == len) || (activeMenuBranch != null && component.isActive(activeMenuBranch))) {
+					if ((activeMenuBranch == null && i == len) || component.isActive(activeMenuBranch)) {
 						out.println(displayStrings.getMessage("tab.menu.level1_active.item", getTitle(component)));
 					} else {
 						out.println(displayStrings.getMessage("tab.menu.level1.item", component.getUrl() != null ? component.getUrl() : component.getAction(),

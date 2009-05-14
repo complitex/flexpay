@@ -23,14 +23,14 @@
     <bean name="sz_dicts" parent="sz"
             p:name="sz.dicts"
             p:title="sz.menu2.dictionaries"
-            p:action="main"
+            p:action="mainDicts"
             p:parent-ref="sz"
             p:userRole="ROLE_MENU_SZ_DICTS"
             />
     <bean name="sz_import" parent="sz"
             p:name="sz.import"
             p:title="sz.menu2.import"
-            p:action="import"
+            p:action="mainImport"
             p:parent-ref="sz"
             p:userRole="ROLE_MENU_SZ_IMPORT"
             />
@@ -39,12 +39,14 @@
     <bean name="sz_dicts_otherDictionaries"  parent="sz_dicts"
             p:name="sz.other_dicts"
             p:title="sz.menu2.dictionaries"
+            p:action="mainOtherDicts"
             p:parent-ref="sz_dicts"
             p:userRole="ROLE_MENU_SZ_OTHER_DICTS"
             />
     <bean name="sz_import_import"  parent="sz_import"
             p:name="sz.import2"
             p:title="sz.menu2.import"
+            p:action="mainImportImport"
             p:parent-ref="sz_import"
             p:userRole="ROLE_MENU_SZ_IMPORT2"
             />

@@ -23,7 +23,7 @@
 	<bean name="ab.dicts" parent="ab"
 		  p:name="ab.dicts"
 		  p:title="ab.menu.dicts"
-		  p:action="main"
+		  p:action="mainDicts"
 		  p:parent-ref="ab"
 		  p:userRole="ROLE_MENU_AB_DICTS"
 			/>
@@ -33,6 +33,7 @@
 		  p:name="ab.address_dictionaries"
 		  p:title="ab.menu.address_dictionaries"
           p:namespace="/dicts"
+          p:action="mainAddressDicts"
 		  p:parent-ref="ab.dicts"
 		  p:userRole="ROLE_MENU_AB_ADDRESS_DICTS"
 			/>
@@ -40,6 +41,7 @@
 		  p:name="ab.person_dictionaries"
 		  p:title="ab.menu.person_dictionaries"
           p:namespace="/dicts"
+          p:action="mainPersonDicts"
 		  p:parent-ref="ab.dicts"
 		  p:userRole="ROLE_MENU_AB_PERSON_DICTS"
 			/>
@@ -47,6 +49,7 @@
 		  p:name="ab.type_dictionaries"
 		  p:title="ab.menu.type_dictionaries"
           p:namespace="/dicts"
+          p:action="mainTypeDicts"
 		  p:parent-ref="ab.dicts"
 		  p:userRole="ROLE_MENU_AB_TYPE_DICTS"
 			/>
@@ -54,6 +57,7 @@
 		  p:name="ab.other_dictionaries"
 		  p:title="ab.menu.other_dictionaries"
           p:namespace="/dicts"
+          p:action="mainOtherDicts"
 		  p:parent-ref="ab.dicts"
 		  p:userRole="ROLE_MENU_AB_OTHER_DICTS"
 			/>

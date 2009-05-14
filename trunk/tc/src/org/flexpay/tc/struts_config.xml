@@ -16,6 +16,34 @@
 			<result type="tiles">tc.dictionaries</result>
 		</action>
 
+        <action name="mainDicts" class="staticPageAction">
+            <result type="tiles">tc.main.dicts</result>
+        </action>
+
+        <action name="mainImportExport" class="staticPageAction">
+            <result type="tiles">tc.main.import_export</result>
+        </action>
+
+        <action name="mainData" class="staticPageAction">
+            <result type="tiles">tc.main.data</result>
+        </action>
+
+        <action name="mainOtherDicts" class="staticPageAction">
+            <result type="tiles">tc.main.other_dicts</result>
+        </action>
+
+        <action name="mainImportExport2" class="staticPageAction">
+            <result type="tiles">tc.main.import_export2</result>
+        </action>
+
+        <action name="mainProcesses" class="staticPageAction">
+            <result type="tiles">tc.main.processes</result>
+        </action>
+
+        <action name="mainData2" class="staticPageAction">
+            <result type="tiles">tc.main.data2</result>
+        </action>
+
 		<action name="importexport" class="staticPageAction">
 			<result type="tiles">tc.importexport</result>
 		</action>
