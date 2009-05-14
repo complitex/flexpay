@@ -53,17 +53,17 @@ public class ReceivedPaymentsReportAction extends FPActionSupport {
 
 		organizations = organizationService.listOrganizationsWithCollectors();
 
-		log.debug("Collector organizations: {}", organizations);
-
 		if (isSubmit()) {
+			if (organizationId == null) {
+				addActionError(getText("payments.errors.reports.received.no_org_selected"));
+				return SUCCESS;
+			}
+
 			Date beginDate = DateUtil.truncateDay(beginDateFilter.getDate());
 			Date endDate = DateUtil.truncateDay(beginDateFilter.getDate());
 			endDate = DateUtils.setHours(endDate, 23);
 			endDate = DateUtils.setMinutes(endDate, 59);
 			endDate = DateUtils.setSeconds(endDate, 59);
-
-			log.debug("Report for org: {}", organizationId);
-			log.debug("Report period: {} - {}", beginDate, endDate);
 
 			operations = operationService.listReceivedPayments(organizationId, beginDate, endDate);
 
