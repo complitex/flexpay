@@ -110,6 +110,7 @@ public class Module {
     /**
      * See Object.
      */
+	@Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
@@ -164,6 +165,7 @@ public class Module {
      * @return  a hash code value for this object.
      * @see     Object#equals(Object)
      */
+	@Override
     public int hashCode() {
         int sum = 0;
         for (int i = 0; i < bars.length; i++) {
@@ -172,6 +174,7 @@ public class Module {
         return sum;
     }
 
+	@Override
     public String toString() {
         StringBuffer buf = new StringBuffer();
         for (int i = 0; i < bars.length; i++) {

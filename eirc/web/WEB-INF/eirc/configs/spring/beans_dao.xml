@@ -34,6 +34,10 @@
 		  class="org.flexpay.eirc.dao.imp.QuittanceDaoExtImpl"
 		  p:jdbcTemplate-ref="jdbcTemplate" />
 
+	<bean id="quittanceReportDao"
+		  class="org.flexpay.eirc.dao.imp.QuittanceReportDaoImpl"
+		  p:jdbcTemplate-ref="jdbcTemplate" />
+
 	<bean id="eircAccountDao" parent="abstractDao">
 		<property name="proxyInterfaces"
 				  value="org.flexpay.eirc.dao.EircAccountDao" />

@@ -1,23 +1,32 @@
 package org.flexpay.common.service.reporting;
 
 import net.sf.jasperreports.engine.*;
-import net.sf.jasperreports.engine.export.*;
+import net.sf.jasperreports.engine.export.JRCsvExporter;
+import net.sf.jasperreports.engine.export.JRHtmlExporter;
+import net.sf.jasperreports.engine.export.JRPdfExporter;
+import net.sf.jasperreports.engine.fill.JRAbstractLRUVirtualizer;
+import net.sf.jasperreports.engine.fill.JRSwapFileVirtualizer;
+import net.sf.jasperreports.engine.fill.JRFileVirtualizer;
 import net.sf.jasperreports.engine.query.JRHibernateQueryExecuterFactory;
 import net.sf.jasperreports.engine.util.JRLoader;
 import net.sf.jasperreports.engine.util.JRSaver;
+import net.sf.jasperreports.engine.util.JRSwapFile;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
+import org.flexpay.common.persistence.FPFile;
+import org.flexpay.common.service.FPFileService;
 import org.flexpay.common.util.CollectionUtils;
+import org.flexpay.common.util.FPFileUtil;
 import org.flexpay.common.util.JDBCUtils;
 import org.flexpay.common.util.config.ApplicationConfig;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.jboss.util.file.FilePrefixFilter;
-import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Required;
 
 import javax.sql.DataSource;
 import java.io.*;
@@ -26,27 +35,13 @@ import java.util.*;
 
 public class ReportUtil {
 
-	@NonNls
 	private Logger log = LoggerFactory.getLogger(getClass());
 
-	@NonNls
 	public static final String EXTENSION_TEMPLATE = ".jrxml";
-	@NonNls
 	private static final String EXTENSION_COMPILED_TEMPLATE = ".jasper";
-	@NonNls
-	private static final String EXTENSION_REPORT = ".jprint";
 
-	@NonNls
 	private static final String EXTENSION_PDF = ".pdf";
-	@NonNls
-	private static final String EXTENSION_RTF = ".rtf";
-	@NonNls
-	private static final String EXTENSION_TXT = ".txt";
-	@NonNls
-	private static final String EXTENSION_XML = ".xml";
-	@NonNls
 	private static final String EXTENSION_HTML = ".html";
-	@NonNls
 	private static final String EXTENSION_CSV = ".csv";
 
 	/**
@@ -65,7 +60,6 @@ public class ReportUtil {
 			"LiberationSerif-Regular"
 	);
 
-	@NonNls
 	private static final String EXTENSION_FONT_TTF = ".ttf";
 
 	/**
@@ -73,11 +67,12 @@ public class ReportUtil {
 	 */
 	private static final String PARAM_NAME_SUBREPORTS_DIR = "SUBREPORT_DIR";
 
-	@NonNls
 	private static final String RESOURCE_CONNECTION = ReportUtil.class.getName() + "_CONNECTION";
 
 	private SessionFactory sessionFactory;
 	private DataSource dataSource;
+
+	private FPFileService fileService;
 
 	private String fontsPath = "/WEB-INF/common/reports/fonts/";
 
@@ -111,6 +106,7 @@ public class ReportUtil {
 
 	@SuppressWarnings ({"ResultOfMethodCallIgnored"})
 	private void ensureDirsExist() {
+
 		File templatesDir = getReportTemplatesDir();
 		if (!templatesDir.exists()) {
 			templatesDir.mkdirs();
@@ -123,7 +119,7 @@ public class ReportUtil {
 
 		File cachesDir = getReportCachesDir();
 		if (!cachesDir.exists()) {
-			reportsDir.mkdirs();
+			cachesDir.mkdirs();
 		}
 
 		File fontsDir = getReportFontsDir();
@@ -139,6 +135,7 @@ public class ReportUtil {
 	 * @throws Exception if failure occurs
 	 */
 	private void ensureReportCompiled(String name) throws Exception {
+
 		if (compiledReports.contains(name)) {
 			return;
 		}
@@ -162,133 +159,85 @@ public class ReportUtil {
 	/**
 	 * Export filled report to pdf format
 	 *
-	 * @param name Report name
+	 * @param name   Report name
+	 * @param params Report parameters
+	 * @param source optional data source
 	 * @return Result PDF file
 	 * @throws Exception if failure occurs
 	 */
-	public File exportToPdf(String name) throws Exception {
+	public FPFile exportToPdf(String name, Map<?, ?> params, JRDataSource source) throws Exception {
 
+		params = params(params);
+
+		JasperPrint print = fillReport(name, params, source);
 		JRPdfExporter exporter = new JRPdfExporter();
-		return exportToFile(exporter, name, EXTENSION_PDF);
-	}
-
-	/**
-	 * Export filled report to rtf format
-	 *
-	 * @param name Report name
-	 * @return Result RTF file
-	 * @throws Exception if failure occurs
-	 */
-	public File exportToRtf(String name) throws Exception {
-
-		JRRtfExporter exporter = new JRRtfExporter();
-		return exportToFile(exporter, name, EXTENSION_RTF);
-	}
-
-	/**
-	 * Export filled report to xml format
-	 *
-	 * @param name Report name
-	 * @return Result XML file
-	 * @throws Exception if failure occurs
-	 */
-	public File exportToXml(String name) throws Exception {
-
-		JRXmlExporter exporter = new JRXmlExporter();
-		return exportToFile(exporter, name, EXTENSION_XML);
+		return exportToFile(exporter, print, name + EXTENSION_PDF, params);
 	}
 
 	/**
 	 * Export filled report to html format
 	 *
-	 * @param name Report name
+	 * @param name   Report name
+	 * @param params Report parameters
+	 * @param source optional data source
 	 * @return Result HTML file
 	 * @throws Exception if failure occurs
 	 */
-	public File exportToHtml(String name) throws Exception {
+	public FPFile exportToHtml(String name, Map<?, ?> params, JRDataSource source) throws Exception {
 
+		params = params(params);
+
+		JasperPrint print = fillReport(name, params, source);
 		JRHtmlExporter exporter = new JRHtmlExporter();
-		return exportToFile(exporter, name, EXTENSION_HTML);
+		return exportToFile(exporter, print, name + EXTENSION_HTML, params);
 	}
 
 	/**
-	 * Export filled report to csv format../../eirc/src/org/flexpay/eirc/i18n
- messages_ru.properties (1)
-134: Inconsistent property 'eirc.service_organization.served_buildings'. Must be defined in the parent file 'messages.properties'.
+	 * Export filled report to csv format
 	 *
-	 * @param name Report name
+	 * @param name   Report name
+	 * @param params Report parameters
+	 * @param source optional data source
 	 * @return Result CSV file
 	 * @throws Exception if failure occurs
 	 */
-	public File exportToCsv(String name) throws Exception {
+	public FPFile exportToCsv(String name, Map<?, ?> params, JRDataSource source) throws Exception {
 
+		params = params(params);
+
+		JasperPrint print = fillReport(name, params, source);
 		JRCsvExporter exporter = new JRCsvExporter();
-		return exportToFile(exporter, name, EXTENSION_CSV);
+		return exportToFile(exporter, print, name + EXTENSION_CSV, params);
 	}
 
-	/**
-	 * Export filled report to plain text
-	 *
-	 * @param name Report name
-	 * @return Result TXT file
-	 * @throws Exception if failure occurs
-	 */
-	public File exportToTxt(String name) throws Exception {
 
-		JRTextExporter exporter = new JRTextExporter();
-		exporter.setParameter(JRTextExporterParameter.CHARACTER_WIDTH, 10);
-		exporter.setParameter(JRTextExporterParameter.CHARACTER_HEIGHT, 10);
-
-		return exportToFile(exporter, name, EXTENSION_TXT);
-	}
-
-	private File exportToFile(JRAbstractExporter exporter, String name, String ext) throws Exception {
-		JasperPrint jasperPrint = (JasperPrint) JRLoader.loadObject(getReportFile(name));
-		exporter.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
-		exporter.setParameter(JRExporterParameter.OUTPUT_FILE_NAME, getReportPath(name, ext));
-		exporter.exportReport();
-
-		return getReportFile(name, ext);
-
-	}
-
-	/**
-	 * Compile and fill report
-	 *
-	 * @param name Report template name
-	 * @return Filled report name
-	 * @throws Exception if failure occurs
-	 */
-	@SuppressWarnings ({"unchecked"})
-	public String runReport(@NotNull String name) throws Exception {
-		return runReport(name, null, null);
-	}
-
-	/**
-	 * Compile and fill report
-	 *
-	 * @param name	   Report template name
-	 * @param parameters Report parameters
-	 * @return Filled report name
-	 * @throws Exception if failure occurs
-	 */
-	@SuppressWarnings ({"unchecked"})
-	public String runReport(@NotNull String name, @Nullable Map<?, ?> parameters) throws Exception {
-		return runReport(name, parameters, null);
-	}
-
-	/**
-	 * Compile and fill report
-	 *
-	 * @param name		 Report template name
-	 * @param jrDataSource optional data source
-	 * @return Filled report name
-	 * @throws Exception if failure occurs
-	 */
-	@SuppressWarnings ({"unchecked"})
-	public String runReport(@NotNull String name, @NotNull JRDataSource jrDataSource)
+	private FPFile exportToFile(JRAbstractExporter exporter, JasperPrint jasperPrint, String name, Map<?, ?> params)
 			throws Exception {
-		return runReport(name, null, jrDataSource);
+
+		FPFile file = new FPFile();
+		file.setOriginalName(name);
+		file.setModule(fileService.getModuleByName("common"));
+
+		OutputStream os = null;
+		try {
+			FPFileUtil.createEmptyFile(file);
+			os = file.getOutputStream();
+			exporter.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
+			exporter.setParameter(JRExporterParameter.OUTPUT_STREAM, os);
+			exporter.exportReport();
+			fileService.create(file);
+		} catch (IOException e) {
+			fileService.delete(file);
+			throw e;
+		} finally {
+
+			IOUtils.closeQuietly(os);
+			@SuppressWarnings ({"SuspiciousMethodCalls"})
+			JRVirtualizer virtualizer = (JRVirtualizer) params.get(JRParameter.REPORT_VIRTUALIZER);
+			virtualizer.cleanup();
+		}
+
+		return file;
 	}
 
 	/**
@@ -297,25 +246,20 @@ public class ReportUtil {
 	 * @param name		 Report template name
 	 * @param parameters   Report parameters
 	 * @param jrDataSource optional data source
-	 * @return Filled report name
+	 * @return Filled report
 	 * @throws Exception if failure occurs
 	 */
 	@SuppressWarnings ({"unchecked", "RawUseOfParameterizedType"})
-	public String runReport(@NotNull String name, @Nullable Map parameters, @Nullable JRDataSource jrDataSource)
+	private JasperPrint fillReport(String name, Map parameters, JRDataSource jrDataSource)
 			throws Exception {
 
-		if (parameters == null || parameters == Collections.emptyMap()) {
-			parameters = new HashMap();
-		}
+		ensureReportCompiled(name);
+		ensureDirsExist();
 
 		// set report virtualizer to prevent OOME generating big reports
-//        JRVirtualizer virtualizer = new JRFileVirtualizer(50, System.getProperty("java.io.tmpdir"));
-//        parameters.put(JRParameter.REPORT_VIRTUALIZER, virtualizer);
-
-		ensureReportCompiled(name);
-
-		// Timestamp should be enough to avoid report names collisions
-		String reportName = name + "-" + System.currentTimeMillis();
+		JRSwapFile swap = new JRSwapFile(getReportCachesDir().getAbsolutePath(), 1024, 1024);
+		JRAbstractLRUVirtualizer virtualizer = new JRSwapFileVirtualizer(15000, swap);
+		parameters.put(JRParameter.REPORT_VIRTUALIZER, virtualizer);
 
 		// Load compiled report template
 		JasperReport report = (JasperReport) JRLoader.loadObject(getCompiledTemplateFile(name));
@@ -323,22 +267,29 @@ public class ReportUtil {
 		Collection<String> resourceNames = fillParameters(report, parameters);
 		try {
 			if (jrDataSource != null) {
-				JasperFillManager.fillReportToFile(report, getReportPath(reportName), parameters, jrDataSource);
+				return JasperFillManager.fillReport(report, parameters, jrDataSource);
 			} else if (requiresConnection(report)) {
 				@SuppressWarnings ({"JDBCResourceOpenedButNotSafelyClosed"})
 				Connection c = dataSource.getConnection();
 				parameters.put(RESOURCE_CONNECTION, c);
 				resourceNames.add(RESOURCE_CONNECTION);
-				JasperFillManager.fillReportToFile(report, getReportPath(reportName), parameters, c);
+				return JasperFillManager.fillReport(report, parameters, c);
 			} else {
 				log.debug("Filling without connection");
-				JasperFillManager.fillReportToFile(report, getReportPath(reportName), parameters);
+				return JasperFillManager.fillReport(report, parameters);
 			}
-			return reportName;
 		} finally {
-//            virtualizer.cleanup();
+			virtualizer.setReadOnly(true);
 			cleanup(parameters, resourceNames);
 		}
+	}
+
+	@NotNull
+	private Map<?, ?> params(@Nullable Map<?, ?> parameters) {
+		if (parameters == null || parameters == Collections.emptyMap()) {
+			parameters = CollectionUtils.map();
+		}
+		return parameters;
 	}
 
 	/**
@@ -505,35 +456,6 @@ public class ReportUtil {
 	}
 
 	/**
-	 * Get path to the compiled report template with a given name
-	 *
-	 * @param name Report name
-	 * @return File path to the compiled template
-	 */
-	public File getReportFile(String name) {
-		return new File(getReportsDir(), name + EXTENSION_REPORT);
-	}
-
-	private String getReportPath(String name) {
-		return getReportFile(name).getAbsolutePath();
-	}
-
-	/**
-	 * Get path to the compiled report template with a given name
-	 *
-	 * @param name	  Report name
-	 * @param extension File name extension
-	 * @return File path to the compiled template
-	 */
-	public File getReportFile(String name, String extension) {
-		return new File(getReportsDir(), name + extension);
-	}
-
-	private String getReportPath(String name, String extension) {
-		return getReportFile(name, extension).getAbsolutePath();
-	}
-
-	/**
 	 * Delete template file
 	 *
 	 * @param name Report name
@@ -552,16 +474,6 @@ public class ReportUtil {
 	public boolean deleteCompiledTemplate(String name) {
 		compiledReports.remove(name);
 		return getCompiledTemplateFile(name).delete();
-	}
-
-	/**
-	 * Delete filled report
-	 *
-	 * @param name Report name
-	 * @return <code>true</code> if file was deleted, or <code>false</code> otherwise
-	 */
-	public boolean deleteReport(String name) {
-		return getReportFile(name).delete();
 	}
 
 	/**
@@ -606,11 +518,18 @@ public class ReportUtil {
 		return n;
 	}
 
+	@Required
 	public void setSessionFactory(SessionFactory sessionFactory) {
 		this.sessionFactory = sessionFactory;
 	}
 
+	@Required
 	public void setDataSource(DataSource dataSource) {
 		this.dataSource = dataSource;
+	}
+
+	@Required
+	public void setFileService(FPFileService fileService) {
+		this.fileService = fileService;
 	}
 }

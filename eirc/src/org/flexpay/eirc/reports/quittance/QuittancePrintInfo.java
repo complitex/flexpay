@@ -1,4 +1,4 @@
-package org.flexpay.eirc.process.quittance.report;
+package org.flexpay.eirc.reports.quittance;
 
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.util.CollectionUtils;
@@ -6,6 +6,8 @@ import org.flexpay.common.util.StringUtil;
 import org.flexpay.payments.persistence.ServiceType;
 import org.flexpay.eirc.persistence.account.Quittance;
 import static org.flexpay.eirc.process.quittance.report.util.SummUtil.addNonNegative;
+import org.flexpay.eirc.process.quittance.report.ServiceTotals;
+import org.flexpay.eirc.process.quittance.report.ServiceTotalsComparator;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -16,7 +18,7 @@ import java.util.*;
  * Container for all necessary Quittance information with calculated summs, service
  * tariffs, subsidies, etc
  */
-public class QuittanceInfo implements Cloneable, Serializable {
+public class QuittancePrintInfo implements Cloneable, Serializable {
 
 	private static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("#,##0.00");
 
@@ -46,7 +48,7 @@ public class QuittanceInfo implements Cloneable, Serializable {
 
 	private Map<ServiceType, ServiceTotals> servicesTotals = Collections.emptyMap();
 
-	public QuittanceInfo() {
+	public QuittancePrintInfo() {
 	}
 
 	public Stub<Quittance> getQuittanceStub() {
@@ -324,8 +326,8 @@ public class QuittanceInfo implements Cloneable, Serializable {
 	}
 
 	@Override
-	public QuittanceInfo clone() throws CloneNotSupportedException {
-		return (QuittanceInfo) super.clone();
+	public QuittancePrintInfo clone() throws CloneNotSupportedException {
+		return (QuittancePrintInfo) super.clone();
 	}
 
 }

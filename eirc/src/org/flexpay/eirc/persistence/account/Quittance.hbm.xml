@@ -151,16 +151,6 @@
 		select count(*) from Quittance q where q.eircAccount.id=? AND q.dateTill=?
 	</query>
 
-	<query name="Quittance.listQuittancesForPrinting"><![CDATA[
-		select distinct q
-		from Quittance q
-			inner join fetch q.eircAccount a
-			inner join fetch a.apartment ap
-			inner join fetch ap.building b
-		where q.serviceOrganization.id=? and q.dateFrom>=? and q.dateTill<=?
-		order by b.id, a.id, a.accountNumber, q.orderNumber desc
-	]]></query>
-
 	<query name="Quittance.findQuittanceByNumber"><![CDATA[
 		select distinct q
 		from Quittance q

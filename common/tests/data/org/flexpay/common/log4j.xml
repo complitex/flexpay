@@ -70,6 +70,17 @@
 		<appender-ref ref="flexpay" />
 	</category>
 
+	<!-- Disable "Narrowing proxy to class XXX - this operation breaks ==" warnings-->
+	<category name="org.hibernate.engine.StatefulPersistenceContext" additivity="false">
+		<priority value="ERROR" />
+		<appender-ref ref="flexpay" />
+	</category>
+
+	<category name="org.springframework.jms.listener.DefaultMessageListenerContainer" additivity="false">
+		<priority value="warn" />
+		<appender-ref ref="flexpay" />
+	</category>
+
 	<root>
 		<priority value="warn" />
 		<appender-ref ref="flexpay" />

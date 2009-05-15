@@ -22,9 +22,9 @@ public class TestGenerateQuittancesPDFJob extends EircSpringBeanAwareTestCase {
 	private GenerateQuittancesPDFJasperJob job;
 
 	// see init_db for ids definitions
-	private Stub<EircServiceOrganization> organizationStub = new Stub<EircServiceOrganization>(1L);
+	private Stub<EircServiceOrganization> organizationStub = new Stub<EircServiceOrganization>(2L);
 	private Date dt_2007_12_01 = new GregorianCalendar(2007, 11, 1).getTime();
-	private Date dt_2007_01_01 = new GregorianCalendar(2008, 0, 1).getTime();
+	private Date dt_2007_01_01 = new GregorianCalendar(2009, 0, 1).getTime();
 
 	@Test
 	public void testGenerateQuittances() throws Throwable {
@@ -37,7 +37,7 @@ public class TestGenerateQuittancesPDFJob extends EircSpringBeanAwareTestCase {
 
 		assertSame("Invalid result", Job.RESULT_NEXT, job.execute(contextVariables));
 
-		assertNotNull("Output file was not specified", contextVariables.get(GenerateQuittancesPDFJasperJob.RESULT_FILE_NAME));
+		assertNotNull("Output file was not specified", contextVariables.get(GenerateQuittancesPDFJasperJob.RESULT_FILE_ID));
 	}
 
 	@Test
@@ -52,6 +52,6 @@ public class TestGenerateQuittancesPDFJob extends EircSpringBeanAwareTestCase {
 
 		assertSame("Invalid result", Job.RESULT_NEXT, job.execute(contextVariables));
 
-		assertNotNull("Output file was not specified", contextVariables.get(GenerateQuittancesPDFJasperJob.RESULT_FILE_NAME));
+		assertNotNull("Output file was not specified", contextVariables.get(GenerateQuittancesPDFJasperJob.RESULT_FILE_ID));
 	}
 }

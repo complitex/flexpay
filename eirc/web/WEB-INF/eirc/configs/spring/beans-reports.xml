@@ -13,5 +13,9 @@
 		  p:quittanceNumberService-ref="quittanceNumberService"
 		  p:spService-ref="spService" />
 
+	<bean id="quittanceReporter"
+		  class="org.flexpay.eirc.reports.quittance.impl.QuittanceReporterImpl"
+		  p:addressService-ref="addressService"
+		  p:reportDao-ref="quittanceReportDao" />
 
 </beans>

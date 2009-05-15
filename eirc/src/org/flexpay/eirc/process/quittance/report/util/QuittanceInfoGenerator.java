@@ -6,6 +6,7 @@ import org.flexpay.payments.persistence.ServiceType;
 import org.flexpay.eirc.persistence.account.Quittance;
 import org.flexpay.eirc.persistence.account.QuittanceDetails;
 import org.flexpay.eirc.process.quittance.report.*;
+import org.flexpay.eirc.reports.quittance.QuittancePrintInfo;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
@@ -22,7 +23,7 @@ public class QuittanceInfoGenerator {
 	 * @param info QuittanceInfo to build
 	 * @throws Exception if failure occurs
 	 */
-	public static void buildInfo(Quittance q, QuittanceInfo info) throws Exception {
+	public static void buildInfo(Quittance q, QuittancePrintInfo info) throws Exception {
 
 		Map<Service, ServiceGroup> groups = makeServiceGroups(q);
 
@@ -51,9 +52,9 @@ public class QuittanceInfoGenerator {
 	 * @return QuittanceInfo
 	 * @throws Exception if failure occurs
 	 */
-	public static QuittanceInfo buildInfo(Quittance q) throws Exception {
+	public static QuittancePrintInfo buildInfo(Quittance q) throws Exception {
 
-		QuittanceInfo qi = new QuittanceInfo();
+		QuittancePrintInfo qi = new QuittancePrintInfo();
 		buildInfo(q, qi);
 		return qi;
 	}

@@ -290,6 +290,7 @@ public class QpidCompositeRollingAppender extends FileAppender
         maxFileSize = OptionConverter.toFileSize(value, maxFileSize + 1);
     }
 
+	@Override
     protected void setQWForFiles(Writer writer)
     {
         qw = new CountingQuietWriter(writer, errorHandler);
@@ -325,6 +326,7 @@ public class QpidCompositeRollingAppender extends FileAppender
      * Handles append time behavior for CompositeRollingAppender.  This checks if a roll over either by date (checked
      * first) or time (checked second) is need and then appends to the file last.
      */
+	@Override
     protected void subAppend(LoggingEvent event)
     {
 
@@ -351,6 +353,7 @@ public class QpidCompositeRollingAppender extends FileAppender
         super.subAppend(event);
     }
 
+	@Override
     public void setFile(String file)
     {
         baseFileName = file.trim();
@@ -608,6 +611,7 @@ public class QpidCompositeRollingAppender extends FileAppender
      * Sets initial conditions including date/time roll over information, first check, scheduledFilename, and calls
      * <code>existingInit</code> to initialize the current # of backups.
      */
+	@Override
     public void activateOptions()
     {
 
