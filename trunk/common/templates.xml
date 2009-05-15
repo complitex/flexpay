@@ -281,7 +281,7 @@
 			<sysproperty key="java.naming.factory.initial"
 						 value="org.flexpay.common.test.MockInitialContextFactory" />
 			<sysproperty key="java.awt.headless" value="true" />
-			<jvmarg value="-Xmx1000m" />
+			<jvmarg value="-Xmx500m" />
 			<test name="${test_name}" haltonfailure="yes">
 				<formatter type="brief" usefile="false" />
 			</test>
@@ -289,10 +289,12 @@
 	</target>
 
 	<target name="template.run.standalone">
+		<antcall target="template.set_db_name" />
 		<java classpathref="classpath"
 			  classname="org.flexpay.common.util.standalone.ApplicationRunner"
 			  dir="${build.dir}/web" fork="yes">
-			<jvmarg value="-Xmx350m" />
+			<jvmarg value="-Xmx250m" />
+			<!--<jvmarg value="-XX:+HeapDumpOnOutOfMemoryError" />-->
 			<sysproperty key="log4j.configuration"
 						 value="WEB-INF/common/configs/log4j.xml" />
 			<sysproperty key="java.naming.factory.initial"
@@ -308,6 +310,7 @@
 			<classpath refid="classpath" />
 		</nbprofiledirect>
 
+		<antcall target="template.set_db_name" />
 		<java classpathref="classpath"
 			  classname="org.flexpay.common.util.standalone.ApplicationRunner"
 			  dir="${build.dir}/web" fork="yes">

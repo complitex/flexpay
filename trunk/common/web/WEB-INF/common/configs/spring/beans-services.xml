@@ -107,7 +107,8 @@
 	<bean class="org.flexpay.common.service.reporting.ReportUtil"
 		  id="reportUtil"
 		  p:sessionFactory-ref="flexpaySessionFactory"
-		  p:dataSource-ref="dataSource" />
+		  p:dataSource-ref="dataSource"
+		  p:fileService-ref="fpFileService" />
 
 	<bean class="org.flexpay.common.process.ProcessHelper"
 		  id="processHelper"

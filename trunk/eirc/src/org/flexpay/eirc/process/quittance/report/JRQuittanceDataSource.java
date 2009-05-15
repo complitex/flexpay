@@ -11,20 +11,22 @@ import org.flexpay.ab.service.AddressService;
 import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.process.ProcessLogger;
-import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.eirc.persistence.ConsumerInfo;
 import org.flexpay.eirc.persistence.ServedBuilding;
-import org.flexpay.payments.persistence.Service;
-import org.flexpay.payments.persistence.ServiceType;
-import org.flexpay.payments.service.ServiceTypeService;
-import org.flexpay.payments.service.SPService;
 import org.flexpay.eirc.persistence.account.Quittance;
 import org.flexpay.eirc.persistence.account.QuittanceDetails;
 import org.flexpay.eirc.process.QuittanceNumberService;
 import org.flexpay.eirc.process.quittance.report.util.QuittanceInfoGenerator;
+import org.flexpay.eirc.reports.quittance.QuittancePrintInfo;
+import org.flexpay.eirc.reports.quittance.QuittancePrintInfoData;
+import org.flexpay.eirc.reports.quittance.QuittancesPrintStats;
 import org.flexpay.eirc.service.QuittanceService;
 import org.flexpay.orgs.persistence.ServiceOrganization;
 import org.flexpay.orgs.service.ServiceOrganizationService;
+import org.flexpay.payments.persistence.Service;
+import org.flexpay.payments.persistence.ServiceType;
+import org.flexpay.payments.service.SPService;
+import org.flexpay.payments.service.ServiceTypeService;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,86 +53,29 @@ public class JRQuittanceDataSource implements JRRewindableDataSource {
 	private ServiceTypeService serviceTypeService;
 	private ServiceOrganizationService serviceOrganizationService;
 
-	private Collection<QuittanceInfo> data = null;
-	private Iterator<QuittanceInfo> iterator = null;
-	private QuittanceInfo currentInfo = null;
+	private Collection<QuittancePrintInfo> data = null;
+	private Iterator<QuittancePrintInfo> iterator = null;
+	private QuittancePrintInfo currentInfo = null;
 	private long processCounter = 0;
 	private Logger log = LoggerFactory.getLogger(getClass());
 
-	public void setQuittances(List<Quittance> quittances, int nBatches) throws Exception {
+	public void setPrintData(QuittancePrintInfoData data, int nBatches) throws Exception {
 
 		log = ProcessLogger.getLogger(getClass());
-		log.info("Starting quittance generation");
-		List<QuittanceInfo> infos = CollectionUtils.list();
 
-		@NotNull Long accountId = -1L;
-		int orderNumber = -1;
-
-		long count = 0;
-		QuittancesStats stats = new QuittancesStats();
-		for (Quittance q : quittances) {
-
-			// check account number
-			if (isNewAccount(accountId, q)) {
-				accountId = q.getEircAccountId();
-				orderNumber = q.getOrderNumber();
-			}
-			// check for quittance order number, only quittances with max order number
-			// are taken into account
-			else if (orderNumber != q.getOrderNumber()) {
-				if (orderNumber < q.getOrderNumber()) {
-					throw new IllegalStateException("Invalid order number, was quittances sorted by orderNumber??");
-				}
-
-				// OK, just skip quittances with lower numbers
-				continue;
-			}
-
-			// now build quittance into quittance info
-			QuittanceInfo info = new QuittanceInfo();
-			info.setQuittanceStub(stub(q));
-			initAddress(q, info);
-			infos.add(info);
-			stats.addAddress(info.getBuildingAddress());
-
-//			infos.add(info.clone());
-//			stats.addAddress(info.getBuildingAddress());
-
-//			infos.add(info);
-//			stats.addAddress(info.getBuildingAddress());
-
-//			QuittanceInfo stub = info.clone();
-//			stub.setApartmentAddress("Test address");
-//			stub.setBuildingAddress("Test address");
-//			infos.add(stub);
-//			stats.addAddress(stub.getBuildingAddress());
-//			infos.add(stub.clone());
-//			stats.addAddress(stub.getBuildingAddress());
-
-			++count;
-			if (count % 100 == 0) {
-				log.info("Generated {} quittance infos", count);
-			}
-
-//			if (count >= 122) {
-//				break;
-//			}
-		}
-
-		log.info("Total {} quittances.", count);
 		log.info("Building batches");
 
 		if (nBatches > 1) {
-			infos = buildBatches(infos, stats, nBatches);
+			data.setInfos(buildBatches(data.getInfos(), data.getStats(), nBatches));
 		}
 
-		data = infos;
-		iterator = data.iterator();
+		this.data = data.getInfos();
+		iterator = this.data.iterator();
 
 		log.info("OK. Ready to print them");
 	}
 
-	private QuittanceInfo prepareInfo(@NotNull QuittanceInfo stub) throws JRException {
+	private QuittancePrintInfo prepareInfo(@NotNull QuittancePrintInfo stub) throws JRException {
 
 		Stub<Quittance> quittanceStub = stub.getQuittanceStub();
 		if (quittanceStub == null) {
@@ -144,7 +89,7 @@ public class JRQuittanceDataSource implements JRRewindableDataSource {
 		initLazyProperties(q);
 
 		try {
-			QuittanceInfo info = stub.clone();
+			QuittancePrintInfo info = stub.clone();
 			QuittanceInfoGenerator.buildInfo(q, info);
 			initHabitants(q, info);
 			initPersonFIO(q, info);
@@ -162,19 +107,19 @@ public class JRQuittanceDataSource implements JRRewindableDataSource {
 		}
 	}
 
-	private List<QuittanceInfo> buildBatches(List<QuittanceInfo> infos, QuittancesStats stats, int nBatches) {
+	private List<QuittancePrintInfo> buildBatches(List<QuittancePrintInfo> infos, QuittancesPrintStats stats, int nBatches) {
 
 		Map<String, Integer> addrStats = stats.getStats();
 		int totalQuittances = stats.getCount() + addrStats.size();
 		int nPages = totalQuittances % nBatches == 0 ?
 					 totalQuittances / nBatches : (totalQuittances / nBatches + 1);
 
-		QuittanceInfo[] result = new QuittanceInfo[nPages * nBatches];
+		QuittancePrintInfo[] result = new QuittancePrintInfo[nPages * nBatches];
 		String previousAddress = "";
 		int n = 0;
-		for (QuittanceInfo info : infos) {
+		for (QuittancePrintInfo info : infos) {
 			if (!previousAddress.equals(info.getBuildingAddress())) {
-				QuittanceInfo addressStub = new QuittanceInfo();
+				QuittancePrintInfo addressStub = new QuittancePrintInfo();
 				// init batch address for later filling
 				addressStub.setBatchBuildingAddress(info.getBuildingAddress());
 				addressStub.setAddressStub(true);
@@ -205,12 +150,12 @@ public class JRQuittanceDataSource implements JRRewindableDataSource {
 	 *
 	 * @param infos QuittanceInfo array to init
 	 */
-	private void setupBatchAddresses(QuittanceInfo[] infos) {
+	private void setupBatchAddresses(QuittancePrintInfo[] infos) {
 		String prevAddr = "";
 		for (int n = 0; n < infos.length; ++n) {
-			QuittanceInfo info = infos[n];
+			QuittancePrintInfo info = infos[n];
 			if (info == null) {
-				info = new QuittanceInfo();
+				info = new QuittancePrintInfo();
 				info.setEmptyInfo(true);
 				infos[n] = info;
 			} else if (info.getBatchBuildingAddress() != null) {
@@ -234,20 +179,20 @@ public class JRQuittanceDataSource implements JRRewindableDataSource {
 		return nPage * batchSize + pagePos;
 	}
 
-	private void initQuittanceNumber(Quittance q, QuittanceInfo info) {
+	private void initQuittanceNumber(Quittance q, QuittancePrintInfo info) {
 
 		String quittanceNumber = quittanceNumberService.getNumber(q);
 		info.setQuittanceNumber(quittanceNumber);
 	}
 
-	private void initDates(Quittance q, QuittanceInfo info) {
+	private void initDates(Quittance q, QuittancePrintInfo info) {
 
 		info.setPeriodBeginDate(q.getDateFrom());
 		info.setPeriodEndDate(q.getDateTill());
 		info.setOperationDate(q.getCreationDate());
 	}
 
-	private void initServiceOrganization(Quittance q, QuittanceInfo info) throws Exception {
+	private void initServiceOrganization(Quittance q, QuittancePrintInfo info) throws Exception {
 
 		ServedBuilding building = (ServedBuilding) q.getEircAccount().getApartment().getBuilding();
 		ServiceOrganization org = serviceOrganizationService.read(building.getServiceOrganizationStub());
@@ -264,7 +209,7 @@ public class JRQuittanceDataSource implements JRRewindableDataSource {
 		}
 	}
 
-	private void initAddress(Quittance q, QuittanceInfo info) throws Exception {
+	private void initAddress(Quittance q, QuittancePrintInfo info) throws Exception {
 
 		Stub<Apartment> stub = q.getEircAccount().getApartmentStub();
 		String address = addressService.getAddress(stub, null);
@@ -275,7 +220,7 @@ public class JRQuittanceDataSource implements JRRewindableDataSource {
 		info.setBuildingAddress(buildingAddress);
 	}
 
-	private void initPersonFIO(Quittance q, QuittanceInfo info) {
+	private void initPersonFIO(Quittance q, QuittancePrintInfo info) {
 
 		Person person = q.getEircAccount().getPerson();
 		if (person != null) {
@@ -293,28 +238,11 @@ public class JRQuittanceDataSource implements JRRewindableDataSource {
 		}
 	}
 
-	private void initHabitants(Quittance q, QuittanceInfo info) {
+	private void initHabitants(Quittance q, QuittancePrintInfo info) {
 
 		Apartment apartment = q.getEircAccount().getApartment();
 		info.setHabitantNumber(apartment.getPersonRegistrations().size());
 	}
-
-	// todo setup summs
-//	private void initTotals(QuittanceInfo info) {
-//
-//	}
-
-	/**
-	 * Check if next quittance has different account
-	 *
-	 * @param oldId Old quittance id
-	 * @param q	 next Quittance
-	 * @return <code>true</code> if quittance has different account
-	 */
-	private boolean isNewAccount(Long oldId, Quittance q) {
-		return !oldId.equals(q.getEircAccountId());
-	}
-
 
 	/**
 	 * Tries to position the cursor on the next element in the data source.

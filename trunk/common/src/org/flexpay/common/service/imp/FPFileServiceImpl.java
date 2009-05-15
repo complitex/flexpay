@@ -103,12 +103,10 @@ public class FPFileServiceImpl implements FPFileService {
 	 */
 	@Transactional (readOnly = false)
 	public void delete(@NotNull FPFile file) {
-		String localPath = FPFileUtil.getFileLocalPath(file);
-		File fileToDelete = new File(localPath);
-		if (!fileToDelete.delete()) {
-			log.error("Error deleting file from server: {}", localPath);
+		deleteFromFileSystem(file);
+		if (file.isNotNew()) {
+			fpFileDao.delete(file);
 		}
-		fpFileDao.delete(file);
 	}
 
 	/**

@@ -1,10 +1,10 @@
-package org.flexpay.eirc.process.quittance.report;
+package org.flexpay.eirc.reports.quittance;
 
 import org.flexpay.common.util.CollectionUtils;
 
 import java.util.Map;
 
-public class QuittancesStats {
+public class QuittancesPrintStats {
 
 	private int count = 0;
 	private Map<String, Integer> stats = CollectionUtils.map();

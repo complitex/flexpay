@@ -22,7 +22,7 @@
 	<bean name="generateQuittancesPDFJob" scope="prototype"
 		  class="org.flexpay.eirc.process.quittance.GenerateQuittancesPDFJasperJob"
 		  p:jrDataSource-ref="jrQuittanceDataSource"
-		  p:quittanceService-ref="quittanceService"
+		  p:quittanceReporter-ref="quittanceReporter"
 		  p:reportUtil-ref="reportUtil" />
 
 	<bean name="generateQuittancesJob" class="org.flexpay.eirc.process.quittance.GenerateQuittanceJob" scope="prototype"

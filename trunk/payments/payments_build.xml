@@ -93,7 +93,7 @@
 		<fileset id="payments.docs.resources" dir="${payments.dir}/docs" />
 		<antcall target="template.docs">
 			<param name="sources.dir" value="${payments.src.production}" />
-			<param name="module_name" value="Bureau of techinical stock-taking" />
+			<param name="module_name" value="Bureau of technical stock-taking" />
 			<param name="docs.file" value="${payments.docs.name}" />
 			<reference refid="payments.docs.resources" torefid="resources" />
 			<reference refid="payments.production.classpath" torefid="classpath" />

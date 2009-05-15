@@ -3,6 +3,7 @@ package org.flexpay.eirc.process.quittance;
 import org.apache.commons.io.IOUtils;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.persistence.FPFile;
 import org.flexpay.common.process.ProcessLogger;
 import org.flexpay.common.process.job.Job;
 import org.flexpay.common.service.reporting.ReportUtil;
@@ -12,10 +13,11 @@ import org.flexpay.eirc.persistence.account.Quittance;
 import org.flexpay.eirc.process.quittance.report.JRQuittanceDataSource;
 import org.flexpay.eirc.service.QuittanceService;
 import org.flexpay.eirc.util.config.ApplicationConfig;
+import org.flexpay.eirc.reports.quittance.QuittanceReporter;
+import org.flexpay.eirc.reports.quittance.QuittancePrintInfoData;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Required;
 
-import java.io.File;
 import java.io.InputStream;
 import java.io.Serializable;
 import java.util.Date;
@@ -28,14 +30,14 @@ public class GenerateQuittancesPDFJasperJob extends Job {
 
 	public static final String JOB_NAME = "generateQuittancesPDFJob";
 
-	public final static String RESULT_FILE_NAME = "RESULT_FILE_NAME";
+	public final static String RESULT_FILE_ID = "RESULT_FILE_ID";
 	public static final String PARAM_DATE_FROM = "dateFrom";
 	public static final String PARAM_DATE_TILL = "dateTill";
 	public static final String PARAM_SERVICE_ORGANIZATION_ID = "serviceOrganizationId";
 
-	private QuittanceService quittanceService;
 	private ReportUtil reportUtil;
 	private JRQuittanceDataSource jrDataSource;
+	private QuittanceReporter quittanceReporter;
 
 	public String execute(Map<Serializable, Serializable> contextVariables) throws FlexPayException {
 
@@ -54,20 +56,16 @@ public class GenerateQuittancesPDFJasperJob extends Job {
 			uploadReportTemplates();
 
 			plog.info("Fetching quittances");
-			List<Quittance> quittances = quittanceService.getQuittances(
+			QuittancePrintInfoData printInfoData = quittanceReporter.getPrintData(
 					new Stub<EircServiceOrganization>(organizationId), dateFrom, dateTill);
 
 			plog.info("About to prepare JR data source");
-			jrDataSource.setQuittances(quittances, 4);
-			quittances.clear();
+			jrDataSource.setPrintData(printInfoData, 4);
 
 			plog.info("Running report");
-			String filledReportName = reportUtil.runReport("Quittance", jrDataSource);
+			FPFile report = reportUtil.exportToPdf("Quittance", null, jrDataSource);
 
-			plog.info("Exporting to PDF");
-			File reportPath = reportUtil.exportToPdf(filledReportName);
-
-			contextVariables.put(RESULT_FILE_NAME, reportPath.getAbsolutePath());
+			contextVariables.put(RESULT_FILE_ID, report.getId());
 
 			if (plog.isInfoEnabled()) {
 				plog.info("Ended PDF quittances generation, time spent: " + (System.currentTimeMillis() - time) + "ms.");
@@ -105,11 +103,6 @@ public class GenerateQuittancesPDFJasperJob extends Job {
 	}
 
 	@Required
-	public void setQuittanceService(QuittanceService quittanceService) {
-		this.quittanceService = quittanceService;
-	}
-
-	@Required
 	public void setReportUtil(ReportUtil reportUtil) {
 		this.reportUtil = reportUtil;
 	}
@@ -119,4 +112,8 @@ public class GenerateQuittancesPDFJasperJob extends Job {
 		this.jrDataSource = jrDataSource;
 	}
 
+	@Required
+	public void setQuittanceReporter(QuittanceReporter quittanceReporter) {
+		this.quittanceReporter = quittanceReporter;
+	}
 }
