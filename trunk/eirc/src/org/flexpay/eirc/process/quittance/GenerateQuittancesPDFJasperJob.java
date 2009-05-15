@@ -3,25 +3,22 @@ package org.flexpay.eirc.process.quittance;
 import org.apache.commons.io.IOUtils;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
-import org.flexpay.common.persistence.FPFile;
+import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.process.ProcessLogger;
 import org.flexpay.common.process.job.Job;
 import org.flexpay.common.service.reporting.ReportUtil;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.eirc.persistence.EircServiceOrganization;
-import org.flexpay.eirc.persistence.account.Quittance;
 import org.flexpay.eirc.process.quittance.report.JRQuittanceDataSource;
-import org.flexpay.eirc.service.QuittanceService;
-import org.flexpay.eirc.util.config.ApplicationConfig;
-import org.flexpay.eirc.reports.quittance.QuittanceReporter;
 import org.flexpay.eirc.reports.quittance.QuittancePrintInfoData;
+import org.flexpay.eirc.reports.quittance.QuittanceReporter;
+import org.flexpay.eirc.util.config.ApplicationConfig;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.io.InputStream;
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
