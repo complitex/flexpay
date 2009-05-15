@@ -36,9 +36,11 @@
 						<td class="col" nowrap="nowrap"><s:property value="%{getServiceName(serviceMasterIndex)}"/></td>
 						<td class="col"><s:property value="%{getProviderName(serviceMasterIndex)}"/></td>
 						<td class="col"><s:property value="outgoingBalance"/></td>
-						<td class="col"><s:textfield name="payments['%{#serviceIndx}']" value="%{outgoingBalance}"
-													 onchange="onPaymentUpdate(this.form)"
+						<td class="col"><s:textfield name="payments['%{#serviceIndx}']"
+													 id="payments_%{#serviceIndx}"
+													 value="%{outgoingBalance}"
 													 onkeypress="return FP.disableEnterKey(event);"
+													 onblur="replaceEmptyValueWithZero('payments_%{#serviceIndx}');"
 													 cssStyle="width: 100%; text-align: right;"/></td>
 					</tr>
 				</s:iterator>
@@ -63,15 +65,14 @@
 						name="payments.quittance.payment.input"/></td>
 				<td><s:textfield name="inputSumm" cssStyle="width: 100%; text-align: right;"
 								 value="%{getTotalToPay()}"
-								 onchange="onInputUpdate(this.form)"/></td>
+								 onkeypress="return FP.disableEnterKey(event);"/></td>
 			</tr>
 
 			<tr class="cols_1">
 				<td colspan="5" style="font-weight: bold; text-align: right;"><s:text
 						name="payments.quittance.payment.change"/></td>
 				<td><s:textfield name="changeSumm" cssStyle="width: 100%; text-align: right;" value="0.00"
-								 onkeypress="return FP.disableEnterKey(event);"
-								 readonly="true"/></td>
+								 onkeypress="return FP.disableEnterKey(event);" readonly="true"/></td>
 			</tr>
 
 			<tr>
