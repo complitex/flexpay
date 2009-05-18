@@ -38,7 +38,8 @@ public class TestQuittanceInfoGenerator extends TransactionalSpringBeanAwareTest
 
 	private List<Quittance> list(Date begin, Date end) {
 
-		return quittanceDao.listQuittancesForPrinting(organizationStub.getId(), begin, end);
+//		return quittanceDao.listQuittancesForPrinting(organizationStub.getId(), begin, end);
+		return CollectionUtils.list();
 	}
 
 	@Test
