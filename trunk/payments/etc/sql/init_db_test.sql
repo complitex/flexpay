@@ -188,7 +188,7 @@ INSERT INTO payments_documents_tbl (version, operation_id, address, payer_fio, t
 		service_id, summ, creditor_id, debtor_id, creditor_organization_id, debtor_organization_id,
 		reference_document_id, registry_record_id)
 		VALUES (0, @operation_1, 'ул. Иванова, д.27, кв.330', 'Федько М.А.', @doc_type_1, @doc_status_1,
-				@service_kvartplata_id, 1235.00, null, null, @organization_zhko, @organization_tszh,
+				@service_kvartplata_id, 1235.00, '123123123', '09012345067', @organization_zhko, @organization_tszh,
 				null, null);
 SELECT @document_1:=last_insert_id();
 
@@ -196,7 +196,7 @@ INSERT INTO payments_documents_tbl (version, operation_id, address, payer_fio, t
 		service_id, summ, creditor_id, debtor_id, creditor_organization_id, debtor_organization_id,
 		reference_document_id, registry_record_id)
 		VALUES (0, @operation_1, 'ул. Иванова, д.27, кв.330', 'Федько М.А.', @doc_type_1, @doc_status_1,
-				@service_10, 90.00, null, null, @organization_zhko, @organization_tszh,
+				@service_10, 90.00, '123123123', '09012345067', @organization_zhko, @organization_tszh,
 				null, null);
 SELECT @document_2:=last_insert_id();
 
@@ -204,7 +204,7 @@ INSERT INTO payments_documents_tbl (version, operation_id, address, payer_fio, t
 		service_id, summ, creditor_id, debtor_id, creditor_organization_id, debtor_organization_id,
 		reference_document_id, registry_record_id)
 		VALUES (0, @operation_1, 'ул. Иванова, д.27, кв.330', 'Федько М.А.', @doc_type_1, @doc_status_1,
-				@service_20, 70.00, null, null, @organization_zhko, @organization_tszh,
+				@service_20, 70.00, '123123123', '09012345067', @organization_zhko, @organization_tszh,
 				null, null);
 SELECT @document_3:=last_insert_id();
 
@@ -212,7 +212,7 @@ INSERT INTO payments_documents_tbl (version, operation_id, address, payer_fio, t
 		service_id, summ, creditor_id, debtor_id, creditor_organization_id, debtor_organization_id,
 		reference_document_id, registry_record_id)
 		VALUES (0, @operation_2, 'ул. Иванова, д.27, кв.330', 'Федько М.А.', @doc_type_1, @doc_status_2,
-				@service_40, 113.00, null, null, @organization_zhko, @organization_tszh,
+				@service_40, 113.00, '123123123', '09012345067', @organization_zhko, @organization_tszh,
 				null, null);
 SELECT @document_4:=last_insert_id();
 
@@ -220,6 +220,6 @@ INSERT INTO payments_documents_tbl (version, operation_id, address, payer_fio, t
 		service_id, summ, creditor_id, debtor_id, creditor_organization_id, debtor_organization_id,
 		reference_document_id, registry_record_id)
 		VALUES (0, @operation_3, 'ул. Иванова, д.27, кв.330', 'Федько М.А.', @doc_type_1, @doc_status_4,
-				@service_50, 220.00, null, null, @organization_zhko, @organization_tszh,
+				@service_50, 220.00, '123123123', '09012345067', @organization_zhko, @organization_tszh,
 				null, null);
 SELECT @document_5:=last_insert_id();
