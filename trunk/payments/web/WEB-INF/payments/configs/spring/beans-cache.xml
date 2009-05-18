@@ -60,4 +60,20 @@
 		<property name="target" ref="spServiceTarget" />
 	</bean>
 
+	<bean id="serviceProviderServiceAttribute"
+		  class="org.springmodules.cache.interceptor.proxy.CacheProxyFactoryBean">
+		<property name="cacheProviderFacade" ref="cacheProviderFacade" />
+		<property name="cachingModels">
+			<props>
+                <prop key="listServiceProviderAttributes">cacheName=flexpayCache</prop>
+				<prop key="flexpayCache">cacheName=flexpayCache</prop>
+			</props>
+		</property>
+		<property name="flushingModels">
+			<props>
+				<prop key="save*">cacheNames=flexpayCache</prop>
+			</props>
+		</property>
+		<property name="target" ref="serviceProviderServiceAttributeTarget" />
+	</bean>
 </beans>

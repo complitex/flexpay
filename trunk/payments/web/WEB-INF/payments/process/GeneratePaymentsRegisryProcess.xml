@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<process-definition name="BuildingAttributesImport"
+					xmlns="http://jbpm.org/3/jpdl"
+					xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+					xsi:schemaLocation="http://jbpm.org/3/jpdl http://jbpm.org/xsd/jpdl-3.0.xsd">
+
+	<swimlane name="worker">
+		<assignment class="org.flexpay.common.process.JobManagerAssignmentHandler" />
+	</swimlane>
+
+
+	<start-state name="start">
+		<transition to="buildingAttributesImportJob" />
+	</start-state>
+
+	<task-node name="createFPFileJob">
+		<task swimlane="worker" blocking="yes" />
+		<transition name="next" to="generatePaymentsDBRegistryJob" />
+		<transition name="error" to="end" />
+	</task-node>
+
+    <task-node name="generatePaymentsDBRegistryJob">
+		<task swimlane="worker" blocking="yes" />
+		<transition name="next" to="generatePaymentsMBRegistryJob" />
+		<transition name="error" to="end" />
+	</task-node>
+
+    <task-node name="generatePaymentsMBRegistryJob">
+		<task swimlane="worker" blocking="yes" />
+		<transition name="next" to="sendRegistryJob" />
+		<transition name="error" to="end" />
+	</task-node>
+
+    <task-node name="sendRegistryJob">
+		<task swimlane="worker" blocking="yes" />
+		<transition name="next" to="end" />
+		<transition name="error" to="end" />
+	</task-node>
+
+	<end-state name="end" />
+
+</process-definition>
