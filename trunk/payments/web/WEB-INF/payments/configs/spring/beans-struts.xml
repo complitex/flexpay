@@ -64,6 +64,12 @@
           p:crumbNameKey="payments.crumbs.payments_report"
           scope="prototype" />
 
+	<bean id="paymentOperationReportAction"
+		  class="org.flexpay.payments.actions.reports.PaymentOperationReportAction"
+		  p:reportUtil-ref="reportUtil"
+		  p:paymentsReporter-ref="paymentsReporter"
+          scope="prototype" />
+
 	<!-- registry-related actions -->
 	<bean id="generateRegistryAction"
 		  class="org.flexpay.payments.actions.registry.GenerateRegistryAction"

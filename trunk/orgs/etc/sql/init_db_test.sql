@@ -127,10 +127,17 @@ insert INTO orgs_payments_collectors_descriptions_tbl (language_id, collector_id
 insert INTO orgs_payment_points_tbl (id, status, version, collector_id, address)
 	values (1, 0, 0, @collector_1, 'сборщик ЦН адрес');
 select @payment_point_1:=1;
+insert into orgs_payment_point_names_tbl (name, language_id, payment_point_id)
+	values ('Касса ЦН №1', @ru_id, @payment_point_1);
+
 insert INTO orgs_payment_points_tbl (id, status, version, collector_id, address)
 	values (2, 0, 0, @collector_1, 'сборщик ЦН #2');
 select @payment_point_2:=2;
+insert into orgs_payment_point_names_tbl (name, language_id, payment_point_id)
+	values ('Касса ЦН №2', @ru_id, @payment_point_2);
 
 insert INTO orgs_payment_points_tbl (id, status, version, collector_id, address)
 	values (3, 0, 0, @collector_2, 'сборщик ТСЖ #1');
 select @payment_point_3:=3;
+insert into orgs_payment_point_names_tbl (name, language_id, payment_point_id)
+	values ('Касса ТСЖ №1', @ru_id, @payment_point_3);

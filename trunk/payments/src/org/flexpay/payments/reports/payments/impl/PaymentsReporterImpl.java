@@ -2,11 +2,18 @@ package org.flexpay.payments.reports.payments.impl;
 
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.util.CollectionUtils;
+import org.flexpay.common.util.DateUtil;
 import org.flexpay.orgs.persistence.Organization;
+import org.flexpay.orgs.persistence.ServiceProvider;
 import org.flexpay.orgs.service.OrganizationService;
+import org.flexpay.orgs.service.ServiceProviderService;
+import org.flexpay.payments.persistence.Operation;
 import org.flexpay.payments.persistence.Service;
+import org.flexpay.payments.persistence.Document;
+import org.flexpay.payments.reports.payments.PaymentPrintForm;
 import org.flexpay.payments.reports.payments.PaymentReportData;
 import org.flexpay.payments.reports.payments.PaymentsReporter;
+import org.flexpay.payments.service.OperationService;
 import org.flexpay.payments.service.SPService;
 import org.flexpay.payments.service.statistics.PaymentsStatisticsService;
 import org.flexpay.payments.service.statistics.ServicePaymentsStatistics;
@@ -20,6 +27,8 @@ public class PaymentsReporterImpl implements PaymentsReporter {
 	private PaymentsStatisticsService paymentsStatisticsService;
 	private OrganizationService organizationService;
 	private SPService spService;
+	private ServiceProviderService serviceProviderService;
+	private OperationService operationService;
 
 	public List<PaymentReportData> getPaymentsData(Date begin, Date end) {
 
@@ -50,6 +59,64 @@ public class PaymentsReporterImpl implements PaymentsReporter {
 		return result;
 	}
 
+	/**
+	 * Get quittance payment print form data
+	 *
+	 * @param stub Payment operation to build form for
+	 * @return PaymentPrintForm form data
+	 * @throws IllegalArgumentException if Operation reference is invalid
+	 */
+	public PaymentPrintForm getPaymentPrintFormData(Stub<Operation> stub) throws IllegalArgumentException {
+
+		Operation op = operationService.read(stub);
+		if (op == null) {
+			throw new IllegalArgumentException("Invalid operation stub " + stub);
+		}
+
+		Organization org = organizationService.readFull(op.getCreatorOrganizationStub());
+		if (org == null) {
+			throw new IllegalArgumentException("Creator organization not found " +
+											   op.getCreatorOrganizationStub());
+		}
+
+		PaymentPrintForm form = new PaymentPrintForm();
+		form.setQuittanceNumber(String.valueOf(op.getId()));
+		form.setOperationDate(op.getCreationDate());
+		form.setOrganizationName(org.getName());
+
+		// todo: fixme
+		form.setCashierFIO("Коваль А.Н.");
+
+		form.setTotal(op.getOperationSumm());
+		form.setInputSumm(op.getOperationInputSumm());
+		form.setChangeSumm(op.getChange());
+
+		List<PaymentPrintForm.PaymentDetails> detailses = CollectionUtils.list();
+		for (Document doc : op.getDocuments()) {
+			PaymentPrintForm.PaymentDetails details = new PaymentPrintForm.PaymentDetails();
+			details.setAccountNumber(doc.getCreditorId());
+			// todo: fixme
+			details.setCounterValue("");
+
+			details.setAddress(doc.getAddress());
+			details.setFio(doc.getPayerFIO());
+			details.setPaymentSumm(doc.getSumm());
+
+			details.setPaymentPeriod(DateUtil.formatMonth(DateUtil.previousMonth(op.getCreationDate())));
+
+			Service service = spService.read(doc.getServiceStub());
+			details.setServiceName(service.getServiceType().getName());
+
+			ServiceProvider provider = serviceProviderService.read(service.getServiceProviderStub());
+			details.setServiceProviderName(provider.getName());
+
+			detailses.add(details);
+		}
+		form.setDetailses(detailses);
+
+		return form;
+	}
+
 	@Required
 	public void setPaymentsStatisticsService(PaymentsStatisticsService paymentsStatisticsService) {
 		this.paymentsStatisticsService = paymentsStatisticsService;
@@ -63,5 +130,15 @@ public class PaymentsReporterImpl implements PaymentsReporter {
 	@Required
 	public void setSpService(SPService spService) {
 		this.spService = spService;
+	}
+
+	@Required
+	public void setServiceProviderService(ServiceProviderService serviceProviderService) {
+		this.serviceProviderService = serviceProviderService;
+	}
+
+	@Required
+	public void setOperationService(OperationService operationService) {
+		this.operationService = operationService;
 	}
 }

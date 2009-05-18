@@ -341,6 +341,15 @@
         primary key (id)
     );
 
+    create table orgs_payment_point_names_tbl (
+        id bigint not null auto_increment,
+        name varchar(255) not null comment 'Name value',
+        language_id bigint not null comment 'Language reference',
+        payment_point_id bigint not null comment 'Payment point reference',
+        primary key (id),
+        unique (language_id, payment_point_id)
+    );
+
     create table orgs_payment_points_tbl (
         id bigint not null auto_increment,
         version integer not null comment 'Optimistic lock version',
@@ -642,6 +651,18 @@
     alter table orgs_organization_names_tbl 
         add index FK_orgs_organization_name_language (language_id), 
         add constraint FK_orgs_organization_name_language 
+        foreign key (language_id) 
+        references common_languages_tbl (id);
+
+    alter table orgs_payment_point_names_tbl 
+        add index FK_orgs_payment_point_names_tbl_point (payment_point_id), 
+        add constraint FK_orgs_payment_point_names_tbl_point 
+        foreign key (payment_point_id) 
+        references orgs_payment_points_tbl (id);
+
+    alter table orgs_payment_point_names_tbl 
+        add index FK_orgs_payment_point_names_tbl_name_language (language_id), 
+        add constraint FK_orgs_payment_point_names_tbl_name_language 
         foreign key (language_id) 
         references common_languages_tbl (id);
 

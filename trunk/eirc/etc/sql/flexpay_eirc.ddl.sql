@@ -872,6 +872,15 @@
         primary key (id)
     );
 
+    create table orgs_payment_point_names_tbl (
+        id bigint not null auto_increment,
+        name varchar(255) not null comment 'Name value',
+        language_id bigint not null comment 'Language reference',
+        payment_point_id bigint not null comment 'Payment point reference',
+        primary key (id),
+        unique (language_id, payment_point_id)
+    );
+
     create table orgs_payment_points_tbl (
         id bigint not null auto_increment,
         version integer not null comment 'Optimistic lock version',
@@ -1036,6 +1045,17 @@
         payer_fio varchar(255) comment 'Payer first-middle-last names',
         creditor_id varchar(255) comment 'Creditor key',
         debtor_id varchar(255) comment 'Debtor key',
+        first_name varchar(255) comment 'Prividers consumer first name',
+        middle_name varchar(255) comment 'Prividers consumer middle name',
+        last_name varchar(255) comment 'Prividers consumer last name',
+        country varchar(255) comment 'Prividers consumer country name',
+        region varchar(255) comment 'Prividers consumer region name',
+        town varchar(255) comment 'Prividers consumer town name',
+        street_type varchar(255) comment 'Prividers consumer street type name',
+        street_name varchar(255) comment 'Prividers consumer street name',
+        building_number varchar(255) comment 'Prividers consumer building number',
+        building_bulk varchar(255) comment 'Prividers consumer building bulk',
+        apartment_number varchar(255) comment 'Prividers consumer apartment number',
         creditor_organization_id bigint not null comment 'Creditor organization reference',
         debtor_organization_id bigint not null comment 'Debtor organization reference',
         operation_id bigint not null comment 'Operation reference',
@@ -1964,6 +1984,18 @@
     alter table orgs_organization_names_tbl 
         add index FK_orgs_organization_name_language (language_id), 
         add constraint FK_orgs_organization_name_language 
+        foreign key (language_id) 
+        references common_languages_tbl (id);
+
+    alter table orgs_payment_point_names_tbl 
+        add index FK_orgs_payment_point_names_tbl_point (payment_point_id), 
+        add constraint FK_orgs_payment_point_names_tbl_point 
+        foreign key (payment_point_id) 
+        references orgs_payment_points_tbl (id);
+
+    alter table orgs_payment_point_names_tbl 
+        add index FK_orgs_payment_point_names_tbl_name_language (language_id), 
+        add constraint FK_orgs_payment_point_names_tbl_name_language 
         foreign key (language_id) 
         references common_languages_tbl (id);
 

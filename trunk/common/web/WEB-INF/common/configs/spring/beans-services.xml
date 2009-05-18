@@ -104,8 +104,8 @@
 		  id="sessionUtils"
 		  p:hibernateTemplate-ref="hibernateTemplate" />
 
-	<bean class="org.flexpay.common.service.reporting.ReportUtil"
-		  id="reportUtil"
+	<bean id="reportUtil"
+		  class="org.flexpay.common.service.reporting.ReportUtil"
 		  p:sessionFactory-ref="flexpaySessionFactory"
 		  p:dataSource-ref="dataSource"
 		  p:fileService-ref="fpFileService" />

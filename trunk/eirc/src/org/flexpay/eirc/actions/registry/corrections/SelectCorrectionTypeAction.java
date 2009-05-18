@@ -45,8 +45,7 @@ public class SelectCorrectionTypeAction extends FPActionSupport {
 					typeRegistry.getType(org.flexpay.bti.persistence.Apartment.class) == objectType) {
 				return "apartment";
 			}
-			if (typeRegistry.getType(org.flexpay.ab.persistence.Person.class) == objectType ||
-					typeRegistry.getType(org.flexpay.bti.persistence.Person.class) == objectType) {
+			if (typeRegistry.getType(org.flexpay.ab.persistence.Person.class) == objectType) {
 				return "person";
 			}
 

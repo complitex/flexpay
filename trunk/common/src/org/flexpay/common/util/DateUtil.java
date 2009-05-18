@@ -5,7 +5,6 @@ import org.apache.commons.lang.time.DateUtils;
 import static org.flexpay.common.util.CollectionUtils.ar;
 import static org.flexpay.common.util.CollectionUtils.treeMap;
 import org.flexpay.common.util.config.ApplicationConfig;
-import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
 import java.text.ParseException;
@@ -16,8 +15,9 @@ import java.util.Map;
 
 public class DateUtil {
 
-	@NonNls
 	private static final String FLEXPAY_DATE_FORMAT = "yyyy/MM/dd";
+	private static final String FLEXPAY_MONTH_FORMAT = "yyyy/MM";
+
 	public static final Map<Integer, String> MONTHS = treeMap(
 			ar(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11),
 			ar("01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"));
@@ -89,6 +89,19 @@ public class DateUtil {
 	}
 
 	/**
+	 * Format Date
+	 *
+	 * @param date Date to format
+	 * @return tring date representation
+	 */
+	public static String formatMonth(@NotNull Date date) {
+		SimpleDateFormat df = new SimpleDateFormat(FLEXPAY_MONTH_FORMAT);
+		return date.equals(ApplicationConfig.getPastInfinite()) ||
+			   date.equals(ApplicationConfig.getFutureInfinite())
+			   ? "" : df.format(date);
+	}
+
+	/**
 	 * Return current date
 	 *
 	 * @return Date with hours, minutes, seconds set to 0
@@ -125,6 +138,22 @@ public class DateUtil {
 	}
 
 	/**
+	 * Get month date following the specified <code>date</code>'s month
+	 *
+	 * @param date Date to get the next month for
+	 * @return Next month date
+	 */
+	@NotNull
+	public static Date nextMonth(@NotNull Date date) {
+		Date dayAfter = DateUtils.addMonths(truncateMonth(date), 1);
+		if (dayAfter.compareTo(ApplicationConfig.getFutureInfinite()) > 0) {
+			dayAfter = ApplicationConfig.getFutureInfinite();
+		}
+
+		return dayAfter;
+	}
+
+	/**
 	 * Get date that date is the same as of <code>dt</code>, but hours, minutes, seconds and millis are 0
 	 *
 	 * @param dt Date to truncate
@@ -136,7 +165,8 @@ public class DateUtil {
 	}
 
 	/**
-	 * Get date that month is the me as of <code>dt</code>, but day is the first and hours, minutes, seconds and millis are 0
+	 * Get date that month is the me as of <code>dt</code>, but day is the first and hours, minutes, seconds and millis are
+	 * 0
 	 *
 	 * @param dt Date to truncate
 	 * @return Date that hours, minuts, seconds and millis are all 0
@@ -147,7 +177,7 @@ public class DateUtil {
 	}
 
 	/**
-	 * Get date following the specified <code>date</code>
+	 * Get date preciding the specified <code>date</code>
 	 *
 	 * @param date Date to get the next for
 	 * @return Next day date
@@ -161,4 +191,21 @@ public class DateUtil {
 
 		return dayBefore;
 	}
+
+	/**
+	 * Get month date preciding the specified <code>date</code>'s month
+	 *
+	 * @param date Date to get the previous month for
+	 * @return Previous month date
+	 */
+	@NotNull
+	public static Date previousMonth(@NotNull Date date) {
+		Date dayBefore = DateUtils.addMonths(truncateMonth(date), -1);
+		if (dayBefore.compareTo(ApplicationConfig.getPastInfinite()) < 0) {
+			dayBefore = ApplicationConfig.getPastInfinite();
+		}
+
+		return dayBefore;
+	}
+
 }

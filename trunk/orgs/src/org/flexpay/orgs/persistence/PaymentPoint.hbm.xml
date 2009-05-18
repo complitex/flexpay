@@ -31,6 +31,35 @@
 				<comment>Payments collector reference</comment>
 			</column>
 		</many-to-one>
+		<set name="names" inverse="true" cascade="all-delete-orphan">
+			<key column="payment_point_id" not-null="true" />
+			<one-to-many class="PaymentPointName" />
+		</set>
+	</class>
+
+	<class name="PaymentPointName" table="orgs_payment_point_names_tbl">
+		<id name="id" column="id">
+			<generator class="native" />
+		</id>
+		<property name="name">
+			<column name="name" not-null="true">
+				<comment>Name value</comment>
+			</column>
+		</property>
+		<properties name="lang_payment_point_pair" unique="true">
+			<many-to-one name="lang" foreign-key="FK_orgs_payment_point_names_tbl_name_language"
+						 class="org.flexpay.common.persistence.Language">
+				<column name="language_id" not-null="true">
+					<comment>Language reference</comment>
+				</column>
+			</many-to-one>
+			<many-to-one name="translatable" class="PaymentPoint"
+						 foreign-key="FK_orgs_payment_point_names_tbl_point">
+				<column name="payment_point_id" not-null="true">
+					<comment>Payment point reference</comment>
+				</column>
+			</many-to-one>
+		</properties>
 	</class>
 
 	<query name="PaymentPoint.listPoints.count">
@@ -40,8 +69,9 @@
 	</query>
 
 	<query name="PaymentPoint.listPoints">
+		select distinct o
 		from PaymentPoint o
-		inner join fetch o.collector
+			inner join fetch o.collector
 		where o.status = 0
 	</query>
 
@@ -52,14 +82,17 @@
 	</query>
 
 	<query name="PaymentPoint.listCollectorPoints">
+		select distinct o
 		from PaymentPoint o
-		inner join fetch o.collector
+			inner join fetch o.collector
 		where o.status = 0 and o.collector.id = ?
 	</query>
 
 	<query name="PaymentPoint.readFull">
+		select distinct o
 		from PaymentPoint o
-		inner join fetch o.collector
+			inner join fetch o.collector
+			left join fetch o.names 
 		where o.id=?
 	</query>
 	

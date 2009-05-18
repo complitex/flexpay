@@ -40,9 +40,10 @@ public abstract class FPActionSupport extends ActionSupport implements UserPrefe
 	private static final String ERRORS_SESSION_ATTRIBUTE = FPActionSupport.class.getName() + ".ERRORS";
 	protected static final String PREFIX_REDIRECT = "redirect";
 
-	protected static final String REDIRECT_ERROR = "redirectError";
-	protected static final String REDIRECT_SUCCESS = "redirectSuccess";
-	protected static final String REDIRECT_INPUT = "redirectInput";
+	public static final String REDIRECT_ERROR = "redirectError";
+	public static final String REDIRECT_SUCCESS = "redirectSuccess";
+	public static final String REDIRECT_INPUT = "redirectInput";
+	public static final String FILE = "file";
 
 	// name of breadcrumb list in session.
 	public static final String BREADCRUMBS = "com.strutsschool.interceptors.breadcrumbs";

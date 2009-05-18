@@ -61,6 +61,8 @@
 		  class="org.flexpay.payments.reports.payments.impl.PaymentsReporterImpl"
 		  p:organizationService-ref="organizationService"
 		  p:spService-ref="spService"
+		  p:serviceProviderService-ref="serviceProviderService"
+		  p:operationService-ref="operationService"
 		  p:paymentsStatisticsService-ref="paymentsStatisticsService" />
 
 </beans>

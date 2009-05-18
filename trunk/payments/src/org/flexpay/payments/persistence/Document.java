@@ -3,13 +3,15 @@ package org.flexpay.payments.persistence;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.flexpay.common.persistence.DomainObject;
+import org.flexpay.common.persistence.Stub;
+import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.persistence.registry.RegistryRecord;
 import org.flexpay.orgs.persistence.Organization;
 import org.jetbrains.annotations.NotNull;
 
 import java.math.BigDecimal;
-import java.util.Set;
 import java.util.Collections;
+import java.util.Set;
 
 public class Document extends DomainObject {
 
@@ -122,6 +124,10 @@ public class Document extends DomainObject {
 		this.service = service;
 	}
 
+	public Stub<Service> getServiceStub() {
+		return stub(service);
+	}
+
 	public Organization getDebtorOrganization() {
 		return debtorOrganization;
 	}
@@ -192,6 +198,10 @@ public class Document extends DomainObject {
 
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
+	}
+
+	public String getCreditorFio() {
+		return lastName + " " + firstName + " " + middleName;
 	}
 
 	public String getCountry() {
