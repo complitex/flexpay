@@ -1,10 +1,9 @@
 package org.flexpay.payments.persistence;
 
 import org.flexpay.common.persistence.DomainObject;
-import org.flexpay.common.persistence.ValueObject;
 
-import java.util.Set;
 import java.util.Collections;
+import java.util.Set;
 
 public class DocumentAdditionType extends DomainObject {
 

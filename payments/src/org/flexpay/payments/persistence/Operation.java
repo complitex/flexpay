@@ -3,6 +3,8 @@ package org.flexpay.payments.persistence;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.flexpay.common.persistence.DomainObject;
+import org.flexpay.common.persistence.Stub;
+import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.persistence.registry.RegistryRecord;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.orgs.persistence.Organization;
@@ -45,6 +47,20 @@ public class Operation extends DomainObject {
 	private String payerFIO;
 
 	private Set<OperationAddition> additions = Collections.emptySet();
+
+	/**
+	 * Constructs a new DomainObject.
+	 */
+	public Operation() {
+	}
+
+	public Operation(@NotNull Long id) {
+		super(id);
+	}
+
+	public Operation(@NotNull Stub<Operation> stub) {
+		super(stub.getId());
+	}
 
 	public BigDecimal getOperationSumm() {
 		return operationSumm;
@@ -108,6 +124,10 @@ public class Operation extends DomainObject {
 
 	public void setCreatorOrganization(@NotNull Organization creatorOrganization) {
 		this.creatorOrganization = creatorOrganization;
+	}
+
+	public Stub<Organization> getCreatorOrganizationStub() {
+		return stub(creatorOrganization);
 	}
 
 	public Organization getRegisterOrganization() {

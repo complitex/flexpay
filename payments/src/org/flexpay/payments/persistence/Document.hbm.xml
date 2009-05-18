@@ -43,6 +43,61 @@
 				<comment>Debtor key</comment>
 			</column>
 		</property>
+		<property name="firstName">
+			<column name="first_name" not-null="false">
+				<comment>Prividers consumer first name</comment>
+			</column>
+		</property>
+		<property name="middleName">
+			<column name="middle_name" not-null="false">
+				<comment>Prividers consumer middle name</comment>
+			</column>
+		</property>
+		<property name="lastName">
+			<column name="last_name" not-null="false">
+				<comment>Prividers consumer last name</comment>
+			</column>
+		</property>
+		<property name="country">
+			<column name="country" not-null="false">
+				<comment>Prividers consumer country name</comment>
+			</column>
+		</property>
+		<property name="region">
+			<column name="region" not-null="false">
+				<comment>Prividers consumer region name</comment>
+			</column>
+		</property>
+		<property name="town">
+			<column name="town" not-null="false">
+				<comment>Prividers consumer town name</comment>
+			</column>
+		</property>
+		<property name="streetType">
+			<column name="street_type" not-null="false">
+				<comment>Prividers consumer street type name</comment>
+			</column>
+		</property>
+		<property name="streetName">
+			<column name="street_name" not-null="false">
+				<comment>Prividers consumer street name</comment>
+			</column>
+		</property>
+		<property name="buildingNumber">
+			<column name="building_number" not-null="false">
+				<comment>Prividers consumer building number</comment>
+			</column>
+		</property>
+		<property name="buildingBulk">
+			<column name="building_bulk" not-null="false">
+				<comment>Prividers consumer building bulk</comment>
+			</column>
+		</property>
+		<property name="apartmentNumber">
+			<column name="apartment_number" not-null="false">
+				<comment>Prividers consumer apartment number</comment>
+			</column>
+		</property>
 		<many-to-one name="creditorOrganization" class="org.flexpay.orgs.persistence.Organization"
 					 foreign-key="FK_payments_documents_tbl_credit_org_id">
 			<column name="creditor_organization_id" not-null="true">

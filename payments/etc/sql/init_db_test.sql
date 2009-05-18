@@ -159,13 +159,13 @@ INSERT INTO payments_service_descriptions_tbl (name, language_id, service_id)
 
 
 -- init operations
-INSERT INTO payments_operations_tbl (version, address, payer_fio, level_id, status_id, type_id,
+INSERT INTO payments_operations_tbl (id, version, address, payer_fio, level_id, status_id, type_id,
 		creator, creation_date, creator_organization_id, register_user, register_date, register_organization_id,
 		operation_summ, operation_input_summ, change_summ, registry_record_id, reference_operation_id)
-		VALUES (0, 'ул. Иванова, д.27, кв.330', 'Федько М.А.', @operation_level_3, @operation_status_1, @operation_type_1,
+		VALUES (1, 0, 'ул. Иванова, д.27, кв.330', 'Федько М.А.', @operation_level_3, @operation_status_1, @operation_type_1,
 				'asemenov', '2009-04-14 12:20', @organization_tszh, 'asemenov', '2009-04-14 12:21', @organization_tszh,
 				1395.00, 1500.00, 105.00, null, null);
-SELECT @operation_1:=last_insert_id();
+SELECT @operation_1:=1;
 
 INSERT INTO payments_operations_tbl (version, address, payer_fio, level_id, status_id, type_id,
 		creator, creation_date, creator_organization_id, register_user, register_date, register_organization_id,

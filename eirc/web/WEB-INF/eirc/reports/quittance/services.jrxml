@@ -76,12 +76,13 @@
 						width="73"
 						height="14"
 						key="staticText-1"/>
-					<box>					<pen lineWidth="0.25" lineStyle="Solid"/>
-					<topPen lineWidth="0.25" lineStyle="Solid"/>
-					<leftPen lineWidth="0.25" lineStyle="Solid"/>
-					<bottomPen lineWidth="0.25" lineStyle="Solid"/>
-					<rightPen lineWidth="0.25" lineStyle="Solid"/>
-</box>
+					<box>
+						<pen lineWidth="0.25" lineStyle="Solid"/>
+						<topPen lineWidth="0.25" lineStyle="Solid"/>
+						<leftPen lineWidth="0.25" lineStyle="Solid"/>
+						<bottomPen lineWidth="0.25" lineStyle="Solid"/>
+						<rightPen lineWidth="0.25" lineStyle="Solid"/>
+					</box>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font size="5"/>
 					</textElement>

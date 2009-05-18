@@ -103,6 +103,16 @@ public class ReportUtil {
 		}
 	}
 
+	/**
+	 * Check if report was already uploaded
+	 *
+	 * @param name Report name to check
+	 * @return <code>true</code> if report was uploaded, or <code>false</code> otherwise
+	 */
+	public boolean templateUploaded(String name) {
+		return compiledReports.contains(name) || getTemplateFile(name).exists();
+	}
+
 	@SuppressWarnings ({"ResultOfMethodCallIgnored"})
 	private void ensureDirsExist() {
 

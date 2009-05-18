@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="QuittancePayment" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+
+	<property name="ireport.scriptlethandling" value="0" />
+	<property name="ireport.encoding" value="UTF-8" />
+
+	<import value="java.util.*" />
+	<import value="net.sf.jasperreports.engine.*" />
+	<import value="net.sf.jasperreports.engine.data.*" />
+
+	<style
+		name="LiberationSans-Regular"
+		isDefault="true"
+		fontName="LiberationSans-Regular"
+		fontSize="8"
+		isBold="false"
+		isItalic="false"
+		isUnderline="false"
+		isStrikeThrough="false"
+		pdfFontName="path-to/LiberationSans-Regular.ttf"
+		pdfEncoding="Cp1251"
+		isPdfEmbedded="true"
+	>
+	</style>
+	<style
+		name="LiberationSans-Bold"
+		isDefault="false"
+		style="LiberationSans-Regular"
+		fontName="LiberationSans-Bold"
+		isBold="true"
+		pdfFontName="path-to/LiberationSans-Bold.ttf"
+	>
+	</style>
+	<style
+		name="LiberationSans-BoldItalic"
+		isDefault="false"
+		style="LiberationSans-Bold"
+		fontName="LiberationSans-BoldItalic"
+		isItalic="true"
+		pdfFontName="path-to/LiberationSans-BoldItalic.ttf"
+	>
+	</style>
+	<style
+		name="LiberationSans-Italic"
+		isDefault="false"
+		style="LiberationSans-Regular"
+		fontName="LiberationSans-Italic"
+		isItalic="true"
+		pdfFontName="path-to/LiberationSans-Italic.ttf"
+	>
+	</style>
+
+	<parameter name="operationDate" class="java.util.Date" isForPrompting="false"/>
+	<parameter name="organizationName" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="quittanceNumber" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="cashierFIO" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="total" class="java.math.BigDecimal" isForPrompting="false"/>
+	<parameter name="totalSpelling" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="inputSumm" class="java.math.BigDecimal" isForPrompting="false"/>
+	<parameter name="changeSumm" class="java.math.BigDecimal" isForPrompting="false"/>
+	<field name="address" class="java.lang.String">
+		<fieldDescription><![CDATA[address]]></fieldDescription>
+	</field>
+	<field name="fio" class="java.lang.String">
+		<fieldDescription><![CDATA[fio]]></fieldDescription>
+	</field>
+	<field name="serviceName" class="java.lang.String">
+		<fieldDescription><![CDATA[serviceName]]></fieldDescription>
+	</field>
+	<field name="serviceProviderName" class="java.lang.String">
+		<fieldDescription><![CDATA[serviceProviderName]]></fieldDescription>
+	</field>
+	<field name="accountNumber" class="java.lang.String">
+		<fieldDescription><![CDATA[accountNumber]]></fieldDescription>
+	</field>
+	<field name="paymentPeriod" class="java.lang.String">
+		<fieldDescription><![CDATA[paymentPeriod]]></fieldDescription>
+	</field>
+	<field name="paymentSumm" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[paymentSumm]]></fieldDescription>
+	</field>
+	<field name="counterValue" class="java.lang.String">
+		<fieldDescription><![CDATA[counterValue]]></fieldDescription>
+	</field>
+	<background>
+		<band/>
+	</background>
+	<title>
+		<band height="72">
+			<staticText>
+				<reportElement x="1" y="9" width="76" height="20"/>
+				<textElement/>
+				<text><![CDATA[г. Харьков]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="77" y="9" width="170" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.util.Date"><![CDATA[$P{operationDate}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="1" y="29" width="385" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{organizationName}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="1" y="49" width="76" height="20"/>
+				<textElement/>
+				<text><![CDATA[Квитанция №]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="77" y="49" width="170" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{quittanceNumber}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band/>
+	</pageHeader>
+	<columnHeader>
+		<band/>
+	</columnHeader>
+	<detail>
+		<band height="40">
+			<textField>
+				<reportElement mode="Transparent" x="0" y="0" width="168" height="20"/>
+				<box>
+					<pen lineWidth="0.25" lineStyle="Solid"/>
+					<topPen lineWidth="0.25" lineStyle="Solid"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid"/>
+				</box>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{address}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="20" width="168" height="20"/>
+				<box>
+					<pen lineWidth="0.25" lineStyle="Solid"/>
+					<topPen lineWidth="0.25" lineStyle="Solid"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid"/>
+				</box>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{fio}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="168" y="0" width="152" height="20"/>
+				<box>
+					<pen lineWidth="0.25" lineStyle="Solid"/>
+					<topPen lineWidth="0.25" lineStyle="Solid"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid"/>
+				</box>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{serviceName}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="168" y="20" width="152" height="20"/>
+				<box>
+					<pen lineWidth="0.25" lineStyle="Solid"/>
+					<topPen lineWidth="0.25" lineStyle="Solid"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid"/>
+				</box>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{serviceProviderName}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="320" y="20" width="112" height="20"/>
+				<box>
+					<pen lineWidth="0.25" lineStyle="Solid"/>
+					<topPen lineWidth="0.25" lineStyle="Solid"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid"/>
+				</box>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{paymentPeriod}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="320" y="0" width="112" height="20"/>
+				<box>
+					<pen lineWidth="0.25" lineStyle="Solid"/>
+					<topPen lineWidth="0.25" lineStyle="Solid"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid"/>
+				</box>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{accountNumber}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="432" y="0" width="118" height="20"/>
+				<box>
+					<pen lineWidth="0.25" lineStyle="Solid"/>
+					<topPen lineWidth="0.25" lineStyle="Solid"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid"/>
+				</box>
+				<textElement/>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{paymentSumm}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="432" y="20" width="118" height="20"/>
+				<box>
+					<pen lineWidth="0.25" lineStyle="Solid"/>
+					<topPen lineWidth="0.25" lineStyle="Solid"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid"/>
+				</box>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{counterValue}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band/>
+	</columnFooter>
+	<pageFooter>
+		<band/>
+	</pageFooter>
+	<summary>
+		<band height="190">
+			<staticText>
+				<reportElement x="0" y="63" width="54" height="20"/>
+				<textElement/>
+				<text><![CDATA[Кассир]]></text>
+			</staticText>
+			<line>
+				<reportElement x="54" y="82" width="126" height="1"/>
+			</line>
+			<textField>
+				<reportElement x="201" y="63" width="113" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{cashierFIO}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="190" y="63" width="11" height="20"/>
+				<textElement/>
+				<text><![CDATA[/]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="314" y="63" width="11" height="20"/>
+				<textElement/>
+				<text><![CDATA[/]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="0" width="76" height="20"/>
+				<textElement/>
+				<text><![CDATA[Итого:]]></text>
+			</staticText>
+			<textField pattern="#,##0.00">
+				<reportElement x="77" y="0" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$P{total}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="177" y="0" width="124" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{totalSpelling}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="1" y="20" width="76" height="20"/>
+				<textElement/>
+				<text><![CDATA[Принято:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="214" y="20" width="100" height="20"/>
+				<textElement/>
+				<text><![CDATA[Сдача:]]></text>
+			</staticText>
+			<textField  pattern="#,##0.00">
+				<reportElement x="77" y="20" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$P{inputSumm}]]></textFieldExpression>
+			</textField>
+			<textField  pattern="#,##0.00">
+				<reportElement x="314" y="20" width="100" height="20"/>
+				<textElement/>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$P{changeSumm}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="54" y="109" width="32" height="20"/>
+				<textElement/>
+				<text><![CDATA[М.П.]]></text>
+			</staticText>
+		</band>
+	</summary>
+</jasperReport>

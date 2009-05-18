@@ -2,7 +2,7 @@ package org.flexpay.common.reporting;
 
 import org.apache.commons.io.IOUtils;
 import org.flexpay.common.persistence.DataSourceDescription;
-import org.flexpay.common.persistence.FPFile;
+import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.service.FPFileService;
 import org.flexpay.common.service.reporting.ReportUtil;
 import org.flexpay.common.test.SpringBeanAwareTestCase;
