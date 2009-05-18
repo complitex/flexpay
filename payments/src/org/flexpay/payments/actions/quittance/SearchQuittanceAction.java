@@ -14,6 +14,7 @@ import org.flexpay.payments.service.QuittanceDetailsFinder;
 import org.flexpay.payments.service.SPService;
 import org.flexpay.payments.util.config.ApplicationConfig;
 import org.flexpay.payments.util.ServiceFullIndexUtil;
+import org.flexpay.payments.actions.PaymentPointAwareAction;
 import org.flexpay.ab.service.ApartmentService;
 import org.flexpay.ab.service.PersonService;
 import org.flexpay.ab.persistence.Apartment;
@@ -24,7 +25,7 @@ import org.springframework.beans.factory.annotation.Required;
 import java.math.BigDecimal;
 import java.util.List;
 
-public class SearchQuittanceAction extends FPActionSupport {
+public class SearchQuittanceAction extends FPActionSupport implements PaymentPointAwareAction {
 
 	private static final String SEARCH_TYPE_EIRC_ACCOUNT = "EIRC_ACCOUNT";
 	private static final String SEARCH_TYPE_QUITTANCE_NUMBER = "QUITTANCE_NUMBER";
@@ -122,7 +123,6 @@ public class SearchQuittanceAction extends FPActionSupport {
 			quittanceInfo.setDetailses(filtered.toArray(new QuittanceInfo.ServiceDetails[filtered.size()]));
 			quittanceInfo.setTotalToPay(totalToPay);
 		}
-
 
 	}
 
@@ -232,7 +232,7 @@ public class SearchQuittanceAction extends FPActionSupport {
 	public String getServiceFullIndex(String quittanceId, String serviceId) {
 
 		return ServiceFullIndexUtil.getServiceFullIndex(quittanceId, serviceId);
-	}	
+	}
 
 	// form data
 	public String getRedirectActionName() {
@@ -283,5 +283,15 @@ public class SearchQuittanceAction extends FPActionSupport {
 	@Required
 	public void setPersonService(PersonService personService) {
 		this.personService = personService;
+	}
+
+	private String paymentPointId;
+
+	public void setPaymentPointId(String paymentPointId) {
+		this.paymentPointId = paymentPointId;
+	}
+
+	public String getPaymentPointId() {
+		return paymentPointId;
 	}
 }

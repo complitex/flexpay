@@ -7,6 +7,7 @@ import org.flexpay.common.persistence.filter.ObjectFilter;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.payments.persistence.Service;
 import org.flexpay.payments.service.SPService;
+import org.flexpay.payments.actions.PaymentPointAwareAction;
 import org.flexpay.orgs.persistence.filters.ServiceProviderFilter;
 import org.flexpay.orgs.service.ServiceProviderService;
 import org.jetbrains.annotations.NotNull;
@@ -14,7 +15,7 @@ import org.springframework.beans.factory.annotation.Required;
 
 import java.util.List;
 
-public class ServicesListAction extends FPActionWithPagerSupport<Service> {
+public class ServicesListAction extends FPActionWithPagerSupport<Service> implements PaymentPointAwareAction {
 
 	private BeginDateFilter beginDateFilter = new BeginDateFilter();
 	private EndDateFilter endDateFilter = new EndDateFilter();
@@ -85,5 +86,15 @@ public class ServicesListAction extends FPActionWithPagerSupport<Service> {
 	@Required
 	public void setProviderService(ServiceProviderService providerService) {
 		this.providerService = providerService;
+	}
+
+	private String paymentPointId;
+
+	public void setPaymentPointId(String paymentPointId) {
+		this.paymentPointId = paymentPointId;
+	}
+
+	public String getPaymentPointId() {
+		return paymentPointId;
 	}
 }

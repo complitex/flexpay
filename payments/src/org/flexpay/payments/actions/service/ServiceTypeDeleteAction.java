@@ -2,13 +2,14 @@ package org.flexpay.payments.actions.service;
 
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.payments.service.ServiceTypeService;
+import org.flexpay.payments.actions.PaymentPointAwareAction;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.util.HashSet;
 import java.util.Set;
 
-public class ServiceTypeDeleteAction extends FPActionSupport {
+public class ServiceTypeDeleteAction extends FPActionSupport implements PaymentPointAwareAction {
 
 	private Set<Long> objectIds = new HashSet<Long>();
 
@@ -52,4 +53,13 @@ public class ServiceTypeDeleteAction extends FPActionSupport {
 		this.serviceTypeService = serviceTypeService;
 	}
 
+	private String paymentPointId;
+
+	public void setPaymentPointId(String paymentPointId) {
+		this.paymentPointId = paymentPointId;
+	}
+
+	public String getPaymentPointId() {
+		return paymentPointId;
+	}
 }

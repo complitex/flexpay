@@ -4,17 +4,17 @@
 		"http://struts.apache.org/dtds/struts-2.0.dtd">
 <struts>
 
-	<package name="quittance" namespace="/payments" extends="common">
+	<package name="quittance" namespace="/payments" extends="payments">
 
-		<action name="searchByQuittanceNumber" class="staticPageAction">
+		<action name="searchByQuittanceNumber" class="paymentsStaticPageAction">
 			<result type="tiles">payments.quittance.search.quittance_number</result>
 		</action>
 
-		<action name="searchByEircAccount" class="staticPageAction">
+		<action name="searchByEircAccount" class="paymentsStaticPageAction">
 			<result type="tiles">payments.quittance.search.eirc_account</result>
 		</action>
 
-		<action name="searchByAddress" class="staticPageAction">
+		<action name="searchByAddress" class="paymentsStaticPageAction">
 			<result type="tiles">payments.quittance.search.address</result>
 		</action>
 

@@ -20,6 +20,7 @@ import org.flexpay.payments.service.SPService;
 import org.flexpay.payments.service.ServiceTypeService;
 import org.flexpay.payments.service.statistics.OperationTypeStatistics;
 import org.flexpay.payments.service.statistics.PaymentsStatisticsService;
+import org.flexpay.payments.actions.PaymentPointAwareAction;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
@@ -28,7 +29,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
-public class ReceivedPaymentsReportAction extends FPActionSupport {
+public class ReceivedPaymentsReportAction extends FPActionSupport implements PaymentPointAwareAction {
 
 	// form data
 	private BeginDateFilter beginDateFilter = new BeginDateFilter();
@@ -210,5 +211,15 @@ public class ReceivedPaymentsReportAction extends FPActionSupport {
 	@Required
 	public void setStatisticsService(PaymentsStatisticsService statisticsService) {
 		this.statisticsService = statisticsService;
+	}
+
+	private String paymentPointId;
+
+	public void setPaymentPointId(String paymentPointId) {
+		this.paymentPointId = paymentPointId;
+	}
+
+	public String getPaymentPointId() {
+		return paymentPointId;
 	}
 }

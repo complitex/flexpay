@@ -13,35 +13,54 @@
 
 	<package name="payments" namespace="/payments" extends="common">
 
-		<action name="main" class="staticPageAction">			
+		<interceptors>
+			<interceptor name="paymentPointIdentification"
+						 class="org.flexpay.payments.actions.interceptor.PaymentPointIdentificationInterceptor"/>
+
+			<interceptor-stack name="paymentsDefaultStack">
+				<interceptor-ref name="commonDefaultStack"/>
+				<interceptor-ref name="cookie">
+					<param name="cookiesName">paymentPointId</param>
+					<param name="cookiesValue"></param>
+				</interceptor-ref>
+				<interceptor-ref name="paymentPointIdentification"/>
+			</interceptor-stack>
+		</interceptors>
+		<default-interceptor-ref name="paymentsDefaultStack"/>
+
+		<global-results>
+			<result name="pointAuthenticationRequired" type="tiles">payments.error.point_authentication_required</result>
+		</global-results>
+
+		<action name="main" class="paymentsStaticPageAction">
 			<result type="tiles">payments.quittance.search.address</result>
 		</action>
 
-        <action name="emptyPage" class="staticPageAction">			
+        <action name="emptyPage" class="paymentsStaticPageAction">
             <result type="tiles">payments.main</result>
         </action>
 
-        <action name="mainByAddressOperations" class="staticPageAction">
+        <action name="mainByAddressOperations" class="paymentsStaticPageAction">
             <result type="tiles">payments.main.by_address.operations</result>
         </action>
 
-        <action name="mainByAddressReports" class="staticPageAction">
+        <action name="mainByAddressReports" class="paymentsStaticPageAction">
             <result type="tiles">payments.main.by_address.reports</result>
         </action>
 
-        <action name="mainByEircaccountOperations" class="staticPageAction">
+        <action name="mainByEircaccountOperations" class="paymentsStaticPageAction">
             <result type="tiles">payments.main.by_eircaccount.operations</result>
         </action>
 
-        <action name="mainByEircaccountReports" class="staticPageAction">
+        <action name="mainByEircaccountReports" class="paymentsStaticPageAction">
             <result type="tiles">payments.main.by_eircaccount.reports</result>
         </action>
 
-        <action name="mainByQuittanceOperations" class="staticPageAction">
+        <action name="mainByQuittanceOperations" class="paymentsStaticPageAction">
             <result type="tiles">payments.main.by_quittance.operations</result>
         </action>
 
-        <action name="mainByQuittanceReports" class="staticPageAction">			
+        <action name="mainByQuittanceReports" class="paymentsStaticPageAction">
             <result type="tiles">payments.main.by_quittance.reports</result>
         </action>
 

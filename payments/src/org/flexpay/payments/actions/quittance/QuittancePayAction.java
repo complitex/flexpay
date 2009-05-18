@@ -10,6 +10,7 @@ import org.flexpay.payments.persistence.*;
 import org.flexpay.payments.persistence.quittance.QuittanceDetailsResponse;
 import org.flexpay.payments.service.*;
 import org.flexpay.payments.util.ServiceFullIndexUtil;
+import org.flexpay.payments.actions.PaymentPointAwareAction;
 import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.orgs.persistence.ServiceProvider;
 import org.flexpay.orgs.service.OrganizationService;
@@ -22,7 +23,7 @@ import java.math.BigDecimal;
 import java.util.Map;
 import java.util.Date;
 
-public class QuittancePayAction extends FPActionSupport {
+public class QuittancePayAction extends FPActionSupport implements PaymentPointAwareAction {
 
 	private String actionName;
 
@@ -255,5 +256,15 @@ public class QuittancePayAction extends FPActionSupport {
 	@Required
 	public void setServiceProviderService(ServiceProviderService serviceProviderService) {
 		this.serviceProviderService = serviceProviderService;
+	}
+		
+	private String paymentPointId;
+
+	public void setPaymentPointId(String paymentPointId) {
+		this.paymentPointId = paymentPointId;
+	}
+
+	public String getPaymentPointId() {
+		return paymentPointId;
 	}
 }
