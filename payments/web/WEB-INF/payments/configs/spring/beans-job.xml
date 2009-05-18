@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:p="http://www.springframework.org/schema/p"
+	   xmlns:context="http://www.springframework.org/schema/context"
+	   xsi:schemaLocation="
+		   http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+		   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
+
+	<bean id="createFPFileJob" class="org.flexpay.payments.process.export.job.CreateFPFileJob"
+            scope="prototype">
+        <property name="fpFileService" ref="fpFileService" />
+        <property name="moduleName" value="${flexpay.module.name.payments}" />
+        <property name="userName" value="${payments.scheduler.user.name}" />
+    </bean>
+
+    <bean id="generatePaymentsDBRegistryJob" class="org.flexpay.payments.process.export.job.GeneratePaymentsDBRegistryJob"
+            scope="prototype">
+        <property name="fpFileService" ref="fpFileService" />
+        <property name="generatePaymentsDBRegistry" ref="generatePaymentsDBRegistry" />
+        <property name="organizationService" ref="organizationService" />
+    </bean>
+
+    <bean id="generatePaymentsMBRegistryJob" class="org.flexpay.payments.process.export.job.GeneratePaymentsMBRegistryJob"
+            scope="prototype">
+        <property name="fpFileService" ref="fpFileService" />
+        <property name="generatePaymentsMBRegistry" ref="generatePaymentsMBRegistry" />
+        <property name="registryService" ref="registryService" />
+        <property name="organizationService" ref="organizationService" />
+    </bean>
+
+    <bean id="sendRegistryJob" class="org.flexpay.payments.process.export.job.SendRegistryJob"
+            scope="prototype"/>
+
+</beans>

@@ -50,6 +50,8 @@
 		<mapping resource="org/flexpay/payments/persistence/Operation.hbm.xml" />
 		<mapping resource="org/flexpay/payments/service/statistics/Statistics.hbm.xml" />
 
+        <mapping resource="org/flexpay/payments/persistence/process/ServiceProviderAttribute.hbm.xml" />
+
 	</session-factory>
 
 </hibernate-configuration>

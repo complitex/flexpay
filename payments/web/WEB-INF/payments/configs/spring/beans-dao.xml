@@ -116,4 +116,14 @@
 		</property>
 	</bean>
 
+    <bean id="serviceProviderAttributeDao" parent="abstractDao">
+		<property name="proxyInterfaces"
+				  value="org.flexpay.payments.dao.ServiceProviderAttributeDao" />
+		<property name="target">
+			<bean parent="abstractDaoTarget">
+				<constructor-arg value="org.flexpay.payments.persistence.process.ServiceProviderAttribute" />
+			</bean>
+		</property>
+	</bean>
+
 </beans>

@@ -65,4 +65,19 @@
 		  p:operationService-ref="operationService"
 		  p:paymentsStatisticsService-ref="paymentsStatisticsService" />
 
+    <bean id="serviceProviderServiceAttributeTarget" autowire-candidate="false"
+		  class="org.flexpay.payments.service.impl.ServiceProviderAttributeServiceImpl"
+		  p:serviceProviderAttributeDao-ref="serviceProviderAttributeDao" />
+
+    <bean id="generatePaymentsDBRegistry"
+          class="org.flexpay.payments.process.export.util.GeneratePaymentsDBRegistry"
+          p:operationService-ref="operationService"
+          p:registryArchiveStatusService-ref="registryArchiveStatusService" />
+    
+    <bean id="generatePaymentsMBRegistry"
+          class="org.flexpay.payments.process.export.util.GeneratePaymentsMBRegistry"
+          p:registryRecordService-ref="registryRecordService"
+          p:registryService-ref="registryService"
+          p:registryStatusService-ref="registryStatusService" />
+
 </beans>
