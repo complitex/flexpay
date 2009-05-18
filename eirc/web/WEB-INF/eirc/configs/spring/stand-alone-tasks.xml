@@ -21,6 +21,7 @@
           p:job-ref="generateQuittancesPDFJob" />
 
 	<bean class="org.flexpay.common.util.standalone.StandaloneTasksHolder"
+		  parent="commonStandAloneTasksHolder"
 		  factory-method="getInstance">
 		<property name="standaloneTasks">
 			<list>
