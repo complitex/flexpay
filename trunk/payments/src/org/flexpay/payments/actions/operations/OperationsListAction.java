@@ -2,6 +2,7 @@ package org.flexpay.payments.actions.operations;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateUtils;
+import org.apache.struts2.interceptor.CookiesAware;
 import org.flexpay.common.actions.FPActionWithPagerSupport;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
@@ -16,14 +17,16 @@ import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.orgs.service.OrganizationService;
 import org.flexpay.payments.persistence.*;
 import org.flexpay.payments.service.*;
+import org.flexpay.payments.actions.PaymentPointAwareAction;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
-public class OperationsListAction extends FPActionWithPagerSupport<Operation> {
+public class OperationsListAction extends FPActionWithPagerSupport<Operation> implements PaymentPointAwareAction {
 
 	// form data
 	private List<ServiceType> serviceTypes = CollectionUtils.list();
@@ -68,6 +71,9 @@ public class OperationsListAction extends FPActionWithPagerSupport<Operation> {
 
 	@NotNull
 	protected String doExecute() throws Exception {
+
+		// TODO remove
+		log.error("[!!!] Payment point id is {}", paymentPointId);
 
 		loadServiceTypes();
 
@@ -388,5 +394,15 @@ public class OperationsListAction extends FPActionWithPagerSupport<Operation> {
 	@Required
 	public void setOrganizationService(OrganizationService organizationService) {
 		this.organizationService = organizationService;
+	}
+	
+	private String paymentPointId;
+
+	public void setPaymentPointId(String paymentPointId) {
+		this.paymentPointId = paymentPointId;
+	}
+
+	public String getPaymentPointId() {
+		return paymentPointId;
 	}
 }

@@ -17,6 +17,7 @@ import org.flexpay.payments.persistence.filters.ServiceFilter;
 import org.flexpay.payments.persistence.filters.ServiceTypeFilter;
 import org.flexpay.payments.service.SPService;
 import org.flexpay.payments.service.ServiceTypeService;
+import org.flexpay.payments.actions.PaymentPointAwareAction;
 import org.flexpay.orgs.persistence.ServiceProvider;
 import org.flexpay.orgs.persistence.filters.ServiceProviderFilter;
 import org.flexpay.orgs.service.ServiceProviderService;
@@ -25,7 +26,7 @@ import org.springframework.beans.factory.annotation.Required;
 
 import java.util.Map;
 
-public class ServiceEditAction extends FPActionSupport {
+public class ServiceEditAction extends FPActionSupport implements PaymentPointAwareAction {
 
 	private Service service = new Service(0L);
 
@@ -235,4 +236,13 @@ public class ServiceEditAction extends FPActionSupport {
 		this.providerService = providerService;
 	}
 
+	private String paymentPointId;
+
+	public void setPaymentPointId(String paymentPointId) {
+		this.paymentPointId = paymentPointId;
+	}
+
+	public String getPaymentPointId() {
+		return paymentPointId;
+	}
 }

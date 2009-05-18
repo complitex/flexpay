@@ -7,12 +7,13 @@ import org.flexpay.common.util.config.ApplicationConfig;
 import org.flexpay.payments.persistence.ServiceType;
 import org.flexpay.payments.persistence.ServiceTypeNameTranslation;
 import org.flexpay.payments.service.ServiceTypeService;
+import org.flexpay.payments.actions.PaymentPointAwareAction;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.util.Map;
 
-public class ServiceTypeEditAction extends FPActionSupport {
+public class ServiceTypeEditAction extends FPActionSupport implements PaymentPointAwareAction {
 
 	private ServiceType serviceType = new ServiceType();
 	private Map<Long, String> names = map();
@@ -129,4 +130,13 @@ public class ServiceTypeEditAction extends FPActionSupport {
 		this.serviceTypeService = serviceTypeService;
 	}
 
+	private String paymentPointId;
+
+	public void setPaymentPointId(String paymentPointId) {
+		this.paymentPointId = paymentPointId;
+	}
+
+	public String getPaymentPointId() {
+		return paymentPointId;
+	}
 }

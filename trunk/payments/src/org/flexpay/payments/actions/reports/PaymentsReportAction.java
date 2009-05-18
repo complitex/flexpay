@@ -15,6 +15,7 @@ import org.flexpay.common.util.FPFileUtil;
 import org.flexpay.common.util.SecurityUtil;
 import org.flexpay.payments.reports.payments.PaymentReportData;
 import org.flexpay.payments.reports.payments.PaymentsReporter;
+import org.flexpay.payments.actions.PaymentPointAwareAction;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
@@ -23,7 +24,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-public class PaymentsReportAction extends FPActionSupport {
+public class PaymentsReportAction extends FPActionSupport implements PaymentPointAwareAction {
 
 	private BeginDateFilter beginDateFilter = new BeginDateFilter(DateUtil.now());
 	private EndDateFilter endDateFilter = new EndDateFilter(DateUtil.now());
@@ -146,4 +147,13 @@ public class PaymentsReportAction extends FPActionSupport {
 		this.paymentsReporter = paymentsReporter;
 	}
 
+	private String paymentPointId;
+
+	public void setPaymentPointId(String paymentPointId) {
+		this.paymentPointId = paymentPointId;
+	}
+
+	public String getPaymentPointId() {
+		return paymentPointId;
+	}
 }

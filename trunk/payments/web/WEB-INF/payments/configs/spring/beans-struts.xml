@@ -7,6 +7,8 @@
 		   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
 	<!-- Define module payments struts actions beans -->
+	<bean id="paymentsStaticPageAction" class="org.flexpay.payments.actions.PaymentPointAwareStaticAction"
+          scope="prototype"/>
 
 	<!-- quittance-related actions -->
 	<bean id="searchQuittanceAction"

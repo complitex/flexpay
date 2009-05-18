@@ -3,13 +3,14 @@ package org.flexpay.payments.actions.service;
 import org.flexpay.common.actions.FPActionWithPagerSupport;
 import org.flexpay.payments.persistence.ServiceType;
 import org.flexpay.payments.service.ServiceTypeService;
+import org.flexpay.payments.actions.PaymentPointAwareAction;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.util.Collections;
 import java.util.List;
 
-public class ServiceTypesListAction extends FPActionWithPagerSupport<ServiceType> {
+public class ServiceTypesListAction extends FPActionWithPagerSupport<ServiceType> implements PaymentPointAwareAction {
 
 	private List<ServiceType> serviceTypes = Collections.emptyList();
 
@@ -44,4 +45,13 @@ public class ServiceTypesListAction extends FPActionWithPagerSupport<ServiceType
 		this.serviceTypeService = serviceTypeService;
 	}
 
+	private String paymentPointId;
+
+	public void setPaymentPointId(String paymentPointId) {
+		this.paymentPointId = paymentPointId;
+	}
+
+	public String getPaymentPointId() {
+		return paymentPointId;
+	}
 }
