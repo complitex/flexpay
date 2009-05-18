@@ -2,6 +2,7 @@ package org.flexpay.eirc.process.quittance;
 
 import org.flexpay.common.test.SpringBeanAwareTestCase;
 import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.eirc.service.QuittanceService;
 import org.flexpay.eirc.process.QuittanceNumberService;
 import org.flexpay.eirc.persistence.account.Quittance;
@@ -32,7 +33,8 @@ public class TestGenerateQuittanceNumbersFile extends SpringBeanAwareTestCase {
 
 		File tmpFile = new File(System.getProperty("java.io.tmpdir"), "QuittanceNumbers.txt");
 		OutputStream os = new BufferedOutputStream(new FileOutputStream(tmpFile));
-		List<Quittance> quittances = quittanceService.getQuittances(ORGANIZATION_STUB, dateFrom, dateTill);
+//		List<Quittance> quittances = quittanceService.getQuittances(ORGANIZATION_STUB, dateFrom, dateTill);
+		List<Quittance> quittances = CollectionUtils.list();
 
 		@SuppressWarnings ({"IOResourceOpenedButNotSafelyClosed"})
 		PrintWriter writer = new PrintWriter(new OutputStreamWriter(os, "UTF-8"));
