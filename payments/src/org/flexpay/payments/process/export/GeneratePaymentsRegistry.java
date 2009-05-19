@@ -68,7 +68,11 @@ public class GeneratePaymentsRegistry extends QuartzJobBean {
                             log.debug("Last processed date did not changed");
                         }
                     }
+                } else {
+                    log.error("Organization did not find for service provider with id '" + providerId + "'");
                 }
+            } else {
+                log.error("Service provider by id '" + providerId + "' did not find");
             }
         } catch (ProcessInstanceException e) {
             log.error("Failed run process generate payments registry", e);
