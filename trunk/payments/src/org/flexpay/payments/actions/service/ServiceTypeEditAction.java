@@ -22,6 +22,9 @@ public class ServiceTypeEditAction extends FPActionSupport implements PaymentPoi
 	private String crumbCreateKey;
 	private ServiceTypeService serviceTypeService;
 
+	private String paymentPointId;
+	private String organizationId;
+
 	@NotNull
 	public String doExecute() throws Exception {
 
@@ -130,13 +133,19 @@ public class ServiceTypeEditAction extends FPActionSupport implements PaymentPoi
 		this.serviceTypeService = serviceTypeService;
 	}
 
-	private String paymentPointId;
-
 	public void setPaymentPointId(String paymentPointId) {
 		this.paymentPointId = paymentPointId;
 	}
 
 	public String getPaymentPointId() {
 		return paymentPointId;
+	}
+
+	public String getOrganizationId() {
+		return organizationId;
+	}
+
+	public void setOrganizationId(String organizationId) {
+		this.organizationId = organizationId;
 	}
 }

@@ -49,6 +49,9 @@ public class QuittancePayAction extends FPActionSupport implements PaymentPointA
 	private SPService spService;
 	private ServiceProviderService serviceProviderService;
 
+	private String paymentPointId;
+	private String organizationId;
+
 	@NotNull
 	protected String doExecute() throws Exception {
 
@@ -79,8 +82,7 @@ public class QuittancePayAction extends FPActionSupport implements PaymentPointA
 
 	private Organization getSelfOrganization() {
 
-		// TODO get organization id from cookies (FP-539)
-		return organizationService.readFull(new Stub<Organization>(1L));
+		return organizationService.readFull(new Stub<Organization>(Long.parseLong(organizationId)));
 	}
 
 	private Operation buildOperation() throws FlexPayException {
@@ -258,7 +260,6 @@ public class QuittancePayAction extends FPActionSupport implements PaymentPointA
 		this.serviceProviderService = serviceProviderService;
 	}
 		
-	private String paymentPointId;
 
 	public void setPaymentPointId(String paymentPointId) {
 		this.paymentPointId = paymentPointId;
@@ -266,5 +267,13 @@ public class QuittancePayAction extends FPActionSupport implements PaymentPointA
 
 	public String getPaymentPointId() {
 		return paymentPointId;
+	}
+
+	public String getOrganizationId() {
+		return organizationId;
+	}
+
+	public void setOrganizationId(String organizationId) {
+		this.organizationId = organizationId;
 	}
 }

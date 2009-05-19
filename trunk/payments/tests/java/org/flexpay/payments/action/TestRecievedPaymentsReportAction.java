@@ -4,9 +4,7 @@ import org.flexpay.payments.test.PaymentsSpringBeanAwareTestCase;
 import org.flexpay.payments.actions.reports.ReceivedPaymentsReportAction;
 import org.flexpay.payments.persistence.Operation;
 import org.flexpay.common.persistence.filter.BeginDateFilter;
-import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.util.config.ApplicationConfig;
-import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.orgs.persistence.TestData;
 import org.springframework.beans.factory.annotation.Autowired;
 import static org.junit.Assert.assertFalse;
@@ -16,7 +14,6 @@ import org.junit.Test;
 
 import java.util.List;
 import java.util.Date;
-import java.math.BigDecimal;
 
 public class TestRecievedPaymentsReportAction extends PaymentsSpringBeanAwareTestCase {
 
@@ -28,7 +25,7 @@ public class TestRecievedPaymentsReportAction extends PaymentsSpringBeanAwareTes
 		BeginDateFilter filter = new BeginDateFilter();
 		filter.setStringDate("2009/04/14");
 		action.setBeginDateFilter(filter);
-		action.setOrganizationId(TestData.ORG_TSZH.getId());
+		action.setReportOrganizationId(TestData.ORG_TSZH.getId());
 		action.setSubmitted("submitted");
 
 		action.execute();

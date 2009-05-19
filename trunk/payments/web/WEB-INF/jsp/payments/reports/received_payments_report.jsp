@@ -8,7 +8,7 @@
 		<tr>
 			<td nowrap="nowrap" style="padding-right: 50px;">
 				<s:text name="payments.report.received.organization"/>
-				<s:select name="organizationId" list="organizations" listKey="id" listValue="name"/>
+				<s:select name="reportOrganizationId" list="organizations" listKey="id" listValue="name"/>
 			</td>
 			<td nowrap="nowrap">
 				<s:text name="payments.report.generate.date"/>

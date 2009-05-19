@@ -44,6 +44,9 @@ public class SearchQuittanceAction extends FPActionSupport implements PaymentPoi
 	private QuittanceDetailsFinder quittanceDetailsFinder;
 	private SPService spService;
 	private ServiceProviderService serviceProviderService;
+		
+	private String paymentPointId;
+	private String organizationId;
 
 	@NotNull
 	protected String doExecute() throws Exception {
@@ -285,13 +288,19 @@ public class SearchQuittanceAction extends FPActionSupport implements PaymentPoi
 		this.personService = personService;
 	}
 
-	private String paymentPointId;
-
 	public void setPaymentPointId(String paymentPointId) {
 		this.paymentPointId = paymentPointId;
 	}
 
 	public String getPaymentPointId() {
 		return paymentPointId;
+	}
+
+	public String getOrganizationId() {
+		return organizationId;
+	}
+
+	public void setOrganizationId(String organizationId) {
+		this.organizationId = organizationId;
 	}
 }

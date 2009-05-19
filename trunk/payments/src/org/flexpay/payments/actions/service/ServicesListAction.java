@@ -26,6 +26,9 @@ public class ServicesListAction extends FPActionWithPagerSupport<Service> implem
 	private ServiceProviderService providerService;
 	private SPService spService;
 
+	private String paymentPointId;
+	private String organizationId;
+
 	@NotNull
 	public String doExecute() throws Exception {
 
@@ -88,13 +91,19 @@ public class ServicesListAction extends FPActionWithPagerSupport<Service> implem
 		this.providerService = providerService;
 	}
 
-	private String paymentPointId;
-
 	public void setPaymentPointId(String paymentPointId) {
 		this.paymentPointId = paymentPointId;
 	}
 
 	public String getPaymentPointId() {
 		return paymentPointId;
+	}
+
+	public String getOrganizationId() {
+		return organizationId;
+	}
+
+	public void setOrganizationId(String organizationId) {
+		this.organizationId = organizationId;
 	}
 }

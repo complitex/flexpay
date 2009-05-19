@@ -36,6 +36,9 @@ public class PaymentsReportAction extends FPActionSupport implements PaymentPoin
 	private FPFileService fpFileService;
 	private PaymentsReporter paymentsReporter;
 
+	private String paymentPointId;
+	private String organizationId;
+
 	@NotNull
 	protected String doExecute() throws Exception {
 
@@ -147,13 +150,19 @@ public class PaymentsReportAction extends FPActionSupport implements PaymentPoin
 		this.paymentsReporter = paymentsReporter;
 	}
 
-	private String paymentPointId;
-
 	public void setPaymentPointId(String paymentPointId) {
 		this.paymentPointId = paymentPointId;
 	}
 
 	public String getPaymentPointId() {
 		return paymentPointId;
+	}
+
+	public String getOrganizationId() {
+		return organizationId;
+	}
+
+	public void setOrganizationId(String organizationId) {
+		this.organizationId = organizationId;
 	}
 }
