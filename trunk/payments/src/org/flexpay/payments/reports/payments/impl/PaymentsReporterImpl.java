@@ -1,8 +1,10 @@
 package org.flexpay.payments.reports.payments.impl;
 
 import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.persistence.morphology.currency.CurrencyToTextConverter;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.DateUtil;
+import org.flexpay.common.service.CurrencyInfoService;
 import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.orgs.persistence.ServiceProvider;
 import org.flexpay.orgs.service.OrganizationService;
@@ -29,6 +31,8 @@ public class PaymentsReporterImpl implements PaymentsReporter {
 	private SPService spService;
 	private ServiceProviderService serviceProviderService;
 	private OperationService operationService;
+	private CurrencyToTextConverter currencyToTextConverter;
+	private CurrencyInfoService currencyInfoService;
 
 	public List<PaymentReportData> getPaymentsData(Date begin, Date end) {
 
@@ -88,6 +92,8 @@ public class PaymentsReporterImpl implements PaymentsReporter {
 		form.setCashierFIO("Коваль А.Н.");
 
 		form.setTotal(op.getOperationSumm());
+		form.setTotalSpelling("(" + currencyToTextConverter.toText(
+				op.getOperationSumm(), currencyInfoService.getDefaultCurrency()) + ")");
 		form.setInputSumm(op.getOperationInputSumm());
 		form.setChangeSumm(op.getChange());
 
@@ -140,5 +146,15 @@ public class PaymentsReporterImpl implements PaymentsReporter {
 	@Required
 	public void setOperationService(OperationService operationService) {
 		this.operationService = operationService;
+	}
+
+	@Required
+	public void setCurrencyToTextConverter(CurrencyToTextConverter currencyToTextConverter) {
+		this.currencyToTextConverter = currencyToTextConverter;
+	}
+
+	@Required
+	public void setCurrencyInfoService(CurrencyInfoService currencyInfoService) {
+		this.currencyInfoService = currencyInfoService;
 	}
 }

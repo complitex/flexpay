@@ -9,7 +9,7 @@
 
 	<bean id="documentService" class="org.flexpay.payments.service.impl.DocumentServiceImpl"
 		  p:documentDao-ref="documentDao"
-			p:documentDaoExt-ref="documentDaoExt"/>
+		  p:documentDaoExt-ref="documentDaoExt" />
 
 	<bean id="documentAdditionTypeService" class="org.flexpay.payments.service.impl.DocumentAdditionTypeServiceImpl"
 		  p:typeDao-ref="documentAdditionTypeDao" />
@@ -63,21 +63,23 @@
 		  p:spService-ref="spService"
 		  p:serviceProviderService-ref="serviceProviderService"
 		  p:operationService-ref="operationService"
-		  p:paymentsStatisticsService-ref="paymentsStatisticsService" />
+		  p:paymentsStatisticsService-ref="paymentsStatisticsService"
+		  p:currencyInfoService-ref="currencyInfoService"
+		  p:currencyToTextConverter-ref="currencyToTextConverter" />
 
-    <bean id="serviceProviderServiceAttributeTarget" autowire-candidate="false"
+	<bean id="serviceProviderServiceAttributeTarget" autowire-candidate="false"
 		  class="org.flexpay.payments.service.impl.ServiceProviderAttributeServiceImpl"
 		  p:serviceProviderAttributeDao-ref="serviceProviderAttributeDao" />
 
-    <bean id="generatePaymentsDBRegistry"
-          class="org.flexpay.payments.process.export.util.GeneratePaymentsDBRegistry"
-          p:operationService-ref="operationService"
-          p:registryArchiveStatusService-ref="registryArchiveStatusService" />
-    
-    <bean id="generatePaymentsMBRegistry"
-          class="org.flexpay.payments.process.export.util.GeneratePaymentsMBRegistry"
-          p:registryRecordService-ref="registryRecordService"
-          p:registryService-ref="registryService"
-          p:registryStatusService-ref="registryStatusService" />
+	<bean id="generatePaymentsDBRegistry"
+		  class="org.flexpay.payments.process.export.util.GeneratePaymentsDBRegistry"
+		  p:operationService-ref="operationService"
+		  p:registryArchiveStatusService-ref="registryArchiveStatusService" />
+
+	<bean id="generatePaymentsMBRegistry"
+		  class="org.flexpay.payments.process.export.util.GeneratePaymentsMBRegistry"
+		  p:registryRecordService-ref="registryRecordService"
+		  p:registryService-ref="registryService"
+		  p:registryStatusService-ref="registryStatusService" />
 
 </beans>

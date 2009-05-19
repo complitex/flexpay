@@ -36,7 +36,7 @@ public class CurrencyInfoServiceImpl implements CurrencyInfoService {
 	 * @throws IllegalArgumentException if currency info cannot be found
 	 * @see org.flexpay.common.util.config.ApplicationConfig#getDefaultCurrencyCode()
 	 */
-	public CurrencyInfo getDefualtCurrency() throws IllegalArgumentException {
+	public CurrencyInfo getDefaultCurrency() throws IllegalArgumentException {
 		return getCurrencyByCode(ApplicationConfig.getDefaultCurrencyCode());
 	}
 

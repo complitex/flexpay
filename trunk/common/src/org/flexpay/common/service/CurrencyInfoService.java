@@ -22,7 +22,7 @@ public interface CurrencyInfoService {
 	 * @throws IllegalArgumentException if currency info cannot be found
 	 * @see org.flexpay.common.util.config.ApplicationConfig#getDefaultCurrencyCode()
 	 */
-	CurrencyInfo getDefualtCurrency() throws IllegalArgumentException;
+	CurrencyInfo getDefaultCurrency() throws IllegalArgumentException;
 
 	/**
 	 * List all currency infos

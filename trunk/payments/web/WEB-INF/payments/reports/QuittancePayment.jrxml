@@ -275,7 +275,7 @@
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$P{total}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="177" y="0" width="124" height="20"/>
+				<reportElement x="177" y="0" width="373" height="20"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{totalSpelling}]]></textFieldExpression>
 			</textField>

@@ -37,6 +37,9 @@
 		  autowire-candidate="false"
 		  p:currencyInfoDao-ref="currencyInfoDao" />
 
+	<bean id="currencyToTextConverter"
+		  class="org.flexpay.common.persistence.morphology.currency.CurrencyToTextConverterImpl" />
+
 	<bean id="historyConsumerService"
 		  class="org.flexpay.common.service.imp.HistoryConsumerServiceImpl"
 		  p:consumerDao-ref="historyConsumperDao"
