@@ -3,7 +3,8 @@ package org.flexpay.payments.process.export;
 import org.springframework.scheduling.quartz.QuartzJobBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.flexpay.common.process.ProcessManager;
+import org.flexpay.common.process.*;
+import org.flexpay.common.process.Process;
 import org.flexpay.common.process.exception.ProcessInstanceException;
 import org.flexpay.common.process.exception.ProcessDefinitionException;
 import org.flexpay.common.persistence.Stub;
@@ -49,7 +50,9 @@ public class GeneratePaymentsRegistry extends QuartzJobBean {
                         }
                     }
                     parameters.put("OrganizationId", organization.getId());
-                    processManager.createProcess("GeneratePaymentsRegisryProcess", parameters);
+                    long processId = processManager.createProcess("GeneratePaymentsRegisryProcess", parameters);
+                    Process process = processManager.getProcessInstanceInfo(processId);
+                    parameters = process.getParameters();
                     String lastProcessedDate = (String) parameters.get("lastProcessedDate");
                     if (lastProcessedDate != null) {
                         if (lastProcessedDateAttribute == null) {
