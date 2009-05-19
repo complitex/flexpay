@@ -135,3 +135,9 @@ INSERT INTO common_registry_record_statuses_tbl (id, code) VALUES (3, 3);
 select @record_status_error_fixed:=3;
 INSERT INTO common_registry_record_statuses_tbl (id, code) VALUES (4, 4);
 select @record_status_processed:=4;
+
+-- Init CurrencyInfo
+insert into common_currency_infos_tbl(id, iso_code, gender) values (1, 'UAH', 1);
+select @currency_grivna:=1;
+insert into common_currency_names_tbl(language_id, currency_info_id, name, short_name, fraction_name, fraction_short_name)
+	values (@ru_id, @currency_grivna, 'Гривна', 'грн', 'Копейка', 'коп');

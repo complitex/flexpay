@@ -11,4 +11,7 @@
 	<!-- Unique instance identifier -->
 	<instanceId>COMMON_INSTANCE</instanceId>
 
+	<!-- Default currency code -->
+	<defaultCurrencyCode>UAH</defaultCurrencyCode>
+
 </flexpay>
