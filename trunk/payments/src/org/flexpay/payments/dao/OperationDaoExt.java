@@ -13,6 +13,7 @@ public interface OperationDaoExt {
 
 	/**
 	 * Returns list of operations which contains documents suitable to search criterias
+	 * @param organizationId creator organization id
 	 * @param serviceTypeId document service type id
 	 * @param begin lower bound for document creation date
 	 * @param end upper bound for document creation date
@@ -22,10 +23,11 @@ public interface OperationDaoExt {
 	 * @return list of operations which contains documents suitable to search criterias
 	 */
 	@Secured (Roles.OPERATION_READ)
-	List<Operation> searchDocuments(Long serviceTypeId, Date begin, Date end, BigDecimal minimalSumm, BigDecimal maximalSumm, Page<Operation> pager);
+	List<Operation> searchDocuments(Long organizationId, Long serviceTypeId, Date begin, Date end, BigDecimal minimalSumm, BigDecimal maximalSumm, Page<Operation> pager);
 
 	/**
 	 * Returns list of operations suitable to search criterias
+	 * @param organizationId creator organization id
 	 * @param begin lower bound for operation creation date
 	 * @param end upper bound for operation creation date
 	 * @param minimalSumm minimal operation summ
@@ -34,5 +36,5 @@ public interface OperationDaoExt {
 	 * @return list of operations suitable to search criterias
 	 */
 	@Secured(Roles.OPERATION_READ)
-	List<Operation> searchOperations(Date begin, Date end, BigDecimal minimalSumm, BigDecimal maximalSumm, Page<Operation> pager);
+	List<Operation> searchOperations(Long organizationId, Date begin, Date end, BigDecimal minimalSumm, BigDecimal maximalSumm, Page<Operation> pager);
 }

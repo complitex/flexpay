@@ -72,12 +72,31 @@ public class OperationServiceImpl implements OperationService {
 	 * {@inheritDoc}
 	 */
 	public List<Operation> listPaymentOperations(Date beginDate, Date endDate, Page<Operation> pager) {
-		
+
 		return operationDao.listPaymentOperations(beginDate, endDate, pager);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public List<Operation> listReceivedPayments(Long organizationId, Date beginDate, Date endDate) {
 		return operationDao.listReceivedPayments(organizationId, beginDate, endDate);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public List<Operation> searchDocuments(Long organizationId, Long serviceTypeId, Date begin, Date end, BigDecimal minimalSumm, BigDecimal maximalSumm, Page<Operation> pager) {
+
+		return operationDaoExt.searchDocuments(organizationId, serviceTypeId, begin, end, minimalSumm, maximalSumm, pager);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public List<Operation> searchOperations(Long organizationId, Date begin, Date end, BigDecimal minimalSumm, BigDecimal maximalSumm, Page<Operation> pager) {
+
+		return operationDaoExt.searchOperations(organizationId, begin, end, minimalSumm, maximalSumm, pager);
 	}
 
 	@Required
@@ -90,19 +109,4 @@ public class OperationServiceImpl implements OperationService {
 		this.operationDaoExt = operationDaoExt;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
-	public List<Operation> searchDocuments(Long serviceTypeId, Date begin, Date end, BigDecimal minimalSumm, BigDecimal maximalSumm, Page<Operation> pager) {
-
-		return operationDaoExt.searchDocuments(serviceTypeId, begin, end, minimalSumm, maximalSumm, pager);
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	public List<Operation> searchOperations(Date begin, Date end, BigDecimal minimalSumm, BigDecimal maximalSumm, Page<Operation> pager) {
-
-		return operationDaoExt.searchOperations(begin, end, minimalSumm, maximalSumm, pager);
-	}
 }

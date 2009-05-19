@@ -49,8 +49,7 @@
 
 	<!-- reports-related actions -->
 	<bean id="generateReportAction"
-		  class="org.flexpay.payments.actions.reports.ReceivedPaymentsReportAction"
-		  p:organizationService-ref="organizationService"
+		  class="org.flexpay.payments.actions.reports.ReceivedPaymentsReportAction"		  
 		  p:operationService-ref="operationService"
 		  p:spService-ref="spService"
 		  p:serviceTypeService-ref="serviceTypeService"

@@ -36,8 +36,8 @@ public class PaymentsReportAction extends FPActionSupport implements PaymentPoin
 	private FPFileService fpFileService;
 	private PaymentsReporter paymentsReporter;
 
-	private String paymentPointId;
-	private String organizationId;
+	private Long paymentPointId;
+	private Long organizationId;
 
 	@NotNull
 	protected String doExecute() throws Exception {
@@ -150,19 +150,19 @@ public class PaymentsReportAction extends FPActionSupport implements PaymentPoin
 		this.paymentsReporter = paymentsReporter;
 	}
 
-	public void setPaymentPointId(String paymentPointId) {
-		this.paymentPointId = paymentPointId;
-	}
-
-	public String getPaymentPointId() {
+	public Long getPaymentPointId() {
 		return paymentPointId;
 	}
 
-	public String getOrganizationId() {
+	public void setPaymentPointId(Long paymentPointId) {
+		this.paymentPointId = paymentPointId;
+	}
+
+	public Long getOrganizationId() {
 		return organizationId;
 	}
 
-	public void setOrganizationId(String organizationId) {
+	public void setOrganizationId(Long organizationId) {
 		this.organizationId = organizationId;
 	}
 }

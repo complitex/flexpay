@@ -45,8 +45,8 @@ public class ServiceEditAction extends FPActionSupport implements PaymentPointAw
 	private ServiceTypeService serviceTypeService;
 	private MeasureUnitService measureUnitService;
 
-	private String paymentPointId;
-	private String organizationId;
+	private Long paymentPointId;
+	private Long organizationId;
 
 	@NotNull
 	public String doExecute() throws Exception {
@@ -239,19 +239,19 @@ public class ServiceEditAction extends FPActionSupport implements PaymentPointAw
 		this.providerService = providerService;
 	}
 
-	public void setPaymentPointId(String paymentPointId) {
-		this.paymentPointId = paymentPointId;
-	}
-
-	public String getPaymentPointId() {
+	public Long getPaymentPointId() {
 		return paymentPointId;
 	}
 
-	public String getOrganizationId() {
+	public void setPaymentPointId(Long paymentPointId) {
+		this.paymentPointId = paymentPointId;
+	}
+
+	public Long getOrganizationId() {
 		return organizationId;
 	}
 
-	public void setOrganizationId(String organizationId) {
+	public void setOrganizationId(Long organizationId) {
 		this.organizationId = organizationId;
 	}
 }
