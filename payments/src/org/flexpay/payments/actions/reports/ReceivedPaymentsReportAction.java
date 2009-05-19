@@ -33,14 +33,11 @@ public class ReceivedPaymentsReportAction extends FPActionSupport implements Pay
 
 	// form data
 	private BeginDateFilter beginDateFilter = new BeginDateFilter();
-	private List<Organization> organizations = CollectionUtils.list();
-	private Long reportOrganizationId;
 
 	private List<Operation> operations = Collections.emptyList();
 	private List<OperationTypeStatistics> typeStatisticses = Collections.emptyList();
 
 	// required services
-	private OrganizationService organizationService;
 	private OperationService operationService;
 
 	private SPService spService;
@@ -49,29 +46,22 @@ public class ReceivedPaymentsReportAction extends FPActionSupport implements Pay
 
 	private PaymentsStatisticsService statisticsService;
 
-	private String paymentPointId;
-	private String organizationId;
+	private Long paymentPointId;
+	private Long organizationId;
 
 	@NotNull
 	protected String doExecute() throws Exception {
 
-		organizations = organizationService.listOrganizationsWithCollectors();
-
 		if (isSubmit()) {
-			if (reportOrganizationId == null) {
-				addActionError(getText("payments.errors.reports.received.no_org_selected"));
-				return SUCCESS;
-			}
-
 			Date beginDate = DateUtil.truncateDay(beginDateFilter.getDate());
 			Date endDate = DateUtil.truncateDay(beginDateFilter.getDate());
 			endDate = DateUtils.setHours(endDate, 23);
 			endDate = DateUtils.setMinutes(endDate, 59);
 			endDate = DateUtils.setSeconds(endDate, 59);
 
-			operations = operationService.listReceivedPayments(reportOrganizationId, beginDate, endDate);
+			operations = operationService.listReceivedPayments(organizationId, beginDate, endDate);
 
-			Stub<Organization> stub = new Stub<Organization>(reportOrganizationId);
+			Stub<Organization> stub = new Stub<Organization>(organizationId);
 			typeStatisticses = statisticsService.operationTypeStatistics(stub, beginDate, endDate);
 		} else {
 			beginDateFilter.setDate(DateUtil.now());
@@ -98,18 +88,6 @@ public class ReceivedPaymentsReportAction extends FPActionSupport implements Pay
 
 	public void setBeginDateFilter(BeginDateFilter beginDateFilter) {
 		this.beginDateFilter = beginDateFilter;
-	}
-
-	public List<Organization> getOrganizations() {
-		return organizations;
-	}
-
-	public Long getReportOrganizationId() {
-		return reportOrganizationId;
-	}
-
-	public void setReportOrganizationId(Long reportOrganizationId) {
-		this.reportOrganizationId = reportOrganizationId;
 	}
 
 	public List<Operation> getOperations() {
@@ -187,11 +165,6 @@ public class ReceivedPaymentsReportAction extends FPActionSupport implements Pay
 
 	// required services
 	@Required
-	public void setOrganizationService(OrganizationService organizationService) {
-		this.organizationService = organizationService;
-	}
-
-	@Required
 	public void setOperationService(OperationService operationService) {
 		this.operationService = operationService;
 	}
@@ -216,19 +189,19 @@ public class ReceivedPaymentsReportAction extends FPActionSupport implements Pay
 		this.statisticsService = statisticsService;
 	}
 
-	public void setPaymentPointId(String paymentPointId) {
-		this.paymentPointId = paymentPointId;
-	}
-
-	public String getPaymentPointId() {
+	public Long getPaymentPointId() {
 		return paymentPointId;
 	}
 
-	public String getOrganizationId() {
+	public void setPaymentPointId(Long paymentPointId) {
+		this.paymentPointId = paymentPointId;
+	}
+
+	public Long getOrganizationId() {
 		return organizationId;
 	}
 
-	public void setOrganizationId(String organizationId) {
+	public void setOrganizationId(Long organizationId) {
 		this.organizationId = organizationId;
 	}
 }

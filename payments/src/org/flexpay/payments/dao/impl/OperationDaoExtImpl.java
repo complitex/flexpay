@@ -24,7 +24,7 @@ public class OperationDaoExtImpl extends HibernateDaoSupport implements Operatio
 	 * {@inheritDoc}
 	 */
 	@SuppressWarnings ({"unchecked"})
-	public List<Operation> searchDocuments(final Long serviceTypeId, final Date begin, final Date end, final BigDecimal minimalSumm, final BigDecimal maximalSumm, final Page<Operation> pager) {
+	public List<Operation> searchDocuments(final Long organizationId, final Long serviceTypeId, final Date begin, final Date end, final BigDecimal minimalSumm, final BigDecimal maximalSumm, final Page<Operation> pager) {
 
 		final StringBuilder hql = new StringBuilder("SELECT DISTINCT o FROM Operation o LEFT JOIN o.documents doc ");
 		final StringBuilder cntHql = new StringBuilder("SELECT COUNT(o) FROM Operation o LEFT JOIN o.documents doc ");		
@@ -37,12 +37,12 @@ public class OperationDaoExtImpl extends HibernateDaoSupport implements Operatio
 			public List<Operation> doInHibernate(Session session) throws HibernateException, SQLException {
 
 				Query cntQuery = session.createQuery(cntHql.toString());
-				setDocumentSearchQueryParameters(cntQuery, serviceTypeId, begin, end, minimalSumm, maximalSumm);
+				setDocumentSearchQueryParameters(cntQuery, organizationId, serviceTypeId, begin, end, minimalSumm, maximalSumm);
 				Long count = (Long) cntQuery.uniqueResult();
 				pager.setTotalElements(count.intValue());
 
 				Query query = session.createQuery(hql.toString());
-				setDocumentSearchQueryParameters(query, serviceTypeId, begin, end, minimalSumm, maximalSumm);
+				setDocumentSearchQueryParameters(query, organizationId, serviceTypeId, begin, end, minimalSumm, maximalSumm);
 				query.setFirstResult(pager.getThisPageFirstElementNumber());
 				query.setMaxResults(pager.getPageSize());
 
@@ -56,6 +56,7 @@ public class OperationDaoExtImpl extends HibernateDaoSupport implements Operatio
 
 		// operation type filtering (payments only)
 		filterHql.append(" (o.operationType.code = 1 OR o.operationType.code = 2 OR o.operationType.code = 5 OR o.operationType.code = 6)");
+		filterHql.append(" AND o.creatorOrganization.id = :organizationId");
 
 		// opeartion status filtering (non-deleted ones)
 		filterHql.append(" AND o.operationStatus.code <> 3");
@@ -84,7 +85,11 @@ public class OperationDaoExtImpl extends HibernateDaoSupport implements Operatio
 		return filterHql;
 	}
 
-	private void setDocumentSearchQueryParameters(Query query, Long serviceTypeId, Date begin, Date end, BigDecimal minimalSumm, BigDecimal maximalSumm) {
+	private void setDocumentSearchQueryParameters(Query query, Long organizationId, Long serviceTypeId, Date begin, Date end, BigDecimal minimalSumm, BigDecimal maximalSumm) {
+
+		if (organizationId != null) {
+			query.setLong("organizationId", organizationId);
+		}
 
 		if (serviceTypeId != null) {
 			query.setLong("serviceTypeId", serviceTypeId);
@@ -111,7 +116,7 @@ public class OperationDaoExtImpl extends HibernateDaoSupport implements Operatio
 	 * {@inheritDoc}
 	 */
 	@SuppressWarnings ({"unchecked"})
-	public List<Operation> searchOperations(final Date begin, final Date end, final BigDecimal minimalSumm, final BigDecimal maximalSumm, final Page<Operation> pager) {
+	public List<Operation> searchOperations(final Long organizationId, final Date begin, final Date end, final BigDecimal minimalSumm, final BigDecimal maximalSumm, final Page<Operation> pager) {
 
 		final StringBuilder hql = new StringBuilder("SELECT DISTINCT o FROM Operation o LEFT JOIN o.documents doc ");
 		final StringBuilder cntHql = new StringBuilder("SELECT COUNT(o) FROM Operation o LEFT JOIN o.documents doc ");
@@ -124,12 +129,12 @@ public class OperationDaoExtImpl extends HibernateDaoSupport implements Operatio
 			public List<Operation> doInHibernate(Session session) throws HibernateException, SQLException {
 
 				Query cntQuery = session.createQuery(cntHql.toString());
-				setOperationSearchQueryParameters(cntQuery, begin, end, minimalSumm, maximalSumm);
+				setOperationSearchQueryParameters(cntQuery, organizationId, begin, end, minimalSumm, maximalSumm);
 				Long count = (Long) cntQuery.uniqueResult();
 				pager.setTotalElements(count.intValue());
 
 				Query query = session.createQuery(hql.toString());
-				setOperationSearchQueryParameters(query, begin, end, minimalSumm, maximalSumm);
+				setOperationSearchQueryParameters(query, organizationId, begin, end, minimalSumm, maximalSumm);
 				query.setFirstResult(pager.getThisPageFirstElementNumber());
 				query.setMaxResults(pager.getPageSize());
 
@@ -143,6 +148,7 @@ public class OperationDaoExtImpl extends HibernateDaoSupport implements Operatio
 
 		// operation type filtering (payments only)
 		filterHql.append(" (o.operationType.code = 1 OR o.operationType.code = 2 OR o.operationType.code = 5 OR o.operationType.code = 6)");
+		filterHql.append(" AND o.creatorOrganization.id = :organizationId");
 
 		// status filtering (non-deleted ones)
 		filterHql.append(" AND o.operationStatus.code <> 3");
@@ -167,7 +173,11 @@ public class OperationDaoExtImpl extends HibernateDaoSupport implements Operatio
 		return filterHql;
 	}
 
-	private void setOperationSearchQueryParameters(Query query, Date begin, Date end, BigDecimal minimalSumm, BigDecimal maximalSumm) {
+	private void setOperationSearchQueryParameters(Query query, Long organizationId, Date begin, Date end, BigDecimal minimalSumm, BigDecimal maximalSumm) {
+
+		if (organizationId != null) {
+			query.setLong("organizationId", organizationId);
+		}
 
 		if (begin != null) {
 			query.setTimestamp("begin", begin);

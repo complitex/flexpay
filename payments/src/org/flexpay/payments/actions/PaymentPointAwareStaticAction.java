@@ -4,22 +4,22 @@ import org.flexpay.common.actions.StaticPageAction;
 
 public class PaymentPointAwareStaticAction extends StaticPageAction implements PaymentPointAwareAction {
 
-	private String paymentPointId;
-	private String organizationId;
+	private Long paymentPointId;
+	private Long organizationId;
 
-	public void setPaymentPointId(String paymentPointId) {
+	public Long getPaymentPointId() {
+		return paymentPointId;
+	}
+
+	public void setPaymentPointId(Long paymentPointId) {
 		this.paymentPointId = paymentPointId;
 	}
 
-	public String getPaymentPointId() {
-		return paymentPointId;
-	}
-	
-	public String getOrganizationId() {
+	public Long getOrganizationId() {
 		return organizationId;
 	}
 
-	public void setOrganizationId(String organizationId) {
+	public void setOrganizationId(Long organizationId) {
 		this.organizationId = organizationId;
 	}
 }

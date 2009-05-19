@@ -7,11 +7,11 @@ package org.flexpay.payments.actions;
  */
 public interface PaymentPointAwareAction {
 
-	String getPaymentPointId();
+	Long getPaymentPointId();
 
-	void setPaymentPointId(String paymentPointId);
+	void setPaymentPointId(Long paymentPointId);
 
-	String getOrganizationId();
+	Long getOrganizationId();
 
-	void setOrganizationId(String organizationId);
+	void setOrganizationId(Long organizationId);
 }

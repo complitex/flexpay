@@ -69,8 +69,8 @@ public class OperationsListAction extends FPActionWithPagerSupport<Operation> im
 	private ServiceTypeService serviceTypeService;
 	private OrganizationService organizationService;
 
-	private String paymentPointId;
-	private String organizationId;
+	private Long paymentPointId;
+	private Long organizationId;
 
 	@NotNull
 	protected String doExecute() throws Exception {
@@ -106,13 +106,13 @@ public class OperationsListAction extends FPActionWithPagerSupport<Operation> im
 			end = DateUtils.setMinutes(end, 59);
 			end = DateUtils.setSeconds(end, 59);
 
-			List<Operation> searchResults = operationService.searchDocuments(serviceTypeId, begin, end, minimalSumm, maximalSumm, getPager());
+			List<Operation> searchResults = operationService.searchDocuments(organizationId, serviceTypeId, begin, end, minimalSumm, maximalSumm, getPager());
 			loadFullOperationsData(searchResults);
 			highlightedDocumentIds = getHighlightedDocumentIds(searchResults);
 		} else {
 			Date begin = beginTimeFilter.setTime(beginDateFilter.getDate());
 			Date end = endTimeFilter.setTime(endDateFilter.getDate());
-			List<Operation> searchResults = operationService.searchOperations(begin, end, minimalSumm, maximalSumm, getPager());
+			List<Operation> searchResults = operationService.searchOperations(organizationId, begin, end, minimalSumm, maximalSumm, getPager());
 			loadFullOperationsData(searchResults);
 		}
 	}
@@ -137,7 +137,7 @@ public class OperationsListAction extends FPActionWithPagerSupport<Operation> im
 
 	private Organization getSelfOrganization() {
 
-		return organizationService.readFull(new Stub<Organization>(Long.parseLong(organizationId)));
+		return organizationService.readFull(new Stub<Organization>(organizationId));
 	}
 
 	// updates status for selected operation and it's documents
@@ -395,19 +395,19 @@ public class OperationsListAction extends FPActionWithPagerSupport<Operation> im
 		this.organizationService = organizationService;
 	}
 
-	public void setPaymentPointId(String paymentPointId) {
+	public void setPaymentPointId(Long paymentPointId) {
 		this.paymentPointId = paymentPointId;
 	}
 
-	public String getPaymentPointId() {
+	public Long getPaymentPointId() {
 		return paymentPointId;
 	}
 
-	public String getOrganizationId() {
+	public Long getOrganizationId() {
 		return organizationId;
 	}
 
-	public void setOrganizationId(String organizationId) {
+	public void setOrganizationId(Long organizationId) {
 		this.organizationId = organizationId;
 	}
 }
