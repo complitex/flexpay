@@ -39,6 +39,6 @@
 
     <query name="ServiceProviderAttribute.listServiceProviderAttributes">
 		FROM ServiceProviderAttribute o
-		WHERE o.service_provider_id=?
+		WHERE o.serviceProvider.id=?
 	</query>
 </hibernate-mapping>
