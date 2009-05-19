@@ -26,11 +26,12 @@ public class GeneratePaymentsMBRegistry {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
     private static final long FLASH_FILE = 100;
+    private static final Integer PAGE_SIZE = 20;
 
-    private final SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy"); //TODO make static
-    private final SimpleDateFormat paymentDateFormat = new SimpleDateFormat("yyyyMMdd"); //TODO make static
-    private final SimpleDateFormat paymentPeriodDateFormat = new SimpleDateFormat("yyyyMM"); //TODO make static
-    private final String[] tableHeader = {                                               //TODO make static
+    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+    private static final SimpleDateFormat paymentDateFormat = new SimpleDateFormat("yyyyMMdd");
+    private static final SimpleDateFormat paymentPeriodDateFormat = new SimpleDateFormat("yyyyMM");
+    private static final String[] tableHeader = {
             "код квит",
             "л.с. ЕРЦ ",
             "  л.с.    ",
@@ -48,9 +49,9 @@ public class GeneratePaymentsMBRegistry {
             "по ",
             "Всего"
     };
-    private final Map<String, String> serviceNames = new HashMap<String, String>(); //TODO make static
+    private static final Map<String, String> serviceNames = new HashMap<String, String>();
 
-    {
+    static {
         serviceNames.put("1", "ЭЛЕКТР  ");
         serviceNames.put("2", "КВ/ЭКСПЛ"); // точно известно
         serviceNames.put("3", "ОТОПЛ   ");
@@ -119,27 +120,29 @@ public class GeneratePaymentsMBRegistry {
             // информационные строки
             log.info("Write info lines");
             log.info("Total info lines: " + registry.getRecordsNumber());
-            List<RegistryRecord> registryRecords = registryRecordService.listRecords(registry, new ImportErrorTypeFilter(),
-                    new RegistryRecordStatusFilter(),
-                    new Page<RegistryRecord>());
+            Page<RegistryRecord> page = new Page<RegistryRecord>(PAGE_SIZE);
+            List<RegistryRecord> registryRecords;
             registry.setRegistryStatus(registryStatusService.findByCode(RegistryStatus.PROCESSING));
             registryService.update(registry);
-            int i = 0;
-            int k = 0;
-            try {
-                for (RegistryRecord registryRecord : registryRecords) {
-                    String[] infoLine = createInfoLine(registryRecord);
-                    rg.writeLine(infoLine);
-                    log.info("Writed line " + String.valueOf(++i));
-                    if (++k >= FLASH_FILE) {
-                        rg.flush();
-                        k = 0;
+            while ((registryRecords = getRegistryRecords(registry, page)).size() > 0) {
+                int i = 0;
+                int k = 0;
+                try {
+                    for (RegistryRecord registryRecord : registryRecords) {
+                        String[] infoLine = createInfoLine(registryRecord);
+                        rg.writeLine(infoLine);
+                        log.info("Writed line " + String.valueOf(++i));
+                        if (++k >= FLASH_FILE) {
+                            rg.flush();
+                            k = 0;
+                        }
                     }
+                } catch (Exception e) {
+                    registry.setRegistryStatus(registryStatusService.findByCode(RegistryStatus.PROCESSING_WITH_ERROR));
+                    registryService.update(registry);
+                    throw new FlexPayException(e);
                 }
-            } catch (Exception e) {
-                registry.setRegistryStatus(registryStatusService.findByCode(RegistryStatus.PROCESSING_WITH_ERROR));
-                registryService.update(registry);
-                throw new FlexPayException(e);
+                page.nextPage();
             }
             registry.setRegistryStatus(registryStatusService.findByCode(RegistryStatus.PROCESSED));
             registryService.update(registry);
@@ -152,6 +155,13 @@ public class GeneratePaymentsMBRegistry {
                 rg.close();
             }
         }
+    }
+
+    private List<RegistryRecord> getRegistryRecords(Registry registry, Page<RegistryRecord> page) {
+        return registryRecordService.listRecords(registry,
+                new ImportErrorTypeFilter(),
+                new RegistryRecordStatusFilter(),
+                page);
     }
 
     @NotNull
