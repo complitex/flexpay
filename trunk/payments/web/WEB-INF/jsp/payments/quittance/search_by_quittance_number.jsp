@@ -32,7 +32,13 @@
 			$('#searchResultsDiv').load('<s:url action="searchResults"/>', {
 				'searchType' : 'QUITTANCE_NUMBER',
 				'searchCriteria': quittanceNumber,
-				'actionName': 'searchByQuittanceNumber' }, enableSearchButton);
+				'actionName': 'searchByQuittanceNumber' }, function (responseText, textStatus, XMLHttpRequest) {
+					if (responseText.indexOf('j_security_check') > 0) {
+						$(this).html('');
+						window.location = '<s:url action="searchByQuittanceNumber"/>';
+					}
+					enableSearchBtn();
+			});
 			$('#searchResultsDiv').show();
 		}
 	}
