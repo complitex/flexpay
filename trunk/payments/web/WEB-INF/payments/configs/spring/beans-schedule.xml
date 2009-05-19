@@ -22,7 +22,7 @@
                 <entry key="processManager" value-ref="processManager"/>
                 <entry key="providerService" value-ref="serviceProviderService"/>
                 <entry key="serviceProviderAttributeService" value-ref="serviceProviderServiceAttributeTarget"/>
-                <entry key="providerId" value-ref="historyConsumerService"/>
+                <entry key="providerId" value="1"/>
             </map>
         </property>
     </bean>
