@@ -103,6 +103,7 @@ public class ConfigLoader implements ResourceLoaderAware {
 		d.addCallMethod("flexpay/instanceId", "setInstanceId", 0);
 
         d.addCallMethod("flexpay/logPreviewLinesNumber", "setLogPreviewLinesNumber", 0);
+        d.addCallMethod("flexpay/defaultCurrencyCode", "setDefaultCurrencyCode", 0);
 	}
 
 	/**

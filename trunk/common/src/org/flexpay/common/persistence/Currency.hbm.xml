@@ -1,0 +1,89 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+		"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="org.flexpay.common.persistence">
+
+	<class name="CurrencyInfo" table="common_currency_infos_tbl">
+		<comment>Currency infos</comment>
+		<id name="id">
+			<column name="id">
+				<comment>Primary key</comment>
+			</column>
+			<generator class="native" />
+		</id>
+		<property name="currencyIsoCode">
+			<column name="iso_code" not-null="true">
+				<comment>ISO 4217 code of a currency</comment>
+			</column>
+		</property>
+		<property name="gender" type="Gender">
+			<column name="gender" not-null="true">
+				<comment>Gender (0-masculine, 1-feminine, 2-neuter)</comment>
+			</column>
+		</property>
+		<set name="names" inverse="true" cascade="all-delete-orphan">
+			<key column="currency_info_id" not-null="true" />
+			<one-to-many class="CurrencyName" />
+		</set>
+	</class>
+
+	<class name="CurrencyName" table="common_currency_names_tbl">
+		<comment>Currency name translation</comment>
+		<id name="id">
+			<column name="id">
+				<comment>Primary key</comment>
+			</column>
+			<generator class="native" />
+		</id>
+		<property name="name" type="string">
+			<column name="name" not-null="true">
+				<comment>Full currency name translation</comment>
+			</column>
+		</property>
+		<property name="shortName" type="string">
+			<column name="short_name" not-null="true">
+				<comment>Short currency name translation</comment>
+			</column>
+		</property>
+		<property name="fractionName" type="string">
+			<column name="fraction_name" not-null="true">
+				<comment>Full currency fraction name translation</comment>
+			</column>
+		</property>
+		<property name="shortFractionName" type="string">
+			<column name="fraction_short_name" not-null="true">
+				<comment>Short currency fraction name translation</comment>
+			</column>
+		</property>
+		<properties name="unit_lang_pair" unique="true">
+			<many-to-one name="lang"
+						 foreign-key="common_currency_names_tbl_language_id">
+				<column name="language_id" not-null="true">
+					<comment>Language reference</comment>
+				</column>
+			</many-to-one>
+			<many-to-one name="translatable" class="CurrencyInfo"
+						 foreign-key="FK_common_currency_names_tbl_currency_info_id">
+				<column name="currency_info_id" not-null="true">
+					<comment>Currency info reference</comment>
+				</column>
+			</many-to-one>
+		</properties>
+	</class>
+
+	<query name="CurrencyInfo.readFull">
+		select distinct o
+		from CurrencyInfo o
+			left join fetch o.names
+		where o.id=?
+	</query>
+
+	<query name="CurrencyInfo.listCurrencies">
+		select distinct o
+		from CurrencyInfo o
+			left join fetch o.names
+	</query>
+
+</hibernate-mapping>

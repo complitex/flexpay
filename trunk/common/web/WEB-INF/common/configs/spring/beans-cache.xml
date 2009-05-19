@@ -34,6 +34,23 @@
 		<property name="target" ref="languageServiceTarget" />
 	</bean>
 
+	<bean id="currencyInfoService"
+		  class="org.springmodules.cache.interceptor.proxy.CacheProxyFactoryBean">
+		<property name="cacheProviderFacade" ref="cacheProviderFacade" />
+		<property name="cachingModels">
+			<props>
+				<prop key="get*">cacheName=commonFlexpayCache</prop>
+				<prop key="list*">cacheName=commonFlexpayCache</prop>
+			</props>
+		</property>
+		<property name="flushingModels">
+			<props>
+				<prop key="update*">cacheNames=commonFlexpayCache</prop>
+			</props>
+		</property>
+		<property name="target" ref="currencyInfoServiceTarget" />
+	</bean>
+
 	<bean id="measureUnitService"
 		  class="org.springmodules.cache.interceptor.proxy.CacheProxyFactoryBean">
 		<property name="cacheProviderFacade" ref="cacheProviderFacade" />

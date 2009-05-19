@@ -27,9 +27,15 @@
 		  abstract="true" id="importErrorServiceTemplate"
 		  p:errorDao-ref="importErrorDao" />
 
-	<bean class="org.flexpay.common.service.imp.LanguageServiceImpl" id="languageServiceTarget"
+	<bean id="languageServiceTarget"
+		  class="org.flexpay.common.service.imp.LanguageServiceImpl"
 		  autowire-candidate="false"
 		  p:languageDao-ref="languageDao" />
+
+	<bean id="currencyInfoServiceTarget"
+		  class="org.flexpay.common.service.imp.CurrencyInfoServiceImpl"
+		  autowire-candidate="false"
+		  p:currencyInfoDao-ref="currencyInfoDao" />
 
 	<bean id="historyConsumerService"
 		  class="org.flexpay.common.service.imp.HistoryConsumerServiceImpl"

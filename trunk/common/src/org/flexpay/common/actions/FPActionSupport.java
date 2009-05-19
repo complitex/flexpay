@@ -85,7 +85,7 @@ public abstract class FPActionSupport extends ActionSupport implements UserPrefe
 
 		String result;
 		try {
-			setBreadCrumbs();
+//			setBreadCrumbs();
 			result = doExecute();
 		} catch (FlexPayException e) {
 			addActionError(e);

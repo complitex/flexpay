@@ -46,6 +46,7 @@ public class ApplicationConfig {
 	 */
 	private String instanceId;
 
+	private String defaultCurrencyCode;
 	private String testProp;
 
 	public static Date getPastInfinite() {
@@ -225,4 +226,12 @@ public class ApplicationConfig {
     public void setApplicationName(String applicationName) {
         this.applicationName = applicationName;
     }
+
+	public static String getDefaultCurrencyCode() {
+		return getInstance().defaultCurrencyCode;
+	}
+
+	public void setDefaultCurrencyCode(String defaultCurrencyCode) {
+		this.defaultCurrencyCode = defaultCurrencyCode;
+	}
 }

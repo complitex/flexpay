@@ -401,6 +401,25 @@
         primary key (id)
     ) comment='Building attributes';
 
+    create table common_currency_infos_tbl (
+        id bigint not null auto_increment comment 'Primary key',
+        iso_code varchar(255) not null comment 'ISO 4217 code of a currency',
+        gender integer not null comment 'Gender (0-masculine, 1-feminine, 2-neuter)',
+        primary key (id)
+    ) comment='Currency infos';
+
+    create table common_currency_names_tbl (
+        id bigint not null auto_increment comment 'Primary key',
+        name varchar(255) not null comment 'Full currency name translation',
+        short_name varchar(255) not null comment 'Short currency name translation',
+        fraction_name varchar(255) not null comment 'Full currency fraction name translation',
+        fraction_short_name varchar(255) not null comment 'Short currency fraction name translation',
+        language_id bigint not null comment 'Language reference',
+        currency_info_id bigint not null comment 'Currency info reference',
+        primary key (id),
+        unique (language_id, currency_info_id)
+    ) comment='Currency name translation';
+
     create table common_data_corrections_tbl (
         id bigint not null auto_increment,
         internal_object_id bigint not null,
@@ -1142,6 +1161,18 @@
         foreign key (building_id) 
         references ab_buildings_tbl (id);
 
+    alter table common_currency_names_tbl 
+        add index FK_common_currency_names_tbl_currency_info_id (currency_info_id), 
+        add constraint FK_common_currency_names_tbl_currency_info_id 
+        foreign key (currency_info_id) 
+        references common_currency_infos_tbl (id);
+
+    alter table common_currency_names_tbl 
+        add index common_currency_names_tbl_language_id (language_id), 
+        add constraint common_currency_names_tbl_language_id 
+        foreign key (language_id) 
+        references common_languages_tbl (id);
+
     alter table common_data_corrections_tbl 
         add index FKF86BDC935BA789BB (data_source_description_id), 
         add constraint FKF86BDC935BA789BB 
@@ -1311,14 +1342,14 @@
         references common_languages_tbl (id);
 
     alter table tc_tariff_calc_rules_files_tbl 
-        add index FKDA48352F7D816B8D (file_id), 
-        add constraint FKDA48352F7D816B8D 
+        add index FKDA48352F5F618B0D (file_id), 
+        add constraint FKDA48352F5F618B0D 
         foreign key (file_id) 
         references common_files_tbl (id);
 
     alter table tc_tariff_calc_rules_files_tbl 
-        add index FKDA48352F25D394E9 (type_id), 
-        add constraint FKDA48352F25D394E9 
+        add index FKDA48352FD397F469 (type_id), 
+        add constraint FKDA48352FD397F469 
         foreign key (type_id) 
         references common_file_types_tbl (id);
 
