@@ -14,4 +14,4 @@ alter table payments_service_provider_attribute_tbl
     foreign key (service_provider_id)
     references orgs_service_providers_tbl (id);
 
-update common_version_tbl set last_modified_date='2009-05-18', date_version=0;
+update common_version_tbl set last_modified_date='2009-05-19', date_version=0;
