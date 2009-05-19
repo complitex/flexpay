@@ -4,7 +4,7 @@
 		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping package="org.flexpay.payments.persistence.process">
-    <class name="ServiceProviderAttribute" table="payments_service_provider_attribute_tbl" optimistic-lock="version">
+	<class name="ServiceProviderAttribute" table="payments_service_provider_attribute_tbl" optimistic-lock="version">
 		<comment>ServiceProviderAttribute</comment>
 		<id name="id">
 			<column name="id">
@@ -12,32 +12,32 @@
 			</column>
 			<generator class="native" />
 		</id>
-        <natural-id mutable="false">
-            <property name="name">
-                <column name="name" not-null="true" length="50">
-                    <comment>Attribute name</comment>
-                </column>
-            </property>
-            <many-to-one name="serviceProvider" class="org.flexpay.orgs.persistence.ServiceProvider"
-                         foreign-key="FK_payments_service_provider_attribute_tbl_service_provider_id">
-                <column name="service_provider_id" not-null="true">
-                    <comment>Service provider reference</comment>
-                </column>
-            </many-to-one>
-        </natural-id>
-        <version name="version" access="field">
+		<natural-id mutable="false">
+			<property name="name">
+				<column name="name" not-null="true" length="50">
+					<comment>Attribute name</comment>
+				</column>
+			</property>
+			<many-to-one name="serviceProvider" class="org.flexpay.orgs.persistence.ServiceProvider"
+						 foreign-key="FK_payments_service_provider_attribute_tbl_service_provider_id">
+				<column name="service_provider_id" not-null="true">
+					<comment>Service provider reference</comment>
+				</column>
+			</many-to-one>
+		</natural-id>
+		<version name="version" access="field">
 			<column name="version">
 				<comment>Optimistic lock version</comment>
 			</column>
 		</version>
-        <property name="value">
+		<property name="value">
 			<column name="value" not-null="false" length="255">
 				<comment>Attribute value</comment>
 			</column>
 		</property>
 	</class>
 
-    <query name="ServiceProviderAttribute.listServiceProviderAttributes">
+	<query name="ServiceProviderAttribute.listServiceProviderAttributes">
 		FROM ServiceProviderAttribute o
 		WHERE o.serviceProvider.id=?
 	</query>

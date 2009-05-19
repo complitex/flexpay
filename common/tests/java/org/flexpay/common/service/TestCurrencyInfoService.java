@@ -15,7 +15,7 @@ public class TestCurrencyInfoService extends SpringBeanAwareTestCase {
 	@Test
 	public void testGetDefaultCurrency() {
 
-		CurrencyInfo info = service.getDefualtCurrency();
+		CurrencyInfo info = service.getDefaultCurrency();
 
 		assertEquals("Invalid gender", Gender.feminine, info.getGender());
 	}

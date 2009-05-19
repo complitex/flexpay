@@ -1,10 +1,12 @@
 package org.flexpay.common.persistence;
 
 import org.flexpay.common.persistence.morphology.Gender;
+import org.flexpay.common.util.TranslationUtil;
 
 import java.util.Collections;
-import java.util.Set;
 import java.util.Currency;
+import java.util.Locale;
+import java.util.Set;
 
 /**
  * Currency details the system is working with
@@ -41,5 +43,11 @@ public class CurrencyInfo extends DomainObject {
 
 	public void setNames(Set<CurrencyName> names) {
 		this.names = names;
+	}
+
+	public CurrencyName getName(Locale locale) {
+		return locale != null ?
+			   TranslationUtil.getTranslation(names, locale) :
+			   TranslationUtil.getTranslation(names);
 	}
 }
