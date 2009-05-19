@@ -10,7 +10,13 @@
 			$('#searchResultsDiv').load('<s:url action="searchResults"/>', {
 				'searchType' : 'ADDRESS',
 				'searchCriteria': apartmentId,
-				'actionName': 'searchByAddress' }, enableSearchBtn);
+				'actionName': 'searchByAddress' }, function (responseText, textStatus, XMLHttpRequest) {
+					if (responseText.indexOf('j_security_check') > 0) {
+						$(this).html('');
+						window.location = '<s:url action="searchByAddress"/>';
+					}
+					enableSearchBtn();
+			});
 			$('#searchResultsDiv').show();
 		}
 	}

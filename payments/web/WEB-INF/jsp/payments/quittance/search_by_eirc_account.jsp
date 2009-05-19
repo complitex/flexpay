@@ -10,7 +10,13 @@
 			$('#searchResultsDiv').load('<s:url action="searchResults"/>', {
 				'searchType' : 'EIRC_ACCOUNT',
 				'searchCriteria': accountNumber,
-				'actionName': 'searchByEircAccount' }, enableSearchBtn);
+				'actionName': 'searchByEircAccount' }, function (responseText, textStatus, XMLHttpRequest) {
+					if (responseText.indexOf('j_security_check') > 0) {
+						$(this).html('');
+						window.location = '<s:url action="searchByEircAccount"/>';
+					}
+					enableSearchBtn();
+			});
 			$('#searchResultsDiv').show();
 		}
 	}
