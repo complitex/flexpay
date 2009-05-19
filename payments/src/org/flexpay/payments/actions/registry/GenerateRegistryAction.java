@@ -6,6 +6,9 @@ import org.jetbrains.annotations.NotNull;
 
 public class GenerateRegistryAction extends FPActionSupport implements PaymentPointAwareAction {
 
+	private String paymentPointId;
+	private String organizationId;
+
 	@NotNull
 	protected String doExecute() throws Exception {
 
@@ -26,13 +29,19 @@ public class GenerateRegistryAction extends FPActionSupport implements PaymentPo
 		return SUCCESS;
 	}
 
-	private String paymentPointId;
-
 	public void setPaymentPointId(String paymentPointId) {
 		this.paymentPointId = paymentPointId;
 	}
 
 	public String getPaymentPointId() {
 		return paymentPointId;
+	}
+
+	public String getOrganizationId() {
+		return organizationId;
+	}
+
+	public void setOrganizationId(String organizationId) {
+		this.organizationId = organizationId;
 	}
 }

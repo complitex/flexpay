@@ -1,10 +1,10 @@
 package org.flexpay.payments.actions.interceptor;
 
-import com.opensymphony.xwork2.interceptor.AbstractInterceptor;
 import com.opensymphony.xwork2.ActionInvocation;
+import com.opensymphony.xwork2.interceptor.AbstractInterceptor;
+import org.flexpay.payments.actions.PaymentPointAwareAction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.flexpay.payments.actions.PaymentPointAwareAction;
 
 
 public class PaymentPointIdentificationInterceptor extends AbstractInterceptor {
@@ -20,8 +20,9 @@ public class PaymentPointIdentificationInterceptor extends AbstractInterceptor {
 			PaymentPointAwareAction paymentPointAwareAction = (PaymentPointAwareAction) action;
 
 			String paymentPointId = paymentPointAwareAction.getPaymentPointId();
-			if (paymentPointId != null) {
-				log.info("Payment point identified as {}", paymentPointId);
+			String organizationId = paymentPointAwareAction.getOrganizationId();
+			if (paymentPointId != null || organizationId != null) {
+				log.info("Payment point identified as {} and organization as {}", new Object[] {paymentPointId, organizationId});
 			} else {
 				return POINT_AUTHENTICATION_REQUIRED;
 			}

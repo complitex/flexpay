@@ -34,7 +34,7 @@ public class ReceivedPaymentsReportAction extends FPActionSupport implements Pay
 	// form data
 	private BeginDateFilter beginDateFilter = new BeginDateFilter();
 	private List<Organization> organizations = CollectionUtils.list();
-	private Long organizationId;
+	private Long reportOrganizationId;
 
 	private List<Operation> operations = Collections.emptyList();
 	private List<OperationTypeStatistics> typeStatisticses = Collections.emptyList();
@@ -49,13 +49,16 @@ public class ReceivedPaymentsReportAction extends FPActionSupport implements Pay
 
 	private PaymentsStatisticsService statisticsService;
 
+	private String paymentPointId;
+	private String organizationId;
+
 	@NotNull
 	protected String doExecute() throws Exception {
 
 		organizations = organizationService.listOrganizationsWithCollectors();
 
 		if (isSubmit()) {
-			if (organizationId == null) {
+			if (reportOrganizationId == null) {
 				addActionError(getText("payments.errors.reports.received.no_org_selected"));
 				return SUCCESS;
 			}
@@ -66,9 +69,9 @@ public class ReceivedPaymentsReportAction extends FPActionSupport implements Pay
 			endDate = DateUtils.setMinutes(endDate, 59);
 			endDate = DateUtils.setSeconds(endDate, 59);
 
-			operations = operationService.listReceivedPayments(organizationId, beginDate, endDate);
+			operations = operationService.listReceivedPayments(reportOrganizationId, beginDate, endDate);
 
-			Stub<Organization> stub = new Stub<Organization>(organizationId);
+			Stub<Organization> stub = new Stub<Organization>(reportOrganizationId);
 			typeStatisticses = statisticsService.operationTypeStatistics(stub, beginDate, endDate);
 		} else {
 			beginDateFilter.setDate(DateUtil.now());
@@ -101,12 +104,12 @@ public class ReceivedPaymentsReportAction extends FPActionSupport implements Pay
 		return organizations;
 	}
 
-	public Long getOrganizationId() {
-		return organizationId;
+	public Long getReportOrganizationId() {
+		return reportOrganizationId;
 	}
 
-	public void setOrganizationId(Long organizationId) {
-		this.organizationId = organizationId;
+	public void setReportOrganizationId(Long reportOrganizationId) {
+		this.reportOrganizationId = reportOrganizationId;
 	}
 
 	public List<Operation> getOperations() {
@@ -213,13 +216,19 @@ public class ReceivedPaymentsReportAction extends FPActionSupport implements Pay
 		this.statisticsService = statisticsService;
 	}
 
-	private String paymentPointId;
-
 	public void setPaymentPointId(String paymentPointId) {
 		this.paymentPointId = paymentPointId;
 	}
 
 	public String getPaymentPointId() {
 		return paymentPointId;
+	}
+
+	public String getOrganizationId() {
+		return organizationId;
+	}
+
+	public void setOrganizationId(String organizationId) {
+		this.organizationId = organizationId;
 	}
 }

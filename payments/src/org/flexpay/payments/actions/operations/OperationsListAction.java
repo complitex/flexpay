@@ -69,11 +69,11 @@ public class OperationsListAction extends FPActionWithPagerSupport<Operation> im
 	private ServiceTypeService serviceTypeService;
 	private OrganizationService organizationService;
 
+	private String paymentPointId;
+	private String organizationId;
+
 	@NotNull
 	protected String doExecute() throws Exception {
-
-		// TODO remove
-		log.error("[!!!] Payment point id is {}", paymentPointId);
 
 		loadServiceTypes();
 
@@ -137,8 +137,7 @@ public class OperationsListAction extends FPActionWithPagerSupport<Operation> im
 
 	private Organization getSelfOrganization() {
 
-		// TODO get organization id from cookies (FP-539)
-		return organizationService.readFull(new Stub<Organization>(1L));
+		return organizationService.readFull(new Stub<Organization>(Long.parseLong(organizationId)));
 	}
 
 	// updates status for selected operation and it's documents
@@ -395,8 +394,6 @@ public class OperationsListAction extends FPActionWithPagerSupport<Operation> im
 	public void setOrganizationService(OrganizationService organizationService) {
 		this.organizationService = organizationService;
 	}
-	
-	private String paymentPointId;
 
 	public void setPaymentPointId(String paymentPointId) {
 		this.paymentPointId = paymentPointId;
@@ -404,5 +401,13 @@ public class OperationsListAction extends FPActionWithPagerSupport<Operation> im
 
 	public String getPaymentPointId() {
 		return paymentPointId;
+	}
+
+	public String getOrganizationId() {
+		return organizationId;
+	}
+
+	public void setOrganizationId(String organizationId) {
+		this.organizationId = organizationId;
 	}
 }

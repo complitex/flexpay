@@ -10,4 +10,8 @@ public interface PaymentPointAwareAction {
 	String getPaymentPointId();
 
 	void setPaymentPointId(String paymentPointId);
+
+	String getOrganizationId();
+
+	void setOrganizationId(String organizationId);
 }
