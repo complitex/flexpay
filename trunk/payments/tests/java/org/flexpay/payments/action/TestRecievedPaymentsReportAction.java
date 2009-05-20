@@ -25,7 +25,7 @@ public class TestRecievedPaymentsReportAction extends PaymentsSpringBeanAwareTes
 		BeginDateFilter filter = new BeginDateFilter();
 		filter.setStringDate("2009/04/14");
 		action.setBeginDateFilter(filter);
-		action.setReportOrganizationId(TestData.ORG_TSZH.getId());
+		action.setOrganizationId(TestData.ORG_TSZH.getId());
 		action.setSubmitted("submitted");
 
 		action.execute();
