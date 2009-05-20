@@ -120,7 +120,7 @@ public class GeneratePaymentsMBRegistry {
             // информационные строки
             log.info("Write info lines");
             log.info("Total info lines: " + registry.getRecordsNumber());
-            Page<RegistryRecord> page = new Page<RegistryRecord>(PAGE_SIZE);
+            Page<RegistryRecord> page = new Page<RegistryRecord>(PAGE_SIZE);  // TODO change paging to range
             List<RegistryRecord> registryRecords;
             registry.setRegistryStatus(registryStatusService.findByCode(RegistryStatus.PROCESSING));
             registryService.update(registry);

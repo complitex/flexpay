@@ -15,13 +15,23 @@ public class SendRegistryJob extends Job {
     private OutTransport outTransport;
 
     public String execute(Map<Serializable, Serializable> parameters) throws FlexPayException {
-        Long fileId = (Long) parameters.get("FileId");
-
-        FPFile spFile = fpFileService.read(new Stub<FPFile>(fileId));
+        FPFile spFile = null;
+        if (parameters.containsKey("File")) {
+            Object o = parameters.get("File");
+            if (o instanceof FPFile) {
+                spFile = (FPFile) o;
+            } else {
+                log.warn("Invalid file`s instance class");
+            }
+        } else if (parameters.containsKey("FileId")) {
+            Long fileId = (Long) parameters.get("FileId");
+            spFile = fpFileService.read(new Stub<FPFile>(fileId));
+        }
         if (spFile == null) {
-            log.warn("Invalid File Id");
+            log.warn("Did not find file in job parameters");
             return RESULT_ERROR;
         }
+        
         try {
             outTransport.send(spFile);
         } catch (Exception e) {

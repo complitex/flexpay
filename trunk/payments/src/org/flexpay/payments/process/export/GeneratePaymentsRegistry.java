@@ -8,6 +8,9 @@ import org.flexpay.common.process.Process;
 import org.flexpay.common.process.exception.ProcessInstanceException;
 import org.flexpay.common.process.exception.ProcessDefinitionException;
 import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.util.CollectionUtils;
+import org.flexpay.common.util.SecurityUtil;
+import org.flexpay.common.service.Roles;
 import org.flexpay.orgs.service.ServiceProviderService;
 import org.flexpay.orgs.persistence.ServiceProvider;
 import org.flexpay.orgs.persistence.Organization;
@@ -24,11 +27,25 @@ import java.io.Serializable;
 
 public class GeneratePaymentsRegistry extends QuartzJobBean {
     private Logger log = LoggerFactory.getLogger(getClass());
+
+    private static final String USER_PAYMENTS_REGISTRY_GENERATOR = "payments-registry-generator";
+
     private ProcessManager processManager;
     private ServiceProviderService serviceProviderService;
     private ServiceProviderAttributeService serviceProviderAttributeService;
 
     private Long providerId;
+
+    /**
+	 * Set of authorities names for payments registry
+	 */
+	protected static final List<String> USER_PAYMENTS_REGISTRY_GENERATOR_AUTHORITIES = CollectionUtils.list(
+			Roles.BASIC,
+            Roles.PROCESS_READ,
+            org.flexpay.payments.service.Roles.OPERATION_READ,
+            org.flexpay.orgs.service.Roles.ORGANIZATION_READ,
+            org.flexpay.orgs.service.Roles.SERVICE_PROVIDER_READ
+	);
 
     protected void executeInternal(JobExecutionContext context) throws JobExecutionException {
         if (log.isDebugEnabled()) {
@@ -36,11 +53,13 @@ public class GeneratePaymentsRegistry extends QuartzJobBean {
         }
         try {
             // Map<Serializable, Serializable> parameters = context.getMergedJobDataMap().getWrappedMap();
+            authenticatePaymentsRegistryGenerator();
+
             ServiceProvider serviceProvider = serviceProviderService.read(new Stub<ServiceProvider>(providerId));
             if (serviceProvider != null) {
                 Organization organization = serviceProvider.getOrganization();
                 if (organization != null && organization.getId() != null) {
-                    List<ServiceProviderAttribute> attributes = serviceProviderAttributeService.listServiceProviderAttributes(new Stub<ServiceProvider>(serviceProvider));
+                    List<ServiceProviderAttribute> attributes = serviceProviderAttributeService.listServiceProviderAttributes(Stub.stub(serviceProvider));
                     Map<Serializable, Serializable> parameters = new HashMap<Serializable, Serializable>();
                     ServiceProviderAttribute lastProcessedDateAttribute = null;
                     for (ServiceProviderAttribute attribute : attributes) {
@@ -49,7 +68,8 @@ public class GeneratePaymentsRegistry extends QuartzJobBean {
                             parameters.put(attribute.getName(), attribute.getValue());
                         }
                     }
-                    parameters.put("OrganizationId", organization.getId());
+                    //parameters.put("OrganizationId", organization.getId());
+                    parameters.put("Organization", organization);
                     long processId = processManager.createProcess("GeneratePaymentsRegisryProcess", parameters);
                     Process process = processManager.getProcessInstanceInfo(processId);
                     parameters = process.getParameters();
@@ -85,6 +105,13 @@ public class GeneratePaymentsRegistry extends QuartzJobBean {
             throw new JobExecutionException(e);
         }
     }
+
+    /**
+	 * Do payments registry user authentication
+	 */
+	private static void authenticatePaymentsRegistryGenerator() {
+		SecurityUtil.authenticate(USER_PAYMENTS_REGISTRY_GENERATOR, USER_PAYMENTS_REGISTRY_GENERATOR_AUTHORITIES);
+	}
 
     public void setProcessManager(ProcessManager processManager) {
         this.processManager = processManager;
