@@ -58,9 +58,11 @@ public class Stub<T extends DomainObject> implements Serializable {
 		return id.hashCode();
 	}
 
+	@Override
 	public String toString() {
 		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE)
 				.append("id", id)
 				.toString();
 	}
+
 }
