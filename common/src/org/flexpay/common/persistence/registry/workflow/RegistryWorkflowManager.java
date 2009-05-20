@@ -238,7 +238,7 @@ public class RegistryWorkflowManager {
 			throw new TransitionNotAllowed("Cannot mark not processing registry as having errors");
 		}
 
-		log.debug("Setting registry errorous: {}", registry);
+		log.debug("Setting registry errors: {}", registry);
 
 		if (code == PROCESSING) {
 			log.debug("Updating registry status");
@@ -262,4 +262,5 @@ public class RegistryWorkflowManager {
 	public void setRegistryDaoExt(RegistryDaoExt registryDaoExt) {
 		this.registryDaoExt = registryDaoExt;
 	}
+
 }

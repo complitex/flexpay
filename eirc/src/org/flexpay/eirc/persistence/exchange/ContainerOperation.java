@@ -16,4 +16,5 @@ public abstract class ContainerOperation extends Operation {
 	public int getTypeId() {
 		return typeId;
 	}
+
 }

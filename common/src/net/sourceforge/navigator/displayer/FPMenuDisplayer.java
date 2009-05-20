@@ -120,14 +120,11 @@ public class FPMenuDisplayer extends AbstractMenuDisplayer {
 			return;
 		}
 
-//		boolean firstHasOut = true;
-
 		for (MenuComponent component : components) {
 			if (hasMenuAccess(component)) {
 				if (level == 3) {
 					if (component.isFirst()) {
 						out.println(displayStrings.getMessage("left.menu.top", getTitle(menu)));
-//						firstHasOut = true;
 					}
 					if (component.isActive(activeMenuBranch)) {
 						out.println(displayStrings.getMessage("left.menu.top_item.top_active",
@@ -152,12 +149,6 @@ public class FPMenuDisplayer extends AbstractMenuDisplayer {
 				if (level == 3) {
 					out.println(displayStrings.getMessage("left.menu.top_item.bottom"));
 				}
-/*
-			} else {
-				if (component.isFirst()) {
-					firstHasOut = false;
-				}
-*/
 			}
 		}
 

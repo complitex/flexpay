@@ -1,6 +1,6 @@
 package org.flexpay.bti.actions.buildings;
 
-import org.flexpay.bti.persistence.BuildingAttributeType;
+import org.flexpay.bti.persistence.building.BuildingAttributeType;
 import org.flexpay.bti.service.BuildingAttributeTypeService;
 import org.flexpay.common.actions.FPActionWithPagerSupport;
 import org.flexpay.common.persistence.Stub;

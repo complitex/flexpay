@@ -34,6 +34,7 @@
 		<mapping resource="org/flexpay/ab/persistence/Building.hbm.xml" />
 		<mapping resource="org/flexpay/ab/persistence/BuildingBase.hbm.xml" />
 		<mapping resource="org/flexpay/ab/persistence/Apartment.hbm.xml" />
+        <mapping resource="org/flexpay/ab/persistence/ApartmentBase.hbm.xml" />
 		<mapping resource="org/flexpay/ab/persistence/StreetType.hbm.xml" />
 		<mapping resource="org/flexpay/ab/persistence/IdentityType.hbm.xml" />
 		<mapping resource="org/flexpay/ab/persistence/Person.hbm.xml" />

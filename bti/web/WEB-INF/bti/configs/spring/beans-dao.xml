@@ -9,11 +9,57 @@
 
 	<!--  Dao Layer instances -->
 
+    <!-- Apartments -->
+    <bean id="apartmentAttributeTypeDao" parent="abstractDao">
+        <property name="proxyInterfaces" value="org.flexpay.bti.dao.ApartmentAttributeTypeDao" />
+        <property name="target">
+            <bean parent="abstractDaoTarget">
+                <constructor-arg value="org.flexpay.bti.persistence.apartment.ApartmentAttributeType" />
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="apartmentAttributeTypeEnumDao" parent="abstractDao">
+        <property name="proxyInterfaces" value="org.flexpay.bti.dao.ApartmentAttributeTypeEnumDao" />
+        <property name="target">
+            <bean parent="abstractDaoTarget">
+                <constructor-arg value="org.flexpay.bti.persistence.apartment.ApartmentAttributeTypeEnum" />
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="apartmentAttributeTypeDaoExt" class="org.flexpay.bti.dao.impl.ApartmentAttributeTypeDaoExtImpl"
+          p:sessionFactory-ref="flexpaySessionFactory"
+          p:attributeTypeDao-ref="apartmentAttributeTypeDao"
+          p:attributeTypeEnumDao-ref="apartmentAttributeTypeEnumDao" />
+
+    <bean id="apartmentAttributeGroupDao" parent="abstractDao">
+        <property name="proxyInterfaces" value="org.flexpay.bti.dao.ApartmentAttributeGroupDao" />
+        <property name="target">
+            <bean parent="abstractDaoTarget">
+                <constructor-arg value="org.flexpay.bti.persistence.apartment.ApartmentAttributeGroup" />
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="apartmentAttributeDao" parent="abstractDao">
+        <property name="proxyInterfaces" value="org.flexpay.bti.dao.ApartmentAttributeDao" />
+        <property name="target">
+            <bean parent="abstractDaoTarget">
+                <constructor-arg value="org.flexpay.bti.persistence.apartment.ApartmentAttributeBase" />
+            </bean>
+        </property>
+    </bean>
+
+    <bean id="btiApartmentDaoExt" class="org.flexpay.bti.dao.impl.BtiApartmentDaoExtImpl"
+          p:sessionFactory-ref="flexpaySessionFactory" />
+
+    <!-- Buildings -->
 	<bean id="buildingAttributeTypeDao" parent="abstractDao">
 		<property name="proxyInterfaces" value="org.flexpay.bti.dao.BuildingAttributeTypeDao" />
 		<property name="target">
 			<bean parent="abstractDaoTarget">
-				<constructor-arg value="org.flexpay.bti.persistence.BuildingAttributeType" />
+				<constructor-arg value="org.flexpay.bti.persistence.building.BuildingAttributeType" />
 			</bean>
 		</property>
 	</bean>
@@ -22,12 +68,12 @@
 		<property name="proxyInterfaces" value="org.flexpay.bti.dao.BuildingAttributeTypeEnumDao" />
 		<property name="target">
 			<bean parent="abstractDaoTarget">
-				<constructor-arg value="org.flexpay.bti.persistence.BuildingAttributeTypeEnum" />
+				<constructor-arg value="org.flexpay.bti.persistence.building.BuildingAttributeTypeEnum" />
 			</bean>
 		</property>
 	</bean>
 
-	<bean id="attributeTypeDaoExt" class="org.flexpay.bti.dao.impl.BuildingAttributeTypeDaoExtImpl"
+	<bean id="buildingAttributeTypeDaoExt" class="org.flexpay.bti.dao.impl.BuildingAttributeTypeDaoExtImpl"
 		  p:sessionFactory-ref="flexpaySessionFactory"
 		  p:attributeTypeDao-ref="buildingAttributeTypeDao"
 		  p:attributeTypeEnumDao-ref="buildingAttributeTypeEnumDao" />
@@ -36,7 +82,7 @@
 		<property name="proxyInterfaces" value="org.flexpay.bti.dao.BuildingAttributeGroupDao" />
 		<property name="target">
 			<bean parent="abstractDaoTarget">
-				<constructor-arg value="org.flexpay.bti.persistence.BuildingAttributeGroup" />
+				<constructor-arg value="org.flexpay.bti.persistence.building.BuildingAttributeGroup" />
 			</bean>
 		</property>
 	</bean>
@@ -45,7 +91,7 @@
 		<property name="proxyInterfaces" value="org.flexpay.bti.dao.BuildingAttributeDao" />
 		<property name="target">
 			<bean parent="abstractDaoTarget">
-				<constructor-arg value="org.flexpay.bti.persistence.BuildingAttributeBase" />
+				<constructor-arg value="org.flexpay.bti.persistence.building.BuildingAttributeBase" />
 			</bean>
 		</property>
 	</bean>

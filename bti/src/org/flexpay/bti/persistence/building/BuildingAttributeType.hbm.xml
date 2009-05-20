@@ -1,0 +1,155 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+		"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<!-- Map all class hierarchy to single table -->
+<hibernate-mapping package="org.flexpay.bti.persistence">
+
+	<class name="org.flexpay.bti.persistence.building.BuildingAttributeType" abstract="true" table="bti_building_attribute_types_tbl">
+
+		<comment>Building attribute types</comment>
+
+		<id name="id" column="id">
+			<generator class="native" />
+		</id>
+
+		<discriminator type="string">
+			<column name="discriminator" not-null="true">
+				<comment>Class hierarchy descriminator</comment>
+			</column>
+		</discriminator>
+
+		<many-to-one name="group" foreign-key="bti_building_attribute_types_tbl" class="org.flexpay.bti.persistence.building.BuildingAttributeGroup">
+			<column name="group_id" not-null="true">
+				<comment>Attribute group reference</comment>
+			</column>
+		</many-to-one>
+
+		<property name="uniqueCode">
+			<column name="unique_code" not-null="false">
+				<comment>Internal unique code</comment>
+			</column>
+		</property>
+
+		<property name="isTemporal" access="field">
+			<column name="is_temporal" not-null="true">
+				<comment>Temporal flag</comment>
+			</column>
+		</property>
+
+		<set name="translations" inverse="true" cascade="all-delete-orphan">
+			<key column="attribute_type_id" not-null="true" />
+			<one-to-many class="org.flexpay.bti.persistence.building.BuildingAttributeTypeName" />
+		</set>
+
+		<subclass name="org.flexpay.bti.persistence.building.BuildingAttributeTypeSimple" discriminator-value="simple" />
+
+		<subclass name="org.flexpay.bti.persistence.building.BuildingAttributeTypeEnum" discriminator-value="enum">
+
+			<set name="values" inverse="true" cascade="all-delete-orphan">
+				<key column="attribute_type_enum_id" not-null="true" />
+				<one-to-many class="org.flexpay.bti.persistence.building.BuildingAttributeTypeEnumValue" />
+			</set>
+		</subclass>
+
+	</class>
+
+	<class name="org.flexpay.bti.persistence.building.BuildingAttributeTypeEnumValue" table="bti_building_attribute_type_enum_values_tbl">
+		<comment>Values for enumeration attribute types</comment>
+		<id name="id" column="id">
+			<generator class="native" />
+		</id>
+		<property name="order">
+			<column name="order_value" not-null="true">
+				<comment>Relatiove order value</comment>
+			</column>
+		</property>
+		<property name="value">
+			<column name="value" not-null="true">
+				<comment>Enum value</comment>
+			</column>
+		</property>
+		<many-to-one name="typeEnum" class="org.flexpay.bti.persistence.building.BuildingAttributeTypeEnum"
+					 foreign-key="bti_building_attribute_type_enum_values_tbl_enum_id">
+			<column name="attribute_type_enum_id" not-null="true">
+				<comment>Attribute type enum reference</comment>
+			</column>
+		</many-to-one>
+	</class>
+
+	<class name="org.flexpay.bti.persistence.building.BuildingAttributeTypeName" table="bti_building_attribute_type_names_tbl">
+		<comment>Building attribute type translations</comment>
+		<id name="id" column="id">
+			<generator class="native" />
+		</id>
+
+		<property name="name">
+			<column name="name" not-null="true">
+				<comment>Translation value</comment>
+			</column>
+		</property>
+
+		<properties name="lang_building_attribute_type_pair" unique="true">
+
+			<many-to-one name="lang" class="org.flexpay.common.persistence.Language"
+						 foreign-key="bti_building_attribute_type_names_tbl_language_id">
+				<column name="language_id" not-null="true">
+					<comment>Language reference</comment>
+				</column>
+			</many-to-one>
+
+			<many-to-one name="translatable" class="org.flexpay.bti.persistence.building.BuildingAttributeType"
+						 foreign-key="bti_building_attribute_type_names_tbl_attribute_type_id">
+				<column name="attribute_type_id" not-null="true">
+					<comment>Building attribute type reference</comment>
+				</column>
+			</many-to-one>
+		</properties>
+	</class>
+
+	<query name="BuildingAttributeType.readFull">
+		select distinct t
+		from BuildingAttributeType t
+			left join fetch t.translations
+			left join fetch t.group 
+		where t.id=?
+	</query>
+
+	<query name="BuildingAttributeType.findTypes.count">
+		select count(t)
+		from BuildingAttributeType t
+	</query>
+
+	<query name="BuildingAttributeType.findTypes">
+		from BuildingAttributeType
+	</query>
+
+	<query name="BuildingAttributeType.findAllTypes">
+		select distinct t
+		from BuildingAttributeType t
+			left join fetch t.translations
+	</query>
+
+	<query name="BuildingAttributeType.findTypesByName">
+		select distinct t
+		from BuildingAttributeType t
+			left join t.translations n
+		where n.name=? or t.uniqueCode=?
+	</query>
+
+	<query name="BuildingAttributeTypeEnum.findValues">
+		from BuildingAttributeTypeEnumValue v
+		where v.typeEnum.id=?
+	</query>
+
+	<query name="BuildingAttributeType.checkUniqueName"><![CDATA[
+		select 1
+		from Dual
+		where exists(
+			from BuildingAttributeType t
+				left join t.translations tn where (tn.name=? or t.uniqueCode=?) and (t.id<>? or 1=?))
+		]]>
+	</query>
+
+</hibernate-mapping>

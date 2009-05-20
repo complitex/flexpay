@@ -1,7 +1,7 @@
 package org.flexpay.bti.service;
 
-import org.flexpay.bti.persistence.BtiBuilding;
-import org.flexpay.bti.persistence.BuildingAttributeBase;
+import org.flexpay.bti.persistence.building.BtiBuilding;
+import org.flexpay.bti.persistence.building.BuildingAttributeBase;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.test.SpringBeanAwareTestCase;

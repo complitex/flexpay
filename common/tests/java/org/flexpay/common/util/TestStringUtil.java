@@ -11,15 +11,13 @@ public class TestStringUtil {
 
 	@Test
 	public void testEscapableRemoved() {
-
 		List<String> parts = StringUtil.splitEscapable("lkjhsalkdjfh/ sadfsa df", ' ', '/');
-		assertTrue("Escape simbol not removed", parts.get(0).indexOf('/') == -1);
+		assertTrue("Escape symbol not removed", parts.get(0).indexOf('/') == -1);
 	}
 
 	@Test
 	public void testSplitEmpty() {
-
-		assertEquals("Escape simbol not removed", 0, StringUtil.splitEscapable("", ' ', '/').size());
+		assertEquals("Escape symbol not removed", 0, StringUtil.splitEscapable("", ' ', '/').size());
 	}
 
 	@Test

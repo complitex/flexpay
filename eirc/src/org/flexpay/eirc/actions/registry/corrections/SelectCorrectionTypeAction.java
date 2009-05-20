@@ -8,6 +8,7 @@ import org.flexpay.common.persistence.ImportError;
 import org.flexpay.common.persistence.registry.RegistryRecord;
 import org.flexpay.common.service.importexport.ClassToTypeRegistry;
 import org.flexpay.common.service.RegistryRecordService;
+import org.flexpay.bti.persistence.apartment.BtiApartment;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
@@ -42,7 +43,7 @@ public class SelectCorrectionTypeAction extends FPActionSupport {
 				return "building";
 			}
 			if (typeRegistry.getType(org.flexpay.ab.persistence.Apartment.class) == objectType ||
-					typeRegistry.getType(org.flexpay.bti.persistence.Apartment.class) == objectType) {
+					typeRegistry.getType(BtiApartment.class) == objectType) {
 				return "apartment";
 			}
 			if (typeRegistry.getType(org.flexpay.ab.persistence.Person.class) == objectType) {

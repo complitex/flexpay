@@ -1,6 +1,6 @@
 package org.flexpay.bti.service.importexport;
 
-import org.flexpay.bti.persistence.BuildingAttributeConfig;
+import org.flexpay.bti.persistence.building.BuildingAttributeConfig;
 import org.flexpay.common.test.SpringBeanAwareTestCase;
 import org.flexpay.common.util.IntegerUtil;
 import static org.junit.Assert.assertEquals;

@@ -1,6 +1,6 @@
 package org.flexpay.bti.persistence.filters;
 
-import org.flexpay.bti.persistence.BuildingAttributeGroup;
+import org.flexpay.bti.persistence.building.BuildingAttributeGroup;
 import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
 
 import java.util.Collections;

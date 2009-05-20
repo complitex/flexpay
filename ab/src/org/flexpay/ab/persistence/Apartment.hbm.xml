@@ -5,24 +5,6 @@
 
 <hibernate-mapping package="org.flexpay.ab.persistence">
 
-	<class name="Apartment" table="ab_apartments_tbl">
-		<id name="id" column="id">
-			<generator class="native" />
-		</id>
-		<property name="status" not-null="true" />
-		<many-to-one name="building" class="Building" column="building_id"
-					 not-null="true" />
-
-		<set name="apartmentNumbers" inverse="true" cascade="all-delete-orphan">
-			<key column="apartment_id" not-null="true" />
-			<one-to-many class="ApartmentNumber" />
-		</set>
-		<set name="personRegistrations" inverse="true" lazy="false" cascade="all">
-			<key column="apartment_id" not-null="true" />
-			<one-to-many class="PersonRegistration" />
-		</set>
-	</class>
-
 	<class name="ApartmentNumber" table="ab_apartment_numbers_tbl">
 		<id name="id" column="id">
 			<generator class="native" />

@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+		"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<!-- Map all class hierarchy to single table -->
+<hibernate-mapping package="org.flexpay.ab.persistence">
+
+    <class name="Apartment" table="ab_apartments_tbl" discriminator-value="ab">
+
+        <comment>Apartments</comment>
+        <id name="id" column="id">
+            <generator class="native" />
+        </id>
+
+        <discriminator type="string">
+            <column name="apartment_type" not-null="true">
+                <comment>Class hierarchy descriminator, all apartments should have the same value</comment>
+            </column>
+        </discriminator>
+
+        <property name="status" not-null="true" />
+        <many-to-one name="building" class="Building" column="building_id" not-null="true" />
+
+        <set name="apartmentNumbers" inverse="true" cascade="all-delete-orphan">
+            <key column="apartment_id" not-null="true" />
+            <one-to-many class="ApartmentNumber" />
+        </set>
+        <set name="personRegistrations" inverse="true" lazy="false" cascade="all">
+            <key column="apartment_id" not-null="true" />
+            <one-to-many class="PersonRegistration" />
+        </set>
+    </class>
+
+</hibernate-mapping>

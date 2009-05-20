@@ -11,6 +11,7 @@ import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.orgs.persistence.filters.OrganizationFilter;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.beans.factory.annotation.Required;
 
 import java.util.Date;
 import java.util.List;
@@ -54,7 +55,9 @@ public class EircRegistryServiceImpl extends RegistryServiceImpl implements Eirc
 		return registries.get(0);
 	}
 
+	@Required
 	public void setRegistryDaoExt(EircRegistryDaoExt eircRegistryDaoExt) {
 		this.eircRegistryDaoExt = eircRegistryDaoExt;
 	}
+
 }

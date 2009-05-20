@@ -2,7 +2,7 @@ package org.flexpay.bti.service;
 
 import org.flexpay.ab.persistence.BuildingAddress;
 import org.flexpay.ab.persistence.Town;
-import org.flexpay.bti.persistence.BtiBuilding;
+import org.flexpay.bti.persistence.building.BtiBuilding;
 import org.flexpay.common.persistence.Stub;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -43,4 +43,5 @@ public interface BtiBuildingService {
 	 * @return BtiBuilding list in town
 	 */
 	List<BtiBuilding> findByTown(Stub<Town> town);
+
 }

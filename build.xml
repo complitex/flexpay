@@ -21,9 +21,9 @@
 	<!-- Build wars -->
 	<target name="build.wars">
 		<antcall target="sz.war.production.glassfish_mysql5" />
-                <antcall target="eirc.war.production.glassfish_mysql5" />
-                <antcall target="orgs.war.production.glassfish_mysql5" />
-                <antcall target="payments.war.production.glassfish_mysql5" />
+        <antcall target="eirc.war.production.glassfish_mysql5" />
+        <antcall target="orgs.war.production.glassfish_mysql5" />
+        <antcall target="payments.war.production.glassfish_mysql5" />
 		<antcall target="bti.war.production.glassfish_mysql5" />
 		<antcall target="tc.war.production.glassfish_mysql5" />
 		<antcall target="ab_sync.war.production.glassfish_mysql5" />
@@ -36,9 +36,9 @@
 		<antcall target="ab.exportschema.mysql5" />
 		<antcall target="ab_sync.exportschema.mysql5" />
 		<antcall target="bti.exportschema.mysql5" />
-                <antcall target="tc.exportschema.mysql5" />
-                <antcall target="orgs.exportschema.mysql5" />
-                <antcall target="payments.exportschema.mysql5" />
+        <antcall target="tc.exportschema.mysql5" />
+        <antcall target="orgs.exportschema.mysql5" />
+        <antcall target="payments.exportschema.mysql5" />
 		<antcall target="eirc.exportschema.mysql5" />
 		<antcall target="sz.exportschema.mysql5" />
 	</target>

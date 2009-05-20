@@ -1,7 +1,7 @@
 package org.flexpay.bti.service.impl;
 
 import org.flexpay.bti.dao.BuildingAttributeGroupDao;
-import org.flexpay.bti.persistence.BuildingAttributeGroup;
+import org.flexpay.bti.persistence.building.BuildingAttributeGroup;
 import org.flexpay.bti.persistence.filters.BuildingAttributeGroupFilter;
 import org.flexpay.bti.service.BuildingAttributeGroupService;
 import org.flexpay.common.dao.paging.Page;

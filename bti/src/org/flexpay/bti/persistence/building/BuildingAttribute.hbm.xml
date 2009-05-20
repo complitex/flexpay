@@ -1,0 +1,118 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="org.flexpay.bti.persistence">
+
+    <class name="org.flexpay.bti.persistence.building.BuildingAttributeBase" abstract="true" table="bti_building_attributes_tbl">
+        <comment>Building attributes</comment>
+        <id name="id" column="id">
+            <generator class="native"/>
+        </id>
+
+        <discriminator type="string">
+            <column name="discriminator" not-null="true">
+                <comment>Class hierarchy descriminator</comment>
+            </column>
+        </discriminator>
+
+        <many-to-one name="building" class="org.flexpay.bti.persistence.building.BtiBuilding"
+                     foreign-key="FK_bti_building_attributes_tbl_building_id">
+            <column name="building_id" not-null="true">
+                <comment>Building reference</comment>
+            </column>
+        </many-to-one>
+
+        <many-to-one name="attributeType" class="org.flexpay.bti.persistence.building.BuildingAttributeType"
+                     foreign-key="bti_building_attributes_tbl_attribute_type_id">
+            <column name="attribute_type_id" not-null="true">
+                <comment>Attribute type reference</comment>
+            </column>
+        </many-to-one>
+
+        <subclass name="org.flexpay.bti.persistence.building.BuildingAttribute" discriminator-value="normal">
+            <property name="value">
+                <column name="normal_attribute_value">
+                    <comment>Attribute value</comment>
+                </column>
+            </property>
+        </subclass>
+
+        <!-- map temp attributes to the same table -->
+        <subclass name="org.flexpay.bti.persistence.building.BuildingTempAttribute" discriminator-value="tmp">
+            <set name="values" inverse="true" cascade="all-delete-orphan">
+                <key column="attribute_id" not-null="true"/>
+                <one-to-many class="org.flexpay.bti.persistence.building.BuildingTempAttributeValue"/>
+            </set>
+        </subclass>
+
+    </class>
+
+    <class name="org.flexpay.bti.persistence.building.BuildingTempAttributeValue" table="bti_building_attribute_temp_values_tbl">
+        <comment>Temporal values for building attributes</comment>
+        <id name="id" column="id">
+            <generator class="native"/>
+        </id>
+        <property name="value">
+            <column name="attribute_value">
+                <comment>Attribute value</comment>
+            </column>
+        </property>
+        <property name="begin">
+            <column name="begin_date" not-null="true">
+                <comment>Value begin date</comment>
+            </column>
+        </property>
+        <property name="end">
+            <column name="end_date" not-null="true">
+                <comment>Value end date</comment>
+            </column>
+        </property>
+        <many-to-one name="attribute" class="org.flexpay.bti.persistence.building.BuildingTempAttribute"
+                     foreign-key="FK_bti_building_attribute_temp_values_tbl_attr_id">
+            <column name="attribute_id" not-null="true">
+                <comment>Temporal attribute reference</comment>
+            </column>
+        </many-to-one>
+    </class>
+
+    <query name="BuildingAttributeBase.findAttributes">
+        select distinct b
+        from BuildingAttributeBase b
+        where b.building.id = ?
+    </query>
+
+    <query name="BuildingAttributeBase.readSimpleAttributes">
+        select distinct a
+        from BuildingAttribute a
+        inner join fetch a.attributeType
+        where a.building.id=?
+    </query>
+
+    <query name="BuildingAttributeBase.readTmpAttributes">
+        select distinct a
+        from BuildingTempAttribute a
+        left join fetch a.values
+        inner join fetch a.attributeType
+        where a.building.id=?
+    </query>
+
+    <query name="BtiBuilding.find">
+        from BtiBuilding
+        where id=?
+    </query>
+
+    <query name="BtiBuilding.findByAddress">
+        select distinct b
+        from BtiBuilding b
+        left join b.buildingses addr
+        where addr.id=?
+    </query>
+
+    <query name="BtiBuilding.findByTown">
+        from BtiBuilding b
+        where b.district.parent.id = ?
+    </query>
+
+</hibernate-mapping>

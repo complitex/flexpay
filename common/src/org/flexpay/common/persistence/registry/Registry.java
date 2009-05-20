@@ -167,7 +167,6 @@ public class Registry extends DomainObject {
 		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
 				append("Registry {").
 				append("id", getId()).
-				append("registryType", registryType).
 				append("registryNumber", registryNumber).
 				append("recordsNumber", recordsNumber).
 				append("creationDate", creationDate).

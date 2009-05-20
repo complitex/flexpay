@@ -1,9 +1,9 @@
 package org.flexpay.bti.service;
 
 import org.flexpay.bti.dao.BuildingAttributeTypeDaoExt;
-import org.flexpay.bti.persistence.BuildingAttributeType;
-import org.flexpay.bti.persistence.BuildingAttributeTypeEnum;
-import org.flexpay.bti.persistence.BuildingAttributeTypeSimple;
+import org.flexpay.bti.persistence.building.BuildingAttributeType;
+import org.flexpay.bti.persistence.building.BuildingAttributeTypeEnum;
+import org.flexpay.bti.persistence.building.BuildingAttributeTypeSimple;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.test.SpringBeanAwareTestCase;

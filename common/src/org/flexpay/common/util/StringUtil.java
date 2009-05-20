@@ -72,7 +72,7 @@ public class StringUtil {
 			escaped = false;
 		}
 		if (escaped) {
-			throw new IllegalArgumentException("Not found final escaped simbol: " + str);
+			throw new IllegalArgumentException("Not found final escaped symbol: " + str);
 		}
 		if (buf.length() > 0 || haveFinalDelimiter) {
 			datum.add(buf.toString());

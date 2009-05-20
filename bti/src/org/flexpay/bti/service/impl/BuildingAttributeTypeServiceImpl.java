@@ -3,7 +3,7 @@ package org.flexpay.bti.service.impl;
 import org.apache.commons.lang.StringUtils;
 import org.flexpay.bti.dao.BuildingAttributeTypeDao;
 import org.flexpay.bti.dao.BuildingAttributeTypeDaoExt;
-import org.flexpay.bti.persistence.*;
+import org.flexpay.bti.persistence.building.*;
 import org.flexpay.bti.service.BuildingAttributeTypeService;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;

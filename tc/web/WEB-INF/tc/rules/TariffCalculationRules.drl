@@ -2,9 +2,9 @@ package org.flexpay.tc
 dialect "java" 
 
 import org.drools.WorkingMemory;
-import org.flexpay.bti.persistence.BtiBuilding;
-import org.flexpay.bti.persistence.BuildingAttributeBase;
-import org.flexpay.bti.persistence.BuildingAttributeConfig;
+import org.flexpay.bti.persistence.building.BtiBuilding;
+import org.flexpay.bti.persistence.building.BuildingAttributeBase;
+import org.flexpay.bti.persistence.building.BuildingAttributeConfig;
 import org.flexpay.bti.service.BuildingAttributeTypeService;
 import org.flexpay.tc.persistence.TariffCalculationResult;
 import org.flexpay.tc.persistence.TariffConfig;

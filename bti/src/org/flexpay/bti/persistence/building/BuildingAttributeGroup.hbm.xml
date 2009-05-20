@@ -1,0 +1,88 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+		"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<!-- Map all class hierarchy to single table -->
+<hibernate-mapping package="org.flexpay.bti.persistence">
+
+	<class name="org.flexpay.bti.persistence.building.BuildingAttributeGroup" table="bti_building_attribute_type_groups_tbl" optimistic-lock="version">
+
+		<comment>Building attribute type groups</comment>
+
+		<id name="id" column="id">
+			<generator class="native" />
+		</id>
+		<property name="version" access="field">
+			<column name="version" not-null="true">
+				<comment>Optimistic lock version</comment>
+			</column>
+		</property>
+		<property name="status">
+			<column name="status" not-null="true">
+				<comment>Enabled/disabled status</comment>
+			</column>
+		</property>
+
+		<set name="translations" inverse="true" cascade="all-delete-orphan">
+			<key column="group_id" not-null="true" />
+			<one-to-many class="org.flexpay.bti.persistence.building.BuildingAttributeGroupName" />
+		</set>
+
+	</class>
+
+	<class name="org.flexpay.bti.persistence.building.BuildingAttributeGroupName" table="bti_building_attribute_type_group_names_tbl">
+		<comment>Building attribute type translations</comment>
+		<id name="id" column="id">
+			<generator class="native" />
+		</id>
+
+		<property name="name">
+			<column name="name" not-null="true">
+				<comment>Translation value</comment>
+			</column>
+		</property>
+
+		<properties name="lang_building_attribute_type_group_pair" unique="true">
+
+			<many-to-one name="lang" class="org.flexpay.common.persistence.Language"
+						 foreign-key="FK_bti_building_attribute_type_names_tbl_language_id">
+				<column name="language_id" not-null="true">
+					<comment>Language reference</comment>
+				</column>
+			</many-to-one>
+
+			<many-to-one name="translatable" class="org.flexpay.bti.persistence.building.BuildingAttributeGroup"
+						 foreign-key="FK_bti_building_attribute_type_group_names_tbl_group_id">
+				<column name="group_id" not-null="true">
+					<comment>Building attribute type group reference</comment>
+				</column>
+			</many-to-one>
+		</properties>
+	</class>
+
+	<query name="BuildingAttributeGroup.readFull">
+		from BuildingAttributeGroup t
+			left join fetch t.translations
+		where t.status=0 and t.id=?
+	</query>
+
+	<query name="BuildingAttributeGroup.findAllGroups">
+		select distinct t
+		from BuildingAttributeGroup t
+			left join fetch t.translations
+		where t.status=0
+	</query>
+
+	<query name="BuildingAttributeGroup.findGroups.count">
+		select count(t)
+		from BuildingAttributeGroup t
+		where t.status=0
+	</query>
+
+	<query name="BuildingAttributeGroup.findGroups">
+		from BuildingAttributeGroup t
+		where t.status=0
+	</query>
+
+</hibernate-mapping>

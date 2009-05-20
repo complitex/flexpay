@@ -1,7 +1,7 @@
 package org.flexpay.bti.service;
 
 import org.flexpay.ab.persistence.BuildingAddress;
-import org.flexpay.bti.persistence.BtiBuilding;
+import org.flexpay.bti.persistence.building.BtiBuilding;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.test.SpringBeanAwareTestCase;
 import static org.junit.Assert.assertNotNull;

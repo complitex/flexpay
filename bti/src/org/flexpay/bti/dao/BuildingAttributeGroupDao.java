@@ -1,6 +1,6 @@
 package org.flexpay.bti.dao;
 
-import org.flexpay.bti.persistence.BuildingAttributeGroup;
+import org.flexpay.bti.persistence.building.BuildingAttributeGroup;
 import org.flexpay.common.dao.GenericDao;
 import org.flexpay.common.dao.paging.Page;
 
@@ -11,4 +11,5 @@ public interface BuildingAttributeGroupDao extends GenericDao<BuildingAttributeG
 	List<BuildingAttributeGroup> findGroups(Page<BuildingAttributeGroup> pager);
 
 	List<BuildingAttributeGroup> findAllGroups();
+
 }

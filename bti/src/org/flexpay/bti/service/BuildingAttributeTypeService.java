@@ -1,6 +1,6 @@
 package org.flexpay.bti.service;
 
-import org.flexpay.bti.persistence.BuildingAttributeType;
+import org.flexpay.bti.persistence.building.BuildingAttributeType;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Stub;

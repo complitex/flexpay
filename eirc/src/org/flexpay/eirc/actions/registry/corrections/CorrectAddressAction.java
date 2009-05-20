@@ -22,6 +22,7 @@ import org.flexpay.payments.service.ServiceTypeService;
 import org.flexpay.eirc.service.importexport.RawConsumerData;
 import org.flexpay.orgs.service.ServiceProviderService;
 import org.flexpay.orgs.persistence.ServiceProvider;
+import org.flexpay.bti.persistence.apartment.BtiApartment;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
@@ -144,7 +145,7 @@ public class CorrectAddressAction extends ApartmentsListAction {
 		ImportError error = record.getImportError();
 		return error != null &&
 			   (typeRegistry.getType(Apartment.class) == error.getObjectType() ||
-				typeRegistry.getType(org.flexpay.bti.persistence.Apartment.class) == error.getObjectType());
+				typeRegistry.getType(BtiApartment.class) == error.getObjectType());
 
 	}
 
