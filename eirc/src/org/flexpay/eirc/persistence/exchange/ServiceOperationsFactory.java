@@ -151,7 +151,6 @@ public class ServiceOperationsFactory {
 				return new SetTotalSquareOperation(this, datum);
 			case 6:
 				return new SetLiveSquareOperation(this, datum);
-/*
 			case 7:
 				return new SetWarmSquareOperation(datum);
 			case 8:
@@ -164,7 +163,6 @@ public class ServiceOperationsFactory {
 				return new SetPrivilegeApprovalDocumentOperation(datum);
 			case 12:
 				return new SetPrivilegePersonsNumberOperation(datum);
-*/
 			case 14:
 				return new OpenSubserviceAccountOperation(this, datum);
 

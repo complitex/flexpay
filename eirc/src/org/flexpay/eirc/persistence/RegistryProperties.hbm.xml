@@ -81,7 +81,7 @@
 
 		<subclass name="org.flexpay.eirc.persistence.EircRegistryRecordProperties" discriminator-value="common">
 			<many-to-one name="consumer" foreign-key="FK_common_registry_record_properties_tbl_consumer_id"
-						 class="org.flexpay.eirc.persistence.Consumer">
+						 class="org.flexpay.eirc.persistence.Consumer" lazy="false">
 				<column name="consumer_id" not-null="false">
 					<comment>Consumer reference</comment>
 				</column>
@@ -93,7 +93,7 @@
 				</column>
 			</many-to-one>
 			<many-to-one name="apartment" foreign-key="FK_common_registry_record_properties_tbl_apartment_id"
-						 class="org.flexpay.ab.persistence.Apartment">
+						 class="org.flexpay.ab.persistence.Apartment" lazy="false">
 				<column name="apartment_id" not-null="false">
 					<comment>Apartment reference</comment>
 				</column>

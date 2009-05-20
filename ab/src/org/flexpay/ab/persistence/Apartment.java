@@ -1,6 +1,8 @@
 package org.flexpay.ab.persistence;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
 import org.flexpay.ab.util.config.ApplicationConfig;
 import org.flexpay.common.persistence.DomainObjectWithStatus;
 import org.flexpay.common.persistence.Stub;
@@ -309,4 +311,14 @@ public class Apartment extends DomainObjectWithStatus {
 		number.setApartment(this);
 		apartmentNumbers.add(number);
 	}
+
+	@Override
+	public String toString() {
+		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
+				append("Apartment {").
+				append("id", getId()).
+				append("number", getNumber()).
+				append("}").toString();
+	}
+
 }

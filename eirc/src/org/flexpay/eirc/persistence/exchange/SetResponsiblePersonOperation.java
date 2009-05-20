@@ -55,14 +55,15 @@ public class SetResponsiblePersonOperation extends AbstractChangePersonalAccount
 		Consumer consumer = props.getConsumer();
 		ConsumerInfo info = consumer.getConsumerInfo();
 
-		List<String> fields = RegistryUtil.parseFIO(newValue);
-		String lName = fields.get(0);
-		String fName = fields.get(1);
-		String mName = fields.get(2);
+//		List<String> fields = RegistryUtil.parseFIO(newValue);
+		String lName = newValue;
+		String fName = "";
+		String mName = "";
 
 		info.setFirstName(fName);
 		info.setMiddleName(mName);
 		info.setLastName(lName);
+
 		factory.getConsumerInfoService().save(info);
 
 		log.debug("Updated consumer info first-middle-last names");
