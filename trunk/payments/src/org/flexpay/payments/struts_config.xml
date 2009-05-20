@@ -11,6 +11,14 @@
 			  	org/flexpay/orgs/i18n/errors,org/flexpay/orgs/i18n/messages,
 			  	org/flexpay/payments/i18n/errors,org/flexpay/payments/i18n/messages" />
 
+	<package name="payments_security" namespace="/payments" extends="common">
+
+		<action name="getIdentityCookies" class="staticPageAction">
+			<result type="tiles">payments.security.get_identity_cookie</result>
+		</action>
+		
+	</package>
+
 	<package name="payments" namespace="/payments" extends="common">
 
 		<interceptors>
@@ -63,7 +71,6 @@
         <action name="mainByQuittanceReports" class="paymentsStaticPageAction">
             <result type="tiles">payments.main.by_quittance.reports</result>
         </action>
-
 	</package>
 
 	<package name="ajax" namespace="dicts" extends="common">
