@@ -84,7 +84,7 @@ public class GeneratePaymentsMBRegistry {
     public void exportToMegaBank(@NotNull Registry registry, @NotNull File file, @NotNull Organization organization) throws FlexPayException {
         RegistryWriter rg = null;
         try {
-            rg = new RegistryWriter(file);
+            rg = new RegistryWriter(file, '|', RegistryWriter.NO_QUOTE_CHARACTER, RegistryWriter.NO_ESCAPE_CHARACTER);
 
             // служебные строки
             log.info("Writing service lines");
