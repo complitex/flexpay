@@ -120,4 +120,27 @@
         foreign key (apartment_id)
         references ab_apartments_tbl (id);
     
+select @ru_id:=1;
+select @en_id:=2;
+
+insert into bti_apartment_attribute_type_groups_tbl (version, status) values (0, 0);
+select @app_attribute_group_1:=last_insert_id();
+
+insert into bti_apartment_attribute_type_group_names_tbl (group_id, language_id, name) values
+	(@app_attribute_group_1, @ru_id, 'Другие'),
+    (@app_attribute_group_1, @en_id, 'Other');
+
+INSERT INTO bti_apartment_attribute_types_tbl (id, discriminator, group_id, unique_code, is_temporal) VALUES
+        (1, 'simple',@app_attribute_group_1,'ATTR_NUMBER_OF_HABITANTS', 0),
+		(2, 'simple',@app_attribute_group_1,'ATTR_TOTAL_SQUARE', 0),
+        (3, 'simple',@app_attribute_group_1,'ATTR_LIVE_SQUARE', 0);
+
+INSERT INTO bti_apartment_attribute_type_names_tbl (name, language_id, attribute_type_id) VALUES
+		('Habitans count',@en_id,1),
+		('Количество проживающих',@ru_id,1),
+		('Total square',@en_id,2),
+		('Общая площадь',@ru_id,2),
+        ('Live square',@en_id,3),
+        ('Жилая площадь',@ru_id,3);
+
 update common_version_tbl set last_modified_date='2009-05-20', date_version=1;
