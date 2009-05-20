@@ -5,7 +5,7 @@ import org.drools.RuleBaseFactory;
 import org.drools.WorkingMemory;
 import org.drools.compiler.DroolsParserException;
 import org.drools.compiler.PackageBuilder;
-import org.flexpay.bti.persistence.BtiBuilding;
+import org.flexpay.bti.persistence.building.BtiBuilding;
 import org.flexpay.bti.service.BtiBuildingService;
 import org.flexpay.bti.service.BuildingAttributeTypeService;
 import org.flexpay.common.exception.FlexPayException;

@@ -14,6 +14,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
@@ -135,19 +136,24 @@ public class RegistryServiceImpl implements RegistryService {
 		return registryDaoExt.findRegistries(objectIds);
 	}
 
+	@Required
 	public void setSpRegistryDao(RegistryDao registryDao) {
 		this.registryDao = registryDao;
 	}
 
+	@Required
 	public void setRegistryDaoExt(RegistryDaoExt registryDaoExt) {
 		this.registryDaoExt = registryDaoExt;
 	}
 
+	@Required
 	public void setSpRegistryRecordService(RegistryRecordService registryRecordService) {
 		this.registryRecordService = registryRecordService;
 	}
 
+	@Required
 	public void setRegistryContainerDao(RegistryContainerDao registryContainerDao) {
 		this.registryContainerDao = registryContainerDao;
 	}
+
 }

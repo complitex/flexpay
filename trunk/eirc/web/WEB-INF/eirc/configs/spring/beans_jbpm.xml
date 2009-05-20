@@ -7,25 +7,34 @@
 		   http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
 		   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
-	<bean name="fileParserJob" class="org.flexpay.eirc.process.registry.FileParserJob" scope="prototype"
+	<bean name="fileParserJob"
+          class="org.flexpay.eirc.process.registry.FileParserJob"
 		  p:parser-ref="registryFileParser"
-		  p:fpFileService-ref="fpFileService" />
+		  p:fpFileService-ref="fpFileService"
+          scope="prototype" />
 
-	<bean name="registryProcessJob" class="org.flexpay.eirc.process.registry.RegistryProcessJob" scope="prototype"
+	<bean name="registryProcessJob"
+          class="org.flexpay.eirc.process.registry.RegistryProcessJob"
 		  p:registryProcessor-ref="registryProcessor"
-		  p:registryService-ref="registryService" />
+		  p:registryService-ref="registryService"
+          scope="prototype" />
 
-	<bean name="registryRecordsProcessJob" class="org.flexpay.eirc.process.registry.RegistryRecordsProcessJob" scope="prototype"
+	<bean name="registryRecordsProcessJob"
+          class="org.flexpay.eirc.process.registry.RegistryRecordsProcessJob"
 		  p:registryProcessor-ref="registryProcessor"
-		  p:registryService-ref="registryService" />
+		  p:registryService-ref="registryService"
+          scope="prototype" />
 
-	<bean name="generateQuittancesPDFJob" scope="prototype"
+	<bean name="generateQuittancesPDFJob"
 		  class="org.flexpay.eirc.process.quittance.GenerateQuittancesPDFJasperJob"
 		  p:jrDataSource-ref="jrQuittanceDataSource"
 		  p:quittanceReporter-ref="quittanceReporter"
-		  p:reportUtil-ref="reportUtil" />
+		  p:reportUtil-ref="reportUtil"
+          scope="prototype" />
 
-	<bean name="generateQuittancesJob" class="org.flexpay.eirc.process.quittance.GenerateQuittanceJob" scope="prototype"
-		  p:quittanceService-ref="quittanceService" />
+	<bean name="generateQuittancesJob"
+          class="org.flexpay.eirc.process.quittance.GenerateQuittanceJob"
+		  p:quittanceService-ref="quittanceService"
+          scope="prototype" />
 
 </beans>

@@ -1,7 +1,7 @@
 package org.flexpay.bti.actions.buildings;
 
 import org.flexpay.ab.util.config.ApplicationConfig;
-import org.flexpay.bti.persistence.*;
+import org.flexpay.bti.persistence.building.*;
 import org.flexpay.bti.persistence.filters.BuildingAttributeGroupFilter;
 import org.flexpay.bti.service.BuildingAttributeGroupService;
 import org.flexpay.bti.service.BuildingAttributeTypeService;

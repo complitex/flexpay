@@ -38,11 +38,11 @@
 			<one-to-many class="Apartment" />
 		</set>
 
-		<subclass name="org.flexpay.bti.persistence.BtiBuilding" discriminator-value="bti">
+		<subclass name="org.flexpay.bti.persistence.building.BtiBuilding" discriminator-value="bti">
 
 			<set name="attributes" cascade="all-delete-orphan" inverse="true">
 				<key column="building_id" not-null="true" />
-				<one-to-many class="org.flexpay.bti.persistence.BuildingTempAttribute" />
+				<one-to-many class="org.flexpay.bti.persistence.building.BuildingTempAttribute" />
 			</set>
 
 			<subclass name="org.flexpay.eirc.persistence.ServedBuilding" discriminator-value="ab">

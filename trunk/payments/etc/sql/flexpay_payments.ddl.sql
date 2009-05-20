@@ -10,10 +10,11 @@
 
     create table ab_apartments_tbl (
         id bigint not null auto_increment,
+        apartment_type varchar(255) not null comment 'Class hierarchy descriminator, all apartments should have the same value',
         status integer not null,
         building_id bigint not null,
         primary key (id)
-    );
+    ) comment='Apartments';
 
     create table ab_building_address_attribute_type_translations_tbl (
         id bigint not null auto_increment,

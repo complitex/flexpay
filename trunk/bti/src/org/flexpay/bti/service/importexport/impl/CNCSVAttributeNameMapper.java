@@ -1,6 +1,6 @@
 package org.flexpay.bti.service.importexport.impl;
 
-import static org.flexpay.bti.persistence.BuildingAttributeConfig.*;
+import static org.flexpay.bti.persistence.building.BuildingAttributeConfig.*;
 import org.flexpay.bti.service.importexport.AttributeNameMapper;
 import org.flexpay.common.util.CollectionUtils;
 import org.slf4j.Logger;
@@ -64,11 +64,11 @@ public class CNCSVAttributeNameMapper implements AttributeNameMapper {
 			ATTR_TOTAL_SQUARE_WITH_WATER_PUMPS,
 			// 25 Y кол-во квартир гостинничного типа
 			ATTR_HOTEL_TYPE_APARTMENTS_NUMBER,
-			// 26 Z площадь крови (мягкая)
+			// 26 Z площадь кровли (мягкая)
 			ATTR_SOFT_ROOF_SQUARE,
-			// 27 AA площадь крови (шифер)
+			// 27 AA площадь кровли (шифер)
 			ATTR_HARD_SLATE_ROOF_SQUARE,
-			// 28 AB площадь крови (металлическая)
+			// 28 AB площадь кровли (металлическая)
 			ATTR_HARD_METAL_ROOF_SQUARE,
 			// 29 AC площадь подвалов
 			ATTR_BASEMENT_SQUARE,

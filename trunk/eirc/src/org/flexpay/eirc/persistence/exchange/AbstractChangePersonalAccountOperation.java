@@ -14,8 +14,7 @@ public abstract class AbstractChangePersonalAccountOperation extends ContainerOp
 	protected String newValue;
 	protected Date changeApplyingDate;
 
-	protected AbstractChangePersonalAccountOperation(List<String> datum)
-			throws InvalidContainerException {
+	protected AbstractChangePersonalAccountOperation(List<String> datum) throws InvalidContainerException {
 
 		super(Integer.valueOf(datum.get(0)));
 		if (datum.size() < 2) {
@@ -48,4 +47,5 @@ public abstract class AbstractChangePersonalAccountOperation extends ContainerOp
 			newValue = datum.get(3);
 		}
 	}
+
 }

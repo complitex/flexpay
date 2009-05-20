@@ -25,7 +25,7 @@ public class RegistryUtil {
 		}
 
 		List<String> fields = StringUtil.splitEscapable(
-				fioStr, Operation.FIO_DELIMITER, Operation.ESCAPE_SIMBOL);
+				fioStr, Operation.FIO_DELIMITER, Operation.ESCAPE_SYMBOL);
 		if (fields.size() != 3) {
 			throw new RegistryFormatException(
 					String.format("FIO group '%s' has invalid number of fields %d",

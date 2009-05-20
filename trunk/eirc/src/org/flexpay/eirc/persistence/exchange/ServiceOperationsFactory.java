@@ -23,11 +23,15 @@ import org.flexpay.orgs.service.ServiceProviderService;
 import org.flexpay.orgs.persistence.ServiceProvider;
 import org.flexpay.payments.service.SPService;
 import org.springframework.beans.factory.annotation.Required;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ServiceOperationsFactory {
+
+	protected Logger log = LoggerFactory.getLogger(getClass());
 
 	private RegistryFileService registryFileService;
 	private SPService spService;
@@ -123,6 +127,10 @@ public class ServiceOperationsFactory {
 		}
 
 		Integer containerType = Integer.valueOf(datum.get(0));
+		log.info("-----------------------------");
+		log.info("containerType = {}", containerType);
+		log.info("containerData = {}", containerData);
+		log.info("-----------------------------");
 		switch (containerType) {
 			case 1:
 				return new OpenAccountOperation(this, datum);
@@ -133,12 +141,12 @@ public class ServiceOperationsFactory {
 				return new CloseAccountOperation(this, datum);
 			case 3:
 				return new SetResponsiblePersonOperation(this, datum);
-//			case 4:
-//				return new SetNumberOfHabitantsOperation(datum);
-//			case 5:
-//				return new SetTotalSquareOperation(datum);
-//			case 6:
-//				return new SetLiveSquareOperation(datum);
+			case 4:
+				return new SetNumberOfHabitantsOperation(this, datum);
+			case 5:
+				return new SetTotalSquareOperation(this, datum);
+			case 6:
+				return new SetLiveSquareOperation(this, datum);
 //			case 7:
 //				return new SetWarmSquareOperation(datum);
 //			case 8:
@@ -167,15 +175,14 @@ public class ServiceOperationsFactory {
 	}
 
 	/**
-	 * Split string with delimiter taking in account {@link Operation#ESCAPE_SIMBOL}
+	 * Split string with delimiter taking in account {@link Operation#ESCAPE_SYMBOL}
 	 *
 	 * @param containers Containers data
-	 * @param delimiter  Delimiter simbol
+	 * @param delimiter  Delimiter symbol
 	 * @return List of separate containers
 	 */
 	private List<String> splitEscapableData(String containers, char delimiter) {
-
-		return StringUtil.splitEscapable(containers, delimiter, Operation.ESCAPE_SIMBOL);
+		return StringUtil.splitEscapable(containers, delimiter, Operation.ESCAPE_SYMBOL);
 	}
 
 	public ImportError addImportError(Registry registry, RegistryRecord record,
@@ -338,4 +345,5 @@ public class ServiceOperationsFactory {
 	public void setServiceProviderService(ServiceProviderService serviceProviderService) {
 		this.serviceProviderService = serviceProviderService;
 	}
+
 }

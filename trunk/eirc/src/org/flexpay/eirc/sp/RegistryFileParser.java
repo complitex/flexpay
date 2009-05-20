@@ -151,7 +151,7 @@ public class RegistryFileParser {
 		}
 
 		List<String> messageFieldList = StringUtil.splitEscapable(
-				messageValue, Operation.RECORD_DELIMITER, Operation.ESCAPE_SIMBOL);
+				messageValue, Operation.RECORD_DELIMITER, Operation.ESCAPE_SYMBOL);
 
 		log.debug("Message fields: {}", messageFieldList);
 
@@ -307,7 +307,7 @@ public class RegistryFileParser {
 			String addressStr = messageFieldList.get(++n);
 			if (StringUtils.isNotEmpty(addressStr)) {
 				List<String> addressFieldList = StringUtil.splitEscapable(
-						addressStr, Operation.ADDRESS_DELIMITER, Operation.ESCAPE_SIMBOL);
+						addressStr, Operation.ADDRESS_DELIMITER, Operation.ESCAPE_SYMBOL);
 
 				if (addressFieldList.size() != 6) {
 					throw new RegistryFormatException(
@@ -370,7 +370,7 @@ public class RegistryFileParser {
 			throws RegistryFormatException {
 
 		List<String> containers = StringUtil.splitEscapable(
-				containersData, Operation.CONTAINER_DELIMITER, Operation.ESCAPE_SIMBOL);
+				containersData, Operation.CONTAINER_DELIMITER, Operation.ESCAPE_SYMBOL);
 		List<RegistryRecordContainer> result = new ArrayList<RegistryRecordContainer>(containers.size());
 		int n = 0;
 		for (String data : containers) {
@@ -394,7 +394,7 @@ public class RegistryFileParser {
 			throws RegistryFormatException {
 
 		List<String> containers = StringUtil.splitEscapable(
-				containersData, Operation.CONTAINER_DELIMITER, Operation.ESCAPE_SIMBOL);
+				containersData, Operation.CONTAINER_DELIMITER, Operation.ESCAPE_SYMBOL);
 		List<RegistryContainer> result = new ArrayList<RegistryContainer>(containers.size());
 		int n = 0;
 		for (String data : containers) {

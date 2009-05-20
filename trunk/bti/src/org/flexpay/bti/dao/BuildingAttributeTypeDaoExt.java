@@ -1,6 +1,6 @@
 package org.flexpay.bti.dao;
 
-import org.flexpay.bti.persistence.BuildingAttributeType;
+import org.flexpay.bti.persistence.building.BuildingAttributeType;
 
 public interface BuildingAttributeTypeDaoExt {
 

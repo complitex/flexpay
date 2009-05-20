@@ -37,10 +37,15 @@
 		<mapping resource="org/flexpay/ab/persistence/IdentityType.hbm.xml" />
 		<mapping resource="org/flexpay/ab/persistence/Person.hbm.xml" />
 
-		<mapping resource="org/flexpay/bti/persistence/BuildingBase.hbm.xml" />
-		<mapping resource="org/flexpay/bti/persistence/BuildingAttribute.hbm.xml" />
-		<mapping resource="org/flexpay/bti/persistence/BuildingAttributeType.hbm.xml" />
-		<mapping resource="org/flexpay/bti/persistence/BuildingAttributeGroup.hbm.xml" />
+        <mapping resource="org/flexpay/bti/persistence/apartment/ApartmentBase.hbm.xml" />
+        <mapping resource="org/flexpay/bti/persistence/apartment/ApartmentAttribute.hbm.xml" />
+        <mapping resource="org/flexpay/bti/persistence/apartment/ApartmentAttributeType.hbm.xml" />
+        <mapping resource="org/flexpay/bti/persistence/apartment/ApartmentAttributeGroup.hbm.xml" />
+
+		<mapping resource="org/flexpay/bti/persistence/building/BuildingBase.hbm.xml" />
+		<mapping resource="org/flexpay/bti/persistence/building/BuildingAttribute.hbm.xml" />
+		<mapping resource="org/flexpay/bti/persistence/building/BuildingAttributeType.hbm.xml" />
+		<mapping resource="org/flexpay/bti/persistence/building/BuildingAttributeGroup.hbm.xml" />
 
 		<mapping resource="org/flexpay/tc/persistence/Tariff.hbm.xml" />
 

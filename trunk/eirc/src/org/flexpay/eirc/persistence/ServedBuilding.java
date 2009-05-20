@@ -1,6 +1,6 @@
 package org.flexpay.eirc.persistence;
 
-import org.flexpay.bti.persistence.BtiBuilding;
+import org.flexpay.bti.persistence.building.BtiBuilding;
 import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.orgs.persistence.ServiceOrganization;

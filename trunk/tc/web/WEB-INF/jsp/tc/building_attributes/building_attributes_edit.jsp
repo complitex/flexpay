@@ -1,6 +1,6 @@
 
-<%@ page import="org.flexpay.bti.persistence.BuildingAttributeTypeSimple" %>
-<%@ page import="org.flexpay.bti.persistence.BuildingAttributeTypeEnum" %>
+<%@ page import="org.flexpay.bti.persistence.building.BuildingAttributeTypeSimple" %>
+<%@ page import="org.flexpay.bti.persistence.building.BuildingAttributeTypeEnum" %>
 <%@include file="/WEB-INF/jsp/common/taglibs.jsp" %>
 
 <%@include file="/WEB-INF/jsp/common/includes/jquery_ui.jsp"%>

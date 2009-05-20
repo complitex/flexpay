@@ -159,7 +159,7 @@ public class MbRegistryFileParser extends MbFileParser<Registry> {
 
 		RegistryRecordContainer container = new RegistryRecordContainer();
 		container.setOrder(0);
-		container.setData("100::0:" + fields[2] +":::" + fields[1] + ":::");
+		container.setData("100::0:" + fields[2] +":::" + fields[1] + "::::");
 		container.setRecord(record);
 		containers.add(container);
 

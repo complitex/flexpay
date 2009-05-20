@@ -1,0 +1,106 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="org.flexpay.bti.persistence.apartment">
+
+    <class name="ApartmentAttributeBase" abstract="true" table="bti_apartment_attributes_tbl">
+        <comment>Apartment attributes</comment>
+        <id name="id" column="id">
+            <generator class="native"/>
+        </id>
+
+        <discriminator type="string">
+            <column name="discriminator" not-null="true">
+                <comment>Class hierarchy descriminator</comment>
+            </column>
+        </discriminator>
+
+        <many-to-one name="apartment" class="BtiApartment"
+                     foreign-key="FK_bti_apartment_attributes_tbl_apartment_id">
+            <column name="apartment_id" not-null="true">
+                <comment>Apartment reference</comment>
+            </column>
+        </many-to-one>
+
+        <many-to-one name="attributeType" class="ApartmentAttributeType"
+                     foreign-key="bti_apartment_attributes_tbl_attribute_type_id">
+            <column name="attribute_type_id" not-null="true">
+                <comment>Attribute type reference</comment>
+            </column>
+        </many-to-one>
+
+        <subclass name="ApartmentAttribute" discriminator-value="normal">
+            <property name="value">
+                <column name="normal_attribute_value">
+                    <comment>Attribute value</comment>
+                </column>
+            </property>
+        </subclass>
+
+        <!-- map temp attributes to the same table -->
+        <subclass name="ApartmentTempAttribute" discriminator-value="tmp">
+            <set name="values" inverse="true" cascade="all-delete-orphan">
+                <key column="attribute_id" not-null="true"/>
+                <one-to-many class="ApartmentTempAttributeValue"/>
+            </set>
+        </subclass>
+
+    </class>
+
+    <class name="ApartmentTempAttributeValue" table="bti_apartment_attribute_temp_values_tbl">
+        <comment>Temporal values for apartment attributes</comment>
+        <id name="id" column="id">
+            <generator class="native"/>
+        </id>
+        <property name="value">
+            <column name="attribute_value">
+                <comment>Attribute value</comment>
+            </column>
+        </property>
+        <property name="begin">
+            <column name="begin_date" not-null="true">
+                <comment>Value begin date</comment>
+            </column>
+        </property>
+        <property name="end">
+            <column name="end_date" not-null="true">
+                <comment>Value end date</comment>
+            </column>
+        </property>
+        <many-to-one name="attribute" class="ApartmentTempAttribute"
+                     foreign-key="FK_bti_apartment_attribute_temp_values_tbl_attr_id">
+            <column name="attribute_id" not-null="true">
+                <comment>Temporal attribute reference</comment>
+            </column>
+        </many-to-one>
+    </class>
+
+    <query name="ApartmentAttributeBase.findAttributes">
+        select distinct b
+        from ApartmentAttributeBase b
+        where b.apartment.id = ?
+    </query>
+
+    <query name="ApartmentAttributeBase.readSimpleAttributes">
+        select distinct a
+        from ApartmentAttribute a
+        inner join fetch a.attributeType
+        where a.apartment.id=?
+    </query>
+
+    <query name="ApartmentAttributeBase.readTmpAttributes">
+        select distinct a
+        from ApartmentTempAttribute a
+        left join fetch a.values
+        inner join fetch a.attributeType
+        where a.apartment.id=?
+    </query>
+
+    <query name="BtiApartment.find">
+        from BtiApartment
+        where id=?
+    </query>
+
+</hibernate-mapping>

@@ -4,7 +4,7 @@ import org.apache.commons.lang.StringUtils;
 import org.flexpay.ab.persistence.BuildingAddress;
 import org.flexpay.ab.service.AddressService;
 import org.flexpay.ab.service.BuildingService;
-import org.flexpay.bti.persistence.*;
+import org.flexpay.bti.persistence.building.*;
 import org.flexpay.bti.service.BtiBuildingService;
 import org.flexpay.bti.service.BuildingAttributeGroupService;
 import org.flexpay.bti.service.BuildingAttributeTypeService;

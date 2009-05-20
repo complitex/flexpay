@@ -3,9 +3,9 @@ package org.flexpay.bti.dao.impl;
 import org.flexpay.bti.dao.BuildingAttributeTypeDao;
 import org.flexpay.bti.dao.BuildingAttributeTypeDaoExt;
 import org.flexpay.bti.dao.BuildingAttributeTypeEnumDao;
-import org.flexpay.bti.persistence.BuildingAttributeType;
-import org.flexpay.bti.persistence.BuildingAttributeTypeEnum;
-import org.flexpay.bti.persistence.BuildingAttributeTypeEnumValue;
+import org.flexpay.bti.persistence.building.BuildingAttributeType;
+import org.flexpay.bti.persistence.building.BuildingAttributeTypeEnum;
+import org.flexpay.bti.persistence.building.BuildingAttributeTypeEnumValue;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 

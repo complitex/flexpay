@@ -107,7 +107,9 @@
 		  class="org.flexpay.common.service.imp.RegistryServiceImpl"
 		  p:spRegistryDao-ref="spRegistryDao"
 		  p:spRegistryRecordService-ref="registryRecordService"
-		  p:registryContainerDao-ref="registryContainerDao" />
+		  p:registryContainerDao-ref="registryContainerDao"
+          p:registryDaoExt-ref="registryDaoExt"
+            />
 
 	<bean class="org.flexpay.common.service.internal.SessionUtils"
 		  id="sessionUtils"

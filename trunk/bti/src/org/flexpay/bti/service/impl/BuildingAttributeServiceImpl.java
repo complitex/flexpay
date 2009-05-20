@@ -1,8 +1,8 @@
 package org.flexpay.bti.service.impl;
 
 import org.flexpay.bti.dao.BtiBuildingDaoExt;
-import org.flexpay.bti.persistence.BtiBuilding;
-import org.flexpay.bti.persistence.BuildingAttributeBase;
+import org.flexpay.bti.persistence.building.BtiBuilding;
+import org.flexpay.bti.persistence.building.BuildingAttributeBase;
 import org.flexpay.bti.service.BuildingAttributeService;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.persistence.Stub;
@@ -33,7 +33,7 @@ public class BuildingAttributeServiceImpl implements BuildingAttributeService {
 	}
 
 	public List<BuildingAttributeBase> listAttributes(@NotNull Stub<BtiBuilding> stub) {
-		BtiBuilding building = buildingDaoExt.readBuildinWithAttributes(stub.getId());
+		BtiBuilding building = buildingDaoExt.readBuildingWithAttributes(stub.getId());
 		return CollectionUtils.list(building.getAttributes());
 	}
 

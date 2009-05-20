@@ -1,6 +1,6 @@
 package org.flexpay.bti.service;
 
-import org.flexpay.bti.persistence.BuildingAttributeGroup;
+import org.flexpay.bti.persistence.building.BuildingAttributeGroup;
 import org.flexpay.bti.persistence.filters.BuildingAttributeGroupFilter;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.persistence.Stub;
@@ -44,4 +44,5 @@ public interface BuildingAttributeGroupService {
 	 */
 	@NotNull
 	BuildingAttributeGroupFilter initFilter(@NotNull BuildingAttributeGroupFilter filter);
+
 }

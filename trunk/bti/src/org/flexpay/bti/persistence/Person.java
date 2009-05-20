@@ -3,6 +3,7 @@ package org.flexpay.bti.persistence;
 import org.flexpay.ab.persistence.PersonAttribute;
 import org.flexpay.ab.persistence.PersonIdentity;
 import org.flexpay.common.persistence.DomainObjectWithStatus;
+import org.flexpay.bti.persistence.apartment.BtiApartment;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -13,7 +14,7 @@ import java.util.Set;
  */
 public class Person extends DomainObjectWithStatus {
 
-	private Apartment apartment;
+	private BtiApartment apartment;
 	private Set<Personact> personacts = new HashSet<Personact>(0);
 	private Set<PersonAttribute> personAttributes = new HashSet<PersonAttribute>(0);
 	private Set<PersonIdentity> personIdentities = Collections.emptySet();
