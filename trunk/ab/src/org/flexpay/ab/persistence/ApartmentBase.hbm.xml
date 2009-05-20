@@ -19,8 +19,17 @@
             </column>
         </discriminator>
 
-        <property name="status" not-null="true" />
-        <many-to-one name="building" class="Building" column="building_id" not-null="true" />
+        <property name="status">
+            <column name="status" not-null="true">
+                <comment>Enabled/Disabled status</comment>
+            </column>
+        </property>
+
+        <many-to-one name="building" foreign-key="ab_apartments_tbl_building_id" class="Building">
+            <column name="building_id" not-null="true">
+                <comment>Building reference</comment>
+            </column>
+        </many-to-one>
 
         <set name="apartmentNumbers" inverse="true" cascade="all-delete-orphan">
             <key column="apartment_id" not-null="true" />

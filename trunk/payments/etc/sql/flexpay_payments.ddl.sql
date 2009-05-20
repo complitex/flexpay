@@ -11,8 +11,8 @@
     create table ab_apartments_tbl (
         id bigint not null auto_increment,
         apartment_type varchar(255) not null comment 'Class hierarchy descriminator, all apartments should have the same value',
-        status integer not null,
-        building_id bigint not null,
+        status integer not null comment 'Enabled/Disabled status',
+        building_id bigint not null comment 'Building reference',
         primary key (id)
     ) comment='Apartments';
 
@@ -62,6 +62,7 @@
     create table ab_buildings_tbl (
         id bigint not null auto_increment,
         building_type varchar(255) not null comment 'Class hierarchy descriminator, all buildings should have the same value',
+        status integer not null comment 'Enabled/Disabled status',
         district_id bigint not null comment 'District reference',
         primary key (id)
     ) comment='Buildings';
@@ -1055,8 +1056,8 @@
         references ab_apartments_tbl (id);
 
     alter table ab_apartments_tbl 
-        add index FKBEC651DEF71F858D (building_id), 
-        add constraint FKBEC651DEF71F858D 
+        add index ab_apartments_tbl_building_id (building_id), 
+        add constraint ab_apartments_tbl_building_id 
         foreign key (building_id) 
         references ab_buildings_tbl (id);
 

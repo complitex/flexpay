@@ -19,6 +19,12 @@
 			</column>
 		</discriminator>
 
+        <property name="status">
+            <column name="status" not-null="true">
+                <comment>Enabled/Disabled status</comment>
+            </column>
+        </property>
+
 		<many-to-one name="district" foreign-key="ab_buildings_tbl_district_id" class="District">
 			<column name="district_id" not-null="true">
 				<comment>District reference</comment>
@@ -29,12 +35,10 @@
 			<key column="building_id" not-null="true" />
 			<one-to-many class="org.flexpay.ab.persistence.BuildingAddress" />
 		</set>
-
 		<set name="buildingStatuses" inverse="true">
 			<key column="building_id" not-null="true" />
 			<one-to-many class="BuildingStatus" />
 		</set>
-
 		<set name="apartments" inverse="true">
 			<key column="building_id" not-null="true" />
 			<one-to-many class="Apartment" />

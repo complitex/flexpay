@@ -143,4 +143,9 @@ INSERT INTO bti_apartment_attribute_type_names_tbl (name, language_id, attribute
         ('Live square',@en_id,3),
         ('Жилая площадь',@ru_id,3);
 
+alter table bti_apartment_attributes_tbl
+  drop index FK57FCB66B8A068EAC,
+  drop foreign key FK57FCB66B8A068EAC,
+  drop column building_id;
+
 update common_version_tbl set last_modified_date='2009-05-20', date_version=1;

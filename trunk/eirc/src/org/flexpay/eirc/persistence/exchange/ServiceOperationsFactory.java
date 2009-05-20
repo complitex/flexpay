@@ -22,6 +22,8 @@ import org.flexpay.orgs.service.OrganizationService;
 import org.flexpay.orgs.service.ServiceProviderService;
 import org.flexpay.orgs.persistence.ServiceProvider;
 import org.flexpay.payments.service.SPService;
+import org.flexpay.bti.service.BtiApartmentService;
+import org.flexpay.bti.service.ApartmentAttributeTypeService;
 import org.springframework.beans.factory.annotation.Required;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,6 +45,8 @@ public class ServiceOperationsFactory {
 	private ServiceProviderService serviceProviderService;
 	private ReportPeriodService reportPeriodService;
 	private CorrectionsService correctionsService;
+	private BtiApartmentService btiApartmentService;
+	private ApartmentAttributeTypeService apartmentAttributeTypeService;
 
 	private ConditionsFactory conditionsFactory;
 
@@ -147,18 +151,20 @@ public class ServiceOperationsFactory {
 				return new SetTotalSquareOperation(this, datum);
 			case 6:
 				return new SetLiveSquareOperation(this, datum);
-//			case 7:
-//				return new SetWarmSquareOperation(datum);
-//			case 8:
-//				return new SetPrivilegeTypeOperation(datum);
-//			case 9:
-//				return new SetPrivilegeOwnerOperation(datum);
-//			case 10:
-//				return new SetPrivilegePersonOperation(datum);
-//			case 11:
-//				return new SetPrivilegeApprovalDocumentOperation(datum);
-//			case 12:
-//				return new SetPrivilegePersonsNumberOperation(datum);
+/*
+			case 7:
+				return new SetWarmSquareOperation(datum);
+			case 8:
+				return new SetPrivilegeTypeOperation(datum);
+			case 9:
+				return new SetPrivilegeOwnerOperation(datum);
+			case 10:
+				return new SetPrivilegePersonOperation(datum);
+			case 11:
+				return new SetPrivilegeApprovalDocumentOperation(datum);
+			case 12:
+				return new SetPrivilegePersonsNumberOperation(datum);
+*/
 			case 14:
 				return new OpenSubserviceAccountOperation(this, datum);
 
@@ -344,6 +350,24 @@ public class ServiceOperationsFactory {
 	@Required
 	public void setServiceProviderService(ServiceProviderService serviceProviderService) {
 		this.serviceProviderService = serviceProviderService;
+	}
+
+	public BtiApartmentService getBtiApartmentService() {
+		return btiApartmentService;
+	}
+
+	@Required
+	public void setBtiApartmentService(BtiApartmentService btiApartmentService) {
+		this.btiApartmentService = btiApartmentService;
+	}
+
+	public ApartmentAttributeTypeService getApartmentAttributeTypeService() {
+		return apartmentAttributeTypeService;
+	}
+
+	@Required
+	public void setApartmentAttributeTypeService(ApartmentAttributeTypeService apartmentAttributeTypeService) {
+		this.apartmentAttributeTypeService = apartmentAttributeTypeService;
 	}
 
 }
