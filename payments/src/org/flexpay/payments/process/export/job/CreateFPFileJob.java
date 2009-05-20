@@ -24,7 +24,7 @@ public class CreateFPFileJob extends Job {
             FPFileUtil.createEmptyFile(fpFile);
 
             fpFileService.create(fpFile);
-            parameters.put("FileId", fpFile.getId());
+            parameters.put("File", fpFile);
             log.info("File created {}", fpFile);
         } catch (Exception e) {
             log.error("Unknown file type", e);

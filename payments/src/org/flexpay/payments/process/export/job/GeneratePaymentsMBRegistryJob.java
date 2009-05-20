@@ -22,25 +22,54 @@ public class GeneratePaymentsMBRegistryJob extends Job {
     private RegistryService registryService;
 
     public String execute(Map<Serializable, Serializable> parameters) throws FlexPayException {
-        Long fileId = (Long) parameters.get("FileId");
-        Long organizationId = (Long) parameters.get("OrganizationId");
-        Long registryId = (Long) parameters.get("RegistryId");
-
-        FPFile spFile = fpFileService.read(new Stub<FPFile>(fileId));
+        FPFile spFile = null;
+        if (parameters.containsKey("File")) {
+            Object o = parameters.get("File");
+            if (o instanceof FPFile) {
+                spFile = (FPFile) o;
+            } else {
+                log.warn("Invalid file`s instance class");
+            }
+        } else if (parameters.containsKey("FileId")) {
+            Long fileId = (Long) parameters.get("FileId");
+            spFile = fpFileService.read(new Stub<FPFile>(fileId));
+        }
         if (spFile == null) {
-            log.warn("Invalid File Id");
+            log.warn("Did not find file in job parameters");
             return RESULT_ERROR;
         }
 
-        Organization organization = organizationService.readFull(new Stub<Organization>(organizationId));
+        Organization organization = null;
+        if (parameters.containsKey("Organization")) {
+            Object o = parameters.get("Organization");
+            if (o instanceof Organization) {
+                organization = (Organization) o;
+            } else {
+                log.warn("Invalid organization`s instance class");
+            }
+        } else if (parameters.containsKey("OrganizationId")) {
+            Long organizationId = (Long) parameters.get("OrganizationId");
+            organization = organizationService.readFull(new Stub<Organization>(organizationId));
+        }
         if (organization == null) {
-            log.warn("Invalid Organization Id");
+            log.warn("Did not find organization in job parameters");
             return RESULT_ERROR;
         }
 
-        Registry registry = registryService.read(new Stub<Registry>(registryId));
+        Registry registry = null;
+        if (parameters.containsKey("Registry")) {
+            Object o = parameters.get("Registry");
+            if (o instanceof Registry) {
+                registry = (Registry) o;
+            } else {
+                log.warn("Invalid registry`s instance class");
+            }
+        } else if (parameters.containsKey("RegistryId")) {
+            Long registryId = (Long) parameters.get("RegistryId");
+            registry = registryService.read(new Stub<Registry>(registryId));
+        }
         if (registry == null) {
-            log.warn("Invalid Registry Id");
+            log.warn("Did not find registry in job parameters");
             return RESULT_ERROR;
         }
         File file = spFile.getFile();
