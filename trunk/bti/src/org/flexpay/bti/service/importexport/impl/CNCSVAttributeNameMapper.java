@@ -295,4 +295,5 @@ public class CNCSVAttributeNameMapper implements AttributeNameMapper {
 
 		return attributeNames.get(n);
 	}
+
 }

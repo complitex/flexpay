@@ -41,7 +41,7 @@
 			alert("'<s:text name="error.building_is_not_selected"/>'");
 			return false;
 		}
-		//validate appartment
+		//validate apartment
 		if ($("#selected_apartment_id").val().length == 0) {
 			alert("'<s:text name="error.apartment_is_not_selected"/>'");
 			return false;

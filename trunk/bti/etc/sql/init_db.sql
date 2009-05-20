@@ -1,6 +1,27 @@
 INSERT INTO common_flexpay_modules_tbl (name) VALUES ('bti');
 SELECT @module_bti:=last_insert_id();
 
+-- init apartment attribute groups
+insert into bti_apartment_attribute_type_groups_tbl (version, status) values (0, 0);
+select @app_attribute_group_1:=last_insert_id();
+
+insert into bti_apartment_attribute_type_group_names_tbl (group_id, language_id, name) values
+	(@app_attribute_group_1, @ru_id, 'Другие'),
+    (@app_attribute_group_1, @en_id, 'Other');
+
+INSERT INTO bti_apartment_attribute_types_tbl (id, discriminator, group_id, unique_code, is_temporal) VALUES
+        (1, 'simple',@app_attribute_group_1,'ATTR_NUMBER_OF_HABITANTS', 0),
+		(2, 'simple',@app_attribute_group_1,'ATTR_TOTAL_SQUARE', 0),
+        (3, 'simple',@app_attribute_group_1,'ATTR_LIVE_SQUARE', 0);
+
+INSERT INTO bti_apartment_attribute_type_names_tbl (name, language_id, attribute_type_id) VALUES
+		('Habitans count',@en_id,1),
+		('Количество проживающих',@ru_id,1),
+		('Total square',@en_id,2),
+		('Общая площадь',@ru_id,2),
+        ('Live square',@en_id,3),
+        ('Жилая площадь',@ru_id,3);
+
 -- init building attribute groups
 insert into bti_building_attribute_type_groups_tbl (version, status) values (0, 0);
 select @attribute_group_1:=last_insert_id();
@@ -163,7 +184,7 @@ INSERT INTO bti_building_attribute_type_names_tbl (id, name, language_id, attrib
 		(70,'Количество квартир со скрытой электропроводкой ',@ru_id,49),
 		(71,'Количество квартир с открытой электропроводкой ',@ru_id,50);
 
-INSERT INTO bti_building_attribute_type_enum_values_tbl (id, order_value, value , attribute_type_enum_id) VALUES
+INSERT INTO bti_building_attribute_type_enum_values_tbl (id, order_value, value, attribute_type_enum_id) VALUES
 (7,296,'№163',9),(8,295,'эксперим.',9),(9,294,'эксперем.',9),(10,293,'экспер',9),
 (11,292,'часть частного дома',9),(12,291,'смеш.',9),(13,290,'пан',9),(14,289,'к-23',9),(15,288,'к',9),(16,269,'П57-10А',9),(17,268,'П57-03/9',9),
 (18,271,'П57011-10А',9),(19,270,'П57-70А/9',9),(20,265,'П57-03',9),(21,264,'П57',9),(22,267,'П57-03/3',9),(23,266,'П57-03/12',9),(24,261,'П120/1-10А',9),
@@ -211,4 +232,3 @@ INSERT INTO bti_building_attribute_type_enum_values_tbl (id, order_value, value 
 (312,8,'асбест.',44),(313,7,'асбест',44),(314,6,'99',44),(315,5,'66',44),(316,4,'54',44),(317,3,'5',44),(318,2,'280',44),(319,1,'231',44),(320,14,'пласт',44),
 (321,15,'пласт.',44),(322,17,'пластм',44),(323,16,'пластик',44),(324,19,'плат',44),(325,18,'пластмас',44),(326,21,'поастм.',44),(327,20,'плсатм.',44),(328,23,'сталь',44),
 (329,22,'сталева',44),(330,25,'чав/плас',44),(331,24,'ч\\п',44),(332,4,'чавун',45),(333,3,'закрытая',45),(334,2,'відкрита',45),(335,1,'135',45);
-

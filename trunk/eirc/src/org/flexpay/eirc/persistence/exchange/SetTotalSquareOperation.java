@@ -30,8 +30,8 @@ public class SetTotalSquareOperation extends AbstractChangePersonalAccountOperat
 	public void process(Registry registry, RegistryRecord record) throws FlexPayException {
 
 		EircRegistryRecordProperties props = (EircRegistryRecordProperties) record.getProperties();
-		if (props.getConsumer() == null) {
-			throw new FlexPayException("Consumer was not set up, cannot change FIO");
+		if (props.getApartmentStub() == null) {
+			throw new FlexPayException("Apartment was not set up, cannot change total square parameter");
 		}
 
 /*
