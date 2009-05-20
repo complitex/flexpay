@@ -7,6 +7,8 @@ import org.flexpay.common.util.DateUtil;
 import org.flexpay.common.util.config.ApplicationConfig;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
 
 import java.util.Collections;
 import java.util.Date;
@@ -125,5 +127,15 @@ public class BtiApartment extends Apartment {
 
         attributes.remove(attribute);
     }
+
+	@Override
+	public String toString() {
+		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
+				append("BtiApartment {").
+				append("id", getId()).
+				append("number", getNumber()).
+				append("attributes", getAttributes()).
+				append("}").toString();
+	}
 
 }

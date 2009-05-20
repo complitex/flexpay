@@ -48,7 +48,6 @@ public class SetTotalSquareOperation extends AbstractChangePersonalAccountOperat
 		btiApartment.setNormalAttribute(attributeType, newValue);
 
 		factory.getBtiApartmentService().updateAttributes(btiApartment);
-
 	}
 
 }
