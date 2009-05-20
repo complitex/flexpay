@@ -74,7 +74,12 @@
 	<bean id="generatePaymentsDBRegistry"
 		  class="org.flexpay.payments.process.export.util.GeneratePaymentsDBRegistry"
 		  p:operationService-ref="operationService"
-		  p:registryArchiveStatusService-ref="registryArchiveStatusService" />
+		  p:registryArchiveStatusService-ref="registryArchiveStatusService"
+          p:registryRecordService-ref="registryRecordService"
+          p:registryService-ref="registryService"
+          p:registryStatusService-ref="registryStatusService"
+          p:registryTypeService-ref="registryTypeService"
+            />
 
 	<bean id="generatePaymentsMBRegistry"
 		  class="org.flexpay.payments.process.export.util.GeneratePaymentsMBRegistry"
