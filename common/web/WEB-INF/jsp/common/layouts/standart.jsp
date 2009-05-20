@@ -21,6 +21,7 @@
 	<script type="text/javascript" src="<s:url value="/resources/common/js/jquery/jquery-ui/development-bundle/ui/i18n" includeParams="none" />/ui.datepicker-<s:if test="%{#session.WW_TRANS_I18N_LOCALE != null}"><s:text name="%{#session.WW_TRANS_I18N_LOCALE}" /></s:if><s:else>ru</s:else>.js"></script>
 	<script type="text/javascript" src="<s:url value="/resources/common/js/jquery/timeentry/jquery.timeentry.js" includeParams="none"/>"></script>
 	<script type="text/javascript" src="<s:url value="/resources/common/js/jquery/timeentry" includeParams="none"/>/jquery.timeentry<s:if test="%{#session.WW_TRANS_I18N_LOCALE != null}">-<s:text name="%{#session.WW_TRANS_I18N_LOCALE}" /></s:if><s:else>-ru</s:else>.js"></script>
+	<script type="text/javascript" src="<s:url value="/resources/common/js/jquery/cookies/jquery.cookies.js" includeParams="none"/>"></script>
 
 	<script type="text/javascript" src="<s:url value="/resources/common/js/flexpay_common.js" includeParams="none" />"></script>
     <script type="text/javascript">FP.base = "<s:url value="/" includeParams="none" />";</script>
