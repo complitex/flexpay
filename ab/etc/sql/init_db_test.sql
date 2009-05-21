@@ -1754,7 +1754,7 @@ INSERT INTO ab_building_address_attribute_type_translations_tbl (name, short_nam
 	VALUES ('Part', 'p', @attr_type_part_id, @en_id);
 
 -- Init Buildings
-INSERT INTO ab_buildings_tbl (id, building_type, district_id) VALUES (1, 'ab', @district_id_nsk_sovetskiy);
+INSERT INTO ab_buildings_tbl (id, status, building_type, district_id) VALUES (1, 0, 'ab', @district_id_nsk_sovetskiy);
 SELECT @building_ivanova_27_id:=1;
 INSERT INTO ab_building_addresses_tbl (id, status, primary_status, street_id, building_id)
 	VALUES (1, 0, b'1', @street_id_ivanova, @building_ivanova_27_id);

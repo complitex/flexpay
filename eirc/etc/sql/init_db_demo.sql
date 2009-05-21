@@ -48,7 +48,7 @@ INSERT INTO ab_street_types_temporal_tbl (street_id, street_type_id, begin_date,
 INSERT INTO ab_streets_districts_tbl (street_id, district_id) VALUES (@street_id_aptekarskiy_viaduk, @district_id_kharkov_central);
 
 
-INSERT INTO ab_buildings_tbl (building_type, district_id) VALUES ('ab', @district_id_kharkov_central);
+INSERT INTO ab_buildings_tbl (status, building_type, district_id) VALUES (0, 'ab', @district_id_kharkov_central);
 SELECT @building_id:=last_insert_id();
 INSERT INTO ab_building_addresses_tbl (status, primary_status, street_id, building_id)
 	VALUES (0, b'1', @street_id_aptekarskiy_per, @building_id);
@@ -95,7 +95,7 @@ INSERT INTO ab_apartment_numbers_tbl (begin_date, end_date, value, apartment_id)
 
 
 
-INSERT INTO ab_buildings_tbl (building_type, district_id) VALUES ('ab', @district_id_kharkov_central);
+INSERT INTO ab_buildings_tbl (status, building_type, district_id) VALUES (0, 'ab', @district_id_kharkov_central);
 SELECT @building_id:=last_insert_id();
 INSERT INTO ab_building_addresses_tbl (status, primary_status, street_id, building_id)
 	VALUES (0, b'1', @street_id_aptekarskiy_per, @building_id);
@@ -111,7 +111,7 @@ INSERT INTO ab_apartment_numbers_tbl (begin_date, end_date, value, apartment_id)
 	VALUES ('1900-01-01', '2100-12-31', '17', @apartment_id);
 
 
-INSERT INTO ab_buildings_tbl (building_type, district_id) VALUES ('ab', @district_id_kharkov_central);
+INSERT INTO ab_buildings_tbl (status, building_type, district_id) VALUES (0, 'ab', @district_id_kharkov_central);
 SELECT @building_id:=last_insert_id();
 INSERT INTO ab_building_addresses_tbl (status, primary_status, street_id, building_id)
 	VALUES (0, b'1', @street_id_aptekarskiy_viaduk, @building_id);
