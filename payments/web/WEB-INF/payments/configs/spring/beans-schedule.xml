@@ -4,6 +4,14 @@
        xmlns:p="http://www.springframework.org/schema/p"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
 
+    <bean id="processManagerPayments" parent="processManager" autowire-candidate="false">
+		<property name="definitionPaths">
+			<list merge="true">
+				<value>WEB-INF/payments/process</value>
+			</list>
+		</property>
+	</bean>
+
     <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
 		<property name="locations">
             <list>
@@ -19,7 +27,7 @@
         <property name="jobClass" value="org.flexpay.payments.process.export.GeneratePaymentsRegistry"/>
         <property name="jobDataAsMap">
             <map>
-                <entry key="processManager" value-ref="processManager"/>
+                <entry key="processManager" value-ref="processManagerPayments"/>
                 <entry key="providerService" value-ref="serviceProviderService"/>
                 <entry key="serviceProviderAttributeService" value-ref="serviceProviderServiceAttributeTarget"/>
                 <entry key="providerId" value="1"/>
