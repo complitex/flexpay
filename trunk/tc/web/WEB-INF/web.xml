@@ -107,6 +107,15 @@
 	</servlet-mapping>
 
 	<servlet>
+		<servlet-name>fileDownloadServlet</servlet-name>
+		<servlet-class>org.flexpay.common.actions.FileDownloadServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>fileDownloadServlet</servlet-name>
+		<url-pattern>/download/*</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
 		<servlet-name>rulesFileDownloadServlet</servlet-name>
 		<servlet-class>org.flexpay.tc.actions.tariff.TariffCalcRulesFileDownloadServlet</servlet-class>
 	</servlet>

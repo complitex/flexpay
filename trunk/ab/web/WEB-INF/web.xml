@@ -94,6 +94,15 @@
 	</filter-mapping>
 
 	<servlet>
+		<servlet-name>fileDownloadServlet</servlet-name>
+		<servlet-class>org.flexpay.common.actions.FileDownloadServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>fileDownloadServlet</servlet-name>
+		<url-pattern>/download/*</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
 		<servlet-name>spring-ws</servlet-name>
 		<servlet-class>org.springframework.ws.transport.http.MessageDispatcherServlet</servlet-class>
 		<load-on-startup>1</load-on-startup>

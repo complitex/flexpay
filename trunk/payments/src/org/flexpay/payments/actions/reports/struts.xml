@@ -22,13 +22,13 @@
 		</action>
 
 		<action name="paymentOperationReportAction" class="paymentOperationReportAction">
+			<interceptor-ref name="commonDefaultStack" />
 			<result name="success" type="tiles">payments.report.paymentOperationReportAction</result>
-			<result name="file" type="stream">
-				<param name="contentType">text/pdf</param>
-				<param name="inputName">inputStream</param>
-				<param name="contentLength">${file.size}</param>
-				<param name="contentDisposition">filename="${file.originalName}"</param>
-				<param name="bufferSize">1024</param>
+			<result name="file" type="redirect-action">
+				<param name="actionName">print</param>
+				<param name="namespace">/common</param>
+				<param name="parse">true</param>
+				<param name="file.id">${report.id}</param>
 			</result>
 		</action>
 

@@ -1,29 +1,28 @@
 package org.flexpay.payments.actions.quittance;
 
+import org.apache.commons.lang.StringUtils;
 import org.flexpay.common.actions.FPActionSupport;
-import org.flexpay.common.util.SecurityUtil;
-import org.flexpay.common.util.CollectionUtils;
-import org.flexpay.common.util.DateUtil;
-import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.exception.FlexPayException;
+import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.util.CollectionUtils;
+import org.flexpay.common.util.SecurityUtil;
+import org.flexpay.orgs.persistence.Organization;
+import org.flexpay.orgs.persistence.PaymentPoint;
+import org.flexpay.orgs.persistence.ServiceProvider;
+import org.flexpay.orgs.service.OrganizationService;
+import org.flexpay.orgs.service.PaymentPointService;
+import org.flexpay.orgs.service.ServiceProviderService;
+import org.flexpay.payments.actions.PaymentPointAwareAction;
 import org.flexpay.payments.persistence.*;
 import org.flexpay.payments.persistence.quittance.QuittanceDetailsResponse;
 import org.flexpay.payments.service.*;
 import org.flexpay.payments.util.ServiceFullIndexUtil;
-import org.flexpay.payments.actions.PaymentPointAwareAction;
-import org.flexpay.orgs.persistence.Organization;
-import org.flexpay.orgs.persistence.ServiceProvider;
-import org.flexpay.orgs.persistence.PaymentPoint;
-import org.flexpay.orgs.service.OrganizationService;
-import org.flexpay.orgs.service.ServiceProviderService;
-import org.flexpay.orgs.service.PaymentPointService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
-import org.apache.commons.lang.StringUtils;
 
 import java.math.BigDecimal;
-import java.util.Map;
 import java.util.Date;
+import java.util.Map;
 
 public class QuittancePayAction extends FPActionSupport implements PaymentPointAwareAction {
 
@@ -54,57 +53,62 @@ public class QuittancePayAction extends FPActionSupport implements PaymentPointA
 
 	private Long paymentPointId;
 
+	private Operation operation = new Operation();
+
 	@NotNull
 	protected String doExecute() throws Exception {
 
-		Operation operation = createOperation();
+		operation = createOperation();
 		operationService.save(operation);
 		return REDIRECT_SUCCESS;
 	}
 
 	private Operation createOperation() throws FlexPayException {
 
-		Operation operation = buildOperation();
+		Operation op = buildOperation();
 		for (String serviceIndx : payments.keySet()) {
 
 			Document document = buildDocument(serviceIndx);
 
-			if (StringUtils.isEmpty(operation.getAddress())) {
-				operation.setAddress(document.getAddress());
-				operation.setPayerFIO(document.getPayerFIO());
+			if (StringUtils.isEmpty(op.getAddress())) {
+				op.setAddress(document.getAddress());
+				op.setPayerFIO(document.getPayerFIO());
 			}
 
 			if (document.getSumm().compareTo(BigDecimal.ZERO) > 0) {
-				operation.addDocument(document);
+				op.addDocument(document);
 			}
 		}
 
-		return operation;
+		return op;
 	}
 
 	private Organization getSelfOrganization() {
 
 		PaymentPoint paymentPoint = paymentPointService.read(new Stub<PaymentPoint>(paymentPointId));
+		if (paymentPoint == null) {
+			throw new IllegalStateException("Invalid payment point id: " + paymentPointId);
+		}
 		Long organizationId = paymentPoint.getCollector().getOrganization().getId();
 		return organizationService.readFull(new Stub<Organization>(organizationId));
 	}
 
 	private Operation buildOperation() throws FlexPayException {
 
-		Operation operation = new Operation();
-		operation.setOperationSumm(totalToPay);
-		operation.setOperationInputSumm(inputSumm);
-		operation.setChange(changeSumm);
-		operation.setCreationDate(new Date());
-		operation.setRegisterDate(new Date());
-		operation.setCreatorOrganization(getSelfOrganization());
-		operation.setRegisterOrganization(getSelfOrganization());
-		operation.setCreatorUserName(SecurityUtil.getUserName());
-		operation.setRegisterUserName(SecurityUtil.getUserName());
-		operation.setOperationStatus(operationStatusService.read(OperationStatus.REGISTERED));
-		operation.setOperationLevel(operationLevelService.read(OperationLevel.AVERAGE));
-		operation.setOperationType(operationTypeService.read(OperationType.SERVICE_CASH_PAYMENT));
-		return operation;
+		Operation op = new Operation();
+		op.setOperationSumm(totalToPay);
+		op.setOperationInputSumm(inputSumm);
+		op.setChange(changeSumm);
+		op.setCreationDate(new Date());
+		op.setRegisterDate(new Date());
+		op.setCreatorOrganization(getSelfOrganization());
+		op.setRegisterOrganization(getSelfOrganization());
+		op.setCreatorUserName(SecurityUtil.getUserName());
+		op.setRegisterUserName(SecurityUtil.getUserName());
+		op.setOperationStatus(operationStatusService.read(OperationStatus.REGISTERED));
+		op.setOperationLevel(operationLevelService.read(OperationLevel.AVERAGE));
+		op.setOperationType(operationTypeService.read(OperationType.SERVICE_CASH_PAYMENT));
+		return op;
 	}
 
 	private Document buildDocument(String serviceFullIndx) throws FlexPayException {
@@ -268,12 +272,16 @@ public class QuittancePayAction extends FPActionSupport implements PaymentPointA
 	public void setServiceProviderService(ServiceProviderService serviceProviderService) {
 		this.serviceProviderService = serviceProviderService;
 	}
-		
+
 	public Long getPaymentPointId() {
 		return paymentPointId;
 	}
 
 	public void setPaymentPointId(Long paymentPointId) {
 		this.paymentPointId = paymentPointId;
+	}
+
+	public Operation getOperation() {
+		return operation;
 	}
 }

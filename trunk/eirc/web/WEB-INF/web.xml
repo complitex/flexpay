@@ -128,6 +128,15 @@
 	</servlet-mapping>
 
 	<servlet>
+		<servlet-name>fileDownloadServlet</servlet-name>
+		<servlet-class>org.flexpay.common.actions.FileDownloadServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>fileDownloadServlet</servlet-name>
+		<url-pattern>/download/*</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
 		<servlet-name>spFileDownloadServlet</servlet-name>
 		<servlet-class>org.flexpay.eirc.actions.SpFileDownloadServlet</servlet-class>
 	</servlet>

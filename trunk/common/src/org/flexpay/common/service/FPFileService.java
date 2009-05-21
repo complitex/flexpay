@@ -75,9 +75,8 @@ public interface FPFileService {
 	 *
 	 * @param stub stub of FPFile entity
 	 * @return Loaded FPFile
-	 * @throws FlexPayException if failure occurs
 	 */
-	FPFile read(@NotNull Stub<FPFile> stub) throws FlexPayException;
+	FPFile read(@NotNull Stub<FPFile> stub);
 
 	/**
 	 * Get file from file system by FPFile entity id,

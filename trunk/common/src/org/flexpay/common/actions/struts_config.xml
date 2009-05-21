@@ -14,6 +14,14 @@
 			<result>/WEB-INF/jsp/common/user_prefs.jsp</result>
 		</action>
 
+		<action name="updateUserPrefs" class="org.flexpay.common.actions.UserPreferencesUpdateAction">
+			<result>/WEB-INF/jsp/common/user_prefs.jsp</result>
+		</action>
+
+		<action name="print" class="printAction">
+			<result>/WEB-INF/jsp/common/printing/container.jsp</result>
+		</action>
+
 	</package>
 
 </struts>

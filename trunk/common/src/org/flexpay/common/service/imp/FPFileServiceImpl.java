@@ -127,9 +127,8 @@ public class FPFileServiceImpl implements FPFileService {
 	 *
 	 * @param stub stub of FPFile entity
 	 * @return Loaded FPFile
-	 * @throws FlexPayException
 	 */
-	public FPFile read(@NotNull Stub<FPFile> stub) throws FlexPayException {
+	public FPFile read(@NotNull Stub<FPFile> stub) {
 		FPFile file = fpFileDao.readFull(stub.getId());
 		if (file == null) {
 			log.warn("No user with file id {} in database", stub.getId());
