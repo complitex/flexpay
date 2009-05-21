@@ -11,7 +11,7 @@
 
 
 	<start-state name="start">
-		<transition to="buildingAttributesImportJob" />
+		<transition to="createFPFileJob" />
 	</start-state>
 
 	<task-node name="createFPFileJob">
