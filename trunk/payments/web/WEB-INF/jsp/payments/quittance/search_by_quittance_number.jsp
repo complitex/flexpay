@@ -3,6 +3,15 @@
 
 <script type="text/javascript">
 
+	$(function() {
+		$('#quittanceNumber').focus();
+		$('#quittanceNumber').change(function() {
+			var quittanceNumber = ($('#quittanceNumber').val()).split(';')[0];
+			$('#quittanceNumber').val(quittanceNumber);
+		});
+	});
+		
+
 	function enableSearchButton() {
 		$("#searchBtn").attr("disabled", false);
 	}
@@ -52,7 +61,7 @@
 	<table cellpadding="3" cellspacing="1" border="0" width="100%">
 		<tr>
 			<td><s:text name="payments.quittance.number" />:</td>
-			<td><s:textfield id="quittanceNumber" name="quittanceNumber" cssStyle="width: 300px;" /></td>
+			<td><s:textfield id="quittanceNumber" name="quittanceNumber" cssStyle="width: 300px;"/></td>
 			<td><input id="searchBtn" type="button" value="<s:text name="common.search" />" class="btn-exit"
 					   onclick="doSearch();" /></td>
 		</tr>
