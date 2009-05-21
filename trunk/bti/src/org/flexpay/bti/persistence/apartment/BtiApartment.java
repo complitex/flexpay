@@ -134,7 +134,6 @@ public class BtiApartment extends Apartment {
 				append("BtiApartment {").
 				append("id", getId()).
 				append("number", getNumber()).
-				append("attributes", getAttributes()).
 				append("}").toString();
 	}
 
