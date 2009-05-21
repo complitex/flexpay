@@ -10,8 +10,4 @@ public interface BtiApartmentDaoExt {
 
 	BtiApartment readApartmentWithAttributes(Long apartmentId);
 
-	BtiApartment readApartmentWithAttributesByAddress(Long addressId);
-
-	List<BtiApartment> findByTown(Stub<Town> town);
-
 }

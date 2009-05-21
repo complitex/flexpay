@@ -1,7 +1,6 @@
 package org.flexpay.bti.service.impl;
 
 import org.flexpay.ab.dao.ApartmentDao;
-import org.flexpay.ab.persistence.Town;
 import org.flexpay.bti.dao.BtiApartmentDaoExt;
 import org.flexpay.bti.persistence.apartment.BtiApartment;
 import org.flexpay.bti.service.BtiApartmentService;
@@ -9,8 +8,6 @@ import org.flexpay.common.persistence.Stub;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Transactional (readOnly = true)
 public class BtiApartmentServiceImpl implements BtiApartmentService {
@@ -39,16 +36,6 @@ public class BtiApartmentServiceImpl implements BtiApartmentService {
 		apartmentDao.update(apartment);
 
 		return apartment;
-	}
-
-	/**
-	 * Find all BtiApartment in the town
-	 *
-	 * @param town town to search
-	 * @return BtiApartment list in town
-	 */
-	public List<BtiApartment> findByTown(Stub<Town> town) {
-		return btiApartmentDaoExt.findByTown(town);
 	}
 
 	@Required

@@ -21,12 +21,6 @@ public class BtiApartmentDaoExtImpl extends HibernateDaoSupport implements BtiAp
         return setupAttributes(building);
     }
 
-    public BtiApartment readApartmentWithAttributesByAddress(Long addressId) {
-        BtiApartment building = (BtiApartment) DataAccessUtils.uniqueResult(getHibernateTemplate()
-                .findByNamedQuery("BtiApartment.findByAddress", addressId));
-        return setupAttributes(building);
-    }
-
     private BtiApartment setupAttributes(BtiApartment apartment) {
 
         if (apartment == null) {
@@ -58,15 +52,5 @@ public class BtiApartmentDaoExtImpl extends HibernateDaoSupport implements BtiAp
             apartment.addAttribute(attribute);
         }
     }
-
-    /**
-     * Find all BtiApartment in the town
-     *
-     * @param town town to search
-     * @return BtiApartment list in town
-     */
-    public List<BtiApartment> findByTown(Stub<Town> town) {
-        return (List<BtiApartment>) getHibernateTemplate().findByNamedQuery("BtiApartment.findByTown", town.getId());
-	}
 
 }

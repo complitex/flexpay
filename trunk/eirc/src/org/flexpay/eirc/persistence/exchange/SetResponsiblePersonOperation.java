@@ -1,14 +1,17 @@
 package org.flexpay.eirc.persistence.exchange;
 
 import org.apache.commons.lang.StringUtils;
+import org.flexpay.ab.persistence.Apartment;
 import org.flexpay.ab.persistence.Person;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.DataCorrection;
 import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.persistence.ImportError;
-import org.flexpay.common.persistence.registry.RegistryRecord;
+import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.registry.Registry;
+import org.flexpay.common.persistence.registry.RegistryRecord;
+import org.flexpay.common.persistence.registry.RegistryRecordProperties;
 import org.flexpay.common.service.importexport.CorrectionsService;
 import org.flexpay.eirc.dao.importexport.RawConsumersDataUtil;
 import org.flexpay.eirc.persistence.*;
@@ -17,7 +20,6 @@ import org.flexpay.eirc.service.ConsumerService;
 import org.flexpay.eirc.service.EircAccountService;
 import org.flexpay.eirc.service.importexport.ImportUtil;
 import org.flexpay.eirc.service.importexport.RawConsumerData;
-import org.flexpay.eirc.sp.RegistryUtil;
 import org.flexpay.orgs.persistence.ServiceProvider;
 
 import java.util.List;
@@ -46,7 +48,7 @@ public class SetResponsiblePersonOperation extends AbstractChangePersonalAccount
 	 */
 	public void process(Registry registry, RegistryRecord record) throws FlexPayException {
 
-		EircRegistryRecordProperties props = (EircRegistryRecordProperties) record.getProperties();
+		EircRegistryRecordProperties props = factory.getEircRegistryRecordPropertiesService().find(new Stub<RegistryRecordProperties>(record.getProperties().getId()));
 		if (props.getConsumer() == null) {
 			throw new FlexPayException("Consumer was not set up, cannot change FIO");
 		}
@@ -138,8 +140,8 @@ public class SetResponsiblePersonOperation extends AbstractChangePersonalAccount
 	private Person findResponsiblePerson(RegistryRecord record, String fName, String mName, String lName) {
 		ImportUtil importUtil = factory.getImportUtil();
 		ImportError error = new ImportError();
-		EircRegistryRecordProperties props = (EircRegistryRecordProperties) record.getProperties();
-		Person person = importUtil.findPersonByFIO(props.getApartmentStub(),
+		EircRegistryRecordProperties props = factory.getEircRegistryRecordPropertiesService().find(new Stub<RegistryRecordProperties>(record.getProperties().getId()));
+		Person person = importUtil.findPersonByFIO(new Stub<Apartment>(props.getConsumer().getApartment().getId()),
 				fName, mName, lName, error);
 		if (error.getErrorId() != null) {
 			log.warn("Responsible person not found {}", error.getErrorId());
@@ -169,12 +171,12 @@ public class SetResponsiblePersonOperation extends AbstractChangePersonalAccount
 		RawConsumerData dataOld = RawConsumersDataUtil.convert(record);
 		RawConsumerData data = RawConsumersDataUtil.convert(record);
 
-		List<String> fields = RegistryUtil.parseFIO(newValue);
+//		List<String> fields = RegistryUtil.parseFIO(newValue);
 
 		// setup fio
-		data.addNameValuePair(RawConsumerData.FIELD_FIRST_NAME, fields.get(1));
-		data.addNameValuePair(RawConsumerData.FIELD_MIDDLE_NAME, fields.get(2));
-		data.addNameValuePair(RawConsumerData.FIELD_LAST_NAME, fields.get(0));
+		data.addNameValuePair(RawConsumerData.FIELD_FIRST_NAME, "");
+		data.addNameValuePair(RawConsumerData.FIELD_MIDDLE_NAME, "");
+		data.addNameValuePair(RawConsumerData.FIELD_LAST_NAME, newValue);
 
 		CorrectionsService service = factory.getCorrectionsService();
 		for (Consumer consumer : account.getConsumers()) {
@@ -213,4 +215,5 @@ public class SetResponsiblePersonOperation extends AbstractChangePersonalAccount
 	private void setServiceCode(RawConsumerData data, String serviceCode) {
 		data.addNameValuePair(RawConsumerData.FIELD_SERVICE_CODE, serviceCode);
 	}
+
 }

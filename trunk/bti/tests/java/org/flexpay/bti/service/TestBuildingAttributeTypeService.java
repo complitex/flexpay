@@ -50,6 +50,7 @@ public class TestBuildingAttributeTypeService extends SpringBeanAwareTestCase {
 		assertTrue("Enum type is empty", enumType.getValues().size() > 0);
 	}
 
+	@Test
 	public void testFindType() {
 
 		assertNotNull("Section number attribute not found", attributeTypeService.findTypeByName("Номер участка"));

@@ -11,6 +11,7 @@ import org.flexpay.common.util.CollectionUtils;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Required;
 
 import java.util.List;
 
@@ -71,7 +72,9 @@ public class ImportUtil {
 		return null;
 	}
 
+	@Required
 	public void setPersonService(PersonService personService) {
 		this.personService = personService;
 	}
+
 }

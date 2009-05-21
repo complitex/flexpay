@@ -150,7 +150,7 @@
         object_type integer not null,
         ext_object_id varchar(255) not null,
         handler_object_name varchar(255) not null,
-        error_key varchar(255),
+        error_key varchar(4000),
         primary key (id)
     );
 

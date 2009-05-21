@@ -81,7 +81,7 @@
 
 		<subclass name="org.flexpay.eirc.persistence.EircRegistryRecordProperties" discriminator-value="common">
 			<many-to-one name="consumer" foreign-key="FK_common_registry_record_properties_tbl_consumer_id"
-						 class="org.flexpay.eirc.persistence.Consumer" lazy="false">
+						 class="org.flexpay.eirc.persistence.Consumer">
 				<column name="consumer_id" not-null="false">
 					<comment>Consumer reference</comment>
 				</column>
@@ -93,7 +93,7 @@
 				</column>
 			</many-to-one>
 			<many-to-one name="apartment" foreign-key="FK_common_registry_record_properties_tbl_apartment_id"
-						 class="org.flexpay.ab.persistence.Apartment" lazy="false">
+						 class="org.flexpay.ab.persistence.Apartment">
 				<column name="apartment_id" not-null="false">
 					<comment>Apartment reference</comment>
 				</column>
@@ -106,5 +106,16 @@
 			</many-to-one>
 		</subclass>
 	</class>
+
+    <query name="EircRegistryRecordProperties.find"><![CDATA[
+        select distinct errp
+        from EircRegistryRecordProperties errp
+            left join fetch errp.consumer c
+            left join fetch c.apartment a
+            left join fetch errp.person
+            left join fetch errp.apartment
+            left join fetch errp.service
+        where errp.id=?
+    ]]></query>
 
 </hibernate-mapping>

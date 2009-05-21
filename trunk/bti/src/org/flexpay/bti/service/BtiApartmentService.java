@@ -1,12 +1,9 @@
 package org.flexpay.bti.service;
 
-import org.flexpay.ab.persistence.Town;
 import org.flexpay.bti.persistence.apartment.BtiApartment;
 import org.flexpay.common.persistence.Stub;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.List;
 
 public interface BtiApartmentService {
 
@@ -26,13 +23,5 @@ public interface BtiApartmentService {
 	 * @return apartment back
 	 */
 	BtiApartment updateAttributes(@NotNull BtiApartment apartment);
-
-	/**
-	 * Find all BtiApartment in the town
-	 * 
-	 * @param town town to search
-	 * @return BtiApartment list in town
-	 */
-	List<BtiApartment> findByTown(Stub<Town> town);
 
 }
