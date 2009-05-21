@@ -47,6 +47,7 @@ public class ServiceOperationsFactory {
 	private CorrectionsService correctionsService;
 	private BtiApartmentService btiApartmentService;
 	private ApartmentAttributeTypeService apartmentAttributeTypeService;
+	private EircRegistryRecordPropertiesService eircRegistryRecordPropertiesService;
 
 	private ConditionsFactory conditionsFactory;
 
@@ -131,10 +132,6 @@ public class ServiceOperationsFactory {
 		}
 
 		Integer containerType = Integer.valueOf(datum.get(0));
-		log.info("-----------------------------");
-		log.info("containerType = {}", containerType);
-		log.info("containerData = {}", containerData);
-		log.info("-----------------------------");
 		switch (containerType) {
 			case 1:
 				return new OpenAccountOperation(this, datum);
@@ -366,6 +363,15 @@ public class ServiceOperationsFactory {
 	@Required
 	public void setApartmentAttributeTypeService(ApartmentAttributeTypeService apartmentAttributeTypeService) {
 		this.apartmentAttributeTypeService = apartmentAttributeTypeService;
+	}
+
+	public EircRegistryRecordPropertiesService getEircRegistryRecordPropertiesService() {
+		return eircRegistryRecordPropertiesService;
+	}
+
+	@Required
+	public void setEircRegistryRecordPropertiesService(EircRegistryRecordPropertiesService eircRegistryRecordPropertiesService) {
+		this.eircRegistryRecordPropertiesService = eircRegistryRecordPropertiesService;
 	}
 
 }

@@ -11,6 +11,10 @@
 		  parent="registryDaoExt"
 		  class="org.flexpay.eirc.dao.imp.EircRegistryDaoExtImpl" />
 
+    <bean id="eircRegistryRecordPropertiesDaoExt"
+          class="org.flexpay.eirc.dao.imp.EircRegistryRecordPropertiesDaoExtImpl"
+          p:sessionFactory-ref="flexpaySessionFactory" />
+
 	<bean id="consumerDao" parent="abstractDao">
 		<property name="proxyInterfaces"
 				  value="org.flexpay.eirc.dao.ConsumerDao" />

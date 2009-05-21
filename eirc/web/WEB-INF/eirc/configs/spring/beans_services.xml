@@ -12,6 +12,11 @@
 		  p:spRegistryRecordService-ref="registryRecordService"
 		  p:registryContainerDao-ref="registryContainerDao" />
 
+    <bean id="eircRegistryRecordPropertiesService"
+          class="org.flexpay.eirc.service.imp.EircRegistryRecordPropertiesServiceImpl"
+          p:eircRegistryRecordPropertiesDaoExt-ref="eircRegistryRecordPropertiesDaoExt"
+            />
+
 	<bean id="registryFileParser"
 		  class="org.flexpay.eirc.sp.RegistryFileParser"
 		  p:consumerService-ref="consumerService"
@@ -82,7 +87,8 @@
 		  p:importUtil-ref="eircImportUtil"
 		  p:accountService-ref="eircAccountService"
           p:btiApartmentService-ref="btiApartmentService"
-          p:apartmentAttributeTypeService-ref="apartmentAttributeTypeServiceTarget"
+          p:apartmentAttributeTypeService-ref="apartmentAttributeTypeService"
+          p:eircRegistryRecordPropertiesService-ref="eircRegistryRecordPropertiesService"
             />
 
 	<bean id="consumerServiceTarget"

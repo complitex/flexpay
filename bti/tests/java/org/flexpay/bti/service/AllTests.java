@@ -6,6 +6,7 @@ import org.junit.runners.Suite;
 @RunWith (Suite.class)
 @Suite.SuiteClasses ({
 		org.flexpay.bti.service.importexport.AllTests.class,
+		TestApartmentAttributeTypeService.class,
 		TestBuildingAttributeTypeService.class,
 		TestBuildingAttributeService.class,
 		TestBuildingService.class,
