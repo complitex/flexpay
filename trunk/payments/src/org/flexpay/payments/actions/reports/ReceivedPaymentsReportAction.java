@@ -9,8 +9,10 @@ import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.DateUtil;
 import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.orgs.persistence.ServiceProvider;
+import org.flexpay.orgs.persistence.PaymentPoint;
 import org.flexpay.orgs.service.OrganizationService;
 import org.flexpay.orgs.service.ServiceProviderService;
+import org.flexpay.orgs.service.PaymentPointService;
 import org.flexpay.payments.persistence.Operation;
 import org.flexpay.payments.persistence.OperationType;
 import org.flexpay.payments.persistence.Service;
@@ -43,11 +45,12 @@ public class ReceivedPaymentsReportAction extends FPActionSupport implements Pay
 	private SPService spService;
 	private ServiceTypeService serviceTypeService;
 	private ServiceProviderService serviceProviderService;
+	private PaymentPointService paymentPointService;
+	private OrganizationService organizationService;
 
 	private PaymentsStatisticsService statisticsService;
 
 	private Long paymentPointId;
-	private Long organizationId;
 
 	@NotNull
 	protected String doExecute() throws Exception {
@@ -59,10 +62,10 @@ public class ReceivedPaymentsReportAction extends FPActionSupport implements Pay
 			endDate = DateUtils.setMinutes(endDate, 59);
 			endDate = DateUtils.setSeconds(endDate, 59);
 
-			operations = operationService.listReceivedPayments(organizationId, beginDate, endDate);
+			operations = operationService.listReceivedPayments(getSelfOrganization(), beginDate, endDate);
 
-			Stub<Organization> stub = new Stub<Organization>(organizationId);
-			typeStatisticses = statisticsService.operationTypeStatistics(stub, beginDate, endDate);
+			typeStatisticses = statisticsService.operationTypeStatistics(
+								new Stub<Organization>(getSelfOrganization().getId()), beginDate, endDate);
 		} else {
 			beginDateFilter.setDate(DateUtil.now());
 		}
@@ -74,6 +77,13 @@ public class ReceivedPaymentsReportAction extends FPActionSupport implements Pay
 	protected String getErrorResult() {
 
 		return SUCCESS;
+	}
+
+	private Organization getSelfOrganization() {
+
+		PaymentPoint paymentPoint = paymentPointService.read(new Stub<PaymentPoint>(paymentPointId));
+		Long organizationId = paymentPoint.getCollector().getOrganization().getId();
+		return organizationService.readFull(new Stub<Organization>(organizationId));
 	}
 
 	// rendering utility methods
@@ -189,19 +199,21 @@ public class ReceivedPaymentsReportAction extends FPActionSupport implements Pay
 		this.statisticsService = statisticsService;
 	}
 
+	@Required
+	public void setPaymentPointService(PaymentPointService paymentPointService) {
+		this.paymentPointService = paymentPointService;
+	}
+
+	@Required
+	public void setOrganizationService(OrganizationService organizationService) {
+		this.organizationService = organizationService;
+	}
+
 	public Long getPaymentPointId() {
 		return paymentPointId;
 	}
 
 	public void setPaymentPointId(Long paymentPointId) {
 		this.paymentPointId = paymentPointId;
-	}
-
-	public Long getOrganizationId() {
-		return organizationId;
-	}
-
-	public void setOrganizationId(Long organizationId) {
-		this.organizationId = organizationId;
 	}
 }

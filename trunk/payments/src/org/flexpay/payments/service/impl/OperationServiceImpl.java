@@ -6,6 +6,7 @@ import org.flexpay.payments.dao.OperationDao;
 import org.flexpay.payments.dao.OperationDaoExt;
 import org.flexpay.payments.persistence.Operation;
 import org.flexpay.payments.service.OperationService;
+import org.flexpay.orgs.persistence.Organization;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
@@ -79,24 +80,24 @@ public class OperationServiceImpl implements OperationService {
 	/**
 	 * {@inheritDoc}
 	 */
-	public List<Operation> listReceivedPayments(Long organizationId, Date beginDate, Date endDate) {
-		return operationDao.listReceivedPayments(organizationId, beginDate, endDate);
+	public List<Operation> listReceivedPayments(Organization organization, Date beginDate, Date endDate) {
+		return operationDao.listReceivedPayments(organization.getId(), beginDate, endDate);
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public List<Operation> searchDocuments(Long organizationId, Long serviceTypeId, Date begin, Date end, BigDecimal minimalSumm, BigDecimal maximalSumm, Page<Operation> pager) {
+	public List<Operation> searchDocuments(Organization organization, Long serviceTypeId, Date begin, Date end, BigDecimal minimalSumm, BigDecimal maximalSumm, Page<Operation> pager) {
 
-		return operationDaoExt.searchDocuments(organizationId, serviceTypeId, begin, end, minimalSumm, maximalSumm, pager);
+		return operationDaoExt.searchDocuments(organization, serviceTypeId, begin, end, minimalSumm, maximalSumm, pager);
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public List<Operation> searchOperations(Long organizationId, Date begin, Date end, BigDecimal minimalSumm, BigDecimal maximalSumm, Page<Operation> pager) {
+	public List<Operation> searchOperations(Organization organization, Date begin, Date end, BigDecimal minimalSumm, BigDecimal maximalSumm, Page<Operation> pager) {
 
-		return operationDaoExt.searchOperations(organizationId, begin, end, minimalSumm, maximalSumm, pager);
+		return operationDaoExt.searchOperations(organization, begin, end, minimalSumm, maximalSumm, pager);
 	}
 
 	@Required

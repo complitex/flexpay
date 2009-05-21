@@ -20,10 +20,8 @@ public class PaymentPointIdentificationInterceptor extends AbstractInterceptor {
 			PaymentPointAwareAction paymentPointAwareAction = (PaymentPointAwareAction) action;
 
 			Long paymentPointId = paymentPointAwareAction.getPaymentPointId();
-			Long organizationId = paymentPointAwareAction.getOrganizationId();
-			if (paymentPointId != null || organizationId != null) {
-				log.info("Payment point identified as {} and organization as {}", new Object[] {paymentPointId, organizationId});
-
+			if (paymentPointId != null) {
+				log.info("Payment point identified as {}", paymentPointId);
 			} else {
 				return POINT_AUTHENTICATION_REQUIRED;
 			}

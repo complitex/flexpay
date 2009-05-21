@@ -46,7 +46,6 @@ public class ServiceEditAction extends FPActionSupport implements PaymentPointAw
 	private MeasureUnitService measureUnitService;
 
 	private Long paymentPointId;
-	private Long organizationId;
 
 	@NotNull
 	public String doExecute() throws Exception {
@@ -245,13 +244,5 @@ public class ServiceEditAction extends FPActionSupport implements PaymentPointAw
 
 	public void setPaymentPointId(Long paymentPointId) {
 		this.paymentPointId = paymentPointId;
-	}
-
-	public Long getOrganizationId() {
-		return organizationId;
-	}
-
-	public void setOrganizationId(Long organizationId) {
-		this.organizationId = organizationId;
 	}
 }

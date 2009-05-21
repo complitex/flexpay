@@ -37,7 +37,6 @@ public class PaymentsReportAction extends FPActionSupport implements PaymentPoin
 	private PaymentsReporter paymentsReporter;
 
 	private Long paymentPointId;
-	private Long organizationId;
 
 	@NotNull
 	protected String doExecute() throws Exception {
@@ -156,13 +155,5 @@ public class PaymentsReportAction extends FPActionSupport implements PaymentPoin
 
 	public void setPaymentPointId(Long paymentPointId) {
 		this.paymentPointId = paymentPointId;
-	}
-
-	public Long getOrganizationId() {
-		return organizationId;
-	}
-
-	public void setOrganizationId(Long organizationId) {
-		this.organizationId = organizationId;
 	}
 }
