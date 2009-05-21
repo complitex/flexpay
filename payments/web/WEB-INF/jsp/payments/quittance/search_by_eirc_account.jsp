@@ -59,6 +59,8 @@
 	</table>
 </s:form>
 
+<%@ include file="print.jsp" %>
+
 <div id="searchResultsDiv" style="display: none;" />
 
 

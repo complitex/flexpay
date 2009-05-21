@@ -134,6 +134,12 @@
 				showSeconds: true
 			});
 	});
+
+	function printQuittance(opId) {
+		var url = '<s:url action="paymentOperationReportAction" includeParams="none" />';
+		url += '?operation.id=' + opId;
+		window.open(url, "_blank");
+	}
 </script>
 
 <s:actionerror/>
@@ -195,7 +201,7 @@
 		</s:if>
 		<s:else>
 			<tr>
-				<td colspan="10">
+				<td colspan="11">
 					<s:text name="payments.operations.list.total"/>
 					<s:property value="%{getTotalOperations()}"/>
 				</td>
@@ -209,7 +215,7 @@
 
 					<input type="button" class="btn-exit" onclick="showDetails();" value="<s:text name="payments.operations.list.detailed"/>"/>
 				</td>
-				<td colspan="5">
+				<td colspan="6">
 					<%@include file="/WEB-INF/jsp/common/filter/pager/pager.jsp" %>
 				</td>
 			</tr>
@@ -226,6 +232,7 @@
 				<td class="th"><s:text name="payments.operations.list.change"/></td>
 				<td class="th service_column" id="service_column_header" style="display: none;"><s:text name="payments.operations.list.service"/></td>
 				<td class="th service_provider_column" style="display: none;"><s:text name="payments.operations.list.provider"/></td>
+				<td class="th">&nbsp;</td>
 			</tr>
 
 			<%-- operation rows --%>
@@ -250,6 +257,7 @@
 					<td nowrap="nowrap"><s:property value="change"/></td>
 					<td class="service_column" nowrap="nowrap" style="display: none;">&nbsp;</td>
 					<td class="service_provider_column" nowrap="nowrap" style="display: none;">&nbsp;</td>
+					<td><a href="#" onclick="printQuittance(<s:property value="id" />);"><s:text name="print" /></a></td>
 				</tr>
 
 				<%-- brief operation header (is not shown by default, appears in 'detailed' view) --%>
@@ -271,6 +279,7 @@
 					<td nowrap="nowrap">&nbsp;</td>
 					<td class="service_column" nowrap="nowrap" style="display: none;">&nbsp;</td>
 					<td class="service_provider_column" nowrap="nowrap" style="display: none;">&nbsp;</td>
+					<td><a href="#" onclick="printQuittance(<s:property value="id" />);"><s:text name="print" /></a></td>
 				</tr>
 
 				<%-- document rows (are not shown by default, appear in 'detailed' view) --%>
@@ -291,7 +300,7 @@
 							<td nowrap="nowrap">&nbsp;</td>
 							<td nowrap="nowrap">&nbsp;</td>
 							<td class="service_column" nowrap="nowrap" style="display: none;"><s:property value="service.serviceType.name"/></td>
-							<td class="service_provider_column" nowrap="nowrap" style="display: none;"><s:property value="service.serviceProvider.name"/></td>
+							<td class="service_provider_column" nowrap="nowrap" style="display: none;" colspan="2"><s:property value="service.serviceProvider.name"/></td>
 						</tr>
 					</s:if>
 				</s:iterator>
@@ -312,7 +321,7 @@
 					<td nowrap="nowrap"><s:property value="operationInputSumm"/></td>
 					<td nowrap="nowrap"><s:property value="change"/></td>
 					<td class="service_column" nowrap="nowrap" style="display: none;">&nbsp;</td>
-					<td class="service_provider_column" nowrap="nowrap" style="display: none;">&nbsp;</td>
+					<td class="service_provider_column" nowrap="nowrap" style="display: none;" colspan="2">&nbsp;</td>
 				</tr>
 			</s:iterator>
 
@@ -324,7 +333,7 @@
 
 					<input type="button" class="btn-exit" onclick="showDetails();" value="<s:text name="payments.operations.list.detailed"/>"/>
 				</td>
-				<td colspan="5">
+				<td colspan="6">
 					<%@include file="/WEB-INF/jsp/common/filter/pager/pager.jsp" %>
 				</td>
 			</tr>

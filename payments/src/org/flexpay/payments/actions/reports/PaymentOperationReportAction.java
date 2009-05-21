@@ -86,10 +86,6 @@ public class PaymentOperationReportAction extends FPActionSupport {
 		return report;
 	}
 
-	public InputStream getInputStream() throws IOException {
-		return report.getInputStream();
-	}
-
 	/**
 	 * Get default error execution result
 	 * <p/>

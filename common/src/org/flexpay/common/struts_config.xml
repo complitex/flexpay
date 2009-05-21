@@ -6,6 +6,7 @@
 
 	<constant name="struts.objectFactory" value="spring"/>
 	<constant name="struts.devMode" value="true"/>
+	<constant name="struts.configuration.xml.reload" value="true"/>
 	<constant name="struts.custom.i18n.resources" value="/org/flexpay/common/i18n/common-messages"/>
 	<constant name="struts.ui.theme" value="simple"/>
 	<constant name="struts.multipart.maxSize" value="1073741824"/>

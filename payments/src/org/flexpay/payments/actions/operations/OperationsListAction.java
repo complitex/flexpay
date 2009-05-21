@@ -140,6 +140,9 @@ public class OperationsListAction extends FPActionWithPagerSupport<Operation> im
 	private Organization getSelfOrganization() {
 
 		PaymentPoint paymentPoint = paymentPointService.read(new Stub<PaymentPoint>(paymentPointId));
+		if (paymentPoint == null) {
+			throw new IllegalStateException("Invalid payment point id: " + paymentPointId);
+		}
 		Long organizationId = paymentPoint.getCollector().getOrganization().getId();
 		return organizationService.readFull(new Stub<Organization>(organizationId));
 	}

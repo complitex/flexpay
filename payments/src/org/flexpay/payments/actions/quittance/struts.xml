@@ -26,6 +26,7 @@
 			<result name="redirectSuccess" type="redirect-action">
 				<param name="actionName">${actionName}</param>
 				<param name="parse">true</param>
+				<param name="operation.id">${operation.id}</param>
 			</result>
 		</action>
 

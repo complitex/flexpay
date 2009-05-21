@@ -104,6 +104,15 @@
 		<url-pattern>/ws/*</url-pattern>
 	</servlet-mapping>
 
+	<servlet>
+		<servlet-name>fileDownloadServlet</servlet-name>
+		<servlet-class>org.flexpay.common.actions.FileDownloadServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>fileDownloadServlet</servlet-name>
+		<url-pattern>/download/*</url-pattern>
+	</servlet-mapping>
+
 	<security-constraint>
 		<web-resource-collection>
 			<web-resource-name>secure-resource</web-resource-name>
