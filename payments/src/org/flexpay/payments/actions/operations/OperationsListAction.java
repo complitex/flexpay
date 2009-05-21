@@ -14,7 +14,9 @@ import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.DateUtil;
 import org.flexpay.common.util.SecurityUtil;
 import org.flexpay.orgs.persistence.Organization;
+import org.flexpay.orgs.persistence.PaymentPoint;
 import org.flexpay.orgs.service.OrganizationService;
+import org.flexpay.orgs.service.PaymentPointService;
 import org.flexpay.payments.persistence.*;
 import org.flexpay.payments.service.*;
 import org.flexpay.payments.actions.PaymentPointAwareAction;
@@ -68,9 +70,9 @@ public class OperationsListAction extends FPActionWithPagerSupport<Operation> im
 	private DocumentService documentService;
 	private ServiceTypeService serviceTypeService;
 	private OrganizationService organizationService;
+	private PaymentPointService paymentPointService;
 
 	private Long paymentPointId;
-	private Long organizationId;
 
 	@NotNull
 	protected String doExecute() throws Exception {
@@ -106,13 +108,13 @@ public class OperationsListAction extends FPActionWithPagerSupport<Operation> im
 			end = DateUtils.setMinutes(end, 59);
 			end = DateUtils.setSeconds(end, 59);
 
-			List<Operation> searchResults = operationService.searchDocuments(organizationId, serviceTypeId, begin, end, minimalSumm, maximalSumm, getPager());
+			List<Operation> searchResults = operationService.searchDocuments(getSelfOrganization(), serviceTypeId, begin, end, minimalSumm, maximalSumm, getPager());
 			loadFullOperationsData(searchResults);
 			highlightedDocumentIds = getHighlightedDocumentIds(searchResults);
 		} else {
 			Date begin = beginTimeFilter.setTime(beginDateFilter.getDate());
 			Date end = endTimeFilter.setTime(endDateFilter.getDate());
-			List<Operation> searchResults = operationService.searchOperations(organizationId, begin, end, minimalSumm, maximalSumm, getPager());
+			List<Operation> searchResults = operationService.searchOperations(getSelfOrganization(), begin, end, minimalSumm, maximalSumm, getPager());
 			loadFullOperationsData(searchResults);
 		}
 	}
@@ -137,6 +139,8 @@ public class OperationsListAction extends FPActionWithPagerSupport<Operation> im
 
 	private Organization getSelfOrganization() {
 
+		PaymentPoint paymentPoint = paymentPointService.read(new Stub<PaymentPoint>(paymentPointId));
+		Long organizationId = paymentPoint.getCollector().getOrganization().getId();
 		return organizationService.readFull(new Stub<Organization>(organizationId));
 	}
 
@@ -395,19 +399,16 @@ public class OperationsListAction extends FPActionWithPagerSupport<Operation> im
 		this.organizationService = organizationService;
 	}
 
+	@Required
+	public void setPaymentPointService(PaymentPointService paymentPointService) {
+		this.paymentPointService = paymentPointService;
+	}
+
 	public void setPaymentPointId(Long paymentPointId) {
 		this.paymentPointId = paymentPointId;
 	}
 
 	public Long getPaymentPointId() {
 		return paymentPointId;
-	}
-
-	public Long getOrganizationId() {
-		return organizationId;
-	}
-
-	public void setOrganizationId(Long organizationId) {
-		this.organizationId = organizationId;
 	}
 }

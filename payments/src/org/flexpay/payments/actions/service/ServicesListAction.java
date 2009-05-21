@@ -27,7 +27,6 @@ public class ServicesListAction extends FPActionWithPagerSupport<Service> implem
 	private SPService spService;
 
 	private Long paymentPointId;
-	private Long organizationId;
 
 	@NotNull
 	public String doExecute() throws Exception {
@@ -97,13 +96,5 @@ public class ServicesListAction extends FPActionWithPagerSupport<Service> implem
 
 	public void setPaymentPointId(Long paymentPointId) {
 		this.paymentPointId = paymentPointId;
-	}
-
-	public Long getOrganizationId() {
-		return organizationId;
-	}
-
-	public void setOrganizationId(Long organizationId) {
-		this.organizationId = organizationId;
 	}
 }

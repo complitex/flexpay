@@ -103,7 +103,7 @@ public class GeneratePaymentsDBRegistry {
     private List<Operation> getOperations(@NotNull Organization organization,
                                           @NotNull Date startDate,
                                           @NotNull Date endDate) {
-        return operationService.listReceivedPayments(organization.getId(), startDate, endDate);
+        return operationService.listReceivedPayments(organization, startDate, endDate);
     }
 
     @NotNull

@@ -3,6 +3,7 @@ package org.flexpay.payments.dao.impl;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.payments.dao.OperationDaoExt;
 import org.flexpay.payments.persistence.Operation;
+import org.flexpay.orgs.persistence.Organization;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 import org.springframework.orm.hibernate3.HibernateCallback;
 import org.hibernate.Query;
@@ -24,11 +25,12 @@ public class OperationDaoExtImpl extends HibernateDaoSupport implements Operatio
 	 * {@inheritDoc}
 	 */
 	@SuppressWarnings ({"unchecked"})
-	public List<Operation> searchDocuments(final Long organizationId, final Long serviceTypeId, final Date begin, final Date end, final BigDecimal minimalSumm, final BigDecimal maximalSumm, final Page<Operation> pager) {
+	public List<Operation> searchDocuments(Organization organization, final Long serviceTypeId, final Date begin, final Date end, final BigDecimal minimalSumm, final BigDecimal maximalSumm, final Page<Operation> pager) {
 
 		final StringBuilder hql = new StringBuilder("SELECT DISTINCT o FROM Operation o LEFT JOIN o.documents doc ");
 		final StringBuilder cntHql = new StringBuilder("SELECT COUNT(o) FROM Operation o LEFT JOIN o.documents doc ");		
 		final StringBuilder filterHql = getDocumentSearchHql(serviceTypeId, begin, end, minimalSumm, maximalSumm);
+		final Long organizationId = organization.getId();
 
 		hql.append(filterHql);
 		cntHql.append(filterHql);
@@ -116,11 +118,12 @@ public class OperationDaoExtImpl extends HibernateDaoSupport implements Operatio
 	 * {@inheritDoc}
 	 */
 	@SuppressWarnings ({"unchecked"})
-	public List<Operation> searchOperations(final Long organizationId, final Date begin, final Date end, final BigDecimal minimalSumm, final BigDecimal maximalSumm, final Page<Operation> pager) {
+	public List<Operation> searchOperations(Organization organization, final Date begin, final Date end, final BigDecimal minimalSumm, final BigDecimal maximalSumm, final Page<Operation> pager) {
 
 		final StringBuilder hql = new StringBuilder("SELECT DISTINCT o FROM Operation o LEFT JOIN o.documents doc ");
 		final StringBuilder cntHql = new StringBuilder("SELECT COUNT(o) FROM Operation o LEFT JOIN o.documents doc ");
 		final StringBuilder filterHql = getOperationSearchHql(begin, end, minimalSumm, maximalSumm);
+		final Long organizationId = organization.getId();
 
 		hql.append(filterHql);
 		cntHql.append(filterHql);

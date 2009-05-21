@@ -4,6 +4,7 @@ import org.springframework.security.annotation.Secured;
 import org.flexpay.payments.service.Roles;
 import org.flexpay.payments.persistence.Operation;
 import org.flexpay.common.dao.paging.Page;
+import org.flexpay.orgs.persistence.Organization;
 
 import java.util.List;
 import java.util.Date;
@@ -23,7 +24,7 @@ public interface OperationDaoExt {
 	 * @return list of operations which contains documents suitable to search criterias
 	 */
 	@Secured (Roles.OPERATION_READ)
-	List<Operation> searchDocuments(Long organizationId, Long serviceTypeId, Date begin, Date end, BigDecimal minimalSumm, BigDecimal maximalSumm, Page<Operation> pager);
+	List<Operation> searchDocuments(Organization organization, Long serviceTypeId, Date begin, Date end, BigDecimal minimalSumm, BigDecimal maximalSumm, Page<Operation> pager);
 
 	/**
 	 * Returns list of operations suitable to search criterias
@@ -36,5 +37,5 @@ public interface OperationDaoExt {
 	 * @return list of operations suitable to search criterias
 	 */
 	@Secured(Roles.OPERATION_READ)
-	List<Operation> searchOperations(Long organizationId, Date begin, Date end, BigDecimal minimalSumm, BigDecimal maximalSumm, Page<Operation> pager);
+	List<Operation> searchOperations(Organization organization, Date begin, Date end, BigDecimal minimalSumm, BigDecimal maximalSumm, Page<Operation> pager);
 }

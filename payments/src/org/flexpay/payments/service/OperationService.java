@@ -3,6 +3,7 @@ package org.flexpay.payments.service;
 import org.flexpay.payments.persistence.Operation;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.dao.paging.Page;
+import org.flexpay.orgs.persistence.Organization;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.security.annotation.Secured;
@@ -53,17 +54,17 @@ public interface OperationService {
 
 	/**
 	 * List of all payment operations which has status REGISTERED inside time interval and organization
-	 * @param organizationId organization id
+	 * @param organization organization
 	 * @param beginDate lower bound for operation registration date
 	 * @param endDate higher bound for operation registration date
 	 * @return list of payment operations
 	 */
 	@Secured(Roles.OPERATION_READ)
-	List<Operation> listReceivedPayments(Long organizationId, Date beginDate, Date endDate);
+	List<Operation> listReceivedPayments(Organization organization, Date beginDate, Date endDate);
 
 	/**
 	 * Returns list of operations which contains documents suitable to search criterias
-	 * @param organizationId organization which registered operation id
+	 * @param organization organization which registered operation
 	 * @param serviceTypeId document service type id
 	 * @param begin lower bound for document creation date
 	 * @param end upper bound for document creation date
@@ -73,11 +74,11 @@ public interface OperationService {
 	 * @return list of operations which contains documents suitable to search criterias
 	 */
 	@Secured(Roles.OPERATION_READ)
-	List<Operation> searchDocuments(Long organizationId, Long serviceTypeId, Date begin, Date end, BigDecimal minimalSumm, BigDecimal maximalSumm, Page<Operation> pager);
+	List<Operation> searchDocuments(Organization organization, Long serviceTypeId, Date begin, Date end, BigDecimal minimalSumm, BigDecimal maximalSumm, Page<Operation> pager);
 
 	/**
 	 * Returns list of operations suitable to search criterias
-	 * @param organizationId organization which registered operation id
+	 * @param organization organization which registered operation
 	 * @param begin lower bound for operation creation date
 	 * @param end upper bound for operation creation date
 	 * @param minimalSumm minimal operation summ
@@ -86,5 +87,5 @@ public interface OperationService {
 	 * @return list of operations suitable to search criterias
 	 */
 	@Secured(Roles.OPERATION_READ)
-	List<Operation> searchOperations(Long organizationId, Date begin, Date end, BigDecimal minimalSumm, BigDecimal maximalSumm, Page<Operation> pager);
+	List<Operation> searchOperations(Organization organization, Date begin, Date end, BigDecimal minimalSumm, BigDecimal maximalSumm, Page<Operation> pager);
 }

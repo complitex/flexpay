@@ -28,7 +28,7 @@
 			<interceptor-stack name="paymentsDefaultStack">
 				<interceptor-ref name="commonDefaultStack"/>
 				<interceptor-ref name="cookie">
-					<param name="cookiesName">paymentPointId,organizationId</param>
+					<param name="cookiesName">paymentPointId</param>
 					<param name="cookiesValue"></param>
 				</interceptor-ref>
 				<interceptor-ref name="paymentPointIdentification"/>

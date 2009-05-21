@@ -10,8 +10,4 @@ public interface PaymentPointAwareAction {
 	Long getPaymentPointId();
 
 	void setPaymentPointId(Long paymentPointId);
-
-	Long getOrganizationId();
-
-	void setOrganizationId(Long organizationId);
 }

@@ -46,7 +46,6 @@ public class SearchQuittanceAction extends FPActionSupport implements PaymentPoi
 	private ServiceProviderService serviceProviderService;
 		
 	private Long paymentPointId;
-	private Long organizationId;
 
 	@NotNull
 	protected String doExecute() throws Exception {
@@ -294,13 +293,5 @@ public class SearchQuittanceAction extends FPActionSupport implements PaymentPoi
 
 	public void setPaymentPointId(Long paymentPointId) {
 		this.paymentPointId = paymentPointId;
-	}
-
-	public Long getOrganizationId() {
-		return organizationId;
-	}
-
-	public void setOrganizationId(Long organizationId) {
-		this.organizationId = organizationId;
 	}
 }
