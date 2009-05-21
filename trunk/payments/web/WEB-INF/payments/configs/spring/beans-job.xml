@@ -30,6 +30,9 @@
     </bean>
 
     <bean id="sendRegistryJob" class="org.flexpay.payments.process.export.job.SendRegistryJob"
-            scope="prototype"/>
+            scope="prototype">
+        <property name="fpFileService" ref="fpFileService" />
+        <property name="outTransport" ref="sendEmail" />
+    </bean>
 
 </beans>
