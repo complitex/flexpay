@@ -87,4 +87,9 @@
 		  p:registryService-ref="registryService"
 		  p:registryStatusService-ref="registryStatusService" />
 
+    <bean id="sendEmail"
+          class="org.flexpay.common.service.transport.impl.SendFileToEmail"
+          p:email="test@test.test"
+          p:sender-ref="mailSender" />
+
 </beans>
