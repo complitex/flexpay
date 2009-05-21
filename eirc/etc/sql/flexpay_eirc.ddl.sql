@@ -62,6 +62,7 @@
     create table ab_buildings_tbl (
         id bigint not null auto_increment,
         building_type varchar(255) not null comment 'Class hierarchy descriminator, all buildings should have the same value',
+        status integer not null comment 'Enabled/Disabled status',
         district_id bigint not null comment 'District reference',
         eirc_service_organization_id bigint comment 'Service organization reference',
         primary key (id)
