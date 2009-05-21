@@ -233,13 +233,13 @@ public class ServiceOperationsFactory {
 		this.spService = spService;
 	}
 
+	public OrganizationService getOrganizationService() {
+		return organizationService;
+	}
+
 	@Required
 	public void setOrganizationService(OrganizationService organizationService) {
 		this.organizationService = organizationService;
-	}
-
-	public OrganizationService getOrganizationService() {
-		return organizationService;
 	}
 
 	public ReportPeriodService getReportPeriodService() {
