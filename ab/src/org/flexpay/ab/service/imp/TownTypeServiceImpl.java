@@ -43,7 +43,7 @@ public class TownTypeServiceImpl implements TownTypeService {
 	 * @return List of TownTypes
 	 * @throws FlexPayException if failure occurs
 	 */
-	public List<TownTypeTranslation> getTranslations(Locale locale)
+	private List<TownTypeTranslation> getTranslations(Locale locale)
 			throws FlexPayException {
 
 		log.debug("Getting list of TownTypes");

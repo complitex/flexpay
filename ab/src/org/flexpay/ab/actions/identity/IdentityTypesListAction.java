@@ -1,6 +1,6 @@
 package org.flexpay.ab.actions.identity;
 
-import org.flexpay.ab.persistence.IdentityTypeTranslation;
+import org.flexpay.ab.persistence.IdentityType;
 import org.flexpay.ab.service.IdentityTypeService;
 import org.flexpay.common.actions.FPActionSupport;
 import org.jetbrains.annotations.NotNull;
@@ -10,13 +10,13 @@ import java.util.List;
 
 public class IdentityTypesListAction extends FPActionSupport {
 
-	private List<IdentityTypeTranslation> translationList;
+	private List<IdentityType> identityTypes;
 
 	private IdentityTypeService identityTypeService;
 
 	@NotNull
 	public String doExecute() throws Exception {
-		translationList = identityTypeService.getTranslations(userPreferences.getLocale());
+		identityTypes = identityTypeService.getEntities();
 
 		return SUCCESS;
 	}
@@ -33,8 +33,8 @@ public class IdentityTypesListAction extends FPActionSupport {
 		return SUCCESS;
 	}
 
-	public List<IdentityTypeTranslation> getTranslationList() {
-		return translationList;
+	public List<IdentityType> getIdentityTypes() {
+		return identityTypes;
 	}
 
 	@Required

@@ -57,16 +57,6 @@ public interface StreetTypeService extends
 	StreetType readFull(@NotNull Stub<StreetType> stub);
 
 	/**
-	 * Get Entity translations for specified locale, if translation is not found check for translation in default locale
-	 *
-	 * @param locale Locale to get translations for
-	 * @return List of Translation
-	 * @deprecated remove me
-	 */
-	@Secured (Roles.STREET_TYPE_READ)
-	List<StreetTypeTranslation> getTranslations(Locale locale);
-
-	/**
 	 * Get a list of available street types
 	 *
 	 * @return List of Entity

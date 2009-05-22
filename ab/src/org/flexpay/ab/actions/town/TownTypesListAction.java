@@ -1,6 +1,6 @@
 package org.flexpay.ab.actions.town;
 
-import org.flexpay.ab.persistence.TownTypeTranslation;
+import org.flexpay.ab.persistence.TownType;
 import org.flexpay.ab.service.TownTypeService;
 import org.flexpay.common.actions.FPActionSupport;
 import org.jetbrains.annotations.NotNull;
@@ -10,13 +10,13 @@ import java.util.List;
 
 public class TownTypesListAction extends FPActionSupport {
 
-	private List<TownTypeTranslation> translationList;
+	private List<TownType> townTypes;
 
 	private TownTypeService townTypeService;
 
 	@NotNull
 	public String doExecute() throws Exception {
-		translationList = townTypeService.getTranslations(userPreferences.getLocale());
+		townTypes = townTypeService.getEntities();
 
 		return SUCCESS;
 	}
@@ -33,8 +33,8 @@ public class TownTypesListAction extends FPActionSupport {
 		return SUCCESS;
 	}
 
-	public List<TownTypeTranslation> getTranslationList() {
-		return translationList;
+	public List<TownType> getTownTypes() {
+		return townTypes;
 	}
 
 	@Required

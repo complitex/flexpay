@@ -295,6 +295,10 @@ public abstract class FPActionSupport extends ActionSupport implements UserPrefe
 		return TranslationUtil.getTranslation(translations, userPreferences.getLocale());
 	}
 
+	public <T extends Translation> String getTranslationName(Set<T> translations) {
+		return getTranslation(translations).getName();
+	}
+
 	/**
 	 * Check if request method was POST
 	 *

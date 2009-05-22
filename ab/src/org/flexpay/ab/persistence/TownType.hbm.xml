@@ -42,7 +42,10 @@
 	</class>
 
 	<query name="TownType.listTownTypes">
-		from TownType t where t.status = ?
+		select distinct t
+		from TownType t
+			left join fetch t.translations 
+		where t.status = ?
 	</query>
 
 	<query name="TownType.readFull">
