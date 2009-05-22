@@ -47,7 +47,7 @@ public class TestStreetService extends AbSpringBeanAwareTestCase {
 		name.addNameTranslation(translation);
 		street.setNameForDate(name, DateUtil.now());
 
-		StreetType streetType = streetTypeService.read(1L);
+		StreetType streetType = streetTypeService.read(new Stub<StreetType>(1L));
 		assertNotNull("No street type found", streetType);
 		street.setType(streetType);
 //		street.setTypeForDate(streetType, ApplicationConfig.getPastInfinite());
@@ -55,7 +55,7 @@ public class TestStreetService extends AbSpringBeanAwareTestCase {
 		try {
 			streetService.create(street);
 
-			streetType = streetTypeService.read(2L);
+			streetType = streetTypeService.read(new Stub<StreetType>(2L));
 			street.setTypeForDate(streetType, DateUtil.next(DateUtil.now()));
 
 			streetService.update(street);

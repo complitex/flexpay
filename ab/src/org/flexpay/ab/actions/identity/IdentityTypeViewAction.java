@@ -3,6 +3,7 @@ package org.flexpay.ab.actions.identity;
 import org.flexpay.ab.persistence.IdentityType;
 import org.flexpay.ab.service.IdentityTypeService;
 import org.flexpay.common.actions.FPActionSupport;
+import org.flexpay.common.persistence.Stub;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
@@ -15,7 +16,7 @@ public class IdentityTypeViewAction extends FPActionSupport {
 
     @NotNull
     public String doExecute() throws Exception {
-        identityType = identityTypeService.read(id);
+        identityType = identityTypeService.read(new Stub<IdentityType>(id));
 
         return SUCCESS;
     }

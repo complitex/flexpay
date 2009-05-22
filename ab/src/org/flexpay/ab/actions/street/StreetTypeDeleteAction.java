@@ -2,6 +2,8 @@ package org.flexpay.ab.actions.street;
 
 import org.flexpay.ab.persistence.StreetType;
 import org.flexpay.ab.service.StreetTypeService;
+import org.flexpay.common.util.CollectionUtils;
+import org.flexpay.common.persistence.Stub;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
@@ -24,9 +26,9 @@ public class StreetTypeDeleteAction {
 
 		log.debug("Ids of street types to disable: {}", idList);
 
-		List<StreetType> streetTypeToDelete = new ArrayList<StreetType>();
+		List<StreetType> streetTypeToDelete = CollectionUtils.list();
 		for (Long id : idList) {
-			streetTypeToDelete.add(streetTypeService.read(id));
+			streetTypeToDelete.add(streetTypeService.read(new Stub<StreetType>(id)));
 		}
 		try {
 			streetTypeService.disable(streetTypeToDelete);

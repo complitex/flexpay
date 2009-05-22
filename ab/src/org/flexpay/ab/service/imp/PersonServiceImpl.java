@@ -89,7 +89,7 @@ public class PersonServiceImpl implements PersonService {
 
 			// setup identity types
 			for (PersonIdentity identity : persistent.getPersonIdentities()) {
-				IdentityType type = identityTypeService.read(identity.getIdentityType().getId());
+				IdentityType type = identityTypeService.read(identity.getIdentityTypeStub());
 				identity.setIdentityType(type);
 			}
 		}

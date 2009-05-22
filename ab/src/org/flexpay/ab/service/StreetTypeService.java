@@ -41,11 +41,11 @@ public interface StreetTypeService extends
 	/**
 	 * Read Entity object by its unique id
 	 *
-	 * @param id Entity key
+	 * @param stub Entity stub
 	 * @return Entity object, or <code>null</code> if object not found
 	 */
 	@Secured (Roles.STREET_TYPE_READ)
-	StreetType read(Long id);
+	StreetType read(Stub<StreetType> stub);
 
 	/**
 	 * Read object by its unique id

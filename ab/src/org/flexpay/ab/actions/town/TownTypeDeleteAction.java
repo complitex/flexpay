@@ -2,6 +2,8 @@ package org.flexpay.ab.actions.town;
 
 import org.flexpay.ab.persistence.TownType;
 import org.flexpay.ab.service.TownTypeService;
+import org.flexpay.common.util.CollectionUtils;
+import org.flexpay.common.persistence.Stub;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
@@ -18,9 +20,9 @@ public class TownTypeDeleteAction {
     private List<Long> idList;
 
     public String execute() throws Exception {
-		List<TownType> townTypeToDelete = new ArrayList<TownType>(idList.size());
+		List<TownType> townTypeToDelete = CollectionUtils.list();
 		for (Long id : idList) {
-			townTypeToDelete.add(townTypeService.read(id));
+			townTypeToDelete.add(townTypeService.read(new Stub<TownType>(id)));
 		}
 		try {
 			townTypeService.disable(townTypeToDelete);

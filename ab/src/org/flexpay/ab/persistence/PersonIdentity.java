@@ -6,8 +6,10 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.apache.commons.lang.time.DateUtils;
 import org.flexpay.common.persistence.DomainObjectWithStatus;
-import org.flexpay.common.util.config.ApplicationConfig;
+import org.flexpay.common.persistence.Stub;
+import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.util.DateUtil;
+import org.flexpay.common.util.config.ApplicationConfig;
 
 import java.util.Calendar;
 import java.util.Collections;
@@ -47,6 +49,10 @@ public class PersonIdentity extends DomainObjectWithStatus implements Comparable
 
 	public void setIdentityType(IdentityType identityType) {
 		this.identityType = identityType;
+	}
+
+	public Stub<IdentityType> getIdentityTypeStub() {
+		return stub(identityType);
 	}
 
 	public Date getBeginDate() {
@@ -236,13 +242,13 @@ public class PersonIdentity extends DomainObjectWithStatus implements Comparable
 		Date futureInfinite = ApplicationConfig.getFutureInfinite();
 		Date pastInfinite = ApplicationConfig.getPastInfinite();
 		return isFIOEmpty() &&
-				beginDate.equals(pastInfinite) &&
-				endDate.equals(futureInfinite) &&
-				birthDate.equals(futureInfinite) &&
-				!isDefault &&
-				StringUtils.isBlank(organization) &&
-				StringUtils.isBlank(serialNumber) &&
-				StringUtils.isBlank(documentNumber);
+			   beginDate.equals(pastInfinite) &&
+			   endDate.equals(futureInfinite) &&
+			   birthDate.equals(futureInfinite) &&
+			   !isDefault &&
+			   StringUtils.isBlank(organization) &&
+			   StringUtils.isBlank(serialNumber) &&
+			   StringUtils.isBlank(documentNumber);
 	}
 
 
@@ -253,8 +259,8 @@ public class PersonIdentity extends DomainObjectWithStatus implements Comparable
 	 */
 	public boolean isFIOEmpty() {
 		return StringUtils.isBlank(firstName) &&
-				StringUtils.isBlank(middleName) &&
-				StringUtils.isBlank(lastName);
+			   StringUtils.isBlank(middleName) &&
+			   StringUtils.isBlank(lastName);
 	}
 
 	/**

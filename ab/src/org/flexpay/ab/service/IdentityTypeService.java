@@ -4,6 +4,7 @@ import org.flexpay.ab.persistence.IdentityType;
 import org.flexpay.ab.persistence.IdentityTypeTranslation;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
+import org.flexpay.common.persistence.Stub;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.security.annotation.Secured;
 
@@ -35,11 +36,11 @@ public interface IdentityTypeService extends
 	/**
 	 * Read Entity object by its unique id
 	 *
-	 * @param id Entity key
+	 * @param stub Entity stub
 	 * @return Entity object, or <code>null</code> if object not found
 	 */
 	@Secured (Roles.IDENTITY_TYPE_READ)
-	IdentityType read(Long id);
+	IdentityType read(Stub<IdentityType> stub);
 
 	/**
 	 * Get Entity translations for specified locale, if translation is not found check for translation in default locale

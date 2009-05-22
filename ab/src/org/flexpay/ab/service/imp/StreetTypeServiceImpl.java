@@ -25,7 +25,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
@@ -75,11 +74,11 @@ public class StreetTypeServiceImpl implements StreetTypeService {
 	/**
 	 * Read StreetType object by its unique id
 	 *
-	 * @param id StreetType key
+	 * @param stub Entity stub
 	 * @return StreetType object, or <code>null</code> if object not found
 	 */
-	public StreetType read(Long id) {
-		return streetTypeDao.readFull(id);
+	public StreetType read(Stub<StreetType> stub) {
+		return streetTypeDao.readFull(stub.getId());
 	}
 
 	/**
