@@ -993,6 +993,7 @@
         status_id bigint not null comment 'Operation status reference',
         type_id bigint not null comment 'Operation type reference (operation code)',
         creator_organization_id bigint not null comment 'Organization operation created in',
+        payment_point_id bigint not null comment 'Payment point operation created in',
         register_organization_id bigint comment 'Organization operation registered in',
         registry_record_id bigint comment 'Registry record',
         reference_operation_id bigint comment 'Optional operation reference',
@@ -1888,6 +1889,12 @@
         add constraint FK_payments_operation_type_translations_tbl_lang_id 
         foreign key (language_id) 
         references common_languages_tbl (id);
+
+    alter table payments_operations_tbl 
+        add index FK_payments_operations_tbl_payment_point_id (payment_point_id), 
+        add constraint FK_payments_operations_tbl_payment_point_id 
+        foreign key (payment_point_id) 
+        references orgs_payment_points_tbl (id);
 
     alter table payments_operations_tbl 
         add index FK_payments_operations_tbl_registry_record_id (registry_record_id), 

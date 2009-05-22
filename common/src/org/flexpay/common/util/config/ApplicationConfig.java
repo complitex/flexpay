@@ -234,4 +234,9 @@ public class ApplicationConfig {
 	public void setDefaultCurrencyCode(String defaultCurrencyCode) {
 		this.defaultCurrencyCode = defaultCurrencyCode;
 	}
+
+	public static boolean isResourceAvailable(String name) {
+		Resource resource = resourceLoader.getResource(name);
+		return resource.exists();
+	}
 }

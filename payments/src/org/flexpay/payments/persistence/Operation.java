@@ -8,6 +8,7 @@ import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.persistence.registry.RegistryRecord;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.orgs.persistence.Organization;
+import org.flexpay.orgs.persistence.PaymentPoint;
 import org.jetbrains.annotations.NotNull;
 
 import java.math.BigDecimal;
@@ -27,6 +28,7 @@ public class Operation extends DomainObject {
 	private Date creationDate;
 	private String creatorUserName;
 	private Organization creatorOrganization;
+	private PaymentPoint paymentPoint;
 
 	private Date registerDate;
 	private String registerUserName;
@@ -228,10 +230,21 @@ public class Operation extends DomainObject {
 		this.additions = additions;
 	}
 
+	public PaymentPoint getPaymentPoint() {
+		return paymentPoint;
+	}
+
+	public void setPaymentPoint(PaymentPoint paymentPoint) {
+		this.paymentPoint = paymentPoint;
+	}
+
+	public Stub<PaymentPoint> getPaymentPointStub() {
+		return stub(paymentPoint);
+	}
+
 	@Override
 	public String toString() {
 		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
-				append("Operation {").
 				append("id", getId()).
 				append("operationInputSumm", operationInputSumm).
 				append("operationSumm", operationSumm).
@@ -242,6 +255,6 @@ public class Operation extends DomainObject {
 				append("registerUserName", registerUserName).
 				append("operationLevel", operationLevel).
 				append("operationStatus", operationStatus).
-				append("}").toString();
+				toString();
 	}
 }

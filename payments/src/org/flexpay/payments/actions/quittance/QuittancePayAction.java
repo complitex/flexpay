@@ -102,6 +102,7 @@ public class QuittancePayAction extends FPActionSupport implements PaymentPointA
 		op.setCreationDate(new Date());
 		op.setRegisterDate(new Date());
 		op.setCreatorOrganization(getSelfOrganization());
+		op.setPaymentPoint(new PaymentPoint(new Stub<PaymentPoint>(paymentPointId)));
 		op.setRegisterOrganization(getSelfOrganization());
 		op.setCreatorUserName(SecurityUtil.getUserName());
 		op.setRegisterUserName(SecurityUtil.getUserName());
