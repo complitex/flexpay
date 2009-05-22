@@ -112,7 +112,7 @@ public class ReceivedPaymentsReportAction extends FPActionSupport implements Pay
 			log.warn("No service found by stub {}", serviceStub);
 			return null;
 		}
-		ServiceType type = serviceTypeService.getServiceType(service.getServiceType());
+		ServiceType type = serviceTypeService.read(service.getServiceTypeStub());
 		return type.getName(getLocale());
 	}
 

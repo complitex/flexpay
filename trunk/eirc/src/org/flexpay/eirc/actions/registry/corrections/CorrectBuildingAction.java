@@ -5,6 +5,7 @@ import org.flexpay.ab.persistence.BuildingAddress;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.DataCorrection;
 import org.flexpay.common.persistence.DataSourceDescription;
+import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.persistence.registry.RegistryRecord;
 import org.flexpay.common.service.importexport.CorrectionsService;
 import org.flexpay.common.service.RegistryRecordService;
@@ -72,7 +73,7 @@ public class CorrectBuildingAction extends BuildingsListAction {
 	}
 
 	public String getServiceTypeName(ServiceType typeStub) throws FlexPayException {
-		ServiceType type = serviceTypeService.getServiceType(typeStub);
+		ServiceType type = serviceTypeService.read(stub(typeStub));
 		ServiceTypeNameTranslation name = getTranslation(type.getTypeNames());
 		return name == null ? "Unknown" : name.getName();
 	}

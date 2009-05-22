@@ -4,19 +4,19 @@ import org.apache.commons.lang.StringUtils;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
+import org.flexpay.common.persistence.Stub;
 import org.flexpay.payments.dao.ServiceDaoExt;
 import org.flexpay.payments.dao.ServiceTypeDao;
 import org.flexpay.payments.persistence.ServiceType;
 import org.flexpay.payments.persistence.ServiceTypeNameTranslation;
 import org.flexpay.payments.persistence.filters.ServiceTypeFilter;
 import org.flexpay.payments.service.ServiceTypeService;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 @Transactional (readOnly = true)
@@ -51,35 +51,24 @@ public class ServiceTypeServiceImpl implements ServiceTypeService {
 	 * @return list of Service types for current page
 	 */
 	public List<ServiceType> listServiceTypes(Page<ServiceType> pager) {
-		log.debug("Listing service types by paging");
 
-		List<ServiceType> types = serviceTypeDao.findServiceTypes(pager);
-		updateCaches(types);
-
-		return types;
+		return serviceTypeDao.findServiceTypes(pager);
 	}
 
 	public List<ServiceType> listAllServiceTypes() {
 
-		List<ServiceType> types = serviceTypeDao.findAllServiceTypes();
-		updateCaches(types);
-
-		return types;
+		return serviceTypeDao.findAllServiceTypes();
 	}
 
 	/**
 	 * Read full service type info
 	 *
-	 * @param serviceType ServiceType stub
+	 * @param stub Service type stub
 	 * @return ServiceType
 	 */
-	public ServiceType read(ServiceType serviceType) {
-		log.debug("Reading service type");
-		if (serviceType.isNotNew()) {
-			return serviceTypeDao.readFull(serviceType.getId());
-		}
-
-		return new ServiceType(0L);
+	public ServiceType read(@NotNull Stub<ServiceType> stub) {
+		log.debug("Reading service type {}", stub);
+		return serviceTypeDao.readFull(stub.getId());
 	}
 
 	/**
@@ -90,15 +79,29 @@ public class ServiceTypeServiceImpl implements ServiceTypeService {
 	 *          if validation error occurs
 	 */
 	@Transactional (readOnly = false)
-	public void save(ServiceType type) throws FlexPayExceptionContainer {
-		log.debug("Saving service types");
+	public ServiceType create(@NotNull ServiceType type) throws FlexPayExceptionContainer {
+
 		validate(type);
-		if (type.isNew()) {
-			type.setId(null);
-			serviceTypeDao.create(type);
-		} else {
-			serviceTypeDao.update(type);
-		}
+		type.setId(null);
+		serviceTypeDao.create(type);
+
+		return type;
+	}
+
+	/**
+	 * Save ServiceType object
+	 *
+	 * @param type ServiceType
+	 * @return Updated object back
+	 * @throws org.flexpay.common.exception.FlexPayExceptionContainer
+	 *          if validation error occurs
+	 */
+	public ServiceType update(@NotNull ServiceType type) throws FlexPayExceptionContainer {
+
+		validate(type);
+		serviceTypeDao.update(type);
+
+		return type;
 	}
 
 	@SuppressWarnings ({"ThrowableInstanceNeverThrown"})
@@ -129,8 +132,8 @@ public class ServiceTypeServiceImpl implements ServiceTypeService {
 		} else {
 			// check if code was not changed and is a unique one
 			try {
-				ServiceType typeByCode = code2TypeCache.get(type.getCode());
-				if (typeByCode != null && (type.isNew() || !typeByCode.getId().equals(type.getId()))) {
+				ServiceType typeByCode = getServiceType(type.getCode());
+				if (typeByCode != null && (type.isNew() || !typeByCode.equals(type))) {
 					container.addException(new FlexPayException("Not unique code",
 							"eirc.error.service_type.not_unique_code"));
 				}
@@ -154,61 +157,12 @@ public class ServiceTypeServiceImpl implements ServiceTypeService {
 	 */
 	public ServiceType getServiceType(int code) throws IllegalArgumentException {
 
-		if (code2TypeCache == null) {
-			initializeServiceTypesCache();
-		}
-		if (code2TypeCache.containsKey(code)) {
-			return code2TypeCache.get(code);
-		}
-
 		ServiceType type = serviceDaoExt.findByCode(code);
 		if (type == null) {
 			throw new IllegalArgumentException("Cannot find service type with code #" + code);
 		}
 
-		code2TypeCache.put(code, type);
-
 		return type;
-	}
-
-	/**
-	 * Read service type details
-	 *
-	 * @param typeStub Service type stub
-	 * @return Service type
-	 */
-	public ServiceType getServiceType(ServiceType typeStub) {
-		log.debug("Getting service type by stub");
-		if (id2TypeCache == null) {
-			initializeServiceTypesCache();
-		}
-		if (id2TypeCache.containsKey(typeStub.getId())) {
-			return id2TypeCache.get(typeStub.getId());
-		}
-
-		throw new IllegalArgumentException("Cannot find service type with id " + typeStub.getId());
-	}
-
-	private Map<Integer, ServiceType> code2TypeCache;
-	private Map<Long, ServiceType> id2TypeCache;
-
-	private void initializeServiceTypesCache() {
-		log.debug("Initializing caches");
-		List<ServiceType> types = serviceTypeDao.findServiceTypes(new Page<ServiceType>(10000, 1));
-		updateCaches(types);
-	}
-
-	private void updateCaches(List<ServiceType> types) {
-		log.debug("Updating caches");
-		if (code2TypeCache == null) {
-			code2TypeCache = new HashMap<Integer, ServiceType>();
-			id2TypeCache = new HashMap<Long, ServiceType>();
-		}
-
-		for (ServiceType type : types) {
-			code2TypeCache.put(type.getCode(), type);
-			id2TypeCache.put(type.getId(), type);
-		}
 	}
 
 	/**
@@ -218,7 +172,8 @@ public class ServiceTypeServiceImpl implements ServiceTypeService {
 	 * @return Filter back
 	 */
 	public ServiceTypeFilter initFilter(ServiceTypeFilter serviceTypeFilter) {
-		serviceTypeFilter.setServiceTypes(listServiceTypes(new Page<ServiceType>(10000, 1)));
+
+		serviceTypeFilter.setServiceTypes(listAllServiceTypes());
 
 		return serviceTypeFilter;
 	}

@@ -49,7 +49,6 @@
 				<prop key="read">cacheName=flexpayCache</prop>
 				<prop key="listServices">cacheName=flexpayCache</prop>
 				<prop key="getService">cacheName=flexpayCache</prop>
-				<prop key="flexpayCache">cacheName=flexpayCache</prop>
 			</props>
 		</property>
 		<property name="flushingModels">
@@ -60,13 +59,32 @@
 		<property name="target" ref="spServiceTarget" />
 	</bean>
 
+	<bean id="serviceTypeService"
+		  class="org.springmodules.cache.interceptor.proxy.CacheProxyFactoryBean">
+		<property name="cacheProviderFacade" ref="cacheProviderFacade" />
+		<property name="cachingModels">
+			<props>
+				<prop key="read">cacheName=paymentsServiceTypeCache</prop>
+				<prop key="list*">cacheName=paymentsServiceTypeCache</prop>
+				<prop key="get*">cacheName=paymentsServiceTypeCache</prop>
+			</props>
+		</property>
+		<property name="flushingModels">
+			<props>
+				<prop key="create">cacheNames=paymentsServiceTypeCache</prop>
+				<prop key="update">cacheNames=paymentsServiceTypeCache</prop>
+				<prop key="disable">cacheNames=paymentsServiceTypeCache</prop>
+			</props>
+		</property>
+		<property name="target" ref="serviceTypeServiceTarget" />
+	</bean>
+
 	<bean id="serviceProviderServiceAttribute"
 		  class="org.springmodules.cache.interceptor.proxy.CacheProxyFactoryBean">
 		<property name="cacheProviderFacade" ref="cacheProviderFacade" />
 		<property name="cachingModels">
 			<props>
                 <prop key="listServiceProviderAttributes">cacheName=flexpayCache</prop>
-				<prop key="flexpayCache">cacheName=flexpayCache</prop>
 			</props>
 		</property>
 		<property name="flushingModels">

@@ -2,6 +2,7 @@ package org.flexpay.payments.actions.service;
 
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.persistence.Language;
+import static org.flexpay.common.persistence.Stub.stub;
 import static org.flexpay.common.util.CollectionUtils.map;
 import org.flexpay.common.util.config.ApplicationConfig;
 import org.flexpay.payments.persistence.ServiceType;
@@ -32,7 +33,7 @@ public class ServiceTypeEditAction extends FPActionSupport implements PaymentPoi
 			return REDIRECT_SUCCESS;
 		}
 
-		ServiceType type = serviceTypeService.read(serviceType);
+		ServiceType type = serviceType.isNotNew() ? serviceTypeService.read(stub(serviceType)) : serviceType;
 		if (type == null) {
 			addActionError(getText("error.invalid_id"));
 			return REDIRECT_SUCCESS;
@@ -59,7 +60,11 @@ public class ServiceTypeEditAction extends FPActionSupport implements PaymentPoi
 			type.setTypeName(nameTranslation);
 		}
 
-		serviceTypeService.save(type);
+		if (type.isNew()) {
+			serviceTypeService.create(type);
+		} else {
+			serviceTypeService.update(type);
+		}
 
 		return REDIRECT_SUCCESS;
 	}

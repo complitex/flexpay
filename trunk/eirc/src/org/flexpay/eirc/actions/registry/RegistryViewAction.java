@@ -61,7 +61,7 @@ public class RegistryViewAction extends FPActionWithPagerSupport<RegistryRecord>
 	}
 
 	public String getServiceTypeName(ServiceType typeStub) throws FlexPayException {
-		ServiceType type = serviceTypeService.getServiceType(typeStub);
+		ServiceType type = serviceTypeService.read(stub(typeStub));
 		ServiceTypeNameTranslation name = getTranslation(type.getTypeNames());
 		return name == null ? "Unknown" : name.getName();
 	}

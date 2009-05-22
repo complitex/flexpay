@@ -2,8 +2,11 @@ package org.flexpay.payments.service;
 
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
+import org.flexpay.common.persistence.Stub;
 import org.flexpay.payments.persistence.ServiceType;
 import org.flexpay.payments.persistence.filters.ServiceTypeFilter;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.security.annotation.Secured;
 
 import java.util.List;
@@ -30,6 +33,7 @@ public interface ServiceTypeService {
 
 	/**
 	 * List all service types
+	 *
 	 * @return list of service types
 	 */
 	@Secured (Roles.SERVICE_TYPE_READ)
@@ -38,20 +42,32 @@ public interface ServiceTypeService {
 	/**
 	 * Read full service type info
 	 *
-	 * @param serviceType ServiceType stub
+	 * @param stub Service type stub
 	 * @return ServiceType
 	 */
 	@Secured (Roles.SERVICE_TYPE_READ)
-	ServiceType read(ServiceType serviceType);
+	@Nullable
+	ServiceType read(@NotNull Stub<ServiceType> stub);
+
+	/**
+	 * Create a new ServiceType object
+	 *
+	 * @param type ServiceType
+	 * @return Persisted type back
+	 * @throws FlexPayExceptionContainer if validation error occurs
+	 */
+	@Secured (Roles.SERVICE_TYPE_CHANGE)
+	ServiceType create(@NotNull ServiceType type) throws FlexPayExceptionContainer;
 
 	/**
 	 * Save ServiceType object
 	 *
 	 * @param type ServiceType
+	 * @return Updated object back
 	 * @throws FlexPayExceptionContainer if validation error occurs
 	 */
-	@Secured ({Roles.SERVICE_TYPE_ADD, Roles.SERVICE_TYPE_CHANGE})
-	void save(ServiceType type) throws FlexPayExceptionContainer;
+	@Secured (Roles.SERVICE_TYPE_CHANGE)
+	ServiceType update(@NotNull ServiceType type) throws FlexPayExceptionContainer;
 
 	/**
 	 * Find service type by its code
@@ -62,15 +78,6 @@ public interface ServiceTypeService {
 	 */
 	@Secured (Roles.SERVICE_TYPE_READ)
 	ServiceType getServiceType(int code) throws IllegalArgumentException;
-
-	/**
-	 * Read service type details
-	 *
-	 * @param typeStub Service type stub
-	 * @return Service type
-	 */
-	@Secured (Roles.SERVICE_TYPE_READ)
-	ServiceType getServiceType(ServiceType typeStub);
 
 	/**
 	 * Initialize filter
