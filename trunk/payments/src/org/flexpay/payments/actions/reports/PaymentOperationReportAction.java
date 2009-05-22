@@ -1,25 +1,24 @@
 package org.flexpay.payments.actions.reports;
 
-import org.flexpay.payments.persistence.Operation;
-import org.flexpay.payments.reports.payments.PaymentsReporter;
-import org.flexpay.payments.reports.payments.PaymentPrintForm;
+import net.sf.jasperreports.engine.JRDataSource;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import org.apache.commons.io.IOUtils;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.file.FPFile;
-import static org.flexpay.common.util.CollectionUtils.map;
-import static org.flexpay.common.util.CollectionUtils.ar;
-import org.flexpay.common.util.config.ApplicationConfig;
 import org.flexpay.common.service.reporting.ReportUtil;
+import static org.flexpay.common.util.CollectionUtils.ar;
+import static org.flexpay.common.util.CollectionUtils.map;
+import org.flexpay.common.util.config.ApplicationConfig;
+import org.flexpay.orgs.persistence.PaymentPoint;
+import org.flexpay.payments.persistence.Operation;
+import org.flexpay.payments.reports.payments.PaymentPrintForm;
+import org.flexpay.payments.reports.payments.PaymentsReporter;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
-import org.apache.commons.io.IOUtils;
 
-import java.util.Map;
 import java.io.InputStream;
-import java.io.IOException;
-
-import net.sf.jasperreports.engine.JRDataSource;
-import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import java.util.Map;
 
 public class PaymentOperationReportAction extends FPActionSupport {
 
@@ -56,23 +55,34 @@ public class PaymentOperationReportAction extends FPActionSupport {
 
 		JRDataSource dataSource = new JRBeanCollectionDataSource(form.getDetailses());
 
-		if (!reportUtil.templateUploaded("QuittancePayment") || true) {
-			uploadReport();
+		String reportName = getReportName(form);
+		if (!reportUtil.templateUploaded(reportName)) {
+			uploadReport(reportName);
 		}
 
-		report = reportUtil.exportToPdf("QuittancePayment", params, dataSource);
+		report = reportUtil.exportToPdf(reportName, params, dataSource);
 
 		return FILE;
 	}
 
-	private void uploadReport() throws Exception {
+	private String getReportName(PaymentPrintForm form) {
+		String base = "QuittancePayment";
+		String perPointQuittance = base + "_" + form.getPaymentPointStub().getId();
+		String resName = "WEB-INF/payments/reports/" + perPointQuittance + ReportUtil.EXTENSION_TEMPLATE;
+		if (ApplicationConfig.isResourceAvailable(resName)) {
+			return perPointQuittance;
+		}
+
+		return base;
+	}
+
+	private void uploadReport(String reportName) throws Exception {
 
 		InputStream is = null;
 		try {
-			String name = "QuittancePayment";
-			String resName = "WEB-INF/payments/reports/" + name + ReportUtil.EXTENSION_TEMPLATE;
+			String resName = "WEB-INF/payments/reports/" + reportName + ReportUtil.EXTENSION_TEMPLATE;
 			is = ApplicationConfig.getResourceAsStream(resName);
-			reportUtil.uploadReportTemplate(is, name);
+			reportUtil.uploadReportTemplate(is, reportName);
 		} finally {
 			IOUtils.closeQuietly(is);
 		}

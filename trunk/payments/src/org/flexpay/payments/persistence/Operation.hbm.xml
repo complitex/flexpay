@@ -88,6 +88,13 @@
 				<comment>Organization operation created in</comment>
 			</column>
 		</many-to-one>
+		<many-to-one name="paymentPoint"
+					 class="org.flexpay.orgs.persistence.PaymentPoint"
+					 foreign-key="FK_payments_operations_tbl_payment_point_id">
+			<column name="payment_point_id" not-null="true">
+				<comment>Payment point operation created in</comment>
+			</column>
+		</many-to-one>
 		<many-to-one name="registerOrganization"
 					 class="org.flexpay.orgs.persistence.Organization"
 					 foreign-key="FK_payments_operations_tbl_register_organization_id">

@@ -1,5 +1,8 @@
 package org.flexpay.payments.reports.payments;
 
+import org.flexpay.orgs.persistence.PaymentPoint;
+import org.flexpay.common.persistence.Stub;
+
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Collections;
@@ -16,6 +19,7 @@ public class PaymentPrintForm implements Serializable {
 	private String totalSpelling;
 	private BigDecimal inputSumm;
 	private BigDecimal changeSumm;
+	private Stub<PaymentPoint> paymentPointStub;
 
 	private List<PaymentDetails> detailses = Collections.emptyList();
 
@@ -89,6 +93,14 @@ public class PaymentPrintForm implements Serializable {
 
 	public void setDetailses(List<PaymentDetails> detailses) {
 		this.detailses = detailses;
+	}
+
+	public Stub<PaymentPoint> getPaymentPointStub() {
+		return paymentPointStub;
+	}
+
+	public void setPaymentPointStub(Stub<PaymentPoint> paymentPointStub) {
+		this.paymentPointStub = paymentPointStub;
 	}
 
 	public static class PaymentDetails implements Serializable {

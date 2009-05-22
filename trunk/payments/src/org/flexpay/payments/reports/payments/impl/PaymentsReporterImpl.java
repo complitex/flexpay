@@ -87,6 +87,7 @@ public class PaymentsReporterImpl implements PaymentsReporter {
 		form.setQuittanceNumber(String.valueOf(op.getId()));
 		form.setOperationDate(op.getCreationDate());
 		form.setOrganizationName(org.getName());
+		form.setPaymentPointStub(op.getPaymentPointStub());
 
 		// todo: fixme
 		form.setCashierFIO("Коваль А.Н.");

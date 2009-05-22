@@ -1,7 +1,9 @@
 package org.flexpay.orgs.persistence;
 
 import org.flexpay.common.persistence.DomainObjectWithStatus;
+import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.util.TranslationUtil;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
 import java.util.Set;
@@ -14,6 +16,20 @@ public class PaymentPoint extends DomainObjectWithStatus {
 	private PaymentsCollector collector;
 	private Set<PaymentPointName> names = Collections.emptySet();
 	private String address;
+
+	/**
+	 * Constructs a new DomainObject.
+	 */
+	public PaymentPoint() {
+	}
+
+	public PaymentPoint(@NotNull Long id) {
+		super(id);
+	}
+
+	public PaymentPoint(@NotNull Stub<PaymentPoint> stub) {
+		super(stub.getId());
+	}
 
 	public PaymentsCollector getCollector() {
 		return collector;
