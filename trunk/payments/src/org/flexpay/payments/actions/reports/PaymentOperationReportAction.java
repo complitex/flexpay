@@ -10,7 +10,6 @@ import org.flexpay.common.service.reporting.ReportUtil;
 import static org.flexpay.common.util.CollectionUtils.ar;
 import static org.flexpay.common.util.CollectionUtils.map;
 import org.flexpay.common.util.config.ApplicationConfig;
-import org.flexpay.orgs.persistence.PaymentPoint;
 import org.flexpay.payments.persistence.Operation;
 import org.flexpay.payments.reports.payments.PaymentPrintForm;
 import org.flexpay.payments.reports.payments.PaymentsReporter;
