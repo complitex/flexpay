@@ -23,7 +23,7 @@ public class IdentityTypeDeleteAction {
 	public String execute() throws Exception {
 		List<IdentityType> identityTypeToDelete = CollectionUtils.list();
 		for (Long id : idList) {
-			identityTypeToDelete.add(identityTypeService.read(new Stub<IdentityType>(id))));
+			identityTypeToDelete.add(identityTypeService.read(new Stub<IdentityType>(id)));
 		}
 		try {
 			identityTypeService.disable(identityTypeToDelete);
