@@ -108,6 +108,12 @@
 			<url-pattern>*.action</url-pattern>
 			<http-method>POST</http-method>
 			<http-method>GET</http-method>
+			<web-resource-collection>
+				<web-resource-name>secure-resource</web-resource-name>
+				<url-pattern>/download/*</url-pattern>
+				<http-method>POST</http-method>
+				<http-method>GET</http-method>
+			</web-resource-collection>
 		</web-resource-collection>
 		<auth-constraint>
 			<role-name>*</role-name>
