@@ -10,6 +10,11 @@
 	<bean id="paymentsStaticPageAction" class="org.flexpay.payments.actions.PaymentPointAwareStaticAction"
 		  scope="prototype" />
 
+	<!-- get identity cookie action -->
+	<bean id="getIdentityCookieAction" class="org.flexpay.payments.actions.security.GetIdentityCookieAction"
+		  p:paymentPointService-ref="paymentPointService"
+		  scope="prototype" />
+
 	<!-- quittance-related actions -->
 	<bean id="searchQuittanceAction"
 		  class="org.flexpay.payments.actions.quittance.SearchQuittanceAction"
