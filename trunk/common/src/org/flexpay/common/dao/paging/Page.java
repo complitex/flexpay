@@ -1,5 +1,8 @@
 package org.flexpay.common.dao.paging;
 
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
+
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
@@ -15,9 +18,6 @@ public class Page<E> implements Serializable {
 	private transient int totalElements;
 	private transient List<E> elements = Collections.emptyList();
 
-	/**
-	 * Constructs a new Page.
-	 */
 	public Page() {
 	}
 
@@ -35,11 +35,6 @@ public class Page<E> implements Serializable {
 		this.pageNumber = pageNumber - 1;
 	}
 
-	/**
-	 * Setter for property 'totalResults'.
-	 *
-	 * @param totalElements Value to set for property 'totalResults'.
-	 */
 	public void setTotalElements(int totalElements) {
 		this.totalElements = totalElements;
 		int lastPageNumber = getLastPageNumber();
@@ -48,11 +43,6 @@ public class Page<E> implements Serializable {
 		}
 	}
 
-	/**
-	 * Setter for property 'results'.
-	 *
-	 * @param elements Value to set for property 'results'.
-	 */
 	public void setElements(List<E> elements) {
 		this.elements = elements;
 	}
@@ -107,20 +97,10 @@ public class Page<E> implements Serializable {
 		return div * pageSize < totalElements ? div + 1 : div;
 	}
 
-	/**
-	 * Get page elements
-	 *
-	 * @return current page elements list
-	 */
 	public List<E> getPageElements() {
 		return elements;
 	}
 
-	/**
-	 * Get total number of elements
-	 *
-	 * @return number of elements
-	 */
 	public int getTotalNumberOfElements() {
 		return totalElements;
 	}
@@ -165,48 +145,34 @@ public class Page<E> implements Serializable {
 		return hasPreviousPage() ? getPageNumber() - 1 : 1;
 	}
 
-	/**
-	 * Get number of elements in the page
-	 *
-	 * @return page size
-	 */
+	public void nextPage() {
+		setPageNumber(getPageNumber() + 1);
+	}
+
 	public int getPageSize() {
 		return pageSize;
 	}
 
-	/**
-	 * Get current page number
-	 *
-	 * @return page number
-	 */
 	public int getPageNumber() {
 		return pageNumber + 1;
 	}
 
-	/**
-	 * Setter for property 'pageSize'.
-	 *
-	 * @param pageSize Value to set for property 'pageSize'.
-	 */
 	public void setPageSize(int pageSize) {
 		this.pageSize = pageSize;
 	}
 
-	/**
-	 * Setter for property 'pageNumber'.
-	 *
-	 * @param pageNumber Value to set for property 'pageNumber'.
-	 */
 	public void setPageNumber(int pageNumber) {
 		this.pageNumber = pageNumber - 1;
 	}
 
 	@Override
 	public String toString() {
-		return getThisPageFirstElementNumber() + " : " + (getThisPageFirstElementNumber() + pageSize);
+		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
+				append("Page {").
+				append("pageSize", pageSize).
+				append("pageNumber", pageNumber).
+				append("totalElements", totalElements).
+				append("}").toString();
 	}
 
-	public void nextPage() {
-		setPageNumber(getPageNumber() + 1);
-	}
 }

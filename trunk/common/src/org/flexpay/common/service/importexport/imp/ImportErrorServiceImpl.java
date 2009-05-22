@@ -7,9 +7,12 @@ import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.common.persistence.ImportError;
 import org.flexpay.common.service.importexport.ClassToTypeRegistry;
 import org.flexpay.common.service.importexport.ImportErrorService;
+import org.springframework.beans.factory.annotation.Required;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+@Transactional(readOnly = true)
 public class ImportErrorServiceImpl implements ImportErrorService {
 
 	private ImportErrorDao errorDao;
@@ -53,25 +56,18 @@ public class ImportErrorServiceImpl implements ImportErrorService {
 	 *
 	 * @param importError ImportError
 	 */
+	@Transactional(readOnly = false)
 	public void addError(ImportError importError) {
 		errorDao.create(importError);
 	}
 
-	/**
-	 * Setter for property 'errorDao'.
-	 *
-	 * @param errorDao Value to set for property 'errorDao'.
-	 */
+	@Required
 	public void setErrorDao(ImportErrorDao errorDao) {
 		this.errorDao = errorDao;
 	}
 
-	/**
-	 * Setter for property 'registry'.
-	 *
-	 * @param registry Value to set for property 'registry'.
-	 */
 	public void setRegistry(ClassToTypeRegistry registry) {
 		this.registry = registry;
 	}
+
 }
