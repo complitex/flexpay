@@ -40,7 +40,8 @@
 	<bean id="operationLevelService" class="org.flexpay.payments.service.impl.OperationLevelServiceImpl"
 		  p:levelDao-ref="operationLevelDao" />
 
-	<bean id="serviceTypeService"
+	<bean id="serviceTypeServiceTarget"
+		  autowire-candidate="false"
 		  class="org.flexpay.payments.service.impl.ServiceTypeServiceImpl"
 		  p:serviceDaoExt-ref="serviceDaoExt"
 		  p:serviceTypeDao-ref="serviceTypeDao" />
