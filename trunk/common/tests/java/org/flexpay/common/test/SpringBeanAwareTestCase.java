@@ -49,11 +49,6 @@ public abstract class SpringBeanAwareTestCase extends AbstractJUnit4SpringContex
 		return getClass().getClassLoader().getResourceAsStream(relativePath);
 	}
 
-	@Test
-	public void testSchedulerDisabled() throws Throwable {
-		assertTrue("Scheduler was not disabled", scheduler == null || scheduler.isShutdown());
-	}
-
 	@Before
 	public void stopScheduler() throws Exception {
 		scheduler = (Scheduler) applicationContext.getBean("schedulerFactoryBean");

@@ -11,18 +11,18 @@
 			<td class="th"><s:text name="ab.identity_type" /></td>
 			<td class="th" width="35%">&nbsp;</td>
 		</tr>
-		<s:iterator value="translationList" status="rowstatus">
+		<s:iterator value="identityTypes" status="rowstatus">
 			<tr valign="middle" class="cols_1">
 				<td class="col_1s"><s:property value="#rowstatus.index + 1" /></td>
-				<td class="col"><input type="checkbox" name="idList" value="<s:property value="%{translatable.id}"/>" />
+				<td class="col"><input type="checkbox" name="idList" value="<s:property value="%{id}"/>" />
 				</td>
 				<td class="col">
-					<a href="<s:url action='identityTypeView'><s:param name="id" value="%{translatable.id}"/></s:url>">
-						<s:property value="name" />
+					<a href="<s:url action='identityTypeView'><s:param name="id" value="%{id}"/></s:url>">
+						<s:property value="%{getTranslationName(translations)}" />
 					</a>
 				</td>
 				<td class="col">
-					<a href="<s:url action='identityTypeEdit'><s:param name="identityType.id" value="%{translatable.id}"/></s:url>">
+					<a href="<s:url action='identityTypeEdit'><s:param name="identityType.id" value="%{id}"/></s:url>">
 						<s:text name="ab.edit" />
 					</a>
 				</td>

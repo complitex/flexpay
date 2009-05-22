@@ -25,16 +25,6 @@ public interface MultilangEntityService<Entity extends DomainObject, T extends T
 	Entity read(Stub<Entity> stub);
 
 	/**
-	 * Get Entity translations for specified locale, if translation is not found check for
-	 * translation in default locale
-	 *
-	 * @param locale Locale to get translations for
-	 * @return List of Translation
-	 * @throws FlexPayException if failure occurs
-	 */
-	List<T> getTranslations(Locale locale) throws FlexPayException;
-
-	/**
 	 * Get a list of available street types
 	 *
 	 * @return List of Entity

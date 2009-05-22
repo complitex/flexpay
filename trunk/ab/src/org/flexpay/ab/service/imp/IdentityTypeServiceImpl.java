@@ -43,7 +43,7 @@ public class IdentityTypeServiceImpl implements IdentityTypeService {
 	 * @throws org.flexpay.common.exception.FlexPayException
 	 *          if failure occurs
 	 */
-	public List<IdentityTypeTranslation> getTranslations(Locale locale)
+	private List<IdentityTypeTranslation> getTranslations(Locale locale)
 			throws FlexPayException {
 
 		log.debug("Getting list of IdentityTypes");

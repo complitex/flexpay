@@ -53,7 +53,10 @@
 	</class>
 
 	<query name="IdentityType.listIdentityTypes">
-		from IdentityType s where s.status = ?
+		select distinct s
+		from IdentityType s
+			left join fetch s.translations 
+		where s.status = ?
 	</query>
 
 	<query name="IdentityType.readFull">

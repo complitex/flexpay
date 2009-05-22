@@ -43,17 +43,6 @@ public interface IdentityTypeService extends
 	IdentityType read(Stub<IdentityType> stub);
 
 	/**
-	 * Get Entity translations for specified locale, if translation is not found check for translation in default locale
-	 *
-	 * @param locale Locale to get translations for
-	 * @return List of Translation
-	 * @throws org.flexpay.common.exception.FlexPayException
-	 *          if failure occurs
-	 */
-	@Secured (Roles.IDENTITY_TYPE_READ)
-	List<IdentityTypeTranslation> getTranslations(Locale locale) throws FlexPayException;
-
-	/**
 	 * Get a list of available street types
 	 *
 	 * @return List of Entity
