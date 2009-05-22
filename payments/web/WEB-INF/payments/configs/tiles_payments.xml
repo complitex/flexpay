@@ -40,7 +40,7 @@
 
 	<definition name="payments.security.get_identity_cookie" extends="payments.main">
 		<put-attribute name="title" value="payments.get_identity_cookie.title"/>
-		<put-attribute name="body" value="/WEB-INF/jsp/payments/security/get_cookie.jsp"/>
+		<put-attribute name="body" value="/WEB-INF/jsp/payments/security/get_identity_cookie.jsp"/>
 	</definition>
 
 	<!-- search-related definitions -->
