@@ -190,6 +190,7 @@ public class RegistryRecord extends DomainObject {
 	}
 
 	@SuppressWarnings ({"UnnecessaryBoxing"})
+	@Override
 	public String toString() {
 		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE)
 				.append("id", getId())
@@ -197,7 +198,7 @@ public class RegistryRecord extends DomainObject {
 				.append("status", recordStatus == null ? "-" : recordStatus.getI18nName())
 				.append("status-id", recordStatus == null ? Long.valueOf(0) : recordStatus.getId())
 				.append("registry-id", registry == null ? Long.valueOf(0) : registry.getId())
-				.append("code", getServiceCode())
+				.append("code", serviceCode)
 				.append("amount", amount)
 				.append("firstName", firstName)
 				.append("middleName", middleName)

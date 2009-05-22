@@ -29,16 +29,17 @@ public class TestSetNumberOfHabitantsOperation extends SpringBeanAwareTestCase {
 	@Test
 	public void testProcess() throws FlexPayException {
 		Registry registry = eircRegistryService.read(new Stub<Registry>(13L));
-		Page<RegistryRecord> pager = new Page<RegistryRecord>();
-		pager.setTotalElements(1);
-		List<RegistryRecord> records = registryFileService.getRecordsForProcessing(stub(registry), pager, new Long[] {null, null});
+		List<RegistryRecord> records = registryFileService.getRecordsForProcessing(stub(registry), new Page<RegistryRecord>(), new Long[] {null, null});
 		for (RegistryRecord record : records) {
 			List<String> containers = new ArrayList<String>();
+
 			for (RegistryRecordContainer c : record.getContainers()) {
-				List<String> data = StringUtil.splitEscapable(c.getData(), Operation.CONTAINER_DATA_DELIMITER, Operation.ESCAPE_SYMBOL);
-				if (data.get(0).equals("4")) {
-					containers = data;
-					break;
+				if (c != null) {
+					List<String> data = StringUtil.splitEscapable(c.getData(), Operation.CONTAINER_DATA_DELIMITER, Operation.ESCAPE_SYMBOL);
+					if ("4".equals(data.get(0))) {
+						containers = data;
+						break;
+					}
 				}
 			}
 			SetNumberOfHabitantsOperation op = new SetNumberOfHabitantsOperation(factory, containers);

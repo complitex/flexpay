@@ -15,6 +15,7 @@ import org.flexpay.common.service.importexport.*;
 import org.flexpay.common.util.config.ApplicationConfig;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.beans.factory.annotation.Required;
 import org.jetbrains.annotations.NonNls;
 
 import java.util.*;
@@ -617,94 +618,117 @@ public class ImportService {
 		}
 	}
 
+	@Required
 	public void setDistrictDataConverter(RawDistrictDataConverter districtDataConverter) {
 		this.districtDataConverter = districtDataConverter;
 	}
 
+	@Required
 	public void setStreetDataConverter(DataConverter streetDataConverter) {
 		this.streetDataConverter = streetDataConverter;
 	}
 
+	@Required
 	public void setPersonDataConverter(RawPersonDataConverter personDataConverter) {
 		this.personDataConverter = personDataConverter;
 	}
 
+	@Required
 	public void setDistrictDataSource(DistrictJdbcDataSource districtDataSource) {
 		this.districtDataSource = districtDataSource;
 	}
 
+	@Required
 	public void setStreetDataSource(RawDataSource<? extends RawData<Street>> streetDataSource) {
 		this.streetDataSource = streetDataSource;
 	}
 
+	@Required
 	public void setStreetService(StreetService streetService) {
 		this.streetService = streetService;
 	}
 
+	@Required
 	public void setCorrectionsService(CorrectionsService correctionsService) {
 		this.correctionsService = correctionsService;
 	}
 
+	@Required
 	public void setDistrictService(DistrictService districtService) {
 		this.districtService = districtService;
 	}
 
+	@Required
 	public void setStreetTypeDataConverter(RawStreetTypeDataConverter streetTypeDataConverter) {
 		this.streetTypeDataConverter = streetTypeDataConverter;
 	}
 
+	@Required
 	public void setStreetTypeDataSource(StreetTypeJdbcDataSource streetTypeDataSource) {
 		this.streetTypeDataSource = streetTypeDataSource;
 	}
 
+	@Required
 	public void setBuildingsDataSource(BuildingsJdbcDataSource buildingsDataSource) {
 		this.buildingsDataSource = buildingsDataSource;
 	}
 
+	@Required
 	public void setApartmentDataSource(ApartmentJdbcDataSource apartmentDataSource) {
 		this.apartmentDataSource = apartmentDataSource;
 	}
 
+	@Required
 	public void setPersonDataSource(PersonJdbcDataSource personDataSource) {
 		this.personDataSource = personDataSource;
 	}
 
+	@Required
 	public void setPersonService(PersonService personService) {
 		this.personService = personService;
 	}
 
+	@Required
 	public void setStreetTypeService(StreetTypeService streetTypeService) {
 		this.streetTypeService = streetTypeService;
 	}
 
+	@Required
 	public void setBuildingsDataConverter(RawBuildingsDataConverter buildingsDataConverter) {
 		this.buildingsDataConverter = buildingsDataConverter;
 	}
 
+	@Required
 	public void setApartmentDataConverter(RawApartmentDataConverter apartmentDataConverter) {
 		this.apartmentDataConverter = apartmentDataConverter;
 	}
 
+	@Required
 	public void setBuildingService(BuildingService buildingService) {
 		this.buildingService = buildingService;
 	}
 
+	@Required
 	public void setApartmentService(ApartmentService apartmentService) {
 		this.apartmentService = apartmentService;
 	}
 
+	@Required
 	public void setAllObjectsDao(AllObjectsDao allObjectsDao) {
 		this.allObjectsDao = allObjectsDao;
 	}
 
+	@Required
 	public void setImportErrorService(ImportErrorService importErrorService) {
 		this.importErrorService = importErrorService;
 	}
 
+	@Required
 	public void setErrorsSupport(ImportErrorsSupport errorsSupport) {
 		this.errorsSupport = errorsSupport;
 	}
 
+	@Required
 	public void setRegistry(ClassToTypeRegistry registry) {
 		this.registry = registry;
 	}

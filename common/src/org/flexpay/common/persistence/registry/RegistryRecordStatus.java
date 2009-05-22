@@ -1,5 +1,7 @@
 package org.flexpay.common.persistence.registry;
 
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
 import org.flexpay.common.persistence.DomainObject;
 import static org.flexpay.common.util.CollectionUtils.ar;
 import static org.flexpay.common.util.CollectionUtils.map;
@@ -23,16 +25,10 @@ public class RegistryRecordStatus extends DomainObject {
 
 	private int code;
 
-	/**
-	 * @return the code
-	 */
 	public int getCode() {
 		return code;
 	}
 
-	/**
-	 * @param code the code to set
-	 */
 	public void setCode(int code) {
 		this.code = code;
 	}
@@ -44,4 +40,15 @@ public class RegistryRecordStatus extends DomainObject {
 	public boolean isProcessedWithError() {
 		return getCode() == PROCESSED_WITH_ERROR;
 	}
+
+	@Override
+	public String toString() {
+		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
+				append("RegistryRecordStatus {").
+				append("id", getId()).
+				append("code", code).
+				append("i18nName", getI18nName()).
+				append("}").toString();
+	}
+
 }

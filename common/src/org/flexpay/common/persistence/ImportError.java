@@ -1,5 +1,8 @@
 package org.flexpay.common.persistence;
 
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
+
 /**
  * Persistent object to store import operations errors
  */
@@ -68,6 +71,18 @@ public class ImportError extends DomainObjectWithStatus {
 
 	public void setErrorId(String errorId) {
 		this.errorId = errorId;
+	}
+
+	@Override
+	public String toString() {
+		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
+				append("ImportError {").
+				append("id", getId()).
+				append("errorId", errorId).
+				append("sourceObjectId", sourceObjectId).
+				append("objectType", objectType).
+				append("dataSourceBean", dataSourceBean).
+				append("}").toString();
 	}
 
 }
