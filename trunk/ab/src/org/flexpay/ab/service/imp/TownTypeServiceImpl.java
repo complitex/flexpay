@@ -8,9 +8,11 @@ import org.flexpay.ab.persistence.filters.TownTypeFilter;
 import org.flexpay.ab.service.TownTypeService;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
+import org.flexpay.common.persistence.Stub;
+import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.persistence.history.ModificationListener;
-import org.flexpay.common.util.TranslationUtil;
 import org.flexpay.common.service.internal.SessionUtils;
+import org.flexpay.common.util.TranslationUtil;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
@@ -98,7 +100,7 @@ public class TownTypeServiceImpl implements TownTypeService {
 
 		validate(type);
 
-		TownType oldType = read(type.getId());
+		TownType oldType = read(stub(type));
 		sessionUtils.evict(oldType);
 		modificationListener.onUpdate(oldType, type);
 
@@ -133,11 +135,11 @@ public class TownTypeServiceImpl implements TownTypeService {
 	/**
 	 * Read TownType object by its unique id
 	 *
-	 * @param id TownType key
+	 * @param stub Entity stub
 	 * @return TownType object, or <code>null</code> if object not found
 	 */
-	public TownType read(Long id) {
-		return townTypeDao.readFull(id);
+	public TownType read(Stub<TownType> stub) {
+		return townTypeDao.readFull(stub.getId());
 	}
 
 	/**

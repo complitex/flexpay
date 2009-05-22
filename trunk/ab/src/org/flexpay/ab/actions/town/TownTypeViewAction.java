@@ -3,6 +3,7 @@ package org.flexpay.ab.actions.town;
 import org.flexpay.ab.persistence.TownType;
 import org.flexpay.ab.service.TownTypeService;
 import org.flexpay.common.actions.FPActionSupport;
+import org.flexpay.common.persistence.Stub;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
@@ -16,7 +17,7 @@ public class TownTypeViewAction extends FPActionSupport {
 
 	@NotNull
 	public String doExecute() throws Exception {
-		townType = townTypeService.read(id);
+		townType = townTypeService.read(new Stub<TownType>(id));
 
 		return SUCCESS;
 	}

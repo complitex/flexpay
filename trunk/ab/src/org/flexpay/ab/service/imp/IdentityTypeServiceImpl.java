@@ -4,19 +4,15 @@ import org.apache.commons.lang.StringUtils;
 import org.flexpay.ab.dao.IdentityTypeDao;
 import org.flexpay.ab.persistence.IdentityType;
 import org.flexpay.ab.persistence.IdentityTypeTranslation;
-import org.flexpay.ab.persistence.StreetType;
 import org.flexpay.ab.service.IdentityTypeService;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
-import org.flexpay.common.persistence.Language;
+import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.persistence.history.ModificationListener;
-import static org.flexpay.common.util.CollectionUtils.list;
-import org.flexpay.common.util.LanguageUtil;
-import org.flexpay.common.util.TranslationUtil;
-import org.flexpay.common.util.config.ApplicationConfig;
 import org.flexpay.common.service.internal.SessionUtils;
-import org.jetbrains.annotations.NonNls;
+import static org.flexpay.common.util.CollectionUtils.list;
+import org.flexpay.common.util.TranslationUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
@@ -52,8 +48,6 @@ public class IdentityTypeServiceImpl implements IdentityTypeService {
 
 		log.debug("Getting list of IdentityTypes");
 
-		Language language = LanguageUtil.getLanguage(locale);
-		Language defaultLang = ApplicationConfig.getDefaultLanguage();
 		List<IdentityType> types = getEntities();
 		List<IdentityTypeTranslation> translations = list();
 
@@ -74,13 +68,13 @@ public class IdentityTypeServiceImpl implements IdentityTypeService {
 	/**
 	 * Read IdentityType object by its unique id
 	 *
-	 * @param id IdentityType key
+	 * @param stub Entity stub
 	 * @return IdentityType object, or <code>null</code> if object not found
 	 */
 	@Nullable
-	public IdentityType read(@NotNull Long id) {
+	public IdentityType read(@NotNull Stub<IdentityType> stub) {
 
-		return identityTypeDao.readFull(id);
+		return identityTypeDao.readFull(stub.getId());
 	}
 
 	/**
@@ -128,12 +122,13 @@ public class IdentityTypeServiceImpl implements IdentityTypeService {
 	 * @return Saved instance
 	 * @throws FlexPayExceptionContainer if validation fails
 	 */
+	@SuppressWarnings ({"ThrowableInstanceNeverThrown"})
 	@Transactional (readOnly = false)
 	public IdentityType update(@NotNull IdentityType identityType) throws FlexPayExceptionContainer {
 
 		validate(identityType);
 
-		IdentityType old = read(identityType.getId());
+		IdentityType old = read(stub(identityType));
 		if (old == null) {
 			throw new FlexPayExceptionContainer(
 					new FlexPayException("No object found to update " + identityType));

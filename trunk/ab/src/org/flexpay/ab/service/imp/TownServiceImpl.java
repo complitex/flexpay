@@ -259,7 +259,7 @@ public class TownServiceImpl extends NameTimeDependentServiceImpl<
 		log.info("type filter: {}", filter);
 		Town typable = object == null ? getNewNameTimeDependent() : object;
 
-		TownType type = townTypeService.read(filter.getSelectedId());
+		TownType type = townTypeService.read(filter.getSelectedStub());
 		TownTypeTemporal typeTemporal = new TownTypeTemporal();
 		typeTemporal.setValue(type);
 		typeTemporal.setTown(typable);

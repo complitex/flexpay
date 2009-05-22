@@ -9,6 +9,7 @@ import org.flexpay.ab.persistence.TownTypeTranslation;
 import org.flexpay.ab.persistence.filters.TownTypeFilter;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
+import org.flexpay.common.persistence.Stub;
 import org.springframework.security.annotation.Secured;
 import org.jetbrains.annotations.NotNull;
 
@@ -35,11 +36,11 @@ public interface TownTypeService extends MultilangEntityService<TownType, TownTy
 	/**
 	 * Read Entity object by its unique id
 	 *
-	 * @param id Entity key
+	 * @param stub Entity stub
 	 * @return Entity object, or <code>null</code> if object not found
 	 */
 	@Secured (Roles.TOWN_TYPE_READ)
-	TownType read(Long id);
+	TownType read(Stub<TownType> stub);
 
 	/**
 	 * Get Entity translations for specified locale, if translation is not found check for translation in default locale

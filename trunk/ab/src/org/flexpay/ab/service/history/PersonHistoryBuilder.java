@@ -380,7 +380,7 @@ public class PersonHistoryBuilder extends HistoryBuilderBase<Person> {
 			if (stub == null) {
 				throw new IllegalStateException("Cannot find identity type by master index: " + externalId);
 			}
-			IdentityType type = identityTypeService.read(stub.getId());
+			IdentityType type = identityTypeService.read(stub);
 			context.lastIdentity.setIdentityType(type);
 			record.setProcessingStatus(ProcessingStatus.STATUS_PROCESSED);
 			log.debug("Set identity type: {}", type);

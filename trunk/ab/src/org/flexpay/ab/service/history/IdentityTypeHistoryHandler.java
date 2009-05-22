@@ -40,7 +40,7 @@ public class IdentityTypeHistoryHandler extends HistoryHandlerBase<IdentityType>
 		if (diff.getOperationType() == HistoryOperationType.TYPE_CREATE) {
 			if (typeStub != null) {
 				log.info("Request for object creation, but it already exists {}", diff);
-				object = identityTypeService.read(typeStub.getId());
+				object = identityTypeService.read(typeStub);
 			} else {
 				object = new IdentityType();
 			}
@@ -49,7 +49,7 @@ public class IdentityTypeHistoryHandler extends HistoryHandlerBase<IdentityType>
 				log.warn("Requested for object update/delete, but not found {}", diff);
 				throw new IllegalStateException("Requested for object update/delete, but not found " + masterIndex);
 			}
-			object = identityTypeService.read(typeStub.getId());
+			object = identityTypeService.read(typeStub);
 		}
 
 		if (object == null) {

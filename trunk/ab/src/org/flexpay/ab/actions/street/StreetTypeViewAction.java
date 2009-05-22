@@ -3,6 +3,7 @@ package org.flexpay.ab.actions.street;
 import org.flexpay.ab.persistence.StreetType;
 import org.flexpay.ab.service.StreetTypeService;
 import org.flexpay.common.actions.FPActionSupport;
+import org.flexpay.common.persistence.Stub;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
@@ -16,7 +17,7 @@ public class StreetTypeViewAction extends FPActionSupport {
 
 	@NotNull
 	public String doExecute() throws Exception {
-		streetType = streetTypeService.read(id);
+		streetType = streetTypeService.read(new Stub<StreetType>(id));
 
 		return SUCCESS;
 	}

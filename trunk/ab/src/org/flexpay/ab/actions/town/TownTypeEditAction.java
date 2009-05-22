@@ -5,6 +5,7 @@ import org.flexpay.ab.persistence.TownTypeTranslation;
 import org.flexpay.ab.service.TownTypeService;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.persistence.Language;
+import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.config.ApplicationConfig;
 import org.jetbrains.annotations.NotNull;
@@ -29,7 +30,7 @@ public class TownTypeEditAction extends FPActionSupport {
 			return REDIRECT_SUCCESS;
 		}
 
-		TownType type = townType.isNew() ? townType : townTypeService.read(townType.getId());
+		TownType type = townType.isNew() ? townType : townTypeService.read(stub(townType));
 
 		if (!isSubmit()) {
 			townType = type;

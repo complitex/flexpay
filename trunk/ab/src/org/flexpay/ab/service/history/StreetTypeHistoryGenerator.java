@@ -5,6 +5,7 @@ import org.flexpay.ab.service.StreetTypeService;
 import org.flexpay.common.persistence.history.Diff;
 import org.flexpay.common.persistence.history.HistoryGenerator;
 import org.flexpay.common.persistence.history.ProcessingStatus;
+import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.service.DiffService;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
@@ -32,7 +33,7 @@ public class StreetTypeHistoryGenerator implements HistoryGenerator<StreetType> 
 			return;
 		}
 
-		obj = streetTypeService.read(obj.getId());
+		obj = streetTypeService.read(stub(obj));
 
 		Diff diff = historyBuilder.diff(null, obj);
 		diff.setProcessingStatus(ProcessingStatus.STATUS_PROCESSED);

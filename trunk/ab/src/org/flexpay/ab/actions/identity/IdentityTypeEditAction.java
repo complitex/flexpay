@@ -6,6 +6,7 @@ import org.flexpay.ab.service.IdentityTypeService;
 import org.flexpay.ab.util.config.ApplicationConfig;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.persistence.Language;
+import static org.flexpay.common.persistence.Stub.stub;
 import static org.flexpay.common.util.CollectionUtils.treeMap;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
@@ -28,10 +29,10 @@ public class IdentityTypeEditAction extends FPActionSupport {
 			return REDIRECT_SUCCESS;
 		}
 
-		IdentityType type = identityType.isNew() ? identityType : identityTypeService.read(identityType.getId());
+		IdentityType type = identityType.isNew() ? identityType : identityTypeService.read(stub(identityType));
 
 		if (isNotSubmit()) {
-			identityType = type;            
+			identityType = type;
 			initTranslations();
 			return INPUT;
 		}

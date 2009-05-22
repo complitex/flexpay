@@ -5,6 +5,7 @@ import org.flexpay.ab.persistence.StreetTypeTranslation;
 import org.flexpay.ab.service.StreetTypeService;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.persistence.Language;
+import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.config.ApplicationConfig;
 import org.jetbrains.annotations.NotNull;
@@ -29,7 +30,7 @@ public class StreetTypeEditAction extends FPActionSupport {
 			return REDIRECT_SUCCESS;
 		}
 
-		StreetType type = streetType.isNew() ? streetType : streetTypeService.read(streetType.getId());
+		StreetType type = streetType.isNew() ? streetType : streetTypeService.read(stub(streetType));
 
 		if (isNotSubmit()) {
 			streetType = type;

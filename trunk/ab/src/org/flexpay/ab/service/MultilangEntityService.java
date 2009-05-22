@@ -3,6 +3,8 @@ package org.flexpay.ab.service;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Translation;
+import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.persistence.DomainObject;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
@@ -12,16 +14,15 @@ import java.util.Locale;
 /**
  * Service interface for multilaguage entity related tasks
  */
-public interface MultilangEntityService<Entity, T extends Translation> {
+public interface MultilangEntityService<Entity extends DomainObject, T extends Translation> {
 
 	/**
 	 * Read Entity object by its unique id
 	 *
-	 * @param id Entity key
+	 * @param stub Entity stub
 	 * @return Entity object, or <code>null</code> if object not found
-	 * @deprecated refactore to use {@link Stub}
 	 */
-	Entity read(Long id);
+	Entity read(Stub<Entity> stub);
 
 	/**
 	 * Get Entity translations for specified locale, if translation is not found check for

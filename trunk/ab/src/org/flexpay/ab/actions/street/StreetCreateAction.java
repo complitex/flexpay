@@ -60,7 +60,7 @@ public class StreetCreateAction extends CreateAction<
 					name.addNameTranslation(translation);
 				}
 			}
-			StreetType type = streetTypeService.read(streetTypeFilter.getSelectedId());
+			StreetType type = streetTypeService.read(streetTypeFilter.getSelectedStub());
 
 			object.setTypeForDate(type, date);
 			object.setNameForDate(name, date);

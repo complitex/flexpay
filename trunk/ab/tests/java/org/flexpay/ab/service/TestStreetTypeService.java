@@ -7,6 +7,7 @@ import org.flexpay.ab.persistence.StreetTypeTranslation;
 import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Language;
+import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.util.config.ApplicationConfig;
 import static org.junit.Assert.*;
 import org.junit.Test;
@@ -76,7 +77,7 @@ public class TestStreetTypeService extends AbSpringBeanAwareTestCase {
 	@Test
 	public void testUpdate() throws Throwable {
 
-		StreetType type = service.read(13L);
+		StreetType type = service.read(new Stub<StreetType>(13L)));
 		assertNotNull("Type #13 not found", type);
 
 		type.setTranslation(new StreetTypeTranslation("Тестовый тип"));
