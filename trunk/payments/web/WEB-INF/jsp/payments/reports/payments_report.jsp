@@ -48,3 +48,35 @@
 		</tr>
 	</table>
 </form>
+
+<s:if test="%{reportContentIsNotEmpty()}">
+	<table cellpadding="3" cellspacing="1" border="0" width="100%" class="operations">
+
+		<tr>
+			<td class="th"><s:text name="payments.reports.payment_report.number_doc"/></td>
+			<td class="th"><s:text name="payments.reports.payment_report.payment_point"/></td>
+			<td class="th"><s:text name="payments.reports.payment_report.number_oper"/></td>
+			<td class="th"><s:text name="payments.reports.payment_report.operation_id"/></td>
+			<td class="th"><s:text name="payments.reports.payment_report.service_provider_account"/></td>
+			<td class="th"><s:text name="payments.reports.payment_report.fio"/></td>
+			<td class="th"><s:text name="payments.reports.payment_report.service_type_code"/></td>
+			<td class="th"><s:text name="payments.reports.payment_report.document_summ"/></td>
+			<td class="th"><s:text name="payments.reports.payment_report.document_id"/></td>
+		</tr>
+
+		<%-- document row --%>
+		<s:iterator value="reportContent" status="status">
+		<tr>
+			<td class="cols_1" nowrap="nowrap"><s:property value="%{#status.count}"/></td>
+			<td class="cols_1" nowrap="nowrap"><s:property value="paymentPointId"/></td>
+			<td class="cols_1" nowrap="nowrap"><s:property value="operationCount"/></td>
+			<td class="cols_1" nowrap="nowrap"><s:property value="operationId"/></td>
+			<td class="cols_1" nowrap="nowrap"><s:property value="serviceProviderAccount"/></td>
+			<td class="cols_1" nowrap="nowrap"><s:property value="fio"/></td>
+			<td class="cols_1" nowrap="nowrap"><s:property value="serviceTypeCode"/></td>
+			<td class="cols_1" nowrap="nowrap"><s:property value="documentSumm"/></td>
+			<td class="cols_1" nowrap="nowrap"><s:property value="documentId"/></td>
+		</tr>
+		</s:iterator>
+	</table>
+</s:if>

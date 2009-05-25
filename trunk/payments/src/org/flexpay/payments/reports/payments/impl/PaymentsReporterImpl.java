@@ -12,11 +12,13 @@ import org.flexpay.orgs.service.ServiceProviderService;
 import org.flexpay.payments.persistence.Operation;
 import org.flexpay.payments.persistence.Service;
 import org.flexpay.payments.persistence.Document;
+import org.flexpay.payments.persistence.ServiceType;
 import org.flexpay.payments.reports.payments.PaymentPrintForm;
 import org.flexpay.payments.reports.payments.PaymentReportData;
 import org.flexpay.payments.reports.payments.PaymentsReporter;
 import org.flexpay.payments.service.OperationService;
 import org.flexpay.payments.service.SPService;
+import org.flexpay.payments.service.DocumentService;
 import org.flexpay.payments.service.statistics.PaymentsStatisticsService;
 import org.flexpay.payments.service.statistics.ServicePaymentsStatistics;
 import org.springframework.beans.factory.annotation.Required;
@@ -27,6 +29,7 @@ import java.util.List;
 public class PaymentsReporterImpl implements PaymentsReporter {
 
 	private PaymentsStatisticsService paymentsStatisticsService;
+	private DocumentService documentService;
 	private OrganizationService organizationService;
 	private SPService spService;
 	private ServiceProviderService serviceProviderService;
@@ -37,27 +40,28 @@ public class PaymentsReporterImpl implements PaymentsReporter {
 	public List<PaymentReportData> getPaymentsData(Date begin, Date end) {
 
 		List<PaymentReportData> result = CollectionUtils.list();
-		List<ServicePaymentsStatistics> statisticses = paymentsStatisticsService.servicePaymentStatistics(begin, end);
-		for (ServicePaymentsStatistics statistics : statisticses) {
-			PaymentReportData data = new PaymentReportData();
-			data.setBeginDate(begin);
-			data.setEndDate(end);
+		List<Document> documents = documentService.listRegisteredPaymentDocuments(begin, end);
+		int operationCount = 0;
+		Long previousOperationId = 0L;
+		for (Document doc : documents) {
+			PaymentReportData reportData = new PaymentReportData();
+			Operation operation = doc.getOperation();
+			ServiceType serviceType = doc.getService().getServiceType();
 
-			Service service = spService.read(new Stub<Service>(statistics.getServiceId()));
-			data.setServiceId(service.getId());
-			data.setServiceName(service.getServiceType().getName());
+			if (!operation.getId().equals(previousOperationId)) {
+				operationCount++;
+			}
 
-			Organization organization = organizationService.readFull(
-					new Stub<Organization>(statistics.getOrganizationId()));
-			data.setBankId(organization.getId());
-			data.setSubdivisionName(organization.getName());
+			reportData.setPaymentPointId(operation.getPaymentPoint().getId());
+			reportData.setDocumentId(doc.getId());
+			reportData.setDocumentSumm(doc.getSumm());
+			reportData.setFio(doc.getPayerFIO());
+			reportData.setOperationId(operation.getId());
+			reportData.setOperationCount(operationCount);
+			reportData.setServiceProviderAccount(doc.getDebtorId());
+			reportData.setServiceTypeCode(serviceType.getCode());
 
-			data.setPayedCacheSumm(statistics.getPayedCacheSumm());
-			data.setPayedCachelessSumm(statistics.getPayedCachelessSumm());
-			data.setReturnedCacheSumm(statistics.getReturnedCacheSumm());
-			data.setReturnedCachelessSumm(statistics.getReturnedCachelessSumm());
-
-			result.add(data);
+			result.add(reportData);
 		}
 
 		return result;
@@ -157,5 +161,10 @@ public class PaymentsReporterImpl implements PaymentsReporter {
 	@Required
 	public void setCurrencyInfoService(CurrencyInfoService currencyInfoService) {
 		this.currencyInfoService = currencyInfoService;
+	}
+
+	@Required
+	public void setDocumentService(DocumentService documentService) {
+		this.documentService = documentService;
 	}
 }

@@ -9,6 +9,7 @@ import org.springframework.security.annotation.Secured;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Date;
 
 public interface DocumentService {
 
@@ -48,4 +49,13 @@ public interface DocumentService {
 	 */
 	@Secured (Roles.DOCUMENT_READ)
 	List<Document> searchDocuments(@NotNull Operation operation, Long serviceTypeId, BigDecimal minimalSumm, BigDecimal maximalSumm);
+
+	/**
+	 * Returns list of documents with state REGISTERED and type CASH_PAYMENT which were created in time period
+	 * @param begin begin date
+	 * @param end end date
+	 * @return list of documents with state REGISTERED and type CASH_PAYMENT which were created in time period
+	 */
+	@Secured (Roles.DOCUMENT_READ)
+	List<Document> listRegisteredPaymentDocuments(@NotNull Date begin, @NotNull Date end);
 }

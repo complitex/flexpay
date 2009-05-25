@@ -406,4 +406,15 @@
 		where o.code=?
 	</query>
 
+	<query name="Document.listRegisteredPaymentDocuments"><![CDATA[
+		select distinct doc
+		from Document doc
+		left join fetch doc.operation op
+		left join fetch doc.service serv
+		left join fetch serv.serviceType servType
+		where op.creationDate >= ? and op.creationDate <= ?
+		and doc.documentType.id = 1 and doc.documentStatus.id = 2
+		group by op.id 
+	]]></query>
+
 </hibernate-mapping>
