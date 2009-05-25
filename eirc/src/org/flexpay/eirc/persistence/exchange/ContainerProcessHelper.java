@@ -14,8 +14,6 @@ import org.slf4j.LoggerFactory;
 
 public class ContainerProcessHelper {
 
-	private static Logger log = LoggerFactory.getLogger(ContainerProcessHelper.class);
-
 	public static Consumer getConsumer(RegistryRecord record, ServiceOperationsFactory factory) throws FlexPayException {
 		EircRegistryRecordProperties props = (EircRegistryRecordProperties) record.getProperties();
 		Stub<Consumer> consumerStub = props.getConsumerStub();
@@ -34,16 +32,12 @@ public class ContainerProcessHelper {
 
 		Consumer consumer = getConsumer(record, factory);
 
-		log.info("consumer = {}", consumer);
 		ApartmentAttributeType attributeType = factory.getApartmentAttributeTypeService().findTypeByName(attributeTypeName);
-		log.info("attributeType = {}", attributeType);
 		BtiApartment btiApartment = factory.getBtiApartmentService().readWithAttributes(consumer.getApartmentStub());
 		if (btiApartment == null) {
 			throw new FlexPayException("BtiApartment for apartment with id " + consumer.getApartmentStub().getId() + " does not exist");
 		}
-		log.info("btiApartment = {}", btiApartment);
 		ApartmentAttributeBase attribute = btiApartment.getAttribute(attributeType);
-		log.info("attribute = {}", attribute);
 		if ((attribute != null && !attribute.getCurrentValue().equals(newValue)) || attribute == null) {
 			btiApartment.setNormalAttribute(attributeType, newValue);
 			factory.getBtiApartmentService().updateAttributes(btiApartment);

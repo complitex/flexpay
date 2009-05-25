@@ -4,8 +4,10 @@ import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.persistence.registry.RegistryRecordStatus;
-import org.flexpay.common.service.RegistryRecordStatusService;
+import org.flexpay.common.persistence.registry.PropertiesFactory;
+import org.flexpay.common.service.*;
 import org.flexpay.eirc.sp.FileParser;
+import org.flexpay.orgs.service.ServiceProviderService;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,6 +28,14 @@ public abstract class MbFileParser implements FileParser {
 	public static final String FILE_CREATION_DATE_FORMAT = "ddMMyy";
 
 	protected RegistryRecordStatus statusLoaded;
+
+	protected RegistryService registryService;
+	protected RegistryRecordService registryRecordService;
+	protected RegistryTypeService registryTypeService;
+	protected ServiceProviderService serviceProviderService;
+	protected RegistryStatusService registryStatusService;
+	protected RegistryArchiveStatusService registryArchiveStatusService;
+	protected PropertiesFactory propertiesFactory;
 
 	private MbFileValidator validator;
 	private RegistryRecordStatusService registryRecordStatusService;
@@ -77,6 +87,41 @@ public abstract class MbFileParser implements FileParser {
 	@Required
 	public void setSpRegistryRecordStatusService(RegistryRecordStatusService registryRecordStatusService) {
 		this.registryRecordStatusService = registryRecordStatusService;
+	}
+
+	@Required
+	public void setRegistryService(RegistryService registryService) {
+		this.registryService = registryService;
+	}
+
+	@Required
+	public void setRegistryRecordService(RegistryRecordService registryRecordService) {
+		this.registryRecordService = registryRecordService;
+	}
+
+	@Required
+	public void setRegistryTypeService(RegistryTypeService registryTypeService) {
+		this.registryTypeService = registryTypeService;
+	}
+
+	@Required
+	public void setServiceProviderService(ServiceProviderService serviceProviderService) {
+		this.serviceProviderService = serviceProviderService;
+	}
+
+	@Required
+	public void setSpRegistryStatusService(RegistryStatusService registryStatusService) {
+		this.registryStatusService = registryStatusService;
+	}
+
+	@Required
+	public void setRegistryArchiveStatusService(RegistryArchiveStatusService registryArchiveStatusService) {
+		this.registryArchiveStatusService = registryArchiveStatusService;
+	}
+
+	@Required
+	public void setPropertiesFactory(PropertiesFactory propertiesFactory) {
+		this.propertiesFactory = propertiesFactory;
 	}
 
 }
