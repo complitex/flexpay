@@ -61,8 +61,8 @@ def modulesDependencies = [
         tc : ['common', 'ab', 'bti', 'tc'],
         orgs : ['common', 'orgs'],
         payments : ['common', 'ab', 'orgs', 'payments'],
-        eirc : ['common', 'ab', 'orgs', 'payments', 'eirc'],
-        sz : ['common', 'ab', 'orgs', 'payments', 'eirc', 'sz']
+        eirc : ['common', 'ab', 'bti', 'orgs', 'payments', 'eirc'],
+        sz : ['common', 'ab', 'bti', 'orgs', 'payments', 'eirc', 'sz']
 ]
 
 assert modulesDependencies[module] != null, "Unknown module name ${module}"
