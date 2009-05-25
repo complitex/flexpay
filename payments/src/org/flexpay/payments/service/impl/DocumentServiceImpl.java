@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Date;
 import java.math.BigDecimal;
 
 @Transactional (readOnly = true)
@@ -67,8 +68,18 @@ public class DocumentServiceImpl implements DocumentService {
 		documentDao.delete(document);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public List<Document> searchDocuments(@NotNull Operation operation, Long serviceTypeId, BigDecimal minimalSumm, BigDecimal maximalSumm) {
 		return documentDaoExt.searchDocuments(operation, serviceTypeId, minimalSumm, maximalSumm);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public List<Document> listRegisteredPaymentDocuments(@NotNull Date begin, @NotNull Date end) {
+		return documentDao.listRegisteredPaymentDocuments(begin, end);
 	}
 
 	@Required

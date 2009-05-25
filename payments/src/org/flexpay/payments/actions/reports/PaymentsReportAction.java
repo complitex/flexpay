@@ -13,6 +13,7 @@ import org.flexpay.common.service.FPFileService;
 import org.flexpay.common.util.DateUtil;
 import org.flexpay.common.util.FPFileUtil;
 import org.flexpay.common.util.SecurityUtil;
+import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.payments.reports.payments.PaymentReportData;
 import org.flexpay.payments.reports.payments.PaymentsReporter;
 import org.flexpay.payments.actions.PaymentPointAwareAction;
@@ -30,6 +31,8 @@ public class PaymentsReportAction extends FPActionSupport implements PaymentPoin
 	private EndDateFilter endDateFilter = new EndDateFilter(DateUtil.now());
 	private BeginTimeFilter beginTimeFilter = new BeginTimeFilter();
 	private EndTimeFilter endTimeFilter = new EndTimeFilter();
+
+	private List<PaymentReportData> reportContent = CollectionUtils.list();
 
 	private FPFile file;
 
@@ -54,41 +57,43 @@ public class PaymentsReportAction extends FPActionSupport implements PaymentPoin
 
 		log.debug("Time interval: {} - {}", begin, end);
 
+		reportContent = paymentsReporter.getPaymentsData(begin, end);
+
+// FIXME this stuff is commented out because doesn't actually work
 		List<PaymentReportData> datum = paymentsReporter.getPaymentsData(begin, end);
-
-		file = new FPFile();
-		FPModule module = fpFileService.getModuleByName("payments");
-		if (module == null) {
-			throw new Exception("Unknown module payments");
-		}
-		file.setModule(module);
-		SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmmss");
-		file.setOriginalName("payments_" + df.format(begin) + "_" + df.format(end) + ".csv");
-		file.setUserName(SecurityUtil.getUserName());
-		FPFileUtil.createEmptyFile(file);
-
-		OutputStream os = file.getOutputStream();
-		Writer w = null;
-		try {
-			//noinspection IOResourceOpenedButNotSafelyClosed
-			w = new OutputStreamWriter(os, "UTF-8");
-
-			if (!datum.isEmpty()) {
-				CSVWriter writer = new CSVWriter(w);
-				for (PaymentReportData data : datum) {
-					String[] row = {
-							String.valueOf(data.getBankId()),
-							String.valueOf(data.getServiceId()),
-							String.valueOf(data.getTotalPayed())
-					};
-					writer.writeNext(row);
-				}
-				writer.close();
-			}
-		} finally {
-			IOUtils.closeQuietly(w);
-			IOUtils.closeQuietly(os);
-		}
+//		file = new FPFile();
+//		FPModule module = fpFileService.getModuleByName("payments");
+//		if (module == null) {
+//			throw new Exception("Unknown module payments");
+//		}
+//		file.setModule(module);
+//		SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmmss");
+//		file.setOriginalName("payments_" + df.format(begin) + "_" + df.format(end) + ".csv");
+//		file.setUserName(SecurityUtil.getUserName());
+//		FPFileUtil.createEmptyFile(file);
+//
+//		OutputStream os = file.getOutputStream();
+//		Writer w = null;
+//		try {
+//			//noinspection IOResourceOpenedButNotSafelyClosed
+//			w = new OutputStreamWriter(os, "UTF-8");
+//
+//			if (!datum.isEmpty()) {
+//				CSVWriter writer = new CSVWriter(w);
+//				for (PaymentReportData data : datum) {
+//					String[] row = {
+//							String.valueOf(data.getBankId()),
+//							String.valueOf(data.getServiceId()),
+//							String.valueOf(data.getTotalPayed())
+//					};
+//					writer.writeNext(row);
+//				}
+//				writer.close();
+//			}
+//		} finally {
+//			IOUtils.closeQuietly(w);
+//			IOUtils.closeQuietly(os);
+//		}
 
 		return SUCCESS;
 	}
@@ -137,6 +142,14 @@ public class PaymentsReportAction extends FPActionSupport implements PaymentPoin
 
 	public void setEndTimeFilter(EndTimeFilter endTimeFilter) {
 		this.endTimeFilter = endTimeFilter;
+	}
+
+	public List<PaymentReportData> getReportContent() {
+		return reportContent;
+	}
+
+	public boolean reportContentIsNotEmpty() {
+		return !reportContent.isEmpty();
 	}
 
 	@Required

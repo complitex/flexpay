@@ -11,118 +11,90 @@ import java.util.Date;
  */
 public class PaymentReportData implements Serializable {
 
-	private Date beginDate;
-	private Date endDate;
-	private Long bankId;
-	private String subdivisionName;
-	private Long serviceId;
-	private String serviceName;
-	private BigDecimal payedCacheSumm = BigDecimal.ZERO;
-	private BigDecimal payedCachelessSumm = BigDecimal.ZERO;
-	private BigDecimal returnedCacheSumm = BigDecimal.ZERO;
-	private BigDecimal returnedCachelessSumm = BigDecimal.ZERO;
+	private Long paymentPointId;
+	private Integer operationCount;
+	private Long operationId;
+	private String serviceProviderAccount;
+	private String fio;
+	private Integer serviceTypeCode;
+	private BigDecimal documentSumm;
+	private Long documentId;
 
-	public Date getBeginDate() {
-		return beginDate;
+	public Long getPaymentPointId() {
+		return paymentPointId;
 	}
 
-	public void setBeginDate(Date beginDate) {
-		this.beginDate = beginDate;
+	public void setPaymentPointId(Long paymentPointId) {
+		this.paymentPointId = paymentPointId;
 	}
 
-	public Date getEndDate() {
-		return endDate;
+	public Long getOperationId() {
+		return operationId;
 	}
 
-	public void setEndDate(Date endDate) {
-		this.endDate = endDate;
+	public void setOperationId(Long operationId) {
+		this.operationId = operationId;
 	}
 
-	public Long getBankId() {
-		return bankId;
+	public String getServiceProviderAccount() {
+		return serviceProviderAccount;
 	}
 
-	public void setBankId(Long bankId) {
-		this.bankId = bankId;
+	public void setServiceProviderAccount(String serviceProviderAccount) {
+		this.serviceProviderAccount = serviceProviderAccount;
 	}
 
-	public String getSubdivisionName() {
-		return subdivisionName;
+	public String getFio() {
+		return fio;
 	}
 
-	public void setSubdivisionName(String subdivisionName) {
-		this.subdivisionName = subdivisionName;
+	public void setFio(String fio) {
+		this.fio = fio;
 	}
 
-	public Long getServiceId() {
-		return serviceId;
+	public Integer getServiceTypeCode() {
+		return serviceTypeCode;
 	}
 
-	public void setServiceId(Long serviceId) {
-		this.serviceId = serviceId;
+	public void setServiceTypeCode(Integer serviceTypeCode) {
+		this.serviceTypeCode = serviceTypeCode;
 	}
 
-	public String getServiceName() {
-		return serviceName;
+	public BigDecimal getDocumentSumm() {
+		return documentSumm;
 	}
 
-	public void setServiceName(String serviceName) {
-		this.serviceName = serviceName;
+	public void setDocumentSumm(BigDecimal documentSumm) {
+		this.documentSumm = documentSumm;
 	}
 
-	public BigDecimal getPayedCacheSumm() {
-		return payedCacheSumm;
+	public Long getDocumentId() {
+		return documentId;
 	}
 
-	public void setPayedCacheSumm(BigDecimal payedCacheSumm) {
-		this.payedCacheSumm = payedCacheSumm;
+	public void setDocumentId(Long documentId) {
+		this.documentId = documentId;
 	}
 
-	public BigDecimal getPayedCachelessSumm() {
-		return payedCachelessSumm;
+	public Integer getOperationCount() {
+		return operationCount;
 	}
 
-	public void setPayedCachelessSumm(BigDecimal payedCachelessSumm) {
-		this.payedCachelessSumm = payedCachelessSumm;
-	}
-
-	public BigDecimal getReturnedCacheSumm() {
-		return returnedCacheSumm;
-	}
-
-	public void setReturnedCacheSumm(BigDecimal returnedCacheSumm) {
-		this.returnedCacheSumm = returnedCacheSumm;
-	}
-
-	public BigDecimal getReturnedCachelessSumm() {
-		return returnedCachelessSumm;
-	}
-
-	public void setReturnedCachelessSumm(BigDecimal returnedCachelessSumm) {
-		this.returnedCachelessSumm = returnedCachelessSumm;
+	public void setOperationCount(Integer operationCount) {
+		this.operationCount = operationCount;
 	}
 
 	@Override
 	public String toString() {
 		return new ToStringBuilder(this).
-				append("beginDate", beginDate).
-				append("endDate", endDate).
-				append("bankId", bankId).
-				append("subdivisionName", subdivisionName).
-				append("serviceId", serviceId).
-				append("serviceName", serviceName).
-				append("payedCacheSumm", payedCacheSumm).
-				append("payedCachelessSumm", payedCachelessSumm).
-				append("returnedCacheSumm", returnedCacheSumm).
-				append("returnedCachelessSumm", returnedCachelessSumm).
+				append("paymentPointId", paymentPointId).
+				append("operationCount", operationCount).
+				append("operationId", operationId).
+				append("serviceProviderAccount", serviceProviderAccount).
+				append("fio", fio).
+				append("serviceTypeCode", serviceTypeCode).
+				append("documentSumm", documentSumm).
+				append("documentId", documentId).
 				toString();
-	}
-
-	public BigDecimal getTotalPayed() {
-		BigDecimal summ = payedCacheSumm == null ? BigDecimal.ZERO : payedCacheSumm;
-		summ = summ.add(payedCachelessSumm == null ? BigDecimal.ZERO : payedCachelessSumm);
-		summ = summ.subtract(returnedCacheSumm == null ? BigDecimal.ZERO : returnedCacheSumm);
-		summ = summ.subtract(returnedCachelessSumm == null ? BigDecimal.ZERO : returnedCachelessSumm);
-		return summ;
 	}
 }
