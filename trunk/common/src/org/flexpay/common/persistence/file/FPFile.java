@@ -96,6 +96,10 @@ public class FPFile extends DomainObject {
 		return new BufferedInputStream(new FileInputStream(FPFileUtil.getFileOnServer(this)));
 	}
 
+	/**
+	 * @deprecated Hide FS usage
+	 * @return
+	 */
 	public File getFile() {
 		return new File(FPFileUtil.getFileLocalPath(this));
 	}
