@@ -6,23 +6,22 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.InputStreamResource;
+import org.omg.CORBA_2_3.portable.InputStream;
 
 import javax.mail.internet.MimeMessage;
 
-public class SendFileToEmail implements OutTransport {
+public class EmailOutTransport implements OutTransport {
     private JavaMailSender sender;
     private String email;
 
     public void send(FPFile file) throws Exception {
-        sender = new JavaMailSenderImpl();
-
         MimeMessage message = sender.createMimeMessage();
 
         MimeMessageHelper helper = new MimeMessageHelper(message, true);
         helper.setTo(email);
 
-        FileSystemResource resourceFile = new FileSystemResource(file.getFile());
-        helper.addAttachment(file.getOriginalName(), resourceFile);
+        helper.addAttachment(file.getOriginalName(), new InputStreamResource(file.getInputStream()));
 
         sender.send(message);
     }
