@@ -1,14 +1,14 @@
-package org.flexpay.eirc.sp.parsing;
+package org.flexpay.eirc.sp.impl.parsing;
 
 import org.apache.commons.io.IOUtils;
 import org.flexpay.common.exception.FlexPayException;
-import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.persistence.registry.*;
 import org.flexpay.common.service.*;
 import org.flexpay.eirc.persistence.EircRegistryProperties;
 import org.flexpay.eirc.persistence.EircRegistryRecordProperties;
-import org.flexpay.eirc.sp.MbFileParser;
+import org.flexpay.eirc.sp.impl.MbFileParser;
 import org.flexpay.eirc.util.config.ApplicationConfig;
 import org.flexpay.orgs.persistence.ServiceProvider;
 import org.flexpay.orgs.service.ServiceProviderService;
@@ -22,7 +22,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.math.BigDecimal;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -31,10 +30,10 @@ import java.util.Date;
 import java.util.List;
 
 @Transactional (readOnly = true)
-public class MbRegistryFileParser extends MbFileParser<Registry> {
+public class MbRegistryFileParser extends MbFileParser {
 
-	public static final DateFormat OPERATION_DATE_FORMAT = new SimpleDateFormat("MMyy");
-	public static final DateFormat INCOME_PERIOD_DATE_FORMAT = new SimpleDateFormat("MMyy");
+	public static final String OPERATION_DATE_FORMAT = "MMyy";
+	public static final String INCOME_PERIOD_DATE_FORMAT = "MMyy";
 
 	private RegistryService registryService;
 	private RegistryRecordService registryRecordService;
@@ -45,7 +44,7 @@ public class MbRegistryFileParser extends MbFileParser<Registry> {
 	private PropertiesFactory propertiesFactory;
 
 	@Transactional(propagation = Propagation.NOT_SUPPORTED, readOnly = false)
-	public Registry parseFile(@NotNull FPFile spFile) throws FlexPayException {
+	protected Registry parseFile(@NotNull FPFile spFile) throws FlexPayException {
 
 		Registry registry = new Registry();
 
@@ -114,7 +113,7 @@ public class MbRegistryFileParser extends MbFileParser<Registry> {
 		registry.setProperties(registryProperties);
 
 		try {
-			Date dateFrom = INCOME_PERIOD_DATE_FORMAT.parse(fields[2]);
+			Date dateFrom = new SimpleDateFormat(INCOME_PERIOD_DATE_FORMAT).parse(fields[2]);
 			registry.setFromDate(dateFrom);
 			Calendar c = Calendar.getInstance();
 			c.setTime(dateFrom);
@@ -150,7 +149,7 @@ public class MbRegistryFileParser extends MbFileParser<Registry> {
 		record.setApartmentNum("");
 
 		try {
-			record.setOperationDate(OPERATION_DATE_FORMAT.parse(fields[5]));
+			record.setOperationDate(new SimpleDateFormat(OPERATION_DATE_FORMAT).parse(fields[5]));
 		} catch (ParseException e) {
 			// do nothing
 		}

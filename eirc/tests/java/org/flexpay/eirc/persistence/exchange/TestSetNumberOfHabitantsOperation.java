@@ -11,6 +11,7 @@ import org.flexpay.common.service.RegistryFileService;
 import org.flexpay.common.test.SpringBeanAwareTestCase;
 import org.flexpay.common.util.StringUtil;
 import org.flexpay.eirc.service.EircRegistryService;
+import org.flexpay.eirc.service.exchange.ServiceProviderFileProcessor;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -19,6 +20,8 @@ import java.util.List;
 
 public class TestSetNumberOfHabitantsOperation extends SpringBeanAwareTestCase {
 
+	@Autowired
+	private ServiceProviderFileProcessor serviceProviderFileProcessor;
 	@Autowired
 	private EircRegistryService eircRegistryService;
 	@Autowired

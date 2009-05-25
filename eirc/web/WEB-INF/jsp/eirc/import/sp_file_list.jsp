@@ -19,14 +19,13 @@
 			<!-- <td class="col"><s:property value="userName"/></td> -->
 			<td class="col">
 				<s:if test="%{!isLoaded(id)}">
-					<a href="<s:url action='spFileAction'><s:param name="spFileId" value="%{id}"/><s:param name="action" value="'loadToDb'"/></s:url>">
-						<s:text name="eirc.registry.file.load"/>
-					</a>
+					<a href="<s:url action='spFileAction'><s:param name="spFileId" value="%{id}"/><s:param name="action" value="'loadToDb'"/></s:url>"><s:text name="eirc.registry.file.load"/></a>
+                    <s:if test="nameOnServer != null">
+                        &nbsp;&nbsp;
+                    </s:if>
 				</s:if>
 				<s:if test="nameOnServer != null">
-					<a href="<s:url value='/spFileDownloadServlet'><s:param name="spFileId" value="%{id}"/></s:url>">
-						<s:property value="originalName"/>
-					</a>
+					<a href="<s:url value='/spFileDownloadServlet'><s:param name="spFileId" value="%{id}"/></s:url>"><s:property value="originalName"/></a>
 				</s:if>
 			</td>
 

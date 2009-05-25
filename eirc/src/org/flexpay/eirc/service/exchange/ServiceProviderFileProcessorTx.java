@@ -8,6 +8,7 @@ import org.flexpay.common.persistence.registry.workflow.RegistryRecordWorkflowMa
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.beans.factory.annotation.Required;
 
 /**
  * Processor of instructions specified by service provider, usually payments, balance notifications, etc. <br />
@@ -20,7 +21,6 @@ public class ServiceProviderFileProcessorTx {
 	private Logger log = LoggerFactory.getLogger(getClass());
 
 	private ServiceOperationsFactory serviceOperationsFactory;
-
 	private RegistryRecordWorkflowManager recordWorkflowManager;
 
 	/**
@@ -47,11 +47,14 @@ public class ServiceProviderFileProcessorTx {
 		recordWorkflowManager.setNextSuccessStatus(record);
 	}
 
+	@Required
 	public void setServiceOperationsFactory(ServiceOperationsFactory serviceOperationsFactory) {
 		this.serviceOperationsFactory = serviceOperationsFactory;
 	}
 
+	@Required
 	public void setRecordWorkflowManager(RegistryRecordWorkflowManager recordWorkflowManager) {
 		this.recordWorkflowManager = recordWorkflowManager;
 	}
+
 }

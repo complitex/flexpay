@@ -47,7 +47,6 @@ public class ServiceOperationsFactory {
 	private CorrectionsService correctionsService;
 	private BtiApartmentService btiApartmentService;
 	private ApartmentAttributeTypeService apartmentAttributeTypeService;
-	private EircRegistryRecordPropertiesService eircRegistryRecordPropertiesService;
 
 	private ConditionsFactory conditionsFactory;
 
@@ -191,10 +190,10 @@ public class ServiceOperationsFactory {
 
 		EircRegistryProperties props = (EircRegistryProperties) registry.getProperties();
 		ImportError error = new ImportError();
-		ServiceProvider provider = getServiceProviderService().read(props.getServiceProviderStub());
+		ServiceProvider provider = serviceProviderService.read(props.getServiceProviderStub());
 		DataSourceDescription sd = provider.getDataSourceDescription();
 		error.setSourceDescription(sd);
-		error.setSourceObjectId(String.valueOf(record.getId()));
+		error.setSourceObjectId(record.getId() + "");
 		error.setErrorId(errorCode);
 		error.setObjectType(this.registry.getType(clazz));
 		errorsSupport.setDataSourceBean(error, dataSource);
@@ -363,15 +362,6 @@ public class ServiceOperationsFactory {
 	@Required
 	public void setApartmentAttributeTypeService(ApartmentAttributeTypeService apartmentAttributeTypeService) {
 		this.apartmentAttributeTypeService = apartmentAttributeTypeService;
-	}
-
-	public EircRegistryRecordPropertiesService getEircRegistryRecordPropertiesService() {
-		return eircRegistryRecordPropertiesService;
-	}
-
-	@Required
-	public void setEircRegistryRecordPropertiesService(EircRegistryRecordPropertiesService eircRegistryRecordPropertiesService) {
-		this.eircRegistryRecordPropertiesService = eircRegistryRecordPropertiesService;
 	}
 
 }

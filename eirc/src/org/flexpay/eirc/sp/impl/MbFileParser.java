@@ -1,32 +1,37 @@
-package org.flexpay.eirc.sp;
+package org.flexpay.eirc.sp.impl;
 
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.file.FPFile;
+import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.persistence.registry.RegistryRecordStatus;
 import org.flexpay.common.service.RegistryRecordStatusService;
+import org.flexpay.eirc.sp.FileParser;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.File;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
-public abstract class MbFileParser<T> {
+public abstract class MbFileParser implements FileParser {
 
 	protected Logger log = LoggerFactory.getLogger(getClass());
 
 	public static final String LAST_FILE_STRING_BEGIN = "999999999";
 	public static final String REGISTRY_FILE_ENCODING = "Cp866";
-	public static final DateFormat FILE_CREATION_DATE_FORMAT = new SimpleDateFormat("ddMMyy");
+	public static final String FILE_CREATION_DATE_FORMAT = "ddMMyy";
 
 	protected RegistryRecordStatus statusLoaded;
 
 	private MbFileValidator validator;
 	private RegistryRecordStatusService registryRecordStatusService;
 
-	public T parse(FPFile spFile) throws FlexPayException {
+	@Transactional(propagation = Propagation.NOT_SUPPORTED)
+	public Registry parse(FPFile spFile) throws FlexPayException {
 
 		if (validator != null) {
 			if (!validator.validate(spFile)) {
@@ -52,7 +57,7 @@ public abstract class MbFileParser<T> {
 			throw new FlexPayException("Can't get registry record status \"loaded\" from database");
 		}
 
-		T ret = parseFile(spFile);
+		Registry ret = parseFile(spFile);
 
 		long endTime = System.currentTimeMillis();
 		long time = (endTime - beginTime) / 1000;
@@ -63,7 +68,7 @@ public abstract class MbFileParser<T> {
 
 	}
 
-	protected abstract T parseFile(@NotNull FPFile spFile) throws FlexPayException;
+	protected abstract Registry parseFile(@NotNull FPFile spFile) throws FlexPayException;
 
 	public void setValidator(MbFileValidator validator) {
 		this.validator = validator;

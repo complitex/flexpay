@@ -2,6 +2,7 @@ package org.flexpay.eirc.sp;
 
 import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.persistence.registry.Registry;
+import org.flexpay.common.persistence.Stub;
 import org.flexpay.eirc.actions.TestSpFileCreateAction;
 import org.flexpay.eirc.service.EircRegistryService;
 import org.junit.Test;
@@ -13,7 +14,7 @@ public class TestMbRegistryFileParser extends TestSpFileCreateAction {
 
 	@Autowired
 	@Qualifier("mbRegistryFileParser")
-	private MbFileParser<Registry> parser;
+	private FileParser parser;
 	@Autowired
 	private EircRegistryService eircRegistryService;
 
@@ -25,15 +26,13 @@ public class TestMbRegistryFileParser extends TestSpFileCreateAction {
 
 		try {
 			Registry registry = parser.parse(newFile);
-/*
-			eircRegistryService.deleteRecords(new Stub<Registry>(registry));
+			eircRegistryService.deleteRecords(new Stub<Registry>(registry.getId()));
 			eircRegistryService.delete(registry);
-*/
 		} catch (Exception e) {
 			log.error("Error with parsing file", e);
 		}
 
-//		deleteFile(newFile);
+		deleteFile(newFile);
 	}
 
 }

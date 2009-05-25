@@ -1,17 +1,14 @@
 package org.flexpay.eirc.persistence.exchange;
 
 import org.apache.commons.lang.StringUtils;
-import org.flexpay.ab.persistence.Apartment;
 import org.flexpay.ab.persistence.Person;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.DataCorrection;
 import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.persistence.ImportError;
-import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.persistence.registry.RegistryRecord;
-import org.flexpay.common.persistence.registry.RegistryRecordProperties;
 import org.flexpay.common.service.importexport.CorrectionsService;
 import org.flexpay.eirc.dao.importexport.RawConsumersDataUtil;
 import org.flexpay.eirc.persistence.*;
@@ -48,13 +45,9 @@ public class SetResponsiblePersonOperation extends AbstractChangePersonalAccount
 	 */
 	public void process(Registry registry, RegistryRecord record) throws FlexPayException {
 
-		EircRegistryRecordProperties props = factory.getEircRegistryRecordPropertiesService().find(new Stub<RegistryRecordProperties>(record.getProperties().getId()));
-		if (props.getConsumer() == null) {
-			throw new FlexPayException("Consumer was not set up, cannot change FIO");
-		}
+		Consumer consumer = ContainerProcessHelper.getConsumer(record, factory);
 
 		// find consumer and set FIO here
-		Consumer consumer = props.getConsumer();
 		ConsumerInfo info = consumer.getConsumerInfo();
 
 //		List<String> fields = RegistryUtil.parseFIO(newValue);
@@ -137,11 +130,11 @@ public class SetResponsiblePersonOperation extends AbstractChangePersonalAccount
 		}
 	}
 
-	private Person findResponsiblePerson(RegistryRecord record, String fName, String mName, String lName) {
+	private Person findResponsiblePerson(RegistryRecord record, String fName, String mName, String lName) throws FlexPayException {
 		ImportUtil importUtil = factory.getImportUtil();
 		ImportError error = new ImportError();
-		EircRegistryRecordProperties props = factory.getEircRegistryRecordPropertiesService().find(new Stub<RegistryRecordProperties>(record.getProperties().getId()));
-		Person person = importUtil.findPersonByFIO(new Stub<Apartment>(props.getConsumer().getApartment().getId()),
+		Consumer consumer = ContainerProcessHelper.getConsumer(record, factory);
+		Person person = importUtil.findPersonByFIO(consumer.getApartmentStub(),
 				fName, mName, lName, error);
 		if (error.getErrorId() != null) {
 			log.warn("Responsible person not found {}", error.getErrorId());

@@ -1,14 +1,14 @@
-package org.flexpay.eirc.sp.parsing;
+package org.flexpay.eirc.sp.impl.parsing;
 
 import org.apache.commons.io.IOUtils;
 import org.flexpay.common.exception.FlexPayException;
-import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.persistence.registry.*;
 import org.flexpay.common.service.*;
 import org.flexpay.eirc.persistence.EircRegistryProperties;
 import org.flexpay.eirc.persistence.EircRegistryRecordProperties;
-import org.flexpay.eirc.sp.MbFileParser;
+import org.flexpay.eirc.sp.impl.MbFileParser;
 import org.flexpay.eirc.util.config.ApplicationConfig;
 import org.flexpay.orgs.persistence.ServiceProvider;
 import org.flexpay.orgs.service.ServiceProviderService;
@@ -21,7 +21,6 @@ import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -29,10 +28,10 @@ import java.util.Date;
 import java.util.List;
 
 @Transactional(readOnly = true)
-public class MbCorrectionsFileParser extends MbFileParser<Registry> {
+public class MbCorrectionsFileParser extends MbFileParser {
 
 	public static final String ACCOUNT_CLOSED = "ЛИЦЕВОЙ ЗАКРЫТ";
-	public static final DateFormat MODIFICATIONS_START_DATE_FORMAT = new SimpleDateFormat("ddMMyy");
+	public static final String MODIFICATIONS_START_DATE_FORMAT = "ddMMyy";
 
 	private RegistryService registryService;
 	private RegistryRecordService registryRecordService;
@@ -43,7 +42,7 @@ public class MbCorrectionsFileParser extends MbFileParser<Registry> {
 	private PropertiesFactory propertiesFactory;
 
 	@Transactional(propagation = Propagation.NOT_SUPPORTED, readOnly = false)
-	public Registry parseFile(@NotNull FPFile spFile) throws FlexPayException {
+	protected Registry parseFile(@NotNull FPFile spFile) throws FlexPayException {
 
 		Registry registry = new Registry();
 
@@ -149,8 +148,8 @@ public class MbCorrectionsFileParser extends MbFileParser<Registry> {
 		registry.setProperties(registryProperties);
 
 		try {
-			registry.setFromDate(FILE_CREATION_DATE_FORMAT.parse(fields[2]));
-			registry.setTillDate(FILE_CREATION_DATE_FORMAT.parse(fields[2]));
+			registry.setFromDate(new SimpleDateFormat(FILE_CREATION_DATE_FORMAT).parse(fields[2]));
+			registry.setTillDate(new SimpleDateFormat(FILE_CREATION_DATE_FORMAT).parse(fields[2]));
 		} catch (Exception e) {
 			// do nothing
 		}
@@ -185,7 +184,7 @@ public class MbCorrectionsFileParser extends MbFileParser<Registry> {
 
 		String modificationStartDate = "";
 		try {
-			modificationStartDate = new SimpleDateFormat("ddMMyyyy").format(MODIFICATIONS_START_DATE_FORMAT.parse(fields[19]));
+			modificationStartDate = new SimpleDateFormat("ddMMyyyy").format(new SimpleDateFormat(MODIFICATIONS_START_DATE_FORMAT).parse(fields[19]));
 		} catch (ParseException e) {
 			// do nothing
 		}
@@ -230,7 +229,7 @@ public class MbCorrectionsFileParser extends MbFileParser<Registry> {
 
 		String modificationStartDate = "";
 		try {
-			modificationStartDate = new SimpleDateFormat("ddMMyyyy").format(MODIFICATIONS_START_DATE_FORMAT.parse(fields[19]));
+			modificationStartDate = new SimpleDateFormat("ddMMyyyy").format(new SimpleDateFormat(MODIFICATIONS_START_DATE_FORMAT).parse(fields[19]));
 		} catch (ParseException e) {
 			// do nothing
 		}

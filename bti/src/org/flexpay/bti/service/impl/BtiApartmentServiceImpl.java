@@ -1,6 +1,7 @@
 package org.flexpay.bti.service.impl;
 
 import org.flexpay.ab.dao.ApartmentDao;
+import org.flexpay.ab.persistence.Apartment;
 import org.flexpay.bti.dao.BtiApartmentDaoExt;
 import org.flexpay.bti.persistence.apartment.BtiApartment;
 import org.flexpay.bti.service.BtiApartmentService;
@@ -21,7 +22,7 @@ public class BtiApartmentServiceImpl implements BtiApartmentService {
 	 * @param stub apartment stub to read
 	 * @return Apartment if found, or <code>null</code> otherwise
 	 */
-	public BtiApartment readWithAttributes(Stub<BtiApartment> stub) {
+	public BtiApartment readWithAttributes(Stub<? extends Apartment> stub) {
 		return btiApartmentDaoExt.readApartmentWithAttributes(stub.getId());
 	}
 

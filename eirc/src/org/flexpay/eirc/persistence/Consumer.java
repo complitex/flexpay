@@ -101,6 +101,10 @@ public class Consumer extends DomainObjectWithStatus {
 		return stub(eircAccount);
 	}
 
+	public Stub<Apartment> getApartmentStub() {
+		return stub(apartment);
+	}
+
 	@NotNull
 	public Stub<Service> getServiceStub() {
 		return stub(getService());
@@ -109,17 +113,11 @@ public class Consumer extends DomainObjectWithStatus {
 	@Override
 	public String toString() {
 		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
-				append("Consumer {").
 				append("id", getId()).
 				append("externalAccountNumber", externalAccountNumber).
 				append("beginDate", beginDate).
 				append("endDate", endDate).
-				append("apartment.id", apartment.getId()).
-				append("consumerInfo.id", consumerInfo.getId()).
-				append("eircAccount.id", eircAccount.getId()).
-				append("service.id", service.getId()).
-				append("responsiblePerson.id", responsiblePerson.getId()).
-				append("}").toString();
+				toString();
 	}
 
 }
