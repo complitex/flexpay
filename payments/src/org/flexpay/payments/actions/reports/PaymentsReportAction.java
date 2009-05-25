@@ -19,6 +19,8 @@ import org.flexpay.payments.reports.payments.PaymentsReporter;
 import org.flexpay.payments.actions.PaymentPointAwareAction;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.text.SimpleDateFormat;
@@ -75,7 +77,7 @@ public class PaymentsReportAction extends FPActionSupport implements PaymentPoin
 		Writer w = null;
 		try {
 			//noinspection IOResourceOpenedButNotSafelyClosed
-			w = new OutputStreamWriter(os, "UTF-8");
+			w = new OutputStreamWriter(os, "CP866");
 
 			if (!datum.isEmpty()) {
 				CSVWriter writer = new CSVWriter(w);
