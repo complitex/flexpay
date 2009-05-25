@@ -83,9 +83,13 @@ public class QuittancePayAction extends FPActionSupport implements PaymentPointA
 		return op;
 	}
 
+	private PaymentPoint getPaymentPoint() {
+		return paymentPointService.read(new Stub<PaymentPoint>(paymentPointId));
+	}
+
 	private Organization getSelfOrganization() {
 
-		PaymentPoint paymentPoint = paymentPointService.read(new Stub<PaymentPoint>(paymentPointId));
+		PaymentPoint paymentPoint = getPaymentPoint();
 		if (paymentPoint == null) {
 			throw new IllegalStateException("Invalid payment point id: " + paymentPointId);
 		}
@@ -102,7 +106,7 @@ public class QuittancePayAction extends FPActionSupport implements PaymentPointA
 		op.setCreationDate(new Date());
 		op.setRegisterDate(new Date());
 		op.setCreatorOrganization(getSelfOrganization());
-		op.setPaymentPoint(new PaymentPoint(new Stub<PaymentPoint>(paymentPointId)));
+		op.setPaymentPoint(getPaymentPoint());
 		op.setRegisterOrganization(getSelfOrganization());
 		op.setCreatorUserName(SecurityUtil.getUserName());
 		op.setRegisterUserName(SecurityUtil.getUserName());
