@@ -12,33 +12,39 @@
 		  p:fileEncoding="UTF-8"
 		  p:ignoreUnresolvablePlaceholders="true" />
 
-	<bean id="spFileCreateAction" class="org.flexpay.eirc.actions.SpFileCreateAction"
+	<bean id="spFileCreateAction"
+          class="org.flexpay.eirc.actions.SpFileCreateAction"
 		  scope="prototype" />
 
-	<bean id="spFileUploadAjaxAction" class="org.flexpay.eirc.actions.UploadFileAction"
+	<bean id="spFileUploadAjaxAction"
+          class="org.flexpay.eirc.actions.UploadFileAction"
 		  p:fpFileService-ref="fpFileService"
 		  p:moduleName="${flexpay.module.name.eirc}"
 		  scope="prototype" />
 
-	<bean id="spFilesListAction" class="org.flexpay.eirc.actions.SpFilesListAction"
+	<bean id="spFilesListAction"
+          class="org.flexpay.eirc.actions.SpFilesListAction"
 		  p:fpFileService-ref="fpFileService"
 		  p:registryFileService-ref="registryFileService"
 		  p:moduleName="${flexpay.module.name.eirc}"
 		  scope="prototype" />
 
-	<bean id="spFileAction" scope="prototype"
+	<bean id="spFileAction"
 		  class="org.flexpay.eirc.actions.SpFileAction"
-		  p:processManager-ref="processManager" />
+          p:fpFileService-ref="fpFileService"
+		  p:processManager-ref="processManager"
+          scope="prototype" />
 
-	<bean id="buildingAjaxAction" scope="prototype"
+	<bean id="buildingAjaxAction"
 		  class="org.flexpay.eirc.actions.BuildingAjaxAction"
-		  p:buildingService-ref="buildingService" />
+		  p:buildingService-ref="buildingService"
+          scope="prototype" />
 
 	<bean id="quittanceGenerateAction"
 		  class="org.flexpay.eirc.actions.quittance.QuittanceGenerateAction"
-		  scope="prototype"
 		  p:serviceOrganizationService-ref="serviceOrganizationService"
-		  p:processManager-ref="processManager" />
+		  p:processManager-ref="processManager"
+          scope="prototype" />
 
 	<bean id="printTicketsAction"
 		  class="org.flexpay.eirc.actions.quittance.QuittanceGeneratePDFAction"

@@ -1,11 +1,11 @@
-package org.flexpay.eirc.sp.validation;
+package org.flexpay.eirc.sp.impl.validation;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.file.FPFile;
-import org.flexpay.eirc.sp.MbFileValidator;
+import org.flexpay.eirc.sp.impl.MbFileValidator;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.BufferedReader;
@@ -135,7 +135,7 @@ public class MbCorrectionsFileValidator extends MbFileValidator {
 			throw new FlexPayException("Can't parse organization code " + fields[1]);
 		}
 		try {
-			FILE_CREATION_DATE_FORMAT.parse(fields[2]);
+			new SimpleDateFormat(FILE_CREATION_DATE_FORMAT).parse(fields[2]);
 		} catch (Exception e) {
 			throw new FlexPayException("Can't parse file creation date " + fields[2]);
 		}

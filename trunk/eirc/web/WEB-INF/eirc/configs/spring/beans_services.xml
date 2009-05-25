@@ -12,13 +12,8 @@
 		  p:spRegistryRecordService-ref="registryRecordService"
 		  p:registryContainerDao-ref="registryContainerDao" />
 
-    <bean id="eircRegistryRecordPropertiesService"
-          class="org.flexpay.eirc.service.imp.EircRegistryRecordPropertiesServiceImpl"
-          p:eircRegistryRecordPropertiesDaoExt-ref="eircRegistryRecordPropertiesDaoExt"
-            />
-
 	<bean id="registryFileParser"
-		  class="org.flexpay.eirc.sp.RegistryFileParser"
+		  class="org.flexpay.eirc.sp.impl.RegistryFileParser"
 		  p:consumerService-ref="consumerService"
 		  p:registryService-ref="eircRegistryService"
 		  p:registryArchiveStatusService-ref="registryArchiveStatusService"
@@ -32,13 +27,13 @@
 		  p:propertiesFactory-ref="propertiesFactory" />
 
 	<bean id="mbRegistryFileValidator"
-		  class="org.flexpay.eirc.sp.validation.MbRegistryFileValidator" />
+		  class="org.flexpay.eirc.sp.impl.validation.MbRegistryFileValidator" />
 
     <bean id="mbCorrectionsFileValidator"
-		  class="org.flexpay.eirc.sp.validation.MbCorrectionsFileValidator" />
+		  class="org.flexpay.eirc.sp.impl.validation.MbCorrectionsFileValidator" />
 
 	<bean id="mbRegistryFileParser"
-		  class="org.flexpay.eirc.sp.parsing.MbRegistryFileParser"
+		  class="org.flexpay.eirc.sp.impl.parsing.MbRegistryFileParser"
 		  p:registryTypeService-ref="registryTypeService"
 		  p:serviceProviderService-ref="serviceProviderService"
 		  p:registryService-ref="eircRegistryService"
@@ -50,7 +45,7 @@
 		  p:validator-ref="mbRegistryFileValidator" />
 
     <bean id="mbCorrectionsFileParser"
-          class="org.flexpay.eirc.sp.parsing.MbCorrectionsFileParser"
+          class="org.flexpay.eirc.sp.impl.parsing.MbCorrectionsFileParser"
           p:registryTypeService-ref="registryTypeService"
           p:serviceProviderService-ref="serviceProviderService"
           p:registryService-ref="eircRegistryService"
@@ -88,7 +83,6 @@
 		  p:accountService-ref="eircAccountService"
           p:btiApartmentService-ref="btiApartmentService"
           p:apartmentAttributeTypeService-ref="apartmentAttributeTypeService"
-          p:eircRegistryRecordPropertiesService-ref="eircRegistryRecordPropertiesService"
             />
 
 	<bean id="consumerServiceTarget"

@@ -148,14 +148,16 @@ public class ServiceProviderFileProcessor implements RegistryProcessor {
 	}
 
 	private void handleError(Throwable t, Registry registry, RegistryRecord record) throws Exception {
+		String code = "eirc.error_code.unknown_error";
 		if (t instanceof FlexPayExceptionContainer) {
 			t = ((FlexPayExceptionContainer) t).getExceptions().iterator().next();
+			code = "eirc.error_code.error_with_processing_container";
 		}
 
 		log.warn("Failed processing registry record", t);
 
 		ImportError error = new ImportError();
-		error.setErrorId(t.getMessage());
+		error.setErrorId(code);
 		EircRegistryProperties props = (EircRegistryProperties) registry.getProperties();
 		ServiceProvider provider = serviceProviderService.read(props.getServiceProviderStub());
 		DataSourceDescription sd = provider.getDataSourceDescription();
@@ -331,4 +333,5 @@ public class ServiceProviderFileProcessor implements RegistryProcessor {
 	public void setServiceProviderService(ServiceProviderService serviceProviderService) {
 		this.serviceProviderService = serviceProviderService;
 	}
+
 }

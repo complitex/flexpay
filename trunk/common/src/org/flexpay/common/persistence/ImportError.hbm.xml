@@ -16,7 +16,7 @@
 		<property name="objectType" column="object_type" not-null="true" />
 		<property name="sourceObjectId" column="ext_object_id" not-null="true" />
 		<property name="dataSourceBean" column="handler_object_name" not-null="true" />
-		<property name="errorId" column="error_key" length="4000" />
+		<property name="errorId" column="error_key" />
 	</class>
 
 	<query name="ImportError.listErrorsByType">

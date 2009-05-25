@@ -10,15 +10,9 @@ public class DataCorrection extends DomainObject {
 	private int objectType;
 	private DataSourceDescription dataSourceDescription;
 
-	/**
-	 * Constructs a new DataCorrection.
-	 */
 	public DataCorrection() {
 	}
 
-	/**
-	 * Constructs a new DomainObject.
-	 */
 	public DataCorrection(String externalId, Long internalObjectId, int objectType, DataSourceDescription dataSourceDescription) {
 		this.externalId = externalId;
 		this.internalObjectId = internalObjectId;
@@ -26,74 +20,34 @@ public class DataCorrection extends DomainObject {
 		this.dataSourceDescription = dataSourceDescription;
 	}
 
-	/**
-	 * Getter for property 'externalId'.
-	 *
-	 * @return Value for property 'externalId'.
-	 */
 	public String getExternalId() {
 		return externalId;
 	}
 
-	/**
-	 * Setter for property 'externalId'.
-	 *
-	 * @param externalId Value to set for property 'externalId'.
-	 */
 	public void setExternalId(String externalId) {
 		this.externalId = externalId;
 	}
 
-	/**
-	 * Getter for property 'internalObjectId'.
-	 *
-	 * @return Value for property 'internalObjectId'.
-	 */
 	public Long getInternalObjectId() {
 		return internalObjectId;
 	}
 
-	/**
-	 * Setter for property 'internalObjectId'.
-	 *
-	 * @param internalObjectId Value to set for property 'internalObjectId'.
-	 */
 	public void setInternalObjectId(Long internalObjectId) {
 		this.internalObjectId = internalObjectId;
 	}
 
-	/**
-	 * Getter for property 'dataSourceDescription'.
-	 *
-	 * @return Value for property 'dataSourceDescription'.
-	 */
 	public DataSourceDescription getDataSourceDescription() {
 		return dataSourceDescription;
 	}
 
-	/**
-	 * Setter for property 'dataSourceDescription'.
-	 *
-	 * @param dataSourceDescription Value to set for property 'dataSourceDescription'.
-	 */
 	public void setDataSourceDescription(DataSourceDescription dataSourceDescription) {
 		this.dataSourceDescription = dataSourceDescription;
 	}
 
-	/**
-	 * Getter for property 'objectType'.
-	 *
-	 * @return Value for property 'objectType'.
-	 */
 	public int getObjectType() {
 		return objectType;
 	}
 
-	/**
-	 * Setter for property 'objectType'.
-	 *
-	 * @param objectType Value to set for property 'objectType'.
-	 */
 	public void setObjectType(int objectType) {
 		this.objectType = objectType;
 	}
@@ -108,4 +62,5 @@ public class DataCorrection extends DomainObject {
 				.append("dataSource", dataSourceDescription.getId())
 				.toString();
 	}
+
 }

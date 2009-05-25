@@ -1,4 +1,4 @@
-package org.flexpay.eirc.sp;
+package org.flexpay.eirc.sp.impl;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
@@ -20,6 +20,10 @@ import org.flexpay.common.persistence.registry.workflow.RegistryRecordWorkflowMa
 import org.flexpay.common.persistence.registry.workflow.RegistryWorkflowManager;
 import org.flexpay.eirc.service.*;
 import org.flexpay.eirc.sp.SpFileReader.Message;
+import org.flexpay.eirc.sp.FileParser;
+import org.flexpay.eirc.sp.SpFileReader;
+import org.flexpay.eirc.sp.RegistryFormatException;
+import org.flexpay.eirc.sp.RegistryUtil;
 import org.flexpay.eirc.util.config.ApplicationConfig;
 import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.orgs.persistence.ServiceProvider;
@@ -43,7 +47,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Transactional (readOnly = true)
-public class RegistryFileParser {
+public class RegistryFileParser implements FileParser {
 
 	private Logger log = LoggerFactory.getLogger(getClass());
 
@@ -68,7 +72,7 @@ public class RegistryFileParser {
 
 	@SuppressWarnings ({"ConstantConditions"})
 	@Transactional (propagation = Propagation.NOT_SUPPORTED)
-	public void parse(FPFile spFile) throws Exception {
+	public Registry parse(FPFile spFile) throws Exception {
 
 		FileSource fileSource = null;
 		InputStream is = null;
@@ -112,6 +116,8 @@ public class RegistryFileParser {
 		}
 
 		processLog.info("File successfully parsed, total records: {}", recordCounter[0]);
+
+		return registry;
 	}
 
 	/**
@@ -488,4 +494,5 @@ public class RegistryFileParser {
 	public void setPropertiesFactory(PropertiesFactory propertiesFactory) {
 		this.propertiesFactory = propertiesFactory;
 	}
+
 }

@@ -1,5 +1,7 @@
 package org.flexpay.bti.persistence.apartment;
 
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.DomainObjectWithStatus;
 import org.flexpay.common.persistence.Stub;
@@ -85,6 +87,17 @@ public abstract class ApartmentAttributeType extends DomainObjectWithStatus {
 
 	public void setTranslation(ApartmentAttributeTypeName name) {
 		translations = TranslationUtil.setTranslation(translations, this, name);
+	}
+
+	@Override
+	public String toString() {
+		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
+				append("ApartmentAttributeType {").
+				append("id", getId()).
+				append("status", getStatus()).
+				append("isTemporal", isTemporal).
+				append("uniqueCode", uniqueCode).
+				append("}").toString();
 	}
 
 }

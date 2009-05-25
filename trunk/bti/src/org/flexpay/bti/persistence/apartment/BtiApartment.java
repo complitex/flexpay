@@ -133,7 +133,7 @@ public class BtiApartment extends Apartment {
 		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
 				append("BtiApartment {").
 				append("id", getId()).
-				append("number", getNumber()).
+				append("status", getStatus()).
 				append("}").toString();
 	}
 

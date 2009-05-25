@@ -2,13 +2,17 @@ package org.flexpay.eirc.actions;
 
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.exception.FlexPayException;
+import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.process.ProcessManager;
+import org.flexpay.common.service.FPFileService;
 import org.flexpay.common.util.CollectionUtils;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
+import org.apache.commons.io.IOUtils;
 
-import java.io.Serializable;
+import java.io.*;
 import java.util.Map;
 
 public class SpFileAction extends FPActionSupport {
@@ -18,6 +22,7 @@ public class SpFileAction extends FPActionSupport {
     @NonNls
     private String action;
 
+	private FPFileService fpFileService;
     private ProcessManager processManager;
 
     @NotNull
@@ -30,6 +35,7 @@ public class SpFileAction extends FPActionSupport {
         if ("loadToDb".equals(action)) {
             Map<Serializable, Serializable> contextVariables = CollectionUtils.map();
             contextVariables.put("FileId", spFileId);
+			contextVariables.put("FileType", getFileType(spFileId));
             processId = processManager.createProcess("ParseRegistryProcess", contextVariables);
 			log.debug("Load to db process id {}", processId);
 			if (processId == null) {
@@ -48,6 +54,40 @@ public class SpFileAction extends FPActionSupport {
         return REDIRECT_SUCCESS;
     }
 
+	private String getFileType(Long fileId) throws FlexPayException {
+
+		File file = fpFileService.getFileFromFileSystem(new Stub<FPFile>(fileId));
+
+		String firstMbFileString = "                                                                                                    "
+			+ "                                                                                                    "
+			+ "                                                                                                    ";
+
+		String line = null;
+		BufferedReader reader = null;
+		try {
+			reader = new BufferedReader(new InputStreamReader(new FileInputStream(file), "Cp866"), 500);
+			line = reader.readLine();
+
+			if (firstMbFileString.equals(line)) {
+				line = reader.readLine();
+
+				String[] fields = line.split("=");
+				if (fields.length == 3) {
+					return "mbCorrections";
+				} else if (fields.length == 4) {
+					return "mbRegistry";
+				}
+			}
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			IOUtils.closeQuietly(reader);
+		}
+
+		return "registry";
+	}
+
     /**
      * Get default error execution result
      * <p/>
@@ -56,7 +96,6 @@ public class SpFileAction extends FPActionSupport {
      * @return {@link #ERROR} by default
      */
     @NotNull
-	@Override
     protected String getErrorResult() {
         return REDIRECT_ERROR;
     }
@@ -77,5 +116,10 @@ public class SpFileAction extends FPActionSupport {
 	public void setProcessManager(ProcessManager processManager) {
         this.processManager = processManager;
     }
+
+	@Required
+	public void setFpFileService(FPFileService fpFileService) {
+		this.fpFileService = fpFileService;
+	}
 
 }

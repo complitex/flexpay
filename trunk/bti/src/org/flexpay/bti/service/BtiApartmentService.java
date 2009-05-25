@@ -1,5 +1,6 @@
 package org.flexpay.bti.service;
 
+import org.flexpay.ab.persistence.Apartment;
 import org.flexpay.bti.persistence.apartment.BtiApartment;
 import org.flexpay.common.persistence.Stub;
 import org.jetbrains.annotations.NotNull;
@@ -14,7 +15,7 @@ public interface BtiApartmentService {
 	 * @return Apartment if found, or <code>null</code> otherwise
 	 */
 	@Nullable
-	BtiApartment readWithAttributes(Stub<BtiApartment> stub);
+	BtiApartment readWithAttributes(Stub<? extends Apartment> stub);
 
 	/**
 	 * Update apartment attributes

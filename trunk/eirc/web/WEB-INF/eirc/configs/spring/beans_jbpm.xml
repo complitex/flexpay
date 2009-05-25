@@ -9,7 +9,9 @@
 
 	<bean name="fileParserJob"
           class="org.flexpay.eirc.process.registry.FileParserJob"
-		  p:parser-ref="registryFileParser"
+		  p:registryFileParser-ref="registryFileParser"
+          p:mbCorrectionsFileParser-ref="mbCorrectionsFileParser"
+          p:mbRegistryFileParser-ref="mbRegistryFileParser"
 		  p:fpFileService-ref="fpFileService"
           scope="prototype" />
 
