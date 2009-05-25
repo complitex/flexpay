@@ -33,14 +33,6 @@ public class MbCorrectionsFileParser extends MbFileParser {
 	public static final String ACCOUNT_CLOSED = "ЛИЦЕВОЙ ЗАКРЫТ";
 	public static final String MODIFICATIONS_START_DATE_FORMAT = "ddMMyy";
 
-	private RegistryService registryService;
-	private RegistryRecordService registryRecordService;
-	private RegistryTypeService registryTypeService;
-	private ServiceProviderService serviceProviderService;
-	private RegistryStatusService registryStatusService;
-	private RegistryArchiveStatusService registryArchiveStatusService;
-	private PropertiesFactory propertiesFactory;
-
 	@Transactional(propagation = Propagation.NOT_SUPPORTED, readOnly = false)
 	protected Registry parseFile(@NotNull FPFile spFile) throws FlexPayException {
 
@@ -310,41 +302,6 @@ public class MbCorrectionsFileParser extends MbFileParser {
 		record = registryRecordService.create(record);
 
 		return record;
-	}
-
-	@Required
-	public void setRegistryService(RegistryService registryService) {
-		this.registryService = registryService;
-	}
-
-	@Required
-	public void setRegistryRecordService(RegistryRecordService registryRecordService) {
-		this.registryRecordService = registryRecordService;
-	}
-
-	@Required
-	public void setRegistryTypeService(RegistryTypeService registryTypeService) {
-		this.registryTypeService = registryTypeService;
-	}
-
-	@Required
-	public void setServiceProviderService(ServiceProviderService serviceProviderService) {
-		this.serviceProviderService = serviceProviderService;
-	}
-
-	@Required
-	public void setSpRegistryStatusService(RegistryStatusService registryStatusService) {
-		this.registryStatusService = registryStatusService;
-	}
-
-	@Required
-	public void setRegistryArchiveStatusService(RegistryArchiveStatusService registryArchiveStatusService) {
-		this.registryArchiveStatusService = registryArchiveStatusService;
-	}
-
-	@Required
-	public void setPropertiesFactory(PropertiesFactory propertiesFactory) {
-		this.propertiesFactory = propertiesFactory;
 	}
 
 }
