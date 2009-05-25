@@ -6,7 +6,8 @@ import org.flexpay.payments.action.TestRecievedPaymentsReportAction;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-		TestRegistryWriter.class
+		TestRegistryWriter.class,
+        TestGeneratePaymentsDBRegistry.class
 		})
 public class AllTests {
 
