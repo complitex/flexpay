@@ -99,6 +99,7 @@ public class PaymentsReportAction extends FPActionSupport implements PaymentPoin
 				}
 				writer.close();
 			}
+			file.updateSize();
 		} finally {
 			IOUtils.closeQuietly(w);
 			IOUtils.closeQuietly(os);
