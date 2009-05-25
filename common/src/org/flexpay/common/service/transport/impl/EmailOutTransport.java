@@ -1,13 +1,10 @@
 package org.flexpay.common.service.transport.impl;
 
-import org.flexpay.common.service.transport.OutTransport;
 import org.flexpay.common.persistence.file.FPFile;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.JavaMailSenderImpl;
-import org.springframework.mail.javamail.MimeMessageHelper;
-import org.springframework.core.io.FileSystemResource;
+import org.flexpay.common.service.transport.OutTransport;
 import org.springframework.core.io.InputStreamResource;
-import org.omg.CORBA_2_3.portable.InputStream;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 
 import javax.mail.internet.MimeMessage;
 
