@@ -80,6 +80,8 @@
           p:registryService-ref="registryService"
           p:registryStatusService-ref="registryStatusService"
           p:registryTypeService-ref="registryTypeService"
+          p:registryRecordStatusService-ref="registryRecordStatusService"
+          p:propertiesFactory-ref="propertiesFactory"
             />
 
 	<bean id="generatePaymentsMBRegistry"
@@ -89,7 +91,7 @@
 		  p:registryStatusService-ref="registryStatusService" />
 
     <bean id="sendEmail"
-          class="org.flexpay.common.service.transport.impl.SendFileToEmail"
+          class="org.flexpay.common.service.transport.impl.EmailOutTransport"
           p:email="test@test.test"
           p:sender-ref="mailSender" />
 

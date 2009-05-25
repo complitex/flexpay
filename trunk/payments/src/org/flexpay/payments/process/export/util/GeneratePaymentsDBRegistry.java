@@ -1,21 +1,21 @@
 package org.flexpay.payments.process.export.util;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.flexpay.common.service.*;
-import org.flexpay.common.persistence.registry.*;
-import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.exception.FlexPayException;
+import org.flexpay.common.persistence.file.FPFile;
+import org.flexpay.common.persistence.registry.*;
+import org.flexpay.common.service.*;
 import org.flexpay.orgs.persistence.Organization;
-import org.flexpay.payments.persistence.Operation;
 import org.flexpay.payments.persistence.Document;
+import org.flexpay.payments.persistence.Operation;
 import org.flexpay.payments.service.OperationService;
 import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.ArrayList;
-import java.math.BigDecimal;
 
 public class GeneratePaymentsDBRegistry {
     private final Logger log = LoggerFactory.getLogger(getClass());
@@ -25,6 +25,8 @@ public class GeneratePaymentsDBRegistry {
     private RegistryTypeService registryTypeService;
     private RegistryStatusService registryStatusService;
     private RegistryArchiveStatusService registryArchiveStatusService;
+    private RegistryRecordStatusService registryRecordStatusService;
+    private PropertiesFactory propertiesFactory;
 
     @NotNull
     public Registry createDBRegestry(@NotNull FPFile spFile, @NotNull Organization organization, @NotNull Date fromDate, @NotNull Date tillDate) throws FlexPayException {
@@ -41,6 +43,7 @@ public class GeneratePaymentsDBRegistry {
         registry.setRegistryStatus(registryStatusService.findByCode(RegistryStatus.CREATING));
         registry.setFromDate(fromDate);
         registry.setTillDate(tillDate);
+        registry.setProperties(propertiesFactory.newRegistryProperties());
         registryService.create(registry);
 
         BigDecimal summ = new BigDecimal(0);
@@ -49,8 +52,7 @@ public class GeneratePaymentsDBRegistry {
             for (Document document : operation.getDocuments()) {
                 if (document.getRegistryRecord() == null) {
                     RegistryRecord record = new RegistryRecord();
-                    RegistryRecordStatus status = new RegistryRecordStatus();
-                    status.setCode(RegistryRecordStatus.PROCESSED);
+                    RegistryRecordStatus status = registryRecordStatusService.findByCode(RegistryRecordStatus.PROCESSED);
                     record.setRecordStatus(status);
                     record.setAmount(document.getSumm());
                     record.setServiceCode("#" + document.getService().getExternalCode());
@@ -67,6 +69,8 @@ public class GeneratePaymentsDBRegistry {
                     record.setBuildingNum(document.getBuildingNumber());
                     record.setBuildingBulkNum(document.getBuildingBulk());
                     record.setApartmentNum(document.getApartmentNumber());
+
+                    record.setProperties(propertiesFactory.newRecordProperties());
 
                     List<RegistryRecordContainer> containers = new ArrayList<RegistryRecordContainer>();
 
@@ -135,5 +139,13 @@ public class GeneratePaymentsDBRegistry {
 
     public void setOperationService(OperationService operationService) {
         this.operationService = operationService;
+    }
+
+    public void setRegistryRecordStatusService(RegistryRecordStatusService registryRecordStatusService) {
+        this.registryRecordStatusService = registryRecordStatusService;
+    }
+
+    public void setPropertiesFactory(PropertiesFactory propertiesFactory) {
+        this.propertiesFactory = propertiesFactory;
     }
 }
