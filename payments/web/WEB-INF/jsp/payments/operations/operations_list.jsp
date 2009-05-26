@@ -272,11 +272,11 @@
 					<td align="right"><s:property value="%{#opStatus.index + 1}"/></td>
 					<td nowrap="nowrap"><s:property value="id"/></td>
 					<td nowrap="nowrap"><s:date name="creationDate" format="HH:mm:ss"/></td>
-					<td nowrap="nowrap">&nbsp;</td>
-					<td nowrap="nowrap">&nbsp;</td>
-					<td nowrap="nowrap">&nbsp;</td>
-					<td nowrap="nowrap">&nbsp;</td>
-					<td nowrap="nowrap">&nbsp;</td>
+					<td nowrap="nowrap"><s:property value="address"/></td>
+					<td nowrap="nowrap"><s:property value="payerFIO"/></td>
+					<td nowrap="nowrap"><s:property value="operationSumm"/></td>
+					<td nowrap="nowrap"><s:property value="operationInputSumm"/></td>
+					<td nowrap="nowrap"><s:property value="change"/></td>
 					<td class="service_column" nowrap="nowrap" style="display: none;">&nbsp;</td>
 					<td class="service_provider_column" nowrap="nowrap" style="display: none;">&nbsp;</td>
 					<td><a href="#" onclick="printQuittance(<s:property value="id" />);"><s:text name="print" /></a></td>
