@@ -34,10 +34,6 @@ public class BtiApartmentDaoExtImpl extends HibernateDaoSupport implements BtiAp
                 .findByNamedQuery("ApartmentAttributeBase.readTmpAttributes", apartment.getId());
         addAttributes(apartment, tmpAttrs);
 
-        if (apartment.getAttributes().isEmpty()) {
-            apartment.setAttributes(Collections.EMPTY_SET);
-        }
-
         return apartment;
     }
 

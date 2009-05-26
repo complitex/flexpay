@@ -10,7 +10,8 @@ import org.junit.runners.Suite;
 		TestBuildingAttributeTypeService.class,
 		TestBuildingAttributeService.class,
 		TestBuildingService.class,
-		TestBtiBuildingService.class
+		TestBtiBuildingService.class,
+		TestApartmentAttribute.class
 		})
 public class AllTests {
 

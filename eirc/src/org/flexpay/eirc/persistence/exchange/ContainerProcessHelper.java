@@ -42,7 +42,6 @@ public class ContainerProcessHelper {
 			btiApartment.setNormalAttribute(attributeType, newValue);
 			factory.getBtiApartmentService().updateAttributes(btiApartment);
 		}
-
 	}
 
 }
