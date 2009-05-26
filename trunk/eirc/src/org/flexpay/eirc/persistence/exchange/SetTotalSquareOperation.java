@@ -32,8 +32,8 @@ public class SetTotalSquareOperation extends AbstractChangePersonalAccountOperat
 	 */
 	public void process(Registry registry, RegistryRecord record) throws FlexPayException {
 
-		ContainerProcessHelper.updateApartmentAttribute(record, newValue, ApartmentAttributeConfig.ATTR_TOTAL_SQUARE, factory);
-
+		ContainerProcessHelper.updateApartmentAttribute(record, newValue,
+				ApartmentAttributeConfig.ATTR_TOTAL_SQUARE, factory);
 	}
 
 }

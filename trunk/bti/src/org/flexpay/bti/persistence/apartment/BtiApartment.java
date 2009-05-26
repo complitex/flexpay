@@ -35,9 +35,6 @@ public class BtiApartment extends Apartment {
 
 	@Nullable
     public ApartmentAttributeBase getAttribute(ApartmentAttributeType attributeType) {
-        if (attributes.isEmpty()) {
-            return null;
-        }
 
         for (ApartmentAttributeBase attribute : attributes) {
             if (attribute.getAttributeType().equals(attributeType)) {
@@ -54,7 +51,7 @@ public class BtiApartment extends Apartment {
 
 	public void setAttribute(ApartmentAttributeBase attribute) {
 		//noinspection CollectionsFieldAccessReplaceableByMethodCall
-		if (attributes.isEmpty()) {
+		if (attributes == Collections.EMPTY_SET) {
 			attributes = CollectionUtils.set();
 		}
 
@@ -93,7 +90,7 @@ public class BtiApartment extends Apartment {
 
 	public void addAttribute(ApartmentAttributeBase attribute) {
 		//noinspection CollectionsFieldAccessReplaceableByMethodCall
-		if (attributes.isEmpty()) {
+		if (attributes == Collections.EMPTY_SET) {
 			attributes = CollectionUtils.set();
 		}
 
@@ -131,10 +128,9 @@ public class BtiApartment extends Apartment {
 	@Override
 	public String toString() {
 		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
-				append("BtiApartment {").
 				append("id", getId()).
 				append("status", getStatus()).
-				append("}").toString();
+				toString();
 	}
 
 }
