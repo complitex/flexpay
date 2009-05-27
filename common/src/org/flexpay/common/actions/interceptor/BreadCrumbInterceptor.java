@@ -29,10 +29,7 @@ public class BreadCrumbInterceptor extends AbstractInterceptor {
 
 		try {
 
-			UserPreferences userPreferences = UserPreferences.getPreferences(request);
-			Stack<Crumb> crumbs = userPreferences.getCrumbs();
-
-			Crumb curCrumb = getCurrentCrumb(request, crumbs);
+			Crumb curCrumb = getCurrentCrumb(request);
 
 			Object action = actionInvocation.getAction();
 			((BreadCrumbAware) action).setCrumb(curCrumb);
@@ -49,7 +46,7 @@ public class BreadCrumbInterceptor extends AbstractInterceptor {
 
 	}
 
-	private Crumb getCurrentCrumb(HttpServletRequest request, Stack<Crumb> crumbs) {
+	private Crumb getCurrentCrumb(HttpServletRequest request) {
 
 		ActionProxy proxy = ActionContext.getContext().getActionInvocation().getProxy();
 		String actionName = proxy.getActionName();
