@@ -61,13 +61,6 @@ public abstract class FPActionSupport extends ActionSupport implements UserPrefe
 		return !isSubmit();
 	}
 
-	public void setMenu(String menu) {
-		this.menu = menu;
-		if (StringUtils.isNotEmpty(menu) && !menu.equals(userPreferences.getActiveMenu())) {
-			userPreferences.setActiveMenu(menu);
-		}
-	}
-
 	/**
 	 * @return Execution result
 	 * @throws Exception if failure occurs
@@ -244,6 +237,10 @@ public abstract class FPActionSupport extends ActionSupport implements UserPrefe
 		for (FlexPayException e : container.getExceptions()) {
 			addActionError(e);
 		}
+	}
+
+	public void setMenu(String menu) {
+		this.menu = menu;
 	}
 
 	public Crumb getCrumb() {
