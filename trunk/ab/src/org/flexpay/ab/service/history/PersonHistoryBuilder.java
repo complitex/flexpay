@@ -83,13 +83,12 @@ public class PersonHistoryBuilder extends HistoryBuilderBase<Person> {
 				addRegistrationDiff(begin, end, t1, t2, df);
 			}
 		}, regs1, regs2, diff);
-
 	}
 
 	private void addRegistrationDiff(Date begin, Date end, PersonRegistration n1, PersonRegistration n2, Diff diff) {
 
 		if (log.isDebugEnabled()) {
-			log.debug("Adding identity diff in interval: {} - {}", DateUtil.format(begin), DateUtil.format(end));
+			log.debug("Adding registration diff in interval: {} - {}", DateUtil.format(begin), DateUtil.format(end));
 		}
 
 		Apartment a1 = n1 == null ? null : n1.getApartment();
@@ -345,7 +344,7 @@ public class PersonHistoryBuilder extends HistoryBuilderBase<Person> {
 			Stub<Apartment> stub = correctionsService.findCorrection(
 					externalId, Apartment.class, masterIndexService.getMasterSourceDescription());
 			if (stub == null) {
-				throw new IllegalStateException("Cannot find identity type by master index: " + externalId);
+				throw new IllegalStateException("Cannot find apartment by master index: " + externalId);
 			}
 			Apartment apartment = apartmentService.readFull(stub);
 			person.setPersonRegistration(apartment, record.getBeginDate(), record.getEndDate());

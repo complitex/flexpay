@@ -2,6 +2,7 @@ package org.flexpay.ab.service.history;
 
 import org.flexpay.ab.persistence.*;
 import org.flexpay.ab.service.AddressAttributeTypeService;
+import org.flexpay.ab.service.ObjectsFactory;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.history.Diff;
 import org.flexpay.common.persistence.history.HistoryOperationType;
@@ -25,6 +26,7 @@ public class BuildingHistoryBuilder extends HistoryBuilderBase<Building> {
 	protected Logger log = LoggerFactory.getLogger(getClass());
 
 	private AddressAttributeTypeService addressAttributeTypeService;
+	private ObjectsFactory factory;
 
 	/**
 	 * Build necessary diff records
@@ -41,7 +43,7 @@ public class BuildingHistoryBuilder extends HistoryBuilderBase<Building> {
 			diff.setOperationType(HistoryOperationType.TYPE_DELETE);
 		}
 
-		Building buildingOld = b1 == null ? new Building() : b1;
+		Building buildingOld = b1 == null ? factory.newBuilding() : b1;
 
 		// create district reference diff
 		buildDistrictReferenceDiff(buildingOld, b2, diff);
@@ -247,5 +249,10 @@ public class BuildingHistoryBuilder extends HistoryBuilderBase<Building> {
 	@Required
 	public void setAddressAttributeTypeService(AddressAttributeTypeService addressAttributeTypeService) {
 		this.addressAttributeTypeService = addressAttributeTypeService;
+	}
+
+	@Required
+	public void setFactory(ObjectsFactory factory) {
+		this.factory = factory;
 	}
 }

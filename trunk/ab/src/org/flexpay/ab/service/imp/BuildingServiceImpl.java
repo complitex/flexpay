@@ -10,6 +10,7 @@ import org.flexpay.ab.persistence.filters.BuildingsFilter;
 import org.flexpay.ab.persistence.filters.DistrictFilter;
 import org.flexpay.ab.persistence.filters.StreetFilter;
 import org.flexpay.ab.service.BuildingService;
+import org.flexpay.ab.service.ObjectsFactory;
 import org.flexpay.ab.util.config.ApplicationConfig;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
@@ -50,6 +51,8 @@ public class BuildingServiceImpl implements BuildingService {
 
 	private SessionUtils sessionUtils;
 	private ModificationListener<Building> modificationListener;
+
+	private ObjectsFactory factory;
 
 	public List<BuildingAddress> getBuildings(ArrayStack filters, Page pager) {
 		PrimaryKeyFilter streetFilter = (PrimaryKeyFilter) filters.peek();
@@ -300,40 +303,6 @@ public class BuildingServiceImpl implements BuildingService {
 		return buildingses.get(0);
 	}
 
-	/**
-	 * Create a new Buildings
-	 *
-	 * @param street	  Street stub
-	 * @param district	District stub
-	 * @param numberValue Buildings number
-	 * @param bulkValue   Buildings bulk
-	 * @return new Buildings object created
-	 * @throws FlexPayException if failure occurs
-	 */
-	@Transactional (readOnly = false, rollbackFor = Exception.class)
-	@NotNull
-	public BuildingAddress createStreetDistrictBuildings(@NotNull Stub<Street> street, @NotNull Stub<District> district,
-												   @NotNull String numberValue, @NotNull String bulkValue)
-			throws FlexPayException {
-		Building building = new Building();
-		building.setDistrict(new District(district.getId()));
-
-		BuildingAddress buildingAddress = new BuildingAddress();
-		buildingAddress.setPrimaryStatus(true);
-		buildingAddress.setStreet(new Street(street.getId()));
-		building.addAddress(buildingAddress);
-
-		buildingAddress.setBuildingAttribute(numberValue, ApplicationConfig.getBuildingAttributeTypeNumber());
-
-		if (StringUtils.isNotBlank(bulkValue)) {
-			buildingAddress.setBuildingAttribute(numberValue, ApplicationConfig.getBuildingAttributeTypeNumber());
-		}
-
-		buildingDao.create(building);
-
-		return buildingAddress;
-	}
-
 	@NotNull
 	private List<BuildingAddress> filter(@NotNull List<BuildingAddress> buildingses, @NotNull Set<AddressAttribute> attrs) {
 		List<BuildingAddress> result = list();
@@ -378,7 +347,7 @@ public class BuildingServiceImpl implements BuildingService {
 
 		Building building = buildingStub == null ? null : buildingDao.readFull(buildingStub.getId());
 		if (building == null) {
-			building = new Building();
+			building = factory.newBuilding();
 			building.setDistrict(new District(district));
 			buildingAddress.setPrimaryStatus(true);
 			building.addAddress(buildingAddress);
@@ -565,8 +534,7 @@ public class BuildingServiceImpl implements BuildingService {
 	}
 
 	@Required
-	public void setDistrictParentService(
-			ParentService<DistrictFilter> districtParentService) {
+	public void setDistrictParentService(ParentService<DistrictFilter> districtParentService) {
 		this.districtParentService = districtParentService;
 	}
 
@@ -578,5 +546,10 @@ public class BuildingServiceImpl implements BuildingService {
 	@Required
 	public void setModificationListener(ModificationListener<Building> modificationListener) {
 		this.modificationListener = modificationListener;
+	}
+
+	@Required
+	public void setFactory(ObjectsFactory factory) {
+		this.factory = factory;
 	}
 }

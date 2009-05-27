@@ -157,7 +157,8 @@ public class Person extends DomainObjectWithStatus {
 	}
 
 	public void addIdentity(PersonIdentity identity) {
-		if (Collections.emptySet().equals(personIdentities)) {
+		//noinspection CollectionsFieldAccessReplaceableByMethodCall
+		if (personIdentities == Collections.EMPTY_SET) {
 			personIdentities = CollectionUtils.set();
 		}
 

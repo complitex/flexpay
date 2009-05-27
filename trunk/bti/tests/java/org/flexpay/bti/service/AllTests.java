@@ -11,7 +11,8 @@ import org.junit.runners.Suite;
 		TestBuildingAttributeService.class,
 		TestBuildingService.class,
 		TestBtiBuildingService.class,
-		TestApartmentAttribute.class
+		TestApartmentAttribute.class,
+		TestObjectsFactory.class
 		})
 public class AllTests {
 

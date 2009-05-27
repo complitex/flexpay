@@ -5,14 +5,17 @@ import org.flexpay.ab.persistence.Building;
 import org.flexpay.ab.persistence.BuildingAddress;
 import org.flexpay.ab.persistence.District;
 import org.flexpay.ab.persistence.Street;
+import org.flexpay.ab.service.ObjectsFactory;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.service.importexport.CorrectionsService;
 import org.flexpay.common.service.importexport.DataConverter;
+import org.springframework.beans.factory.annotation.Required;
 
-public class RawBuildingsDataConverter implements
-		DataConverter<BuildingAddress, RawBuildingsData> {
+public class RawBuildingsDataConverter implements DataConverter<BuildingAddress, RawBuildingsData> {
+
+	private ObjectsFactory factory;
 
 	/**
 	 * Convert raw data to domain object
@@ -39,7 +42,7 @@ public class RawBuildingsDataConverter implements
 			throw new FlexPayException("Cannot find district");
 		}
 
-		Building building = new Building();
+		Building building = factory.newBuilding();
 		building.setDistrict(new District(district));
 
 		BuildingAddress buildingAddress = new BuildingAddress();
@@ -53,5 +56,10 @@ public class RawBuildingsDataConverter implements
 		}
 
 		return buildingAddress;
+	}
+
+	@Required
+	public void setFactory(ObjectsFactory factory) {
+		this.factory = factory;
 	}
 }

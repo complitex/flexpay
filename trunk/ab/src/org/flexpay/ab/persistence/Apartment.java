@@ -25,7 +25,7 @@ public class Apartment extends DomainObjectWithStatus {
 	private Set<ApartmentNumber> apartmentNumbers = Collections.emptySet();
 	private Set<PersonRegistration> personRegistrations = Collections.emptySet();
 
-	public Apartment() {
+	protected Apartment() {
 	}
 
 	public Apartment(@NotNull Long id) {
@@ -34,6 +34,10 @@ public class Apartment extends DomainObjectWithStatus {
 
 	public Apartment(@NotNull Stub<Apartment> stub) {
 		super(stub.getId());
+	}
+
+	public static Apartment newInstance() {
+		return new Apartment();
 	}
 
 	@Nullable
@@ -105,6 +109,7 @@ public class Apartment extends DomainObjectWithStatus {
 			}
 		}
 
+		number = StringUtils.trimToNull(number);
 		if (number == null) {
 			return;
 		}

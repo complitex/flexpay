@@ -32,6 +32,10 @@ public class Building extends DomainObjectWithStatus {
 		super(stub.getId());
 	}
 
+	public static Building newInstance() {
+		return new Building();
+	}
+
 	public District getDistrict() {
 		return district;
 	}

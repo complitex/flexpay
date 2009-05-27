@@ -8,8 +8,12 @@ import org.flexpay.common.persistence.history.ProcessingStatus;
 import org.flexpay.common.service.DiffService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ModificationListenerImpl<T extends DomainObject> implements ModificationListener<T> {
+
+	private Logger log = LoggerFactory.getLogger(getClass());
 
 	private HistoryBuilder<T> historyBuilder;
 	private DiffService diffService;
@@ -20,6 +24,8 @@ public class ModificationListenerImpl<T extends DomainObject> implements Modific
 	 * @param obj New object
 	 */
 	public void onCreate(@NotNull T obj) {
+
+		log.debug("On CREATE");
 
 		Diff diff = historyBuilder.diff(null, obj);
 		diff.setProcessingStatus(ProcessingStatus.STATUS_PROCESSED);
@@ -35,6 +41,8 @@ public class ModificationListenerImpl<T extends DomainObject> implements Modific
 	 * @param obj	object new version
 	 */
 	public void onUpdate(@NotNull T objOld, @NotNull T obj) {
+
+		log.debug("On UPDATE");
 
 		// check if old object already has history build, i.e. we are not updating new object
 		if (!diffService.hasDiffs(objOld)) {

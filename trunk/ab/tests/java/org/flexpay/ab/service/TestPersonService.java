@@ -1,18 +1,18 @@
 package org.flexpay.ab.service;
 
-import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
+import org.flexpay.ab.persistence.IdentityType;
 import org.flexpay.ab.persistence.Person;
 import org.flexpay.ab.persistence.PersonIdentity;
-import org.flexpay.ab.persistence.IdentityType;
+import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
-import org.flexpay.common.util.config.ApplicationConfig;
 import org.flexpay.common.persistence.Stub;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.junit.Test;
+import org.flexpay.common.util.config.ApplicationConfig;
 import static org.junit.Assert.assertNotNull;
+import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.GregorianCalendar;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 public class TestPersonService extends AbSpringBeanAwareTestCase {
 
@@ -67,7 +67,6 @@ public class TestPersonService extends AbSpringBeanAwareTestCase {
 		identity.setSerialNumber("");
 		identity.setDocumentNumber("");
 		identity.setDefault(true);
-		//noinspection ConstantConditions
 		person.addIdentity(identity);
 
 		personService.update(person);

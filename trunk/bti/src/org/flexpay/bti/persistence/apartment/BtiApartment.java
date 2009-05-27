@@ -18,7 +18,7 @@ public class BtiApartment extends Apartment {
 
 	private Set<ApartmentAttributeBase> attributes = Collections.emptySet();
 
-	public BtiApartment() {
+	protected BtiApartment() {
 	}
 
 	public BtiApartment(@NotNull Long id) {
@@ -27,6 +27,10 @@ public class BtiApartment extends Apartment {
 
 	public BtiApartment(@NotNull Stub<BtiApartment> stub) {
 		super(stub.getId());
+	}
+
+	public static BtiApartment newInstance() {
+		return new BtiApartment();
 	}
 
 	public Set<ApartmentAttributeBase> getAttributes() {

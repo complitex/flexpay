@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
 	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+	   xmlns:p="http://www.springframework.org/schema/p" xmlns:context="http://www.springframework.org/schema/context"
+	   xsi:schemaLocation="
+		   http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+		   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
 	<bean id="townProcessor" class="org.flexpay.ab.service.imp.TownProcessor">
 		<property name="townDao" ref="townDao" />
@@ -22,19 +25,21 @@
 		<property name="districtService" ref="districtService" />
 	</bean>
 
-	<bean id="buildingProcessor" class="org.flexpay.ab.service.imp.BuildingProcessor">
-		<property name="streetDao" ref="streetDao" />
-		<property name="districtDao" ref="districtDao" />
-		<property name="buildingsDao" ref="buildingsDao" />
-		<property name="buildingDao" ref="buildingDao" />
-		<property name="buildingService" ref="buildingService" />
-	</bean>
+	<bean id="buildingProcessor"
+		  class="org.flexpay.ab.service.imp.BuildingProcessor"
+		  p:streetDao-ref="streetDao"
+		  p:districtDao-ref="districtDao"
+		  p:buildingDao-ref="buildingDao"
+		  p:buildingsDao-ref="buildingsDao"
+		  p:buildingService-ref="buildingService"
+		  p:factory-ref="objectsFactory" />
 
-	<bean id="apartmentProcessor" class="org.flexpay.ab.service.imp.ApartmentProcessor">
-		<property name="apartmentDao" ref="apartmentDao" />
-		<property name="buildingsDao" ref="buildingsDao" />
-		<property name="apartmentService" ref="apartmentService" />
-	</bean>
+	<bean id="apartmentProcessor"
+		  class="org.flexpay.ab.service.imp.ApartmentProcessor"
+		  p:apartmentDao-ref="apartmentDao"
+		  p:buildingsDao-ref="buildingsDao"
+		  p:apartmentService-ref="apartmentService"
+		  p:factory-ref="objectsFactory" />
 
 	<bean id="personProcessor" class="org.flexpay.ab.service.imp.PersonProcessor">
 		<property name="personService" ref="personService" />

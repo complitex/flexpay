@@ -4,7 +4,9 @@ import org.apache.commons.lang.StringUtils;
 import org.flexpay.ab.persistence.Apartment;
 import org.flexpay.ab.persistence.ApartmentNumber;
 import org.flexpay.ab.persistence.Building;
+import org.flexpay.ab.service.ObjectsFactory;
 import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.common.persistence.history.Diff;
 import org.flexpay.common.persistence.history.HistoryRecord;
 import org.flexpay.common.persistence.history.ProcessingStatus;
@@ -16,6 +18,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Required;
 
 import java.util.Collections;
 import java.util.Date;
@@ -28,6 +32,8 @@ public class ApartmentHistoryBuilder extends HistoryBuilderBase<Apartment> {
 
 	protected Logger log = LoggerFactory.getLogger(getClass());
 
+	private ObjectsFactory factory;
+
 	/**
 	 * Build necessary diff records
 	 *
@@ -39,7 +45,7 @@ public class ApartmentHistoryBuilder extends HistoryBuilderBase<Apartment> {
 
 		log.debug("creating new buildings diff");
 
-		Apartment apartmentOld = a1 == null ? new Apartment() : a1;
+		Apartment apartmentOld = a1 == null ? factory.newApartment() : a1;
 
 		buildBuildingReferenceDiff(apartmentOld, a2, diff);
 
@@ -86,19 +92,28 @@ public class ApartmentHistoryBuilder extends HistoryBuilderBase<Apartment> {
 		return an == null || StringUtils.isBlank(an.getValue());
 	}
 
+	private boolean isNew(DomainObject object) {
+		Long id = object.getId();
+		return id == null || id <= 0;
+	}
+
+	private boolean isNotNew(DomainObject object) {
+		return !isNew(object);
+	}
+
 	private void buildBuildingReferenceDiff(@NotNull Apartment a1, @NotNull Apartment a2, @NotNull Diff diff) {
 
 		Building b1 = a1.getBuilding();
 		Building b2 = a2.getBuilding();
-		boolean noParent = (b1 == null || b1.isNew()) && (b2 == null || b2.isNew());
+		boolean noParent = (b1 == null || isNew(b1)) && (b2 == null || isNew(b2));
 
 		// no parent found in both objects, nothing to do
 		if (noParent) {
 			return;
 		}
 
-		boolean sameParent = b1 != null && b1.isNotNew() &&
-							 b2 != null && b2.isNotNew() &&
+		boolean sameParent = b1 != null && isNotNew(b1) &&
+							 b2 != null && isNotNew(b2) &&
 							 b1.equals(b2);
 		// same parent found in both objects, nothing to do
 		if (sameParent) {
@@ -108,11 +123,11 @@ public class ApartmentHistoryBuilder extends HistoryBuilderBase<Apartment> {
 		HistoryRecord rec = new HistoryRecord();
 		rec.setFieldType(FIELD_BUILDING_ID);
 		rec.setOldStringValue(
-				b1 == null || b1.isNew() ?
+				b1 == null || isNew(b1) ?
 				null :
 				masterIndexService.getMasterIndex(b1));
 		rec.setNewStringValue(
-				b2 == null || b2.isNew() ?
+				b2 == null || isNew(b2) ?
 				null :
 				masterIndexService.getMasterIndex(b2));
 		diff.addRecord(rec);
@@ -166,5 +181,10 @@ public class ApartmentHistoryBuilder extends HistoryBuilderBase<Apartment> {
 		apartment.setBuilding(building);
 		log.debug("Patched building reference {}", apartment.getBuilding());
 		record.setProcessingStatus(ProcessingStatus.STATUS_PROCESSED);
+	}
+
+	@Required
+	public void setFactory(ObjectsFactory factory) {
+		this.factory = factory;
 	}
 }

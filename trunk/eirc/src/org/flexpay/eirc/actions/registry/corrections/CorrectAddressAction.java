@@ -30,7 +30,7 @@ import org.springframework.beans.factory.annotation.Required;
 public class CorrectAddressAction extends ApartmentsListAction {
 
 	private String setupType;
-	private Apartment object = new Apartment();
+	private Apartment object = Apartment.newInstance();
 	private RegistryRecord record = new RegistryRecord();
 
 	private DistrictFilter districtFilter = new DistrictFilter();

@@ -20,11 +20,13 @@ public class TestApartmentService extends AbSpringBeanAwareTestCase {
 	protected ApartmentService apartmentService;
 	@Autowired
 	protected ApartmentDao apartmentDao;
+	@Autowired
+	private ObjectsFactory factory;
 
 	@Test
 	public void testCreateApartment() throws Throwable {
 
-		Apartment apartment = new Apartment();
+		Apartment apartment = factory.newApartment();
 		apartment.setBuilding(new Building(26L));
 
 		ApartmentNumber number = new ApartmentNumber();
