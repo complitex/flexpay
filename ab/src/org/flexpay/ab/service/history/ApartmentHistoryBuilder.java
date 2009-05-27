@@ -117,7 +117,7 @@ public class ApartmentHistoryBuilder extends HistoryBuilderBase<Apartment> {
 				masterIndexService.getMasterIndex(b2));
 		diff.addRecord(rec);
 
-		log.debug("Biolding ref diff {}", rec);
+		log.debug("Building ref diff {}", rec);
 	}
 
 	/**

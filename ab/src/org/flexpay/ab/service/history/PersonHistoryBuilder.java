@@ -13,6 +13,7 @@ import org.flexpay.common.persistence.history.TemporalObjectsHistoryBuildHelper.
 import org.flexpay.common.persistence.history.impl.HistoryBuilderBase;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.DateUtil;
+import org.flexpay.common.util.config.ApplicationConfig;
 import static org.flexpay.common.util.CollectionUtils.list;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -367,6 +368,16 @@ public class PersonHistoryBuilder extends HistoryBuilderBase<Person> {
 			}
 
 			context.lastIdentity = new PersonIdentity();
+			context.lastIdentity.setFirstName("");
+			context.lastIdentity.setMiddleName("");
+			context.lastIdentity.setLastName("");
+			context.lastIdentity.setOrganization("");
+			context.lastIdentity.setDocumentNumber("");
+			context.lastIdentity.setSerialNumber("");
+			context.lastIdentity.setBirthDate(ApplicationConfig.getPastInfinite());
+			context.lastIdentity.setDefault(false);
+			context.lastIdentity.setSex(PersonIdentity.SEX_UNKNOWN);
+
 			context.lastIdentity.setBeginDate(record.getBeginDate());
 			context.lastIdentity.setEndDate(record.getEndDate());
 			context.oldTypeId = record.getFieldKey2();

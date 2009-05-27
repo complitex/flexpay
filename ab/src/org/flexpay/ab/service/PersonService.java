@@ -94,7 +94,7 @@ public interface PersonService {
 	 * @return Saved person back
 	 * @throws FlexPayExceptionContainer if validation fails
 	 */
-	@Secured ({Roles.PERSON_ADD, Roles.PERSON_CHANGE})
+	@Secured (Roles.PERSON_CHANGE)
 	Person update(@NotNull Person person) throws FlexPayExceptionContainer;
 
     /**

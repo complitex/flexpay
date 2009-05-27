@@ -123,6 +123,7 @@ public class Diff extends DomainObject {
 				append("userName", userName).
 				append("masterIndex", masterIndex).
 				append("instanceId", instanceId).
+				append("processingStatus", processingStatus).
 				toString();
 	}
 

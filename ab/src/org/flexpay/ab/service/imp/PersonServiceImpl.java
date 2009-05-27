@@ -6,10 +6,7 @@ import org.flexpay.ab.dao.PersonAttributeDao;
 import org.flexpay.ab.dao.PersonDao;
 import org.flexpay.ab.dao.PersonDaoExt;
 import org.flexpay.ab.dao.PersonRegistrationDao;
-import org.flexpay.ab.persistence.IdentityType;
-import org.flexpay.ab.persistence.Person;
-import org.flexpay.ab.persistence.PersonIdentity;
-import org.flexpay.ab.persistence.Apartment;
+import org.flexpay.ab.persistence.*;
 import org.flexpay.ab.service.IdentityTypeService;
 import org.flexpay.ab.service.PersonService;
 import org.flexpay.common.dao.paging.Page;
@@ -84,8 +81,13 @@ public class PersonServiceImpl implements PersonService {
 
 		Person persistent = personDao.readFull(stub.getId());
 		if (persistent != null) {
-			persistent.setPersonAttributes(personAttributeDao.listAttributes(stub.getId()));
-			persistent.setPersonRegistrations(personRegistrationDao.listRegistrations(stub.getId()));
+			List<PersonAttribute> attributes = personAttributeDao.listAttributes(stub.getId());
+			persistent.setPersonAttributes(attributes);
+			sessionUtils.evict(attributes);
+
+			List<PersonRegistration> registrations = personRegistrationDao.listRegistrations(stub.getId());
+			persistent.setPersonRegistrations(registrations);
+			sessionUtils.evict(registrations);
 
 			// setup identity types
 			for (PersonIdentity identity : persistent.getPersonIdentities()) {

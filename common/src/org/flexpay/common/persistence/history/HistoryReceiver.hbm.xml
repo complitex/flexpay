@@ -1,0 +1,73 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+		"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="org.flexpay.common.persistence.history">
+
+	<class name="ExternalHistoryPack" table="common_external_history_packs_tbl">
+		<comment>Received history records pack</comment>
+		<id name="id" column="id">
+			<generator class="native" />
+		</id>
+		<property name="receiveDate" type="timestamp">
+			<column name="receive_date" not-null="true">
+				<comment>Packet recieve time</comment>
+			</column>
+		</property>
+		<properties name="source_instance_consumption_group" unique="true">
+			<property name="sourceInstanceId">
+				<column name="source_instance_id" not-null="true">
+					<comment>Source instance id</comment>
+				</column>
+			</property>
+			<property name="consumptionGroupId">
+				<column name="consumption_group_id" not-null="true">
+					<comment>Consumption group id</comment>
+				</column>
+			</property>
+		</properties>
+		<many-to-one name="file" class="org.flexpay.common.persistence.file.FPFile"
+					 foreign-key="FK_common_external_history_packs_tbl">
+			<column name="file_id" not-null="true">
+				<comment>File containing records reference</comment>
+			</column>
+		</many-to-one>
+	</class>
+
+	<class name="HistoryUnPackData" table="common_history_unpack_data_tbl">
+		<comment>Data for unpacking process</comment>
+		<id name="id" column="id">
+			<generator class="native" />
+		</id>
+		<property name="sourceInstanceId">
+			<column name="source_instance_id" not-null="true" unique="true">
+				<comment>Source instance id</comment>
+			</column>
+		</property>
+		<many-to-one name="lastUnPackedPacket" class="ExternalHistoryPack"
+					 foreign-key="FK_common_history_unpack_data_tbl_last_pack_id">
+			<column name="last_pack_id" not-null="true">
+				<comment>Reference to last history pack</comment>
+			</column>
+		</many-to-one>
+	</class>
+
+	<query name="HistoryUnPackData.findLastUnpackedData">
+		select distinct o
+		from HistoryUnPackData o
+		where o.sourceInstanceId=?
+	</query>
+
+	<query name="ExternalHistoryPack.findLatestPacks">
+		select distinct p
+		from ExternalHistoryPack p
+			left join fetch p.file f
+			left join fetch f.module 
+		where exists (
+		from HistoryUnPackData u where u.sourceInstanceId=p.sourceInstanceId and p.id>u.lastUnPackedPacket.id)
+		or not exists (
+		from HistoryUnPackData u where u.sourceInstanceId=p.sourceInstanceId)
+	</query>
+
+</hibernate-mapping>
