@@ -108,8 +108,7 @@
 		  p:spRegistryDao-ref="spRegistryDao"
 		  p:spRegistryRecordService-ref="registryRecordService"
 		  p:registryContainerDao-ref="registryContainerDao"
-          p:registryDaoExt-ref="registryDaoExt"
-            />
+		  p:registryDaoExt-ref="registryDaoExt" />
 
 	<bean class="org.flexpay.common.service.internal.SessionUtils"
 		  id="sessionUtils"
@@ -175,6 +174,11 @@
 
 	<bean id="xmlHistoryUnPacker" parent="historyUnPackerBase"
 		  class="org.flexpay.common.persistence.history.impl.XmlHistoryUnPacker" />
+
+	<bean id="historyUnpackManager"
+		  class="org.flexpay.common.persistence.history.impl.HistoryUnpackManagerImpl"
+		  p:historyPackDao-ref="externalHistoryPackDao"
+		  p:unPackDataDao-ref="historyUnPackDataDao" />
 
 	<bean id="historyChangesListenerBase" abstract="true"
 		  class="org.flexpay.common.persistence.history.impl.ModificationListenerImpl"

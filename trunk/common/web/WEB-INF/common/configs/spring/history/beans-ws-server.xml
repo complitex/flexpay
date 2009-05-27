@@ -78,8 +78,9 @@
 		</description>
 	</bean>
 
-	<bean id="soapInHistoryEndpoint" class="org.flexpay.common.persistence.history.impl.SoapInHistoryEndpoint"
+	<bean id="soapInHistoryEndpoint"
+		  class="org.flexpay.common.persistence.history.impl.SoapInHistoryEndpoint"
 		  p:fileService-ref="fpFileService"
-		  p:processManager-ref="processManager" />
+		  p:unpackManager-ref="historyUnpackManager" />
 
 </beans>

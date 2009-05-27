@@ -1,6 +1,7 @@
 package org.flexpay.ab.test;
 
 import static org.flexpay.ab.service.Roles.*;
+import static org.flexpay.common.service.Roles.PROCESS_READ;
 import org.flexpay.common.test.SpringBeanAwareTestCase;
 import org.flexpay.common.util.SecurityUtil;
 import org.junit.BeforeClass;
@@ -38,7 +39,8 @@ public class AbSpringBeanAwareTestCase extends SpringBeanAwareTestCase {
 				TOWN_ADD,
 				TOWN_CHANGE,
 				PERSON_ADD,
-				PERSON_CHANGE
+				PERSON_CHANGE,
+				PROCESS_READ
 		);
 		User user = new User("test", "test", true, true, true, true, authorities);
 		Authentication auth = new AnonymousAuthenticationToken("key", user, authorities);

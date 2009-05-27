@@ -7,7 +7,7 @@
 	<!-- Deployed single instance -->
 	<bean id="soapOutHistoryTransport"
 		  class="org.flexpay.common.persistence.history.impl.SoapOutHistoryTransport"
-		  p:url="http://localhost:8080/eirc/ws/ShareHistory" />
+		  p:url="http://localhost:8080/tc/ws/ShareHistory" />
 
 	<!-- Test internal localhost server via Java 6 HTTP server -->
 	<!--<bean id="soapOutHistoryTransport"-->

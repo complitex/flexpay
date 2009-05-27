@@ -53,7 +53,7 @@ public class SessionUtils {
 	 * @param c Collection that elements should be evicted
 	 */
 	@Transactional(propagation = Propagation.REQUIRED)
-	public void evict(Collection c) {
+	public void evict(Collection<?> c) {
 
 		log.debug("Evicting collection");
 

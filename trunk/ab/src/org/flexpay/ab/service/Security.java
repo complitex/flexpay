@@ -6,6 +6,14 @@ public abstract class Security extends org.flexpay.common.service.Security {
 
 	static {
 		USER_HISTORY_SYNCER_AUTHORITIES.addAll(CollectionUtils.list(
+				Roles.PERSON_READ,
+				Roles.PERSON_ADD,
+				Roles.PERSON_CHANGE,
+				Roles.PERSON_DELETE,
+				Roles.APARTMENT_READ,
+				Roles.APARTMENT_ADD,
+				Roles.APARTMENT_CHANGE,
+				Roles.APARTMENT_DELETE,
 				Roles.BUILDING_READ,
 				Roles.BUILDING_ADD,
 				Roles.BUILDING_CHANGE,
@@ -33,7 +41,11 @@ public abstract class Security extends org.flexpay.common.service.Security {
 				Roles.TOWN_READ,
 				Roles.TOWN_ADD,
 				Roles.TOWN_CHANGE,
-				Roles.TOWN_DELETE
+				Roles.TOWN_DELETE,
+				Roles.IDENTITY_TYPE_READ,
+				Roles.IDENTITY_TYPE_ADD,
+				Roles.IDENTITY_TYPE_CHANGE,
+				Roles.IDENTITY_TYPE_DELETE
 		));
 	}
 

@@ -11,15 +11,11 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Transactional;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
 @Transactional
 public class MasterIndexServiceImpl implements MasterIndexService {
-
-	private Logger log = LoggerFactory.getLogger(getClass());
 
 	private boolean useSelfInstanceIfNotFound = true;
 	private CorrectionsService correctionsService;
@@ -49,12 +45,12 @@ public class MasterIndexServiceImpl implements MasterIndexService {
 	 */
 	@Nullable
 	public <T extends DomainObject> String getMasterIndex(@NotNull T obj) {
-		if (obj.isNew()) {
+		Long id = obj.getId();
+		if (id == null || id <= 0) {
 			throw new IllegalArgumentException("No new object allowed for master index request");
 		}
 
 		String index = correctionsService.getExternalId(obj, getMasterSourceDescription());
-		log.debug("Master index: {} , for object {}", index, obj);
 
 		if (index == null && useSelfInstanceIfNotFound) {
 			index = getNewMasterIndex(obj);

@@ -517,6 +517,16 @@
         primary key (id)
     );
 
+    create table common_external_history_packs_tbl (
+        id bigint not null auto_increment,
+        receive_date datetime not null comment 'Packet recieve time',
+        source_instance_id varchar(255) not null comment 'Source instance id',
+        consumption_group_id bigint not null comment 'Consumption group id',
+        file_id bigint not null comment 'File containing records reference',
+        primary key (id),
+        unique (source_instance_id, consumption_group_id)
+    ) comment='Received history records pack';
+
     create table common_file_statuses_tbl (
         id bigint not null auto_increment comment 'Primary key',
         name varchar(255) not null comment 'Filestatus name',
@@ -607,6 +617,13 @@
         diff_id bigint not null comment 'Diff (set of records) reference',
         primary key (id)
     ) comment='Single field update record';
+
+    create table common_history_unpack_data_tbl (
+        id bigint not null auto_increment,
+        source_instance_id varchar(255) not null unique comment 'Source instance id',
+        last_pack_id bigint not null comment 'Reference to last history pack',
+        primary key (id)
+    ) comment='Data for unpacking process';
 
     create table common_import_errors_tbl (
         id bigint not null auto_increment,
@@ -1924,6 +1941,12 @@
         foreign key (data_source_description_id) 
         references common_data_source_descriptions_tbl (id);
 
+    alter table common_external_history_packs_tbl 
+        add index FK_common_external_history_packs_tbl (file_id), 
+        add constraint FK_common_external_history_packs_tbl 
+        foreign key (file_id) 
+        references common_files_tbl (id);
+
     alter table common_file_statuses_tbl 
         add index common_file_statuses_tbl_module_id (module_id), 
         add constraint common_file_statuses_tbl_module_id 
@@ -1977,6 +2000,12 @@
         add constraint FK_common_history_records_tbl_diff_id 
         foreign key (diff_id) 
         references common_diffs_tbl (id);
+
+    alter table common_history_unpack_data_tbl 
+        add index FK_common_history_unpack_data_tbl_last_pack_id (last_pack_id), 
+        add constraint FK_common_history_unpack_data_tbl_last_pack_id 
+        foreign key (last_pack_id) 
+        references common_external_history_packs_tbl (id);
 
     alter table common_import_errors_tbl 
         add index FKBAEED8705355D490 (source_description_id), 

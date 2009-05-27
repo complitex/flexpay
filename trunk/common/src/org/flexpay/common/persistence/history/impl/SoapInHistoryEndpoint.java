@@ -4,6 +4,8 @@ import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.IOUtils;
 import org.apache.xmlbeans.XmlDateTime;
 import org.flexpay.common.persistence.file.FPFile;
+import org.flexpay.common.persistence.history.HistoryUnpackManager;
+import org.flexpay.common.persistence.history.ExternalHistoryPack;
 import org.flexpay.common.service.FPFileService;
 import org.flexpay.common.service.Security;
 import org.flexpay.common.util.FPFileUtil;
@@ -36,7 +38,7 @@ public class SoapInHistoryEndpoint extends AbstractJDomPayloadEndpoint {
 	private XPath fileExpression;
 
 	private FPFileService fileService;
-	private ProcessManager processManager;
+	private HistoryUnpackManager unpackManager;
 
 	public SoapInHistoryEndpoint() throws JDOMException {
 		Namespace namespace = Namespace.getNamespace("h", NS);
@@ -89,9 +91,12 @@ public class SoapInHistoryEndpoint extends AbstractJDomPayloadEndpoint {
 			log.debug("Data recieved, saving file");
 			fileService.create(file);
 
-			log.debug("Creating unpack process");
-			processManager.createProcess("common.HistoryUnPack",
-					CollectionUtils.<Serializable, Serializable>map(HistoryUnPackJob.PARAM_FILE_ID, file.getId()));
+			log.debug("Creating pack instance");
+			ExternalHistoryPack pack = new ExternalHistoryPack();
+			pack.setFile(file);
+			pack.setConsumptionGroupId(Long.parseLong(groupId));
+			pack.setSourceInstanceId(instanceId);
+			unpackManager.create(pack);
 		} catch (Exception ex) {
 			log.error("Failed saving file and creating process", ex);
 			throw ex;
@@ -108,7 +113,7 @@ public class SoapInHistoryEndpoint extends AbstractJDomPayloadEndpoint {
 	}
 
 	@Required
-	public void setProcessManager(ProcessManager processManager) {
-		this.processManager = processManager;
+	public void setUnpackManager(HistoryUnpackManager unpackManager) {
+		this.unpackManager = unpackManager;
 	}
 }

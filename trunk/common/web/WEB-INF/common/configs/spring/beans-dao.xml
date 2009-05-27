@@ -74,6 +74,26 @@
 		  class="org.flexpay.common.dao.impl.DiffDaoExtImpl"
 		  p:hibernateTemplate-ref="hibernateTemplate" />
 
+	<bean id="externalHistoryPackDao" parent="abstractDao">
+		<property name="proxyInterfaces"
+				  value="org.flexpay.common.dao.ExternalHistoryPackDao" />
+		<property name="target">
+			<bean parent="abstractDaoTarget">
+				<constructor-arg value="org.flexpay.common.persistence.history.ExternalHistoryPack" />
+			</bean>
+		</property>
+	</bean>
+
+	<bean id="historyUnPackDataDao" parent="abstractDao">
+		<property name="proxyInterfaces"
+				  value="org.flexpay.common.dao.HistoryUnPackDataDao" />
+		<property name="target">
+			<bean parent="abstractDaoTarget">
+				<constructor-arg value="org.flexpay.common.persistence.history.HistoryUnPackData" />
+			</bean>
+		</property>
+	</bean>
+
 	<bean id="importErrorDao" parent="abstractDao">
 		<property name="proxyInterfaces"
 				  value="org.flexpay.common.dao.ImportErrorDao" />

@@ -67,8 +67,8 @@ public class StandaloneTasksHolder {
 
 	@Required
 	public void setScheduler(Scheduler scheduler) throws Exception {
-		if (scheduler != null) {
-			scheduler.shutdown();
-		}
+//		if (scheduler != null) {
+//			scheduler.shutdown();
+//		}
 	}
 }

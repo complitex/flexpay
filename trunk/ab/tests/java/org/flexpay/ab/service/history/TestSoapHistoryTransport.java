@@ -26,6 +26,8 @@ public class TestSoapHistoryTransport extends AbSpringBeanAwareTestCase {
 	@Autowired
 	private TownHistoryGenerator townHistoryGenerator;
 	@Autowired
+	private PersonsHistoryGenerator personsHistoryGenerator;
+	@Autowired
 	private HistoryConsumerService historyConsumerService;
 	@Autowired
 	private SoapOutHistoryTransport outTransport;
@@ -46,17 +48,18 @@ public class TestSoapHistoryTransport extends AbSpringBeanAwareTestCase {
 
 		// first, generate some history if needed
 		townHistoryGenerator.generateFor(new Town(2L));
+		personsHistoryGenerator.generate();
 
 		Stub<HistoryConsumer> consumer = new Stub<HistoryConsumer>(1L);
 
-		// second, clean up all previously generated packes
+		// second, clean up all previously generated packs
 		historyConsumerService.deleteConsumptions(consumer);
 
 		// third, dump history to the file
 		List<FPFile> history = historyPacker.packHistory(consumer);
 		assertFalse("history packing failed", history.isEmpty());
 
-		// forth, clean up generated packes
+		// forth, clean up generated packs
 		historyConsumerService.deleteConsumptions(consumer);
 
 		for (FPFile file : history) {

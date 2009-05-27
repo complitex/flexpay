@@ -26,6 +26,17 @@
 		</property>
 	</bean>
 
+	<bean name="jobHistoryUnpackBean" class="org.springframework.scheduling.quartz.JobDetailBean">
+		<property name="jobClass" value="org.flexpay.common.persistence.history.HistoryUnpackQuartzJob" />
+		<property name="jobDataAsMap">
+			<map>
+				<entry key="lockManager" value-ref="lockManager" />
+				<entry key="historyUnPacker" value-ref="xmlHistoryUnPacker" />
+				<entry key="unpackManager" value-ref="historyUnpackManager" />
+			</map>
+		</property>
+	</bean>
+
 	<bean id="jobObjectsSyncTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
 		<property name="jobDetail" ref="jobObjectsSyncDetailBean" />
 		<property name="cronExpression" value="${common.sync.cron.schedule}" />
@@ -36,11 +47,17 @@
 		<property name="cronExpression" value="${common.history_broadcast.cron.schedule}" />
 	</bean>
 
+	<bean id="jobHistoryUnPackTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="jobHistoryUnpackBean" />
+		<property name="cronExpression" value="${common.history_unpack.cron.schedule}" />
+	</bean>
+
 	<bean id="schedulerFactoryBean" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
 		<property name="triggers">
 			<list>
 				<ref bean="jobObjectsSyncTrigger" />
 				<ref bean="jobHistoryBroadcastTrigger" />
+				<ref bean="jobHistoryUnPackTrigger" />
 			</list>
 		</property>
 		<property name="quartzProperties">

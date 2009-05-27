@@ -64,11 +64,6 @@ public abstract class Roles {
 	public static final String IDENTITY_TYPE_CHANGE = PREFIX + "IDENTITY_TYPE_CHANGE";
 	public static final String IDENTITY_TYPE_ADD = PREFIX + "IDENTITY_TYPE_ADD";
 	public static final String IDENTITY_TYPE_DELETE = PREFIX + "IDENTITY_TYPE_DELETE";
-//	<!-- Identity roles -->
-	public static final String IDENTITY_READ = PREFIX + "IDENTITY_READ";
-	public static final String IDENTITY_CHANGE = PREFIX + "IDENTITY_CHANGE";
-	public static final String IDENTITY_ADD = PREFIX + "IDENTITY_ADD";
-	public static final String IDENTITY_DELETE = PREFIX + "IDENTITY_DELETE";
 //	<!-- Person roles -->
 	public static final String PERSON_READ = PREFIX + "PERSON_READ";
 	public static final String PERSON_CHANGE = PREFIX + "PERSON_CHANGE";

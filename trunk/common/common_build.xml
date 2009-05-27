@@ -7,12 +7,12 @@
 	<import file="templates.xml" />
 
 	<path id="common.production.classpath">
-        <path refid="drools.lib" />
+		<path refid="drools.lib" />
 		<path refid="commons.lib" />
 		<path refid="spring.lib" />
 		<path refid="struts.lib" />
 		<path refid="hibernate.lib" />
-        <path refid="freemarker.lib" />
+		<path refid="freemarker.lib" />
 		<path refid="log4j.lib" />
 		<path refid="j2ee.lib" />
 		<path refid="javadbf.lib" />
@@ -95,7 +95,7 @@
 
 	<target name="common.jar.production" depends="common.compile.production">
 		<antcall target="template.jar">
-			<param name="jar.name" value="${common.jar.name}" /> 
+			<param name="jar.name" value="${common.jar.name}" />
 		</antcall>
 	</target>
 
@@ -124,6 +124,12 @@
 		<condition property="class.name" value="${test.class.name}" else="org.flexpay.common.AllTests">
 			<isset property="test.class.name" />
 		</condition>
+
+		<!-- Capture the path as a delimited property using the refid attribute -->
+		<!--<property name="myclasspath" refid="common.runtests.classpath" />-->
+		<!-- Emit the property to the ant console -->
+		<!--<echo message="Classpath = ${myclasspath}" />-->
+
 		<antcall target="template.run.tests">
 			<param name="test_name" value="${class.name}" />
 			<reference refid="common.runtests.classpath" torefid="classpath" />

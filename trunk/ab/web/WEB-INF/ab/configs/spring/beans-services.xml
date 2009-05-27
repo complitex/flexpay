@@ -325,7 +325,7 @@
 		  parent="abHistoryHandlerBase"
 		  class="org.flexpay.ab.service.history.IdentityTypeHistoryHandler"
 		  p:identityTypeService-ref="identityTypeService"
-		  p:historyBuilder-ref="townTypeHistoryBuilder" />
+		  p:historyBuilder-ref="identityTypeHistoryBuilder" />
 
 	<bean id="streetTypeHistoryHandler"
 		  parent="abHistoryHandlerBase"
