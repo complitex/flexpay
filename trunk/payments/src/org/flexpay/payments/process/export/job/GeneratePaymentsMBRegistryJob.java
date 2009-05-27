@@ -1,18 +1,20 @@
 package org.flexpay.payments.process.export.job;
 
+import org.flexpay.common.exception.FlexPayException;
+import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.persistence.file.FPFile;
+import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.process.job.Job;
 import org.flexpay.common.service.FPFileService;
 import org.flexpay.common.service.RegistryService;
-import org.flexpay.common.exception.FlexPayException;
-import org.flexpay.common.persistence.file.FPFile;
-import org.flexpay.common.persistence.Stub;
-import org.flexpay.common.persistence.registry.Registry;
-import org.flexpay.orgs.service.OrganizationService;
+import org.flexpay.common.util.FPFileUtil;
 import org.flexpay.orgs.persistence.Organization;
+import org.flexpay.orgs.service.OrganizationService;
 import org.flexpay.payments.process.export.util.GeneratePaymentsMBRegistry;
+import org.springframework.beans.factory.annotation.Required;
 
-import java.io.Serializable;
 import java.io.File;
+import java.io.Serializable;
 import java.util.Map;
 
 public class GeneratePaymentsMBRegistryJob extends Job {
@@ -72,7 +74,7 @@ public class GeneratePaymentsMBRegistryJob extends Job {
             log.warn("Did not find registry in job parameters");
             return RESULT_ERROR;
         }
-        File file = spFile.getFile();
+        File file = FPFileUtil.getFileOnServer(spFile);
         long currentLength = file.length();
         generatePaymentsMBRegistry.exportToMegaBank(registry, file, organization);
         if (file.length() > currentLength) {
@@ -82,19 +84,24 @@ public class GeneratePaymentsMBRegistryJob extends Job {
         return RESULT_NEXT;
     }
 
+	@Required
     public void setFpFileService(FPFileService fpFileService) {
         this.fpFileService = fpFileService;
     }
 
+	@Required
     public void setGeneratePaymentsMBRegistry(GeneratePaymentsMBRegistry generatePaymentsMBRegistry) {
         this.generatePaymentsMBRegistry = generatePaymentsMBRegistry;
     }
 
+	@Required
     public void setOrganizationService(OrganizationService organizationService) {
         this.organizationService = organizationService;
     }
 
+	@Required
     public void setRegistryService(RegistryService registryService) {
         this.registryService = registryService;
     }
+
 }

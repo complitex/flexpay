@@ -2,10 +2,11 @@ package org.flexpay.eirc.sp.impl;
 
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.file.FPFile;
+import org.flexpay.common.persistence.registry.PropertiesFactory;
 import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.persistence.registry.RegistryRecordStatus;
-import org.flexpay.common.persistence.registry.PropertiesFactory;
 import org.flexpay.common.service.*;
+import org.flexpay.common.util.FPFileUtil;
 import org.flexpay.eirc.sp.FileParser;
 import org.flexpay.orgs.service.ServiceProviderService;
 import org.jetbrains.annotations.NotNull;
@@ -16,8 +17,6 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.File;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 
 public abstract class MbFileParser implements FileParser {
 
@@ -56,7 +55,7 @@ public abstract class MbFileParser implements FileParser {
 
 		long beginTime = System.currentTimeMillis();
 
-		File file = spFile.getFile();
+		File file = FPFileUtil.getFileOnServer(spFile);
 		if (file == null) {
 			log.debug("Incorrect spFile: can't find file on server (spFile.id = {})", spFile.getId());
 			throw new FlexPayException("For FPFile (id = " + spFile.getId() + ") not found temp file: " + spFile.getNameOnServer());

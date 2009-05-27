@@ -61,7 +61,7 @@ public class TariffCalculationJob extends Job {
 				Reader source = null;
 				InputStream fis = null;
 				try {
-					fis = new FileInputStream(rulesFile.getFile().getFile());
+					fis = rulesFile.getFile().getInputStream();
 					source = new InputStreamReader(fis);
 					PackageBuilder builder = new PackageBuilder();
 					builder.addPackageFromDrl(source);

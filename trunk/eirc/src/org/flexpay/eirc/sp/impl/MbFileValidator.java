@@ -2,6 +2,7 @@ package org.flexpay.eirc.sp.impl;
 
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.file.FPFile;
+import org.flexpay.common.util.FPFileUtil;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,7 +23,7 @@ public abstract class MbFileValidator {
 
 	public boolean validate(FPFile spFile) throws FlexPayException  {
 
-		File file = spFile.getFile();
+		File file = FPFileUtil.getFileOnServer(spFile);
 		if (file == null) {
 			log.debug("Incorrect spFile: can't find file on server (spFile.id = {})", spFile.getId());
 			throw new FlexPayException("For FPFile (id = " + spFile.getId() + ") not found temp file: " + spFile.getNameOnServer());
