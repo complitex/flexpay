@@ -2,6 +2,68 @@
 
 <script type="text/javascript">
 
+	var fieldChain = new Array();
+	var currentFieldIndex = 0;
+
+	$(function() {
+		rebindEvents();
+		createFieldChain();
+	});
+
+	function createFieldChain() {
+		// selecting all the payments inputs
+		var paymentInputs = $('input[id^=payments_]');
+		for (var i = 0; i < paymentInputs.length ; i++) {
+			fieldChain[i] = $(paymentInputs[i]).attr('id');
+		}
+		// adding total input summ field to field chain
+		fieldChain[fieldChain.length] = 'inputSumm';
+
+		// setting focus to the first payments field
+		$('#' + fieldChain[0]).focus();
+		currentFieldIndex = 0;
+
+		// debug
+		console.log('Build field chain is following');
+		for (var j = 0; j < fieldChain.length; j++) {
+			console.log('[' + fieldChain[j] + ']');
+		}
+		console.log('Current field index is ' + currentFieldIndex);
+	}
+
+	function rebindEvents() {
+	<s:iterator value="quittanceInfos" id="qi" status="nQI">
+	<s:iterator value="detailses" status="status">
+		<s:set name="serviceId" value="%{getServiceId(serviceMasterIndex)}"/>
+		<s:set name="serviceIndx" value="%{getServiceFullIndex(#nQI.index, #serviceId)}"/>
+		$('#payments_<s:property value="#serviceIndx"/>').bind('focus', function(event) {
+			var selectedFieldId = $(event.target).attr('id');
+			for (var i = 0; i < fieldChain.length; i++) {
+				if (fieldChain[i] == selectedFieldId) {
+					console.log('Updating current field index to ' + currentFieldIndex);
+					currentFieldIndex = i;					
+				}
+			}
+		});
+
+		$('#payments_<s:property value="#serviceIndx"/>').bind('keypress', function(event) {
+			console.log('Pressed key code is ' + event.keyCode);
+			if (event.keyCode == 13 || event.keyCode == 9) {
+				console.log('Moving current field index to ' + (currentFieldIndex + 1));
+				$('#' + fieldChain[currentFieldIndex + 1]).focus();
+				 event.preventDefault();
+			}
+		});
+
+		$('#inputSumm').bind('keypress', function(event) {
+			if (event.keyCode == 13) {
+				$('#quittancePayForm').submit();
+			}
+		});
+	</s:iterator>
+	</s:iterator>
+	};
+
 	/*
 	 Common functions
 	 */
@@ -41,7 +103,7 @@
 			return isValidPayValue(value);
 		}, '<s:text name="eirc.error.quittances.quittance_pay.invalid_pay_value"/>');
 
-	<%--<s:iterator value="quittanceInfos" id="qi">--%>
+	<%--<s:iterator value="quittanceInfos" id="qi" status="nQI">--%>
 	<%--<s:iterator value="detailses" status="status">--%>
 	<%--<s:set name="serviceId" value="%{getServiceId(serviceMasterIndex)}"/>--%>
 	<%--<s:set name="serviceIndx" value="%{getServiceFullIndex(#nQI.index, #serviceId)}"/>--%>
@@ -55,7 +117,7 @@
 			if (!isValidPayValue($('#totalToPay').val())) {
 				return true;
 			}
-						
+
 			var totalPaySumm = dotted2Int($('#totalToPay').val());
 			var inputSumm = dotted2Int(value);
 			return totalPaySumm <= inputSumm;
