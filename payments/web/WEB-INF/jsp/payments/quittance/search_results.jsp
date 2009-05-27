@@ -39,9 +39,9 @@
 						<td class="col"><s:textfield name="payments['%{#serviceIndx}']"
 													 id="payments_%{#serviceIndx}"
 													 value="%{outgoingBalance}"
-													 onkeypress="return FP.disableEnterKey(event);"
 													 onblur="replaceEmptyValueWithZero('payments_%{#serviceIndx}');"
 													 cssStyle="width: 100%; text-align: right;"/></td>
+													 <%--onkeypress="return FP.disableEnterKey(event);"--%>													 
 					</tr>
 				</s:iterator>
 			</s:iterator>
