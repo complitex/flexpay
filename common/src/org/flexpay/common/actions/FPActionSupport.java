@@ -289,16 +289,6 @@ public abstract class FPActionSupport extends ActionSupport implements UserPrefe
 		return getTranslation(translations).getName();
 	}
 
-	/**
-	 * Check if request method was POST
-	 *
-	 * @return <code>true</code> if method was POST, or <code>false</code> otherwise
-	 * @deprecated use {@link #isSubmit()} instead
-	 */
-	public boolean isPost() {
-		return METHOD_POST.equalsIgnoreCase(ServletActionContext.getRequest().getMethod());
-	}
-
 	public String format(Date date) {
 		String dt = DateUtil.format(date);
 		return "-".equals(dt) ? "" : dt;
