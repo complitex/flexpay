@@ -8,6 +8,7 @@ import org.flexpay.ab.persistence.ApartmentNumber;
 import org.flexpay.ab.persistence.BuildingAddress;
 import org.flexpay.ab.persistence.HistoryRecord;
 import org.flexpay.ab.service.ApartmentService;
+import org.flexpay.ab.service.ObjectsFactory;
 import org.flexpay.ab.util.config.ApplicationConfig;
 import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.persistence.DomainObject;
@@ -15,6 +16,7 @@ import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.service.importexport.CorrectionsService;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.springframework.beans.factory.annotation.Required;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -24,6 +26,7 @@ public class ApartmentProcessor extends AbstractProcessor<Apartment> {
 	private ApartmentDao apartmentDao;
 	private BuildingsDao buildingsDao;
 	private ApartmentService apartmentService;
+	private ObjectsFactory factory;
 
 	public ApartmentProcessor() {
 		super(Apartment.class);
@@ -37,7 +40,7 @@ public class ApartmentProcessor extends AbstractProcessor<Apartment> {
 	 */
 	@NotNull
 	protected Apartment doCreateObject() throws Exception {
-		return new Apartment();
+		return factory.newApartment();
 	}
 
 	/**
@@ -177,15 +180,23 @@ public class ApartmentProcessor extends AbstractProcessor<Apartment> {
 		return stub;
 	}
 
+	@Required
 	public void setApartmentDao(ApartmentDao apartmentDao) {
 		this.apartmentDao = apartmentDao;
 	}
 
+	@Required
 	public void setBuildingsDao(BuildingsDao buildingsDao) {
 		this.buildingsDao = buildingsDao;
 	}
 
+	@Required
 	public void setApartmentService(ApartmentService apartmentService) {
 		this.apartmentService = apartmentService;
+	}
+
+	@Required
+	public void setFactory(ObjectsFactory factory) {
+		this.factory = factory;
 	}
 }

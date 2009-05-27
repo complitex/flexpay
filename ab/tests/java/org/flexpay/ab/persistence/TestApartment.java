@@ -1,8 +1,11 @@
 package org.flexpay.ab.persistence;
 
 import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
+import org.flexpay.ab.service.ObjectsFactory;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
+import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -10,9 +13,13 @@ import java.util.GregorianCalendar;
 
 public class TestApartment extends AbSpringBeanAwareTestCase {
 
+	@Autowired
+	private ObjectsFactory factory;
+
+	@Test
 	public void testSetupApartmentNumber() {
 
-		Apartment apartment = new Apartment();
+		Apartment apartment = Apartment.newInstance();
 		apartment.setNumber("   ");
 		assertNull("Blank number setup should erase value", apartment.getNumber());
 

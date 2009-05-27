@@ -3,6 +3,7 @@ package org.flexpay.ab.service.history;
 import org.flexpay.ab.persistence.Apartment;
 import org.flexpay.ab.persistence.ApartmentNumber;
 import org.flexpay.ab.service.ApartmentService;
+import org.flexpay.ab.service.ObjectsFactory;
 import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.history.Diff;
@@ -18,18 +19,20 @@ public class TestApartmentHistoryBuilder extends AbSpringBeanAwareTestCase {
 	private ApartmentHistoryBuilder historyBuilder;
 	@Autowired
 	private ApartmentService apartmentService;
+	@Autowired
+	private ObjectsFactory factory;
 
 	@Test
 	public void testBuildDiff() {
 
-		Diff diff = historyBuilder.diff(new Apartment(), new Apartment());
+		Diff diff = historyBuilder.diff(factory.newApartment(), factory.newApartment());
 		assertTrue("Diff of two empty apartment is not empty", diff.isEmpty());
 	}
 
 	@Test
 	public void testBuildDiff3() {
 
-		Diff diff = historyBuilder.diff(null, new Apartment());
+		Diff diff = historyBuilder.diff(null, factory.newApartment());
 		assertTrue("Diff of two empty apartments is not empty", diff.isEmpty());
 	}
 
@@ -57,7 +60,7 @@ public class TestApartmentHistoryBuilder extends AbSpringBeanAwareTestCase {
 
 		Diff diff = historyBuilder.diff(null, apartment);
 
-		Apartment newApartment = new Apartment();
+		Apartment newApartment = factory.newApartment();
 		historyBuilder.patch(newApartment, diff);
 
 		assertEquals("Invalid building reference patch", apartment.getBuildingStub(), newApartment.getBuildingStub());

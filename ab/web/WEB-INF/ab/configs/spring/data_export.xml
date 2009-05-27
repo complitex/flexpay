@@ -7,45 +7,37 @@
 		   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
 	<bean id="dataExportDao"
-		  class="org.flexpay.ab.dao.importexport.imp.HarkovCenterNachisleniyDataSource">
-		<property name="jdbcTemplate" ref="dataExportJdbcTemplate" />
-	</bean>
+		  class="org.flexpay.ab.dao.importexport.imp.HarkovCenterNachisleniyDataSource"
+		  p:jdbcTemplate-ref="dataExportJdbcTemplate" />
 
 	<bean id="allObjectsDao"
-		  class="org.flexpay.ab.service.importexport.imp.AllObjectsDao">
-		<property name="hibernateTemplate" ref="hibernateTemplate" />
-	</bean>
+		  class="org.flexpay.ab.service.importexport.imp.AllObjectsDao"
+		  p:hibernateTemplate-ref="hibernateTemplate" />
 
 	<!-- Data sources -->
 	<bean id="districtJdbcDataSource"
-		  class="org.flexpay.ab.dao.importexport.DistrictJdbcDataSource">
-		<property name="source" ref="dataExportDao" />
-	</bean>
+		  class="org.flexpay.ab.dao.importexport.DistrictJdbcDataSource"
+		  p:source-ref="dataExportDao" />
 
 	<bean id="streetTypeJdbcDataSource"
-		  class="org.flexpay.ab.dao.importexport.StreetTypeJdbcDataSource">
-		<property name="source" ref="dataExportDao" />
-	</bean>
+		  class="org.flexpay.ab.dao.importexport.StreetTypeJdbcDataSource"
+		  p:source-ref="dataExportDao" />
 
 	<bean id="streetJdbcDataSource"
-		  class="org.flexpay.ab.dao.importexport.StreetJdbcDataSource">
-		<property name="source" ref="dataExportDao" />
-	</bean>
+		  class="org.flexpay.ab.dao.importexport.StreetJdbcDataSource"
+		  p:source-ref="dataExportDao" />
 
 	<bean id="buildingsJdbcDataSource"
-		  class="org.flexpay.ab.dao.importexport.BuildingsJdbcDataSource">
-		<property name="source" ref="dataExportDao" />
-	</bean>
+		  class="org.flexpay.ab.dao.importexport.BuildingsJdbcDataSource"
+		  p:source-ref="dataExportDao" />
 
 	<bean id="apartmentJdbcDataSource"
-		  class="org.flexpay.ab.dao.importexport.ApartmentJdbcDataSource">
-		<property name="source" ref="dataExportDao" />
-	</bean>
+		  class="org.flexpay.ab.dao.importexport.ApartmentJdbcDataSource"
+		  p:source-ref="dataExportDao" />
 
 	<bean id="personJdbcDataSource"
-		  class="org.flexpay.ab.dao.importexport.PersonJdbcDataSource">
-		<property name="source" ref="dataExportDao" />
-	</bean>
+		  class="org.flexpay.ab.dao.importexport.PersonJdbcDataSource"
+		  p:source-ref="dataExportDao" />
 
 	<!-- Data converters -->
 	<bean id="districtDataConverter"
@@ -58,26 +50,27 @@
 		  class="org.flexpay.ab.service.importexport.RawStreetDataConverter" />
 
 	<bean id="buildingsDataConverter"
-		  class="org.flexpay.ab.service.importexport.RawBuildingsDataConverter" />
+		  class="org.flexpay.ab.service.importexport.RawBuildingsDataConverter"
+		  p:factory-ref="objectsFactory" />
 
 	<bean id="apartmentDataConverter"
-		  class="org.flexpay.ab.service.importexport.RawApartmentDataConverter">
-		<property name="buildingService" ref="buildingService" />
-	</bean>
+		  class="org.flexpay.ab.service.importexport.RawApartmentDataConverter"
+		  p:buildingService-ref="buildingService"
+		  p:factory-ref="objectsFactory" />
 
 	<bean id="personDataConverter"
-		  class="org.flexpay.ab.service.importexport.RawPersonDataConverter">
-		<property name="identityTypeService" ref="identityTypeService" />
-	</bean>
+		  class="org.flexpay.ab.service.importexport.RawPersonDataConverter"
+		  p:identityTypeService-ref="identityTypeService" />
 
-	<bean id="typeRegistryAb" class="org.flexpay.ab.service.importexport.imp.ClassToTypeRegistry" />
+	<bean id="typeRegistryAb"
+		  class="org.flexpay.ab.service.importexport.imp.ClassToTypeRegistry" />
 
-	<bean id="correctionsServiceAb" parent="correctionsService"
+	<bean id="correctionsServiceAb"
+		  parent="correctionsService"
 		  p:typeRegistry-ref="typeRegistryAb" />
 
-	<bean id="importErrorServiceAb" parent="importErrorServiceTemplate">
-		<property name="registry" ref="typeRegistryAb" />
-	</bean>
+	<bean id="importErrorServiceAb" parent="importErrorServiceTemplate"
+		  p:registry-ref="typeRegistryAb" />
 
 	<!-- Import-Export services -->
 	<bean id="importServiceAb" class="org.flexpay.ab.service.importexport.ImportService">

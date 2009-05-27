@@ -82,8 +82,14 @@
 		  p:importUtil-ref="eircImportUtil"
 		  p:accountService-ref="eircAccountService"
           p:btiApartmentService-ref="btiApartmentService"
-          p:apartmentAttributeTypeService-ref="apartmentAttributeTypeService"
-            />
+          p:apartmentAttributeTypeService-ref="apartmentAttributeTypeService" />
+
+	<bean id="eircObjectsFactory" autowire-candidate="false"
+		  class="org.flexpay.eirc.service.imp.EircObjectsFactory" />
+
+	<bean id="eircObjectsFactoryHolder"
+		  parent="btiObjectsFactoryHolder"
+		  p:factory-ref="eircObjectsFactory" />
 
 	<bean id="consumerServiceTarget"
 		  autowire-candidate="false"

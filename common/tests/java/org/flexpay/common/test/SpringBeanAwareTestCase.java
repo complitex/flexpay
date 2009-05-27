@@ -36,8 +36,6 @@ public abstract class SpringBeanAwareTestCase extends AbstractJUnit4SpringContex
 
 	protected Logger log = LoggerFactory.getLogger(getClass());
 
-	private Scheduler scheduler;
-
 	@Autowired
 	@Qualifier ("hibernateTemplate")
 	protected HibernateTemplate hibernateTemplate;
@@ -51,7 +49,7 @@ public abstract class SpringBeanAwareTestCase extends AbstractJUnit4SpringContex
 
 	@Before
 	public void stopScheduler() throws Exception {
-		scheduler = (Scheduler) applicationContext.getBean("schedulerFactoryBean");
+		Scheduler scheduler = (Scheduler) applicationContext.getBean("schedulerFactoryBean");
 		if (scheduler != null) {
 			scheduler.shutdown();
 		}

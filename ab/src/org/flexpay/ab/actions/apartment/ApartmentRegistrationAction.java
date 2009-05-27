@@ -12,7 +12,7 @@ import java.util.*;
 
 public class ApartmentRegistrationAction extends FPActionSupport {
 
-	private Apartment apartment = new Apartment();
+	private Apartment apartment = Apartment.newInstance();
 	private BuildingAddress buildings;
 	private Street street;
 	private Town town;

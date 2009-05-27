@@ -5,6 +5,7 @@ import org.flexpay.ab.persistence.ApartmentNumber;
 import org.flexpay.ab.persistence.Building;
 import org.flexpay.ab.persistence.BuildingAddress;
 import org.flexpay.ab.service.BuildingService;
+import org.flexpay.ab.service.ObjectsFactory;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.persistence.Stub;
@@ -12,6 +13,7 @@ import org.flexpay.common.service.importexport.CorrectionsService;
 import org.flexpay.common.service.importexport.DataConverter;
 import org.flexpay.common.util.DateUtil;
 import org.flexpay.common.util.config.ApplicationConfig;
+import org.springframework.beans.factory.annotation.Required;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -19,6 +21,7 @@ import java.util.Set;
 public class RawApartmentDataConverter implements DataConverter<Apartment, RawApartmentData> {
 
 	private BuildingService buildingService;
+	private ObjectsFactory factory;
 
 	/**
 	 * Convert raw data to domain object
@@ -35,7 +38,7 @@ public class RawApartmentDataConverter implements DataConverter<Apartment, RawAp
 								 CorrectionsService correctionsService)
 			throws FlexPayException {
 
-		Apartment apartment = new Apartment();
+		Apartment apartment = factory.newApartment();
 
 		Stub<BuildingAddress> buildings = correctionsService.findCorrection(
 				rawData.getBuildingId(), BuildingAddress.class, dataSourceDescription);
@@ -62,8 +65,13 @@ public class RawApartmentDataConverter implements DataConverter<Apartment, RawAp
 		return apartment;
 	}
 
+	@Required
 	public void setBuildingService(BuildingService buildingService) {
 		this.buildingService = buildingService;
 	}
 
+	@Required
+	public void setFactory(ObjectsFactory factory) {
+		this.factory = factory;
+	}
 }

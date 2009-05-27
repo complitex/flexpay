@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Required;
 
 public class ApartmentEditAction extends BuildingsFilterDependentAction {
 
-	private Apartment apartment = new Apartment();
+	private Apartment apartment = Apartment.newInstance();
 	private String apartmentNumber;
 
 	private String crumbCreateKey;

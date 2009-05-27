@@ -2,6 +2,7 @@ package org.flexpay.ab.service.history;
 
 import org.flexpay.ab.persistence.Apartment;
 import org.flexpay.ab.service.ApartmentService;
+import org.flexpay.ab.service.ObjectsFactory;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.history.Diff;
 import org.flexpay.common.persistence.history.HistoryOperationType;
@@ -13,6 +14,7 @@ import org.springframework.beans.factory.annotation.Required;
 public class ApartmentHistoryHandler extends HistoryHandlerBase<Apartment> {
 
 	private ApartmentService apartmentService;
+	private ObjectsFactory factory;
 
 	/**
 	 * Check if this handler can handle this <code>diff</code>
@@ -42,7 +44,7 @@ public class ApartmentHistoryHandler extends HistoryHandlerBase<Apartment> {
 				log.info("Request for object creation, but it already exists {}", diff);
 				object = apartmentService.readFull(stub);
 			} else {
-				object = new Apartment();
+				object = factory.newApartment();
 			}
 		} else {
 			if (stub == null) {
@@ -72,5 +74,10 @@ public class ApartmentHistoryHandler extends HistoryHandlerBase<Apartment> {
 	@Required
 	public void setApartmentService(ApartmentService apartmentService) {
 		this.apartmentService = apartmentService;
+	}
+
+	@Required
+	public void setFactory(ObjectsFactory factory) {
+		this.factory = factory;
 	}
 }

@@ -16,15 +16,19 @@ public class BtiBuilding extends Building {
 
 	private Set<BuildingAttributeBase> attributes = Collections.emptySet();
 
-	public BtiBuilding() {
+	protected BtiBuilding() {
 	}
 
 	public BtiBuilding(@NotNull Long id) {
 		super(id);
 	}
 
-	public BtiBuilding(@NotNull Stub<BtiBuilding> stub) {
+	public BtiBuilding(@NotNull Stub<? extends Building> stub) {
 		super(stub.getId());
+	}
+
+	public static BtiBuilding newInstance() {
+		return new BtiBuilding();
 	}
 
 	public Set<BuildingAttributeBase> getAttributes() {

@@ -59,7 +59,6 @@ public class TestPersonHistoryBuilder extends AbSpringBeanAwareTestCase {
 		Person person = personService.read(PERSON);
 		assertNotNull("Person not found: " + PERSON, person);
 
-		@SuppressWarnings ({"ConstantConditions"})
 		Diff diff = historyBuilder.diff(null, person);
 		assertFalse("Invalid history builder", diff.isEmpty());
 
@@ -83,5 +82,7 @@ public class TestPersonHistoryBuilder extends AbSpringBeanAwareTestCase {
 		for (IdentityType type : types) {
 			typeHistoryGenerator.generateFor(type);
 		}
+
+
 	}
 }

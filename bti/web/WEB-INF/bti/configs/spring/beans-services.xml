@@ -7,30 +7,30 @@
 		   http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
 		   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
-    <!-- Apartments -->
-    <bean id="apartmentAttributeTypeServiceTarget"
-          class="org.flexpay.bti.service.impl.ApartmentAttributeTypeServiceImpl"
-          autowire-candidate="false"
-          p:attributeTypeDao-ref="apartmentAttributeTypeDao"
-          p:attributeTypeDaoExt-ref="apartmentAttributeTypeDaoExt" />
+	<!-- Apartments -->
+	<bean id="apartmentAttributeTypeServiceTarget"
+		  class="org.flexpay.bti.service.impl.ApartmentAttributeTypeServiceImpl"
+		  autowire-candidate="false"
+		  p:attributeTypeDao-ref="apartmentAttributeTypeDao"
+		  p:attributeTypeDaoExt-ref="apartmentAttributeTypeDaoExt" />
 
-    <bean id="apartmentAttributeGroupServiceTarget"
-          class="org.flexpay.bti.service.impl.ApartmentAttributeGroupServiceImpl"
-          autowire-candidate="false"
-          p:groupDao-ref="apartmentAttributeGroupDao" />
+	<bean id="apartmentAttributeGroupServiceTarget"
+		  class="org.flexpay.bti.service.impl.ApartmentAttributeGroupServiceImpl"
+		  autowire-candidate="false"
+		  p:groupDao-ref="apartmentAttributeGroupDao" />
 
-    <bean id="apartmentAttributeService"
-          class="org.flexpay.bti.service.impl.ApartmentAttributeServiceImpl"
-          p:apartmentDaoExt-ref="btiApartmentDaoExt" />
+	<bean id="apartmentAttributeService"
+		  class="org.flexpay.bti.service.impl.ApartmentAttributeServiceImpl"
+		  p:apartmentDaoExt-ref="btiApartmentDaoExt" />
 
-    <bean id="btiApartmentService"
-          class="org.flexpay.bti.service.impl.BtiApartmentServiceImpl"
-          p:apartmentDao-ref="apartmentDao"
-          p:btiApartmentDaoExt-ref="btiApartmentDaoExt" />
+	<bean id="btiApartmentService"
+		  class="org.flexpay.bti.service.impl.BtiApartmentServiceImpl"
+		  p:apartmentDao-ref="apartmentDao"
+		  p:btiApartmentDaoExt-ref="btiApartmentDaoExt" />
 
-    <!-- Buildings -->
+	<!-- Buildings -->
 	<bean id="buildingAttributeTypeServiceTarget"
-          class="org.flexpay.bti.service.impl.BuildingAttributeTypeServiceImpl"
+		  class="org.flexpay.bti.service.impl.BuildingAttributeTypeServiceImpl"
 		  autowire-candidate="false"
 		  p:attributeTypeDao-ref="buildingAttributeTypeDao"
 		  p:attributeTypeDaoExt-ref="buildingAttributeTypeDaoExt" />
@@ -41,12 +41,19 @@
 		  p:groupDao-ref="buildingAttributeGroupDao" />
 
 	<bean id="buildingAttributeService"
-          class="org.flexpay.bti.service.impl.BuildingAttributeServiceImpl"
+		  class="org.flexpay.bti.service.impl.BuildingAttributeServiceImpl"
 		  p:buildingDaoExt-ref="btiBuildingDaoExt" />
 
 	<bean id="btiBuildingService"
-          class="org.flexpay.bti.service.impl.BtiBuildingServiceImpl"
+		  class="org.flexpay.bti.service.impl.BtiBuildingServiceImpl"
 		  p:buildingDao-ref="buildingDao"
 		  p:btiBuildingDaoExt-ref="btiBuildingDaoExt" />
+
+	<bean id="btiObjectsFactory" autowire-candidate="false"
+		  class="org.flexpay.bti.service.impl.BtiObjectsFactory" />
+
+	<bean id="btiObjectsFactoryHolder"
+		  parent="objectsFactoryHolder"
+		  p:factory-ref="btiObjectsFactory" />
 
 </beans>

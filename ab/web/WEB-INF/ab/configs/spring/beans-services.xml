@@ -92,6 +92,7 @@
 		  p:parentService-ref="streetService"
 		  p:districtParentService-ref="districtService"
 		  p:sessionUtils-ref="sessionUtils"
+		  p:factory-ref="objectsFactory"
 		  p:modificationListener-ref="buildingHistoryChangesListener" />
 
 	<bean id="addressAttributeTypeHistoryChangesListener"
@@ -110,6 +111,17 @@
 		  p:apartmentService-ref="apartmentService"
 		  p:buildingService-ref="buildingService"
 		  p:streetService-ref="streetService" />
+
+	<bean id="abObjectsFactory" autowire-candidate="false"
+		  class="org.flexpay.ab.service.imp.AbObjectsFactory" />
+
+	<bean id="objectsFactoryHolder"
+		  class="org.flexpay.ab.service.imp.ObjectsFactoryHolder"
+		  p:factory-ref="abObjectsFactory" />
+
+	<bean id="objectsFactory"
+		  class="org.flexpay.ab.service.imp.ObjectsFactoryProxy"
+		  p:factoryHolder-ref="objectsFactoryHolder" />
 
 	<bean id="apartmentHistoryChangesListener"
 		  parent="historyChangesListenerBase"
@@ -210,11 +222,13 @@
 	<bean id="buildingHistoryBuilder"
 		  parent="abHistoryBuilderBase"
 		  class="org.flexpay.ab.service.history.BuildingHistoryBuilder"
-		  p:addressAttributeTypeService-ref="addressAttributeTypeService" />
+		  p:addressAttributeTypeService-ref="addressAttributeTypeService"
+		  p:factory-ref="objectsFactory" />
 
 	<bean id="apartmentHistoryBuilder"
 		  parent="abHistoryBuilderBase"
-		  class="org.flexpay.ab.service.history.ApartmentHistoryBuilder" />
+		  class="org.flexpay.ab.service.history.ApartmentHistoryBuilder"
+		  p:factory-ref="objectsFactory" />
 
 	<bean id="personHistoryBuilder"
 		  parent="abHistoryBuilderBase"
@@ -343,12 +357,14 @@
 		  parent="abHistoryHandlerBase"
 		  class="org.flexpay.ab.service.history.BuildingHistoryHandler"
 		  p:buildingService-ref="buildingService"
-		  p:historyBuilder-ref="buildingHistoryBuilder" />
+		  p:historyBuilder-ref="buildingHistoryBuilder"
+		  p:factory-ref="objectsFactory" />
 
 	<bean id="apartmentHistoryHandler"
 		  parent="abHistoryHandlerBase"
 		  class="org.flexpay.ab.service.history.ApartmentHistoryHandler"
 		  p:apartmentService-ref="apartmentService"
+		  p:factory-ref="objectsFactory"
 		  p:historyBuilder-ref="apartmentHistoryBuilder" />
 
 	<bean id="personHistoryHandler"

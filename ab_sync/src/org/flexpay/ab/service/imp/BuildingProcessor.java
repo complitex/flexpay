@@ -6,6 +6,7 @@ import org.flexpay.ab.dao.DistrictDao;
 import org.flexpay.ab.dao.StreetDao;
 import org.flexpay.ab.persistence.*;
 import org.flexpay.ab.service.BuildingService;
+import org.flexpay.ab.service.ObjectsFactory;
 import org.flexpay.ab.util.config.ApplicationConfig;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.DataSourceDescription;
@@ -13,7 +14,9 @@ import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.service.importexport.CorrectionsService;
+import org.flexpay.common.util.CollectionUtils;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Required;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -29,6 +32,7 @@ public class BuildingProcessor extends AbstractProcessor<BuildingAddress> {
 	private DistrictDao districtDao;
 	private StreetDao streetDao;
 	private BuildingService buildingService;
+	private ObjectsFactory factory;
 
 	/**
 	 * Create new DomainObject from HistoryRecord
@@ -36,14 +40,12 @@ public class BuildingProcessor extends AbstractProcessor<BuildingAddress> {
 	@NotNull
 	protected BuildingAddress doCreateObject() throws Exception {
 
-		Building building = new Building();
+		Building building = factory.newBuilding();
 
 		BuildingAddress buildingAddress = new BuildingAddress();
 		buildingAddress.setBuilding(building);
 
-		Set<BuildingAddress> buildingses = new HashSet<BuildingAddress>();
-		buildingses.add(buildingAddress);
-		building.addAll(buildingses);
+		building.addAll(CollectionUtils.set(buildingAddress));
 
 		return buildingAddress;
 	}
@@ -56,8 +58,7 @@ public class BuildingProcessor extends AbstractProcessor<BuildingAddress> {
 	 */
 	protected BuildingAddress readObject(@NotNull Stub<BuildingAddress> stub) {
 		BuildingAddress buildingAddress = buildingsDao.readFull(stub.getId());
-		Set<BuildingAddress> buildingses = new HashSet<BuildingAddress>();
-		buildingses.add(buildingAddress);
+		Set<BuildingAddress> buildingses = CollectionUtils.set(buildingAddress);
 
 		Building building = buildingDao.read(buildingAddress.getBuilding().getId());
 		buildingAddress.setBuilding(building);
@@ -200,23 +201,33 @@ public class BuildingProcessor extends AbstractProcessor<BuildingAddress> {
 		return buildingAddress != null ? stub(buildingAddress) : null;
 	}
 
+	@Required
 	public void setBuildingDao(BuildingDao buildingDao) {
 		this.buildingDao = buildingDao;
 	}
 
+	@Required
 	public void setBuildingsDao(BuildingsDao buildingsDao) {
 		this.buildingsDao = buildingsDao;
 	}
 
+	@Required
 	public void setDistrictDao(DistrictDao districtDao) {
 		this.districtDao = districtDao;
 	}
 
+	@Required
 	public void setStreetDao(StreetDao streetDao) {
 		this.streetDao = streetDao;
 	}
 
+	@Required
 	public void setBuildingService(BuildingService buildingService) {
 		this.buildingService = buildingService;
+	}
+
+	@Required
+	public void setFactory(ObjectsFactory factory) {
+		this.factory = factory;
 	}
 }

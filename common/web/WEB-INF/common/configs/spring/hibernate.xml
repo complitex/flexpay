@@ -73,9 +73,8 @@
 	<tx:annotation-driven transaction-manager="transactionManager" />
 
 	<bean id="hibernateTemplate"
-		  class="org.springframework.orm.hibernate3.HibernateTemplate">
-		<property name="sessionFactory" ref="flexpaySessionFactory" />
-	</bean>
+		  class="org.springframework.orm.hibernate3.HibernateTemplate"
+			p:sessionFactory-ref="flexpaySessionFactory" />
 
 	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
 		<constructor-arg ref="dataSource" />

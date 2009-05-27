@@ -14,7 +14,6 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.annotation.NotTransactional;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,12 +25,10 @@ public class TestBuildingService extends AbSpringBeanAwareTestCase {
 	protected BuildingsDao buildingsDao;
 	@Autowired
 	protected AddressAttributeDao addressAttributeDao;
-	protected BuildingService buildingService;
-
 	@Autowired
-	public void setBuildingService(@Qualifier ("buildingService") BuildingService buildingService) {
-		this.buildingService = buildingService;
-	}
+	protected BuildingService buildingService;
+	@Autowired
+	private ObjectsFactory factory;
 
 	// See init_db script
 	private Street street = new Street(2L);
@@ -42,7 +39,7 @@ public class TestBuildingService extends AbSpringBeanAwareTestCase {
 
 	private Building newBuilding() {
 
-		Building building = new Building();
+		Building building = factory.newBuilding();
 		building.setDistrict(new District(1L));
 		return building;
 	}

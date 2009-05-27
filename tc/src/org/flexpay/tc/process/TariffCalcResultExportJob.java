@@ -7,7 +7,6 @@ import org.flexpay.common.locking.LockManager;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.process.job.Job;
 import org.flexpay.tc.locking.Resources;
-import org.flexpay.tc.persistence.Tariff;
 import org.flexpay.tc.persistence.TariffCalculationResult;
 import org.flexpay.tc.process.exporters.Exporter;
 import org.flexpay.tc.service.TariffCalculationResultService;
@@ -30,7 +29,7 @@ public class TariffCalcResultExportJob extends Job {
 	public final static String PERIOD_BEGIN_DATE = "PERIOD_BEGIN_DATE";
 	private List<String> subServiceExportCodes;
 	private TariffService tariffService;
-	
+
 	public String execute(Map<Serializable, Serializable> parameters) throws FlexPayException {
 
 		log.debug("Tariff calculation result export procces started");
@@ -47,9 +46,9 @@ public class TariffCalcResultExportJob extends Job {
 			Date periodBeginDate = (Date) parameters.get(PERIOD_BEGIN_DATE);
 
 			List<Long> addressIds = tariffCalculationResultService.getAddressIds(calculationDate);
-            int cnt = addressIds.size();
-            int exportedCnt = 0;
-            log.info("Found {} building addresses. Starting tariff export.",cnt);
+			int cnt = addressIds.size();
+			int exportedCnt = 0;
+			log.info("Found {} building addresses. Starting tariff export.", cnt);
 			for (Long addressId : addressIds) {
 				List<TariffCalculationResult> tariffCalcResultList = tariffCalculationResultService.getTariffCalcResultsByCalcDateAndAddressId(calculationDate, new Stub<BuildingAddress>(addressId));
 				try {
@@ -58,8 +57,7 @@ public class TariffCalcResultExportJob extends Job {
 						if (tcr == null) {
 							tcr = new TariffCalculationResult();
 							tcr.setTariff(tariffService.getTariffByCode(subServiceCode));
-							Building building = new Building();
-							building.setId(addressId);
+							Building building = new Building(addressId);
 							tcr.setBuilding(building);
 							tcr.setCalculationDate(calculationDate);
 							tcr.setValue(BigDecimal.ZERO);
@@ -75,12 +73,12 @@ public class TariffCalcResultExportJob extends Job {
 						ex.printStackTrace();
 					}
 				}
-                exportedCnt++;
-                if ((exportedCnt %100)==0){
-                    log.info("{} buildings exported.", exportedCnt);
-                }
+				exportedCnt++;
+				if ((exportedCnt % 100) == 0) {
+					log.info("{} buildings exported.", exportedCnt);
+				}
 			}
-            log.info("{} buildings exported.", exportedCnt);
+			log.info("{} buildings exported.", exportedCnt);
 		} catch (Exception e) {
 			log.error("Exporter exception", e);
 		} finally {

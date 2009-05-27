@@ -19,11 +19,11 @@
 			<key column="person_id" not-null="true" />
 			<one-to-many class="PersonAttribute" />
 		</set>
-		<set name="personIdentities" inverse="true" lazy="false" cascade="all">
+		<set name="personIdentities" inverse="true" cascade="all">
 			<key column="person_id" not-null="true" />
 			<one-to-many class="PersonIdentity" />
 		</set>
-		<set name="personRegistrations" inverse="true" lazy="false" cascade="all">
+		<set name="personRegistrations" inverse="true" cascade="all">
 			<key column="person_id" not-null="true" />
 			<one-to-many class="PersonRegistration" />
 		</set>
@@ -247,8 +247,10 @@
 	</query>
 
 	<query name="PersonRegistration.listRegistrations"><![CDATA[
+		select distinct o
 		FROM PersonRegistration o
-		WHERE o.person.id=? and o.beginDate <= current_date() and current_date() < o.endDate 
+			left join fetch o.apartment 
+		WHERE o.person.id=? 
 	]]></query>
 
 	<query name="PersonRegistration.listRegistrationHistory">
@@ -280,6 +282,7 @@
 		select distinct d
 		from Person d
 			left join fetch d.personRegistrations pr
+			left join fetch pr.apartment 
 		where d.id between ? and ? and d.status=0
 	]]></query>
 

@@ -22,12 +22,16 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.Required;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Set;
 
 @Transactional (readOnly = true)
 public class PersonServiceImpl implements PersonService {
+
+	private Logger log = LoggerFactory.getLogger(getClass());
 
 	private PersonDao personDao;
 	private PersonDaoExt personDaoExt;
@@ -81,14 +85,17 @@ public class PersonServiceImpl implements PersonService {
 
 		Person persistent = personDao.readFull(stub.getId());
 		if (persistent != null) {
+			log.debug("READ ATTRIBUTES");
 			List<PersonAttribute> attributes = personAttributeDao.listAttributes(stub.getId());
 			persistent.setPersonAttributes(attributes);
 			sessionUtils.evict(attributes);
 
+			log.debug("READ REGISTRATIONS");
 			List<PersonRegistration> registrations = personRegistrationDao.listRegistrations(stub.getId());
 			persistent.setPersonRegistrations(registrations);
 			sessionUtils.evict(registrations);
 
+			log.debug("SETTING IDENTITY TYPES");
 			// setup identity types
 			for (PersonIdentity identity : persistent.getPersonIdentities()) {
 				IdentityType type = identityTypeService.read(identity.getIdentityTypeStub());
@@ -127,6 +134,7 @@ public class PersonServiceImpl implements PersonService {
 
 		validate(person);
 
+		log.debug("ReadFULL UPDATE");
 		Person old = read(stub(person));
 		if (old == null) {
 			throw new FlexPayExceptionContainer(
@@ -135,7 +143,10 @@ public class PersonServiceImpl implements PersonService {
 		sessionUtils.evict(old);
 		modificationListener.onUpdate(old, person);
 
+		log.debug("UDATING");
 		personDao.update(person);
+
+		log.debug("UDATED");
 
 		return person;
 	}
