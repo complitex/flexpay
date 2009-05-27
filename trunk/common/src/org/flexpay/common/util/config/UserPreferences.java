@@ -2,10 +2,12 @@ package org.flexpay.common.util.config;
 
 import net.sourceforge.navigator.menu.MenuComponent;
 import org.flexpay.common.persistence.Language;
+import org.flexpay.common.actions.breadcrumbs.Crumb;
 import org.springframework.web.util.WebUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Locale;
+import java.util.Stack;
 import java.io.Serializable;
 
 public class UserPreferences implements Serializable {
@@ -25,6 +27,9 @@ public class UserPreferences implements Serializable {
 	private String streetFilterValue;
 	private String buildingFilterValue;
 	private String apartmentFilterValue;
+
+	private String activeMenu;
+	private Stack<Crumb> crumbs = new Stack<Crumb>();
 
 	private static final String WW_TRANS_I18_N_LOCALE = "WW_TRANS_I18N_LOCALE";
 
@@ -160,4 +165,21 @@ public class UserPreferences implements Serializable {
 	public void setTestProp(String testProp) {
 		this.testProp = testProp;
 	}
+
+	public String getActiveMenu() {
+		return activeMenu;
+	}
+
+	public void setActiveMenu(String activeMenu) {
+		this.activeMenu = activeMenu;
+	}
+
+	public Stack<Crumb> getCrumbs() {
+		return crumbs;
+	}
+
+	public void setCrumbs(Stack<Crumb> crumbs) {
+		this.crumbs = crumbs;
+	}
+
 }
