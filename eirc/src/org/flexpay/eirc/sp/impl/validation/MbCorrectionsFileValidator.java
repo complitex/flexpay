@@ -5,6 +5,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.file.FPFile;
+import org.flexpay.common.util.FPFileUtil;
 import org.flexpay.eirc.sp.impl.MbFileValidator;
 import org.jetbrains.annotations.NotNull;
 
@@ -32,7 +33,7 @@ public class MbCorrectionsFileValidator extends MbFileValidator {
 		List<String> services = new ArrayList<String>();
 
 		try {
-			reader = new BufferedReader(new InputStreamReader(new FileInputStream(spFile.getFile()), REGISTRY_FILE_ENCODING), 500);
+			reader = new BufferedReader(new InputStreamReader(new FileInputStream(FPFileUtil.getFileOnServer(spFile)), REGISTRY_FILE_ENCODING), 500);
 
 			for (int lineNum = 0;;lineNum++) {
 				String line = reader.readLine();

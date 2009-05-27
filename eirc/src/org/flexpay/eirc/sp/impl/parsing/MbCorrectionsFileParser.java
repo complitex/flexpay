@@ -5,15 +5,13 @@ import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.persistence.registry.*;
-import org.flexpay.common.service.*;
+import org.flexpay.common.util.FPFileUtil;
 import org.flexpay.eirc.persistence.EircRegistryProperties;
 import org.flexpay.eirc.persistence.EircRegistryRecordProperties;
 import org.flexpay.eirc.sp.impl.MbFileParser;
 import org.flexpay.eirc.util.config.ApplicationConfig;
 import org.flexpay.orgs.persistence.ServiceProvider;
-import org.flexpay.orgs.service.ServiceProviderService;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -42,7 +40,7 @@ public class MbCorrectionsFileParser extends MbFileParser {
 
 		try {
 
-			reader = new BufferedReader(new InputStreamReader(new FileInputStream(spFile.getFile()), REGISTRY_FILE_ENCODING), 500);
+			reader = new BufferedReader(new InputStreamReader(new FileInputStream(FPFileUtil.getFileOnServer(spFile)), REGISTRY_FILE_ENCODING), 500);
 
 			registry.setCreationDate(new Date());
 			registry.setSpFile(spFile);
