@@ -28,6 +28,7 @@ public class ApplicationConfig {
 	private List<Language> languages = new ArrayList<Language>(3);
 	@NonNls
 	public static final String USER_PREFERENCES_SESSION_ATTRIBUTE = "FLEXPAY_USER_PREFERENCES_SESSION_ATTRIBUTE";
+	public static final String BREADCRUMBS_SESSION_ATTRIBUTE = "FLEXPAY_BREADCRUMBS_SESSION_ATTRIBUTE";
 
 	private static final Date DATE_PAST_INFINITE = new GregorianCalendar(1900, 0, 1).getTime();
 	private static final Date DATE_FUTURE_INFINITE = new GregorianCalendar(2100, 11, 31).getTime();

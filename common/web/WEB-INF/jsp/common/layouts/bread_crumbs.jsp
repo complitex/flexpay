@@ -1,6 +1,6 @@
 <%@ include file="/WEB-INF/jsp/common/taglibs.jsp" %>
 
-<s:iterator	value="%{#session['com.strutsschool.interceptors.breadcrumbs']}" status="status">
+<s:iterator	value="%{userPreferences.crumbs}" status="status">
     <nobr>
         <s:if test="!#status.last">
             <a href="<s:url value="%{getUrl()}" includeParams="none" />" class="crumb"><s:text name="%{wildPortionOfName}"/></a>

@@ -23,10 +23,13 @@
 						 class="org.flexpay.common.actions.interceptor.UserPreferencesInterceptor" />
             <interceptor name="menuInterceptor"
                          class="org.flexpay.common.actions.interceptor.MenuInterceptor" />
+            <interceptor name="breadCrumb"
+                         class="org.flexpay.common.actions.interceptor.BreadCrumbInterceptor" />
 			<interceptor-stack name="commonDefaultStack">
 				<interceptor-ref name="defaultStack" />
 				<interceptor-ref name="userPreferences" />
                 <interceptor-ref name="menuInterceptor" />
+                <interceptor-ref name="breadCrumb" />
 			</interceptor-stack>
 		</interceptors>
 		<default-interceptor-ref name="commonDefaultStack"/>

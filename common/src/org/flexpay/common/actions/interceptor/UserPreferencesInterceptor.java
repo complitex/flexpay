@@ -44,4 +44,5 @@ public class UserPreferencesInterceptor extends AbstractInterceptor {
 			throw new RuntimeException(t);
 		}
 	}
+
 }
