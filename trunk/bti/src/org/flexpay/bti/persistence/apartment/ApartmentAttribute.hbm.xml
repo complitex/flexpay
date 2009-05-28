@@ -86,15 +86,15 @@
     <query name="ApartmentAttributeBase.readSimpleAttributes">
         select distinct a
         from ApartmentAttribute a
-        inner join fetch a.attributeType
+        	inner join fetch a.attributeType
         where a.apartment.id=?
     </query>
 
     <query name="ApartmentAttributeBase.readTmpAttributes">
         select distinct a
         from ApartmentTempAttribute a
-        left join fetch a.values
-        inner join fetch a.attributeType
+			left join fetch a.values
+			inner join fetch a.attributeType
         where a.apartment.id=?
     </query>
 

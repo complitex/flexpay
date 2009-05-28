@@ -35,7 +35,7 @@
             <key column="apartment_id" not-null="true" />
             <one-to-many class="ApartmentNumber" />
         </set>
-        <set name="personRegistrations" inverse="true" lazy="false" cascade="all">
+        <set name="personRegistrations" inverse="true" cascade="all">
             <key column="apartment_id" not-null="true" />
             <one-to-many class="PersonRegistration" />
         </set>
