@@ -2,28 +2,26 @@ package org.flexpay.common.persistence.history.impl;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.xmlbeans.XmlDateTime;
 import org.flexpay.common.persistence.file.FPFile;
-import org.flexpay.common.persistence.history.HistoryUnpackManager;
 import org.flexpay.common.persistence.history.ExternalHistoryPack;
+import org.flexpay.common.persistence.history.HistoryUnpackManager;
 import org.flexpay.common.service.FPFileService;
 import org.flexpay.common.service.Security;
 import org.flexpay.common.util.FPFileUtil;
-import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.config.ApplicationConfig;
-import org.flexpay.common.process.ProcessManager;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.Namespace;
 import org.jdom.xpath.XPath;
-import org.springframework.ws.server.endpoint.AbstractJDomPayloadEndpoint;
-import org.springframework.beans.factory.annotation.Required;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Required;
+import org.springframework.ws.server.endpoint.AbstractJDomPayloadEndpoint;
 
 import java.io.ByteArrayInputStream;
 import java.io.OutputStream;
-import java.io.Serializable;
 import java.util.Date;
 
 public class SoapInHistoryEndpoint extends AbstractJDomPayloadEndpoint {
@@ -96,7 +94,14 @@ public class SoapInHistoryEndpoint extends AbstractJDomPayloadEndpoint {
 			pack.setFile(file);
 			pack.setConsumptionGroupId(Long.parseLong(groupId));
 			pack.setSourceInstanceId(instanceId);
-			unpackManager.create(pack);
+			if ("CASA_TEST".equals(instanceId)) {
+				log.debug("Composite application test request, ignoring");
+			} else if (StringUtils.equals(ApplicationConfig.getInstanceId(), instanceId)) {
+				log.debug("Received self made packet, do nothing");
+			} else {
+				log.debug("Creating a new pack: ", pack);
+				unpackManager.create(pack);
+			}
 		} catch (Exception ex) {
 			log.error("Failed saving file and creating process", ex);
 			throw ex;

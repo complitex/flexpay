@@ -17,6 +17,6 @@
 	<!-- Integration test with OpenESB configured broadcast -->
 	<!--<bean id="soapOutHistoryTransport"-->
 		  <!--class="org.flexpay.common.persistence.history.impl.SoapOutHistoryTransport"-->
-		  <!--p:url="http://localhost:9080/historyBroadcast/sourceEndpoint" />-->
+		  <!--p:url="http://192.168.1.107:39080/historyBroadcast/sourceEndpoint" />-->
 
 </beans>
