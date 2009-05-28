@@ -8,12 +8,16 @@ import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.service.transport.OutTransport;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.ws.client.core.WebServiceTemplate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 import java.io.*;
 
 public class SoapOutHistoryTransport implements OutTransport {
+
+	private static final Logger log = LoggerFactory.getLogger(SoapOutHistoryTransport.class);
 
 	private String url;
 
@@ -51,6 +55,8 @@ public class SoapOutHistoryTransport implements OutTransport {
 		StreamSource source = new StreamSource(new StringReader(xml.toString()));
 		StreamResult result = new StreamResult(writer);
 		webServiceTemplate.sendSourceAndReceiveToResult(url, source, result);
+
+		log.debug("Sending to {} contents:\n{}", url, xml);
 
 		String response = writer.toString();
 		if (!response.contains("OK!")) {

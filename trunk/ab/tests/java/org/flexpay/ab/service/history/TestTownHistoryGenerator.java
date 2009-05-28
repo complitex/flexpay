@@ -9,9 +9,12 @@ public class TestTownHistoryGenerator extends AbSpringBeanAwareTestCase {
 
 	@Autowired
 	private TownHistoryGenerator generator;
+	@Autowired
+	private PersonsHistoryGenerator personsHistoryGenerator;
 
 	@Test
 	public void testGenerateTownHistory() {
 		generator.generateFor(new Town(2L));
+		personsHistoryGenerator.generate();
 	}
 }

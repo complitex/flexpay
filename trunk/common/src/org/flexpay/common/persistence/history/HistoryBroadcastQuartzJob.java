@@ -49,13 +49,16 @@ public class HistoryBroadcastQuartzJob extends QuartzJobBean {
 
 			List<HistoryConsumer> consumers = historyConsumerService.listConsumers();
 			for (HistoryConsumer consumer : consumers) {
+				log.debug("History consumer: {}", consumer);
 				List<FPFile> history = historyPacker.packHistory(stub(consumer));
 				OutTransport transport = consumer.getOutTransportConfig().createTransport();
 				for (FPFile file : history) {
+					log.info("Sending FILE: {}", file);
 					transport.send(file);
 				}
 			}
 		} catch (Exception ex) {
+			log.error("Failed history broadcast", ex);
 			throw new JobExecutionException("Failed history broadcast", ex);
 		} finally {
 			lockManager.releaseLock(LOCK_NAME);

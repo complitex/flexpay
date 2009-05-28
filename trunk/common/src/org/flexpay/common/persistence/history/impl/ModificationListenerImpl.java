@@ -25,12 +25,15 @@ public class ModificationListenerImpl<T extends DomainObject> implements Modific
 	 */
 	public void onCreate(@NotNull T obj) {
 
-		log.debug("On CREATE");
+		log.debug("On CREATE: {}", obj);
 
 		Diff diff = historyBuilder.diff(null, obj);
 		diff.setProcessingStatus(ProcessingStatus.STATUS_PROCESSED);
 		if (diff.isNotEmpty()) {
 			diffService.create(diff);
+			log.debug("Creating diff {}", diff);
+		} else {
+			log.debug("Diff is empty");
 		}
 	}
 
@@ -42,18 +45,22 @@ public class ModificationListenerImpl<T extends DomainObject> implements Modific
 	 */
 	public void onUpdate(@NotNull T objOld, @NotNull T obj) {
 
-		log.debug("On UPDATE");
+		log.debug("On UPDATE:\n{}\n{}", objOld, obj);
 
 		// check if old object already has history build, i.e. we are not updating new object
 		if (!diffService.hasDiffs(objOld)) {
 			// no diffs found for this object, calling onCreate first on old object version
 			onCreate(objOld);
+			log.debug("On UPDATE, just created old obj history");
 		}
 
 		Diff diff = historyBuilder.diff(objOld, obj);
 		diff.setProcessingStatus(ProcessingStatus.STATUS_PROCESSED);
 		if (diff.isNotEmpty()) {
 			diffService.create(diff);
+			log.debug("Creating diff {}", diff);
+		} else {
+			log.debug("Diff is empty");
 		}
 	}
 
