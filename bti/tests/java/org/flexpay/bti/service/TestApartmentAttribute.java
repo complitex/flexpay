@@ -6,10 +6,12 @@ import org.flexpay.bti.persistence.apartment.ApartmentAttributeType;
 import org.flexpay.bti.persistence.apartment.BtiApartment;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.test.TransactionalSpringBeanAwareTestCase;
+import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.DateUtil;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import org.junit.Test;
+import org.junit.Ignore;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.NotTransactional;
 
