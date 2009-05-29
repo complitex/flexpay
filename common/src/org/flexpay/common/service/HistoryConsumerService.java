@@ -42,7 +42,7 @@ public interface HistoryConsumerService {
 	 * @return list of diffs, possibly empty
 	 */
 	@NotNull
-	List<Diff> findNewDiffs(@NotNull HistoryConsumer consumer, FetchRange range);
+	List<Diff> findNewDiffs(@NotNull Stub<HistoryConsumer> consumer, FetchRange range);
 
 	/**
 	 * Create new consumption group

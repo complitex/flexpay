@@ -2,24 +2,24 @@ package org.flexpay.common.persistence.history.impl;
 
 import org.apache.commons.io.IOUtils;
 import org.flexpay.common.dao.paging.FetchRange;
-import org.flexpay.common.persistence.file.FPFile;
+import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.persistence.history.*;
 import org.flexpay.common.service.FPFileService;
 import org.flexpay.common.service.HistoryConsumerService;
-import org.flexpay.common.util.FPFileUtil;
 import org.flexpay.common.util.CollectionUtils;
+import org.flexpay.common.util.FPFileUtil;
 import org.flexpay.common.util.config.ApplicationConfig;
-import org.flexpay.common.exception.FlexPayException;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 
-import java.io.OutputStream;
 import java.io.IOException;
-import java.util.List;
+import java.io.OutputStream;
 import java.util.Collections;
+import java.util.List;
 import java.util.zip.GZIPOutputStream;
 
 public abstract class HistoryPackerBase implements HistoryPacker {
@@ -52,7 +52,8 @@ public abstract class HistoryPackerBase implements HistoryPacker {
 
 		FetchRange range = new FetchRange();
 		range.setPageSize(pagingSize);
-		List<Diff> diffs = consumerService.findNewDiffs(consumer, range);
+		List<Diff> diffs = consumerService.findNewDiffs(stub, range);
+		log.debug("Having diffs to pack: {}", diffs.size());
 
 		HistoryPackingContext context = new HistoryPackingContext();
 		context.setConsumer(consumer);
@@ -62,16 +63,18 @@ public abstract class HistoryPackerBase implements HistoryPacker {
 
 		OutputStream os = null;
 		try {
-			// open stream and write header if needed
-			FPFile file = getNewFile(consumer, context);
-			files.add(file);
-			os = file.getOutputStream();
-			os = new GZIPOutputStream(os);
+			if (range.hasMore() || !diffs.isEmpty()) {
+				// open stream and write header if needed
+				FPFile file = getNewFile(consumer, context);
+				files.add(file);
+				os = file.getOutputStream();
+				os = new GZIPOutputStream(os);
+			}
 			beginPacking(os, context);
 
 			int currentGroupSize = 0;
 
-			while (range.hasMore()) {
+			while (range.hasMore() || !diffs.isEmpty()) {
 
 				if (currentGroupSize >= groupSize) {
 					// close last stream
@@ -79,7 +82,7 @@ public abstract class HistoryPackerBase implements HistoryPacker {
 					os = null;
 
 					// open stream and write header if needed
-					file = getNewFile(consumer, context);
+					FPFile file = getNewFile(consumer, context);
 					files.add(file);
 					os = file.getOutputStream();
 					os = new GZIPOutputStream(os);
@@ -96,7 +99,8 @@ public abstract class HistoryPackerBase implements HistoryPacker {
 				consumer.setLastPackedDiff(diffs.get(diffs.size() - 1));
 				consumerService.update(consumer);
 				range.nextPage();
-				diffs = consumerService.findNewDiffs(consumer, range);
+				diffs = consumerService.findNewDiffs(stub, range);
+				log.debug("Having diffs to pack: {}", diffs.size());
 			}
 
 			// end writing

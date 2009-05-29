@@ -72,7 +72,7 @@ public class HistoryConsumerServiceImpl implements HistoryConsumerService {
 	 * @return list of diffs, possibly empty
 	 */
 	@NotNull
-	public List<Diff> findNewDiffs(@NotNull HistoryConsumer consumer, FetchRange range) {
+	public List<Diff> findNewDiffs(@NotNull Stub<HistoryConsumer> consumer, FetchRange range) {
 		return consumerDaoExt.findNewHistoryRecords(consumer.getId(), range);
 	}
 

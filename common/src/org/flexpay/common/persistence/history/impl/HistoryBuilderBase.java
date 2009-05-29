@@ -42,13 +42,15 @@ public abstract class HistoryBuilderBase<T extends DomainObject> implements Hist
 		if (t1 == null) {
 			diff.setOperationType(HistoryOperationType.TYPE_CREATE);
 			if (t2.isNotNew()) {
-				String masterIndex =masterIndexService.getMasterIndex(t2);
+				String masterIndex = SyncContext.isSyncing() ?
+									 SyncContext.getProcessingDiff().getMasterIndex() :
+									 masterIndexService.getMasterIndex(t2);
 				if (masterIndex == null) {
 					masterIndex = masterIndexService.getNewMasterIndex(t2);
 				}
 				diff.setMasterIndex(masterIndex);
 				correctionsService.save(new DataCorrection(
-						diff.getMasterIndex(), t2.getId(),
+						masterIndex, t2.getId(),
 						typeRegistry.getType(t2.getClass()),
 						masterIndexService.getMasterSourceDescription()));
 			}

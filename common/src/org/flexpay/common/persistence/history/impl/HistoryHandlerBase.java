@@ -24,6 +24,7 @@ public abstract class HistoryHandlerBase<T extends DomainObject> implements Hist
 	protected void saveMasterCorrection(T obj, Diff diff) {
 		DataCorrection correction =
 				correctionsService.getStub(diff.getMasterIndex(), obj, masterIndexService.getMasterSourceDescription());
+		log.debug("Saving master correction: {}", correction);
 		correctionsService.save(correction);
 	}
 
