@@ -46,7 +46,6 @@ public class TariffCalculateAction extends FPActionWithPagerSupport<TariffCalcul
 	 * @return {@link #ERROR} by default
 	 */
 	@NotNull
-	@Override
 	protected String getErrorResult() {
 		return REDIRECT_SUCCESS;
 	}

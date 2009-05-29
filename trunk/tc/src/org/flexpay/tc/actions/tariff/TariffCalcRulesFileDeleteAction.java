@@ -34,7 +34,6 @@ public class TariffCalcRulesFileDeleteAction extends FPActionWithPagerSupport<Ta
 	 * @return {@link #ERROR} by default
 	 */
 	@NotNull
-	@Override
 	protected String getErrorResult() {
 		return REDIRECT_SUCCESS;
 	}

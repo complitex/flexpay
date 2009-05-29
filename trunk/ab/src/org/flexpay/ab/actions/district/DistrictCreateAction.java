@@ -28,10 +28,6 @@ public class DistrictCreateAction extends CreateAction<
 		townFilter.setNeedAutoChange(false);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
 	@NotNull
 	public String doExecute() throws Exception {
 		ArrayStack filterArrayStack = getFilters();

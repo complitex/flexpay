@@ -18,46 +18,18 @@ public abstract class RawData<Obj extends DomainObject> implements Serializable 
 	private String externalSourceId;
 	private Map<String, Serializable> nameToValuesMap = map();
 
-	@Override
-	public String toString() {
-		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE)
-				.append("externalId", externalSourceId)
-				.append("values", nameToValuesMap)
-				.toString();
-	}
-
-	/**
-	 * Getter for property 'externalSourceId'.
-	 *
-	 * @return Value for property 'externalSourceId'.
-	 */
 	public String getExternalSourceId() {
 		return externalSourceId;
 	}
 
-	/**
-	 * Setter for property 'externalSourceId'.
-	 *
-	 * @param externalSourceId Value to set for property 'externalSourceId'.
-	 */
 	public void setExternalSourceId(String externalSourceId) {
 		this.externalSourceId = externalSourceId;
 	}
 
-	/**
-	 * Getter for property 'nameToValuesMap'.
-	 *
-	 * @return Value for property 'nameToValuesMap'.
-	 */
 	public Map<String, Serializable> getNameToValuesMap() {
 		return nameToValuesMap;
 	}
 
-	/**
-	 * Setter for property 'nameToValuesMap'.
-	 *
-	 * @param nameToValuesMap Value to set for property 'nameToValuesMap'.
-	 */
 	public void setNameToValuesMap(Map<String, Serializable> nameToValuesMap) {
 		this.nameToValuesMap = nameToValuesMap;
 	}
@@ -88,4 +60,13 @@ public abstract class RawData<Obj extends DomainObject> implements Serializable 
 		Object obj = getNameToValuesMap().get(param);
 		return obj == null ? null : obj.toString();
 	}
+
+	@Override
+	public String toString() {
+		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
+				append("externalId", externalSourceId).
+				append("values", nameToValuesMap).
+				toString();
+	}
+
 }

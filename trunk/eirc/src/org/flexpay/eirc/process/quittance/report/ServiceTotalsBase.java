@@ -170,23 +170,6 @@ public abstract class ServiceTotalsBase implements Serializable {
 		outgoingDebt = addNegative(outgoingDebt, amount);
 	}
 
-	@Override
-	public String toString() {
-		return new ToStringBuilder(this).
-				append("serviceType", serviceType).
-				append("tariff", tariff).
-				append("expence", expence).
-				append("expenceUnitKey", expenceUnitKey).
-				append("charges", charges).
-				append("recalculation", recalculation).
-				append("privilege", privilege).
-				append("subsidy", subsidy).
-				append("payed", payed).
-				append("incomingDebt", incomingDebt).
-				append("outgoingDebt", outgoingDebt).
-				toString();
-	}
-
 	public String[] getOutgoingDebtDigits() {
 
 		String[] result = new String[6];
@@ -211,6 +194,23 @@ public abstract class ServiceTotalsBase implements Serializable {
 		}
 
 		return result;
+	}
+
+	@Override
+	public String toString() {
+		return new ToStringBuilder(this).
+				append("serviceType", serviceType).
+				append("tariff", tariff).
+				append("expence", expence).
+				append("expenceUnitKey", expenceUnitKey).
+				append("charges", charges).
+				append("recalculation", recalculation).
+				append("privilege", privilege).
+				append("subsidy", subsidy).
+				append("payed", payed).
+				append("incomingDebt", incomingDebt).
+				append("outgoingDebt", outgoingDebt).
+				toString();
 	}
 
 }

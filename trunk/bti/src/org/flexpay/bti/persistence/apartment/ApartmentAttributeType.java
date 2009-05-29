@@ -92,12 +92,11 @@ public abstract class ApartmentAttributeType extends DomainObjectWithStatus {
 	@Override
 	public String toString() {
 		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
-				append("ApartmentAttributeType {").
 				append("id", getId()).
 				append("status", getStatus()).
 				append("isTemporal", isTemporal).
 				append("uniqueCode", uniqueCode).
-				append("}").toString();
+				toString();
 	}
 
 }

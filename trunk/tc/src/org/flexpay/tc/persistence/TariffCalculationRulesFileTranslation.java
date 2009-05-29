@@ -37,12 +37,11 @@ public class TariffCalculationRulesFileTranslation extends Translation {
 	@Override
 	public String toString() {
 		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
-				append("TariffCalculationRulesFileTranslation {").
 				append("id", getId()).
 				append("name", getName()).
 				append("lang", getLang()).
 				append("description", description).
-				append("}").toString();
+				toString();
 	}
 
 }

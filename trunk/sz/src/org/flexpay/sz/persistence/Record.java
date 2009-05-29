@@ -19,9 +19,8 @@ public abstract class Record extends DomainObject {
 	@Override
 	public String toString() {
 		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
-				append("Record {").
 				append("id", getId()).
-				append("}").toString();
+				toString();
 	}
 
 }

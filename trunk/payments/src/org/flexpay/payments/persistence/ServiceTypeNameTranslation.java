@@ -8,9 +8,6 @@ public class ServiceTypeNameTranslation extends Translation {
 
 	private String description;
 
-	/**
-	 * Constructs a new Translation.
-	 */
 	public ServiceTypeNameTranslation() {
 	}
 
@@ -22,15 +19,14 @@ public class ServiceTypeNameTranslation extends Translation {
 		this.description = description;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public String toString() {
-		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE)
-				.append("Name", getName())
-				.append("Description", description)
-				.append("Lang", getLang().getLangIsoCode())
-				.toString();
+		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
+				append("id", getId()).
+				append("name", getName()).
+				append("lang", getLang()).
+				append("description", description).
+				toString();
 	}
+
 }

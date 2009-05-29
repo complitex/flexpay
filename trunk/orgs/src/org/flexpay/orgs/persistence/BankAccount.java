@@ -13,9 +13,6 @@ public class BankAccount extends DomainObjectWithStatus {
 	private String accountNumber;
 	private boolean isDefault = false;
 
-	/**
-	 * Constructs a new DomainObject.
-	 */
 	public BankAccount() {
 	}
 
@@ -56,6 +53,7 @@ public class BankAccount extends DomainObjectWithStatus {
 
 	/**
 	 * Check if this account is default for juridical person
+	 *
 	 * @return <code>true</code> if account is default, or <code>false</code> otherwise
 	 */
 	public boolean isDefault() {
@@ -68,11 +66,12 @@ public class BankAccount extends DomainObjectWithStatus {
 
 	@Override
 	public String toString() {
-		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE)
-				.append("bankId", bank.getId())
-				.append("juridicalPerson", juridicalPerson.getId())
-				.append("accountNumber", accountNumber)
-				.append("default", isDefault)
-				.toString();
+		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
+				append("id", getId()).
+				append("status", getStatus()).
+				append("accountNumber", accountNumber).
+				append("isDefault", isDefault).
+				toString();
 	}
+
 }

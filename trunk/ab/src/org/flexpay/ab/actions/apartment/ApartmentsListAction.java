@@ -30,11 +30,7 @@ public class ApartmentsListAction extends BuildingsActionsBase {
 		streetNameFilter.setShowSearchString(true);
 	}
 
-    /**
-	 * {@inheritDoc}
-	 */
 	@NotNull
-	@Override
 	public String doExecute() throws Exception {
 
 		ArrayStack filters = getFilters();

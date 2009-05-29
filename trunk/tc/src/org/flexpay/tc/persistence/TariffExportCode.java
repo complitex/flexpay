@@ -1,5 +1,7 @@
 package org.flexpay.tc.persistence;
 
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
 import org.flexpay.common.persistence.DomainObject;
 import static org.flexpay.common.util.CollectionUtils.ar;
 import static org.flexpay.common.util.CollectionUtils.map;
@@ -41,31 +43,17 @@ public class TariffExportCode extends DomainObject {
 
 	private int code;
 
-    /**
-	 * Constructs a new TariffExportCode.
-	 */
 	public TariffExportCode() {
 	}
 
-	/**
-	 * Constructs a new TariffExportCode and set up code.
-	 *
-	 * @param code code
-	 */
 	public TariffExportCode(int code) {
 		this.code = code;
 	}
 
-	/**
-	 * @return the code
-	 */
 	public int getCode() {
 		return code;
 	}
 
-	/**
-	 * @param code the code to set
-	 */
 	public void setCode(int code) {
 		this.code = code;
 	}
@@ -76,8 +64,11 @@ public class TariffExportCode extends DomainObject {
 
 	@Override
 	public String toString() {
-		return "TariffExportCode{" +
-			   "code=" + code +
-			   '}';
+		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
+				append("id", getId()).
+				append("code", code).
+				append("i18nName", getI18nName()).
+				toString();
 	}
+
 }

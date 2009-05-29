@@ -19,11 +19,7 @@ public abstract class ListAction<
 
 	protected List<?> objectNames;
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@NotNull
-	@Override
 	public String doExecute() throws Exception {
 
 		long start = System.currentTimeMillis();

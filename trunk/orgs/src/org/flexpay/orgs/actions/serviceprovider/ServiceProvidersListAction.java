@@ -31,7 +31,6 @@ public class ServiceProvidersListAction extends FPActionWithPagerSupport<Service
 	 * @return {@link #ERROR} by default
 	 */
 	@NotNull
-	@Override
 	protected String getErrorResult() {
 		return SUCCESS;
 	}
@@ -44,4 +43,5 @@ public class ServiceProvidersListAction extends FPActionWithPagerSupport<Service
 	public void setProviderService(ServiceProviderService providerService) {
 		this.providerService = providerService;
 	}
+
 }

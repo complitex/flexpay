@@ -89,4 +89,5 @@ public abstract class ObjectSorter implements Serializable {
 				append("active", isActivated()).
 				toString();
 	}
+
 }

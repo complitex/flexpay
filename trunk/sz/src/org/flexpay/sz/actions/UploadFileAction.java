@@ -1,6 +1,6 @@
 package org.flexpay.sz.actions;
 
-import com.opensymphony.xwork2.ActionSupport;
+import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.persistence.file.FPFileType;
 import org.flexpay.common.service.FPFileService;
@@ -19,12 +19,9 @@ import org.springframework.beans.factory.annotation.Required;
 import java.io.File;
 import java.util.Calendar;
 
-public class UploadFileAction extends ActionSupport {
+public class UploadFileAction extends FPActionSupport {
 
-	@NonNls
-	protected Logger log = LoggerFactory.getLogger(getClass());
-
-	String message = "success";
+	private String message = "success";
 
 	private File upload;
 	private String uploadFileName;
@@ -39,7 +36,7 @@ public class UploadFileAction extends ActionSupport {
 	private FPFileService fpFileService;
 
 	@NotNull
-	public String execute() {
+	public String doExecute() {
 
 		if (uploadFileName == null) {
 			log.warn("Error: uploadFileName is null");
@@ -83,6 +80,16 @@ public class UploadFileAction extends ActionSupport {
 		}
 
 		return SUCCESS;
+	}
+
+	@NotNull
+	protected String getErrorResult() {
+		return ERROR;
+	}
+
+	@Override
+	protected void setBreadCrumbs() {
+		
 	}
 
 	public String getMessage() {

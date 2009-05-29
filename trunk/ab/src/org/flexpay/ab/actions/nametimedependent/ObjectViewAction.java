@@ -35,11 +35,7 @@ public abstract class ObjectViewAction<
 		}
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@NotNull
-	@Override
 	public String doExecute() {
 
 		log.info("Object: {}", object);

@@ -19,219 +19,223 @@
         </tr>
         <tr>
             <td colspan="3" id="fileRaw">
-                <s:text name="common.file" />&nbsp;<s:file id="upload" name="upload" label="File" required="true" size="75" onchange="setFile($(this));" />
+                <s:text name="common.file" />&nbsp;<s:file id="upload" name="upload" label="File" required="true" size="75" />
             </td>
         </tr>
     </table>
-    <input id="uploadBtn" type="button" value="<s:text name="common.add_to_upload" />" class="btn-exit" onclick="submitForm();" />
+    <input id="uploadBtn" type="button" value="<s:text name="common.add_to_upload" />" class="btn-exit" />
 </s:form>
 
 <div id="mainBlock"></div>
 
 <script type="text/javascript">
 
-    function FPFileUploadForm(name, options) {
+    function FPFileUploadForm(formId, submitId, options) {
 
         options = options || {};
 
-        options.name = name;
+        options.formId = formId;
 
         options = $.extend({
-            action: "",
-            filterId: "",
-            valueId: "",
-            isArray: false,
-            extraParams: {},
-            resultId: "result",
-            preRequest: true,
-            parents: []
+            action : "",
+            mainBlockId : "mainBlock",
+            fileBlockId : "fileRaw",
+            fileId : "upload",
+            retries : 5
         }, options);
 
         this.options = options;
+        fileBlock = $("#" + options.fileBlockId);
+
+        mainBlock = $("#" + options.mainBlockId);
+
+        file = null;
+
+        stack = new Array();
+        unsuccess = 0;
+        success = 0;
+        total = 0;
+        uploaded = true;
+        uploadingId = -1;
+        started = false;
+        wait = false;
+        uploadingFilename = "";
+        curRetry = 0;
+
+        responseId = "ajaxResponse";
+        uploadFormId = "uploadForm";
+        uploadFrameId = "uploadFrame";
+        fileId = "upload";
+
+        successResponse = "success";
+        errorResponse = "error";
+
+        uploadForms = [];
+        responses = [];
+        uploadFrames = [];
+
+        $("#" + submitId).attr("onclick", "FPFileUtils.fileForms[\"" + formId + "\"].submitForm();");
+        $("#" + options.fileId).attr("onchange", "FPFileUtils.fileForms[\"" + formId + "\"].setFile(this);");
+
+        function setFile(obj) {
+            file = $(obj);
+        }
+
+        function addNewBlock(index) {
+
+            uploadForms[index] = $("<form id=\"" + uploadFormId + index + "\" action=\"" + options.action + "\""
+                             + "method=\"post\" enctype=\"multipart/form-data\" target=\"" + uploadFrameId + index + "\"></form>").css({display : "none"});
+
+            $(":input:not(:button):not(:reset):not(:image):not(:file):not(:submit):not(:disabled)").each(function(i, el) {
+                if (el.form.id == options.formId) {
+                    uploadForms[index].append($("<input type=\"hidden\" name=\"" + el.name + "\" />").val(el.value));
+                }
+            });
+            uploadForms[index].append(file);
+
+            fileBlock.append(file.clone());
+            file.attr("id", fileId + index);
+
+            responses[index] = $("<div id=\"" + responseId + index + "\"></div>").css({color : "#ff0000"});
+            uploadFrames[index] = $("<iframe id=\"" + uploadFrameId + index + "\" name=\"" + uploadFrameId + index + '"></iframe>').css({"display": "none"})
+
+            mainBlock.append(uploadForms[index]).append(responses[index]).append(uploadFrames[index]);
+
+        }
+
+        this.setFile = function(obj) {
+            return setFile(obj);
+        }
+
+        this.submitForm = function() {
+
+            stack.push(total);
+            addNewBlock(total);
+            eraseForm();
+
+            if (!uploaded || (uploaded && wait)) {
+                var fileValue = $("#" + fileId + total).val();
+                var index = fileValue.lastIndexOf("\\") + ($.browser.msie ? 1 : 0);
+                $("#" + responseId + total).text(
+                        "<s:text name="common.file" /> \"" + fileValue.substring(index) + "\": <s:text name="common.file_upload.progress_bar.waiting" />"
+                        );
+            }
+            total++;
+
+            f();
+
+        }
+
+        function eraseForm() {
+            $("#" + fileId).val("");
+        }
+
+        function upload() {
+            if (uploaded && !wait) {
+                uploaded = false;
+                uploadingId = stack[0];
+                var fileValue = $("#" + fileId + uploadingId).val();
+                var index = fileValue.lastIndexOf("\\") + ($.browser.msie ? 1 : 0);
+                uploadingFilename = "<s:text name="common.file" /> \"" + fileValue.substring(index) + "\": ";
+                Array.remove(stack, 0);
+                $("#" + uploadFormId + uploadingId).submit();
+                setTimeout(getProgress, 1000);
+            }
+        }
+
+        function getProgress() {
+            $.post("<s:url action="fileUploadProgress" namespace="/common" includeParams="none" />", {},
+                    function (data, textStatus) {
+                        if (textStatus == successResponse && data != null && data != "") {
+                            var ajaxResponse = $("#" + responseId + uploadingId).
+                                    text(uploadingFilename + "<s:text name="common.file_upload.progress_bar.loading" /> " + data + "%");
+                            if (data == "100") {
+                                uploaded = true;
+                                wait = true;
+                                ajaxResponse.text(uploadingFilename + "<s:text name="common.file_upload.progress_bar.processing" />");
+                                curRetry = 0;
+                                setTimeout(uploadWait, 100);;
+                                return true;
+                            }
+                            setTimeout(getProgress, 1000);
+                        }
+                        return false;
+                    });
+        }
+
+        function waitFunction() {
+            if (!wait) {
+                return;
+            }
+            curRetry++;
+            var frame = window.frames[uploadFrameId + uploadingId];
+            if (frame != null) {
+                var bodyFrame = frame.document.body;
+                var ajaxResponse = $("#" + responseId + uploadingId);
+                if (curRetry <= options.retries) {
+                    if (bodyFrame != null && bodyFrame.innerHTML != null && bodyFrame.innerHTML != "") {
+                        if (bodyFrame.innerHTML == successResponse) {
+                            ajaxResponse.css({"color": "#008000"}).text(uploadingFilename + "<s:text name="common.file_upload.progress_bar.loaded" />");
+                            success++;
+                            wait = false;
+                        } else if (bodyFrame.innerHTML == errorResponse) {
+                            ajaxResponse.text(uploadingFilename + "<s:text name="common.file_upload.progress_bar.error" />");
+                            wait = false;
+                            unsuccess++;
+                        }
+                    }
+                }
+            }
+            if (stack.length == 0 && !wait) {
+                started = false;
+                window.onbeforeunload = "";
+            }
+            uploadWait();
+        }
+
+        function uploadWait() {
+            if (stack.length > 0) {
+                if (wait) {
+                    setTimeout(waitFunction, 1500);
+                } else {
+                    upload();
+                }
+            } else {
+                if (wait) {
+                    setTimeout(waitFunction, 1500);
+                }
+            }
+        }
+
+        function f() {
+            if (!started) {
+                started = true;
+                window.onbeforeunload = closeIt;
+                upload();
+            }
+        }
+
+        function closeIt() {
+            return FP.formatI18nMessage("<s:text name="common.file_upload.confirm_exit" />", [success, unsuccess, total - success - unsuccess - 1]);
+        }
 
     }
 
     var FPFileUtils = {
 
-        createFileUploadForm : function (name, options) {
-            var form = new FPFileUploadForm(name, options);
+        fileForms : [],
+
+        createFileUploadForm : function(formId, submitId, options) {
+            var fileForm = new FPFileUploadForm(formId, submitId, options);
+            this.fileForms[formId] = fileForm;
         }
-
-
 
     };
 
-    var file = null;
-
-    var unsuccess = 0;
-    var success = 0;
-    var total = 0;
-
-    function setFile(obj) {
-        file = obj;
-    }
-
-    function setNewBlock(index) {
-        return '<form id="uploadForm' + index + '" action="<s:url action="doSzFileUploadAjax" namespace="/sz" includeParams="none" />"'
-                + 'method="POST" enctype="multipart/form-data" target="uploadFrame' + index + '" style="display:none;">\n'
-                + '<input type="hidden" id="y' + index + '" name="year" />\n'
-                + '<input type="hidden" id="m' + index + '" name="month" />\n'
-                + '<input type="hidden" id="o' + index + '" name="osznId" />\n'
-                + '</form>\n'
-                + '<div id="ajaxResponse' + index + '" style="color:#ff0000;"></div>\n';
-    }
-
-    function addBlock() {
-
-        $("#mainBlock").append(setNewBlock(total));
-
-        var uploadForm = $("#uploadForm" + total).append(file);
-
-        $("#y" + total).val($("#year").val());
-        $("#m" + total).val($("#month").val());
-        $("#o" + total).val($("#osznId").val());
-        $("#fileRaw").append(file.clone());
-        file.attr("id", "upload" + total);
-        $("#mainBlock").append(
-                $('<iframe id="uploadFrame' + total + '" name="uploadFrame' + total + '"></iframe>').css({"display": "none"})
-        );
-
-    }
-
-    function eraseForm() {
-        $("#upload").val("");
-    }
-
-    function validateForm() {
-        var v = $("#upload").val();
-        if (v == null || v == "") {
-            alert("<s:text name="common.file.upload.error.empty_file_field" />");
-            return false;
-        }
-        return true;
-    }
-
-    var uploaded = true;
-    var stack = new Array();
-    var uploadingId = -1;
-    var started = false;
-    var wait = false;
-
-    function submitForm() {
-
-        if (!validateForm()) {
-            return;
-        }
-
-        stack.push(total);
-        addBlock();
-        eraseForm();
-
-        if (!uploaded || (uploaded && wait)) {
-            var fileValue = $("#upload" + total).val();
-            var index = fileValue.lastIndexOf("\\") + ($.browser.msie ? 1 : 0);
-            $("#ajaxResponse" + total).text(
-                    "<s:text name="common.file" /> \"" + fileValue.substring(index) + "\": <s:text name="common.file_upload.progress_bar.waiting" />"
-                    );
-        }
-        total++;
-
-        f();
-
-    }
-
-    var uploadingFilename;
-
-    function upload() {
-        if (uploaded && !wait) {
-            uploaded = false;
-            uploadingId = stack[0];
-            var fileValue = $("#upload" + uploadingId).val();
-            var index = fileValue.lastIndexOf("\\") + ($.browser.msie ? 1 : 0);
-            uploadingFilename = "<s:text name="common.file" /> \"" + fileValue.substring(index) + "\": ";
-            Array.remove(stack, 0);
-            $("#uploadForm" + uploadingId).submit();
-            setTimeout(getProgress, 1000);
-        }
-    }
-
-    function getProgress() {
-        $.post("<s:url action="fileUploadProgress" namespace="/common" includeParams="none" />", {},
-                function (data, textStatus) {
-                    if (textStatus == "success" && data != null && data != "") {
-                        var ajaxResponse = $("#ajaxResponse" + uploadingId).
-                                text(uploadingFilename + "<s:text name="common.file_upload.progress_bar.loading" /> " + data + "%");
-                        if (data == "100") {
-                            uploaded = true;
-                            wait = true;
-                            ajaxResponse.text(uploadingFilename + "<s:text name="common.file_upload.progress_bar.processing" />");
-                            curRetry = 0;
-                            setTimeout(uploadWait, 100);;
-                            return true;
-                        }
-                        setTimeout(getProgress, 1000);
-                    }
-                    return false;
-                });
-    }
-
-    var retries = 5;
-    var curRetry = 0;
-
-    function waitFunction() {
-        if (!wait) {
-            return;
-        }
-        curRetry++;
-        var frame = window.frames["uploadFrame" + uploadingId];
-        if (frame != null) {
-            var bodyFrame = frame.document.body;
-            var ajaxResponse = $("#ajaxResponse" + uploadingId);
-            if (curRetry <= retries) {
-                if (bodyFrame != null && bodyFrame.innerHTML != null && bodyFrame.innerHTML != "") {
-                    if (bodyFrame.innerHTML == "success") {
-                        ajaxResponse.css({"color": "#008000"}).text(uploadingFilename + "<s:text name="common.file_upload.progress_bar.loaded" />");
-                        success++;
-                        wait = false;
-                    } else if (bodyFrame.innerHTML == "error") {
-                        ajaxResponse.text(uploadingFilename + "<s:text name="common.file_upload.progress_bar.error" />");
-                        wait = false;
-                        unsuccess++;
-                    }
-                }
-            }
-        }
-        if (stack.length == 0 && !wait) {
-            started = false;
-            window.onbeforeunload = "";
-        }
-        uploadWait();
-    }
-
-    function uploadWait() {
-        if (stack.length > 0) {
-            if (wait) {
-                setTimeout(waitFunction, 1500);
-            } else {
-                upload();
-            }
-        } else {
-            if (wait) {
-                setTimeout(waitFunction, 1500);
-            }
-        }
-    }
-
-    function f() {
-        if (!started) {
-            started = true;
-            window.onbeforeunload = closeIt;
-            upload();
-        }
-    }
-
-    function closeIt() {
-        return FP.formatI18nMessage("<s:text name="common.file_upload.confirm_exit" />", [success, unsuccess, total - success - unsuccess - 1]);
-    }
+    $(function() {
+        FPFileUtils.createFileUploadForm("inputForm", "uploadBtn", {
+            action : "<s:url action="doSzFileUploadAjax" namespace="/sz" includeParams="none" />"
+        })
+    });
 
 </script>

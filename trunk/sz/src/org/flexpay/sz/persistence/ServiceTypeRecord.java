@@ -491,7 +491,6 @@ public class ServiceTypeRecord extends Record {
 	@Override
 	public String toString() {
 		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
-				append("ServiceTypeRecord {").
 				append("id", getId()).
 				append("tariffCode", tariffCode).
 				append("extDistrictCode", extDistrictCode).
@@ -516,7 +515,7 @@ public class ServiceTypeRecord extends Record {
 				append("privilegeEndMonth", privilegeEndMonth).
 				append("personalAccountNumber", personalAccountNumber).
 				append("serviceType", serviceType).
-				append("}").toString();
+				toString();
 	}
 
 }

@@ -53,10 +53,10 @@ public class Tariff extends DomainObjectWithStatus {
 	@Override
 	public String toString() {
 		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
-				append("Tariff {").
 				append("id", getId()).
 				append("status", getStatus()).
 				append("subServiceCode", subServiceCode).
-				append("}").toString();
+				toString();
 	}
+
 }

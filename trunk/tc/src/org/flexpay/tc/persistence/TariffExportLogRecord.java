@@ -59,11 +59,10 @@ public class TariffExportLogRecord extends DomainObject{
 	@Override
 	public String toString() {
 		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
-				append("TariffExportLogRecord{").
 				append("id", getId()).
 				append("tariffExportCode", tariffExportCode == null?"-":tariffExportCode.toString()).
 				append("exportdate", exportdate).
 				append("tariffBeginDate", tariffBeginDate).
-				append("}").toString();
+				toString();
 	}
 }

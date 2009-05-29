@@ -59,7 +59,6 @@ public class TariffCalcResultExportAction extends FPActionSupport {
 	}
 
 	@NotNull
-	@Override
 	protected String getErrorResult() {
 		return INPUT;
 	}

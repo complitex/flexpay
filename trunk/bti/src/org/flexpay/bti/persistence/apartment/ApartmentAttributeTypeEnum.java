@@ -122,12 +122,11 @@ public class ApartmentAttributeTypeEnum extends ApartmentAttributeType {
 	@Override
 	public String toString() {
 		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
-				append("ApartmentAttributeTypeEnum {").
 				append("id", getId()).
 				append("i18nTitle", getI18nTitle()).
 				append("status", getStatus()).
 				append("uniqueCode", getUniqueCode()).
-				append("}").toString();
+				toString();
 	}
 
 }

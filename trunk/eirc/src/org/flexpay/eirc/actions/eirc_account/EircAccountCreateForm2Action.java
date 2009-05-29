@@ -27,7 +27,6 @@ public class EircAccountCreateForm2Action extends PersonsListAction {
 	 * @return {@link #ERROR} by default
 	 */
 	@NotNull
-	@Override
 	protected String getErrorResult() {
 		return "redirectForm1";
 	}

@@ -32,7 +32,6 @@ public class ImportFilesListAction extends FPActionWithPagerSupport<SzFile> {
 	 * @return {@link #ERROR} by default
 	 */
 	@NotNull
-	@Override
 	protected String getErrorResult() {
 		return SUCCESS;
 	}

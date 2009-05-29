@@ -21,11 +21,7 @@ public abstract class DeleteAction<
 
 	private Set<Long> objectIds = new HashSet<Long>();
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@NotNull
-	@Override
 	public String doExecute() throws Exception {
 
 		ArrayStack filters = parentService.initFilters(getFilters(), userPreferences.getLocale());

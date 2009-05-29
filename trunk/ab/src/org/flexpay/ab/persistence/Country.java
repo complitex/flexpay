@@ -39,17 +39,15 @@ public class Country extends DomainObjectWithStatus {
 	}
 
 	@Override
-	public String toString() {
-		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
-				append("Country {").
-				append("id", getId()).
-				append("}").toString();
-	}
-
-	@Override
 	public boolean equals(Object obj) {
 		return this == obj || obj instanceof Country && super.equals(obj);
 
+	}
+
+	@Override
+	public String toString() {
+		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
+				append("id", getId()).toString();
 	}
 
 }

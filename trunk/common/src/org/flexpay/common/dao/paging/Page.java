@@ -168,11 +168,10 @@ public class Page<E> implements Serializable {
 	@Override
 	public String toString() {
 		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
-				append("Page {").
 				append("pageSize", pageSize).
 				append("pageNumber", pageNumber).
 				append("totalElements", totalElements).
-				append("}").toString();
+				toString();
 	}
 
 }

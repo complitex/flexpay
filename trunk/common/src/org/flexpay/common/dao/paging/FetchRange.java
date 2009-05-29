@@ -102,4 +102,5 @@ public class FetchRange implements Serializable {
 				append("pageSize", pageSize).
 				toString();
 	}
+
 }

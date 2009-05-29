@@ -33,11 +33,7 @@ public class BuildingsListAction extends BuildingsActionsBase {
 		streetNameFilter.setShowSearchString(true);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@NotNull
-	@Override
 	public String doExecute() throws Exception {
 
 		ArrayStack filters = initFilters();
@@ -68,16 +64,10 @@ public class BuildingsListAction extends BuildingsActionsBase {
 	 * @return {@link #ERROR} by default
 	 */
 	@NotNull
-	@Override
 	protected String getErrorResult() {
 		return SUCCESS;
 	}
 
-	/**
-	 * Getter for property 'filters'.
-	 *
-	 * @return Value for property 'filters'.
-	 */
 	public ArrayStack getFilters() {
 
 		ArrayStack filters = new ArrayStack();
@@ -89,11 +79,6 @@ public class BuildingsListAction extends BuildingsActionsBase {
 		return filters;
 	}
 
-	/**
-	 * Setter for property 'filters'.
-	 *
-	 * @param filters Value to set for property 'filters'.
-	 */
 	public void setFilters(ArrayStack filters) {
 		countryFilter = (CountryFilter) filters.peek(3);
 		regionFilter = (RegionFilter) filters.peek(2);
@@ -101,56 +86,26 @@ public class BuildingsListAction extends BuildingsActionsBase {
 		streetNameFilter = (StreetNameFilter) filters.peek(0);
 	}
 
-	/**
-	 * Getter for property 'countryFilter'.
-	 *
-	 * @return Value for property 'countryFilter'.
-	 */
 	public CountryFilter getCountryFilter() {
 		return countryFilter;
 	}
 
-	/**
-	 * Setter for property 'countryFilter'.
-	 *
-	 * @param countryFilter Value to set for property 'countryFilter'.
-	 */
 	public void setCountryFilter(CountryFilter countryFilter) {
 		this.countryFilter = countryFilter;
 	}
 
-	/**
-	 * Getter for property 'regionFilter'.
-	 *
-	 * @return Value for property 'regionFilter'.
-	 */
 	public RegionFilter getRegionFilter() {
 		return regionFilter;
 	}
 
-	/**
-	 * Setter for property 'regionFilter'.
-	 *
-	 * @param regionFilter Value to set for property 'regionFilter'.
-	 */
 	public void setRegionFilter(RegionFilter regionFilter) {
 		this.regionFilter = regionFilter;
 	}
 
-	/**
-	 * Getter for property 'townFilter'.
-	 *
-	 * @return Value for property 'townFilter'.
-	 */
 	public TownFilter getTownFilter() {
 		return townFilter;
 	}
 
-	/**
-	 * Setter for property 'townFilter'.
-	 *
-	 * @param townFilter Value to set for property 'townFilter'.
-	 */
 	public void setTownFilter(TownFilter townFilter) {
 		this.townFilter = townFilter;
 	}
@@ -163,30 +118,15 @@ public class BuildingsListAction extends BuildingsActionsBase {
 		this.streetNameFilter = streetNameFilter;
 	}
 
-	/**
-	 * Getter for property 'buildingsList'.
-	 *
-	 * @return Value for property 'buildingsList'.
-	 */
 	public List<BuildingAddress> getBuildingsList() {
 		return buildingsList;
 	}
 
-	/**
-	 * Setter for property 'buildingsService'.
-	 *
-	 * @param buildingService Value to set for property 'buildingsService'.
-	 */
 	@Required
 	public void setBuildingService(BuildingService buildingService) {
 		this.buildingService = buildingService;
 	}
 
-	/**
-	 * Setter for property 'parentService'.
-	 *
-	 * @param parentService Value to set for property 'parentService'.
-	 */
 	@Required
 	public void setParentService(ParentService parentService) {
 		this.parentService = parentService;

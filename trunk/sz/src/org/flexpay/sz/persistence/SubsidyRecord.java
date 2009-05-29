@@ -380,7 +380,6 @@ public class SubsidyRecord extends Record {
 	@Override
 	public String toString() {
 		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
-				append("SubsidyRecord {").
 				append("id", getId()).
 				append("surName", surName).
 				append("firstName", firstName).
@@ -423,7 +422,7 @@ public class SubsidyRecord extends Record {
 				append("orgsID", orgsID).
 				append("fileID", fileID).
 				append("status", status).
-				append("}").toString();
+				toString();
 	}
 
 }

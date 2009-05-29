@@ -31,7 +31,6 @@ public class TariffCalcRulesFilesListAction extends FPActionWithPagerSupport<Tar
 	 * @return {@link #ERROR} by default
 	 */
 	@NotNull
-	@Override
 	protected String getErrorResult() {
 		return SUCCESS;
 	}

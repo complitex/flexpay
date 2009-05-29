@@ -66,12 +66,11 @@ public class ApartmentTempAttributeValue extends DomainObject implements Compara
 	@Override
 	public String toString() {
 		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
-				append("ApartmentTempAttributeValue {").
 				append("id", getId()).
 				append("value", value).
 				append("begin", begin).
 				append("end", end).
-				append("}").toString();
+				toString();
 	}
 
 }

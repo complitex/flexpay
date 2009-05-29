@@ -320,10 +320,8 @@ public class Apartment extends DomainObjectWithStatus {
 	@Override
 	public String toString() {
 		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
-				append("Apartment {").
 				append("id", getId()).
-				append("number", getNumber()).
-				append("}").toString();
+				append("number", getNumber()).toString();
 	}
 
 }

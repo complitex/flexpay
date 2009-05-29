@@ -30,10 +30,9 @@ public class Oszn extends DomainObject {
 	@Override
 	public String toString() {
 		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
-				append("Oszn {").
 				append("id", getId()).
 				append("description", description).
-				append("}").toString();
+				toString();
 	}
 
 }

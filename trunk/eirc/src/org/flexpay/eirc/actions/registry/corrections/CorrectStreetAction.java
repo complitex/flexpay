@@ -33,6 +33,7 @@ public class CorrectStreetAction extends StreetsListAction {
 	private ServiceProviderService serviceProviderService;
 
 	@NotNull
+	@Override
 	public String doExecute() throws Exception {
 
 		record = recordService.read(record.getId());
@@ -126,4 +127,5 @@ public class CorrectStreetAction extends StreetsListAction {
 	public void setServiceProviderService(ServiceProviderService serviceProviderService) {
 		this.serviceProviderService = serviceProviderService;
 	}
+
 }
