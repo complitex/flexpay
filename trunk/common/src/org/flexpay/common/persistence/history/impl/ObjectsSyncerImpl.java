@@ -37,7 +37,9 @@ public class ObjectsSyncerImpl implements ObjectsSyncer {
 				boolean processed = true;
 				for (HistoryHandler handler : handlers) {
 					if (handler.supports(diff)) {
+						SyncContext.setProcessingDiff(diff);
 						handler.process(diff);
+						SyncContext.setProcessingDiff(null);
 						diff.setProcessingStatus(ProcessingStatus.STATUS_PROCESSED);
 						break;
 					}
@@ -51,6 +53,8 @@ public class ObjectsSyncerImpl implements ObjectsSyncer {
 				diffService.update(diff);
 			} catch (Exception e) {
 				log.error("Failed processing diff " + diff, e);
+			} finally {
+				SyncContext.setProcessingDiff(null);
 			}
 		}
 

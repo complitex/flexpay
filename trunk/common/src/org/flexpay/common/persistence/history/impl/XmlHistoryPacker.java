@@ -1,14 +1,14 @@
 package org.flexpay.common.persistence.history.impl;
 
+import com.thoughtworks.xstream.XStream;
 import org.flexpay.common.persistence.history.Diff;
-import org.flexpay.common.persistence.history.HistoryRecord;
 import org.flexpay.common.persistence.history.HistoryOperationType;
+import org.flexpay.common.persistence.history.HistoryRecord;
 import org.flexpay.common.util.CollectionUtils;
+import org.apache.commons.io.IOUtils;
 
 import java.io.*;
 import java.util.List;
-
-import com.thoughtworks.xstream.XStream;
 
 public class XmlHistoryPacker extends HistoryPackerBase {
 
@@ -34,7 +34,9 @@ public class XmlHistoryPacker extends HistoryPackerBase {
 		xstream.omitField(Diff.class, "userName");
 		xstream.omitField(Diff.class, "processingStatus");
 
-		oos = xstream.createObjectOutputStream(getWriter(os));
+		if (os != null) {
+			oos = xstream.createObjectOutputStream(getWriter(os));
+		}
 
 //		Writer wr = getWriter(os);
 //		wr.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<history>\n");
@@ -51,7 +53,7 @@ public class XmlHistoryPacker extends HistoryPackerBase {
 	protected void endPacking(OutputStream os, HistoryPackingContext context) throws Exception {
 		super.endPacking(os, context);
 
-		oos.close();
+		IOUtils.closeQuietly(oos);
 		oos = null;
 //		Writer wr = getWriter(os);
 //		wr.write("</history>");

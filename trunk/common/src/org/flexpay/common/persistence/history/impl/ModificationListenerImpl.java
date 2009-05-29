@@ -18,6 +18,23 @@ public class ModificationListenerImpl<T extends DomainObject> implements Modific
 	private HistoryBuilder<T> historyBuilder;
 	private DiffService diffService;
 
+	private void createDiff(Diff diff) {
+		// check if the result of this operation is a sync
+		if (SyncContext.isSyncing()) {
+			Diff processingDiff = SyncContext.getProcessingDiff();
+			diff.setMasterIndex(processingDiff.getMasterIndex());
+			log.debug("Replacing master index");
+		}
+
+		diff.setProcessingStatus(ProcessingStatus.STATUS_PROCESSED);
+		if (diff.isNotEmpty()) {
+			diffService.create(diff);
+			log.debug("Creating diff {}", diff);
+		} else {
+			log.debug("Diff is empty");
+		}
+	}
+
 	/**
 	 * Notify of new object created
 	 *
@@ -28,13 +45,7 @@ public class ModificationListenerImpl<T extends DomainObject> implements Modific
 		log.debug("On CREATE: {}", obj);
 
 		Diff diff = historyBuilder.diff(null, obj);
-		diff.setProcessingStatus(ProcessingStatus.STATUS_PROCESSED);
-		if (diff.isNotEmpty()) {
-			diffService.create(diff);
-			log.debug("Creating diff {}", diff);
-		} else {
-			log.debug("Diff is empty");
-		}
+		createDiff(diff);
 	}
 
 	/**
@@ -55,13 +66,7 @@ public class ModificationListenerImpl<T extends DomainObject> implements Modific
 		}
 
 		Diff diff = historyBuilder.diff(objOld, obj);
-		diff.setProcessingStatus(ProcessingStatus.STATUS_PROCESSED);
-		if (diff.isNotEmpty()) {
-			diffService.create(diff);
-			log.debug("Creating diff {}", diff);
-		} else {
-			log.debug("Diff is empty");
-		}
+		createDiff(diff);
 	}
 
 	/**
