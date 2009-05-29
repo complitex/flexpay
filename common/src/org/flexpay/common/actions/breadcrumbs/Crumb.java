@@ -84,12 +84,11 @@ public class Crumb implements Serializable {
 	@Override
 	public String toString() {
 		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
-				append("Crumb {").
 				append("action", action).
 				append("nameSpace", nameSpace).
 				append("wildPortionOfName", wildPortionOfName).
 				append("requestParams", requestParams).
-				append("}").toString();
+				toString();
 	}
 
 }

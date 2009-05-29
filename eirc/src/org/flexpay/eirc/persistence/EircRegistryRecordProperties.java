@@ -64,6 +64,11 @@ public class EircRegistryRecordProperties extends RegistryRecordProperties {
 		this.consumer = consumer;
 	}
 
+	@Nullable
+	public Stub<Consumer> getConsumerStub() {
+		return stub(consumer);
+	}
+
 	@SuppressWarnings ({"UnnecessaryBoxing"})
 	@Override
 	public String toString() {
@@ -75,8 +80,4 @@ public class EircRegistryRecordProperties extends RegistryRecordProperties {
 				.toString();
 	}
 
-	@Nullable
-	public Stub<Consumer> getConsumerStub() {
-		return stub(consumer);
-	}
 }

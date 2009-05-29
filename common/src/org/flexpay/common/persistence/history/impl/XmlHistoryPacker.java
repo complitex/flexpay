@@ -113,4 +113,5 @@ public class XmlHistoryPacker extends HistoryPackerBase {
 	protected String getFileExtension() {
 		return ".xml";
 	}
+
 }

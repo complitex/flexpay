@@ -89,14 +89,12 @@ public class TariffCalculationResult extends DomainObject {
 	@Override
 	public String toString() {
 		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
-				append("TariffCalculationResult {").
 				append("id", getId()).
 				append("value", value).
 				append("creationDate", creationDate).
 				append("calculationDate", calculationDate).
 				append("tariff", tariff.toString()).
-//				append("tariffExportCode", tariffExportCode == null ? "-" : tariffExportCode.toString()).
-				append("}").toString();
+				toString();
 	}
 
 }

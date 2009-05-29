@@ -31,7 +31,6 @@ public class ServiceOrganizationsListAction extends FPActionWithPagerSupport<Ser
 	 * @return {@link #ERROR} by default
 	 */
 	@NotNull
-	@Override
 	protected String getErrorResult() {
 		return SUCCESS;
 	}
@@ -44,4 +43,5 @@ public class ServiceOrganizationsListAction extends FPActionWithPagerSupport<Ser
 	public void setServiceOrganizationService(ServiceOrganizationService serviceOrganizationService) {
 		this.serviceOrganizationService = serviceOrganizationService;
 	}
+
 }

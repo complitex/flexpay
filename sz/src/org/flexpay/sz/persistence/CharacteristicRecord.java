@@ -167,7 +167,6 @@ public class CharacteristicRecord extends Record {
 	@Override
 	public String toString() {
 		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
-				append("CharacteristicRecord {").
 				append("id", getId()).
 				append("cod", cod).
 				append("cdpr", cdpr).
@@ -186,7 +185,7 @@ public class CharacteristicRecord extends Record {
 				append("vl", vl).
 				append("plzag", plzag).
 				append("plopal", plopal).
-				append("}").toString();
+				toString();
 	}
 
 }

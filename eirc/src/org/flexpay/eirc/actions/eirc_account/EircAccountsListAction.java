@@ -43,11 +43,6 @@ public class EircAccountsListAction extends ApartmentFilterDependent2Action {
 		return SUCCESS;
 	}
 
-	/**
-	 * Getter for property 'filters'.
-	 *
-	 * @return Value for property 'filters'.
-	 */
 	@Override
 	public ArrayStack getFilters() {
 		ArrayStack filters = super.getFilters();
@@ -56,11 +51,6 @@ public class EircAccountsListAction extends ApartmentFilterDependent2Action {
 		return filters;
 	}
 
-	/**
-	 * Setter for property 'filters'.
-	 *
-	 * @param filters Value to set for property 'filters'.
-	 */
 	@Override
 	public void setFilters(ArrayStack filters) {
 		setFilters(filters, 7);

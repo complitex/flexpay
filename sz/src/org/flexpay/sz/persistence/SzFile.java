@@ -112,14 +112,13 @@ public class SzFile extends DomainObject {
 	@Override
 	public String toString() {
 		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
-				append("SzFile {").
 				append("id", getId()).
 				append("date", date).
 				append("importDate", importDate).
 				append("userName", userName).
 				append("uploadedFile", uploadedFile).
 				append("fileToDownload", fileToDownload).
-				append("}").toString();
+				toString();
 	}
 
 }

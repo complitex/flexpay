@@ -28,9 +28,6 @@ public class QuittancePacket extends DomainObjectWithStatus {
 
 	private Set<QuittancePayment> payments = Collections.emptySet();
 
-	/**
-	 * Constructs a new DomainObject.
-	 */
 	public QuittancePacket() {
 	}
 
@@ -141,6 +138,8 @@ public class QuittancePacket extends DomainObjectWithStatus {
 	@Override
 	public String toString() {
 		return new ToStringBuilder(this).
+				append("id", getId()).
+				append("status", getStatus()).
 				append("packetNumber", packetNumber).
 				append("creationDate", creationDate).
 				append("beginDate", beginDate).
@@ -154,4 +153,5 @@ public class QuittancePacket extends DomainObjectWithStatus {
 				append("closerUserName", closerUserName).
 				toString();
 	}
+
 }

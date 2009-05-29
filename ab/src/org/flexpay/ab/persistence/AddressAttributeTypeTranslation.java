@@ -28,9 +28,12 @@ public class AddressAttributeTypeTranslation extends Translation {
 		this.shortName = shortName;
 	}
 
+	public boolean isBlank() {
+		return StringUtils.isBlank(getName()) && StringUtils.isBlank(getShortName());
+	}
+
 	@Override
 	public boolean equals(Object o) {
-
 		return o instanceof AddressAttributeTypeTranslation && super.equals(o);
 	}
 
@@ -38,11 +41,8 @@ public class AddressAttributeTypeTranslation extends Translation {
 	public String toString() {
 		return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
 				.appendSuper(super.toString())
-				.append("short name", shortName)
+				.append("shortName", shortName)
 				.toString();
 	}
 
-	public boolean isBlank() {
-		return StringUtils.isBlank(getName()) && StringUtils.isBlank(getShortName());
-	}
 }

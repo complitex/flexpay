@@ -14,9 +14,6 @@ public class District extends NameTimeDependentChild<DistrictName, DistrictNameT
 
 	private Set<Street> streets = Collections.emptySet();
 
-	/**
-	 * Constructs a new District.
-	 */
 	public District() {
 	}
 
@@ -28,37 +25,14 @@ public class District extends NameTimeDependentChild<DistrictName, DistrictNameT
 		super(district.getId());
 	}
 
-	/**
-	 * Create a new empty temporal
-	 *
-	 * @return empty temporal
-	 */
 	protected DistrictNameTemporal getEmptyTemporal() {
 		return new DistrictNameTemporal(this);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public boolean equals(Object obj) {
-		return this == obj || obj instanceof District && super.equals(obj);
-	}
-
-	/**
-	 * Getter for property 'streets'.
-	 *
-	 * @return Value for property 'streets'.
-	 */
 	public Set<Street> getStreets() {
 		return streets;
 	}
 
-	/**
-	 * Setter for property 'streets'.
-	 *
-	 * @param streets Value to set for property 'streets'.
-	 */
 	public void setStreets(Set<Street> streets) {
 		this.streets = streets;
 	}
@@ -100,4 +74,10 @@ public class District extends NameTimeDependentChild<DistrictName, DistrictNameT
 	public Stub<Town> getTownStub() {
 		return new Stub<Town>(getTown());
 	}
+
+	@Override
+	public boolean equals(Object obj) {
+		return this == obj || obj instanceof District && super.equals(obj);
+	}
+
 }

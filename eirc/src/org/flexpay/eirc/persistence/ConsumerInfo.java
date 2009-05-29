@@ -1,8 +1,8 @@
 package org.flexpay.eirc.persistence;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
-import org.apache.commons.lang.StringUtils;
 import org.flexpay.common.persistence.DomainObjectWithStatus;
 
 import java.util.Collections;
@@ -27,9 +27,6 @@ public class ConsumerInfo extends DomainObjectWithStatus {
 
     private Set<Consumer> consumers = Collections.emptySet();
 
-    /**
-     * Constructs a new DomainObject.
-     */
     public ConsumerInfo() {
     }
 
@@ -156,19 +153,21 @@ public class ConsumerInfo extends DomainObjectWithStatus {
         return sb.toString();
     }
 
-    @Override
-    public String toString() {
-        return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE)
-                .append("id", getId())
-                .append("firstName", getFirstName())
-                .append("middleName", getMiddleName())
-                .append("lastName", getLastName())
-                .append("city", getCityName())
-                .append("street", getStreetName())
-                .append("streetType", getStreetTypeName())
-                .append("building", getBuildingNumber())
-                .append("bulk", getBuildingBulk())
-                .append("apartment", getApartmentNumber())
-                .toString();
-    }
+	@Override
+	public String toString() {
+		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
+				append("id", getId()).
+				append("status", getStatus()).
+				append("firstName", firstName).
+				append("middleName", middleName).
+				append("lastName", lastName).
+				append("cityName", cityName).
+				append("streetTypeName", streetTypeName).
+				append("streetName", streetName).
+				append("buildingNumber", buildingNumber).
+				append("buildingBulk", buildingBulk).
+				append("apartmentNumber", apartmentNumber).
+				toString();
+	}
+
 }

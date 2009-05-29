@@ -1,6 +1,8 @@
 package org.flexpay.payments.persistence;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
 import org.flexpay.common.persistence.DomainObjectWithStatus;
 import org.flexpay.common.util.TranslationUtil;
 import org.flexpay.common.util.config.ApplicationConfig;
@@ -8,8 +10,8 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.Set;
 import java.util.Locale;
+import java.util.Set;
 
 public class ServiceType extends DomainObjectWithStatus {
 
@@ -81,6 +83,15 @@ public class ServiceType extends DomainObjectWithStatus {
 	@Override
 	public boolean equals(Object obj) {
 		return obj instanceof ServiceType && super.equals(obj);
+	}
+
+	@Override
+	public String toString() {
+		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
+				append("id", getId()).
+				append("status", getStatus()).
+				append("code", code).
+				toString();
 	}
 
 }

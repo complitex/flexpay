@@ -29,4 +29,5 @@ public class PersonSearchFilter extends ObjectFilter {
 	public boolean needFilter() {
 		return StringUtils.isNotBlank(searchString);
 	}
+
 }

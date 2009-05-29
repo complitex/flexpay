@@ -27,11 +27,10 @@ public class TariffTranslation extends Translation {
 	@Override
 	public String toString() {
 		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
-				append("TariffTranslation {").
 				append("id", getId()).
 				append("name", getName()).
 				append("lang", getLang()).
-				append("}").toString();
+				toString();
 	}
 
 }

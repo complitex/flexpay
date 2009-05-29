@@ -41,7 +41,6 @@ public class ServiceOrganizationAddServedBuildingAction extends BuildingsActions
     }
 
     @NotNull
-    @Override
 	public String doExecute() throws Exception {
 
         if (serviceOrganization.getId() == null) {

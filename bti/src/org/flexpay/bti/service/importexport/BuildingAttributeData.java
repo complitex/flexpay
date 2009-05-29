@@ -103,4 +103,5 @@ public class BuildingAttributeData implements Cloneable {
 	public boolean isBuildingFound() {
 		return buildingAddress != null;
 	}
+
 }

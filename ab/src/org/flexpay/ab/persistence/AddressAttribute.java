@@ -19,69 +19,33 @@ public class AddressAttribute extends DomainObjectWithStatus {
 	private AddressAttributeType addressAttributeType;
 	private String value;
 
-	/**
-	 * Constructs a new BuildingAttribute.
-	 */
 	public AddressAttribute() {
 	}
 
-	/**
-	 * Getter for property 'buildings'.
-	 *
-	 * @return Value for property 'buildings'.
-	 */
 	public BuildingAddress getBuildings() {
 		return this.buildingAddress;
 	}
 
-	/**
-	 * Setter for property 'buildings'.
-	 *
-	 * @param buildingAddress Value to set for property 'buildings'.
-	 */
 	public void setBuildings(BuildingAddress buildingAddress) {
 		this.buildingAddress = buildingAddress;
 	}
 
-	/**
-	 * Getter for property 'buildingAttributeType'.
-	 *
-	 * @return Value for property 'buildingAttributeType'.
-	 */
 	public AddressAttributeType getBuildingAttributeType() {
 		return this.addressAttributeType;
 	}
 
-	/**
-	 * Setter for property 'buildingAttributeType'.
-	 *
-	 * @param addressAttributeType Value to set for property 'buildingAttributeType'.
-	 */
 	public void setBuildingAttributeType(AddressAttributeType addressAttributeType) {
 		this.addressAttributeType = addressAttributeType;
 	}
 
-	/**
-	 * Getter for property 'value'.
-	 *
-	 * @return Value for property 'value'.
-	 */
 	public String getValue() {
 		return this.value;
 	}
 
-	/**
-	 * Setter for property 'value'.
-	 *
-	 * @param value Value to set for property 'value'.
-	 */
 	public void setValue(String value) {
 		this.value = value;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -104,9 +68,6 @@ public class AddressAttribute extends DomainObjectWithStatus {
 				.toHashCode();
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public String toString() {
 		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE)
@@ -129,4 +90,5 @@ public class AddressAttribute extends DomainObjectWithStatus {
 
 		return result.toString();
 	}
+
 }

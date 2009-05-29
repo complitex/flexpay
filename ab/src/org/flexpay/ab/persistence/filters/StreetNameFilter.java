@@ -29,4 +29,5 @@ public class StreetNameFilter extends PrimaryKeyFilter<Street> {
 	public void setShowSearchString(boolean showSearchString) {
 		this.showSearchString = showSearchString;
 	}
+
 }

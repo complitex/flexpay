@@ -44,16 +44,18 @@ public class BuildingAttributeTypeEnumValue extends DomainObject implements Comp
 		this.order = order;
 	}
 
+	public int compareTo(BuildingAttributeTypeEnumValue o) {
+		return order - o.order;
+	}
+
 	@Override
 	public String toString() {
 		return new ToStringBuilder(this).
+				append("id", getId()).
 				append("typeEnum", typeEnum).
 				append("value", value).
 				append("order", order).
 				toString();
 	}
 
-	public int compareTo(BuildingAttributeTypeEnumValue o) {
-		return order - o.order;
-	}
 }

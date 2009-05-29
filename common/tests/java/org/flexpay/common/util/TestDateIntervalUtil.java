@@ -181,9 +181,6 @@ class Price extends TemporaryValue<Price> {
 
 	int value = 0;
 
-	/**
-	 * Constructs a new Price.
-	 */
 	Price() {
 	}
 
@@ -200,20 +197,10 @@ class Price extends TemporaryValue<Price> {
 		return false;
 	}
 
-	/**
-	 * Getter for property 'value'.
-	 *
-	 * @return Value for property 'value'.
-	 */
 	public int getValue() {
 		return value;
 	}
 
-	/**
-	 * Setter for property 'value'.
-	 *
-	 * @param value Value to set for property 'value'.
-	 */
 	public void setValue(int value) {
 		this.value = value;
 	}
@@ -227,7 +214,7 @@ class Price extends TemporaryValue<Price> {
 		return new Price(0);
 	}
 
-	/** {@inheritDoc} */
+	@Override
 	public String toString() {
 		return String.valueOf(value);
 	}
@@ -249,6 +236,7 @@ class Price extends TemporaryValue<Price> {
 	public int hashCode() {
 		return value;
 	}
+
 }
 
 class DI extends DateInterval<Price, DI> {
@@ -280,4 +268,5 @@ class DI extends DateInterval<Price, DI> {
 	public DI copy() {
 		return new DI(getBegin(), getEnd(), getValue());
 	}
+
 }

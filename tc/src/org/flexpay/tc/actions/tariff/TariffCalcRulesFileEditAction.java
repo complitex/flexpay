@@ -122,7 +122,6 @@ public class TariffCalcRulesFileEditAction extends FPActionSupport {
 	}
 
 	@NotNull
-	@Override
 	protected String getErrorResult() {
 		return REDIRECT_SUCCESS;
 	}

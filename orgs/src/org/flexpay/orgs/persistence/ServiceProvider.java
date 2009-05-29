@@ -9,9 +9,6 @@ public class ServiceProvider extends OrganizationInstance<ServiceProviderDescrip
 
 	private DataSourceDescription dataSourceDescription;
 
-	/**
-	 * Constructs a new DomainObject.
-	 */
 	public ServiceProvider() {
 	}
 
@@ -19,20 +16,10 @@ public class ServiceProvider extends OrganizationInstance<ServiceProviderDescrip
 		super(id);
 	}
 
-	/**
-	 * Getter for property 'dataSourceDescription'.
-	 *
-	 * @return Value for property 'dataSourceDescription'.
-	 */
 	public DataSourceDescription getDataSourceDescription() {
 		return dataSourceDescription;
 	}
 
-	/**
-	 * Setter for property 'dataSourceDescription'.
-	 *
-	 * @param dataSourceDescription Value to set for property 'dataSourceDescription'.
-	 */
 	public void setDataSourceDescription(DataSourceDescription dataSourceDescription) {
 		this.dataSourceDescription = dataSourceDescription;
 	}
@@ -45,12 +32,10 @@ public class ServiceProvider extends OrganizationInstance<ServiceProviderDescrip
 	@Override
 	public String toString() {
 		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
-				append("ServiceProvider {").
 				append("id", getId()).
 				append("name", getName()).
-				append("organization", getOrganization()).
-				append("dataSourceDescription", dataSourceDescription).
-				append("}").toString();
+				append("status", getStatus()).
+				toString();
 	}
 
 }

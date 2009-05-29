@@ -36,10 +36,8 @@ public class FilterObject implements Serializable {
 	@Override
 	public String toString() {
 		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
-				append("FilterObject {").
 				append("value", value).
-				append("name", name).
-				append("}").toString();
+				append("name", name).toString();
 	}
 
 }

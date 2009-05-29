@@ -33,6 +33,7 @@ public class CorrectBuildingAction extends BuildingsListAction {
 	private ServiceProviderService serviceProviderService;
 
 	@NotNull
+	@Override
 	public String doExecute() throws Exception {
 
 		record = recordService.read(record.getId());

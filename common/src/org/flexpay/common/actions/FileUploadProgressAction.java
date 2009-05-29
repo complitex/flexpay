@@ -5,29 +5,33 @@ import com.opensymphony.xwork2.ActionSupport;
 import org.apache.struts2.interceptor.SessionAware;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 
-public class FileUploadProgressAction implements SessionAware {
+public class FileUploadProgressAction extends FPActionSupport {
 
-	private Logger log = LoggerFactory.getLogger(getClass());
-
-	private Map sessionMap;
 	private String rnd;
 	private String stringResult;
 
-	public String execute() {
-		Object mon_obj = sessionMap.get("com.davidjc.ajaxfileupload.multipart.ProgressMonitor");
+	public String doExecute() {
+		Object mon_obj = session.get("com.davidjc.ajaxfileupload.multipart.ProgressMonitor");
 		ProgressMonitor monitor = (ProgressMonitor) mon_obj;
 		String progressInfo = monitor == null ? "" : monitor.percentComplete();
 		log.debug("progressInfo = {}", progressInfo);
 		setStringResult(progressInfo);
 
-		return ActionSupport.SUCCESS;
+		return SUCCESS;
 	}
 
-	public void setSession(Map sessionMap) {
-		this.sessionMap = sessionMap;
+	@NotNull
+	protected String getErrorResult() {
+		return SUCCESS;
+	}
+
+	@Override
+	protected void setBreadCrumbs() {
+		
 	}
 
 	public void setRnd(String rnd) {

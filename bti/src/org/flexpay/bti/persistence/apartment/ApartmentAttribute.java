@@ -28,10 +28,9 @@ public class ApartmentAttribute extends ApartmentAttributeBase {
 	@Override
 	public String toString() {
 		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
-				append("ApartmentAttribute {").
 				append("id", getId()).
 				append("value", value).
-				append("}").toString();
+				toString();
 	}
 
 }

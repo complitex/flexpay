@@ -43,6 +43,7 @@ public class CorrectAddressAction extends ApartmentsListAction {
 	private ServiceProviderService serviceProviderService;
 
 	@NotNull
+	@Override
 	public String doExecute() throws Exception {
 
 		record = recordService.read(record.getId());

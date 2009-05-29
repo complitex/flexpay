@@ -81,14 +81,13 @@ public class TariffCalculationRulesFile extends DomainObjectWithStatus {
 	@Override
 	public String toString() {
 		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
-				append("TariffCalculationRulesFile {").
 				append("id", getId()).
 				append("status", getStatus()).
 				append("creationDate", creationDate).
 				append("userName", userName).
 				append("type", type).
 				append("file", file).
-				append("}").toString();
+				toString();
 	}
 
 }
