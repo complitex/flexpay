@@ -83,7 +83,6 @@ public abstract class SimpleEditAction<
 
 		if (isSubmit()) {
 			object = nameTimeDependentService.updateNameTranslations(object, temporalId, nameTranslations, date);
-			session.put(ObjectViewAction.ATTRIBUTE_OBJECT, object);
 
 			return SUCCESS;
 		}

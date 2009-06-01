@@ -13,7 +13,7 @@
 		<tr>
 			<td class="th" width="1%">&nbsp;</td>
 			<td class="th" width="1%">
-                <input type="checkbox" onchange="FP.setCheckboxes(this.checked, 'objectIds');">
+                <input type="checkbox" onchange="FP.setCheckboxes(this.checked, 'objectIds');" />
 			</td>
 			<td class="th" width="20%"><s:text name="ab.person.last_name"/></td>
 			<td class="th" width="20%"><s:text name="ab.person.first_name"/></td>
@@ -22,15 +22,16 @@
 			<td class="th" width="18%">&nbsp;</td>
 		</tr>
 		<s:iterator value="%{persons}" status="status">
+			<s:set name="person" value="%{getPerson(id)}" />
 			<tr valign="middle" class="cols_1">
 				<td class="col_1s" align="right"><s:property
 						value="%{#status.index + pager.thisPageFirstElementNumber + 1}"/>&nbsp;</td>
 				<td class="col"><input type="checkbox" name="objectIds" value="<s:property value="%{id}"/>"/></td>
-				<td class="col"><s:property value="%{defaultIdentity.lastName}"/></td>
-				<td class="col"><s:property value="%{defaultIdentity.firstName}"/></td>
-				<td class="col"><s:property value="%{defaultIdentity.middleName}"/></td>
+				<td class="col"><s:property value="%{#person.defaultIdentity.lastName}"/></td>
+				<td class="col"><s:property value="%{#person.defaultIdentity.firstName}"/></td>
+				<td class="col"><s:property value="%{#person.defaultIdentity.middleName}"/></td>
 				<td class="col"><s:property
-						value="%{format(defaultIdentity.birthDate)}"/></td>
+						value="%{format(#person.defaultIdentity.birthDate)}"/></td>
 				<td class="col">
 					<a href="<s:url action="personView"><s:param name="person.id" value="%{id}"/></s:url>">
 						<s:text name="common.view"/></a></td>

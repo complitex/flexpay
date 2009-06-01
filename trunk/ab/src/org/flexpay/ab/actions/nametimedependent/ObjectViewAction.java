@@ -1,6 +1,5 @@
 package org.flexpay.ab.actions.nametimedependent;
 
-import com.opensymphony.xwork2.Preparable;
 import org.apache.commons.collections.ArrayStack;
 import org.flexpay.common.persistence.NameDateInterval;
 import org.flexpay.common.persistence.NameTimeDependentChild;
@@ -13,39 +12,25 @@ public abstract class ObjectViewAction<
 		TV extends TemporaryValue<TV>,
 		DI extends NameDateInterval<TV, DI>,
 		NTD extends NameTimeDependentChild<TV, DI>,
-		T extends Translation> extends ActionBase<TV, DI, NTD, T> implements Preparable {
+		T extends Translation> extends ActionBase<TV, DI, NTD, T> {
 
-	public static final String ATTRIBUTE_OBJECT = ObjectViewAction.class.getName() + ".OBJECT";
-
-	private NTD object;
-
-	/**
-	 * This method is called to allow the action to prepare itself.
-	 *
-	 * @throws Exception thrown if a system level exception occurs.
-	 */
-	@SuppressWarnings ({"unchecked"})
-	public void prepare() throws Exception {
-		log.info("Object: {}", object);
-		if (object.getId() == null) {
-			NTD reg = (NTD) session.remove(ATTRIBUTE_OBJECT);
-			if (reg != null) {
-				object = reg;
-			}
-		}
-	}
+	protected NTD object;
 
 	@NotNull
 	public String doExecute() {
 
 		log.info("Object: {}", object);
-		if (object.getId() != null) {
-			object = nameTimeDependentService.readFull(stub(object));
-			return SUCCESS;
-		} else {
+		if (object.isNew()) {
 			addActionError(getText("error.no_id"));
 			return REDIRECT_ERROR;
 		}
+
+		object = nameTimeDependentService.readFull(stub(object));
+		if (object == null) {
+			addActionError(getText("error.invalid_id"));
+			return REDIRECT_ERROR;
+		}
+		return SUCCESS;
 	}
 
 	/**

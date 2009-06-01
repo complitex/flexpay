@@ -1,17 +1,20 @@
 package org.flexpay.ab.persistence;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.time.DateUtils;
 import org.flexpay.ab.util.config.ApplicationConfig;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.DomainObjectWithStatus;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.util.CollectionUtils;
+import org.flexpay.common.util.DateIntervalUtil;
 import org.flexpay.common.util.DateUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Person
@@ -205,7 +208,12 @@ public class Person extends DomainObjectWithStatus {
 		setPersonRegistration(apartment, null, null);
 	}
 
-	public void setPersonRegistration(Apartment apartment, Date beginDate, Date endDate) {
+	public void setPersonRegistration(Apartment apartment, Date beginDate) {
+		setPersonRegistration(apartment, beginDate, ApplicationConfig.getFutureInfinite());
+	}
+
+	public void setPersonRegistration(@Nullable Apartment apartment, @Nullable Date beginDate, @Nullable Date endDate) {
+
 		if (beginDate == null || beginDate.before(ApplicationConfig.getPastInfinite())) {
 			beginDate = ApplicationConfig.getPastInfinite();
 		}
@@ -213,50 +221,48 @@ public class Person extends DomainObjectWithStatus {
 			endDate = ApplicationConfig.getFutureInfinite();
 		}
 
-		beginDate = DateUtils.truncate(beginDate, Calendar.DAY_OF_MONTH);
-		endDate = DateUtils.truncate(endDate, Calendar.DAY_OF_MONTH);
-
-		//todo move it to registration action instead
-//		Date[] dateInterval = getBeginValidInterval();
-//		if (beginDate.before(dateInterval[0]) || beginDate.after(dateInterval[1])) {
-//			throw new FlexPayException("beginDate valid interval error",
-//					"ab.person.registration.error.begin_date_interval_error", dateInterval[0], dateInterval[1]);
-//		}
+		beginDate = DateUtil.truncateDay(beginDate);
+		endDate = DateUtil.truncateDay(endDate);
 
 		for (PersonRegistration reg : personRegistrations) {
-			if (reg.getEndDate().after(beginDate)) {
-				reg.setEndDate(beginDate);
+			// if registration intervals are intersecting update old intervals bound
+			// possibly adds one new interval if new interval is inside the old
+			Date beg = reg.getBeginDate();
+			Date end = reg.getEndDate();
+			if (DateIntervalUtil.areIntersecting(beg, end, beginDate, endDate)) {
+				boolean firstAdded = false;
+				if (beg.before(beginDate)) {
+					reg.setEndDate(DateUtil.previous(beginDate));
+					firstAdded = true;
+				}
+				if (end.after(endDate)) {
+					reg = firstAdded ? reg.copy() : reg;
+					reg.setBeginDate(DateUtil.next(endDate));
+				}
+				if (firstAdded) {
+					addRegistration(reg);
+				}
 			}
 		}
 
-		if (Collections.emptySet().equals(personRegistrations)) {
+		if (apartment != null) {
+			PersonRegistration reg = new PersonRegistration();
+			reg.setApartment(apartment);
+			reg.setPerson(this);
+			reg.setBeginDate(beginDate);
+			reg.setEndDate(endDate);
+			addRegistration(reg);
+		}
+	}
+
+	private void addRegistration(PersonRegistration registration) {
+
+		//noinspection CollectionsFieldAccessReplaceableByMethodCall
+		if (personRegistrations == Collections.EMPTY_SET) {
 			personRegistrations = CollectionUtils.set();
 		}
 
-		PersonRegistration reg = new PersonRegistration();
-		reg.setApartment(apartment);
-		reg.setPerson(this);
-		reg.setBeginDate(beginDate);
-		reg.setEndDate(endDate);
-		personRegistrations.add(reg);
-	}
-
-	private Date[] getBeginValidInterval() {
-		Calendar cal = Calendar.getInstance();
-		cal.setTime(DateUtil.now());
-		cal.add(Calendar.MONTH, -3);
-		Date date1 = cal.getTime();
-
-		cal.add(Calendar.MONTH, 4);
-		Date date2 = cal.getTime();
-
-		for (PersonRegistration reg : personRegistrations) {
-			if (reg.getBeginDate().after(date1)) {
-				date1 = reg.getBeginDate();
-			}
-		}
-
-		return new Date[]{date1, date2};
+		personRegistrations.add(registration);
 	}
 
 	/**

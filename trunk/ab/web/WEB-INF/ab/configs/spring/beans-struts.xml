@@ -151,6 +151,7 @@
 	<bean id="streetViewAction"
 		  class="org.flexpay.ab.actions.street.StreetViewAction"
 		  p:nameTimeDependentService-ref="streetService"
+		  p:streetService-ref="streetService"
           p:crumbNameKey="ab.crumbs.street_view"
           scope="prototype" />
 

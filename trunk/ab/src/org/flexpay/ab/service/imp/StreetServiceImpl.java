@@ -459,6 +459,17 @@ public class StreetServiceImpl extends NameTimeDependentServiceImpl<
 		return street;
 	}
 
+	/**
+	 * List all districts the street lays in
+	 *
+	 * @param stub Street stub
+	 * @return List of districts
+	 */
+	@NotNull
+	public List<District> getStreetDistricts(@NotNull Stub<Street> stub) {
+		return streetDao.findDistricts(stub.getId());
+	}
+
 	@Required
 	public void setStreetDao(StreetDao streetDao) {
 		this.streetDao = streetDao;

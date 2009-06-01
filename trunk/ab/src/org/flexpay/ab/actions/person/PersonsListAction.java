@@ -6,6 +6,7 @@ import org.flexpay.ab.persistence.filters.PersonSearchFilter;
 import org.flexpay.ab.service.PersonService;
 import org.flexpay.common.actions.FPActionWithPagerSupport;
 import org.flexpay.common.service.ParentService;
+import org.flexpay.common.persistence.Stub;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
@@ -62,6 +63,10 @@ public class PersonsListAction extends FPActionWithPagerSupport<Person> {
 
 	public void setPersonSearchFilter(PersonSearchFilter personSearchFilter) {
 		this.personSearchFilter = personSearchFilter;
+	}
+
+	public Person getPerson(Long id) {
+		return personService.read(new Stub<Person>(id));
 	}
 
 	public void setParentService(ParentService<?> parentService) {

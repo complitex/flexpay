@@ -50,10 +50,12 @@ public class ApplicationConfig {
 	private String defaultCurrencyCode;
 	private String testProp;
 
+	@NotNull
 	public static Date getPastInfinite() {
 		return DATE_PAST_INFINITE;
 	}
 
+	@NotNull
 	public static Date getFutureInfinite() {
 		return DATE_FUTURE_INFINITE;
 	}

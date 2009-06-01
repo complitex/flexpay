@@ -99,7 +99,7 @@
 		<td class="th"><s:text name="ab.district"/></td>
 		<td class="th">&nbsp;</td>
 	</tr>
-	<s:iterator value="%{object.districts}" status="status">
+	<s:iterator value="%{districts}" status="status">
 		<tr valign="middle" class="cols_1">
 			<td class="col_1s" align="right"><s:property
 					value="%{#status.index + 1}"/>&nbsp;</td>

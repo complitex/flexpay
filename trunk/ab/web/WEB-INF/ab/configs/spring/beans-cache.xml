@@ -90,6 +90,7 @@
 		<property name="cachingModels">
 			<props>
 				<prop key="readFull">cacheName=commonFlexpayCache</prop>
+				<prop key="readFull">cacheName=commonFlexpayCache</prop>
 			</props>
 		</property>
 		<property name="flushingModels">
