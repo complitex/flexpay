@@ -117,7 +117,7 @@ public class PersonServiceImpl implements PersonService {
 		return personDaoExt.findPersonStub(person);
 	}
 
-	public List<Person> findByFIO(Page pager, String searchString) {
+	public List<Person> findByFIO(Page<Person> pager, String searchString) {
 		return personDao.findByFIO(pager, searchString);
 	}
 

@@ -75,7 +75,7 @@ public interface PersonService {
 	List<Person> findRegisteredPersons(@NotNull Stub<Apartment> stub);
 
 	@Secured (Roles.PERSON_READ)
-	List<Person> findByFIO(Page pager, String searchString);
+	List<Person> findByFIO(Page<Person> pager, String searchString);
 
 	/**
 	 * Create person

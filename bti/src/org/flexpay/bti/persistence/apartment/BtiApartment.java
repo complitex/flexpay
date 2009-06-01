@@ -7,8 +7,6 @@ import org.flexpay.common.util.DateUtil;
 import org.flexpay.common.util.config.ApplicationConfig;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.apache.commons.lang.builder.ToStringBuilder;
-import org.apache.commons.lang.builder.ToStringStyle;
 
 import java.util.Collections;
 import java.util.Date;
@@ -38,16 +36,16 @@ public class BtiApartment extends Apartment {
 	}
 
 	@Nullable
-    public ApartmentAttributeBase getAttribute(ApartmentAttributeType attributeType) {
+	public ApartmentAttributeBase getAttribute(ApartmentAttributeType attributeType) {
 
-        for (ApartmentAttributeBase attribute : attributes) {
-            if (attribute.getAttributeType().equals(attributeType)) {
-                return attribute;
-            }
-        }
+		for (ApartmentAttributeBase attribute : attributes) {
+			if (attribute.getAttributeType().equals(attributeType)) {
+				return attribute;
+			}
+		}
 
-        return null;
-    }
+		return null;
+	}
 
 	public void setAttributes(Set<ApartmentAttributeBase> attributes) {
 		this.attributes = attributes;
@@ -102,39 +100,30 @@ public class BtiApartment extends Apartment {
 		attributes.add(attribute);
 	}
 
-    public void removeAttribute(ApartmentAttributeType type) {
-        if (attributes.isEmpty()) {
+	public void removeAttribute(ApartmentAttributeType type) {
+		if (attributes.isEmpty()) {
 			return;
 		}
 
-        ApartmentAttributeBase theAttribute = null;
-        for (ApartmentAttributeBase attribute : attributes) {
-            ApartmentAttributeType attributeType = attribute.getAttributeType();
+		ApartmentAttributeBase theAttribute = null;
+		for (ApartmentAttributeBase attribute : attributes) {
+			ApartmentAttributeType attributeType = attribute.getAttributeType();
 
-            if (attributeType != null && attributeType.equals(type)) {
-                theAttribute = attribute;
-            }
-        }
-
-        if (theAttribute != null) {
-            attributes.remove(theAttribute);
-        }
-    }
-
-    public void removeAttribute(ApartmentAttributeBase attribute) {
-        if (attributes.isEmpty()) {
-			return;
+			if (attributeType != null && attributeType.equals(type)) {
+				theAttribute = attribute;
+			}
 		}
 
-        attributes.remove(attribute);
-    }
-
-	@Override
-	public String toString() {
-		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
-				append("id", getId()).
-				append("status", getStatus()).
-				toString();
+		if (theAttribute != null) {
+			attributes.remove(theAttribute);
+		}
 	}
 
+	public void removeAttribute(ApartmentAttributeBase attribute) {
+		if (attributes.isEmpty()) {
+			return;
+		}
+
+		attributes.remove(attribute);
+	}
 }

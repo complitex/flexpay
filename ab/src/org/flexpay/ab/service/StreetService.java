@@ -236,4 +236,14 @@ public interface StreetService extends
 	 */
 	@Secured (Roles.STREET_READ)
 	ArrayStack initFilters(ArrayStack filters, Locale locale) throws FlexPayException;
+
+	/**
+	 * List all districts the street lays in
+	 *
+	 * @param stub Street stub
+	 * @return List of districts
+	 */
+	@NotNull
+	@Secured (Roles.DISTRICT_READ)
+	List<District> getStreetDistricts(@NotNull Stub<Street> stub);
 }

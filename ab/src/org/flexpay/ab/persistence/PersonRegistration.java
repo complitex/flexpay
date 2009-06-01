@@ -76,4 +76,13 @@ public class PersonRegistration extends DomainObject implements Comparable<Perso
 	public int compareTo(PersonRegistration o) {
 		return beginDate.compareTo(o.beginDate);
 	}
+
+	public PersonRegistration copy() {
+		PersonRegistration result = new PersonRegistration();
+		result.setPerson(person);
+		result.setApartment(apartment);
+		result.setBeginDate(beginDate);
+		result.setEndDate(endDate);
+		return result;
+	}
 }
