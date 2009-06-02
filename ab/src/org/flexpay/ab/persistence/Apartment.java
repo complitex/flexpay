@@ -87,40 +87,7 @@ public class Apartment extends DomainObjectWithStatus {
 
 	public void setNumber(@Nullable String number) {
 
-		if (number == null && getNumber() == null) {
-			return;
-		}
-		if (number != null && number.equals(getNumber())) {
-			return;
-		}
-
-		// Check if apartment numbers is not empty (Collections.EMPTY_SET)
-		if (Collections.emptySet().equals(apartmentNumbers)) {
-			apartmentNumbers = set();
-		}
-
-		Date nowDate = DateUtil.now();
-		// set up previous numbers to end at the record's operation date
-		for (ApartmentNumber apartmentNumber : getApartmentNumbers()) {
-			if (apartmentNumber.getEnd().after(nowDate)) {
-				apartmentNumber.setEnd(nowDate);
-			}
-		}
-
-		number = StringUtils.trimToNull(number);
-		if (number == null) {
-			return;
-		}
-
-		// Create a new apartment number and setup its properties
-		ApartmentNumber apartmentNumber = new ApartmentNumber();
-		apartmentNumber.setBegin(nowDate);
-		apartmentNumber.setEnd(ApplicationConfig.getFutureInfinite());
-		apartmentNumber.setValue(number);
-		apartmentNumber.setApartment(this);
-
-		// Add number to apartment numbers set
-		apartmentNumbers.add(apartmentNumber);
+		setNumberForDate(number, DateUtil.now());
 	}
 
 
@@ -259,11 +226,20 @@ public class Apartment extends DomainObjectWithStatus {
 		return stub(building);
 	}
 
-	public void setNumberForDate(Date begin, String value) {
-		setNumberForDates(begin, ApplicationConfig.getFutureInfinite(), value);
+	public void setNumberForDate(String value, Date begin) {
+		setNumberForDates(value, begin, ApplicationConfig.getFutureInfinite());
 	}
 
-	public void setNumberForDates(Date begin, Date end, String value) {
+	public void setNumberForDates(String value, Date begin, Date end) {
+
+		if (begin == null || begin.before(ApplicationConfig.getPastInfinite())) {
+			begin = ApplicationConfig.getPastInfinite();
+		}
+		begin = DateUtil.truncateDay(begin);
+		if (end == null || end.after(ApplicationConfig.getFutureInfinite())) {
+			end = ApplicationConfig.getFutureInfinite();
+		}
+		end = DateUtil.truncateDay(end);
 
 		SortedSet<ApartmentNumber> numbers = treeSet(getApartmentNumbers());
 		List<ApartmentNumber> intersectingNumbers = list();

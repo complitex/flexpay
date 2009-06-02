@@ -11,10 +11,7 @@ import org.flexpay.common.util.DateUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Person
@@ -130,13 +127,10 @@ public class Person extends DomainObjectWithStatus {
 	}
 
 	public void setIdentity(PersonIdentity personIdentity) {
-		if (Collections.emptySet().equals(personIdentities)) {
-			personIdentities = CollectionUtils.set();
-		}
 
 		PersonIdentity candidate = null;
 		for (PersonIdentity identity : personIdentities) {
-			if (identity.equals(personIdentity)) {
+			if (identity.equals(personIdentity) || identity.sameNumber(personIdentity)) {
 				candidate = identity;
 				break;
 			}
@@ -155,8 +149,7 @@ public class Person extends DomainObjectWithStatus {
 			return;
 		}
 
-		personIdentity.setPerson(this);
-		personIdentities.add(personIdentity);
+		addIdentity(personIdentity);
 	}
 
 	public void addIdentity(PersonIdentity identity) {
@@ -224,6 +217,7 @@ public class Person extends DomainObjectWithStatus {
 		beginDate = DateUtil.truncateDay(beginDate);
 		endDate = DateUtil.truncateDay(endDate);
 
+		List<PersonRegistration> newRegistrations = CollectionUtils.list();
 		for (PersonRegistration reg : personRegistrations) {
 			// if registration intervals are intersecting update old intervals bound
 			// possibly adds one new interval if new interval is inside the old
@@ -238,12 +232,13 @@ public class Person extends DomainObjectWithStatus {
 				if (end.after(endDate)) {
 					reg = firstAdded ? reg.copy() : reg;
 					reg.setBeginDate(DateUtil.next(endDate));
-				}
-				if (firstAdded) {
-					addRegistration(reg);
+					if (firstAdded) {
+						newRegistrations.add(reg);
+					}
 				}
 			}
 		}
+		addRegistrations(newRegistrations);
 
 		if (apartment != null) {
 			PersonRegistration reg = new PersonRegistration();
@@ -263,6 +258,16 @@ public class Person extends DomainObjectWithStatus {
 		}
 
 		personRegistrations.add(registration);
+	}
+
+	private void addRegistrations(Collection<PersonRegistration> registrations) {
+
+		//noinspection CollectionsFieldAccessReplaceableByMethodCall
+		if (personRegistrations == Collections.EMPTY_SET) {
+			personRegistrations = CollectionUtils.set();
+		}
+
+		personRegistrations.addAll(registrations);
 	}
 
 	/**
@@ -321,6 +326,9 @@ public class Person extends DomainObjectWithStatus {
 	public PersonIdentity getFIOIdentity(Date date) {
 		for (PersonIdentity candidate : personIdentities) {
 			IdentityType type = candidate.getIdentityType();
+			if (type == null) {
+				throw new NullPointerException("Person identity type is null: " + candidate);
+			}
 			if (type.isFIO() && isValidForDate(candidate, date)) {
 				return candidate;
 			}
@@ -330,7 +338,7 @@ public class Person extends DomainObjectWithStatus {
 	}
 
 	private boolean isValidForDate(PersonIdentity id, Date dt) {
-		return id.getBeginDate().compareTo(dt) <= 0 && dt.compareTo(id.getEndDate()) <= 0;
+		return DateIntervalUtil.includes(dt, id.getBeginDate(), id.getEndDate());
 	}
 
 	/**

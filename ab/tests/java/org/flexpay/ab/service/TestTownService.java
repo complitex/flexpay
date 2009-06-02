@@ -7,10 +7,8 @@ import org.flexpay.common.exception.FlexPayExceptionContainer;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.util.DateUtil;
 import static org.junit.Assert.assertEquals;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -18,7 +16,6 @@ import java.util.GregorianCalendar;
 public class TestTownService extends AbSpringBeanAwareTestCase {
 
 	@Autowired
-	@Qualifier ("townService")
 	private TownService townService;
 
 	private Date dt_08_08_08 = new GregorianCalendar(2008, 7, 8).getTime();

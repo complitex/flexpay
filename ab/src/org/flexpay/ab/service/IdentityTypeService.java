@@ -2,15 +2,14 @@ package org.flexpay.ab.service;
 
 import org.flexpay.ab.persistence.IdentityType;
 import org.flexpay.ab.persistence.IdentityTypeTranslation;
-import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Stub;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.security.annotation.Secured;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Locale;
 
 public interface IdentityTypeService extends
 		MultilangEntityService<IdentityType, IdentityTypeTranslation> {
@@ -22,6 +21,7 @@ public interface IdentityTypeService extends
 	 * @return IdentityType if found, or <code>null</code> otherwise
 	 */
 	@Secured (Roles.IDENTITY_TYPE_READ)
+	@Nullable
 	IdentityType getType(int typeId);
 
 	/**
@@ -31,6 +31,7 @@ public interface IdentityTypeService extends
 	 * @return IdentityType if found, or <code>null</code> otherwise
 	 */
 	@Secured (Roles.IDENTITY_TYPE_READ)
+	@Nullable
 	IdentityType getType(String typeName);
 
 	/**

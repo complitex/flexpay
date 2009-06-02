@@ -52,6 +52,7 @@ public class HistoryRecord extends DomainObject {
 		super(stub.getId());
 	}
 
+	@Nullable
 	public Boolean getOldBoolValue() {
 		return oldBoolValue;
 	}
@@ -60,6 +61,7 @@ public class HistoryRecord extends DomainObject {
 		this.oldBoolValue = oldBoolValue;
 	}
 
+	@Nullable
 	public Boolean getNewBoolValue() {
 		return newBoolValue;
 	}
@@ -68,6 +70,7 @@ public class HistoryRecord extends DomainObject {
 		this.newBoolValue = newBoolValue;
 	}
 
+	@Nullable
 	public Integer getOldIntValue() {
 		return oldIntValue;
 	}
@@ -76,6 +79,7 @@ public class HistoryRecord extends DomainObject {
 		this.oldIntValue = oldIntValue;
 	}
 
+	@Nullable
 	public Integer getNewIntValue() {
 		return newIntValue;
 	}
@@ -84,6 +88,7 @@ public class HistoryRecord extends DomainObject {
 		this.newIntValue = newIntValue;
 	}
 
+	@Nullable
 	public Long getOldLongValue() {
 		return oldLongValue;
 	}
@@ -92,6 +97,7 @@ public class HistoryRecord extends DomainObject {
 		this.oldLongValue = oldLongValue;
 	}
 
+	@Nullable
 	public Long getNewLongValue() {
 		return newLongValue;
 	}
@@ -100,6 +106,7 @@ public class HistoryRecord extends DomainObject {
 		this.newLongValue = newLongValue;
 	}
 
+	@Nullable
 	public String getOldStringValue() {
 		return oldStringValue;
 	}
@@ -108,6 +115,7 @@ public class HistoryRecord extends DomainObject {
 		this.oldStringValue = oldStringValue;
 	}
 
+	@Nullable
 	public String getNewStringValue() {
 		return newStringValue;
 	}
@@ -116,6 +124,7 @@ public class HistoryRecord extends DomainObject {
 		this.newStringValue = newStringValue;
 	}
 
+	@Nullable
 	public Date getOldDateValue() {
 		return oldDateValue;
 	}
@@ -124,6 +133,7 @@ public class HistoryRecord extends DomainObject {
 		this.oldDateValue = oldDateValue;
 	}
 
+	@Nullable
 	public Date getNewDateValue() {
 		return newDateValue;
 	}
@@ -132,6 +142,7 @@ public class HistoryRecord extends DomainObject {
 		this.newDateValue = newDateValue;
 	}
 
+	@Nullable
 	public Double getOldDoubleValue() {
 		return oldDoubleValue;
 	}
@@ -140,6 +151,7 @@ public class HistoryRecord extends DomainObject {
 		this.oldDoubleValue = oldDoubleValue;
 	}
 
+	@Nullable
 	public Double getNewDoubleValue() {
 		return newDoubleValue;
 	}
@@ -164,6 +176,7 @@ public class HistoryRecord extends DomainObject {
 		this.operationOrder = operationOrder;
 	}
 
+	@Nullable
 	public String getLanguage() {
 		return language;
 	}
@@ -183,6 +196,7 @@ public class HistoryRecord extends DomainObject {
 		this.language = language;
 	}
 
+	@Nullable
 	public Date getBeginDate() {
 		return beginDate;
 	}
@@ -191,6 +205,7 @@ public class HistoryRecord extends DomainObject {
 		this.beginDate = beginDate;
 	}
 
+	@Nullable
 	public Date getEndDate() {
 		return endDate;
 	}
@@ -199,6 +214,7 @@ public class HistoryRecord extends DomainObject {
 		this.endDate = endDate;
 	}
 
+	@Nullable
 	public String getFieldKey() {
 		return fieldKey;
 	}
@@ -207,6 +223,7 @@ public class HistoryRecord extends DomainObject {
 		this.fieldKey = fieldKey;
 	}
 
+	@Nullable
 	public String getFieldKey2() {
 		return fieldKey2;
 	}
@@ -215,6 +232,7 @@ public class HistoryRecord extends DomainObject {
 		this.fieldKey2 = fieldKey2;
 	}
 
+	@Nullable
 	public String getFieldKey3() {
 		return fieldKey3;
 	}

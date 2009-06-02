@@ -151,6 +151,7 @@
 		  p:consumerService-ref="historyConsumerService"
 		  p:fileService-ref="fpFileService"
 		  p:recordsFilter-ref="historyRecordsFiltersChain"
+		  p:lockManager-ref="lockManager"
 		  class="org.flexpay.common.persistence.history.impl.HistoryPackerBase" />
 
 	<bean id="xmlHistoryPacker" parent="historyPackerBase"

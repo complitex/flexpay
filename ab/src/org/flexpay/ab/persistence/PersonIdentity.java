@@ -1,5 +1,6 @@
 package org.flexpay.ab.persistence;
 
+import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
@@ -10,6 +11,7 @@ import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.util.DateUtil;
 import org.flexpay.common.util.config.ApplicationConfig;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Calendar;
 import java.util.Collections;
@@ -305,8 +307,8 @@ public class PersonIdentity extends DomainObjectWithStatus implements Comparable
 				.append("firstName", firstName)
 				.append("middleName", middleName)
 				.append("lastName", lastName)
-				.append("begin", beginDate)
-				.append("end", endDate)
+				.append("begin", beginDate != null ? DateUtil.format(beginDate) : null)
+				.append("end", endDate != null ? DateUtil.format(endDate) : null)
 				.append("birthday", birthDate)
 				.append("organization", organization)
 				.append("serialNumber", serialNumber)
@@ -337,5 +339,11 @@ public class PersonIdentity extends DomainObjectWithStatus implements Comparable
 
 	public int compareTo(PersonIdentity o) {
 		return beginDate.compareTo(o.beginDate);
+	}
+
+	public boolean sameNumber(@NotNull PersonIdentity o) {
+		return ObjectUtils.equals(identityType, o.identityType) &&
+			   StringUtils.equals(serialNumber, o.serialNumber) &&
+			   StringUtils.equals(documentNumber, o.documentNumber);
 	}
 }

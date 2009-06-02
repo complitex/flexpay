@@ -18,7 +18,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.util.Collections;
@@ -160,7 +159,7 @@ public class ApartmentHistoryBuilder extends HistoryBuilderBase<Apartment> {
 	private void patchAddress(@NotNull Apartment apartment, @NotNull HistoryRecord record) {
 
 		log.debug("Patching number {}", record);
-		apartment.setNumberForDates(record.getBeginDate(), record.getEndDate(), record.getNewStringValue());
+		apartment.setNumberForDates(record.getNewStringValue(), record.getBeginDate(), record.getEndDate());
 		record.setProcessingStatus(ProcessingStatus.STATUS_PROCESSED);
 	}
 

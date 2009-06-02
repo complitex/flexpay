@@ -127,6 +127,7 @@ public class PersonHistoryBuilder extends HistoryBuilderBase<Person> {
 			List<PersonIdentity> identsList2 = idents2.get(type);
 			identsList2 = identsList2 != null ? identsList2 : Collections.<PersonIdentity>emptyList();
 
+			log.debug("Type diff: {}", type);
 			buildTypeDiff(identsList1, identsList2, diff);
 		}
 	}
@@ -277,8 +278,12 @@ public class PersonHistoryBuilder extends HistoryBuilderBase<Person> {
 
 		HistoryRecord rec = new HistoryRecord();
 		rec.setFieldType(FIELD_IDENTITY);
-		rec.setFieldKey2(n1 == null || n1.getId() == null ? null : String.valueOf(n1.getId()));
-		rec.setFieldKey3(n2 == null || n2.getId() == null ? null : String.valueOf(n2.getId()));
+		IdentityType type = n1 != null ? n1.getIdentityType() :
+							n2 != null ? n2.getIdentityType() : null;
+		String key2 = (n1 == null || n1.getId() == null ? null : String.valueOf(n1.getId())) + "|" +
+					(n2 == null || n2.getId() == null ? null : String.valueOf(n2.getId()));
+		rec.setFieldKey2(key2);
+		rec.setFieldKey3(type != null ? masterIndexService.getMasterIndex(type) : null);
 		rec.setBeginDate(begin);
 		rec.setEndDate(end);
 		return rec;
@@ -333,6 +338,7 @@ public class PersonHistoryBuilder extends HistoryBuilderBase<Person> {
 		}
 
 		if (context.lastIdentity != null) {
+			updateIdentityType(context);
 			person.setIdentity(context.lastIdentity);
 		}
 	}
@@ -343,10 +349,7 @@ public class PersonHistoryBuilder extends HistoryBuilderBase<Person> {
 			String externalId = record.getNewStringValue();
 			Stub<Apartment> stub = correctionsService.findCorrection(
 					externalId, Apartment.class, masterIndexService.getMasterSourceDescription());
-			if (stub == null) {
-				throw new IllegalStateException("Cannot find apartment by master index: " + externalId);
-			}
-			Apartment apartment = apartmentService.readFull(stub);
+			Apartment apartment = stub == null ? null : apartmentService.readFull(stub);
 			person.setPersonRegistration(apartment, record.getBeginDate(), record.getEndDate());
 			record.setProcessingStatus(ProcessingStatus.STATUS_PROCESSED);
 			log.debug("Set person registration");
@@ -355,14 +358,33 @@ public class PersonHistoryBuilder extends HistoryBuilderBase<Person> {
 
 	private static class IdentityPatchContext {
 		PersonIdentity lastIdentity;
-		String oldTypeId;
-		String newTypeId;
+		String prevIdentityId;
+		String prevTypeMasterIndex;
+	}
+
+	/**
+	 * Unless identity type is not a implicit set it via fieldKey3 property each Identity diff record has
+	 *
+	 * @param context Identity patch context
+	 */
+	private void updateIdentityType(IdentityPatchContext context) {
+		PersonIdentity identity = context.lastIdentity;
+		if (identity != null && identity.getIdentityType() == null && context.prevTypeMasterIndex != null) {
+			Stub<IdentityType> stub = correctionsService.findCorrection(
+					context.prevTypeMasterIndex, IdentityType.class, masterIndexService.getMasterSourceDescription());
+			if (stub == null) {
+				throw new IllegalStateException("Cannot find identity type by master index: " + context.prevTypeMasterIndex);
+			}
+			IdentityType type = identityTypeService.read(stub);
+			context.lastIdentity.setIdentityType(type);
+		}
 	}
 
 	private void patchIdentity(IdentityPatchContext context, Person person, HistoryRecord record) {
 
-		if (!equals(record.getFieldKey2(), context.oldTypeId) || !equals(record.getFieldKey3(), context.newTypeId)) {
+		if (!equals(record.getFieldKey2(), context.prevIdentityId)) {
 			if (context.lastIdentity != null) {
+				updateIdentityType(context);
 				person.setIdentity(context.lastIdentity);
 			}
 
@@ -379,8 +401,8 @@ public class PersonHistoryBuilder extends HistoryBuilderBase<Person> {
 
 			context.lastIdentity.setBeginDate(record.getBeginDate());
 			context.lastIdentity.setEndDate(record.getEndDate());
-			context.oldTypeId = record.getFieldKey2();
-			context.newTypeId = record.getFieldKey3();
+			context.prevIdentityId = record.getFieldKey2();
+			context.prevTypeMasterIndex = record.getFieldKey3();
 		}
 
 		if (KEY_IDENTITY_ID.equals(record.getFieldKey())) {

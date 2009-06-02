@@ -1,22 +1,21 @@
 package org.flexpay.ab.service.history;
 
 import org.flexpay.ab.persistence.*;
+import org.flexpay.ab.util.config.ApplicationConfig;
 import org.flexpay.common.persistence.Language;
 import org.flexpay.common.persistence.Pair;
 import org.flexpay.common.persistence.Stub;
-import org.flexpay.common.persistence.history.Diff;
-import org.flexpay.common.persistence.history.HistoryOperationType;
-import org.flexpay.common.persistence.history.HistoryRecord;
-import org.flexpay.common.persistence.history.ProcessingStatus;
+import org.flexpay.common.persistence.history.*;
+import static org.flexpay.common.persistence.history.TemporalObjectsHistoryBuildHelper.TemporalDataExtractor;
 import org.flexpay.common.persistence.history.impl.HistoryBuilderBase;
 import org.flexpay.common.util.DateIntervalUtil;
-import org.flexpay.ab.util.config.ApplicationConfig;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
+import java.util.Date;
 
 public class TownHistoryBuilder extends HistoryBuilderBase<Town> {
 
@@ -50,6 +49,8 @@ public class TownHistoryBuilder extends HistoryBuilderBase<Town> {
 	}
 
 	private void buildNameDiff(@NotNull Town t1, @NotNull Town t2, @NotNull Diff diff) {
+
+		log.debug("Building town name diff");
 
 		List<Pair<TownNameTemporal, TownNameTemporal>> differences =
 				DateIntervalUtil.diff(t1.getNamesTimeLine(), t2.getNamesTimeLine());
@@ -92,29 +93,52 @@ public class TownHistoryBuilder extends HistoryBuilderBase<Town> {
 		}
 	}
 
+	private static boolean objsEquals(Object o1, Object o2) {
+		return (o1 == null && o2 == null) || (o1 != null && o1.equals(o2));
+	}
+
 	private void buildTypeDiff(@NotNull Town t1, @NotNull Town t2, @NotNull Diff diff) {
 
-		List<Pair<TownTypeTemporal, TownTypeTemporal>> differences =
-				DateIntervalUtil.diff(t1.getTypesTimeLine(), t2.getTypesTimeLine());
-		for (Pair<TownTypeTemporal, TownTypeTemporal> pair : differences) {
+		log.debug("Building town type diff");
 
-			TownTypeTemporal tmp1 = pair.getFirst();
-			TownTypeTemporal tmp2 = pair.getSecond();
+		List<TownTypeTemporal> types1 = t1.getTypesTimeLine().getIntervals();
+		List<TownTypeTemporal> types2 = t2.getTypesTimeLine().getIntervals();
 
-			if (tmp1.isValueEmpty() && tmp2.isValueEmpty()) {
-				continue;
+		log.debug("Town types sizes: {}, {}", types1.size(), types2.size());
+
+		TemporalObjectsHistoryBuildHelper.buildDiff(new TemporalDataExtractor<TownTypeTemporal>() {
+			public Date getBeginDate(TownTypeTemporal obj) {
+				return obj.getBegin();
 			}
 
-			HistoryRecord rec = new HistoryRecord();
-			rec.setFieldType(FIELD_TYPE_ID);
-			rec.setOldStringValue(tmp1.isValueEmpty() ? null : masterIndexService.getMasterIndex(tmp1.getValue()));
-			rec.setNewStringValue(tmp2.isValueEmpty() ? null : masterIndexService.getMasterIndex(tmp2.getValue()));
-			rec.setBeginDate(tmp2.getBegin());
-			rec.setEndDate(tmp2.getEnd());
-			diff.addRecord(rec);
+			public Date getEndDate(TownTypeTemporal obj) {
+				return obj.getEnd();
+			}
 
-			log.debug("Added type record {}", rec);
-		}
+			public void buildDiff(Date begin, Date end, TownTypeTemporal tmp1, TownTypeTemporal tmp2, Diff dff) {
+
+				if ((tmp1 == null || tmp1.isValueEmpty()) && (tmp2 == null || tmp2.isValueEmpty())) {
+					return;
+				}
+
+				TownType type1 = tmp1 == null ? null : tmp1.getValue();
+				TownType type2 = tmp2 == null ? null : tmp2.getValue();
+				if (objsEquals(type1, type2)) {
+					return;
+				}
+
+				HistoryRecord rec = new HistoryRecord();
+				rec.setFieldType(FIELD_TYPE_ID);
+				rec.setOldStringValue(type1 == null || type1.isNew() ? null : masterIndexService.getMasterIndex(type1));
+				rec.setNewStringValue(type2 == null || type2.isNew() ? null : masterIndexService.getMasterIndex(type2));
+				rec.setBeginDate(begin);
+				rec.setEndDate(end);
+				dff.addRecord(rec);
+
+				log.debug("Added type record {}", rec);
+			}
+		}, types1, types2, diff);
+
 	}
 
 	/**

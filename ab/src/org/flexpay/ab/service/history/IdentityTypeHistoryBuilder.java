@@ -52,13 +52,13 @@ public class IdentityTypeHistoryBuilder extends HistoryBuilderBase<IdentityType>
 					tr2 == null ? null : tr2.getName());
 
 			if (nameDiffer) {
-				log.debug("Name differ");
 				HistoryRecord rec = new HistoryRecord();
 				rec.setFieldType(FIELD_NAME);
 				rec.setOldStringValue(tr1 == null ? null : tr1.getName());
 				rec.setNewStringValue(tr2 == null ? null : tr2.getName());
 				rec.setLanguage(lang.getLangIsoCode());
 				diff.addRecord(rec);
+				log.debug("Name differ: {}", rec);
 			}
 
 			log.debug("Completed Diff for lang {}", lang);
@@ -75,12 +75,13 @@ public class IdentityTypeHistoryBuilder extends HistoryBuilderBase<IdentityType>
 			return;
 		}
 
-		log.debug("Code differ");
 		HistoryRecord rec = new HistoryRecord();
 		rec.setFieldType(FIELD_CODE);
 		rec.setOldIntValue(c1);
 		rec.setNewIntValue(c2);
 		diff.addRecord(rec);
+
+		log.debug("Code differ: {}", rec);
 	}
 
 	/**
@@ -93,36 +94,39 @@ public class IdentityTypeHistoryBuilder extends HistoryBuilderBase<IdentityType>
 
 		for (HistoryRecord record : diff.getHistoryRecords()) {
 
-			Language lang = record.getLang();
-			if (lang == null) {
-				log.info("No lang found for record {}", record);
-				record.setProcessingStatus(ProcessingStatus.STATUS_IGNORED);
-				continue;
-			}
-
-			IdentityTypeTranslation tr = t.getTranslation(lang);
-
-			if (tr == null) {
-				tr = new IdentityTypeTranslation();
-				tr.setLang(lang);
-			}
-
 			switch (record.getFieldType()) {
 				case FIELD_NAME:
-					tr.setName(record.getNewStringValue());
+					patchName(t, record);
 					break;
 				case FIELD_CODE:
 					Integer code = record.getNewIntValue();
 					t.setTypeId(code == null ? IdentityType.TYPE_UNKNOWN : code);
+					record.setProcessingStatus(ProcessingStatus.STATUS_PROCESSED);
 					break;
 				default:
 					log.info("Unsupported record: {}", record);
 					record.setProcessingStatus(ProcessingStatus.STATUS_IGNORED);
-					continue;
 			}
-
-			t.setTranslation(tr);
-			record.setProcessingStatus(ProcessingStatus.STATUS_PROCESSED);
 		}
+	}
+
+	private void patchName(IdentityType t, HistoryRecord record) {
+		Language lang = record.getLang();
+		if (lang == null) {
+			log.info("No lang found for record {}", record);
+			record.setProcessingStatus(ProcessingStatus.STATUS_IGNORED);
+			return;
+		}
+
+		IdentityTypeTranslation tr = t.getTranslation(lang);
+
+		if (tr == null) {
+			tr = new IdentityTypeTranslation();
+			tr.setLang(lang);
+		}
+
+		tr.setName(record.getNewStringValue());
+		t.setTranslation(tr);
+		record.setProcessingStatus(ProcessingStatus.STATUS_PROCESSED);
 	}
 }

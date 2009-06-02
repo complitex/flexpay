@@ -6,7 +6,6 @@ import org.apache.struts2.ServletActionContext;
 import org.flexpay.common.persistence.*;
 import org.flexpay.common.util.DateUtil;
 import org.flexpay.common.util.config.ApplicationConfig;
-import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
 import javax.servlet.http.HttpServletRequest;
@@ -37,7 +36,7 @@ public abstract class SimpleEditAction<
 			return Collections.emptyMap();
 		}
 
-		TemporaryName<TV, T> name = (TemporaryName<TV,T>) temporal.getValue();
+		TemporaryName<TV, T> name = (TemporaryName<TV, T>) temporal.getValue();
 
 		Map<Long, T> map = new HashMap<Long, T>();
 		for (T translation : name.getTranslations()) {
@@ -48,7 +47,6 @@ public abstract class SimpleEditAction<
 	}
 
 	public void prepare() {
-		@NonNls
 		HttpServletRequest request = ServletActionContext.getRequest();
 		temporalId = Long.parseLong(request.getParameter("temporalId"));
 

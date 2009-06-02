@@ -53,7 +53,7 @@ public class TestTownHistoryBuilder extends AbSpringBeanAwareTestCase {
 		}
 
 		Diff diff = historyBuilder.diff(null, town);
-		assertEquals("Invalid history builder", 2, diff.size());
+		assertEquals("Invalid history builder", 4, diff.size());
 	}
 
 	@Test
@@ -75,24 +75,30 @@ public class TestTownHistoryBuilder extends AbSpringBeanAwareTestCase {
 
 		TownType type = newTown.getCurrentType();
 		assertNotNull("Invalid patch, no type", type);
-		assertEquals("Invalid current type after patch", Long.valueOf(1L), type.getId());
+		assertEquals("Invalid current type after patch", Long.valueOf(4L), type.getId());
 	}
 
 	@Before
 	public void addTownTypeMasterCorrection() {
-		correctionsService.save(getCityTypeMasterCorrection());
+		correctionsService.save(getTypeMasterCorrection(1L));
+		correctionsService.save(getTypeMasterCorrection(2L));
+		correctionsService.save(getTypeMasterCorrection(3L));
+		correctionsService.save(getTypeMasterCorrection(4L));
 	}
 
 	@After
 	public void delTownTypeMasterCorrection() {
-		correctionsService.delete(getCityTypeMasterCorrection());
+		correctionsService.delete(getTypeMasterCorrection(1L));
+		correctionsService.delete(getTypeMasterCorrection(2L));
+		correctionsService.delete(getTypeMasterCorrection(3L));
+		correctionsService.delete(getTypeMasterCorrection(4L));
 	}
 
-	private DataCorrection getCityTypeMasterCorrection() {
-		TownType cityType = new TownType(1L);
+	private DataCorrection getTypeMasterCorrection(Long typeId) {
+		TownType type = new TownType(typeId);
 		return correctionsService.getStub(
-				masterIndexService.getNewMasterIndex(cityType),
-				cityType,
+				masterIndexService.getNewMasterIndex(type),
+				type,
 				masterIndexService.getMasterSourceDescription());
 	}
 }
