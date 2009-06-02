@@ -209,7 +209,7 @@
 
 			<tr>
 				<td colspan="5">
-					<%--<input type="submit" name="registerSubmitted" onclick="setStatus(2);" class="btn-exit btn-register" value="<s:text name="payments.operations.list.register"/>"/>--%>
+					<input type="submit" name="registerSubmitted" onclick="setStatus(2);" class="btn-exit btn-register" value="<s:text name="payments.operations.list.register"/>"/>
 					<input type="submit" name="returnSubmitted" onclick="setStatus(4);" class="btn-exit btn-return" value="<s:text name="payments.operations.list.return"/>"/>
 					<input type="submit" name="deleteSubmitted" onclick="setStatus(3);" class="btn-exit btn-delete" value="<s:text name="payments.operations.list.delete"/>"/>
 
@@ -327,7 +327,7 @@
 
 			<tr>
 				<td colspan="5">
-					<%--<input type="submit" name="registerSubmitted" onclick="setStatus(2);" class="btn-exit btn-register" value="<s:text name="payments.operations.list.register"/>"/>--%>
+					<input type="submit" name="registerSubmitted" onclick="setStatus(2);" class="btn-exit btn-register" value="<s:text name="payments.operations.list.register"/>"/>
 					<input type="submit" name="returnSubmitted" onclick="setStatus(4);" class="btn-exit btn-return" value="<s:text name="payments.operations.list.return"/>"/>
 					<input type="submit" name="deleteSubmitted" onclick="setStatus(3);" class="btn-exit btn-delete" value="<s:text name="payments.operations.list.delete"/>"/>
 
