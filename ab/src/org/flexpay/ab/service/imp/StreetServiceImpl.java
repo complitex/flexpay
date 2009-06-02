@@ -31,7 +31,7 @@ import org.springframework.beans.factory.annotation.Required;
 
 import java.util.*;
 
-@Transactional (readOnly = true, rollbackFor = Exception.class)
+@Transactional (readOnly = true)
 public class StreetServiceImpl extends NameTimeDependentServiceImpl<
 		StreetNameTranslation, StreetName, StreetNameTemporal, Street, Town>
 		implements StreetService {
@@ -244,13 +244,11 @@ public class StreetServiceImpl extends NameTimeDependentServiceImpl<
 	}
 
 	@NotNull
-	@Transactional (readOnly = true)
 	public List<Street> findByTownAndName(@NotNull Stub<Town> stub, @NotNull String name) {
 		return streetDao.findByTownAndName(stub.getId(), name);
 	}
 
 	@NotNull
-	@Transactional (readOnly = true)
 	public List<Street> findByTownAndQuery(@NotNull Stub<Town> stub, @NotNull String query) {
 		return streetDao.findByTownAndQuery(stub.getId(), query);
 	}

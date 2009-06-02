@@ -37,6 +37,8 @@ public abstract class BuildingsFilterDependentAction extends FPActionSupport {
 			setFilters(filters);
 		} catch (FlexPayException e) {
 			filtersError = e.getErrorKey();
+		} catch (Exception e) {
+			log.error("Unexpected exception initializing filters", e);
 		}
 	}
 

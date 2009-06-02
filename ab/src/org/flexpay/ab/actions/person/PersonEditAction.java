@@ -20,7 +20,6 @@ public class PersonEditAction extends ApartmentFilterDependentAction {
 	private Person person = new Person();
 	private Date beginDate = DateUtil.now();
 	private Date endDate = ApplicationConfig.getFutureInfinite();
-	@NonNls
 	private String editType;
 
 	private String crumbCreateKey;
