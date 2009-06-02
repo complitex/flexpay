@@ -110,7 +110,7 @@ public class QuittancePayAction extends FPActionSupport implements PaymentPointA
 		op.setRegisterOrganization(getSelfOrganization());
 		op.setCreatorUserName(SecurityUtil.getUserName());
 		op.setRegisterUserName(SecurityUtil.getUserName());
-		op.setOperationStatus(operationStatusService.read(OperationStatus.REGISTERED));
+		op.setOperationStatus(operationStatusService.read(OperationStatus.CREATED));
 		op.setOperationLevel(operationLevelService.read(OperationLevel.AVERAGE));
 		op.setOperationType(operationTypeService.read(OperationType.SERVICE_CASH_PAYMENT));
 		return op;
@@ -128,7 +128,7 @@ public class QuittancePayAction extends FPActionSupport implements PaymentPointA
 
 		Document document = new Document();
 		document.setService(service);
-		document.setDocumentStatus(documentStatusService.read(DocumentStatus.REGISTERED));
+		document.setDocumentStatus(documentStatusService.read(DocumentStatus.CREATED));
 		document.setDocumentType(documentTypeService.read(DocumentType.CASH_PAYMENT));
 		document.setSumm(documentSumm);
 		document.setAddress(addresses.get(serviceFullIndx));
