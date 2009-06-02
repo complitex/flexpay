@@ -35,15 +35,15 @@ INSERT INTO ab_town_type_translations_tbl (name, short_name, language_id, town_t
 INSERT INTO ab_town_type_translations_tbl (name, short_name, language_id, town_type_id)
 	VALUES ('Village', 'vil', @en_id, @town_type_village_id);
 
-INSERT INTO ab_town_types_tbl (status) VALUES (0);
-SELECT @town_type_settlement_id:=last_insert_id();
+INSERT INTO ab_town_types_tbl (id, status) VALUES (3, 0);
+SELECT @town_type_settlement_id:=3;
 INSERT INTO ab_town_type_translations_tbl (name, short_name, language_id, town_type_id)
 	VALUES ('Поселок', 'пос', @ru_id, @town_type_settlement_id);
 INSERT INTO ab_town_type_translations_tbl (name, short_name, language_id, town_type_id)
 	VALUES ('Settlement', 'stl', @en_id, @town_type_settlement_id);
 
-INSERT INTO ab_town_types_tbl (status) VALUES (0);
-SELECT @town_type_urban_settlement_id:=last_insert_id();
+INSERT INTO ab_town_types_tbl (id, status) VALUES (4, 0);
+SELECT @town_type_urban_settlement_id:=4;
 INSERT INTO ab_town_type_translations_tbl (name, short_name, language_id, town_type_id)
 	VALUES ('Поселок городского типа', 'пгт', @ru_id, @town_type_urban_settlement_id);
 INSERT INTO ab_town_type_translations_tbl (name, short_name, language_id, town_type_id)
@@ -1097,7 +1097,11 @@ INSERT INTO ab_town_name_translations_tbl (name, town_name_id, language_id)
 INSERT INTO ab_town_names_temporal_tbl (town_id, town_name_id, begin_date, end_date, create_date, invalid_date)
 	VALUES (@town_id, @town_name_id, '1900-01-01', '2100-12-31', '2008-01-17', '2100-12-31');
 INSERT INTO ab_town_types_temporal_tbl (town_id, town_type_id, begin_date, end_date, create_date, invalid_date)
-	VALUES (@town_id, @town_type_town_id, '1900-01-01', '2100-12-31', '2008-01-17', '2100-12-31');
+	VALUES (@town_id, @town_type_village_id, '1900-01-01', '1950-12-31', '2008-01-17', '2100-12-31');
+INSERT INTO ab_town_types_temporal_tbl (town_id, town_type_id, begin_date, end_date, create_date, invalid_date)
+	VALUES (@town_id, @town_type_urban_settlement_id, '1951-01-01', '2009-12-31', '2008-01-17', '2100-12-31');
+INSERT INTO ab_town_types_temporal_tbl (town_id, town_type_id, begin_date, end_date, create_date, invalid_date)
+	VALUES (@town_id, @town_type_town_id, '2010-01-01', '2100-12-31', '2008-01-17', '2100-12-31');
 
 INSERT INTO ab_towns_tbl (status, region_id) VALUES (0, @region_adygeya_id);
 SELECT @town_id:=last_insert_id();
@@ -1484,7 +1488,7 @@ INSERT INTO ab_town_name_translations_tbl (name, town_name_id, language_id)
 INSERT INTO ab_town_names_temporal_tbl (town_id, town_name_id, begin_date, end_date, create_date, invalid_date)
 	VALUES (@town_ufa_id, @town_name_id, '1900-01-01', '2100-12-31', '2008-01-17', '2100-12-31');
 INSERT INTO ab_town_types_temporal_tbl (town_id, town_type_id, begin_date, end_date, create_date, invalid_date)
-	VALUES (@town_id, @town_type_town_id, '1900-01-01', '2100-12-31', '2008-01-17', '2100-12-31');
+	VALUES (@town_ufa_id, @town_type_town_id, '1900-01-01', '2100-12-31', '2008-01-17', '2100-12-31');
 
 -- Init Districts
 INSERT INTO ab_districts_tbl (status, town_id) VALUES (0, @town_novosibirsk_id);
@@ -1704,8 +1708,8 @@ INSERT INTO ab_person_attributes_tbl (name, value, language_id, person_id)
 INSERT INTO ab_person_identities_tbl (status, sex, begin_date, end_date, birth_date, serial_number,
 	document_number, first_name, middle_name, last_name, organization,
 	is_default, identity_type_id, person_id)
-	VALUES (0, 1, '1983-01-25', '2100-12-31', '1983-01-25', 0,
-	0, 'Михаил', 'Анатольевич', 'Федько', '',
+	VALUES (0, 1, '1983-01-25', '2100-12-31', '1983-01-25', '',
+	'', 'Михаил', 'Анатольевич', 'Федько', '',
 	0, @identity_type_fio_id, @person_id);
 SELECT @person_identity_id:=last_insert_id();
 

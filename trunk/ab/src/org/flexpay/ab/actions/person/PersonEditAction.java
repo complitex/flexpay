@@ -62,8 +62,6 @@ public class PersonEditAction extends ApartmentFilterDependentAction {
 		initFilters();
 		apartmentFilter.setNeedAutoChange(false);
 
-		log.debug("BuildingAddress: {}", buildingsFilter.getBuildingses());
-
 		return INPUT;
 	}
 

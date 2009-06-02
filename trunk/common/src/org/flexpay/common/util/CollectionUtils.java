@@ -2,7 +2,6 @@ package org.flexpay.common.util;
 
 import org.apache.commons.collections.ArrayStack;
 import org.apache.commons.lang.builder.EqualsBuilder;
-import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
@@ -35,7 +34,7 @@ public class CollectionUtils {
 	}
 
 	@NotNull
-	public static <T> Set<T> set(@NonNls T... ts) {
+	public static <T> Set<T> set(T... ts) {
 		return new HashSet<T>(Arrays.asList(ts));
 	}
 
@@ -53,28 +52,28 @@ public class CollectionUtils {
 	 */
 	@NotNull
 	public static <K, V> Map<K, V> map() {
-		return new HashMap<K,V>();
+		return new HashMap<K, V>();
 	}
 
 	/**
-	 * Create an instance of HashMap from single key-value pair 
+	 * Create an instance of HashMap from single key-value pair
 	 *
-	 * @param k Single entry key
-	 * @param v Single entry value
+	 * @param k   Single entry key
+	 * @param v   Single entry value
 	 * @param <K> key type
 	 * @param <V> value type
 	 * @return Map
 	 */
 	@NotNull
 	public static <K, V> Map<K, V> map(K k, V v) {
-		Map<K, V> map = new HashMap<K,V>();
+		Map<K, V> map = new HashMap<K, V>();
 		map.put(k, v);
 		return map;
 	}
 
 	@NotNull
 	public static <K, V> Map<K, V> map(K k1, V v1, K k2, V v2) {
-		Map<K, V> map = new HashMap<K,V>();
+		Map<K, V> map = new HashMap<K, V>();
 		map.put(k1, v1);
 		map.put(k2, v2);
 		return map;
@@ -82,7 +81,7 @@ public class CollectionUtils {
 
 	@NotNull
 	public static <K, V> Map<K, V> map(K k1, V v1, K k2, V v2, K k3, V v3) {
-		Map<K, V> map = new HashMap<K,V>();
+		Map<K, V> map = new HashMap<K, V>();
 		map.put(k1, v1);
 		map.put(k2, v2);
 		map.put(k3, v3);
@@ -91,7 +90,7 @@ public class CollectionUtils {
 
 	@NotNull
 	public static <K, V> Map<K, V> map(K k1, V v1, K k2, V v2, K k3, V v3, K k4, V v4) {
-		Map<K, V> map = new HashMap<K,V>();
+		Map<K, V> map = new HashMap<K, V>();
 		map.put(k1, v1);
 		map.put(k2, v2);
 		map.put(k3, v3);
@@ -103,13 +102,13 @@ public class CollectionUtils {
 	 * Create an instance of HashMap from existing map
 	 *
 	 * @param values Initial map data
-	 * @param <K> key type
-	 * @param <V> value type
+	 * @param <K>    key type
+	 * @param <V>    value type
 	 * @return Map
 	 */
 	@NotNull
 	public static <K, V> Map<K, V> map(Map<K, V> values) {
-		return new HashMap<K,V>(values);
+		return new HashMap<K, V>(values);
 	}
 
 	/**
@@ -121,7 +120,7 @@ public class CollectionUtils {
 	 */
 	@NotNull
 	public static <K, V> SortedMap<K, V> treeMap() {
-		return new TreeMap<K,V>();
+		return new TreeMap<K, V>();
 	}
 
 	@NotNull
@@ -164,11 +163,11 @@ public class CollectionUtils {
 	 * Check if maps values are equals by a specified set of keys
 	 *
 	 * @param keys Set of keys to check equality against
-	 * @param p1 First map
-	 * @param p2 Second map
-	 * @param <K> Key parameter type
-	 * @param <V> Value parameter type
-	 * @return <code>true</code> if maps has equals values for requested set of keys 
+	 * @param p1   First map
+	 * @param p2   Second map
+	 * @param <K>  Key parameter type
+	 * @param <V>  Value parameter type
+	 * @return <code>true</code> if maps has equals values for requested set of keys
 	 */
 	public static <K, V> boolean isSame(Collection<K> keys, Map<K, V> p1, Map<K, V> p2) {
 		EqualsBuilder equalsBuilder = new EqualsBuilder();

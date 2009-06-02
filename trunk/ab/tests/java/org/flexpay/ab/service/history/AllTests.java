@@ -6,6 +6,7 @@ import org.junit.runners.Suite;
 @RunWith (Suite.class)
 @Suite.SuiteClasses ({
 		TestTownTypeHistoryBuilder.class,
+		TestIdentityTypeHistoryBuilder.class,
 		TestPersonHistoryBuilder.class,
 		TestPersonsHistoryGenerator.class,
 		TestTownHistoryBuilder.class, // this test should go after town type builder, as depends on master correction

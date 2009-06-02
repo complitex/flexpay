@@ -11,6 +11,7 @@ import org.flexpay.common.persistence.history.Diff;
 import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.Ignore;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
@@ -29,6 +30,7 @@ public class TestPersonHistoryBuilder extends AbSpringBeanAwareTestCase {
 	public static final Stub<Person> PERSON = new Stub<Person>(1L);
 
 	@Test
+	@Ignore
 	public void testBuildDiff() {
 
 		Diff diff = historyBuilder.diff(new Person(), new Person());
@@ -36,6 +38,7 @@ public class TestPersonHistoryBuilder extends AbSpringBeanAwareTestCase {
 	}
 
 	@Test
+	@Ignore
 	public void testBuildDiff2() {
 
 		Diff diff = historyBuilder.diff(null, new Person());
@@ -43,6 +46,7 @@ public class TestPersonHistoryBuilder extends AbSpringBeanAwareTestCase {
 	}
 
 	@Test
+	@Ignore
 	public void testBuildPersonDiff() {
 
 		Person person = personService.read(PERSON);
@@ -54,6 +58,7 @@ public class TestPersonHistoryBuilder extends AbSpringBeanAwareTestCase {
 	}
 
 	@Test
+	@Ignore
 	public void testPatchPerson() {
 
 		Person person = personService.read(PERSON);
@@ -75,6 +80,44 @@ public class TestPersonHistoryBuilder extends AbSpringBeanAwareTestCase {
 		assertEquals("Invalid last name patch", "Федько", fio.getLastName());
 	}
 
+	@Test
+	public void testPatchPerson2() {
+
+		Person person = personService.read(PERSON);
+		assertNotNull("Person not found: " + PERSON, person);
+
+		Diff diff = historyBuilder.diff(null, person);
+
+		log.debug("\n============================= FIRST DIFF ==================================");
+
+		Person patchedPerson = new Person();
+		historyBuilder.patch(patchedPerson, diff);
+
+		PersonIdentity fio = patchedPerson.getFIOIdentity();
+		assertNotNull("Invalid patch, fio not set", fio);
+
+		fio.setFirstName("TEST_PATCH_FN");
+		fio.setLastName("TEST_PATCH_LN");
+		fio.setMiddleName("TEST_PATCH_MN");
+
+		log.debug("\n============================= FIRST PATCH ==================================");
+
+		Diff diff2 = historyBuilder.diff(person, patchedPerson);
+		log.debug("\n============================= SECOND DIFF ==================================");
+		patchedPerson = new Person();
+
+		historyBuilder.patch(patchedPerson, diff);
+		log.debug("\n============================= SECOND PATCH ==================================");
+		historyBuilder.patch(patchedPerson, diff2);
+		log.debug("\n============================= THIRD PATCH ==================================");
+
+		fio = patchedPerson.getFIOIdentity();
+		assertNotNull("Invalid patch, fio not set", fio);
+		assertEquals("Invalid second patch, FN", "TEST_PATCH_FN", fio.getFirstName());
+		assertEquals("Invalid second patch, MN", "TEST_PATCH_MN", fio.getMiddleName());
+		assertEquals("Invalid second patch, LN", "TEST_PATCH_LN", fio.getLastName());
+	}
+
 	@Before
 	public void generateTypeHistory() {
 
@@ -82,7 +125,5 @@ public class TestPersonHistoryBuilder extends AbSpringBeanAwareTestCase {
 		for (IdentityType type : types) {
 			typeHistoryGenerator.generateFor(type);
 		}
-
-
 	}
 }

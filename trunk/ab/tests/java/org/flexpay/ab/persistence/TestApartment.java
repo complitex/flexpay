@@ -24,7 +24,7 @@ public class TestApartment extends AbSpringBeanAwareTestCase {
 		assertNull("Blank number setup should erase value", apartment.getNumber());
 
 		Date date = new GregorianCalendar(2009, Calendar.JANUARY, 1).getTime();
-		apartment.setNumberForDate(date, "123123");
+		apartment.setNumberForDate("123123", date);
 		assertEquals("Invalid number setup", "123123", apartment.getNumberForDate(date));
 
 		Date pastDate = new GregorianCalendar(1950, Calendar.JANUARY, 1).getTime();

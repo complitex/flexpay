@@ -3,6 +3,7 @@ package org.flexpay.common.persistence.history.impl;
 import org.apache.commons.io.IOUtils;
 import org.flexpay.common.dao.paging.FetchRange;
 import org.flexpay.common.exception.FlexPayException;
+import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.persistence.history.*;
@@ -11,6 +12,7 @@ import org.flexpay.common.service.HistoryConsumerService;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.FPFileUtil;
 import org.flexpay.common.util.config.ApplicationConfig;
+import org.flexpay.common.locking.LockManager;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,6 +32,9 @@ public abstract class HistoryPackerBase implements HistoryPacker {
 
 	protected HistoryConsumerService consumerService;
 	protected HistoryRecordsFilter recordsFilter;
+	private LockManager lockManager;
+
+	public static final String LOCK_NAME = HistoryPackerBase.class.getName() + ".LOCK";
 
 	private int groupSize = 5000;
 	private int pagingSize = 50;
@@ -44,6 +49,20 @@ public abstract class HistoryPackerBase implements HistoryPacker {
 	@NotNull
 	public List<FPFile> packHistory(@NotNull Stub<HistoryConsumer> stub) throws Exception {
 
+		boolean locked = lockManager.lock(LOCK_NAME);
+		if (!locked) {
+			log.debug("Lock request failed, probably another instance already running");
+			return Collections.emptyList();
+		}
+
+		try {
+			return doPack(stub);
+		} finally {
+			lockManager.releaseLock(LOCK_NAME);
+		}
+	}
+
+	private List<FPFile> doPack(Stub<HistoryConsumer> stub) throws FlexPayException, FlexPayExceptionContainer {
 		HistoryConsumer consumer = consumerService.readFull(stub);
 		if (consumer == null) {
 			log.warn("History consumer not found {}", stub);
@@ -210,6 +229,11 @@ public abstract class HistoryPackerBase implements HistoryPacker {
 	@Required
 	public void setRecordsFilter(HistoryRecordsFilter recordsFilter) {
 		this.recordsFilter = recordsFilter;
+	}
+
+	@Required
+	public void setLockManager(LockManager lockManager) {
+		this.lockManager = lockManager;
 	}
 
 	public void setPagingSize(int pagingSize) {
