@@ -15,7 +15,7 @@
 					   onclick="$('#fobjects').attr('action','<s:url action="streetDelete" includeParams="none" />');"
 					   value="<s:text name="common.delete_selected"/>"/>
 				<input type="button" class="btn-exit"
-					   onclick="window.location='<s:url action="streetCreate" includeParams="none" />';"
+					   onclick="window.location='<s:url action="streetEdit" includeParams="none"><s:param name="street.id" value="0"/></s:url>';"
 					   value="<s:text name="common.new"/>"/>
 			</td>
 		</tr>
@@ -51,6 +51,9 @@
 				<td class="col">
 					<a href="<s:url value="/dicts/streetView.action?object.id=%{id}"/>">
 						<s:text name="common.view"/>
+					</a>&nbsp;
+					<a href="<s:url value="/dicts/streetEdit.action?street.id=%{id}"/>">
+						<s:text name="common.edit"/>
 					</a>
 				</td>
 			</tr>
@@ -62,7 +65,7 @@
 					   onclick="$('#fobjects').attr('action','<s:url action="streetDelete" includeParams="none" />');"
 					   value="<s:text name="common.delete_selected"/>"/>
 				<input type="button" class="btn-exit"
-					   onclick="window.location='<s:url action="streetCreate" includeParams="none" />';"
+					   onclick="window.location='<s:url action="streetEdit" includeParams="none"><s:param name="street.id" value="0"/></s:url>';"
 					   value="<s:text name="common.new"/>"/>
 			</td>
 		</tr>

@@ -130,16 +130,6 @@
           scope="prototype" />
 
 	<!-- Strees -->
-	<bean id="streetCreateAction"
-		  class="org.flexpay.ab.actions.street.StreetCreateAction"
-		  p:streetTypeService-ref="streetTypeService"
-		  p:parentService-ref="townService"
-		  p:streetService-ref="streetService"
-		  p:townService-ref="townService"
-		  p:nameTimeDependentService-ref="streetService"
-          p:crumbNameKey="ab.crumbs.street_create"
-          scope="prototype" />
-
 	<bean id="streetViewAction"
 		  class="org.flexpay.ab.actions.street.StreetViewAction"
 		  p:nameTimeDependentService-ref="streetService"
@@ -149,15 +139,10 @@
 
 	<bean id="streetEditAction"
 		  class="org.flexpay.ab.actions.street.StreetEditSimpleAction"
-		  p:nameTimeDependentService-ref="streetService"
-          p:crumbNameKey="ab.crumbs.street_edit"
-          scope="prototype" />
-
-	<bean id="editStreetTypeAction"
-		  class="org.flexpay.ab.actions.street.StreetEditTypeAction"
 		  p:streetService-ref="streetService"
 		  p:streetTypeService-ref="streetTypeService"
-          p:crumbNameKey="ab.crumbs.street_street_type_edit"
+		  p:townService-ref="townService"
+          p:crumbNameKey="ab.crumbs.street_edit"
           scope="prototype" />
 
 	<bean id="streetDistrictEditAction"
