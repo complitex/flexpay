@@ -12,8 +12,7 @@
 		<many-to-one name="parent" column="town_id" class="Town" not-null="true" />
 		<property name="status" not-null="true" />
 
-		<set name="nameTemporals" inverse="true" cascade="all"
-			  where="invalid_date='2100-12-31'" sort="natural">
+		<set name="nameTemporals" inverse="true" cascade="all" where="invalid_date='2100-12-31'" sort="natural">
 			<key column="district_id" not-null="true" />
 			<one-to-many class="DistrictNameTemporal" />
 		</set>
@@ -74,11 +73,9 @@
 		SELECT DISTINCT o
 		FROM District o
 			join fetch o.parent 
-		LEFT JOIN FETCH o.nameTemporals t
-		LEFT JOIN FETCH t.value v
-		LEFT JOIN FETCH v.translations tr
-		LEFT JOIN FETCH tr.lang l
-		    join fetch l.translations
+			LEFT JOIN FETCH o.nameTemporals t
+			LEFT JOIN FETCH t.value v
+			LEFT JOIN FETCH v.translations tr
 		WHERE o.id=? and t.invalidDate='2100-12-31'
 	</query>
 
@@ -87,8 +84,6 @@
 		FROM DistrictNameTemporal t
 		LEFT JOIN FETCH t.value v
 		LEFT JOIN FETCH v.translations tr
-		LEFT JOIN FETCH tr.lang l
-		LEFT JOIN FETCH l.translations
 		WHERE t.id=?
 	</query>
 
@@ -97,8 +92,6 @@
 		FROM DistrictName n
 		LEFT JOIN FETCH n.object
 		LEFT JOIN FETCH n.translations tr
-		LEFT JOIN FETCH tr.lang l
-		LEFT JOIN FETCH l.translations
 		WHERE n.id=?
 	</query>
 

@@ -98,15 +98,6 @@
           scope="prototype" />
 
 	<!-- Town districts -->
-	<bean id="districtCreateAction"
-		  class="org.flexpay.ab.actions.district.DistrictCreateAction"
-		  p:nameTimeDependentService-ref="districtService"
-		  p:parentService-ref="townService"
-		  p:districtService-ref="districtService"
-		  p:townService-ref="townService"
-          p:crumbNameKey="ab.crumbs.district_create"
-          scope="prototype" />
-
 	<bean id="districtViewAction"
 		  class="org.flexpay.ab.actions.district.DistrictViewAction"
 		  p:nameTimeDependentService-ref="districtService"
@@ -115,7 +106,8 @@
 
 	<bean id="districtEditAction"
 		  class="org.flexpay.ab.actions.district.DistrictEditSimpleAction"
-		  p:nameTimeDependentService-ref="districtService"
+		  p:districtService-ref="districtService"
+		  p:townService-ref="townService"
           p:crumbNameKey="ab.crumbs.district_edit"
           scope="prototype" />
 

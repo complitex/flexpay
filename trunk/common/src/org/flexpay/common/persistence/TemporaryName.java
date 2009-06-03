@@ -14,7 +14,7 @@ import java.util.Set;
 /**
  * Temporary object name having reference to object and a collection of translations
  */
-public abstract class TemporaryName<TV extends TemporaryValue, T extends Translation>
+public abstract class TemporaryName<TV extends TemporaryValue<TV>, T extends Translation>
 		extends TemporaryValue<TV> {
 
 	private DomainObject object;
@@ -122,6 +122,10 @@ public abstract class TemporaryName<TV extends TemporaryValue, T extends Transla
 		T t = TranslationUtil.getTranslation(translations);
 		return t == null ? null : t.getName();
 	}
+	
+	public void setTranslation(T translation) {
+		translations = TranslationUtil.setTranslation(translations, this, translation);
+	}
 
 	/**
 	 * Check if this value is empty
@@ -129,6 +133,7 @@ public abstract class TemporaryName<TV extends TemporaryValue, T extends Transla
 	 * @return <code>true</code> if this value is empty, or <code>false</code> otherwise
 	 */
 	public boolean isEmpty() {
+		//noinspection CollectionsFieldAccessReplaceableByMethodCall
 		return isNew() && translations == Collections.EMPTY_SET;
 	}
 }

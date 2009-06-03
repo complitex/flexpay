@@ -19,10 +19,10 @@ public class ActionUtil {
 	 * @param temporaryName Temporary name to get mapping from
 	 * @param <TV>          Temporary value type
 	 * @param <T>           Translation type
-
+	 * @return mapping from language ids to translations
 	 */
 	@NotNull
-	public static <TV extends TemporaryValue, T extends Translation>
+	public static <TV extends TemporaryValue<TV>, T extends Translation>
 	Map<Long, String> getLangIdsToTranslations(@NotNull TemporaryName<TV, T> temporaryName) {
 
 		return getLangIdsToTranslations(temporaryName.getTranslations());

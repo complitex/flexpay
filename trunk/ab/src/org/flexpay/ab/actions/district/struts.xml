@@ -11,26 +11,13 @@
 			<result type="tiles">ab.districts.list</result>
 		</action>
 
-		<action name="districtCreate" class="districtCreateAction">
-			<result name="redirectSuccess" type="redirect-action">
-				<param name="actionName">districtView</param>
-				<param name="parse">true</param>
-				<param name="object.id">${object.id}</param>
-			</result>
-			<result type="tiles" name="input">ab.district.create</result>
-		</action>
-
 		<action name="districtView" class="districtViewAction">
 			<result type="tiles">ab.district.view</result>
 			<result type="redirect-action" name="redirectError">districtsList</result>
 		</action>
 
 		<action name="districtEdit" class="districtEditAction">
-			<result type="redirect-action">
-				<param name="actionName">districtView</param>
-				<param name="parse">true</param>
-				<param name="object.id">${object.id}</param>
-			</result>
+			<result name="redirectSuccess" type="redirect-action">districtsList</result>
 			<result type="tiles" name="input">ab.district.edit</result>
 		</action>
 

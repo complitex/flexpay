@@ -34,6 +34,7 @@ public class AbSpringBeanAwareTestCase extends SpringBeanAwareTestCase {
 				IDENTITY_TYPE_READ,
 				APARTMENT_ADD,
 				DISTRICT_ADD,
+				DISTRICT_CHANGE,
 				STREET_ADD,
 				STREET_CHANGE,
 				TOWN_ADD,

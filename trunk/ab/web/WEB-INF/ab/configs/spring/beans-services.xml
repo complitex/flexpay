@@ -32,7 +32,8 @@
 		  parent="historyChangesListenerBase"
 		  p:historyBuilder-ref="townHistoryBuilder" />
 
-	<bean id="townService"
+	<bean id="townServiceTarget"
+		  autowire-candidate="false"
 		  class="org.flexpay.ab.service.imp.TownServiceImpl"
 		  p:parentService-ref="regionService"
 		  p:regionDao-ref="regionDao"
@@ -40,7 +41,6 @@
 		  p:townNameDao-ref="townNameDao"
 		  p:townNameTranslationDao-ref="townNameTranslationDao"
 		  p:townNameTemporalDao-ref="townNameTemporalDao"
-		  p:townTypeTemporalDao-ref="townTypeTemporalDao"
 		  p:townTypeService-ref="townTypeService"
 		  p:sessionUtils-ref="sessionUtils"
 		  p:modificationListener-ref="townHistoryChangesListener" />

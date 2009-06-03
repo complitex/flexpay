@@ -165,6 +165,7 @@ public abstract class DateInterval<T extends TemporaryValue<T>, DI extends DateI
 	@Override
 	public String toString() {
 		return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
+				.append("Id", getId())
 				.append("Begin", DateUtil.format(begin))
 				.append("End", DateUtil.format(end))
 				.append("Created", DateUtil.format(createDate))
@@ -198,6 +199,7 @@ public abstract class DateInterval<T extends TemporaryValue<T>, DI extends DateI
 			return false;
 		}
 
+		@SuppressWarnings ({"unchecked"})
 		DateInterval<T, DI> that = (DateInterval<T, DI>) obj;
 		return new EqualsBuilder()
 				.append(begin, that.getBegin())

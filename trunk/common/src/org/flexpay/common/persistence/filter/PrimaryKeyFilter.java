@@ -32,7 +32,7 @@ public class PrimaryKeyFilter<T extends DomainObject> extends ObjectFilter {
 		return selectedId != null && selectedId > 0;
 	}
 
-	@SuppressWarnings({"unchecked"})
+	@SuppressWarnings ({"unchecked", "RawUseOfParameterizedType"})
 	@Override
 	public void initFilter(Map session) {
 		String filterName = this.getClass().getName();

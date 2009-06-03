@@ -1,6 +1,5 @@
 package org.flexpay.common.persistence;
 
-import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.DateIntervalUtil;
@@ -20,6 +19,7 @@ public abstract class NameTimeDependent<T extends TemporaryValue<T>, DI extends 
 	private static final SortedSet EMPTY_SORTED_SET =
 			Collections.unmodifiableSortedSet(new TreeSet());
 
+	@SuppressWarnings ({"unchecked"})
 	private SortedSet<DI> nameTemporals = EMPTY_SORTED_SET;
 	private TimeLine<T, DI> namesTimeLine;
 
@@ -97,9 +97,13 @@ public abstract class NameTimeDependent<T extends TemporaryValue<T>, DI extends 
 		nameTemporals.addAll(tlNew.getIntervals());
 
 		// invalidate old timeline and assign to a new
-//		if (namesTimeLine != null) {
-//			namesTimeLine.invalidate();
-//		}
+		if (namesTimeLine != null) {
+			namesTimeLine.invalidate();
+		}
+		System.out.println("=================================================================");
+		System.out.println("New intervals: " + tlNew.getIntervals());
+		System.out.println("Old intervals: " + (namesTimeLine == null ? null : namesTimeLine.getIntervals()));
+		System.out.println("ALL TEMPORALS:\n" + nameTemporals);
 		namesTimeLine = tlNew;
 	}
 
@@ -123,8 +127,7 @@ public abstract class NameTimeDependent<T extends TemporaryValue<T>, DI extends 
 	/**
 	 * Find temporal for current date
 	 *
-	 * @return Temporal which interval includes specified date, or <code>null</code> if not
-	 *         found
+	 * @return Temporal which interval includes specified date, or <code>null</code> if not found
 	 */
 	@Nullable
 	public DI getCurrentNameTemporal() {
@@ -135,8 +138,7 @@ public abstract class NameTimeDependent<T extends TemporaryValue<T>, DI extends 
 	 * Find value for date
 	 *
 	 * @param dt Date to get value for
-	 * @return Temporal which interval includes specified date, or <code>null</code> if not
-	 *         found
+	 * @return Temporal which interval includes specified date, or <code>null</code> if not found
 	 */
 	@Nullable
 	public DI getNameTemporalForDate(Date dt) {
@@ -159,8 +161,7 @@ public abstract class NameTimeDependent<T extends TemporaryValue<T>, DI extends 
 	 * Find value for date
 	 *
 	 * @param dt Date to get value for
-	 * @return Value which interval includes specified date, or <code>null</code> if not
-	 *         found
+	 * @return Value which interval includes specified date, or <code>null</code> if not found
 	 */
 	@Nullable
 	public T getNameForDate(Date dt) {
@@ -171,8 +172,7 @@ public abstract class NameTimeDependent<T extends TemporaryValue<T>, DI extends 
 	/**
 	 * Find value for current date
 	 *
-	 * @return Value which interval includes specified date, or <code>null</code> if not
-	 *         found
+	 * @return Value which interval includes specified date, or <code>null</code> if not found
 	 */
 	@Nullable
 	public T getCurrentName() {
