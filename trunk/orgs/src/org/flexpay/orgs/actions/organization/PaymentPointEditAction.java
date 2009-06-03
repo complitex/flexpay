@@ -2,19 +2,26 @@ package org.flexpay.orgs.actions.organization;
 
 import org.flexpay.common.actions.FPActionSupport;
 import static org.flexpay.common.persistence.Stub.stub;
+import org.flexpay.common.persistence.Language;
+import static org.flexpay.common.util.CollectionUtils.map;
+import org.flexpay.common.util.config.ApplicationConfig;
 import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.orgs.persistence.PaymentPoint;
 import org.flexpay.orgs.persistence.PaymentsCollector;
+import org.flexpay.orgs.persistence.PaymentPointName;
 import org.flexpay.orgs.persistence.filters.PaymentsCollectorFilter;
 import org.flexpay.orgs.service.PaymentPointService;
 import org.flexpay.orgs.service.PaymentsCollectorService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
+import java.util.Map;
+
 public class PaymentPointEditAction extends FPActionSupport {
 
 	private PaymentsCollectorFilter paymentsCollectorFilter = new PaymentsCollectorFilter();
 	private PaymentPoint point = new PaymentPoint();
+	private Map<Long, String> names = map();
 
 	private OrganizationHelper organizationHelper;
 	private PaymentsCollectorService paymentsCollectorService;
@@ -49,14 +56,15 @@ public class PaymentPointEditAction extends FPActionSupport {
 
 		paymentsCollectorService.initFilter(paymentsCollectorFilter);
 
-		if (pnt.isNotNew()) {
-			paymentsCollectorFilter.setSelectedId(pnt.getCollector().getId());
-			paymentsCollectorFilter.setReadOnly(true);
-		}
-
 		// prepare initial setup
 		if (!isSubmit()) {
 			point = pnt;
+			initNames();
+			if (pnt.isNotNew()) {
+				paymentsCollectorFilter.setSelectedId(pnt.getCollector().getId());
+				paymentsCollectorFilter.setReadOnly(true);
+			}
+
 			return INPUT;
 		}
 
@@ -64,6 +72,18 @@ public class PaymentPointEditAction extends FPActionSupport {
 			pnt.setCollector(paymentsCollectorService.read(paymentsCollectorFilter.getSelectedStub()));
 		}
 		pnt.setAddress(point.getAddress());
+
+		for (Map.Entry<Long, String> name : names.entrySet()) {
+			String value = name.getValue();
+			Language lang = getLang(name.getKey());
+			PaymentPointName nameTranslation = new PaymentPointName();
+			nameTranslation.setLang(lang);
+			nameTranslation.setName(value);
+
+			log.debug("Setting payment point name: {}", nameTranslation);
+
+			pnt.setName(nameTranslation);
+		}
 
 		if (pnt.isNew()) {
 			paymentPointService.create(pnt);
@@ -75,13 +95,24 @@ public class PaymentPointEditAction extends FPActionSupport {
 	}
 
 	public String getCollectorName(@NotNull PaymentsCollector collectorStub) {
-
 		return organizationHelper.getName(collectorStub, userPreferences.getLocale());
 	}
 
 	public String getCollectorName(@NotNull Organization organizationStub) {
-
 		return organizationHelper.getName(organizationStub, userPreferences.getLocale());
+	}
+
+	private void initNames() {
+		for (PaymentPointName name : point.getNames()) {
+			names.put(name.getLang().getId(), name.getName());
+		}
+
+		for (Language lang : ApplicationConfig.getLanguages()) {
+			if (names.containsKey(lang.getId())) {
+				continue;
+			}
+			names.put(lang.getId(), "");
+		}
 	}
 
 	/**
@@ -102,6 +133,14 @@ public class PaymentPointEditAction extends FPActionSupport {
 
 	public void setPaymentsCollectorFilter(PaymentsCollectorFilter paymentsCollectorFilter) {
 		this.paymentsCollectorFilter = paymentsCollectorFilter;
+	}
+
+	public Map<Long, String> getNames() {
+		return names;
+	}
+
+	public void setNames(Map<Long, String> names) {
+		this.names = names;
 	}
 
 	public PaymentPoint getPoint() {

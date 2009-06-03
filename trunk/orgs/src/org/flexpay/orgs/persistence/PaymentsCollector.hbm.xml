@@ -65,16 +65,17 @@
 	<query name="PaymentsCollector.readFull">
 		select distinct i
 		from PaymentsCollector i
-		left outer join fetch i.descriptions
-		inner join fetch i.organization
+		    left outer join fetch i.descriptions
+		    inner join fetch i.organization
 		where i.id=?
 	</query>
 
 	<query name="PaymentsCollector.findInstances">
 		select distinct i
 		from PaymentsCollector i
-		left outer join fetch i.descriptions
-		inner join fetch i.organization
+    		left outer join fetch i.descriptions
+	    	inner join fetch i.organization o
+            left join fetch o.names
 		where i.status=0
 	</query>
 

@@ -27,4 +27,15 @@ public abstract class OrganizationInstanceFilter
 	public void setInstances(List<T> instances) {
 		this.instances = instances;
 	}
+	
+	public T getSelected() {
+		for (T instance : instances) {
+			if (instance.getId().equals(getSelectedId())) {
+				return instance;
+			}
+		}
+
+		return null;
+	}
+
 }
