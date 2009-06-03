@@ -41,6 +41,10 @@
             <result type="tiles">eirc.main.services_dicts</result>
         </action>
 
+        <action name="mainCashboxesDicts" class="staticPageAction">
+            <result type="tiles">eirc.main.cashboxes_dicts</result>
+        </action>
+
         <action name="mainImportImport" class="staticPageAction">
             <result type="tiles">eirc.main.import_import</result>
         </action>
@@ -81,6 +85,7 @@
 
 	</package>
 
+    <include file="org/flexpay/eirc/actions/cashbox/struts.xml" />
 	<include file="org/flexpay/eirc/actions/eirc_account/struts.xml" />
 	<include file="org/flexpay/eirc/actions/organization/struts.xml" />
 	<include file="org/flexpay/eirc/actions/serviceprovider/struts.xml" />

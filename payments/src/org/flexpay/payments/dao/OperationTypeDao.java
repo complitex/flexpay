@@ -10,4 +10,5 @@ public interface OperationTypeDao extends GenericDao<OperationType, Long> {
 
 	@NotNull
 	List<OperationType> findByCode(int code);
+
 }

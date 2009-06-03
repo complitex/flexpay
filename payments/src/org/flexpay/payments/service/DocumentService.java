@@ -41,6 +41,7 @@ public interface DocumentService {
 
 	/**
 	 * Returns list of operation documents which suits search criterias
+	 *
 	 * @param operation owner operation
 	 * @param serviceTypeId documnent service type id
 	 * @param minimalSumm minimal document summ
@@ -51,11 +52,15 @@ public interface DocumentService {
 	List<Document> searchDocuments(@NotNull Operation operation, Long serviceTypeId, BigDecimal minimalSumm, BigDecimal maximalSumm);
 
 	/**
-	 * Returns list of documents with state REGISTERED and type CASH_PAYMENT which were created in time period
+	 * Returns list of documents with state REGISTERED
+	 * and type CASH_PAYMENT which were created in time period
+	 *
 	 * @param begin begin date
 	 * @param end end date
-	 * @return list of documents with state REGISTERED and type CASH_PAYMENT which were created in time period
+	 * @return list of documents with state REGISTERED
+	 * 		   and type CASH_PAYMENT which were created in time period
 	 */
 	@Secured (Roles.DOCUMENT_READ)
 	List<Document> listRegisteredPaymentDocuments(@NotNull Date begin, @NotNull Date end);
+
 }

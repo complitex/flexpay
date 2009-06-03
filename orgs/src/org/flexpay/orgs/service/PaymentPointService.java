@@ -51,7 +51,7 @@ public interface PaymentPointService {
 	PaymentPoint create(@NotNull PaymentPoint point) throws FlexPayExceptionContainer;
 
 	/**
-	 * Updaet PaymentPoint
+	 * Update PaymentPoint
 	 *
 	 * @param point Point to update
 	 * @return PaymentPoint back
@@ -68,4 +68,8 @@ public interface PaymentPointService {
 	 */
 	@NotNull
 	PaymentPointsFilter initFilter(@NotNull PaymentPointsFilter filter);
+
+
+	List<PaymentPoint> findAll();
+
 }

@@ -10,7 +10,7 @@ import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.orgs.persistence.ServiceProvider;
 import org.flexpay.orgs.service.ServiceProviderService;
-import org.flexpay.payments.actions.PaymentPointAwareAction;
+import org.flexpay.payments.actions.interceptor.CashboxAware;
 import org.flexpay.payments.persistence.Service;
 import org.flexpay.payments.persistence.quittance.QuittanceDetailsRequest;
 import org.flexpay.payments.persistence.quittance.QuittanceDetailsResponse;
@@ -25,7 +25,7 @@ import org.springframework.beans.factory.annotation.Required;
 import java.math.BigDecimal;
 import java.util.List;
 
-public class SearchQuittanceAction extends FPActionSupport implements PaymentPointAwareAction {
+public class SearchQuittanceAction extends FPActionSupport implements CashboxAware {
 
 	private static final String SEARCH_TYPE_EIRC_ACCOUNT = "EIRC_ACCOUNT";
 	private static final String SEARCH_TYPE_QUITTANCE_NUMBER = "QUITTANCE_NUMBER";
@@ -39,13 +39,12 @@ public class SearchQuittanceAction extends FPActionSupport implements PaymentPoi
 	private PersonService personService;
 
 	private String actionName;
+	private Long cashboxId;
 
 	// required services
 	private QuittanceDetailsFinder quittanceDetailsFinder;
 	private SPService spService;
 	private ServiceProviderService serviceProviderService;
-
-	private Long paymentPointId;
 
 	@NotNull
 	protected String doExecute() throws Exception {
@@ -136,7 +135,6 @@ public class SearchQuittanceAction extends FPActionSupport implements PaymentPoi
 	}
 
 	private Long getLocalId(String masterIndex) {
-
 		// TODO how to properly get service id by index? current implementation is hack
 		return Long.parseLong(masterIndex.substring(ApplicationConfig.getInstanceId().length() + 1)); // +1 is for '-' delimeter
 	}
@@ -162,13 +160,11 @@ public class SearchQuittanceAction extends FPActionSupport implements PaymentPoi
 
 	@NotNull
 	protected String getErrorResult() {
-
 		return SUCCESS;
 	}
 
 	// rendering utility methods
 	public boolean resultsAreNotEmpty() {
-
 		return quittanceInfos.length > 0;
 	}
 
@@ -188,7 +184,6 @@ public class SearchQuittanceAction extends FPActionSupport implements PaymentPoi
 	}
 
 	public Long getServiceId(String serviceMasterIndex) {
-
 		return getLocalId(serviceMasterIndex);
 	}
 
@@ -232,7 +227,6 @@ public class SearchQuittanceAction extends FPActionSupport implements PaymentPoi
 	}
 
 	public String getServiceFullIndex(String quittanceId, String serviceId) {
-
 		return ServiceFullIndexUtil.getServiceFullIndex(quittanceId, serviceId);
 	}
 
@@ -261,7 +255,16 @@ public class SearchQuittanceAction extends FPActionSupport implements PaymentPoi
 		this.actionName = actionName;
 	}
 
+	public Long getCashboxId() {
+		return cashboxId;
+	}
+
+	public void setCashboxId(Long cashboxId) {
+		this.cashboxId = cashboxId;
+	}
+
 	// required services
+
 	@Required
 	public void setQuittanceDetailsFinder(QuittanceDetailsFinder quittanceDetailsFinder) {
 		this.quittanceDetailsFinder = quittanceDetailsFinder;
@@ -287,11 +290,4 @@ public class SearchQuittanceAction extends FPActionSupport implements PaymentPoi
 		this.personService = personService;
 	}
 
-	public Long getPaymentPointId() {
-		return paymentPointId;
-	}
-
-	public void setPaymentPointId(Long paymentPointId) {
-		this.paymentPointId = paymentPointId;
-	}
 }

@@ -40,4 +40,5 @@ public interface ServiceDaoExt {
 	 * @return List of services
 	 */
 	List<Service> findIntersectingServices(Long providerId, Long typeId, Date beginDate, Date endDate);
+
 }

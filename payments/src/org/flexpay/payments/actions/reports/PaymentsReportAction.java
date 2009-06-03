@@ -16,18 +16,16 @@ import org.flexpay.common.util.SecurityUtil;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.payments.reports.payments.PaymentReportData;
 import org.flexpay.payments.reports.payments.PaymentsReporter;
-import org.flexpay.payments.actions.PaymentPointAwareAction;
+import org.flexpay.payments.actions.interceptor.CashboxAware;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-public class PaymentsReportAction extends FPActionSupport implements PaymentPointAwareAction {
+public class PaymentsReportAction extends FPActionSupport implements CashboxAware {
 
 	private BeginDateFilter beginDateFilter = new BeginDateFilter(DateUtil.now());
 	private EndDateFilter endDateFilter = new EndDateFilter(DateUtil.now());
@@ -36,12 +34,12 @@ public class PaymentsReportAction extends FPActionSupport implements PaymentPoin
 
 	private List<PaymentReportData> reportContent = CollectionUtils.list();
 
+	private Long cashboxId;
+
 	private FPFile file;
 
 	private FPFileService fpFileService;
 	private PaymentsReporter paymentsReporter;
-
-	private Long paymentPointId;
 
 	@NotNull
 	protected String doExecute() throws Exception {
@@ -162,6 +160,14 @@ public class PaymentsReportAction extends FPActionSupport implements PaymentPoin
 		return !reportContent.isEmpty();
 	}
 
+	public Long getCashboxId() {
+		return cashboxId;
+	}
+
+	public void setCashboxId(Long cashboxId) {
+		this.cashboxId = cashboxId;
+	}
+
 	@Required
 	public void setFpFileService(FPFileService fpFileService) {
 		this.fpFileService = fpFileService;
@@ -172,11 +178,4 @@ public class PaymentsReportAction extends FPActionSupport implements PaymentPoin
 		this.paymentsReporter = paymentsReporter;
 	}
 
-	public Long getPaymentPointId() {
-		return paymentPointId;
-	}
-
-	public void setPaymentPointId(Long paymentPointId) {
-		this.paymentPointId = paymentPointId;
-	}
 }

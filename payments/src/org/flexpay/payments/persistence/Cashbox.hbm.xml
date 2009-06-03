@@ -1,0 +1,94 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+		"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="org.flexpay.payments.persistence">
+
+	<class name="Cashbox" table="payments_cashboxes_tbl" optimistic-lock="version">
+		<comment>Cashboxes table</comment>
+		<id name="id">
+			<column name="id">
+				<comment>Primary key</comment>
+			</column>
+			<generator class="native" />
+		</id>
+		<version name="version" access="field">
+			<column name="version">
+				<comment>Optimistic lock version</comment>
+			</column>
+		</version>
+        <property name="status">
+            <column name="status" not-null="true">
+                <comment>Cashbox status</comment>
+            </column>
+        </property>
+		<many-to-one name="paymentPoint" class="org.flexpay.orgs.persistence.PaymentPoint"
+					 foreign-key="FK_payments_cashboxes_tbl_payment_point_id">
+			<column name="payment_point_id" not-null="true">
+				<comment>Payment point reference</comment>
+			</column>
+		</many-to-one>
+        <set name="names" inverse="true" cascade="all-delete-orphan">
+            <key column="cashbox_id" not-null="true"/>
+            <one-to-many class="CashboxNameTranslation"/>
+        </set>
+	</class>
+
+    <class name="CashboxNameTranslation" table="payments_cashbox_name_translations_tbl" optimistic-lock="version">
+        <id name="id">
+            <column name="id">
+                <comment>Primary key</comment>
+            </column>
+            <generator class="native" />
+        </id>
+        <version name="version" access="field">
+            <column name="version">
+                <comment>Optimistic lock version</comment>
+            </column>
+        </version>
+        <property name="name">
+            <column name="name" not-null="true">
+                <comment>Name</comment>
+            </column>
+        </property>
+        <properties name="lang_cashbox_pair" unique="true">
+            <many-to-one name="lang" foreign-key="FK_payments_cashbox_name_translation_language"
+                         class="org.flexpay.common.persistence.Language">
+                <column not-null="true" name="language_id">
+                    <comment>Language reference</comment>
+                </column>
+            </many-to-one>
+            <many-to-one name="translatable" foreign-key="FK_payments_cashbox_name_translation_cashbox"
+                         class="Cashbox">
+                <column name="cashbox_id" not-null="true">
+                    <comment>Cashbox reference</comment>
+                </column>
+            </many-to-one>
+        </properties>
+    </class>
+
+    <query name="Cashbox.readFull">
+        select distinct o
+        from Cashbox o
+            inner join fetch o.paymentPoint p
+            left join fetch o.names
+            inner join fetch p.collector
+        where o.id=?
+    </query>
+
+    <query name="Cashbox.findCashboxes.count">
+        select count(*)
+        from Cashbox o
+        where o.status=0
+    </query>
+
+    <query name="Cashbox.findCashboxes">
+        select distinct o
+        from Cashbox o
+            inner join fetch o.paymentPoint
+            left join fetch o.names
+        where o.status=0
+    </query>
+
+</hibernate-mapping>

@@ -26,4 +26,5 @@ public interface PaymentStatisticsDaoExt {
 	 * @return List of payment operation statistics
 	 */
 	List<OperationTypeStatistics> getOperationTypeStatistics(Long organizationId, Date begin, Date end);
+
 }

@@ -14,4 +14,7 @@ public interface PaymentPointDao extends GenericDao<PaymentPoint, Long> {
 	List<PaymentPoint> listPoints(Page<PaymentPoint> pager);
 
 	List<PaymentPoint> listCollectorPoints(Long collectorId, Page<PaymentPoint> pager);
+
+	List<PaymentPoint> listPoints();
+
 }

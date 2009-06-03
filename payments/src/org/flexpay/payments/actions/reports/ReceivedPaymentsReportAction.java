@@ -5,24 +5,20 @@ import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.filter.BeginDateFilter;
 import org.flexpay.common.util.BigDecimalFormat;
-import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.DateUtil;
 import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.orgs.persistence.ServiceProvider;
-import org.flexpay.orgs.persistence.PaymentPoint;
 import org.flexpay.orgs.service.OrganizationService;
-import org.flexpay.orgs.service.ServiceProviderService;
 import org.flexpay.orgs.service.PaymentPointService;
-import org.flexpay.payments.persistence.Operation;
-import org.flexpay.payments.persistence.OperationType;
-import org.flexpay.payments.persistence.Service;
-import org.flexpay.payments.persistence.ServiceType;
+import org.flexpay.orgs.service.ServiceProviderService;
+import org.flexpay.payments.actions.interceptor.CashboxAware;
+import org.flexpay.payments.persistence.*;
+import org.flexpay.payments.service.CashboxService;
 import org.flexpay.payments.service.OperationService;
 import org.flexpay.payments.service.SPService;
 import org.flexpay.payments.service.ServiceTypeService;
 import org.flexpay.payments.service.statistics.OperationTypeStatistics;
 import org.flexpay.payments.service.statistics.PaymentsStatisticsService;
-import org.flexpay.payments.actions.PaymentPointAwareAction;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
@@ -31,7 +27,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
-public class ReceivedPaymentsReportAction extends FPActionSupport implements PaymentPointAwareAction {
+public class ReceivedPaymentsReportAction extends FPActionSupport implements CashboxAware {
 
 	// form data
 	private BeginDateFilter beginDateFilter = new BeginDateFilter();
@@ -39,18 +35,16 @@ public class ReceivedPaymentsReportAction extends FPActionSupport implements Pay
 	private List<Operation> operations = Collections.emptyList();
 	private List<OperationTypeStatistics> typeStatisticses = Collections.emptyList();
 
+	private Long cashboxId;
+
 	// required services
 	private OperationService operationService;
-
 	private SPService spService;
 	private ServiceTypeService serviceTypeService;
 	private ServiceProviderService serviceProviderService;
-	private PaymentPointService paymentPointService;
+	private CashboxService cashboxService;
 	private OrganizationService organizationService;
-
 	private PaymentsStatisticsService statisticsService;
-
-	private Long paymentPointId;
 
 	@NotNull
 	protected String doExecute() throws Exception {
@@ -81,8 +75,8 @@ public class ReceivedPaymentsReportAction extends FPActionSupport implements Pay
 
 	private Organization getSelfOrganization() {
 
-		PaymentPoint paymentPoint = paymentPointService.read(new Stub<PaymentPoint>(paymentPointId));
-		Long organizationId = paymentPoint.getCollector().getOrganization().getId();
+		Cashbox cashbox = cashboxService.read(new Stub<Cashbox>(cashboxId));
+		Long organizationId = cashbox.getPaymentPoint().getCollector().getOrganization().getId();
 		return organizationService.readFull(new Stub<Organization>(organizationId));
 	}
 
@@ -173,6 +167,14 @@ public class ReceivedPaymentsReportAction extends FPActionSupport implements Pay
 		return BigDecimalFormat.format(summ, 2).toPlainString();
 	}
 
+	public Long getCashboxId() {
+		return cashboxId;
+	}
+
+	public void setCashboxId(Long cashboxId) {
+		this.cashboxId = cashboxId;
+	}
+
 	// required services
 	@Required
 	public void setOperationService(OperationService operationService) {
@@ -200,8 +202,8 @@ public class ReceivedPaymentsReportAction extends FPActionSupport implements Pay
 	}
 
 	@Required
-	public void setPaymentPointService(PaymentPointService paymentPointService) {
-		this.paymentPointService = paymentPointService;
+	public void setCashboxService(CashboxService cashboxService) {
+		this.cashboxService = cashboxService;
 	}
 
 	@Required
@@ -209,11 +211,4 @@ public class ReceivedPaymentsReportAction extends FPActionSupport implements Pay
 		this.organizationService = organizationService;
 	}
 
-	public Long getPaymentPointId() {
-		return paymentPointId;
-	}
-
-	public void setPaymentPointId(Long paymentPointId) {
-		this.paymentPointId = paymentPointId;
-	}
 }

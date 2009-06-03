@@ -21,4 +21,5 @@ public interface ServiceTypeDao extends GenericDao<ServiceType, Long> {
 	 * @return list of service types
 	 */
 	List<ServiceType> findAllServiceTypes();
+
 }

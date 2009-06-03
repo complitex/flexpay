@@ -116,4 +116,5 @@ public class PaymentOperationReportAction extends FPActionSupport {
 	public void setPaymentsReporter(PaymentsReporter paymentsReporter) {
 		this.paymentsReporter = paymentsReporter;
 	}
+
 }

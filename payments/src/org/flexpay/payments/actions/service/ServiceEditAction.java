@@ -17,7 +17,7 @@ import org.flexpay.payments.persistence.filters.ServiceFilter;
 import org.flexpay.payments.persistence.filters.ServiceTypeFilter;
 import org.flexpay.payments.service.SPService;
 import org.flexpay.payments.service.ServiceTypeService;
-import org.flexpay.payments.actions.PaymentPointAwareAction;
+import org.flexpay.payments.actions.interceptor.CashboxAware;
 import org.flexpay.orgs.persistence.ServiceProvider;
 import org.flexpay.orgs.persistence.filters.ServiceProviderFilter;
 import org.flexpay.orgs.service.ServiceProviderService;
@@ -26,7 +26,7 @@ import org.springframework.beans.factory.annotation.Required;
 
 import java.util.Map;
 
-public class ServiceEditAction extends FPActionSupport implements PaymentPointAwareAction {
+public class ServiceEditAction extends FPActionSupport implements CashboxAware {
 
 	private Service service = new Service(0L);
 
@@ -39,13 +39,13 @@ public class ServiceEditAction extends FPActionSupport implements PaymentPointAw
 
 	private Map<Long, String> descriptions = map();
 
+	private Long cashboxId;
+
 	private String crumbCreateKey;
 	private SPService spService;
 	private ServiceProviderService providerService;
 	private ServiceTypeService serviceTypeService;
 	private MeasureUnitService measureUnitService;
-
-	private Long paymentPointId;
 
 	@NotNull
 	public String doExecute() throws Exception {
@@ -214,6 +214,14 @@ public class ServiceEditAction extends FPActionSupport implements PaymentPointAw
 		this.descriptions = descriptions;
 	}
 
+	public Long getCashboxId() {
+		return cashboxId;
+	}
+
+	public void setCashboxId(Long cashboxId) {
+		this.cashboxId = cashboxId;
+	}
+
 	public void setCrumbCreateKey(String crumbCreateKey) {
 		this.crumbCreateKey = crumbCreateKey;
 	}
@@ -238,11 +246,4 @@ public class ServiceEditAction extends FPActionSupport implements PaymentPointAw
 		this.providerService = providerService;
 	}
 
-	public Long getPaymentPointId() {
-		return paymentPointId;
-	}
-
-	public void setPaymentPointId(Long paymentPointId) {
-		this.paymentPointId = paymentPointId;
-	}
 }

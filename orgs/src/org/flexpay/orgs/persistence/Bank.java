@@ -1,5 +1,7 @@
 package org.flexpay.orgs.persistence;
 
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
 import org.flexpay.common.persistence.Stub;
 import org.jetbrains.annotations.NotNull;
 
@@ -8,14 +10,11 @@ import java.util.Set;
 
 public class Bank extends OrganizationInstance<BankDescription, Bank> {
 
-	private Set<BankAccount> accounts = Collections.emptySet();
-
 	private String bankIdentifierCode;
 	private String correspondingAccount;
 
-	/**
-	 * Constructs a new DomainObject.
-	 */
+	private Set<BankAccount> accounts = Collections.emptySet();
+
 	public Bank() {
 	}
 
@@ -50,4 +49,15 @@ public class Bank extends OrganizationInstance<BankDescription, Bank> {
 	public void setCorrespondingAccount(String correspondingAccount) {
 		this.correspondingAccount = correspondingAccount;
 	}
+
+	@Override
+	public String toString() {
+		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
+				append("id", getId()).
+				append("status", getStatus()).
+				append("bankIdentifierCode", bankIdentifierCode).
+				append("correspondingAccount", correspondingAccount).
+				toString();
+	}
+
 }

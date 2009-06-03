@@ -1,4 +1,3 @@
-
 <%@include file="/WEB-INF/jsp/common/taglibs.jsp" %>
 
 <s:form id="ftypes">

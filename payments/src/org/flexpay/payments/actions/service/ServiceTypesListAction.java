@@ -3,20 +3,19 @@ package org.flexpay.payments.actions.service;
 import org.flexpay.common.actions.FPActionWithPagerSupport;
 import org.flexpay.payments.persistence.ServiceType;
 import org.flexpay.payments.service.ServiceTypeService;
-import org.flexpay.payments.actions.PaymentPointAwareAction;
+import org.flexpay.payments.actions.interceptor.CashboxAware;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.util.Collections;
 import java.util.List;
 
-public class ServiceTypesListAction extends FPActionWithPagerSupport<ServiceType> implements PaymentPointAwareAction {
+public class ServiceTypesListAction extends FPActionWithPagerSupport<ServiceType> implements CashboxAware {
 
+	private Long cashboxId;
 	private List<ServiceType> serviceTypes = Collections.emptyList();
 
 	private ServiceTypeService serviceTypeService;
-
-	private Long paymentPointId;
 
 	@NotNull
 	public String doExecute() throws Exception {
@@ -42,16 +41,17 @@ public class ServiceTypesListAction extends FPActionWithPagerSupport<ServiceType
 		return serviceTypes;
 	}
 
+	public Long getCashboxId() {
+		return cashboxId;
+	}
+
+	public void setCashboxId(Long cashboxId) {
+		this.cashboxId = cashboxId;
+	}
+
 	@Required
 	public void setServiceTypeService(ServiceTypeService serviceTypeService) {
 		this.serviceTypeService = serviceTypeService;
 	}
 
-	public Long getPaymentPointId() {
-		return paymentPointId;
-	}
-
-	public void setPaymentPointId(Long paymentPointId) {
-		this.paymentPointId = paymentPointId;
-	}
 }
