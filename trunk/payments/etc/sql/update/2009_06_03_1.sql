@@ -1,3 +1,5 @@
+-- DO NOT ENTER FOR EIRC AND REFERENCE MODULES
+
 alter table common_registry_properties_tbl
         add column service_provider_id bigint comment 'Service provider reference';
 alter table common_registry_properties_tbl
