@@ -7,52 +7,59 @@
 		   http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
 		   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
-	<bean id="documentService" class="org.flexpay.payments.service.impl.DocumentServiceImpl"
+	<bean id="documentService"
+          class="org.flexpay.payments.service.impl.DocumentServiceImpl"
 		  p:documentDao-ref="documentDao"
 		  p:documentDaoExt-ref="documentDaoExt" />
 
-	<bean id="documentAdditionTypeService" class="org.flexpay.payments.service.impl.DocumentAdditionTypeServiceImpl"
+	<bean id="documentAdditionTypeService"
+          class="org.flexpay.payments.service.impl.DocumentAdditionTypeServiceImpl"
 		  p:typeDao-ref="documentAdditionTypeDao" />
 
-	<bean id="operationAdditionTypeService" class="org.flexpay.payments.service.impl.OperationAdditionTypeServiceImpl"
+	<bean id="operationAdditionTypeService"
+          class="org.flexpay.payments.service.impl.OperationAdditionTypeServiceImpl"
 		  p:typeDao-ref="operationAdditionTypeDao" />
 
 	<bean id="documentTypeServiceTarget"
-		  autowire-candidate="false"
 		  class="org.flexpay.payments.service.impl.DocumentTypeServiceImpl"
-		  p:documentTypeDao-ref="documentTypeDao" />
+		  p:documentTypeDao-ref="documentTypeDao"
+          autowire-candidate="false" />
 
 	<bean id="documentStatusServiceTarget"
-		  autowire-candidate="false"
 		  class="org.flexpay.payments.service.impl.DocumentStatusServiceImpl"
-		  p:documentStatusDao-ref="documentStatusDao" />
+		  p:documentStatusDao-ref="documentStatusDao"
+          autowire-candidate="false" />
 
-	<bean id="operationService" class="org.flexpay.payments.service.impl.OperationServiceImpl"
+	<bean id="operationService"
+          class="org.flexpay.payments.service.impl.OperationServiceImpl"
 		  p:operationDao-ref="operationDao"
 		  p:operationDaoExt-ref="operationDaoExt" />
 
-	<bean id="operationTypeService" class="org.flexpay.payments.service.impl.OperationTypeServiceImpl"
+	<bean id="operationTypeService"
+          class="org.flexpay.payments.service.impl.OperationTypeServiceImpl"
 		  p:operationTypeDao-ref="operationTypeDao" />
 
-	<bean id="operationStatusService" class="org.flexpay.payments.service.impl.OperationStatusServiceImpl"
+	<bean id="operationStatusService"
+          class="org.flexpay.payments.service.impl.OperationStatusServiceImpl"
 		  p:operationStatusDao-ref="operationStatusDao" />
 
-	<bean id="operationLevelService" class="org.flexpay.payments.service.impl.OperationLevelServiceImpl"
+	<bean id="operationLevelService"
+          class="org.flexpay.payments.service.impl.OperationLevelServiceImpl"
 		  p:levelDao-ref="operationLevelDao" />
 
 	<bean id="serviceTypeServiceTarget"
-		  autowire-candidate="false"
 		  class="org.flexpay.payments.service.impl.ServiceTypeServiceImpl"
 		  p:serviceDaoExt-ref="serviceDaoExt"
-		  p:serviceTypeDao-ref="serviceTypeDao" />
+		  p:serviceTypeDao-ref="serviceTypeDao"
+          autowire-candidate="false" />
 
 	<bean id="spServiceTarget"
-		  autowire-candidate="false"
 		  class="org.flexpay.payments.service.impl.SPServiceImpl"
 		  p:serviceDao-ref="serviceDao"
 		  p:serviceDaoExt-ref="serviceDaoExt"
 		  p:sessionUtils-ref="sessionUtils"
-		  p:measureUnitService-ref="measureUnitService" />
+		  p:measureUnitService-ref="measureUnitService"
+          autowire-candidate="false" />
 
 	<bean id="paymentsStatisticsService"
 		  class="org.flexpay.payments.service.statistics.impl.PaymentsStatisticsServiceImpl"
@@ -95,5 +102,10 @@
           class="org.flexpay.common.service.transport.impl.EmailOutTransport"
           p:email="test@test.test"
           p:sender-ref="mailSender" />
+
+    <bean id="cashboxService"
+          class="org.flexpay.payments.service.impl.CashboxServiceImpl"
+          p:cashboxDao-ref="cashboxDao"
+            />
 
 </beans>

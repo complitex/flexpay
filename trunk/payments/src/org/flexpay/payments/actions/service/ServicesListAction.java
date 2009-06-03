@@ -7,7 +7,7 @@ import org.flexpay.common.persistence.filter.ObjectFilter;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.payments.persistence.Service;
 import org.flexpay.payments.service.SPService;
-import org.flexpay.payments.actions.PaymentPointAwareAction;
+import org.flexpay.payments.actions.interceptor.CashboxAware;
 import org.flexpay.orgs.persistence.filters.ServiceProviderFilter;
 import org.flexpay.orgs.service.ServiceProviderService;
 import org.jetbrains.annotations.NotNull;
@@ -15,18 +15,18 @@ import org.springframework.beans.factory.annotation.Required;
 
 import java.util.List;
 
-public class ServicesListAction extends FPActionWithPagerSupport<Service> implements PaymentPointAwareAction {
+public class ServicesListAction extends FPActionWithPagerSupport<Service> implements CashboxAware {
 
 	private BeginDateFilter beginDateFilter = new BeginDateFilter();
 	private EndDateFilter endDateFilter = new EndDateFilter();
 	private ServiceProviderFilter serviceProviderFilter = new ServiceProviderFilter();
 
+	private Long cashboxId;
+
 	private List<Service> services;
 
 	private ServiceProviderService providerService;
 	private SPService spService;
-
-	private Long paymentPointId;
 
 	@NotNull
 	public String doExecute() throws Exception {
@@ -80,6 +80,14 @@ public class ServicesListAction extends FPActionWithPagerSupport<Service> implem
 		this.serviceProviderFilter = serviceProviderFilter;
 	}
 
+	public Long getCashboxId() {
+		return cashboxId;
+	}
+
+	public void setCashboxId(Long cashboxId) {
+		this.cashboxId = cashboxId;
+	}
+
 	@Required
 	public void setSpService(SPService spService) {
 		this.spService = spService;
@@ -90,11 +98,4 @@ public class ServicesListAction extends FPActionWithPagerSupport<Service> implem
 		this.providerService = providerService;
 	}
 
-	public Long getPaymentPointId() {
-		return paymentPointId;
-	}
-
-	public void setPaymentPointId(Long paymentPointId) {
-		this.paymentPointId = paymentPointId;
-	}
 }

@@ -8,9 +8,6 @@ public class ServiceTypeNameTranslation extends Translation {
 
 	private String description;
 
-	public ServiceTypeNameTranslation() {
-	}
-
 	public String getDescription() {
 		return description;
 	}

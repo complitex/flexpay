@@ -29,10 +29,13 @@ public class BreadCrumbInterceptor extends AbstractInterceptor {
 
 		try {
 
-			Crumb curCrumb = getCurrentCrumb(request);
-
 			Object action = actionInvocation.getAction();
-			((BreadCrumbAware) action).setCrumb(curCrumb);
+
+			if (action instanceof BreadCrumbAware) {
+
+				Crumb curCrumb = getCurrentCrumb(request);
+				((BreadCrumbAware) action).setCrumb(curCrumb);
+			}
 
 			return actionInvocation.invoke();
 

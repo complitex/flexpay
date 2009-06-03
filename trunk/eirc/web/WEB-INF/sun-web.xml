@@ -509,6 +509,24 @@
 		<group-name>EIRC_FULL_ACCESS</group-name>
 	</security-role-mapping>
 
+    <!-- cashbox roles -->
+    <security-role-mapping>
+        <role-name>ROLE_PAYMENTS_CASHBOX_READ</role-name>
+        <group-name>EIRC_FULL_ACCESS</group-name>
+    </security-role-mapping>
+    <security-role-mapping>
+        <role-name>ROLE_PAYMENTS_CASHBOX_CHANGE</role-name>
+        <group-name>EIRC_FULL_ACCESS</group-name>
+    </security-role-mapping>
+    <security-role-mapping>
+        <role-name>ROLE_PAYMENTS_CASHBOX_ADD</role-name>
+        <group-name>EIRC_FULL_ACCESS</group-name>
+    </security-role-mapping>
+    <security-role-mapping>
+        <role-name>ROLE_PAYMENTS_CASHBOX_DELETE</role-name>
+        <group-name>EIRC_FULL_ACCESS</group-name>
+    </security-role-mapping>
+
 	<!-- EIRC Service types -->
 	<security-role-mapping>
 		<role-name>ROLE_PAYMENTS_SERVICE_TYPE_READ</role-name>
@@ -690,6 +708,10 @@
 		<role-name>ROLE_MENU_EIRC_SERVICES_DICTS</role-name>
 		<group-name>FULL_ACCESS</group-name>
 	</security-role-mapping>
+    <security-role-mapping>
+        <role-name>ROLE_MENU_EIRC_CASHBOXES_DICTS</role-name>
+        <group-name>FULL_ACCESS</group-name>
+    </security-role-mapping>
 	<security-role-mapping>
 		<role-name>ROLE_MENU_EIRC_IMPORT2</role-name>
 		<group-name>FULL_ACCESS</group-name>
@@ -742,6 +764,10 @@
 		<role-name>ROLE_MENU_EIRC_DICTS_SERVICES</role-name>
 		<group-name>FULL_ACCESS</group-name>
 	</security-role-mapping>
+    <security-role-mapping>
+        <role-name>ROLE_MENU_EIRC_DICTS_CASHBOXES</role-name>
+        <group-name>FULL_ACCESS</group-name>
+    </security-role-mapping>
 	<security-role-mapping>
 		<role-name>ROLE_MENU_EIRC_IMPORT_SP_FILES_IMPORT</role-name>
 		<group-name>FULL_ACCESS</group-name>

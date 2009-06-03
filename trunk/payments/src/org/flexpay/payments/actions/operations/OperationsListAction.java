@@ -1,8 +1,6 @@
 package org.flexpay.payments.actions.operations;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateUtils;
-import org.apache.struts2.interceptor.CookiesAware;
 import org.flexpay.common.actions.FPActionWithPagerSupport;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
@@ -19,19 +17,20 @@ import org.flexpay.orgs.service.OrganizationService;
 import org.flexpay.orgs.service.PaymentPointService;
 import org.flexpay.payments.persistence.*;
 import org.flexpay.payments.service.*;
-import org.flexpay.payments.actions.PaymentPointAwareAction;
+import org.flexpay.payments.actions.interceptor.CashboxAware;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
-public class OperationsListAction extends FPActionWithPagerSupport<Operation> implements PaymentPointAwareAction {
+public class OperationsListAction extends FPActionWithPagerSupport<Operation> implements CashboxAware {
 
 	// form data
 	private List<ServiceType> serviceTypes = CollectionUtils.list();
+
+	private Long cashboxId;
 
 	// selected service type id
 	private Long serviceTypeId;
@@ -70,9 +69,7 @@ public class OperationsListAction extends FPActionWithPagerSupport<Operation> im
 	private DocumentService documentService;
 	private ServiceTypeService serviceTypeService;
 	private OrganizationService organizationService;
-	private PaymentPointService paymentPointService;
-
-	private Long paymentPointId;
+	private CashboxService cashboxService;
 
 	@NotNull
 	protected String doExecute() throws Exception {
@@ -139,11 +136,11 @@ public class OperationsListAction extends FPActionWithPagerSupport<Operation> im
 
 	private Organization getSelfOrganization() {
 
-		PaymentPoint paymentPoint = paymentPointService.read(new Stub<PaymentPoint>(paymentPointId));
-		if (paymentPoint == null) {
-			throw new IllegalStateException("Invalid payment point id: " + paymentPointId);
+		Cashbox cashbox = cashboxService.read(new Stub<Cashbox>(cashboxId));
+		if (cashbox == null) {
+			throw new IllegalArgumentException("Invalid cashbox id: " + cashboxId);
 		}
-		Long organizationId = paymentPoint.getCollector().getOrganization().getId();
+		Long organizationId = cashbox.getPaymentPoint().getCollector().getOrganization().getId();
 		return organizationService.readFull(new Stub<Organization>(organizationId));
 	}
 
@@ -371,6 +368,14 @@ public class OperationsListAction extends FPActionWithPagerSupport<Operation> im
 		this.documentSearchEnabled = documentSearchEnabled;
 	}
 
+	public Long getCashboxId() {
+		return cashboxId;
+	}
+
+	public void setCashboxId(Long cashboxId) {
+		this.cashboxId = cashboxId;
+	}
+
 	// required services
 	@Required
 	public void setOperationService(OperationService operationService) {
@@ -403,15 +408,8 @@ public class OperationsListAction extends FPActionWithPagerSupport<Operation> im
 	}
 
 	@Required
-	public void setPaymentPointService(PaymentPointService paymentPointService) {
-		this.paymentPointService = paymentPointService;
+	public void setCashboxService(CashboxService cashboxService) {
+		this.cashboxService = cashboxService;
 	}
 
-	public void setPaymentPointId(Long paymentPointId) {
-		this.paymentPointId = paymentPointId;
-	}
-
-	public Long getPaymentPointId() {
-		return paymentPointId;
-	}
 }

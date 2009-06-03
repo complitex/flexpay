@@ -540,6 +540,20 @@
 		<role-name>ROLE_EIRC_QUITTANCE_PAYMENT_READ</role-name>
 	</security-role>
 
+    <!-- cashbox roles -->
+    <security-role>
+        <role-name>ROLE_PAYMENTS_CASHBOX_READ</role-name>
+    </security-role>
+    <security-role>
+        <role-name>ROLE_PAYMENTS_CASHBOX_CHANGE</role-name>
+    </security-role>
+    <security-role>
+        <role-name>ROLE_PAYMENTS_CASHBOX_ADD</role-name>
+    </security-role>
+    <security-role>
+        <role-name>ROLE_PAYMENTS_CASHBOX_DELETE</role-name>
+    </security-role>
+
     <!-- Menu -->
     <security-role>
         <role-name>ROLE_MENU_AB</role-name>
@@ -618,6 +632,12 @@
     </security-role>
     <security-role>
         <role-name>ROLE_MENU_EIRC_SERVICES_DICTS</role-name>
+    </security-role>
+    <security-role>
+        <role-name>ROLE_MENU_EIRC_CASHBOXES_DICTS</role-name>
+    </security-role>
+    <security-role>
+        <role-name>ROLE_MENU_EIRC_DICTS_CASHBOXES</role-name>
     </security-role>
     <security-role>
         <role-name>ROLE_MENU_EIRC_IMPORT2</role-name>

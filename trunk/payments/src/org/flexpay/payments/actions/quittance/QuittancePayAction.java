@@ -7,12 +7,10 @@ import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.SecurityUtil;
 import org.flexpay.orgs.persistence.Organization;
-import org.flexpay.orgs.persistence.PaymentPoint;
 import org.flexpay.orgs.persistence.ServiceProvider;
 import org.flexpay.orgs.service.OrganizationService;
-import org.flexpay.orgs.service.PaymentPointService;
 import org.flexpay.orgs.service.ServiceProviderService;
-import org.flexpay.payments.actions.PaymentPointAwareAction;
+import org.flexpay.payments.actions.interceptor.CashboxAware;
 import org.flexpay.payments.persistence.*;
 import org.flexpay.payments.persistence.quittance.QuittanceDetailsResponse;
 import org.flexpay.payments.service.*;
@@ -24,9 +22,12 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Map;
 
-public class QuittancePayAction extends FPActionSupport implements PaymentPointAwareAction {
+public class QuittancePayAction extends FPActionSupport implements CashboxAware {
 
 	private String actionName;
+
+	private Long cashboxId;
+	private Operation operation = new Operation();
 
 	// form data
 	private QuittanceDetailsResponse.QuittanceInfo quittanceInfo = new QuittanceDetailsResponse.QuittanceInfo();
@@ -46,14 +47,10 @@ public class QuittancePayAction extends FPActionSupport implements PaymentPointA
 	private OperationLevelService operationLevelService;
 	private OperationStatusService operationStatusService;
 	private OperationTypeService operationTypeService;
-	private PaymentPointService paymentPointService;
+	private CashboxService cashboxService;
 	private OrganizationService organizationService;
 	private SPService spService;
 	private ServiceProviderService serviceProviderService;
-
-	private Long paymentPointId;
-
-	private Operation operation = new Operation();
 
 	@NotNull
 	protected String doExecute() throws Exception {
@@ -83,17 +80,13 @@ public class QuittancePayAction extends FPActionSupport implements PaymentPointA
 		return op;
 	}
 
-	private PaymentPoint getPaymentPoint() {
-		return paymentPointService.read(new Stub<PaymentPoint>(paymentPointId));
-	}
-
 	private Organization getSelfOrganization() {
 
-		PaymentPoint paymentPoint = getPaymentPoint();
-		if (paymentPoint == null) {
-			throw new IllegalStateException("Invalid payment point id: " + paymentPointId);
+		Cashbox cashbox = cashboxService.read(new Stub<Cashbox>(cashboxId));
+		if (cashbox == null) {
+			throw new IllegalArgumentException("Invalid cashbox id: " + cashboxId);
 		}
-		Long organizationId = paymentPoint.getCollector().getOrganization().getId();
+		Long organizationId = cashbox.getPaymentPoint().getCollector().getOrganization().getId();
 		return organizationService.readFull(new Stub<Organization>(organizationId));
 	}
 
@@ -106,7 +99,7 @@ public class QuittancePayAction extends FPActionSupport implements PaymentPointA
 		op.setCreationDate(new Date());
 		op.setRegisterDate(new Date());
 		op.setCreatorOrganization(getSelfOrganization());
-		op.setPaymentPoint(getPaymentPoint());
+		op.setPaymentPoint(cashboxService.read(new Stub<Cashbox>(cashboxId)).getPaymentPoint());
 		op.setRegisterOrganization(getSelfOrganization());
 		op.setCreatorUserName(SecurityUtil.getUserName());
 		op.setRegisterUserName(SecurityUtil.getUserName());
@@ -227,6 +220,18 @@ public class QuittancePayAction extends FPActionSupport implements PaymentPointA
 		this.eircAccounts = eircAccounts;
 	}
 
+	public Long getCashboxId() {
+		return cashboxId;
+	}
+
+	public void setCashboxId(Long cashboxId) {
+		this.cashboxId = cashboxId;
+	}
+
+	public Operation getOperation() {
+		return operation;
+	}
+
 	// required services
 	@Required
 	public void setDocumentTypeService(DocumentTypeService documentTypeService) {
@@ -264,8 +269,8 @@ public class QuittancePayAction extends FPActionSupport implements PaymentPointA
 	}
 
 	@Required
-	public void setPaymentPointService(PaymentPointService paymentPointService) {
-		this.paymentPointService = paymentPointService;
+	public void setCashboxService(CashboxService cashboxService) {
+		this.cashboxService = cashboxService;
 	}
 
 	@Required
@@ -278,15 +283,4 @@ public class QuittancePayAction extends FPActionSupport implements PaymentPointA
 		this.serviceProviderService = serviceProviderService;
 	}
 
-	public Long getPaymentPointId() {
-		return paymentPointId;
-	}
-
-	public void setPaymentPointId(Long paymentPointId) {
-		this.paymentPointId = paymentPointId;
-	}
-
-	public Operation getOperation() {
-		return operation;
-	}
 }

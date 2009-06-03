@@ -218,6 +218,20 @@
 		<role-name>ROLE_PAYMENTS_PAYMENTS_REPORT</role-name>
 	</security-role>
 
+    <!-- cashbox roles -->
+    <security-role>
+        <role-name>ROLE_PAYMENTS_CASHBOX_READ</role-name>
+    </security-role>
+    <security-role>
+        <role-name>ROLE_PAYMENTS_CASHBOX_CHANGE</role-name>
+    </security-role>
+    <security-role>
+        <role-name>ROLE_PAYMENTS_CASHBOX_ADD</role-name>
+    </security-role>
+    <security-role>
+        <role-name>ROLE_PAYMENTS_CASHBOX_DELETE</role-name>
+    </security-role>
+	
     <!-- Menu roles -->
 
 	<!-- level 1 -->

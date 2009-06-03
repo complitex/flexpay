@@ -1,12 +1,12 @@
 package org.flexpay.payments.actions.registry;
 
 import org.flexpay.common.actions.FPActionSupport;
-import org.flexpay.payments.actions.PaymentPointAwareAction;
+import org.flexpay.payments.actions.interceptor.CashboxAware;
 import org.jetbrains.annotations.NotNull;
 
-public class GenerateRegistryAction extends FPActionSupport implements PaymentPointAwareAction {
+public class GenerateRegistryAction extends FPActionSupport implements CashboxAware {
 
-	private Long paymentPointId;
+	private Long cashboxId;
 	private Long organizationId;
 
 	@NotNull
@@ -29,12 +29,12 @@ public class GenerateRegistryAction extends FPActionSupport implements PaymentPo
 		return SUCCESS;
 	}
 
-	public void setPaymentPointId(Long paymentPointId) {
-		this.paymentPointId = paymentPointId;
+	public Long getCashboxId() {
+		return cashboxId;
 	}
 
-	public Long getPaymentPointId() {
-		return paymentPointId;
+	public void setCashboxId(Long cashboxId) {
+		this.cashboxId = cashboxId;
 	}
 
 	public Long getOrganizationId() {
@@ -44,4 +44,5 @@ public class GenerateRegistryAction extends FPActionSupport implements PaymentPo
 	public void setOrganizationId(Long organizationId) {
 		this.organizationId = organizationId;
 	}
+
 }

@@ -1,14 +1,11 @@
 package org.flexpay.payments.dao;
 
-import org.flexpay.payments.persistence.Operation;
-import org.flexpay.payments.service.Roles;
 import org.flexpay.common.dao.GenericDao;
 import org.flexpay.common.dao.paging.Page;
-import org.springframework.security.annotation.Secured;
+import org.flexpay.payments.persistence.Operation;
 
-import java.util.List;
 import java.util.Date;
-import java.math.BigDecimal;
+import java.util.List;
 
 public interface OperationDao extends GenericDao<Operation, Long> {
 
@@ -25,10 +22,12 @@ public interface OperationDao extends GenericDao<Operation, Long> {
 
 	/**
 	 * List of all payment operations which has status REGISTERED inside time interval and organization
+	 *
 	 * @param organizationId organization id
 	 * @param beginDate lower bound for operation registration date
 	 * @param endDate higher bound for operation registration date
 	 * @return list of payment operations
 	 */
 	List<Operation> listReceivedPayments(Long organizationId, Date beginDate, Date endDate);
+
 }

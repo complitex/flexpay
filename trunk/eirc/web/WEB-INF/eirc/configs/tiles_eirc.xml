@@ -32,6 +32,10 @@
         <put-attribute name="title" value="ab.main.title" />
     </definition>
 
+    <definition name="eirc.main.cashboxes_dicts" extends="ab.layout.standart">
+        <put-attribute name="title" value="ab.main.title" />
+    </definition>
+
     <definition name="eirc.main.import_import" extends="ab.layout.standart">
         <put-attribute name="title" value="ab.main.title" />
     </definition>
@@ -293,7 +297,7 @@
 		<put-attribute name="body" value="/WEB-INF/jsp/eirc/data/correspondence/correct_person_complete.jsp" />
 	</definition>
 
-	<!--  EIRC Account -->
+	<!-- EIRC Account -->
 	<definition name="eirc.eirc_account.list" extends="eirc.dictionaries">
 		<put-attribute name="title" value="eirc.eirc_account.list" />
 		<put-attribute name="body" value="/WEB-INF/jsp/eirc/eirc_account/eirc_account_list.jsp" />
@@ -310,5 +314,15 @@
 		<put-attribute name="title" value="eirc.eirc_account.create.select_apartment" />
 		<put-attribute name="body" value="/WEB-INF/jsp/eirc/eirc_account/eirc_account_create_form2.jsp" />
 	</definition>
+
+    <!-- Cashbox -->
+    <definition name="eirc.cashbox.list" extends="eirc.dictionaries">
+        <put-attribute name="title" value="eirc.cashbox.list" />
+        <put-attribute name="body" value="/WEB-INF/jsp/eirc/cashbox/cashboxes_list.jsp" />
+    </definition>
+    <definition name="eirc.cashbox.edit" extends="eirc.dictionaries">
+        <put-attribute name="title" value="eirc.cashbox" />
+        <put-attribute name="body" value="/WEB-INF/jsp/eirc/cashbox/cashbox_edit.jsp" />
+    </definition>
 
 </tiles-definitions>

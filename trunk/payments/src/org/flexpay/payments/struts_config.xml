@@ -23,7 +23,7 @@
 
 		<interceptors>
 			<interceptor name="paymentPointIdentification"
-						 class="org.flexpay.payments.actions.interceptor.PaymentPointIdentificationInterceptor"/>
+						 class="org.flexpay.payments.actions.interceptor.CashboxInterceptor"/>
 
 			<interceptor-stack name="paymentsDefaultStack">
 				<interceptor-ref name="commonDefaultStack"/>
@@ -39,35 +39,35 @@
 			<result name="pointAuthenticationRequired" type="tiles">payments.error.point_authentication_required</result>
 		</global-results>
 
-		<action name="main" class="paymentsStaticPageAction">
+		<action name="main" class="cashboxStaticPageAction">
 			<result type="tiles">payments.quittance.search.address</result>
 		</action>
 
-        <action name="emptyPage" class="paymentsStaticPageAction">
+        <action name="emptyPage" class="cashboxStaticPageAction">
             <result type="tiles">payments.main</result>
         </action>
 
-        <action name="mainByAddressOperations" class="paymentsStaticPageAction">
+        <action name="mainByAddressOperations" class="cashboxStaticPageAction">
             <result type="tiles">payments.main.by_address.operations</result>
         </action>
 
-        <action name="mainByAddressReports" class="paymentsStaticPageAction">
+        <action name="mainByAddressReports" class="cashboxStaticPageAction">
             <result type="tiles">payments.main.by_address.reports</result>
         </action>
 
-        <action name="mainByEircaccountOperations" class="paymentsStaticPageAction">
+        <action name="mainByEircaccountOperations" class="cashboxStaticPageAction">
             <result type="tiles">payments.main.by_eircaccount.operations</result>
         </action>
 
-        <action name="mainByEircaccountReports" class="paymentsStaticPageAction">
+        <action name="mainByEircaccountReports" class="cashboxStaticPageAction">
             <result type="tiles">payments.main.by_eircaccount.reports</result>
         </action>
 
-        <action name="mainByQuittanceOperations" class="paymentsStaticPageAction">
+        <action name="mainByQuittanceOperations" class="cashboxStaticPageAction">
             <result type="tiles">payments.main.by_quittance.operations</result>
         </action>
 
-        <action name="mainByQuittanceReports" class="paymentsStaticPageAction">
+        <action name="mainByQuittanceReports" class="cashboxStaticPageAction">
             <result type="tiles">payments.main.by_quittance.reports</result>
         </action>
 	</package>
@@ -79,7 +79,6 @@
 		</action>
 
 	</package>
-
 
 	<include file="org/flexpay/payments/actions/operations/struts.xml" />
 	<include file="org/flexpay/payments/actions/registry/struts.xml" />

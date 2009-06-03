@@ -48,11 +48,6 @@ public class PrimaryKeyFilter<T extends DomainObject> extends ObjectFilter {
 		}
 	}
 
-	/**
-	 * Getter for property 'selectedId'.
-	 * 
-	 * @return Value for property 'selectedId'.
-	 */
 	@Nullable
 	public Long getSelectedId() {
 		return selectedId;
@@ -63,12 +58,6 @@ public class PrimaryKeyFilter<T extends DomainObject> extends ObjectFilter {
 		return new Stub<T>(selectedId);
 	}
 
-	/**
-	 * Setter for property 'selectedId'.
-	 * 
-	 * @param selectedId
-	 *            Value to set for property 'selectedId'.
-	 */
 	public void setSelectedId(Long selectedId) {
 		this.selectedId = selectedId;
 	}
@@ -78,32 +67,12 @@ public class PrimaryKeyFilter<T extends DomainObject> extends ObjectFilter {
 		this.selectedId = defaultId;
 	}
 
-	/**
-	 * @return the defaultId
-	 */
 	public Long getDefaultId() {
 		return defaultId;
 	}
 
-	/**
-	 * @param defaultId
-	 *            the defaultId to set
-	 */
 	public void setDefaultId(Long defaultId) {
 		this.defaultId = defaultId;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public String toString() {
-		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE)
-				.append("readOnly", isReadOnly())
-				.append("selectedId", selectedId)
-				.append("needAutoChange", needAutoChange)
-				.append("allowEmpty", allowEmpty)
-				.toString();
 	}
 
 	public void setNeedAutoChange(boolean needAutoChange) {
@@ -126,4 +95,16 @@ public class PrimaryKeyFilter<T extends DomainObject> extends ObjectFilter {
 	public void setAllowEmpty(boolean allowEmpty) {
 		this.allowEmpty = allowEmpty;
 	}
+
+	@Override
+	public String toString() {
+		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
+				append("readOnly", isReadOnly()).
+				append("selectedId", selectedId).
+				append("defaultId", defaultId).
+				append("needAutoChange", needAutoChange).
+				append("allowEmpty", allowEmpty).
+				toString();
+	}
+
 }

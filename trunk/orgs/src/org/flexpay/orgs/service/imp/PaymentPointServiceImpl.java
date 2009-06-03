@@ -161,14 +161,18 @@ public class PaymentPointServiceImpl implements PaymentPointService {
 	 */
 	@NotNull
 	public PaymentPointsFilter initFilter(@NotNull PaymentPointsFilter filter) {
-
 		log.debug("Initializing filter");
 		filter.setPoints(listPoints(CollectionUtils.arrayStack(), new Page<PaymentPoint>(10000, 1)));
 		return filter;
+	}
+
+	public List<PaymentPoint> findAll() {
+		return paymentPointDao.listPoints();
 	}
 
 	@Required
 	public void setPaymentPointDao(PaymentPointDao paymentPointDao) {
 		this.paymentPointDao = paymentPointDao;
 	}
+
 }

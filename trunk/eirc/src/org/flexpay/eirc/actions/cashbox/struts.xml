@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+		"-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+		"http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+
+	<package name="cashbox" namespace="/eirc" extends="common">
+
+		<!-- Cashbox -->
+		<action name="cashboxesList" class="cashboxesListAction">
+			<result type="tiles">eirc.cashbox.list</result>
+		</action>
+
+		<action name="cashboxEdit" class="cashboxEditAction">
+            <result name="input" type="tiles">eirc.cashbox.edit</result>
+            <result name="redirectSuccess" type="redirect-action">cashboxesList</result>
+		</action>
+
+		<action name="cashboxDelete" class="cashboxDeleteAction">
+            <result name="redirectSuccess" type="redirect-action">cashboxesList</result>
+		</action>
+
+	</package>
+
+</struts>

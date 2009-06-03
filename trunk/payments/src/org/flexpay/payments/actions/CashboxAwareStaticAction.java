@@ -2,21 +2,22 @@ package org.flexpay.payments.actions;
 
 import org.flexpay.common.actions.StaticPageAction;
 import org.flexpay.payments.persistence.Operation;
+import org.flexpay.payments.actions.interceptor.CashboxAware;
 
-public class PaymentPointAwareStaticAction extends StaticPageAction implements PaymentPointAwareAction {
+public class CashboxAwareStaticAction extends StaticPageAction implements CashboxAware {
 
-	private Long paymentPointId;
+	private Long cashboxId;
 	private Long organizationId;
 
 	// print previously created operation
 	private Operation operation = new Operation();
 
-	public Long getPaymentPointId() {
-		return paymentPointId;
+	public Long getCashboxId() {
+		return cashboxId;
 	}
 
-	public void setPaymentPointId(Long paymentPointId) {
-		this.paymentPointId = paymentPointId;
+	public void setCashboxId(Long cashboxId) {
+		this.cashboxId = cashboxId;
 	}
 
 	public Long getOrganizationId() {
@@ -34,4 +35,5 @@ public class PaymentPointAwareStaticAction extends StaticPageAction implements P
 	public void setOperation(Operation operation) {
 		this.operation = operation;
 	}
+
 }

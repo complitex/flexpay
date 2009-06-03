@@ -10,4 +10,5 @@ public interface DocumentStatusDao extends GenericDao<DocumentStatus, Long> {
 
 	@NotNull
 	List<DocumentStatus> findByCode(int code);
+
 }

@@ -7,12 +7,14 @@
 		   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
 	<!-- Define module payments struts actions beans -->
-	<bean id="paymentsStaticPageAction" class="org.flexpay.payments.actions.PaymentPointAwareStaticAction"
+	<bean id="cashboxStaticPageAction"
+          class="org.flexpay.payments.actions.CashboxAwareStaticAction"
 		  scope="prototype" />
 
 	<!-- get identity cookie action -->
-	<bean id="getIdentityCookieAction" class="org.flexpay.payments.actions.security.GetIdentityCookieAction"
-		  p:paymentPointService-ref="paymentPointService"
+	<bean id="getIdentityCookieAction"
+          class="org.flexpay.payments.actions.security.GetIdentityCookieAction"
+		  p:cashboxService-ref="cashboxService"
 		  scope="prototype" />
 
 	<!-- quittance-related actions -->
@@ -35,7 +37,7 @@
 		  p:operationTypeService-ref="operationTypeService"
 		  p:operationService-ref="operationService"
 		  p:organizationService-ref="organizationService"
-		  p:paymentPointService-ref="paymentPointService"
+		  p:cashboxService-ref="cashboxService"
 		  p:spService-ref="spService"
 		  p:serviceProviderService-ref="serviceProviderService"
 		  p:crumbNameKey="payments.crumbs.quittances_pay"
@@ -50,7 +52,7 @@
 		  p:documentService-ref="documentService"
 		  p:documentStatusService-ref="documentStatusService"
 		  p:organizationService-ref="organizationService"
-		  p:paymentPointService-ref="paymentPointService"
+		  p:cashboxService-ref="cashboxService"
 		  p:crumbNameKey="payments.crumbs.operations_list"
 		  scope="prototype" />
 
@@ -63,7 +65,7 @@
 		  p:serviceProviderService-ref="serviceProviderService"
 		  p:statisticsService-ref="paymentsStatisticsService"
 		  p:organizationService-ref="organizationService"
-		  p:paymentPointService-ref="paymentPointService"
+		  p:cashboxService-ref="cashboxService"
 		  p:crumbNameKey="payments.crumbs.received_payments_report"
 		  scope="prototype" />
 
@@ -121,5 +123,24 @@
 		  p:crumbNameKey="payments.crumbs.service_edit"
 		  p:crumbCreateKey="payments.crumbs.service_create"
 		  scope="prototype" />
+
+    <bean id="cashboxDeleteAction"
+          class="org.flexpay.payments.actions.cashbox.CashboxDeleteAction"
+          p:cashboxService-ref="cashboxService"
+          scope="prototype" />
+
+    <bean id="cashboxEditAction"
+          class="org.flexpay.payments.actions.cashbox.CashboxEditAction"
+          p:cashboxService-ref="cashboxService"
+          p:paymentPointService-ref="paymentPointService"
+          p:crumbNameKey="payments.crumbs.cashbox_edit"
+          p:crumbCreateKey="payments.crumbs.cashbox_create"
+          scope="prototype" />
+
+    <bean id="cashboxesListAction"
+          class="org.flexpay.payments.actions.cashbox.CashboxesListAction"
+          p:cashboxService-ref="cashboxService"
+          p:crumbNameKey="payments.crumbs.cashboxes_list"
+          scope="prototype" />
 
 </beans>

@@ -120,14 +120,12 @@ public class Organization extends DomainObjectWithStatus {
 
 	@Nullable
 	public String getName(@NotNull Locale locale) {
-
 		OrganizationName name = TranslationUtil.getTranslation(getNames(), locale);
 		return name != null ? name.getName() : null;
 	}
 
 	@Nullable
 	public String getName() {
-
 		OrganizationName name = TranslationUtil.getTranslation(getNames());
 		return name != null ? name.getName() : null;
 	}
@@ -172,11 +170,16 @@ public class Organization extends DomainObjectWithStatus {
 		this.paymentsCollectors = paymentsCollectors;
 	}
 
+	@Override
 	public String toString() {
-        return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE)
-                .append("id", getId())
-                .append("KPP", kpp)
-                .append("INN", individualTaxNumber)
-                .toString();
-    }
+		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
+				append("id", getId()).
+				append("status", getStatus()).
+				append("individualTaxNumber", individualTaxNumber).
+				append("kpp", kpp).
+				append("juridicalAddress", juridicalAddress).
+				append("postalAddress", postalAddress).
+				toString();
+	}
+
 }

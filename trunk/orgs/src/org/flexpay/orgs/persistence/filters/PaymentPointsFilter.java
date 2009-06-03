@@ -21,4 +21,15 @@ public class PaymentPointsFilter extends PrimaryKeyFilter<PaymentPoint> {
 	public void setPoints(List<PaymentPoint> points) {
 		this.points = points;
 	}
+
+	public PaymentPoint getSelected() {
+		for (PaymentPoint point : points) {
+			if (point.getId().equals(getSelectedId())) {
+				return point;
+			}
+		}
+
+		return null;
+	}
+
 }

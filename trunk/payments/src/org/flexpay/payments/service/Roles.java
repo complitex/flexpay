@@ -43,6 +43,11 @@ public abstract class Roles {
 
 	public static final String PAYMENTS_REPORT = PREFIX + "PAYMENTS_REPORT";
 
+	public static final String CASHBOX_READ = PREFIX + "CASHBOX_READ";
+	public static final String CASHBOX_CHANGE = PREFIX + "CASHBOX_CHANGE";
+	public static final String CASHBOX_ADD = PREFIX + "CASHBOX_ADD";
+	public static final String CASHBOX_DELETE = PREFIX + "CASHBOX_DELETE";
+
 	// menu roles
 	// level 1
 	public static final String MENU_PAYMENTS_PREFIX = "ROLE_MENU_PAYMENTS";
@@ -64,4 +69,5 @@ public abstract class Roles {
 	public static final String ROLE_MENU_PAYMENTS_OPERATIONS_LIST = MENU_PAYMENTS_PREFIX + "_OPERATIONS_LIST";
 	public static final String ROLE_MENU_PAYMENTS_REPORTS_IMPORT = MENU_PAYMENTS_PREFIX + "_REPORTS_IMPORT";
 	public static final String ROLE_MENU_PAYMENTS_REPORTS_RECEIVED = MENU_PAYMENTS_PREFIX + "_REPORTS_RECEIVED";
+
 }

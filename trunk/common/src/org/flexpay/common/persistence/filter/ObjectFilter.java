@@ -39,4 +39,5 @@ public class ObjectFilter implements Serializable {
 				.append("readOnly", readOnly)
 				.toString();
 	}
+
 }

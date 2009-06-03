@@ -669,6 +669,24 @@
 		<group-name>EIRC_QUITTANCE_PAYMENT_ACCEPTORS</group-name>
 	</security-role-mapping>
 
+    <!-- cashbox roles -->
+    <security-role-mapping>
+        <role-name>ROLE_PAYMENTS_CASHBOX_READ</role-name>
+        <group-name>SZ_FULL_ACCESS</group-name>
+    </security-role-mapping>
+    <security-role-mapping>
+        <role-name>ROLE_PAYMENTS_CASHBOX_CHANGE</role-name>
+        <group-name>SZ_FULL_ACCESS</group-name>
+    </security-role-mapping>
+    <security-role-mapping>
+        <role-name>ROLE_PAYMENTS_CASHBOX_ADD</role-name>
+        <group-name>SZ_FULL_ACCESS</group-name>
+    </security-role-mapping>
+    <security-role-mapping>
+        <role-name>ROLE_PAYMENTS_CASHBOX_DELETE</role-name>
+        <group-name>SZ_FULL_ACCESS</group-name>
+    </security-role-mapping>
+
     <!-- SZ files -->
     <security-role-mapping>
         <role-name>ROLE_SZ_SZ_FILE_READ</role-name>
@@ -722,6 +740,10 @@
     </security-role-mapping>
     <security-role-mapping>
         <role-name>ROLE_MENU_AB_OTHER_DICTS</role-name>
+        <group-name>FULL_ACCESS</group-name>
+    </security-role-mapping>
+    <security-role-mapping>
+        <role-name>ROLE_MENU_EIRC_CASHBOXES_DICTS</role-name>
         <group-name>FULL_ACCESS</group-name>
     </security-role-mapping>
     <security-role-mapping>
@@ -854,6 +876,10 @@
     </security-role-mapping>
     <security-role-mapping>
         <role-name>ROLE_MENU_EIRC_DICTS_SERVICES</role-name>
+        <group-name>FULL_ACCESS</group-name>
+    </security-role-mapping>
+    <security-role-mapping>
+        <role-name>ROLE_MENU_EIRC_DICTS_CASHBOXES</role-name>
         <group-name>FULL_ACCESS</group-name>
     </security-role-mapping>
     <security-role-mapping>
