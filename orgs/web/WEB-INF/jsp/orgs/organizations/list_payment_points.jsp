@@ -12,6 +12,7 @@
 		<tr>
 			<td class="th" width="1%">&nbsp;</td>
 			<td class="th" width="1%"><input type="checkbox" onchange="FP.setCheckboxes(this.checked, 'objectIds');"></td>
+            <td class="th"><s:text name="eirc.payment_point.name"/></td>
             <td class="th"><s:text name="eirc.payments_collector"/></td>
             <td class="th"><s:text name="ab.address"/></td>
 			<td class="th">&nbsp;</td>
@@ -24,10 +25,10 @@
 				<td class="col" width="1%">
 					<input type="checkbox" name="objectIds" value="<s:property value="%{id}"/>"/>
 				</td>
+                <td class="col"><s:property value="getTranslation(names).name"/></td>
                 <td class="col"><s:property value="getCollectorName(collector)"/></td>
                 <td class="col"><s:property value="address"/></td>
-				<td class="col"><a href="<s:url action="paymentPointEdit"><s:param name="point.id" value="%{id}"/></s:url>">
-						 <s:text name="common.edit"/></a></td>
+				<td class="col"><a href="<s:url action="paymentPointEdit"><s:param name="point.id" value="%{id}"/></s:url>"><s:text name="common.edit"/></a></td>
 			</tr>
 		</s:iterator>
 		<tr>

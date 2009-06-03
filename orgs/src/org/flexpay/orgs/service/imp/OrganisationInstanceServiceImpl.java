@@ -201,8 +201,7 @@ public abstract class OrganisationInstanceServiceImpl<
 	@NotNull
 	public OrganizationInstanceFilter<D, T> initFilter(@NotNull OrganizationInstanceFilter<D, T> filter) {
 
-		List<T> instances = listInstances(new Page<T>(1000, 1));
-		filter.setInstances(instances);
+		filter.setInstances(listInstances(new Page<T>(1000, 1)));
 
 		return filter;
 	}
