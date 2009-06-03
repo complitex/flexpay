@@ -30,22 +30,8 @@ public class DistrictNameTemporal extends NameDateInterval<DistrictName, Distric
 	 */
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
-		} else if (!(obj instanceof DistrictNameTemporal)) {
-			return false;
-		}
-		return super.equals(obj);
-	}
 
-	/**
-	 * Returns a string representation of the object.
-	 *
-	 * @return a string representation of the object.
-	 */
-	@Override
-	public String toString() {
-		return super.toString();
+		return obj instanceof DistrictNameTemporal && super.equals(obj);
 	}
 
 	protected DistrictNameTemporal doGetCopy(NameDateInterval<DistrictName, DistrictNameTemporal> di) {

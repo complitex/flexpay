@@ -1,6 +1,5 @@
 package org.flexpay.ab.service;
 
-import org.flexpay.ab.dao.DistrictDao;
 import org.flexpay.ab.persistence.District;
 import org.flexpay.ab.persistence.DistrictName;
 import org.flexpay.ab.persistence.DistrictNameTranslation;
@@ -9,13 +8,15 @@ import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
 import org.flexpay.ab.util.config.ApplicationConfig;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.util.DateUtil;
+import org.flexpay.common.persistence.Stub;
 import org.junit.Test;
+import org.junit.Ignore;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertEquals;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class TestDistrictService extends AbSpringBeanAwareTestCase {
 
-	@Autowired
-	private DistrictDao districtDao;
 	@Autowired
 	private DistrictService districtService;
 
@@ -31,6 +32,7 @@ public class TestDistrictService extends AbSpringBeanAwareTestCase {
 	}
 
 	@Test
+	@Ignore
 	public void testCreateDistrict() throws Throwable {
 
 		Town town = ApplicationConfig.getDefaultTown();
@@ -40,14 +42,35 @@ public class TestDistrictService extends AbSpringBeanAwareTestCase {
 
 		DistrictName name = new DistrictName();
 		name.setObject(district);
-
-		DistrictNameTranslation translation = new DistrictNameTranslation("Test district");
-		name.addNameTranslation(translation);
+		name.setTranslation(new DistrictNameTranslation("Test district"));
 
 		district.setNameForDate(name, DateUtil.now());
 
 		districtService.create(district);
+	}
 
-		districtDao.delete(district);
+	@Test
+	public void testUpdateDistrict() throws Throwable {
+
+		District district = districtService.readFull(new Stub<District>(1L));
+		assertNotNull("District not found", district);
+
+		DistrictName name = new DistrictName();
+		name.setTranslation(new DistrictNameTranslation("TEST_DISTRICT_UPDATE"));
+		district.setNameForDate(name, DateUtil.parseBeginDate("2009/01/01"));
+		districtService.update(district);
+
+		DistrictName setName = district.getNameForDate(DateUtil.parseBeginDate("2009/01/01"));
+		assertNotNull("Name setup failed", setName);
+		assertEquals("Invalid name setup", "TEST_DISTRICT_UPDATE", setName.getDefaultNameTranslation());
+
+		name = new DistrictName();
+		name.setTranslation(new DistrictNameTranslation("TEST_DISTRICT_UPDATE_2"));
+		district.setNameForDate(name, DateUtil.parseBeginDate("2009/01/01"));
+		districtService.update(district);
+
+		setName = district.getNameForDate(DateUtil.parseBeginDate("2009/01/01"));
+		assertNotNull("Name setup failed", setName);
+		assertEquals("Invalid name setup", "TEST_DISTRICT_UPDATE_2", setName.getDefaultNameTranslation());
 	}
 }

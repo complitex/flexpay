@@ -295,6 +295,7 @@ public class DistrictServiceImpl extends
 		}
 
 		if (ex.isNotEmpty()) {
+			ex.info(log);
 			throw ex;
 		}
 	}

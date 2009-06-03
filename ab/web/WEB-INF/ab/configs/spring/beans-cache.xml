@@ -59,7 +59,6 @@
 				<prop key="create">cacheNames=commonFlexpayCache</prop>
 				<prop key="update">cacheNames=commonFlexpayCache</prop>
 				<prop key="disable">cacheNames=commonFlexpayCache</prop>
-				<prop key="save">cacheNames=commonFlexpayCache</prop>
 			</props>
 		</property>
 		<property name="target" ref="townTypeServiceTarget" />
@@ -75,10 +74,9 @@
 		</property>
 		<property name="flushingModels">
 			<props>
-				<prop key="create">cacheNames=commonFlexpayCache</prop>
-				<prop key="update*">cacheNames=commonFlexpayCache</prop>
-				<prop key="disable*">cacheNames=commonFlexpayCache</prop>
-				<prop key="save*">cacheNames=commonFlexpayCache</prop>
+				<prop key="create">cacheNames=commonFlexpayCache;flushBeforeMethodExecution=true</prop>
+				<prop key="update*">cacheNames=commonFlexpayCache;flushBeforeMethodExecution=true</prop>
+				<prop key="disable*">cacheNames=commonFlexpayCache;flushBeforeMethodExecution=true</prop>
 			</props>
 		</property>
 		<property name="target" ref="districtServiceTarget" />
@@ -140,6 +138,25 @@
 			</props>
 		</property>
 		<property name="target" ref="regionServiceTarget" />
+	</bean>
+
+	<bean id="townService"
+		  class="org.springmodules.cache.interceptor.proxy.CacheProxyFactoryBean">
+		<property name="cacheProviderFacade" ref="cacheProviderFacade" />
+		<property name="cachingModels">
+			<props>
+				<prop key="readFull">cacheName=abRegionFlexpayCache</prop>
+			</props>
+		</property>
+		<property name="flushingModels">
+			<props>
+				<prop key="create">cacheNames=abRegionFlexpayCache</prop>
+				<prop key="update*">cacheNames=abRegionFlexpayCache</prop>
+				<prop key="disable*">cacheNames=abRegionFlexpayCache</prop>
+				<prop key="save*">cacheNames=abRegionFlexpayCache</prop>
+			</props>
+		</property>
+		<property name="target" ref="townServiceTarget" />
 	</bean>
 
 	<bean id="buildingService"

@@ -41,7 +41,6 @@ public class TownServiceImpl extends NameTimeDependentServiceImpl<
 	private TownNameTemporalDao townNameTemporalDao;
 	private TownNameTranslationDao townNameTranslationDao;
 	private RegionDao regionDao;
-	private TownTypeTemporalDao townTypeTemporalDao;
 
 	private ParentService<RegionFilter> parentService;
 	private TownTypeService townTypeService;
@@ -84,15 +83,6 @@ public class TownServiceImpl extends NameTimeDependentServiceImpl<
 	 */
 	protected GenericDao<TownNameTemporal, Long> getNameTemporalDao() {
 		return townNameTemporalDao;
-	}
-
-	/**
-	 * Get DAO implementation working with DateIntervals
-	 *
-	 * @return GenericDao implementation
-	 */
-	protected GenericDao<TownTypeTemporal, Long> getTypeTemporalDao() {
-		return townTypeTemporalDao;
 	}
 
 	/**
@@ -425,11 +415,6 @@ public class TownServiceImpl extends NameTimeDependentServiceImpl<
 	@Required
 	public void setParentService(ParentService<RegionFilter> parentService) {
 		this.parentService = parentService;
-	}
-
-	@Required
-	public void setTownTypeTemporalDao(TownTypeTemporalDao townTypeTemporalDao) {
-		this.townTypeTemporalDao = townTypeTemporalDao;
 	}
 
 	@Required

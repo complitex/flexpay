@@ -90,11 +90,6 @@
 	</definition>
 
 	<!-- Town Districts -->
-	<definition name="ab.district.create" extends="ab.layout.standart">
-		<put-attribute name="title" value="ab.district.create.title" />
-		<put-attribute name="body" value="/WEB-INF/jsp/ab/district_create.jsp" />
-	</definition>
-
 	<definition name="ab.district.view" extends="ab.layout.standart">
 		<put-attribute name="title" value="ab.district.view.title" />
 		<put-attribute name="body" value="/WEB-INF/jsp/ab/district_view.jsp" />
