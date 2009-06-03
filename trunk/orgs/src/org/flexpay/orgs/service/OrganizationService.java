@@ -6,6 +6,7 @@ import org.flexpay.common.persistence.Stub;
 import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.orgs.persistence.filters.OrganizationFilter;
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.security.annotation.Secured;
 
 import java.util.List;
@@ -63,4 +64,12 @@ public interface OrganizationService {
 	 */
 	@Secured (Roles.ORGANIZATION_ADD)
 	void save(Organization organization) throws FlexPayExceptionContainer;
+
+    /**
+	 * Delete Organization object
+	 *
+	 * @param organizationStub organization stub
+	 */
+	@Secured (Roles.ORGANIZATION_DELETE)
+	void delete(@NotNull Stub<Organization> organizationStub);
 }

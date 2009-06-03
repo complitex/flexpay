@@ -267,6 +267,7 @@
 	<bean parent="eirc_import_import"
 		  p:name="eirc.registries"
 		  p:title="eirc.menu34.registries"
+          p:namespace="/payments"
 		  p:action="registriesList"
 		  p:parent-ref="eirc_import_import">
         <property name="userRole">

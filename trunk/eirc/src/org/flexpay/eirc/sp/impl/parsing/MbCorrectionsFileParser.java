@@ -6,7 +6,7 @@ import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.persistence.registry.*;
 import org.flexpay.common.util.FPFileUtil;
-import org.flexpay.eirc.persistence.EircRegistryProperties;
+import org.flexpay.payments.persistence.EircRegistryProperties;
 import org.flexpay.eirc.persistence.EircRegistryRecordProperties;
 import org.flexpay.eirc.sp.impl.MbFileParser;
 import org.flexpay.eirc.util.config.ApplicationConfig;

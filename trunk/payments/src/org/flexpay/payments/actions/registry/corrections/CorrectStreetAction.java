@@ -1,39 +1,34 @@
-package org.flexpay.eirc.actions.registry.corrections;
+package org.flexpay.payments.actions.registry.corrections;
 
 import org.flexpay.ab.actions.street.StreetsListAction;
 import org.flexpay.ab.persistence.Street;
 import org.flexpay.common.exception.FlexPayException;
-import org.flexpay.common.persistence.DataCorrection;
 import org.flexpay.common.persistence.DataSourceDescription;
 import static org.flexpay.common.persistence.Stub.stub;
-import org.flexpay.common.service.importexport.CorrectionsService;
-import org.flexpay.common.service.RegistryRecordService;
-import org.flexpay.eirc.dao.importexport.RawConsumersDataSource;
 import org.flexpay.common.persistence.registry.RegistryRecord;
-import org.flexpay.payments.persistence.ServiceType;
-import org.flexpay.payments.persistence.ServiceTypeNameTranslation;
-import org.flexpay.eirc.persistence.EircRegistryProperties;
-import org.flexpay.payments.service.ServiceTypeService;
-import org.flexpay.eirc.service.importexport.RawConsumerData;
+import org.flexpay.common.service.RegistryRecordService;
+import org.flexpay.common.service.importexport.CorrectionsService;
 import org.flexpay.orgs.persistence.ServiceProvider;
 import org.flexpay.orgs.service.ServiceProviderService;
+import org.flexpay.payments.persistence.EircRegistryProperties;
+import org.flexpay.payments.persistence.ServiceType;
+import org.flexpay.payments.persistence.ServiceTypeNameTranslation;
+import org.flexpay.payments.service.ServiceTypeService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
 public class CorrectStreetAction extends StreetsListAction {
 
-	private String setupType;
-	private Street object = new Street();
-	private RegistryRecord record = new RegistryRecord();
+	protected String setupType;
+	protected Street object = new Street();
+	protected RegistryRecord record = new RegistryRecord();
 
-	private RawConsumersDataSource consumersDataSource;
-	private CorrectionsService correctionsService;
-	private RegistryRecordService recordService;
-	private ServiceTypeService serviceTypeService;
-	private ServiceProviderService serviceProviderService;
+	protected CorrectionsService correctionsService;
+	protected RegistryRecordService recordService;
+	protected ServiceTypeService serviceTypeService;
+	protected ServiceProviderService serviceProviderService;
 
 	@NotNull
-	@Override
 	public String doExecute() throws Exception {
 
 		record = recordService.read(record.getId());
@@ -48,17 +43,17 @@ public class CorrectStreetAction extends StreetsListAction {
 				return super.doExecute();
 			}
 
-			RawConsumerData data = consumersDataSource.getById(String.valueOf(record.getId()));
-
-			// add correction for street
-			DataCorrection correction = correctionsService.getStub(data.getStreetId(), object, sd);
-			correctionsService.save(correction);
+			saveCorrection(sd);
 
 			record = recordService.removeError(record);
 			return "complete";
 		}
 		return super.doExecute();
 	}
+
+    protected void saveCorrection(DataSourceDescription sd) {
+
+    }
 
 	/**
 	 * Get default error execution result
@@ -104,11 +99,6 @@ public class CorrectStreetAction extends StreetsListAction {
 	}
 
 	@Required
-	public void setConsumersDataSource(RawConsumersDataSource consumersDataSource) {
-		this.consumersDataSource = consumersDataSource;
-	}
-
-	@Required
 	public void setCorrectionsService(CorrectionsService correctionsService) {
 		this.correctionsService = correctionsService;
 	}
@@ -127,5 +117,4 @@ public class CorrectStreetAction extends StreetsListAction {
 	public void setServiceProviderService(ServiceProviderService serviceProviderService) {
 		this.serviceProviderService = serviceProviderService;
 	}
-
 }

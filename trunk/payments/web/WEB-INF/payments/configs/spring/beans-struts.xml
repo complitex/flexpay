@@ -123,6 +123,28 @@
 		  p:crumbNameKey="payments.crumbs.service_edit"
 		  p:crumbCreateKey="payments.crumbs.service_create"
 		  scope="prototype" />
+    <!-- Registries -->
+    <bean id="registriesListAction" scope="prototype"
+          class="org.flexpay.payments.actions.registry.RegistriesListAction"
+          p:eircRegistryService-ref="eircRegistryService"
+          p:organizationService-ref="organizationService"
+          p:registryTypeService-ref="registryTypeService" />
+
+    <bean id="registriesProcessAction" scope="prototype"
+          class="org.flexpay.payments.actions.registry.RegistriesProcessAction"
+          p:processManager-ref="processManager" />
+
+    <bean id="registryRecordsProcessAction" scope="prototype"
+          class="org.flexpay.payments.actions.registry.RegistryRecordsProcessAction"
+          p:processManager-ref="processManager" />
+
+    <bean id="registryViewAction" scope="prototype"
+          class="org.flexpay.payments.actions.registry.RegistryViewAction"
+          p:registryService-ref="registryService"
+          p:registryRecordService-ref="registryRecordService"
+          p:classToTypeRegistry-ref="typeRegistryPayments"
+          p:serviceTypeService-ref="serviceTypeService" />
+    
 
     <bean id="cashboxDeleteAction"
           class="org.flexpay.payments.actions.cashbox.CashboxDeleteAction"

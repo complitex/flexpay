@@ -1,4 +1,4 @@
-package org.flexpay.eirc.dao;
+package org.flexpay.payments.dao;
 
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.dao.registry.RegistryDaoExt;

@@ -1,16 +1,14 @@
-package org.flexpay.eirc.dao.imp;
+package org.flexpay.payments.dao.impl;
 
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.dao.registry.impl.RegistryDaoExtImpl;
 import org.flexpay.common.persistence.filter.RegistryTypeFilter;
 import org.flexpay.common.persistence.registry.Registry;
-import org.flexpay.eirc.dao.EircRegistryDaoExt;
+import org.flexpay.payments.dao.EircRegistryDaoExt;
 import org.flexpay.orgs.persistence.filters.OrganizationFilter;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
-import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.orm.hibernate3.HibernateCallback;

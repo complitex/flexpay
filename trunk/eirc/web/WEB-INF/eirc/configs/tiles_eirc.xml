@@ -254,49 +254,6 @@
 		<put-attribute name="body" value="/WEB-INF/jsp/payments/services/edit_service.jsp" />
 	</definition>
 
-
-	<!-- Registries -->
-	<definition name="eirc.registry.list" extends="eirc.import">
-		<put-attribute name="body" value="/WEB-INF/jsp/eirc/registry/list_registries.jsp" />
-	</definition>
-
-	<definition name="eirc.registry.view" extends="eirc.import">
-		<put-attribute name="body" value="/WEB-INF/jsp/eirc/registry/view_registry.jsp" />
-	</definition>
-
-	<!-- Registry record corrections -->
-	<definition name="eirc.select_correction_type" extends="ab.layout.content">
-		<put-attribute name="body" value="/WEB-INF/jsp/eirc/data/correspondence/select_correction_type.jsp" />
-	</definition>
-
-	<definition name="eirc.correction_type_error" extends="ab.layout.content">
-		<put-attribute name="body" value="/WEB-INF/jsp/eirc/data/correspondence/select_correction_type_error.jsp" />
-	</definition>
-
-	<definition name="eirc.registry.record.correct_address" extends="ab.layout.content">
-		<put-attribute name="body" value="/WEB-INF/jsp/eirc/data/correspondence/correct_address.jsp" />
-	</definition>
-
-	<definition name="eirc.registry.record.correct_address_building" extends="ab.layout.content">
-		<put-attribute name="body" value="/WEB-INF/jsp/eirc/data/correspondence/correct_address_building.jsp" />
-	</definition>
-
-	<definition name="eirc.registry.record.correct_address_street" extends="ab.layout.content">
-		<put-attribute name="body" value="/WEB-INF/jsp/eirc/data/correspondence/correct_address_street.jsp" />
-	</definition>
-
-	<definition name="eirc.registry.record.correct_address_complete" extends="ab.layout.content">
-		<put-attribute name="body" value="/WEB-INF/jsp/eirc/data/correspondence/correct_address_complete.jsp" />
-	</definition>
-
-	<definition name="eirc.registry.record.correct_person" extends="ab.layout.content">
-		<put-attribute name="body" value="/WEB-INF/jsp/eirc/data/correspondence/correct_person.jsp" />
-	</definition>
-
-	<definition name="eirc.registry.record.correct_person_complete" extends="ab.layout.content">
-		<put-attribute name="body" value="/WEB-INF/jsp/eirc/data/correspondence/correct_person_complete.jsp" />
-	</definition>
-
 	<!-- EIRC Account -->
 	<definition name="eirc.eirc_account.list" extends="eirc.dictionaries">
 		<put-attribute name="title" value="eirc.eirc_account.list" />

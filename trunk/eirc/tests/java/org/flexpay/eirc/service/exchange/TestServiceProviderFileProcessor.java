@@ -10,7 +10,7 @@ import org.flexpay.common.persistence.registry.RegistryRecord;
 import org.flexpay.common.service.RegistryRecordService;
 import org.flexpay.eirc.actions.TestSpFileAction;
 import org.flexpay.eirc.persistence.filters.ImportErrorTypeFilter;
-import org.flexpay.eirc.service.EircRegistryService;
+import org.flexpay.payments.service.EircRegistryService;
 import org.flexpay.payments.service.SPService;
 import static org.junit.Assert.*;
 import org.junit.Test;

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:p="http://www.springframework.org/schema/p" xmlns:context="http://www.springframework.org/schema/context"
+	   xsi:schemaLocation="
+		   http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+		   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
+    <!-- Corrections -->
+	<bean id="selectCorrectionTypeAction" scope="prototype"
+		  class="org.flexpay.payments.actions.registry.corrections.SelectCorrectionTypeAction"
+		  p:registryRecordService-ref="registryRecordService"
+		  p:typeRegistry-ref="typeRegistryPayments" />
+
+	<bean id="correctRecordAddressAction" scope="prototype" parent="apartmentsListAction"
+		  class="org.flexpay.payments.actions.registry.corrections.CorrectAddressAction"
+		  p:correctionsService-ref="correctionsServicePayments"
+		  p:recordService-ref="registryRecordService"
+		  p:serviceTypeService-ref="serviceTypeService"
+		  p:typeRegistry-ref="typeRegistryPayments"
+		  p:serviceProviderService-ref="serviceProviderService" />
+
+	<bean id="correctBuildingAddressAction" scope="prototype" parent="buildingsListAction"
+		  class="org.flexpay.payments.actions.registry.corrections.CorrectBuildingAction"
+		  p:correctionsService-ref="correctionsServicePayments"
+		  p:recordService-ref="registryRecordService"
+		  p:serviceTypeService-ref="serviceTypeService"
+		  p:serviceProviderService-ref="serviceProviderService" />
+
+	<bean id="correctStreetAddressAction" scope="prototype" parent="streetsListAction"
+		  class="org.flexpay.payments.actions.registry.corrections.CorrectStreetAction"
+		  p:correctionsService-ref="correctionsServicePayments"
+		  p:recordService-ref="registryRecordService"
+		  p:serviceTypeService-ref="serviceTypeService"
+		  p:serviceProviderService-ref="serviceProviderService" />
+
+	<bean id="correctPersonAction" scope="prototype" parent="personsListAction"
+		  class="org.flexpay.payments.actions.registry.corrections.CorrectPersonAction"
+		  p:correctionsService-ref="correctionsServicePayments"
+		  p:recordService-ref="registryRecordService"
+		  p:serviceProviderService-ref="serviceProviderService" />
+
+</beans>

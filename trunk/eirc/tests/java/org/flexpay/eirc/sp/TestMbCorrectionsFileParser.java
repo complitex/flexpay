@@ -4,7 +4,7 @@ import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.eirc.actions.TestSpFileCreateAction;
-import org.flexpay.eirc.service.EircRegistryService;
+import org.flexpay.payments.service.EircRegistryService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;

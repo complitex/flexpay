@@ -7,6 +7,7 @@ import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.DataCorrection;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.DataSourceDescription;
+import org.flexpay.payments.persistence.EircRegistryProperties;
 import org.flexpay.common.persistence.registry.RegistryRecord;
 import org.flexpay.common.persistence.registry.RegistryType;
 import org.flexpay.common.persistence.registry.Registry;

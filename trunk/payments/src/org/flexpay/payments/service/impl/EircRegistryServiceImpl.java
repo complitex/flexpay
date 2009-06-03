@@ -1,17 +1,17 @@
-package org.flexpay.eirc.service.imp;
+package org.flexpay.payments.service.impl;
 
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.filter.RegistryTypeFilter;
 import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.service.imp.RegistryServiceImpl;
-import org.flexpay.eirc.dao.EircRegistryDaoExt;
-import org.flexpay.eirc.service.EircRegistryService;
 import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.orgs.persistence.filters.OrganizationFilter;
+import org.flexpay.payments.dao.EircRegistryDaoExt;
+import org.flexpay.payments.service.EircRegistryService;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
