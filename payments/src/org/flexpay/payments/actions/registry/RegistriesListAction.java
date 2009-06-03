@@ -1,4 +1,4 @@
-package org.flexpay.eirc.actions.registry;
+package org.flexpay.payments.actions.registry;
 
 import org.apache.commons.lang.time.DateUtils;
 import org.flexpay.common.actions.FPActionWithPagerSupport;
@@ -7,8 +7,8 @@ import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.persistence.registry.RegistryProperties;
 import org.flexpay.common.service.RegistryTypeService;
 import org.flexpay.common.util.DateUtil;
-import org.flexpay.eirc.persistence.EircRegistryProperties;
-import org.flexpay.eirc.service.EircRegistryService;
+import org.flexpay.payments.persistence.EircRegistryProperties;
+import org.flexpay.payments.service.EircRegistryService;
 import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.orgs.persistence.filters.OrganizationFilter;
 import org.flexpay.orgs.service.OrganizationService;
@@ -54,6 +54,7 @@ public class RegistriesListAction extends FPActionWithPagerSupport {
 	 * @return {@link #ERROR} by default
 	 */
 	@NotNull
+	@Override
 	protected String getErrorResult() {
 		return SUCCESS;
 	}

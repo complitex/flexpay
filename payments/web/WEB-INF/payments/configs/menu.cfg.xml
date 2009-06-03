@@ -203,7 +203,7 @@
           p:name="payments.registers"
           p:title="payments.menu2.registry"
           p:namespace="/payments"
-          p:action="emptyPage"
+          p:action="registriesList"
           p:parent-ref="payments.acc">
         <property name="userRole">
             <util:constant static-field="org.flexpay.payments.service.Roles.ROLE_MENU_PAYMENTS_REGISTERS" />

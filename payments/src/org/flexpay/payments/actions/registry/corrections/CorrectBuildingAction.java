@@ -1,4 +1,4 @@
-package org.flexpay.eirc.actions.registry.corrections;
+package org.flexpay.payments.actions.registry.corrections;
 
 import org.flexpay.ab.actions.buildings.BuildingsListAction;
 import org.flexpay.ab.persistence.BuildingAddress;
@@ -9,12 +9,10 @@ import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.persistence.registry.RegistryRecord;
 import org.flexpay.common.service.importexport.CorrectionsService;
 import org.flexpay.common.service.RegistryRecordService;
-import org.flexpay.eirc.dao.importexport.RawConsumersDataSource;
 import org.flexpay.payments.persistence.ServiceType;
 import org.flexpay.payments.persistence.ServiceTypeNameTranslation;
+import org.flexpay.payments.persistence.EircRegistryProperties;
 import org.flexpay.payments.service.ServiceTypeService;
-import org.flexpay.eirc.persistence.EircRegistryProperties;
-import org.flexpay.eirc.service.importexport.RawConsumerData;
 import org.flexpay.orgs.persistence.ServiceProvider;
 import org.flexpay.orgs.service.ServiceProviderService;
 import org.jetbrains.annotations.NotNull;
@@ -22,18 +20,16 @@ import org.springframework.beans.factory.annotation.Required;
 
 public class CorrectBuildingAction extends BuildingsListAction {
 
-	private String setupType;
-	private BuildingAddress object = new BuildingAddress();
-	private RegistryRecord record = new RegistryRecord();
+	protected String setupType;
+	protected BuildingAddress object = new BuildingAddress();
+	protected RegistryRecord record = new RegistryRecord();
 
-	private RawConsumersDataSource consumersDataSource;
-	private CorrectionsService correctionsService;
-	private RegistryRecordService recordService;
-	private ServiceTypeService serviceTypeService;
-	private ServiceProviderService serviceProviderService;
+	protected CorrectionsService correctionsService;
+	protected RegistryRecordService recordService;
+	protected ServiceTypeService serviceTypeService;
+	protected ServiceProviderService serviceProviderService;
 
 	@NotNull
-	@Override
 	public String doExecute() throws Exception {
 
 		record = recordService.read(record.getId());
@@ -48,17 +44,17 @@ public class CorrectBuildingAction extends BuildingsListAction {
 				return super.doExecute();
 			}
 
-			RawConsumerData data = consumersDataSource.getById(String.valueOf(record.getId()));
-
-			// add correction for buildings
-			DataCorrection correction = correctionsService.getStub(data.getBuildingId(), object, sd);
-			correctionsService.save(correction);
+            saveCorrection(sd);
 
 			record = recordService.removeError(record);
 			return "complete";
 		}
 		return super.doExecute();
 	}
+
+    protected void saveCorrection(DataSourceDescription sd) {
+
+    }
 
 	/**
 	 * Get default error execution result
@@ -101,11 +97,6 @@ public class CorrectBuildingAction extends BuildingsListAction {
 
 	public void setRecord(RegistryRecord record) {
 		this.record = record;
-	}
-
-	@Required
-	public void setConsumersDataSource(RawConsumersDataSource consumersDataSource) {
-		this.consumersDataSource = consumersDataSource;
 	}
 
 	@Required

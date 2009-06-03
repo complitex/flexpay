@@ -3,16 +3,10 @@ package org.flexpay.common.service.importexport.imp;
 import org.flexpay.common.service.importexport.ClassToTypeRegistry;
 import org.flexpay.common.persistence.DomainObject;
 
-public class ClassToTypeRegistryStub implements ClassToTypeRegistry {
+public class ClassToTypeRegistryStub extends ClassToTypeRegistry {
+    private static final int ERROR_CODE = 0x0000;
 
-	/**
-	 * Get class type id to use in corrections service
-	 *
-	 * @param clazz Object class
-	 * @return Type id
-	 */
-	public int getType(Class<? extends DomainObject> clazz) {
-
-		throw new IllegalArgumentException("Class " + clazz + " has no assigned type");
-	}
+    protected int getErrorCode() {
+        return ERROR_CODE;
+    }
 }

@@ -1,30 +1,26 @@
-package org.flexpay.eirc.actions.registry.corrections;
+package org.flexpay.payments.actions.registry.corrections;
 
 import org.flexpay.ab.actions.person.PersonsListAction;
 import org.flexpay.ab.persistence.Person;
-import org.flexpay.common.persistence.DataCorrection;
 import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.persistence.registry.RegistryRecord;
-import org.flexpay.common.service.importexport.CorrectionsService;
-import org.flexpay.eirc.dao.importexport.RawConsumersDataSource;
 import org.flexpay.common.service.RegistryRecordService;
-import org.flexpay.eirc.service.importexport.RawConsumerData;
-import org.flexpay.eirc.persistence.EircRegistryProperties;
+import org.flexpay.common.service.importexport.CorrectionsService;
 import org.flexpay.orgs.persistence.ServiceProvider;
 import org.flexpay.orgs.service.ServiceProviderService;
+import org.flexpay.payments.persistence.EircRegistryProperties;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
 public class CorrectPersonAction extends PersonsListAction {
 
-	private String setupType;
-	private Person object = new Person();
-	private RegistryRecord record = new RegistryRecord();
+	protected String setupType;
+	protected Person object = new Person();
+	protected RegistryRecord record = new RegistryRecord();
 
-	private RawConsumersDataSource consumersDataSource;
-	private CorrectionsService correctionsService;
-	private RegistryRecordService recordService;
-	private ServiceProviderService serviceProviderService;
+	protected CorrectionsService correctionsService;
+	protected RegistryRecordService recordService;
+	protected ServiceProviderService serviceProviderService;
 
 	/**
 	 * Perform action execution.
@@ -49,11 +45,7 @@ public class CorrectPersonAction extends PersonsListAction {
 				return super.doExecute();
 			}
 
-			RawConsumerData data = consumersDataSource.getById(String.valueOf(record.getId()));
-
-			// add correction for apartment
-			DataCorrection correction = correctionsService.getStub(data.getPersonFIOId(), object, sd);
-			correctionsService.save(correction);
+            saveCorrection(sd);
 
 			record = recordService.removeError(record);
 			return "complete";
@@ -61,7 +53,10 @@ public class CorrectPersonAction extends PersonsListAction {
 		return super.doExecute();
 	}
 
-	/**
+    protected void saveCorrection(DataSourceDescription sd) {
+    }
+
+    /**
 	 * Get default error execution result
 	 * <p/>
 	 * If return code starts with a {@link #PREFIX_REDIRECT} all error messages are stored in
@@ -96,11 +91,6 @@ public class CorrectPersonAction extends PersonsListAction {
 
 	public void setRecord(RegistryRecord record) {
 		this.record = record;
-	}
-
-	@Required
-	public void setConsumersDataSource(RawConsumersDataSource consumersDataSource) {
-		this.consumersDataSource = consumersDataSource;
 	}
 
 	@Required

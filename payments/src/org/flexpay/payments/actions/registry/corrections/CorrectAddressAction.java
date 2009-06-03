@@ -1,4 +1,4 @@
-package org.flexpay.eirc.actions.registry.corrections;
+package org.flexpay.payments.actions.registry.corrections;
 
 import org.apache.commons.collections.ArrayStack;
 import org.flexpay.ab.actions.apartment.ApartmentsListAction;
@@ -7,43 +7,37 @@ import org.flexpay.ab.persistence.BuildingAddress;
 import org.flexpay.ab.persistence.Street;
 import org.flexpay.ab.persistence.filters.*;
 import org.flexpay.common.exception.FlexPayException;
-import org.flexpay.common.persistence.DataCorrection;
 import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.persistence.ImportError;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.persistence.registry.RegistryRecord;
+import org.flexpay.common.service.RegistryRecordService;
 import org.flexpay.common.service.importexport.ClassToTypeRegistry;
 import org.flexpay.common.service.importexport.CorrectionsService;
-import org.flexpay.common.service.RegistryRecordService;
-import org.flexpay.eirc.dao.importexport.RawConsumersDataSource;
+import org.flexpay.orgs.persistence.ServiceProvider;
+import org.flexpay.orgs.service.ServiceProviderService;
+import org.flexpay.payments.persistence.EircRegistryProperties;
 import org.flexpay.payments.persistence.ServiceType;
 import org.flexpay.payments.persistence.ServiceTypeNameTranslation;
-import org.flexpay.eirc.persistence.EircRegistryProperties;
 import org.flexpay.payments.service.ServiceTypeService;
-import org.flexpay.eirc.service.importexport.RawConsumerData;
-import org.flexpay.orgs.service.ServiceProviderService;
-import org.flexpay.orgs.persistence.ServiceProvider;
-import org.flexpay.bti.persistence.apartment.BtiApartment;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
 public class CorrectAddressAction extends ApartmentsListAction {
 
-	private String setupType;
-	private Apartment object = Apartment.newInstance();
-	private RegistryRecord record = new RegistryRecord();
+	protected String setupType;
+	protected Apartment object = Apartment.newInstance();
+	protected RegistryRecord record = new RegistryRecord();
 
-	private DistrictFilter districtFilter = new DistrictFilter();
+	protected DistrictFilter districtFilter = new DistrictFilter();
 
-	private RawConsumersDataSource consumersDataSource;
-	private CorrectionsService correctionsService;
-	private RegistryRecordService recordService;
-	private ServiceTypeService serviceTypeService;
-	private ClassToTypeRegistry typeRegistry;
-	private ServiceProviderService serviceProviderService;
+	protected CorrectionsService correctionsService;
+	protected RegistryRecordService recordService;
+	protected ServiceTypeService serviceTypeService;
+	protected ClassToTypeRegistry typeRegistry;
+	protected ServiceProviderService serviceProviderService;
 
 	@NotNull
-	@Override
 	public String doExecute() throws Exception {
 
 		record = recordService.read(record.getId());
@@ -58,17 +52,16 @@ public class CorrectAddressAction extends ApartmentsListAction {
 				return super.doExecute();
 			}
 
-			RawConsumerData data = consumersDataSource.getById(String.valueOf(record.getId()));
-
-			// add correction for apartment
-			DataCorrection correction = correctionsService.getStub(data.getApartmentId(), object, sd);
-			correctionsService.save(correction);
+			saveCorrection(sd);
 
 			record = recordService.removeError(record);
 			return "complete";
 		}
 		return super.doExecute();
 	}
+
+    protected void saveCorrection(DataSourceDescription sd) {
+    }
 
 	/**
 	 * Get default error execution result
@@ -147,7 +140,7 @@ public class CorrectAddressAction extends ApartmentsListAction {
 		ImportError error = record.getImportError();
 		return error != null &&
 			   (typeRegistry.getType(Apartment.class) == error.getObjectType() ||
-				typeRegistry.getType(BtiApartment.class) == error.getObjectType());
+				typeRegistry.getType(Apartment.class) == error.getObjectType());
 
 	}
 
@@ -160,11 +153,6 @@ public class CorrectAddressAction extends ApartmentsListAction {
 	public boolean getCanCreateStreet() {
 		ImportError error = record.getImportError();
 		return error != null && typeRegistry.getType(Street.class) == error.getObjectType();
-	}
-
-	@Required
-	public void setConsumersDataSource(RawConsumersDataSource consumersDataSource) {
-		this.consumersDataSource = consumersDataSource;
 	}
 
 	@Required

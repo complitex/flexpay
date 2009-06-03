@@ -7,7 +7,74 @@
 	<package name="paymensRegistry" namespace="/payments" extends="payments">
 
 		<action name="generateRegistry" class="generateRegistryAction">
-			<result type="tiles">payments.registry.generate</result>
+			<result type="tiles">payments.registry.generate.title</result>
+		</action>
+
+        <action name="registriesList" class="registriesListAction">
+			<result type="tiles">payments.registry.list</result>
+		</action>
+
+		<action name="registryView" class="registryViewAction">
+			<result name="success" type="tiles">payments.registry.view</result>
+			<result name="redirectError" type="redirect-action">registriesList</result>
+		</action>
+
+		<action name="selectCorrectionType" class="selectCorrectionTypeAction">
+			<result name="input" type="tiles">payments.select_correction_type</result>
+			<result name="error" type="tiles">payments.correction_type_error</result>
+			<result name="apartment" type="redirect-action">
+				<param name="actionName">registryRecordCorrectAddress</param>
+				<param name="parse">true</param>
+				<param name="record.id">${record.id}</param>
+			</result>
+			<result name="building" type="redirect-action">
+				<param name="actionName">registryRecordCorrectAddressBuilding</param>
+				<param name="parse">true</param>
+				<param name="record.id">${record.id}</param>
+			</result>
+			<result name="street" type="redirect-action">
+				<param name="actionName">registryRecordCorrectAddressStreet</param>
+				<param name="parse">true</param>
+				<param name="record.id">${record.id}</param>
+			</result>
+			<result name="person" type="redirect-action">
+				<param name="actionName">registryRecordCorrectPerson</param>
+				<param name="parse">true</param>
+				<param name="record.id">${record.id}</param>
+			</result>
+		</action>
+
+		<action name="registryRecordCorrectAddress" class="correctRecordAddressAction">
+			<result type="tiles">payments.registry.record.correct_address</result>
+			<result name="complete" type="tiles">payments.registry.record.correct_address_complete</result>
+		</action>
+
+		<action name="registryRecordCorrectAddressStreet" class="correctStreetAddressAction">
+			<result type="tiles">payments.registry.record.correct_address_street</result>
+			<result name="complete" type="tiles">payments.registry.record.correct_address_complete</result>
+		</action>
+
+		<action name="registryRecordCorrectAddressBuilding" class="correctBuildingAddressAction">
+			<result type="tiles">payments.registry.record.correct_address_building</result>
+			<result name="complete" type="tiles">payments.registry.record.correct_address_complete</result>
+		</action>
+
+		<action name="registryRecordCorrectPerson" class="correctPersonAction">
+			<result type="tiles">payments.registry.record.correct_person</result>
+			<result name="complete" type="tiles">payments.registry.record.correct_person_complete</result>
+		</action>
+
+		<action name="registriesProcess" class="registriesProcessAction">
+			<result name="redirectSuccess" type="redirect-action">registriesList</result>
+		</action>
+
+		<action name="registryRecordsProcess" class="registryRecordsProcessAction">
+			<result name="redirectSuccess" type="redirect-action">
+				<param name="actionName">registryView</param>
+				<param name="parse">true</param>
+				<param name="registry.id">${registry.id}</param>
+			</result>
+			<result name="redirectError" type="redirect-action">registriesList</result>
 		</action>
 
 	</package>

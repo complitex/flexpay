@@ -15,6 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.Required;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.Set;
@@ -94,7 +95,24 @@ public class OrganizationServiceImpl implements OrganizationService {
 		}
 	}
 
-	@SuppressWarnings ({"ThrowableInstanceNeverThrown"})
+    /**
+	 * Delete Organization object
+	 *
+	 * @param organizationStub organization stub
+	 */
+    @Transactional (readOnly = false)
+	public void delete(@NotNull Stub<Organization> organizationStub) {
+		Organization organization = organizationDao.read(organizationStub.getId());
+
+		if (organization == null) {
+			log.debug("Can't find organization with id {}", organizationStub.getId());
+			return;
+		}
+
+		organizationDao.delete(organization);
+	}
+
+    @SuppressWarnings ({"ThrowableInstanceNeverThrown"})
 	public void validate(Organization organization) throws FlexPayExceptionContainer {
 		FlexPayExceptionContainer container = new FlexPayExceptionContainer();
 

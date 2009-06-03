@@ -1,4 +1,4 @@
-package org.flexpay.eirc.actions.registry;
+package org.flexpay.payments.actions.registry;
 
 import org.flexpay.common.actions.FPActionWithPagerSupport;
 import org.flexpay.common.exception.FlexPayException;
@@ -6,12 +6,12 @@ import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.persistence.registry.RegistryRecord;
 import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.persistence.filter.RegistryRecordStatusFilter;
+import org.flexpay.common.persistence.filter.ImportErrorTypeFilter;
 import org.flexpay.common.service.importexport.ClassToTypeRegistry;
 import org.flexpay.common.service.RegistryService;
 import org.flexpay.payments.persistence.ServiceType;
 import org.flexpay.payments.persistence.ServiceTypeNameTranslation;
 import org.flexpay.payments.service.ServiceTypeService;
-import org.flexpay.eirc.persistence.filters.ImportErrorTypeFilter;
 import org.flexpay.common.service.RegistryRecordService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;

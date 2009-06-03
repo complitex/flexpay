@@ -13,7 +13,7 @@ import org.flexpay.common.service.RegistryFileService;
 import org.flexpay.common.util.StringUtil;
 import org.flexpay.common.dao.registry.RegistryRecordDao;
 import org.flexpay.eirc.persistence.exchange.conditions.ConditionsFactory;
-import org.flexpay.eirc.persistence.EircRegistryProperties;
+import org.flexpay.payments.persistence.EircRegistryProperties;
 import org.flexpay.eirc.service.*;
 import org.flexpay.eirc.service.importexport.ImportUtil;
 import org.flexpay.eirc.service.importexport.RawConsumerData;

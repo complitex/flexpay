@@ -13,7 +13,14 @@
 		<property name="registryRecordDaoExt" ref="spRegistryRecordDaoExt" />
 	</bean>
 
-	<bean id="typeRegistryEirc" class="org.flexpay.eirc.service.importexport.imp.ClassToTypeRegistry" />
+	<bean id="typeRegistryEirc" class="org.flexpay.eirc.service.importexport.imp.ClassToTypeRegistry" >
+        <property name="classes">
+            <list>
+                <ref bean="typeRegistryBti"/>
+                <ref bean="typeRegistryPayments"/>
+            </list>
+        </property>
+    </bean>
 
 	<bean id="correctionsServiceEirc" parent="correctionsServiceAb"
 		  class="org.flexpay.common.service.importexport.imp.CorrectionsServiceImpl"

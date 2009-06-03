@@ -93,28 +93,6 @@
 		  p:paymentStatusService-ref="quittancePaymentStatusService"
 		  p:numberService-ref="quittanceNumberService" />
 
-	<!-- Registries -->
-	<bean id="registriesListAction" scope="prototype"
-		  class="org.flexpay.eirc.actions.registry.RegistriesListAction"
-		  p:eircRegistryService-ref="eircRegistryService"
-		  p:organizationService-ref="organizationService"
-		  p:registryTypeService-ref="registryTypeService" />
-
-	<bean id="registriesProcessAction" scope="prototype"
-		  class="org.flexpay.eirc.actions.registry.RegistriesProcessAction"
-		  p:processManager-ref="processManager" />
-
-	<bean id="registryRecordsProcessAction" scope="prototype"
-		  class="org.flexpay.eirc.actions.registry.RegistryRecordsProcessAction"
-		  p:processManager-ref="processManager" />
-
-	<bean id="registryViewAction" scope="prototype"
-		  class="org.flexpay.eirc.actions.registry.RegistryViewAction"
-		  p:registryService-ref="registryService"
-		  p:registryRecordService-ref="registryRecordService"
-		  p:classToTypeRegistry-ref="typeRegistryEirc"
-		  p:serviceTypeService-ref="serviceTypeService" />
-
 	<!-- Served buildings actions -->
 	<bean id="serviceOrganizationListServedBuildingsAction" scope="prototype"
 		  class="org.flexpay.eirc.actions.organization.ServiceOrganizationListServedBuildingsAction"

@@ -11,13 +11,16 @@ import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.persistence.registry.RegistryRecord;
 import org.flexpay.common.service.importexport.CorrectionsService;
 import org.flexpay.eirc.dao.importexport.RawConsumersDataUtil;
-import org.flexpay.eirc.persistence.*;
+import org.flexpay.eirc.persistence.Consumer;
+import org.flexpay.eirc.persistence.ConsumerInfo;
+import org.flexpay.eirc.persistence.EircAccount;
 import org.flexpay.eirc.persistence.exchange.conditions.AccountPersonChangeCondition;
 import org.flexpay.eirc.service.ConsumerService;
 import org.flexpay.eirc.service.EircAccountService;
 import org.flexpay.eirc.service.importexport.ImportUtil;
 import org.flexpay.eirc.service.importexport.RawConsumerData;
 import org.flexpay.orgs.persistence.ServiceProvider;
+import org.flexpay.payments.persistence.EircRegistryProperties;
 
 import java.util.List;
 

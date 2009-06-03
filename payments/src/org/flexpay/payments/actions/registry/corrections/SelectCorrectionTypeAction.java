@@ -1,4 +1,4 @@
-package org.flexpay.eirc.actions.registry.corrections;
+package org.flexpay.payments.actions.registry.corrections;
 
 import org.flexpay.ab.persistence.BuildingAddress;
 import org.flexpay.ab.persistence.Street;
@@ -8,14 +8,13 @@ import org.flexpay.common.persistence.ImportError;
 import org.flexpay.common.persistence.registry.RegistryRecord;
 import org.flexpay.common.service.importexport.ClassToTypeRegistry;
 import org.flexpay.common.service.RegistryRecordService;
-import org.flexpay.bti.persistence.apartment.BtiApartment;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
 public class SelectCorrectionTypeAction extends FPActionSupport {
 
 	private RegistryRecordService registryRecordService;
-	private ClassToTypeRegistry typeRegistry;
+	protected ClassToTypeRegistry typeRegistry;
 
 	private RegistryRecord record = new RegistryRecord();
 
@@ -35,18 +34,16 @@ public class SelectCorrectionTypeAction extends FPActionSupport {
 		ImportError importError = record.getImportError();
 		if (importError != null) {
 			int objectType = importError.getObjectType();
-			if (typeRegistry.getType(StreetType.class) == objectType ||
-					typeRegistry.getType(Street.class) == objectType) {
+			if (checkStreetType(objectType)) {
 				return "street";
 			}
-			if (typeRegistry.getType(BuildingAddress.class) == objectType) {
+			if (checkBuildingType(objectType)) {
 				return "building";
 			}
-			if (typeRegistry.getType(org.flexpay.ab.persistence.Apartment.class) == objectType ||
-					typeRegistry.getType(BtiApartment.class) == objectType) {
+			if (checkApartmentType(objectType)) {
 				return "apartment";
 			}
-			if (typeRegistry.getType(org.flexpay.ab.persistence.Person.class) == objectType) {
+			if (checkPersonType(objectType)) {
 				return "person";
 			}
 
@@ -55,6 +52,23 @@ public class SelectCorrectionTypeAction extends FPActionSupport {
 
 		return INPUT;
 	}
+
+    protected boolean checkPersonType(int objectType) {
+        return typeRegistry.getType(org.flexpay.ab.persistence.Person.class) == objectType;
+    }
+
+    protected boolean checkApartmentType(int objectType) {
+        return typeRegistry.getType(org.flexpay.ab.persistence.Apartment.class) == objectType;
+    }
+
+    protected boolean checkBuildingType(int objectType) {
+        return typeRegistry.getType(BuildingAddress.class) == objectType;
+    }
+
+    protected boolean checkStreetType(int objectType) {
+        return typeRegistry.getType(StreetType.class) == objectType ||
+					typeRegistry.getType(Street.class) == objectType;
+    }
 
 	/**
 	 * Get default error execution result

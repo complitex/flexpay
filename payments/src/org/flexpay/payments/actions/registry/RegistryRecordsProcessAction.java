@@ -1,4 +1,4 @@
-package org.flexpay.eirc.actions.registry;
+package org.flexpay.payments.actions.registry;
 
 import org.flexpay.common.actions.FPActionSupport;
 import static org.flexpay.common.persistence.Stub.stub;

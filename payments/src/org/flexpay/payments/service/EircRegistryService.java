@@ -1,20 +1,17 @@
-package org.flexpay.eirc.service;
+package org.flexpay.payments.service;
 
 import org.flexpay.common.dao.paging.Page;
-import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
-import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.persistence.filter.RegistryTypeFilter;
+import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.service.RegistryService;
 import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.orgs.persistence.filters.OrganizationFilter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 public interface EircRegistryService extends RegistryService {
 

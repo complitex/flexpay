@@ -592,6 +592,9 @@
         props_type varchar(255) not null comment 'Hierarchy discriminator, all entities should have the same value',
         version integer not null comment 'Optimistic lock version',
         registry_id bigint comment 'Registry reference',
+        service_provider_id bigint comment 'Service provider reference',
+        sender_organisation_id bigint comment 'Sender organization reference',
+        recipient_organisation_id bigint comment 'Recipient organization reference',
         primary key (id)
     );
 
@@ -1570,10 +1573,28 @@
         references common_registries_tbl (id);
 
     alter table common_registry_properties_tbl 
+        add index FK_common_registry_properties_tbl_service_provider_id (service_provider_id), 
+        add constraint FK_common_registry_properties_tbl_service_provider_id 
+        foreign key (service_provider_id) 
+        references orgs_service_providers_tbl (id);
+
+    alter table common_registry_properties_tbl 
         add index FK_common_registry_properties_tbl_registry_id (registry_id), 
         add constraint FK_common_registry_properties_tbl_registry_id 
         foreign key (registry_id) 
         references common_registries_tbl (id);
+
+    alter table common_registry_properties_tbl 
+        add index FK_common_registry_properties_tbl_recipient_organisation_id (recipient_organisation_id), 
+        add constraint FK_common_registry_properties_tbl_recipient_organisation_id 
+        foreign key (recipient_organisation_id) 
+        references orgs_organizations_tbl (id);
+
+    alter table common_registry_properties_tbl 
+        add index FK_common_registry_properties_tbl_sender_organisation_id (sender_organisation_id), 
+        add constraint FK_common_registry_properties_tbl_sender_organisation_id 
+        foreign key (sender_organisation_id) 
+        references orgs_organizations_tbl (id);
 
     alter table common_registry_record_containers_tbl 
         add index FK_common_registry_record_containers_tbl_record_id (record_id), 
