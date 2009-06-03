@@ -106,11 +106,6 @@
 	</definition>
 
 	<!-- Streets -->
-	<definition name="ab.street.create" extends="ab.layout.standart">
-		<put-attribute name="title" value="ab.street.create.title" />
-		<put-attribute name="body" value="/WEB-INF/jsp/ab/street_create.jsp" />
-	</definition>
-
 	<definition name="ab.street.view" extends="ab.layout.standart">
 		<put-attribute name="title" value="ab.street.view.title" />
 		<put-attribute name="body" value="/WEB-INF/jsp/ab/street_view.jsp" />
@@ -119,11 +114,6 @@
 	<definition name="ab.street.edit" extends="ab.layout.standart">
 		<put-attribute name="title" value="ab.street.edit.title" />
 		<put-attribute name="body" value="/WEB-INF/jsp/ab/street_edit.jsp" />
-	</definition>
-
-	<definition name="ab.street.edit.type" extends="ab.layout.standart">
-		<put-attribute name="title" value="ab.street.edit.type.title" />
-		<put-attribute name="body" value="/WEB-INF/jsp/ab/street_edit_type.jsp" />
 	</definition>
 
 	<definition name="ab.street.edit.districts" extends="ab.layout.standart">
