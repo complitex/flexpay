@@ -3,8 +3,8 @@ package org.flexpay.payments.persistence;
 import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.common.util.CollectionUtils;
 
-import java.util.Set;
 import java.util.Collections;
+import java.util.Set;
 
 public class OperationType extends DomainObject {
 

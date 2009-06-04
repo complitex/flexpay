@@ -1,29 +1,24 @@
 package org.flexpay.payments.actions.cashbox;
 
-import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.persistence.Language;
-import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.persistence.Stub.stub;
 import static org.flexpay.common.util.CollectionUtils.map;
 import org.flexpay.common.util.config.ApplicationConfig;
-import org.flexpay.orgs.persistence.PaymentPoint;
 import org.flexpay.orgs.persistence.filters.PaymentPointsFilter;
 import org.flexpay.orgs.service.PaymentPointService;
-import org.flexpay.payments.actions.interceptor.CashboxAware;
+import org.flexpay.payments.actions.CashboxCookieActionSupport;
 import org.flexpay.payments.persistence.Cashbox;
 import org.flexpay.payments.persistence.CashboxNameTranslation;
 import org.flexpay.payments.service.CashboxService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
-import java.util.List;
 import java.util.Map;
 
-public class CashboxEditAction extends FPActionSupport implements CashboxAware {
+public class CashboxEditAction extends CashboxCookieActionSupport {
 
 	private PaymentPointsFilter paymentPointsFilter = new PaymentPointsFilter();
 
-	private Long cashboxId;
 	private Cashbox cashbox = new Cashbox();
 	private Map<Long, String> names = map();
 
@@ -128,14 +123,6 @@ public class CashboxEditAction extends FPActionSupport implements CashboxAware {
 
 	public void setNames(Map<Long, String> names) {
 		this.names = names;
-	}
-
-	public Long getCashboxId() {
-		return cashboxId;
-	}
-
-	public void setCashboxId(Long cashboxId) {
-		this.cashboxId = cashboxId;
 	}
 
 	public PaymentPointsFilter getPaymentPointsFilter() {

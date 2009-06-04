@@ -3,26 +3,27 @@ package org.flexpay.payments.actions.registry.corrections;
 import org.flexpay.ab.actions.buildings.BuildingsListAction;
 import org.flexpay.ab.persistence.BuildingAddress;
 import org.flexpay.common.exception.FlexPayException;
-import org.flexpay.common.persistence.DataCorrection;
 import org.flexpay.common.persistence.DataSourceDescription;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.persistence.registry.RegistryRecord;
-import org.flexpay.common.service.importexport.CorrectionsService;
 import org.flexpay.common.service.RegistryRecordService;
-import org.flexpay.payments.persistence.ServiceType;
-import org.flexpay.payments.persistence.ServiceTypeNameTranslation;
-import org.flexpay.payments.persistence.EircRegistryProperties;
-import org.flexpay.payments.service.ServiceTypeService;
+import org.flexpay.common.service.importexport.CorrectionsService;
 import org.flexpay.orgs.persistence.ServiceProvider;
 import org.flexpay.orgs.service.ServiceProviderService;
+import org.flexpay.payments.persistence.EircRegistryProperties;
+import org.flexpay.payments.persistence.ServiceType;
+import org.flexpay.payments.persistence.ServiceTypeNameTranslation;
+import org.flexpay.payments.service.ServiceTypeService;
+import org.flexpay.payments.actions.interceptor.CashboxAware;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
-public class CorrectBuildingAction extends BuildingsListAction {
+public class CorrectBuildingAction extends BuildingsListAction implements CashboxAware {
 
 	protected String setupType;
 	protected BuildingAddress object = new BuildingAddress();
 	protected RegistryRecord record = new RegistryRecord();
+	protected Long cashboxId;
 
 	protected CorrectionsService correctionsService;
 	protected RegistryRecordService recordService;
@@ -99,6 +100,14 @@ public class CorrectBuildingAction extends BuildingsListAction {
 		this.record = record;
 	}
 
+	public Long getCashboxId() {
+		return cashboxId;
+	}
+
+	public void setCashboxId(Long cashboxId) {
+		this.cashboxId = cashboxId;
+	}
+
 	@Required
 	public void setCorrectionsService(CorrectionsService correctionsService) {
 		this.correctionsService = correctionsService;
@@ -118,4 +127,5 @@ public class CorrectBuildingAction extends BuildingsListAction {
 	public void setServiceProviderService(ServiceProviderService serviceProviderService) {
 		this.serviceProviderService = serviceProviderService;
 	}
+
 }

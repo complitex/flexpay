@@ -1,13 +1,13 @@
 package org.flexpay.payments.reports.payments;
 
-import org.flexpay.orgs.persistence.PaymentPoint;
 import org.flexpay.common.persistence.Stub;
+import org.flexpay.orgs.persistence.PaymentPoint;
 
 import java.io.Serializable;
-import java.util.Date;
-import java.util.Collections;
-import java.util.List;
 import java.math.BigDecimal;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
 
 public class PaymentPrintForm implements Serializable {
 

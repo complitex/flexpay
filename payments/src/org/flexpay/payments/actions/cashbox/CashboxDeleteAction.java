@@ -1,7 +1,6 @@
 package org.flexpay.payments.actions.cashbox;
 
-import org.flexpay.common.actions.FPActionSupport;
-import org.flexpay.payments.actions.interceptor.CashboxAware;
+import org.flexpay.payments.actions.CashboxCookieActionSupport;
 import org.flexpay.payments.service.CashboxService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
@@ -9,9 +8,8 @@ import org.springframework.beans.factory.annotation.Required;
 import java.util.HashSet;
 import java.util.Set;
 
-public class CashboxDeleteAction extends FPActionSupport implements CashboxAware {
+public class CashboxDeleteAction extends CashboxCookieActionSupport {
 
-	private Long cashboxId;
 	private Set<Long> objectIds = new HashSet<Long>();
 
 	private CashboxService cashboxService;
@@ -40,14 +38,6 @@ public class CashboxDeleteAction extends FPActionSupport implements CashboxAware
 
 	public void setObjectIds(Set<Long> objectIds) {
 		this.objectIds = objectIds;
-	}
-
-	public Long getCashboxId() {
-		return cashboxId;
-	}
-
-	public void setCashboxId(Long cashboxId) {
-		this.cashboxId = cashboxId;
 	}
 
 	@Required

@@ -1,7 +1,6 @@
 package org.flexpay.payments.actions.reports;
 
 import org.apache.commons.lang.time.DateUtils;
-import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.filter.BeginDateFilter;
 import org.flexpay.common.util.BigDecimalFormat;
@@ -9,9 +8,8 @@ import org.flexpay.common.util.DateUtil;
 import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.orgs.persistence.ServiceProvider;
 import org.flexpay.orgs.service.OrganizationService;
-import org.flexpay.orgs.service.PaymentPointService;
 import org.flexpay.orgs.service.ServiceProviderService;
-import org.flexpay.payments.actions.interceptor.CashboxAware;
+import org.flexpay.payments.actions.CashboxCookieActionSupport;
 import org.flexpay.payments.persistence.*;
 import org.flexpay.payments.service.CashboxService;
 import org.flexpay.payments.service.OperationService;
@@ -27,15 +25,13 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
-public class ReceivedPaymentsReportAction extends FPActionSupport implements CashboxAware {
+public class ReceivedPaymentsReportAction extends CashboxCookieActionSupport {
 
 	// form data
 	private BeginDateFilter beginDateFilter = new BeginDateFilter();
 
 	private List<Operation> operations = Collections.emptyList();
 	private List<OperationTypeStatistics> typeStatisticses = Collections.emptyList();
-
-	private Long cashboxId;
 
 	// required services
 	private OperationService operationService;
@@ -165,14 +161,6 @@ public class ReceivedPaymentsReportAction extends FPActionSupport implements Cas
 			}
 		}
 		return BigDecimalFormat.format(summ, 2).toPlainString();
-	}
-
-	public Long getCashboxId() {
-		return cashboxId;
-	}
-
-	public void setCashboxId(Long cashboxId) {
-		this.cashboxId = cashboxId;
 	}
 
 	// required services

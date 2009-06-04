@@ -1,16 +1,16 @@
 package org.flexpay.payments.service;
 
-import org.flexpay.payments.persistence.Operation;
-import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.dao.paging.Page;
+import org.flexpay.common.persistence.Stub;
 import org.flexpay.orgs.persistence.Organization;
+import org.flexpay.payments.persistence.Operation;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.security.annotation.Secured;
 
-import java.util.List;
-import java.util.Date;
 import java.math.BigDecimal;
+import java.util.Date;
+import java.util.List;
 
 public interface OperationService {
 

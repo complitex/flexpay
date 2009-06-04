@@ -1,12 +1,12 @@
 package org.flexpay.payments.service.impl;
 
-import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.dao.paging.Page;
+import org.flexpay.common.persistence.Stub;
+import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.payments.dao.OperationDao;
 import org.flexpay.payments.dao.OperationDaoExt;
 import org.flexpay.payments.persistence.Operation;
 import org.flexpay.payments.service.OperationService;
-import org.flexpay.orgs.persistence.Organization;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
@@ -14,9 +14,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Date;
 import java.math.BigDecimal;
+import java.util.Date;
+import java.util.List;
 
 @Transactional (readOnly = true)
 public class OperationServiceImpl implements OperationService {

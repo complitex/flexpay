@@ -2,7 +2,6 @@ package org.flexpay.payments.actions.reports;
 
 import au.com.bytecode.opencsv.CSVWriter;
 import org.apache.commons.io.IOUtils;
-import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.persistence.FPModule;
 import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.persistence.filter.BeginDateFilter;
@@ -10,13 +9,13 @@ import org.flexpay.common.persistence.filter.BeginTimeFilter;
 import org.flexpay.common.persistence.filter.EndDateFilter;
 import org.flexpay.common.persistence.filter.EndTimeFilter;
 import org.flexpay.common.service.FPFileService;
+import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.DateUtil;
 import org.flexpay.common.util.FPFileUtil;
 import org.flexpay.common.util.SecurityUtil;
-import org.flexpay.common.util.CollectionUtils;
+import org.flexpay.payments.actions.CashboxCookieActionSupport;
 import org.flexpay.payments.reports.payments.PaymentReportData;
 import org.flexpay.payments.reports.payments.PaymentsReporter;
-import org.flexpay.payments.actions.interceptor.CashboxAware;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
@@ -25,7 +24,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-public class PaymentsReportAction extends FPActionSupport implements CashboxAware {
+public class PaymentsReportAction extends CashboxCookieActionSupport {
 
 	private BeginDateFilter beginDateFilter = new BeginDateFilter(DateUtil.now());
 	private EndDateFilter endDateFilter = new EndDateFilter(DateUtil.now());
@@ -33,8 +32,6 @@ public class PaymentsReportAction extends FPActionSupport implements CashboxAwar
 	private EndTimeFilter endTimeFilter = new EndTimeFilter();
 
 	private List<PaymentReportData> reportContent = CollectionUtils.list();
-
-	private Long cashboxId;
 
 	private FPFile file;
 
@@ -158,14 +155,6 @@ public class PaymentsReportAction extends FPActionSupport implements CashboxAwar
 
 	public boolean reportContentIsNotEmpty() {
 		return !reportContent.isEmpty();
-	}
-
-	public Long getCashboxId() {
-		return cashboxId;
-	}
-
-	public void setCashboxId(Long cashboxId) {
-		this.cashboxId = cashboxId;
 	}
 
 	@Required

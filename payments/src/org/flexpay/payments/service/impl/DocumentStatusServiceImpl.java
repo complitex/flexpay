@@ -1,13 +1,13 @@
 package org.flexpay.payments.service.impl;
 
-import org.flexpay.payments.service.DocumentStatusService;
-import org.flexpay.payments.persistence.DocumentStatus;
-import org.flexpay.payments.dao.DocumentStatusDao;
-import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.exception.FlexPayException;
+import org.flexpay.common.persistence.Stub;
+import org.flexpay.payments.dao.DocumentStatusDao;
+import org.flexpay.payments.persistence.DocumentStatus;
+import org.flexpay.payments.service.DocumentStatusService;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 

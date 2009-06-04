@@ -4,13 +4,12 @@ import org.flexpay.ab.persistence.Apartment;
 import org.flexpay.ab.persistence.Person;
 import org.flexpay.ab.service.ApartmentService;
 import org.flexpay.ab.service.PersonService;
-import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.orgs.persistence.ServiceProvider;
 import org.flexpay.orgs.service.ServiceProviderService;
-import org.flexpay.payments.actions.interceptor.CashboxAware;
+import org.flexpay.payments.actions.CashboxCookieActionSupport;
 import org.flexpay.payments.persistence.Service;
 import org.flexpay.payments.persistence.quittance.QuittanceDetailsRequest;
 import org.flexpay.payments.persistence.quittance.QuittanceDetailsResponse;
@@ -25,7 +24,7 @@ import org.springframework.beans.factory.annotation.Required;
 import java.math.BigDecimal;
 import java.util.List;
 
-public class SearchQuittanceAction extends FPActionSupport implements CashboxAware {
+public class SearchQuittanceAction extends CashboxCookieActionSupport {
 
 	private static final String SEARCH_TYPE_EIRC_ACCOUNT = "EIRC_ACCOUNT";
 	private static final String SEARCH_TYPE_QUITTANCE_NUMBER = "QUITTANCE_NUMBER";
@@ -39,7 +38,6 @@ public class SearchQuittanceAction extends FPActionSupport implements CashboxAwa
 	private PersonService personService;
 
 	private String actionName;
-	private Long cashboxId;
 
 	// required services
 	private QuittanceDetailsFinder quittanceDetailsFinder;
@@ -253,14 +251,6 @@ public class SearchQuittanceAction extends FPActionSupport implements CashboxAwa
 
 	public void setActionName(String actionName) {
 		this.actionName = actionName;
-	}
-
-	public Long getCashboxId() {
-		return cashboxId;
-	}
-
-	public void setCashboxId(Long cashboxId) {
-		this.cashboxId = cashboxId;
 	}
 
 	// required services

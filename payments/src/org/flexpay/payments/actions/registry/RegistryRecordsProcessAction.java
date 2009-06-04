@@ -1,10 +1,10 @@
 package org.flexpay.payments.actions.registry;
 
-import org.flexpay.common.actions.FPActionSupport;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.process.ProcessManager;
 import org.flexpay.common.util.CollectionUtils;
+import org.flexpay.payments.actions.CashboxCookieActionSupport;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
@@ -12,7 +12,7 @@ import java.io.Serializable;
 import java.util.Map;
 import java.util.Set;
 
-public class RegistryRecordsProcessAction extends FPActionSupport {
+public class RegistryRecordsProcessAction extends CashboxCookieActionSupport {
 
 	private Set<Long> objectIds = CollectionUtils.set();
 	private Registry registry = new Registry();

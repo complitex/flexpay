@@ -3,7 +3,6 @@ package org.flexpay.payments.actions.security;
 import org.apache.struts2.interceptor.ServletResponseAware;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.persistence.Stub;
-import org.flexpay.orgs.service.PaymentPointService;
 import org.flexpay.payments.persistence.Cashbox;
 import org.flexpay.payments.service.CashboxService;
 import org.jetbrains.annotations.NotNull;

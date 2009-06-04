@@ -1,7 +1,6 @@
 package org.flexpay.payments.actions.quittance;
 
 import org.apache.commons.lang.StringUtils;
-import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.util.CollectionUtils;
@@ -10,7 +9,7 @@ import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.orgs.persistence.ServiceProvider;
 import org.flexpay.orgs.service.OrganizationService;
 import org.flexpay.orgs.service.ServiceProviderService;
-import org.flexpay.payments.actions.interceptor.CashboxAware;
+import org.flexpay.payments.actions.CashboxCookieActionSupport;
 import org.flexpay.payments.persistence.*;
 import org.flexpay.payments.persistence.quittance.QuittanceDetailsResponse;
 import org.flexpay.payments.service.*;
@@ -22,11 +21,10 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Map;
 
-public class QuittancePayAction extends FPActionSupport implements CashboxAware {
+public class QuittancePayAction extends CashboxCookieActionSupport {
 
 	private String actionName;
 
-	private Long cashboxId;
 	private Operation operation = new Operation();
 
 	// form data
@@ -218,14 +216,6 @@ public class QuittancePayAction extends FPActionSupport implements CashboxAware 
 
 	public void setEircAccounts(Map<String, String> eircAccounts) {
 		this.eircAccounts = eircAccounts;
-	}
-
-	public Long getCashboxId() {
-		return cashboxId;
-	}
-
-	public void setCashboxId(Long cashboxId) {
-		this.cashboxId = cashboxId;
 	}
 
 	public Operation getOperation() {

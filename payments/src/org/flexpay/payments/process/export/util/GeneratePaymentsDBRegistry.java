@@ -11,6 +11,7 @@ import org.flexpay.payments.service.OperationService;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Required;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -18,6 +19,7 @@ import java.util.Date;
 import java.util.List;
 
 public class GeneratePaymentsDBRegistry {
+
     private final Logger log = LoggerFactory.getLogger(getClass());
 
     private RegistryService registryService;
@@ -27,12 +29,17 @@ public class GeneratePaymentsDBRegistry {
     private RegistryArchiveStatusService registryArchiveStatusService;
     private RegistryRecordStatusService registryRecordStatusService;
     private PropertiesFactory propertiesFactory;
+	private OperationService operationService;
 
     @NotNull
-    public Registry createDBRegestry(@NotNull FPFile spFile, @NotNull Organization organization, @NotNull Date fromDate, @NotNull Date tillDate) throws FlexPayException {
-        log.info("Get operation by organization " + organization.getId());
+    public Registry createDBRegestry(@NotNull FPFile spFile, @NotNull Organization organization,
+									 @NotNull Date fromDate, @NotNull Date tillDate) throws FlexPayException {
+
+        log.info("Get operation by organization {}", organization.getId());
+
         List<Operation> operations = getOperations(organization, fromDate, tillDate);
-        log.info("Count operations " + operations.size());
+
+        log.info("Count operations {}", operations.size());
 
         Registry registry = new Registry();
 
@@ -97,7 +104,8 @@ public class GeneratePaymentsDBRegistry {
         registry.setRecordsNumber(recordsNumber);
         registry.setRegistryStatus(registryStatusService.findByCode(RegistryStatus.CREATED));
         registryService.update(registry);
-        log.info("Created db registry: id =" + registry.getId() + ", recordsNumber=" + recordsNumber + ", amount=" + summ);
+
+		log.info("Created db registry: id = {}, recordsNumber = {}, amount = {}", new Object[] {registry.getId(), recordsNumber, summ});
 
         return registry;
 
@@ -107,6 +115,7 @@ public class GeneratePaymentsDBRegistry {
     private List<Operation> getOperations(@NotNull Organization organization,
                                           @NotNull Date startDate,
                                           @NotNull Date endDate) {
+
         return operationService.listReceivedPayments(organization, startDate, endDate);
     }
 
@@ -115,37 +124,44 @@ public class GeneratePaymentsDBRegistry {
         return RegistryType.TYPE_CASH_PAYMENTS;
     }
 
-    private OperationService operationService;
-
+	@Required
     public void setRegistryService(RegistryService registryService) {
         this.registryService = registryService;
     }
 
+	@Required
     public void setRegistryRecordService(RegistryRecordService registryRecordService) {
         this.registryRecordService = registryRecordService;
     }
 
+	@Required
     public void setRegistryTypeService(RegistryTypeService registryTypeService) {
         this.registryTypeService = registryTypeService;
     }
 
+	@Required
     public void setRegistryStatusService(RegistryStatusService registryStatusService) {
         this.registryStatusService = registryStatusService;
     }
 
+	@Required
     public void setRegistryArchiveStatusService(RegistryArchiveStatusService registryArchiveStatusService) {
         this.registryArchiveStatusService = registryArchiveStatusService;
     }
 
+	@Required
     public void setOperationService(OperationService operationService) {
         this.operationService = operationService;
     }
 
+	@Required
     public void setRegistryRecordStatusService(RegistryRecordStatusService registryRecordStatusService) {
         this.registryRecordStatusService = registryRecordStatusService;
     }
 
+	@Required
     public void setPropertiesFactory(PropertiesFactory propertiesFactory) {
         this.propertiesFactory = propertiesFactory;
     }
+
 }
