@@ -33,9 +33,9 @@
         <put-attribute name="title" value="payments.main.title" />
     </definition>
 
-	<definition name="payments.error.point_authentication_required" extends="payments.main">
-		<put-attribute name="title" value="payments.errors.point_authentication_required"/>
-		<put-attribute name="body" value="/WEB-INF/jsp/payments/errors/point_authentication_required.jsp"/>
+	<definition name="payments.error.cashbox_authentication_required" extends="payments.main">
+		<put-attribute name="title" value="payments.errors.cashbox_authentication_required"/>
+		<put-attribute name="body" value="/WEB-INF/jsp/payments/errors/cashbox_authentication_required.jsp"/>
 	</definition>
 
 	<definition name="payments.security.get_identity_cookie" extends="payments.main">
