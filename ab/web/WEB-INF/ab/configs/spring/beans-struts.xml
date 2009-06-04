@@ -238,7 +238,6 @@
 
 	<bean id="apartmentEditAction"
 		  class="org.flexpay.ab.actions.apartment.ApartmentEditAction"
-		  p:parentService-ref="buildingService"
 		  p:apartmentService-ref="apartmentService"
 		  p:buildingService-ref="buildingService"
           p:crumbNameKey="ab.crumbs.apartment_edit"

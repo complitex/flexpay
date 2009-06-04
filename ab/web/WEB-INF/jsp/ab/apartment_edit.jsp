@@ -9,12 +9,12 @@
 
 		<tr>
 			<td colspan="2">
-				<%@ include file="filters/groups/country_region_town_street_building.jsp" %>
+				<%@ include file="filters/groups/country_region_town_streetname_building_ajax.jsp" %>
 			</td>
 		</tr>
 
 		<tr>
-			<td class="col"><s:text name="ab.apartment.number"/></td>
+			<td class="col"><s:text name="ab.apartment.number"/>:</td>
 			<td class="col">
 				<s:textfield name="apartmentNumber" value="%{apartmentNumber}"/>
 			</td>
