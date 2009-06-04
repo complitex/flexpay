@@ -55,6 +55,16 @@
 		</antcall>
 	</target>
 
+    <target name="payments.deploy.sjsas" depends="payments.war.production.glassfish_mysql5">
+        <antcall target="payments.deploy.sjsas.nobuild" />
+    </target>
+
+    <target name="payments.deploy.sjsas.nobuild">
+        <antcall target="template.deploy.sjsas">
+            <param name="application_archive" value="${distr.dir}/${payments.war.name}" />
+        </antcall>
+    </target>
+
 	<taskdef name="sun-appserv-deploy"
 			 classname="org.apache.tools.ant.taskdefs.optional.sun.appserv.DeployTask"
 			 classpath="${sjsas.root}/lib/sun-appserv-ant.jar" />
