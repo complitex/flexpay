@@ -1,22 +1,20 @@
 package org.flexpay.payments.actions.service;
 
-import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.persistence.Language;
 import static org.flexpay.common.persistence.Stub.stub;
 import static org.flexpay.common.util.CollectionUtils.map;
 import org.flexpay.common.util.config.ApplicationConfig;
+import org.flexpay.payments.actions.CashboxCookieActionSupport;
 import org.flexpay.payments.persistence.ServiceType;
 import org.flexpay.payments.persistence.ServiceTypeNameTranslation;
 import org.flexpay.payments.service.ServiceTypeService;
-import org.flexpay.payments.actions.interceptor.CashboxAware;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.util.Map;
 
-public class ServiceTypeEditAction extends FPActionSupport implements CashboxAware {
+public class ServiceTypeEditAction extends CashboxCookieActionSupport {
 
-	private Long cashboxId;
 	private ServiceType serviceType = new ServiceType();
 	private Map<Long, String> names = map();
 	private Map<Long, String> descriptions = map();
@@ -125,14 +123,6 @@ public class ServiceTypeEditAction extends FPActionSupport implements CashboxAwa
 
 	public void setDescriptions(Map<Long, String> descriptions) {
 		this.descriptions = descriptions;
-	}
-
-	public Long getCashboxId() {
-		return cashboxId;
-	}
-
-	public void setCashboxId(Long cashboxId) {
-		this.cashboxId = cashboxId;
 	}
 
 	public void setCrumbCreateKey(String crumbCreateKey) {

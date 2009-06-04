@@ -1,8 +1,8 @@
 package org.flexpay.payments.actions;
 
 import org.flexpay.common.actions.StaticPageAction;
-import org.flexpay.payments.persistence.Operation;
 import org.flexpay.payments.actions.interceptor.CashboxAware;
+import org.flexpay.payments.persistence.Operation;
 
 public class CashboxAwareStaticAction extends StaticPageAction implements CashboxAware {
 

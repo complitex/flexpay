@@ -1,27 +1,24 @@
 package org.flexpay.payments.actions.service;
 
-import org.flexpay.common.actions.FPActionWithPagerSupport;
 import org.flexpay.common.persistence.filter.BeginDateFilter;
 import org.flexpay.common.persistence.filter.EndDateFilter;
 import org.flexpay.common.persistence.filter.ObjectFilter;
 import org.flexpay.common.util.CollectionUtils;
-import org.flexpay.payments.persistence.Service;
-import org.flexpay.payments.service.SPService;
-import org.flexpay.payments.actions.interceptor.CashboxAware;
 import org.flexpay.orgs.persistence.filters.ServiceProviderFilter;
 import org.flexpay.orgs.service.ServiceProviderService;
+import org.flexpay.payments.actions.CashboxCookieWithPagerActionSupport;
+import org.flexpay.payments.persistence.Service;
+import org.flexpay.payments.service.SPService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.util.List;
 
-public class ServicesListAction extends FPActionWithPagerSupport<Service> implements CashboxAware {
+public class ServicesListAction extends CashboxCookieWithPagerActionSupport<Service> {
 
 	private BeginDateFilter beginDateFilter = new BeginDateFilter();
 	private EndDateFilter endDateFilter = new EndDateFilter();
 	private ServiceProviderFilter serviceProviderFilter = new ServiceProviderFilter();
-
-	private Long cashboxId;
 
 	private List<Service> services;
 
@@ -78,14 +75,6 @@ public class ServicesListAction extends FPActionWithPagerSupport<Service> implem
 
 	public void setServiceProviderFilter(ServiceProviderFilter serviceProviderFilter) {
 		this.serviceProviderFilter = serviceProviderFilter;
-	}
-
-	public Long getCashboxId() {
-		return cashboxId;
-	}
-
-	public void setCashboxId(Long cashboxId) {
-		this.cashboxId = cashboxId;
 	}
 
 	@Required

@@ -1,24 +1,24 @@
 package org.flexpay.payments.actions.registry;
 
 import org.apache.commons.lang.time.DateUtils;
-import org.flexpay.common.actions.FPActionWithPagerSupport;
 import org.flexpay.common.persistence.filter.RegistryTypeFilter;
 import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.persistence.registry.RegistryProperties;
 import org.flexpay.common.service.RegistryTypeService;
 import org.flexpay.common.util.DateUtil;
-import org.flexpay.payments.persistence.EircRegistryProperties;
-import org.flexpay.payments.service.EircRegistryService;
 import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.orgs.persistence.filters.OrganizationFilter;
 import org.flexpay.orgs.service.OrganizationService;
+import org.flexpay.payments.actions.CashboxCookieWithPagerActionSupport;
+import org.flexpay.payments.persistence.EircRegistryProperties;
+import org.flexpay.payments.service.EircRegistryService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.util.Date;
 import java.util.List;
 
-public class RegistriesListAction extends FPActionWithPagerSupport {
+public class RegistriesListAction extends CashboxCookieWithPagerActionSupport {
 
 	private OrganizationFilter senderOrganizationFilter = new OrganizationFilter();
 	private OrganizationFilter recipientOrganizationFilter = new OrganizationFilter();

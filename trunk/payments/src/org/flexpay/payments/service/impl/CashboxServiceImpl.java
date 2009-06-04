@@ -7,8 +7,8 @@ import org.flexpay.payments.dao.CashboxDao;
 import org.flexpay.payments.persistence.Cashbox;
 import org.flexpay.payments.service.CashboxService;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Set;

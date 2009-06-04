@@ -2,25 +2,24 @@ package org.flexpay.payments.reports.payments.impl;
 
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.morphology.currency.CurrencyToTextConverter;
+import org.flexpay.common.service.CurrencyInfoService;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.DateUtil;
-import org.flexpay.common.service.CurrencyInfoService;
 import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.orgs.persistence.ServiceProvider;
 import org.flexpay.orgs.service.OrganizationService;
 import org.flexpay.orgs.service.ServiceProviderService;
+import org.flexpay.payments.persistence.Document;
 import org.flexpay.payments.persistence.Operation;
 import org.flexpay.payments.persistence.Service;
-import org.flexpay.payments.persistence.Document;
 import org.flexpay.payments.persistence.ServiceType;
 import org.flexpay.payments.reports.payments.PaymentPrintForm;
 import org.flexpay.payments.reports.payments.PaymentReportData;
 import org.flexpay.payments.reports.payments.PaymentsReporter;
+import org.flexpay.payments.service.DocumentService;
 import org.flexpay.payments.service.OperationService;
 import org.flexpay.payments.service.SPService;
-import org.flexpay.payments.service.DocumentService;
 import org.flexpay.payments.service.statistics.PaymentsStatisticsService;
-import org.flexpay.payments.service.statistics.ServicePaymentsStatistics;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.util.Date;

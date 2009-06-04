@@ -1,6 +1,5 @@
 package org.flexpay.payments.actions.service;
 
-import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.persistence.Language;
 import org.flexpay.common.persistence.MeasureUnit;
 import static org.flexpay.common.persistence.Stub.stub;
@@ -10,6 +9,10 @@ import org.flexpay.common.persistence.filter.MeasureUnitFilter;
 import org.flexpay.common.service.MeasureUnitService;
 import static org.flexpay.common.util.CollectionUtils.map;
 import org.flexpay.common.util.config.ApplicationConfig;
+import org.flexpay.orgs.persistence.ServiceProvider;
+import org.flexpay.orgs.persistence.filters.ServiceProviderFilter;
+import org.flexpay.orgs.service.ServiceProviderService;
+import org.flexpay.payments.actions.CashboxCookieActionSupport;
 import org.flexpay.payments.persistence.Service;
 import org.flexpay.payments.persistence.ServiceDescription;
 import org.flexpay.payments.persistence.ServiceType;
@@ -17,16 +20,12 @@ import org.flexpay.payments.persistence.filters.ServiceFilter;
 import org.flexpay.payments.persistence.filters.ServiceTypeFilter;
 import org.flexpay.payments.service.SPService;
 import org.flexpay.payments.service.ServiceTypeService;
-import org.flexpay.payments.actions.interceptor.CashboxAware;
-import org.flexpay.orgs.persistence.ServiceProvider;
-import org.flexpay.orgs.persistence.filters.ServiceProviderFilter;
-import org.flexpay.orgs.service.ServiceProviderService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.util.Map;
 
-public class ServiceEditAction extends FPActionSupport implements CashboxAware {
+public class ServiceEditAction extends CashboxCookieActionSupport {
 
 	private Service service = new Service(0L);
 
@@ -38,8 +37,6 @@ public class ServiceEditAction extends FPActionSupport implements CashboxAware {
 	private EndDateFilter endDateFilter = new EndDateFilter();
 
 	private Map<Long, String> descriptions = map();
-
-	private Long cashboxId;
 
 	private String crumbCreateKey;
 	private SPService spService;
@@ -212,14 +209,6 @@ public class ServiceEditAction extends FPActionSupport implements CashboxAware {
 
 	public void setDescriptions(Map<Long, String> descriptions) {
 		this.descriptions = descriptions;
-	}
-
-	public Long getCashboxId() {
-		return cashboxId;
-	}
-
-	public void setCashboxId(Long cashboxId) {
-		this.cashboxId = cashboxId;
 	}
 
 	public void setCrumbCreateKey(String crumbCreateKey) {

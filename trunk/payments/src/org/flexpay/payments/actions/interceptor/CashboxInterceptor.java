@@ -13,17 +13,28 @@ public class CashboxInterceptor extends AbstractInterceptor {
 
 	public String intercept(ActionInvocation actionInvocation) throws Exception {
 
-		Object action = actionInvocation.getAction();
-		if (action instanceof CashboxAware) {
-			Long cashboxId = ((CashboxAware) action).getCashboxId();
-			if (cashboxId != null) {
-				log.info("Cashbox identified as {}", cashboxId);
-			} else {
-				return CASHBOX_AUTHENTICATION_REQUIRED;
+		try {
+
+			Object action = actionInvocation.getAction();
+			if (action instanceof CashboxAware) {
+				Long cashboxId = ((CashboxAware) action).getCashboxId();
+				if (cashboxId != null) {
+					log.info("Cashbox identified as {}", cashboxId);
+				} else {
+					return CASHBOX_AUTHENTICATION_REQUIRED;
+				}
 			}
+
+			return actionInvocation.invoke();
+
+		} catch (Exception e) {
+			log.error("Failure", e);
+			throw e;
+		} catch (Throwable e) {
+			log.error("Failure", e);
+			throw new RuntimeException(e);
 		}
 
-		return actionInvocation.invoke();
 	}
 
 }

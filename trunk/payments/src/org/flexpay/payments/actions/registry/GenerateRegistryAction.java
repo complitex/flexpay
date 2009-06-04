@@ -1,12 +1,10 @@
 package org.flexpay.payments.actions.registry;
 
-import org.flexpay.common.actions.FPActionSupport;
-import org.flexpay.payments.actions.interceptor.CashboxAware;
+import org.flexpay.payments.actions.CashboxCookieActionSupport;
 import org.jetbrains.annotations.NotNull;
 
-public class GenerateRegistryAction extends FPActionSupport implements CashboxAware {
+public class GenerateRegistryAction extends CashboxCookieActionSupport {
 
-	private Long cashboxId;
 	private Long organizationId;
 
 	@NotNull
@@ -25,16 +23,7 @@ public class GenerateRegistryAction extends FPActionSupport implements CashboxAw
 
 	@NotNull
 	protected String getErrorResult() {
-		
 		return SUCCESS;
-	}
-
-	public Long getCashboxId() {
-		return cashboxId;
-	}
-
-	public void setCashboxId(Long cashboxId) {
-		this.cashboxId = cashboxId;
 	}
 
 	public Long getOrganizationId() {

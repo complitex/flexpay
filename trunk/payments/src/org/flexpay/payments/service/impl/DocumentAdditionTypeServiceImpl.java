@@ -1,10 +1,10 @@
 package org.flexpay.payments.service.impl;
 
-import org.flexpay.payments.service.DocumentAdditionTypeService;
-import org.flexpay.payments.persistence.DocumentAdditionType;
-import org.flexpay.payments.dao.DocumentAdditionTypeDao;
-import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
+import org.flexpay.common.persistence.Stub;
+import org.flexpay.payments.dao.DocumentAdditionTypeDao;
+import org.flexpay.payments.persistence.DocumentAdditionType;
+import org.flexpay.payments.service.DocumentAdditionTypeService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Transactional;

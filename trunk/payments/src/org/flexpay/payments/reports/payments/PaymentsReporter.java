@@ -1,12 +1,12 @@
 package org.flexpay.payments.reports.payments;
 
-import org.springframework.security.annotation.Secured;
-import org.flexpay.payments.service.Roles;
-import org.flexpay.payments.persistence.Operation;
 import org.flexpay.common.persistence.Stub;
+import org.flexpay.payments.persistence.Operation;
+import org.flexpay.payments.service.Roles;
+import org.springframework.security.annotation.Secured;
 
-import java.util.List;
 import java.util.Date;
+import java.util.List;
 
 public interface PaymentsReporter {
 

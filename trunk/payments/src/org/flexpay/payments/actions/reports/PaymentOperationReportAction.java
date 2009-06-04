@@ -3,13 +3,13 @@ package org.flexpay.payments.actions.reports;
 import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.apache.commons.io.IOUtils;
-import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.service.reporting.ReportUtil;
 import static org.flexpay.common.util.CollectionUtils.ar;
 import static org.flexpay.common.util.CollectionUtils.map;
 import org.flexpay.common.util.config.ApplicationConfig;
+import org.flexpay.payments.actions.CashboxCookieActionSupport;
 import org.flexpay.payments.persistence.Operation;
 import org.flexpay.payments.reports.payments.PaymentPrintForm;
 import org.flexpay.payments.reports.payments.PaymentsReporter;
@@ -19,7 +19,7 @@ import org.springframework.beans.factory.annotation.Required;
 import java.io.InputStream;
 import java.util.Map;
 
-public class PaymentOperationReportAction extends FPActionSupport {
+public class PaymentOperationReportAction extends CashboxCookieActionSupport {
 
 	private ReportUtil reportUtil;
 	private PaymentsReporter paymentsReporter;

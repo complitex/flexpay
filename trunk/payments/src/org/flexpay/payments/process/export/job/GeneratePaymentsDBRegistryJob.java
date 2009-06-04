@@ -1,20 +1,22 @@
 package org.flexpay.payments.process.export.job;
 
+import org.flexpay.common.exception.FlexPayException;
+import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.persistence.file.FPFile;
+import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.process.job.Job;
 import org.flexpay.common.service.FPFileService;
-import org.flexpay.common.exception.FlexPayException;
-import org.flexpay.common.persistence.file.FPFile;
-import org.flexpay.common.persistence.Stub;
-import org.flexpay.common.persistence.registry.Registry;
-import org.flexpay.orgs.service.OrganizationService;
 import org.flexpay.orgs.persistence.Organization;
+import org.flexpay.orgs.service.OrganizationService;
 import org.flexpay.payments.process.export.util.GeneratePaymentsDBRegistry;
+import org.springframework.beans.factory.annotation.Required;
 
 import java.io.Serializable;
-import java.util.Map;
 import java.util.Date;
+import java.util.Map;
 
 public class GeneratePaymentsDBRegistryJob extends Job {
+
     private FPFileService fpFileService;
     private GeneratePaymentsDBRegistry generatePaymentsDBRegistry;
     private OrganizationService organizationService;
@@ -70,15 +72,19 @@ public class GeneratePaymentsDBRegistryJob extends Job {
         return RESULT_NEXT;
     }
 
+	@Required
     public void setFpFileService(FPFileService fpFileService) {
         this.fpFileService = fpFileService;
     }
 
+	@Required
     public void setGeneratePaymentsDBRegistry(GeneratePaymentsDBRegistry generatePaymentsDBRegistry) {
         this.generatePaymentsDBRegistry = generatePaymentsDBRegistry;
     }
 
+	@Required
     public void setOrganizationService(OrganizationService organizationService) {
         this.organizationService = organizationService;
     }
+
 }

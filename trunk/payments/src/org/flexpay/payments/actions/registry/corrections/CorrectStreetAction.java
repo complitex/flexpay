@@ -14,14 +14,16 @@ import org.flexpay.payments.persistence.EircRegistryProperties;
 import org.flexpay.payments.persistence.ServiceType;
 import org.flexpay.payments.persistence.ServiceTypeNameTranslation;
 import org.flexpay.payments.service.ServiceTypeService;
+import org.flexpay.payments.actions.interceptor.CashboxAware;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
-public class CorrectStreetAction extends StreetsListAction {
+public class CorrectStreetAction extends StreetsListAction implements CashboxAware {
 
 	protected String setupType;
 	protected Street object = new Street();
 	protected RegistryRecord record = new RegistryRecord();
+	protected Long cashboxId;
 
 	protected CorrectionsService correctionsService;
 	protected RegistryRecordService recordService;
@@ -98,6 +100,14 @@ public class CorrectStreetAction extends StreetsListAction {
 		this.record = record;
 	}
 
+	public Long getCashboxId() {
+		return cashboxId;
+	}
+
+	public void setCashboxId(Long cashboxId) {
+		this.cashboxId = cashboxId;
+	}
+
 	@Required
 	public void setCorrectionsService(CorrectionsService correctionsService) {
 		this.correctionsService = correctionsService;
@@ -117,4 +127,5 @@ public class CorrectStreetAction extends StreetsListAction {
 	public void setServiceProviderService(ServiceProviderService serviceProviderService) {
 		this.serviceProviderService = serviceProviderService;
 	}
+
 }

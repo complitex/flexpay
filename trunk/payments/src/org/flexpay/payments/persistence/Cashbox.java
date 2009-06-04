@@ -2,18 +2,15 @@ package org.flexpay.payments.persistence;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
-import org.apache.commons.lang.StringUtils;
-import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.common.persistence.DomainObjectWithStatus;
 import org.flexpay.common.util.TranslationUtil;
 import org.flexpay.common.util.config.ApplicationConfig;
 import org.flexpay.orgs.persistence.PaymentPoint;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Set;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.Locale;
+import java.util.Set;
 
 public class Cashbox extends DomainObjectWithStatus {
 

@@ -20,14 +20,16 @@ import org.flexpay.payments.persistence.EircRegistryProperties;
 import org.flexpay.payments.persistence.ServiceType;
 import org.flexpay.payments.persistence.ServiceTypeNameTranslation;
 import org.flexpay.payments.service.ServiceTypeService;
+import org.flexpay.payments.actions.interceptor.CashboxAware;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
-public class CorrectAddressAction extends ApartmentsListAction {
+public class CorrectAddressAction extends ApartmentsListAction implements CashboxAware {
 
 	protected String setupType;
 	protected Apartment object = Apartment.newInstance();
 	protected RegistryRecord record = new RegistryRecord();
+	protected Long cashboxId;
 
 	protected DistrictFilter districtFilter = new DistrictFilter();
 
@@ -155,6 +157,14 @@ public class CorrectAddressAction extends ApartmentsListAction {
 		return error != null && typeRegistry.getType(Street.class) == error.getObjectType();
 	}
 
+	public Long getCashboxId() {
+		return cashboxId;
+	}
+
+	public void setCashboxId(Long cashboxId) {
+		this.cashboxId = cashboxId;
+	}
+
 	@Required
 	public void setCorrectionsService(CorrectionsService correctionsService) {
 		this.correctionsService = correctionsService;
@@ -179,4 +189,5 @@ public class CorrectAddressAction extends ApartmentsListAction {
 	public void setServiceProviderService(ServiceProviderService serviceProviderService) {
 		this.serviceProviderService = serviceProviderService;
 	}
+
 }

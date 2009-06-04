@@ -1,7 +1,6 @@
 package org.flexpay.payments.actions.operations;
 
 import org.apache.commons.lang.time.DateUtils;
-import org.flexpay.common.actions.FPActionWithPagerSupport;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.filter.BeginDateFilter;
@@ -12,12 +11,10 @@ import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.DateUtil;
 import org.flexpay.common.util.SecurityUtil;
 import org.flexpay.orgs.persistence.Organization;
-import org.flexpay.orgs.persistence.PaymentPoint;
 import org.flexpay.orgs.service.OrganizationService;
-import org.flexpay.orgs.service.PaymentPointService;
+import org.flexpay.payments.actions.CashboxCookieWithPagerActionSupport;
 import org.flexpay.payments.persistence.*;
 import org.flexpay.payments.service.*;
-import org.flexpay.payments.actions.interceptor.CashboxAware;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
@@ -25,12 +22,10 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
-public class OperationsListAction extends FPActionWithPagerSupport<Operation> implements CashboxAware {
+public class OperationsListAction extends CashboxCookieWithPagerActionSupport<Operation> {
 
 	// form data
 	private List<ServiceType> serviceTypes = CollectionUtils.list();
-
-	private Long cashboxId;
 
 	// selected service type id
 	private Long serviceTypeId;
@@ -366,14 +361,6 @@ public class OperationsListAction extends FPActionWithPagerSupport<Operation> im
 
 	public void setDocumentSearchEnabled(String documentSearchEnabled) {
 		this.documentSearchEnabled = documentSearchEnabled;
-	}
-
-	public Long getCashboxId() {
-		return cashboxId;
-	}
-
-	public void setCashboxId(Long cashboxId) {
-		this.cashboxId = cashboxId;
 	}
 
 	// required services
