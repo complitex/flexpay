@@ -2,14 +2,17 @@ package org.flexpay.ab.actions.apartment;
 
 import org.flexpay.ab.persistence.Apartment;
 import org.flexpay.ab.persistence.Building;
+import org.flexpay.ab.persistence.filters.BuildingsFilter;
 import org.flexpay.ab.service.ApartmentService;
 import org.flexpay.ab.service.BuildingService;
+import org.flexpay.common.actions.FPActionSupport;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
-public class ApartmentEditAction extends BuildingsFilterDependentAction {
+public class ApartmentEditAction extends FPActionSupport {
 
+	private BuildingsFilter buildingsFilter = new BuildingsFilter();
 	private Apartment apartment = Apartment.newInstance();
 	private String apartmentNumber;
 
@@ -20,44 +23,50 @@ public class ApartmentEditAction extends BuildingsFilterDependentAction {
 	@NotNull
 	public String doExecute() throws Exception {
 
+		if (apartment.getId() == null) {
+			addActionError(getText("error.no_id"));
+			return REDIRECT_SUCCESS;
+		}
+
+		apartment = apartment.isNew() ? apartment : apartmentService.readFull(stub(apartment));
+		if (apartment == null) {
+			addActionError(getText("error.invalid_id"));
+			return REDIRECT_SUCCESS;
+		}
+
+		if (apartment.isNotNew()) {
+			buildingsFilter.setSelectedId(apartment.getBuildingStub().getId());
+			buildingsFilter.setReadOnly(true);
+		}
+
+		if (!isSubmit()) {
+			apartmentNumber = apartment.getNumber();
+			return INPUT;
+		}
+
 		if (!buildingsFilter.needFilter()) {
-			log.error("!!!!!!!!!!!! no buildings filter value");
 			addActionError(getText("ab.error.apartment.invalid_buildings_id"));
 			return REDIRECT_SUCCESS;
 		}
 
 		Building building = buildingService.findBuilding(buildingsFilter.getSelectedStub());
 		if (building == null) {
-			log.error("!!!!!!!!!!!! no building fetched");
 			addActionError(getText("ab.error.apartment.invalid_buildings_id"));
 			return REDIRECT_SUCCESS;
 		}
 
-		if (apartment.isNotNew()) {
-			apartment = apartmentService.readWithPersons(stub(apartment));
-		}
+		apartment.setNumber(apartmentNumber);
 
-		countryFilter.setReadOnly(true);
-		regionFilter.setReadOnly(true);
-		townFilter.setReadOnly(true);
-		streetFilter.setReadOnly(true);
-		buildingsFilter.setReadOnly(true);
-		initFilters();
-
-		if (isSubmit()) {
+		if (apartment.isNew()) {
 			apartment.setBuilding(building);
-			apartment.setNumber(apartmentNumber);
-
-			if (apartment.isNew()) {
-				apartmentService.create(apartment);
-			} else {
-				apartmentService.update(apartment);
-			}
-			return REDIRECT_SUCCESS;
+			apartmentService.create(apartment);
+		} else {
+			apartmentService.update(apartment);
 		}
 
-		apartmentNumber = apartment.getNumber();
-		return INPUT;
+		addActionError(getText("ab.apartment.saved"));
+
+		return REDIRECT_SUCCESS;
 	}
 
 	@Override
@@ -80,6 +89,14 @@ public class ApartmentEditAction extends BuildingsFilterDependentAction {
 		return INPUT;
 	}
 
+	public BuildingsFilter getBuildingsFilter() {
+		return buildingsFilter;
+	}
+
+	public void setBuildingsFilter(BuildingsFilter buildingsFilter) {
+		this.buildingsFilter = buildingsFilter;
+	}
+
 	public Apartment getApartment() {
 		return apartment;
 	}
@@ -88,12 +105,12 @@ public class ApartmentEditAction extends BuildingsFilterDependentAction {
 		this.apartment = apartment;
 	}
 
-	public void setApartmentNumber(String apartmentNumber) {
-		this.apartmentNumber = apartmentNumber;
-	}
-
 	public String getApartmentNumber() {
 		return apartmentNumber;
+	}
+
+	public void setApartmentNumber(String apartmentNumber) {
+		this.apartmentNumber = apartmentNumber;
 	}
 
 	public void setCrumbCreateKey(String crumbCreateKey) {

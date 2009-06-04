@@ -4,7 +4,7 @@
 	<s:hidden name="buildingsFilter.selectedId" value="%{buildingsFilter.selectedId}"/>
 	<s:property value="%{getBuildingNumber(buildingsFilter.selected)}"/>
 </s:if><s:else>
-	<select name="buildingsFilter.selectedId" onchange="this.form.submit();" class="form-select">
+	<select name="buildingsFilter.selectedId" id="buildingsFilter" onchange="this.form.submit();" class="form-select">
 		<s:if test="buildingsFilter.allowEmpty">
 			<option value="-1"><s:text name="common.select"/></option>
 		</s:if>
