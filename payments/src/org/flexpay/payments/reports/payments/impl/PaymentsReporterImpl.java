@@ -31,6 +31,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 public class PaymentsReporterImpl implements PaymentsReporter {
 
@@ -149,7 +150,7 @@ public class PaymentsReporterImpl implements PaymentsReporter {
 
 		List<Operation> operations = operationService.listReceivedPayments(organization, begin, end);
 		for (Operation operation : operations) {
-			operationPrintInfos.add(convert(locale, operation));
+			operationPrintInfos.add(convert(operation));
 		}
 		result.setOperationDetailses(operationPrintInfos);
 
@@ -166,32 +167,28 @@ public class PaymentsReporterImpl implements PaymentsReporter {
 	private void setTotals(Date begin, Date end, Organization organization, PaymentPoint paymentPoint,
 						   ReceivedPaymentsPrintInfoData result, Locale locale) {
 
-		List<OperationTypeStatistics> typeStatisticses = paymentsStatisticsService.operationTypeStatistics(
-				new Stub<Organization>(organization.getId()), begin, end);
-
 		result.setCreationDate(new Date());
 		result.setBeginDate(begin);
 		result.setEndDate(end);
-
 		result.setPaymentPointName(TranslationUtil.getTranslation(paymentPoint.getNames(), locale).getName());
 		result.setPaymentPointAddress(paymentPoint.getAddress());
 
 		result.setCashierFio("Коваль А.Н."); // TODO : FIXME
-
-		result.setTotalPaymentsCount(getPaymentsCount(typeStatisticses));
-		result.setTotalPaymentsSumm(getPaymentsSumm(typeStatisticses));
-
-		result.setServiceTypePaymentsCounts(null); // TODO
-		result.setServiceTypePaymentsTotals(null); // TODO
 	}
 
-	private OperationPrintInfo convert(Locale locale, Operation operation) {
+	private OperationPrintInfo convert(Operation operation) {
 		OperationPrintInfo operationPrintInfo = new OperationPrintInfo();
 		operationPrintInfo.setOperationId(operation.getId());
 		operationPrintInfo.setSumm(operation.getOperationSumm());
 		operationPrintInfo.setPayerFio(operation.getPayerFIO());
 
-		operationPrintInfo.setServicePayments(null); // TODO
+		// setting service payments
+		Map<Integer, BigDecimal> servicePayments = CollectionUtils.map();
+		for (Document document : operation.getDocuments()) {
+			ServiceType serviceType = serviceTypeService.read(document.getService().getServiceTypeStub());
+			servicePayments.put(serviceType.getCode(), document.getSumm());
+		}
+		operationPrintInfo.setServicePayments(servicePayments);
 
 		return operationPrintInfo;
 	}

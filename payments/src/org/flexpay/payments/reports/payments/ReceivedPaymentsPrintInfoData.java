@@ -15,33 +15,21 @@ import java.math.BigDecimal;
  */
 public class ReceivedPaymentsPrintInfoData {
 
+	private static final int SERVICE_TYPE_KVARTPLATA = 1;
+	private static final int SERVICE_TYPE_DOGS = 2;
+	private static final int SERVICE_TYPE_GARAGE = 3;
+	private static final int SERVICE_TYPE_WARMING = 4;
+	private static final int SERVICE_TYPE_HOT_WATER = 7;
+	private static final int SERVICE_TYPE_COLD_WATER = 6;
+	private static final int SERVICE_TYPE_SEWER = 13; // FIXME find proper one
+
 	private Date creationDate;
 	private Date beginDate;
 	private Date endDate;
 	private String paymentPointName;
 	private String paymentPointAddress;
 	private String cashierFio;
-	private Long totalPaymentsCount;
-	private BigDecimal totalPaymentsSumm;
 	private List<OperationPrintInfo> operationDetailses = CollectionUtils.list();
-	private Map<Integer, Integer> serviceTypePaymentsCounts; // maps service type code to number of payments for it
-	private Map<Integer, BigDecimal> serviceTypePaymentsTotals; // maps service type code to total payments summ for it
-
-	public Long getTotalPaymentsCount() {
-		return totalPaymentsCount;
-	}
-
-	public void setTotalPaymentsCount(Long totalPaymentsCount) {
-		this.totalPaymentsCount = totalPaymentsCount;
-	}
-
-	public BigDecimal getTotalPaymentsSumm() {
-		return totalPaymentsSumm;
-	}
-
-	public void setTotalPaymentsSumm(BigDecimal totalPaymentsSumm) {
-		this.totalPaymentsSumm = totalPaymentsSumm;
-	}
 
 	public String getCashierFio() {
 		return cashierFio;
@@ -99,22 +87,6 @@ public class ReceivedPaymentsPrintInfoData {
 		this.operationDetailses = operationDetailses;
 	}
 
-	public Map<Integer, Integer> getServiceTypePaymentsCounts() {
-		return serviceTypePaymentsCounts;
-	}
-
-	public void setServiceTypePaymentsCounts(Map<Integer, Integer> serviceTypePaymentsCounts) {
-		this.serviceTypePaymentsCounts = serviceTypePaymentsCounts;
-	}
-
-	public Map<Integer, BigDecimal> getServiceTypePaymentsTotals() {
-		return serviceTypePaymentsTotals;
-	}
-
-	public void setServiceTypePaymentsTotals(Map<Integer, BigDecimal> serviceTypePaymentsTotals) {
-		this.serviceTypePaymentsTotals = serviceTypePaymentsTotals;
-	}
-
 	@Override
 	public String toString() {
 		return new ToStringBuilder(this).
@@ -124,10 +96,8 @@ public class ReceivedPaymentsPrintInfoData {
 				append("paymentPointName", paymentPointName).
 				append("paymentPointAddress", paymentPointAddress).
 				append("cashierFio", cashierFio).
-				append("totalPaymentsCount", totalPaymentsCount).
-				append("totalPaymentsSumm", totalPaymentsSumm).
 				toString();
-		}
+	}
 
 	/**
 	 * Represents printable information about an operation
@@ -169,6 +139,39 @@ public class ReceivedPaymentsPrintInfoData {
 
 		public void setServicePayments(Map<Integer, BigDecimal> servicePayments) {
 			this.servicePayments = servicePayments;
+		}
+
+		private BigDecimal getServicePayment(Integer code) {
+			BigDecimal payment = servicePayments.get(code);
+			return payment != null ? payment : new BigDecimal("0.00");
+		}
+
+		public BigDecimal getPaymentKvartplata() {
+			return getServicePayment(SERVICE_TYPE_KVARTPLATA);
+		}
+
+		public BigDecimal getPaymentDogs() {
+			return getServicePayment(SERVICE_TYPE_DOGS);
+		}
+
+		public BigDecimal getPaymentGarage() {
+			return getServicePayment(SERVICE_TYPE_GARAGE);
+		}
+
+		public BigDecimal getPaymentWarming() {
+			return getServicePayment(SERVICE_TYPE_WARMING);
+		}
+
+		public BigDecimal getPaymentHotWater() {
+			return getServicePayment(SERVICE_TYPE_HOT_WATER);
+		}
+
+		public BigDecimal getPaymentColdWater() {
+			return getServicePayment(SERVICE_TYPE_COLD_WATER);
+		}
+
+		public BigDecimal getPaymentSewer() {
+			return getServicePayment(SERVICE_TYPE_SEWER);
 		}
 
 		@Override
