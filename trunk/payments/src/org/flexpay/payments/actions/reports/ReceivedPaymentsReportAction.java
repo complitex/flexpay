@@ -51,20 +51,15 @@ public class ReceivedPaymentsReportAction extends CashboxCookieActionSupport {
 		ReceivedPaymentsPrintInfoData data = paymentsReporter.
 				getReceivedPaymentsPrintFormData(beginDate, endDate, getPaymentPoint(), getLocale());
 		Map<?, ?> params = map(
-				ar("totalPaymentsCount", "totalPaymentsSumm", "cashierFio", "creationDate",
-						"beginDate", "endDate", "paymentPointName", "paymentPointAddress"),
-				ar(data.getTotalPaymentsCount(), data.getTotalPaymentsSumm(), data.getCashierFio(),
-						data.getCreationDate(), data.getBeginDate(), data.getEndDate(),
+				ar("cashierFio", "creationDate", "beginDate", "endDate",
+						"paymentPointName", "paymentPointAddress"),
+				ar(data.getCashierFio(), data.getCreationDate(), data.getBeginDate(), data.getEndDate(),
 						data.getPaymentPointName(), data.getPaymentPointAddress()));
-
-		log.debug("[!!!] data {}", data);
-		for (ReceivedPaymentsPrintInfoData.OperationPrintInfo info : data.getOperationDetailses()) {
-			log.debug("[!!!] operation {}", info);
-		}
 
 		JRDataSource dataSource = new JRBeanCollectionDataSource(data.getOperationDetailses());
 
 		String reportName = getReportName();
+		// FIXME set back before commit
 		//if (!reportUtil.templateUploaded(reportName)) {
 			uploadReport(reportName);
 		//}
