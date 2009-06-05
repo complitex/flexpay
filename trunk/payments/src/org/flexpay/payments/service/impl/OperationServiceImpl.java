@@ -73,6 +73,10 @@ public class OperationServiceImpl implements OperationService {
 		return operationDao.listPaymentOperations(beginDate, endDate, pager);
 	}
 
+	public List<Operation> listPaymentOperations(Date beginDate, Date endDate) {
+		return operationDao.listPaymentOperations(beginDate, endDate);
+	}
+
 	public List<Operation> listReceivedPayments(Organization organization, Date beginDate, Date endDate) {
 		return operationDao.listReceivedPayments(organization.getId(), beginDate, endDate);
 	}

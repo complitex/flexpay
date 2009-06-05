@@ -273,7 +273,6 @@ public class Document extends DomainObject {
 		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
 				append("id", getId()).
 				append("summ", summ).
-				append("operation.id", operation.getId()).
 				append("registryRecord", registryRecord).
 				append("documentType", documentType).
 				append("documentStatus", documentStatus).

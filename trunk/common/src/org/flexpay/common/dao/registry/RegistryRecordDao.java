@@ -19,4 +19,12 @@ public interface RegistryRecordDao extends GenericDao<RegistryRecord, Long> {
 	@NotNull
 	List<RegistryRecord> listRecordsForProcessing(Long registryId, Long lowerBoundId, Long upperBoundId);
 
+	/**
+	 * List registry records
+	 *
+	 * @param registryId   Registry header id
+	 * @return list of registry records
+	 */
+	List<RegistryRecord> listRecordsForExport(Long registryId);
+
 }

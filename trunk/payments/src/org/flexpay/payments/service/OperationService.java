@@ -53,6 +53,17 @@ public interface OperationService {
 	List<Operation> listPaymentOperations(Date beginDate, Date endDate, Page<Operation> pager);
 
 	/**
+	 * List all operations which have been created between <code>beginDate</code> and <code>endDate</code>
+	 * NOTE: operations with status DELETED are not included!
+	 *
+	 * @param beginDate lower bound for operation creation date
+	 * @param endDate higher bound for operation creation date
+	 * @return list of operations
+	 */
+	@Secured(Roles.OPERATION_READ)
+	List<Operation> listPaymentOperations(Date beginDate, Date endDate);
+
+	/**
 	 * List of all payment operations which has status REGISTERED inside time interval and organization
 	 * @param organization organization
 	 * @param beginDate lower bound for operation registration date
