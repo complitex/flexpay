@@ -92,7 +92,6 @@
 		  p:parentService-ref="streetService"
 		  p:districtParentService-ref="districtService"
 		  p:sessionUtils-ref="sessionUtils"
-		  p:factory-ref="objectsFactory"
 		  p:modificationListener-ref="buildingHistoryChangesListener" />
 
 	<bean id="addressAttributeTypeHistoryChangesListener"

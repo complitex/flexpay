@@ -31,7 +31,7 @@
 			</column>
 		</many-to-one>
 
-		<set name="buildingses" inverse="true" cascade="all-delete-orphan">
+		<set name="buildingses" inverse="true" cascade="all-delete-orphan" where="status=0">
 			<key column="building_id" not-null="true" />
 			<one-to-many class="BuildingAddress" />
 		</set>

@@ -77,7 +77,8 @@ public class Building extends DomainObjectWithStatus {
 	}
 
 	public void addAddress(@NotNull BuildingAddress buildingAddress) {
-		if (Collections.emptySet().equals(buildingses)) {
+		//noinspection CollectionsFieldAccessReplaceableByMethodCall
+		if (buildingses == Collections.EMPTY_SET) {
 			buildingses = CollectionUtils.set();
 		}
 
@@ -132,6 +133,18 @@ public class Building extends DomainObjectWithStatus {
 
 		for (BuildingAddress address : getBuildingses()) {
 			if (street.equals(address.getStreet())) {
+				return address;
+			}
+		}
+
+		return null;
+	}
+
+	@Nullable
+	public BuildingAddress getAddress(Stub<BuildingAddress> stub) {
+
+		for (BuildingAddress address : getBuildingses()) {
+			if (stub.sameId(address)) {
 				return address;
 			}
 		}

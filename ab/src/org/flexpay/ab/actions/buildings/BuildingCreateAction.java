@@ -1,104 +1,83 @@
 package org.flexpay.ab.actions.buildings;
 
-import org.apache.commons.collections.ArrayStack;
-import org.apache.commons.lang.StringUtils;
-import org.flexpay.ab.persistence.AddressAttributeType;
-import org.flexpay.ab.persistence.Building;
-import org.flexpay.ab.persistence.BuildingAddress;
-import org.flexpay.ab.persistence.filters.*;
-import org.flexpay.ab.service.AddressAttributeTypeService;
-import org.flexpay.ab.service.BuildingService;
-import org.flexpay.ab.service.DistrictService;
+import org.flexpay.ab.persistence.*;
+import org.flexpay.ab.persistence.filters.DistrictFilter;
+import org.flexpay.ab.persistence.filters.StreetFilter;
+import org.flexpay.ab.service.*;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
-import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
-import org.flexpay.common.service.ParentService;
 import org.flexpay.common.util.CollectionUtils;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.util.Map;
 
+/**
+ * Create building with a single required address
+ */
 public class BuildingCreateAction extends FPActionSupport {
 
-	private CountryFilter countryFilter = new CountryFilter();
-	private RegionFilter regionFilter = new RegionFilter();
-	private TownFilter townFilter = new TownFilter();
-	private StreetNameFilter streetNameFilter = new StreetNameFilter();
+	private StreetFilter streetFilter = new StreetFilter();
 	private DistrictFilter districtFilter = new DistrictFilter();
-
-	private Long buildingId;
-	private BuildingAddress buildings = new BuildingAddress();
 
 	// type id to value mapping
 	private Map<Long, String> attributeMap = CollectionUtils.treeMap();
 
-	private ParentService<StreetFilter> parentService;
 	private BuildingService buildingService;
-	private AddressAttributeTypeService addressAttributeTypeService;
 	private DistrictService districtService;
+	private StreetService streetService;
+	private ObjectsFactory objectsFactory;
+	private AddressAttributeTypeService addressAttributeTypeService;
 
-	public BuildingCreateAction() {
-		streetNameFilter.setShowSearchString(true);
-		streetNameFilter.setNeedAutoChange(false);
-		districtFilter.setNeedAutoChange(false);
-	}
+	private Building building;
 
 	@NotNull
-	public String doExecute() throws FlexPayException {
+	public String doExecute() throws Exception {
 
-		setupAttributes();
-		setupFilters();
-
-		if (isSubmit()) {
-
-			// validate 
-			if (!districtFilter.needFilter()) {
-				addActionError(getText("ab.buildings.create.district_required"));
-				return INPUT;
-			}
-			if (!streetNameFilter.needFilter()) {
-				addActionError(getText("ab.buildings.create.street_required"));
-				return INPUT;
-			}
-			if (buildings.getBuildingAttributes().isEmpty()) {
-				addActionError(getText("ab.buildings.create.buildings_attr_required"));
-				return INPUT;
-			}
-
-			log.debug("About to save new building");
-			if (buildingId == null) {
-				buildings = buildingService.createStreetDistrictBuildings(
-						streetNameFilter.getSelectedStub(), districtFilter.getSelectedStub(),
-						buildings.getBuildingAttributes());
-				addActionError(getText("ab.buildings.created_successfully"));
-				return REDIRECT_SUCCESS;
-			} else {
-				buildings = buildingService.createStreetBuildings(
-						new Stub<Building>(buildingId), streetNameFilter.getSelectedStub(),
-						buildings.getBuildingAttributes());
-				return "edit";
-			}
+		if (!isSubmit()) {
+			setupAttributes();
+			return INPUT;
 		}
 
-		return INPUT;
-	}
-
-	private void setupFilters() throws FlexPayException {
-		ArrayStack filterArrayStack = getFilters();
-		for (Object filter : filterArrayStack) {
-			((PrimaryKeyFilter<?>) filter).initFilter(session);
+		boolean valid = true;
+		if (!districtFilter.needFilter()) {
+			addActionError(getText("ab.buildings.create.district_required"));
+			valid = false;
 		}
-		ArrayStack filters = parentService.initFilters(filterArrayStack, getUserPreferences().getLocale());
-		setFilters(filters);
-
-		if (buildingId != null) {
-			Building building = buildingService.read(new Stub<Building>(buildingId));
-			districtFilter.setSelectedId(building.getDistrict().getId());
-			districtFilter.setReadOnly(true);
+		if (!streetFilter.needFilter()) {
+			addActionError(getText("ab.buildings.create.street_required"));
+			valid = false;
 		}
-		districtService.initFilter(districtFilter, townFilter, getUserPreferences().getLocale());
+		if (attributeMap.isEmpty()) {
+			addActionError(getText("ab.buildings.create.buildings_attr_required"));
+			valid = false;
+		}
+		if (!valid) {
+			return INPUT;
+		}
+
+		building = objectsFactory.newBuilding();
+
+		District district = districtService.readFull(districtFilter.getSelectedStub());
+		building.setDistrict(district);
+
+		BuildingAddress address = new BuildingAddress();
+		address.setPrimaryStatus(true);
+		Street street = streetService.readFull(streetFilter.getSelectedStub());
+		address.setStreet(street);
+		for (Map.Entry<Long, String> attr : attributeMap.entrySet()) {
+			AddressAttributeType type = addressAttributeTypeService.read(new Stub<AddressAttributeType>(attr.getKey()));
+			address.setBuildingAttribute(attr.getValue(), type);
+		}
+		building.addAddress(address);
+
+		log.debug("About to save new building");
+		buildingService.create(building);
+
+		addActionError(getText("ab.building.saved"));
+
+		return REDIRECT_SUCCESS;
 	}
 
 	private void setupAttributes() {
@@ -106,11 +85,7 @@ public class BuildingCreateAction extends FPActionSupport {
 		log.debug("Attributes: {}", attributeMap);
 
 		for (AddressAttributeType type : addressAttributeTypeService.getAttributeTypes()) {
-			String value = attributeMap.get(type.getId());
-			if (StringUtils.isNotBlank(value)) {
-				buildings.setBuildingAttribute(value, type);
-			}
-			attributeMap.put(type.getId(), value);
+			attributeMap.put(type.getId(), "");
 		}
 	}
 
@@ -134,74 +109,12 @@ public class BuildingCreateAction extends FPActionSupport {
 		return getTranslation(type.getTranslations()).getName();
 	}
 
-	public ArrayStack getFilters() {
-
-		ArrayStack filters = new ArrayStack();
-		filters.push(countryFilter);
-		filters.push(regionFilter);
-		filters.push(townFilter);
-		filters.push(streetNameFilter);
-
-		return filters;
+	public StreetFilter getStreetFilter() {
+		return streetFilter;
 	}
 
-	public void setFilters(ArrayStack filters) {
-		countryFilter = (CountryFilter) filters.peek(3);
-		regionFilter = (RegionFilter) filters.peek(2);
-		townFilter = (TownFilter) filters.peek(1);
-		streetNameFilter = (StreetNameFilter) filters.peek(0);
-	}
-
-	public CountryFilter getCountryFilter() {
-		return countryFilter;
-	}
-
-	public void setCountryFilter(CountryFilter countryFilter) {
-		this.countryFilter = countryFilter;
-	}
-
-	public RegionFilter getRegionFilter() {
-		return regionFilter;
-	}
-
-	public void setRegionFilter(RegionFilter regionFilter) {
-		this.regionFilter = regionFilter;
-	}
-
-	public TownFilter getTownFilter() {
-		return townFilter;
-	}
-
-	public void setTownFilter(TownFilter townFilter) {
-		this.townFilter = townFilter;
-	}
-
-	public void setBuildingId(Long buildingId) {
-		this.buildingId = buildingId;
-	}
-
-	public Long getBuildingId() {
-		return buildingId;
-	}
-
-	public BuildingAddress getBuildings() {
-		return buildings;
-	}
-
-	public Map<Long, String> getAttributeMap() {
-		return attributeMap;
-	}
-
-	public void setAttributeMap(Map<Long, String> attributeMap) {
-		this.attributeMap = attributeMap;
-	}
-
-	public StreetNameFilter getStreetNameFilter() {
-		return streetNameFilter;
-	}
-
-	public void setStreetNameFilter(StreetNameFilter streetNameFilter) {
-		this.streetNameFilter = streetNameFilter;
+	public void setStreetFilter(StreetFilter streetFilter) {
+		this.streetFilter = streetFilter;
 	}
 
 	public DistrictFilter getDistrictFilter() {
@@ -212,9 +125,16 @@ public class BuildingCreateAction extends FPActionSupport {
 		this.districtFilter = districtFilter;
 	}
 
-	@Required
-	public void setParentService(ParentService<StreetFilter> parentService) {
-		this.parentService = parentService;
+	public Map<Long, String> getAttributeMap() {
+		return attributeMap;
+	}
+
+	public void setAttributeMap(Map<Long, String> attributeMap) {
+		this.attributeMap = attributeMap;
+	}
+
+	public Building getBuilding() {
+		return building;
 	}
 
 	@Required
@@ -223,13 +143,22 @@ public class BuildingCreateAction extends FPActionSupport {
 	}
 
 	@Required
+	public void setObjectsFactory(ObjectsFactory objectsFactory) {
+		this.objectsFactory = objectsFactory;
+	}
+
+	@Required
+	public void setAddressAttributeTypeService(AddressAttributeTypeService addressAttributeTypeService) {
+		this.addressAttributeTypeService = addressAttributeTypeService;
+	}
+
+	@Required
 	public void setDistrictService(DistrictService districtService) {
 		this.districtService = districtService;
 	}
 
 	@Required
-	public void setBuildingAttributeTypeService(AddressAttributeTypeService addressAttributeTypeService) {
-		this.addressAttributeTypeService = addressAttributeTypeService;
+	public void setStreetService(StreetService streetService) {
+		this.streetService = streetService;
 	}
-
 }

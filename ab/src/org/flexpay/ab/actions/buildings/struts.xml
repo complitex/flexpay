@@ -13,33 +13,42 @@
 
 		<action name="buildingCreate" class="buildingCreateAction">
 			<result name="input" type="tiles">ab.buildings.create</result>
-			<result name="redirectSuccess" type="redirect-action">buildingsList</result>
-			<result name="edit" type="redirect-action">
-				<param name="actionName">buildingEdit</param>
+			<result name="redirectSuccess" type="redirect-action">
+				<param name="actionName">buildingView</param>
 				<param name="parse">true</param>
-				<param name="buildings.id">${buildings.id}</param>
+				<param name="building.id">${building.id}</param>
 			</result>
 		</action>
 
-		<action name="buildingEdit" class="buildingEditAction">
-			<result name="input" type="tiles">ab.buildings.edit</result>
+		<action name="editBuildingAddress" class="editBuildingAddressAction">
+			<result name="input" type="tiles">ab.buildings.edit_address</result>
+			<result name="redirectError" type="redirect-action">buildingsList</result>
+			<result name="redirectSuccess" type="redirect-action">
+				<param name="actionName">buildingView</param>
+				<param name="parse">true</param>
+				<param name="building.id">${building.id}</param>
+			</result>
+		</action>
+
+		<action name="buildingView" class="buildingViewAction">
+			<result name="success" type="tiles">ab.building.view</result>
 			<result name="redirectSuccess" type="redirect-action">buildingsList</result>
 		</action>
 
 		<action name="buildingDelete" class="buildingDeleteAction">
 			<result name="redirectSuccess" type="redirect-action">buildingsList</result>
 			<result name="redirectInput" type="redirect-action">
-				<param name="actionName">buildingEdit</param>
+				<param name="actionName">buildingView</param>
 				<param name="parse">true</param>
-				<param name="buildings.id">${redirectBuildingsId}</param>
+				<param name="building.id">${redirectBuildingsId}</param>
 			</result>
 		</action>
 
 		<action name="buildingSetPrimaryStatus" class="buildingSetPrimaryStatusAction">
 			<result name="redirectSuccess" type="redirect-action">
-				<param name="actionName">buildingEdit</param>
+				<param name="actionName">buildingView</param>
 				<param name="parse">true</param>
-				<param name="buildings.id">${redirectBuildingsId!=null ? redirectBuildingsId : buildings.id}</param>
+				<param name="building.id">${redirectBuildingsId!=null ? redirectBuildingsId : buildings.id}</param>
 			</result>
 		</action>
 

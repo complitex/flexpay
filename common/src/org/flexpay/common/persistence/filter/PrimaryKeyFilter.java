@@ -62,6 +62,9 @@ public class PrimaryKeyFilter<T extends DomainObject> extends ObjectFilter {
 		this.selectedId = selectedId;
 	}
 
+	public void setSelected(Stub<T> stub) {
+		this.selectedId = stub.getId();
+	}
 
 	public void unsetSelected() {
 		this.selectedId = defaultId;

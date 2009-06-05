@@ -31,7 +31,7 @@
 			</column>
 		</many-to-one>
 
-		<set name="buildingses" inverse="true" cascade="all">
+		<set name="buildingses" inverse="true" cascade="all" where="status=0">
 			<key column="building_id" not-null="true" />
 			<one-to-many class="org.flexpay.ab.persistence.BuildingAddress" />
 		</set>
