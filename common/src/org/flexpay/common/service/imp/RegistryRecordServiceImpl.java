@@ -98,6 +98,10 @@ public class RegistryRecordServiceImpl implements RegistryRecordService {
 		return registryRecordDaoExt.filterRecords(registry.getId(), importErrorTypeFilter, recordStatusFilter, pager);
 	}
 
+	public List<RegistryRecord> listRecords(Registry registry) {
+		return registryRecordDao.listRecordsForExport(registry.getId());
+	}
+
 	/**
 	 * Count number of error in registry
 	 *

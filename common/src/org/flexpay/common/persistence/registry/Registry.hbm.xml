@@ -308,6 +308,19 @@
 		where r.id=? and rr.id>=? and rr.id<=? and rrs.code NOT IN (2, 4)
 	]]></query>
 
+    <query name="RegistryRecord.listRecordsForExport"><![CDATA[
+        select distinct rr
+        from RegistryRecord rr
+            inner join fetch rr.properties
+            inner join fetch rr.registry r
+            inner join fetch r.properties
+            inner join fetch r.registryStatus rs
+            inner join fetch rr.recordStatus rrs
+            left join fetch rr.importError
+            left join fetch rr.containers
+        where r.id=? and rrs.code NOT IN (2)
+    ]]></query>
+
 	<query name="RegistryType.countNotProcessedRecords"><![CDATA[
 		select count(*)
 		from RegistryRecord r

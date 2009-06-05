@@ -58,6 +58,15 @@ public interface RegistryRecordService {
 									   RegistryRecordStatusFilter recordStatusFilter, Page<RegistryRecord> pager);
 
 	/**
+	 * List registry records
+	 *
+	 * @param registry			  Registry to get records for
+	 * @param recordStatusFilter	Records status filter
+	 * @return list of filtered registry records
+	 */
+	List<RegistryRecord> listRecords(Registry registry);
+
+	/**
 	 * Count number of error in registry
 	 *
 	 * @param registry Registry to count errors for

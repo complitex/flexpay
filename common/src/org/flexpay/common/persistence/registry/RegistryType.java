@@ -23,6 +23,7 @@ public class RegistryType extends DomainObject {
 	public static final int TYPE_REPAYMENT = 9;
 	public static final int TYPE_ERRORS = 10;
 	public static final int TYPE_QUITTANCE = 11;
+	public static final int TYPE_BANK_PAYMENTS = 12;
 
 	static {
 		typeToName.put(TYPE_UNKNOWN, "eirc.registry_type.unknown");
@@ -37,6 +38,7 @@ public class RegistryType extends DomainObject {
 		typeToName.put(TYPE_REPAYMENT, "eirc.registry_type.repayment");
 		typeToName.put(TYPE_ERRORS, "eirc.registry_type.errors");
 		typeToName.put(TYPE_QUITTANCE, "eirc.registry_type.quittance");
+		typeToName.put(TYPE_BANK_PAYMENTS, "eirc.registry_type.bank_payments");
 	}
 
 	private int code;
@@ -63,9 +65,10 @@ public class RegistryType extends DomainObject {
 	@Override
 	public String toString() {
 		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
-				append("RegistryType {").
+				append("id", getId()).
 				append("code", code).
-				append("}").toString();
+				append("i18nName", getI18nName()).
+				toString();
 	}
 
 }

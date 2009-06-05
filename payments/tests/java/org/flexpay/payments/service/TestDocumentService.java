@@ -5,7 +5,7 @@ import org.flexpay.payments.persistence.Document;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public class TestDocumentService  extends SpringBeanAwareTestCase {
+public class TestDocumentService extends SpringBeanAwareTestCase {
 
 	@Autowired
 	private DocumentService documentService;
