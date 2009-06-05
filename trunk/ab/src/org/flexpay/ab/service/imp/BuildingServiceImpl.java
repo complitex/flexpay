@@ -10,49 +10,47 @@ import org.flexpay.ab.persistence.filters.BuildingsFilter;
 import org.flexpay.ab.persistence.filters.DistrictFilter;
 import org.flexpay.ab.persistence.filters.StreetFilter;
 import org.flexpay.ab.service.BuildingService;
-import org.flexpay.ab.service.ObjectsFactory;
+import org.flexpay.ab.service.AddressService;
 import org.flexpay.ab.util.config.ApplicationConfig;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.persistence.Stub.stub;
-import org.flexpay.common.persistence.history.ModificationListener;
 import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
+import org.flexpay.common.persistence.history.ModificationListener;
 import org.flexpay.common.service.ParentService;
 import org.flexpay.common.service.internal.SessionUtils;
+import org.flexpay.common.util.CollectionUtils;
 import static org.flexpay.common.util.CollectionUtils.list;
 import static org.flexpay.common.util.CollectionUtils.set;
-import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
-import java.util.Collection;
 
-@Transactional (readOnly = true, rollbackFor = Exception.class)
+@Transactional (readOnly = true)
 public class BuildingServiceImpl implements BuildingService {
 
-	@NonNls
 	private Logger log = LoggerFactory.getLogger(getClass());
 
 	private BuildingDao buildingDao;
 	private BuildingsDao buildingsDao;
 	private BuildingsDaoExt buildingsDaoExt;
 
+	private AddressService addressService;
 	private ParentService<StreetFilter> parentService;
 	private ParentService<DistrictFilter> districtParentService;
 
 	private SessionUtils sessionUtils;
 	private ModificationListener<Building> modificationListener;
-
-	private ObjectsFactory factory;
 
 	public List<BuildingAddress> getBuildings(ArrayStack filters, Page pager) {
 		PrimaryKeyFilter streetFilter = (PrimaryKeyFilter) filters.peek();
@@ -197,7 +195,7 @@ public class BuildingServiceImpl implements BuildingService {
 	 *          if failure occurs
 	 */
 	public BuildingAddress findBuildings(@NotNull Stub<Street> street, @Nullable Stub<District> district,
-								   @NotNull Set<AddressAttribute> attributes)
+										 @NotNull Set<AddressAttribute> attributes)
 			throws FlexPayException {
 
 		List<BuildingAddress> buildingses =
@@ -236,7 +234,6 @@ public class BuildingServiceImpl implements BuildingService {
 	 * @param bulk	 Building bulk number
 	 * @return Buildings instance, or <code>null</null> if not found
 	 */
-	@Transactional (readOnly = true, rollbackFor = Exception.class)
 	@Nullable
 	public BuildingAddress findBuildings(@NotNull Stub<Street> street, @NotNull Stub<District> district, String number, String bulk)
 			throws FlexPayException {
@@ -251,7 +248,6 @@ public class BuildingServiceImpl implements BuildingService {
 	 * @param bulk	   Building bulk number
 	 * @return Buildings instance, or <code>null</null> if not found
 	 */
-	@Transactional (readOnly = true, rollbackFor = Exception.class)
 	public BuildingAddress findBuildings(@NotNull Stub<Street> streetStub, @NotNull String number, @Nullable String bulk)
 			throws FlexPayException {
 		return findBuildings(streetStub, null, attributes(number, bulk));
@@ -324,72 +320,6 @@ public class BuildingServiceImpl implements BuildingService {
 		}
 
 		throw new FlexPayException("No number attribute", "error.ab.buildings.no_number");
-	}
-
-	private BuildingAddress createBuildings(@Nullable Stub<Building> buildingStub, @Nullable Stub<District> district,
-									  @NotNull Stub<Street> street, @NotNull Set<AddressAttribute> attrs)
-			throws FlexPayException {
-
-		List<BuildingAddress> buildingses =
-				district == null ?
-				buildingsDaoExt.findBuildings(street.getId(), findNumber(attrs)) :
-				buildingsDaoExt.findBuildings(street.getId(), district.getId(), findNumber(attrs));
-		buildingses = filter(buildingses, attrs);
-		if (!buildingses.isEmpty()) {
-			throw new FlexPayException("Address alredy exists", "error.ab.address_alredy_exist");
-		}
-
-		BuildingAddress buildingAddress = new BuildingAddress();
-		buildingAddress.setStreet(new Street(street));
-		for (AddressAttribute attr : attrs) {
-			buildingAddress.setBuildingAttribute(attr.getValue(), attr.getBuildingAttributeType());
-		}
-
-		Building building = buildingStub == null ? null : buildingDao.readFull(buildingStub.getId());
-		if (building == null) {
-			building = factory.newBuilding();
-			building.setDistrict(new District(district));
-			buildingAddress.setPrimaryStatus(true);
-			building.addAddress(buildingAddress);
-			buildingDao.create(building);
-		} else {
-			building.addAddress(buildingAddress);
-			buildingsDao.create(buildingAddress);
-		}
-
-		return buildingAddress;
-	}
-
-	/**
-	 * Create a new Buildings
-	 *
-	 * @param building Building
-	 * @param street   Street
-	 * @param attrs	Buildings attributes
-	 * @return new Buildings object created
-	 */
-	@Transactional (readOnly = false)
-	@NotNull
-	public BuildingAddress createStreetBuildings(@NotNull Stub<Building> building, @NotNull Stub<Street> street,
-										   @NotNull Set<AddressAttribute> attrs)
-			throws FlexPayException {
-		return createBuildings(building, null, street, attrs);
-	}
-
-	/**
-	 * Create a new Buildings
-	 *
-	 * @param street   Street
-	 * @param district District
-	 * @param attrs	Buildings attributes
-	 * @return new Buildings object created
-	 */
-	@Transactional (readOnly = false)
-	@NotNull
-	public BuildingAddress createStreetDistrictBuildings(@NotNull Stub<Street> street, @NotNull Stub<District> district,
-												   @NotNull Set<AddressAttribute> attrs)
-			throws FlexPayException {
-		return createBuildings(null, district, street, attrs);
 	}
 
 	@Nullable
@@ -490,11 +420,48 @@ public class BuildingServiceImpl implements BuildingService {
 			ex.addException(new FlexPayException("No district", "error.ab.building.no_district"));
 		}
 
-		// todo: check that building has only one address on any streets
+		if (building.isNotNew()) {
+			Building old = read(stub(building));
+			sessionUtils.evict(old);
+			if (!old.getDistrictStub().equals(building.getDistrictStub())) {
+				ex.addException(new FlexPayException("District changed", "error.ab.building.district_changed"));
+			}
+		}
+
+		// check that building has only one address on any streets
+		do {
+			Set<Stub<Street>> streetStubs = CollectionUtils.set();
+			for (BuildingAddress address : building.getBuildingses()) {
+				if (streetStubs.contains(address.getStreetStub())) {
+					ex.addException(new FlexPayException("Two street address", "error.ab.building.street_address_duplicate"));
+					break;
+				}
+				streetStubs.add(address.getStreetStub());
+			}
+		} while (false);
+
+		// check no other buildings has the same address
+		for (BuildingAddress address : building.getBuildingses()) {
+			List<BuildingAddress> candidates = buildingsDaoExt.findBuildings(
+					address.getStreetStub().getId(), address.getNumber());
+			candidates = filter(candidates, address.getBuildingAttributes());
+			if (!candidates.isEmpty() && (candidates.size() > 1 || !candidates.get(0).equals(address))) {
+				ex.addException(new FlexPayException("Address already exists", "error.ab.address_alredy_exist",
+						getBuildingsAddress(candidates.get(0))));
+			}
+		}
 
 		if (ex.isNotEmpty()) {
 			ex.info(log);
 			throw ex;
+		}
+	}
+
+	private String getBuildingsAddress(BuildingAddress address) {
+		try {
+			return addressService.getBuildingsAddress(stub(address), null);
+		} catch (Exception ex) {
+			return "";
 		}
 	}
 
@@ -546,10 +513,5 @@ public class BuildingServiceImpl implements BuildingService {
 	@Required
 	public void setModificationListener(ModificationListener<Building> modificationListener) {
 		this.modificationListener = modificationListener;
-	}
-
-	@Required
-	public void setFactory(ObjectsFactory factory) {
-		this.factory = factory;
 	}
 }

@@ -45,8 +45,8 @@
                     </a>
                 </td>
                 <td class="col">
-                    <a href="<s:url value="/dicts/buildingEdit.action?buildings.id=%{id}"/>">
-                        <s:text name="common.edit"/>
+                    <a href="<s:url action="buildingView" includeParams="none"><s:param name="building.id" value="%{building.id}"/></s:url>">
+                        <s:text name="common.view"/>
                     </a>
                 </td>
             </tr>

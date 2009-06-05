@@ -185,18 +185,26 @@
 	<bean id="buildingCreateAction"
 		  class="org.flexpay.ab.actions.buildings.BuildingCreateAction"
 		  p:buildingService-ref="buildingService"
-		  p:buildingAttributeTypeService-ref="addressAttributeTypeService"
-		  p:parentService-ref="streetService"
+		  p:addressAttributeTypeService-ref="addressAttributeTypeService"
+		  p:objectsFactory-ref="objectsFactory"
+		  p:streetService-ref="streetService"
 		  p:districtService-ref="districtService"
           p:crumbNameKey="ab.crumbs.buildings_create"
           scope="prototype" />
 
-	<bean id="buildingEditAction"
-		  class="org.flexpay.ab.actions.buildings.BuildingEditAction"
+	<bean id="editBuildingAddressAction"
+		  class="org.flexpay.ab.actions.buildings.EditBuildingAddressAction"
 		  p:buildingService-ref="buildingService"
-		  p:buildingAttributeTypeService-ref="addressAttributeTypeService"
+		  p:addressAttributeTypeService-ref="addressAttributeTypeService"
+		  p:streetService-ref="streetService"
+		  p:districtService-ref="districtService"
+          p:crumbNameKey="ab.crumbs.buildings_create"
+          scope="prototype" />
+
+	<bean id="buildingViewAction"
+		  class="org.flexpay.ab.actions.buildings.BuildingViewAction"
+		  p:buildingService-ref="buildingService"
 		  p:addressService-ref="addressService"
-          p:crumbNameKey="ab.crumbs.buildings_edit"
           scope="prototype" />
 
 	<bean id="buildingDeleteAction"

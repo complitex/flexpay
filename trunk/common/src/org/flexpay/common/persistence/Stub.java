@@ -48,9 +48,13 @@ public class Stub<T extends DomainObject> implements Serializable {
 			return false;
 		}
 
-		Stub stub = (Stub) o;
+		Stub<?> stub = (Stub<?>) o;
 
 		return id.equals(stub.id);
+	}
+
+	public boolean sameId(@NotNull T o) {
+		return id.equals(o.getId());
 	}
 
 	@Override

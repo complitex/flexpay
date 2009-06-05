@@ -152,38 +152,6 @@ public interface BuildingService extends ParentService<BuildingsFilter> {
 	void update(BuildingAddress buildingAddress);
 
 	/**
-	 * Create a new Buildings
-	 *
-	 * @param street   Street
-	 * @param district District
-	 * @param attrs	Buildings attributes
-	 * @return new Buildings object created
-	 * @throws FlexPayException if failure occurs
-	 * @deprecated use {@link #create(org.flexpay.ab.persistence.Building)} instead
-	 */
-	@Secured (Roles.BUILDING_ADD)
-	@NotNull
-	BuildingAddress createStreetDistrictBuildings(@NotNull Stub<Street> street, @NotNull Stub<District> district,
-												  @NotNull Set<AddressAttribute> attrs)
-			throws FlexPayException;
-
-	/**
-	 * Create a new Buildings
-	 *
-	 * @param building Building
-	 * @param street   Street
-	 * @param attrs	Buildings attributes
-	 * @return new Buildings object created
-	 * @throws FlexPayException if failure occurs
-	 * @deprecated use {@link #create(org.flexpay.ab.persistence.Building)} instead
-	 */
-	@Secured (Roles.BUILDING_ADD)
-	@NotNull
-	BuildingAddress createStreetBuildings(@NotNull Stub<Building> building, @NotNull Stub<Street> street,
-										  @NotNull Set<AddressAttribute> attrs)
-			throws FlexPayException;
-
-	/**
 	 * Find all Buildings relation for building stub
 	 *
 	 * @param stub Building stub
