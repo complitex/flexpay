@@ -41,8 +41,6 @@
         <path refid="orgs.runtests.classpath" />
         <path refid="ab.runtests.classpath" />
         <path refid="payments.test.classpath" />
-        <path location="${build.dir}/web" />
-        <path location="payments/src" />
         <path location="payments/tests/data" />
     </path>
 
@@ -188,6 +186,10 @@
 		<condition property="class.name" value="${test.class.name}" else="org.flexpay.payments.AllTests">
 			<isset property="test.class.name" />
 		</condition>
+		<!-- Capture the path as a delimited property using the refid attribute -->
+		<property name="myclasspath" refid="payments.runtests.classpath" />
+		<!-- Emit the property to the ant console -->
+		<echo message="Classpath = ${myclasspath}" />
 		<antcall target="template.run.tests">
 			<param name="test_name" value="${class.name}" />
 			<reference refid="payments.runtests.classpath" torefid="classpath" />

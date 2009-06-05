@@ -208,4 +208,17 @@ public class DateUtil {
 		return dayBefore;
 	}
 
+	/**
+	 * Returns date which has the same day to given but time is 23:59:59
+	 * @param date date
+	 * @return date which has the same day to given but time is 23:59:59
+	 */
+	@NotNull
+	public static Date getEndOfThisDay(@NotNull Date date) {
+		Date result = DateUtil.truncateDay(date);
+		result = DateUtils.setHours(result, 23);
+		result = DateUtils.setMinutes(result, 59);
+		result = DateUtils.setSeconds(result, 59);
+		return result;
+	}
 }

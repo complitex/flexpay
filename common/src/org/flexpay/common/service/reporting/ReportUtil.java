@@ -42,6 +42,7 @@ public class ReportUtil {
 	private static final String EXTENSION_PDF = ".pdf";
 	private static final String EXTENSION_HTML = ".html";
 	private static final String EXTENSION_CSV = ".csv";
+	private static final String EXTENSION_PROPERTIES = ".properties";
 
 	/**
 	 * Name of fonts that are to
@@ -77,6 +78,7 @@ public class ReportUtil {
 
 	private Set<String> compiledReports = CollectionUtils.set();
 
+	// TODO eliminate this method!!! Usage: PaymentOperationReportAction and two tests
 	/**
 	 * Upload report and compile it
 	 *
@@ -100,6 +102,65 @@ public class ReportUtil {
 			ensureReportCompiled(name);
 		} finally {
 			IOUtils.closeQuietly(os);
+		}
+	}
+
+	/**
+	 * Upload report and compile it
+	 *
+	 * @param sourcePath resource name
+	 * @param reportName Report name
+	 * @throws Exception if failure occurs
+	 */
+	public void uploadReportTemplate(String sourcePath, String reportName) throws Exception {
+
+		ensureDirsExist();
+
+		uploadTemplateFile(sourcePath, reportName);
+		//uploadResourceBundleFiles(sourcePath, reportName);
+
+		compiledReports.remove(reportName);
+		ensureReportCompiled(reportName);
+	}
+
+	private void uploadTemplateFile(String sourcePath, String reportName) throws Exception {
+
+		String resName = sourcePath + reportName + ReportUtil.EXTENSION_TEMPLATE;
+
+		InputStream is = ApplicationConfig.getResourceAsStream(resName);
+		@SuppressWarnings ({"IOResourceOpenedButNotSafelyClosed"})
+		OutputStream os = new FileOutputStream(getTemplateFile(reportName));
+
+		try {
+			// copy report
+			IOUtils.copyLarge(is, os);
+		} finally {
+			IOUtils.closeQuietly(os);
+			IOUtils.closeQuietly(is);
+		}
+	}
+
+	private void uploadResourceBundleFiles(String sourcePath, final String reportName) throws Exception {
+
+		File sourceDir = ApplicationConfig.getResourceAsFile(sourcePath);
+		String[] bundleFileNames = sourceDir.list(new FilenameFilter() {
+			public boolean accept(File dir, String name) {
+				return name.contains(reportName) && name.contains(EXTENSION_PROPERTIES);
+			}
+		});
+
+		for (String name : bundleFileNames) {
+			InputStream is = ApplicationConfig.getResourceAsStream(sourcePath + name);
+			String bundleName = name.substring(0, name.indexOf(EXTENSION_PROPERTIES));
+			@SuppressWarnings ({"IOResourceOpenedButNotSafelyClosed"})
+			OutputStream os = new FileOutputStream(getBundleFile(bundleName));
+
+			try {
+				IOUtils.copyLarge(is, os);
+			} finally {
+				IOUtils.closeQuietly(os);
+				IOUtils.closeQuietly(is);
+			}
 		}
 	}
 
@@ -157,6 +218,9 @@ public class ReportUtil {
 
 		// setup Liberation fonts if they are used
 		adjustFontsPath(report);
+
+		// setup resource bundles if they are used
+		adjustBundlesPath(report);
 
 		// save compiled report 
 		JRSaver.saveObject(report, getCompiledTemplatePath(name));
@@ -324,6 +388,21 @@ public class ReportUtil {
 		}
 	}
 
+	/**
+	 * Setup bundles to valid locations
+	 *
+	 * @param report report
+	 * @throws Exception if an error occurres
+	 */
+	private void adjustBundlesPath(@NotNull JasperReport report) throws Exception {
+
+		log.debug("[!!!] getResourceBundle returned {}", report.getResourceBundle());
+
+		//report.
+
+		// TODO set proper bundle path if it is neccessary
+	}
+
 	@SuppressWarnings ({"unchecked", "RawUseOfParameterizedType"})
 	private Collection<String> fillParameters(JasperReport report, Map parameters) {
 
@@ -399,6 +478,10 @@ public class ReportUtil {
 	 */
 	public File getTemplateFile(String name) {
 		return new File(getReportTemplatesDir(), name + EXTENSION_TEMPLATE);
+	}
+
+	private File getBundleFile(String name) {
+		return new File(getReportTemplatesDir(), name + EXTENSION_PROPERTIES);
 	}
 
 	private String getTemplatePath(String name) {

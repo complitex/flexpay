@@ -351,5 +351,4 @@ public class JRQuittanceDataSource implements JRRewindableDataSource {
 	public void setQuittanceNumberService(QuittanceNumberService quittanceNumberService) {
 		this.quittanceNumberService = quittanceNumberService;
 	}
-
 }

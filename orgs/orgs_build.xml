@@ -36,8 +36,6 @@
     <path id="orgs.runtests.classpath">
         <path refid="common.runtests.classpath" />
         <path refid="orgs.test.classpath" />
-        <path location="${build.dir}/web" />
-        <path location="orgs/src" />
         <path location="orgs/tests/data" />
     </path>
 

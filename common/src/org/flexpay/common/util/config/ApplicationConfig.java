@@ -199,6 +199,26 @@ public class ApplicationConfig {
 		}
 	}
 
+	/**
+	 * Get resource file by name.
+	 *
+	 * @param name Resource name
+	 * @return resource file or <code>null</code> if not found
+	 */
+	public static File getResourceAsFile(@NotNull @NonNls String name) {
+		try {
+			Resource resource = resourceLoader.getResource(name);
+			if (resource.exists()) {
+				return resource.getFile();
+			} else {
+				return null;
+			}
+		} catch (IOException e) {
+			log.warn("Failed getting resource {}", name, e);
+			return null;
+		}
+	}
+
 	public static void setResourceLoader(ResourceLoader resourceLoader) {
 		log.debug("Setting resource loader");
 		ApplicationConfig.resourceLoader = resourceLoader;

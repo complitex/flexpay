@@ -38,8 +38,6 @@
 	<path id="ab.runtests.classpath">
 		<path refid="common.runtests.classpath" />
 		<path refid="ab.test.classpath" />
-		<path location="${build.dir}/web" />
-		<path location="ab/src" />
 		<path location="ab/tests/data" />
 	</path>
 

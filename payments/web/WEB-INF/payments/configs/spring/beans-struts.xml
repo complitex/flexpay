@@ -59,13 +59,10 @@
 	<!-- reports-related actions -->
 	<bean id="generateReportAction"
 		  class="org.flexpay.payments.actions.reports.ReceivedPaymentsReportAction"
-		  p:operationService-ref="operationService"
-		  p:spService-ref="spService"
-		  p:serviceTypeService-ref="serviceTypeService"
-		  p:serviceProviderService-ref="serviceProviderService"
-		  p:statisticsService-ref="paymentsStatisticsService"
-		  p:organizationService-ref="organizationService"
+		  p:reportUtil-ref="reportUtil"
+		  p:paymentsReporter-ref="paymentsReporter"		  
 		  p:cashboxService-ref="cashboxService"
+		  p:paymentPointService-ref="paymentPointService"
 		  p:crumbNameKey="payments.crumbs.received_payments_report"
 		  scope="prototype" />
 

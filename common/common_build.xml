@@ -53,7 +53,8 @@
 		<path location="${build.dir}/classes" />
 		<path refid="common.test.classpath" />
 		<path location="${build.dir}/web" />
-		<path location="common/src" />
+		<path location="${build.dir}/web/WEB-INF" />
+		<path location="${build.dir}/web/WEB-INF/classes" />
 		<path location="${common.dir}/tests/data" />
 	</path>
 

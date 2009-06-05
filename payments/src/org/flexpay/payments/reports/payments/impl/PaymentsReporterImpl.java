@@ -5,33 +5,43 @@ import org.flexpay.common.persistence.morphology.currency.CurrencyToTextConverte
 import org.flexpay.common.service.CurrencyInfoService;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.DateUtil;
+import org.flexpay.common.util.TranslationUtil;
 import org.flexpay.orgs.persistence.Organization;
+import org.flexpay.orgs.persistence.PaymentPoint;
 import org.flexpay.orgs.persistence.ServiceProvider;
 import org.flexpay.orgs.service.OrganizationService;
 import org.flexpay.orgs.service.ServiceProviderService;
-import org.flexpay.payments.persistence.Document;
-import org.flexpay.payments.persistence.Operation;
-import org.flexpay.payments.persistence.Service;
-import org.flexpay.payments.persistence.ServiceType;
+import org.flexpay.payments.persistence.*;
 import org.flexpay.payments.reports.payments.PaymentPrintForm;
 import org.flexpay.payments.reports.payments.PaymentReportData;
 import org.flexpay.payments.reports.payments.PaymentsReporter;
+import org.flexpay.payments.reports.payments.ReceivedPaymentsPrintInfoData;
+import static org.flexpay.payments.reports.payments.ReceivedPaymentsPrintInfoData.OperationPrintInfo;
 import org.flexpay.payments.service.DocumentService;
 import org.flexpay.payments.service.OperationService;
 import org.flexpay.payments.service.SPService;
+import org.flexpay.payments.service.ServiceTypeService;
+import org.flexpay.payments.service.statistics.OperationTypeStatistics;
 import org.flexpay.payments.service.statistics.PaymentsStatisticsService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class PaymentsReporterImpl implements PaymentsReporter {
+
+	private static final Logger log = LoggerFactory.getLogger(PaymentsReporterImpl.class);
 
 	private PaymentsStatisticsService paymentsStatisticsService;
 	private DocumentService documentService;
 	private OrganizationService organizationService;
 	private SPService spService;
 	private ServiceProviderService serviceProviderService;
+	private ServiceTypeService serviceTypeService;
 	private OperationService operationService;
 	private CurrencyToTextConverter currencyToTextConverter;
 	private CurrencyInfoService currencyInfoService;
@@ -127,6 +137,129 @@ public class PaymentsReporterImpl implements PaymentsReporter {
 		return form;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	public ReceivedPaymentsPrintInfoData getReceivedPaymentsPrintFormData(Date begin, Date end, PaymentPoint paymentPoint, Locale locale) {
+
+		Organization organization = getOrganization(paymentPoint);
+
+		ReceivedPaymentsPrintInfoData result = new ReceivedPaymentsPrintInfoData();
+		List<ReceivedPaymentsPrintInfoData.OperationPrintInfo> operationPrintInfos = CollectionUtils.list();
+
+		List<Operation> operations = operationService.listReceivedPayments(organization, begin, end);
+		for (Operation operation : operations) {
+			operationPrintInfos.add(convert(locale, operation));
+		}
+		result.setOperationDetailses(operationPrintInfos);
+
+		setTotals(begin, end, organization, paymentPoint, result, locale);
+		return result;
+	}
+
+	private Organization getOrganization(PaymentPoint paymentPoint) {
+		Long organizationId = paymentPoint.getCollector().getOrganization().getId();
+		Organization organization  = organizationService.readFull(new Stub<Organization>(organizationId));
+		return organization;
+	}
+
+	private void setTotals(Date begin, Date end, Organization organization, PaymentPoint paymentPoint,
+						   ReceivedPaymentsPrintInfoData result, Locale locale) {
+
+		List<OperationTypeStatistics> typeStatisticses = paymentsStatisticsService.operationTypeStatistics(
+				new Stub<Organization>(organization.getId()), begin, end);
+
+		result.setCreationDate(new Date());
+		result.setBeginDate(begin);
+		result.setEndDate(end);
+
+		result.setPaymentPointName(TranslationUtil.getTranslation(paymentPoint.getNames(), locale).getName());
+		result.setPaymentPointAddress(paymentPoint.getAddress());
+
+		result.setCashierFio("Коваль А.Н."); // TODO : FIXME
+
+		result.setTotalPaymentsCount(getPaymentsCount(typeStatisticses));
+		result.setTotalPaymentsSumm(getPaymentsSumm(typeStatisticses));
+
+		result.setServiceTypePaymentsCounts(null); // TODO
+		result.setServiceTypePaymentsTotals(null); // TODO
+	}
+
+	private OperationPrintInfo convert(Locale locale, Operation operation) {
+		OperationPrintInfo operationPrintInfo = new OperationPrintInfo();
+		operationPrintInfo.setOperationId(operation.getId());
+		operationPrintInfo.setSumm(operation.getOperationSumm());
+		operationPrintInfo.setPayerFio(operation.getPayerFIO());
+
+		operationPrintInfo.setServicePayments(null); // TODO
+
+		return operationPrintInfo;
+	}
+
+	public String getServiceTypeName(Service serviceStub, Locale locale) {
+
+		Stub<Service> stub = new Stub<Service>(serviceStub);
+		Service service = spService.read(stub);
+		ServiceType type = serviceTypeService.read(service.getServiceTypeStub());
+		return type.getName(locale);
+	}
+
+	public String getServiceProviderName(Service serviceStub, Locale locale) {
+
+		Stub<Service> stub = new Stub<Service>(serviceStub);
+		Service service = spService.read(stub);
+		if (service == null) {
+			log.warn("No service found by stub {}", serviceStub);
+			return null;
+		}
+		ServiceProvider provider = serviceProviderService.read(service.getServiceProviderStub());
+		if (provider == null) {
+			log.warn("No service provider found {}", service.getServiceProviderStub());
+			return null;
+		}
+		return provider.getName(locale);
+	}
+
+	public long getPaymentsCount(List<OperationTypeStatistics> typeStatisticses) {
+		long count = 0;
+		for (OperationTypeStatistics stats : typeStatisticses) {
+			if (OperationType.isPaymentCode(stats.getOperationTypeCode())) {
+				count += stats.getCount();
+			}
+		}
+		return count;
+	}
+
+	public BigDecimal getPaymentsSumm(List<OperationTypeStatistics> typeStatisticses) {
+		BigDecimal summ = BigDecimal.ZERO;
+		for (OperationTypeStatistics stats : typeStatisticses) {
+			if (OperationType.isPaymentCode(stats.getOperationTypeCode())) {
+				summ = summ.add(stats.getSumm());
+			}
+		}
+		return summ;
+	}
+
+	public long getReturnsCount(List<OperationTypeStatistics> typeStatisticses) {
+		long count = 0;
+		for (OperationTypeStatistics stats : typeStatisticses) {
+			if (OperationType.isReturnCode(stats.getOperationTypeCode())) {
+				count += stats.getCount();
+			}
+		}
+		return count;
+	}
+
+	public BigDecimal getReturnsSumm(List<OperationTypeStatistics> typeStatisticses) {
+		BigDecimal summ = BigDecimal.ZERO;
+		for (OperationTypeStatistics stats : typeStatisticses) {
+			if (OperationType.isReturnCode(stats.getOperationTypeCode())) {
+				summ = summ.add(stats.getSumm());
+			}
+		}
+		return summ;
+	}
+
 	@Required
 	public void setPaymentsStatisticsService(PaymentsStatisticsService paymentsStatisticsService) {
 		this.paymentsStatisticsService = paymentsStatisticsService;
@@ -145,6 +278,11 @@ public class PaymentsReporterImpl implements PaymentsReporter {
 	@Required
 	public void setServiceProviderService(ServiceProviderService serviceProviderService) {
 		this.serviceProviderService = serviceProviderService;
+	}
+
+	@Required
+	public void setServiceTypeService(ServiceTypeService serviceTypeService) {
+		this.serviceTypeService = serviceTypeService;
 	}
 
 	@Required
