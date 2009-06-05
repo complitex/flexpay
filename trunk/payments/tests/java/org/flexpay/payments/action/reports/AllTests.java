@@ -5,7 +5,8 @@ import org.junit.runners.Suite;
 
 @RunWith (Suite.class)
 @Suite.SuiteClasses ({
-		TestPaymentOperationReportAction.class
+		TestPaymentOperationReportAction.class,
+		TestReceivedPaymentsReportAction.class
 })
 public class AllTests {
 

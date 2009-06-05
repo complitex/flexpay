@@ -124,6 +124,11 @@ public abstract class FPActionSupport extends ActionSupport implements UserPrefe
 	protected abstract String doExecute() throws Exception;
 
 	protected void setBreadCrumbs() {
+		if (userPreferences == null) {
+			log.warn("No user preferences found. Action execution terminated.");
+			return;
+		}
+
 		Stack<Crumb> crumbs = userPreferences.getCrumbs();
 		if (crumbs == null) {
 			crumbs = new Stack<Crumb>();

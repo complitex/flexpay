@@ -4,9 +4,12 @@ import org.flexpay.common.persistence.Stub;
 import org.flexpay.payments.persistence.Operation;
 import org.flexpay.payments.service.Roles;
 import org.springframework.security.annotation.Secured;
+import org.flexpay.orgs.persistence.Organization;
+import org.flexpay.orgs.persistence.PaymentPoint;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public interface PaymentsReporter {
 
@@ -29,4 +32,15 @@ public interface PaymentsReporter {
 	 */
 	@Secured(Roles.PAYMENTS_REPORT)
 	PaymentPrintForm getPaymentPrintFormData(Stub<Operation> stub) throws IllegalArgumentException;
+
+	/**
+	 * Get received payments print form data
+	 * @param begin begin date report parameter
+	 * @param end end date report parameter
+	 * @param paymentPoint payment point
+	 * @param locale locale
+	 * @return printable form data
+	 */
+	@Secured(Roles.PAYMENTS_REPORT)
+	ReceivedPaymentsPrintInfoData getReceivedPaymentsPrintFormData(Date begin, Date end, PaymentPoint paymentPoint, Locale locale);
 }

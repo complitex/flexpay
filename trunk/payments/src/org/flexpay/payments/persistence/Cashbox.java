@@ -3,6 +3,8 @@ package org.flexpay.payments.persistence;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.flexpay.common.persistence.DomainObjectWithStatus;
+import org.flexpay.common.persistence.Stub;
+import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.util.TranslationUtil;
 import org.flexpay.common.util.config.ApplicationConfig;
 import org.flexpay.orgs.persistence.PaymentPoint;
@@ -28,6 +30,10 @@ public class Cashbox extends DomainObjectWithStatus {
 
 	public PaymentPoint getPaymentPoint() {
 		return paymentPoint;
+	}
+
+	public Stub<PaymentPoint> getPaymentPointStub() {
+		return stub(paymentPoint);
 	}
 
 	public void setPaymentPoint(PaymentPoint paymentPoint) {
