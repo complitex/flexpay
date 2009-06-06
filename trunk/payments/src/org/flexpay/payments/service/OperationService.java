@@ -60,7 +60,7 @@ public interface OperationService {
 	 * @param endDate higher bound for operation creation date
 	 * @return list of operations
 	 */
-	@Secured(Roles.OPERATION_READ)
+	//@Secured(Roles.OPERATION_READ)
 	List<Operation> listPaymentOperations(Date beginDate, Date endDate);
 
 	/**

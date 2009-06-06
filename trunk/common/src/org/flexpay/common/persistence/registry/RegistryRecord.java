@@ -189,27 +189,25 @@ public class RegistryRecord extends DomainObject {
 		this.properties = properties;
 	}
 
-	@SuppressWarnings ({"UnnecessaryBoxing"})
 	@Override
 	public String toString() {
-		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE)
-				.append("id", getId())
-				.append("version", version)
-				.append("status", recordStatus == null ? "-" : recordStatus.getI18nName())
-				.append("status-id", recordStatus == null ? Long.valueOf(0) : recordStatus.getId())
-				.append("registry-id", registry == null ? Long.valueOf(0) : registry.getId())
-				.append("code", serviceCode)
-				.append("amount", amount)
-				.append("firstName", firstName)
-				.append("middleName", middleName)
-				.append("lastName", lastName)
-				.append("city", city)
-				.append("street", streetName)
-				.append("streetType", streetType)
-				.append("building", buildingNum)
-				.append("bulk", buildingBulkNum)
-				.append("apartment", apartmentNum)
-				.toString();
+		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
+				append("id", getId()).
+				append("serviceCode", serviceCode).
+				append("personalAccountExt", personalAccountExt).
+				append("city", city).
+				append("streetType", streetType).
+				append("streetName", streetName).
+				append("buildingNum", buildingNum).
+				append("buildingBulkNum", buildingBulkNum).
+				append("apartmentNum", apartmentNum).
+				append("firstName", firstName).
+				append("middleName", middleName).
+				append("lastName", lastName).
+				append("operationDate", operationDate).
+				append("uniqueOperationNumber", uniqueOperationNumber).
+				append("amount", amount).
+				toString();
 	}
 
 }
