@@ -15,6 +15,8 @@ import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.annotation.Propagation;
 
 import java.io.BufferedWriter;
 import java.io.FileOutputStream;
@@ -23,6 +25,7 @@ import java.io.OutputStreamWriter;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
+@Transactional(readOnly = true)
 public class ExportBankPaymentsRegistry {
 
 	private Logger log = LoggerFactory.getLogger(getClass());
@@ -36,16 +39,20 @@ public class ExportBankPaymentsRegistry {
 
 	public static final String OPERATION_DATE_FORMAT = "ddMMyyyyHHmmss";
 	public static final String MESSAGE_TYPE = "♥";
-	public static final String FILE_NAME = "exportBankPayments";
+	public static final String FILE_NAME = "exportBankPayments.txt";
 
 	private String moduleName;
 	private FPFileService fpFileService;
 	private RegistryService registryService;
 	private RegistryRecordService registryRecordService;
 
+	@Transactional(propagation = Propagation.NOT_SUPPORTED, readOnly = false)
 	public Registry export(@NotNull Registry registry) throws FlexPayException {
 
+		log.info("Start exporting payments registry with id = {}", registry.getId());
+
 		List<RegistryRecord> records = registryRecordService.listRecords(registry);
+		log.debug("Found {} records for registry with id = {}", records.size(), registry.getId());
 
 		SimpleDateFormat df = new SimpleDateFormat(OPERATION_DATE_FORMAT);
 
@@ -71,6 +78,7 @@ public class ExportBankPaymentsRegistry {
 			writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(FPFileUtil.getFileOnServer(fpFile)), FILE_ENCODING), 500);
 
 			for (RegistryRecord record : records) {
+				log.debug("Processing record = {}", record);
 				StringBuilder sb = new StringBuilder();
 				sb.append(MESSAGE_TYPE).append(FIELD_SEPARATOR).
 						append(registry.getId()).append(FIELD_SEPARATOR).
@@ -102,6 +110,8 @@ public class ExportBankPaymentsRegistry {
 					i++;
 				}
 
+				log.debug("Write new line to file = {}", sb.toString());
+
 				writer.write(sb.toString());
 				writer.newLine();
 
@@ -115,10 +125,13 @@ public class ExportBankPaymentsRegistry {
 		}
 
 		fpFile.setSize(FPFileUtil.getFileOnServer(fpFile).length());
+		fpFile = fpFileService.create(fpFile);
 
 		registry.setSpFile(fpFile);
 
 		registry = registryService.update(registry);
+
+		log.info("Finish exporting payments registry with id = {}", registry.getId());
 
 		return registry;
 

@@ -87,7 +87,6 @@ public class FPFileUtil {
 	 * @throws IOException if an error occurred
 	 */
 	public static void createEmptyFile(FPFile fpFile) throws IOException {
-
 		createFile(fpFile);
 	}
 

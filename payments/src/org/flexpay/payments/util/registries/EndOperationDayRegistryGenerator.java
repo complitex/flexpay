@@ -16,12 +16,15 @@ import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.annotation.Propagation;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+@Transactional(readOnly = true)
 public class EndOperationDayRegistryGenerator {
 
 	protected Logger log = LoggerFactory.getLogger(getClass());
@@ -38,21 +41,27 @@ public class EndOperationDayRegistryGenerator {
 	private RegistryArchiveStatusService registryArchiveStatusService;
 	private PropertiesFactory propertiesFactory;
 
+	@Transactional(propagation = Propagation.NOT_SUPPORTED, readOnly = false)
 	public Registry generate(@NotNull Stub<PaymentPoint> pointStub, @NotNull Stub<Organization> orgStub,
 							 @NotNull Date beginDate, @NotNull Date endDate) throws FlexPayException {
+
+		log.info("Start generating end operation day registry...");
 
 		PaymentPoint paymentPoint = paymentPointService.read(pointStub);
 		if (paymentPoint == null) {
 			log.error("Payment point with id - {} does not exist", pointStub.getId());
 			return null;
 		}
+		log.debug("Found paymentPoint - {}", paymentPoint);
 		Organization organization = organizationService.readFull(orgStub);
 		if (organization == null) {
 			log.error("Organization with id - {} does not exist", orgStub.getId());
 			return null;
 		}
+		log.debug("Found organization - {}", organization);
 
 		List<Operation> operations = operationService.listPaymentOperations(beginDate, endDate);
+		log.debug("Found {} operations", operations.size());
 
 		Registry registry = new Registry();
 
@@ -79,7 +88,11 @@ public class EndOperationDayRegistryGenerator {
 
 		for (Operation operation : operations) {
 
+			log.debug("Operation with id = {} processing...", operation.getId());
+
 			for (Document document : operation.getDocuments()) {
+
+				log.debug("Document with id = {} processing...", document.getId());
 
 				RegistryRecord record = new RegistryRecord();
 				record.setRegistry(registry);
@@ -117,6 +130,8 @@ public class EndOperationDayRegistryGenerator {
 				record.setProperties(recordProperties);
 				record = registryRecordService.create(record);
 
+				log.debug("Record created ({})", record);
+
 				recordsNum++;
 			}
 
@@ -126,6 +141,9 @@ public class EndOperationDayRegistryGenerator {
 		registry.setAmount(totalSumm);
 		registry.setRegistryStatus(registryStatusService.findByCode(RegistryStatus.CREATED));
 		registry = registryService.update(registry);
+
+		log.info("Finish generating end operation day registry...");
+		log.info("Registry = {}", registry);
 
 		return registry;
 
