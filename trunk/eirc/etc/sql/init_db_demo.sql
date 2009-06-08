@@ -1,18 +1,19 @@
-SELECT @town_kharkov_id:=1;
-SELECT @street_pereulok_id:=6;
-SELECT @street_viaduk_id:=2;
-SELECT @attr_type_part_id:=3;
-SELECT @ru_id:=1;
-SELECT @identity_type_fio_id:=1;
-select @eirc_registry_rec:=1;
-select @service_garazh_id:=21;
-select @service_zhivotnoe_id:=26;
-select @service_kvartplata_id:=1;
-select @service_pogreba_id:=25;
-select @service_saray_id:=24;
-select @attr_type_home_number_id:=1;
-select @attr_type_part_id:=3;
-select @service_org_1:=1;
+set @town_kharkov_id:=1;
+set @street_pereulok_id:=6;
+set @street_viaduk_id:=2;
+set @attr_type_part_id:=3;
+set @ru_id:=1;
+set @en_id:=2;
+set @identity_type_fio_id:=1;
+set @eirc_registry_rec:=1;
+set @service_garazh_id:=21;
+set @service_zhivotnoe_id:=26;
+set @service_kvartplata_id:=1;
+set @service_pogreba_id:=25;
+set @service_saray_id:=24;
+set @attr_type_home_number_id:=1;
+set @attr_type_part_id:=3;
+set @service_org_1:=1;
 
 INSERT INTO ab_districts_tbl (status, town_id) VALUES (0, @town_kharkov_id);
 SELECT @district_id_kharkov_central:=last_insert_id();
@@ -652,3 +653,54 @@ insert into eirc_quittance_details_quittances_tbl (quittance_details_id, quittan
 	values (@quittance_details_klimko_garazh, @quittance_klimko);
 insert into eirc_quittance_details_quittances_tbl (quittance_details_id, quittance_id)
 	values (@quittance_details_klimko_kvartplata, @quittance_klimko);
+
+-- Organization, Payment Collector, Payment points, Cashboxes
+insert into orgs_organizations_tbl (status, version, juridical_address, postal_address, individual_tax_number, kpp)
+	values (0, 0, '', '', '123123123', '123');
+select @organization_zol_vor:=last_insert_id();
+insert into orgs_organization_descriptions_tbl (name, language_id, organization_id)
+	values ('Банк для тестирования', @ru_id, @organization_zol_vor);
+insert into orgs_organization_descriptions_tbl (name, language_id, organization_id)
+	values ('Bank for testing', @en_id, @organization_zol_vor);
+insert into orgs_organization_names_tbl (name, language_id, organization_id)
+	values ('Золотые ворота', @ru_id, @organization_zol_vor);
+insert into orgs_organization_names_tbl (name, language_id, organization_id)
+	values ('Zolotie vorota', @en_id, @organization_zol_vor);
+
+insert into orgs_payments_collectors_tbl (status, version, organization_id)
+	values (0, 0, @organization_zol_vor);
+select @collector_zol_vor:=last_insert_id();
+insert into orgs_payments_collectors_descriptions_tbl (language_id, collector_id, name)
+	values (@ru_id, @collector_zol_vor, 'Сборщик для банка "Золотые ворота"');
+insert into orgs_payments_collectors_descriptions_tbl (language_id, collector_id, name)
+	values (@en_id, @collector_zol_vor, 'Collector for bank "Zolotie vorota"');
+
+insert into orgs_payment_points_tbl (status, version, collector_id, address)
+	values (0, 0, @collector_zol_vor, 'address');
+select @payment_point_zol_vor_central:=last_insert_id();
+insert into orgs_payment_point_names_tbl (name, language_id, payment_point_id)
+	values ('ППП Центральный', @ru_id, @payment_point_zol_vor_central);
+
+insert into orgs_payment_points_tbl (status, version, collector_id, address)
+	values (0, 0, @collector_zol_vor, 'address');
+select @payment_point_zol_vor_sever:=last_insert_id();
+insert into orgs_payment_point_names_tbl (name, language_id, payment_point_id)
+	values ('ППП Северный', @ru_id, @payment_point_zol_vor_sever);
+
+insert into payments_cashboxes_tbl (status, version, payment_point_id)
+	values (0, 0, @payment_point_zol_vor_central);
+select @cashbox_central_1:=last_insert_id();
+insert into payments_cashbox_name_translations_tbl (version, language_id, cashbox_id, name)
+	values (0, @ru_id, @cashbox_central_1, 'Первая центральная касса');
+
+insert into payments_cashboxes_tbl (status, version, payment_point_id)
+	values (0, 0, @payment_point_zol_vor_central);
+select @cashbox_central_2:=last_insert_id();
+insert into payments_cashbox_name_translations_tbl (version, language_id, cashbox_id, name)
+	values (0, @ru_id, @cashbox_central_2, 'Вторая центральная касса');
+
+insert into payments_cashboxes_tbl (status, version, payment_point_id)
+	values (0, 0, @payment_point_zol_vor_sever);
+select @cashbox_sever_1:=last_insert_id();
+insert into payments_cashbox_name_translations_tbl (version, language_id, cashbox_id, name)
+	values (0, @ru_id, @cashbox_sever_1, 'Первая северная касса');
