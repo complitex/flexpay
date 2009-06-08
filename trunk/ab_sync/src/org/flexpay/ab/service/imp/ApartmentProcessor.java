@@ -6,7 +6,7 @@ import org.flexpay.ab.dao.BuildingsDao;
 import org.flexpay.ab.persistence.Apartment;
 import org.flexpay.ab.persistence.ApartmentNumber;
 import org.flexpay.ab.persistence.BuildingAddress;
-import org.flexpay.ab.persistence.HistoryRecord;
+import org.flexpay.ab.persistence.HistoryRec;
 import org.flexpay.ab.service.ApartmentService;
 import org.flexpay.ab.service.ObjectsFactory;
 import org.flexpay.ab.util.config.ApplicationConfig;
@@ -63,7 +63,7 @@ public class ApartmentProcessor extends AbstractProcessor<Apartment> {
 	 * @param cs	 CorrectionsService
 	 * @throws Exception if failure occurs
 	 */
-	public void setProperty(@NotNull DomainObject object, @NotNull HistoryRecord record, DataSourceDescription sd, CorrectionsService cs)
+	public void setProperty(@NotNull DomainObject object, @NotNull HistoryRec record, DataSourceDescription sd, CorrectionsService cs)
 			throws Exception {
 		@NotNull Apartment apartment = (Apartment) object;
 		switch (record.getFieldType()) {
@@ -78,7 +78,7 @@ public class ApartmentProcessor extends AbstractProcessor<Apartment> {
 		}
 	}
 
-	private void setBuildingId(@NotNull Apartment apartment, @NotNull HistoryRecord record, DataSourceDescription sd, CorrectionsService cs)
+	private void setBuildingId(@NotNull Apartment apartment, @NotNull HistoryRec record, DataSourceDescription sd, CorrectionsService cs)
 			throws Exception {
 
 		Stub<BuildingAddress> stub = cs.findCorrection(record.getCurrentValue(), BuildingAddress.class, sd);
@@ -97,7 +97,7 @@ public class ApartmentProcessor extends AbstractProcessor<Apartment> {
 		apartment.setBuilding(buildingAddress.getBuilding());
 	}
 
-	private void setNumber(@NotNull Apartment apartment, @NotNull HistoryRecord record) {
+	private void setNumber(@NotNull Apartment apartment, @NotNull HistoryRec record) {
 
 		String newNumber = record.getCurrentValue();
 		String numberStr = apartment.getNumberForDate(record.getRecordDate());

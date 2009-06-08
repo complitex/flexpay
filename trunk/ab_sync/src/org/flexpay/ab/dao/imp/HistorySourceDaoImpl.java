@@ -3,7 +3,7 @@ package org.flexpay.ab.dao.imp;
 import org.apache.commons.lang.StringUtils;
 import org.flexpay.ab.dao.HistorySourceDao;
 import org.flexpay.ab.persistence.FieldType;
-import org.flexpay.ab.persistence.HistoryRecord;
+import org.flexpay.ab.persistence.HistoryRec;
 import org.flexpay.ab.persistence.ObjectType;
 import org.flexpay.ab.persistence.SyncAction;
 import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
@@ -88,7 +88,7 @@ public class HistorySourceDaoImpl extends SimpleJdbcDaoSupport implements Histor
 	 * @return List of new records
 	 * @throws Exception if failure occurs
 	 */
-	public Iterator<HistoryRecord> getRecords(Long lastRecord) throws Exception {
+	public Iterator<HistoryRec> getRecords(Long lastRecord) throws Exception {
 
 		Connection con = DataSourceUtils.getConnection(getDataSource());
 		PreparedStatement ps = null;
@@ -123,15 +123,15 @@ public class HistorySourceDaoImpl extends SimpleJdbcDaoSupport implements Histor
 		}
 	}
 
-	private static class HistoryRecordIterator implements Iterator<HistoryRecord> {
+	private static class HistoryRecordIterator implements Iterator<HistoryRec> {
 
 		private Connection con;
 		private PreparedStatement ps;
 		private ResultSet rs;
 		private HistorySourceDaoImpl source;
 
-		private List<HistoryRecord> recordsBuffer = new ArrayList<HistoryRecord>(1000);
-		private Iterator<HistoryRecord> it;
+		private List<HistoryRec> recordsBuffer = new ArrayList<HistoryRec>(1000);
+		private Iterator<HistoryRec> it;
 
 		public boolean hasNext() {
 			if (it == null || !it.hasNext()) {
@@ -148,7 +148,7 @@ public class HistorySourceDaoImpl extends SimpleJdbcDaoSupport implements Histor
 						break;
 					}
 
-					HistoryRecord record = new HistoryRecord();
+					HistoryRec record = new HistoryRec();
 
 					record.setRecordId(rs.getLong(source.fieldRecordId));
 					record.setRecordDate(rs.getTimestamp(source.fieldRecordDate));
@@ -169,7 +169,7 @@ public class HistorySourceDaoImpl extends SimpleJdbcDaoSupport implements Histor
 			it = recordsBuffer.iterator();
 		}
 
-		public HistoryRecord next() {
+		public HistoryRec next() {
 			return it.next();
 		}
 

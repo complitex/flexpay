@@ -3,7 +3,7 @@ package org.flexpay.ab.service.imp;
 import org.flexpay.ab.dao.HistoryDao;
 import org.flexpay.ab.dao.HistorySourceDao;
 import org.flexpay.ab.dao.UpdateConfigDao;
-import org.flexpay.ab.persistence.HistoryRecord;
+import org.flexpay.ab.persistence.HistoryRec;
 import org.flexpay.ab.persistence.UpdateConfig;
 import org.flexpay.ab.service.HistoryDumpService;
 import org.flexpay.common.locking.LockManager;
@@ -36,9 +36,9 @@ public class HistoryDumpServiceImpl implements HistoryDumpService {
 			UpdateConfig config = updateConfigDao.getConfig();
 			log.info("Last dumped record was: {}", config.getLastDumpedRecordId());
 
-			Iterator<HistoryRecord> it = historySourceDao.getRecords(config.getLastDumpedRecordId());
+			Iterator<HistoryRec> it = historySourceDao.getRecords(config.getLastDumpedRecordId());
 			while (it.hasNext()) {
-				HistoryRecord record = it.next();
+				HistoryRec record = it.next();
 				historyDao.addRecord(record);
 				++nRecords;
 				config.setLastDumpedRecordId(record.getRecordId());

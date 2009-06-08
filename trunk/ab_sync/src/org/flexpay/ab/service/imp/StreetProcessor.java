@@ -79,7 +79,7 @@ public class StreetProcessor extends AbstractProcessor<Street> {
 		street.setNamesTimeLine(timeLine);
 	}
 
-	private void setStreetTypeId(Street street, HistoryRecord record, DataSourceDescription sd, CorrectionsService cs) {
+	private void setStreetTypeId(Street street, HistoryRec record, DataSourceDescription sd, CorrectionsService cs) {
 		Stub<StreetType> stub = cs.findCorrection(record.getCurrentValue(), StreetType.class, sd);
 		if (stub == null) {
 			log.error("No correction for street type #{} DataSourceDescription {}, cannot set up reference for street",
@@ -115,7 +115,7 @@ public class StreetProcessor extends AbstractProcessor<Street> {
 	 * @param sd	 DataSourceDescription
 	 * @param cs	 CorrectionsService
 	 */
-	public void setProperty(@NotNull DomainObject object, @NotNull HistoryRecord record, DataSourceDescription sd, CorrectionsService cs)
+	public void setProperty(@NotNull DomainObject object, @NotNull HistoryRec record, DataSourceDescription sd, CorrectionsService cs)
 			throws Exception {
 
 		Street street = (Street) object;

@@ -82,7 +82,7 @@ public class PersonProcessor extends AbstractProcessor<Person> {
 	 * @param cs	 CorrectionsService
 	 * @throws Exception if failure occurs
 	 */
-	public void setProperty(@NotNull DomainObject object, @NotNull HistoryRecord record,
+	public void setProperty(@NotNull DomainObject object, @NotNull HistoryRec record,
 							DataSourceDescription sd, CorrectionsService cs)
 			throws Exception {
 
@@ -106,7 +106,7 @@ public class PersonProcessor extends AbstractProcessor<Person> {
 		}
 	}
 
-	private void setFirstName(@NotNull Person person, @NotNull HistoryRecord record) {
+	private void setFirstName(@NotNull Person person, @NotNull HistoryRec record) {
 		PersonIdentity identity = person.getDefaultIdentity();
 		log.debug("Setting first name, person: {}", person);
 
@@ -130,7 +130,7 @@ public class PersonProcessor extends AbstractProcessor<Person> {
 		log.debug("Set person first name");
 	}
 
-	private void setMiddleName(Person person, HistoryRecord record) {
+	private void setMiddleName(Person person, HistoryRec record) {
 		PersonIdentity identity = person.getDefaultIdentity();
 		log.debug("Setting middle name, person: {}", person);
 
@@ -154,7 +154,7 @@ public class PersonProcessor extends AbstractProcessor<Person> {
 		log.debug("Set person middle name");
 	}
 
-	private void setLastName(@NotNull Person person, @NotNull HistoryRecord record) {
+	private void setLastName(@NotNull Person person, @NotNull HistoryRec record) {
 		PersonIdentity identity = person.getDefaultIdentity();
 		log.debug("Setting last name, person: {}", person);
 
@@ -178,7 +178,7 @@ public class PersonProcessor extends AbstractProcessor<Person> {
 		log.debug("Set person last name");
 	}
 
-	private PersonIdentity copyIdentityIfNotNew(@NotNull HistoryRecord record, @NotNull PersonIdentity identity) {
+	private PersonIdentity copyIdentityIfNotNew(@NotNull HistoryRec record, @NotNull PersonIdentity identity) {
 		// old identity is not new, create new one
 		if (identity.isNotNew()) {
 			identity.setEndDate(record.getRecordDate());
