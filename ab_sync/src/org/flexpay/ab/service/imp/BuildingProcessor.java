@@ -18,7 +18,6 @@ import org.flexpay.common.util.CollectionUtils;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
-import java.util.HashSet;
 import java.util.Set;
 
 public class BuildingProcessor extends AbstractProcessor<BuildingAddress> {
@@ -94,7 +93,7 @@ public class BuildingProcessor extends AbstractProcessor<BuildingAddress> {
 	 * @param cs	 CorrectionsService
 	 * @throws Exception if failure occurs
 	 */
-	public void setProperty(@NotNull DomainObject object, @NotNull HistoryRecord record,
+	public void setProperty(@NotNull DomainObject object, @NotNull HistoryRec record,
 							DataSourceDescription sd, CorrectionsService cs) throws Exception {
 		BuildingAddress buildingAddress = (BuildingAddress) object;
 		switch (record.getFieldType()) {
@@ -115,7 +114,7 @@ public class BuildingProcessor extends AbstractProcessor<BuildingAddress> {
 		}
 	}
 
-	private void setBuildingNumber(BuildingAddress buildingAddress, HistoryRecord record)
+	private void setBuildingNumber(BuildingAddress buildingAddress, HistoryRec record)
 			throws Exception {
 
 		log.info("Setting building number");
@@ -130,7 +129,7 @@ public class BuildingProcessor extends AbstractProcessor<BuildingAddress> {
 		log.info("Building number to set: {}, actual number: {}", record.getCurrentValue(), buildingAddress.getNumber());
 	}
 
-	private void setBuildingBulk(BuildingAddress buildingAddress, HistoryRecord record)
+	private void setBuildingBulk(BuildingAddress buildingAddress, HistoryRec record)
 			throws Exception {
 
 		String value = buildingAddress.getBulk();
@@ -143,7 +142,7 @@ public class BuildingProcessor extends AbstractProcessor<BuildingAddress> {
 		log.info("Building bulk to set: {}, actual value: {}", record.getCurrentValue(), buildingAddress.getBulk());
 	}
 
-	private void setDistrictId(Building building, HistoryRecord record,
+	private void setDistrictId(Building building, HistoryRec record,
 							   DataSourceDescription sd, CorrectionsService cs) {
 		Stub<District> stub = cs.findCorrection(record.getCurrentValue(), District.class, sd);
 		if (stub == null) {
@@ -162,7 +161,7 @@ public class BuildingProcessor extends AbstractProcessor<BuildingAddress> {
 		building.setDistrict(new District(stub));
 	}
 
-	private void setStreetId(BuildingAddress building, HistoryRecord record,
+	private void setStreetId(BuildingAddress building, HistoryRec record,
 							 DataSourceDescription sd, CorrectionsService cs) {
 		Stub<Street> stub = cs.findCorrection(record.getCurrentValue(), Street.class, sd);
 		if (stub == null) {

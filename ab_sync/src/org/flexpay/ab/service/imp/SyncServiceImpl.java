@@ -1,7 +1,7 @@
 package org.flexpay.ab.service.imp;
 
 import org.flexpay.ab.dao.HistoryDao;
-import org.flexpay.ab.persistence.HistoryRecord;
+import org.flexpay.ab.persistence.HistoryRec;
 import org.flexpay.ab.persistence.ObjectType;
 import org.flexpay.ab.service.SyncService;
 import org.flexpay.common.dao.paging.Page;
@@ -41,7 +41,7 @@ public class SyncServiceImpl implements SyncService {
 	@Nullable
 	private DomainObject prevObj = null;
 	private AbstractProcessor processor = null;
-	private List<HistoryRecord> recordBuffer = new ArrayList<HistoryRecord>();
+	private List<HistoryRec> recordBuffer = new ArrayList<HistoryRec>();
 
 	/**
 	 * Synchronize Address Bureau
@@ -60,7 +60,7 @@ public class SyncServiceImpl implements SyncService {
 			prevType = ObjectType.Unknown;
 			prevObj = null;
 			processor = null;
-			recordBuffer = new ArrayList<HistoryRecord>();
+			recordBuffer = new ArrayList<HistoryRec>();
 
 			int count = 0;
 
@@ -68,7 +68,7 @@ public class SyncServiceImpl implements SyncService {
 				try {
 					log.debug("Starting sync for next records");
 					long time = System.currentTimeMillis();
-					List<HistoryRecord> records = historyDao.getRecords(new Page(50000, 1));
+					List<HistoryRec> records = historyDao.getRecords(new Page(50000, 1));
 					if (log.isErrorEnabled()) {
 						log.error("time spent for fetch: {}", (System.currentTimeMillis() - time));
 					}
@@ -78,7 +78,7 @@ public class SyncServiceImpl implements SyncService {
 						break;
 					}
 
-					for (HistoryRecord record : records) {
+					for (HistoryRec record : records) {
 						if (!prevId.equals(record.getObjectId()) || prevType != record.getObjectType()) {
 							saveObject();
 							prevId = record.getObjectId();
@@ -118,7 +118,7 @@ public class SyncServiceImpl implements SyncService {
 		prevType = ObjectType.Unknown;
 	}
 
-	private void processRecord(HistoryRecord record) throws Exception {
+	private void processRecord(HistoryRec record) throws Exception {
 		switch (record.getObjectType()) {
 			case Apartment:
 				processor = apartmentProcessor;
@@ -146,7 +146,7 @@ public class SyncServiceImpl implements SyncService {
 		processAction(record);
 	}
 
-	private void processAction(HistoryRecord record) throws Exception {
+	private void processAction(HistoryRec record) throws Exception {
 		switch (record.getSyncAction()) {
 			case Create:
 				prevObj = processor.createObject(prevObj, String.valueOf(record.getObjectId()), sd, correctionsService);

@@ -1,6 +1,6 @@
 package org.flexpay.ab.service.imp;
 
-import org.flexpay.ab.persistence.HistoryRecord;
+import org.flexpay.ab.persistence.HistoryRec;
 import org.flexpay.common.persistence.*;
 import org.flexpay.common.service.importexport.CorrectionsService;
 import org.jetbrains.annotations.NonNls;
@@ -131,7 +131,7 @@ public abstract class AbstractProcessor<T extends DomainObject> {
 	 * @param cs	 CorrectionsService
 	 * @throws Exception if failure occurs
 	 */
-	public abstract void setProperty(@NotNull DomainObject object, @NotNull HistoryRecord record, DataSourceDescription sd, CorrectionsService cs)
+	public abstract void setProperty(@NotNull DomainObject object, @NotNull HistoryRec record, DataSourceDescription sd, CorrectionsService cs)
 			throws Exception;
 
 	/**

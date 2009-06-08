@@ -89,7 +89,7 @@ public class TownProcessor extends AbstractProcessor<Town> {
 	 * @param cs	 CorrectionsService
 	 * @throws Exception if failure occurs
 	 */
-	public void setProperty(@NotNull DomainObject object, @NotNull HistoryRecord record, DataSourceDescription sd, CorrectionsService cs)
+	public void setProperty(@NotNull DomainObject object, @NotNull HistoryRec record, DataSourceDescription sd, CorrectionsService cs)
 			throws Exception {
 		Town town = (Town) object;
 		switch (record.getFieldType()) {

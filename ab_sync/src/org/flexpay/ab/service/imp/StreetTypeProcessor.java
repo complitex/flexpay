@@ -1,7 +1,7 @@
 package org.flexpay.ab.service.imp;
 
 import org.flexpay.ab.dao.StreetTypeDao;
-import org.flexpay.ab.persistence.HistoryRecord;
+import org.flexpay.ab.persistence.HistoryRec;
 import org.flexpay.ab.persistence.StreetType;
 import org.flexpay.ab.persistence.StreetTypeTranslation;
 import org.flexpay.ab.service.StreetTypeService;
@@ -61,7 +61,7 @@ public class StreetTypeProcessor extends AbstractProcessor<StreetType> {
 	 * @param cs	 CorrectionsService
 	 * @throws Exception if failure occurs
 	 */
-	public void setProperty(@NotNull DomainObject object, @NotNull HistoryRecord record, DataSourceDescription sd, CorrectionsService cs)
+	public void setProperty(@NotNull DomainObject object, @NotNull HistoryRec record, DataSourceDescription sd, CorrectionsService cs)
 			throws Exception {
 
 		log.debug("About to set property: {}", record.getFieldType());

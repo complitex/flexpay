@@ -2,7 +2,7 @@ package org.flexpay.ab.dao.imp;
 
 import org.flexpay.ab.dao.HistoryDao;
 import org.flexpay.ab.persistence.FieldType;
-import org.flexpay.ab.persistence.HistoryRecord;
+import org.flexpay.ab.persistence.HistoryRec;
 import org.flexpay.ab.persistence.ObjectType;
 import org.flexpay.ab.persistence.SyncAction;
 import org.flexpay.common.dao.paging.Page;
@@ -28,11 +28,11 @@ public class HistoryDaoJdbcImpl extends SimpleJdbcDaoSupport implements HistoryD
 	 * @param pager Page instance
 	 * @return List of HistoryRecord instances
 	 */
-	public List<HistoryRecord> getRecords(Page pager) {
+	public List<HistoryRec> getRecords(Page pager) {
 		String sqlGetRecords = "select * from ab_sync_changes_tbl where processed=0 order by order_weight, object_id, record_date limit ?";
-		return getSimpleJdbcTemplate().query(sqlGetRecords, new ParameterizedRowMapper<HistoryRecord>() {
-			public HistoryRecord mapRow(ResultSet rs, int i) throws SQLException {
-				HistoryRecord record = new HistoryRecord();
+		return getSimpleJdbcTemplate().query(sqlGetRecords, new ParameterizedRowMapper<HistoryRec>() {
+			public HistoryRec mapRow(ResultSet rs, int i) throws SQLException {
+				HistoryRec record = new HistoryRec();
 
 				record.setRecordId(rs.getLong("record_id"));
 				record.setRecordDate(rs.getTimestamp("record_date"));
@@ -56,13 +56,13 @@ public class HistoryDaoJdbcImpl extends SimpleJdbcDaoSupport implements HistoryD
 	 * @param records List of history records to mark as processed
 	 */
 	@Transactional (readOnly = false, rollbackFor = Exception.class)
-	public void setProcessed(List<HistoryRecord> records) {
-		for (HistoryRecord record : records) {
+	public void setProcessed(List<HistoryRec> records) {
+		for (HistoryRec record : records) {
 			getSimpleJdbcTemplate().update(getSetProcessedSql(record), getParams(record));
 		}
 	}
 
-	private Object[] getParams(HistoryRecord record) {
+	private Object[] getParams(HistoryRec record) {
 		ArrayList<Object> params = new ArrayList<Object>();
 		params.add(record.getRecordId());
 		params.add(record.getRecordDate());
@@ -82,7 +82,7 @@ public class HistoryDaoJdbcImpl extends SimpleJdbcDaoSupport implements HistoryD
 		return params.toArray(new Object[params.size()]);
 	}
 
-	private String getWhere(HistoryRecord record) {
+	private String getWhere(HistoryRec record) {
 		return ("where record_id=? and record_date=? and old_value $oldValue and " +
 				"current_value $currentValue and object_type=? and object_id=? and field $field and action_type=?")
 				.replace("$oldValue", record.getOldValue() == null ? "is null" : "= ?")
@@ -90,7 +90,7 @@ public class HistoryDaoJdbcImpl extends SimpleJdbcDaoSupport implements HistoryD
 				.replace("$field", record.getFieldType() == null ? "is null" : "= ?");
 	}
 
-	private String getSetProcessedSql(HistoryRecord record) {
+	private String getSetProcessedSql(HistoryRec record) {
 		return "update ab_sync_changes_tbl set processed=1 " + getWhere(record);
 	}
 
@@ -100,7 +100,7 @@ public class HistoryDaoJdbcImpl extends SimpleJdbcDaoSupport implements HistoryD
 	 * @param record HistoryRecord
 	 */
 	@Transactional (readOnly = false, rollbackFor = Exception.class)
-	public void addRecord(HistoryRecord record) {
+	public void addRecord(HistoryRec record) {
 
 		// check if record was already dumped
 		int count = getSimpleJdbcTemplate().queryForInt("select count(1) from ab_sync_changes_tbl " + getWhere(record),

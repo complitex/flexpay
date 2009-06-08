@@ -1,6 +1,6 @@
 package org.flexpay.ab.dao;
 
-import org.flexpay.ab.persistence.HistoryRecord;
+import org.flexpay.ab.persistence.HistoryRec;
 
 import java.util.Iterator;
 
@@ -13,7 +13,7 @@ public interface HistorySourceDao {
 	 * @return List of new records
 	 * @throws Exception if failure occurs
 	 */
-	Iterator<HistoryRecord> getRecords(Long lastRecord) throws Exception;
+	Iterator<HistoryRec> getRecords(Long lastRecord) throws Exception;
 
 	/**
 	 * Close source

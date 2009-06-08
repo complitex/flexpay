@@ -7,7 +7,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Date;
 
-public class HistoryRecord {
+public class HistoryRec {
 
 	private Long recordId;
 	private Date recordDate;
@@ -115,11 +115,11 @@ public class HistoryRecord {
 		if (this == obj) {
 			return true;
 		}
-		if (!(obj instanceof HistoryRecord)) {
+		if (!(obj instanceof HistoryRec)) {
 			return false;
 		}
 
-		HistoryRecord that = (HistoryRecord) obj;
+		HistoryRec that = (HistoryRec) obj;
 
 		return new EqualsBuilder()
 				.append(recordDate, that.recordDate)
