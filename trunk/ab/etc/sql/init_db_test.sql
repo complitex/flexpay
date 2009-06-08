@@ -179,6 +179,16 @@ INSERT INTO ab_street_type_translations_tbl (name, short_name, language_id, stre
 INSERT INTO ab_street_type_translations_tbl (name, short_name, language_id, street_type_id)
 	VALUES ('Highway', 'hig', @en_id, @street_type_id);
 
+-- init reegionns
+INSERT INTO ab_regions_tbl (id, status, country_id) VALUES (1000, 0, @russia_id);
+SELECT @region_novosibirskaya_obl_id:=1000;
+INSERT INTO ab_region_names_tbl (region_id) VALUES (@region_novosibirskaya_obl_id);
+SELECT @region_name_id:=last_insert_id();
+INSERT INTO ab_region_name_translations_tbl (name, region_name_id, language_id)
+	VALUES ('Новосибирская область', @region_name_id, @ru_id);
+INSERT INTO ab_region_names_temporal_tbl (region_id, region_name_id, begin_date, end_date, create_date, invalid_date)
+	VALUES (@region_novosibirskaya_obl_id, @region_name_id, '1900-01-01', '2100-12-31', '2008-01-01', '2100-12-31');
+
 INSERT INTO ab_regions_tbl (status, country_id) VALUES (0, @russia_id);
 SELECT @region_adygeya_id:=last_insert_id();
 INSERT INTO ab_region_names_tbl (region_id) VALUES (@region_adygeya_id);
@@ -705,15 +715,6 @@ INSERT INTO ab_region_name_translations_tbl (name, region_name_id, language_id)
 	VALUES ('Новгородская область', @region_name_id, @ru_id);
 INSERT INTO ab_region_names_temporal_tbl (region_id, region_name_id, begin_date, end_date, create_date, invalid_date)
 	VALUES (@region_id, @region_name_id, '1900-01-01', '2100-12-31', '2008-01-01', '2100-12-31');
-
-INSERT INTO ab_regions_tbl (status, country_id) VALUES (0, @russia_id);
-SELECT @region_novosibirskaya_obl_id:=last_insert_id();
-INSERT INTO ab_region_names_tbl (region_id) VALUES (@region_novosibirskaya_obl_id);
-SELECT @region_name_id:=last_insert_id();
-INSERT INTO ab_region_name_translations_tbl (name, region_name_id, language_id)
-	VALUES ('Новосибирская область', @region_name_id, @ru_id);
-INSERT INTO ab_region_names_temporal_tbl (region_id, region_name_id, begin_date, end_date, create_date, invalid_date)
-	VALUES (@region_novosibirskaya_obl_id, @region_name_id, '1900-01-01', '2100-12-31', '2008-01-01', '2100-12-31');
 
 INSERT INTO ab_regions_tbl (status, country_id) VALUES (0, @russia_id);
 SELECT @region_id:=last_insert_id();
@@ -1655,6 +1656,8 @@ INSERT INTO ab_street_names_tbl (street_id) VALUES (@street_id_demakova);
 SELECT @street_name_id:=last_insert_id();
 INSERT INTO ab_street_name_translations_tbl (name, street_name_id, language_id)
 	VALUES ('Демакова', @street_name_id, @ru_id);
+INSERT INTO ab_street_name_translations_tbl (name, street_name_id, language_id)
+	VALUES ('Demakova', @street_name_id, @en_id);
 INSERT INTO ab_street_names_temporal_tbl (street_id, street_name_id, begin_date, end_date, create_date, invalid_date)
 	VALUES (@street_id_demakova, @street_name_id, '1900-01-01', '2100-12-31', '2008-01-17', '2100-12-31');
 INSERT INTO ab_street_types_temporal_tbl (street_id, street_type_id, begin_date, end_date, create_date, invalid_date)
@@ -1667,6 +1670,8 @@ INSERT INTO ab_street_names_tbl (street_id) VALUES (@street_id_ivanova);
 SELECT @street_name_id:=last_insert_id();
 INSERT INTO ab_street_name_translations_tbl (name, street_name_id, language_id)
 	VALUES ('Иванова', @street_name_id, @ru_id);
+INSERT INTO ab_street_name_translations_tbl (name, street_name_id, language_id)
+	VALUES ('Ivanova', @street_name_id, @en_id);
 INSERT INTO ab_street_names_temporal_tbl (street_id, street_name_id, begin_date, end_date, create_date, invalid_date)
 	VALUES (@street_id_ivanova, @street_name_id, '1900-01-01', '2100-12-31', '2008-01-17', '2100-12-31');
 INSERT INTO ab_street_types_temporal_tbl (street_id, street_type_id, begin_date, end_date, create_date, invalid_date)
@@ -1679,6 +1684,8 @@ INSERT INTO ab_street_names_tbl (street_id) VALUES (@street_id_rossiiskaya);
 SELECT @street_name_id:=last_insert_id();
 INSERT INTO ab_street_name_translations_tbl (name, street_name_id, language_id)
 	VALUES ('Российская', @street_name_id, @ru_id);
+INSERT INTO ab_street_name_translations_tbl (name, street_name_id, language_id)
+	VALUES ('Rossiiskaya', @street_name_id, @en_id);
 INSERT INTO ab_street_names_temporal_tbl (street_id, street_name_id, begin_date, end_date, create_date, invalid_date)
 	VALUES (@street_id_rossiiskaya, @street_name_id, '1900-01-01', '2100-12-31', '2008-01-17', '2100-12-31');
 INSERT INTO ab_street_types_temporal_tbl (street_id, street_type_id, begin_date, end_date, create_date, invalid_date)
@@ -1691,6 +1698,8 @@ INSERT INTO ab_street_names_tbl (street_id) VALUES (@street_id_krasniy);
 SELECT @street_name_id:=last_insert_id();
 INSERT INTO ab_street_name_translations_tbl (name, street_name_id, language_id)
 	VALUES ('Красный проспект', @street_name_id, @ru_id);
+INSERT INTO ab_street_name_translations_tbl (name, street_name_id, language_id)
+	VALUES ('Krasnii prospekt', @street_name_id, @en_id);
 INSERT INTO ab_street_names_temporal_tbl (street_id, street_name_id, begin_date, end_date, create_date, invalid_date)
 	VALUES (@street_id_krasniy, @street_name_id, '1900-01-01', '2100-12-31', '2008-01-17', '2100-12-31');
 INSERT INTO ab_street_types_temporal_tbl (street_id, street_type_id, begin_date, end_date, create_date, invalid_date)

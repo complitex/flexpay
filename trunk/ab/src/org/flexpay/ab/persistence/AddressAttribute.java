@@ -4,6 +4,7 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
+import org.apache.commons.lang.StringUtils;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.DomainObjectWithStatus;
 import org.flexpay.common.util.TranslationUtil;
@@ -63,7 +64,7 @@ public class AddressAttribute extends DomainObjectWithStatus {
 
 	public int hashCode() {
 		return new HashCodeBuilder()
-				.append(value).append(addressAttributeType)
+				.append(value)
 				.append(addressAttributeType)
 				.toHashCode();
 	}
@@ -84,11 +85,28 @@ public class AddressAttribute extends DomainObjectWithStatus {
 				.getTranslation(addressAttributeType.getTranslations(), locale);
 
 		result.append(typeTranslation == null ? ""
-											  : (shortMode ? typeTranslation.getShortName() + ". "
+											  : (shortMode ? getShortTypeName(locale)
 														   : typeTranslation.getName() + " "));
 		result.append(value);
 
 		return result.toString();
 	}
 
+	private String getShortTypeName(Locale locale) {
+
+		AddressAttributeTypeTranslation typeTranslation = TranslationUtil
+				.getTranslation(addressAttributeType.getTranslations(), locale);
+		AddressAttributeTypeTranslation defaultTranslation = TranslationUtil
+				.getTranslation(addressAttributeType.getTranslations());
+
+		StringBuilder buf = new StringBuilder();
+		if(typeTranslation != null && StringUtils.isNotBlank(typeTranslation.getShortName())) {
+			return typeTranslation.getShortName() + ". ";
+		}
+		if (defaultTranslation != null && StringUtils.isNotBlank(defaultTranslation.getShortName())) {
+			return defaultTranslation.getShortName() + ". ";
+		}
+
+		return "";
+	}
 }
