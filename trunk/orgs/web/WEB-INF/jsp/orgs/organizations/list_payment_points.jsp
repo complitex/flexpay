@@ -7,7 +7,7 @@
 
 	<table cellpadding="3" cellspacing="1" border="0" width="100%">
 		<tr>
-			<td colspan="5"><%@include file="../filters/payments_collector_filter.jsp"%> </td>
+			<td colspan="6"><%@include file="../filters/payments_collector_filter.jsp"%> </td>
 		</tr>
 		<tr>
 			<td class="th" width="1%">&nbsp;</td>
@@ -15,6 +15,7 @@
             <td class="th"><s:text name="eirc.payment_point.name"/></td>
             <td class="th"><s:text name="eirc.payments_collector"/></td>
             <td class="th"><s:text name="ab.address"/></td>
+            <td class="th"><s:text name="ab.email"/></td>
 			<td class="th">&nbsp;</td>
 		</tr>
 		<s:iterator value="points" status="status">
@@ -28,6 +29,7 @@
                 <td class="col"><s:property value="getTranslation(names).name"/></td>
                 <td class="col"><s:property value="getCollectorName(collector)"/></td>
                 <td class="col"><s:property value="address"/></td>
+                <td class="col"><s:property value="email"/></td>
 				<td class="col"><a href="<s:url action="paymentPointEdit"><s:param name="point.id" value="%{id}"/></s:url>"><s:text name="common.edit"/></a></td>
 			</tr>
 		</s:iterator>

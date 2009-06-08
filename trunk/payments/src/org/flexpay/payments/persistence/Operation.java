@@ -48,6 +48,8 @@ public class Operation extends DomainObject {
 	private String address;
 	private String payerFIO;
 
+    private Cashbox cashbox;
+
 	private Set<OperationAddition> additions = Collections.emptySet();
 
 	/**
@@ -242,7 +244,15 @@ public class Operation extends DomainObject {
 		return stub(paymentPoint);
 	}
 
-	@Override
+    public Cashbox getCashbox() {
+        return cashbox;
+    }
+
+    public void setCashbox(Cashbox cashbox) {
+        this.cashbox = cashbox;
+    }
+
+    @Override
 	public String toString() {
 		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
 				append("id", getId()).

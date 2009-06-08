@@ -984,6 +984,7 @@
         version integer not null comment 'Optimistic lock version',
         status integer not null comment 'Enabled-disabled status',
         address varchar(255) not null comment 'Address',
+        email varchar(255) not null comment 'E-mail',
         collector_id bigint not null comment 'Payments collector reference',
         primary key (id)
     ) comment='Payment points';
@@ -1281,6 +1282,7 @@
         register_organization_id bigint comment 'Organization operation registered in',
         registry_record_id bigint comment 'Registry record',
         reference_operation_id bigint comment 'Optional operation reference',
+        cashbox_id bigint comment 'Cash box',
         primary key (id)
     ) comment='Operations';
 
@@ -2640,6 +2642,12 @@
         add constraint FK_payments_operation_type_translations_tbl_lang_id 
         foreign key (language_id) 
         references common_languages_tbl (id);
+
+    alter table payments_operations_tbl 
+        add index FK_payments_cashboxes_tbl_cashbox_id (cashbox_id), 
+        add constraint FK_payments_cashboxes_tbl_cashbox_id 
+        foreign key (cashbox_id) 
+        references payments_cashboxes_tbl (id);
 
     alter table payments_operations_tbl 
         add index FK_payments_operations_tbl_payment_point_id (payment_point_id), 

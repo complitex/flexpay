@@ -56,6 +56,20 @@
 		  p:crumbNameKey="payments.crumbs.operations_list"
 		  scope="prototype" />
 
+    <!-- payment points monitor actions -->
+	<bean id="paymentPointsListMonitorAction"
+		  class="org.flexpay.payments.actions.monitor.PaymentPointsListMonitorAction"
+		  p:crumbNameKey="payments.crumbs.payment_points_list"
+          p:processManager-ref="processManagerPayments"
+          p:paymentsStatisticsService-ref="paymentsStatisticsService"
+		  scope="prototype" />
+
+    <bean id="paymentPointDetailMonitorAction"
+		  class="org.flexpay.payments.actions.monitor.PaymentPointDetailMonitorAction"
+		  p:crumbNameKey="payments.crumbs.payment_point_detail"
+          p:paymentPointService-ref="paymentPointService"
+		  scope="prototype" />
+
 	<!-- reports-related actions -->
 	<bean id="generateReportAction"
 		  class="org.flexpay.payments.actions.reports.ReceivedPaymentsReportAction"

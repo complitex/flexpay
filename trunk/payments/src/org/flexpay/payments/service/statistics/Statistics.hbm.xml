@@ -24,12 +24,30 @@
 		order by o.creatorOrganization.id, d.service.id 
 	]]></query>
 
-	<query name="OperationTypeStatistics.collect"><![CDATA[
+	<query name="OperationTypeOrganizationStatistics.collect"><![CDATA[
 		select type.code, count(o), sum(o.operationSumm)
 		from Operation o
 			inner join o.operationStatus status
 			inner join o.operationType type
 		where status.code=2 and o.registerOrganization.id=? and o.creationDate>=? and o.creationDate<=?
+		group by type.code
+	]]></query>
+
+    <query name="OperationTypePaymentPointStatistics.collect"><![CDATA[
+		select type.code, count(o), sum(o.operationSumm)
+		from Operation o
+			inner join o.operationStatus status
+			inner join o.operationType type
+		where status.code=2 and o.paymentPoint.id=? and o.creationDate>=? and o.creationDate<=?
+		group by type.code
+	]]></query>
+
+    <query name="OperationTypeCashboxStatistics.collect"><![CDATA[
+		select type.code, count(o), sum(o.operationSumm)
+		from Operation o
+			inner join o.operationStatus status
+			inner join o.operationType type
+		where status.code=2 and o.cashbox.id=? and o.creationDate>=? and o.creationDate<=?
 		group by type.code
 	]]></query>
 

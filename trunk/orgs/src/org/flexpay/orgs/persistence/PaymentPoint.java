@@ -18,6 +18,7 @@ import java.util.Set;
 public class PaymentPoint extends DomainObjectWithStatus {
 
 	private String address;
+    private String email;
 
 	private PaymentsCollector collector;
 	private Set<PaymentPointName> names = Collections.emptySet();
@@ -49,7 +50,15 @@ public class PaymentPoint extends DomainObjectWithStatus {
 		this.address = address;
 	}
 
-	public Set<PaymentPointName> getNames() {
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public Set<PaymentPointName> getNames() {
 		return names;
 	}
 
