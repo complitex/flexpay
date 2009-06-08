@@ -25,6 +25,11 @@
 				<comment>Address</comment>
 			</column>
 		</property>
+        <property name="email">
+			<column name="email" not-null="true">
+				<comment>E-mail</comment>
+			</column>
+		</property>
 		<many-to-one name="collector" foreign-key="FK_orgs_payment_points_tbl_collector_id"
 					 class="PaymentsCollector">
 			<column name="collector_id" not-null="true">

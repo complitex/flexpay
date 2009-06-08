@@ -49,10 +49,10 @@ public class PaymentStatisticsDaoExtImpl extends HibernateDaoSupport implements 
 	 * @param end			Report period end timestamp
 	 * @return List of payment operation statistics
 	 */
-	public List<OperationTypeStatistics> getOperationTypeStatistics(Long organizationId, Date begin, Date end) {
+	public List<OperationTypeStatistics> getOperationTypeOrganizationStatistics(Long organizationId, Date begin, Date end) {
 		Object[] params = {organizationId, begin, end};
 		List<?> data = getHibernateTemplate()
-				.findByNamedQuery("OperationTypeStatistics.collect", params);
+				.findByNamedQuery("OperationTypeOrganizationStatistics.collect", params);
 
 		List<OperationTypeStatistics> result = CollectionUtils.list();
 		for (Object obj : data) {
@@ -66,4 +66,56 @@ public class PaymentStatisticsDaoExtImpl extends HibernateDaoSupport implements 
 
 		return result;
 	}
+
+    /**
+	 * Build payment operations statistics
+	 *
+	 * @param paymentPointId Payment point
+	 * @param begin		  Report period begin timestamp
+	 * @param end			Report period end timestamp
+	 * @return List of payment operation statistics
+	 */
+    public List<OperationTypeStatistics> getOperationTypePaymentPointStatistics(Long paymentPointId, Date begin, Date end) {
+        Object[] params = {paymentPointId, begin, end};
+		List<?> data = getHibernateTemplate()
+				.findByNamedQuery("OperationTypePaymentPointStatistics.collect", params);
+
+		List<OperationTypeStatistics> result = CollectionUtils.list();
+		for (Object obj : data) {
+			Object[] row = (Object[]) obj;
+			OperationTypeStatistics stats = new OperationTypeStatistics();
+			stats.setOperationTypeCode((Integer) row[0]);
+			stats.setCount((Long) row[1]);
+			stats.setSumm((BigDecimal) row[2]);
+			result.add(stats);
+		}
+
+		return result;
+    }
+
+        /**
+	 * Build payment operations statistics
+	 *
+	 * @param cashboxId Cash box
+	 * @param begin		  Report period begin timestamp
+	 * @param end			Report period end timestamp
+	 * @return List of payment operation statistics
+	 */
+    public List<OperationTypeStatistics> getOperationTypeCashboxStatistics(Long cashboxId, Date begin, Date end) {
+        Object[] params = {cashboxId, begin, end};
+		List<?> data = getHibernateTemplate()
+				.findByNamedQuery("OperationTypeCashboxStatistics.collect", params);
+
+		List<OperationTypeStatistics> result = CollectionUtils.list();
+		for (Object obj : data) {
+			Object[] row = (Object[]) obj;
+			OperationTypeStatistics stats = new OperationTypeStatistics();
+			stats.setOperationTypeCode((Integer) row[0]);
+			stats.setCount((Long) row[1]);
+			stats.setSumm((BigDecimal) row[2]);
+			result.add(stats);
+		}
+
+		return result;
+    }
 }

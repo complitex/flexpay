@@ -23,6 +23,12 @@
 				<s:textfield name="point.address" />
 			</td>
 		</tr>
+    <tr valign="middle" class="cols_1">
+			<td class="col"><s:text name="ab.email"/>:</td>
+			<td class="col">
+				<s:textfield name="point.email" />
+			</td>
+		</tr>
 		<tr valign="middle">
 			<td colspan="2"><input type="submit" class="btn-exit" name="submitted" value="<s:text name="common.save"/>"/></td>
 		</tr>

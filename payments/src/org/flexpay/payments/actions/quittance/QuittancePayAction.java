@@ -89,6 +89,10 @@ public class QuittancePayAction extends CashboxCookieActionSupport {
 	}
 
 	private Operation buildOperation() throws FlexPayException {
+        Cashbox cashbox = cashboxService.read(new Stub<Cashbox>(cashboxId));
+        if (cashbox == null) {
+			throw new IllegalArgumentException("Invalid cashbox id: " + cashboxId);
+		}
 
 		Operation op = new Operation();
 		op.setOperationSumm(totalToPay);
@@ -97,7 +101,8 @@ public class QuittancePayAction extends CashboxCookieActionSupport {
 		op.setCreationDate(new Date());
 		op.setRegisterDate(new Date());
 		op.setCreatorOrganization(getSelfOrganization());
-		op.setPaymentPoint(cashboxService.read(new Stub<Cashbox>(cashboxId)).getPaymentPoint());
+		op.setPaymentPoint(cashbox.getPaymentPoint());
+        op.setCashbox(cashbox);
 		op.setRegisterOrganization(getSelfOrganization());
 		op.setCreatorUserName(SecurityUtil.getUserName());
 		op.setRegisterUserName(SecurityUtil.getUserName());

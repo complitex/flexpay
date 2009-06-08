@@ -221,6 +221,17 @@
         </property>
     </bean>
 
+    <bean name="payments.payment_points.monitor" parent="payments.acc"
+          p:name="payments.payment_points.monitor"
+          p:title="payments.menu2.payment_points.monitor"
+          p:namespace="/payments"
+          p:action="paymentPointsListMonitor"
+          p:parent-ref="payments.acc">
+        <property name="userRole">
+            <util:constant static-field="org.flexpay.payments.service.Roles.ROLE_MENU_PAYMENTS_MONITOR" />
+        </property>
+    </bean>
+
 	<!--level 3 -->
 	<bean name="payments.reports.reports" parent="payments.reports"
           p:name="payments.reports2"

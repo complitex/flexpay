@@ -137,6 +137,12 @@
 		<role-name>ROLE_BASIC</role-name>
 	</security-role>
 
+    <!-- common reading roles -->
+
+    <security-role>
+		<role-name>ROLE_COMMON_PROCESS_READ</role-name>
+	</security-role>
+
 	<!-- ab reading roles (used for filters initialization) -->
 	<security-role>
 		<role-name>ROLE_AB_COUNTRY_READ</role-name>
@@ -257,6 +263,9 @@
     </security-role>
     <security-role>
         <role-name>ROLE_MENU_PAYMENTS_REPORTS</role-name>
+    </security-role>
+    <security-role>
+        <role-name>ROLE_MENU_PAYMENTS_MONITOR</role-name>
     </security-role>
 
 	<!--level 3 -->

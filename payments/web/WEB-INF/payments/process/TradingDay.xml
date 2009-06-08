@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<process-definition xmlns="urn:jbpm.org:jpdl-3.2" name="TradingDay"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xsi:schemaLocation="urn:jbpm.org:jpdl-3.2 http://docs.jboss.org/jbpm/xsd/jpdl-3.2.xsd">
+
+    <swimlane name="Accounter">
+        <assignment actor-id="accounter"></assignment>
+    </swimlane>
+
+
+    <swimlane name="PaymentCollector">
+        <assignment actor-id="generalPaymentCollector"></assignment>
+    </swimlane>
+
+    <swimlane name="JobManager"></swimlane>
+
+    <start-state name="Start">
+        <description>
+            Старт опердня
+        </description>
+        <transition to="MarkPaymentPointForClosing" name="start"/>
+    </start-state>
+
+    <task-node name="MarkPaymentPointForClosing">
+        <description>
+            ожидаем от главного кассира пометки окончания опердня
+        </description>
+        <event type="node-enter">
+            <script>
+                <variable mapped-name="processStatus" access="write" name="PROCESS_STATUS"/>
+                <expression>
+                    processStatus = "opened";
+                </expression>
+            </script>
+        </event>
+        <task name="CloseTradingDay" swimlane="Accounter"/>
+        <transition to="GenerateReginstry" name="tradingDay.mark_for_closing"></transition>
+    </task-node>
+
+
+    <task-node name="GenerateReginstry">
+        <description>
+            генерация реестра типа 12
+        </description>
+        <event type="node-enter">
+            <script>
+                <variable mapped-name="processStatus" access="write" name="PROCESS_STATUS"/>
+                <expression>
+                    processStatus = "processing";
+                </expression>
+            </script>
+        </event>
+        <task name="GenerateRegistryType12" swimlane="JobManager"/>
+        <transition to="emailRegistryFile" name="next"/>
+    </task-node>
+
+
+    <task-node name="emailRegistryFile">
+        <description>
+            отправляем на указанный в ППП емейл с вложенным файлом сформированного реестра
+        </description>
+        <transition to="WaitForApprove" name="next"/>
+    </task-node>
+
+
+    <task-node name="WaitForApprove">
+        <description>
+            ожидаем от бухгалтера действия
+        </description>
+        <event type="node-enter">
+            <script>
+                <variable mapped-name="processStatus" access="write" name="PROCESS_STATUS"/>
+                <expression>
+                    processStatus = "opened";
+                </expression>
+            </script>
+        </event>
+        <event type="node-leave">
+            <script>
+                <variable mapped-name="processStatus" access="write" name="PROCESS_STATUS"/>
+                <expression>
+                    processStatus = "closed";
+                </expression>
+            </script>
+        </event>
+        <task name="Aproove" swimlane="PaymentCollector"/>
+        <transition to="MarkPaymentPointForClosing" name="tradingDay.close_denied"/>
+        <transition to="end-state" name="tradingDay.close_approved"/>
+    </task-node>
+
+    <end-state name="end-state"/>
+
+</process-definition>

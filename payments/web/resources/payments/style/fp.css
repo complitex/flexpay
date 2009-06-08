@@ -64,3 +64,35 @@
 .columns .main-content table.operations tr.highlighted {
 	background-color: #cc6699;
 }
+
+.columns .main-content table.payment_points_list td {
+	font-size: 1.0em;
+	font-weight: bold;
+}
+
+.columns .main-content table.payment_points_list td.th {
+	font-size: 0.8em;
+}
+
+.columns .main-content table.payment_points_list tr.col_ppp {
+	background: #ecf6f6;
+	font-family: tahoma, sans-serif;
+	font-size: 0.8em;
+	font-weight: bold;
+}
+
+.columns .main-content table.payment_points_list tr.col_red {
+	color: red;
+}
+
+.columns .main-content table.payment_points_list tr.col_black {
+	color: black;
+}
+
+.columns .main-content table.payment_points_list tr.col_blue {
+	color: blue;
+}
+
+.columns .main-content table.payment_points_list tr.highlighted {
+	background-color: #cc6699;
+}

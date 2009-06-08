@@ -135,4 +135,15 @@
 		<put-attribute name="body" value="/WEB-INF/jsp/payments/data/correspondence/correct_person_complete.jsp" />
 	</definition>
 
+    <!-- payment point list definitions -->
+	<definition name="payments.payment_points.list" extends="ab.layout.standart">
+		<put-attribute name="title" value="payments.payment_points.list.title"/>
+		<put-attribute name="body" value="/WEB-INF/jsp/payments/monitor/payment_points_list.jsp"/>
+	</definition>
+
+    <definition name="payments.payment_point.detail" extends="ab.layout.standart">
+		<put-attribute name="title" value="payments.payment_point.detail.title"/>
+		<put-attribute name="body" value="/WEB-INF/jsp/payments/monitor/payment_point_detail.jsp"/>
+	</definition>
+
 </tiles-definitions>

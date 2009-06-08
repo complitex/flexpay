@@ -1,0 +1,162 @@
+package org.flexpay.payments.actions.monitor;
+
+import org.flexpay.common.dao.paging.Page;
+import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.process.Process;
+import org.flexpay.common.process.ProcessManager;
+import org.flexpay.common.process.ProcessState;
+import org.flexpay.common.process.sorter.ProcessSorterByEndDate;
+import org.flexpay.common.process.sorter.ProcessSorterByName;
+import org.flexpay.common.process.sorter.ProcessSorterByStartDate;
+import org.flexpay.common.process.sorter.ProcessSorterByState;
+import org.flexpay.orgs.persistence.PaymentPoint;
+import org.flexpay.payments.actions.CashboxCookieWithPagerActionSupport;
+import org.flexpay.payments.actions.monitor.data.PaymentPointMonitorContainer;
+import org.flexpay.payments.persistence.OperationType;
+import org.flexpay.payments.service.statistics.OperationTypeStatistics;
+import org.flexpay.payments.service.statistics.PaymentsStatisticsService;
+import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Required;
+
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+
+public class PaymentPointsListMonitorAction extends CashboxCookieWithPagerActionSupport<PaymentPointMonitorContainer> {
+    private static final String PROCESS_DEFINITION_NAME = "TradingDay";
+
+    private static final String PROCESS_PARAM_PAYMENT_POINT = "PAYMENT_POINT";
+
+    // sorters
+	private static final ProcessSorterByName processSorterByName = new ProcessSorterByName();
+	private static final ProcessSorterByStartDate processSorterByStartDate = new ProcessSorterByStartDate();
+	private static final ProcessSorterByEndDate processSorterByEndDate = new ProcessSorterByEndDate();
+	private static final ProcessSorterByState processSorterByState = new ProcessSorterByState();
+
+    private String selectedPaymentPointName;
+    private String filter;
+    private String updated;
+    private String update;
+    private String detail;
+    private List<PaymentPointMonitorContainer> paymentPoints;
+
+    private ProcessManager processManager;
+    private PaymentsStatisticsService paymentsStatisticsService;
+
+    /**
+	 * {@inheritDoc}
+	 */
+    @NotNull
+    protected String doExecute() throws Exception {
+        Page<org.flexpay.common.process.Process> page = new Page<org.flexpay.common.process.Process>();
+        page.setPageSize(getPageSize());
+        page.setPageNumber(getPager().getPageNumber());
+
+        List<org.flexpay.common.process.Process> processes = processManager.getProcesses(processSorterByName, page, null, null, ProcessState.RUNING, PROCESS_DEFINITION_NAME);
+
+        paymentPoints = new ArrayList<PaymentPointMonitorContainer>();
+        for (Process process : processes) {
+            PaymentPoint paymentPont = (PaymentPoint) process.getParameters().get(PROCESS_PARAM_PAYMENT_POINT);
+            List<OperationTypeStatistics> statistics = paymentsStatisticsService.operationTypePaymentPointStatistics(Stub.stub(paymentPont), null, null);
+
+            PaymentPointMonitorContainer container = new PaymentPointMonitorContainer();
+            container.setId(String.valueOf(process.getId()));
+            container.setName(paymentPont.getName());
+            container.setPaymentsCount(String.valueOf(getPaymentsCount(statistics)));
+            container.setTotalSum(String.valueOf(getPaymentsSumm(statistics)));
+
+            container.setCashBox(null);
+            container.setCashierFIO(null);
+            container.setLastPayment(null);
+
+            paymentPoints.add(container);
+        }
+        return SUCCESS;
+    }
+
+    /**
+	 * {@inheritDoc}
+	 */
+    @NotNull
+    protected String getErrorResult() {
+        return SUCCESS;
+    }
+
+    public String getSelectedPaymentPointName() {
+        return selectedPaymentPointName;
+    }
+
+    public void setSelectedPaymentPointName(String selectedPaymentPointName) {
+        this.selectedPaymentPointName = selectedPaymentPointName;
+    }
+
+    public String getFilter() {
+        return filter;
+    }
+
+    public void setFilter(String filter) {
+        this.filter = filter;
+    }
+
+    public String getUpdated() {
+        return updated;
+    }
+
+    public void setUpdated(String updated) {
+        this.updated = updated;
+    }
+
+    public String getUpdate() {
+        return update;
+    }
+
+    public void setUpdate(String update) {
+        this.update = update;
+    }
+
+    public String getDetail() {
+        return detail;
+    }
+
+    public void setDetail(String detail) {
+        this.detail = detail;
+    }
+
+    public List<PaymentPointMonitorContainer> getPaymentPoints() {
+        return paymentPoints;
+    }
+
+    public void setPaymentPoints(List<PaymentPointMonitorContainer> paymentPoints) {
+        this.paymentPoints = paymentPoints;
+    }
+
+    @Required
+    public void setProcessManager(ProcessManager processManager) {
+        this.processManager = processManager;
+    }
+
+    @Required
+    public void setPaymentsStatisticsService(PaymentsStatisticsService paymentsStatisticsService) {
+        this.paymentsStatisticsService = paymentsStatisticsService;
+    }
+
+    public long getPaymentsCount(List<OperationTypeStatistics> typeStatisticses) {
+		long count = 0;
+		for (OperationTypeStatistics stats : typeStatisticses) {
+			if (OperationType.isPaymentCode(stats.getOperationTypeCode())) {
+				count += stats.getCount();
+			}
+		}
+		return count;
+	}
+
+	public BigDecimal getPaymentsSumm(List<OperationTypeStatistics> typeStatisticses) {
+		BigDecimal summ = BigDecimal.ZERO;
+		for (OperationTypeStatistics stats : typeStatisticses) {
+			if (OperationType.isPaymentCode(stats.getOperationTypeCode())) {
+				summ = summ.add(stats.getSumm());
+			}
+		}
+		return summ;
+	}
+}
