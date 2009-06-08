@@ -16,7 +16,6 @@ public class BuildingSetPrimaryStatusAction extends FPActionSupport {
 	private Long redirectBuildingsId;
 
 	private BuildingService buildingService;
-	private AddressService addressService;
 
 	@NotNull
 	public String doExecute() throws Exception {
@@ -29,8 +28,7 @@ public class BuildingSetPrimaryStatusAction extends FPActionSupport {
 		building.setPrimaryAddress(addressStub);
 		buildingService.update(building);
 
-		addActionError(getText("ab.building.primary_address_set",
-				addressService.getBuildingsAddress(stub(buildings), getLocale())));
+		addActionError(getText("ab.building.primary_address_set"));
 
 		return REDIRECT_SUCCESS;
 	}
@@ -71,10 +69,5 @@ public class BuildingSetPrimaryStatusAction extends FPActionSupport {
 	@Required
 	public void setBuildingService(BuildingService buildingService) {
 		this.buildingService = buildingService;
-	}
-
-	@Required
-	public void setAddressService(AddressService addressService) {
-		this.addressService = addressService;
 	}
 }
