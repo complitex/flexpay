@@ -25,8 +25,8 @@ INSERT INTO ab_country_name_translations_tbl (name, short_name, country_id, lang
 	VALUES ('Ukraine', 'RU', @ukraine_id, @en_id);
 
 -- Init Regions table
-INSERT INTO ab_regions_tbl (status, country_id) VALUES (0, @ukraine_id);
-SELECT @region_harkovschina_id:=last_insert_id();
+INSERT INTO ab_regions_tbl (id, status, country_id) VALUES (1, 0, @ukraine_id);
+SELECT @region_harkovschina_id:=1;
 INSERT INTO ab_region_names_tbl (region_id) VALUES (@region_harkovschina_id);
 SELECT @region_name_id:=last_insert_id();
 INSERT INTO ab_region_name_translations_tbl (name, region_name_id, language_id)
