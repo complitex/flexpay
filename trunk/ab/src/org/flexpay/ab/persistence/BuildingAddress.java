@@ -169,8 +169,10 @@ public class BuildingAddress extends DomainObjectWithStatus {
 
 	public String toString() {
 		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE)
-				.append("Building id", building.getId())
-				.append("Street id", street.getId())
+				.append("id", getId())
+				.append("status", getStatus())
+				.append("BuildingId", building == null ? null : building.getId())
+				.append("StreetId", street == null ? null : street.getId())
 				.toString();
 	}
 

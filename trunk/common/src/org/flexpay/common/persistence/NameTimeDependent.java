@@ -188,14 +188,4 @@ public abstract class NameTimeDependent<T extends TemporaryValue<T>, DI extends 
 
 		return obj instanceof NameTimeDependent<?, ?> && super.equals(obj);
 	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public int hashCode() {
-		return new HashCodeBuilder()
-				.append(namesTimeLine)
-				.toHashCode();
-	}
 }

@@ -23,21 +23,16 @@
 	<path id="${module_name}.production.classpath">
 		<path refid="${parent_module_name}.production.classpath" />
 		<path refid="${module_name}.lib" />
-		<path refid="${parent_module_name}.jar" />
 	</path>
 
 	<path id="${module_name}.test.classpath">
 		<path refid="${parent_module_name}.test.classpath" />
-		<path refid="${module_name}.jar" />
-		<path refid="${module_name}.test.jar" />
 		<path refid="${module_name}.production.classpath" />
 	</path>
 
     <path id="${module_name}.runtests.classpath">
         <path refid="${parent_module_name}.runtests.classpath" />
         <path refid="${module_name}.test.classpath" />
-        <path location="${build.dir}/web" />
-        <path location="${module_name}/src" />
         <path location="${module_name}/tests/data" />
     </path>
 

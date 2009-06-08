@@ -131,8 +131,20 @@ public class Building extends DomainObjectWithStatus {
 	@Nullable
 	public BuildingAddress getAddressOnStreet(@NotNull Street street) {
 
+		return getAddressOnStreet(stub(street));
+	}
+
+	/**
+	 * Find building address on a street
+	 *
+	 * @param street Street to get address on
+	 * @return BuildingAddress if exists, or <code>null</code> otherwise
+	 */
+	@Nullable
+	public BuildingAddress getAddressOnStreet(@NotNull Stub<Street> street) {
+
 		for (BuildingAddress address : getBuildingses()) {
-			if (street.equals(address.getStreet())) {
+			if (street.sameId(address.getStreet())) {
 				return address;
 			}
 		}
@@ -150,5 +162,16 @@ public class Building extends DomainObjectWithStatus {
 		}
 
 		return null;
+	}
+
+	/**
+	 * Set primary status of an address of a building a stub references to
+	 * @param stub Address stub
+	 */
+	public void setPrimaryAddress(Stub<BuildingAddress> stub) {
+
+		for (BuildingAddress address : getBuildingses()) {
+			address.setPrimaryStatus(stub.sameId(address));
+		}
 	}
 }

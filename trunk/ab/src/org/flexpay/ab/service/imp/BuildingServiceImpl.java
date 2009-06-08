@@ -52,8 +52,8 @@ public class BuildingServiceImpl implements BuildingService {
 	private SessionUtils sessionUtils;
 	private ModificationListener<Building> modificationListener;
 
-	public List<BuildingAddress> getBuildings(ArrayStack filters, Page pager) {
-		PrimaryKeyFilter streetFilter = (PrimaryKeyFilter) filters.peek();
+	public List<BuildingAddress> getBuildings(ArrayStack filters, Page<BuildingAddress> pager) {
+		PrimaryKeyFilter<?> streetFilter = (PrimaryKeyFilter<?>) filters.peek();
 		if (filters.size() > 1 && filters.peek(1) instanceof DistrictFilter) {
 			DistrictFilter districtFilter = (DistrictFilter) filters.peek(1);
 
@@ -66,7 +66,7 @@ public class BuildingServiceImpl implements BuildingService {
 		return buildingsDao.findBuildings(streetFilter.getSelectedId(), pager);
 	}
 
-	public List<BuildingAddress> getBuildings(Long streetId, Page pager) {
+	public List<BuildingAddress> getBuildings(Long streetId, Page<BuildingAddress> pager) {
 		return buildingsDao.findBuildings(streetId, pager);
 	}
 
@@ -261,7 +261,9 @@ public class BuildingServiceImpl implements BuildingService {
 	 */
 	@Nullable
 	public Building findBuilding(@NotNull Stub<BuildingAddress> stub) {
-		return buildingsDaoExt.findBuilding(stub.getId());
+		Building building = buildingsDaoExt.findBuilding(stub.getId());
+		sessionUtils.evict(building);
+		return building != null ? read(stub(building)) : null;
 	}
 
 	private Set<AddressAttribute> attributes(@NotNull String number, @Nullable String bulk) {
@@ -325,16 +327,6 @@ public class BuildingServiceImpl implements BuildingService {
 	@Nullable
 	public BuildingAddress readFull(@NotNull Stub<BuildingAddress> stub) {
 		return buildingsDao.readFull(stub.getId());
-	}
-
-	/**
-	 * Update buildings
-	 *
-	 * @param buildingAddress Buildings
-	 */
-	@Transactional (readOnly = false)
-	public void update(BuildingAddress buildingAddress) {
-		buildingsDao.update(buildingAddress);
 	}
 
 	/**
@@ -513,5 +505,10 @@ public class BuildingServiceImpl implements BuildingService {
 	@Required
 	public void setModificationListener(ModificationListener<Building> modificationListener) {
 		this.modificationListener = modificationListener;
+	}
+
+	@Required
+	public void setAddressService(AddressService addressService) {
+		this.addressService = addressService;
 	}
 }

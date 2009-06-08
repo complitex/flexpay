@@ -9,6 +9,7 @@ import org.flexpay.common.persistence.history.HistoryOperationType;
 import org.flexpay.common.persistence.history.HistoryRecord;
 import org.flexpay.common.persistence.history.ProcessingStatus;
 import org.flexpay.common.persistence.history.impl.HistoryBuilderBase;
+import static org.flexpay.common.util.CollectionUtils.ar;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
@@ -22,6 +23,7 @@ public class BuildingHistoryBuilder extends HistoryBuilderBase<Building> {
 	public static final int FIELD_DISTRICT_ID = 1;
 	public static final int FIELD_ADDRESS_VALUE = 2;
 	public static final int FIELD_PRIMARY_ADDRESS = 3;
+	public static final int FIELD_DELETED_ADDRESS = 4;
 
 	protected Logger log = LoggerFactory.getLogger(getClass());
 
@@ -56,40 +58,47 @@ public class BuildingHistoryBuilder extends HistoryBuilderBase<Building> {
 		Set<Street> streets = b1.getStreets();
 		streets.addAll(b2.getStreets());
 
+		log.debug("Streets to build diff on: {}", streets );
+
 		for (Street street : streets) {
 			BuildingAddress addr1 = b1.getAddressOnStreet(street);
 			BuildingAddress addr2 = b2.getAddressOnStreet(street);
 
 			buildAddressOnStreetDiff(addr1, addr2, street, diff);
 			buildPrimaryAddressDiff(addr1, addr2, diff, street);
-
 		}
 	}
 
 	private void buildPrimaryAddressDiff(BuildingAddress addr1, BuildingAddress addr2, Diff diff, Street street) {
-		// second, setup diff for primary status
-		boolean statusSame = addr1 == null && addr2 == null;
-		statusSame = statusSame || (addr1 == null && addr2.isNotPrimary());
-		statusSame = statusSame || (addr2 == null && addr1.isNotPrimary());
-		statusSame = statusSame || (addr1 != null && addr1.isPrimary() && addr2 != null && addr2.isPrimary());
-		if (statusSame) {
+
+		// setup diff for primary status
+		boolean prim1 = addr1 != null && addr1.isPrimary();
+		boolean prim2 = addr2 != null && addr2.isPrimary();
+		if (prim1 == prim2) {
 			return;
 		}
 
 		HistoryRecord rec = new HistoryRecord();
 		rec.setFieldType(FIELD_PRIMARY_ADDRESS);
-		rec.setOldBoolValue(addr1 == null ? null : addr1.isPrimary());
-		rec.setNewBoolValue(addr2 == null ? null : addr2.isPrimary());
+		rec.setOldBoolValue(prim1);
+		rec.setNewBoolValue(prim2);
 		rec.setFieldKey(masterIndexService.getMasterIndex(street));
 		diff.addRecord(rec);
+		log.debug("Added primary status diff record: {}", rec);
 	}
 
 	private void buildAddressOnStreetDiff(BuildingAddress addr1, BuildingAddress addr2, Street street, Diff diff) {
+
+		if (log.isDebugEnabled()) {
+			log.debug("Building address diff on street {}, addresses:\n{}\n{}", ar(street, addr1, addr2));
+		}
+
 		// first, build diffs by attribute types
 		for (AddressAttributeType type : addressAttributeTypeService.getAttributeTypes()) {
 			AddressAttribute attr1 = addr1 != null ? addr1.getAttribute(type) : null;
 			AddressAttribute attr2 = addr2 != null ? addr2.getAttribute(type) : null;
 
+			// check value
 			boolean sameValue = EqualsHelper.strEquals(
 					attr1 == null ? null : attr1.getValue(),
 					attr2 == null ? null : attr2.getValue());
@@ -102,13 +111,30 @@ public class BuildingHistoryBuilder extends HistoryBuilderBase<Building> {
 			rec.setOldStringValue(attr1 == null ? null : attr1.getValue());
 			rec.setNewStringValue(attr2 == null ? null : attr2.getValue());
 
-			// small trick, field key is a street + "|" + type to later restore references
-			rec.setFieldKey(
-					masterIndexService.getMasterIndex(street) +
-					"|" +
-					masterIndexService.getMasterIndex(type));
+			// field key is a street + field key 2 is a type
+			rec.setFieldKey(masterIndexService.getMasterIndex(street));
+			rec.setFieldKey2(masterIndexService.getMasterIndex(type));
 			diff.addRecord(rec);
+			log.debug("Added address diff record: {}", rec);
 		}
+
+		// check deleted status
+		boolean addr1Act = addr1 != null && addr1.isActive();
+		boolean addr2Act = addr2 != null && addr2.isActive();
+		boolean sameActiveStatus = addr1Act == addr2Act;
+		if (sameActiveStatus || (addr1 == null && addr2Act)) {
+			return;
+		}
+
+		HistoryRecord rec = new HistoryRecord();
+		rec.setFieldType(FIELD_DELETED_ADDRESS);
+		rec.setOldBoolValue(addr1Act);
+		rec.setNewBoolValue(addr2Act);
+
+		// field key is a street
+		rec.setFieldKey(masterIndexService.getMasterIndex(street));
+		diff.addRecord(rec);
+		log.debug("Added address deleted record: {}", rec);
 	}
 
 	private void buildDistrictReferenceDiff(@NotNull Building b1, @NotNull Building b2, @NotNull Diff diff) {
@@ -140,6 +166,7 @@ public class BuildingHistoryBuilder extends HistoryBuilderBase<Building> {
 				null :
 				masterIndexService.getMasterIndex(b2.getDistrict()));
 		diff.addRecord(rec);
+		log.debug("Added district ref diff record: {}", rec);
 	}
 
 	/**
@@ -162,21 +189,41 @@ public class BuildingHistoryBuilder extends HistoryBuilderBase<Building> {
 				case FIELD_PRIMARY_ADDRESS:
 					patchPrimaryStatus(building, record);
 					break;
+				case FIELD_DELETED_ADDRESS:
+					patchDeletedAddress(building, record);
+					break;
 				default:
 					log.warn("Unsupported field type {}", record);
 			}
 		}
 	}
 
+	private void patchDeletedAddress(@NotNull Building building, @NotNull HistoryRecord record) {
+
+		// find street
+		BuildingAddress addr = findStreetAddress(building, record.getFieldKey());
+		Boolean active = record.getNewBoolValue();
+		if (addr != null && active != null) {
+			if (active) {
+				addr.activate();
+			} else {
+				addr.disable();
+			}
+		}
+
+		record.setProcessingStatus(ProcessingStatus.STATUS_PROCESSED);
+	}
+
 	private void patchPrimaryStatus(@NotNull Building building, @NotNull HistoryRecord record) {
 
-		BuildingAddress addr = findStreetAddress(building, record.getFieldKey());
-		boolean isPrimary = record.getNewBoolValue() != null ? record.getNewBoolValue() : false;
+		log.debug("Patching primary status: {}", record);
 
-		if ((addr.getBuildingAttributes().isEmpty() && !isPrimary) || addr.isNotNew()) {
-			addr.setPrimaryStatus(isPrimary);
-			building.addAddress(addr);
-		}
+		BuildingAddress addr = findStreetAddress(building, record.getFieldKey());
+		Boolean value = record.getNewBoolValue();
+		boolean isPrimary = value != null ? value : false;
+
+		addr.setPrimaryStatus(isPrimary);
+		building.addAddress(addr);
 
 		record.setProcessingStatus(ProcessingStatus.STATUS_PROCESSED);
 	}
@@ -204,19 +251,16 @@ public class BuildingHistoryBuilder extends HistoryBuilderBase<Building> {
 	private void patchAddress(@NotNull Building building, @NotNull HistoryRecord record) {
 
 		// split street-id and type-id
-		String[] parts = record.getFieldKey().split("\\|");
-		if (parts.length != 2) {
-			log.warn("Address setup record should have street-id and type-id splitted with '|': {}", record);
-			return;
-		}
+		String streetMasterIndex = record.getFieldKey();
+		String typeMasterIndex = record.getFieldKey2();
 
-		BuildingAddress addr = findStreetAddress(building, parts[0]);
+		BuildingAddress addr = findStreetAddress(building, streetMasterIndex);
 
 		// find attribute type
 		Stub<AddressAttributeType> typeStub = correctionsService.findCorrection(
-				parts[1], AddressAttributeType.class, masterIndexService.getMasterSourceDescription());
+				typeMasterIndex, AddressAttributeType.class, masterIndexService.getMasterSourceDescription());
 		if (typeStub == null) {
-			throw new IllegalStateException("Cannot find address attribute type by master index: " + parts[1]);
+			throw new IllegalStateException("Cannot find address attribute type by master index: " + typeMasterIndex);
 		}
 
 		// setup address value and add address to building

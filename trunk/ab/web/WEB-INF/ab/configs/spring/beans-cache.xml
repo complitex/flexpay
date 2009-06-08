@@ -164,15 +164,14 @@
 		<property name="cacheProviderFacade" ref="cacheProviderFacade" />
 		<property name="cachingModels">
 			<props>
-				<prop key="readFull">cacheName=commonFlexpayCache</prop>
+				<prop key="readFull">cacheName=abBuildingFlexpayCache</prop>
 			</props>
 		</property>
 		<property name="flushingModels">
 			<props>
-				<prop key="create*">cacheNames=commonFlexpayCache</prop>
-				<prop key="update*">cacheNames=commonFlexpayCache</prop>
-				<prop key="disable*">cacheNames=commonFlexpayCache</prop>
-				<prop key="save*">cacheNames=commonFlexpayCache</prop>
+				<prop key="create">cacheNames=abBuildingFlexpayCache;flushBeforeMethodExecution=true</prop>
+				<prop key="update">cacheNames=abBuildingFlexpayCache;flushBeforeMethodExecution=true</prop>
+				<prop key="disable">cacheNames=abBuildingFlexpayCache;flushBeforeMethodExecution=true</prop>
 			</props>
 		</property>
 		<property name="target" ref="buildingServiceTarget" />

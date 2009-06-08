@@ -1,27 +1,36 @@
 package org.flexpay.ab.actions.buildings;
 
+import org.flexpay.ab.persistence.Building;
 import org.flexpay.ab.persistence.BuildingAddress;
 import org.flexpay.ab.service.BuildingService;
+import org.flexpay.ab.service.AddressService;
 import org.flexpay.common.actions.FPActionSupport;
-import org.flexpay.common.exception.FlexPayException;
+import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
 public class BuildingSetPrimaryStatusAction extends FPActionSupport {
 
-	private BuildingAddress buildings;
+	private BuildingAddress buildings = new BuildingAddress();
 	private Long redirectBuildingsId;
 
 	private BuildingService buildingService;
+	private AddressService addressService;
 
 	@NotNull
-	public String doExecute() throws FlexPayException {
-		buildings = buildingService.readFull(stub(buildings));
-		for (BuildingAddress current : buildingService.getBuildingBuildings(buildings.getBuildingStub())) {
-			current.setPrimaryStatus(buildings.equals(current));
-			buildingService.update(current);
+	public String doExecute() throws Exception {
+
+		Stub<BuildingAddress> addressStub = stub(buildings);
+		Building building = buildingService.findBuilding(addressStub);
+		if (building == null) {
+			return REDIRECT_SUCCESS;
 		}
+		building.setPrimaryAddress(addressStub);
+		buildingService.update(building);
+
+		addActionError(getText("ab.building.primary_address_set",
+				addressService.getBuildingsAddress(stub(buildings), getLocale())));
 
 		return REDIRECT_SUCCESS;
 	}
@@ -64,4 +73,8 @@ public class BuildingSetPrimaryStatusAction extends FPActionSupport {
 		this.buildingService = buildingService;
 	}
 
+	@Required
+	public void setAddressService(AddressService addressService) {
+		this.addressService = addressService;
+	}
 }

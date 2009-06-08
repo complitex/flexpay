@@ -1,12 +1,12 @@
-package org.flexpay.ab.action;
+package org.flexpay.ab.action.building;
 
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
 @RunWith (Suite.class)
 @Suite.SuiteClasses ({
-		org.flexpay.ab.action.building.AllTests.class,
-		TestBuildingsActionsBase.class
+		TestBuildingDeleteAction.class,
+		TestBuildingSetPrimaryStatusAction.class
 })
 public class AllTests {
 

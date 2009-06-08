@@ -25,15 +25,11 @@
 		<path refid="orgs.production.classpath" />
 		<path refid="ab.production.classpath" />
 		<path refid="payments.lib" />
-		<path refid="orgs.jar" />
-		<path refid="ab.jar" />
 	</path>
 
 	<path id="payments.test.classpath">
 		<path refid="orgs.test.classpath" />
 		<path refid="ab.test.classpath" />
-		<path refid="payments.jar" />
-		<path refid="payments.test.jar" />
 		<path refid="payments.production.classpath" />
 	</path>
 
