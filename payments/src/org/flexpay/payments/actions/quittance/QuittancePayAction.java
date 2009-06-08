@@ -101,7 +101,7 @@ public class QuittancePayAction extends CashboxCookieActionSupport {
 		op.setRegisterOrganization(getSelfOrganization());
 		op.setCreatorUserName(SecurityUtil.getUserName());
 		op.setRegisterUserName(SecurityUtil.getUserName());
-		op.setOperationStatus(operationStatusService.read(OperationStatus.CREATED));
+		op.setOperationStatus(operationStatusService.read(OperationStatus.REGISTERED));
 		op.setOperationLevel(operationLevelService.read(OperationLevel.AVERAGE));
 		op.setOperationType(operationTypeService.read(OperationType.SERVICE_CASH_PAYMENT));
 		return op;
@@ -119,7 +119,7 @@ public class QuittancePayAction extends CashboxCookieActionSupport {
 
 		Document document = new Document();
 		document.setService(service);
-		document.setDocumentStatus(documentStatusService.read(DocumentStatus.CREATED));
+		document.setDocumentStatus(documentStatusService.read(DocumentStatus.REGISTERED));
 		document.setDocumentType(documentTypeService.read(DocumentType.CASH_PAYMENT));
 		document.setSumm(documentSumm);
 		document.setAddress(addresses.get(serviceFullIndx));
