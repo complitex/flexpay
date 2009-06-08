@@ -26,10 +26,12 @@ function Filter(name, options) {
         filterId: "",
         valueId: "",
         isArray: false,
+        display: {readonly:false,justText:false},
         extraParams: {},
         resultAction: null,
         resultId: "result",
         preRequest: true,
+        required: true,
         parents: []
     }, options);
 
@@ -38,18 +40,56 @@ function Filter(name, options) {
     this.name = options.name;
     this.action = options.action;
     this.isArray = options.isArray;
+    this.readonly = options.display.readonly;
+    this.justText = options.display.justText;
     this.extraParams = options.extraParams;
     this.parents = [];
     for (var ind in options.parents) {
         this.parents[options.parents[ind]] = options.parents[ind];
     }
     this.parentsCount = options.parents.length;
+    this.requiredParentsCount = 0;
+    for (var i in this.parents) {
+        if (FF.filters[i].required) {
+            this.requiredParentsCount++;
+        }
+    }
+    this.haveRequiredParents = this.requiredParentsCount > 0;
     this.resultAction = options.resultAction;
     this.preRequest = options.preRequest;
+    this.required = options.required;
 
     this.result = $("#" + options.resultId);
     this.value = $("#" + options.valueId);
     this.string = $("#" + options.filterId);
+    this.string.parent().prepend('<span id="' + options.filterId + '_text" class="filter">' + this.string.val() + '</span>');
+    this.text = $("#" + options.filterId + "_text");
+
+    if (this.justText) {
+        this.string.css({display: "none"});
+        this.text.removeAttr("style");
+        this.readonly = true;
+    }
+
+    displayParents(this);
+
+    function displayParents(filter) {
+        if (filter.readonly || filter.justText) {
+            filter.string.attr("readonly", true);
+            if (filter.justText) {
+                filter.string.css({display: "none"});
+            }
+            for (var i in filter.parents) {
+                if (filter.readonly) {
+                    FF.filters[i].readonly = true;
+                }
+                if (filter.justText) {
+                    FF.filters[i].justText = true;
+                }
+                displayParents(FF.filters[i]);
+            }
+        }
+    }
 
     this.defaultResult = this.result.html();
 
@@ -80,7 +120,7 @@ function Filter(name, options) {
     }
 
     function create(filter) {
-        if (!options.isArray) {
+        if (!options.isArray && !this.readonly) {
             filter.autocompleter = filter.string.autocomplete(options.action,
                     {
                         delay:10,
@@ -172,19 +212,25 @@ var FF = {
                     k++;
                 }
             }
-            if (filter.parentsCount > 0 && k < filter.parentsCount) {
+            console.log("filter.name = " + filter.name);
+            console.log("filter.requiredParentsCount = " + filter.requiredParentsCount);
+            console.log("filter.parentsCount = " + filter.parentsCount);
+            if ((filter.haveRequiredParents && k < filter.requiredParentsCount) || (filter.parentsCount > 0 && !filter.haveRequiredParents)) {
                 filter.string.attr("readonly", true);
             }
             $.post(filter.action, {filterValue:filter.value.val(), preRequest:true},
                 function(data) {
                     var r = data.split("|");
                     filter.string.val(r[0]);
+                    if (filter.justText) {
+                        filter.text.text(r[0]);
+                    }
                     filter.value.val(r[1]);
                     FF.onSelect(filter.name);
                 });
             pausecomp(100);
         } else {
-            if (filter.parentsCount > 0) {
+            if (filter.haveRequiredParents || filter.requiredParentsCount == filter.parentsCount) {
                 filter.string.attr("readonly", true);
             }
         }
@@ -233,23 +279,37 @@ var FF = {
                     filter.result.html(data);
                 });
         }
+        if (filter.justText) {
+            filter.text.val(filter.string.val());
+        }
         if (this.setFocusByTabIndex(filters)) {
             return;
         }
         for (var i in filters) {
             var filter2 = filters[i];
             var parentsFilled = true;
+            var filledParentsCount = 0;
             for (var i1 in filter2.parents) {
-                if (this.filters[i1].value.val() == "") {
+                if (this.filters[i1].value.val() != "") {
+                    filledParentsCount++;
+                }
+                if (this.filters[i1].value.val() == "" && this.filters[i1].required) {
                     parentsFilled = false;
-                    break;
                 }
             }
+            if (filter.requiredParentsCount == filter.parentsCount && filledParentsCount == 0) {
+                parentsFilled = false;
+            }
             if (parentsFilled) {
-                filter2.string.removeAttr("readonly").focus();
+                filter2.string.focus()
+                if (!filter2.readonly || (filter2.readonly && this.getFiltersByParentName(filter2.name).length == 0)) {
+                    filter2.string.removeAttr("readonly");
+                }
             }
             if (!filter2.isArray) {
-                filter2.autocompleter.setExtraParams({parents : this.getParentParams(filter2)});
+                if (filter2.autocompleter != null) {
+                    filter2.autocompleter.setExtraParams({parents : this.getParentParams(filter2)});
+                }
             } else {
                 filter2.string.addClass("ac_loading");
                 var params = this.getParentParams(filter2);
