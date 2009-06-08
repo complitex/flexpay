@@ -568,6 +568,10 @@
 		<role-name>ROLE_COMMON_PROCESS_READ</role-name>
 		<group-name>EIRC_FULL_ACCESS</group-name>
 	</security-role-mapping>
+    <security-role-mapping>
+		<role-name>ROLE_COMMON_PROCESS_READ</role-name>
+		<group-name>PAYMENTS_FULL_ACCESS</group-name>
+	</security-role-mapping>
 	<security-role-mapping>
 		<role-name>ROLE_COMMON_PROCESS_DELETE</role-name>
 		<group-name>EIRC_FULL_ACCESS</group-name>
