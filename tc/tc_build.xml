@@ -26,21 +26,16 @@
 	<path id="tc.production.classpath">
 		<path refid="bti.production.classpath" />
 		<path refid="tc.lib" />
-		<path refid="bti.jar" />
 	</path>
 
 	<path id="tc.test.classpath">
 		<path refid="bti.test.classpath" />
-		<path refid="tc.jar" />
-		<path refid="tc.test.jar" />
 		<path refid="tc.production.classpath" />
 	</path>
 
 	<path id="tc.runtests.classpath">
 		<path refid="bti.runtests.classpath" />
 		<path refid="tc.test.classpath" />
-		<path location="${build.dir}/web" />
-		<path location="tc/src" />
 		<path location="${tc.dir}/tests/data" />
 	</path>
 

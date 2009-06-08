@@ -48,7 +48,7 @@ public interface BuildingService extends ParentService<BuildingsFilter> {
 	ArrayStack initFilters(ArrayStack filters, Locale locale) throws FlexPayException;
 
 	@Secured (Roles.BUILDING_READ)
-	List<BuildingAddress> getBuildings(ArrayStack filters, Page pager);
+	List<BuildingAddress> getBuildings(ArrayStack filters, Page<BuildingAddress> pager);
 
 	/**
 	 * Get buildings of a street
@@ -60,7 +60,7 @@ public interface BuildingService extends ParentService<BuildingsFilter> {
 	 *             instead
 	 */
 	@Secured (Roles.BUILDING_READ)
-	List<BuildingAddress> getBuildings(Long streetId, Page pager);
+	List<BuildingAddress> getBuildings(Long streetId, Page<BuildingAddress> pager);
 
 	@Secured (Roles.BUILDING_READ)
 	List<BuildingAddress> getBuildings(@NotNull Stub<Street> stub);
@@ -141,15 +141,6 @@ public interface BuildingService extends ParentService<BuildingsFilter> {
 	@Secured (Roles.BUILDING_READ)
 	@Nullable
 	BuildingAddress readFull(@NotNull Stub<BuildingAddress> stub);
-
-	/**
-	 * Update buildings
-	 *
-	 * @param buildingAddress Buildings
-	 * @deprecated use {@link #update(org.flexpay.ab.persistence.Building)} instead
-	 */
-	@Secured (Roles.BUILDING_CHANGE)
-	void update(BuildingAddress buildingAddress);
 
 	/**
 	 * Find all Buildings relation for building stub

@@ -215,6 +215,7 @@
 	<bean id="buildingSetPrimaryStatusAction"
 		  class="org.flexpay.ab.actions.buildings.BuildingSetPrimaryStatusAction"
 		  p:buildingService-ref="buildingService"
+		  p:addressService-ref="addressService"
           scope="prototype" />
 
     <bean id="buildingFilterAjaxAction"

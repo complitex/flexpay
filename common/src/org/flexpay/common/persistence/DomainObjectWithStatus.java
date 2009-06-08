@@ -27,6 +27,10 @@ public class DomainObjectWithStatus extends DomainObject implements ObjectWithSt
 		status = STATUS_DISABLED;
 	}
 
+	public void activate() {
+		status = STATUS_ACTIVE;
+	}
+
 	public boolean isActive() {
 		return status == STATUS_ACTIVE;
 	}
@@ -34,11 +38,10 @@ public class DomainObjectWithStatus extends DomainObject implements ObjectWithSt
 	@Override
 	public String toString() {
 		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
-				append("DomainObjectWithStatus {").
 				append("id", getId()).
 				append("status", status).
 				append("version", version).
-				append("}").toString();
+				toString();
 	}
 
 }

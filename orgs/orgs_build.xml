@@ -23,13 +23,12 @@
 	<path id="orgs.production.classpath">
 		<path refid="common.production.classpath" />
 		<path refid="orgs.lib" />
-		<path refid="common.jar" />
 	</path>
 
 	<path id="orgs.test.classpath">
 		<path refid="common.test.classpath" />
-		<path refid="orgs.jar" />
-		<path refid="orgs.test.jar" />
+		<!--<path refid="orgs.jar" />-->
+		<!--<path refid="orgs.test.jar" />-->
 		<path refid="orgs.production.classpath" />
 	</path>
 

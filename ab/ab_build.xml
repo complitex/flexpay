@@ -25,13 +25,12 @@
 	<path id="ab.production.classpath">
 		<path refid="common.production.classpath" />
 		<path refid="ab.lib" />
-		<path refid="common.jar" />
 	</path>
 
 	<path id="ab.test.classpath">
 		<path refid="common.test.classpath" />
-		<path refid="ab.jar" />
-		<path refid="ab.test.jar" />
+		<!--<path refid="ab.jar" />-->
+		<!--<path refid="ab.test.jar" />-->
 		<path refid="ab.production.classpath" />
 	</path>
 

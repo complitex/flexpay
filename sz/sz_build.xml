@@ -27,21 +27,16 @@
 	<path id="sz.production.classpath">
 		<path refid="eirc.production.classpath" />
 		<path refid="sz.lib" />
-		<path refid="eirc.jar" />
 	</path>
 
 	<path id="sz.test.classpath">
 		<path refid="eirc.test.classpath" />
-		<path refid="sz.jar" />
-		<path refid="sz.test.jar" />
 		<path refid="sz.production.classpath" />
 	</path>
 
     <path id="sz.runtests.classpath">
         <path refid="eirc.runtests.classpath" />
         <path refid="sz.test.classpath" />
-        <path location="${build.dir}/web" />
-        <path location="sz/src" />
 		<path location="${sz.dir}/tests/data" />
     </path>
 

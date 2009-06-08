@@ -1,5 +1,6 @@
 package org.flexpay.ab.actions.buildings;
 
+import org.flexpay.ab.persistence.Building;
 import org.flexpay.ab.persistence.BuildingAddress;
 import org.flexpay.ab.service.BuildingService;
 import org.flexpay.common.actions.FPActionSupport;
@@ -18,14 +19,30 @@ public class BuildingDeleteAction extends FPActionSupport {
 	private BuildingService buildingService;
 
 	@NotNull
-	public String doExecute() {
+	public String doExecute() throws Exception {
+
+		boolean wasDeleted = false;
 		for (Long id : objectIds) {
-			BuildingAddress buildingAddress = buildingService.readFull(new Stub<BuildingAddress>(id));
-			if (buildingAddress == null) {
+			Stub<BuildingAddress> addressStub = new Stub<BuildingAddress>(id);
+			Building building = buildingService.findBuilding(addressStub);
+			if (building == null) {
 				continue;
 			}
-			buildingAddress.setStatus(BuildingAddress.STATUS_DISABLED);
-			buildingService.update(buildingAddress);
+			BuildingAddress address = building.getAddress(addressStub);
+			if (address == null) {
+				continue;
+			}
+
+			address.setStatus(BuildingAddress.STATUS_DISABLED);
+			buildingService.update(building);
+			log.debug("Disabling address {}", address);
+			wasDeleted = true;
+		}
+
+		if (wasDeleted) {
+			addActionError(getText("ab.building.address_deleted"));
+		} else {
+			addActionError(getText("ab.building.no_address_deleted"));
 		}
 
 		return redirectBuildingsId == null ? REDIRECT_SUCCESS : REDIRECT_INPUT;

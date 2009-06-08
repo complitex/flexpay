@@ -1491,8 +1491,21 @@ INSERT INTO ab_town_types_temporal_tbl (town_id, town_type_id, begin_date, end_d
 	VALUES (@town_ufa_id, @town_type_town_id, '1900-01-01', '2100-12-31', '2008-01-17', '2100-12-31');
 
 -- Init Districts
-INSERT INTO ab_districts_tbl (status, town_id) VALUES (0, @town_novosibirsk_id);
-SELECT @district_id_nsk_zaelcovskiy:=last_insert_id();
+INSERT INTO ab_districts_tbl (id, status, town_id) VALUES (1, 0, @town_novosibirsk_id);
+SELECT @district_id_nsk_sovetskiy:=1;
+INSERT INTO ab_district_names_tbl (district_id) VALUES (@district_id_nsk_sovetskiy);
+SELECT @district_name_id:=last_insert_id();
+INSERT INTO ab_district_name_translations_tbl (name, district_name_id, language_id)
+	VALUES ('Советский', @district_name_id, @ru_id);
+INSERT INTO ab_district_names_temporal_tbl (district_id, district_name_id, begin_date, end_date, create_date, invalid_date)
+	VALUES (@district_id_nsk_sovetskiy, @district_name_id, '1900-01-01', '2100-12-31', '2008-01-17', '2100-12-31');
+
+-- add master correction for the first district
+insert into common_data_corrections_tbl (internal_object_id, object_type, external_object_id, data_source_description_id)
+	values (@district_id_nsk_sovetskiy, 0x1000 + 0x05, concat('COMMON_INSTANCE-', @district_id_nsk_sovetskiy), @source_description_master_index);
+
+INSERT INTO ab_districts_tbl (id, status, town_id) VALUES (2, 0, @town_novosibirsk_id);
+SELECT @district_id_nsk_zaelcovskiy:=2;
 INSERT INTO ab_district_names_tbl (district_id) VALUES (@district_id_nsk_zaelcovskiy);
 SELECT @district_name_id:=last_insert_id();
 INSERT INTO ab_district_name_translations_tbl (name, district_name_id, language_id)
@@ -1500,8 +1513,8 @@ INSERT INTO ab_district_name_translations_tbl (name, district_name_id, language_
 INSERT INTO ab_district_names_temporal_tbl (district_id, district_name_id, begin_date, end_date, create_date, invalid_date)
 	VALUES (@district_id_nsk_zaelcovskiy, @district_name_id, '1900-01-01', '2100-12-31', '2008-01-17', '2100-12-31');
 
-INSERT INTO ab_districts_tbl (status, town_id) VALUES (0, @town_novosibirsk_id);
-SELECT @district_id:=last_insert_id();
+INSERT INTO ab_districts_tbl (id, status, town_id) VALUES (3, 0, @town_novosibirsk_id);
+SELECT @district_id:=3;
 INSERT INTO ab_district_names_tbl (district_id) VALUES (@district_id);
 SELECT @district_name_id:=last_insert_id();
 INSERT INTO ab_district_name_translations_tbl (name, district_name_id, language_id)
@@ -1509,8 +1522,8 @@ INSERT INTO ab_district_name_translations_tbl (name, district_name_id, language_
 INSERT INTO ab_district_names_temporal_tbl (district_id, district_name_id, begin_date, end_date, create_date, invalid_date)
 	VALUES (@district_id, @district_name_id, '1900-01-01', '2100-12-31', '2008-01-17', '2100-12-31');
 
-INSERT INTO ab_districts_tbl (status, town_id) VALUES (0, @town_novosibirsk_id);
-SELECT @district_id:=last_insert_id();
+INSERT INTO ab_districts_tbl (id, status, town_id) VALUES (4, 0, @town_novosibirsk_id);
+SELECT @district_id:=4;
 INSERT INTO ab_district_names_tbl (district_id) VALUES (@district_id);
 SELECT @district_name_id:=last_insert_id();
 INSERT INTO ab_district_name_translations_tbl (name, district_name_id, language_id)
@@ -1562,15 +1575,6 @@ INSERT INTO ab_district_name_translations_tbl (name, district_name_id, language_
 	VALUES ('Первомайский', @district_name_id, @ru_id);
 INSERT INTO ab_district_names_temporal_tbl (district_id, district_name_id, begin_date, end_date, create_date, invalid_date)
 	VALUES (@district_id, @district_name_id, '1900-01-01', '2100-12-31', '2008-01-17', '2100-12-31');
-
-INSERT INTO ab_districts_tbl (status, town_id) VALUES (0, @town_novosibirsk_id);
-SELECT @district_id_nsk_sovetskiy:=last_insert_id();
-INSERT INTO ab_district_names_tbl (district_id) VALUES (@district_id_nsk_sovetskiy);
-SELECT @district_name_id:=last_insert_id();
-INSERT INTO ab_district_name_translations_tbl (name, district_name_id, language_id)
-	VALUES ('Советский', @district_name_id, @ru_id);
-INSERT INTO ab_district_names_temporal_tbl (district_id, district_name_id, begin_date, end_date, create_date, invalid_date)
-	VALUES (@district_id_nsk_sovetskiy, @district_name_id, '1900-01-01', '2100-12-31', '2008-01-17', '2100-12-31');
 
 INSERT INTO ab_districts_tbl (status, town_id) VALUES (0, @town_novosibirsk_id);
 SELECT @district_id_nsk_centralniy:=last_insert_id();
@@ -1645,8 +1649,8 @@ INSERT INTO ab_district_names_temporal_tbl (district_id, district_name_id, begin
 	VALUES (@district_id, @district_name_id, '1900-01-01', '2100-12-31', '2008-01-17', '2100-12-31');
 
 -- Init Streets
-INSERT INTO ab_streets_tbl (status, town_id) values (0, @town_novosibirsk_id);
-SELECT @street_id_demakova:=last_insert_id();
+INSERT INTO ab_streets_tbl (id, status, town_id) values (1, 0, @town_novosibirsk_id);
+SELECT @street_id_demakova:=1;
 INSERT INTO ab_street_names_tbl (street_id) VALUES (@street_id_demakova);
 SELECT @street_name_id:=last_insert_id();
 INSERT INTO ab_street_name_translations_tbl (name, street_name_id, language_id)
@@ -1657,8 +1661,8 @@ INSERT INTO ab_street_types_temporal_tbl (street_id, street_type_id, begin_date,
 	VALUES (@street_id_demakova, @street_type_street, '1900-01-01', '2100-12-31', '2008-01-17', '2100-12-31');
 INSERT INTO ab_streets_districts_tbl (street_id, district_id) VALUES (@street_id_demakova, @district_id_nsk_sovetskiy);
 
-INSERT INTO ab_streets_tbl (status, town_id) values (0, @town_novosibirsk_id);
-SELECT @street_id_ivanova:=last_insert_id();
+INSERT INTO ab_streets_tbl (id, status, town_id) values (2, 0, @town_novosibirsk_id);
+SELECT @street_id_ivanova:=2;
 INSERT INTO ab_street_names_tbl (street_id) VALUES (@street_id_ivanova);
 SELECT @street_name_id:=last_insert_id();
 INSERT INTO ab_street_name_translations_tbl (name, street_name_id, language_id)
@@ -1669,8 +1673,8 @@ INSERT INTO ab_street_types_temporal_tbl (street_id, street_type_id, begin_date,
 	VALUES (@street_id_ivanova, @street_type_street, '1900-01-01', '2100-12-31', '2008-01-17', '2100-12-31');
 INSERT INTO ab_streets_districts_tbl (street_id, district_id) VALUES (@street_id_ivanova, @district_id_nsk_sovetskiy);
 
-INSERT INTO ab_streets_tbl (status, town_id) values (0, @town_novosibirsk_id);
-SELECT @street_id_rossiiskaya:=last_insert_id();
+INSERT INTO ab_streets_tbl (id, status, town_id) values (3, 0, @town_novosibirsk_id);
+SELECT @street_id_rossiiskaya:=3;
 INSERT INTO ab_street_names_tbl (street_id) VALUES (@street_id_rossiiskaya);
 SELECT @street_name_id:=last_insert_id();
 INSERT INTO ab_street_name_translations_tbl (name, street_name_id, language_id)
@@ -1681,8 +1685,8 @@ INSERT INTO ab_street_types_temporal_tbl (street_id, street_type_id, begin_date,
 	VALUES (@street_id_rossiiskaya, @street_type_street, '1900-01-01', '2100-12-31', '2008-01-17', '2100-12-31');
 INSERT INTO ab_streets_districts_tbl (street_id, district_id) VALUES (@street_id_rossiiskaya, @district_id_nsk_sovetskiy);
 
-INSERT INTO ab_streets_tbl (status, town_id) values (0, @town_novosibirsk_id);
-SELECT @street_id_krasniy:=last_insert_id();
+INSERT INTO ab_streets_tbl (id, status, town_id) values (4, 0, @town_novosibirsk_id);
+SELECT @street_id_krasniy:=4;
 INSERT INTO ab_street_names_tbl (street_id) VALUES (@street_id_krasniy);
 SELECT @street_name_id:=last_insert_id();
 INSERT INTO ab_street_name_translations_tbl (name, street_name_id, language_id)
@@ -1693,6 +1697,16 @@ INSERT INTO ab_street_types_temporal_tbl (street_id, street_type_id, begin_date,
 	VALUES (@street_id_krasniy, @street_type_street, '1900-01-01', '2100-12-31', '2008-01-17', '2100-12-31');
 INSERT INTO ab_streets_districts_tbl (street_id, district_id) VALUES (@street_id_krasniy, @district_id_nsk_centralniy);
 INSERT INTO ab_streets_districts_tbl (street_id, district_id) VALUES (@street_id_krasniy, @district_id_nsk_zaelcovskiy);
+
+-- add master correction for the streets
+insert into common_data_corrections_tbl (internal_object_id, object_type, external_object_id, data_source_description_id)
+	values (@street_id_demakova, 0x1000 + 0x06, concat('COMMON_INSTANCE-', @street_id_demakova), @source_description_master_index);
+insert into common_data_corrections_tbl (internal_object_id, object_type, external_object_id, data_source_description_id)
+	values (@street_id_ivanova, 0x1000 + 0x06, concat('COMMON_INSTANCE-', @street_id_ivanova), @source_description_master_index);
+insert into common_data_corrections_tbl (internal_object_id, object_type, external_object_id, data_source_description_id)
+	values (@street_id_rossiiskaya, 0x1000 + 0x06, concat('COMMON_INSTANCE-', @street_id_rossiiskaya), @source_description_master_index);
+insert into common_data_corrections_tbl (internal_object_id, object_type, external_object_id, data_source_description_id)
+	values (@street_id_krasniy, 0x1000 + 0x06, concat('COMMON_INSTANCE-', @street_id_krasniy), @source_description_master_index);
 
 -- Init Persons
 INSERT INTO ab_persons_tbl (id, status) VALUES (1, 0);
@@ -1757,6 +1771,16 @@ INSERT INTO ab_building_address_attribute_type_translations_tbl (name, short_nam
 INSERT INTO ab_building_address_attribute_type_translations_tbl (name, short_name, attribute_type_id, language_id)
 	VALUES ('Part', 'p', @attr_type_part_id, @en_id);
 
+-- add master correction for the address attribute types
+insert into common_data_corrections_tbl (internal_object_id, object_type, external_object_id, data_source_description_id)
+	values (@attr_type_home_number_id, 0x1000 + 0x0B, concat('COMMON_INSTANCE-', @attr_type_home_number_id), @source_description_master_index);
+insert into common_data_corrections_tbl (internal_object_id, object_type, external_object_id, data_source_description_id)
+	values (@attr_type_bulk_id, 0x1000 + 0x0B, concat('COMMON_INSTANCE-', @attr_type_bulk_id), @source_description_master_index);
+insert into common_data_corrections_tbl (internal_object_id, object_type, external_object_id, data_source_description_id)
+	values (@attr_type_part_id, 0x1000 + 0x0B, concat('COMMON_INSTANCE-', @attr_type_part_id), @source_description_master_index);
+
+
+
 -- Init Buildings
 INSERT INTO ab_buildings_tbl (id, status, building_type, district_id) VALUES (1, 0, 'ab', @district_id_nsk_sovetskiy);
 SELECT @building_ivanova_27_id:=1;
@@ -1770,13 +1794,23 @@ INSERT INTO ab_building_address_attributes_tbl (value, status, attribute_type_id
 insert into common_data_corrections_tbl (internal_object_id, object_type, external_object_id, data_source_description_id)
 	values (@building_ivanova_27_id, 0x1000 + 0x0A, concat('COMMON_INSTANCE-', @building_ivanova_27_id), @source_description_master_index);
 
-INSERT INTO ab_buildings_tbl (status, building_type, district_id) VALUES (0, 'ab', @district_id_nsk_sovetskiy);
-SELECT @building_id:=last_insert_id();
-INSERT INTO ab_building_addresses_tbl (status, primary_status, street_id, building_id)
-	VALUES (0, b'1', @street_id_ivanova, @building_id);
-SELECT @buildings_id:=last_insert_id();
+INSERT INTO ab_buildings_tbl (id, status, building_type, district_id) VALUES (2, 0, 'ab', @district_id_nsk_sovetskiy);
+SELECT @building_id:=2;
+INSERT INTO ab_building_addresses_tbl (id, status, primary_status, street_id, building_id)
+	VALUES (2, 0, b'1', @street_id_ivanova, @building_id);
+SELECT @buildings_id:=2;
 INSERT INTO ab_building_address_attributes_tbl (value, status, attribute_type_id, buildings_id)
 	VALUES ('2', 0, @attr_type_home_number_id, @buildings_id);
+INSERT INTO ab_building_addresses_tbl (id, status, primary_status, street_id, building_id)
+	VALUES (3, 0, b'0', @street_id_demakova, @building_id);
+SELECT @buildings_id:=3;
+INSERT INTO ab_building_address_attributes_tbl (value, status, attribute_type_id, buildings_id)
+	VALUES ('220D', 0, @attr_type_home_number_id, @buildings_id);
+INSERT INTO ab_building_addresses_tbl (id, status, primary_status, street_id, building_id)
+	VALUES (4, 0, b'0', @street_id_rossiiskaya, @building_id);
+SELECT @buildings_id:=4;
+INSERT INTO ab_building_address_attributes_tbl (value, status, attribute_type_id, buildings_id)
+	VALUES ('220R', 0, @attr_type_home_number_id, @buildings_id);
 
 INSERT INTO ab_buildings_tbl (status, building_type,  district_id) VALUES (0, 'ab', @district_id_nsk_sovetskiy);
 SELECT @building_id:=last_insert_id();

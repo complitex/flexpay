@@ -2,6 +2,7 @@ package org.flexpay.eirc.actions;
 
 import com.opensymphony.xwork2.ActionSupport;
 import org.flexpay.ab.persistence.BuildingAddress;
+import org.flexpay.ab.persistence.Building;
 import org.flexpay.ab.service.BuildingService;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
@@ -23,7 +24,7 @@ public class BuildingAjaxAction {
 	}
 
 	List<BuildingAddress> getBuildingListByStreetId(Long streetId) {
-		Page<?> pager = new Page(200, 1);
+		Page<BuildingAddress> pager = new Page<BuildingAddress>(200, 1);
 		List<BuildingAddress> buildingses = null;
 		while (true) {
 			if (buildingses == null) {

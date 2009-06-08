@@ -25,21 +25,16 @@
 	<path id="bti.production.classpath">
 		<path refid="ab.production.classpath" />
 		<path refid="bti.lib" />
-		<path refid="ab.jar" />
 	</path>
 
 	<path id="bti.test.classpath">
 		<path refid="ab.test.classpath" />
-		<path refid="bti.jar" />
-		<path refid="bti.test.jar" />
 		<path refid="bti.production.classpath" />
 	</path>
 
     <path id="bti.runtests.classpath">
         <path refid="ab.runtests.classpath" />
         <path refid="bti.test.classpath" />
-        <path location="${build.dir}/web" />
-        <path location="bti/src" />
         <path location="bti/tests/data" />
     </path>
 

@@ -32,8 +32,6 @@
 	<path id="eirc.test.classpath">
 		<path refid="bti.test.classpath" />
 		<path refid="payments.test.classpath" />
-		<path refid="eirc.jar" />
-		<path refid="eirc.test.jar" />
 		<path refid="eirc.production.classpath" />
 	</path>
 
@@ -41,8 +39,6 @@
         <path refid="bti.runtests.classpath" />
         <path refid="payments.runtests.classpath" />
         <path refid="eirc.test.classpath" />
-        <path location="${build.dir}/web" />
-        <path location="eirc/src" />
         <path location="${eirc.dir}/tests/data" />
     </path>
 
