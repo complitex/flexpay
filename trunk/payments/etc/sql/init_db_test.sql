@@ -223,3 +223,41 @@ INSERT INTO payments_documents_tbl (version, operation_id, address, payer_fio, t
 				@service_50, 220.00, '123123123', '09012345067', @organization_zhko, @organization_tszh,
 				null, null);
 SELECT @document_5:=last_insert_id();
+
+-- init cashboxes
+
+insert into payments_cashboxes_tbl (status, version, payment_point_id)
+	values (0, 0, @payment_point_1);
+select @cashbox_1_1:=last_insert_id();
+insert into payments_cashbox_name_translations_tbl (version, language_id, cashbox_id, name)
+	values (0, @ru_id, @cashbox_1_1, 'Тестовая касса1_1');
+
+insert into payments_cashboxes_tbl (status, version, payment_point_id)
+	values (0, 0, @payment_point_1);
+select @cashbox_1_2:=last_insert_id();
+insert into payments_cashbox_name_translations_tbl (version, language_id, cashbox_id, name)
+	values (0, @ru_id, @cashbox_1_2, 'Тестовая касса1_2');
+
+insert into payments_cashboxes_tbl (status, version, payment_point_id)
+	values (0, 0, @payment_point_2);
+select @cashbox_2_1:=last_insert_id();
+insert into payments_cashbox_name_translations_tbl (version, language_id, cashbox_id, name)
+	values (0, @ru_id, @cashbox_2_1, 'Тестовая касса2_1');
+
+insert into payments_cashboxes_tbl (status, version, payment_point_id)
+	values (0, 0, @payment_point_3);
+select @cashbox_3_1:=last_insert_id();
+insert into payments_cashbox_name_translations_tbl (version, language_id, cashbox_id, name)
+	values (0, @ru_id, @cashbox_3_1, 'Тестовая касса3_1');
+
+insert into payments_cashboxes_tbl (status, version, payment_point_id)
+	values (0, 0, @payment_point_3);
+select @cashbox_3_2:=last_insert_id();
+insert into payments_cashbox_name_translations_tbl (version, language_id, cashbox_id, name)
+	values (0, @ru_id, @cashbox_3_2, 'Тестовая касса3_2');
+
+insert into payments_cashboxes_tbl (status, version, payment_point_id)
+	values (0, 0, @payment_point_3);
+select @cashbox_3_2:=last_insert_id();
+insert into payments_cashbox_name_translations_tbl (version, language_id, cashbox_id, name)
+	values (0, @ru_id, @cashbox_3_2, 'Тестовая касса3_3');
