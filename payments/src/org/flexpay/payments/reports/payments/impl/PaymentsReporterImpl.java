@@ -11,6 +11,7 @@ import org.flexpay.orgs.persistence.PaymentPoint;
 import org.flexpay.orgs.persistence.ServiceProvider;
 import org.flexpay.orgs.service.OrganizationService;
 import org.flexpay.orgs.service.ServiceProviderService;
+import org.flexpay.orgs.service.PaymentPointService;
 import org.flexpay.payments.persistence.*;
 import org.flexpay.payments.reports.payments.PaymentPrintForm;
 import org.flexpay.payments.reports.payments.PaymentReportData;
@@ -40,6 +41,7 @@ public class PaymentsReporterImpl implements PaymentsReporter {
 	private PaymentsStatisticsService paymentsStatisticsService;
 	private DocumentService documentService;
 	private OrganizationService organizationService;
+	private PaymentPointService paymentPointService;
 	private SPService spService;
 	private ServiceProviderService serviceProviderService;
 	private ServiceTypeService serviceTypeService;
@@ -97,11 +99,15 @@ public class PaymentsReporterImpl implements PaymentsReporter {
 											   op.getCreatorOrganizationStub());
 		}
 
+		PaymentPoint paymentPoint = paymentPointService.read(op.getPaymentPointStub());
+
 		PaymentPrintForm form = new PaymentPrintForm();
 		form.setQuittanceNumber(String.valueOf(op.getId()));
 		form.setOperationDate(op.getCreationDate());
 		form.setOrganizationName(org.getName());
 		form.setPaymentPointStub(op.getPaymentPointStub());
+		form.setPayerFIO(op.getPayerFIO());
+		form.setPaymentPointAddress(paymentPoint.getAddress());
 
 		// todo: fixme
 		form.setCashierFIO("Коваль А.Н.");
@@ -300,5 +306,10 @@ public class PaymentsReporterImpl implements PaymentsReporter {
 	@Required
 	public void setDocumentService(DocumentService documentService) {
 		this.documentService = documentService;
+	}
+
+	@Required
+	public void setPaymentPointService(PaymentPointService paymentPointService) {
+		this.paymentPointService = paymentPointService;
 	}
 }

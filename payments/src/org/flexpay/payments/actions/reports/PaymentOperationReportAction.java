@@ -21,6 +21,8 @@ import java.util.Map;
 
 public class PaymentOperationReportAction extends CashboxCookieActionSupport {
 
+	private static final String REPORT_BASE_NAME = "DoubleQuittancePayment";
+
 	private ReportUtil reportUtil;
 	private PaymentsReporter paymentsReporter;
 
@@ -46,17 +48,19 @@ public class PaymentOperationReportAction extends CashboxCookieActionSupport {
 		PaymentPrintForm form = paymentsReporter.getPaymentPrintFormData(Stub.stub(operation));
 		Map<?, ?> params = map(
 				ar("operationDate", "organizationName", "quittanceNumber",
-						"cashierFIO", "total", "totalSpelling",
-						"inputSumm", "changeSumm"),
+						"cashierFIO", "payerFIO", "total", "totalSpelling",
+						"inputSumm", "changeSumm", "paymentPointAddress", "detailses"),
 				ar(form.getOperationDate(), form.getOrganizationName(), form.getQuittanceNumber(),
-						form.getCashierFIO(), form.getTotal(), form.getTotalSpelling(),
-						form.getInputSumm(), form.getChangeSumm()));
+						form.getCashierFIO(), form.getPayerFIO(), form.getTotal(), form.getTotalSpelling(),
+						form.getInputSumm(), form.getChangeSumm(), form.getPaymentPointAddress(), form.getDetailses()));
 
 		JRDataSource dataSource = new JRBeanCollectionDataSource(form.getDetailses());
 
-		String reportName = getReportName(form);
+		String paymentPointSuffix = getPaymentPointSuffix(form);
+		String reportName = REPORT_BASE_NAME + paymentPointSuffix;
+
 		if (!reportUtil.templateUploaded(reportName)) {
-			uploadReport(reportName);
+			uploadReportTemplates(paymentPointSuffix);
 		}
 
 		report = reportUtil.exportToPdf(reportName, params, dataSource);
@@ -64,18 +68,24 @@ public class PaymentOperationReportAction extends CashboxCookieActionSupport {
 		return FILE;
 	}
 
-	private String getReportName(PaymentPrintForm form) {
-		String base = "QuittancePayment";
-		String perPointQuittance = base + "_" + form.getPaymentPointStub().getId();
+	private String getPaymentPointSuffix(PaymentPrintForm form) {
+		
+		String perPointQuittance = REPORT_BASE_NAME + "_" + form.getPaymentPointStub().getId();
 		String resName = "WEB-INF/payments/reports/" + perPointQuittance + ReportUtil.EXTENSION_TEMPLATE;
 		if (ApplicationConfig.isResourceAvailable(resName)) {
-			return perPointQuittance;
+			return "_" + form.getPaymentPointStub().getId();
 		}
 
-		return base;
+		return "";
 	}
 
-	private void uploadReport(String reportName) throws Exception {
+	private void uploadReportTemplates(String paymentPointSuffix) throws Exception {
+
+		uploadReportTemplate("DoubleQuittancePayment" + paymentPointSuffix);
+		uploadReportTemplate("QuittancePayment" + paymentPointSuffix);
+	}
+
+	private void uploadReportTemplate(String reportName) throws Exception {
 
 		InputStream is = null;
 		try {

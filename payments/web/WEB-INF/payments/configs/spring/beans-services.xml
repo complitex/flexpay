@@ -74,6 +74,7 @@
 	<bean id="paymentsReporter"
 		  class="org.flexpay.payments.reports.payments.impl.PaymentsReporterImpl"
 		  p:organizationService-ref="organizationService"
+		  p:paymentPointService-ref="paymentPointService"
 		  p:documentService-ref="documentService"
 		  p:spService-ref="spService"
 		  p:serviceProviderService-ref="serviceProviderService"
