@@ -138,4 +138,9 @@
 		</property>
 	</bean>
 
+    <bean name="fooProcessManager" class="org.flexpay.common.process.FooProcessManagerImpl"
+          destroy-method="stop" init-method="start" factory-method="getInstance" autowire-candidate="false"
+          p:jbpmConfiguration-ref="jbpmConfiguration"
+          p:rescanFrequency="${process_manager.rescanFrequency}"
+          p:taskRepeatLimit="${process_manager.startTaskLimit}" />
 </beans>
