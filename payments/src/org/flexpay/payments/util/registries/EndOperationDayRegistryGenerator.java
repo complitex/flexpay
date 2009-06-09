@@ -29,8 +29,6 @@ public class EndOperationDayRegistryGenerator {
 
 	protected Logger log = LoggerFactory.getLogger(getClass());
 
-	private PaymentPointService paymentPointService;
-	private OrganizationService organizationService;
 	private DocumentService documentService;
 	private OperationService operationService;
 	private RegistryRecordService registryRecordService;
@@ -42,23 +40,10 @@ public class EndOperationDayRegistryGenerator {
 	private PropertiesFactory propertiesFactory;
 
 	@Transactional(propagation = Propagation.NOT_SUPPORTED, readOnly = false)
-	public Registry generate(@NotNull Stub<PaymentPoint> pointStub, @NotNull Stub<Organization> orgStub,
+	public Registry generate(@NotNull PaymentPoint paymentPoint, @NotNull Organization organization,
 							 @NotNull Date beginDate, @NotNull Date endDate) throws FlexPayException {
 
 		log.info("Start generating end operation day registry...");
-
-		PaymentPoint paymentPoint = paymentPointService.read(pointStub);
-		if (paymentPoint == null) {
-			log.error("Payment point with id - {} does not exist", pointStub.getId());
-			return null;
-		}
-		log.debug("Found paymentPoint - {}", paymentPoint);
-		Organization organization = organizationService.readFull(orgStub);
-		if (organization == null) {
-			log.error("Organization with id - {} does not exist", orgStub.getId());
-			return null;
-		}
-		log.debug("Found organization - {}", organization);
 
 		List<Operation> operations = operationService.listPaymentOperations(beginDate, endDate);
 		log.debug("Found {} operations", operations.size());
@@ -147,16 +132,6 @@ public class EndOperationDayRegistryGenerator {
 
 		return registry;
 
-	}
-
-	@Required
-	public void setPaymentPointService(PaymentPointService paymentPointService) {
-		this.paymentPointService = paymentPointService;
-	}
-
-	@Required
-	public void setOrganizationService(OrganizationService organizationService) {
-		this.organizationService = organizationService;
 	}
 
 	@Required
