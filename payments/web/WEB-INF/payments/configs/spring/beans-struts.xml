@@ -62,6 +62,7 @@
 		  p:crumbNameKey="payments.crumbs.payment_points_list"
           p:processManager-ref="processManagerPayments"
           p:paymentsStatisticsService-ref="paymentsStatisticsService"
+          p:paymentPointService-ref="paymentPointService"
 		  scope="prototype" />
 
     <bean id="paymentPointDetailMonitorAction"

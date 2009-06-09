@@ -10,6 +10,7 @@ import org.flexpay.common.process.sorter.ProcessSorterByName;
 import org.flexpay.common.process.sorter.ProcessSorterByStartDate;
 import org.flexpay.common.process.sorter.ProcessSorterByState;
 import org.flexpay.orgs.persistence.PaymentPoint;
+import org.flexpay.orgs.service.PaymentPointService;
 import org.flexpay.payments.actions.CashboxCookieWithPagerActionSupport;
 import org.flexpay.payments.actions.monitor.data.PaymentPointMonitorContainer;
 import org.flexpay.payments.persistence.OperationType;
@@ -21,11 +22,15 @@ import org.springframework.beans.factory.annotation.Required;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Date;
+import java.text.SimpleDateFormat;
 
 public class PaymentPointsListMonitorAction extends CashboxCookieWithPagerActionSupport<PaymentPointMonitorContainer> {
     private static final String PROCESS_DEFINITION_NAME = "TradingDay";
 
     private static final String PROCESS_PARAM_PAYMENT_POINT = "PAYMENT_POINT";
+
+    private static final SimpleDateFormat formatTimeUpdated = new SimpleDateFormat("HH:mm");
 
     // sorters
 	private static final ProcessSorterByName processSorterByName = new ProcessSorterByName();
@@ -42,6 +47,7 @@ public class PaymentPointsListMonitorAction extends CashboxCookieWithPagerAction
 
     private ProcessManager processManager;
     private PaymentsStatisticsService paymentsStatisticsService;
+    private PaymentPointService paymentPointService;
 
     /**
 	 * {@inheritDoc}
@@ -56,12 +62,17 @@ public class PaymentPointsListMonitorAction extends CashboxCookieWithPagerAction
 
         paymentPoints = new ArrayList<PaymentPointMonitorContainer>();
         for (Process process : processes) {
-            PaymentPoint paymentPont = (PaymentPoint) process.getParameters().get(PROCESS_PARAM_PAYMENT_POINT);
-            List<OperationTypeStatistics> statistics = paymentsStatisticsService.operationTypePaymentPointStatistics(Stub.stub(paymentPont), null, null);
+            Long pointId = (Long) process.getParameters().get("paymentPointId");
+		    PaymentPoint paymentPoint = paymentPointService.read(new Stub<PaymentPoint>(pointId));
+            if (paymentPoint == null) {
+                log.error("Payment point with id - {} does not exist", pointId);
+                return ERROR;
+            }
+            List<OperationTypeStatistics> statistics = paymentsStatisticsService.operationTypePaymentPointStatistics(Stub.stub(paymentPoint), null, null);
 
             PaymentPointMonitorContainer container = new PaymentPointMonitorContainer();
             container.setId(String.valueOf(process.getId()));
-            container.setName(paymentPont.getName());
+            container.setName(paymentPoint.getName());
             container.setPaymentsCount(String.valueOf(getPaymentsCount(statistics)));
             container.setTotalSum(String.valueOf(getPaymentsSumm(statistics)));
 
@@ -71,6 +82,11 @@ public class PaymentPointsListMonitorAction extends CashboxCookieWithPagerAction
 
             paymentPoints.add(container);
         }
+
+        getPager().setElements(paymentPoints);
+        getPager().setTotalElements(page.getTotalNumberOfElements());
+
+        updated = formatTimeUpdated.format(new Date());
         return SUCCESS;
     }
 
@@ -138,6 +154,11 @@ public class PaymentPointsListMonitorAction extends CashboxCookieWithPagerAction
     @Required
     public void setPaymentsStatisticsService(PaymentsStatisticsService paymentsStatisticsService) {
         this.paymentsStatisticsService = paymentsStatisticsService;
+    }
+
+    @Required
+    public void setPaymentPointService(PaymentPointService paymentPointService) {
+        this.paymentPointService = paymentPointService;
     }
 
     public long getPaymentsCount(List<OperationTypeStatistics> typeStatisticses) {
