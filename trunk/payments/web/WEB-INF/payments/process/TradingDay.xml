@@ -5,15 +5,18 @@
      xsi:schemaLocation="urn:jbpm.org:jpdl-3.2 http://docs.jboss.org/jbpm/xsd/jpdl-3.2.xsd">
 
     <swimlane name="Accounter">
-        <assignment actor-id="accounter"></assignment>
+        <assignment class="org.flexpay.payments.process.handlers.AccounterAssignmentHandler"/>
     </swimlane>
 
-
+<!--
     <swimlane name="PaymentCollector">
-        <assignment actor-id="generalPaymentCollector"></assignment>
+        <assignment actor-id="generalPaymentCollector"/>
     </swimlane>
+-->
 
-    <swimlane name="JobManager"></swimlane>
+    <swimlane name="JobManager">
+        <assignment class="org.flexpay.common.process.JobManagerAssignmentHandler"/>
+    </swimlane>
 
     <start-state name="Start">
         <description>
@@ -34,12 +37,33 @@
                 </expression>
             </script>
         </event>
-        <task name="CloseTradingDay" swimlane="Accounter"/>
-        <transition to="GenerateReginstry" name="tradingDay.mark_for_closing"></transition>
+        <task name="CloseTradingDay" swimlane="Accounter">
+            <timer duedate="10 seconds" transition="generateEndOperationDayRegistryJob">
+                <script>
+                    <variable mapped-name="autoMode" access="write" name="AUTO_MODE"/>
+                    <expression>
+                        autoMode = "true";
+                    </expression>
+                </script>
+            </timer>
+        </task>
+        <!--
+        <task name="CloseTradingDay" swimlane="PaymentCollector">
+            <timer duedate="10 business seconds" transition="generateEndOperationDayRegistryJob">
+                <script>
+                    <variable mapped-name="autoMode" access="write" name="AUTO_MODE"/>
+                    <expression>
+                        autoMode = "true";
+                    </expression>
+                </script>
+            </timer>
+        </task>
+        -->
+        <transition to="generateEndOperationDayRegistryJob" name="tradingDay.mark_for_closing"/>
     </task-node>
 
 
-    <task-node name="GenerateReginstry">
+    <task-node name="generateEndOperationDayRegistryJob">
         <description>
             генерация реестра типа 12
         </description>
@@ -51,15 +75,16 @@
                 </expression>
             </script>
         </event>
-        <task name="GenerateRegistryType12" swimlane="JobManager"/>
-        <transition to="emailRegistryFile" name="next"/>
+        <task swimlane="JobManager"/>
+        <transition to="sendRegistryJob" name="next"/>
     </task-node>
 
 
-    <task-node name="emailRegistryFile">
+    <task-node name="sendRegistryJob">
         <description>
             отправляем на указанный в ППП емейл с вложенным файлом сформированного реестра
         </description>
+        <task swimlane="JobManager" blocking="yes" />
         <transition to="WaitForApprove" name="next"/>
     </task-node>
 
@@ -84,7 +109,8 @@
                 </expression>
             </script>
         </event>
-        <task name="Aproove" swimlane="PaymentCollector"/>
+        <timer duedate="1 business day" transition="end-state"/>
+        <task name="Aproove" swimlane="Accounter"/>
         <transition to="MarkPaymentPointForClosing" name="tradingDay.close_denied"/>
         <transition to="end-state" name="tradingDay.close_approved"/>
     </task-node>

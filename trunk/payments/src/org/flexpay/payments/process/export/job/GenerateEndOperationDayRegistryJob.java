@@ -52,6 +52,8 @@ public class GenerateEndOperationDayRegistryJob extends Job {
 		Registry registry = registryGenerator.generate(paymentPoint, organization, beginDate, endDate);
 
 		registry = exportBankPaymentsRegistry.export(registry);
+        parameters.put("File", registry.getSpFile());
+        parameters.put("Email", paymentPoint.getEmail());
 
 		log.info("End operation day registry and save it to file process finished...");
 
