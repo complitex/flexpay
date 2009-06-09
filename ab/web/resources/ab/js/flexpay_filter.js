@@ -13,20 +13,12 @@ function Filter(name, options) {
 
     options.name = name;
 
-    if (!options.filterId) {
-        options.filterId = options.name + "_filter";
-    }
-
-    if (!options.valueId) {
-        options.valueId = "selected_" + options.name + "_id";
-    }
-
     options = $.extend({
         action: "",
-        filterId: "",
-        valueId: "",
+        filterId: name + "_filter",
+        valueId: "selected_" + name + "_id",
         isArray: false,
-        display: {readonly:false,justText:false},
+        display: "input",
         extraParams: {},
         resultAction: null,
         resultId: "result",
@@ -40,12 +32,12 @@ function Filter(name, options) {
     this.name = options.name;
     this.action = options.action;
     this.isArray = options.isArray;
-    this.readonly = options.display.readonly;
-    this.justText = options.display.justText;
+    this.readonly = options.display == "input-readonly";
+    this.justText = options.display == "text";
     this.extraParams = options.extraParams;
     this.parents = [];
-    for (var ind in options.parents) {
-        this.parents[options.parents[ind]] = options.parents[ind];
+    for (var i in options.parents) {
+        this.parents[options.parents[i]] = options.parents[i];
     }
     this.parentsCount = options.parents.length;
     this.requiredParentsCount = 0;
@@ -179,30 +171,10 @@ var FF = {
         return false;
     },
 
-    onKeyDown : function(e, filterName) {
-
-        if ((window.event && window.event.keyCode == 13)
-                || e.keyCode == 13 || e.which == 13) {
-
-            if( e.stopPropagation ) { e.stopPropagation(); }
-
-//            this.filters[filterName].string.simulate("keypress", {keyCode: 9});
-
-/*
-            var filters = this.getFiltersByParentName(filterName);
-            if (this.setFocusByTabIndex(filters)) {
-                return;
-            }
-            filters[0].string.focus();
-*/
-        }
-    },
-
     createFilter : function (name, options) {
         var filter = new Filter(name, options);
         this.filters[name] = filter;
         filter.string.attr("onchange", "FF.onChange2('" + name + "');");
-//        filter.string.attr("onkeydown", "FF.onKeyDown(event, '" + name + "');");
         filter.string.attr("tabIndex", "1");
         this.filters.splice(this.filters.length - 1, 1);
         if (filter.preRequest) {
@@ -212,9 +184,6 @@ var FF = {
                     k++;
                 }
             }
-            console.log("filter.name = " + filter.name);
-            console.log("filter.requiredParentsCount = " + filter.requiredParentsCount);
-            console.log("filter.parentsCount = " + filter.parentsCount);
             if ((filter.haveRequiredParents && k < filter.requiredParentsCount) || (filter.parentsCount > 0 && !filter.haveRequiredParents)) {
                 filter.string.attr("readonly", true);
             }
