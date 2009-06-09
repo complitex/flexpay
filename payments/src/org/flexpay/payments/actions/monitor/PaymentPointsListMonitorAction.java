@@ -72,7 +72,7 @@ public class PaymentPointsListMonitorAction extends CashboxCookieWithPagerAction
 
             PaymentPointMonitorContainer container = new PaymentPointMonitorContainer();
             container.setId(String.valueOf(process.getId()));
-            container.setName(paymentPoint.getName());
+            container.setName(paymentPoint.getName(getLocale()));
             container.setPaymentsCount(String.valueOf(getPaymentsCount(statistics)));
             container.setTotalSum(String.valueOf(getPaymentsSumm(statistics)));
 

@@ -69,6 +69,9 @@
 		  class="org.flexpay.payments.actions.monitor.PaymentPointDetailMonitorAction"
 		  p:crumbNameKey="payments.crumbs.payment_point_detail"
           p:paymentPointService-ref="paymentPointService"
+          p:processManager-ref="processManager"
+          p:cashboxService-ref="cashboxService"
+          p:paymentsStatisticsService-ref="paymentsStatisticsService"
 		  scope="prototype" />
 
 	<!-- reports-related actions -->

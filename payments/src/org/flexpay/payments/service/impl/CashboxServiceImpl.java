@@ -7,6 +7,7 @@ import org.flexpay.payments.dao.CashboxDao;
 import org.flexpay.payments.persistence.Cashbox;
 import org.flexpay.payments.service.CashboxService;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -51,6 +52,10 @@ public class CashboxServiceImpl implements CashboxService {
 	public List<Cashbox> findObjects(Page<Cashbox> pager) {
 		return cashboxDao.findCashboxes(pager);
 	}
+
+    public List<Cashbox> findCashboxesForPaymentPoint(Long paymentPointId) {
+        return cashboxDao.findCashboxesForPaymentPoint(paymentPointId);
+    }
 
 	@Required
 	public void setCashboxDao(CashboxDao cashboxDao) {

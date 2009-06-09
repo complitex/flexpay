@@ -17,6 +17,13 @@
     <tr>
       <td nowrap="nowrap"><s:text name="payments.payment_point.detail.status"/>:<s:property value="status"/></td>
     </tr>
+    <tr>
+      <s:iterator value="buttons" id="button">
+        <td>
+          <input type="submit" name="activity" class="" value="<s:property value="button"/>"/>
+        </td>
+      </s:iterator>
+    </tr>
   </table>
   <table cellpadding="3" cellspacing="1" border="0" width="100%" class="cash_boxes_list">
     <tr>
@@ -27,21 +34,12 @@
       <td class="th"><s:text name="payments.payment_point.detail.cash_boxes.list.payments_count"/></td>
     </tr>
 
-    <s:iterator value="paymentPoints" id="paymentPointDetail">
+    <s:iterator value="cashboxes" id="paymentPointDetail">
       <td nowrap="nowrap"><s:property value="cashBox"/></td>
       <td nowrap="nowrap"><s:property value="sum"/></td>
       <td nowrap="nowrap"><s:property value="cashierFIO"/></td>
       <td nowrap="nowrap"><s:property value="lastPayment"/></td>
       <td nowrap="nowrap"><s:property value="paymentsCount"/></td>
     </s:iterator>
-  </table>
-  <table cellpadding="3" cellspacing="1" border="0" width="100%">
-    <tr>
-      <s:iterator value="buttons" id="paymentPointDetail">
-        <td>
-          <input type="submit" name="dayClosed" class="" value="<s:text name=""/>"/>
-        </td>
-      </s:iterator>
-    </tr>
   </table>
 </s:form>
