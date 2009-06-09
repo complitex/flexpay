@@ -10,6 +10,7 @@
         <property name="classes">
             <list>
                 <ref bean="typeRegistryAb"/>
+				<ref bean="typeRegistryOrgs" />
             </list>
         </property>
     </bean>

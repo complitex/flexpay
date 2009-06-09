@@ -4,6 +4,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.flexpay.common.persistence.DomainObjectWithStatus;
 import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.persistence.Language;
 import org.flexpay.common.util.TranslationUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -168,6 +169,42 @@ public class Organization extends DomainObjectWithStatus {
 
 	public void setPaymentsCollectors(Set<PaymentsCollector> paymentsCollectors) {
 		this.paymentsCollectors = paymentsCollectors;
+	}
+
+	/**
+	 * Get name translation in a specified language
+	 *
+	 * @param lang Language to get translation in
+	 * @return translation if found, or <code>null</code> otherwise
+	 */
+	@Nullable
+	public OrganizationName getNameTranslation(@NotNull Language lang) {
+
+		for (OrganizationName translation : getNames()) {
+			if (lang.equals(translation.getLang())) {
+				return translation;
+			}
+		}
+
+		return null;
+	}
+
+	/**
+	 * Get description translation in a specified language
+	 *
+	 * @param lang Language to get translation in
+	 * @return translation if found, or <code>null</code> otherwise
+	 */
+	@Nullable
+	public OrganizationDescription getDescriptionTranslation(@NotNull Language lang) {
+
+		for (OrganizationDescription translation : getDescriptions()) {
+			if (lang.equals(translation.getLang())) {
+				return translation;
+			}
+		}
+
+		return null;
 	}
 
 	@Override

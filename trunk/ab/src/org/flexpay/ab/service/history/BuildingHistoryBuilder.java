@@ -10,6 +10,7 @@ import org.flexpay.common.persistence.history.HistoryRecord;
 import org.flexpay.common.persistence.history.ProcessingStatus;
 import org.flexpay.common.persistence.history.impl.HistoryBuilderBase;
 import static org.flexpay.common.util.CollectionUtils.ar;
+import org.flexpay.common.util.EqualsHelper;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
@@ -58,7 +59,7 @@ public class BuildingHistoryBuilder extends HistoryBuilderBase<Building> {
 		Set<Street> streets = b1.getStreets();
 		streets.addAll(b2.getStreets());
 
-		log.debug("Streets to build diff on: {}", streets );
+		log.debug("Streets to build diff on: {}", streets);
 
 		for (Street street : streets) {
 			BuildingAddress addr1 = b1.getAddressOnStreet(street);

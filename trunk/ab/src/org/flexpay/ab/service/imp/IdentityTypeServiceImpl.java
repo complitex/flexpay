@@ -35,37 +35,6 @@ public class IdentityTypeServiceImpl implements IdentityTypeService {
 	private ModificationListener<IdentityType> modificationListener;
 
 	/**
-	 * Get IdentityType translations for specified locale, if translation is not found check for translation in default
-	 * locale
-	 *
-	 * @param locale Locale to get translations for
-	 * @return List of IdentityTypes
-	 * @throws org.flexpay.common.exception.FlexPayException
-	 *          if failure occurs
-	 */
-	private List<IdentityTypeTranslation> getTranslations(Locale locale)
-			throws FlexPayException {
-
-		log.debug("Getting list of IdentityTypes");
-
-		List<IdentityType> types = getEntities();
-		List<IdentityTypeTranslation> translations = list();
-
-		log.debug("IdentityTypes: {}", types);
-
-		for (IdentityType identityType : types) {
-			IdentityTypeTranslation translation = TranslationUtil.getTranslation(identityType.getTranslations());
-			if (translation == null) {
-				log.error("No name for identity type: {}", identityType);
-				continue;
-			}
-			translations.add(translation);
-		}
-
-		return translations;
-	}
-
-	/**
 	 * Read IdentityType object by its unique id
 	 *
 	 * @param stub Entity stub

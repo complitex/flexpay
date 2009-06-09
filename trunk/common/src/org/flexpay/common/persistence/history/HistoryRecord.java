@@ -120,6 +120,11 @@ public class HistoryRecord extends DomainObject {
 		return newStringValue;
 	}
 
+	@NotNull
+	public String getNewStringValueNotNull() {
+		return newStringValue == null ? "" : newStringValue;
+	}
+
 	public void setNewStringValue(String newStringValue) {
 		this.newStringValue = newStringValue;
 	}

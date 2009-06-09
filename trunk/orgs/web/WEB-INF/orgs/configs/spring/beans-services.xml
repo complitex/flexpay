@@ -11,8 +11,14 @@
 		  class="org.flexpay.orgs.service.imp.OrganisationInstanceServiceImpl"
 		  p:sessionUtils-ref="sessionUtils" />
 
-	<bean id="organizationService"
+	<bean id="organizationHistoryChangesListener"
+		  parent="historyChangesListenerBase"
+		  p:historyBuilder-ref="organizationHistoryBuilder" />
+
+	<bean id="organizationServiceTarget"
 		  class="org.flexpay.orgs.service.imp.OrganizationServiceImpl"
+		  p:sessionUtils-ref="sessionUtils"
+		  p:modificationListener-ref="organizationHistoryChangesListener"
 		  p:organizationDao-ref="organizationDao" />
 
 	<bean id="subdivisionService"
@@ -45,5 +51,51 @@
 		  p:serviceProviderDao-ref="serviceProviderDao"
 		  p:serviceProviderDaoExt-ref="serviceProviderDaoExt"
 		  p:dataSourceDescriptionDao-ref="dataSourceDescriptionDao" />
+
+	<bean id="typeRegistryOrgs"
+		  class="org.flexpay.orgs.service.importexport.impl.ClassToTypeRegistry" />
+
+	<bean id="correctionsServiceOrgs"
+		  parent="correctionsService"
+		  p:typeRegistry-ref="typeRegistryOrgs" />
+
+	<!-- History builders -->
+	<bean id="orgsHistoryBuilderBase"
+		  abstract="true"
+		  class="org.flexpay.common.persistence.history.impl.HistoryBuilderBase"
+		  p:masterIndexService-ref="masterIndexService"
+		  p:correctionsService-ref="correctionsServiceOrgs"
+		  p:typeRegistry-ref="typeRegistryOrgs" />
+
+	<bean id="organizationHistoryBuilder"
+		  parent="orgsHistoryBuilderBase"
+		  class="org.flexpay.orgs.service.history.OrganizationHistoryBuilder" />
+
+	<!-- History generators -->
+	<bean id="identityTypeHistoryGenerator"
+		  class="org.flexpay.orgs.service.history.OrganizationHistoryGenerator"
+		  p:diffService-ref="diffService"
+		  p:historyBuilder-ref="organizationHistoryBuilder"
+		  p:organizationService-ref="organizationService" />
+
+	<!-- History handlers -->
+	<bean id="orgsHistoryHandlerBase"
+		  abstract="true"
+		  autowire-candidate="false"
+		  parent="historyHandlerBase"
+		  p:typeRegistry-ref="typeRegistryOrgs" />
+
+	<bean id="organizationHistoryHandler" parent="orgsHistoryHandlerBase"
+		  class="org.flexpay.orgs.service.history.OrganizationHistoryHandler"
+		  p:historyBuilder-ref="organizationHistoryBuilder"
+		  p:organizationService-ref="organizationService" />
+
+	<bean id="orgsObjectsSyncer" parent="objectsSyncer">
+		<property name="handlers">
+			<list merge="true">
+				<ref bean="organizationHistoryHandler" />
+			</list>
+		</property>
+	</bean>
 
 </beans>

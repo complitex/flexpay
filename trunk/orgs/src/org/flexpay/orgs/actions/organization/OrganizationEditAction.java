@@ -65,7 +65,13 @@ public class OrganizationEditAction extends FPActionSupport {
 			org.setDescription(organizationDescription);
 		}
 
-		organizationService.save(org);
+		if (org.isNew()) {
+			organizationService.create(org);
+		} else {
+			organizationService.update(org);
+		}
+
+		addActionError(getText("orgs.saved"));
 
 		return REDIRECT_SUCCESS;
 	}
