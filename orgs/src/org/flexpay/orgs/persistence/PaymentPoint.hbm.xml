@@ -26,7 +26,7 @@
 			</column>
 		</property>
         <property name="email">
-			<column name="email" not-null="true">
+			<column name="email" not-null="false">
 				<comment>E-mail</comment>
 			</column>
 		</property>
