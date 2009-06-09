@@ -4,6 +4,7 @@ import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.orgs.persistence.ServiceOrganization;
+import org.flexpay.orgs.persistence.ServiceOrganizationDescription;
 import org.flexpay.orgs.persistence.filters.OrganizationFilter;
 import org.flexpay.orgs.persistence.filters.ServiceOrganizationFilter;
 import org.jetbrains.annotations.NotNull;
@@ -12,7 +13,8 @@ import org.springframework.security.annotation.Secured;
 import java.util.List;
 import java.util.Set;
 
-public interface ServiceOrganizationService {
+public interface ServiceOrganizationService
+		extends OrganizationInstanceService<ServiceOrganizationDescription, ServiceOrganization> {
 
 	/**
 	 * Get a list of available ServiceOrganizations
@@ -30,7 +32,7 @@ public interface ServiceOrganizationService {
 	 * @return List of service organizations
 	 */
 	@Secured (Roles.SERVICE_ORGANIZATION_READ)
-	List<ServiceOrganization> listServiceOrganizations(Page<? extends ServiceOrganization> pager);
+	List<ServiceOrganization> listInstances(@NotNull Page<ServiceOrganization> pager);
 
 	/**
 	 * Read full service organization info
@@ -59,14 +61,28 @@ public interface ServiceOrganizationService {
 	void disable(@NotNull Set<Long> objectIds);
 
 	/**
-	 * Save or update service organization
+	 * Create service organization
 	 *
 	 * @param serviceOrganization Service organization to save
+	 * @return persisted instance back
 	 * @throws org.flexpay.common.exception.FlexPayExceptionContainer
 	 *          if validation fails
 	 */
-	@Secured ({Roles.SERVICE_ORGANIZATION_ADD, Roles.SERVICE_ORGANIZATION_CHANGE})
-	void save(@NotNull ServiceOrganization serviceOrganization) throws FlexPayExceptionContainer;
+	@Secured (Roles.SERVICE_ORGANIZATION_ADD)
+	@NotNull
+	ServiceOrganization create(@NotNull ServiceOrganization serviceOrganization) throws FlexPayExceptionContainer;
+
+	/**
+	 * Update service organization
+	 *
+	 * @param serviceOrganization Service organization to save
+	 * @return updated instance back
+	 * @throws org.flexpay.common.exception.FlexPayExceptionContainer
+	 *          if validation fails
+	 */
+	@Secured (Roles.SERVICE_ORGANIZATION_CHANGE)
+	@NotNull
+	ServiceOrganization update(@NotNull ServiceOrganization serviceOrganization) throws FlexPayExceptionContainer;
 
 	/**
 	 * Initialize filter
@@ -85,5 +101,5 @@ public interface ServiceOrganizationService {
 	 * @param serviceOrganization service organization
 	 */
 	@Secured (Roles.SERVICE_ORGANIZATION_READ)
-	void initServiceOrganizationlessFilter(@NotNull OrganizationFilter organizationFilter, @NotNull ServiceOrganization serviceOrganization);
+	OrganizationFilter initInstancelessFilter(@NotNull OrganizationFilter organizationFilter, @NotNull ServiceOrganization serviceOrganization);
 }

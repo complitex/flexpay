@@ -157,7 +157,7 @@ public class TestGeneratePaymentsDBRegistry extends SpringBeanAwareTestCase {
         serviceProviderDescription.setName("test service provider description");
         serviceProvider.setDescription(serviceProviderDescription);
 
-        serviceProviderService.save(serviceProvider);
+        serviceProviderService.create(serviceProvider);
 
         //get operation type
         OperationType operationType = operationTypeService.read(OperationType.SERVICE_CASH_PAYMENT);

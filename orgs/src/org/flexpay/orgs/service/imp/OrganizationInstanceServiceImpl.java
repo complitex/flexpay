@@ -12,7 +12,7 @@ import org.flexpay.orgs.persistence.OrganizationInstance;
 import org.flexpay.orgs.persistence.OrganizationInstanceDescription;
 import org.flexpay.orgs.persistence.filters.OrganizationFilter;
 import org.flexpay.orgs.persistence.filters.OrganizationInstanceFilter;
-import org.flexpay.orgs.service.OrganisationInstanceService;
+import org.flexpay.orgs.service.OrganizationInstanceService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,10 +21,10 @@ import java.util.List;
 import java.util.Set;
 
 @Transactional (readOnly = true)
-public abstract class OrganisationInstanceServiceImpl<
+public abstract class OrganizationInstanceServiceImpl<
 		D extends OrganizationInstanceDescription,
 		T extends OrganizationInstance<D, T>>
-		implements OrganisationInstanceService<D, T> {
+		implements OrganizationInstanceService<D, T> {
 
 	private SessionUtils sessionUtils;
 	protected OrganisationInstanceDao<D, T> instanceDao;
@@ -191,20 +191,6 @@ public abstract class OrganisationInstanceServiceImpl<
 	 * @param ex	   Container to store validation errors in
 	 */
 	protected abstract void doValidate(T instance, FlexPayExceptionContainer ex);
-
-	/**
-	 * Initialize instances filter
-	 *
-	 * @param filter Instance filter to init
-	 * @return Filter back
-	 */
-	@NotNull
-	public OrganizationInstanceFilter<D, T> initFilter(@NotNull OrganizationInstanceFilter<D, T> filter) {
-
-		filter.setInstances(listInstances(new Page<T>(1000, 1)));
-
-		return filter;
-	}
 
 	@Required
 	public void setInstanceDao(OrganisationInstanceDao<D, T> instanceDao) {

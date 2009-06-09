@@ -60,8 +60,9 @@ public class ServiceOrganizationServiceImpl implements ServiceOrganizationServic
 	 * @throws org.flexpay.common.exception.FlexPayExceptionContainer
 	 *          if validation fails
 	 */
+	@NotNull
 	@Transactional (readOnly = false)
-	public void save(@NotNull ServiceOrganization serviceOrganization) throws FlexPayExceptionContainer {
+	public ServiceOrganization create(@NotNull ServiceOrganization serviceOrganization) throws FlexPayExceptionContainer {
 		validate(serviceOrganization);
 		if (serviceOrganization.isNew()) {
 			serviceOrganization.setId(null);
@@ -69,6 +70,25 @@ public class ServiceOrganizationServiceImpl implements ServiceOrganizationServic
 		} else {
 			serviceOrganizationDao.update(serviceOrganization);
 		}
+
+		return serviceOrganization;
+	}
+
+	/**
+	 * Update service organization
+	 *
+	 * @param serviceOrganization Service organization to save
+	 * @return updated instance back
+	 * @throws org.flexpay.common.exception.FlexPayExceptionContainer
+	 *          if validation fails
+	 */
+	@NotNull
+	public ServiceOrganization update(@NotNull ServiceOrganization serviceOrganization) throws FlexPayExceptionContainer {
+
+		validate(serviceOrganization);
+		serviceOrganizationDao.update(serviceOrganization);
+
+		return serviceOrganization;
 	}
 
 	@SuppressWarnings ({"ThrowableInstanceNeverThrown"})
@@ -119,7 +139,7 @@ public class ServiceOrganizationServiceImpl implements ServiceOrganizationServic
 		}
 
 		List<ServiceOrganization> organizations = serviceOrganizationDao.listServiceOrganizations();
-		filter.setOrganizations(organizations);
+		filter.setInstances(organizations);
 
 		return filter;
 	}
@@ -131,12 +151,14 @@ public class ServiceOrganizationServiceImpl implements ServiceOrganizationServic
 	 * @param filter  Filter to initialize
 	 * @param org service organization
 	 */
-	public void initServiceOrganizationlessFilter(@NotNull OrganizationFilter filter, @NotNull ServiceOrganization org) {
+	public OrganizationFilter initInstancelessFilter(@NotNull OrganizationFilter filter, @NotNull ServiceOrganization org) {
 		@SuppressWarnings ({"UnnecessaryBoxing"})
 		Long includedServiceOrganizationId = org.isNotNew() ? org.getId() : Long.valueOf(-1L);
 		List<Organization> organizations = serviceOrganizationDao
 				.findServiceOrganizationlessOrganizations(includedServiceOrganizationId);
 		filter.setOrganizations(organizations);
+
+		return filter;
 	}
 
 	/**
@@ -161,7 +183,7 @@ public class ServiceOrganizationServiceImpl implements ServiceOrganizationServic
 	 * @return List of registered service organizations
 	 */
 	@NotNull
-	public List<ServiceOrganization> listServiceOrganizations(Page<? extends ServiceOrganization> pager) {
+	public List<ServiceOrganization> listInstances(Page<ServiceOrganization> pager) {
 		return serviceOrganizationDao.findServiceOrganizations(pager);
 	}
 

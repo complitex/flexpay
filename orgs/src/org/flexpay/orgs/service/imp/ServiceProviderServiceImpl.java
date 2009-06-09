@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Required;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.Set;
@@ -39,7 +40,7 @@ public class ServiceProviderServiceImpl implements ServiceProviderService {
 	 * @param stub provider stub
 	 * @return ServiceProvider
 	 */
-	public ServiceProvider read(Stub<ServiceProvider> stub) {
+	public ServiceProvider read(@NotNull Stub<ServiceProvider> stub) {
 		return serviceProviderDao.readFull(stub.getId());
 	}
 
@@ -65,7 +66,8 @@ public class ServiceProviderServiceImpl implements ServiceProviderService {
 	 * @param pager Page
 	 * @return List of service providers
 	 */
-	public List<ServiceProvider> listProviders(Page<ServiceProvider> pager) {
+	@NotNull
+	public List<ServiceProvider> listInstances(Page<ServiceProvider> pager) {
 		return serviceProviderDao.findProviders(pager);
 	}
 
@@ -75,7 +77,7 @@ public class ServiceProviderServiceImpl implements ServiceProviderService {
 	 * @param objectIds Set of service provider identifiers
 	 */
 	@Transactional (readOnly = false)
-	public void disable(Set<Long> objectIds) {
+	public void disable(@NotNull Set<Long> objectIds) {
 		for (Long id : objectIds) {
 			ServiceProvider provider = serviceProviderDao.read(id);
 			if (provider != null) {
@@ -92,22 +94,38 @@ public class ServiceProviderServiceImpl implements ServiceProviderService {
 	 * @throws org.flexpay.common.exception.FlexPayExceptionContainer
 	 *          if provider validation fails
 	 */
+	@NotNull
 	@Transactional (readOnly = false)
-	public void save(ServiceProvider serviceProvider) throws FlexPayExceptionContainer {
+	public ServiceProvider create(@NotNull ServiceProvider serviceProvider) throws FlexPayExceptionContainer {
 		validate(serviceProvider);
-		if (serviceProvider.isNew()) {
-			serviceProvider.setId(null);
+		serviceProvider.setId(null);
 
-			// create data source description with provider default description text
-			DataSourceDescription sd = new DataSourceDescription();
-			sd.setDescription(serviceProvider.getDefaultDescription());
-			dataSourceDescriptionDao.create(sd);
-			serviceProvider.setDataSourceDescription(sd);
+		// create data source description with provider default description text
+		DataSourceDescription sd = new DataSourceDescription();
+		sd.setDescription(serviceProvider.getDefaultDescription());
+		dataSourceDescriptionDao.create(sd);
+		serviceProvider.setDataSourceDescription(sd);
 
-			serviceProviderDao.create(serviceProvider);
-		} else {
-			serviceProviderDao.update(serviceProvider);
-		}
+		serviceProviderDao.create(serviceProvider);
+
+		return serviceProvider;
+	}
+
+	/**
+	 * Update service provider
+	 *
+	 * @param serviceProvider object to update
+	 * @return updated object back
+	 * @throws org.flexpay.common.exception.FlexPayExceptionContainer
+	 *          if provider validation fails
+	 */
+	@NotNull
+	@Transactional (readOnly = false)
+	public ServiceProvider update(@NotNull ServiceProvider serviceProvider) throws FlexPayExceptionContainer {
+		validate(serviceProvider);
+
+		serviceProviderDao.update(serviceProvider);
+		return serviceProvider;
 	}
 
 	@SuppressWarnings ({"ThrowableInstanceNeverThrown"})
@@ -147,7 +165,7 @@ public class ServiceProviderServiceImpl implements ServiceProviderService {
 	 * @param sp				 Service Provider
 	 * @return filter
 	 */
-	public OrganizationFilter initOrganizationFilter(OrganizationFilter organizationFilter, ServiceProvider sp) {
+	public OrganizationFilter initInstancelessFilter(OrganizationFilter organizationFilter, ServiceProvider sp) {
 		List<Organization> organizations = serviceProviderDao.findProviderlessOrgs();
 		List<Organization> providerlessOrgs = new ArrayList<Organization>();
 		Long orgId = sp.getOrganization() != null ? sp.getOrganizationStub().getId() : null;

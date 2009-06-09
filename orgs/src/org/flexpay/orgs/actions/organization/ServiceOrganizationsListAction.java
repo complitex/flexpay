@@ -18,7 +18,7 @@ public class ServiceOrganizationsListAction extends FPActionWithPagerSupport<Ser
 	@NotNull
 	public String doExecute() throws Exception {
 
-		serviceOrganizations = serviceOrganizationService.listServiceOrganizations(getPager());
+		serviceOrganizations = serviceOrganizationService.listInstances(getPager());
 
 		return SUCCESS;
 	}

@@ -82,6 +82,8 @@ public class BankEditAction extends FPActionSupport {
 			bankService.update(oldBank);
 		}
 
+		addActionError(getText("orgs.bank.saved"));
+
 		return REDIRECT_SUCCESS;
 	}
 

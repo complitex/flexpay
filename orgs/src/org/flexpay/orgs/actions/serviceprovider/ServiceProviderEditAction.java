@@ -38,7 +38,7 @@ public class ServiceProviderEditAction extends FPActionSupport {
 			addActionError(getText("error.invalid_id"));
 			return REDIRECT_SUCCESS;
 		}
-		organizationFilter = providerService.initOrganizationFilter(organizationFilter, serviceProvider);
+		organizationFilter = providerService.initInstancelessFilter(organizationFilter, serviceProvider);
 		if (organizationFilter.getOrganizations().isEmpty()) {
 			addActionError(getText("eirc.error.service_provider.no_providerless_organization"));
 			return INPUT;
@@ -77,7 +77,7 @@ public class ServiceProviderEditAction extends FPActionSupport {
 		log.info("New Service provider descriptions: {}", serviceProvider.getDescriptions());
 
 		serviceProvider.setOrganization(juridicalPerson);
-		providerService.save(serviceProvider);
+		providerService.create(serviceProvider);
 
 		return REDIRECT_SUCCESS;
 	}

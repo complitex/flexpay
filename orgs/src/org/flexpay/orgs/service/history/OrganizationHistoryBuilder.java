@@ -40,7 +40,7 @@ public class OrganizationHistoryBuilder extends HistoryBuilderBase<Organization>
 	 */
 	protected void doDiff(@Nullable Organization org1, @NotNull Organization org2, @NotNull Diff diff) {
 
-		log.debug("creating new buildings diff");
+		log.debug("creating new organizations diff");
 		if (!org2.isActive()) {
 			diff.setOperationType(HistoryOperationType.TYPE_DELETE);
 		}

@@ -80,6 +80,8 @@ public class PaymentsCollectorEditAction extends FPActionSupport {
 			instanceService.update(oldInstance);
 		}
 
+		addActionError(getText("orgs.payments_collector.saved"));
+
 		return REDIRECT_SUCCESS;
 	}
 

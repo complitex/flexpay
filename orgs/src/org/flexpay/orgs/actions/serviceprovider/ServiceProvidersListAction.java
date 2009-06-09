@@ -18,7 +18,7 @@ public class ServiceProvidersListAction extends FPActionWithPagerSupport<Service
 	@NotNull
 	public String doExecute() throws Exception {
 
-		providers = providerService.listProviders(getPager());
+		providers = providerService.listInstances(getPager());
 
 		return SUCCESS;
 	}

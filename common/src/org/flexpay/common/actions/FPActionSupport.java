@@ -124,8 +124,8 @@ public abstract class FPActionSupport extends ActionSupport implements UserPrefe
 	protected abstract String doExecute() throws Exception;
 
 	protected void setBreadCrumbs() {
-		if (userPreferences == null) {
-			log.warn("No user preferences found. Action execution terminated.");
+		if (userPreferences == null || crumb == null) {
+			log.warn("No user preferences found or crumb. Action execution terminated.");
 			return;
 		}
 
@@ -153,7 +153,6 @@ public abstract class FPActionSupport extends ActionSupport implements UserPrefe
 		}
 
 		crumbs.add(crumb);
-
 	}
 
 	protected void deleteOldCrumbs(int index) {

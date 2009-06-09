@@ -13,7 +13,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 import java.util.Set;
 
-public interface OrganisationInstanceService<
+public interface OrganizationInstanceService<
 		D extends OrganizationInstanceDescription,
 		T extends OrganizationInstance<D, T>> {
 
@@ -72,13 +72,4 @@ public interface OrganisationInstanceService<
 	 */
 	@NotNull
 	OrganizationFilter initInstancelessFilter(@NotNull OrganizationFilter filter, @NotNull T instance);
-
-	/**
-	 * Initialize instances filter
-	 *
-	 * @param filter Instance filter to init
-	 * @return Filter back
-	 */
-	@NotNull
-	OrganizationInstanceFilter<D, T> initFilter(@NotNull OrganizationInstanceFilter<D, T> filter);
 }

@@ -38,7 +38,7 @@ public class ServiceOrganizationEditAction extends FPActionSupport {
 			return REDIRECT_SUCCESS;
 		}
 
-		serviceOrganizationService.initServiceOrganizationlessFilter(organizationFilter, oldServiceOrganization);
+		serviceOrganizationService.initInstancelessFilter(organizationFilter, oldServiceOrganization);
 
 		// prepare initial setup
 		if (!isSubmit()) {
@@ -73,7 +73,13 @@ public class ServiceOrganizationEditAction extends FPActionSupport {
 			oldServiceOrganization.setDescription(description);
 		}
 
-		serviceOrganizationService.save(oldServiceOrganization);
+		if (oldServiceOrganization.isNew()) {
+			serviceOrganizationService.create(oldServiceOrganization);
+		} else {
+			serviceOrganizationService.update(oldServiceOrganization);
+		}
+
+		addActionError(getText("orgs.service_organization.saved"));
 
 		return REDIRECT_SUCCESS;
 	}
