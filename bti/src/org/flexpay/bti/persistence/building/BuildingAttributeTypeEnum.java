@@ -106,6 +106,7 @@ public class BuildingAttributeTypeEnum extends BuildingAttributeType {
 			}
 		}
 
+		//noinspection CollectionsFieldAccessReplaceableByMethodCall
 		if (values == Collections.EMPTY_SET) {
 			values = CollectionUtils.set();
 		}

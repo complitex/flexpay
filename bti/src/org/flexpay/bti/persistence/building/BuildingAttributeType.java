@@ -3,8 +3,10 @@ package org.flexpay.bti.persistence.building;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.DomainObjectWithStatus;
 import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.persistence.Language;
 import org.flexpay.common.util.TranslationUtil;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Collections;
 import java.util.Set;
@@ -88,6 +90,24 @@ public abstract class BuildingAttributeType extends DomainObjectWithStatus {
 
 	public void setTranslation(BuildingAttributeTypeName name) {
 		translations = TranslationUtil.setTranslation(translations, this, name);
+	}
+
+	/**
+	 * Get type translation in a specified language
+	 *
+	 * @param lang Language to get translation in
+	 * @return translation if found, or <code>null</code> otherwise
+	 */
+	@Nullable
+	public BuildingAttributeTypeName getTranslation(@NotNull Language lang) {
+
+		for (BuildingAttributeTypeName translation : getTranslations()) {
+			if (lang.equals(translation.getLang())) {
+				return translation;
+			}
+		}
+
+		return null;
 	}
 
 }
