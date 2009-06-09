@@ -2,6 +2,7 @@ package org.flexpay.orgs.persistence;
 
 import org.flexpay.common.persistence.DomainObjectWithStatus;
 import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.persistence.Language;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.util.TranslationUtil;
 import org.flexpay.common.util.config.ApplicationConfig;
@@ -65,6 +66,23 @@ public abstract class OrganizationInstance<
 		descriptions = TranslationUtil.setTranslation(descriptions, this, description);
 	}
 
+	/**
+	 * Get description translation in a specified language
+	 *
+	 * @param lang Language to get translation in
+	 * @return translation if found, or <code>null</code> otherwise
+	 */
+	@Nullable
+	public D getDescription(@NotNull Language lang) {
+
+		for (D translation : getDescriptions()) {
+			if (lang.equals(translation.getLang())) {
+				return translation;
+			}
+		}
+
+		return null;
+	}
 
 	public String getName(@NotNull Locale locale) {
 		return TranslationUtil.getTranslation(organization.getNames(), locale).getName();

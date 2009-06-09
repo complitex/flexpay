@@ -4,15 +4,18 @@ import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.orgs.persistence.ServiceProvider;
+import org.flexpay.orgs.persistence.ServiceProviderDescription;
 import org.flexpay.orgs.persistence.filters.OrganizationFilter;
 import org.flexpay.orgs.persistence.filters.ServiceProviderFilter;
 import org.springframework.security.annotation.Secured;
 import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.Set;
 
-public interface ServiceProviderService {
+public interface ServiceProviderService
+		extends OrganizationInstanceService<ServiceProviderDescription, ServiceProvider> {
 
 	/**
 	 * Find service provider by its number
@@ -31,8 +34,9 @@ public interface ServiceProviderService {
 	 * @param pager Page
 	 * @return List of service providers
 	 */
+	@NotNull
 	@Secured (Roles.SERVICE_PROVIDER_READ)
-	List<ServiceProvider> listProviders(Page<ServiceProvider> pager);
+	List<ServiceProvider> listInstances(Page<ServiceProvider> pager);
 
 	/**
 	 * Disable service providers
@@ -40,7 +44,7 @@ public interface ServiceProviderService {
 	 * @param objectIds Set of service provider identifiers
 	 */
 	@Secured (Roles.SERVICE_PROVIDER_DELETE)
-	void disable(Set<Long> objectIds);
+	void disable(@NotNull Set<Long> objectIds);
 
 	/**
 	 * Read full service provider info
@@ -50,17 +54,31 @@ public interface ServiceProviderService {
 	 */
 	@Secured (Roles.SERVICE_PROVIDER_READ)
 	@Nullable
-	ServiceProvider read(Stub<ServiceProvider> stub);
+	ServiceProvider read(@NotNull Stub<ServiceProvider> stub);
 
 	/**
-	 * Save service provider
+	 * Create service provider
 	 *
-	 * @param serviceProvider New or persitent object to save
+	 * @param serviceProvider New object to save
+	 * @return Persisted object back
 	 * @throws org.flexpay.common.exception.FlexPayExceptionContainer
 	 *          if provider validation fails
 	 */
-	@Secured ({Roles.SERVICE_PROVIDER_ADD, Roles.SERVICE_PROVIDER_CHANGE})
-	void save(ServiceProvider serviceProvider) throws FlexPayExceptionContainer;
+	@NotNull
+	@Secured (Roles.SERVICE_PROVIDER_CHANGE)
+	ServiceProvider create(@NotNull ServiceProvider serviceProvider) throws FlexPayExceptionContainer;
+
+	/**
+	 * Update service provider
+	 *
+	 * @param serviceProvider object to update
+	 * @return updated object back
+	 * @throws org.flexpay.common.exception.FlexPayExceptionContainer
+	 *          if provider validation fails
+	 */
+	@Secured (Roles.SERVICE_PROVIDER_CHANGE)
+	@NotNull
+	ServiceProvider update(@NotNull ServiceProvider serviceProvider) throws FlexPayExceptionContainer;
 
 	/**
 	 * Initialize filter with organizations that do not have active service providers
@@ -70,7 +88,7 @@ public interface ServiceProviderService {
 	 * @return filter
 	 */
 	@Secured (Roles.SERVICE_ORGANIZATION_READ)
-	OrganizationFilter initOrganizationFilter(OrganizationFilter organizationFilter, ServiceProvider sp);
+	OrganizationFilter initInstancelessFilter(OrganizationFilter organizationFilter, ServiceProvider sp);
 
 	/**
 	 * Initialize filter

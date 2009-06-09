@@ -6,6 +6,8 @@ import org.flexpay.common.persistence.Stub;
 import org.flexpay.orgs.persistence.PaymentsCollector;
 import org.flexpay.orgs.persistence.PaymentsCollectorDescription;
 import org.flexpay.orgs.persistence.filters.OrganizationFilter;
+import org.flexpay.orgs.persistence.filters.OrganizationInstanceFilter;
+import org.flexpay.orgs.persistence.filters.PaymentsCollectorFilter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -13,7 +15,7 @@ import java.util.List;
 import java.util.Set;
 
 public interface PaymentsCollectorService
-		extends OrganisationInstanceService<PaymentsCollectorDescription, PaymentsCollector> {
+		extends OrganizationInstanceService<PaymentsCollectorDescription, PaymentsCollector> {
 
 	/**
 	 * List registered instances
@@ -72,4 +74,13 @@ public interface PaymentsCollectorService
 	 */
 	@NotNull
 	OrganizationFilter initInstancelessFilter(@NotNull OrganizationFilter filter, @NotNull PaymentsCollector instance);
+
+	/**
+	 * Initialize instances filter
+	 *
+	 * @param filter Instance filter to init
+	 * @return Filter back
+	 */
+	@NotNull
+	PaymentsCollectorFilter initFilter(@NotNull PaymentsCollectorFilter filter);
 }

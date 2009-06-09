@@ -10,7 +10,7 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional (readOnly = true)
-public class BankServiceImpl extends OrganisationInstanceServiceImpl<BankDescription, Bank>
+public class BankServiceImpl extends OrganizationInstanceServiceImpl<BankDescription, Bank>
 		implements BankService {
 
 	protected String getSeveralInstancesErrorCode() {

@@ -2,15 +2,25 @@ package org.flexpay.orgs.persistence.filters;
 
 import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
 import org.flexpay.orgs.persistence.ServiceOrganization;
+import org.flexpay.orgs.persistence.ServiceOrganizationDescription;
 
 import java.util.List;
 
-public class ServiceOrganizationFilter extends PrimaryKeyFilter<ServiceOrganization> {
+public class ServiceOrganizationFilter
+		extends OrganizationInstanceFilter<ServiceOrganizationDescription, ServiceOrganization> {
 
 	private List<ServiceOrganization> organizations;
 
 	public ServiceOrganizationFilter() {
 		super(-1L);
+	}
+
+	public List<ServiceOrganization> getInstances() {
+		return organizations;
+	}
+
+	public void setInstances(List<ServiceOrganization> organizations) {
+		this.organizations = organizations;
 	}
 
 	public List<ServiceOrganization> getOrganizations() {
@@ -20,5 +30,4 @@ public class ServiceOrganizationFilter extends PrimaryKeyFilter<ServiceOrganizat
 	public void setOrganizations(List<ServiceOrganization> organizations) {
 		this.organizations = organizations;
 	}
-
 }

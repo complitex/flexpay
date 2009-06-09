@@ -8,7 +8,7 @@
 		   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
 	<bean id="organisationInstanceService" abstract="true"
-		  class="org.flexpay.orgs.service.imp.OrganisationInstanceServiceImpl"
+		  class="org.flexpay.orgs.service.imp.OrganizationInstanceServiceImpl"
 		  p:sessionUtils-ref="sessionUtils" />
 
 	<bean id="organizationHistoryChangesListener"
@@ -71,12 +71,53 @@
 		  parent="orgsHistoryBuilderBase"
 		  class="org.flexpay.orgs.service.history.OrganizationHistoryBuilder" />
 
+	<bean id="bankHistoryBuilder"
+		  parent="orgsHistoryBuilderBase"
+		  class="org.flexpay.orgs.service.history.BankHistoryBuilder" />
+
+	<bean id="serviceOrganizationHistoryBuilder"
+		  parent="orgsHistoryBuilderBase"
+		  class="org.flexpay.orgs.service.history.ServiceOrganizationHistoryBuilder" />
+
+	<bean id="serviceProviderHistoryBuilder"
+		  parent="orgsHistoryBuilderBase"
+		  class="org.flexpay.orgs.service.history.ServiceProviderHistoryBuilder" />
+
+	<bean id="paymentsCollectorHistoryBuilder"
+		  parent="orgsHistoryBuilderBase"
+		  class="org.flexpay.orgs.service.history.PaymentsCollectorHistoryBuilder" />
+
 	<!-- History generators -->
-	<bean id="identityTypeHistoryGenerator"
+	<bean id="organizationHistoryGenerator"
 		  class="org.flexpay.orgs.service.history.OrganizationHistoryGenerator"
 		  p:diffService-ref="diffService"
 		  p:historyBuilder-ref="organizationHistoryBuilder"
 		  p:organizationService-ref="organizationService" />
+
+	<bean id="organizationInstanceHistoryGenerator"
+		  abstract="true"
+		  class="org.flexpay.orgs.service.history.OrganizationInstanceHistoryGenerator"
+		  p:diffService-ref="diffService" />
+
+	<bean id="bankHistoryGenerator"
+		  parent="organizationInstanceHistoryGenerator"
+		  p:instanceService-ref="bankService"
+		  p:historyBuilder-ref="bankHistoryBuilder" />
+
+	<bean id="serviceOrganizationHistoryGenerator"
+		  parent="organizationInstanceHistoryGenerator"
+		  p:instanceService-ref="serviceOrganizationService"
+		  p:historyBuilder-ref="serviceOrganizationHistoryBuilder" />
+
+	<bean id="serviceProviderHistoryGenerator"
+		  parent="organizationInstanceHistoryGenerator"
+		  p:instanceService-ref="serviceProviderService"
+		  p:historyBuilder-ref="serviceProviderHistoryBuilder" />
+
+	<bean id="paymentsCollectorHistoryGenerator"
+		  parent="organizationInstanceHistoryGenerator"
+		  p:instanceService-ref="paymentsCollectorService"
+		  p:historyBuilder-ref="paymentsCollectorHistoryBuilder" />
 
 	<!-- History handlers -->
 	<bean id="orgsHistoryHandlerBase"
@@ -84,6 +125,30 @@
 		  autowire-candidate="false"
 		  parent="historyHandlerBase"
 		  p:typeRegistry-ref="typeRegistryOrgs" />
+
+	<bean id="bankHistoryHandler"
+		  parent="orgsHistoryHandlerBase"
+		  p:instanceService-ref="bankService"
+		  p:historyBuilder-ref="bankHistoryBuilder"
+		  class="org.flexpay.orgs.service.history.BankHistoryHandler" />
+
+	<bean id="paymentsCollectorHistoryHandler"
+		  parent="orgsHistoryHandlerBase"
+		  p:instanceService-ref="paymentsCollectorService"
+		  p:historyBuilder-ref="paymentsCollectorHistoryBuilder"
+		  class="org.flexpay.orgs.service.history.PaymentsCollectorHistoryHandler" />
+
+	<bean id="serviceOrganizationHistoryHandler"
+		  parent="orgsHistoryHandlerBase"
+		  p:instanceService-ref="serviceOrganizationService"
+		  p:historyBuilder-ref="serviceOrganizationHistoryBuilder"
+		  class="org.flexpay.orgs.service.history.ServiceOrganizationHistoryHandler" />
+
+	<bean id="serviceProviderHistoryHandler"
+		  parent="orgsHistoryHandlerBase"
+		  p:instanceService-ref="serviceProviderService"
+		  p:historyBuilder-ref="serviceProviderHistoryBuilder"
+		  class="org.flexpay.orgs.service.history.ServiceProviderHistoryHandler" />
 
 	<bean id="organizationHistoryHandler" parent="orgsHistoryHandlerBase"
 		  class="org.flexpay.orgs.service.history.OrganizationHistoryHandler"

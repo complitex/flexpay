@@ -6,6 +6,8 @@ import org.flexpay.common.persistence.Stub;
 import org.flexpay.orgs.persistence.Bank;
 import org.flexpay.orgs.persistence.BankDescription;
 import org.flexpay.orgs.persistence.filters.OrganizationFilter;
+import org.flexpay.orgs.persistence.filters.OrganizationInstanceFilter;
+import org.flexpay.orgs.persistence.filters.BankFilter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.security.annotation.Secured;
@@ -13,7 +15,7 @@ import org.springframework.security.annotation.Secured;
 import java.util.List;
 import java.util.Set;
 
-public interface BankService extends OrganisationInstanceService<BankDescription, Bank> {
+public interface BankService extends OrganizationInstanceService<BankDescription, Bank> {
 
 	/**
 	 * List registered banks
