@@ -768,7 +768,7 @@ public class ProcessManagerImpl implements ProcessManager, Runnable {
 
 	/**
 	 * Retrieve ProcessInstance
-	 * @param processId ProcessInstance id
+	 * @param processInstanceIdId ProcessInstance id
 	 * @return Process info
 	 */	
 	public ProcessInstance getProcessInstance(@NotNull final Long processInstanceId) {

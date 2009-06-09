@@ -159,7 +159,7 @@ public interface ProcessManager {
 	@Nullable
 	/**
 	 * Retrieve ProcessInstance
-	 * @param processId ProcessInstance id
+	 * @param processInstanceId ProcessInstance id
 	 * @return Process info
 	 */
 	public ProcessInstance getProcessInstance(@NotNull final Long processInstanceId);
