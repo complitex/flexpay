@@ -767,6 +767,19 @@ public class ProcessManagerImpl implements ProcessManager, Runnable {
 	}
 
 	/**
+	 * Retrieve ProcessInstance
+	 * @param processId ProcessInstance id
+	 * @return Process info
+	 */	
+	public ProcessInstance getProcessInstance(@NotNull final Long processInstanceId) {
+		return execute(new ContextCallback<ProcessInstance>(){
+			public ProcessInstance doInContext(@NotNull JbpmContext context) {
+				return context.getProcessInstance(processInstanceId);
+			}
+		});
+	}
+
+	/**
 	 * Execute Context callback
 	 *
 	 * @param callback ContextCallback to execute
