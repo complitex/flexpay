@@ -9,6 +9,7 @@ import org.jbpm.graph.def.ProcessDefinition;
 import org.jbpm.graph.exe.ProcessInstance;
 import org.jbpm.taskmgmt.exe.TaskInstance;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.security.annotation.Secured;
 
 import java.io.InputStream;
@@ -17,8 +18,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.Date;
-
-import com.sun.istack.internal.Nullable;
 
 public interface ProcessManager {
 
