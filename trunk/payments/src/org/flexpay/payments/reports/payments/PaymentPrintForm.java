@@ -15,6 +15,8 @@ public class PaymentPrintForm implements Serializable {
 	private String organizationName;
 	private String quittanceNumber;
 	private String cashierFIO;
+	private String payerFIO;
+	private String paymentPointAddress;
 	private BigDecimal total;
 	private String totalSpelling;
 	private BigDecimal inputSumm;
@@ -53,6 +55,22 @@ public class PaymentPrintForm implements Serializable {
 
 	public void setCashierFIO(String cashierFIO) {
 		this.cashierFIO = cashierFIO;
+	}
+
+	public String getPayerFIO() {
+		return payerFIO;
+	}
+
+	public void setPayerFIO(String payerFIO) {
+		this.payerFIO = payerFIO;
+	}
+
+	public String getPaymentPointAddress() {
+		return paymentPointAddress;
+	}
+
+	public void setPaymentPointAddress(String paymentPointAddress) {
+		this.paymentPointAddress = paymentPointAddress;
 	}
 
 	public BigDecimal getTotal() {
