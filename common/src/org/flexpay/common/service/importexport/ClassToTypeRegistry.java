@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class ClassToTypeRegistry {
+
     private List<ClassToTypeRegistry> classes = null;
 
 	/**
@@ -23,6 +24,7 @@ public abstract class ClassToTypeRegistry {
     }
 
     protected int getModuleType(Class<? extends DomainObject> clazz) {
+
         for (ClassToTypeRegistry classToTypeRegistry : getClasses()) {
             int typeModule = classToTypeRegistry.getModuleType(clazz);
             if (classToTypeRegistry.checkModuleType(typeModule)) {

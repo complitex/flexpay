@@ -145,7 +145,7 @@ public class TestGeneratePaymentsDBRegistry extends SpringBeanAwareTestCase {
         organizationDescription.setName("test organization description");
         organization.setDescription(organizationDescription);
 
-        organizationService.save(organization);
+        organizationService.create(organization);
 
         //create service provider
         ServiceProvider serviceProvider = new ServiceProvider();

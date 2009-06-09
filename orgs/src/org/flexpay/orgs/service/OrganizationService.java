@@ -5,8 +5,8 @@ import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.orgs.persistence.filters.OrganizationFilter;
-import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.security.annotation.Secured;
 
 import java.util.List;
@@ -43,6 +43,7 @@ public interface OrganizationService {
 
 	/**
 	 * List registered organizations which have any {@link org.flexpay.orgs.persistence.PaymentsCollector}s
+	 *
 	 * @return list of organiztions which has collectors
 	 */
 	@Secured (Roles.ORGANIZATION_READ)
@@ -57,15 +58,28 @@ public interface OrganizationService {
 	void disable(Set<Long> objectIds);
 
 	/**
-	 * Save or update organization
+	 * Create organization
 	 *
 	 * @param organization Organization to save
+	 * @return persisted object back
 	 * @throws FlexPayExceptionContainer if validation fails
 	 */
 	@Secured (Roles.ORGANIZATION_ADD)
-	void save(Organization organization) throws FlexPayExceptionContainer;
+	@NotNull
+	Organization create(@NotNull Organization organization) throws FlexPayExceptionContainer;
 
-    /**
+	/**
+	 * Update organization
+	 *
+	 * @param organization Organization to save
+	 * @return Updated object back
+	 * @throws FlexPayExceptionContainer if validation fails
+	 */
+	@Secured (Roles.ORGANIZATION_CHANGE)
+	@NotNull
+	Organization update(@NotNull Organization organization) throws FlexPayExceptionContainer;
+
+	/**
 	 * Delete Organization object
 	 *
 	 * @param organizationStub organization stub

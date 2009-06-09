@@ -5,6 +5,9 @@ import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Stub;
+import static org.flexpay.common.persistence.Stub.stub;
+import org.flexpay.common.persistence.history.ModificationListener;
+import org.flexpay.common.service.internal.SessionUtils;
 import org.flexpay.orgs.dao.OrganizationDao;
 import org.flexpay.orgs.service.OrganizationService;
 import org.flexpay.orgs.persistence.filters.OrganizationFilter;
@@ -24,6 +27,9 @@ import java.util.Set;
 public class OrganizationServiceImpl implements OrganizationService {
 
 	private Logger log = LoggerFactory.getLogger(getClass());
+
+	private SessionUtils sessionUtils;
+	private ModificationListener<Organization> modificationListener;
 
 	private OrganizationDao organizationDao;
 
@@ -75,27 +81,54 @@ public class OrganizationServiceImpl implements OrganizationService {
 			if (organization != null) {
 				organization.disable();
 				organizationDao.update(organization);
+
+				modificationListener.onDelete(organization);
+
+				log.info("Disabled: {}", organization);
 			}
 		}
 	}
 
-	/**
-	 * Save or update organization
-	 *
-	 * @param organization Organization to save
-	 */
 	@Transactional (readOnly = false)
-	public void save(Organization organization) throws FlexPayExceptionContainer {
+	@NotNull
+	public Organization create(@NotNull Organization organization) throws FlexPayExceptionContainer {
 		validate(organization);
-		if (organization.isNew()) {
-			organization.setId(null);
-			organizationDao.create(organization);
-		} else {
-			organizationDao.update(organization);
-		}
+
+		organization.setId(null);
+		organizationDao.create(organization);
+
+		modificationListener.onCreate(organization);
+
+		return organization;
 	}
 
-    /**
+	/**
+	 * Update organization
+	 *
+	 * @param organization Organization to save
+	 * @return Updated object back
+	 * @throws org.flexpay.common.exception.FlexPayExceptionContainer
+	 *          if validation fails
+	 */
+	@SuppressWarnings ({"ThrowableInstanceNeverThrown"})
+	@Transactional (readOnly = false)
+	@NotNull
+	public Organization update(@NotNull Organization organization) throws FlexPayExceptionContainer {
+		validate(organization);
+
+		Organization old = readFull(stub(organization));
+		if (old == null) {
+			throw new FlexPayExceptionContainer(
+					new FlexPayException("No object found to update " + organization));
+		}
+		sessionUtils.evict(old);
+		modificationListener.onUpdate(old, organization);
+
+		organizationDao.update(organization);
+		return organization;
+	}
+
+	/**
 	 * Delete Organization object
 	 *
 	 * @param organizationStub organization stub
@@ -156,5 +189,15 @@ public class OrganizationServiceImpl implements OrganizationService {
 	@Required
 	public void setOrganizationDao(OrganizationDao organizationDao) {
 		this.organizationDao = organizationDao;
+	}
+
+	@Required
+	public void setSessionUtils(SessionUtils sessionUtils) {
+		this.sessionUtils = sessionUtils;
+	}
+
+	@Required
+	public void setModificationListener(ModificationListener<Organization> modificationListener) {
+		this.modificationListener = modificationListener;
 	}
 }

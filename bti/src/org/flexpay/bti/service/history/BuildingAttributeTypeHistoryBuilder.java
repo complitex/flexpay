@@ -1,6 +1,6 @@
 package org.flexpay.bti.service.history;
 
-import org.flexpay.ab.service.history.EqualsHelper;
+import org.flexpay.common.util.EqualsHelper;
 import org.flexpay.bti.persistence.building.BuildingAttributeType;
 import org.flexpay.bti.persistence.building.BuildingAttributeTypeName;
 import org.flexpay.common.persistence.Language;

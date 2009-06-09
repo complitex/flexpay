@@ -1,4 +1,4 @@
-package org.flexpay.ab.service.history;
+package org.flexpay.common.util;
 
 import org.apache.commons.lang.StringUtils;
 

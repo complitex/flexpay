@@ -93,6 +93,12 @@
 		   overflowToDisk="true"
 		   memoryStoreEvictionPolicy="LRU" />
 
+	<cache name="orgsFlexpayCache"
+		   maxElementsInMemory="1000"
+		   eternal="true"
+		   overflowToDisk="true"
+		   memoryStoreEvictionPolicy="LRU" />
+
 	<cache name="paymentsServiceTypeCache"
 		   maxElementsInMemory="500"
 		   eternal="true"
