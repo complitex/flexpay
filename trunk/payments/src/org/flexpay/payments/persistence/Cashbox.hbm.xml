@@ -91,4 +91,12 @@
         where o.status=0
     </query>
 
+    <query name="Cashbox.findCashboxesForPaymentPoint">
+        select distinct o
+        from Cashbox o
+            inner join fetch o.paymentPoint
+            left join fetch o.names
+        where o.status=0 and o.paymentPoint.id=?
+    </query>
+
 </hibernate-mapping>

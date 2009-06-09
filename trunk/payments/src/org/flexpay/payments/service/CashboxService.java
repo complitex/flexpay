@@ -68,4 +68,14 @@ public interface CashboxService {
 	@Nullable
 	List<Cashbox> findObjects(Page<Cashbox> pager);
 
+    /**
+	 * Get all cashbox stub for payment point
+	 *
+	 * @param paymentPointId Payment point id
+	 * @return List of cashbox objects
+	 */
+	@Secured(Roles.CASHBOX_READ)
+	@Nullable
+    List<Cashbox> findCashboxesForPaymentPoint(Long paymentPointId);
+
 }

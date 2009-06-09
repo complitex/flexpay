@@ -36,7 +36,7 @@
     <s:iterator value="paymentPoints" id="paymentPointDetail">
       <td nowrap="nowrap">
         <input type="submit" name="selectedPaymentPointName" value="<s:property value="name"/>" class="btn-link"/>
-        <a href="<s:url action='paymentPointDetailMonitor.action'><s:param name="paymentPointsFilter.selectedId" value="%{id}"/></s:url>">
+        <a href="<s:url action='paymentPointDetailMonitor.action'><s:param name="processId" value="%{id}"/></s:url>">
 	            	<s:property value="name" />
 	            </a>
       </td>
