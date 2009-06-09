@@ -28,7 +28,7 @@ public class GenerateEndOperationDayRegistryJob extends Job {
 
     public String execute(Map<Serializable, Serializable> parameters) throws FlexPayException {
 
-		log.info("Start generating end operation day registry and save it to file process...");
+		log.info("Start process generating end operation day registry and save it to file...");
 
 		Long pointId = (Long) parameters.get("paymentPointId");
 		PaymentPoint paymentPoint = paymentPointService.read(new Stub<PaymentPoint>(pointId));
@@ -55,7 +55,7 @@ public class GenerateEndOperationDayRegistryJob extends Job {
         parameters.put("File", registry.getSpFile());
         parameters.put("Email", paymentPoint.getEmail());
 
-		log.info("End operation day registry and save it to file process finished...");
+		log.info("Process end operation day registry and save it to file finished...");
 
         return RESULT_NEXT;
     }

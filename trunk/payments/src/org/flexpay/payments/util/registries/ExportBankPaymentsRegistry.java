@@ -10,13 +10,14 @@ import org.flexpay.common.service.FPFileService;
 import org.flexpay.common.service.RegistryRecordService;
 import org.flexpay.common.service.RegistryService;
 import org.flexpay.common.util.FPFileUtil;
+import org.flexpay.common.util.RegistryUtil;
 import org.flexpay.common.util.SecurityUtil;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.BufferedWriter;
 import java.io.FileOutputStream;
@@ -31,14 +32,6 @@ public class ExportBankPaymentsRegistry {
 	private Logger log = LoggerFactory.getLogger(getClass());
 
 	public static final String FILE_ENCODING = "utf8";
-
-	public static final String FIELD_SEPARATOR = ";";
-	public static final String ADDRESS_SEPARATOR = ",";
-	public static final String FIO_SEPARATOR = " ";
-	public static final String CONTAINER_SEPARATOR = "|";
-
-	public static final String OPERATION_DATE_FORMAT = "ddMMyyyyHHmmss";
-	public static final String MESSAGE_TYPE = "♥";
 	public static final String FILE_NAME = "exportBankPayments.txt";
 
 	private String moduleName;
@@ -54,7 +47,7 @@ public class ExportBankPaymentsRegistry {
 		List<RegistryRecord> records = registryRecordService.listRecords(registry);
 		log.debug("Found {} records for registry with id = {}", records.size(), registry.getId());
 
-		SimpleDateFormat df = new SimpleDateFormat(OPERATION_DATE_FORMAT);
+		SimpleDateFormat df = new SimpleDateFormat(RegistryUtil.OPERATION_DATE_FORMAT);
 
 		String userName = SecurityUtil.getUserName();
 
@@ -80,22 +73,22 @@ public class ExportBankPaymentsRegistry {
 			for (RegistryRecord record : records) {
 				log.debug("Processing record = {}", record);
 				StringBuilder sb = new StringBuilder();
-				sb.append(MESSAGE_TYPE).append(FIELD_SEPARATOR).
-						append(registry.getId()).append(FIELD_SEPARATOR).
-						append(record.getServiceCode()).append(FIELD_SEPARATOR).
-						append(record.getPersonalAccountExt()).append(FIELD_SEPARATOR).
-						append(record.getCity()).append(ADDRESS_SEPARATOR).
-						append(record.getStreetType()).append(ADDRESS_SEPARATOR).
-						append(record.getStreetName()).append(ADDRESS_SEPARATOR).
-						append(record.getBuildingNum()).append(ADDRESS_SEPARATOR).
-						append(record.getBuildingBulkNum()).append(ADDRESS_SEPARATOR).
-						append(record.getApartmentNum()).append(FIELD_SEPARATOR).
-						append(record.getLastName()).append(FIO_SEPARATOR).
-						append(record.getFirstName()).append(FIO_SEPARATOR).
-						append(record.getMiddleName()).append(FIELD_SEPARATOR).
-						append(df.format(record.getOperationDate())).append(FIELD_SEPARATOR).
-						append(record.getUniqueOperationNumber()).append(FIELD_SEPARATOR).
-						append(record.getAmount()).append(FIELD_SEPARATOR);
+				sb.append(RegistryUtil.MESSAGE_TYPE).append(RegistryUtil.FIELD_SEPARATOR).
+						append(registry.getId()).append(RegistryUtil.FIELD_SEPARATOR).
+						append(record.getServiceCode()).append(RegistryUtil.FIELD_SEPARATOR).
+						append(record.getPersonalAccountExt()).append(RegistryUtil.FIELD_SEPARATOR).
+						append(record.getCity()).append(RegistryUtil.ADDRESS_SEPARATOR).
+						append(record.getStreetType()).append(RegistryUtil.ADDRESS_SEPARATOR).
+						append(record.getStreetName()).append(RegistryUtil.ADDRESS_SEPARATOR).
+						append(record.getBuildingNum()).append(RegistryUtil.ADDRESS_SEPARATOR).
+						append(record.getBuildingBulkNum()).append(RegistryUtil.ADDRESS_SEPARATOR).
+						append(record.getApartmentNum()).append(RegistryUtil.FIELD_SEPARATOR).
+						append(record.getLastName()).append(RegistryUtil.FIO_SEPARATOR).
+						append(record.getFirstName()).append(RegistryUtil.FIO_SEPARATOR).
+						append(record.getMiddleName()).append(RegistryUtil.FIELD_SEPARATOR).
+						append(df.format(record.getOperationDate())).append(RegistryUtil.FIELD_SEPARATOR).
+						append(record.getUniqueOperationNumber()).append(RegistryUtil.FIELD_SEPARATOR).
+						append(record.getAmount()).append(RegistryUtil.FIELD_SEPARATOR);
 
 				int i = 1;
 				int total = record.getContainers().size();
@@ -104,7 +97,7 @@ public class ExportBankPaymentsRegistry {
 
 					sb.append(container.getData());
 					if (i != total) {
-						sb.append(CONTAINER_SEPARATOR);
+						sb.append(RegistryUtil.CONTAINER_SEPARATOR);
 					}
 
 					i++;
