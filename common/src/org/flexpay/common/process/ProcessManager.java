@@ -6,6 +6,7 @@ import org.flexpay.common.process.sorter.ProcessSorter;
 import org.flexpay.common.service.Roles;
 import org.flexpay.common.dao.paging.Page;
 import org.jbpm.graph.def.ProcessDefinition;
+import org.jbpm.graph.exe.ProcessInstance;
 import org.jbpm.taskmgmt.exe.TaskInstance;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.security.annotation.Secured;
@@ -16,6 +17,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.Date;
+
+import com.sun.istack.internal.Nullable;
 
 public interface ProcessManager {
 
@@ -135,7 +138,7 @@ public interface ProcessManager {
 	void taskCompleted(Long taskId, Map<Serializable, Serializable> parameters, String transition);
 
 	/**
-	 * Retrive process info
+	 * Retrieve process info
 	 *
 	 * @param processId ProcessInstance id
 	 * @return Process info
@@ -152,4 +155,13 @@ public interface ProcessManager {
 	 * @param lyfecycleVoters Voters to set
 	 */
 	void setLyfecycleVoters(List<LyfecycleVoter> lyfecycleVoters);
+
+	@Secured (Roles.PROCESS_READ)
+	@Nullable
+	/**
+	 * Retrieve ProcessInstance
+	 * @param processId ProcessInstance id
+	 * @return Process info
+	 */
+	public ProcessInstance getProcessInstance(@NotNull final Long processInstanceId);
 }
