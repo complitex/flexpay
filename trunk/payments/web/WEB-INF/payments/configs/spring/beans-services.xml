@@ -127,8 +127,6 @@
           class="org.flexpay.payments.util.registries.EndOperationDayRegistryGenerator"
           p:documentService-ref="documentService"
           p:operationService-ref="operationService"
-          p:organizationService-ref="organizationService"
-          p:paymentPointService-ref="paymentPointService"
           p:propertiesFactory-ref="propertiesFactory"
           p:registryArchiveStatusService-ref="registryArchiveStatusService"
           p:registryRecordService-ref="registryRecordService"
