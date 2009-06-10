@@ -81,4 +81,40 @@
 		<group-name>ORGS_FULL_ACCESS</group-name>
 	</security-role-mapping>
 
+	<!-- Payments collectors -->
+	<security-role-mapping>
+		<role-name>ROLE_ORGS_PAYMENTS_COLLECTOR_READ</role-name>
+		<group-name>ORGS_FULL_ACCESS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>ROLE_ORGS_PAYMENTS_COLLECTOR_CHANGE</role-name>
+		<group-name>ORGS_FULL_ACCESS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>ROLE_ORGS_PAYMENTS_COLLECTOR_ADD</role-name>
+		<group-name>ORGS_FULL_ACCESS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>ROLE_ORGS_PAYMENTS_COLLECTOR_DELETE</role-name>
+		<group-name>ORGS_FULL_ACCESS</group-name>
+	</security-role-mapping>
+
+	<!-- Payment points -->
+	<security-role-mapping>
+		<role-name>ROLE_ORGS_PAYMENT_POINT_READ</role-name>
+		<group-name>ORGS_FULL_ACCESS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>ROLE_ORGS_PAYMENT_POINT_CHANGE</role-name>
+		<group-name>ORGS_FULL_ACCESS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>ROLE_ORGS_PAYMENT_POINT_ADD</role-name>
+		<group-name>ORGS_FULL_ACCESS</group-name>
+	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>ROLE_ORGS_PAYMENT_POINT_DELETE</role-name>
+		<group-name>ORGS_FULL_ACCESS</group-name>
+	</security-role-mapping>
+
 </sun-web-app>

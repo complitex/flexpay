@@ -10,6 +10,7 @@ import org.flexpay.orgs.persistence.filters.OrganizationInstanceFilter;
 import org.flexpay.orgs.persistence.filters.PaymentsCollectorFilter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.springframework.security.annotation.Secured;
 
 import java.util.List;
 import java.util.Set;
@@ -23,6 +24,7 @@ public interface PaymentsCollectorService
 	 * @param pager Page
 	 * @return List of registered instances
 	 */
+	@Secured (Roles.PAYMENTS_COLLECTOR_READ)
 	@NotNull
 	List<PaymentsCollector> listInstances(@NotNull Page<PaymentsCollector> pager);
 
@@ -31,6 +33,7 @@ public interface PaymentsCollectorService
 	 *
 	 * @param objectIds Instances identifiers to disable
 	 */
+	@Secured (Roles.PAYMENTS_COLLECTOR_DELETE)
 	void disable(@NotNull Set<Long> objectIds);
 
 	/**
@@ -39,6 +42,7 @@ public interface PaymentsCollectorService
 	 * @param stub Instance stub
 	 * @return Instance if found, or <code>null</code> otherwise
 	 */
+	@Secured (Roles.PAYMENTS_COLLECTOR_READ)
 	@Nullable
 	<T extends PaymentsCollector>
 	T read(@NotNull Stub<T> stub);
@@ -51,6 +55,7 @@ public interface PaymentsCollectorService
 	 * @throws org.flexpay.common.exception.FlexPayExceptionContainer
 	 *          if validation fails
 	 */
+	@Secured (Roles.PAYMENTS_COLLECTOR_ADD)
 	@NotNull
 	PaymentsCollector create(@NotNull PaymentsCollector instance) throws FlexPayExceptionContainer;
 
@@ -62,6 +67,7 @@ public interface PaymentsCollectorService
 	 * @throws org.flexpay.common.exception.FlexPayExceptionContainer
 	 *          if validation fails
 	 */
+	@Secured (Roles.PAYMENTS_COLLECTOR_CHANGE)
 	@NotNull
 	PaymentsCollector update(@NotNull PaymentsCollector instance) throws FlexPayExceptionContainer;
 
@@ -73,6 +79,7 @@ public interface PaymentsCollectorService
 	 * @param instance Organisation Instance
 	 * @return filter
 	 */
+	@Secured (Roles.PAYMENTS_COLLECTOR_READ)
 	@NotNull
 	OrganizationFilter initInstancelessFilter(@NotNull OrganizationFilter filter, @NotNull PaymentsCollector instance);
 
@@ -82,6 +89,7 @@ public interface PaymentsCollectorService
 	 * @param filter Instance filter to init
 	 * @return Filter back
 	 */
+	@Secured (Roles.PAYMENTS_COLLECTOR_READ)
 	@NotNull
 	PaymentsCollectorFilter initFilter(@NotNull PaymentsCollectorFilter filter);
 }

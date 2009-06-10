@@ -159,7 +159,7 @@
 	<bean id="paymentPointHistoryGenerator"
 		  class="org.flexpay.orgs.service.history.PaymentPointHistoryGenerator"
 		  p:diffService-ref="diffService"
-		  p:historyBuilder-ref=""
+		  p:historyBuilder-ref="paymentPointHistoryBuilder"
 		  p:paymentPointService-ref="paymentPointService" />
 
 	<!-- History handlers -->
@@ -202,7 +202,7 @@
 	<bean id="paymentPointHistoryHandler"
 		  parent="orgsHistoryHandlerBase"
 		  class="org.flexpay.orgs.service.history.PaymentPointHistoryHandler"
-		  p:historyBuilder-ref=""
+		  p:historyBuilder-ref="paymentPointHistoryBuilder"
 		  p:paymentPointService-ref="paymentPointService" />
 
 	<bean id="orgsObjectsSyncer" parent="objectsSyncer">

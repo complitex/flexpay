@@ -188,6 +188,32 @@
 		<role-name>ROLE_ORGS_SERVICE_PROVIDER_DELETE</role-name>
 	</security-role>
 
+	<security-role>
+		<role-name>ROLE_ORGS_PAYMENTS_COLLECTOR_READ</role-name>
+	</security-role>
+	<security-role>
+		<role-name>ROLE_ORGS_PAYMENTS_COLLECTOR_CHANGE</role-name>
+	</security-role>
+	<security-role>
+		<role-name>ROLE_ORGS_PAYMENTS_COLLECTOR_ADD</role-name>
+	</security-role>
+	<security-role>
+		<role-name>ROLE_ORGS_PAYMENTS_COLLECTOR_DELETE</role-name>
+	</security-role>
+
+	<security-role>
+		<role-name>ROLE_ORGS_PAYMENT_POINT_READ</role-name>
+	</security-role>
+	<security-role>
+		<role-name>ROLE_ORGS_PAYMENT_POINT_CHANGE</role-name>
+	</security-role>
+	<security-role>
+		<role-name>ROLE_ORGS_PAYMENT_POINT_ADD</role-name>
+	</security-role>
+	<security-role>
+		<role-name>ROLE_ORGS_PAYMENT_POINT_DELETE</role-name>
+	</security-role>
+
 	<login-config>
 		<auth-method>FORM</auth-method>
 		<form-login-config>
