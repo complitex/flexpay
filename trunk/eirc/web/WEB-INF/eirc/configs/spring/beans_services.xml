@@ -130,7 +130,8 @@
 		  class="org.flexpay.eirc.service.imp.PaymentPointServiceImpl"
 		  p:paymentPointDao-ref="paymentPointDao" />
 
-	<bean id="eircServiceOrganizationService" parent="serviceOrganizationService"
+	<bean id="eircServiceOrganizationServiceTarget" 
+		  parent="serviceOrganizationServiceTarget"
 		  class="org.flexpay.eirc.service.imp.ServiceOrganizationServiceImpl"
 		  p:servedBuildingDao-ref="servedBuildingDao" />
 
