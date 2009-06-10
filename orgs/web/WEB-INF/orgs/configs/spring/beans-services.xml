@@ -55,7 +55,7 @@
 		  parent="historyChangesListenerBase"
 		  p:historyBuilder-ref="serviceOrganizationHistoryBuilder" />
 
-	<bean id="serviceOrganizationService"
+	<bean id="serviceOrganizationServiceTarget"
 		  class="org.flexpay.orgs.service.imp.ServiceOrganizationServiceImpl"
 		  p:sessionUtils-ref="sessionUtils"
 		  p:serviceOrganizationDao-ref="serviceOrganizationDao" />
