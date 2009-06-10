@@ -127,6 +127,7 @@
 		  p:spService-ref="spService" />
 
 	<bean id="eircPaymentPointService"
+		  parent="paymentPointService"
 		  class="org.flexpay.eirc.service.imp.PaymentPointServiceImpl"
 		  p:paymentPointDao-ref="paymentPointDao" />
 
