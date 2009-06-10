@@ -6,7 +6,10 @@ import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Stub;
+import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.persistence.filter.ObjectFilter;
+import org.flexpay.common.persistence.history.ModificationListener;
+import org.flexpay.common.service.internal.SessionUtils;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.orgs.dao.PaymentPointDao;
 import org.flexpay.orgs.persistence.PaymentPoint;
@@ -31,6 +34,9 @@ import java.util.Set;
 public class PaymentPointServiceImpl implements PaymentPointService {
 
 	private Logger log = LoggerFactory.getLogger(getClass());
+
+	private SessionUtils sessionUtils;
+	private ModificationListener<PaymentPoint> modificationListener;
 
 	protected PaymentPointDao paymentPointDao;
 
@@ -81,6 +87,9 @@ public class PaymentPointServiceImpl implements PaymentPointService {
 			if (point != null) {
 				point.disable();
 				paymentPointDao.update(point);
+
+				modificationListener.onDelete(point);
+				log.info("Disabled: {}", point);
 			}
 		}
 	}
@@ -107,8 +116,9 @@ public class PaymentPointServiceImpl implements PaymentPointService {
 		point.setId(null);
 		paymentPointDao.create(point);
 
-		return point;
+		modificationListener.onCreate(point);
 
+		return point;
 	}
 
 	/**
@@ -128,6 +138,14 @@ public class PaymentPointServiceImpl implements PaymentPointService {
 		if (point.isNew()) {
 			throw new FlexPayExceptionContainer(new FlexPayException("New", "common.error.update_new"));
 		}
+
+		PaymentPoint old = read(stub(point));
+		if (old == null) {
+			throw new FlexPayExceptionContainer(
+					new FlexPayException("No object found to update " + point));
+		}
+		sessionUtils.evict(old);
+		modificationListener.onUpdate(old, point);
 
 		paymentPointDao.update(point);
 
@@ -175,4 +193,13 @@ public class PaymentPointServiceImpl implements PaymentPointService {
 		this.paymentPointDao = paymentPointDao;
 	}
 
+	@Required
+	public void setSessionUtils(SessionUtils sessionUtils) {
+		this.sessionUtils = sessionUtils;
+	}
+
+	@Required
+	public void setModificationListener(ModificationListener<PaymentPoint> modificationListener) {
+		this.modificationListener = modificationListener;
+	}
 }
