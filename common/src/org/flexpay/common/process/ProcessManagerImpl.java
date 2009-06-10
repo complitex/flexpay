@@ -62,13 +62,15 @@ public class ProcessManagerImpl implements ProcessManager, Runnable {
 	 */
 	private int taskRepeatLimit = 10;
 
-	// process DAO
+	/**
+	 * Process data access object
+	 */
 	private ProcessDao processDao;
 
 	private JbpmConfiguration jbpmConfiguration = null;
 
 	/**
-	 * Predefined set of paths where to lookup definitions if not already deployed
+	 * Predefined set of paths where to look definitions if not already deployed
 	 */
 	private final List<String> definitionPaths = CollectionUtils.list();
 
@@ -164,7 +166,7 @@ public class ProcessManagerImpl implements ProcessManager, Runnable {
 	 * @param in	  input stream with process definition
 	 * @param replace replace if true old process definition should be removed with new one
 	 * @return ID of process definition
-	 * @throws ProcessDefinitionException when can't deplot process definition to jbpm
+	 * @throws ProcessDefinitionException when can't deploy process definition to jbpm
 	 */
 	public long deployProcessDefinition(InputStream in, boolean replace) throws ProcessDefinitionException {
 		ProcessDefinition processDefinition = null;
@@ -649,7 +651,7 @@ public class ProcessManagerImpl implements ProcessManager, Runnable {
 	 * @param processId ProcessInstance id
 	 * @return Process info
 	 */
-	@NotNull
+	@Nullable
 	public Process getProcessInstanceInfo(@NotNull final Long processId) {
 
 		return execute(new ContextCallback<Process>() {
@@ -768,7 +770,7 @@ public class ProcessManagerImpl implements ProcessManager, Runnable {
 
 	/**
 	 * Retrieve ProcessInstance
-	 * @param processInstanceIdId ProcessInstance id
+	 * @param processInstanceId ProcessInstance id
 	 * @return Process info
 	 */	
 	public ProcessInstance getProcessInstance(@NotNull final Long processInstanceId) {
@@ -786,7 +788,7 @@ public class ProcessManagerImpl implements ProcessManager, Runnable {
 	 * @param <T>      Return value type
 	 * @return instance of T
 	 */
-	private <T> T execute(@NotNull ContextCallback<T> callback) {
+	public <T> T execute(@NotNull ContextCallback<T> callback) {
 		return execute(callback, false);
 	}
 
@@ -799,7 +801,7 @@ public class ProcessManagerImpl implements ProcessManager, Runnable {
 	 * @return instance of T
 	 */
 	synchronized
-	private <T> T execute(@NotNull ContextCallback<T> callback, boolean useExistingContext) {
+	public <T> T execute(@NotNull ContextCallback<T> callback, boolean useExistingContext) {
 
 		JbpmContext context = null;
 		boolean needClose = true;
@@ -857,9 +859,4 @@ public class ProcessManagerImpl implements ProcessManager, Runnable {
 	public void setProcessDao(ProcessDao processDao) {
 		this.processDao = processDao;
 	}
-}
-
-interface ContextCallback<T> {
-
-	T doInContext(@NotNull JbpmContext context);
 }

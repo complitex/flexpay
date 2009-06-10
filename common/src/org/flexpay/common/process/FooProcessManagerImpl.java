@@ -130,4 +130,12 @@ public class FooProcessManagerImpl implements ProcessManager{
 	public ProcessInstance getProcessInstance(@NotNull Long processInstanceId) {
 		return null;
 	}
+
+	public <T> T execute(@NotNull ContextCallback<T> callback) {
+		return null;
+	}
+
+	public <T> T execute(@NotNull ContextCallback<T> callback, boolean useExistingContext) {
+		return null;
+	}
 }
