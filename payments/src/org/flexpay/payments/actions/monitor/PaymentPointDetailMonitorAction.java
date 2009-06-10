@@ -18,8 +18,11 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 import org.apache.commons.lang.time.DateUtils;
 import org.flexpay.common.process.Process;
+import org.flexpay.common.process.ContextCallback;
 import org.jbpm.graph.exe.ProcessInstance;
+import org.jbpm.graph.exe.Token;
 import org.jbpm.graph.def.Transition;
+import org.jbpm.JbpmContext;
 
 import java.util.List;
 import java.util.Date;
@@ -58,16 +61,23 @@ public class PaymentPointDetailMonitorAction extends CashboxCookieActionSupport 
             return ERROR;
         }
 
+        status = (String) process.getParameters().get("PROCESS_STATUS");
+
         List<Cashbox> cbs = cashboxService.findCashboxesForPaymentPoint(paymentPoint.getId());
         Date endDate = DateUtil.now();
         Date startDate = DateUtils.setHours(endDate, 0);
 		startDate = DateUtils.setMinutes(startDate, 0);
 		startDate = DateUtils.setSeconds(startDate, 0);
 
+        List<OperationTypeStatistics> statistics = paymentsStatisticsService.operationTypePaymentPointStatistics(Stub.stub(paymentPoint), startDate, endDate);
+        paymentsCount = String.valueOf(getPaymentsCount(statistics));
+        totalSum = String.valueOf(getPaymentsSumm(statistics));
+        name = paymentPoint.getName(getLocale());
+
         cashboxes = new ArrayList<CashboxMonitorContainer>();
         if (cbs != null) {
             for (Cashbox cashbox : cbs) {
-                List<OperationTypeStatistics> statistics = paymentsStatisticsService.operationTypeCashboxStatistics(Stub.stub(cashbox), startDate, endDate);
+                statistics = paymentsStatisticsService.operationTypeCashboxStatistics(Stub.stub(cashbox), startDate, endDate);
                 CashboxMonitorContainer container = new CashboxMonitorContainer();
                 container.setCashbox(cashbox.getName(getLocale()));
                 container.setCashierFIO(null);
@@ -77,9 +87,27 @@ public class PaymentPointDetailMonitorAction extends CashboxCookieActionSupport 
                 cashboxes.add(container);
             }
         }
-        long processInstanceId = process.getProcessInstaceId();
+        final long processInstanceId = process.getId();
+        /*
+        if (processInstanceId <= 0) {
+            processInstanceId = process.getId();
+            log.warn("Process instance Id get from process {}", processInstanceId);
+        }
+        */
         ProcessInstance processInstance = processManager.getProcessInstance(processInstanceId);
-        Set transitions = processInstance.getRootToken().getAvailableTransitions();
+        if (processInstance == null) {
+            log.error("Not found process instance for process instance id {}", processInstanceId);
+            return ERROR;
+        }
+
+        Set transitions = processManager.execute(new ContextCallback<Set>(){
+			public Set doInContext(@NotNull JbpmContext context) {
+				return context.getProcessInstance(processInstanceId).getRootToken().getAvailableTransitions();
+			}
+		});
+        /*
+        processInstance.getRootToken().getAvailableTransitions();
+        */
 
         buttons = new ArrayList<String>();
         for (Object o : transitions) {

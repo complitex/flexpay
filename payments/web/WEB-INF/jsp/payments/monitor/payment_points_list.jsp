@@ -34,18 +34,19 @@
     </tr>
 
     <s:iterator value="paymentPoints" id="paymentPointDetail">
-      <td nowrap="nowrap">
-        <input type="submit" name="selectedPaymentPointName" value="<s:property value="name"/>" class="btn-link"/>
-        <a href="<s:url action='paymentPointDetailMonitor.action'><s:param name="processId" value="%{id}"/></s:url>">
-	            	<s:property value="name" />
-	            </a>
-      </td>
-      <td nowrap="nowrap"><s:property value="paymentsCount"/></td>
-      <td nowrap="nowrap"><s:property value="status"/></td>
-      <td nowrap="nowrap"><s:property value="totalSum"/></td>
-      <td nowrap="nowrap"><s:property value="cashBox"/></td>
-      <td nowrap="nowrap"><s:property value="cashierFIO"/></td>
-      <td nowrap="nowrap"><s:property value="lastPayment"/></td>
+      <tr>
+        <td nowrap="nowrap">
+          <a href="<s:url action='paymentPointDetailMonitor.action'><s:param name="processId" value="%{id}"/></s:url>">
+                  <s:property value="name" />
+                </a>
+        </td>
+        <td nowrap="nowrap"><s:property value="paymentsCount"/></td>
+        <td nowrap="nowrap"><s:property value="status"/></td>
+        <td nowrap="nowrap"><s:property value="totalSum"/></td>
+        <td nowrap="nowrap"><s:property value="cashBox"/></td>
+        <td nowrap="nowrap"><s:property value="cashierFIO"/></td>
+        <td nowrap="nowrap"><s:property value="lastPayment"/></td>
+      </tr>
     </s:iterator>
   </table>
   <table cellpadding="3" cellspacing="1" border="0" width="100%">

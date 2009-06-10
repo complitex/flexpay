@@ -9,6 +9,7 @@ import org.flexpay.common.process.sorter.ProcessSorterByEndDate;
 import org.flexpay.common.process.sorter.ProcessSorterByName;
 import org.flexpay.common.process.sorter.ProcessSorterByStartDate;
 import org.flexpay.common.process.sorter.ProcessSorterByState;
+import org.flexpay.common.util.DateUtil;
 import org.flexpay.orgs.persistence.PaymentPoint;
 import org.flexpay.orgs.service.PaymentPointService;
 import org.flexpay.payments.actions.CashboxCookieWithPagerActionSupport;
@@ -18,6 +19,7 @@ import org.flexpay.payments.service.statistics.OperationTypeStatistics;
 import org.flexpay.payments.service.statistics.PaymentsStatisticsService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
+import org.apache.commons.lang.time.DateUtils;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -27,8 +29,6 @@ import java.text.SimpleDateFormat;
 
 public class PaymentPointsListMonitorAction extends CashboxCookieWithPagerActionSupport<PaymentPointMonitorContainer> {
     private static final String PROCESS_DEFINITION_NAME = "TradingDay";
-
-    private static final String PROCESS_PARAM_PAYMENT_POINT = "PAYMENT_POINT";
 
     private static final SimpleDateFormat formatTimeUpdated = new SimpleDateFormat("HH:mm");
 
@@ -62,19 +62,26 @@ public class PaymentPointsListMonitorAction extends CashboxCookieWithPagerAction
 
         paymentPoints = new ArrayList<PaymentPointMonitorContainer>();
         for (Process process : processes) {
+            process = processManager.getProcessInstanceInfo(process.getId());
             Long pointId = (Long) process.getParameters().get("paymentPointId");
+            String status = (String) process.getParameters().get("PROCESS_STATUS");
 		    PaymentPoint paymentPoint = paymentPointService.read(new Stub<PaymentPoint>(pointId));
             if (paymentPoint == null) {
                 log.error("Payment point with id - {} does not exist", pointId);
                 return ERROR;
             }
-            List<OperationTypeStatistics> statistics = paymentsStatisticsService.operationTypePaymentPointStatistics(Stub.stub(paymentPoint), null, null);
+            Date endDate = DateUtil.now();
+            Date startDate = DateUtils.setHours(endDate, 0);
+            startDate = DateUtils.setMinutes(startDate, 0);
+            startDate = DateUtils.setSeconds(startDate, 0);
+            List<OperationTypeStatistics> statistics = paymentsStatisticsService.operationTypePaymentPointStatistics(Stub.stub(paymentPoint), startDate, endDate);
 
             PaymentPointMonitorContainer container = new PaymentPointMonitorContainer();
             container.setId(String.valueOf(process.getId()));
             container.setName(paymentPoint.getName(getLocale()));
             container.setPaymentsCount(String.valueOf(getPaymentsCount(statistics)));
             container.setTotalSum(String.valueOf(getPaymentsSumm(statistics)));
+            container.setStatus(status);
 
             container.setCashBox(null);
             container.setCashierFIO(null);
