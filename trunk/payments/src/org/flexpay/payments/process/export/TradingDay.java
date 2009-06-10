@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.flexpay.common.process.*;
+import org.flexpay.common.process.Process;
 import org.flexpay.common.process.exception.ProcessInstanceException;
 import org.flexpay.common.process.exception.ProcessDefinitionException;
 import org.flexpay.common.process.sorter.ProcessSorterByName;
@@ -14,6 +15,7 @@ import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.SecurityUtil;
 import org.flexpay.common.service.Roles;
+import org.jbpm.graph.exe.ProcessInstance;
 
 import java.util.Date;
 import java.util.List;
@@ -38,7 +40,7 @@ public class TradingDay extends QuartzJobBean {
      * Set of authorities names for payments registry
      */
     protected static final List<String> USER_TRADING_DAY_AUTHORITIES = CollectionUtils.list(
-            Roles.PROCESS_READ
+            Roles.PROCESS_READ, Roles.PROCESS_DELETE
     );
 
 
@@ -52,21 +54,48 @@ public class TradingDay extends QuartzJobBean {
         List<org.flexpay.common.process.Process> processes;
         do {
             processes = processManager.getProcesses(processSorterByName, page, null, null, ProcessState.RUNING, PROCESS_DEFINITION_NAME);
+            log.debug("Have some processes {}", page.getTotalNumberOfElements());
             try {
-                Thread.sleep(TIME_OUT);
+                if (processes.size() > 0) {
+                    Thread.sleep(TIME_OUT);
+                }
             } catch (InterruptedException e) {
                 log.warn("Interrupted", e);
                 throw new JobExecutionException(e);
             }
-            log.debug("Have some processes {}", page.getTotalNumberOfElements());
-        } while (processes != null && processes.size() > 0);
+            /*
+            for (Process process : processes) {
+                long processId = process.getId();
+                Process processInstanceInfo = processManager.getProcessInstanceInfo(processId);
+                log.debug("Process {} state complited {} ", new Object[]{processId, processInstanceInfo.getProcessState().isCompleted()});
+                log.debug("Process {} status {} ", new Object[]{processId, processInstanceInfo.getParameters().get("PROCESS_STATUS")});
+                log.debug("Process {} payment point {} ", new Object[]{processId, processInstanceInfo.getParameters().get("paymentPointId")});
+                long processInstanceId = processInstanceInfo.getProcessInstaceId();
+                ProcessInstance pi = processManager.getProcessInstance(processInstanceInfo.getProcessInstaceId());
+                if (pi != null) {
+                    try {
+                        pi.signal();
+                        log.debug("Send signal to {}", processInstanceId);
+                    } catch (Exception ex) {
+                        log.error("Did not send signal to process instace {}", processInstanceId);
+                        processManager.deleteProcessInstance(processInstanceInfo);
+                    }
+                } else {
+                    log.error("Process instace {} did not load", processInstanceId);
+                    processManager.deleteProcessInstance(processInstanceInfo);
+                }
+            }
+            */
+        } while (processes.size() > 0);
         log.debug("All processes finished");
 
         for (String paymentPoint : paymentPoints) {
             Map<Serializable, Serializable> parameters = new HashMap<Serializable, Serializable>();
-            parameters.put("paymentPointId", paymentPoint);
+            Long paymentPointId = Long.parseLong(paymentPoint);
+            parameters.put("paymentPointId", paymentPointId);
+            log.debug("set paymentPointId {}", paymentPointId);
             try {
-                processManager.createProcess("GeneratePaymentsRegisryProcess", parameters);
+                processManager.createProcess(PROCESS_DEFINITION_NAME, parameters);
             } catch (ProcessInstanceException e) {
                 log.error("Failed run process trading day", e);
                 throw new JobExecutionException(e);

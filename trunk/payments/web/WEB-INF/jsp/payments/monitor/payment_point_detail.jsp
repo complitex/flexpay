@@ -11,7 +11,7 @@
     <tr>
       <td nowrap="nowrap">
         <s:text name="payments.payment_point.detail.payments_count"/>:<s:property value="paymentsCount"/>&nbsp;&nbsp;&nbsp;
-        <s:text name="payments.payment_point"/>:<s:property value="totalSum"/>
+        <s:text name="payments.payment_point.detail.sum"/>:<s:property value="totalSum"/>
       </td>
     </tr>
     <tr>
@@ -35,11 +35,13 @@
     </tr>
 
     <s:iterator value="cashboxes" id="paymentPointDetail">
-      <td nowrap="nowrap"><s:property value="cashBox"/></td>
-      <td nowrap="nowrap"><s:property value="sum"/></td>
-      <td nowrap="nowrap"><s:property value="cashierFIO"/></td>
-      <td nowrap="nowrap"><s:property value="lastPayment"/></td>
-      <td nowrap="nowrap"><s:property value="paymentsCount"/></td>
+      <tr>
+        <td nowrap="nowrap"><s:property value="cashBox"/></td>
+        <td nowrap="nowrap"><s:property value="sum"/></td>
+        <td nowrap="nowrap"><s:property value="cashierFIO"/></td>
+        <td nowrap="nowrap"><s:property value="lastPayment"/></td>
+        <td nowrap="nowrap"><s:property value="paymentsCount"/></td>
+      </tr>
     </s:iterator>
   </table>
 </s:form>
