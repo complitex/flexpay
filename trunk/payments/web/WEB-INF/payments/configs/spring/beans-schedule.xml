@@ -30,14 +30,29 @@
                 <entry key="processManager" value-ref="processManagerPayments"/>
                 <entry key="providerService" value-ref="serviceProviderService"/>
                 <entry key="serviceProviderAttributeService" value-ref="serviceProviderServiceAttributeTarget"/>
-                <entry key="providerId" value="1"/>
+                <entry key="providerId" value=""/>
+            </map>
+        </property>
+    </bean>
+
+    <bean name="jobTradingDay" class="org.springframework.scheduling.quartz.JobDetailBean">
+        <property name="jobClass" value="org.flexpay.payments.process.export.TradingDay"/>
+        <property name="jobDataAsMap">
+            <map>
+                <entry key="processManager" value-ref="processManagerPayments"/>
+                <entry key="paymentPoints" value-ref="paymentPoints"/>
             </map>
         </property>
     </bean>
 
     <bean id="jobGeneratePaymentsRegistryTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
 		<property name="jobDetail" ref="jobGeneratePaymentsRegistry" />
-		<property name="cronExpression" value="${payments.sync.cron.schedule.sync}" />
+		<property name="cronExpression" value="${payments.cron.schedule.sync}" />
+	</bean>
+
+    <bean id="jobTradingDayTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="jobTradingDay" />
+		<property name="cronExpression" value="${trading.day.cron.schedule.sync}" />
 	</bean>
 
 

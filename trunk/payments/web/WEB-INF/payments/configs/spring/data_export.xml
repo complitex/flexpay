@@ -19,4 +19,13 @@
 		  class="org.flexpay.common.service.importexport.imp.CorrectionsServiceImpl"
 		  p:typeRegistry-ref="typeRegistryPayments" />
 
+    <bean id="paymentPoints" class="java.util.ArrayList">
+        <constructor-arg>
+            <list>
+                <value>1</value>
+                <value>2</value>
+            </list>
+        </constructor-arg>
+    </bean>
+
 </beans>
