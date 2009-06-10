@@ -22,13 +22,6 @@
 		// setting focus to the first payments field
 		$('#' + fieldChain[0]).focus();
 		currentFieldIndex = 0;
-
-		// debug
-		console.log('Build field chain is following');
-		for (var j = 0; j < fieldChain.length; j++) {
-			console.log('[' + fieldChain[j] + ']');
-		}
-		console.log('Current field index is ' + currentFieldIndex);
 	}
 
 	function rebindEvents() {
@@ -40,16 +33,13 @@
 			var selectedFieldId = $(event.target).attr('id');
 			for (var i = 0; i < fieldChain.length; i++) {
 				if (fieldChain[i] == selectedFieldId) {
-					console.log('Updating current field index to ' + currentFieldIndex);
 					currentFieldIndex = i;					
 				}
 			}
 		});
 
 		$('#payments_<s:property value="#serviceIndx"/>').bind('keypress', function(event) {
-			console.log('Pressed key code is ' + event.keyCode);
 			if (event.keyCode == 13 || event.keyCode == 9) {
-				console.log('Moving current field index to ' + (currentFieldIndex + 1));
 				$('#' + fieldChain[currentFieldIndex + 1]).focus();
 				 event.preventDefault();
 			}
