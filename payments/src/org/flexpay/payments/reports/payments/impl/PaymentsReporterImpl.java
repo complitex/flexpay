@@ -93,6 +93,18 @@ public class PaymentsReporterImpl implements PaymentsReporter {
 			throw new IllegalArgumentException("Invalid operation stub " + stub);
 		}
 
+		return getPaymentPrintFormData(op);
+	}
+
+	/**
+	 * Get quittance payment print form data
+	 *
+	 * @param operation Payment operation to build form for
+	 * @return PaymentPrintForm form data
+	 * @throws IllegalArgumentException if Operation reference is invalid
+	 */
+	public PaymentPrintForm getPaymentPrintFormData(Operation op) throws IllegalArgumentException {
+
 		Organization org = organizationService.readFull(op.getCreatorOrganizationStub());
 		if (org == null) {
 			throw new IllegalArgumentException("Creator organization not found " +

@@ -6,9 +6,9 @@
 	<%@ include file="/WEB-INF/jsp/common/layouts/scripts.jsp" %>
 </head>
 <body>
-<div align="center">
-	<input type='button' onclick='parent.mainFrame.print();' value='<s:text name="print" />' class="btn-exit" />
-	<input type='button' onclick="parent.close();" value="<s:text name="close_window" />" class="btn-exit" />
-</div>
+    <div align="center">
+        <input type="button" onclick="parent.mainFrame.print();" value="<s:text name="print" />" class="btn-exit" />
+        <input type="button" onclick="parent.close();" value="<s:text name="close_window" />" class="btn-exit" />
+    </div>
 </body>
 </html>

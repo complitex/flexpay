@@ -50,18 +50,6 @@ public interface BuildingService extends ParentService<BuildingsFilter> {
 	@Secured (Roles.BUILDING_READ)
 	List<BuildingAddress> getBuildings(ArrayStack filters, Page<BuildingAddress> pager);
 
-	/**
-	 * Get buildings of a street
-	 *
-	 * @param streetId Street key
-	 * @param pager	Page
-	 * @return List of buildingses
-	 * @deprecated use {@link #getBuildings(org.apache.commons.collections.ArrayStack, org.flexpay.common.dao.paging.Page)}
-	 *             instead
-	 */
-	@Secured (Roles.BUILDING_READ)
-	List<BuildingAddress> getBuildings(Long streetId, Page<BuildingAddress> pager);
-
 	@Secured (Roles.BUILDING_READ)
 	List<BuildingAddress> getBuildings(@NotNull Stub<Street> stub);
 

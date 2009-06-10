@@ -31,6 +31,7 @@ public class CorrectBuildingAction extends BuildingsListAction implements Cashbo
 	protected ServiceProviderService serviceProviderService;
 
 	@NotNull
+	@Override
 	public String doExecute() throws Exception {
 
 		record = recordService.read(record.getId());

@@ -3,13 +3,14 @@ package org.flexpay.orgs.service;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Stub;
+import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.orgs.persistence.ServiceProvider;
 import org.flexpay.orgs.persistence.ServiceProviderDescription;
 import org.flexpay.orgs.persistence.filters.OrganizationFilter;
 import org.flexpay.orgs.persistence.filters.ServiceProviderFilter;
-import org.springframework.security.annotation.Secured;
-import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import org.springframework.security.annotation.Secured;
 
 import java.util.List;
 import java.util.Set;
@@ -18,15 +19,14 @@ public interface ServiceProviderService
 		extends OrganizationInstanceService<ServiceProviderDescription, ServiceProvider> {
 
 	/**
-	 * Find service provider by its number
+	 * Find service provider by its organization stub
 	 *
-	 * @param providerNumber Service provider unique number
+	 * @param orgStub Service provider organization stub
 	 * @return ServiceProvider instance
 	 * @throws IllegalArgumentException if provider cannot be found
-	 * @deprecated todo refactor to use Stub
 	 */
 	@Secured (Roles.SERVICE_PROVIDER_READ)
-	ServiceProvider getProvider(Long providerNumber) throws IllegalArgumentException;
+	ServiceProvider getProvider(Stub<Organization> orgStub) throws IllegalArgumentException;
 
 	/**
 	 * List service providers

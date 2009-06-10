@@ -34,6 +34,16 @@ public interface PaymentsReporter {
 	PaymentPrintForm getPaymentPrintFormData(Stub<Operation> stub) throws IllegalArgumentException;
 
 	/**
+	 * Get quittance payment print form data
+	 *
+	 * @param operation Payment operation to build form for
+	 * @return PaymentPrintForm form data
+	 * @throws IllegalArgumentException if Operation reference is invalid
+	 */
+	@Secured(Roles.PAYMENTS_REPORT)
+	PaymentPrintForm getPaymentPrintFormData(Operation operation) throws IllegalArgumentException;
+
+	/**
 	 * Get received payments print form data
 	 * @param begin begin date report parameter
 	 * @param end end date report parameter

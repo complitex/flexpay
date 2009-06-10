@@ -28,9 +28,6 @@ public class BuildingsListAction extends BuildingsActionsBase {
 		streetNameFilter.setShowSearchString(true);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@NotNull
 	public String doExecute() throws Exception {
 

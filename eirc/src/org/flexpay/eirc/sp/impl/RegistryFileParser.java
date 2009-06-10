@@ -240,7 +240,7 @@ public class RegistryFileParser implements FileParser {
 			}
 			log.info("Recipient: {}\n sender: {}", recipient, sender);
 
-			ServiceProvider provider = providerService.getProvider(newRegistry.getSenderCode());
+			ServiceProvider provider = providerService.getProvider(new Stub<Organization>(newRegistry.getSenderCode()));
 			if (provider == null) {
 				log.error("Failed processing registry header, provider not found: #{}", newRegistry.getSenderCode());
 				throw new FlexPayException("Cannot find service provider " + newRegistry.getSenderCode());

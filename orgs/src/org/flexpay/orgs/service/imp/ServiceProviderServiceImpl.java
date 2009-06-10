@@ -50,16 +50,16 @@ public class ServiceProviderServiceImpl implements ServiceProviderService {
 	}
 
 	/**
-	 * Find service provider by its number
+	 * Find service provider by its organization stub
 	 *
-	 * @param providerNumber Service provider unique number
+	 * @param orgStub Service provider organization stub
 	 * @return ServiceProvider instance
 	 * @throws IllegalArgumentException if provider cannot be found
 	 */
-	public ServiceProvider getProvider(Long providerNumber) throws IllegalArgumentException {
-		ServiceProvider serviceProvider = serviceProviderDaoExt.findByNumber(providerNumber);
+	public ServiceProvider getProvider(@NotNull Stub<Organization> orgStub) throws IllegalArgumentException {
+		ServiceProvider serviceProvider = serviceProviderDaoExt.findByNumber(orgStub.getId());
 		if (serviceProvider == null) {
-			throw new IllegalArgumentException("Cannot find service provider with number #" + providerNumber);
+			throw new IllegalArgumentException("Cannot find service provider with number #" + orgStub);
 		}
 
 		return serviceProvider;

@@ -35,11 +35,6 @@
 		  p:processManager-ref="processManager"
           scope="prototype" />
 
-	<bean id="buildingAjaxAction"
-		  class="org.flexpay.eirc.actions.BuildingAjaxAction"
-		  p:buildingService-ref="buildingService"
-          scope="prototype" />
-
 	<bean id="quittanceGenerateAction"
 		  class="org.flexpay.eirc.actions.quittance.QuittanceGenerateAction"
 		  p:serviceOrganizationService-ref="serviceOrganizationService"
