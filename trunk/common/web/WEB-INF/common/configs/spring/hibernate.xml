@@ -74,7 +74,7 @@
 
 	<bean id="hibernateTemplate"
 		  class="org.springframework.orm.hibernate3.HibernateTemplate"
-			p:sessionFactory-ref="flexpaySessionFactory" />
+		  p:sessionFactory-ref="flexpaySessionFactory" />
 
 	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
 		<constructor-arg ref="dataSource" />
@@ -82,20 +82,20 @@
 
 	<!--  Dao Layer generic config-->
 	<bean id="namingStrategy"
-		  class="org.springframework.beans.factory.config.FieldRetrievingFactoryBean">
-		<property name="staticField" value="${namingStrategy.staticField}" />
-	</bean>
+		  class="org.springframework.beans.factory.config.FieldRetrievingFactoryBean"
+		  p:staticField="${namingStrategy.staticField}" />
 
 	<bean id="extendedFinderNamingStrategy"
 		  class="org.flexpay.common.dao.finder.impl.ExtendedFinderNamingStrategy" />
+
 	<bean id="finderIntroductionAdvisor"
 		  class="org.flexpay.common.dao.finder.impl.FinderIntroductionAdvisor" />
 
 	<bean id="abstractDaoTarget"
-		  class="org.flexpay.common.dao.impl.GenericDaoHibernateImpl" abstract="true">
-		<property name="hibernateTemplate" ref="hibernateTemplate" />
-		<property name="namingStrategy" ref="extendedFinderNamingStrategy" />
-	</bean>
+		  class="org.flexpay.common.dao.impl.GenericDaoHibernateImpl"
+		  abstract="true"
+		  p:hibernateTemplate-ref="hibernateTemplate"
+		  p:namingStrategy-ref="extendedFinderNamingStrategy" />
 
 	<bean id="abstractDao" abstract="true"
 		  class="org.springframework.aop.framework.ProxyFactoryBean">
@@ -107,33 +107,29 @@
 	</bean>
 
 	<bean name="lockManager" class="org.flexpay.common.locking.LockManager"
-		  destroy-method="releaseAll">
-		<property name="hibernateTemplate" ref="hibernateTemplate" />
-	</bean>
+		  destroy-method="releaseAll"
+		  p:hibernateTemplate-ref="hibernateTemplate" />
 
-    <bean id="jbpmObjectFactory" class="org.flexpay.common.process.FlexPayJBPMObjectFactory"
-            p:configuration="WEB-INF/common/configs/jbpm/jbpm.cfg.xml"
-            />
+	<bean id="jbpmObjectFactory" class="org.flexpay.common.process.FlexPayJBPMObjectFactory"
+		  p:configuration="WEB-INF/common/configs/jbpm/jbpm.cfg.xml" />
 
 	<bean id="jbpmConfiguration"
 		  class="org.springmodules.workflow.jbpm31.LocalJbpmConfigurationFactoryBean" scope="singleton"
-            p:sessionFactory-ref="flexpaySessionFactory"
-            p:objectFactory-ref="jbpmObjectFactory"
-            />
+		  p:sessionFactory-ref="flexpaySessionFactory"
+		  p:objectFactory-ref="jbpmObjectFactory" />
 
-    <bean id="jobExecutor" class="org.jbpm.job.executor.JobExecutor" scope="singleton"
-        p:jbpmConfiguration-ref="jbpmConfiguration"
-        p:name="FlexPayJobExecutor"
-        p:nbrOfThreads="1"
-        p:idleInterval="5000"
-        p:maxIdleInterval="3600000"
-        p:historyMaxSize="20"
-        p:maxLockTime="600000"
-        p:lockMonitorInterval="60000"
-        p:lockBufferTime="5000"
-        init-method="startThread"
-        destroy-method="stopThread"
-    />
+	<bean id="jobExecutor" class="org.jbpm.job.executor.JobExecutor" scope="singleton"
+		  p:jbpmConfiguration-ref="jbpmConfiguration"
+		  p:name="FlexPayJobExecutor"
+		  p:nbrOfThreads="1"
+		  p:idleInterval="5000"
+		  p:maxIdleInterval="3600000"
+		  p:historyMaxSize="20"
+		  p:maxLockTime="600000"
+		  p:lockMonitorInterval="60000"
+		  p:lockBufferTime="5000"
+		  init-method="startThread"
+		  destroy-method="stopThread" />
 
 	<bean name="jobManager" class="org.flexpay.common.process.job.JobManager"
 		  factory-method="getInstance" destroy-method="unload"
@@ -156,9 +152,13 @@
 		</property>
 	</bean>
 
-    <bean name="fooProcessManager" class="org.flexpay.common.process.FooProcessManagerImpl"
-          destroy-method="stop" init-method="start" factory-method="getInstance" autowire-candidate="false"
-          p:jbpmConfiguration-ref="jbpmConfiguration"
-          p:rescanFrequency="${process_manager.rescanFrequency}"
-          p:taskRepeatLimit="${process_manager.startTaskLimit}" />
+	<bean name="fooProcessManager"
+		  class="org.flexpay.common.process.FooProcessManagerImpl"
+		  destroy-method="stop"
+		  init-method="start"
+		  factory-method="getInstance"
+		  autowire-candidate="false"
+		  p:jbpmConfiguration-ref="jbpmConfiguration"
+		  p:rescanFrequency="${process_manager.rescanFrequency}"
+		  p:taskRepeatLimit="${process_manager.startTaskLimit}" />
 </beans>

@@ -40,7 +40,8 @@ public interface PaymentsCollectorService
 	 * @return Instance if found, or <code>null</code> otherwise
 	 */
 	@Nullable
-	PaymentsCollector read(@NotNull Stub<PaymentsCollector> stub);
+	<T extends PaymentsCollector>
+	T read(@NotNull Stub<T> stub);
 
 	/**
 	 * Update instance

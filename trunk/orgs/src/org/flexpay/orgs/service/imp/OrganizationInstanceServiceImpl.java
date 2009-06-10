@@ -5,15 +5,18 @@ import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Stub;
+import static org.flexpay.common.persistence.Stub.stub;
+import org.flexpay.common.persistence.history.ModificationListener;
 import org.flexpay.common.service.internal.SessionUtils;
 import org.flexpay.orgs.dao.OrganisationInstanceDao;
 import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.orgs.persistence.OrganizationInstance;
 import org.flexpay.orgs.persistence.OrganizationInstanceDescription;
 import org.flexpay.orgs.persistence.filters.OrganizationFilter;
-import org.flexpay.orgs.persistence.filters.OrganizationInstanceFilter;
 import org.flexpay.orgs.service.OrganizationInstanceService;
 import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,8 +29,12 @@ public abstract class OrganizationInstanceServiceImpl<
 		T extends OrganizationInstance<D, T>>
 		implements OrganizationInstanceService<D, T> {
 
+	protected Logger log = LoggerFactory.getLogger(getClass());
+
 	private SessionUtils sessionUtils;
 	protected OrganisationInstanceDao<D, T> instanceDao;
+
+	private ModificationListener<T> modificationListener;
 
 	/**
 	 * List registered instances
@@ -46,8 +53,8 @@ public abstract class OrganizationInstanceServiceImpl<
 	 * @param stub Instance stub
 	 * @return Instance if found, or <code>null</code> otherwise
 	 */
-	public T read(@NotNull Stub<T> stub) {
-		return instanceDao.readFull(stub.getId());
+	public <SubT extends T> SubT read(@NotNull Stub<SubT> stub) {
+		return (SubT) instanceDao.readFull(stub.getId());
 	}
 
 	/**
@@ -62,6 +69,9 @@ public abstract class OrganizationInstanceServiceImpl<
 			if (t != null) {
 				t.disable();
 				instanceDao.update(t);
+
+				modificationListener.onDelete(t);
+				log.debug("Disabled instance: {}", t);
 			}
 		}
 	}
@@ -88,6 +98,8 @@ public abstract class OrganizationInstanceServiceImpl<
 		instance.setId(null);
 		instanceDao.create(instance);
 
+		modificationListener.onCreate(instance);
+
 		return instance;
 	}
 
@@ -108,6 +120,14 @@ public abstract class OrganizationInstanceServiceImpl<
 		if (instance.isNew()) {
 			throw new FlexPayExceptionContainer(new FlexPayException("New", "common.error.update_new"));
 		}
+
+		T old = read(stub(instance));
+		if (old == null) {
+			throw new FlexPayExceptionContainer(
+					new FlexPayException("No object found to update " + instance));
+		}
+		sessionUtils.evict(old);
+		modificationListener.onUpdate(old, instance);
 
 		instanceDao.update(instance);
 
@@ -200,5 +220,10 @@ public abstract class OrganizationInstanceServiceImpl<
 	@Required
 	public void setSessionUtils(SessionUtils sessionUtils) {
 		this.sessionUtils = sessionUtils;
+	}
+
+	@Required
+	public void setModificationListener(ModificationListener<T> modificationListener) {
+		this.modificationListener = modificationListener;
 	}
 }

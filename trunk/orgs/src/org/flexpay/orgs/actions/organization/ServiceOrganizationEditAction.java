@@ -2,6 +2,7 @@ package org.flexpay.orgs.actions.organization;
 
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.persistence.Language;
+import static org.flexpay.common.persistence.Stub.stub;
 import static org.flexpay.common.util.CollectionUtils.map;
 import org.flexpay.common.util.config.ApplicationConfig;
 import org.flexpay.orgs.persistence.ServiceOrganization;
@@ -32,20 +33,21 @@ public class ServiceOrganizationEditAction extends FPActionSupport {
 			return REDIRECT_SUCCESS;
 		}
 
-		ServiceOrganization oldServiceOrganization = serviceOrganizationService.read(serviceOrganization);
-		if (oldServiceOrganization == null) {
+		ServiceOrganization old = serviceOrganization.isNew()
+								  ? serviceOrganization : serviceOrganizationService.read(stub(serviceOrganization));
+		if (old == null) {
 			addActionError(getText("error.invalid_id"));
 			return REDIRECT_SUCCESS;
 		}
 
-		serviceOrganizationService.initInstancelessFilter(organizationFilter, oldServiceOrganization);
+		serviceOrganizationService.initInstancelessFilter(organizationFilter, old);
 
 		// prepare initial setup
 		if (!isSubmit()) {
-			if (oldServiceOrganization.isNotNew()) {
-				organizationFilter.setSelectedId(oldServiceOrganization.getOrganizationStub().getId());
+			if (old.isNotNew()) {
+				organizationFilter.setSelectedId(old.getOrganizationStub().getId());
 			}
-			serviceOrganization = oldServiceOrganization;
+			serviceOrganization = old;
 			initDescriptions();
 			return INPUT;
 		}
@@ -62,7 +64,7 @@ public class ServiceOrganizationEditAction extends FPActionSupport {
 
 		log.debug("Service organization descriptions: {}", descriptions);
 
-		oldServiceOrganization.setOrganization(juridicalPerson);
+		old.setOrganization(juridicalPerson);
 
 		for (Map.Entry<Long, String> name : descriptions.entrySet()) {
 			String value = name.getValue();
@@ -70,13 +72,13 @@ public class ServiceOrganizationEditAction extends FPActionSupport {
 			ServiceOrganizationDescription description = new ServiceOrganizationDescription();
 			description.setLang(lang);
 			description.setName(value);
-			oldServiceOrganization.setDescription(description);
+			old.setDescription(description);
 		}
 
-		if (oldServiceOrganization.isNew()) {
-			serviceOrganizationService.create(oldServiceOrganization);
+		if (old.isNew()) {
+			serviceOrganizationService.create(old);
 		} else {
-			serviceOrganizationService.update(oldServiceOrganization);
+			serviceOrganizationService.update(old);
 		}
 
 		addActionError(getText("orgs.service_organization.saved"));

@@ -5,6 +5,8 @@ import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Stub;
+import static org.flexpay.common.persistence.Stub.stub;
+import org.flexpay.common.persistence.history.ModificationListener;
 import org.flexpay.common.service.internal.SessionUtils;
 import org.flexpay.orgs.dao.ServiceOrganizationDao;
 import org.flexpay.orgs.persistence.Organization;
@@ -15,6 +17,8 @@ import org.flexpay.orgs.persistence.filters.ServiceOrganizationFilter;
 import org.flexpay.orgs.service.ServiceOrganizationService;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,8 +28,11 @@ import java.util.Set;
 @Transactional (readOnly = true)
 public class ServiceOrganizationServiceImpl implements ServiceOrganizationService {
 
+	protected Logger log = LoggerFactory.getLogger(getClass());
+
 	private SessionUtils sessionUtils;
 	private ServiceOrganizationDao serviceOrganizationDao;
+	private ModificationListener<ServiceOrganization> modificationListener;
 
 	/**
 	 * Read ServiceOrganization object by its unique id
@@ -33,8 +40,8 @@ public class ServiceOrganizationServiceImpl implements ServiceOrganizationServic
 	 * @param stub ServiceOrganization key
 	 * @return ServiceOrganization object, or <code>null</code> if object not found
 	 */
-	public ServiceOrganization read(@NotNull Stub<ServiceOrganization> stub) {
-		return serviceOrganizationDao.readFull(stub.getId());
+	public <T extends ServiceOrganization> T read(@NotNull Stub<T> stub) {
+		return (T) serviceOrganizationDao.readFull(stub.getId());
 	}
 
 	/**
@@ -49,6 +56,9 @@ public class ServiceOrganizationServiceImpl implements ServiceOrganizationServic
 			if (sOrganization != null) {
 				sOrganization.disable();
 				serviceOrganizationDao.update(sOrganization);
+
+				modificationListener.onDelete(sOrganization);
+				log.debug("Disabled instance: {}", sOrganization);
 			}
 		}
 	}
@@ -64,12 +74,10 @@ public class ServiceOrganizationServiceImpl implements ServiceOrganizationServic
 	@Transactional (readOnly = false)
 	public ServiceOrganization create(@NotNull ServiceOrganization serviceOrganization) throws FlexPayExceptionContainer {
 		validate(serviceOrganization);
-		if (serviceOrganization.isNew()) {
-			serviceOrganization.setId(null);
-			serviceOrganizationDao.create(serviceOrganization);
-		} else {
-			serviceOrganizationDao.update(serviceOrganization);
-		}
+		serviceOrganization.setId(null);
+		serviceOrganizationDao.create(serviceOrganization);
+
+		modificationListener.onCreate(serviceOrganization);
 
 		return serviceOrganization;
 	}
@@ -83,9 +91,19 @@ public class ServiceOrganizationServiceImpl implements ServiceOrganizationServic
 	 *          if validation fails
 	 */
 	@NotNull
+	@Transactional (readOnly = false)
 	public ServiceOrganization update(@NotNull ServiceOrganization serviceOrganization) throws FlexPayExceptionContainer {
 
 		validate(serviceOrganization);
+
+		ServiceOrganization old = read(stub(serviceOrganization));
+		if (old == null) {
+			throw new FlexPayExceptionContainer(
+					new FlexPayException("No object found to update " + serviceOrganization));
+		}
+		sessionUtils.evict(old);
+		modificationListener.onUpdate(old, serviceOrganization);
+
 		serviceOrganizationDao.update(serviceOrganization);
 
 		return serviceOrganization;
@@ -148,8 +166,8 @@ public class ServiceOrganizationServiceImpl implements ServiceOrganizationServic
 	 * Initialize organizations filter, includes only organizations that are not banks or this particular <code>service
 	 * organization</code> organization
 	 *
-	 * @param filter  Filter to initialize
-	 * @param org service organization
+	 * @param filter Filter to initialize
+	 * @param org	service organization
 	 */
 	public OrganizationFilter initInstancelessFilter(@NotNull OrganizationFilter filter, @NotNull ServiceOrganization org) {
 		@SuppressWarnings ({"UnnecessaryBoxing"})
@@ -159,21 +177,6 @@ public class ServiceOrganizationServiceImpl implements ServiceOrganizationServic
 		filter.setOrganizations(organizations);
 
 		return filter;
-	}
-
-	/**
-	 * Read full service organization info
-	 *
-	 * @param stub Service organization stub
-	 * @return ServiceOrganization
-	 */
-	@Nullable
-	public ServiceOrganization read(@NotNull ServiceOrganization stub) {
-		if (stub.isNotNew()) {
-			return serviceOrganizationDao.readFull(new Stub<ServiceOrganization>(stub).getId());
-		}
-
-		return new ServiceOrganization(0L);
 	}
 
 	/**
@@ -205,5 +208,10 @@ public class ServiceOrganizationServiceImpl implements ServiceOrganizationServic
 	@Required
 	public void setSessionUtils(SessionUtils sessionUtils) {
 		this.sessionUtils = sessionUtils;
+	}
+
+	@Required
+	public void setModificationListener(ModificationListener<ServiceOrganization> modificationListener) {
+		this.modificationListener = modificationListener;
 	}
 }

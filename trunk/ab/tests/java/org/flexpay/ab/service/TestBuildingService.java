@@ -31,23 +31,20 @@ public class TestBuildingService extends AbSpringBeanAwareTestCase {
 	private ObjectsFactory factory;
 
 	// See init_db script
-	private Street street = new Street(2L);
-	private District district = new District(9L);
-
 	private AddressAttributeType numberType;
 	private AddressAttributeType bulkType;
 
 	private Building newBuilding() {
 
 		Building building = factory.newBuilding();
-		building.setDistrict(new District(1L));
+		building.setDistrict(new District(TestData.DISTRICT_SOVETSKII));
 		return building;
 	}
 
 	private BuildingAddress newBuildings(Building building) {
 
 		BuildingAddress buildingAddress = new BuildingAddress();
-		buildingAddress.setStreet(street);
+		buildingAddress.setStreet(new Street(TestData.DEMAKOVA));
 		building.addAddress(buildingAddress);
 		return buildingAddress;
 	}
@@ -135,7 +132,7 @@ public class TestBuildingService extends AbSpringBeanAwareTestCase {
 		// See init_db script
 		AddressAttribute number = BuildingAddress.numberAttribute("31");
 		AddressAttribute bulk = BuildingAddress.bulkAttribute("2");
-		BuildingAddress buildingAddress = buildingService.findBuildings(stub(street), stub(district), set(number, bulk));
+		BuildingAddress buildingAddress = buildingService.findBuildings(TestData.IVANOVA, TestData.DISTRICT_SOVETSKII, set(number, bulk));
 
 		assertNotNull("Building find with bulk number faild", buildingAddress);
 		assertEquals("Invalid number", "31", buildingAddress.getNumber());
@@ -148,7 +145,7 @@ public class TestBuildingService extends AbSpringBeanAwareTestCase {
 
 		// See init_db script
 		AddressAttribute number = BuildingAddress.numberAttribute("31");
-		BuildingAddress buildingAddress = buildingService.findBuildings(stub(street), stub(district), set(number));
+		BuildingAddress buildingAddress = buildingService.findBuildings(TestData.IVANOVA, TestData.DISTRICT_SOVETSKII, set(number));
 
 		assertNotNull("Building find faild", buildingAddress);
 		assertEquals("Invalid building number", "31", buildingAddress.getNumber());

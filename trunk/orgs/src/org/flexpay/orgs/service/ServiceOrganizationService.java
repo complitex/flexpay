@@ -35,22 +35,14 @@ public interface ServiceOrganizationService
 	List<ServiceOrganization> listInstances(@NotNull Page<ServiceOrganization> pager);
 
 	/**
-	 * Read full service organization info
-	 *
-	 * @param serviceOrganization Service organization
-	 * @return ServiceOrganization
-	 */
-	@Secured (Roles.SERVICE_ORGANIZATION_READ)
-	ServiceOrganization read(ServiceOrganization serviceOrganization);
-
-	/**
 	 * Read ServiceOrganization object by its unique id
 	 *
 	 * @param stub ServiceOrganization stub
 	 * @return ServiceOrganization object, or <code>null</code> if object not found
 	 */
 	@Secured (Roles.SERVICE_ORGANIZATION_READ)
-	ServiceOrganization read(@NotNull Stub<ServiceOrganization> stub);
+	<T extends ServiceOrganization>
+	T read(@NotNull Stub<T> stub);
 
 	/**
 	 * Disable service organizations

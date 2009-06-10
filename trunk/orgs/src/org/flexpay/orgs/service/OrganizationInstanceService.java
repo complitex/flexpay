@@ -40,7 +40,8 @@ public interface OrganizationInstanceService<
 	 * @return Instance if found, or <code>null</code> otherwise
 	 */
 	@Nullable
-	T read(@NotNull Stub<T> stub);
+	<SubT extends T>
+	SubT read(@NotNull Stub<SubT> stub);
 
 	/**
 	 * Create instance
