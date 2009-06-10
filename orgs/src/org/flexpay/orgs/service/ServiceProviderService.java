@@ -54,7 +54,8 @@ public interface ServiceProviderService
 	 */
 	@Secured (Roles.SERVICE_PROVIDER_READ)
 	@Nullable
-	ServiceProvider read(@NotNull Stub<ServiceProvider> stub);
+	<T extends ServiceProvider>
+	T read(@NotNull Stub<T> stub);
 
 	/**
 	 * Create service provider

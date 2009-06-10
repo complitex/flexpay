@@ -43,7 +43,8 @@ public interface BankService extends OrganizationInstanceService<BankDescription
 	 */
 	@Secured (Roles.BANK_READ)
 	@Nullable
-	Bank read(@NotNull Stub<Bank> stub);
+	<T extends Bank>
+	T read(@NotNull Stub<T> stub);
 
 	/**
 	 * Create instance

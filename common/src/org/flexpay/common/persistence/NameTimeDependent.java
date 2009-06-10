@@ -100,10 +100,6 @@ public abstract class NameTimeDependent<T extends TemporaryValue<T>, DI extends 
 		if (namesTimeLine != null) {
 			namesTimeLine.invalidate();
 		}
-		System.out.println("=================================================================");
-		System.out.println("New intervals: " + tlNew.getIntervals());
-		System.out.println("Old intervals: " + (namesTimeLine == null ? null : namesTimeLine.getIntervals()));
-		System.out.println("ALL TEMPORALS:\n" + nameTemporals);
 		namesTimeLine = tlNew;
 	}
 

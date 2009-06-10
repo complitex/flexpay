@@ -14,6 +14,8 @@ import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.persistence.history.ModificationListener;
+import org.flexpay.common.service.internal.SessionUtils;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.Required;
 import org.apache.commons.lang.StringUtils;
@@ -34,14 +36,17 @@ public class ServiceProviderServiceImpl implements ServiceProviderService {
 	private ServiceProviderDaoExt serviceProviderDaoExt;
 	private DataSourceDescriptionDao dataSourceDescriptionDao;
 
+	private SessionUtils sessionUtils;
+	private ModificationListener<ServiceProvider> modificationListener;
+
 	/**
 	 * Read full service provider info
 	 *
 	 * @param stub provider stub
 	 * @return ServiceProvider
 	 */
-	public ServiceProvider read(@NotNull Stub<ServiceProvider> stub) {
-		return serviceProviderDao.readFull(stub.getId());
+	public <T extends ServiceProvider> T read(@NotNull Stub<T> stub) {
+		return (T) serviceProviderDao.readFull(stub.getId());
 	}
 
 	/**
@@ -225,5 +230,15 @@ public class ServiceProviderServiceImpl implements ServiceProviderService {
 	@Required
 	public void setDataSourceDescriptionDao(DataSourceDescriptionDao dataSourceDescriptionDao) {
 		this.dataSourceDescriptionDao = dataSourceDescriptionDao;
+	}
+
+	@Required
+	public void setSessionUtils(SessionUtils sessionUtils) {
+		this.sessionUtils = sessionUtils;
+	}
+
+	@Required
+	public void setModificationListener(ModificationListener<ServiceProvider> modificationListener) {
+		this.modificationListener = modificationListener;
 	}
 }

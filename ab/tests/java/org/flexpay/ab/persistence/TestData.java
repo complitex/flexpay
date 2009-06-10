@@ -17,7 +17,11 @@ public class TestData {
 	public static final Stub<BuildingAddress> ADDR_DEMAKOVA_220D = new Stub<BuildingAddress>(3L);
 	public static final Stub<BuildingAddress> ADDR_ROSSIISKAYA_220R = new Stub<BuildingAddress>(4L);
 
+	// test streets
 	public static final Stub<Street> DEMAKOVA = new Stub<Street>(1L);
 	public static final Stub<Street> IVANOVA = new Stub<Street>(2L);
 	public static final Stub<Street> ROSSIISKAYA = new Stub<Street>(3L);
+
+	// test districts
+	public static final Stub<District> DISTRICT_SOVETSKII = new Stub<District>(1L);
 }

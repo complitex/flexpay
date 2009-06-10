@@ -32,7 +32,7 @@ public class ServiceOrganizationListServedBuildingsAction extends FPActionWithPa
 			return SUCCESS;
 		}
 
-		serviceOrganization = (EircServiceOrganization) serviceOrganizationService.read(serviceOrganization);
+		serviceOrganization = serviceOrganizationService.read(stub(serviceOrganization));
 		if (serviceOrganization == null) {
 			addActionError(getText("error.invalid_id"));
 			return SUCCESS;

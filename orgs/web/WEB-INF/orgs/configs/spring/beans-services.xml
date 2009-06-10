@@ -27,29 +27,48 @@
 		  p:subdivisionDao-ref="subdivisionDao"
 		  p:organizationService-ref="organizationService" />
 
-	<bean id="bankService"
+	<bean id="bankHistoryChangesListener"
+		  parent="historyChangesListenerBase"
+		  p:historyBuilder-ref="bankHistoryBuilder" />
+
+	<bean id="bankServiceTarget"
 		  class="org.flexpay.orgs.service.imp.BankServiceImpl"
 		  parent="organisationInstanceService"
+		  p:modificationListener-ref="bankHistoryChangesListener"
 		  p:instanceDao-ref="bankDao" />
 
-	<bean id="paymentsCollectorService"
+	<bean id="paymentsCollectorHistoryChangesListener"
+		  parent="historyChangesListenerBase"
+		  p:historyBuilder-ref="paymentsCollectorHistoryBuilder" />
+
+	<bean id="paymentsCollectorServiceTarget"
 		  class="org.flexpay.orgs.service.imp.PaymentsCollectorServiceImpl"
 		  parent="organisationInstanceService"
+		  p:modificationListener-ref="paymentsCollectorHistoryChangesListener"
 		  p:instanceDao-ref="paymentsCollectorDao" />
 
 	<bean id="paymentPointService"
 		  class="org.flexpay.orgs.service.imp.PaymentPointServiceImpl"
 		  p:paymentPointDao-ref="paymentPointDao" />
 
+	<bean id="serviceOrganizationHistoryChangesListener"
+		  parent="historyChangesListenerBase"
+		  p:historyBuilder-ref="serviceOrganizationHistoryBuilder" />
+
 	<bean id="serviceOrganizationService"
 		  class="org.flexpay.orgs.service.imp.ServiceOrganizationServiceImpl"
 		  p:sessionUtils-ref="sessionUtils"
 		  p:serviceOrganizationDao-ref="serviceOrganizationDao" />
 
+	<bean id="serviceProviderHistoryChangesListener"
+		  parent="historyChangesListenerBase"
+		  p:historyBuilder-ref="serviceProviderHistoryBuilder" />
+
 	<bean id="serviceProviderServiceTarget" autowire-candidate="false"
 		  class="org.flexpay.orgs.service.imp.ServiceProviderServiceImpl"
 		  p:serviceProviderDao-ref="serviceProviderDao"
 		  p:serviceProviderDaoExt-ref="serviceProviderDaoExt"
+		  p:modificationListener-ref="serviceProviderHistoryChangesListener"
 		  p:dataSourceDescriptionDao-ref="dataSourceDescriptionDao" />
 
 	<bean id="typeRegistryOrgs"
