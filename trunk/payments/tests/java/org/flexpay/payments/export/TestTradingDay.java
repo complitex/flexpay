@@ -9,6 +9,7 @@ import org.flexpay.common.process.exception.ProcessDefinitionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
+import org.jbpm.JbpmConfiguration;
 
 import java.io.Serializable;
 import java.util.Map;
@@ -21,6 +22,8 @@ public class TestTradingDay extends SpringBeanAwareTestCase {
 
     @Autowired
     private ProcessManager processManager;
+	@Autowired
+	private JbpmConfiguration jbpmConfiguration;
     @Test
     public void testStartTradingDay() throws ProcessInstanceException, ProcessDefinitionException, InterruptedException {
         Map<Serializable, Serializable> parameters = new HashMap<Serializable, Serializable>();

@@ -38,7 +38,7 @@
             </script>
         </event>
         <task name="CloseTradingDay" swimlane="Accounter">
-            <timer duedate="10 seconds" transition="generateEndOperationDayRegistryJob">
+            <timer duedate="10 seconds" transition="tradingDay.mark_for_closing">
                 <script>
                     <variable mapped-name="autoMode" access="write" name="AUTO_MODE"/>
                     <expression>
@@ -77,6 +77,7 @@
         </event>
         <task swimlane="JobManager"/>
         <transition to="sendRegistryJob" name="next"/>
+        <transition to="JobManagerError" name="error"/>
     </task-node>
 
 
@@ -86,6 +87,7 @@
         </description>
         <task swimlane="JobManager" blocking="yes" />
         <transition to="WaitForApprove" name="next"/>
+        <transition to="JobManagerError" name="error"/>
     </task-node>
 
 
@@ -115,6 +117,15 @@
         <transition to="end-state" name="tradingDay.close_approved"/>
     </task-node>
 
+    <task-node name="JobManagerError">
+        <description>
+            Выслать администрутору е-мейл о том что процесс закончился с ошибкой
+        </description>
+        <task name="sendEmailToAdministrator" swimlane="JobManager"/>
+        <transition to="end-state" name="next"/>
+        <transition to="end-state" name="error"/>
+    </task-node>
+    
     <end-state name="end-state"/>
 
 </process-definition>
