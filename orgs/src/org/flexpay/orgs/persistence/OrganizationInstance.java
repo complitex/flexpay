@@ -36,10 +36,6 @@ public abstract class OrganizationInstance<
 		super(id);
 	}
 
-	protected OrganizationInstance(@NotNull Stub<OrganizationInstance<D, T>> stub) {
-		super(stub.getId());
-	}
-
 	@Nullable
 	public Organization getOrganization() {
 		return organization;
