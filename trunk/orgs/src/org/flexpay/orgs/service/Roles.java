@@ -29,4 +29,13 @@ public abstract class Roles {
 	public static final String SERVICE_PROVIDER_ADD = PREFIX + "SERVICE_PROVIDER_ADD";
 	public static final String SERVICE_PROVIDER_DELETE = PREFIX + "SERVICE_PROVIDER_DELETE";
 
+	public static final String PAYMENTS_COLLECTOR_READ = PREFIX + "PAYMENTS_COLLECTOR_READ";
+	public static final String PAYMENTS_COLLECTOR_CHANGE = PREFIX + "PAYMENTS_COLLECTOR_CHANGE";
+	public static final String PAYMENTS_COLLECTOR_ADD = PREFIX + "PAYMENTS_COLLECTOR_ADD";
+	public static final String PAYMENTS_COLLECTOR_DELETE = PREFIX + "PAYMENTS_COLLECTOR_DELETE";
+
+	public static final String PAYMENT_POINT_READ = PREFIX + "PAYMENT_POINT_READ";
+	public static final String PAYMENT_POINT_CHANGE = PREFIX + "PAYMENT_POINT_CHANGE";
+	public static final String PAYMENT_POINT_ADD = PREFIX + "PAYMENT_POINT_ADD";
+	public static final String PAYMENT_POINT_DELETE = PREFIX + "PAYMENT_POINT_DELETE";
 }

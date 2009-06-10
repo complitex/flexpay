@@ -29,7 +29,7 @@ public class PaymentPointHistoryGenerator implements HistoryGenerator<PaymentPoi
 	public void generateFor(@NotNull PaymentPoint obj) {
 
 		if (diffService.hasDiffs(obj)) {
-			log.debug("Identity type already has history, do nothing {}", obj);
+			log.debug("PaymentPoint already has history, do nothing {}", obj);
 			return;
 		}
 
@@ -42,7 +42,6 @@ public class PaymentPointHistoryGenerator implements HistoryGenerator<PaymentPoi
 		Diff diff = historyBuilder.diff(null, org);
 		diff.setProcessingStatus(ProcessingStatus.STATUS_PROCESSED);
 		diffService.create(diff);
-
 	}
 
 	@Required

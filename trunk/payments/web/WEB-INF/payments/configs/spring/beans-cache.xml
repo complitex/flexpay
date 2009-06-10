@@ -94,4 +94,23 @@
 		</property>
 		<property name="target" ref="serviceProviderServiceAttributeTarget" />
 	</bean>
+
+	<bean id="cashboxService"
+		  class="org.springmodules.cache.interceptor.proxy.CacheProxyFactoryBean">
+		<property name="cacheProviderFacade" ref="cacheProviderFacade" />
+		<property name="cachingModels">
+			<props>
+				<prop key="read">cacheName=orgsFlexpayCache</prop>
+			</props>
+		</property>
+		<property name="flushingModels">
+			<props>
+				<prop key="create">cacheNames=orgsFlexpayCache;flushBeforeMethodExecution=true</prop>
+				<prop key="update">cacheNames=orgsFlexpayCache;flushBeforeMethodExecution=true</prop>
+				<prop key="disable">cacheNames=orgsFlexpayCache;flushBeforeMethodExecution=true</prop>
+			</props>
+		</property>
+		<property name="target" ref="cashboxServiceTarget" />
+	</bean>
+
 </beans>

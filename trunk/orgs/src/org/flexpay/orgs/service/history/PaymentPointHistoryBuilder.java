@@ -36,7 +36,7 @@ public class PaymentPointHistoryBuilder extends HistoryBuilderBase<PaymentPoint>
 	 */
 	protected void doDiff(@Nullable PaymentPoint p1, @NotNull PaymentPoint p2, @NotNull Diff diff) {
 
-		log.debug("creating new organizations diff");
+		log.debug("creating new payment points diff");
 		if (!p2.isActive()) {
 			diff.setOperationType(HistoryOperationType.TYPE_DELETE);
 		}
@@ -45,7 +45,7 @@ public class PaymentPointHistoryBuilder extends HistoryBuilderBase<PaymentPoint>
 
 		buildSimpleFieldsDiff(old, p2, diff);
 		buildNameDiff(old, p2, diff);
-		buildOrganizationRefDiff(old, p2, diff);
+		buildCollectorRefDiff(old, p2, diff);
 	}
 
 	private boolean differ(String s1, String s2) {
@@ -93,7 +93,6 @@ public class PaymentPointHistoryBuilder extends HistoryBuilderBase<PaymentPoint>
 					tr2 == null ? null : tr2.getName());
 
 			if (nameDiffer) {
-				log.debug("Name differ");
 				HistoryRecord rec = new HistoryRecord();
 				rec.setFieldType(FIELD_NAME);
 				rec.setOldStringValue(tr1 == null ? null : tr1.getName());
@@ -106,7 +105,7 @@ public class PaymentPointHistoryBuilder extends HistoryBuilderBase<PaymentPoint>
 		}
 	}
 
-	private void buildOrganizationRefDiff(PaymentPoint p1, PaymentPoint p2, Diff diff) {
+	private void buildCollectorRefDiff(PaymentPoint p1, PaymentPoint p2, Diff diff) {
 		PaymentsCollector org1 = p1.getCollector();
 		PaymentsCollector org2 = p2.getCollector();
 		boolean noOrganization = (org1 == null || org1.isNew()) && (org2 == null || org2.isNew());
