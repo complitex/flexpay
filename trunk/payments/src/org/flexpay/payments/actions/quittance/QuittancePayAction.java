@@ -10,6 +10,7 @@ import org.flexpay.orgs.persistence.ServiceProvider;
 import org.flexpay.orgs.service.OrganizationService;
 import org.flexpay.orgs.service.ServiceProviderService;
 import org.flexpay.payments.actions.CashboxCookieActionSupport;
+import org.flexpay.payments.actions.PaymentOperationAction;
 import org.flexpay.payments.persistence.*;
 import org.flexpay.payments.persistence.quittance.QuittanceDetailsResponse;
 import org.flexpay.payments.service.*;
@@ -21,124 +22,25 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Map;
 
-public class QuittancePayAction extends CashboxCookieActionSupport {
-
-	private String actionName;
+public class QuittancePayAction extends PaymentOperationAction {
 
 	private Operation operation = new Operation();
 
-	// form data
-	private QuittanceDetailsResponse.QuittanceInfo quittanceInfo = new QuittanceDetailsResponse.QuittanceInfo();
-	private Map<String, BigDecimal> payments = CollectionUtils.map();
-	private Map<String, String> serviceProviderAccounts = CollectionUtils.map();
-	private Map<String, String> payerFios = CollectionUtils.map();
-	private Map<String, String> addresses = CollectionUtils.map();
-	private Map<String, String> eircAccounts = CollectionUtils.map();
-	private BigDecimal changeSumm;
-	private BigDecimal inputSumm;
-	private BigDecimal totalToPay;
-
 	// required services
-	private DocumentTypeService documentTypeService;
-	private DocumentStatusService documentStatusService;
 	private OperationService operationService;
-	private OperationLevelService operationLevelService;
-	private OperationStatusService operationStatusService;
-	private OperationTypeService operationTypeService;
-	private CashboxService cashboxService;
-	private OrganizationService organizationService;
-	private SPService spService;
-	private ServiceProviderService serviceProviderService;
 
 	@NotNull
 	protected String doExecute() throws Exception {
 
-		operation = createOperation();
-		operationService.save(operation);
-		return REDIRECT_SUCCESS;
-	}
-
-	private Operation createOperation() throws FlexPayException {
-
-		Operation op = buildOperation();
-		for (String serviceIndx : payments.keySet()) {
-
-			Document document = buildDocument(serviceIndx);
-
-			if (StringUtils.isEmpty(op.getAddress())) {
-				op.setAddress(document.getAddress());
-				op.setPayerFIO(document.getPayerFIO());
-			}
-
-			if (document.getSumm().compareTo(BigDecimal.ZERO) > 0) {
-				op.addDocument(document);
-			}
-		}
-
-		return op;
-	}
-
-	private Organization getSelfOrganization() {
-
 		Cashbox cashbox = cashboxService.read(new Stub<Cashbox>(cashboxId));
+		log.debug("Found cashbox {}", cashbox);
 		if (cashbox == null) {
 			throw new IllegalArgumentException("Invalid cashbox id: " + cashboxId);
 		}
-		Long organizationId = cashbox.getPaymentPoint().getCollector().getOrganization().getId();
-		return organizationService.readFull(new Stub<Organization>(organizationId));
-	}
 
-	private Operation buildOperation() throws FlexPayException {
-        Cashbox cashbox = cashboxService.read(new Stub<Cashbox>(cashboxId));
-        if (cashbox == null) {
-			throw new IllegalArgumentException("Invalid cashbox id: " + cashboxId);
-		}
-
-		Operation op = new Operation();
-		op.setOperationSumm(totalToPay);
-		op.setOperationInputSumm(inputSumm);
-		op.setChange(changeSumm);
-		op.setCreationDate(new Date());
-		op.setRegisterDate(new Date());
-		op.setCreatorOrganization(getSelfOrganization());
-		op.setPaymentPoint(cashbox.getPaymentPoint());
-        op.setCashbox(cashbox);
-		op.setRegisterOrganization(getSelfOrganization());
-		op.setCreatorUserName(SecurityUtil.getUserName());
-		op.setRegisterUserName(SecurityUtil.getUserName());
-		op.setOperationStatus(operationStatusService.read(OperationStatus.REGISTERED));
-		op.setOperationLevel(operationLevelService.read(OperationLevel.AVERAGE));
-		op.setOperationType(operationTypeService.read(OperationType.SERVICE_CASH_PAYMENT));
-		return op;
-	}
-
-	private Document buildDocument(String serviceFullIndx) throws FlexPayException {
-
-		BigDecimal documentSumm = payments.get(serviceFullIndx);
-		String serviceId = getServiceIdFromIndex(serviceFullIndx);
-		Service service = spService.read(new Stub<Service>(Long.parseLong(serviceId)));
-		ServiceProvider serviceProvider = serviceProviderService.read(new Stub<ServiceProvider>(service.getServiceProvider().getId()));
-		Organization serviceProviderOrganization = serviceProvider.getOrganization();
-
-		String serviceProviderAccount = this.serviceProviderAccounts.get(serviceFullIndx);
-
-		Document document = new Document();
-		document.setService(service);
-		document.setDocumentStatus(documentStatusService.read(DocumentStatus.REGISTERED));
-		document.setDocumentType(documentTypeService.read(DocumentType.CASH_PAYMENT));
-		document.setSumm(documentSumm);
-		document.setAddress(addresses.get(serviceFullIndx));
-		document.setPayerFIO(payerFios.get(serviceFullIndx));
-		document.setDebtorOrganization(getSelfOrganization());
-		document.setDebtorId(eircAccounts.get(serviceFullIndx));
-		document.setCreditorOrganization(serviceProviderOrganization);
-		document.setCreditorId(serviceProviderAccount);
-		return document;
-	}
-
-	private String getServiceIdFromIndex(String serviceFullIndex) {
-
-		return ServiceFullIndexUtil.getServiceIdFromIndex(serviceFullIndex);
+		operation = createOperation(cashbox);
+		operationService.save(operation);
+		return REDIRECT_SUCCESS;
 	}
 
 	@NotNull
@@ -146,136 +48,9 @@ public class QuittancePayAction extends CashboxCookieActionSupport {
 		return SUCCESS;
 	}
 
-	// form data
-	public QuittanceDetailsResponse.QuittanceInfo getQuittanceInfo() {
-		return quittanceInfo;
-	}
-
-	public void setQuittanceInfo(QuittanceDetailsResponse.QuittanceInfo quittanceInfo) {
-		this.quittanceInfo = quittanceInfo;
-	}
-
-	public Map<String, BigDecimal> getPayments() {
-		return payments;
-	}
-
-	public void setPayments(Map<String, BigDecimal> payments) {
-		this.payments = payments;
-	}
-
-	public String getActionName() {
-		return actionName;
-	}
-
-	public void setActionName(String actionName) {
-		this.actionName = actionName;
-	}
-
-	public BigDecimal getChangeSumm() {
-		return changeSumm;
-	}
-
-	public void setChangeSumm(BigDecimal changeSumm) {
-		this.changeSumm = changeSumm;
-	}
-
-	public BigDecimal getInputSumm() {
-		return inputSumm;
-	}
-
-	public void setInputSumm(BigDecimal inputSumm) {
-		this.inputSumm = inputSumm;
-	}
-
-	public void setTotalToPay(BigDecimal totalToPay) {
-		this.totalToPay = totalToPay;
-	}
-
-	public Map<String, String> getServiceProviderAccounts() {
-		return serviceProviderAccounts;
-	}
-
-	public void setServiceProviderAccounts(Map<String, String> serviceProviderAccounts) {
-		this.serviceProviderAccounts = serviceProviderAccounts;
-	}
-
-	public Map<String, String> getPayerFios() {
-		return payerFios;
-	}
-
-	public void setPayerFios(Map<String, String> payerFios) {
-		this.payerFios = payerFios;
-	}
-
-	public Map<String, String> getAddresses() {
-		return addresses;
-	}
-
-	public void setAddresses(Map<String, String> addresses) {
-		this.addresses = addresses;
-	}
-
-	public Map<String, String> getEircAccounts() {
-		return eircAccounts;
-	}
-
-	public void setEircAccounts(Map<String, String> eircAccounts) {
-		this.eircAccounts = eircAccounts;
-	}
-
-	public Operation getOperation() {
-		return operation;
-	}
-
-	// required services
-	@Required
-	public void setDocumentTypeService(DocumentTypeService documentTypeService) {
-		this.documentTypeService = documentTypeService;
-	}
-
-	@Required
-	public void setDocumentStatusService(DocumentStatusService documentStatusService) {
-		this.documentStatusService = documentStatusService;
-	}
-
 	@Required
 	public void setOperationService(OperationService operationService) {
 		this.operationService = operationService;
-	}
-
-	@Required
-	public void setOperationLevelService(OperationLevelService operationLevelService) {
-		this.operationLevelService = operationLevelService;
-	}
-
-	@Required
-	public void setOperationStatusService(OperationStatusService operationStatusService) {
-		this.operationStatusService = operationStatusService;
-	}
-
-	@Required
-	public void setOperationTypeService(OperationTypeService operationTypeService) {
-		this.operationTypeService = operationTypeService;
-	}
-
-	@Required
-	public void setOrganizationService(OrganizationService organizationService) {
-		this.organizationService = organizationService;
-	}
-
-	@Required
-	public void setCashboxService(CashboxService cashboxService) {
-		this.cashboxService = cashboxService;
-	}
-
-	@Required
-	public void setSpService(SPService spService) {
-		this.spService = spService;
-	}
-
-	@Required
-	public void setServiceProviderService(ServiceProviderService serviceProviderService) {
-		this.serviceProviderService = serviceProviderService;
 	}
 
 }

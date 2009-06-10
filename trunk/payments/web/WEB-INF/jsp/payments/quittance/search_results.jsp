@@ -5,7 +5,7 @@
 <s:actionerror/>
 
 <s:if test="%{resultsAreNotEmpty()}">
-	<form id='quittancePayForm' action="<s:url action="paymentsQuittancePay" />">
+	<s:form id="quittancePayForm">
 		<table class="search_results" cellpadding="3" cellspacing="1" border="0" width="100%">
 			<tr>
 				<td class="th" nowrap="nowrap"><s:text name="payments.quittances.quittance_pay.consumer_account"/></td>
@@ -27,7 +27,7 @@
 					<s:hidden name="serviceProviderAccounts['%{#serviceIndx}']" value="%{serviceProviderAccount}"/>
 
 					<tr class="cols_1_error" style="display:none;">
-						<td colspan="6"/>
+						<td colspan="6" />
 					</tr>
 
 					<tr class="cols_1 service_payment">
@@ -40,38 +40,38 @@
 													 id="payments_%{#serviceIndx}"
 													 value="%{outgoingBalance}"
 													 onblur="replaceEmptyValueWithZero('payments_%{#serviceIndx}');"
-													 cssStyle="width: 100%; text-align: right;"/></td>
+													 cssStyle="width:100%;text-align:right;"/></td>
 													 <%--onkeypress="return FP.disableEnterKey(event);"--%>													 
 					</tr>
 				</s:iterator>
 			</s:iterator>
 
 			<tr class="cols_1_error" style="display:none;">
-				<td colspan="6"/>
+				<td colspan="6" />
 			</tr>
 			<tr class="cols_1">
 				<td class="col" colspan="5" style="text-align:right;font-weight:bold;">
 					<s:text name="payments.quittances.quittance_pay.total_payable"/></td>
 				<td class="col"><s:textfield name="totalToPay" readonly="true" value="%{getTotalToPay()}"
 											 onkeypress="return FP.disableEnterKey(event);"
-											 cssStyle="width: 100%; text-align: right;"/></td>
+											 cssStyle="width:100%;text-align:right;"/></td>
 			</tr>
 
 			<tr class="cols_1_error" style="display:none;">
 				<td colspan="6"/>
 			</tr>
 			<tr class="cols_1">
-				<td colspan="5" style="font-weight: bold; text-align: right; "><s:text
+				<td colspan="5" style="font-weight:bold;text-align:right;"><s:text
 						name="payments.quittance.payment.input"/></td>
-				<td><s:textfield name="inputSumm" cssStyle="width: 100%; text-align: right;"
+				<td><s:textfield name="inputSumm" cssStyle="width:100%;text-align:right;"
 								 value="%{getTotalToPay()}"
 								 onkeypress="return FP.disableEnterKey(event);"/></td>
 			</tr>
 
 			<tr class="cols_1">
-				<td colspan="5" style="font-weight: bold; text-align: right;"><s:text
+				<td colspan="5" style="font-weight:bold;text-align:right;"><s:text
 						name="payments.quittance.payment.change"/></td>
-				<td><s:textfield name="changeSumm" cssStyle="width: 100%; text-align: right;" value="0.00"
+				<td><s:textfield name="changeSumm" cssStyle="width:100%;text-align:right;" value="0.00"
 								 onkeypress="return FP.disableEnterKey(event);" readonly="true"/></td>
 			</tr>
 
@@ -79,13 +79,15 @@
 				<td colspan="5" style="text-align:left;"/>
 				<td style="text-align:right;">
 					<s:hidden name="actionName" value="%{actionName}"/>
-					<input type="submit" name="submitted" class="btn-exit" style="width: 100%;"
+                    <s:hidden name="submitted" value="true" />
+					<input type="button" class="btn-exit" style="width:100%;" onclick="printQuittance();"
 						   value="<s:text name="payments.quittances.quittance_pay.pay"/>"/>
 				</td>
 			</tr>
 
 		</table>
-	</form>
+	</s:form>
+
 </s:if>
 <s:else>
 	<s:text name="payments.quittances.quittance_pay.no_debts_found"/>

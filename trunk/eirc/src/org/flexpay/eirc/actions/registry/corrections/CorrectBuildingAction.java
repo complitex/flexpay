@@ -25,4 +25,5 @@ public class CorrectBuildingAction extends org.flexpay.payments.actions.registry
 	public void setConsumersDataSource(RawConsumersDataSource consumersDataSource) {
 		this.consumersDataSource = consumersDataSource;
 	}
+
 }

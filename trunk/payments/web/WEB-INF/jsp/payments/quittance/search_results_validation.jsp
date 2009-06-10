@@ -45,12 +45,12 @@
 			}
 		});
 
-		$('#inputSumm').bind('keypress', function(event) {
-			if (event.keyCode == 13) {
-				$('#quittancePayForm').submit();
-			}
-		});
-	</s:iterator>
+            $('#inputSumm').bind('keypress', function(event) {
+                if (event.keyCode == 13) {
+                    printQuittance();
+                }
+            });
+        </s:iterator>
 	</s:iterator>
 	};
 

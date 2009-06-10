@@ -95,6 +95,15 @@
 		  class="org.flexpay.payments.actions.reports.PaymentOperationReportAction"
 		  p:reportUtil-ref="reportUtil"
 		  p:paymentsReporter-ref="paymentsReporter"
+          p:documentStatusService-ref="documentStatusService"
+          p:documentTypeService-ref="documentTypeService"
+          p:operationLevelService-ref="operationLevelService"
+          p:operationStatusService-ref="operationStatusService"
+          p:operationTypeService-ref="operationTypeService"
+          p:organizationService-ref="organizationService"
+          p:cashboxService-ref="cashboxService"
+          p:spService-ref="spService"
+          p:serviceProviderService-ref="serviceProviderService"
 		  scope="prototype" />
 
 	<!-- registry-related actions -->

@@ -11,4 +11,5 @@ public interface ServiceProviderDaoExt {
 	 * @return ServiceProvider instance
 	 */
 	ServiceProvider findByNumber(Long organizationId);
+
 }

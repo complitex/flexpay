@@ -62,5 +62,3 @@
 <%@ include file="print.jsp" %>
 
 <div id="searchResultsDiv" style="display: none;" />
-
-

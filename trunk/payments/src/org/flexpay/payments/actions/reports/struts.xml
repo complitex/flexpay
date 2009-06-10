@@ -29,7 +29,6 @@
 		</action>
 
 		<action name="paymentOperationReportAction" class="paymentOperationReportAction">
-			<interceptor-ref name="commonDefaultStack" />
 			<result name="success" type="tiles">payments.report.paymentOperationReportAction</result>
 			<result name="file" type="redirect-action">
 				<param name="actionName">print</param>
