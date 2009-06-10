@@ -18,6 +18,7 @@ import org.quartz.JobExecutionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.quartz.QuartzJobBean;
+import org.springframework.beans.factory.annotation.Required;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -30,23 +31,25 @@ public class GeneratePaymentsRegistry extends QuartzJobBean {
     private Logger log = LoggerFactory.getLogger(getClass());
 
     private static final String USER_PAYMENTS_REGISTRY_GENERATOR = "payments-registry-generator";
+    // time out 10 sec
+    private static final long TIME_OUT = 10000;
 
-	private Long providerId;
+    private Long providerId;
 
     private ProcessManager processManager;
     private ServiceProviderService serviceProviderService;
     private ServiceProviderAttributeService serviceProviderAttributeService;
 
     /**
-	 * Set of authorities names for payments registry
-	 */
-	protected static final List<String> USER_PAYMENTS_REGISTRY_GENERATOR_AUTHORITIES = CollectionUtils.list(
-			Roles.BASIC,
+     * Set of authorities names for payments registry
+     */
+    protected static final List<String> USER_PAYMENTS_REGISTRY_GENERATOR_AUTHORITIES = CollectionUtils.list(
+            Roles.BASIC,
             Roles.PROCESS_READ,
             org.flexpay.payments.service.Roles.OPERATION_READ,
             org.flexpay.orgs.service.Roles.ORGANIZATION_READ,
             org.flexpay.orgs.service.Roles.SERVICE_PROVIDER_READ
-	);
+    );
 
     protected void executeInternal(JobExecutionContext context) throws JobExecutionException {
 
@@ -73,7 +76,17 @@ public class GeneratePaymentsRegistry extends QuartzJobBean {
                     parameters.put("Organization", organization);
 
                     long processId = processManager.createProcess("GeneratePaymentsRegisryProcess", parameters);
-                    Process process = processManager.getProcessInstanceInfo(processId);
+                    Process process;
+                    do {
+                        process = processManager.getProcessInstanceInfo(processId);
+                        try {
+                            Thread.sleep(TIME_OUT);
+                        } catch (InterruptedException e) {
+                            log.warn("Interrupted", e);
+                            throw new JobExecutionException(e);
+                        }
+                        log.debug("Waiting process ({}) will complete ...", processId);
+                    } while (!process.getProcessState().isCompleted());
 
                     parameters = process.getParameters();
 
@@ -115,24 +128,27 @@ public class GeneratePaymentsRegistry extends QuartzJobBean {
     }
 
     /**
-	 * Do payments registry user authentication
-	 */
-	private static void authenticatePaymentsRegistryGenerator() {
-		SecurityUtil.authenticate(USER_PAYMENTS_REGISTRY_GENERATOR, USER_PAYMENTS_REGISTRY_GENERATOR_AUTHORITIES);
-	}
+     * Do payments registry user authentication
+     */
+    private static void authenticatePaymentsRegistryGenerator() {
+        SecurityUtil.authenticate(USER_PAYMENTS_REGISTRY_GENERATOR, USER_PAYMENTS_REGISTRY_GENERATOR_AUTHORITIES);
+    }
 
-	public void setProviderId(Long providerId) {
-		this.providerId = providerId;
-	}
+    public void setProviderId(Long providerId) {
+        this.providerId = providerId;
+    }
 
+    @Required
     public void setProcessManager(ProcessManager processManager) {
         this.processManager = processManager;
     }
 
+    @Required
     public void setProviderService(ServiceProviderService providerService) {
         this.serviceProviderService = providerService;
     }
 
+    @Required
     public void setServiceProviderAttributeService(ServiceProviderAttributeService serviceProviderAttributeService) {
         this.serviceProviderAttributeService = serviceProviderAttributeService;
     }
