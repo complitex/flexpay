@@ -143,7 +143,7 @@ public interface ProcessManager {
 	 * @return Process info
 	 */
 	@Secured (Roles.PROCESS_READ)
-	@NotNull
+	@Nullable
 	Process getProcessInstanceInfo(@NotNull final Long processId);
 
 	void setDefinitionPaths(List<String> definitionPaths);
@@ -163,4 +163,27 @@ public interface ProcessManager {
 	 * @return Process info
 	 */
 	public ProcessInstance getProcessInstance(@NotNull final Long processInstanceId);
+
+	@Secured (Roles.PROCESS_READ)
+	@Nullable
+	/**
+	 * Execute Context callback
+	 *
+	 * @param callback ContextCallback to execute
+	 * @param <T>      Return value type
+	 * @return instance of T
+	 */
+	public  <T> T execute(@NotNull ContextCallback<T> callback);
+
+	@Secured (Roles.PROCESS_READ)
+	@Nullable
+	/**
+	 * Execute Context callback
+	 *
+	 * @param callback		   ContextCallback to execute
+	 * @param useExistingContext Whether to use existing context or not
+	 * @param <T>                Return value type
+	 * @return instance of T
+	 */
+	public <T> T execute(@NotNull ContextCallback<T> callback, boolean useExistingContext);
 }
