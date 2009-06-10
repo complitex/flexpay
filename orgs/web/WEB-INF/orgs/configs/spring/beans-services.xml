@@ -7,7 +7,8 @@
 		   http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
 		   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
-	<bean id="organisationInstanceService" abstract="true"
+	<bean id="organisationInstanceService"
+		  abstract="true"
 		  class="org.flexpay.orgs.service.imp.OrganizationInstanceServiceImpl"
 		  p:sessionUtils-ref="sessionUtils" />
 
@@ -16,6 +17,7 @@
 		  p:historyBuilder-ref="organizationHistoryBuilder" />
 
 	<bean id="organizationServiceTarget"
+		  autowire-candidate="false"
 		  class="org.flexpay.orgs.service.imp.OrganizationServiceImpl"
 		  p:sessionUtils-ref="sessionUtils"
 		  p:modificationListener-ref="organizationHistoryChangesListener"
@@ -32,6 +34,7 @@
 		  p:historyBuilder-ref="bankHistoryBuilder" />
 
 	<bean id="bankServiceTarget"
+		  autowire-candidate="false"
 		  class="org.flexpay.orgs.service.imp.BankServiceImpl"
 		  parent="organisationInstanceService"
 		  p:modificationListener-ref="bankHistoryChangesListener"
@@ -42,6 +45,7 @@
 		  p:historyBuilder-ref="paymentsCollectorHistoryBuilder" />
 
 	<bean id="paymentsCollectorServiceTarget"
+		  autowire-candidate="false"
 		  class="org.flexpay.orgs.service.imp.PaymentsCollectorServiceImpl"
 		  parent="organisationInstanceService"
 		  p:modificationListener-ref="paymentsCollectorHistoryChangesListener"
@@ -56,18 +60,22 @@
 		  p:historyBuilder-ref="serviceOrganizationHistoryBuilder" />
 
 	<bean id="serviceOrganizationServiceTarget"
+		  autowire-candidate="false"
 		  class="org.flexpay.orgs.service.imp.ServiceOrganizationServiceImpl"
 		  p:sessionUtils-ref="sessionUtils"
+		  p:modificationListener-ref="serviceOrganizationHistoryChangesListener"
 		  p:serviceOrganizationDao-ref="serviceOrganizationDao" />
 
 	<bean id="serviceProviderHistoryChangesListener"
 		  parent="historyChangesListenerBase"
 		  p:historyBuilder-ref="serviceProviderHistoryBuilder" />
 
-	<bean id="serviceProviderServiceTarget" autowire-candidate="false"
+	<bean id="serviceProviderServiceTarget"
+		  autowire-candidate="false"
 		  class="org.flexpay.orgs.service.imp.ServiceProviderServiceImpl"
 		  p:serviceProviderDao-ref="serviceProviderDao"
 		  p:serviceProviderDaoExt-ref="serviceProviderDaoExt"
+		  p:sessionUtils-ref="sessionUtils"
 		  p:modificationListener-ref="serviceProviderHistoryChangesListener"
 		  p:dataSourceDescriptionDao-ref="dataSourceDescriptionDao" />
 
