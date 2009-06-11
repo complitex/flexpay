@@ -4,6 +4,7 @@
 <s:actionerror/>
 
 <s:form action="paymentPointDetailMonitor">
+  <s:hidden value="status"/>
   <table cellpadding="3" cellspacing="1" border="0" width="100%">
     <tr>
       <td nowrap="nowrap"><s:text name="payments.payment_point"/>:<s:property value="name"/></td>

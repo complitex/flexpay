@@ -8,11 +8,13 @@ import org.flexpay.payments.persistence.OperationType;
 import org.flexpay.payments.service.CashboxService;
 import org.flexpay.payments.service.statistics.PaymentsStatisticsService;
 import org.flexpay.payments.service.statistics.OperationTypeStatistics;
+import org.flexpay.payments.process.handlers.AccounterAssignmentHandler;
 import org.flexpay.orgs.persistence.filters.PaymentPointsFilter;
 import org.flexpay.orgs.persistence.PaymentPoint;
 import org.flexpay.orgs.service.PaymentPointService;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.util.DateUtil;
+import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.process.ProcessManager;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
@@ -23,14 +25,16 @@ import org.jbpm.graph.exe.ProcessInstance;
 import org.jbpm.graph.exe.Token;
 import org.jbpm.graph.def.Transition;
 import org.jbpm.JbpmContext;
+import org.jbpm.taskmgmt.exe.SwimlaneInstance;
+import org.jbpm.taskmgmt.exe.TaskInstance;
+import org.hibernate.util.StringHelper;
 
-import java.util.List;
-import java.util.Date;
-import java.util.Set;
-import java.util.ArrayList;
+import java.util.*;
 import java.math.BigDecimal;
 
 public class PaymentPointDetailMonitorAction extends CashboxCookieActionSupport {
+    private static final String PROCESS_STATUS = "PROCESS_STATUS";
+
     private String name;
     private String paymentsCount;
     private String totalSum;
@@ -61,7 +65,25 @@ public class PaymentPointDetailMonitorAction extends CashboxCookieActionSupport 
             return ERROR;
         }
 
-        status = (String) process.getParameters().get("PROCESS_STATUS");
+        String currentStatus = (String) process.getParameters().get(PROCESS_STATUS);
+
+        final long processInstanceId = process.getId();
+
+        Set transitions = getTransitions(processInstanceId, activity);
+        if (status != null && status.equals(currentStatus) && activity != null && activity.length() > 0) {
+            do {
+                Thread.sleep(1000);
+                process = processManager.getProcessInstanceInfo(Long.parseLong(processId));
+                currentStatus = (String) process.getParameters().get(PROCESS_STATUS);
+            } while(!status.equals(currentStatus));
+            transitions = getTransitions(processInstanceId, activity);
+        }
+        status = currentStatus;
+        buttons = new ArrayList<String>();
+        for (Object o : transitions) {
+            Transition transition = (Transition) o;
+            buttons.add(transition.getName());
+        }
 
         List<Cashbox> cbs = cashboxService.findCashboxesForPaymentPoint(paymentPoint.getId());
         Date endDate = DateUtil.now();
@@ -87,34 +109,48 @@ public class PaymentPointDetailMonitorAction extends CashboxCookieActionSupport 
                 cashboxes.add(container);
             }
         }
-        final long processInstanceId = process.getId();
-        /*
-        if (processInstanceId <= 0) {
-            processInstanceId = process.getId();
-            log.warn("Process instance Id get from process {}", processInstanceId);
-        }
-        */
-        ProcessInstance processInstance = processManager.getProcessInstance(processInstanceId);
-        if (processInstance == null) {
-            log.error("Not found process instance for process instance id {}", processInstanceId);
-            return ERROR;
-        }
 
-        Set transitions = processManager.execute(new ContextCallback<Set>(){
+        return SUCCESS;
+    }
+
+    private Set getTransitions(final long processInstanceId, final String transitionName) {
+        return processManager.execute(new ContextCallback<Set>(){
 			public Set doInContext(@NotNull JbpmContext context) {
-				return context.getProcessInstance(processInstanceId).getRootToken().getAvailableTransitions();
+                ProcessInstance processInstance = context.getProcessInstance(processInstanceId);
+                Collection tasks = processInstance.getTaskMgmtInstance().getTaskInstances();
+                if (tasks.isEmpty()) {
+                    return Collections.emptySet();
+                }
+                boolean isAccounter = false;
+                for (Object o : tasks) {
+                    TaskInstance task = (TaskInstance) o;
+                    if (AccounterAssignmentHandler.ACCOUNTER.equals(task.getActorId())) {
+                        isAccounter = true;
+                        break;
+                    }
+                }
+                if (!isAccounter) {
+                    return Collections.emptySet();
+                }
+                Set transitions = processInstance.getRootToken().getAvailableTransitions();
+                if (transitionName != null && transitionName.length() > 0) {
+                    Transition t = null;
+                    for (Object o : transitions) {
+                        Transition transition = (Transition) o;
+                        if (transitionName.equals(transition.getName())) {
+                            t = transition;
+                            break;
+                        }
+                    }
+                    if (t != null) {
+                        processInstance.getRootToken().signal(t);
+                        return Collections.emptySet();
+                    }
+                }
+
+                return transitions;
 			}
 		});
-        /*
-        processInstance.getRootToken().getAvailableTransitions();
-        */
-
-        buttons = new ArrayList<String>();
-        for (Object o : transitions) {
-            Transition transition = (Transition) o;
-            buttons.add(transition.getName());
-        }
-        return SUCCESS;
     }
 
     @NotNull
