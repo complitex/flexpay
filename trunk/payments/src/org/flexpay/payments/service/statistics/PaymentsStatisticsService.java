@@ -32,7 +32,7 @@ public interface PaymentsStatisticsService {
 	 * @param stub Organization stab to generate statistics for
 	 * @param beginDate lower bound for operation creation date
 	 * @param endDate   higher bound for operation creation date   @return list of operation type statistics
-     * @return
+     * @return list of operation type statistics objects
 	 */
 	@Secured (Roles.PAYMENTS_REPORT)
 	List<OperationTypeStatistics> operationTypeOrganizationStatistics(Stub<Organization> stub, Date beginDate, Date endDate);
@@ -45,7 +45,7 @@ public interface PaymentsStatisticsService {
 	 * @param stub Payment Point stab to generate statistics for
 	 * @param beginDate lower bound for operation creation date
 	 * @param endDate   higher bound for operation creation date   @return list of operation type statistics
-     * @return
+	 * @return list of operation type statistics objects
 	 */
 	@Secured (Roles.PAYMENTS_REPORT)
 	List<OperationTypeStatistics> operationTypePaymentPointStatistics(Stub<PaymentPoint> stub, Date beginDate, Date endDate);
@@ -58,7 +58,7 @@ public interface PaymentsStatisticsService {
 	 * @param stub Cashbox stab to generate statistics for
 	 * @param beginDate lower bound for operation creation date
 	 * @param endDate   higher bound for operation creation date   @return list of operation type statistics
-     * @return
+	 * @return list of operation type statistics objects
 	 */
 	@Secured (Roles.PAYMENTS_REPORT)
 	List<OperationTypeStatistics> operationTypeCashboxStatistics(Stub<Cashbox> stub, Date beginDate, Date endDate);

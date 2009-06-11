@@ -28,6 +28,7 @@ public abstract class ActionBase<
 		this.nameTimeDependentService = nameTimeDependentService;
 	}
 
+	@Required
 	public void setParentService(ParentService<?> parentService) {
 		this.parentService = parentService;
 	}

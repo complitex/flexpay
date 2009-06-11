@@ -136,8 +136,8 @@
 	});
 
 	function printQuittance(opId) {
-		var url = '<s:url action="paymentOperationReportAction" includeParams="none" />';
-		url += '?operation.id=' + opId;
+		var url = "<s:url action="paymentOperationReportAction" includeParams="none" />";
+		url += "?operationId=" + opId;
 		window.open(url, "_blank");
 	}
 </script>

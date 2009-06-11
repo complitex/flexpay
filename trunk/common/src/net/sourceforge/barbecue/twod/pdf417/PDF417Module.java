@@ -40,9 +40,10 @@ import net.sourceforge.barbecue.output.OutputException;
  * @author Alex Ferrer
  * @author <a href="mailto:opensource@ianbourke.com">Ian Bourke</a>
  *
- * @todo Do we really want to fix the DATACOLS to 12?
+ * TODO: Do we really want to fix the DATACOLS to 12?
  */
 public class PDF417Module extends Module implements java.io.Serializable {
+
 	private static final int DATACOLS = 12;
 
 	private String data;
@@ -58,6 +59,7 @@ public class PDF417Module extends Module implements java.io.Serializable {
 
 	/**
 	 * Constructs the PDF417 barcode with the specified data.
+	 *
 	 * @param data The data to encode
 	 */
 	public PDF417Module(String data) {
@@ -67,6 +69,7 @@ public class PDF417Module extends Module implements java.io.Serializable {
 
 	/**
 	 * Returns the barcode width;
+	 *
 	 * @return The barcode width
 	 */
 	private int getBarcodeWidth() {
@@ -75,6 +78,7 @@ public class PDF417Module extends Module implements java.io.Serializable {
 
 	/**
 	 * Returns the barcode height.
+	 *
 	 * @return The barcode height
 	 */
 	int getBarcodeHeight() {
@@ -83,6 +87,7 @@ public class PDF417Module extends Module implements java.io.Serializable {
 
 	/**
 	 * Draw the barcode to the specified outputter, at the specified origin.
+	 *
 	 * @param outputter The outputter
 	 * @param x The X component of the origin
 	 * @param y The Y component of the origin
@@ -104,6 +109,7 @@ public class PDF417Module extends Module implements java.io.Serializable {
 
 	/**
 	 * I have no idea what this does.
+	 *
 	 * @param data The barcode data
 	 * @param length The length of the data
 	 * @param ecLength The length of the EC (2)
@@ -333,4 +339,5 @@ public class PDF417Module extends Module implements java.io.Serializable {
 			}
 		}
 	}
+
 }

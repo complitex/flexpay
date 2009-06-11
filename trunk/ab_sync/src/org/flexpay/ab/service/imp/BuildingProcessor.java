@@ -196,7 +196,7 @@ public class BuildingProcessor extends AbstractProcessor<BuildingAddress> {
 			return null;
 		}
 
-		BuildingAddress buildingAddress = buildingService.findBuildings(stub(object.getStreet()), number, bulk);
+		BuildingAddress buildingAddress = buildingService.findBuildings(stub(object.getStreet()), buildingService.attributes(number, bulk));
 		return buildingAddress != null ? stub(buildingAddress) : null;
 	}
 
@@ -229,4 +229,5 @@ public class BuildingProcessor extends AbstractProcessor<BuildingAddress> {
 	public void setFactory(ObjectsFactory factory) {
 		this.factory = factory;
 	}
+
 }

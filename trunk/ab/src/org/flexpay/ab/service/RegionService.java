@@ -54,7 +54,6 @@ public interface RegionService extends
 	 * @return persisted object
 	 * @throws org.flexpay.common.exception.FlexPayExceptionContainer
 	 *          if operation fails
-	 * @deprecated Use single save for create-update operations
 	 */
 	@Secured(Roles.REGION_ADD)
 	Region create(Region object, List<RegionNameTranslation> nameTranslations, ArrayStack filters, Date from)

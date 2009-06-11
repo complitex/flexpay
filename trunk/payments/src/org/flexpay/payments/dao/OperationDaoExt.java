@@ -15,7 +15,7 @@ public interface OperationDaoExt {
 	/**
 	 * Returns list of operations which contains documents suitable to search criterias
 	 *
-	 * @param organizationId creator organization id
+	 * @param organization Organization object
 	 * @param serviceTypeId document service type id
 	 * @param begin lower bound for document creation date
 	 * @param end upper bound for document creation date
@@ -31,7 +31,7 @@ public interface OperationDaoExt {
 	/**
 	 * Returns list of operations suitable to search criterias
 	 *
-	 * @param organizationId creator organization id
+	 * @param organization Organization object
 	 * @param begin lower bound for operation creation date
 	 * @param end upper bound for operation creation date
 	 * @param minimalSumm minimal operation summ

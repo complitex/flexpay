@@ -334,7 +334,8 @@ public class EircImportServiceTx extends ImportService {
 
 	private Apartment findApartment(RawConsumerData data, Street street, DataSourceDescription sd, RawDataSource<RawConsumerData> dataSource)
 			throws Exception {
-		BuildingAddress buildingAddress = buildingService.findBuildings(stub(street), data.getAddressHouse(), data.getAddressBulk());
+
+		BuildingAddress buildingAddress = buildingService.findBuildings(stub(street), buildingService.attributes(data.getAddressHouse(), data.getAddressBulk()));
 		if (buildingAddress == null) {
 			log.warn("Failed getting building for consumer, Street({}, {}), Building({}, {}) ",
 					new Object[]{street.getId(), data.getAddressStreet(), data.getAddressHouse(), data.getAddressBulk()});

@@ -47,7 +47,7 @@ public class GetIdentityCookieAction extends FPActionSupport implements ServletR
 		try {
 			Cashbox cashbox = cashboxService.read(new Stub<Cashbox>(Long.parseLong(cashboxId)));
 			if (cashbox == null) {
-				addActionError(getText("payments.errors.cashbox_id_is_bad", new String[] { cashboxId }));
+				addActionError(getText("payments.errors.cashbox_id_is_bad", cashboxId));
 			}
 		} catch (NumberFormatException nfe) {
 			addActionError(getText("payments.errors.cashbox_id_must_be_a_number"));

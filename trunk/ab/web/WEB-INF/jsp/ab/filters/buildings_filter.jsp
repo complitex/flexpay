@@ -11,7 +11,7 @@
 		<s:iterator value="buildingsFilter.buildingses">
 			<option value="<s:property value="building.id"/>"<s:if
 					test="%{building.id == buildingsFilter.selectedId}"> selected</s:if>><s:property
-					value="%{getBuildingNumber(buildingAttributes)}"/></option>
+					value="%{@org.flexpay.ab.util.TranslationUtil@getBuildingNumber(buildingAttributes, userPreferences.locale)}"/></option>
 		</s:iterator>
 	</select>
 </s:else>

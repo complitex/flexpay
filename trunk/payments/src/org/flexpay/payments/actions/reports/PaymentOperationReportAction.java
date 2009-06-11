@@ -37,6 +37,8 @@ public class PaymentOperationReportAction extends PaymentOperationAction {
 
 	private static final String REPORT_BASE_NAME = "DoubleQuittancePayment";
 
+	private Long operationId;
+
 	private FPFile report;
 
 	private ReportUtil reportUtil;
@@ -53,15 +55,28 @@ public class PaymentOperationReportAction extends PaymentOperationAction {
 	@NotNull
 	protected String doExecute() throws Exception {
 
-		Cashbox cashbox = cashboxService.read(new Stub<Cashbox>(cashboxId));
-		log.debug("Found cashbox {}", cashbox);
-		if (cashbox == null) {
-			throw new IllegalArgumentException("Invalid cashbox id: " + cashboxId);
+		PaymentPrintForm form;
+
+		if (operationId != null) {
+			form = paymentsReporter.getPaymentPrintFormData(new Stub<Operation>(operationId));
+		} else {
+			Cashbox cashbox = cashboxService.read(new Stub<Cashbox>(cashboxId));
+			if (cashbox == null) {
+				log.warn("Can't find cashbox with id {}", cashboxId);
+				addActionError(getText("payments.errors.cashbox_id_is_bad", "" + cashboxId));
+				return SUCCESS;
+			}
+			log.debug("Found cashbox {}", cashbox);
+
+			Operation operation = createOperation(cashbox);
+			form = paymentsReporter.getPaymentPrintFormData(operation);
 		}
 
-		Operation operation = createOperation(cashbox);
+		if (form == null) {
+			addActionError(getText("error.no_id"));
+			return SUCCESS;
+		}
 
-		PaymentPrintForm form = paymentsReporter.getPaymentPrintFormData(operation);
 		Map<String, Object> params = map(
 				ar("operationDate", "organizationName", "quittanceNumber",
 						"cashierFIO", "payerFIO", "total", "totalSpelling",
@@ -112,10 +127,6 @@ public class PaymentOperationReportAction extends PaymentOperationAction {
 		}
 	}
 
-	public FPFile getReport() {
-		return report;
-	}
-
 	/**
 	 * Get default error execution result
 	 * <p/>
@@ -126,6 +137,14 @@ public class PaymentOperationReportAction extends PaymentOperationAction {
 	@NotNull
 	protected String getErrorResult() {
 		return SUCCESS;
+	}
+
+	public void setOperationId(Long operationId) {
+		this.operationId = operationId;
+	}
+
+	public FPFile getReport() {
+		return report;
 	}
 
 	@Required

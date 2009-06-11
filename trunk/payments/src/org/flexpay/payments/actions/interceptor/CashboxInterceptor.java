@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory;
 
 public class CashboxInterceptor extends AbstractInterceptor {
 
-	private static final Logger log = LoggerFactory.getLogger(CashboxInterceptor.class);
+	private Logger log = LoggerFactory.getLogger(getClass());
 
 	private static final String CASHBOX_AUTHENTICATION_REQUIRED = "cashboxAuthenticationRequired";
 

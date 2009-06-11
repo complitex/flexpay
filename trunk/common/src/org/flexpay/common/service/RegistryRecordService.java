@@ -61,7 +61,6 @@ public interface RegistryRecordService {
 	 * List registry records
 	 *
 	 * @param registry			  Registry to get records for
-	 * @param recordStatusFilter	Records status filter
 	 * @return list of filtered registry records
 	 */
 	List<RegistryRecord> listRecords(Registry registry);

@@ -35,7 +35,7 @@ import java.util.Map;
 
 public class PaymentsReporterImpl implements PaymentsReporter {
 
-	private static final Logger log = LoggerFactory.getLogger(PaymentsReporterImpl.class);
+	private Logger log = LoggerFactory.getLogger(getClass());
 
 	private DocumentService documentService;
 	private OrganizationService organizationService;
@@ -82,13 +82,13 @@ public class PaymentsReporterImpl implements PaymentsReporter {
 	 *
 	 * @param stub Payment operation to build form for
 	 * @return PaymentPrintForm form data
-	 * @throws IllegalArgumentException if Operation reference is invalid
 	 */
-	public PaymentPrintForm getPaymentPrintFormData(Stub<Operation> stub) throws IllegalArgumentException {
+	public PaymentPrintForm getPaymentPrintFormData(Stub<Operation> stub) {
 
 		Operation op = operationService.read(stub);
 		if (op == null) {
-			throw new IllegalArgumentException("Invalid operation stub " + stub);
+			log.debug("Operation with id {} does not exist", stub.getId());
+			return null;
 		}
 
 		return getPaymentPrintFormData(op);
@@ -99,14 +99,13 @@ public class PaymentsReporterImpl implements PaymentsReporter {
 	 *
 	 * @param op Payment operation to build form for
 	 * @return PaymentPrintForm form data
-	 * @throws IllegalArgumentException if Operation reference is invalid
 	 */
-	public PaymentPrintForm getPaymentPrintFormData(Operation op) throws IllegalArgumentException {
+	public PaymentPrintForm getPaymentPrintFormData(Operation op) {
 
 		Organization org = organizationService.readFull(op.getCreatorOrganizationStub());
 		if (org == null) {
-			throw new IllegalArgumentException("Creator organization not found " +
-											   op.getCreatorOrganizationStub());
+			log.error("Can't find organization with id {}", op.getCreatorOrganizationStub());
+			return null;
 		}
 
 		PaymentPoint paymentPoint = paymentPointService.read(op.getPaymentPointStub());
@@ -154,9 +153,6 @@ public class PaymentsReporterImpl implements PaymentsReporter {
 		return form;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	public ReceivedPaymentsPrintInfoData getReceivedPaymentsPrintFormData(Date begin, Date end, PaymentPoint paymentPoint, Locale locale) {
 
 		Organization organization = getOrganization(paymentPoint);
@@ -317,4 +313,5 @@ public class PaymentsReporterImpl implements PaymentsReporter {
 	public void setPaymentPointService(PaymentPointService paymentPointService) {
 		this.paymentPointService = paymentPointService;
 	}
+
 }

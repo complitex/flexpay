@@ -19,11 +19,8 @@ import java.util.List;
 
 public class OperationDaoExtImpl extends HibernateDaoSupport implements OperationDaoExt {
 
-	private static final Logger log = LoggerFactory.getLogger(OperationDaoExtImpl.class);
+	private Logger log = LoggerFactory.getLogger(getClass());
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@SuppressWarnings ({"unchecked"})
 	public List<Operation> searchDocuments(Organization organization, final Long serviceTypeId, final Date begin, final Date end, final BigDecimal minimalSumm, final BigDecimal maximalSumm, final Page<Operation> pager) {
 
@@ -198,4 +195,5 @@ public class OperationDaoExtImpl extends HibernateDaoSupport implements Operatio
 			query.setBigDecimal("maximalSumm", maximalSumm);
 		}
 	}
+
 }

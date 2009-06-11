@@ -1,10 +1,10 @@
 package org.flexpay.ab.actions.apartment;
 
 import org.apache.commons.collections.ArrayStack;
-import org.flexpay.ab.actions.buildings.BuildingsActionsBase;
 import org.flexpay.ab.persistence.Apartment;
 import org.flexpay.ab.persistence.filters.*;
 import org.flexpay.ab.service.ApartmentService;
+import org.flexpay.common.actions.FPActionWithPagerSupport;
 import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
 import org.flexpay.common.service.ParentService;
 import org.flexpay.common.util.CollectionUtils;
@@ -13,7 +13,7 @@ import org.springframework.beans.factory.annotation.Required;
 
 import java.util.List;
 
-public class ApartmentsListAction extends BuildingsActionsBase {
+public class ApartmentsListAction extends FPActionWithPagerSupport {
 
 	protected CountryFilter countryFilter = new CountryFilter();
 	protected RegionFilter regionFilter = new RegionFilter();

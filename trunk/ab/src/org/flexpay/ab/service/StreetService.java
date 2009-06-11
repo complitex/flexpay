@@ -55,15 +55,6 @@ public interface StreetService extends
 	@NotNull
 	List<Street> findByTownAndQuery(@NotNull Stub<Town> stub, @NotNull String query);
 
-	/**
-	 * Save Street types timeline
-	 *
-	 * @param object Street to update
-	 * @deprecated use {@link #update(org.flexpay.ab.persistence.Street)} instead
-	 */
-	@Secured (Roles.STREET_CHANGE)
-	void saveTypes(Street object);
-
 	@Secured (Roles.STREET_READ)
 	String format(@NotNull Stub<Street> stub, @NotNull Locale locale, boolean shortMode)
 			throws FlexPayException;
@@ -100,7 +91,6 @@ public interface StreetService extends
 	 * @return persisted object
 	 * @throws org.flexpay.common.exception.FlexPayExceptionContainer
 	 *          if operation fails
-	 * @deprecated Use single save for create-update operations
 	 */
 	@Secured (Roles.STREET_ADD)
 	Street create(Street object, List<StreetNameTranslation> nameTranslations, ArrayStack filters, Date from)
@@ -246,4 +236,5 @@ public interface StreetService extends
 	@NotNull
 	@Secured (Roles.DISTRICT_READ)
 	List<District> getStreetDistricts(@NotNull Stub<Street> stub);
+
 }

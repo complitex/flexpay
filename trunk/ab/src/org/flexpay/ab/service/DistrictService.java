@@ -52,7 +52,6 @@ public interface DistrictService extends NameTimeDependentService<
 	 * @return persisted object
 	 * @throws org.flexpay.common.exception.FlexPayExceptionContainer
 	 *          if operation fails
-	 * @deprecated Use single save for create-update operations
 	 */
 	@Secured (Roles.DISTRICT_ADD)
 	District create(District object, List<DistrictNameTranslation> nameTranslations, ArrayStack filters, Date from)
