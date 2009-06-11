@@ -76,7 +76,7 @@ public class PaymentPointDetailMonitorAction extends CashboxCookieActionSupport 
                 process = processManager.getProcessInstanceInfo(Long.parseLong(processId));
                 currentStatus = (String) process.getParameters().get(PROCESS_STATUS);
             } while(!status.equals(currentStatus));
-            transitions = getTransitions(processInstanceId, activity);
+            transitions = getTransitions(processInstanceId, null);
         }
         status = currentStatus;
         buttons = new ArrayList<String>();
