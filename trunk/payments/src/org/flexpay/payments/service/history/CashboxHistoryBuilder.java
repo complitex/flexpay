@@ -1,21 +1,21 @@
 package org.flexpay.payments.service.history;
 
-import org.flexpay.orgs.persistence.PaymentPoint;
-import org.flexpay.common.persistence.history.impl.HistoryBuilderBase;
+import org.flexpay.common.persistence.Language;
+import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.history.Diff;
 import org.flexpay.common.persistence.history.HistoryOperationType;
 import org.flexpay.common.persistence.history.HistoryRecord;
 import org.flexpay.common.persistence.history.ProcessingStatus;
-import org.flexpay.common.persistence.Language;
-import org.flexpay.common.persistence.Stub;
-import org.flexpay.common.util.config.ApplicationConfig;
+import org.flexpay.common.persistence.history.impl.HistoryBuilderBase;
 import org.flexpay.common.util.EqualsHelper;
+import org.flexpay.common.util.config.ApplicationConfig;
+import org.flexpay.orgs.persistence.PaymentPoint;
 import org.flexpay.payments.persistence.Cashbox;
 import org.flexpay.payments.persistence.CashboxNameTranslation;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.jetbrains.annotations.Nullable;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -103,8 +103,8 @@ public class CashboxHistoryBuilder extends HistoryBuilderBase<Cashbox> {
 	/**
 	 * Apply diff to an object
 	 *
-	 * @param t	Object to apply diff to
-	 * @param diff Diff to apply
+	 * @param cashbox Object to apply diff to
+	 * @param diff	Diff to apply
 	 */
 	public void patch(@NotNull Cashbox cashbox, @NotNull Diff diff) {
 

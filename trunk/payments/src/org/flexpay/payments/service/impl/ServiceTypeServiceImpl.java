@@ -5,6 +5,8 @@ import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.persistence.history.ModificationListener;
+import org.flexpay.common.service.internal.SessionUtils;
 import org.flexpay.payments.dao.ServiceDaoExt;
 import org.flexpay.payments.dao.ServiceTypeDao;
 import org.flexpay.payments.persistence.ServiceType;
@@ -15,6 +17,7 @@ import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.beans.factory.annotation.Required;
 
 import java.util.List;
 import java.util.Set;
@@ -26,6 +29,9 @@ public class ServiceTypeServiceImpl implements ServiceTypeService {
 
 	private ServiceTypeDao serviceTypeDao;
 	private ServiceDaoExt serviceDaoExt;
+
+	private SessionUtils sessionUtils;
+	private ModificationListener<ServiceType> modificationListener;
 
 	/**
 	 * Disable service types
@@ -40,6 +46,9 @@ public class ServiceTypeServiceImpl implements ServiceTypeService {
 			if (serviceType != null) {
 				serviceType.disable();
 				serviceTypeDao.update(serviceType);
+
+				modificationListener.onDelete(serviceType);
+				log.debug("Disabled service type: {}", serviceType);
 			}
 		}
 	}
@@ -85,6 +94,8 @@ public class ServiceTypeServiceImpl implements ServiceTypeService {
 		type.setId(null);
 		serviceTypeDao.create(type);
 
+		modificationListener.onCreate(type);
+
 		return type;
 	}
 
@@ -96,9 +107,24 @@ public class ServiceTypeServiceImpl implements ServiceTypeService {
 	 * @throws org.flexpay.common.exception.FlexPayExceptionContainer
 	 *          if validation error occurs
 	 */
+	@SuppressWarnings ({"ThrowableInstanceNeverThrown"})
+	@Transactional (readOnly = false)
 	public ServiceType update(@NotNull ServiceType type) throws FlexPayExceptionContainer {
 
 		validate(type);
+
+		if (type.isNew()) {
+			throw new FlexPayExceptionContainer(new FlexPayException("New", "common.error.update_new"));
+		}
+
+		ServiceType old = read(Stub.stub(type));
+		if (old == null) {
+			throw new FlexPayExceptionContainer(new FlexPayException("No object found to update " + type));
+		}
+
+		sessionUtils.evict(old);
+		modificationListener.onUpdate(old, type);
+
 		serviceTypeDao.update(type);
 
 		return type;
@@ -178,11 +204,23 @@ public class ServiceTypeServiceImpl implements ServiceTypeService {
 		return serviceTypeFilter;
 	}
 
+	@Required
 	public void setServiceDaoExt(ServiceDaoExt serviceDaoExt) {
 		this.serviceDaoExt = serviceDaoExt;
 	}
 
+	@Required
 	public void setServiceTypeDao(ServiceTypeDao serviceTypeDao) {
 		this.serviceTypeDao = serviceTypeDao;
+	}
+
+	@Required
+	public void setSessionUtils(SessionUtils sessionUtils) {
+		this.sessionUtils = sessionUtils;
+	}
+
+	@Required
+	public void setModificationListener(ModificationListener<ServiceType> modificationListener) {
+		this.modificationListener = modificationListener;
 	}
 }

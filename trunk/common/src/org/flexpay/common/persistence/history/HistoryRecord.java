@@ -88,6 +88,11 @@ public class HistoryRecord extends DomainObject {
 		this.newIntValue = newIntValue;
 	}
 
+	@NotNull
+	public Integer getNewIntValueNotNull() {
+		return newIntValue;
+	}
+
 	@Nullable
 	public Long getOldLongValue() {
 		return oldLongValue;

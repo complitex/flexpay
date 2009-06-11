@@ -56,7 +56,7 @@ public interface ServiceTypeService {
 	 * @return Persisted type back
 	 * @throws FlexPayExceptionContainer if validation error occurs
 	 */
-	@Secured (Roles.SERVICE_TYPE_CHANGE)
+	@Secured (Roles.SERVICE_TYPE_ADD)
 	ServiceType create(@NotNull ServiceType type) throws FlexPayExceptionContainer;
 
 	/**

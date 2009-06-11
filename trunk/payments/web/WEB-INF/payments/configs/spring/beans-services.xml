@@ -53,10 +53,16 @@
 		  class="org.flexpay.payments.service.impl.OperationLevelServiceImpl"
 		  p:levelDao-ref="operationLevelDao" />
 
+	<bean id="serviceTypeHistoryChangesListener"
+		  parent="historyChangesListenerBase"
+		  p:historyBuilder-ref="serviceTypeHistoryBuilder" />
+
 	<bean id="serviceTypeServiceTarget"
 		  class="org.flexpay.payments.service.impl.ServiceTypeServiceImpl"
 		  p:serviceDaoExt-ref="serviceDaoExt"
 		  p:serviceTypeDao-ref="serviceTypeDao"
+		  p:sessionUtils-ref="sessionUtils"
+		  p:modificationListener-ref="serviceTypeHistoryChangesListener"
 		  autowire-candidate="false" />
 
 	<bean id="spServiceTarget"
@@ -152,12 +158,22 @@
 		  parent="paymentsHistoryBuilderBase"
 		  class="org.flexpay.payments.service.history.CashboxHistoryBuilder" />
 
+	<bean id="serviceTypeHistoryBuilder"
+		  parent="paymentsHistoryBuilderBase"
+		  class="org.flexpay.payments.service.history.ServiceTypeHistoryBuilder" />
+
 	<!-- History generators -->
 	<bean id="cashboxHistoryGenerator"
 		  class="org.flexpay.payments.service.history.CashboxHistoryGenerator"
 		  p:diffService-ref="diffService"
 		  p:historyBuilder-ref="cashboxHistoryBuilder"
 		  p:cashboxService-ref="cashboxService" />
+
+	<bean id="serviceTypeHistoryGenerator"
+		  class="org.flexpay.payments.service.history.ServiceTypeHistoryGenerator"
+		  p:diffService-ref="diffService"
+		  p:historyBuilder-ref="serviceTypeHistoryBuilder"
+		  p:typeService-ref="serviceTypeService" />
 
 	<!-- Histrory handlers -->
 	<bean id="paymentsHistoryHandlerBase"
@@ -171,6 +187,12 @@
 		  class="org.flexpay.payments.service.history.CashboxHistoryHandler"
 		  p:cashboxService-ref="cashboxService"
 		  p:historyBuilder-ref="cashboxHistoryBuilder" />
+
+	<bean id="serviceTypeHistoryHandler"
+		  parent="paymentsHistoryHandlerBase"
+		  class="org.flexpay.payments.service.history.ServiceTypeHistoryHandler"
+		  p:typeService-ref="serviceTypeService"
+		  p:historyBuilder-ref="serviceTypeHistoryBuilder" />
 
 	<bean id="paymentsObjectsSyncer" parent="objectsSyncer">
 		<property name="handlers">
@@ -192,6 +214,7 @@
 				<ref bean="bankHistoryHandler" />
 				<ref bean="organizationHistoryHandler" />
 				<ref bean="cashboxHistoryHandler" />
+				<ref bean="serviceTypeHistoryHandler" />
 			</list>
 		</property>
 	</bean>
