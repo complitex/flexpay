@@ -1,7 +1,7 @@
 package org.flexpay.payments.service;
 
 import org.flexpay.common.dao.paging.Page;
-import org.flexpay.common.exception.FlexPayException;
+import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.payments.persistence.Cashbox;
 import org.jetbrains.annotations.NotNull;
@@ -17,19 +17,23 @@ public interface CashboxService {
 	 * Create cashbox
 	 *
 	 * @param cashbox Cashbox
-	 * @throws FlexPayException if failure occurs
+	 * @return persisted object back
+	 * @throws FlexPayExceptionContainer if failure occurs
 	 */
-	@Secured(Roles.CASHBOX_ADD)
-	void create(Cashbox cashbox) throws FlexPayException;
+	@Secured (Roles.CASHBOX_ADD)
+	@NotNull
+	Cashbox create(@NotNull Cashbox cashbox) throws FlexPayExceptionContainer;
 
 	/**
 	 * Update cashbox
 	 *
 	 * @param cashbox Cashbox to update for
-	 * @throws FlexPayException if Cashbox object is invalid
+	 * @return updated object back
+	 * @throws FlexPayExceptionContainer if Cashbox object is invalid
 	 */
-	@Secured(Roles.CASHBOX_CHANGE)
-	void update(Cashbox cashbox) throws FlexPayException;
+	@Secured (Roles.CASHBOX_CHANGE)
+	@NotNull
+	Cashbox update(@NotNull Cashbox cashbox) throws FlexPayExceptionContainer;
 
 	/**
 	 * Read SpCashbox object by its unique id
@@ -37,7 +41,7 @@ public interface CashboxService {
 	 * @param stub Cashbox stub
 	 * @return Cashbox object, or <code>null</code> if object not found
 	 */
-	@Secured(Roles.CASHBOX_READ)
+	@Secured (Roles.CASHBOX_READ)
 	@Nullable
 	Cashbox read(@NotNull Stub<Cashbox> stub);
 
@@ -46,7 +50,7 @@ public interface CashboxService {
 	 *
 	 * @param cashbox Cashbox-object to delete
 	 */
-	@Secured(Roles.CASHBOX_DELETE)
+	@Secured (Roles.CASHBOX_DELETE)
 	void delete(Cashbox cashbox);
 
 	/**
@@ -61,21 +65,21 @@ public interface CashboxService {
 	/**
 	 * Get all cashbox stub in page mode
 	 *
-	 * @param pager	Page object
+	 * @param pager Page object
 	 * @return List of cashbox objects for pager
 	 */
-	@Secured(Roles.CASHBOX_READ)
+	@Secured (Roles.CASHBOX_READ)
 	@Nullable
 	List<Cashbox> findObjects(Page<Cashbox> pager);
 
-    /**
+	/**
 	 * Get all cashbox stub for payment point
 	 *
 	 * @param paymentPointId Payment point id
 	 * @return List of cashbox objects
 	 */
-	@Secured(Roles.CASHBOX_READ)
+	@Secured (Roles.CASHBOX_READ)
 	@Nullable
-    List<Cashbox> findCashboxesForPaymentPoint(Long paymentPointId);
+	List<Cashbox> findCashboxesForPaymentPoint(Long paymentPointId);
 
 }

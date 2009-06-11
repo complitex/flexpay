@@ -110,8 +110,15 @@
 		  p:email="test@test.test"
 		  p:sender-ref="mailSender" />
 
+	<bean id="cashboxHistoryChangesListener"
+		  parent="historyChangesListenerBase"
+		  p:historyBuilder-ref="cashboxHistoryBuilder" />
+
 	<bean id="cashboxServiceTarget"
+		  autowire-candidate="false"
 		  class="org.flexpay.payments.service.impl.CashboxServiceImpl"
+		  p:sessionUtils-ref="sessionUtils"
+		  p:modificationListener-ref="cashboxHistoryChangesListener"
 		  p:cashboxDao-ref="cashboxDao" />
 
 	<bean id="exportBankPaymentsRegistry"
