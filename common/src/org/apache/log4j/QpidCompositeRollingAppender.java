@@ -254,8 +254,8 @@ public class QpidCompositeRollingAppender extends FileAppender
      * Set the maximum size that the output file is allowed to reach before being rolled over to backup files.
      *
      * <p>This method is equivalent to {@link #setMaxFileSize} except that it is required for differentiating the setter
-     * taking a <code>long</code> argument from the setter taking a <code>String</code> argument by the JavaBeans {@link
-     * java.beans.Introspector Introspector}.
+     * taking a <code>long</code> argument from the setter taking a <code>String</code> argument by the JavaBeans
+	 * {@link java.beans.Introspector}.
      *
      * @see #setMaxFileSize(String)
      */
@@ -268,8 +268,8 @@ public class QpidCompositeRollingAppender extends FileAppender
      * Set the maximum size that the output file is allowed to reach before being rolled over to backup files.
      *
      * <p>This method is equivalent to {@link #setMaxFileSize} except that it is required for differentiating the setter
-     * taking a <code>long</code> argument from the setter taking a <code>String</code> argument by the JavaBeans {@link
-     * java.beans.Introspector Introspector}.
+     * taking a <code>long</code> argument from the setter taking a <code>String</code> argument by the JavaBeans
+	 * {@link java.beans.Introspector}.
      *
      * @see #setMaxFileSize(String)
      */

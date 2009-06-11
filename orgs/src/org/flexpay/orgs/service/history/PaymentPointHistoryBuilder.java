@@ -134,7 +134,7 @@ public class PaymentPointHistoryBuilder extends HistoryBuilderBase<PaymentPoint>
 	/**
 	 * Apply diff to an object
 	 *
-	 * @param t	Object to apply diff to
+	 * @param paymentPoint Payment point object to apply diff to
 	 * @param diff Diff to apply
 	 */
 	public void patch(@NotNull PaymentPoint paymentPoint, @NotNull Diff diff) {

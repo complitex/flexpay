@@ -31,7 +31,7 @@
 					<input type="checkbox" value="<s:property value="%{building.id}"/>" name="objectIds"/>
 				</td>
 				<td class="col">
-                    <s:property	value="%{getBuildingNumber(buildingAttributes)}"/>
+                    <s:property	value="%{@org.flexpay.ab.util.TranslationUtil@getBuildingNumber(buildingAttributes, userPreferences.locale)}"/>
 				</td>
 			</tr>
 		</s:iterator>

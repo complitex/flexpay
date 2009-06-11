@@ -5,8 +5,7 @@ import org.junit.runners.Suite;
 
 @RunWith (Suite.class)
 @Suite.SuiteClasses ({
-		org.flexpay.ab.action.building.AllTests.class,
-		TestBuildingsActionsBase.class
+		org.flexpay.ab.action.building.AllTests.class
 })
 public class AllTests {
 

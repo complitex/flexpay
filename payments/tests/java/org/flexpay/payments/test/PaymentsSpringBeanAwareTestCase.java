@@ -37,7 +37,8 @@ public class PaymentsSpringBeanAwareTestCase extends SpringBeanAwareTestCase {
 				OPERATION_READ,
 				PAYMENTS_REPORT,
 				SERVICE_READ,
-				CASHBOX_READ
+				CASHBOX_READ,
+				PAYMENT_POINT_READ
 		);
 		User user = new User("test", "test", true, true, true, true, authorities);
 		Authentication auth = new AnonymousAuthenticationToken("key", user, authorities);

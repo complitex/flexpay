@@ -81,7 +81,6 @@ public interface TownService extends
 	 * @return persisted object
 	 * @throws org.flexpay.common.exception.FlexPayExceptionContainer
 	 *          if operation fails
-	 * @deprecated Use single save for create-update operations
 	 */
 	@Secured (Roles.TOWN_ADD)
 	Town create(Town object, List<TownNameTranslation> nameTranslations, ArrayStack filters, Date from)

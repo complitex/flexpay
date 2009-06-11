@@ -54,7 +54,20 @@ public interface BuildingService extends ParentService<BuildingsFilter> {
 	List<BuildingAddress> getBuildings(@NotNull Stub<Street> stub);
 
 	/**
-	 * Find buildings by attributes
+	 * Find buildings by street and attributes
+	 *
+	 * @param street	 Building street stub
+	 * @param attributes Building attributes
+	 * @return Buildings instance, or <code>null</null> if not found
+	 * @throws org.flexpay.common.exception.FlexPayException
+	 *          if failure occurs
+	 */
+	BuildingAddress findBuildings(@NotNull Stub<Street> street, @NotNull Set<AddressAttribute> attributes) throws FlexPayException;
+
+	Set<AddressAttribute> attributes(@NotNull String number, @Nullable String bulk);
+
+	/**
+	 * Find buildings by street, district and attributes
 	 *
 	 * @param street	 Building street stub
 	 * @param district   Building district stub
@@ -67,38 +80,6 @@ public interface BuildingService extends ParentService<BuildingsFilter> {
 	BuildingAddress findBuildings(@NotNull Stub<Street> street, @Nullable Stub<District> district,
 								  @NotNull Set<AddressAttribute> attributes)
 			throws FlexPayException;
-
-	/**
-	 * Find building by number
-	 *
-	 * @param street   Building street stub
-	 * @param district Building district stub
-	 * @param number   Building number
-	 * @param bulk	 Building bulk number
-	 * @return Buildings instance, or <code>null</null> if not found
-	 * @throws FlexPayException if failure occurs
-	 * @deprecated use {@link #findBuildings(org.flexpay.common.persistence.Stub, org.flexpay.common.persistence.Stub,
-	 *			 java.util.Set)}
-	 */
-	@Secured (Roles.BUILDING_READ)
-	@Nullable
-	BuildingAddress findBuildings(@NotNull Stub<Street> street, @NotNull Stub<District> district,
-								  String number, String bulk) throws FlexPayException;
-
-	/**
-	 * Find building by number
-	 *
-	 * @param streetStub Street stub
-	 * @param number	 Building number
-	 * @param bulk	   Building bulk number
-	 * @return Buildings instance, or <code>null</null> if not found
-	 * @throws FlexPayException if failure occurs
-	 * @deprecated use {@link #findBuildings(org.flexpay.common.persistence.Stub, org.flexpay.common.persistence.Stub,
-	 *			 java.util.Set)}
-	 */
-	@Secured (Roles.BUILDING_READ)
-	@Nullable
-	BuildingAddress findBuildings(@NotNull Stub<Street> streetStub, String number, String bulk) throws FlexPayException;
 
 	/**
 	 * Find building by buildings stub

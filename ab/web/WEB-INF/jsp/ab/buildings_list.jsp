@@ -41,7 +41,7 @@
                 </td>
                 <td class="col">
                     <a href="<s:url value="/dicts/apartmentsList.action?countryFilter.selectedId=%{countryFilter.selectedId}&regionFilter.selectedId=%{regionFilter.selectedId}&townFilter.selectedId=%{townFilter.selectedId}&streetNameFilter.selectedId=%{streetNameFilter.selectedId}&buildingsFilter.selectedId=%{id}"/>">
-                        <s:property	value="%{getBuildingNumber(buildingAttributes)}"/>
+                        <s:property	value="%{@org.flexpay.ab.util.TranslationUtil@getBuildingNumber(buildingAttributes, userPreferences.locale)}"/>
                     </a>
                 </td>
                 <td class="col">

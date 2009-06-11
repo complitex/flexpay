@@ -25,9 +25,6 @@ public abstract class SimpleEditAction<
 	private Long temporalId;
 	private List<T> nameTranslations = new ArrayList<T>();
 
-	/**
-	 * {@inheritDoc}
-	 */
 	public Map<Long, T> getTranslations(Long temporalId) {
 
 		DI temporal = nameTimeDependentService.readTemporalName(temporalId);

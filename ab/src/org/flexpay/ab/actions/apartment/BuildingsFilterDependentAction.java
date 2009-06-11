@@ -5,6 +5,7 @@ import org.flexpay.ab.persistence.AddressAttribute;
 import org.flexpay.ab.persistence.AddressAttributeTypeTranslation;
 import org.flexpay.ab.persistence.BuildingAddress;
 import org.flexpay.ab.persistence.filters.*;
+import org.flexpay.ab.util.TranslationUtil;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
@@ -60,29 +61,10 @@ public abstract class BuildingsFilterDependentAction extends FPActionSupport {
 
 	public String getBuildingNumber(@Nullable BuildingAddress buildingAddress) throws Exception {
 		if (buildingAddress != null) {
-			return getBuildingNumber(buildingAddress.getBuildingAttributes());
+			return TranslationUtil.getBuildingNumber(buildingAddress.getBuildingAttributes(), userPreferences.getLocale());
 		}
 
 		return null;
-	}
-
-	public String getBuildingNumber(Collection<AddressAttribute> attributes) throws Exception {
-
-		StringBuilder number = new StringBuilder();
-		for (AddressAttribute attribute : attributes) {
-
-			AddressAttributeTypeTranslation typeTranslation =
-					getTranslation(attribute.getBuildingAttributeType().getTranslations());
-			if (typeTranslation.getShortName() != null) {
-				number.append(typeTranslation.getShortName()).append(' ');
-			} else {
-				number.append(typeTranslation.getName()).append(' ');
-			}
-
-			number.append(attribute.getValue()).append(' ');
-		}
-
-		return number.toString().trim();
 	}
 
 	public void setFilters(ArrayStack filters) {

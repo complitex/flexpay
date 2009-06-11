@@ -86,6 +86,10 @@ public class TranslationUtil {
 		return streetTypeStr;
 	}
 
+	public static String getBuildingNumber(@Nullable Collection<AddressAttribute> attributes) throws FlexPayException {
+		return getBuildingNumber(attributes, org.flexpay.common.util.config.ApplicationConfig.getDefaultLocale());
+	}
+
 	public static String getBuildingNumber(@Nullable Collection<AddressAttribute> attributes, @Nullable Locale locale) throws FlexPayException {
 
 		if (attributes == null) {

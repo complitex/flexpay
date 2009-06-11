@@ -9,6 +9,7 @@ import org.flexpay.payments.service.statistics.PaymentsStatisticsService;
 import org.flexpay.payments.service.statistics.ServicePaymentsStatistics;
 import org.flexpay.payments.persistence.Cashbox;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.beans.factory.annotation.Required;
 
 import java.util.Date;
 import java.util.List;
@@ -39,7 +40,7 @@ public class PaymentsStatisticsServiceImpl implements PaymentsStatisticsService 
 	 * @param stub	  Organization stab to generate statistics for
 	 * @param beginDate lower bound for operation creation date
 	 * @param endDate   higher bound for operation creation date   @return list of operation type statistics
-     * @return
+	 * @return list of operation type statistics objects
 	 */
 	public List<OperationTypeStatistics> operationTypeOrganizationStatistics(Stub<Organization> stub, Date beginDate, Date endDate) {
 		return statisticsDao.getOperationTypeOrganizationStatistics(stub.getId(), beginDate, endDate);
@@ -53,13 +54,13 @@ public class PaymentsStatisticsServiceImpl implements PaymentsStatisticsService 
 	 * @param stub Payment Point stab to generate statistics for
 	 * @param beginDate lower bound for operation creation date
 	 * @param endDate   higher bound for operation creation date   @return list of operation type statistics
-     * @return
+	 * @return list of operation type statistics objects
 	 */
     public List<OperationTypeStatistics> operationTypePaymentPointStatistics(Stub<PaymentPoint> stub, Date beginDate, Date endDate) {
         return statisticsDao.getOperationTypePaymentPointStatistics(stub.getId(), beginDate, endDate);
     }
 
-     /**
+    /**
 	 * Collect statistics for payment operations in period between <code>beginDate</code> and <code>endDate</code>
 	 * <p/>
 	 * NOTE: operations with status DELETED are not included!
@@ -67,13 +68,15 @@ public class PaymentsStatisticsServiceImpl implements PaymentsStatisticsService 
 	 * @param stub Cashbox stab to generate statistics for
 	 * @param beginDate lower bound for operation creation date
 	 * @param endDate   higher bound for operation creation date   @return list of operation type statistics
-     * @return
+	 * @return list of operation type statistics objects
 	 */
     public List<OperationTypeStatistics> operationTypeCashboxStatistics(Stub<Cashbox> stub, Date beginDate, Date endDate) {
         return statisticsDao.getOperationTypeCashboxStatistics(stub.getId(), beginDate, endDate);
     }
 
+	@Required
     public void setStatisticsDao(PaymentStatisticsDaoExt statisticsDao) {
 		this.statisticsDao = statisticsDao;
 	}
+
 }

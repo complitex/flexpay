@@ -181,14 +181,26 @@ public class BuildingServiceImpl implements BuildingService {
 	}
 
 	/**
-	 * Find buildings by attributes
+	 * Find buildings by street and attributes
+	 *
+	 * @param street	 Building street stub
+	 * @param attributes Building attributes
+	 * @return Buildings instance, or <code>null</null> if not found
+	 * @throws org.flexpay.common.exception.FlexPayException
+	 *          if failure occurs
+	 */
+	public BuildingAddress findBuildings(@NotNull Stub<Street> street, @NotNull Set<AddressAttribute> attributes) throws FlexPayException {
+		return findBuildings(street, null, attributes);
+	}
+
+	/**
+	 * Find buildings by street, district and attributes
 	 *
 	 * @param street	 Building street stub
 	 * @param district   Building district stub
 	 * @param attributes Building attributes
 	 * @return Buildings instance, or <code>null</null> if not found
-	 * @throws org.flexpay.common.exception.FlexPayException
-	 *          if failure occurs
+	 * @throws FlexPayException if failure occurs
 	 */
 	public BuildingAddress findBuildings(@NotNull Stub<Street> street, @Nullable Stub<District> district,
 										 @NotNull Set<AddressAttribute> attributes)
@@ -222,34 +234,6 @@ public class BuildingServiceImpl implements BuildingService {
 	}
 
 	/**
-	 * Find building by number
-	 *
-	 * @param street   Building street
-	 * @param district Building district
-	 * @param number   Building number
-	 * @param bulk	 Building bulk number
-	 * @return Buildings instance, or <code>null</null> if not found
-	 */
-	@Nullable
-	public BuildingAddress findBuildings(@NotNull Stub<Street> street, @NotNull Stub<District> district, String number, String bulk)
-			throws FlexPayException {
-		return findBuildings(street, district, attributes(number, bulk));
-	}
-
-	/**
-	 * Find building by number
-	 *
-	 * @param streetStub Street stub
-	 * @param number	 Building number
-	 * @param bulk	   Building bulk number
-	 * @return Buildings instance, or <code>null</null> if not found
-	 */
-	public BuildingAddress findBuildings(@NotNull Stub<Street> streetStub, @NotNull String number, @Nullable String bulk)
-			throws FlexPayException {
-		return findBuildings(streetStub, null, attributes(number, bulk));
-	}
-
-	/**
 	 * Find building by buildings stub
 	 *
 	 * @param stub Buildings stub
@@ -262,7 +246,7 @@ public class BuildingServiceImpl implements BuildingService {
 		return building != null ? read(stub(building)) : null;
 	}
 
-	private Set<AddressAttribute> attributes(@NotNull String number, @Nullable String bulk) {
+	public Set<AddressAttribute> attributes(@NotNull String number, @Nullable String bulk) {
 		Set<AddressAttribute> result = set();
 
 		AddressAttribute numberAttr = new AddressAttribute();
@@ -507,4 +491,5 @@ public class BuildingServiceImpl implements BuildingService {
 	public void setAddressService(AddressService addressService) {
 		this.addressService = addressService;
 	}
+
 }

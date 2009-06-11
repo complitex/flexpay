@@ -31,7 +31,7 @@
 				<input type="radio" value="<s:property value="%{id}"/>" name="object.id"/>
 			</td>
 			<td class="col">
-				<s:property value="%{getBuildingNumber(buildingAttributes)}"/>
+				<s:property value="%{@org.flexpay.ab.util.TranslationUtil@getBuildingNumber(buildingAttributes, userPreferences.locale)}"/>
 			</td>
 		</tr>
 		</s:iterator>

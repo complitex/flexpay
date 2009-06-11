@@ -7,7 +7,7 @@
 	<package name="reports" namespace="/payments" extends="payments">
 
 		<action name="receivedPaymentsReport" class="generateReportAction">
-			<result name="success" type="tiles">payments.report.generate</result>
+			<result type="tiles">payments.report.generate</result>
 			<result name="file" type="redirect-action">
 				<param name="actionName">print</param>
 				<param name="namespace">/common</param>
@@ -29,7 +29,7 @@
 		</action>
 
 		<action name="paymentOperationReportAction" class="paymentOperationReportAction">
-			<result name="success" type="tiles">payments.report.paymentOperationReportAction</result>
+			<result type="redirect-action">operationsList</result>
 			<result name="file" type="redirect-action">
 				<param name="actionName">print</param>
 				<param name="namespace">/common</param>

@@ -77,11 +77,6 @@
 		<put-attribute name="body" value="/WEB-INF/jsp/payments/reports/payments_report.jsp"/>
 	</definition>
 
-	<definition name="payments.report.paymentOperationReportAction" extends="ab.layout.standart">
-		<put-attribute name="title" value="payments.report.generate.title"/>
-		<put-attribute name="body" value="/WEB-INF/jsp/payments/reports/payment_operation_report.jsp"/>
-	</definition>
-
 	<!-- registry-related definitions -->
 	<definition name="payments.registry.generate" extends="ab.layout.standart">
 		<put-attribute name="title" value="payments.registry.generate.title"/>

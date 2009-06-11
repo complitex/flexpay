@@ -41,7 +41,7 @@
 
                 <td class="col">
                     <a href="<s:url action="buildingAttributesEdit"><s:param name="building.id" value="%{id}"/></s:url>">
-                        <s:property value="%{getBuildingNumber(buildingAttributes)}"/>
+                        <s:property value="%{@org.flexpay.ab.util.TranslationUtil@getBuildingNumber(buildingAttributes, userPreferences.locale)}"/>
                     </a>
                 </td>
 

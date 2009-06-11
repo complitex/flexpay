@@ -1,13 +1,13 @@
 package org.flexpay.eirc.actions.organization;
 
 import org.apache.commons.collections.ArrayStack;
-import org.flexpay.ab.actions.buildings.BuildingsActionsBase;
 import org.flexpay.ab.persistence.BuildingAddress;
 import org.flexpay.ab.persistence.filters.CountryFilter;
 import org.flexpay.ab.persistence.filters.RegionFilter;
 import org.flexpay.ab.persistence.filters.StreetNameFilter;
 import org.flexpay.ab.persistence.filters.TownFilter;
 import org.flexpay.ab.service.BuildingService;
+import org.flexpay.common.actions.FPActionWithPagerSupport;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
 import org.flexpay.common.service.ParentService;
@@ -22,7 +22,7 @@ import org.springframework.beans.factory.annotation.Required;
 import java.util.List;
 import java.util.Set;
 
-public class ServiceOrganizationAddServedBuildingAction extends BuildingsActionsBase {
+public class ServiceOrganizationAddServedBuildingAction extends FPActionWithPagerSupport {
 
 	private CountryFilter countryFilter = new CountryFilter();
 	private RegionFilter regionFilter = new RegionFilter();

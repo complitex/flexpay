@@ -35,9 +35,9 @@ public class TestEndOperationDayRegistryGenerator extends PaymentsSpringBeanAwar
 		Date beginDate = df.parse("2009-06-07 00:00:00");
 		Date endDate = df.parse("2009-06-07 23:59:59");
 
-		PaymentPoint paymentPoint = paymentPointService.read(new Stub<PaymentPoint>(2L));
+		PaymentPoint paymentPoint = paymentPointService.read(new Stub<PaymentPoint>(1L));
 		if (paymentPoint == null) {
-			log.error("Payment point with id - {} does not exist", 2L);
+			log.error("Payment point with id - {} does not exist", 1L);
 			return;
 		}
 		log.debug("Found paymentPoint - {}", paymentPoint);

@@ -28,20 +28,18 @@ public interface PaymentsReporter {
 	 *
 	 * @param stub Payment operation to build form for
 	 * @return PaymentPrintForm form data
-	 * @throws IllegalArgumentException if Operation reference is invalid
 	 */
 	@Secured(Roles.PAYMENTS_REPORT)
-	PaymentPrintForm getPaymentPrintFormData(Stub<Operation> stub) throws IllegalArgumentException;
+	PaymentPrintForm getPaymentPrintFormData(Stub<Operation> stub);
 
 	/**
 	 * Get quittance payment print form data
 	 *
 	 * @param operation Payment operation to build form for
 	 * @return PaymentPrintForm form data
-	 * @throws IllegalArgumentException if Operation reference is invalid
 	 */
 	@Secured(Roles.PAYMENTS_REPORT)
-	PaymentPrintForm getPaymentPrintFormData(Operation operation) throws IllegalArgumentException;
+	PaymentPrintForm getPaymentPrintFormData(Operation operation);
 
 	/**
 	 * Get received payments print form data

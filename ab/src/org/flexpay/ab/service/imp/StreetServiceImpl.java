@@ -253,22 +253,6 @@ public class StreetServiceImpl extends NameTimeDependentServiceImpl<
 		return streetDao.findByTownAndQuery(stub.getId(), query);
 	}
 
-	@Transactional (readOnly = false)
-	public void saveTypes(Street object) {
-
-		log.debug("Types to save: {}", object.getTypeTemporals());
-
-		streetDaoExt.invalidateTypeTemporals(object.getId(), ApplicationConfig.getFutureInfinite(), DateUtil.now());
-
-		for (StreetTypeTemporal temporal : object.getTypeTemporals()) {
-			if (temporal.isNotNew()) {
-				streetTypeTemporalDao.update(temporal);
-			} else {
-				streetTypeTemporalDao.create(temporal);
-			}
-		}
-	}
-
 	public String format(@NotNull Stub<Street> stub, @NotNull Locale locale, boolean shortMode) throws FlexPayException {
 		Street street = streetDao.read(stub.getId());
 		if (street == null) {
