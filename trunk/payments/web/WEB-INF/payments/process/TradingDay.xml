@@ -8,11 +8,11 @@
         <assignment class="org.flexpay.payments.process.handlers.AccounterAssignmentHandler"/>
     </swimlane>
 
-<!--
+
     <swimlane name="PaymentCollector">
-        <assignment actor-id="generalPaymentCollector"/>
+        <assignment class="org.flexpay.payments.process.handlers.PaymentCollectorAssignmentHandler"/>
     </swimlane>
--->
+
 
     <swimlane name="JobManager">
         <assignment class="org.flexpay.common.process.JobManagerAssignmentHandler"/>
@@ -33,12 +33,12 @@
             <script>
                 <variable mapped-name="processStatus" access="write" name="PROCESS_STATUS"/>
                 <expression>
-                    processStatus = "opened";
+                    processStatus = "Открыт";
                 </expression>
             </script>
         </event>
         <task name="CloseTradingDay" swimlane="Accounter">
-            <timer duedate="10 seconds" transition="tradingDay.mark_for_closing">
+            <timer duedate="3 minutes" transition="tradingDay.mark_for_closing">
                 <script>
                     <variable mapped-name="autoMode" access="write" name="AUTO_MODE"/>
                     <expression>
@@ -47,7 +47,7 @@
                 </script>
             </timer>
         </task>
-        <!--
+
         <task name="CloseTradingDay" swimlane="PaymentCollector">
             <timer duedate="10 business seconds" transition="generateEndOperationDayRegistryJob">
                 <script>
@@ -58,7 +58,6 @@
                 </script>
             </timer>
         </task>
-        -->
         <transition to="generateEndOperationDayRegistryJob" name="tradingDay.mark_for_closing"/>
     </task-node>
 
@@ -71,7 +70,7 @@
             <script>
                 <variable mapped-name="processStatus" access="write" name="PROCESS_STATUS"/>
                 <expression>
-                    processStatus = "processing";
+                    processStatus = "Обрабатывается";
                 </expression>
             </script>
         </event>
@@ -85,7 +84,7 @@
         <description>
             отправляем на указанный в ППП емейл с вложенным файлом сформированного реестра
         </description>
-        <task swimlane="JobManager" blocking="yes" />
+        <task swimlane="JobManager" />
         <transition to="WaitForApprove" name="next"/>
         <transition to="JobManagerError" name="error"/>
     </task-node>
@@ -99,7 +98,7 @@
             <script>
                 <variable mapped-name="processStatus" access="write" name="PROCESS_STATUS"/>
                 <expression>
-                    processStatus = "opened";
+                    processStatus = "Ожидает подтверждения";
                 </expression>
             </script>
         </event>
@@ -123,7 +122,7 @@
             <script>
                 <variable mapped-name="processStatus" access="write" name="PROCESS_STATUS"/>
                 <expression>
-                    processStatus = "closed";
+                    processStatus = "Закрыт";
                 </expression>
             </script>
         </event>

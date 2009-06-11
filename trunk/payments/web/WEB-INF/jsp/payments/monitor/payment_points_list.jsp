@@ -5,6 +5,7 @@
 
 <s:form action="paymentPointsListMonitor">
   <table cellpadding="3" cellspacing="1" border="0" width="100%">
+    <!--
     <tr>
       <td nowrap="nowrap">
         <s:text name="payments.payment_points.list.filter"/>
@@ -12,12 +13,15 @@
         <input type="submit" name="submitFilter" value="<s:text name="payments.payment_points.list.filter.submit"/>"/>
       </td>
     </tr>
+    -->
     <tr>
       <td nowrap="nowrap"><s:text name="payments.payment_points.list.updated"/><s:property value="updated"/></td>
       <td nowrap="nowrap" align="left">
         <input type="submit" name="update" class="" value="<s:text name="payments.payment_points.list.update"/>"/>
       </td>
-      <td nowrap="nowrap" align="right">
+    </tr>
+    <tr>
+      <td nowrap="nowrap" align="right" colspan="2">
         <%@include file="/WEB-INF/jsp/common/filter/pager/pager.jsp" %>
       </td>
     </tr>

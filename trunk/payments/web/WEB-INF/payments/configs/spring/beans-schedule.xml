@@ -41,6 +41,7 @@
             <map>
                 <entry key="processManager" value-ref="processManagerPayments"/>
                 <entry key="paymentPoints" value-ref="paymentPoints"/>
+                <entry key="paymentPointService" value-ref="paymentPointService"/>
             </map>
         </property>
     </bean>

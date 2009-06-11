@@ -392,6 +392,7 @@
         status integer not null comment 'Enabled-disabled status',
         address varchar(255) not null comment 'Address',
         email varchar(255) comment 'E-mail',
+        tradingDayProcessInstance_Id bigint comment 'Trading date process instance id',
         collector_id bigint not null comment 'Payments collector reference',
         primary key (id)
     ) comment='Payment points';

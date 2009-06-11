@@ -9,6 +9,7 @@ import org.flexpay.common.util.TranslationUtil;
 import org.flexpay.common.util.config.ApplicationConfig;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.jbpm.graph.exe.ProcessInstance;
 
 import java.util.Collections;
 import java.util.Locale;
@@ -21,11 +22,13 @@ public class PaymentPoint extends DomainObjectWithStatus {
 
 	private String address;
     private String email;
+//    private org.jbpm.graph.exe.ProcessInstance tradingDayProcessInstance;
+    private Long tradingDayProcessInstanceId;
 
 	private PaymentsCollector collector;
 	private Set<PaymentPointName> names = Collections.emptySet();
 
-	public PaymentPoint() {
+    public PaymentPoint() {
 	}
 
 	public PaymentPoint(@NotNull Long id) {
@@ -80,7 +83,23 @@ public class PaymentPoint extends DomainObjectWithStatus {
 		return getName(ApplicationConfig.getDefaultLocale());
 	}
 
-	/**
+//    public ProcessInstance getTradingDayProcessInstance() {
+//        return tradingDayProcessInstance;
+//    }
+//
+//    public void setTradingDayProcessInstance(ProcessInstance tradingDayProcessInstance) {
+//        this.tradingDayProcessInstance = tradingDayProcessInstance;
+//    }
+
+    public Long getTradingDayProcessInstanceId() {
+        return tradingDayProcessInstanceId;
+    }
+
+    public void setTradingDayProcessInstanceId(Long tradingDayProcessInstanceId) {
+        this.tradingDayProcessInstanceId = tradingDayProcessInstanceId;
+    }
+
+    /**
 	 * Get name translation in a specified language
 	 *
 	 * @param lang Language to get translation in
