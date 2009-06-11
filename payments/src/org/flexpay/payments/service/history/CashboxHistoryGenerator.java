@@ -1,17 +1,16 @@
 package org.flexpay.payments.service.history;
 
-import org.flexpay.orgs.persistence.PaymentPoint;
-import org.flexpay.common.persistence.history.HistoryGenerator;
-import org.flexpay.common.persistence.history.Diff;
-import org.flexpay.common.persistence.history.ProcessingStatus;
 import static org.flexpay.common.persistence.Stub.stub;
+import org.flexpay.common.persistence.history.Diff;
+import org.flexpay.common.persistence.history.HistoryGenerator;
+import org.flexpay.common.persistence.history.ProcessingStatus;
 import org.flexpay.common.service.DiffService;
 import org.flexpay.payments.persistence.Cashbox;
 import org.flexpay.payments.service.CashboxService;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
-import org.jetbrains.annotations.NotNull;
 
 public class CashboxHistoryGenerator implements HistoryGenerator<Cashbox> {
 

@@ -3,6 +3,7 @@ package org.flexpay.payments.service.importexport.imp;
 import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.payments.persistence.Cashbox;
 import org.flexpay.payments.persistence.Service;
+import org.flexpay.payments.persistence.ServiceType;
 
 public class ClassToTypeRegistry extends org.flexpay.common.service.importexport.ClassToTypeRegistry {
 
@@ -11,8 +12,12 @@ public class ClassToTypeRegistry extends org.flexpay.common.service.importexport
 
 	@Override
 	protected int getModuleType(Class<? extends DomainObject> clazz) {
+
 		if (Service.class.isAssignableFrom(clazz)) {
 			return MODULE_BASE + 0x0201;
+		}
+		if (ServiceType.class.isAssignableFrom(clazz)) {
+			return MODULE_BASE + 0x002;
 		}
 		if (Cashbox.class.isAssignableFrom(clazz)) {
 			return MODULE_BASE + 0x006;

@@ -4,9 +4,11 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.flexpay.common.persistence.DomainObjectWithStatus;
+import org.flexpay.common.persistence.Language;
 import org.flexpay.common.util.TranslationUtil;
 import org.flexpay.common.util.config.ApplicationConfig;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -79,6 +81,25 @@ public class ServiceType extends DomainObjectWithStatus {
 	public String getName() {
 		return getName(ApplicationConfig.getDefaultLocale());
 	}
+
+	/**
+	 * Get name translation in a specified language
+	 *
+	 * @param lang Language to get translation in
+	 * @return translation if found, or <code>null</code> otherwise
+	 */
+	@Nullable
+	public ServiceTypeNameTranslation getTranslation(@NotNull Language lang) {
+
+		for (ServiceTypeNameTranslation translation : getTypeNames()) {
+			if (lang.equals(translation.getLang())) {
+				return translation;
+			}
+		}
+
+		return null;
+	}
+
 
 	@Override
 	public boolean equals(Object obj) {

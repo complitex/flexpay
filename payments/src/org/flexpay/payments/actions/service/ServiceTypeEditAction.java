@@ -63,6 +63,8 @@ public class ServiceTypeEditAction extends CashboxCookieActionSupport {
 			serviceTypeService.update(type);
 		}
 
+		addActionError(getText("payments.service_type.saved"));
+
 		return REDIRECT_SUCCESS;
 	}
 
