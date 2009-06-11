@@ -3,6 +3,7 @@ package org.flexpay.orgs.persistence;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.flexpay.common.persistence.DataSourceDescription;
+import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.util.TranslationUtil;
 
 public class ServiceProvider extends OrganizationInstance<ServiceProviderDescription, ServiceProvider> {
@@ -14,6 +15,10 @@ public class ServiceProvider extends OrganizationInstance<ServiceProviderDescrip
 
 	public ServiceProvider(Long id) {
 		super(id);
+	}
+
+	public ServiceProvider(Stub<ServiceProvider> stub) {
+		super(stub.getId());
 	}
 
 	public DataSourceDescription getDataSourceDescription() {

@@ -6,9 +6,23 @@
 <hibernate-mapping package="org.flexpay.payments.persistence">
 
 	<class name="Service" table="payments_services_tbl" optimistic-lock="version">
-		<id name="id" column="id">
+		<comment>Services</comment>
+		<id name="id">
+			<column name="id">
+				<comment>Primary key</comment>
+			</column>
 			<generator class="native"/>
 		</id>
+		<version name="version" access="field">
+			<column name="version">
+				<comment>Optimistic lock version</comment>
+			</column>
+		</version>
+        <property name="status">
+            <column name="status" not-null="true">
+                <comment>Cashbox status</comment>
+            </column>
+        </property>
 		<property name="externalCode">
 			<column name="external_code" not-null="false" index="INDX_payments_service_external_code">
 				<comment>Service providers internal service code</comment>

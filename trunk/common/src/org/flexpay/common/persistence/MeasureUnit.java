@@ -20,6 +20,10 @@ public class MeasureUnit extends DomainObjectWithStatus {
 		super(id);
 	}
 
+	public MeasureUnit(@NotNull Stub<MeasureUnit> stub) {
+		super(stub.getId());
+	}
+
 	public Set<MeasureUnitName> getUnitNames() {
 		return unitNames;
 	}

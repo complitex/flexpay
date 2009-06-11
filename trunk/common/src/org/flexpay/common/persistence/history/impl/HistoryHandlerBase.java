@@ -3,6 +3,7 @@ package org.flexpay.common.persistence.history.impl;
 import org.flexpay.common.persistence.history.HistoryHandler;
 import org.flexpay.common.persistence.history.HistoryBuilder;
 import org.flexpay.common.persistence.history.Diff;
+import org.flexpay.common.persistence.history.handler.HistoryHandlerHelper;
 import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.common.persistence.DataCorrection;
 import org.flexpay.common.service.importexport.ClassToTypeRegistry;
@@ -20,6 +21,7 @@ public abstract class HistoryHandlerBase<T extends DomainObject> implements Hist
 	protected ClassToTypeRegistry typeRegistry;
 	protected MasterIndexService masterIndexService;
 	protected CorrectionsService correctionsService;
+	protected HistoryHandlerHelper historyHandlerHelper;
 
 	protected void saveMasterCorrection(T obj, Diff diff) {
 		DataCorrection correction =
@@ -46,5 +48,10 @@ public abstract class HistoryHandlerBase<T extends DomainObject> implements Hist
 	@Required
 	public void setCorrectionsService(CorrectionsService correctionsService) {
 		this.correctionsService = correctionsService;
+	}
+
+	@Required
+	public void setHistoryHandlerHelper(HistoryHandlerHelper historyHandlerHelper) {
+		this.historyHandlerHelper = historyHandlerHelper;
 	}
 }

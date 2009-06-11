@@ -4,6 +4,7 @@ import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.filter.ObjectFilter;
+import org.flexpay.common.service.DomainObjectService;
 import org.flexpay.payments.persistence.Service;
 import org.flexpay.payments.persistence.filters.ServiceFilter;
 import org.jetbrains.annotations.NotNull;
@@ -11,11 +12,12 @@ import org.jetbrains.annotations.Nullable;
 import org.springframework.security.annotation.Secured;
 
 import java.util.List;
+import java.util.Collection;
 
 /**
  * Service providers services helper service
  */
-public interface SPService {
+public interface SPService extends DomainObjectService<Service> {
 
 	/**
 	 * List active services using filters and pager
@@ -34,17 +36,36 @@ public interface SPService {
 	 * @return Service description
 	 */
 	@Secured (Roles.SERVICE_READ)
+	@Override
 	@Nullable
-	Service read(@NotNull Stub<Service> stub);
+	Service readFull(@NotNull Stub<? extends Service> stub);
 
 	/**
-	 * Create or update service
+	 * Create service
 	 *
 	 * @param service Service to save
+	 * @return Persisted object back
 	 * @throws FlexPayExceptionContainer if validation fails
 	 */
-	@Secured ({Roles.SERVICE_ADD, Roles.SERVICE_CHANGE})
-	void save(Service service) throws FlexPayExceptionContainer;
+	@Secured (Roles.SERVICE_ADD)
+	@Override
+	@NotNull
+	Service create(@NotNull Service service) throws FlexPayExceptionContainer;
+
+	/**
+	 * Update service
+	 *
+	 * @param service Service to save
+	 * @return updated service back
+	 * @throws FlexPayExceptionContainer if validation fails
+	 */
+	@Secured (Roles.SERVICE_CHANGE)
+	@Override
+	@NotNull
+	Service update(@NotNull Service service) throws FlexPayExceptionContainer;
+
+	@Override
+	void disable(@NotNull Collection<Long> ids);
 
 	/**
 	 * Initalize service filter with a list of parent services

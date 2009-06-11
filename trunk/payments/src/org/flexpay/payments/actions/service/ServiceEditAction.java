@@ -52,7 +52,7 @@ public class ServiceEditAction extends CashboxCookieActionSupport {
 			return REDIRECT_SUCCESS;
 		}
 
-		Service srvc = service.isNew() ? service : spService.read(stub(service));
+		Service srvc = service.isNew() ? service : spService.readFull(stub(service));
 		if (srvc == null) {
 			addActionError(getText("error.invalid_id"));
 			return REDIRECT_SUCCESS;
@@ -92,7 +92,7 @@ public class ServiceEditAction extends CashboxCookieActionSupport {
 			srvc.setDescription(description);
 		}
 
-		spService.save(srvc);
+		spService.create(srvc);
 
 		log.debug("Service saved!");
 		return REDIRECT_SUCCESS;

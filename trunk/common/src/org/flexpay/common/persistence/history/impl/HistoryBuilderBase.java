@@ -5,6 +5,7 @@ import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.common.persistence.history.Diff;
 import org.flexpay.common.persistence.history.HistoryBuilder;
 import org.flexpay.common.persistence.history.HistoryOperationType;
+import org.flexpay.common.persistence.history.builder.HistoryBuilderHelper;
 import org.flexpay.common.service.importexport.ClassToTypeRegistry;
 import org.flexpay.common.service.importexport.CorrectionsService;
 import org.flexpay.common.service.importexport.MasterIndexService;
@@ -21,6 +22,7 @@ public abstract class HistoryBuilderBase<T extends DomainObject> implements Hist
 	protected MasterIndexService masterIndexService;
 	private ClassToTypeRegistry typeRegistry;
 	protected CorrectionsService correctionsService;
+	protected HistoryBuilderHelper builderHelper;
 
 	/**
 	 * Create diff from t1 to t2
@@ -114,5 +116,10 @@ public abstract class HistoryBuilderBase<T extends DomainObject> implements Hist
 	@Required
 	public void setCorrectionsService(CorrectionsService correctionsService) {
 		this.correctionsService = correctionsService;
+	}
+
+	@Required
+	public void setBuilderHelper(HistoryBuilderHelper builderHelper) {
+		this.builderHelper = builderHelper;
 	}
 }

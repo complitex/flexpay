@@ -189,6 +189,7 @@
 		  class="org.flexpay.common.persistence.history.impl.HistoryBuilderBase"
 		  p:masterIndexService-ref="masterIndexService"
 		  p:correctionsService-ref="correctionsServiceAb"
+		  p:builderHelper-ref="historyBuilderHelper"
 		  p:typeRegistry-ref="typeRegistryAb" />
 
 	<bean id="townTypeHistoryBuilder"
@@ -321,6 +322,7 @@
 		  abstract="true"
 		  autowire-candidate="false"
 		  parent="historyHandlerBase"
+		  p:historyHandlerHelper-ref="historyHandlerHelper"
 		  p:typeRegistry-ref="typeRegistryAb" />
 
 	<bean id="townHistoryHandler"

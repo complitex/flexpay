@@ -161,6 +161,15 @@
 		  p:diffService-ref="diffService"
 		  class="org.flexpay.common.persistence.history.impl.HistoryUnPackerBase" />
 
+	<bean id="historyBuilderHelper"
+		  class="org.flexpay.common.persistence.history.builder.HistoryBuilderHelper"
+		  p:correctionsService-ref="correctionsService"
+		  p:masterIndexService-ref="masterIndexService" />
+
+	<bean id="historyHandlerHelper"
+		  class="org.flexpay.common.persistence.history.handler.HistoryHandlerHelper"
+		  p:masterIndexService-ref="masterIndexService" />
+
 	<bean id="objectsSyncerFactory"
 		  class="org.flexpay.common.persistence.history.impl.ObjectsSyncerFactory" />
 

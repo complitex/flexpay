@@ -119,7 +119,7 @@ public class QuittancePaymentServiceImpl implements QuittancePaymentService {
 				doc.setService(qdPayment.getQuittanceDetails().getConsumer().getService());
 
 				Stub<Service> stub = qdPayment.getQuittanceDetails().getConsumer().getServiceStub();
-				Service service = spService.read(stub);
+				Service service = spService.readFull(stub);
 				if (service == null) {
 					throw new FlexPayExceptionContainer(new FlexPayException(
 							"No service " + stub, "eirc.error.quittance.pay.no_service_found", stub.getId()));

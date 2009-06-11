@@ -128,7 +128,7 @@ public class SearchQuittanceAction extends CashboxCookieActionSupport {
 	public boolean isNotSubservice(String serviceMasterIndex) {
 
 		Long serviceId = getServiceId(serviceMasterIndex);
-		Service service = spService.read(new Stub<Service>(serviceId));
+		Service service = spService.readFull(new Stub<Service>(serviceId));
 		return service.isNotSubservice();
 	}
 
@@ -169,15 +169,15 @@ public class SearchQuittanceAction extends CashboxCookieActionSupport {
 	public String getServiceName(String serviceMasterIndex) {
 
 		Long serviceId = getServiceId(serviceMasterIndex);
-		Service service = spService.read(new Stub<Service>(serviceId));
+		Service service = spService.readFull(new Stub<Service>(serviceId));
 		return service.getServiceType().getName();
 	}
 
 	public String getProviderName(String serviceMasterIndex) {
 
 		Long serviceId = getServiceId(serviceMasterIndex);
-		Service service = spService.read(new Stub<Service>(serviceId));
-		ServiceProvider serviceProvider = serviceProviderService.read(new Stub<ServiceProvider>(service.getServiceProvider().getId()));
+		Service service = spService.readFull(new Stub<Service>(serviceId));
+		ServiceProvider serviceProvider = serviceProviderService.read(service.getServiceProviderStub());
 		return serviceProvider.getName();
 	}
 

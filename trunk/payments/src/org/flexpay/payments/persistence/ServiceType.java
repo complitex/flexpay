@@ -5,6 +5,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.flexpay.common.persistence.DomainObjectWithStatus;
 import org.flexpay.common.persistence.Language;
+import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.util.TranslationUtil;
 import org.flexpay.common.util.config.ApplicationConfig;
 import org.jetbrains.annotations.NotNull;
@@ -25,6 +26,10 @@ public class ServiceType extends DomainObjectWithStatus {
 
 	public ServiceType(Long id) {
 		super(id);
+	}
+
+	public ServiceType(Stub<ServiceType> stub) {
+		super(stub.getId());
 	}
 
 	public Set<ServiceTypeNameTranslation> getTypeNames() {

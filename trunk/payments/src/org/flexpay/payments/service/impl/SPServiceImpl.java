@@ -7,6 +7,7 @@ import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.MeasureUnit;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.filter.ObjectFilter;
+import org.flexpay.common.persistence.history.ModificationListener;
 import org.flexpay.common.service.MeasureUnitService;
 import org.flexpay.common.service.internal.SessionUtils;
 import org.flexpay.payments.dao.ServiceDao;
@@ -18,19 +19,25 @@ import org.flexpay.payments.persistence.filters.ServiceFilter;
 import org.flexpay.payments.service.SPService;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 @Transactional (readOnly = true)
 public class SPServiceImpl implements SPService {
 
+	private Logger log = LoggerFactory.getLogger(getClass());
+
 	private ServiceDaoExt serviceDaoExt;
 	private ServiceDao serviceDao;
 
 	private SessionUtils sessionUtils;
+	private ModificationListener<Service> modificationListener;
 
 	private MeasureUnitService measureUnitService;
 
@@ -45,6 +52,15 @@ public class SPServiceImpl implements SPService {
 		return serviceDaoExt.findServices(filters, pager);
 	}
 
+	@NotNull
+	public Service newInstance() {
+		return new Service();
+	}
+
+	public Class<Service> getType() {
+		return Service.class;
+	}
+
 	/**
 	 * Create or update service
 	 *
@@ -52,15 +68,61 @@ public class SPServiceImpl implements SPService {
 	 * @throws org.flexpay.common.exception.FlexPayExceptionContainer
 	 *          if validation fails
 	 */
+	@NotNull
 	@Transactional (readOnly = false)
-	public void save(Service service) throws FlexPayExceptionContainer {
+	public Service create(@NotNull Service service) throws FlexPayExceptionContainer {
+
 		validate(service);
-		if (service.isNew()) {
-			service.setId(null);
-			serviceDao.create(service);
-		} else {
-			serviceDao.update(service);
+		service.setId(null);
+		serviceDao.create(service);
+
+		modificationListener.onCreate(service);
+
+		return service;
+	}
+
+	@Override
+	@Transactional (readOnly = false)
+	public void disable(@NotNull Collection<Long> ids) {
+		log.debug("Disabling service types");
+		for (Long id : ids) {
+			Service service = readFull(new Stub<Service>(id));
+			if (service != null) {
+				service.disable();
+				serviceDao.update(service);
+
+				modificationListener.onDelete(service);
+				log.debug("Disabled service type: {}", service);
+			}
 		}
+
+	}
+
+	/**
+	 * Update service
+	 *
+	 * @param service Service to save
+	 * @return updated service back
+	 * @throws org.flexpay.common.exception.FlexPayExceptionContainer
+	 *          if validation fails
+	 */
+	@SuppressWarnings ({"ThrowableInstanceNeverThrown"})
+	@NotNull
+	@Transactional (readOnly = false)
+	public Service update(@NotNull Service service) throws FlexPayExceptionContainer {
+
+		validate(service);
+
+		Service old = readFull(Stub.stub(service));
+		if (old == null) {
+			throw new FlexPayExceptionContainer(new FlexPayException("No object found to update " + service));
+		}
+
+		sessionUtils.evict(old);
+		modificationListener.onUpdate(old, service);
+
+		serviceDao.update(service);
+		return service;
 	}
 
 	@SuppressWarnings ({"ThrowableInstanceNeverThrown"})
@@ -144,7 +206,7 @@ public class SPServiceImpl implements SPService {
 	 * @return Service description
 	 */
 	@Nullable
-	public Service read(@NotNull Stub<Service> stub) {
+	public Service readFull(@NotNull Stub<? extends Service> stub) {
 		Service service = serviceDao.readFull(stub.getId());
 		if (service != null && service.getMeasureUnit() != null) {
 			Stub<MeasureUnit> unitStub = Stub.stub(service.getMeasureUnit());
@@ -187,5 +249,10 @@ public class SPServiceImpl implements SPService {
 	@Required
 	public void setMeasureUnitService(MeasureUnitService measureUnitService) {
 		this.measureUnitService = measureUnitService;
+	}
+
+	@Required
+	public void setModificationListener(ModificationListener<Service> modificationListener) {
+		this.modificationListener = modificationListener;
 	}
 }

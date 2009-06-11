@@ -234,7 +234,7 @@ public class JRQuittanceDataSource implements JRRewindableDataSource {
 	private void initLazyProperties(Quittance q) {
 		for (QuittanceDetails qd : q.getQuittanceDetails()) {
 			Stub<Service> serviceStub = stub(qd.getConsumer().getService());
-			qd.getConsumer().setService(spService.read(serviceStub));
+			qd.getConsumer().setService(spService.readFull(serviceStub));
 		}
 	}
 

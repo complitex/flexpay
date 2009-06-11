@@ -1,17 +1,19 @@
 package org.flexpay.payments.persistence;
 
 import org.apache.commons.lang.StringUtils;
-import org.flexpay.common.persistence.DomainObject;
+import org.flexpay.common.persistence.DomainObjectWithStatus;
 import org.flexpay.common.persistence.MeasureUnit;
 import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.persistence.Language;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.util.TranslationUtil;
 import org.flexpay.orgs.persistence.ServiceProvider;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
-public class Service extends DomainObject {
+public class Service extends DomainObjectWithStatus {
 
 	private ServiceProvider serviceProvider;
 	private Set<ServiceDescription> descriptions = Collections.emptySet();
@@ -28,6 +30,10 @@ public class Service extends DomainObject {
 
 	public Service(Long id) {
 		super(id);
+	}
+
+	public Service(@NotNull Stub<Service> stub) {
+		super(stub.getId());
 	}
 
 	public ServiceProvider getServiceProvider() {
@@ -158,5 +164,23 @@ public class Service extends DomainObject {
 
 	public Stub<ServiceType> getServiceTypeStub() {
 		return new Stub<ServiceType>(serviceType);
+	}
+
+	/**
+	 * Get description translation in a specified language
+	 *
+	 * @param lang Language to get translation in
+	 * @return translation if found, or <code>null</code> otherwise
+	 */
+	@Nullable
+	public ServiceDescription getDescription(@NotNull Language lang) {
+
+		for (ServiceDescription translation : getDescriptions()) {
+			if (lang.equals(translation.getLang())) {
+				return translation;
+			}
+		}
+
+		return null;
 	}
 }
