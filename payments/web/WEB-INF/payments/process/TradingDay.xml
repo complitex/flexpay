@@ -103,14 +103,6 @@
                 </expression>
             </script>
         </event>
-        <event type="node-leave">
-            <script>
-                <variable mapped-name="processStatus" access="write" name="PROCESS_STATUS"/>
-                <expression>
-                    processStatus = "closed";
-                </expression>
-            </script>
-        </event>
         <timer duedate="1 business day" transition="end-state"/>
         <task name="Aproove" swimlane="Accounter"/>
         <transition to="MarkPaymentPointForClosing" name="tradingDay.close_denied"/>
@@ -126,6 +118,15 @@
         <transition to="end-state" name="error"/>
     </task-node>
     
-    <end-state name="end-state"/>
+    <end-state name="end-state">
+        <event type="node-enter">
+            <script>
+                <variable mapped-name="processStatus" access="write" name="PROCESS_STATUS"/>
+                <expression>
+                    processStatus = "closed";
+                </expression>
+            </script>
+        </event>
+    </end-state>
 
 </process-definition>
