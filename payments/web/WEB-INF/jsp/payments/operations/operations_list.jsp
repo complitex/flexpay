@@ -149,6 +149,7 @@
 	<s:hidden name="status"/>
 	<s:hidden name="selectedOperationId"/>
 	<s:hidden name="documentSearchEnabled"/>
+  <s:hidden name="taskInstanceId"/>
 
 	<%-- filters are temporary hidden! --%>
 	<sec:authorize ifAllGranted="ROLE_PAYMENTS_DEVELOPER">
@@ -164,6 +165,14 @@
 				<td nowrap="nowrap"><%@include file="/WEB-INF/jsp/common/filter/end_date_filter.jsp" %></td>																	
 			</tr>
 		</sec:authorize>
+
+    <tr>
+      <td colspan="4" nowrap="nowrap">
+        <s:iterator value="processButtons" id="button">
+          <input type="submit" name="activity" class="" value="<s:property value="button"/>"/>
+        </s:iterator>
+      </td>
+    </tr>
 	
 		<tr>
 			<td nowrap="nowrap"><s:text name="payments.operations.list.service_type"/></td>

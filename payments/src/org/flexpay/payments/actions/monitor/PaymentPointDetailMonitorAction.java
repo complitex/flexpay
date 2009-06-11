@@ -1,7 +1,6 @@
 package org.flexpay.payments.actions.monitor;
 
 import org.flexpay.payments.actions.CashboxCookieActionSupport;
-import org.flexpay.payments.actions.monitor.data.PaymentPointMonitorContainer;
 import org.flexpay.payments.actions.monitor.data.CashboxMonitorContainer;
 import org.flexpay.payments.persistence.Cashbox;
 import org.flexpay.payments.persistence.OperationType;
@@ -9,31 +8,29 @@ import org.flexpay.payments.service.CashboxService;
 import org.flexpay.payments.service.statistics.PaymentsStatisticsService;
 import org.flexpay.payments.service.statistics.OperationTypeStatistics;
 import org.flexpay.payments.process.handlers.AccounterAssignmentHandler;
-import org.flexpay.orgs.persistence.filters.PaymentPointsFilter;
 import org.flexpay.orgs.persistence.PaymentPoint;
 import org.flexpay.orgs.service.PaymentPointService;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.util.DateUtil;
-import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.process.ProcessManager;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 import org.apache.commons.lang.time.DateUtils;
 import org.flexpay.common.process.Process;
+import org.flexpay.common.process.TaskHelper;
 import org.flexpay.common.process.ContextCallback;
-import org.jbpm.graph.exe.ProcessInstance;
-import org.jbpm.graph.exe.Token;
 import org.jbpm.graph.def.Transition;
 import org.jbpm.JbpmContext;
-import org.jbpm.taskmgmt.exe.SwimlaneInstance;
 import org.jbpm.taskmgmt.exe.TaskInstance;
-import org.hibernate.util.StringHelper;
 
 import java.util.*;
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
 
 public class PaymentPointDetailMonitorAction extends CashboxCookieActionSupport {
     private static final String PROCESS_STATUS = "PROCESS_STATUS";
+
+    private static final SimpleDateFormat formatTimeUpdated = new SimpleDateFormat("HH:mm");
 
     private String name;
     private String paymentsCount;
@@ -43,6 +40,9 @@ public class PaymentPointDetailMonitorAction extends CashboxCookieActionSupport 
     private String activity;
     private List<CashboxMonitorContainer> cashboxes;
     private String processId;
+
+    private String update;
+    private String updated;
 
     private CashboxService cashboxService;
     private PaymentPointService paymentPointService;
@@ -69,14 +69,14 @@ public class PaymentPointDetailMonitorAction extends CashboxCookieActionSupport 
 
         final long processInstanceId = process.getId();
 
-        Set transitions = getTransitions(processInstanceId, activity);
+//-------------------------------------------------------
+        Set transitions = TaskHelper.getTransitions(processManager, AccounterAssignmentHandler.ACCOUNTER, processInstanceId, activity, log);
         if (status != null && status.equals(currentStatus) && activity != null && activity.length() > 0) {
-            do {
-                Thread.sleep(1000);
-                process = processManager.getProcessInstanceInfo(Long.parseLong(processId));
-                currentStatus = (String) process.getParameters().get(PROCESS_STATUS);
-            } while(!status.equals(currentStatus));
-            transitions = getTransitions(processInstanceId, null);
+     //       do {
+            process = processManager.getProcessInstanceInfo(Long.parseLong(processId));
+            currentStatus = (String) process.getParameters().get(PROCESS_STATUS);
+       //     } while(status.equals(currentStatus));
+            transitions = TaskHelper.getTransitions(processManager, AccounterAssignmentHandler.ACCOUNTER, processInstanceId, null, log);
         }
         status = currentStatus;
         buttons = new ArrayList<String>();
@@ -84,7 +84,7 @@ public class PaymentPointDetailMonitorAction extends CashboxCookieActionSupport 
             Transition transition = (Transition) o;
             buttons.add(transition.getName());
         }
-
+//----------------------------------------
         List<Cashbox> cbs = cashboxService.findCashboxesForPaymentPoint(paymentPoint.getId());
         Date endDate = DateUtil.now();
         Date startDate = DateUtils.setHours(endDate, 0);
@@ -110,47 +110,9 @@ public class PaymentPointDetailMonitorAction extends CashboxCookieActionSupport 
             }
         }
 
+        updated = formatTimeUpdated.format(new Date());
+
         return SUCCESS;
-    }
-
-    private Set getTransitions(final long processInstanceId, final String transitionName) {
-        return processManager.execute(new ContextCallback<Set>(){
-			public Set doInContext(@NotNull JbpmContext context) {
-                ProcessInstance processInstance = context.getProcessInstance(processInstanceId);
-                Collection tasks = processInstance.getTaskMgmtInstance().getTaskInstances();
-                if (tasks.isEmpty()) {
-                    return Collections.emptySet();
-                }
-                boolean isAccounter = false;
-                for (Object o : tasks) {
-                    TaskInstance task = (TaskInstance) o;
-                    if (AccounterAssignmentHandler.ACCOUNTER.equals(task.getActorId())) {
-                        isAccounter = true;
-                        break;
-                    }
-                }
-                if (!isAccounter) {
-                    return Collections.emptySet();
-                }
-                Set transitions = processInstance.getRootToken().getAvailableTransitions();
-                if (transitionName != null && transitionName.length() > 0) {
-                    Transition t = null;
-                    for (Object o : transitions) {
-                        Transition transition = (Transition) o;
-                        if (transitionName.equals(transition.getName())) {
-                            t = transition;
-                            break;
-                        }
-                    }
-                    if (t != null) {
-                        processInstance.getRootToken().signal(t);
-                        return Collections.emptySet();
-                    }
-                }
-
-                return transitions;
-			}
-		});
     }
 
     @NotNull
@@ -220,6 +182,22 @@ public class PaymentPointDetailMonitorAction extends CashboxCookieActionSupport 
 
     public void setProcessId(String processId) {
         this.processId = processId;
+    }
+
+    public String getUpdate() {
+        return update;
+    }
+
+    public void setUpdate(String update) {
+        this.update = update;
+    }
+
+    public String getUpdated() {
+        return updated;
+    }
+
+    public void setUpdated(String updated) {
+        this.updated = updated;
     }
 
     @Required

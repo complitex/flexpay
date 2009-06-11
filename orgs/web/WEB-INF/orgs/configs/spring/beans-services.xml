@@ -58,7 +58,7 @@
 	<bean id="paymentPointService"
 		  class="org.flexpay.orgs.service.imp.PaymentPointServiceImpl"
 		  p:sessionUtils-ref="sessionUtils"
-		  p:modificationListener-ref="paymentPointHistoryChangesListener"
+		  p:modificationListener-ref="nopeHistoryChangesListener"
 		  p:paymentPointDao-ref="paymentPointDao" />
 
 	<bean id="serviceOrganizationHistoryChangesListener"

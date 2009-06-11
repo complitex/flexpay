@@ -8,6 +8,12 @@
   <s:hidden name="processId" />
   <table cellpadding="3" cellspacing="1" border="0" width="100%">
     <tr>
+      <td nowrap="nowrap"><s:text name="payments.payment_points.list.updated"/><s:property value="updated"/></td>
+      <td nowrap="nowrap" align="left">
+        <input type="submit" name="update" class="" value="<s:text name="payments.payment_points.list.update"/>"/>
+      </td>
+    </tr>
+    <tr>
       <td nowrap="nowrap"><s:text name="payments.payment_point"/>:<s:property value="name"/></td>
     </tr>
     <tr>
@@ -20,11 +26,11 @@
       <td nowrap="nowrap"><s:text name="payments.payment_point.detail.status"/>:<s:property value="status"/></td>
     </tr>
     <tr>
-      <s:iterator value="buttons" id="button">
-        <td>
+      <td>
+        <s:iterator value="buttons" id="button">
           <input type="submit" name="activity" class="" value="<s:property value="button"/>"/>
-        </td>
-      </s:iterator>
+        </s:iterator>
+      </td>
     </tr>
   </table>
   <table cellpadding="3" cellspacing="1" border="0" width="100%" class="cash_boxes_list">

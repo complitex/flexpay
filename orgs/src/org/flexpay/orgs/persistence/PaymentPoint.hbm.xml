@@ -30,6 +30,17 @@
 				<comment>E-mail</comment>
 			</column>
 		</property>
+        <property name="tradingDayProcessInstanceId">
+            <column name="tradingDayProcessInstance_Id" not-null="false">
+                <comment>Trading date process instance id</comment>
+            </column>
+        </property>
+        <!--<many-to-one name="tradingDayProcessInstance" foreign-key="FK_trading_day_process_instance_id"-->
+                     <!--class="org.jbpm.graph.exe.ProcessInstance">-->
+            <!--<column name="tradingDayProcessInstance_Id" not-null="false">-->
+				<!--<comment>Trading day process instance ID</comment>-->
+			<!--</column>-->
+        <!--</many-to-one>-->
 		<many-to-one name="collector" foreign-key="FK_orgs_payment_points_tbl_collector_id"
 					 class="PaymentsCollector">
 			<column name="collector_id" not-null="true">
@@ -77,7 +88,7 @@
 		select distinct o
 		from PaymentPoint o
 			inner join fetch o.collector
-            left join fetch o.names 
+            left join fetch o.names
 		where o.status = 0
 	</query>
 
@@ -98,7 +109,7 @@
 		select distinct o
 		from PaymentPoint o
 			inner join fetch o.collector
-			left join fetch o.names 
+			left join fetch o.names
 		where o.id=?
 	</query>
 	

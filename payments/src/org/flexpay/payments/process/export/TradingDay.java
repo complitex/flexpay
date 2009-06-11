@@ -15,6 +15,10 @@ import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.SecurityUtil;
 import org.flexpay.common.service.Roles;
+import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.exception.FlexPayExceptionContainer;
+import org.flexpay.orgs.service.PaymentPointService;
+import org.flexpay.orgs.persistence.PaymentPoint;
 import org.jbpm.graph.exe.ProcessInstance;
 
 import java.util.Date;
@@ -33,6 +37,7 @@ public class TradingDay extends QuartzJobBean {
     private static final ProcessSorterByName processSorterByName = new ProcessSorterByName();
 
     private ProcessManager processManager;
+    private PaymentPointService paymentPointService;
 
     private List<String> paymentPoints;
 
@@ -42,7 +47,9 @@ public class TradingDay extends QuartzJobBean {
     protected static final List<String> USER_TRADING_DAY_AUTHORITIES = CollectionUtils.list(
             Roles.PROCESS_READ, Roles.PROCESS_DELETE,
             org.flexpay.orgs.service.Roles.PAYMENT_POINT_READ,
-            org.flexpay.orgs.service.Roles.ORGANIZATION_READ
+            org.flexpay.orgs.service.Roles.ORGANIZATION_READ,
+            Roles.PROCESS_DEFINITION_UPLOAD_NEW,
+            org.flexpay.orgs.service.Roles.PAYMENT_POINT_CHANGE
     );
 
 
@@ -51,6 +58,13 @@ public class TradingDay extends QuartzJobBean {
         log.debug("Starting traiding day at {}", new Date());
 
         authenticateTradingDayGenerator();
+
+        try {
+            processManager.deployProcessDefinition(PROCESS_DEFINITION_NAME, true);
+        } catch (ProcessDefinitionException e) {
+            log.error("Deploy exception", e);
+            throw new JobExecutionException(e);
+        }
 
         Page<org.flexpay.common.process.Process> page = new Page<org.flexpay.common.process.Process>();
         List<org.flexpay.common.process.Process> processes;
@@ -65,7 +79,7 @@ public class TradingDay extends QuartzJobBean {
                 log.warn("Interrupted", e);
                 throw new JobExecutionException(e);
             }
-            /*
+
             for (Process process : processes) {
                 long processId = process.getId();
                 Process processInstanceInfo = processManager.getProcessInstanceInfo(processId);
@@ -74,36 +88,37 @@ public class TradingDay extends QuartzJobBean {
                 log.debug("Process {} payment point {} ", new Object[]{processId, processInstanceInfo.getParameters().get("paymentPointId")});
                 long processInstanceId = processInstanceInfo.getProcessInstaceId();
                 ProcessInstance pi = processManager.getProcessInstance(processInstanceInfo.getProcessInstaceId());
-                if (pi != null) {
-                    try {
-                        pi.signal();
-                        log.debug("Send signal to {}", processInstanceId);
-                    } catch (Exception ex) {
-                        log.error("Did not send signal to process instace {}", processInstanceId);
-                        processManager.deleteProcessInstance(processInstanceInfo);
-                    }
-                } else {
-                    log.error("Process instace {} did not load", processInstanceId);
-                    processManager.deleteProcessInstance(processInstanceInfo);
-                }
+
+                log.error("Delete process instace {} ", processInstanceId);
+                processManager.deleteProcessInstance(processInstanceInfo);
+
             }
-            */
         } while (processes.size() > 0);
         log.debug("All processes finished");
 
         for (String paymentPoint : paymentPoints) {
             Map<Serializable, Serializable> parameters = new HashMap<Serializable, Serializable>();
             Long paymentPointId = Long.parseLong(paymentPoint);
-            parameters.put("paymentPointId", paymentPointId);
-            log.debug("set paymentPointId {}", paymentPointId);
-            try {
-                processManager.createProcess(PROCESS_DEFINITION_NAME, parameters);
-            } catch (ProcessInstanceException e) {
-                log.error("Failed run process trading day", e);
-                throw new JobExecutionException(e);
-            } catch (ProcessDefinitionException e) {
-                log.error("Process trading day not started", e);
-                throw new JobExecutionException(e);
+            PaymentPoint pp = paymentPointService.read(new Stub<PaymentPoint>(paymentPointId));
+            if (pp == null) {
+                log.error("Payment point with id {} not found", paymentPointId);
+            } else {
+
+                parameters.put("paymentPointId", paymentPointId);
+                log.debug("set paymentPointId {}", paymentPointId);
+                try {
+                    pp.setTradingDayProcessInstanceId(processManager.createProcess(PROCESS_DEFINITION_NAME, parameters));
+                    paymentPointService.update(pp);
+                } catch (ProcessInstanceException e) {
+                    log.error("Failed run process trading day", e);
+                    throw new JobExecutionException(e);
+                } catch (ProcessDefinitionException e) {
+                    log.error("Process trading day not started", e);
+                    throw new JobExecutionException(e);
+                } catch (FlexPayExceptionContainer flexPayExceptionContainer) {
+                    log.error("Payment point did not save", flexPayExceptionContainer);
+                    // TODO Kill the process!!!
+                }
             }
         }
     }
@@ -111,6 +126,11 @@ public class TradingDay extends QuartzJobBean {
     @Required
     public void setPaymentPoints(List<String> paymentPoints) {
         this.paymentPoints = paymentPoints;
+    }
+
+    @Required
+    public void setPaymentPointService(PaymentPointService paymentPointService) {
+        this.paymentPointService = paymentPointService;
     }
 
     @Required
