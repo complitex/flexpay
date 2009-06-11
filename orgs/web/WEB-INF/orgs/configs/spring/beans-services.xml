@@ -98,6 +98,7 @@
 		  class="org.flexpay.common.persistence.history.impl.HistoryBuilderBase"
 		  p:masterIndexService-ref="masterIndexService"
 		  p:correctionsService-ref="correctionsServiceOrgs"
+		  p:builderHelper-ref="historyBuilderHelper"
 		  p:typeRegistry-ref="typeRegistryOrgs" />
 
 	<bean id="organizationHistoryBuilder"
@@ -167,6 +168,7 @@
 		  abstract="true"
 		  autowire-candidate="false"
 		  parent="historyHandlerBase"
+		  p:historyHandlerHelper-ref="historyHandlerHelper"
 		  p:typeRegistry-ref="typeRegistryOrgs" />
 
 	<bean id="bankHistoryHandler"

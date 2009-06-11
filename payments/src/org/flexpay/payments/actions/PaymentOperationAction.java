@@ -91,7 +91,7 @@ public abstract class PaymentOperationAction extends CashboxCookieActionSupport 
 
 		BigDecimal documentSumm = payments.get(serviceFullIndex);
 		String serviceId = ServiceFullIndexUtil.getServiceIdFromIndex(serviceFullIndex);
-		Service service = spService.read(new Stub<Service>(Long.parseLong(serviceId)));
+		Service service = spService.readFull(new Stub<Service>(Long.parseLong(serviceId)));
 		ServiceProvider serviceProvider = serviceProviderService.read(new Stub<ServiceProvider>(service.getServiceProvider().getId()));
 		Organization serviceProviderOrganization = serviceProvider.getOrganization();
 

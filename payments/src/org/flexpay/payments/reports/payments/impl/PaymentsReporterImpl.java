@@ -10,8 +10,8 @@ import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.orgs.persistence.PaymentPoint;
 import org.flexpay.orgs.persistence.ServiceProvider;
 import org.flexpay.orgs.service.OrganizationService;
-import org.flexpay.orgs.service.ServiceProviderService;
 import org.flexpay.orgs.service.PaymentPointService;
+import org.flexpay.orgs.service.ServiceProviderService;
 import org.flexpay.payments.persistence.*;
 import org.flexpay.payments.reports.payments.PaymentPrintForm;
 import org.flexpay.payments.reports.payments.PaymentReportData;
@@ -23,7 +23,6 @@ import org.flexpay.payments.service.OperationService;
 import org.flexpay.payments.service.SPService;
 import org.flexpay.payments.service.ServiceTypeService;
 import org.flexpay.payments.service.statistics.OperationTypeStatistics;
-import org.flexpay.payments.service.statistics.PaymentsStatisticsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
@@ -38,7 +37,6 @@ public class PaymentsReporterImpl implements PaymentsReporter {
 
 	private static final Logger log = LoggerFactory.getLogger(PaymentsReporterImpl.class);
 
-	private PaymentsStatisticsService paymentsStatisticsService;
 	private DocumentService documentService;
 	private OrganizationService organizationService;
 	private PaymentPointService paymentPointService;
@@ -99,7 +97,7 @@ public class PaymentsReporterImpl implements PaymentsReporter {
 	/**
 	 * Get quittance payment print form data
 	 *
-	 * @param operation Payment operation to build form for
+	 * @param op Payment operation to build form for
 	 * @return PaymentPrintForm form data
 	 * @throws IllegalArgumentException if Operation reference is invalid
 	 */
@@ -143,7 +141,7 @@ public class PaymentsReporterImpl implements PaymentsReporter {
 
 			details.setPaymentPeriod(DateUtil.formatMonth(DateUtil.previousMonth(op.getCreationDate())));
 
-			Service service = spService.read(doc.getServiceStub());
+			Service service = spService.readFull(doc.getServiceStub());
 			details.setServiceName(service.getServiceType().getName());
 
 			ServiceProvider provider = serviceProviderService.read(service.getServiceProviderStub());
@@ -178,7 +176,7 @@ public class PaymentsReporterImpl implements PaymentsReporter {
 
 	private Organization getOrganization(PaymentPoint paymentPoint) {
 		Long organizationId = paymentPoint.getCollector().getOrganization().getId();
-		Organization organization  = organizationService.readFull(new Stub<Organization>(organizationId));
+		Organization organization = organizationService.readFull(new Stub<Organization>(organizationId));
 		return organization;
 	}
 
@@ -214,7 +212,7 @@ public class PaymentsReporterImpl implements PaymentsReporter {
 	public String getServiceTypeName(Service serviceStub, Locale locale) {
 
 		Stub<Service> stub = new Stub<Service>(serviceStub);
-		Service service = spService.read(stub);
+		Service service = spService.readFull(stub);
 		ServiceType type = serviceTypeService.read(service.getServiceTypeStub());
 		return type.getName(locale);
 	}
@@ -222,7 +220,7 @@ public class PaymentsReporterImpl implements PaymentsReporter {
 	public String getServiceProviderName(Service serviceStub, Locale locale) {
 
 		Stub<Service> stub = new Stub<Service>(serviceStub);
-		Service service = spService.read(stub);
+		Service service = spService.readFull(stub);
 		if (service == null) {
 			log.warn("No service found by stub {}", serviceStub);
 			return null;
@@ -273,11 +271,6 @@ public class PaymentsReporterImpl implements PaymentsReporter {
 			}
 		}
 		return summ;
-	}
-
-	@Required
-	public void setPaymentsStatisticsService(PaymentsStatisticsService paymentsStatisticsService) {
-		this.paymentsStatisticsService = paymentsStatisticsService;
 	}
 
 	@Required

@@ -235,7 +235,7 @@ public class TestGeneratePaymentsDBRegistry extends SpringBeanAwareTestCase {
         service.setServiceType(serviceType);
         service.setDescription(serviceDescription);
         service.setServiceProvider(serviceProvider);
-        spService.save(service);
+        spService.create(service);
 
         //Service documentService = spService.listServices();
 

@@ -1,10 +1,9 @@
 package org.flexpay.payments.service.history;
 
-import org.flexpay.orgs.persistence.PaymentPoint;
-import org.flexpay.common.persistence.history.impl.HistoryHandlerBase;
+import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.history.Diff;
 import org.flexpay.common.persistence.history.HistoryOperationType;
-import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.persistence.history.impl.HistoryHandlerBase;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.payments.persistence.Cashbox;
 import org.flexpay.payments.service.CashboxService;

@@ -37,7 +37,7 @@ public class EircAccountViewAction extends FPActionSupport {
 	}
 
 	public String getServiceDescription(@NotNull Service service) throws Exception {
-		Service persistent = spService.read(stub(service));
+		Service persistent = spService.readFull(stub(service));
 		return persistent.format(getLocale());
 	}
 
