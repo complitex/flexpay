@@ -237,6 +237,11 @@
     <security-role>
         <role-name>ROLE_PAYMENTS_CASHBOX_DELETE</role-name>
     </security-role>
+
+    <!-- payment point roles -->
+    <security-role>
+        <role-name>ROLE_ORGS_PAYMENT_POINT_READ</role-name>
+    </security-role>
 	
     <!-- Menu roles -->
 

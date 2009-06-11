@@ -12,6 +12,8 @@
 
         <action name="paymentPointDetailMonitor" class="paymentPointDetailMonitorAction">
 			<result type="tiles">payments.payment_point.detail</result>
+            <result name="success" type="tiles">payments.payment_point.detail</result>
+            <result name="error" type="tiles">payments.payment_point.detail</result>
 		</action>
 
 	</package>
