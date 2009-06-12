@@ -33,7 +33,7 @@
 			<td class="th"><s:text name="eirc.status"/></td>
 			<td class="th">&nbsp;</td>
 
-            <td class="th"><s:text name="eirc.file_download"/></td>
+            <td class="th"><s:text name="eirc.registry.file_download"/></td>
 		</tr>
 		<s:iterator value="registries" status="status">
 			<tr valign="middle" class="cols_1">
