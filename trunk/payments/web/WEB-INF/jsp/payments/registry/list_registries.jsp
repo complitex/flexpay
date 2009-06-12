@@ -31,8 +31,8 @@
 			<td class="th"><s:text name="eirc.load_date"/></td>
 			<td class="th"><s:text name="eirc.records_number"/></td>
 			<td class="th"><s:text name="eirc.status"/></td>
-			<td class="th"><s:text name="eirc.file_download"/></td>
 			<td class="th">&nbsp;</td>
+            <td class="th"><s:text name="eirc.file_download"/></td>
 		</tr>
 		<s:iterator value="registries" status="status">
 			<tr valign="middle" class="cols_1">
@@ -51,7 +51,7 @@
 					<s:text name="common.view"/>	 
 						</a></td>
                 <td class="col">
-                    <a href="<s:url value='/download/' includeParams="none"><s:param name="fileId" value="%{spFile.id}"/></s:url>"><s:property value="spFile.originalName"/></a>
+                    <a href="<s:url value='/download/' includeParams="none"/><s:property value="%{spFile.id}"/>.registry"><s:property value="spFile.originalName"/></a>
                 </td>
 			</tr>
 		</s:iterator>
