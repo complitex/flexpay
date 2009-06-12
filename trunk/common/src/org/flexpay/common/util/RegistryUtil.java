@@ -16,7 +16,7 @@ public class RegistryUtil {
 	public static final String REGISTRY_DATE_FROM_FORMAT = "ddMMyyyyHHmmss";
 	public static final String REGISTRY_DATE_TILL_FORMAT = "ddMMyyyyHHmmss";
 	
-	public static final String EXPORT_FILE_ENCODING = "CP1251";
+	public static final String EXPORT_FILE_ENCODING = "Cp1251";
 
 	public static final String EXPORT_FILE_NAME = "exportBankPayments.txt";
 

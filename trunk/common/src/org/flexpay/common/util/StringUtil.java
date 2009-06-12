@@ -159,4 +159,9 @@ public class StringUtil {
 
 		return String.valueOf(value.intValue());
 	}
+
+	public static String getString(Object str) {
+		return str == null ? "" : "" + str.toString();
+	}
+
 }
