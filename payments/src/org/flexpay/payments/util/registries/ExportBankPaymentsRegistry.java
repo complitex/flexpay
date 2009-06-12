@@ -12,6 +12,7 @@ import org.flexpay.common.service.RegistryService;
 import org.flexpay.common.util.FPFileUtil;
 import org.flexpay.common.util.RegistryUtil;
 import org.flexpay.common.util.SecurityUtil;
+import org.flexpay.common.util.config.ApplicationConfig;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,9 +32,6 @@ public class ExportBankPaymentsRegistry {
 
 	private Logger log = LoggerFactory.getLogger(getClass());
 
-	public static final String FILE_ENCODING = "utf8";
-	public static final String FILE_NAME = "exportBankPayments.txt";
-
 	private String moduleName;
 	private FPFileService fpFileService;
 	private RegistryService registryService;
@@ -47,12 +45,10 @@ public class ExportBankPaymentsRegistry {
 		List<RegistryRecord> records = registryRecordService.listRecords(registry);
 		log.debug("Found {} records for registry with id = {}", records.size(), registry.getId());
 
-		SimpleDateFormat df = new SimpleDateFormat(RegistryUtil.OPERATION_DATE_FORMAT);
-
 		String userName = SecurityUtil.getUserName();
 
 		FPFile fpFile = new FPFile();
-		fpFile.setOriginalName(FILE_NAME);
+		fpFile.setOriginalName(RegistryUtil.EXPORT_FILE_NAME);
 		fpFile.setModule(fpFileService.getModuleByName(moduleName));
 		fpFile.setUserName(userName);
 
@@ -68,47 +64,17 @@ public class ExportBankPaymentsRegistry {
 
 		try {
 
-			writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(FPFileUtil.getFileOnServer(fpFile)), FILE_ENCODING), 500);
+			writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(FPFileUtil.getFileOnServer(fpFile)), RegistryUtil.EXPORT_FILE_ENCODING), 500);
+
+			writer.write(buildHeader(registry));
+			writer.newLine();
 
 			for (RegistryRecord record : records) {
-				log.debug("Processing record = {}", record);
-				StringBuilder sb = new StringBuilder();
-				sb.append(RegistryUtil.MESSAGE_TYPE).append(RegistryUtil.FIELD_SEPARATOR).
-						append(registry.getId()).append(RegistryUtil.FIELD_SEPARATOR).
-						append(record.getServiceCode()).append(RegistryUtil.FIELD_SEPARATOR).
-						append(record.getPersonalAccountExt()).append(RegistryUtil.FIELD_SEPARATOR).
-						append(record.getCity()).append(RegistryUtil.ADDRESS_SEPARATOR).
-						append(record.getStreetType()).append(RegistryUtil.ADDRESS_SEPARATOR).
-						append(record.getStreetName()).append(RegistryUtil.ADDRESS_SEPARATOR).
-						append(record.getBuildingNum()).append(RegistryUtil.ADDRESS_SEPARATOR).
-						append(record.getBuildingBulkNum()).append(RegistryUtil.ADDRESS_SEPARATOR).
-						append(record.getApartmentNum()).append(RegistryUtil.FIELD_SEPARATOR).
-						append(record.getLastName()).append(RegistryUtil.FIO_SEPARATOR).
-						append(record.getFirstName()).append(RegistryUtil.FIO_SEPARATOR).
-						append(record.getMiddleName()).append(RegistryUtil.FIELD_SEPARATOR).
-						append(df.format(record.getOperationDate())).append(RegistryUtil.FIELD_SEPARATOR).
-						append(record.getUniqueOperationNumber()).append(RegistryUtil.FIELD_SEPARATOR).
-						append(record.getAmount()).append(RegistryUtil.FIELD_SEPARATOR);
-
-				int i = 1;
-				int total = record.getContainers().size();
-
-				for (RegistryRecordContainer container : record.getContainers()) {
-
-					sb.append(container.getData());
-					if (i != total) {
-						sb.append(RegistryUtil.CONTAINER_SEPARATOR);
-					}
-
-					i++;
-				}
-
-				log.debug("Write new line to file = {}", sb.toString());
-
-				writer.write(sb.toString());
+				writer.write(buildRecord(registry, record));
 				writer.newLine();
-
 			}
+
+			writer.write(buildFooter(registry));
 
 		} catch (IOException e) {
 			log.error("Error with writing export-file for registry", e);
@@ -128,6 +94,82 @@ public class ExportBankPaymentsRegistry {
 
 		return registry;
 
+	}
+
+	private String buildHeader(Registry registry) {
+
+		StringBuilder header = new StringBuilder();
+
+		log.debug("Building header for registry = {}", registry);
+
+		SimpleDateFormat dfCreation = new SimpleDateFormat(RegistryUtil.REGISTRY_CREATION_DATE_FORMAT);
+		SimpleDateFormat dfFrom = new SimpleDateFormat(RegistryUtil.REGISTRY_DATE_FROM_FORMAT);
+		SimpleDateFormat dfTill = new SimpleDateFormat(RegistryUtil.REGISTRY_DATE_TILL_FORMAT);
+
+		header.append(RegistryUtil.REGISTY_HEADER_MESSAGE_TYPE).append(registry.getRegistryNumber()).append(registry.getRegistryType()).append(registry.getRecordsNumber()).
+				append(dfCreation.format(registry.getCreationDate())).append(dfFrom.format(registry.getFromDate())).
+				append(dfTill.format(registry.getFromDate())).append(registry.getSenderCode()).append(registry.getRecipientCode()).
+				append(registry.getAmount());
+
+		log.debug("File header = {}", header.toString());
+
+		return header.toString();
+	}
+
+	private String buildRecord(Registry registry, RegistryRecord record) {
+
+		log.debug("Building string for record = {}", record);
+
+		SimpleDateFormat df = new SimpleDateFormat(RegistryUtil.OPERATION_DATE_FORMAT);
+
+		StringBuilder sb = new StringBuilder();
+		sb.append(RegistryUtil.REGISTRY_RECORD_MESSAGE_TYPE).append(RegistryUtil.FIELD_SEPARATOR).
+				append(registry.getId()).append(RegistryUtil.FIELD_SEPARATOR).
+				append(record.getServiceCode()).append(RegistryUtil.FIELD_SEPARATOR).
+				append(record.getPersonalAccountExt()).append(RegistryUtil.FIELD_SEPARATOR).
+				append(record.getCity()).append(RegistryUtil.ADDRESS_SEPARATOR).
+				append(record.getStreetType()).append(RegistryUtil.ADDRESS_SEPARATOR).
+				append(record.getStreetName()).append(RegistryUtil.ADDRESS_SEPARATOR).
+				append(record.getBuildingNum()).append(RegistryUtil.ADDRESS_SEPARATOR).
+				append(record.getBuildingBulkNum()).append(RegistryUtil.ADDRESS_SEPARATOR).
+				append(record.getApartmentNum()).append(RegistryUtil.FIELD_SEPARATOR).
+				append(record.getLastName()).append(RegistryUtil.FIO_SEPARATOR).
+				append(record.getFirstName()).append(RegistryUtil.FIO_SEPARATOR).
+				append(record.getMiddleName()).append(RegistryUtil.FIELD_SEPARATOR).
+				append(df.format(record.getOperationDate())).append(RegistryUtil.FIELD_SEPARATOR).
+				append(record.getUniqueOperationNumber()).append(RegistryUtil.FIELD_SEPARATOR).
+				append(record.getAmount()).append(RegistryUtil.FIELD_SEPARATOR);
+
+		int i = 1;
+		int total = record.getContainers().size();
+
+		for (RegistryRecordContainer container : record.getContainers()) {
+
+			sb.append(container.getData());
+			if (i != total) {
+				sb.append(RegistryUtil.CONTAINER_SEPARATOR);
+			}
+
+			i++;
+		}
+
+		log.debug("File record = {}", sb.toString());
+
+		return sb.toString();
+
+	}
+
+	private String buildFooter(Registry registry) {
+
+		StringBuilder footer = new StringBuilder();
+
+		log.debug("Building footer for registry = {}", registry);
+
+		footer.append(RegistryUtil.REGISTY_FOOTER_MESSAGE_TYPE).append(registry.getRegistryNumber());
+
+		log.debug("File footer = {}", footer.toString());
+
+		return footer.toString();
 	}
 
 	@Required
