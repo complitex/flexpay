@@ -182,6 +182,7 @@
 		<property name="definitionPaths">
 			<list merge="true">
 				<value>WEB-INF/eirc/process</value>
+				<value>WEB-INF/payments/process</value>
 			</list>
 		</property>
 		<property name="lyfecycleVoters">
