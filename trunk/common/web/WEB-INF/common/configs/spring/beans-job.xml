@@ -7,5 +7,8 @@
 		   http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
 		   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
-    <bean id="sendEmailToAdministrator" class="org.flexpay.common.process.job.SendEmailToAdministrator"/>
+    <bean id="sendEmailToAdministrator" class="org.flexpay.common.process.job.SendEmailToAdministrator" scope="prototype"/>
+
+    <bean id="emptyJob" class="org.flexpay.common.process.job.EmptyJob" scope="prototype"/>
+
 </beans>
