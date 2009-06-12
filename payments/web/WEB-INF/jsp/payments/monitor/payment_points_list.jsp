@@ -15,7 +15,7 @@
     </tr>
     -->
     <tr>
-      <td nowrap="nowrap"><s:text name="payments.payment_points.list.updated"/><s:property value="updated"/></td>
+      <td nowrap="nowrap"><s:text name="payments.payment_points.list.updated"/>&nbsp;<s:property value="updated"/></td>
       <td nowrap="nowrap" align="left">
         <input type="submit" name="update" class="" value="<s:text name="payments.payment_points.list.update"/>"/>
       </td>

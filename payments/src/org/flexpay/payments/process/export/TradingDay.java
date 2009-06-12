@@ -14,6 +14,7 @@ import org.flexpay.common.process.sorter.ProcessSorterByName;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.SecurityUtil;
+import org.flexpay.common.util.DateUtil;
 import org.flexpay.common.service.Roles;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
@@ -21,10 +22,7 @@ import org.flexpay.orgs.service.PaymentPointService;
 import org.flexpay.orgs.persistence.PaymentPoint;
 import org.jbpm.graph.exe.ProcessInstance;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.HashMap;
+import java.util.*;
 import java.io.Serializable;
 
 public class TradingDay extends QuartzJobBean {
@@ -106,6 +104,20 @@ public class TradingDay extends QuartzJobBean {
 
                 parameters.put("paymentPointId", paymentPointId);
                 log.debug("set paymentPointId {}", paymentPointId);
+
+				//fill begin and end date
+                parameters.put("beginDate", DateUtil.truncateDay(new Date()));
+                log.debug("set beginDate {}", DateUtil.truncateDay(new Date()));
+
+                parameters.put("endDate", DateUtil.getEndOfThisDay(new Date()));
+                log.debug("set endDate {}", DateUtil.getEndOfThisDay(new Date()));
+
+				//@TODO fill organization id
+                parameters.put("organizationId", 6L );
+                log.debug("set organizationId {}", 6L);
+
+
+
                 try {
                     pp.setTradingDayProcessInstanceId(processManager.createProcess(PROCESS_DEFINITION_NAME, parameters));
                     paymentPointService.update(pp);

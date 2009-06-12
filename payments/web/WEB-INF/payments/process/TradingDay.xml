@@ -58,7 +58,7 @@
                 </script>
             </timer>
         </task>
-        <transition to="generateEndOperationDayRegistryJob" name="tradingDay.mark_for_closing"/>
+        <transition to="generateEndOperationDayRegistryJob" name="Пометить на закрытие"/>
     </task-node>
 
 
@@ -104,19 +104,34 @@
         </event>
         <timer duedate="1 business day" transition="end-state"/>
         <task name="Aproove" swimlane="Accounter"/>
-        <transition to="MarkPaymentPointForClosing" name="tradingDay.close_denied"/>
-        <transition to="end-state" name="tradingDay.close_approved"/>
+        <transition to="MarkPaymentPointForClosing" name="Отменить пометку"/>
+        <transition to="ViewApproval" name="Подтвердить закрытие"/>
+    </task-node>
+
+    <task-node name="ViewApproval">
+        <description>Просмотр Оператором сообщения о том что операционный день завершен</description>
+        <event type="node-enter">
+            <script>
+                <variable mapped-name="processStatus" access="write" name="PROCESS_STATUS"/>
+                <expression>
+                    processStatus = "Завершен";
+                </expression>
+            </script>
+        </event>
+        <timer duedate="1 business day" transition="end-state"/>
+        <task name="" swimlane="PaymentCollector"/>
+        <transition to="end-state" name="Принять сообщение"/>
     </task-node>
 
     <task-node name="JobManagerError">
         <description>
-            Выслать администрутору е-мейл о том что процесс закончился с ошибкой
+            Выслать администрутору е-мейл с сообщением о том, что процесс закончился с ошибкой
         </description>
         <task name="sendEmailToAdministrator" swimlane="JobManager"/>
         <transition to="end-state" name="next"/>
         <transition to="end-state" name="error"/>
     </task-node>
-    
+
     <end-state name="end-state">
         <event type="node-enter">
             <script>
