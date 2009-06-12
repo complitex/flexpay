@@ -128,7 +128,7 @@
 		  autowire-candidate="false"
 		  class="org.flexpay.payments.service.impl.CashboxServiceImpl"
 		  p:sessionUtils-ref="sessionUtils"
-		  p:modificationListener-ref="cashboxHistoryChangesListener"
+		  p:modificationListener-ref="nopeHistoryChangesListener"
 		  p:cashboxDao-ref="cashboxDao" />
 
 	<bean id="exportBankPaymentsRegistry"

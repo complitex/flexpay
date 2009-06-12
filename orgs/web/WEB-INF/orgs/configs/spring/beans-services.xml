@@ -48,7 +48,7 @@
 		  autowire-candidate="false"
 		  class="org.flexpay.orgs.service.imp.PaymentsCollectorServiceImpl"
 		  parent="organisationInstanceService"
-		  p:modificationListener-ref="paymentsCollectorHistoryChangesListener"
+		  p:modificationListener-ref="nopeHistoryChangesListener"
 		  p:instanceDao-ref="paymentsCollectorDao" />
 
 	<bean id="paymentPointHistoryChangesListener"
