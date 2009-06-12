@@ -14,12 +14,12 @@
             </td>
         </tr>
         <tr>
-            <td nowrap="nowrap"><s:text name="payments.payment_point"/>:<s:property value="name"/></td>
+            <td nowrap="nowrap"><s:text name="payments.payment_point"/>&nbsp;:&nbsp;<s:property value="name"/></td>
         </tr>
         <tr>
             <td nowrap="nowrap">
-                <s:text name="payments.payment_point.detail.payments_count"/>:<s:property value="paymentsCount"/>&nbsp;&nbsp;&nbsp;
-                <s:text name="payments.payment_point.detail.sum"/>:<s:property value="totalSum"/>
+                <s:text name="payments.payment_point.detail.payments_count"/>&nbsp;:&nbsp;<s:property value="paymentsCount"/>&nbsp;&nbsp;&nbsp;
+                <s:text name="payments.payment_point.detail.sum"/>&nbsp;:&nbsp;<s:property value="totalSum"/>
             </td>
         </tr>
 
@@ -27,7 +27,7 @@
             <td>
                 <fieldset class="fieldset">
                     <legend class="legend"><s:text name="payments.payment_point.detail.status"/>:<s:property
-                            value="status"/>,&nbsp;<s:text name="payments.payment_point.detail.available_actions"/>:</legend>
+                            value="status"/>,&nbsp;<s:text name="payments.payment_point.detail.available_actions"/>:&nbsp;</legend>
                     <s:if test="buttons.size == 0">
                         <br/>
                         <s:text name="payments.payment_point.detail.no_action_available"/>

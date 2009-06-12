@@ -207,7 +207,7 @@
         <td colspan="11" nowrap="nowrap">
             <fieldset class="fieldset">
                 <legend class="legend"><s:text name="payments.payment_point.detail.status"/>&nbsp;:&nbsp;<s:property
-                        value="processStatus"/>,&nbsp;<s:text name="payments.payment_point.detail.available_actions"/>:</legend>
+                        value="processStatus"/>,&nbsp;<s:text name="payments.payment_point.detail.available_actions"/>:&nbsp;</legend>
                 <s:if test="processButtons.size == 0">
                     <br/>
                     <s:text name="payments.payment_point.detail.no_action_available"/>
