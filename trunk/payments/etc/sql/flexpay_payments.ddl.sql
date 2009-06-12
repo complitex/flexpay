@@ -739,6 +739,7 @@
         status integer not null comment 'Enabled-disabled status',
         address varchar(255) not null comment 'Address',
         email varchar(255) comment 'E-mail',
+        tradingDayProcessInstance_Id bigint comment 'Trading date process instance id',
         collector_id bigint not null comment 'Payments collector reference',
         primary key (id)
     ) comment='Payment points';
@@ -1077,7 +1078,9 @@
     );
 
     create table payments_services_tbl (
-        id bigint not null auto_increment,
+        id bigint not null auto_increment comment 'Primary key',
+        version integer not null comment 'Optimistic lock version',
+        status integer not null comment 'Enabled-disabled status',
         external_code varchar(255) comment 'Service providers internal service code',
         begin_date date not null comment 'The Date service is valid from',
         end_date date not null comment 'The Date service is valid till',
@@ -1086,7 +1089,7 @@
         measure_unit_id bigint comment 'Measure unit reference',
         parent_service_id bigint comment 'If parent service reference present service is a subservice',
         primary key (id)
-    );
+    ) comment='Services';
 
     create index indx_value on ab_apartment_numbers_tbl (value);
 
