@@ -20,7 +20,7 @@
 		</version>
         <property name="status">
             <column name="status" not-null="true">
-                <comment>Cashbox status</comment>
+                <comment>Enabled-disabled status</comment>
             </column>
         </property>
 		<property name="externalCode">
