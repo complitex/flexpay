@@ -119,15 +119,15 @@ public class ServiceHistoryBuilder extends HistoryBuilderBase<Service> {
 
 	private void buildMeasureUnitRefDiff(Service p1, Service p2, Diff diff) {
 
-		builderHelper.buildReferenceDiff(p1, p2, diff, new ReferenceExtractor<MeasureUnit, Service>() {
-			public MeasureUnit getReference(Service obj) {
-				return obj.getMeasureUnit();
-			}
-
-			public int getReferenceField() {
-				return FIELD_MEASURE_UNIT_ID;
-			}
-		});
+//		builderHelper.buildReferenceDiff(p1, p2, diff, new ReferenceExtractor<MeasureUnit, Service>() {
+//			public MeasureUnit getReference(Service obj) {
+//				return obj.getMeasureUnit();
+//			}
+//
+//			public int getReferenceField() {
+//				return FIELD_MEASURE_UNIT_ID;
+//			}
+//		});
 	}
 
 	private void buildParentServiceRefDiff(Service p1, Service p2, Diff diff) {
@@ -184,9 +184,9 @@ public class ServiceHistoryBuilder extends HistoryBuilderBase<Service> {
 				case FIELD_SERVICETYPE_ID:
 					patchServiceTypeReference(service, record);
 					break;
-				case FIELD_MEASURE_UNIT_ID:
-					patchMeasureUnitReference(service, record);
-					break;
+//				case FIELD_MEASURE_UNIT_ID:
+//					patchMeasureUnitReference(service, record);
+//					break;
 				case FIELD_PARENT_SERVICE_ID:
 					patchParentServiceReference(service, record);
 					break;
