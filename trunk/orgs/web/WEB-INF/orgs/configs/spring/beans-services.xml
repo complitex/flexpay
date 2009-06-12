@@ -20,7 +20,7 @@
 		  autowire-candidate="false"
 		  class="org.flexpay.orgs.service.imp.OrganizationServiceImpl"
 		  p:sessionUtils-ref="sessionUtils"
-		  p:modificationListener-ref="organizationHistoryChangesListener"
+		  p:modificationListener-ref="nopeHistoryChangesListener"
 		  p:organizationDao-ref="organizationDao" />
 
 	<bean id="subdivisionService"
@@ -37,7 +37,7 @@
 		  autowire-candidate="false"
 		  class="org.flexpay.orgs.service.imp.BankServiceImpl"
 		  parent="organisationInstanceService"
-		  p:modificationListener-ref="bankHistoryChangesListener"
+		  p:modificationListener-ref="nopeHistoryChangesListener"
 		  p:instanceDao-ref="bankDao" />
 
 	<bean id="paymentsCollectorHistoryChangesListener"
@@ -69,7 +69,7 @@
 		  autowire-candidate="false"
 		  class="org.flexpay.orgs.service.imp.ServiceOrganizationServiceImpl"
 		  p:sessionUtils-ref="sessionUtils"
-		  p:modificationListener-ref="serviceOrganizationHistoryChangesListener"
+		  p:modificationListener-ref="nopeHistoryChangesListener"
 		  p:serviceOrganizationDao-ref="serviceOrganizationDao" />
 
 	<bean id="serviceProviderHistoryChangesListener"
@@ -82,7 +82,7 @@
 		  p:serviceProviderDao-ref="serviceProviderDao"
 		  p:serviceProviderDaoExt-ref="serviceProviderDaoExt"
 		  p:sessionUtils-ref="sessionUtils"
-		  p:modificationListener-ref="serviceProviderHistoryChangesListener"
+		  p:modificationListener-ref="nopeHistoryChangesListener"
 		  p:dataSourceDescriptionDao-ref="dataSourceDescriptionDao" />
 
 	<bean id="typeRegistryOrgs"
