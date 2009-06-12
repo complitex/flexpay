@@ -32,6 +32,7 @@
 			<td class="th"><s:text name="eirc.records_number"/></td>
 			<td class="th"><s:text name="eirc.status"/></td>
 			<td class="th">&nbsp;</td>
+
             <td class="th"><s:text name="eirc.file_download"/></td>
 		</tr>
 		<s:iterator value="registries" status="status">
