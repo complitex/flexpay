@@ -12,6 +12,7 @@ import org.flexpay.common.service.RegistryService;
 import org.flexpay.common.util.FPFileUtil;
 import org.flexpay.common.util.RegistryUtil;
 import org.flexpay.common.util.SecurityUtil;
+import org.flexpay.common.util.StringUtil;
 import org.flexpay.common.util.config.ApplicationConfig;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
@@ -106,10 +107,16 @@ public class ExportBankPaymentsRegistry {
 		SimpleDateFormat dfFrom = new SimpleDateFormat(RegistryUtil.REGISTRY_DATE_FROM_FORMAT);
 		SimpleDateFormat dfTill = new SimpleDateFormat(RegistryUtil.REGISTRY_DATE_TILL_FORMAT);
 
-		header.append(RegistryUtil.REGISTY_HEADER_MESSAGE_TYPE).append(registry.getRegistryNumber()).append(registry.getRegistryType()).append(registry.getRecordsNumber()).
-				append(dfCreation.format(registry.getCreationDate())).append(dfFrom.format(registry.getFromDate())).
-				append(dfTill.format(registry.getFromDate())).append(registry.getSenderCode()).append(registry.getRecipientCode()).
-				append(registry.getAmount());
+		header.append(RegistryUtil.REGISTY_HEADER_MESSAGE_TYPE).
+				append(StringUtil.getString(registry.getRegistryNumber())).
+				append(StringUtil.getString(registry.getRegistryType())).
+				append(StringUtil.getString(registry.getRecordsNumber())).
+				append(StringUtil.getString(dfCreation.format(registry.getCreationDate()))).
+				append(StringUtil.getString(dfFrom.format(registry.getFromDate()))).
+				append(StringUtil.getString(dfTill.format(registry.getFromDate()))).
+				append(StringUtil.getString(registry.getSenderCode())).
+				append(StringUtil.getString(registry.getRecipientCode())).
+				append(StringUtil.getString(registry.getAmount()));
 
 		log.debug("File header = {}", header.toString());
 
@@ -124,28 +131,43 @@ public class ExportBankPaymentsRegistry {
 
 		StringBuilder sb = new StringBuilder();
 		sb.append(RegistryUtil.REGISTRY_RECORD_MESSAGE_TYPE).append(RegistryUtil.FIELD_SEPARATOR).
-				append(registry.getId()).append(RegistryUtil.FIELD_SEPARATOR).
-				append(record.getServiceCode()).append(RegistryUtil.FIELD_SEPARATOR).
-				append(record.getPersonalAccountExt()).append(RegistryUtil.FIELD_SEPARATOR).
-				append(record.getCity()).append(RegistryUtil.ADDRESS_SEPARATOR).
-				append(record.getStreetType()).append(RegistryUtil.ADDRESS_SEPARATOR).
-				append(record.getStreetName()).append(RegistryUtil.ADDRESS_SEPARATOR).
-				append(record.getBuildingNum()).append(RegistryUtil.ADDRESS_SEPARATOR).
-				append(record.getBuildingBulkNum()).append(RegistryUtil.ADDRESS_SEPARATOR).
-				append(record.getApartmentNum()).append(RegistryUtil.FIELD_SEPARATOR).
-				append(record.getLastName()).append(RegistryUtil.FIO_SEPARATOR).
-				append(record.getFirstName()).append(RegistryUtil.FIO_SEPARATOR).
-				append(record.getMiddleName()).append(RegistryUtil.FIELD_SEPARATOR).
-				append(df.format(record.getOperationDate())).append(RegistryUtil.FIELD_SEPARATOR).
-				append(record.getUniqueOperationNumber()).append(RegistryUtil.FIELD_SEPARATOR).
-				append(record.getAmount()).append(RegistryUtil.FIELD_SEPARATOR);
+				append(StringUtil.getString(registry.getId())).
+				append(RegistryUtil.FIELD_SEPARATOR).
+				append(StringUtil.getString(record.getServiceCode())).
+				append(RegistryUtil.FIELD_SEPARATOR).
+				append(StringUtil.getString(record.getPersonalAccountExt())).
+				append(RegistryUtil.FIELD_SEPARATOR).
+				append(StringUtil.getString(record.getCity())).
+				append(RegistryUtil.ADDRESS_SEPARATOR).
+				append(StringUtil.getString(record.getStreetType())).
+				append(RegistryUtil.ADDRESS_SEPARATOR).
+				append(StringUtil.getString(record.getStreetName())).
+				append(RegistryUtil.ADDRESS_SEPARATOR).
+				append(StringUtil.getString(record.getBuildingNum())).
+				append(RegistryUtil.ADDRESS_SEPARATOR).
+				append(StringUtil.getString(record.getBuildingBulkNum())).
+				append(RegistryUtil.ADDRESS_SEPARATOR).
+				append(StringUtil.getString(record.getApartmentNum())).
+				append(RegistryUtil.FIELD_SEPARATOR).
+				append(StringUtil.getString(record.getLastName())).
+				append(RegistryUtil.FIO_SEPARATOR).
+				append(StringUtil.getString(record.getFirstName())).
+				append(RegistryUtil.FIO_SEPARATOR).
+				append(StringUtil.getString(record.getMiddleName())).
+				append(RegistryUtil.FIELD_SEPARATOR).
+				append(StringUtil.getString(df.format(record.getOperationDate()))).
+				append(RegistryUtil.FIELD_SEPARATOR).
+				append(StringUtil.getString(record.getUniqueOperationNumber())).
+				append(RegistryUtil.FIELD_SEPARATOR).
+				append(StringUtil.getString(record.getAmount())).
+				append(RegistryUtil.FIELD_SEPARATOR);
 
 		int i = 1;
 		int total = record.getContainers().size();
 
 		for (RegistryRecordContainer container : record.getContainers()) {
 
-			sb.append(container.getData());
+			sb.append(StringUtil.getString(container.getData()));
 			if (i != total) {
 				sb.append(RegistryUtil.CONTAINER_SEPARATOR);
 			}
@@ -165,7 +187,8 @@ public class ExportBankPaymentsRegistry {
 
 		log.debug("Building footer for registry = {}", registry);
 
-		footer.append(RegistryUtil.REGISTY_FOOTER_MESSAGE_TYPE).append(registry.getRegistryNumber());
+		footer.append(RegistryUtil.REGISTY_FOOTER_MESSAGE_TYPE).
+				append(StringUtil.getString(registry.getRegistryNumber()));
 
 		log.debug("File footer = {}", footer.toString());
 
