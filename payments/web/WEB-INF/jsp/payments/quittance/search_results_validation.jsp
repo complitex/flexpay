@@ -33,7 +33,8 @@
 			var selectedFieldId = $(event.target).attr('id');
 			for (var i = 0; i < fieldChain.length; i++) {
 				if (fieldChain[i] == selectedFieldId) {
-					currentFieldIndex = i;					
+					currentFieldIndex = i;
+					return;
 				}
 			}
 		});

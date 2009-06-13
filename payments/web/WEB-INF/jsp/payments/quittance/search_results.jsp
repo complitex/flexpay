@@ -5,7 +5,7 @@
 <s:actionerror/>
 
 <s:if test="%{resultsAreNotEmpty()}">
-	<s:form id="quittancePayForm">
+	<form id="quittancePayForm" action="<s:url action="paymentOperationReportAction"/>">
 		<table class="search_results" cellpadding="3" cellspacing="1" border="0" width="100%">
 			<tr>
 				<td class="th" nowrap="nowrap"><s:text name="payments.quittances.quittance_pay.consumer_account"/></td>
@@ -41,7 +41,6 @@
 													 value="%{outgoingBalance}"
 													 onblur="replaceEmptyValueWithZero('payments_%{#serviceIndx}');"
 													 cssStyle="width:100%;text-align:right;"/></td>
-													 <%--onkeypress="return FP.disableEnterKey(event);"--%>													 
 					</tr>
 				</s:iterator>
 			</s:iterator>
@@ -86,8 +85,7 @@
 			</tr>
 
 		</table>
-	</s:form>
-
+	</form>
 </s:if>
 <s:else>
 	<s:text name="payments.quittances.quittance_pay.no_debts_found"/>
