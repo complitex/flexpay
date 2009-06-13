@@ -1,11 +1,20 @@
 package org.flexpay.payments.actions.monitor.data;
 
 public class CashboxMonitorContainer {
+    private String id;
     private String cashbox;
     private String totalSum;
     private String cashierFIO;
     private String lastPayment;
     private String paymentsCount;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getCashbox() {
         return cashbox;

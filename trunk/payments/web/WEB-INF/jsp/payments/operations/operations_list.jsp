@@ -150,6 +150,7 @@
 <s:hidden name="selectedOperationId"/>
 <s:hidden name="documentSearchEnabled"/>
 <s:hidden name="taskInstanceId"/>
+<s:hidden name="cashboxIdFilter"/>
 
 <%-- filters are temporary hidden! --%>
 <sec:authorize ifAllGranted="ROLE_PAYMENTS_DEVELOPER">
