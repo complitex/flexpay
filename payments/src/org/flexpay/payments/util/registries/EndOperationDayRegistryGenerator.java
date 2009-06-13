@@ -84,13 +84,14 @@ public class EndOperationDayRegistryGenerator {
 				record.setOperationDate(operation.getCreationDate());
 				record.setRecordStatus(recordStatus);
 
-				record.setServiceCode("#" + document.getService().getExternalCode());
+				record.setServiceCode(String.valueOf(document.getService().getServiceType().getCode()));
 				record.setPersonalAccountExt(document.getDebtorId());
 				record.setUniqueOperationNumber(operation.getId());
 
-				record.setLastName(document.getLastName());
-				record.setMiddleName(document.getMiddleName());
-				record.setFirstName(document.getFirstName());
+				record.setLastName(document.getPayerFIO());
+//				record.setLastName(document.getLastName());
+//				record.setMiddleName(document.getMiddleName());
+//				record.setFirstName(document.getFirstName());
 				record.setCity(document.getTown());
 				record.setBuildingBulkNum(document.getBuildingBulk());
 				record.setStreetType(document.getStreetType());
@@ -104,7 +105,7 @@ public class EndOperationDayRegistryGenerator {
 				BigDecimal summ = document.getSumm().setScale(2, BigDecimal.ROUND_HALF_UP);
 				record.setAmount(summ);
 				
-				totalSumm.add(summ);
+				totalSumm = totalSumm.add(summ);
 				container.setOrder(0);
 				container.setData("52:" + operation.getCreatorOrganization().getId() + ":" + operation.getId() + ":" + operation.getOperationSumm());
 				container.setRecord(record);
