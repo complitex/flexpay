@@ -41,6 +41,7 @@
 		  p:spService-ref="spService"
 		  p:serviceProviderService-ref="serviceProviderService"
 		  p:crumbNameKey="payments.crumbs.quittances_pay"
+          p:processManager-ref="processManagerPayments"
 		  scope="prototype" />
 
 	<!-- operation-related actions -->
