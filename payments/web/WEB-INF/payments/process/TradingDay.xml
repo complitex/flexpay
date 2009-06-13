@@ -89,9 +89,19 @@
             отправляем на указанный в ППП емейл с вложенным файлом сформированного реестра
         </description>
         <task swimlane="JobManager" />
-        <transition to="WaitForApprove" name="next"/>
+        <transition to="AutoModeDecision" name="next"/>
         <transition to="JobManagerError" name="error"/>
     </task-node>
+
+
+    <decision name="AutoModeDecision">
+		<transition to="WaitForApprove" name="Human approval">
+			<condition expression="#{executionContext.getVariable['AUTO_MODE'] == null}" />
+		</transition>
+		<transition to="end-state" name="AutoModeApproval">
+			<condition expression="#{executionContext.getVariable['AUTO_MODE'] == 'true'}"/>
+		</transition>
+	</decision>
 
 
     <task-node name="WaitForApprove">
