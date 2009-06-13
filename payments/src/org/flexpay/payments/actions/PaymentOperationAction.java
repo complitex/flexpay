@@ -6,6 +6,7 @@ import org.flexpay.payments.service.*;
 import org.flexpay.payments.util.ServiceFullIndexUtil;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.SecurityUtil;
+import org.flexpay.common.util.BigDecimalUtil;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.orgs.service.OrganizationService;
@@ -57,7 +58,7 @@ public abstract class PaymentOperationAction extends CashboxCookieActionSupport 
 				op.setPayerFIO(document.getPayerFIO());
 			}
 
-			if (document.getSumm().compareTo(BigDecimal.ZERO) > 0) {
+			if (BigDecimalUtil.isZero(document.getSumm())) {
 				op.addDocument(document);
 			}
 		}
