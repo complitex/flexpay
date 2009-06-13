@@ -108,14 +108,23 @@ public class ExportBankPaymentsRegistry {
 		SimpleDateFormat dfTill = new SimpleDateFormat(RegistryUtil.REGISTRY_DATE_TILL_FORMAT);
 
 		header.append(RegistryUtil.REGISTY_HEADER_MESSAGE_TYPE).
+				append(RegistryUtil.FIELD_SEPARATOR).
 				append(StringUtil.getString(registry.getRegistryNumber())).
-				append(StringUtil.getString(registry.getRegistryType())).
+				append(RegistryUtil.FIELD_SEPARATOR).
+				append(StringUtil.getString(registry.getRegistryType().getCode())).
+				append(RegistryUtil.FIELD_SEPARATOR).
 				append(StringUtil.getString(registry.getRecordsNumber())).
+				append(RegistryUtil.FIELD_SEPARATOR).
 				append(StringUtil.getString(dfCreation.format(registry.getCreationDate()))).
+				append(RegistryUtil.FIELD_SEPARATOR).
 				append(StringUtil.getString(dfFrom.format(registry.getFromDate()))).
+				append(RegistryUtil.FIELD_SEPARATOR).
 				append(StringUtil.getString(dfTill.format(registry.getFromDate()))).
+				append(RegistryUtil.FIELD_SEPARATOR).
 				append(StringUtil.getString(registry.getSenderCode())).
+				append(RegistryUtil.FIELD_SEPARATOR).
 				append(StringUtil.getString(registry.getRecipientCode())).
+				append(RegistryUtil.FIELD_SEPARATOR).
 				append(StringUtil.getString(registry.getAmount()));
 
 		log.debug("File header = {}", header.toString());
