@@ -11,6 +11,7 @@ import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.DateUtil;
 import org.flexpay.common.util.SecurityUtil;
 import org.flexpay.common.process.*;
+import org.flexpay.common.process.Process;
 import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.orgs.persistence.PaymentPoint;
 import org.flexpay.orgs.service.OrganizationService;
@@ -19,6 +20,7 @@ import org.flexpay.payments.persistence.*;
 import org.flexpay.payments.service.*;
 import org.flexpay.payments.process.handlers.PaymentCollectorAssignmentHandler;
 import org.jbpm.graph.def.Transition;
+import org.jbpm.graph.exe.ProcessInstance;
 import org.jbpm.taskmgmt.exe.TaskInstance;
 import org.jbpm.JbpmContext;
 import org.jetbrains.annotations.NotNull;
@@ -123,8 +125,11 @@ public class OperationsListAction extends CashboxCookieWithPagerActionSupport<Op
 					}
 				});
 			}
-			
-			processStatus = (String)processManager.getProcessInstanceInfo(processInstanceId).getParameters().get(PROCESS_STATUS);
+			Process process = processManager.getProcessInstanceInfo(processInstanceId);
+			if (process != null){
+				processStatus = (String)process.getParameters().get(PROCESS_STATUS);
+			}
+
 		}
 		loadServiceTypes();
 
