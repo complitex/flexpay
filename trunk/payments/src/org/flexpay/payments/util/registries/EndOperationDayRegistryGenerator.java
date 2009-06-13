@@ -89,6 +89,7 @@ public class EndOperationDayRegistryGenerator {
 				record.setUniqueOperationNumber(operation.getId());
 
 				record.setLastName(document.getPayerFIO());
+				//@todo parse last, middle and first name
 //				record.setLastName(document.getLastName());
 //				record.setMiddleName(document.getMiddleName());
 //				record.setFirstName(document.getFirstName());
