@@ -40,6 +40,12 @@
 		  p:cashboxService-ref="cashboxService"
 		  p:spService-ref="spService"
 		  p:serviceProviderService-ref="serviceProviderService"
+		  p:apartmentService-ref="apartmentService"
+		  p:buildingService-ref="buildingService"
+		  p:streetService-ref="streetService"
+		  p:townService-ref="townService"
+		  p:regionService-ref="regionService"
+		  p:countryService-ref="countryService"
 		  p:crumbNameKey="payments.crumbs.quittances_pay"
           p:processManager-ref="processManagerPayments"
 		  scope="prototype" />
@@ -110,6 +116,12 @@
           p:cashboxService-ref="cashboxService"
           p:spService-ref="spService"
           p:serviceProviderService-ref="serviceProviderService"
+		  p:apartmentService-ref="apartmentService"
+		  p:buildingService-ref="buildingService"
+		  p:streetService-ref="streetService"
+		  p:townService-ref="townService"
+		  p:regionService-ref="regionService"
+		  p:countryService-ref="countryService"
 		  scope="prototype" />
 
 	<!-- registry-related actions -->
