@@ -53,7 +53,7 @@ public class PaymentPointDetailMonitorAction extends CashboxCookieActionSupport 
     @NotNull
     protected String doExecute() throws Exception {
         if (paymentPointId == null || paymentPointId.length() == 0) {
-            log.error("Payment point with id does not set");
+            log.error("Payment point does not set");
             return ERROR;
         }
 

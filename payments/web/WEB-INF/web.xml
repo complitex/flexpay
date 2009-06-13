@@ -242,6 +242,11 @@
     <security-role>
         <role-name>ROLE_ORGS_PAYMENT_POINT_READ</role-name>
     </security-role>
+
+    <!-- Payments collectors -->
+    <security-role>
+		<role-name>ROLE_ORGS_PAYMENTS_COLLECTOR_READ</role-name>
+	</security-role>
 	
     <!-- Menu roles -->
 

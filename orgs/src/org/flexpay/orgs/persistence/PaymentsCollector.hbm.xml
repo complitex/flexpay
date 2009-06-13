@@ -67,6 +67,7 @@
 		from PaymentsCollector i
 		    left outer join fetch i.descriptions
 		    inner join fetch i.organization
+		    left join fetch i.paymentPoints
 		where i.id=?
 	</query>
 

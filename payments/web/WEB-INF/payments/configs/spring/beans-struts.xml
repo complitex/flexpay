@@ -66,6 +66,8 @@
           p:paymentsStatisticsService-ref="paymentsStatisticsService"
           p:paymentPointService-ref="paymentPointService"
           p:operationService-ref="operationService"
+          p:cashboxService-ref="cashboxService"
+          p:paymentsCollectorService-ref="paymentsCollectorService"
 		  scope="prototype" />
 
     <bean id="paymentPointDetailMonitorAction"
