@@ -1,25 +1,27 @@
 package org.flexpay.payments.actions;
 
-import org.flexpay.payments.persistence.quittance.QuittanceDetailsResponse;
-import org.flexpay.payments.persistence.*;
-import org.flexpay.payments.service.*;
-import org.flexpay.payments.util.ServiceFullIndexUtil;
+import org.apache.commons.lang.StringUtils;
+import org.flexpay.ab.persistence.*;
+import org.flexpay.ab.service.*;
+import org.flexpay.common.exception.FlexPayException;
+import org.flexpay.common.persistence.Stub;
+import static org.flexpay.common.persistence.Stub.stub;
+import org.flexpay.common.util.BigDecimalUtil;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.SecurityUtil;
-import org.flexpay.common.util.BigDecimalUtil;
-import org.flexpay.common.persistence.Stub;
-import org.flexpay.common.exception.FlexPayException;
-import org.flexpay.orgs.service.OrganizationService;
-import org.flexpay.orgs.service.ServiceProviderService;
 import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.orgs.persistence.ServiceProvider;
-import org.jetbrains.annotations.NotNull;
-import org.apache.commons.lang.StringUtils;
+import org.flexpay.orgs.service.OrganizationService;
+import org.flexpay.orgs.service.ServiceProviderService;
+import org.flexpay.payments.persistence.*;
+import org.flexpay.payments.persistence.quittance.QuittanceDetailsResponse;
+import org.flexpay.payments.service.*;
+import org.flexpay.payments.util.ServiceFullIndexUtil;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.math.BigDecimal;
-import java.util.Map;
 import java.util.Date;
+import java.util.Map;
 
 public abstract class PaymentOperationAction extends CashboxCookieActionSupport {
 
@@ -36,6 +38,9 @@ public abstract class PaymentOperationAction extends CashboxCookieActionSupport 
 	private BigDecimal inputSumm;
 	private BigDecimal totalToPay;
 
+	// used to save address search criteria when using search by address
+	private Long apartmentId;
+
 	private DocumentTypeService documentTypeService;
 	private DocumentStatusService documentStatusService;
 	private OperationLevelService operationLevelService;
@@ -45,6 +50,15 @@ public abstract class PaymentOperationAction extends CashboxCookieActionSupport 
 	private OrganizationService organizationService;
 	private SPService spService;
 	private ServiceProviderService serviceProviderService;
+
+	private ApartmentService apartmentService;
+	private BuildingService buildingService;
+	private StreetService streetService;
+	private TownService townService;
+	private RegionService regionService;
+	private CountryService countryService;
+
+	// TODO more
 
 	protected Operation createOperation(Cashbox cashbox) throws FlexPayException {
 
@@ -110,7 +124,35 @@ public abstract class PaymentOperationAction extends CashboxCookieActionSupport 
 		document.setCreditorOrganization(serviceProviderOrganization);
 		document.setCreditorId(serviceProviderAccount);
 
+		if (apartmentId != null) {
+			setSearchAddress(document);
+		}
+
 		return document;
+	}
+
+	private void setSearchAddress(Document document) {
+
+		Apartment apartment = apartmentService.readFull(new Stub<Apartment>(apartmentId));
+		document.setApartmentNumber(apartment.getNumber());
+
+		Building building = buildingService.read(apartment.getBuildingStub());
+		BuildingAddress buildingAddress = buildingService.readFull(stub(building.getDefaultBuildings()));
+		document.setBuildingBulk(buildingAddress.getBulk());
+		document.setBuildingNumber(buildingAddress.getNumber());
+
+		Street street = streetService.readFull(buildingAddress.getStreetStub());
+		document.setStreetType(getTranslation(street.getCurrentType().getTranslations()).getName());
+		document.setStreetName(getTranslation(street.getCurrentName().getTranslations()).getName());
+
+		Town town = townService.readFull(street.getTownStub());
+		document.setTown(getTranslation(town.getCurrentName().getTranslations()).getName());
+
+		Region region = regionService.readFull(town.getRegionStub());
+		document.setRegion(getTranslation(region.getCurrentName().getTranslations()).getName());
+
+		Country country = countryService.readFull(region.getCountryStub());
+		document.setCountry(getTranslation(country.getCountryNames()).getName());
 	}
 
 	public String getActionName() {
@@ -193,6 +235,10 @@ public abstract class PaymentOperationAction extends CashboxCookieActionSupport 
 		this.totalToPay = totalToPay;
 	}
 
+	public void setApartmentId(Long apartmentId) {
+		this.apartmentId = apartmentId;
+	}
+
 	@Required
 	public void setDocumentTypeService(DocumentTypeService documentTypeService) {
 		this.documentTypeService = documentTypeService;
@@ -238,4 +284,33 @@ public abstract class PaymentOperationAction extends CashboxCookieActionSupport 
 		this.serviceProviderService = serviceProviderService;
 	}
 
+	@Required
+	public void setApartmentService(ApartmentService apartmentService) {
+		this.apartmentService = apartmentService;
+	}
+
+	@Required
+	public void setBuildingService(BuildingService buildingService) {
+		this.buildingService = buildingService;
+	}
+
+	@Required
+	public void setStreetService(StreetService streetService) {
+		this.streetService = streetService;
+	}
+
+	@Required
+	public void setTownService(TownService townService) {
+		this.townService = townService;
+	}
+
+	@Required
+	public void setRegionService(RegionService regionService) {
+		this.regionService = regionService;
+	}
+
+	@Required
+	public void setCountryService(CountryService countryService) {
+		this.countryService = countryService;
+	}
 }

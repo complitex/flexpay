@@ -57,18 +57,8 @@
 	</security-role-mapping>
 
 	<security-role-mapping>
-		<role-name>ROLE_PAYMENTS_OPERATION_READ</role-name>
-		<group-name>PAYMENTS_OPERATOR_ACCESS</group-name>
-	</security-role-mapping>
-
-	<security-role-mapping>
 		<role-name>ROLE_PAYMENTS_OPERATION_ADD</role-name>
 		<group-name>PAYMENTS_FULL_ACCESS</group-name>
-	</security-role-mapping>
-
-	<security-role-mapping>
-		<role-name>ROLE_PAYMENTS_OPERATION_ADD</role-name>
-		<group-name>PAYMENTS_OPERATOR_ACCESS</group-name>
 	</security-role-mapping>
 
 	<security-role-mapping>
@@ -82,10 +72,6 @@
 		<group-name>PAYMENTS_FULL_ACCESS</group-name>
 	</security-role-mapping>
 
-	<security-role-mapping>
-		<role-name>ROLE_ORGS_ORGANIZATION_READ</role-name>
-		<group-name>PAYMENTS_OPERATOR_ACCESS</group-name>
-	</security-role-mapping>
 
 	<!-- document roles -->
 	<security-role-mapping>
@@ -103,47 +89,16 @@
 		<group-name>PAYMENTS_FULL_ACCESS</group-name>
 	</security-role-mapping>
 
-	<security-role-mapping>
-		<role-name>ROLE_PAYMENTS_DOCUMENT_TYPE_READ</role-name>
-		<group-name>PAYMENTS_OPERATOR_ACCESS</group-name>
-	</security-role-mapping>
-
-	<security-role-mapping>
-		<role-name>ROLE_PAYMENTS_DOCUMENT_READ</role-name>
-		<group-name>PAYMENTS_OPERATOR_ACCESS</group-name>
-	</security-role-mapping>
-
-	<security-role-mapping>
-		<role-name>ROLE_PAYMENTS_DOCUMENT_CHANGE</role-name>
-		<group-name>PAYMENTS_OPERATOR_ACCESS</group-name>
-	</security-role-mapping>
-
 	<!-- service roles -->
 	<security-role-mapping>
 		<role-name>ROLE_PAYMENTS_SERVICE_READ</role-name>
 		<group-name>PAYMENTS_FULL_ACCESS</group-name>
-	</security-role-mapping>
-	<security-role-mapping>
-		<role-name>ROLE_PAYMENTS_SERVICE_READ</role-name>
-		<group-name>PAYMENTS_ACCOUNTANT_ACCESS</group-name>
-	</security-role-mapping>
-	<security-role-mapping>
-		<role-name>ROLE_PAYMENTS_SERVICE_READ</role-name>
-		<group-name>PAYMENTS_OPERATOR_ACCESS</group-name>
-	</security-role-mapping>
-	<security-role-mapping>
-		<role-name>ROLE_PAYMENTS_SERVICE_TYPE_READ</role-name>
-		<group-name>PAYMENTS_OPERATOR_ACCESS</group-name>
 	</security-role-mapping>
 
 	<!-- organization roles -->
 	<security-role-mapping>
 		<role-name>ROLE_ORGS_SERVICE_PROVIDER_READ</role-name>
 		<group-name>PAYMENTS_FULL_ACCESS</group-name>
-	</security-role-mapping>
-	<security-role-mapping>
-		<role-name>ROLE_ORGS_SERVICE_PROVIDER_READ</role-name>
-		<group-name>PAYMENTS_OPERATOR_ACCESS</group-name>
 	</security-role-mapping>
 
 	<!-- developer roles -->
@@ -169,10 +124,6 @@
         <role-name>ROLE_PAYMENTS_CASHBOX_DELETE</role-name>
         <group-name>PAYMENTS_FULL_ACCESS</group-name>
     </security-role-mapping>	
-	<security-role-mapping>
-        <role-name>ROLE_PAYMENTS_CASHBOX_READ</role-name>
-        <group-name>PAYMENTS_OPERATOR_ACCESS</group-name>
-    </security-role-mapping>
 
     <!-- payment point role -->
     <security-role-mapping>
@@ -243,11 +194,6 @@
 		<group-name>PAYMENTS_FULL_ACCESS</group-name>
 	</security-role-mapping>
 
-	<security-role-mapping>
-		<role-name>ROLE_PAYMENTS_PAYMENTS_REPORT</role-name>
-		<group-name>PAYMENTS_OPERATOR_ACCESS</group-name>
-	</security-role-mapping>
-
     <security-role-mapping>
         <role-name>ROLE_MENU_PAYMENTS_ACCOUNTANT</role-name>
         <group-name>PAYMENTS_FULL_ACCESS</group-name>
@@ -263,7 +209,89 @@
         <group-name>PAYMENTS_FULL_ACCESS</group-name>
     </security-role-mapping>
 
-    <!-- Menu for operator -->
+	<!-- OPERATOR ROLES SECTION-->
+
+	<security-role-mapping>
+		<role-name>ROLE_ORGS_SERVICE_PROVIDER_READ</role-name>
+		<group-name>PAYMENTS_OPERATOR_ACCESS</group-name>
+	</security-role-mapping>
+
+	<security-role-mapping>
+        <role-name>ROLE_PAYMENTS_CASHBOX_READ</role-name>
+        <group-name>PAYMENTS_OPERATOR_ACCESS</group-name>
+    </security-role-mapping>
+
+	<security-role-mapping>
+		<role-name>ROLE_PAYMENTS_SERVICE_TYPE_READ</role-name>
+		<group-name>PAYMENTS_OPERATOR_ACCESS</group-name>
+	</security-role-mapping>
+
+	<security-role-mapping>
+		<role-name>ROLE_PAYMENTS_SERVICE_READ</role-name>
+		<group-name>PAYMENTS_OPERATOR_ACCESS</group-name>
+	</security-role-mapping>
+
+	<security-role-mapping>
+		<role-name>ROLE_PAYMENTS_DOCUMENT_TYPE_READ</role-name>
+		<group-name>PAYMENTS_OPERATOR_ACCESS</group-name>
+	</security-role-mapping>
+
+	<security-role-mapping>
+		<role-name>ROLE_PAYMENTS_DOCUMENT_READ</role-name>
+		<group-name>PAYMENTS_OPERATOR_ACCESS</group-name>
+	</security-role-mapping>
+
+	<security-role-mapping>
+		<role-name>ROLE_PAYMENTS_DOCUMENT_CHANGE</role-name>
+		<group-name>PAYMENTS_OPERATOR_ACCESS</group-name>
+	</security-role-mapping>
+
+	<security-role-mapping>
+		<role-name>ROLE_ORGS_ORGANIZATION_READ</role-name>
+		<group-name>PAYMENTS_OPERATOR_ACCESS</group-name>
+	</security-role-mapping>
+
+	<security-role-mapping>
+		<role-name>ROLE_PAYMENTS_OPERATION_READ</role-name>
+		<group-name>PAYMENTS_OPERATOR_ACCESS</group-name>
+	</security-role-mapping>
+
+	<security-role-mapping>
+		<role-name>ROLE_PAYMENTS_OPERATION_ADD</role-name>
+		<group-name>PAYMENTS_OPERATOR_ACCESS</group-name>
+	</security-role-mapping>
+
+	<security-role-mapping>
+		<role-name>ROLE_AB_COUNTRY_READ</role-name>
+		<group-name>PAYMENTS_OPERATOR_ACCESS</group-name>
+	</security-role-mapping>
+
+	<security-role-mapping>
+		<role-name>ROLE_AB_REGION_READ</role-name>
+		<group-name>PAYMENTS_OPERATOR_ACCESS</group-name>
+	</security-role-mapping>
+
+	<security-role-mapping>
+		<role-name>ROLE_AB_TOWN_READ</role-name>
+		<group-name>PAYMENTS_OPERATOR_ACCESS</group-name>
+	</security-role-mapping>
+
+	<security-role-mapping>
+		<role-name>ROLE_AB_STREET_READ</role-name>
+		<group-name>PAYMENTS_OPERATOR_ACCESS</group-name>
+	</security-role-mapping>
+
+	<security-role-mapping>
+		<role-name>ROLE_AB_BUILDING_READ</role-name>
+		<group-name>PAYMENTS_OPERATOR_ACCESS</group-name>
+	</security-role-mapping>
+
+	<security-role-mapping>
+		<role-name>ROLE_AB_APARTMENT_READ</role-name>
+		<group-name>PAYMENTS_OPERATOR_ACCESS</group-name>
+	</security-role-mapping>
+	
+	<!-- Menu for operator -->
     <security-role-mapping>
         <role-name>ROLE_MENU_PAYMENTS</role-name>
         <group-name>PAYMENTS_OPERATOR_ACCESS</group-name>
@@ -294,39 +322,51 @@
         <group-name>PAYMENTS_OPERATOR_ACCESS</group-name>
     </security-role-mapping>
 
-	<security-role-mapping>
+		<security-role-mapping>
         <role-name>ROLE_MENU_PAYMENTS_REPORTS</role-name>
         <group-name>PAYMENTS_OPERATOR_ACCESS</group-name>
     </security-role-mapping>
 
 	<security-role-mapping>
+		<role-name>ROLE_PAYMENTS_PAYMENTS_REPORT</role-name>
+		<group-name>PAYMENTS_OPERATOR_ACCESS</group-name>
+	</security-role-mapping>
+
+    <security-role-mapping>
         <role-name>ROLE_MENU_PAYMENTS_REPORTS_RECEIVED</role-name>
         <group-name>PAYMENTS_OPERATOR_ACCESS</group-name>
     </security-role-mapping>
 
-    <!-- Menu for accountant -->
+	<!-- ACCOUNTANT ROLES SECTION -->
+	<security-role-mapping>
+		<role-name>ROLE_PAYMENTS_SERVICE_READ</role-name>
+		<group-name>PAYMENTS_ACCOUNTANT_ACCESS</group-name>
+	</security-role-mapping>
+
 	<security-role-mapping>
 		<role-name>ROLE_PAYMENTS_PAYMENTS_REPORT</role-name>
 		<group-name>PAYMENTS_ACCOUNTANT_ACCESS</group-name>
 	</security-role-mapping>
 
+	<!-- Menu for accountant -->
 	<security-role-mapping>
+		<role-name>ROLE_PAYMENTS_PAYMENTS_REPORT</role-name>
+		<group-name>PAYMENTS_ACCOUNTANT_ACCESS</group-name>
+	</security-role-mapping>
+    <security-role-mapping>
         <role-name>ROLE_MENU_PAYMENTS_ACCOUNTANT</role-name>
         <group-name>PAYMENTS_ACCOUNTANT_ACCESS</group-name>
     </security-role-mapping>
-
-	<security-role-mapping>
+    <security-role-mapping>
         <role-name>ROLE_MENU_PAYMENTS_REGISTERS</role-name>
         <group-name>PAYMENTS_ACCOUNTANT_ACCESS</group-name>
     </security-role-mapping>
-
-	<security-role-mapping>
+    <security-role-mapping>
         <role-name>ROLE_MENU_PAYMENTS_REPORTS</role-name>
         <group-name>PAYMENTS_ACCOUNTANT_ACCESS</group-name>
     </security-role-mapping>
-
-	<security-role-mapping>
+    <security-role-mapping>
         <role-name>ROLE_MENU_PAYMENTS_REPORTS_IMPORT</role-name>
         <group-name>PAYMENTS_ACCOUNTANT_ACCESS</group-name>
-    </security-role-mapping>
+    </security-role-mapping>	
 </sun-web-app>

@@ -228,6 +228,15 @@ public class SearchQuittanceAction extends CashboxCookieActionSupport {
 		return ServiceFullIndexUtil.getServiceFullIndex(quittanceId, serviceId);
 	}
 
+	public String getApartmentId() {
+		
+		if (SEARCH_TYPE_ADDRESS.equals(searchType)) {
+			return searchCriteria;
+		}
+
+		return null;
+	}
+
 	// form data
 	public String getRedirectActionName() {
 		return actionName;

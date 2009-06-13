@@ -78,6 +78,7 @@
 				<td colspan="5" style="text-align:left;"/>
 				<td style="text-align:right;">
 					<s:hidden name="actionName" value="%{actionName}"/>
+					<s:hidden name="apartmentId" value="%{apartmentId}"/>
                     <s:hidden name="submitted" value="true" />
 					<input type="button" class="btn-exit" style="width:100%;" onclick="printQuittance();"
 						   value="<s:text name="payments.quittances.quittance_pay.pay"/>"/>
