@@ -656,7 +656,12 @@ public class ProcessManagerImpl implements ProcessManager, Runnable {
 
 		return execute(new ContextCallback<Process>() {
 			public Process doInContext(@NotNull JbpmContext context) {
-				return processDao.getProcessInfoWithVariables(context.getProcessInstance(processId));
+				ProcessInstance processInstance = context.getProcessInstance(processId);
+				if (processInstance == null){
+					log.debug("Process with id = {} not found", processId);
+					return null;
+				}
+				return processDao.getProcessInfoWithVariables(processInstance);
 			}
 		});
 	}
