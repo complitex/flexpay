@@ -3,7 +3,6 @@
 
 	<import file="../orgs/orgs_build.xml" />
 	<import file="../ab/ab_build.xml" />
-	<import file="../barcode/barcode_build.xml" />
 
 	<property file="payments/payments_build.properties" />
 
@@ -125,10 +124,7 @@
 		<antcall target="template.copy.classes" />
 	</target>
 
-    <target name="payments.prepare.war.internal" depends="orgs.prepare.war.internal,ab.prepare.war.internal,barcode.build.production.jar">
-
-		<copy file="${build.dir}/lib/${barcode.jar.name}" todir="${build.dir}/web/resources/barcode"/>
-
+    <target name="payments.prepare.war.internal" depends="orgs.prepare.war.internal,ab.prepare.war.internal">
         <fileset id="payments.web.resources" dir="${payments.dir}/web" />
         <antcall target="template.prepare.war">
             <param name="to_dir" value="" />
