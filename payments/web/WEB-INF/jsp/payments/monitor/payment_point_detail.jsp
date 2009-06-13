@@ -5,7 +5,7 @@
 
 <s:form action="paymentPointDetailMonitor">
     <s:hidden name="status"/>
-    <s:hidden name="processId"/>
+    <s:hidden name="paymentPointId"/>
     <table cellpadding="3" cellspacing="1" border="0" width="100%">
         <tr>
             <td nowrap="nowrap"><s:text name="payments.payment_points.list.updated"/>&nbsp;<s:property value="updated"/></td>
@@ -65,7 +65,7 @@
 
         <s:iterator value="cashboxes" id="paymentPointDetail">
             <tr>
-                <td nowrap="nowrap"><s:property value="cashBox"/></td>
+                <td nowrap="nowrap"><s:property value="cashbox"/></td>
                 <td nowrap="nowrap"><s:property value="sum"/></td>
                 <td nowrap="nowrap"><s:property value="cashierFIO"/></td>
                 <td nowrap="nowrap"><s:property value="lastPayment"/></td>

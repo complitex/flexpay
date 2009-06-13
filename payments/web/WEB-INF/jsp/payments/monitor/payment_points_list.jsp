@@ -40,7 +40,7 @@
     <s:iterator value="paymentPoints" id="paymentPointDetail">
       <tr>
         <td nowrap="nowrap">
-          <a href="<s:url action='paymentPointDetailMonitor.action'><s:param name="processId" value="%{id}"/></s:url>">
+          <a href="<s:url action='paymentPointDetailMonitor.action'><s:param name="paymentPointId" value="%{id}"/></s:url>">
                   <s:property value="name" />
                 </a>
         </td>
@@ -55,9 +55,6 @@
   </table>
   <table cellpadding="3" cellspacing="1" border="0" width="100%">
     <tr>
-      <td>
-        <input type="submit" name="detail" class="" value="<s:text name="payments.payment_points.list.detail"/>"/>
-      </td>
       <td align="right">
         <%@include file="/WEB-INF/jsp/common/filter/pager/pager.jsp" %>
       </td>

@@ -19,10 +19,10 @@ public interface OperationDao extends GenericDao<Operation, Long> {
 	 */
 	List<Operation> listPaymentOperations(Date beginDate, Date endDate);
 
-	/**
+    /**
 	 * List all operations which have been created between <code>beginDate</code> and <code>endDate</code>
 	 * NOTE: operations with status DELETED are not included!
-	 * 
+	 *
 	 * @param beginDate lower bound for operation creation date
 	 * @param endDate higher bound for operation creation date
 	 * @param pager Page
@@ -30,7 +30,7 @@ public interface OperationDao extends GenericDao<Operation, Long> {
 	 */
 	List<Operation> listPaymentOperations(Date beginDate, Date endDate, Page<Operation> pager);
 
-	/**
+    /**
 	 * List of all payment operations which has status REGISTERED inside time interval and organization
 	 *
 	 * @param organizationId organization id
@@ -39,5 +39,26 @@ public interface OperationDao extends GenericDao<Operation, Long> {
 	 * @return list of payment operations
 	 */
 	List<Operation> listReceivedPayments(Long organizationId, Date beginDate, Date endDate);
+
+    /**
+     * List last operations which have been created between <code>beginDate</code> and <code>endDate</code>
+     * NOTE: operations with status DELETED are not included!
+     *
+     * @param beginDate lower bound for operation creation date
+     * @param endDate higher bound for operation creation date
+     * @return list of operations
+     */
+    List<Operation> listLastPaymentOperations(Date beginDate, Date endDate);
+
+    /**
+     * List last operations which have been created between <code>beginDate</code> and <code>endDate</code>
+     * NOTE: operations with status DELETED are not included!
+     *
+     * @param cashboxId cash box id
+     * @param beginDate lower bound for operation creation date
+     * @param endDate higher bound for operation creation date
+     * @return list of operations
+     */
+    List<Operation> listLastCashboxPaymentOperations(Long cashboxId, Date beginDate, Date endDate);
 
 }

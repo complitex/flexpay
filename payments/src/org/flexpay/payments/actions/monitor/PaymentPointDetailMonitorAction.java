@@ -4,10 +4,13 @@ import org.flexpay.payments.actions.CashboxCookieActionSupport;
 import org.flexpay.payments.actions.monitor.data.CashboxMonitorContainer;
 import org.flexpay.payments.persistence.Cashbox;
 import org.flexpay.payments.persistence.OperationType;
+import org.flexpay.payments.persistence.Operation;
 import org.flexpay.payments.service.CashboxService;
+import org.flexpay.payments.service.OperationService;
 import org.flexpay.payments.service.statistics.PaymentsStatisticsService;
 import org.flexpay.payments.service.statistics.OperationTypeStatistics;
 import org.flexpay.payments.process.handlers.AccounterAssignmentHandler;
+import org.flexpay.payments.process.export.TradingDay;
 import org.flexpay.orgs.persistence.PaymentPoint;
 import org.flexpay.orgs.service.PaymentPointService;
 import org.flexpay.common.persistence.Stub;
@@ -18,10 +21,7 @@ import org.springframework.beans.factory.annotation.Required;
 import org.apache.commons.lang.time.DateUtils;
 import org.flexpay.common.process.Process;
 import org.flexpay.common.process.TaskHelper;
-import org.flexpay.common.process.ContextCallback;
 import org.jbpm.graph.def.Transition;
-import org.jbpm.JbpmContext;
-import org.jbpm.taskmgmt.exe.TaskInstance;
 
 import java.util.*;
 import java.math.BigDecimal;
@@ -30,7 +30,7 @@ import java.text.SimpleDateFormat;
 public class PaymentPointDetailMonitorAction extends CashboxCookieActionSupport {
     private static final String PROCESS_STATUS = "PROCESS_STATUS";
 
-    private static final SimpleDateFormat formatTimeUpdated = new SimpleDateFormat("HH:mm");
+    private static final SimpleDateFormat formatTime = new SimpleDateFormat("HH:mm");
 
     private String name;
     private String paymentsCount;
@@ -39,7 +39,7 @@ public class PaymentPointDetailMonitorAction extends CashboxCookieActionSupport 
     private List<String> buttons;
     private String activity;
     private List<CashboxMonitorContainer> cashboxes;
-    private String processId;
+    private String paymentPointId;
 
     private String update;
     private String updated;
@@ -48,41 +48,48 @@ public class PaymentPointDetailMonitorAction extends CashboxCookieActionSupport 
     private PaymentPointService paymentPointService;
     private ProcessManager processManager;
     private PaymentsStatisticsService paymentsStatisticsService;
+    private OperationService operationService;
 
     @NotNull
     protected String doExecute() throws Exception {
-        if (getProcessId() == null) {
-            log.error("Process instance with id - {} does not exist", getProcessId());
+        if (paymentPointId == null || paymentPointId.length() == 0) {
+            log.error("Payment point with id does not set");
             return ERROR;
         }
 
-        Process process = processManager.getProcessInstanceInfo(Long.parseLong(processId));
-
-        Long paymentPointId = (Long) process.getParameters().get("paymentPointId");
-        PaymentPoint paymentPoint = paymentPointService.read(new Stub<PaymentPoint>(paymentPointId));
+        PaymentPoint paymentPoint = paymentPointService.read(new Stub<PaymentPoint>(Long.parseLong(paymentPointId)));
         if (paymentPoint == null) {
             log.error("Payment point with id - {} does not exist", paymentPointId);
             return ERROR;
         }
 
-        String currentStatus = (String) process.getParameters().get(PROCESS_STATUS);
-
-        final long processInstanceId = process.getId();
-
-//-------------------------------------------------------
-        Set transitions = TaskHelper.getTransitions(processManager, AccounterAssignmentHandler.ACCOUNTER, processInstanceId, activity, log);
-        if (status != null && status.equals(currentStatus) && activity != null && activity.length() > 0) {
-     //       do {
-            process = processManager.getProcessInstanceInfo(Long.parseLong(processId));
-            currentStatus = (String) process.getParameters().get(PROCESS_STATUS);
-       //     } while(status.equals(currentStatus));
-            transitions = TaskHelper.getTransitions(processManager, AccounterAssignmentHandler.ACCOUNTER, processInstanceId, null, log);
-        }
-        status = currentStatus;
         buttons = new ArrayList<String>();
-        for (Object o : transitions) {
-            Transition transition = (Transition) o;
-            buttons.add(transition.getName());
+        
+        Long processId = paymentPoint.getTradingDayProcessInstanceId();
+        if (processId != null && processId > 0) {
+            Process process = processManager.getProcessInstanceInfo(processId);
+            if (process == null) {
+                log.error("Process instance with id - {} does not exist", processId);
+                return ERROR;
+            }
+
+            String currentStatus = (String) process.getParameters().get(TradingDay.PROCESS_STATUS);
+
+            final long processInstanceId = process.getId();
+
+            Set transitions = TaskHelper.getTransitions(processManager, AccounterAssignmentHandler.ACCOUNTER, processInstanceId, activity, log);
+            if (status != null && status.equals(currentStatus) && activity != null && activity.length() > 0) {
+         //       do {
+                process = processManager.getProcessInstanceInfo(processId);
+                currentStatus = (String) process.getParameters().get(PROCESS_STATUS);
+           //     } while(status.equals(currentStatus));
+                transitions = TaskHelper.getTransitions(processManager, AccounterAssignmentHandler.ACCOUNTER, processInstanceId, null, log);
+            }
+            status = currentStatus;
+            for (Object o : transitions) {
+                Transition transition = (Transition) o;
+                buttons.add(transition.getName());
+            }
         }
 //----------------------------------------
         List<Cashbox> cbs = cashboxService.findCashboxesForPaymentPoint(paymentPoint.getId());
@@ -100,17 +107,20 @@ public class PaymentPointDetailMonitorAction extends CashboxCookieActionSupport 
         if (cbs != null) {
             for (Cashbox cashbox : cbs) {
                 statistics = paymentsStatisticsService.operationTypeCashboxStatistics(Stub.stub(cashbox), startDate, endDate);
+                List<Operation> operations = operationService.listLastCashboxPaymentOperations(cashbox, startDate, endDate);
+                String lastPayment = operations != null && operations.size() > 0? formatTime.format(operations.get(0).getCreationDate()): null;
+
                 CashboxMonitorContainer container = new CashboxMonitorContainer();
                 container.setCashbox(cashbox.getName(getLocale()));
                 container.setCashierFIO(null);
-                container.setLastPayment(null);
+                container.setLastPayment(lastPayment);
                 container.setPaymentsCount(String.valueOf(getPaymentsCount(statistics)));
                 container.setTotalSum(String.valueOf(getPaymentsSumm(statistics)));
                 cashboxes.add(container);
             }
         }
 
-        updated = formatTimeUpdated.format(new Date());
+        updated = formatTime.format(new Date());
 
         return SUCCESS;
     }
@@ -176,12 +186,12 @@ public class PaymentPointDetailMonitorAction extends CashboxCookieActionSupport 
         this.cashboxes = cashboxes;
     }
 
-    public String getProcessId() {
-        return processId;
+    public String getPaymentPointId() {
+        return paymentPointId;
     }
 
-    public void setProcessId(String processId) {
-        this.processId = processId;
+    public void setPaymentPointId(String paymentPointId) {
+        this.paymentPointId = paymentPointId;
     }
 
     public String getUpdate() {
@@ -218,6 +228,11 @@ public class PaymentPointDetailMonitorAction extends CashboxCookieActionSupport 
     @Required
     public void setPaymentsStatisticsService(PaymentsStatisticsService paymentsStatisticsService) {
         this.paymentsStatisticsService = paymentsStatisticsService;
+    }
+
+    @Required
+    public void setOperationService(OperationService operationService) {
+        this.operationService = operationService;
     }
 
     public long getPaymentsCount(List<OperationTypeStatistics> typeStatisticses) {
