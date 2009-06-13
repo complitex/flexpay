@@ -11,14 +11,18 @@ import org.flexpay.common.process.sorter.ProcessSorterByState;
 import org.flexpay.common.util.DateUtil;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.orgs.persistence.PaymentPoint;
+import org.flexpay.orgs.persistence.PaymentsCollector;
 import org.flexpay.orgs.service.PaymentPointService;
+import org.flexpay.orgs.service.PaymentsCollectorService;
 import org.flexpay.payments.actions.CashboxCookieWithPagerActionSupport;
 import org.flexpay.payments.actions.monitor.data.PaymentPointMonitorContainer;
 import org.flexpay.payments.persistence.OperationType;
 import org.flexpay.payments.persistence.Operation;
+import org.flexpay.payments.persistence.Cashbox;
 import org.flexpay.payments.service.statistics.OperationTypeStatistics;
 import org.flexpay.payments.service.statistics.PaymentsStatisticsService;
 import org.flexpay.payments.service.OperationService;
+import org.flexpay.payments.service.CashboxService;
 import org.flexpay.payments.process.export.TradingDay;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
@@ -28,6 +32,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Date;
+import java.util.Set;
 import java.text.SimpleDateFormat;
 
 public class PaymentPointsListMonitorAction extends CashboxCookieWithPagerActionSupport<PaymentPointMonitorContainer> {
@@ -46,6 +51,8 @@ public class PaymentPointsListMonitorAction extends CashboxCookieWithPagerAction
     private PaymentsStatisticsService paymentsStatisticsService;
     private PaymentPointService paymentPointService;
     private OperationService operationService;
+    private CashboxService cashboxService;
+    private PaymentsCollectorService paymentsCollectorService;
 
     /**
      * {@inheritDoc}
@@ -58,11 +65,33 @@ public class PaymentPointsListMonitorAction extends CashboxCookieWithPagerAction
 
 //        List<org.flexpay.common.process.Process> processes = processManager.getProcesses(processSorterByName, page, null, null, ProcessState.RUNING, PROCESS_DEFINITION_NAME);
 
-        List<PaymentPoint> lPaymentPoints = paymentPointService.listPoints(CollectionUtils.arrayStack(), page);
-
         paymentPoints = new ArrayList<PaymentPointMonitorContainer>();
+        if (getCashboxId() == null || getCashboxId() <= 0) {
+            log.error("Cash box does not set");
+            return ERROR;
+        }
+        Cashbox currentCashbox = cashboxService.read(new Stub<Cashbox>(getCashboxId()));
+        if (currentCashbox == null) {
+            log.error("Cash box with id {} does not exist", getCashboxId());
+            return ERROR;
+        }
+        PaymentPoint currentPaymentPoint = paymentPointService.read(new Stub<PaymentPoint>(currentCashbox.getPaymentPoint()));
+        if (currentPaymentPoint == null) {
+            log.error("Payment point does not set for current cash box with if {}", currentCashbox.getId());
+            return ERROR;
+        }
+
+        if (currentPaymentPoint.getCollector() == null) {
+            log.error("Collector does not set for current payment point with id {}", currentPaymentPoint.getId());
+            return ERROR;
+        }
+        PaymentsCollector paymentsCollector = paymentsCollectorService.read(new Stub<PaymentsCollector>(currentPaymentPoint.getCollector()));
+        Set<PaymentPoint> lPaymentPoints = paymentsCollector.getPaymentPoints();
+//        List<PaymentPoint> lPaymentPoints = paymentPointService.listPoints(CollectionUtils.arrayStack(), page);
 //        for (Process process : processes) {
         for (PaymentPoint paymentPoint : lPaymentPoints) {
+            paymentPoint = paymentPointService.read(new Stub<PaymentPoint>(paymentPoint));
+
             Date endDate = DateUtil.now();
             Date startDate = DateUtils.setHours(endDate, 0);
             startDate = DateUtils.setMinutes(startDate, 0);
@@ -183,6 +212,16 @@ public class PaymentPointsListMonitorAction extends CashboxCookieWithPagerAction
     @Required
     public void setOperationService(OperationService operationService) {
         this.operationService = operationService;
+    }
+
+    @Required
+    public void setCashboxService(CashboxService cashboxService) {
+        this.cashboxService = cashboxService;
+    }
+
+    @Required
+    public void setPaymentsCollectorService(PaymentsCollectorService paymentsCollectorService) {
+        this.paymentsCollectorService = paymentsCollectorService;
     }
 
     public long getPaymentsCount(List<OperationTypeStatistics> typeStatisticses) {
