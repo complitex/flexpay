@@ -11,11 +11,11 @@
 				'searchType' : 'EIRC_ACCOUNT',
 				'searchCriteria': accountNumber,
 				'actionName': 'searchByEircAccount' }, function (responseText, textStatus, XMLHttpRequest) {
-					if (responseText.indexOf('j_security_check') > 0) {
-						$(this).html('');
-						window.location = '<s:url action="searchByEircAccount"/>';
-					}
-					enableSearchBtn();
+				if (responseText.indexOf('j_security_check') > 0) {
+					$(this).html('');
+					window.location = '<s:url action="searchByEircAccount"/>';
+				}
+				enableSearchBtn();
 			});
 			$('#searchResultsDiv').show();
 		}
@@ -43,22 +43,32 @@
 		return true;
 	}
 
+	$(function() {
+		$('#accountNumber').focus();
+
+		$('#accountNumber').bind('keypress', function(event) {
+			if (event.keyCode == 13) {
+				doSearch();
+			}
+		});
+	});
+
 </script>
 
-<s:actionerror />
+<s:actionerror/>
 
-<s:form action="searchByEircAccount">
+<s:form action="searchByEircAccount" onsubmit="return false;">
 
 	<table cellpadding="3" cellspacing="1" border="0" width="100%">
 		<tr>
-			<td><s:text name="payments.eirc_account" />:</td>
-			<td><s:textfield id="accountNumber" name="accountNumber" cssStyle="width: 300px;" /></td>
+			<td><s:text name="payments.eirc_account"/>:</td>
+			<td><s:textfield id="accountNumber" name="accountNumber" cssStyle="width: 300px;"/></td>
 			<td><input id="searchBtn" type="button" value="<s:text name="common.search" />" class="btn-exit"
-					   onclick="doSearch();" /></td>
+					   onclick="doSearch();"/></td>
 		</tr>
 	</table>
 </s:form>
 
 <%@ include file="print.jsp" %>
 
-<div id="searchResultsDiv" style="display: none;" />
+<div id="searchResultsDiv" style="display: none;"/>

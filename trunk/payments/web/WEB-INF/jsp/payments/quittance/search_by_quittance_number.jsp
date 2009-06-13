@@ -52,11 +52,20 @@
 		}
 	}
 
+	$(function() {
+		$('#quittanceNumber').focus();
+
+		$('#quittanceNumber').bind('keypress', function(event) {
+			if (event.keyCode == 13) {
+				doSearch();
+			}
+		});
+	});
 </script>
 
 <s:actionerror />
 
-<s:form action="searchByQuittanceNumber">
+<s:form action="searchByQuittanceNumber" onsubmit="return false;">
 
 	<table cellpadding="3" cellspacing="1" border="0" width="100%">
 		<tr>
@@ -68,6 +77,12 @@
 
 	</table>
 </s:form>
+
+<APPLET CODE=org.flexpay.barcode.BarcodeReaderApplet ARCHIVE=<s:url value="/resources/barcode/flexpay_barcode.jar"/> WIDTH=0 HEIGHT=0>
+	<PARAM NAME="url" value="<s:url action="searchByQuittanceNumber" forceAddSchemeHostAndPort="true"/>"/>
+</APPLET>
+
+
 
 <%@ include file="print.jsp" %>
 
