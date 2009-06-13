@@ -20,6 +20,10 @@ public abstract class TaskHelper {
         return processManager.execute(new ContextCallback<TaskInstance>() {
             public TaskInstance doInContext(@NotNull JbpmContext context) {
                 ProcessInstance processInstance = context.getProcessInstance(processInstanceId);
+				if (processInstance == null){
+					log.debug("Process instance with id = {} deleted", processInstanceId);
+					return null;
+				}
                 Collection tasks = processInstance.getTaskMgmtInstance().getTaskInstances();
                 for (Object o : tasks) {
                     TaskInstance task = (TaskInstance) o;
@@ -39,6 +43,10 @@ public abstract class TaskHelper {
         return processManager.execute(new ContextCallback<TaskInstance>() {
             public TaskInstance doInContext(@NotNull JbpmContext context) {
                 ProcessInstance processInstance = context.getProcessInstance(processInstanceId);
+				if (processInstance == null){
+					log.debug("Process instance with id = {} deleted", processInstanceId);
+					return null;
+				}
                 Collection tasks = processInstance.getTaskMgmtInstance().getTaskInstances();
                 for (Object o : tasks) {
                     TaskInstance task = (TaskInstance) o;
@@ -53,11 +61,16 @@ public abstract class TaskHelper {
         });
     }
 
+
     public static Set getTransitions(@NotNull final ProcessManager processManager, @NotNull final String actorName, @NotNull final long processInstanceId,
                                       @Nullable final String transitionName, @NotNull final Logger log) {
         return processManager.execute(new ContextCallback<Set>() {
             public Set doInContext(@NotNull JbpmContext context) {
                 ProcessInstance processInstance = context.getProcessInstance(processInstanceId);
+				if (processInstance == null){
+					log.debug("Process instance with id = {} deleted", processInstanceId);
+					return Collections.emptySet();
+				}
                 Collection tasks = processInstance.getTaskMgmtInstance().getTaskInstances();
                 if (tasks.isEmpty()) {
                     return Collections.emptySet();
