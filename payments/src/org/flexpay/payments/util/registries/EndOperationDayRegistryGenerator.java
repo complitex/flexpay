@@ -102,6 +102,8 @@ public class EndOperationDayRegistryGenerator {
 
 				RegistryRecordContainer container = new RegistryRecordContainer();
 				BigDecimal summ = document.getSumm().setScale(2, BigDecimal.ROUND_HALF_UP);
+				record.setAmount(summ);
+				
 				totalSumm.add(summ);
 				container.setOrder(0);
 				container.setData("52:" + operation.getCreatorOrganization().getId() + ":" + operation.getId() + ":" + operation.getOperationSumm());
