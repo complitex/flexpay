@@ -32,8 +32,10 @@
         <event type="node-enter">
             <script>
                 <variable mapped-name="processStatus" access="write" name="PROCESS_STATUS"/>
+                <variable mapped-name="canUpdateOrCreateOperation" access="write" name="CAN_UPDATE_OR_CRETAE_OPERATION"/>
                 <expression>
                     processStatus = "Открыт";
+                    canUpdateOrCreateOperation = "true";
                 </expression>
             </script>
         </event>
@@ -69,8 +71,10 @@
         <event type="node-enter">
             <script>
                 <variable mapped-name="processStatus" access="write" name="PROCESS_STATUS"/>
+                <variable mapped-name="canUpdateOrCreateOperation" access="write" name="CAN_UPDATE_OR_CRETAE_OPERATION"/>
                 <expression>
                     processStatus = "Обрабатывается";
+                    canUpdateOrCreateOperation = "false";
                 </expression>
             </script>
         </event>
