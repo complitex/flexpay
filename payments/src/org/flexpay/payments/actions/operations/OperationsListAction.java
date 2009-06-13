@@ -82,10 +82,16 @@ public class OperationsListAction extends CashboxCookieWithPagerActionSupport<Op
 	private String activity;
 	private Long taskInstanceId;
 
+    private String cashboxIdFilter;
+
 	@NotNull
 	protected String doExecute() throws Exception {
+        Long showCashboxId = cashboxId;
+        if (cashboxIdFilter != null && cashboxIdFilter.length() > 0) {
+            showCashboxId = Long.valueOf(cashboxIdFilter);
+        }
 
-		Cashbox cashbox = cashboxService.read(new Stub<Cashbox>(cashboxId));
+		Cashbox cashbox = cashboxService.read(new Stub<Cashbox>(showCashboxId));
 		PaymentPoint paymentPoint = cashbox.getPaymentPoint();
 		//signal if taskInstanceId and activity not null
 		processButtons = Collections.emptyList();
@@ -161,14 +167,23 @@ public class OperationsListAction extends CashboxCookieWithPagerActionSupport<Op
 			end = DateUtils.setHours(end, 23);
 			end = DateUtils.setMinutes(end, 59);
 			end = DateUtils.setSeconds(end, 59);
-
-			List<Operation> searchResults = operationService.searchDocuments(getSelfOrganization(), serviceTypeId, begin, end, minimalSumm, maximalSumm, getPager());
-			loadFullOperationsData(searchResults);
+            List<Operation> searchResults;
+            if (cashboxIdFilter != null && cashboxIdFilter.length() > 0) {
+                searchResults = operationService.searchDocuments(getCashboxFilter(), serviceTypeId, begin, end, minimalSumm, maximalSumm, getPager());
+            } else {
+                searchResults = operationService.searchDocuments(getSelfOrganization(), serviceTypeId, begin, end, minimalSumm, maximalSumm, getPager());
+            }
+            loadFullOperationsData(searchResults);
 			highlightedDocumentIds = getHighlightedDocumentIds(searchResults);
 		} else {
 			Date begin = beginTimeFilter.setTime(beginDateFilter.getDate());
 			Date end = endTimeFilter.setTime(endDateFilter.getDate());
-			List<Operation> searchResults = operationService.searchOperations(getSelfOrganization(), begin, end, minimalSumm, maximalSumm, getPager());
+            List<Operation> searchResults;
+            if (cashboxIdFilter != null && cashboxIdFilter.length() > 0) {
+                searchResults = operationService.searchOperations(getCashboxFilter(), begin, end, minimalSumm, maximalSumm, getPager());
+            } else {
+			    searchResults = operationService.searchOperations(getSelfOrganization(), begin, end, minimalSumm, maximalSumm, getPager());
+            }
 			loadFullOperationsData(searchResults);
 		}
 	}
@@ -190,6 +205,15 @@ public class OperationsListAction extends CashboxCookieWithPagerActionSupport<Op
 		}
 		return result;
 	}
+
+    private Cashbox getCashboxFilter() {
+        Long cID = Long.parseLong(cashboxIdFilter);
+        Cashbox cashbox = cashboxService.read(new Stub<Cashbox>(cID));
+		if (cashbox == null) {
+			throw new IllegalArgumentException("Invalid filter cashbox id: " + cashboxIdFilter);
+		}
+        return cashbox;
+    }
 
 	private Organization getSelfOrganization() {
 
@@ -461,8 +485,16 @@ public class OperationsListAction extends CashboxCookieWithPagerActionSupport<Op
 		this.processStatus = processStatus;
 	}
 
-	// required services
-	@Required
+    public String getCashboxIdFilter() {
+        return cashboxIdFilter;
+    }
+
+    public void setCashboxIdFilter(String cashboxIdFilter) {
+        this.cashboxIdFilter = cashboxIdFilter;
+    }
+
+    // required services
+    @Required
 	public void setOperationService(OperationService operationService) {
 		this.operationService = operationService;
 	}

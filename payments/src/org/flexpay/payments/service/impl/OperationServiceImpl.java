@@ -100,6 +100,16 @@ public class OperationServiceImpl implements OperationService {
 		return operationDaoExt.searchOperations(organization, begin, end, minimalSumm, maximalSumm, pager);
 	}
 
+	public List<Operation> searchDocuments(Cashbox cashbox, Long serviceTypeId, Date begin,
+										   Date end, BigDecimal minimalSumm, BigDecimal maximalSumm, Page<Operation> pager) {
+		return operationDaoExt.searchDocuments(cashbox, serviceTypeId, begin, end, minimalSumm, maximalSumm, pager);
+	}
+
+	public List<Operation> searchOperations(Cashbox cashbox, Date begin, Date end, BigDecimal minimalSumm,
+											BigDecimal maximalSumm, Page<Operation> pager) {
+		return operationDaoExt.searchOperations(cashbox, begin, end, minimalSumm, maximalSumm, pager);
+	}
+
 	@Required
 	public void setOperationDao(OperationDao operationDao) {
 		this.operationDao = operationDao;

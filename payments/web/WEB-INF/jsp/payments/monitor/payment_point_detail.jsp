@@ -65,7 +65,11 @@
 
         <s:iterator value="cashboxes" id="paymentPointDetail">
             <tr>
-                <td nowrap="nowrap"><s:property value="cashbox"/></td>
+                <td nowrap="nowrap">
+                  <a href="<s:url action='operationsList.action'><s:param name="cashboxIdFilter" value="%{id}"/></s:url>">
+                    <s:property value="cashbox" />
+                  </a>
+                </td>
                 <td nowrap="nowrap"><s:property value="sum"/></td>
                 <td nowrap="nowrap"><s:property value="cashierFIO"/></td>
                 <td nowrap="nowrap"><s:property value="lastPayment"/></td>

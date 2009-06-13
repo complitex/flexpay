@@ -111,6 +111,7 @@ public class PaymentPointDetailMonitorAction extends CashboxCookieActionSupport 
                 String lastPayment = operations != null && operations.size() > 0? formatTime.format(operations.get(0).getCreationDate()): null;
 
                 CashboxMonitorContainer container = new CashboxMonitorContainer();
+                container.setId(String.valueOf(cashbox.getId()));
                 container.setCashbox(cashbox.getName(getLocale()));
                 container.setCashierFIO(null);
                 container.setLastPayment(lastPayment);
