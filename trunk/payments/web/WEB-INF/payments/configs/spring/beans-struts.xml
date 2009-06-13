@@ -64,6 +64,7 @@
           p:processManager-ref="processManagerPayments"
           p:paymentsStatisticsService-ref="paymentsStatisticsService"
           p:paymentPointService-ref="paymentPointService"
+          p:operationService-ref="operationService"
 		  scope="prototype" />
 
     <bean id="paymentPointDetailMonitorAction"
@@ -73,6 +74,7 @@
           p:processManager-ref="processManager"
           p:cashboxService-ref="cashboxService"
           p:paymentsStatisticsService-ref="paymentsStatisticsService"
+          p:operationService-ref="operationService"
 		  scope="prototype" />
 
 	<!-- reports-related actions -->
