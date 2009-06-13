@@ -13,7 +13,6 @@ import org.flexpay.common.util.FPFileUtil;
 import org.flexpay.common.util.RegistryUtil;
 import org.flexpay.common.util.SecurityUtil;
 import org.flexpay.common.util.StringUtil;
-import org.flexpay.common.util.config.ApplicationConfig;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -107,7 +106,7 @@ public class ExportBankPaymentsRegistry {
 		SimpleDateFormat dfFrom = new SimpleDateFormat(RegistryUtil.REGISTRY_DATE_FROM_FORMAT);
 		SimpleDateFormat dfTill = new SimpleDateFormat(RegistryUtil.REGISTRY_DATE_TILL_FORMAT);
 
-		header.append(RegistryUtil.REGISTY_HEADER_MESSAGE_TYPE).
+		header.append(RegistryUtil.REGISTY_HEADER_MESSAGE_TYPE_CHAR).
 				append(RegistryUtil.FIELD_SEPARATOR).
 				append(StringUtil.getString(registry.getRegistryNumber())).
 				append(RegistryUtil.FIELD_SEPARATOR).
@@ -139,7 +138,7 @@ public class ExportBankPaymentsRegistry {
 		SimpleDateFormat df = new SimpleDateFormat(RegistryUtil.OPERATION_DATE_FORMAT);
 
 		StringBuilder sb = new StringBuilder();
-		sb.append(RegistryUtil.REGISTRY_RECORD_MESSAGE_TYPE).append(RegistryUtil.FIELD_SEPARATOR).
+		sb.append(RegistryUtil.REGISTRY_RECORD_MESSAGE_TYPE_CHAR).append(RegistryUtil.FIELD_SEPARATOR).
 				append(StringUtil.getString(registry.getId())).
 				append(RegistryUtil.FIELD_SEPARATOR).
 				append(StringUtil.getString(record.getServiceCode())).
@@ -196,7 +195,7 @@ public class ExportBankPaymentsRegistry {
 
 		log.debug("Building footer for registry = {}", registry);
 
-		footer.append(RegistryUtil.REGISTY_FOOTER_MESSAGE_TYPE).
+		footer.append(RegistryUtil.REGISTRY_FOOTER_MESSAGE_TYPE_CHAR).
 				append(StringUtil.getString(registry.getRegistryNumber()));
 
 		log.debug("File footer = {}", footer.toString());
