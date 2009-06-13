@@ -28,6 +28,10 @@ import java.io.Serializable;
 public class TradingDay extends QuartzJobBean {
     private Logger log = LoggerFactory.getLogger(getClass());
 
+	public final static String CAN_UPDATE_OR_CRETAE_OPERATION = "CAN_UPDATE_OR_CRETAE_OPERATION";
+	public final static String PROCESS_STATUS = "PROCESS_STATUS";
+	public final static String AUTO_MODE = "AUTO_MODE";
+
     private static final String PROCESS_DEFINITION_NAME = "TradingDay";
     private static final String USER_TRADING_DAY = "trading-day";
     // time out 10 sec
