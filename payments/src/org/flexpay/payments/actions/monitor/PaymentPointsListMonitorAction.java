@@ -111,8 +111,11 @@ public class PaymentPointsListMonitorAction extends CashboxCookieWithPagerAction
             String lastPayment = null;
             if (operations != null && operations.size() > 0) {
                 Operation operation = operations.get(0);
-                cashBoxName = operation.getCashbox().getName(getLocale());
-                lastPayment = DateUtil.format(operation.getCreationDate());
+                Cashbox operationCashbox = cashboxService.read(new Stub<Cashbox>(operation.getCashbox()));
+                if (operationCashbox != null) {
+                    cashBoxName = operationCashbox.getName(getLocale());
+                    lastPayment = DateUtil.format(operation.getCreationDate());
+                }
             }
 
             PaymentPointMonitorContainer container = new PaymentPointMonitorContainer();
