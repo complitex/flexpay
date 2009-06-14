@@ -70,7 +70,7 @@
                     <s:property value="cashbox" />
                   </a>
                 </td>
-                <td nowrap="nowrap"><s:property value="sum"/></td>
+                <td nowrap="nowrap"><s:property value="totalSum"/></td>
                 <td nowrap="nowrap"><s:property value="cashierFIO"/></td>
                 <td nowrap="nowrap"><s:property value="lastPayment"/></td>
                 <td nowrap="nowrap"><s:property value="paymentsCount"/></td>
