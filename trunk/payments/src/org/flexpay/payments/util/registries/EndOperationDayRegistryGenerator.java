@@ -4,6 +4,7 @@ import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.registry.*;
 import org.flexpay.common.service.*;
+import org.flexpay.common.util.StringUtil;
 import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.orgs.persistence.PaymentPoint;
 import org.flexpay.orgs.service.OrganizationService;
@@ -88,17 +89,17 @@ public class EndOperationDayRegistryGenerator {
 				record.setPersonalAccountExt(document.getDebtorId());
 				record.setUniqueOperationNumber(operation.getId());
 
-				record.setLastName(document.getPayerFIO());
+				record.setLastName(StringUtil.getString(document.getPayerFIO()));
 				//@todo parse last, middle and first name
 //				record.setLastName(document.getLastName());
 //				record.setMiddleName(document.getMiddleName());
 //				record.setFirstName(document.getFirstName());
-				record.setCity(document.getTown());
-				record.setBuildingBulkNum(document.getBuildingBulk());
-				record.setStreetType(document.getStreetType());
-				record.setStreetName(document.getStreetName());
-				record.setBuildingNum(document.getBuildingNumber());
-				record.setApartmentNum(document.getApartmentNumber());
+				record.setCity(StringUtil.getString(document.getTown()));
+				record.setBuildingBulkNum(StringUtil.getString(document.getBuildingBulk()));
+				record.setStreetType(StringUtil.getString(document.getStreetType()));
+				record.setStreetName(StringUtil.getString(document.getStreetName()));
+				record.setBuildingNum(StringUtil.getString(document.getBuildingNumber()));
+				record.setApartmentNum(StringUtil.getString(document.getApartmentNumber()));
 
 				List<RegistryRecordContainer> containers = new ArrayList<RegistryRecordContainer>();
 
@@ -108,7 +109,7 @@ public class EndOperationDayRegistryGenerator {
 				
 				totalSumm = totalSumm.add(summ);
 				container.setOrder(0);
-				container.setData("52:" + operation.getCreatorOrganization().getId() + ":" + operation.getId() + ":" + operation.getOperationSumm());
+				container.setData("52:" + StringUtil.getString(operation.getCreatorOrganization().getId()) + ":" + StringUtil.getString(operation.getId()) + ":" + StringUtil.getString(operation.getOperationSumm()));
 				container.setRecord(record);
 				containers.add(container);
 
