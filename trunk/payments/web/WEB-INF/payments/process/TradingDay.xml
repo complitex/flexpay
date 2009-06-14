@@ -171,7 +171,7 @@
                 </expression>
             </script>
         </event>
-        <task name="sendEmailToAdministrator" swimlane="JobManager" />
+        <task name="sendEmailToAdministrator" swimlane="JobManager" blocking="false"/>
         <task name="ApproveOpenCloseTradingDay" swimlane="Accounter" blocking="true"/>
         <transition to="MarkPaymentPointForClosing" name="Открыть операционный день" />
         <transition to="end-state" name="Закрыть операционный день" />
