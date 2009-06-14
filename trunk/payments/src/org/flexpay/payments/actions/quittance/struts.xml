@@ -23,6 +23,7 @@
 		</action>
 
 		<action name="paymentsQuittancePay" class="paymentsQuittancePayAction">
+            <result name="error" type="tiles">payments.quittance.search.address</result>
 			<result name="redirectSuccess" type="redirect-action">
 				<param name="actionName">${actionName}</param>
 				<param name="parse">true</param>
