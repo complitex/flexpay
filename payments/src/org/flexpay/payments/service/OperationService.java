@@ -3,6 +3,7 @@ package org.flexpay.payments.service;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.orgs.persistence.Organization;
+import org.flexpay.orgs.persistence.PaymentPoint;
 import org.flexpay.payments.persistence.Operation;
 import org.flexpay.payments.persistence.Cashbox;
 import org.jetbrains.annotations.NotNull;
@@ -79,13 +80,25 @@ public interface OperationService {
 	 * List last operations which have been created between <code>beginDate</code> and <code>endDate</code>
 	 * NOTE: operations with status DELETED are not included!
 	 *
+     * @param paymentPoint payment point
+	 * @param beginDate lower bound for operation creation date
+	 * @param endDate higher bound for operation creation date
+	 * @return list of operations
+	 */
+	//@Secured(Roles.OPERATION_READ)
+	List<Operation> listLastPaymentOperations(PaymentPoint paymentPoint, Date beginDate, Date endDate);
+
+    /**
+	 * List last operations which have been created between <code>beginDate</code> and <code>endDate</code>
+	 * NOTE: operations with status DELETED are not included!
+	 *
      * @param cashbox cash box
 	 * @param beginDate lower bound for operation creation date
 	 * @param endDate higher bound for operation creation date
 	 * @return list of operations
 	 */
 	//@Secured(Roles.OPERATION_READ)
-	List<Operation> listLastCashboxPaymentOperations(Cashbox cashbox, Date beginDate, Date endDate);
+	List<Operation> listLastPaymentOperations(Cashbox cashbox, Date beginDate, Date endDate);
 
 	/**
 	 * List of all payment operations which has status REGISTERED inside time interval and organization

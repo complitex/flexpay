@@ -18,7 +18,6 @@ import org.flexpay.common.util.DateUtil;
 import org.flexpay.common.process.ProcessManager;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
-import org.apache.commons.lang.time.DateUtils;
 import org.flexpay.common.process.Process;
 import org.flexpay.common.process.TaskHelper;
 import org.jbpm.graph.def.Transition;
@@ -108,7 +107,7 @@ public class PaymentPointDetailMonitorAction extends CashboxCookieActionSupport 
         if (cbs != null) {
             for (Cashbox cashbox : cbs) {
                 statistics = paymentsStatisticsService.operationTypeCashboxStatistics(Stub.stub(cashbox), startDate, finishDate);
-                List<Operation> operations = operationService.listLastCashboxPaymentOperations(cashbox, startDate, finishDate);
+                List<Operation> operations = operationService.listLastPaymentOperations(cashbox, startDate, finishDate);
                 String lastPayment = operations != null && operations.size() > 0? formatTime.format(operations.get(0).getCreationDate()): null;
 
                 CashboxMonitorContainer container = new CashboxMonitorContainer();

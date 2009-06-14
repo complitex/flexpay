@@ -105,7 +105,7 @@ public class PaymentPointsListMonitorAction extends CashboxCookieWithPagerAction
                 }
             }
             List<OperationTypeStatistics> statistics = paymentsStatisticsService.operationTypePaymentPointStatistics(Stub.stub(paymentPoint), startDate, finishDate);
-            List<Operation> operations = operationService.listLastPaymentOperations(startDate, finishDate);
+            List<Operation> operations = operationService.listLastPaymentOperations(paymentPoint, startDate, finishDate);
 
             PaymentPointMonitorContainer container = new PaymentPointMonitorContainer();
             container.setId(String.valueOf(paymentPoint.getId()));
@@ -124,7 +124,7 @@ public class PaymentPointsListMonitorAction extends CashboxCookieWithPagerAction
                 Cashbox operationCashbox = cashboxService.read(new Stub<Cashbox>(operation.getCashbox()));
                 if (operationCashbox != null) {
                     container.setCashBox(operationCashbox.getName(getLocale()));
-                    container.setLastPayment(format(operation.getCreationDate()));
+                    container.setLastPayment(formatTime.format(operation.getCreationDate()));
                 }
             }
 
