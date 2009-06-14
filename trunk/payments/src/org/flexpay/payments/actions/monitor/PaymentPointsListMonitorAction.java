@@ -107,28 +107,26 @@ public class PaymentPointsListMonitorAction extends CashboxCookieWithPagerAction
             List<OperationTypeStatistics> statistics = paymentsStatisticsService.operationTypePaymentPointStatistics(Stub.stub(paymentPoint), startDate, finishDate);
             List<Operation> operations = operationService.listLastPaymentOperations(startDate, finishDate);
 
-            String cashBoxName = null;
-            String lastPayment = null;
-            if (operations != null && operations.size() > 0) {
-                Operation operation = operations.get(0);
-                Cashbox operationCashbox = cashboxService.read(new Stub<Cashbox>(operation.getCashbox()));
-                if (operationCashbox != null) {
-                    cashBoxName = operationCashbox.getName(getLocale());
-                    lastPayment = DateUtil.format(operation.getCreationDate());
-                }
-            }
-
             PaymentPointMonitorContainer container = new PaymentPointMonitorContainer();
             container.setId(String.valueOf(paymentPoint.getId()));
             container.setName(paymentPoint.getName(getLocale()));
             container.setPaymentsCount(String.valueOf(getPaymentsCount(statistics)));
             container.setTotalSum(String.valueOf(getPaymentsSumm(statistics)));
 
-            container.setCashBox(cashBoxName);
+            container.setCashBox(null);
             container.setCashierFIO(null);
-            container.setLastPayment(lastPayment);
+            container.setLastPayment(null);
 
             container.setStatus(status);
+
+            if (operations != null && operations.size() > 0) {
+                Operation operation = operations.get(0);
+                Cashbox operationCashbox = cashboxService.read(new Stub<Cashbox>(operation.getCashbox()));
+                if (operationCashbox != null) {
+                    container.setCashBox(operationCashbox.getName(getLocale()));
+                    container.setLastPayment(format(operation.getCreationDate()));
+                }
+            }
 
             paymentPoints.add(container);
         }
