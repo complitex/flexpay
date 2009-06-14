@@ -92,7 +92,7 @@
         </description>
         <task swimlane="JobManager" />
         <transition to="AutoModeDecision" name="next" />
-        <transition to="JobManagerError" name="error" />
+        <transition to="AutoModeDecision" name="error" />
     </task-node>
 
 
