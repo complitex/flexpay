@@ -3,6 +3,7 @@ package org.flexpay.payments.service.impl;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.orgs.persistence.Organization;
+import org.flexpay.orgs.persistence.PaymentPoint;
 import org.flexpay.payments.dao.OperationDao;
 import org.flexpay.payments.dao.OperationDaoExt;
 import org.flexpay.payments.persistence.Operation;
@@ -82,7 +83,11 @@ public class OperationServiceImpl implements OperationService {
         return operationDao.listLastPaymentOperations(beginDate, endDate);
     }
 
-    public List<Operation> listLastCashboxPaymentOperations(Cashbox cashbox, Date beginDate, Date endDate) {
+    public List<Operation> listLastPaymentOperations(PaymentPoint paymentPoint, Date beginDate, Date endDate) {
+        return operationDao.listLastPaymentPointPaymentOperations(paymentPoint.getId(), beginDate, endDate);
+    }
+
+    public List<Operation> listLastPaymentOperations(Cashbox cashbox, Date beginDate, Date endDate) {
         return operationDao.listLastCashboxPaymentOperations(cashbox.getId(), beginDate, endDate);
     }
 
