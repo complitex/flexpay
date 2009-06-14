@@ -40,6 +40,7 @@
 													 id="payments_%{#serviceIndx}"
 													 value="%{outgoingBalance}"
 													 onblur="replaceEmptyValueWithZero('payments_%{#serviceIndx}');"
+													 onchange="disablePayment();"
 													 cssStyle="width:100%;text-align:right;"/></td>
 					</tr>
 				</s:iterator>
@@ -75,14 +76,17 @@
 			</tr>
 
 			<tr>
-				<td colspan="5" style="text-align:left;"/>
+				<td colspan="5" style="text-align:right;">
+					<input type="button" id="printQuittanceButton" class="btn-exit" style="width: 80px;" onclick="doPrintQuittance();"
+						   value="<s:text name="payments.quittances.quittance_pay.print_quittance"/>"/>
+				</td>
 				<td style="text-align:right;">
-					<s:hidden name="actionName" value="%{actionName}"/>
-					<s:hidden name="apartmentId" value="%{apartmentId}"/>
-                    <s:hidden name="submitted" value="true" />
-					<input type="button" class="btn-exit" style="width:100%;" onclick="printQuittance();"
+					<input type="button" id="payQuittanceButton" class="btn-exit" style="width: 80px;" onclick="doPayQuittance();"
 						   value="<s:text name="payments.quittances.quittance_pay.pay"/>"/>
 				</td>
+				<s:hidden name="actionName" value="%{actionName}"/>
+				<s:hidden name="apartmentId" value="%{apartmentId}"/>
+                <s:hidden name="submitted" value="true" />
 			</tr>
 
 		</table>

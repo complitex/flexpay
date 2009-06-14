@@ -2,6 +2,40 @@
 
 <script type="text/javascript">
 
+	$(function() {
+		disablePayment();	
+	});
+
+	/**
+	 * UI controlling functions
+	 */
+	function disablePayment() {
+		$('#payQuittanceButton').attr('disabled', 'disabled');
+		$('#payQuittanceButton').removeClass('btn-exit');
+        $('#payQuittanceButton').addClass('btn-search');
+	}
+
+	function enablePayment() {
+		$('#payQuittanceButton').removeAttr('disabled');
+		$('#payQuittanceButton').removeClass('btn-search');
+        $('#payQuittanceButton').addClass('btn-exit');
+	}
+
+	function doPayQuittance() {
+		$("#quittancePayForm").attr("action", "<s:url action="paymentsQuittancePay" />").submit();
+		$("#quittancePayForm").removeAttr('action');
+	}
+
+	function doPrintQuittance() {
+		$("#quittancePayForm").attr("action", "<s:url action="paymentOperationReportAction" />").attr("target", "_blank").submit();
+		$("#quittancePayForm").removeAttr('action');
+		$("#quittancePayForm").removeAttr('target');		
+		enablePayment();
+	}
+
+	/**
+	 * Field chain functions
+	 */
 	var fieldChain = new Array();
 	var currentFieldIndex = 0;
 
@@ -45,14 +79,13 @@
 				 event.preventDefault();
 			}
 		});
-
-            $('#inputSumm').bind('keypress', function(event) {
-                if (event.keyCode == 13) {
-                    printQuittance();
-                }
-            });
         </s:iterator>
 	</s:iterator>
+		$('#inputSumm').bind('keypress', function(event) {
+               if (event.keyCode == 13) {
+                   doPrintQuittance();
+               }
+    	});
 	};
 
 	/*
