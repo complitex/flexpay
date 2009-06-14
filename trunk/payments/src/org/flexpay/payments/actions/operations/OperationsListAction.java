@@ -160,7 +160,7 @@ public class OperationsListAction extends CashboxCookieWithPagerActionSupport<Op
 				if (canCreateOrUpdateOperations){
 					updateOperationStatus();
 				}else{
-					addActionError(getText("payments.quittance.pay.operation_changes_not_alowed_due_closed_trading_day"));					
+					addActionError(getText("payments.quittance.payment.operation_changes_not_alowed_due_closed_trading_day"));					
 					log.debug("Trading day process (id = {})is closed for Payment Point = {}", processInstanceId, paymentPoint.getId());
 					log.debug("Operations update canceled;");
 					loadOperations();
