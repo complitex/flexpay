@@ -931,7 +931,6 @@
 		<group-name>PAYMENTS_FULL_ACCESS</group-name>
 	</security-role-mapping>
 
-
 	<security-role-mapping>
 		<role-name>ROLE_PAYMENTS_OPERATION_CHANGE</role-name>
 		<group-name>PAYMENTS_FULL_ACCESS</group-name>
@@ -940,6 +939,11 @@
 	<!-- organization roles -->
 	<security-role-mapping>
 		<role-name>ROLE_ORGS_ORGANIZATION_READ</role-name>
+		<group-name>PAYMENTS_FULL_ACCESS</group-name>
+	</security-role-mapping>
+
+	<security-role-mapping>
+		<role-name>ROLE_ORGS_PAYMENT_POINT_READ</role-name>
 		<group-name>PAYMENTS_FULL_ACCESS</group-name>
 	</security-role-mapping>
 
@@ -1022,6 +1026,11 @@
 
 	<security-role-mapping>
 		<role-name>ROLE_ORGS_ORGANIZATION_READ</role-name>
+		<group-name>PAYMENTS_OPERATOR_ACCESS</group-name>
+	</security-role-mapping>
+
+	<security-role-mapping>
+		<role-name>ROLE_ORGS_PAYMENT_POINT_READ</role-name>
 		<group-name>PAYMENTS_OPERATOR_ACCESS</group-name>
 	</security-role-mapping>
 
