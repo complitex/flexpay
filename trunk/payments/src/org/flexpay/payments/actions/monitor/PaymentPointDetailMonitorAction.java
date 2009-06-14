@@ -66,6 +66,9 @@ public class PaymentPointDetailMonitorAction extends CashboxCookieActionSupport 
         buttons = new ArrayList<String>();
         
         Long processId = paymentPoint.getTradingDayProcessInstanceId();
+
+        log.debug("processInstanceId = {}", processId);
+
         if (processId != null && processId > 0) {
             Process process = processManager.getProcessInstanceInfo(processId);
             if (process == null) {

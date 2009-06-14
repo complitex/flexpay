@@ -60,6 +60,7 @@
 		  p:documentStatusService-ref="documentStatusService"
 		  p:organizationService-ref="organizationService"
 		  p:cashboxService-ref="cashboxService"
+          p:paymentPointService-ref="paymentPointService"
           p:processManager-ref="processManager"
 		  p:crumbNameKey="payments.crumbs.operations_list"
 		  scope="prototype" />
