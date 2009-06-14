@@ -172,9 +172,8 @@
             </script>
         </event>
         <task name="sendEmailToAdministrator" swimlane="JobManager" />
-        <task name="ApproveOpenCloseTradingDay" swimlane="Accounter" />
-        <transition to="MarkPaymentPointForClosing" name="Открыть операционный день" />
-        <transition to="end-state" name="Закрыть операционный день" />
+        <transition to="end-state" name="error" />
+        <transition to="end-state" name="next" />
     </task-node>
 
     <end-state name="end-state">
