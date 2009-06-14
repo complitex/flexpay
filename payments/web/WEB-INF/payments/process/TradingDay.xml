@@ -1,28 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <process-definition xmlns="urn:jbpm.org:jpdl-3.2" name="TradingDay"
-     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-     xsi:schemaLocation="urn:jbpm.org:jpdl-3.2 http://docs.jboss.org/jbpm/xsd/jpdl-3.2.xsd">
+                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                    xsi:schemaLocation="urn:jbpm.org:jpdl-3.2 http://docs.jboss.org/jbpm/xsd/jpdl-3.2.xsd">
 
     <swimlane name="Accounter">
-        <assignment class="org.flexpay.payments.process.handlers.AccounterAssignmentHandler"/>
+        <!--<assignment class="org.flexpay.payments.process.handlers.AccounterAssignmentHandler"/>-->
+        <assignment actor-id="ACCOUNTER" />
     </swimlane>
 
 
     <swimlane name="PaymentCollector">
-        <assignment class="org.flexpay.payments.process.handlers.PaymentCollectorAssignmentHandler"/>
+        <!--<assignment class="org.flexpay.payments.process.handlers.PaymentCollectorAssignmentHandler"/>-->
+        <assignment actor-id="PAYMENT_COLLECTOR" />
     </swimlane>
 
 
     <swimlane name="JobManager">
-        <assignment class="org.flexpay.common.process.JobManagerAssignmentHandler"/>
+        <assignment class="org.flexpay.common.process.JobManagerAssignmentHandler" />
     </swimlane>
 
     <start-state name="Start">
         <description>
             Старт опердня
         </description>
-        <transition to="MarkPaymentPointForClosing" name="start"/>
+        <transition to="MarkPaymentPointForClosing" name="start" />
     </start-state>
 
     <task-node name="MarkPaymentPointForClosing">
@@ -31,8 +33,8 @@
         </description>
         <event type="node-enter">
             <script>
-                <variable mapped-name="processStatus" access="write" name="PROCESS_STATUS"/>
-                <variable mapped-name="canUpdateOrCreateOperation" access="write" name="CAN_UPDATE_OR_CRETAE_OPERATION"/>
+                <variable mapped-name="processStatus" access="write" name="PROCESS_STATUS" />
+                <variable mapped-name="canUpdateOrCreateOperation" access="write" name="CAN_UPDATE_OR_CRETAE_OPERATION" />
                 <expression>
                     processStatus = "Открыт";
                     canUpdateOrCreateOperation = "true";
@@ -42,7 +44,7 @@
         <task name="CloseTradingDay" swimlane="Accounter">
             <timer duedate="3 minutes" transition="tradingDay.mark_for_closing">
                 <script>
-                    <variable mapped-name="autoMode" access="write" name="AUTO_MODE"/>
+                    <variable mapped-name="autoMode" access="write" name="AUTO_MODE" />
                     <expression>
                         autoMode = "true";
                     </expression>
@@ -53,14 +55,14 @@
         <task name="CloseTradingDay" swimlane="PaymentCollector">
             <timer duedate="10 business seconds" transition="generateEndOperationDayRegistryJob">
                 <script>
-                    <variable mapped-name="autoMode" access="write" name="AUTO_MODE"/>
+                    <variable mapped-name="autoMode" access="write" name="AUTO_MODE" />
                     <expression>
                         autoMode = "true";
                     </expression>
                 </script>
             </timer>
         </task>
-        <transition to="generateEndOperationDayRegistryJob" name="Пометить на закрытие"/>
+        <transition to="generateEndOperationDayRegistryJob" name="Пометить на закрытие" />
     </task-node>
 
 
@@ -70,17 +72,17 @@
         </description>
         <event type="node-enter">
             <script>
-                <variable mapped-name="processStatus" access="write" name="PROCESS_STATUS"/>
-                <variable mapped-name="canUpdateOrCreateOperation" access="write" name="CAN_UPDATE_OR_CRETAE_OPERATION"/>
+                <variable mapped-name="processStatus" access="write" name="PROCESS_STATUS" />
+                <variable mapped-name="canUpdateOrCreateOperation" access="write" name="CAN_UPDATE_OR_CRETAE_OPERATION" />
                 <expression>
                     processStatus = "Обрабатывается";
                     canUpdateOrCreateOperation = "false";
                 </expression>
             </script>
         </event>
-        <task swimlane="JobManager"/>
-        <transition to="sendRegistryJob" name="next"/>
-        <transition to="JobManagerError" name="error"/>
+        <task swimlane="JobManager" />
+        <transition to="sendRegistryJob" name="next" />
+        <transition to="JobManagerError" name="error" />
     </task-node>
 
 
@@ -89,19 +91,19 @@
             отправляем на указанный в ППП емейл с вложенным файлом сформированного реестра
         </description>
         <task swimlane="JobManager" />
-        <transition to="AutoModeDecision" name="next"/>
-        <transition to="JobManagerError" name="error"/>
+        <transition to="AutoModeDecision" name="next" />
+        <transition to="JobManagerError" name="error" />
     </task-node>
 
 
     <decision name="AutoModeDecision">
-		<transition to="WaitForApprove" name="Human approval">
-			<condition expression="#{executionContext.getVariable['AUTO_MODE'] == null}" />
-		</transition>
-		<transition to="end-state" name="AutoModeApproval">
-			<condition expression="#{executionContext.getVariable['AUTO_MODE'] == 'true'}"/>
-		</transition>
-	</decision>
+        <transition to="WaitForApprove" name="Human approval">
+            <condition expression="#{executionContext.getVariable['AUTO_MODE'] == null}" />
+        </transition>
+        <transition to="end-state" name="AutoModeApproval">
+            <condition expression="#{executionContext.getVariable['AUTO_MODE'] == 'true'}" />
+        </transition>
+    </decision>
 
 
     <task-node name="WaitForApprove">
@@ -110,46 +112,75 @@
         </description>
         <event type="node-enter">
             <script>
-                <variable mapped-name="processStatus" access="write" name="PROCESS_STATUS"/>
+                <variable mapped-name="processStatus" access="write" name="PROCESS_STATUS" />
                 <expression>
                     processStatus = "Ожидает подтверждения";
                 </expression>
             </script>
         </event>
-        <timer duedate="1 business day" transition="end-state"/>
-        <task name="Aproove" swimlane="Accounter"/>
-        <transition to="MarkPaymentPointForClosing" name="Отменить пометку"/>
-        <transition to="ViewApproval" name="Подтвердить закрытие"/>
+
+        <task name="Aproove" swimlane="Accounter">
+            <timer duedate="1 business day" transition="AutoModeDecision2">
+                <script>
+                    <variable mapped-name="autoMode" access="write" name="AUTO_MODE" />
+                    <expression>
+                        autoMode = "true";
+                    </expression>
+                </script>
+            </timer>
+        </task>
+        <transition to="MarkPaymentPointForClosing" name="Отменить пометку" />
+        <transition to="ViewApproval" name="Подтвердить закрытие" />
     </task-node>
+
+    <decision name="AutoModeDecision2">
+        <transition to="ViewApproval" name="Human approval">
+            <condition expression="#{executionContext.getVariable['AUTO_MODE'] == null}" />
+        </transition>
+        <transition to="end-state" name="AutoModeApproval">
+            <condition expression="#{executionContext.getVariable['AUTO_MODE'] == 'true'}" />
+        </transition>
+    </decision>
 
     <task-node name="ViewApproval">
         <description>Просмотр Оператором сообщения о том что операционный день завершен</description>
         <event type="node-enter">
             <script>
-                <variable mapped-name="processStatus" access="write" name="PROCESS_STATUS"/>
+                <variable mapped-name="processStatus" access="write" name="PROCESS_STATUS" />
                 <expression>
                     processStatus = "Завершен";
                 </expression>
             </script>
         </event>
-        <timer duedate="1 business day" transition="end-state"/>
-        <task name="" swimlane="PaymentCollector"/>
-        <transition to="end-state" name="Принять сообщение"/>
+        <timer duedate="1 business day" transition="end-state" />
+        <task name="" swimlane="PaymentCollector" />
+        <transition to="end-state" name="Принять сообщение" />
     </task-node>
 
     <task-node name="JobManagerError">
         <description>
             Выслать администрутору е-мейл с сообщением о том, что процесс закончился с ошибкой
         </description>
-        <task name="sendEmailToAdministrator" swimlane="JobManager"/>
-        <transition to="end-state" name="next"/>
-        <transition to="end-state" name="error"/>
+        <event type="node-enter">
+            <script>
+                <variable mapped-name="processStatus" access="write" name="PROCESS_STATUS" />
+                <variable mapped-name="canUpdateOrCreateOperation" access="write" name="CAN_UPDATE_OR_CRETAE_OPERATION" />
+                <expression>
+                    processStatus = "Допущена ошибка, обратитесь к администратору";
+                    canUpdateOrCreateOperation = "false";
+                </expression>
+            </script>
+        </event>
+        <task name="sendEmailToAdministrator" swimlane="JobManager" />
+        <task name="ApproveOpenCloseTradingDay" swimlane="Accounter" blocking="true"/>
+        <transition to="MarkPaymentPointForClosing" name="Открыть операционный день" />
+        <transition to="end-state" name="Закрыть операционный день" />
     </task-node>
 
     <end-state name="end-state">
         <event type="node-enter">
             <script>
-                <variable mapped-name="processStatus" access="write" name="PROCESS_STATUS"/>
+                <variable mapped-name="processStatus" access="write" name="PROCESS_STATUS" />
                 <expression>
                     processStatus = "Закрыт";
                 </expression>
