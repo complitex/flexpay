@@ -68,7 +68,7 @@ public class QuittancePayAction extends PaymentOperationAction {
 				return REDIRECT_SUCCESS;
 			}else{
 				addActionError(getText("payments.quittance.pay.payment_not_alowed_due_closed_trading_day"));
-				return REDIRECT_SUCCESS;
+				return ERROR;
 			}
 		}else{
 			if (log.isDebugEnabled()){
