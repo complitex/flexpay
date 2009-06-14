@@ -21,6 +21,8 @@ import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.orgs.service.PaymentPointService;
 import org.flexpay.orgs.persistence.PaymentPoint;
 import org.jbpm.graph.exe.ProcessInstance;
+import org.jbpm.JbpmContext;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 import java.io.Serializable;
@@ -55,6 +57,29 @@ public class TradingDay extends QuartzJobBean {
     );
 
 
+	/**
+	 * Return True if Trading Day is opened
+	 * @param processManager process manager instance
+	 * @param processInstanceId process instance id
+	 * @return true if Trading day is opened or false if not.
+	 */
+	public static boolean isOpened(@NotNull final ProcessManager processManager, @NotNull final Long processInstanceId){
+		return processManager.execute(new ContextCallback<Boolean>(){
+			public Boolean doInContext(@NotNull JbpmContext context) {
+				ProcessInstance processInstance = context.getProcessInstance(processInstanceId);
+				if (processInstance == null || processInstance.hasEnded()){
+					return false;
+				}
+				return new Boolean((String)context.getProcessInstance(processInstanceId).getContextInstance().getVariable(TradingDay.CAN_UPDATE_OR_CRETAE_OPERATION));
+			}
+		});
+	}
+
+	/**
+	 * Main execution method
+	 * @param context - job execution context
+	 * @throws JobExecutionException when something goes wrong 
+	 */
     protected void executeInternal(JobExecutionContext context) throws JobExecutionException {
 
         log.debug("Starting traiding day at {}", new Date());

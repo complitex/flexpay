@@ -20,6 +20,7 @@ import org.flexpay.payments.actions.CashboxCookieWithPagerActionSupport;
 import org.flexpay.payments.persistence.*;
 import org.flexpay.payments.service.*;
 import org.flexpay.payments.process.handlers.PaymentCollectorAssignmentHandler;
+import org.flexpay.payments.process.export.TradingDay;
 import org.jbpm.graph.def.Transition;
 import org.jbpm.graph.exe.ProcessInstance;
 import org.jbpm.taskmgmt.exe.TaskInstance;
@@ -85,6 +86,7 @@ public class OperationsListAction extends CashboxCookieWithPagerActionSupport<Op
 	private Long taskInstanceId;
 
     private String cashboxIdFilter;
+	private boolean canCreateOrUpdateOperations = true;
 
 	@NotNull
 	protected String doExecute() throws Exception {
@@ -114,6 +116,8 @@ public class OperationsListAction extends CashboxCookieWithPagerActionSupport<Op
 					}
 				});
 			}
+			//fetch Trading day status
+			canCreateOrUpdateOperations = TradingDay.isOpened(processManager, processInstanceId);
 			//fetch taskInstance  and transitions
 			final TaskInstance taskInstance = TaskHelper.getTaskInstance(processManager, processInstanceId, PaymentCollectorAssignmentHandler.PAYMENT_COLLECTOR, log);
 
@@ -140,6 +144,7 @@ public class OperationsListAction extends CashboxCookieWithPagerActionSupport<Op
 			}
 
 		}
+
 		loadServiceTypes();
 
 		if (dateFiltersAreEmpty()) {
@@ -152,7 +157,15 @@ public class OperationsListAction extends CashboxCookieWithPagerActionSupport<Op
 			}
 			return SUCCESS;
 		} else if (isStatusSubmitted()) { // if status change submitted
-			updateOperationStatus();
+				if (canCreateOrUpdateOperations){
+					updateOperationStatus();
+				}else{
+					addActionError(getText("payments.quittance.pay.operation_changes_not_alowed_due_closed_trading_day"));					
+					log.debug("Trading day process (id = {})is closed for Payment Point = {}", processInstanceId, paymentPoint.getId());
+					log.debug("Operations update canceled;");
+					loadOperations();
+					return SUCCESS;
+				}
 			loadOperations();
 			return SUCCESS;
 		} else { // nothing is submitted
@@ -310,6 +323,10 @@ public class OperationsListAction extends CashboxCookieWithPagerActionSupport<Op
 
 	public boolean isHighlighted(Document document) {
 		return highlightedDocumentIds.contains(document.getId());
+	}
+
+	public boolean isTradingDayopened(){
+		return canCreateOrUpdateOperations;
 	}
 
 	public int getTotalOperations() {

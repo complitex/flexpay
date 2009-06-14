@@ -49,16 +49,16 @@ public class QuittancePayAction extends PaymentOperationAction {
 		final Long paymentProcessId = cashbox.getPaymentPoint().getTradingDayProcessInstanceId();
 		if (paymentProcessId != null && paymentProcessId != 0 ){
 			log.debug("Found process id {} for cashbox {}", new Object[]{paymentProcessId, cashboxId});
-			Boolean opened = processManager.execute(new ContextCallback<Boolean>(){
-				public Boolean doInContext(@NotNull JbpmContext context) {
-					ProcessInstance processInstance = context.getProcessInstance(paymentProcessId);
-					if (processInstance == null || processInstance.hasEnded()){
-						return false;
-					}
-					return new Boolean((String)context.getProcessInstance(paymentProcessId).getContextInstance().getVariable(TradingDay.CAN_UPDATE_OR_CRETAE_OPERATION));
-				}
-			});
-			if (opened.booleanValue()){
+//			Boolean opened = processManager.execute(new ContextCallback<Boolean>(){
+//				public Boolean doInContext(@NotNull JbpmContext context) {
+//					ProcessInstance processInstance = context.getProcessInstance(paymentProcessId);
+//					if (processInstance == null || processInstance.hasEnded()){
+//						return false;
+//					}
+//					return new Boolean((String)context.getProcessInstance(paymentProcessId).getContextInstance().getVariable(TradingDay.CAN_UPDATE_OR_CRETAE_OPERATION));
+//				}
+//			});
+			if (TradingDay.isOpened(processManager, paymentProcessId)){
 				operation = createOperation(cashbox);
 				if (BigDecimalUtil.isZero(operation.getOperationSumm()) || operation.getDocuments()== null || operation.getDocuments().size() == 0){
 					log.debug("Zero summ for operation or zero documents for operation created. Operation was not created");
