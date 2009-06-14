@@ -72,7 +72,7 @@ public abstract class PaymentOperationAction extends CashboxCookieActionSupport 
 				op.setPayerFIO(document.getPayerFIO());
 			}
 
-			if (BigDecimalUtil.isZero(document.getSumm())) {
+			if (!BigDecimalUtil.isZero(document.getSumm())) {
 				op.addDocument(document);
 			}
 		}
