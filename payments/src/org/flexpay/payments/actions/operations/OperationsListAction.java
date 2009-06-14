@@ -15,6 +15,7 @@ import org.flexpay.common.process.Process;
 import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.orgs.persistence.PaymentPoint;
 import org.flexpay.orgs.service.OrganizationService;
+import org.flexpay.orgs.service.PaymentPointService;
 import org.flexpay.payments.actions.CashboxCookieWithPagerActionSupport;
 import org.flexpay.payments.persistence.*;
 import org.flexpay.payments.service.*;
@@ -75,6 +76,7 @@ public class OperationsListAction extends CashboxCookieWithPagerActionSupport<Op
 	private ServiceTypeService serviceTypeService;
 	private OrganizationService organizationService;
 	private CashboxService cashboxService;
+    private PaymentPointService paymentPointService;
 	private ProcessManager processManager;
 
 	private List<String> processButtons;
@@ -93,6 +95,7 @@ public class OperationsListAction extends CashboxCookieWithPagerActionSupport<Op
 
 		Cashbox cashbox = cashboxService.read(new Stub<Cashbox>(showCashboxId));
 		PaymentPoint paymentPoint = cashbox.getPaymentPoint();
+        paymentPoint = paymentPointService.read(new Stub<PaymentPoint>(paymentPoint));
 		//signal if taskInstanceId and activity not null
 		processButtons = Collections.emptyList();
 		Long processInstanceId = paymentPoint.getTradingDayProcessInstanceId();
@@ -529,7 +532,12 @@ public class OperationsListAction extends CashboxCookieWithPagerActionSupport<Op
 		this.cashboxService = cashboxService;
 	}
 
-	@Required
+    @Required
+    public void setPaymentPointService(PaymentPointService paymentPointService) {
+        this.paymentPointService = paymentPointService;
+    }
+
+    @Required
 	public void setProcessManager(ProcessManager processManager) {
 		this.processManager = processManager;
 	}
