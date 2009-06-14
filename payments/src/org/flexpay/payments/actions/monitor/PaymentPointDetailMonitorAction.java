@@ -93,12 +93,10 @@ public class PaymentPointDetailMonitorAction extends CashboxCookieActionSupport 
         }
 //----------------------------------------
         List<Cashbox> cbs = cashboxService.findCashboxesForPaymentPoint(paymentPoint.getId());
-        Date endDate = DateUtil.now();
-        Date startDate = DateUtils.setHours(endDate, 0);
-		startDate = DateUtils.setMinutes(startDate, 0);
-		startDate = DateUtils.setSeconds(startDate, 0);
+        Date startDate = DateUtil.now();
+        Date finishDate = new Date();
 
-        List<OperationTypeStatistics> statistics = paymentsStatisticsService.operationTypePaymentPointStatistics(Stub.stub(paymentPoint), startDate, endDate);
+        List<OperationTypeStatistics> statistics = paymentsStatisticsService.operationTypePaymentPointStatistics(Stub.stub(paymentPoint), startDate, finishDate);
         paymentsCount = String.valueOf(getPaymentsCount(statistics));
         totalSum = String.valueOf(getPaymentsSumm(statistics));
         name = paymentPoint.getName(getLocale());
@@ -106,8 +104,8 @@ public class PaymentPointDetailMonitorAction extends CashboxCookieActionSupport 
         cashboxes = new ArrayList<CashboxMonitorContainer>();
         if (cbs != null) {
             for (Cashbox cashbox : cbs) {
-                statistics = paymentsStatisticsService.operationTypeCashboxStatistics(Stub.stub(cashbox), startDate, endDate);
-                List<Operation> operations = operationService.listLastCashboxPaymentOperations(cashbox, startDate, endDate);
+                statistics = paymentsStatisticsService.operationTypeCashboxStatistics(Stub.stub(cashbox), startDate, finishDate);
+                List<Operation> operations = operationService.listLastCashboxPaymentOperations(cashbox, startDate, finishDate);
                 String lastPayment = operations != null && operations.size() > 0? formatTime.format(operations.get(0).getCreationDate()): null;
 
                 CashboxMonitorContainer container = new CashboxMonitorContainer();
