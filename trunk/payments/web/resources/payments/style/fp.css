@@ -26,6 +26,10 @@
 	font-size: 1.0em;
 }
 
+.columns .main-content table.search_results td input.btn-search {
+	font-size: 1.0em;
+}
+
 .columns .main-content table.operations td {
 	font-size: 1.0em;
 	font-weight: bold;
