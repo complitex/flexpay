@@ -108,7 +108,7 @@ public class ExportBankPaymentsRegistry {
 
 		header.append(RegistryUtil.REGISTY_HEADER_MESSAGE_TYPE_CHAR).
 				append(RegistryUtil.FIELD_SEPARATOR).
-				append(StringUtil.getString(registry.getRegistryNumber())).
+				append(StringUtil.getString(registry.getId())).
 				append(RegistryUtil.FIELD_SEPARATOR).
 				append(StringUtil.getString(registry.getRegistryType().getCode())).
 				append(RegistryUtil.FIELD_SEPARATOR).
