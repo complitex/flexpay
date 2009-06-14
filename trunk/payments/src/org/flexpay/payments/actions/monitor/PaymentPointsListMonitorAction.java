@@ -92,10 +92,9 @@ public class PaymentPointsListMonitorAction extends CashboxCookieWithPagerAction
         for (PaymentPoint paymentPoint : lPaymentPoints) {
             paymentPoint = paymentPointService.read(new Stub<PaymentPoint>(paymentPoint));
 
-            Date endDate = DateUtil.now();
-            Date startDate = DateUtils.setHours(endDate, 0);
-            startDate = DateUtils.setMinutes(startDate, 0);
-            startDate = DateUtils.setSeconds(startDate, 0);
+            Date startDate = DateUtil.now();
+            Date finishDate = new Date();
+            log.debug("Start date={} {}, finish date={} {}", new Object[]{DateUtil.format(startDate), formatTime.format(startDate), DateUtil.format(finishDate), formatTime.format(finishDate)});
             
             String status = null;
             if (paymentPoint.getTradingDayProcessInstanceId() != null && paymentPoint.getTradingDayProcessInstanceId() > 0) {
@@ -105,8 +104,8 @@ public class PaymentPointsListMonitorAction extends CashboxCookieWithPagerAction
                     // PaymentPoint paymentPoint = paymentPointService.read(new Stub<PaymentPoint>(pointId));
                 }
             }
-            List<OperationTypeStatistics> statistics = paymentsStatisticsService.operationTypePaymentPointStatistics(Stub.stub(paymentPoint), startDate, endDate);
-            List<Operation> operations = operationService.listLastPaymentOperations(startDate, endDate);
+            List<OperationTypeStatistics> statistics = paymentsStatisticsService.operationTypePaymentPointStatistics(Stub.stub(paymentPoint), startDate, finishDate);
+            List<Operation> operations = operationService.listLastPaymentOperations(startDate, finishDate);
 
             String cashBoxName = null;
             String lastPayment = null;
