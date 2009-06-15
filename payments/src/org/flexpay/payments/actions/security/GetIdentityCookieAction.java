@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 public class GetIdentityCookieAction extends FPActionSupport implements ServletResponseAware {
 
 	private static final String CASHBOX_ID = "cashboxId";
-	private static final int ONE_YEAR_IN_SECONDS = 31536000;
+	private static final int SIX_YEARS_IN_SECONDS = 6 * 31536000;
 
 	private String cashboxId;
 
@@ -28,7 +28,7 @@ public class GetIdentityCookieAction extends FPActionSupport implements ServletR
 		if (isSubmit()) {
 			if (validatePaymentPointId()) {
 				Cookie cookie = new Cookie(CASHBOX_ID, cashboxId);
-				cookie.setMaxAge(ONE_YEAR_IN_SECONDS);
+				cookie.setMaxAge(SIX_YEARS_IN_SECONDS);
 				response.addCookie(cookie);
 				addActionMessage(getText("payments.get_identity_cookie.cookies_successfully_set"));
 			}
