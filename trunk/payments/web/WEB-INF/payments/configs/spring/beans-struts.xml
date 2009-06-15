@@ -48,6 +48,7 @@
 		  p:countryService-ref="countryService"
 		  p:crumbNameKey="payments.crumbs.quittances_pay"
           p:processManager-ref="processManagerPayments"
+          p:paymentPointService-ref="paymentPointService"
 		  scope="prototype" />
 
 	<!-- operation-related actions -->
