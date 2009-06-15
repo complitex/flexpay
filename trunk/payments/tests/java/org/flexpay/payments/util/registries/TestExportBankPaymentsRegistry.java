@@ -23,8 +23,10 @@ public class TestExportBankPaymentsRegistry extends PaymentsSpringBeanAwareTestC
 
 		registry = exportBankPaymentsRegistry.export(registry);
 
+/*
 		registryService.deleteRecords(Stub.stub(registry));
 		registryService.delete(registry);
+*/
 
 	}
 

@@ -75,6 +75,7 @@ public class ExportBankPaymentsRegistry {
 			}
 
 			writer.write(buildFooter(registry));
+			writer.newLine();
 
 		} catch (IOException e) {
 			log.error("Error with writing export-file for registry", e);
@@ -199,6 +200,7 @@ public class ExportBankPaymentsRegistry {
 		log.debug("Building footer for registry = {}", registry);
 
 		footer.append(RegistryUtil.REGISTRY_FOOTER_MESSAGE_TYPE_CHAR).
+				append(RegistryUtil.FIELD_SEPARATOR).
 				append(StringUtil.getString(registry.getId()));
 
 		log.debug("File footer = {}", footer.toString());

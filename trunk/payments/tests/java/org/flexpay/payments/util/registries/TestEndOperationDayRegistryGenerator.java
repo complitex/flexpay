@@ -52,8 +52,10 @@ public class TestEndOperationDayRegistryGenerator extends PaymentsSpringBeanAwar
 
 		Registry registry = endOperationDayRegistryGenerator.generate(paymentPoint, organization, beginDate, endDate);
 
+/*
 		registryService.deleteRecords(Stub.stub(registry));
 		registryService.delete(registry);
+*/
 
 	}
 

@@ -24,24 +24,25 @@
 	</bean>
 
     <bean name="jobGeneratePaymentsRegistry" class="org.springframework.scheduling.quartz.JobDetailBean">
-        <property name="jobClass" value="org.flexpay.payments.process.export.GeneratePaymentsRegistry"/>
+        <property name="jobClass" value="org.flexpay.payments.process.export.GeneratePaymentsRegistry" />
         <property name="jobDataAsMap">
             <map>
-                <entry key="processManager" value-ref="processManagerPayments"/>
-                <entry key="providerService" value-ref="serviceProviderService"/>
-                <entry key="serviceProviderAttributeService" value-ref="serviceProviderServiceAttributeTarget"/>
+                <entry key="processManager" value-ref="processManagerPayments" />
+                <entry key="providerService" value-ref="serviceProviderService" />
+                <entry key="serviceProviderAttributeService" value-ref="serviceProviderServiceAttributeTarget" />
                 <entry key="providerId" value=""/>
             </map>
         </property>
     </bean>
 
     <bean name="jobTradingDay" class="org.springframework.scheduling.quartz.JobDetailBean">
-        <property name="jobClass" value="org.flexpay.payments.process.export.TradingDay"/>
+        <property name="jobClass" value="org.flexpay.payments.process.export.TradingDay" />
         <property name="jobDataAsMap">
             <map>
-                <entry key="processManager" value-ref="processManagerPayments"/>
-                <entry key="paymentPoints" value-ref="paymentPoints"/>
-                <entry key="paymentPointService" value-ref="paymentPointService"/>
+                <entry key="processManager" value-ref="processManagerPayments" />
+                <entry key="paymentPoints" value-ref="paymentPoints" />
+                <entry key="paymentPointService" value-ref="paymentPointService" />
+                <entry key="organizationId" value-ref="organizationId" />
             </map>
         </property>
     </bean>
@@ -61,7 +62,7 @@
         <property name="triggers">
             <list>
                 <!-- ref bean="jobGeneratePaymentsRegistryTrigger"/ -->
-                <ref bean="jobTradingDayTrigger"/>
+                <ref bean="jobTradingDayTrigger" />
             </list>
         </property>
         <property name="quartzProperties">
@@ -69,7 +70,7 @@
                 <prop key="org.quartz.threadPool.class">org.quartz.simpl.SimpleThreadPool</prop>
             </props>
         </property>
-        <property name="startupDelay" value="20"/>
+        <property name="startupDelay" value="20" />
     </bean>
 
 

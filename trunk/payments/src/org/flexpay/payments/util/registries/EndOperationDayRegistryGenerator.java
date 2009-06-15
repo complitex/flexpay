@@ -55,7 +55,7 @@ public class EndOperationDayRegistryGenerator {
 		registry.setFromDate(beginDate);
 		registry.setTillDate(endDate);
 		registry.setCreationDate(new Date());
-		registry.setSenderCode(paymentPoint.getId());
+		registry.setSenderCode(paymentPoint.getCollector().getOrganizationStub().getId());
 		registry.setRecipientCode(organization.getId());
 		registry.setRegistryType(registryTypeService.findByCode(RegistryType.TYPE_BANK_PAYMENTS));
 		registry.setArchiveStatus(registryArchiveStatusService.findByCode(RegistryArchiveStatus.NONE));
@@ -111,7 +111,7 @@ public class EndOperationDayRegistryGenerator {
 				totalSumm = totalSumm.add(summ);
 				container.setOrder(0);
 				container.setData(RegistryUtil.BANK_PAYMENT_CONTAINER_CODE + RegistryUtil.CONTAINER_BODY_SEPARATOR + 
-						StringUtil.getString(operation.getCreatorOrganization().getId()) + RegistryUtil.CONTAINER_BODY_SEPARATOR +
+						StringUtil.getString(paymentPoint.getId()) + RegistryUtil.CONTAINER_BODY_SEPARATOR +
 						StringUtil.getString(operation.getId()) + RegistryUtil.CONTAINER_BODY_SEPARATOR +
 						StringUtil.getString(operation.getOperationSumm()));
 				container.setRecord(record);
