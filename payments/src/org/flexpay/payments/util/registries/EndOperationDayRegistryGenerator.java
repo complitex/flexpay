@@ -99,11 +99,11 @@ public class EndOperationDayRegistryGenerator {
 				record.setPersonalAccountExt(document.getDebtorId());
 				record.setUniqueOperationNumber(document.getId());
 
-				record.setLastName(StringUtils.stripToEmpty(document.getPayerFIO()));
+//				record.setLastName(StringUtils.stripToEmpty(document.getPayerFIO()));
 				//todo: parse last, middle and first name
-//				record.setLastName(document.getLastName());
-//				record.setMiddleName(document.getMiddleName());
-//				record.setFirstName(document.getFirstName());
+				record.setLastName(StringUtils.stripToEmpty(document.getLastName()));
+				record.setMiddleName(StringUtils.stripToEmpty(document.getMiddleName()));
+				record.setFirstName(StringUtils.stripToEmpty(document.getFirstName()));
 				record.setCity(StringUtils.stripToEmpty(document.getTown()));
 				record.setBuildingBulkNum(StringUtils.stripToEmpty(document.getBuildingBulk()));
 				record.setStreetType(StringUtils.stripToEmpty(document.getStreetType()));
