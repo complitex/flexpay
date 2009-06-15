@@ -22,6 +22,8 @@ import org.springframework.beans.factory.annotation.Required;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Map;
+import java.util.List;
+import java.util.ArrayList;
 
 public abstract class PaymentOperationAction extends CashboxCookieActionSupport {
 
@@ -58,8 +60,6 @@ public abstract class PaymentOperationAction extends CashboxCookieActionSupport 
 	private RegionService regionService;
 	private CountryService countryService;
 
-	// TODO more
-
 	protected Operation createOperation(Cashbox cashbox) throws FlexPayException {
 
 		Operation op = buildOperation(cashbox);
@@ -92,7 +92,7 @@ public abstract class PaymentOperationAction extends CashboxCookieActionSupport 
 		op.setRegisterDate(new Date());
 		op.setCreatorOrganization(organization);
 		op.setPaymentPoint(cashbox.getPaymentPoint());
-        op.setCashbox(cashbox);
+		op.setCashbox(cashbox);
 		op.setRegisterOrganization(organization);
 		op.setCreatorUserName(SecurityUtil.getUserName());
 		op.setRegisterUserName(SecurityUtil.getUserName());
@@ -125,14 +125,15 @@ public abstract class PaymentOperationAction extends CashboxCookieActionSupport 
 		document.setCreditorId(serviceProviderAccount);
 
 		if (apartmentId != null) {
-			setSearchAddress(document);
+			setPayerAddress(document);
 		}
+
+		setPayerName(serviceFullIndex, document);
 
 		return document;
 	}
 
-	private void setSearchAddress(Document document) {
-
+	private void setPayerAddress(Document document) {
 		Apartment apartment = apartmentService.readFull(new Stub<Apartment>(apartmentId));
 		document.setApartmentNumber(apartment.getNumber());
 
@@ -153,6 +154,36 @@ public abstract class PaymentOperationAction extends CashboxCookieActionSupport 
 
 		Country country = countryService.readFull(region.getCountryStub());
 		document.setCountry(getTranslation(country.getCountryNames()).getName());
+	}
+
+	private void setPayerName(String serviceFullIndex, Document document) {
+		String[] pieces = payerFios.get(serviceFullIndex).split(" ");
+		List<String> tokens = new ArrayList<String>();
+		for (String p : pieces) {
+			if (StringUtils.isNotBlank(p)) {
+				tokens.add(p);
+				log.debug("[!!!] Token: " + p);
+			}
+		}
+
+		if (tokens.size() > 0) {
+			document.setLastName(tokens.get(0));
+		}
+
+		if (tokens.size() > 1) {
+			document.setFirstName(tokens.get(1));
+		}
+
+		if (tokens.size() > 2) {
+			StringBuilder middleNameBuilder = new StringBuilder();
+			for (int i = 2; i < tokens.size(); i++) {
+				middleNameBuilder.append(tokens.get(i));
+				if (i < tokens.size() - 1) {
+					middleNameBuilder.append(" ");
+				}
+			}
+			document.setMiddleName(middleNameBuilder.toString());
+		}
 	}
 
 	public String getActionName() {
