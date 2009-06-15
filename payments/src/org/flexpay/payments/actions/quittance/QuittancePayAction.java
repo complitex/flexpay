@@ -30,12 +30,15 @@ import java.util.Map;
 
 public class QuittancePayAction extends PaymentOperationAction {
 
+	private static final String TRADING_DAY_CLOSED = "tradingTayClosed"; // tiles result name
+
 	private Operation operation = new Operation();
 
 	// required services
 	private OperationService operationService;
 
 	private ProcessManager processManager;
+
 	@NotNull
 	protected String doExecute() throws Exception {
 
@@ -47,7 +50,7 @@ public class QuittancePayAction extends PaymentOperationAction {
 
 		//@TODO reformat if then else shit
 		final Long paymentProcessId = cashbox.getPaymentPoint().getTradingDayProcessInstanceId();
-		if (paymentProcessId != null && paymentProcessId != 0 ){
+		if (paymentProcessId != null && paymentProcessId != 0) {
 			log.debug("Found process id {} for cashbox {}", new Object[]{paymentProcessId, cashboxId});
 //			Boolean opened = processManager.execute(new ContextCallback<Boolean>(){
 //				public Boolean doInContext(@NotNull JbpmContext context) {
@@ -58,27 +61,26 @@ public class QuittancePayAction extends PaymentOperationAction {
 //					return new Boolean((String)context.getProcessInstance(paymentProcessId).getContextInstance().getVariable(TradingDay.CAN_UPDATE_OR_CRETAE_OPERATION));
 //				}
 //			});
-			if (TradingDay.isOpened(processManager, paymentProcessId)){
+			if (TradingDay.isOpened(processManager, paymentProcessId)) {
 				operation = createOperation(cashbox);
-				if (BigDecimalUtil.isZero(operation.getOperationSumm()) || operation.getDocuments()== null || operation.getDocuments().size() == 0){
+				if (BigDecimalUtil.isZero(operation.getOperationSumm()) || operation.getDocuments() == null || operation.getDocuments().size() == 0) {
 					log.debug("Zero summ for operation or zero documents for operation created. Operation was not created");
-				}else{
+				} else {
 					operationService.save(operation);
 				}
 				return REDIRECT_SUCCESS;
-			}else{
-				addActionError(getText("payments.quittance.payment.payment_not_alowed_due_closed_trading_day"));
-				return ERROR;
+			} else {
+				return TRADING_DAY_CLOSED;
 			}
-		}else{
-			if (log.isDebugEnabled()){
+		} else {
+			if (log.isDebugEnabled()) {
 				log.debug("TradingDay process id not found for Payment point id = {}", cashbox.getPaymentPoint().getId());
 			}
 		}
 		operation = createOperation(cashbox);
-		if (BigDecimalUtil.isZero(operation.getOperationSumm()) || operation.getDocuments()== null || operation.getDocuments().size() == 0){
+		if (BigDecimalUtil.isZero(operation.getOperationSumm()) || operation.getDocuments() == null || operation.getDocuments().size() == 0) {
 			log.debug("Zero summ for operation or zero documents for operation created. Operation was not created");
-		}else{
+		} else {
 			operationService.save(operation);
 		}
 		return REDIRECT_SUCCESS;
