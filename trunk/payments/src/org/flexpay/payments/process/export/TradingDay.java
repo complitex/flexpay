@@ -70,14 +70,17 @@ public class TradingDay extends QuartzJobBean {
 	 * @param processInstanceId process instance id
 	 * @return true if Trading day is opened or false if not.
 	 */
-	public static boolean isOpened(@NotNull final ProcessManager processManager, @NotNull final Long processInstanceId){
+	public static boolean isOpened(@NotNull final ProcessManager processManager, @NotNull final Long processInstanceId, @NotNull final Logger logger){
 		return processManager.execute(new ContextCallback<Boolean>(){
 			public Boolean doInContext(@NotNull JbpmContext context) {
 				ProcessInstance processInstance = context.getProcessInstance(processInstanceId);
 				if (processInstance == null || processInstance.hasEnded()){
+					logger.debug("Process Instance {} was not found", processInstanceId);
 					return false;
 				}
-				return new Boolean((String)context.getProcessInstance(processInstanceId).getContextInstance().getVariable(TradingDay.CAN_UPDATE_OR_CRETAE_OPERATION));
+				String canCreateOrUpdate = (String)context.getProcessInstance(processInstanceId).getContextInstance().getVariable(TradingDay.CAN_UPDATE_OR_CRETAE_OPERATION);
+				logger.debug("CAN_UPDATE_OR_CRETAE_OPERATION = {} for process instance id = {}", new Object[]{canCreateOrUpdate, processInstanceId});
+				return new Boolean(canCreateOrUpdate);
 			}
 		});
 	}

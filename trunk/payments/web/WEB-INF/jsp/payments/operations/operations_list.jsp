@@ -153,7 +153,7 @@
 <s:hidden name="cashboxIdFilter"/>
 
 <%-- filters are temporary hidden! --%>
-<sec:authorize ifAllGranted="ROLE_PAYMENTS_DEVELOPER">
+<%--<sec:authorize ifAllGranted="ROLE_PAYMENTS_DEVELOPER">--%>
 
     <table cellpadding="3" cellspacing="1" border="0" width="100%" class="operations">
         <sec:authorize ifAllGranted="ROLE_PAYMENTS_DEVELOPER">
@@ -200,7 +200,7 @@
             <td nowrap="nowrap"><s:textfield name="maximalSumm"/></td>
         </tr>
     </table>
-</sec:authorize>
+<%--</sec:authorize>--%>
 
 <table cellpadding="3" cellspacing="1" border="0" width="100%" class="operations">
 
