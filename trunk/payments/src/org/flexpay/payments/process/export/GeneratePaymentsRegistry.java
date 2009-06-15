@@ -102,8 +102,8 @@ public class GeneratePaymentsRegistry extends QuartzJobBean {
                         }
 
                         if (!lastProcessedDate.equals(lastProcessedDateAttribute.getValue())) {
-                            log.debug("Old last processed date: " + lastProcessedDateAttribute.getValue());
-                            log.debug("New last processed date: " + lastProcessedDate);
+                            log.debug("Old last processed date: {}", lastProcessedDateAttribute.getValue());
+                            log.debug("New last processed date: {}", lastProcessedDate);
                             lastProcessedDateAttribute.setValue(lastProcessedDate);
                             serviceProviderAttributeService.save(lastProcessedDateAttribute);
                             log.debug("Change last processed date");

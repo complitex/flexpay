@@ -118,7 +118,7 @@ public class ExportBankPaymentsRegistry {
 				append(RegistryUtil.FIELD_SEPARATOR).
 				append(StringUtil.getString(dfFrom.format(registry.getFromDate()))).
 				append(RegistryUtil.FIELD_SEPARATOR).
-				append(StringUtil.getString(dfTill.format(registry.getFromDate()))).
+				append(StringUtil.getString(dfTill.format(registry.getTillDate()))).
 				append(RegistryUtil.FIELD_SEPARATOR).
 				append(StringUtil.getString(registry.getSenderCode())).
 				append(RegistryUtil.FIELD_SEPARATOR).

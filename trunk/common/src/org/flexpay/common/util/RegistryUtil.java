@@ -2,9 +2,12 @@ package org.flexpay.common.util;
 
 public class RegistryUtil {
 
+	public static final String BANK_PAYMENT_CONTAINER_CODE = "52";
+
 	public static final String FIELD_SEPARATOR = ";";
 	public static final String ADDRESS_SEPARATOR = ",";
 	public static final String FIO_SEPARATOR = " ";
+	public static final String CONTAINER_BODY_SEPARATOR = ":";
 	public static final String CONTAINER_SEPARATOR = "|";
 
 	public static final char REGISTRY_RECORD_MESSAGE_TYPE_CHAR = 0x03;

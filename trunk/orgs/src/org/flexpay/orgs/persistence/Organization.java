@@ -17,6 +17,9 @@ public class Organization extends DomainObjectWithStatus {
 
 	private String individualTaxNumber;
 	private String kpp; // code prichiny postanovki na nalogoviy uchet (TODO: translate me)
+	private String juridicalAddress;
+	private String postalAddress;
+
 	private Set<OrganizationDescription> descriptions = Collections.emptySet();
 	private Set<OrganizationName> names = Collections.emptySet();
 
@@ -26,16 +29,10 @@ public class Organization extends DomainObjectWithStatus {
     private Set<ServiceOrganization> serviceOrganizations = Collections.emptySet();
 	private Set<PaymentsCollector> paymentsCollectors = Collections.emptySet();
 
-	private String juridicalAddress;
-	private String postalAddress;
-
 	private Set<BankAccount> accounts = Collections.emptySet();
 	private Set<Subdivision> childSubdivisions = Collections.emptySet();
 	private Set<Subdivision> dependentSubdivisions = Collections.emptySet();
 
-	/**
-	 * Constructs a new DomainObject.
-	 */
 	public Organization() {
 	}
 
