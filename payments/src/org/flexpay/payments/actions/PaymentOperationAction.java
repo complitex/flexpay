@@ -69,7 +69,7 @@ public abstract class PaymentOperationAction extends CashboxCookieActionSupport 
 
 			if (StringUtils.isEmpty(op.getAddress())) {
 				op.setAddress(document.getAddress());
-				op.setPayerFIO(document.getPayerFIO());
+				op.setPayerFIO(StringUtils.stripToEmpty(document.getPayerFIO()));
 			}
 
 			if (!BigDecimalUtil.isZero(document.getSumm())) {
@@ -118,7 +118,7 @@ public abstract class PaymentOperationAction extends CashboxCookieActionSupport 
 		document.setDocumentType(documentTypeService.read(DocumentType.CASH_PAYMENT));
 		document.setSumm(documentSumm);
 		document.setAddress(addresses.get(serviceFullIndex));
-		document.setPayerFIO(payerFios.get(serviceFullIndex).trim());
+		document.setPayerFIO(StringUtils.stripToEmpty(payerFios.get(serviceFullIndex)));
 		document.setDebtorOrganization(cashbox.getPaymentPoint().getCollector().getOrganization());
 		document.setDebtorId(eircAccounts.get(serviceFullIndex));
 		document.setCreditorOrganization(serviceProviderOrganization);
