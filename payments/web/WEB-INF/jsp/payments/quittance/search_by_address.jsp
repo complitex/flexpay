@@ -6,18 +6,18 @@
 	function doSearch() {
 		if (validateAdress()) {
 			$("#searchBtn").attr("disabled", true);
-			var apartmentId = $('#selected_apartment_id').val();
-			$('#searchResultsDiv').load('<s:url action="searchResults"/>', {
+			var apartmentId = $("#selected_apartment_id").val();
+			$("#searchResultsDiv").load("<s:url action="searchResults"/>", {
 				'searchType' : 'ADDRESS',
 				'searchCriteria': apartmentId,
-				'actionName': 'searchByAddress' }, function (responseText, textStatus, XMLHttpRequest) {
+				'actionName': "searchByAddress" }, function (responseText, textStatus, XMLHttpRequest) {
 					if (responseText.indexOf('j_security_check') > 0) {
 						$(this).html('');
-						window.location = '<s:url action="searchByAddress"/>';
+						window.location = "<s:url action="searchByAddress" />";
 					}
 					enableSearchBtn();
 			});
-			$('#searchResultsDiv').show();
+			$("#searchResultsDiv").show();
 		}
 	}
 
@@ -28,22 +28,22 @@
 	function validateAdress() {
 		//validate town
 		if ($("#selected_town_id").val().length == 0) {
-			alert("'<s:text name="error.town_is_not_selected"/>'");
+			alert("<s:text name="error.town_is_not_selected"/>");
 			return false;
 		}
 		//validate street
 		if ($("#selected_street_id").val().length == 0) {
-			alert("'<s:text name="error.street_is_not_selected"/>'");
+			alert("<s:text name="error.street_is_not_selected"/>");
 			return false;
 		}
 		//validate house
 		if ($("#selected_building_id").val().length == 0) {
-			alert("'<s:text name="error.building_is_not_selected"/>'");
+			alert("<s:text name="error.building_is_not_selected"/>");
 			return false;
 		}
 		//validate apartment
 		if ($("#selected_apartment_id").val().length == 0) {
-			alert("'<s:text name="error.apartment_is_not_selected"/>'");
+			alert("<s:text name="error.apartment_is_not_selected"/>");
 			return false;
 		}
 		return true;
