@@ -28,6 +28,7 @@ import java.util.*;
 import java.io.Serializable;
 
 public class TradingDay extends QuartzJobBean {
+
     private Logger log = LoggerFactory.getLogger(getClass());
 
 	public final static String CAN_UPDATE_OR_CRETAE_OPERATION = "CAN_UPDATE_OR_CRETAE_OPERATION";
@@ -40,10 +41,10 @@ public class TradingDay extends QuartzJobBean {
     private static final long TIME_OUT = 10000;
     private static final ProcessSorterByName processSorterByName = new ProcessSorterByName();
 
+	private List<String> paymentPoints;
+
     private ProcessManager processManager;
     private PaymentPointService paymentPointService;
-
-    private List<String> paymentPoints;
 
     /**
      * Set of authorities names for payments registry
@@ -56,9 +57,9 @@ public class TradingDay extends QuartzJobBean {
             org.flexpay.orgs.service.Roles.PAYMENT_POINT_CHANGE
     );
 
-
 	/**
 	 * Return True if Trading Day is opened
+	 *
 	 * @param processManager process manager instance
 	 * @param processInstanceId process instance id
 	 * @return true if Trading day is opened or false if not.
@@ -77,6 +78,7 @@ public class TradingDay extends QuartzJobBean {
 
 	/**
 	 * Main execution method
+	 *
 	 * @param context - job execution context
 	 * @throws JobExecutionException when something goes wrong 
 	 */
@@ -110,9 +112,9 @@ public class TradingDay extends QuartzJobBean {
             for (Process process : processes) {
                 long processId = process.getId();
                 Process processInstanceInfo = processManager.getProcessInstanceInfo(processId);
-                log.debug("Process {} state complited {} ", new Object[]{processId, processInstanceInfo.getProcessState().isCompleted()});
-                log.debug("Process {} status {} ", new Object[]{processId, processInstanceInfo.getParameters().get("PROCESS_STATUS")});
-                log.debug("Process {} payment point {} ", new Object[]{processId, processInstanceInfo.getParameters().get("paymentPointId")});
+                log.debug("Process {} state complited {} ", processId, processInstanceInfo.getProcessState().isCompleted());
+                log.debug("Process {} status {} ", processId, processInstanceInfo.getParameters().get("PROCESS_STATUS"));
+                log.debug("Process {} payment point {} ", processId, processInstanceInfo.getParameters().get("paymentPointId"));
                 long processInstanceId = processInstanceInfo.getProcessInstaceId();
                 ProcessInstance pi = processManager.getProcessInstance(processInstanceInfo.getProcessInstaceId());
 
@@ -141,11 +143,9 @@ public class TradingDay extends QuartzJobBean {
                 parameters.put("endDate", DateUtil.getEndOfThisDay(new Date()));
                 log.debug("set endDate {}", DateUtil.getEndOfThisDay(new Date()));
 
-				//@TODO fill organization id
-                parameters.put("organizationId", 6L );
+				//TODO fill organization id
+                parameters.put("organizationId", 6L);
                 log.debug("set organizationId {}", 6L);
-
-
 
                 try {
                     pp.setTradingDayProcessInstanceId(processManager.createProcess(PROCESS_DEFINITION_NAME, parameters));
@@ -164,6 +164,13 @@ public class TradingDay extends QuartzJobBean {
         }
     }
 
+	/**
+	 * Do payments registry user authentication
+	 */
+	private static void authenticateTradingDayGenerator() {
+		SecurityUtil.authenticate(USER_TRADING_DAY, USER_TRADING_DAY_AUTHORITIES);
+	}
+
     @Required
     public void setPaymentPoints(List<String> paymentPoints) {
         this.paymentPoints = paymentPoints;
@@ -179,10 +186,4 @@ public class TradingDay extends QuartzJobBean {
         this.processManager = processManager;
     }
 
-    /**
-     * Do payments registry user authentication
-     */
-    private static void authenticateTradingDayGenerator() {
-        SecurityUtil.authenticate(USER_TRADING_DAY, USER_TRADING_DAY_AUTHORITIES);
-    }
 }

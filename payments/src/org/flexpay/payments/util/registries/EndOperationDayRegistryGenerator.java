@@ -5,6 +5,7 @@ import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.registry.*;
 import org.flexpay.common.service.*;
 import org.flexpay.common.util.StringUtil;
+import org.flexpay.common.util.RegistryUtil;
 import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.orgs.persistence.PaymentPoint;
 import org.flexpay.orgs.service.OrganizationService;
@@ -87,10 +88,10 @@ public class EndOperationDayRegistryGenerator {
 
 				record.setServiceCode(String.valueOf(document.getService().getServiceType().getCode()));
 				record.setPersonalAccountExt(document.getDebtorId());
-				record.setUniqueOperationNumber(operation.getId());
+				record.setUniqueOperationNumber(document.getId());
 
 				record.setLastName(StringUtil.getString(document.getPayerFIO()));
-				//@todo parse last, middle and first name
+				//todo: parse last, middle and first name
 //				record.setLastName(document.getLastName());
 //				record.setMiddleName(document.getMiddleName());
 //				record.setFirstName(document.getFirstName());
@@ -109,7 +110,10 @@ public class EndOperationDayRegistryGenerator {
 				
 				totalSumm = totalSumm.add(summ);
 				container.setOrder(0);
-				container.setData("52:" + StringUtil.getString(operation.getCreatorOrganization().getId()) + ":" + StringUtil.getString(operation.getId()) + ":" + StringUtil.getString(operation.getOperationSumm()));
+				container.setData(RegistryUtil.BANK_PAYMENT_CONTAINER_CODE + RegistryUtil.CONTAINER_BODY_SEPARATOR + 
+						StringUtil.getString(operation.getCreatorOrganization().getId()) + RegistryUtil.CONTAINER_BODY_SEPARATOR +
+						StringUtil.getString(operation.getId()) + RegistryUtil.CONTAINER_BODY_SEPARATOR +
+						StringUtil.getString(operation.getOperationSumm()));
 				container.setRecord(record);
 				containers.add(container);
 

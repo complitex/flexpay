@@ -121,7 +121,6 @@ public class OperationsListAction extends CashboxCookieWithPagerActionSupport<Op
 			//fetch taskInstance  and transitions
 			final TaskInstance taskInstance = TaskHelper.getTaskInstance(processManager, processInstanceId, PaymentCollectorAssignmentHandler.PAYMENT_COLLECTOR, log);
 
-
 			if (taskInstance != null) {
 				taskInstanceId = taskInstance.getId();
 				processButtons = processManager.execute(new ContextCallback<List<String>>() {
@@ -558,4 +557,5 @@ public class OperationsListAction extends CashboxCookieWithPagerActionSupport<Op
 	public void setProcessManager(ProcessManager processManager) {
 		this.processManager = processManager;
 	}
+
 }

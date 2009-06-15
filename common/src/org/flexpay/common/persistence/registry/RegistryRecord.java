@@ -21,7 +21,7 @@ public class RegistryRecord extends DomainObject {
 	private String buildingNum;
 	private String buildingBulkNum;
 	private String apartmentNum;
-	private String firstName;
+	private String firstNameupdate;
 	private String middleName;
 	private String lastName;
 	private Date operationDate;
