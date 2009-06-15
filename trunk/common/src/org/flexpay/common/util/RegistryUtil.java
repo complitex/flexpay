@@ -7,11 +7,11 @@ public class RegistryUtil {
 	public static final String FIO_SEPARATOR = " ";
 	public static final String CONTAINER_SEPARATOR = "|";
 
-	public static final String OPERATION_DATE_FORMAT = "ddMMyyyyHHmmss";
 	public static final char REGISTRY_RECORD_MESSAGE_TYPE_CHAR = 0x03;
-
 	public static final char REGISTY_HEADER_MESSAGE_TYPE_CHAR = 0x0C;
 	public static final char REGISTRY_FOOTER_MESSAGE_TYPE_CHAR = 0x0B;
+
+	public static final String OPERATION_DATE_FORMAT = "ddMMyyyyHHmmss";
 	public static final String REGISTRY_CREATION_DATE_FORMAT = "ddMMyyyyHHmmss";
 	public static final String REGISTRY_DATE_FROM_FORMAT = "ddMMyyyyHHmmss";
 	public static final String REGISTRY_DATE_TILL_FORMAT = "ddMMyyyyHHmmss";
