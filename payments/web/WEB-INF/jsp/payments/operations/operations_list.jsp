@@ -39,7 +39,7 @@
         $('tr.full_operation_header_row').toggle();
         $('tr.brief_operation_header_row').toggle();
         $('tr.document_row').toggle();
-        $('tr.operation_footer_row').toggle();
+        //$('tr.operation_footer_row').toggle();
 
         // because of nesting the normal toggle will not work like we need it
         // so here is a little trick (let me do a little bit monkey business)
@@ -343,23 +343,23 @@
             </s:iterator>
 
             <%-- operation footer (is not shown by default, but appears in 'detailed' view) --%>
-            <tr valign="middle" style="display: none;" class="col_oper operation_footer_row
-					<s:if test="%{isOperationRegistered(operationStatus.code)}"> col_black</s:if>
-					<s:elseif test="%{isOperationCreated(operationStatus.code) || isOperationError(operationStatus.code)}"> col_blue</s:elseif>
-					<s:elseif test="%{isOperationReturned(operationStatus.code)}"> col_red</s:elseif>">
+            <%--<tr valign="middle" style="display: none;" class="col_oper operation_footer_row--%>
+					<%--<s:if test="%{isOperationRegistered(operationStatus.code)}"> col_black</s:if>--%>
+					<%--<s:elseif test="%{isOperationCreated(operationStatus.code) || isOperationError(operationStatus.code)}"> col_blue</s:elseif>--%>
+					<%--<s:elseif test="%{isOperationReturned(operationStatus.code)}"> col_red</s:elseif>">--%>
 
-                <td align="right">&nbsp;</td>
-                <td nowrap="nowrap">&nbsp;</td>
-                <td nowrap="nowrap">&nbsp;</td>
-                <td nowrap="nowrap">&nbsp;</td>
-                <td nowrap="nowrap"><s:property value="address"/></td>
-                <td nowrap="nowrap"><s:property value="payerFIO"/></td>
-                <td nowrap="nowrap"><s:property value="operationSumm"/></td>
-                <td nowrap="nowrap"><s:property value="operationInputSumm"/></td>
-                <td nowrap="nowrap"><s:property value="change"/></td>
-                <td class="service_column" nowrap="nowrap" style="display: none;">&nbsp;</td>
-                <td class="service_provider_column" nowrap="nowrap" style="display: none;" colspan="2">&nbsp;</td>
-            </tr>
+                <%--<td align="right">&nbsp;</td>--%>
+                <%--<td nowrap="nowrap">&nbsp;</td>--%>
+                <%--<td nowrap="nowrap">&nbsp;</td>--%>
+                <%--<td nowrap="nowrap">&nbsp;</td>--%>
+                <%--<td nowrap="nowrap"><s:property value="address"/></td>--%>
+                <%--<td nowrap="nowrap"><s:property value="payerFIO"/></td>--%>
+                <%--<td nowrap="nowrap"><s:property value="operationSumm"/></td>--%>
+                <%--<td nowrap="nowrap"><s:property value="operationInputSumm"/></td>--%>
+                <%--<td nowrap="nowrap"><s:property value="change"/></td>--%>
+                <%--<td class="service_column" nowrap="nowrap" style="display: none;">&nbsp;</td>--%>
+                <%--<td class="service_provider_column" nowrap="nowrap" style="display: none;" colspan="2">&nbsp;</td>--%>
+            <%--</tr>--%>
         </s:iterator>
 
         <tr>
