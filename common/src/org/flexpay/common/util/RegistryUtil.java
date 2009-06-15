@@ -10,8 +10,8 @@ public class RegistryUtil {
 	public static final String CONTAINER_BODY_SEPARATOR = ":";
 	public static final String CONTAINER_SEPARATOR = "|";
 
-	public static final char REGISTRY_RECORD_MESSAGE_TYPE_CHAR = 0x03;
 	public static final char REGISTY_HEADER_MESSAGE_TYPE_CHAR = 0x0C;
+	public static final char REGISTRY_RECORD_MESSAGE_TYPE_CHAR = 0x03;
 	public static final char REGISTRY_FOOTER_MESSAGE_TYPE_CHAR = 0x0B;
 
 	public static final String OPERATION_DATE_FORMAT = "ddMMyyyyHHmmss";

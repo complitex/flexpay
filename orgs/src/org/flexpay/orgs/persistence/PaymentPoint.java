@@ -3,13 +3,13 @@ package org.flexpay.orgs.persistence;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.flexpay.common.persistence.DomainObjectWithStatus;
-import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.Language;
+import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.util.TranslationUtil;
 import org.flexpay.common.util.config.ApplicationConfig;
+import org.jbpm.graph.exe.ProcessInstance;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.jbpm.graph.exe.ProcessInstance;
 
 import java.util.Collections;
 import java.util.Locale;
@@ -117,13 +117,14 @@ public class PaymentPoint extends DomainObjectWithStatus {
 		return null;
 	}
 
-
 	@Override
 	public String toString() {
 		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
 				append("id", getId()).
 				append("status", getStatus()).
 				append("address", address).
+				append("email", email).
+				append("tradingDayProcessInstanceId", tradingDayProcessInstanceId).
 				toString();
 	}
 

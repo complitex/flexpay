@@ -1,31 +1,36 @@
 package org.flexpay.payments.process.export;
 
-import org.springframework.scheduling.quartz.QuartzJobBean;
-import org.springframework.beans.factory.annotation.Required;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.flexpay.common.dao.paging.Page;
+import org.flexpay.common.exception.FlexPayExceptionContainer;
+import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.process.ContextCallback;
+import org.flexpay.common.process.Process;
+import org.flexpay.common.process.ProcessManager;
+import org.flexpay.common.process.ProcessState;
+import org.flexpay.common.process.exception.ProcessDefinitionException;
+import org.flexpay.common.process.exception.ProcessInstanceException;
+import org.flexpay.common.process.sorter.ProcessSorterByName;
+import org.flexpay.common.service.Roles;
+import org.flexpay.common.util.CollectionUtils;
+import org.flexpay.common.util.DateUtil;
+import org.flexpay.common.util.SecurityUtil;
+import org.flexpay.orgs.persistence.PaymentPoint;
+import org.flexpay.orgs.service.PaymentPointService;
+import org.jbpm.JbpmContext;
+import org.jbpm.graph.exe.ProcessInstance;
+import org.jetbrains.annotations.NotNull;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
-import org.flexpay.common.process.*;
-import org.flexpay.common.process.Process;
-import org.flexpay.common.process.exception.ProcessInstanceException;
-import org.flexpay.common.process.exception.ProcessDefinitionException;
-import org.flexpay.common.process.sorter.ProcessSorterByName;
-import org.flexpay.common.dao.paging.Page;
-import org.flexpay.common.util.CollectionUtils;
-import org.flexpay.common.util.SecurityUtil;
-import org.flexpay.common.util.DateUtil;
-import org.flexpay.common.service.Roles;
-import org.flexpay.common.persistence.Stub;
-import org.flexpay.common.exception.FlexPayExceptionContainer;
-import org.flexpay.orgs.service.PaymentPointService;
-import org.flexpay.orgs.persistence.PaymentPoint;
-import org.jbpm.graph.exe.ProcessInstance;
-import org.jbpm.JbpmContext;
-import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Required;
+import org.springframework.scheduling.quartz.QuartzJobBean;
 
-import java.util.*;
 import java.io.Serializable;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class TradingDay extends QuartzJobBean {
 
@@ -41,6 +46,7 @@ public class TradingDay extends QuartzJobBean {
     private static final long TIME_OUT = 10000;
     private static final ProcessSorterByName processSorterByName = new ProcessSorterByName();
 
+	private Long organizationId;
 	private List<String> paymentPoints;
 
     private ProcessManager processManager;
@@ -134,18 +140,17 @@ public class TradingDay extends QuartzJobBean {
             } else {
 
                 parameters.put("paymentPointId", paymentPointId);
-                log.debug("set paymentPointId {}", paymentPointId);
+                log.debug("Set paymentPointId {}", paymentPointId);
 
 				//fill begin and end date
                 parameters.put("beginDate", DateUtil.truncateDay(new Date()));
-                log.debug("set beginDate {}", DateUtil.truncateDay(new Date()));
+                log.debug("Set beginDate {}", DateUtil.truncateDay(new Date()));
 
                 parameters.put("endDate", DateUtil.getEndOfThisDay(new Date()));
-                log.debug("set endDate {}", DateUtil.getEndOfThisDay(new Date()));
+                log.debug("Set endDate {}", DateUtil.getEndOfThisDay(new Date()));
 
-				//TODO fill organization id
-                parameters.put("organizationId", 6L);
-                log.debug("set organizationId {}", 6L);
+                parameters.put("organizationId", organizationId);
+                log.debug("Set organizationId {}", organizationId);
 
                 try {
                     pp.setTradingDayProcessInstanceId(processManager.createProcess(PROCESS_DEFINITION_NAME, parameters));
@@ -176,7 +181,12 @@ public class TradingDay extends QuartzJobBean {
         this.paymentPoints = paymentPoints;
     }
 
-    @Required
+	@Required
+	public void setOrganizationId(Long organizationId) {
+		this.organizationId = organizationId;
+	}
+
+	@Required
     public void setPaymentPointService(PaymentPointService paymentPointService) {
         this.paymentPointService = paymentPointService;
     }

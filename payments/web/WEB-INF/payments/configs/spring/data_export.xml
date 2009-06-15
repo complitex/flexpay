@@ -28,4 +28,8 @@
         </constructor-arg>
     </bean>
 
+    <bean id="organizationId" class="java.lang.Long">
+        <constructor-arg value="5" />
+    </bean>
+
 </beans>
