@@ -118,7 +118,7 @@ public abstract class PaymentOperationAction extends CashboxCookieActionSupport 
 		document.setDocumentType(documentTypeService.read(DocumentType.CASH_PAYMENT));
 		document.setSumm(documentSumm);
 		document.setAddress(addresses.get(serviceFullIndex));
-		document.setPayerFIO(payerFios.get(serviceFullIndex));
+		document.setPayerFIO(payerFios.get(serviceFullIndex).trim());
 		document.setDebtorOrganization(cashbox.getPaymentPoint().getCollector().getOrganization());
 		document.setDebtorId(eircAccounts.get(serviceFullIndex));
 		document.setCreditorOrganization(serviceProviderOrganization);
@@ -142,7 +142,7 @@ public abstract class PaymentOperationAction extends CashboxCookieActionSupport 
 		document.setBuildingNumber(buildingAddress.getNumber());
 
 		Street street = streetService.readFull(buildingAddress.getStreetStub());
-		document.setStreetType(getTranslation(street.getCurrentType().getTranslations()).getName());
+		document.setStreetType(getTranslation(street.getCurrentType().getTranslations()).getShortName());
 		document.setStreetName(getTranslation(street.getCurrentName().getTranslations()).getName());
 
 		Town town = townService.readFull(street.getTownStub());

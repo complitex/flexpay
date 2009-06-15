@@ -124,7 +124,8 @@ public class ExportBankPaymentsRegistry {
 				append(RegistryUtil.FIELD_SEPARATOR).
 				append(StringUtil.getString(registry.getRecipientCode())).
 				append(RegistryUtil.FIELD_SEPARATOR).
-				append(StringUtil.getString(registry.getAmount()));
+				append(StringUtil.getString(registry.getAmount())).
+				append(RegistryUtil.FIELD_SEPARATOR);
 
 		log.debug("File header = {}", header.toString());
 
@@ -146,7 +147,8 @@ public class ExportBankPaymentsRegistry {
 				append(RegistryUtil.FIELD_SEPARATOR).
 				append(StringUtil.getString(record.getPersonalAccountExt())).
 				append(RegistryUtil.FIELD_SEPARATOR).
-				append(StringUtil.getString(record.getCity())).
+				//default city is empty
+//				append(StringUtil.getString(record.getCity())).
 				append(RegistryUtil.ADDRESS_SEPARATOR).
 				append(StringUtil.getString(record.getStreetType())).
 				append(RegistryUtil.ADDRESS_SEPARATOR).
@@ -197,8 +199,7 @@ public class ExportBankPaymentsRegistry {
 		log.debug("Building footer for registry = {}", registry);
 
 		footer.append(RegistryUtil.REGISTRY_FOOTER_MESSAGE_TYPE_CHAR).
-				append(RegistryUtil.FIELD_SEPARATOR).
-				append(StringUtil.getString(registry.getRegistryNumber()));
+				append(StringUtil.getString(registry.getId()));
 
 		log.debug("File footer = {}", footer.toString());
 
