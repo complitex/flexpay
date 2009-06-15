@@ -96,7 +96,7 @@ public class EndOperationDayRegistryGenerator {
 				record.setRecordStatus(recordStatus);
 
 				record.setServiceCode(String.valueOf(document.getService().getServiceType().getCode()));
-				record.setPersonalAccountExt(document.getDebtorId());
+				record.setPersonalAccountExt(document.getCreditorId());
 				record.setUniqueOperationNumber(document.getId());
 
 //				record.setLastName(StringUtils.stripToEmpty(document.getPayerFIO()));
