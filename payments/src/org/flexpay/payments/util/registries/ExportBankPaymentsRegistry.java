@@ -138,7 +138,8 @@ public class ExportBankPaymentsRegistry {
 		SimpleDateFormat df = new SimpleDateFormat(RegistryUtil.OPERATION_DATE_FORMAT);
 
 		StringBuilder sb = new StringBuilder();
-		sb.append(RegistryUtil.REGISTRY_RECORD_MESSAGE_TYPE_CHAR).append(RegistryUtil.FIELD_SEPARATOR).
+		sb.append(RegistryUtil.REGISTRY_RECORD_MESSAGE_TYPE_CHAR).
+				append(RegistryUtil.FIELD_SEPARATOR).
 				append(StringUtil.getString(registry.getId())).
 				append(RegistryUtil.FIELD_SEPARATOR).
 				append(StringUtil.getString(record.getServiceCode())).
@@ -196,6 +197,7 @@ public class ExportBankPaymentsRegistry {
 		log.debug("Building footer for registry = {}", registry);
 
 		footer.append(RegistryUtil.REGISTRY_FOOTER_MESSAGE_TYPE_CHAR).
+				append(RegistryUtil.FIELD_SEPARATOR).
 				append(StringUtil.getString(registry.getRegistryNumber()));
 
 		log.debug("File footer = {}", footer.toString());
