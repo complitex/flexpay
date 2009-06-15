@@ -20,6 +20,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.annotation.Propagation;
+import org.apache.commons.lang.StringUtils;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -98,17 +99,17 @@ public class EndOperationDayRegistryGenerator {
 				record.setPersonalAccountExt(document.getDebtorId());
 				record.setUniqueOperationNumber(document.getId());
 
-				record.setLastName(StringUtil.getString(document.getPayerFIO()));
+				record.setLastName(StringUtils.stripToEmpty(document.getPayerFIO()));
 				//todo: parse last, middle and first name
 //				record.setLastName(document.getLastName());
 //				record.setMiddleName(document.getMiddleName());
 //				record.setFirstName(document.getFirstName());
-				record.setCity(StringUtil.getString(document.getTown()));
-				record.setBuildingBulkNum(StringUtil.getString(document.getBuildingBulk()));
-				record.setStreetType(StringUtil.getString(document.getStreetType()));
-				record.setStreetName(StringUtil.getString(document.getStreetName()));
-				record.setBuildingNum(StringUtil.getString(document.getBuildingNumber()));
-				record.setApartmentNum(StringUtil.getString(document.getApartmentNumber()));
+				record.setCity(StringUtils.stripToEmpty(document.getTown()));
+				record.setBuildingBulkNum(StringUtils.stripToEmpty(document.getBuildingBulk()));
+				record.setStreetType(StringUtils.stripToEmpty(document.getStreetType()));
+				record.setStreetName(StringUtils.stripToEmpty(document.getStreetName()));
+				record.setBuildingNum(StringUtils.stripToEmpty(document.getBuildingNumber()));
+				record.setApartmentNum(StringUtils.stripToEmpty(document.getApartmentNumber()));
 
 				List<RegistryRecordContainer> containers = new ArrayList<RegistryRecordContainer>();
 
