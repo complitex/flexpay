@@ -10,8 +10,10 @@ import org.flexpay.common.process.ProcessManager;
 import org.flexpay.common.process.ContextCallback;
 import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.orgs.persistence.ServiceProvider;
+import org.flexpay.orgs.persistence.PaymentPoint;
 import org.flexpay.orgs.service.OrganizationService;
 import org.flexpay.orgs.service.ServiceProviderService;
+import org.flexpay.orgs.service.PaymentPointService;
 import org.flexpay.payments.actions.CashboxCookieActionSupport;
 import org.flexpay.payments.actions.PaymentOperationAction;
 import org.flexpay.payments.persistence.*;
@@ -39,6 +41,7 @@ public class QuittancePayAction extends PaymentOperationAction {
 
 	private ProcessManager processManager;
 
+	private PaymentPointService paymentPointService;
 	@NotNull
 	protected String doExecute() throws Exception {
 
@@ -47,20 +50,12 @@ public class QuittancePayAction extends PaymentOperationAction {
 		if (cashbox == null) {
 			throw new IllegalArgumentException("Invalid cashbox id: " + cashboxId);
 		}
-
+		PaymentPoint paymentPoint = cashbox.getPaymentPoint();
+		paymentPoint = paymentPointService.read(new Stub<PaymentPoint>(paymentPoint));
+		final Long paymentProcessId = paymentPoint.getTradingDayProcessInstanceId();
 		//@TODO reformat if then else shit
-		final Long paymentProcessId = cashbox.getPaymentPoint().getTradingDayProcessInstanceId();
 		if (paymentProcessId != null && paymentProcessId != 0) {
 			log.debug("Found process id {} for cashbox {}", new Object[]{paymentProcessId, cashboxId});
-//			Boolean opened = processManager.execute(new ContextCallback<Boolean>(){
-//				public Boolean doInContext(@NotNull JbpmContext context) {
-//					ProcessInstance processInstance = context.getProcessInstance(paymentProcessId);
-//					if (processInstance == null || processInstance.hasEnded()){
-//						return false;
-//					}
-//					return new Boolean((String)context.getProcessInstance(paymentProcessId).getContextInstance().getVariable(TradingDay.CAN_UPDATE_OR_CRETAE_OPERATION));
-//				}
-//			});
 			if (TradingDay.isOpened(processManager, paymentProcessId, log)) {
 				operation = createOperation(cashbox);
 				if (BigDecimalUtil.isZero(operation.getOperationSumm()) || operation.getDocuments() == null || operation.getDocuments().size() == 0) {
@@ -99,5 +94,10 @@ public class QuittancePayAction extends PaymentOperationAction {
 	@Required
 	public void setProcessManager(ProcessManager processManager) {
 		this.processManager = processManager;
+	}
+
+	@Required
+	public void setPaymentPointService(PaymentPointService paymentPointService) {
+		this.paymentPointService = paymentPointService;
 	}
 }
