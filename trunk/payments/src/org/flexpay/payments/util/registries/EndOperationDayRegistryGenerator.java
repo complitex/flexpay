@@ -52,8 +52,6 @@ public class EndOperationDayRegistryGenerator {
 
 		Registry registry = new Registry();
 
-		registry.setFromDate(beginDate);
-		registry.setTillDate(endDate);
 		registry.setCreationDate(new Date());
 		registry.setSenderCode(paymentPoint.getCollector().getOrganizationStub().getId());
 		registry.setRecipientCode(organization.getId());
@@ -73,9 +71,19 @@ public class EndOperationDayRegistryGenerator {
 
 		long recordsNum = 0;
 
+		Date minDate = new Date();
+		Date maxDate = new Date();
+
 		for (Operation operation : operations) {
 
 			log.debug("Operation with id = {} processing...", operation.getId());
+
+			if (operation.getCreationDate().getTime() < minDate.getTime()) {
+				minDate = operation.getCreationDate();
+			}
+			if (operation.getCreationDate().getTime() > maxDate.getTime()) {
+				maxDate = operation.getCreationDate();
+			}
 
 			for (Document document : operation.getDocuments()) {
 
@@ -131,6 +139,8 @@ public class EndOperationDayRegistryGenerator {
 
 		}
 
+		registry.setFromDate(minDate);
+		registry.setTillDate(maxDate);
 		registry.setRecordsNumber(recordsNum);
 		registry.setAmount(totalSumm);
 		registry.setRegistryStatus(registryStatusService.findByCode(RegistryStatus.CREATED));

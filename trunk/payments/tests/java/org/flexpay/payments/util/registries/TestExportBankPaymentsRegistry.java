@@ -19,7 +19,7 @@ public class TestExportBankPaymentsRegistry extends PaymentsSpringBeanAwareTestC
 	@Test
 	public void testExport() throws Throwable {
 
-		Registry registry = registryService.read(new Stub<Registry>(2L));
+		Registry registry = registryService.read(new Stub<Registry>(4L));
 
 		registry = exportBankPaymentsRegistry.export(registry);
 
