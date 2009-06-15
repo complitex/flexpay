@@ -117,7 +117,7 @@ public class OperationsListAction extends CashboxCookieWithPagerActionSupport<Op
 				});
 			}
 			//fetch Trading day status
-			canCreateOrUpdateOperations = TradingDay.isOpened(processManager, processInstanceId);
+			canCreateOrUpdateOperations = TradingDay.isOpened(processManager, processInstanceId,log);
 			//fetch taskInstance  and transitions
 			final TaskInstance taskInstance = TaskHelper.getTaskInstance(processManager, processInstanceId, PaymentCollectorAssignmentHandler.PAYMENT_COLLECTOR, log);
 

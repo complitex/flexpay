@@ -61,7 +61,7 @@ public class QuittancePayAction extends PaymentOperationAction {
 //					return new Boolean((String)context.getProcessInstance(paymentProcessId).getContextInstance().getVariable(TradingDay.CAN_UPDATE_OR_CRETAE_OPERATION));
 //				}
 //			});
-			if (TradingDay.isOpened(processManager, paymentProcessId)) {
+			if (TradingDay.isOpened(processManager, paymentProcessId, log)) {
 				operation = createOperation(cashbox);
 				if (BigDecimalUtil.isZero(operation.getOperationSumm()) || operation.getDocuments() == null || operation.getDocuments().size() == 0) {
 					log.debug("Zero summ for operation or zero documents for operation created. Operation was not created");
