@@ -37,6 +37,7 @@
 
 		<global-results>
 			<result name="cashboxAuthenticationRequired" type="tiles">payments.error.cashbox_authentication_required</result>
+			<result name="tradingTayClosed" type="tiles">payments.error.trading_day_closed</result>
 		</global-results>
 
 		<action name="main" class="cashboxStaticPageAction">

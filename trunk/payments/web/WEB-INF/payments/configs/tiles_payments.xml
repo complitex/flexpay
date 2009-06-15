@@ -38,6 +38,11 @@
 		<put-attribute name="body" value="/WEB-INF/jsp/payments/errors/cashbox_authentication_required.jsp"/>
 	</definition>
 
+	<definition name="payments.error.trading_day_closed" extends="payments.main">
+		<put-attribute name="title" value="payments.errors.trading_day_closed"/>
+		<put-attribute name="body" value="/WEB-INF/jsp/payments/errors/trading_day_closed.jsp"/>
+	</definition>
+
 	<definition name="payments.security.get_identity_cookie" extends="payments.main">
 		<put-attribute name="title" value="payments.get_identity_cookie.title"/>
 		<put-attribute name="body" value="/WEB-INF/jsp/payments/security/get_identity_cookie.jsp"/>
