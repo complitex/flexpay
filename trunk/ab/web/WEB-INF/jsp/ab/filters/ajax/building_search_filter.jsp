@@ -4,7 +4,7 @@
 	<s:set name="buildingsFilter.field.value" value="buildingsFilter.searchString" />
 </s:if>
 
-<s:if test="%{buildingsFilter.needFilter()}">
+<s:if test="%{buildingsFilter != null && buildingsFilter.needFilter()}">
 	<s:set name="buildingId" value="%{buildingsFilter.selectedId}" />
 </s:if>
 <s:else>
