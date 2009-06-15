@@ -23,7 +23,7 @@ public class RegistriesListAction extends CashboxCookieWithPagerActionSupport {
 	private OrganizationFilter senderOrganizationFilter = new OrganizationFilter();
 	private OrganizationFilter recipientOrganizationFilter = new OrganizationFilter();
 	private RegistryTypeFilter registryTypeFilter = new RegistryTypeFilter();
-	private Date fromDate = DateUtils.addMonths(DateUtil.currentMonth(), -2);
+	private Date fromDate = DateUtils.addDays(DateUtil.now(), -2);
 	private Date tillDate = new Date();
 
 	private List<Registry> registries;
