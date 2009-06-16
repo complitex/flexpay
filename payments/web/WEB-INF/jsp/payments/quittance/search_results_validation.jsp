@@ -55,6 +55,7 @@
 
 		// setting focus to the first payments field
 		$('#' + fieldChain[0]).focus();
+		$('#' + fieldChain[0]).select();
 		currentFieldIndex = 0;
 	}
 
@@ -68,6 +69,7 @@
 			for (var i = 0; i < fieldChain.length; i++) {
 				if (fieldChain[i] == selectedFieldId) {
 					currentFieldIndex = i;
+					$('#' + fieldChain[i]).select();
 					return;
 				}
 			}
@@ -75,14 +77,17 @@
 
 		$('#payments_<s:property value="#serviceIndx"/>').bind('keypress', function(event) {
 			if (event.keyCode == 13 || event.keyCode == 9) {
-				$('#' + fieldChain[currentFieldIndex + 1]).focus();
-				 event.preventDefault();
+				var nextFieldId = fieldChain[currentFieldIndex + 1];
+				$('#' + nextFieldId).focus();
+				$('#' + nextFieldId).select();
+				event.preventDefault();
 			}
 		});
         </s:iterator>
 	</s:iterator>
 		$('#inputSumm').bind('keypress', function(event) {
                if (event.keyCode == 13) {
+				   updateChange();
                    doPrintQuittance();
                }
     	});
