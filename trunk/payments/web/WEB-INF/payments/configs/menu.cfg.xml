@@ -15,7 +15,7 @@
 	<!-- level 1 -->
 	<bean name="payments" parent="fpMenu"
 		  p:name="payments"
-		  p:title="payments.menu1.title"
+		  p:title="payments.menu1.operator_title"
 		  p:namespace="/payments"
 		  p:action="searchByAddress"
 		  p:parent-ref="fpMenu">
@@ -189,7 +189,7 @@
 	<!-- level 1 -->
 	<bean name="payments.acc" parent="fpMenu"
           p:name="payments.acc"
-          p:title="payments.menu1.title"
+          p:title="payments.menu1.accountant_title"
           p:namespace="/payments"
           p:action="emptyPage"
           p:parent-ref="fpMenu">
