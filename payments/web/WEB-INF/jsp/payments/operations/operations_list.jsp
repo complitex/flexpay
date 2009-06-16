@@ -172,21 +172,10 @@
         </sec:authorize>
 
         <tr>
-            <td nowrap="nowrap"><s:text name="payments.operations.list.service_type"/></td>
-            <td colspan="2" nowrap="nowrap"><s:select name="serviceTypeId" list="serviceTypes" listKey="id" listValue="name"
-                                                      emptyOption="true"/></td>
-            <td nowrap="nowrap"><input type="submit" name="filterSubmitted" class="btn-exit"
-                                       value="<s:text name="payments.operations.list.filter"/>"/></td>
-        </tr>
-
-        <tr>
             <td nowrap="nowrap"><s:text name="payments.operations.list.time_from"/></td>
             <td nowrap="nowrap">
                 <%@ include file="/WEB-INF/jsp/common/filter/begin_time_filter.jsp" %>
             </td>
-        </tr>
-
-        <tr>
             <td nowrap="nowrap"><s:text name="payments.operations.list.time_till"/></td>
             <td nowrap="nowrap">
                 <%@ include file="/WEB-INF/jsp/common/filter/end_time_filter.jsp" %>
@@ -198,6 +187,14 @@
             <td nowrap="nowrap"><s:textfield name="minimalSumm"/></td>
             <td nowrap="nowrap"><s:text name="payments.operations.list.summ_up_to"/></td>
             <td nowrap="nowrap"><s:textfield name="maximalSumm"/></td>
+        </tr>
+
+        <tr>
+            <td nowrap="nowrap"><s:text name="payments.operations.list.service_type"/></td>
+            <td colspan="2" nowrap="nowrap"><s:select name="serviceTypeId" list="serviceTypes" listKey="id" listValue="name"
+                                                      emptyOption="true"/></td>
+            <td nowrap="nowrap"><input type="submit" name="filterSubmitted" class="btn-exit"
+                                       value="<s:text name="payments.operations.list.filter"/>"/></td>
         </tr>
     </table>
 <%--</sec:authorize>--%>
