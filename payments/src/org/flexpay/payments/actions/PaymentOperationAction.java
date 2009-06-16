@@ -162,7 +162,6 @@ public abstract class PaymentOperationAction extends CashboxCookieActionSupport 
 		for (String p : pieces) {
 			if (StringUtils.isNotBlank(p)) {
 				tokens.add(p);
-				log.debug("[!!!] Token: " + p);
 			}
 		}
 

@@ -59,7 +59,7 @@ public class GenerateQuittancesPDFJasperJob extends Job {
 			jrDataSource.setPrintData(printInfoData, 4);
 
 			plog.info("Running report");
-			FPFile report = reportUtil.exportToPdf("Quittance", null, jrDataSource);
+			FPFile report = reportUtil.exportToPdf("Quittance", null, jrDataSource, ApplicationConfig.getDefaultReportLocale());
 
 			contextVariables.put(RESULT_FILE_ID, report.getId());
 
