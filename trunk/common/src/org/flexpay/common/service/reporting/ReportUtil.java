@@ -66,6 +66,11 @@ public class ReportUtil {
 	 */
 	private static final String PARAM_NAME_SUBREPORTS_DIR = "SUBREPORT_DIR";
 
+	/**
+	 * Report locale parameter name
+	 */
+	private static final String PARAM_NAME_REPORT_LOCALE = "REPORT_LOCALE";
+
 	private static final String RESOURCE_CONNECTION = ReportUtil.class.getName() + "_CONNECTION";
 
 	private SessionFactory sessionFactory;
@@ -115,7 +120,6 @@ public class ReportUtil {
 		ensureDirsExist();
 
 		uploadTemplateFile(sourcePath, reportName);
-		//uploadResourceBundleFiles(sourcePath, reportName);
 
 		compiledReports.remove(reportName);
 		ensureReportCompiled(reportName);
@@ -206,14 +210,15 @@ public class ReportUtil {
 	 * @param name   Report name
 	 * @param params Report parameters
 	 * @param source optional data source
+	 * @param locale report locale if null default one will be used
 	 * @return Result PDF file
 	 * @throws Exception if failure occurs
 	 */
-	public FPFile exportToPdf(String name, Map<?, ?> params, JRDataSource source) throws Exception {
+	public FPFile exportToPdf(String name, Map<?, ?> params, JRDataSource source, Locale locale) throws Exception {
 
 		params = params(params);
 
-		JasperPrint print = fillReport(name, params, source);
+		JasperPrint print = fillReport(name, params, source, locale);
 		JRPdfExporter exporter = new JRPdfExporter();
 		return exportToFile(exporter, print, name + EXTENSION_PDF, params);
 	}
@@ -224,14 +229,15 @@ public class ReportUtil {
 	 * @param name   Report name
 	 * @param params Report parameters
 	 * @param source optional data source
+	 * @param locale report locale if null default one will be used
 	 * @return Result HTML file
 	 * @throws Exception if failure occurs
 	 */
-	public FPFile exportToHtml(String name, Map<?, ?> params, JRDataSource source) throws Exception {
+	public FPFile exportToHtml(String name, Map<?, ?> params, JRDataSource source, Locale locale) throws Exception {
 
 		params = params(params);
 
-		JasperPrint print = fillReport(name, params, source);
+		JasperPrint print = fillReport(name, params, source, locale);
 		JRHtmlExporter exporter = new JRHtmlExporter();
 		return exportToFile(exporter, print, name + EXTENSION_HTML, params);
 	}
@@ -242,14 +248,15 @@ public class ReportUtil {
 	 * @param name   Report name
 	 * @param params Report parameters
 	 * @param source optional data source
+	 * @param locale report locale if null default one will be used
 	 * @return Result CSV file
 	 * @throws Exception if failure occurs
 	 */
-	public FPFile exportToCsv(String name, Map<?, ?> params, JRDataSource source) throws Exception {
+	public FPFile exportToCsv(String name, Map<?, ?> params, JRDataSource source, Locale locale) throws Exception {
 
 		params = params(params);
 
-		JasperPrint print = fillReport(name, params, source);
+		JasperPrint print = fillReport(name, params, source, locale);
 		JRCsvExporter exporter = new JRCsvExporter();
 		return exportToFile(exporter, print, name + EXTENSION_CSV, params);
 	}
@@ -290,12 +297,20 @@ public class ReportUtil {
 	 * @param name		 Report template name
 	 * @param parameters   Report parameters
 	 * @param jrDataSource optional data source
+	 * @param locale report locale, if null default locale will be used
 	 * @return Filled report
 	 * @throws Exception if failure occurs
 	 */
 	@SuppressWarnings ({"unchecked", "RawUseOfParameterizedType"})
-	private JasperPrint fillReport(String name, Map parameters, JRDataSource jrDataSource)
+	private JasperPrint fillReport(String name, Map parameters, JRDataSource jrDataSource, Locale locale)
 			throws Exception {
+
+		// setting locale parameter
+		if (locale != null) {
+			parameters.put(PARAM_NAME_REPORT_LOCALE, locale);			
+		} else {
+			parameters.put(PARAM_NAME_REPORT_LOCALE, ApplicationConfig.getDefaultReportLocale());
+		}
 
 		ensureReportCompiled(name);
 		ensureDirsExist();

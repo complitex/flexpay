@@ -94,7 +94,7 @@ public class PaymentOperationReportAction extends PaymentOperationAction {
 			uploadReportTemplates(paymentPointSuffix);
 		}
 
-		report = reportUtil.exportToPdf(reportName, params, dataSource);
+		report = reportUtil.exportToPdf(reportName, params, dataSource, userPreferences.getLocale());
 
 		return FILE;
 	}

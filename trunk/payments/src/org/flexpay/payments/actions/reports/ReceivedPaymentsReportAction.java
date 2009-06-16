@@ -59,12 +59,11 @@ public class ReceivedPaymentsReportAction extends CashboxCookieActionSupport {
 		JRDataSource dataSource = new JRBeanCollectionDataSource(data.getOperationDetailses());
 
 		String reportName = getReportName();
-		// FIXME set back before commit
-		//if (!reportUtil.templateUploaded(reportName)) {
+		if (!reportUtil.templateUploaded(reportName)) {
 			uploadReport(reportName);
-		//}
+		}
 
-		report = reportUtil.exportToPdf(reportName, params, dataSource);
+		report = reportUtil.exportToPdf(reportName, params, dataSource, userPreferences.getLocale());	
 
 		return FILE;
 	}

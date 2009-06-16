@@ -28,7 +28,7 @@ public class TestReportUtil extends SpringBeanAwareTestCase {
 	@Test (expected = Exception.class)
 	public void testFillNotExistingReport() throws Exception {
 		String reportName = "_NOT_EXISTING_REPORT_";
-		FPFile file = reportUtil.exportToHtml(reportName, null, null);
+		FPFile file = reportUtil.exportToHtml(reportName, null, null, null);
 		fileService.delete(file);
 	}
 
@@ -47,7 +47,7 @@ public class TestReportUtil extends SpringBeanAwareTestCase {
 			FPFile file = reportUtil.exportToCsv(reportName,
 					map(
 							ar("dataSourceId", "dataSourceDescr"),
-							ar(sourceDescription.getId(), sourceDescription.getDescription())), null);
+							ar(sourceDescription.getId(), sourceDescription.getDescription())), null, null);
 			fileService.delete(file);
 		} finally {
 			IOUtils.closeQuietly(is);
@@ -65,7 +65,7 @@ public class TestReportUtil extends SpringBeanAwareTestCase {
 			FPFile file = reportUtil.exportToPdf(reportName,
 					map(
 							ar("dataSourceId", "dataSourceDescr"),
-							ar(sourceDescription.getId(), sourceDescription.getDescription())), null);
+							ar(sourceDescription.getId(), sourceDescription.getDescription())), null, null);
 			fileService.delete(file);
 		} finally {
 			IOUtils.closeQuietly(is);

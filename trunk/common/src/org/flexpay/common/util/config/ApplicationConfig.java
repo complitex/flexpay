@@ -37,6 +37,8 @@ public class ApplicationConfig {
 	private String dataRoot;
     private int logPreviewLinesNumber;
 
+	private Locale defaultReportLocale;
+
 	static {
 		// ensure Security fields are initialised
 		Security.touch();
@@ -261,5 +263,13 @@ public class ApplicationConfig {
 	public static boolean isResourceAvailable(String name) {
 		Resource resource = resourceLoader.getResource(name);
 		return resource.exists();
+	}
+
+	public void setDefaultReportLocale(String localeName) {
+		this.defaultReportLocale = new Locale(localeName);
+	}
+
+	public static Locale getDefaultReportLocale() {
+		return getInstance().defaultReportLocale;
 	}
 }
