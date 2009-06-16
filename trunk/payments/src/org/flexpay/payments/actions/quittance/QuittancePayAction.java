@@ -32,7 +32,7 @@ import java.util.Map;
 
 public class QuittancePayAction extends PaymentOperationAction {
 
-	private static final String TRADING_DAY_CLOSED = "tradingTayClosed"; // tiles result name
+	private static final String TRADING_DAY_CLOSED = "tradingDayClosed"; // tiles result name
 
 	private Operation operation = new Operation();
 
