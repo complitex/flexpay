@@ -34,56 +34,56 @@
 		<variableExpression><![CDATA[$F{summ}]]></variableExpression>
 		<initialValueExpression><![CDATA[new java.math.BigDecimal("0.00")]]></initialValueExpression>
 	</variable>
-	<variable name="kvartplataTotalCount" class="java.lang.Integer" calculation="Count">
-		<variableExpression><![CDATA[$F{paymentKvartplata}]]></variableExpression>
+	<variable name="kvartplataTotalCount" class="java.lang.Integer">
+		<variableExpression><![CDATA[new Integer($V{kvartplataTotalCount}.intValue() + (($F{paymentKvartplata}.doubleValue() > 0) ? 1 : 0))]]></variableExpression>
 		<initialValueExpression><![CDATA[new java.lang.Integer(0)]]></initialValueExpression>
 	</variable>
 	<variable name="kvartplataTotalSumm" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[$F{paymentKvartplata}]]></variableExpression>
 		<initialValueExpression><![CDATA[new java.math.BigDecimal("0.00")]]></initialValueExpression>
 	</variable>
-	<variable name="dogsTotalCount" class="java.lang.Integer" calculation="Count">
-		<variableExpression><![CDATA[$F{paymentDogs}]]></variableExpression>
+	<variable name="dogsTotalCount" class="java.lang.Integer">
+                <variableExpression><![CDATA[new Integer($V{dogsTotalCount}.intValue() + (($F{paymentDogs}.doubleValue() > 0) ? 1 : 0))]]></variableExpression>
 		<initialValueExpression><![CDATA[new java.lang.Integer(0)]]></initialValueExpression>
 	</variable>
 	<variable name="dogsTotalSumm" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[$F{paymentDogs}]]></variableExpression>
 		<initialValueExpression><![CDATA[new java.math.BigDecimal("0.00")]]></initialValueExpression>
 	</variable>
-	<variable name="garageTotalCount" class="java.lang.Integer" calculation="Count">
-		<variableExpression><![CDATA[$F{paymentGarage}]]></variableExpression>
+	<variable name="garageTotalCount" class="java.lang.Integer">
+                <variableExpression><![CDATA[new Integer($V{garageTotalCount}.intValue() + (($F{paymentGarage}.doubleValue() > 0) ? 1 : 0))]]></variableExpression>		
 		<initialValueExpression><![CDATA[new java.lang.Integer(0)]]></initialValueExpression>
 	</variable>
 	<variable name="garageTotalSumm" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[$F{paymentGarage}]]></variableExpression>
 		<initialValueExpression><![CDATA[new java.math.BigDecimal("0.00")]]></initialValueExpression>
 	</variable>
-	<variable name="warmingTotalCount" class="java.lang.Integer" calculation="Count">
-		<variableExpression><![CDATA[$F{paymentWarming}]]></variableExpression>
+	<variable name="warmingTotalCount" class="java.lang.Integer">
+            <variableExpression><![CDATA[new Integer($V{warmingTotalCount}.intValue() + (($F{paymentWarming}.doubleValue() > 0) ? 1 : 0))]]></variableExpression>
 		<initialValueExpression><![CDATA[new java.lang.Integer(0)]]></initialValueExpression>
 	</variable>
 	<variable name="warmingTotalSumm" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[$F{paymentWarming}]]></variableExpression>
 		<initialValueExpression><![CDATA[new java.math.BigDecimal("0.00")]]></initialValueExpression>
 	</variable>
-	<variable name="hotWaterTotalCount" class="java.lang.Integer" calculation="Count">
-		<variableExpression><![CDATA[$F{paymentHotWater}]]></variableExpression>
+	<variable name="hotWaterTotalCount" class="java.lang.Integer">
+                <variableExpression><![CDATA[new Integer($V{hotWaterTotalCount}.intValue() + (($F{paymentHotWater}.doubleValue() > 0) ? 1 : 0))]]></variableExpression>
 		<initialValueExpression><![CDATA[new Integer(0)]]></initialValueExpression>
 	</variable>
 	<variable name="hotWaterTotalSumm" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[$F{paymentHotWater}]]></variableExpression>
 		<initialValueExpression><![CDATA[new java.math.BigDecimal("0.00")]]></initialValueExpression>
 	</variable>
-	<variable name="coldWaterTotalCount" class="java.lang.Integer" calculation="Count">
-		<variableExpression><![CDATA[$F{paymentColdWater}]]></variableExpression>
+	<variable name="coldWaterTotalCount" class="java.lang.Integer">
+                <variableExpression><![CDATA[new Integer($V{coldWaterTotalCount}.intValue() + (($F{paymentColdWater}.doubleValue() > 0) ? 1 : 0))]]></variableExpression>
 		<initialValueExpression><![CDATA[new java.lang.Integer(0)]]></initialValueExpression>
 	</variable>
 	<variable name="coldWaterTotalSumm" class="java.math.BigDecimal" calculation="Sum">
 		<variableExpression><![CDATA[$F{paymentColdWater}]]></variableExpression>
 		<initialValueExpression><![CDATA[new java.math.BigDecimal("0.00")]]></initialValueExpression>
 	</variable>
-	<variable name="sewerTotalCount" class="java.lang.Integer" calculation="Count">
-		<variableExpression><![CDATA[$F{paymentSewer}]]></variableExpression>
+	<variable name="sewerTotalCount" class="java.lang.Integer">
+                <variableExpression><![CDATA[new Integer($V{sewerTotalCount}.intValue() + (($F{paymentSewer}.doubleValue() > 0) ? 1 : 0))]]></variableExpression>		
 		<initialValueExpression><![CDATA[new java.lang.Integer(0)]]></initialValueExpression>
 	</variable>
 	<variable name="sewerTotalSumm" class="java.math.BigDecimal" calculation="Sum">
