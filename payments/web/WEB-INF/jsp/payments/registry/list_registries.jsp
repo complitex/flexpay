@@ -18,9 +18,16 @@
 	<%@include file="../filters/date_interval_filter.jsp" %>
 	</span>
 
-	<input type="submit" value="<s:text name="eirc.filter" />" class="btn-exit"/>
 
 	<table cellpadding="3" cellspacing="1" border="0" width="100%">
+    <tr>
+			<td colspan="5">
+				<input type="submit" value="<s:text name="eirc.filter" />" class="btn-exit"/>
+			</td>
+      <td colspan="6" align="right">
+        <%@include file="/WEB-INF/jsp/common/filter/pager/pager.jsp" %>
+      </td>
+		</tr>
 		<tr>
 			<td class="th" width="1%">&nbsp;</td>
 			<td class="th"><input type="checkbox" onchange="FP.setCheckboxes(this.checked, 'objectIds');"></td>
@@ -57,11 +64,13 @@
 			</tr>
 		</s:iterator>
 		<tr>
-			<td colspan="11">
-				<%@include file="/WEB-INF/jsp/common/filter/pager/pager.jsp" %>
+			<td colspan="5">
 				<input type="submit" value="<s:text name="eirc.process" />" class="btn-exit"
 					   onclick="$('#fregistries').attr('action', '<s:url action="registriesProcess" includeParams="none" />');"/>
 			</td>
+      <td colspan="6" align="right">
+        <%@include file="/WEB-INF/jsp/common/filter/pager/pager.jsp" %>
+      </td>
 		</tr>
 	</table>
 </s:form>
