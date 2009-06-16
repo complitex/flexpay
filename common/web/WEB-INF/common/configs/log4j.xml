@@ -30,17 +30,44 @@
 		</layout>
 	</appender>
 
+	<appender name="flexpay_hist" class="org.apache.log4j.QpidCompositeRollingAppender">
+		<!-- Ensure that logs allways have the dateFormat set-->
+		<param name="StaticLogFileName" value="false" />
+		<param name="File" value="${java.io.tmpdir}/logs/flexpay_log_LOG_NAME_history" />
+		<param name="Append" value="false" />
+		<!-- Change the direction so newer files have bigger numbers -->
+		<!-- So log.1 is written then log.2 etc This prevents a lot of file renames at log rollover -->
+		<param name="CountDirection" value="1" />
+		<!-- Use 50MB -->
+		<param name="MaxFileSize" value="52428800" />
+		<param name="DatePattern" value="'.'yyyy-MM-dd-HH" />
+		<!-- Unlimited number of backups -->
+		<param name="MaxSizeRollBackups" value="-1" />
+		<!-- Compress(gzip) the backup files-->
+		<param name="CompressBackupFiles" value="true" />
+		<!-- Compress the backup files using a second thread -->
+		<param name="CompressAsync" value="true" />
+		<!-- Start at zero numbered files-->
+		<param name="ZeroBased" value="true" />
+		<!-- Backup Location -->
+		<!--<param name="backupFilesToPath" value="${java.io.tmpdir}/logs/backup" />-->
+
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d %-5p [%t] %C{2} (%F:%L) - %m%n" />
+		</layout>
+	</appender>
+
 	<category name="org.flexpay" additivity="false">
 		<priority value="debug" />
 		<appender-ref ref="flexpay" />
 	</category>
 
-	<category name="org.flexpay.common.actions.interceptor" additivity="false">
-		<priority value="info" />
-		<appender-ref ref="flexpay" />
+	<category name="org.flexpay.common.persistence.history" additivity="false">
+		<priority value="debug" />
+		<appender-ref ref="flexpay_hist" />
 	</category>
 
-	<category name="org.flexpay.common.persistence.history" additivity="false">
+	<category name="org.flexpay.common.actions.interceptor" additivity="false">
 		<priority value="info" />
 		<appender-ref ref="flexpay" />
 	</category>
@@ -82,6 +109,17 @@
 
 	<category name="jdbc.connection" additivity="false">
 		<priority value="FATAL" />
+		<appender-ref ref="flexpay" />
+	</category>
+
+	<!-- Disable "Narrowing proxy to class XXX - this operation breaks ==" warnings-->
+	<category name="org.hibernate.engine.StatefulPersistenceContext" additivity="false">
+		<priority value="ERROR" />
+		<appender-ref ref="flexpay" />
+	</category>
+
+	<category name="org.springframework.jms.listener.DefaultMessageListenerContainer" additivity="false">
+		<priority value="warn" />
 		<appender-ref ref="flexpay" />
 	</category>
 
