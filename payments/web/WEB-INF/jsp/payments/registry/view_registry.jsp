@@ -8,7 +8,7 @@
 <s:form id="frecords">
 	<table cellpadding="3" cellspacing="1" border="0" width="100%">
 		<tr>
-			<td colspan="12">
+			<td colspan="11">
 				<%@include file="/WEB-INF/jsp/ab/filters/import_error_type_filter.jsp" %>
 				<%@include file="../filters/registry_record_status_filter.jsp" %>
 				<input type="submit" value="<s:text name="eirc.filter" />" class="btn-exit"/>
@@ -28,7 +28,9 @@
 			<td class="th"><s:text name="eirc.registry.record.containers"/></td>
 			<td class="th"><s:text name="eirc.registry.record.error"/></td>
 			<td class="th"><s:text name="eirc.status"/></td>
+      <!--
 			<td class="th"><s:text name="eirc.correspondence"/></td>
+			-->
 		</tr>
 		<s:iterator value="records" status="status">
 			<tr valign="middle" class="cols_1">
@@ -81,18 +83,22 @@
 				<%--<td class="col"><s:text name="%{importError.errorId}"/></td>--%>
 				<td class="col"><s:property value="%{importError.errorId}"/></td>
 				<td class="col"><s:text name="%{recordStatus.i18nName}"/></td>
+        <!--
 				<td class="col">
                     <a href="javascript:createDialog(<s:property value="%{id}" />)">
 					    <s:text name="common.edit"/>
                     </a>
 				</td>
+				-->
 			</tr>
 		</s:iterator>
 		<tr>
-			<td colspan="12">
+			<td colspan="11">
 				<%@include file="/WEB-INF/jsp/common/filter/pager/pager.jsp" %>
+        <!--
 				<input type="submit" value="<s:text name="eirc.process_selected" />" class="btn-exit"
 					   onclick="$('#frecords').attr('action', '<s:url action="registryRecordsProcess" includeParams="none"/>');"/>
+        -->
 			</td>
 		</tr>
 	</table>
