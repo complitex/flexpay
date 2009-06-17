@@ -11,10 +11,5 @@
             <ns2:process-name>broadcastHistoryApplication</ns2:process-name>
             <ns2:file-path>broadcastHistoryApplication.bpel</ns2:file-path>
         </consumes>
-        <consumes endpoint-name="saveHistoryPortTypeRole_partnerRole" interface-name="ns1:saveHistoryPortType" service-name="ns0:historyConsumer2">
-            <ns2:display-name>historyConsumer2</ns2:display-name>
-            <ns2:process-name>broadcastHistoryApplication</ns2:process-name>
-            <ns2:file-path>broadcastHistoryApplication.bpel</ns2:file-path>
-        </consumes>
     </services>
 </jbi>
