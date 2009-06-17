@@ -173,7 +173,6 @@ public class ServiceProviderFileProcessor implements RegistryProcessor {
 
 	public void importConsumers(Registry registry) throws Exception {
 
-		serviceOperationsFactory.setDataSource(rawConsumersDataSource);
 		processHeader(registry);
 		log.info("Starting importing consumers");
 		rawConsumersDataSource.setRegistry(registry);
@@ -220,7 +219,6 @@ public class ServiceProviderFileProcessor implements RegistryProcessor {
 		Collection<RegistryRecord> records = registryRecordService.findObjects(registry, recordIds);
 		RawDataSource<RawConsumerData> dataSource = new InMemoryRawConsumersDataSource(records);
 		errorsSupport.registerAlias(dataSource, rawConsumersDataSource);
-		serviceOperationsFactory.setDataSource(dataSource);
 
 		try {
 			// setup records registry to the same object

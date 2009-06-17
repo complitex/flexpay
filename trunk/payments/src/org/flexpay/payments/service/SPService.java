@@ -30,6 +30,14 @@ public interface SPService extends DomainObjectService<Service> {
 	List<Service> listServices(List<ObjectFilter> filters, Page<Service> pager);
 
 	/**
+	 * List active services using filters and pager
+	 *
+	 * @return List of services
+	 */
+	@Secured (Roles.SERVICE_READ)
+	List<Service> listAllServices();
+
+	/**
 	 * Read full service information
 	 *
 	 * @param stub Service stub

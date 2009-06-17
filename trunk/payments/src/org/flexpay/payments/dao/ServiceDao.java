@@ -25,4 +25,10 @@ public interface ServiceDao extends GenericDao<Service, Long> {
 	 */
 	List<Service> findServicesByProviderCode(Long providerId, String serviceCode);
 
+	/**
+	 * List all services
+	 * 
+	 * @return all services
+	 */
+	List<Service> findAllServices();
 }
