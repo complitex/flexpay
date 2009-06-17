@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuite errors="0" failures="0" hostname="host2" name="org.netbeans.modules.compapp.catd.ConfiguredTest" tests="1" time="6.405" timestamp="2009-05-28T09:07:16">
+  <properties>
+    <property name="default.javac.source" value="1.6" />
+    <property name="file.encoding.pkg" value="sun.io" />
+    <property name="libs.jdbcsupport-designtime.javadoc" value="" />
+    <property name="libs.toplink.maven-pom" value="" />
+    <property name="javac.source" value="1.4" />
+    <property name="libs.exceptionhandler-runtime.maven-pom" value="" />
+    <property name="java.home" value="/usr/java/jdk1.6.0_11/jre" />
+    <property name="com.sun.jbi.sa.internal.routing" value="true" />
+    <property name="libs.jaxws21.src" value="" />
+    <property name="javadoc.version" value="false" />
+    <property name="libs.CopyLibs.classpath" value="/tmp/GlassFishESB/netbeans/java2/ant/extra/org-netbeans-modules-java-j2seproject-copylibstask.jar" />
+    <property name="libs.javac-api.src" value="" />
+    <property name="libs.JAVADB_DRIVER_LABEL.classpath" value="/tmp/GlassFishESB/glassfish/javadb/lib/derby.jar:/tmp/GlassFishESB/glassfish/javadb/lib/derbyclient.jar:/tmp/GlassFishESB/glassfish/javadb/lib/derbynet.jar" />
+    <property name="libs.restlib.src" value="" />
+    <property name="java.endorsed.dirs" value="/usr/java/jdk1.6.0_11/jre/lib/endorsed" />
+    <property name="libs.MySQLDriver.classpath" value="/tmp/GlassFishESB/netbeans/ide9/modules/ext/mysql-connector-java-5.1.5-bin.jar" />
+    <property name="libs.junit.maven-pom" value="" />
+    <property name="libs.Encoder-Custom.src" value="" />
+    <property name="libs.Encoder-Framework.maven-pom" value="" />
+    <property name="libs.jsf12.src" value="" />
+    <property name="libs.PostgreSQLDriver.src" value="" />
+    <property name="src.dir" value="src/jbiasa" />
+    <property name="sun.java2d.noddraw" value="true" />
+    <property name="nbplatform.default.harness.dir" value="/tmp/GlassFishESB/netbeans/harness" />
+    <property name="source.root" value="src" />
+    <property name="src.build.dir" value="src/jbiServiceUnits" />
+    <property name="source.encoding" value="UTF-8" />
+    <property name="libs.jaxws21.classpath" value="/tmp/GlassFishESB/netbeans/java2/modules/ext/jaxws21/activation.jar:/tmp/GlassFishESB/netbeans/java2/modules/ext/jaxws21/FastInfoset.jar:/tmp/GlassFishESB/netbeans/java2/modules/ext/jaxws21/http.jar:/tmp/GlassFishESB/netbeans/java2/modules/ext/jaxws21/api/jaxb-api.jar:/tmp/GlassFishESB/netbeans/java2/modules/ext/jaxws21/jaxb-impl.jar:/tmp/GlassFishESB/netbeans/java2/modules/ext/jaxws21/jaxb-xjc.jar:/tmp/GlassFishESB/netbeans/java2/modules/ext/jaxws21/api/jaxws-api.jar:/tmp/GlassFishESB/netbeans/java2/modules/ext/jaxws21/jaxws-rt.jar:/tmp/GlassFishESB/netbeans/java2/modules/ext/jaxws21/jaxws-tools.jar:/tmp/GlassFishESB/netbeans/java2/modules/ext/jaxws21/api/jsr173_api.jar:/tmp/GlassFishESB/netbeans/java2/modules/ext/jaxws21/api/jsr181-api.jar:/tmp/GlassFishESB/netbeans/java2/modules/ext/jaxws21/api/jsr250-api.jar:/tmp/GlassFishESB/netbeans/java2/modules/ext/jaxws21/api/saaj-api.jar:/tmp/GlassFishESB/netbeans/java2/modules/ext/jaxws21/saaj-impl.jar:/tmp/GlassFishESB/netbeans/java2/modules/ext/jaxws21/sjsxp.jar:/tmp/GlassFishESB/netbeans/java2/modules/ext/jaxws21/stax-ex.jar:/tmp/GlassFishESB/netbeans/java2/modules/ext/jaxws21/streambuffer.jar" />
+    <property name="libs.swing-app-framework.javadoc" value="/tmp/GlassFishESB/netbeans/java2/docs/appframework-1.0.3-doc.zip" />
+    <property name="libs.Encoder-Framework.src" value="" />
+    <property name="libs.JAVADB_DRIVER_LABEL.src" value="" />
+    <property name="sun.os.patch.level" value="unknown" />
+    <property name="java.vendor.url" value="http://java.sun.com/" />
+    <property name="libs.restapi.src" value="" />
+    <property name="libs.exceptionhandler-runtime.javadoc" value="" />
+    <property name="java.version" value="1.6.0_11" />
+    <property name="libs.jaxb21.javadoc" value="" />
+    <property name="libs.woodstock-theme-default.classpath" value="/tmp/GlassFishESB/netbeans/visualweb2/modules/ext/webui-jsf-suntheme.jar" />
+    <property name="javac.debug" value="true" />
+    <property name="reference.HistoryBroadcast.dist_se" value="../HistoryBroadcast/build/SEDeployment.jar" />
+    <property name="org.openide.major.version" value="IDE/1" />
+    <property name="libs.PostgreSQLDriver.maven-pom" value="" />
+    <property name="java.vendor.url.bug" value="http://java.sun.com/cgi-bin/bugreport.cgi" />
+    <property name="libs.jdbcsupport-designtime.maven-pom" value="" />
+    <property name="jbi.service-assembly.description" value="Represents the Service Assembly of caHistoryBroadcast" />
+    <property name="libs.absolutelayout.javadoc" value="" />
+    <property name="libs.junit_4.maven-pom" value="" />
+    <property name="netbeans.buildnumber" value="200810140114" />
+    <property name="jna.platform.library.path" value="/usr/lib64:/lib64" />
+    <property name="libs.swing-app-framework.maven-pom" value="" />
+    <property name="user.name" value="mixa" />
+    <property name="libs.webui.src" value="/tmp/GlassFishESB/netbeans/visualweb2/docs/webui-src.zip" />
+    <property name="sun.io.unicode.encoding" value="UnicodeLittle" />
+    <property name="libs.jstl11.maven-pom" value="" />
+    <property name="sun.jnu.encoding" value="UTF-8" />
+    <property name="java.runtime.name" value="Java(TM) SE Runtime Environment" />
+    <property name="jdk.home" value="/usr/java/jdk1.6.0_11" />
+    <property name="jspc.classpath" value="/tmp/GlassFishESB/netbeans/java2/ant/lib/ant.jar:/tmp/GlassFishESB/netbeans/enterprise5/modules/ext/servlet2.5-jsp2.1-api.jar:${j2ee.platform.classpath}:/tmp/GlassFishESB/netbeans/enterprise5/modules/ext/glassfish-jspparser-2.0.jar:/tmp/GlassFishESB/netbeans/enterprise5/modules/ext/glassfish-logging-2.0.jar:/tmp/GlassFishESB/netbeans/ide9/modules/ext/commons-logging-1.0.4.jar:/tmp/GlassFishESB/netbeans/java2/ant/lib/ant-launcher.jar" />
+    <property name="org.openide.TopManager" value="org.netbeans.core.NonGui" />
+    <property name="netbeans.dirs" value="/tmp/GlassFishESB/netbeans/nb6.1:/tmp/GlassFishESB/netbeans/ide9:/tmp/GlassFishESB/netbeans/java2:/tmp/GlassFishESB/netbeans/xml2:/tmp/GlassFishESB/netbeans/apisupport1:/tmp/GlassFishESB/netbeans/enterprise5:/tmp/GlassFishESB/netbeans/profiler3:/tmp/GlassFishESB/netbeans/gsf1:/tmp/GlassFishESB/netbeans/visualweb2:/tmp/GlassFishESB/netbeans/soa2:/tmp/GlassFishESB/netbeans/harness:" />
+    <property name="java.specification.name" value="Java Platform API Specification" />
+    <property name="javadoc.author" value="false" />
+    <property name="user.timezone" value="" />
+    <property name="libs.jsfsupport-runtime.classpath" value="/tmp/GlassFishESB/netbeans/visualweb2/modules/ext/jsfcl.jar:/tmp/GlassFishESB/netbeans/visualweb2/modules/ext/appbase.jar:/tmp/GlassFishESB/netbeans/visualweb2/modules/ext/dataprovider.jar:/tmp/GlassFishESB/netbeans/visualweb2/modules/ext/sqlx.jar" />
+    <property name="libs.spring-framework.maven-pom" value="" />
+    <property name="libs.swing-layout.maven-pom" value="" />
+    <property name="libs.junit.javadoc" value="/tmp/GlassFishESB/netbeans/java2/docs/junit-3.8.2-api.zip" />
+    <property name="org.openide.specification.version" value="6.2" />
+    <property name="path.separator" value=":" />
+    <property name="rave.build" value="thresher-fcs" />
+    <property name="libs.absolutelayout.classpath" value="/tmp/GlassFishESB/netbeans/java2/modules/ext/AbsoluteLayout.jar" />
+    <property name="libs.jsfsupport-designtime.src" value="/tmp/GlassFishESB/netbeans/visualweb2/docs/appbase-src.zip:/tmp/GlassFishESB/netbeans/visualweb2/docs/dataprovider-src.zip:/tmp/GlassFishESB/netbeans/visualweb2/docs/jsfcl-src.zip" />
+    <property name="libs.woodstock-components.classpath" value="/tmp/GlassFishESB/netbeans/visualweb2/modules/ext/webui-jsf.jar:/tmp/GlassFishESB/netbeans/enterprise5/modules/ext/commons-fileupload-1.0.jar:/tmp/GlassFishESB/netbeans/visualweb2/modules/ext/json-2.jar:/tmp/GlassFishESB/netbeans/visualweb2/modules/ext/jsf-extensions-common-0.1.jar:/tmp/GlassFishESB/netbeans/visualweb2/modules/ext/jsf-extensions-dynamic-faces-0.1.jar" />
+    <property name="libs.jsf12-support.javadoc" value="/tmp/GlassFishESB/netbeans/visualweb2/docs/appbase-doc.zip:/tmp/GlassFishESB/netbeans/visualweb2/docs/dataprovider-doc.zip:/tmp/GlassFishESB/netbeans/visualweb2/docs/jsfcl-doc.zip" />
+    <property name="netbeans.accept_license_class" value="org.netbeans.license.AcceptLicense" />
+    <property name="file.encoding" value="UTF-8" />
+    <property name="dist.javadoc.dir" value="dist/javadoc" />
+    <property name="libs.jsf12-support.src" value="/tmp/GlassFishESB/netbeans/visualweb2/docs/appbase-src.zip:/tmp/GlassFishESB/netbeans/visualweb2/docs/dataprovider-src.zip:/tmp/GlassFishESB/netbeans/visualweb2/docs/jsfcl-src.zip" />
+    <property name="https.nonProxyHosts" value="localhost|127.0.0.1|host2" />
+    <property name="libs.junit.src" value="" />
+    <property name="libs.jaxb21.maven-pom" value="" />
+    <property name="ant.file" value="/home/mixa/flexpay/soa/caHistoryBroadcast/build.xml" />
+    <property name="libs.theme-default.classpath" value="/tmp/GlassFishESB/netbeans/visualweb2/modules/ext/defaulttheme.jar" />
+    <property name="copyfiles.classpath" value="/tmp/GlassFishESB/netbeans/enterprise5/ant/extra/copyfiles.jar" />
+    <property name="libs.junit_4.src" value="" />
+    <property name="libs.Encoder-Custom.maven-pom" value="" />
+    <property name="j2ee.server.instance" value="[/tmp/GlassFishESB/glassfish]deployer:Sun:AppServer::localhost:4848" />
+    <property name="java.io.tmpdir" value="/tmp" />
+    <property name="user.language" value="ru" />
+    <property name="line.separator" value="
+" />
+    <property name="apple.laf.useScreenMenuBar" value="true" />
+    <property name="libs.absolutelayout.src" value="" />
+    <property name="xml.module.install.dir" value="/tmp/GlassFishESB/netbeans/xml2/modules" />
+    <property name="libs.webui.classpath" value="/tmp/GlassFishESB/netbeans/visualweb2/modules/ext/webui.jar:/tmp/GlassFishESB/netbeans/enterprise5/modules/ext/commons-fileupload-1.0.jar" />
+    <property name="libs.woodstock-components.javadoc" value="/tmp/GlassFishESB/netbeans/visualweb2/docs/webui-jsf-doc.zip:/tmp/GlassFishESB/netbeans/visualweb2/docs/webui-jsf-tld.zip" />
+    <property name="libs.jdbcsupport-runtime.src" value="" />
+    <property name="libs.restapi.classpath" value="/tmp/GlassFishESB/netbeans/enterprise5/modules/ext/rest/jsr311-api.jar" />
+    <property name="jar.compress" value="false" />
+    <property name="jbi.service-unit.description" value="Represents this Service Unit" />
+    <property name="libs.jdbcsupport-runtime.classpath" value="/tmp/GlassFishESB/netbeans/visualweb2/modules/ext/sqlx.jar" />
+    <property name="java.vm.info" value="mixed mode" />
+    <property name="libs.javac-api.maven-pom" value="" />
+    <property name="libs.restlib.classpath" value="/tmp/GlassFishESB/netbeans/enterprise5/modules/ext/rest/jersey.jar:/tmp/GlassFishESB/netbeans/java2/modules/ext/jaxws21/activation.jar:/tmp/GlassFishESB/netbeans/java2/modules/ext/jaxws21/api/jsr250-api.jar:/tmp/GlassFishESB/netbeans/enterprise5/modules/ext/rest/http.jar:/tmp/GlassFishESB/netbeans/enterprise5/modules/ext/rest/wadl2java.jar:/tmp/GlassFishESB/netbeans/java2/modules/ext/jaxws21/api/jaxws-api.jar:/tmp/GlassFishESB/netbeans/java2/modules/ext/jaxws21/api/jaxb-api.jar:/tmp/GlassFishESB/netbeans/java2/modules/ext/jaxws21/jaxb-impl.jar:/tmp/GlassFishESB/netbeans/java2/modules/ext/jaxws21/jaxb-xjc.jar:/tmp/GlassFishESB/netbeans/java2/modules/ext/jaxws21/api/jsr173_api.jar:/tmp/GlassFishESB/netbeans/enterprise5/modules/ext/rest/rome-0.9.jar:/tmp/GlassFishESB/netbeans/enterprise5/modules/ext/rest/jdom-1.0.jar:/tmp/GlassFishESB/netbeans/enterprise5/modules/ext/rest/jettison-1.0-RC1.jar:/tmp/GlassFishESB/netbeans/enterprise5/modules/ext/rest/asm-3.1.jar:/tmp/GlassFishESB/netbeans/enterprise5/modules/ext/rest/grizzly-servlet-webserver-1.7.3.2.jar" />
+    <property name="javadoc.private" value="false" />
+    <property name="java.vm.specification.name" value="Java Virtual Machine Specification" />
+    <property name="libs.theme-default-green.classpath" value="/tmp/GlassFishESB/netbeans/visualweb2/modules/ext/defaulttheme-green.jar" />
+    <property name="libs.MySQLDriver.javadoc" value="" />
+    <property name="libs.spring-webmvc.classpath" value="/tmp/GlassFishESB/netbeans/enterprise5/modules/ext/spring/spring-webmvc-2.5.jar" />
+    <property name="jbi.service-assembly.id" value="caHistoryBroadcast" />
+    <property name="jbi.content.additional" value="../HistoryBroadcast/build/SEDeployment.jar" />
+    <property name="netbeans.dynamic.classpath" value="/tmp/GlassFishESB/netbeans/platform8/core/org-openide-filesystems.jar:/tmp/GlassFishESB/netbeans/platform8/core/core.jar:/tmp/GlassFishESB/netbeans/nb6.1/core/org-netbeans-upgrader.jar:/tmp/GlassFishESB/netbeans/nb6.1/core/locale/core_nb.jar" />
+    <property name="libs.beans-binding.javadoc" value="/tmp/GlassFishESB/netbeans/java2/docs/beansbinding-1.2.1-doc.zip" />
+    <property name="libs.jdbcsupport-designtime.src" value="" />
+    <property name="java.module.install.dir" value="/tmp/GlassFishESB/netbeans/java2/modules" />
+    <property name="platform.active" value="default_platform" />
+    <property name="meta.inf" value="src/conf" />
+    <property name="http.nonProxyHosts" value="localhost|127.0.0.1|host2" />
+    <property name="libs.junit_4.javadoc" value="" />
+    <property name="libs.spring-framework.src" value="" />
+    <property name="libs.theme-default-gray.runtime" value="/tmp/GlassFishESB/netbeans/visualweb2/modules/ext/defaulttheme-gray.jar" />
+    <property name="test.results.dir" value="/home/mixa/flexpay/soa/caHistoryBroadcast/test/results" />
+    <property name="libs.beans-binding.maven-pom" value="" />
+    <property name="javadoc.encoding" value="" />
+    <property name="java.awt.printerjob" value="sun.print.PSPrinterJob" />
+    <property name="ide.module.install.dir" value="/tmp/GlassFishESB/netbeans/ide9/modules" />
+    <property name="jbi.content.component" value="sun-bpel-engine" />
+    <property name="libs.jsf12-support.classpath" value="/tmp/GlassFishESB/netbeans/visualweb2/modules/ext/jsfcl.jar:/tmp/GlassFishESB/netbeans/visualweb2/modules/ext/appbase.jar:/tmp/GlassFishESB/netbeans/visualweb2/modules/ext/dataprovider.jar:/tmp/GlassFishESB/netbeans/visualweb2/modules/ext/sqlx.jar" />
+    <property name="dist.jar" value="dist/caHistoryBroadcast.zip" />
+    <property name="ant.file.caHistoryBroadcast-jbi-impl" value="/home/mixa/flexpay/soa/caHistoryBroadcast/nbproject/build-impl.xml" />
+    <property name="libs.struts.classpath" value="/tmp/GlassFishESB/netbeans/enterprise5/modules/ext/struts/antlr.jar:/tmp/GlassFishESB/netbeans/enterprise5/modules/ext/struts/commons-beanutils.jar:/tmp/GlassFishESB/netbeans/enterprise5/modules/ext/struts/commons-digester.jar:/tmp/GlassFishESB/netbeans/enterprise5/modules/ext/struts/commons-logging.jar:/tmp/GlassFishESB/netbeans/enterprise5/modules/ext/struts/commons-validator.jar:/tmp/GlassFishESB/netbeans/enterprise5/modules/ext/struts/jakarta-oro.jar:/tmp/GlassFishESB/netbeans/enterprise5/modules/ext/struts/struts.jar:/tmp/GlassFishESB/netbeans/enterprise5/modules/ext/commons-fileupload-1.0.jar" />
+    <property name="ant.version" value="Apache Ant version 1.7.0 compiled on December 13 2006" />
+    <property name="netbeans.home" value="/tmp/GlassFishESB/netbeans/platform8" />
+    <property name="javadoc.nonavbar" value="false" />
+    <property name="user.properties.file" value="/tmp/GlassFishESB/.netbeans/glassfishesb/build.properties" />
+    <property name="libs.toplink.classpath" value="/tmp/GlassFishESB/netbeans/java2/modules/ext/toplink/toplink-essentials.jar:/tmp/GlassFishESB/netbeans/java2/modules/ext/toplink/toplink-essentials-agent.jar" />
+    <property name="netbeans.importclass" value="org.netbeans.upgrade.AutoUpgrade" />
+    <property name="libs.jsf12.maven-pom" value="" />
+    <property name="libs.exceptionhandler-runtime.classpath" value="/tmp/GlassFishESB/netbeans/visualweb2/modules/ext/errorhandler.jar" />
+    <property name="libs.spring-framework.javadoc" value="" />
+    <property name="libs.CopyLibs.maven-pom" value="" />
+    <property name="j2ee.server.type" value="J2EE" />
+    <property name="build.generated.dir" value="build/generated" />
+    <property name="netbeans.home+have.tests" value="true" />
+    <property name="os.name" value="Linux" />
+    <property name="libs.restlib.javadoc" value="" />
+    <property name="libs.Encoder-Custom.javadoc" value="" />
+    <property name="java.specification.vendor" value="Sun Microsystems Inc." />
+    <property name="libs.webui-runtime.classpath" value="/tmp/GlassFishESB/netbeans/visualweb2/modules/ext/webui.jar:/tmp/GlassFishESB/netbeans/enterprise5/modules/ext/commons-fileupload-1.0.jar" />
+    <property name="NetBeansUserDir" value="/tmp/GlassFishESB/.netbeans/glassfishesb" />
+    <property name="libs.CopyLibs.src" value="" />
+    <property name="java.vm.name" value="Java HotSpot(TM) 64-Bit Server VM" />
+    <property name="libs.jaxb21.src" value="" />
+    <property name="org.openide.version" value="deprecated" />
+    <property name="libs.junit.classpath" value="/tmp/GlassFishESB/netbeans/java2/modules/ext/junit-3.8.2.jar" />
+    <property name="libs.Encoder-Framework.classpath" value="/tmp/GlassFishESB/netbeans/soa2/modules/ext/encoder/encoderframework.jar:/tmp/GlassFishESB/netbeans/soa2/modules/ext/encoder/encoderfrmwk-xsdextension.jar:/tmp/GlassFishESB/netbeans/soa2/modules/ext/xmlbeans-2.1.0/xbean.jar" />
+    <property name="libs.beans-binding.src" value="" />
+    <property name="java.library.path" value="/usr/java/jdk1.6.0_11/jre/lib/amd64/server:/usr/java/jdk1.6.0_11/jre/lib/amd64:/usr/java/jdk1.6.0_11/jre/../lib/amd64:/usr/java/packages/lib/amd64:/lib:/usr/lib" />
+    <property name="libs.webui.javadoc" value="/tmp/GlassFishESB/netbeans/visualweb2/docs/webui-doc.zip" />
+    <property name="libs.toplink.javadoc" value="/tmp/GlassFishESB/netbeans/enterprise5/docs/javaee5-doc-api.zip" />
+    <property name="libs.PostgreSQLDriver.javadoc" value="" />
+    <property name="libs.jsfsupport-designtime.javadoc" value="/tmp/GlassFishESB/netbeans/visualweb2/docs/appbase-doc.zip:/tmp/GlassFishESB/netbeans/visualweb2/docs/dataprovider-doc.zip:/tmp/GlassFishESB/netbeans/visualweb2/docs/jsfcl-doc.zip" />
+    <property name="ant.java.version" value="1.6" />
+    <property name="java.class.version" value="50.0" />
+    <property name="basedir" value="/home/mixa/flexpay/soa/caHistoryBroadcast" />
+    <property name="javadoc.noindex" value="false" />
+    <property name="sun.awt.exception.handler" value="org.netbeans.core.startup.TopLogging$AWTHandler" />
+    <property name="j2ee.platform" value="1.4" />
+    <property name="ant.home" value="/tmp/GlassFishESB/netbeans/java2/ant" />
+    <property name="javadoc.splitindex" value="true" />
+    <property name="libs.toplink.src" value="" />
+    <property name="libs.JAVADB_DRIVER_LABEL.maven-pom" value="" />
+    <property name="libs.javac-api.javadoc" value="" />
+    <property name="javadoc.preview" value="true" />
+    <property name="rave.version" value="2.0.0" />
+    <property name="libs.MySQLDriver.maven-pom" value="" />
+    <property name="libs.CopyLibs.javadoc" value="" />
+    <property name="libs.restapi.javadoc" value="/tmp/GlassFishESB/netbeans/enterprise5/docs/jsr311-api-doc.zip" />
+    <property name="libs.PostgreSQLDriver.classpath" value="/tmp/GlassFishESB/netbeans/ide9/modules/ext/postgresql-8.3-603.jdbc3.jar" />
+    <property name="libs.junit_4.classpath" value="/tmp/GlassFishESB/netbeans/java2/modules/ext/junit-4.1.jar" />
+    <property name="libs.jdbcsupport-designtime.classpath" value="/tmp/GlassFishESB/netbeans/visualweb2/modules/ext/sqlx.jar" />
+    <property name="libs.jaxws21.maven-pom" value="" />
+    <property name="sun.boot.library.path" value="/usr/java/jdk1.6.0_11/jre/lib/amd64" />
+    <property name="build.dir" value="build" />
+    <property name="libs.spring-webmvc.src" value="" />
+    <property name="ant.file." value="/home/mixa/flexpay/soa/caHistoryBroadcast/build.xml" />
+    <property name="libs.webui-designtime.src" value="/tmp/GlassFishESB/netbeans/visualweb2/docs/webui-src.zip" />
+    <property name="libs.swing-app-framework.classpath" value="/tmp/GlassFishESB/netbeans/java2/modules/ext/appframework-1.0.3.jar:/tmp/GlassFishESB/netbeans/java2/modules/ext/swing-worker-1.1.jar" />
+    <property name="sun.management.compiler" value="HotSpot 64-Bit Server Compiler" />
+    <property name="java.awt.graphicsenv" value="sun.awt.X11GraphicsEnvironment" />
+    <property name="org.netbeans.core.startup.specialResource" value="nullcom.sun.jdo.api.persistence.mapping.ejb" />
+    <property name="javadoc.windowtitle" value="" />
+    <property name="libs.jstl11.javadoc" value="/tmp/GlassFishESB/netbeans/enterprise5/docs/javaee5-doc-api.zip" />
+    <property name="build.compiler.emacs" value="true" />
+    <property name="libs.jstl11.src" value="" />
+    <property name="ant.project.name" value="" />
+    <property name="libs.spring-framework.classpath" value="/tmp/GlassFishESB/netbeans/java2/modules/ext/spring/commons-logging-1.1.jar:/tmp/GlassFishESB/netbeans/java2/modules/ext/spring/spring-2.5.jar" />
+    <property name="libs.swing-layout.classpath" value="/tmp/GlassFishESB/netbeans/platform8/modules/ext/swing-layout-1.0.3.jar" />
+    <property name="java.vm.specification.version" value="1.0" />
+    <property name="soa.module.install.dir" value="/tmp/GlassFishESB/netbeans/soa2/modules" />
+    <property name="javadoc.use" value="true" />
+    <property name="sun.cpu.isalist" value="" />
+    <property name="libs.exceptionhandler-runtime.src" value="" />
+    <property name="netbeans.derby.system.home" value="/tmp/GlassFishESB/glassfish/databases" />
+    <property name="java.ext.dirs" value="/usr/java/jdk1.6.0_11/jre/lib/ext:/usr/java/packages/lib/ext" />
+    <property name="libs.jdbcsupport-runtime.javadoc" value="" />
+    <property name="os.version" value="2.6.27.21-0.1-default" />
+    <property name="libs.jstl11.classpath" value="/tmp/GlassFishESB/netbeans/enterprise5/modules/ext/standard.jar:/tmp/GlassFishESB/netbeans/enterprise5/modules/ext/jstl.jar" />
+    <property name="user.home" value="/home/mixa" />
+    <property name="org.xml.sax.driver" value="com.sun.org.apache.xerces.internal.jaxp.SAXParserImpl$JAXPSAXParser" />
+    <property name="libs.jaxb21.classpath" value="/tmp/GlassFishESB/netbeans/java2/modules/ext/jaxws21/activation.jar:/tmp/GlassFishESB/netbeans/java2/modules/ext/jaxws21/api/jaxb-api.jar:/tmp/GlassFishESB/netbeans/java2/modules/ext/jaxws21/jaxb-impl.jar:/tmp/GlassFishESB/netbeans/java2/modules/ext/jaxws21/jaxb-xjc.jar:/tmp/GlassFishESB/netbeans/java2/modules/ext/jaxws21/api/jsr173_api.jar" />
+    <property name="javax.xml.parsers.DocumentBuilderFactory" value="org.netbeans.core.startup.DOMFactoryImpl" />
+    <property name="java.vm.vendor" value="Sun Microsystems Inc." />
+    <property name="libs.struts.src" value="" />
+    <property name="libs.absolutelayout.maven-pom" value="" />
+    <property name="org.openide.TopManager.GUI" value="true" />
+    <property name="user.dir" value="/home/mixa/work/FlexPay/flexpay/soa/caHistoryBroadcast" />
+    <property name="libs.Encoder-Custom.classpath" value="/tmp/GlassFishESB/netbeans/soa2/modules/ext/encoder/custom.jar:/tmp/GlassFishESB/netbeans/soa2/modules/ext/encoder/customencoder-xsdextension.jar" />
+    <property name="libs.jsf12.javadoc" value="/tmp/GlassFishESB/netbeans/enterprise5/docs/javaee5-doc-api.zip" />
+    <property name="test.dir" value="test" />
+    <property name="sun.cpu.endian" value="little" />
+    <property name="com.sun.jbi.routing" value="true" />
+    <property name="libs.woodstock-components.src" value="/tmp/GlassFishESB/netbeans/visualweb2/docs/webui-jsf-src.zip" />
+    <property name="libs.MySQLDriver.src" value="" />
+    <property name="java.vm.version" value="11.0-b16" />
+    <property name="java.class.path" value="/tmp/GlassFishESB/netbeans/soa2/modules/org-netbeans-modules-compapp-manager-jbi.jar:/tmp/GlassFishESB/netbeans/soa2/modules/org-netbeans-modules-compapp-projects-jbi.jar:/tmp/GlassFishESB/netbeans/soa2/modules/ext/jbi/jbi-admin-common.jar:/tmp/GlassFishESB/netbeans/soa2/modules/ext/jbi/catd.jar:/tmp/GlassFishESB/netbeans/java2/modules/ext/junit-3.8.2.jar:/tmp/GlassFishESB/netbeans/java2/modules/ext/jaxws21/api/saaj-api.jar:/tmp/GlassFishESB/netbeans/java2/modules/ext/jaxws21/saaj-impl.jar:/tmp/GlassFishESB/netbeans/java2/modules/ext/jaxws21/FastInfoset.jar:/tmp/GlassFishESB/netbeans/ide9/modules/org-netbeans-modules-editor-lib.jar:/tmp/GlassFishESB/netbeans/ide9/modules/org-netbeans-modules-editor.jar:/tmp/GlassFishESB/netbeans/ide9/modules/org-netbeans-modules-editor-util.jar:/tmp/GlassFishESB/netbeans/ide9/modules/org-netbeans-modules-editor-lib2.jar:/tmp/GlassFishESB/netbeans/ide9/modules/org-netbeans-modules-editor-indent.jar:/tmp/GlassFishESB/netbeans/ide9/modules/org-netbeans-modules-editor-plain.jar:/tmp/GlassFishESB/netbeans/ide9/modules/org-netbeans-modules-editor-plain-lib.jar:/tmp/GlassFishESB/netbeans/ide9/modules/org-netbeans-modules-editor-settings.jar:/tmp/GlassFishESB/netbeans/ide9/modules/org-netbeans-modules-lexer.jar:/tmp/GlassFishESB/netbeans/ide9/modules/org-netbeans-modules-xml-core.jar:/tmp/GlassFishESB/netbeans/ide9/modules/org-netbeans-modules-xml-lexer.jar:/tmp/GlassFishESB/netbeans/ide9/modules/org-netbeans-modules-xml-text.jar:/tmp/GlassFishESB/netbeans/ide9/modules/org-netbeans-modules-xml-xdm.jar:/tmp/GlassFishESB/netbeans/ide9/modules/org-netbeans-modules-xml-xam.jar:/tmp/GlassFishESB/netbeans/platform8/lib/org-openide-modules.jar:/tmp/GlassFishESB/netbeans/platform8/lib/org-openide-util.jar:/tmp/GlassFishESB/netbeans/platform8/modules/org-openide-options.jar:/tmp/GlassFishESB/netbeans/platform8/modules/org-openide-text.jar:/tmp/GlassFishESB/netbeans/platform8/modules/org-openide-loaders.jar:/tmp/GlassFishESB/netbeans/platform8/modules/org-openide-nodes.jar:/tmp/GlassFishESB/netbeans/platform8/modules/org-netbeans-modules-editor-mimelookup.jar:/tmp/GlassFishESB/netbeans/platform8/modules/org-netbeans-modules-editor-mimelookup-impl.jar:/tmp/GlassFishESB/netbeans/platform8/core/org-openide-filesystems.jar:/tmp/GlassFishESB/netbeans/java2/ant/lib/ant-launcher.jar:/tmp/GlassFishESB/netbeans/java2/ant/lib/ant.jar:/tmp/GlassFishESB/netbeans/java2/ant/lib/ant-junit.jar" />
+    <property name="libs.webui-designtime.classpath" value="/tmp/GlassFishESB/netbeans/visualweb2/modules/ext/webui.jar:/tmp/GlassFishESB/netbeans/enterprise5/modules/ext/commons-fileupload-1.0.jar" />
+    <property name="javax.xml.parsers.SAXParserFactory" value="org.netbeans.core.startup.SAXFactoryImpl" />
+    <property name="resource.HistoryBroadcast" value="../HistoryBroadcast/setup" />
+    <property name="os.arch" value="amd64" />
+    <property name="javac.deprecation" value="false" />
+    <property name="libs.webui-designtime.javadoc" value="/tmp/GlassFishESB/netbeans/visualweb2/docs/webui-doc.zip" />
+    <property name="libs.woodstock-theme-default.runtime" value="/tmp/GlassFishESB/netbeans/visualweb2/modules/ext/webui-jsf-suntheme.jar" />
+    <property name="nbplatform.default.netbeans.dest.dir" value="/tmp/GlassFishESB/netbeans" />
+    <property name="libs.theme-default.runtime" value="/tmp/GlassFishESB/netbeans/visualweb2/modules/ext/defaulttheme.jar" />
+    <property name="build.classes.excludes" value="**/*.java,**/*.form,**/.nbattrs" />
+    <property name="dist.dir" value="dist" />
+    <property name="debug.classpath" value="${javac.classpath}:build/jar" />
+    <property name="netbeans.user" value="/tmp/GlassFishESB/.netbeans/glassfishesb" />
+    <property name="sun.java.launcher" value="SUN_STANDARD" />
+    <property name="enterprise.module.install.dir" value="/tmp/GlassFishESB/netbeans/enterprise5/modules" />
+    <property name="nb.registration.enabled" value="false" />
+    <property name="ant.core.lib" value="/tmp/GlassFishESB/netbeans/java2/ant/lib/ant.jar" />
+    <property name="java.vm.specification.vendor" value="Sun Microsystems Inc." />
+    <property name="libs.JAVADB_DRIVER_LABEL.javadoc" value="" />
+    <property name="libs.restapi.maven-pom" value="" />
+    <property name="com.sun.aas.installRoot" value="/tmp/GlassFishESB/glassfish" />
+    <property name="file.separator" value="/" />
+    <property name="libs.jdbcsupport-runtime.maven-pom" value="" />
+    <property name="java.runtime.version" value="1.6.0_11-b03" />
+    <property name="sun.boot.class.path" value="/usr/java/jdk1.6.0_11/jre/lib/resources.jar:/usr/java/jdk1.6.0_11/jre/lib/rt.jar:/usr/java/jdk1.6.0_11/jre/lib/sunrsasign.jar:/usr/java/jdk1.6.0_11/jre/lib/jsse.jar:/usr/java/jdk1.6.0_11/jre/lib/jce.jar:/usr/java/jdk1.6.0_11/jre/lib/charsets.jar:/usr/java/jdk1.6.0_11/jre/classes" />
+    <property name="libs.theme-default-gray.classpath" value="/tmp/GlassFishESB/netbeans/visualweb2/modules/ext/defaulttheme-gray.jar" />
+    <property name="libs.restlib.maven-pom" value="" />
+    <property name="libs.beans-binding.classpath" value="/tmp/GlassFishESB/netbeans/java2/modules/ext/beansbinding-1.2.1.jar" />
+    <property name="have.tests" value="true" />
+    <property name="libs.spring-webmvc.maven-pom" value="" />
+    <property name="libs.spring-webmvc.javadoc" value="" />
+    <property name="java.util.logging.config.class" value="org.netbeans.core.startup.TopLogging" />
+    <property name="libs.javac-api.classpath" value="/tmp/GlassFishESB/netbeans/java2/modules/ext/javac-api-nb-7.0-b07.jar" />
+    <property name="user.country" value="RU" />
+    <property name="javadoc.notree" value="false" />
+    <property name="libs.jsfsupport-designtime.classpath" value="/tmp/GlassFishESB/netbeans/visualweb2/modules/ext/jsfcl.jar:/tmp/GlassFishESB/netbeans/visualweb2/modules/ext/appbase.jar:/tmp/GlassFishESB/netbeans/visualweb2/modules/ext/dataprovider.jar:/tmp/GlassFishESB/netbeans/visualweb2/modules/ext/sqlx.jar" />
+    <property name="libs.struts.javadoc" value="/tmp/GlassFishESB/netbeans/enterprise5/docs/struts-1.2.9-javadoc.zip" />
+    <property name="libs.Encoder-Framework.javadoc" value="" />
+    <property name="project.HistoryBroadcast" value="../HistoryBroadcast" />
+    <property name="libs.jaxws21.javadoc" value="/tmp/GlassFishESB/netbeans/java2/docs/jaxws-2_1-api-doc.zip" />
+    <property name="libs.jsf12.classpath" value="/tmp/GlassFishESB/netbeans/enterprise5/modules/ext/jsf-1_2/commons-beanutils.jar:/tmp/GlassFishESB/netbeans/enterprise5/modules/ext/jsf-1_2/commons-collections.jar:/tmp/GlassFishESB/netbeans/enterprise5/modules/ext/jsf-1_2/commons-digester.jar:/tmp/GlassFishESB/netbeans/enterprise5/modules/ext/jsf-1_2/commons-logging.jar:/tmp/GlassFishESB/netbeans/enterprise5/modules/ext/jsf-1_2/jsf-api.jar:/tmp/GlassFishESB/netbeans/enterprise5/modules/ext/jsf-1_2/jsf-impl.jar" />
+    <property name="default.javac.target" value="1.6" />
+    <property name="build.classes.dir" value="build/jar" />
+    <property name="libs.swing-layout.src" value="/tmp/GlassFishESB/netbeans/platform8/docs/swing-layout-1.0.3-src.zip" />
+    <property name="libs.swing-layout.javadoc" value="/tmp/GlassFishESB/netbeans/platform8/docs/swing-layout-1.0.3-doc.zip" />
+    <property name="java.vendor" value="Sun Microsystems Inc." />
+    <property name="javac.target" value="1.4" />
+    <property name="libs.theme-default-green.runtime" value="/tmp/GlassFishESB/netbeans/visualweb2/modules/ext/defaulttheme-green.jar" />
+    <property name="libs.swing-app-framework.src" value="" />
+    <property name="java.specification.version" value="1.6" />
+    <property name="libs.struts.maven-pom" value="" />
+    <property name="sun.arch.data.model" value="64" />
+  </properties>
+  <testcase classname="org.netbeans.modules.compapp.catd.ConfiguredTest" name="TestSendHistory" time="6.318" />
+  <system-out><![CDATA[{java.runtime.name=Java(TM) SE Runtime Environment, sun.boot.library.path=/usr/java/jdk1.6.0_11/jre/lib/amd64, java.vm.version=11.0-b16, java.vm.vendor=Sun Microsystems Inc., java.vendor.url=http://java.sun.com/, path.separator=:, java.vm.name=Java HotSpot(TM) 64-Bit Server VM, file.encoding.pkg=sun.io, sun.java.launcher=SUN_STANDARD, user.country=RU, sun.os.patch.level=unknown, java.vm.specification.name=Java Virtual Machine Specification, user.dir=/home/mixa/work/FlexPay/flexpay/soa/caHistoryBroadcast, java.runtime.version=1.6.0_11-b03, java.awt.graphicsenv=sun.awt.X11GraphicsEnvironment, java.endorsed.dirs=/usr/java/jdk1.6.0_11/jre/lib/endorsed, os.arch=amd64, java.io.tmpdir=/tmp, line.separator=
+, java.vm.specification.vendor=Sun Microsystems Inc., os.name=Linux, sun.jnu.encoding=UTF-8, java.library.path=/usr/java/jdk1.6.0_11/jre/lib/amd64/server:/usr/java/jdk1.6.0_11/jre/lib/amd64:/usr/java/jdk1.6.0_11/jre/../lib/amd64:/usr/java/packages/lib/amd64:/lib:/usr/lib, java.specification.name=Java Platform API Specification, java.class.version=50.0, sun.management.compiler=HotSpot 64-Bit Server Compiler, os.version=2.6.27.21-0.1-default, user.home=/home/mixa, user.timezone=Asia/Novosibirsk, java.awt.printerjob=sun.print.PSPrinterJob, file.encoding=UTF-8, java.specification.version=1.6, java.class.path=/tmp/GlassFishESB/netbeans/soa2/modules/org-netbeans-modules-compapp-manager-jbi.jar:/tmp/GlassFishESB/netbeans/soa2/modules/org-netbeans-modules-compapp-projects-jbi.jar:/tmp/GlassFishESB/netbeans/soa2/modules/ext/jbi/jbi-admin-common.jar:/tmp/GlassFishESB/netbeans/soa2/modules/ext/jbi/catd.jar:/tmp/GlassFishESB/netbeans/java2/modules/ext/junit-3.8.2.jar:/tmp/GlassFishESB/netbeans/java2/modules/ext/jaxws21/api/saaj-api.jar:/tmp/GlassFishESB/netbeans/java2/modules/ext/jaxws21/saaj-impl.jar:/tmp/GlassFishESB/netbeans/java2/modules/ext/jaxws21/FastInfoset.jar:/tmp/GlassFishESB/netbeans/ide9/modules/org-netbeans-modules-editor-lib.jar:/tmp/GlassFishESB/netbeans/ide9/modules/org-netbeans-modules-editor.jar:/tmp/GlassFishESB/netbeans/ide9/modules/org-netbeans-modules-editor-util.jar:/tmp/GlassFishESB/netbeans/ide9/modules/org-netbeans-modules-editor-lib2.jar:/tmp/GlassFishESB/netbeans/ide9/modules/org-netbeans-modules-editor-indent.jar:/tmp/GlassFishESB/netbeans/ide9/modules/org-netbeans-modules-editor-plain.jar:/tmp/GlassFishESB/netbeans/ide9/modules/org-netbeans-modules-editor-plain-lib.jar:/tmp/GlassFishESB/netbeans/ide9/modules/org-netbeans-modules-editor-settings.jar:/tmp/GlassFishESB/netbeans/ide9/modules/org-netbeans-modules-lexer.jar:/tmp/GlassFishESB/netbeans/ide9/modules/org-netbeans-modules-xml-core.jar:/tmp/GlassFishESB/netbeans/ide9/modules/org-netbeans-modules-xml-lexer.jar:/tmp/GlassFishESB/netbeans/ide9/modules/org-netbeans-modules-xml-text.jar:/tmp/GlassFishESB/netbeans/ide9/modules/org-netbeans-modules-xml-xdm.jar:/tmp/GlassFishESB/netbeans/ide9/modules/org-netbeans-modules-xml-xam.jar:/tmp/GlassFishESB/netbeans/platform8/lib/org-openide-modules.jar:/tmp/GlassFishESB/netbeans/platform8/lib/org-openide-util.jar:/tmp/GlassFishESB/netbeans/platform8/modules/org-openide-options.jar:/tmp/GlassFishESB/netbeans/platform8/modules/org-openide-text.jar:/tmp/GlassFishESB/netbeans/platform8/modules/org-openide-loaders.jar:/tmp/GlassFishESB/netbeans/platform8/modules/org-openide-nodes.jar:/tmp/GlassFishESB/netbeans/platform8/modules/org-netbeans-modules-editor-mimelookup.jar:/tmp/GlassFishESB/netbeans/platform8/modules/org-netbeans-modules-editor-mimelookup-impl.jar:/tmp/GlassFishESB/netbeans/platform8/core/org-openide-filesystems.jar:/tmp/GlassFishESB/netbeans/java2/ant/lib/ant-launcher.jar:/tmp/GlassFishESB/netbeans/java2/ant/lib/ant.jar:/tmp/GlassFishESB/netbeans/java2/ant/lib/ant-junit.jar, user.name=mixa, java.vm.specification.version=1.0, java.home=/usr/java/jdk1.6.0_11/jre, sun.arch.data.model=64, user.language=ru, java.specification.vendor=Sun Microsystems Inc., NetBeansUserDir=/tmp/GlassFishESB/.netbeans/glassfishesb, java.vm.info=mixed mode, java.version=1.6.0_11, java.ext.dirs=/usr/java/jdk1.6.0_11/jre/lib/ext:/usr/java/packages/lib/ext, sun.boot.class.path=/usr/java/jdk1.6.0_11/jre/lib/resources.jar:/usr/java/jdk1.6.0_11/jre/lib/rt.jar:/usr/java/jdk1.6.0_11/jre/lib/sunrsasign.jar:/usr/java/jdk1.6.0_11/jre/lib/jsse.jar:/usr/java/jdk1.6.0_11/jre/lib/jce.jar:/usr/java/jdk1.6.0_11/jre/lib/charsets.jar:/usr/java/jdk1.6.0_11/jre/classes, java.vendor=Sun Microsystems Inc., file.separator=/, java.vendor.url.bug=http://java.sun.com/cgi-bin/bugreport.cgi, sun.io.unicode.encoding=UnicodeLittle, sun.cpu.endian=little, sun.cpu.isalist=}
+Test TestSendHistory\Concurrent.properties
+Replace '${HttpDefaultPort}' in WSDL soap location by '9080' defined in sun-http-binding.
+ Passed. Threads count Success: <1> Error: <0> Not completed: <0>
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

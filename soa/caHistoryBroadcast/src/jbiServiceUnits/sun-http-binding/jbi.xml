@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<jbi xmlns="http://java.sun.com/xml/ns/jbi" xmlns:ns1="caHistoryBroadcast" xmlns:ns2="http://enterprise.netbeans.org/bpel/HistoryBroadcast/broadcastHistoryApplication" xmlns:ns3="http://j2ee.netbeans.org/wsdl/HistoryBroadcast/saveHistory" version="1.0">
+<jbi xmlns="http://java.sun.com/xml/ns/jbi" xmlns:ns1="http://enterprise.netbeans.org/bpel/HistoryBroadcast/broadcastHistoryApplication" xmlns:ns2="caHistoryBroadcast" xmlns:ns3="http://j2ee.netbeans.org/wsdl/HistoryBroadcast/saveHistory" version="1.0">
     <services binding-component="true">
-        <provides endpoint-name="consumer1Endpoint" interface-name="ns3:saveHistoryPortType" service-name="ns1:casaService2"/>
-        <provides endpoint-name="consumer2Endpoint" interface-name="ns3:saveHistoryPortType" service-name="ns1:casaService3"/>
-        <consumes endpoint-name="historySourceEndpoint" interface-name="ns3:saveHistoryPortType" service-name="ns1:casaService1"/>
+        <provides endpoint-name="consumer1Endpoint" interface-name="ns3:saveHistoryPortType" service-name="ns2:casaService2"/>
+        <consumes endpoint-name="historySourceEndpoint" interface-name="ns3:saveHistoryPortType" service-name="ns2:casaService1"/>
     </services>
 </jbi>

@@ -2,7 +2,7 @@
   <soapenv:Body>
     <his:SaveHistoryRequest>
       <his:groupId>10</his:groupId>
-      <his:instanceId>string</his:instanceId>
+      <his:instanceId>CASA_TEST</his:instanceId>
       <his:created>2008-09-29T08:49:45</his:created>
       <his:file>c29ub3Jhcw==</his:file>
     </his:SaveHistoryRequest>

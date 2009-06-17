@@ -27,8 +27,8 @@
         </binding-component-service-unit>
     </service-units>
     <connections>
-        <connection consumer="endpoint1" provider="endpoint3" state="new"/>
         <connection consumer="endpoint4" provider="endpoint2" state="new"/>
+        <connection consumer="endpoint1" provider="endpoint3" state="new"/>
         <connection consumer="endpoint4" provider="endpoint3" state="deleted"/>
     </connections>
     <porttypes>

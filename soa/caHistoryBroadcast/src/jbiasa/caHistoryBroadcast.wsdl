@@ -43,7 +43,7 @@
     </service>
     <service name="casaService2">
         <port name="consumer1Endpoint" binding="tns:casaBinding2">
-            <soap:address location="http://localhost:8080/eirc/ws/ShareHistory"/>
+            <soap:address location="http://192.168.1.106:8080/tc/ws/ShareHistory"/>
         </port>
     </service>
 </definitions>
