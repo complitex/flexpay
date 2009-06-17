@@ -10,7 +10,6 @@ public class ClassToTypeRegistryPayments implements ClassToTypeRegistry {
 
 	private static final int MODULE_BASE = 0x3000;
 
-	@Override
 	public int getType(Class<? extends DomainObject> clazz) {
 
 		if (Service.class.isAssignableFrom(clazz)) {
