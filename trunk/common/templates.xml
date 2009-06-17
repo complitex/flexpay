@@ -75,14 +75,12 @@
 	<path id="jbpm_jpdl.lib">
 		<fileset dir="${common.dir}/lib">
 			<include name="jbpm/*.jar" />
-			<include name="jbpm/*.txt" />
 		</fileset>
 	</path>
 
 	<path id="drools.lib">
 		<fileset dir="${common.dir}/lib">
 			<include name="drools/*.jar" />
-			<include name="drools/*.txt" />
 		</fileset>
 	</path>
 

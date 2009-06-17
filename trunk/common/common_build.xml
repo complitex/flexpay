@@ -43,19 +43,16 @@
 
 	<path id="common.test.classpath">
 		<path refid="common.production.classpath" />
-		<path refid="common.jar" />
-		<path refid="common.test.jar" />
 		<path refid="jdbc.lib" />
 		<path refid="junit.lib" />
 	</path>
 
 	<path id="common.runtests.classpath">
-		<path location="${build.dir}/classes" />
 		<path refid="common.test.classpath" />
-		<path location="${build.dir}/web" />
-		<path location="${build.dir}/web/WEB-INF" />
-		<path location="${build.dir}/web/WEB-INF/classes" />
-		<path location="${common.dir}/tests/data" />
+		<pathelement location="${build.dir}/web" />
+		<pathelement location="${build.dir}/web/WEB-INF" />
+		<pathelement location="${build.dir}/web/WEB-INF/classes" />
+		<pathelement location="${common.dir}/tests/data" />
 	</path>
 
 	<target name="common.help" description="Print common module build script options">
