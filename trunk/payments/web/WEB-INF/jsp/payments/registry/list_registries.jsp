@@ -64,11 +64,13 @@
 			</tr>
 		</s:iterator>
 		<tr>
+      <!--
 			<td colspan="5">
 				<input type="submit" value="<s:text name="eirc.process" />" class="btn-exit"
 					   onclick="$('#fregistries').attr('action', '<s:url action="registriesProcess" includeParams="none" />');"/>
 			</td>
-      <td colspan="6" align="right">
+      -->
+      <td colspan="11">
         <%@include file="/WEB-INF/jsp/common/filter/pager/pager.jsp" %>
       </td>
 		</tr>
