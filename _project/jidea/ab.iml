@@ -60,6 +60,7 @@
             <file>file://$MODULE_DIR$/../../ab/src/org/flexpay/ab/actions/country/struts.xml</file>
             <file>file://$MODULE_DIR$/../../ab/src/org/flexpay/ab/actions/region/struts.xml</file>
             <file>file://$MODULE_DIR$/../../ab/src/org/flexpay/ab/actions/filters/struts.xml</file>
+            <file>file://$MODULE_DIR$/../../common/src/org/flexpay/common/actions/struts_config.xml</file>
           </fileset>
         </configuration>
       </facet>
@@ -67,8 +68,8 @@
     <facet type="hibernate" name="Hibernate">
       <configuration>
         <datasource-map>
-          <unit-entry name="flexpay" value="1cbbd1b0-185e-4357-955d-ff0dac282ef8" />
-          <unit-entry name="flexpaySessionFactory" value="1cbbd1b0-185e-4357-955d-ff0dac282ef8" />
+          <unit-entry name="flexpay" value="adcaabfc-5767-4e94-8aa8-d6f88d6db163" />
+          <unit-entry name="flexpaySessionFactory" value="adcaabfc-5767-4e94-8aa8-d6f88d6db163" />
         </datasource-map>
         <deploymentDescriptor name="hibernate.cfg.xml" url="file://$MODULE_DIR$/../../ab/web/WEB-INF/hibernate.cfg.xml" optional="false" version="3.0" />
       </configuration>
@@ -100,7 +101,6 @@
           <file>file://$MODULE_DIR$/../../common/web/WEB-INF/common/configs/menu.cfg.xml</file>
           <file>file://$MODULE_DIR$/../../ab/web/WEB-INF/ab/configs/menu.cfg.xml</file>
           <file>file://$MODULE_DIR$/../../common/web/WEB-INF/common/configs/spring/beans-struts.xml</file>
-          <file>file://$MODULE_DIR$/../../common/web/WEB-INF/common/configs/spring/beans-job.xml</file>
           <file>file://$MODULE_DIR$/../../common/web/WEB-INF/common/configs/spring/beans-schedule.xml</file>
           <file>file://$MODULE_DIR$/../../common/web/WEB-INF/common/configs/spring/history/beans-ws-client.xml</file>
           <file>file://$MODULE_DIR$/../../common/web/WEB-INF/common/configs/spring/history/beans-ws-server-test.xml</file>
@@ -108,6 +108,8 @@
           <file>file://$MODULE_DIR$/../../common/web/WEB-INF/common/configs/spring/history/config.xml</file>
           <file>file://$MODULE_DIR$/../../common/web/WEB-INF/spring-ws-servlet.xml</file>
           <file>file://$MODULE_DIR$/../../common/web/WEB-INF/applicationContext-security.xml</file>
+          <file>file://$MODULE_DIR$/../../common/web/WEB-INF/common/configs/spring/beans-jms.xml</file>
+          <file>file://$MODULE_DIR$/../../common/web/WEB-INF/common/configs/spring/beans-job.xml</file>
         </fileset>
       </configuration>
     </facet>
@@ -140,7 +142,7 @@
     <orderEntry type="module" module-name="common" />
     <orderEntry type="library" name="logging" level="project" />
     <orderEntry type="library" name="Commons" level="project" />
-    <orderEntry type="library" name="AJax" level="project" />
+    <orderEntry type="library" name="Ajax" level="project" />
     <orderEntry type="library" name="JBPM" level="project" />
     <orderEntry type="library" name="Quartz" level="project" />
     <orderEntry type="library" name="Jetbrains" level="project" />
