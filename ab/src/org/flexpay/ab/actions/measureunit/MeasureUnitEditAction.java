@@ -39,7 +39,7 @@ public class MeasureUnitEditAction extends FPActionSupport {
 		}
 
 		MeasureUnit unit = measureUnit.isNew() ?
-						   measureUnit : measureUnitService.read(Stub.stub(measureUnit));
+						   measureUnit : measureUnitService.readFull(Stub.stub(measureUnit));
 		if (unit == null) {
 			log.debug("Invalid id specified");
 			addActionError(getText("error.invalid_id"));
@@ -65,7 +65,11 @@ public class MeasureUnitEditAction extends FPActionSupport {
 
 		log.debug("Unit names: {}", unit.getUnitNames());
 
-		measureUnitService.save(unit);
+		if (unit.isNew()) {
+			measureUnitService.create(unit);
+		} else {
+			measureUnitService.update(unit);
+		}
 
 		return REDIRECT_SUCCESS;
 	}

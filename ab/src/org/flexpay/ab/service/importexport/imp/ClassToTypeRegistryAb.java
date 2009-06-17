@@ -2,14 +2,14 @@ package org.flexpay.ab.service.importexport.imp;
 
 import org.flexpay.ab.persistence.*;
 import org.flexpay.common.persistence.DomainObject;
+import org.flexpay.common.service.importexport.ClassToTypeRegistry;
 
-public class ClassToTypeRegistry extends org.flexpay.common.service.importexport.ClassToTypeRegistry {
+public class ClassToTypeRegistryAb implements ClassToTypeRegistry {
 
 	private static final int MODULE_BASE = 0x1000;
-    private static final int ERROR_CODE = 0x0000;
 
-    @Override
-    protected int getModuleType(Class<? extends DomainObject> clazz) {
+	@Override
+	public int getType(Class<? extends DomainObject> clazz) {
 		if (Person.class.isAssignableFrom(clazz)) {
 			return MODULE_BASE + 0x09;
 		}
@@ -50,10 +50,6 @@ public class ClassToTypeRegistry extends org.flexpay.common.service.importexport
 			return MODULE_BASE + 0x0C;
 		}
 
-        return super.getModuleType(clazz);
+		throw new IllegalArgumentException("Class " + clazz + " has no assigned type");
 	}
-
-    protected int getErrorCode() {
-        return ERROR_CODE;
-    }
 }

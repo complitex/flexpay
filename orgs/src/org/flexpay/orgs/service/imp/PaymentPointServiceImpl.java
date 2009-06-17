@@ -188,6 +188,12 @@ public class PaymentPointServiceImpl implements PaymentPointService {
 		return paymentPointDao.listPoints();
 	}
 
+	@Override
+	@Transactional (readOnly = false)
+	public void delete(@NotNull PaymentPoint point) {
+		paymentPointDao.delete(point);
+	}
+
 	@Required
 	public void setPaymentPointDao(PaymentPointDao paymentPointDao) {
 		this.paymentPointDao = paymentPointDao;

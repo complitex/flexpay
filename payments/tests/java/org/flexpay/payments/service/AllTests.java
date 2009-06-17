@@ -7,7 +7,8 @@ import org.junit.runners.Suite;
 @Suite.SuiteClasses ({
 		org.flexpay.payments.service.statistics.AllTests.class,
 		TestDocumentService.class,
-		TestServiceDao.class
+		TestServiceDao.class,
+		TestObjectsServices.class
 })
 public class AllTests {
 

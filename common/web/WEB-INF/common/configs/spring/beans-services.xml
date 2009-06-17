@@ -21,10 +21,11 @@
 		  factory-method="getDiffService"
 		  p:diffDao-ref="diffDao"
 		  p:diffDaoExt-ref="diffDaoExt"
-		  p:registry-ref="classToTypeRegistryCommon" />
+		  p:registry-ref="classToTypeRegistry" />
 
-	<bean class="org.flexpay.common.service.importexport.imp.ImportErrorServiceImpl"
-		  abstract="true" id="importErrorServiceTemplate"
+	<bean id="importErrorService"
+		  class="org.flexpay.common.service.importexport.imp.ImportErrorServiceImpl"
+		  p:registry-ref="classToTypeRegistry"
 		  p:errorDao-ref="importErrorDao" />
 
 	<bean id="languageServiceTarget"
@@ -54,9 +55,15 @@
 		  p:fpFileTypeDao-ref="fpFileTypeDao"
 		  p:fpModuleDao-ref="fpModuleDao" />
 
+	<bean id="measureUnitModificationListener"
+		  parent="historyChangesListenerBase"
+		  p:historyBuilder-ref="measureUnitHistoryBuilder" />
+
 	<bean id="measureUnitServiceTarget"
 		  class="org.flexpay.common.service.imp.MeasureUnitServiceImpl"
 		  autowire-candidate="false"
+		  p:sessionUtils-ref="sessionUtils"
+		  p:modificationListener-ref="measureUnitModificationListener"
 		  p:measureUnitDao-ref="measureUnitDao" />
 
 	<bean id="registryFileService"
@@ -128,15 +135,24 @@
 		  class="org.flexpay.common.service.importexport.imp.CorrectionsServiceFactory" />
 
 	<bean id="classToTypeRegistryCommon"
-		  class="org.flexpay.common.service.importexport.imp.ClassToTypeRegistryStub" />
+		  class="org.flexpay.common.service.importexport.imp.ClassToTypeRegistryCommon" />
+
+	<bean id="classToTypeRegistryFactory"
+		  class="org.flexpay.common.service.importexport.imp.ClassToTypeRegistryFactory"
+		  p:registry-ref="classToTypeRegistryCommon" />
+
+	<bean id="classToTypeRegistry"
+		  class="org.flexpay.common.service.importexport.imp.ProxyClassToTypeRegistry"
+		  p:factory-ref="classToTypeRegistryFactory" />
 
 	<bean id="correctionsService"
 		  factory-bean="correctionsServiceFactory"
 		  factory-method="getInstance"
-		  p:typeRegistry-ref="classToTypeRegistryCommon"
+		  p:typeRegistry-ref="classToTypeRegistry"
 		  p:correctionsDao-ref="correctionsDao" />
 
-	<bean id="masterIndexServiceTarget" autowire-candidate="false"
+	<bean id="masterIndexServiceTarget"
+		  autowire-candidate="false"
 		  class="org.flexpay.common.service.importexport.imp.MasterIndexServiceImpl"
 		  p:correctionsService-ref="correctionsService"
 		  p:sourceDescriptionDao-ref="dataSourceDescriptionDao" />
@@ -145,19 +161,25 @@
 		  class="org.flexpay.common.persistence.history.impl.HistoryRecordsFilterFactory" />
 
 	<bean id="historyRecordsFiltersChain"
-		  factory-bean="historyRecordsFilterFactory" factory-method="getFilter" />
+		  factory-bean="historyRecordsFilterFactory"
+		  factory-method="getFilter" />
 
-	<bean id="historyPackerBase" abstract="true" autowire-candidate="false"
+	<bean id="historyPackerBase"
+		  abstract="true"
+		  autowire-candidate="false"
 		  p:consumerService-ref="historyConsumerService"
 		  p:fileService-ref="fpFileService"
 		  p:recordsFilter-ref="historyRecordsFiltersChain"
 		  p:lockManager-ref="lockManager"
 		  class="org.flexpay.common.persistence.history.impl.HistoryPackerBase" />
 
-	<bean id="xmlHistoryPacker" parent="historyPackerBase"
+	<bean id="xmlHistoryPacker"
+		  parent="historyPackerBase"
 		  class="org.flexpay.common.persistence.history.impl.XmlHistoryPacker" />
 
-	<bean id="historyUnPackerBase" abstract="true" autowire-candidate="false"
+	<bean id="historyUnPackerBase"
+		  abstract="true"
+		  autowire-candidate="false"
 		  p:diffService-ref="diffService"
 		  class="org.flexpay.common.persistence.history.impl.HistoryUnPackerBase" />
 
@@ -174,15 +196,21 @@
 		  class="org.flexpay.common.persistence.history.impl.ObjectsSyncerFactory" />
 
 	<bean id="objectsSyncer"
-		  factory-bean="objectsSyncerFactory" factory-method="getInstance"
+		  factory-bean="objectsSyncerFactory"
+		  factory-method="getInstance"
 		  p:diffService-ref="diffService" />
 
-	<bean id="historyHandlerBase" abstract="true" autowire-candidate="false"
+	<bean id="historyHandlerBase"
+		  abstract="true"
+		  autowire-candidate="false"
 		  class="org.flexpay.common.persistence.history.impl.HistoryHandlerBase"
 		  p:correctionsService-ref="correctionsService"
-		  p:masterIndexService-ref="masterIndexService" />
+		  p:masterIndexService-ref="masterIndexService"
+		  p:historyHandlerHelper-ref="historyHandlerHelper"
+		  p:typeRegistry-ref="classToTypeRegistry" />
 
-	<bean id="xmlHistoryUnPacker" parent="historyUnPackerBase"
+	<bean id="xmlHistoryUnPacker"
+		  parent="historyUnPackerBase"
 		  class="org.flexpay.common.persistence.history.impl.XmlHistoryUnPacker" />
 
 	<bean id="historyUnpackManager"
@@ -190,12 +218,45 @@
 		  p:historyPackDao-ref="externalHistoryPackDao"
 		  p:unPackDataDao-ref="historyUnPackDataDao" />
 
-	<bean id="historyChangesListenerBase" abstract="true"
+	<bean id="historyChangesListenerBase"
+		  abstract="true"
 		  class="org.flexpay.common.persistence.history.impl.ModificationListenerImpl"
 		  p:diffService-ref="diffService" />
 
 	<bean id="nopeHistoryChangesListener"
 		  class="org.flexpay.common.persistence.history.impl.NopeModificationListener" />
+
+	<bean id="historyBuilderBase"
+		  abstract="true"
+		  class="org.flexpay.common.persistence.history.impl.HistoryBuilderBase"
+		  p:masterIndexService-ref="masterIndexService"
+		  p:correctionsService-ref="correctionsService"
+		  p:builderHelper-ref="historyBuilderHelper"
+		  p:typeRegistry-ref="classToTypeRegistry" />
+
+	<bean id="measureUnitHistoryBuilder"
+		  parent="historyBuilderBase"
+		  class="org.flexpay.common.service.history.MeasureUnitHistoryBuilder" />
+
+	<bean id="measureUnitHistoryGenerator"
+		  class="org.flexpay.common.service.history.MeasureUnitHistoryGenerator"
+		  p:diffService-ref="diffService"
+		  p:historyBuilder-ref="measureUnitHistoryBuilder"
+		  p:unitService-ref="measureUnitService" />
+
+	<!-- History handlers -->
+	<bean id="commonHistoryHandlerBase"
+		  abstract="true"
+		  autowire-candidate="false"
+		  parent="historyHandlerBase"
+		  p:historyHandlerHelper-ref="historyHandlerHelper"
+		  p:typeRegistry-ref="classToTypeRegistry" />
+
+	<bean id="measureUnitHistoryHandler"
+		  parent="commonHistoryHandlerBase"
+		  class="org.flexpay.common.service.history.MeasureUnitHistoryHandler"
+		  p:historyBuilder-ref="measureUnitHistoryBuilder"
+		  p:unitService-ref="measureUnitService" />
 
 	<bean id="cnDataSourceDescription" class="org.flexpay.common.persistence.DataSourceDescription">
 		<!-- TODO Here put the CN data source ID -->

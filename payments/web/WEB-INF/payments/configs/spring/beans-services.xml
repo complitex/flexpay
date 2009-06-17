@@ -128,7 +128,7 @@
 		  autowire-candidate="false"
 		  class="org.flexpay.payments.service.impl.CashboxServiceImpl"
 		  p:sessionUtils-ref="sessionUtils"
-		  p:modificationListener-ref="nopeHistoryChangesListener"
+		  p:modificationListener-ref="cashboxHistoryChangesListener"
 		  p:cashboxDao-ref="cashboxDao" />
 
 	<bean id="exportBankPaymentsRegistry"
@@ -151,24 +151,16 @@
 		  p:registryTypeService-ref="registryTypeService" />
 
 	<!-- History builders -->
-	<bean id="paymentsHistoryBuilderBase"
-		  abstract="true"
-		  class="org.flexpay.common.persistence.history.impl.HistoryBuilderBase"
-		  p:masterIndexService-ref="masterIndexService"
-		  p:correctionsService-ref="correctionsServicePayments"
-		  p:builderHelper-ref="historyBuilderHelper"
-		  p:typeRegistry-ref="typeRegistryPayments" />
-
 	<bean id="cashboxHistoryBuilder"
-		  parent="paymentsHistoryBuilderBase"
+		  parent="historyBuilderBase"
 		  class="org.flexpay.payments.service.history.CashboxHistoryBuilder" />
 
 	<bean id="serviceTypeHistoryBuilder"
-		  parent="paymentsHistoryBuilderBase"
+		  parent="historyBuilderBase"
 		  class="org.flexpay.payments.service.history.ServiceTypeHistoryBuilder" />
 
 	<bean id="serviceHistoryBuilder"
-		  parent="paymentsHistoryBuilderBase"
+		  parent="historyBuilderBase"
 		  class="org.flexpay.payments.service.history.ServiceHistoryBuilder" />
 
 	<!-- History generators -->
@@ -196,7 +188,7 @@
 		  autowire-candidate="false"
 		  parent="historyHandlerBase"
 		  p:historyHandlerHelper-ref="historyHandlerHelper"
-		  p:typeRegistry-ref="typeRegistryPayments" />
+		  p:typeRegistry-ref="classToTypeRegistry" />
 
 	<bean id="cashboxHistoryHandler"
 		  parent="paymentsHistoryHandlerBase"
@@ -238,6 +230,7 @@
 				<ref bean="cashboxHistoryHandler" />
 				<ref bean="serviceTypeHistoryHandler" />
 				<ref bean="serviceHistoryHandler" />
+				<ref bean="measureUnitHistoryHandler" />
 			</list>
 		</property>
 	</bean>

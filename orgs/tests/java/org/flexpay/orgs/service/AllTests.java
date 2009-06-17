@@ -5,7 +5,8 @@ import org.junit.runners.Suite;
 
 @RunWith (Suite.class)
 @Suite.SuiteClasses ({
-		TestOrganisationService.class
+		TestOrganisationService.class,
+		TestInstanceService.class
 })
 public class AllTests {
 

@@ -29,10 +29,10 @@ public class MeasureUnitDeleteAction extends FPActionSupport {
 		log.debug("Deleting measure units: {}", objectIds);
 
 		for (Long id : objectIds) {
-			MeasureUnit unit = measureUnitService.read(new Stub<MeasureUnit>(id));
+			MeasureUnit unit = measureUnitService.readFull(new Stub<MeasureUnit>(id));
 			if (unit != null) {
 				unit.disable();
-				measureUnitService.save(unit);
+				measureUnitService.create(unit);
 			}
 		}
 

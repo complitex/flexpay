@@ -72,7 +72,7 @@ public class ServiceProviderServiceImpl implements ServiceProviderService {
 	 * @return List of service providers
 	 */
 	@NotNull
-	public List<ServiceProvider> listInstances(Page<ServiceProvider> pager) {
+	public List<ServiceProvider> listInstances(@NotNull Page<ServiceProvider> pager) {
 		return serviceProviderDao.findProviders(pager);
 	}
 
@@ -170,7 +170,8 @@ public class ServiceProviderServiceImpl implements ServiceProviderService {
 	 * @param sp				 Service Provider
 	 * @return filter
 	 */
-	public OrganizationFilter initInstancelessFilter(OrganizationFilter organizationFilter, ServiceProvider sp) {
+	@NotNull
+	public OrganizationFilter initInstancelessFilter(@NotNull OrganizationFilter organizationFilter, @NotNull ServiceProvider sp) {
 		List<Organization> organizations = serviceProviderDao.findProviderlessOrgs();
 		List<Organization> providerlessOrgs = new ArrayList<Organization>();
 		Long orgId = sp.getOrganization() != null ? sp.getOrganizationStub().getId() : null;
@@ -215,6 +216,17 @@ public class ServiceProviderServiceImpl implements ServiceProviderService {
 		filter.setInstances(providers);
 
 		return filter;
+	}
+
+	/**
+	 * Test method that deletes created instance
+	 *
+	 * @param instance Organization instance to delete
+	 */
+	@Transactional (readOnly = false)
+	@Override
+	public void delete(@NotNull ServiceProvider instance) {
+		serviceProviderDao.delete(instance);
 	}
 
 	@Required

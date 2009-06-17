@@ -81,4 +81,6 @@ public interface BankService extends OrganizationInstanceService<BankDescription
 	@Secured (Roles.BANK_READ)
 	@NotNull
 	OrganizationFilter initInstancelessFilter(@NotNull OrganizationFilter organizationFilter, @NotNull Bank bank);
+
+	void delete(@NotNull Bank org);
 }

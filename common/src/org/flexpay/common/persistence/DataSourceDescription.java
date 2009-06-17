@@ -14,6 +14,10 @@ public class DataSourceDescription extends DomainObject {
 	public DataSourceDescription() {
 	}
 
+	public DataSourceDescription(String description) {
+		this.description = description;
+	}
+
 	public DataSourceDescription(Long id) {
 		super(id);
 	}

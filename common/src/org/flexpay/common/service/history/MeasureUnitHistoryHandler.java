@@ -1,15 +1,15 @@
-package org.flexpay.payments.service.history;
+package org.flexpay.common.service.history;
 
 import org.flexpay.common.persistence.history.impl.HistoryHandlerBase;
 import org.flexpay.common.persistence.history.Diff;
-import org.flexpay.payments.persistence.Service;
-import org.flexpay.payments.service.SPService;
+import org.flexpay.common.persistence.MeasureUnit;
+import org.flexpay.common.service.MeasureUnitService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
-public class ServiceHistoryHandler extends HistoryHandlerBase<Service> {
+public class MeasureUnitHistoryHandler extends HistoryHandlerBase<MeasureUnit> {
 
-	private SPService spService;
+	private MeasureUnitService unitService;
 
 	/**
 	 * Check if this handler can handle this <code>diff</code>
@@ -17,8 +17,10 @@ public class ServiceHistoryHandler extends HistoryHandlerBase<Service> {
 	 * @param diff Diff that is to be handled
 	 * @return <code>
 	 */
+	@Override
 	public boolean supports(@NotNull Diff diff) {
-		return typeRegistry.getType(Service.class) == diff.getObjectType();
+
+		return typeRegistry.getType(MeasureUnit.class) == diff.getObjectType();
 	}
 
 	/**
@@ -27,13 +29,14 @@ public class ServiceHistoryHandler extends HistoryHandlerBase<Service> {
 	 * @param diff Diff
 	 * @throws Exception if failure occurs
 	 */
+	@Override
 	public void process(@NotNull Diff diff) throws Exception {
 
-		historyHandlerHelper.process(diff, historyBuilder, spService, correctionsService);
+		historyHandlerHelper.process(diff, historyBuilder, unitService, correctionsService);
 	}
 
 	@Required
-	public void setSpService(SPService spService) {
-		this.spService = spService;
+	public void setUnitService(MeasureUnitService unitService) {
+		this.unitService = unitService;
 	}
 }

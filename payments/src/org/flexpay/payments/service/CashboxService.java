@@ -50,8 +50,7 @@ public interface CashboxService {
 	 *
 	 * @param cashbox Cashbox-object to delete
 	 */
-	@Secured (Roles.CASHBOX_DELETE)
-	void delete(Cashbox cashbox);
+	void delete(@NotNull Cashbox cashbox);
 
 	/**
 	 * Disable cashboxes

@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * Service helping working with MeasureUnit-s
  */
-public interface MeasureUnitService {
+public interface MeasureUnitService extends DomainObjectService<MeasureUnit> {
 
 	/**
 	 * Read full unit info
@@ -21,7 +21,7 @@ public interface MeasureUnitService {
 	 * @return MeasureUnit if available
 	 */
 	@Nullable
-	MeasureUnit read(@NotNull Stub<MeasureUnit> stub);
+	MeasureUnit readFull(@NotNull Stub<? extends MeasureUnit> stub);
 
 	/**
 	 * Get a list of available measure units
@@ -41,10 +41,25 @@ public interface MeasureUnitService {
 	MeasureUnitFilter initFilter(@Nullable MeasureUnitFilter filter);
 
 	/**
-	 * Create or update measure unit
+	 * Create measure unit
 	 *
 	 * @param unit MeasureUnit to save
+	 * @return Persisted object back
 	 * @throws FlexPayExceptionContainer if validation fails
 	 */
-	void save(@NotNull MeasureUnit unit) throws FlexPayExceptionContainer;
+	@NotNull
+	MeasureUnit create(@NotNull MeasureUnit unit) throws FlexPayExceptionContainer;
+
+	/**
+	 * Update measure unit
+	 *
+	 * @param obj Unit to update
+	 * @return updatyed object back
+	 * @throws FlexPayExceptionContainer if validation fails
+	 */
+	@NotNull
+	@Override
+	MeasureUnit update(@NotNull MeasureUnit obj) throws FlexPayExceptionContainer;
+
+	void delete(@NotNull MeasureUnit unit);
 }

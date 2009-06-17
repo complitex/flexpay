@@ -75,4 +75,6 @@ public interface SPService extends DomainObjectService<Service> {
 	 */
 	@Secured (Roles.SERVICE_READ)
 	ServiceFilter initParentServicesFilter(ServiceFilter filter);
+
+	void delete(@NotNull Service service);
 }

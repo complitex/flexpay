@@ -73,4 +73,11 @@ public interface OrganizationInstanceService<
 	 */
 	@NotNull
 	OrganizationFilter initInstancelessFilter(@NotNull OrganizationFilter filter, @NotNull T instance);
+
+	/**
+	 * Test method that deletes created instance
+	 *
+	 * @param instance Organization instance to delete
+	 */
+	void delete(@NotNull T instance);
 }

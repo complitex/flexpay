@@ -36,7 +36,7 @@ public interface ServiceProviderService
 	 */
 	@NotNull
 	@Secured (Roles.SERVICE_PROVIDER_READ)
-	List<ServiceProvider> listInstances(Page<ServiceProvider> pager);
+	List<ServiceProvider> listInstances(@NotNull Page<ServiceProvider> pager);
 
 	/**
 	 * Disable service providers
@@ -66,7 +66,7 @@ public interface ServiceProviderService
 	 *          if provider validation fails
 	 */
 	@NotNull
-	@Secured (Roles.SERVICE_PROVIDER_CHANGE)
+	@Secured (Roles.SERVICE_PROVIDER_ADD)
 	ServiceProvider create(@NotNull ServiceProvider serviceProvider) throws FlexPayExceptionContainer;
 
 	/**
@@ -88,8 +88,9 @@ public interface ServiceProviderService
 	 * @param sp				 ServiceProvider to init filter for
 	 * @return filter
 	 */
+	@NotNull
 	@Secured (Roles.SERVICE_ORGANIZATION_READ)
-	OrganizationFilter initInstancelessFilter(OrganizationFilter organizationFilter, ServiceProvider sp);
+	OrganizationFilter initInstancelessFilter(@NotNull OrganizationFilter organizationFilter, @NotNull ServiceProvider sp);
 
 	/**
 	 * Initialize filter

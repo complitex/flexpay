@@ -98,7 +98,7 @@ public class CashboxServiceImpl implements CashboxService {
 	}
 
 	@Transactional (readOnly = false)
-	public void delete(Cashbox cashbox) {
+	public void delete(@NotNull Cashbox cashbox) {
 		cashboxDao.delete(cashbox);
 	}
 

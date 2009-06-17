@@ -66,8 +66,8 @@ public class ImportErrorServiceImpl implements ImportErrorService {
 		this.errorDao = errorDao;
 	}
 
+	@Required
 	public void setRegistry(ClassToTypeRegistry registry) {
 		this.registry = registry;
 	}
-
 }
