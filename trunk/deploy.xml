@@ -2,6 +2,7 @@
 <project name="flexpay-deploy">
 
 	<import file="sz/sz_build.xml" />
+    <import file="rent/rent_build.xml" />
 	<import file="ab_sync/ab_sync_build.xml" />
 	<import file="tc/tc_build.xml" />
 
@@ -54,6 +55,16 @@
 			<param name="application_archive" value="${distr.dir}/${payments.war.name}" />
 		</antcall>
 	</target>
+
+    <target name="rent.deploy.sjsas" depends="rent.war.production.glassfish_mysql5">
+        <antcall target="rent.deploy.sjsas.nobuild" />
+    </target>
+
+    <target name="rent.deploy.sjsas.nobuild">
+        <antcall target="template.deploy.sjsas">
+            <param name="application_archive" value="${distr.dir}/${rent.war.name}" />
+        </antcall>
+    </target>
 
 	<target name="eirc.deploy.sjsas" depends="eirc.war.production.glassfish_mysql5">
 		<antcall target="eirc.deploy.sjsas.nobuild" />

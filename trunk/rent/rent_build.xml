@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="flexpay_rent" basedir=".." default="rent.help">
+
+    <import file="../orgs/orgs_build.xml" />
+    <import file="../ab/ab_build.xml" />
+	<import file="../payments/payments_build.xml" />
+
+	<property file="rent/rent_build.properties" />
+
+	<property name="rent.dir" value="${basedir}/rent" />
+
+	<path id="rent.lib">
+		<fileset dir="${rent.dir}/lib">
+			<include name="**/*.jar" />
+		</fileset>
+	</path>
+
+	<fileset id="rent.libraries" dir="${rent.dir}/lib">
+		<include name="**/*" />
+	</fileset>
+
+	<path id="rent.jar" location="${build.dir}/lib/${rent.jar.name}" />
+	<path id="rent.test.jar" location="${build.dir}/lib/${rent.tests.jar.name}" />
+
+	<path id="rent.production.classpath">
+        <path refid="orgs.production.classpath" />
+        <path refid="ab.production.classpath" />
+		<path refid="payments.production.classpath" />
+		<path refid="rent.lib" />
+	</path>
+
+	<path id="rent.test.classpath">
+        <path refid="orgs.test.classpath" />
+        <path refid="ab.test.classpath" />
+		<path refid="payments.test.classpath" />
+		<path refid="rent.production.classpath" />
+	</path>
+
+    <path id="rent.runtests.classpath">
+        <path refid="orgs.runtests.classpath" />
+        <path refid="ab.runtests.classpath" />
+        <path refid="payments.runtests.classpath" />
+        <path refid="rent.test.classpath" />
+        <path location="rent/tests/data" />
+    </path>
+
+	<target name="rent.help" description="Print rent module build script options">
+		<echo>
+	rent module build script
+	Usage:
+	ant -f rent_build.xml [target_name [target_options]]
+
+	Available targets are:
+		rent.db - Initialize database
+		rent.exportschema.mysql5 - Generate DDL of module for MySQL5
+		rent.runtests - Run all module tests, possible option for this target is test.class.name that specifies test class name to run
+			for example ant -f eirc_build.xml eirc.runtests -Dtest.class.name=org.flexpay.rent.service.TestBuildingService
+		rent.war.production.tomcat_mysql5 - Build production war for Tomcat and MySQL5
+		rent.war.production.flassfish_mysql5 - Build production war for Glassfish and MySQL5
+		</echo>
+	</target>
+
+    <target name="rent.clean.build">
+		<antcall target="clean.build" />
+	</target>
+
+	<property name="rent.src.production" value="${rent.dir}/${src.dir};${payments.src.production}" />
+	<target name="rent.compile.production">
+		<antcall target="template.compile.production">
+			<param name="sources.dir" value="${rent.src.production}" />
+			<reference refid="rent.production.classpath" torefid="classpath" />
+		</antcall>
+	</target>
+
+	<property name="rent.src.test" value="${rent.src.production};${rent.dir}/${tests.src.dir};${payments.src.test}" />
+	<target name="rent.compile.test">
+		<antcall target="template.compile.test">
+			<param name="sources.dir" value="${rent.src.test}" />
+			<reference refid="rent.test.classpath" torefid="classpath" />
+		</antcall>
+	</target>
+
+	<target name="rent.jar.production" depends="rent.compile.production">
+		<antcall target="template.jar">
+			<param name="jar.name" value="${rent.jar.name}" /> 
+		</antcall>
+	</target>
+
+	<!-- Build targets -->
+	<target name="rent.docs" depends="rent.compile.production">
+		<fileset id="rent.docs.resources" dir="${rent.dir}/docs" />
+		<antcall target="template.docs">
+			<param name="sources.dir" value="${rent.src.production}" />
+			<param name="module_name" value="Bureau of techinical stock-taking" />
+			<param name="docs.file" value="${rent.docs.name}" />
+			<reference refid="rent.docs.resources" torefid="resources" />
+			<reference refid="rent.production.classpath" torefid="classpath" />
+		</antcall>
+	</target>
+
+	<target name="rent.war.production.tomcat_mysql5">
+		<antcall target="clean.all" />
+		<antcall target="template.rent.war.production">
+			<param name="app_server.properties" value="app_server_tomcat.properties" />
+			<param name="data_source.properties" value="data_source_mysql5.properties" />
+		</antcall>
+	</target>
+
+	<target name="rent.war.production.glassfish_mysql5">
+		<antcall target="clean.all" />
+		<antcall target="template.rent.war.production">
+			<param name="app_server.properties" value="app_server_glassfish.properties" />
+			<param name="data_source.properties" value="data_source_mysql5.properties" />
+		</antcall>
+	</target>
+
+    <target name="rent.prepare.war">
+		<antcall target="rent.prepare.war.internal" />
+		<antcall target="template.switch_log_name">
+			<param name="log_name" value="rent" />
+		</antcall>
+		<antcall target="template.copy.classes" />
+	</target>
+
+	<target name="rent.prepare.test.war">
+		<antcall target="rent.prepare.war.internal" />
+		<antcall target="common.test.war.data-source" />
+		<antcall target="template.copy.classes" />
+	</target>
+
+    <target name="rent.prepare.war.internal" depends="payments.prepare.war.internal">
+        <fileset id="rent.web.resources" dir="${rent.dir}/web" />
+        <antcall target="template.prepare.war">
+            <param name="to_dir" value="" />
+            <param name="src.i18n.dir" value="${build.dir}/empty" />
+            <reference refid="rent.web.resources" torefid="resources" />
+        </antcall>
+
+        <fileset dir="${rent.dir}/${src.dir}" id="rent.classes.resources">
+            <patternset refid="resources_pattern" />
+        </fileset>
+        <antcall target="template.prepare.war">
+            <param name="to_dir" value="/WEB-INF/classes" />
+            <param name="src.i18n.dir" value="${rent.dir}/${src.dir}" />
+            <reference refid="rent.classes.resources" torefid="resources" />
+        </antcall>
+    </target>
+
+    <!-- Build production web-archive -->
+	<target name="template.rent.war.production"
+			depends="clean.all,rent.compile.production,rent.prepare.war,init.distr">
+
+		<copy file="${build.dir}/web/WEB-INF/common/configs/ps/${app_server.properties}"
+			  overwrite="true"
+			  tofile="${build.dir}/web/WEB-INF/common/configs/spring/app_server.properties" />
+		<copy file="${build.dir}/web/WEB-INF/common/configs/ps/${data_source.properties}"
+			  overwrite="true"
+			  tofile="${build.dir}/web/WEB-INF/common/configs/spring/data_source.properties" />
+
+		<antcall target="template.set_db_name" />
+		<antcall target="template.switch_instance_id" />
+
+		<war destfile="${distr.dir}/${rent.war.name}" needxmlfile="false">
+			<fileset dir="${build.dir}/web" />
+			<lib refid="rent.libraries" />
+		</war>
+
+		<antcall target="common.war.include.libs">
+			<param name="warfile" value="${distr.dir}/${rent.war.name}" />
+		</antcall>
+	</target>
+
+	<target name="rent.exportschema.mysql5" depends="clean.build,rent.compile.production">
+		<property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5Dialect" />
+		<antcall target="template.schemaexport">
+			<param name="file_name" value="flexpay_rent.ddl.sql" />
+			<param name="src.dir" value="${rent.src.production}" />
+			<param name="hibernate.cfg"
+				   value="${rent.dir}/web/WEB-INF/hibernate.cfg.xml" />
+			<param name="hibernate.properties"
+				   value="${common.dir}/web/WEB-INF/common/configs/ps/data_source_mysql5.properties" />
+		</antcall>
+	</target>
+
+	<target name="rent.runtests" depends="rent.compile.test,rent.prepare.test.war">
+		<condition property="class.name" value="${test.class.name}" else="org.flexpay.rent.AllTests">
+			<isset property="test.class.name" />
+		</condition>
+		<antcall target="template.run.tests">
+			<param name="test_name" value="${class.name}" />
+			<reference refid="rent.runtests.classpath" torefid="classpath" />
+		</antcall>
+	</target>
+
+	<target name="rent.sql.init-db"
+			depends="payments.sql.init-db"
+			unless="rent.sql.init-db.run">
+		<concat destfile="${build.dir}/sql/init_db.sql" append="true" encoding="UTF-8">
+			<fileset file="${rent.dir}/etc/sql/init_db.sql" />
+		</concat>
+		<property name="rent.sql.init-db.run" value="true" />
+	</target>
+
+	<target name="rent.sql.init-db-test"
+			depends="payments.sql.init-db-test"
+			unless="rent.sql.init-db-test.run">
+		<concat destfile="${build.dir}/sql/init_db.sql" append="true" encoding="UTF-8">
+			<fileset file="${rent.dir}/etc/sql/init_db.sql" />
+		</concat>
+		<concat destfile="${build.dir}/sql/init_db.sql" append="true" encoding="UTF-8">
+			<fileset file="${rent.dir}/etc/sql/init_db_test.sql" />
+		</concat>
+		<property name="rent.sql.init-db-test.run" value="true" />
+	</target>
+
+	<target name="rent.sql.all">
+		<antcall target="common.sql.create-db" />
+		<concat destfile="${build.dir}/sql/init_db.sql" append="true" encoding="UTF-8">
+			<fileset file="${rent.dir}/etc/sql/flexpay_rent.ddl.sql" />
+		</concat>
+		<antcall target="rent.sql.init-db" />
+		<antcall target="template.set_db_name" />
+	</target>
+
+	<target name="rent.sql.all-test">
+		<antcall target="common.sql.create-test-db" />
+		<concat destfile="${build.dir}/sql/init_db.sql" append="true" encoding="UTF-8">
+			<fileset file="${rent.dir}/etc/sql/flexpay_rent.ddl.sql" />
+		</concat>
+		<antcall target="rent.sql.init-db-test" />
+		<antcall target="template.set_test_db_name" />
+	</target>
+
+	<target name="rent.db-test" description="create rent db">
+		<antcall target="rent.sql.all-test" />
+		<antcall target="template.mysql.run">
+			<param name="src.sql" value="${build.dir}/sql/init_db.sql" />
+		</antcall>
+	</target>
+
+</project>

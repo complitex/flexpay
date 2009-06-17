@@ -42,7 +42,7 @@
             <attribute name="URI" value="/WEB-INF/lib" />
             <url>jar://$MODULE_DIR$/../../common/lib/ajax/json-lib-2.0-jdk15.jar!/</url>
           </containerElement>
-          <containerElement type="library" name="AJax" level="project">
+          <containerElement type="library" name="Ajax" level="project">
             <attribute name="method" value="0" />
             <attribute name="URI" value="/WEB-INF/lib" />
           </containerElement>
@@ -91,15 +91,16 @@
     <facet type="hibernate" name="Hibernate">
       <configuration>
         <datasource-map>
-          <unit-entry name="flexpay" value="1cbbd1b0-185e-4357-955d-ff0dac282ef8" />
-          <unit-entry name="flexpaySessionFactory" value="1cbbd1b0-185e-4357-955d-ff0dac282ef8" />
+          <unit-entry name="flexpay" value="adcaabfc-5767-4e94-8aa8-d6f88d6db163" />
+          <unit-entry name="flexpaySessionFactory" value="adcaabfc-5767-4e94-8aa8-d6f88d6db163" />
         </datasource-map>
         <deploymentDescriptor name="hibernate.cfg.xml" url="file://$MODULE_DIR$/../../ab/web/WEB-INF/hibernate.cfg.xml" optional="false" version="3.0" />
       </configuration>
     </facet>
     <facet type="Spring" name="Spring">
       <configuration>
-        <fileset id="fileset1" name="My Fileset" removed="false">
+        <fileset id="web: application context" name="MVC application context" removed="true" />
+        <fileset id="fileset1" name="MVC application context" removed="false">
           <file>file://$MODULE_DIR$/../../common/web/WEB-INF/applicationContext.xml</file>
           <file>file://$MODULE_DIR$/../../common/web/WEB-INF/common/configs/spring/beans-cache.xml</file>
           <file>file://$MODULE_DIR$/../../common/web/WEB-INF/common/configs/spring/beans-dao.xml</file>
@@ -116,15 +117,19 @@
           <file>file://$MODULE_DIR$/../../common/web/WEB-INF/common/configs/menu.cfg.xml</file>
           <file>file://$MODULE_DIR$/../../common/web/WEB-INF/common/configs/spring/beans-struts.xml</file>
           <file>file://$MODULE_DIR$/../../common/web/WEB-INF/applicationContext-security.xml</file>
-          <file>file://$MODULE_DIR$/../../common/web/WEB-INF/common/configs/spring/beans-job.xml</file>
           <file>file://$MODULE_DIR$/../../common/web/WEB-INF/common/configs/spring/beans-schedule.xml</file>
           <file>file://$MODULE_DIR$/../../common/web/WEB-INF/common/configs/spring/history/beans-ws-client.xml</file>
           <file>file://$MODULE_DIR$/../../common/web/WEB-INF/common/configs/spring/history/beans-ws-server-test.xml</file>
           <file>file://$MODULE_DIR$/../../common/web/WEB-INF/common/configs/spring/history/beans-ws-server.xml</file>
           <file>file://$MODULE_DIR$/../../common/web/WEB-INF/common/configs/spring/history/config.xml</file>
           <file>file://$MODULE_DIR$/../../common/web/WEB-INF/spring-ws-servlet.xml</file>
+          <file>file://$MODULE_DIR$/../../common/web/WEB-INF/common/configs/spring/beans-jms.xml</file>
+          <file>file://$MODULE_DIR$/../../common/web/WEB-INF/common/configs/spring/beans-job.xml</file>
         </fileset>
       </configuration>
+    </facet>
+    <facet type="Groovy" name="Groovy">
+      <configuration />
     </facet>
   </component>
   <component name="NewModuleRootManager" inherit-compiler-output="false">
@@ -138,6 +143,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="groovy-1.6.3" level="project" />
     <orderEntry type="library" name="hibernate3" level="project" />
     <orderEntry type="library" name="spring2" level="project" />
     <orderEntry type="library" name="Struts2" level="project" />
@@ -164,13 +170,16 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="library" name="AJax" level="project" />
+    <orderEntry type="library" name="Ajax" level="project" />
     <orderEntry type="library" name="JBPM" level="project" />
     <orderEntry type="library" name="Quartz" level="project" />
     <orderEntry type="library" name="Jetbrains" level="project" />
     <orderEntry type="library" name="jasper" level="project" />
     <orderEntry type="library" name="j2ee" level="project" />
     <orderEntry type="library" name="Spring-WS" level="project" />
+    <orderEntry type="library" name="XStream" level="project" />
+    <orderEntry type="library" name="Drools" level="project" />
+    <orderEntry type="library" name="openmq" level="project" />
   </component>
 </module>
 

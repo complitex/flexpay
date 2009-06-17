@@ -3,6 +3,7 @@
 
 	<import file="ab_sync/ab_sync_build.xml" />
 	<import file="tc/tc_build.xml" />
+    <import file="rent/rent_build.xml" />
 	<import file="sz/sz_build.xml" />
 
 	<target name="build.all" depends="build.ddls,build.docs,build.wars,run.tests" />
@@ -11,6 +12,8 @@
 		<antcall target="sz.jar.production" />
 		<antcall target="eirc.jar.production" />
         <antcall target="orgs.jar.production" />
+        <antcall target="payments.jar.production" />
+        <antcall target="rent.jar.production" />
         <antcall target="bti.jar.production" />
         <antcall target="tc.jar.production" />
         <antcall target="ab_sync.jar.production" />
@@ -24,6 +27,7 @@
         <antcall target="eirc.war.production.glassfish_mysql5" />
         <antcall target="orgs.war.production.glassfish_mysql5" />
         <antcall target="payments.war.production.glassfish_mysql5" />
+        <antcall target="rent.war.production.glassfish_mysql5" />
 		<antcall target="bti.war.production.glassfish_mysql5" />
 		<antcall target="tc.war.production.glassfish_mysql5" />
 		<antcall target="ab_sync.war.production.glassfish_mysql5" />
@@ -39,6 +43,7 @@
 		<antcall target="bti.exportschema.mysql5" />
         <antcall target="tc.exportschema.mysql5" />
         <antcall target="orgs.exportschema.mysql5" />
+        <antcall target="rent.exportschema.mysql5" />
         <antcall target="payments.exportschema.mysql5" />
 		<antcall target="eirc.exportschema.mysql5" />
 	</target>
@@ -63,6 +68,9 @@
         <antcall target="payments.db-test" />
         <antcall target="payments.runtests" />
 
+        <antcall target="rent.db-test" />
+        <antcall target="rent.runtests" />
+
         <antcall target="eirc.db-test" />
 		<antcall target="eirc.runtests" />
 
@@ -79,7 +87,9 @@
         <antcall target="tc.docs" />
         <antcall target="orgs.docs" />
         <antcall target="payments.docs" />
+        <antcall target="rent.docs" />
 		<antcall target="eirc.docs" />
 		<antcall target="sz.docs" />
 	</target>
+
 </project>
