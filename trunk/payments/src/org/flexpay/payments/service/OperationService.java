@@ -111,6 +111,16 @@ public interface OperationService {
 	List<Operation> listReceivedPayments(Organization organization, Date beginDate, Date endDate);
 
 	/**
+	 * List of all payment operations which has status RETURNED inside time interval and organization
+	 * @param organization organization
+	 * @param beginDate lower bound for operation registration date
+	 * @param endDate higher bound for operation registration date
+	 * @return list of payment operations
+	 */
+	@Secured(Roles.OPERATION_READ)
+	List<Operation> listReturnedPayments(Organization organization, Date beginDate, Date endDate);
+
+	/**
 	 * Returns list of operations which contains documents suitable to search criterias
 	 * @param organization organization which registered operation
 	 * @param serviceTypeId document service type id

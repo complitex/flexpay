@@ -6,8 +6,8 @@
 
 	<package name="reports" namespace="/payments" extends="payments">
 
-		<action name="receivedPaymentsReport" class="generateReportAction">
-			<result type="tiles">payments.report.generate</result>
+		<action name="receivedPaymentsReport" class="receivedPaymentsReportAction">
+			<result type="tiles">payments.report.received</result>
 			<result name="file" type="redirect-action">
 				<param name="actionName">print</param>
 				<param name="namespace">/common</param>
@@ -16,9 +16,18 @@
 			</result>
 		</action>
 
-		<action name="generatePaymentsReport" class="paymentsReportAction">
-			<result name="input" type="tiles">payments.report.generatePaymentsReport</result>
-			<!--<result name="success" type="tiles">payments.report.generatePaymentsReport</result>-->
+		<action name="returnedPaymentsReport" class="returnedPaymentsReportAction">
+			<result type="tiles">payments.report.returned</result>
+			<result name="file" type="redirect-action">
+				<param name="actionName">print</param>
+				<param name="namespace">/common</param>
+				<param name="parse">true</param>
+				<param name="file.id">${report.id}</param>
+			</result>
+		</action>
+
+		<action name="importPaymentsReport" class="importPaymentsReportAction">
+			<result name="input" type="tiles">payments.report.importPaymentsReport</result>
 			<result type="stream">
 				<param name="contentType">text/csv</param>
 				<param name="inputName">inputStream</param>

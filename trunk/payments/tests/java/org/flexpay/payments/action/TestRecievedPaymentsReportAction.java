@@ -2,18 +2,11 @@ package org.flexpay.payments.action;
 
 import org.flexpay.payments.test.PaymentsSpringBeanAwareTestCase;
 import org.flexpay.payments.actions.reports.ReceivedPaymentsReportAction;
-import org.flexpay.payments.persistence.Operation;
-import org.flexpay.common.persistence.filter.BeginDateFilter;
-import org.flexpay.common.util.config.ApplicationConfig;
-import org.flexpay.orgs.persistence.TestData;
 import org.springframework.beans.factory.annotation.Autowired;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertEquals;
 import org.junit.Test;
-
-import java.util.List;
-import java.util.Date;
 
 public class TestRecievedPaymentsReportAction extends PaymentsSpringBeanAwareTestCase {
 

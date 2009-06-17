@@ -89,7 +89,7 @@
 		  scope="prototype" />
 
 	<!-- reports-related actions -->
-	<bean id="generateReportAction"
+	<bean id="receivedPaymentsReportAction"
 		  class="org.flexpay.payments.actions.reports.ReceivedPaymentsReportAction"
 		  p:reportUtil-ref="reportUtil"
 		  p:paymentsReporter-ref="paymentsReporter"		  
@@ -98,8 +98,17 @@
 		  p:crumbNameKey="payments.crumbs.received_payments_report"
 		  scope="prototype" />
 
-	<bean id="paymentsReportAction"
-		  class="org.flexpay.payments.actions.reports.PaymentsReportAction"
+	<bean id="returnedPaymentsReportAction"
+		  class="org.flexpay.payments.actions.reports.ReturnedPaymentsReportAction"
+		  p:reportUtil-ref="reportUtil"
+		  p:paymentsReporter-ref="paymentsReporter"
+		  p:cashboxService-ref="cashboxService"
+		  p:paymentPointService-ref="paymentPointService"
+		  p:crumbNameKey="payments.crumbs.returned_payments_report"
+		  scope="prototype" />
+
+	<bean id="importPaymentsReportAction"
+		  class="org.flexpay.payments.actions.reports.ImportPaymentsReportAction"
 		  p:fpFileService-ref="fpFileService"
 		  p:paymentsReporter-ref="paymentsReporter"
 		  p:crumbNameKey="payments.crumbs.payments_report"

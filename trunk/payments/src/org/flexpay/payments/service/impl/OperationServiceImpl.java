@@ -8,6 +8,7 @@ import org.flexpay.payments.dao.OperationDao;
 import org.flexpay.payments.dao.OperationDaoExt;
 import org.flexpay.payments.persistence.Operation;
 import org.flexpay.payments.persistence.Cashbox;
+import org.flexpay.payments.persistence.OperationStatus;
 import org.flexpay.payments.service.OperationService;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -92,7 +93,11 @@ public class OperationServiceImpl implements OperationService {
     }
 
 	public List<Operation> listReceivedPayments(Organization organization, Date beginDate, Date endDate) {
-		return operationDao.listReceivedPayments(organization.getId(), beginDate, endDate);
+		return operationDao.listPayments(organization.getId(), beginDate, endDate, OperationStatus.REGISTERED);
+	}
+
+	public List<Operation> listReturnedPayments(Organization organization, Date beginDate, Date endDate) {
+		return operationDao.listPayments(organization.getId(), beginDate, endDate, OperationStatus.RETURNED);
 	}
 
 	public List<Operation> searchDocuments(Organization organization, Long serviceTypeId, Date begin,

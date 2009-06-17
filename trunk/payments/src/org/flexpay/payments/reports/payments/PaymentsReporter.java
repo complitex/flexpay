@@ -4,7 +4,6 @@ import org.flexpay.common.persistence.Stub;
 import org.flexpay.payments.persistence.Operation;
 import org.flexpay.payments.service.Roles;
 import org.springframework.security.annotation.Secured;
-import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.orgs.persistence.PaymentPoint;
 
 import java.util.Date;
@@ -42,13 +41,23 @@ public interface PaymentsReporter {
 	PaymentPrintForm getPaymentPrintFormData(Operation operation);
 
 	/**
-	 * Get received payments print form data
+	 * Get received payments print form data for payment point
 	 * @param begin begin date report parameter
 	 * @param end end date report parameter
 	 * @param paymentPoint payment point
-	 * @param locale locale
+	 * @param locale report locale
 	 * @return printable form data
 	 */
 	@Secured(Roles.PAYMENTS_REPORT)
-	ReceivedPaymentsPrintInfoData getReceivedPaymentsPrintFormData(Date begin, Date end, PaymentPoint paymentPoint, Locale locale);
+	PaymentsPrintInfoData getReceivedPaymentsPrintFormData(Date begin, Date end, PaymentPoint paymentPoint, Locale locale);
+
+	/**
+	 * Get printable information about returned payments in given period for payment point
+	 * @param begin period begin date
+	 * @param end period end date
+	 * @param paymentPoint payment point
+	 * @param locale report locale
+	 * @return printable form data
+	 */
+	PaymentsPrintInfoData getReturnedPaymentsPrintFormData(Date begin, Date end, PaymentPoint paymentPoint, Locale locale);
 }

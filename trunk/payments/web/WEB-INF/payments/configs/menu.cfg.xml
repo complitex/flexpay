@@ -165,6 +165,16 @@
         </property>
     </bean>
 
+	<bean name="payments.quittance.search_address.reports.returned" parent="payments.quittance.search_address.reports"
+		  p:name="payments.quittance.search_address.reports.returned"
+		  p:title="payments.menu4.returned_payments"
+		  p:action="returnedPaymentsReport"
+		  p:parent-ref="payments.quittance.search_address.reports">
+        <property name="userRole">
+            <util:constant static-field="org.flexpay.payments.service.Roles.ROLE_MENU_PAYMENTS_REPORTS_RECEIVED" />
+        </property>
+    </bean>
+
 	<bean name="payments.quittance.search_eircaccount.reports.received" parent="payments.quittance.search_eircaccount.reports"
 		  p:name="payments.quittance.search_eircaccount.reports.received"
 		  p:title="payments.menu4.received_payments"
@@ -175,10 +185,30 @@
         </property>
     </bean>
 
+	<bean name="payments.quittance.search_eircaccount.reports.returned" parent="payments.quittance.search_eircaccount.reports"
+		  p:name="payments.quittance.search_eircaccount.reports.returned"
+		  p:title="payments.menu4.returned_payments"
+		  p:action="returnedPaymentsReport"
+		  p:parent-ref="payments.quittance.search_eircaccount.reports">
+        <property name="userRole">
+            <util:constant static-field="org.flexpay.payments.service.Roles.ROLE_MENU_PAYMENTS_REPORTS_RECEIVED" />
+        </property>
+    </bean>
+
 	<bean name="payments.quittance.search_quittance.reports.received" parent="payments.quittance.search_quittance.reports"
 		  p:name="payments.quittance.search_quittance.reports.received"
 		  p:title="payments.menu4.received_payments"
 		  p:action="receivedPaymentsReport"
+		  p:parent-ref="payments.quittance.search_quittance.reports">
+        <property name="userRole">
+            <util:constant static-field="org.flexpay.payments.service.Roles.ROLE_MENU_PAYMENTS_REPORTS_RECEIVED" />
+        </property>
+    </bean>
+
+	<bean name="payments.quittance.search_quittance.reports.returned" parent="payments.quittance.search_quittance.reports"
+		  p:name="payments.quittance.search_quittance.reports.returned"
+		  p:title="payments.menu4.returned_payments"
+		  p:action="returnedPaymentsReport"
 		  p:parent-ref="payments.quittance.search_quittance.reports">
         <property name="userRole">
             <util:constant static-field="org.flexpay.payments.service.Roles.ROLE_MENU_PAYMENTS_REPORTS_RECEIVED" />
@@ -247,7 +277,7 @@
 	<bean name="payments.reports.reports.import" parent="payments.reports.reports"
           p:name="payments.reports2.import"
           p:title="payments.menu4.payments_import_report"
-          p:action="generatePaymentsReport"
+          p:action="importPaymentsReport"
           p:parent-ref="payments.reports.reports">
         <property name="userRole">
             <util:constant static-field="org.flexpay.payments.service.Roles.ROLE_MENU_PAYMENTS_REPORTS_IMPORT" />

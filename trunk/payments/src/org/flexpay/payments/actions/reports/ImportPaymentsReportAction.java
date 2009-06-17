@@ -24,7 +24,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-public class PaymentsReportAction extends CashboxCookieActionSupport {
+public class ImportPaymentsReportAction extends CashboxCookieActionSupport {
 
 	private BeginDateFilter beginDateFilter = new BeginDateFilter(DateUtil.now());
 	private EndDateFilter endDateFilter = new EndDateFilter(DateUtil.now());
