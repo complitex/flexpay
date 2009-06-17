@@ -182,6 +182,7 @@ public class OrganizationServiceImpl implements OrganizationService {
 		}
 
 		if (!container.isEmpty()) {
+			container.info(log);
 			throw container;
 		}
 	}

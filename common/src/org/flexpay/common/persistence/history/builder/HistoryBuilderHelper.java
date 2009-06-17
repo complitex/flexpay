@@ -65,16 +65,20 @@ public class HistoryBuilderHelper {
 		}
 
 		T tr = patcher.getNotNullTranslation(obj1, lang);
+		// unsure lang is set
+		tr.setLang(lang);
 		patcher.setTranslation(obj1, tr, record.getNewStringValueNotNull());
 		record.setProcessingStatus(ProcessingStatus.STATUS_PROCESSED);
 	}
 
 	private boolean isNew(DomainObject obj) {
-		return obj == null || obj.getId() == null || obj.getId() <= 0L;
+		Long id = obj == null ? null : obj.getId();
+		return id == null || id <= 0L;
 	}
 
 	private boolean isNotNew(DomainObject obj) {
-		return obj != null && obj.getId() == null && obj.getId() > 0L;
+		Long id = obj == null ? null : obj.getId();
+		return id != null && id > 0L;
 	}
 
 	public <Ref extends DomainObject, DO extends DomainObject>

@@ -1,15 +1,11 @@
-package org.flexpay.${module_name}.service;
+package org.flexpay.sz.service;
 
 public abstract class Security extends org.flexpay.common.service.Security {
-
-	static {
-		// put all necessary code here
-	}
 
 	/**
 	 * touch me to ensure static fields are properly initialised
 	 */
 	public static void touch() {
-		org.flexpay.${parent_module_name}.service.Security.touch();
+		org.flexpay.eirc.service.Security.touch();
 	}
 }

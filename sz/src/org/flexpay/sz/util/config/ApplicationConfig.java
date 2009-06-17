@@ -1,11 +1,19 @@
 package org.flexpay.sz.util.config;
 
+import org.flexpay.sz.service.Security;
+
 import java.io.File;
 
 public class ApplicationConfig extends org.flexpay.eirc.util.config.ApplicationConfig {
 
 	private String szDataRoot;
 	private String szDefaultDbfFileEncoding;
+
+	static {
+		// ensure Security fields are initialised
+		Security.touch();
+	}
+
 
 	protected static ApplicationConfig getInstance() {
 		return (ApplicationConfig) org.flexpay.common.util.config.ApplicationConfig.getInstance();

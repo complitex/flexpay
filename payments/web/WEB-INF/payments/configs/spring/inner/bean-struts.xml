@@ -9,14 +9,14 @@
 	<bean id="selectCorrectionTypeAction" scope="prototype"
 		  class="org.flexpay.payments.actions.registry.corrections.SelectCorrectionTypeAction"
 		  p:registryRecordService-ref="registryRecordService"
-		  p:typeRegistry-ref="classToTypeRegistryPayments" />
+		  p:typeRegistry-ref="classToTypeRegistry" />
 
 	<bean id="correctRecordAddressAction" scope="prototype" parent="apartmentsListAction"
 		  class="org.flexpay.payments.actions.registry.corrections.CorrectAddressAction"
 		  p:correctionsService-ref="correctionsService"
 		  p:recordService-ref="registryRecordService"
 		  p:serviceTypeService-ref="serviceTypeService"
-		  p:typeRegistry-ref="classToTypeRegistryPayments"
+		  p:typeRegistry-ref="classToTypeRegistry"
 		  p:serviceProviderService-ref="serviceProviderService" />
 
 	<bean id="correctBuildingAddressAction" scope="prototype" parent="buildingsListAction"

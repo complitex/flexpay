@@ -17,7 +17,7 @@
 		  class="org.flexpay.eirc.service.importexport.imp.ClassToTypeRegistryEirc" />
 
 	<bean id="classToTypeRegistryFactoryEirc"
-		  depends-on="classToTypeRegistryFactoryBti,classToTypeRegistryPayments"
+		  depends-on="classToTypeRegistryFactoryBti,classToTypeRegistryFactoryPayments"
 		  class="org.flexpay.common.service.importexport.imp.ClassToTypeRegistryFactory">
 		<property name="registry">
 			<bean class="org.flexpay.common.service.importexport.imp.CompositeClassToTypeRegistry">

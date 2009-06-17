@@ -1,6 +1,7 @@
 package org.flexpay.eirc.util.config;
 
 import org.flexpay.orgs.persistence.Organization;
+import org.flexpay.eirc.service.Security;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -12,6 +13,12 @@ public class ApplicationConfig extends org.flexpay.ab.util.config.ApplicationCon
 	private String eircId;
 
 	private int eircMainServiceCode;
+
+	static {
+		// ensure Security fields are initialised
+		Security.touch();
+	}
+
 
 	/**
 	 * TODO: perform lookup by individual tax number, not id
