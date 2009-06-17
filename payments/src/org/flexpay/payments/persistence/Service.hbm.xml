@@ -171,6 +171,12 @@
 		where p.id=? and o.id=?
 	</query>
 
+	<query name="Service.findAllServices">
+		select distinct o
+		from Service o
+		where o.status=0
+	</query>
+
 	<query name="Service.findServicesByProviderCode">
 		select distinct o
 		from Service o

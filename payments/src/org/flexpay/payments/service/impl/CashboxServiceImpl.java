@@ -116,6 +116,7 @@ public class CashboxServiceImpl implements CashboxService {
 		}
 	}
 
+	@NotNull
 	public List<Cashbox> findObjects(Page<Cashbox> pager) {
 		return cashboxDao.findCashboxes(pager);
 	}

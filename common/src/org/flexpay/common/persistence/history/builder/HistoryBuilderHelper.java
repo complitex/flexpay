@@ -69,21 +69,27 @@ public class HistoryBuilderHelper {
 		record.setProcessingStatus(ProcessingStatus.STATUS_PROCESSED);
 	}
 
+	private boolean isNew(DomainObject obj) {
+		return obj == null || obj.getId() == null || obj.getId() <= 0L;
+	}
+
+	private boolean isNotNew(DomainObject obj) {
+		return obj != null && obj.getId() == null && obj.getId() > 0L;
+	}
+
 	public <Ref extends DomainObject, DO extends DomainObject>
 	void buildReferenceDiff(DO obj1, DO obj2, Diff diff, ReferenceExtractor<Ref, DO> extractor) {
 
 		Ref ref1 = extractor.getReference(obj1);
 		Ref ref2 = extractor.getReference(obj2);
-		boolean noRef = (ref1 == null || ref1.isNew()) && (ref2 == null || ref2.isNew());
+		boolean noRef = isNew(obj1) && isNew(obj2);
 
 		// no references found in both objects, nothing to do
 		if (noRef) {
 			return;
 		}
 
-		boolean sameRef = ref1 != null && ref1.isNotNew() &&
-						  ref2 != null && ref2.isNotNew() &&
-						  ref1.equals(ref2);
+		boolean sameRef = isNotNew(ref1) && isNotNew(ref2) && ref1.equals(ref2);
 		// same reference found in both objects, nothing to do
 		if (sameRef) {
 			return;
@@ -91,8 +97,8 @@ public class HistoryBuilderHelper {
 
 		HistoryRecord rec = new HistoryRecord();
 		rec.setFieldType(extractor.getReferenceField());
-		rec.setOldStringValue(ref1 == null || ref1.isNew() ? null : masterIndexService.getMasterIndex(ref1));
-		rec.setNewStringValue(ref2 == null || ref2.isNew() ? null : masterIndexService.getMasterIndex(ref2));
+		rec.setOldStringValue(isNew(ref1) ? null : masterIndexService.getMasterIndex(ref1));
+		rec.setNewStringValue(isNew(ref2) ? null : masterIndexService.getMasterIndex(ref2));
 		diff.addRecord(rec);
 		log.debug("Added ref diff record: {}", rec);
 	}

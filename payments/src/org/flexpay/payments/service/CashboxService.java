@@ -68,7 +68,7 @@ public interface CashboxService {
 	 * @return List of cashbox objects for pager
 	 */
 	@Secured (Roles.CASHBOX_READ)
-	@Nullable
+	@NotNull
 	List<Cashbox> findObjects(Page<Cashbox> pager);
 
 	/**

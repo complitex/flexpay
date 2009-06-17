@@ -62,6 +62,16 @@ public class SPServiceImpl implements SPService {
 	}
 
 	/**
+	 * List active services
+	 *
+	 * @return List of services
+	 */
+	@Override
+	public List<Service> listAllServices() {
+		return serviceDao.findAllServices();
+	}
+
+	/**
 	 * Create or update service
 	 *
 	 * @param service Service to save

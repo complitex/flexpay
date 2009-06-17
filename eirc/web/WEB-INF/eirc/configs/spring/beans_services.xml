@@ -123,13 +123,15 @@
 		  p:operationTypeService-ref="operationTypeService"
 		  p:spService-ref="spService" />
 
-	<bean id="eircPaymentPointService"
-		  parent="paymentPointService"
+	<bean id="eircPaymentPointServiceTarget"
+		  parent="paymentPointServiceTarget"
+		  autowire-candidate="false"
 		  class="org.flexpay.eirc.service.imp.PaymentPointServiceImpl"
 		  p:paymentPointDao-ref="paymentPointDao" />
 
 	<bean id="eircServiceOrganizationServiceTarget" 
 		  parent="serviceOrganizationServiceTarget"
+		  autowire-candidate="false"
 		  class="org.flexpay.eirc.service.imp.ServiceOrganizationServiceImpl"
 		  p:servedBuildingDao-ref="servedBuildingDao" />
 
