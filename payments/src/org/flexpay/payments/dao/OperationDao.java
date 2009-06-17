@@ -38,7 +38,7 @@ public interface OperationDao extends GenericDao<Operation, Long> {
 	 * @param endDate higher bound for operation registration date
 	 * @return list of payment operations
 	 */
-	List<Operation> listReceivedPayments(Long organizationId, Date beginDate, Date endDate);
+	List<Operation> listPayments(Long organizationId, Date beginDate, Date endDate, int status);
 
     /**
      * List last operations which have been created between <code>beginDate</code> and <code>endDate</code>

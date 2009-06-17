@@ -493,7 +493,7 @@
 			and (o.operationStatus.code <> 3)
 	]]></query>
 
-	<query name="Operation.listReceivedPayments"><![CDATA[
+	<query name="Operation.listPayments"><![CDATA[
 		select distinct o
 		from Operation o
 		left join fetch o.operationStatus status
@@ -505,7 +505,7 @@
 		where o.registerOrganization.id = ?
 		 	and (o.registerDate >= ? and o.registerDate <= ?)
 			and (o.operationType.code in (1, 2, 5, 6))
-			and (status.code = 2)						
+			and (status.code = ?)						
 		order by o.creationDate
 	]]></query>
 

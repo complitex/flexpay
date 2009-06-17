@@ -16,8 +16,8 @@ import org.flexpay.payments.persistence.*;
 import org.flexpay.payments.reports.payments.PaymentPrintForm;
 import org.flexpay.payments.reports.payments.PaymentReportData;
 import org.flexpay.payments.reports.payments.PaymentsReporter;
-import org.flexpay.payments.reports.payments.ReceivedPaymentsPrintInfoData;
-import static org.flexpay.payments.reports.payments.ReceivedPaymentsPrintInfoData.OperationPrintInfo;
+import org.flexpay.payments.reports.payments.PaymentsPrintInfoData;
+import static org.flexpay.payments.reports.payments.PaymentsPrintInfoData.OperationPrintInfo;
 import org.flexpay.payments.service.DocumentService;
 import org.flexpay.payments.service.OperationService;
 import org.flexpay.payments.service.SPService;
@@ -153,39 +153,59 @@ public class PaymentsReporterImpl implements PaymentsReporter {
 		return form;
 	}
 
-	public ReceivedPaymentsPrintInfoData getReceivedPaymentsPrintFormData(Date begin, Date end, PaymentPoint paymentPoint, Locale locale) {
+	/**
+	 * {@inheritDoc}
+	 */
+	public PaymentsPrintInfoData getReturnedPaymentsPrintFormData(Date begin, Date end, PaymentPoint paymentPoint, Locale locale) {
 
-		Organization organization = getOrganization(paymentPoint);
-
-		ReceivedPaymentsPrintInfoData result = new ReceivedPaymentsPrintInfoData();
-		List<ReceivedPaymentsPrintInfoData.OperationPrintInfo> operationPrintInfos = CollectionUtils.list();
-
-		List<Operation> operations = operationService.listReceivedPayments(organization, begin, end);
-		for (Operation operation : operations) {
-			operationPrintInfos.add(convert(operation));
-		}
-		result.setOperationDetailses(operationPrintInfos);
-
-		setTotals(begin, end, organization, paymentPoint, result, locale);
-		return result;
-	}
-
-	private Organization getOrganization(PaymentPoint paymentPoint) {
-		Long organizationId = paymentPoint.getCollector().getOrganization().getId();
-		Organization organization = organizationService.readFull(new Stub<Organization>(organizationId));
-		return organization;
-	}
-
-	private void setTotals(Date begin, Date end, Organization organization, PaymentPoint paymentPoint,
-						   ReceivedPaymentsPrintInfoData result, Locale locale) {
-
+		PaymentsPrintInfoData result = new PaymentsPrintInfoData();
+		result.setOperationDetailses(convert(getReturnedPayments(begin, end, getOrganization(paymentPoint))));
 		result.setCreationDate(new Date());
 		result.setBeginDate(begin);
 		result.setEndDate(end);
 		result.setPaymentPointName(TranslationUtil.getTranslation(paymentPoint.getNames(), locale).getName());
 		result.setPaymentPointAddress(paymentPoint.getAddress());
-
 		result.setCashierFio("Коваль А.Н."); // TODO : FIXME
+		return result;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	public PaymentsPrintInfoData getReceivedPaymentsPrintFormData(Date begin, Date end, PaymentPoint paymentPoint, Locale locale) {
+
+		PaymentsPrintInfoData result = new PaymentsPrintInfoData();
+		result.setOperationDetailses(convert(getReceivedPayments(begin, end, getOrganization(paymentPoint))));
+		result.setCreationDate(new Date());
+		result.setBeginDate(begin);
+		result.setEndDate(end);
+		result.setPaymentPointName(TranslationUtil.getTranslation(paymentPoint.getNames(), locale).getName());
+		result.setPaymentPointAddress(paymentPoint.getAddress());
+		result.setCashierFio("Коваль А.Н."); // TODO : FIXME
+		return result;
+	}
+
+	private List<OperationPrintInfo> convert(List<Operation> operations) {
+		List<OperationPrintInfo> operationPrintInfos = CollectionUtils.list();
+		for (Operation operation : operations) {
+			operationPrintInfos.add(convert(operation));
+		}
+		return operationPrintInfos;
+	}
+
+	private List<Operation> getReceivedPayments(Date begin, Date end, Organization organization) {
+		return operationService.listReceivedPayments(organization, begin, end);
+	}
+
+	private List<Operation> getReturnedPayments(Date begin, Date end, Organization organization) {
+		return operationService.listReturnedPayments(organization, begin, end);
+	}
+
+
+	private Organization getOrganization(PaymentPoint paymentPoint) {
+		Long organizationId = paymentPoint.getCollector().getOrganization().getId();
+		Organization organization = organizationService.readFull(new Stub<Organization>(organizationId));
+		return organization;
 	}
 
 	private OperationPrintInfo convert(Operation operation) {

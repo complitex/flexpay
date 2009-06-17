@@ -13,7 +13,7 @@ import java.math.BigDecimal;
 /**
  * Represents information of received payments report
  */
-public class ReceivedPaymentsPrintInfoData {
+public class PaymentsPrintInfoData {
 
 	private static final int SERVICE_TYPE_KVARTPLATA = 1;
 	private static final int SERVICE_TYPE_DOGS = 2;
