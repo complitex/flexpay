@@ -548,7 +548,7 @@ public class ProcessManagerImpl implements ProcessManager, Runnable {
 	 */
 	private void checkProcessCompleted(long processId) {
 		Process process = getProcessInstanceInfo(processId);
-		if (process.getProcessState().isCompleted()) {
+		if (process != null && process.getProcessState().isCompleted()) {
 			ProcessLogger.closeLog(processId);
 			log.info("Closing process log: {}", processId);
 		}
@@ -710,7 +710,7 @@ public class ProcessManagerImpl implements ProcessManager, Runnable {
 			// wait untill there is any 
 			synchronized (sleepSemaphore) {
 				Process info = getProcessInstanceInfo(processId);
-				if (info.getId() != processId) {
+				if (info == null || info.getId() != processId) {
 					return;
 				}
 

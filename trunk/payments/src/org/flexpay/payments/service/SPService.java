@@ -72,6 +72,7 @@ public interface SPService extends DomainObjectService<Service> {
 	@NotNull
 	Service update(@NotNull Service service) throws FlexPayExceptionContainer;
 
+	@Secured (Roles.SERVICE_DELETE)
 	@Override
 	void disable(@NotNull Collection<Long> ids);
 

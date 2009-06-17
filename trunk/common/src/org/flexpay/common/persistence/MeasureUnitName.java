@@ -13,8 +13,10 @@ public class MeasureUnitName extends Translation {
 
 	/**
 	 * Constructs a new Translation.
+	 *
+	 * @param name Unit name in default language
 	 */
-	public MeasureUnitName(@NotNull String name) throws Exception {
+	public MeasureUnitName(@NotNull String name) {
 		this(name, ApplicationConfig.getDefaultLanguage());
 	}
 

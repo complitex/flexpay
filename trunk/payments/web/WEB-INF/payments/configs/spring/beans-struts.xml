@@ -197,7 +197,7 @@
           p:crumbNameKey="payments.crumbs.registries_view"
           p:registryService-ref="registryService"
           p:registryRecordService-ref="registryRecordService"
-          p:classToTypeRegistry-ref="classToTypeRegistryPayments"
+          p:classToTypeRegistry-ref="classToTypeRegistry"
           p:serviceTypeService-ref="serviceTypeService" />
     
 

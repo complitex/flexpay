@@ -26,11 +26,6 @@ public abstract class Roles {
 	public static final String OPERATION_ADD = PREFIX + "OPERATION_ADD";
 	public static final String OPERATION_DELETE = PREFIX + "OPERATION_DELETE";
 
-	public static final String EIRC_SUBJECT_READ = PREFIX + "EIRC_SUBJECT_READ";
-	public static final String EIRC_SUBJECT_CHANGE = PREFIX + "EIRC_SUBJECT_CHANGE";
-	public static final String EIRC_SUBJECT_ADD = PREFIX + "EIRC_SUBJECT_ADD";
-	public static final String EIRC_SUBJECT_DELETE = PREFIX + "EIRC_SUBJECT_DELETE";
-
 	public static final String SERVICE_READ = PREFIX + "SERVICE_READ";
 	public static final String SERVICE_CHANGE = PREFIX + "SERVICE_CHANGE";
 	public static final String SERVICE_ADD = PREFIX + "SERVICE_ADD";

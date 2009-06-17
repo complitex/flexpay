@@ -1,5 +1,7 @@
 package org.flexpay.tc.util.config;
 
+import org.flexpay.tc.service.Security;
+
 import java.io.File;
 
 public class ApplicationConfig extends org.flexpay.ab.util.config.ApplicationConfig {
@@ -9,6 +11,12 @@ public class ApplicationConfig extends org.flexpay.ab.util.config.ApplicationCon
 	private int maximumFloors;
 	private int maximumPporches;
 	private int maximumApartments;
+
+	static {
+		// ensure Security fields are initialised
+		Security.touch();
+	}
+
 
 	protected static ApplicationConfig getInstance() {
 		return (ApplicationConfig) org.flexpay.common.util.config.ApplicationConfig.getInstance();
