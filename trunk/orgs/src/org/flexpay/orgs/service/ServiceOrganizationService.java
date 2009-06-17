@@ -31,6 +31,7 @@ public interface ServiceOrganizationService
 	 * @param pager Page
 	 * @return List of service organizations
 	 */
+	@NotNull
 	@Secured (Roles.SERVICE_ORGANIZATION_READ)
 	List<ServiceOrganization> listInstances(@NotNull Page<ServiceOrganization> pager);
 
@@ -92,6 +93,9 @@ public interface ServiceOrganizationService
 	 * @param organizationFilter  Filter to initialize
 	 * @param serviceOrganization service organization
 	 */
+	@NotNull
 	@Secured (Roles.SERVICE_ORGANIZATION_READ)
 	OrganizationFilter initInstancelessFilter(@NotNull OrganizationFilter organizationFilter, @NotNull ServiceOrganization serviceOrganization);
+
+	void delete(@NotNull ServiceOrganization org);
 }

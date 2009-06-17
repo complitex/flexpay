@@ -18,7 +18,18 @@ public class OrgsSpringBeanAwareTestCase extends SpringBeanAwareTestCase {
 	@BeforeClass
 	public static void authenticateTestUser() {
 		GrantedAuthority[] authorities = SecurityUtil.auths(
-				ORGANIZATION_READ
+				ORGANIZATION_READ,
+				ORGANIZATION_ADD,
+				SERVICE_ORGANIZATION_ADD,
+				SERVICE_ORGANIZATION_CHANGE,
+				SERVICE_PROVIDER_ADD,
+				SERVICE_PROVIDER_CHANGE,
+				BANK_ADD,
+				BANK_CHANGE,
+				PAYMENTS_COLLECTOR_ADD,
+				PAYMENTS_COLLECTOR_CHANGE,
+				PAYMENT_POINT_ADD,
+				PAYMENT_POINT_CHANGE
 		);
 		User user = new User("test", "test", true, true, true, true, authorities);
 		Authentication auth = new AnonymousAuthenticationToken("key", user, authorities);

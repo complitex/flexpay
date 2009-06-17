@@ -53,6 +53,7 @@ public abstract class OrganizationInstanceServiceImpl<
 	 * @param stub Instance stub
 	 * @return Instance if found, or <code>null</code> otherwise
 	 */
+	@SuppressWarnings ({"unchecked"})
 	public <SubT extends T> SubT read(@NotNull Stub<SubT> stub) {
 		return (SubT) instanceDao.readFull(stub.getId());
 	}
@@ -202,6 +203,17 @@ public abstract class OrganizationInstanceServiceImpl<
 		filter.setOrganizations(organizations);
 
 		return filter;
+	}
+
+	/**
+	 * Test method that deletes created instance
+	 *
+	 * @param instance Organization instance to delete
+	 */
+	@Override
+	@Transactional (readOnly = false)
+	public void delete(@NotNull T instance) {
+		instanceDao.delete(instance);
 	}
 
 	/**

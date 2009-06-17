@@ -87,4 +87,6 @@ public interface ServiceTypeService {
 	 */
 	@Secured (Roles.SERVICE_TYPE_READ)
 	ServiceTypeFilter initFilter(ServiceTypeFilter serviceTypeFilter);
+
+	void delete(@NotNull ServiceType type);
 }

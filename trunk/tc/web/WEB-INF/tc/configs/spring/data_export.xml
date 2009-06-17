@@ -7,7 +7,10 @@
 		   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
 
-	<bean name="jdbcCNExporter" class="org.flexpay.tc.process.exporters.JDBCCNExporter"
+	<bean name="jdbcCNExporter"
+		  scope="prototype"
+		  destroy-method="endExport"
+		  class="org.flexpay.tc.process.exporters.JDBCCNExporter"
 		  p:jdbcDriverClassName="${jdbc.export.driverClassName}"
 		  p:jdbcUrl="${jdbc.export.url}"
 		  p:jdbcUsername="${jdbc.export.username}"
@@ -17,12 +20,9 @@
 		  p:tariffExportCodeServiceExt-ref="tariffExportCodeServiceExt"
 		  p:buildingService-ref="buildingServiceTarget"
 		  p:dataSourceDescriptionId="${datasource.id}"
-		  p:classToTypeRegistry-ref="typeRegistryAb"
-		  p:correctionsService-ref="correctionsServiceAb"
-          p:tariffExportLogRecordService-ref="tariffExportLogService"
-		  destroy-method="endExport"
-		  scope="prototype"
-			/>
+		  p:classToTypeRegistry-ref="classToTypeRegistry"
+		  p:correctionsService-ref="correctionsService"
+          p:tariffExportLogRecordService-ref="tariffExportLogService" />
 
 	<bean name="fileCNExporter" class="org.flexpay.tc.process.exporters.FileCNExporter"
 		  destroy-method="endExport"

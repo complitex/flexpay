@@ -1,32 +1,22 @@
 package org.flexpay.eirc.persistence.exchange;
 
+import org.flexpay.bti.service.ApartmentAttributeTypeService;
+import org.flexpay.bti.service.BtiApartmentService;
 import org.flexpay.common.exception.FlexPayException;
-import org.flexpay.common.persistence.DomainObject;
-import org.flexpay.common.persistence.ImportError;
-import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.persistence.registry.*;
+import org.flexpay.common.service.RegistryFileService;
 import org.flexpay.common.service.importexport.CorrectionsService;
 import org.flexpay.common.service.importexport.ImportErrorService;
-import org.flexpay.common.service.importexport.ImportErrorsSupport;
-import org.flexpay.common.service.importexport.RawDataSource;
-import org.flexpay.common.service.RegistryFileService;
 import org.flexpay.common.util.StringUtil;
-import org.flexpay.common.dao.registry.RegistryRecordDao;
 import org.flexpay.eirc.persistence.exchange.conditions.ConditionsFactory;
-import org.flexpay.payments.persistence.EircRegistryProperties;
 import org.flexpay.eirc.service.*;
 import org.flexpay.eirc.service.importexport.ImportUtil;
-import org.flexpay.eirc.service.importexport.RawConsumerData;
-import org.flexpay.eirc.service.importexport.imp.ClassToTypeRegistry;
 import org.flexpay.orgs.service.OrganizationService;
 import org.flexpay.orgs.service.ServiceProviderService;
-import org.flexpay.orgs.persistence.ServiceProvider;
 import org.flexpay.payments.service.SPService;
-import org.flexpay.bti.service.BtiApartmentService;
-import org.flexpay.bti.service.ApartmentAttributeTypeService;
-import org.springframework.beans.factory.annotation.Required;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Required;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,11 +40,7 @@ public class ServiceOperationsFactory {
 
 	private ConditionsFactory conditionsFactory;
 
-	private ClassToTypeRegistry registry;
-	private ImportErrorsSupport errorsSupport;
 	private ImportErrorService importErrorService;
-	private RawDataSource<RawConsumerData> dataSource;
-	private RegistryRecordDao registryRecordDao;
 	private ImportUtil importUtil;
 
 	/**
@@ -63,8 +49,7 @@ public class ServiceOperationsFactory {
 	 * @param registry Registry header
 	 * @param record   Registry record
 	 * @return Operation instance
-	 * @throws InvalidContainerException if record contains invalid operation container
-	 *                                   information
+	 * @throws InvalidContainerException if record contains invalid operation container information
 	 */
 	public Operation getOperation(Registry registry, RegistryRecord record) throws FlexPayException {
 
@@ -104,8 +89,7 @@ public class ServiceOperationsFactory {
 	 *
 	 * @param registry SpRegistry
 	 * @return OperationContainer instance
-	 * @throws InvalidContainerException if record contains invalid operation container
-	 *                                   information
+	 * @throws InvalidContainerException if record contains invalid operation container information
 	 */
 	public Operation getContainerOperation(Registry registry) throws InvalidContainerException {
 
@@ -162,16 +146,16 @@ public class ServiceOperationsFactory {
 			case 14:
 				return new OpenSubserviceAccountOperation(this, datum);
 
-				// Payment
+			// Payment
 //			case 50:
 
-				// General info
+			// General info
 			case 100:
 				return new BaseContainerOperation(this, datum);
 		}
 
 		throw new InvalidContainerException("Unknown container type: " +
-				datum.get(0) + " in " + containerData);
+											datum.get(0) + " in " + containerData);
 	}
 
 	/**
@@ -183,35 +167,6 @@ public class ServiceOperationsFactory {
 	 */
 	private List<String> splitEscapableData(String containers, char delimiter) {
 		return StringUtil.splitEscapable(containers, delimiter, Operation.ESCAPE_SYMBOL);
-	}
-
-	public ImportError addImportError(Registry registry, RegistryRecord record,
-									  Class<? extends DomainObject> clazz, String errorCode) {
-
-		EircRegistryProperties props = (EircRegistryProperties) registry.getProperties();
-		ImportError error = new ImportError();
-		ServiceProvider provider = serviceProviderService.read(props.getServiceProviderStub());
-		DataSourceDescription sd = provider.getDataSourceDescription();
-		error.setSourceDescription(sd);
-		error.setSourceObjectId(record.getId() + "");
-		error.setErrorId(errorCode);
-		error.setObjectType(this.registry.getType(clazz));
-		errorsSupport.setDataSourceBean(error, dataSource);
-
-		importErrorService.addError(error);
-
-		record.setImportError(error);
-		registryRecordDao.update(record);
-
-		return error;
-	}
-
-	public void setDataSource(RawDataSource<RawConsumerData> dataSource) {
-		this.dataSource = dataSource;
-	}
-
-	public RawDataSource<RawConsumerData> getDataSource() {
-		return dataSource;
 	}
 
 	public RegistryFileService getSpFileService() {
@@ -284,21 +239,6 @@ public class ServiceOperationsFactory {
 	@Required
 	public void setImportErrorService(ImportErrorService importErrorService) {
 		this.importErrorService = importErrorService;
-	}
-
-	@Required
-	public void setRegistry(ClassToTypeRegistry registry) {
-		this.registry = registry;
-	}
-
-	@Required
-	public void setErrorsSupport(ImportErrorsSupport errorsSupport) {
-		this.errorsSupport = errorsSupport;
-	}
-
-	@Required
-	public void setRegistryRecordDao(RegistryRecordDao registryRecordDao) {
-		this.registryRecordDao = registryRecordDao;
 	}
 
 	public ConsumerInfoService getConsumerInfoService() {

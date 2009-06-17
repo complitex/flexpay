@@ -83,7 +83,7 @@ public class DiffServiceImpl implements DiffService {
 	/**
 	 * Check if there is some history for an object
 	 *
-	 * @param obj Object to check history existance for
+	 * @param obj Object to check history existence for
 	 * @return <code>true</code> if there is diffs, or <code>false</code> otherwise
 	 */
 	public <T extends DomainObject> boolean hasDiffs(@NotNull T obj) {

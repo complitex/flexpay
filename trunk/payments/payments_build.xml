@@ -183,9 +183,9 @@
 			<isset property="test.class.name" />
 		</condition>
 		<!-- Capture the path as a delimited property using the refid attribute -->
-		<property name="myclasspath" refid="payments.runtests.classpath" />
+		<!--<property name="myclasspath" refid="payments.runtests.classpath" />-->
 		<!-- Emit the property to the ant console -->
-		<echo message="Classpath = ${myclasspath}" />
+		<!--<echo message="Classpath = ${myclasspath}" />-->
 		<antcall target="template.run.tests">
 			<param name="test_name" value="${class.name}" />
 			<reference refid="payments.runtests.classpath" torefid="classpath" />

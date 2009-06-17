@@ -62,15 +62,23 @@
 		  class="org.flexpay.ab.service.importexport.RawPersonDataConverter"
 		  p:identityTypeService-ref="identityTypeService" />
 
-	<bean id="typeRegistryAb"
-		  class="org.flexpay.ab.service.importexport.imp.ClassToTypeRegistry" />
+	<bean id="classToTypeRegistryAb"
+		  class="org.flexpay.ab.service.importexport.imp.ClassToTypeRegistryAb" />
 
-	<bean id="correctionsServiceAb"
-		  parent="correctionsService"
-		  p:typeRegistry-ref="typeRegistryAb" />
-
-	<bean id="importErrorServiceAb" parent="importErrorServiceTemplate"
-		  p:registry-ref="typeRegistryAb" />
+	<bean id="classToTypeRegistryFactoryAb"
+		  depends-on="classToTypeRegistryFactory"
+		  class="org.flexpay.common.service.importexport.imp.ClassToTypeRegistryFactory">
+		<property name="registry">
+			<bean class="org.flexpay.common.service.importexport.imp.CompositeClassToTypeRegistry">
+				<property name="registries">
+					<list>
+						<ref bean="classToTypeRegistryAb" />
+						<ref bean="classToTypeRegistryCommon" />
+					</list>
+				</property>
+			</bean>
+		</property>
+	</bean>
 
 	<!-- Import-Export services -->
 	<bean id="importServiceAb" class="org.flexpay.ab.service.importexport.ImportService">
@@ -86,7 +94,7 @@
 		<property name="buildingsDataConverter" ref="buildingsDataConverter" />
 		<property name="apartmentDataConverter" ref="apartmentDataConverter" />
 		<property name="personDataConverter" ref="personDataConverter" />
-		<property name="correctionsService" ref="correctionsServiceAb" />
+		<property name="correctionsService" ref="correctionsService" />
 		<property name="districtService" ref="districtService" />
 		<property name="streetTypeService" ref="streetTypeService" />
 		<property name="streetService" ref="streetService" />
@@ -95,8 +103,8 @@
 		<property name="personService" ref="personService" />
 		<property name="allObjectsDao" ref="allObjectsDao" />
 		<property name="errorsSupport" ref="importErrorSupport" />
-		<property name="importErrorService" ref="importErrorServiceAb" />
-		<property name="registry" ref="typeRegistryAb" />
+		<property name="importErrorService" ref="importErrorService" />
+		<property name="registry" ref="classToTypeRegistry" />
 	</bean>
 
 </beans>

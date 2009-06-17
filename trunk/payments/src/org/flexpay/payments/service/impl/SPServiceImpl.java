@@ -95,7 +95,12 @@ public class SPServiceImpl implements SPService {
 				log.debug("Disabled service type: {}", service);
 			}
 		}
+	}
 
+	@Override
+	@Transactional (readOnly = false)
+	public void delete(@NotNull Service service) {
+		serviceDao.delete(service);
 	}
 
 	/**
@@ -195,6 +200,7 @@ public class SPServiceImpl implements SPService {
 		sessionUtils.evict(sameTypeSrvcs);
 
 		if (!container.isEmpty()) {
+			container.info(log);
 			throw container;
 		}
 	}
@@ -210,7 +216,7 @@ public class SPServiceImpl implements SPService {
 		Service service = serviceDao.readFull(stub.getId());
 		if (service != null && service.getMeasureUnit() != null) {
 			Stub<MeasureUnit> unitStub = Stub.stub(service.getMeasureUnit());
-			service.setMeasureUnit(measureUnitService.read(unitStub));
+			service.setMeasureUnit(measureUnitService.readFull(unitStub));
 		}
 
 		return service;

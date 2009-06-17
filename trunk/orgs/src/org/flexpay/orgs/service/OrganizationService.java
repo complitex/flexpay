@@ -84,6 +84,5 @@ public interface OrganizationService {
 	 *
 	 * @param organizationStub organization stub
 	 */
-	@Secured (Roles.ORGANIZATION_DELETE)
 	void delete(@NotNull Stub<Organization> organizationStub);
 }

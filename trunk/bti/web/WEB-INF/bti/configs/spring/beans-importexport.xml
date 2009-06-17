@@ -7,13 +7,24 @@
 		   http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
 		   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
-    <bean id="typeRegistryBti" class="org.flexpay.bti.service.importexport.impl.ClassToTypeRegistry">
-        <property name="classes">
-            <list>
-                <ref bean="typeRegistryAb" />
-            </list>
-        </property>
-    </bean>
+	<bean id="classToTypeRegistryBti"
+		  class="org.flexpay.bti.service.importexport.impl.ClassToTypeRegistryBti" />
+
+	<bean id="classToTypeRegistryFactoryBti"
+		  depends-on="classToTypeRegistryFactoryAb"
+		  class="org.flexpay.common.service.importexport.imp.ClassToTypeRegistryFactory">
+		<property name="registry">
+			<bean class="org.flexpay.common.service.importexport.imp.CompositeClassToTypeRegistry">
+				<property name="registries">
+					<list>
+						<ref bean="classToTypeRegistryBti" />
+						<ref bean="classToTypeRegistryAb" />
+						<ref bean="classToTypeRegistryCommon" />
+					</list>
+				</property>
+			</bean>
+		</property>
+	</bean>
 
 	<bean id="cncsvAttributeNameMapper"
 		  class="org.flexpay.bti.service.importexport.impl.CNCSVAttributeNameMapper" />
@@ -22,7 +33,7 @@
 		  class="org.flexpay.bti.service.importexport.impl.CSVBuildingAttributesImporter"
 		  p:sourceDescription-ref="cnDataSourceDescription"
 		  p:attributeNameMapper-ref="cncsvAttributeNameMapper"
-		  p:correctionsService-ref="correctionsServiceAb" />
+		  p:correctionsService-ref="correctionsService" />
 
 	<bean id="buildingAttributeDataProcessor"
 		  class="org.flexpay.bti.service.importexport.impl.BuildingAttributeDataProcessorImpl"

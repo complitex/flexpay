@@ -48,7 +48,7 @@
 
 
 	<bean id="abSyncService" class="org.flexpay.ab.service.imp.SyncServiceImpl">
-		<property name="correctionsService" ref="correctionsServiceAb" />
+		<property name="correctionsService" ref="correctionsService" />
 		<property name="historyDao" ref="historyDaoJdbc" />
 		<property name="townProcessor" ref="townProcessor" />
 		<property name="buildingProcessor" ref="buildingProcessor" />

@@ -204,6 +204,12 @@ public class ServiceTypeServiceImpl implements ServiceTypeService {
 		return serviceTypeFilter;
 	}
 
+	@Transactional (readOnly = false)
+	@Override
+	public void delete(@NotNull ServiceType type) {
+		serviceTypeDao.delete(type);
+	}
+
 	@Required
 	public void setServiceDaoExt(ServiceDaoExt serviceDaoExt) {
 		this.serviceDaoExt = serviceDaoExt;

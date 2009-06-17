@@ -7,7 +7,6 @@ import org.flexpay.common.persistence.Language;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.util.TranslationUtil;
 import org.flexpay.common.util.config.ApplicationConfig;
-import org.jbpm.graph.exe.ProcessInstance;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

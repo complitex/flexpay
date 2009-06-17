@@ -7,22 +7,30 @@ import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.MeasureUnit;
 import org.flexpay.common.persistence.MeasureUnitName;
 import org.flexpay.common.persistence.Stub;
+import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.persistence.filter.MeasureUnitFilter;
+import org.flexpay.common.persistence.history.ModificationListener;
 import org.flexpay.common.service.MeasureUnitService;
+import org.flexpay.common.service.internal.SessionUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.beans.factory.annotation.Required;
 
+import java.util.Collection;
 import java.util.List;
 
-@Transactional(readOnly = true)
+@Transactional (readOnly = true)
 public class MeasureUnitServiceImpl implements MeasureUnitService {
 
 	private final Logger log = LoggerFactory.getLogger(getClass());
 
 	private MeasureUnitDao measureUnitDao;
+
+	private SessionUtils sessionUtils;
+	private ModificationListener<MeasureUnit> modificationListener;
 
 	/**
 	 * Read full unit info
@@ -31,7 +39,7 @@ public class MeasureUnitServiceImpl implements MeasureUnitService {
 	 * @return MeasureUnit if available
 	 */
 	@Nullable
-	public MeasureUnit read(@NotNull Stub<MeasureUnit> stub) {
+	public MeasureUnit readFull(@NotNull Stub<? extends MeasureUnit> stub) {
 		log.debug("read called");
 		return measureUnitDao.readFull(stub.getId());
 	}
@@ -44,6 +52,33 @@ public class MeasureUnitServiceImpl implements MeasureUnitService {
 	@NotNull
 	public List<MeasureUnit> listUnits() {
 		return measureUnitDao.listUnits();
+	}
+
+	@NotNull
+	@Override
+	public MeasureUnit newInstance() {
+		return new MeasureUnit();
+	}
+
+	@Override
+	public Class<? extends MeasureUnit> getType() {
+		return MeasureUnit.class;
+	}
+
+	@Override
+	public void disable(@NotNull Collection<Long> ids) {
+
+		log.debug("Disabling service types");
+		for (Long id : ids) {
+			MeasureUnit unit = readFull(new Stub<MeasureUnit>(id));
+			if (unit != null) {
+				unit.disable();
+				measureUnitDao.update(unit);
+
+				modificationListener.onDelete(unit);
+				log.debug("Disabled unit: {}", unit);
+			}
+		}
 	}
 
 	/**
@@ -71,18 +106,51 @@ public class MeasureUnitServiceImpl implements MeasureUnitService {
 	 * @throws org.flexpay.common.exception.FlexPayExceptionContainer
 	 *          if validation fails
 	 */
-	@Transactional(readOnly = false)
-	public void save(@NotNull MeasureUnit unit) throws FlexPayExceptionContainer {
-
-		log.debug("save called");
+	@Transactional (readOnly = false)
+	@NotNull
+	public MeasureUnit create(@NotNull MeasureUnit unit) throws FlexPayExceptionContainer {
 
 		validate(unit);
-		if (unit.isNew()) {
-			unit.setId(null);
-			measureUnitDao.create(unit);
-		} else {
-			measureUnitDao.update(unit);
+		unit.setId(null);
+		measureUnitDao.create(unit);
+
+		modificationListener.onCreate(unit);
+
+		return unit;
+	}
+
+	/**
+	 * Update measure unit
+	 *
+	 * @param obj Unit to update
+	 * @return updatyed object back
+	 * @throws org.flexpay.common.exception.FlexPayExceptionContainer
+	 *          if validation fails
+	 */
+	@SuppressWarnings ({"ThrowableInstanceNeverThrown"})
+	@NotNull
+	@Override
+	@Transactional (readOnly = false)
+	public MeasureUnit update(@NotNull MeasureUnit obj) throws FlexPayExceptionContainer {
+
+		validate(obj);
+
+		MeasureUnit old = readFull(stub(obj));
+		if (old == null) {
+			throw new FlexPayExceptionContainer(new FlexPayException("No object found to update " + obj));
 		}
+		sessionUtils.evict(old);
+		modificationListener.onUpdate(old, obj);
+
+		measureUnitDao.update(obj);
+
+		return obj;
+	}
+
+	@Transactional (readOnly = false)
+	@Override
+	public void delete(@NotNull MeasureUnit unit) {
+		measureUnitDao.delete(unit);
 	}
 
 	@SuppressWarnings ({"ThrowableInstanceNeverThrown"})
@@ -106,7 +174,18 @@ public class MeasureUnitServiceImpl implements MeasureUnitService {
 		}
 	}
 
+	@Required
 	public void setMeasureUnitDao(MeasureUnitDao measureUnitDao) {
 		this.measureUnitDao = measureUnitDao;
+	}
+
+	@Required
+	public void setSessionUtils(SessionUtils sessionUtils) {
+		this.sessionUtils = sessionUtils;
+	}
+
+	@Required
+	public void setModificationListener(ModificationListener<MeasureUnit> modificationListener) {
+		this.modificationListener = modificationListener;
 	}
 }

@@ -16,7 +16,6 @@ import org.flexpay.orgs.persistence.filters.OrganizationFilter;
 import org.flexpay.orgs.persistence.filters.ServiceOrganizationFilter;
 import org.flexpay.orgs.service.ServiceOrganizationService;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
@@ -40,6 +39,7 @@ public class ServiceOrganizationServiceImpl implements ServiceOrganizationServic
 	 * @param stub ServiceOrganization key
 	 * @return ServiceOrganization object, or <code>null</code> if object not found
 	 */
+	@SuppressWarnings ({"unchecked"})
 	public <T extends ServiceOrganization> T read(@NotNull Stub<T> stub) {
 		return (T) serviceOrganizationDao.readFull(stub.getId());
 	}
@@ -90,6 +90,7 @@ public class ServiceOrganizationServiceImpl implements ServiceOrganizationServic
 	 * @throws org.flexpay.common.exception.FlexPayExceptionContainer
 	 *          if validation fails
 	 */
+	@SuppressWarnings ({"ThrowableInstanceNeverThrown"})
 	@NotNull
 	@Transactional (readOnly = false)
 	public ServiceOrganization update(@NotNull ServiceOrganization serviceOrganization) throws FlexPayExceptionContainer {
@@ -169,6 +170,7 @@ public class ServiceOrganizationServiceImpl implements ServiceOrganizationServic
 	 * @param filter Filter to initialize
 	 * @param org	service organization
 	 */
+	@NotNull
 	public OrganizationFilter initInstancelessFilter(@NotNull OrganizationFilter filter, @NotNull ServiceOrganization org) {
 		@SuppressWarnings ({"UnnecessaryBoxing"})
 		Long includedServiceOrganizationId = org.isNotNew() ? org.getId() : Long.valueOf(-1L);
@@ -186,7 +188,7 @@ public class ServiceOrganizationServiceImpl implements ServiceOrganizationServic
 	 * @return List of registered service organizations
 	 */
 	@NotNull
-	public List<ServiceOrganization> listInstances(Page<ServiceOrganization> pager) {
+	public List<ServiceOrganization> listInstances(@NotNull Page<ServiceOrganization> pager) {
 		return serviceOrganizationDao.findServiceOrganizations(pager);
 	}
 
@@ -198,6 +200,12 @@ public class ServiceOrganizationServiceImpl implements ServiceOrganizationServic
 	@NotNull
 	public List<ServiceOrganization> listServiceOrganizations() {
 		return serviceOrganizationDao.listServiceOrganizations();
+	}
+
+	@Transactional (readOnly = false)
+	@Override
+	public void delete(@NotNull ServiceOrganization org) {
+		serviceOrganizationDao.delete(org);
 	}
 
 	@Required

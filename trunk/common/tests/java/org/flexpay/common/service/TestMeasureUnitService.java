@@ -20,30 +20,30 @@ public class TestMeasureUnitService extends SpringBeanAwareTestCase {
 	@Test
 	public void testUpdateMeasureUnit() throws Throwable {
 
-		MeasureUnit unit = measureUnitService.read(new Stub<MeasureUnit>(1L));
+		MeasureUnit unit = measureUnitService.readFull(new Stub<MeasureUnit>(1L));
 		assertNotNull("Measure unit not found", unit);
 
 		unit.setName(new MeasureUnitName("Test"));
-		measureUnitService.save(unit);
+		measureUnitService.create(unit);
 	}
 
 	@Test
 	public void testUpdateMeasureUnit2() throws Throwable {
 
-		MeasureUnit unit = measureUnitService.read(new Stub<MeasureUnit>(1L));
+		MeasureUnit unit = measureUnitService.readFull(new Stub<MeasureUnit>(1L));
 		assertNotNull("Measure unit not found", unit);
 
 		unit.setName(new MeasureUnitName(""));
 		try {
-			measureUnitService.save(unit);
+			measureUnitService.create(unit);
 		} catch (FlexPayExceptionContainer ex) {
 			// expected
 		}
 
-		unit = measureUnitService.read(new Stub<MeasureUnit>(1L));
+		unit = measureUnitService.readFull(new Stub<MeasureUnit>(1L));
 
 		assertFalse("Unit names is empty", unit.getUnitNames().isEmpty());
 		unit.setName(new MeasureUnitName("----------Test-------"));
-		measureUnitService.save(unit);
+		measureUnitService.create(unit);
 	}
 }

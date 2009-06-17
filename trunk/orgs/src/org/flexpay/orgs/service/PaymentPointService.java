@@ -79,4 +79,5 @@ public interface PaymentPointService {
 	@Secured(Roles.PAYMENT_POINT_READ)
 	List<PaymentPoint> findAll();
 
+	void delete(@NotNull PaymentPoint point);
 }
