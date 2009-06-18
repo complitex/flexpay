@@ -22,6 +22,7 @@
         <action name="changeAnnotation" class="changeAnnotationAction">
             <result name="success" type="tiles">payments.registry.annotation</result>
             <result name="error" type="tiles">payments.registry.annotation</result>
+            <result name="none" type="redirect-action">registriesList</result>
             <result name="redirectSuccess" type="redirect-action">registriesList</result>
         </action>
 
