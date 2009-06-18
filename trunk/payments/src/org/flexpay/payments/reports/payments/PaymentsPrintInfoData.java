@@ -1,7 +1,5 @@
 package org.flexpay.payments.reports.payments;
 
-import org.flexpay.orgs.persistence.PaymentPoint;
-import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.util.CollectionUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
@@ -26,6 +24,7 @@ public class PaymentsPrintInfoData {
 	private Date creationDate;
 	private Date beginDate;
 	private Date endDate;
+	private String paymentCollectorOrgName;
 	private String paymentPointName;
 	private String paymentPointAddress;
 	private String cashierFio;
@@ -61,6 +60,14 @@ public class PaymentsPrintInfoData {
 
 	public void setEndDate(Date endDate) {
 		this.endDate = endDate;
+	}
+
+	public String getPaymentCollectorOrgName() {
+		return paymentCollectorOrgName;
+	}
+
+	public void setPaymentCollectorOrgName(String paymentCollectorOrgName) {
+		this.paymentCollectorOrgName = paymentCollectorOrgName;
 	}
 
 	public String getPaymentPointName() {
