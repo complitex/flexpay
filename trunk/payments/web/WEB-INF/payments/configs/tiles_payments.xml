@@ -107,6 +107,10 @@
 		<put-attribute name="body" value="/WEB-INF/jsp/payments/registry/view_registry.jsp" />
 	</definition>
 
+    <definition name="payments.registry.annotation" extends="payments.registry">
+		<put-attribute name="body" value="/WEB-INF/jsp/payments/registry/edit_registry_annotation.jsp" />
+	</definition>
+
 	<!-- Registry record corrections -->
 	<definition name="payments.select_correction_type" extends="ab.layout.content">
 		<put-attribute name="body" value="/WEB-INF/jsp/payments/data/correspondence/select_correction_type.jsp" />
