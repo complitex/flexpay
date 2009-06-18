@@ -9,19 +9,20 @@ import org.flexpay.common.util.StringUtil;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.lang.StringUtils;
 
 import java.util.List;
 
 public class ChangeAnnotationAction extends CashboxCookieActionSupport {
     /**
-	 * Symbol used escape special symbols
-	 */
-	private static final char ESCAPE_SYMBOL = '\\';
+     * Symbol used escape special symbols
+     */
+    private static final char ESCAPE_SYMBOL = '\\';
 
-	/**
-	 * Symbol used to split fields in containers
-	 */
-	private static final char CONTAINER_DATA_DELIMITER = ':';
+    /**
+     * Symbol used to split fields in containers
+     */
+    private static final char CONTAINER_DATA_DELIMITER = ':';
 
     private static final String ANNOTATION_CONTAINER_TYPE = "1001";
 
@@ -36,7 +37,7 @@ public class ChangeAnnotationAction extends CashboxCookieActionSupport {
 
     @NotNull
     protected String doExecute() throws Exception {
-        if (cancel != null && cancel.length() > 0) {
+        if (!StringUtils.isEmpty(cancel)) {
             log.error("Canceled edit annotation");
             return NONE;
         }
@@ -62,7 +63,7 @@ public class ChangeAnnotationAction extends CashboxCookieActionSupport {
         String annotaion = null;
         for (RegistryContainer registryContainer : containers) {
             List<String> containerData = StringUtil.splitEscapable(
-            registryContainer.getData(), CONTAINER_DATA_DELIMITER, ESCAPE_SYMBOL);
+                    registryContainer.getData(), CONTAINER_DATA_DELIMITER, ESCAPE_SYMBOL);
             if (containerData != null && containerData.size() > 0 && ANNOTATION_CONTAINER_TYPE.equals(containerData.get(0))) {
                 annotationContainer = registryContainer;
                 if (containerData.size() > 1) {
@@ -71,36 +72,34 @@ public class ChangeAnnotationAction extends CashboxCookieActionSupport {
                 break;
             }
         }
-        if (submitChange != null && submitChange.length() > 0) {
-            if (registryAnnotation != null && registryAnnotation.length() > 0) {
-                String encodeRegistryAnnotation = new String(Base64.encodeBase64(registryAnnotation.getBytes()));
-                String annotationContainerData = ANNOTATION_CONTAINER_TYPE + CONTAINER_DATA_DELIMITER + encodeRegistryAnnotation;
-                if (annotationContainerData.length() > CONTAINER_DATA_MAX_SIZE) {
-                    long maxSize = CONTAINER_DATA_MAX_SIZE + registryAnnotation.length() - encodeRegistryAnnotation.length();
-                    addActionError(getText("payments.registry.annotation.max_size", String.valueOf(maxSize)));
-                    return ERROR;
-                }
-                if (annotationContainer == null) {
-                    annotationContainer = new RegistryContainer();
-                    annotationContainer.setRegistry(registry);
-                    containers.add(annotationContainer);
-                }
-                annotationContainer.setData(annotationContainerData);
-                registryService.update(registry);
-
-                log.debug("Annotation updated for registry {}", registry.getId());
-
-                return REDIRECT_SUCCESS;
-            } else {
-                if (annotationContainer != null) {
-                    containers.remove(annotationContainer);
-                    registryService.update(registry);
-
-                    log.debug("Annotation remove for registry {}", registry.getId());
-
-                    return REDIRECT_SUCCESS;
-                }
+        if (!StringUtils.isEmpty(submitChange) && !StringUtils.isEmpty(registryAnnotation)) {
+            String encodeRegistryAnnotation = new String(Base64.encodeBase64(registryAnnotation.getBytes()));
+            String annotationContainerData = ANNOTATION_CONTAINER_TYPE + CONTAINER_DATA_DELIMITER + encodeRegistryAnnotation;
+            if (annotationContainerData.length() > CONTAINER_DATA_MAX_SIZE) {
+                long maxSize = CONTAINER_DATA_MAX_SIZE + registryAnnotation.length() - encodeRegistryAnnotation.length();
+                addActionError(getText("payments.registry.annotation.max_size", String.valueOf(maxSize)));
+                return ERROR;
             }
+            if (annotationContainer == null) {
+                annotationContainer = new RegistryContainer();
+                annotationContainer.setRegistry(registry);
+                containers.add(annotationContainer);
+            }
+            annotationContainer.setData(annotationContainerData);
+            registryService.update(registry);
+
+            log.debug("Annotation updated for registry {}", registry.getId());
+
+            return REDIRECT_SUCCESS;
+
+        } else if (!StringUtils.isEmpty(submitChange) && StringUtils.isEmpty(registryAnnotation) && annotationContainer != null) {
+            annotationContainer.setData("");
+            registryService.update(registry);
+
+            log.debug("Annotation remove for registry {}", registry.getId());
+
+            return REDIRECT_SUCCESS;
+            
         } else if (annotaion != null) {
             registryAnnotation = annotaion;
         }
