@@ -10,7 +10,7 @@
 }
 
 .columns .main-content table td {
-	font-size: 1.2em;
+	font-size: 1.0em;
 	font-weight: bold;
 }
 
@@ -67,6 +67,10 @@
 
 .columns .main-content table.operations tr.highlighted {
 	background-color: #cc6699;
+}
+
+.columns .main-content table.operations td.operations_list_summary {
+	font-size: 0.8em;
 }
 
 .columns .main-content table.payment_points_list td {
