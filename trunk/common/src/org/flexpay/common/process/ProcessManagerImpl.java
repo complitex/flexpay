@@ -510,6 +510,7 @@ public class ProcessManagerImpl implements ProcessManager, Runnable {
 							ContextInstance ci = task.getProcessInstance().getContextInstance();
 							// save the variables in ProcessInstance dictionary
 							ci.addVariables(parameters);
+							log.debug(parameters.toString());
 							ci.setVariable("StartTaskCounter", 0, task.getToken());
 							// mark task as ended with job result code as decision transition value
 							task.end(transition);
