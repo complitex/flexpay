@@ -18,10 +18,7 @@ import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Transactional;
 import org.apache.commons.lang.StringUtils;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
-import java.util.Collections;
+import java.util.*;
 
 @Transactional (readOnly = true)
 public class RegistryServiceImpl implements RegistryService {
@@ -110,7 +107,7 @@ public class RegistryServiceImpl implements RegistryService {
 	public Registry update(Registry registry) throws FlexPayException {
 		registryDao.update(registry);
 
-        List<RegistryContainer> removeContainers = Collections.emptyList();
+        List<RegistryContainer> removeContainers = new ArrayList<RegistryContainer>();
         for (RegistryContainer container : registry.getContainers()) {
             if (container.isNew() && !StringUtils.isEmpty(container.getData())) {
 			    registryContainerDao.create(container);
