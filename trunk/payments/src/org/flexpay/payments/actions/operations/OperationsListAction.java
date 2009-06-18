@@ -12,6 +12,7 @@ import org.flexpay.common.util.DateUtil;
 import org.flexpay.common.util.SecurityUtil;
 import org.flexpay.common.process.*;
 import org.flexpay.common.process.Process;
+import org.flexpay.common.service.CurrencyInfoService;
 import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.orgs.persistence.PaymentPoint;
 import org.flexpay.orgs.service.OrganizationService;
@@ -21,6 +22,7 @@ import org.flexpay.payments.persistence.*;
 import org.flexpay.payments.service.*;
 import org.flexpay.payments.process.handlers.PaymentCollectorAssignmentHandler;
 import org.flexpay.payments.process.export.TradingDay;
+import org.flexpay.payments.util.config.ApplicationConfig;
 import org.jbpm.graph.def.Transition;
 import org.jbpm.graph.exe.ProcessInstance;
 import org.jbpm.taskmgmt.exe.TaskInstance;
@@ -35,7 +37,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class OperationsListAction extends CashboxCookieWithPagerActionSupport<Operation> {
+
 	private static final String PROCESS_STATUS = "PROCESS_STATUS";
+
 	// form data
 	private List<ServiceType> serviceTypes = CollectionUtils.list();
 
@@ -79,6 +83,7 @@ public class OperationsListAction extends CashboxCookieWithPagerActionSupport<Op
 	private CashboxService cashboxService;
     private PaymentPointService paymentPointService;
 	private ProcessManager processManager;
+	private CurrencyInfoService currencyInfoService;
 
 	private List<String> processButtons;
 	private String processStatus;
@@ -368,6 +373,37 @@ public class OperationsListAction extends CashboxCookieWithPagerActionSupport<Op
 		return status == DocumentStatus.DELETED;
 	}
 
+	public int getOperationsTotalCount() {
+		return operations.size();
+	}
+
+	public BigDecimal getTotalPaymentsSumm() {
+
+		return getTotalSummForOperations(OperationStatus.REGISTERED);
+	}
+
+	public BigDecimal getTotalReturnsSumm() {
+
+		return getTotalSummForOperations(OperationStatus.RETURNED);
+	}
+
+	private BigDecimal getTotalSummForOperations(int statusCode) {
+
+		BigDecimal summ = new BigDecimal("0.00");
+		for (Operation operation : operations) {
+			if (statusCode == operation.getOperationStatus().getCode()) {
+				summ = summ.add(operation.getOperationSumm());
+			}
+		}
+
+		return summ;
+	}
+
+	public String getCurrencyName() {
+
+		return currencyInfoService.getDefaultCurrency().getName(userPreferences.getLocale()).getShortName();
+	}
+
 	// form data
 	public BeginDateFilter getBeginDateFilter() {
 		return beginDateFilter;
@@ -553,9 +589,13 @@ public class OperationsListAction extends CashboxCookieWithPagerActionSupport<Op
         this.paymentPointService = paymentPointService;
     }
 
+	@Required
+	public void setCurrencyInfoService(CurrencyInfoService currencyInfoService) {
+		this.currencyInfoService = currencyInfoService;
+	}
+
     @Required
 	public void setProcessManager(ProcessManager processManager) {
 		this.processManager = processManager;
 	}
-
 }
