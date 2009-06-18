@@ -376,22 +376,16 @@
         </tr>
 
 		<tr>
-			<td colspan="11">
+			<td colspan="11" class="operations_list_summary">
 				<s:text name="payments.operations.list.total_operations">
 					<s:param value="%{getOperationsTotalCount()}"/>
 				</s:text>
-			</td>
-		</tr>
-		<tr>
-			<td colspan="11">
+				&nbsp;
 				<s:text name="payments.operations.list.total_payments_summ">
 					<s:param value="%{getTotalPaymentsSumm()}"/>
 					<s:param value="%{getCurrencyName()}"/>
 				</s:text>
-			</td>
-		</tr>
-		<tr>
-			<td colspan="11">
+				&nbsp;
 				<s:text name="payments.operations.list.total_returns_summ">
 					<s:param value="%{getTotalReturnsSumm()}"/>
 					<s:param value="%{getCurrencyName()}"/>
