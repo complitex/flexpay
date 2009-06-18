@@ -177,6 +177,13 @@
 		  parent="historyPackerBase"
 		  class="org.flexpay.common.persistence.history.impl.XmlHistoryPacker" />
 
+	<bean id="historyConsumptionGroupsDistributor"
+		  class="org.flexpay.common.persistence.history.HistoryConsumptionGroupsDistributor"
+		  p:lockManager-ref="lockManager"
+		  p:consumerService-ref="historyConsumerService"
+		  p:groupsBatchSize="200"
+		  p:postponeTimeout="300" />
+
 	<bean id="historyUnPackerBase"
 		  abstract="true"
 		  autowire-candidate="false"

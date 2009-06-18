@@ -51,9 +51,8 @@ public abstract class Security {
 	/**
 	 * Do history broadcast user authentication
 	 */
-	public static void authenticateHistoryBroadcaster() {
+	public static void authenticateHistoryPacker() {
 		SecurityUtil.authenticate(USER_HISTORY_BROADCASTER, USER_HISTORY_BROADCASTER_AUTHORITIES);
 	}
-
 
 }

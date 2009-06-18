@@ -157,17 +157,19 @@ public abstract class HistoryPackerBase implements HistoryPacker {
 							 group.getId() + getFileExtension() + ".gz");
 		FPFileUtil.createEmptyFile(file);
 		fileService.create(file);
+		group.setFile(file);
 		return file;
 	}
 
 	private void clear(List<FPFile> files, HistoryPackingContext context) {
 
-		for (FPFile file : files) {
-			fileService.delete(file);
+		for (HistoryConsumptionGroup group : context.getGroups()) {
+			group.cancelBuilding();
+			consumerService.deleteConsumptionGroup(group);
 		}
 
-		for (HistoryConsumptionGroup group : context.getGroups()) {
-			consumerService.deleteConsumptionGroup(group);
+		for (FPFile file : files) {
+			fileService.delete(file);
 		}
 	}
 
@@ -195,6 +197,11 @@ public abstract class HistoryPackerBase implements HistoryPacker {
 		if (log.isDebugEnabled()) {
 			log.debug("Ended pack, number of packed diffs {} of {}",
 					context.getNumberOfDiffs(), context.getRange().getCount());
+		}
+
+		for (HistoryConsumptionGroup group : context.getGroups()) {
+			group.created();
+			consumerService.update(group);
 		}
 	}
 

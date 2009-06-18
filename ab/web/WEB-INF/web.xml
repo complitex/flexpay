@@ -7,7 +7,7 @@
 	<!--ab-->
 	<context-param>
 		<param-name>webAppRootKey</param-name>
-		<param-value>FlexPay AB module</param-value>
+		<param-value>FlexPay AB module COMMON_INSTANCE</param-value>
 	</context-param>
 
 	<context-param>

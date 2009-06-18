@@ -369,6 +369,8 @@
 					   match="COMMON_INSTANCE" replace="${newInstanceId}">
 			<fileset dir="${build.dir}">
 				<include name="web/WEB-INF/classes/org/flexpay/common/application_config.xml" />
+				<include name="web/WEB-INF/web.xml" />
+				<include name="web/WEB-INF/common/configs/log4j.xml" />
 			</fileset>
 		</replaceregexp>
 	</target>

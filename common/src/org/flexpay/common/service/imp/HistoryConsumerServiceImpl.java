@@ -5,6 +5,7 @@ import org.flexpay.common.dao.HistoryConsumerDaoExt;
 import org.flexpay.common.dao.HistoryConsumptionDao;
 import org.flexpay.common.dao.HistoryConsumptionGroupDao;
 import org.flexpay.common.dao.paging.FetchRange;
+import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.history.*;
@@ -98,6 +99,21 @@ public class HistoryConsumerServiceImpl implements HistoryConsumerService {
 	}
 
 	/**
+	 * Update created consumption group
+	 *
+	 * @param group HistoryConsumptionGroup to update
+	 * @return updated group back
+	 */
+	@NotNull
+	@Transactional (readOnly = false)
+	public HistoryConsumptionGroup update(@NotNull HistoryConsumptionGroup group) {
+
+		consumptionGroupDao.update(group);
+
+		return group;
+	}
+
+	/**
 	 * Create consumptions for a set of history records
 	 *
 	 * @param group   Consumption group to put new consumptions in
@@ -169,6 +185,18 @@ public class HistoryConsumerServiceImpl implements HistoryConsumerService {
 	 */
 	public List<HistoryConsumer> listConsumers() {
 		return consumerDao.listConsumers();
+	}
+
+	/**
+	 * List yet not sent consumer groups
+	 *
+	 * @param consumerStub HistoryConsumer to check groups of
+	 * @param pager		Page
+	 * @return List of groups that was not sent yet
+	 */
+	@Override
+	public List<HistoryConsumptionGroup> listNotSentGroups(Stub<HistoryConsumer> consumerStub, Page<HistoryConsumptionGroup> pager) {
+		return consumerDao.listNotSentGroups(consumerStub.getId(), pager);
 	}
 
 	@Required

@@ -77,7 +77,7 @@ public class ServiceTypeEditAction extends CashboxCookieActionSupport {
 	 */
 	@NotNull
 	protected String getErrorResult() {
-		return REDIRECT_SUCCESS;
+		return INPUT;
 	}
 
 	private void initNames() {
