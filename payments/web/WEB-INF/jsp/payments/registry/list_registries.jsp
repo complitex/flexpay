@@ -56,7 +56,7 @@
         <td class="col"><s:property value="recordsNumber"/></td>
         <td class="col"><s:text name="%{registryStatus.i18nName}"/></td>
         <td class="col">
-          <a href="<s:url action="changeAnnotation"><s:param name="registry.id" value="%{id}"/></s:url>"><s:text
+          <a href="<s:url action="changeAnnotation"><s:param name="registryId" value="%{id}"/></s:url>"><s:text
                   name="common.view"/></a>
         </td>
         <td class="col">
