@@ -374,6 +374,30 @@
                 <%@include file="/WEB-INF/jsp/common/filter/pager/pager.jsp" %>
             </td>
         </tr>
+
+		<tr>
+			<td colspan="11">
+				<s:text name="payments.operations.list.total_operations">
+					<s:param value="%{getOperationsTotalCount()}"/>
+				</s:text>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="11">
+				<s:text name="payments.operations.list.total_payments_summ">
+					<s:param value="%{getTotalPaymentsSumm()}"/>
+					<s:param value="%{getCurrencyName()}"/>
+				</s:text>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="11">
+				<s:text name="payments.operations.list.total_returns_summ">
+					<s:param value="%{getTotalReturnsSumm()}"/>
+					<s:param value="%{getCurrencyName()}"/>
+				</s:text>
+			</td>
+		</tr>
     </s:else>
 
 </table>
