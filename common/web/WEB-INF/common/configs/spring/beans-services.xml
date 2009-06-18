@@ -200,6 +200,12 @@
 		  factory-method="getInstance"
 		  p:diffService-ref="diffService" />
 
+	<bean id="objectsSyncerJob"
+		  class="org.flexpay.common.persistence.history.ObjectsSyncerJob"
+		  p:diffService-ref="diffService"
+		  p:lockManager-ref="lockManager"
+		  p:syncer-ref="objectsSyncer" />
+
 	<bean id="historyHandlerBase"
 		  abstract="true"
 		  autowire-candidate="false"

@@ -1,5 +1,6 @@
 package org.flexpay.common.persistence.history.impl;
 
+import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.history.Diff;
 import org.flexpay.common.persistence.history.HistoryHandler;
 import org.flexpay.common.persistence.history.ObjectsSyncer;
@@ -51,6 +52,8 @@ public class ObjectsSyncerImpl implements ObjectsSyncer {
 					diff.setProcessingStatus(ProcessingStatus.STATUS_IGNORED);
 				}
 				diffService.update(diff);
+			} catch (FlexPayExceptionContainer e) {
+				e.error(log, "Sync failed");
 			} catch (Exception e) {
 				log.error("Failed processing diff " + diff, e);
 			} finally {

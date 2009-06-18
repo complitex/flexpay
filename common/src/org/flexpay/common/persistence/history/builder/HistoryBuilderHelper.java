@@ -86,7 +86,7 @@ public class HistoryBuilderHelper {
 
 		Ref ref1 = extractor.getReference(obj1);
 		Ref ref2 = extractor.getReference(obj2);
-		boolean noRef = isNew(obj1) && isNew(obj2);
+		boolean noRef = isNew(ref1) && isNew(ref2);
 
 		// no references found in both objects, nothing to do
 		if (noRef) {

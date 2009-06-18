@@ -143,13 +143,14 @@ public class ServiceTypeServiceImpl implements ServiceTypeService {
 			}
 			boolean descBlank = StringUtils.isBlank(translation.getDescription());
 			if (nameBlank || descBlank) {
-				container.addException(new FlexPayException("Need both name and desc for lang",
+				container.addException(new FlexPayException(
+						"Need name and desc, was: '" + translation.getName() + "' and '" + translation.getDescription() + "'",
 						"eirc.error.service_type.need_both_name_and_description"));
 			}
 		}
 		if (!defaultNameFound) {
 			container.addException(new FlexPayException(
-					"No default lang desc", "eirc.error.service_type.no_default_lang_name"));
+					"No default lang name", "eirc.error.service_type.no_default_lang_name"));
 		}
 
 		if (type.getCode() == 0) {
@@ -160,9 +161,10 @@ public class ServiceTypeServiceImpl implements ServiceTypeService {
 			try {
 				ServiceType typeByCode = getServiceType(type.getCode());
 				if (typeByCode != null && (type.isNew() || !typeByCode.equals(type))) {
-					container.addException(new FlexPayException("Not unique code",
+					container.addException(new FlexPayException("Not unique code: " + type.getCode(),
 							"eirc.error.service_type.not_unique_code"));
 				}
+				sessionUtils.evict(typeByCode);
 			} catch (IllegalArgumentException e) {
 				// nothing to do
 			}
@@ -181,6 +183,7 @@ public class ServiceTypeServiceImpl implements ServiceTypeService {
 	 * @return Service type if found
 	 * @throws IllegalArgumentException if the <code>code</code> is invalid
 	 */
+	@NotNull
 	public ServiceType getServiceType(int code) throws IllegalArgumentException {
 
 		ServiceType type = serviceDaoExt.findByCode(code);

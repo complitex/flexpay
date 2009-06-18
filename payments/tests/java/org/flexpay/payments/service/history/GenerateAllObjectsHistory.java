@@ -2,6 +2,11 @@ package org.flexpay.payments.service.history;
 
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.persistence.MeasureUnit;
+import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.persistence.file.FPFile;
+import org.flexpay.common.persistence.history.ObjectsSyncQuartzJob;
+import org.flexpay.common.persistence.history.HistoryConsumer;
+import org.flexpay.common.persistence.history.HistoryPacker;
 import org.flexpay.common.service.MeasureUnitService;
 import org.flexpay.common.service.history.MeasureUnitHistoryGenerator;
 import org.flexpay.orgs.persistence.*;
@@ -19,6 +24,7 @@ import org.flexpay.payments.persistence.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.junit.Test;
+import static org.junit.Assert.assertFalse;
 
 import java.util.List;
 
@@ -82,8 +88,11 @@ public class GenerateAllObjectsHistory extends PaymentsSpringBeanAwareTestCase {
 	@Autowired
 	private ServiceHistoryGenerator serviceHistoryGenerator;
 
+	@Autowired
+	private HistoryPacker historyPacker;
+	
 	@Test
-	public void generate() {
+	public void generate() throws Exception {
 
 		generateMeasureUnits();
 		generateOrganizations();
@@ -95,6 +104,12 @@ public class GenerateAllObjectsHistory extends PaymentsSpringBeanAwareTestCase {
 		generateCashboxes();
 		generateServiceTypes();
 		generateServices();
+
+//		Stub<HistoryConsumer> consumer = new Stub<HistoryConsumer>(1L);
+//		List<FPFile> history = historyPacker.packHistory(consumer);
+//		assertFalse("history packing failed", history.isEmpty());
+//
+//		System.out.println("Files:" + history);
 	}
 
 	private void generateMeasureUnits() {

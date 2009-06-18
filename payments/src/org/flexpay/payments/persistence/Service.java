@@ -2,9 +2,9 @@ package org.flexpay.payments.persistence;
 
 import org.apache.commons.lang.StringUtils;
 import org.flexpay.common.persistence.DomainObjectWithStatus;
+import org.flexpay.common.persistence.Language;
 import org.flexpay.common.persistence.MeasureUnit;
 import org.flexpay.common.persistence.Stub;
-import org.flexpay.common.persistence.Language;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.util.TranslationUtil;
 import org.flexpay.orgs.persistence.ServiceProvider;
@@ -128,6 +128,15 @@ public class Service extends DomainObjectWithStatus {
 	}
 
 	/**
+	 * Get parent service stub, call only when {@link #isSubService()} is <code>true</code>
+	 *
+	 * @return Parent service stub
+	 */
+	public Stub<Service> getParentServiceStub() {
+		return stub(parentService);
+	}
+
+	/**
 	 * Check if this service is a subservice
 	 *
 	 * @return <code>true</code> if parent service is not <code>null</code>, or <code>false</code> otherwise
@@ -154,6 +163,20 @@ public class Service extends DomainObjectWithStatus {
 
 	public void setMeasureUnit(MeasureUnit measureUnit) {
 		this.measureUnit = measureUnit;
+	}
+
+	public boolean hasMeasureUnit() {
+		return measureUnit != null;
+	}
+
+	/**
+	 * Get measure unit stub, call only if {@link #hasMeasureUnit()} is <code>true</code>
+	 *
+	 * @return Measure unit stub
+	 */
+	@NotNull
+	public Stub<MeasureUnit> getMeasureUnitStub() {
+		return stub(measureUnit);
 	}
 
 	@NotNull

@@ -16,13 +16,16 @@ import org.flexpay.common.persistence.history.builder.TranslationPatcher;
 import org.flexpay.common.persistence.history.impl.HistoryBuilderBase;
 import org.flexpay.common.util.EqualsHelper;
 import org.flexpay.orgs.persistence.ServiceProvider;
+import org.flexpay.orgs.service.ServiceProviderService;
 import org.flexpay.payments.persistence.Service;
 import org.flexpay.payments.persistence.ServiceDescription;
 import org.flexpay.payments.persistence.ServiceType;
+import org.flexpay.payments.service.SPService;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Required;
 
 public class ServiceHistoryBuilder extends HistoryBuilderBase<Service> {
 
@@ -36,6 +39,9 @@ public class ServiceHistoryBuilder extends HistoryBuilderBase<Service> {
 	public static final int FIELD_END_DATE = 6;
 	public static final int FIELD_MEASURE_UNIT_ID = 7;
 	public static final int FIELD_PARENT_SERVICE_ID = 8;
+
+	private ServiceProviderService serviceProviderService;
+	private SPService spService;
 
 	/**
 	 * Build necessary diff records
@@ -63,7 +69,7 @@ public class ServiceHistoryBuilder extends HistoryBuilderBase<Service> {
 
 	private void buildSimpleFieldsDiff(Service p1, Service p2, Diff diff) {
 
-		if (EqualsHelper.strEquals(p1.getExternalCode(), p2.getExternalCode())) {
+		if (!EqualsHelper.strEquals(p1.getExternalCode(), p2.getExternalCode())) {
 			HistoryRecord record = new HistoryRecord();
 			record.setOldStringValue(p1.getExternalCode());
 			record.setNewStringValue(p2.getExternalCode());
@@ -72,7 +78,7 @@ public class ServiceHistoryBuilder extends HistoryBuilderBase<Service> {
 			log.debug("Added external code diff record: {}", record);
 		}
 
-		if (ObjectUtils.equals(p1.getBeginDate(), p2.getBeginDate())) {
+		if (!ObjectUtils.equals(p1.getBeginDate(), p2.getBeginDate())) {
 			HistoryRecord record = new HistoryRecord();
 			record.setOldDateValue(p1.getBeginDate());
 			record.setNewDateValue(p2.getBeginDate());
@@ -81,7 +87,7 @@ public class ServiceHistoryBuilder extends HistoryBuilderBase<Service> {
 			log.debug("Added begin date diff record: {}", record);
 		}
 
-		if (ObjectUtils.equals(p1.getEndDate(), p2.getEndDate())) {
+		if (!ObjectUtils.equals(p1.getEndDate(), p2.getEndDate())) {
 			HistoryRecord record = new HistoryRecord();
 			record.setOldDateValue(p1.getEndDate());
 			record.setNewDateValue(p2.getEndDate());
@@ -119,15 +125,15 @@ public class ServiceHistoryBuilder extends HistoryBuilderBase<Service> {
 
 	private void buildMeasureUnitRefDiff(Service p1, Service p2, Diff diff) {
 
-//		builderHelper.buildReferenceDiff(p1, p2, diff, new ReferenceExtractor<MeasureUnit, Service>() {
-//			public MeasureUnit getReference(Service obj) {
-//				return obj.getMeasureUnit();
-//			}
-//
-//			public int getReferenceField() {
-//				return FIELD_MEASURE_UNIT_ID;
-//			}
-//		});
+		builderHelper.buildReferenceDiff(p1, p2, diff, new ReferenceExtractor<MeasureUnit, Service>() {
+			public MeasureUnit getReference(Service obj) {
+				return obj.getMeasureUnit();
+			}
+
+			public int getReferenceField() {
+				return FIELD_MEASURE_UNIT_ID;
+			}
+		});
 	}
 
 	private void buildParentServiceRefDiff(Service p1, Service p2, Diff diff) {
@@ -170,23 +176,26 @@ public class ServiceHistoryBuilder extends HistoryBuilderBase<Service> {
 					patchDescription(service, record);
 					break;
 				case FIELD_BEGIN_DATE:
+					log.debug("Patching service begin date {}", record);
 					service.setBeginDate(record.getNewDateValue());
 					record.setProcessingStatus(ProcessingStatus.STATUS_PROCESSED);
 					break;
 				case FIELD_END_DATE:
+					log.debug("Patching service end date {}", record);
 					service.setEndDate(record.getNewDateValue());
 					record.setProcessingStatus(ProcessingStatus.STATUS_PROCESSED);
 					break;
 				case FIELD_EXTERNAL_CODE:
+					log.debug("Patching service external code {}", record);
 					service.setExternalCode(record.getNewStringValueNotNull());
 					record.setProcessingStatus(ProcessingStatus.STATUS_PROCESSED);
 					break;
 				case FIELD_SERVICETYPE_ID:
 					patchServiceTypeReference(service, record);
 					break;
-//				case FIELD_MEASURE_UNIT_ID:
-//					patchMeasureUnitReference(service, record);
-//					break;
+				case FIELD_MEASURE_UNIT_ID:
+					patchMeasureUnitReference(service, record);
+					break;
 				case FIELD_PARENT_SERVICE_ID:
 					patchParentServiceReference(service, record);
 					break;
@@ -198,10 +207,13 @@ public class ServiceHistoryBuilder extends HistoryBuilderBase<Service> {
 					record.setProcessingStatus(ProcessingStatus.STATUS_IGNORED);
 			}
 		}
+
+		log.debug("End patch");
 	}
 
 	private void patchDescription(Service service, HistoryRecord record) {
 
+		log.debug("Patching service description {}", record);
 		builderHelper.patchTranslation(service, record, new TranslationPatcher<ServiceDescription, Service>() {
 			public ServiceDescription getNotNullTranslation(Service obj, @NotNull Language language) {
 				ServiceDescription tr = obj.getDescription(language);
@@ -224,7 +236,8 @@ public class ServiceHistoryBuilder extends HistoryBuilderBase<Service> {
 			}
 
 			public void setReference(Service obj, Stub<ServiceProvider> ref) {
-				obj.setServiceProvider(new ServiceProvider(ref));
+				ServiceProvider provider = serviceProviderService.read(ref);
+				obj.setServiceProvider(provider);
 			}
 		});
 	}
@@ -273,10 +286,23 @@ public class ServiceHistoryBuilder extends HistoryBuilderBase<Service> {
 				if (ref == null) {
 					obj.setParentService(null);
 				} else {
-					obj.setParentService(new Service(ref));
+					Service parent = spService.readFull(ref);
+					if (parent == null) {
+						throw new IllegalStateException("Expected parent service but not found: " + ref);
+					}
+					obj.setParentService(parent);
 				}
 			}
 		});
 	}
 
+	@Required
+	public void setServiceProviderService(ServiceProviderService serviceProviderService) {
+		this.serviceProviderService = serviceProviderService;
+	}
+
+	@Required
+	public void setSpService(SPService spService) {
+		this.spService = spService;
+	}
 }

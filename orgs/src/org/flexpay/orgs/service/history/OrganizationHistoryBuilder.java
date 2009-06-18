@@ -53,7 +53,7 @@ public class OrganizationHistoryBuilder extends HistoryBuilderBase<Organization>
 	}
 
 	private boolean differ(String s1, String s2) {
-		return StringUtils.trimToEmpty(s1).equals(StringUtils.trimToEmpty(s2));
+		return !StringUtils.trimToEmpty(s1).equals(StringUtils.trimToEmpty(s2));
 	}
 
 	private HistoryRecord newRecord(int fieldType) {
@@ -78,7 +78,6 @@ public class OrganizationHistoryBuilder extends HistoryBuilderBase<Organization>
 					tr2 == null ? null : tr2.getName());
 
 			if (nameDiffer) {
-				log.debug("Name differ");
 				HistoryRecord rec = new HistoryRecord();
 				rec.setFieldType(FIELD_NAME);
 				rec.setOldStringValue(tr1 == null ? null : tr1.getName());
@@ -107,15 +106,14 @@ public class OrganizationHistoryBuilder extends HistoryBuilderBase<Organization>
 					tr2 == null ? null : tr2.getName());
 
 			if (nameDiffer) {
-				log.debug("Name differ");
 				HistoryRecord rec = new HistoryRecord();
-				rec.setFieldType(FIELD_NAME);
+				rec.setFieldType(FIELD_DESCRIPTION);
 				rec.setOldStringValue(tr1 == null ? null : tr1.getName());
 				rec.setNewStringValue(tr2 == null ? null : tr2.getName());
 				rec.setLanguage(lang.getLangIsoCode());
 				diff.addRecord(rec);
 
-				log.debug("Added name diff for lang {}\n{}", lang, rec);
+				log.debug("Added description diff for lang {}\n{}", lang, rec);
 			}
 		}
 	}
@@ -172,18 +170,22 @@ public class OrganizationHistoryBuilder extends HistoryBuilderBase<Organization>
 					patchDescription(org, record);
 					break;
 				case FIELD_INDIVIDUAL_TAX_NUMBER:
+					log.debug("Patching organization INN: {}", record);
 					org.setIndividualTaxNumber(record.getNewStringValue());
 					record.setProcessingStatus(ProcessingStatus.STATUS_PROCESSED);
 					break;
 				case FIELD_KPP:
+					log.debug("Patching organization KPP: {}", record);
 					org.setKpp(record.getNewStringValue());
 					record.setProcessingStatus(ProcessingStatus.STATUS_PROCESSED);
 					break;
 				case FIELD_JURIDICAL_ADDRESS:
+					log.debug("Patching organization Juridical address: {}", record);
 					org.setJuridicalAddress(record.getNewStringValue());
 					record.setProcessingStatus(ProcessingStatus.STATUS_PROCESSED);
 					break;
 				case FIELD_POSTAL_ADDRESS:
+					log.debug("Patching organization Postal address: {}", record);
 					org.setPostalAddress(record.getNewStringValue());
 					record.setProcessingStatus(ProcessingStatus.STATUS_PROCESSED);
 					break;
@@ -195,6 +197,9 @@ public class OrganizationHistoryBuilder extends HistoryBuilderBase<Organization>
 	}
 
 	private void patchName(Organization org, HistoryRecord record) {
+
+		log.debug("Patching organization name: {}", record);
+
 		Language lang = record.getLang();
 		if (lang == null) {
 			log.info("No lang found for record {}", record);
@@ -215,6 +220,8 @@ public class OrganizationHistoryBuilder extends HistoryBuilderBase<Organization>
 	}
 
 	private void patchDescription(Organization org, HistoryRecord record) {
+
+		log.debug("Patching organization description {}", record);
 		Language lang = record.getLang();
 		if (lang == null) {
 			log.info("No lang found for record {}", record);

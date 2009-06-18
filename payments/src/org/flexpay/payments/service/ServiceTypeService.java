@@ -77,6 +77,7 @@ public interface ServiceTypeService {
 	 * @throws IllegalArgumentException if the <code>code</code> is invalid
 	 */
 	@Secured (Roles.SERVICE_TYPE_READ)
+	@NotNull
 	ServiceType getServiceType(int code) throws IllegalArgumentException;
 
 	/**

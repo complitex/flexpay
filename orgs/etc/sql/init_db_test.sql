@@ -1,20 +1,20 @@
 -- put here module test initialization data
 INSERT INTO orgs_organizations_tbl (id, status, version, juridical_address, postal_address, individual_tax_number, kpp)
-	VALUES (2, 0, 0, '', '', '123123123', '123');
+	VALUES (2, 0, 0, 'Иванова 27-315', 'Иванова 27-314', '123123123', '123');
 SELECT @organization_zhko:=2;
 INSERT INTO orgs_organization_descriptions_tbl (name, language_id, organization_id)
 	VALUES ('Test organization', @ru_id, @organization_zhko);
 INSERT INTO orgs_organization_names_tbl (name, language_id, organization_id)
 	VALUES ('ЖКО', @ru_id, @organization_zhko);
 INSERT INTO orgs_organizations_tbl (id, status, version, juridical_address, postal_address, individual_tax_number, kpp)
-	VALUES (3, 0, 0, '', '', '456456456', '56');
+	VALUES (3, 0, 0, 'Иванова 1', 'Иванова 2', '456456456', '56');
 SELECT @organization_tszh:=3;
 INSERT INTO orgs_organization_descriptions_tbl (name, language_id, organization_id)
 	VALUES ('Test organization 2', @ru_id, @organization_tszh);
 INSERT INTO orgs_organization_names_tbl (name, language_id, organization_id)
 	VALUES ('ТСЖ', @ru_id, @organization_tszh);
 INSERT INTO orgs_organizations_tbl (id, status, version, juridical_address, postal_address, individual_tax_number, kpp)
-	VALUES (4, 0, 0, '', '', '1111111', '56');
+	VALUES (4, 0, 0, 'Иванова 26-315', 'Иванова 26-314', '1111111', '56');
 SELECT @organization_cn:=4;
 INSERT INTO orgs_organization_descriptions_tbl (name, language_id, organization_id)
 	VALUES ('Calculation center', @ru_id, @organization_cn);
@@ -68,16 +68,16 @@ INSERT INTO orgs_subdivision_descriptions_tbl (version, name, language_id, subdi
 
 
 -- Init banks
-INSERT INTO orgs_banks_tbl (status, version, organization_id, bank_identifier_code, corresponding_account)
-	VALUES (0, 0, @organization_cn, '044525957', '30101810600000000957');
-SELECT @bank_cn:=last_insert_id();
+INSERT INTO orgs_banks_tbl (id, status, version, organization_id, bank_identifier_code, corresponding_account)
+	VALUES (1, 0, 0, @organization_cn, '044525957', '30101810600000000957');
+SELECT @bank_cn:=1;
 INSERT INTO orgs_bank_descriptions_tbl (version, name, language_id, bank_id)
 	VALUES (0, 'Мега Банк', @ru_id, @bank_cn);
 INSERT INTO orgs_bank_descriptions_tbl (version, name, language_id, bank_id)
 	VALUES (0, 'Mega Bank', @en_id, @bank_cn);
-INSERT INTO orgs_banks_tbl (status, version, organization_id, bank_identifier_code, corresponding_account)
-	VALUES (0, 0, @organization_eirc, '1233455', '30101810600000000455');
-SELECT @bank_eirc:=last_insert_id();
+INSERT INTO orgs_banks_tbl (id, status, version, organization_id, bank_identifier_code, corresponding_account)
+	VALUES (2, 0, 0, @organization_eirc, '1233455', '30101810600000000455');
+SELECT @bank_eirc:=2;
 INSERT INTO orgs_bank_descriptions_tbl (version, name, language_id, bank_id)
 	VALUES (0, 'ЕИРЦ Банк', @ru_id, @bank_eirc);
 INSERT INTO orgs_bank_descriptions_tbl (version, name, language_id, bank_id)
@@ -93,7 +93,7 @@ INSERT INTO orgs_service_provider_descriptions_tbl (version, name, language_id, 
 
 -- Init service organizations
 INSERT INTO orgs_organizations_tbl (id, status, version, juridical_address, postal_address, individual_tax_number, kpp)
-	VALUES (5, 0, 0, '', '', '', '56');
+	VALUES (5, 0, 0, 'Демакова-3', 'Демакова-3', '56', '56');
 SELECT @organization_service_org_1:=5;
 INSERT INTO orgs_organization_descriptions_tbl (name, language_id, organization_id)
 	VALUES ('Тестовая обсл. организация', @ru_id, @organization_service_org_1);

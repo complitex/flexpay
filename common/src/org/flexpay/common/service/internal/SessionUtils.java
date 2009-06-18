@@ -42,9 +42,11 @@ public class SessionUtils {
 	@Transactional(propagation = Propagation.REQUIRED)
 	public void evict(Object o) {
 
-		log.debug("Evicting");
+		log.debug("Evicting {}", o);
 
-		hibernateTemplate.evict(o);
+		if (o != null) {
+			hibernateTemplate.evict(o);
+		}
 	}
 
 	/**

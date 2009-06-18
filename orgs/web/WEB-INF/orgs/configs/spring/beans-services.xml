@@ -111,23 +111,28 @@
 
 	<bean id="paymentPointHistoryBuilder"
 		  parent="historyBuilderBase"
-		  class="org.flexpay.orgs.service.history.PaymentPointHistoryBuilder" />
+		  class="org.flexpay.orgs.service.history.PaymentPointHistoryBuilder"
+		  p:collectorService-ref="paymentsCollectorService" />
 
 	<bean id="bankHistoryBuilder"
 		  parent="historyBuilderBase"
-		  class="org.flexpay.orgs.service.history.BankHistoryBuilder" />
+		  class="org.flexpay.orgs.service.history.BankHistoryBuilder"
+		  p:organizationService-ref="organizationService" />
 
 	<bean id="serviceOrganizationHistoryBuilder"
 		  parent="historyBuilderBase"
-		  class="org.flexpay.orgs.service.history.ServiceOrganizationHistoryBuilder" />
+		  class="org.flexpay.orgs.service.history.ServiceOrganizationHistoryBuilder"
+		  p:organizationService-ref="organizationService" />
 
 	<bean id="serviceProviderHistoryBuilder"
 		  parent="historyBuilderBase"
-		  class="org.flexpay.orgs.service.history.ServiceProviderHistoryBuilder" />
+		  class="org.flexpay.orgs.service.history.ServiceProviderHistoryBuilder"
+		  p:organizationService-ref="organizationService" />
 
 	<bean id="paymentsCollectorHistoryBuilder"
 		  parent="historyBuilderBase"
-		  class="org.flexpay.orgs.service.history.PaymentsCollectorHistoryBuilder" />
+		  class="org.flexpay.orgs.service.history.PaymentsCollectorHistoryBuilder"
+		  p:organizationService-ref="organizationService" />
 
 	<!-- History generators -->
 	<bean id="organizationHistoryGenerator"

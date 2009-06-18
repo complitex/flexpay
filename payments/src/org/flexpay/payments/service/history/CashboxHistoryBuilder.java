@@ -13,12 +13,14 @@ import org.flexpay.common.persistence.history.builder.TranslationExtractor;
 import org.flexpay.common.persistence.history.builder.TranslationPatcher;
 import org.flexpay.common.persistence.history.impl.HistoryBuilderBase;
 import org.flexpay.orgs.persistence.PaymentPoint;
+import org.flexpay.orgs.service.PaymentPointService;
 import org.flexpay.payments.persistence.Cashbox;
 import org.flexpay.payments.persistence.CashboxNameTranslation;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Required;
 
 public class CashboxHistoryBuilder extends HistoryBuilderBase<Cashbox> {
 
@@ -26,6 +28,8 @@ public class CashboxHistoryBuilder extends HistoryBuilderBase<Cashbox> {
 
 	public static final int FIELD_NAME = 1;
 	public static final int FIELD_PAYMENT_POINT_ID = 2;
+
+	private PaymentPointService pointService;
 
 	/**
 	 * Build necessary diff records
@@ -123,8 +127,14 @@ public class CashboxHistoryBuilder extends HistoryBuilderBase<Cashbox> {
 			}
 
 			public void setReference(Cashbox obj, Stub<PaymentPoint> ref) {
-				obj.setPaymentPoint(new PaymentPoint(ref));
+				PaymentPoint point = pointService.read(ref);
+				obj.setPaymentPoint(point);
 			}
 		});
+	}
+
+	@Required
+	public void setPointService(PaymentPointService pointService) {
+		this.pointService = pointService;
 	}
 }
