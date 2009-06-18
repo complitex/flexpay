@@ -16,6 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Transactional;
+import org.apache.commons.lang.StringUtils;
 
 import java.util.Collection;
 import java.util.List;
@@ -107,6 +108,17 @@ public class RegistryServiceImpl implements RegistryService {
 	@Transactional (readOnly = false)
 	public Registry update(Registry registry) throws FlexPayException {
 		registryDao.update(registry);
+
+        for (RegistryContainer container : registry.getContainers()) {
+            if (container.isNew() && !StringUtils.isEmpty(container.getData())) {
+			    registryContainerDao.create(container);
+            } else if (container.isNotNew() && StringUtils.isEmpty(container.getData())) {
+                registry.getContainers().remove(container);
+                registryContainerDao.delete(container);
+            } else if (container.isNotNew()) {
+                registryContainerDao.update(container);
+            }
+		}
 
 		return registry;
 	}
