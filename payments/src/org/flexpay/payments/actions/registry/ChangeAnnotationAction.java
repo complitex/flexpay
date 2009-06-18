@@ -67,7 +67,7 @@ public class ChangeAnnotationAction extends CashboxCookieActionSupport {
             if (containerData != null && containerData.size() > 0 && ANNOTATION_CONTAINER_TYPE.equals(containerData.get(0))) {
                 annotationContainer = registryContainer;
                 if (containerData.size() > 1) {
-                    annotaion = containerData.get(1);
+                    annotaion = new String(Base64.decodeBase64(containerData.get(1).getBytes()));
                 }
                 break;
             }
