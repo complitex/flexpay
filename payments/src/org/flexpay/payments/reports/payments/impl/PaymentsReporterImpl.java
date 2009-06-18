@@ -165,6 +165,8 @@ public class PaymentsReporterImpl implements PaymentsReporter {
 		result.setEndDate(end);
 		result.setPaymentPointName(TranslationUtil.getTranslation(paymentPoint.getNames(), locale).getName());
 		result.setPaymentPointAddress(paymentPoint.getAddress());
+		Organization collectorOrganization = organizationService.readFull(paymentPoint.getCollector().getOrganizationStub());
+		result.setPaymentCollectorOrgName(collectorOrganization.getName(locale));
 		result.setCashierFio("Коваль А.Н."); // TODO : FIXME
 		return result;
 	}
@@ -181,6 +183,8 @@ public class PaymentsReporterImpl implements PaymentsReporter {
 		result.setEndDate(end);
 		result.setPaymentPointName(TranslationUtil.getTranslation(paymentPoint.getNames(), locale).getName());
 		result.setPaymentPointAddress(paymentPoint.getAddress());
+		Organization collectorOrganization = organizationService.readFull(paymentPoint.getCollector().getOrganizationStub());
+		result.setPaymentCollectorOrgName(collectorOrganization.getName(locale));
 		result.setCashierFio("Коваль А.Н."); // TODO : FIXME
 		return result;
 	}

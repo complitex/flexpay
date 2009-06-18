@@ -37,6 +37,7 @@ public abstract class PaymentsDayReportAction extends CashboxCookieActionSupport
 
 	// form data
 	private BeginDateFilter beginDateFilter = new BeginDateFilter();
+	private Boolean showDetails = true;
 
 	// report file
 	private FPFile report;
@@ -52,6 +53,9 @@ public abstract class PaymentsDayReportAction extends CashboxCookieActionSupport
 	@NotNull
 	protected String doExecute() throws Exception {
 
+//		 FIXME remove
+//		log.debug("[!!!] showDetails {}", showDetails);
+
 		if (isNotSubmit()) {
 			beginDateFilter.setDate(DateUtil.now());
 			return SUCCESS;
@@ -62,8 +66,8 @@ public abstract class PaymentsDayReportAction extends CashboxCookieActionSupport
 
 		PaymentsPrintInfoData data = getPaymentsData(beginDate, endDate);
 		Map<?, ?> params = map(
-				ar("cashierFio", "creationDate", "beginDate", "endDate", "paymentPointName", "paymentPointAddress"),
-				ar(data.getCashierFio(), data.getCreationDate(), data.getBeginDate(), data.getEndDate(), data.getPaymentPointName(), data.getPaymentPointAddress()));
+				ar("cashierFio", "creationDate", "beginDate", "endDate", "paymentPointName", "paymentPointAddress", "showServiceSumms", "paymentCollectorOrgName"),
+				ar(data.getCashierFio(), data.getCreationDate(), data.getBeginDate(), data.getEndDate(), data.getPaymentPointName(), data.getPaymentPointAddress(), showDetails, data.getPaymentCollectorOrgName()));
 		JRDataSource dataSource = new JRBeanCollectionDataSource(data.getOperationDetailses());
 
 		String reportName = ensureReportTemplateUploaded();
@@ -135,6 +139,14 @@ public abstract class PaymentsDayReportAction extends CashboxCookieActionSupport
 	public void setBeginDateFilter(BeginDateFilter beginDateFilter) {
 		this.beginDateFilter = beginDateFilter;
 	}
+
+//	public void setShowDetails(Boolean showDetails) {
+//		this.showDetails = showDetails;
+//	}
+//
+//	public Boolean getShowDetails() {
+//		return showDetails;
+//	}
 
 	public FPFile getReport() {
 		return report;

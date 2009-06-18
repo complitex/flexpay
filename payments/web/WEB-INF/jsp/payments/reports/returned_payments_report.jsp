@@ -23,5 +23,11 @@
 					   value="<s:text name="payments.reports.generate.generate"/>"/>
 			</td>
 		</tr>
+		<%--<tr>--%>
+			<%--<td>--%>
+				<%--<s:text name="payments.report.generate.show_details"/>--%>
+				<%--<s:checkbox name="showDetails" value="%{showDetails}"/>--%>
+			<%--</td>--%>
+		<%--</tr>--%>
 	</table>
 </s:form>
