@@ -579,7 +579,11 @@
         id bigint not null auto_increment,
         consumer_id bigint not null comment 'History consumer reference',
         creation_date datetime not null comment 'Group creation date',
+        postpone_time datetime comment 'Last postpone timestamp',
         user_name varchar(255) not null comment 'User name created group',
+        send_tries integer not null comment 'Number of tries group file was sent',
+        group_status integer not null comment 'Number of tries group file was sent',
+        file_id bigint comment 'History group data file reference',
         primary key (id)
     ) comment='Group of several consumptions';
 
@@ -1284,6 +1288,12 @@
         add constraint FK_common_history_consumers_tbl_out_transport_config_id 
         foreign key (out_transport_config_id) 
         references common_out_transport_configs_tbl (id);
+
+    alter table common_history_consumption_groups_tbl 
+        add index FK_common_history_consumption_groups_tbl_file_id (file_id), 
+        add constraint FK_common_history_consumption_groups_tbl_file_id 
+        foreign key (file_id) 
+        references common_files_tbl (id);
 
     alter table common_history_consumption_groups_tbl 
         add index FK_common_history_consumption_groups_tbl_consumer_id (consumer_id), 

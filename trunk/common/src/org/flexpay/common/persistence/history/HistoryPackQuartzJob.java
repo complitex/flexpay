@@ -1,11 +1,9 @@
 package org.flexpay.common.persistence.history;
 
 import org.flexpay.common.locking.LockManager;
-import org.flexpay.common.persistence.file.FPFile;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.service.HistoryConsumerService;
 import org.flexpay.common.service.Security;
-import org.flexpay.common.service.transport.OutTransport;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.slf4j.Logger;
@@ -16,13 +14,13 @@ import org.springframework.scheduling.quartz.QuartzJobBean;
 import java.util.List;
 
 /**
- * Job performing history broadcasting for all registered {@link org.flexpay.common.service.transport.OutTransport}
+ * Job performing history packing to groups
  */
-public class HistoryBroadcastQuartzJob extends QuartzJobBean {
+public class HistoryPackQuartzJob extends QuartzJobBean {
 
 	private Logger log = LoggerFactory.getLogger(getClass());
 
-	public static final String LOCK_NAME = HistoryBroadcastQuartzJob.class.getName() + ".LOCK";
+	public static final String LOCK_NAME = HistoryPackQuartzJob.class.getName() + ".LOCK";
 
 	private LockManager lockManager;
 	private HistoryPacker historyPacker;
@@ -42,29 +40,24 @@ public class HistoryBroadcastQuartzJob extends QuartzJobBean {
 			return;
 		}
 
-		log.debug("Starting history broadcast");
+		log.debug("Starting history pack");
 
 		try {
-			Security.authenticateHistoryBroadcaster();
+			Security.authenticateHistoryPacker();
 
 			List<HistoryConsumer> consumers = historyConsumerService.listConsumers();
 			for (HistoryConsumer consumer : consumers) {
 				log.debug("History consumer: {}", consumer);
-				List<FPFile> history = historyPacker.packHistory(stub(consumer));
-				OutTransport transport = consumer.getOutTransportConfig().createTransport();
-				for (FPFile file : history) {
-					log.info("Sending FILE: {}", file);
-					transport.send(file);
-				}
+				historyPacker.packHistory(stub(consumer));
 			}
 		} catch (Exception ex) {
-			log.error("Failed history broadcast", ex);
-			throw new JobExecutionException("Failed history broadcast", ex);
+			log.error("Failed history pack", ex);
+			throw new JobExecutionException("Failed history pack", ex);
 		} finally {
 			lockManager.releaseLock(LOCK_NAME);
 		}
 
-		log.debug("Ended history broadcast");
+		log.debug("Ended history pack");
 	}
 
 	@Required

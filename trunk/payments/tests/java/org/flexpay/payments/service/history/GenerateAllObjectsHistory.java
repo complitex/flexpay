@@ -1,11 +1,10 @@
 package org.flexpay.payments.service.history;
 
+import org.flexpay.ab.persistence.Town;
+import org.flexpay.ab.service.history.PersonsHistoryGenerator;
+import org.flexpay.ab.service.history.TownHistoryGenerator;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.persistence.MeasureUnit;
-import org.flexpay.common.persistence.Stub;
-import org.flexpay.common.persistence.file.FPFile;
-import org.flexpay.common.persistence.history.ObjectsSyncQuartzJob;
-import org.flexpay.common.persistence.history.HistoryConsumer;
 import org.flexpay.common.persistence.history.HistoryPacker;
 import org.flexpay.common.service.MeasureUnitService;
 import org.flexpay.common.service.history.MeasureUnitHistoryGenerator;
@@ -14,17 +13,16 @@ import org.flexpay.orgs.service.*;
 import org.flexpay.orgs.service.history.OrganizationHistoryGenerator;
 import org.flexpay.orgs.service.history.OrganizationInstanceHistoryGenerator;
 import org.flexpay.orgs.service.history.PaymentPointHistoryGenerator;
+import org.flexpay.payments.persistence.Cashbox;
+import org.flexpay.payments.persistence.Service;
+import org.flexpay.payments.persistence.ServiceType;
 import org.flexpay.payments.service.CashboxService;
 import org.flexpay.payments.service.SPService;
 import org.flexpay.payments.service.ServiceTypeService;
 import org.flexpay.payments.test.PaymentsSpringBeanAwareTestCase;
-import org.flexpay.payments.persistence.Cashbox;
-import org.flexpay.payments.persistence.ServiceType;
-import org.flexpay.payments.persistence.Service;
+import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.junit.Test;
-import static org.junit.Assert.assertFalse;
 
 import java.util.List;
 
@@ -90,7 +88,12 @@ public class GenerateAllObjectsHistory extends PaymentsSpringBeanAwareTestCase {
 
 	@Autowired
 	private HistoryPacker historyPacker;
-	
+
+	@Autowired
+	private TownHistoryGenerator generator;
+	@Autowired
+	private PersonsHistoryGenerator personsHistoryGenerator;
+
 	@Test
 	public void generate() throws Exception {
 
@@ -104,6 +107,9 @@ public class GenerateAllObjectsHistory extends PaymentsSpringBeanAwareTestCase {
 		generateCashboxes();
 		generateServiceTypes();
 		generateServices();
+
+		generator.generateFor(new Town(2L));
+		personsHistoryGenerator.generate();
 
 //		Stub<HistoryConsumer> consumer = new Stub<HistoryConsumer>(1L);
 //		List<FPFile> history = historyPacker.packHistory(consumer);

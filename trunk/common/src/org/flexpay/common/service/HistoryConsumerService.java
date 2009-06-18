@@ -1,6 +1,7 @@
 package org.flexpay.common.service;
 
 import org.flexpay.common.dao.paging.FetchRange;
+import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.history.Diff;
@@ -90,4 +91,23 @@ public interface HistoryConsumerService {
 	 * @return List of consumers
 	 */
 	List<HistoryConsumer> listConsumers();
+
+	/**
+	 * Update created consumption group
+	 *
+	 * @param group HistoryConsumptionGroup to update
+	 * @return updated group back
+	 */
+	@NotNull
+	HistoryConsumptionGroup update(@NotNull HistoryConsumptionGroup group);
+
+	/**
+	 * List yet not sent consumer groups
+	 *
+	 * @param consumerStub HistoryConsumer to check groups of
+	 * @param pager Page
+	 * @return List of groups that was not sent yet
+	 */
+	List<HistoryConsumptionGroup> listNotSentGroups(
+			Stub<HistoryConsumer> consumerStub, Page<HistoryConsumptionGroup> pager);
 }

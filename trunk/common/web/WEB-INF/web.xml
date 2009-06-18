@@ -7,7 +7,7 @@
 	<!--common-->
 	<context-param>
 		<param-name>webAppRootKey</param-name>
-		<param-value>FlexPay Common module</param-value>
+		<param-value>FlexPay Common module COMMON_INSTANCE</param-value>
 	</context-param>
 
 	<context-param>
@@ -108,12 +108,12 @@
 			<url-pattern>*.action</url-pattern>
 			<http-method>POST</http-method>
 			<http-method>GET</http-method>
-			<web-resource-collection>
-				<web-resource-name>secure-resource</web-resource-name>
-				<url-pattern>/download/*</url-pattern>
-				<http-method>POST</http-method>
-				<http-method>GET</http-method>
-			</web-resource-collection>
+		</web-resource-collection>
+		<web-resource-collection>
+			<web-resource-name>secure-resource</web-resource-name>
+			<url-pattern>/download/*</url-pattern>
+			<http-method>POST</http-method>
+			<http-method>GET</http-method>
 		</web-resource-collection>
 		<auth-constraint>
 			<role-name>*</role-name>

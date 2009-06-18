@@ -20,6 +20,7 @@ public class PaymentsSpringBeanAwareTestCase extends SpringBeanAwareTestCase {
 	@BeforeClass
 	public static void authenticateTestUser() {
 		GrantedAuthority[] authorities = SecurityUtil.auths(
+				PERSON_READ,
 				APARTMENT_READ,
 				BUILDING_ATTRIBUTE_TYPE_READ,
 				BUILDING_READ,
@@ -29,6 +30,9 @@ public class PaymentsSpringBeanAwareTestCase extends SpringBeanAwareTestCase {
 				REGION_READ,
 				TOWN_TYPE_READ,
 				STREET_TYPE_READ,
+				STREET_TYPE_ADD,
+				STREET_TYPE_CHANGE,
+				IDENTITY_TYPE_READ,
 				APARTMENT_ADD,
 				PAYMENTS_REPORT,
 				SERVICE_PROVIDER_READ,

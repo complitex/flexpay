@@ -7,7 +7,7 @@
 
 	<context-param>
 		<param-name>webAppRootKey</param-name>
-		<param-value>FlexPay payments module</param-value>
+		<param-value>FlexPay payments module COMMON_INSTANCE</param-value>
 	</context-param>
 
 	<context-param>
