@@ -24,6 +24,7 @@ public class OrgsSpringBeanAwareTestCase extends SpringBeanAwareTestCase {
 				SERVICE_ORGANIZATION_CHANGE,
 				SERVICE_PROVIDER_ADD,
 				SERVICE_PROVIDER_CHANGE,
+				BANK_READ,
 				BANK_ADD,
 				BANK_CHANGE,
 				PAYMENTS_COLLECTOR_ADD,

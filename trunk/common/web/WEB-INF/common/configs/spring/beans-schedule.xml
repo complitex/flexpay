@@ -8,9 +8,7 @@
 		<property name="jobClass" value="org.flexpay.common.persistence.history.ObjectsSyncQuartzJob" />
 		<property name="jobDataAsMap">
 			<map>
-				<entry key="diffService" value-ref="diffService" />
-				<entry key="lockManager" value-ref="lockManager" />
-				<entry key="syncer" value-ref="objectsSyncer" />
+				<entry key="syncerJob" value-ref="objectsSyncerJob" />
 			</map>
 		</property>
 	</bean>

@@ -10,11 +10,13 @@ import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.util.config.ApplicationConfig;
 import org.flexpay.common.util.EqualsHelper;
 import org.flexpay.orgs.persistence.*;
+import org.flexpay.orgs.service.PaymentsCollectorService;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Required;
 
 import java.util.List;
 
@@ -26,6 +28,8 @@ public class PaymentPointHistoryBuilder extends HistoryBuilderBase<PaymentPoint>
 	public static final int FIELD_PAYMENT_COLLECTOR_ID = 2;
 	public static final int FIELD_ADDRESS = 3;
 	public static final int FIELD_EMAIL = 4;
+
+	private PaymentsCollectorService collectorService;
 
 	/**
 	 * Build necessary diff records
@@ -49,7 +53,7 @@ public class PaymentPointHistoryBuilder extends HistoryBuilderBase<PaymentPoint>
 	}
 
 	private boolean differ(String s1, String s2) {
-		return StringUtils.trimToEmpty(s1).equals(StringUtils.trimToEmpty(s2));
+		return !StringUtils.trimToEmpty(s1).equals(StringUtils.trimToEmpty(s2));
 	}
 
 	private HistoryRecord newRecord(int fieldType) {
@@ -193,9 +197,15 @@ public class PaymentPointHistoryBuilder extends HistoryBuilderBase<PaymentPoint>
 			if (stub == null) {
 				throw new IllegalStateException("Cannot find collector by master index: " + externalId);
 			}
-			pp.setCollector(new PaymentsCollector(stub));
+			PaymentsCollector collector = collectorService.read(stub);
+			pp.setCollector(collector);
 		}
 
 		record.setProcessingStatus(ProcessingStatus.STATUS_PROCESSED);
+	}
+
+	@Required
+	public void setCollectorService(PaymentsCollectorService collectorService) {
+		this.collectorService = collectorService;
 	}
 }

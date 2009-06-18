@@ -1,13 +1,11 @@
-package org.flexpay.orgs.service;
+package org.flexpay.orgs.service.history;
 
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
 @RunWith (Suite.class)
 @Suite.SuiteClasses ({
-		org.flexpay.orgs.service.history.AllTests.class,
-		TestOrganisationService.class,
-		TestInstanceService.class
+		TestOrganizationHistoryBuilder.class
 })
 public class AllTests {
 

@@ -153,7 +153,8 @@
 	<!-- History builders -->
 	<bean id="cashboxHistoryBuilder"
 		  parent="historyBuilderBase"
-		  class="org.flexpay.payments.service.history.CashboxHistoryBuilder" />
+		  class="org.flexpay.payments.service.history.CashboxHistoryBuilder"
+		  p:pointService-ref="paymentPointService" />
 
 	<bean id="serviceTypeHistoryBuilder"
 		  parent="historyBuilderBase"
@@ -161,7 +162,9 @@
 
 	<bean id="serviceHistoryBuilder"
 		  parent="historyBuilderBase"
-		  class="org.flexpay.payments.service.history.ServiceHistoryBuilder" />
+		  class="org.flexpay.payments.service.history.ServiceHistoryBuilder"
+		  p:serviceProviderService-ref="serviceProviderService"
+		  p:spService-ref="spService" />
 
 	<!-- History generators -->
 	<bean id="cashboxHistoryGenerator"

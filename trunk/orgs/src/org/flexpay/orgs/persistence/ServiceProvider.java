@@ -1,7 +1,5 @@
 package org.flexpay.orgs.persistence;
 
-import org.apache.commons.lang.builder.ToStringBuilder;
-import org.apache.commons.lang.builder.ToStringStyle;
 import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.util.TranslationUtil;
@@ -33,14 +31,4 @@ public class ServiceProvider extends OrganizationInstance<ServiceProviderDescrip
 		ServiceProviderDescription desc = TranslationUtil.getTranslation(getDescriptions());
 		return desc != null ? desc.getName() : "";
 	}
-
-	@Override
-	public String toString() {
-		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
-				append("id", getId()).
-				append("name", getName()).
-				append("status", getStatus()).
-				toString();
-	}
-
 }

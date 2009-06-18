@@ -30,11 +30,17 @@ public class MasterIndexServiceImpl implements MasterIndexService {
 	@Nullable
 	public <T extends DomainObject> String getNewMasterIndex(@NotNull T obj) {
 
-		if (obj.isNew()) {
-			throw new IllegalArgumentException("No new object allowed for master index request");
-		}
+		assertNotNew(obj);
 		String instanceId = ApplicationConfig.getInstanceId();
 		return StringUtils.isNotBlank(instanceId) ? instanceId + "-" + obj.getId() : null;
+	}
+
+	private <T extends DomainObject> void assertNotNew(T obj) {
+
+		Long id = obj.getId();
+		if (id == null || id <= 0L) {
+			throw new IllegalArgumentException("No new object allowed for master index request");
+		}
 	}
 
 	/**
@@ -45,11 +51,8 @@ public class MasterIndexServiceImpl implements MasterIndexService {
 	 */
 	@Nullable
 	public <T extends DomainObject> String getMasterIndex(@NotNull T obj) {
-		Long id = obj.getId();
-		if (id == null || id <= 0) {
-			throw new IllegalArgumentException("No new object allowed for master index request");
-		}
 
+		assertNotNew(obj);
 		String index = correctionsService.getExternalId(obj, getMasterSourceDescription());
 
 		if (index == null && useSelfInstanceIfNotFound) {

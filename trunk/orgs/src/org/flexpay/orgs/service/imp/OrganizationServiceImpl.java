@@ -181,6 +181,15 @@ public class OrganizationServiceImpl implements OrganizationService {
 					"No postal address", "eirc.error.organization.no_postal_address"));
 		}
 
+		if (StringUtils.isBlank(organization.getIndividualTaxNumber())) {
+			container.addException(new FlexPayException(
+					"No inn", "eirc.error.organization.no_individual_tax_number"));
+		}
+
+		if (StringUtils.isBlank(organization.getKpp())) {
+			container.addException(new FlexPayException("No kpp", "eirc.error.organization.no_kpp"));
+		}
+
 		if (!container.isEmpty()) {
 			container.info(log);
 			throw container;

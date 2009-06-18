@@ -1,7 +1,6 @@
 package org.flexpay.payments.service.history;
 
 import org.flexpay.common.persistence.Language;
-import org.flexpay.common.persistence.Translation;
 import org.flexpay.common.persistence.history.Diff;
 import org.flexpay.common.persistence.history.HistoryOperationType;
 import org.flexpay.common.persistence.history.HistoryRecord;
@@ -9,6 +8,8 @@ import org.flexpay.common.persistence.history.ProcessingStatus;
 import org.flexpay.common.persistence.history.builder.TranslationExtractor;
 import org.flexpay.common.persistence.history.builder.TranslationPatcher;
 import org.flexpay.common.persistence.history.impl.HistoryBuilderBase;
+import org.flexpay.common.util.EqualsHelper;
+import org.flexpay.common.util.config.ApplicationConfig;
 import org.flexpay.payments.persistence.ServiceType;
 import org.flexpay.payments.persistence.ServiceTypeNameTranslation;
 import org.jetbrains.annotations.NotNull;
@@ -16,12 +17,15 @@ import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.List;
+
 public class ServiceTypeHistoryBuilder extends HistoryBuilderBase<ServiceType> {
 
 	protected Logger log = LoggerFactory.getLogger(getClass());
 
 	public static final int FIELD_NAME = 1;
 	public static final int FIELD_CODE = 2;
+	public static final int FIELD_DESCRIPTION = 3;
 
 	/**
 	 * Build necessary diff records
@@ -61,17 +65,45 @@ public class ServiceTypeHistoryBuilder extends HistoryBuilderBase<ServiceType> {
 
 	private void buildNameDiff(ServiceType t1, ServiceType t2, Diff diff) {
 
-		builderHelper.buildTranslationDiff(t1, t2, diff,
-				new TranslationExtractor<Translation, ServiceType>() {
+		TranslationExtractor<ServiceTypeNameTranslation, ServiceType> extractor =
+				new TranslationExtractor<ServiceTypeNameTranslation, ServiceType>() {
 
-					public Translation getTranslation(ServiceType obj, @NotNull Language language) {
+					public ServiceTypeNameTranslation getTranslation(ServiceType obj, @NotNull Language language) {
 						return obj.getTranslation(language);
 					}
 
 					public int getTranslationField() {
 						return FIELD_NAME;
 					}
-				});
+				};
+		builderHelper.buildTranslationDiff(t1, t2, diff, extractor);
+
+		List<Language> langs = ApplicationConfig.getLanguages();
+		for (Language lang : langs) {
+			ServiceTypeNameTranslation tr1 = extractor.getTranslation(t1, lang);
+			ServiceTypeNameTranslation tr2 = extractor.getTranslation(t2, lang);
+
+			// no translation, check other languages
+			if (tr1 == null && tr2 == null) {
+				continue;
+			}
+
+			boolean descrDiffer = !EqualsHelper.strEquals(
+					tr1 == null ? null : tr1.getDescription(),
+					tr2 == null ? null : tr2.getDescription());
+
+			if (descrDiffer) {
+				HistoryRecord rec = new HistoryRecord();
+				rec.setFieldType(FIELD_DESCRIPTION);
+				rec.setOldStringValue(tr1 == null ? null : tr1.getDescription());
+				rec.setNewStringValue(tr2 == null ? null : tr2.getDescription());
+				rec.setLanguage(lang.getLangIsoCode());
+				diff.addRecord(rec);
+
+				log.debug("Added description diff for lang {}\n{}", lang, rec);
+			}
+		}
+
 	}
 
 	/**
@@ -88,6 +120,9 @@ public class ServiceTypeHistoryBuilder extends HistoryBuilderBase<ServiceType> {
 				case FIELD_NAME:
 					patchName(type, record);
 					break;
+				case FIELD_DESCRIPTION:
+					patchDescription(type, record);
+					break;
 				case FIELD_CODE:
 					type.setCode(record.getNewIntValueNotNull());
 					record.setProcessingStatus(ProcessingStatus.STATUS_PROCESSED);
@@ -101,6 +136,8 @@ public class ServiceTypeHistoryBuilder extends HistoryBuilderBase<ServiceType> {
 
 	private void patchName(ServiceType type, HistoryRecord record) {
 
+		log.debug("Patching type name {}", record);
+
 		builderHelper.patchTranslation(type, record, new TranslationPatcher<ServiceTypeNameTranslation, ServiceType>() {
 			public ServiceTypeNameTranslation getNotNullTranslation(ServiceType obj, @NotNull Language language) {
 				ServiceTypeNameTranslation tr = obj.getTranslation(language);
@@ -109,6 +146,23 @@ public class ServiceTypeHistoryBuilder extends HistoryBuilderBase<ServiceType> {
 
 			public void setTranslation(ServiceType obj, ServiceTypeNameTranslation tr, String name) {
 				tr.setName(name);
+				obj.setTypeName(tr);
+			}
+		});
+	}
+
+	private void patchDescription(ServiceType type, HistoryRecord record) {
+
+		log.debug("Patching type description {}", record);
+
+		builderHelper.patchTranslation(type, record, new TranslationPatcher<ServiceTypeNameTranslation, ServiceType>() {
+			public ServiceTypeNameTranslation getNotNullTranslation(ServiceType obj, @NotNull Language language) {
+				ServiceTypeNameTranslation tr = obj.getTranslation(language);
+				return tr == null ? new ServiceTypeNameTranslation() : tr;
+			}
+
+			public void setTranslation(ServiceType obj, ServiceTypeNameTranslation tr, String name) {
+				tr.setDescription(name);
 				obj.setTypeName(tr);
 			}
 		});

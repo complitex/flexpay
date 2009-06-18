@@ -12,10 +12,12 @@ import org.flexpay.common.util.config.ApplicationConfig;
 import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.orgs.persistence.OrganizationInstance;
 import org.flexpay.orgs.persistence.OrganizationInstanceDescription;
+import org.flexpay.orgs.service.OrganizationService;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Required;
 
 import java.util.List;
 
@@ -27,6 +29,8 @@ public abstract class OrganizationInstanceHistoryBuilder<
 	public static final int FIELD_DESCRIPTION = 2;
 
 	protected Logger log = LoggerFactory.getLogger(getClass());
+
+	private OrganizationService organizationService;
 
 	protected abstract T newInstance();
 
@@ -50,6 +54,8 @@ public abstract class OrganizationInstanceHistoryBuilder<
 
 		buildOrganizationRefDiff(old, org2, diff);
 		buildDescriptionDiff(old, org2, diff);
+
+		doInstanceDiff(old, org2, diff);
 	}
 
 	// redefine in child instance
@@ -167,7 +173,11 @@ public abstract class OrganizationInstanceHistoryBuilder<
 			if (stub == null) {
 				throw new IllegalStateException("Cannot find organization by master index: " + externalId);
 			}
-			org.setOrganization(new Organization(stub));
+			Organization organization = organizationService.readFull(stub);
+			if (organization == null) {
+				throw new IllegalStateException("Cannot find organization by stub: " + stub);
+			}
+			org.setOrganization(organization);
 		}
 
 		record.setProcessingStatus(ProcessingStatus.STATUS_PROCESSED);
@@ -176,5 +186,10 @@ public abstract class OrganizationInstanceHistoryBuilder<
 	// redefine in child instance
 	protected boolean doInstancePatch(@NotNull T org1, @NotNull HistoryRecord record) {
 		return false;
+	}
+
+	@Required
+	public void setOrganizationService(OrganizationService organizationService) {
+		this.organizationService = organizationService;
 	}
 }
