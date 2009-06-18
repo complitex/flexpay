@@ -15,7 +15,7 @@
 		</action>
 
 		<action name="registryView" class="registryViewAction">
-			<result name="success" type="tiles">payments.registry.annotation</result>
+			<result name="success" type="tiles">payments.registry.view</result>
 			<result name="redirectError" type="redirect-action">registriesList</result>
 		</action>
 
