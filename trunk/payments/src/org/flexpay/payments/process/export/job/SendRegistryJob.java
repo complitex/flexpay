@@ -24,6 +24,7 @@ public class SendRegistryJob extends Job {
             Object o = parameters.get("File");
             if (o instanceof FPFile) {
                 spFile = (FPFile) o;
+				spFile = fpFileService.read(new Stub<FPFile>(spFile.getId()));
             } else {
                 log.warn("Invalid file`s instance class");
             }
