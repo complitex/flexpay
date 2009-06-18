@@ -21,6 +21,7 @@ import org.apache.commons.lang.StringUtils;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
+import java.util.Collections;
 
 @Transactional (readOnly = true)
 public class RegistryServiceImpl implements RegistryService {
@@ -109,16 +110,19 @@ public class RegistryServiceImpl implements RegistryService {
 	public Registry update(Registry registry) throws FlexPayException {
 		registryDao.update(registry);
 
+        List<RegistryContainer> removeContainers = Collections.emptyList();
         for (RegistryContainer container : registry.getContainers()) {
             if (container.isNew() && !StringUtils.isEmpty(container.getData())) {
 			    registryContainerDao.create(container);
             } else if (container.isNotNew() && StringUtils.isEmpty(container.getData())) {
-                registry.getContainers().remove(container);
+                removeContainers.add(container);
                 registryContainerDao.delete(container);
             } else if (container.isNotNew()) {
                 registryContainerDao.update(container);
             }
 		}
+
+        registry.getContainers().removeAll(removeContainers);
 
 		return registry;
 	}
