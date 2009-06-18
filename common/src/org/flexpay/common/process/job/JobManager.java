@@ -85,7 +85,7 @@ public class JobManager implements BeanFactoryAware {
 	}
 
 
-	public void jobFinished(String id, String transition) {
+	public void jobFinished(String id, String transition, Map<Serializable,Serializable> parameters) {
 		Job job = runningJobs.get(id);
 		if (job == null) {
 			job = sleepingJobs.get(id);
@@ -95,7 +95,7 @@ public class JobManager implements BeanFactoryAware {
 			}
 		}
 
-		processManager.taskCompleted(job.getTaskId(), jobParameters.get(id), transition);
+		processManager.taskCompleted(job.getTaskId(), parameters, transition);
 
 		jobParameters.remove(id);
 		if (runningJobs.get(id) != null) {

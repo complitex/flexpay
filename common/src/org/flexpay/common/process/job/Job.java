@@ -68,7 +68,7 @@ public abstract class Job implements Runnable {
 			}
 
 			SecurityContextHolder.clearContext();
-			jobMgr.jobFinished(id, transition);
+			jobMgr.jobFinished(id, transition, parameters);
 		} catch (Throwable e) {
 			if (e instanceof FlexPayException) {
 				FlexPayException ex = (FlexPayException) e;
@@ -81,7 +81,7 @@ public abstract class Job implements Runnable {
 			}
 			parameters.put(STATUS_ERROR, Boolean.TRUE);
 			SecurityContextHolder.clearContext();
-			jobMgr.jobFinished(id, RESULT_ERROR);
+			jobMgr.jobFinished(id, RESULT_ERROR, parameters);
 		}
 		setEnd(new Date());
 	}
