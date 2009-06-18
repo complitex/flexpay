@@ -219,11 +219,11 @@
           p:cashboxService-ref="cashboxService"
           p:crumbNameKey="payments.crumbs.cashboxes_list"
           scope="prototype" />
-<!--
+
     <bean id="changeAnnotationAction"
           class="org.flexpay.payments.actions.registry.ChangeAnnotationAction"
           p:crumbNameKey="payments.crumbs.change_annotation"
           p:registryService-ref="registryService"
           scope="prototype" />
--->
+
 </beans>

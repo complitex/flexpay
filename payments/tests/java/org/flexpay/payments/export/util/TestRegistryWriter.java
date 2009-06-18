@@ -7,6 +7,7 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.codec.binary.Base64;
 import org.jetbrains.annotations.NonNls;
 
 import java.io.*;
@@ -39,6 +40,17 @@ public class TestRegistryWriter {
         if (file.exists()) {
             file.delete();
         }
+    }
+
+    @Test
+    public void testBase64() {
+        String s = "`1234567890-=qwertyuiop[]\\asdfghjkl;'zxcvbnm,./\n~!@#$%^&*()_+QWERTYUIOP{}|ASDFGHJKL:\"ZXCVBNM<>?\n";
+        String encode = new String(Base64.encodeBase64(s.getBytes()));
+        System.out.println(encode);
+        System.out.print("Size=" + encode.length());
+        String decode = new String(Base64.decodeBase64(encode.getBytes()));
+        System.out.println(decode);
+        System.out.print("Size=" + decode.length());
     }
 
     @Test

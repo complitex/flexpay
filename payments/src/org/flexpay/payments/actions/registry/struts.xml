@@ -15,9 +15,15 @@
 		</action>
 
 		<action name="registryView" class="registryViewAction">
-			<result name="success" type="tiles">payments.registry.view</result>
+			<result name="success" type="tiles">payments.registry.annotation</result>
 			<result name="redirectError" type="redirect-action">registriesList</result>
 		</action>
+
+        <action name="changeAnnotation" class="changeAnnotationAction">
+            <result name="success" type="tiles">payments.registry.annotation</result>
+            <result name="error" type="tiles">payments.registry.annotation</result>
+            <result name="redirectSuccess" type="redirect-action">registriesList</result>
+        </action>
 
 		<action name="selectCorrectionType" class="selectCorrectionTypeAction">
 			<result name="input" type="tiles">payments.select_correction_type</result>
