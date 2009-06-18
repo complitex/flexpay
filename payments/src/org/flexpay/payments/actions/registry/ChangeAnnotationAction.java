@@ -30,11 +30,15 @@ public class ChangeAnnotationAction extends CashboxCookieActionSupport {
     private String registryId;
     private String registryAnnotation;
     private String submitChange;
+    private String cancel;
 
     private RegistryService registryService;
 
     @NotNull
     protected String doExecute() throws Exception {
+        if (cancel != null && cancel.length() > 0) {
+            return NONE;
+        }
         if (registryId == null) {
             log.error("Registry does not set");
             return ERROR;
@@ -126,6 +130,14 @@ public class ChangeAnnotationAction extends CashboxCookieActionSupport {
 
     public void setSubmitChange(String submitChange) {
         this.submitChange = submitChange;
+    }
+
+    public String getCancel() {
+        return cancel;
+    }
+
+    public void setCancel(String cancel) {
+        this.cancel = cancel;
     }
 
     @Required
