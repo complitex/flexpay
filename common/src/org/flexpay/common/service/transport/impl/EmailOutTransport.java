@@ -2,7 +2,8 @@ package org.flexpay.common.service.transport.impl;
 
 import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.service.transport.OutTransport;
-import org.springframework.core.io.InputStreamResource;
+import org.flexpay.common.util.FPFileUtil;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 
@@ -13,12 +14,13 @@ public class EmailOutTransport implements OutTransport {
     private String email;
 
     public void send(FPFile file) throws Exception {
+		
         MimeMessage message = sender.createMimeMessage();
 
         MimeMessageHelper helper = new MimeMessageHelper(message, true);
         helper.setTo(email);
 
-        helper.addAttachment(file.getOriginalName(), new InputStreamResource(file.getInputStream()));
+        helper.addAttachment(file.getOriginalName(), new FileSystemResource(FPFileUtil.getFileOnServer(file)));
 
         sender.send(message);
     }
