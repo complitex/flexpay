@@ -37,6 +37,7 @@ public class ChangeAnnotationAction extends CashboxCookieActionSupport {
     @NotNull
     protected String doExecute() throws Exception {
         if (cancel != null && cancel.length() > 0) {
+            log.error("Canceled edit annotation");
             return NONE;
         }
         if (registryId == null) {
@@ -87,11 +88,15 @@ public class ChangeAnnotationAction extends CashboxCookieActionSupport {
                 annotationContainer.setData(annotationContainerData);
                 registryService.update(registry);
 
+                log.debug("Annotation updated for registry {}", registry.getId());
+
                 return REDIRECT_SUCCESS;
             } else {
                 if (annotationContainer != null) {
                     containers.remove(annotationContainer);
                     registryService.update(registry);
+
+                    log.debug("Annotation remove for registry {}", registry.getId());
 
                     return REDIRECT_SUCCESS;
                 }
