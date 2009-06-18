@@ -6,6 +6,7 @@ import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.process.job.Job;
 import org.flexpay.common.service.FPFileService;
 import org.flexpay.common.service.transport.OutTransport;
+import org.flexpay.common.service.transport.impl.EmailOutTransport;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.io.Serializable;
@@ -39,7 +40,13 @@ public class SendRegistryJob extends Job {
         }
         
         try {
-            outTransport.send(spFile);
+			EmailOutTransport emailOutTransport = (EmailOutTransport) outTransport;
+			emailOutTransport.setEmail((String)parameters.get("Email"));
+			emailOutTransport.send(spFile);
+            //outTransport.send(spFile);
+
+
+
         } catch (Exception e) {
             log.warn("Send file exception", e);
             return RESULT_ERROR;
