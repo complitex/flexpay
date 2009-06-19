@@ -96,4 +96,5 @@ public class PaymentReportData implements Serializable {
 				append("documentId", documentId).
 				toString();
 	}
+
 }

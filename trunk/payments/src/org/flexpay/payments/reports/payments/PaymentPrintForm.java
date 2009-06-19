@@ -23,6 +23,7 @@ public class PaymentPrintForm implements Serializable {
 	private BigDecimal changeSumm;
 	private Stub<PaymentPoint> paymentPointStub;
 
+	// TODO: rename "detailses" to "details"
 	private List<PaymentDetails> detailses = Collections.emptyList();
 
 	public Date getOperationDate() {
@@ -195,5 +196,7 @@ public class PaymentPrintForm implements Serializable {
 		public void setCounterValue(String counterValue) {
 			this.counterValue = counterValue;
 		}
+
 	}
+
 }
