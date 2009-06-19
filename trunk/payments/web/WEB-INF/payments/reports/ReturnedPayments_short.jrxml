@@ -15,6 +15,7 @@
 	<parameter name="paymentCollectorOrgName" class="java.lang.String" isForPrompting="false">
 		<defaultValueExpression><![CDATA[]]></defaultValueExpression>
 	</parameter>
+	<parameter name="showServiceSumms" class="java.lang.Boolean" isForPrompting="false"/>
 	<field name="operationId" class="java.lang.Long"/>
 	<field name="payerFio" class="java.lang.String"/>
 	<field name="summ" class="java.math.BigDecimal"/>
@@ -153,7 +154,7 @@
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{returned.payments.report.num_doc}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="65" y="59" width="120" height="39"/>
+				<reportElement x="65" y="59" width="435" height="39"/>
 				<box leftPadding="5">
 					<pen lineWidth="0.25" lineStyle="Solid"/>
 					<topPen lineWidth="0.25" lineStyle="Solid"/>
@@ -175,102 +176,6 @@
 				</box>
 				<textElement textAlignment="Center"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{returned.payments.report.payment_summ_total}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="185" y="59" width="315" height="14" isRemoveLineWhenBlank="true"/>
-				<box leftPadding="5">
-					<pen lineWidth="0.25" lineStyle="Solid"/>
-					<topPen lineWidth="0.25" lineStyle="Solid"/>
-					<leftPen lineWidth="0.25" lineStyle="Solid"/>
-					<bottomPen lineWidth="0.25" lineStyle="Solid"/>
-					<rightPen lineWidth="0.25" lineStyle="Solid"/>
-				</box>
-				<textElement textAlignment="Center"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{returned.payments.report.summs}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="185" y="73" width="45" height="25" isRemoveLineWhenBlank="true"/>
-				<box leftPadding="5">
-					<pen lineWidth="0.25" lineStyle="Solid"/>
-					<topPen lineWidth="0.25" lineStyle="Solid"/>
-					<leftPen lineWidth="0.25" lineStyle="Solid"/>
-					<bottomPen lineWidth="0.25" lineStyle="Solid"/>
-					<rightPen lineWidth="0.25" lineStyle="Solid"/>
-				</box>
-				<textElement textAlignment="Center"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{returned.payments.report.kvartpl}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="230" y="73" width="45" height="25" isRemoveLineWhenBlank="true"/>
-				<box leftPadding="5">
-					<pen lineWidth="0.25" lineStyle="Solid"/>
-					<topPen lineWidth="0.25" lineStyle="Solid"/>
-					<leftPen lineWidth="0.25" lineStyle="Solid"/>
-					<bottomPen lineWidth="0.25" lineStyle="Solid"/>
-					<rightPen lineWidth="0.25" lineStyle="Solid"/>
-				</box>
-				<textElement textAlignment="Center"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{returned.payments.report.dogs}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="275" y="73" width="45" height="25" isRemoveLineWhenBlank="true"/>
-				<box leftPadding="5">
-					<pen lineWidth="0.25" lineStyle="Solid"/>
-					<topPen lineWidth="0.25" lineStyle="Solid"/>
-					<leftPen lineWidth="0.25" lineStyle="Solid"/>
-					<bottomPen lineWidth="0.25" lineStyle="Solid"/>
-					<rightPen lineWidth="0.25" lineStyle="Solid"/>
-				</box>
-				<textElement textAlignment="Center"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{returned.payments.report.garage}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="320" y="73" width="45" height="25" isRemoveLineWhenBlank="true"/>
-				<box leftPadding="5">
-					<pen lineWidth="0.25" lineStyle="Solid"/>
-					<topPen lineWidth="0.25" lineStyle="Solid"/>
-					<leftPen lineWidth="0.25" lineStyle="Solid"/>
-					<bottomPen lineWidth="0.25" lineStyle="Solid"/>
-					<rightPen lineWidth="0.25" lineStyle="Solid"/>
-				</box>
-				<textElement textAlignment="Center"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{returned.payments.report.opal}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="365" y="73" width="45" height="25" isRemoveLineWhenBlank="true"/>
-				<box leftPadding="5">
-					<pen lineWidth="0.25" lineStyle="Solid"/>
-					<topPen lineWidth="0.25" lineStyle="Solid"/>
-					<leftPen lineWidth="0.25" lineStyle="Solid"/>
-					<bottomPen lineWidth="0.25" lineStyle="Solid"/>
-					<rightPen lineWidth="0.25" lineStyle="Solid"/>
-				</box>
-				<textElement textAlignment="Center"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{returned.payments.report.hot}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="410" y="73" width="45" height="25" isRemoveLineWhenBlank="true"/>
-				<box leftPadding="5">
-					<pen lineWidth="0.25" lineStyle="Solid"/>
-					<topPen lineWidth="0.25" lineStyle="Solid"/>
-					<leftPen lineWidth="0.25" lineStyle="Solid"/>
-					<bottomPen lineWidth="0.25" lineStyle="Solid"/>
-					<rightPen lineWidth="0.25" lineStyle="Solid"/>
-				</box>
-				<textElement textAlignment="Center"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{returned.payments.report.cold}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="455" y="73" width="45" height="25" isRemoveLineWhenBlank="true"/>
-				<box leftPadding="5">
-					<pen lineWidth="0.25" lineStyle="Solid"/>
-					<topPen lineWidth="0.25" lineStyle="Solid"/>
-					<leftPen lineWidth="0.25" lineStyle="Solid"/>
-					<bottomPen lineWidth="0.25" lineStyle="Solid"/>
-					<rightPen lineWidth="0.25" lineStyle="Solid"/>
-				</box>
-				<textElement textAlignment="Center"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{returned.payments.report.stok}]]></textFieldExpression>
 			</textField>
 		</band>
 	</title>
@@ -301,7 +206,7 @@
 				<textFieldExpression class="java.lang.Long"><![CDATA[$F{operationId}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="65" y="1" width="120" height="20"/>
+				<reportElement x="65" y="1" width="435" height="20"/>
 				<box leftPadding="5">
 					<pen lineWidth="0.25" lineStyle="Solid"/>
 					<topPen lineWidth="0.25" lineStyle="Solid"/>
@@ -309,92 +214,8 @@
 					<bottomPen lineWidth="0.25" lineStyle="Solid"/>
 					<rightPen lineWidth="0.25" lineStyle="Solid"/>
 				</box>
-				<textElement textAlignment="Center"/>
+				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{payerFio}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="185" y="1" width="45" height="20" isRemoveLineWhenBlank="true"/>
-				<box leftPadding="5">
-					<pen lineWidth="0.25" lineStyle="Solid"/>
-					<topPen lineWidth="0.25" lineStyle="Solid"/>
-					<leftPen lineWidth="0.25" lineStyle="Solid"/>
-					<bottomPen lineWidth="0.25" lineStyle="Solid"/>
-					<rightPen lineWidth="0.25" lineStyle="Solid"/>
-				</box>
-				<textElement textAlignment="Center"/>
-				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{paymentKvartplata}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="230" y="1" width="45" height="20" isRemoveLineWhenBlank="true"/>
-				<box leftPadding="5">
-					<pen lineWidth="0.25" lineStyle="Solid"/>
-					<topPen lineWidth="0.25" lineStyle="Solid"/>
-					<leftPen lineWidth="0.25" lineStyle="Solid"/>
-					<bottomPen lineWidth="0.25" lineStyle="Solid"/>
-					<rightPen lineWidth="0.25" lineStyle="Solid"/>
-				</box>
-				<textElement textAlignment="Center"/>
-				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{paymentDogs}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="275" y="1" width="45" height="20" isRemoveLineWhenBlank="true"/>
-				<box leftPadding="5">
-					<pen lineWidth="0.25" lineStyle="Solid"/>
-					<topPen lineWidth="0.25" lineStyle="Solid"/>
-					<leftPen lineWidth="0.25" lineStyle="Solid"/>
-					<bottomPen lineWidth="0.25" lineStyle="Solid"/>
-					<rightPen lineWidth="0.25" lineStyle="Solid"/>
-				</box>
-				<textElement textAlignment="Center"/>
-				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{paymentGarage}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="320" y="1" width="45" height="20" isRemoveLineWhenBlank="true"/>
-				<box leftPadding="5">
-					<pen lineWidth="0.25" lineStyle="Solid"/>
-					<topPen lineWidth="0.25" lineStyle="Solid"/>
-					<leftPen lineWidth="0.25" lineStyle="Solid"/>
-					<bottomPen lineWidth="0.25" lineStyle="Solid"/>
-					<rightPen lineWidth="0.25" lineStyle="Solid"/>
-				</box>
-				<textElement textAlignment="Center"/>
-				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{paymentWarming}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="365" y="1" width="45" height="20" isRemoveLineWhenBlank="true"/>
-				<box leftPadding="5">
-					<pen lineWidth="0.25" lineStyle="Solid"/>
-					<topPen lineWidth="0.25" lineStyle="Solid"/>
-					<leftPen lineWidth="0.25" lineStyle="Solid"/>
-					<bottomPen lineWidth="0.25" lineStyle="Solid"/>
-					<rightPen lineWidth="0.25" lineStyle="Solid"/>
-				</box>
-				<textElement textAlignment="Center"/>
-				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{paymentHotWater}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="410" y="1" width="45" height="20" isRemoveLineWhenBlank="true"/>
-				<box leftPadding="5">
-					<pen lineWidth="0.25" lineStyle="Solid"/>
-					<topPen lineWidth="0.25" lineStyle="Solid"/>
-					<leftPen lineWidth="0.25" lineStyle="Solid"/>
-					<bottomPen lineWidth="0.25" lineStyle="Solid"/>
-					<rightPen lineWidth="0.25" lineStyle="Solid"/>
-				</box>
-				<textElement textAlignment="Center"/>
-				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{paymentColdWater}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="455" y="1" width="45" height="20" isRemoveLineWhenBlank="true"/>
-				<box leftPadding="5">
-					<pen lineWidth="0.25" lineStyle="Solid"/>
-					<topPen lineWidth="0.25" lineStyle="Solid"/>
-					<leftPen lineWidth="0.25" lineStyle="Solid"/>
-					<bottomPen lineWidth="0.25" lineStyle="Solid"/>
-					<rightPen lineWidth="0.25" lineStyle="Solid"/>
-				</box>
-				<textElement textAlignment="Center"/>
-				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{paymentSewer}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="500" y="1" width="55" height="20"/>
@@ -428,17 +249,19 @@
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{returned.payments.report.total_summ}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="65" y="40" width="120" height="20"/>
+				<reportElement x="65" y="40" width="120" height="20">
+					<printWhenExpression><![CDATA[$P{showServiceSumms}]]></printWhenExpression>
+				</reportElement>
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{returned.payments.report.by_services}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="65" y="143" width="120" height="20"/>
+				<reportElement x="65" y="59" width="120" height="20"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{cashierFio}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="0" y="163" width="185" height="12"/>
+				<reportElement x="0" y="79" width="185" height="12"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA[new java.text.SimpleDateFormat("dd.MM.yyyy HH:mm").format($P{creationDate})]]></textFieldExpression>
 			</textField>
@@ -453,58 +276,9 @@
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{totalPaymentsSumm}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement isPrintRepeatedValues="false" x="0" y="144" width="65" height="20"/>
+				<reportElement isPrintRepeatedValues="false" x="0" y="60" width="65" height="20"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{returned.payments.report.cashierFio}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="90" y="96" width="465" height="12" isRemoveLineWhenBlank="true">
-					<printWhenExpression><![CDATA[new java.lang.Boolean($V{warmingTotalCount}.intValue() > 0)]]></printWhenExpression>
-				</reportElement>
-				<textElement/>
-				<textFieldExpression class="java.lang.String"><![CDATA[msg($R{returned.payments.report.service_total}, $R{returned.payments.report.service_warming}, $V{warmingTotalCount}, $V{warmingTotalSumm})]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="90" y="84" width="465" height="12" isRemoveLineWhenBlank="true">
-					<printWhenExpression><![CDATA[new java.lang.Boolean($V{garageTotalCount}.intValue() > 0)]]></printWhenExpression>
-				</reportElement>
-				<textElement/>
-				<textFieldExpression class="java.lang.String"><![CDATA[msg($R{returned.payments.report.service_total}, $R{returned.payments.report.service_garage}, $V{garageTotalCount}, $V{garageTotalSumm})]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="90" y="60" width="465" height="12" isRemoveLineWhenBlank="true">
-					<printWhenExpression><![CDATA[new java.lang.Boolean($V{kvartplataTotalCount}.intValue() > 0)]]></printWhenExpression>
-				</reportElement>
-				<textElement/>
-				<textFieldExpression class="java.lang.String"><![CDATA[msg($R{returned.payments.report.service_total}, $R{returned.payments.report.service_kvartplata}, $V{kvartplataTotalCount}, $V{kvartplataTotalSumm})]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="90" y="120" width="465" height="12" isRemoveLineWhenBlank="true">
-					<printWhenExpression><![CDATA[new java.lang.Boolean($V{coldWaterTotalCount}.intValue() > 0)]]></printWhenExpression>
-				</reportElement>
-				<textElement/>
-				<textFieldExpression class="java.lang.String"><![CDATA[msg($R{returned.payments.report.service_total}, $R{returned.payments.report.service_cold_water}, $V{coldWaterTotalCount}, $V{coldWaterTotalSumm})]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="90" y="108" width="465" height="12" isRemoveLineWhenBlank="true">
-					<printWhenExpression><![CDATA[new java.lang.Boolean($V{hotWaterTotalCount}.intValue() > 0)]]></printWhenExpression>
-				</reportElement>
-				<textElement/>
-				<textFieldExpression class="java.lang.String"><![CDATA[msg($R{returned.payments.report.service_total}, $R{returned.payments.report.service_hot_water}, $V{hotWaterTotalCount}, $V{hotWaterTotalSumm})]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="90" y="72" width="465" height="12" isRemoveLineWhenBlank="true">
-					<printWhenExpression><![CDATA[new java.lang.Boolean($V{dogsTotalCount}.intValue() > 0)]]></printWhenExpression>
-				</reportElement>
-				<textElement/>
-				<textFieldExpression class="java.lang.String"><![CDATA[msg($R{returned.payments.report.service_total}, $R{returned.payments.report.service_dogs}, $V{dogsTotalCount}, $V{dogsTotalSumm})]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="90" y="132" width="465" height="12" isRemoveLineWhenBlank="true">
-					<printWhenExpression><![CDATA[new java.lang.Boolean($V{sewerTotalCount}.intValue() > 0)]]></printWhenExpression>
-				</reportElement>
-				<textElement/>
-				<textFieldExpression class="java.lang.String"><![CDATA[msg($R{returned.payments.report.service_total}, $R{returned.payments.report.service_sewer}, $V{sewerTotalCount}, $V{sewerTotalSumm})]]></textFieldExpression>
 			</textField>
 		</band>
 	</summary>

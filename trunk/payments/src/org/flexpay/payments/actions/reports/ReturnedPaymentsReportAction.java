@@ -7,6 +7,8 @@ import java.util.Date;
 public class ReturnedPaymentsReportAction extends PaymentsDayReportAction {
 
 	private static final String RETURNED_PAYMENTS_REPORT_NAME = "ReturnedPayments";
+	private static final String RETURNED_PAYMENTS_SHORT_REPORT_NAME = "ReturnedPayments_short";
+
 
 	/**
 	 * {@inheritDoc}
@@ -17,6 +19,6 @@ public class ReturnedPaymentsReportAction extends PaymentsDayReportAction {
 	}
 
 	protected String getReportBaseName() {
-		return RETURNED_PAYMENTS_REPORT_NAME;
+		return showDetails ? RETURNED_PAYMENTS_REPORT_NAME : RETURNED_PAYMENTS_SHORT_REPORT_NAME;
 	}
 }
