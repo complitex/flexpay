@@ -88,7 +88,8 @@ public class ChangeAnnotationAction extends CashboxCookieActionSupport {
 
             log.debug("Annotation updated for registry {}", registry.getId());
 
-            addActionMessage("payments.registry.annotation.updated");
+            // TODO change to addActionMessage
+            addActionError("payments.registry.annotation.updated");
             return REDIRECT_SUCCESS;
 
         } else if (!StringUtils.isEmpty(submitChange) && StringUtils.isEmpty(registryAnnotation) && annotationContainer != null) {
@@ -97,7 +98,8 @@ public class ChangeAnnotationAction extends CashboxCookieActionSupport {
 
             log.debug("Annotation remove for registry {}", registry.getId());
 
-            addActionMessage("payments.registry.annotation.deleted");
+            // TODO change to addActionMessage
+            addActionError("payments.registry.annotation.deleted");
             return REDIRECT_SUCCESS;
             
         } else if (annotaion != null) {
