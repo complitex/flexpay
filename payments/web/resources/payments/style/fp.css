@@ -1,4 +1,4 @@
-.columns {
+form-sear.columns {
 	clear: both;
 	width: 99%;
 }
@@ -15,7 +15,7 @@
 }
 
 .form-search {
-	font-size: 0.7em;
+	font-size: 0.9em;
 }
 
 .columns .main-content table.search_results td {
