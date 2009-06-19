@@ -229,11 +229,22 @@
     </s:if>
     <s:else>
         <tr>
-            <td colspan="11">
-                <s:text name="payments.operations.list.total"/>
-                <s:property value="%{getTotalOperations()}"/>
-            </td>
-        </tr>
+			<td colspan="11" class="operations_list_summary">
+				<s:text name="payments.operations.list.total_operations">
+					<s:param value="%{getOperationsTotalCount()}"/>
+				</s:text>
+				&nbsp;
+				<s:text name="payments.operations.list.total_payments_summ">
+					<s:param value="%{getTotalPaymentsSumm()}"/>
+					<s:param value="%{getCurrencyName()}"/>
+				</s:text>
+				&nbsp;
+				<s:text name="payments.operations.list.total_returns_summ">
+					<s:param value="%{getTotalReturnsSumm()}"/>
+					<s:param value="%{getCurrencyName()}"/>
+				</s:text>
+			</td>
+		</tr>
 
         <tr>
             <td colspan="5">
@@ -375,23 +386,7 @@
             </td>
         </tr>
 
-		<tr>
-			<td colspan="11" class="operations_list_summary">
-				<s:text name="payments.operations.list.total_operations">
-					<s:param value="%{getOperationsTotalCount()}"/>
-				</s:text>
-				&nbsp;
-				<s:text name="payments.operations.list.total_payments_summ">
-					<s:param value="%{getTotalPaymentsSumm()}"/>
-					<s:param value="%{getCurrencyName()}"/>
-				</s:text>
-				&nbsp;
-				<s:text name="payments.operations.list.total_returns_summ">
-					<s:param value="%{getTotalReturnsSumm()}"/>
-					<s:param value="%{getCurrencyName()}"/>
-				</s:text>
-			</td>
-		</tr>
+
     </s:else>
 
 </table>
