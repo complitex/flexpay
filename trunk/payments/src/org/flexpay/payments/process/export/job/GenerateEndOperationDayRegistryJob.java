@@ -21,6 +21,7 @@ import java.util.Map;
 
 public class GenerateEndOperationDayRegistryJob extends Job {
 
+	public final static String RESULT_NO_REGISTRY_CREATED = "No registry created";
 	private PaymentPointService paymentPointService;
 	private OrganizationService organizationService;
     private EndOperationDayRegistryGenerator registryGenerator;
@@ -51,13 +52,17 @@ public class GenerateEndOperationDayRegistryJob extends Job {
 
 		Registry registry = registryGenerator.generate(paymentPoint, organization, beginDate, endDate);
 
-		registry = exportBankPaymentsRegistry.export(registry);
-        parameters.put("File", registry.getSpFile());
-        parameters.put("Email", paymentPoint.getEmail());
+		if (registry == null){
+			registry = exportBankPaymentsRegistry.export(registry);
+			parameters.put("File", registry.getSpFile());
+			parameters.put("Email", paymentPoint.getEmail());
 
-		log.info("Process end operation day registry and save it to file finished...");
+			log.info("Process end operation day registry and save it to file finished...");
 
-        return RESULT_NEXT;
+			return RESULT_NEXT;
+		}else{
+			return RESULT_NO_REGISTRY_CREATED;
+		}
     }
 
 	@Required

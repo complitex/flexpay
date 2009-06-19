@@ -140,18 +140,23 @@ public class EndOperationDayRegistryGenerator {
 
 		}
 
-		registry.setFromDate(minDate == null ? new Date() : minDate);
-		registry.setTillDate(maxDate == null ? new Date() : maxDate);
-		registry.setRecordsNumber(recordsNum);
-		registry.setAmount(totalSumm);
-		registry.setRegistryStatus(registryStatusService.findByCode(RegistryStatus.CREATED));
-		registry = registryService.update(registry);
+		if (recordsNum == 0){
+			log.info("Finish generating end operation day registry...");
+			log.info("Zero records created. No Registry created.");
+			return null;
+		}else{
+			registry.setFromDate(minDate == null ? new Date() : minDate);
+			registry.setTillDate(maxDate == null ? new Date() : maxDate);
+			registry.setRecordsNumber(recordsNum);
+			registry.setAmount(totalSumm);
+			registry.setRegistryStatus(registryStatusService.findByCode(RegistryStatus.CREATED));
+			registry = registryService.update(registry);
 
-		log.info("Finish generating end operation day registry...");
-		log.info("Registry = {}", registry);
+			log.info("Finish generating end operation day registry...");
+			log.info("Registry = {}", registry);
 
-		return registry;
-
+			return registry;
+		}
 	}
 
 	@Required

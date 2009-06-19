@@ -83,6 +83,7 @@
         <task swimlane="JobManager" />
         <transition to="sendRegistryJob" name="next" />
         <transition to="JobManagerError" name="error" />
+        <transition to="AutoModeDecision" name="No registry created"/>
     </task-node>
 
 
