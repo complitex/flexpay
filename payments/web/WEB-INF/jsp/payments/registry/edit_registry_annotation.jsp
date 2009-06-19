@@ -3,7 +3,7 @@
 <s:actionerror/>
 
 <s:form action="changeAnnotation">
-  <s:hidden name="registryId"/>
+  <s:hidden name="registry.id"/>
   <table>
     <tr>
       <td colspan="2">
