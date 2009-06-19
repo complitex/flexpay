@@ -222,7 +222,7 @@
           scope="prototype" />
 
     <bean id="changeAnnotationAction"
-          class="org.flexpay.payments.actions.registry.ChangeAnnotationAction"
+          class="org.flexpay.payments.actions.registry.RegistryAnnotationAction"
           p:crumbNameKey="payments.crumbs.change_annotation"
           p:registryService-ref="registryService"
           scope="prototype" />

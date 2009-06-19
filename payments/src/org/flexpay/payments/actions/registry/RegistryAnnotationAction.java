@@ -13,7 +13,7 @@ import org.apache.commons.lang.StringUtils;
 
 import java.util.List;
 
-public class ChangeAnnotationAction extends CashboxCookieActionSupport {
+public class RegistryAnnotationAction extends CashboxCookieActionSupport {
     /**
      * Symbol used escape special symbols
      */
