@@ -79,7 +79,7 @@ public class ChangeAnnotationAction extends CashboxCookieActionSupport {
             String annotationContainerData = ANNOTATION_CONTAINER_TYPE + CONTAINER_DATA_DELIMITER + encodeRegistryAnnotation;
             if (annotationContainerData.length() > CONTAINER_DATA_MAX_SIZE) {
                 long maxSize = CONTAINER_DATA_MAX_SIZE + registryAnnotation.length() - encodeRegistryAnnotation.length();
-                addActionError(getText("payments.registry.annotation.max_size", String.valueOf(maxSize)));
+                addActionError(getText("payments.registry.annotation.max_size", new String[] {String.valueOf(maxSize)}));
                 return ERROR;
             }
             if (annotationContainer == null) {
