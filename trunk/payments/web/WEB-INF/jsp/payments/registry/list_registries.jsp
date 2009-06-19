@@ -63,7 +63,7 @@
         </td>
         <td class="col">
           <a href="<s:url action="registryView"><s:param name="registry.id" value="%{id}"/></s:url>"><s:text
-                  name="common.edit"/></a>
+                  name="common.view"/></a>
         </td>
         <td class="col">
           <a href="<s:url value='/download/' includeParams="none"/><s:property value="%{spFile.id}"/>.registry"><s:property
