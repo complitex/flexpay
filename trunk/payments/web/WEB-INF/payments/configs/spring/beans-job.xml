@@ -32,7 +32,10 @@
     <bean id="sendRegistryJob"
           class="org.flexpay.payments.process.export.job.SendRegistryJob"
           p:fpFileService-ref="fpFileService"
-          p:outTransport-ref="sendEmail"
+          p:emailFrom="${flexpay.email.from}"
+          p:emailUserName="${flexpay.email.user_name}"
+          p:emailPassword="${flexpay.email.user_pass}"
+          p:smtpHost="${flexpay.email.host}"
           scope="prototype" />
 
     <bean id="generateEndOperationDayRegistryJob"

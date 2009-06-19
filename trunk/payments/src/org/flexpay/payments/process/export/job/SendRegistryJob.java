@@ -5,17 +5,26 @@ import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.process.job.Job;
 import org.flexpay.common.service.FPFileService;
-import org.flexpay.common.service.transport.OutTransport;
-import org.flexpay.common.service.transport.impl.EmailOutTransport;
+import org.flexpay.common.util.FPFileUtil;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.core.io.FileSystemResource;
+import org.apache.commons.lang.StringUtils;
 
+import javax.mail.internet.MimeMessage;
+import javax.mail.MessagingException;
 import java.io.Serializable;
+import java.io.File;
 import java.util.Map;
 
 public class SendRegistryJob extends Job {
 
     private FPFileService fpFileService;
-    private OutTransport outTransport;
+	private String emailPassword;
+	private String emailUserName;
+	private String smtpHost;
+	private String emailFrom;
 
     public String execute(Map<Serializable, Serializable> parameters) throws FlexPayException {
 
@@ -23,7 +32,7 @@ public class SendRegistryJob extends Job {
 
         if (parameters.containsKey("File")) {
             Object o = parameters.get("File");
-            if (o instanceof FPFile) {
+            if (o instanceof FPFile && ((FPFile)o).getId() != null) {
                 spFile = (FPFile) o;
 				spFile = fpFileService.read(new Stub<FPFile>(spFile.getId()));
             } else {
@@ -40,14 +49,8 @@ public class SendRegistryJob extends Job {
         }
         
         try {
-			EmailOutTransport emailOutTransport = (EmailOutTransport) outTransport;
-			emailOutTransport.setEmail((String)parameters.get("Email"));
-			emailOutTransport.send(spFile);
-            //outTransport.send(spFile);
-
-
-
-        } catch (Exception e) {
+			send(emailFrom, (String)parameters.get("Email"), "", emailUserName, emailPassword, smtpHost, FPFileUtil.getFileOnServer(spFile));
+        } catch (FlexPayException e) {
             log.warn("Send file exception", e);
             return RESULT_ERROR;
         }
@@ -55,14 +58,61 @@ public class SendRegistryJob extends Job {
         return RESULT_NEXT;
     }
 
+	private void send(String emailFrom, String emailTo, String subject, String userName, String userPassword, String smptHost, File attachment)
+		throws FlexPayException {
+
+		log.debug("Sending mail from {} to {} with subject {} userName {} password **** smtpHost {} ",
+				new Object[]{emailFrom, emailTo, subject, userName, smptHost});
+
+		JavaMailSenderImpl sender = new JavaMailSenderImpl();
+
+		if (!StringUtils.isEmpty(userName)){
+			sender.setUsername(userName);
+			sender.setPassword(userPassword);
+		}
+
+		sender.setHost(smptHost);
+
+		MimeMessage message = sender.createMimeMessage();
+
+		try {
+			MimeMessageHelper helper = new MimeMessageHelper(message, true);
+			helper.setTo(emailTo);
+			helper.setFrom(emailFrom);
+			helper.setSubject(subject);
+
+			helper.addAttachment(attachment.getName(), new FileSystemResource(attachment));
+
+			sender.send(message);
+		}catch (MessagingException m){
+			log.debug("Can't send email.",m);
+			throw new FlexPayException(m);
+		}
+
+	}
+
 	@Required
     public void setFpFileService(FPFileService fpFileService) {
         this.fpFileService = fpFileService;
     }
 
 	@Required
-    public void setOutTransport(OutTransport outTransport) {
-        this.outTransport = outTransport;
-    }
+	public void setEmailPassword(String emailPassword) {
+		this.emailPassword = emailPassword;
+	}
 
+	@Required
+	public void setEmailUserName(String emailUserName) {
+		this.emailUserName = emailUserName;
+	}
+
+	@Required
+	public void setSmtpHost(String smtpHost) {
+		this.smtpHost = smtpHost;
+	}
+
+	@Required
+	public void setEmailFrom(String emailFrom) {
+		this.emailFrom = emailFrom;
+	}
 }
