@@ -30,7 +30,7 @@ public class ChangeAnnotationAction extends CashboxCookieActionSupport {
 
     private static final String CHARSET = "UTF-8";
 
-    private String registryId;
+    private Registry registry = new Registry();
     private String registryAnnotation;
     private String submitChange;
     private String cancel;
@@ -40,23 +40,19 @@ public class ChangeAnnotationAction extends CashboxCookieActionSupport {
     @NotNull
     protected String doExecute() throws Exception {
         if (!StringUtils.isEmpty(cancel)) {
-            log.error("Canceled edit annotation");
+            log.debug("Canceled edit annotation");
             return NONE;
         }
-        if (registryId == null) {
-            log.error("Registry does not set");
-            return ERROR;
-        }
-        Long id;
-        try {
-            id = Long.parseLong(registryId);
-        } catch (NumberFormatException e) {
-            log.error("Missing registryId={}", registryId, e);
-            return ERROR;
-        }
-        Registry registry = registryService.readWithContainers(new Stub<Registry>(id));
+        if (registry.getId() == null) {
+            log.error("No registryId specified, give up");
+			addActionError(getText("payments.registry.not_specified"));
+			return ERROR;
+		}
+        Long currentRegistryId = registry.getId();
+        registry = registryService.readWithContainers(Stub.stub(registry));
         if (registry == null) {
-            log.error("Missing registryId={}. Registry does not find.", registryId);
+            log.error("Missing registryId={}. Registry does not find.", currentRegistryId);
+            addActionError(getText("payments.registry.not_found", new String[] {String.valueOf(currentRegistryId)}));
             return ERROR;
         }
         // TODO Make factory
@@ -78,7 +74,7 @@ public class ChangeAnnotationAction extends CashboxCookieActionSupport {
             String encodeRegistryAnnotation = new String(Base64.encodeBase64(registryAnnotation.getBytes(CHARSET)));
             String annotationContainerData = ANNOTATION_CONTAINER_TYPE + CONTAINER_DATA_DELIMITER + encodeRegistryAnnotation;
             if (annotationContainerData.length() > CONTAINER_DATA_MAX_SIZE) {
-                long maxSize = CONTAINER_DATA_MAX_SIZE + registryAnnotation.length() - encodeRegistryAnnotation.length();
+                long maxSize = CONTAINER_DATA_MAX_SIZE - registryAnnotation.length() + encodeRegistryAnnotation.length();
                 addActionError(getText("payments.registry.annotation.max_size", new String[] {String.valueOf(maxSize)}));
                 return ERROR;
             }
@@ -114,12 +110,12 @@ public class ChangeAnnotationAction extends CashboxCookieActionSupport {
         return ERROR;
     }
 
-    public String getRegistryId() {
-        return registryId;
+    public Registry getRegistry() {
+        return registry;
     }
 
-    public void setRegistryId(String registryId) {
-        this.registryId = registryId;
+    public void setRegistry(Registry registry) {
+        this.registry = registry;
     }
 
     public String getRegistryAnnotation() {
