@@ -2,6 +2,8 @@
 
 <s:actionerror/>
 
+<s:actionmessage/>
+
 <s:form id="fregistries">
   <%@include file="/WEB-INF/jsp/orgs/filters/sender_organization_filter.jsp" %>
   &nbsp;&nbsp;
