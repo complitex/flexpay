@@ -57,11 +57,11 @@
         <td class="col"><s:text name="%{registryStatus.i18nName}"/></td>
         <td class="col">
           <a href="<s:url action="changeAnnotation"><s:param name="registry.id" value="%{id}"/></s:url>"><s:text
-                  name="common.view"/></a>
+                  name="common.edit"/></a>
         </td>
         <td class="col">
           <a href="<s:url action="registryView"><s:param name="registry.id" value="%{id}"/></s:url>"><s:text
-                  name="common.view"/></a>
+                  name="common.edit"/></a>
         </td>
         <td class="col">
           <a href="<s:url value='/download/' includeParams="none"/><s:property value="%{spFile.id}"/>.registry"><s:property
