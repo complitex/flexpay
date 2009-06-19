@@ -49,7 +49,7 @@ public class SendRegistryJob extends Job {
         }
         
         try {
-			send(emailFrom, (String)parameters.get("Email"), "", emailUserName, emailPassword, smtpHost, FPFileUtil.getFileOnServer(spFile));
+			send(emailFrom, (String)parameters.get("Email"), "", emailUserName, emailPassword, smtpHost, FPFileUtil.getFileOnServer(spFile), spFile.getOriginalName());
         } catch (FlexPayException e) {
             log.warn("Send file exception", e);
             return RESULT_ERROR;
@@ -58,7 +58,7 @@ public class SendRegistryJob extends Job {
         return RESULT_NEXT;
     }
 
-	private void send(String emailFrom, String emailTo, String subject, String userName, String userPassword, String smptHost, File attachment)
+	private void send(String emailFrom, String emailTo, String subject, String userName, String userPassword, String smptHost, File attachment, String attachmentName)
 		throws FlexPayException {
 
 		log.debug("Sending mail from {} to {} with subject {} userName {} password **** smtpHost {} ",
@@ -81,7 +81,7 @@ public class SendRegistryJob extends Job {
 			helper.setFrom(emailFrom);
 			helper.setSubject(subject);
 
-			helper.addAttachment(attachment.getName(), new FileSystemResource(attachment));
+			helper.addAttachment(attachmentName, new FileSystemResource(attachment));
 
 			sender.send(message);
 		}catch (MessagingException m){
