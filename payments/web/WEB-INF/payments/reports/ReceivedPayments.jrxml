@@ -424,17 +424,17 @@
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{received.payments.report.total_summ}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="65" y="40" width="81" height="20"/>
+				<reportElement x="65" y="40" width="120" height="20"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{received.payments.report.by_services}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="65" y="144" width="100" height="20"/>
+				<reportElement x="65" y="144" width="120" height="20"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{cashierFio}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="0" y="164" width="165" height="14"/>
+				<reportElement x="0" y="164" width="185" height="14"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA[new java.text.SimpleDateFormat("dd.MM.yyyy HH:mm").format($P{creationDate})]]></textFieldExpression>
 			</textField>
