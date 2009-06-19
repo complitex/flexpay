@@ -28,6 +28,8 @@ public class ChangeAnnotationAction extends CashboxCookieActionSupport {
 
     private static final long CONTAINER_DATA_MAX_SIZE = 2048;
 
+    private static final String CHARSET = "UTF-8";
+
     private String registryId;
     private String registryAnnotation;
     private String submitChange;
@@ -67,13 +69,13 @@ public class ChangeAnnotationAction extends CashboxCookieActionSupport {
             if (containerData != null && containerData.size() > 0 && ANNOTATION_CONTAINER_TYPE.equals(containerData.get(0))) {
                 annotationContainer = registryContainer;
                 if (containerData.size() > 1) {
-                    annotaion = new String(Base64.decodeBase64(containerData.get(1).getBytes()));
+                    annotaion = new String(Base64.decodeBase64(containerData.get(1).getBytes()), CHARSET);
                 }
                 break;
             }
         }
         if (!StringUtils.isEmpty(submitChange) && !StringUtils.isEmpty(registryAnnotation)) {
-            String encodeRegistryAnnotation = new String(Base64.encodeBase64(registryAnnotation.getBytes()));
+            String encodeRegistryAnnotation = new String(Base64.encodeBase64(registryAnnotation.getBytes(CHARSET)));
             String annotationContainerData = ANNOTATION_CONTAINER_TYPE + CONTAINER_DATA_DELIMITER + encodeRegistryAnnotation;
             if (annotationContainerData.length() > CONTAINER_DATA_MAX_SIZE) {
                 long maxSize = CONTAINER_DATA_MAX_SIZE + registryAnnotation.length() - encodeRegistryAnnotation.length();
