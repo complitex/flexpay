@@ -19,7 +19,7 @@ public class PaymentsPrintInfoData {
 	private static final int SERVICE_TYPE_WARMING = 4;
 	private static final int SERVICE_TYPE_HOT_WATER = 7;
 	private static final int SERVICE_TYPE_COLD_WATER = 6;
-	private static final int SERVICE_TYPE_SEWER = 13; // FIXME find proper one
+	private static final int SERVICE_TYPE_SEWER = 13; // TODO: FIXME find proper one
 
 	private Date creationDate;
 	private Date beginDate;

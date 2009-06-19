@@ -2,6 +2,7 @@ package org.flexpay.payments.util.registries;
 
 import org.apache.commons.io.IOUtils;
 import org.flexpay.common.exception.FlexPayException;
+import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.persistence.registry.RegistryRecord;
@@ -25,6 +26,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @Transactional(readOnly = true)
@@ -45,10 +47,27 @@ public class ExportBankPaymentsRegistry {
 		List<RegistryRecord> records = registryRecordService.listRecords(registry);
 		log.debug("Found {} records for registry with id = {}", records.size(), registry.getId());
 
+		if (records.size() == 0) {
+			log.error("Error! Not found records for registry with id {}", registry.getId());
+			throw new FlexPayException("Error! Not found records for registry with id " + registry.getId());
+		}
+
 		String userName = SecurityUtil.getUserName();
+		String paymentPointId = "";
+
+		for (RegistryRecordContainer container : registryRecordService.getRecordContainers(records.get(0))) {
+			String[] fields = container.getData().split(RegistryUtil.CONTAINER_BODY_SEPARATOR);
+			if (RegistryUtil.BANK_PAYMENT_CONTAINER_CODE.equals(fields[0])) {
+				paymentPointId = fields[1];
+				break;
+			}
+		}
+
+		String fileName = new SimpleDateFormat(RegistryUtil.EXPORT_FILE_NAME_DATE_FORMAT).format(new Date())
+				+ "_" + paymentPointId + "_" + registry.getId() + "." + RegistryUtil.EXPORT_FILE_EXTENSION;
 
 		FPFile fpFile = new FPFile();
-		fpFile.setOriginalName(RegistryUtil.EXPORT_FILE_NAME);
+		fpFile.setOriginalName(fileName);
 		fpFile.setModule(fpFileService.getModuleByName(moduleName));
 		fpFile.setUserName(userName);
 

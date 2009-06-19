@@ -84,8 +84,8 @@ public class ImportPaymentsReportAction extends CashboxCookieActionSupport {
 							String.valueOf(data.getPaymentPointId()),
 							String.valueOf(data.getOperationCount()),
 							String.valueOf(data.getOperationId()),
-							String.valueOf(data.getServiceProviderAccount()),
-							String.valueOf(data.getFio()),
+							data.getServiceProviderAccount(),
+							data.getFio(),
 							String.valueOf(data.getServiceTypeCode()),
 							String.valueOf(data.getDocumentSumm()),
 							String.valueOf(data.getDocumentId())							
@@ -105,7 +105,6 @@ public class ImportPaymentsReportAction extends CashboxCookieActionSupport {
 
 	@NotNull
 	protected String getErrorResult() {
-
 		return INPUT;
 	}
 

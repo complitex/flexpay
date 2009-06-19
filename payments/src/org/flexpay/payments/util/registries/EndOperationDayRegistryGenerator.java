@@ -72,17 +72,17 @@ public class EndOperationDayRegistryGenerator {
 
 		long recordsNum = 0;
 
-		Date minDate = new Date();
-		Date maxDate = new Date();
+		Date minDate = null;
+		Date maxDate = null;
 
 		for (Operation operation : operations) {
 
 			log.debug("Operation with id = {} processing...", operation.getId());
 
-			if (operation.getCreationDate().getTime() < minDate.getTime()) {
+			if (minDate == null || operation.getCreationDate().getTime() < minDate.getTime()) {
 				minDate = operation.getCreationDate();
 			}
-			if (operation.getCreationDate().getTime() > maxDate.getTime()) {
+			if (maxDate == null || operation.getCreationDate().getTime() > maxDate.getTime()) {
 				maxDate = operation.getCreationDate();
 			}
 
@@ -99,7 +99,7 @@ public class EndOperationDayRegistryGenerator {
 				record.setPersonalAccountExt(document.getCreditorId());
 				record.setUniqueOperationNumber(document.getId());
 
-//				record.setLastName(StringUtils.stripToEmpty(document.getPayerFIO()));
+//					record.setLastName(StringUtils.stripToEmpty(document.getPayerFIO()));
 				//todo: parse last, middle and first name
 				record.setLastName(StringUtils.stripToEmpty(document.getLastName()));
 				record.setMiddleName(StringUtils.stripToEmpty(document.getMiddleName()));
@@ -140,8 +140,8 @@ public class EndOperationDayRegistryGenerator {
 
 		}
 
-		registry.setFromDate(minDate);
-		registry.setTillDate(maxDate);
+		registry.setFromDate(minDate == null ? new Date() : minDate);
+		registry.setTillDate(maxDate == null ? new Date() : maxDate);
 		registry.setRecordsNumber(recordsNum);
 		registry.setAmount(totalSumm);
 		registry.setRegistryStatus(registryStatusService.findByCode(RegistryStatus.CREATED));
