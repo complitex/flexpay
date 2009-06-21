@@ -26,6 +26,7 @@
 		<mapping resource="org/flexpay/common/persistence/Gender.hbm.xml" />
 		<mapping resource="org/flexpay/common/persistence/Currency.hbm.xml" />
 
+		<mapping resource="org/flexpay/orgs/persistence/Cashbox.hbm.xml" />
 		<mapping resource="org/flexpay/orgs/persistence/Bank.hbm.xml" />
 		<mapping resource="org/flexpay/orgs/persistence/Organization.hbm.xml" />
 		<mapping resource="org/flexpay/orgs/persistence/PaymentPoint.hbm.xml" />

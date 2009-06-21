@@ -1,4 +1,4 @@
-package org.flexpay.payments.persistence;
+package org.flexpay.orgs.persistence;
 
 import org.flexpay.common.persistence.Translation;
 import org.flexpay.common.persistence.Language;

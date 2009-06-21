@@ -1,8 +1,8 @@
-package org.flexpay.payments.dao;
+package org.flexpay.orgs.dao;
 
 import org.flexpay.common.dao.GenericDao;
 import org.flexpay.common.dao.paging.Page;
-import org.flexpay.payments.persistence.Cashbox;
+import org.flexpay.orgs.persistence.Cashbox;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;

@@ -671,19 +671,19 @@
 
     <!-- cashbox roles -->
     <security-role-mapping>
-        <role-name>ROLE_PAYMENTS_CASHBOX_READ</role-name>
+        <role-name>ROLE_ORGS_CASHBOX_READ</role-name>
         <group-name>SZ_FULL_ACCESS</group-name>
     </security-role-mapping>
     <security-role-mapping>
-        <role-name>ROLE_PAYMENTS_CASHBOX_CHANGE</role-name>
+        <role-name>ROLE_ORGS_CASHBOX_CHANGE</role-name>
         <group-name>SZ_FULL_ACCESS</group-name>
     </security-role-mapping>
     <security-role-mapping>
-        <role-name>ROLE_PAYMENTS_CASHBOX_ADD</role-name>
+        <role-name>ROLE_ORGS_CASHBOX_ADD</role-name>
         <group-name>SZ_FULL_ACCESS</group-name>
     </security-role-mapping>
     <security-role-mapping>
-        <role-name>ROLE_PAYMENTS_CASHBOX_DELETE</role-name>
+        <role-name>ROLE_ORGS_CASHBOX_DELETE</role-name>
         <group-name>SZ_FULL_ACCESS</group-name>
     </security-role-mapping>
 

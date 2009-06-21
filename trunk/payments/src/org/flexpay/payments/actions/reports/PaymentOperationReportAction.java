@@ -3,34 +3,21 @@ package org.flexpay.payments.actions.reports;
 import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang.StringUtils;
-import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.service.reporting.ReportUtil;
-import org.flexpay.common.util.CollectionUtils;
 import static org.flexpay.common.util.CollectionUtils.ar;
 import static org.flexpay.common.util.CollectionUtils.map;
-import org.flexpay.common.util.SecurityUtil;
 import org.flexpay.common.util.config.ApplicationConfig;
-import org.flexpay.orgs.persistence.Organization;
-import org.flexpay.orgs.persistence.ServiceProvider;
-import org.flexpay.orgs.service.OrganizationService;
-import org.flexpay.orgs.service.ServiceProviderService;
-import org.flexpay.payments.actions.CashboxCookieActionSupport;
+import org.flexpay.orgs.persistence.Cashbox;
 import org.flexpay.payments.actions.PaymentOperationAction;
 import org.flexpay.payments.persistence.*;
-import org.flexpay.payments.persistence.quittance.QuittanceDetailsResponse;
 import org.flexpay.payments.reports.payments.PaymentPrintForm;
 import org.flexpay.payments.reports.payments.PaymentsReporter;
-import org.flexpay.payments.service.*;
-import org.flexpay.payments.util.ServiceFullIndexUtil;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.io.InputStream;
-import java.math.BigDecimal;
-import java.util.Date;
 import java.util.Map;
 
 public class PaymentOperationReportAction extends PaymentOperationAction {

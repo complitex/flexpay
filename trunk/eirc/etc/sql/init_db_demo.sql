@@ -687,20 +687,20 @@ select @payment_point_zol_vor_sever:=last_insert_id();
 insert into orgs_payment_point_names_tbl (name, language_id, payment_point_id)
 	values ('ППП Северный', @ru_id, @payment_point_zol_vor_sever);
 
-insert into payments_cashboxes_tbl (status, version, payment_point_id)
+insert into orgs_cashboxes_tbl (status, version, payment_point_id)
 	values (0, 0, @payment_point_zol_vor_central);
 select @cashbox_central_1:=last_insert_id();
-insert into payments_cashbox_name_translations_tbl (version, language_id, cashbox_id, name)
+insert into orgs_cashbox_name_translations_tbl (version, language_id, cashbox_id, name)
 	values (0, @ru_id, @cashbox_central_1, 'Первая центральная касса');
 
-insert into payments_cashboxes_tbl (status, version, payment_point_id)
+insert into orgs_cashboxes_tbl (status, version, payment_point_id)
 	values (0, 0, @payment_point_zol_vor_central);
 select @cashbox_central_2:=last_insert_id();
-insert into payments_cashbox_name_translations_tbl (version, language_id, cashbox_id, name)
+insert into orgs_cashbox_name_translations_tbl (version, language_id, cashbox_id, name)
 	values (0, @ru_id, @cashbox_central_2, 'Вторая центральная касса');
 
-insert into payments_cashboxes_tbl (status, version, payment_point_id)
+insert into orgs_cashboxes_tbl (status, version, payment_point_id)
 	values (0, 0, @payment_point_zol_vor_sever);
 select @cashbox_sever_1:=last_insert_id();
-insert into payments_cashbox_name_translations_tbl (version, language_id, cashbox_id, name)
+insert into orgs_cashbox_name_translations_tbl (version, language_id, cashbox_id, name)
 	values (0, @ru_id, @cashbox_sever_1, 'Первая северная касса');

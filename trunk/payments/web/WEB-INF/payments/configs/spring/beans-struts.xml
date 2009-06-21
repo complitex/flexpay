@@ -201,26 +201,6 @@
           p:classToTypeRegistry-ref="classToTypeRegistry"
           p:serviceTypeService-ref="serviceTypeService" />
     
-
-    <bean id="cashboxDeleteAction"
-          class="org.flexpay.payments.actions.cashbox.CashboxDeleteAction"
-          p:cashboxService-ref="cashboxService"
-          scope="prototype" />
-
-    <bean id="cashboxEditAction"
-          class="org.flexpay.payments.actions.cashbox.CashboxEditAction"
-          p:cashboxService-ref="cashboxService"
-          p:paymentPointService-ref="paymentPointService"
-          p:crumbNameKey="payments.crumbs.cashbox_edit"
-          p:crumbCreateKey="payments.crumbs.cashbox_create"
-          scope="prototype" />
-
-    <bean id="cashboxesListAction"
-          class="org.flexpay.payments.actions.cashbox.CashboxesListAction"
-          p:cashboxService-ref="cashboxService"
-          p:crumbNameKey="payments.crumbs.cashboxes_list"
-          scope="prototype" />
-
     <bean id="changeAnnotationAction"
           class="org.flexpay.payments.actions.registry.RegistryAnnotationAction"
           p:crumbNameKey="payments.crumbs.change_annotation"

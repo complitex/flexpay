@@ -1,21 +1,22 @@
-package org.flexpay.payments.actions.cashbox;
+package org.flexpay.orgs.actions.cashbox;
 
+import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.persistence.Language;
 import static org.flexpay.common.persistence.Stub.stub;
 import static org.flexpay.common.util.CollectionUtils.map;
 import org.flexpay.common.util.config.ApplicationConfig;
+import org.flexpay.orgs.persistence.Cashbox;
+import org.flexpay.orgs.persistence.CashboxNameTranslation;
 import org.flexpay.orgs.persistence.filters.PaymentPointsFilter;
+import org.flexpay.orgs.service.CashboxService;
 import org.flexpay.orgs.service.PaymentPointService;
 import org.flexpay.payments.actions.CashboxCookieActionSupport;
-import org.flexpay.payments.persistence.Cashbox;
-import org.flexpay.payments.persistence.CashboxNameTranslation;
-import org.flexpay.payments.service.CashboxService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.util.Map;
 
-public class CashboxEditAction extends CashboxCookieActionSupport {
+public class CashboxEditAction extends FPActionSupport {
 
 	private PaymentPointsFilter paymentPointsFilter = new PaymentPointsFilter();
 

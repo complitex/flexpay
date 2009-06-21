@@ -152,3 +152,40 @@ insert INTO orgs_payment_points_tbl (id, status, version, collector_id, address)
 select @payment_point_3:=3;
 insert into orgs_payment_point_names_tbl (name, language_id, payment_point_id)
 	values ('Касса ТСЖ №1', @ru_id, @payment_point_3);
+
+-- init cashboxes
+insert into orgs_cashboxes_tbl (status, version, payment_point_id)
+	values (0, 0, @payment_point_1);
+select @cashbox_1_1:=last_insert_id();
+insert into orgs_cashbox_name_translations_tbl (version, language_id, cashbox_id, name)
+	values (0, @ru_id, @cashbox_1_1, 'Тестовая касса1_1');
+
+insert into orgs_cashboxes_tbl (status, version, payment_point_id)
+	values (0, 0, @payment_point_1);
+select @cashbox_1_2:=last_insert_id();
+insert into orgs_cashbox_name_translations_tbl (version, language_id, cashbox_id, name)
+	values (0, @ru_id, @cashbox_1_2, 'Тестовая касса1_2');
+
+insert into orgs_cashboxes_tbl (status, version, payment_point_id)
+	values (0, 0, @payment_point_2);
+select @cashbox_2_1:=last_insert_id();
+insert into orgs_cashbox_name_translations_tbl (version, language_id, cashbox_id, name)
+	values (0, @ru_id, @cashbox_2_1, 'Тестовая касса2_1');
+
+insert into orgs_cashboxes_tbl (status, version, payment_point_id)
+	values (0, 0, @payment_point_3);
+select @cashbox_3_1:=last_insert_id();
+insert into orgs_cashbox_name_translations_tbl (version, language_id, cashbox_id, name)
+	values (0, @ru_id, @cashbox_3_1, 'Тестовая касса3_1');
+
+insert into orgs_cashboxes_tbl (status, version, payment_point_id)
+	values (0, 0, @payment_point_3);
+select @cashbox_3_2:=last_insert_id();
+insert into orgs_cashbox_name_translations_tbl (version, language_id, cashbox_id, name)
+	values (0, @ru_id, @cashbox_3_2, 'Тестовая касса3_2');
+
+insert into orgs_cashboxes_tbl (status, version, payment_point_id)
+	values (0, 0, @payment_point_3);
+select @cashbox_3_2:=last_insert_id();
+insert into orgs_cashbox_name_translations_tbl (version, language_id, cashbox_id, name)
+	values (0, @ru_id, @cashbox_3_2, 'Тестовая касса3_3');

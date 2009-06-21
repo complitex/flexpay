@@ -1,12 +1,12 @@
-package org.flexpay.payments.service.history;
+package org.flexpay.orgs.service.history;
 
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.history.Diff;
 import org.flexpay.common.persistence.history.HistoryOperationType;
 import org.flexpay.common.persistence.history.impl.HistoryHandlerBase;
 import org.flexpay.common.util.CollectionUtils;
-import org.flexpay.payments.persistence.Cashbox;
-import org.flexpay.payments.service.CashboxService;
+import org.flexpay.orgs.persistence.Cashbox;
+import org.flexpay.orgs.service.CashboxService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 

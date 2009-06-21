@@ -1,9 +1,9 @@
-package org.flexpay.payments.service;
+package org.flexpay.orgs.service;
 
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Stub;
-import org.flexpay.payments.persistence.Cashbox;
+import org.flexpay.orgs.persistence.Cashbox;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.security.annotation.Secured;

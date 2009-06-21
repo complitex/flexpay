@@ -1,4 +1,4 @@
-package org.flexpay.payments.persistence;
+package org.flexpay.orgs.persistence;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;

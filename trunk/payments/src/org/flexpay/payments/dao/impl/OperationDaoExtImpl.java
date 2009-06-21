@@ -2,9 +2,9 @@ package org.flexpay.payments.dao.impl;
 
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.orgs.persistence.Organization;
+import org.flexpay.orgs.persistence.Cashbox;
 import org.flexpay.payments.dao.OperationDaoExt;
 import org.flexpay.payments.persistence.Operation;
-import org.flexpay.payments.persistence.Cashbox;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;

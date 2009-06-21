@@ -272,14 +272,15 @@
 		<put-attribute name="body" value="/WEB-INF/jsp/eirc/eirc_account/eirc_account_create_form2.jsp" />
 	</definition>
 
-    <!-- Cashbox -->
-    <definition name="eirc.cashbox.list" extends="eirc.dictionaries">
-        <put-attribute name="title" value="eirc.cashbox.list" />
-        <put-attribute name="body" value="/WEB-INF/jsp/eirc/cashbox/cashboxes_list.jsp" />
-    </definition>
-    <definition name="eirc.cashbox.edit" extends="eirc.dictionaries">
-        <put-attribute name="title" value="eirc.cashbox" />
-        <put-attribute name="body" value="/WEB-INF/jsp/eirc/cashbox/cashbox_edit.jsp" />
-    </definition>
+	<!-- Cashboxes -->
+	<definition name="eirc.cashbox.list" extends="eirc.dictionaries">
+		<put-attribute name="title" value="eirc.cashbox.list" />
+		<put-attribute name="body" value="/WEB-INF/jsp/orgs/cashbox/cashboxes_list.jsp" />
+	</definition>
 
+	<definition name="eirc.cashbox.edit" extends="eirc.dictionaries">
+		<put-attribute name="title" value="eirc.cashbox" />
+		<put-attribute name="body" value="/WEB-INF/jsp/orgs/cashbox/cashbox_edit.jsp" />
+	</definition>
+    
 </tiles-definitions>

@@ -120,17 +120,6 @@
 		  p:email="test@test.test"
 		  p:sender-ref="mailSender" />
 
-	<bean id="cashboxHistoryChangesListener"
-		  parent="historyChangesListenerBase"
-		  p:historyBuilder-ref="cashboxHistoryBuilder" />
-
-	<bean id="cashboxServiceTarget"
-		  autowire-candidate="false"
-		  class="org.flexpay.payments.service.impl.CashboxServiceImpl"
-		  p:sessionUtils-ref="sessionUtils"
-		  p:modificationListener-ref="cashboxHistoryChangesListener"
-		  p:cashboxDao-ref="cashboxDao" />
-
 	<bean id="exportBankPaymentsRegistry"
 		  class="org.flexpay.payments.util.registries.ExportBankPaymentsRegistry"
 		  p:moduleName="${flexpay.module.name.payments}"
@@ -151,11 +140,6 @@
 		  p:registryTypeService-ref="registryTypeService" />
 
 	<!-- History builders -->
-	<bean id="cashboxHistoryBuilder"
-		  parent="historyBuilderBase"
-		  class="org.flexpay.payments.service.history.CashboxHistoryBuilder"
-		  p:pointService-ref="paymentPointService" />
-
 	<bean id="serviceTypeHistoryBuilder"
 		  parent="historyBuilderBase"
 		  class="org.flexpay.payments.service.history.ServiceTypeHistoryBuilder" />
@@ -166,13 +150,7 @@
 		  p:serviceProviderService-ref="serviceProviderService"
 		  p:spService-ref="spService" />
 
-	<!-- History generators -->
-	<bean id="cashboxHistoryGenerator"
-		  class="org.flexpay.payments.service.history.CashboxHistoryGenerator"
-		  p:diffService-ref="diffService"
-		  p:historyBuilder-ref="cashboxHistoryBuilder"
-		  p:cashboxService-ref="cashboxService" />
-
+	<!-- History generators -->	
 	<bean id="serviceTypeHistoryGenerator"
 		  class="org.flexpay.payments.service.history.ServiceTypeHistoryGenerator"
 		  p:diffService-ref="diffService"
@@ -192,12 +170,6 @@
 		  parent="historyHandlerBase"
 		  p:historyHandlerHelper-ref="historyHandlerHelper"
 		  p:typeRegistry-ref="classToTypeRegistry" />
-
-	<bean id="cashboxHistoryHandler"
-		  parent="paymentsHistoryHandlerBase"
-		  class="org.flexpay.payments.service.history.CashboxHistoryHandler"
-		  p:cashboxService-ref="cashboxService"
-		  p:historyBuilder-ref="cashboxHistoryBuilder" />
 
 	<bean id="serviceTypeHistoryHandler"
 		  parent="paymentsHistoryHandlerBase"
@@ -230,7 +202,6 @@
 				<ref bean="serviceProviderHistoryHandler" />
 				<ref bean="bankHistoryHandler" />
 				<ref bean="organizationHistoryHandler" />
-				<ref bean="cashboxHistoryHandler" />
 				<ref bean="serviceTypeHistoryHandler" />
 				<ref bean="serviceHistoryHandler" />
 				<ref bean="measureUnitHistoryHandler" />

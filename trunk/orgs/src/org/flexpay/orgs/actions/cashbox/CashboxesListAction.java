@@ -1,15 +1,15 @@
-package org.flexpay.payments.actions.cashbox;
+package org.flexpay.orgs.actions.cashbox;
 
-import org.flexpay.payments.actions.CashboxCookieWithPagerActionSupport;
-import org.flexpay.payments.persistence.Cashbox;
-import org.flexpay.payments.service.CashboxService;
+import org.flexpay.common.actions.FPActionWithPagerSupport;
+import org.flexpay.orgs.persistence.Cashbox;
+import org.flexpay.orgs.service.CashboxService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.util.Collections;
 import java.util.List;
 
-public class CashboxesListAction extends CashboxCookieWithPagerActionSupport<Cashbox> {
+public class CashboxesListAction extends FPActionWithPagerSupport {
 
 	private List<Cashbox> cashboxes = Collections.emptyList();
 

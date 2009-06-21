@@ -40,6 +40,17 @@
 		  p:modificationListener-ref="bankHistoryChangesListener"
 		  p:instanceDao-ref="bankDao" />
 
+	<bean id="cashboxHistoryChangesListener"
+		  parent="historyChangesListenerBase"
+		  p:historyBuilder-ref="cashboxHistoryBuilder" />
+
+	<bean id="cashboxServiceTarget"
+		  autowire-candidate="false"
+		  class="org.flexpay.orgs.service.imp.CashboxServiceImpl"
+		  p:sessionUtils-ref="sessionUtils"
+		  p:modificationListener-ref="cashboxHistoryChangesListener"
+		  p:cashboxDao-ref="cashboxDao" />
+
 	<bean id="paymentsCollectorHistoryChangesListener"
 		  parent="historyChangesListenerBase"
 		  p:historyBuilder-ref="paymentsCollectorHistoryBuilder" />
@@ -119,6 +130,11 @@
 		  class="org.flexpay.orgs.service.history.BankHistoryBuilder"
 		  p:organizationService-ref="organizationService" />
 
+	<bean id="cashboxHistoryBuilder"
+		  parent="historyBuilderBase"
+		  class="org.flexpay.orgs.service.history.CashboxHistoryBuilder"
+		  p:pointService-ref="paymentPointService" />
+
 	<bean id="serviceOrganizationHistoryBuilder"
 		  parent="historyBuilderBase"
 		  class="org.flexpay.orgs.service.history.ServiceOrganizationHistoryBuilder"
@@ -150,6 +166,12 @@
 		  parent="organizationInstanceHistoryGenerator"
 		  p:instanceService-ref="bankService"
 		  p:historyBuilder-ref="bankHistoryBuilder" />
+
+	<bean id="cashboxHistoryGenerator"
+		  class="org.flexpay.orgs.service.history.CashboxHistoryGenerator"
+		  p:diffService-ref="diffService"
+		  p:historyBuilder-ref="cashboxHistoryBuilder"
+		  p:cashboxService-ref="cashboxService" />
 
 	<bean id="serviceOrganizationHistoryGenerator"
 		  parent="organizationInstanceHistoryGenerator"
@@ -185,6 +207,13 @@
 		  p:instanceService-ref="bankService"
 		  p:historyBuilder-ref="bankHistoryBuilder"
 		  class="org.flexpay.orgs.service.history.BankHistoryHandler" />
+
+	<bean id="cashboxHistoryHandler"
+		  parent="paymentsHistoryHandlerBase"
+		  class="org.flexpay.orgs.service.history.CashboxHistoryHandler"
+		  p:cashboxService-ref="cashboxService"
+		  p:historyBuilder-ref="cashboxHistoryBuilder" />
+
 
 	<bean id="paymentsCollectorHistoryHandler"
 		  parent="orgsHistoryHandlerBase"
@@ -224,6 +253,7 @@
 				<ref bean="serviceOrganizationHistoryHandler" />
 				<ref bean="serviceProviderHistoryHandler" />
 				<ref bean="bankHistoryHandler" />
+				<ref bean="cashboxHistoryHandler" />
 				<ref bean="organizationHistoryHandler" />
 			</list>
 		</property>
