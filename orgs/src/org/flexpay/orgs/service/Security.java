@@ -29,7 +29,11 @@ public abstract class Security extends org.flexpay.common.service.Security {
 				Roles.BANK_DELETE,
 				Roles.ORGANIZATION_ADD,
 				Roles.ORGANIZATION_CHANGE,
-				Roles.ORGANIZATION_DELETE
+				Roles.ORGANIZATION_DELETE,
+				Roles.CASHBOX_READ,
+				Roles.CASHBOX_ADD,
+				Roles.CASHBOX_CHANGE,
+				Roles.CASHBOX_DELETE
 		));
 	}
 

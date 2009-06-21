@@ -2,7 +2,7 @@ package org.flexpay.payments.service.importexport.imp;
 
 import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.common.service.importexport.ClassToTypeRegistry;
-import org.flexpay.payments.persistence.Cashbox;
+import org.flexpay.orgs.persistence.Cashbox;
 import org.flexpay.payments.persistence.Service;
 import org.flexpay.payments.persistence.ServiceType;
 

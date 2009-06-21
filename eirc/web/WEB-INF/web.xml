@@ -568,16 +568,16 @@
 
     <!-- cashbox roles -->
     <security-role>
-        <role-name>ROLE_PAYMENTS_CASHBOX_READ</role-name>
+        <role-name>ROLE_ORGS_CASHBOX_READ</role-name>
     </security-role>
     <security-role>
-        <role-name>ROLE_PAYMENTS_CASHBOX_CHANGE</role-name>
+        <role-name>ROLE_ORGS_CASHBOX_CHANGE</role-name>
     </security-role>
     <security-role>
-        <role-name>ROLE_PAYMENTS_CASHBOX_ADD</role-name>
+        <role-name>ROLE_ORGS_CASHBOX_ADD</role-name>
     </security-role>
     <security-role>
-        <role-name>ROLE_PAYMENTS_CASHBOX_DELETE</role-name>
+        <role-name>ROLE_ORGS_CASHBOX_DELETE</role-name>
     </security-role>
 
     <!-- Menu -->

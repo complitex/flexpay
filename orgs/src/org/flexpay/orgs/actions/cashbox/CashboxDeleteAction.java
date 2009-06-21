@@ -1,14 +1,14 @@
-package org.flexpay.payments.actions.cashbox;
+package org.flexpay.orgs.actions.cashbox;
 
-import org.flexpay.payments.actions.CashboxCookieActionSupport;
-import org.flexpay.payments.service.CashboxService;
+import org.flexpay.common.actions.FPActionSupport;
+import org.flexpay.orgs.service.CashboxService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.util.HashSet;
 import java.util.Set;
 
-public class CashboxDeleteAction extends CashboxCookieActionSupport {
+public class CashboxDeleteAction extends FPActionSupport {
 
 	private Set<Long> objectIds = new HashSet<Long>();
 

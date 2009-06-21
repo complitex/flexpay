@@ -2,10 +2,10 @@ package org.flexpay.payments.actions.monitor;
 
 import org.flexpay.payments.actions.CashboxCookieActionSupport;
 import org.flexpay.payments.actions.monitor.data.CashboxMonitorContainer;
-import org.flexpay.payments.persistence.Cashbox;
+import org.flexpay.orgs.persistence.Cashbox;
 import org.flexpay.payments.persistence.OperationType;
 import org.flexpay.payments.persistence.Operation;
-import org.flexpay.payments.service.CashboxService;
+import org.flexpay.orgs.service.CashboxService;
 import org.flexpay.payments.service.OperationService;
 import org.flexpay.payments.service.statistics.PaymentsStatisticsService;
 import org.flexpay.payments.service.statistics.OperationTypeStatistics;

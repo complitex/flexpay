@@ -8,16 +8,12 @@ public abstract class Security extends org.flexpay.common.service.Security {
 		USER_HISTORY_SYNCER_AUTHORITIES.addAll(CollectionUtils.list(
 				Roles.SERVICE_READ,
 				Roles.SERVICE_TYPE_READ,
-				Roles.CASHBOX_READ,
 				Roles.SERVICE_ADD,
 				Roles.SERVICE_CHANGE,
 				Roles.SERVICE_DELETE,
 				Roles.SERVICE_TYPE_ADD,
 				Roles.SERVICE_TYPE_CHANGE,
-				Roles.SERVICE_TYPE_DELETE,
-				Roles.CASHBOX_ADD,
-				Roles.CASHBOX_CHANGE,
-				Roles.CASHBOX_DELETE
+				Roles.SERVICE_TYPE_DELETE				
 		));
 	}
 

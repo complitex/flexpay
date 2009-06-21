@@ -1,4 +1,4 @@
-package org.flexpay.payments.service.history;
+package org.flexpay.orgs.service.history;
 
 import org.flexpay.common.persistence.Language;
 import org.flexpay.common.persistence.Stub;
@@ -13,9 +13,9 @@ import org.flexpay.common.persistence.history.builder.TranslationExtractor;
 import org.flexpay.common.persistence.history.builder.TranslationPatcher;
 import org.flexpay.common.persistence.history.impl.HistoryBuilderBase;
 import org.flexpay.orgs.persistence.PaymentPoint;
+import org.flexpay.orgs.persistence.Cashbox;
 import org.flexpay.orgs.service.PaymentPointService;
-import org.flexpay.payments.persistence.Cashbox;
-import org.flexpay.payments.persistence.CashboxNameTranslation;
+import org.flexpay.orgs.persistence.CashboxNameTranslation;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;

@@ -1,34 +1,17 @@
 package org.flexpay.payments.actions.quittance;
 
-import org.apache.commons.lang.StringUtils;
-import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
-import org.flexpay.common.util.CollectionUtils;
-import org.flexpay.common.util.SecurityUtil;
 import org.flexpay.common.util.BigDecimalUtil;
 import org.flexpay.common.process.ProcessManager;
-import org.flexpay.common.process.ContextCallback;
-import org.flexpay.orgs.persistence.Organization;
-import org.flexpay.orgs.persistence.ServiceProvider;
 import org.flexpay.orgs.persistence.PaymentPoint;
-import org.flexpay.orgs.service.OrganizationService;
-import org.flexpay.orgs.service.ServiceProviderService;
+import org.flexpay.orgs.persistence.Cashbox;
 import org.flexpay.orgs.service.PaymentPointService;
-import org.flexpay.payments.actions.CashboxCookieActionSupport;
 import org.flexpay.payments.actions.PaymentOperationAction;
 import org.flexpay.payments.persistence.*;
-import org.flexpay.payments.persistence.quittance.QuittanceDetailsResponse;
 import org.flexpay.payments.service.*;
-import org.flexpay.payments.util.ServiceFullIndexUtil;
 import org.flexpay.payments.process.export.TradingDay;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
-import org.jbpm.JbpmContext;
-import org.jbpm.graph.exe.ProcessInstance;
-
-import java.math.BigDecimal;
-import java.util.Date;
-import java.util.Map;
 
 public class QuittancePayAction extends PaymentOperationAction {
 

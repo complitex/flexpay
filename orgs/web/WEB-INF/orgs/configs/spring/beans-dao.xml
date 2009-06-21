@@ -78,4 +78,13 @@
 		</property>
 	</bean>
 
+    <bean id="cashboxDao" parent="abstractDao">
+        <property name="proxyInterfaces" value="org.flexpay.orgs.dao.CashboxDao" />
+        <property name="target">
+            <bean parent="abstractDaoTarget">
+                <constructor-arg value="org.flexpay.orgs.persistence.Cashbox" />
+            </bean>
+        </property>
+    </bean>
+
 </beans>

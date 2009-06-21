@@ -9,6 +9,7 @@ import org.flexpay.common.persistence.registry.RegistryRecord;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.orgs.persistence.PaymentPoint;
+import org.flexpay.orgs.persistence.Cashbox;
 import org.jetbrains.annotations.NotNull;
 
 import java.math.BigDecimal;

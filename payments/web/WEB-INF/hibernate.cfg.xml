@@ -51,8 +51,7 @@
 
 		<mapping resource="org/flexpay/payments/persistence/Document.hbm.xml" />
 		<mapping resource="org/flexpay/payments/persistence/Service.hbm.xml" />
-		<mapping resource="org/flexpay/payments/persistence/Operation.hbm.xml" />
-        <mapping resource="org/flexpay/payments/persistence/Cashbox.hbm.xml" />
+		<mapping resource="org/flexpay/payments/persistence/Operation.hbm.xml" />        
 		<mapping resource="org/flexpay/payments/service/statistics/Statistics.hbm.xml" />
 
         <mapping resource="org/flexpay/payments/persistence/process/ServiceProviderAttribute.hbm.xml" />

@@ -7,7 +7,7 @@ import org.flexpay.payments.dao.PaymentStatisticsDaoExt;
 import org.flexpay.payments.service.statistics.OperationTypeStatistics;
 import org.flexpay.payments.service.statistics.PaymentsStatisticsService;
 import org.flexpay.payments.service.statistics.ServicePaymentsStatistics;
-import org.flexpay.payments.persistence.Cashbox;
+import org.flexpay.orgs.persistence.Cashbox;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.Required;
 

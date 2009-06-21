@@ -1,4 +1,4 @@
-package org.flexpay.payments.service.impl;
+package org.flexpay.orgs.service.imp;
 
 import org.apache.commons.lang.StringUtils;
 import org.flexpay.common.dao.paging.Page;
@@ -7,10 +7,10 @@ import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.history.ModificationListener;
 import org.flexpay.common.service.internal.SessionUtils;
-import org.flexpay.payments.dao.CashboxDao;
-import org.flexpay.payments.persistence.Cashbox;
-import org.flexpay.payments.persistence.CashboxNameTranslation;
-import org.flexpay.payments.service.CashboxService;
+import org.flexpay.orgs.dao.CashboxDao;
+import org.flexpay.orgs.persistence.Cashbox;
+import org.flexpay.orgs.persistence.CashboxNameTranslation;
+import org.flexpay.orgs.service.CashboxService;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
