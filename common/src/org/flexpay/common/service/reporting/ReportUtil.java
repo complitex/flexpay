@@ -594,4 +594,5 @@ public class ReportUtil {
 	public void setFileService(FPFileService fileService) {
 		this.fileService = fileService;
 	}
+
 }

@@ -38,6 +38,8 @@ import java.util.*;
 
 public class JRQuittanceDataSource implements JRRewindableDataSource {
 
+	private Logger log = LoggerFactory.getLogger(getClass());
+
 	/**
 	 * Field mapping that produces the current bean.
 	 * <p/>
@@ -46,18 +48,17 @@ public class JRQuittanceDataSource implements JRRewindableDataSource {
 	 */
 	public static final String CURRENT_BEAN_MAPPING = "_THIS";
 
+	private Collection<QuittancePrintInfo> data = null;
+	private Iterator<QuittancePrintInfo> iterator = null;
+	private QuittancePrintInfo currentInfo = null;
+	private long processCounter = 0;
+
 	private AddressService addressService;
 	private SPService spService;
 	private QuittanceService quittanceService;
 	private QuittanceNumberService quittanceNumberService;
 	private ServiceTypeService serviceTypeService;
 	private ServiceOrganizationService serviceOrganizationService;
-
-	private Collection<QuittancePrintInfo> data = null;
-	private Iterator<QuittancePrintInfo> iterator = null;
-	private QuittancePrintInfo currentInfo = null;
-	private long processCounter = 0;
-	private Logger log = LoggerFactory.getLogger(getClass());
 
 	public void setPrintData(QuittancePrintInfoData data, int nBatches) throws Exception {
 
@@ -355,4 +356,5 @@ public class JRQuittanceDataSource implements JRRewindableDataSource {
 	public void setQuittanceNumberService(QuittanceNumberService quittanceNumberService) {
 		this.quittanceNumberService = quittanceNumberService;
 	}
+
 }

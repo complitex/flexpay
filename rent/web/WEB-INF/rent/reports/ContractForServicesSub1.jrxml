@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Contract for services subreport 1" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="595" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
+	<property name="ireport.scriptlethandling" value="0"/>
+	<property name="ireport.encoding" value="UTF-8"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="java.util.*"/>
+	<import value="java.math.BigDecimal"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<style name="TNR_12" isDefault="true" fontName="LiberationSans-Regular" fontSize="12" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="path-to/LiberationSans-Regular.ttf" pdfEncoding="Cp1251" isPdfEmbedded="true"/>
+	<style name="TNR_12b" isDefault="false" fontName="LiberationSans-Bold" fontSize="12" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="path-to/LiberationSans-Bold.ttf" pdfEncoding="Cp1251" isPdfEmbedded="true"/>
+	<style name="TNR_13b" isDefault="false" fontName="LiberationSans-Bold" fontSize="13" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="path-to/LiberationSans-Bold.ttf" pdfEncoding="Cp1251" isPdfEmbedded="true"/>
+	<style name="TNR_14b" isDefault="false" fontName="LiberationSans-Bold" fontSize="14" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="path-to/LiberationSans-Bold.ttf" pdfEncoding="Cp1251" isPdfEmbedded="true"/>
+	<parameter name="totalSquare" class="java.math.BigDecimal" isForPrompting="false"/>
+	<parameter name="address" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="document" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="businessType" class="java.lang.String" isForPrompting="false"/>
+	<background>
+		<band/>
+	</background>
+	<title>
+		<band height="335">
+			<staticText>
+				<reportElement style="TNR_13b" x="0" y="1" width="483" height="17"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[1 ПРЕДМЕТ ДОГОВОРУ]]></text>
+			</staticText>
+			<textField>
+				<reportElement style="TNR_12" x="0" y="18" width="483" height="317"/>
+				<textElement textAlignment="Justified" markup="styled"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[" 1.1 “<style isBold=\"true\">Підпріємство</style>” на підставі укладених договорів з "
++ "Виробниками і Постачальниками комунальних послуг (@ПУ 1@, @ПУ 2@), ...) зобов'язується "
++ "транспортувати по внутрішньобудинкових мережах нежилого приміщення "
++ "<style isBold=\"true\">площею " + $P{totalSquare} + " кв.м.</style> за адресою " +$P{address}
++ ", згидно " + $P{document} + ", яке використовується під " + $P{businessType} + " комунальні послуги, виставляти "
++ "“<style isBold=\"true\">Споживачеві</style>” платіжні документи за Договором.<br/>"
++ " 1.2 “<style isBold=\"true\">Споживач</style>” увідповідності до данного Договору " 
++ "зобов'язується прийняти комунальні послуги та своєчасно їх оплатити.<br/>"
++ " 1.3 Додаток №1 до Договору визначає потребу “<style isBold=\"true\">Споживача</style>” "
++ "в окремій комунальній послзі і є невід'ємною частиною данного Договору.<br/>"
++ " 1.4 Додаток №2 до Договору визначає дані про кількість працюючих, вид діяльності, "
++ "графік роботи, збільшення (зменшення) займаної та опалювальної площі, встановлення (демонтування) "
++ "приладів опалення та санехнічного обладання.<br/>"
++ " 1.5 При виконанні умов цього Договору Сторони зобов'язуються керуватися тарифами, затвержденними "
++ "Київськой міською держадміністрацією, нормативними актами з питань користування та взаєморозрахунків "
++ "за енерго- та теплоносії.<br/>"
++ " 1.6 Додаток №3 до Договору згідно Положення про порядок відшкодування власникам житла витрат на "
++ "технічне обслуговування внутрішньобудинкових мереж, затвержденного Наказом Державного комітету "
++ "України по житлово-комунальному господарству від 17.10.1996 р. №87, визначає частку “<style isBold=\"true\">Споживача</style>” "
++ "у відшкодуванні витрат по обслуговуванню внутрішньобудинкових мереж."]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band/>
+	</pageHeader>
+	<columnHeader>
+		<band/>
+	</columnHeader>
+	<detail>
+		<band/>
+	</detail>
+	<columnFooter>
+		<band/>
+	</columnFooter>
+	<pageFooter>
+		<band/>
+	</pageFooter>
+	<summary>
+		<band/>
+	</summary>
+</jasperReport>
