@@ -52,7 +52,7 @@ public class GenerateEndOperationDayRegistryJob extends Job {
 
 		Registry registry = registryGenerator.generate(paymentPoint, organization, beginDate, endDate);
 
-		if (registry == null){
+		if (registry != null){
 			registry = exportBankPaymentsRegistry.export(registry);
 			parameters.put("File", registry.getSpFile());
 			parameters.put("Email", paymentPoint.getEmail());
