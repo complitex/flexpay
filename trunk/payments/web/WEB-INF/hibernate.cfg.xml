@@ -40,6 +40,7 @@
 		<mapping resource="org/flexpay/ab/persistence/IdentityType.hbm.xml" />
 		<mapping resource="org/flexpay/ab/persistence/Person.hbm.xml" />
 
+		<mapping resource="org/flexpay/orgs/persistence/Cashbox.hbm.xml" />
 		<mapping resource="org/flexpay/orgs/persistence/Bank.hbm.xml" />
 		<mapping resource="org/flexpay/orgs/persistence/Organization.hbm.xml" />
 		<mapping resource="org/flexpay/orgs/persistence/PaymentPoint.hbm.xml" />

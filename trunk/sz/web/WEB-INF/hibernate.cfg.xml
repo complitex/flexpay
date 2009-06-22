@@ -46,6 +46,7 @@
 		<mapping resource="org/flexpay/bti/persistence/building/BuildingAttributeType.hbm.xml" />
 		<mapping resource="org/flexpay/bti/persistence/building/BuildingAttributeGroup.hbm.xml" />
 
+		<mapping resource="org/flexpay/orgs/persistence/Cashbox.hbm.xml" />
 		<mapping resource="org/flexpay/orgs/persistence/Bank.hbm.xml" />
 		<mapping resource="org/flexpay/orgs/persistence/Organization.hbm.xml" />
 		<mapping resource="org/flexpay/orgs/persistence/PaymentPoint.hbm.xml" />
@@ -69,7 +70,6 @@
 		<mapping resource="org/flexpay/eirc/persistence/account/Quittance.hbm.xml" />
 		<mapping resource="org/flexpay/eirc/persistence/ServiceOrganizationBase.hbm.xml" />
 		<mapping resource="org/flexpay/eirc/persistence/registry/RegistryExt.hbm.xml" />
-
 
 		<mapping resource="org/flexpay/sz/persistence/SzFile.hbm.xml" />
 		<mapping resource="org/flexpay/sz/persistence/CharacteristicRecord.hbm.xml" />
