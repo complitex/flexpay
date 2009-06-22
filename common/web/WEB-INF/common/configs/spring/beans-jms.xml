@@ -15,9 +15,12 @@
         </property>
     </bean>
 
-    <bean id="connectionFactory" factory-bean="connectionFactoryFactory" factory-method="createConnectionFactory" />
+    <bean id="connectionFactory"
+		  factory-bean="connectionFactoryFactory"
+		  factory-method="createConnectionFactory" />
 
-    <bean id="springConnectionFactory" class="org.springframework.jms.connection.SingleConnectionFactory"
+    <bean id="springConnectionFactory" 
+		  class="org.springframework.jms.connection.SingleConnectionFactory"
           p:targetConnectionFactory-ref="connectionFactory" />
 
 </beans>

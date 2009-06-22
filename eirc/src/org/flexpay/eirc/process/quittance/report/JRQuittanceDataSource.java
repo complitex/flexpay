@@ -266,6 +266,10 @@ public class JRQuittanceDataSource implements JRRewindableDataSource {
 					log.info("Prepared info #{}", processCounter);
 				}
 			}
+
+//			if (processCounter >= 50) {
+//				return false;
+//			}
 		}
 
 		return hasNext;

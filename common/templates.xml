@@ -291,8 +291,8 @@
 		<java classpathref="classpath"
 			  classname="org.flexpay.common.util.standalone.ApplicationRunner"
 			  dir="${build.dir}/web" fork="yes">
-			<jvmarg value="-Xmx250m" />
-			<!--<jvmarg value="-XX:+HeapDumpOnOutOfMemoryError" />-->
+			<jvmarg value="-Xmx350m" />
+			<jvmarg value="-XX:+HeapDumpOnOutOfMemoryError" />
 			<sysproperty key="log4j.configuration"
 						 value="WEB-INF/common/configs/log4j.xml" />
 			<sysproperty key="java.naming.factory.initial"

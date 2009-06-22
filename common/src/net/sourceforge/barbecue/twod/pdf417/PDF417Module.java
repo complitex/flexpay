@@ -1,28 +1,28 @@
 /***********************************************************************************************************************
-Copyright (c) 2003, International Barcode Consortium
-All rights reserved.
+ Copyright (c) 2003, International Barcode Consortium
+ All rights reserved.
 
-Redistribution and use in source and binary forms, with or without modification,
-are permitted provided that the following conditions are met:
+ Redistribution and use in source and binary forms, with or without modification,
+ are permitted provided that the following conditions are met:
 
-    * Redistributions of source code must retain the above copyright notice, this list of
-      conditions and the following disclaimer.
-    * Redistributions in binary form must reproduce the above copyright notice, this list of
-      conditions and the following disclaimer in the documentation and/or other materials
-      provided with the distribution.
-    * Neither the name of the International Barcode Consortium nor the names of any contributors may be used to endorse
-      or promote products derived from this software without specific prior written permission.
+ * Redistributions of source code must retain the above copyright notice, this list of
+ conditions and the following disclaimer.
+ * Redistributions in binary form must reproduce the above copyright notice, this list of
+ conditions and the following disclaimer in the documentation and/or other materials
+ provided with the distribution.
+ * Neither the name of the International Barcode Consortium nor the names of any contributors may be used to endorse
+ or promote products derived from this software without specific prior written permission.
 
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR
-IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
-AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
-CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
-CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
-OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
-POSSIBILITY OF SUCH DAMAGE.
-***********************************************************************************************************************/
+ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR
+ IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+ AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+ CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+ OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ POSSIBILITY OF SUCH DAMAGE.
+ ***********************************************************************************************************************/
 
 package net.sourceforge.barbecue.twod.pdf417;
 
@@ -31,16 +31,14 @@ import net.sourceforge.barbecue.output.Output;
 import net.sourceforge.barbecue.output.OutputException;
 
 /**
- * Specific module implementation that draws an entire PDF417 barcode
- * as one barbecue module. This is not an ideal implementation, but was
- * the best way of integrating the PDF417 code short of re-writing it.
- *
+ * Specific module implementation that draws an entire PDF417 barcode as one barbecue module. This is not an ideal
+ * implementation, but was the best way of integrating the PDF417 code short of re-writing it.
+ * <p/>
  * <p/>Contributed by Alex Ferrer <alex@ftconsult.com>
  *
  * @author Alex Ferrer
  * @author <a href="mailto:opensource@ianbourke.com">Ian Bourke</a>
- *
- * TODO: Do we really want to fix the DATACOLS to 12?
+ * @todo: Do we really want to fix the DATACOLS to 12?
  */
 public class PDF417Module extends Module implements java.io.Serializable {
 
@@ -89,8 +87,8 @@ public class PDF417Module extends Module implements java.io.Serializable {
 	 * Draw the barcode to the specified outputter, at the specified origin.
 	 *
 	 * @param outputter The outputter
-	 * @param x The X component of the origin
-	 * @param y The Y component of the origin
+	 * @param x		 The X component of the origin
+	 * @param y		 The Y component of the origin
 	 * @param barWidth
 	 * @param barHeight
 	 * @return The total width drawn
@@ -110,8 +108,8 @@ public class PDF417Module extends Module implements java.io.Serializable {
 	/**
 	 * I have no idea what this does.
 	 *
-	 * @param data The barcode data
-	 * @param length The length of the data
+	 * @param data	 The barcode data
+	 * @param length   The length of the data
 	 * @param ecLength The length of the EC (2)
 	 */
 	private void generateEC(int[] data, int length, int ecLength) {
@@ -194,12 +192,12 @@ public class PDF417Module extends Module implements java.io.Serializable {
 
 		/* The first two codewords are the length and the BC mode latch
 		   The mode latch is 924 if len is a multiple of 6, 901 otherwise */
-		out = new int[outlen];              // dimension the array
+		out = new int[outlen];			  // dimension the array
 		out[0] = 2 + (len / 6) * 5 + (len % 6);   // 1st value s size of sequence
 		if (len % 6 != 0) {
-			out[1] = 901;  					// if len not a multiple of 6
+			out[1] = 901;					  // if len not a multiple of 6
 		} else {
-			out[1] = 924;                    // if len *is* a multiple of 6
+			out[1] = 924;					// if len *is* a multiple of 6
 		}
 
 		/* Map blocks of 6 bytes to block of 5 codewords */
@@ -236,8 +234,8 @@ public class PDF417Module extends Module implements java.io.Serializable {
 	private void createBits(int[] codes, int codelen, int datarows) {
 		int row, inp, outp;
 		if (DATACOLS < 1 || DATACOLS > 30
-		 				 || datarows < 3 || datarows > 90
-		 				 || codelen != DATACOLS * datarows) {
+			|| datarows < 3 || datarows > 90
+			|| codelen != DATACOLS * datarows) {
 			return;
 		}
 		/* Each row has start, left, data, right, stop */

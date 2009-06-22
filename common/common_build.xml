@@ -48,11 +48,11 @@
 	</path>
 
 	<path id="common.runtests.classpath">
-		<path refid="common.test.classpath" />
 		<pathelement location="${build.dir}/web" />
 		<pathelement location="${build.dir}/web/WEB-INF" />
 		<pathelement location="${build.dir}/web/WEB-INF/classes" />
 		<pathelement location="${common.dir}/tests/data" />
+		<path refid="common.test.classpath" />
 	</path>
 
 	<target name="common.help" description="Print common module build script options">
