@@ -16,6 +16,7 @@
 	</bean>
 
 	<bean id="jmsQuittanceDetailsFinder"
+		  lazy-init="true"
 		  class="org.flexpay.payments.service.impl.JmsQuittanceDetailsFinder"
 		  p:connectionFactory-ref="springConnectionFactory"
 		  p:requestQueue-ref="findQuittanceRequestQueue"

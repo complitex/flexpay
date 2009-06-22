@@ -109,7 +109,7 @@
 		<group  name="buildingAddressGroup" >
 			<groupExpression><![CDATA[$F{batchBuildingAddress}]]></groupExpression>
 			<groupHeader>
-			<band height="401"  isSplitAllowed="true" >
+			<band height="401" >
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						style="LiberationSans-Regular"
@@ -147,28 +147,28 @@
 			</band>
 			</groupHeader>
 			<groupFooter>
-			<band height="0"  isSplitAllowed="true" >
+			<band height="0"  >
 			</band>
 			</groupFooter>
 		</group>
 		<background>
-			<band height="0"  isSplitAllowed="true" >
+			<band height="0"  >
 			</band>
 		</background>
 		<title>
-			<band height="0"  isSplitAllowed="true" >
+			<band height="0" >
 			</band>
 		</title>
 		<pageHeader>
-			<band height="0"  isSplitAllowed="true" >
+			<band height="0" >
 			</band>
 		</pageHeader>
 		<columnHeader>
-			<band height="0"  isSplitAllowed="true" >
+			<band height="0" >
 			</band>
 		</columnHeader>
 		<detail>
-			<band height="401"  isSplitAllowed="true" >
+			<band height="401" >
 				<printWhenExpression><![CDATA[$F{notAddressStub}]]></printWhenExpression>
 				<frame>					<reportElement
 						style="LiberationSans-Regular"
@@ -902,7 +902,7 @@
 				<componentElement>
 					<reportElement x="0" y="38" width="150" height="36" key="barcode-1"/>
 					<bc:barcode type="Code128">
-						<bc:codeExpression>"$F{quittanceNumberWithSumm}"</bc:codeExpression>
+						<bc:codeExpression>$F{quittanceNumberWithSumm}</bc:codeExpression>
 					</bc:barcode>
 				</componentElement>
 				<staticText>
@@ -1071,7 +1071,7 @@
 					</textElement>
 				<textFieldExpression   class="java.lang.Long"><![CDATA[$F{quittanceId}]]></textFieldExpression>
 				</textField>
-				<image  scaleImage="RetainShape" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+				<image  scaleImage="RetainShape" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" isUsingCache="false">
 					<reportElement
 						style="LiberationSans-Regular"
 						x="422"
@@ -1086,15 +1086,15 @@
 				</frame>			</band>
 		</detail>
 		<columnFooter>
-			<band height="0"  isSplitAllowed="true" >
+			<band height="0" >
 			</band>
 		</columnFooter>
 		<pageFooter>
-			<band height="0"  isSplitAllowed="true" >
+			<band height="0" >
 			</band>
 		</pageFooter>
 		<summary>
-			<band height="0"  isSplitAllowed="true" >
+			<band height="0" >
 			</band>
 		</summary>
 </jasperReport>

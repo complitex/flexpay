@@ -1,10 +1,16 @@
 package org.flexpay.common.util.jms.openmq;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.jms.ConnectionFactory;
 import java.util.Enumeration;
 import java.util.Properties;
 
 public class MQConnectionFactoryFactory {
+
+	private Logger log = LoggerFactory.getLogger(getClass());
+
 	private Properties props;
 
 	public void setProperties(Properties props) {
@@ -21,6 +27,7 @@ public class MQConnectionFactoryFactory {
 				cf.setProperty(name, value);
 			}
 		} catch (Exception e) {
+			log.info("MQConnectionFactoryFactory.createConnectionFactory() failed", e);
 			throw new RuntimeException("MQConnectionFactoryFactory.createConnectionFactory() failed: ", e);
 		}
 		return cf;

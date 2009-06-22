@@ -57,8 +57,7 @@
 		<property name="cachingModels">
 			<props>
 				<prop key="list*">cacheName=commonMeasureUnitFlexpayCache</prop>
-				<prop key="read">cacheName=commonMeasureUnitFlexpayCache</prop>
-				<prop key="initFilter">cacheName=commonMeasureUnitFlexpayCache</prop>
+				<prop key="readFull">cacheName=commonMeasureUnitFlexpayCache</prop>
 			</props>
 		</property>
 		<property name="flushingModels">

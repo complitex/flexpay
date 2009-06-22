@@ -317,7 +317,7 @@ public class ReportUtil {
 
 		// set report virtualizer to prevent OOME generating big reports
 		JRSwapFile swap = new JRSwapFile(getReportCachesDir().getAbsolutePath(), 1024, 1024);
-		JRAbstractLRUVirtualizer virtualizer = new JRSwapFileVirtualizer(15000, swap);
+		JRAbstractLRUVirtualizer virtualizer = new JRSwapFileVirtualizer(50, swap);
 		parameters.put(JRParameter.REPORT_VIRTUALIZER, virtualizer);
 
 		// Load compiled report template
@@ -325,6 +325,7 @@ public class ReportUtil {
 
 		Collection<String> resourceNames = fillParameters(report, parameters);
 		try {
+			log.debug("Starting report filling: {}", name);
 			if (jrDataSource != null) {
 				return JasperFillManager.fillReport(report, parameters, jrDataSource);
 			} else if (requiresConnection(report)) {
@@ -340,6 +341,8 @@ public class ReportUtil {
 		} finally {
 			virtualizer.setReadOnly(true);
 			cleanup(parameters, resourceNames);
+
+			log.debug("Report filled: {}", name);
 		}
 	}
 

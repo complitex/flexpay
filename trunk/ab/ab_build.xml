@@ -29,8 +29,6 @@
 
 	<path id="ab.test.classpath">
 		<path refid="common.test.classpath" />
-		<!--<path refid="ab.jar" />-->
-		<!--<path refid="ab.test.jar" />-->
 		<path refid="ab.production.classpath" />
 	</path>
 

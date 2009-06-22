@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"  ?>
-<!-- Created with iReport - A designer for JasperReports -->
-<!DOCTYPE jasperReport PUBLIC "//JasperReports//DTD Report Design//EN" "http://jasperreports.sourceforge.net/dtds/jasperreport.dtd">
 <jasperReport
+		xmlns="http://jasperreports.sourceforge.net/jasperreports"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd"
 		 name="subservices"
 		 columnCount="1"
 		 printOrder="Vertical"
@@ -55,19 +56,19 @@
 	<field name="recalculation" class="java.math.BigDecimal"/>
 
 		<background>
-			<band height="0"  isSplitAllowed="true" >
+			<band height="0"  >
 			</band>
 		</background>
 		<title>
-			<band height="0"  isSplitAllowed="true" >
+			<band height="0"  >
 			</band>
 		</title>
 		<pageHeader>
-			<band height="0"  isSplitAllowed="true" >
+			<band height="0"  >
 			</band>
 		</pageHeader>
 		<columnHeader>
-			<band height="14"  isSplitAllowed="true" >
+			<band height="14"  >
 				<staticText>
 					<reportElement
 						style="LiberationSans-Bold"
@@ -167,7 +168,7 @@
 			</band>
 		</columnHeader>
 		<detail>
-			<band height="7"  isSplitAllowed="true" >
+			<band height="7"  >
 				<textField isStretchWithOverflow="false" isBlankWhenNull="false" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						x="0"
@@ -225,15 +226,15 @@
 			</band>
 		</detail>
 		<columnFooter>
-			<band height="0"  isSplitAllowed="true" >
+			<band height="0"  >
 			</band>
 		</columnFooter>
 		<pageFooter>
-			<band height="0"  isSplitAllowed="true" >
+			<band height="0"  >
 			</band>
 		</pageFooter>
 		<summary>
-			<band height="7"  isSplitAllowed="true" >
+			<band height="7"  >
 				<textField isStretchWithOverflow="false" pattern="#,##0.00" isBlankWhenNull="true" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
 					<reportElement
 						style="LiberationSans-Bold"
