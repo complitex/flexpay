@@ -16,6 +16,10 @@
 				</s:iterator>
 			</td>
 		</tr>
+		<tr valign="middle" class="cols_1">
+			<td class="col"><s:text name="eirc.payments_collector.email"/>:</td>
+			<td class="col"><s:textfield name="email"/></td>
+		</tr>
 		<tr valign="middle">
 			<td colspan="2"><input type="submit" class="btn-exit" name="submitted"
 								   value="<s:text name="common.save"/>"/></td>

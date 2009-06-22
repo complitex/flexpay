@@ -1025,6 +1025,7 @@
         id bigint not null auto_increment,
         version integer not null comment 'Optimistic lock version',
         status integer not null comment 'Enabled/Disabled status',
+        email varchar(255) comment 'Collector email address',
         organization_id bigint not null comment 'Organization reference',
         primary key (id)
     ) comment='Payment collectors';

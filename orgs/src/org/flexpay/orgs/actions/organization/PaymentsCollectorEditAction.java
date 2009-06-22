@@ -21,6 +21,7 @@ public class PaymentsCollectorEditAction extends FPActionSupport {
 	private PaymentsCollector instance = new PaymentsCollector();
 	private OrganizationFilter organizationFilter = new OrganizationFilter();
 	private Map<Long, String> descriptions = map();
+	private String email;
 
 	private PaymentsCollectorService instanceService;
 	private OrganizationService organizationService;
@@ -45,6 +46,7 @@ public class PaymentsCollectorEditAction extends FPActionSupport {
 		if (!isSubmit()) {
 			if (oldInstance.isNotNew()) {
 				organizationFilter.setSelectedId(oldInstance.getOrganizationStub().getId());
+				email = oldInstance.getEmail();
 			}
 			instance = oldInstance;
 			initDescriptions();
@@ -73,6 +75,8 @@ public class PaymentsCollectorEditAction extends FPActionSupport {
 			description.setName(value);
 			oldInstance.setDescription(description);
 		}
+
+		oldInstance.setEmail(email);
 
 		if (oldInstance.isNew()) {
 			instanceService.create(oldInstance);
@@ -134,6 +138,14 @@ public class PaymentsCollectorEditAction extends FPActionSupport {
 		this.organizationFilter = organizationFilter;
 	}
 
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
 	@Required
 	public void setOrganizationService(OrganizationService organizationService) {
 		this.organizationService = organizationService;
@@ -143,5 +155,4 @@ public class PaymentsCollectorEditAction extends FPActionSupport {
 	public void setInstanceService(PaymentsCollectorService instanceService) {
 		this.instanceService = instanceService;
 	}
-
 }
