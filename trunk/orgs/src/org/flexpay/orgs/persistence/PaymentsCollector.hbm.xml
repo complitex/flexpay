@@ -20,6 +20,11 @@
 				<comment>Enabled/Disabled status</comment>
 			</column>
 		</property>
+		<property name="email">
+			<column name="email">
+				<comment>Collector email address</comment>
+			</column>
+		</property>
 		<many-to-one name="organization" class="org.flexpay.orgs.persistence.Organization"
 					 foreign-key="FK_orgs_payments_collectors_tbl_organization_id">
 			<column name="organization_id" not-null="true">

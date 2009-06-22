@@ -118,16 +118,16 @@ INSERT INTO orgs_service_organization_descriptions_tbl (name, language_id, servi
 	VALUES ('ЖКО', @ru_id, @service_org_1);
 
 -- Payment collectors
-insert INTO orgs_payments_collectors_tbl (id, status, version, organization_id)
-	values (1, 0, 0, @organization_cn);
+insert INTO orgs_payments_collectors_tbl (id, status, version, organization_id, email)
+	values (1, 0, 0, @organization_cn, 'collector@cn.kharkov.ua');
 select @collector_1:=1;
 insert INTO orgs_payments_collectors_descriptions_tbl (language_id, collector_id, name)
 	values (@ru_id, @collector_1, 'Сборщик ЦН');
 insert INTO orgs_payments_collectors_descriptions_tbl (language_id, collector_id, name)
 	values (@en_id, @collector_1, 'Collector CN');
 
-insert INTO orgs_payments_collectors_tbl (id, status, version, organization_id)
-	values (2, 0, 0, @organization_tszh);
+insert INTO orgs_payments_collectors_tbl (id, status, version, organization_id, email)
+	values (2, 0, 0, @organization_tszh, 'collector@tszh.kharkov.ua');
 select @collector_2:=2;
 insert INTO orgs_payments_collectors_descriptions_tbl (language_id, collector_id, name)
 	values (@ru_id, @collector_2, 'Сборщик ТСЖ');

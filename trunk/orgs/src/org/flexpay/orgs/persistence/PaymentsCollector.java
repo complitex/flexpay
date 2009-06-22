@@ -8,6 +8,7 @@ import java.util.Set;
 
 public class PaymentsCollector extends OrganizationInstance<PaymentsCollectorDescription, PaymentsCollector> {
 
+	private String email;
 	private Set<PaymentPoint> paymentPoints = Collections.emptySet();
 
 	/**
@@ -30,5 +31,13 @@ public class PaymentsCollector extends OrganizationInstance<PaymentsCollectorDes
 
 	public void setPaymentPoints(Set<PaymentPoint> paymentPoints) {
 		this.paymentPoints = paymentPoints;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 }
