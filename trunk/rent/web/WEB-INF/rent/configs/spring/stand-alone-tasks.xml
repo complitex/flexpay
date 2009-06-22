@@ -4,7 +4,9 @@
 	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
 
 	<!-- Module rent standalone tasks -->
-	<bean class="org.flexpay.common.util.standalone.StandaloneTasksHolder" factory-method="getInstance">
+	<bean class="org.flexpay.common.util.standalone.StandaloneTasksHolder"
+          parent="commonStandAloneTasksHolder"
+          factory-method="getInstance">
 		<property name="standaloneTasks">
 			<list>
 			</list>

@@ -17,7 +17,6 @@
 		<property name="languageService" ref="languageService" />
 	</bean>
 
-
     <import resource="common/configs/spring/config.xml" />
 	<import resource="ab/configs/spring/config.xml" />
     <import resource="orgs/configs/spring/config.xml" />

@@ -6,6 +6,7 @@
     <import resource="beans-dao.xml" />
     <import resource="beans-services.xml" />
 	<import resource="beans-cache.xml" />
+    <import resource="beans-jbpm.xml" />
     <import resource="beans-struts.xml" />
 
 	<import resource="stand-alone-tasks.xml" />

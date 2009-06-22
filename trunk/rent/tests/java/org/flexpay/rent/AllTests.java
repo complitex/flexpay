@@ -11,6 +11,7 @@ import org.junit.runners.Suite;
 @Suite.SuiteClasses({
 		org.flexpay.rent.action.AllTests.class,
 		org.flexpay.rent.persistence.AllTests.class,
+		org.flexpay.rent.process.AllTests.class,
 		org.flexpay.rent.service.AllTests.class
 		})
 public class AllTests extends TestCase {
@@ -20,4 +21,5 @@ public class AllTests extends TestCase {
         suite.addTest(new JUnit4TestAdapter(AllTests.class));
         return suite;
     }
+
 }

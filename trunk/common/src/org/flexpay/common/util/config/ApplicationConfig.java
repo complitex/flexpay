@@ -68,10 +68,7 @@ public class ApplicationConfig {
 	 * @return Value for property 'instance'.
 	 */
 	protected static ApplicationConfig getInstance() {
-		if (instance == null) {
-			return new ApplicationConfig();
-		}
-		return instance;
+		return instance == null ? new ApplicationConfig() : instance;
 	}
 
 	/**
@@ -138,9 +135,7 @@ public class ApplicationConfig {
 		instance = config;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
+	@Override
 	public String toString() {
 		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE)
 				.append("languages", languages.toArray()).toString();
@@ -190,11 +185,7 @@ public class ApplicationConfig {
 	public static InputStream getResourceAsStream(@NotNull @NonNls String name) {
 		try {
 			Resource resource = resourceLoader.getResource(name);
-			if (resource.exists()) {
-				return resource.getInputStream();
-			} else {
-				return null;
-			}
+			return resource.exists() ? resource.getInputStream() : null;
 		} catch (IOException e) {
 			log.warn("Failed getting resource {}", name, e);
 			return null;
@@ -210,11 +201,7 @@ public class ApplicationConfig {
 	public static File getResourceAsFile(@NotNull @NonNls String name) {
 		try {
 			Resource resource = resourceLoader.getResource(name);
-			if (resource.exists()) {
-				return resource.getFile();
-			} else {
-				return null;
-			}
+			return resource.exists() ? resource.getFile() : null;
 		} catch (IOException e) {
 			log.warn("Failed getting resource {}", name, e);
 			return null;
@@ -272,4 +259,5 @@ public class ApplicationConfig {
 	public static Locale getDefaultReportLocale() {
 		return getInstance().defaultReportLocale;
 	}
+
 }
