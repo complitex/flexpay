@@ -15,7 +15,6 @@
             <td class="th"><s:text name="eirc.payment_point.name"/></td>
             <td class="th"><s:text name="eirc.payments_collector"/></td>
             <td class="th"><s:text name="ab.address"/></td>
-            <td class="th"><s:text name="ab.email"/></td>
 			<td class="th">&nbsp;</td>
 		</tr>
 		<s:iterator value="points" status="status">
@@ -29,12 +28,11 @@
                 <td class="col"><s:property value="getTranslation(names).name"/></td>
                 <td class="col"><s:property value="getCollectorName(collector)"/></td>
                 <td class="col"><s:property value="address"/></td>
-                <td class="col"><s:property value="email"/></td>
 				<td class="col"><a href="<s:url action="paymentPointEdit"><s:param name="point.id" value="%{id}"/></s:url>"><s:text name="common.edit"/></a></td>
 			</tr>
 		</s:iterator>
 		<tr>
-			<td colspan="5">
+			<td colspan="6">
 				<%@include file="/WEB-INF/jsp/common/filter/pager/pager.jsp" %>
 				<input type="submit" value="<s:text name="common.delete_selected" />" class="btn-exit"
 					   onclick="$('#fobjects').attr('action', '<s:url action="paymentPointsDelete" includeParams="none" />');"/>
