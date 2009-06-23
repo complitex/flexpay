@@ -47,6 +47,20 @@ class UpdatePath implements Comparable {
 	}
 }
 
+class SQLCommentsExtractor {
+
+	String getComments(File file) {
+		// find "/* xxx */" and "-- xxx" comments
+		// .*? = suppress greedy matching
+		// (?ms) multiline and dotall modes
+		def matcher = file.text =~ /(?ms)(\/\*.*?\*\/)|(\-\-.*?$)/
+		if (matcher) {
+			return "Comments: \n" + matcher.collect {it[0]}.join("\n") + "\n"
+		}
+		return ""
+	}
+}
+
 def version = new Version(number : 0)
 if (versionStr.count("-") == 3) {
 	version.number = versionStr.substring("yyyy-MM-dd-".size()) as int
@@ -61,6 +75,7 @@ def modulesDependencies = [
         tc : ['common', 'ab', 'bti', 'tc'],
         orgs : ['common', 'orgs'],
         payments : ['common', 'ab', 'orgs', 'payments'],
+		rent : ['common', 'ab', 'orgs', 'payments', 'rent'],
         eirc : ['common', 'ab', 'bti', 'orgs', 'payments', 'eirc'],
         sz : ['common', 'ab', 'bti', 'orgs', 'payments', 'eirc', 'sz']
 ]
@@ -100,7 +115,11 @@ modulesDependencies[module].each { moduleName ->
 
 paths.sort()
 
+
+SQLCommentsExtractor commentsExtractor = new SQLCommentsExtractor()
+
 println "Updates for ${version}"
 paths.each { up ->
 	println up.path
+	print commentsExtractor.getComments(up.path)
 }
