@@ -186,6 +186,7 @@ public class ServiceTypeServiceImpl implements ServiceTypeService {
 	@NotNull
 	public ServiceType getServiceType(int code) throws IllegalArgumentException {
 
+		log.debug("Getting service type by code {}", code);
 		ServiceType type = serviceDaoExt.findByCode(code);
 		if (type == null) {
 			throw new IllegalArgumentException("Cannot find service type with code #" + code);

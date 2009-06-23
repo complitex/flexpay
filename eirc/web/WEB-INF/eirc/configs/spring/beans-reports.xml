@@ -6,7 +6,6 @@
 
 	<bean name="jrQuittanceDataSource" scope="prototype"
 		  class="org.flexpay.eirc.process.quittance.report.JRQuittanceDataSource"
-		  p:addressService-ref="addressService"
 		  p:serviceOrganizationService-ref="serviceOrganizationService"
 		  p:serviceTypeService-ref="serviceTypeService"
 		  p:quittanceService-ref="quittanceService"

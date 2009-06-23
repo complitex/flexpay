@@ -41,6 +41,7 @@ public class ServiceOrganizationServiceImpl implements ServiceOrganizationServic
 	 */
 	@SuppressWarnings ({"unchecked"})
 	public <T extends ServiceOrganization> T read(@NotNull Stub<T> stub) {
+		log.debug("ReadFull called");
 		return (T) serviceOrganizationDao.readFull(stub.getId());
 	}
 

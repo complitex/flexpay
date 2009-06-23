@@ -5,9 +5,7 @@ import net.sf.jasperreports.engine.JRField;
 import net.sf.jasperreports.engine.JRRewindableDataSource;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.flexpay.ab.persistence.Apartment;
-import org.flexpay.ab.persistence.Building;
 import org.flexpay.ab.persistence.Person;
-import org.flexpay.ab.service.AddressService;
 import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.process.ProcessLogger;
@@ -34,7 +32,10 @@ import org.springframework.beans.factory.annotation.Required;
 
 import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 public class JRQuittanceDataSource implements JRRewindableDataSource {
 
@@ -48,17 +49,16 @@ public class JRQuittanceDataSource implements JRRewindableDataSource {
 	 */
 	public static final String CURRENT_BEAN_MAPPING = "_THIS";
 
-	private Collection<QuittancePrintInfo> data = null;
-	private Iterator<QuittancePrintInfo> iterator = null;
-	private QuittancePrintInfo currentInfo = null;
-	private long processCounter = 0;
-
-	private AddressService addressService;
 	private SPService spService;
 	private QuittanceService quittanceService;
 	private QuittanceNumberService quittanceNumberService;
 	private ServiceTypeService serviceTypeService;
 	private ServiceOrganizationService serviceOrganizationService;
+
+	private List<QuittancePrintInfo> data = null;
+	private Iterator<QuittancePrintInfo> iterator = null;
+	private QuittancePrintInfo currentInfo = null;
+	private long processCounter = 0;
 
 	public void setPrintData(QuittancePrintInfoData data, int nBatches) throws Exception {
 
@@ -196,8 +196,10 @@ public class JRQuittanceDataSource implements JRRewindableDataSource {
 	private void initServiceOrganization(Quittance q, QuittancePrintInfo info) throws Exception {
 
 		ServedBuilding building = (ServedBuilding) q.getEircAccount().getApartment().getBuilding();
+		assert building != null;
 		ServiceOrganization org = serviceOrganizationService.read(building.getServiceOrganizationStub());
 
+		assert org != null;
 		info.setServiceOrganizationName(org.getName());
 
 		// kvartplata
@@ -208,17 +210,6 @@ public class JRQuittanceDataSource implements JRRewindableDataSource {
 				info.setServiceOrganizationAccount(accountNumber);
 			}
 		}
-	}
-
-	private void initAddress(Quittance q, QuittancePrintInfo info) throws Exception {
-
-		Stub<Apartment> stub = q.getEircAccount().getApartmentStub();
-		String address = addressService.getAddress(stub, null);
-		info.setApartmentAddress(address);
-
-		Stub<Building> buildingStub = q.getEircAccount().getApartment().getBuildingStub();
-		String buildingAddress = addressService.getBuildingAddress(buildingStub, null);
-		info.setBuildingAddress(buildingAddress);
 	}
 
 	private void initPersonFIO(Quittance q, QuittancePrintInfo info) {
@@ -268,7 +259,7 @@ public class JRQuittanceDataSource implements JRRewindableDataSource {
 				}
 			}
 
-//			if (processCounter >= 50) {
+//			if (processCounter >= 500) {
 //				return false;
 //			}
 		}
@@ -330,11 +321,6 @@ public class JRQuittanceDataSource implements JRRewindableDataSource {
 	@Required
 	public void setSpService(SPService spService) {
 		this.spService = spService;
-	}
-
-	@Required
-	public void setAddressService(AddressService addressService) {
-		this.addressService = addressService;
 	}
 
 	@Required
