@@ -180,6 +180,7 @@
     <orderEntry type="library" name="XStream" level="project" />
     <orderEntry type="library" name="Drools" level="project" />
     <orderEntry type="library" name="openmq" level="project" />
+    <orderEntry type="library" name="opensso" level="project" />
   </component>
 </module>
 

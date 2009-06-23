@@ -26,6 +26,7 @@
 		<path refid="xstream.lib" />
 		<path refid="spring-ws.lib" />
 		<path refid="openmq.lib" />
+        <path refid="opensso.lib"/>
 	</path>
 
 	<patternset id="empty_pattern" excludes="**/*.*" />
@@ -165,6 +166,9 @@
 			<param name="src.i18n.dir" value="${common.dir}/${src.dir}" />
 			<reference refid="common.classes.resources" torefid="resources" />
 		</antcall>
+        <copy todir="${build.dir}/web/WEB-INF/classes" overwrite="true">
+            <fileset file="${common.dir}/etc/AMConfig.properties" />
+		</copy>
 	</target>
 
 	<target name="common.exportschema.mysql5" depends="clean.build,common.compile.production">

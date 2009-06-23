@@ -15693,6 +15693,19 @@
             </SvnBranchConfiguration>
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/../../payments">
+          <value>
+            <SvnBranchConfiguration>
+              <option name="branchUrls">
+                <list>
+                  <option value="https://flexpay.googlecode.com/svn/branches" />
+                  <option value="https://flexpay.googlecode.com/svn/tags" />
+                </list>
+              </option>
+              <option name="trunkUrl" value="https://flexpay.googlecode.com/svn/trunk" />
+            </SvnBranchConfiguration>
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/../../samples">
           <value>
             <SvnBranchConfiguration>
@@ -15798,7 +15811,21 @@
         <root url="jar://$PROJECT_DIR$/../../common/lib/spring2/spring-webmvc.jar!/" />
       </CLASSES>
       <JAVADOC />
-      <SOURCES />
+      <SOURCES>
+        <root url="jar://$LIB_JAVASOURCES$/spring-framework-2.5.5/dist/spring-sources.jar!/" />
+        <root url="jar://$LIB_JAVASOURCES$/spring-framework-2.5.5/dist/module-sources/spring-beans-sources.jar!/" />
+        <root url="jar://$LIB_JAVASOURCES$/spring-framework-2.5.5/dist/module-sources/spring-aop-sources.jar!/" />
+        <root url="jar://$LIB_JAVASOURCES$/spring-framework-2.5.5/dist/module-sources/spring-tx-sources.jar!/" />
+        <root url="jar://$LIB_JAVASOURCES$/spring-framework-2.5.5/dist/module-sources/spring-orm-sources.jar!/" />
+        <root url="jar://$LIB_JAVASOURCES$/spring-framework-2.5.5/dist/module-sources/spring-webmvc-struts-sources.jar!/" />
+        <root url="jar://$LIB_JAVASOURCES$/spring-framework-2.5.5/dist/module-sources/spring-core-sources.jar!/" />
+        <root url="jar://$LIB_JAVASOURCES$/spring-framework-2.5.5/dist/module-sources/spring-web-sources.jar!/" />
+        <root url="jar://$LIB_JAVASOURCES$/spring-framework-2.5.5/dist/module-sources/spring-jdbc-sources.jar!/" />
+        <root url="jar://$LIB_JAVASOURCES$/spring-framework-2.5.5/dist/module-sources/spring-webmvc-sources.jar!/" />
+        <root url="jar://$LIB_JAVASOURCES$/spring-framework-2.5.5/dist/module-sources/spring-jms-sources.jar!/" />
+        <root url="jar://$LIB_JAVASOURCES$/spring-framework-2.5.5/dist/module-sources/spring-test-sources.jar!/" />
+        <root url="jar://$LIB_JAVASOURCES$/spring-framework-2.5.5/dist/module-sources/spring-webmvc-portlet-sources.jar!/" />
+      </SOURCES>
     </library>
     <library name="Struts2">
       <CLASSES>
@@ -15964,6 +15991,24 @@
       <JAVADOC />
       <SOURCES />
     </library>
+    <library name="opensso">
+      <CLASSES>
+        <root url="jar://$PROJECT_DIR$/../../common/lib/opensso/openssoclientsdk.jar!/" />
+        <root url="jar://$PROJECT_DIR$/../../common/lib/opensso/opensso-springsecurity-0.2.jar!/" />
+      </CLASSES>
+      <JAVADOC />
+      <SOURCES />
+    </library>
+    <library name="openmq">
+      <CLASSES>
+        <root url="jar://$PROJECT_DIR$/../../common/lib/openmq/imq.jar!/" />
+      </CLASSES>
+      <JAVADOC />
+      <SOURCES />
+    </library>
   </component>
+  <UsedPathMacros>
+    <macro name="LIB_JAVASOURCES" description="" />
+  </UsedPathMacros>
 </project>
 

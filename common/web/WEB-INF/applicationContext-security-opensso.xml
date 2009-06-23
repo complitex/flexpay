@@ -1,0 +1,130 @@
+<b:beans xmlns:security="http://www.springframework.org/schema/security"
+		 xmlns:b="http://www.springframework.org/schema/beans"
+		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+              http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-2.0.4.xsd">
+    <!--
+    <security:http>
+        <security:intercept-url pattern="/resources/common/jsp/login-failed.jsp" access="IS_AUTHENTICATED_ANONYMOUSLY" />
+    </security:http>
+    -->
+    <b:bean id="filterChainProxy"
+            class="org.springframework.security.util.FilterChainProxy">
+        <security:filter-chain-map path-type="ant">
+            <security:filter-chain pattern="/**" filters="httpSessionContextIntegrationFilter,logoutFilter,openssoFilter,exceptionTranslationFilter,filterInvocationInterceptor"/>
+        </security:filter-chain-map>
+    </b:bean>
+
+    <b:alias name="filterChainProxy" alias="springSecurityFilterChain"/>
+
+    <!--
+        Postions of filters:
+            httpSessionContextIntegrationFilter,
+            logoutFilter,
+            openssoFilter,
+            exceptionTranslationFilter,
+            filterInvocationInterceptor
+
+        Postions of every filters:
+                      CHANNEL_FILTER
+                      CONCURRENT_SESSION_FILTER
+                      HTTP_SESSION_CONTEXT_FILTER
+                      SESSION_FIXATION_FILTER
+                      LOGOUT_FILTER
+                      X509_FILTER
+                      PRE_AUTH_FILTER
+                      CAS_PROCESSING_FILTER
+                      AUTHENTICATION_PROCESSING_FILTER
+                      OPENID_PROCESSING_FILTER
+                      LOGIN_PAGE_FILTER
+                      BASIC_PROCESSING_FILTER
+                      SERVLET_API_SUPPORT_FILTER
+                      REMEMBER_ME_FILTER
+                      ANONYMOUS_FILTER
+                      EXCEPTION_TRANSLATION_FILTER
+                      NTLM_FILTER
+                      FILTER_SECURITY_INTERCEPTOR
+                      SWITCH_USER_FILTER
+    -->
+
+    <b:bean id="httpSessionContextIntegrationFilter"
+            class="org.springframework.security.context.HttpSessionContextIntegrationFilter">
+        <b:property name="allowSessionCreation" value="true"/>
+        <b:property name="forceEagerSessionCreation" value="true"/>
+    </b:bean>
+
+    <b:bean id="filterInvocationInterceptor"
+            class="org.springframework.security.intercept.web.FilterSecurityInterceptor">
+        <b:property name="authenticationManager" ref="authenticationManager"/>
+        <b:property name="accessDecisionManager" ref="accessDecisionManager"/>
+        <b:property name="objectDefinitionSource">
+            <b:bean class="com.sun.identity.provider.springsecurity.OpenSSOObjectDefinitionSource">
+                <b:property name="anonymousUrls">
+                    <b:list>
+                        <b:value>/logout*</b:value>
+                        <b:value>/denied*</b:value>
+			            <b:value>/resources/common/jsp/forbidden.jsp</b:value>
+                    </b:list>
+                </b:property>
+            </b:bean>
+        </b:property>
+    </b:bean>
+
+    <b:bean id="authenticationManager"
+            class="org.springframework.security.providers.ProviderManager">
+        <b:property name="providers">
+            <b:list>
+                <b:bean class="com.sun.identity.provider.springsecurity.OpenSSOAuthenticationProvider"/>
+            </b:list>
+        </b:property>
+    </b:bean>
+
+    <b:bean id="openssoFilter" class="com.sun.identity.provider.springsecurity.OpenSSOProcessingFilter">
+        <b:property name="authenticationManager" ref="authenticationManager"/>
+
+        <b:property name="authenticationFailureUrl" value="/resources/common/jsp/forbidden.jsp"/>
+        <b:property name="defaultTargetUrl" value="/"/>
+        <b:property name="filterProcessesUrl" value="/j_spring_security_check"/>
+    </b:bean>
+
+    <b:bean id="authenticationEntryPoint" class="com.sun.identity.provider.springsecurity.OpenSSOProcessingFilterEntryPoint">
+        <b:property name="loginUrl" value="http://opensso.flexpay.complitex:8080/opensso/UI/Login"/>
+        <b:property name="filterProcessesUrl" value="/j_spring_security_check"/>
+    </b:bean>
+
+    <b:bean id="exceptionTranslationFilter" class="org.springframework.security.ui.ExceptionTranslationFilter">
+        <b:property name="authenticationEntryPoint" ref="authenticationEntryPoint"/>
+        <b:property name="accessDeniedHandler">
+            <b:bean class="org.springframework.security.ui.AccessDeniedHandlerImpl">
+                <b:property name="errorPage" value="/resources/common/jsp/forbidden_error.jsp"/>
+            </b:bean>
+        </b:property>
+    </b:bean>
+
+    <b:bean id="logoutFilter" class="org.springframework.security.ui.logout.LogoutFilter">
+        <b:constructor-arg value="/"/>
+        <b:constructor-arg>
+            <b:list>
+                <b:bean class="org.springframework.security.ui.logout.SecurityContextLogoutHandler">
+                    <b:property name="invalidateHttpSession" value="true"/>
+                </b:bean>
+                <b:bean id="openSsoLogoutHandler" class="com.sun.identity.provider.springsecurity.OpenSSOLogoutHandler"/>
+            </b:list>
+        </b:constructor-arg>
+        <b:property name="filterProcessesUrl" value="/logout"/>
+    </b:bean>
+
+    <!--
+    Using Affirmative voter will DENY all that which is not
+    explicitly allowed.
+
+    -->
+     <b:bean name="accessDecisionManager" class="org.springframework.security.vote.AffirmativeBased">
+        <b:property name="decisionVoters">
+            <b:list>
+                <b:bean class="com.sun.identity.provider.springsecurity.OpenSSOVoter"/>
+            </b:list>
+        </b:property>
+        <b:property name="allowIfAllAbstainDecisions" value="true"/>
+    </b:bean>
+</b:beans>
