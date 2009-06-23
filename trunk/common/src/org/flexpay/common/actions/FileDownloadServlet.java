@@ -1,7 +1,7 @@
 package org.flexpay.common.actions;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringUtils;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.service.FPFileService;
@@ -15,10 +15,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 
 public class FileDownloadServlet extends HttpServlet {
 
@@ -35,23 +32,21 @@ public class FileDownloadServlet extends HttpServlet {
 			try {
 				inline = Integer.parseInt(inlineStr);
 			} catch (NumberFormatException ex) {
-				log.debug("invalid inline parameter {}", inlineStr);
+				log.debug("Invalid inline parameter {}", inlineStr);
 			}
 		}
 
 		String fileIdStr = StringUtil.getFileNameWithoutExtension(request.getRequestURI());
-		if (log.isDebugEnabled()) {
-			log.debug("Request uri: {}", request.getRequestURI());
-			log.debug("Request url: {}", request.getRequestURL());
-			log.debug("QueryString: {}", request.getQueryString());
-			log.debug("FileId: {}", fileIdStr);
-		}
+		log.debug("Request uri: {}", request.getRequestURI());
+		log.debug("Request url: {}", request.getRequestURL());
+		log.debug("QueryString: {}", request.getQueryString());
+		log.debug("FileId: {}", fileIdStr);
 
 		if (StringUtils.isNotBlank(fileIdStr)) {
 			try {
 				file.setId(Long.parseLong(fileIdStr));
 			} catch (NumberFormatException ex) {
-				log.debug("invalid file.id parameter {}", inlineStr);
+				log.debug("Invalid file.id parameter {}", fileIdStr);
 			}
 		}
 
@@ -102,13 +97,8 @@ public class FileDownloadServlet extends HttpServlet {
 		return file.getInputStream();
 	}
 
-	public String getContentDisposition() {
-		String result;
-		if (inline != 0) {
-			result = "inline";
-		} else {
-			result = "attachment; filename=\"" + getFileName() + "\"";
-		}
+	public String getContentDisposition() throws UnsupportedEncodingException {
+		String result = inline != 1 ? "inline" : "attachment;filename=\"" + new String(getFileName().getBytes("UTF-8"), "ISO-8859-1") + "\"";
 
 		log.debug("Result: {}", result);
 
@@ -132,4 +122,5 @@ public class FileDownloadServlet extends HttpServlet {
 
 		return result;
 	}
+
 }

@@ -181,6 +181,7 @@
     <orderEntry type="library" name="Drools" level="project" />
     <orderEntry type="library" name="openmq" level="project" />
     <orderEntry type="library" name="opensso" level="project" />
+    <orderEntry type="library" name="iText" level="project" />
   </component>
 </module>
 
