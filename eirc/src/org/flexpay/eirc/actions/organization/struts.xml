@@ -72,6 +72,10 @@
 			<result name="redirectSuccess" type="redirect-action">paymentsCollectorsList</result>
 		</action>
 
+		<action name="paymentCollectorDetails" class="paymentsCollectorDetailsAction">
+			<result type="tiles">eirc.organization.payments_collectors.details</result>
+		</action>
+
 		<!-- Payment points -->
 		<action name="paymentPointsList" class="paymentPointsListAction">
 			<result type="tiles">eirc.organization.payment_points.list</result>

@@ -17,12 +17,12 @@ import java.util.List;
 
 public class PaymentPointsListAction extends FPActionWithPagerSupport<PaymentPoint> {
 
-	private PaymentsCollectorFilter paymentsCollectorFilter = new PaymentsCollectorFilter();
-	private List<PaymentPoint> points = Collections.emptyList();
+	protected PaymentsCollectorFilter paymentsCollectorFilter = new PaymentsCollectorFilter();
+	protected List<PaymentPoint> points = Collections.emptyList();
 
-	private OrganizationHelper organizationHelper;
-	private PaymentsCollectorService collectorService;
-	private PaymentPointService paymentPointService;
+	protected OrganizationHelper organizationHelper;
+	protected PaymentsCollectorService collectorService;
+	protected PaymentPointService paymentPointService;
 
 	/**
 	 * Perform action execution.
@@ -35,12 +35,15 @@ public class PaymentPointsListAction extends FPActionWithPagerSupport<PaymentPoi
 	@NotNull
 	protected String doExecute() throws Exception {
 
-		collectorService.initFilter(paymentsCollectorFilter);
-
-		ArrayStack filters = CollectionUtils.arrayStack(paymentsCollectorFilter);
-		points = paymentPointService.listPoints(filters, getPager());
+		loadPaymentPoints();
 
 		return SUCCESS;
+	}
+
+	protected void loadPaymentPoints() {
+		collectorService.initFilter(paymentsCollectorFilter);
+		ArrayStack filters = CollectionUtils.arrayStack(paymentsCollectorFilter);
+		points = paymentPointService.listPoints(filters, getPager());
 	}
 
 	public String getCollectorName(@NotNull PaymentsCollector collectorStub) {

@@ -187,6 +187,11 @@
 		<put-attribute name="body" value="/WEB-INF/jsp/orgs/organizations/edit_payments_collector.jsp" />
 	</definition>
 
+	<definition name="eirc.organization.payments_collectors.details" extends="eirc.dictionaries">
+		<put-attribute name="title" value="eirc.payments_collector" />
+		<put-attribute name="body" value="/WEB-INF/jsp/orgs/organizations/payments_collector_details.jsp" />
+	</definition>
+
 	<!-- Payment Points -->
 	<definition name="eirc.organization.payment_points.list" extends="eirc.dictionaries">
 		<put-attribute name="title" value="eirc.payment_points" />

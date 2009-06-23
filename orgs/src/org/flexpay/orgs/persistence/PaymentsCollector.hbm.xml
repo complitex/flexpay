@@ -85,6 +85,12 @@
 		where i.status=0
 	</query>
 
+	<query name="PaymentsCollector.findInstances.count">
+		select count(i)
+		from PaymentsCollector i    		
+		where i.status=0
+	</query>
+
 	<query name="PaymentsCollector.findOrganizationInstances">
 		from PaymentsCollector
 		where status=0 and organization.id=?
