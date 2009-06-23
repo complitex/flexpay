@@ -21,7 +21,6 @@
 				<input type="submit" class="btn-exit"
 					   onclick="$('#fobjects').attr('action','<s:url action='apartmentEdit'><s:param name="apartment.id" value="0"/></s:url>');"
 					   value="<s:text name="common.new"/>"/>
-                <a href="<s:url value="/download/" includeParams="none" />37.registry">nnnnn</a>
 			</td>
 		</tr>
 		<tr>
