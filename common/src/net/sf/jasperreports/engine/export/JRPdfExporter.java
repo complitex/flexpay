@@ -111,15 +111,7 @@ import com.lowagie.text.Image;
 import com.lowagie.text.Phrase;
 import com.lowagie.text.Rectangle;
 import com.lowagie.text.SplitCharacter;
-import com.lowagie.text.pdf.BaseFont;
-import com.lowagie.text.pdf.ColumnText;
-import com.lowagie.text.pdf.FontMapper;
-import com.lowagie.text.pdf.PdfAction;
-import com.lowagie.text.pdf.PdfContentByte;
-import com.lowagie.text.pdf.PdfDestination;
-import com.lowagie.text.pdf.PdfOutline;
-import com.lowagie.text.pdf.PdfTemplate;
-import com.lowagie.text.pdf.PdfWriter;
+import com.lowagie.text.pdf.*;
 
 
 /**
@@ -475,10 +467,10 @@ public class JRPdfExporter extends JRAbstractExporter
 			if (isEncrypted)
 			{
 				pdfWriter.setEncryption(
-					is128BitKey,
-					userPassword,
-					ownerPassword,
-					permissions
+					userPassword.getBytes(),
+					ownerPassword.getBytes(),
+					permissions,
+					PdfEncryption.STANDARD_ENCRYPTION_128
 					);
 			}
 
