@@ -147,6 +147,12 @@
 		</fileset>
 	</path>
 
+    <path id="opensso.lib">
+		<fileset dir="${common.dir}/lib">
+			<include name="opensso/*.jar" />
+		</fileset>
+	</path>
+
 	<!-- NotNull instrumentation javac task -->
 	<taskdef name="javac2"
 			 classname="com.intellij.ant.Javac2"
@@ -254,6 +260,7 @@
             <lib dir="${common.dir}/lib/spring-ws" />
             <lib dir="${common.dir}/lib/openmq" />
 			<lib dir="${common.dir}/lib/jdbc" />
+			<lib dir="${common.dir}/lib/opensso" />
 			<lib dir="${build.dir}/lib" />
 		</war>
 	</target>
