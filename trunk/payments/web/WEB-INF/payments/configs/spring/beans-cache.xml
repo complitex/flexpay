@@ -46,14 +46,14 @@
 		<property name="cacheProviderFacade" ref="cacheProviderFacade" />
 		<property name="cachingModels">
 			<props>
-				<prop key="read">cacheName=flexpayCache</prop>
-				<prop key="listServices">cacheName=flexpayCache</prop>
-				<prop key="getService">cacheName=flexpayCache</prop>
+				<prop key="readFull">cacheName=paymentsServiceCache</prop>
 			</props>
 		</property>
 		<property name="flushingModels">
 			<props>
-				<prop key="save*">cacheNames=flexpayCache</prop>
+				<prop key="create">cacheNames=paymentsServiceCache;flushBeforeMethodExecution=true</prop>
+				<prop key="update">cacheNames=paymentsServiceCache;flushBeforeMethodExecution=true</prop>
+				<prop key="disable">cacheNames=paymentsServiceCache;flushBeforeMethodExecution=true</prop>
 			</props>
 		</property>
 		<property name="target" ref="spServiceTarget" />
@@ -71,9 +71,9 @@
 		</property>
 		<property name="flushingModels">
 			<props>
-				<prop key="create">cacheNames=paymentsServiceTypeCache</prop>
-				<prop key="update">cacheNames=paymentsServiceTypeCache</prop>
-				<prop key="disable">cacheNames=paymentsServiceTypeCache</prop>
+				<prop key="create">cacheNames=paymentsServiceTypeCache;flushBeforeMethodExecution=true</prop>
+				<prop key="update">cacheNames=paymentsServiceTypeCache;flushBeforeMethodExecution=true</prop>
+				<prop key="disable">cacheNames=paymentsServiceTypeCache;flushBeforeMethodExecution=true</prop>
 			</props>
 		</property>
 		<property name="target" ref="serviceTypeServiceTarget" />
@@ -89,7 +89,7 @@
 		</property>
 		<property name="flushingModels">
 			<props>
-				<prop key="save*">cacheNames=flexpayCache</prop>
+				<prop key="save*">cacheNames=flexpayCache;flushBeforeMethodExecution=true</prop>
 			</props>
 		</property>
 		<property name="target" ref="serviceProviderServiceAttributeTarget" />

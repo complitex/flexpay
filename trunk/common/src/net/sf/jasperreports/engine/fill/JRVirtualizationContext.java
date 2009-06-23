@@ -139,12 +139,6 @@ public class JRVirtualizationContext implements Serializable
 						  ", total templates: " + cachedTemplates.size());
             }
         }
-//		Object old = cachedTemplates.put(template.getId(), template);
-//		if (old == null && log.isWarnEnabled())
-//		{
-//			log.warn("Cached template " + template + " having id " + template.getId() +
-//					  ", total templates: " + cachedTemplates.size());
-//		}
 	}
 
 

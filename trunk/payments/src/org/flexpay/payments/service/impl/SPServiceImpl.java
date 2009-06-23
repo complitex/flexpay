@@ -223,6 +223,7 @@ public class SPServiceImpl implements SPService {
 	 */
 	@Nullable
 	public Service readFull(@NotNull Stub<? extends Service> stub) {
+		log.debug("readFull called");
 		Service service = serviceDao.readFull(stub.getId());
 		if (service != null && service.getMeasureUnit() != null) {
 			Stub<MeasureUnit> unitStub = Stub.stub(service.getMeasureUnit());

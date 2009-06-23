@@ -899,12 +899,20 @@
 					</textElement>
 				<text><![CDATA[Киевский филиал]]></text>
 				</staticText>
-				<componentElement>
-					<reportElement x="0" y="38" width="150" height="36" key="barcode-1"/>
-					<bc:barcode type="Code128">
-						<bc:codeExpression>$F{quittanceNumberWithSumm}</bc:codeExpression>
-					</bc:barcode>
-				</componentElement>
+				<image isUsingCache="false" scaleImage="RetainShape" vAlign="Top" hAlign="Left" evaluationTime="Now" hyperlinkType="None"  hyperlinkTarget="Self" >
+					<reportElement
+						mode="Opaque"
+						x="0"
+						y="38"
+						width="150"
+						height="36"
+						forecolor="#000000"
+						backcolor="#FFFFFF"
+						key="barcode-1"/>
+					<box></box>
+					<graphicElement stretchType="NoStretch" fill="Solid" />
+					<imageExpression class="net.sf.jasperreports.engine.JRRenderable"><![CDATA[new org.flexpay.common.service.reporting.BarbecueRenderer(net.sourceforge.barbecue.BarcodeFactory.createEAN128($F{quittanceNumberWithSumm}), false)]]></imageExpression>
+				</image>
 				<staticText>
 					<reportElement
 						style="LiberationSans-Bold"
