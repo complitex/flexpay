@@ -56,6 +56,12 @@
 		  p:organizationService-ref="organizationService"
 		  p:instanceService-ref="paymentsCollectorService" />
 
+	<bean id="paymentsCollectorDetailsAction" scope="prototype"
+		  class="org.flexpay.orgs.actions.organization.PaymentsCollectorDetailsAction"
+		  p:organizationHelper-ref="organizationHelper"
+		  p:collectorService-ref="paymentsCollectorService"
+		  p:paymentPointService-ref="paymentPointService" />
+
 	<!-- Payment points actions -->
 	<bean id="paymentPointsListAction" scope="prototype"
 		  class="org.flexpay.orgs.actions.organization.PaymentPointsListAction"

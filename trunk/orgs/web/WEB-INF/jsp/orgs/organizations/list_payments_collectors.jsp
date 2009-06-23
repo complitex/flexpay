@@ -9,8 +9,10 @@
 		<tr>
 			<td class="th" width="1%">&nbsp;</td>
 			<td class="th" width="1%"><input type="checkbox" onchange="FP.setCheckboxes(this.checked, 'objectIds');"></td>
+            <td class="th"><s:text name="eirc.organization.id"/></td>
             <td class="th"><s:text name="eirc.organization.name"/></td>
             <td class="th"><s:text name="eirc.orginstance.description"/></td>
+			<td class="th"><s:text name="eirc.organization.email"/></td>
 			<td class="th">&nbsp;</td>
 		</tr>
 		<s:iterator value="instances" status="status">
@@ -21,14 +23,22 @@
 				<td class="col" width="1%">
 					<input type="checkbox" name="objectIds" value="<s:property value="%{id}"/>"/>
 				</td>
-                <td class="col"><s:property value="getOrganizationName(organization)"/></td>
+				<td class="col">
+					<s:property value="%{id}"/>
+				</td>
+                <td class="col">
+					<a href="<s:url action="paymentCollectorDetails"><s:param name="paymentsCollectorFilter.selectedId" value="%{id}"/></s:url>">
+						<s:property value="getOrganizationName(organization)"/>
+					</a>
+				</td>
                 <td class="col"><s:property value="getTranslation(descriptions).name"/></td>
+                <td class="col"><s:property value="email"/></td>
 				<td class="col"><a href="<s:url action="paymentsCollectorEdit"><s:param name="instance.id" value="%{id}"/></s:url>">
 						 <s:text name="common.edit"/></a></td>
 			</tr>
 		</s:iterator>
 		<tr>
-			<td colspan="10">
+			<td colspan="7">
 				<%@include file="/WEB-INF/jsp/common/filter/pager/pager.jsp" %>
 				<input type="submit" value="<s:text name="common.delete_selected" />" class="btn-exit"
 					   onclick="$('#fobjects').attr('action', '<s:url action="paymentsCollectorsDelete" includeParams="none" />');"/>

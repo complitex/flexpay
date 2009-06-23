@@ -102,6 +102,7 @@
 		select distinct o
 		from PaymentPoint o
 			inner join fetch o.collector
+			left join fetch o.names
 		where o.status = 0 and o.collector.id = ?
 	</query>
 
