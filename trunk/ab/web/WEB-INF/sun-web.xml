@@ -4,7 +4,7 @@
 		"http://www.sun.com/software/dtd/appserver/sun-web-app_2_5-0.dtd">
 <sun-web-app>
 
-<!--
+
 	<security-role-mapping>
 		<role-name>ROLE_BASIC</role-name>
 		<group-name>id=FULL_ACCESS,ou=group,dc=opensso,dc=java,dc=net</group-name>
@@ -364,5 +364,5 @@
 		<role-name>ROLE_AB_PERSON_READ</role-name>
 		<group-name>VIEW_ONLY</group-name>
 	</security-role-mapping>
--->
+    
 </sun-web-app>
