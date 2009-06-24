@@ -49,6 +49,7 @@ public class PaymentPointServiceImpl implements PaymentPointService {
 	 */
 	@NotNull
 	public List<PaymentPoint> listPoints(@NotNull ArrayStack filters, @NotNull Page<PaymentPoint> pager) {
+
 		if (filters.isEmpty()) {
 			return paymentPointDao.listPoints(pager);
 		}
@@ -61,6 +62,26 @@ public class PaymentPointServiceImpl implements PaymentPointService {
 		}
 
 		return paymentPointDao.listPoints(pager);
+	}
+
+	/**
+	 * List available payment points if payments collector is selected in filters stack, empty list otherwise
+	 *
+	 * @param filters Filters stack
+	 * @param pager   Pager
+	 * @return available payment points if payments collector is selected in filters stack, empty list otherwise
+	 */
+	@NotNull
+	public List<PaymentPoint> listCollectorPoints(@NotNull ArrayStack filters, @NotNull Page<PaymentPoint> pager) {
+		
+		// check if payments collector filter is there
+		ObjectFilter filter = (ObjectFilter) filters.peek();
+		if (filter.needFilter() && filter instanceof PaymentsCollectorFilter) {
+			PaymentsCollectorFilter collectorFilter = (PaymentsCollectorFilter) filter;
+			return paymentPointDao.listCollectorPoints(collectorFilter.getSelectedId(), pager);
+		}
+
+		return CollectionUtils.list();
 	}
 
 	/**
@@ -179,9 +200,40 @@ public class PaymentPointServiceImpl implements PaymentPointService {
 	 */
 	@NotNull
 	public PaymentPointsFilter initFilter(@NotNull PaymentPointsFilter filter) {
+
+		return initFilter(CollectionUtils.arrayStack(), filter);
+	}
+
+	/**
+	 * Initialize payment points filter
+	 *
+	 * @param filters filters stack
+	 * @param filter PaymentPointsFilter to initialize
+	 * @return filter back
+	 */
+	@NotNull
+	public PaymentPointsFilter initFilter(@NotNull ArrayStack filters, @NotNull PaymentPointsFilter filter) {
+		
 		log.debug("Initializing filter");
-		filter.setPoints(listPoints(CollectionUtils.arrayStack(), new Page<PaymentPoint>(10000, 1)));
+		List<PaymentPoint> points = listPoints(filters, new Page<PaymentPoint>(10000, 1));
+		filter.setPoints(points);
+
+		if (!containsSuchId(points, filter.getSelectedId())) {
+			filter.setSelectedId(filter.getDefaultId());
+		}
+
 		return filter;
+	}
+
+	private boolean containsSuchId(List<PaymentPoint> points, Long id) {
+
+		for (PaymentPoint paymentPoint : points) {
+			if (paymentPoint.getId().equals(id)) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	public List<PaymentPoint> findAll() {

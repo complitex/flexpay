@@ -9,18 +9,23 @@ import org.springframework.beans.factory.annotation.Required;
 import java.util.Collections;
 import java.util.List;
 
-public class CashboxesListAction extends FPActionWithPagerSupport {
+public class CashboxesListAction extends FPActionWithPagerSupport<Cashbox> {
 
-	private List<Cashbox> cashboxes = Collections.emptyList();
+	protected List<Cashbox> cashboxes = Collections.emptyList();
 
-	private CashboxService cashboxService;
+	protected CashboxService cashboxService;
 
 	@NotNull
 	protected String doExecute() throws Exception {
 
-		cashboxes = cashboxService.findObjects(getPager());
+		loadCashboxes();
 
 		return SUCCESS;
+	}
+
+	protected void loadCashboxes() {
+
+		cashboxes = cashboxService.findObjects(getPager());
 	}
 
 	@NotNull
