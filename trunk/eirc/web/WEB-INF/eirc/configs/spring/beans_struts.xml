@@ -108,21 +108,21 @@
 	<bean id="selectCorrectionTypeAction" scope="prototype"
 		  class="org.flexpay.eirc.actions.registry.corrections.SelectCorrectionTypeAction"
 		  p:registryRecordService-ref="registryRecordService"
-		  p:typeRegistry-ref="typeRegistryEirc" />
+		  p:typeRegistry-ref="classToTypeRegistry" />
 
 	<bean id="correctRecordAddressAction" scope="prototype" parent="apartmentsListAction"
 		  class="org.flexpay.eirc.actions.registry.corrections.CorrectAddressAction"
 		  p:consumersDataSource-ref="consumersDataSource"
-		  p:correctionsService-ref="correctionsServiceEirc"
+		  p:correctionsService-ref="correctionsService"
 		  p:recordService-ref="registryRecordService"
 		  p:serviceTypeService-ref="serviceTypeService"
-		  p:typeRegistry-ref="typeRegistryEirc"
+		  p:typeRegistry-ref="classToTypeRegistry"
 		  p:serviceProviderService-ref="serviceProviderService" />
 
 	<bean id="correctBuildingAddressAction" scope="prototype" parent="buildingsListAction"
 		  class="org.flexpay.eirc.actions.registry.corrections.CorrectBuildingAction"
 		  p:consumersDataSource-ref="consumersDataSource"
-		  p:correctionsService-ref="correctionsServiceEirc"
+		  p:correctionsService-ref="correctionsService"
 		  p:recordService-ref="registryRecordService"
 		  p:serviceTypeService-ref="serviceTypeService"
 		  p:serviceProviderService-ref="serviceProviderService" />
@@ -130,7 +130,7 @@
 	<bean id="correctStreetAddressAction" scope="prototype" parent="streetsListAction"
 		  class="org.flexpay.eirc.actions.registry.corrections.CorrectStreetAction"
 		  p:consumersDataSource-ref="consumersDataSource"
-		  p:correctionsService-ref="correctionsServiceEirc"
+		  p:correctionsService-ref="correctionsService"
 		  p:recordService-ref="registryRecordService"
 		  p:serviceTypeService-ref="serviceTypeService"
 		  p:serviceProviderService-ref="serviceProviderService" />
@@ -138,7 +138,7 @@
 	<bean id="correctPersonAction" scope="prototype" parent="personsListAction"
 		  class="org.flexpay.eirc.actions.registry.corrections.CorrectPersonAction"
 		  p:consumersDataSource-ref="consumersDataSource"
-		  p:correctionsService-ref="correctionsServiceEirc"
+		  p:correctionsService-ref="correctionsService"
 		  p:recordService-ref="registryRecordService"
 		  p:serviceProviderService-ref="serviceProviderService" />
 
