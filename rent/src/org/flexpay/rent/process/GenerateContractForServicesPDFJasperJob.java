@@ -1,6 +1,7 @@
 package org.flexpay.rent.process;
 
 import net.sf.jasperreports.engine.JRDataSource;
+import net.sf.jasperreports.engine.JREmptyDataSource;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.apache.commons.io.IOUtils;
 import org.flexpay.common.exception.FlexPayException;
@@ -44,9 +45,7 @@ public class GenerateContractForServicesPDFJasperJob extends Job {
 			plog.info("Uploading report template");
 			uploadReportTemplates();
 
-			List<Object> ds = new ArrayList<Object>();
-			ds.add(dataForm);
-			JRDataSource dataSource = new JRBeanCollectionDataSource(ds);
+			JRDataSource dataSource = new JREmptyDataSource(1);
 
 			plog.info("Running report");
 			FPFile report = reportUtil.exportToPdf("ContractForServices", dataForm.getParams(), dataSource, ApplicationConfig.getDefaultReportLocale());
