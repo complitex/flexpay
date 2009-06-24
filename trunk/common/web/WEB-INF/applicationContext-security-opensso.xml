@@ -18,14 +18,14 @@
     <b:alias name="filterChainProxy" alias="springSecurityFilterChain"/>
 
     <!--
-        Postions of filters:
+        Positions of filters:
             httpSessionContextIntegrationFilter,
             logoutFilter,
             openssoFilter,
             exceptionTranslationFilter,
             filterInvocationInterceptor
 
-        Postions of every filters:
+        Positions of every filters:
                       CHANNEL_FILTER
                       CONCURRENT_SESSION_FILTER
                       HTTP_SESSION_CONTEXT_FILTER

@@ -135,6 +135,9 @@
 	<security-role>
 		<role-name>ROLE_BASIC</role-name>
 	</security-role>
+	<security-role>
+		<role-name>ROLE_COMMON_DEVELOPER</role-name>
+	</security-role>
 	<!-- Country roles -->
 	<security-role>
 		<role-name>ROLE_AB_COUNTRY_READ</role-name>
