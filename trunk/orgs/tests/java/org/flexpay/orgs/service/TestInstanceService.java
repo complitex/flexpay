@@ -34,7 +34,7 @@ public class TestInstanceService extends OrgsSpringBeanAwareTestCase {
 
 	@Test
 	public void testEditServiceOrganization() throws Exception {
-		ServiceOrganization org = new ServiceOrganization();
+		ServiceOrganization org = ServiceOrganization.newInstance();
 		org.setOrganization(organization);
 		org.setDescription(new ServiceOrganizationDescription("TEST", lang()));
 		serviceOrganizationService.create(org);

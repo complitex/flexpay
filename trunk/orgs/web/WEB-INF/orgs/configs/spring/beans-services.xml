@@ -7,6 +7,18 @@
 		   http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
 		   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
+	<bean id="orgsObjectsFactoryHolder"
+		  class="org.flexpay.orgs.service.imp.OrgsObjectsFactoryHolder"
+		  p:factory-ref="orgsObjectsFactoryImpl" />
+
+	<bean id="orgsObjectsFactoryImpl"
+		  autowire-candidate="false"
+		  class="org.flexpay.orgs.service.imp.OrgsObjectsFactoryImpl" />
+
+	<bean id="orgsObjectsFactory"
+		  class="org.flexpay.orgs.service.imp.OrgsObjectsFactoryProxy"
+		  p:factoryHolder-ref="orgsObjectsFactoryHolder" />
+
 	<bean id="organisationInstanceService"
 		  abstract="true"
 		  class="org.flexpay.orgs.service.imp.OrganizationInstanceServiceImpl"
@@ -138,7 +150,8 @@
 	<bean id="serviceOrganizationHistoryBuilder"
 		  parent="historyBuilderBase"
 		  class="org.flexpay.orgs.service.history.ServiceOrganizationHistoryBuilder"
-		  p:organizationService-ref="organizationService" />
+		  p:organizationService-ref="organizationService"
+		  p:objectsFactory-ref="orgsObjectsFactory" />
 
 	<bean id="serviceProviderHistoryBuilder"
 		  parent="historyBuilderBase"
@@ -209,7 +222,7 @@
 		  class="org.flexpay.orgs.service.history.BankHistoryHandler" />
 
 	<bean id="cashboxHistoryHandler"
-		  parent="paymentsHistoryHandlerBase"
+		  parent="orgsHistoryHandlerBase"
 		  class="org.flexpay.orgs.service.history.CashboxHistoryHandler"
 		  p:cashboxService-ref="cashboxService"
 		  p:historyBuilder-ref="cashboxHistoryBuilder" />
@@ -223,9 +236,10 @@
 
 	<bean id="serviceOrganizationHistoryHandler"
 		  parent="orgsHistoryHandlerBase"
+		  class="org.flexpay.orgs.service.history.ServiceOrganizationHistoryHandler"
 		  p:instanceService-ref="serviceOrganizationService"
 		  p:historyBuilder-ref="serviceOrganizationHistoryBuilder"
-		  class="org.flexpay.orgs.service.history.ServiceOrganizationHistoryHandler" />
+		  p:objectsFactory-ref="orgsObjectsFactory" />
 
 	<bean id="serviceProviderHistoryHandler"
 		  parent="orgsHistoryHandlerBase"

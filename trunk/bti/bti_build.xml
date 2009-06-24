@@ -153,6 +153,7 @@
 
 		<antcall target="template.set_db_name" />
 		<antcall target="template.switch_instance_id" />
+		<antcall target="template.update_version" />
 
 		<war destfile="${distr.dir}/${bti.war.name}" needxmlfile="false">
 			<fileset dir="${build.dir}/web" />

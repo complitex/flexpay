@@ -1,6 +1,5 @@
 package org.flexpay.common.actions;
 
-import org.apache.struts2.ServletActionContext;
 import org.jetbrains.annotations.NotNull;
 
 public class StaticPageAction extends FPActionSupport {

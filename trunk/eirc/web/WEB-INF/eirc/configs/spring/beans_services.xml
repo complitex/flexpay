@@ -78,9 +78,16 @@
 	<bean id="eircObjectsFactory" autowire-candidate="false"
 		  class="org.flexpay.eirc.service.imp.EircObjectsFactory" />
 
+	<bean id="eircOrgsObjectsFactory" autowire-candidate="false"
+		  class="org.flexpay.eirc.service.imp.EircOrgsObjectsFactory" />
+
 	<bean id="eircObjectsFactoryHolder"
 		  parent="btiObjectsFactoryHolder"
 		  p:factory-ref="eircObjectsFactory" />
+
+	<bean id="eircOrgsObjectsFactoryHolder"
+		  parent="orgsObjectsFactoryHolder"
+		  p:factory-ref="eircOrgsObjectsFactory" />
 
 	<bean id="consumerServiceTarget"
 		  autowire-candidate="false"

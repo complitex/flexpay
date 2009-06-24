@@ -29,7 +29,7 @@ public class ServiceOrganizationAddServedBuildingAction extends FPActionWithPage
 	private TownFilter townFilter = new TownFilter();
 	private StreetNameFilter streetNameFilter = new StreetNameFilter();
 
-	private EircServiceOrganization serviceOrganization = new EircServiceOrganization();
+	private EircServiceOrganization serviceOrganization = EircServiceOrganization.newInstance();
 	private List<BuildingAddress> buildingsList = list();
 	private Set<Long> objectIds = set();
 

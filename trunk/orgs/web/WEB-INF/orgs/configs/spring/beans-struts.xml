@@ -91,7 +91,8 @@
 	<bean id="serviceOrganizationEditAction" scope="prototype"
 		  class="org.flexpay.orgs.actions.organization.ServiceOrganizationEditAction"
 		  p:organizationService-ref="organizationService"
-		  p:serviceOrganizationService-ref="serviceOrganizationService" />
+		  p:serviceOrganizationService-ref="serviceOrganizationService"
+		  p:objectsFactory-ref="orgsObjectsFactory" />
 
 	<!-- Service provider actions -->
 	<bean id="serviceProvidersListAction" scope="prototype"
@@ -124,22 +125,22 @@
 
 	<!-- cashboxes actions -->
 	<bean id="cashboxDeleteAction"
-          class="org.flexpay.orgs.actions.cashbox.CashboxDeleteAction"
-          p:cashboxService-ref="cashboxService"
-          scope="prototype" />
+		  class="org.flexpay.orgs.actions.cashbox.CashboxDeleteAction"
+		  p:cashboxService-ref="cashboxService"
+		  scope="prototype" />
 
-    <bean id="cashboxEditAction"
-          class="org.flexpay.orgs.actions.cashbox.CashboxEditAction"
-          p:cashboxService-ref="cashboxService"
-          p:paymentPointService-ref="paymentPointService"
-          p:crumbNameKey="payments.crumbs.cashbox_edit"
-          p:crumbCreateKey="payments.crumbs.cashbox_create"
-          scope="prototype" />
+	<bean id="cashboxEditAction"
+		  class="org.flexpay.orgs.actions.cashbox.CashboxEditAction"
+		  p:cashboxService-ref="cashboxService"
+		  p:paymentPointService-ref="paymentPointService"
+		  p:crumbNameKey="payments.crumbs.cashbox_edit"
+		  p:crumbCreateKey="payments.crumbs.cashbox_create"
+		  scope="prototype" />
 
-    <bean id="cashboxesListAction"
-          class="org.flexpay.orgs.actions.cashbox.CashboxesListAction"
-          p:cashboxService-ref="cashboxService"
-          p:crumbNameKey="payments.crumbs.cashboxes_list"
-          scope="prototype" />
+	<bean id="cashboxesListAction"
+		  class="org.flexpay.orgs.actions.cashbox.CashboxesListAction"
+		  p:cashboxService-ref="cashboxService"
+		  p:crumbNameKey="payments.crumbs.cashboxes_list"
+		  scope="prototype" />
 
 </beans>

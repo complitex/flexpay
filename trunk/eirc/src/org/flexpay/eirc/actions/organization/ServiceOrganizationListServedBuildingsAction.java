@@ -17,7 +17,7 @@ import java.util.List;
 
 public class ServiceOrganizationListServedBuildingsAction extends FPActionWithPagerSupport<ServedBuilding> {
 
-	private EircServiceOrganization serviceOrganization = new EircServiceOrganization();
+	private EircServiceOrganization serviceOrganization = EircServiceOrganization.newInstance();
 	private List<ServedBuilding> buildings = Collections.emptyList();
 	private List<String> addresses = Collections.emptyList();
 

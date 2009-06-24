@@ -11,6 +11,7 @@ import org.flexpay.orgs.persistence.ServiceOrganizationDescription;
 import org.flexpay.orgs.persistence.filters.OrganizationFilter;
 import org.flexpay.orgs.service.OrganizationService;
 import org.flexpay.orgs.service.ServiceOrganizationService;
+import org.flexpay.orgs.service.OrgsObjectsFactory;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
@@ -19,11 +20,12 @@ import java.util.Map;
 public class ServiceOrganizationEditAction extends FPActionSupport {
 
 	private OrganizationFilter organizationFilter = new OrganizationFilter();
-	private ServiceOrganization serviceOrganization = new ServiceOrganization();
+	private ServiceOrganization serviceOrganization = ServiceOrganization.newInstance();
 	private Map<Long, String> descriptions = map();
 
 	private ServiceOrganizationService serviceOrganizationService;
 	private OrganizationService organizationService;
+	private OrgsObjectsFactory objectsFactory;
 
 	@NotNull
 	public String doExecute() throws Exception {
@@ -34,12 +36,14 @@ public class ServiceOrganizationEditAction extends FPActionSupport {
 		}
 
 		ServiceOrganization old = serviceOrganization.isNew()
-								  ? serviceOrganization : serviceOrganizationService.read(stub(serviceOrganization));
+								  ? objectsFactory.newServiceOrganization()
+								  : serviceOrganizationService.read(stub(serviceOrganization));
 		if (old == null) {
 			addActionError(getText("error.invalid_id"));
 			return REDIRECT_SUCCESS;
 		}
 
+		old.setId(serviceOrganization.getId());
 		serviceOrganizationService.initInstancelessFilter(organizationFilter, old);
 
 		// prepare initial setup
@@ -145,4 +149,8 @@ public class ServiceOrganizationEditAction extends FPActionSupport {
 		this.organizationService = organizationService;
 	}
 
+	@Required
+	public void setObjectsFactory(OrgsObjectsFactory objectsFactory) {
+		this.objectsFactory = objectsFactory;
+	}
 }

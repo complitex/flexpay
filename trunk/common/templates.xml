@@ -16,8 +16,8 @@
 			<include name="hibernate3/*.jar" />
 			<include name="antlr/*.jar" />
 			<include name="log4j/*.jar" />
-            <include name="logging/*.jar" />
-            <include name="freemarker/*.jar" />
+			<include name="logging/*.jar" />
+			<include name="freemarker/*.jar" />
 		</fileset>
 		<path refid="commons.lib" />
 	</path>
@@ -28,17 +28,17 @@
 		</fileset>
 	</path>
 
-    <path id="freemarker.lib">
-        <fileset dir="${common.dir}/lib/freemarker">
-            <include name="*.jar" />
-        </fileset>
-    </path>
+	<path id="freemarker.lib">
+		<fileset dir="${common.dir}/lib/freemarker">
+			<include name="*.jar" />
+		</fileset>
+	</path>
 
 	<path id="struts.lib">
 		<fileset dir="${common.dir}/lib">
 			<include name="struts2/*.jar" />
 			<include name="antlr/*.jar" />
-            <include name="freemarker/*.jar" />
+			<include name="freemarker/*.jar" />
 		</fileset>
 	</path>
 
@@ -147,7 +147,7 @@
 		</fileset>
 	</path>
 
-    <path id="opensso.lib">
+	<path id="opensso.lib">
 		<fileset dir="${common.dir}/lib">
 			<include name="opensso/*.jar" />
 		</fileset>
@@ -253,12 +253,12 @@
 			<lib dir="${common.dir}/lib/itext" />
 			<lib dir="${common.dir}/lib/quartz" />
 			<lib dir="${common.dir}/lib/jasperreports" />
-            <lib dir="${common.dir}/lib/freemarker" />
-            <lib dir="${common.dir}/lib/logging" />
-            <lib dir="${common.dir}/lib/csv" />
-            <lib dir="${common.dir}/lib/xstream" />
-            <lib dir="${common.dir}/lib/spring-ws" />
-            <lib dir="${common.dir}/lib/openmq" />
+			<lib dir="${common.dir}/lib/freemarker" />
+			<lib dir="${common.dir}/lib/logging" />
+			<lib dir="${common.dir}/lib/csv" />
+			<lib dir="${common.dir}/lib/xstream" />
+			<lib dir="${common.dir}/lib/spring-ws" />
+			<lib dir="${common.dir}/lib/openmq" />
 			<lib dir="${common.dir}/lib/jdbc" />
 			<lib dir="${common.dir}/lib/opensso" />
 			<lib dir="${build.dir}/lib" />
@@ -389,6 +389,54 @@
 				<include name="web/WEB-INF/common/configs/log4j.xml" />
 			</fileset>
 		</replaceregexp>
+	</target>
+
+	<taskdef resource="net/sf/antcontrib/antcontrib.properties">
+		<classpath>
+			<pathelement location="${common.dir}/lib/ant/ant-contrib-1.0b2.jar" />
+		</classpath>
+	</taskdef>
+
+	<target name="template.update_version">
+		<exec executable="svn"
+			  dir="${basedir}"
+			  outputproperty="svninfo">
+			<arg line="info" />
+		</exec>
+		<propertyregex input="${svninfo}" property="svnrevision" regexp="Last Changed Rev: (\d+)" select="\1" />
+
+		<replaceregexp file="${build.dir}/web/WEB-INF/jsp/common/about.jsp"
+					   encoding="UTF-8"
+					   match="@@@VERSION@@@"
+					   replace="${svnrevision}" />
+
+		<tstamp>
+			<format property="buildtime" pattern="MM/dd/yyyy hh:mm:ss" />
+		</tstamp>
+		<replaceregexp file="${build.dir}/web/WEB-INF/jsp/common/about.jsp"
+					   encoding="UTF-8"
+					   match="@@@TIME@@@"
+					   replace="${buildtime}" />
+
+		<exec executable="svn"
+			  dir="${basedir}"
+			  outputproperty="svnstatus">
+			<arg line="status -q" />
+		</exec>
+
+		<replaceregexp file="${build.dir}/web/WEB-INF/jsp/common/about.jsp"
+					   encoding="UTF-8"
+					   match="@@@FILESLIST@@@"
+					   replace="${svnstatus}" />
+
+		<exec executable="svn"
+			  dir="${basedir}"
+			  outputproperty="svndiffres">
+			<arg line="diff" />
+		</exec>
+
+		<echo file="${build.dir}/web/WEB-INF/jsp/common/diff.txt" message="${svndiffres}" />
+
 	</target>
 
 </project>
