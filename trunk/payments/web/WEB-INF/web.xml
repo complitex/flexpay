@@ -115,6 +115,16 @@
 		<url-pattern>/ws/*</url-pattern>
 	</servlet-mapping>
 
+    <servlet>
+        <servlet-name>confirmationTradingDayServlet</servlet-name>
+        <servlet-class>org.flexpay.payments.actions.ConfirmationTradingDayServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+		<servlet-name>confirmationTradingDayServlet</servlet-name>
+		<url-pattern>/confirmationTradingDay/*</url-pattern>
+	</servlet-mapping>
+
 	<security-constraint>
 		<web-resource-collection>
 			<web-resource-name>secure-resource</web-resource-name>
@@ -125,6 +135,12 @@
 		<web-resource-collection>
 			<web-resource-name>secure-resource</web-resource-name>
 			<url-pattern>/download/*</url-pattern>
+			<http-method>POST</http-method>
+			<http-method>GET</http-method>
+		</web-resource-collection>
+        <web-resource-collection>
+			<web-resource-name>secure-resource</web-resource-name>
+			<url-pattern>/confirmationTradingDay/*</url-pattern>
 			<http-method>POST</http-method>
 			<http-method>GET</http-method>
 		</web-resource-collection>
