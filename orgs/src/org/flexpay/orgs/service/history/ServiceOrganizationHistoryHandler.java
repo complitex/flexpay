@@ -3,13 +3,17 @@ package org.flexpay.orgs.service.history;
 import org.flexpay.common.persistence.history.Diff;
 import org.flexpay.orgs.persistence.ServiceOrganization;
 import org.flexpay.orgs.persistence.ServiceOrganizationDescription;
+import org.flexpay.orgs.service.OrgsObjectsFactory;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Required;
 
 public class ServiceOrganizationHistoryHandler
 		extends OrganizationInstanceHistoryHandler<ServiceOrganizationDescription, ServiceOrganization> {
 
+	private OrgsObjectsFactory objectsFactory;
+
 	protected ServiceOrganization newInstance() {
-		return new ServiceOrganization();
+		return objectsFactory.newServiceOrganization();
 	}
 
 	protected Class<ServiceOrganization> getType() {
@@ -24,5 +28,10 @@ public class ServiceOrganizationHistoryHandler
 	 */
 	public boolean supports(@NotNull Diff diff) {
 		return typeRegistry.getType(ServiceOrganization.class) == diff.getObjectType();
+	}
+
+	@Required
+	public void setObjectsFactory(OrgsObjectsFactory objectsFactory) {
+		this.objectsFactory = objectsFactory;
 	}
 }

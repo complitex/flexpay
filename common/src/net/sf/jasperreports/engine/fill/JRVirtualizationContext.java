@@ -53,6 +53,7 @@ public class JRVirtualizationContext implements Serializable
 
 	private static final Logger log = LoggerFactory.getLogger(JRVirtualizationContext.class);
 
+	@SuppressWarnings ({"deprecation"})
 	private static final ReferenceMap contexts = new ReferenceMap(ReferenceMap.WEAK, ReferenceMap.WEAK);
 
 	private Map cachedRenderers;

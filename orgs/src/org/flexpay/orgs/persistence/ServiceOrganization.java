@@ -8,10 +8,14 @@ public class ServiceOrganization extends OrganizationInstance<ServiceOrganizatio
 	/**
 	 * Constructs a new DomainObject.
 	 */
-	public ServiceOrganization() {
+	protected ServiceOrganization() {
 	}
 
 	public ServiceOrganization(Long id) {
 		super(id);
+	}
+
+	public static ServiceOrganization newInstance() {
+		return new ServiceOrganization();
 	}
 }

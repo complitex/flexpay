@@ -22,6 +22,14 @@
 			<result>/WEB-INF/jsp/common/printing/container.jsp</result>
 		</action>
 
+		<action name="about" class="staticPageAction">
+			<result>/WEB-INF/jsp/common/about.jsp</result>
+		</action>
+
+		<action name="diff" class="staticPageAction">
+			<result>/WEB-INF/jsp/common/diff.txt</result>
+		</action>
+
 	</package>
 
 </struts>

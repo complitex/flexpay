@@ -14,7 +14,7 @@ import java.util.Set;
 public class ServiceOrganizationRemoveServedBuildingsAction extends FPActionSupport {
 
 	private Set<Long> objectIds = set();
-    private EircServiceOrganization serviceOrganization = new EircServiceOrganization();
+    private EircServiceOrganization serviceOrganization = EircServiceOrganization.newInstance();
 
 	private ServiceOrganizationService serviceOrganizationService;
 

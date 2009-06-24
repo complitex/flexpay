@@ -144,6 +144,8 @@
 			  overwrite="true"
 			  tofile="${build.dir}/web/WEB-INF/common/configs/spring/data_source.properties" />
 
+		<antcall target="template.update_version" />
+
 		<war destfile="${distr.dir}/${ab_sync.war.name}" needxmlfile="false">
 			<fileset dir="${build.dir}/web" />
 			<lib refid="ab_sync.libraries" />

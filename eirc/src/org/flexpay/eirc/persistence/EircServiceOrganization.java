@@ -15,11 +15,15 @@ public class EircServiceOrganization extends ServiceOrganization {
 	/**
 	 * Constructs a new DomainObject.
 	 */
-	public EircServiceOrganization() {
+	protected EircServiceOrganization() {
 	}
 
 	public EircServiceOrganization(Long id) {
 		super(id);
+	}
+
+	public static EircServiceOrganization newInstance() {
+		return new EircServiceOrganization();
 	}
 
 	public Set<ServedBuilding> getBuildings() {

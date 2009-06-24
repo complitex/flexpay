@@ -45,4 +45,6 @@
 
 	</package>
 
+	<include file="org/flexpay/common/actions/struts_config.xml" />
+
 </struts>
