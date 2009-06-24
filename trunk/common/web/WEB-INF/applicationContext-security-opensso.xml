@@ -64,6 +64,7 @@
                         <b:value>/logout*</b:value>
                         <b:value>/denied*</b:value>
 			            <b:value>/resources/common/jsp/forbidden.jsp</b:value>
+                        <b:value>/confirmationTradingDay*</b:value>
                     </b:list>
                 </b:property>
             </b:bean>
