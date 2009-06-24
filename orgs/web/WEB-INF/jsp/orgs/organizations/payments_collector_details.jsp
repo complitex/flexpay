@@ -50,7 +50,12 @@
 					<input type="checkbox" name="objectIds" value="<s:property value="%{id}"/>"/>
 				</td>
 				<td class="col"><s:property value="%{id}"/></td>
-                <td class="col"><s:property value="getTranslation(names).name"/></td>
+                <td class="col">
+					<a href="<s:url action="paymentPointDetails"><s:param name="paymentsCollectorFilter.selectedId" value="%{paymentsCollector.id}"/>
+								<s:param name="paymentPointsFilter.selectedId" value="%{id}"/></s:url>">
+						<s:property value="getTranslation(names).name"/>
+					</a>
+				</td>
                 <td class="col"><s:property value="getCollectorName(collector)"/></td>
                 <td class="col"><s:property value="address"/></td>
 				<td class="col">

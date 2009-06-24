@@ -27,6 +27,16 @@ public interface PaymentPointService {
 	List<PaymentPoint> listPoints(@NotNull ArrayStack filters, @NotNull Page<PaymentPoint> pager);
 
 	/**
+	 * List available payment points if payments collector is selected in filters stack, empty list otherwise
+	 *
+	 * @param filters Filters stack
+	 * @param pager   Pager
+	 * @return available payment points if payments collector is selected in filters stack, empty list otherwise
+	 */
+	@NotNull
+	List<PaymentPoint> listCollectorPoints(@NotNull ArrayStack filters, @NotNull Page<PaymentPoint> pager);
+
+	/**
 	 * Read full payment point info
 	 *
 	 * @param stub payment point stub
@@ -75,6 +85,17 @@ public interface PaymentPointService {
 	@Secured(Roles.PAYMENT_POINT_READ)
 	@NotNull
 	PaymentPointsFilter initFilter(@NotNull PaymentPointsFilter filter);
+
+	/**
+	 * Initialize payment points filter
+	 *
+	 * @param filters filters stack
+	 * @param filter PaymentPointsFilter to initialize
+	 * @return filter back
+	 */
+	@Secured(Roles.PAYMENT_POINT_READ)
+	@NotNull
+	PaymentPointsFilter initFilter(@NotNull ArrayStack filters, @NotNull PaymentPointsFilter filter);
 
 	@Secured(Roles.PAYMENT_POINT_READ)
 	List<PaymentPoint> findAll();

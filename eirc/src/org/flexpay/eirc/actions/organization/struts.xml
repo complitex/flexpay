@@ -90,6 +90,11 @@
 			<result name="redirectSuccess" type="redirect-action">paymentPointsList</result>
 		</action>
 
+		<action name="paymentPointDetails" class="paymentPointDetailsAction">
+			<result type="tiles">eirc.organization.payment_point.details</result>
+		</action>
+
+
         <!-- Service organizations -->
         <action name="serviceOrganizationsList" class="serviceOrganizationsListAction">
             <result type="tiles">eirc.organization.service_organizations.list</result>
