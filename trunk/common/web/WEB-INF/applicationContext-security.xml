@@ -8,8 +8,10 @@
 		  session-fixation-protection="none">
 		<http-basic />
 		<intercept-url pattern="/resources/common/jsp/login.jsp*" access="IS_AUTHENTICATED_ANONYMOUSLY" />
+		<intercept-url pattern="/confirmationTradingDay*" access="IS_AUTHENTICATED_ANONYMOUSLY" />
 		<intercept-url pattern="/resources/**" filters="none" />
-		<intercept-url pattern="/dicts/**" access="ROLE_BASIC" />
+        <intercept-url pattern="/confirmationTradingDay*" filters="none" />
+        <intercept-url pattern="/dicts/**" access="ROLE_BASIC" />
 		<logout invalidate-session="true" logout-url="/logout" />
 		<!--<concurrent-session-control max-sessions="1" exception-if-maximum-exceeded="true" />-->
 	</http>
