@@ -177,6 +177,9 @@
 	<security-role>
 		<role-name>ROLE_BASIC</role-name>
 	</security-role>
+	<security-role>
+		<role-name>ROLE_COMMON_DEVELOPER</role-name>
+	</security-role>
 
 	<security-role>
 		<role-name>ROLE_COMMON_PROCESS_READ</role-name>

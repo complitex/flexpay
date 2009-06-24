@@ -14,4 +14,9 @@
         <group-name>VIEW_ONLY</group-name>
     </security-role-mapping>
 
+    <security-role-mapping>
+        <role-name>ROLE_COMMON_DEVELOPER</role-name>
+        <group-name>developerRole</group-name>
+    </security-role-mapping>
+
 </sun-web-app>

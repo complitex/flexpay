@@ -8,6 +8,11 @@
 		<role-name>ROLE_BASIC</role-name>
 		<group-name>FULL_ACCESS</group-name>
 	</security-role-mapping>
+	<security-role-mapping>
+		<role-name>ROLE_COMMON_DEVELOPER</role-name>
+		<group-name>developerRole</group-name>
+	</security-role-mapping>
+
 
 	<!-- Processes -->
 	<security-role-mapping>
