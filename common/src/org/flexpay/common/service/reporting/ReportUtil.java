@@ -141,7 +141,7 @@ public class ReportUtil {
 			IOUtils.closeQuietly(is);
 		}
 	}
-	
+
 	/**
 	 * Check if report was already uploaded
 	 *
@@ -214,7 +214,8 @@ public class ReportUtil {
 	 * @return Result PDF file
 	 * @throws Exception if failure occurs
 	 */
-	public FPFile exportToPdf(String name, Map<?, ?> params, JRDataSource source, Locale locale) throws Exception {
+	public FPFile exportToPdf(String name, @Nullable Map<?, ?> params,
+							  @Nullable JRDataSource source, @Nullable Locale locale) throws Exception {
 
 		params = params(params);
 
@@ -233,7 +234,8 @@ public class ReportUtil {
 	 * @return Result HTML file
 	 * @throws Exception if failure occurs
 	 */
-	public FPFile exportToHtml(String name, Map<?, ?> params, JRDataSource source, Locale locale) throws Exception {
+	public FPFile exportToHtml(String name, @Nullable Map<?, ?> params,
+							   @Nullable JRDataSource source, @Nullable Locale locale) throws Exception {
 
 		params = params(params);
 
@@ -252,7 +254,8 @@ public class ReportUtil {
 	 * @return Result CSV file
 	 * @throws Exception if failure occurs
 	 */
-	public FPFile exportToCsv(String name, Map<?, ?> params, JRDataSource source, Locale locale) throws Exception {
+	public FPFile exportToCsv(String name, @Nullable Map<?, ?> params,
+							  @Nullable JRDataSource source, @Nullable Locale locale) throws Exception {
 
 		params = params(params);
 
@@ -297,17 +300,18 @@ public class ReportUtil {
 	 * @param name		 Report template name
 	 * @param parameters   Report parameters
 	 * @param jrDataSource optional data source
-	 * @param locale report locale, if null default locale will be used
+	 * @param locale	   report locale, if null default locale will be used
 	 * @return Filled report
 	 * @throws Exception if failure occurs
 	 */
 	@SuppressWarnings ({"unchecked", "RawUseOfParameterizedType"})
-	private JasperPrint fillReport(String name, Map parameters, JRDataSource jrDataSource, Locale locale)
+	private JasperPrint fillReport(String name, @NotNull Map parameters,
+								   @Nullable JRDataSource jrDataSource, @Nullable Locale locale)
 			throws Exception {
 
 		// setting locale parameter
 		if (locale != null) {
-			parameters.put(PARAM_NAME_REPORT_LOCALE, locale);			
+			parameters.put(PARAM_NAME_REPORT_LOCALE, locale);
 		} else {
 			parameters.put(PARAM_NAME_REPORT_LOCALE, ApplicationConfig.getDefaultReportLocale());
 		}
