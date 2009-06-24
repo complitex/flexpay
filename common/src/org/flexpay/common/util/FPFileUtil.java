@@ -72,8 +72,13 @@ public class FPFileUtil {
 			});
 		}
 
+		String fileName = StringUtil.getFileNameWithoutExtension(name) + "_";
+		// see File.createTempFile
+		if (fileName.length() < 3) {
+			fileName += "__";
+		}
 		File tmpFile = File.createTempFile(
-				StringUtil.getFileNameWithoutExtension(name) + "_",
+				fileName,
 				StringUtil.getFileExtension(name), localDir);
 		fpFile.setNameOnServer(tmpFile.getName());
 
