@@ -6,7 +6,6 @@ import org.flexpay.common.persistence.history.HistoryOperationType;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.orgs.persistence.PaymentPoint;
-import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.orgs.service.PaymentPointService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
@@ -38,7 +37,7 @@ public class PaymentPointHistoryHandler extends HistoryHandlerBase<PaymentPoint>
 
 		// find object if it already exists
 		Stub<PaymentPoint> stub = correctionsService.findCorrection(
-				masterIndex, PaymentPoint.class, masterIndexService.getMasterSourceDescription());
+				masterIndex, PaymentPoint.class, masterIndexService.getMasterSourceDescriptionStub());
 
 		if (diff.getOperationType() == HistoryOperationType.TYPE_CREATE) {
 			if (stub != null) {

@@ -31,7 +31,7 @@ public abstract class AbstractProcessor<T extends DomainObject> {
 	 * @throws Exception if failure occurs
 	 */
 	@NotNull
-	public T createObject(@Nullable DomainObject obj, String extId, DataSourceDescription sd, CorrectionsService cs)
+	public T createObject(@Nullable DomainObject obj, String extId, Stub<DataSourceDescription> sd, CorrectionsService cs)
 			throws Exception {
 		if (obj == null) {
 			Stub<T> stub = cs.findCorrection(extId, type, sd);
@@ -97,7 +97,7 @@ public abstract class AbstractProcessor<T extends DomainObject> {
 	 * @throws Exception if failure occurs
 	 */
 	@NotNull
-	public T findObject(@Nullable DomainObject obj, String extId, DataSourceDescription sd, CorrectionsService cs)
+	public T findObject(@Nullable DomainObject obj, String extId, Stub<DataSourceDescription> sd, CorrectionsService cs)
 			throws Exception {
 		if (obj == null) {
 			Stub<T> stub = cs.findCorrection(extId, type, sd);
@@ -131,7 +131,7 @@ public abstract class AbstractProcessor<T extends DomainObject> {
 	 * @param cs	 CorrectionsService
 	 * @throws Exception if failure occurs
 	 */
-	public abstract void setProperty(@NotNull DomainObject object, @NotNull HistoryRec record, DataSourceDescription sd, CorrectionsService cs)
+	public abstract void setProperty(@NotNull DomainObject object, @NotNull HistoryRec record, Stub<DataSourceDescription> sd, CorrectionsService cs)
 			throws Exception;
 
 	/**
@@ -143,7 +143,7 @@ public abstract class AbstractProcessor<T extends DomainObject> {
 	 * @param cs		 CorrectionsService
 	 * @throws Exception if failure occurs
 	 */
-	public void saveObject(DomainObject object, String externalId, DataSourceDescription sd, CorrectionsService cs)
+	public void saveObject(DomainObject object, String externalId, Stub<DataSourceDescription> sd, CorrectionsService cs)
 		throws Exception {
 
 		log.debug("Saving object: {}, externalID: {}", object.getId(), externalId);
@@ -196,7 +196,7 @@ public abstract class AbstractProcessor<T extends DomainObject> {
 	 * @throws Exception if failure occurs
 	 */
 	@Nullable
-	protected abstract Stub<T> findPersistentObject(T object, DataSourceDescription sd, CorrectionsService cs)
+	protected abstract Stub<T> findPersistentObject(T object, Stub<DataSourceDescription> sd, CorrectionsService cs)
 			throws Exception;
 
 	/**

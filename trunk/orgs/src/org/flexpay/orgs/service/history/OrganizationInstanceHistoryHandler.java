@@ -33,7 +33,7 @@ public abstract class OrganizationInstanceHistoryHandler<
 
 		// find object if it already exists
 		Stub<T> stub = correctionsService.findCorrection(
-				masterIndex, getType(), masterIndexService.getMasterSourceDescription());
+				masterIndex, getType(), masterIndexService.getMasterSourceDescriptionStub());
 
 		if (diff.getOperationType() == HistoryOperationType.TYPE_CREATE) {
 			if (stub != null) {

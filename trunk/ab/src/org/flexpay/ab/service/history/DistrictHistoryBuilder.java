@@ -154,7 +154,7 @@ public class DistrictHistoryBuilder extends HistoryBuilderBase<District> {
 		if (record.getNewStringValue() != null) {
 			String externalId = record.getNewStringValue();
 			Stub<Town> townStub = correctionsService.findCorrection(
-					externalId, Town.class, masterIndexService.getMasterSourceDescription());
+					externalId, Town.class, masterIndexService.getMasterSourceDescriptionStub());
 			if (townStub == null) {
 				throw new IllegalStateException("Cannot find town type by master index: " + externalId);
 			}

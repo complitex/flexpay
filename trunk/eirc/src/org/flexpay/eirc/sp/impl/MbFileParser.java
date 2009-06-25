@@ -1,11 +1,15 @@
 package org.flexpay.eirc.sp.impl;
 
 import org.flexpay.common.exception.FlexPayException;
+import org.flexpay.common.persistence.DataSourceDescription;
+import org.flexpay.common.persistence.Stub;
+import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.persistence.registry.PropertiesFactory;
 import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.persistence.registry.RegistryRecordStatus;
 import org.flexpay.common.service.*;
+import org.flexpay.common.service.importexport.CorrectionsService;
 import org.flexpay.common.util.FPFileUtil;
 import org.flexpay.eirc.sp.FileParser;
 import org.flexpay.orgs.service.ServiceProviderService;
@@ -35,11 +39,13 @@ public abstract class MbFileParser implements FileParser {
 	protected RegistryStatusService registryStatusService;
 	protected RegistryArchiveStatusService registryArchiveStatusService;
 	protected PropertiesFactory propertiesFactory;
+	protected CorrectionsService correctionsService;
+	protected Stub<DataSourceDescription> megabankSD;
 
 	private MbFileValidator validator;
 	private RegistryRecordStatusService registryRecordStatusService;
 
-	@Transactional(propagation = Propagation.NOT_SUPPORTED)
+	@Transactional (propagation = Propagation.NOT_SUPPORTED)
 	public Registry parse(FPFile spFile) throws FlexPayException {
 
 		if (validator != null) {
@@ -123,4 +129,13 @@ public abstract class MbFileParser implements FileParser {
 		this.propertiesFactory = propertiesFactory;
 	}
 
+	@Required
+	public void setCorrectionsService(CorrectionsService correctionsService) {
+		this.correctionsService = correctionsService;
+	}
+
+	@Required
+	public void setMegabankSD(DataSourceDescription megabankSD) {
+		this.megabankSD = stub(megabankSD);
+	}
 }

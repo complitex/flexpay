@@ -61,7 +61,7 @@ public class StreetTypeProcessor extends AbstractProcessor<StreetType> {
 	 * @param cs	 CorrectionsService
 	 * @throws Exception if failure occurs
 	 */
-	public void setProperty(@NotNull DomainObject object, @NotNull HistoryRec record, DataSourceDescription sd, CorrectionsService cs)
+	public void setProperty(@NotNull DomainObject object, @NotNull HistoryRec record, Stub<DataSourceDescription> sd, CorrectionsService cs)
 			throws Exception {
 
 		log.debug("About to set property: {}", record.getFieldType());
@@ -109,7 +109,7 @@ public class StreetTypeProcessor extends AbstractProcessor<StreetType> {
 	 * @param cs	 CorrectionsService
 	 * @return Persistent object stub if exists, or <code>null</code> otherwise
 	 */
-	protected Stub<StreetType> findPersistentObject(StreetType object, DataSourceDescription sd, CorrectionsService cs) {
+	protected Stub<StreetType> findPersistentObject(StreetType object, Stub<DataSourceDescription> sd, CorrectionsService cs) {
 
 		if (object.getTranslations().isEmpty()) {
 			return null;

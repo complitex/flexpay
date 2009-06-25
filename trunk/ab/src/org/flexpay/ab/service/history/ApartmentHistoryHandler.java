@@ -37,7 +37,7 @@ public class ApartmentHistoryHandler extends HistoryHandlerBase<Apartment> {
 
 		// find object if it already exists
 		Stub<Apartment> stub = correctionsService.findCorrection(
-				masterIndex, Apartment.class, masterIndexService.getMasterSourceDescription());
+				masterIndex, Apartment.class, masterIndexService.getMasterSourceDescriptionStub());
 
 		if (diff.getOperationType() == HistoryOperationType.TYPE_CREATE) {
 			if (stub != null) {

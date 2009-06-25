@@ -2,6 +2,7 @@ package org.flexpay.common.persistence.history.impl;
 
 import org.flexpay.common.persistence.DataCorrection;
 import org.flexpay.common.persistence.DomainObject;
+import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.persistence.history.Diff;
 import org.flexpay.common.persistence.history.HistoryBuilder;
 import org.flexpay.common.persistence.history.HistoryOperationType;
@@ -54,7 +55,7 @@ public abstract class HistoryBuilderBase<T extends DomainObject> implements Hist
 				correctionsService.save(new DataCorrection(
 						masterIndex, t2.getId(),
 						typeRegistry.getType(t2.getClass()),
-						masterIndexService.getMasterSourceDescription()));
+						new DataSourceDescription(masterIndexService.getMasterSourceDescriptionStub())));
 			}
 		} else {
 			diff.setOperationType(HistoryOperationType.TYPE_UPDATE);

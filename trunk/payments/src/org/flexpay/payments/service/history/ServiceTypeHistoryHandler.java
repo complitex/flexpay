@@ -37,7 +37,7 @@ public class ServiceTypeHistoryHandler extends HistoryHandlerBase<ServiceType> {
 
 		// find object if it already exists
 		Stub<ServiceType> stub = correctionsService.findCorrection(
-				masterIndex, ServiceType.class, masterIndexService.getMasterSourceDescription());
+				masterIndex, ServiceType.class, masterIndexService.getMasterSourceDescriptionStub());
 
 		if (diff.getOperationType() == HistoryOperationType.TYPE_CREATE) {
 			if (stub != null) {

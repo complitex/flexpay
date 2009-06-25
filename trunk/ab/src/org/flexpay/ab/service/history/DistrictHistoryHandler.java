@@ -35,7 +35,7 @@ public class DistrictHistoryHandler extends HistoryHandlerBase<District> {
 
 		// find object if it already exists
 		Stub<District> stub = correctionsService.findCorrection(
-				masterIndex, District.class, masterIndexService.getMasterSourceDescription());
+				masterIndex, District.class, masterIndexService.getMasterSourceDescriptionStub());
 
 		if (diff.getOperationType() == HistoryOperationType.TYPE_CREATE) {
 			if (stub != null) {

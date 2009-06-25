@@ -85,7 +85,7 @@ public class DistrictProcessor extends AbstractProcessor<District> {
 	 * @param sd	 DataSourceDescription
 	 * @param cs	 CorrectionsService
 	 */
-	public void setProperty(@NotNull DomainObject object, @NotNull HistoryRec record, DataSourceDescription sd, CorrectionsService cs)
+	public void setProperty(@NotNull DomainObject object, @NotNull HistoryRec record, Stub<DataSourceDescription> sd, CorrectionsService cs)
 			throws Exception {
 
 		District district = (District) object;
@@ -114,7 +114,7 @@ public class DistrictProcessor extends AbstractProcessor<District> {
 	 * @param cs	 CorrectionsService
 	 * @return Persistent object stub if exists, or <code>null</code> otherwise
 	 */
-	protected Stub<District> findPersistentObject(District object, DataSourceDescription sd, CorrectionsService cs) {
+	protected Stub<District> findPersistentObject(District object, Stub<DataSourceDescription> sd, CorrectionsService cs) {
 		DistrictName name = object.getCurrentName();
 		if (name == null || name.getTranslations().isEmpty()) {
 			return null;

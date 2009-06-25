@@ -35,7 +35,7 @@ public class TownTypeHistoryHandler extends HistoryHandlerBase<TownType> {
 
 		// find object if it already exists
 		Stub<TownType> typeStub = correctionsService.findCorrection(
-				masterIndex, TownType.class, masterIndexService.getMasterSourceDescription());
+				masterIndex, TownType.class, masterIndexService.getMasterSourceDescriptionStub());
 
 		if (diff.getOperationType() == HistoryOperationType.TYPE_CREATE) {
 			if (typeStub != null) {

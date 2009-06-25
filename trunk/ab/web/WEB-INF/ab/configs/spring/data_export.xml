@@ -63,6 +63,7 @@
 		  p:identityTypeService-ref="identityTypeService" />
 
 	<bean id="classToTypeRegistryAb"
+		  autowire-candidate="false"
 		  class="org.flexpay.ab.service.importexport.imp.ClassToTypeRegistryAb" />
 
 	<bean id="classToTypeRegistryFactoryAb"

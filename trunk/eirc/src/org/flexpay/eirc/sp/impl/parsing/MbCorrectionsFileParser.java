@@ -82,7 +82,12 @@ public class MbCorrectionsFileParser extends MbFileParser {
 	private Registry parseHeader(String line, Registry registry) throws FlexPayException {
 		String[] fields = line.split("=");
 		log.debug("Getting service provider with id = {} from DB", fields[1]);
-		ServiceProvider serviceProvider = serviceProviderService.read(new Stub<ServiceProvider>(Long.parseLong(fields[1])));
+		Stub<ServiceProvider> providerStub = correctionsService.findCorrection(
+				fields[1], ServiceProvider.class, megabankSD);
+		if (providerStub == null) {
+			throw new FlexPayException("No service provider correction with id " + fields[1]);
+		}
+		ServiceProvider serviceProvider = serviceProviderService.read(providerStub);
 		if (serviceProvider == null) {
 			throw new FlexPayException("Incorrect header line (can't find service provider with id " + fields[1] + ")");
 		}
@@ -90,7 +95,7 @@ public class MbCorrectionsFileParser extends MbFileParser {
 		EircRegistryProperties registryProperties = (EircRegistryProperties) propertiesFactory.newRegistryProperties();
 		registryProperties.setServiceProvider(serviceProvider);
 		registryProperties.setRegistry(registry);
-		registry.setSenderCode(serviceProvider.getOrganization().getId());
+		registry.setSenderCode(serviceProvider.getOrganizationStub().getId());
 		registry.setRecipientCode(ApplicationConfig.getSelfOrganization().getId());
 		registry.setProperties(registryProperties);
 

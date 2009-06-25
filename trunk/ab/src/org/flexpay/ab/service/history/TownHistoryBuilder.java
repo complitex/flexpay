@@ -208,7 +208,7 @@ public class TownHistoryBuilder extends HistoryBuilderBase<Town> {
 
 			String externalId = record.getNewStringValue();
 			Stub<TownType> typeStub = correctionsService.findCorrection(
-					externalId, TownType.class, masterIndexService.getMasterSourceDescription());
+					externalId, TownType.class, masterIndexService.getMasterSourceDescriptionStub());
 			if (typeStub == null) {
 				throw new IllegalStateException("Cannot find town type by master index: " + externalId);
 			}

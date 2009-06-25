@@ -2,7 +2,9 @@ package org.flexpay.orgs.persistence;
 
 import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.persistence.Stub;
+import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.util.TranslationUtil;
+import org.jetbrains.annotations.NotNull;
 
 public class ServiceProvider extends OrganizationInstance<ServiceProviderDescription, ServiceProvider> {
 
@@ -21,6 +23,11 @@ public class ServiceProvider extends OrganizationInstance<ServiceProviderDescrip
 
 	public DataSourceDescription getDataSourceDescription() {
 		return dataSourceDescription;
+	}
+
+	@NotNull
+	public Stub<DataSourceDescription> getDataSourceDescriptionStub() {
+		return stub(dataSourceDescription);
 	}
 
 	public void setDataSourceDescription(DataSourceDescription dataSourceDescription) {

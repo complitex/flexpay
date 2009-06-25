@@ -7,7 +7,6 @@ import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.service.importexport.ClassToTypeRegistry;
 import org.flexpay.common.service.importexport.CorrectionsService;
-import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
@@ -18,7 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional (readOnly = true)
 public class CorrectionsServiceImpl implements CorrectionsService {
 
-	@NonNls
 	private Logger log = LoggerFactory.getLogger(getClass());
 
 	private ClassToTypeRegistry typeRegistry;
@@ -32,7 +30,7 @@ public class CorrectionsServiceImpl implements CorrectionsService {
 	@Transactional (readOnly = false, rollbackFor = Exception.class)
 	public void save(DataCorrection correction) {
 		DataCorrection corr = correctionsDao.findCorrection(
-				correction.getExternalId(), correction.getObjectType(), correction.getDataSourceDescription());
+				correction.getExternalId(), correction.getObjectType(), correction.getDataSourceDescriptionStub());
 		if (corr != null) {
 			if (corr.getInternalObjectId().equals(correction.getInternalObjectId())) {
 				log.debug("Existing correction references to the same object");
@@ -66,7 +64,7 @@ public class CorrectionsServiceImpl implements CorrectionsService {
 	 * @return DomainObject
 	 */
 	@Nullable
-	public <T extends DomainObject> Stub<T> findCorrection(String externalId, Class<T> cls, DataSourceDescription sd) {
+	public <T extends DomainObject> Stub<T> findCorrection(String externalId, Class<T> cls, Stub<DataSourceDescription> sd) {
 		int type = typeRegistry.getType(cls);
 		return correctionsDao.findCorrection(externalId, type, cls, sd);
 	}
@@ -79,7 +77,7 @@ public class CorrectionsServiceImpl implements CorrectionsService {
 	 * @param sd		 External data source description
 	 * @return DomainObject
 	 */
-	public boolean existsCorrection(String externalId, Class<? extends DomainObject> cls, DataSourceDescription sd) {
+	public boolean existsCorrection(String externalId, Class<? extends DomainObject> cls, Stub<DataSourceDescription> sd) {
 		int type = typeRegistry.getType(cls);
 		return correctionsDao.existsCorrection(externalId, type, sd);
 	}
@@ -93,7 +91,7 @@ public class CorrectionsServiceImpl implements CorrectionsService {
 	 * @return stub for a new DataCorrection
 	 */
 	@NotNull
-	public DataCorrection getStub(String externalId, DomainObject obj, DataSourceDescription sourceDescription) {
+	public DataCorrection getStub(String externalId, DomainObject obj, Stub<DataSourceDescription> sourceDescription) {
 
 		int type = typeRegistry.getType(obj.getClass());
 		DataCorrection correction = correctionsDao.findCorrection(externalId, type, sourceDescription);
@@ -103,13 +101,13 @@ public class CorrectionsServiceImpl implements CorrectionsService {
 
 		correction.setExternalId(externalId);
 		correction.setInternalObjectId(obj.getId());
-		correction.setDataSourceDescription(sourceDescription);
+		correction.setDataSourceDescription(new DataSourceDescription(sourceDescription));
 		correction.setObjectType(typeRegistry.getType(obj.getClass()));
 
 		return correction;
 	}
 
-	public String getExternalId(@NonNls Long internalId, int type, Stub<DataSourceDescription> dataSourceDescriptionStub) {
+	public String getExternalId(Long internalId, int type, Stub<DataSourceDescription> dataSourceDescriptionStub) {
 		return correctionsDao.getExternalId(internalId, type, dataSourceDescriptionStub.getId());
 	}
 
@@ -117,13 +115,12 @@ public class CorrectionsServiceImpl implements CorrectionsService {
 	 * Find external identifier of internal object
 	 *
 	 * @param obj			   Object to get external identifier of
-	 * @param sourceDescription DataSourceDescription to get
-	 * @param <T>               Object type
+	 * @param sd DataSourceDescription to get
 	 * @return External id that if found, or <code>null</code> otherwise
 	 */
 	@Nullable
-	public <T extends DomainObject> String getExternalId(@NotNull T obj, DataSourceDescription sourceDescription) {
-		return correctionsDao.getExternalId(obj.getId(), typeRegistry.getType(obj.getClass()), sourceDescription.getId());
+	public <T extends DomainObject> String getExternalId(@NotNull T obj, Stub<DataSourceDescription> sd) {
+		return correctionsDao.getExternalId(obj.getId(), typeRegistry.getType(obj.getClass()), sd.getId());
 	}
 
 	@Required

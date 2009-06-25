@@ -4,6 +4,8 @@ import org.apache.commons.lang.StringUtils;
 import org.flexpay.common.dao.DataSourceDescriptionDao;
 import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.persistence.DomainObject;
+import org.flexpay.common.persistence.Stub;
+import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.service.importexport.CorrectionsService;
 import org.flexpay.common.service.importexport.MasterIndexService;
 import org.flexpay.common.util.config.ApplicationConfig;
@@ -53,7 +55,7 @@ public class MasterIndexServiceImpl implements MasterIndexService {
 	public <T extends DomainObject> String getMasterIndex(@NotNull T obj) {
 
 		assertNotNew(obj);
-		String index = correctionsService.getExternalId(obj, getMasterSourceDescription());
+		String index = correctionsService.getExternalId(obj, getMasterSourceDescriptionStub());
 
 		if (index == null && useSelfInstanceIfNotFound) {
 			index = getNewMasterIndex(obj);
@@ -68,7 +70,7 @@ public class MasterIndexServiceImpl implements MasterIndexService {
 	 * @return DataSourceDescription
 	 */
 	@NotNull
-	public DataSourceDescription getMasterSourceDescription() {
+	public Stub<DataSourceDescription> getMasterSourceDescriptionStub() {
 		List<DataSourceDescription> descriptions = sourceDescriptionDao.findMasterSourceDescription();
 		if (descriptions.isEmpty()) {
 			throw new IllegalStateException("Master index data source not found");
@@ -76,7 +78,7 @@ public class MasterIndexServiceImpl implements MasterIndexService {
 		if (descriptions.size() > 1) {
 			throw new IllegalStateException("Several master indexes found");
 		}
-		return descriptions.get(0);
+		return stub(descriptions.get(0));
 	}
 
 	@Required

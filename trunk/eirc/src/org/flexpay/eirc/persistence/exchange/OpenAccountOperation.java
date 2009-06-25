@@ -104,7 +104,7 @@ public class OpenAccountOperation extends AbstractChangePersonalAccountOperation
 		EircRegistryProperties props = (EircRegistryProperties) registry.getProperties();
 		RawConsumerData data = RawConsumersDataUtil.convert(registry, record);
 		ServiceProvider provider = factory.getServiceProviderService().read(props.getServiceProviderStub());
-		DataSourceDescription sd = provider.getDataSourceDescription();
+		Stub<DataSourceDescription> sd = provider.getDataSourceDescriptionStub();
 		DataCorrection corr = correctionsService.getStub(data.getShortConsumerId(), consumer, sd);
 		correctionsService.save(corr);
 

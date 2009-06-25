@@ -6,6 +6,7 @@ import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.persistence.ImportError;
 import org.flexpay.common.persistence.DataSourceDescription;
+import org.flexpay.common.persistence.Stub;
 import org.flexpay.payments.persistence.EircRegistryProperties;
 import org.flexpay.common.persistence.registry.RegistryRecord;
 import static org.flexpay.common.persistence.Stub.stub;
@@ -268,7 +269,7 @@ public class ServiceProviderFileProcessor implements RegistryProcessor {
 
 		EircRegistryProperties props = (EircRegistryProperties) registry.getProperties();
 		ServiceProvider provider = serviceProviderService.read(props.getServiceProviderStub());
-		DataSourceDescription sd = provider.getDataSourceDescription();
+		Stub<DataSourceDescription> sd = provider.getDataSourceDescriptionStub();
 		importService.importConsumers(sd, rawConsumersDataSource);
 	}
 

@@ -193,7 +193,7 @@ public class PaymentPointHistoryBuilder extends HistoryBuilderBase<PaymentPoint>
 		if (record.getNewStringValue() != null) {
 			String externalId = record.getNewStringValue();
 			Stub<PaymentsCollector> stub = correctionsService.findCorrection(
-					externalId, PaymentsCollector.class, masterIndexService.getMasterSourceDescription());
+					externalId, PaymentsCollector.class, masterIndexService.getMasterSourceDescriptionStub());
 			if (stub == null) {
 				throw new IllegalStateException("Cannot find collector by master index: " + externalId);
 			}

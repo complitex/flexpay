@@ -37,7 +37,7 @@ public class CashboxHistoryHandler extends HistoryHandlerBase<Cashbox> {
 
 		// find object if it already exists
 		Stub<Cashbox> stub = correctionsService.findCorrection(
-				masterIndex, Cashbox.class, masterIndexService.getMasterSourceDescription());
+				masterIndex, Cashbox.class, masterIndexService.getMasterSourceDescriptionStub());
 
 		if (diff.getOperationType() == HistoryOperationType.TYPE_CREATE) {
 			if (stub != null) {

@@ -110,6 +110,7 @@
 		  p:dataSourceDescriptionDao-ref="dataSourceDescriptionDao" />
 
 	<bean id="classToTypeRegistryOrgs"
+		  autowire-candidate="false"
 		  class="org.flexpay.orgs.service.importexport.impl.ClassToTypeRegistryOrgs" />
 
 	<bean id="classToTypeRegistryFactoryOrgs"

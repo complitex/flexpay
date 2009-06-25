@@ -3,6 +3,7 @@ package org.flexpay.payments.actions.registry.corrections;
 import org.flexpay.ab.actions.person.PersonsListAction;
 import org.flexpay.ab.persistence.Person;
 import org.flexpay.common.persistence.DataSourceDescription;
+import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.registry.RegistryRecord;
 import org.flexpay.common.service.RegistryRecordService;
 import org.flexpay.common.service.importexport.CorrectionsService;
@@ -41,11 +42,11 @@ public class CorrectPersonAction extends PersonsListAction implements CashboxAwa
 
 			EircRegistryProperties props = (EircRegistryProperties) record.getRegistry().getProperties();
 			ServiceProvider provider = serviceProviderService.read(props.getServiceProviderStub());
-			DataSourceDescription sd = provider.getDataSourceDescription();
-			if (sd == null) {
+			if (provider == null) {
 				addActionError(getText("error.eirc.data_source_not_found"));
 				return super.doExecute();
 			}
+			Stub<DataSourceDescription> sd = provider.getDataSourceDescriptionStub();
 
             saveCorrection(sd);
 
@@ -55,7 +56,7 @@ public class CorrectPersonAction extends PersonsListAction implements CashboxAwa
 		return super.doExecute();
 	}
 
-    protected void saveCorrection(DataSourceDescription sd) {
+    protected void saveCorrection(Stub<DataSourceDescription> sd) {
     }
 
     /**

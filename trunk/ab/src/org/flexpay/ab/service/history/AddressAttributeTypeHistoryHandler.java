@@ -35,7 +35,7 @@ public class AddressAttributeTypeHistoryHandler extends HistoryHandlerBase<Addre
 
 		// find object if it already exists
 		Stub<AddressAttributeType> typeStub = correctionsService.findCorrection(
-				masterIndex, AddressAttributeType.class, masterIndexService.getMasterSourceDescription());
+				masterIndex, AddressAttributeType.class, masterIndexService.getMasterSourceDescriptionStub());
 
 		if (diff.getOperationType() == HistoryOperationType.TYPE_CREATE) {
 			if (typeStub != null) {

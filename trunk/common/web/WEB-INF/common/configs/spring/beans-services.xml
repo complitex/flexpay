@@ -135,6 +135,7 @@
 		  class="org.flexpay.common.service.importexport.imp.CorrectionsServiceFactory" />
 
 	<bean id="classToTypeRegistryCommon"
+		  autowire-candidate="false"
 		  class="org.flexpay.common.service.importexport.imp.ClassToTypeRegistryCommon" />
 
 	<bean id="classToTypeRegistryFactory"
@@ -279,6 +280,11 @@
 	<bean id="cnDataSourceDescription" class="org.flexpay.common.persistence.DataSourceDescription">
 		<!-- TODO Here put the CN data source ID -->
 		<constructor-arg index="0" value="${cn.data.source.description.id}" />
+	</bean>
+
+	<bean id="megabankDataSourceDescription" class="org.flexpay.common.persistence.DataSourceDescription">
+		<!-- TODO Here put the megabank data source ID -->
+		<constructor-arg index="0" value="${megabank.data.source.description.id}" />
 	</bean>
 
 	<bean id="propertiesFactoryHolder" class="org.flexpay.common.persistence.registry.PropertiesFactoryHolder" />

@@ -4,6 +4,7 @@ import org.flexpay.ab.persistence.Town;
 import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
 import org.flexpay.ab.util.config.ApplicationConfig;
 import org.flexpay.common.persistence.DataSourceDescription;
+import static org.flexpay.common.persistence.Stub.stub;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -11,65 +12,52 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.test.annotation.NotTransactional;
 
 public class TestImportService extends AbSpringBeanAwareTestCase {
 
+	@Autowired
+	@Qualifier ("importServiceAb")
 	protected ImportService importService;
+	@Autowired
+	@Qualifier ("dataExportJdbcTemplate")
 	protected JdbcTemplate template;
 
 	private DataSourceDescription sourceDescription;
 	private Town town;
 
-	@Autowired
-	public void setService(@Qualifier ("importServiceAb") ImportService service) {
-		this.importService = service;
-	}
-
-	@Autowired
-	public void setTemplate(@Qualifier ("dataExportJdbcTemplate") JdbcTemplate template) {
-		this.template = template;
-	}
-
 	@Test
-	@NotTransactional
 	public void testImportDistricts() throws Throwable {
 		importService.importDistricts(town, sourceDescription);
 	}
 
 	@Test
 	@Ignore
-	@NotTransactional
 	public void testImportStreetTypes() {
 		importService.importStreetTypes(sourceDescription);
 	}
 
 	@Test
 	@Ignore
-	@NotTransactional
 	public void testImportStreets() throws Throwable {
 		importService.importStreets(town, sourceDescription);
 	}
 
 	@Test
 	@Ignore
-	@NotTransactional
 	public void testImportBuildings() throws Throwable {
 		importService.importBuildings(sourceDescription);
 	}
 
 	@Test
 	@Ignore
-	@NotTransactional
 	public void testImportApartments() throws Throwable {
 		importService.importApartments(sourceDescription);
 	}
 
 	@Test
 	@Ignore
-	@NotTransactional
 	public void testImportPersons() throws Throwable {
-		importService.importPersons(sourceDescription);
+		importService.importPersons(stub(sourceDescription));
 	}
 
 	@Before

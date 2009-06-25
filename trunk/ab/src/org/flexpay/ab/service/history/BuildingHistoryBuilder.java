@@ -233,7 +233,7 @@ public class BuildingHistoryBuilder extends HistoryBuilderBase<Building> {
 
 		// find street
 		Stub<Street> streetStub = correctionsService.findCorrection(
-				streetId, Street.class, masterIndexService.getMasterSourceDescription());
+				streetId, Street.class, masterIndexService.getMasterSourceDescriptionStub());
 		if (streetStub == null) {
 			throw new IllegalStateException("Cannot find street by master index: " + streetId);
 		}
@@ -259,7 +259,7 @@ public class BuildingHistoryBuilder extends HistoryBuilderBase<Building> {
 
 		// find attribute type
 		Stub<AddressAttributeType> typeStub = correctionsService.findCorrection(
-				typeMasterIndex, AddressAttributeType.class, masterIndexService.getMasterSourceDescription());
+				typeMasterIndex, AddressAttributeType.class, masterIndexService.getMasterSourceDescriptionStub());
 		if (typeStub == null) {
 			throw new IllegalStateException("Cannot find address attribute type by master index: " + typeMasterIndex);
 		}
@@ -280,7 +280,7 @@ public class BuildingHistoryBuilder extends HistoryBuilderBase<Building> {
 		if (record.getNewStringValue() != null) {
 			String externalId = record.getNewStringValue();
 			Stub<District> stub = correctionsService.findCorrection(
-					externalId, District.class, masterIndexService.getMasterSourceDescription());
+					externalId, District.class, masterIndexService.getMasterSourceDescriptionStub());
 			if (stub == null) {
 				throw new IllegalStateException("Cannot find district by master index: " + externalId);
 			}

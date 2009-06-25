@@ -89,7 +89,7 @@ public class TownProcessor extends AbstractProcessor<Town> {
 	 * @param cs	 CorrectionsService
 	 * @throws Exception if failure occurs
 	 */
-	public void setProperty(@NotNull DomainObject object, @NotNull HistoryRec record, DataSourceDescription sd, CorrectionsService cs)
+	public void setProperty(@NotNull DomainObject object, @NotNull HistoryRec record, Stub<DataSourceDescription> sd, CorrectionsService cs)
 			throws Exception {
 		Town town = (Town) object;
 		switch (record.getFieldType()) {
@@ -116,7 +116,7 @@ public class TownProcessor extends AbstractProcessor<Town> {
 	 * @param cs	 CorrectionsService
 	 * @return Persistent object stub if exists, or <code>null</code> otherwise
 	 */
-	protected Stub<Town> findPersistentObject(Town object, DataSourceDescription sd, CorrectionsService cs) {
+	protected Stub<Town> findPersistentObject(Town object, Stub<DataSourceDescription> sd, CorrectionsService cs) {
 		return null;
 	}
 

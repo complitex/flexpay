@@ -35,7 +35,7 @@ public class IdentityTypeHistoryHandler extends HistoryHandlerBase<IdentityType>
 
 		// find object if it already exists
 		Stub<IdentityType> typeStub = correctionsService.findCorrection(
-				masterIndex, IdentityType.class, masterIndexService.getMasterSourceDescription());
+				masterIndex, IdentityType.class, masterIndexService.getMasterSourceDescriptionStub());
 
 		if (diff.getOperationType() == HistoryOperationType.TYPE_CREATE) {
 			if (typeStub != null) {

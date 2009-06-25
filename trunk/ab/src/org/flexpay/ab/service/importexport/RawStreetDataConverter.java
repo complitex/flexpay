@@ -3,13 +3,14 @@ package org.flexpay.ab.service.importexport;
 import org.flexpay.ab.persistence.*;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.DataSourceDescription;
-import org.flexpay.common.persistence.TimeLine;
 import org.flexpay.common.persistence.Stub;
+import static org.flexpay.common.persistence.Stub.stub;
+import org.flexpay.common.persistence.TimeLine;
 import org.flexpay.common.service.importexport.CorrectionsService;
 import org.flexpay.common.service.importexport.DataConverter;
+import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.config.ApplicationConfig;
 
-import java.util.HashSet;
 import java.util.Set;
 
 public class RawStreetDataConverter implements DataConverter<Street, RawStreetData> {
@@ -37,7 +38,7 @@ public class RawStreetDataConverter implements DataConverter<Street, RawStreetDa
 		nameTranslation.setTranslatable(streetName);
 		nameTranslation.setName(streetRawData.getName());
 
-		Set<StreetNameTranslation> translations = new HashSet<StreetNameTranslation>();
+		Set<StreetNameTranslation> translations = CollectionUtils.set();
 		translations.add(nameTranslation);
 		streetName.setTranslations(translations);
 
@@ -47,7 +48,7 @@ public class RawStreetDataConverter implements DataConverter<Street, RawStreetDa
 		street.setNamesTimeLine(new TimeLine<StreetName, StreetNameTemporal>(nameTemporal));
 
 		Stub<StreetType> streetType = correctionsService.findCorrection(
-				streetRawData.getTypeId(), StreetType.class, dataSourceDescription);
+				streetRawData.getTypeId(), StreetType.class, stub(dataSourceDescription));
 		if (streetType == null) {
 			throw new FlexPayException("Cannot find street type correction: " + streetRawData.getTypeId());
 		}

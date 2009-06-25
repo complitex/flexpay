@@ -87,10 +87,6 @@ public class ApartmentHistoryBuilder extends HistoryBuilderBase<Apartment> {
 		log.debug("Address diff {}", rec);
 	}
 
-	private boolean empty(ApartmentNumber an) {
-		return an == null || StringUtils.isBlank(an.getValue());
-	}
-
 	private boolean isNew(DomainObject object) {
 		Long id = object.getId();
 		return id == null || id <= 0;
@@ -170,7 +166,7 @@ public class ApartmentHistoryBuilder extends HistoryBuilderBase<Apartment> {
 		if (record.getNewStringValue() != null) {
 			String externalId = record.getNewStringValue();
 			Stub<Building> stub = correctionsService.findCorrection(
-					externalId, Building.class, masterIndexService.getMasterSourceDescription());
+					externalId, Building.class, masterIndexService.getMasterSourceDescriptionStub());
 			if (stub == null) {
 				throw new IllegalStateException("Cannot find building by master index: " + externalId);
 			}

@@ -35,7 +35,7 @@ public class PersonHistoryHandler extends HistoryHandlerBase<Person> {
 
 		// find object if it already exists
 		Stub<Person> stub = correctionsService.findCorrection(
-				masterIndex, Person.class, masterIndexService.getMasterSourceDescription());
+				masterIndex, Person.class, masterIndexService.getMasterSourceDescriptionStub());
 
 		if (diff.getOperationType() == HistoryOperationType.TYPE_CREATE) {
 			if (stub != null) {

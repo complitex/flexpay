@@ -22,6 +22,10 @@ public class DataSourceDescription extends DomainObject {
 		super(id);
 	}
 
+	public DataSourceDescription(Stub<DataSourceDescription> stub) {
+		super(stub.getId());
+	}
+
 	/**
 	 * Getter for property 'description'.
 	 *

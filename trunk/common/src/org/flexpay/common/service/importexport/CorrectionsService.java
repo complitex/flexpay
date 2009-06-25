@@ -26,7 +26,7 @@ public interface CorrectionsService {
 	 * @return DomainObject
 	 */
 	@Nullable
-	<T extends DomainObject> Stub<T> findCorrection(String externalId, Class<T> cls, DataSourceDescription sourceDescription);
+	<T extends DomainObject> Stub<T> findCorrection(String externalId, Class<T> cls, Stub<DataSourceDescription> sourceDescription);
 
 	/**
 	 * Check if correction exists 
@@ -36,7 +36,7 @@ public interface CorrectionsService {
 	 * @param sourceDescription External data source description
 	 * @return DomainObject
 	 */
-	boolean existsCorrection(String externalId, Class<? extends DomainObject> cls, DataSourceDescription sourceDescription);
+	boolean existsCorrection(String externalId, Class<? extends DomainObject> cls, Stub<DataSourceDescription> sourceDescription);
 
 	/**
 	 * Create stub for new data correction or get existing one
@@ -47,7 +47,7 @@ public interface CorrectionsService {
 	 * @return stub for a new DataCorrection
 	 */
 	@NotNull
-	DataCorrection getStub(String externalId, DomainObject obj, DataSourceDescription sourceDescription);
+	DataCorrection getStub(String externalId, DomainObject obj, Stub<DataSourceDescription> sourceDescription);
 
 	/**
 	 *
@@ -63,11 +63,10 @@ public interface CorrectionsService {
 	 *
 	 * @param obj Object to get external identifier of
 	 * @param sourceDescription DataSourceDescription to get
-	 * @param <T> Object type
 	 * @return External id that if found, or <code>null</code> otherwise
 	 */
 	@Nullable
-	<T extends DomainObject> String getExternalId(@NotNull T obj, DataSourceDescription sourceDescription);
+	<T extends DomainObject> String getExternalId(@NotNull T obj, Stub<DataSourceDescription> sourceDescription);
 
 	/**
 	 * Delete correction

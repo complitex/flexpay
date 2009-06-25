@@ -23,11 +23,12 @@
 	<bean id="mbRegistryFileValidator"
 		  class="org.flexpay.eirc.sp.impl.validation.MbRegistryFileValidator" />
 
-    <bean id="mbCorrectionsFileValidator"
+	<bean id="mbCorrectionsFileValidator"
 		  class="org.flexpay.eirc.sp.impl.validation.MbCorrectionsFileValidator" />
 
-	<bean id="mbRegistryFileParser"
-		  class="org.flexpay.eirc.sp.impl.parsing.MbRegistryFileParser"
+	<bean id="mbFileParser"
+		  abstract="true"
+		  class="org.flexpay.eirc.sp.impl.MbFileParser"
 		  p:registryTypeService-ref="registryTypeService"
 		  p:serviceProviderService-ref="serviceProviderService"
 		  p:registryService-ref="eircRegistryService"
@@ -36,19 +37,18 @@
 		  p:spRegistryRecordStatusService-ref="registryRecordStatusService"
 		  p:registryArchiveStatusService-ref="registryArchiveStatusService"
 		  p:propertiesFactory-ref="eircPropertiesFactory"
+		  p:correctionsService-ref="correctionsService"
+		  p:megabankSD-ref="megabankDataSourceDescription" />
+
+	<bean id="mbRegistryFileParser"
+		  parent="mbFileParser"
+		  class="org.flexpay.eirc.sp.impl.parsing.MbRegistryFileParser"
 		  p:validator-ref="mbRegistryFileValidator" />
 
-    <bean id="mbCorrectionsFileParser"
-          class="org.flexpay.eirc.sp.impl.parsing.MbCorrectionsFileParser"
-          p:registryTypeService-ref="registryTypeService"
-          p:serviceProviderService-ref="serviceProviderService"
-          p:registryService-ref="eircRegistryService"
-          p:registryRecordService-ref="registryRecordService"
-          p:spRegistryStatusService-ref="registryStatusService"
-          p:spRegistryRecordStatusService-ref="registryRecordStatusService"
-          p:registryArchiveStatusService-ref="registryArchiveStatusService"
-          p:propertiesFactory-ref="eircPropertiesFactory"
-          p:validator-ref="mbCorrectionsFileValidator" />
+	<bean id="mbCorrectionsFileParser"
+		  parent="mbFileParser"
+		  class="org.flexpay.eirc.sp.impl.parsing.MbCorrectionsFileParser"
+		  p:validator-ref="mbCorrectionsFileValidator" />
 
 	<bean id="eircAccountService"
 		  class="org.flexpay.eirc.service.imp.EircAccountServiceImpl"
@@ -72,8 +72,8 @@
 		  p:consumerInfoService-ref="consumerInfoService"
 		  p:importUtil-ref="eircImportUtil"
 		  p:accountService-ref="eircAccountService"
-          p:btiApartmentService-ref="btiApartmentService"
-          p:apartmentAttributeTypeService-ref="apartmentAttributeTypeService" />
+		  p:btiApartmentService-ref="btiApartmentService"
+		  p:apartmentAttributeTypeService-ref="apartmentAttributeTypeService" />
 
 	<bean id="eircObjectsFactory" autowire-candidate="false"
 		  class="org.flexpay.eirc.service.imp.EircObjectsFactory" />
@@ -136,7 +136,7 @@
 		  class="org.flexpay.eirc.service.imp.PaymentPointServiceImpl"
 		  p:paymentPointDao-ref="paymentPointDao" />
 
-	<bean id="eircServiceOrganizationServiceTarget" 
+	<bean id="eircServiceOrganizationServiceTarget"
 		  parent="serviceOrganizationServiceTarget"
 		  autowire-candidate="false"
 		  class="org.flexpay.eirc.service.imp.ServiceOrganizationServiceImpl"

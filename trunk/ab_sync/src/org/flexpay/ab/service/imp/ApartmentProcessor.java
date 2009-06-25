@@ -63,7 +63,7 @@ public class ApartmentProcessor extends AbstractProcessor<Apartment> {
 	 * @param cs	 CorrectionsService
 	 * @throws Exception if failure occurs
 	 */
-	public void setProperty(@NotNull DomainObject object, @NotNull HistoryRec record, DataSourceDescription sd, CorrectionsService cs)
+	public void setProperty(@NotNull DomainObject object, @NotNull HistoryRec record, Stub<DataSourceDescription> sd, CorrectionsService cs)
 			throws Exception {
 		@NotNull Apartment apartment = (Apartment) object;
 		switch (record.getFieldType()) {
@@ -78,7 +78,7 @@ public class ApartmentProcessor extends AbstractProcessor<Apartment> {
 		}
 	}
 
-	private void setBuildingId(@NotNull Apartment apartment, @NotNull HistoryRec record, DataSourceDescription sd, CorrectionsService cs)
+	private void setBuildingId(@NotNull Apartment apartment, @NotNull HistoryRec record, Stub<DataSourceDescription> sd, CorrectionsService cs)
 			throws Exception {
 
 		Stub<BuildingAddress> stub = cs.findCorrection(record.getCurrentValue(), BuildingAddress.class, sd);
@@ -160,7 +160,7 @@ public class ApartmentProcessor extends AbstractProcessor<Apartment> {
 	 * @param cs	 CorrectionsService
 	 * @return Persistent object stub if exists, or <code>null</code> otherwise
 	 */
-	protected Stub<Apartment> findPersistentObject(Apartment object, DataSourceDescription sd, CorrectionsService cs) {
+	protected Stub<Apartment> findPersistentObject(Apartment object, Stub<DataSourceDescription> sd, CorrectionsService cs) {
 		if (object.getApartmentNumbers().isEmpty()) {
 			return null;
 		}

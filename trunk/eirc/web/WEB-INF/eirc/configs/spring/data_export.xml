@@ -14,6 +14,7 @@
 	</bean>
 
 	<bean id="classToTypeRegistryEirc"
+		  autowire-candidate="false"
 		  class="org.flexpay.eirc.service.importexport.imp.ClassToTypeRegistryEirc" />
 
 	<bean id="classToTypeRegistryFactoryEirc"
