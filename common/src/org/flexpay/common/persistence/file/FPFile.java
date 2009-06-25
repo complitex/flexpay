@@ -2,15 +2,21 @@ package org.flexpay.common.persistence.file;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
+import org.apache.commons.io.IOUtils;
 import org.flexpay.common.util.FPFileUtil;
+import org.flexpay.common.util.io.InputStreamCallback;
+import org.flexpay.common.util.io.OutputStreamCallback;
+import org.flexpay.common.util.io.ReaderCallback;
+import org.flexpay.common.util.io.WriterCallback;
 import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.common.persistence.FPModule;
 import org.jetbrains.annotations.NotNull;
 
+import javax.activation.DataSource;
 import java.io.*;
 import java.util.Date;
 
-public class FPFile extends DomainObject {
+public class FPFile extends DomainObject implements DataSource {
 
 	private String nameOnServer;
 	private String originalName;
@@ -96,8 +102,62 @@ public class FPFile extends DomainObject {
 		return new BufferedInputStream(new FileInputStream(FPFileUtil.getFileOnServer(this)));
 	}
 
+	@Override
+	public String getContentType() {
+		return "application/octet-stream";
+	}
+
+	@Override
+	public String getName() {
+		return getOriginalName();
+	}
+
 	public void updateSize() {
 		size = FPFileUtil.getFileOnServer(this).length();
+	}
+
+	public void withInputStream(InputStreamCallback callback) throws IOException {
+
+		InputStream is = getInputStream();
+		try {
+			callback.read(is);
+		} finally {
+			IOUtils.closeQuietly(is);
+		}
+	}
+
+	public void withOutputStream(OutputStreamCallback callback) throws IOException {
+
+		OutputStream os = getOutputStream();
+		try {
+			callback.write(os);
+		} finally {
+			IOUtils.closeQuietly(os);
+			updateSize();
+		}
+	}
+
+	public void withReader(String encoding, ReaderCallback callback) throws IOException {
+
+		@SuppressWarnings ({"IOResourceOpenedButNotSafelyClosed"})
+		Reader r = new InputStreamReader(getInputStream(), encoding);
+		try {
+			callback.read(r);
+		} finally {
+			IOUtils.closeQuietly(r);
+		}
+	}
+
+	public void withWriter(String encoding, WriterCallback callback) throws IOException {
+
+		@SuppressWarnings ({"IOResourceOpenedButNotSafelyClosed"})
+		Writer w = new OutputStreamWriter(getOutputStream(), encoding);
+		try {
+			callback.write(w);
+		} finally {
+			IOUtils.closeQuietly(w);
+			updateSize();
+		}
 	}
 
 	@Override

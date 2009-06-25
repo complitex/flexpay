@@ -115,11 +115,6 @@
 		  p:registryService-ref="registryService"
 		  p:registryStatusService-ref="registryStatusService" />
 
-	<bean id="sendEmail"
-		  class="org.flexpay.common.service.transport.impl.EmailOutTransport"
-		  p:email="test@test.test"
-		  p:sender-ref="mailSender" />
-
 	<bean id="exportBankPaymentsRegistry"
 		  class="org.flexpay.payments.util.registries.ExportBankPaymentsRegistry"
 		  p:moduleName="${flexpay.module.name.payments}"

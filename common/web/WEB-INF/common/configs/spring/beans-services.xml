@@ -271,6 +271,11 @@
 		  p:historyBuilder-ref="measureUnitHistoryBuilder"
 		  p:unitService-ref="measureUnitService" />
 
+	<bean id="sendEmail"
+		  class="org.flexpay.common.service.transport.impl.EmailOutTransport"
+		  p:email="test@test.test"
+		  p:sender-ref="mailSender" />
+
 	<bean id="cnDataSourceDescription" class="org.flexpay.common.persistence.DataSourceDescription">
 		<!-- TODO Here put the CN data source ID -->
 		<constructor-arg index="0" value="${cn.data.source.description.id}" />
