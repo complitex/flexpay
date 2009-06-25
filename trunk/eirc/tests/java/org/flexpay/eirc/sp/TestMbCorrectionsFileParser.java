@@ -69,4 +69,5 @@ public class TestMbCorrectionsFileParser extends TestSpFileCreateAction {
 	public void restoreIgnoreInvalidLinesNumber() {
 		validator.setIgnoreInvalidLinesNumber(ignoreInvalidLinesNumber);
 	}
+
 }

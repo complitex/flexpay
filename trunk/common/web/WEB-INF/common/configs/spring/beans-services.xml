@@ -279,12 +279,12 @@
 
 	<bean id="cnDataSourceDescription" class="org.flexpay.common.persistence.DataSourceDescription">
 		<!-- TODO Here put the CN data source ID -->
-		<constructor-arg index="0" value="${cn.data.source.description.id}" />
+		<constructor-arg index="0" value="${cn.data.source.description.id}" type="java.lang.Long" />
 	</bean>
 
 	<bean id="megabankDataSourceDescription" class="org.flexpay.common.persistence.DataSourceDescription">
 		<!-- TODO Here put the megabank data source ID -->
-		<constructor-arg index="0" value="${megabank.data.source.description.id}" />
+		<constructor-arg index="0" value="${megabank.data.source.description.id}" type="java.lang.Long" />
 	</bean>
 
 	<bean id="propertiesFactoryHolder" class="org.flexpay.common.persistence.registry.PropertiesFactoryHolder" />

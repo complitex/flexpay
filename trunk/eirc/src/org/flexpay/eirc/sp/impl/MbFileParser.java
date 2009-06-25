@@ -138,4 +138,5 @@ public abstract class MbFileParser implements FileParser {
 	public void setMegabankSD(DataSourceDescription megabankSD) {
 		this.megabankSD = stub(megabankSD);
 	}
+
 }
