@@ -40,6 +40,16 @@ public interface OperationDao extends GenericDao<Operation, Long> {
 	 */
 	List<Operation> listPayments(Long organizationId, Date beginDate, Date endDate, int status);
 
+	/**
+	 * List of all payment operations which has status REGISTERED inside time interval and organization
+	 *
+	 * @param organizationId organization id
+	 * @param beginDate lower bound for operation registration date
+	 * @param endDate higher bound for operation registration date
+	 * @return list of payment operations
+	 */
+	List<Operation> listPaymentsByPaymentPoint(Long paymentPointId, Date beginDate, Date endDate, int status);
+
     /**
      * List last operations which have been created between <code>beginDate</code> and <code>endDate</code>
      * NOTE: operations with status DELETED are not included!
