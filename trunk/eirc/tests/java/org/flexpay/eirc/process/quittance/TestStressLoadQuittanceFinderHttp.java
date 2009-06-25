@@ -1,5 +1,6 @@
 package org.flexpay.eirc.process.quittance;
 
+import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.output.NullOutputStream;
 import org.apache.commons.lang.time.StopWatch;
@@ -29,9 +30,8 @@ public class TestStressLoadQuittanceFinderHttp {
 			watch.start();
 
 			// prepare nasic auth
-			sun.misc.BASE64Encoder enc = new sun.misc.BASE64Encoder();
 			String userpassword = "vld:vld";
-			String encodedAuthorization = enc.encode(userpassword.getBytes());
+			String encodedAuthorization = new String(Base64.encodeBase64(userpassword.getBytes()));
 
 			while ((number = reader.readLine()) != null) {
 				URL url = new URL(baseUrl, "/eirc/eirc/quittancePay.action?quittanceNumber=" + number);
