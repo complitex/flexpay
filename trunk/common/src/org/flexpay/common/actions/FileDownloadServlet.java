@@ -21,7 +21,7 @@ public class FileDownloadServlet extends HttpServlet {
 
 	private static final Logger log = LoggerFactory.getLogger(FileDownloadServlet.class);
 
-	private int inline = 1;
+	private int inline = 0;
 	private FPFile file = new FPFile();
 	private Long fileId = null;
 
@@ -98,7 +98,7 @@ public class FileDownloadServlet extends HttpServlet {
 	}
 
 	public String getContentDisposition() throws UnsupportedEncodingException {
-		String result = inline != 1 ? "inline" : "attachment;filename=\"" + new String(getFileName().getBytes("UTF-8"), "ISO-8859-1") + "\"";
+		String result = inline != 0 ? "inline" : "attachment;filename=\"" + new String(getFileName().getBytes("UTF-8"), "ISO-8859-1") + "\"";
 
 		log.debug("Result: {}", result);
 

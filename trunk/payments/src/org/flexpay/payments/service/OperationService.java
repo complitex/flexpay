@@ -6,6 +6,7 @@ import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.orgs.persistence.PaymentPoint;
 import org.flexpay.orgs.persistence.Cashbox;
 import org.flexpay.payments.persistence.Operation;
+import org.flexpay.payments.persistence.OperationStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.security.annotation.Secured;
@@ -76,11 +77,11 @@ public interface OperationService {
 	//@Secured(Roles.OPERATION_READ)
 	List<Operation> listLastPaymentOperations(Date beginDate, Date endDate);
 
-    /**
+	/**
 	 * List last operations which have been created between <code>beginDate</code> and <code>endDate</code>
 	 * NOTE: operations with status DELETED are not included!
 	 *
-     * @param paymentPoint payment point
+	 * @param paymentPoint payment point
 	 * @param beginDate lower bound for operation creation date
 	 * @param endDate higher bound for operation creation date
 	 * @return list of operations
@@ -109,6 +110,17 @@ public interface OperationService {
 	 */
 	@Secured(Roles.OPERATION_READ)
 	List<Operation> listReceivedPayments(Organization organization, Date beginDate, Date endDate);
+
+	/**
+	 * List of all payment operations which has status REGISTERED inside time interval and organization
+	 *
+	 * @param paymentPoint paymentPoint
+	 * @param beginDate lower bound for operation registration date
+	 * @param endDate higher bound for operation registration date
+	 * @return list of payment operations
+	 */
+	@Secured(Roles.OPERATION_READ)
+	List<Operation> listReceivedPayments(PaymentPoint paymentPoint, Date beginDate, Date endDate);
 
 	/**
 	 * List of all payment operations which has status RETURNED inside time interval and organization

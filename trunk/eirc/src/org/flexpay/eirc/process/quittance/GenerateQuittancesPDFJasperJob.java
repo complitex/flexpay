@@ -64,7 +64,7 @@ public class GenerateQuittancesPDFJasperJob extends Job {
 			contextVariables.put(RESULT_FILE_ID, report.getId());
 
 			if (plog.isInfoEnabled()) {
-				plog.info("Ended PDF quittances generation, time spent: " + (System.currentTimeMillis() - time) + "ms.");
+				plog.info("Ended PDF quittances generation, time spent: {} ms.", System.currentTimeMillis() - time);
 			}
 		} catch (Exception e) {
 			contextVariables.put(Job.STATUS_ERROR, "Error : " + e.getMessage());

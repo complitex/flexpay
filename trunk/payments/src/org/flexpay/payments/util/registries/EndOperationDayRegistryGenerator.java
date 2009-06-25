@@ -48,7 +48,7 @@ public class EndOperationDayRegistryGenerator {
 
 		log.info("Start generating end operation day registry...");
 
-		List<Operation> operations = operationService.listPaymentOperations(beginDate, endDate);
+		List<Operation> operations = operationService.listReceivedPayments(paymentPoint, beginDate, endDate);
 		log.debug("Found {} operations", operations.size());
 
 		Registry registry = new Registry();
