@@ -6,7 +6,7 @@ import junit.framework.TestCase;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-		TestGenerateContractForServicesPDFJasperJob.class
+		TestGenerateContractForServicesJasperJob.class
 		})
 public class AllTests extends TestCase {
 

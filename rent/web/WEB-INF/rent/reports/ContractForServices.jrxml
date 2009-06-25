@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ContractForServices" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="483" leftMargin="56" rightMargin="56" topMargin="28" bottomMargin="28">
-	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
 	<import value="java.text.SimpleDateFormat"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
-	<style name="TNR_12" isDefault="true" fontName="LiberationSerif-Regular" fontSize="12" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="path-to/LiberationSerif-Regular.ttf" pdfEncoding="Cp1251" isPdfEmbedded="true"/>
-	<style name="TNR_12b" isDefault="false" fontName="LiberationSerif-Bold" fontSize="12" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="path-to/LiberationSerif-Bold.ttf" pdfEncoding="Cp1251" isPdfEmbedded="true"/>
-	<style name="TNR_13b" isDefault="false" fontName="LiberationSerif-Bold" fontSize="13" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="path-to/LiberationSerif-Bold.ttf" pdfEncoding="Cp1251" isPdfEmbedded="true"/>
-	<style name="TNR_14b" isDefault="false" fontName="LiberationSerif-Bold" fontSize="14" isBold="true" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="path-to/LiberationSerif-Bold.ttf" pdfEncoding="Cp1251" isPdfEmbedded="true"/>
-	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
-		<defaultValueExpression><![CDATA["D:/work/flexpay/rent/web/WEB-INF/rent/reports/"]]></defaultValueExpression>
-	</parameter>
+	<style name="TNR_12" isDefault="true" fontName="LiberationSerif-Regular" fontSize="12" pdfFontName="fonts/LiberationSerif-Regular.ttf" pdfEncoding="Cp1251" isPdfEmbedded="true"/>
+	<style name="TNR_13b" isDefault="false" fontName="LiberationSerif-Bold" fontSize="13" isBold="true" pdfFontName="fonts/LiberationSerif-Bold.ttf" pdfEncoding="Cp1251" isPdfEmbedded="true"/>
+	<style name="TNR_14b" isDefault="false" fontName="LiberationSerif-Bold" fontSize="14" isBold="true" pdfFontName="fonts/LiberationSerif-Bold.ttf" pdfEncoding="Cp1251" isPdfEmbedded="true"/>
 	<parameter name="contractNumber" class="java.lang.String" isForPrompting="false"/>
 	<parameter name="contractDate" class="java.util.Date" isForPrompting="false"/>
 	<parameter name="executor" class="java.lang.String" isForPrompting="false"/>
-	<parameter name="headPosition" class="java.lang.String" isForPrompting="false"/>
-	<parameter name="headFIO" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="executorAddress" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="executorBankDetails" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="executorChiefFIO" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="executorChiefPosition" class="java.lang.String" isForPrompting="false"/>
 	<parameter name="renter" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="renterJuridicalAddress" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="renterBankDetails" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="renterChiefFIO" class="java.lang.String" isForPrompting="false"/>
 	<parameter name="registrationDocument" class="java.lang.String" isForPrompting="false"/>
 	<parameter name="totalSquare" class="java.math.BigDecimal" isForPrompting="false"/>
 	<parameter name="address" class="java.lang.String" isForPrompting="false"/>
@@ -29,62 +29,53 @@
 	<parameter name="documents" class="java.lang.String" isForPrompting="false"/>
 	<parameter name="beginDate" class="java.util.Date" isForPrompting="false"/>
 	<parameter name="endDate" class="java.util.Date" isForPrompting="false"/>
-	<background>
-		<band/>
-	</background>
 	<title>
 		<band height="67">
 			<textField>
-				<reportElement x="392" y="36" width="61" height="16"/>
+				<reportElement style="TNR_14b" x="0" y="0" width="483" height="36"/>
+				<textElement textAlignment="Center" markup="styled"/>
+				<textFieldExpression class="java.lang.String"><![CDATA["ДОГОВІР № " + $P{contractNumber} + "<br/><font size=\"12\">про надання послуг</font>"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="392" y="36" width="67" height="16"/>
 				<textElement textAlignment="Right"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[new SimpleDateFormat("dd.MM.yyyy").format($P{contractDate})]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="29" y="36" width="42" height="16"/>
+				<reportElement x="29" y="36" width="50" height="16"/>
 				<textElement/>
 				<text><![CDATA[м. Киев]]></text>
 			</staticText>
-			<textField>
-				<reportElement style="TNR_14b" x="0" y="0" width="483" height="36"/>
-				<textElement textAlignment="Center" markup="styled"/>
-				<textFieldExpression class="java.lang.String"><![CDATA["ДОГОВІР № " + $P{contractNumber} + "<br/><font size=\"12\">п�о надання послуг</font>"]]></textFieldExpression>
-			</textField>
 		</band>
 	</title>
-	<pageHeader>
-		<band/>
-	</pageHeader>
-	<columnHeader>
-		<band/>
-	</columnHeader>
 	<detail>
-		<band height="231">
-				<textField isStretchWithOverflow="true">
-					<reportElement positionType="Float" x="0" y="0" width="483" height="61" isPrintWhenDetailOverflows="true"/>
-					<textElement textAlignment="Justified" markup="styled"/>
-					<textFieldExpression class="java.lang.String"><![CDATA["    " + $P{executor}
-+ ", далі “<b>Підприємство</b>”, в особі " + $P{headPosition} + " " + $P{headFIO}
-+ ", що діє на підставі <b>Статуту</b>, з одного боку, та " + $P{renter}
-+ " далі “<b>Споживач</b>”, що діє на пидставє " + $P{registrationDocument}
-+ ", з іншого боку уклали цей <b>Договір</b> про таке:<br/>"]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="true">
-					<reportElement style="TNR_13b" positionType="Float" x="0" y="61" width="483" height="17" isPrintWhenDetailOverflows="true"/>
-					<textElement textAlignment="Center"/>
-					<textFieldExpression class="java.lang.String"><![CDATA["1 ПРЕДМЕТ ДОГОВОРУ"]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="true">
-					<reportElement positionType="Float" x="0" y="78" width="483" height="17" isPrintWhenDetailOverflows="true"/>
-					<textElement textAlignment="Justified" markup="styled"/>
-					<textFieldExpression class="java.lang.String"><![CDATA[" 1.1 “<b>Підпріємство</b>” на підставі укладених договорів з "
+		<band height="395">
+			<textField isStretchWithOverflow="true">
+				<reportElement mode="Opaque" x="0" y="0" width="483" height="16"/>
+				<textElement textAlignment="Justified" markup="styled"/>
+				<textFieldExpression class="java.lang.String"><![CDATA["    " + $P{executor}
++ ", далі “<style isBold=\"true\" pdfFontName=\"fonts/LiberationSerif-Bold.ttf\">Підприємство</style>”, в особі " + $P{executorChiefPosition} + " " + $P{executorChiefFIO}
++ ", що діє на підставі <style isBold=\"true\" pdfFontName=\"fonts/LiberationSerif-Bold.ttf\">Статуту</style>, з одного боку, та " + $P{renter}
++ " далі “<style isBold=\"true\" pdfFontName=\"fonts/LiberationSerif-Bold.ttf\">Споживач</style>”, що діє на пидставє " + $P{registrationDocument}
++ ", з іншого боку уклали цей <style isBold=\"true\" pdfFontName=\"fonts/LiberationSerif-Bold.ttf\">Договір</style> про таке:"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement style="TNR_13b" positionType="Float" x="0" y="16" width="483" height="17"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression class="java.lang.String"><![CDATA["1 ПРЕДМЕТ ДОГОВОРУ"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement positionType="Float" x="0" y="33" width="483" height="16"/>
+				<textElement textAlignment="Justified" markup="styled"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[" 1.1 “<style isBold=\"true\" pdfFontName=\"fonts/LiberationSerif-Bold.ttf\">Підпріємство</style>” на підставі укладених договорів з "
 + "Виробниками і Постачальниками комунальних послуг (" + $P{serviceProviders} + ") зобов'язується "
 + "транспортувати по внутрішньобудинкових мережах нежилого приміщення "
-+ "<b>площею " + $P{totalSquare} + " кв.м.</b> за адресою " +$P{address}
++ "<style isBold=\"true\" pdfFontName=\"fonts/LiberationSerif-Bold.ttf\">площею " + ($P{totalSquare}).setScale(2) + " кв.м.</style> за адресою " +$P{address}
 + ", згидно " + $P{document} + ", яке використовується під " + $P{businessType} + " комунальні послуги, виставляти "
-+ "“<b>Споживачеві</b>” платіжні документи за Договором.<br/>"
-+ " 1.2 “<b>Споживач</b>” увідповідності до данного Договору " 
++ "“<style isBold=\"true\" pdfFontName=\"fonts/LiberationSerif-Bold.ttf\">Споживачеві</style>” платіжні документи за Договором.<br/>"
++ " 1.2 “<style isBold=\"true\" pdfFontName=\"fonts/LiberationSerif-Bold.ttf\">Споживач</style>” увідповідності до данного Договору " 
 + "зобов'язується прийняти комунальні послуги та своєчасно їх оплатити.<br/>"
-+ " 1.3 Додаток №1 до Договору визначає потребу “<b>Споживача</b>” "
++ " 1.3 Додаток №1 до Договору визначає потребу “<style isBold=\"true\" pdfFontName=\"fonts/LiberationSerif-Bold.ttf\">Споживача</style>” "
 + "в окремій комунальній послзі і є невід'ємною частиною данного Договору.<br/>"
 + " 1.4 Додаток №2 до Договору визначає дані про кількість працюючих, вид діяльності, "
 + "графік роботи, збільшення (зменшення) займаної та опалювальної площі, встановлення (демонтування) "
@@ -94,37 +85,37 @@
 + "за енерго- та теплоносії.<br/>"
 + " 1.6 Додаток №3 до Договору згідно Положення про порядок відшкодування власникам житла витрат на "
 + "технічне обслуговування внутрішньобудинкових мереж, затвержденного Наказом Державного комітету "
-+ "України по житлово-комунальному господарству від 17.10.1996 р. №87, визначає частку “<b>Споживача</b>” "
++ "України по житлово-комунальному господарству від 17.10.1996 р. №87, визначає частку “<style isBold=\"true\" pdfFontName=\"fonts/LiberationSerif-Bold.ttf\">Споживача</style>” "
 + "у відшкодуванні витрат по обслуговуванню внутрішньобудинкових мереж."]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="true">
-					<reportElement style="TNR_13b" positionType="Float" x="0" y="95" width="483" height="17" isPrintWhenDetailOverflows="true"/>
-					<textElement textAlignment="Center"/>
-					<textFieldExpression class="java.lang.String"><![CDATA["2 ПОРЯДОК РОЗРАХУНКІВ"]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="true">
-					<reportElement positionType="Float" x="0" y="112" width="483" height="17" isPrintWhenDetailOverflows="true"/>
-					<textElement textAlignment="Justified" markup="styled"/>
-					<textFieldExpression class="java.lang.String"><![CDATA[" 2.1 Облік споживання “<b>Споживачем</b>” "
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement style="TNR_13b" positionType="Float" x="0" y="49" width="483" height="17"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression class="java.lang.String"><![CDATA["2 ПОРЯДОК РОЗРАХУНКІВ"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement positionType="Float" x="0" y="66" width="483" height="16"/>
+				<textElement textAlignment="Justified" markup="styled"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[" 2.1 Облік споживання “<style isBold=\"true\" pdfFontName=\"fonts/LiberationSerif-Bold.ttf\">Споживачем</style>” "
 + "комунальних послуг за відсутності приладів обліку проводиться розрахунковим способом. "
-+ "При цьому “<b>Підприємство</b>” не несе відповідальності за якість комунальних послуг та їх кілкість, "
++ "При цьому “<style isBold=\"true\" pdfFontName=\"fonts/LiberationSerif-Bold.ttf\">Підприємство</style>” не несе відповідальності за якість комунальних послуг та їх кілкість, "
 + "що виставлена Постачальниками комунальних послуг в табулярах та групрахунках.<br/>"
-+ " 2.2 “<b>Споживач</b>” повинен до 10 числа поточного місяца сплатити:<br/>"
++ " 2.2 “<style isBold=\"true\" pdfFontName=\"fonts/LiberationSerif-Bold.ttf\">Споживач</style>” повинен до 10 числа поточного місяца сплатити:<br/>"
 + "    Платежі за комунальні послуги (" + $P{services} + ") поточного місяца в сумі, що визначається<br/>" 
-+ " 2.3 “<b>Споживач</b>” отримує документи (" + $P{documents} + ")"]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="true">
-					<reportElement style="TNR_13b" positionType="Float" x="0" y="129" width="483" height="17" isPrintWhenDetailOverflows="true"/>
-					<textElement textAlignment="Center"/>
-					<textFieldExpression class="java.lang.String"><![CDATA["3 ЗОБОВ'ЯЗАННЯ СТОРІН"]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="true">
-					<reportElement positionType="Float" x="0" y="146" width="483" height="17" isPrintWhenDetailOverflows="true"/>
-					<textElement textAlignment="Justified" markup="styled"/>
-					<textFieldExpression class="java.lang.String"><![CDATA[" 3.1 “<b>Споживач</b>” зобов'язується:<br/>"
++ " 2.3 “<style isBold=\"true\" pdfFontName=\"fonts/LiberationSerif-Bold.ttf\">Споживач</style>” отримує документи (" + $P{documents} + ")."]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement style="TNR_13b" positionType="Float" x="0" y="82" width="483" height="17"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression class="java.lang.String"><![CDATA["3 ЗОБОВ'ЯЗАННЯ СТОРІН"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement positionType="Float" x="0" y="99" width="483" height="16"/>
+				<textElement textAlignment="Justified" markup="styled"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[" 3.1 “<style isBold=\"true\" pdfFontName=\"fonts/LiberationSerif-Bold.ttf\">Споживач</style>” зобов'язується:<br/>"
 + " 3.1.1 забезпечити належне утримання інженерних комунікацій (водопроводу, каналізації, електричних "
 + "та опалювальних мереж), переданих в оренду разом з об'єктом оренди. У випадку аварії та проведенні "
-+ "планових ремонтних робіт повідомляти про це “<b>Підприємство</b>”.<br/>"
++ "планових ремонтних робіт повідомляти про це “<style isBold=\"true\" pdfFontName=\"fonts/LiberationSerif-Bold.ttf\">Підприємство</style>”.<br/>"
 + " 3.1.2 дотримуватись Правил експлуатації та ремонту інженерних комунікацій та вимог БНІП-11-104-76 "
 + "по зберіганню та складуванню матеріальних цінностей, а токож забезпечити їх захист від аврій інженерних комунікацій.<br/>"
 + " 3.1.3 забезпечити додержання протипожежних вимог стандартів, норм, правил, а також виконання вимог "
@@ -132,45 +123,45 @@
 + "протипожежного захисту і зв'язку, пожежну техніку, обладання та інвентар, не допускати їх "
 + "використання не за призначенням.<br/>"
 + " 3.1.4 забезпечити безперешкодний доступ до систем постачання комунальних послуг представників "
-+ "“<b>Підприємства</b>” і Постачальної організації.<br/>"
++ "“<style isBold=\"true\" pdfFontName=\"fonts/LiberationSerif-Bold.ttf\">Підприємства</style>” і Постачальної організації.<br/>"
 + " 3.1.5 встановити прилади обліку електроенергії, тепла, води згідно з Постановою КМ України від 27.11.1995 р. "
 + "№947 та з Разпорядженнями Київськой міської держадміністрації №125 від 02.02.1996 р., і укласти з відповідними "
-+ "організаціями договори на постачання комунальних послуг. Копії договорів необхідно надати “<b>Підприємству</b>”, після "
++ "організаціями договори на постачання комунальних послуг. Копії договорів необхідно надати “<style isBold=\"true\" pdfFontName=\"fonts/LiberationSerif-Bold.ttf\">Підприємству</style>”, після "
 + "чого останній припинить нарахування відповідних платежів.<br/>"
-+ " 3.1.6 За два місяці письмово попередити “<b>Підприємство</b>” про дострокове припинення користування окремою "
-+ "комунальною послугою. При цьому “<b>Споживач</b>” додає письмовий висновок Постачальної організації про "
-+ "технічну можливість відключення даної комунальної послуги. “<b>Споживач</b>” забезпечує складання "
-+ "трьохстороннього акту за участі представників “<b>Підприємства</b>”, Постачальної організації і "
-+ "“<b>Споживача</b>” про відключення комунальної послуги. Нарахування відповідальних платежів припиняється "
++ " 3.1.6 За два місяці письмово попередити “<style isBold=\"true\" pdfFontName=\"fonts/LiberationSerif-Bold.ttf\">Підприємство</style>” про дострокове припинення користування окремою "
++ "комунальною послугою. При цьому “<style isBold=\"true\" pdfFontName=\"fonts/LiberationSerif-Bold.ttf\">Споживач</style>” додає письмовий висновок Постачальної організації про "
++ "технічну можливість відключення даної комунальної послуги. “<style isBold=\"true\" pdfFontName=\"fonts/LiberationSerif-Bold.ttf\">Споживач</style>” забезпечує складання "
++ "трьохстороннього акту за участі представників “<style isBold=\"true\" pdfFontName=\"fonts/LiberationSerif-Bold.ttf\">Підприємства</style>”, Постачальної організації і "
++ "“<style isBold=\"true\" pdfFontName=\"fonts/LiberationSerif-Bold.ttf\">Споживача</style>” про відключення комунальної послуги. Нарахування відповідальних платежів припиняється "
 + "з дня підписання акту.<br/>"
-+ " 3.1.7 “<b>Підприємство</b>” припиняє нарахування платежів за Договором в цілому з дати складання акту "
++ " 3.1.7 “<style isBold=\"true\" pdfFontName=\"fonts/LiberationSerif-Bold.ttf\">Підприємство</style>” припиняє нарахування платежів за Договором в цілому з дати складання акту "
 + "приймання-передачі нежилого приміщення.<br/>"
-+ " 3.2 “<b>Підприємство</b>” зобов'язується:<br/>"
++ " 3.2 “<style isBold=\"true\" pdfFontName=\"fonts/LiberationSerif-Bold.ttf\">Підприємство</style>” зобов'язується:<br/>"
 + " 3.2.1 цілодобово безперебійно транспортувати по внутрішньобудинковим мережах комунальні послуги, "
 + "за винятком періодів, коли проводяться передбаченні графіком випробування теплових мереж, профілактика, "
 + "поточні і капітальні ремонти інженерних комунікацій.<br/>"
-+ " 3.2.2 своєчасно надавати “<b>Споживачеві</b>” документи (" + $P{documents} + ").<br/>"
++ " 3.2.2 своєчасно надавати “<style isBold=\"true\" pdfFontName=\"fonts/LiberationSerif-Bold.ttf\">Споживачеві</style>” документи (" + $P{documents} + ").<br/>"
 + " 3.2.3 щорічно в міжопалювальний сезон отримувати від Постачальної організації Акт про готовність "
 + "до опалювального сезону.<br/>"
-+ " 3.2.4 “<b>Підприємство</b>” не несе відповідальності за несвоєчасне включення, невключення, відключення "
++ " 3.2.4 “<style isBold=\"true\" pdfFontName=\"fonts/LiberationSerif-Bold.ttf\">Підприємство</style>” не несе відповідальності за несвоєчасне включення, невключення, відключення "
 + "центрального опалення Постачальною організацією з причини наявності боргу за теплоносії за "
-+ "“<b>Споживачем</b>” чи по об'єкту в цілому, а також з інших технічних причин, усунення яких не є в "
-+ "компетенції “<b>Підприємства</b>”."]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="true">
-					<reportElement style="TNR_13b" positionType="Float" x="0" y="163" width="483" height="17" isPrintWhenDetailOverflows="true"/>
-					<textElement textAlignment="Center"/>
-					<textFieldExpression class="java.lang.String"><![CDATA["4 ВІДПОВІДАЛЬНІСТЬ СТОРІН"]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="true">
-					<reportElement positionType="Float" x="0" y="180" width="483" height="17" isPrintWhenDetailOverflows="true"/>
-					<textElement textAlignment="Justified" markup="styled"/>
-					<textFieldExpression class="java.lang.String"><![CDATA[" 4.1 “<b>Споживач</b>” несе "
++ "“<style isBold=\"true\" pdfFontName=\"fonts/LiberationSerif-Bold.ttf\">Споживачем</style>” чи по об'єкту в цілому, а також з інших технічних причин, усунення яких не є в "
++ "компетенції “<style isBold=\"true\" pdfFontName=\"fonts/LiberationSerif-Bold.ttf\">Підприємства</style>”."]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement style="TNR_13b" positionType="Float" x="0" y="115" width="483" height="17"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression class="java.lang.String"><![CDATA["4 ВІДПОВІДАЛЬНІСТЬ СТОРІН"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement positionType="Float" x="0" y="132" width="483" height="16"/>
+				<textElement textAlignment="Justified" markup="styled"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[" 4.1 “<style isBold=\"true\" pdfFontName=\"fonts/LiberationSerif-Bold.ttf\">Споживач</style>” несе "
 + "відповідальність за самовільне підключення до водопровідних, каналізаційних, теплових, "
-+ "електричних мереж Посточальної організації та “<b>Підприємства</b>”, та за цілісність пломб, встановлених "
++ "електричних мереж Посточальної організації та “<style isBold=\"true\" pdfFontName=\"fonts/LiberationSerif-Bold.ttf\">Підприємства</style>”, та за цілісність пломб, встановлених "
 + "Постачальниками комунальних послуг.<br/>"
-+ " 4.2 За несвоєчасну сплату платежів, предбачених п.2.2 Договору, “<b>Споживач</b>” сплачує на користь "
-+ "“<b>Підприємства</b>” пеню в розмірі 1% від розміру несплачених платежів за кожний день просрочення, "
++ " 4.2 За несвоєчасну сплату платежів, предбачених п.2.2 Договору, “<style isBold=\"true\" pdfFontName=\"fonts/LiberationSerif-Bold.ttf\">Споживач</style>” сплачує на користь "
++ "“<style isBold=\"true\" pdfFontName=\"fonts/LiberationSerif-Bold.ttf\">Підприємства</style>” пеню в розмірі 1% від розміру несплачених платежів за кожний день просрочення, "
 + "але не більше розміру, встановленного чинним законодавством.<br/>"
 + " 4.3 За неналежне виконання та невиконання умов цього Договору Сторни несуть відповідальність "
 + "згідно чинного законодавства.<br/>"
@@ -181,16 +172,16 @@
 + "існування обставин непереборної сили більше трьох місяців кожна із Сторін може письмово "
 + "повідомити іншу Сторону про розірвання Договору з обов'язковим проведенням розрахунків "
 + "за спожиті комунальні послуги."]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="true">
-					<reportElement style="TNR_13b" positionType="Float" x="0" y="197" width="483" height="17" isPrintWhenDetailOverflows="true"/>
-					<textElement textAlignment="Center"/>
-					<textFieldExpression class="java.lang.String"><![CDATA["5 СТРОК ДІЇ ДОГОВОРУ ТА ІНШІ УМОВІ"]]></textFieldExpression>
-				</textField>
-				<textField isStretchWithOverflow="true">
-					<reportElement positionType="Float" x="0" y="214" width="483" height="16" isPrintWhenDetailOverflows="true"/>
-					<textElement textAlignment="Justified" markup="styled"/>
-					<textFieldExpression class="java.lang.String"><![CDATA[" 5.1 Сторони по "
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement style="TNR_13b" positionType="Float" x="0" y="148" width="483" height="17"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression class="java.lang.String"><![CDATA["5 СТРОК ДІЇ ДОГОВОРУ ТА ІНШІ УМОВІ"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement positionType="Float" x="0" y="165" width="483" height="16"/>
+				<textElement textAlignment="Justified" markup="styled"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[" 5.1 Сторони по "
 + "Договору забов'язані на вимогу однієї із Сторін проводити звіряння взаєморозрахунків "
 + "по Договору і оформляти відповідні акті звірки.<br/>"
 + " 5.2 В разі змін банківских реквізитів, юридичної алреси, Сторони по Договору в "
@@ -205,27 +196,53 @@
 + "про зміну цін та тарифів на комунальні послуги, відшкодування витрат по обслугованню "
 + "внутришньобудинкових мереж вважається підставою для зміни нарахувань платежів по даному "
 + "Договору і не потребує складання окремого письмового документу.<br/>"
-+ " 5.5 Строк дії договору вставлений з " + new SimpleDateFormat("dd.MM.yyyy").format($P{beginDate}) + " по " + new SimpleDateFormat("dd.MM.yyyy").format($P{endDate}) + ".<br/>"
++ " 5.5 Строк дії договору вставлений з " + (new SimpleDateFormat("dd.MM.yyyy")).format($P{beginDate}) + " по " + (new SimpleDateFormat("dd.MM.yyyy")).format($P{endDate}) + ".<br/>"
 + " 5.6 Після закінчення дії цього Договору він може бути продовжений на той же термін і "
 + "на тих же умовах, якщо за місяць до закінчення данного Договору жодна із Сторін не "
 + "повідомить іншу про його припинення або зміну умов.<br/>"
 + " 5.7 Даний Договор складений у двох примірниках, які мають однакову юридичну силу. "
-+ "Один з них зберігається у “<b>Підприємства</b>”, а інший — у “<b>Споживача</b>”.<br/>"
++ "Один з них зберігається у “<style isBold=\"true\" pdfFontName=\"fonts/LiberationSerif-Bold.ttf\">Підприємства</style>”, а інший — у “<style isBold=\"true\" pdfFontName=\"fonts/LiberationSerif-Bold.ttf\">Споживача</style>”.<br/>"
 + " 5.8 Одностороння відмова від Договору не допускається.<br/>"
 + " 5.9 Договір може бути розірвано за погодженнями Сторін.<br/>"
 + " 5.10 Спори Сторін, пов'язані з виконанням данного Договору вирішуються у встановленому"
 + "чинним законодавством порядку.<br/>"
-+ " 5.11 “<b>Підприємство</b>” і “<b>Споживач</b>” є платником податку на прибуток на загальних підставах.<br/>"]]></textFieldExpression>
-				</textField>
++ " 5.11 “<style isBold=\"true\" pdfFontName=\"fonts/LiberationSerif-Bold.ttf\">Підприємство</style>” і “<style isBold=\"true\" pdfFontName=\"fonts/LiberationSerif-Bold.ttf\">Споживач</style>” є платником податку на прибуток на загальних підставах.<br/>"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement style="TNR_13b" positionType="Float" x="0" y="199" width="483" height="17"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression class="java.lang.String"><![CDATA["ЮРИДИЧНІ АДРЕСИ, БАНКІВСЬКІ РЕКВІЗИТИ ТА ПІДПИСИ СТОРІН"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement style="TNR_13b" positionType="Float" x="0" y="216" width="227" height="17"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression class="java.lang.String"><![CDATA["ПІДПРИЄМСТВО:"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement positionType="Float" x="0" y="233" width="227" height="48"/>
+				<textElement markup="styled"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{executor} + "<br/>" + $P{executorAddress} + "<br/>" + $P{executorBankDetails}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement positionType="Float" x="0" y="329" width="227" height="16"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA["_____________  /" + $P{executorChiefFIO}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement style="TNR_13b" positionType="Float" x="255" y="216" width="228" height="17"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression class="java.lang.String"><![CDATA["СПОЖИВАЧ"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement positionType="Float" x="256" y="233" width="227" height="48"/>
+				<textElement markup="styled"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{renter} + "<br/>" + $P{renterJuridicalAddress} + "<br/>" + $P{renterBankDetails}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement positionType="Float" x="256" y="329" width="227" height="16"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA["_____________  /" + $P{renterChiefFIO}]]></textFieldExpression>
+			</textField>
 		</band>
 	</detail>
-	<columnFooter>
-		<band/>
-	</columnFooter>
-	<pageFooter>
-		<band/>
-	</pageFooter>
-	<summary>
-		<band/>
-	</summary>
 </jasperReport>
