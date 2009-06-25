@@ -40,7 +40,7 @@ public class MbCorrectionsFileParser extends MbFileParser {
 
 		try {
 
-			reader = new BufferedReader(new InputStreamReader(new FileInputStream(FPFileUtil.getFileOnServer(spFile)), REGISTRY_FILE_ENCODING), 500);
+			reader = new BufferedReader(new InputStreamReader(new FileInputStream(FPFileUtil.getFileOnServer(spFile)), REGISTRY_FILE_ENCODING));
 
 			registry.setCreationDate(new Date());
 			registry.setSpFile(spFile);

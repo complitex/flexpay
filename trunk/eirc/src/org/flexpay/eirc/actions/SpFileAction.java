@@ -66,7 +66,7 @@ public class SpFileAction extends FPActionSupport {
 		String line = null;
 		BufferedReader reader = null;
 		try {
-			reader = new BufferedReader(new InputStreamReader(new FileInputStream(file), "Cp866"), 500);
+			reader = new BufferedReader(new InputStreamReader(new FileInputStream(file), "Cp866"));
 			line = reader.readLine();
 
 			if (firstMbFileString.equals(line)) {

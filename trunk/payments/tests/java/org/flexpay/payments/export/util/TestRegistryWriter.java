@@ -172,7 +172,7 @@ public class TestRegistryWriter {
     private static void assertCountLine(File file, int n) throws IOException {
         BufferedReader reader = null;
         try {
-            reader = new BufferedReader(new InputStreamReader(new FileInputStream(file), FILE_ENCODING), 500);
+            reader = new BufferedReader(new InputStreamReader(new FileInputStream(file), FILE_ENCODING));
             int i = 0;
             while (reader.readLine() != null) {
                 i++;
@@ -193,7 +193,7 @@ public class TestRegistryWriter {
     private static String[] getLineCeils(File file, int lineN, char separator) throws IOException {
         BufferedReader reader = null;
         try {
-            reader = new BufferedReader(new InputStreamReader(new FileInputStream(file), FILE_ENCODING), 500);
+            reader = new BufferedReader(new InputStreamReader(new FileInputStream(file), FILE_ENCODING));
             int i = 0;
             String line;
             while ((line = reader.readLine()) != null) {

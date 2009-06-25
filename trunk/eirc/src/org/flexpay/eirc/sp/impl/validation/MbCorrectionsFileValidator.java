@@ -33,7 +33,7 @@ public class MbCorrectionsFileValidator extends MbFileValidator {
 		List<String> services = new ArrayList<String>();
 
 		try {
-			reader = new BufferedReader(new InputStreamReader(new FileInputStream(FPFileUtil.getFileOnServer(spFile)), REGISTRY_FILE_ENCODING), 500);
+			reader = new BufferedReader(new InputStreamReader(new FileInputStream(FPFileUtil.getFileOnServer(spFile)), REGISTRY_FILE_ENCODING));
 
 			for (int lineNum = 0;;lineNum++) {
 				String line = reader.readLine();

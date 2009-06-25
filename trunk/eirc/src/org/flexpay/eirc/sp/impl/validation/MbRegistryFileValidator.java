@@ -29,7 +29,7 @@ public class MbRegistryFileValidator extends MbFileValidator {
 		boolean ret = true;
 
 		try {
-			reader = new BufferedReader(new InputStreamReader(new FileInputStream(FPFileUtil.getFileOnServer(spFile)), REGISTRY_FILE_ENCODING), 500);
+			reader = new BufferedReader(new InputStreamReader(new FileInputStream(FPFileUtil.getFileOnServer(spFile)), REGISTRY_FILE_ENCODING));
 
 			for (int lineNum = 0;;lineNum++) {
 				String line = reader.readLine();

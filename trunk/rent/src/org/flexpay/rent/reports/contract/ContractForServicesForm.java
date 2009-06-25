@@ -14,9 +14,14 @@ public class ContractForServicesForm implements Cloneable, Serializable {
 
 	private String contractNumber;
 	private String executor;
-	private String headPosition;
-	private String headFIO;
+	private String executorAddress;
+	private String executorBankDetails;
+	private String executorChiefFIO;
+	private String executorChiefPosition;
 	private String renter;
+	private String renterJuridicalAddress;
+	private String renterBankDetails;
+	private String renterChiefFIO;
 	private String registrationDocument;
 	private Date contractDate;
 
@@ -33,9 +38,14 @@ public class ContractForServicesForm implements Cloneable, Serializable {
 	public Map<String, ?> getParams() {
 		return map(ar("contractNumber",
 				"executor",
-				"headPosition",
-				"headFIO",
+				"executorAddress",
+				"executorBankDetails",
+				"executorChiefFIO",
+				"executorChiefPosition",
 				"renter",
+				"renterJuridicalAddress",
+				"renterBankDetails",
+				"renterChiefFIO",
 				"registrationDocument",
 				"contractDate",
 				"totalSquare",
@@ -50,9 +60,14 @@ public class ContractForServicesForm implements Cloneable, Serializable {
 				),
 				ar(contractNumber,
 						executor,
-						headPosition,
-						headFIO,
+						executorAddress,
+						executorBankDetails,
+						executorChiefFIO,
+						executorChiefPosition,
 						renter,
+						renterJuridicalAddress,
+						renterBankDetails,
+						renterChiefFIO,
 						registrationDocument,
 						contractDate,
 						totalSquare,
@@ -83,20 +98,36 @@ public class ContractForServicesForm implements Cloneable, Serializable {
 		this.executor = executor;
 	}
 
-	public String getHeadPosition() {
-		return headPosition;
+	public String getExecutorAddress() {
+		return executorAddress;
 	}
 
-	public void setHeadPosition(String headPosition) {
-		this.headPosition = headPosition;
+	public void setExecutorAddress(String executorAddress) {
+		this.executorAddress = executorAddress;
 	}
 
-	public String getHeadFIO() {
-		return headFIO;
+	public String getExecutorBankDetails() {
+		return executorBankDetails;
 	}
 
-	public void setHeadFIO(String headFIO) {
-		this.headFIO = headFIO;
+	public void setExecutorBankDetails(String executorBankDetails) {
+		this.executorBankDetails = executorBankDetails;
+	}
+
+	public String getExecutorChiefFIO() {
+		return executorChiefFIO;
+	}
+
+	public void setExecutorChiefFIO(String executorChiefFIO) {
+		this.executorChiefFIO = executorChiefFIO;
+	}
+
+	public String getExecutorChiefPosition() {
+		return executorChiefPosition;
+	}
+
+	public void setExecutorChiefPosition(String executorChiefPosition) {
+		this.executorChiefPosition = executorChiefPosition;
 	}
 
 	public String getRenter() {
@@ -105,6 +136,30 @@ public class ContractForServicesForm implements Cloneable, Serializable {
 
 	public void setRenter(String renter) {
 		this.renter = renter;
+	}
+
+	public String getRenterJuridicalAddress() {
+		return renterJuridicalAddress;
+	}
+
+	public void setRenterJuridicalAddress(String renterJuridicalAddress) {
+		this.renterJuridicalAddress = renterJuridicalAddress;
+	}
+
+	public String getRenterBankDetails() {
+		return renterBankDetails;
+	}
+
+	public void setRenterBankDetails(String renterBankDetails) {
+		this.renterBankDetails = renterBankDetails;
+	}
+
+	public String getRenterChiefFIO() {
+		return renterChiefFIO;
+	}
+
+	public void setRenterChiefFIO(String renterChiefFIO) {
+		this.renterChiefFIO = renterChiefFIO;
 	}
 
 	public String getRegistrationDocument() {
@@ -200,9 +255,14 @@ public class ContractForServicesForm implements Cloneable, Serializable {
 		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
 				append("contractNumber", contractNumber).
 				append("executor", executor).
-				append("headPosition", headPosition).
-				append("headFIO", headFIO).
+				append("executorAddress", executorAddress).
+				append("executorBankDetails", executorBankDetails).
+				append("executorChiefFIO", executorChiefFIO).
+				append("executorChiefPosition", executorChiefPosition).
 				append("renter", renter).
+				append("renterJuridicalAddress", renterJuridicalAddress).
+				append("renterBankDetails", renterBankDetails).
+				append("renterChiefFIO", renterChiefFIO).
 				append("registrationDocument", registrationDocument).
 				append("contractDate", contractDate).
 				append("totalSquare", totalSquare).

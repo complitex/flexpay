@@ -43,6 +43,10 @@ public class ReportUtil {
 	private static final String EXTENSION_HTML = ".html";
 	private static final String EXTENSION_CSV = ".csv";
 
+	public static final String FORMAT_PDF = "pdf";
+	public static final String FORMAT_HTML = "html";
+	public static final String FORMAT_CSV = "csv";
+
 	/**
 	 * Name of fonts that are to
 	 */
@@ -78,7 +82,7 @@ public class ReportUtil {
 
 	private FPFileService fileService;
 
-	private String fontsPath = "/WEB-INF/common/reports/fonts/";
+	private String fontsPath = "/WEB-INF/classes/fonts/";
 
 	private Set<String> compiledReports = CollectionUtils.set();
 

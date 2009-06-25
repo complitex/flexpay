@@ -22,24 +22,26 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class GenerateContractForServicesPDFJasperJob extends Job {
+public class GenerateContractForServicesJasperJob extends Job {
 
-	public static final String JOB_NAME = "generateContractForServicesPDFJob";
+	public static final String JOB_NAME = "generateContractForServicesJob";
 
-	public final static String RESULT_FILE_ID = "RESULT_FILE_ID";
+	public static final String RESULT_FILE_ID = "RESULT_FILE_ID";
 	public static final String PARAM_DATA_FORM = "dataForm";
+	public static final String PARAM_GENERATE_FORMAT = "format";
 
 	private ReportUtil reportUtil;
 
 	public String execute(Map<Serializable, Serializable> contextVariables) throws FlexPayException {
 
 		ContractForServicesForm dataForm = (ContractForServicesForm) contextVariables.get(PARAM_DATA_FORM);
+		String format = (String) contextVariables.get(PARAM_GENERATE_FORMAT);
 
 		Logger plog = ProcessLogger.getLogger(getClass());
 
 		try {
 			long time = System.currentTimeMillis();
-			plog.info("Starting PDF contract for services generation");
+			plog.info("Starting contract for services generation, format: {}", format);
 
 			// upload report and subreports templates
 			plog.info("Uploading report template");
@@ -48,11 +50,22 @@ public class GenerateContractForServicesPDFJasperJob extends Job {
 			JRDataSource dataSource = new JREmptyDataSource(1);
 
 			plog.info("Running report");
-			FPFile report = reportUtil.exportToPdf("ContractForServices", dataForm.getParams(), dataSource, ApplicationConfig.getDefaultReportLocale());
 
-			contextVariables.put(RESULT_FILE_ID, report.getId());
+			FPFile report = null;
+			if (ReportUtil.FORMAT_PDF.equals(format)) {
+				report = reportUtil.exportToPdf("ContractForServices", dataForm.getParams(), dataSource, ApplicationConfig.getDefaultReportLocale());
+			} else if (ReportUtil.FORMAT_HTML.equals(format)) {
+				report = reportUtil.exportToHtml("ContractForServices", dataForm.getParams(), dataSource, ApplicationConfig.getDefaultReportLocale());
+			} else if (ReportUtil.FORMAT_CSV.equals(format)) {
+				report = reportUtil.exportToCsv("ContractForServices", dataForm.getParams(), dataSource, ApplicationConfig.getDefaultReportLocale());
+			} else {
+				throw  new FlexPayException("Incorrect format value - " +  format);
+			}
+			if (report != null) {
+				contextVariables.put(RESULT_FILE_ID, report.getId());
+			}
 
-			plog.info("Ended PDF contract for services generation, time spent: {} ms.", System.currentTimeMillis() - time);
+			plog.info("Ended jasper contract for services generation for format {}, time spent: {} ms.", format, System.currentTimeMillis() - time);
 		} catch (Exception e) {
 			contextVariables.put(Job.STATUS_ERROR, "Error : " + e.getMessage());
 			plog.error("Error", e);
