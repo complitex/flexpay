@@ -8,6 +8,7 @@ import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.process.ProcessManager;
 import org.flexpay.common.service.FPFileService;
 import org.flexpay.common.util.CollectionUtils;
+import org.flexpay.eirc.sp.impl.MbFileValidator;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
@@ -54,19 +55,17 @@ public class SpFileAction extends FPActionSupport {
 		return REDIRECT_SUCCESS;
 	}
 
-	private String getFileType(Long fileId) throws FlexPayException {
+	private String getFileType(Long fileId) {
 
-		File file = fpFileService.getFileFromFileSystem(new Stub<FPFile>(fileId));
+		FPFile file = fpFileService.read(new Stub<FPFile>(fileId));
 
-		String firstMbFileString =
-				"                                                                                                    " +
-				"                                                                                                    " +
-				"                                                                                                    ";
+		String firstMbFileString = MbFileValidator.FIRST_FILE_STRING;
 
-		String line = null;
+		String line;
 		BufferedReader reader = null;
 		try {
-			reader = new BufferedReader(new InputStreamReader(new FileInputStream(file), "Cp866"));
+			//noinspection IOResourceOpenedButNotSafelyClosed
+			reader = new BufferedReader(new InputStreamReader(file.getInputStream(), MbFileValidator.REGISTRY_FILE_ENCODING));
 			line = reader.readLine();
 
 			if (firstMbFileString.equals(line)) {
@@ -81,7 +80,7 @@ public class SpFileAction extends FPActionSupport {
 			}
 
 		} catch (IOException e) {
-			e.printStackTrace();
+			log.error("Failed getting file type: " + file, e);
 		} finally {
 			IOUtils.closeQuietly(reader);
 		}

@@ -2,12 +2,10 @@ package org.flexpay.eirc.sp.impl;
 
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.file.FPFile;
-import org.flexpay.common.util.FPFileUtil;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.io.File;
+import org.apache.commons.lang.time.StopWatch;
 
 public abstract class MbFileValidator {
 
@@ -21,24 +19,18 @@ public abstract class MbFileValidator {
 			+ "                                                                                                    "
 			+ "                                                                                                    ";
 
-	public boolean validate(FPFile spFile) throws FlexPayException  {
+	public boolean validate(FPFile spFile) throws FlexPayException {
 
-		File file = FPFileUtil.getFileOnServer(spFile);
-		if (file == null) {
-			log.debug("Incorrect spFile: can't find file on server (spFile.id = {})", spFile.getId());
-			throw new FlexPayException("For FPFile (id = " + spFile.getId() + ") not found temp file: " + spFile.getNameOnServer());
-		}
+		log.info("Started file validation: {}", spFile);
 
-		log.info("Validation file {} started", spFile.getOriginalName());
-
-		long beginTime = System.currentTimeMillis();
+		StopWatch watch = new StopWatch();
+		watch.start();
 
 		boolean ret = validateFile(spFile);
 
-		long endTime = System.currentTimeMillis();
-		long time = (endTime - beginTime) / 1000;
+		watch.stop();
 
-		log.info("Validation file {} finished in {}", spFile.getOriginalName(), (time / 60 + "m " + time % 60 + "s"));
+		log.info("Validation if file {} finished in {}", spFile, watch);
 
 		return ret;
 	}
