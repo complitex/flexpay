@@ -14,7 +14,6 @@ import static org.junit.Assert.assertFalse;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.io.File;
 import java.io.InputStream;
 import java.io.Serializable;
 import java.util.Date;
@@ -41,9 +40,7 @@ public class TestImportBuildingAttributes extends BtiSpringBeanAwareTestCase {
 		InputStream is = getFileStream("org/flexpay/bti/service/importexport/26.12.2008.csv");
 
 		try {
-			File serverFile = FPFileUtil.saveToFileSystem(fpFile, is);
-			fpFile.setNameOnServer(serverFile.getName());
-			fpFile.setSize(serverFile.length());
+			FPFileUtil.copy(is, fpFile);
 			fileService.create(fpFile);
 			log.info("File uploaded {}", fpFile);
 

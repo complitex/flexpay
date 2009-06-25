@@ -7,6 +7,7 @@ import org.flexpay.common.persistence.filter.RegistryRecordStatusFilter;
 import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.persistence.registry.RegistryRecord;
 import org.flexpay.common.persistence.registry.RegistryStatus;
+import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.service.RegistryRecordService;
 import org.flexpay.common.service.RegistryService;
 import org.flexpay.common.service.RegistryStatusService;
@@ -81,7 +82,7 @@ public class GeneratePaymentsMBRegistry {
     private RegistryStatusService registryStatusService;
     private RegistryRecordService registryRecordService;
 
-    public void exportToMegaBank(@NotNull Registry registry, @NotNull File file, @NotNull Organization organization) throws FlexPayException {
+    public void exportToMegaBank(@NotNull Registry registry, @NotNull FPFile file, @NotNull Organization organization) throws FlexPayException {
         RegistryWriter rg = null;
         try {
             rg = new RegistryWriter(file, '|', RegistryWriter.NO_QUOTE_CHARACTER, RegistryWriter.NO_ESCAPE_CHARACTER);

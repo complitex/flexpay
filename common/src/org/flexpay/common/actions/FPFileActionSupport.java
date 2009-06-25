@@ -38,9 +38,7 @@ public abstract class FPFileActionSupport extends FPActionSupport {
 			fpFile.setModule(module);
 			fpFile.setOriginalName(uploadFileName);
 			fpFile.setUserName(userName);
-			File fileOnSystem = FPFileUtil.saveToFileSystem(fpFile, upload);
-			fpFile.setNameOnServer(fileOnSystem.getName());
-			fpFile.setSize(fileOnSystem.length());
+			FPFileUtil.copy(upload, fpFile);
 
 			fpFileService.create(fpFile);
 			log.info("File uploaded {}", fpFile);

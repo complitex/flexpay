@@ -1,18 +1,17 @@
 package org.flexpay.sz.dbf;
 
-import com.linuxense.javadbf.DBFException;
+import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.sz.persistence.ServiceTypeRecord;
 
-import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.IOException;
 
 public class ServiceTypeRecordDBFInfo extends DBFInfo<ServiceTypeRecord> {
 
-	public ServiceTypeRecordDBFInfo(File originalFile) {
+	public ServiceTypeRecordDBFInfo(FPFile originalFile) {
 		super(originalFile);
 	}
 
-	ServiceTypeRecord create(Object[] rowData) throws DBFException, FileNotFoundException {
+	ServiceTypeRecord create(Object[] rowData) throws IOException {
 
 		ServiceTypeRecord record = new ServiceTypeRecord();
 		record.setExtDistrictCode(getInteger(rowData, "cod"));
@@ -42,21 +41,18 @@ public class ServiceTypeRecordDBFInfo extends DBFInfo<ServiceTypeRecord> {
 		return record;
 	}
 
-	protected String getString(Object[] rowData, String fieldName)
-			throws DBFException, FileNotFoundException {
+	protected String getString(Object[] rowData, String fieldName) throws IOException {
 
 		int fieldIndex = getInd(fieldName);
 		String value = (String) rowData[fieldIndex];
 		return value == null ? null : value.trim();
 	}
 
-	protected Integer getInteger(Object[] rowData, String fieldName)
-			throws DBFException, FileNotFoundException {
+	protected Integer getInteger(Object[] rowData, String fieldName) throws IOException {
 		return getInteger(rowData, fieldName, 0);
 	}
 
-	protected Integer getInteger(Object[] rowData, String fieldName, int precision)
-			throws DBFException, FileNotFoundException {
+	protected Integer getInteger(Object[] rowData, String fieldName, int precision) throws IOException {
 
 		int fieldIndex = getInd(fieldName);
 		Double val = (Double) rowData[fieldIndex];
@@ -80,8 +76,7 @@ public class ServiceTypeRecordDBFInfo extends DBFInfo<ServiceTypeRecord> {
 		return (int) Math.floor(d1);
 	}
 
-	Object[] getRowData(ServiceTypeRecord element)
-			throws DBFException, FileNotFoundException {
+	Object[] getRowData(ServiceTypeRecord element) throws IOException {
 
 		Object[] row = new Object[getDBFFields().length];
 		row[getInd("cod")] = (double) element.getExtDistrictCode().intValue();

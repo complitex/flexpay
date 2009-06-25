@@ -10,10 +10,7 @@ import org.flexpay.sz.persistence.Oszn;
 import org.flexpay.sz.persistence.SzFile;
 import org.flexpay.sz.service.OsznService;
 import org.flexpay.sz.service.SzFileService;
-import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.io.File;
@@ -59,9 +56,7 @@ public class UploadFileAction extends FPActionSupport {
 			fileOnServer.setModule(fpFileService.getModuleByName(moduleName));
 			fileOnServer.setOriginalName(uploadFileName);
 			fileOnServer.setUserName(userName);
-			File fileOnSystem = FPFileUtil.saveToFileSystem(fileOnServer, upload);
-			fileOnServer.setNameOnServer(fileOnSystem.getName());
-			fileOnServer.setSize(fileOnSystem.length());
+			FPFileUtil.copy(upload, fileOnServer);
 			szFile.setUploadedFile(fileOnServer);
 			Oszn oszn = osznService.read(osznId);
 			szFile.setOszn(oszn);

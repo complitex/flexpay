@@ -99,33 +99,27 @@ public class FPFileUtil {
 	/**
 	 * Saves all data from given file to file system
 	 *
-	 * @param fpFile flexpay file
 	 * @param file   to read from
-	 * @return new file
+	 * @param fpFile flexpay file
 	 * @throws IOException if an error occurred
-	 * @deprecated Hide usage of FS
 	 */
-	public static File saveToFileSystem(FPFile fpFile, File file) throws IOException {
+	public static void copy(File file, FPFile fpFile) throws IOException {
 
 		File fileOnServer = createFile(fpFile);
 		if (file != null && file.length() > 0) {
 			FileUtils.copyFile(file, fileOnServer);
 		}
-
-		return fileOnServer;
 	}
 
 	/**
 	 * Saves all data from given input stream to file system
 	 *
-	 * @param fpFile flexpay file
 	 * @param is	 Stream to read from
-	 * @return new file
+	 * @param fpFile flexpay file
 	 * @throws IOException if an error occurred
-	 * @deprecated Hide usage of FS
 	 */
 	@SuppressWarnings ({"IOResourceOpenedButNotSafelyClosed"})
-	public static File saveToFileSystem(FPFile fpFile, InputStream is) throws IOException {
+	public static void copy(InputStream is, FPFile fpFile) throws IOException {
 
 		File fileOnServer = createFile(fpFile);
 
@@ -135,7 +129,5 @@ public class FPFileUtil {
 		} finally {
 			IOUtils.closeQuietly(os);
 		}
-
-		return fileOnServer;
 	}
 }

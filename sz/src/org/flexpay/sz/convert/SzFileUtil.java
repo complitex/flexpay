@@ -1,6 +1,5 @@
 package org.flexpay.sz.convert;
 
-import com.linuxense.javadbf.DBFException;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.file.FPFile;
@@ -19,8 +18,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 
-import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.List;
 
 public class SzFileUtil {
@@ -36,7 +34,7 @@ public class SzFileUtil {
 	private static SzFileService szFileService;
 
 	@SuppressWarnings ({"unchecked"})
-	public static void loadFromDbGeneric(SzFile szFile, File targetFile, DBFInfo dbfInfo, RecordService recordService) throws DBFException, FileNotFoundException {
+	public static void loadFromDbGeneric(SzFile szFile, FPFile targetFile, DBFInfo dbfInfo, RecordService recordService) throws IOException {
 
 		SzDbfWriter writer = new SzDbfWriter(dbfInfo, targetFile, getDbfEncoding(), true);
 
@@ -61,10 +59,10 @@ public class SzFileUtil {
 	private static String getDbfEncoding() {
 		return ApplicationConfig.getSzDefaultDbfFileEncoding();
 	}
-	                                     	
+
 	public static Integer getNumberOfRecord(SzFile szFile) throws NotSupportedOperationException {
 
-        Long szFileTypeCode = szFile.getType().getCode();
+		Long szFileTypeCode = szFile.getType().getCode();
 		if (SzFile.CHARACTERISTIC_FILE_TYPE.equals(szFileTypeCode)) {
 			Page<CharacteristicRecord> pager = new Page<CharacteristicRecord>();
 			pager.setPageSize(1);
