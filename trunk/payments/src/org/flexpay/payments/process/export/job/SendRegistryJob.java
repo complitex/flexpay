@@ -1,72 +1,72 @@
 package org.flexpay.payments.process.export.job;
 
+import org.apache.commons.lang.StringUtils;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
+import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.process.job.Job;
 import org.flexpay.common.service.FPFileService;
-import org.flexpay.common.util.FPFileUtil;
 import org.springframework.beans.factory.annotation.Required;
-import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
-import org.springframework.core.io.FileSystemResource;
-import org.apache.commons.lang.StringUtils;
+import org.springframework.mail.javamail.MimeMessageHelper;
 
-import javax.mail.internet.MimeMessage;
 import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
 import java.io.Serializable;
-import java.io.File;
 import java.util.Map;
 
 public class SendRegistryJob extends Job {
 
-    private FPFileService fpFileService;
+	private FPFileService fpFileService;
 	private String emailPassword;
 	private String emailUserName;
 	private String smtpHost;
 	private String emailFrom;
 
-    public String execute(Map<Serializable, Serializable> parameters) throws FlexPayException {
+	public String execute(Map<Serializable, Serializable> parameters) throws FlexPayException {
 
-        FPFile spFile = null;
+		FPFile spFile = null;
 
-        if (parameters.containsKey("File")) {
-            Object o = parameters.get("File");
-            if (o instanceof FPFile && ((FPFile)o).getId() != null) {
-                spFile = (FPFile) o;
-				spFile = fpFileService.read(new Stub<FPFile>(spFile.getId()));
-            } else {
-                log.warn("Invalid file`s instance class");
-            }
-        } else if (parameters.containsKey("FileId")) {
-            Long fileId = (Long) parameters.get("FileId");
-            spFile = fpFileService.read(new Stub<FPFile>(fileId));
-        }
+		if (parameters.containsKey("File")) {
+			Object o = parameters.get("File");
+			if (o instanceof FPFile && ((FPFile) o).getId() != null) {
+				spFile = (FPFile) o;
+				spFile = fpFileService.read(stub(spFile));
+			} else {
+				log.warn("Invalid file`s instance class");
+			}
+		} else if (parameters.containsKey("FileId")) {
+			Long fileId = (Long) parameters.get("FileId");
+			spFile = fpFileService.read(new Stub<FPFile>(fileId));
+		}
 
-        if (spFile == null) {
-            log.warn("Did not find file in job parameters");
-            return RESULT_ERROR;
-        }
-        
-        try {
-			send(emailFrom, (String)parameters.get("Email"), "", emailUserName, emailPassword, smtpHost, FPFileUtil.getFileOnServer(spFile), spFile.getOriginalName());
-        } catch (FlexPayException e) {
-            log.warn("Send file exception", e);
-            return RESULT_ERROR;
-        }
+		if (spFile == null) {
+			log.warn("Did not find file in job parameters");
+			return RESULT_ERROR;
+		}
 
-        return RESULT_NEXT;
-    }
+		try {
+			send(emailFrom, (String) parameters.get("Email"), "", emailUserName, emailPassword, smtpHost, spFile, spFile.getOriginalName());
+		} catch (FlexPayException e) {
+			log.warn("Send file exception", e);
+			return RESULT_ERROR;
+		}
 
-	private void send(String emailFrom, String emailTo, String subject, String userName, String userPassword, String smptHost, File attachment, String attachmentName)
-		throws FlexPayException {
+		return RESULT_NEXT;
+	}
 
-		log.debug("Sending mail from {} to {} with subject {} userName {} password **** smtpHost {} ",
-				new Object[]{emailFrom, emailTo, subject, userName, smptHost});
+	private void send(String emailFrom, String emailTo, String subject, String userName, String userPassword, String smptHost, FPFile attachment, String attachmentName)
+			throws FlexPayException {
+
+		if (log.isDebugEnabled()) {
+			log.debug("Sending mail from {} to {} with subject {} userName {} password **** smtpHost {} ",
+					new Object[]{emailFrom, emailTo, subject, userName, smptHost});
+		}
 
 		JavaMailSenderImpl sender = new JavaMailSenderImpl();
 
-		if (!StringUtils.isEmpty(userName)){
+		if (!StringUtils.isEmpty(userName)) {
 			sender.setUsername(userName);
 			sender.setPassword(userPassword);
 		}
@@ -81,20 +81,20 @@ public class SendRegistryJob extends Job {
 			helper.setFrom(emailFrom);
 			helper.setSubject(subject);
 
-			helper.addAttachment(attachmentName, new FileSystemResource(attachment));
+			helper.addAttachment(attachmentName, attachment);
 
 			sender.send(message);
-		}catch (MessagingException m){
-			log.debug("Can't send email.",m);
+		} catch (MessagingException m) {
+			log.debug("Can't send email.", m);
 			throw new FlexPayException(m);
 		}
 
 	}
 
 	@Required
-    public void setFpFileService(FPFileService fpFileService) {
-        this.fpFileService = fpFileService;
-    }
+	public void setFpFileService(FPFileService fpFileService) {
+		this.fpFileService = fpFileService;
+	}
 
 	@Required
 	public void setEmailPassword(String emailPassword) {

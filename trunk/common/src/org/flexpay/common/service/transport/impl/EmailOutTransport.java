@@ -20,7 +20,7 @@ public class EmailOutTransport implements OutTransport {
         MimeMessageHelper helper = new MimeMessageHelper(message, true);
         helper.setTo(email);
 
-        helper.addAttachment(file.getOriginalName(), new FileSystemResource(FPFileUtil.getFileOnServer(file)));
+        helper.addAttachment(file.getOriginalName(), file);
 
         sender.send(message);
     }
@@ -33,4 +33,3 @@ public class EmailOutTransport implements OutTransport {
         this.email = email;
     }
 }
-
