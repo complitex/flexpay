@@ -39,8 +39,8 @@ public class FPFile extends DomainObject implements DataSource {
 		return originalName;
 	}
 
-	public String getFileName() {
-		return StringUtil.getFileName(originalName);
+	public String getGetFileNameWithoutExtension() {
+		return StringUtil.getFileNameWithoutExtension(originalName);
 	}
 
 	public String getExtension() {

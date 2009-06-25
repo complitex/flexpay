@@ -10,7 +10,6 @@ import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.persistence.registry.RegistryRecordStatus;
 import org.flexpay.common.service.*;
 import org.flexpay.common.service.importexport.CorrectionsService;
-import org.flexpay.common.util.FPFileUtil;
 import org.flexpay.eirc.sp.FileParser;
 import org.flexpay.orgs.service.ServiceProviderService;
 import org.jetbrains.annotations.NotNull;
@@ -19,8 +18,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.io.File;
 
 public abstract class MbFileParser implements FileParser {
 
@@ -61,12 +58,6 @@ public abstract class MbFileParser implements FileParser {
 
 		long beginTime = System.currentTimeMillis();
 
-		File file = FPFileUtil.getFileOnServer(spFile);
-		if (file == null) {
-			log.debug("Incorrect spFile: can't find file on server (spFile.id = {})", spFile.getId());
-			throw new FlexPayException("For FPFile (id = " + spFile.getId() + ") not found temp file: " + spFile.getNameOnServer());
-		}
-
 		statusLoaded = registryRecordStatusService.findByCode(RegistryRecordStatus.LOADED);
 		if (statusLoaded == null) {
 			throw new FlexPayException("Can't get registry record status \"loaded\" from database");
@@ -80,7 +71,6 @@ public abstract class MbFileParser implements FileParser {
 		log.info("Parsing file {} finished in {}", spFile.getOriginalName(), (time / 60 + "m " + time % 60 + "s"));
 
 		return ret;
-
 	}
 
 	protected abstract Registry parseFile(@NotNull FPFile spFile) throws FlexPayException;

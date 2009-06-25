@@ -29,7 +29,7 @@ public class SzDbfWriter<E, I extends DBFInfo<E>> {
 
 	private void init() throws IOException {
 		if (isInSyncMode) {
-			rawFile = File.createTempFile(file.getFileName(), file.getExtension());
+			rawFile = File.createTempFile(file.getGetFileNameWithoutExtension(), file.getExtension());
 			@SuppressWarnings ({"IOResourceOpenedButNotSafelyClosed"})
 			final OutputStream os = new BufferedOutputStream(new FileOutputStream(rawFile));
 			try {
