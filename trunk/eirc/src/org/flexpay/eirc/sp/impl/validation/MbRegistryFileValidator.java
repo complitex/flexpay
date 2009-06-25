@@ -5,12 +5,10 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.file.FPFile;
-import org.flexpay.common.util.FPFileUtil;
 import org.flexpay.eirc.sp.impl.MbFileValidator;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.BufferedReader;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.text.DateFormat;
@@ -18,8 +16,8 @@ import java.text.SimpleDateFormat;
 
 public class MbRegistryFileValidator extends MbFileValidator {
 
-	public static final DateFormat OPERATION_DATE_FORMAT = new SimpleDateFormat("MMyy");
-	public static final DateFormat INCOME_PERIOD_DATE_FORMAT = new SimpleDateFormat("MMyy");
+	private final DateFormat OPERATION_DATE_FORMAT = new SimpleDateFormat("MMyy");
+	private final DateFormat INCOME_PERIOD_DATE_FORMAT = new SimpleDateFormat("MMyy");
 
 	protected boolean validateFile(@NotNull FPFile spFile) throws FlexPayException {
 
@@ -29,9 +27,10 @@ public class MbRegistryFileValidator extends MbFileValidator {
 		boolean ret = true;
 
 		try {
-			reader = new BufferedReader(new InputStreamReader(new FileInputStream(FPFileUtil.getFileOnServer(spFile)), REGISTRY_FILE_ENCODING));
+			//noinspection IOResourceOpenedButNotSafelyClosed
+			reader = new BufferedReader(new InputStreamReader(spFile.getInputStream(), REGISTRY_FILE_ENCODING));
 
-			for (int lineNum = 0;;lineNum++) {
+			for (int lineNum = 0; ; lineNum++) {
 				String line = reader.readLine();
 				if (line == null) {
 					throw new FlexPayException("Can't read file line");
@@ -44,18 +43,18 @@ public class MbRegistryFileValidator extends MbFileValidator {
 					try {
 						validateHeader(line);
 					} catch (Exception e) {
-						log.debug("Incorrect header in file. Line number = {}, error: {}\nLine = {}", new Object[] {lineNum, e.getMessage(), line});
+						log.warn("Incorrect header in file. Line number = {}, error: {}\nLine = {}",
+								new Object[]{lineNum, e.getMessage(), line});
 						ret = false;
-//						throw new FlexPayException("Incorrect header in file. Line number = " + lineNum, e);
 					}
 				} else if (line.startsWith(LAST_FILE_STRING_BEGIN)) {
 					fileValues.setLines(lineNum - 2);
 					try {
 						validateFooter(line, fileValues);
 					} catch (Exception e) {
-						log.debug("Incorrect footer in file. Line number = {}, error: {}\nLine = {}", new Object[] {lineNum, e.getMessage(), line});
+						log.warn("Incorrect footer in file. Line number = {}, error: {}\nLine = {}",
+								new Object[]{lineNum, e.getMessage(), line});
 						ret = false;
-//						throw new FlexPayException("Incorrect footer in file. Line number = " + lineNum, e);
 					}
 					log.debug("Validated {} records in file", lineNum - 2);
 					break;
@@ -63,9 +62,9 @@ public class MbRegistryFileValidator extends MbFileValidator {
 					try {
 						validateRecord(line, fileValues);
 					} catch (Exception e) {
-						log.debug("Incorrect record in file. Line number = {}, error: {}\nLine = {}", new Object[] {lineNum, e.getMessage(), line});
+						log.warn("Incorrect record in file. Line number = {}, error: {}\nLine = {}", 
+								new Object[]{lineNum, e.getMessage(), line});
 						ret = false;
-//						throw new FlexPayException("Incorrect record in file. Line number = " + lineNum + ". Line = " + line, e);
 					}
 				}
 			}
@@ -175,16 +174,8 @@ public class MbRegistryFileValidator extends MbFileValidator {
 			return incomeSumm;
 		}
 
-		public void setIncomeSumm(long incomeSumm) {
-			this.incomeSumm = incomeSumm;
-		}
-
 		public long getSaldoSumm() {
 			return saldoSumm;
-		}
-
-		public void setSaldoSumm(long saldoSumm) {
-			this.saldoSumm = saldoSumm;
 		}
 
 		public int getLines() {

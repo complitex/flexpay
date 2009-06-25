@@ -15,7 +15,6 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.test.annotation.NotTransactional;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -36,7 +35,6 @@ public class TestSpFileCreateAction extends EircSpringBeanAwareTestCase {
 
 	@Test
 	@Ignore
-	@NotTransactional
 	public void testCreateSpFile() throws Throwable {
 		FPFile newFile = createSpFile("org/flexpay/eirc/actions/sp/k0108.ree");
 		deleteFile(newFile);

@@ -5,7 +5,7 @@ import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.persistence.registry.*;
-import org.flexpay.common.util.FPFileUtil;
+import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.eirc.persistence.EircRegistryRecordProperties;
 import org.flexpay.eirc.sp.impl.MbFileParser;
 import org.flexpay.eirc.util.config.ApplicationConfig;
@@ -16,16 +16,13 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.BufferedReader;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 
 @Transactional (readOnly = true)
 public class MbRegistryFileParser extends MbFileParser {
@@ -33,7 +30,7 @@ public class MbRegistryFileParser extends MbFileParser {
 	public static final String OPERATION_DATE_FORMAT = "MMyy";
 	public static final String INCOME_PERIOD_DATE_FORMAT = "MMyy";
 
-	@Transactional(propagation = Propagation.NOT_SUPPORTED, readOnly = false)
+	@Transactional (propagation = Propagation.NOT_SUPPORTED, readOnly = false)
 	protected Registry parseFile(@NotNull FPFile spFile) throws FlexPayException {
 
 		Registry registry = new Registry();
@@ -42,8 +39,8 @@ public class MbRegistryFileParser extends MbFileParser {
 
 		try {
 
-			reader = new BufferedReader(new InputStreamReader(new FileInputStream(FPFileUtil.getFileOnServer(spFile)), REGISTRY_FILE_ENCODING));
-
+			//noinspection IOResourceOpenedButNotSafelyClosed
+			reader = new BufferedReader(new InputStreamReader(spFile.getInputStream(), REGISTRY_FILE_ENCODING));
 			registry.setCreationDate(new Date());
 			registry.setSpFile(spFile);
 			registry.setRegistryType(registryTypeService.findByCode(RegistryType.TYPE_INCOME));
@@ -52,7 +49,7 @@ public class MbRegistryFileParser extends MbFileParser {
 
 			long recordsNum = 0;
 
-			for (int lineNum = 0;;lineNum++) {
+			for (int lineNum = 0; ; lineNum++) {
 				String line = reader.readLine();
 				if (line == null) {
 					log.debug("End of file, lineNum = {}", lineNum);
@@ -71,7 +68,6 @@ public class MbRegistryFileParser extends MbFileParser {
 						log.info("{} records created, {} lines processed", recordsNum, lineNum - 1);
 					}
 				}
-
 			}
 
 			registry.setRegistryStatus(registryStatusService.findByCode(RegistryStatus.LOADED));
@@ -108,7 +104,7 @@ public class MbRegistryFileParser extends MbFileParser {
 			Calendar c = Calendar.getInstance();
 			c.setTime(dateFrom);
 			c.set(Calendar.MONTH, c.get(Calendar.MONTH) + 1);
-			c.setTime(new Date(c.getTime().getTime() - 24*60*60*1000));
+			c.setTime(new Date(c.getTime().getTime() - 24 * 60 * 60 * 1000));
 			registry.setTillDate(c.getTime());
 		} catch (Exception e) {
 			// do nothing
@@ -144,15 +140,13 @@ public class MbRegistryFileParser extends MbFileParser {
 			// do nothing
 		}
 
-		List<RegistryRecordContainer> containers = new ArrayList<RegistryRecordContainer>();
 
 		RegistryRecordContainer container = new RegistryRecordContainer();
 		container.setOrder(0);
-		container.setData("100::0:" + fields[2] +":::" + fields[1] + "::::");
+		container.setData("100::0:" + fields[2] + ":::" + fields[1] + "::::");
 		container.setRecord(record);
-		containers.add(container);
 
-		record.setContainers(containers);
+		record.setContainers(CollectionUtils.list(container));
 
 		EircRegistryRecordProperties registryProperties = (EircRegistryRecordProperties) propertiesFactory.newRecordProperties();
 		registryProperties.setRecord(record);

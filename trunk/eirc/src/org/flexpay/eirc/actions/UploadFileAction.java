@@ -30,14 +30,6 @@ public class UploadFileAction extends FPActionSupport {
 			setMessage(ERROR);
 			return ERROR;
 		}
-/*
-		FPFileType fileType = fpFileService.getTypeByFileName(uploadFileName, moduleName);
-		if (fileType == null) {
-			log.warn("Unknown file type");
-			setMessage(ERROR);
-			return ERROR;
-		}
-*/
 
 		String userName = SecurityUtil.getUserName();
 		try {

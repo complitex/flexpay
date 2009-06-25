@@ -47,6 +47,7 @@ public class FPFileUtil {
 	 *
 	 * @param fpFile fpFile
 	 * @return file
+	 * @deprecated Hide usage of FS
 	 */
 	public static File getFileOnServer(FPFile fpFile) {
 		if (fpFile == null || fpFile.getNameOnServer() == null) {
@@ -96,24 +97,13 @@ public class FPFileUtil {
 	}
 
 	/**
-	 * Create empty file on file system with original file name
-	 *
-	 * @param fpFile flexpay file
-	 * @throws IOException if an error occurred
-	 */
-	public static void createEmptyFileWithOriginalName(FPFile fpFile) throws IOException {
-		String localPath = getLocalDirPath(fpFile.getModule().getName(), fpFile.getCreationDate());
-		createFile(fpFile).renameTo(new File(localPath + File.separator + fpFile.getOriginalName()));
-		fpFile.setNameOnServer(fpFile.getOriginalName());
-	}
-
-	/**
 	 * Saves all data from given file to file system
 	 *
 	 * @param fpFile flexpay file
 	 * @param file   to read from
 	 * @return new file
 	 * @throws IOException if an error occurred
+	 * @deprecated Hide usage of FS
 	 */
 	public static File saveToFileSystem(FPFile fpFile, File file) throws IOException {
 
@@ -132,6 +122,7 @@ public class FPFileUtil {
 	 * @param is	 Stream to read from
 	 * @return new file
 	 * @throws IOException if an error occurred
+	 * @deprecated Hide usage of FS
 	 */
 	@SuppressWarnings ({"IOResourceOpenedButNotSafelyClosed"})
 	public static File saveToFileSystem(FPFile fpFile, InputStream is) throws IOException {

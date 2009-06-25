@@ -5,18 +5,16 @@ import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.persistence.registry.*;
-import org.flexpay.common.util.FPFileUtil;
-import org.flexpay.payments.persistence.EircRegistryProperties;
 import org.flexpay.eirc.persistence.EircRegistryRecordProperties;
 import org.flexpay.eirc.sp.impl.MbFileParser;
 import org.flexpay.eirc.util.config.ApplicationConfig;
 import org.flexpay.orgs.persistence.ServiceProvider;
+import org.flexpay.payments.persistence.EircRegistryProperties;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.BufferedReader;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.text.ParseException;
@@ -25,13 +23,12 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-@Transactional(readOnly = true)
+@Transactional (readOnly = true)
 public class MbCorrectionsFileParser extends MbFileParser {
 
-	public static final String ACCOUNT_CLOSED = "ЛИЦЕВОЙ ЗАКРЫТ";
-	public static final String MODIFICATIONS_START_DATE_FORMAT = "ddMMyy";
+	private final String MODIFICATIONS_START_DATE_FORMAT = "ddMMyy";
 
-	@Transactional(propagation = Propagation.NOT_SUPPORTED, readOnly = false)
+	@Transactional (propagation = Propagation.NOT_SUPPORTED, readOnly = false)
 	protected Registry parseFile(@NotNull FPFile spFile) throws FlexPayException {
 
 		Registry registry = new Registry();
@@ -39,9 +36,8 @@ public class MbCorrectionsFileParser extends MbFileParser {
 		BufferedReader reader = null;
 
 		try {
-
-			reader = new BufferedReader(new InputStreamReader(new FileInputStream(FPFileUtil.getFileOnServer(spFile)), REGISTRY_FILE_ENCODING));
-
+			//noinspection IOResourceOpenedButNotSafelyClosed
+			reader = new BufferedReader(new InputStreamReader(spFile.getInputStream(), REGISTRY_FILE_ENCODING));
 			registry.setCreationDate(new Date());
 			registry.setSpFile(spFile);
 			registry.setRegistryType(registryTypeService.findByCode(RegistryType.TYPE_QUITTANCE));
@@ -50,7 +46,7 @@ public class MbCorrectionsFileParser extends MbFileParser {
 
 			long recordsNum = 0;
 
-			for (int lineNum = 0;;lineNum++) {
+			for (int lineNum = 0; ; lineNum++) {
 				String line = reader.readLine();
 				if (line == null) {
 					log.debug("End of file, lineNum = {}", lineNum);
@@ -63,50 +59,12 @@ public class MbCorrectionsFileParser extends MbFileParser {
 					registry.setRecordsNumber(recordsNum);
 					log.info("Total {} records created", recordsNum);
 					break;
-/*
-				} else if (lineNum == 19340 || lineNum == 19439
-						|| lineNum == 19450 || lineNum == 19492
-						|| lineNum == 25492 || lineNum == 25495
-						|| lineNum == 25563 || lineNum == 25581
-						|| lineNum == 31679 || lineNum == 31809
-						|| lineNum == 38016 || lineNum == 38056
-						|| lineNum == 38188 || lineNum == 43834
-						|| lineNum == 43837 || lineNum == 43848
-						|| lineNum == 43891 || lineNum == 44041
-						|| lineNum == 44044 || lineNum == 49607
-						|| lineNum == 49609 || lineNum == 49664
-						|| lineNum == 49680 || lineNum == 49759
-						|| lineNum == 59193 || lineNum == 75116
-						|| lineNum == 75298 || lineNum == 75324
-						|| lineNum == 105690 || lineNum == 108907
-						|| lineNum == 136493 || lineNum == 136695
-						|| lineNum == 167513 || lineNum == 167564
-						|| lineNum == 167696 || lineNum == 167702
-						|| lineNum == 167705 || lineNum == 167769
-						|| lineNum == 167781 || lineNum == 167784
-						|| lineNum == 167833 || lineNum == 198577
-						|| lineNum == 198642 || lineNum == 198648
-						|| lineNum == 198669 || lineNum == 229311
-						|| lineNum == 229380 || lineNum == 229539
-						|| lineNum == 229688 || lineNum == 259886
-						|| lineNum == 289980 || lineNum == 290106
-						|| lineNum == 290163 || lineNum == 290174
-						|| lineNum == 290177 || lineNum == 290281
-						|| lineNum == 290302 || lineNum == 290322
-						|| lineNum == 290389 || lineNum == 297778
-						|| lineNum == 320443 || lineNum == 320518
-						|| lineNum == 320529 || lineNum == 320549
-						|| lineNum == 320595 || lineNum == 320612
-						|| lineNum == 320622 || lineNum == 320710
-						|| lineNum == 320727 || lineNum == 355126) {
-*/
 				} else {
 					recordsNum += parseRecord(line, registry);
 					if (recordsNum % 1000 == 0) {
 						log.info("{} records created, {} lines processed", recordsNum, lineNum - 1);
 					}
 				}
-
 			}
 
 			registry.setRegistryStatus(registryStatusService.findByCode(RegistryStatus.LOADED));
@@ -119,7 +77,6 @@ public class MbCorrectionsFileParser extends MbFileParser {
 		}
 
 		return registry;
-
 	}
 
 	private Registry parseHeader(String line, Registry registry) throws FlexPayException {
@@ -149,13 +106,6 @@ public class MbCorrectionsFileParser extends MbFileParser {
 
 	private long parseRecord(String line, Registry registry) throws FlexPayException {
 		String[] fields = line.split("=");
-
-/*
-		if (ACCOUNT_CLOSED.equals(fields[2])) {
-			log.debug("Account closed. Skipping line");
-			return 0;
-		}
-*/
 
 		String[] serviceCodes = fields[20].split(";");
 
@@ -212,7 +162,6 @@ public class MbCorrectionsFileParser extends MbFileParser {
 		record = registryRecordService.create(record);
 
 		return record;
-
 	}
 
 	private RegistryRecord createRecord(Registry registry, String[] fields, String serviceCode) throws FlexPayException {
@@ -301,5 +250,4 @@ public class MbCorrectionsFileParser extends MbFileParser {
 
 		return record;
 	}
-
 }
