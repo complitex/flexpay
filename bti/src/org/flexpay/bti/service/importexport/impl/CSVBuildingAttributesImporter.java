@@ -66,11 +66,11 @@ public class CSVBuildingAttributesImporter implements BuildingAttributesImporter
 			}
 
 			for (int n = indx; n < values.length; ++n) {
-				String attrName = attributeNameMapper.getName(n+1);
+				String attrName = attributeNameMapper.getName(n + 1);
 				if (attrName != null) {
 					if (log.isDebugEnabled()) {
 						log.debug("Found attribute: #{} ({}). {} - {}",
-								new Object[]{n+1, IntegerUtil.toXLSColumnNumber(n+1), attrName, values[n]});
+								new Object[] {n + 1, IntegerUtil.toXLSColumnNumber(n+1), attrName, values[n]});
 					}
 					data.addValue(attrName, values[n]);
 				}
@@ -129,4 +129,5 @@ public class CSVBuildingAttributesImporter implements BuildingAttributesImporter
 	public void setSourceDescription(DataSourceDescription sourceDescription) {
 		this.sourceDescription = stub(sourceDescription);
 	}
+
 }
