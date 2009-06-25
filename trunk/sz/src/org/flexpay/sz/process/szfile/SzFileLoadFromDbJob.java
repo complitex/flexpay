@@ -86,28 +86,24 @@ public class SzFileLoadFromDbJob extends Job {
 			fileToDownload.setOriginalName(uploadedFile.getOriginalName());
 			fileToDownload.setModule(module);
 
-			File targetFile = null;
 			try {
-				targetFile = FPFileUtil.saveToFileSystem(fileToDownload, new File(uploadedFile.getOriginalName()));
-				fileToDownload.setNameOnServer(targetFile.getName());
+				FPFileUtil.copy(new File(uploadedFile.getOriginalName()), fileToDownload);
 
 				Long szFileTypeCode = szFile.getType().getCode();
-				File uploadedFileOnSystem = FPFileUtil.getFileOnServer(uploadedFile);
 
 				if (SzFile.CHARACTERISTIC_FILE_TYPE.equals(szFileTypeCode)) {
-					DBFInfo dbfInfo = new CharacteristicDBFInfo(uploadedFileOnSystem);
-					SzFileUtil.loadFromDbGeneric(szFile, targetFile, dbfInfo, characteristicRecordService);
+					DBFInfo<?> dbfInfo = new CharacteristicDBFInfo(uploadedFile);
+					SzFileUtil.loadFromDbGeneric(szFile, fileToDownload, dbfInfo, characteristicRecordService);
 				} else if (SzFile.SUBSIDY_FILE_TYPE.equals(szFileTypeCode)) {
-					DBFInfo dbfInfo = new SubsidyRecordDBFInfo(uploadedFileOnSystem);
-					SzFileUtil.loadFromDbGeneric(szFile, targetFile, dbfInfo, subsidyRecordService);
+					DBFInfo<?> dbfInfo = new SubsidyRecordDBFInfo(uploadedFile);
+					SzFileUtil.loadFromDbGeneric(szFile, fileToDownload, dbfInfo, subsidyRecordService);
 				} else if (SzFile.SRV_TYPES_FILE_TYPE.equals(szFileTypeCode)) {
-					DBFInfo dbfInfo = new ServiceTypeRecordDBFInfo(uploadedFileOnSystem);
-					SzFileUtil.loadFromDbGeneric(szFile, targetFile, dbfInfo, serviceTypeRecordService);
+					DBFInfo<?> dbfInfo = new ServiceTypeRecordDBFInfo(uploadedFile);
+					SzFileUtil.loadFromDbGeneric(szFile, fileToDownload, dbfInfo, serviceTypeRecordService);
 				} else {
 					throw new NotSupportedOperationException();
 				}
 
-				fileToDownload.setSize(targetFile.length());
 				szFile.setStatus(fpFileService.getStatusByCodeAndModule(SzFile.PROCESSED_FILE_STATUS, moduleName));
 				szFile.setFileToDownload(fileToDownload);
 				szFileService.update(szFile);
@@ -117,11 +113,11 @@ public class SzFileLoadFromDbJob extends Job {
 				szFile.setFileToDownload(null);
 				szFileService.update(szFile);
 			} catch (NotSupportedOperationException e) {
-				log.error("Error loading data fro DB and creating file to download", e);
+				log.error("Error loading data from DB and creating file to download", e);
 				szFile.setStatus(errorStatus);
 				szFile.setFileToDownload(null);
 				szFileService.update(szFile);
-				targetFile.delete();
+				fpFileService.delete(fileToDownload);
 			}
 
 			pLogger.info("Loading from DB szFile with id = {} finished", szFile.getId());

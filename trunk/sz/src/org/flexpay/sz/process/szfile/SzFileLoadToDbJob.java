@@ -1,12 +1,11 @@
 package org.flexpay.sz.process.szfile;
 
-import com.linuxense.javadbf.DBFException;
 import org.flexpay.common.exception.FlexPayException;
+import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.persistence.file.FPFileStatus;
-import org.flexpay.common.process.job.Job;
 import org.flexpay.common.process.ProcessLogger;
+import org.flexpay.common.process.job.Job;
 import org.flexpay.common.service.FPFileService;
-import org.flexpay.common.util.FPFileUtil;
 import org.flexpay.sz.convert.NotSupportedOperationException;
 import org.flexpay.sz.convert.SzFileUtil;
 import org.flexpay.sz.dbf.CharacteristicDBFInfo;
@@ -19,11 +18,10 @@ import org.flexpay.sz.persistence.SubsidyRecord;
 import org.flexpay.sz.persistence.SzFile;
 import org.flexpay.sz.service.RecordService;
 import org.flexpay.sz.service.SzFileService;
-import org.springframework.beans.factory.annotation.Required;
 import org.slf4j.Logger;
+import org.springframework.beans.factory.annotation.Required;
 
-import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Map;
@@ -37,7 +35,7 @@ public class SzFileLoadToDbJob extends Job {
 	private SzFileService szFileService;
 	private FPFileService fpFileService;
 
-	@SuppressWarnings({"unchecked"})
+	@SuppressWarnings ({"unchecked"})
 	public String execute(Map<Serializable, Serializable> parameters) throws FlexPayException {
 
 		Logger pLogger = ProcessLogger.getLogger(getClass());
@@ -63,7 +61,7 @@ public class SzFileLoadToDbJob extends Job {
 				log.warn("Can't delete records for file with id = {}", szFile.getId());
 			}
 
-			File file = FPFileUtil.getFileOnServer(szFile.getUploadedFile());
+			FPFile file = szFile.getUploadedFile();
 			Long szFileTypeCode = szFile.getType().getCode();
 
 			SzDbfReader<?, ?> reader = null;
@@ -96,10 +94,8 @@ public class SzFileLoadToDbJob extends Job {
 						serviceTypeRecordService.create(record);
 					}
 				}
-			} catch (DBFException e) {
+			} catch (IOException e) {
 				log.warn("Can't read record from file with name {}", szFile.getUploadedFile().getOriginalName());
-			} catch (FileNotFoundException e) {
-				log.warn("Can't find file with name {}", szFile.getUploadedFile().getOriginalName());
 			} finally {
 				if (reader != null) {
 					reader.close();

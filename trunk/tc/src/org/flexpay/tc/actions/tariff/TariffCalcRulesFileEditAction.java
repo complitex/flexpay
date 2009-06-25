@@ -86,9 +86,7 @@ public class TariffCalcRulesFileEditAction extends FPActionSupport {
 			fileOnServer.setOriginalName(uploadFileName);
 			fileOnServer.setUserName(userName);
 			try {
-				File fileOnSystem = FPFileUtil.saveToFileSystem(fileOnServer, upload);
-				fileOnServer.setNameOnServer(fileOnSystem.getName());
-				fileOnServer.setSize(fileOnSystem.length());
+				FPFileUtil.copy(upload, fileOnServer);
 			} catch (Exception e) {
 				log.error("Error creating file on server", e);
 				addActionError(getText("tc.error.cant_create_file_on_system"));

@@ -1,6 +1,7 @@
 package org.flexpay.payments.process.export.util;
 
 import org.flexpay.common.exception.FlexPayException;
+import org.flexpay.common.persistence.file.FPFile;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
@@ -13,7 +14,7 @@ public class RegistryWriter {
 
     private BufferedOutputStream bos;
 
-    private File file;
+    private FPFile file;
 
     private char separator;
 
@@ -38,30 +39,29 @@ public class RegistryWriter {
     public static final String DEFAULT_LINE_END = "\n";
 
 
-    public RegistryWriter(@NotNull File file) throws FileNotFoundException {
+    public RegistryWriter(@NotNull FPFile file) throws IOException {
         this(file, DEFAULT_SEPARATOR);
     }
 
-    public RegistryWriter(@NotNull File file, char separator) throws FileNotFoundException {
+    public RegistryWriter(@NotNull FPFile file, char separator) throws IOException {
         this(file, separator, DEFAULT_QUOTE_CHARACTER);
     }
 
-    public RegistryWriter(@NotNull File file, char separator, char quotechar) throws FileNotFoundException {
+    public RegistryWriter(@NotNull FPFile file, char separator, char quotechar) throws IOException {
         this(file, separator, quotechar, DEFAULT_ESCAPE_CHARACTER);
     }
 
-    public RegistryWriter(@NotNull File file, char separator, char quotechar, char escapechar) throws FileNotFoundException {
+    public RegistryWriter(@NotNull FPFile file, char separator, char quotechar, char escapechar) throws IOException {
         this(file, separator, quotechar, escapechar, DEFAULT_LINE_END);
     }
 
-    public RegistryWriter(@NotNull File file, char separator, char quotechar, @NotNull String lineEnd) throws FileNotFoundException {
+    public RegistryWriter(@NotNull FPFile file, char separator, char quotechar, @NotNull String lineEnd) throws IOException {
         this(file, separator, quotechar, DEFAULT_ESCAPE_CHARACTER, lineEnd);
     }
 
-    public RegistryWriter(@NotNull File file, char separator, char quotechar, char escapechar, @NotNull String lineEnd) throws FileNotFoundException {
-        FileOutputStream fos = new FileOutputStream(file);
+    public RegistryWriter(@NotNull FPFile file, char separator, char quotechar, char escapechar, @NotNull String lineEnd) throws IOException {
         this.file = file;
-        this.bos = new BufferedOutputStream(fos);
+        this.bos = new BufferedOutputStream(file.getOutputStream());
         this.separator = separator;
         this.quotechar = quotechar;
         this.escapechar = escapechar;
@@ -150,7 +150,7 @@ public class RegistryWriter {
 
     public long getFileSize() throws FlexPayException {
         flush();
-        return file.length();
+        return file.getSize();
     }
 
     public void flush() throws FlexPayException {

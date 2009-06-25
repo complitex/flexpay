@@ -4,6 +4,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.apache.commons.io.IOUtils;
 import org.flexpay.common.util.FPFileUtil;
+import org.flexpay.common.util.StringUtil;
 import org.flexpay.common.util.io.InputStreamCallback;
 import org.flexpay.common.util.io.OutputStreamCallback;
 import org.flexpay.common.util.io.ReaderCallback;
@@ -36,6 +37,14 @@ public class FPFile extends DomainObject implements DataSource {
 
 	public String getOriginalName() {
 		return originalName;
+	}
+
+	public String getFileName() {
+		return StringUtil.getFileName(originalName);
+	}
+
+	public String getExtension() {
+		return StringUtil.getFileExtension(originalName);
 	}
 
 	public void setOriginalName(String originalName) {
@@ -89,7 +98,13 @@ public class FPFile extends DomainObject implements DataSource {
 	 * @throws IOException if stream open fails
 	 */
 	public OutputStream getOutputStream() throws IOException {
-		return new BufferedOutputStream(new FileOutputStream(FPFileUtil.getFileOnServer(this)));
+		return new BufferedOutputStream(new FileOutputStream(FPFileUtil.getFileOnServer(this))) {
+			@Override
+			public void close() throws IOException {
+				super.close();
+				updateSize();
+			}
+		};
 	}
 
 	/**

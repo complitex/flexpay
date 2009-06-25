@@ -1,19 +1,17 @@
 package org.flexpay.sz.dbf;
 
-import com.linuxense.javadbf.DBFException;
+import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.sz.persistence.CharacteristicRecord;
 
-import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.IOException;
 
 public class CharacteristicDBFInfo extends DBFInfo<CharacteristicRecord> {
 
-	public CharacteristicDBFInfo(File originalFile) {
+	public CharacteristicDBFInfo(FPFile originalFile) {
 		super(originalFile);
 	}
 
-	CharacteristicRecord create(Object[] rowData) throws DBFException,
-			FileNotFoundException {
+	CharacteristicRecord create(Object[] rowData) throws IOException {
 		CharacteristicRecord characteristic = new CharacteristicRecord();
 		characteristic.setCod((Double) rowData[getInd("cod")]);
 		characteristic.setCdpr((Double) rowData[getInd("cdpr")]);
@@ -36,8 +34,7 @@ public class CharacteristicDBFInfo extends DBFInfo<CharacteristicRecord> {
 		return characteristic;
 	}
 
-	Object[] getRowData(CharacteristicRecord characteristic) throws DBFException,
-			FileNotFoundException {
+	Object[] getRowData(CharacteristicRecord characteristic) throws IOException {
 		Object[] rowData = new Object[getDBFFields().length];
 		rowData[getInd("cod")] = characteristic.getCod();
 		rowData[getInd("cdpr")] = characteristic.getCdpr();

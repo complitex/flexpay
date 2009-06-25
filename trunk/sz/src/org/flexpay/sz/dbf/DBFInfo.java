@@ -5,30 +5,28 @@ import com.linuxense.javadbf.DBFField;
 import com.linuxense.javadbf.DBFReader;
 import org.apache.commons.io.IOUtils;
 import org.flexpay.sz.util.config.ApplicationConfig;
+import org.flexpay.common.persistence.file.FPFile;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 
 public abstract class DBFInfo<E> {
 
-	private File originalFile;
+	private FPFile originalFile;
 	private String dbfFileEncoding = ApplicationConfig.getSzDefaultDbfFileEncoding();
 	private DBFField[] dbfFields;
 	private Map<String, Integer> indMap;
 
-	public DBFInfo(File originalFile) {
+	public DBFInfo(FPFile originalFile) {
 		this.originalFile = originalFile;
 	}
 
-	abstract E create(Object[] record) throws DBFException, FileNotFoundException;
+	abstract E create(Object[] record) throws IOException;
 
-	abstract Object[] getRowData(E element) throws DBFException, FileNotFoundException;
+	abstract Object[] getRowData(E element) throws IOException;
 
-	protected int getInd(String name) throws DBFException, FileNotFoundException {
+	protected int getInd(String name) throws IOException {
 		if (indMap == null) {
 			init();
 		}
@@ -36,7 +34,7 @@ public abstract class DBFInfo<E> {
 		return indMap.get(name.toLowerCase());
 	}
 
-	DBFField[] getDBFFields() throws DBFException, FileNotFoundException {
+	DBFField[] getDBFFields() throws IOException {
 		if (dbfFields == null) {
 			init();
 		}
@@ -44,8 +42,8 @@ public abstract class DBFInfo<E> {
 		return dbfFields;
 	}
 
-	private void init() throws DBFException, FileNotFoundException {
-		InputStream fis = new FileInputStream(originalFile);
+	private void init() throws IOException {
+		InputStream fis = originalFile.getInputStream();
 		try {
 			DBFReader reader = new DBFReader(fis);
 			reader.setCharactersetName(dbfFileEncoding);

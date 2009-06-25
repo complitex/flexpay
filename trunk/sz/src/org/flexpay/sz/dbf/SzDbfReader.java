@@ -1,32 +1,34 @@
 package org.flexpay.sz.dbf;
 
-import com.linuxense.javadbf.DBFException;
 import com.linuxense.javadbf.DBFReader;
+import org.flexpay.common.persistence.file.FPFile;
+import org.apache.commons.io.IOUtils;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 public class SzDbfReader<E, I extends DBFInfo<E>> {
 
-	private File file;
+	private FPFile file;
 	private InputStream is;
 	private DBFReader reader;
 	private I dbfInfo;
 
-	public SzDbfReader(I dbfInfo, File file) {
+	public SzDbfReader(I dbfInfo, FPFile file) {
 		this.dbfInfo = dbfInfo;
 		this.file = file;
 	}
 
-	private void init() throws DBFException, FileNotFoundException {
-		is = new FileInputStream(file);
+	private void init() throws IOException {
+		is = file.getInputStream();
 		reader = new DBFReader(is);
 		reader.setCharactersetName(dbfInfo.getDbfFileEncoding());
 	}
 
-	public E read() throws DBFException, FileNotFoundException {
+	public E read() throws IOException {
 		if (reader == null) {
 			init();
 		}
@@ -36,13 +38,13 @@ public class SzDbfReader<E, I extends DBFInfo<E>> {
 		return record == null ? null : dbfInfo.create(record);
 	}
 
-	public Collection<E> readAll() throws DBFException, FileNotFoundException {
+	public Collection<E> readAll() throws IOException {
 		if (reader == null) {
 			init();
 		}
 
 		List<E> elements = new ArrayList<E>(reader.getRecordCount());
-		E element = null;
+		E element;
 		while ((element = read()) != null) {
 			elements.add(element);
 		}
@@ -51,12 +53,6 @@ public class SzDbfReader<E, I extends DBFInfo<E>> {
 	}
 
 	public void close() {
-		if (is != null) {
-			try {
-				is.close();
-			} catch (IOException e) {
-				// TODO ignore
-			}
-		}
+		IOUtils.closeQuietly(is);
 	}
 }
