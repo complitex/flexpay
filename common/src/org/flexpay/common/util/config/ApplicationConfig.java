@@ -182,26 +182,10 @@ public class ApplicationConfig {
 	 * @see java.lang.Class#getResourceAsStream(String)
 	 */
 	@Nullable
-	public static InputStream getResourceAsStream(@NotNull @NonNls String name) {
+	public static InputStream getResourceAsStream(@NotNull String name) {
 		try {
 			Resource resource = resourceLoader.getResource(name);
 			return resource.exists() ? resource.getInputStream() : null;
-		} catch (IOException e) {
-			log.warn("Failed getting resource {}", name, e);
-			return null;
-		}
-	}
-
-	/**
-	 * Get resource file by name.
-	 *
-	 * @param name Resource name
-	 * @return resource file or <code>null</code> if not found
-	 */
-	public static File getResourceAsFile(@NotNull @NonNls String name) {
-		try {
-			Resource resource = resourceLoader.getResource(name);
-			return resource.exists() ? resource.getFile() : null;
 		} catch (IOException e) {
 			log.warn("Failed getting resource {}", name, e);
 			return null;
