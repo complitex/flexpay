@@ -1,6 +1,5 @@
 package org.flexpay.eirc.persistence.exchange;
 
-import org.flexpay.ab.persistence.Apartment;
 import org.flexpay.bti.persistence.apartment.ApartmentAttributeBase;
 import org.flexpay.bti.persistence.apartment.ApartmentAttributeType;
 import org.flexpay.bti.persistence.apartment.BtiApartment;
@@ -9,8 +8,6 @@ import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.registry.RegistryRecord;
 import org.flexpay.eirc.persistence.Consumer;
 import org.flexpay.eirc.persistence.EircRegistryRecordProperties;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class ContainerProcessHelper {
 

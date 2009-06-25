@@ -2,7 +2,6 @@ package org.flexpay.payments.util.registries;
 
 import org.apache.commons.io.IOUtils;
 import org.flexpay.common.exception.FlexPayException;
-import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.persistence.registry.RegistryRecord;
@@ -22,14 +21,13 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.BufferedWriter;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-@Transactional(readOnly = true)
+@Transactional (readOnly = true)
 public class ExportBankPaymentsRegistry {
 
 	private Logger log = LoggerFactory.getLogger(getClass());
@@ -39,7 +37,7 @@ public class ExportBankPaymentsRegistry {
 	private RegistryService registryService;
 	private RegistryRecordService registryRecordService;
 
-	@Transactional(propagation = Propagation.NOT_SUPPORTED, readOnly = false)
+	@Transactional (propagation = Propagation.NOT_SUPPORTED, readOnly = false)
 	public Registry export(@NotNull Registry registry) throws FlexPayException {
 
 		log.info("Start exporting payments registry with id = {}", registry.getId());
@@ -64,7 +62,7 @@ public class ExportBankPaymentsRegistry {
 		}
 
 		String fileName = new SimpleDateFormat(RegistryUtil.EXPORT_FILE_NAME_DATE_FORMAT).format(new Date())
-				+ "_" + paymentPointId + "_" + registry.getId() + "." + RegistryUtil.EXPORT_FILE_EXTENSION;
+						  + "_" + paymentPointId + "_" + registry.getId() + "." + RegistryUtil.EXPORT_FILE_EXTENSION;
 
 		FPFile fpFile = new FPFile();
 		fpFile.setOriginalName(fileName);
@@ -83,7 +81,8 @@ public class ExportBankPaymentsRegistry {
 
 		try {
 
-			writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(FPFileUtil.getFileOnServer(fpFile)), RegistryUtil.EXPORT_FILE_ENCODING), 500);
+			//noinspection IOResourceOpenedButNotSafelyClosed
+			writer = new BufferedWriter(new OutputStreamWriter(fpFile.getOutputStream(), RegistryUtil.EXPORT_FILE_ENCODING));
 
 			writer.write(buildHeader(registry));
 			writer.newLine();
@@ -103,7 +102,7 @@ public class ExportBankPaymentsRegistry {
 			IOUtils.closeQuietly(writer);
 		}
 
-		fpFile.setSize(FPFileUtil.getFileOnServer(fpFile).length());
+		fpFile.updateSize();
 		fpFile = fpFileService.create(fpFile);
 
 		registry.setSpFile(fpFile);
@@ -169,7 +168,7 @@ public class ExportBankPaymentsRegistry {
 				append(RegistryUtil.FIELD_SEPARATOR).
 				//default city is empty
 //				append(StringUtil.getString(record.getCity())).
-				append(RegistryUtil.ADDRESS_SEPARATOR).
+						append(RegistryUtil.ADDRESS_SEPARATOR).
 				append(StringUtil.getString(record.getStreetType())).
 				append(RegistryUtil.ADDRESS_SEPARATOR).
 				append(StringUtil.getString(record.getStreetName())).

@@ -37,7 +37,7 @@ public class BuildingHistoryHandler extends HistoryHandlerBase<Building> {
 
 		// find object if it already exists
 		Stub<Building> stub = correctionsService.findCorrection(
-				masterIndex, Building.class, masterIndexService.getMasterSourceDescription());
+				masterIndex, Building.class, masterIndexService.getMasterSourceDescriptionStub());
 
 		if (diff.getOperationType() == HistoryOperationType.TYPE_CREATE) {
 			if (stub != null) {

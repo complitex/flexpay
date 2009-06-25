@@ -29,7 +29,7 @@ public class HistoryHandlerHelper {
 
 		// find object if it already exists
 		Stub<? extends T> stub = correctionsService.findCorrection(
-				masterIndex, service.getType(), masterIndexService.getMasterSourceDescription());
+				masterIndex, service.getType(), masterIndexService.getMasterSourceDescriptionStub());
 
 		if (diff.getOperationType() == HistoryOperationType.TYPE_CREATE) {
 			if (stub != null) {
@@ -64,7 +64,7 @@ public class HistoryHandlerHelper {
 
 	private void saveMasterCorrection(DomainObject obj, Diff diff, CorrectionsService correctionsService) {
 		DataCorrection correction = correctionsService.getStub(
-				diff.getMasterIndex(), obj, masterIndexService.getMasterSourceDescription());
+				diff.getMasterIndex(), obj, masterIndexService.getMasterSourceDescriptionStub());
 		log.debug("Saving master correction: {}", correction);
 		correctionsService.save(correction);
 	}

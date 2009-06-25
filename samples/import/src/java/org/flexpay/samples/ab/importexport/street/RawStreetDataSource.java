@@ -44,6 +44,7 @@ public class RawStreetDataSource implements RawDataSource<RawStreetData> {
 	public void initialize() {
 		try {
 			inputStream = new DataInputStream(new BufferedInputStream(new FileInputStream(FILE_NAME)));
+			//noinspection IOResourceOpenedButNotSafelyClosed
 			br = new LineNumberReader(new InputStreamReader(inputStream, "UTF-8"));
 		} catch (IOException e) {
 			throw new RuntimeException("Failed opening file " + FILE_NAME, e);

@@ -8,23 +8,23 @@ import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.locking.LockManager;
 import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.persistence.DomainObject;
+import org.flexpay.common.persistence.Stub;
+import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.service.importexport.CorrectionsService;
-import org.jetbrains.annotations.NonNls;
+import org.flexpay.common.util.CollectionUtils;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class SyncServiceImpl implements SyncService {
 
-	@NonNls
 	private Logger log = LoggerFactory.getLogger(getClass());
 
 	private HistoryDao historyDao;
 	private CorrectionsService correctionsService;
-	private DataSourceDescription sd;
+	private Stub<DataSourceDescription> sd;
 
 	private TownProcessor townProcessor;
 	private BuildingProcessor buildingProcessor;
@@ -40,8 +40,8 @@ public class SyncServiceImpl implements SyncService {
 	private ObjectType prevType = ObjectType.Unknown;
 	@Nullable
 	private DomainObject prevObj = null;
-	private AbstractProcessor processor = null;
-	private List<HistoryRec> recordBuffer = new ArrayList<HistoryRec>();
+	private AbstractProcessor<?> processor = null;
+	private List<HistoryRec> recordBuffer = CollectionUtils.list();
 
 	/**
 	 * Synchronize Address Bureau
@@ -60,7 +60,7 @@ public class SyncServiceImpl implements SyncService {
 			prevType = ObjectType.Unknown;
 			prevObj = null;
 			processor = null;
-			recordBuffer = new ArrayList<HistoryRec>();
+			recordBuffer = CollectionUtils.list();
 
 			int count = 0;
 
@@ -202,6 +202,6 @@ public class SyncServiceImpl implements SyncService {
 	}
 
 	public void setSd(DataSourceDescription sd) {
-		this.sd = sd;
+		this.sd = stub(sd);
 	}
 }

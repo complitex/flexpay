@@ -113,7 +113,7 @@ public class HistoryBuilderHelper {
 		if (record.getNewStringValue() != null) {
 			String externalId = record.getNewStringValue();
 			Stub<Ref> stub = correctionsService.findCorrection(
-					externalId, patcher.getType(), masterIndexService.getMasterSourceDescription());
+					externalId, patcher.getType(), masterIndexService.getMasterSourceDescriptionStub());
 			if (stub == null) {
 				throw new IllegalStateException("Cannot find reference of type " + patcher.getType() +
 												" by master index " + externalId);

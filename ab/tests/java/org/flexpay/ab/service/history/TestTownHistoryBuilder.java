@@ -99,6 +99,6 @@ public class TestTownHistoryBuilder extends AbSpringBeanAwareTestCase {
 		return correctionsService.getStub(
 				masterIndexService.getNewMasterIndex(type),
 				type,
-				masterIndexService.getMasterSourceDescription());
+				masterIndexService.getMasterSourceDescriptionStub());
 	}
 }

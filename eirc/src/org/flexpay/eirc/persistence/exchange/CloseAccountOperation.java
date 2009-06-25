@@ -4,6 +4,7 @@ import org.apache.commons.lang.StringUtils;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.DataSourceDescription;
+import org.flexpay.common.persistence.Stub;
 import org.flexpay.payments.persistence.EircRegistryProperties;
 import org.flexpay.common.persistence.registry.RegistryRecord;
 import org.flexpay.common.persistence.registry.Registry;
@@ -55,7 +56,7 @@ public class CloseAccountOperation extends AbstractChangePersonalAccountOperatio
 		// remove corrections to consumer
 		EircRegistryProperties registryProperties = (EircRegistryProperties) registry.getProperties();
 		ServiceProvider provider = factory.getServiceProviderService().read(registryProperties.getServiceProviderStub());
-		DataSourceDescription sd = provider.getDataSourceDescription();
+		Stub<DataSourceDescription> sd = provider.getDataSourceDescriptionStub();
 
 		removeCorrections(consumer, record, sd);
 
@@ -84,7 +85,7 @@ public class CloseAccountOperation extends AbstractChangePersonalAccountOperatio
 		}
 	}
 
-	private void removeCorrections(Consumer consumer, RegistryRecord record, DataSourceDescription sd) {
+	private void removeCorrections(Consumer consumer, RegistryRecord record, Stub<DataSourceDescription> sd) {
 
 		RawConsumerData data = RawConsumersDataUtil.convert(record);
 
@@ -100,7 +101,7 @@ public class CloseAccountOperation extends AbstractChangePersonalAccountOperatio
 	}
 
 	private void removeCorrections(RawConsumerData data, Consumer consumer,
-								   String serviceCode, DataSourceDescription sd) {
+								   String serviceCode, Stub<DataSourceDescription> sd) {
 
 		CorrectionsService service = factory.getCorrectionsService();
 

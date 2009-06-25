@@ -9,6 +9,7 @@ import org.flexpay.ab.service.ObjectsFactory;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.persistence.Stub;
+import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.service.importexport.CorrectionsService;
 import org.flexpay.common.service.importexport.DataConverter;
 import org.flexpay.common.util.DateUtil;
@@ -41,7 +42,7 @@ public class RawApartmentDataConverter implements DataConverter<Apartment, RawAp
 		Apartment apartment = factory.newApartment();
 
 		Stub<BuildingAddress> buildings = correctionsService.findCorrection(
-				rawData.getBuildingId(), BuildingAddress.class, dataSourceDescription);
+				rawData.getBuildingId(), BuildingAddress.class, stub(dataSourceDescription));
 		if (buildings == null) {
 			throw new FlexPayException("Failed finding building for apartment #" + rawData.getExternalSourceId());
 		}

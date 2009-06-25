@@ -83,7 +83,7 @@ public class PersonProcessor extends AbstractProcessor<Person> {
 	 * @throws Exception if failure occurs
 	 */
 	public void setProperty(@NotNull DomainObject object, @NotNull HistoryRec record,
-							DataSourceDescription sd, CorrectionsService cs)
+							Stub<DataSourceDescription> sd, CorrectionsService cs)
 			throws Exception {
 
 		Person person = (Person) object;
@@ -190,7 +190,7 @@ public class PersonProcessor extends AbstractProcessor<Person> {
 		return identity;
 	}
 
-	private void setINN(@NotNull Person person, @Nullable String value) throws FlexPayException {
+	private void setINN(@NotNull Person person, @Nullable String value) {
 		PersonAttribute inn = new PersonAttribute();
 		inn.setLang(ApplicationConfig.getDefaultLanguage());
 		inn.setValue(value == null ? "" : value);
@@ -202,7 +202,7 @@ public class PersonProcessor extends AbstractProcessor<Person> {
 		person.setAttribute(inn);
 	}
 
-	private void setResidenceApartment(Person person, String apartmentId, DataSourceDescription sd, CorrectionsService cs)
+	private void setResidenceApartment(Person person, String apartmentId, Stub<DataSourceDescription> sd, CorrectionsService cs)
 			throws FlexPayException {
 
 		Stub<Apartment> stub = cs.findCorrection(apartmentId, Apartment.class, sd);
@@ -222,7 +222,7 @@ public class PersonProcessor extends AbstractProcessor<Person> {
 	 * @param cs	 CorrectionsService
 	 * @return Persistent object stub if exists, or <code>null</code> otherwise
 	 */
-	protected Stub<Person> findPersistentObject(Person object, DataSourceDescription sd, CorrectionsService cs) {
+	protected Stub<Person> findPersistentObject(Person object, Stub<DataSourceDescription> sd, CorrectionsService cs) {
 		// there is not enough info to identify each person, will create new each time
 		return null;
 	}

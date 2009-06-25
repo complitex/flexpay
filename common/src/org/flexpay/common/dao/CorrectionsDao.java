@@ -26,14 +26,14 @@ public interface CorrectionsDao {
 	/**
 	 * Find domain object by correction
 	 *
-	 * @param externalId		DataSource internal object id
-	 * @param type			  DomainObject type
-	 * @param cls			   DomainObject class to retrive
-	 * @param sd Data source description
+	 * @param externalId DataSource internal object id
+	 * @param type	   DomainObject type
+	 * @param cls		DomainObject class to retrive
+	 * @param sd		 Data source description
 	 * @return DomainObject
 	 */
 	@Nullable
-	<T extends DomainObject> Stub<T> findCorrection(@NonNls String externalId, int type, Class<T> cls, DataSourceDescription sd);
+	<T extends DomainObject> Stub<T> findCorrection(@NonNls String externalId, int type, Class<T> cls, Stub<DataSourceDescription> sd);
 
 	@Nullable
 	String getExternalId(@NonNls Long internalId, int type, Long dataSourceDescriptionId);
@@ -41,20 +41,20 @@ public interface CorrectionsDao {
 	/**
 	 * Check if correction exists
 	 *
-	 * @param externalId		DataSource internal object id
-	 * @param type			  DomainObject type
-	 * @param sourceDescription Data source description
+	 * @param externalId DataSource internal object id
+	 * @param type	   DomainObject type
+	 * @param sd		 DataSourceDescription
 	 * @return DomainObject
 	 */
-	boolean existsCorrection(String externalId, int type, DataSourceDescription sourceDescription);
+	boolean existsCorrection(String externalId, int type, Stub<DataSourceDescription> sd);
 
 	/**
 	 * Find existing correction if any
 	 *
 	 * @param externalId External object id
-	 * @param type Object type id
-	 * @param sourceDescription Source description
+	 * @param type	   Object type id
+	 * @param sd		 DataSourceDescription
 	 * @return DataCorrection if exists, or <code>null</code> otherwise
 	 */
-	DataCorrection findCorrection(String externalId, int type, DataSourceDescription sourceDescription);
+	DataCorrection findCorrection(String externalId, int type, Stub<DataSourceDescription> sd);
 }

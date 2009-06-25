@@ -186,7 +186,7 @@ public class StreetHistoryBuilder extends HistoryBuilderBase<Street> {
 		if (record.getNewStringValue() != null) {
 			String externalId = record.getNewStringValue();
 			Stub<Town> townStub = correctionsService.findCorrection(
-					externalId, Town.class, masterIndexService.getMasterSourceDescription());
+					externalId, Town.class, masterIndexService.getMasterSourceDescriptionStub());
 			if (townStub == null) {
 				throw new IllegalStateException("Cannot find town type by master index: " + externalId);
 			}
@@ -235,7 +235,7 @@ public class StreetHistoryBuilder extends HistoryBuilderBase<Street> {
 
 			String externalId = record.getNewStringValue();
 			Stub<StreetType> typeStub = correctionsService.findCorrection(
-					externalId, StreetType.class, masterIndexService.getMasterSourceDescription());
+					externalId, StreetType.class, masterIndexService.getMasterSourceDescriptionStub());
 			if (typeStub == null) {
 				throw new IllegalStateException("Cannot find street type by master index: " + externalId);
 			}

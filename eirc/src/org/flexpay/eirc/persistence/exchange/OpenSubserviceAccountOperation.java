@@ -121,7 +121,7 @@ public class OpenSubserviceAccountOperation extends ContainerOperation {
 		String shortId = data.getShortConsumerId();
 		EircRegistryProperties props = (EircRegistryProperties) registry.getProperties();
 		ServiceProvider provider = factory.getServiceProviderService().read(props.getServiceProviderStub());
-		DataSourceDescription sd = provider.getDataSourceDescription();
+		Stub<DataSourceDescription> sd = provider.getDataSourceDescriptionStub();
 		DataCorrection corr = correctionsService.getStub(shortId, consumer, sd);
 		correctionsService.save(corr);
 
@@ -178,7 +178,7 @@ public class OpenSubserviceAccountOperation extends ContainerOperation {
 		EircRegistryProperties registryProps = (EircRegistryProperties) registry.getProperties();
 		ServiceProvider provider = factory.getServiceProviderService().read(registryProps.getServiceProviderStub());
 		Stub<Consumer> persistent = factory.getCorrectionsService().findCorrection(
-				id, Consumer.class, provider.getDataSourceDescription());
+				id, Consumer.class, provider.getDataSourceDescriptionStub());
 		if (persistent != null) {
 			log.info("Already existing subconsumer: {}", id);
 			return false;

@@ -169,7 +169,7 @@ public abstract class OrganizationInstanceHistoryBuilder<
 		if (record.getNewStringValue() != null) {
 			String externalId = record.getNewStringValue();
 			Stub<Organization> stub = correctionsService.findCorrection(
-					externalId, Organization.class, masterIndexService.getMasterSourceDescription());
+					externalId, Organization.class, masterIndexService.getMasterSourceDescriptionStub());
 			if (stub == null) {
 				throw new IllegalStateException("Cannot find organization by master index: " + externalId);
 			}

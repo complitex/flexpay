@@ -35,7 +35,7 @@ public class EircImportServiceTx extends ImportService {
 
 	@Transactional (readOnly = false)
 	public boolean processBatch(long[] counters, boolean inited,
-								DataSourceDescription sd, RawDataSource<RawConsumerData> dataSource,
+								Stub<DataSourceDescription> sd, RawDataSource<RawConsumerData> dataSource,
 								Map<String, List<Street>> nameObjsMap) {
 
 		log.debug("Fetching for next batch");
@@ -187,7 +187,7 @@ public class EircImportServiceTx extends ImportService {
 	}
 
 	@Nullable
-	private Person findPerson(DataSourceDescription sd, @NotNull RawConsumerData data,
+	private Person findPerson(Stub<DataSourceDescription> sd, @NotNull RawConsumerData data,
 							  RawDataSource<RawConsumerData> dataSource) throws Exception {
 
 		// first try to find person via set correction
@@ -214,7 +214,7 @@ public class EircImportServiceTx extends ImportService {
 	}
 
 	private Apartment findApartment(Map<String, List<Street>> nameObjsMap,
-									DataSourceDescription sd, RawConsumerData data,
+									Stub<DataSourceDescription> sd, RawConsumerData data,
 									RawDataSource<RawConsumerData> dataSource) throws Exception {
 
 		// try to find by apartment correction
@@ -258,7 +258,7 @@ public class EircImportServiceTx extends ImportService {
 
 	private Street findStreet(Map<String, List<Street>> nameObjsMap,
 							  RawConsumerData data,
-							  DataSourceDescription sd, RawDataSource<RawConsumerData> dataSource) throws Exception {
+							  Stub<DataSourceDescription> sd, RawDataSource<RawConsumerData> dataSource) throws Exception {
 
 		StreetType streetType = findStreetType(data, sd);
 		if (streetType == null) {
@@ -320,19 +320,20 @@ public class EircImportServiceTx extends ImportService {
 	}
 
 	@Nullable
-	private StreetType findStreetType(RawConsumerData data, DataSourceDescription sd) throws Exception {
+	private StreetType findStreetType(RawConsumerData data, Stub<DataSourceDescription> sd) throws Exception {
 
 		StreetType type = streetTypeService.findTypeByName(data.getAddressStreetType());
 		if (type != null) {
 			return type;
 		}
 
-		Stub<StreetType> stub = correctionsService.findCorrection(data.getAddressStreetType(),
-				StreetType.class, sd);
+		Stub<StreetType> stub = correctionsService.findCorrection(
+				data.getAddressStreetType(), StreetType.class, sd);
 		return stub != null ? new StreetType(stub.getId()) : null;
 	}
 
-	private Apartment findApartment(RawConsumerData data, Street street, DataSourceDescription sd, RawDataSource<RawConsumerData> dataSource)
+	private Apartment findApartment(RawConsumerData data, Street street,
+									Stub<DataSourceDescription> sd, RawDataSource<RawConsumerData> dataSource)
 			throws Exception {
 
 		BuildingAddress buildingAddress = buildingService.findBuildings(stub(street), buildingService.attributes(data.getAddressHouse(), data.getAddressBulk()));
@@ -352,7 +353,8 @@ public class EircImportServiceTx extends ImportService {
 		return findApartment(data, buildingAddress, sd, dataSource);
 	}
 
-	private Apartment findApartment(RawConsumerData data, BuildingAddress buildingAddress, DataSourceDescription sd, RawDataSource<RawConsumerData> dataSource)
+	private Apartment findApartment(RawConsumerData data, BuildingAddress buildingAddress,
+									Stub<DataSourceDescription> sd, RawDataSource<RawConsumerData> dataSource)
 			throws Exception {
 		Building building = buildingAddress.getBuilding();
 

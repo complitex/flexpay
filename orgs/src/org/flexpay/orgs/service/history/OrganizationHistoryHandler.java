@@ -35,7 +35,7 @@ public class OrganizationHistoryHandler extends HistoryHandlerBase<Organization>
 
 		// find object if it already exists
 		Stub<Organization> stub = correctionsService.findCorrection(
-				masterIndex, Organization.class, masterIndexService.getMasterSourceDescription());
+				masterIndex, Organization.class, masterIndexService.getMasterSourceDescriptionStub());
 
 		if (diff.getOperationType() == HistoryOperationType.TYPE_CREATE) {
 			if (stub != null) {

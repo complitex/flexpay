@@ -9,6 +9,7 @@ import org.flexpay.bti.service.importexport.BuildingAttributesImporter;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.persistence.Stub;
+import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.process.ProcessLogger;
 import org.flexpay.common.service.importexport.CorrectionsService;
 import org.flexpay.common.util.CollectionUtils;
@@ -30,7 +31,7 @@ public class CSVBuildingAttributesImporter implements BuildingAttributesImporter
 
 	private AttributeNameMapper attributeNameMapper;
 	private CorrectionsService correctionsService;
-	private DataSourceDescription sourceDescription;
+	private Stub<DataSourceDescription> sourceDescription;
 
 	private Set<AttributeDataValidator> validators = Collections.emptySet();
 
@@ -126,6 +127,6 @@ public class CSVBuildingAttributesImporter implements BuildingAttributesImporter
 
 	@Required
 	public void setSourceDescription(DataSourceDescription sourceDescription) {
-		this.sourceDescription = sourceDescription;
+		this.sourceDescription = stub(sourceDescription);
 	}
 }

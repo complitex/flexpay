@@ -94,7 +94,7 @@ public class BuildingProcessor extends AbstractProcessor<BuildingAddress> {
 	 * @throws Exception if failure occurs
 	 */
 	public void setProperty(@NotNull DomainObject object, @NotNull HistoryRec record,
-							DataSourceDescription sd, CorrectionsService cs) throws Exception {
+							Stub<DataSourceDescription> sd, CorrectionsService cs) throws Exception {
 		BuildingAddress buildingAddress = (BuildingAddress) object;
 		switch (record.getFieldType()) {
 			case DistrictId:
@@ -143,7 +143,7 @@ public class BuildingProcessor extends AbstractProcessor<BuildingAddress> {
 	}
 
 	private void setDistrictId(Building building, HistoryRec record,
-							   DataSourceDescription sd, CorrectionsService cs) {
+							   Stub<DataSourceDescription> sd, CorrectionsService cs) {
 		Stub<District> stub = cs.findCorrection(record.getCurrentValue(), District.class, sd);
 		if (stub == null) {
 			log.error("No correction for district #{} DataSourceDescription {}, cannot set up reference for building",
@@ -162,7 +162,7 @@ public class BuildingProcessor extends AbstractProcessor<BuildingAddress> {
 	}
 
 	private void setStreetId(BuildingAddress building, HistoryRec record,
-							 DataSourceDescription sd, CorrectionsService cs) {
+							 Stub<DataSourceDescription> sd, CorrectionsService cs) {
 		Stub<Street> stub = cs.findCorrection(record.getCurrentValue(), Street.class, sd);
 		if (stub == null) {
 			log.error("No correction for street #{} DataSourceDescription {}, cannot set up reference for building",
@@ -189,7 +189,7 @@ public class BuildingProcessor extends AbstractProcessor<BuildingAddress> {
 	 * @return Persistent object stub if exists, or <code>null</code> otherwise
 	 */
 	protected Stub<BuildingAddress> findPersistentObject(BuildingAddress object,
-												   DataSourceDescription sd, CorrectionsService cs) throws FlexPayException {
+												   Stub<DataSourceDescription> sd, CorrectionsService cs) throws FlexPayException {
 		String number = object.getNumber();
 		String bulk = object.getBulk();
 		if (number == null) {

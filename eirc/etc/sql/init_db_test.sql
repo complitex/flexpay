@@ -270,3 +270,15 @@ insert into eirc_quittance_details_payments_tbl (version, details_id, payment_st
 	values (0, @quittance_details_1_3, @payment_status_partial, @q_payment_1, '20.0');
 insert into eirc_quittance_details_payments_tbl (version, details_id, payment_status_id, payment_id, amount)
 	values (0, @quittance_details_1_4, @payment_status_partial, @q_payment_1, '30.0');
+
+-- MegaBank integration data
+select @eirc_base:=0x5000 + 0;
+select @orgs_base:=0x4000 + 0;
+
+insert into common_data_source_descriptions_tbl (id, description)
+	values (@eirc_base + 1, 'МегаБАНК');
+select @ds_megabank:=@eirc_base + 1;
+
+-- add correction from Megabank's КП "ЖИЛКОМСЕРВИС"=1033
+insert into common_data_corrections_tbl (internal_object_id, external_object_id, object_type, data_source_description_id)
+	values (@service_provider_cn, '1033', @orgs_base + 0x003, @ds_megabank);

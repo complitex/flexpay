@@ -1,8 +1,6 @@
 package org.flexpay.ab.service.history;
 
-import org.flexpay.ab.persistence.District;
 import org.flexpay.ab.persistence.Street;
-import org.flexpay.ab.service.DistrictService;
 import org.flexpay.ab.service.StreetService;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.history.Diff;
@@ -37,7 +35,7 @@ public class StreetHistoryHandler extends HistoryHandlerBase<Street> {
 
 		// find object if it already exists
 		Stub<Street> stub = correctionsService.findCorrection(
-				masterIndex, Street.class, masterIndexService.getMasterSourceDescription());
+				masterIndex, Street.class, masterIndexService.getMasterSourceDescriptionStub());
 
 		if (diff.getOperationType() == HistoryOperationType.TYPE_CREATE) {
 			if (stub != null) {

@@ -348,7 +348,7 @@ public class PersonHistoryBuilder extends HistoryBuilderBase<Person> {
 		if (KEY_APARTMENT_ID.equals(record.getFieldKey())) {
 			String externalId = record.getNewStringValue();
 			Stub<Apartment> stub = correctionsService.findCorrection(
-					externalId, Apartment.class, masterIndexService.getMasterSourceDescription());
+					externalId, Apartment.class, masterIndexService.getMasterSourceDescriptionStub());
 			Apartment apartment = stub == null ? null : apartmentService.readFull(stub);
 			person.setPersonRegistration(apartment, record.getBeginDate(), record.getEndDate());
 			record.setProcessingStatus(ProcessingStatus.STATUS_PROCESSED);
@@ -371,7 +371,7 @@ public class PersonHistoryBuilder extends HistoryBuilderBase<Person> {
 		PersonIdentity identity = context.lastIdentity;
 		if (identity != null && identity.getIdentityType() == null && context.prevTypeMasterIndex != null) {
 			Stub<IdentityType> stub = correctionsService.findCorrection(
-					context.prevTypeMasterIndex, IdentityType.class, masterIndexService.getMasterSourceDescription());
+					context.prevTypeMasterIndex, IdentityType.class, masterIndexService.getMasterSourceDescriptionStub());
 			if (stub == null) {
 				throw new IllegalStateException("Cannot find identity type by master index: " + context.prevTypeMasterIndex);
 			}
@@ -408,7 +408,7 @@ public class PersonHistoryBuilder extends HistoryBuilderBase<Person> {
 		if (KEY_IDENTITY_ID.equals(record.getFieldKey())) {
 			String externalId = record.getNewStringValue();
 			Stub<IdentityType> stub = correctionsService.findCorrection(
-					externalId, IdentityType.class, masterIndexService.getMasterSourceDescription());
+					externalId, IdentityType.class, masterIndexService.getMasterSourceDescriptionStub());
 			if (stub == null) {
 				throw new IllegalStateException("Cannot find identity type by master index: " + externalId);
 			}

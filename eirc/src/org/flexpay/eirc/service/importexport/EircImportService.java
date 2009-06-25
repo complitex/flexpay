@@ -6,11 +6,8 @@ import org.flexpay.ab.persistence.Town;
 import org.flexpay.ab.persistence.filters.TownFilter;
 import org.flexpay.ab.service.StreetService;
 import org.flexpay.common.exception.FlexPayException;
-import org.flexpay.common.persistence.DataSourceDescription;
-import org.flexpay.common.persistence.NameTimeDependentChild;
 import static org.flexpay.common.persistence.Stub.stub;
-import org.flexpay.common.persistence.TemporaryName;
-import org.flexpay.common.persistence.Translation;
+import org.flexpay.common.persistence.*;
 import org.flexpay.common.service.importexport.RawDataSource;
 import org.flexpay.eirc.util.config.ApplicationConfig;
 import org.slf4j.Logger;
@@ -25,7 +22,7 @@ public class EircImportService {
 	private StreetService streetService;
 	private EircImportServiceTx eircImportServiceTx;
 
-	public void importConsumers(DataSourceDescription sd, RawDataSource<RawConsumerData> dataSource)
+	public void importConsumers(Stub<DataSourceDescription> sd, RawDataSource<RawConsumerData> dataSource)
 			throws FlexPayException {
 
 		log.info("Starting importing consumers for data source: {}", sd.getId());

@@ -7,6 +7,7 @@ import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.DataCorrection;
 import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.persistence.ImportError;
+import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.persistence.registry.RegistryRecord;
 import org.flexpay.common.service.importexport.CorrectionsService;
@@ -89,7 +90,7 @@ public class SetResponsiblePersonOperation extends AbstractChangePersonalAccount
 		// update corrections
 		EircRegistryProperties registryProperties = (EircRegistryProperties) registry.getProperties();
 		ServiceProvider provider = factory.getServiceProviderService().read(registryProperties.getServiceProviderStub());
-		DataSourceDescription sd = provider.getDataSourceDescription();
+		Stub<DataSourceDescription> sd = provider.getDataSourceDescriptionStub();
 		updateCorrections(info, record, eircAccount, sd);
 	}
 
@@ -161,7 +162,7 @@ public class SetResponsiblePersonOperation extends AbstractChangePersonalAccount
 	}
 
 	private void updateCorrections(ConsumerInfo info, RegistryRecord record,
-								   EircAccount account, DataSourceDescription sd)
+								   EircAccount account, Stub<DataSourceDescription> sd)
 			throws FlexPayException {
 
 		RawConsumerData dataOld = RawConsumersDataUtil.convert(record);
@@ -201,7 +202,7 @@ public class SetResponsiblePersonOperation extends AbstractChangePersonalAccount
 	}
 
 	private DataCorrection buildCorrection(RawConsumerData data, Consumer consumer,
-										   String serviceCode, DataSourceDescription sd) {
+										   String serviceCode, Stub<DataSourceDescription> sd) {
 		CorrectionsService service = factory.getCorrectionsService();
 		setServiceCode(data, serviceCode);
 

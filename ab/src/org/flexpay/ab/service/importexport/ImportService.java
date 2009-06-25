@@ -59,16 +59,16 @@ public class ImportService {
 
 	private List<DomainObject> objectsStack = new ArrayList<DomainObject>(STACK_SIZE + 5);
 
-	protected void addPersonImportError(DataSourceDescription sd, RawPersonData data) {
+	protected void addPersonImportError(Stub<DataSourceDescription> sd, RawPersonData data) {
 		ImportError error = addImportError(sd, data.getExternalSourceId(), Person.class, personDataSource);
 		importErrorService.addError(error);
 	}
 
-	protected ImportError addImportError(DataSourceDescription sd, String externalSourceId,
+	protected ImportError addImportError(Stub<DataSourceDescription> sd, String externalSourceId,
 										 Class<? extends DomainObject> clazz, RawDataSource<? extends RawData> source) {
 
 		ImportError error = new ImportError();
-		error.setSourceDescription(sd);
+		error.setSourceDescription(new DataSourceDescription(sd));
 		error.setSourceObjectId(externalSourceId);
 		error.setObjectType(registry.getType(clazz));
 		errorsSupport.setDataSourceBean(error, source);
@@ -148,7 +148,7 @@ public class ImportService {
 
 				// Find object by correction
 				Stub<District> persistentObj = correctionsService.findCorrection(
-						data.getExternalSourceId(), District.class, sourceDescription);
+						data.getExternalSourceId(), District.class, stub(sourceDescription));
 
 				// Find object by its name
 				District nameMatchObj = findObject(nameObjsMap, district);
@@ -165,14 +165,14 @@ public class ImportService {
 					}
 					log.info("Creating new district correction: {}", data.getName());
 					DataCorrection correction = correctionsService.getStub(
-							data.getExternalSourceId(), district, sourceDescription);
+							data.getExternalSourceId(), district, stub(sourceDescription));
 					addToStack(correction);
 				} else {
 					if (nameMatchObj == null) {
 						log.warn("Invalid correction found, no district found: {}", data.getName());
 						addToStack(district);
 						DataCorrection correction = correctionsService.getStub(
-								data.getExternalSourceId(), district, sourceDescription);
+								data.getExternalSourceId(), district, stub(sourceDescription));
 						addToStack(correction);
 					} else {
 						// correction found but objects do not match
@@ -224,9 +224,9 @@ public class ImportService {
 
 				// Find object by correction
 				Stub<Street> persistentObj = correctionsService.findCorrection(
-						data.getExternalSourceId(), Street.class, sourceDescription);
+						data.getExternalSourceId(), Street.class, stub(sourceDescription));
 				boolean found = correctionsService.existsCorrection(
-						data.getExternalSourceId(), Street.class, sourceDescription);
+						data.getExternalSourceId(), Street.class, stub(sourceDescription));
 				log.info("{}ound street {}, total time: {} ms",
 						new Object[] {(found ? "F" : "Not f"), data, (System.currentTimeMillis() - tm)});
 
@@ -262,14 +262,14 @@ public class ImportService {
 			}
 			log.info("Creating new street correction: {}", data);
 			DataCorrection correction = correctionsService.getStub(
-					data.getExternalSourceId(), street, sourceDescription);
+					data.getExternalSourceId(), street, stub(sourceDescription));
 			addToStack(correction);
 		} else {
 			if (nameMatchObj == null) {
 				log.warn("Invalid correction found, no street found: {}", data);
 				addToStack(street);
 				DataCorrection correction = correctionsService.getStub(
-						data.getExternalSourceId(), street, sourceDescription);
+						data.getExternalSourceId(), street, stub(sourceDescription));
 				addToStack(correction);
 			} else {
 				//	correction found but objects do not match
@@ -354,8 +354,7 @@ public class ImportService {
 		return true;
 	}
 
-	private Translation getDefaultLangTranslation(Collection<? extends Translation> translations)
-			throws FlexPayException {
+	private Translation getDefaultLangTranslation(Collection<? extends Translation> translations) {
 
 		Long defaultLangId = ApplicationConfig.getDefaultLanguage().getId();
 		for (Translation translation : translations) {
@@ -382,7 +381,7 @@ public class ImportService {
 			RawStreetTypeData data = streetTypeDataSource.next(typeHolder);
 			try {
 				Stub<StreetType> correction = correctionsService.findCorrection(
-						data.getExternalSourceId(), StreetType.class, sourceDescription);
+						data.getExternalSourceId(), StreetType.class, stub(sourceDescription));
 				if (correction != null) {
 					log.info("Found street type correction!");
 					continue;
@@ -395,7 +394,7 @@ public class ImportService {
 				// found general correction, create specific one
 				if (generalStub != null) {
 					DataCorrection corr = correctionsService.getStub(
-							data.getExternalSourceId(), new StreetType(generalStub), sourceDescription);
+							data.getExternalSourceId(), new StreetType(generalStub), stub(sourceDescription));
 					correctionsService.save(corr);
 					log.info("Found general street type correction, adding special one!");
 					continue;
@@ -420,7 +419,7 @@ public class ImportService {
 		String extTypeName = tr.getName().toLowerCase();
 		StreetType type = streetTypeService.findTypeByName(extTypeName);
 		if (type != null) {
-			DataCorrection corr = correctionsService.getStub(data.getExternalSourceId(), type, sd);
+			DataCorrection corr = correctionsService.getStub(data.getExternalSourceId(), type, stub(sd));
 			correctionsService.save(corr);
 			log.info("Creating correction by street type name: {}", tr.getName());
 		} else {
@@ -444,7 +443,7 @@ public class ImportService {
 
 				try {
 					Stub<BuildingAddress> correction = correctionsService.findCorrection(
-							data.getExternalSourceId(), BuildingAddress.class, sourceDescription);
+							data.getExternalSourceId(), BuildingAddress.class, stub(sourceDescription));
 
 					if (correction != null) {
 						log.info("Found correction for building #{}", data.getExternalSourceId());
@@ -466,7 +465,7 @@ public class ImportService {
 					}
 
 					DataCorrection corr = correctionsService.getStub(
-							data.getExternalSourceId(), persistent, sourceDescription);
+							data.getExternalSourceId(), persistent, stub(sourceDescription));
 					addToStack(corr);
 
 					log.info("Creating new building correction");
@@ -512,7 +511,7 @@ public class ImportService {
 
 			try {
 				Stub<Apartment> correction = correctionsService.findCorrection(
-						data.getExternalSourceId(), Apartment.class, sourceDescription);
+						data.getExternalSourceId(), Apartment.class, stub(sourceDescription));
 
 				if (correction != null) {
 					log.debug("Found correction for apartment #{}", data.getExternalSourceId());
@@ -532,7 +531,7 @@ public class ImportService {
 				}
 
 				DataCorrection corr = correctionsService.getStub(
-						data.getExternalSourceId(), new Apartment(persistent), sourceDescription);
+						data.getExternalSourceId(), new Apartment(persistent), stub(sourceDescription));
 				addToStack(corr);
 
 				log.debug("Creating new apartment correction");
@@ -550,7 +549,7 @@ public class ImportService {
 	}
 
 	@Transactional(readOnly = false, propagation = Propagation.NOT_SUPPORTED)
-	public void importPersons(DataSourceDescription sourceDescription) throws Exception {
+	public void importPersons(Stub<DataSourceDescription> sd) throws Exception {
 		personDataSource.initialize();
 
 		long time = System.currentTimeMillis();
@@ -576,7 +575,7 @@ public class ImportService {
 
 			try {
 				Stub<Person> correction = correctionsService.findCorrection(
-						data.getExternalSourceId(), Person.class, sourceDescription);
+						data.getExternalSourceId(), Person.class, sd);
 
 				if (correction != null) {
 					log.info("Found correction for person {}", data.getExternalSourceId());
@@ -584,7 +583,7 @@ public class ImportService {
 				}
 
 				Person person = personDataConverter.fromRawData(
-						data, sourceDescription, correctionsService);
+						data, new DataSourceDescription(sd), correctionsService);
 
 				Stub<Person> persistent = personService.findPersonStub(person);
 				if (persistent == null) {
@@ -593,7 +592,7 @@ public class ImportService {
 						persistent = stub(person);
 						log.info("Creating new person: {}", person);
 					} else {
-						addPersonImportError(sourceDescription, data);
+						addPersonImportError(sd, data);
 						log.warn("Cannot find person: {}",  person);
 						continue;
 					}
@@ -601,7 +600,7 @@ public class ImportService {
 
 				// persistent person found, set up correction
 				DataCorrection corr = correctionsService.getStub(
-						data.getExternalSourceId(), new Person(persistent), sourceDescription);
+						data.getExternalSourceId(), new Person(persistent), sd);
 				addToStack(corr);
 
 				log.info("Creating new person correction");

@@ -75,7 +75,7 @@ public class QuittanceDetailsFinderImpl implements QuittanceDetailsFinder {
 	private QuittanceDetailsResponse findByApartmentReference(String apartmentMasterIndex) {
 
 		Stub<Apartment> stub = correctionsService.findCorrection(
-				apartmentMasterIndex, Apartment.class, masterIndexService.getMasterSourceDescription());
+				apartmentMasterIndex, Apartment.class, masterIndexService.getMasterSourceDescriptionStub());
 		if (stub == null) {
 			// todo remove this hack
 			stub = new Stub<Apartment>(Long.parseLong(apartmentMasterIndex));

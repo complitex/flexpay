@@ -1,8 +1,8 @@
 package org.flexpay.eirc.persistence.exchange;
 
+import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.persistence.registry.RegistryRecord;
-import org.flexpay.common.exception.FlexPayException;
 
 import java.util.List;
 

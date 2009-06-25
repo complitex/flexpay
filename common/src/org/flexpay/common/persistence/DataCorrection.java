@@ -2,6 +2,8 @@ package org.flexpay.common.persistence;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
+import org.jetbrains.annotations.NotNull;
+import static org.flexpay.common.persistence.Stub.stub;
 
 public class DataCorrection extends DomainObject {
 
@@ -38,6 +40,11 @@ public class DataCorrection extends DomainObject {
 
 	public DataSourceDescription getDataSourceDescription() {
 		return dataSourceDescription;
+	}
+
+	@NotNull
+	public Stub<DataSourceDescription> getDataSourceDescriptionStub() {
+		return stub(dataSourceDescription);
 	}
 
 	public void setDataSourceDescription(DataSourceDescription dataSourceDescription) {

@@ -1,10 +1,13 @@
 package org.flexpay.eirc.sp;
 
+import org.flexpay.common.persistence.DataSourceDescription;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.persistence.registry.Registry;
+import org.flexpay.common.service.importexport.ClassToTypeRegistry;
 import org.flexpay.eirc.actions.TestSpFileCreateAction;
 import org.flexpay.eirc.sp.impl.validation.MbCorrectionsFileValidator;
+import org.flexpay.orgs.persistence.ServiceProvider;
 import org.flexpay.payments.service.EircRegistryService;
 import org.junit.After;
 import static org.junit.Assert.assertNotNull;
@@ -22,7 +25,12 @@ public class TestMbCorrectionsFileParser extends TestSpFileCreateAction {
 	private EircRegistryService eircRegistryService;
 
 	@Autowired
+	private ClassToTypeRegistry typeRegistry;
+	@Autowired
 	private MbCorrectionsFileValidator validator;
+	@Autowired
+	@Qualifier ("megabankDataSourceDescription")
+	private DataSourceDescription megabankSD;
 
 	private boolean ignoreInvalidLinesNumber;
 
@@ -43,6 +51,12 @@ public class TestMbCorrectionsFileParser extends TestSpFileCreateAction {
 		}
 
 		deleteFile(newFile);
+	}
+
+	@Test
+	public void testClassToTypeRegistry() {
+		System.out.println("ServiceProvider type id: " + typeRegistry.getType(ServiceProvider.class));
+		System.out.println("Megabank SD: " + megabankSD);
 	}
 
 	@Before

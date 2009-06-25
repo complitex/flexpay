@@ -9,6 +9,7 @@ import org.flexpay.ab.persistence.filters.*;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.persistence.ImportError;
+import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.persistence.registry.RegistryRecord;
 import org.flexpay.common.service.RegistryRecordService;
@@ -48,11 +49,11 @@ public class CorrectAddressAction extends ApartmentsListAction implements Cashbo
 
 			EircRegistryProperties props = (EircRegistryProperties) record.getRegistry().getProperties();
 			ServiceProvider provider = serviceProviderService.read(props.getServiceProviderStub());
-			DataSourceDescription sd = provider.getDataSourceDescription();
-			if (sd == null) {
+			if (provider == null) {
 				addActionError(getText("error.eirc.data_source_not_found"));
 				return super.doExecute();
 			}
+			Stub<DataSourceDescription> sd = provider.getDataSourceDescriptionStub();
 
 			saveCorrection(sd);
 
@@ -62,7 +63,7 @@ public class CorrectAddressAction extends ApartmentsListAction implements Cashbo
 		return super.doExecute();
 	}
 
-    protected void saveCorrection(DataSourceDescription sd) {
+    protected void saveCorrection(Stub<DataSourceDescription> sd) {
     }
 
 	/**
