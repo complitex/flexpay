@@ -20,6 +20,20 @@ public class PaymentPointsFilter extends PrimaryKeyFilter<PaymentPoint> {
 
 	public void setPoints(List<PaymentPoint> points) {
 		this.points = points;
+		if (!containsSuchId(points, getSelectedId())) {
+			setSelectedId(getDefaultId());
+		}
+	}
+
+	private boolean containsSuchId(List<PaymentPoint> points, Long id) {
+
+		for (PaymentPoint paymentPoint : points) {
+			if (paymentPoint.getId().equals(id)) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	public PaymentPoint getSelected() {
