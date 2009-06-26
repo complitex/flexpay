@@ -59,7 +59,11 @@ public class TradingDay extends QuartzJobBean {
             org.flexpay.common.service.Roles.PROCESS_READ,
 			org.flexpay.common.service.Roles.PROCESS_DELETE,
 			org.flexpay.common.service.Roles.PROCESS_DEFINITION_UPLOAD_NEW,
-			
+
+			org.flexpay.common.service.Roles.PROCESS_DEFINITION_UPLOAD_NEW,
+			org.flexpay.common.service.Roles.PROCESS_DEFINITION_UPLOAD_NEW,
+
+            org.flexpay.orgs.service.Roles.PAYMENTS_COLLECTOR_READ,
             org.flexpay.orgs.service.Roles.PAYMENT_POINT_READ,
 			org.flexpay.orgs.service.Roles.PAYMENT_POINT_CHANGE,
             org.flexpay.orgs.service.Roles.ORGANIZATION_READ,
