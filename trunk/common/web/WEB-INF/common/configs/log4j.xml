@@ -67,6 +67,46 @@
 		<appender-ref ref="flexpay_hist" />
 	</category>
 
+	<category name="org.flexpay.ab.service.history" additivity="false">
+		<priority value="debug" />
+		<appender-ref ref="flexpay_hist" />
+	</category>
+
+	<category name="org.flexpay.bti.service.history" additivity="false">
+		<priority value="debug" />
+		<appender-ref ref="flexpay_hist" />
+	</category>
+
+	<category name="org.flexpay.orgs.service.history" additivity="false">
+		<priority value="debug" />
+		<appender-ref ref="flexpay_hist" />
+	</category>
+
+	<category name="org.flexpay.payments.service.history" additivity="false">
+		<priority value="debug" />
+		<appender-ref ref="flexpay_hist" />
+	</category>
+
+	<category name="org.flexpay.eirc.service.history" additivity="false">
+		<priority value="debug" />
+		<appender-ref ref="flexpay_hist" />
+	</category>
+
+	<category name="org.flexpay.tc.service.history" additivity="false">
+		<priority value="debug" />
+		<appender-ref ref="flexpay_hist" />
+	</category>
+
+	<category name="org.flexpay.rent.service.history" additivity="false">
+		<priority value="debug" />
+		<appender-ref ref="flexpay_hist" />
+	</category>
+
+	<category name="org.flexpay.sz.service.history" additivity="false">
+		<priority value="debug" />
+		<appender-ref ref="flexpay_hist" />
+	</category>
+
 	<category name="org.flexpay.common.actions.interceptor" additivity="false">
 		<priority value="info" />
 		<appender-ref ref="flexpay" />
