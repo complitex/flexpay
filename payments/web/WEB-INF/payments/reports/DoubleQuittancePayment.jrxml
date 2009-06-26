@@ -3,8 +3,8 @@
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
-	<style name="LiberationSans-Regular" isDefault="true" fontName="LiberationSans-Regular" fontSize="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="path-to/LiberationSans-Regular.ttf" pdfEncoding="Cp1251" isPdfEmbedded="true"/>
-	<style name="LiberationSans-Bold" isDefault="false" style="LiberationSans-Regular" fontName="LiberationSans-Bold" isBold="true" pdfFontName="path-to/LiberationSans-Bold.ttf" isPdfEmbedded="true"/>
+	<style name="LiberationSans-Regular" isDefault="true" fontName="LiberationSans-Regular" fontSize="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="fonts/LiberationSans-Regular.ttf" pdfEncoding="Cp1251" isPdfEmbedded="true"/>
+	<style name="LiberationSans-Bold" isDefault="false" style="LiberationSans-Regular" fontName="LiberationSans-Bold" isBold="true" pdfFontName="fonts/LiberationSans-Bold.ttf" isPdfEmbedded="true"/>
 	<parameter name="operationDate" class="java.util.Date" isForPrompting="false"/>
 	<parameter name="organizationName" class="java.lang.String" isForPrompting="false"/>
 	<parameter name="quittanceNumber" class="java.lang.String" isForPrompting="false"/>

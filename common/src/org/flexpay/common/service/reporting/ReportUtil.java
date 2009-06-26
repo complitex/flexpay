@@ -199,7 +199,8 @@ public class ReportUtil {
 		JasperReport report = JasperCompileManager.compileReport(getTemplatePath(name));
 
 		// setup Liberation fonts if they are used
-		adjustFontsPath(report);
+		//TODO: delete this converting fonts path later
+//		adjustFontsPath(report);
 
 		// save compiled report 
 		JRSaver.saveObject(report, getCompiledTemplatePath(name));

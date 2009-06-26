@@ -33,7 +33,7 @@
 		isItalic="false"
 		isUnderline="false"
 		isStrikeThrough="false"
-		pdfFontName="path-to/LiberationSans-Regular.ttf"
+		pdfFontName="fonts/LiberationSans-Regular.ttf"
 		pdfEncoding="Cp1251"
 		isPdfEmbedded="true"
 	>
@@ -44,7 +44,7 @@
 		style="LiberationSans-Regular"
 		fontName="LiberationSans-Bold"
 		isBold="true"
-		pdfFontName="path-to/LiberationSans-Bold.ttf"
+		pdfFontName="fonts/LiberationSans-Bold.ttf"
 	>
 	</style>
 

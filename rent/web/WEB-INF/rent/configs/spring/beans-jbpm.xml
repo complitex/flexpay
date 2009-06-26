@@ -12,4 +12,9 @@
           p:reportUtil-ref="reportUtil"
           scope="prototype" />
 
+    <bean name="contractForServicesAppendix1JasperJob"
+          class="org.flexpay.rent.process.GenerateContractForServicesAppendix1JasperJob"
+          p:reportUtil-ref="reportUtil"
+          scope="prototype" />
+
 </beans>

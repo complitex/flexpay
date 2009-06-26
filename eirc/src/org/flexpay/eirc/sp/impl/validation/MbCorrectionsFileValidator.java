@@ -11,12 +11,11 @@ import org.jetbrains.annotations.NotNull;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
 public class MbCorrectionsFileValidator extends MbFileValidator {
 
-	private final DateFormat MODIFICATIONS_BEGIN_DATE_FORMAT = new SimpleDateFormat("ddMMyy");
+	private final String MODIFICATIONS_BEGIN_DATE_FORMAT = "ddMMyy";
 
 	private boolean ignoreInvalidLinesNumber = false;
 
@@ -45,7 +44,7 @@ public class MbCorrectionsFileValidator extends MbFileValidator {
 						validateHeader(line);
 					} catch (Exception e) {
 						log.warn("Incorrect header in file. Line number = {}, error: {}\nLine = {}",
-								new Object[]{lineNum, e.getMessage(), line});
+								new Object[] {lineNum, e.getMessage(), line});
 						ret = false;
 					}
 				} else if (line.startsWith(LAST_FILE_STRING_BEGIN)) {
@@ -54,7 +53,7 @@ public class MbCorrectionsFileValidator extends MbFileValidator {
 						validateFooter(line, fileValues);
 					} catch (Exception e) {
 						log.warn("Incorrect footer in file. Line number = {}, error: {}\nLine = {}",
-								new Object[]{lineNum, e.getMessage(), line});
+								new Object[] {lineNum, e.getMessage(), line});
 						ret = false;
 					}
 					log.debug("Validated {} records in file", lineNum - 2);
@@ -64,7 +63,7 @@ public class MbCorrectionsFileValidator extends MbFileValidator {
 						validateRecord(line);
 					} catch (Exception e) {
 						log.warn("Incorrect record in file. Line number = {}, error: {}\nLine = {}",
-								new Object[]{lineNum, e.getMessage(), line});
+								new Object[] {lineNum, e.getMessage(), line});
 						ret = false;
 					}
 				}
@@ -161,7 +160,7 @@ public class MbCorrectionsFileValidator extends MbFileValidator {
 			throw new FlexPayException("Can't parse privileged persons quantity " + fields[17]);
 		}
 		try {
-			MODIFICATIONS_BEGIN_DATE_FORMAT.parse(fields[19]);
+			new SimpleDateFormat(MODIFICATIONS_BEGIN_DATE_FORMAT).parse(fields[19]);
 		} catch (Exception e) {
 			throw new FlexPayException("Can't parse modifications begin date " + fields[19]);
 		}
@@ -190,7 +189,7 @@ public class MbCorrectionsFileValidator extends MbFileValidator {
 	private void validateFooter(String line, FileValues fileValues) throws FlexPayException {
 		String[] fields = line.split("=");
 		if (fields.length != 2) {
-			throw new FlexPayException("Not 2 fields)");
+			throw new FlexPayException("Not 2 fields");
 		}
 		validateFields(fields);
 		if (!fields[0].equals(LAST_FILE_STRING_BEGIN)) {

@@ -39,7 +39,7 @@
 			<textField>
 				<reportElement x="392" y="36" width="67" height="16"/>
 				<textElement textAlignment="Right"/>
-				<textFieldExpression class="java.lang.String"><![CDATA[new SimpleDateFormat("dd.MM.yyyy").format($P{contractDate})]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[(new SimpleDateFormat("dd.MM.yyyy")).format($P{contractDate})]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="29" y="36" width="50" height="16"/>
