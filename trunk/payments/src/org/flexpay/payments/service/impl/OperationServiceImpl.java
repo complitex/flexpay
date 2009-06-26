@@ -104,16 +104,6 @@ public class OperationServiceImpl implements OperationService {
 		return operationDao.listPayments(organization.getId(), beginDate, endDate, OperationStatus.RETURNED);
 	}
 
-	public List<Operation> searchDocuments(Organization organization, Long serviceTypeId, Date begin,
-										   Date end, BigDecimal minimalSumm, BigDecimal maximalSumm, Page<Operation> pager) {
-		return operationDaoExt.searchDocuments(organization, serviceTypeId, begin, end, minimalSumm, maximalSumm, pager);
-	}
-
-	public List<Operation> searchOperations(Organization organization, Date begin, Date end, BigDecimal minimalSumm,
-											BigDecimal maximalSumm, Page<Operation> pager) {
-		return operationDaoExt.searchOperations(organization, begin, end, minimalSumm, maximalSumm, pager);
-	}
-
 	public List<Operation> searchDocuments(Cashbox cashbox, Long serviceTypeId, Date begin,
 										   Date end, BigDecimal minimalSumm, BigDecimal maximalSumm, Page<Operation> pager) {
 		return operationDaoExt.searchDocuments(cashbox, serviceTypeId, begin, end, minimalSumm, maximalSumm, pager);

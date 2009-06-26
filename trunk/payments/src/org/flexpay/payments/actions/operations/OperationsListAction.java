@@ -1,6 +1,7 @@
 package org.flexpay.payments.actions.operations;
 
 import org.apache.commons.lang.time.DateUtils;
+import org.apache.commons.lang.StringUtils;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.filter.BeginDateFilter;
@@ -81,7 +82,7 @@ public class OperationsListAction extends CashboxCookieWithPagerActionSupport<Op
 	private ServiceTypeService serviceTypeService;
 	private OrganizationService organizationService;
 	private CashboxService cashboxService;
-    private PaymentPointService paymentPointService;
+	private PaymentPointService paymentPointService;
 	private ProcessManager processManager;
 	private CurrencyInfoService currencyInfoService;
 
@@ -90,26 +91,27 @@ public class OperationsListAction extends CashboxCookieWithPagerActionSupport<Op
 	private String activity;
 	private Long taskInstanceId;
 
-    private String cashboxIdFilter;
+	private String cashboxIdFilter;
 	private boolean canCreateOrUpdateOperations = true;
 
 	@NotNull
 	protected String doExecute() throws Exception {
-        Long showCashboxId = cashboxId;
-        if (cashboxIdFilter != null && cashboxIdFilter.length() > 0) {
-            showCashboxId = Long.valueOf(cashboxIdFilter);
-        }
 
-		Cashbox cashbox = cashboxService.read(new Stub<Cashbox>(showCashboxId));
+		// processing cashbox id filtering parameter
+		if (cashboxIdFilter == null || StringUtils.isEmpty(cashboxIdFilter)) {
+			cashboxIdFilter = cashboxId.toString();
+		}
+
+		Cashbox cashbox = cashboxService.read(new Stub<Cashbox>(Long.valueOf(cashboxIdFilter)));
 		PaymentPoint paymentPoint = cashbox.getPaymentPoint();
-        paymentPoint = paymentPointService.read(new Stub<PaymentPoint>(paymentPoint));
+		paymentPoint = paymentPointService.read(new Stub<PaymentPoint>(paymentPoint));
 		//signal if taskInstanceId and activity not null
 		processButtons = Collections.emptyList();
 		Long processInstanceId = paymentPoint.getTradingDayProcessInstanceId();
 
 		log.debug("processInstanceId = {}", processInstanceId);
 
-		if (processInstanceId != null && processInstanceId !=0) {
+		if (processInstanceId != null && processInstanceId != 0) {
 			if (activity != null && activity.length() > 0 && taskInstanceId != null) {
 				processManager.execute(new ContextCallback<Void>() {
 					public Void doInContext(@NotNull JbpmContext context) {
@@ -122,7 +124,7 @@ public class OperationsListAction extends CashboxCookieWithPagerActionSupport<Op
 				});
 			}
 			//fetch Trading day status
-			canCreateOrUpdateOperations = TradingDay.isOpened(processManager, processInstanceId,log);
+			canCreateOrUpdateOperations = TradingDay.isOpened(processManager, processInstanceId, log);
 			//fetch taskInstance  and transitions
 			final TaskInstance taskInstance = TaskHelper.getTaskInstance(processManager, processInstanceId, PaymentCollectorAssignmentHandler.PAYMENT_COLLECTOR, log);
 
@@ -143,8 +145,8 @@ public class OperationsListAction extends CashboxCookieWithPagerActionSupport<Op
 				});
 			}
 			Process process = processManager.getProcessInstanceInfo(processInstanceId);
-			if (process != null){
-				processStatus = (String)process.getParameters().get(PROCESS_STATUS);
+			if (process != null) {
+				processStatus = (String) process.getParameters().get(PROCESS_STATUS);
 			}
 
 		}
@@ -161,15 +163,15 @@ public class OperationsListAction extends CashboxCookieWithPagerActionSupport<Op
 			}
 			return SUCCESS;
 		} else if (isStatusSubmitted()) { // if status change submitted
-				if (canCreateOrUpdateOperations){
-					updateOperationStatus();
-				}else{
-					addActionError(getText("payments.quittance.payment.operation_changes_not_alowed_due_closed_trading_day"));					
-					log.debug("Trading day process (id = {})is closed for Payment Point = {}", processInstanceId, paymentPoint.getId());
-					log.debug("Operations update canceled;");
-					loadOperations();
-					return SUCCESS;
-				}
+			if (canCreateOrUpdateOperations) {
+				updateOperationStatus();
+			} else {
+				addActionError(getText("payments.quittance.payment.operation_changes_not_alowed_due_closed_trading_day"));
+				log.debug("Trading day process (id = {})is closed for Payment Point = {}", processInstanceId, paymentPoint.getId());
+				log.debug("Operations update canceled;");
+				loadOperations();
+				return SUCCESS;
+			}
 			loadOperations();
 			return SUCCESS;
 		} else { // nothing is submitted
@@ -183,27 +185,14 @@ public class OperationsListAction extends CashboxCookieWithPagerActionSupport<Op
 
 		if (documentSearchEnabled()) {
 			Date begin = beginDateFilter.getDate();
-			Date end = endDateFilter.getDate();
-			end = DateUtils.setHours(end, 23);
-			end = DateUtils.setMinutes(end, 59);
-			end = DateUtils.setSeconds(end, 59);
-            List<Operation> searchResults;
-            if (cashboxIdFilter != null && cashboxIdFilter.length() > 0) {
-                searchResults = operationService.searchDocuments(getCashboxFilter(), serviceTypeId, begin, end, minimalSumm, maximalSumm, getPager());
-            } else {
-                searchResults = operationService.searchDocuments(getSelfOrganization(), serviceTypeId, begin, end, minimalSumm, maximalSumm, getPager());
-            }
-            loadFullOperationsData(searchResults);
+			Date end = DateUtil.getEndOfThisDay(endDateFilter.getDate());
+			List<Operation> searchResults = operationService.searchDocuments(getCashboxFilter(), serviceTypeId, begin, end, minimalSumm, maximalSumm, getPager());
+			loadFullOperationsData(searchResults);
 			highlightedDocumentIds = getHighlightedDocumentIds(searchResults);
 		} else {
 			Date begin = beginTimeFilter.setTime(beginDateFilter.getDate());
 			Date end = endTimeFilter.setTime(endDateFilter.getDate());
-            List<Operation> searchResults;
-            if (cashboxIdFilter != null && cashboxIdFilter.length() > 0) {
-                searchResults = operationService.searchOperations(getCashboxFilter(), begin, end, minimalSumm, maximalSumm, getPager());
-            } else {
-			    searchResults = operationService.searchOperations(getSelfOrganization(), begin, end, minimalSumm, maximalSumm, getPager());
-            }
+			List<Operation> searchResults = operationService.searchOperations(getCashboxFilter(), begin, end, minimalSumm, maximalSumm, getPager());
 			loadFullOperationsData(searchResults);
 		}
 	}
@@ -226,14 +215,14 @@ public class OperationsListAction extends CashboxCookieWithPagerActionSupport<Op
 		return result;
 	}
 
-    private Cashbox getCashboxFilter() {
-        Long cID = Long.parseLong(cashboxIdFilter);
-        Cashbox cashbox = cashboxService.read(new Stub<Cashbox>(cID));
+	private Cashbox getCashboxFilter() {
+		Long cID = Long.parseLong(cashboxIdFilter);
+		Cashbox cashbox = cashboxService.read(new Stub<Cashbox>(cID));
 		if (cashbox == null) {
 			throw new IllegalArgumentException("Invalid filter cashbox id: " + cashboxIdFilter);
 		}
-        return cashbox;
-    }
+		return cashbox;
+	}
 
 	private Organization getSelfOrganization() {
 
@@ -329,7 +318,7 @@ public class OperationsListAction extends CashboxCookieWithPagerActionSupport<Op
 		return highlightedDocumentIds.contains(document.getId());
 	}
 
-	public boolean isTradingDayopened(){
+	public boolean isTradingDayopened() {
 		return canCreateOrUpdateOperations;
 	}
 
@@ -540,16 +529,16 @@ public class OperationsListAction extends CashboxCookieWithPagerActionSupport<Op
 		this.processStatus = processStatus;
 	}
 
-    public String getCashboxIdFilter() {
-        return cashboxIdFilter;
-    }
+	public String getCashboxIdFilter() {
+		return cashboxIdFilter;
+	}
 
-    public void setCashboxIdFilter(String cashboxIdFilter) {
-        this.cashboxIdFilter = cashboxIdFilter;
-    }
+	public void setCashboxIdFilter(String cashboxIdFilter) {
+		this.cashboxIdFilter = cashboxIdFilter;
+	}
 
-    // required services
-    @Required
+	// required services
+	@Required
 	public void setOperationService(OperationService operationService) {
 		this.operationService = operationService;
 	}
@@ -584,17 +573,17 @@ public class OperationsListAction extends CashboxCookieWithPagerActionSupport<Op
 		this.cashboxService = cashboxService;
 	}
 
-    @Required
-    public void setPaymentPointService(PaymentPointService paymentPointService) {
-        this.paymentPointService = paymentPointService;
-    }
+	@Required
+	public void setPaymentPointService(PaymentPointService paymentPointService) {
+		this.paymentPointService = paymentPointService;
+	}
 
 	@Required
 	public void setCurrencyInfoService(CurrencyInfoService currencyInfoService) {
 		this.currencyInfoService = currencyInfoService;
 	}
 
-    @Required
+	@Required
 	public void setProcessManager(ProcessManager processManager) {
 		this.processManager = processManager;
 	}
