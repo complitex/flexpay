@@ -2,8 +2,8 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ReturnedPayments" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" resourceBundle="org/flexpay/payments/i18n/ReturnedPayments">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
-	<style name="LiberationSans-Regular" isDefault="true" fontName="LiberationSans-Regular" fontSize="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="path-to/LiberationSans-Regular.ttf" pdfEncoding="Cp1251" isPdfEmbedded="true"/>
-	<style name="LiberationSans-Bold" isDefault="false" style="LiberationSans-Regular" fontName="LiberationSans-Bold" isBold="true" pdfFontName="path-to/LiberationSans-Bold.ttf" isPdfEmbedded="true"/>
+	<style name="LiberationSans-Regular" isDefault="true" fontName="LiberationSans-Regular" fontSize="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="fonts/LiberationSans-Regular.ttf" pdfEncoding="Cp1251" isPdfEmbedded="true"/>
+	<style name="LiberationSans-Bold" isDefault="false" style="LiberationSans-Regular" fontName="LiberationSans-Bold" isBold="true" pdfFontName="fonts/LiberationSans-Bold.ttf" isPdfEmbedded="true"/>
 	<parameter name="creationDate" class="java.util.Date" isForPrompting="false"/>
 	<parameter name="beginDate" class="java.util.Date" isForPrompting="false"/>
 	<parameter name="endDate" class="java.util.Date" isForPrompting="false"/>

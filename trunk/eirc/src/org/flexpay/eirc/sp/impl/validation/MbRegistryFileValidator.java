@@ -11,13 +11,12 @@ import org.jetbrains.annotations.NotNull;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
 public class MbRegistryFileValidator extends MbFileValidator {
 
-	private final DateFormat OPERATION_DATE_FORMAT = new SimpleDateFormat("MMyy");
-	private final DateFormat INCOME_PERIOD_DATE_FORMAT = new SimpleDateFormat("MMyy");
+	private final String OPERATION_DATE_FORMAT = "MMyy";
+	private final String INCOME_PERIOD_DATE_FORMAT = "MMyy";
 
 	protected boolean validateFile(@NotNull FPFile spFile) throws FlexPayException {
 
@@ -44,7 +43,7 @@ public class MbRegistryFileValidator extends MbFileValidator {
 						validateHeader(line);
 					} catch (Exception e) {
 						log.warn("Incorrect header in file. Line number = {}, error: {}\nLine = {}",
-								new Object[]{lineNum, e.getMessage(), line});
+								new Object[] {lineNum, e.getMessage(), line});
 						ret = false;
 					}
 				} else if (line.startsWith(LAST_FILE_STRING_BEGIN)) {
@@ -53,7 +52,7 @@ public class MbRegistryFileValidator extends MbFileValidator {
 						validateFooter(line, fileValues);
 					} catch (Exception e) {
 						log.warn("Incorrect footer in file. Line number = {}, error: {}\nLine = {}",
-								new Object[]{lineNum, e.getMessage(), line});
+								new Object[] {lineNum, e.getMessage(), line});
 						ret = false;
 					}
 					log.debug("Validated {} records in file", lineNum - 2);
@@ -63,7 +62,7 @@ public class MbRegistryFileValidator extends MbFileValidator {
 						validateRecord(line, fileValues);
 					} catch (Exception e) {
 						log.warn("Incorrect record in file. Line number = {}, error: {}\nLine = {}", 
-								new Object[]{lineNum, e.getMessage(), line});
+								new Object[] {lineNum, e.getMessage(), line});
 						ret = false;
 					}
 				}
@@ -93,7 +92,7 @@ public class MbRegistryFileValidator extends MbFileValidator {
 			throw new FlexPayException("Can't parse organization code " + fields[1]);
 		}
 		try {
-			INCOME_PERIOD_DATE_FORMAT.parse(fields[2]);
+			new SimpleDateFormat(INCOME_PERIOD_DATE_FORMAT).parse(fields[2]);
 		} catch (Exception e) {
 			throw new FlexPayException("Can't parse income period " + fields[2]);
 		}
@@ -126,7 +125,7 @@ public class MbRegistryFileValidator extends MbFileValidator {
 			throw new FlexPayException("Can't parse service code " + fields[3]);
 		}
 		try {
-			OPERATION_DATE_FORMAT.parse(fields[5]);
+			new SimpleDateFormat(OPERATION_DATE_FORMAT).parse(fields[5]);
 		} catch (Exception e) {
 			throw new FlexPayException("Can't parse operation date " + fields[5]);
 		}
