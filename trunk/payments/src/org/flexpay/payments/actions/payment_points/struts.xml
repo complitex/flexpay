@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+		"-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+		"http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+
+	<package name="payment_points" namespace="/payments" extends="common">
+
+		<!-- payment points -->
+		<action name="paymentPointsList" class="paymentPointsListAction">
+			<result type="tiles">payments.organization.payment_points.list</result>
+		</action>
+
+		<action name="paymentPointsDelete" class="paymentPointsDeleteAction">
+			<result name="redirectSuccess" type="redirect-action">paymentPointsList</result>
+		</action>
+
+		<action name="paymentPointEdit" class="paymentPointEditAction">
+			<result name="input" type="tiles">payments.organization.payment_point.edit</result>
+			<result name="redirectSuccess" type="redirect-action">paymentPointsList</result>
+		</action>
+
+		<action name="paymentPointDetails" class="paymentPointDetailsAction">
+			<result type="tiles">payments.organization.payment_point.details</result>
+		</action>
+
+		<!-- cashboxes -->
+		<action name="cashboxesList" class="cashboxesListAction">
+			<result type="tiles">payments.cashbox.list</result>
+		</action>
+
+		<action name="cashboxEdit" class="cashboxEditAction">
+            <result name="input" type="tiles">payments.cashbox.edit</result>
+            <result name="redirectSuccess" type="redirect-action">cashboxesList</result>
+		</action>
+
+		<action name="cashboxDelete" class="cashboxDeleteAction">
+            <result name="redirectSuccess" type="redirect-action">cashboxesList</result>
+		</action>
+
+	</package>
+
+</struts>

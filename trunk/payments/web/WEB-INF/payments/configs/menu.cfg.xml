@@ -229,6 +229,17 @@
     </bean>
 
 	<!-- level 2 -->
+	<bean name="payments.dictionaries" parent="payments.acc"
+          p:name="payments.dictionaries"
+          p:title="payments.menu2.dictionaries"
+          p:namespace="/payments"
+          p:action="emptyPage"
+          p:parent-ref="payments.acc">
+        <property name="userRole">
+            <util:constant static-field="org.flexpay.payments.service.Roles.ROLE_MENU_PAYMENTS_DICTIONARIES" />
+        </property>
+    </bean>
+
 	<bean name="payments.registers" parent="payments.acc"
           p:name="payments.registers"
           p:title="payments.menu2.registry"
@@ -273,6 +284,16 @@
         </property>
     </bean>
 
+	<bean name="payments.dictionaries.payment_points" parent="payments.dictionaries"
+          p:name="payments.dictionaries.payment_points"
+          p:title="payments.menu3.payment_points"
+          p:action="paymentPointsList"
+          p:parent-ref="payments.dictionaries">
+        <property name="userRole">
+            <util:constant static-field="org.flexpay.payments.service.Roles.ROLE_MENU_PAYMENTS_PAYMENT_POINTS" />
+        </property>
+    </bean>
+
 	<!-- level 4 -->
 	<bean name="payments.reports.reports.import" parent="payments.reports.reports"
           p:name="payments.reports2.import"
@@ -284,4 +305,23 @@
         </property>
     </bean>
 
+	<bean name="payments.dictionaries.payment_points.payment_points" parent="payments.dictionaries.payment_points"
+          p:name="payments.dictionaries.payment_points.payment_points"
+          p:title="payments.menu3.payment_points"
+          p:action="paymentPointsList"
+          p:parent-ref="payments.dictionaries.payment_points">
+        <property name="userRole">
+            <util:constant static-field="org.flexpay.payments.service.Roles.ROLE_MENU_PAYMENTS_PAYMENT_POINTS" />
+        </property>
+    </bean>
+
+	<bean name="payments.dictionaries.payment_points.cashboxes" parent="payments.dictionaries.payment_points"
+          p:name="payments.dictionaries.payment_points.cashboxes"
+          p:title="payments.menu4.cashboxes"
+          p:action="cashboxesList"
+          p:parent-ref="payments.dictionaries.payment_points">
+        <property name="userRole">
+            <util:constant static-field="org.flexpay.payments.service.Roles.ROLE_MENU_PAYMENTS_CASHBOXES" />
+        </property>
+    </bean>
 </beans>

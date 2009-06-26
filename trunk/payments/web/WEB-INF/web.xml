@@ -281,6 +281,9 @@
     <security-role>
         <role-name>ROLE_MENU_PAYMENTS_QUITTANCE</role-name>
     </security-role>
+	<security-role>
+        <role-name>ROLE_MENU_PAYMENTS_DICTIONARIES</role-name>
+    </security-role>
     <security-role>
         <role-name>ROLE_MENU_PAYMENTS_REGISTERS</role-name>
     </security-role>
@@ -295,6 +298,9 @@
     <security-role>
         <role-name>ROLE_MENU_PAYMENTS_OPERATIONS</role-name>
     </security-role>
+	<security-role>
+        <role-name>ROLE_MENU_PAYMENTS_PAYMENT_POINTS</role-name>
+    </security-role>
 
 	<!-- level 4 -->
 	<security-role>
@@ -308,7 +314,11 @@
     <security-role>
         <role-name>ROLE_MENU_PAYMENTS_REPORTS_IMPORT</role-name>
     </security-role>
-	
+
+	<security-role>
+        <role-name>ROLE_MENU_PAYMENTS_CASHBOXES</role-name>
+    </security-role>
+
 	<login-config>
 		<auth-method>FORM</auth-method>
 		<form-login-config>
