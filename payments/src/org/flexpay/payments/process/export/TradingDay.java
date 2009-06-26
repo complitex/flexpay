@@ -56,11 +56,20 @@ public class TradingDay extends QuartzJobBean {
      * Set of authorities names for payments registry
      */
     protected static final List<String> USER_TRADING_DAY_AUTHORITIES = CollectionUtils.list(
-            Roles.PROCESS_READ, Roles.PROCESS_DELETE,
+            org.flexpay.common.service.Roles.PROCESS_READ,
+			org.flexpay.common.service.Roles.PROCESS_DELETE,
+			org.flexpay.common.service.Roles.PROCESS_DEFINITION_UPLOAD_NEW,
+			
             org.flexpay.orgs.service.Roles.PAYMENT_POINT_READ,
+			org.flexpay.orgs.service.Roles.PAYMENT_POINT_CHANGE,
             org.flexpay.orgs.service.Roles.ORGANIZATION_READ,
-            Roles.PROCESS_DEFINITION_UPLOAD_NEW,
-            org.flexpay.orgs.service.Roles.PAYMENT_POINT_CHANGE
+            org.flexpay.orgs.service.Roles.CASHBOX_READ,
+
+			org.flexpay.payments.service.Roles.DOCUMENT_READ,
+			org.flexpay.payments.service.Roles.DOCUMENT_CHANGE,
+			org.flexpay.payments.service.Roles.OPERATION_READ,
+			org.flexpay.payments.service.Roles.OPERATION_CHANGE
+			
     );
 
 	/**
