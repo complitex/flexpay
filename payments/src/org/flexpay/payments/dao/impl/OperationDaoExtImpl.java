@@ -63,7 +63,7 @@ public class OperationDaoExtImpl extends HibernateDaoSupport implements Operatio
 		filterHql.append(" AND doc.documentStatus.code <> 3");
 
 		if (serviceTypeId != null) {
-			filterHql.append(" AND doc.service.serviceType.id = :serviceTypeId");// TODO may be the problem is here?
+			filterHql.append(" AND doc.service.serviceType.id = :serviceTypeId");
 		}
 
 		if (begin != null) {
