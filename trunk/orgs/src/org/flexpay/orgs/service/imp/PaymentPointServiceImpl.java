@@ -214,27 +214,12 @@ public class PaymentPointServiceImpl implements PaymentPointService {
 	@NotNull
 	public PaymentPointsFilter initFilter(@NotNull ArrayStack filters, @NotNull PaymentPointsFilter filter) {
 		
-		log.debug("Initializing filter");
 		List<PaymentPoint> points = listPoints(filters, new Page<PaymentPoint>(10000, 1));
 		filter.setPoints(points);
-
-		if (!containsSuchId(points, filter.getSelectedId())) {
-			filter.setSelectedId(filter.getDefaultId());
-		}
-
 		return filter;
 	}
 
-	private boolean containsSuchId(List<PaymentPoint> points, Long id) {
 
-		for (PaymentPoint paymentPoint : points) {
-			if (paymentPoint.getId().equals(id)) {
-				return true;
-			}
-		}
-
-		return false;
-	}
 
 	public List<PaymentPoint> findAll() {
 		return paymentPointDao.listPoints();
