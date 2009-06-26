@@ -8,8 +8,10 @@ import org.flexpay.common.process.job.Job;
 import org.flexpay.common.util.FPFileUtil;
 import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.orgs.persistence.PaymentPoint;
+import org.flexpay.orgs.persistence.PaymentsCollector;
 import org.flexpay.orgs.service.PaymentPointService;
 import org.flexpay.orgs.service.OrganizationService;
+import org.flexpay.orgs.service.PaymentsCollectorService;
 import org.flexpay.payments.util.registries.EndOperationDayRegistryGenerator;
 import org.flexpay.payments.util.registries.ExportBankPaymentsRegistry;
 import org.springframework.beans.factory.annotation.Required;
@@ -26,6 +28,7 @@ public class GenerateEndOperationDayRegistryJob extends Job {
 	private OrganizationService organizationService;
     private EndOperationDayRegistryGenerator registryGenerator;
     private ExportBankPaymentsRegistry exportBankPaymentsRegistry;
+	private PaymentsCollectorService paymentsCollectorService;
 
     public String execute(Map<Serializable, Serializable> parameters) throws FlexPayException {
 
@@ -55,6 +58,10 @@ public class GenerateEndOperationDayRegistryJob extends Job {
 		if (registry != null){
 			registry = exportBankPaymentsRegistry.export(registry);
 			parameters.put("FileId", registry.getSpFile().getId());
+			PaymentsCollector paymentsCollector = paymentsCollectorService.read(new Stub<PaymentsCollector>(paymentPoint.getCollector().getId()));
+			if (paymentsCollector != null ){
+				parameters.put("Email", paymentsCollector.getEmail());
+			}
 			parameters.put("Email", paymentPoint.getEmail());
 
 			log.info("Process end operation day registry and save it to file finished...");
@@ -85,4 +92,8 @@ public class GenerateEndOperationDayRegistryJob extends Job {
 		this.exportBankPaymentsRegistry = exportBankPaymentsRegistry;
 	}
 
+	@Required
+	public void setPaymentsCollectorService(PaymentsCollectorService paymentsCollectorService) {
+		this.paymentsCollectorService = paymentsCollectorService;
+	}
 }
