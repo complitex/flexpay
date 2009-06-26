@@ -9,16 +9,44 @@
 	/**
 	 * UI controlling functions
 	 */
+	var paymentEnabled = false;
+
+	function disableButton(button) {
+		$(button).attr('disabled', 'disabled');
+		$(button).removeClass('btn-exit');
+        $(button).addClass('btn-search');
+	}
+
+	function enableButton(button) {
+		$(button).removeAttr('disabled');
+		$(button).removeClass('btn-search');
+        $(button).addClass('btn-exit');
+	}
+
 	function disablePayment() {
-		$('#payQuittanceButton').attr('disabled', 'disabled');
-		$('#payQuittanceButton').removeClass('btn-exit');
-        $('#payQuittanceButton').addClass('btn-search');
+		disableButton('#payQuittanceButton');
+		paymentEnabled = false;
 	}
 
 	function enablePayment() {
-		$('#payQuittanceButton').removeAttr('disabled');
-		$('#payQuittanceButton').removeClass('btn-search');
-        $('#payQuittanceButton').addClass('btn-exit');
+		enableButton('#payQuittanceButton');
+		paymentEnabled = true;
+	}
+
+	function enableButtons() {
+		enableButton('#payQuittanceButton');
+		enableButton('#printQuittanceButton');
+
+		if (paymentEnabled) {
+			enablePayment();
+		} else {
+			disablePayment();
+		}
+	}
+
+	function disableButtons() {
+		disableButton('#payQuittanceButton');
+		disableButton('#printQuittanceButton');
 	}
 
 	function doPayQuittance() {
@@ -88,7 +116,9 @@
 		$('#inputSumm').bind('keypress', function(event) {
                if (event.keyCode == 13) {
 				   updateChange();
-                   doPrintQuittance();
+				   if ($("#quittancePayForm").valid()) {
+					   doPrintQuittance();
+				   }                   
                }
     	});
 	};
@@ -186,6 +216,7 @@
 				updateTotal();
 				updateChange();
 				if (validator.numberOfInvalids() == 0) {
+					enableButtons();
 					// if the updated field is a payment we should update input
 					if (nextRow.hasClass('service_payment')) {
 						updateInput();
@@ -193,6 +224,7 @@
 				}
 			},
 			showErrors: function(errorMap, errorList) {
+				disableButtons();
 				updateTotal();
 				updateChange();
 				this.defaultShowErrors();
