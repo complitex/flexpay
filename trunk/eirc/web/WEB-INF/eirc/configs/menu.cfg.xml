@@ -93,16 +93,6 @@
         </property>
     </bean>
 
-	<bean name="eirc_dicts_cashboxes" parent="eirc_dicts"
-          p:name="eirc.cashboxes"
-          p:title="eirc.cashboxes"
-          p:action="mainCashboxesDicts"
-          p:parent-ref="eirc_dicts">
-        <property name="userRole">
-            <util:constant static-field="org.flexpay.eirc.service.Roles.ROLE_MENU_EIRC_CASHBOXES_DICTS" />
-        </property>
-    </bean>
-
 	<bean name="eirc_import_import" parent="eirc_import"
 		  p:name="eirc.import2"
 		  p:title="eirc.menu2.import"
@@ -221,16 +211,6 @@
 		  p:parent-ref="eirc_dicts_services">
         <property name="userRole">
             <util:constant static-field="org.flexpay.eirc.service.Roles.ROLE_MENU_EIRC_DICTS_SERVICES" />
-        </property>
-    </bean>
-
-    <bean parent="eirc_dicts_cashboxes"
-          p:name="eirc.cashboxes2"
-          p:title="eirc.cashboxes"
-          p:action="cashboxesList"
-          p:parent-ref="eirc_dicts_cashboxes">
-        <property name="userRole">
-            <util:constant static-field="org.flexpay.eirc.service.Roles.ROLE_MENU_EIRC_DICTS_CASHBOXES" />
         </property>
     </bean>
 
