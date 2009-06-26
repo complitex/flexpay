@@ -546,7 +546,7 @@
 		left join fetch serviceProvider.organization organization
 		left join fetch organization.names names
 		where o.cashbox.id = ?
-		    and (o.creationDate IN (select max(op.creationDate) from Operation op where op.creationDate >= ? and op.creationDate < ?))
+		    and (o.creationDate IN (select max(op.creationDate) from Operation op where op.creationDate >= ? and op.creationDate < ? and o.cashbox.id = op.cashbox.id))
 			and (o.operationType.code in (1, 2, 5, 6))
 			and (status.code <> 3)
 		order by o.creationDate
@@ -568,7 +568,7 @@
 		left join fetch serviceProvider.organization organization
 		left join fetch organization.names names
 		where o.paymentPoint.id = ?
-		    and (o.creationDate IN (select max(op.creationDate) from Operation op where op.creationDate >= ? and op.creationDate < ?))
+		    and (o.creationDate IN (select max(op.creationDate) from Operation op where op.creationDate >= ? and op.creationDate < ? and o.paymentPoint.id = op.paymentPoint.id ))
 			and (o.operationType.code in (1, 2, 5, 6))
 			and (status.code <> 3)
 		order by o.creationDate
