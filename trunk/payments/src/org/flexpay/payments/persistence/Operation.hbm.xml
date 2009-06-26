@@ -590,8 +590,8 @@
 		left join fetch serviceProvider.organization organization
 		left join fetch organization.names names
 		where o.paymentPoint.id = ?
-		    and op.creationDate >= ?
-		    and op.creationDate <= ?
+		    and o.creationDate >= ?
+		    and o.creationDate <= ?
 			and (o.operationType.code in (1, 2, 5, 6))
 			and (status.code = ?)
 		order by o.creationDate
