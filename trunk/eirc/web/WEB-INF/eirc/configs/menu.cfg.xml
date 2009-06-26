@@ -83,7 +83,17 @@
         </property>
     </bean>
 
-    <bean name="eirc_dicts_cashboxes" parent="eirc_dicts"
+	<bean name="eirc_dicts_payments_collectors" parent="eirc_dicts"
+          p:name="eirc.payments_collectors"
+          p:title="eirc.payments_collectors"
+          p:action="paymentsCollectorsList"
+          p:parent-ref="eirc_dicts">
+        <property name="userRole">
+            <util:constant static-field="org.flexpay.eirc.service.Roles.ROLE_MENU_EIRC_DICTS_PAYMENT_COLLECTORS" />
+        </property>
+    </bean>
+
+	<bean name="eirc_dicts_cashboxes" parent="eirc_dicts"
           p:name="eirc.cashboxes"
           p:title="eirc.cashboxes"
           p:action="mainCashboxesDicts"
@@ -185,26 +195,6 @@
     </bean>
 
 	<bean parent="eirc_dicts_organizations"
-		  p:name="eirc.payments_collectors"
-		  p:title="eirc.payments_collectors"
-		  p:action="paymentsCollectorsList"
-		  p:parent-ref="eirc_dicts_organizations">
-        <property name="userRole">
-            <util:constant static-field="org.flexpay.eirc.service.Roles.ROLE_MENU_EIRC_DICTS_PAYMENT_COLLECTORS" />
-        </property>
-    </bean>
-
-	<bean parent="eirc_dicts_organizations"
-		  p:name="eirc.payment_points"
-		  p:title="eirc.payment_points"
-		  p:action="paymentPointsList"
-		  p:parent-ref="eirc_dicts_organizations">
-        <property name="userRole">
-            <util:constant static-field="org.flexpay.eirc.service.Roles.ROLE_MENU_EIRC_DICTS_PAYMENT_POINTS" />
-        </property>
-    </bean>
-
-	<bean parent="eirc_dicts_organizations"
 		  p:name="eirc.eirc_accounts"
 		  p:title="eirc.eirc_account.list"
 		  p:action="eircAccountsList"
@@ -241,6 +231,26 @@
           p:parent-ref="eirc_dicts_cashboxes">
         <property name="userRole">
             <util:constant static-field="org.flexpay.eirc.service.Roles.ROLE_MENU_EIRC_DICTS_CASHBOXES" />
+        </property>
+    </bean>
+
+	<bean parent="eirc_dicts_payments_collectors"
+		  p:name="eirc.payments_collectors"
+		  p:title="eirc.payments_collectors"
+		  p:action="paymentsCollectorsList"
+		  p:parent-ref="eirc_dicts_payments_collectors">
+        <property name="userRole">
+            <util:constant static-field="org.flexpay.eirc.service.Roles.ROLE_MENU_EIRC_DICTS_PAYMENT_COLLECTORS" />
+        </property>
+    </bean>
+
+	<bean parent="eirc_dicts_payments_collectors"
+		  p:name="eirc.payment_points"
+		  p:title="eirc.payment_points"
+		  p:action="paymentPointsList"
+		  p:parent-ref="eirc_dicts_payments_collectors">
+        <property name="userRole">
+            <util:constant static-field="org.flexpay.eirc.service.Roles.ROLE_MENU_EIRC_DICTS_PAYMENT_POINTS" />
         </property>
     </bean>
 
