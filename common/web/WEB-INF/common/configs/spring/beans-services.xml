@@ -77,7 +77,8 @@
 		  class="org.flexpay.common.service.imp.RegistryTypeServiceImpl"
 		  p:spRegistryTypeDao-ref="spRegistryTypeDao" />
 
-	<bean id="registryStatusService"
+	<bean id="registryStatusServiceTarget"
+		  autowire-candidate="false"
 		  class="org.flexpay.common.service.imp.RegistryStatusServiceImpl"
 		  p:spRegistryStatusDao-ref="spRegistryStatusDao" />
 

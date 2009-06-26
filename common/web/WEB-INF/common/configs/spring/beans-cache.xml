@@ -91,4 +91,15 @@
 		<property name="target" ref="registryArchiveStatusServiceTarget" />
 	</bean>
 
+    <bean id="registryStatusService"
+		  class="org.springmodules.cache.interceptor.proxy.CacheProxyFactoryBean">
+		<property name="cacheProviderFacade" ref="cacheProviderFacade" />
+		<property name="cachingModels">
+			<props>
+				<prop key="findByCode">cacheName=flexpayCache</prop>
+			</props>
+		</property>
+		<property name="target" ref="registryStatusServiceTarget" />
+	</bean>
+
 </beans>

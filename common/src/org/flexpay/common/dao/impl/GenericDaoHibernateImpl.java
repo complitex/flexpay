@@ -7,6 +7,7 @@ import org.flexpay.common.dao.finder.FinderNamingStrategy;
 import org.flexpay.common.dao.finder.MethodExecutor;
 import org.flexpay.common.dao.finder.impl.SimpleFinderArgumentTypeFactory;
 import org.flexpay.common.dao.finder.impl.SimpleFinderNamingStrategy;
+import org.flexpay.common.dao.paging.FetchRange;
 import org.flexpay.common.dao.paging.Page;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
@@ -23,6 +24,7 @@ import org.springframework.orm.hibernate3.HibernateTemplate;
 import java.io.Serializable;
 import java.lang.reflect.Method;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -113,17 +115,32 @@ public class GenericDaoHibernateImpl<T, PK extends Serializable>
 		return hibernateTemplate.executeFind(new HibernateCallback() {
 			public Object doInHibernate(Session session) throws HibernateException {
 				Query queryObject = session.getNamedQuery(queryName);
-//						.setCacheable(true).setCacheRegion(queryName);
 				Query queryCount = getCountQuery(session, queryName);
+				Query queryStats = getStatsQuery(session, queryName);
 				Page<?> pageParam = null;
+				FetchRange range = null;
+				int fetchRangeParamPosition = 0;
 				if (values != null) {
 					int nNamedParam = 1;
 					for (int i = 0, fix = 0; i < values.length; i++) {
 
 						// handle page parameter
 						if (values[i] instanceof Page) {
+							if (pageParam != null) {
+								throw new IllegalStateException("Only one Page parameter allowed");
+							}
 							++fix;
 							pageParam = (Page<?>) values[i];
+							continue;
+						}
+						// handle FetchRange parameter
+						if (values[i] instanceof FetchRange) {
+							if (range != null) {
+								throw new IllegalStateException("Only one FetchRange parameter allowed");
+							}
+							fetchRangeParamPosition = i - fix;
+							fix += 2;
+							range = (FetchRange) values[i];
 							continue;
 						}
 						int nParam = i - fix;
@@ -132,6 +149,9 @@ public class GenericDaoHibernateImpl<T, PK extends Serializable>
 							queryObject.setParameterList(PARAM_LIST_PREFIX + nNamedParam, (Collection<?>) values[i]);
 							if (queryCount != null) {
 								queryObject.setParameterList(PARAM_LIST_PREFIX + nNamedParam, (Collection<?>) values[i]);
+							}
+							if (queryStats != null) {
+								queryStats.setParameterList(PARAM_LIST_PREFIX + nNamedParam, (Collection<?>) values[i]);
 							}
 							++fix;
 							++nNamedParam;
@@ -143,6 +163,9 @@ public class GenericDaoHibernateImpl<T, PK extends Serializable>
 							if (queryCount != null) {
 								queryObject.setParameterList(PARAM_LIST_PREFIX + nNamedParam, (Object[]) values[i]);
 							}
+							if (queryStats != null) {
+								queryStats.setParameterList(PARAM_LIST_PREFIX + nNamedParam, (Object[]) values[i]);
+							}
 							++fix;
 							++nNamedParam;
 							continue;
@@ -153,17 +176,42 @@ public class GenericDaoHibernateImpl<T, PK extends Serializable>
 						if (queryCount != null) {
 							queryCount.setParameter(nParam, values[i]);
 						}
+						if (queryStats != null) {
+							queryStats.setParameter(nParam, values[i]);
+						}
 					}
 				}
 
 				if (pageParam != null && queryCount != null) {
 					Long count = (Long) queryCount.uniqueResult();
 					pageParam.setTotalElements(count.intValue());
-					log.debug("Setting page for query: {} {} - {}", new Object[] {queryName, pageParam.getThisPageFirstElementNumber(), pageParam.getPageSize()});
+					log.debug("Setting page for query: {} {} - {}", new Object[]{
+							queryName, pageParam.getThisPageFirstElementNumber(), pageParam.getPageSize()});
 					queryObject.setFirstResult(pageParam.getThisPageFirstElementNumber());
 					queryObject.setMaxResults(pageParam.getPageSize());
 				} else if (pageParam != null) {
 					log.warn("Page parameter found, but no count query found: {}, invalid API usage", queryName);
+				}
+				if (range != null && queryStats != null) {
+					if (!range.wasInitialized()) {
+						Object[] stats = (Object[]) queryStats.uniqueResult();
+						range.setMinId((Long) stats[0]);
+						range.setMaxId((Long) stats[1]);
+						range.setCount(((Long) stats[2]).intValue());
+						range.setLowerBound(range.getMinId());
+						range.setUpperBound(range.getLowerBound() != null ? range.getLowerBound() + range.getPageSize() : null);
+					}
+
+					if (!range.wasInitialized()) {
+						log.debug("No records in range");
+						return Collections.emptyList();
+					}
+
+					queryObject.setParameter(fetchRangeParamPosition, range.getLowerBound());
+					queryObject.setParameter(fetchRangeParamPosition+1, range.getUpperBound());
+				} else if (range != null) {
+					throw new IllegalStateException("Found FetchRange parameter, but no stats query found: "
+													+ getStatsQueryName(queryName));
 				}
 				List results = queryObject.list();
 				if (pageParam != null) {
@@ -182,9 +230,20 @@ public class GenericDaoHibernateImpl<T, PK extends Serializable>
 		}
 	}
 
-	@NonNls
+	private Query getStatsQuery(Session session, String queryName) {
+		try {
+			return session.getNamedQuery(getStatsQueryName(queryName));
+		} catch (HibernateException e) {
+			return null;
+		}
+	}
+
 	private String getCountQueryName(String queryName) {
 		return queryName + ".count";
+	}
+
+	private String getStatsQueryName(String queryName) {
+		return queryName + ".stats";
 	}
 
 	public void setHibernateTemplate(HibernateTemplate hibernateTemplate) {
