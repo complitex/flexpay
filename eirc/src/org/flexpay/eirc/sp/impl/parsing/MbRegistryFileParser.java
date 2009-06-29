@@ -1,11 +1,13 @@
 package org.flexpay.eirc.sp.impl.parsing;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.time.StopWatch;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.persistence.registry.*;
 import org.flexpay.common.util.CollectionUtils;
+import org.flexpay.common.process.ProcessLogger;
 import org.flexpay.eirc.persistence.EircRegistryRecordProperties;
 import org.flexpay.eirc.sp.impl.MbFileParser;
 import org.flexpay.eirc.util.config.ApplicationConfig;
@@ -14,6 +16,7 @@ import org.flexpay.payments.persistence.EircRegistryProperties;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.slf4j.Logger;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -23,6 +26,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 @Transactional (readOnly = true)
 public class MbRegistryFileParser extends MbFileParser {
@@ -31,7 +35,7 @@ public class MbRegistryFileParser extends MbFileParser {
 	public static final String INCOME_PERIOD_DATE_FORMAT = "MMyy";
 
 	@Transactional (propagation = Propagation.NOT_SUPPORTED, readOnly = false)
-	protected Registry parseFile(@NotNull FPFile spFile) throws FlexPayException {
+	protected List<Registry> parseFile(@NotNull FPFile spFile) throws FlexPayException {
 
 		Registry registry = new Registry();
 
@@ -47,9 +51,13 @@ public class MbRegistryFileParser extends MbFileParser {
 			registry.setArchiveStatus(registryArchiveStatusService.findByCode(RegistryArchiveStatus.NONE));
 			registry.setRegistryStatus(registryStatusService.findByCode(RegistryStatus.LOADING));
 
-			long recordsNum = 0;
+			Logger plog = ProcessLogger.getLogger(getClass());
+			StopWatch watch = new StopWatch();
+			watch.start();
 
-			for (int lineNum = 0; ; lineNum++) {
+			long recordsNum = 0;
+			int lineNum = 0;
+			for (; ; lineNum++) {
 				String line = reader.readLine();
 				if (line == null) {
 					log.debug("End of file, lineNum = {}", lineNum);
@@ -58,7 +66,7 @@ public class MbRegistryFileParser extends MbFileParser {
 				if (lineNum == 0) {
 				} else if (lineNum == 1) {
 					registry = registryService.create(parseHeader(line, registry));
-				} else if (line.startsWith(LAST_FILE_STRING_BEGIN)) {
+				} else if (line.startsWith(FOOTER_MARKER)) {
 					registry.setRecordsNumber(recordsNum);
 					log.info("Total {} records created", recordsNum);
 					break;
@@ -73,13 +81,19 @@ public class MbRegistryFileParser extends MbFileParser {
 			registry.setRegistryStatus(registryStatusService.findByCode(RegistryStatus.LOADED));
 			registry = registryService.update(registry);
 
+			watch.stop();
+			if (plog.isInfoEnabled()) {
+				plog.info("Registry parse completed, total lines {}, total records {}, total time {}",
+						new Object[]{lineNum, recordsNum, watch});
+			}
+			
 		} catch (IOException e) {
 			log.error("Error with reading file", e);
 		} finally {
 			IOUtils.closeQuietly(reader);
 		}
 
-		return registry;
+		return CollectionUtils.list(registry);
 
 	}
 

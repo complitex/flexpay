@@ -16,6 +16,7 @@ import org.flexpay.common.service.internal.SessionUtils;
 import org.flexpay.common.util.FPFileUtil;
 import org.flexpay.common.util.FileSource;
 import org.flexpay.common.util.StringUtil;
+import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.eirc.persistence.EircRegistryRecordProperties;
 import org.flexpay.eirc.persistence.exchange.Operation;
 import org.flexpay.eirc.service.ConsumerService;
@@ -74,7 +75,7 @@ public class RegistryFileParser implements FileParser {
 
 	@SuppressWarnings ({"ConstantConditions"})
 	@Transactional (propagation = Propagation.NOT_SUPPORTED)
-	public Registry parse(FPFile spFile) throws Exception {
+	public List<Registry> parse(FPFile spFile) throws Exception {
 
 		FileSource fileSource = null;
 		InputStream is = null;
@@ -119,7 +120,7 @@ public class RegistryFileParser implements FileParser {
 
 		processLog.info("File successfully parsed, total records: {}", recordCounter[0]);
 
-		return registry;
+		return CollectionUtils.list(registry);
 	}
 
 	/**

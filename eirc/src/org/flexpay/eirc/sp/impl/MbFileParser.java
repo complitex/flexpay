@@ -11,19 +11,24 @@ import org.flexpay.common.persistence.registry.RegistryRecordStatus;
 import org.flexpay.common.service.*;
 import org.flexpay.common.service.importexport.CorrectionsService;
 import org.flexpay.eirc.sp.FileParser;
+import org.flexpay.eirc.service.ConsumerService;
 import org.flexpay.orgs.service.ServiceProviderService;
+import org.flexpay.payments.service.SPService;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.apache.commons.lang.time.StopWatch;
+
+import java.util.List;
 
 public abstract class MbFileParser implements FileParser {
 
 	protected Logger log = LoggerFactory.getLogger(getClass());
 
-	public static final String LAST_FILE_STRING_BEGIN = "999999999";
+	public static final String FOOTER_MARKER = "999999999";
 	public static final String REGISTRY_FILE_ENCODING = "Cp866";
 	public static final String FILE_CREATION_DATE_FORMAT = "ddMMyy";
 
@@ -37,13 +42,17 @@ public abstract class MbFileParser implements FileParser {
 	protected RegistryArchiveStatusService registryArchiveStatusService;
 	protected PropertiesFactory propertiesFactory;
 	protected CorrectionsService correctionsService;
+
 	protected Stub<DataSourceDescription> megabankSD;
+	protected ServiceTypesMapper serviceTypesMapper;
+	protected SPService spService;
+	protected ConsumerService consumerService;
 
 	private MbFileValidator validator;
 	private RegistryRecordStatusService registryRecordStatusService;
 
 	@Transactional (propagation = Propagation.NOT_SUPPORTED)
-	public Registry parse(FPFile spFile) throws FlexPayException {
+	public List<Registry> parse(FPFile spFile) throws FlexPayException {
 
 		if (validator != null) {
 			if (!validator.validate(spFile)) {
@@ -56,24 +65,23 @@ public abstract class MbFileParser implements FileParser {
 
 		log.info("Starting parsing file: {}", spFile.getOriginalName());
 
-		long beginTime = System.currentTimeMillis();
+		StopWatch watch = new StopWatch();
+		watch.start();
 
 		statusLoaded = registryRecordStatusService.findByCode(RegistryRecordStatus.LOADED);
 		if (statusLoaded == null) {
 			throw new FlexPayException("Can't get registry record status \"loaded\" from database");
 		}
 
-		Registry ret = parseFile(spFile);
+		List<Registry> registries = parseFile(spFile);
+		watch.stop();
 
-		long endTime = System.currentTimeMillis();
-		long time = (endTime - beginTime) / 1000;
+		log.info("Parsing file {} finished in {}", spFile, watch);
 
-		log.info("Parsing file {} finished in {}", spFile.getOriginalName(), (time / 60 + "m " + time % 60 + "s"));
-
-		return ret;
+		return registries;
 	}
 
-	protected abstract Registry parseFile(@NotNull FPFile spFile) throws FlexPayException;
+	protected abstract List<Registry> parseFile(@NotNull FPFile spFile) throws FlexPayException;
 
 	public void setValidator(MbFileValidator validator) {
 		this.validator = validator;
@@ -129,4 +137,18 @@ public abstract class MbFileParser implements FileParser {
 		this.megabankSD = stub(megabankSD);
 	}
 
+	@Required
+	public void setServiceTypesMapper(ServiceTypesMapper serviceTypesMapper) {
+		this.serviceTypesMapper = serviceTypesMapper;
+	}
+
+	@Required
+	public void setSpService(SPService spService) {
+		this.spService = spService;
+	}
+
+	@Required
+	public void setConsumerService(ConsumerService consumerService) {
+		this.consumerService = consumerService;
+	}
 }

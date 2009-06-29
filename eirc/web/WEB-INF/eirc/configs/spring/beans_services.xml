@@ -20,10 +20,39 @@
 		  p:sessionUtils-ref="sessionUtils"
 		  p:propertiesFactory-ref="propertiesFactory" />
 
+	<bean id="mbServiceTypeMapper"
+		  init-method="validate"
+		  class="org.flexpay.eirc.sp.impl.ServiceTypesMapper"
+		  p:serviceTypeService-ref="serviceTypeService">
+		<property name="mapping">
+			<map>
+				<entry key="0" value="1" />
+				<entry key="1" value="2" />
+				<entry key="2" value="3" />
+				<entry key="11" value="10" />
+				<entry key="12" value="12" />
+				<entry key="13" value="13" />
+				<entry key="14" value="4" />
+				<entry key="15" value="7" />
+				<entry key="21" value="5" />
+			</map>
+		</property>
+	</bean>
+
+	<bean id="mbFileValidator"
+		  abstract="true"
+		  class="org.flexpay.eirc.sp.impl.MbFileValidator"
+		  p:serviceTypesMapper-ref="mbServiceTypeMapper"
+		  p:spService-ref="spService"
+		  p:correctionsService-ref="correctionsService"
+		  p:megabankSD-ref="megabankDataSourceDescription" />
+
 	<bean id="mbRegistryFileValidator"
+		  parent="mbFileValidator"
 		  class="org.flexpay.eirc.sp.impl.validation.MbRegistryFileValidator" />
 
 	<bean id="mbCorrectionsFileValidator"
+		  parent="mbFileValidator"
 		  class="org.flexpay.eirc.sp.impl.validation.MbCorrectionsFileValidator" />
 
 	<bean id="mbFileParser"
@@ -38,6 +67,9 @@
 		  p:registryArchiveStatusService-ref="registryArchiveStatusService"
 		  p:propertiesFactory-ref="eircPropertiesFactory"
 		  p:correctionsService-ref="correctionsService"
+		  p:serviceTypesMapper-ref="mbServiceTypeMapper"
+		  p:spService-ref="spService"
+		  p:consumerService-ref="consumerService"
 		  p:megabankSD-ref="megabankDataSourceDescription" />
 
 	<bean id="mbRegistryFileParser"

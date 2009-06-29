@@ -1,16 +1,25 @@
 package org.flexpay.eirc.sp.impl.parsing;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.time.StopWatch;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.persistence.registry.*;
+import org.flexpay.common.process.ProcessLogger;
+import org.flexpay.common.util.CollectionUtils;
+import org.flexpay.eirc.persistence.Consumer;
 import org.flexpay.eirc.persistence.EircRegistryRecordProperties;
 import org.flexpay.eirc.sp.impl.MbFileParser;
+import org.flexpay.eirc.sp.impl.MbFileValidator;
 import org.flexpay.eirc.util.config.ApplicationConfig;
 import org.flexpay.orgs.persistence.ServiceProvider;
 import org.flexpay.payments.persistence.EircRegistryProperties;
+import org.flexpay.payments.persistence.Service;
+import org.flexpay.payments.persistence.ServiceType;
 import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,7 +28,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -29,24 +37,27 @@ public class MbCorrectionsFileParser extends MbFileParser {
 	private final String MODIFICATIONS_START_DATE_FORMAT = "ddMMyy";
 
 	@Transactional (propagation = Propagation.NOT_SUPPORTED, readOnly = false)
-	protected Registry parseFile(@NotNull FPFile spFile) throws FlexPayException {
+	protected List<Registry> parseFile(@NotNull FPFile spFile) throws FlexPayException {
 
-		Registry registry = new Registry();
+		Registry infoRegistry = new Registry();
+		infoRegistry.setRegistryType(registryTypeService.findByCode(RegistryType.TYPE_QUITTANCE));
+		List<Registry> registries = CollectionUtils.list(infoRegistry);
 
 		BufferedReader reader = null;
 
 		try {
 			//noinspection IOResourceOpenedButNotSafelyClosed
 			reader = new BufferedReader(new InputStreamReader(spFile.getInputStream(), REGISTRY_FILE_ENCODING));
-			registry.setCreationDate(new Date());
-			registry.setSpFile(spFile);
-			registry.setRegistryType(registryTypeService.findByCode(RegistryType.TYPE_QUITTANCE));
-			registry.setArchiveStatus(registryArchiveStatusService.findByCode(RegistryArchiveStatus.NONE));
-			registry.setRegistryStatus(registryStatusService.findByCode(RegistryStatus.LOADING));
+			initRegistry(spFile, infoRegistry);
+
+			Logger plog = ProcessLogger.getLogger(getClass());
+			StopWatch watch = new StopWatch();
+			watch.start();
 
 			long recordsNum = 0;
-
-			for (int lineNum = 0; ; lineNum++) {
+			int lineNum = 0;
+			List<RegistryRecord> recordStack = CollectionUtils.list();
+			for (; ; lineNum++) {
 				String line = reader.readLine();
 				if (line == null) {
 					log.debug("End of file, lineNum = {}", lineNum);
@@ -54,33 +65,72 @@ public class MbCorrectionsFileParser extends MbFileParser {
 				}
 				if (lineNum == 0) {
 				} else if (lineNum == 1) {
-					registry = registryService.create(parseHeader(line, registry));
-				} else if (line.startsWith(LAST_FILE_STRING_BEGIN)) {
-					registry.setRecordsNumber(recordsNum);
+					parseHeader(line, registries);
+				} else if (line.startsWith(FOOTER_MARKER)) {
+					infoRegistry.setRecordsNumber(recordsNum);
 					log.info("Total {} records created", recordsNum);
 					break;
 				} else {
-					recordsNum += parseRecord(line, registry);
+					recordsNum += parseRecord(line, infoRegistry, recordStack);
 					if (recordsNum % 1000 == 0) {
 						log.info("{} records created, {} lines processed", recordsNum, lineNum - 1);
 					}
 				}
+
+				if (recordStack.size() >= 50) {
+					flushRecordStack(recordStack);
+				}
+
+				if (lineNum % 100 == 0) {
+					plog.info("Parsed {} records, time spent {}", lineNum, watch);
+				}
 			}
 
-			registry.setRegistryStatus(registryStatusService.findByCode(RegistryStatus.LOADED));
-			registry = registryService.update(registry);
+			flushRecordStack(recordStack);
+
+			List<Registry> result = CollectionUtils.list();
+			for (Registry registry : registries) {
+				registry.setRegistryStatus(registryStatusService.findByCode(RegistryStatus.LOADED));
+				registryService.update(registry);
+				result.add(registry);
+			}
+
+			watch.stop();
+			if (plog.isInfoEnabled()) {
+				plog.info("Registry parse completed, total lines {}, total records {}, total time {}",
+						new Object[]{lineNum, recordsNum, watch});
+			}
 
 		} catch (IOException e) {
-			log.error("Error with reading file", e);
+			log.error("Error reading file " + spFile, e);
 		} finally {
 			IOUtils.closeQuietly(reader);
 		}
 
-		return registry;
+		return registries;
 	}
 
-	private Registry parseHeader(String line, Registry registry) throws FlexPayException {
+	private void flushRecordStack(List<RegistryRecord> records) {
+		registryRecordService.create(records);
+		records.clear();
+	}
+
+	private void initRegistry(FPFile spFile, Registry registry) {
+		registry.setCreationDate(new Date());
+		registry.setSpFile(spFile);
+		registry.setArchiveStatus(registryArchiveStatusService.findByCode(RegistryArchiveStatus.NONE));
+		registry.setRegistryStatus(registryStatusService.findByCode(RegistryStatus.LOADING));
+	}
+
+	private void parseHeader(String line, List<Registry> registries) throws FlexPayException {
 		String[] fields = line.split("=");
+		for (Registry registry : registries) {
+			parseHeader(fields, registry);
+			registryService.create(registry);
+		}
+	}
+
+	private void parseHeader(String[] fields, Registry registry) throws FlexPayException {
 		log.debug("Getting service provider with id = {} from DB", fields[1]);
 		Stub<ServiceProvider> providerStub = correctionsService.findCorrection(
 				fields[1], ServiceProvider.class, megabankSD);
@@ -93,66 +143,76 @@ public class MbCorrectionsFileParser extends MbFileParser {
 		}
 
 		EircRegistryProperties registryProperties = (EircRegistryProperties) propertiesFactory.newRegistryProperties();
+		registry.setProperties(registryProperties);
 		registryProperties.setServiceProvider(serviceProvider);
-		registryProperties.setRegistry(registry);
 		registry.setSenderCode(serviceProvider.getOrganizationStub().getId());
 		registry.setRecipientCode(ApplicationConfig.getSelfOrganization().getId());
-		registry.setProperties(registryProperties);
 
 		try {
-			registry.setFromDate(new SimpleDateFormat(FILE_CREATION_DATE_FORMAT).parse(fields[2]));
-			registry.setTillDate(new SimpleDateFormat(FILE_CREATION_DATE_FORMAT).parse(fields[2]));
-		} catch (Exception e) {
+			Date period = new SimpleDateFormat(FILE_CREATION_DATE_FORMAT).parse(fields[2]);
+			registry.setFromDate(period);
+			registry.setTillDate(period);
+		} catch (ParseException e) {
 			// do nothing
 		}
-
-		return registry;
 	}
 
-	private long parseRecord(String line, Registry registry) throws FlexPayException {
+	private long parseRecord(String line, Registry registry, List<RegistryRecord> recordStack) throws FlexPayException {
 		String[] fields = line.split("=");
 
 		String[] serviceCodes = fields[20].split(";");
 
+		long count = 0;
 		for (String serviceCode : serviceCodes) {
-			if (serviceCode == null || serviceCode.length() == 0 || serviceCode.equals("0")) {
+			if (StringUtils.isEmpty(serviceCode) || "0".equals(serviceCode)) {
 				return 0;
 			}
-			createRecord(registry, fields, serviceCode);
-//			createAccountRecord(registry, fields, serviceCode);
+			RegistryRecord record = newRecord(registry, fields, serviceCode);
+			recordStack.add(record);
+
+			// check if consumer already exists and does not create account
+			EircRegistryRecordProperties recProps = (EircRegistryRecordProperties) record.getProperties();
+			Consumer consumer = consumerService.findConsumer(record.getPersonalAccountExt(), recProps.getServiceStub());
+			if (consumer == null) {
+				log.debug("No consumer found, adding creation record {}", record.getPersonalAccountExt());
+				createAccountRecord(record, fields);
+				++count;
+				record = newRecord(registry, fields, serviceCode);
+				recordStack.add(record);
+			} else {
+				recProps.setConsumer(consumer);
+			}
+
+			createRecord(record, fields);
+			++count;
 		}
 
-		return serviceCodes.length;
+		return count;
 	}
 
-	private RegistryRecord createAccountRecord(Registry registry, String[] fields, String serviceCode) throws FlexPayException {
-
-		String modificationStartDate = "";
-		try {
-			modificationStartDate = new SimpleDateFormat("ddMMyyyy").format(new SimpleDateFormat(MODIFICATIONS_START_DATE_FORMAT).parse(fields[19]));
-		} catch (ParseException e) {
-			// do nothing
+	private void setBuildingAddress(RegistryRecord record, String addr) throws FlexPayException {
+		String[] parts = MbFileValidator.parseBuildingAddress(addr);
+		record.setBuildingNum(parts[0]);
+		if (parts.length > 1) {
+			record.setBuildingBulkNum(parts[1]);
 		}
+	}
 
-		RegistryRecord record = new RegistryRecord();
-		record.setServiceCode("#" + serviceCode);
-		record.setPersonalAccountExt(fields[1]);
-		record.setOperationDate(new Date());
-		record.setRegistry(registry);
+	private String getModificationDate(String field) {
 
-		record.setLastName(fields[2]);
-		record.setMiddleName("");
-		record.setFirstName("");
-		record.setCity("ХАРЬКОВ");
-		record.setBuildingBulkNum("");
-		record.setStreetType(fields[6]);
-		record.setStreetName(fields[7]);
-		record.setBuildingNum(fields[8]);
-		record.setApartmentNum(fields[9]);
-		record.setRecordStatus(statusLoaded);
+		try {
+			return new SimpleDateFormat("ddMMyyyy").format(
+					new SimpleDateFormat(MODIFICATIONS_START_DATE_FORMAT).parse(field));
+		} catch (ParseException e) {
+			return "";
+		}
+	}
 
-		List<RegistryRecordContainer> containers = new ArrayList<RegistryRecordContainer>();
+	private long createAccountRecord(RegistryRecord record, String[] fields) throws FlexPayException {
 
+		List<RegistryRecordContainer> containers = CollectionUtils.list();
+
+		String modificationStartDate = getModificationDate(fields[19]);
 		RegistryRecordContainer container = new RegistryRecordContainer();
 		container.setOrder(1);
 		container.setData("1:" + modificationStartDate + "::");
@@ -161,41 +221,15 @@ public class MbCorrectionsFileParser extends MbFileParser {
 
 		record.setContainers(containers);
 
-		EircRegistryRecordProperties registryProperties = (EircRegistryRecordProperties) propertiesFactory.newRecordProperties();
-		registryProperties.setRecord(record);
-		record.setProperties(registryProperties);
-		record = registryRecordService.create(record);
+		registryRecordService.create(record);
 
-		return record;
+		return 1;
 	}
 
-	private RegistryRecord createRecord(Registry registry, String[] fields, String serviceCode) throws FlexPayException {
+	private RegistryRecord createRecord(RegistryRecord record, String[] fields) {
 
-		String modificationStartDate = "";
-		try {
-			modificationStartDate = new SimpleDateFormat("ddMMyyyy").format(new SimpleDateFormat(MODIFICATIONS_START_DATE_FORMAT).parse(fields[19]));
-		} catch (ParseException e) {
-			// do nothing
-		}
-
-		RegistryRecord record = new RegistryRecord();
-		record.setServiceCode("#" + serviceCode);
-		record.setPersonalAccountExt(fields[1]);
-		record.setOperationDate(new Date());
-		record.setRegistry(registry);
-
-		record.setLastName(fields[2]);
-		record.setMiddleName("");
-		record.setFirstName("");
-		record.setCity("ХАРЬКОВ");
-		record.setBuildingBulkNum("");
-		record.setStreetType(fields[6]);
-		record.setStreetName(fields[7]);
-		record.setBuildingNum(fields[8]);
-		record.setApartmentNum(fields[9]);
-		record.setRecordStatus(statusLoaded);
-
-		List<RegistryRecordContainer> containers = new ArrayList<RegistryRecordContainer>();
+		List<RegistryRecordContainer> containers = CollectionUtils.list();
+		String modificationStartDate = getModificationDate(fields[19]);
 
 		// ФИО
 		RegistryRecordContainer container = new RegistryRecordContainer();
@@ -248,11 +282,58 @@ public class MbCorrectionsFileParser extends MbFileParser {
 
 		record.setContainers(containers);
 
-		EircRegistryRecordProperties registryProperties = (EircRegistryRecordProperties) propertiesFactory.newRecordProperties();
-		registryProperties.setRecord(record);
-		record.setProperties(registryProperties);
-		record = registryRecordService.create(record);
+		return record;
+	}
+
+	private RegistryRecord newRecord(Registry registry, String[] fields, String serviceCode) throws FlexPayException {
+
+		RegistryRecord record = new RegistryRecord();
+		record.setRegistry(registry);
+		record.setProperties(propertiesFactory.newRecordProperties());
+
+		setServiceCode(record, serviceCode);
+		record.setPersonalAccountExt(fields[1]);
+		record.setOperationDate(new Date());
+
+		record.setLastName(fields[2]);
+		record.setMiddleName("");
+		record.setFirstName("");
+		record.setCity("ХАРЬКОВ");
+		record.setStreetType(fields[6]);
+		record.setStreetName(fields[7]);
+		setBuildingAddress(record, fields[8]);
+		record.setApartmentNum(fields[9]);
+		record.setRecordStatus(statusLoaded);
 
 		return record;
+	}
+
+	private void setServiceCode(RegistryRecord record, String mbServiceTypeCode) throws FlexPayException {
+
+		EircRegistryProperties properties = (EircRegistryProperties) record.getRegistry().getProperties();
+		List<Service> services = findInternalServices(properties.getServiceProviderStub(),
+				mbServiceTypeCode, record.getRegistry().getFromDate());
+		if (services.size() > 1) {
+			throw new FlexPayException("Cannot map type to service: " +
+									   serviceTypesMapper.getInternalType(mbServiceTypeCode));
+		}
+
+		Service service = services.get(0);
+		record.setServiceCode(String.valueOf(service.getId()));
+		EircRegistryRecordProperties recProps = (EircRegistryRecordProperties) record.getProperties();
+		recProps.setService(service);
+	}
+
+	private List<Service> findInternalServices(Stub<ServiceProvider> providerStub, String mbCode, Date date)
+			throws FlexPayException {
+
+		Stub<ServiceType> typeStub = serviceTypesMapper.getInternalType(mbCode);
+		List<Service> services = spService.findServices(
+				providerStub, typeStub, date);
+		if (services.isEmpty()) {
+			throw new FlexPayException("No service found by internal type " + typeStub + ", mb code=" + mbCode);
+		}
+
+		return services;
 	}
 }

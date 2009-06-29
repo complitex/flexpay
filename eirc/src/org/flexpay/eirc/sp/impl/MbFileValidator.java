@@ -2,10 +2,17 @@ package org.flexpay.eirc.sp.impl;
 
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.file.FPFile;
+import org.flexpay.common.persistence.DataSourceDescription;
+import org.flexpay.common.persistence.Stub;
+import static org.flexpay.common.persistence.Stub.stub;
+import org.flexpay.common.service.importexport.CorrectionsService;
+import org.flexpay.payments.service.SPService;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.apache.commons.lang.time.StopWatch;
+import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Required;
 
 public abstract class MbFileValidator {
 
@@ -18,6 +25,15 @@ public abstract class MbFileValidator {
 			"                                                                                                    "
 			+ "                                                                                                    "
 			+ "                                                                                                    ";
+
+	public static final String BUILDING_BULK_PREFIX = "К";
+	public static final String SERVICE_CODES_SEPARATOR = ";";
+
+
+	protected ServiceTypesMapper serviceTypesMapper;
+	protected SPService spService;
+	protected CorrectionsService correctionsService;
+	protected Stub<DataSourceDescription> megabankSD;
 
 	public boolean validate(FPFile spFile) throws FlexPayException {
 
@@ -49,4 +65,34 @@ public abstract class MbFileValidator {
 		}
 	}
 
+	public static String[] parseBuildingAddress(String mbBuidingAddress) throws FlexPayException {
+		String[] parts = StringUtils.split(mbBuidingAddress, ' ');
+		if (parts.length > 1) {
+			if (!parts[1].startsWith(BUILDING_BULK_PREFIX)) {
+				throw new FlexPayException("Invalid building bulk value: " + parts[1]);
+			}
+			parts[1] = parts[1].substring(BUILDING_BULK_PREFIX.length());
+		}
+		return parts;
+	}
+
+	@Required
+	public void setServiceTypesMapper(ServiceTypesMapper serviceTypesMapper) {
+		this.serviceTypesMapper = serviceTypesMapper;
+	}
+
+	@Required
+	public void setSpService(SPService spService) {
+		this.spService = spService;
+	}
+
+	@Required
+	public void setCorrectionsService(CorrectionsService correctionsService) {
+		this.correctionsService = correctionsService;
+	}
+
+	@Required
+	public void setMegabankSD(DataSourceDescription megabankSD) {
+		this.megabankSD = stub(megabankSD);
+	}
 }

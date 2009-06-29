@@ -52,6 +52,10 @@ public class EircRegistryRecordProperties extends RegistryRecordProperties {
 		return service;
 	}
 
+	public Stub<Service> getServiceStub() {
+		return stub(service);
+	}
+
 	public void setService(Service service) {
 		this.service = service;
 	}

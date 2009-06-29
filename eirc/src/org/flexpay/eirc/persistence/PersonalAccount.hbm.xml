@@ -183,7 +183,7 @@
 		and apartment.id = ?
 	</query>
 
-	<!-- see Service.findServicesByTypeCode query -->
+	<!-- see Service.findServicesByCode query -->
 	<query name="Consumer.findConsumersByServiceTypeCode">
 		select distinct o
 		from Consumer o
@@ -192,13 +192,19 @@
 		where p.id=? and o.externalAccountNumber=? and s.id=?
 	</query>
 
-	<!-- see Service.findServicesByTypeCode query -->
+	<!-- see Service.findServicesByCode query -->
 	<query name="Consumer.findConsumersByProviderServiceCode">
 		select distinct o
 		from Consumer o
 			inner join o.service s
 			inner join s.serviceProvider p
 		where p.id=? and o.externalAccountNumber=? and s.externalCode=?
+	</query>
+
+	<query name="Consumer.findConsumersByAccountAndService">
+		select distinct o
+		from Consumer o
+		where o.status=0 and o.externalAccountNumber=? and o.service.id=?
 	</query>
 
 	<query name="EircAccount.findByPersonFIO.count">

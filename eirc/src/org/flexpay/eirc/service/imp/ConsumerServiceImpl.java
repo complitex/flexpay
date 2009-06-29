@@ -72,7 +72,7 @@ public class ConsumerServiceImpl implements ConsumerService {
 		if (serviceCode.startsWith("#")) {
 			services = serviceDao.findServicesByProviderCode(serviceProviderStub.getId(), serviceCode.substring(1));
 		} else {
-			services = serviceDao.findServicesByTypeCode(serviceProviderStub.getId(), Long.valueOf(serviceCode));
+			services = serviceDao.findServicesByCode(serviceProviderStub.getId(), Long.valueOf(serviceCode));
 		}
 
 		if (services.isEmpty()) {
@@ -113,6 +113,28 @@ public class ConsumerServiceImpl implements ConsumerService {
 		} else {
 			consumerDao.update(consumer);
 		}
+	}
+
+	/**
+	 * Try to find consumer by external account number and service
+	 *
+	 * @param accountNumber External account number
+	 * @param serviceStub   Service stub
+	 * @return Consumer if found, or <code>null</code> otherwise
+	 */
+	@Override
+	public Consumer findConsumer(@NotNull String accountNumber, @NotNull Stub<Service> serviceStub) {
+
+		List<Consumer> consumers = consumerDao.findConsumersByAccountAndService(accountNumber, serviceStub.getId());
+		if (consumers.isEmpty()) {
+			return null;
+		}
+
+		if (consumers.size() > 1) {
+			log.info("Found several consumers by service {} and external account {}", serviceStub, accountNumber);
+		}
+
+		return consumers.get(0);
 	}
 
 	public void setConsumerDao(ConsumerDao consumerDao) {

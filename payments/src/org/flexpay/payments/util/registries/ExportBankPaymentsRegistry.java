@@ -17,8 +17,6 @@ import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -27,7 +25,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-@Transactional (readOnly = true)
 public class ExportBankPaymentsRegistry {
 
 	private Logger log = LoggerFactory.getLogger(getClass());
@@ -37,7 +34,6 @@ public class ExportBankPaymentsRegistry {
 	private RegistryService registryService;
 	private RegistryRecordService registryRecordService;
 
-	@Transactional (propagation = Propagation.NOT_SUPPORTED, readOnly = false)
 	public Registry export(@NotNull Registry registry) throws FlexPayException {
 
 		log.info("Start exporting payments registry with id = {}", registry.getId());
