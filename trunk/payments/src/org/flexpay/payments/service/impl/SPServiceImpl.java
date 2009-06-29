@@ -10,10 +10,13 @@ import org.flexpay.common.persistence.filter.ObjectFilter;
 import org.flexpay.common.persistence.history.ModificationListener;
 import org.flexpay.common.service.MeasureUnitService;
 import org.flexpay.common.service.internal.SessionUtils;
+import org.flexpay.common.util.CollectionUtils;
+import org.flexpay.orgs.persistence.ServiceProvider;
 import org.flexpay.payments.dao.ServiceDao;
 import org.flexpay.payments.dao.ServiceDaoExt;
 import org.flexpay.payments.persistence.Service;
 import org.flexpay.payments.persistence.ServiceDescription;
+import org.flexpay.payments.persistence.ServiceType;
 import org.flexpay.payments.persistence.filters.ParentServiceFilterMarker;
 import org.flexpay.payments.persistence.filters.ServiceFilter;
 import org.flexpay.payments.service.SPService;
@@ -24,8 +27,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 @Transactional (readOnly = true)
@@ -240,12 +243,27 @@ public class SPServiceImpl implements SPService {
 	 * @return Filter back
 	 */
 	public ServiceFilter initParentServicesFilter(ServiceFilter filter) {
-		List<ObjectFilter> filters = new ArrayList<ObjectFilter>();
+		List<ObjectFilter> filters = CollectionUtils.list();
 		filters.add(new ParentServiceFilterMarker());
 		List<Service> services = serviceDaoExt.findServices(filters, new Page<Service>(10000, 1));
 		filter.setServices(services);
 
 		return filter;
+	}
+
+	/**
+	 * Find Service by service provider and subservice code
+	 *
+	 * @param providerStub ServiceProvider stub
+	 * @param typeStub	 Service type stub
+	 * @param date		 Date service is valid in
+	 * @return Service if found, or <code>null</code> otherwise
+	 */
+	@Override
+	@Nullable
+	public List<Service> findServices(@NotNull Stub<ServiceProvider> providerStub,
+									  @NotNull Stub<ServiceType> typeStub, Date date) {
+		return serviceDao.findServicesByTypeCodeAndDate(providerStub.getId(), typeStub.getId(), date);
 	}
 
 	@Required

@@ -16,6 +16,8 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
+import java.util.List;
+
 public class TestMbCorrectionsFileParser extends TestSpFileCreateAction {
 
 	@Autowired
@@ -40,11 +42,13 @@ public class TestMbCorrectionsFileParser extends TestSpFileCreateAction {
 		FPFile newFile = createSpFile("org/flexpay/eirc/sp/01033_122008.kor");
 
 		try {
-			Registry registry = parser.parse(newFile);
-			assertNotNull("Registry parse failed", registry);
+			List<Registry> registries = parser.parse(newFile);
+			assertNotNull("Registry parse failed", registries);
 
-			eircRegistryService.deleteRecords(stub(registry));
-			eircRegistryService.delete(registry);
+			for (Registry registry : registries) {
+				eircRegistryService.deleteRecords(stub(registry));
+				eircRegistryService.delete(registry);
+			}
 		} catch (Exception e) {
 			log.error("Error with parsing file", e);
 			throw e;

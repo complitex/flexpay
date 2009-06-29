@@ -98,4 +98,11 @@ public interface RegistryRecordService {
 	 * @return List of containers
 	 */
 	List<RegistryRecordContainer> getRecordContainers(RegistryRecord stub);
+
+	/**
+	 * Batch create records
+	 *
+	 * @param records Collection of records to create
+	 */
+	void create(Collection<RegistryRecord> records);
 }

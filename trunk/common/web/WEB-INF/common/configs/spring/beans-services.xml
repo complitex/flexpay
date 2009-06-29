@@ -288,7 +288,8 @@
 		<constructor-arg index="0" value="${megabank.data.source.description.id}" type="java.lang.Long" />
 	</bean>
 
-	<bean id="propertiesFactoryHolder" class="org.flexpay.common.persistence.registry.PropertiesFactoryHolder" />
+	<bean id="propertiesFactoryHolder"
+		  class="org.flexpay.common.persistence.registry.PropertiesFactoryHolder" />
 
 	<bean id="propertiesFactory" factory-bean="propertiesFactoryHolder" factory-method="getFactory">
 		<property name="factory">

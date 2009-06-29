@@ -47,6 +47,7 @@
 		<property name="cachingModels">
 			<props>
 				<prop key="readFull">cacheName=paymentsServiceCache</prop>
+				<prop key="findServices">cacheName=paymentsServiceCache</prop>
 			</props>
 		</property>
 		<property name="flushingModels">

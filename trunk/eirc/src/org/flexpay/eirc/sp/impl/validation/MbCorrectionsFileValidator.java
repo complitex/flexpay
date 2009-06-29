@@ -5,13 +5,20 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.file.FPFile;
+import org.flexpay.common.persistence.Stub;
 import org.flexpay.eirc.sp.impl.MbFileValidator;
+import org.flexpay.eirc.sp.impl.ValidationContext;
+import org.flexpay.payments.persistence.Service;
+import org.flexpay.payments.persistence.ServiceType;
+import org.flexpay.orgs.persistence.ServiceProvider;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
+import java.util.List;
+import java.util.Date;
 
 public class MbCorrectionsFileValidator extends MbFileValidator {
 
@@ -29,6 +36,7 @@ public class MbCorrectionsFileValidator extends MbFileValidator {
 		try {
 			//noinspection IOResourceOpenedButNotSafelyClosed
 			reader = new BufferedReader(new InputStreamReader(spFile.getInputStream(), REGISTRY_FILE_ENCODING));
+			ValidationContext context = new ValidationContext();
 
 			for (int lineNum = 0; ; lineNum++) {
 				String line = reader.readLine();
@@ -41,7 +49,7 @@ public class MbCorrectionsFileValidator extends MbFileValidator {
 					}
 				} else if (lineNum == 1) {
 					try {
-						validateHeader(line);
+						validateHeader(line, context);
 					} catch (Exception e) {
 						log.warn("Incorrect header in file. Line number = {}, error: {}\nLine = {}",
 								new Object[] {lineNum, e.getMessage(), line});
@@ -60,9 +68,9 @@ public class MbCorrectionsFileValidator extends MbFileValidator {
 					break;
 				} else {
 					try {
-						validateRecord(line);
+						validateRecord(line, context);
 					} catch (Exception e) {
-						log.warn("Incorrect record in file. Line number = {}, error: {}\nLine = {}",
+						log.warn("Incorrect record in file. Line number = {}, error: {}. Line = {}",
 								new Object[] {lineNum, e.getMessage(), line});
 						ret = false;
 					}
@@ -77,28 +85,35 @@ public class MbCorrectionsFileValidator extends MbFileValidator {
 		return ret;
 	}
 
-	private void validateHeader(String line) throws FlexPayException {
+	private void validateHeader(String line, ValidationContext context) throws FlexPayException {
 		String[] fields = line.split("=");
 		if (fields.length != 3) {
-			throw new FlexPayException("Not 3 fields");
+			throw new FlexPayException("Expected 3 fields in header");
 		}
 		validateFields(fields);
 		if (fields[0].length() > 20) {
-			throw new FlexPayException("Organization name length can't be more 20 symbols (was " + fields[0].length() + ", " + fields[0] + ")");
+			throw new FlexPayException("Organization name length can't be more 20 symbols, was "
+									   + fields[0].length() + ": " + fields[0]);
 		}
-		try {
-			Long.parseLong(fields[1]);
-		} catch (Exception e) {
-			throw new FlexPayException("Can't parse organization code " + fields[1]);
+
+		// check if provider correction exists
+		Stub<ServiceProvider> providerStub = correctionsService.findCorrection(
+				fields[1], ServiceProvider.class, megabankSD);
+		if (providerStub == null) {
+			throw new FlexPayException("No service provider correction with id " + fields[1]);
 		}
+		context.setServiceProviderId(providerStub.getId());
+
 		try {
-			new SimpleDateFormat(FILE_CREATION_DATE_FORMAT).parse(fields[2]);
+			Date period = new SimpleDateFormat(FILE_CREATION_DATE_FORMAT).parse(fields[2]);
+			context.setFrom(period);
+			context.setTill(period);
 		} catch (Exception e) {
 			throw new FlexPayException("Can't parse file creation date " + fields[2]);
 		}
 	}
 
-	private void validateRecord(String line) throws FlexPayException {
+	private void validateRecord(String line, ValidationContext context) throws FlexPayException {
 		String[] fields = line.split("=");
 		if (fields.length != 28) {
 			throw new FlexPayException("Not 28 fields");
@@ -119,6 +134,7 @@ public class MbCorrectionsFileValidator extends MbFileValidator {
 		} catch (Exception e) {
 			throw new FlexPayException("Can't parse organization street id " + fields[5]);
 		}
+		parseBuildingAddress(fields[8]);
 		try {
 			Double.parseDouble(fields[10]);
 		} catch (Exception e) {
@@ -142,27 +158,37 @@ public class MbCorrectionsFileValidator extends MbFileValidator {
 		try {
 			Long.parseLong(fields[14]);
 		} catch (Exception e) {
-			throw new FlexPayException("Can't parse registered persons quantity " + fields[14]);
+			throw new FlexPayException("Can't parse registered persons number " + fields[14]);
 		}
 		try {
 			Long.parseLong(fields[15]);
 		} catch (Exception e) {
-			throw new FlexPayException("Can't parse residents persons quantity " + fields[15]);
+			throw new FlexPayException("Can't parse resident persons number " + fields[15]);
 		}
 		try {
 			Long.parseLong(fields[16]);
 		} catch (Exception e) {
-			throw new FlexPayException("Can't parse privileged persons quantity " + fields[16]);
+			throw new FlexPayException("Can't parse privileged persons number " + fields[16]);
 		}
 		try {
 			Long.parseLong(fields[17]);
 		} catch (Exception e) {
-			throw new FlexPayException("Can't parse privileged persons quantity " + fields[17]);
+			throw new FlexPayException("Can't parse privileged persons number " + fields[17]);
 		}
+		Date beginDate;
 		try {
-			new SimpleDateFormat(MODIFICATIONS_BEGIN_DATE_FORMAT).parse(fields[19]);
+			beginDate = new SimpleDateFormat(MODIFICATIONS_BEGIN_DATE_FORMAT).parse(fields[19]);
 		} catch (Exception e) {
 			throw new FlexPayException("Can't parse modifications begin date " + fields[19]);
+		}
+
+		String[] serviceCodes = fields[20].split(SERVICE_CODES_SEPARATOR);
+		for (String code : serviceCodes) {
+			if (serviceTypesMapper.getInternalType(code) == null) {
+				throw new FlexPayException("Cannot map service type code " + code + " in list " +  fields[20]);
+			}
+			// ensure services can be found
+			findInternalServices(context.getServiceProviderStub(), code, beginDate);
 		}
 
 		if (!fields[21].equals("0") && !fields[21].equals("1")) {
@@ -197,11 +223,23 @@ public class MbCorrectionsFileValidator extends MbFileValidator {
 		}
 		try {
 			if (fileValues.getLines() != Integer.parseInt(fields[1]) && !ignoreInvalidLinesNumber) {
-				throw new FlexPayException("Incorrect records number in file - " + fields[1] + ", but were " + fileValues.getLines() + ")");
+				throw new FlexPayException("Wrong records number expected " + fields[1] + ", but was " + fileValues.getLines());
 			}
 		} catch (NumberFormatException e) {
 			throw new FlexPayException("Can't parse total amount of lines in file - " + fields[1]);
 		}
+	}
+
+	private List<Service> findInternalServices(Stub<ServiceProvider> providerStub, String mbCode, Date date)
+			throws FlexPayException {
+
+		Stub<ServiceType> typeStub = serviceTypesMapper.getInternalType(mbCode);
+		List<Service> services = spService.findServices(providerStub, typeStub, date);
+		if (services.isEmpty()) {
+			throw new FlexPayException("No service found by internal type " + typeStub + ", mb code=" + mbCode);
+		}
+
+		return services;
 	}
 
 	private class FileValues {
@@ -221,7 +259,6 @@ public class MbCorrectionsFileValidator extends MbFileValidator {
 			return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
 					append("lines", lines).toString();
 		}
-
 	}
 
 	public boolean isIgnoreInvalidLinesNumber() {

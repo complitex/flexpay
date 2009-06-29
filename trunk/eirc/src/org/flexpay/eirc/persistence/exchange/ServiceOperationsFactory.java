@@ -117,33 +117,43 @@ public class ServiceOperationsFactory {
 		Integer containerType = Integer.valueOf(datum.get(0));
 		switch (containerType) {
 			case 1:
+				checkContainer(registry, "Open account", RegistryType.TYPE_INFO);
 				return new OpenAccountOperation(this, datum);
 			case 2:
-				if (registry.getRegistryType().getCode() != RegistryType.TYPE_CLOSED_ACCOUNTS) {
-					throw new InvalidContainerException("Close account containers are allowed only in close accounts registry");
-				}
+				checkContainer(registry, "Close account", RegistryType.TYPE_CLOSED_ACCOUNTS);
 				return new CloseAccountOperation(this, datum);
 			case 3:
+				checkContainer(registry, "Set responsible person", RegistryType.TYPE_INFO);
 				return new SetResponsiblePersonOperation(this, datum);
 			case 4:
+				checkContainer(registry, "Set number on habitants", RegistryType.TYPE_INFO);
 				return new SetNumberOfHabitantsOperation(this, datum);
 			case 5:
+				checkContainer(registry, "Set total square", RegistryType.TYPE_INFO);
 				return new SetTotalSquareOperation(this, datum);
 			case 6:
+				checkContainer(registry, "Set live square", RegistryType.TYPE_INFO);
 				return new SetLiveSquareOperation(this, datum);
 			case 7:
+				checkContainer(registry, "Set warm square", RegistryType.TYPE_INFO);
 				return new SetWarmSquareOperation(datum);
 			case 8:
+				checkContainer(registry, "Set privilege type", RegistryType.TYPE_INFO);
 				return new SetPrivilegeTypeOperation(datum);
 			case 9:
+				checkContainer(registry, "Set privilege owner", RegistryType.TYPE_INFO);
 				return new SetPrivilegeOwnerOperation(datum);
 			case 10:
+				checkContainer(registry, "Set privilege person", RegistryType.TYPE_INFO);
 				return new SetPrivilegePersonOperation(datum);
 			case 11:
+				checkContainer(registry, "Set privilege approval document", RegistryType.TYPE_INFO);
 				return new SetPrivilegeApprovalDocumentOperation(datum);
 			case 12:
+				checkContainer(registry, "Set privilege persons number", RegistryType.TYPE_INFO);
 				return new SetPrivilegePersonsNumberOperation(datum);
 			case 14:
+				checkContainer(registry, "Open subaccount", RegistryType.TYPE_INFO);
 				return new OpenSubserviceAccountOperation(this, datum);
 
 			// Payment
@@ -156,6 +166,12 @@ public class ServiceOperationsFactory {
 
 		throw new InvalidContainerException("Unknown container type: " +
 											datum.get(0) + " in " + containerData);
+	}
+
+	private void checkContainer(Registry registry, String name, int type) throws InvalidContainerException {
+		if (registry.getRegistryType().getCode() != type) {
+			throw new InvalidContainerException(name + " containers are not allowed in registry type " + type);
+		}
 	}
 
 	/**

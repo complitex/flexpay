@@ -53,4 +53,14 @@ public interface ConsumerService {
 	 */
 	@Nullable
 	Consumer read(@NotNull Stub<Consumer> stub);
+
+	/**
+	 * Try to find consumer by external account number and service
+	 *
+	 * @param accountNumber External account number
+	 * @param serviceStub Service stub
+	 * @return Consumer if found, or <code>null</code> otherwise
+	 */
+	@Nullable
+	Consumer findConsumer(@NotNull String accountNumber, @NotNull Stub<Service> serviceStub);
 }
