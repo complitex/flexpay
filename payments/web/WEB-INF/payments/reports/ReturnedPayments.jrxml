@@ -411,7 +411,7 @@
 		</band>
 	</detail>
 	<summary>
-		<band height="319">
+		<band height="175">
 			<textField>
 				<reportElement x="0" y="0" width="65" height="20"/>
 				<textElement/>

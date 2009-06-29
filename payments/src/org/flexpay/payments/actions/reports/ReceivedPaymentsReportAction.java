@@ -8,6 +8,7 @@ import java.util.Date;
 public class ReceivedPaymentsReportAction extends PaymentsDayReportAction {
 
 	private static final String RECEIVED_PAYMENTS_REPORT_NAME = "ReceivedPayments";
+	private static final String RECEIVED_PAYMENTS_SHORT_REPORT_NAME = "ReceivedPayments_short";
 
 	/**
 	 * {@inheritDoc}
@@ -18,6 +19,6 @@ public class ReceivedPaymentsReportAction extends PaymentsDayReportAction {
 	}
 
 	protected String getReportBaseName() {
-		return RECEIVED_PAYMENTS_REPORT_NAME;
+		return showDetails ? RECEIVED_PAYMENTS_REPORT_NAME : RECEIVED_PAYMENTS_SHORT_REPORT_NAME;
 	}
 }

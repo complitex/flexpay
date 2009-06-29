@@ -4,7 +4,8 @@
 <script type="text/javascript">
 	function printReport() {
 		var url = '<s:url action="receivedPaymentsReport" includeParams="none" />';
-		url += '?beginDateFilter.stringDate=' + $('#beginDateFilter').val() + '&submitted=submitted';
+		url += '?beginDateFilter.stringDate=' + $('#beginDateFilter').val() +
+			   '&showDetails=' + $('#showDetails').attr('checked') +  '&submitted=submitted';
 		window.open(url, "_blank");
 	}
 </script>
@@ -21,6 +22,12 @@
 			<td nowrap="nowrap">
 				<input type="button" name="submitted" class="btn-exit" onclick="printReport();"
 					   value="<s:text name="payments.reports.generate.generate"/>"/>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<s:text name="payments.report.generate.show_details"/>
+				<s:checkbox id="showDetails" name="showDetails" value="true"/>
 			</td>
 		</tr>
 	</table>

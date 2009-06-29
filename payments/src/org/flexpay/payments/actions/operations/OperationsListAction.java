@@ -98,7 +98,7 @@ public class OperationsListAction extends CashboxCookieWithPagerActionSupport<Op
 	protected String doExecute() throws Exception {
 
 		// processing cashbox id filtering parameter
-		if (cashboxIdFilter == null || StringUtils.isEmpty(cashboxIdFilter)) {
+		if (StringUtils.isBlank(cashboxIdFilter)) {
 			cashboxIdFilter = cashboxId.toString();
 		}
 

@@ -232,7 +232,7 @@
 		</band>
 	</detail>
 	<summary>
-		<band height="319">
+		<band height="71">
 			<textField>
 				<reportElement x="0" y="0" width="65" height="20"/>
 				<textElement/>
@@ -249,19 +249,12 @@
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{returned.payments.report.total_summ}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="65" y="40" width="120" height="20">
-					<printWhenExpression><![CDATA[$P{showServiceSumms}]]></printWhenExpression>
-				</reportElement>
-				<textElement/>
-				<textFieldExpression class="java.lang.String"><![CDATA[$R{returned.payments.report.by_services}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="65" y="59" width="120" height="20"/>
+				<reportElement x="65" y="39" width="120" height="20"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{cashierFio}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="0" y="79" width="185" height="12"/>
+				<reportElement x="0" y="59" width="185" height="12"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA[new java.text.SimpleDateFormat("dd.MM.yyyy HH:mm").format($P{creationDate})]]></textFieldExpression>
 			</textField>
@@ -276,7 +269,7 @@
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$V{totalPaymentsSumm}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement isPrintRepeatedValues="false" x="0" y="60" width="65" height="20"/>
+				<reportElement isPrintRepeatedValues="false" x="0" y="40" width="65" height="20"/>
 				<textElement/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$R{returned.payments.report.cashierFio}]]></textFieldExpression>
 			</textField>
