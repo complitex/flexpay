@@ -8,6 +8,7 @@ import org.flexpay.common.persistence.filter.RegistryRecordStatusFilter;
 import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.persistence.registry.RegistryRecord;
 import org.flexpay.common.service.RegistryRecordService;
+import org.flexpay.common.service.RegistryService;
 import org.flexpay.eirc.actions.TestSpFileAction;
 import org.flexpay.eirc.persistence.filters.ImportErrorTypeFilter;
 import org.flexpay.payments.service.EircRegistryService;
@@ -33,6 +34,8 @@ public class TestServiceProviderFileProcessor extends TestSpFileAction {
 	protected RegistryRecordService registryRecordService;
 	@Autowired
 	protected EircRegistryService eircRegistryService;
+    @Autowired
+	protected RegistryService registryService;
 
 	@Test
 	@NotTransactional
@@ -60,7 +63,7 @@ public class TestServiceProviderFileProcessor extends TestSpFileAction {
 		try {
 			registryProcessor.processFile(file);
 
-			List<Registry> registries = eircRegistryService.findObjects(new Page<Registry>(), file.getId());
+			List<Registry> registries = registryService.findObjects(new Page<Registry>(), file.getId());
 			assertEquals("Expected 1 registry", 1, registries.size());
 			Registry registry = registries.get(0);
 			List<RegistryRecord> records = registryRecordService.listRecords(

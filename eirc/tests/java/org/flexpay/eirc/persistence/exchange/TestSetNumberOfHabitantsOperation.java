@@ -8,6 +8,7 @@ import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.persistence.registry.RegistryRecord;
 import org.flexpay.common.persistence.registry.RegistryRecordContainer;
 import org.flexpay.common.service.RegistryFileService;
+import org.flexpay.common.service.RegistryService;
 import org.flexpay.common.test.SpringBeanAwareTestCase;
 import org.flexpay.common.util.StringUtil;
 import org.flexpay.payments.service.EircRegistryService;
@@ -24,6 +25,8 @@ public class TestSetNumberOfHabitantsOperation extends SpringBeanAwareTestCase {
 	private ServiceProviderFileProcessor serviceProviderFileProcessor;
 	@Autowired
 	private EircRegistryService eircRegistryService;
+    @Autowired
+	private RegistryService registryService;
 	@Autowired
 	private RegistryFileService registryFileService;
 	@Autowired
@@ -31,7 +34,7 @@ public class TestSetNumberOfHabitantsOperation extends SpringBeanAwareTestCase {
 
 	@Test
 	public void testProcess() throws FlexPayException {
-		Registry registry = eircRegistryService.read(new Stub<Registry>(13L));
+		Registry registry = registryService.read(new Stub<Registry>(13L));
 		List<RegistryRecord> records = registryFileService.getRecordsForProcessing(stub(registry), new Page<RegistryRecord>(), new Long[] {null, null});
 		for (RegistryRecord record : records) {
 			List<String> containers = new ArrayList<String>();
