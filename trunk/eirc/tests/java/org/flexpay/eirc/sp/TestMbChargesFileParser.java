@@ -3,6 +3,7 @@ package org.flexpay.eirc.sp;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.persistence.registry.Registry;
+import org.flexpay.common.service.RegistryService;
 import org.flexpay.eirc.actions.TestSpFileCreateAction;
 import org.flexpay.payments.service.EircRegistryService;
 import org.junit.Test;
@@ -18,6 +19,8 @@ public class TestMbChargesFileParser extends TestSpFileCreateAction {
 	private FileParser parser;
 	@Autowired
 	private EircRegistryService eircRegistryService;
+    @Autowired
+	private RegistryService registryService;
 
 	@Test
 	public void testParseFile() throws Throwable {
@@ -26,8 +29,8 @@ public class TestMbChargesFileParser extends TestSpFileCreateAction {
 
 		List<Registry> registries = parser.parse(newFile);
 		for (Registry registry : registries) {
-			eircRegistryService.deleteRecords(stub(registry));
-			eircRegistryService.delete(registry);
+			registryService.deleteRecords(stub(registry));
+			registryService.delete(registry);
 		}
 
 		deleteFile(newFile);

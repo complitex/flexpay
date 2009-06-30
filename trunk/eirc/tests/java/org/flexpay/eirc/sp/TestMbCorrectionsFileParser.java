@@ -5,6 +5,7 @@ import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.service.importexport.ClassToTypeRegistry;
+import org.flexpay.common.service.RegistryService;
 import org.flexpay.eirc.actions.TestSpFileCreateAction;
 import org.flexpay.eirc.sp.impl.validation.MbCorrectionsFileValidator;
 import org.flexpay.orgs.persistence.ServiceProvider;
@@ -25,6 +26,8 @@ public class TestMbCorrectionsFileParser extends TestSpFileCreateAction {
 	private FileParser parser;
 	@Autowired
 	private EircRegistryService eircRegistryService;
+    @Autowired
+	private RegistryService registryService;
 
 	@Autowired
 	private ClassToTypeRegistry typeRegistry;
@@ -46,8 +49,8 @@ public class TestMbCorrectionsFileParser extends TestSpFileCreateAction {
 			assertNotNull("Registry parse failed", registries);
 
 			for (Registry registry : registries) {
-				eircRegistryService.deleteRecords(stub(registry));
-				eircRegistryService.delete(registry);
+				registryService.deleteRecords(stub(registry));
+				registryService.delete(registry);
 			}
 		} catch (Exception e) {
 			log.error("Error with parsing file", e);
