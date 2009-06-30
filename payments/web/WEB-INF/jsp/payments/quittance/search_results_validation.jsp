@@ -254,6 +254,11 @@
 		var inputSumm = dotted2Int($('#inputSumm').val());
 		var changeSumm = inputSumm - totalPaySumm;
 
+		if (changeSumm < 0) {
+			$('#changeSumm').val('');
+			return;
+		}
+
 		$('#changeSumm').val(int2Dotted(changeSumm));
 	}
 
