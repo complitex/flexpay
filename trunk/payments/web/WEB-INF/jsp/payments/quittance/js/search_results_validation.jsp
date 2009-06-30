@@ -121,7 +121,7 @@
 		var changeSumm = inputSumm - totalPaySumm;
 
 		if (changeSumm < 0) {
-			$('#changeSumm').val('');
+			$('#changeSumm').val('');			
 			return;
 		}
 

@@ -40,8 +40,10 @@
 			if (event.keyCode == 13 || event.keyCode == 9) {
 				updateChange();
 				if ($("#quittancePayForm").valid()) {
-					   doPrintQuittance();
-				}                   				
+					doPrintQuittance();										
+				} else {
+					return false; // FIXME hack
+				}
 			}
     	});
 
