@@ -37,7 +37,8 @@
 		});
 
 		$('#inputSumm').bind('keypress', function(event) {
-			if (event.keyCode == 13) {
+//			if (event.keyCode == 13) {
+			if (event.keyCode == 13 || event.keyCode == 9) {
 				updateChange();
 				doPrintQuittance();
 			}
