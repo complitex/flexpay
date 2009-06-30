@@ -47,9 +47,9 @@ public class ServiceTypesMapper {
 		for (Object mbCode : mapping.keySet()) {
 			@SuppressWarnings ({"unchecked"})
 			Stub<ServiceType> stub = (Stub<ServiceType>) mapping.get(mbCode);
-			if (serviceTypeService.read(stub) == null) {
-				invalidTypes.add(stub.getId());
-			}
+//			if (serviceTypeService.read(stub) == null) {
+//				invalidTypes.add(stub.getId());
+//			}
 		}
 
 		if (!invalidTypes.isEmpty()) {
