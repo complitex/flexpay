@@ -43,6 +43,7 @@ public class TestGeneratePaymentsDBRegistry extends SpringBeanAwareTestCase {
     @Autowired
     private OperationService operationService;
     @Autowired
+    //@Qualifier("organizationService")
     private OrganizationService organizationService;
     @Autowired
     private OperationTypeService operationTypeService;
@@ -120,7 +121,9 @@ public class TestGeneratePaymentsDBRegistry extends SpringBeanAwareTestCase {
             org.flexpay.payments.service.Roles.SERVICE_ADD,
             org.flexpay.payments.service.Roles.SERVICE_CHANGE,
             org.flexpay.orgs.service.Roles.SERVICE_PROVIDER_ADD,
-            org.flexpay.orgs.service.Roles.SERVICE_PROVIDER_CHANGE
+            org.flexpay.orgs.service.Roles.SERVICE_PROVIDER_CHANGE,
+            org.flexpay.orgs.service.Roles.PAYMENTS_COLLECTOR_ADD,
+            org.flexpay.orgs.service.Roles.PAYMENT_POINT_ADD
 	);
 
     @Before
@@ -297,7 +300,11 @@ public class TestGeneratePaymentsDBRegistry extends SpringBeanAwareTestCase {
         generate.setRegistryRecordStatusService(registryRecordStatusService);
         generate.setPropertiesFactory(propertiesFactory);
 
-        Registry registry  = generate.createDBRegestry(spFile, organization, new Date(currDate.getTime() - 100000), new Date(currDate.getTime() + 1000));
+        Registry registry  = generate.createDBRegestry(spFile, organization, new Date(currDate.getTime() + 1000), new Date(currDate.getTime() + 10000));
+        assertNotNull(registry);
+        assertEquals(0, registry.getRecordsNumber().intValue());
+
+        registry  = generate.createDBRegestry(spFile, organization, new Date(currDate.getTime() - 100000), new Date(currDate.getTime() + 1000));
         assertNotNull(registry);
         assertEquals(1, registry.getRecordsNumber().intValue());
         assertEquals(100, registry.getAmount().intValue());

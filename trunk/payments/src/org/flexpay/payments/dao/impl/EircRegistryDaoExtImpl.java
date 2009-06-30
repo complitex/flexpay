@@ -12,12 +12,13 @@ import org.hibernate.Session;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.orm.hibernate3.HibernateCallback;
+import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class EircRegistryDaoExtImpl extends RegistryDaoExtImpl implements EircRegistryDaoExt {
+public class EircRegistryDaoExtImpl extends HibernateDaoSupport implements EircRegistryDaoExt {
 
 	private Logger log = LoggerFactory.getLogger(getClass());
 

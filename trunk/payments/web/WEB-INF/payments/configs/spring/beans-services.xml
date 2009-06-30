@@ -7,11 +7,10 @@
 		   http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
 		   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
-	<bean id="eircRegistryService" parent="registryService"
+	<bean id="eircRegistryService"
 		  class="org.flexpay.payments.service.impl.EircRegistryServiceImpl"
 		  p:registryDaoExt-ref="eircRegistryDaoExt"
-		  p:spRegistryRecordService-ref="registryRecordService"
-		  p:registryContainerDao-ref="registryContainerDao" />
+		  p:registryDao-ref="spRegistryDao" />
 
 	<bean id="documentService"
 		  class="org.flexpay.payments.service.impl.DocumentServiceImpl"

@@ -66,9 +66,13 @@ public class GeneratePaymentsDBRegistryJob extends Job {
             }
         }
         Date lastProcessedDate = new Date();
+        if (parameters.containsKey("finishDate")) {
+            lastProcessedDate = (Date) parameters.get("finishDate");
+        }
         Registry registry = generatePaymentsDBRegistry.createDBRegestry(file, organization, oldLastProcessedDate, lastProcessedDate);
         parameters.put("lastProcessedDate", String.valueOf(lastProcessedDate.getTime()));
-        parameters.put("Registry", registry);
+        //parameters.put("Registry", registry);
+        parameters.put("RegistryId", registry.getId());
         return RESULT_NEXT;
     }
 

@@ -9,7 +9,7 @@ import org.flexpay.orgs.persistence.filters.OrganizationFilter;
 import java.util.Date;
 import java.util.List;
 
-public interface EircRegistryDaoExt extends RegistryDaoExt {
+public interface EircRegistryDaoExt {
 
 	/**
 	 * Find registries
