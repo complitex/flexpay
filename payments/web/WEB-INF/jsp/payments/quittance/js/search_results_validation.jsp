@@ -98,9 +98,9 @@
 				error.appendTo(cell);
 				row.css("display", "table-row");
 			},
-			invalidHandler: function(form, validator) {
-				alert('<s:text name="eirc.error.quittances.quittance_pay.invalid_submit"/>');
-			},
+			<%--invalidHandler: function(form, validator) {--%>
+				<%--alert('<s:text name="eirc.error.quittances.quittance_pay.invalid_submit"/>');--%>
+			<%--},--%>
 			onsubmit: false
 		});
 	}
