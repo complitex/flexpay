@@ -9,6 +9,7 @@ import org.flexpay.common.util.TranslationUtil;
 import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.orgs.persistence.PaymentPoint;
 import org.flexpay.orgs.persistence.ServiceProvider;
+import org.flexpay.orgs.persistence.Cashbox;
 import org.flexpay.orgs.service.OrganizationService;
 import org.flexpay.orgs.service.PaymentPointService;
 import org.flexpay.orgs.service.ServiceProviderService;
@@ -156,10 +157,12 @@ public class PaymentsReporterImpl implements PaymentsReporter {
 	/**
 	 * {@inheritDoc}
 	 */
-	public PaymentsPrintInfoData getReturnedPaymentsPrintFormData(Date begin, Date end, PaymentPoint paymentPoint, Locale locale) {
+	public PaymentsPrintInfoData getReturnedPaymentsPrintFormData(Date begin, Date end, Cashbox cashbox, Locale locale) {
 
 		PaymentsPrintInfoData result = new PaymentsPrintInfoData();
-		result.setOperationDetailses(convert(getReturnedPayments(begin, end, getOrganization(paymentPoint))));
+		PaymentPoint paymentPoint = getPaymentPoint(cashbox);
+
+		result.setOperationDetailses(convert(getReturnedPayments(begin, end, cashbox)));
 		result.setCreationDate(new Date());
 		result.setBeginDate(begin);
 		result.setEndDate(end);
@@ -167,17 +170,19 @@ public class PaymentsReporterImpl implements PaymentsReporter {
 		result.setPaymentPointAddress(paymentPoint.getAddress());
 		Organization collectorOrganization = organizationService.readFull(paymentPoint.getCollector().getOrganizationStub());
 		result.setPaymentCollectorOrgName(collectorOrganization.getName(locale));
-		result.setCashierFio("Коваль А.Н."); // TODO : FIXME
+		result.setCashierFio("Коваль А.Н."); // TODO : use actual cashier name
 		return result;
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
-	public PaymentsPrintInfoData getReceivedPaymentsPrintFormData(Date begin, Date end, PaymentPoint paymentPoint, Locale locale) {
+	public PaymentsPrintInfoData getReceivedPaymentsPrintFormData(Date begin, Date end, Cashbox cashbox, Locale locale) {
 
 		PaymentsPrintInfoData result = new PaymentsPrintInfoData();
-		result.setOperationDetailses(convert(getReceivedPayments(begin, end, getOrganization(paymentPoint))));
+		PaymentPoint paymentPoint = getPaymentPoint(cashbox);
+
+		result.setOperationDetailses(convert(getReceivedPayments(begin, end, cashbox)));
 		result.setCreationDate(new Date());
 		result.setBeginDate(begin);
 		result.setEndDate(end);
@@ -185,7 +190,7 @@ public class PaymentsReporterImpl implements PaymentsReporter {
 		result.setPaymentPointAddress(paymentPoint.getAddress());
 		Organization collectorOrganization = organizationService.readFull(paymentPoint.getCollector().getOrganizationStub());
 		result.setPaymentCollectorOrgName(collectorOrganization.getName(locale));
-		result.setCashierFio("Коваль А.Н."); // TODO : FIXME
+		result.setCashierFio("Коваль А.Н."); // TODO : use actual cashier name
 		return result;
 	}
 
@@ -197,12 +202,12 @@ public class PaymentsReporterImpl implements PaymentsReporter {
 		return operationPrintInfos;
 	}
 
-	private List<Operation> getReceivedPayments(Date begin, Date end, Organization organization) {
-		return operationService.listReceivedPayments(organization, begin, end);
+	private List<Operation> getReceivedPayments(Date begin, Date end, Cashbox cashbox) {
+		return operationService.listReceivedPayments(cashbox, begin, end);
 	}
 
-	private List<Operation> getReturnedPayments(Date begin, Date end, Organization organization) {
-		return operationService.listReturnedPayments(organization, begin, end);
+	private List<Operation> getReturnedPayments(Date begin, Date end, Cashbox cashbox) {
+		return operationService.listReturnedPayments(cashbox, begin, end);
 	}
 
 
@@ -210,6 +215,11 @@ public class PaymentsReporterImpl implements PaymentsReporter {
 		Long organizationId = paymentPoint.getCollector().getOrganization().getId();
 		Organization organization = organizationService.readFull(new Stub<Organization>(organizationId));
 		return organization;
+	}
+
+	private PaymentPoint getPaymentPoint(Cashbox cashbox) {
+
+		return paymentPointService.read(cashbox.getPaymentPointStub());
 	}
 
 	private OperationPrintInfo convert(Operation operation) {
