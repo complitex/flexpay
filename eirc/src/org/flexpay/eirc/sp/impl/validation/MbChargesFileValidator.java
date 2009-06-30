@@ -5,15 +5,22 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.file.FPFile;
+import org.flexpay.common.persistence.Stub;
 import org.flexpay.eirc.sp.impl.MbFileValidator;
+import org.flexpay.eirc.sp.impl.ValidationContext;
+import org.flexpay.orgs.persistence.ServiceProvider;
+import org.flexpay.payments.persistence.Service;
+import org.flexpay.payments.persistence.ServiceType;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
 
-public class MbRegistryFileValidator extends MbFileValidator {
+public class MbChargesFileValidator extends MbFileValidator {
 
 	private final String OPERATION_DATE_FORMAT = "MMyy";
 	private final String INCOME_PERIOD_DATE_FORMAT = "MMyy";
@@ -28,6 +35,7 @@ public class MbRegistryFileValidator extends MbFileValidator {
 		try {
 			//noinspection IOResourceOpenedButNotSafelyClosed
 			reader = new BufferedReader(new InputStreamReader(spFile.getInputStream(), REGISTRY_FILE_ENCODING));
+			ValidationContext context = new ValidationContext();
 
 			for (int lineNum = 0; ; lineNum++) {
 				String line = reader.readLine();
@@ -40,7 +48,7 @@ public class MbRegistryFileValidator extends MbFileValidator {
 					}
 				} else if (lineNum == 1) {
 					try {
-						validateHeader(line);
+						validateHeader(line, context);
 					} catch (Exception e) {
 						log.warn("Incorrect header in file. Line number = {}, error: {}\nLine = {}",
 								new Object[] {lineNum, e.getMessage(), line});
@@ -59,7 +67,7 @@ public class MbRegistryFileValidator extends MbFileValidator {
 					break;
 				} else {
 					try {
-						validateRecord(line, fileValues);
+						validateRecord(line, fileValues, context);
 					} catch (Exception e) {
 						log.warn("Incorrect record in file. Line number = {}, error: {}\nLine = {}", 
 								new Object[] {lineNum, e.getMessage(), line});
@@ -77,7 +85,7 @@ public class MbRegistryFileValidator extends MbFileValidator {
 
 	}
 
-	private void validateHeader(String line) throws FlexPayException {
+	private void validateHeader(String line, ValidationContext context) throws FlexPayException {
 		String[] fields = line.split("=");
 		if (fields.length != 4) {
 			throw new FlexPayException("Not 4 fields");
@@ -86,11 +94,14 @@ public class MbRegistryFileValidator extends MbFileValidator {
 		if (fields[0].length() > 20) {
 			throw new FlexPayException("Organization name length can't be more 20 symbols");
 		}
-		try {
-			Long.parseLong(fields[1]);
-		} catch (Exception e) {
-			throw new FlexPayException("Can't parse organization code " + fields[1]);
+		// check if provider correction exists
+		Stub<ServiceProvider> providerStub = correctionsService.findCorrection(
+				fields[1], ServiceProvider.class, megabankSD);
+		if (providerStub == null) {
+			throw new FlexPayException("No service provider correction with id " + fields[1]);
 		}
+		context.setServiceProviderId(providerStub.getId());
+
 		try {
 			new SimpleDateFormat(INCOME_PERIOD_DATE_FORMAT).parse(fields[2]);
 		} catch (Exception e) {
@@ -103,33 +114,50 @@ public class MbRegistryFileValidator extends MbFileValidator {
 		}
 	}
 
-	private void validateRecord(String line, FileValues fileValues) throws FlexPayException {
+	private void validateRecord(String line, FileValues fileValues, ValidationContext context) throws FlexPayException {
 		String[] fields = line.split("=");
 		if (fields.length != 6) {
-			throw new FlexPayException("Not 6 fields");
+			throw new FlexPayException("Expected 6 fields");
 		}
 		validateFields(fields);
 		try {
 			fileValues.addIncome(Long.parseLong(fields[1]));
 		} catch (Exception e) {
-			throw new FlexPayException("Can't parse summ " + fields[1]);
+			throw new FlexPayException("Can't parse charges summ " + fields[1]);
 		}
 		try {
 			fileValues.addSaldo(Long.parseLong(fields[2]));
 		} catch (Exception e) {
-			throw new FlexPayException("Can't parse saldo summ " + fields[2]);
+			throw new FlexPayException("Can't parse balance summ " + fields[2]);
 		}
+
+		Date operationDate;
 		try {
-			Integer.parseInt(fields[3]);
-		} catch (Exception e) {
-			throw new FlexPayException("Can't parse service code " + fields[3]);
-		}
-		try {
-			new SimpleDateFormat(OPERATION_DATE_FORMAT).parse(fields[5]);
+			operationDate = new SimpleDateFormat(OPERATION_DATE_FORMAT).parse(fields[5]);
 		} catch (Exception e) {
 			throw new FlexPayException("Can't parse operation date " + fields[5]);
 		}
+
+		String serviceTypeCode = fields[3];
+		if (serviceTypesMapper.getInternalType(serviceTypeCode) == null) {
+			throw new FlexPayException("Cannot map service type code " + serviceTypeCode);
+		}
+		// ensure services can be found
+		findInternalServices(context.getServiceProviderStub(), serviceTypeCode, operationDate);
 	}
+
+	private List<Service> findInternalServices(Stub<ServiceProvider> providerStub, String mbCode, Date date)
+			throws FlexPayException {
+
+		Stub<ServiceType> typeStub = serviceTypesMapper.getInternalType(mbCode);
+		List<Service> services = spService.findServices(providerStub, typeStub, date);
+		if (services.isEmpty()) {
+			throw new FlexPayException("No service found by internal type " + typeStub + ", mb code=" + mbCode);
+		}
+
+		return services;
+	}
+	
 
 	private void validateFooter(String line, FileValues fileValues) throws FlexPayException {
 		String[] fields = line.split("=");
