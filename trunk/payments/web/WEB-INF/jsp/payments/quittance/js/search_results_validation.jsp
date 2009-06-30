@@ -3,148 +3,8 @@
 <script type="text/javascript">
 
 	$(function() {
-		disablePayment();	
+		initValidator();
 	});
-
-	/**
-	 * UI controlling functions
-	 */
-	var paymentEnabled = false;
-
-	function disableButton(button) {
-		$(button).attr('disabled', 'disabled');
-		$(button).removeClass('btn-exit');
-        $(button).addClass('btn-search');
-	}
-
-	function enableButton(button) {
-		$(button).removeAttr('disabled');
-		$(button).removeClass('btn-search');
-        $(button).addClass('btn-exit');
-	}
-
-	function disablePayment() {
-		disableButton('#payQuittanceButton');
-		paymentEnabled = false;
-	}
-
-	function enablePayment() {
-		enableButton('#payQuittanceButton');
-		paymentEnabled = true;
-	}
-
-	function enableButtons() {
-		enableButton('#payQuittanceButton');
-		enableButton('#printQuittanceButton');
-
-		if (paymentEnabled) {
-			enablePayment();
-		} else {
-			disablePayment();
-		}
-	}
-
-	function disableButtons() {
-		disableButton('#payQuittanceButton');
-		disableButton('#printQuittanceButton');
-	}
-
-	function doPayQuittance() {
-		$("#quittancePayForm").attr("action", "<s:url action="paymentsQuittancePay" />").submit();
-		$("#quittancePayForm").removeAttr('action');
-	}
-
-	function doPrintQuittance() {
-		$("#quittancePayForm").attr("action", "<s:url action="paymentOperationReportAction" />").attr("target", "_blank").submit();
-		$("#quittancePayForm").removeAttr('action');
-		$("#quittancePayForm").removeAttr('target');		
-		enablePayment();
-	}
-
-	/**
-	 * Field chain functions
-	 */
-	var fieldChain = new Array();
-	var currentFieldIndex = 0;
-
-	$(function() {
-		rebindEvents();
-		createFieldChain();
-	});
-
-	function createFieldChain() {
-		// selecting all the payments inputs
-		var paymentInputs = $('input[id^=payments_]');
-		for (var i = 0; i < paymentInputs.length ; i++) {
-			fieldChain[i] = $(paymentInputs[i]).attr('id');
-		}
-		// adding total input summ field to field chain
-		fieldChain[fieldChain.length] = 'inputSumm';
-
-		// setting focus to the first payments field
-		$('#' + fieldChain[0]).focus();
-		$('#' + fieldChain[0]).select();
-		currentFieldIndex = 0;
-	}
-
-	function rebindEvents() {
-	<s:iterator value="quittanceInfos" id="qi" status="nQI">
-	<s:iterator value="detailses" status="status">
-		<s:set name="serviceId" value="%{getServiceId(serviceMasterIndex)}"/>
-		<s:set name="serviceIndx" value="%{getServiceFullIndex(#nQI.index, #serviceId)}"/>
-		$('#payments_<s:property value="#serviceIndx"/>').bind('focus', function(event) {
-			var selectedFieldId = $(event.target).attr('id');
-			for (var i = 0; i < fieldChain.length; i++) {
-				if (fieldChain[i] == selectedFieldId) {
-					currentFieldIndex = i;
-					$('#' + fieldChain[i]).select();
-					return;
-				}
-			}
-		});
-
-		$('#payments_<s:property value="#serviceIndx"/>').bind('keypress', function(event) {
-			if (event.keyCode == 13 || event.keyCode == 9) {
-				var nextFieldId = fieldChain[currentFieldIndex + 1];
-				$('#' + nextFieldId).focus();
-				$('#' + nextFieldId).select();
-				event.preventDefault();
-			}
-		});
-        </s:iterator>
-	</s:iterator>
-		$('#inputSumm').bind('keypress', function(event) {
-               if (event.keyCode == 13) {
-				   updateChange();
-				   if ($("#quittancePayForm").valid()) {
-					   doPrintQuittance();
-				   }                   
-               }
-    	});
-	};
-
-	/*
-	 Common functions
-	 */
-	// replaces all the commas in string with dots
-	function replaceCommaWithDot(value) {
-		return value.replace(",", ".");
-	}
-
-	// Convert from big decimal format
-	function dotted2Int(i) {
-		i = replaceCommaWithDot(i);
-		var dotpos = i.indexOf(".");
-		//noinspection PointlessArithmeticExpressionJS
-		return dotpos != -1 ? i.substring(0, dotpos) * 100 + i.substring(dotpos + 1) * 1 : i * 100;
-	}
-
-	// Convert integer to big decimal format
-	function int2Dotted(i) {
-		var divider = 100;
-		var mod = i % divider;
-		return ((i - mod) / divider).toString() + "." + (mod < 10 ? "0" + mod : mod);
-	}
 
 	/*
 	 Validation functions
@@ -156,7 +16,7 @@
 	}
 
 	// validator rules initializing
-	$(function() {
+	function initValidatorRules() {
 
 		$.validator.addMethod('validPayValue', function(value, element) {
 			return isValidPayValue(value);
@@ -181,11 +41,14 @@
 			var inputSumm = dotted2Int(value);
 			return totalPaySumm <= inputSumm;
 		}, '<s:text name="payments.quittances.quittance_pay.input_summ_is_too_small"/>');
-	});
+	}
 
 	// validator initializing
 	var validator;
-	$(function() {
+	function initValidator() {
+
+		initValidatorRules();
+
 		validator = $("#quittancePayForm").validate({
 			rules: {
 				<s:iterator value="quittanceInfos" id="qi" status="nQI">
@@ -218,9 +81,9 @@
 				if (validator.numberOfInvalids() == 0) {
 					enableButtons();
 					// if the updated field is a payment we should update input
-					if (nextRow.hasClass('service_payment')) {
-						updateInput();
-					}
+//					if (nextRow.hasClass('service_payment')) {
+//						updateInput();
+//					}
 				}
 			},
 			showErrors: function(errorMap, errorList) {
@@ -240,8 +103,11 @@
 			},
 			onsubmit: false
 		});
-	});
+	}
 
+	/**
+	 * Automatical values update functions
+	 */
 	// change modification
 	function updateChange() {
 
@@ -285,11 +151,5 @@
 	function updateInput() {
 		$('#inputSumm').val($('#totalToPay').val());
 		updateChange();
-	}
-
-	function replaceEmptyValueWithZero(id) {
-		if ($.trim($('#' + id).val()) == '') {
-			$('#' + id).val('0.00');
-		}
 	}
 </script>
