@@ -11,10 +11,10 @@ import org.springframework.beans.factory.annotation.Qualifier;
 
 import java.util.List;
 
-public class TestMbRegistryFileParser extends TestSpFileCreateAction {
+public class TestMbChargesFileParser extends TestSpFileCreateAction {
 
 	@Autowired
-	@Qualifier ("mbRegistryFileParser")
+	@Qualifier ("mbChargesFileParser")
 	private FileParser parser;
 	@Autowired
 	private EircRegistryService eircRegistryService;

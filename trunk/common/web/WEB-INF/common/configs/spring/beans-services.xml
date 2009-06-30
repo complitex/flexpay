@@ -278,12 +278,16 @@
 		  p:email="test@test.test"
 		  p:sender-ref="mailSender" />
 
-	<bean id="cnDataSourceDescription" class="org.flexpay.common.persistence.DataSourceDescription">
+	<bean id="cnDataSourceDescription"
+		  autowire-candidate="false"
+		  class="org.flexpay.common.persistence.DataSourceDescription">
 		<!-- TODO Here put the CN data source ID -->
 		<constructor-arg index="0" value="${cn.data.source.description.id}" type="java.lang.Long" />
 	</bean>
 
-	<bean id="megabankDataSourceDescription" class="org.flexpay.common.persistence.DataSourceDescription">
+	<bean id="megabankDataSourceDescription"
+		  autowire-candidate="false"
+		  class="org.flexpay.common.persistence.DataSourceDescription">
 		<!-- TODO Here put the megabank data source ID -->
 		<constructor-arg index="0" value="${megabank.data.source.description.id}" type="java.lang.Long" />
 	</bean>

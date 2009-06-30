@@ -47,9 +47,9 @@
 		  p:correctionsService-ref="correctionsService"
 		  p:megabankSD-ref="megabankDataSourceDescription" />
 
-	<bean id="mbRegistryFileValidator"
+	<bean id="mbChargesFileValidator"
 		  parent="mbFileValidator"
-		  class="org.flexpay.eirc.sp.impl.validation.MbRegistryFileValidator" />
+		  class="org.flexpay.eirc.sp.impl.validation.MbChargesFileValidator" />
 
 	<bean id="mbCorrectionsFileValidator"
 		  parent="mbFileValidator"
@@ -72,10 +72,10 @@
 		  p:consumerService-ref="consumerService"
 		  p:megabankSD-ref="megabankDataSourceDescription" />
 
-	<bean id="mbRegistryFileParser"
+	<bean id="mbChargesFileParser"
 		  parent="mbFileParser"
-		  class="org.flexpay.eirc.sp.impl.parsing.MbRegistryFileParser"
-		  p:validator-ref="mbRegistryFileValidator" />
+		  class="org.flexpay.eirc.sp.impl.parsing.MbChargesFileParser"
+		  p:validator-ref="mbChargesFileValidator" />
 
 	<bean id="mbCorrectionsFileParser"
 		  parent="mbFileParser"

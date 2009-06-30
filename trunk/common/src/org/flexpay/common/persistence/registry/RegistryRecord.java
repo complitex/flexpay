@@ -4,6 +4,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.common.persistence.ImportError;
+import org.flexpay.common.util.CollectionUtils;
 
 import java.math.BigDecimal;
 import java.util.Collections;
@@ -162,6 +163,16 @@ public class RegistryRecord extends DomainObject {
 
 	public void setContainers(List<RegistryRecordContainer> containers) {
 		this.containers = containers;
+	}
+
+	public void addContainer(RegistryRecordContainer container) {
+		//noinspection CollectionsFieldAccessReplaceableByMethodCall
+		if (containers == Collections.EMPTY_LIST) {
+			containers = CollectionUtils.list();
+		}
+		container.setOrder(containers.size());
+		container.setRecord(this);
+		containers.add(container);
 	}
 
 	public RegistryRecordStatus getRecordStatus() {

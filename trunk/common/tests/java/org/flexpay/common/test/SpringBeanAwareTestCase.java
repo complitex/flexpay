@@ -3,10 +3,8 @@ package org.flexpay.common.test;
 import static org.flexpay.common.service.Roles.*;
 import org.flexpay.common.util.SecurityUtil;
 import org.jetbrains.annotations.NonNls;
-import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Test;
 import org.quartz.Scheduler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,6 +21,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
 
 import java.io.InputStream;
+import java.util.Map;
 
 /**
  * Base class for all SpringFramework initialised beans aware tests
@@ -49,9 +48,12 @@ public abstract class SpringBeanAwareTestCase extends AbstractJUnit4SpringContex
 
 	@Before
 	public void stopScheduler() throws Exception {
-		Scheduler scheduler = (Scheduler) applicationContext.getBean("schedulerFactoryBean");
-		if (scheduler != null) {
-			scheduler.shutdown();
+		Map<?, ?> schedulers = applicationContext.getBeansOfType(Scheduler.class);
+		for (Object obj : schedulers.values()) {
+			Scheduler scheduler = (Scheduler) obj;
+			if (scheduler != null) {
+				scheduler.shutdown();
+			}
 		}
 	}
 

@@ -72,9 +72,6 @@ public class MbCorrectionsFileParser extends MbFileParser {
 					break;
 				} else {
 					recordsNum += parseRecord(line, infoRegistry, recordStack);
-					if (recordsNum % 1000 == 0) {
-						log.info("{} records created, {} lines processed", recordsNum, lineNum - 1);
-					}
 				}
 
 				if (recordStack.size() >= 50) {
