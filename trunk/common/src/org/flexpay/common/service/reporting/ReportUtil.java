@@ -84,8 +84,6 @@ public class ReportUtil {
 
 	private String fontsPath = "/WEB-INF/classes/fonts/";
 
-	private Set<String> compiledReports = CollectionUtils.set();
-
 	/**
 	 * Upload report and compile it
 	 *
@@ -102,9 +100,6 @@ public class ReportUtil {
 		try {
 			// copy report
 			IOUtils.copyLarge(is, os);
-
-			// invalidate compiled report version
-			compiledReports.remove(name);
 
 			ensureReportCompiled(name);
 		} finally {
@@ -125,7 +120,6 @@ public class ReportUtil {
 
 		uploadTemplateFile(sourcePath, reportName);
 
-		compiledReports.remove(reportName);
 		ensureReportCompiled(reportName);
 	}
 
@@ -153,7 +147,7 @@ public class ReportUtil {
 	 * @return <code>true</code> if report was uploaded, or <code>false</code> otherwise
 	 */
 	public boolean templateUploaded(String name) {
-		return compiledReports.contains(name) || getTemplateFile(name).exists();
+		return getTemplateFile(name).exists();
 	}
 
 	@SuppressWarnings ({"ResultOfMethodCallIgnored"})
@@ -188,7 +182,7 @@ public class ReportUtil {
 	 */
 	private void ensureReportCompiled(String name) throws Exception {
 
-		if (compiledReports.contains(name)) {
+		if (getCompiledTemplateFile(name).exists()) {
 			return;
 		}
 
@@ -204,9 +198,6 @@ public class ReportUtil {
 
 		// save compiled report 
 		JRSaver.saveObject(report, getCompiledTemplatePath(name));
-
-		// mark template compiled, no need to compile it again
-		compiledReports.add(name);
 	}
 
 	/**
@@ -543,7 +534,6 @@ public class ReportUtil {
 	 * @return <code>true</code> if file was deleted, or <code>false</code> otherwise
 	 */
 	public boolean deleteCompiledTemplate(String name) {
-		compiledReports.remove(name);
 		return getCompiledTemplateFile(name).delete();
 	}
 
