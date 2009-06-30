@@ -40,7 +40,7 @@
 	}
 
 	function updateCurrentFieldIndex(event) {
-		if (event.keyCode == 13 || event.keyCode == 9) {
+		if (event.keyCode == 13 || (event.keyCode == 9 && !event.shiftKey)) {
 			var nextFieldId = fieldChain[currentFieldIndex + 1];
 			$('#' + nextFieldId).focus();
 			$('#' + nextFieldId).select();
