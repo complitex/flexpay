@@ -354,29 +354,6 @@ public class ReportUtil {
 		return parameters;
 	}
 
-	/**
-	 * Setup styles fonts to point to valid fonts location
-	 *
-	 * @param report JasperReport that styles are to be updated
-	 * @throws Exception if failure occurs
-	 */
-	private void adjustFontsPath(@NotNull JasperReport report) throws Exception {
-
-		ensureFontsCopied();
-
-		JRStyle[] styles = report.getStyles();
-		if (styles == null) {
-			log.debug("No styles in report");
-			return;
-		}
-
-		for (JRStyle style : styles) {
-			if (fontNames.contains(style.getFontName())) {
-				style.setPdfFontName(getFontPath(style.getFontName()));
-			}
-		}
-	}
-
 	@SuppressWarnings ({"unchecked", "RawUseOfParameterizedType"})
 	private Collection<String> fillParameters(JasperReport report, Map parameters) {
 
