@@ -13,7 +13,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Date;
 import java.util.List;
 
-public interface EircRegistryService extends RegistryService {
+public interface EircRegistryService {
 
 	/**
 	 * Find registries

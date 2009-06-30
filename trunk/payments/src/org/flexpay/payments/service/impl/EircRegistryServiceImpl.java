@@ -1,6 +1,8 @@
 package org.flexpay.payments.service.impl;
 
 import org.flexpay.common.dao.paging.Page;
+import org.flexpay.common.dao.registry.RegistryDaoExt;
+import org.flexpay.common.dao.registry.RegistryDao;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.filter.RegistryTypeFilter;
 import org.flexpay.common.persistence.registry.Registry;
@@ -12,14 +14,18 @@ import org.flexpay.payments.service.EircRegistryService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Transactional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Date;
 import java.util.List;
 
 @Transactional (readOnly = true)
-public class EircRegistryServiceImpl extends RegistryServiceImpl implements EircRegistryService {
+public class EircRegistryServiceImpl implements EircRegistryService {
+    private Logger log = LoggerFactory.getLogger(getClass());
 
 	private EircRegistryDaoExt eircRegistryDaoExt;
+    private RegistryDao registryDao;
 
 	/**
 	 * Find registries
@@ -60,4 +66,8 @@ public class EircRegistryServiceImpl extends RegistryServiceImpl implements Eirc
 		this.eircRegistryDaoExt = eircRegistryDaoExt;
 	}
 
+    @Required
+    public void setRegistryDao(RegistryDao registryDao) {
+        this.registryDao = registryDao;
+    }
 }
