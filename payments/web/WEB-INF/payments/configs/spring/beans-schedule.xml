@@ -15,8 +15,8 @@
     <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
 		<property name="locations">
             <list>
-                <value>/WEB-INF/payments/configs/synchronization.properties</value>
-                <value>/WEB-INF/payments/configs/module.properties</value>
+                <value>file:WEB-INF/payments/configs/synchronization.properties</value>
+                <value>file:WEB-INF/payments/configs/module.properties</value>
             </list>
         </property>
 		<property name="ignoreUnresolvablePlaceholders" value="true" />
@@ -29,8 +29,9 @@
             <map>
                 <entry key="processManager" value-ref="processManagerPayments" />
                 <entry key="providerService" value-ref="serviceProviderService" />
-                <entry key="serviceProviderAttributeService" value-ref="serviceProviderServiceAttributeTarget" />
+                <entry key="serviceProviderAttributeService" value-ref="serviceProviderServiceAttribute" />
                 <entry key="providerId" value=""/>
+                <entry key="email" value=""/>
             </map>
         </property>
     </bean>

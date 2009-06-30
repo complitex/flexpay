@@ -8,6 +8,7 @@ import org.flexpay.common.process.exception.ProcessInstanceException;
 import org.flexpay.common.service.Roles;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.SecurityUtil;
+import org.flexpay.common.util.DateUtil;
 import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.orgs.persistence.ServiceProvider;
 import org.flexpay.orgs.service.ServiceProviderService;
@@ -15,6 +16,7 @@ import org.flexpay.payments.persistence.process.ServiceProviderAttribute;
 import org.flexpay.payments.service.ServiceProviderAttributeService;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
+import org.quartz.JobDataMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.quartz.QuartzJobBean;
@@ -35,6 +37,7 @@ public class GeneratePaymentsRegistry extends QuartzJobBean {
     private static final long TIME_OUT = 10000;
 
     private Long providerId;
+    private String email;
 
     private ProcessManager processManager;
     private ServiceProviderService serviceProviderService;
@@ -56,7 +59,6 @@ public class GeneratePaymentsRegistry extends QuartzJobBean {
         log.debug("Starting process generate payments registry at {}", new Date());
 
         try {
-            // Map<Serializable, Serializable> parameters = context.getMergedJobDataMap().getWrappedMap();
             authenticatePaymentsRegistryGenerator();
 
             ServiceProvider serviceProvider = serviceProviderService.read(new Stub<ServiceProvider>(providerId));
@@ -72,8 +74,11 @@ public class GeneratePaymentsRegistry extends QuartzJobBean {
                             parameters.put(attribute.getName(), attribute.getValue());
                         }
                     }
-                    //parameters.put("OrganizationId", organization.getId());
-                    parameters.put("Organization", organization);
+                    Date finishDate = DateUtil.now();
+                    parameters.put("finishDate", finishDate);
+                    parameters.put("OrganizationId", organization.getId());
+                    //parameters.put("Organization", organization);
+                    parameters.put("Email", email);
 
                     long processId = processManager.createProcess("GeneratePaymentsRegisryProcess", parameters);
                     Process process;
@@ -112,6 +117,10 @@ public class GeneratePaymentsRegistry extends QuartzJobBean {
                         }
 
                     }
+                    JobDataMap contextParameters = context.getMergedJobDataMap();
+                    for (Map.Entry<Serializable, Serializable> param : parameters.entrySet()) {
+                        contextParameters.put(param.getKey(), param.getValue());
+                    }
                 } else {
                     log.error("Organization did not find for service provider with id {}", providerId);
                 }
@@ -134,8 +143,14 @@ public class GeneratePaymentsRegistry extends QuartzJobBean {
         SecurityUtil.authenticate(USER_PAYMENTS_REGISTRY_GENERATOR, USER_PAYMENTS_REGISTRY_GENERATOR_AUTHORITIES);
     }
 
+    @Required
     public void setProviderId(Long providerId) {
         this.providerId = providerId;
+    }
+
+    @Required
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     @Required

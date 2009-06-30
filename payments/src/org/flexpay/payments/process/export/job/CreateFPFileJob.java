@@ -14,6 +14,7 @@ public class CreateFPFileJob extends Job {
 
     private String moduleName;
     private String userName;
+    private String fileName;
 
     private FPFileService fpFileService;
 
@@ -23,10 +24,12 @@ public class CreateFPFileJob extends Job {
             fpFile = new FPFile();
             fpFile.setModule(fpFileService.getModuleByName(moduleName));
             fpFile.setUserName(userName);
+            fpFile.setOriginalName(fileName);
             FPFileUtil.createEmptyFile(fpFile);
 
             fpFileService.create(fpFile);
-            parameters.put("File", fpFile);
+            //parameters.put("File", fpFile);
+            parameters.put("FileId", fpFile.getId());
             log.info("File created {}", fpFile);
         } catch (Exception e) {
             log.error("Unknown file type", e);
@@ -52,7 +55,12 @@ public class CreateFPFileJob extends Job {
         this.userName = userName;
     }
 
-	@Required
+    @Required
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
+
+    @Required
     public void setFpFileService(FPFileService fpFileService) {
         this.fpFileService = fpFileService;
     }

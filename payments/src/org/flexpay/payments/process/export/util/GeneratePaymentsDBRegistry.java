@@ -76,6 +76,7 @@ public class GeneratePaymentsDBRegistry {
                     record.setBuildingNum(document.getBuildingNumber());
                     record.setBuildingBulkNum(document.getBuildingBulk());
                     record.setApartmentNum(document.getApartmentNumber());
+                    record.setUniqueOperationNumber(operation.getId());
 
                     record.setProperties(propertiesFactory.newRecordProperties());
 

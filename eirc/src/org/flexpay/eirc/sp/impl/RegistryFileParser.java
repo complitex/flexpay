@@ -12,6 +12,7 @@ import org.flexpay.common.process.ProcessLogger;
 import org.flexpay.common.service.RegistryArchiveStatusService;
 import org.flexpay.common.service.RegistryRecordService;
 import org.flexpay.common.service.RegistryTypeService;
+import org.flexpay.common.service.RegistryService;
 import org.flexpay.common.service.internal.SessionUtils;
 import org.flexpay.common.util.FPFileUtil;
 import org.flexpay.common.util.FileSource;
@@ -58,7 +59,8 @@ public class RegistryFileParser implements FileParser {
 
 	private static final int MAX_CONTAINER_SIZE = 2048;
 
-	private EircRegistryService registryService;
+	private EircRegistryService eircRegistryService;
+    private RegistryService registryService;
 	private RegistryRecordService registryRecordService;
 	private RegistryTypeService registryTypeService;
 	private RegistryArchiveStatusService registryArchiveStatusService;
@@ -73,7 +75,7 @@ public class RegistryFileParser implements FileParser {
 
 	private PropertiesFactory propertiesFactory;
 
-	@SuppressWarnings ({"ConstantConditions"})
+    @SuppressWarnings ({"ConstantConditions"})
 	@Transactional (propagation = Propagation.NOT_SUPPORTED)
 	public List<Registry> parse(FPFile spFile) throws Exception {
 
@@ -270,7 +272,7 @@ public class RegistryFileParser implements FileParser {
 	@Transactional (readOnly = true)
 	private void validateRegistry(Registry registry) throws FlexPayException {
 		EircRegistryProperties props = (EircRegistryProperties) registry.getProperties();
-		Registry persistent = registryService.getRegistryByNumber(registry.getRegistryNumber(), props.getSenderStub());
+		Registry persistent = eircRegistryService.getRegistryByNumber(registry.getRegistryNumber(), props.getSenderStub());
 		if (persistent != null) {
 			throw new FlexPayException("Registry number duplicate");
 		}
@@ -443,9 +445,14 @@ public class RegistryFileParser implements FileParser {
 		registryWorkflowManager.setNextSuccessStatus(registry);
 	}
 
-	@Required
-	public void setRegistryService(EircRegistryService registryService) {
-		this.registryService = registryService;
+    @Required
+    public void setRegistryService(RegistryService registryService) {
+        this.registryService = registryService;
+    }
+
+    @Required
+	public void setEircRegistryService(EircRegistryService eircRegistryService) {
+		this.eircRegistryService = eircRegistryService;
 	}
 
 	@Required

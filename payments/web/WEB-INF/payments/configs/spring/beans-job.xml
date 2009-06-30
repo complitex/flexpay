@@ -12,6 +12,7 @@
           p:fpFileService-ref="fpFileService"
           p:moduleName="${flexpay.module.name.payments}"
           p:userName="${payments.scheduler.user.name}"
+          p:fileName="${payments.scheduler.file.name}"
           scope="prototype" />
 
     <bean id="generatePaymentsDBRegistryJob"

@@ -2,12 +2,12 @@ package org.flexpay.payments.process.export.util;
 
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
+import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.persistence.filter.ImportErrorTypeFilter;
 import org.flexpay.common.persistence.filter.RegistryRecordStatusFilter;
 import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.persistence.registry.RegistryRecord;
 import org.flexpay.common.persistence.registry.RegistryStatus;
-import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.service.RegistryRecordService;
 import org.flexpay.common.service.RegistryService;
 import org.flexpay.common.service.RegistryStatusService;
@@ -17,9 +17,9 @@ import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -46,22 +46,22 @@ public class GeneratePaymentsMBRegistry {
             " Кон. ",
             "Рзн",
             "Дата пл.",
-            "с  ",
-            "по ",
+            "с     ",
+            "по    ",
             "Всего"
     };
     private static final Map<String, String> serviceNames = new HashMap<String, String>();
 
     static {
-        serviceNames.put("1", "ЭЛЕКТР  ");
-        serviceNames.put("2", "КВ/ЭКСПЛ"); // точно известно
-        serviceNames.put("3", "ОТОПЛ   ");
-        serviceNames.put("4", "ГОР ВОДА");
-        serviceNames.put("5", "ХОЛ ВОДА");
-        serviceNames.put("6", "КАНАЛИЗ ");
-        serviceNames.put("7", "ГАЗ ВАР ");
-        serviceNames.put("8", "ГАЗ ОТОП");
-        serviceNames.put("9", "РАДИО   ");
+        serviceNames.put("01", "ЭЛЕКТР  ");
+        serviceNames.put("02", "КВ/ЭКСПЛ"); // точно известно
+        serviceNames.put("03", "ОТОПЛ   ");
+        serviceNames.put("04", "ГОР ВОДА");
+        serviceNames.put("05", "ХОЛ ВОДА");
+        serviceNames.put("06", "КАНАЛИЗ ");
+        serviceNames.put("07", "ГАЗ ВАР ");
+        serviceNames.put("08", "ГАЗ ОТОП");
+        serviceNames.put("09", "РАДИО   ");
         serviceNames.put("10", "АНТ     "); // точно известно
         serviceNames.put("11", "ЖИВ     "); // точно известно
         serviceNames.put("12", "ГАРАЖ   "); // точно известно
@@ -96,10 +96,14 @@ public class GeneratePaymentsMBRegistry {
             // заголовочные строки
             log.info("Write header lines");
             rg.writeLine("Реестр поступивших платежей. Мемориальный ордер №" + registry.getId());
-            rg.writeLine("Для «" + organization.getName(getLocation()) + "». День распределения платежей " + dateFormat.format(new Date()) + ".");
+            rg.writeLine("Для \"" + organization.getName(getLocation()) + "\". День распределения платежей " + dateFormat.format(new Date()) + ".");
             rg.writeCharToLine(' ', 128);
             rg.writeCharToLine(' ', 128);
-            rg.writeLine("Всего «" + registry.getAmount() + "» коп. Суммы указаны в копейках. Всего строк " + registry.getRecordsNumber());
+            BigDecimal amount = registry.getAmount();
+            if (amount == null) {
+                amount = new BigDecimal(0);
+            }
+            rg.writeLine("Всего " + amount.intValue() + " коп. Суммы указаны в копейках. Всего строк " + registry.getRecordsNumber());
             rg.writeCharToLine(' ', 128);
 
             // шапка таблицы
@@ -111,7 +115,7 @@ public class GeneratePaymentsMBRegistry {
                     bf.append('+');
                 }
                 for (int i = 0; i < s.length(); i++) {
-                    bf.append('_');
+                    bf.append('-');
                 }
             }
             rg.writeLine(bf.toString());
@@ -170,7 +174,7 @@ public class GeneratePaymentsMBRegistry {
         List<String> infoLine = new ArrayList<String>();
 
         // код квитанции
-        infoLine.add(createCellData(null, tableHeader[0].length(), ' '));
+        infoLine.add(createCellData(String.valueOf(record.getUniqueOperationNumber()), tableHeader[0].length(), ' '));
 
         // лиц. счет ЕРЦ
         infoLine.add(createCellData(null, tableHeader[1].length(), ' '));
@@ -181,7 +185,7 @@ public class GeneratePaymentsMBRegistry {
         // ФИО
         String fio = record.getLastName();
         if (record.getFirstName() != null && record.getFirstName().length() > 0) {
-            fio += record.getFirstName().charAt(0);
+            fio += " " + record.getFirstName().charAt(0);
             if (record.getMiddleName() != null && record.getMiddleName().length() > 0) {
                 fio += " " + record.getMiddleName().charAt(0);
             }
@@ -213,22 +217,22 @@ public class GeneratePaymentsMBRegistry {
         while (serviceCode.length() < 2) {
             serviceCode = "0" + serviceCode;
         }
-        String service = serviceCode + "." + serviceNames.get(record.getServiceCode()) + " " + "*";
-        infoLine.add(createCellData(service, tableHeader[7].length(), ' '));
+        String service = serviceCode + "." + serviceNames.get(serviceCode) + " " + "*";
+        infoLine.add(createCellData(service, tableHeader[8].length(), ' '));
 
         // начальное показание счетчика
-        infoLine.add(createCellData("0", tableHeader[8].length(), ' '));
-
-        // конечное показание счетчика
         infoLine.add(createCellData("0", tableHeader[9].length(), ' '));
 
-        // разница показаний счетчика
+        // конечное показание счетчика
         infoLine.add(createCellData("0", tableHeader[10].length(), ' '));
+
+        // разница показаний счетчика
+        infoLine.add(createCellData("0", tableHeader[11].length(), ' '));
 
         // дата платежа
         Date operationDate = record.getOperationDate();
         String paymentDate = operationDate != null ? paymentDateFormat.format(operationDate) : null;
-        infoLine.add(createCellData(paymentDate, tableHeader[11].length(), ' '));
+        infoLine.add(createCellData(paymentDate, tableHeader[12].length(), ' '));
 
         // с какого месяца оплачена услуга
         String paymentMounth = null;
@@ -236,25 +240,31 @@ public class GeneratePaymentsMBRegistry {
             Calendar cal = (Calendar) Calendar.getInstance().clone();
             cal.setTime(operationDate);
             cal.set(Calendar.DAY_OF_MONTH, 1);
-            cal.roll(Calendar.MONTH, 1);
+            cal.roll(Calendar.MONTH, -1);
             paymentMounth = paymentPeriodDateFormat.format(cal.getTime());
         }
-        infoLine.add(createCellData(paymentMounth, tableHeader[12].length(), ' '));
-
-        // по какой месяц оплачена услуга
         infoLine.add(createCellData(paymentMounth, tableHeader[13].length(), ' '));
 
-        // сумма
-        infoLine.add(createCellData(String.valueOf(record.getAmount()), tableHeader[14].length(), ' '));
+        // по какой месяц оплачена услуга
+        infoLine.add(createCellData(paymentMounth, tableHeader[14].length(), ' '));
 
-        return (String[]) infoLine.toArray();
+        // сумма
+        infoLine.add(createCellData(String.valueOf(record.getAmount().intValue()), null, ' '));
+
+        return infoLine.toArray(new String[infoLine.size()]);
     }
 
     @NotNull
-    private String createCellData(@Nullable String data, @NotNull Integer length, char ch) {
+    private String createCellData(@Nullable String data, @Nullable Integer length, char ch) {
         String cellData = data;
         if (cellData == null) {
             cellData = "";
+        }
+        if (length == null) {
+            return cellData;
+        }
+        if (cellData.length() > length) {
+            return cellData.substring(0, length);
         }
         StringBuffer sb = new StringBuffer(cellData);
         while (sb.length() < length) {
@@ -283,6 +293,6 @@ public class GeneratePaymentsMBRegistry {
 
     @NotNull
     private Locale getLocation() {
-        return new Locale("rus");
+        return new Locale("ru");
     }
 }
