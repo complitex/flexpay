@@ -49,11 +49,6 @@ public class ApartmentsListAjaxAction extends FPActionWithPagerSupport {
 		return SUCCESS;
 	}
 
-	@Override
-	protected void setBreadCrumbs() {
-
-	}
-
 	public void setParents(String[] parents) {
 		this.parents = parents;
 	}

@@ -60,11 +60,6 @@ public class BuildingDeleteAction extends FPActionSupport {
 		return REDIRECT_SUCCESS;
 	}
 
-	@Override
-	protected void setBreadCrumbs() {
-
-	}
-
 	public void setObjectIds(List<Long> objectIds) {
 		this.objectIds = objectIds;
 	}

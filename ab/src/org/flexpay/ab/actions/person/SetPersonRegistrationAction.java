@@ -52,11 +52,6 @@ public class SetPersonRegistrationAction extends ApartmentFilterDependentAction 
 		return ERROR;
 	}
 
-	@Override
-	protected void setBreadCrumbs() {
-
-	}
-
 	public Person getPerson() {
 		return person;
 	}

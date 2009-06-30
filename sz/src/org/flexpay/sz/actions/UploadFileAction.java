@@ -82,11 +82,6 @@ public class UploadFileAction extends FPActionSupport {
 		return ERROR;
 	}
 
-	@Override
-	protected void setBreadCrumbs() {
-		
-	}
-
 	public String getMessage() {
 		return message;
 	}

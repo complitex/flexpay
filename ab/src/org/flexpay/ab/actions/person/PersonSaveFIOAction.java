@@ -74,11 +74,6 @@ public class PersonSaveFIOAction extends FPActionSupport {
 		return REDIRECT_ERROR;
 	}
 
-	@Override
-	protected void setBreadCrumbs() {
-
-	}
-
 	public Person getPerson() {
 		return person;
 	}

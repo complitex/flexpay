@@ -128,6 +128,11 @@ public abstract class FPActionSupport extends ActionSupport implements UserPrefe
 			log.warn("No user preferences found or crumb. Action execution terminated.");
 			return;
 		}
+		
+		if (crumbNameKey == null) {
+			log.debug("For this action breadcrumb name not initialize.");
+			return;
+		}
 
 		Stack<Crumb> crumbs = userPreferences.getCrumbs();
 		if (crumbs == null) {
@@ -148,9 +153,7 @@ public abstract class FPActionSupport extends ActionSupport implements UserPrefe
 		if (crumbToReplace != null) {
 			deleteOldCrumbs(userPreferences.getCrumbs().indexOf(crumbToReplace));
 		}
-		if (crumbNameKey != null) {
-			crumb.setWildPortionOfName(crumbNameKey);
-		}
+		crumb.setWildPortionOfName(crumbNameKey);
 
 		crumbs.add(crumb);
 	}
