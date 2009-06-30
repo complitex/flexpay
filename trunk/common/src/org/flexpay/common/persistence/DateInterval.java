@@ -174,9 +174,6 @@ public abstract class DateInterval<T extends TemporaryValue<T>, DI extends DateI
 				.toString();
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public int hashCode() {
 		return new HashCodeBuilder()
@@ -188,9 +185,6 @@ public abstract class DateInterval<T extends TemporaryValue<T>, DI extends DateI
 				.toHashCode();
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {

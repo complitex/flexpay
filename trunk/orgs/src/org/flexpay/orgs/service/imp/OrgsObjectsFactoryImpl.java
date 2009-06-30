@@ -11,4 +11,5 @@ public class OrgsObjectsFactoryImpl implements OrgsObjectsFactory {
 	public ServiceOrganization newServiceOrganization() {
 		return ServiceOrganization.newInstance();
 	}
+
 }

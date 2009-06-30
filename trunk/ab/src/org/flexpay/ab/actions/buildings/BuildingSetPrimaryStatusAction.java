@@ -45,11 +45,6 @@ public class BuildingSetPrimaryStatusAction extends FPActionSupport {
 		return REDIRECT_SUCCESS;
 	}
 
-	@Override
-	protected void setBreadCrumbs() {
-
-	}
-
 	public BuildingAddress getBuildings() {
 		return buildings;
 	}

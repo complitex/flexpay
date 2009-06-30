@@ -21,20 +21,13 @@ public class FileDownloadServlet extends HttpServlet {
 
 	private static final Logger log = LoggerFactory.getLogger(FileDownloadServlet.class);
 
-	private int inline = 0;
+	private boolean isInline = false;
 	private FPFile file = new FPFile();
 	private Long fileId = null;
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-		String inlineStr = request.getParameter("inline");
-		if (StringUtils.isNotBlank(inlineStr)) {
-			try {
-				inline = Integer.parseInt(inlineStr);
-			} catch (NumberFormatException ex) {
-				log.debug("Invalid inline parameter {}", inlineStr);
-			}
-		}
+		isInline = request.getParameter("inline") != null;
 
 		String fileIdStr = StringUtil.getFileNameWithoutExtension(request.getRequestURI());
 		log.debug("Request uri: {}", request.getRequestURI());
@@ -98,7 +91,7 @@ public class FileDownloadServlet extends HttpServlet {
 	}
 
 	public String getContentDisposition() throws UnsupportedEncodingException {
-		String result = inline != 0 ? "inline" : "attachment;filename=\"" + new String(getFileName().getBytes("UTF-8"), "ISO-8859-1") + "\"";
+		String result = isInline ? "inline" : "attachment;filename=\"" + new String(getFileName().getBytes("UTF-8"), "ISO-8859-1") + "\"";
 
 		log.debug("Result: {}", result);
 

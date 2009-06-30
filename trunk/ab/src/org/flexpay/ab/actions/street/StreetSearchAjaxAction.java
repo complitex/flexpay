@@ -62,11 +62,6 @@ public class StreetSearchAjaxAction extends FPActionSupport {
 		return SUCCESS;
 	}
 
-	@Override
-	protected void setBreadCrumbs() {
-
-	}
-
 	public void setQ(String q) {
 		this.q = q;
 	}

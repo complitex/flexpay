@@ -74,11 +74,9 @@ public class HistoryConsumer extends DomainObjectWithStatus {
 				toString();
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public boolean equals(Object obj) {
 		return obj instanceof HistoryConsumer && super.equals(obj);
 	}
+
 }

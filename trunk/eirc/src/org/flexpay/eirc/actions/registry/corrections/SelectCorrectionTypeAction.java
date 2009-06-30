@@ -18,4 +18,5 @@ public class SelectCorrectionTypeAction extends org.flexpay.payments.actions.reg
     protected boolean checkApartmentType(int objectType) {
         return super.checkApartmentType(objectType) && typeRegistry.getType(BtiApartment.class) == objectType;
     }
+
 }

@@ -34,11 +34,6 @@ public class ApartmentDeleteAction extends FPActionSupport {
 		return REDIRECT_SUCCESS;
 	}
 
-	@Override
-	public void setBreadCrumbs() {
-
-	}
-
 	public Set<Long> getObjectIds() {
 		return objectIds;
 	}

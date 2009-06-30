@@ -34,11 +34,6 @@ public class ServiceTypeDeleteAction extends CashboxCookieActionSupport {
 		return REDIRECT_SUCCESS;
 	}
 
-	@Override
-	protected void setBreadCrumbs() {
-
-	}
-
 	public Set<Long> getObjectIds() {
 		return objectIds;
 	}

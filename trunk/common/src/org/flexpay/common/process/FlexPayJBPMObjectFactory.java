@@ -44,6 +44,7 @@ public class FlexPayJBPMObjectFactory extends JbpmObjectFactory implements Initi
 
 	/**
 	 * Create Object
+	 *
 	 * @param name object name
 	 * @return created object
 	 */
@@ -60,6 +61,7 @@ public class FlexPayJBPMObjectFactory extends JbpmObjectFactory implements Initi
 
 	/**
 	 * Check if object factory already has object
+	 *
 	 * @param name object to check
 	 * @return true if factory has object, false otherwise
 	 */

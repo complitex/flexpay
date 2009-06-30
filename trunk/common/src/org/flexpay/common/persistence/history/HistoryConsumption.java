@@ -36,11 +36,9 @@ public class HistoryConsumption extends DomainObject {
 				toString();
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public boolean equals(Object obj) {
 		return obj instanceof HistoryConsumption && super.equals(obj);
 	}
+
 }
