@@ -113,6 +113,10 @@ public abstract class PaymentsDayReportAction extends CashboxCookieActionSupport
 		return base;
 	}
 
+	protected Cashbox getCashbox() {
+		return cashboxService.read(new Stub<Cashbox>(cashboxId));
+	}
+
 	protected PaymentPoint getPaymentPoint() {
 		Cashbox cashbox = cashboxService.read(new Stub<Cashbox>(cashboxId));
 		return paymentPointService.read(cashbox.getPaymentPointStub());

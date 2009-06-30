@@ -502,7 +502,7 @@
 		left join fetch doc.documentStatus docStatus
 		left join fetch doc.documentType docType
 		left join fetch doc.service service
-		where o.registerOrganization.id = ?
+		where o.cashbox.id = ?
 		 	and (o.registerDate >= ? and o.registerDate <= ?)
 			and (o.operationType.code in (1, 2, 5, 6))
 			and (status.code = ?)						
@@ -590,6 +590,29 @@
 		left join fetch serviceProvider.organization organization
 		left join fetch organization.names names
 		where o.paymentPoint.id = ?
+		    and o.creationDate >= ?
+		    and o.creationDate <= ?
+			and (o.operationType.code in (1, 2, 5, 6))
+			and (status.code = ?)
+		order by o.creationDate
+    ]]></query>
+
+	<query name="Operation.listPaymentsByOrganization"><![CDATA[
+		select distinct o
+		from Operation o
+		left join fetch o.operationStatus status
+		left join fetch o.operationLevel level
+		left join fetch o.documents doc
+		left join fetch o.cashbox cashbox
+		left join fetch doc.documentStatus docStatus
+		left join fetch doc.documentType docType
+		left join fetch doc.service service
+		left join fetch service.serviceType serviceType
+		left join fetch serviceType.typeNames
+		left join fetch service.serviceProvider serviceProvider
+		left join fetch serviceProvider.organization organization
+		left join fetch organization.names names
+		where o.registerOrganization.id = ?
 		    and o.creationDate >= ?
 		    and o.creationDate <= ?
 			and (o.operationType.code in (1, 2, 5, 6))

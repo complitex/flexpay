@@ -31,24 +31,37 @@ public interface OperationDao extends GenericDao<Operation, Long> {
 	List<Operation> listPaymentOperations(Date beginDate, Date endDate, Page<Operation> pager);
 
     /**
-	 * List of all payment operations which has status REGISTERED inside time interval and organization
+	 * List of all payment operations which has status REGISTERED inside time interval and cashbox
 	 *
-	 * @param organizationId organization id
+	 * @param cashboxId organization id
 	 * @param beginDate lower bound for operation registration date
 	 * @param endDate higher bound for operation registration date
+	 * @param status operation status
 	 * @return list of payment operations
 	 */
-	List<Operation> listPayments(Long organizationId, Date beginDate, Date endDate, int status);
+	List<Operation> listPayments(Long cashboxId, Date beginDate, Date endDate, int status);
+
+	/**
+	 * List of all payment operations which has status REGISTERED inside time interval and payment point
+	 *
+	 * @param paymentPointId payment point id
+	 * @param beginDate lower bound for operation registration date
+	 * @param endDate higher bound for operation registration date
+	 * @param status operation status
+	 * @return list of payment operations
+	 */
+	List<Operation> listPaymentsByPaymentPoint(Long paymentPointId, Date beginDate, Date endDate, int status);
 
 	/**
 	 * List of all payment operations which has status REGISTERED inside time interval and organization
 	 *
-	 * @param organizationId organization id
+	 * @param organizationId payment point id
 	 * @param beginDate lower bound for operation registration date
 	 * @param endDate higher bound for operation registration date
+	 * @param status operation status
 	 * @return list of payment operations
 	 */
-	List<Operation> listPaymentsByPaymentPoint(Long paymentPointId, Date beginDate, Date endDate, int status);
+	List<Operation> listPaymentsByOrganization(Long organizationId, Date beginDate, Date endDate, int status);
 
     /**
      * List last operations which have been created between <code>beginDate</code> and <code>endDate</code>
