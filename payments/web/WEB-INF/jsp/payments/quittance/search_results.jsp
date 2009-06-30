@@ -1,6 +1,11 @@
 <%@ include file="/WEB-INF/jsp/common/taglibs.jsp" %>
 
-<%@include file="search_results_validation.jsp" %>
+
+<%@include file="js/search_results_common.jsp" %>
+<%@include file="js/search_results_validation.jsp" %>
+<%@include file="js/search_results_buttons.jsp" %>
+<%@include file="js/search_results_fieldchain.jsp" %>
+<%@include file="js/search_results_events.jsp" %>
 
 <s:actionerror/>
 
@@ -40,7 +45,7 @@
 													 id="payments_%{#serviceIndx}"
 													 value="%{outgoingBalance}"
 													 onblur="replaceEmptyValueWithZero('payments_%{#serviceIndx}');"
-													 onchange="disablePayment();"
+													 onchange="updateInput();disablePayment();"													 
 													 cssStyle="width:100%;text-align:right;"/></td>
 					</tr>
 				</s:iterator>
@@ -53,7 +58,6 @@
 				<td class="col" colspan="5" style="text-align:right;font-weight:bold;">
 					<s:text name="payments.quittances.quittance_pay.total_payable"/></td>
 				<td class="col"><s:textfield name="totalToPay" readonly="true" value="%{getTotalToPay()}"
-											 onkeypress="return FP.disableEnterKey(event);"
 											 cssStyle="width:100%;text-align:right;"/></td>
 			</tr>
 
@@ -65,23 +69,23 @@
 						name="payments.quittance.payment.input"/></td>
 				<td><s:textfield name="inputSumm" cssStyle="width:100%;text-align:right;"
 								 value="%{getTotalToPay()}"
-								 onkeypress="return FP.disableEnterKey(event);"/></td>
+								 onchange="disablePayment();"/></td>
 			</tr>
 
 			<tr class="cols_1">
 				<td colspan="5" style="font-weight:bold;text-align:right;"><s:text
 						name="payments.quittance.payment.change"/></td>
 				<td><s:textfield name="changeSumm" cssStyle="width:100%;text-align:right;" value="0.00"
-								 onkeypress="return FP.disableEnterKey(event);" readonly="true"/></td>
+								 readonly="true"/></td>
 			</tr>
 
 			<tr>
 				<td colspan="5" style="text-align:right;">
-					<input type="button" id="printQuittanceButton" class="btn-exit" style="width: 80px;" onclick="doPrintQuittance();"
+					<input type="button" id="printQuittanceButton" class="btn-exit" style="width: 80px;"
 						   value="<s:text name="payments.quittances.quittance_pay.print_quittance"/>"/>
 				</td>
 				<td style="text-align:right;">
-					<input type="button" id="payQuittanceButton" class="btn-exit" style="width: 80px;" onclick="doPayQuittance();"
+					<input type="button" id="payQuittanceButton" class="btn-exit" style="width: 80px;"
 						   value="<s:text name="payments.quittances.quittance_pay.pay"/>"/>
 				</td>
 				<s:hidden name="actionName" value="%{actionName}"/>
