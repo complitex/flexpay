@@ -15,8 +15,8 @@
     <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
 		<property name="locations">
             <list>
-                <value>file:WEB-INF/payments/configs/synchronization.properties</value>
-                <value>file:WEB-INF/payments/configs/module.properties</value>
+                <value>/WEB-INF/payments/configs/synchronization.properties</value>
+                <value>/WEB-INF/payments/configs/module.properties</value>
             </list>
         </property>
 		<property name="ignoreUnresolvablePlaceholders" value="true" />
