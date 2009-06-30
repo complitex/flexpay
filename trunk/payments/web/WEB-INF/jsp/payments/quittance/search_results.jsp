@@ -2,8 +2,8 @@
 
 
 <%@include file="js/search_results_common.jsp" %>
-<%@include file="js/search_results_validation.jsp" %>
 <%@include file="js/search_results_buttons.jsp" %>
+<%@include file="js/search_results_validation.jsp" %>
 <%@include file="js/search_results_fieldchain.jsp" %>
 <%@include file="js/search_results_events.jsp" %>
 
