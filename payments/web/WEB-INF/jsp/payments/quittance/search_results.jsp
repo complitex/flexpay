@@ -1,11 +1,7 @@
 <%@ include file="/WEB-INF/jsp/common/taglibs.jsp" %>
 
 
-<%@include file="js/search_results_common.jsp" %>
-<%@include file="js/search_results_buttons.jsp" %>
-<%@include file="js/search_results_validation.jsp" %>
-<%@include file="js/search_results_fieldchain.jsp" %>
-<%@include file="js/search_results_events.jsp" %>
+<%@include file="search_results_js.jsp" %>
 
 <s:actionerror/>
 
@@ -44,9 +40,9 @@
 						<td class="col"><s:textfield name="payments['%{#serviceIndx}']"
 													 id="payments_%{#serviceIndx}"
 													 value="%{outgoingBalance}"
-													 onblur="replaceEmptyValueWithZero('payments_%{#serviceIndx}');"
-													 onchange="updateInput();disablePayment();"													 
+													 onchange="onChangeHandler('payments_%{#serviceIndx}');"
 													 cssStyle="width:100%;text-align:right;"/></td>
+
 					</tr>
 				</s:iterator>
 			</s:iterator>
@@ -56,27 +52,34 @@
 			</tr>
 			<tr class="cols_1">
 				<td class="col" colspan="5" style="text-align:right;font-weight:bold;">
-					<s:text name="payments.quittances.quittance_pay.total_payable"/></td>
-				<td class="col"><s:textfield name="totalToPay" readonly="true" value="%{getTotalToPay()}"
-											 cssStyle="width:100%;text-align:right;"/></td>
+					<s:text name="payments.quittances.quittance_pay.total_payable"/>
+				</td>
+				<td class="col">
+					<s:textfield name="totalToPay" readonly="true" value="%{getTotalToPay()}"
+											 cssStyle="width:100%;text-align:right;"/>
+				</td>
 			</tr>
 
 			<tr class="cols_1_error" style="display:none;">
 				<td colspan="6"/>
 			</tr>
 			<tr class="cols_1">
-				<td colspan="5" style="font-weight:bold;text-align:right;"><s:text
-						name="payments.quittance.payment.input"/></td>
-				<td><s:textfield name="inputSumm" cssStyle="width:100%;text-align:right;"
-								 value="%{getTotalToPay()}"
-								 onchange="disablePayment();"/></td>
+				<td colspan="5" style="font-weight:bold;text-align:right;">
+					<s:text name="payments.quittance.payment.input"/>
+				</td>
+				<td>
+					<s:textfield name="inputSumm" cssStyle="width:100%;text-align:right;"value="%{getTotalToPay()}"
+							onchange="onChageInputHandler();"/>
+				</td>
 			</tr>
 
 			<tr class="cols_1">
-				<td colspan="5" style="font-weight:bold;text-align:right;"><s:text
-						name="payments.quittance.payment.change"/></td>
-				<td><s:textfield name="changeSumm" cssStyle="width:100%;text-align:right;" value="0.00"
-								 readonly="true"/></td>
+				<td colspan="5" style="font-weight:bold;text-align:right;">
+					<s:text name="payments.quittance.payment.change"/>
+				</td>
+				<td>
+					<s:textfield name="changeSumm" cssStyle="width:100%;text-align:right;" value="0.00" readonly="true"/>
+				</td>
 			</tr>
 
 			<tr>
