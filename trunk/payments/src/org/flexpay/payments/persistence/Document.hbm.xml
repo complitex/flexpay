@@ -426,7 +426,6 @@
 		where serv.serviceProvider.id = ?
 		and op.creationDate >= ? and op.creationDate <= ?
 		and doc.documentType.id = 1 and doc.documentStatus.id = 2
-		group by op.id
 	]]></query>
 
 </hibernate-mapping>

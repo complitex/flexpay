@@ -38,6 +38,7 @@ import org.junit.Test;
 import org.quartz.JobExecutionContext;
 import org.quartz.SchedulerException;
 import org.quartz.impl.StdScheduler;
+import org.quartz.impl.calendar.BaseCalendar;
 import org.quartz.spi.TriggerFiredBundle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -245,9 +246,9 @@ public class TestGeneratePaymentsRegistry extends SpringBeanAwareTestCase {
         operationService.save(operation);
 
         //change register date operation
-        Date registerDate = operation.getRegisterDate();
-        registerDate = DateUtil.previous(registerDate);
-        operation.setRegisterDate(registerDate);
+        Date creationDate = operation.getRegisterDate();
+        creationDate = DateUtil.previous(creationDate);
+        operation.setCreationDate(creationDate);
 
         operations.add(operation);
 
@@ -379,7 +380,9 @@ public class TestGeneratePaymentsRegistry extends SpringBeanAwareTestCase {
         jobScheduler.setProviderService(tProviderService);
         jobScheduler.setServiceProviderAttributeService(tProviderAttributeService);
 
-        TriggerFiredBundle fireBundle = new TriggerFiredBundle(tJobTradingDayTrigger.getJobDetail(), tJobTradingDayTrigger, tSchedulerFactoryBeanRegistry.getCalendar(""),
+        BaseCalendar calendar = new BaseCalendar();
+
+        TriggerFiredBundle fireBundle = new TriggerFiredBundle(tJobTradingDayTrigger.getJobDetail(), tJobTradingDayTrigger, calendar,
                 false, null, null, null, null);
         JobExecutionContext schedulerContext = new JobExecutionContext(tSchedulerFactoryBeanRegistry, fireBundle, jobScheduler);
         log.debug("start jobScheduler");
