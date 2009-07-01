@@ -252,21 +252,15 @@
 
 	function setCurrentFieldIndex(event) {
 
-		console.log('set START');
-
 		var selectedFieldId = $(event.target).attr('id');
 
 		for (var i = 0; i < fieldChain.length; i++) {
 			if (fieldChain[i] == selectedFieldId) {
 				currentFieldIndex = i;
 				$('#' + fieldChain[i]).select();
-
-				console.log('set END (selected ' + i + ') (1)');
 				return;
 			}
 		}
-
-		console.log('set END (2)');
 	}
 
 	function updateCurrentFieldIndex(event) {
