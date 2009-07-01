@@ -242,8 +242,7 @@
 		}
 		// adding total input summ field to field chain
 		fieldChain[fieldChain.length] = 'inputSumm';
-		fieldChain[fieldChain.length] = 'printQuittanceButton';
-
+		
 		// setting focus to the first payments field
 		$('#' + fieldChain[0]).focus();
 		$('#' + fieldChain[0]).select();
