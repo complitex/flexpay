@@ -4,6 +4,7 @@ import org.flexpay.common.persistence.Stub;
 import org.flexpay.payments.persistence.Document;
 import org.flexpay.payments.persistence.Operation;
 import org.flexpay.orgs.persistence.ServiceProvider;
+import org.flexpay.orgs.persistence.Organization;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.security.annotation.Secured;
@@ -75,6 +76,6 @@ public interface DocumentService {
 	 * 		   and type CASH_PAYMENT which were created in time period
 	 */
 	@Secured (Roles.DOCUMENT_READ)
-	List<Document> listRegisteredPaymentDocuments(@NotNull ServiceProvider serviceProvider, @NotNull Date begin, @NotNull Date end);
+	List<Document> listRegisteredPaymentDocuments(@NotNull ServiceProvider serviceProvider, @NotNull Organization organization, @NotNull Date begin, @NotNull Date end);
 
 }

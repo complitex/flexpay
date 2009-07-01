@@ -31,6 +31,7 @@
                 <entry key="providerService" value-ref="serviceProviderService" />
                 <entry key="serviceProviderAttributeService" value-ref="serviceProviderServiceAttribute" />
                 <entry key="providerId" value=""/>
+                <entry key="registeredOrganizationId" value=""/>
                 <entry key="email" value=""/>
             </map>
         </property>
