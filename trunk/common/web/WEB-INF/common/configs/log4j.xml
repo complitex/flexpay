@@ -117,6 +117,11 @@
 		<appender-ref ref="flexpay" />
 	</category>
 
+	<category name="org.flexpay.eirc.service.importexport" additivity="false">
+		<priority value="info" />
+		<appender-ref ref="flexpay" />
+	</category>
+
 	<category name="org.flexpay.common.locking" additivity="false">
 		<priority value="info" />
 		<appender-ref ref="flexpay" />

@@ -67,7 +67,7 @@ public class ImportUtil {
 			return null;
 		}
 
-		log.error("No FIO matches");
+		log.debug("No FIO matches");
 		error.setErrorId("error.eirc.import.person_no_fio_match");
 		return null;
 	}

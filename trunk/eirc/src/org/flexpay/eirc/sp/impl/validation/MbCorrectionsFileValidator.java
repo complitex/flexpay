@@ -4,21 +4,21 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.flexpay.common.exception.FlexPayException;
-import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.eirc.sp.impl.MbFileValidator;
 import org.flexpay.eirc.sp.impl.ValidationContext;
+import org.flexpay.orgs.persistence.ServiceProvider;
 import org.flexpay.payments.persistence.Service;
 import org.flexpay.payments.persistence.ServiceType;
-import org.flexpay.orgs.persistence.ServiceProvider;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
-import java.util.List;
 import java.util.Date;
+import java.util.List;
 
 public class MbCorrectionsFileValidator extends MbFileValidator {
 
@@ -52,8 +52,9 @@ public class MbCorrectionsFileValidator extends MbFileValidator {
 						validateHeader(line, context);
 					} catch (Exception e) {
 						log.warn("Incorrect header in file. Line number = {}, error: {}\nLine = {}",
-								new Object[] {lineNum, e.getMessage(), line});
+								new Object[]{lineNum, e.getMessage(), line});
 						ret = false;
+						break;
 					}
 				} else if (line.startsWith(LAST_FILE_STRING_BEGIN)) {
 					fileValues.setLines(lineNum - 2);
@@ -61,7 +62,7 @@ public class MbCorrectionsFileValidator extends MbFileValidator {
 						validateFooter(line, fileValues);
 					} catch (Exception e) {
 						log.warn("Incorrect footer in file. Line number = {}, error: {}\nLine = {}",
-								new Object[] {lineNum, e.getMessage(), line});
+								new Object[]{lineNum, e.getMessage(), line});
 						ret = false;
 					}
 					log.debug("Validated {} records in file", lineNum - 2);
@@ -71,7 +72,7 @@ public class MbCorrectionsFileValidator extends MbFileValidator {
 						validateRecord(line, context);
 					} catch (Exception e) {
 						log.warn("Incorrect record in file. Line number = {}, error: {}. Line = {}",
-								new Object[] {lineNum, e.getMessage(), line});
+								new Object[]{lineNum, e.getMessage(), line});
 						ret = false;
 					}
 				}
@@ -184,11 +185,16 @@ public class MbCorrectionsFileValidator extends MbFileValidator {
 
 		String[] serviceCodes = fields[20].split(SERVICE_CODES_SEPARATOR);
 		for (String code : serviceCodes) {
-			if (serviceTypesMapper.getInternalType(code) == null) {
-				throw new FlexPayException("Cannot map service type code " + code + " in list " +  fields[20]);
+			if ("0".equals(code)) {
+				if (serviceCodes.length > 1) {
+					throw new FlexPayException("Service code 0 should be the only one: " + fields[20]);
+				}
+			} else if (serviceTypesMapper.getInternalType(code) == null) {
+				throw new FlexPayException("Cannot map service type code " + code + " in list " + fields[20]);
+			} else {
+				// ensure services can be found
+				findInternalServices(context.getServiceProviderStub(), code, beginDate);
 			}
-			// ensure services can be found
-			findInternalServices(context.getServiceProviderStub(), code, beginDate);
 		}
 
 		if (!fields[21].equals("0") && !fields[21].equals("1")) {
