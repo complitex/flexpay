@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ContractForServicesAppendix4" pageWidth="483" pageHeight="786" whenNoDataType="AllSectionsNoDetail" columnWidth="483" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" isSummaryNewPage="true">
+	<property name="ireport.encoding" value="UTF-8"/>
+	<import value="java.text.SimpleDateFormat"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="java.util.*"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<style name="TNR_7" isDefault="false" fontName="LiberationSerif-Regular" fontSize="7" pdfFontName="fonts/LiberationSerif-Regular.ttf" pdfEncoding="Cp1251" isPdfEmbedded="true"/>
+	<style name="TNR_8" isDefault="false" fontName="LiberationSerif-Regular" fontSize="8" pdfFontName="fonts/LiberationSerif-Regular.ttf" pdfEncoding="Cp1251" isPdfEmbedded="true"/>
+	<style name="TNR_9" isDefault="true" fontName="LiberationSerif-Regular" fontSize="9" pdfFontName="fonts/LiberationSerif-Regular.ttf" pdfEncoding="Cp1251" isPdfEmbedded="true"/>
+	<style name="TNR_10" isDefault="false" fontName="LiberationSerif-Regular" fontSize="10" pdfFontName="fonts/LiberationSerif-Regular.ttf" pdfEncoding="Cp1251" isPdfEmbedded="true"/>
+	<style name="TNR_12" isDefault="false" fontName="LiberationSerif-Regular" fontSize="12" pdfFontName="fonts/LiberationSerif-Regular.ttf" pdfEncoding="Cp1251" isPdfEmbedded="true"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["C:/Documents and Settings/Alexuy/Local Settings/Temp/flexpay_data/reports/templates/"]]></defaultValueExpression>
+	</parameter>
+	<title>
+		<band height="311">
+			<staticText>
+				<reportElement x="0" y="0" width="482" height="12"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Поставка неплатнику податку]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="0" y="12" width="184" height="16"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="0" y="28" width="184" height="16"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="184" y="12" width="29" height="16"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="184" y="28" width="29" height="16"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="272" y="12" width="211" height="52"/>
+				<textElement textAlignment="Justified"/>
+				<text><![CDATA[Затверждено наказом ДПА України від 30 травня 1997 р. №165 (у редакції наказу ДПА України від 08.10.98 р. №469, з урахуванням змін, внесених наказом ДПА України від 30.06.05 р. №244)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="3" y="12" width="181" height="16"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Оригінал (видається покупцю)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="3" y="28" width="181" height="16"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Копія (залишається у продавця)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="44" width="180" height="14"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<text><![CDATA[Непотрібне виділити поміткою “Х”]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="TNR_12" x="0" y="64" width="482" height="16"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[ПОДАТКОВА НАКЛАДНА]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="3" y="81" width="229" height="12"/>
+				<textElement/>
+				<text><![CDATA[Дата виписки податкової накладної ____________]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="325" y="80" width="157" height="12"/>
+				<textElement/>
+				<text><![CDATA[Порядковий номер _______________]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="92" width="232" height="12"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[ПРОДАВЕЦЬ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="252" y="92" width="230" height="12"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[ПОКУПЕЦЬ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="3" y="104" width="229" height="12"/>
+				<textElement/>
+				<text><![CDATA[Особа (платник податку) - продавець]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="252" y="104" width="229" height="12"/>
+				<textElement/>
+				<text><![CDATA[Особа (платник податку) - покупець]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="0" y="116" width="232" height="24"/>
+			</rectangle>
+			<textField>
+				<reportElement x="3" y="116" width="229" height="24"/>
+				<textElement markup="styled"/>
+				<textFieldExpression class="java.lang.String"><![CDATA["@исполнитель@"]]></textFieldExpression>
+			</textField>
+			<rectangle>
+				<reportElement x="251" y="116" width="232" height="24"/>
+			</rectangle>
+			<textField>
+				<reportElement x="255" y="116" width="230" height="24"/>
+				<textElement markup="styled"/>
+				<textFieldExpression class="java.lang.String"><![CDATA["@арендатор@"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement style="TNR_7" x="0" y="140" width="232" height="9"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[(назва; прізвище, ім'я, по батькові — для фізичної особи)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="TNR_7" x="251" y="140" width="232" height="9"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[(назва; прізвище, ім'я, по батькові — для фізичної особи)]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="65" y="149" width="105" height="16"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="305" y="149" width="105" height="16"/>
+			</rectangle>
+			<staticText>
+				<reportElement style="TNR_7" x="0" y="165" width="232" height="9"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[(індивідуальний податковий номер продавця)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="TNR_7" x="251" y="165" width="232" height="9"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[(індивідуальний податковий номер покупця)]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="4" y="174" width="229" height="60"/>
+				<textElement textAlignment="Justified" markup="styled"/>
+				<textFieldExpression class="java.lang.String"><![CDATA["Місцезнаходження продавця:"
++ "@адрес@<br/>"
++ "№ телефону: @телефон@<br/>"
++ "Номер свідоцтва про реєстрацію платника податку на додану вартість (продавця)"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="251" y="174" width="229" height="60"/>
+				<textElement textAlignment="Justified" markup="styled"/>
+				<textFieldExpression class="java.lang.String"><![CDATA["Місцезнаходження покупця:"
++ "@адрес@<br/>"
++ "№ телефону: @телефон@<br/>"
++ "Номер свідоцтва про реєстрацію платника податку на додану вартість (покупця)"]]></textFieldExpression>
+			</textField>
+			<rectangle>
+				<reportElement x="65" y="234" width="105" height="14"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="305" y="234" width="105" height="14"/>
+			</rectangle>
+			<textField>
+				<reportElement x="68" y="234" width="102" height="14"/>
+				<textElement markup="styled"/>
+				<textFieldExpression class="java.lang.String"><![CDATA["@ИНН@"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="308" y="234" width="102" height="14"/>
+				<textElement markup="styled"/>
+				<textFieldExpression class="java.lang.String"><![CDATA["@ИНН@"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="TNR_10" x="0" y="248" width="483" height="13"/>
+				<textElement markup="styled"/>
+				<textFieldExpression class="java.lang.String"><![CDATA["Умова поставки згідно Договору № @договор@ від @дата договора@"]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="76" y="261" width="407" height="1"/>
+			</line>
+			<staticText>
+				<reportElement style="TNR_7" x="0" y="262" width="482" height="9"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[(форма цивільно-правового договору)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="TNR_10" x="0" y="271" width="482" height="13"/>
+				<textElement/>
+				<text><![CDATA[Форма проведених розрахунків    оплата з розрахункового рахунку]]></text>
+			</staticText>
+			<line>
+				<reportElement x="152" y="283" width="331" height="1"/>
+			</line>
+			<staticText>
+				<reportElement style="TNR_7" x="1" y="284" width="482" height="9"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[(бартер, готівка, оплата з розрахункового рахунку, чек, тощо)]]></text>
+			</staticText>
+		</band>
+	</title>
+	<summary>
+		<band height="786">
+			<subreport>
+				<reportElement positionType="Float" x="0" y="0" width="483" height="786" isPrintWhenDetailOverflows="true"/>
+				<parametersMapExpression><![CDATA[new HashMap($P{REPORT_PARAMETERS_MAP})]]></parametersMapExpression>
+				<dataSourceExpression><![CDATA[new JREmptyDataSource()]]></dataSourceExpression>
+				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "ContractForServicesAppendix2.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</summary>
+</jasperReport>

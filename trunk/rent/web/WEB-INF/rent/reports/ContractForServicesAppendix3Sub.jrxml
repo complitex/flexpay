@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ContractForServicesAppendix3Sub" pageWidth="483" pageHeight="786" whenNoDataType="AllSectionsNoDetail" columnWidth="483" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" isSummaryNewPage="true">
+	<property name="ireport.encoding" value="UTF-8"/>
+	<import value="java.text.SimpleDateFormat"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="java.util.*"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<style name="TNR_12" isDefault="true" fontName="LiberationSerif-Regular" fontSize="12" pdfFontName="fonts/LiberationSerif-Regular.ttf" pdfEncoding="Cp1251" isPdfEmbedded="true"/>
+	<style name="TNR_12b" isDefault="false" fontName="LiberationSerif-Bold" fontSize="12" isBold="true" pdfFontName="fonts/LiberationSerif-Bold.ttf" pdfEncoding="Cp1251" isPdfEmbedded="true"/>
+	<style name="TNR_14b" isDefault="false" fontName="LiberationSerif-Bold" fontSize="14" isBold="true" pdfFontName="fonts/LiberationSerif-Bold.ttf" pdfEncoding="Cp1251" isPdfEmbedded="true"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["C:/Documents and Settings/Alexuy/Local Settings/Temp/flexpay_data/reports/templates/"]]></defaultValueExpression>
+	</parameter>
+	<title>
+		<band height="387">
+			<staticText>
+				<reportElement mode="Transparent" x="0" y="0" width="70" height="32"/>
+				<textElement/>
+				<text><![CDATA[Виконавець
+Замовник
+]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="70" y="0" width="412" height="32"/>
+				<textElement markup="styled"/>
+				<textFieldExpression class="java.lang.String"><![CDATA["@исполнитель@<br/>"
++ "@арендатор@"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="TNR_12b" x="0" y="31" width="482" height="48"/>
+				<textElement textAlignment="Center" markup="styled"/>
+				<textFieldExpression class="java.lang.String"><![CDATA["АКТ<br/>"
++ "про виконання робіт за (надання послуг)<br/>"
++ "за договором № @номер договора@ від @дата договора@"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="79" width="300" height="16"/>
+				<textElement markup="styled"/>
+				<textFieldExpression class="java.lang.String"><![CDATA["Адреса @адрес@"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="300" y="79" width="182" height="16"/>
+				<textElement markup="styled"/>
+				<textFieldExpression class="java.lang.String"><![CDATA["Дата складання @дата@"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Transparent" x="0" y="95" width="482" height="32"/>
+				<textElement textAlignment="Justified"/>
+				<text><![CDATA[    Ми, що підписалися нижче, представники Виконавця та Замовника, склали цей Акт про те, що наступні роботи (послуги):]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="127" width="483" height="1"/>
+			</line>
+			<line>
+				<reportElement x="0" y="146" width="483" height="1"/>
+			</line>
+			<line>
+				<reportElement x="227" y="128" width="1" height="113"/>
+			</line>
+			<line>
+				<reportElement x="0" y="165" width="483" height="1"/>
+			</line>
+			<line>
+				<reportElement x="0" y="184" width="483" height="1"/>
+			</line>
+			<line>
+				<reportElement x="0" y="203" width="483" height="1"/>
+			</line>
+			<line>
+				<reportElement x="0" y="222" width="483" height="1"/>
+			</line>
+			<line>
+				<reportElement x="0" y="241" width="483" height="1"/>
+			</line>
+			<line>
+				<reportElement x="0" y="127" width="1" height="115"/>
+			</line>
+			<line>
+				<reportElement x="482" y="127" width="1" height="115"/>
+			</line>
+			<line>
+				<reportElement x="380" y="128" width="1" height="115"/>
+			</line>
+			<line>
+				<reportElement x="320" y="127" width="1" height="115"/>
+			</line>
+			<textField>
+				<reportElement style="TNR_12b" x="0" y="127" width="227" height="19"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle" markup="styled"/>
+				<textFieldExpression class="java.lang.String"><![CDATA["Види робіт (послуг) за @период@"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement style="TNR_12b" mode="Transparent" x="228" y="128" width="92" height="18"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Нараховано]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="TNR_12b" mode="Transparent" x="321" y="128" width="59" height="18"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[ПДВ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="TNR_12b" mode="Transparent" x="381" y="128" width="101" height="18"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Всього до сплати]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Transparent" x="4" y="147" width="223" height="18"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Опалення]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Transparent" x="4" y="166" width="223" height="18"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Холодна вода]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Transparent" x="4" y="185" width="223" height="18"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Гаряча вода]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Transparent" x="4" y="204" width="223" height="18"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Вода на подогрев]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="TNR_12b" mode="Transparent" x="132" y="223" width="92" height="18"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<text><![CDATA[Всього:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="0" y="243" width="482" height="80"/>
+				<textElement markup="styled"/>
+				<textFieldExpression class="java.lang.String"><![CDATA["Виконано (надано) на умовах "
++ " вищезазначеного договору на суму: @сумма прописью@ в тому числе ПДВ @сумма НДС@.<br/>"
++ "Сторони взаємних претензій не мають.<br/>"
++ "Даний Акт складений у двох примірниках, що мають однакову юридичну силу, по"
++ " одному для кожної зі сторін."]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement style="TNR_12b" mode="Transparent" x="1" y="323" width="244" height="16"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[ВИКОНАВЕЦЬ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="TNR_12b" mode="Transparent" x="245" y="323" width="239" height="16"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[ЗАМОВНИК]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="1" y="339" width="244" height="16"/>
+				<textElement markup="styled"/>
+				<textFieldExpression class="java.lang.String"><![CDATA["@руководитель@ ________ @ФИО рук.@"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="245" y="339" width="239" height="16"/>
+				<textElement markup="styled"/>
+				<textFieldExpression class="java.lang.String"><![CDATA["@руководитель@ ________ @ФИО рук.@"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="1" y="371" width="244" height="16"/>
+				<textElement markup="styled"/>
+				<textFieldExpression class="java.lang.String"><![CDATA["@бухгалтер@ ___________ @ФИО бух.@"]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+</jasperReport>

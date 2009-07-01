@@ -1,0 +1,512 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ContractForServicesAppendix2" pageWidth="483" pageHeight="786" whenNoDataType="AllSectionsNoDetail" columnWidth="483" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0">
+	<property name="ireport.encoding" value="UTF-8"/>
+	<import value="java.text.SimpleDateFormat"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="java.util.*"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<style name="TNR_10" isDefault="true" fontName="LiberationSerif-Regular" fontSize="10" pdfFontName="fonts/LiberationSerif-Regular.ttf" pdfEncoding="Cp1251" isPdfEmbedded="true"/>
+	<style name="TNR_12" isDefault="false" fontName="LiberationSerif-Regular" fontSize="12" pdfFontName="fonts/LiberationSerif-Regular.ttf" pdfEncoding="Cp1251" isPdfEmbedded="true"/>
+	<style name="TNR_12b" isDefault="false" fontName="LiberationSerif-Bold" fontSize="12" isBold="true" pdfFontName="fonts/LiberationSerif-Bold.ttf" pdfEncoding="Cp1251" isPdfEmbedded="true"/>
+	<style name="TNR_14b" isDefault="false" fontName="LiberationSerif-Bold" fontSize="14" isBold="true" pdfFontName="fonts/LiberationSerif-Bold.ttf" pdfEncoding="Cp1251" isPdfEmbedded="true"/>
+	<parameter name="contractNumber" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["C:/Documents and Settings/Alexuy/Local Settings/Temp/flexpay_data/reports/templates/"]]></defaultValueExpression>
+	</parameter>
+	<title>
+		<band height="639">
+			<textField>
+				<reportElement x="6" y="0" width="404" height="15"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression class="java.lang.String"><![CDATA["ПЛАТІЖНА ВИМОГА — ДОРУЧЕННЯ № " + $P{contractNumber}]]></textFieldExpression>
+			</textField>
+			<rectangle>
+				<reportElement x="410" y="0" width="73" height="15"/>
+			</rectangle>
+			<textField>
+				<reportElement x="6" y="15" width="355" height="15"/>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression class="java.lang.String"><![CDATA["від @дата формирования@"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="410" y="0" width="73" height="15"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[410002]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="361" y="15" width="122" height="15"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Одержано банком]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="361" y="30" width="122" height="15"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[“___”  _______ 2009р.]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="6" y="45" width="477" height="15"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA["Платник  @арендатор@"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="6" y="60" width="42" height="15"/>
+				<textElement/>
+				<text><![CDATA[Код]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="6" y="75" width="477" height="15"/>
+				<textElement/>
+				<text><![CDATA[Банк платника                                       Код банку                 ДЕБЕТ рах.№     СУМА]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="217" y="151" width="72" height="15"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="48" y="60" width="96" height="15"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="313" y="151" width="97" height="15"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="293" y="151" width="21" height="15"/>
+				<textElement/>
+				<text><![CDATA[рах]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="105" width="289" height="1"/>
+			</line>
+			<textField>
+				<reportElement x="6" y="106" width="404" height="15"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA["Одерживач  @исполнитель@"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="6" y="121" width="42" height="15"/>
+				<textElement/>
+				<text><![CDATA[Код]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="48" y="121" width="96" height="15"/>
+			</rectangle>
+			<textField>
+				<reportElement x="6" y="136" width="211" height="15"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA["Банк одержувача  @банк исполнителя@"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="217" y="136" width="74" height="15"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Код банку]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="313" y="121" width="97" height="15"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[КРЕДИТ рах.№]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="313" y="136" width="97" height="15"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="410" y="177" width="73" height="15"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="410" y="90" width="73" height="76"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="289" y="91" width="21" height="15"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[рах]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="217" y="90" width="72" height="15"/>
+			</rectangle>
+			<textField>
+				<reportElement x="6" y="166" width="404" height="26"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA["Призначення платежу  Комунальні послуги за @период оплаты@ згідно дог. №@номер договора@ від @дата договора@ л/с @л/с@. ПДВ @ПДВ@ грн"]]></textFieldExpression>
+			</textField>
+			<rectangle>
+				<reportElement x="314" y="90" width="96" height="15"/>
+			</rectangle>
+			<line>
+				<reportElement x="0" y="192" width="313" height="1"/>
+			</line>
+			<staticText>
+				<reportElement x="6" y="193" width="308" height="15"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Підписи одержувача _____________________]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="410" y="208" width="73" height="15"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[СУМА]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="410" y="223" width="73" height="15"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[ДО ОПЛАТИ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="314" y="223" width="96" height="15"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[ДЕБЕТ рах.№]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="166" width="289" height="1"/>
+			</line>
+			<staticText>
+				<reportElement x="6" y="208" width="73" height="15"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[М.П.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="151" y="208" width="139" height="15"/>
+				<textElement/>
+				<text><![CDATA[_____________________]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="237" width="313" height="1"/>
+			</line>
+			<rectangle>
+				<reportElement x="313" y="237" width="97" height="15"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="314" y="252" width="96" height="15"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[КРЕДИТ рах.№]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="313" y="267" width="97" height="15"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="313" y="282" width="97" height="15"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="410" y="237" width="73" height="60"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="292" y="267" width="21" height="15"/>
+				<textElement/>
+				<text><![CDATA[рах]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="292" y="238" width="21" height="15"/>
+				<textElement/>
+				<text><![CDATA[рах]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="6" y="238" width="283" height="15"/>
+				<textElement/>
+				<text><![CDATA[Сума до оплати словами]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="6" y="253" width="404" height="15"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA["@сумма прописью@"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="361" y="297" width="122" height="15"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Проведено банком]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="6" y="312" width="262" height="15"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[Підписи платника _____________________]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="6" y="327" width="73" height="15"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[М.П.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="151" y="327" width="139" height="15"/>
+				<textElement/>
+				<text><![CDATA[_____________________]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="361" y="312" width="122" height="15"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[“___”  _______ 2009р.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="361" y="327" width="122" height="15"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Підпис банку]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="220" y="151" width="73" height="15"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA["@код банк@"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="316" y="136" width="94" height="15"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA["@р.счет@"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="316" y="268" width="94" height="15"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA["@р.счет@"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="412" y="238" width="71" height="30"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA["@сумма@"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="412" y="91" width="71" height="30"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA["@сумма@"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="8" y="387" width="475" height="15"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA["@период@	@ЖЄК@	Плат. в/д №@номер договора@ @дата договора@"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="8" y="402" width="475" height="15"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA["Платник: @арндатор@    Адреса: @адрес@"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="6" y="461" width="91" height="15"/>
+				<textElement/>
+				<text><![CDATA[Оплення]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="6" y="477" width="91" height="15"/>
+				<textElement/>
+				<text><![CDATA[Холодна вода]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="6" y="492" width="91" height="15"/>
+				<textElement/>
+				<text><![CDATA[Гаряча вода]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="6" y="507" width="91" height="15"/>
+				<textElement/>
+				<text><![CDATA[Вода на подогрев]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="522" width="91" height="15"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[Всього:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="417" width="97" height="15"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Послуга]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="97" y="417" width="49" height="15"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Вх.сальдо]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="146" y="417" width="49" height="15"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Нарах.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="193" y="417" width="49" height="15"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Перерах.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="242" y="417" width="49" height="15"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[ПДВ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="288" y="417" width="49" height="15"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Разом]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="337" y="417" width="49" height="15"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Сплачено]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="387" y="416" width="49" height="30"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Вих.сальдо]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="437" y="418" width="45" height="30"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[У т.ч. ПДВ]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="417" width="483" height="1"/>
+			</line>
+			<line>
+				<reportElement x="0" y="537" width="483" height="1"/>
+			</line>
+			<line>
+				<reportElement x="0" y="0" width="483" height="1"/>
+			</line>
+			<line>
+				<reportElement x="0" y="492" width="483" height="1"/>
+			</line>
+			<line>
+				<reportElement x="0" y="506" width="483" height="1"/>
+			</line>
+			<line>
+				<reportElement x="0" y="521" width="483" height="1"/>
+			</line>
+			<line>
+				<reportElement x="0" y="476" width="483" height="1"/>
+			</line>
+			<line>
+				<reportElement x="0" y="462" width="483" height="1"/>
+			</line>
+			<line>
+				<reportElement x="0" y="446" width="483" height="1"/>
+			</line>
+			<line>
+				<reportElement x="482" y="418" width="1" height="119"/>
+			</line>
+			<line>
+				<reportElement x="434" y="417" width="1" height="120"/>
+			</line>
+			<line>
+				<reportElement x="387" y="418" width="1" height="120"/>
+			</line>
+			<line>
+				<reportElement x="337" y="418" width="1" height="120"/>
+			</line>
+			<line>
+				<reportElement x="290" y="418" width="1" height="120"/>
+			</line>
+			<line>
+				<reportElement x="241" y="418" width="1" height="120"/>
+			</line>
+			<line>
+				<reportElement x="194" y="418" width="1" height="120"/>
+			</line>
+			<line>
+				<reportElement x="146" y="418" width="1" height="120"/>
+			</line>
+			<line>
+				<reportElement x="97" y="418" width="1" height="120"/>
+			</line>
+			<line>
+				<reportElement x="0" y="418" width="1" height="120"/>
+			</line>
+			<staticText>
+				<reportElement x="1" y="447" width="97" height="15"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[1]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="98" y="447" width="49" height="15"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[2]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="146" y="448" width="49" height="15"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[3]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="194" y="447" width="49" height="15"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[4]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="242" y="447" width="49" height="15"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[5]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="291" y="447" width="49" height="15"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[6]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="338" y="447" width="49" height="15"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[7]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="388" y="447" width="49" height="15"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[8]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="435" y="447" width="49" height="15"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[9]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="241" y="568" width="97" height="15"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[НАРАХОВАНО:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="410" y="568" width="72" height="15"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression class="java.lang.String"><![CDATA["@5@"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="410" y="553" width="72" height="15"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[У т.ч. ПДВ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="337" y="568" width="72" height="15"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression class="java.lang.String"><![CDATA["@3+4+5@"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="337" y="583" width="72" height="15"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression class="java.lang.String"><![CDATA["@2@"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="337" y="598" width="72" height="15"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression class="java.lang.String"><![CDATA["@7@"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="337" y="613" width="72" height="15"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression class="java.lang.String"><![CDATA["@8@"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="241" y="583" width="97" height="15"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[ЗАБОРГОВАНІСТЬ:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="242" y="598" width="96" height="15"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[СПЛАЧЕНО:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="242" y="613" width="96" height="15"/>
+				<textElement textAlignment="Right"/>
+				<text><![CDATA[ДО ВИПЛАТИ:
+]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="410" y="613" width="72" height="15"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression class="java.lang.String"><![CDATA["@9@"]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<summary>
+		<band height="786">
+			<subreport>
+				<reportElement positionType="Float" x="0" y="0" width="483" height="786" isPrintWhenDetailOverflows="true"/>
+				<parametersMapExpression><![CDATA[new HashMap($P{REPORT_PARAMETERS_MAP})]]></parametersMapExpression>
+				<dataSourceExpression><![CDATA[new JREmptyDataSource()]]></dataSourceExpression>
+				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "ContractForServicesAppendix3.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</summary>
+</jasperReport>
