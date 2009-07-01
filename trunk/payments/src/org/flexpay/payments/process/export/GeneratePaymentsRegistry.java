@@ -50,6 +50,7 @@ public class GeneratePaymentsRegistry extends QuartzJobBean {
             Roles.BASIC,
             Roles.PROCESS_READ,
             org.flexpay.payments.service.Roles.OPERATION_READ,
+            org.flexpay.payments.service.Roles.DOCUMENT_READ,
             org.flexpay.orgs.service.Roles.ORGANIZATION_READ,
             org.flexpay.orgs.service.Roles.SERVICE_PROVIDER_READ
     );
@@ -77,6 +78,7 @@ public class GeneratePaymentsRegistry extends QuartzJobBean {
                     Date finishDate = DateUtil.now();
                     parameters.put("finishDate", finishDate);
                     parameters.put("OrganizationId", organization.getId());
+                    parameters.put("ServiceProviderId", providerId);
                     //parameters.put("Organization", organization);
                     parameters.put("Email", email);
 

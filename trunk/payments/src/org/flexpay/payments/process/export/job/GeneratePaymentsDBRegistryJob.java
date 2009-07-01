@@ -7,7 +7,9 @@ import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.process.job.Job;
 import org.flexpay.common.service.FPFileService;
 import org.flexpay.orgs.persistence.Organization;
+import org.flexpay.orgs.persistence.ServiceProvider;
 import org.flexpay.orgs.service.OrganizationService;
+import org.flexpay.orgs.service.ServiceProviderService;
 import org.flexpay.payments.process.export.util.GeneratePaymentsDBRegistry;
 import org.springframework.beans.factory.annotation.Required;
 
@@ -20,6 +22,7 @@ public class GeneratePaymentsDBRegistryJob extends Job {
     private FPFileService fpFileService;
     private GeneratePaymentsDBRegistry generatePaymentsDBRegistry;
     private OrganizationService organizationService;
+    private ServiceProviderService serviceProviderService;
 
     public String execute(Map<Serializable, Serializable> parameters) throws FlexPayException {
         FPFile file = null;
@@ -56,6 +59,23 @@ public class GeneratePaymentsDBRegistryJob extends Job {
             return RESULT_ERROR;
         }
 
+        ServiceProvider serviceProvider = null;
+        if (parameters.containsKey("ServiceProvider")) {
+            Object o = parameters.get("ServiceProvider");
+            if (o instanceof ServiceProvider) {
+                serviceProvider = (ServiceProvider) o;
+            } else {
+                log.warn("Invalid service provider`s instance class");
+            }
+        } else if (parameters.containsKey("ServiceProviderId")) {
+            Long serviceProviderId = (Long) parameters.get("ServiceProviderId");
+            serviceProvider = serviceProviderService.read(new Stub<ServiceProvider>(serviceProviderId));
+        }
+        if (serviceProvider == null) {
+            log.warn("Did not find service provider in job parameters");
+            return RESULT_ERROR;
+        }
+
         String oldLastProcessedDateSt = (String) parameters.get("lastProcessedDate");
         Date oldLastProcessedDate = new Date(0);
         if (oldLastProcessedDateSt != null) {
@@ -69,7 +89,7 @@ public class GeneratePaymentsDBRegistryJob extends Job {
         if (parameters.containsKey("finishDate")) {
             lastProcessedDate = (Date) parameters.get("finishDate");
         }
-        Registry registry = generatePaymentsDBRegistry.createDBRegestry(file, organization, oldLastProcessedDate, lastProcessedDate);
+        Registry registry = generatePaymentsDBRegistry.createDBRegestry(file, serviceProvider, oldLastProcessedDate, lastProcessedDate);
         parameters.put("lastProcessedDate", String.valueOf(lastProcessedDate.getTime()));
         //parameters.put("Registry", registry);
         parameters.put("RegistryId", registry.getId());
@@ -91,4 +111,8 @@ public class GeneratePaymentsDBRegistryJob extends Job {
         this.organizationService = organizationService;
     }
 
+    @Required
+    public void setServiceProviderService(ServiceProviderService serviceProviderService) {
+        this.serviceProviderService = serviceProviderService;
+    }
 }

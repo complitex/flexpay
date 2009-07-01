@@ -6,6 +6,7 @@ import org.flexpay.payments.dao.DocumentDaoExt;
 import org.flexpay.payments.persistence.Document;
 import org.flexpay.payments.persistence.Operation;
 import org.flexpay.payments.service.DocumentService;
+import org.flexpay.orgs.persistence.ServiceProvider;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
@@ -82,7 +83,14 @@ public class DocumentServiceImpl implements DocumentService {
 		return documentDao.listRegisteredPaymentDocuments(begin, end);
 	}
 
-	@Required
+    /**
+	 * {@inheritDoc}
+	 */
+    public List<Document> listRegisteredPaymentDocuments(@NotNull ServiceProvider serviceProvider, @NotNull Date begin, @NotNull Date end) {
+        return documentDao.listRegisteredPaymentDocumentsByServiceProvider(serviceProvider.getId(), begin, end);
+    }
+
+    @Required
 	public void setDocumentDao(DocumentDao documentDao) {
 		this.documentDao = documentDao;
 	}

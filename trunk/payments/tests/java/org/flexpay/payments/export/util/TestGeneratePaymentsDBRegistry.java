@@ -91,7 +91,7 @@ public class TestGeneratePaymentsDBRegistry extends SpringBeanAwareTestCase {
     @Autowired
     private PropertiesFactory propertiesFactory;
 
-    private Organization organization;
+    private ServiceProvider serviceProvider;
 
     private List<Operation> operations = new ArrayList<Operation>();
 
@@ -113,6 +113,7 @@ public class TestGeneratePaymentsDBRegistry extends SpringBeanAwareTestCase {
             org.flexpay.payments.service.Roles.OPERATION_CHANGE,
             org.flexpay.payments.service.Roles.OPERATION_DELETE,
             org.flexpay.payments.service.Roles.DOCUMENT_TYPE_READ,
+            org.flexpay.payments.service.Roles.DOCUMENT_READ,
             org.flexpay.payments.service.Roles.DOCUMENT_ADD,
             org.flexpay.payments.service.Roles.DOCUMENT_CHANGE,
             org.flexpay.payments.service.Roles.SERVICE_TYPE_READ,
@@ -131,7 +132,7 @@ public class TestGeneratePaymentsDBRegistry extends SpringBeanAwareTestCase {
         authenticatePaymentsRegistryGenerator();
 
         //create organization
-        organization = new Organization();
+        Organization organization = new Organization();
         organization.setStatus(ObjectWithStatus.STATUS_ACTIVE);
         organization.setIndividualTaxNumber("111");
         organization.setKpp("222");
@@ -151,7 +152,7 @@ public class TestGeneratePaymentsDBRegistry extends SpringBeanAwareTestCase {
         organizationService.create(organization);
 
         //create service provider
-        ServiceProvider serviceProvider = new ServiceProvider();
+        serviceProvider = new ServiceProvider();
         serviceProvider.setOrganization(organization);
         serviceProvider.setStatus(ServiceProvider.STATUS_ACTIVE);
 
@@ -211,11 +212,12 @@ public class TestGeneratePaymentsDBRegistry extends SpringBeanAwareTestCase {
         //get document type
         DocumentType documentType = documentTypeService.read(DocumentType.CASH_PAYMENT);
         //get document status
-        DocumentStatus documentStatus = documentStatusService.read(DocumentStatus.CREATED);
+        DocumentStatus documentStatus = documentStatusService.read(DocumentStatus.REGISTERED);
         //get document service
         int code = 1;
         ServiceType serviceType;
         serviceType = serviceTypeService.getServiceType(code);
+        /*
         if (serviceType == null) {
             serviceType = new ServiceType();
             serviceType.setCode(code);
@@ -227,6 +229,7 @@ public class TestGeneratePaymentsDBRegistry extends SpringBeanAwareTestCase {
             serviceType.setTypeName(serviceTypeName);
             serviceTypeService.create(serviceType);
         }
+        */
 
         ServiceDescription serviceDescription = new ServiceDescription();
         serviceDescription.setLang(LANG);
@@ -275,7 +278,7 @@ public class TestGeneratePaymentsDBRegistry extends SpringBeanAwareTestCase {
 
     @Test
     public void testCreateDBRegistry() throws FlexPayException {
-        assertNotNull(organization);
+        assertNotNull(serviceProvider);
         assertEquals(1, operations.size());
 
         FPModule module = fpFileService.getModuleByName("payments");
@@ -292,6 +295,7 @@ public class TestGeneratePaymentsDBRegistry extends SpringBeanAwareTestCase {
         GeneratePaymentsDBRegistry generate = new GeneratePaymentsDBRegistry();
 
         generate.setOperationService(operationService);
+        generate.setDocumentService(documentService);
         generate.setRegistryArchiveStatusService(registryArchiveStatusService);
         generate.setRegistryRecordService(registryRecordService);
         generate.setRegistryService(registryService);
@@ -300,11 +304,11 @@ public class TestGeneratePaymentsDBRegistry extends SpringBeanAwareTestCase {
         generate.setRegistryRecordStatusService(registryRecordStatusService);
         generate.setPropertiesFactory(propertiesFactory);
 
-        Registry registry  = generate.createDBRegestry(spFile, organization, new Date(currDate.getTime() + 1000), new Date(currDate.getTime() + 10000));
+        Registry registry  = generate.createDBRegestry(spFile, serviceProvider, new Date(currDate.getTime() + 1000), new Date(currDate.getTime() + 10000));
         assertNotNull(registry);
         assertEquals(0, registry.getRecordsNumber().intValue());
 
-        registry  = generate.createDBRegestry(spFile, organization, new Date(currDate.getTime() - 100000), new Date(currDate.getTime() + 1000));
+        registry  = generate.createDBRegestry(spFile, serviceProvider, new Date(currDate.getTime() - 100000), new Date(currDate.getTime() + 1000));
         assertNotNull(registry);
         assertEquals(1, registry.getRecordsNumber().intValue());
         assertEquals(100, registry.getAmount().intValue());

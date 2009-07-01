@@ -58,10 +58,6 @@ public class TestGeneratePaymentsRegistry extends SpringBeanAwareTestCase {
 
     private static final String FILE_ENCODING = "cp866";
 
-    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
-    private static final SimpleDateFormat paymentDateFormat = new SimpleDateFormat("yyyyMMdd");
-    private static final SimpleDateFormat paymentPeriodDateFormat = new SimpleDateFormat("yyyyMM");
-
 //    @Resource(name = "processManager")
     @Autowired
     private ProcessManager tProcessManager;
@@ -258,7 +254,7 @@ public class TestGeneratePaymentsRegistry extends SpringBeanAwareTestCase {
         //get document type
         DocumentType documentType = documentTypeService.read(DocumentType.CASH_PAYMENT);
         //get document status
-        DocumentStatus documentStatus = documentStatusService.read(DocumentStatus.CREATED);
+        DocumentStatus documentStatus = documentStatusService.read(DocumentStatus.REGISTERED);
         //get document service2
         int code = 2;
         ServiceType serviceType2;
@@ -383,7 +379,7 @@ public class TestGeneratePaymentsRegistry extends SpringBeanAwareTestCase {
         jobScheduler.setProviderService(tProviderService);
         jobScheduler.setServiceProviderAttributeService(tProviderAttributeService);
 
-        TriggerFiredBundle fireBundle = new TriggerFiredBundle(tJobTradingDayTrigger.getJobDetail(), tJobTradingDayTrigger, tSchedulerFactoryBeanRegistry.getCalendar(""), 
+        TriggerFiredBundle fireBundle = new TriggerFiredBundle(tJobTradingDayTrigger.getJobDetail(), tJobTradingDayTrigger, tSchedulerFactoryBeanRegistry.getCalendar(""),
                 false, null, null, null, null);
         JobExecutionContext schedulerContext = new JobExecutionContext(tSchedulerFactoryBeanRegistry, fireBundle, jobScheduler);
         log.debug("start jobScheduler");
