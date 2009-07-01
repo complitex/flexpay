@@ -20,6 +20,7 @@
           p:fpFileService-ref="fpFileService"
           p:generatePaymentsDBRegistry-ref="generatePaymentsDBRegistry"
           p:organizationService-ref="organizationService"
+          p:serviceProviderService-ref="serviceProviderService"
           scope="prototype" />
 
     <bean id="generatePaymentsMBRegistryJob"

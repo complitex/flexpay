@@ -62,7 +62,7 @@
     <bean id="schedulerFactoryBeanRegistry" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
         <property name="triggers">
             <list>
-                <!-- ref bean="jobGeneratePaymentsRegistryTrigger"/ -->
+                <ref bean="jobGeneratePaymentsRegistryTrigger" />
                 <ref bean="jobTradingDayTrigger" />
             </list>
         </property>

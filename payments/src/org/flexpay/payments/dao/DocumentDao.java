@@ -18,4 +18,15 @@ public interface DocumentDao extends GenericDao<Document, Long> {
 	 */
 	List<Document> listRegisteredPaymentDocuments(@NotNull Date begin, @NotNull Date end);
 
+    /**
+	 * Returns list of documents with state REGISTERED and type CASH_PAYMENT which were created in time period
+     * for service provider
+	 *
+     * @param serviceProviderId
+	 * @param begin begin date
+	 * @param end   end date
+	 * @return list of documents with state REGISTERED and type CASH_PAYMENT which were created in time period
+	 */
+	List<Document> listRegisteredPaymentDocumentsByServiceProvider(Long serviceProviderId, @NotNull Date begin, @NotNull Date end);
+
 }

@@ -3,6 +3,7 @@ package org.flexpay.payments.service;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.payments.persistence.Document;
 import org.flexpay.payments.persistence.Operation;
+import org.flexpay.orgs.persistence.ServiceProvider;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.security.annotation.Secured;
@@ -62,5 +63,18 @@ public interface DocumentService {
 	 */
 	@Secured (Roles.DOCUMENT_READ)
 	List<Document> listRegisteredPaymentDocuments(@NotNull Date begin, @NotNull Date end);
+
+    /**
+	 * Returns list of documents with state REGISTERED
+	 * and type CASH_PAYMENT which were created in time period for service provider
+	 *
+     * @param serviceProvider service provider
+	 * @param begin begin date
+	 * @param end end date
+	 * @return list of documents with state REGISTERED
+	 * 		   and type CASH_PAYMENT which were created in time period
+	 */
+	@Secured (Roles.DOCUMENT_READ)
+	List<Document> listRegisteredPaymentDocuments(@NotNull ServiceProvider serviceProvider, @NotNull Date begin, @NotNull Date end);
 
 }
