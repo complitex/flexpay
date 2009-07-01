@@ -40,7 +40,7 @@
 						<td class="col"><s:textfield name="payments['%{#serviceIndx}']"
 													 id="payments_%{#serviceIndx}"
 													 value="%{outgoingBalance}"
-													 onchange="onChangeHandler('payments_%{#serviceIndx}');"
+													 onchange="onChangePaymentHandler('payments_%{#serviceIndx}');"
 													 cssStyle="width:100%;text-align:right;"/></td>
 
 					</tr>
@@ -69,7 +69,7 @@
 				</td>
 				<td>
 					<s:textfield name="inputSumm" cssStyle="width:100%;text-align:right;"value="%{getTotalToPay()}"
-							onchange="onChageInputHandler();"/>
+							onchange="onChangeInputHandler();"/>
 				</td>
 			</tr>
 

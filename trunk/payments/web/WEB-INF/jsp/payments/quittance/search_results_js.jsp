@@ -42,7 +42,7 @@
 		if (!containsError(fieldId)) {
 			errorFields[errorFields.length] = fieldId;
 			disableButtons();
-		}		
+		}
 	}
 
 	function removeErrorField(fieldId) {
@@ -251,25 +251,40 @@
 	}
 
 	function setCurrentFieldIndex(event) {
+
+		console.log('set START');
+
 		var selectedFieldId = $(event.target).attr('id');
 
 		for (var i = 0; i < fieldChain.length; i++) {
 			if (fieldChain[i] == selectedFieldId) {
 				currentFieldIndex = i;
 				$('#' + fieldChain[i]).select();
+
+				console.log('set END (selected ' + i + ') (1)');
 				return;
 			}
 		}
+
+		console.log('set END (2)');
 	}
 
 	function updateCurrentFieldIndex(event) {
-
+		var oldNumberOfErrors = getTotalErrorsNumber();
 		var nextFieldId = $(event.target).attr('id');
+		var currentFieldId = fieldChain[currentFieldIndex];
+
 		if (event.keyCode == 13 || (event.keyCode == 9 && !event.shiftKey)) {
 			if (currentFieldIndex < fieldChain.length - 1) {
 				nextFieldId = fieldChain[currentFieldIndex + 1];
 				$('#' + nextFieldId).focus();
 				$('#' + nextFieldId).select();
+
+				if (getTotalErrorsNumber() > oldNumberOfErrors) {
+					$('#' + currentFieldId).focus();
+					$('#' + currentFieldId).select();
+				}
+
 				event.preventDefault();
 			}
 		} else if (event.keyCode == 9 && event.shiftKey) {
@@ -277,20 +292,26 @@
 				nextFieldId = fieldChain[currentFieldIndex - 1];
 				$('#' + nextFieldId).focus();
 				$('#' + nextFieldId).select();
+
+				if (getTotalErrorsNumber() > oldNumberOfErrors) {
+					$('#' + currentFieldId).focus();
+					$('#' + currentFieldId).select();
+				}
+
 				event.preventDefault();
 			}
 		}
 	}
 
 	// FIXME ELIMINATE THIS HACKS
-	function onChangeHandler(id) {
-		processPaymentValue();
+	function onChangePaymentHandler(id) {
+		processPaymentValue(id);
 		validatePaymentValue(id);
 		updateTotal();
 		disablePayment();
 	}
 
-	function onChageInputHandler() {
+	function onChangeInputHandler() {
 		processPaymentValue('inputSumm');
 		validatePaymentValue('inputSumm');
 		validateInputValue();
