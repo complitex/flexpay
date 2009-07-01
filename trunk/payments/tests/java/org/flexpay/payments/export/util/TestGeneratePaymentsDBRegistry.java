@@ -92,6 +92,7 @@ public class TestGeneratePaymentsDBRegistry extends SpringBeanAwareTestCase {
     private PropertiesFactory propertiesFactory;
 
     private ServiceProvider serviceProvider;
+    private Organization registerOrganization;
 
     private List<Operation> operations = new ArrayList<Operation>();
 
@@ -131,6 +132,25 @@ public class TestGeneratePaymentsDBRegistry extends SpringBeanAwareTestCase {
     public void startUp() throws FlexPayExceptionContainer, FlexPayException {
         authenticatePaymentsRegistryGenerator();
 
+        registerOrganization = new Organization();
+        registerOrganization.setStatus(ObjectWithStatus.STATUS_ACTIVE);
+        registerOrganization.setIndividualTaxNumber("112");
+        registerOrganization.setKpp("224");
+        registerOrganization.setJuridicalAddress("Kharkov");
+        registerOrganization.setPostalAddress("Kharkov");
+
+        OrganizationName organizationName = new OrganizationName();
+		organizationName.setLang(LANG);
+        organizationName.setName("test register organization name");
+        registerOrganization.setName(organizationName);
+
+        OrganizationDescription organizationDescription = new OrganizationDescription();
+        organizationDescription.setLang(LANG);
+        organizationDescription.setName("test register organization description");
+        registerOrganization.setDescription(organizationDescription);
+
+        organizationService.create(registerOrganization);
+
         //create organization
         Organization organization = new Organization();
         organization.setStatus(ObjectWithStatus.STATUS_ACTIVE);
@@ -139,12 +159,12 @@ public class TestGeneratePaymentsDBRegistry extends SpringBeanAwareTestCase {
         organization.setJuridicalAddress("Kharkov");
         organization.setPostalAddress("Kharkov");
 
-        OrganizationName organizationName = new OrganizationName();
+        organizationName = new OrganizationName();
 		organizationName.setLang(LANG);
         organizationName.setName("test organization name");
         organization.setName(organizationName);
 
-        OrganizationDescription organizationDescription = new OrganizationDescription();
+        organizationDescription = new OrganizationDescription();
         organizationDescription.setLang(LANG);
         organizationDescription.setName("test organization description");
         organization.setDescription(organizationDescription);
@@ -181,7 +201,7 @@ public class TestGeneratePaymentsDBRegistry extends SpringBeanAwareTestCase {
         paymentPoint.setName(paymentPointName);
 
         PaymentsCollector paymentsCollector = new PaymentsCollector();
-        paymentsCollector.setOrganization(organization);
+        paymentsCollector.setOrganization(registerOrganization);
 
         PaymentsCollectorDescription paymentsCollectorDescription = new PaymentsCollectorDescription();
         paymentsCollectorDescription.setLang(LANG);
@@ -198,11 +218,11 @@ public class TestGeneratePaymentsDBRegistry extends SpringBeanAwareTestCase {
         operation.setCreatorUserName(TEST_USER);
         operation.setCreationDate(new Date());
         operation.setOperationType(operationType);
-        operation.setCreatorOrganization(organization);
+        operation.setCreatorOrganization(registerOrganization);
         operation.setOperationLevel(operationLevel);
         operation.setOperationStatus(operationStatus);
         operation.setPaymentPoint(paymentPoint);
-        operation.setRegisterOrganization(organization);
+        operation.setRegisterOrganization(registerOrganization);
         operation.setRegisterDate(new Date());
         operation.setRegisterUserName(TEST_USER);
         operationService.save(operation);
@@ -250,9 +270,9 @@ public class TestGeneratePaymentsDBRegistry extends SpringBeanAwareTestCase {
         document.setSumm(new BigDecimal(100));
         document.setDocumentStatus(documentStatus);
         document.setOperation(operation);
-        document.setCreditorOrganization(organization);
-        document.setDebtorOrganization(organization);
-        document.setDebtorId(organization.getId().toString());
+        document.setCreditorOrganization(registerOrganization);
+        document.setDebtorOrganization(registerOrganization);
+        document.setDebtorId(registerOrganization.getId().toString());
         document.setService(service);
         if (documentType != null) {
             document.setDocumentType(documentType);
@@ -304,11 +324,11 @@ public class TestGeneratePaymentsDBRegistry extends SpringBeanAwareTestCase {
         generate.setRegistryRecordStatusService(registryRecordStatusService);
         generate.setPropertiesFactory(propertiesFactory);
 
-        Registry registry  = generate.createDBRegestry(spFile, serviceProvider, new Date(currDate.getTime() + 1000), new Date(currDate.getTime() + 10000));
+        Registry registry  = generate.createDBRegestry(spFile, serviceProvider, registerOrganization, new Date(currDate.getTime() + 1000), new Date(currDate.getTime() + 10000));
         assertNotNull(registry);
         assertEquals(0, registry.getRecordsNumber().intValue());
 
-        registry  = generate.createDBRegestry(spFile, serviceProvider, new Date(currDate.getTime() - 100000), new Date(currDate.getTime() + 1000));
+        registry  = generate.createDBRegestry(spFile, serviceProvider, registerOrganization, new Date(currDate.getTime() - 100000), new Date(currDate.getTime() + 1000));
         assertNotNull(registry);
         assertEquals(1, registry.getRecordsNumber().intValue());
         assertEquals(100, registry.getAmount().intValue());

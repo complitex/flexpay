@@ -42,20 +42,20 @@ public class GeneratePaymentsDBRegistryJob extends Job {
             return RESULT_ERROR;
         }
 
-        Organization organization = null;
-        if (parameters.containsKey("Organization")) {
-            Object o = parameters.get("Organization");
+        Organization registeredOrganization = null;
+        if (parameters.containsKey("RegisteredOrganization")) {
+            Object o = parameters.get("RegisteredOrganization");
             if (o instanceof Organization) {
-                organization = (Organization) o;
+                registeredOrganization = (Organization) o;
             } else {
-                log.warn("Invalid organization`s instance class");
+                log.warn("Invalid registered organization`s instance class");
             }
-        } else if (parameters.containsKey("OrganizationId")) {
-            Long organizationId = (Long) parameters.get("OrganizationId");
-            organization = organizationService.readFull(new Stub<Organization>(organizationId));
+        } else if (parameters.containsKey("RegisteredOrganizationId")) {
+            Long organizationId = (Long) parameters.get("RegisteredOrganizationId");
+            registeredOrganization = organizationService.readFull(new Stub<Organization>(organizationId));
         }
-        if (organization == null) {
-            log.warn("Did not find organization in job parameters");
+        if (registeredOrganization == null) {
+            log.warn("Did not find registered organization in job parameters");
             return RESULT_ERROR;
         }
 
@@ -89,7 +89,7 @@ public class GeneratePaymentsDBRegistryJob extends Job {
         if (parameters.containsKey("finishDate")) {
             lastProcessedDate = (Date) parameters.get("finishDate");
         }
-        Registry registry = generatePaymentsDBRegistry.createDBRegestry(file, serviceProvider, oldLastProcessedDate, lastProcessedDate);
+        Registry registry = generatePaymentsDBRegistry.createDBRegestry(file, serviceProvider, registeredOrganization, oldLastProcessedDate, lastProcessedDate);
         parameters.put("lastProcessedDate", String.valueOf(lastProcessedDate.getTime()));
         //parameters.put("Registry", registry);
         parameters.put("RegistryId", registry.getId());

@@ -27,6 +27,6 @@ public interface DocumentDao extends GenericDao<Document, Long> {
 	 * @param end   end date
 	 * @return list of documents with state REGISTERED and type CASH_PAYMENT which were created in time period
 	 */
-	List<Document> listRegisteredPaymentDocumentsByServiceProvider(Long serviceProviderId, @NotNull Date begin, @NotNull Date end);
+	List<Document> listRegisteredPaymentDocumentsByServiceProvider(Long serviceProviderId, Long registerOrganizationId, @NotNull Date begin, @NotNull Date end);
 
 }

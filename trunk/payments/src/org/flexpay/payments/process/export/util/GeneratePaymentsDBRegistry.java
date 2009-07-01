@@ -35,12 +35,12 @@ public class GeneratePaymentsDBRegistry {
     private DocumentService documentService;
 
     @NotNull
-    public Registry createDBRegestry(@NotNull FPFile spFile, @NotNull ServiceProvider serviceProvider,
+    public Registry createDBRegestry(@NotNull FPFile spFile, @NotNull ServiceProvider serviceProvider, @NotNull Organization registerOrganization,
 									 @NotNull Date fromDate, @NotNull Date tillDate) throws FlexPayException {
 
-        log.info("Get document by service provider {}", serviceProvider.getId());
+        log.info("Get document by service provider {}, registered {} organization", new Object[]{serviceProvider.getId(), registerOrganization.getId()});
 
-        List<Document> documents = getDocuments(serviceProvider, fromDate, tillDate);
+        List<Document> documents = getDocuments(serviceProvider, registerOrganization, fromDate, tillDate);
 
         log.info("Count documents {}", documents.size());
 
@@ -124,9 +124,10 @@ public class GeneratePaymentsDBRegistry {
 
     @NotNull
     private List<Document> getDocuments(@NotNull ServiceProvider serviceProvider,
+                                        @NotNull Organization registerdOrganization,
                                         @NotNull Date startDate,
                                         @NotNull Date endDate) {
-        return documentService.listRegisteredPaymentDocuments(serviceProvider, startDate, endDate);
+        return documentService.listRegisteredPaymentDocuments(serviceProvider, registerdOrganization, startDate, endDate);
     }
 
     @NotNull

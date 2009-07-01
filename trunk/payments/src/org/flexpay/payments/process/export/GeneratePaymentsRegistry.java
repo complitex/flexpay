@@ -37,6 +37,7 @@ public class GeneratePaymentsRegistry extends QuartzJobBean {
     private static final long TIME_OUT = 10000;
 
     private Long providerId;
+    private Long registeredOrganizationId;
     private String email;
 
     private ProcessManager processManager;
@@ -79,6 +80,7 @@ public class GeneratePaymentsRegistry extends QuartzJobBean {
                     parameters.put("finishDate", finishDate);
                     parameters.put("OrganizationId", organization.getId());
                     parameters.put("ServiceProviderId", providerId);
+                    parameters.put("RegisteredOrganizationId", registeredOrganizationId);
                     //parameters.put("Organization", organization);
                     parameters.put("Email", email);
 
@@ -148,6 +150,11 @@ public class GeneratePaymentsRegistry extends QuartzJobBean {
     @Required
     public void setProviderId(Long providerId) {
         this.providerId = providerId;
+    }
+
+    @Required
+    public void setRegisteredOrganizationId(Long registeredOrganizationId) {
+        this.registeredOrganizationId = registeredOrganizationId;
     }
 
     @Required
