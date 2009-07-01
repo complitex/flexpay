@@ -12,6 +12,8 @@ import java.util.Map;
 
 public class ContractForServicesForm implements Cloneable, Serializable {
 
+	private Boolean test = Boolean.TRUE;
+
 	private String contractNumber;
 	private String executor;
 	private String executorAddress;
@@ -35,8 +37,28 @@ public class ContractForServicesForm implements Cloneable, Serializable {
 	private Date beginDate;
 	private Date endDate;
 
+	private String centralHeatingSP;
+	private String centralHeatingSPAccount;
+	private BigDecimal centralHeatingHeatedSquare = BigDecimal.ZERO;
+	private Integer centralHeatingDesignLoad;
+
+	private String hotWaterSP;
+	private String hotWaterSPAccount;
+	private Integer hotWaterPercent;
+	private Integer hotWaterDesignLoad;
+
+	private String coldWaterSP;
+	private String coldWaterSPAccount;
+	private Integer coldWaterPercent;
+	private Integer coldWaterSize;
+
+	private String waterHeaterSP;
+	private String waterHeaterSPAccount;
+	private Integer waterHeaterPercent;
+	private Integer waterHeaterSize;
+
 	public Map<String, ?> getParams() {
-		return map(ar("contractNumber",
+		return map(ar("test","contractNumber",
 				"executor",
 				"executorAddress",
 				"executorBankDetails",
@@ -56,9 +78,25 @@ public class ContractForServicesForm implements Cloneable, Serializable {
 				"services",
 				"documents",
 				"beginDate",
-				"endDate"
+				"endDate",
+				"centralHeatingSP",
+				"centralHeatingSPAccount",
+				"centralHeatingHeatedSquare",
+				"centralHeatingDesignLoad",
+				"hotWaterSP",
+				"hotWaterSPAccount",
+				"hotWaterPercent",
+				"hotWaterDesignLoad",
+				"coldWaterSP",
+				"coldWaterSPAccount",
+				"coldWaterPercent",
+				"coldWaterSize",
+				"waterHeaterSP",
+				"waterHeaterSPAccount",
+				"waterHeaterPercent",
+				"waterHeaterSize"
 				),
-				ar(contractNumber,
+				ar(test, contractNumber,
 						executor,
 						executorAddress,
 						executorBankDetails,
@@ -78,8 +116,32 @@ public class ContractForServicesForm implements Cloneable, Serializable {
 						services,
 						documents,
 						beginDate,
-						endDate
+						endDate,
+						centralHeatingSP,
+						centralHeatingSPAccount,
+						centralHeatingHeatedSquare,
+						centralHeatingDesignLoad,
+						hotWaterSP,
+						hotWaterSPAccount,
+						hotWaterPercent,
+						hotWaterDesignLoad,
+						coldWaterSP,
+						coldWaterSPAccount,
+						coldWaterPercent,
+						coldWaterSize,
+						waterHeaterSP,
+						waterHeaterSPAccount,
+						waterHeaterPercent,
+						waterHeaterSize
 				));
+	}
+
+	public Boolean isTest() {
+		return test;
+	}
+
+	public void setTest(Boolean test) {
+		this.test = test;
 	}
 
 	public String getContractNumber() {
@@ -248,6 +310,134 @@ public class ContractForServicesForm implements Cloneable, Serializable {
 
 	public void setEndDate(Date endDate) {
 		this.endDate = endDate;
+	}
+
+	public String getCentralHeatingSP() {
+		return centralHeatingSP;
+	}
+
+	public void setCentralHeatingSP(String centralHeatingSP) {
+		this.centralHeatingSP = centralHeatingSP;
+	}
+
+	public String getCentralHeatingSPAccount() {
+		return centralHeatingSPAccount;
+	}
+
+	public void setCentralHeatingSPAccount(String centralHeatingSPAccount) {
+		this.centralHeatingSPAccount = centralHeatingSPAccount;
+	}
+
+	public BigDecimal getCentralHeatingHeatedSquare() {
+		return centralHeatingHeatedSquare;
+	}
+
+	public void setCentralHeatingHeatedSquare(BigDecimal centralHeatingHeatedSquare) {
+		this.centralHeatingHeatedSquare = centralHeatingHeatedSquare;
+	}
+
+	public Integer getCentralHeatingDesignLoad() {
+		return centralHeatingDesignLoad;
+	}
+
+	public void setCentralHeatingDesignLoad(Integer centralHeatingDesignLoad) {
+		this.centralHeatingDesignLoad = centralHeatingDesignLoad;
+	}
+
+	public String getHotWaterSP() {
+		return hotWaterSP;
+	}
+
+	public void setHotWaterSP(String hotWaterSP) {
+		this.hotWaterSP = hotWaterSP;
+	}
+
+	public String getHotWaterSPAccount() {
+		return hotWaterSPAccount;
+	}
+
+	public void setHotWaterSPAccount(String hotWaterSPAccount) {
+		this.hotWaterSPAccount = hotWaterSPAccount;
+	}
+
+	public Integer getHotWaterPercent() {
+		return hotWaterPercent;
+	}
+
+	public void setHotWaterPercent(Integer hotWaterPercent) {
+		this.hotWaterPercent = hotWaterPercent;
+	}
+
+	public Integer getHotWaterDesignLoad() {
+		return hotWaterDesignLoad;
+	}
+
+	public void setHotWaterDesignLoad(Integer hotWaterDesignLoad) {
+		this.hotWaterDesignLoad = hotWaterDesignLoad;
+	}
+
+	public String getColdWaterSP() {
+		return coldWaterSP;
+	}
+
+	public void setColdWaterSP(String coldWaterSP) {
+		this.coldWaterSP = coldWaterSP;
+	}
+
+	public String getColdWaterSPAccount() {
+		return coldWaterSPAccount;
+	}
+
+	public void setColdWaterSPAccount(String coldWaterSPAccount) {
+		this.coldWaterSPAccount = coldWaterSPAccount;
+	}
+
+	public Integer getColdWaterPercent() {
+		return coldWaterPercent;
+	}
+
+	public void setColdWaterPercent(Integer coldWaterPercent) {
+		this.coldWaterPercent = coldWaterPercent;
+	}
+
+	public Integer getColdWaterSize() {
+		return coldWaterSize;
+	}
+
+	public void setColdWaterSize(Integer coldWaterSize) {
+		this.coldWaterSize = coldWaterSize;
+	}
+
+	public String getWaterHeaterSP() {
+		return waterHeaterSP;
+	}
+
+	public void setWaterHeaterSP(String waterHeaterSP) {
+		this.waterHeaterSP = waterHeaterSP;
+	}
+
+	public String getWaterHeaterSPAccount() {
+		return waterHeaterSPAccount;
+	}
+
+	public void setWaterHeaterSPAccount(String waterHeaterSPAccount) {
+		this.waterHeaterSPAccount = waterHeaterSPAccount;
+	}
+
+	public Integer getWaterHeaterPercent() {
+		return waterHeaterPercent;
+	}
+
+	public void setWaterHeaterPercent(Integer waterHeaterPercent) {
+		this.waterHeaterPercent = waterHeaterPercent;
+	}
+
+	public Integer getWaterHeaterSize() {
+		return waterHeaterSize;
+	}
+
+	public void setWaterHeaterSize(Integer waterHeaterSize) {
+		this.waterHeaterSize = waterHeaterSize;
 	}
 
 	@Override

@@ -1,8 +1,9 @@
 package org.flexpay.rent.process;
 
 import org.flexpay.common.process.job.Job;
-import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.service.reporting.ReportUtil;
+import org.flexpay.common.util.CollectionUtils;
+import org.flexpay.rent.reports.contract.ContractForServicesAppendix1Form;
 import org.flexpay.rent.reports.contract.ContractForServicesForm;
 import org.flexpay.rent.test.RentSpringBeanAwareTestCase;
 import static org.junit.Assert.assertNotNull;
@@ -11,9 +12,9 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Map;
-import java.math.BigDecimal;
 
 public class TestGenerateContractForServicesJasperJob extends RentSpringBeanAwareTestCase {
 
@@ -25,6 +26,7 @@ public class TestGenerateContractForServicesJasperJob extends RentSpringBeanAwar
 
 		Map<Serializable, Serializable> contextVariables = CollectionUtils.map();
 		contextVariables.put(GenerateContractForServicesJasperJob.PARAM_DATA_FORM, createTestForm());
+		contextVariables.put(GenerateContractForServicesJasperJob.PARAM_DATA_FORM1, createTestForm1());
 		contextVariables.put(GenerateContractForServicesJasperJob.PARAM_GENERATE_FORMAT, ReportUtil.FORMAT_PDF);
 
 		assertSame("Invalid result for PDF generation", Job.RESULT_NEXT, job.execute(contextVariables));
@@ -37,6 +39,7 @@ public class TestGenerateContractForServicesJasperJob extends RentSpringBeanAwar
 
 		Map<Serializable, Serializable> contextVariables = CollectionUtils.map();
 		contextVariables.put(GenerateContractForServicesJasperJob.PARAM_DATA_FORM, createTestForm());
+		contextVariables.put(GenerateContractForServicesJasperJob.PARAM_DATA_FORM1, createTestForm1());
 		contextVariables.put(GenerateContractForServicesJasperJob.PARAM_GENERATE_FORMAT, ReportUtil.FORMAT_HTML);
 
 		assertSame("Invalid result for HTML genaration", Job.RESULT_NEXT, job.execute(contextVariables));
@@ -49,6 +52,7 @@ public class TestGenerateContractForServicesJasperJob extends RentSpringBeanAwar
 
 		Map<Serializable, Serializable> contextVariables = CollectionUtils.map();
 		contextVariables.put(GenerateContractForServicesJasperJob.PARAM_DATA_FORM, createTestForm());
+		contextVariables.put(GenerateContractForServicesJasperJob.PARAM_DATA_FORM1, createTestForm1());
 		contextVariables.put(GenerateContractForServicesJasperJob.PARAM_GENERATE_FORMAT, ReportUtil.FORMAT_CSV);
 
 		assertSame("Invalid result for CSV genaration", Job.RESULT_NEXT, job.execute(contextVariables));
@@ -58,6 +62,7 @@ public class TestGenerateContractForServicesJasperJob extends RentSpringBeanAwar
 
 	private ContractForServicesForm createTestForm() {
 		ContractForServicesForm form = new ContractForServicesForm();
+		form.setTest(Boolean.TRUE);
 		form.setContractDate(new Date());
 		form.setContractNumber("1235");
 		form.setExecutor("EXECUTOR");
@@ -79,6 +84,51 @@ public class TestGenerateContractForServicesJasperJob extends RentSpringBeanAwar
 		form.setServiceProviders("S_PROVIDER1, S_PROVIDER2, S_PROVIDER3");
 		form.setServices("SERVICE1, SERVICE2, SERVICE3, SERVICE$");
 		form.setTotalSquare(new BigDecimal("77.13"));
+
+		form.setCentralHeatingSP("ЦЕНТРАЛЬНОЕ ОТОПЛЕНИЕ");
+		form.setCentralHeatingSPAccount("СЧЕТ ЦО");
+		form.setCentralHeatingHeatedSquare(new BigDecimal("34.56"));
+		form.setCentralHeatingDesignLoad(452);
+		form.setHotWaterSP("ГОРЯЧАЯ ВОДА");
+		form.setHotWaterSPAccount("СЧЁТ ГВ");
+		form.setHotWaterPercent(6);
+		form.setHotWaterDesignLoad(97);
+		form.setColdWaterSP("ХОЛОДНАЯ ВОДА");
+		form.setColdWaterSPAccount("СЧЁТ ХОЛОДНОЙ ВОДЫ");
+		form.setColdWaterPercent(13);
+		form.setColdWaterSize(78);
+		form.setWaterHeaterSP("НАГРЕВ ВОДЫ");
+		form.setWaterHeaterSPAccount("СЧЁТ НАГРЕВА ВОДЫ");
+		form.setWaterHeaterPercent(57);
+		form.setWaterHeaterSize(23);
+
+		return form;
+	}
+
+	private ContractForServicesAppendix1Form createTestForm1() {
+		ContractForServicesAppendix1Form form = new ContractForServicesAppendix1Form();
+
+		form.setContractDate(new Date());
+		form.setContractNumber("1235");
+		form.setAddress("АДРЕС ТУТ БУДЕТ");
+		form.setBeginDate(new Date(form.getContractDate().getTime() - 3*24*60*60*1000));
+		form.setRenter("RENTER BUDET");
+		form.setCentralHeatingSP("ЦЕНТРАЛЬНОЕ ОТОПЛЕНИЕ");
+		form.setCentralHeatingSPAccount("СЧЕТ ЦО");
+		form.setCentralHeatingHeatedSquare(new BigDecimal("34.56"));
+		form.setCentralHeatingDesignLoad(452);
+		form.setHotWaterSP("ГОРЯЧАЯ ВОДА");
+		form.setHotWaterSPAccount("СЧЁТ ГВ");
+		form.setHotWaterPercent(6);
+		form.setHotWaterDesignLoad(97);
+		form.setColdWaterSP("ХОЛОДНАЯ ВОДА");
+		form.setColdWaterSPAccount("СЧЁТ ХОЛОДНОЙ ВОДЫ");
+		form.setColdWaterPercent(13);
+		form.setColdWaterSize(78);
+		form.setWaterHeaterSP("НАГРЕВ ВОДЫ");
+		form.setWaterHeaterSPAccount("СЧЁТ НАГРЕВА ВОДЫ");
+		form.setWaterHeaterPercent(57);
+		form.setWaterHeaterSize(23);
 
 		return form;
 	}

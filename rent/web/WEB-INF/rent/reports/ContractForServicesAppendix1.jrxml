@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ContractForServices" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="483" leftMargin="56" rightMargin="56" topMargin="28" bottomMargin="28">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ContractForServicesAppendix1" pageWidth="483" pageHeight="786" whenNoDataType="AllSectionsNoDetail" columnWidth="483" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" isSummaryNewPage="true">
 	<property name="ireport.encoding" value="UTF-8"/>
 	<import value="java.text.SimpleDateFormat"/>
 	<import value="net.sf.jasperreports.engine.*"/>
@@ -29,6 +29,9 @@
 	<parameter name="waterHeaterSPAccount" class="java.lang.String" isForPrompting="false"/>
 	<parameter name="waterHeaterPercent" class="java.lang.Integer" isForPrompting="false"/>
 	<parameter name="waterHeaterSize" class="java.lang.Integer" isForPrompting="false"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["C:/Documents and Settings/Alexuy/Local Settings/Temp/flexpay_data/reports/templates/"]]></defaultValueExpression>
+	</parameter>
 	<title>
 		<band height="143">
 			<textField>
@@ -124,4 +127,14 @@
 			</textField>
 		</band>
 	</detail>
+	<summary>
+		<band height="786">
+			<subreport>
+				<reportElement positionType="Float" x="0" y="0" width="483" height="786" isPrintWhenDetailOverflows="true"/>
+				<parametersMapExpression><![CDATA[new HashMap($P{REPORT_PARAMETERS_MAP})]]></parametersMapExpression>
+				<dataSourceExpression><![CDATA[new JREmptyDataSource()]]></dataSourceExpression>
+				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "ContractForServicesAppendix2.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</summary>
 </jasperReport>

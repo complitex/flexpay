@@ -12,6 +12,7 @@ import org.flexpay.common.service.reporting.ReportUtil;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.config.ApplicationConfig;
 import org.flexpay.rent.reports.contract.ContractForServicesForm;
+import org.flexpay.rent.reports.contract.ContractForServicesAppendix1Form;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Required;
 
@@ -28,6 +29,7 @@ public class GenerateContractForServicesJasperJob extends Job {
 
 	public static final String RESULT_FILE_ID = "RESULT_FILE_ID";
 	public static final String PARAM_DATA_FORM = "dataForm";
+	public static final String PARAM_DATA_FORM1 = "dataForm1";
 	public static final String PARAM_GENERATE_FORMAT = "format";
 
 	private ReportUtil reportUtil;
@@ -35,6 +37,7 @@ public class GenerateContractForServicesJasperJob extends Job {
 	public String execute(Map<Serializable, Serializable> contextVariables) throws FlexPayException {
 
 		ContractForServicesForm dataForm = (ContractForServicesForm) contextVariables.get(PARAM_DATA_FORM);
+		ContractForServicesAppendix1Form dataForm1 = (ContractForServicesAppendix1Form) contextVariables.get(PARAM_DATA_FORM1);
 		String format = (String) contextVariables.get(PARAM_GENERATE_FORMAT);
 
 		Logger plog = ProcessLogger.getLogger(getClass());
@@ -53,17 +56,16 @@ public class GenerateContractForServicesJasperJob extends Job {
 
 			FPFile report = null;
 			if (ReportUtil.FORMAT_PDF.equals(format)) {
-				report = reportUtil.exportToPdf("ContractForServices", dataForm.getParams(), dataSource, ApplicationConfig.getDefaultReportLocale());
+				reportUtil.exportToPdf("ContractForServices", dataForm.getParams(), dataSource, ApplicationConfig.getDefaultReportLocale());
 			} else if (ReportUtil.FORMAT_HTML.equals(format)) {
-				report = reportUtil.exportToHtml("ContractForServices", dataForm.getParams(), dataSource, ApplicationConfig.getDefaultReportLocale());
+				reportUtil.exportToHtml("ContractForServices", dataForm.getParams(), dataSource, ApplicationConfig.getDefaultReportLocale());
 			} else if (ReportUtil.FORMAT_CSV.equals(format)) {
-				report = reportUtil.exportToCsv("ContractForServices", dataForm.getParams(), dataSource, ApplicationConfig.getDefaultReportLocale());
+				reportUtil.exportToCsv("ContractForServices", dataForm.getParams(), dataSource, ApplicationConfig.getDefaultReportLocale());
 			} else {
-				throw  new FlexPayException("Incorrect format value - " +  format);
+				throw new FlexPayException("Incorrect format value - " +  format);
 			}
-			if (report != null) {
-				contextVariables.put(RESULT_FILE_ID, report.getId());
-			}
+
+			contextVariables.put(GenerateContractForServicesJasperJob.RESULT_FILE_ID, "1");
 
 			plog.info("Ended jasper contract for services generation for format {}, time spent: {} ms.", format, System.currentTimeMillis() - time);
 		} catch (Exception e) {
@@ -77,6 +79,10 @@ public class GenerateContractForServicesJasperJob extends Job {
 
 	private void uploadReportTemplates() throws Exception {
 		uploadReportTemplate("ContractForServices");
+		uploadReportTemplate("ContractForServicesAppendix1");
+		uploadReportTemplate("ContractForServicesAppendix2");
+		uploadReportTemplate("ContractForServicesAppendix3");
+		uploadReportTemplate("ContractForServicesAppendix3Sub");
 	}
 
 	private void uploadReportTemplate(String name) throws Exception {
