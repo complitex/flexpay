@@ -25,6 +25,7 @@ import org.flexpay.common.persistence.registry.workflow.RegistryRecordWorkflowMa
 import org.flexpay.common.persistence.registry.workflow.RegistryWorkflowManager;
 import org.flexpay.common.persistence.registry.workflow.TransitionNotAllowed;
 import org.flexpay.common.service.RegistryFileService;
+import org.flexpay.common.process.ProcessLogger;
 import org.flexpay.eirc.service.importexport.EircImportService;
 import org.flexpay.eirc.service.importexport.RawConsumerData;
 import org.flexpay.orgs.service.ServiceProviderService;
@@ -33,6 +34,7 @@ import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
+import org.apache.commons.lang.time.StopWatch;
 
 import java.util.Collection;
 import java.util.List;
@@ -117,13 +119,21 @@ public class ServiceProviderFileProcessor implements RegistryProcessor {
 
 	public void processRegistry(Registry registry) throws Exception {
 
-		log.info("Starting processing records");
+		StopWatch watch = new StopWatch();
+		watch.start();
+		Logger plog = ProcessLogger.getLogger(getClass());
+
+		plog.info("Starting processing records");
 		Page<RegistryRecord> pager = new Page<RegistryRecord>(50, 1);
 		Long[] minMaxIds = {null, null};
 		do {
+			plog.info("Fetching next page {}. Time spent {}", pager, watch);
 			processRegistry(registry, pager, minMaxIds);
 		} while (pager.getThisPageFirstElementNumber() <= (minMaxIds[1] - minMaxIds[0]));
-		log.info("No more records to process");
+		plog.info("No more records to process");
+
+		watch.stop();
+		plog.info("Import finished. Time spent {}", watch);
 	}
 
 	/**

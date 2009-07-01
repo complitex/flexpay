@@ -6,6 +6,7 @@ import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.payments.persistence.ServiceType;
 import org.flexpay.payments.service.ServiceTypeService;
+import org.flexpay.eirc.service.Security;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.util.List;
@@ -43,13 +44,14 @@ public class ServiceTypesMapper {
 
 	public void validate() {
 
+		Security.authenticateSyncer();
 		List<Long> invalidTypes = CollectionUtils.list();
 		for (Object mbCode : mapping.keySet()) {
 			@SuppressWarnings ({"unchecked"})
 			Stub<ServiceType> stub = (Stub<ServiceType>) mapping.get(mbCode);
-//			if (serviceTypeService.read(stub) == null) {
-//				invalidTypes.add(stub.getId());
-//			}
+			if (serviceTypeService.read(stub) == null) {
+				invalidTypes.add(stub.getId());
+			}
 		}
 
 		if (!invalidTypes.isEmpty()) {

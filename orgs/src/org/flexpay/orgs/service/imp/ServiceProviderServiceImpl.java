@@ -46,6 +46,7 @@ public class ServiceProviderServiceImpl implements ServiceProviderService {
 	 * @return ServiceProvider
 	 */
 	public <T extends ServiceProvider> T read(@NotNull Stub<T> stub) {
+		log.debug("Service provider read {}", stub);
 		return (T) serviceProviderDao.readFull(stub.getId());
 	}
 

@@ -40,7 +40,7 @@ public class MbCorrectionsFileParser extends MbFileParser {
 	protected List<Registry> parseFile(@NotNull FPFile spFile) throws FlexPayException {
 
 		Registry infoRegistry = new Registry();
-		infoRegistry.setRegistryType(registryTypeService.findByCode(RegistryType.TYPE_QUITTANCE));
+		infoRegistry.setRegistryType(registryTypeService.findByCode(RegistryType.TYPE_INFO));
 		List<Registry> registries = CollectionUtils.list(infoRegistry);
 
 		BufferedReader reader = null;
@@ -225,59 +225,54 @@ public class MbCorrectionsFileParser extends MbFileParser {
 
 	private RegistryRecord createRecord(RegistryRecord record, String[] fields) {
 
-		List<RegistryRecordContainer> containers = CollectionUtils.list();
 		String modificationStartDate = getModificationDate(fields[19]);
 
 		// ФИО
 		RegistryRecordContainer container = new RegistryRecordContainer();
-		container.setOrder(3);
 		container.setData("3:" + modificationStartDate + "::" + fields[2]);
-		container.setRecord(record);
-		containers.add(container);
+		record.addContainer(container);
 
 		// Количество проживающих
-		RegistryRecordContainer container1 = new RegistryRecordContainer();
-		container1.setOrder(4);
-		container1.setData("4:" + modificationStartDate + "::" + fields[15]);
-		container1.setRecord(record);
-		containers.add(container1);
+		if (!"0".equals(fields[15])) {
+			container = new RegistryRecordContainer();
+			container.setData("4:" + modificationStartDate + "::" + fields[15]);
+			record.addContainer(container);
+		}
 
 		// Площадь общая
-		RegistryRecordContainer container2 = new RegistryRecordContainer();
-		container2.setOrder(5);
-		container2.setData("5:" + modificationStartDate + "::" + fields[10]);
-		container2.setRecord(record);
-		containers.add(container2);
+		if (!"0.00".equals(fields[10])) {
+			container = new RegistryRecordContainer();
+			container.setData("5:" + modificationStartDate + "::" + fields[10]);
+			record.addContainer(container);
+		}
 
 		// Площадь жилая
-		RegistryRecordContainer container3 = new RegistryRecordContainer();
-		container3.setOrder(6);
-		container3.setData("6:" + modificationStartDate + "::" + fields[11]);
-		container3.setRecord(record);
-		containers.add(container3);
+		if (!"0.00".equals(fields[11])) {
+			container = new RegistryRecordContainer();
+			container.setData("6:" + modificationStartDate + "::" + fields[11]);
+			record.addContainer(container);
+		}
 
 		// Тип льготы
-		RegistryRecordContainer container4 = new RegistryRecordContainer();
-		container4.setOrder(8);
-		container4.setData("8:" + modificationStartDate + "::" + fields[17]);
-		container4.setRecord(record);
-		containers.add(container4);
+		if (!"0".equals(fields[17])) {
+			container = new RegistryRecordContainer();
+			container.setData("8:" + modificationStartDate + "::" + fields[17]);
+			record.addContainer(container);
+		}
 
 		// ФИО носителя льготы
-		RegistryRecordContainer container5 = new RegistryRecordContainer();
-		container5.setOrder(9);
-		container5.setData("9:" + modificationStartDate + "::" + fields[26]);
-		container5.setRecord(record);
-		containers.add(container5);
+		if (!"0".equals(fields[26])) {
+			container = new RegistryRecordContainer();
+			container.setData("9:" + modificationStartDate + "::" + fields[26]);
+			record.addContainer(container);
+		}
 
 		// Количество пользующихся льготой
-		RegistryRecordContainer container6 = new RegistryRecordContainer();
-		container6.setOrder(12);
-		container6.setData("12:" + modificationStartDate + "::" + fields[16]);
-		container6.setRecord(record);
-		containers.add(container6);
-
-		record.setContainers(containers);
+		if (!"0".equals(fields[16])) {
+			container = new RegistryRecordContainer();
+			container.setData("12:" + modificationStartDate + "::" + fields[16]);
+			record.addContainer(container);
+		}
 
 		return record;
 	}

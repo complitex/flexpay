@@ -71,6 +71,18 @@
 		<put-attribute name="body" value="/WEB-INF/jsp/eirc/import/sp_file_list.jsp" />
 	</definition>
 
+	<!-- Registries -->
+	<definition name="eirc.registry" extends="eirc.import">
+		<put-attribute name="title" value="eirc.menu34.registries" />
+	</definition>
+	<definition name="eirc.registry.list" extends="eirc.registry">
+		<put-attribute name="body" value="/WEB-INF/jsp/payments/registry/list_registries.jsp" />
+	</definition>
+	<definition name="eirc.registry.view" extends="eirc.registry">
+		<put-attribute name="body" value="/WEB-INF/jsp/payments/registry/view_registry.jsp" />
+	</definition>
+
+
 	<!-- Processing -->
 	<definition name="eirc.processing" extends="ab.layout.standart">
 		<put-attribute name="title" value="eirc.menu2.processing" />

@@ -125,7 +125,7 @@ public class EircImportServiceTx extends ImportService {
 				// set service if not found
 				EircRegistryProperties regProps = (EircRegistryProperties) data.getRegistryRecord().getRegistry().getProperties();
 				Service service = props.getService();
-				Stub<ServiceProvider> spStub = new Stub<ServiceProvider>(regProps.getServiceProvider());
+				Stub<ServiceProvider> spStub = regProps.getServiceProviderStub();
 				if (service == null) {
 					service = consumerService.findService(spStub, data.getServiceCode());
 					if (service == null) {

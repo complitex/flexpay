@@ -162,6 +162,26 @@ SELECT @service_type_250:=last_insert_id();
 INSERT INTO payments_service_type_name_translations_tbl (name, description, language_id, service_type_id)
 	VALUES ('Содержание животных', 'Описание', @ru_id, @service_type_250);
 
+INSERT INTO payments_service_types_tbl (id, status, code) VALUES (1002, 0, 1002);
+SELECT @service_t_electricity:=1002;
+INSERT INTO payments_service_type_name_translations_tbl (name, description, language_id, service_type_id)
+	VALUES ('Электроэнергия', 'Описание', @ru_id, @service_t_electricity);
+
+INSERT INTO payments_service_types_tbl (id, status, code) VALUES (1003, 0, 1003);
+SELECT @service_t_shed:=1003;
+INSERT INTO payments_service_type_name_translations_tbl (name, description, language_id, service_type_id)
+	VALUES ('Сарай', 'Описание', @ru_id, @service_t_shed);
+
+INSERT INTO payments_service_types_tbl (id, status, code) VALUES (1004, 0, 1004);
+SELECT @service_t_larder:=1004;
+INSERT INTO payments_service_type_name_translations_tbl (name, description, language_id, service_type_id)
+	VALUES ('Кладовая', 'Описание', @ru_id, @service_t_larder);
+
+INSERT INTO payments_service_types_tbl (id, status, code) VALUES (1005, 0, 1005);
+SELECT @service_t_household_consumptions:=1005;
+INSERT INTO payments_service_type_name_translations_tbl (name, description, language_id, service_type_id)
+	VALUES ('Хозрасходы', 'Описание', @ru_id, @service_t_household_consumptions);
+
 -- Init services
 INSERT INTO payments_services_tbl (id, provider_id, external_code, measure_unit_id, type_id, begin_date, end_date, version, status)
 	VALUES (1, @service_provider_cn, '1', @unit_square_meter, @service_kvartplata, '1900-01-01', '2100-12-31', 0, 0);
@@ -330,6 +350,31 @@ INSERT INTO payments_services_tbl (provider_id, external_code, measure_unit_id, 
 SELECT @service_250:=last_insert_id();
 INSERT INTO payments_service_descriptions_tbl (name, language_id, service_id)
 		VALUES ('Содержание животных', @ru_id, @service_250);
+
+
+INSERT INTO payments_services_tbl (provider_id, external_code, measure_unit_id, type_id, begin_date, end_date, version, status)
+	VALUES (@service_provider_cn, null, null, @service_t_electricity, '1900-01-01', '2100-12-31', 0, 0);
+SELECT @service_electricity:=last_insert_id();
+INSERT INTO payments_service_descriptions_tbl (name, language_id, service_id)
+		VALUES ('Электроэнергия', @ru_id, @service_electricity);
+
+INSERT INTO payments_services_tbl (provider_id, external_code, measure_unit_id, type_id, begin_date, end_date, version, status)
+	VALUES (@service_provider_cn, null, null, @service_t_shed, '1900-01-01', '2100-12-31', 0, 0);
+SELECT @service_shed:=last_insert_id();
+INSERT INTO payments_service_descriptions_tbl (name, language_id, service_id)
+		VALUES ('Сарай', @ru_id, @service_shed);
+
+INSERT INTO payments_services_tbl (provider_id, external_code, measure_unit_id, type_id, begin_date, end_date, version, status)
+	VALUES (@service_provider_cn, null, null, @service_t_larder, '1900-01-01', '2100-12-31', 0, 0);
+SELECT @service_larder:=last_insert_id();
+INSERT INTO payments_service_descriptions_tbl (name, language_id, service_id)
+		VALUES ('Кладовая', @ru_id, @service_larder);
+
+INSERT INTO payments_services_tbl (provider_id, external_code, measure_unit_id, type_id, begin_date, end_date, version, status)
+	VALUES (@service_provider_cn, null, null, @service_t_household_consumptions, '1900-01-01', '2100-12-31', 0, 0);
+SELECT @service_household_consumptions:=last_insert_id();
+INSERT INTO payments_service_descriptions_tbl (name, language_id, service_id)
+		VALUES ('Хозрасходы', @ru_id, @service_household_consumptions);
 
 
 -- init operations

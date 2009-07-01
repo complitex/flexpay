@@ -1,14 +1,13 @@
 package org.flexpay.eirc.sp;
 
-import org.flexpay.common.persistence.DataSourceDescription;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.service.importexport.ClassToTypeRegistry;
 import org.flexpay.common.service.RegistryService;
 import org.flexpay.eirc.actions.TestSpFileCreateAction;
+import org.flexpay.eirc.service.exchange.RegistryProcessor;
 import org.flexpay.eirc.sp.impl.validation.MbCorrectionsFileValidator;
-import org.flexpay.orgs.persistence.ServiceProvider;
 import org.flexpay.payments.service.EircRegistryService;
 import org.junit.After;
 import static org.junit.Assert.assertNotNull;
@@ -34,8 +33,7 @@ public class TestMbCorrectionsFileParser extends TestSpFileCreateAction {
 	@Autowired
 	private MbCorrectionsFileValidator validator;
 	@Autowired
-	@Qualifier ("megabankDataSourceDescription")
-	private DataSourceDescription megabankSD;
+	private RegistryProcessor registryProcessor;
 
 	private boolean ignoreInvalidLinesNumber;
 
@@ -48,6 +46,8 @@ public class TestMbCorrectionsFileParser extends TestSpFileCreateAction {
 			List<Registry> registries = parser.parse(newFile);
 			assertNotNull("Registry parse failed", registries);
 
+			registryProcessor.registriesProcess(registries);
+
 			for (Registry registry : registries) {
 				registryService.deleteRecords(stub(registry));
 				registryService.delete(registry);
@@ -58,12 +58,6 @@ public class TestMbCorrectionsFileParser extends TestSpFileCreateAction {
 		}
 
 		deleteFile(newFile);
-	}
-
-	@Test
-	public void testClassToTypeRegistry() {
-		System.out.println("ServiceProvider type id: " + typeRegistry.getType(ServiceProvider.class));
-		System.out.println("Megabank SD: " + megabankSD);
 	}
 
 	@Before
