@@ -46,6 +46,8 @@ public class GeneratePaymentsDBRegistry {
 
         Registry registry = new Registry();
 
+        registry.setRecipientCode(serviceProvider.getOrganization().getId());
+        registry.setSenderCode(registerOrganization.getId());
         registry.setCreationDate(new Date());
         registry.setSpFile(spFile);
         registry.setRegistryType(registryTypeService.findByCode(getPaymentsType()));
