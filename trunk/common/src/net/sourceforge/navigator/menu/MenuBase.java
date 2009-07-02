@@ -1,6 +1,7 @@
 package net.sourceforge.navigator.menu;
 
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
 public abstract class MenuBase {
 
@@ -22,9 +23,6 @@ public abstract class MenuBase {
 
     /** Holds value of property image. */
     protected String image;
-
-    /** Holds value of property name. */
-    protected String name;
 
     /** Holds value of property onclick. */
     protected String onclick;
@@ -128,15 +126,6 @@ public abstract class MenuBase {
 
     public String getLocation() {
         return location;
-    }
-
-	@Required
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getName() {
-        return name;
     }
 
     public void setOnclick(String onclick) {

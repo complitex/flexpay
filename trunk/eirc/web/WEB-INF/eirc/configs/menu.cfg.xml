@@ -215,7 +215,7 @@
     </bean>
 
 	<bean parent="eirc_dicts_payments_collectors"
-		  p:name="eirc.payments_collectors_1"
+		  p:name="eirc.payments_collectors2"
 		  p:title="eirc.payments_collectors"
 		  p:action="paymentsCollectorsList"
 		  p:parent-ref="eirc_dicts_payments_collectors">

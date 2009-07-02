@@ -24,11 +24,6 @@ public class MenuRepository implements Serializable {
         return menu;
     }
 
-    @Required
-    public void setMenu(MenuComponent menu) {
-        this.menu = menu;
-    }
-
     public void setIndex(MenuComponent menu) {
 		List<MenuComponent> components = menu.getComponents();
 		if (components.isEmpty()) {
@@ -40,7 +35,6 @@ public class MenuRepository implements Serializable {
 		}
 	}
 
-
     public MenuDisplayerMapping getMenuDisplayer(String displayerName) {
         return displayers.get(displayerName);
     }
@@ -49,17 +43,22 @@ public class MenuRepository implements Serializable {
         return displayers;
     }
 
-    @Required
-    public void setDisplayers(Map<String, MenuDisplayerMapping> displayers) {
-        this.displayers = displayers;
-    }
-
     public ApplicationContext getApplicationContext() {
         return applicationContext;
     }
 
     public void setApplicationContext(ApplicationContext applicationContext) {
         this.applicationContext = applicationContext;
+    }
+
+	@Required
+	public void setMenu(MenuComponent menu) {
+		this.menu = menu;
+	}
+
+    @Required
+    public void setDisplayers(Map<String, MenuDisplayerMapping> displayers) {
+        this.displayers = displayers;
     }
 
     @Override
