@@ -280,6 +280,19 @@
 
 				event.preventDefault();
 			}
+			else {
+				if (containsError('inputSumm')) {
+					$('#changeSumm').focus(); // to invalidate error by calling validator on change
+				}
+				$('#printQuittanceButton').focus();
+
+				if (getTotalErrorsNumber() > oldNumberOfErrors) {
+					$('#' + currentFieldId).focus();
+					$('#' + currentFieldId).select();
+				}
+
+				event.preventDefault();
+			}
 		} else if (event.keyCode == 9 && event.shiftKey) {
 			if (currentFieldIndex > 0) {
 				nextFieldId = fieldChain[currentFieldIndex - 1];
@@ -293,10 +306,12 @@
 
 				event.preventDefault();
 			}
+			else {
+				event.preventDefault();
+			}
 		}
 	}
 
-	// FIXME ELIMINATE THIS HACKS
 	function onChangePaymentHandler(id) {
 		processPaymentValue(id);
 		validatePaymentValue(id);
@@ -337,24 +352,8 @@
 		$('#payments_<s:property value="#serviceIndx"/>').bind('keypress', function(event) {
 			updateCurrentFieldIndex(event);
 		});
-
-		<%-- FIXME THIS EVENT IS ACTUALLY BOUND IN HTML (WHY IT DOESN'T WORK FROM HERE?!)--%>
-		<%--$('#payments_<s:property value="#serviceIndx"/>').bind('change', function(event) {--%>
-			<%--processPaymentValue('payments_<s:property value="#serviceIndx"/>');--%>
-			<%--validatePaymentValue('payments_<s:property value="#serviceIndx"/>');--%>
-			<%--updateTotal();--%>
-			<%--disablePayment();--%>
-		<%--});--%>
 		</s:iterator>
 		</s:iterator>
-
-//		$('#inputSumm').bind('change', function(event) {
-//			processPaymentValue('inputSumm');
-//			validatePaymentValue('inputSumm');
-//			validateInputValue();
-//			updateChange();
-//			disablePayment();
-//		});
 
 		$('#inputSumm').bind('focus', function(event) {
 			setCurrentFieldIndex(event);
@@ -364,12 +363,11 @@
 			updateCurrentFieldIndex(event);
 		});
 
-		$('#printQuittanceButton').bind('focus', function(event) {
-			setCurrentFieldIndex(event);
-		});
-
 		$('#printQuittanceButton').bind('keypress', function(event) {
-			updateCurrentFieldIndex(event);
+			if (event.keyCode == 9 && event.shiftKey) {
+				$('#inputSumm').focus();
+				event.preventDefault();
+			}
 		});
 
 		$('#printQuittanceButton').bind('click', function(event) {
