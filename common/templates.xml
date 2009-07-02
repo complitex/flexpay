@@ -424,10 +424,14 @@
 			<arg line="status -q" />
 		</exec>
 
-		<replaceregexp file="${build.dir}/web/WEB-INF/jsp/common/about.jsp"
+		<!--<replaceregexp file="${build.dir}/web/WEB-INF/jsp/common/about.jsp"-->
+					   <!--encoding="UTF-8"-->
+					   <!--match="@@@FILESLIST@@@"-->
+					   <!--replace="${svnstatus}" />-->
+		<replace file="${build.dir}/web/WEB-INF/jsp/common/about.jsp"
 					   encoding="UTF-8"
-					   match="@@@FILESLIST@@@"
-					   replace="${svnstatus}" />
+					   token="@@@FILESLIST@@@"
+					   value="${svnstatus}" />
 
 		<exec executable="svn"
 			  dir="${basedir}"
