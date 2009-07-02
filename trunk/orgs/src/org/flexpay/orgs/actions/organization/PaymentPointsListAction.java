@@ -3,6 +3,7 @@ package org.flexpay.orgs.actions.organization;
 import org.apache.commons.collections.ArrayStack;
 import org.flexpay.common.actions.FPActionWithPagerSupport;
 import org.flexpay.common.util.CollectionUtils;
+import org.flexpay.common.persistence.Stub;
 import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.orgs.persistence.PaymentPoint;
 import org.flexpay.orgs.persistence.PaymentsCollector;
@@ -68,6 +69,11 @@ public class PaymentPointsListAction extends FPActionWithPagerSupport<PaymentPoi
 
 	public PaymentsCollectorFilter getPaymentsCollectorFilter() {
 		return paymentsCollectorFilter;
+	}
+
+	public Long getPaymentsCollectorId(Long paymentPointId) {
+		PaymentPoint paymentPoint = paymentPointService.read(new Stub<PaymentPoint>(paymentPointId));
+		return paymentPoint.getCollector().getId();
 	}
 
 	public void setPaymentsCollectorFilter(PaymentsCollectorFilter paymentsCollectorFilter) {
