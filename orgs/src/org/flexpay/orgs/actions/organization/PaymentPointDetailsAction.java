@@ -1,15 +1,13 @@
 package org.flexpay.orgs.actions.organization;
 
-import org.flexpay.orgs.actions.cashbox.CashboxesListAction;
-import org.flexpay.orgs.persistence.filters.PaymentsCollectorFilter;
-import org.flexpay.orgs.persistence.filters.PaymentPointsFilter;
-import org.flexpay.orgs.persistence.PaymentPoint;
-import org.flexpay.orgs.service.PaymentsCollectorService;
-import org.flexpay.orgs.service.PaymentPointService;
-import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
 import org.flexpay.common.util.CollectionUtils;
+import org.flexpay.orgs.actions.cashbox.CashboxesListAction;
+import org.flexpay.orgs.persistence.PaymentPoint;
+import org.flexpay.orgs.persistence.filters.PaymentPointsFilter;
+import org.flexpay.orgs.persistence.filters.PaymentsCollectorFilter;
+import org.flexpay.orgs.service.PaymentPointService;
+import org.flexpay.orgs.service.PaymentsCollectorService;
 import org.jetbrains.annotations.NotNull;
-import org.apache.commons.collections.ArrayStack;
 import org.springframework.beans.factory.annotation.Required;
 
 public class PaymentPointDetailsAction extends CashboxesListAction {
