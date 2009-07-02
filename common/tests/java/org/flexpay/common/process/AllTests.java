@@ -6,7 +6,8 @@ import org.junit.runners.Suite;
 @RunWith (Suite.class)
 @Suite.SuiteClasses ({
 		org.flexpay.common.process.job.AllTests.class,
-		TestProcessManager.class
+		TestProcessManager.class,
+		TestProcessLogger.class
 })
 public class AllTests {
 
