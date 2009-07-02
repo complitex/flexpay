@@ -48,7 +48,6 @@ public class PaymentsCollectorServiceImpl
 	public PaymentsCollectorFilter initFilter(@NotNull PaymentsCollectorFilter filter) {
 
 		filter.setInstances(listInstances(new Page<PaymentsCollector>(1000, 1)));
-
 		return filter;
 	}
 }

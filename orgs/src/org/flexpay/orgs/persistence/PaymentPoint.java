@@ -20,7 +20,6 @@ import java.util.Set;
 public class PaymentPoint extends DomainObjectWithStatus {
 
 	private String address;
-    private String email;
 //    private org.jbpm.graph.exe.ProcessInstance tradingDayProcessInstance;
     private Long tradingDayProcessInstanceId;
 
@@ -53,14 +52,6 @@ public class PaymentPoint extends DomainObjectWithStatus {
 	public void setAddress(String address) {
 		this.address = address;
 	}
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
 
     public Set<PaymentPointName> getNames() {
 		return names;
@@ -122,7 +113,6 @@ public class PaymentPoint extends DomainObjectWithStatus {
 				append("id", getId()).
 				append("status", getStatus()).
 				append("address", address).
-				append("email", email).
 				append("tradingDayProcessInstanceId", tradingDayProcessInstanceId).
 				toString();
 	}

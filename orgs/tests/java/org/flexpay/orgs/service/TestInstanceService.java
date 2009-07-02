@@ -99,11 +99,9 @@ public class TestInstanceService extends OrgsSpringBeanAwareTestCase {
 		PaymentPoint point = new PaymentPoint();
 		point.setCollector(org);
 		point.setAddress("TEST_POINT_ADDRESS");
-		point.setEmail("a@b.com");
 		point.setName(new PaymentPointName("TEST-POINT", lang()));
 		paymentPointService.create(point);
 
-		point.setEmail(null);
 		point.setAddress("ADDR");
 		point.setName(new PaymentPointName("TEST-POINT-UPDATE", lang()));
 		paymentPointService.update(point);
