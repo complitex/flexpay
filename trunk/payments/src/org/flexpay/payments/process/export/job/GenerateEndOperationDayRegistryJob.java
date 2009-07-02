@@ -61,8 +61,7 @@ public class GenerateEndOperationDayRegistryJob extends Job {
 			PaymentsCollector paymentsCollector = paymentsCollectorService.read(new Stub<PaymentsCollector>(paymentPoint.getCollector().getId()));
 			if (paymentsCollector != null ){
 				parameters.put("Email", paymentsCollector.getEmail());
-			}
-			parameters.put("Email", paymentPoint.getEmail());
+			}			
 
 			log.info("Process end operation day registry and save it to file finished...");
 

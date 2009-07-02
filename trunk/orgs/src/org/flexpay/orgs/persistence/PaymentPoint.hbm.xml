@@ -25,11 +25,6 @@
 				<comment>Address</comment>
 			</column>
 		</property>
-        <property name="email">
-			<column name="email" not-null="false">
-				<comment>E-mail</comment>
-			</column>
-		</property>
         <property name="tradingDayProcessInstanceId">
             <column name="tradingDayProcessInstance_Id" not-null="false">
                 <comment>Trading date process instance id</comment>

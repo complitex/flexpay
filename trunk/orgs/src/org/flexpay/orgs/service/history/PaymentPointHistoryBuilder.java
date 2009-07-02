@@ -71,14 +71,6 @@ public class PaymentPointHistoryBuilder extends HistoryBuilderBase<PaymentPoint>
 			diff.addRecord(rec);
 			log.debug("Added address diff record {}", rec);
 		}
-
-		if (differ(p1.getEmail(), p2.getEmail())) {
-			HistoryRecord rec = newRecord(FIELD_EMAIL);
-			rec.setOldStringValue(p1.getAddress());
-			rec.setNewStringValue(p2.getAddress());
-			diff.addRecord(rec);
-			log.debug("Added email diff record {}", rec);
-		}
 	}
 	
 	private void buildNameDiff(PaymentPoint p1, PaymentPoint p2, Diff diff) {

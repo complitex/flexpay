@@ -72,7 +72,6 @@ public class PaymentPointEditAction extends FPActionSupport {
 			pnt.setCollector(paymentsCollectorService.read(paymentsCollectorFilter.getSelectedStub()));
 		}
 		pnt.setAddress(point.getAddress());
-        pnt.setEmail(point.getEmail());
 
 		for (Map.Entry<Long, String> name : names.entrySet()) {
 			String value = name.getValue();
