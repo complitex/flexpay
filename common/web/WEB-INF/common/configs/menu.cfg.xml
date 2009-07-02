@@ -13,14 +13,17 @@
             p:type="net.sourceforge.navigator.displayer.FPMenuDisplayer"
             />
 
+    <bean name="fpMenuInform" class="net.sourceforge.navigator.menu.MenuInform" />
+
     <!--level0-->
     <bean name="fpMenu" class="net.sourceforge.navigator.menu.MenuComponent"
             p:name="fp"
             p:userRole="ROLE_BASIC"
+            p:menuInform-ref="fpMenuInform"
             />
 
-    <bean name="menuRepository" class="net.sourceforge.navigator.menu.MenuRepository">
-        <property name="menu" ref="fpMenu" />
+    <bean name="menuRepository" class="net.sourceforge.navigator.menu.MenuRepository"
+            p:menu-ref="fpMenu">
         <property name="displayers">
             <map>
                 <entry key="fpDisplayer" value-ref="fpDisplayerMapping" />

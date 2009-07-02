@@ -4,6 +4,8 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.security.GrantedAuthorityImpl;
+import org.springframework.beans.factory.annotation.Required;
+import org.springframework.beans.factory.InitializingBean;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -11,7 +13,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
-public class MenuComponent extends MenuBase implements Serializable {
+public class MenuComponent extends MenuBase implements Serializable, InitializingBean {
 
 	public final static String ACTIVE_MENU = "activeMenuComponentName";
 
@@ -19,9 +21,11 @@ public class MenuComponent extends MenuBase implements Serializable {
 
     protected List<MenuComponent> menuComponents = new ArrayList<MenuComponent>();
     protected MenuComponent parent;
+	protected String name;
 	protected String userRole;
 	private int level;
 	private int index;
+	protected MenuInform menuInform;
 	protected GrantedAuthorityImpl requiredAuthority;
 
 	public GrantedAuthorityImpl getRequiredAuthority() {
@@ -110,11 +114,34 @@ public class MenuComponent extends MenuBase implements Serializable {
 		this.level = level;
 	}
 
+	public String getName() {
+		return name;
+	}
+
+	@Required
+    public void setName(String name) {
+        this.name = name;
+    }
+
+	public MenuInform getMenuInform() {
+		return menuInform;
+	}
+
+	@Required
+	public void setMenuInform(MenuInform menuInform) {
+		this.menuInform = menuInform;
+	}
+
+	@Override
+	public void afterPropertiesSet() throws Exception {
+		menuInform.addNameOfMenuComponent(name);
+	}
+
 	@Override
 	public String toString() {
 		ToStringBuilder sb = new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE).
 				append("MenuComponent {").
-                append("name", getName()).
+                append("name", name).
 				append("title", title).
 				append("action", action).
 				append("index", index).

@@ -57,6 +57,11 @@
 		</layout>
 	</appender>
 
+    <category name="net.sourceforge.navigator" additivity="false">
+        <priority value="info" />
+        <appender-ref ref="flexpay" />
+    </category>
+
 	<category name="org.flexpay" additivity="false">
 		<priority value="debug" />
 		<appender-ref ref="flexpay" />
