@@ -103,6 +103,10 @@
 
 	function validateInputValue() {
 
+		if (!validatePaymentValue('inputSumm')) {
+			return true;
+		}
+
 		var inputValue = $('#inputSumm').val();
 		var totalValue = $('#totalToPay').val();
 
@@ -148,7 +152,8 @@
 		}
 
 		$('#totalToPay').val(int2Dotted(total));
-		$('#inputSumm').val(int2Dotted(total));
+		$('#inputSumm').val(int2Dotted(total));		
+		validateInputValue(); // if we have an error in input before it is not valid anymore
 		$('#changeSumm').val('0.00');
 	}
 
@@ -321,7 +326,6 @@
 
 	function onChangeInputHandler() {
 		processPaymentValue('inputSumm');
-		validatePaymentValue('inputSumm');
 		validateInputValue();
 		updateChange();
 		disablePayment();
@@ -358,7 +362,7 @@
 		$('#inputSumm').bind('focus', function(event) {
 			setCurrentFieldIndex(event);
 		});
-		
+
 		$('#inputSumm').bind('keypress', function(event) {
 			updateCurrentFieldIndex(event);
 		});
