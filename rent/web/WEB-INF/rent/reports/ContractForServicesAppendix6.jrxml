@@ -1,0 +1,375 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ContractForServicesAppendix5" pageWidth="483" pageHeight="786" whenNoDataType="AllSectionsNoDetail" columnWidth="483" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" isSummaryNewPage="true">
+	<property name="ireport.encoding" value="UTF-8"/>
+	<import value="java.text.SimpleDateFormat"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="java.util.*"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<style name="TNR_9" isDefault="true" fontName="LiberationSerif-Regular" fontSize="9" pdfFontName="fonts/LiberationSerif-Regular.ttf" pdfEncoding="Cp1251" isPdfEmbedded="true"/>
+	<style name="TNR_10b" isDefault="false" fontName="LiberationSerif-Bold" fontSize="10" isBold="true" pdfFontName="fonts/LiberationSerif-Regular.ttf" pdfEncoding="Cp1251" isPdfEmbedded="true"/>
+	<style name="TNR_12b" isDefault="false" fontName="LiberationSerif-Bold" fontSize="12" isBold="true" pdfFontName="fonts/LiberationSerif-Regular.ttf" pdfEncoding="Cp1251" isPdfEmbedded="true"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["C:/Documents and Settings/Alexuy/Local Settings/Temp/flexpay_data/reports/templates/"]]></defaultValueExpression>
+	</parameter>
+	<title>
+		<band height="375">
+			<staticText>
+				<reportElement style="TNR_12b" x="2" y="0" width="482" height="16"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Печатные формы для Исполнителя]]></text>
+			</staticText>
+			<textField>
+				<reportElement style="TNR_10b" x="0" y="32" width="483" height="26"/>
+				<textElement textAlignment="Center" markup="styled"/>
+				<textFieldExpression class="java.lang.String"><![CDATA["Обігова відомість за @месяц@<br/>по @структурное подразделение@"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="58" width="78" height="62" backcolor="#CCCCCC"/>
+				<textElement textAlignment="Center" verticalAlignment="Top"/>
+				<text><![CDATA[Послуга]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement x="1" y="120" width="481" height="13" backcolor="#CCCCCC"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="1" y="173" width="481" height="12" backcolor="#CCCCCC"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="1" y="224" width="481" height="12" backcolor="#CCCCCC"/>
+			</rectangle>
+			<textField>
+				<reportElement x="4" y="133" width="74" height="13"/>
+				<textElement markup="styled"/>
+				<textFieldExpression class="java.lang.String"><![CDATA["@Услуга 1@"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Opaque" x="78" y="58" width="74" height="26" backcolor="#CCCCCC"/>
+				<textElement textAlignment="Center" verticalAlignment="Top"/>
+				<text><![CDATA[Сальдо на початок міс.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="78" y="84" width="37" height="36" backcolor="#CCCCCC"/>
+				<textElement textAlignment="Center" verticalAlignment="Top"/>
+				<text><![CDATA[всього]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="115" y="84" width="37" height="36" backcolor="#CCCCCC"/>
+				<textElement textAlignment="Center" verticalAlignment="Top"/>
+				<text><![CDATA[в т.ч. ПДВ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="152" y="58" width="185" height="26" backcolor="#CCCCCC"/>
+				<textElement textAlignment="Center" verticalAlignment="Top"/>
+				<text><![CDATA[Нараховано]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="152" y="84" width="37" height="36" backcolor="#CCCCCC"/>
+				<textElement textAlignment="Center" verticalAlignment="Top"/>
+				<text><![CDATA[план.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="189" y="84" width="37" height="36" backcolor="#CCCCCC"/>
+				<textElement textAlignment="Center" verticalAlignment="Top"/>
+				<text><![CDATA[поточн. п/рах.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="226" y="84" width="37" height="36" backcolor="#CCCCCC"/>
+				<textElement textAlignment="Center" verticalAlignment="Top"/>
+				<text><![CDATA[п/рах. минуліх періодів]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="263" y="84" width="37" height="36" backcolor="#CCCCCC"/>
+				<textElement textAlignment="Center" verticalAlignment="Top"/>
+				<text><![CDATA[всього]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="300" y="84" width="37" height="36" backcolor="#CCCCCC"/>
+				<textElement textAlignment="Center" verticalAlignment="Top"/>
+				<text><![CDATA[в т.ч. ПДВ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="337" y="58" width="81" height="26" backcolor="#CCCCCC"/>
+				<textElement textAlignment="Center" verticalAlignment="Top"/>
+				<text><![CDATA[Сплачено]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="381" y="84" width="37" height="36" backcolor="#CCCCCC"/>
+				<textElement textAlignment="Center" verticalAlignment="Top"/>
+				<text><![CDATA[в т.ч. ПДВ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="337" y="84" width="44" height="36" backcolor="#CCCCCC"/>
+				<textElement textAlignment="Center" verticalAlignment="Top"/>
+				<text><![CDATA[всього]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="418" y="58" width="64" height="26" backcolor="#CCCCCC"/>
+				<textElement textAlignment="Center" verticalAlignment="Top"/>
+				<text><![CDATA[Сальдо на кінець міс.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="418" y="84" width="31" height="36" backcolor="#CCCCCC"/>
+				<textElement textAlignment="Center" verticalAlignment="Top"/>
+				<text><![CDATA[всього]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="449" y="84" width="33" height="36" backcolor="#CCCCCC"/>
+				<textElement textAlignment="Center" verticalAlignment="Top"/>
+				<text><![CDATA[в т.ч. ПДВ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="4" y="146" width="74" height="13"/>
+				<textElement markup="styled"/>
+				<textFieldExpression class="java.lang.String"><![CDATA["@Услуга 2@"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="4" y="159" width="74" height="13"/>
+				<textElement markup="styled"/>
+				<textFieldExpression class="java.lang.String"><![CDATA["@Услуга 3@"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="4" y="185" width="74" height="13"/>
+				<textElement markup="styled"/>
+				<textFieldExpression class="java.lang.String"><![CDATA["@Услуга 1@"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="4" y="198" width="74" height="13"/>
+				<textElement markup="styled"/>
+				<textFieldExpression class="java.lang.String"><![CDATA["@Услуга 2@"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="4" y="237" width="74" height="13"/>
+				<textElement markup="styled"/>
+				<textFieldExpression class="java.lang.String"><![CDATA["@Услуга 1@"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="4" y="250" width="74" height="13"/>
+				<textElement markup="styled"/>
+				<textFieldExpression class="java.lang.String"><![CDATA["@Услуга 2@"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="4" y="263" width="74" height="13"/>
+				<textElement markup="styled"/>
+				<textFieldExpression class="java.lang.String"><![CDATA["@Услуга 3@"]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="57" width="483" height="1"/>
+			</line>
+			<line>
+				<reportElement x="0" y="119" width="483" height="1"/>
+			</line>
+			<line>
+				<reportElement x="0" y="133" width="483" height="1"/>
+			</line>
+			<line>
+				<reportElement x="0" y="146" width="483" height="1"/>
+			</line>
+			<line>
+				<reportElement x="0" y="158" width="483" height="1"/>
+			</line>
+			<line>
+				<reportElement x="0" y="172" width="483" height="1"/>
+			</line>
+			<line>
+				<reportElement x="0" y="185" width="483" height="1"/>
+			</line>
+			<line>
+				<reportElement x="0" y="197" width="483" height="1"/>
+			</line>
+			<line>
+				<reportElement x="0" y="210" width="483" height="1"/>
+			</line>
+			<line>
+				<reportElement x="0" y="223" width="483" height="1"/>
+			</line>
+			<line>
+				<reportElement x="0" y="236" width="483" height="1"/>
+			</line>
+			<line>
+				<reportElement x="0" y="249" width="483" height="1"/>
+			</line>
+			<line>
+				<reportElement x="0" y="262" width="483" height="1"/>
+			</line>
+			<line>
+				<reportElement x="0" y="275" width="483" height="1"/>
+			</line>
+			<line>
+				<reportElement x="77" y="58" width="1" height="61"/>
+			</line>
+			<line>
+				<reportElement x="336" y="59" width="1" height="217"/>
+			</line>
+			<line>
+				<reportElement x="380" y="84" width="1" height="192"/>
+			</line>
+			<line>
+				<reportElement x="417" y="59" width="1" height="217"/>
+			</line>
+			<line>
+				<reportElement x="448" y="84" width="1" height="192"/>
+			</line>
+			<line>
+				<reportElement x="482" y="57" width="1" height="219"/>
+			</line>
+			<line>
+				<reportElement x="0" y="57" width="1" height="219"/>
+			</line>
+			<line>
+				<reportElement x="300" y="84" width="1" height="192"/>
+			</line>
+			<line>
+				<reportElement x="263" y="84" width="1" height="192"/>
+			</line>
+			<line>
+				<reportElement x="225" y="84" width="1" height="192"/>
+			</line>
+			<line>
+				<reportElement x="189" y="84" width="1" height="35"/>
+			</line>
+			<line>
+				<reportElement x="152" y="59" width="1" height="60"/>
+			</line>
+			<line>
+				<reportElement x="115" y="84" width="1" height="35"/>
+			</line>
+			<line>
+				<reportElement x="77" y="84" width="405" height="1"/>
+			</line>
+			<textField>
+				<reportElement mode="Transparent" x="4" y="120" width="259" height="13"/>
+				<textElement markup="styled"/>
+				<textFieldExpression class="java.lang.String"><![CDATA["@адрес@ @договор@ @арендатор@"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement mode="Transparent" x="4" y="172" width="259" height="13"/>
+				<textElement markup="styled"/>
+				<textFieldExpression class="java.lang.String"><![CDATA["@адрес@ @договор@ @арендатор@"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Transparent" x="4" y="224" width="74" height="13"/>
+				<textElement verticalAlignment="Top"/>
+				<text><![CDATA[Всього]]></text>
+			</staticText>
+			<line>
+				<reportElement x="77" y="134" width="1" height="38"/>
+			</line>
+			<line>
+				<reportElement x="77" y="186" width="1" height="89"/>
+			</line>
+			<line>
+				<reportElement x="115" y="186" width="1" height="89"/>
+			</line>
+			<line>
+				<reportElement x="152" y="186" width="1" height="89"/>
+			</line>
+			<line>
+				<reportElement x="189" y="186" width="1" height="89"/>
+			</line>
+			<line>
+				<reportElement x="115" y="134" width="1" height="38"/>
+			</line>
+			<line>
+				<reportElement x="152" y="134" width="1" height="38"/>
+			</line>
+			<line>
+				<reportElement x="189" y="134" width="1" height="38"/>
+			</line>
+			<textField>
+				<reportElement x="69" y="316" width="93" height="13"/>
+				<textElement markup="styled"/>
+				<textFieldExpression class="java.lang.String"><![CDATA["@Услуга 2@"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="69" y="329" width="93" height="13"/>
+				<textElement markup="styled"/>
+				<textFieldExpression class="java.lang.String"><![CDATA["@Услуга 3@"]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="66" y="341" width="355" height="1"/>
+			</line>
+			<line>
+				<reportElement x="66" y="289" width="355" height="1"/>
+			</line>
+			<line>
+				<reportElement x="66" y="328" width="355" height="1"/>
+			</line>
+			<line>
+				<reportElement x="66" y="315" width="355" height="1"/>
+			</line>
+			<rectangle>
+				<reportElement x="67" y="289" width="354" height="14" backcolor="#CCCCCC"/>
+			</rectangle>
+			<rectangle>
+				<reportElement x="67" y="355" width="354" height="11" backcolor="#CCCCCC"/>
+			</rectangle>
+			<line>
+				<reportElement x="66" y="303" width="355" height="1"/>
+			</line>
+			<line>
+				<reportElement x="421" y="289" width="1" height="77"/>
+			</line>
+			<line>
+				<reportElement x="162" y="289" width="1" height="77"/>
+			</line>
+			<textField>
+				<reportElement x="69" y="303" width="93" height="13"/>
+				<textElement markup="styled"/>
+				<textFieldExpression class="java.lang.String"><![CDATA["@Услуга 1@"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Transparent" x="66" y="290" width="96" height="13"/>
+				<textElement textAlignment="Center" verticalAlignment="Top"/>
+				<text><![CDATA[Послуга]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="69" y="341" width="93" height="13"/>
+				<textElement markup="styled"/>
+				<textFieldExpression class="java.lang.String"><![CDATA["@Услуга 4@"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Transparent" x="67" y="354" width="91" height="13"/>
+				<textElement textAlignment="Right" verticalAlignment="Top"/>
+				<text><![CDATA[Всього:]]></text>
+			</staticText>
+			<line>
+				<reportElement x="227" y="289" width="1" height="77"/>
+			</line>
+			<staticText>
+				<reportElement mode="Transparent" x="357" y="290" width="64" height="13"/>
+				<textElement textAlignment="Center" verticalAlignment="Top"/>
+				<text><![CDATA[В т.ч. ПДВ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Transparent" x="293" y="289" width="64" height="14"/>
+				<textElement textAlignment="Center" verticalAlignment="Top"/>
+				<text><![CDATA[Всього]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Transparent" x="228" y="290" width="64" height="13"/>
+				<textElement textAlignment="Center" verticalAlignment="Top"/>
+				<text><![CDATA[Кредіт]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Transparent" x="163" y="290" width="64" height="13"/>
+				<textElement textAlignment="Center" verticalAlignment="Top"/>
+				<text><![CDATA[Дебет]]></text>
+			</staticText>
+			<line>
+				<reportElement x="292" y="289" width="1" height="77"/>
+			</line>
+			<line>
+				<reportElement x="357" y="289" width="1" height="77"/>
+			</line>
+			<line>
+				<reportElement x="66" y="289" width="1" height="77"/>
+			</line>
+			<line>
+				<reportElement x="66" y="354" width="355" height="1"/>
+			</line>
+			<line>
+				<reportElement x="66" y="366" width="356" height="1"/>
+			</line>
+		</band>
+	</title>
+</jasperReport>

@@ -8,13 +8,14 @@
 	<style name="TNR_7" isDefault="false" fontName="LiberationSerif-Regular" fontSize="7" pdfFontName="fonts/LiberationSerif-Regular.ttf" pdfEncoding="Cp1251" isPdfEmbedded="true"/>
 	<style name="TNR_8" isDefault="false" fontName="LiberationSerif-Regular" fontSize="8" pdfFontName="fonts/LiberationSerif-Regular.ttf" pdfEncoding="Cp1251" isPdfEmbedded="true"/>
 	<style name="TNR_9" isDefault="true" fontName="LiberationSerif-Regular" fontSize="9" pdfFontName="fonts/LiberationSerif-Regular.ttf" pdfEncoding="Cp1251" isPdfEmbedded="true"/>
+	<style name="TNR_9i" isDefault="false" fontName="LiberationSerif-Italic" fontSize="9" isItalic="true" pdfFontName="fonts/LiberationSerif-Italic.ttf" pdfEncoding="Cp1251" isPdfEmbedded="true"/>
 	<style name="TNR_10" isDefault="false" fontName="LiberationSerif-Regular" fontSize="10" pdfFontName="fonts/LiberationSerif-Regular.ttf" pdfEncoding="Cp1251" isPdfEmbedded="true"/>
 	<style name="TNR_12" isDefault="false" fontName="LiberationSerif-Regular" fontSize="12" pdfFontName="fonts/LiberationSerif-Regular.ttf" pdfEncoding="Cp1251" isPdfEmbedded="true"/>
 	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
 		<defaultValueExpression><![CDATA["C:/Documents and Settings/Alexuy/Local Settings/Temp/flexpay_data/reports/templates/"]]></defaultValueExpression>
 	</parameter>
 	<title>
-		<band height="311">
+		<band height="786">
 			<staticText>
 				<reportElement x="0" y="0" width="482" height="12"/>
 				<textElement textAlignment="Center"/>
@@ -187,16 +188,501 @@
 				<textElement textAlignment="Center"/>
 				<text><![CDATA[(бартер, готівка, оплата з розрахункового рахунку, чек, тощо)]]></text>
 			</staticText>
+			<line>
+				<reportElement x="0" y="293" width="1" height="331"/>
+			</line>
+			<line>
+				<reportElement x="0" y="293" width="483" height="1"/>
+			</line>
+			<staticText>
+				<reportElement style="TNR_8" x="1" y="294" width="24" height="94"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Роз-дил]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="TNR_8" x="25" y="294" width="51" height="94"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Дата від-вантаження (виконання, поставки)(оплати*) товарів (послуг)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="TNR_8" x="76" y="294" width="127" height="94"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Номенклатура поставки товарів (послуг) продавця]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="TNR_8" x="203" y="294" width="34" height="94"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Оди-ниця вимиру товару]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="TNR_8" x="237" y="294" width="34" height="94"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Кіль-кість (об'єм,обсяг)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="TNR_8" x="271" y="294" width="43" height="94"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Ціна поставки одиниці продукції без урахуван-ня ПДВ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="TNR_8" x="444" y="294" width="38" height="94"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Загальна сума коштів, що підлягає оплаті]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="TNR_8" x="314" y="294" width="130" height="41"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Обсяги поставки (база оподаткуван-ня) без урахування ПДВ, що підля-гають оподаткованнюза ставками:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="TNR_8" x="314" y="335" width="43" height="53"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[20%]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="TNR_8" x="357" y="335" width="24" height="53"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[0% реал. митн. тер. Укр]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="TNR_8" x="381" y="335" width="24" height="53"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[0% (єкс-порт)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="TNR_8" x="405" y="335" width="39" height="53"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Звильнен-ня від ПДВ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="388" width="24" height="14"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[1]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="25" y="388" width="51" height="14"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[2]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="76" y="388" width="127" height="14"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[3]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="203" y="388" width="34" height="14"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[4]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="237" y="388" width="34" height="14"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[5]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="271" y="388" width="43" height="14"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[6]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="314" y="388" width="43" height="14"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[7]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="357" y="388" width="24" height="14"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[8]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="381" y="388" width="24" height="14"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[9]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="405" y="388" width="39" height="14"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[10]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="444" y="388" width="38" height="14"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[11]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="27" y="402" width="49" height="13"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA["@дата@"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="27" y="415" width="49" height="13"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA["@дата@"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="27" y="428" width="49" height="13"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA["@дата@"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="27" y="441" width="49" height="13"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA["@дата@"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="78" y="402" width="125" height="13"/>
+				<textElement/>
+				<text><![CDATA[Опалення]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="78" y="415" width="125" height="13"/>
+				<textElement/>
+				<text><![CDATA[Хол. вода]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="78" y="428" width="125" height="13"/>
+				<textElement/>
+				<text><![CDATA[Гор. вода]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="78" y="441" width="125" height="13"/>
+				<textElement/>
+				<text><![CDATA[Вода на под]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="205" y="402" width="32" height="13"/>
+				<textElement/>
+				<text><![CDATA[грн.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="205" y="415" width="32" height="13"/>
+				<textElement/>
+				<text><![CDATA[грн.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="205" y="428" width="32" height="13"/>
+				<textElement/>
+				<text><![CDATA[грн.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="205" y="441" width="32" height="13"/>
+				<textElement/>
+				<text><![CDATA[грн.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="237" y="402" width="34" height="13"/>
+				<textElement/>
+				<text><![CDATA[послуга]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="237" y="415" width="34" height="13"/>
+				<textElement/>
+				<text><![CDATA[послуга]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="237" y="428" width="34" height="13"/>
+				<textElement/>
+				<text><![CDATA[послуга]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="237" y="441" width="34" height="13"/>
+				<textElement/>
+				<text><![CDATA[послуга]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="273" y="402" width="41" height="13"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA["@сума@"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="273" y="415" width="41" height="13"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA["@сума@"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="273" y="428" width="41" height="13"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA["@сума@"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="273" y="441" width="41" height="13"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA["@сума@"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="316" y="402" width="41" height="13"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA["@НДС@"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="316" y="415" width="41" height="13"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA["@НДС@"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="316" y="428" width="41" height="13"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA["@НДС@"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="316" y="441" width="41" height="13"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA["@НДС@"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="25" y="519" width="178" height="13"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Усього по розділу І]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="316" y="519" width="41" height="13"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA["@Σ@"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="447" y="519" width="35" height="13"/>
+				<textElement/>
+				<textFieldExpression class="java.lang.String"><![CDATA["@7@"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="1" y="402" width="24" height="130"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[I]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="25" y="532" width="178" height="13"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Товарно-транспортні витр]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="25" y="545" width="178" height="13"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[Зворотна (заставна) тара]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="532" width="24" height="13"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[ІІ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="545" width="24" height="13"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[ІІI]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="203" y="545" width="34" height="13"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[X]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="237" y="545" width="34" height="13"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[X]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="271" y="545" width="43" height="13"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[X]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="314" y="545" width="43" height="13"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[X]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="357" y="545" width="24" height="13"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[X]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="381" y="545" width="24" height="13"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[X]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="405" y="545" width="39" height="13"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[X]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="444" y="545" width="38" height="13"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[X]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="558" width="24" height="26"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[ІV]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="120" y="558" width="83" height="13"/>
+				<textElement/>
+				<text><![CDATA[Надбавка (+)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="120" y="571" width="83" height="13"/>
+				<textElement/>
+				<text><![CDATA[Знижка (-)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="584" width="24" height="13"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[V]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="25" y="558" width="93" height="26"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Надано покупцю]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="597" width="24" height="13"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[VI]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="610" width="24" height="13"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[VII]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="27" y="584" width="176" height="13"/>
+				<textElement/>
+				<text><![CDATA[Всього по розділах I+II+IV]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="27" y="597" width="176" height="13"/>
+				<textElement/>
+				<text><![CDATA[Податок на додану вартість]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="27" y="610" width="176" height="13"/>
+				<textElement/>
+				<text><![CDATA[Загальна сума з ПДВ]]></text>
+			</staticText>
+			<line>
+				<reportElement x="1" y="388" width="482" height="1"/>
+			</line>
+			<line>
+				<reportElement x="1" y="402" width="482" height="1"/>
+			</line>
+			<line>
+				<reportElement x="1" y="415" width="482" height="1"/>
+			</line>
+			<line>
+				<reportElement x="1" y="427" width="482" height="1"/>
+			</line>
+			<line>
+				<reportElement x="1" y="441" width="482" height="1"/>
+			</line>
+			<line>
+				<reportElement x="0" y="454" width="482" height="1"/>
+			</line>
+			<line>
+				<reportElement x="1" y="466" width="482" height="1"/>
+			</line>
+			<line>
+				<reportElement x="1" y="480" width="482" height="1"/>
+			</line>
+			<line>
+				<reportElement x="1" y="493" width="482" height="1"/>
+			</line>
+			<line>
+				<reportElement x="1" y="506" width="482" height="1"/>
+			</line>
+			<line>
+				<reportElement x="1" y="518" width="482" height="1"/>
+			</line>
+			<line>
+				<reportElement x="1" y="532" width="482" height="1"/>
+			</line>
+			<line>
+				<reportElement x="1" y="545" width="482" height="1"/>
+			</line>
+			<line>
+				<reportElement x="0" y="558" width="482" height="1"/>
+			</line>
+			<line>
+				<reportElement x="118" y="571" width="365" height="1"/>
+			</line>
+			<line>
+				<reportElement x="1" y="584" width="482" height="1"/>
+			</line>
+			<line>
+				<reportElement x="1" y="597" width="482" height="1"/>
+			</line>
+			<line>
+				<reportElement x="1" y="610" width="482" height="1"/>
+			</line>
+			<line>
+				<reportElement x="0" y="623" width="482" height="1"/>
+			</line>
+			<line>
+				<reportElement x="24" y="294" width="1" height="330"/>
+			</line>
+			<line>
+				<reportElement x="75" y="294" width="1" height="224"/>
+			</line>
+			<line>
+				<reportElement x="202" y="294" width="1" height="330"/>
+			</line>
+			<line>
+				<reportElement x="236" y="294" width="1" height="330"/>
+			</line>
+			<line>
+				<reportElement x="270" y="294" width="1" height="330"/>
+			</line>
+			<line>
+				<reportElement x="313" y="294" width="1" height="330"/>
+			</line>
+			<line>
+				<reportElement x="356" y="336" width="1" height="287"/>
+			</line>
+			<line>
+				<reportElement x="380" y="335" width="1" height="288"/>
+			</line>
+			<line>
+				<reportElement x="404" y="335" width="1" height="288"/>
+			</line>
+			<line>
+				<reportElement x="443" y="293" width="1" height="330"/>
+			</line>
+			<line>
+				<reportElement x="482" y="293" width="1" height="331"/>
+			</line>
+			<line>
+				<reportElement x="117" y="559" width="1" height="25"/>
+			</line>
+			<line>
+				<reportElement x="313" y="335" width="130" height="1"/>
+			</line>
+			<staticText>
+				<reportElement x="0" y="624" width="482" height="36"/>
+				<textElement/>
+				<text><![CDATA[Суми ПДВ, нараховані (сплачені) в зв'язку з поставкою товарів (послуг), зазначених в цій накладній, визначені правильно та відповідають сумі податкових зобов'язань продавця і включені до рєєстру отриманих та виданих податкових накладних.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="TNR_10" x="7" y="673" width="24" height="13"/>
+				<textElement/>
+				<text><![CDATA[М.П.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="TNR_7" x="1" y="686" width="482" height="9"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[(підпис і прізвище особи, яка склала податкову накладну)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="TNR_9i" x="0" y="695" width="482" height="50"/>
+				<textElement/>
+				<text><![CDATA[* Дата оплати ставиться у разі попередньої оплати поставки, на яку виписується нодаткова накладна; для бартерних операцій — дата оприбутковання товарів, попередньо одержаних в оплату поставки; дата попереднього одержання послуг в оплату поставки; для операцій з поставки товарів (послуг) за касовим методом відповідно до Закону України “Про податок на додану вартість”.]]></text>
+			</staticText>
+			<textField>
+				<reportElement style="TNR_10" x="290" y="673" width="192" height="13"/>
+				<textElement markup="styled"/>
+				<textFieldExpression class="java.lang.String"><![CDATA["@ФИО бухгалтера@"]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="31" y="685" width="373" height="1"/>
+			</line>
 		</band>
 	</title>
-	<summary>
-		<band height="786">
-			<subreport>
-				<reportElement positionType="Float" x="0" y="0" width="483" height="786" isPrintWhenDetailOverflows="true"/>
-				<parametersMapExpression><![CDATA[new HashMap($P{REPORT_PARAMETERS_MAP})]]></parametersMapExpression>
-				<dataSourceExpression><![CDATA[new JREmptyDataSource()]]></dataSourceExpression>
-				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "ContractForServicesAppendix2.jasper"]]></subreportExpression>
-			</subreport>
-		</band>
-	</summary>
 </jasperReport>
