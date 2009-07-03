@@ -4,8 +4,11 @@ import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.apache.commons.io.IOUtils;
 import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.persistence.report.ReportPrintHistoryRecord;
+import org.flexpay.common.persistence.report.ReportType;
 import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.service.reporting.ReportUtil;
+import org.flexpay.common.service.ReportPrintHistoryRecordService;
 import static org.flexpay.common.util.CollectionUtils.ar;
 import static org.flexpay.common.util.CollectionUtils.map;
 import org.flexpay.common.util.config.ApplicationConfig;
@@ -19,6 +22,7 @@ import org.springframework.beans.factory.annotation.Required;
 
 import java.io.InputStream;
 import java.util.Map;
+import java.util.Date;
 
 public class PaymentOperationReportAction extends PaymentOperationAction {
 
@@ -30,6 +34,7 @@ public class PaymentOperationReportAction extends PaymentOperationAction {
 
 	private ReportUtil reportUtil;
 	private PaymentsReporter paymentsReporter;
+	private ReportPrintHistoryRecordService reportPrintHistoryRecordService;
 
 	/**
 	 * Perform action execution.
@@ -82,8 +87,17 @@ public class PaymentOperationReportAction extends PaymentOperationAction {
 		}
 
 		report = reportUtil.exportToPdf(reportName, params, dataSource, userPreferences.getLocale());
+		addPrintHistoryRecord();
 
 		return FILE;
+	}
+
+	private void addPrintHistoryRecord() {
+		ReportPrintHistoryRecord record = new ReportPrintHistoryRecord();
+		record.setPrintDate(new Date());
+		record.setReportType(ReportType.OPERATION_REPORT);
+		record.setUserName(userPreferences.getUserName());
+		reportPrintHistoryRecordService.addRecord(record);
 	}
 
 	private String getPaymentPointSuffix(PaymentPrintForm form) {
@@ -144,4 +158,8 @@ public class PaymentOperationReportAction extends PaymentOperationAction {
 		this.paymentsReporter = paymentsReporter;
 	}
 
+	@Required
+	public void setReportPrintHistoryRecordService(ReportPrintHistoryRecordService reportPrintHistoryRecordService) {
+		this.reportPrintHistoryRecordService = reportPrintHistoryRecordService;
+	}
 }

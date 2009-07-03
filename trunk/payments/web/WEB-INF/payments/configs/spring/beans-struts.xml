@@ -134,6 +134,7 @@
 		  p:townService-ref="townService"
 		  p:regionService-ref="regionService"
 		  p:countryService-ref="countryService"
+		  p:reportPrintHistoryRecordService-ref="reportPrintHistoryRecordService"
 		  scope="prototype" />
 
 	<!-- registry-related actions -->

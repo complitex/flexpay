@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+		"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="org.flexpay.common.persistence.report">
+
+	<class name="ReportPrintHistoryRecord" table="common_report_print_history_record_tbl" optimistic-lock="version">
+
+		<id name="id" column="id">
+			<generator class="native" />
+		</id>
+
+		<version name="version" column="version" access="field" />
+
+		<property name="userName">
+			<column name="user_name" not-null="true">
+				<comment>Name of user who printed report</comment>
+			</column>
+		</property>
+
+		<property name="printDate" type="timestamp">
+			<column name="print_date" not-null="true">
+				<comment>Printing date</comment>
+			</column>
+		</property>
+
+		<property name="reportType">
+			<column name="report_type" not-null="true">
+				<comment>Report type</comment>
+			</column>
+		</property>
+
+	</class>
+
+</hibernate-mapping>
