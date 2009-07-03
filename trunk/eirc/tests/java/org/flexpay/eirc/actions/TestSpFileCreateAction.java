@@ -7,7 +7,6 @@ import org.flexpay.common.service.FPFileService;
 import org.flexpay.common.util.StringUtil;
 import org.flexpay.common.util.config.UserPreferences;
 import org.flexpay.eirc.test.EircSpringBeanAwareTestCase;
-import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
@@ -40,7 +39,7 @@ public class TestSpFileCreateAction extends EircSpringBeanAwareTestCase {
 		deleteFile(newFile);
 	}
 
-	protected FPFile createSpFile(@NotNull @NonNls String spFile) throws Throwable {
+	protected FPFile createSpFile(@NotNull String spFile) throws Throwable {
 
 		String name = StringUtil.getFileName(spFile);
 		String extension = StringUtil.getFileExtension(name);
