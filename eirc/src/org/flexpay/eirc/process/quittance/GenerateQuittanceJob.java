@@ -3,12 +3,15 @@ package org.flexpay.eirc.process.quittance;
 import org.flexpay.ab.persistence.Town;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.process.ProcessLogger;
 import org.flexpay.common.process.job.Job;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.DateUtil;
 import org.flexpay.eirc.persistence.EircServiceOrganization;
 import org.flexpay.eirc.service.QuittanceService;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Required;
+import org.apache.commons.lang.time.StopWatch;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -28,6 +31,7 @@ public class GenerateQuittanceJob extends Job {
 
 	public String execute(Map<Serializable, Serializable> contextVariables) throws FlexPayException {
 
+		Logger plog = ProcessLogger.getLogger(getClass());
 		Date dateFrom = (Date) contextVariables.get(PARAM_DATE_FROM);
 		Date dateTill = (Date) contextVariables.get(PARAM_DATE_TILL);
 		if (dateFrom == null || dateTill == null) {
@@ -41,7 +45,15 @@ public class GenerateQuittanceJob extends Job {
 
 		Stub<EircServiceOrganization> organizationStub = new Stub<EircServiceOrganization>(organizationId);
 		Stub<Town> townStub = new Stub<Town>(townId);
+		plog.info("Starting generation quittances, organization-id={}, from={}, till={}",
+				new Object[]{organizationId, dateFrom, dateTill});
+		StopWatch watch = new StopWatch();
+		watch.start();
+
 		quittanceService.generateForServiceOrganization(organizationStub, townStub, dateFrom, dateTill);
+
+		watch.stop();
+		plog.info("End generation quittances, organization-id={}, time spent {}", organizationId, watch);
 
 		return Job.RESULT_NEXT;
 	}
