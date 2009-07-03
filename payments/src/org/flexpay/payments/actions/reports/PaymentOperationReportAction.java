@@ -28,6 +28,8 @@ public class PaymentOperationReportAction extends PaymentOperationAction {
 
 	private static final String REPORT_BASE_NAME = "DoubleQuittancePayment";
 
+	private static final String OPERATION_UID_SESSION_ATTRIBUTE = "operationUid";
+
 	private Long operationId;
 	private Boolean copy = false;
 
@@ -47,6 +49,8 @@ public class PaymentOperationReportAction extends PaymentOperationAction {
 	 */
 	@NotNull
 	protected String doExecute() throws Exception {
+
+
 
 		PaymentPrintForm form;
 
@@ -72,6 +76,9 @@ public class PaymentOperationReportAction extends PaymentOperationAction {
 
 		if (copy) {
 			form.setQuittanceNumber(form.getQuittanceNumber() + " КОПИЯ"); // FIXME I18N
+		} else {
+			Long operationUid = addPrintHistoryRecord();
+			form.setQuittanceNumber(operationUid.toString());
 		}
 
 		Map<String, Object> params = map(
@@ -92,17 +99,24 @@ public class PaymentOperationReportAction extends PaymentOperationAction {
 		}
 
 		report = reportUtil.exportToPdf(reportName, params, dataSource, userPreferences.getLocale());
-		addPrintHistoryRecord();
+
 
 		return FILE;
 	}
 
-	private void addPrintHistoryRecord() {
+	private Long addPrintHistoryRecord() {
 		ReportPrintHistoryRecord record = new ReportPrintHistoryRecord();
 		record.setPrintDate(new Date());
 		record.setReportType(ReportType.OPERATION_REPORT);
 		record.setUserName(userPreferences.getUserName());
 		reportPrintHistoryRecordService.addRecord(record);
+
+		// fixme remove print debug
+		log.debug("[!!!] newly created record id {}", record.getId());
+
+		session.put(OPERATION_UID_SESSION_ATTRIBUTE, record.getId());
+
+		return record.getId(); // TODO check
 	}
 
 	private String getPaymentPointSuffix(PaymentPrintForm form) {

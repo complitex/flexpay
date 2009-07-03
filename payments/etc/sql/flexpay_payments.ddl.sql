@@ -1033,6 +1033,7 @@
     create table payments_operations_tbl (
         id bigint not null auto_increment comment 'Primary key',
         version integer not null comment 'Optimistic lock version',
+        uid bigint,
         operation_summ decimal(19,2) not null comment 'Operation summ',
         operation_input_summ decimal(19,2) comment 'Operation input summ',
         change_summ decimal(19,2) comment 'Change',

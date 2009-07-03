@@ -29,6 +29,8 @@ import java.util.ArrayList;
 
 public abstract class PaymentOperationAction extends CashboxCookieActionSupport {
 
+	private static final String OPERATION_UID_SESSION_ATTRIBUTE = "operationUid";
+
 	private String actionName;
 
 	// form data
@@ -65,6 +67,9 @@ public abstract class PaymentOperationAction extends CashboxCookieActionSupport 
 	protected Operation createOperation(Cashbox cashbox) throws FlexPayException {
 
 		Operation op = buildOperation(cashbox);
+		op.setUid((Long) session.get(OPERATION_UID_SESSION_ATTRIBUTE));
+		session.remove(OPERATION_UID_SESSION_ATTRIBUTE);
+
 		for (String serviceIndex : payments.keySet()) {
 
 			Document document = buildDocument(serviceIndex, cashbox);

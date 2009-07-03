@@ -18,6 +18,9 @@
 				<comment>Optimistic lock version</comment>
 			</column>
 		</version>
+		<property name="uid">
+			<column name="uid"/>
+		</property>
 		<property name="operationSumm">
 			<column name="operation_summ" not-null="true" scale="2">
 				<comment>Operation summ</comment>
