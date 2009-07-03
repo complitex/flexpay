@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ContractForServicesAppendix5" pageWidth="483" pageHeight="786" whenNoDataType="AllSectionsNoDetail" columnWidth="483" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" isSummaryNewPage="true">
+	<property name="ireport.encoding" value="UTF-8"/>
+	<import value="java.text.SimpleDateFormat"/>
+	<import value="net.sf.jasperreports.engine.*"/>
+	<import value="java.util.*"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<style name="TNR_10" isDefault="true" fontName="LiberationSerif-Regular" fontSize="10" pdfFontName="fonts/LiberationSerif-Regular.ttf" pdfEncoding="Cp1251" isPdfEmbedded="true"/>
+	<style name="TNR_10b" isDefault="false" fontName="LiberationSerif-Bold" fontSize="10" isBold="true" pdfFontName="fonts/LiberationSerif-Regular.ttf" pdfEncoding="Cp1251" isPdfEmbedded="true"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["C:/Documents and Settings/Alexuy/Local Settings/Temp/flexpay_data/reports/templates/"]]></defaultValueExpression>
+	</parameter>
+	<title>
+		<band height="272">
+			<textField>
+				<reportElement x="0" y="0" width="483" height="40"/>
+				<textElement markup="styled"/>
+				<textFieldExpression class="java.lang.String"><![CDATA["<style isBold=\"true\" isUnderline=\"true\" pdfFontName=\"fonts/LiberationSerif-Bold.ttf\">Продавець</style>: @исполнитель@<br/>@ЄДРПОУ@    @ИНН@            @свидетельство плательщика НДС@<br/>@банковские ревкизиты@"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="53" width="483" height="13"/>
+				<textElement markup="styled"/>
+				<textFieldExpression class="java.lang.String"><![CDATA["<style isBold=\"true\" isUnderline=\"true\" pdfFontName=\"fonts/LiberationSerif-Bold.ttf\">Одержувач</style>: @арендатор@"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="79" width="483" height="26"/>
+				<textElement textAlignment="Center" markup="styled"/>
+				<textFieldExpression class="java.lang.String"><![CDATA["Рахунок-фактура № @номер@<br/>від @дата@"]]></textFieldExpression>
+			</textField>
+			<rectangle>
+				<reportElement x="1" y="184" width="481" height="12" backcolor="#CCCCCC"/>
+				<graphicElement>
+					<pen lineWidth="0.0"/>
+				</graphicElement>
+			</rectangle>
+			<staticText>
+				<reportElement style="TNR_10b" mode="Opaque" x="1" y="118" width="21" height="26" backcolor="#CCCCCC"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[№]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="TNR_10b" mode="Opaque" x="22" y="118" width="189" height="26" backcolor="#CCCCCC"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Найменування]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="TNR_10b" mode="Opaque" x="211" y="118" width="26" height="26" backcolor="#CCCCCC"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Од.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="TNR_10b" mode="Opaque" x="237" y="118" width="72" height="26" backcolor="#CCCCCC"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Кількість]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="TNR_10b" mode="Opaque" x="309" y="118" width="58" height="26" backcolor="#CCCCCC"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Ціна без ПДВ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="TNR_10b" mode="Opaque" x="367" y="118" width="58" height="26" backcolor="#CCCCCC"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Вартість без ПДВ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="TNR_10b" mode="Opaque" x="425" y="118" width="58" height="26" backcolor="#CCCCCC"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Вартість з ПДВ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1" y="144" width="21" height="13"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[1]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="24" y="144" width="187" height="13"/>
+				<textElement markup="styled"/>
+				<textFieldExpression class="java.lang.String"><![CDATA["@Услуга 1@"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="1" y="157" width="21" height="13"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[2]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="24" y="157" width="187" height="13"/>
+				<textElement markup="styled"/>
+				<textFieldExpression class="java.lang.String"><![CDATA["@Услуга 2@"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement style="TNR_10b" x="22" y="183" width="186" height="13"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<text><![CDATA[Всього:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="1" y="209" width="483" height="26"/>
+				<textElement markup="styled"/>
+				<textFieldExpression class="java.lang.String"><![CDATA["Всього на суму: @сумма прописью@<br/>Продавець є платником податку на прибуток нв загальних умовах за ставкою 25%"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="1" y="248" width="482" height="13"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Р/ф виписав:    ______________]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="118" width="483" height="1"/>
+			</line>
+			<line>
+				<reportElement x="0" y="143" width="483" height="1"/>
+			</line>
+			<line>
+				<reportElement x="0" y="157" width="483" height="1"/>
+			</line>
+			<line>
+				<reportElement x="0" y="170" width="483" height="1"/>
+			</line>
+			<line>
+				<reportElement x="0" y="183" width="483" height="1"/>
+			</line>
+			<line>
+				<reportElement x="0" y="196" width="483" height="1"/>
+			</line>
+			<line>
+				<reportElement x="0" y="119" width="1" height="78"/>
+			</line>
+			<line>
+				<reportElement x="21" y="119" width="1" height="78"/>
+			</line>
+			<line>
+				<reportElement x="210" y="119" width="1" height="78"/>
+			</line>
+			<line>
+				<reportElement x="236" y="119" width="1" height="78"/>
+			</line>
+			<line>
+				<reportElement x="308" y="118" width="1" height="78"/>
+			</line>
+			<line>
+				<reportElement x="366" y="119" width="1" height="78"/>
+			</line>
+			<line>
+				<reportElement x="424" y="119" width="1" height="78"/>
+			</line>
+			<line>
+				<reportElement x="482" y="119" width="1" height="78"/>
+			</line>
+		</band>
+	</title>
+</jasperReport>
