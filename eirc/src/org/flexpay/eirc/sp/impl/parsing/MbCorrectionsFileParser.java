@@ -174,14 +174,14 @@ public class MbCorrectionsFileParser extends MbFileParser {
 				log.debug("No consumer found, adding creation record {}", record.getPersonalAccountExt());
 				createAccountRecord(record, fields);
 				++count;
-				record = newRecord(registry, fields, serviceCode);
-				recordStack.add(record);
+//				record = newRecord(registry, fields, serviceCode);
+//				recordStack.add(record);
 			} else {
 				recProps.setConsumer(consumer);
 			}
 
-			createRecord(record, fields);
-			++count;
+//			createRecord(record, fields);
+//			++count;
 		}
 
 		return count;
