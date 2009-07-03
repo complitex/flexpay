@@ -30,6 +30,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 @Transactional (readOnly = true)
 public class MbCorrectionsFileParser extends MbFileParser {
@@ -157,7 +158,8 @@ public class MbCorrectionsFileParser extends MbFileParser {
 	private long parseRecord(String line, Registry registry, List<RegistryRecord> recordStack) throws FlexPayException {
 		String[] fields = line.split("=");
 
-		String[] serviceCodes = fields[20].split(";");
+		// remove duplicates in service codes
+		Set<String> serviceCodes = CollectionUtils.set(fields[20].split(";"));
 
 		long count = 0;
 		for (String serviceCode : serviceCodes) {
@@ -205,21 +207,14 @@ public class MbCorrectionsFileParser extends MbFileParser {
 		}
 	}
 
-	private long createAccountRecord(RegistryRecord record, String[] fields) throws FlexPayException {
+	private long createAccountRecord(RegistryRecord record, String[] fields) {
 
-		List<RegistryRecordContainer> containers = CollectionUtils.list();
 
 		String modificationStartDate = getModificationDate(fields[19]);
 		RegistryRecordContainer container = new RegistryRecordContainer();
-		container.setOrder(1);
 		container.setData("1:" + modificationStartDate + "::");
-		container.setRecord(record);
-		containers.add(container);
-
-		record.setContainers(containers);
-
-		registryRecordService.create(record);
-
+		record.addContainer(container);
+		
 		return 1;
 	}
 
