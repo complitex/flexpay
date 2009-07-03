@@ -1,12 +1,10 @@
 package org.flexpay.eirc.sp;
 
+import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.eirc.actions.TestSpFileCreateAction;
 import org.flexpay.eirc.sp.impl.validation.MbCorrectionsFileValidator;
-import org.flexpay.common.persistence.file.FPFile;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
 import static org.junit.Assert.assertTrue;
+import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class TestMbCorrectionsFileValidator extends TestSpFileCreateAction {
