@@ -10,6 +10,9 @@
 	<bean id="sequenceService" class="org.flexpay.common.service.imp.SequenceServiceImpl"
 		  p:sequenceDao-ref="sequenceDao" />
 
+	<bean id="reportPrintHistoryRecordService" class="org.flexpay.common.service.imp.ReportPrintHistoryRecordServiceImpl"
+		  p:reportPrintHistoryRecordDao-ref="reportPrintHistoryRecordDao" />
+
 	<bean id="importErrorSupport"
 		  class="org.flexpay.common.service.importexport.ImportErrorsSupport" />
 

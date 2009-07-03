@@ -24,6 +24,7 @@
 		<mapping resource="org/flexpay/common/persistence/registry/Registry.hbm.xml" />
 		<mapping resource="org/flexpay/common/persistence/Gender.hbm.xml" />
 		<mapping resource="org/flexpay/common/persistence/Currency.hbm.xml" />
+		<mapping resource="org/flexpay/common/persistence/report/ReportPrintHistoryRecord.hbm.xml" />
 
 		<mapping resource="org/flexpay/ab/persistence/Country.hbm.xml" />
 		<mapping resource="org/flexpay/ab/persistence/Region.hbm.xml" />

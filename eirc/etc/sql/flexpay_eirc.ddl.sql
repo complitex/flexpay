@@ -786,6 +786,15 @@
         primary key (id)
     );
 
+    create table common_report_print_history_record_tbl (
+        id bigint not null auto_increment,
+        version integer not null,
+        user_name varchar(255) not null comment 'Name of user who printed report',
+        print_date datetime not null comment 'Printing date',
+        report_type integer not null comment 'Report type',
+        primary key (id)
+    );
+
     create table common_sequences_tbl (
         id bigint not null auto_increment,
         counter bigint not null,
