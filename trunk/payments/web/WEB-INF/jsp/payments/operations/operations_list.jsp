@@ -138,6 +138,7 @@
     function printQuittance(opId) {
         var url = "<s:url action="paymentOperationReportAction" includeParams="none" />";
         url += "?operationId=" + opId;
+		url += '&copy=true';
         window.open(url, "_blank");
     }
 </script>
@@ -300,7 +301,7 @@
                 <td nowrap="nowrap"><s:property value="change"/></td>
                 <td class="service_column" nowrap="nowrap" style="display: none;">&nbsp;</td>
                 <td class="service_provider_column" nowrap="nowrap" style="display: none;">&nbsp;</td>
-                <td><a href="#" onclick="printQuittance(<s:property value="id" />);"><s:text name="print"/></a></td>
+                <td><a href="#" onclick="printQuittance(<s:property value="id"/>);"><s:text name="print"/></a></td>
             </tr>
 
             <%-- brief operation header (is not shown by default, appears in 'detailed' view) --%>

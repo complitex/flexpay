@@ -29,6 +29,7 @@ public class PaymentOperationReportAction extends PaymentOperationAction {
 	private static final String REPORT_BASE_NAME = "DoubleQuittancePayment";
 
 	private Long operationId;
+	private Boolean copy = false;
 
 	private FPFile report;
 
@@ -67,6 +68,10 @@ public class PaymentOperationReportAction extends PaymentOperationAction {
 		if (form == null) {
 			addActionError(getText("error.no_id"));
 			return SUCCESS;
+		}
+
+		if (copy) {
+			form.setQuittanceNumber(form.getQuittanceNumber() + " КОПИЯ"); // FIXME I18N
 		}
 
 		Map<String, Object> params = map(
@@ -142,6 +147,10 @@ public class PaymentOperationReportAction extends PaymentOperationAction {
 
 	public void setOperationId(Long operationId) {
 		this.operationId = operationId;
+	}
+
+	public void setCopy(Boolean copy) {
+		this.copy = copy;
 	}
 
 	public FPFile getReport() {
