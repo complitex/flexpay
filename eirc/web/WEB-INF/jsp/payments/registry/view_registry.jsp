@@ -105,8 +105,8 @@
 
     function createDialog(recordId) {
 
-        $("#dialog").append(
-                $('<iframe name="frame" src="<s:url action="selectCorrectionType" namespace="/payments" includeParams="none"/>?record.id=' + recordId + '" width="600" height="320"></iframe>').
+        $("#dialog").html(
+                $('<iframe name="frame" src="<s:url action="selectCorrectionType" namespace="/payments" includeParams="none"/>?record.id=' + recordId + '" width="100%" height="100%"></iframe>').
                         css({"border" : "none"})
         );
 
@@ -120,7 +120,7 @@
             autoOpen: false,
             buttons: {
                 '<s:text name="common.cancel" />' : function() {
-                    $(this).html("").dialog("destroy");
+                    $(this).dialog("close");
                 }
             }
         });
