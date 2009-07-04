@@ -4,7 +4,7 @@
 		"http://struts.apache.org/dtds/struts-2.0.dtd">
 <struts>
 
-	<package name="paymensRegistry" namespace="/payments" extends="payments">
+	<package name="paymensRegistry" namespace="/payments" extends="common">
 
 		<action name="generateRegistry" class="generateRegistryAction">
 			<result type="tiles">payments.registry.generate.title</result>

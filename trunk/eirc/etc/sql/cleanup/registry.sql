@@ -2,25 +2,25 @@
 select @id:=6 from dual;
 
 -- delete quittance quittance details
---delete qq
---	from eirc_registries_tbl r
---		left join eirc_registry_records_tbl rr on r.id=rr.registry_id
---		left join eirc_quittance_details_tbl q on rr.id=q.registry_record_id
---		left join eirc_quittance_details_quittances_tbl qq on q.id=qq.quittance_details_id
---	where r.id=@id;
+delete qq
+	from common_registries_tbl r
+		left join common_registry_records_tbl rr on r.id=rr.registry_id
+		left join eirc_quittance_details_tbl q on rr.id=q.registry_record_id
+		left join eirc_quittance_details_quittances_tbl qq on q.id=qq.quittance_details_id
+	where r.id=@id;
 
 -- delete quittances
---delete q
---	from eirc_quittances_tbl q
---		left outer join eirc_quittance_details_quittances_tbl qq on q.id=qq.quittance_id
---	where qq.id is null;
+delete q
+	from eirc_quittances_tbl q
+		left outer join eirc_quittance_details_quittances_tbl qq on q.id=qq.quittance_id
+	where qq.id is null;
 
 -- delete quittance details
---delete q
---	from eirc_registries_tbl r
---		left join eirc_registry_records_tbl rr on r.id=rr.registry_id
---		left join eirc_quittance_details_tbl q on rr.id=q.registry_record_id
---	where r.id=@id;
+delete q
+	from common_registries_tbl r
+		left join common_registry_records_tbl rr on r.id=rr.registry_id
+		left join eirc_quittance_details_tbl q on rr.id=q.registry_record_id
+	where r.id=@id;
 
 -- delete record containers
 delete c
