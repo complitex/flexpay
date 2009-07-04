@@ -146,8 +146,8 @@ public class HistoryConsumptionGroup extends DomainObject {
 		return new ToStringBuilder(this).
 				append("creationDate", creationDate).
 				append("userName", userName).
-				append("consumer", consumer).
-				append("file", file).
+				append("consumer-id", consumer == null ? null : consumer.getId()).
+				append("file-id", file == null ? null : file.getId()).
 				append("sendTries", sendTries).
 				append("groupStatus", groupStatus).
 				toString();
