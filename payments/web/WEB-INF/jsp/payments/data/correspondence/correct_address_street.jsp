@@ -1,7 +1,6 @@
-
 <%@ include file="/WEB-INF/jsp/common/taglibs.jsp" %>
 
-<s:actionerror/>
+<s:actionerror />
 
 <form id="fobjects" method="post"
 	  action="<s:url action="registryRecordCorrectAddressStreet" includeParams="none"/>"
@@ -15,19 +14,19 @@
 		<tr>
 			<td class="th" width="1%">&nbsp;</td>
 			<td class="th" width="1%">&nbsp;</td>
-			<td class="th" width="98%"><s:text name="ab.street"/></td>
+			<td class="th" width="98%"><s:text name="ab.street" /></td>
 		</tr>
-		<s:iterator value="%{objectNames}" status="status">
+		<s:iterator value="%{streets}" status="status">
 			<tr valign="middle" class="cols_1">
 				<td class="col_1s" align="right">
-					<s:property value="%{#status.index + pager.thisPageFirstElementNumber + 1}"/>
+					<s:property value="%{#status.index + pager.thisPageFirstElementNumber + 1}" />
 				</td>
 				<td class="col">
-					<input type="radio" value="<s:property value="%{id}"/>" name="object.id"/>
+					<input type="radio" value="<s:property value="%{id}"/>" name="object.id" />
 				</td>
 				<td class="col">
-					<s:property value="%{getTranslation(getCurrentType().translations).name}"/>
-					<s:property value="%{getTranslation(getCurrentName().translations).name}"/>
+					<s:property value="%{getTranslation(getCurrentType().translations).name}" />
+					<s:property value="%{getTranslation(getCurrentName().translations).name}" />
 				</td>
 			</tr>
 		</s:iterator>
