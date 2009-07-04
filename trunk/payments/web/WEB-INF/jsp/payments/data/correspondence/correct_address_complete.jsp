@@ -6,6 +6,8 @@
 	<s:text name="eirc.address_setup_completed" />
 
 	<br /><br />
-	<input type="button" value="<s:text name="common.close" />" class="btn-exit" />
+	<input type="button" value="<s:text name="common.close" />"
+		   onclick="parent.$('#dialog').dialog('close');"
+		   class="btn-exit" />
 
 </div>
