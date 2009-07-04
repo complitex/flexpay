@@ -51,14 +51,12 @@ public class RegistryRecordDaoExtImpl extends HibernateDaoSupport implements Reg
 	public List<RegistryRecord> filterRecords(Long registryId, ImportErrorTypeFilter importErrorTypeFilter,
 											  RegistryRecordStatusFilter recordStatusFilter, final Page<RegistryRecord> pager) {
 		final StringBuilder hql = new StringBuilder("select distinct rr from RegistryRecord rr " +
-													"inner join fetch rr.registry r " +
-													"inner join fetch rr.recordStatus rs " +
-													"left join fetch rr.importError e where r.id=? ");
+													"left join fetch rr.recordStatus rs " +
+													"left join fetch rr.importError e where rr.registry.id=? ");
 
 		final StringBuilder hqlCount = new StringBuilder("select count(*) from RegistryRecord rr " +
-														 "inner join rr.registry r " +
-														 "inner join rr.recordStatus rs " +
-														 "left join rr.importError e where r.id=? ");
+														 "left join rr.recordStatus rs " +
+														 "left join rr.importError e where rr.registry.id=? ");
 
 		final List<Object> params = new ArrayList<Object>();
 		params.add(registryId);
