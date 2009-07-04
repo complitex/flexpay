@@ -142,6 +142,14 @@
 		  p:recordService-ref="registryRecordService"
 		  p:serviceProviderService-ref="serviceProviderService" />
 
+    <bean id="registryViewAction" scope="prototype"
+          class="org.flexpay.eirc.actions.registry.RegistryViewAction"
+          p:crumbNameKey="payments.crumbs.registries_view"
+          p:registryService-ref="registryService"
+          p:registryRecordService-ref="registryRecordService"
+          p:classToTypeRegistry-ref="classToTypeRegistry"
+          p:serviceTypeService-ref="serviceTypeService" />
+
 	<bean id="processesListAction" scope="prototype"
 		  class="org.flexpay.common.actions.processing.ProcessesListAction"
 		  p:processManager-ref="processManager" />

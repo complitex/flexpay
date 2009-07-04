@@ -24,7 +24,7 @@ public class RegistryViewAction extends CashboxCookieWithPagerActionSupport<Regi
 	private Registry registry = new Registry();
 	private List<RegistryRecord> records = Collections.emptyList();
 
-	private ImportErrorTypeFilter importErrorTypeFilter = new ImportErrorTypeFilter();
+	protected ImportErrorTypeFilter importErrorTypeFilter = null;
 	private RegistryRecordStatusFilter recordStatusFilter = new RegistryRecordStatusFilter();
 
 	private RegistryService registryService;
@@ -38,7 +38,7 @@ public class RegistryViewAction extends CashboxCookieWithPagerActionSupport<Regi
 			addActionError("No registryId specified, give up.");
 			return ERROR;
 		}
-		importErrorTypeFilter.init(classToTypeRegistry);
+		getImportErrorTypeFilter().init(classToTypeRegistry);
 		registry = registryService.read(stub(registry));
 		records = registryRecordService.listRecords(registry, importErrorTypeFilter, recordStatusFilter, getPager());
 
@@ -75,7 +75,10 @@ public class RegistryViewAction extends CashboxCookieWithPagerActionSupport<Regi
 	}
 
 	public ImportErrorTypeFilter getImportErrorTypeFilter() {
-		return importErrorTypeFilter;
+		if (importErrorTypeFilter == null) {
+            importErrorTypeFilter = new ImportErrorTypeFilter();
+        }
+        return importErrorTypeFilter;
 	}
 
 	public void setImportErrorTypeFilter(ImportErrorTypeFilter importErrorTypeFilter) {
