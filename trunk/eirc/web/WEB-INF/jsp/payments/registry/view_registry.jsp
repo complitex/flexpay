@@ -106,7 +106,7 @@
     function createDialog(recordId) {
 
         $("#dialog").append(
-                $('<iframe name="frame" src="<s:url action="selectCorrectionType" includeParams="none"/>?record.id=' + recordId + '" width="600" height="320"></iframe>').
+                $('<iframe name="frame" src="<s:url action="selectCorrectionType" namespace="/payments" includeParams="none"/>?record.id=' + recordId + '" width="600" height="320"></iframe>').
                         css({"border" : "none"})
         );
 
