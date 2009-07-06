@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ContractForServices" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="483" leftMargin="56" rightMargin="56" topMargin="28" bottomMargin="28" isSummaryNewPage="true">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ContractForServices" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="483" leftMargin="56" rightMargin="56" topMargin="28" bottomMargin="28">
 	<property name="ireport.encoding" value="UTF-8"/>
 	<import value="java.text.SimpleDateFormat"/>
 	<import value="net.sf.jasperreports.engine.*"/>
@@ -267,17 +267,4 @@
 			</textField>
 		</band>
 	</detail>
-	<summary>
-		<band height="786">
-                    <printWhenExpression>
-                        $P{test}
-                    </printWhenExpression>
-			<subreport>
-				<reportElement positionType="Float" x="0" y="0" width="483" height="786" isPrintWhenDetailOverflows="true"/>
-				<parametersMapExpression><![CDATA[new HashMap($P{REPORT_PARAMETERS_MAP})]]></parametersMapExpression>
-				<dataSourceExpression><![CDATA[new JREmptyDataSource(1)]]></dataSourceExpression>
-				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "ContractForServicesAppendix1.jasper"]]></subreportExpression>
-			</subreport>
-		</band>
-	</summary>
 </jasperReport>
