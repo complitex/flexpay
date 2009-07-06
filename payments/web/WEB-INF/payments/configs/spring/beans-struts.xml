@@ -193,14 +193,6 @@
     <bean id="registryRecordsProcessAction" scope="prototype"
           class="org.flexpay.payments.actions.registry.RegistryRecordsProcessAction"
           p:processManager-ref="processManager" />
-
-    <bean id="registryViewAction" scope="prototype"
-          class="org.flexpay.payments.actions.registry.RegistryViewAction"
-          p:crumbNameKey="payments.crumbs.registries_view"
-          p:registryService-ref="registryService"
-          p:registryRecordService-ref="registryRecordService"
-          p:classToTypeRegistry-ref="classToTypeRegistry"
-          p:serviceTypeService-ref="serviceTypeService" />
     
     <bean id="changeAnnotationAction"
           class="org.flexpay.payments.actions.registry.RegistryAnnotationAction"
