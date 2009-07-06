@@ -21,13 +21,29 @@
 	/*
 	 *	Replaces empty value with zero summ and comma with dot
 	 */
-	function processPaymentValue(fieldId) {
+	function preProcessPaymentValue(fieldId) {
 		var paymentValue = $.trim($('#' + fieldId).val());
 
 		if (paymentValue == '') {
 			paymentValue = '0.00';
 		} else {
 			paymentValue = paymentValue.replace(",", ".");
+		}
+
+		$('#' + fieldId).val(paymentValue);
+	}
+
+	function postProcessPaymentValue(fieldId) {
+
+		var paymentValue = $('#' + fieldId).val();
+		var dotpos = paymentValue.indexOf(".");		
+
+		if (dotpos < 0) {
+			paymentValue = paymentValue + ".00";
+		} else if (dotpos == paymentValue.length - 1) {
+			paymentValue = paymentValue + "00";
+		} else if (dotpos == paymentValue.length - 2) {
+			paymentValue = paymentValue + "0";
 		}
 
 		$('#' + fieldId).val(paymentValue);
@@ -318,15 +334,17 @@
 	}
 
 	function onChangePaymentHandler(id) {
-		processPaymentValue(id);
+		preProcessPaymentValue(id);
 		validatePaymentValue(id);
+		postProcessPaymentValue(id);
 		updateTotal();
 		disablePayment();
 	}
 
 	function onChangeInputHandler() {
-		processPaymentValue('inputSumm');
+		preProcessPaymentValue('inputSumm');
 		validateInputValue();
+		postProcessPaymentValue('inputSumm');
 		updateChange();
 		disablePayment();
 	}
