@@ -65,6 +65,7 @@ public class MbCorrectionsFileParser extends MbFileParser {
 					break;
 				}
 				if (lineNum == 0) {
+					continue;
 				} else if (lineNum == 1) {
 					parseHeader(line, registries);
 				} else if (line.startsWith(FOOTER_MARKER)) {

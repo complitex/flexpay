@@ -71,6 +71,7 @@ public class MbChargesFileParser extends MbFileParser {
 					break;
 				}
 				if (lineNum == 0) {
+					continue;
 				} else if (lineNum == 1) {
 					registry = registryService.create(parseHeader(line, registry));
 				} else if (line.startsWith(FOOTER_MARKER)) {

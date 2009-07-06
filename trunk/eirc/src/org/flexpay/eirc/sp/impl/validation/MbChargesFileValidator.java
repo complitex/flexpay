@@ -50,8 +50,8 @@ public class MbChargesFileValidator extends MbFileValidator {
 					try {
 						validateHeader(line, context);
 					} catch (Exception e) {
-						log.warn("Incorrect header in file. Line number = {}, error: {}\nLine = {}",
-								new Object[] {lineNum, e.getMessage(), line});
+						log.warn("Incorrect header in file. Line number = {}, error: {}\n{}\nLine = {}",
+								new Object[] {lineNum, e.getMessage(), e.getStackTrace(), line});
 						ret = false;
 					}
 				} else if (line.startsWith(LAST_FILE_STRING_BEGIN)) {
@@ -69,8 +69,8 @@ public class MbChargesFileValidator extends MbFileValidator {
 					try {
 						validateRecord(line, fileValues, context);
 					} catch (Exception e) {
-						log.warn("Incorrect record in file. Line number = {}, error: {}\nLine = {}", 
-								new Object[] {lineNum, e.getMessage(), line});
+						log.warn("Incorrect record in file. Line number = {}, error: {}\n{}\nLine = {}",
+								new Object[] {lineNum, e.getMessage(), e.getStackTrace(), line});
 						ret = false;
 					}
 				}
