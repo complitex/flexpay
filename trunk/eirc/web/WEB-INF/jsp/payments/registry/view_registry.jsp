@@ -49,9 +49,19 @@
 				</td>
 				<td class="col"><s:property value="%{personalAccountExt}"/></td>
 				<td class="col" nowrap="nowrap">
-					<s:if test="streetType != null && streetName != null && buildingNum != null || buildingBulkNum != null || apartmentNum != null">
-						<s:set name="addressVal"
-							   value="%{streetType + ', ' + streetName + ', ' + buildingNum + ' ' + buildingBulkNum + ', ' + apartmentNum}"/>
+					<s:if test="streetType != null && streetName != null && (buildingNum != null || buildingBulkNum != null) && apartmentNum != null">
+            <s:if test="buildingNum != null && buildingBulkNum != null">
+              <s:set name="addressVal"
+                     value="%{streetType + ', ' + streetName + ', ' + buildingNum + ' ' + buildingBulkNum + ', ' + apartmentNum}"/>
+            </s:if>
+            <s:elseif test="buildingNum != null">
+              <s:set name="addressVal"
+                     value="%{streetType + ', ' + streetName + ', ' + buildingNum + ', ' + apartmentNum}"/>
+            </s:elseif>
+            <s:else>
+              <s:set name="addressVal"
+                     value="%{streetType + ', ' + streetName + ', ' + buildingBulkNum + ', ' + apartmentNum}"/>
+            </s:else>
 						<s:if test="apartment != null">
 							<a href="<s:url action="apartmentRegistration" namespace="/dicts" includeParams="none"><s:param name="apartment.id" value="apartment.id" /></s:url>">
 								<s:property value="addressVal"/>
