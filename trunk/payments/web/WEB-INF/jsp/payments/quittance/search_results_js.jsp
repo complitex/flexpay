@@ -3,6 +3,12 @@
 <script type="text/javascript">
 
 	/**
+ 	 * Constants
+ 	 */
+	var TAB_KEY_CODE = 9;
+	var ENTER_KEY_CODE = 13;
+
+	/**
 	 *	Common functions
 	 */
 	function dotted2Int(i) {
@@ -36,7 +42,7 @@
 	function postProcessPaymentValue(fieldId) {
 
 		var paymentValue = $('#' + fieldId).val();
-		var dotpos = paymentValue.indexOf(".");		
+		var dotpos = paymentValue.indexOf(".");
 
 		if (dotpos < 0) {
 			paymentValue = paymentValue + ".00";
@@ -109,7 +115,7 @@
 			removeErrorField(fieldId);
 			return true;
 		} else {
-			// show error			
+			// show error
 			$(errorCell).text('<s:text name="eirc.error.quittances.quittance_pay.invalid_pay_value"/>');
 			$(previousRow).css("display", "table-row");
 			addErrorField(fieldId);
@@ -168,7 +174,7 @@
 		}
 
 		$('#totalToPay').val(int2Dotted(total));
-		$('#inputSumm').val(int2Dotted(total));		
+		$('#inputSumm').val(int2Dotted(total));
 		validateInputValue(); // if we have an error in input before it is not valid anymore
 		$('#changeSumm').val('0.00');
 	}
@@ -263,7 +269,7 @@
 		}
 		// adding total input summ field to field chain
 		fieldChain[fieldChain.length] = 'inputSumm';
-		
+
 		// setting focus to the first payments field
 		$('#' + fieldChain[0]).focus();
 		$('#' + fieldChain[0]).select();
@@ -288,7 +294,7 @@
 		var nextFieldId = $(event.target).attr('id');
 		var currentFieldId = fieldChain[currentFieldIndex];
 
-		if (event.keyCode == 13 || (event.keyCode == 9 && !event.shiftKey)) {
+		if (event.keyCode == ENTER_KEY_CODE || (event.keyCode == TAB_KEY_CODE && !event.shiftKey)) {
 			if (currentFieldIndex < fieldChain.length - 1) {
 				nextFieldId = fieldChain[currentFieldIndex + 1];
 				$('#' + nextFieldId).focus();
@@ -314,7 +320,7 @@
 
 				event.preventDefault();
 			}
-		} else if (event.keyCode == 9 && event.shiftKey) {
+		} else if (event.keyCode == TAB_KEY_CODE && event.shiftKey) {
 			if (currentFieldIndex > 0) {
 				nextFieldId = fieldChain[currentFieldIndex - 1];
 				$('#' + nextFieldId).focus();
@@ -386,12 +392,12 @@
 		});
 
 		$('#printQuittanceButton').bind('keypress', function(event) {
-			if (event.keyCode == 9 && event.shiftKey) {
+			if (event.keyCode == TAB_KEY_CODE && event.shiftKey) {
 				$('#inputSumm').focus();
 				event.preventDefault();
-			} else if (event.keyCode == 9 && !event.shiftKey) {
+			} else if (event.keyCode == TAB_KEY_CODE && !event.shiftKey) {
 				if (paymentEnabled) {
-					$('#payQuittanceButton').focus();					
+					$('#payQuittanceButton').focus();
 				}
 				event.preventDefault();
 			}
