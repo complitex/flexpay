@@ -389,6 +389,11 @@
 			if (event.keyCode == 9 && event.shiftKey) {
 				$('#inputSumm').focus();
 				event.preventDefault();
+			} else if (event.keyCode == 9 && !event.shiftKey) {
+				if (paymentEnabled) {
+					$('#payQuittanceButton').focus();					
+				}
+				event.preventDefault();
 			}
 		});
 
