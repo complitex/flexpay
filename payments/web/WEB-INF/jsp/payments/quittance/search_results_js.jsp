@@ -2,11 +2,7 @@
 
 <script type="text/javascript">
 
-	/**
- 	 * Constants
- 	 */
-	var TAB_KEY_CODE = 9;
-	var ENTER_KEY_CODE = 13;
+	
 
 	/**
 	 *	Common functions
@@ -294,7 +290,7 @@
 		var nextFieldId = $(event.target).attr('id');
 		var currentFieldId = fieldChain[currentFieldIndex];
 
-		if (event.keyCode == ENTER_KEY_CODE || (event.keyCode == TAB_KEY_CODE && !event.shiftKey)) {
+		if (event.keyCode == FP.ENTER_KEY_CODE || (event.keyCode == FP.TAB_KEY_CODE && !event.shiftKey)) {
 			if (currentFieldIndex < fieldChain.length - 1) {
 				nextFieldId = fieldChain[currentFieldIndex + 1];
 				$('#' + nextFieldId).focus();
@@ -320,7 +316,7 @@
 
 				event.preventDefault();
 			}
-		} else if (event.keyCode == TAB_KEY_CODE && event.shiftKey) {
+		} else if (event.keyCode == FP.TAB_KEY_CODE && event.shiftKey) {
 			if (currentFieldIndex > 0) {
 				nextFieldId = fieldChain[currentFieldIndex - 1];
 				$('#' + nextFieldId).focus();
@@ -392,10 +388,10 @@
 		});
 
 		$('#printQuittanceButton').bind('keypress', function(event) {
-			if (event.keyCode == TAB_KEY_CODE && event.shiftKey) {
+			if (event.keyCode == FP.TAB_KEY_CODE && event.shiftKey) {
 				$('#inputSumm').focus();
 				event.preventDefault();
-			} else if (event.keyCode == TAB_KEY_CODE && !event.shiftKey) {
+			} else if (event.keyCode == FP.TAB_KEY_CODE && !event.shiftKey) {
 				if (paymentEnabled) {
 					$('#payQuittanceButton').focus();
 				}

@@ -1,5 +1,9 @@
 var FP = {
 
+	// key code constants
+	TAB_KEY_CODE: 9,
+	ENTER_KEY_CODE: 13,
+
     base : "",
 
     // Set checkboxes group (names starts with prefix) state to checked
