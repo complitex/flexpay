@@ -51,7 +51,7 @@ public class MbChargesFileParser extends MbFileParser {
 			reader = new BufferedReader(new InputStreamReader(spFile.getInputStream(), REGISTRY_FILE_ENCODING));
 			registry.setCreationDate(new Date());
 			registry.setSpFile(spFile);
-			registry.setRegistryType(registryTypeService.findByCode(RegistryType.TYPE_INCOME));
+			registry.setRegistryType(registryTypeService.findByCode(RegistryType.TYPE_QUITTANCE));
 			registry.setArchiveStatus(registryArchiveStatusService.findByCode(RegistryArchiveStatus.NONE));
 			registry.setRegistryStatus(registryStatusService.findByCode(RegistryStatus.LOADING));
 
