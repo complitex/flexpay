@@ -11,17 +11,22 @@ import org.flexpay.common.persistence.registry.RegistryStatus;
 import org.flexpay.common.service.RegistryRecordService;
 import org.flexpay.common.service.RegistryService;
 import org.flexpay.common.service.RegistryStatusService;
+import org.flexpay.common.service.FPFileService;
+import org.flexpay.common.util.FPFileUtil;
 import org.flexpay.orgs.persistence.Organization;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Required;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.security.Signature;
+import java.security.SignatureException;
+import java.lang.reflect.Array;
 
 public class GeneratePaymentsMBRegistry {
     private final Logger log = LoggerFactory.getLogger(getClass());
@@ -81,17 +86,23 @@ public class GeneratePaymentsMBRegistry {
     private RegistryService registryService;
     private RegistryStatusService registryStatusService;
     private RegistryRecordService registryRecordService;
+    private FPFileService fpFileService;
+
+    private Signature signature = null;
 
     public void exportToMegaBank(@NotNull Registry registry, @NotNull FPFile file, @NotNull Organization organization) throws FlexPayException {
         RegistryWriter rg = null;
         try {
-            rg = new RegistryWriter(file, '|', RegistryWriter.NO_QUOTE_CHARACTER, RegistryWriter.NO_ESCAPE_CHARACTER);
+            FPFile tmpFile = new FPFile();
+            tmpFile.setModule(file.getModule());
+            tmpFile.setDescription(file.getDescription());
+            tmpFile.setOriginalName(file.getOriginalName());
+            tmpFile.setUserName(file.getUserName());
 
-            // служебные строки
-            log.info("Writing service lines");
-            rg.writeCharToLine('_', 128);
-            writeDigitalSignature(rg);
-            rg.writeCharToLine('_', 128);
+            FPFileUtil.createEmptyFile(tmpFile);
+
+            rg = new RegistryWriter(tmpFile, '|', RegistryWriter.NO_QUOTE_CHARACTER, RegistryWriter.NO_ESCAPE_CHARACTER);
+            rg.setSignature(signature);
 
             // заголовочные строки
             log.info("Write header lines");
@@ -151,13 +162,39 @@ public class GeneratePaymentsMBRegistry {
             }
             registry.setRegistryStatus(registryStatusService.findByCode(RegistryStatus.PROCESSED));
             registryService.update(registry);
+
+            rg.close();
+            byte[] sign = rg.getSign();
+
+            // служебные строки
+            rg = new RegistryWriter(file, '|', RegistryWriter.NO_QUOTE_CHARACTER, RegistryWriter.NO_ESCAPE_CHARACTER);
+            
+            log.info("Writing service lines");
+            rg.writeCharToLine('_', 128);
+            writeDigitalSignature(rg, sign);
+            rg.writeCharToLine('_', 128);
+
+            BufferedInputStream is = new BufferedInputStream(tmpFile.getInputStream());
+
+            int bytesRead;
+            byte[] buffer = new byte[1024];
+            while ((bytesRead = is.read(buffer)) != -1) {
+                rg.write(buffer, 0, bytesRead);
+            }
+            is.close();
+            file.setSize(rg.getFileSize());
+
+            fpFileService.deleteFromFileSystem(tmpFile);
         } catch (FileNotFoundException e) {
             throw new FlexPayException(e);
         } catch (IOException e) {
             throw new FlexPayException(e);
+        } catch (SignatureException e) {
+            throw new FlexPayException(e);
         } finally {
             if (rg != null) {
                 rg.close();
+                fpFileService.update(file);
             }
         }
     }
@@ -273,20 +310,58 @@ public class GeneratePaymentsMBRegistry {
         return sb.toString();
     }
 
-    private void writeDigitalSignature(@NotNull RegistryWriter rg) throws IOException {
+    private void writeDigitalSignature(@NotNull RegistryWriter rg, @Nullable byte[] sign) throws IOException, SignatureException {
+        if (sign != null) {
+            rg.writeLine(sign);
+            int m = 0;
+            byte[] lineEnd = RegistryWriter.DEFAULT_LINE_END.getBytes(rg.getFileEncoding());
+            for (int i = 0; i < sign.length; i++) {
+                if (sign[i] == lineEnd[0]) {
+                    log.debug("search i={}", i);
+                    if ((i+1)%lineEnd.length == 0 && (i +  lineEnd.length) < sign.length) {
+                        log.debug("sign length: {}, range: {}.. {}", new Object[]{sign.length, i, i + lineEnd.length});
+                        byte[] sub = Arrays.copyOfRange(sign, i, i + lineEnd.length);
+                        if (Arrays.equals(sub, lineEnd)) {
+                            m++;
+                        }
+                    }
+                }
+            }
+            while (m < 2) {
+                rg.writeLine("");
+                m++;
+            }
+            return;
+        }
         rg.writeLine("");
         rg.writeLine("");
         rg.writeLine("");
     }
 
+    public void setSignature(Signature signature) {
+        this.signature = signature;
+    }
+
+    public void setPrivKey(Signature sign) {
+        this.signature = sign;
+    }
+
+    @Required
+    public void setFpFileService(FPFileService fpFileService) {
+        this.fpFileService = fpFileService;
+    }
+
+    @Required
     public void setRegistryService(RegistryService registryService) {
         this.registryService = registryService;
     }
 
+    @Required
     public void setRegistryStatusService(RegistryStatusService registryStatusService) {
         this.registryStatusService = registryStatusService;
     }
 
+    @Required
     public void setRegistryRecordService(RegistryRecordService registryRecordService) {
         this.registryRecordService = registryRecordService;
     }

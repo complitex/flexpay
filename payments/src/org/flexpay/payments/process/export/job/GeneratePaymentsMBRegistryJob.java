@@ -12,8 +12,15 @@ import org.flexpay.orgs.service.OrganizationService;
 import org.flexpay.payments.process.export.util.GeneratePaymentsMBRegistry;
 import org.springframework.beans.factory.annotation.Required;
 
-import java.io.Serializable;
+import java.io.*;
 import java.util.Map;
+import java.net.URL;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.security.*;
+import java.security.spec.PKCS8EncodedKeySpec;
+import java.security.spec.InvalidKeySpecException;
 
 public class GeneratePaymentsMBRegistryJob extends Job {
 
@@ -80,6 +87,49 @@ public class GeneratePaymentsMBRegistryJob extends Job {
 			log.warn("Did not find registry in job parameters");
 			return RESULT_ERROR;
 		}
+
+        if (parameters.containsKey("PrivateKey")) {
+            String privateKey = (String) parameters.get("PrivateKey");
+            File privateKeyFile = null;
+            try {
+                URI uri = new URI(privateKey);
+                privateKeyFile = new File(uri);
+            } catch (Exception e) {
+                log.debug("Private key is not uri '{}': {}", privateKey, e);
+            }
+            DataInputStream dis = null;
+            try {
+                if (privateKeyFile == null || !privateKeyFile.exists()) {
+                    privateKeyFile = new File (privateKey);
+                }
+                dis = new DataInputStream(new FileInputStream(privateKeyFile));
+                byte[] privKeyBytes = new byte[(int)privateKeyFile.length()];
+                dis.read(privKeyBytes);
+                dis.close();
+                dis = null;
+
+                KeyFactory keyFactory = KeyFactory.getInstance("RSA");
+
+                // decode private key
+                PKCS8EncodedKeySpec privSpec = new PKCS8EncodedKeySpec(privKeyBytes);
+                PrivateKey privKey = keyFactory.generatePrivate(privSpec);
+
+                Signature instance = Signature.getInstance("SHA1withRSA");
+                instance.initSign(privKey);
+
+                generatePaymentsMBRegistry.setSignature(instance);                
+            } catch (Exception e) {
+                log.error("Error create signature '{}': {}", privateKey, e);
+            } finally {
+                if (dis != null) {
+                    try {
+                        dis.close();
+                    } catch (IOException e) {
+                        log.warn("Error close stream of private key", e);
+                    }
+                }
+            }
+        }
 
 		generatePaymentsMBRegistry.exportToMegaBank(registry, spFile, organization);
 

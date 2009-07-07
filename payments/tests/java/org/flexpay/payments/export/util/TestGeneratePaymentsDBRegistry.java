@@ -2,6 +2,7 @@ package org.flexpay.payments.export.util;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNotNull;
+import static junit.framework.Assert.assertNull;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.FPModule;
@@ -14,6 +15,7 @@ import org.flexpay.common.persistence.registry.PropertiesFactory;
 import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.persistence.registry.RegistryRecord;
 import org.flexpay.common.service.*;
+import org.flexpay.common.service.importexport.ImportErrorService;
 import org.flexpay.common.test.SpringBeanAwareTestCase;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.SecurityUtil;
@@ -27,6 +29,7 @@ import org.flexpay.payments.persistence.*;
 import org.flexpay.payments.process.export.util.GeneratePaymentsDBRegistry;
 import org.flexpay.payments.service.*;
 import org.flexpay.payments.service.Roles;
+import org.flexpay.payments.service.importexport.imp.ClassToTypeRegistryPayments;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -38,6 +41,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
+
+import sun.security.provider.DSAPrivateKey;
+
+import javax.annotation.Resource;
 
 public class TestGeneratePaymentsDBRegistry extends SpringBeanAwareTestCase {
     @Autowired
@@ -90,6 +97,13 @@ public class TestGeneratePaymentsDBRegistry extends SpringBeanAwareTestCase {
     private RegistryRecordStatusService registryRecordStatusService;
     @Autowired
     private PropertiesFactory propertiesFactory;
+
+    @Resource(name = "classToTypeRegistryPayments")
+    //@Qualifier("classToTypeRegistryPayments")
+    private ClassToTypeRegistryPayments classToTypeRegistryPayments;
+
+    @Autowired
+    private ImportErrorService importErrorService;
 
     private ServiceProvider serviceProvider;
     private Organization registerOrganization;
@@ -325,8 +339,8 @@ public class TestGeneratePaymentsDBRegistry extends SpringBeanAwareTestCase {
         generate.setPropertiesFactory(propertiesFactory);
 
         Registry registry  = generate.createDBRegestry(spFile, serviceProvider, registerOrganization, new Date(currDate.getTime() + 1000), new Date(currDate.getTime() + 10000));
-        assertNotNull(registry);
-        assertEquals(0, registry.getRecordsNumber().intValue());
+        assertNull(registry);
+        //assertEquals(0, registry.getRecordsNumber().intValue());
 
         registry  = generate.createDBRegestry(spFile, serviceProvider, registerOrganization, new Date(currDate.getTime() - 100000), new Date(currDate.getTime() + 1000));
         assertNotNull(registry);

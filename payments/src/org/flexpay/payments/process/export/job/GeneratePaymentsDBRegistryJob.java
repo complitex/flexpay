@@ -91,6 +91,10 @@ public class GeneratePaymentsDBRegistryJob extends Job {
         }
         Registry registry = generatePaymentsDBRegistry.createDBRegestry(file, serviceProvider, registeredOrganization, oldLastProcessedDate, lastProcessedDate);
         parameters.put("lastProcessedDate", String.valueOf(lastProcessedDate.getTime()));
+        if (registry == null) {
+            log.debug("Empty registry nothing do");
+            return RESULT_ERROR;
+        }
         //parameters.put("Registry", registry);
         parameters.put("RegistryId", registry.getId());
         return RESULT_NEXT;
