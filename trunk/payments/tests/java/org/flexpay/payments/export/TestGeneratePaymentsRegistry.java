@@ -401,6 +401,7 @@ public class TestGeneratePaymentsRegistry extends SpringBeanAwareTestCase {
         jobScheduler.setEmail("test@test.ru");
         jobScheduler.setProviderService(tProviderService);
         jobScheduler.setServiceProviderAttributeService(tProviderAttributeService);
+        jobScheduler.setPrivateKey("WEB-INF/payments/configs/keys/secret.key");
 
         BaseCalendar calendar = new BaseCalendar();
 
@@ -458,7 +459,8 @@ public class TestGeneratePaymentsRegistry extends SpringBeanAwareTestCase {
 			spFile = fpFileService.read(new Stub<FPFile>(fileId));
 		}
         assertNotNull(spFile);
-        assertTotalCountLine(spFile, 15);
+        assertDigitalSignatureCountLine(spFile, 3);
+        //assertTotalCountLine(spFile, 15);
         assertRecordCountLine(spFile, 2);
         fpFileService.deleteFromFileSystem(spFile);
     }
@@ -494,6 +496,31 @@ public class TestGeneratePaymentsRegistry extends SpringBeanAwareTestCase {
                     }
 				}
 				assertEquals(n, i);
+			}
+		});
+	}
+
+
+    private static void assertDigitalSignatureCountLine(FPFile file, final int n) throws IOException {
+		file.withReader(FILE_ENCODING, new ReaderCallback() {
+			public void read(Reader r) throws IOException {
+				@SuppressWarnings ({"IOResourceOpenedButNotSafelyClosed"})
+				BufferedReader reader = new BufferedReader(r);
+				int i = 0;
+                String line;
+                boolean startSignature = false;
+				while ((line = reader.readLine()) != null) {
+                    if (line.startsWith("-----------------------------------------------")) {
+                        if (startSignature) {
+                            assertEquals(n, i);
+                            return;
+                        } else {
+                            startSignature = true;
+                        }
+                    } else if (startSignature) {
+                        i++;
+                    }
+				}
 			}
 		});
 	}

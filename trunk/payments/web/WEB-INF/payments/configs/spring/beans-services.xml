@@ -111,6 +111,7 @@
 
 	<bean id="generatePaymentsMBRegistry"
 		  class="org.flexpay.payments.process.export.util.GeneratePaymentsMBRegistry"
+          p:fpFileService-ref="fpFileService"
 		  p:registryRecordService-ref="registryRecordService"
 		  p:registryService-ref="registryService"
 		  p:registryStatusService-ref="registryStatusService" />

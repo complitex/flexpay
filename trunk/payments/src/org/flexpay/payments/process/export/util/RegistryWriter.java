@@ -8,6 +8,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.*;
+import java.security.Signature;
+import java.security.SignatureException;
 
 public class RegistryWriter {
     private final Logger log = LoggerFactory.getLogger(getClass());
@@ -15,6 +17,7 @@ public class RegistryWriter {
     private BufferedOutputStream bos;
 
     private FPFile file;
+    private long size;
 
     private char separator;
 
@@ -37,6 +40,8 @@ public class RegistryWriter {
     public static final char NO_ESCAPE_CHARACTER = '\u0000';
 
     public static final String DEFAULT_LINE_END = "\n";
+
+    private Signature signature;
 
 
     public RegistryWriter(@NotNull FPFile file) throws IOException {
@@ -66,9 +71,11 @@ public class RegistryWriter {
         this.quotechar = quotechar;
         this.escapechar = escapechar;
         this.lineEnd = lineEnd;
+        signature = null;
+        size = 0;
     }
 
-    public void writeLine(@Nullable String[] nextLine) throws IOException {
+    public void writeLine(@Nullable String[] nextLine) throws IOException, SignatureException {
 
         if (nextLine == null)
             return;
@@ -89,11 +96,32 @@ public class RegistryWriter {
         sb.append(lineEnd);
 
         log.debug("Write line:" + sb.toString());
-        bos.write(sb.toString().getBytes(getFileEncoding()));
+        write(sb);
 
     }
 
-    public void writeLine(@Nullable String nextLine) throws IOException {
+    public void write(@NotNull byte[] bytes, int off, int len) throws SignatureException, IOException {
+        if (signature != null) {
+            signature.update(bytes, off, len);
+        }
+        size += len;
+        bos.write(bytes, off, len);
+    }
+
+    public void write(@NotNull byte[] bytes) throws SignatureException, IOException {
+        if (signature != null) {
+            signature.update(bytes);
+        }
+        size += bytes.length;
+        bos.write(bytes);
+    }
+
+    private void write(StringBuffer sb) throws IOException, SignatureException {
+        byte[] bytes = sb.toString().getBytes(getFileEncoding());
+        write(bytes);
+    }
+
+    public void writeLine(@Nullable String nextLine) throws IOException, SignatureException {
 
         if (nextLine == null)
             return;
@@ -104,21 +132,22 @@ public class RegistryWriter {
 
         sb.append(lineEnd);
         log.debug("Write line:" + sb.toString());
-        bos.write(sb.toString().getBytes(getFileEncoding()));
+        write(sb);
 
     }
 
-    public void writeLine(@Nullable byte[] nextLine) throws IOException {
+    public void writeLine(@Nullable byte[] nextLine) throws IOException, SignatureException {
 
         if (nextLine == null)
             return;
 
         log.debug("Write line:{}", nextLine);
-        bos.write(nextLine);
-        bos.write(lineEnd.getBytes(getFileEncoding()));
+        write(nextLine);
+        byte[] bytesLineEnd = lineEnd.getBytes(getFileEncoding());
+        write(bytesLineEnd);
     }
 
-    public void writeCharToLine(char ch, int count) throws IOException {
+    public void writeCharToLine(char ch, int count) throws IOException, SignatureException {
         StringBuffer sb = new StringBuffer();
         for (int i = 0; i < count; i++) {
             sb.append(ch);
@@ -128,7 +157,7 @@ public class RegistryWriter {
 
         sb.append(lineEnd);
         log.debug("Write line:" + sb.toString());
-        bos.write(sb.toString().getBytes(getFileEncoding()));
+        write(sb);
     }
 
     private void appendCell(@NotNull StringBuffer sb, @NotNull String nextLine) {
@@ -148,9 +177,16 @@ public class RegistryWriter {
             sb.append(quotechar);
     }
 
+    public byte[] getSign() throws SignatureException {
+        return signature != null? signature.sign(): null;
+    }
+
+    public void setSignature(Signature signature) {
+        this.signature = signature;
+    }
+
     public long getFileSize() throws FlexPayException {
-        flush();
-        return file.getSize();
+        return size;
     }
 
     public void flush() throws FlexPayException {

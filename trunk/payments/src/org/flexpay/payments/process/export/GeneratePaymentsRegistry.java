@@ -39,6 +39,7 @@ public class GeneratePaymentsRegistry extends QuartzJobBean {
     private Long providerId;
     private Long registeredOrganizationId;
     private String email;
+    private String privateKey;
 
     private ProcessManager processManager;
     private ServiceProviderService serviceProviderService;
@@ -83,6 +84,8 @@ public class GeneratePaymentsRegistry extends QuartzJobBean {
                     parameters.put("RegisteredOrganizationId", registeredOrganizationId);
                     //parameters.put("Organization", organization);
                     parameters.put("Email", email);
+                    log.debug("set PrivateKey='{}'", privateKey);
+                    parameters.put("PrivateKey", privateKey);
 
                     long processId = processManager.createProcess("GeneratePaymentsRegisryProcess", parameters);
                     Process process;
@@ -177,4 +180,7 @@ public class GeneratePaymentsRegistry extends QuartzJobBean {
         this.serviceProviderAttributeService = serviceProviderAttributeService;
     }
 
+    public void setPrivateKey(String privateKey) {
+        this.privateKey = privateKey;
+    }
 }

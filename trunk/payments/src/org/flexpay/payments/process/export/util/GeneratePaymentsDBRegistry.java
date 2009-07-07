@@ -7,10 +7,10 @@ import org.flexpay.common.service.*;
 import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.orgs.persistence.ServiceProvider;
 import org.flexpay.payments.persistence.Document;
-import org.flexpay.payments.persistence.Operation;
-import org.flexpay.payments.service.OperationService;
 import org.flexpay.payments.service.DocumentService;
+import org.flexpay.payments.service.OperationService;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
@@ -34,7 +34,7 @@ public class GeneratePaymentsDBRegistry {
 	private OperationService operationService;
     private DocumentService documentService;
 
-    @NotNull
+    @Nullable
     public Registry createDBRegestry(@NotNull FPFile spFile, @NotNull ServiceProvider serviceProvider, @NotNull Organization registerOrganization,
 									 @NotNull Date fromDate, @NotNull Date tillDate) throws FlexPayException {
 
@@ -43,6 +43,10 @@ public class GeneratePaymentsDBRegistry {
         List<Document> documents = getDocuments(serviceProvider, registerOrganization, fromDate, tillDate);
 
         log.info("Count documents {}", documents.size());
+
+        if (documents.size() == 0) {
+            return null;
+        }
 
         Registry registry = new Registry();
 
@@ -81,6 +85,23 @@ public class GeneratePaymentsDBRegistry {
                 record.setBuildingBulkNum(document.getBuildingBulk());
                 record.setApartmentNum(document.getApartmentNumber());
                 record.setUniqueOperationNumber(document.getOperation().getId());
+
+                /*
+                String code = "eirc.error_code.unknown_error";
+
+                ImportError error = new ImportError();
+                error.setErrorId(code);
+                DataSourceDescription sd = serviceProvider.getDataSourceDescription();
+                error.setSourceDescription(sd);
+
+                error.setDataSourceBean("consumersDataSource");
+
+                error.setSourceObjectId(String.valueOf(record.getId()));
+                error.setObjectType(classToTypeRegistry.getType(Service.class));
+                importErrorService.addError(error);
+
+                record.setImportError(error);
+                */
 
                 record.setProperties(propertiesFactory.newRecordProperties());
 
@@ -181,5 +202,4 @@ public class GeneratePaymentsDBRegistry {
     public void setPropertiesFactory(PropertiesFactory propertiesFactory) {
         this.propertiesFactory = propertiesFactory;
     }
-
 }

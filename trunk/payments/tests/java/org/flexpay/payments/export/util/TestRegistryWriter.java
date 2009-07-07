@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.*;
 import java.net.URISyntaxException;
+import java.security.SignatureException;
 
 public class TestRegistryWriter {
 	private static final String fileName = "org/flexpay/payments/export/util/testFile.dat";
@@ -51,7 +52,7 @@ public class TestRegistryWriter {
 	}
 
 	@Test
-	public void testWriteLine1() throws IOException, FlexPayException, URISyntaxException {
+	public void testWriteLine1() throws IOException, FlexPayException, URISyntaxException, SignatureException {
 		FPFile file = getTestFile();
 		RegistryWriter rw = new RegistryWriter(file);
 		try {
@@ -65,7 +66,7 @@ public class TestRegistryWriter {
 	}
 
 	@Test
-	public void testWriteLine2() throws IOException, FlexPayException, URISyntaxException {
+	public void testWriteLine2() throws IOException, FlexPayException, URISyntaxException, SignatureException {
 		final char separator = ',';
 		FPFile file = getTestFile();
 		RegistryWriter rw = new RegistryWriter(file, separator, RegistryWriter.NO_QUOTE_CHARACTER);
@@ -89,7 +90,7 @@ public class TestRegistryWriter {
 	}
 
 	@Test
-	public void testWriteLine3() throws IOException, FlexPayException, URISyntaxException {
+	public void testWriteLine3() throws IOException, FlexPayException, URISyntaxException, SignatureException {
 		final char separator = ',';
 		FPFile file = getTestFile();
 		RegistryWriter rw = new RegistryWriter(file);
@@ -115,7 +116,7 @@ public class TestRegistryWriter {
 	}
 
 	@Test
-	public void testWriteLine4() throws IOException, FlexPayException, URISyntaxException {
+	public void testWriteLine4() throws IOException, FlexPayException, URISyntaxException, SignatureException {
 		final char separator = ',';
 		FPFile file = getTestFile();
 		RegistryWriter rw = new RegistryWriter(file, separator, RegistryWriter.NO_QUOTE_CHARACTER);
@@ -141,7 +142,7 @@ public class TestRegistryWriter {
 	}
 
 	@Test
-	public void testWriteLine5() throws IOException, FlexPayException, URISyntaxException {
+	public void testWriteLine5() throws IOException, FlexPayException, URISyntaxException, SignatureException {
 		final char separator = ',';
 		FPFile file = getTestFile();
 		RegistryWriter rw = new RegistryWriter(file, separator, RegistryWriter.NO_QUOTE_CHARACTER);
