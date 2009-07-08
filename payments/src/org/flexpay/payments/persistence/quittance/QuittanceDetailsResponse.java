@@ -379,6 +379,8 @@ public class QuittanceDetailsResponse implements Serializable {
 			private String buildingBulk;
 			private String apartmentNumber;
 
+			private ServiceAttribute[] attributes;
+
 			public BigDecimal getIncomingBalance() {
 				return incomingBalance;
 			}
@@ -563,6 +565,14 @@ public class QuittanceDetailsResponse implements Serializable {
 				this.apartmentNumber = apartmentNumber;
 			}
 
+			public ServiceAttribute[] getAttributes() {
+				return attributes;
+			}
+
+			public void setAttributes(ServiceAttribute[] attributes) {
+				this.attributes = attributes;
+			}
+
 			@Override
 			public String toString() {
 				return new ToStringBuilder(this).
@@ -589,8 +599,39 @@ public class QuittanceDetailsResponse implements Serializable {
 						append("buildingNumber", buildingNumber).
 						append("buildingBulk", buildingBulk).
 						append("apartmentNumber", apartmentNumber).
+						append("attributes", attributes).
 						toString();
 			}
+		}
+	}
+
+	public static class ServiceAttribute implements Serializable {
+
+		private String name;
+		private String value;
+
+		public String getName() {
+			return name;
+		}
+
+		public void setName(String name) {
+			this.name = name;
+		}
+
+		public String getValue() {
+			return value;
+		}
+
+		public void setValue(String value) {
+			this.value = value;
+		}
+
+		@Override
+		public String toString() {
+			return new ToStringBuilder(this).
+					append("name", name).
+					append("value", value).
+					toString();
 		}
 	}
 }
