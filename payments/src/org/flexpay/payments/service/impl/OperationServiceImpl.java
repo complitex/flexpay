@@ -129,12 +129,21 @@ public class OperationServiceImpl implements OperationService {
 	}
 
 	@Transactional (readOnly = false)
-	public Operation createBlankOperation() throws FlexPayException {
-
+	/**
+	 * Creates new operation with no data and BLANK state
+	 *
+	 * @return new operation instance
+	 */
+	public Operation createBlankOperation(BigDecimal operationSumm, String creator, Organization creatorOrganization, PaymentPoint paymentPoint) throws FlexPayException {
 		Operation operation = new Operation();
 		operation.setOperationStatus(operationStatusService.read(OperationStatus.BLANK));
 		operation.setOperationType(operationTypeService.read(OperationType.SERVICE_CASH_PAYMENT));
 		operation.setOperationLevel(operationLevelService.read(OperationLevel.AVERAGE));
+		operation.setCreationDate(new Date());
+		operation.setOperationSumm(operationSumm);
+		operation.setCreatorUserName(creator);
+		operation.setCreatorOrganization(creatorOrganization);
+		operation.setPaymentPoint(paymentPoint);
 		operationDao.create(operation);
 
 		return operation;

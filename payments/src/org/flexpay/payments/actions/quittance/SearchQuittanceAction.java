@@ -7,8 +7,13 @@ import org.flexpay.ab.service.PersonService;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.util.CollectionUtils;
+import org.flexpay.common.util.SecurityUtil;
 import org.flexpay.orgs.persistence.ServiceProvider;
+import org.flexpay.orgs.persistence.Organization;
+import org.flexpay.orgs.persistence.PaymentPoint;
+import org.flexpay.orgs.persistence.Cashbox;
 import org.flexpay.orgs.service.ServiceProviderService;
+import org.flexpay.orgs.service.CashboxService;
 import org.flexpay.payments.actions.CashboxCookieActionSupport;
 import org.flexpay.payments.persistence.Service;
 import org.flexpay.payments.persistence.Operation;
@@ -46,6 +51,7 @@ public class SearchQuittanceAction extends CashboxCookieActionSupport {
 	private QuittanceDetailsFinder quittanceDetailsFinder;
 	private SPService spService;
 	private ServiceProviderService serviceProviderService;
+	private CashboxService cashboxService;
 
 	@NotNull
 	protected String doExecute() throws Exception {
@@ -59,13 +65,24 @@ public class SearchQuittanceAction extends CashboxCookieActionSupport {
 			filterNegativeSumms();
 
 			// creating blank operation
-			Operation newOperationBlank = operationService.createBlankOperation();
+			Cashbox cashbox = getCashbox();
+			Organization organization = cashbox.getPaymentPoint().getCollector().getOrganization();
+			Operation newOperationBlank = operationService.createBlankOperation(BigDecimal.valueOf(0), SecurityUtil.getUserName(), organization, cashbox.getPaymentPoint() );
 			operationBlankId = newOperationBlank.getId();
 		} else {
 			addActionError(getErrorMessage(response.getErrorCode()));
 		}
 
 		return SUCCESS;
+	}
+
+	private Cashbox getCashbox() {
+		Cashbox cashbox = cashboxService.read(new Stub<Cashbox>(cashboxId));
+		log.debug("Found cashbox {}", cashbox);
+		if (cashbox == null) {
+			throw new IllegalArgumentException("Invalid cashbox id: " + cashboxId);
+		}
+		return cashbox;
 	}
 
 	private QuittanceDetailsRequest buildQuittanceRequest() throws FlexPayException {
@@ -302,5 +319,10 @@ public class SearchQuittanceAction extends CashboxCookieActionSupport {
 	@Required
 	public void setOperationService(OperationService operationService) {
 		this.operationService = operationService;
+	}
+
+	@Required
+	public void setCashboxService(CashboxService cashboxService) {
+		this.cashboxService = cashboxService;
 	}
 }
