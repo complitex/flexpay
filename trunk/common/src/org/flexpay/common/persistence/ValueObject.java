@@ -1,5 +1,10 @@
 package org.flexpay.common.persistence;
 
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.ObjectUtils;
+import org.apache.commons.lang.StringUtils;
+
+import java.math.BigDecimal;
 import java.util.Date;
 
 public abstract class ValueObject extends DomainObject {
@@ -10,6 +15,7 @@ public abstract class ValueObject extends DomainObject {
 	public static final int TYPE_STRING = 4;
 	public static final int TYPE_DATE = 5;
 	public static final int TYPE_DOUBLE = 6;
+	public static final int TYPE_DECIMAL = 7;
 
 	private Boolean boolValue;
 	private Integer intValue;
@@ -17,6 +23,7 @@ public abstract class ValueObject extends DomainObject {
 	private String stringValue;
 	private Date dateValue;
 	private Double doubleValue;
+	private BigDecimal decimalValue;
 	private int valueType;
 
 	public Boolean isBoolValue() {
@@ -73,6 +80,15 @@ public abstract class ValueObject extends DomainObject {
 		valueType = TYPE_DOUBLE;
 	}
 
+	public BigDecimal getDecimalValue() {
+		return decimalValue;
+	}
+
+	public void setDecimalValue(BigDecimal decimalValue) {
+		this.decimalValue = decimalValue;
+		valueType = TYPE_DECIMAL;
+	}
+
 	public int getValueType() {
 		return valueType;
 	}
@@ -101,8 +117,96 @@ public abstract class ValueObject extends DomainObject {
 		return valueType == TYPE_DOUBLE;
 	}
 
+	public boolean isDecimal() {
+		return valueType == TYPE_DECIMAL;
+	}
+
 	@SuppressWarnings ({"UnusedDeclaration"})
 	private void setValueType(int valueType) {
 		this.valueType = valueType;
 	}
+
+	/**
+	 * Update object value, type should be the same as set before
+	 *
+	 * @param obj Object of type that matches current <code>valueType</code>
+	 */
+	public void updateValue(Object obj) {
+		switch (valueType) {
+			case TYPE_BOOLEAN:
+				setBoolValue((Boolean) obj);
+				break;
+			case TYPE_DATE:
+				setDateValue((Date) obj);
+				break;
+			case TYPE_DECIMAL:
+				setDecimalValue((BigDecimal) obj);
+				break;
+			case TYPE_DOUBLE:
+				setDoubleValue((Double) obj);
+				break;
+			case TYPE_INT:
+				setIntValue((Integer) obj);
+				break;
+			case TYPE_LONG:
+				setLongValue((Long) obj);
+				break;
+			case TYPE_STRING:
+				setStringValue((String) obj);
+				break;
+			default:
+				throw new IllegalStateException("updateValue called before valueType set");
+		}
+	}
+
+	public Object value() {
+		switch (valueType) {
+			case TYPE_BOOLEAN:
+				return isBoolValue();
+			case TYPE_DATE:
+				return getDateValue();
+			case TYPE_DECIMAL:
+				return getDecimalValue();
+			case TYPE_DOUBLE:
+				return getDoubleValue();
+			case TYPE_INT:
+				return getIntValue();
+			case TYPE_LONG:
+				return getLongValue();
+			case TYPE_STRING:
+				return getStringValue();
+			default:
+				return null;
+		}
+	}
+
+	public boolean sameValue(ValueObject object) {
+		return valueType == object.getValueType() &&
+			   ObjectUtils.equals(value(), object.value());
+	}
+
+	public boolean empty() {
+		Object value = value();
+		return value == null || (isString() && StringUtils.isEmpty(getStringValue()));
+	}
+
+	public boolean notEmpty() {
+		return !empty();
+	}
+
+	@Override
+	public String toString() {
+		return buildToString(new ToStringBuilder(this).
+				append("id", getId()).
+				append("boolValue", boolValue).
+				append("intValue", intValue).
+				append("longValue", longValue).
+				append("stringValue", stringValue).
+				append("dateValue", dateValue).
+				append("doubleValue", doubleValue).
+				append("valueType", valueType)).
+				toString();
+	}
+
+	protected abstract ToStringBuilder buildToString(ToStringBuilder builder);
 }

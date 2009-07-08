@@ -42,6 +42,11 @@
 				<!--<comment>Optional double value</comment>-->
 			<!--</column>-->
 		<!--</property>-->
+		<!--<property name="decimalValue">-->
+			<!--<column name="decimal_value" not-null="false" scale="5">-->
+				<!--<comment>Optional double value</comment>-->
+			<!--</column>-->
+		<!--</property>-->
 		<!--<property name="valueType">-->
 			<!--<column name="value_type" not-null="true">-->
 				<!--<comment>Value type discriminator</comment>-->

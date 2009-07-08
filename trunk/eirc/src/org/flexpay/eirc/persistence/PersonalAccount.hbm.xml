@@ -59,6 +59,10 @@
 				<comment>Service providers consumer details</comment>
 			</column>
 		</many-to-one>
+		<set name="attributes" inverse="true" cascade="all-delete-orphan">
+			<key column="consumer_id" not-null="true" />
+			<one-to-many class="org.flexpay.eirc.persistence.consumer.ConsumerAttribute" />
+		</set>
 	</class>
 
 	<class name="ConsumerInfo" table="eirc_consumer_infos_tbl"
@@ -169,18 +173,12 @@
 	<query name="Consumer.findConsumers.count">
 		select count(*)
 		from Consumer
-		where responsiblePerson.id = ?
-		and service.id = ?
-		and externalAccountNumber = ?
-		and apartment.id = ?
+		where responsiblePerson.id = ? and service.id = ? and externalAccountNumber = ? and apartment.id = ?
 	</query>
 
 	<query name="Consumer.findConsumers">
 		from Consumer
-		where responsiblePerson.id = ?
-		and service.id = ?
-		and externalAccountNumber = ?
-		and apartment.id = ?
+		where responsiblePerson.id = ? and service.id = ? and externalAccountNumber = ? and apartment.id = ?
 	</query>
 
 	<!-- see Service.findServicesByCode query -->
@@ -205,6 +203,15 @@
 		select distinct o
 		from Consumer o
 		where o.status=0 and o.externalAccountNumber=? and o.service.id=?
+	</query>
+
+	<query name="Consumer.readFull">
+		select distinct o
+		from Consumer o
+			left join fetch o.consumerInfo
+			left join fetch o.attributes a
+			left join fetch a.type 
+		where o.status=0 and o.id=?
 	</query>
 
 	<query name="EircAccount.findByPersonFIO.count">

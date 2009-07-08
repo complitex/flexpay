@@ -22,6 +22,20 @@
 		  p:dataSource-ref="dataSource"
 		  p:hibernateTemplate-ref="hibernateTemplate" />
 
+	<bean id="consumerAttributeTypeDaoExt"
+		  class="org.flexpay.eirc.dao.imp.ConsumerAttributeTypeDaoExtImpl"
+		  p:hibernateTemplate-ref="hibernateTemplate" />
+
+	<bean id="consumerAttributeTypeDao" parent="abstractDao">
+		<property name="proxyInterfaces"
+				  value="org.flexpay.eirc.dao.ConsumerAttributeTypeDao" />
+		<property name="target">
+			<bean parent="abstractDaoTarget">
+				<constructor-arg value="org.flexpay.eirc.persistence.consumer.ConsumerAttributeTypeBase" />
+			</bean>
+		</property>
+	</bean>
+
 	<bean id="eircAccountDaoExt"
 		  class="org.flexpay.eirc.dao.imp.EircAccountDaoExtImpl"
 		  p:hibernateTemplate-ref="hibernateTemplate" />

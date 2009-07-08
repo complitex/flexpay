@@ -1,6 +1,7 @@
 package org.flexpay.payments.persistence;
 
 import org.flexpay.common.persistence.ValueObject;
+import org.apache.commons.lang.builder.ToStringBuilder;
 
 public class DocumentAddition extends ValueObject {
 
@@ -21,5 +22,10 @@ public class DocumentAddition extends ValueObject {
 
 	public void setDocument(Document document) {
 		this.document = document;
+	}
+
+	@Override
+	protected ToStringBuilder buildToString(ToStringBuilder builder) {
+		return builder;
 	}
 }

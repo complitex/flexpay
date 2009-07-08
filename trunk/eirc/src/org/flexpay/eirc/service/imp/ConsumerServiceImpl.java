@@ -95,7 +95,7 @@ public class ConsumerServiceImpl implements ConsumerService {
 	 */
 	@Nullable
 	public Consumer read(@NotNull Stub<Consumer> stub) {
-		return consumerDao.read(stub.getId());
+		return consumerDao.readFull(stub.getId());
 	}
 
 	/**

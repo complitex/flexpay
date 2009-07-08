@@ -1,6 +1,7 @@
 package org.flexpay.payments.persistence;
 
 import org.flexpay.common.persistence.ValueObject;
+import org.apache.commons.lang.builder.ToStringBuilder;
 
 public class OperationAddition extends ValueObject {
 
@@ -21,5 +22,10 @@ public class OperationAddition extends ValueObject {
 
 	public void setOperation(Operation operation) {
 		this.operation = operation;
+	}
+
+	@Override
+	protected ToStringBuilder buildToString(ToStringBuilder builder) {
+		return builder;
 	}
 }

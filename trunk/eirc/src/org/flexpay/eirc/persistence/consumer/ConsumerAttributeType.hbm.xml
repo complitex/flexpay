@@ -1,0 +1,174 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+		"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="org.flexpay.eirc.persistence.consumer">
+
+	<class name="ConsumerAttributeTypeBase" abstract="true" table="eirc_consumer_attribute_types_tbl"
+		   optimistic-lock="version">
+		<comment>Consumer attribute types</comment>
+		<id name="id">
+			<column name="id" not-null="true">
+				<comment>Primary key</comment>
+			</column>
+			<generator class="native" />
+		</id>
+		<discriminator type="string">
+			<column name="discriminator" not-null="true">
+				<comment>Class hierarchy discriminator</comment>
+			</column>
+		</discriminator>
+
+		<property name="status">
+			<column name="status" not-null="true">
+				<comment>Enabled-disabled status</comment>
+			</column>
+		</property>
+
+		<property name="version" access="field">
+			<column name="version" not-null="true">
+				<comment>Optimistic lock version</comment>
+			</column>
+		</property>
+
+		<property name="uniqueCode">
+			<column name="unique_code" not-null="false">
+				<comment>Internal unique code</comment>
+			</column>
+		</property>
+
+		<property name="isTemporal" access="field">
+			<column name="is_temporal" not-null="true">
+				<comment>Temporal flag</comment>
+			</column>
+		</property>
+
+		<many-to-one name="measureUnit" class="org.flexpay.common.persistence.MeasureUnit"
+					 foreign-key="FK_eirc_consumer_attribute_types_tbl_unit_id">
+			<column name="measure_unit_id" not-null="false">
+				<comment>Optional measure unit reference</comment>
+			</column>
+		</many-to-one>
+
+		<set name="names" inverse="true" cascade="all-delete-orphan">
+			<key column="attribute_type_id" not-null="true" />
+			<one-to-many class="ConsumerAttributeTypeName" />
+		</set>
+
+		<subclass name="ConsumerAttributeTypeSimple" discriminator-value="simple" />
+
+		<subclass name="ConsumerAttributeTypeEnum" discriminator-value="enum">
+			<list name="values" inverse="true" cascade="all-delete-orphan">
+				<key column="attribute_type_enum_id" not-null="true" />
+				<index column="order_value" />
+				<one-to-many class="ConsumerAttributeTypeEnumValue" />
+			</list>
+		</subclass>
+
+	</class>
+
+	<class name="ConsumerAttributeTypeName" table="eirc_consumer_attribute_type_names_tbl">
+
+		<comment>Consumer attribute type translations</comment>
+		<id name="id">
+			<column name="id" not-null="true">
+				<comment>Primary key</comment>
+			</column>
+			<generator class="native" />
+		</id>
+
+		<property name="name">
+			<column name="name" not-null="true">
+				<comment>Translation value</comment>
+			</column>
+		</property>
+
+		<properties name="lang_consumer_attribute_type_pair" unique="true">
+			<many-to-one name="lang" class="org.flexpay.common.persistence.Language"
+						 foreign-key="FK_eirc_consumer_attribute_type_names_tbl_language_id">
+				<column name="language_id" not-null="true">
+					<comment>Language reference</comment>
+				</column>
+			</many-to-one>
+			<many-to-one name="translatable" class="ConsumerAttributeTypeBase"
+						 foreign-key="FK_eirc_consumer_attribute_type_names_tbl_type_id">
+				<column name="attribute_type_id" not-null="true">
+					<comment>Consumer attribute type reference</comment>
+				</column>
+			</many-to-one>
+		</properties>
+
+	</class>
+
+	<class name="ConsumerAttributeTypeEnumValue" table="eirc_consumer_attribute_type_enum_values_tbl">
+		<comment>Values for enumeration attribute types</comment>
+		<id name="id" column="id">
+			<generator class="native" />
+		</id>
+		<property name="order">
+			<column name="order_value" not-null="true">
+				<comment>Relational order value</comment>
+			</column>
+		</property>
+		<property name="dateValue">
+			<column name="date_value" not-null="false" sql-type="datetime">
+				<comment>Optional date value</comment>
+			</column>
+		</property>
+		<property name="intValue">
+			<column name="int_value" not-null="false">
+				<comment>Optional int value</comment>
+			</column>
+		</property>
+		<property name="boolValue">
+			<column name="bool_value" not-null="false">
+				<comment>Optional boolean value</comment>
+			</column>
+		</property>
+		<property name="longValue">
+			<column name="long_value" not-null="false">
+				<comment>Optional long value</comment>
+			</column>
+		</property>
+		<property name="stringValue">
+			<column name="string_value" not-null="false">
+				<comment>Optional string value</comment>
+			</column>
+		</property>
+		<property name="doubleValue">
+			<column name="double_value" not-null="false">
+				<comment>Optional double value</comment>
+			</column>
+		</property>
+		<property name="decimalValue">
+			<column name="decimal_value" not-null="false" scale="5">
+				<comment>Optional double value</comment>
+			</column>
+		</property>
+		<property name="valueType">
+			<column name="value_type" not-null="true">
+				<comment>Value type discriminator</comment>
+			</column>
+		</property>
+		<many-to-one name="typeEnum" class="ConsumerAttributeTypeEnum"
+					 foreign-key="eirc_consumer_attribute_type_enum_values_tbl_enum_id">
+			<column name="attribute_type_enum_id" not-null="true">
+				<comment>Attribute type enum reference</comment>
+			</column>
+		</many-to-one>
+	</class>
+
+	<query name="ConsumerAttributeTypeBase.listAttributeTypes">
+		from ConsumerAttributeTypeBase t
+		where t.status=0
+	</query>
+
+	<query name="ConsumerAttributeTypeBase.readFull">
+		select distinct t
+		from ConsumerAttributeTypeBase t
+		left join fetch t.names
+		where t.status=0 and t.id=?
+	</query>
+
+</hibernate-mapping>
