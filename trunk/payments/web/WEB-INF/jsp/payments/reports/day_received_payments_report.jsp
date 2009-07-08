@@ -3,16 +3,16 @@
 
 <script type="text/javascript">
 	function printReport() {
-		var url = '<s:url action="returnedPaymentsReport" includeParams="none" />';
+		var url = '<s:url action="dayReceivedPaymentsReport" includeParams="none" />';
 		url += '?beginDateFilter.stringDate=' + $('#beginDateFilter').val() +
-			   '&showDetails=' + $('#showDetails').attr('checked') + '&submitted=submitted';
+			   '&showDetails=' + $('#showDetails').attr('checked') +  '&submitted=submitted';
 		window.open(url, "_blank");
 	}
 </script>
 
 <s:actionerror/>
 
-<s:form action="returnedPaymentsReport">
+<s:form action="dayReceivedPaymentsReport">
 	<table>
 		<tr>
 			<td nowrap="nowrap">

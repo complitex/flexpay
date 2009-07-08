@@ -91,22 +91,30 @@
 		  scope="prototype" />
 
 	<!-- reports-related actions -->
-	<bean id="receivedPaymentsReportAction"
-		  class="org.flexpay.payments.actions.reports.ReceivedPaymentsReportAction"
+		<bean id="dayReceivedPaymentsReportAction"
+		  class="org.flexpay.payments.actions.reports.DayReceivedPaymentsReportAction"
 		  p:reportUtil-ref="reportUtil"
-		  p:paymentsReporter-ref="paymentsReporter"		  
+		  p:paymentsReporter-ref="paymentsReporter"
 		  p:cashboxService-ref="cashboxService"
 		  p:paymentPointService-ref="paymentPointService"
 		  p:crumbNameKey="payments.crumbs.received_payments_report"
 		  scope="prototype" />
 
-	<bean id="returnedPaymentsReportAction"
-		  class="org.flexpay.payments.actions.reports.ReturnedPaymentsReportAction"
+	<bean id="dayReturnedPaymentsReportAction"
+		  class="org.flexpay.payments.actions.reports.DayReturnedPaymentsReportAction"
 		  p:reportUtil-ref="reportUtil"
 		  p:paymentsReporter-ref="paymentsReporter"
 		  p:cashboxService-ref="cashboxService"
 		  p:paymentPointService-ref="paymentPointService"
 		  p:crumbNameKey="payments.crumbs.returned_payments_report"
+		  scope="prototype" />
+
+	<bean id="accReceivedPaymentsReportAction"
+		  class="org.flexpay.payments.actions.reports.AccReceivedPaymentsReportAction"
+		  scope="prototype" />
+
+	<bean id="accReturnedPaymentsReportAction"
+		  class="org.flexpay.payments.actions.reports.AccReturnedPaymentsReportAction"
 		  scope="prototype" />
 
 	<bean id="importPaymentsReportAction"

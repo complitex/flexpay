@@ -198,7 +198,7 @@
 	<bean name="payments.quittance.search_quittance.reports.received" parent="payments.quittance.search_quittance.reports"
 		  p:name="payments.quittance.search_quittance.reports.received"
 		  p:title="payments.menu4.received_payments"
-		  p:action="receivedPaymentsReport"
+		  p:action="dayReceivedPaymentsReport"
 		  p:parent-ref="payments.quittance.search_quittance.reports">
         <property name="userRole">
             <util:constant static-field="org.flexpay.payments.service.Roles.ROLE_MENU_PAYMENTS_REPORTS_RECEIVED" />
@@ -208,7 +208,7 @@
 	<bean name="payments.quittance.search_quittance.reports.returned" parent="payments.quittance.search_quittance.reports"
 		  p:name="payments.quittance.search_quittance.reports.returned"
 		  p:title="payments.menu4.returned_payments"
-		  p:action="returnedPaymentsReport"
+		  p:action="dayReturnedPaymentsReport"
 		  p:parent-ref="payments.quittance.search_quittance.reports">
         <property name="userRole">
             <util:constant static-field="org.flexpay.payments.service.Roles.ROLE_MENU_PAYMENTS_REPORTS_RECEIVED" />
@@ -304,6 +304,26 @@
             <util:constant static-field="org.flexpay.payments.service.Roles.ROLE_MENU_PAYMENTS_REPORTS_IMPORT" />
         </property>
     </bean>
+
+	<!--<bean name="payments.reports.reports.acc.received" parent="payments.reports.reports"-->
+          <!--p:name="payments.reports2.acc.received"-->
+          <!--p:title="payments.menu4.received_payments"-->
+          <!--p:action="accReceivedPaymentsReport"-->
+          <!--p:parent-ref="payments.reports.reports">-->
+        <!--<property name="userRole">-->
+            <!--<util:constant static-field="org.flexpay.payments.service.Roles.ROLE_MENU_PAYMENTS_REPORTS_ACC_RECEIVED" />-->
+        <!--</property>-->
+    <!--</bean>-->
+
+	<!--<bean name="payments.reports.reports.acc.returned" parent="payments.reports.reports"-->
+          <!--p:name="payments.reports2.acc.returned"-->
+          <!--p:title="payments.menu4.returned_payments"-->
+          <!--p:action="accReturnedPaymentsReport"-->
+          <!--p:parent-ref="payments.reports.reports">-->
+        <!--<property name="userRole">-->
+            <!--<util:constant static-field="org.flexpay.payments.service.Roles.ROLE_MENU_PAYMENTS_REPORTS_ACC_RETURNED" />-->
+        <!--</property>-->
+    <!--</bean>-->
 
 	<bean name="payments.dictionaries.payment_points.payment_points" parent="payments.dictionaries.payment_points"
           p:name="payments.dictionaries.payment_points.payment_points"

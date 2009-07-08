@@ -28,9 +28,8 @@ public class PaymentOperationReportAction extends PaymentOperationAction {
 
 	private static final String REPORT_BASE_NAME = "DoubleQuittancePayment";
 
-	private static final String OPERATION_UID_SESSION_ATTRIBUTE = "operationUid";
-
 	private Long operationId;
+	private Long operationBlankId;
 	private Boolean copy = false;
 
 	private FPFile report;
@@ -50,10 +49,8 @@ public class PaymentOperationReportAction extends PaymentOperationAction {
 	@NotNull
 	protected String doExecute() throws Exception {
 
-
-
 		PaymentPrintForm form;
-
+		Operation operation;
 		if (operationId != null) {
 			form = paymentsReporter.getPaymentPrintFormData(new Stub<Operation>(operationId));
 		} else {
@@ -65,7 +62,8 @@ public class PaymentOperationReportAction extends PaymentOperationAction {
 			}
 			log.debug("Found cashbox {}", cashbox);
 
-			Operation operation = createOperation(cashbox);
+			operation = createOperation(cashbox);
+			operation.setId(operationBlankId);
 			form = paymentsReporter.getPaymentPrintFormData(operation);
 		}
 
@@ -77,8 +75,7 @@ public class PaymentOperationReportAction extends PaymentOperationAction {
 		if (copy) {
 			form.setQuittanceNumber(form.getQuittanceNumber() + " КОПИЯ"); // FIXME I18N
 		} else {
-			Long operationUid = addPrintHistoryRecord();
-			form.setQuittanceNumber(operationUid.toString());
+			addPrintHistoryRecord();
 		}
 
 		Map<String, Object> params = map(
@@ -110,13 +107,7 @@ public class PaymentOperationReportAction extends PaymentOperationAction {
 		record.setReportType(ReportType.OPERATION_REPORT);
 		record.setUserName(userPreferences.getUserName());
 		reportPrintHistoryRecordService.addRecord(record);
-
-		// fixme remove print debug
-		log.debug("[!!!] newly created record id {}", record.getId());
-
-		session.put(OPERATION_UID_SESSION_ATTRIBUTE, record.getId());
-
-		return record.getId(); // TODO check
+		return record.getId();
 	}
 
 	private String getPaymentPointSuffix(PaymentPrintForm form) {
@@ -161,6 +152,10 @@ public class PaymentOperationReportAction extends PaymentOperationAction {
 
 	public void setOperationId(Long operationId) {
 		this.operationId = operationId;
+	}
+
+	public void setOperationBlankId(Long operationBlankId) {
+		this.operationBlankId = operationBlankId;
 	}
 
 	public void setCopy(Boolean copy) {

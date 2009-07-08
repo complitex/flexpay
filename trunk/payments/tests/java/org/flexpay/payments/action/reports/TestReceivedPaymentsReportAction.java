@@ -2,7 +2,7 @@ package org.flexpay.payments.action.reports;
 
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.persistence.filter.BeginDateFilter;
-import org.flexpay.payments.actions.reports.ReceivedPaymentsReportAction;
+import org.flexpay.payments.actions.reports.DayReceivedPaymentsReportAction;
 import org.flexpay.payments.test.PaymentsSpringBeanAwareTestCase;
 import static org.junit.Assert.assertEquals;
 import org.junit.Test;
@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class TestReceivedPaymentsReportAction extends PaymentsSpringBeanAwareTestCase  {
 
 	@Autowired
-	private ReceivedPaymentsReportAction action;
+	private DayReceivedPaymentsReportAction action;
 
 	@Test
 	public void testBuildPrintForm() throws Exception {

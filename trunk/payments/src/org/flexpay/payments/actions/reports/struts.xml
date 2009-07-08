@@ -6,8 +6,8 @@
 
 	<package name="reports" namespace="/payments" extends="payments">
 
-		<action name="receivedPaymentsReport" class="receivedPaymentsReportAction">
-			<result type="tiles">payments.report.received</result>
+		<action name="dayReceivedPaymentsReport" class="dayReceivedPaymentsReportAction">
+			<result type="tiles">payments.report.day.received</result>
 			<result name="file" type="redirect-action">
 				<param name="actionName">print</param>
 				<param name="namespace">/common</param>
@@ -16,8 +16,28 @@
 			</result>
 		</action>
 
-		<action name="returnedPaymentsReport" class="returnedPaymentsReportAction">
-			<result type="tiles">payments.report.returned</result>
+		<action name="dayReturnedPaymentsReport" class="dayReturnedPaymentsReportAction">
+			<result type="tiles">payments.report.day.returned</result>
+			<result name="file" type="redirect-action">
+				<param name="actionName">print</param>
+				<param name="namespace">/common</param>
+				<param name="parse">true</param>
+				<param name="file.id">${report.id}</param>
+			</result>
+		</action>
+
+		<action name="accReceivedPaymentsReport" class="accReceivedPaymentsReportAction">
+			<result type="tiles">payments.report.acc.received</result>
+			<result name="file" type="redirect-action">
+				<param name="actionName">print</param>
+				<param name="namespace">/common</param>
+				<param name="parse">true</param>
+				<param name="file.id">${report.id}</param>
+			</result>
+		</action>
+
+		<action name="accReturnedPaymentsReport" class="accReturnedPaymentsReportAction">
+			<result type="tiles">payments.report.acc.returned</result>
 			<result name="file" type="redirect-action">
 				<param name="actionName">print</param>
 				<param name="namespace">/common</param>

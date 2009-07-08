@@ -27,13 +27,13 @@ import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 /**
  * Provides functionality for creating report about payments performed in one day
  *
- * To specify what kind of payments should be included {@link org.flexpay.payments.actions.reports.PaymentsDayReportAction#getPaymentsData(java.util.Date, java.util.Date)}
+ * To specify what kind of payments should be included {@link DayPaymentsReportAction#getPaymentsData(java.util.Date, java.util.Date)}
  * method should be implemented
  *
- * To specify report JRXML template name {@link PaymentsDayReportAction#getReportName()}
+ * To specify report JRXML template name {@link DayPaymentsReportAction#getReportName()}
  * method should be implemented
  */
-public abstract class PaymentsDayReportAction extends CashboxCookieActionSupport {
+public abstract class DayPaymentsReportAction extends CashboxCookieActionSupport {
 
 	// form data
 	private BeginDateFilter beginDateFilter = new BeginDateFilter();
