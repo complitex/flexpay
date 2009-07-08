@@ -12,7 +12,9 @@ import org.junit.runners.Suite;
 		TestEircAccountService.class,
 		TestSpFileService.class,
 		TestQuittanceService.class,
-		TestQuittancePacketService.class
+		TestQuittancePacketService.class,
+		TestConsumerAttributeTypeService.class,
+		TestConsumerAttributes.class
 })
 public class AllTests {
 

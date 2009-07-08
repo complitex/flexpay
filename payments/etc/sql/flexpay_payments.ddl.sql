@@ -884,6 +884,7 @@
         long_value bigint comment 'Optional long value',
         string_value varchar(255) comment 'Optional string value',
         double_value double precision comment 'Optional double value',
+        decimal_value decimal(19,5) comment 'Optional decimal value',
         value_type integer not null comment 'Value type discriminator',
         addition_type_id bigint not null comment 'Addition type reference',
         document_id bigint not null comment 'Document reference',
@@ -977,6 +978,7 @@
         string_value varchar(255) comment 'Optional string value',
         double_value double precision comment 'Optional double value',
         value_type integer not null comment 'Value type discriminator',
+        decimal_value decimal(19,5) comment 'Optional decimal value',
         addition_type_id bigint not null comment 'Addition type reference',
         operation_id bigint not null comment 'Operation reference',
         primary key (id)

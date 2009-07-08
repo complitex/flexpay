@@ -282,3 +282,58 @@ select @ds_megabank:=@eirc_base + 1;
 -- add correction from Megabank's КП "ЖИЛКОМСЕРВИС"=1033
 insert into common_data_corrections_tbl (internal_object_id, external_object_id, object_type, data_source_description_id)
 	values (@service_provider_cn, '1033', @orgs_base + 0x003, @ds_megabank);
+
+-- Consumer attribute types
+insert into eirc_consumer_attribute_types_tbl (id, version, status, unique_code, is_temporal, discriminator, measure_unit_id)
+	values (1, 0, 0, null, 0, 'simple', null);
+select @cons_attr_type_erc_account:=1;
+insert into eirc_consumer_attribute_type_names_tbl (name, language_id, attribute_type_id)
+	values ('Счет ЕРЦ (Мегабанк)', @ru_id, @cons_attr_type_erc_account);
+
+insert into eirc_consumer_attribute_types_tbl (id, version, status, unique_code, is_temporal, discriminator, measure_unit_id)
+	values (2, 0, 0, null, 1, 'enum', null);
+select @cons_attr_type_checkbook_color:=2;
+insert into eirc_consumer_attribute_type_names_tbl (name, language_id, attribute_type_id)
+	values ('Цвет чековой книжки', @ru_id, @cons_attr_type_checkbook_color);
+insert into eirc_consumer_attribute_type_enum_values_tbl (value_type, string_value, order_value, attribute_type_enum_id)
+	values (4, 'Красный', 0, @cons_attr_type_checkbook_color);
+insert into eirc_consumer_attribute_type_enum_values_tbl (value_type, string_value, order_value, attribute_type_enum_id)
+	values (4, 'Оранжевый', 1, @cons_attr_type_checkbook_color);
+insert into eirc_consumer_attribute_type_enum_values_tbl (value_type, string_value, order_value, attribute_type_enum_id)
+	values (4, 'Желтый', 2, @cons_attr_type_checkbook_color);
+insert into eirc_consumer_attribute_type_enum_values_tbl (value_type, string_value, order_value, attribute_type_enum_id)
+	values (4, 'Зеленый', 3, @cons_attr_type_checkbook_color);
+insert into eirc_consumer_attribute_type_enum_values_tbl (value_type, string_value, order_value, attribute_type_enum_id)
+	values (4, 'Голубой', 4, @cons_attr_type_checkbook_color);
+insert into eirc_consumer_attribute_type_enum_values_tbl (value_type, string_value, order_value, attribute_type_enum_id)
+	values (4, 'Синий', 5, @cons_attr_type_checkbook_color);
+insert into eirc_consumer_attribute_type_enum_values_tbl (value_type, string_value, order_value, attribute_type_enum_id)
+	values (4, 'Фиолетовый', 6, @cons_attr_type_checkbook_color);
+
+insert into eirc_consumer_attribute_types_tbl (id, version, status, unique_code, is_temporal, discriminator, measure_unit_id)
+	values (3, 0, 0, null, 1, 'enum', null);
+select @cons_attr_type_rainbow_remainder:=3;
+insert into eirc_consumer_attribute_type_names_tbl (name, language_id, attribute_type_id)
+	values ('Цвета радуги', @ru_id, @cons_attr_type_rainbow_remainder);
+insert into eirc_consumer_attribute_type_enum_values_tbl (value_type, string_value, order_value, attribute_type_enum_id)
+	values (4, 'Каждый', 0, @cons_attr_type_rainbow_remainder);
+insert into eirc_consumer_attribute_type_enum_values_tbl (value_type, string_value, order_value, attribute_type_enum_id)
+	values (4, 'Охотник', 0, @cons_attr_type_rainbow_remainder);
+insert into eirc_consumer_attribute_type_enum_values_tbl (value_type, string_value, order_value, attribute_type_enum_id)
+	values (4, 'Желает', 1, @cons_attr_type_rainbow_remainder);
+insert into eirc_consumer_attribute_type_enum_values_tbl (value_type, string_value, order_value, attribute_type_enum_id)
+	values (4, 'Знать', 1, @cons_attr_type_rainbow_remainder);
+insert into eirc_consumer_attribute_type_enum_values_tbl (value_type, string_value, order_value, attribute_type_enum_id)
+	values (4, 'Где', 1, @cons_attr_type_rainbow_remainder);
+insert into eirc_consumer_attribute_type_enum_values_tbl (value_type, string_value, order_value, attribute_type_enum_id)
+	values (4, 'Сидит', 1, @cons_attr_type_rainbow_remainder);
+insert into eirc_consumer_attribute_type_enum_values_tbl (value_type, string_value, order_value, attribute_type_enum_id)
+	values (4, 'Фазан', 1, @cons_attr_type_rainbow_remainder);
+
+-- init consumer attributes
+insert into eirc_consumer_attributes_tbl (value_type, string_value, consumer_id, type_id, begin_date, end_date, temporal_flag)
+	values (4, '123141', @consumer_1_1, @cons_attr_type_erc_account, '1900-01-01', '2100-12-31', 0);
+insert into eirc_consumer_attributes_tbl (value_type, string_value, consumer_id, type_id, begin_date, end_date, temporal_flag)
+	values (4, 'Красный', @consumer_1_1, @cons_attr_type_checkbook_color, '1900-01-01', '2000-12-31', 1);
+insert into eirc_consumer_attributes_tbl (value_type, string_value, consumer_id, type_id, begin_date, end_date, temporal_flag)
+	values (4, 'Синий', @consumer_1_1, @cons_attr_type_checkbook_color, '2001-01-01', '2100-12-31', 1);

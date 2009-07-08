@@ -699,6 +699,24 @@
         primary key (id)
     ) comment='Banks';
 
+    create table orgs_cashbox_name_translations_tbl (
+        id bigint not null auto_increment comment 'Primary key',
+        version integer not null comment 'Optimistic lock version',
+        name varchar(255) not null comment 'Name',
+        language_id bigint not null comment 'Language reference',
+        cashbox_id bigint not null comment 'Cashbox reference',
+        primary key (id),
+        unique (language_id, cashbox_id)
+    );
+
+    create table orgs_cashboxes_tbl (
+        id bigint not null auto_increment comment 'Primary key',
+        version integer not null comment 'Optimistic lock version',
+        status integer not null comment 'Cashbox status',
+        payment_point_id bigint not null comment 'Payment point reference',
+        primary key (id)
+    ) comment='Cashboxes table';
+
     create table orgs_organization_descriptions_tbl (
         id bigint not null auto_increment,
         name varchar(255) not null comment 'Description value',
@@ -742,7 +760,6 @@
         version integer not null comment 'Optimistic lock version',
         status integer not null comment 'Enabled-disabled status',
         address varchar(255) not null comment 'Address',
-        email varchar(255) comment 'E-mail',
         tradingDayProcessInstance_Id bigint comment 'Trading date process instance id',
         collector_id bigint not null comment 'Payments collector reference',
         primary key (id)
@@ -761,6 +778,7 @@
         id bigint not null auto_increment,
         version integer not null comment 'Optimistic lock version',
         status integer not null comment 'Enabled/Disabled status',
+        email varchar(255) comment 'Collector email address',
         organization_id bigint not null comment 'Organization reference',
         primary key (id)
     ) comment='Payment collectors';
@@ -833,24 +851,6 @@
         primary key (id)
     ) comment='Organization subdivisions';
 
-    create table payments_cashbox_name_translations_tbl (
-        id bigint not null auto_increment comment 'Primary key',
-        version integer not null comment 'Optimistic lock version',
-        name varchar(255) not null comment 'Name',
-        language_id bigint not null comment 'Language reference',
-        cashbox_id bigint not null comment 'Cashbox reference',
-        primary key (id),
-        unique (language_id, cashbox_id)
-    );
-
-    create table payments_cashboxes_tbl (
-        id bigint not null auto_increment comment 'Primary key',
-        version integer not null comment 'Optimistic lock version',
-        status integer not null comment 'Cashbox status',
-        payment_point_id bigint not null comment 'Payment point reference',
-        primary key (id)
-    ) comment='Cashboxes table';
-
     create table payments_document_addition_type_translations_tbl (
         id bigint not null auto_increment comment 'Primary key',
         name varchar(255) not null comment 'Translation value',
@@ -875,6 +875,7 @@
         long_value bigint comment 'Optional long value',
         string_value varchar(255) comment 'Optional string value',
         double_value double precision comment 'Optional double value',
+        decimal_value decimal(19,5) comment 'Optional decimal value',
         value_type integer not null comment 'Value type discriminator',
         addition_type_id bigint not null comment 'Addition type reference',
         document_id bigint not null comment 'Document reference',
@@ -968,6 +969,7 @@
         string_value varchar(255) comment 'Optional string value',
         double_value double precision comment 'Optional double value',
         value_type integer not null comment 'Value type discriminator',
+        decimal_value decimal(19,5) comment 'Optional decimal value',
         addition_type_id bigint not null comment 'Addition type reference',
         operation_id bigint not null comment 'Operation reference',
         primary key (id)
@@ -1024,6 +1026,7 @@
     create table payments_operations_tbl (
         id bigint not null auto_increment comment 'Primary key',
         version integer not null comment 'Optimistic lock version',
+        uid bigint,
         operation_summ decimal(19,2) not null comment 'Operation summ',
         operation_input_summ decimal(19,2) comment 'Operation input summ',
         change_summ decimal(19,2) comment 'Change',
@@ -1671,6 +1674,24 @@
         foreign key (organization_id) 
         references orgs_organizations_tbl (id);
 
+    alter table orgs_cashbox_name_translations_tbl 
+        add index FK_orgs_cashbox_name_translation_cashbox (cashbox_id), 
+        add constraint FK_orgs_cashbox_name_translation_cashbox 
+        foreign key (cashbox_id) 
+        references orgs_cashboxes_tbl (id);
+
+    alter table orgs_cashbox_name_translations_tbl 
+        add index FK_orgs_cashbox_name_translation_language (language_id), 
+        add constraint FK_orgs_cashbox_name_translation_language 
+        foreign key (language_id) 
+        references common_languages_tbl (id);
+
+    alter table orgs_cashboxes_tbl 
+        add index FK_orgs_cashboxes_tbl_payment_point_id (payment_point_id), 
+        add constraint FK_orgs_cashboxes_tbl_payment_point_id 
+        foreign key (payment_point_id) 
+        references orgs_payment_points_tbl (id);
+
     alter table orgs_organization_descriptions_tbl 
         add index FK_orgs_organization_description_organization (organization_id), 
         add constraint FK_orgs_organization_description_organization 
@@ -1816,24 +1837,6 @@
         add constraint FK_eirc_subdivisions_tbl_juridical_person_id 
         foreign key (juridical_person_id) 
         references orgs_organizations_tbl (id);
-
-    alter table payments_cashbox_name_translations_tbl 
-        add index FK_payments_cashbox_name_translation_cashbox (cashbox_id), 
-        add constraint FK_payments_cashbox_name_translation_cashbox 
-        foreign key (cashbox_id) 
-        references payments_cashboxes_tbl (id);
-
-    alter table payments_cashbox_name_translations_tbl 
-        add index FK_payments_cashbox_name_translation_language (language_id), 
-        add constraint FK_payments_cashbox_name_translation_language 
-        foreign key (language_id) 
-        references common_languages_tbl (id);
-
-    alter table payments_cashboxes_tbl 
-        add index FK_payments_cashboxes_tbl_payment_point_id (payment_point_id), 
-        add constraint FK_payments_cashboxes_tbl_payment_point_id 
-        foreign key (payment_point_id) 
-        references orgs_payment_points_tbl (id);
 
     alter table payments_document_addition_type_translations_tbl 
         add index FK_payments_document_add_type_translations_tbl_type_id (type_id), 
@@ -1992,10 +1995,10 @@
         references common_languages_tbl (id);
 
     alter table payments_operations_tbl 
-        add index FK_payments_cashboxes_tbl_cashbox_id (cashbox_id), 
-        add constraint FK_payments_cashboxes_tbl_cashbox_id 
+        add index FK_orgs_cashboxes_tbl_cashbox_id (cashbox_id), 
+        add constraint FK_orgs_cashboxes_tbl_cashbox_id 
         foreign key (cashbox_id) 
-        references payments_cashboxes_tbl (id);
+        references orgs_cashboxes_tbl (id);
 
     alter table payments_operations_tbl 
         add index FK_payments_operations_tbl_payment_point_id (payment_point_id), 

@@ -76,6 +76,18 @@ public class DateUtil {
 	}
 
 	/**
+	 * Parse date in yyyy/MM/dd farmat, if parse fails - return default date
+	 *
+	 * @param date		String in yyyy/MM/dd format, possibly empty
+	 * @throws ParseException if parsing fails
+	 * @return Date
+	 */
+	@NotNull
+	public static Date parseDate(String date) throws ParseException {
+		return new SimpleDateFormat(FLEXPAY_DATE_FORMAT).parse(date);
+	}
+
+	/**
 	 * Format Date
 	 *
 	 * @param date Date to format

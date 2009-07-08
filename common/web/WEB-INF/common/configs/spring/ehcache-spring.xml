@@ -111,6 +111,12 @@
 		   overflowToDisk="true"
 		   memoryStoreEvictionPolicy="LRU" />
 
+	<cache name="eircConsumerAttributeTypesCache"
+		   maxElementsInMemory="50"
+		   eternal="true"
+		   overflowToDisk="true"
+		   memoryStoreEvictionPolicy="LRU" />
+
 	<cache name="tcFlexpayCache"
 		   maxElementsInMemory="500"
 		   eternal="true"

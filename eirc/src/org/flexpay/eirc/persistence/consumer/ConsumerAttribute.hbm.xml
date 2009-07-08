@@ -1,0 +1,85 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+		"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="org.flexpay.eirc.persistence.consumer">
+
+	<class name="ConsumerAttribute" table="eirc_consumer_attributes_tbl">
+		<comment>Consumer attribute types</comment>
+		<id name="id">
+			<column name="id" not-null="true">
+				<comment>Primary key</comment>
+			</column>
+			<generator class="native" />
+		</id>
+		<property name="dateValue">
+			<column name="date_value" not-null="false" sql-type="datetime">
+				<comment>Optional date value</comment>
+			</column>
+		</property>
+		<property name="intValue">
+			<column name="int_value" not-null="false">
+				<comment>Optional int value</comment>
+			</column>
+		</property>
+		<property name="boolValue">
+			<column name="bool_value" not-null="false">
+				<comment>Optional boolean value</comment>
+			</column>
+		</property>
+		<property name="longValue">
+			<column name="long_value" not-null="false">
+				<comment>Optional long value</comment>
+			</column>
+		</property>
+		<property name="stringValue">
+			<column name="string_value" not-null="false">
+				<comment>Optional string value</comment>
+			</column>
+		</property>
+		<property name="doubleValue">
+			<column name="double_value" not-null="false">
+				<comment>Optional double value</comment>
+			</column>
+		</property>
+		<property name="decimalValue">
+			<column name="decimal_value" not-null="false" scale="5">
+				<comment>Optional double value</comment>
+			</column>
+		</property>
+		<property name="valueType">
+			<column name="value_type" not-null="true">
+				<comment>Value type discriminator</comment>
+			</column>
+		</property>
+		<property name="begin" type="date">
+			<column name="begin_date">
+				<comment>Attribute value begin date</comment>
+			</column>
+		</property>
+		<property name="end" type="date">
+			<column name="end_date">
+				<comment>Attribute value end date</comment>
+			</column>
+		</property>
+		<property name="temporal">
+			<column name="temporal_flag" not-null="true">
+				<comment>Temporal attribute flag</comment>
+			</column>
+		</property>
+		<many-to-one name="consumer" class="org.flexpay.eirc.persistence.Consumer"
+					 foreign-key="FK_eirc_consumer_attributes_tbl_consumer_id">
+			<column name="consumer_id" not-null="true">
+				<comment>Consumer reference</comment>
+			</column>
+		</many-to-one>
+		<many-to-one name="type" class="ConsumerAttributeTypeBase"
+					 foreign-key="FK_eirc_consumer_attributes_tbl_type_id">
+			<column name="type_id" not-null="true">
+				<comment>Attribute type reference</comment>
+			</column>
+		</many-to-one>
+	</class>
+
+</hibernate-mapping>

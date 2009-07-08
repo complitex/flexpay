@@ -1,8 +1,6 @@
 package org.flexpay.common.exception;
 
 import org.flexpay.common.util.DateUtil;
-import org.jetbrains.annotations.Nls;
-import org.jetbrains.annotations.NonNls;
 import org.slf4j.Logger;
 
 import java.util.Date;
@@ -26,7 +24,7 @@ public class FlexPayException extends Exception {
 	 *
 	 * @param message the detail message
 	 */
-	public FlexPayException(@NonNls String message) {
+	public FlexPayException(String message) {
 		super(message);
 	}
 
@@ -37,7 +35,7 @@ public class FlexPayException extends Exception {
 	 * @param errorKey localization error message key
 	 * @param params   optional localization error message parameters
 	 */
-	public FlexPayException(@NonNls String message, String errorKey, Object... params) {
+	public FlexPayException(String message, String errorKey, Object... params) {
 		super(message);
 		this.errorKey = errorKey;
 		this.params = convert(params);
@@ -51,7 +49,7 @@ public class FlexPayException extends Exception {
 	 * @param errorKey localization error message key
 	 * @param params   optional localization error message parameters
 	 */
-	public FlexPayException(@NonNls String message, Throwable cause, String errorKey, Object... params) {
+	public FlexPayException(String message, Throwable cause, String errorKey, Object... params) {
 		super(message, cause);
 		this.errorKey = errorKey;
 		this.params = convert(params);
@@ -81,18 +79,8 @@ public class FlexPayException extends Exception {
 	 *
 	 * @return Value for property 'errorKey'.
 	 */
-	@Nls
 	public String getErrorKey() {
 		return errorKey;
-	}
-
-	/**
-	 * Setter for property 'errorKey'.
-	 *
-	 * @param errorKey Value to set for property 'errorKey'.
-	 */
-	public void setErrorKey(@Nls String errorKey) {
-		this.errorKey = errorKey;
 	}
 
 	/**
@@ -102,15 +90,6 @@ public class FlexPayException extends Exception {
 	 */
 	public String[] getParams() {
 		return params;
-	}
-
-	/**
-	 * Setter for property 'params'.
-	 *
-	 * @param params Value to set for property 'params'.
-	 */
-	public void setParams(String[] params) {
-		this.params = params;
 	}
 
 	/**
@@ -137,7 +116,7 @@ public class FlexPayException extends Exception {
 		}
 	}
 
-	public void debug(Logger log, String format, Object ... params) {
+	public void debug(Logger log, String format, Object... params) {
 		if (log.isDebugEnabled()) {
 			log.debug(getMessage(), this);
 			log.debug(format, params);
@@ -150,14 +129,14 @@ public class FlexPayException extends Exception {
 		}
 	}
 
-	public void info(Logger log, String format, Object ... params) {
+	public void info(Logger log, String format, Object... params) {
 		if (log.isInfoEnabled()) {
 			log.info(getMessage(), this);
 			log.info(format, params);
 		}
 	}
 
-	public void error(Logger log, String format, Object ... params) {
+	public void error(Logger log, String format, Object... params) {
 		log.error(getMessage(), this);
 		log.error(format, params);
 	}

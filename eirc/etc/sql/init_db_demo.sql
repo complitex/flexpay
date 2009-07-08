@@ -398,7 +398,7 @@ insert into eirc_consumer_infos_tbl ( status, first_name, middle_name, last_name
             'Харьков', 'пер.', 'Аптекарский', '9', 'ч. 1', '62');
 select @consumer_info_goncharova:=last_insert_id();
 
-INSERT INTO eirc_eirc_accounts_tbl (version, status, apartment_id, person_id, account_number, consumer_info_id, consumer_info_id)
+INSERT INTO eirc_eirc_accounts_tbl (version, status, apartment_id, person_id, account_number, consumer_info_id)
 	VALUES ( 0, 0, @apartment_id, @person_id_goncharova, '09000164041', @consumer_info_goncharova);
 SELECT @account_id_goncharova:=last_insert_id();
 

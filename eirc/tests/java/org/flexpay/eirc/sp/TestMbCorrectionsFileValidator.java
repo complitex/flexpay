@@ -16,7 +16,7 @@ public class TestMbCorrectionsFileValidator extends TestSpFileCreateAction {
 
 	@Test
 	public void validateFile() throws Throwable {
-		FPFile newFile = createSpFile("org/flexpay/eirc/sp/20090605m.ls");
+		FPFile newFile = createSpFile("org/flexpay/eirc/sp/20090605m_10k.ls");
 //		FPFile newFile = createSpFile("org/flexpay/eirc/sp/01033_122008.kor");
 		try {
 			assertTrue("Validation failed", validator.validate(newFile));

@@ -60,7 +60,6 @@ public abstract class BuildingAttributeType extends DomainObjectWithStatus {
 		return translations;
 	}
 
-	@SuppressWarnings ({"UnusedDeclaration"})
 	private void setTranslations(Set<BuildingAttributeTypeName> translations) {
 		this.translations = translations;
 	}
