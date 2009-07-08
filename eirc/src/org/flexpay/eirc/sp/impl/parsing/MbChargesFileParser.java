@@ -180,7 +180,7 @@ public class MbChargesFileParser extends MbFileParser {
 		container.setData("100:" + // container type (BASE container) (1)
 						  ":" + // subservice code (2)
 						  parts[2] + ":" + // incoming balance (3)
-						  new BigDecimal(parts[3]).add(recalculation) + ":" + // outgoing balance (4)
+						  parts[3] + ":" + // outgoing balance (4)
 						  parts[4] + ":" + // expense (5)
 						  parts[5] + ":" + // tariff (6)
 						  parts[6] + ":" + // charges (7)
@@ -201,7 +201,8 @@ public class MbChargesFileParser extends MbFileParser {
 		return new BigDecimal(fields[1]).divide(new BigDecimal("100"));
 	}
 
-	private BigDecimal incomingBalance(String[] fields) {
+	private BigDecimal outgoingBalance(String[] fields) {
+		// Doc and protocol mismatch, in doc - incoming balance, actually - outgoing
 		return new BigDecimal(fields[2]).divide(new BigDecimal("100"));
 	}
 
@@ -223,16 +224,16 @@ public class MbChargesFileParser extends MbFileParser {
 
 		record.setRecordStatus(statusLoaded);
 		BigDecimal charges = charges(fields);
-		BigDecimal incomingBalance = incomingBalance(fields);
-		record.setAmount(incomingBalance);
+		BigDecimal outgoingBalance = outgoingBalance(fields);
+		record.setAmount(outgoingBalance);
 		setServiceCode(record, mbServiceTypeCode(fields));
 		record.setPersonalAccountExt(accountNumberExt(fields));
 
 		RegistryRecordContainer container = new RegistryRecordContainer();
 		container.setData("100:" + // container type (BASE container) (1)
 						  ":" + // subservice code (2)
-						  incomingBalance.toString() + ":" + // incoming balance (3)
-						  incomingBalance.add(charges).toString() + ":" + // outgoing balance (4)
+						  "0.00" + ":" + // incoming balance (3)
+						  outgoingBalance.toString() + ":" + // outgoing balance (4)
 						  ":" + // expense (5)
 						  ":" + // tariff (6)
 						  charges.toString() + ":" + // charges (7)
