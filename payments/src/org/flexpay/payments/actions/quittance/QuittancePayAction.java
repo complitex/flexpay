@@ -17,56 +17,77 @@ public class QuittancePayAction extends PaymentOperationAction {
 
 	private static final String TRADING_DAY_CLOSED = "tradingDayClosed"; // tiles result name
 
-	private Operation operation = new Operation();
+	private Long operationBlankId;
 
 	// required services
-	private OperationService operationService;
-
 	private ProcessManager processManager;
-
+	private OperationService operationService;
 	private PaymentPointService paymentPointService;
+
 	@NotNull
 	protected String doExecute() throws Exception {
 
+		Operation operation = operationService.read(new Stub<Operation>(operationBlankId));
+		
+		Cashbox cashbox = getCashbox();
+		final Long paymentProcessId = getPaymentProcessId(cashbox);
+
+		if (paymentProcessId == null || paymentProcessId == 0) {
+			log.debug("TradingDay process id not found for Payment point id = {}", cashbox.getPaymentPoint().getId());
+
+			fillOperation(operation, cashbox);
+			if (isNotEmptyOperation(operation)) {
+				operationService.save(operation);
+			} else {
+				log.debug("Zero summ for operation or zero documents for operation created. Operation was not created");
+			}
+
+			return REDIRECT_SUCCESS;
+
+		} else {
+			log.debug("Found process id {} for cashbox {}", new Object[]{paymentProcessId, cashboxId});
+
+			if (!TradingDay.isOpened(processManager, paymentProcessId, log)) {
+				return TRADING_DAY_CLOSED;
+			}
+
+			fillOperation(operation, cashbox);
+			if (isNotEmptyOperation(operation)) {
+				operationService.save(operation);
+			} else {
+				log.debug("Zero summ for operation or zero documents for operation created. Operation was not created");
+			}
+
+			return REDIRECT_SUCCESS;
+		}
+	}
+
+	private Long getPaymentProcessId(Cashbox cashbox) {
+		PaymentPoint paymentPoint = cashbox.getPaymentPoint();
+		paymentPoint = paymentPointService.read(new Stub<PaymentPoint>(paymentPoint));
+		return paymentPoint.getTradingDayProcessInstanceId();
+	}
+
+	private Cashbox getCashbox() {
 		Cashbox cashbox = cashboxService.read(new Stub<Cashbox>(cashboxId));
 		log.debug("Found cashbox {}", cashbox);
 		if (cashbox == null) {
 			throw new IllegalArgumentException("Invalid cashbox id: " + cashboxId);
 		}
-		PaymentPoint paymentPoint = cashbox.getPaymentPoint();
-		paymentPoint = paymentPointService.read(new Stub<PaymentPoint>(paymentPoint));
-		final Long paymentProcessId = paymentPoint.getTradingDayProcessInstanceId();
-		//@TODO reformat if then else shit
-		if (paymentProcessId != null && paymentProcessId != 0) {
-			log.debug("Found process id {} for cashbox {}", new Object[]{paymentProcessId, cashboxId});
-			if (TradingDay.isOpened(processManager, paymentProcessId, log)) {
-				operation = createOperation(cashbox);
-				if (BigDecimalUtil.isZero(operation.getOperationSumm()) || operation.getDocuments() == null || operation.getDocuments().size() == 0) {
-					log.debug("Zero summ for operation or zero documents for operation created. Operation was not created");
-				} else {
-					operationService.save(operation);
-				}
-				return REDIRECT_SUCCESS;
-			} else {
-				return TRADING_DAY_CLOSED;
-			}
-		} else {
-			if (log.isDebugEnabled()) {
-				log.debug("TradingDay process id not found for Payment point id = {}", cashbox.getPaymentPoint().getId());
-			}
-		}
-		operation = createOperation(cashbox);
-		if (BigDecimalUtil.isZero(operation.getOperationSumm()) || operation.getDocuments() == null || operation.getDocuments().size() == 0) {
-			log.debug("Zero summ for operation or zero documents for operation created. Operation was not created");
-		} else {
-			operationService.save(operation);
-		}
-		return REDIRECT_SUCCESS;
+		return cashbox;
+	}
+
+	private boolean isNotEmptyOperation(Operation operation) {
+		return !BigDecimalUtil.isZero(operation.getOperationSumm()) && operation.getDocuments() != null && operation.getDocuments().size() > 0;
 	}
 
 	@NotNull
 	protected String getErrorResult() {
 		return SUCCESS;
+	}
+
+	public void setOperationBlankId(Long operationBlankId) {
+		this.operationBlankId = operationBlankId;
 	}
 
 	@Required

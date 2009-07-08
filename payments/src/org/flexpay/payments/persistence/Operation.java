@@ -22,8 +22,6 @@ import java.util.Set;
  */
 public class Operation extends DomainObject {
 
-	private Long uid;
-
 	private BigDecimal operationSumm;
 	private BigDecimal operationInputSumm;
 	private BigDecimal change;
@@ -129,7 +127,7 @@ public class Operation extends DomainObject {
 		return creatorOrganization;
 	}
 
-	public void setCreatorOrganization(@NotNull Organization creatorOrganization) {
+	public void setCreatorOrganization(Organization creatorOrganization) {
 		this.creatorOrganization = creatorOrganization;
 	}
 
@@ -217,14 +215,6 @@ public class Operation extends DomainObject {
 
 	public void setAddress(String address) {
 		this.address = address;
-	}
-
-	public Long getUid() {
-		return uid;
-	}
-
-	public void setUid(Long uid) {
-		this.uid = uid;
 	}
 
 	public String getPayerFIO() {

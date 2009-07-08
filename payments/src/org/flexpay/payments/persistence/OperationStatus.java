@@ -12,6 +12,7 @@ public class OperationStatus extends DomainObject {
 	public static final int DELETED = 3;
 	public static final int RETURNED = 4;
 	public static final int ERROR = 5;
+	public static final int BLANK = 6;
 
 	private int code;
 	private Set<OperationStatusTranslation> translations = Collections.emptySet();

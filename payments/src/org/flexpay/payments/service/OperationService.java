@@ -2,6 +2,7 @@ package org.flexpay.payments.service;
 
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.orgs.persistence.PaymentPoint;
 import org.flexpay.orgs.persistence.Cashbox;
@@ -173,4 +174,11 @@ public interface OperationService {
 	 */
 	@Secured (Roles.OPERATION_READ)
 	List<Operation> searchOperations(Cashbox cashbox, Date begin, Date end, BigDecimal minimalSumm, BigDecimal maximalSumm, Page<Operation> pager);
+
+	/**
+	 * Creates new operation with no data and BLANK state
+	 * @return new operation instance
+	 */
+	@Secured(Roles.OPERATION_ADD)
+	Operation createBlankOperation() throws FlexPayException;
 }

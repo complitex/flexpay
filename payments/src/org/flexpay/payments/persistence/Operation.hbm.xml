@@ -18,11 +18,8 @@
 				<comment>Optimistic lock version</comment>
 			</column>
 		</version>
-		<property name="uid">
-			<column name="uid"/>
-		</property>
 		<property name="operationSumm">
-			<column name="operation_summ" not-null="true" scale="2">
+			<column name="operation_summ" not-null="false" scale="2">
 				<comment>Operation summ</comment>
 			</column>
 		</property>
@@ -37,12 +34,12 @@
 			</column>
 		</property>
 		<property name="creatorUserName">
-			<column name="creator" not-null="true">
+			<column name="creator" not-null="false">
 				<comment>Creator username</comment>
 			</column>
 		</property>
 		<property name="creationDate" type="timestamp">
-			<column name="creation_date" not-null="true">
+			<column name="creation_date" not-null="false">
 				<comment>Creation date</comment>
 			</column>
 		</property>
@@ -87,14 +84,14 @@
 		<many-to-one name="creatorOrganization"
 					 class="org.flexpay.orgs.persistence.Organization"
 					 foreign-key="FK_payments_operations_tbl_creator_organization_id">
-			<column name="creator_organization_id" not-null="true">
+			<column name="creator_organization_id" not-null="false">
 				<comment>Organization operation created in</comment>
 			</column>
 		</many-to-one>
 		<many-to-one name="paymentPoint"
 					 class="org.flexpay.orgs.persistence.PaymentPoint"
 					 foreign-key="FK_payments_operations_tbl_payment_point_id">
-			<column name="payment_point_id" not-null="true">
+			<column name="payment_point_id" not-null="false">
 				<comment>Payment point operation created in</comment>
 			</column>
 		</many-to-one>

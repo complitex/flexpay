@@ -37,6 +37,9 @@
 
 	<bean id="operationService"
 		  class="org.flexpay.payments.service.impl.OperationServiceImpl"
+		  p:operationLevelService-ref="operationLevelService"
+		  p:operationStatusService-ref="operationStatusService"
+		  p:operationTypeService-ref="operationTypeService"
 		  p:operationDao-ref="operationDao"
 		  p:operationDaoExt-ref="operationDaoExt" />
 
