@@ -27,6 +27,7 @@
 		  p:personService-ref="personService"
 		  p:operationService-ref="operationService"
 		  p:crumbNameKey="payments.crumbs.search_quittances"
+          p:cashboxService-ref="cashboxService"
 		  scope="prototype" />
 
 	<bean id="paymentsQuittancePayAction"
