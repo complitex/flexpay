@@ -72,14 +72,24 @@
 	</definition>
 
 	<!-- reports-related definitions -->
-	<definition name="payments.report.received" extends="ab.layout.standart">
+	<definition name="payments.report.day.received" extends="ab.layout.standart">
 		<put-attribute name="title" value="payments.reports.received.title"/>
-		<put-attribute name="body" value="/WEB-INF/jsp/payments/reports/received_payments_report.jsp"/>
+		<put-attribute name="body" value="/WEB-INF/jsp/payments/reports/day_received_payments_report.jsp"/>
 	</definition>
 
-	<definition name="payments.report.returned" extends="ab.layout.standart">
+	<definition name="payments.report.day.returned" extends="ab.layout.standart">
 		<put-attribute name="title" value="payments.reports.returned.title"/>
-		<put-attribute name="body" value="/WEB-INF/jsp/payments/reports/returned_payments_report.jsp"/>
+		<put-attribute name="body" value="/WEB-INF/jsp/payments/reports/day_returned_payments_report.jsp"/>
+	</definition>
+
+	<definition name="payments.report.acc.received" extends="ab.layout.standart">
+		<put-attribute name="title" value="payments.reports.received.title"/>
+		<put-attribute name="body" value="/WEB-INF/jsp/payments/reports/acc_received_payments_report.jsp"/>
+	</definition>
+
+	<definition name="payments.report.acc.returned" extends="ab.layout.standart">
+		<put-attribute name="title" value="payments.reports.returned.title"/>
+		<put-attribute name="body" value="/WEB-INF/jsp/payments/reports/acc_returned_payments_report.jsp"/>
 	</definition>
 
 	<definition name="payments.report.importPaymentsReport" extends="ab.layout.standart">

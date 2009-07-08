@@ -1,7 +1,7 @@
 package org.flexpay.payments.action;
 
 import org.flexpay.payments.test.PaymentsSpringBeanAwareTestCase;
-import org.flexpay.payments.actions.reports.ReceivedPaymentsReportAction;
+import org.flexpay.payments.actions.reports.DayReceivedPaymentsReportAction;
 import org.springframework.beans.factory.annotation.Autowired;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -11,7 +11,7 @@ import org.junit.Test;
 public class TestRecievedPaymentsReportAction extends PaymentsSpringBeanAwareTestCase {
 
 	@Autowired
-	private ReceivedPaymentsReportAction action;
+	private DayReceivedPaymentsReportAction action;
 
 	@Test
 	public void testBuildReport() throws Exception {

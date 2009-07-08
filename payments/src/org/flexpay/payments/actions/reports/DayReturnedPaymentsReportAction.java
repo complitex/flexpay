@@ -4,7 +4,7 @@ import org.flexpay.payments.reports.payments.PaymentsPrintInfoData;
 
 import java.util.Date;
 
-public class ReturnedPaymentsReportAction extends PaymentsDayReportAction {
+public class DayReturnedPaymentsReportAction extends DayPaymentsReportAction {
 
 	private static final String RETURNED_PAYMENTS_REPORT_NAME = "ReturnedPayments";
 	private static final String RETURNED_PAYMENTS_SHORT_REPORT_NAME = "ReturnedPayments_short";
