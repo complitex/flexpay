@@ -274,15 +274,15 @@
     </bean>
 
 	<!--level 3 -->
-	<bean name="payments.reports.reports" parent="payments.reports"
-          p:name="payments.reports2"
-          p:title="payments.menu3.reports"
-          p:action="emptyPage"
-          p:parent-ref="payments.reports">
-        <property name="userRole">
-            <util:constant static-field="org.flexpay.payments.service.Roles.ROLE_MENU_PAYMENTS_REPORTS" />
-        </property>
-    </bean>
+	<!--<bean name="payments.reports.reports" parent="payments.reports"-->
+          <!--p:name="payments.reports2"-->
+          <!--p:title="payments.menu3.reports"-->
+          <!--p:action="emptyPage"-->
+          <!--p:parent-ref="payments.reports">-->
+        <!--<property name="userRole">-->
+            <!--<util:constant static-field="org.flexpay.payments.service.Roles.ROLE_MENU_PAYMENTS_REPORTS" />-->
+        <!--</property>-->
+    <!--</bean>-->
 
 	<bean name="payments.dictionaries.payment_points" parent="payments.dictionaries"
           p:name="payments.dictionaries.payment_points"
