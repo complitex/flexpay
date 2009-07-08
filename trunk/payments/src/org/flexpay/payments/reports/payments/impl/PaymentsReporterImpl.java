@@ -112,7 +112,7 @@ public class PaymentsReporterImpl implements PaymentsReporter {
 		PaymentPoint paymentPoint = paymentPointService.read(op.getPaymentPointStub());
 
 		PaymentPrintForm form = new PaymentPrintForm();
-		form.setQuittanceNumber(String.valueOf(op.getUid())); // FIXME
+		form.setQuittanceNumber(op.getId().toString());
 		form.setOperationDate(op.getCreationDate());
 		form.setOrganizationName(org.getName());
 		form.setPaymentPointStub(op.getPaymentPointStub());

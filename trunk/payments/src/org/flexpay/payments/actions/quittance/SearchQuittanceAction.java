@@ -11,11 +11,13 @@ import org.flexpay.orgs.persistence.ServiceProvider;
 import org.flexpay.orgs.service.ServiceProviderService;
 import org.flexpay.payments.actions.CashboxCookieActionSupport;
 import org.flexpay.payments.persistence.Service;
+import org.flexpay.payments.persistence.Operation;
 import org.flexpay.payments.persistence.quittance.QuittanceDetailsRequest;
 import org.flexpay.payments.persistence.quittance.QuittanceDetailsResponse;
 import static org.flexpay.payments.persistence.quittance.QuittanceDetailsResponse.*;
 import org.flexpay.payments.service.QuittanceDetailsFinder;
 import org.flexpay.payments.service.SPService;
+import org.flexpay.payments.service.OperationService;
 import org.flexpay.payments.util.ServiceFullIndexUtil;
 import org.flexpay.payments.util.config.ApplicationConfig;
 import org.jetbrains.annotations.NotNull;
@@ -34,12 +36,13 @@ public class SearchQuittanceAction extends CashboxCookieActionSupport {
 	private String searchType;
 	private String searchCriteria;
 	private QuittanceDetailsResponse.QuittanceInfo[] quittanceInfos;
-	private ApartmentService apartmentService;
-	private PersonService personService;
-
 	private String actionName;
+	private Long operationBlankId;
 
 	// required services
+	private OperationService operationService;
+	private ApartmentService apartmentService;
+	private PersonService personService;
 	private QuittanceDetailsFinder quittanceDetailsFinder;
 	private SPService spService;
 	private ServiceProviderService serviceProviderService;
@@ -54,6 +57,10 @@ public class SearchQuittanceAction extends CashboxCookieActionSupport {
 			quittanceInfos = response.getInfos();
 			filterSubservices();
 			filterNegativeSumms();
+
+			// creating blank operation
+			Operation newOperationBlank = operationService.createBlankOperation();
+			operationBlankId = newOperationBlank.getId();
 		} else {
 			addActionError(getErrorMessage(response.getErrorCode()));
 		}
@@ -262,8 +269,11 @@ public class SearchQuittanceAction extends CashboxCookieActionSupport {
 		this.actionName = actionName;
 	}
 
-	// required services
+	public Long getOperationBlankId() {
+		return operationBlankId;
+	}
 
+	// required services
 	@Required
 	public void setQuittanceDetailsFinder(QuittanceDetailsFinder quittanceDetailsFinder) {
 		this.quittanceDetailsFinder = quittanceDetailsFinder;
@@ -289,4 +299,8 @@ public class SearchQuittanceAction extends CashboxCookieActionSupport {
 		this.personService = personService;
 	}
 
+	@Required
+	public void setOperationService(OperationService operationService) {
+		this.operationService = operationService;
+	}
 }

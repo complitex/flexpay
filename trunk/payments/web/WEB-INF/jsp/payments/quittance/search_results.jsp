@@ -94,6 +94,7 @@
 				<s:hidden name="actionName" value="%{actionName}"/>
 				<s:hidden name="apartmentId" value="%{apartmentId}"/>
                 <s:hidden name="submitted" value="true" />
+				<s:hidden name="operationBlankId" value="%{operationBlankId}" />
 			</tr>
 
 		</table>

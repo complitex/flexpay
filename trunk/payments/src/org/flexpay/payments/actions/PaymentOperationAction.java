@@ -29,8 +29,6 @@ import java.util.ArrayList;
 
 public abstract class PaymentOperationAction extends CashboxCookieActionSupport {
 
-	private static final String OPERATION_UID_SESSION_ATTRIBUTE = "operationUid";
-
 	private String actionName;
 
 	// form data
@@ -66,47 +64,42 @@ public abstract class PaymentOperationAction extends CashboxCookieActionSupport 
 
 	protected Operation createOperation(Cashbox cashbox) throws FlexPayException {
 
-		Operation op = buildOperation(cashbox);
-		op.setUid((Long) session.get(OPERATION_UID_SESSION_ATTRIBUTE));
-		session.remove(OPERATION_UID_SESSION_ATTRIBUTE);
+		Operation op = new Operation();
+		fillOperation(op, cashbox);
+		return op;
+	}
+
+	protected void fillOperation(Operation operation, Cashbox cashbox) throws FlexPayException {
+
+		Organization organization = cashbox.getPaymentPoint().getCollector().getOrganization();
+		operation.setOperationSumm(totalToPay);
+		operation.setOperationInputSumm(inputSumm);
+		operation.setChange(changeSumm);
+		operation.setCreationDate(new Date());
+		operation.setRegisterDate(new Date());
+		operation.setCreatorOrganization(organization);
+		operation.setPaymentPoint(cashbox.getPaymentPoint());
+		operation.setCashbox(cashbox);
+		operation.setRegisterOrganization(organization);
+		operation.setCreatorUserName(SecurityUtil.getUserName());
+		operation.setRegisterUserName(SecurityUtil.getUserName());
+		operation.setOperationStatus(operationStatusService.read(OperationStatus.REGISTERED));
+		operation.setOperationLevel(operationLevelService.read(OperationLevel.AVERAGE));
+		operation.setOperationType(operationTypeService.read(OperationType.SERVICE_CASH_PAYMENT));
 
 		for (String serviceIndex : payments.keySet()) {
 
 			Document document = buildDocument(serviceIndex, cashbox);
 
-			if (StringUtils.isEmpty(op.getAddress())) {
-				op.setAddress(document.getAddress());
-				op.setPayerFIO(StringUtils.stripToEmpty(document.getPayerFIO()));
+			if (StringUtils.isEmpty(operation.getAddress())) {
+				operation.setAddress(document.getAddress());
+				operation.setPayerFIO(StringUtils.stripToEmpty(document.getPayerFIO()));
 			}
 
 			if (!BigDecimalUtil.isZero(document.getSumm())) {
-				op.addDocument(document);
+				operation.addDocument(document);
 			}
 		}
-
-		return op;
-	}
-
-	private Operation buildOperation(Cashbox cashbox) throws FlexPayException {
-
-		Organization organization = cashbox.getPaymentPoint().getCollector().getOrganization();
-
-		Operation op = new Operation();
-		op.setOperationSumm(totalToPay);
-		op.setOperationInputSumm(inputSumm);
-		op.setChange(changeSumm);
-		op.setCreationDate(new Date());
-		op.setRegisterDate(new Date());
-		op.setCreatorOrganization(organization);
-		op.setPaymentPoint(cashbox.getPaymentPoint());
-		op.setCashbox(cashbox);
-		op.setRegisterOrganization(organization);
-		op.setCreatorUserName(SecurityUtil.getUserName());
-		op.setRegisterUserName(SecurityUtil.getUserName());
-		op.setOperationStatus(operationStatusService.read(OperationStatus.REGISTERED));
-		op.setOperationLevel(operationLevelService.read(OperationLevel.AVERAGE));
-		op.setOperationType(operationTypeService.read(OperationType.SERVICE_CASH_PAYMENT));
-		return op;
 	}
 
 	private Document buildDocument(String serviceFullIndex, Cashbox cashbox) throws FlexPayException {

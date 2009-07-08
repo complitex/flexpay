@@ -2,6 +2,7 @@ package org.flexpay.payments.service.impl;
 
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.orgs.persistence.PaymentPoint;
 import org.flexpay.orgs.persistence.Cashbox;
@@ -9,7 +10,12 @@ import org.flexpay.payments.dao.OperationDao;
 import org.flexpay.payments.dao.OperationDaoExt;
 import org.flexpay.payments.persistence.Operation;
 import org.flexpay.payments.persistence.OperationStatus;
+import org.flexpay.payments.persistence.OperationLevel;
+import org.flexpay.payments.persistence.OperationType;
 import org.flexpay.payments.service.OperationService;
+import org.flexpay.payments.service.OperationStatusService;
+import org.flexpay.payments.service.OperationLevelService;
+import org.flexpay.payments.service.OperationTypeService;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
@@ -25,6 +31,10 @@ import java.util.List;
 public class OperationServiceImpl implements OperationService {
 
 	private Logger log = LoggerFactory.getLogger(getClass());
+
+	private OperationStatusService operationStatusService;
+	private OperationLevelService operationLevelService;
+	private OperationTypeService operationTypeService;
 
 	private OperationDao operationDao;
 	private OperationDaoExt operationDaoExt;
@@ -118,6 +128,18 @@ public class OperationServiceImpl implements OperationService {
 		return operationDaoExt.searchOperations(cashbox, begin, end, minimalSumm, maximalSumm, pager);
 	}
 
+	@Transactional (readOnly = false)
+	public Operation createBlankOperation() throws FlexPayException {
+
+		Operation operation = new Operation();
+		operation.setOperationStatus(operationStatusService.read(OperationStatus.BLANK));
+		operation.setOperationType(operationTypeService.read(OperationType.SERVICE_CASH_PAYMENT));
+		operation.setOperationLevel(operationLevelService.read(OperationLevel.AVERAGE));
+		operationDao.create(operation);
+
+		return operation;
+	}
+
 	@Required
 	public void setOperationDao(OperationDao operationDao) {
 		this.operationDao = operationDao;
@@ -128,4 +150,18 @@ public class OperationServiceImpl implements OperationService {
 		this.operationDaoExt = operationDaoExt;
 	}
 
+	@Required
+	public void setOperationStatusService(OperationStatusService operationStatusService) {
+		this.operationStatusService = operationStatusService;
+	}
+
+	@Required
+	public void setOperationLevelService(OperationLevelService operationLevelService) {
+		this.operationLevelService = operationLevelService;
+	}
+
+	@Required
+	public void setOperationTypeService(OperationTypeService operationTypeService) {
+		this.operationTypeService = operationTypeService;
+	}
 }

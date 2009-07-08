@@ -141,6 +141,13 @@ insert into payments_operation_status_translations_tbl(name, language_id, status
 	values ('Ошибка проводки', @ru_id, @operation_status_5);
 insert into payments_operation_status_translations_tbl(name, language_id, status_id)
 	values ('Error', @en_id, @operation_status_5);
+insert into payments_operation_statuses_tbl (id, version, code)
+	values (6, 0, 6);
+select @operation_status_6:=6;
+insert into payments_operation_status_translations_tbl(name, language_id, status_id)
+	values ('Бланк операции', @ru_id, @operation_status_6);
+insert into payments_operation_status_translations_tbl(name, language_id, status_id)
+	values ('Blank', @en_id, @operation_status_6);
 
 -- init operation types
 insert into payments_operation_types_tbl (id, version, code)
