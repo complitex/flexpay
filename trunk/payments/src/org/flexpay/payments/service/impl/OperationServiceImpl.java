@@ -134,7 +134,7 @@ public class OperationServiceImpl implements OperationService {
 	 *
 	 * @return new operation instance
 	 */
-	public Operation createBlankOperation(BigDecimal operationSumm, String creator, Organization creatorOrganization, PaymentPoint paymentPoint, CacheBox casheBox) throws FlexPayException {
+	public Operation createBlankOperation(BigDecimal operationSumm, String creator, Organization creatorOrganization, PaymentPoint paymentPoint, Cashbox cashBox) throws FlexPayException {
 		Operation operation = new Operation();
 		operation.setOperationStatus(operationStatusService.read(OperationStatus.BLANK));
 		operation.setOperationType(operationTypeService.read(OperationType.SERVICE_CASH_PAYMENT));
@@ -144,7 +144,7 @@ public class OperationServiceImpl implements OperationService {
 		operation.setCreatorUserName(creator);
 		operation.setCreatorOrganization(creatorOrganization);
 		operation.setPaymentPoint(paymentPoint);
-		operation.setCashbox(casheBox);
+		operation.setCashbox(cashBox);
 		operationDao.create(operation);
 
 		return operation;
