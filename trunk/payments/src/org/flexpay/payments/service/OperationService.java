@@ -180,5 +180,5 @@ public interface OperationService {
 	 * @return new operation instance
 	 */
 	@Secured(Roles.OPERATION_ADD)
-	Operation createBlankOperation(BigDecimal operationSumm, String creator, Organization creatorOrganization, PaymentPoint paymentPoint) throws FlexPayException;
+	Operation createBlankOperation(BigDecimal operationSumm, String creator, Organization creatorOrganization, PaymentPoint paymentPoint, CacheBox casheBox) throws FlexPayException;
 }

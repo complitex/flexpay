@@ -67,7 +67,7 @@ public class SearchQuittanceAction extends CashboxCookieActionSupport {
 			// creating blank operation
 			Cashbox cashbox = getCashbox();
 			Organization organization = cashbox.getPaymentPoint().getCollector().getOrganization();
-			Operation newOperationBlank = operationService.createBlankOperation(BigDecimal.valueOf(0), SecurityUtil.getUserName(), organization, cashbox.getPaymentPoint() );
+			Operation newOperationBlank = operationService.createBlankOperation(BigDecimal.valueOf(0), SecurityUtil.getUserName(), organization, cashbox.getPaymentPoint(), cashbox );
 			operationBlankId = newOperationBlank.getId();
 		} else {
 			addActionError(getErrorMessage(response.getErrorCode()));
