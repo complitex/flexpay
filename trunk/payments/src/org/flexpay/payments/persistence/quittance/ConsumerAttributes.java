@@ -6,9 +6,9 @@ import java.util.List;
 
 public class ConsumerAttributes {
 
-	public static final String ATTR_EIRC_ACCOUNT = "ATTR_EIRC_ACCOUNT";
+	public static final String ATTR_ERC_ACCOUNT = "ATTR_ERC_ACCOUNT";
 
 	public static final List<String> PAYMENT_ATTRIBUTES = CollectionUtils.list(
-			ATTR_EIRC_ACCOUNT
+			ATTR_ERC_ACCOUNT
 	);
 }
