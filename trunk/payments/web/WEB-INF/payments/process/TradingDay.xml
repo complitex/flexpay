@@ -42,7 +42,7 @@
             </script>
         </event>
         <task name="CloseTradingDay" swimlane="Accounter">
-            <timer duedate="3 minutes" transition="tradingDay.mark_for_closing">
+            <timer duedate="1 business day + 3 hours" transition="generateEndOperationDayRegistryJob">
                 <script>
                     <variable mapped-name="autoMode" access="write" name="AUTO_MODE" />
                     <expression>
@@ -53,7 +53,7 @@
         </task>
 
         <task name="CloseTradingDay" swimlane="PaymentCollector">
-            <timer duedate="10 business seconds" transition="generateEndOperationDayRegistryJob">
+            <timer duedate="1 business day + 2 hours" transition="generateEndOperationDayRegistryJob">
                 <script>
                     <variable mapped-name="autoMode" access="write" name="AUTO_MODE" />
                     <expression>
@@ -121,7 +121,7 @@
         </event>
 
         <task name="Aproove" swimlane="Accounter">
-            <timer duedate="1 business day" transition="AutoModeDecision2">
+            <timer duedate="1 business day + 2 hours" transition="AutoModeDecision2">
                 <script>
                     <variable mapped-name="autoMode" access="write" name="AUTO_MODE" />
                     <expression>
@@ -153,7 +153,7 @@
                 </expression>
             </script>
         </event>
-        <timer duedate="1 business day" transition="end-state" />
+        <timer duedate="1 business day + 2 hours" transition="end-state" />
         <task name="" swimlane="PaymentCollector" />
         <transition to="end-state" name="Принять сообщение" />
     </task-node>
