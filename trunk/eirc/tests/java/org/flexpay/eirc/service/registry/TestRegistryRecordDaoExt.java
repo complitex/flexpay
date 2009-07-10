@@ -3,6 +3,7 @@ package org.flexpay.eirc.service.registry;
 import org.flexpay.ab.persistence.BuildingAddress;
 import org.flexpay.ab.persistence.Street;
 import org.flexpay.common.dao.paging.Page;
+import org.flexpay.common.dao.paging.FetchRange;
 import org.flexpay.common.dao.registry.RegistryRecordDao;
 import org.flexpay.common.dao.registry.RegistryRecordDaoExt;
 import org.flexpay.common.persistence.filter.RegistryRecordStatusFilter;
@@ -27,7 +28,6 @@ public class TestRegistryRecordDaoExt extends SpringBeanAwareTestCase {
 	@Autowired
 	protected RegistryRecordDao recordDao;
 	@Autowired
-	@Qualifier ("typeRegistryEirc")
 	private ClassToTypeRegistry classToTypeRegistry;
 
 	private ImportErrorTypeFilter errorTypeFilter = new ImportErrorTypeFilter();
@@ -88,5 +88,11 @@ public class TestRegistryRecordDaoExt extends SpringBeanAwareTestCase {
 	@Test
 	public void testGetMaxMinForProcessing() {
 		recordDaoExt.getMinMaxIdsForProcessing(9L);
+	}
+
+	@Test
+	public void testGetRecordsForExport() {
+		FetchRange range = new FetchRange();
+		recordDao.listRecordsForExport(1L, range);
 	}
 }
