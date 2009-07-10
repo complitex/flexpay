@@ -308,14 +308,22 @@
 		where r.id=? and rr.id>=? and rr.id<=? and rrs.code NOT IN (2, 4)
 	]]></query>
 
+    <query name="RegistryRecord.listRecordsForExport.stats">
+        select min(rr.id), max(rr.id), count(rr.id)
+        from RegistryRecord rr
+            left outer join rr.registry r
+            left outer join rr.recordStatus rrs
+        where r.id=? and rrs.code NOT IN (2)
+    </query>
+
     <query name="RegistryRecord.listRecordsForExport"><![CDATA[
         select distinct rr
         from RegistryRecord rr
-            inner join fetch rr.properties
-            inner join fetch rr.registry r
-            inner join fetch r.properties
-            inner join fetch r.registryStatus rs
-            inner join fetch rr.recordStatus rrs
+            left outer join fetch rr.properties
+            left outer join fetch rr.registry r
+            left outer join fetch r.properties
+            left outer join fetch r.registryStatus rs
+            left outer join fetch rr.recordStatus rrs
             left join fetch rr.importError
             left join fetch rr.containers
         where r.id=? and rrs.code NOT IN (2)

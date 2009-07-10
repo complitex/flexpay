@@ -12,8 +12,6 @@ import java.util.Map;
 
 public class ContractForServicesForm implements Cloneable, Serializable {
 
-	private Boolean test = Boolean.TRUE;
-
 	private String contractNumber;
 	private String executor;
 	private String executorAddress;
@@ -58,7 +56,7 @@ public class ContractForServicesForm implements Cloneable, Serializable {
 	private Integer waterHeaterSize;
 
 	public Map<String, ?> getParams() {
-		return map(ar("test","contractNumber",
+		return map(ar("contractNumber",
 				"executor",
 				"executorAddress",
 				"executorBankDetails",
@@ -96,7 +94,7 @@ public class ContractForServicesForm implements Cloneable, Serializable {
 				"waterHeaterPercent",
 				"waterHeaterSize"
 				),
-				ar(test, contractNumber,
+				ar(contractNumber,
 						executor,
 						executorAddress,
 						executorBankDetails,
@@ -134,14 +132,6 @@ public class ContractForServicesForm implements Cloneable, Serializable {
 						waterHeaterPercent,
 						waterHeaterSize
 				));
-	}
-
-	public Boolean isTest() {
-		return test;
-	}
-
-	public void setTest(Boolean test) {
-		this.test = test;
 	}
 
 	public String getContractNumber() {

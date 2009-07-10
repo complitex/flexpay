@@ -1,6 +1,7 @@
 package org.flexpay.payments.util.registries;
 
 import org.apache.commons.io.IOUtils;
+import org.flexpay.common.dao.paging.FetchRange;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.persistence.registry.Registry;
@@ -38,10 +39,10 @@ public class ExportBankPaymentsRegistry {
 
 		log.info("Start exporting payments registry with id = {}", registry.getId());
 
-		List<RegistryRecord> records = registryRecordService.listRecords(registry);
-		log.debug("Found {} records for registry with id = {}", records.size(), registry.getId());
+		FetchRange fetchRange = new FetchRange();
+		List<RegistryRecord> records = registryRecordService.listRecordsForExport(registry, fetchRange);
 
-		if (records.size() == 0) {
+		if (fetchRange.getCount() == 0) {
 			log.error("Error! Not found records for registry with id {}", registry.getId());
 			throw new FlexPayException("Error! Not found records for registry with id " + registry.getId());
 		}
@@ -83,10 +84,13 @@ public class ExportBankPaymentsRegistry {
 			writer.write(buildHeader(registry));
 			writer.newLine();
 
-			for (RegistryRecord record : records) {
-				writer.write(buildRecord(registry, record));
-				writer.newLine();
-			}
+			do {
+				for (RegistryRecord record : records) {
+					writer.write(buildRecord(registry, record));
+					writer.newLine();
+				}
+				fetchRange.nextPage();
+			} while ((records = registryRecordService.listRecordsForExport(registry, fetchRange)).size() > 0);
 
 			writer.write(buildFooter(registry));
 			writer.newLine();

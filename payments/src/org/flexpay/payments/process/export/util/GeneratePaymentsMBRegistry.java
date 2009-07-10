@@ -34,6 +34,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class GeneratePaymentsMBRegistry {
+
     private final Logger log = LoggerFactory.getLogger(getClass());
 
     private static final long FLASH_FILE = 100;
@@ -358,6 +359,11 @@ public class GeneratePaymentsMBRegistry {
         this.signature = sign;
     }
 
+	@NotNull
+	private Locale getLocation() {
+		return new Locale("ru");
+	}
+
     @Required
     public void setFpFileService(FPFileService fpFileService) {
         this.fpFileService = fpFileService;
@@ -388,8 +394,4 @@ public class GeneratePaymentsMBRegistry {
         this.serviceTypeService = serviceTypeService;
     }
 
-    @NotNull
-    private Locale getLocation() {
-        return new Locale("ru");
-    }
 }

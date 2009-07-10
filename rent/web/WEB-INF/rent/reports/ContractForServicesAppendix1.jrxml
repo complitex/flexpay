@@ -29,11 +29,8 @@
 	<parameter name="waterHeaterSPAccount" class="java.lang.String" isForPrompting="false"/>
 	<parameter name="waterHeaterPercent" class="java.lang.Integer" isForPrompting="false"/>
 	<parameter name="waterHeaterSize" class="java.lang.Integer" isForPrompting="false"/>
-	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
-		<defaultValueExpression><![CDATA["C:/Documents and Settings/Alexuy/Local Settings/Temp/flexpay_data/reports/templates/"]]></defaultValueExpression>
-	</parameter>
 	<title>
-		<band height="143">
+		<band height="475">
 			<textField>
 				<reportElement x="0" y="0" width="483" height="46"/>
 				<textElement textAlignment="Right" markup="styled"/>
@@ -53,12 +50,8 @@
 				<textFieldExpression class="java.lang.String"><![CDATA["<style isBold=\"true\" pdfFontName=\"fonts/LiberationSerif-Bold.ttf\">СПОЖІВАЧ:</style> " + $P{renter} + "<br/>"
 + "<style isBold=\"true\" pdfFontName=\"fonts/LiberationSerif-Bold.ttf\">АДРЕСА:</style> " + $P{address}]]></textFieldExpression>
 			</textField>
-		</band>
-	</title>
-	<detail>
-		<band height="350">
 			<textField isStretchWithOverflow="true">
-				<reportElement x="0" y="16" width="483" height="16"/>
+				<reportElement x="1" y="158" width="483" height="16"/>
 				<textElement textAlignment="Justified" markup="styled"/>
 				<textFieldExpression class="java.lang.String"><![CDATA["1.<style isBold=\"true\" pdfFontName=\"fonts/LiberationSerif-Bold.ttf\">Центральне опалення:</style> "
 + "згідно табулярів " + $P{centralHeatingSP} + " по особистому рахунку "
@@ -67,7 +60,7 @@
 + "нежитлові приміщення " + $P{centralHeatingDesignLoad} + " Гкал/міс."]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement positionType="Float" x="0" y="32" width="483" height="16"/>
+				<reportElement positionType="Float" x="1" y="174" width="483" height="16"/>
 				<textElement textAlignment="Justified" markup="styled"/>
 				<textFieldExpression class="java.lang.String"><![CDATA["2.<style isBold=\"true\" pdfFontName=\"fonts/LiberationSerif-Bold.ttf\">Гаряче водопосточання:</style> "
 + "згідно табулярів " + $P{hotWaterSP} + " по особистому рахунку "
@@ -75,7 +68,7 @@
 + "%. Проектно навантаження на нежитлове приміщення " + $P{hotWaterDesignLoad} + " Гкал/міс."]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement positionType="Float" x="0" y="48" width="483" height="16"/>
+				<reportElement positionType="Float" x="1" y="190" width="483" height="16"/>
 				<textElement textAlignment="Justified" markup="styled"/>
 				<textFieldExpression class="java.lang.String"><![CDATA["3.<style isBold=\"true\" pdfFontName=\"fonts/LiberationSerif-Bold.ttf\">Холодне водопостачання та каналізація:</style> "
 + "згідно розрахунків " + $P{coldWaterSP} + " у процентному відношенні "
@@ -83,7 +76,7 @@
 + $P{coldWaterSize} + " м&#179;/міс."]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement positionType="Float" x="0" y="64" width="483" height="16"/>
+				<reportElement positionType="Float" x="1" y="206" width="483" height="16"/>
 				<textElement textAlignment="Justified" markup="styled"/>
 				<textFieldExpression class="java.lang.String"><![CDATA["4.<style isBold=\"true\" pdfFontName=\"fonts/LiberationSerif-Bold.ttf\">Вода на подогрев:</style> "
 + "згідно розрахунків " + $P{waterHeaterSP} + " у процентному відношенні "
@@ -91,40 +84,40 @@
 + $P{waterHeaterSize} + " м&#179;/міс."]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement positionType="Float" x="0" y="80" width="483" height="45"/>
+				<reportElement positionType="Float" x="1" y="222" width="483" height="45"/>
 				<textElement textAlignment="Justified" markup="styled"/>
 				<textFieldExpression class="java.lang.String"><![CDATA["5.<style isBold=\"true\" pdfFontName=\"fonts/LiberationSerif-Bold.ttf\">Інші комунальні послуги:</style> "]]></textFieldExpression>
 			</textField>
-			<textField isStretchWithOverflow="true">
-				<reportElement positionType="Float" x="0" y="125" width="483" height="16"/>
+			<staticText>
+				<reportElement positionType="Float" x="1" y="267" width="483" height="16"/>
 				<textElement/>
-				<textFieldExpression class="java.lang.String"><![CDATA["Розрахунок погодив:"]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true">
-				<reportElement positionType="Float" x="0" y="157" width="483" height="16"/>
+				<text><![CDATA[Розрахунок погодив:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="1" y="299" width="483" height="16"/>
 				<textElement/>
-				<textFieldExpression class="java.lang.String"><![CDATA["Головний інженер  ________________  /                                 /"]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true">
-				<reportElement style="TNR_12b" positionType="Float" x="0" y="189" width="227" height="17"/>
+				<text><![CDATA[Головний інженер  ________________  /                                 /]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="TNR_12b" positionType="Float" x="0" y="331" width="227" height="17"/>
 				<textElement textAlignment="Center"/>
-				<textFieldExpression class="java.lang.String"><![CDATA["ПІДПРИЄМСТВО"]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true">
-				<reportElement positionType="Float" x="0" y="254" width="227" height="48"/>
+				<text><![CDATA[ПІДПРИЄМСТВО]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="1" y="396" width="227" height="48"/>
 				<textElement markup="styled"/>
-				<textFieldExpression class="java.lang.String"><![CDATA["________________  /                             /<br/><br/>М.П."]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true">
-				<reportElement style="TNR_12b" positionType="Float" x="256" y="189" width="228" height="17"/>
+				<text><![CDATA[________________  /                             /<br/><br/>М.П.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="TNR_12b" positionType="Float" x="257" y="331" width="228" height="17"/>
 				<textElement textAlignment="Center"/>
-				<textFieldExpression class="java.lang.String"><![CDATA["СПОЖИВАЧ"]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true">
-				<reportElement positionType="Float" x="255" y="254" width="227" height="48"/>
+				<text><![CDATA[СПОЖИВАЧ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="256" y="396" width="227" height="48"/>
 				<textElement markup="styled"/>
-				<textFieldExpression class="java.lang.String"><![CDATA["________________  /                             /<br/><br/>М.П."]]></textFieldExpression>
-			</textField>
+				<text><![CDATA[________________  /                             /<br/><br/>М.П.]]></text>
+			</staticText>
 		</band>
-	</detail>
+	</title>
 </jasperReport>

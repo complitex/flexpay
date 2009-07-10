@@ -62,7 +62,6 @@ public class TestGenerateContractForServicesJasperJob extends RentSpringBeanAwar
 
 	private ContractForServicesForm createTestForm() {
 		ContractForServicesForm form = new ContractForServicesForm();
-		form.setTest(Boolean.TRUE);
 		form.setContractDate(new Date());
 		form.setContractNumber("1235");
 		form.setExecutor("EXECUTOR");
