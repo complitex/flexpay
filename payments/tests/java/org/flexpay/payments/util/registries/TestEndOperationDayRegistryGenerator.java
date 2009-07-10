@@ -8,9 +8,9 @@ import org.flexpay.orgs.persistence.PaymentPoint;
 import org.flexpay.orgs.service.OrganizationService;
 import org.flexpay.orgs.service.PaymentPointService;
 import org.flexpay.payments.test.PaymentsSpringBeanAwareTestCase;
+import static org.junit.Assert.assertNotNull;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -20,13 +20,10 @@ public class TestEndOperationDayRegistryGenerator extends PaymentsSpringBeanAwar
 	@Autowired
 	EndOperationDayRegistryGenerator endOperationDayRegistryGenerator;
 	@Autowired
-	@Qualifier("paymentPointService")
 	PaymentPointService paymentPointService;
 	@Autowired
-	@Qualifier("organizationService")
 	OrganizationService organizationService;
 	@Autowired
-	@Qualifier("registryService")
 	RegistryService registryService;
 
 	@Test
@@ -51,12 +48,10 @@ public class TestEndOperationDayRegistryGenerator extends PaymentsSpringBeanAwar
 		}
 
 		Registry registry = endOperationDayRegistryGenerator.generate(paymentPoint, organization, beginDate, endDate);
+		assertNotNull("Operation day registry generation failed", registry);
 
-/*
+
 		registryService.deleteRecords(Stub.stub(registry));
 		registryService.delete(registry);
-*/
-
 	}
-
 }
