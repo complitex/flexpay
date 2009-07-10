@@ -2,8 +2,8 @@
 
 -- Init service types
 -- kvartplata
-INSERT INTO payments_service_types_tbl (id, status, code) VALUES (1, 0, 1);
-SELECT @service_kvartplata:=1;
+INSERT INTO payments_service_types_tbl (id, status, code) VALUES (9, 0, 9);
+SELECT @service_kvartplata:=9;
 INSERT INTO payments_service_type_name_translations_tbl (name, description, language_id, service_type_id)
 	VALUES ('Квартплата', 'Описание', @ru_id, @service_kvartplata);
 
@@ -27,13 +27,13 @@ SELECT @service_t_water_cooling:=5;
 INSERT INTO payments_service_type_name_translations_tbl (name, description, language_id, service_type_id)
 	VALUES ('Подогрев воды', 'Описание', @ru_id, @service_t_water_cooling);
 
-INSERT INTO payments_service_types_tbl (id, status, code) VALUES (6, 0, 6);
-SELECT @service_cold_water:=6;
+INSERT INTO payments_service_types_tbl (id, status, code) VALUES (7, 0, 7);
+SELECT @service_cold_water:=7;
 INSERT INTO payments_service_type_name_translations_tbl (name, description, language_id, service_type_id)
 	VALUES ('Холодная вода', 'Описание', @ru_id, @service_cold_water);
 
-INSERT INTO payments_service_types_tbl (id, status, code) VALUES (7, 0, 7);
-SELECT @service_hot_water:=7;
+INSERT INTO payments_service_types_tbl (id, status, code) VALUES (8, 0, 8);
+SELECT @service_hot_water:=8;
 INSERT INTO payments_service_type_name_translations_tbl (name, description, language_id, service_type_id)
 	VALUES ('Горячая вода', 'Описание', @ru_id, @service_hot_water);
 
@@ -152,8 +152,8 @@ SELECT @service_type_230:=last_insert_id();
 INSERT INTO payments_service_type_name_translations_tbl (name, description, language_id, service_type_id)
 	VALUES ('Сарай', 'Описание', @ru_id, @service_type_230);
 
-INSERT INTO payments_service_types_tbl (status, code) VALUES (0, 240);
-SELECT @service_type_240:=last_insert_id();
+INSERT INTO payments_service_types_tbl (id, status, code) VALUES (38, 0, 38);
+SELECT @service_type_240:=38;
 INSERT INTO payments_service_type_name_translations_tbl (name, description, language_id, service_type_id)
 	VALUES ('Погреба', 'Описание', @ru_id, @service_type_240);
 
@@ -181,6 +181,66 @@ INSERT INTO payments_service_types_tbl (id, status, code) VALUES (1005, 0, 1005)
 SELECT @service_t_household_consumptions:=1005;
 INSERT INTO payments_service_type_name_translations_tbl (name, description, language_id, service_type_id)
 	VALUES ('Хозрасходы', 'Описание', @ru_id, @service_t_household_consumptions);
+
+INSERT INTO payments_service_types_tbl (id, status, code) VALUES (1006, 0, 1006);
+SELECT @service_t_sewerage:=1006;
+INSERT INTO payments_service_type_name_translations_tbl (name, description, language_id, service_type_id)
+	VALUES ('Канализация', '', @ru_id, @service_t_sewerage);
+
+INSERT INTO payments_service_types_tbl (id, status, code) VALUES (1007, 0, 1007);
+SELECT @service_t_coocking_gas:=1007;
+INSERT INTO payments_service_type_name_translations_tbl (name, description, language_id, service_type_id)
+	VALUES ('Газ варочный', '', @ru_id, @service_t_coocking_gas);
+
+INSERT INTO payments_service_types_tbl (id, status, code) VALUES (1008, 0, 1008);
+SELECT @service_t_heating_gas:=1008;
+INSERT INTO payments_service_type_name_translations_tbl (name, description, language_id, service_type_id)
+	VALUES ('Газ отопительный', '', @ru_id, @service_t_heating_gas);
+
+INSERT INTO payments_service_types_tbl (id, status, code) VALUES (1009, 0, 1009);
+SELECT @service_t_radio:=1009;
+INSERT INTO payments_service_type_name_translations_tbl (name, description, language_id, service_type_id)
+	VALUES ('Радио', '', @ru_id, @service_t_radio);
+
+INSERT INTO payments_service_types_tbl (id, status, code) VALUES (1010, 0, 1010);
+SELECT @service_t_antenna:=1010;
+INSERT INTO payments_service_type_name_translations_tbl (name, description, language_id, service_type_id)
+	VALUES ('Антенна', '', @ru_id, @service_t_antenna);
+
+INSERT INTO payments_service_types_tbl (id, status, code) VALUES (1011, 0, 1011);
+SELECT @service_t_phone:=1011;
+INSERT INTO payments_service_type_name_translations_tbl (name, description, language_id, service_type_id)
+	VALUES ('Телефон', '', @ru_id, @service_t_phone);
+
+INSERT INTO payments_service_types_tbl (id, status, code) VALUES (1012, 0, 1012);
+SELECT @service_t_cesspool_cleaning:=1012;
+INSERT INTO payments_service_type_name_translations_tbl (name, description, language_id, service_type_id)
+	VALUES ('Ассенизация', '', @ru_id, @service_t_cesspool_cleaning);
+
+INSERT INTO payments_service_types_tbl (id, status, code) VALUES (1013, 0, 1013);
+SELECT @service_t_lift:=1013;
+INSERT INTO payments_service_type_name_translations_tbl (name, description, language_id, service_type_id)
+	VALUES ('Лифт', '', @ru_id, @service_t_lift);
+
+INSERT INTO payments_service_types_tbl (id, status, code) VALUES (1014, 0, 1014);
+SELECT @service_t_ground_tax:=1014;
+INSERT INTO payments_service_type_name_translations_tbl (name, description, language_id, service_type_id)
+	VALUES ('Налог на землю', '', @ru_id, @service_t_ground_tax);
+
+INSERT INTO payments_service_types_tbl (id, status, code) VALUES (1015, 0, 1015);
+SELECT @service_t_repeat_turn_on:=1015;
+INSERT INTO payments_service_type_name_translations_tbl (name, description, language_id, service_type_id)
+	VALUES ('Повторное подключение', '', @ru_id, @service_t_repeat_turn_on);
+
+INSERT INTO payments_service_types_tbl (id, status, code) VALUES (1016, 0, 1016);
+SELECT @service_t_acts_payment:=1016;
+INSERT INTO payments_service_type_name_translations_tbl (name, description, language_id, service_type_id)
+	VALUES ('Оплата по актам', '', @ru_id, @service_t_acts_payment);
+
+INSERT INTO payments_service_types_tbl (id, status, code) VALUES (1017, 0, 1017);
+SELECT @service_t_counters_repair:=1017;
+INSERT INTO payments_service_type_name_translations_tbl (name, description, language_id, service_type_id)
+	VALUES ('Ремонт счетчиков', '', @ru_id, @service_t_counters_repair);
 
 -- Init services
 INSERT INTO payments_services_tbl (id, provider_id, external_code, measure_unit_id, type_id, begin_date, end_date, version, status)
@@ -340,7 +400,7 @@ INSERT INTO payments_service_descriptions_tbl (name, language_id, service_id)
 	VALUES ('Сарай', @ru_id, @service_230);
 
 INSERT INTO payments_services_tbl (provider_id, external_code, measure_unit_id, type_id, begin_date, end_date, version, status)
-	VALUES (@service_provider_cn, '240', null, @service_type_240, '1900-01-01', '2100-12-31', 0, 0);
+	VALUES (@service_provider_cn, '13', null, @service_type_240, '1900-01-01', '2100-12-31', 0, 0);
 SELECT @service_240:=last_insert_id();
 INSERT INTO payments_service_descriptions_tbl (name, language_id, service_id)
 	VALUES ('Погреба', @ru_id, @service_240);
@@ -375,6 +435,78 @@ INSERT INTO payments_services_tbl (provider_id, external_code, measure_unit_id, 
 SELECT @service_household_consumptions:=last_insert_id();
 INSERT INTO payments_service_descriptions_tbl (name, language_id, service_id)
 		VALUES ('Хозрасходы', @ru_id, @service_household_consumptions);
+
+INSERT INTO payments_services_tbl (provider_id, external_code, measure_unit_id, type_id, begin_date, end_date, version, status)
+	VALUES (@service_provider_cn, null, null, @service_t_sewerage, '1900-01-01', '2100-12-31', 0, 0);
+SELECT @service_sewerage:=last_insert_id();
+INSERT INTO payments_service_descriptions_tbl (name, language_id, service_id)
+		VALUES ('Канализация', @ru_id, @service_sewerage);
+
+INSERT INTO payments_services_tbl (provider_id, external_code, measure_unit_id, type_id, begin_date, end_date, version, status)
+	VALUES (@service_provider_cn, null, null, @service_t_coocking_gas, '1900-01-01', '2100-12-31', 0, 0);
+SELECT @service_coocking_gas:=last_insert_id();
+INSERT INTO payments_service_descriptions_tbl (name, language_id, service_id)
+		VALUES ('Газ варочный', @ru_id, @service_coocking_gas);
+
+INSERT INTO payments_services_tbl (provider_id, external_code, measure_unit_id, type_id, begin_date, end_date, version, status)
+	VALUES (@service_provider_cn, null, null, @service_t_heating_gas, '1900-01-01', '2100-12-31', 0, 0);
+SELECT @service_heating_gas:=last_insert_id();
+INSERT INTO payments_service_descriptions_tbl (name, language_id, service_id)
+		VALUES ('Газ отопительный', @ru_id, @service_heating_gas);
+
+INSERT INTO payments_services_tbl (provider_id, external_code, measure_unit_id, type_id, begin_date, end_date, version, status)
+	VALUES (@service_provider_cn, null, null, @service_t_radio, '1900-01-01', '2100-12-31', 0, 0);
+SELECT @service_radio:=last_insert_id();
+INSERT INTO payments_service_descriptions_tbl (name, language_id, service_id)
+		VALUES ('Радио', @ru_id, @service_radio);
+
+INSERT INTO payments_services_tbl (provider_id, external_code, measure_unit_id, type_id, begin_date, end_date, version, status)
+	VALUES (@service_provider_cn, null, null, @service_t_antenna, '1900-01-01', '2100-12-31', 0, 0);
+SELECT @service_antenna:=last_insert_id();
+INSERT INTO payments_service_descriptions_tbl (name, language_id, service_id)
+		VALUES ('Антенна', @ru_id, @service_antenna);
+
+INSERT INTO payments_services_tbl (provider_id, external_code, measure_unit_id, type_id, begin_date, end_date, version, status)
+	VALUES (@service_provider_cn, null, null, @service_t_phone, '1900-01-01', '2100-12-31', 0, 0);
+SELECT @service_phone:=last_insert_id();
+INSERT INTO payments_service_descriptions_tbl (name, language_id, service_id)
+		VALUES ('Телефон', @ru_id, @service_phone);
+
+INSERT INTO payments_services_tbl (provider_id, external_code, measure_unit_id, type_id, begin_date, end_date, version, status)
+	VALUES (@service_provider_cn, null, null, @service_t_cesspool_cleaning, '1900-01-01', '2100-12-31', 0, 0);
+SELECT @service_cesspool_cleaning:=last_insert_id();
+INSERT INTO payments_service_descriptions_tbl (name, language_id, service_id)
+		VALUES ('Ассенизация', @ru_id, @service_cesspool_cleaning);
+
+INSERT INTO payments_services_tbl (provider_id, external_code, measure_unit_id, type_id, begin_date, end_date, version, status)
+	VALUES (@service_provider_cn, null, null, @service_t_lift, '1900-01-01', '2100-12-31', 0, 0);
+SELECT @service_lift:=last_insert_id();
+INSERT INTO payments_service_descriptions_tbl (name, language_id, service_id)
+		VALUES ('Лифт', @ru_id, @service_lift);
+
+INSERT INTO payments_services_tbl (provider_id, external_code, measure_unit_id, type_id, begin_date, end_date, version, status)
+	VALUES (@service_provider_cn, null, null, @service_t_ground_tax, '1900-01-01', '2100-12-31', 0, 0);
+SELECT @service_ground_tax:=last_insert_id();
+INSERT INTO payments_service_descriptions_tbl (name, language_id, service_id)
+		VALUES ('Налог на землю', @ru_id, @service_ground_tax);
+
+INSERT INTO payments_services_tbl (provider_id, external_code, measure_unit_id, type_id, begin_date, end_date, version, status)
+	VALUES (@service_provider_cn, null, null, @service_t_repeat_turn_on, '1900-01-01', '2100-12-31', 0, 0);
+SELECT @service_repeat_turn_on:=last_insert_id();
+INSERT INTO payments_service_descriptions_tbl (name, language_id, service_id)
+		VALUES ('Повторное подключение', @ru_id, @service_repeat_turn_on);
+
+INSERT INTO payments_services_tbl (provider_id, external_code, measure_unit_id, type_id, begin_date, end_date, version, status)
+	VALUES (@service_provider_cn, null, null, @service_t_acts_payment, '1900-01-01', '2100-12-31', 0, 0);
+SELECT @service_acts_payment:=last_insert_id();
+INSERT INTO payments_service_descriptions_tbl (name, language_id, service_id)
+		VALUES ('Оплата по актам', @ru_id, @service_acts_payment);
+
+INSERT INTO payments_services_tbl (provider_id, external_code, measure_unit_id, type_id, begin_date, end_date, version, status)
+	VALUES (@service_provider_cn, null, null, @service_t_counters_repair, '1900-01-01', '2100-12-31', 0, 0);
+SELECT @service_counters_repair:=last_insert_id();
+INSERT INTO payments_service_descriptions_tbl (name, language_id, service_id)
+		VALUES ('Ремонт счетчиков', @ru_id, @service_counters_repair);
 
 
 -- init operations
