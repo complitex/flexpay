@@ -50,17 +50,38 @@ public class GenerateContractForServicesJasperJob extends Job {
 			plog.info("Uploading report template");
 			uploadReportTemplates();
 
-			JRDataSource dataSource = new JREmptyDataSource(1);
+			JRDataSource dataSource = new JREmptyDataSource();
 
 			plog.info("Running report");
 
 			FPFile report = null;
 			if (ReportUtil.FORMAT_PDF.equals(format)) {
 				reportUtil.exportToPdf("ContractForServices", dataForm.getParams(), dataSource, ApplicationConfig.getDefaultReportLocale());
+				reportUtil.exportToPdf("ContractForServicesAppendix1", dataForm.getParams(), dataSource, ApplicationConfig.getDefaultReportLocale());
+				reportUtil.exportToPdf("ContractForServicesAppendix2", dataForm.getParams(), dataSource, ApplicationConfig.getDefaultReportLocale());
+				reportUtil.exportToPdf("ContractForServicesAppendix3", dataForm.getParams(), dataSource, ApplicationConfig.getDefaultReportLocale());
+				reportUtil.exportToPdf("ContractForServicesAppendix4", dataForm.getParams(), dataSource, ApplicationConfig.getDefaultReportLocale());
+				reportUtil.exportToPdf("ContractForServicesAppendix5", dataForm.getParams(), dataSource, ApplicationConfig.getDefaultReportLocale());
+				reportUtil.exportToPdf("ContractForServicesAppendix6", dataForm.getParams(), dataSource, ApplicationConfig.getDefaultReportLocale());
+				reportUtil.exportToPdf("ContractForServicesAppendix7", dataForm.getParams(), dataSource, ApplicationConfig.getDefaultReportLocale());
 			} else if (ReportUtil.FORMAT_HTML.equals(format)) {
 				reportUtil.exportToHtml("ContractForServices", dataForm.getParams(), dataSource, ApplicationConfig.getDefaultReportLocale());
+				reportUtil.exportToHtml("ContractForServicesAppendix1", dataForm.getParams(), dataSource, ApplicationConfig.getDefaultReportLocale());
+				reportUtil.exportToHtml("ContractForServicesAppendix2", dataForm.getParams(), dataSource, ApplicationConfig.getDefaultReportLocale());
+				reportUtil.exportToHtml("ContractForServicesAppendix3", dataForm.getParams(), dataSource, ApplicationConfig.getDefaultReportLocale());
+				reportUtil.exportToHtml("ContractForServicesAppendix4", dataForm.getParams(), dataSource, ApplicationConfig.getDefaultReportLocale());
+				reportUtil.exportToHtml("ContractForServicesAppendix5", dataForm.getParams(), dataSource, ApplicationConfig.getDefaultReportLocale());
+				reportUtil.exportToHtml("ContractForServicesAppendix6", dataForm.getParams(), dataSource, ApplicationConfig.getDefaultReportLocale());
+				reportUtil.exportToHtml("ContractForServicesAppendix7", dataForm.getParams(), dataSource, ApplicationConfig.getDefaultReportLocale());
 			} else if (ReportUtil.FORMAT_CSV.equals(format)) {
 				reportUtil.exportToCsv("ContractForServices", dataForm.getParams(), dataSource, ApplicationConfig.getDefaultReportLocale());
+				reportUtil.exportToCsv("ContractForServicesAppendix1", dataForm.getParams(), dataSource, ApplicationConfig.getDefaultReportLocale());
+				reportUtil.exportToCsv("ContractForServicesAppendix2", dataForm.getParams(), dataSource, ApplicationConfig.getDefaultReportLocale());
+				reportUtil.exportToCsv("ContractForServicesAppendix3", dataForm.getParams(), dataSource, ApplicationConfig.getDefaultReportLocale());
+				reportUtil.exportToCsv("ContractForServicesAppendix4", dataForm.getParams(), dataSource, ApplicationConfig.getDefaultReportLocale());
+				reportUtil.exportToCsv("ContractForServicesAppendix5", dataForm.getParams(), dataSource, ApplicationConfig.getDefaultReportLocale());
+				reportUtil.exportToCsv("ContractForServicesAppendix6", dataForm.getParams(), dataSource, ApplicationConfig.getDefaultReportLocale());
+				reportUtil.exportToCsv("ContractForServicesAppendix7", dataForm.getParams(), dataSource, ApplicationConfig.getDefaultReportLocale());
 			} else {
 				throw new FlexPayException("Incorrect format value - " +  format);
 			}
@@ -83,6 +104,11 @@ public class GenerateContractForServicesJasperJob extends Job {
 		uploadReportTemplate("ContractForServicesAppendix2");
 		uploadReportTemplate("ContractForServicesAppendix3");
 		uploadReportTemplate("ContractForServicesAppendix3Sub");
+		uploadReportTemplate("ContractForServicesAppendix3");
+		uploadReportTemplate("ContractForServicesAppendix4");
+		uploadReportTemplate("ContractForServicesAppendix5");
+		uploadReportTemplate("ContractForServicesAppendix6");
+		uploadReportTemplate("ContractForServicesAppendix7");
 	}
 
 	private void uploadReportTemplate(String name) throws Exception {

@@ -19,7 +19,7 @@ public class BuildingViewAction extends FPActionSupport {
 	private Building building = Building.newInstance();
 
 	{
-		setCrumbNameKey("ab.crumbs.buildings_create");
+		setCrumbNameKey("ab.crumbs.buildings_view");
 	}
 
 	@NotNull
@@ -51,6 +51,7 @@ public class BuildingViewAction extends FPActionSupport {
 	 * @return {@link #ERROR} by default
 	 */
 	@NotNull
+	@Override
 	protected String getErrorResult() {
 		return REDIRECT_SUCCESS;
 	}
@@ -72,4 +73,5 @@ public class BuildingViewAction extends FPActionSupport {
 	public void setAddressService(AddressService addressService) {
 		this.addressService = addressService;
 	}
+
 }

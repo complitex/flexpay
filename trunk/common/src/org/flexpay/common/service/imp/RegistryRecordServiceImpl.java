@@ -1,6 +1,7 @@
 package org.flexpay.common.service.imp;
 
 import org.flexpay.common.dao.paging.Page;
+import org.flexpay.common.dao.paging.FetchRange;
 import org.flexpay.common.dao.registry.RegistryRecordContainerDao;
 import org.flexpay.common.dao.registry.RegistryRecordDao;
 import org.flexpay.common.dao.registry.RegistryRecordDaoExt;
@@ -103,14 +104,13 @@ public class RegistryRecordServiceImpl implements RegistryRecordService {
 	 * @param pager				 Page
 	 * @return list of filtered registry records
 	 */
-	@Transactional (readOnly = true)
 	public List<RegistryRecord> listRecords(Registry registry, ImportErrorTypeFilter importErrorTypeFilter,
 											RegistryRecordStatusFilter recordStatusFilter, Page<RegistryRecord> pager) {
 		return registryRecordDaoExt.filterRecords(registry.getId(), importErrorTypeFilter, recordStatusFilter, pager);
 	}
 
-	public List<RegistryRecord> listRecords(Registry registry) {
-		return registryRecordDao.listRecordsForExport(registry.getId());
+	public List<RegistryRecord> listRecordsForExport(Registry registry, FetchRange range) {
+		return registryRecordDao.listRecordsForExport(registry.getId(), range);
 	}
 
 	/**
@@ -131,7 +131,6 @@ public class RegistryRecordServiceImpl implements RegistryRecordService {
 	 */
 	@Transactional (readOnly = false)
 	public RegistryRecord removeError(RegistryRecord record) throws Exception {
-
 		workflowManager.setNextSuccessStatus(record);
 		return record;
 	}

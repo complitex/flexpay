@@ -121,7 +121,7 @@ public interface OperationService {
 	 * @param endDate	  higher bound for operation registration date
 	 * @return list of payment operations
 	 */
-	@Secured (Roles.OPERATION_READ)
+	//@Secured (Roles.OPERATION_READ)
 	List<Operation> listReceivedPayments(PaymentPoint paymentPoint, Date beginDate, Date endDate);
 
 	/**

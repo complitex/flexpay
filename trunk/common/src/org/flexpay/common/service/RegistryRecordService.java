@@ -1,9 +1,10 @@
 package org.flexpay.common.service;
 
+import org.flexpay.common.dao.paging.FetchRange;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
-import org.flexpay.common.persistence.filter.RegistryRecordStatusFilter;
 import org.flexpay.common.persistence.filter.ImportErrorTypeFilter;
+import org.flexpay.common.persistence.filter.RegistryRecordStatusFilter;
 import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.persistence.registry.RegistryRecord;
 import org.flexpay.common.persistence.registry.RegistryRecordContainer;
@@ -63,7 +64,7 @@ public interface RegistryRecordService {
 	 * @param registry			  Registry to get records for
 	 * @return list of filtered registry records
 	 */
-	List<RegistryRecord> listRecords(Registry registry);
+	List<RegistryRecord> listRecordsForExport(Registry registry, FetchRange range);
 
 	/**
 	 * Count number of error in registry

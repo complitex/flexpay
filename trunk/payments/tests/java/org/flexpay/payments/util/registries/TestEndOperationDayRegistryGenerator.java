@@ -34,8 +34,8 @@ public class TestEndOperationDayRegistryGenerator extends PaymentsSpringBeanAwar
 
 		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-		Date beginDate = df.parse("2009-04-14 00:00:00");
-		Date endDate = df.parse("2009-04-14 23:59:59");
+		Date beginDate = df.parse("2009-03-14 00:00:00");
+		Date endDate = df.parse("2009-07-07 23:59:59");
 
 		PaymentPoint paymentPoint = paymentPointService.read(new Stub<PaymentPoint>(1L));
 		if (paymentPoint == null) {

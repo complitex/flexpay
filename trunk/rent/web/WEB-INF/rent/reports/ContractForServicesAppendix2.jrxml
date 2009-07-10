@@ -9,9 +9,6 @@
 	<style name="TNR_12" isDefault="false" fontName="LiberationSerif-Regular" fontSize="12" pdfFontName="fonts/LiberationSerif-Regular.ttf" pdfEncoding="Cp1251" isPdfEmbedded="true"/>
 	<style name="TNR_12b" isDefault="false" fontName="LiberationSerif-Bold" fontSize="12" isBold="true" pdfFontName="fonts/LiberationSerif-Bold.ttf" pdfEncoding="Cp1251" isPdfEmbedded="true"/>
 	<style name="TNR_14b" isDefault="false" fontName="LiberationSerif-Bold" fontSize="14" isBold="true" pdfFontName="fonts/LiberationSerif-Bold.ttf" pdfEncoding="Cp1251" isPdfEmbedded="true"/>
-	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
-		<defaultValueExpression><![CDATA["C:/Documents and Settings/Alexuy/Local Settings/Temp/flexpay_data/reports/templates/"]]></defaultValueExpression>
-	</parameter>
 	<title>
 		<band height="639">
 			<textField>
