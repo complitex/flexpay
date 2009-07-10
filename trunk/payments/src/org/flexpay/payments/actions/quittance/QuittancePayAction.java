@@ -38,7 +38,7 @@ public class QuittancePayAction extends PaymentOperationAction {
 			log.debug("TradingDay process id not found for Payment point id = {}", cashbox.getPaymentPoint().getId());
 
 			fillOperation(operation, cashbox);
-			if (isNotValidOperation(operation)) {
+			if (!isValidOperation(operation)) {
 				addActionError(getText("payments.error.operation_is_incorrect"));
 				return REDIRECT_SUCCESS;
 			}
@@ -59,7 +59,7 @@ public class QuittancePayAction extends PaymentOperationAction {
 			}
 
 			fillOperation(operation, cashbox);
-			if (isNotValidOperation(operation)) {
+			if (!isValidOperation(operation)) {
 				addActionError(getText("payments.error.operation_is_incorrect"));
 				return REDIRECT_SUCCESS;
 			}
@@ -93,7 +93,7 @@ public class QuittancePayAction extends PaymentOperationAction {
 		return !BigDecimalUtil.isZero(operation.getOperationSumm()) && operation.getDocuments() != null && operation.getDocuments().size() > 0;
 	}
 
-	private boolean isNotValidOperation(Operation operation) {
+	private boolean isValidOperation(Operation operation) {
 
 		BigDecimal totalSumm = operation.getOperationSumm();
 		BigDecimal inputSumm = operation.getOperationInputSumm();
