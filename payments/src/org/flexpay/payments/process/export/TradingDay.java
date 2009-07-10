@@ -110,12 +110,15 @@ public class TradingDay extends QuartzJobBean {
 
         authenticateTradingDayGenerator();
 
+        /*
+        // Redeploy process definition. Using in development.
         try {
             processManager.deployProcessDefinition(PROCESS_DEFINITION_NAME, true);
         } catch (ProcessDefinitionException e) {
             log.error("Deploy exception", e);
             throw new JobExecutionException(e);
         }
+        */
 
         Page<org.flexpay.common.process.Process> page = new Page<org.flexpay.common.process.Process>();
         List<org.flexpay.common.process.Process> processes;
