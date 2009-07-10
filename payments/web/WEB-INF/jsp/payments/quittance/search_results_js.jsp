@@ -107,13 +107,15 @@
 		if (isValidPaymentValue(paymentValue)) {
 			// hide error
 			$(errorCell).text('');
-			$(previousRow).css('display', 'none');
+//			$(previousRow).css('display', 'none');
+			$(previousRow).hide();
 			removeErrorField(fieldId);
 			return true;
 		} else {
 			// show error
 			$(errorCell).text('<s:text name="eirc.error.quittances.quittance_pay.invalid_pay_value"/>');
-			$(previousRow).css("display", "table-row");
+//			$(previousRow).css("display", "table-row");
+			$(previousRow).show();
 			addErrorField(fieldId);
 			return false;
 		}
@@ -140,12 +142,14 @@
 		if (totalPaySumm > inputSumm) {
 			// show error
 			$(errorCell).text('<s:text name="payments.quittances.quittance_pay.input_summ_is_too_small"/>');
-			$(previousRow).css("display", "table-row");
+//			$(previousRow).css("display", "table-row");
+			$(previousRow).show();
 			addErrorField('inputSumm');
 			return false;
 		} else {
 			$(errorCell).text('');
-			$(previousRow).css('display', 'none');
+//			$(previousRow).css('display', 'none');
+			$(previousRow).hide();
 			removeErrorField('inputSumm');
 			return true;
 		}
