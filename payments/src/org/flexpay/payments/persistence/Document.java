@@ -49,6 +49,7 @@ public class Document extends DomainObject {
 	private String buildingBulk;
 	private String apartmentNumber;
 
+	private BigDecimal debt;
 
 	private Set<DocumentAddition> additions = Collections.emptySet();
 
@@ -266,6 +267,14 @@ public class Document extends DomainObject {
 
 	public void setApartmentNumber(String apartmentNumber) {
 		this.apartmentNumber = apartmentNumber;
+	}
+
+	public BigDecimal getDebt() {
+		return debt;
+	}
+
+	public void setDebt(BigDecimal debt) {
+		this.debt = debt;
 	}
 
 	@Override

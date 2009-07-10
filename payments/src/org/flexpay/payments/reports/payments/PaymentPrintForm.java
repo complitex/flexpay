@@ -16,6 +16,7 @@ public class PaymentPrintForm implements Serializable {
 	private String quittanceNumber;
 	private String cashierFIO;
 	private String payerFIO;
+	private String paymentPointName;
 	private String paymentPointAddress;
 	private BigDecimal total;
 	private String totalSpelling;
@@ -106,6 +107,14 @@ public class PaymentPrintForm implements Serializable {
 		this.changeSumm = changeSumm;
 	}
 
+	public String getPaymentPointName() {
+		return paymentPointName;
+	}
+
+	public void setPaymentPointName(String paymentPointName) {
+		this.paymentPointName = paymentPointName;
+	}
+
 	public List<PaymentDetails> getDetailses() {
 		return detailses;
 	}
@@ -132,6 +141,7 @@ public class PaymentPrintForm implements Serializable {
 		private BigDecimal paymentSumm;
 		private String paymentPeriod;
 		private String counterValue;
+		private BigDecimal debt;
 
 		public String getAddress() {
 			return address;
@@ -197,6 +207,13 @@ public class PaymentPrintForm implements Serializable {
 			this.counterValue = counterValue;
 		}
 
+		public BigDecimal getDebt() {
+			return debt;
+		}
+
+		public void setDebt(BigDecimal debt) {
+			this.debt = debt;
+		}
 	}
 
 }
