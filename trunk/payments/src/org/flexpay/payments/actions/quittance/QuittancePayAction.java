@@ -13,6 +13,8 @@ import org.flexpay.payments.process.export.TradingDay;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
+import java.math.BigDecimal;
+
 public class QuittancePayAction extends PaymentOperationAction {
 
 	private static final String TRADING_DAY_CLOSED = "tradingDayClosed"; // tiles result name
@@ -36,6 +38,11 @@ public class QuittancePayAction extends PaymentOperationAction {
 			log.debug("TradingDay process id not found for Payment point id = {}", cashbox.getPaymentPoint().getId());
 
 			fillOperation(operation, cashbox);
+			if (isNotValidOperation(operation)) {
+				addActionError(getText("payments.error.operation_is_incorrect"));
+				return REDIRECT_SUCCESS;
+			}
+
 			if (isNotEmptyOperation(operation)) {
 				operationService.save(operation);
 			} else {
@@ -52,6 +59,11 @@ public class QuittancePayAction extends PaymentOperationAction {
 			}
 
 			fillOperation(operation, cashbox);
+			if (isNotValidOperation(operation)) {
+				addActionError(getText("payments.error.operation_is_incorrect"));
+				return REDIRECT_SUCCESS;
+			}
+
 			if (isNotEmptyOperation(operation)) {
 				operationService.save(operation);
 			} else {
@@ -79,6 +91,25 @@ public class QuittancePayAction extends PaymentOperationAction {
 
 	private boolean isNotEmptyOperation(Operation operation) {
 		return !BigDecimalUtil.isZero(operation.getOperationSumm()) && operation.getDocuments() != null && operation.getDocuments().size() > 0;
+	}
+
+	private boolean isNotValidOperation(Operation operation) {
+
+		BigDecimal totalSumm = operation.getOperationSumm();
+		BigDecimal inputSumm = operation.getOperationInputSumm();
+		BigDecimal changeSumm = operation.getChange();
+
+		BigDecimal summ = totalSumm.add(changeSumm);
+
+		if (inputSumm == null || totalSumm == null || changeSumm == null) {
+			return false;
+		}
+
+		if (inputSumm.compareTo(summ) != 0) {
+			return false;
+		}
+
+		return true;
 	}
 
 	@NotNull
