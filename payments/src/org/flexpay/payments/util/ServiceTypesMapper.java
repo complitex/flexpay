@@ -1,4 +1,4 @@
-package org.flexpay.eirc.sp.impl;
+package org.flexpay.payments.util;
 
 import org.apache.commons.collections.BidiMap;
 import org.apache.commons.collections.bidimap.DualHashBidiMap;
@@ -6,7 +6,7 @@ import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.payments.persistence.ServiceType;
 import org.flexpay.payments.service.ServiceTypeService;
-import org.flexpay.eirc.service.Security;
+import org.flexpay.payments.service.Security;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.util.List;

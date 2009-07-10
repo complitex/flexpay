@@ -70,7 +70,7 @@ public class GeneratePaymentsDBRegistry {
                 RegistryRecordStatus status = registryRecordStatusService.findByCode(RegistryRecordStatus.PROCESSED);
                 record.setRecordStatus(status);
                 record.setAmount(document.getSumm());
-                record.setServiceCode("#" + document.getService().getExternalCode());
+                record.setServiceCode("#" + document.getService().getServiceType().getCode());
                 record.setPersonalAccountExt(document.getDebtorId());
                 record.setOperationDate(document.getOperation().getCreationDate());
                 record.setRegistry(registry);

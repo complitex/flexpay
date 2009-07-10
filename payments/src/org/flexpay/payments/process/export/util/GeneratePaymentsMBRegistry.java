@@ -2,31 +2,36 @@ package org.flexpay.payments.process.export.util;
 
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
+import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.persistence.filter.ImportErrorTypeFilter;
 import org.flexpay.common.persistence.filter.RegistryRecordStatusFilter;
 import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.persistence.registry.RegistryRecord;
 import org.flexpay.common.persistence.registry.RegistryStatus;
+import org.flexpay.common.service.FPFileService;
 import org.flexpay.common.service.RegistryRecordService;
 import org.flexpay.common.service.RegistryService;
 import org.flexpay.common.service.RegistryStatusService;
-import org.flexpay.common.service.FPFileService;
 import org.flexpay.common.util.FPFileUtil;
 import org.flexpay.orgs.persistence.Organization;
+import org.flexpay.payments.persistence.ServiceType;
+import org.flexpay.payments.service.ServiceTypeService;
+import org.flexpay.payments.util.ServiceTypesMapper;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 
-import java.io.*;
+import java.io.BufferedInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
-import java.util.*;
 import java.security.Signature;
 import java.security.SignatureException;
-import java.lang.reflect.Array;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 public class GeneratePaymentsMBRegistry {
     private final Logger log = LoggerFactory.getLogger(getClass());
@@ -87,6 +92,8 @@ public class GeneratePaymentsMBRegistry {
     private RegistryStatusService registryStatusService;
     private RegistryRecordService registryRecordService;
     private FPFileService fpFileService;
+    private ServiceTypesMapper serviceTypesMapper;
+    private ServiceTypeService serviceTypeService;
 
     private Signature signature = null;
 
@@ -250,7 +257,12 @@ public class GeneratePaymentsMBRegistry {
         infoLine.add(createCellData(record.getApartmentNum(), tableHeader[7].length(), ' '));
 
         // услуга
-        String serviceCode = record.getServiceCode().substring(1);
+        String serviceCode = record.getServiceCode();
+        if (serviceCode.startsWith("#")) {
+            int innerServiceCode = Integer.parseInt(serviceCode.substring(1));
+            ServiceType serviceType = serviceTypeService.getServiceType(innerServiceCode);
+            serviceCode = serviceTypesMapper.getMegabankCode(Stub.stub(serviceType));
+        }
         while (serviceCode.length() < 2) {
             serviceCode = "0" + serviceCode;
         }
@@ -364,6 +376,16 @@ public class GeneratePaymentsMBRegistry {
     @Required
     public void setRegistryRecordService(RegistryRecordService registryRecordService) {
         this.registryRecordService = registryRecordService;
+    }
+
+    @Required
+    public void setServiceTypesMapper(ServiceTypesMapper serviceTypesMapper) {
+        this.serviceTypesMapper = serviceTypesMapper;
+    }
+
+    @Required
+    public void setServiceTypeService(ServiceTypeService serviceTypeService) {
+        this.serviceTypeService = serviceTypeService;
     }
 
     @NotNull
