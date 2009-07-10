@@ -118,6 +118,7 @@ public class PaymentsReporterImpl implements PaymentsReporter {
 		form.setPaymentPointStub(op.getPaymentPointStub());
 		form.setPayerFIO(op.getPayerFIO());
 		form.setPaymentPointAddress(paymentPoint.getAddress());
+		form.setPaymentPointName(paymentPoint.getName());
 
 		// todo: fixme
 		form.setCashierFIO("Коваль А.Н.");
@@ -138,6 +139,7 @@ public class PaymentsReporterImpl implements PaymentsReporter {
 			details.setAddress(doc.getAddress());
 			details.setFio(doc.getPayerFIO());
 			details.setPaymentSumm(doc.getSumm());
+			details.setDebt(doc.getDebt());
 
 			details.setPaymentPeriod(DateUtil.formatMonth(DateUtil.previousMonth(op.getCreationDate())));
 

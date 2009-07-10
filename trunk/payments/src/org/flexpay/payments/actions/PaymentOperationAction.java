@@ -38,6 +38,7 @@ public abstract class PaymentOperationAction extends CashboxCookieActionSupport 
 	private Map<String, String> payerFios = CollectionUtils.map();
 	private Map<String, String> addresses = CollectionUtils.map();
 	private Map<String, String> eircAccounts = CollectionUtils.map();
+	private Map<String, BigDecimal> debts = CollectionUtils.map();
 	private BigDecimal changeSumm;
 	private BigDecimal inputSumm;
 	private BigDecimal totalToPay;
@@ -117,6 +118,7 @@ public abstract class PaymentOperationAction extends CashboxCookieActionSupport 
 		document.setDocumentStatus(documentStatusService.read(DocumentStatus.REGISTERED));
 		document.setDocumentType(documentTypeService.read(DocumentType.CASH_PAYMENT));
 		document.setSumm(documentSumm);
+		document.setDebt(debts.get(serviceFullIndex));
 		document.setAddress(addresses.get(serviceFullIndex));
 		document.setPayerFIO(StringUtils.stripToEmpty(payerFios.get(serviceFullIndex)));
 		document.setDebtorOrganization(cashbox.getPaymentPoint().getCollector().getOrganization());
@@ -239,6 +241,14 @@ public abstract class PaymentOperationAction extends CashboxCookieActionSupport 
 
 	public void setEircAccounts(Map<String, String> eircAccounts) {
 		this.eircAccounts = eircAccounts;
+	}
+
+	public Map<String, BigDecimal> getDebts() {
+		return debts;
+	}
+
+	public void setDebts(Map<String, BigDecimal> debts) {
+		this.debts = debts;
 	}
 
 	public BigDecimal getChangeSumm() {

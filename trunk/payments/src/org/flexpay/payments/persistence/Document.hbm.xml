@@ -23,6 +23,11 @@
 				<comment>Summ</comment>
 			</column>
 		</property>
+		<property name="debt">
+			<column name="debt" not-null="false">
+				<comment>Debt summ</comment>
+			</column>
+		</property>
 		<property name="address">
 			<column name="address" not-null="false">
 				<comment>Payer address</comment>

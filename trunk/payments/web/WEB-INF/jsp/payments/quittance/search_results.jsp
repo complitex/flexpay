@@ -26,6 +26,7 @@
 					<s:hidden name="addresses['%{#serviceIndx}']" value="%{getApartmentAddress(#qi)}"/>
 					<s:hidden name="eircAccounts['%{#serviceIndx}']" value="%{getEircAccount(#qi)}"/>
 					<s:hidden name="serviceProviderAccounts['%{#serviceIndx}']" value="%{serviceProviderAccount}"/>
+					<s:hidden name="debts['%{#serviceIndx}']" value="%{outgoingBalance}"/>
 
 					<tr class="cols_1_error" style="display:none;">
 						<td colspan="6" />
