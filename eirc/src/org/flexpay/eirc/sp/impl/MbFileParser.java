@@ -14,6 +14,7 @@ import org.flexpay.eirc.sp.FileParser;
 import org.flexpay.eirc.service.ConsumerService;
 import org.flexpay.orgs.service.ServiceProviderService;
 import org.flexpay.payments.service.SPService;
+import org.flexpay.payments.util.ServiceTypesMapper;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
