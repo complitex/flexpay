@@ -12,7 +12,8 @@ import org.junit.runners.Suite;
 		org.flexpay.payments.action.AllTests.class,
 		org.flexpay.payments.persistence.AllTests.class,
 		org.flexpay.payments.service.AllTests.class,
-		org.flexpay.payments.export.AllTests.class
+		org.flexpay.payments.export.AllTests.class,
+		org.flexpay.payments.util.AllTests.class
 		})
 public class AllTests extends TestCase {
 
