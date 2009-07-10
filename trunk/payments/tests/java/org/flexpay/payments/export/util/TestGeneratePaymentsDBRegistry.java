@@ -248,7 +248,7 @@ public class TestGeneratePaymentsDBRegistry extends SpringBeanAwareTestCase {
         //get document status
         DocumentStatus documentStatus = documentStatusService.read(DocumentStatus.REGISTERED);
         //get document service
-        int code = 1;
+        int code = 3;
         ServiceType serviceType;
         serviceType = serviceTypeService.getServiceType(code);
         /*

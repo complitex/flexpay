@@ -54,7 +54,8 @@ public class GeneratePaymentsRegistry extends QuartzJobBean {
             org.flexpay.payments.service.Roles.OPERATION_READ,
             org.flexpay.payments.service.Roles.DOCUMENT_READ,
             org.flexpay.orgs.service.Roles.ORGANIZATION_READ,
-            org.flexpay.orgs.service.Roles.SERVICE_PROVIDER_READ
+            org.flexpay.orgs.service.Roles.SERVICE_PROVIDER_READ,
+            org.flexpay.payments.service.Roles.SERVICE_TYPE_READ
     );
 
     protected void executeInternal(JobExecutionContext context) throws JobExecutionException {
