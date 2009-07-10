@@ -21,7 +21,7 @@
 	<null name="jbpm.job.executor" />
 
 	<!--configuration resource files pointing to default configuration files in jbpm-{version}.jar-->
-	<string name="resource.business.calendar" value="org/jbpm/calendar/jbpm.business.calendar.properties" />
+	<string name="resource.business.calendar" value="org/flexpay/payments/process/calendar/jbpm.business.calendar.properties" />
 	<string name="resource.default.modules" value="org/jbpm/graph/def/jbpm.default.modules.properties" />
 	<string name="resource.converter" value="org/jbpm/db/hibernate/jbpm.converter.properties" />
 	<string name="resource.action.types" value="org/jbpm/graph/action/action.types.xml" />
