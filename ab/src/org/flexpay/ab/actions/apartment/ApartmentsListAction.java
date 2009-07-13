@@ -2,10 +2,12 @@ package org.flexpay.ab.actions.apartment;
 
 import org.apache.commons.collections.ArrayStack;
 import org.flexpay.ab.persistence.Apartment;
+import org.flexpay.ab.persistence.sorter.ApartmentSorter;
 import org.flexpay.ab.persistence.filters.*;
 import org.flexpay.ab.service.ApartmentService;
 import org.flexpay.common.actions.FPActionWithPagerSupport;
 import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
+import org.flexpay.common.persistence.sorter.ObjectSorter;
 import org.flexpay.common.service.ParentService;
 import org.flexpay.common.util.CollectionUtils;
 import org.jetbrains.annotations.NotNull;
@@ -13,13 +15,15 @@ import org.springframework.beans.factory.annotation.Required;
 
 import java.util.List;
 
-public class ApartmentsListAction extends FPActionWithPagerSupport {
+public class ApartmentsListAction extends FPActionWithPagerSupport<Apartment> {
 
 	protected CountryFilter countryFilter = new CountryFilter();
 	protected RegionFilter regionFilter = new RegionFilter();
 	protected TownFilter townFilter = new TownFilter();
 	protected StreetNameFilter streetNameFilter = new StreetNameFilter();
 	protected BuildingsFilter buildingsFilter = new BuildingsFilter();
+
+	protected ApartmentSorter apartmentSorter = new ApartmentSorter();
 
 	private List<Apartment> apartments = CollectionUtils.list();
 
@@ -41,7 +45,11 @@ public class ApartmentsListAction extends FPActionWithPagerSupport {
 		filters = parentService.initFilters(filters, userPreferences.getLocale());
 		setFilters(filters);
 
-		apartments = apartmentService.getApartments(filters, getPager());
+		List<ObjectSorter> sorters = CollectionUtils.<ObjectSorter>list(apartmentSorter);
+		apartments = apartmentService.find(filters, sorters, getPager());
+		log.debug("Total apartments filtered: {}", apartments.size());
+		apartments = apartmentService.readFull (Apartment.collectionIds(apartments));
+		log.debug("Total apartments readFull: {}", apartments.size());
 
 		return SUCCESS;
 	}
@@ -120,6 +128,14 @@ public class ApartmentsListAction extends FPActionWithPagerSupport {
 
 	public List<Apartment> getApartments() {
 		return apartments;
+	}
+
+	public ApartmentSorter getApartmentSorter() {
+		return apartmentSorter;
+	}
+
+	public void setApartmentSorter(ApartmentSorter apartmentSorter) {
+		this.apartmentSorter = apartmentSorter;
 	}
 
 	@Required

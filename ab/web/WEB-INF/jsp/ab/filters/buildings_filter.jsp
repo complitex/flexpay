@@ -9,8 +9,8 @@
 			<option value="-1"><s:text name="common.select"/></option>
 		</s:if>
 		<s:iterator value="buildingsFilter.buildingses">
-			<option value="<s:property value="building.id"/>"<s:if
-					test="%{building.id == buildingsFilter.selectedId}"> selected</s:if>><s:property
+			<option value="<s:property value="id"/>"<s:if
+					test="%{id == buildingsFilter.selectedId}"> selected</s:if>><s:property
 					value="%{@org.flexpay.ab.util.TranslationUtil@getBuildingNumber(buildingAttributes, userPreferences.locale)}"/></option>
 		</s:iterator>
 	</select>
