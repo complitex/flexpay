@@ -326,7 +326,7 @@
             left outer join fetch rr.recordStatus rrs
             left join fetch rr.importError
             left join fetch rr.containers
-        where r.id=? and rrs.code NOT IN (2)
+        where r.id=? and rr.id between ? and ? and rrs.code NOT IN (2)
     ]]></query>
 
 	<query name="RegistryType.countNotProcessedRecords"><![CDATA[
