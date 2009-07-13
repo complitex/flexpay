@@ -14,8 +14,7 @@ public class TestMbChargesFileValidator extends TestSpFileCreateAction {
 
 	@Test
 	public void validateFile() throws Throwable {
-		FPFile newFile = createSpFile("org/flexpay/eirc/sp/20090605m_10k.nch");
-//		FPFile newFile = createSpFile("org/flexpay/eirc/sp/01033_122008.nac");
+		FPFile newFile = createSpFile("org/flexpay/eirc/sp/20090605m_10.nch");
 		try {
 			assertTrue("Validation failed", validator.validate(newFile));
 		} finally {

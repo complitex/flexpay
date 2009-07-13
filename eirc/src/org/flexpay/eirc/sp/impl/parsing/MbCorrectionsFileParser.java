@@ -178,14 +178,14 @@ public class MbCorrectionsFileParser extends MbFileParser {
 				log.debug("No consumer found, adding creation record {}", record.getPersonalAccountExt());
 				createAccountRecord(record, fields);
 				++count;
-//				record = newRecord(registry, fields, serviceCode);
-//				recordStack.add(record);
+				record = newRecord(registry, fields, serviceCode);
+				recordStack.add(record);
 			} else {
 				recProps.setConsumer(consumer);
 			}
 
-//			createRecord(record, fields);
-//			++count;
+			createRecord(record, fields);
+			++count;
 		}
 
 		return count;
@@ -283,6 +283,11 @@ public class MbCorrectionsFileParser extends MbFileParser {
 			container.setData("12:" + modificationStartDate + "::" + fields[16]);
 			record.addContainer(container);
 		}
+
+		container = new RegistryRecordContainer();
+		container.setData("15:" + modificationStartDate + "::" + getErcAccount(fields) +
+						  ":" + getMBOrganizationStub().getId());
+		record.addContainer(container);
 
 		return record;
 	}

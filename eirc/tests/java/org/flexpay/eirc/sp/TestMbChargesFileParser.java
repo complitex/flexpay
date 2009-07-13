@@ -28,7 +28,7 @@ public class TestMbChargesFileParser extends TestSpFileCreateAction {
 	@Test
 	public void testParseFile() throws Throwable {
 
-		FPFile newFile = createSpFile("org/flexpay/eirc/sp/01033_122008.nac");
+		FPFile newFile = createSpFile("org/flexpay/eirc/sp/20090605m_10.nch");
 
 		List<Registry> registries = parser.parse(newFile);
 		registryProcessor.registriesProcess(registries);

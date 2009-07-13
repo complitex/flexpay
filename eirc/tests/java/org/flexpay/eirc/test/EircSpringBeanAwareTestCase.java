@@ -22,6 +22,7 @@ public class EircSpringBeanAwareTestCase extends AbSpringBeanAwareTestCase {
 	public static void authenticateTestUser() {
 		GrantedAuthority[] authorities = SecurityUtil.auths(
 				QUITTANCE_READ,
+				ACCOUNT_READ,
 				PERSON_READ,
 				APARTMENT_READ,
 				BUILDING_ATTRIBUTE_TYPE_READ,

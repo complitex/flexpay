@@ -40,7 +40,7 @@ public class TestMbCorrectionsFileParser extends TestSpFileCreateAction {
 	@Test
 	public void testParseFile() throws Throwable {
 
-		FPFile newFile = createSpFile("org/flexpay/eirc/sp/01033_122008.kor");
+		FPFile newFile = createSpFile("org/flexpay/eirc/sp/20090605m_10.ls");
 
 		try {
 			List<Registry> registries = parser.parse(newFile);
@@ -57,7 +57,7 @@ public class TestMbCorrectionsFileParser extends TestSpFileCreateAction {
 			throw e;
 		}
 
-		deleteFile(newFile);
+//		deleteFile(newFile);
 	}
 
 	@Before

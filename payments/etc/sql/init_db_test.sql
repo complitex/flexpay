@@ -382,10 +382,16 @@ INSERT INTO payments_service_descriptions_tbl (name, language_id, service_id)
 	VALUES ('Подогрев воды', @ru_id, @service_5);
 
 INSERT INTO payments_services_tbl (provider_id, external_code, measure_unit_id, type_id, begin_date, end_date, version, status)
-	VALUES (@service_provider_cn, '7', null, @service_hot_water, '1900-01-01', '2100-12-31', 0, 0);
+	VALUES (@service_provider_cn, '7', null, @service_cold_water, '1900-01-01', '2100-12-31', 0, 0);
 SELECT @service_7:=last_insert_id();
 INSERT INTO payments_service_descriptions_tbl (name, language_id, service_id)
-	VALUES ('Горячая вода', @ru_id, @service_7);
+	VALUES ('Холодная вода', @ru_id, @service_7);
+
+INSERT INTO payments_services_tbl (provider_id, external_code, measure_unit_id, type_id, begin_date, end_date, version, status)
+	VALUES (@service_provider_cn, '8', null, @service_hot_water, '1900-01-01', '2100-12-31', 0, 0);
+SELECT @service_8:=last_insert_id();
+INSERT INTO payments_service_descriptions_tbl (name, language_id, service_id)
+	VALUES ('Горячая вода', @ru_id, @service_8);
 
 INSERT INTO payments_services_tbl (provider_id, external_code, measure_unit_id, type_id, begin_date, end_date, version, status)
 	VALUES (@service_provider_cn, '220', null, @service_type_220, '1900-01-01', '2100-12-31', 0, 0);

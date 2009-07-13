@@ -256,11 +256,4 @@
 		</antcall>
 	</target>
 
-    <target name="eirc.db" description="create eirc db">
-		<antcall target="eirc.sql.all" />
-		<antcall target="template.mysql.run">
-			<param name="src.sql" value="${build.dir}/sql/init_db.sql" />
-		</antcall>
-	</target>
-
 </project>
