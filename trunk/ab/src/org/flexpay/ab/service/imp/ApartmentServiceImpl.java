@@ -16,12 +16,11 @@ import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Stub;
-import org.flexpay.common.persistence.sorter.ObjectSorter;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.persistence.filter.ObjectFilter;
 import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
 import org.flexpay.common.persistence.history.ModificationListener;
-import org.flexpay.common.service.ParentService;
+import org.flexpay.common.persistence.sorter.ObjectSorter;
 import org.flexpay.common.service.internal.SessionUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -225,7 +224,13 @@ public class ApartmentServiceImpl implements ApartmentService {
 	@NotNull
 	@Override
 	public List<Apartment> readFull(@NotNull Collection<Long> stubs) {
-		return apartmentDao.readFullCollection(stubs);
+
+		List<Apartment> apartments = apartmentDao.readFullCollection(stubs, true);
+		if (log.isDebugEnabled()) {
+			log.debug("Requested {} apartments, fetched {}", stubs.size(), apartments.size());
+		}
+
+		return apartments;
 	}
 
 	public void fillFilterIds(@NotNull Stub<Apartment> stub, ArrayStack filters) throws FlexPayException {
@@ -420,6 +425,9 @@ public class ApartmentServiceImpl implements ApartmentService {
 
 		log.debug("Finding building apartments with sorters");
 		BuildingsFilter buildingFilter = (BuildingsFilter) filters.peek();
+		if (!buildingFilter.needFilter()) {
+			return Collections.emptyList();
+		}
 		Building building = buildingService.findBuilding(buildingFilter.getSelectedStub());
 		if (building == null) {
 			log.info("No building found for filter {}", buildingFilter);

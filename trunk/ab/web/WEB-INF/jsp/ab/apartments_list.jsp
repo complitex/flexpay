@@ -4,7 +4,7 @@
 <s:actionerror/>
 
 <table cellpadding="3" cellspacing="1" border="0" width="100%">
-	<form id="fobjects" method="post" action="<s:url value="/dicts/apartmentsList.action" includeParams="none" />">
+	<form id="fobjects" method="post" action="<s:url action="apartmentsList" includeParams="none" />">
 
 		<tr>
 			<td colspan="4">
@@ -28,7 +28,9 @@
 			<td class="th" width="1%">
                 <input type="checkbox" onchange="FP.setCheckboxes(this.checked, 'objectIds');">
 			</td>
-			<td colspan="2" class="th" width="98%"><s:text name="ab.apartment"/></td>
+			<td colspan="2" class="th" width="98%">
+				<%@ include file="sorters/apartmentSorterHeader.jsp" %>
+			</td>
 		</tr>
 		<s:iterator value="%{apartments}" status="status">
 			<tr valign="middle" class="cols_1">

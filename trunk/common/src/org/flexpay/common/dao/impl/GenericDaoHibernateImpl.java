@@ -9,6 +9,8 @@ import org.flexpay.common.dao.finder.impl.SimpleFinderArgumentTypeFactory;
 import org.flexpay.common.dao.finder.impl.SimpleFinderNamingStrategy;
 import org.flexpay.common.dao.paging.FetchRange;
 import org.flexpay.common.dao.paging.Page;
+import org.flexpay.common.util.CollectionUtils;
+import org.flexpay.common.persistence.DomainObject;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -26,6 +28,7 @@ import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Hibernate implementation of GenericDao A typesafe implementation of CRUD and finder methods based on Hibernate and
@@ -88,19 +91,38 @@ public class GenericDaoHibernateImpl<T, PK extends Serializable>
 	 * Read full persistent objects info
 	 *
 	 * @param ids Object identifiers
+	 * @param preserveOrder whether to save order of elements
 	 * @return Objects found
 	 */
 	@NotNull
 	@Override
-	public List<T> readFullCollection(final @NotNull Collection<PK> ids) {
+	public List<T> readFullCollection(final @NotNull Collection<PK> ids, boolean preserveOrder) {
+		if (ids.isEmpty()) {
+			return Collections.emptyList();
+		}
 		final String queryName = type.getSimpleName() + ".readFullCollection";
-		return (List<T>) hibernateTemplate.execute(new HibernateCallback() {
+		List<T> result = (List<T>) hibernateTemplate.execute(new HibernateCallback() {
 			public Object doInHibernate(Session session) throws HibernateException {
 				Query query = session.getNamedQuery(queryName);
 				query.setParameterList("ids", ids);
 				return query.list();
 			}
 		});
+
+		if (preserveOrder) {
+			Map<Long, DomainObject> map = CollectionUtils.map();
+			for (Object t : result) {
+				DomainObject o = (DomainObject) t;
+				map.put(o.getId(), o);
+			}
+			result = CollectionUtils.list();
+			for (Object id : ids) {
+				//noinspection SuspiciousMethodCalls
+				result.add((T) map.get(id));
+			}
+		}
+
+		return result;
 	}
 
 	public void update(@NotNull T o) {
