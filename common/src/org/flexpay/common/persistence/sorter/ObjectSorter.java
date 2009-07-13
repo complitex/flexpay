@@ -78,8 +78,9 @@ public abstract class ObjectSorter implements Serializable {
 		this.active = active;
 	}
 
-	public void activate() {
+	public ObjectSorter activate() {
 		this.active = ACTIVE;
+		return this;
 	}
 
 	@Override

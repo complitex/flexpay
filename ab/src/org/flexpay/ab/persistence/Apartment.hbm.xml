@@ -64,6 +64,13 @@
 		WHERE a.id=?
 	</query>
 
+	<query name="Apartment.readFullCollection">
+		SELECT DISTINCT a
+		FROM Apartment a
+			LEFT JOIN FETCH a.apartmentNumbers
+		WHERE a.id in (:ids)
+	</query>
+
 	<query name="Apartment.findByNumber">
 		FROM Apartment a
 			LEFT JOIN FETCH a.apartmentNumbers

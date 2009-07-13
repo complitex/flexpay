@@ -1,6 +1,7 @@
 package org.flexpay.ab.persistence.filters;
 
 import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
+import org.flexpay.common.persistence.Stub;
 import org.flexpay.ab.persistence.BuildingAddress;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.NotNull;
@@ -11,6 +12,17 @@ import java.util.Collections;
 public class BuildingsFilter extends PrimaryKeyFilter<BuildingAddress> {
 
 	private List<BuildingAddress> buildingses = Collections.emptyList();
+
+	public BuildingsFilter() {
+	}
+
+	public BuildingsFilter(Long selectedId) {
+		super(selectedId);
+	}
+
+	public BuildingsFilter(@NotNull Stub<BuildingAddress> stub) {
+		super(stub);
+	}
 
 	/**
 	 * Getter for property 'buildingses'.
@@ -35,7 +47,7 @@ public class BuildingsFilter extends PrimaryKeyFilter<BuildingAddress> {
 	public BuildingAddress getSelected() {
 		if (needFilter()) {
 			for (BuildingAddress buildingAddress : buildingses) {
-				if (getSelectedId().equals(buildingAddress.getId())) {
+				if (getSelectedStub().sameId(buildingAddress)) {
 					return buildingAddress;
 				}
 			}

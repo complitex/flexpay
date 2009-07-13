@@ -4,8 +4,11 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.flexpay.common.util.CollectionUtils;
 
 import java.io.Serializable;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * Parent class for all domain objects
@@ -70,4 +73,12 @@ public class DomainObject implements Serializable {
 				.toString();
 	}
 
+	public static Collection<Long> collectionIds(@NotNull Collection<? extends DomainObject> objects) {
+		List<Long> result = CollectionUtils.list();
+		for (DomainObject o : objects) {
+			result.add(o.getId());
+		}
+
+		return result;
+	}
 }

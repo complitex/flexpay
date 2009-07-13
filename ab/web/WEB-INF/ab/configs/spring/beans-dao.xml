@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
 	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+	   xmlns:p="http://www.springframework.org/schema/p"
+	   xmlns:context="http://www.springframework.org/schema/context"
+	   xsi:schemaLocation="
+		   http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+		   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
 	<!--  Dao Layer instances -->
 	<bean id="countryDao" parent="abstractDao">
@@ -192,16 +196,6 @@
 		</property>
 	</bean>
 
-	<bean id="streetTypeTemporalDao" parent="abstractDao">
-		<property name="proxyInterfaces"
-				  value="org.flexpay.ab.dao.StreetTypeTemporalDao" />
-		<property name="target">
-			<bean parent="abstractDaoTarget">
-				<constructor-arg value="org.flexpay.ab.persistence.StreetTypeTemporal" />
-			</bean>
-		</property>
-	</bean>
-
 	<!-- Town type DAO objects -->
 	<bean id="townTypeDao" parent="abstractDao">
 		<property name="proxyInterfaces"
@@ -290,9 +284,10 @@
 		<property name="hibernateTemplate" ref="hibernateTemplate" />
 	</bean>
 
-	<bean id="apartmentDaoExt" class="org.flexpay.ab.dao.imp.ApartmentDaoExtImpl">
-		<property name="dataSource" ref="dataSource" />
-	</bean>
+	<bean id="apartmentDaoExt"
+		  class="org.flexpay.ab.dao.imp.ApartmentDaoExtImpl"
+		  p:dataSource-ref="dataSource"
+		  p:hibernateTemplate-ref="hibernateTemplate" />
 
 	<bean id="streetDaoExt" class="org.flexpay.ab.dao.imp.StreetDaoExtImpl">
 		<property name="hibernateTemplate" ref="hibernateTemplate" />

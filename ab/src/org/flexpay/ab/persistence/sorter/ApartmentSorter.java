@@ -30,8 +30,8 @@ public class ApartmentSorter extends ObjectSorter {
 			whereClause.append(" and ");
 		}
 
-		whereClause.append(" (")
-				.append("sortApartmentNumber.begin <= current_date() and sortApartmentNumber.end > current_date()");
+		whereClause
+				.append("(sortApartmentNumber.begin <= current_date() and sortApartmentNumber.end > current_date()) ");
 	}
 
 	/**
@@ -45,7 +45,7 @@ public class ApartmentSorter extends ObjectSorter {
 			orderByClause.append(",");
 		}
 
-		orderByClause.append(" convert(ifnull(sortApartmentNumber.value, '0'), UNSIGNED) ")
+		orderByClause.append(" lpad(convert(ifnull(sortApartmentNumber.value, '0'), UNSIGNED), 10, '0') ")
 				.append(getOrder());
 	}
 }
