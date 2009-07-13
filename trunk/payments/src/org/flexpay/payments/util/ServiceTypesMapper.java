@@ -4,10 +4,12 @@ import org.apache.commons.collections.BidiMap;
 import org.apache.commons.collections.bidimap.DualHashBidiMap;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.util.CollectionUtils;
+import org.flexpay.common.util.SecurityUtil;
 import org.flexpay.payments.persistence.ServiceType;
 import org.flexpay.payments.service.ServiceTypeService;
 import org.flexpay.payments.service.Security;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.security.Authentication;
 
 import java.util.List;
 import java.util.Map;
@@ -44,6 +46,7 @@ public class ServiceTypesMapper {
 
 	public void validate() {
 
+		Authentication auth = SecurityUtil.getAuthentication();
 		Security.authenticateSyncer();
 		List<Long> invalidTypes = CollectionUtils.list();
 		for (Object mbCode : mapping.keySet()) {
@@ -53,6 +56,7 @@ public class ServiceTypesMapper {
 				invalidTypes.add(stub.getId());
 			}
 		}
+		SecurityUtil.setAuthentication(auth);
 
 		if (!invalidTypes.isEmpty()) {
 			throw new IllegalArgumentException("Unknown service types: " + invalidTypes);
