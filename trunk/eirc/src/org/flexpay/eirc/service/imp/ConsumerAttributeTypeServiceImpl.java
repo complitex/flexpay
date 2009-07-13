@@ -7,6 +7,7 @@ import org.flexpay.eirc.dao.ConsumerAttributeTypeDaoExt;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
+import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.service.internal.SessionUtils;
 import org.flexpay.common.util.CollectionUtils;
 import org.jetbrains.annotations.NotNull;
@@ -122,6 +123,21 @@ public class ConsumerAttributeTypeServiceImpl implements ConsumerAttributeTypeSe
 			log.warn("Unknown type: {}", type);
 		}
 		return type;
+	}
+
+	/**
+	 * Find attribute type by unique code
+	 *
+	 * @param code Unique attribute type code
+	 * @return Attribute type
+	 */
+	@Override
+	public ConsumerAttributeTypeBase readByCode(String code) {
+		ConsumerAttributeTypeBase type = attributeTypeDaoExt.findAtributeTypeByCode(code);
+		if (type != null) {
+			return readFull(stub(type));
+		}
+		return null;
 	}
 
 	@Override

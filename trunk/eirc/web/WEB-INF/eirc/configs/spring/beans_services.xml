@@ -85,6 +85,7 @@
 		  p:reportPeriodService-ref="reportPeriodService"
 		  p:consumerService-ref="consumerService"
 		  p:consumerInfoService-ref="consumerInfoService"
+		  p:consumerAttributeTypeService-ref="consumerAttributeTypeService"
 		  p:importUtil-ref="eircImportUtil"
 		  p:accountService-ref="eircAccountService"
 		  p:btiApartmentService-ref="btiApartmentService"
@@ -176,7 +177,9 @@
 		  p:masterIndexService-ref="masterIndexService"
 		  p:quittanceNumberService-ref="quittanceNumberService"
 		  p:quittanceService-ref="quittanceService"
-		  p:quittancePaymentService-ref="quittancePaymentService" />
+		  p:quittancePaymentService-ref="quittancePaymentService"
+		  p:spService-ref="spService"
+		  p:attributeTypeService-ref="consumerAttributeTypeService" />
 
 	<bean id="eircQuittanceDetailsFinder"
 		  class="org.flexpay.eirc.service.exchange.QuittanceDetailsFinderImpl"

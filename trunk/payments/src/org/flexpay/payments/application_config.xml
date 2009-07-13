@@ -3,4 +3,8 @@
 
     <applicationName>payments</applicationName>
 
+	<payments>
+		<mbOrganization id="1">Мегабанк</mbOrganization>
+	</payments>
+
 </flexpay>

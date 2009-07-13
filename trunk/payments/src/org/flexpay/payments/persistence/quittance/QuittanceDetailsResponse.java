@@ -610,6 +610,14 @@ public class QuittanceDetailsResponse implements Serializable {
 		private String name;
 		private String value;
 
+		public ServiceAttribute() {
+		}
+
+		public ServiceAttribute(String name, String value) {
+			this.name = name;
+			this.value = value;
+		}
+
 		public String getName() {
 			return name;
 		}

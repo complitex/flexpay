@@ -15,6 +15,7 @@ import org.flexpay.eirc.sp.impl.MbFileParser;
 import org.flexpay.eirc.sp.impl.MbFileValidator;
 import org.flexpay.eirc.util.config.ApplicationConfig;
 import org.flexpay.orgs.persistence.ServiceProvider;
+import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.payments.persistence.EircRegistryProperties;
 import org.flexpay.payments.persistence.Service;
 import org.flexpay.payments.persistence.ServiceType;
@@ -215,8 +216,21 @@ public class MbCorrectionsFileParser extends MbFileParser {
 		RegistryRecordContainer container = new RegistryRecordContainer();
 		container.setData("1:" + modificationStartDate + "::");
 		record.addContainer(container);
-		
+
+		container = new RegistryRecordContainer();
+		container.setData("15:" + modificationStartDate + "::" + getErcAccount(fields) +
+						  ":" + getMBOrganizationStub().getId());
+		record.addContainer(container);
+
 		return 1;
+	}
+
+	private Stub<Organization> getMBOrganizationStub() {
+		return ApplicationConfig.getMbOrganizationStub();
+	}
+
+	private String getErcAccount(String[] fields) {
+		return fields[0];
 	}
 
 	private RegistryRecord createRecord(RegistryRecord record, String[] fields) {

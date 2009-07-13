@@ -6,7 +6,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 
-public class ApplicationConfig extends org.flexpay.ab.util.config.ApplicationConfig {
+public class ApplicationConfig extends org.flexpay.payments.util.config.ApplicationConfig {
 
 	private Organization selfOrganization;
 	private String eircDataRoot;

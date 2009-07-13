@@ -12,6 +12,7 @@
 			<list>
 				<value>classpath:org/flexpay/common/application_config.xml</value>
 				<value>classpath:org/flexpay/ab/application_config.xml</value>
+				<value>classpath:org/flexpay/payments/application_config.xml</value>
 				<value>classpath:org/flexpay/eirc/application_config.xml</value>
                 <value>classpath:org/flexpay/sz/application_config.xml</value>
 				<value>classpath:org/flexpay/common/application_config_test.xml</value>

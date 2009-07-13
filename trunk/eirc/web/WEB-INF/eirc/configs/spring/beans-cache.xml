@@ -40,6 +40,7 @@
 		<property name="cachingModels">
 			<props>
 				<prop key="read">cacheName=eircConsumerAttributeTypesCache</prop>
+				<prop key="readByCode">cacheName=eircConsumerAttributeTypesCache</prop>
 			</props>
 		</property>
 		<property name="flushingModels">

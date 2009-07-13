@@ -23,7 +23,6 @@ public class EircSpringBeanAwareTestCase extends AbSpringBeanAwareTestCase {
 		GrantedAuthority[] authorities = SecurityUtil.auths(
 				QUITTANCE_READ,
 				PERSON_READ,
-				SERVICE_PROVIDER_READ,
 				APARTMENT_READ,
 				BUILDING_ATTRIBUTE_TYPE_READ,
 				BUILDING_READ,
@@ -36,6 +35,7 @@ public class EircSpringBeanAwareTestCase extends AbSpringBeanAwareTestCase {
 				SERVICE_READ,
 				SERVICE_TYPE_READ,
 				SERVICE_ORGANIZATION_READ,
+				SERVICE_PROVIDER_READ,
 				BANK_READ,
 				ORGANIZATION_READ
 		);

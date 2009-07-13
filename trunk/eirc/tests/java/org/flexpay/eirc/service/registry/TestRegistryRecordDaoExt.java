@@ -2,8 +2,8 @@ package org.flexpay.eirc.service.registry;
 
 import org.flexpay.ab.persistence.BuildingAddress;
 import org.flexpay.ab.persistence.Street;
-import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.dao.paging.FetchRange;
+import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.dao.registry.RegistryRecordDao;
 import org.flexpay.common.dao.registry.RegistryRecordDaoExt;
 import org.flexpay.common.persistence.filter.RegistryRecordStatusFilter;
@@ -17,7 +17,6 @@ import org.flexpay.eirc.persistence.filters.ImportErrorTypeFilter;
 import static org.junit.Assert.assertNotNull;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 
 import java.util.List;
 

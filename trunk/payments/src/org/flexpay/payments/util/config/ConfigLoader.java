@@ -28,5 +28,8 @@ public class ConfigLoader extends org.flexpay.ab.util.config.ConfigLoader {
 	 */
 	protected void addRules(Digester d) {
 		super.addRules(d);
+
+		d.addSetProperties("flexpay/payments/mbOrganization", "id", "mbOrganizationId");
+
 	}
 }

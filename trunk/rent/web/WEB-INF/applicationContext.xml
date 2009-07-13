@@ -11,6 +11,7 @@
 				<value>classpath:org/flexpay/common/application_config.xml</value>
 				<value>classpath:org/flexpay/common/application_config_test.xml</value>
                 <value>classpath:org/flexpay/ab/application_config.xml</value>
+				<value>classpath:org/flexpay/payments/application_config.xml</value>
 				<value>classpath:org/flexpay/rent/application_config.xml</value>
 			</list>
 		</constructor-arg>

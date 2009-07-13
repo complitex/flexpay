@@ -8,9 +8,19 @@ import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.registry.RegistryRecord;
 import org.flexpay.eirc.persistence.Consumer;
 import org.flexpay.eirc.persistence.EircRegistryRecordProperties;
+import org.jetbrains.annotations.NotNull;
 
 public class ContainerProcessHelper {
 
+	/**
+	 * extract consumer from registry record properties
+	 *
+	 * @param record RegistryRecord
+	 * @param factory Operations factory
+	 * @return Consumer if found
+	 * @throws FlexPayException if consumer cannot be found
+	 */
+	@NotNull
 	public static Consumer getConsumer(RegistryRecord record, ServiceOperationsFactory factory) throws FlexPayException {
 		EircRegistryRecordProperties props = (EircRegistryRecordProperties) record.getProperties();
 		Stub<Consumer> consumerStub = props.getConsumerStub();

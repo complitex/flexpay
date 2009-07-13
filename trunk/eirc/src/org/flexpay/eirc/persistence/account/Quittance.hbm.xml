@@ -161,22 +161,18 @@
 	<query name="Quittance.readFull"><![CDATA[
 		select distinct q
 		from Quittance q
-			inner join fetch q.eircAccount a
+			left join fetch q.eircAccount a
 			left join fetch a.consumerInfo ci
 			left join fetch a.person p
 			left join fetch p.personIdentities pi
-			inner join fetch a.apartment ap
-			inner join fetch ap.building
+			left join fetch a.apartment ap
+			left join fetch ap.building
 			left join fetch ap.personRegistrations pr
 			left join fetch q.quittanceDetailsQuittances qdq
 			left join fetch qdq.quittanceDetails qd
 			left join fetch qd.consumer c
-			left join fetch c.service serv
-			left join fetch serv.serviceProvider prov
-			left join fetch prov.organization org
-			left join fetch org.names
-			left join fetch serv.serviceType servtype
-			left join fetch servtype.typeNames 
+			left join fetch c.attributes attr
+			left join fetch attr.type 
 		where q.id=?
 			and (pr is null or (pr.beginDate<=current_date() and pr.endDate>=current_date()))
 	]]></query>
