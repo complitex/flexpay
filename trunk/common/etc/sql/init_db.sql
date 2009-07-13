@@ -69,8 +69,9 @@ INSERT INTO common_registry_types_tbl (id, version, code) VALUES (10, 0, 10);
 select @registry_type:=10;
 INSERT INTO common_registry_types_tbl (id, version, code) VALUES (11, 0, 11);
 select @registry_type_info:=11;
-
 INSERT INTO common_registry_types_tbl (id, version, code) VALUES (12, 0, 12);
+select @registry_type_bank_payments:=12;
+
 -- Init RegistryStatuses
 INSERT INTO common_registry_statuses_tbl (version, code) VALUES (0, 0);
 SELECT @registry_status_loading:=last_insert_id();

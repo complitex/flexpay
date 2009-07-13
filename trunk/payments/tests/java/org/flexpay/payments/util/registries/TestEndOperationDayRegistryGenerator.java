@@ -31,27 +31,20 @@ public class TestEndOperationDayRegistryGenerator extends PaymentsSpringBeanAwar
 
 		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-		Date beginDate = df.parse("2009-03-14 00:00:00");
-		Date endDate = df.parse("2009-07-07 23:59:59");
+		Date beginDate = df.parse("2009-07-13 00:00:00");
+		Date endDate = df.parse("2009-07-13 23:59:59");
 
 		PaymentPoint paymentPoint = paymentPointService.read(new Stub<PaymentPoint>(1L));
-		if (paymentPoint == null) {
-			log.error("Payment point with id - {} does not exist", 1L);
-			return;
-		}
-		log.debug("Found paymentPoint - {}", paymentPoint);
+		assertNotNull("Payment point with id - 1 does not exist", paymentPoint);
 
 		Organization organization = organizationService.readFull(new Stub<Organization>(4L));
-		if (organization == null) {
-			log.error("Organization with id - {} does not exist", 4L);
-			return;
-		}
+		assertNotNull("Organization with id - 4 does not exist", paymentPoint);
 
 		Registry registry = endOperationDayRegistryGenerator.generate(paymentPoint, organization, beginDate, endDate);
 		assertNotNull("Operation day registry generation failed", registry);
 
-
-		registryService.deleteRecords(Stub.stub(registry));
-		registryService.delete(registry);
+//		registryService.deleteRecords(Stub.stub(registry));
+//		registryService.delete(registry);
 	}
+
 }
