@@ -5,6 +5,7 @@ import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.eirc.persistence.consumer.ConsumerAttributeTypeBase;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
 
@@ -30,4 +31,13 @@ public interface ConsumerAttributeTypeService extends DomainObjectService<Consum
 
 	@Override
 	Class<? extends ConsumerAttributeTypeBase> getType();
+
+	/**
+	 * Find attribute type by unique code
+	 *
+	 * @param code Unique attribute type code
+	 * @return Attribute type
+	 */
+	@Nullable
+	ConsumerAttributeTypeBase readByCode(String code);
 }

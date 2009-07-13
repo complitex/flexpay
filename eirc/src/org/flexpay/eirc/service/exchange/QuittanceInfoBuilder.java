@@ -7,18 +7,25 @@ import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.service.importexport.MasterIndexService;
 import org.flexpay.common.util.CollectionUtils;
+import org.flexpay.common.util.SecurityUtil;
 import org.flexpay.eirc.persistence.ConsumerInfo;
 import org.flexpay.eirc.persistence.QuittancePayment;
 import org.flexpay.eirc.persistence.QuittanceDetailsPayment;
 import org.flexpay.eirc.persistence.Consumer;
+import org.flexpay.eirc.persistence.consumer.ConsumerAttributeTypeBase;
+import org.flexpay.eirc.persistence.consumer.ConsumerAttribute;
 import org.flexpay.eirc.persistence.account.Quittance;
 import org.flexpay.eirc.persistence.account.QuittanceDetails;
 import org.flexpay.eirc.process.QuittanceNumberService;
 import org.flexpay.eirc.service.QuittanceService;
 import org.flexpay.eirc.service.QuittancePaymentService;
+import org.flexpay.eirc.service.ConsumerAttributeTypeService;
 import static org.flexpay.payments.persistence.quittance.QuittanceDetailsResponse.QuittanceInfo;
 import static org.flexpay.payments.persistence.quittance.QuittanceDetailsResponse.QuittanceInfo.ServiceDetails;
+import org.flexpay.payments.persistence.quittance.QuittanceDetailsResponse.ServiceAttribute;
+import org.flexpay.payments.persistence.quittance.ConsumerAttributes;
 import org.flexpay.payments.persistence.Service;
+import org.flexpay.payments.service.SPService;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
@@ -33,6 +40,8 @@ public class QuittanceInfoBuilder {
 	private MasterIndexService masterIndexService;
 	private ApartmentService apartmentService;
 	private QuittancePaymentService quittancePaymentService;
+	private ConsumerAttributeTypeService attributeTypeService;
+	private SPService spService;
 
 	@Nullable
 	public QuittanceInfo buildInfo(Stub<Quittance> stub) throws Exception {
@@ -111,6 +120,8 @@ public class QuittanceInfoBuilder {
 			serviceDetails.setBuildingBulk(cinfo.getBuildingBulk());
 			serviceDetails.setApartmentNumber(cinfo.getApartmentNumber());
 
+			serviceDetails.setAttributes(getConsumerAttributes(consumer));
+
 			detailses.add(serviceDetails);
 		}
 
@@ -119,11 +130,28 @@ public class QuittanceInfoBuilder {
 		return info;
 	}
 
+	public ServiceAttribute[] getConsumerAttributes(Consumer consumer) {
+		List<ServiceAttribute> attrs = CollectionUtils.list();
+		for (String attrCode : ConsumerAttributes.PAYMENT_ATTRIBUTES) {
+			ConsumerAttributeTypeBase type = attributeTypeService.readByCode(attrCode);
+			if (type == null) {
+				throw new IllegalStateException("Cannot find attribute type by code: " + attrCode);
+			}
+			ConsumerAttribute attribute = consumer.getAttribute(type);
+			if (attribute == null) {
+				continue;
+			}
+			attrs.add(new ServiceAttribute(attrCode, String.valueOf(attribute.value())));
+		}
+
+		return attrs.toArray(new ServiceAttribute[attrs.size()]);
+	}
+
 	public BigDecimal getTotalPayed(Quittance quittance, List<QuittancePayment> payments) {
 
 		BigDecimal summ = new BigDecimal("0.00");
 		for (QuittanceDetails details : quittance.getQuittanceDetails()) {
-			if (!details.getConsumer().getService().isSubService()) {
+			if (getService(details).isNotSubservice()) {
 				BigDecimal summPayed = getPayedSumm(details, payments);
 				summ = summ.add(summPayed);
 			}
@@ -150,12 +178,17 @@ public class QuittanceInfoBuilder {
 		BigDecimal total = new BigDecimal("0.00");
 
 		for (QuittanceDetails qd : quittance.getQuittanceDetails()) {
-			if (!qd.getConsumer().getService().isSubService()) {
+			if (getService(qd).isNotSubservice()) {
 				total = total.add(qd.getOutgoingBalance());
 			}
 		}
 
 		return total;
+	}
+
+	private Service getService(QuittanceDetails qd) {
+		Consumer consumer = qd.getConsumer();
+		return spService.readFull(consumer.getServiceStub());
 	}
 
 	@Required
@@ -181,5 +214,15 @@ public class QuittanceInfoBuilder {
 	@Required
 	public void setQuittancePaymentService(QuittancePaymentService quittancePaymentService) {
 		this.quittancePaymentService = quittancePaymentService;
+	}
+
+	@Required
+	public void setAttributeTypeService(ConsumerAttributeTypeService attributeTypeService) {
+		this.attributeTypeService = attributeTypeService;
+	}
+
+	@Required
+	public void setSpService(SPService spService) {
+		this.spService = spService;
 	}
 }

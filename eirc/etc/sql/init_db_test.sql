@@ -285,12 +285,6 @@ insert into common_data_corrections_tbl (internal_object_id, external_object_id,
 
 -- Consumer attribute types
 insert into eirc_consumer_attribute_types_tbl (id, version, status, unique_code, is_temporal, discriminator, measure_unit_id)
-	values (1, 0, 0, null, 0, 'simple', null);
-select @cons_attr_type_erc_account:=1;
-insert into eirc_consumer_attribute_type_names_tbl (name, language_id, attribute_type_id)
-	values ('Счет ЕРЦ (Мегабанк)', @ru_id, @cons_attr_type_erc_account);
-
-insert into eirc_consumer_attribute_types_tbl (id, version, status, unique_code, is_temporal, discriminator, measure_unit_id)
 	values (2, 0, 0, null, 1, 'enum', null);
 select @cons_attr_type_checkbook_color:=2;
 insert into eirc_consumer_attribute_type_names_tbl (name, language_id, attribute_type_id)

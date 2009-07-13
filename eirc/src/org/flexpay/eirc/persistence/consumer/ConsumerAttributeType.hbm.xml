@@ -164,6 +164,11 @@
 		where t.status=0
 	</query>
 
+	<query name="ConsumerAttributeTypeBase.findAtributeTypeByCode">
+		from ConsumerAttributeTypeBase t
+		where t.status=0 and t.uniqueCode=?
+	</query>
+
 	<query name="ConsumerAttributeTypeBase.readFull">
 		select distinct t
 		from ConsumerAttributeTypeBase t

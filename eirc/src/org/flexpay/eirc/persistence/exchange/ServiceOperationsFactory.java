@@ -31,6 +31,7 @@ public class ServiceOperationsFactory {
 	private ConsumerService consumerService;
 	private QuittanceService quittanceService;
 	private ConsumerInfoService consumerInfoService;
+	private ConsumerAttributeTypeService consumerAttributeTypeService;
 	private OrganizationService organizationService;
 	private ServiceProviderService serviceProviderService;
 	private ReportPeriodService reportPeriodService;
@@ -155,6 +156,9 @@ public class ServiceOperationsFactory {
 			case 14:
 				checkContainer(registry, "Open subaccount", RegistryType.TYPE_INFO);
 				return new OpenSubserviceAccountOperation(this, datum);
+			case 15:
+				checkContainer(registry, "External Org account", RegistryType.TYPE_INFO);
+				return new SetExternalOrganizationAccountOperation(this, datum);
 
 			// Payment
 //			case 50:
@@ -320,4 +324,12 @@ public class ServiceOperationsFactory {
 		this.apartmentAttributeTypeService = apartmentAttributeTypeService;
 	}
 
+	public ConsumerAttributeTypeService getConsumerAttributeTypeService() {
+		return consumerAttributeTypeService;
+	}
+
+	@Required
+	public void setConsumerAttributeTypeService(ConsumerAttributeTypeService consumerAttributeTypeService) {
+		this.consumerAttributeTypeService = consumerAttributeTypeService;
+	}
 }

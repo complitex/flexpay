@@ -3,6 +3,7 @@ package org.flexpay.eirc.dao.imp;
 import org.flexpay.eirc.dao.ConsumerAttributeTypeDaoExt;
 import org.flexpay.eirc.persistence.consumer.ConsumerAttributeTypeSimple;
 import org.flexpay.eirc.persistence.consumer.ConsumerAttributeTypeEnum;
+import org.flexpay.eirc.persistence.consumer.ConsumerAttributeTypeBase;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 import org.springframework.dao.support.DataAccessUtils;
 
@@ -22,5 +23,11 @@ public class ConsumerAttributeTypeDaoExtImpl extends HibernateDaoSupport impleme
 			getHibernateTemplate().initialize(type.getValues());
 		}
 		return type;
+	}
+
+	@Override
+	public ConsumerAttributeTypeBase findAtributeTypeByCode(String code) {
+		return (ConsumerAttributeTypeBase) DataAccessUtils.uniqueResult(getHibernateTemplate()
+				.findByNamedQuery("ConsumerAttributeTypeBase.findAtributeTypeByCode", code));
 	}
 }

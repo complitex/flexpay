@@ -205,7 +205,9 @@ public class JRQuittanceDataSource implements JRRewindableDataSource {
 		// kvartplata
 		ServiceType defaultService = serviceTypeService.getServiceType(1);
 		for (QuittanceDetails details : q.getQuittanceDetails()) {
-			if (details.getConsumer().getService().getServiceType().equals(defaultService)) {
+			Service srv = spService.readFull(details.getConsumer().getServiceStub());
+			assert srv != null;
+			if (srv.getServiceType().equals(defaultService)) {
 				String accountNumber = details.getConsumer().getExternalAccountNumber();
 				info.setServiceOrganizationAccount(accountNumber);
 			}

@@ -2,7 +2,6 @@ package org.flexpay.common.test;
 
 import static org.flexpay.common.service.Roles.*;
 import org.flexpay.common.util.SecurityUtil;
-import org.jetbrains.annotations.NonNls;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.quartz.Scheduler;
@@ -42,7 +41,7 @@ public abstract class SpringBeanAwareTestCase extends AbstractJUnit4SpringContex
 	@Qualifier ("jdbcTemplate")
 	protected JdbcTemplate jdbcTemplate;
 
-	protected InputStream getFileStream(@NonNls String relativePath) {
+	protected InputStream getFileStream(String relativePath) {
 		return getClass().getClassLoader().getResourceAsStream(relativePath);
 	}
 

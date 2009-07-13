@@ -5,7 +5,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.net.URL;
 
-public class ConfigLoader extends org.flexpay.ab.util.config.ConfigLoader {
+public class ConfigLoader extends org.flexpay.payments.util.config.ConfigLoader {
 
 	public ConfigLoader(URL[] configFiles) {
 		super(configFiles);

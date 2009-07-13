@@ -17,8 +17,16 @@ public abstract class SecurityUtil {
 	 * @return Current authenticated user name
 	 */
 	public static String getUserName() {
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		Authentication auth = getAuthentication();
 		return auth != null ? auth.getName() : null;
+	}
+
+	public static Authentication getAuthentication() {
+		return SecurityContextHolder.getContext().getAuthentication();
+	}
+
+	public static void setAuthentication(Authentication auth) {
+		SecurityContextHolder.getContext().setAuthentication(auth);
 	}
 
 	/**
@@ -38,7 +46,7 @@ public abstract class SecurityUtil {
 
 		User user = new User(userName, "", true, true, true, true, grantedAuthorities);
 		Authentication auth = new AnonymousAuthenticationToken("key", user, grantedAuthorities);
-		SecurityContextHolder.getContext().setAuthentication(auth);
+		setAuthentication(auth);
 	}
 
 	public static GrantedAuthority auth(String authName) {

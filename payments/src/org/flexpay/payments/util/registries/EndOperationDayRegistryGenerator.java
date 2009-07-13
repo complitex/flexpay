@@ -1,33 +1,31 @@
 package org.flexpay.payments.util.registries;
 
+import org.apache.commons.lang.StringUtils;
 import org.flexpay.common.exception.FlexPayException;
-import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.registry.*;
 import org.flexpay.common.service.*;
-import org.flexpay.common.util.StringUtil;
 import org.flexpay.common.util.RegistryUtil;
+import org.flexpay.common.util.StringUtil;
 import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.orgs.persistence.PaymentPoint;
-import org.flexpay.orgs.service.OrganizationService;
-import org.flexpay.orgs.service.PaymentPointService;
 import org.flexpay.payments.persistence.Document;
 import org.flexpay.payments.persistence.Operation;
 import org.flexpay.payments.service.DocumentService;
 import org.flexpay.payments.service.OperationService;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.annotation.Propagation;
-import org.apache.commons.lang.StringUtils;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-@Transactional(readOnly = true)
+@Transactional (readOnly = true)
 public class EndOperationDayRegistryGenerator {
 
 	protected Logger log = LoggerFactory.getLogger(getClass());
@@ -42,7 +40,8 @@ public class EndOperationDayRegistryGenerator {
 	private RegistryArchiveStatusService registryArchiveStatusService;
 	private PropertiesFactory propertiesFactory;
 
-	@Transactional(propagation = Propagation.NOT_SUPPORTED, readOnly = false)
+	@Transactional (propagation = Propagation.NOT_SUPPORTED, readOnly = false)
+	@Nullable
 	public Registry generate(@NotNull PaymentPoint paymentPoint, @NotNull Organization organization,
 							 @NotNull Date beginDate, @NotNull Date endDate) throws FlexPayException {
 
@@ -116,13 +115,13 @@ public class EndOperationDayRegistryGenerator {
 				RegistryRecordContainer container = new RegistryRecordContainer();
 				BigDecimal summ = document.getSumm().setScale(2, BigDecimal.ROUND_HALF_UP);
 				record.setAmount(summ);
-				
+
 				totalSumm = totalSumm.add(summ);
 				container.setOrder(0);
-				container.setData(RegistryUtil.BANK_PAYMENT_CONTAINER_CODE + RegistryUtil.CONTAINER_BODY_SEPARATOR + 
-						StringUtil.getString(paymentPoint.getId()) + RegistryUtil.CONTAINER_BODY_SEPARATOR +
-						StringUtil.getString(operation.getId()) + RegistryUtil.CONTAINER_BODY_SEPARATOR +
-						StringUtil.getString(operation.getOperationSumm()));
+				container.setData(RegistryUtil.BANK_PAYMENT_CONTAINER_CODE + RegistryUtil.CONTAINER_BODY_SEPARATOR +
+								  StringUtil.getString(paymentPoint.getId()) + RegistryUtil.CONTAINER_BODY_SEPARATOR +
+								  StringUtil.getString(operation.getId()) + RegistryUtil.CONTAINER_BODY_SEPARATOR +
+								  StringUtil.getString(operation.getOperationSumm()));
 				container.setRecord(record);
 				containers.add(container);
 
@@ -140,11 +139,11 @@ public class EndOperationDayRegistryGenerator {
 
 		}
 
-		if (recordsNum == 0){
+		if (recordsNum == 0) {
 			log.info("Finish generating end operation day registry...");
 			log.info("Zero records created. No Registry created.");
 			return null;
-		}else{
+		} else {
 			registry.setFromDate(minDate == null ? new Date() : minDate);
 			registry.setTillDate(maxDate == null ? new Date() : maxDate);
 			registry.setRecordsNumber(recordsNum);
