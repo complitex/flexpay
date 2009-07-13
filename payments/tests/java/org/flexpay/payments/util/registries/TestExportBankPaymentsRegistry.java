@@ -33,21 +33,21 @@ public class TestExportBankPaymentsRegistry extends PaymentsSpringBeanAwareTestC
 
 		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-		Date beginDate = df.parse("2009-03-14 00:00:00");
-		Date endDate = df.parse("2009-07-07 23:59:59");
+		Date beginDate = df.parse("2009-07-13 00:00:00");
+		Date endDate = df.parse("2009-07-13 23:59:59");
 
 		PaymentPoint paymentPoint = paymentPointService.read(new Stub<PaymentPoint>(1L));
-		assertNotNull("PP not found", paymentPoint);
+		assertNotNull("Payment point with id - 1 does not exist", paymentPoint);
 
 		Organization organization = organizationService.readFull(new Stub<Organization>(4L));
-		assertNotNull("Org not found", organization);
+		assertNotNull("Organization with id - 4 does not exist", paymentPoint);
 
 		Registry registry = endOperationDayRegistryGenerator.generate(paymentPoint, organization, beginDate, endDate);
 		assertNotNull("Operation day registry generation failed", registry);
 		registry = exportBankPaymentsRegistry.export(registry);
 
-
-		registryService.deleteRecords(Stub.stub(registry));
-		registryService.delete(registry);
+//		registryService.deleteRecords(Stub.stub(registry));
+//		registryService.delete(registry);
 	}
+
 }

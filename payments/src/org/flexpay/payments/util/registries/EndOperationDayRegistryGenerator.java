@@ -141,7 +141,7 @@ public class EndOperationDayRegistryGenerator {
 
 		if (recordsNum == 0) {
 			log.info("Finish generating end operation day registry...");
-			log.info("Zero records created. No Registry created.");
+			log.info("0 records created. No Registry created.");
 			return null;
 		} else {
 			registry.setFromDate(minDate == null ? new Date() : minDate);

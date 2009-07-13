@@ -59,41 +59,40 @@ INSERT INTO ab_building_address_attributes_tbl (value, status, attribute_type_id
 INSERT INTO ab_building_address_attributes_tbl (value, status, attribute_type_id, buildings_id)
 	VALUES ('1', 0, @attr_type_part_id, @buildings_id);
 
-INSERT INTO ab_apartments_tbl (status, building_id) VALUES (0, @building_id);
+INSERT INTO ab_apartments_tbl (status, apartment_type, building_id) VALUES (0, 'ab', @building_id);
 SELECT @apartment_id:=last_insert_id();
 INSERT INTO ab_apartment_numbers_tbl (begin_date, end_date, value, apartment_id)
 	VALUES ('1900-01-01', '2100-12-31', '12', @apartment_id);
 
-INSERT INTO ab_apartments_tbl (status, building_id) VALUES (0, @building_id);
+INSERT INTO ab_apartments_tbl (status, apartment_type, building_id) VALUES (0, 'ab', @building_id);
 SELECT @apartment_id:=last_insert_id();
 INSERT INTO ab_apartment_numbers_tbl (begin_date, end_date, value, apartment_id)
 	VALUES ('1900-01-01', '2100-12-31', '16', @apartment_id);
 
-INSERT INTO ab_apartments_tbl (status, building_id) VALUES (0, @building_id);
+INSERT INTO ab_apartments_tbl (status, apartment_type, building_id) VALUES (0, 'ab', @building_id);
 SELECT @apartment_id:=last_insert_id();
 INSERT INTO ab_apartment_numbers_tbl (begin_date, end_date, value, apartment_id)
 	VALUES ('1900-01-01', '2100-12-31', '37', @apartment_id);
 
-INSERT INTO ab_apartments_tbl (status, building_id) VALUES (0, @building_id);
+INSERT INTO ab_apartments_tbl (status, apartment_type, building_id) VALUES (0, 'ab', @building_id);
 SELECT @apartment_id:=last_insert_id();
 INSERT INTO ab_apartment_numbers_tbl (begin_date, end_date, value, apartment_id)
 	VALUES ('1900-01-01', '2100-12-31', '59', @apartment_id);
 
-INSERT INTO ab_apartments_tbl (status, building_id) VALUES (0, @building_id);
+INSERT INTO ab_apartments_tbl (status, apartment_type, building_id) VALUES (0, 'ab', @building_id);
 SELECT @apartment_id:=last_insert_id();
 INSERT INTO ab_apartment_numbers_tbl (begin_date, end_date, value, apartment_id)
 	VALUES ('1900-01-01', '2100-12-31', '62', @apartment_id);
 
-INSERT INTO ab_apartments_tbl (status, building_id) VALUES (0, @building_id);
+INSERT INTO ab_apartments_tbl (status, apartment_type, building_id) VALUES (0, 'ab', @building_id);
 SELECT @apartment_id:=last_insert_id();
 INSERT INTO ab_apartment_numbers_tbl (begin_date, end_date, value, apartment_id)
 	VALUES ('1900-01-01', '2100-12-31', '70', @apartment_id);
 
-INSERT INTO ab_apartments_tbl (status, building_id) VALUES (0, @building_id);
+INSERT INTO ab_apartments_tbl (status, apartment_type, building_id) VALUES (0, 'ab', @building_id);
 SELECT @apartment_id:=last_insert_id();
 INSERT INTO ab_apartment_numbers_tbl (begin_date, end_date, value, apartment_id)
 	VALUES ('1900-01-01', '2100-12-31', '103', @apartment_id);
-
 
 
 INSERT INTO ab_buildings_tbl (status, building_type, district_id) VALUES (0, 'ab', @district_id_kharkov_central);
@@ -106,7 +105,7 @@ INSERT INTO ab_building_address_attributes_tbl (value, status, attribute_type_id
 INSERT INTO ab_building_address_attributes_tbl (value, status, attribute_type_id, buildings_id)
 	VALUES ('2', 0, @attr_type_part_id, @buildings_id);
 
-INSERT INTO ab_apartments_tbl (status, building_id) VALUES (0, @building_id);
+INSERT INTO ab_apartments_tbl (status, apartment_type, building_id) VALUES (0, 'ab', @building_id);
 SELECT @apartment_id:=last_insert_id();
 INSERT INTO ab_apartment_numbers_tbl (begin_date, end_date, value, apartment_id)
 	VALUES ('1900-01-01', '2100-12-31', '17', @apartment_id);
@@ -120,7 +119,7 @@ SELECT @buildings_id:=last_insert_id();
 INSERT INTO ab_building_address_attributes_tbl (value, status, attribute_type_id, buildings_id)
 	VALUES ('4', 0, @attr_type_home_number_id, @buildings_id);
 
-INSERT INTO ab_apartments_tbl (status, building_id) VALUES (0, @building_id);
+INSERT INTO ab_apartments_tbl (status, apartment_type, building_id) VALUES (0, 'ab', @building_id);
 SELECT @apartment_id:=last_insert_id();
 INSERT INTO ab_apartment_numbers_tbl (begin_date, end_date, value, apartment_id)
 	VALUES ('1900-01-01', '2100-12-31', '1', @apartment_id);

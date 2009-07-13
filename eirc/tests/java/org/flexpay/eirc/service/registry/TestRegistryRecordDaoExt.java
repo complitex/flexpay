@@ -94,4 +94,5 @@ public class TestRegistryRecordDaoExt extends SpringBeanAwareTestCase {
 		FetchRange range = new FetchRange();
 		recordDao.listRecordsForExport(1L, range);
 	}
+
 }
