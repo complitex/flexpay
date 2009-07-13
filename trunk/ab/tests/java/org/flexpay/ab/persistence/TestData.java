@@ -10,10 +10,10 @@ public class TestData {
 
 	// test buildings
 	public static final Stub<Building> IVANOVA_27 = new Stub<Building>(1L);
-	public static final Stub<BuildingAddress> ADDR_IVANOVA_27 = new Stub<BuildingAddress>(1L);
+	public static final Stub<BuildingAddress> ADDR_IVANOVA_27 = new Stub<BuildingAddress>(1001L);
 
 	public static final Stub<Building> IVANOVA_2 = new Stub<Building>(2L);
-	public static final Stub<BuildingAddress> ADDR_IVANOVA_2 = new Stub<BuildingAddress>(2L);
+	public static final Stub<BuildingAddress> ADDR_IVANOVA_2 = new Stub<BuildingAddress>(1002L);
 	public static final Stub<BuildingAddress> ADDR_DEMAKOVA_220D = new Stub<BuildingAddress>(3L);
 	public static final Stub<BuildingAddress> ADDR_ROSSIISKAYA_220R = new Stub<BuildingAddress>(4L);
 

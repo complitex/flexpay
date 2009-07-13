@@ -9,6 +9,7 @@ import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.persistence.sorter.ObjectSorter;
 import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
 import org.flexpay.common.service.ParentService;
 import org.jetbrains.annotations.NotNull;
@@ -22,10 +23,10 @@ import java.util.Locale;
 public interface ApartmentService extends ParentService<ApartmentFilter> {
 
 	@Secured (Roles.APARTMENT_READ)
-	List<Apartment> getApartments(Stub<BuildingAddress> addressStub, Page pager);
+	List<Apartment> getApartments(Stub<BuildingAddress> addressStub, Page<Apartment> pager);
 
 	@Secured (Roles.APARTMENT_READ)
-	List<Apartment> getApartments(ArrayStack filters, Page pager);
+	List<Apartment> getApartments(ArrayStack filters, Page<Apartment> pager);
 
 	/**
 	 * Try to find apartment by building and number
@@ -112,6 +113,16 @@ public interface ApartmentService extends ParentService<ApartmentFilter> {
 	@Nullable
 	Apartment readFull(@NotNull Stub<Apartment> stub);
 
+	/**
+	 * Read apartment
+	 *
+	 * @param stubs Apartment keys
+	 * @return Object if found, or <code>null</code> otherwise
+	 */
+	@Secured ({Roles.APARTMENT_READ})
+	@NotNull
+	List<Apartment> readFull(@NotNull Collection<Long> stubs);
+
 	@Secured (Roles.APARTMENT_READ)
 	void fillFilterIds(@NotNull Stub<Apartment> stub, ArrayStack filters) throws FlexPayException;
 
@@ -162,4 +173,15 @@ public interface ApartmentService extends ParentService<ApartmentFilter> {
 	@Secured (Roles.APARTMENT_READ)
 	List<Apartment> getBuildingApartments(@NotNull Stub<Building> stub);
 
+	/**
+	 * Get a list of available objects
+	 *
+	 * @param filters Parent filters
+	 * @param sorters Stack of sorters
+	 * @param pager   Page
+	 * @return List of Objects
+	 */
+	@Secured (Roles.APARTMENT_READ)
+	@NotNull
+	List<Apartment> find(ArrayStack filters, List<ObjectSorter> sorters, Page<Apartment> pager);
 }

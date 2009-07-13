@@ -9,19 +9,20 @@ import org.flexpay.ab.persistence.BuildingAddress;
 import org.flexpay.ab.persistence.Street;
 import org.flexpay.ab.persistence.filters.*;
 import org.flexpay.ab.service.ApartmentService;
+import org.flexpay.ab.service.BuildingService;
 import static org.flexpay.ab.util.TranslationUtil.getNameTranslation;
 import static org.flexpay.ab.util.TranslationUtil.getTypeTranslation;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.persistence.sorter.ObjectSorter;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.persistence.filter.ObjectFilter;
 import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
 import org.flexpay.common.persistence.history.ModificationListener;
 import org.flexpay.common.service.ParentService;
 import org.flexpay.common.service.internal.SessionUtils;
-import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
@@ -34,13 +35,12 @@ import java.util.*;
 @Transactional (readOnly = true)
 public class ApartmentServiceImpl implements ApartmentService {
 
-	@NonNls
 	private Logger log = LoggerFactory.getLogger(getClass());
 
 	private ApartmentDao apartmentDao;
 	private ApartmentDaoExt apartmentDaoExt;
 
-	private ParentService<BuildingsFilter> parentService;
+	private BuildingService buildingService;
 
 	private SessionUtils sessionUtils;
 	private ModificationListener<Apartment> modificationListener;
@@ -216,6 +216,18 @@ public class ApartmentServiceImpl implements ApartmentService {
 		return apartmentDao.readFull(stub.getId());
 	}
 
+	/**
+	 * Read apartment
+	 *
+	 * @param stubs Apartment keys
+	 * @return Object if found, or <code>null</code> otherwise
+	 */
+	@NotNull
+	@Override
+	public List<Apartment> readFull(@NotNull Collection<Long> stubs) {
+		return apartmentDao.readFullCollection(stubs);
+	}
+
 	public void fillFilterIds(@NotNull Stub<Apartment> stub, ArrayStack filters) throws FlexPayException {
 		Apartment apartment = apartmentDao.read(stub.getId());
 		if (apartment == null) {
@@ -270,7 +282,7 @@ public class ApartmentServiceImpl implements ApartmentService {
 
 		ArrayStack filters = new ArrayStack();
 		filters.push(forefatherFilter);
-		Page pager = new Page(100000, 1);
+		Page<Apartment> pager = new Page<Apartment>(100000, 1);
 		parentFilter.setApartments(getApartments(filters, pager));
 
 		List<Apartment> apartments = parentFilter.getApartments();
@@ -321,7 +333,7 @@ public class ApartmentServiceImpl implements ApartmentService {
 		ApartmentFilter parentFilter = filters.isEmpty() ? null
 														 : (ApartmentFilter) filters.pop();
 
-		filters = parentService.initFilters(filters, locale);
+		filters = buildingService.initFilters(filters, locale);
 		BuildingsFilter forefatherFilter = (BuildingsFilter) filters.peek();
 
 		// init filter
@@ -335,7 +347,7 @@ public class ApartmentServiceImpl implements ApartmentService {
 		return filters;
 	}
 
-	public List<Apartment> getApartments(Stub<BuildingAddress> addressStub, Page pager) {
+	public List<Apartment> getApartments(Stub<BuildingAddress> addressStub, Page<Apartment> pager) {
 		List<Apartment> apartments = apartmentDao.findObjects(addressStub.getId(), pager);
 		Collections.sort(apartments, new Comparator<Apartment>() {
 			public int compare(Apartment a1, Apartment a2) {
@@ -357,7 +369,7 @@ public class ApartmentServiceImpl implements ApartmentService {
 		return apartments;
 	}
 
-	public List<Apartment> getApartments(ArrayStack filters, Page pager) {
+	public List<Apartment> getApartments(ArrayStack filters, Page<Apartment> pager) {
 		BuildingsFilter filter = (BuildingsFilter) filters.peek();
 		List<Apartment> apartments = apartmentDao.findObjects(filter.getSelectedId(), pager);
 		Collections.sort(apartments, new Comparator<Apartment>() {
@@ -385,6 +397,38 @@ public class ApartmentServiceImpl implements ApartmentService {
 	}
 
 	/**
+	 * Get a list of available objects
+	 *
+	 * @param filters Parent filters
+	 * @param sorters Stack of sorters
+	 * @param pager   Page
+	 * @return List of Objects
+	 */
+	@NotNull
+	@Override
+	public List<Apartment> find(ArrayStack filters, List<ObjectSorter> sorters, Page<Apartment> pager) {
+		ObjectFilter filter = (ObjectFilter) filters.peek();
+
+		// found apartment filter
+		if (filter instanceof ApartmentFilter) {
+			if (filter.needFilter()) {
+				return getApartments(filters, pager);
+			}
+			// remove apartment filter as there is nothing to search now
+			filters.pop();
+		}
+
+		log.debug("Finding building apartments with sorters");
+		BuildingsFilter buildingFilter = (BuildingsFilter) filters.peek();
+		Building building = buildingService.findBuilding(buildingFilter.getSelectedStub());
+		if (building == null) {
+			log.info("No building found for filter {}", buildingFilter);
+			return Collections.emptyList();
+		}
+		return apartmentDaoExt.findApartments(building.getId(), sorters, pager);
+	}
+
+	/**
 	 * Find all apartments in the building
 	 *
 	 * @param stub Building stub
@@ -405,11 +449,6 @@ public class ApartmentServiceImpl implements ApartmentService {
 	}
 
 	@Required
-	public void setParentService(ParentService<BuildingsFilter> parentService) {
-		this.parentService = parentService;
-	}
-
-	@Required
 	public void setSessionUtils(SessionUtils sessionUtils) {
 		this.sessionUtils = sessionUtils;
 	}
@@ -417,5 +456,10 @@ public class ApartmentServiceImpl implements ApartmentService {
 	@Required
 	public void setModificationListener(ModificationListener<Apartment> modificationListener) {
 		this.modificationListener = modificationListener;
+	}
+
+	@Required
+	public void setBuildingService(BuildingService buildingService) {
+		this.buildingService = buildingService;
 	}
 }

@@ -70,7 +70,6 @@
 		  p:streetDaoExt-ref="streetDaoExt"
 		  p:streetNameDao-ref="streetNameDao"
 		  p:streetNameTemporalDao-ref="streetNameTemporalDao"
-		  p:streetTypeTemporalDao-ref="streetTypeTemporalDao"
 		  p:streetNameTranslationDao-ref="streetNameTranslationDao"
 		  p:sessionUtils-ref="sessionUtils"
 		  p:modificationListener-ref="streetHistoryChangesListener" />
@@ -127,8 +126,8 @@
 		  class="org.flexpay.ab.service.imp.ApartmentServiceImpl"
 		  p:apartmentDao-ref="apartmentDao"
 		  p:apartmentDaoExt-ref="apartmentDaoExt"
-		  p:parentService-ref="buildingService"
 		  p:sessionUtils-ref="sessionUtils"
+		  p:buildingService-ref="buildingService"
 		  p:modificationListener-ref="apartmentHistoryChangesListener" />
 
 	<bean id="townTypeHistoryChangesListener"

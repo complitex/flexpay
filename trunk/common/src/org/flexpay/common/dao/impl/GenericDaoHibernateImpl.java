@@ -74,13 +74,31 @@ public class GenericDaoHibernateImpl<T, PK extends Serializable>
 
 	@Nullable
 	public T readFull(@NotNull final PK id) {
-		@NonNls
 		final String queryName = type.getSimpleName() + ".readFull";
 		return (T) hibernateTemplate.execute(new HibernateCallback() {
 			public Object doInHibernate(Session session) throws HibernateException {
 				Query queryObject = session.getNamedQuery(queryName);
 				queryObject.setParameter(0, id);
 				return queryObject.uniqueResult();
+			}
+		});
+	}
+
+	/**
+	 * Read full persistent objects info
+	 *
+	 * @param ids Object identifiers
+	 * @return Objects found
+	 */
+	@NotNull
+	@Override
+	public List<T> readFullCollection(final @NotNull Collection<PK> ids) {
+		final String queryName = type.getSimpleName() + ".readFullCollection";
+		return (List<T>) hibernateTemplate.execute(new HibernateCallback() {
+			public Object doInHibernate(Session session) throws HibernateException {
+				Query query = session.getNamedQuery(queryName);
+				query.setParameterList("ids", ids);
+				return query.list();
 			}
 		});
 	}
@@ -95,7 +113,7 @@ public class GenericDaoHibernateImpl<T, PK extends Serializable>
 
 	public List<T> executeFinder(Method method, final Object[] queryArgs) {
 		final String queryName = getNamingStrategy().queryNameFromMethod(type, method);
-		return findByNamedQuery(queryName, queryArgs);
+		return (List<T>) findByNamedQuery(queryName, queryArgs);
 	}
 
 	public Integer executeUpdate(Method method, final Object[] values) {
@@ -111,7 +129,7 @@ public class GenericDaoHibernateImpl<T, PK extends Serializable>
 		});
 	}
 
-	private List findByNamedQuery(final String queryName, final Object[] values) throws DataAccessException {
+	private List<?> findByNamedQuery(final String queryName, final Object[] values) throws DataAccessException {
 		return hibernateTemplate.executeFind(new HibernateCallback() {
 			public Object doInHibernate(Session session) throws HibernateException {
 				Query queryObject = session.getNamedQuery(queryName);
@@ -213,6 +231,7 @@ public class GenericDaoHibernateImpl<T, PK extends Serializable>
 					throw new IllegalStateException("Found FetchRange parameter, but no stats query found: "
 													+ getStatsQueryName(queryName));
 				}
+				@SuppressWarnings ({"RawUseOfParameterizedType"})
 				List results = queryObject.list();
 				if (pageParam != null) {
 					pageParam.setElements(results);

@@ -8,7 +8,6 @@ import org.flexpay.ab.persistence.filters.StreetFilter;
 import org.flexpay.ab.persistence.filters.StreetNameFilter;
 import org.flexpay.ab.persistence.filters.TownFilter;
 import org.flexpay.ab.service.StreetService;
-import org.flexpay.ab.util.config.ApplicationConfig;
 import org.flexpay.common.dao.GenericDao;
 import org.flexpay.common.dao.NameTimeDependentDao;
 import org.flexpay.common.dao.paging.Page;
@@ -16,18 +15,18 @@ import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.persistence.Stub.stub;
-import org.flexpay.common.persistence.history.ModificationListener;
-import org.flexpay.common.persistence.sorter.ObjectSorter;
 import org.flexpay.common.persistence.filter.ObjectFilter;
 import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
+import org.flexpay.common.persistence.history.ModificationListener;
+import org.flexpay.common.persistence.sorter.ObjectSorter;
 import org.flexpay.common.service.ParentService;
-import org.flexpay.common.service.internal.SessionUtils;
 import org.flexpay.common.service.imp.NameTimeDependentServiceImpl;
+import org.flexpay.common.service.internal.SessionUtils;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.DateUtil;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
@@ -41,7 +40,6 @@ public class StreetServiceImpl extends NameTimeDependentServiceImpl<
 	private StreetNameDao streetNameDao;
 	private StreetNameTemporalDao streetNameTemporalDao;
 	private StreetNameTranslationDao streetNameTranslationDao;
-	private StreetTypeTemporalDao streetTypeTemporalDao;
 	private TownDao townDao;
 
 	private ParentService<TownFilter> parentService;
@@ -485,11 +483,6 @@ public class StreetServiceImpl extends NameTimeDependentServiceImpl<
 	@Required
 	public void setParentService(ParentService<TownFilter> parentService) {
 		this.parentService = parentService;
-	}
-
-	@Required
-	public void setStreetTypeTemporalDao(StreetTypeTemporalDao streetTypeTemporalDao) {
-		this.streetTypeTemporalDao = streetTypeTemporalDao;
 	}
 
 	@Required

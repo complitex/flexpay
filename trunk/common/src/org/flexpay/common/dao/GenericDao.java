@@ -4,6 +4,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.Serializable;
+import java.util.List;
+import java.util.Collection;
 
 /**
  * The basic GenericDao interface with CRUD methods Finders are added with interface inheritance <br /> and AOP
@@ -42,6 +44,15 @@ public interface GenericDao<T, PK extends Serializable> {
 	 */
 	@Nullable
 	T readFull(@NotNull PK id);
+
+	/**
+	 * Read full persistent objects info
+	 *
+	 * @param ids Object identifiers
+	 * @return Objects found
+	 */
+	@NotNull
+	List<T> readFullCollection(@NotNull Collection<PK> ids);
 
 	void update(@NotNull T transientObject);
 

@@ -1794,8 +1794,8 @@ insert into common_data_corrections_tbl (internal_object_id, object_type, extern
 INSERT INTO ab_buildings_tbl (id, status, building_type, district_id) VALUES (1, 0, 'ab', @district_id_nsk_sovetskiy);
 SELECT @building_ivanova_27_id:=1;
 INSERT INTO ab_building_addresses_tbl (id, status, primary_status, street_id, building_id)
-	VALUES (1, 0, b'1', @street_id_ivanova, @building_ivanova_27_id);
-SELECT @buildings_ivanova_27:=1;
+	VALUES (1001, 0, b'1', @street_id_ivanova, @building_ivanova_27_id);
+SELECT @buildings_ivanova_27:=1001;
 INSERT INTO ab_building_address_attributes_tbl (value, status, attribute_type_id, buildings_id)
 	VALUES ('27', 0, @attr_type_home_number_id, @buildings_ivanova_27);
 
@@ -1806,8 +1806,8 @@ insert into common_data_corrections_tbl (internal_object_id, object_type, extern
 INSERT INTO ab_buildings_tbl (id, status, building_type, district_id) VALUES (2, 0, 'ab', @district_id_nsk_sovetskiy);
 SELECT @building_id:=2;
 INSERT INTO ab_building_addresses_tbl (id, status, primary_status, street_id, building_id)
-	VALUES (2, 0, b'1', @street_id_ivanova, @building_id);
-SELECT @buildings_id:=2;
+	VALUES (1002, 0, b'1', @street_id_ivanova, @building_id);
+SELECT @buildings_id:=1002;
 INSERT INTO ab_building_address_attributes_tbl (value, status, attribute_type_id, buildings_id)
 	VALUES ('2', 0, @attr_type_home_number_id, @buildings_id);
 INSERT INTO ab_building_addresses_tbl (id, status, primary_status, street_id, building_id)
