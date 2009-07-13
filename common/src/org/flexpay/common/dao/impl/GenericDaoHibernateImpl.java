@@ -166,8 +166,8 @@ public class GenericDaoHibernateImpl<T, PK extends Serializable>
 
 						// handle page parameter
 						if (values[i] instanceof Page) {
-							if (pageParam != null) {
-								throw new IllegalStateException("Only one Page parameter allowed");
+							if (pageParam != null || range != null) {
+								throw new IllegalStateException("Only one Page or FetchRange parameter allowed");
 							}
 							++fix;
 							pageParam = (Page<?>) values[i];
@@ -176,10 +176,11 @@ public class GenericDaoHibernateImpl<T, PK extends Serializable>
 						// handle FetchRange parameter
 						if (values[i] instanceof FetchRange) {
 							if (range != null) {
-								throw new IllegalStateException("Only one FetchRange parameter allowed");
+								throw new IllegalStateException("Only one FetchRange or Page parameter allowed");
 							}
 							fetchRangeParamPosition = i - fix;
-							fix += 2;
+							// skip 2 "between ? and ?" parameters and add thrown away 1 argument
+							fix += -2 + 1;
 							range = (FetchRange) values[i];
 							continue;
 						}
@@ -217,6 +218,8 @@ public class GenericDaoHibernateImpl<T, PK extends Serializable>
 							queryCount.setParameter(nParam, values[i]);
 						}
 						if (queryStats != null) {
+							// stats query should not contain additional "between ? and ?"
+							nParam = fetchRangeParamPosition != 0 ? nParam - 2 : nParam;
 							queryStats.setParameter(nParam, values[i]);
 						}
 					}
@@ -247,8 +250,8 @@ public class GenericDaoHibernateImpl<T, PK extends Serializable>
 						return Collections.emptyList();
 					}
 
-					queryObject.setParameter(fetchRangeParamPosition, range.getLowerBound());
-					queryObject.setParameter(fetchRangeParamPosition+1, range.getUpperBound());
+					queryObject.setLong(fetchRangeParamPosition, range.getLowerBound());
+					queryObject.setLong(fetchRangeParamPosition+1, range.getUpperBound());
 				} else if (range != null) {
 					throw new IllegalStateException("Found FetchRange parameter, but no stats query found: "
 													+ getStatsQueryName(queryName));

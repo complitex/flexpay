@@ -86,4 +86,21 @@
 		where o.id between ? and ?
 	</query>
 
+	<query name="MeasureUnit.listUnitsRangeTest2.stats">
+	<![CDATA[
+		select min(id), max(id), count(id)
+		from MeasureUnit
+		where id >= ? and id <= ?
+	]]>
+	</query>
+
+	<query name="MeasureUnit.listUnitsRangeTest2">
+	<![CDATA[
+		select distinct o
+		from MeasureUnit o
+			left join fetch o.unitNames
+		where o.id >= ? and o.id between ? and ? and o.id <= ?
+	]]>
+	</query>
+
 </hibernate-mapping>

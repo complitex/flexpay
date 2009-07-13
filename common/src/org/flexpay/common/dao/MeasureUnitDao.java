@@ -24,4 +24,6 @@ public interface MeasureUnitDao extends GenericDao<MeasureUnit, Long> {
 
 	List<MeasureUnit> listUnitsRangeTest(FetchRange range);
 
+	List<MeasureUnit> listUnitsRangeTest2(Long lowerId, FetchRange range, Long upperId);
+
 }

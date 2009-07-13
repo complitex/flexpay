@@ -14,7 +14,6 @@ import java.util.List;
 public class TestMeasureUnitDao extends SpringBeanAwareTestCase {
 
 	@Autowired
-	@Qualifier ("measureUnitDao")
 	private MeasureUnitDao measureUnitDao;
 
 	@Test
@@ -38,6 +37,15 @@ public class TestMeasureUnitDao extends SpringBeanAwareTestCase {
 
 		FetchRange fetchRange = new FetchRange();
 		measureUnitDao.listUnitsRangeTest(fetchRange);
+
+		assertNotNull("No measure units found", fetchRange.getCount());
+	}
+
+	@Test
+	public void testCallRange2() {
+
+		FetchRange fetchRange = new FetchRange();
+		measureUnitDao.listUnitsRangeTest2(1L, fetchRange, 5L);
 
 		assertNotNull("No measure units found", fetchRange.getCount());
 	}
