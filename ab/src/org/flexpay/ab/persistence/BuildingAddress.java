@@ -167,15 +167,6 @@ public class BuildingAddress extends DomainObjectWithStatus {
 		return attribute;
 	}
 
-	public String toString() {
-		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE)
-				.append("id", getId())
-				.append("status", getStatus())
-				.append("BuildingId", building == null ? null : building.getId())
-				.append("StreetId", street == null ? null : street.getId())
-				.toString();
-	}
-
 	public String format(Locale locale, boolean shortMode) throws FlexPayException {
 
 		StringBuilder result = new StringBuilder();
@@ -295,4 +286,18 @@ public class BuildingAddress extends DomainObjectWithStatus {
 	public Stub<Building> getBuildingStub() {
 		return stub(building);
 	}
+
+	@Override
+	public String toString() {
+		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
+				append("id", getId()).
+				append("status", getStatus()).
+				append("bulk", getBulk()).
+				append("number", getNumber()).
+				append("primaryStatus", primaryStatus).
+				append("streetId", street != null ? street.getId() : null).
+				append("buildingId", building != null ? building.getId() : null).
+				toString();
+	}
+
 }

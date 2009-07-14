@@ -1,5 +1,6 @@
-
 <%@ include file="/WEB-INF/jsp/common/taglibs.jsp" %>
+
+<s:actionerror />
 
 <s:form action="streetEdit" method="post">
 	<%@ include file="filters/groups/country_region_town_ajax.jsp" %>
