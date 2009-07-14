@@ -27,6 +27,7 @@
 					<s:hidden name="eircAccounts['%{#serviceIndx}']" value="%{getEircAccount(#qi)}"/>
 					<s:hidden name="serviceProviderAccounts['%{#serviceIndx}']" value="%{serviceProviderAccount}"/>
 					<s:hidden name="debts['%{#serviceIndx}']" value="%{outgoingBalance}"/>
+					<s:hidden name="ercAccounts['%{#serviceIndx}']" value="%{getErcAccount(attributes)}"/>
 
 					<tr class="cols_1_error" style="display:none;">
 						<td colspan="6" />

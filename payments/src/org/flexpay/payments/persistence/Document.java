@@ -161,6 +161,17 @@ public class Document extends DomainObject {
 		this.payerFIO = payerFIO;
 	}
 
+	public DocumentAddition getAddition(int typeCode) {
+
+		for (DocumentAddition addition : additions) {
+			if (addition.getAdditionType().getCode() == typeCode) {
+				return addition;
+			}
+		}
+
+		return null;
+	}
+
 	public Set<DocumentAddition> getAdditions() {
 		return additions;
 	}
