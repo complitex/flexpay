@@ -18,6 +18,7 @@ public class ApplicationConfig extends org.flexpay.common.util.config.Applicatio
 	private AddressAttributeType buildingHouseType;
 	private AddressAttributeType addressAttributeTypeNumber;
 	private AddressAttributeType addressAttributeTypeBulk;
+	private AddressAttributeType addressAttributeTypePart;
 
 	static {
 		// ensure Security fields are initialised
@@ -55,6 +56,10 @@ public class ApplicationConfig extends org.flexpay.common.util.config.Applicatio
 
 	public static AddressAttributeType getBuildingAttributeTypeBulk() {
 		return getInstance().addressAttributeTypeBulk;
+	}
+
+	public static AddressAttributeType getBuildingAttributeTypePart() {
+		return getInstance().addressAttributeTypePart;
 	}
 
 	public static AddressAttributeType getBuildingHouseType() {
@@ -98,6 +103,10 @@ public class ApplicationConfig extends org.flexpay.common.util.config.Applicatio
 
 	public void setBuildingAttributeTypeBulkId(String bulkTypeId) {
 		addressAttributeTypeBulk = new AddressAttributeType(Long.valueOf(bulkTypeId));
+	}
+
+	public void setBuildingAttributeTypePartId(String partTypeId) {
+		addressAttributeTypePart = new AddressAttributeType(Long.valueOf(partTypeId));
 	}
 
 	protected static ApplicationConfig getInstance() {
