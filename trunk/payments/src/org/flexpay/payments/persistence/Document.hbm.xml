@@ -246,6 +246,11 @@
 				<comment>Optimistic lock version</comment>
 			</column>
 		</version>
+		<property name="code">
+			<column name="code">
+				<comment>Document addition type code</comment>
+			</column>
+		</property>
 		<set name="translations" cascade="all-delete-orphan" inverse="true">
 			<key column="type_id" not-null="true" />
 			<one-to-many class="DocumentAdditionTypeTranslation" />
@@ -438,5 +443,12 @@
 		and op.creationDate >= ? and op.creationDate <= ?
 		and doc.documentType.id = 1 and doc.documentStatus.id = 2
 	]]></query>
+
+	<query name="DocumentAdditionType.findTypeByCode">
+		select distinct type
+		from DocumentAdditionType type
+		left join fetch type.translations
+		where type.code = ?
+	</query>
 
 </hibernate-mapping>

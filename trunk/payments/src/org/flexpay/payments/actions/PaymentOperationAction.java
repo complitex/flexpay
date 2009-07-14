@@ -39,6 +39,7 @@ public abstract class PaymentOperationAction extends CashboxCookieActionSupport 
 	private Map<String, String> addresses = CollectionUtils.map();
 	private Map<String, String> eircAccounts = CollectionUtils.map();
 	private Map<String, BigDecimal> debts = CollectionUtils.map();
+	private Map<String, String> ercAccounts = CollectionUtils.map();
 	private BigDecimal changeSumm;
 	private BigDecimal inputSumm;
 	private BigDecimal totalToPay;
@@ -48,6 +49,7 @@ public abstract class PaymentOperationAction extends CashboxCookieActionSupport 
 
 	private DocumentTypeService documentTypeService;
 	private DocumentStatusService documentStatusService;
+	private DocumentAdditionTypeService documentAdditionTypeService;
 	private OperationLevelService operationLevelService;
 	private OperationStatusService operationStatusService;
 	private OperationTypeService operationTypeService;
@@ -55,6 +57,7 @@ public abstract class PaymentOperationAction extends CashboxCookieActionSupport 
 	private OrganizationService organizationService;
 	private SPService spService;
 	private ServiceProviderService serviceProviderService;
+
 
 	private ApartmentService apartmentService;
 	private BuildingService buildingService;
@@ -104,7 +107,7 @@ public abstract class PaymentOperationAction extends CashboxCookieActionSupport 
 	}
 
 	private Document buildDocument(String serviceFullIndex, Cashbox cashbox) throws FlexPayException {
-
+		
 		BigDecimal documentSumm = payments.get(serviceFullIndex);
 		String serviceId = ServiceFullIndexUtil.getServiceIdFromIndex(serviceFullIndex);
 		Service service = spService.readFull(new Stub<Service>(Long.parseLong(serviceId)));
@@ -125,6 +128,12 @@ public abstract class PaymentOperationAction extends CashboxCookieActionSupport 
 		document.setDebtorId(eircAccounts.get(serviceFullIndex));
 		document.setCreditorOrganization(serviceProviderOrganization);
 		document.setCreditorId(serviceProviderAccount);
+
+		DocumentAddition ercAccountAddition = new DocumentAddition();
+		ercAccountAddition.setAdditionType(documentAdditionTypeService.findTypeByCode(DocumentAdditionType.CODE_ERC_ACCOUNT));
+		ercAccountAddition.setDocument(document);
+		ercAccountAddition.setStringValue(ercAccounts.get(serviceFullIndex));
+		document.setAdditions(CollectionUtils.set(ercAccountAddition));
 
 		if (apartmentId != null) {
 			setPayerAddress(document);
@@ -251,6 +260,14 @@ public abstract class PaymentOperationAction extends CashboxCookieActionSupport 
 		this.debts = debts;
 	}
 
+	public Map<String, String> getErcAccounts() {
+		return ercAccounts;
+	}
+
+	public void setErcAccounts(Map<String, String> ercAccounts) {
+		this.ercAccounts = ercAccounts;
+	}
+
 	public BigDecimal getChangeSumm() {
 		return changeSumm;
 	}
@@ -322,6 +339,11 @@ public abstract class PaymentOperationAction extends CashboxCookieActionSupport 
 	@Required
 	public void setServiceProviderService(ServiceProviderService serviceProviderService) {
 		this.serviceProviderService = serviceProviderService;
+	}
+
+	@Required
+	public void setDocumentAdditionTypeService(DocumentAdditionTypeService documentAdditionTypeService) {
+		this.documentAdditionTypeService = documentAdditionTypeService;
 	}
 
 	@Required

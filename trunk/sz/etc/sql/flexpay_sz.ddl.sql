@@ -1171,6 +1171,7 @@
     create table payments_document_addition_types_tbl (
         id bigint not null auto_increment comment 'Primary key',
         version integer not null comment 'Optimistic lock version',
+        code integer comment 'Document addition type code',
         primary key (id)
     ) comment='Operation document addition types';
 

@@ -34,6 +34,7 @@
 		  class="org.flexpay.payments.actions.quittance.QuittancePayAction"
 		  p:documentStatusService-ref="documentStatusService"
 		  p:documentTypeService-ref="documentTypeService"
+		  p:documentAdditionTypeService-ref="documentAdditionTypeService"
 		  p:operationLevelService-ref="operationLevelService"
 		  p:operationStatusService-ref="operationStatusService"
 		  p:operationTypeService-ref="operationTypeService"
@@ -112,10 +113,14 @@
 
 	<bean id="accReceivedPaymentsReportAction"
 		  class="org.flexpay.payments.actions.reports.AccReceivedPaymentsReportAction"
+		  p:paymentPointService-ref="paymentPointService"
+		  p:cashboxService-ref="cashboxService"
 		  scope="prototype" />
 
 	<bean id="accReturnedPaymentsReportAction"
 		  class="org.flexpay.payments.actions.reports.AccReturnedPaymentsReportAction"
+		  p:paymentPointService-ref="paymentPointService"
+		  p:cashboxService-ref="cashboxService"
 		  scope="prototype" />
 
 	<bean id="importPaymentsReportAction"
@@ -131,6 +136,7 @@
 		  p:paymentsReporter-ref="paymentsReporter"
           p:documentStatusService-ref="documentStatusService"
           p:documentTypeService-ref="documentTypeService"
+		  p:documentAdditionTypeService-ref="documentAdditionTypeService"
           p:operationLevelService-ref="operationLevelService"
           p:operationStatusService-ref="operationStatusService"
           p:operationTypeService-ref="operationTypeService"

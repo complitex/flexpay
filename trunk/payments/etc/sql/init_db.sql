@@ -68,6 +68,14 @@ insert into payments_document_status_translations_tbl(name, language_id, status_
 insert into payments_document_status_translations_tbl(name, language_id, status_id)
 	values ('Error', @en_id, @doc_status_5);
 
+-- init document addition types
+insert into payments_document_addition_types_tbl (id, version, code)
+		values (1, 0, 1);
+insert into payments_document_addition_type_translations_tbl (name, language_id, type_id)
+		values ('ЕРЦ счёт', @ru_id, 1);
+insert into payments_document_addition_type_translations_tbl (name, language_id, type_id)
+		values ('ERC account', @en_id, 1);
+
 -- init operation levels
 insert into payments_operation_levels_tbl (id, version, code)
 	values (1, 0, 1);

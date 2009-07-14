@@ -1,6 +1,7 @@
 package org.flexpay.payments.service.impl;
 
 import org.flexpay.common.exception.FlexPayExceptionContainer;
+import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.payments.dao.DocumentAdditionTypeDao;
 import org.flexpay.payments.persistence.DocumentAdditionType;
@@ -8,6 +9,8 @@ import org.flexpay.payments.service.DocumentAdditionTypeService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Transactional (readOnly = true)
 public class DocumentAdditionTypeServiceImpl implements DocumentAdditionTypeService {
@@ -57,6 +60,17 @@ public class DocumentAdditionTypeServiceImpl implements DocumentAdditionTypeServ
 		validate(type);
 		typeDao.update(type);
 		return type;
+	}
+
+	@Override
+	public DocumentAdditionType findTypeByCode(int typeCode) throws FlexPayException {
+
+		List<DocumentAdditionType> types =  typeDao.findTypeByCode(typeCode);
+		if (types.isEmpty()) {
+			throw new FlexPayException("Document addition type not found #" + typeCode);
+		}
+
+		return types.get(0);
 	}
 
 	private void validate(DocumentAdditionType type) throws FlexPayExceptionContainer {

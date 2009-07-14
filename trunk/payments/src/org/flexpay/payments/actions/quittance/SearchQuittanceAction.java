@@ -19,6 +19,7 @@ import org.flexpay.payments.persistence.Service;
 import org.flexpay.payments.persistence.Operation;
 import org.flexpay.payments.persistence.quittance.QuittanceDetailsRequest;
 import org.flexpay.payments.persistence.quittance.QuittanceDetailsResponse;
+import org.flexpay.payments.persistence.quittance.ConsumerAttributes;
 import static org.flexpay.payments.persistence.quittance.QuittanceDetailsResponse.*;
 import org.flexpay.payments.service.QuittanceDetailsFinder;
 import org.flexpay.payments.service.SPService;
@@ -207,6 +208,17 @@ public class SearchQuittanceAction extends CashboxCookieActionSupport {
 		ServiceProvider serviceProvider = serviceProviderService.read(service.getServiceProviderStub());
 		assert serviceProvider != null;
 		return serviceProvider.getName();
+	}
+
+	public String getErcAccount(ServiceAttribute[] attributes) {
+
+		for (ServiceAttribute attribute : attributes) {
+			if (attribute.getName().equals(ConsumerAttributes.ATTR_ERC_ACCOUNT)) {
+				return attribute.getValue();
+			}
+		}
+
+		return null;
 	}
 
 	public Long getServiceId(String serviceMasterIndex) {
