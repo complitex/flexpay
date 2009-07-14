@@ -1,5 +1,6 @@
 package org.flexpay.ab.actions.buildings;
 
+import org.apache.commons.lang.StringUtils;
 import org.flexpay.ab.persistence.*;
 import org.flexpay.ab.persistence.filters.DistrictFilter;
 import org.flexpay.ab.persistence.filters.StreetFilter;
@@ -49,10 +50,18 @@ public class BuildingCreateAction extends FPActionSupport {
 			addActionError(getText("ab.buildings.create.street_required"));
 			valid = false;
 		}
-		if (attributeMap.isEmpty()) {
+		boolean allAttributesAreNull = true;
+		for (String value : attributeMap.values()) {
+			if (!StringUtils.isBlank(value)) {
+				allAttributesAreNull = false;
+				break;
+			}
+		}
+		if (attributeMap.isEmpty() || allAttributesAreNull) {
 			addActionError(getText("ab.buildings.create.buildings_attr_required"));
 			valid = false;
 		}
+
 		if (!valid) {
 			return INPUT;
 		}
