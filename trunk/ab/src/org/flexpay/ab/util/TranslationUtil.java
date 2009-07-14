@@ -76,11 +76,7 @@ public class TranslationUtil {
 														  getTranslation(type.getTranslations()) :
 														  getTranslation(type.getTranslations(), locale);
 			if (streetTypeTranslation != null) {
-				if (streetTypeTranslation.getShortName() != null) {
-					streetTypeStr = streetTypeTranslation.getShortName();
-				} else {
-					streetTypeStr = streetTypeTranslation.getName();
-				}
+				streetTypeStr = streetTypeTranslation.getShortName() != null ? streetTypeTranslation.getShortName() : streetTypeTranslation.getName();
 			}
 		}
 		return streetTypeStr;
@@ -96,24 +92,37 @@ public class TranslationUtil {
 			return null;
 		}
 
-		StringBuilder number = new StringBuilder();
+		String building = "";
+		String bulk = "";
+		String part = "";
 		for (AddressAttribute attribute : attributes) {
 			if (attribute == null) {
 				continue;
 			}
-			AddressAttributeTypeTranslation attributeTypeTranslation =
+			AddressAttributeTypeTranslation att =
 					locale == null ? getTranslation(attribute.getBuildingAttributeType().getTranslations()) :
 							getTranslation(attribute.getBuildingAttributeType().getTranslations(), locale);
-			if (attributeTypeTranslation.getShortName() != null) {
-				number.append(attributeTypeTranslation.getShortName()).append(' ');
-			} else {
-				number.append(attributeTypeTranslation.getName()).append(' ');
+			String v = new StringBuilder().
+					append(att.getShortName() != null ? att.getShortName() : att.getName()).
+					append(" ").
+					append(attribute.getValue()).
+					toString().trim();
+			if (attribute.getBuildingAttributeType().isPartNumber()) {
+				part = v;
+			} else if (attribute.getBuildingAttributeType().isBulkNumber()) {
+				bulk = v;
+			} else if (attribute.getBuildingAttributeType().isBuildingNumber()) {
+				building = v;
 			}
-
-			number.append(attribute.getValue()).append(' ');
 		}
 
-		return number.toString().trim();
+		return new StringBuilder().
+				append(building).
+				append(" ").
+				append(bulk).
+				append(" ").
+				append(part).
+				toString();
 	}
 
 	public static String getBuildingNumberWithoutHouseType(@Nullable Collection<AddressAttribute> attributes, @Nullable Locale locale) throws FlexPayException {

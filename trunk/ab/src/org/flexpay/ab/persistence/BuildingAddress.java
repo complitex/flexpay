@@ -111,6 +111,22 @@ public class BuildingAddress extends DomainObjectWithStatus {
 	}
 
 	/**
+	 * Get building attribute
+	 *
+	 * @return BuildingAttribute part if attribute specified, or <code>null</code> otherwise
+	 */
+	@Nullable
+	public AddressAttribute getPartAttribute() {
+		for (AddressAttribute attribute : addressAttributes) {
+			if (attribute.getBuildingAttributeType().isPartNumber()) {
+				return attribute;
+			}
+		}
+
+		return null;
+	}
+
+	/**
 	 * Get building number
 	 *
 	 * @return Building number if attribute specified, or <code>null</code> otherwise
@@ -176,8 +192,13 @@ public class BuildingAddress extends DomainObjectWithStatus {
 		}
 		attribute = getBulkAttribute();
 		if (attribute != null) {
-			result.append(", ");
-			result.append(attribute.format(locale, shortMode));
+			result.append(", ").
+					append(attribute.format(locale, shortMode));
+		}
+		attribute = getPartAttribute();
+		if (attribute != null) {
+			result.append(", ").
+					append(attribute.format(locale, shortMode));
 		}
 
 		return result.toString();

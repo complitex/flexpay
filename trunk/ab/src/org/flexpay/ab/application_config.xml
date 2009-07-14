@@ -8,7 +8,13 @@
 
     <applicationName>ab</applicationName>
 
-	<defaultCountry id="3">Украина</defaultCountry>
+<!--
+	<defaultCountry id="1">РОССИЯ</defaultCountry>
+	<defaultRegion id="1000">Новосибирская область</defaultRegion>
+	<defaultTown id="2">Новосибирск</defaultTown>
+-->
+
+    <defaultCountry id="3">Украина</defaultCountry>
 	<defaultRegion id="1">Харьковская область</defaultRegion>
 	<defaultTown id="1">Харьков</defaultTown>
 
@@ -16,5 +22,6 @@
 
 	<buildingAttributeTypeNumber id="1" />
 	<buildingAttributeTypeBulk id="2" />
+    <buildingAttributeTypePart id="3" />
 
 </flexpay>

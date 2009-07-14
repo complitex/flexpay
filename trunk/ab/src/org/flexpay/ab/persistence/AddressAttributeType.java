@@ -66,6 +66,16 @@ public class AddressAttributeType extends DomainObjectWithStatus {
 		return equals(type);
 	}
 
+	/**
+	 * Check if attribute type is a part number
+	 *
+	 * @return <code>true</code> if attribute type is a part number
+	 */
+	public boolean isPartNumber() {
+		AddressAttributeType type = ApplicationConfig.getBuildingAttributeTypePart();
+		return equals(type);
+	}
+
 	public void setTranslation(@NotNull AddressAttributeTypeTranslation translation) {
 		translations = TranslationUtil.setTranslation(translations, this, translation);
 	}
