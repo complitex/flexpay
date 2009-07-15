@@ -9,6 +9,7 @@ import org.flexpay.common.persistence.filter.RegistryRecordStatusFilter;
 import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.persistence.registry.RegistryRecord;
 import org.flexpay.common.persistence.registry.RegistryStatus;
+import org.flexpay.common.persistence.registry.RegistryRecordContainer;
 import org.flexpay.common.service.FPFileService;
 import org.flexpay.common.service.RegistryRecordService;
 import org.flexpay.common.service.RegistryService;
@@ -222,7 +223,15 @@ public class GeneratePaymentsMBRegistry {
         infoLine.add(createCellData(String.valueOf(record.getUniqueOperationNumber()), tableHeader[0].length(), ' '));
 
         // лиц. счет ЕРЦ
-        infoLine.add(createCellData(null, tableHeader[1].length(), ' '));
+        String eircCount = null;
+        List<RegistryRecordContainer> containers = record.getContainers();
+        for (RegistryRecordContainer container : containers) {
+            if (container.getData() != null && container.getData().startsWith("201:")) {
+                eircCount = container.getData().substring(4);
+                break;
+            }
+        }
+        infoLine.add(createCellData(eircCount, tableHeader[1].length(), ' '));
 
         // лиц. счет поставщика услуг
         infoLine.add(createCellData(record.getPersonalAccountExt(), tableHeader[2].length(), ' '));

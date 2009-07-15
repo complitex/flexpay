@@ -97,6 +97,8 @@ public class TestGeneratePaymentsDBRegistry extends SpringBeanAwareTestCase {
     private RegistryRecordStatusService registryRecordStatusService;
     @Autowired
     private PropertiesFactory propertiesFactory;
+    @Autowired
+    private DocumentAdditionTypeService documentAdditionTypeService;
 
     @Resource(name = "classToTypeRegistryPayments")
     //@Qualifier("classToTypeRegistryPayments")
@@ -337,6 +339,7 @@ public class TestGeneratePaymentsDBRegistry extends SpringBeanAwareTestCase {
         generate.setRegistryTypeService(registryTypeService);
         generate.setRegistryRecordStatusService(registryRecordStatusService);
         generate.setPropertiesFactory(propertiesFactory);
+        generate.setDocumentAdditionTypeService(documentAdditionTypeService);
 
         Registry registry  = generate.createDBRegestry(spFile, serviceProvider, registerOrganization, new Date(currDate.getTime() + 1000), new Date(currDate.getTime() + 10000));
         assertNull(registry);
