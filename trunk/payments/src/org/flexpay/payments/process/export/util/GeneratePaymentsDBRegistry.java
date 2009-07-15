@@ -131,7 +131,7 @@ public class GeneratePaymentsDBRegistry {
                 if (ercAccountAddition != null) {
                     container = new RegistryRecordContainer();
                     container.setOrder(1);
-                    container.setData("201:" + ercAccountAddition.getStringValue());
+                    container.setData("53:" + ercAccountAddition.getStringValue());
                     container.setRecord(record);
                     containers.add(container);
                 }
