@@ -7,8 +7,11 @@ import org.flexpay.common.service.*;
 import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.orgs.persistence.ServiceProvider;
 import org.flexpay.payments.persistence.Document;
+import org.flexpay.payments.persistence.DocumentAdditionType;
+import org.flexpay.payments.persistence.DocumentAddition;
 import org.flexpay.payments.service.DocumentService;
 import org.flexpay.payments.service.OperationService;
+import org.flexpay.payments.service.DocumentAdditionTypeService;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
@@ -33,6 +36,7 @@ public class GeneratePaymentsDBRegistry {
     private PropertiesFactory propertiesFactory;
 	private OperationService operationService;
     private DocumentService documentService;
+    private DocumentAdditionTypeService documentAdditionTypeService;
 
     @Nullable
     public Registry createDBRegestry(@NotNull FPFile spFile, @NotNull ServiceProvider serviceProvider, @NotNull Organization registerOrganization,
@@ -105,6 +109,17 @@ public class GeneratePaymentsDBRegistry {
 
                 record.setProperties(propertiesFactory.newRecordProperties());
 
+                DocumentAddition ercAccountAddition = null;
+                DocumentAdditionType documentErcType = documentAdditionTypeService.findTypeByCode(DocumentAdditionType.CODE_ERC_ACCOUNT);
+                if (documentErcType != null) {
+                    for (DocumentAddition documentAddition : document.getAdditions()) {
+                        if (documentErcType.equals(documentAddition.getAdditionType())) {
+                            ercAccountAddition = documentAddition;
+                            break;
+                        }
+                    }
+                }
+
                 List<RegistryRecordContainer> containers = new ArrayList<RegistryRecordContainer>();
 
                 RegistryRecordContainer container = new RegistryRecordContainer();
@@ -112,6 +127,14 @@ public class GeneratePaymentsDBRegistry {
                 container.setData("50:" + document.getDebtorId());
                 container.setRecord(record);
                 containers.add(container);
+
+                if (ercAccountAddition != null) {
+                    container = new RegistryRecordContainer();
+                    container.setOrder(1);
+                    container.setData("201:" + ercAccountAddition.getStringValue());
+                    container.setRecord(record);
+                    containers.add(container);
+                }
 
                 record.setContainers(containers);
 
@@ -201,5 +224,10 @@ public class GeneratePaymentsDBRegistry {
 	@Required
     public void setPropertiesFactory(PropertiesFactory propertiesFactory) {
         this.propertiesFactory = propertiesFactory;
+    }
+
+    @Required
+    public void setDocumentAdditionTypeService(DocumentAdditionTypeService documentAdditionTypeService) {
+        this.documentAdditionTypeService = documentAdditionTypeService;
     }
 }
