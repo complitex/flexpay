@@ -13,7 +13,7 @@
 		<param name="CountDirection" value="1" />
 		<!-- Use 50MB -->
 		<param name="MaxFileSize" value="52428800" />
-		<param name="DatePattern" value="'.'yyyy-MM-dd-HH" />
+		<param name="DatePattern" value="'.'yyyy-MM-dd" />
 		<!-- Unlimited number of backups -->
 		<param name="MaxSizeRollBackups" value="-1" />
 		<!-- Compress(gzip) the backup files-->
@@ -40,7 +40,7 @@
 		<param name="CountDirection" value="1" />
 		<!-- Use 50MB -->
 		<param name="MaxFileSize" value="52428800" />
-		<param name="DatePattern" value="'.'yyyy-MM-dd-HH" />
+		<param name="DatePattern" value="'.'yyyy-MM-dd" />
 		<!-- Unlimited number of backups -->
 		<param name="MaxSizeRollBackups" value="-1" />
 		<!-- Compress(gzip) the backup files-->
