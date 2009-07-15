@@ -116,8 +116,11 @@ public class MbCorrectionsFileValidator extends MbFileValidator {
 
 	private void validateRecord(String line, ValidationContext context) throws FlexPayException {
 		String[] fields = line.split("=");
-		if (fields.length != 28) {
-			throw new FlexPayException("Not 28 fields");
+		if (fields.length < 28) {
+			throw new FlexPayException("Found " + fields.length + " fields. expected 28");
+		}
+		if (fields.length > 28) {
+			log.warn("Found {} fields. expected 28", fields.length);
 		}
 		validateFields(fields);
 		try {
