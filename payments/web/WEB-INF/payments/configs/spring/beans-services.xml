@@ -143,7 +143,8 @@
 		  p:registryStatusService-ref="registryStatusService"
 		  p:registryTypeService-ref="registryTypeService"
 		  p:registryRecordStatusService-ref="registryRecordStatusService"
-		  p:propertiesFactory-ref="propertiesFactory" />
+		  p:propertiesFactory-ref="propertiesFactory"
+          p:documentAdditionTypeService-ref="documentAdditionTypeService" />
 
 	<bean id="generatePaymentsMBRegistry"
 		  class="org.flexpay.payments.process.export.util.GeneratePaymentsMBRegistry"
