@@ -84,7 +84,8 @@ public class TranslationUtil {
 	@NotNull
 	public static <T extends Translation> Set<T> setTranslation(
 			@NotNull Set<T> translations, @NotNull DomainObject translatable, @NotNull T translation) {
-		if (Collections.emptySet().equals(translations)) {
+
+		if (translations == Collections.EMPTY_SET) {
 			translations = set();
 		}
 
