@@ -41,7 +41,7 @@ public class TestMeasureUnitService extends SpringBeanAwareTestCase {
 		}
 
 		unit = measureUnitService.readFull(new Stub<MeasureUnit>(1L));
-
+		assertNotNull("Failed reading just saved unit", unit);
 		assertFalse("Unit names is empty", unit.getUnitNames().isEmpty());
 		unit.setName(new MeasureUnitName("----------Test-------"));
 		measureUnitService.create(unit);
