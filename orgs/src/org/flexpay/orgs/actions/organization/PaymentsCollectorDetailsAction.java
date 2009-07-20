@@ -38,7 +38,7 @@ public class PaymentsCollectorDetailsAction extends PaymentPointsListAction {
 
 	public String getOrganizationName() {
 
-		return organizationHelper.getName(paymentsCollector.getOrganization(), userPreferences.getLocale());
+		return organizationHelper.getName(paymentsCollector.getOrganization(), getUserPreferences().getLocale());
 	}
 
 	public PaymentsCollector getPaymentsCollector() {

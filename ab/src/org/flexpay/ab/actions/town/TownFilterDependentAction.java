@@ -1,8 +1,6 @@
 package org.flexpay.ab.actions.town;
 
 import org.apache.commons.collections.ArrayStack;
-import org.flexpay.ab.persistence.AddressAttribute;
-import org.flexpay.ab.persistence.AddressAttributeTypeTranslation;
 import org.flexpay.ab.persistence.BuildingAddress;
 import org.flexpay.ab.persistence.filters.CountryFilter;
 import org.flexpay.ab.persistence.filters.RegionFilter;
@@ -14,8 +12,6 @@ import org.flexpay.common.persistence.filter.ObjectFilter;
 import org.flexpay.common.service.ParentService;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Required;
-
-import java.util.Collection;
 
 /**
  * Town filter dependent action
@@ -34,7 +30,7 @@ public abstract class TownFilterDependentAction extends FPActionSupport {
 			for (Object filter : filterArrayStack) {
 				((ObjectFilter) filter).initFilter(session);
 			}
-			ArrayStack filters = parentService.initFilters(filterArrayStack, userPreferences.getLocale());
+			ArrayStack filters = parentService.initFilters(filterArrayStack, getUserPreferences().getLocale());
 			setFilters(filters);
 		} catch (FlexPayException e) {
 			if (!ignoreFilterInitErrors()) {
@@ -57,7 +53,7 @@ public abstract class TownFilterDependentAction extends FPActionSupport {
 
 	public String getBuildingNumber(@Nullable BuildingAddress buildingAddress) throws Exception {
 		if (buildingAddress != null) {
-			return TranslationUtil.getBuildingNumber(buildingAddress.getBuildingAttributes(), userPreferences.getLocale());
+			return TranslationUtil.getBuildingNumber(buildingAddress.getBuildingAttributes(), getUserPreferences().getLocale());
 		}
 
 		return null;

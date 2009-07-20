@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:p="http://www.springframework.org/schema/p"
+	   xmlns:context="http://www.springframework.org/schema/context"
+	   xsi:schemaLocation="
+	       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+		   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
+
+	<bean id="contextSource"
+		  class="org.springframework.ldap.pool.factory.PoolingContextSource"
+		  p:contextSource-ref="contextSourceTarget"
+		  p:dirContextValidator-ref="dirContextValidator"
+		  p:testOnBorrow="true"
+		  p:testWhileIdle="true" />
+
+	<bean id="dirContextValidator"
+		  class="org.springframework.ldap.pool.validation.DefaultDirContextValidator" />
+
+	<bean id="contextSourceTarget"
+		  class="org.springframework.ldap.core.support.LdapContextSource"
+		  p:url="${ldap.url}"
+		  p:base="${ldap.base}"
+		  p:userDn="${ldap.userDn}"
+		  p:password="${ldap.password}"
+		  p:pooled="false" />
+
+	<bean id="simpleLdapTemplate" class="org.springframework.ldap.core.simple.SimpleLdapTemplate">
+		<constructor-arg ref="contextSource" />
+	</bean>
+
+	<bean id="compositeUserPreferencesContextMapperFactory"
+		  class="org.flexpay.common.dao.impl.ldap.CompositeUserPreferencesContextMapperFactory" />
+
+	<bean id="commonUserPreferencesContextMapper"
+		  autowire-candidate="false"
+		  class="org.flexpay.common.dao.impl.ldap.CommonUserPreferencesContextMapper" />
+
+	<bean id="userPreferencesContextMapper"
+		  factory-bean="compositeUserPreferencesContextMapperFactory"
+		  factory-method="getMapper"
+		  class="org.flexpay.common.dao.impl.ldap.CompositeUserPreferencesContextMapper"
+		  p:mapper-ref="commonUserPreferencesContextMapper" />
+
+	<bean id="uidLdapDnBuilder"
+		  class="org.flexpay.common.dao.impl.ldap.UidDnBuilder" />
+
+	<!--<bean id="ldapUserPreferencesDao"-->
+		  <!--autowire-candidate="false"-->
+		  <!--class="org.flexpay.common.dao.impl.LdapUserPreferencesDaoImpl"-->
+		  <!--p:ldapTemplate-ref="simpleLdapTemplate"-->
+		  <!--p:mapper-ref="userPreferencesContextMapper"-->
+		  <!--p:dnBuilder-ref="uidLdapDnBuilder"-->
+		  <!--p:userPreferencesFactory-ref="userPreferencesFactory" />-->
+
+	<!--<bean id="userPreferencesService"-->
+		  <!--class="org.flexpay.common.service.imp.UserPreferencesServiceImpl"-->
+		  <!--p:userPreferencesDao-ref="ldapUserPreferencesDao" />-->
+
+	<bean id="userPreferencesService"
+		  class="org.flexpay.common.service.imp.UserPreferencesServiceImpl"
+		  p:userPreferencesDao-ref="userPreferencesDao" />
+
+</beans>

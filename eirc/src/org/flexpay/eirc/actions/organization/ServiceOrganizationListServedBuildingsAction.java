@@ -47,7 +47,7 @@ public class ServiceOrganizationListServedBuildingsAction extends FPActionWithPa
 		addresses = new ArrayList<String>();
 
 		for (Building b : buildings) {
-			addresses.add(addressService.getBuildingAddress(new Stub<Building>(b), userPreferences.getLocale()));
+			addresses.add(addressService.getBuildingAddress(new Stub<Building>(b), getUserPreferences().getLocale()));
 		}
 
 		return SUCCESS;

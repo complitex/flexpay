@@ -28,7 +28,7 @@ public abstract class ListAction<
 		for (Object filter : filterArrayStack) {
 			((PrimaryKeyFilter<?>) filter).initFilter(session);
 		}
-		ArrayStack filters = parentService.initFilters(filterArrayStack, userPreferences.getLocale());
+		ArrayStack filters = parentService.initFilters(filterArrayStack, getUserPreferences().getLocale());
 		setFilters(filters);
 
 		initObjects(filters);

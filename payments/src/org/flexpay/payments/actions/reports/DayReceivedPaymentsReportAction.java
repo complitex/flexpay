@@ -15,7 +15,7 @@ public class DayReceivedPaymentsReportAction extends DayPaymentsReportAction {
 	 */
 	protected PaymentsPrintInfoData getPaymentsData(Date beginDate, Date endDate) {
 
-		return paymentsReporter.getReceivedPaymentsPrintFormData(beginDate, endDate, getCashbox(), userPreferences.getLocale());
+		return paymentsReporter.getReceivedPaymentsPrintFormData(beginDate, endDate, getCashbox(), getUserPreferences().getLocale());
 	}
 
 	protected String getReportBaseName() {

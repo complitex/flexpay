@@ -27,6 +27,7 @@
 		<path refid="spring-ws.lib" />
 		<path refid="openmq.lib" />
         <path refid="opensso.lib"/>
+        <path refid="ldap.lib"/>
 	</path>
 
 	<patternset id="empty_pattern" excludes="**/*.*" />

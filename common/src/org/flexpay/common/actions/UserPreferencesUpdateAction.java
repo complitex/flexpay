@@ -17,7 +17,7 @@ public class UserPreferencesUpdateAction extends FPActionSupport {
 	@NotNull
 	protected String doExecute() throws Exception {
 		if (prop != null) {
-			userPreferences.setTestProp(prop);
+			getUserPreferences().setTestProp(prop);
 		}
 
 		return SUCCESS;

@@ -56,7 +56,7 @@ public class StreetsListAction extends FPActionWithPagerSupport<Street> {
 	@NotNull
 	protected String doExecute() throws Exception {
 
-		Locale locale = userPreferences.getLocale();
+		Locale locale = getUserPreferences().getLocale();
 
 		ArrayStack filterArrayStack = getFilters();
 		for (Object filter : filterArrayStack) {

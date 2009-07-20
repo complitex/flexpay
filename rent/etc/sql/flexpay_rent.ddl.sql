@@ -668,6 +668,21 @@
         primary key (id)
     );
 
+    create table common_users_tbl (
+        id bigint not null auto_increment comment 'Primary key',
+        discriminator varchar(255) not null comment 'Class hierarchy discriminator',
+        full_name varchar(255) not null comment 'Full user name',
+        last_name varchar(255) not null comment 'Last user name',
+        user_name varchar(255) not null unique comment 'User login name',
+        language_code varchar(255) not null comment 'Preferred language ISO code',
+        page_size integer comment 'Preferred listing page size',
+        ab_country_filter varchar(255) comment 'Country filter',
+        ab_region_filter varchar(255) comment 'Region filter',
+        ab_town_filter varchar(255) comment 'Town filter',
+        payments_payment_point_id bigint comment 'User payment point',
+        primary key (id)
+    ) comment='User details';
+
     create table orgs_bank_accounts_tbl (
         id bigint not null auto_increment,
         version integer not null comment 'Optiomistic lock version',
@@ -863,6 +878,7 @@
     create table payments_document_addition_types_tbl (
         id bigint not null auto_increment comment 'Primary key',
         version integer not null comment 'Optimistic lock version',
+        code integer comment 'Document addition type code',
         primary key (id)
     ) comment='Operation document addition types';
 
@@ -918,6 +934,7 @@
         id bigint not null auto_increment comment 'Primary key',
         version integer not null comment 'Optimistic lock version',
         summ decimal(19,2) not null comment 'Summ',
+        debt decimal(19,2) comment 'Debt summ',
         address varchar(255) comment 'Payer address',
         payer_fio varchar(255) comment 'Payer first-middle-last names',
         creditor_id varchar(255) comment 'Creditor key',
@@ -1026,12 +1043,11 @@
     create table payments_operations_tbl (
         id bigint not null auto_increment comment 'Primary key',
         version integer not null comment 'Optimistic lock version',
-        uid bigint,
-        operation_summ decimal(19,2) not null comment 'Operation summ',
+        operation_summ decimal(19,2) comment 'Operation summ',
         operation_input_summ decimal(19,2) comment 'Operation input summ',
         change_summ decimal(19,2) comment 'Change',
-        creator varchar(255) not null comment 'Creator username',
-        creation_date datetime not null comment 'Creation date',
+        creator varchar(255) comment 'Creator username',
+        creation_date datetime comment 'Creation date',
         register_user varchar(255) comment 'Register username',
         register_date datetime comment 'Operation registration date',
         address varchar(255) comment 'Payer address',
@@ -1039,8 +1055,8 @@
         level_id bigint not null comment 'Operation level reference',
         status_id bigint not null comment 'Operation status reference',
         type_id bigint not null comment 'Operation type reference (operation code)',
-        creator_organization_id bigint not null comment 'Organization operation created in',
-        payment_point_id bigint not null comment 'Payment point operation created in',
+        creator_organization_id bigint comment 'Organization operation created in',
+        payment_point_id bigint comment 'Payment point operation created in',
         register_organization_id bigint comment 'Organization operation registered in',
         registry_record_id bigint comment 'Registry record',
         reference_operation_id bigint comment 'Optional operation reference',

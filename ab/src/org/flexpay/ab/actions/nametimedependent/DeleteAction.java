@@ -24,7 +24,7 @@ public abstract class DeleteAction<
 	@NotNull
 	public String doExecute() throws Exception {
 
-		ArrayStack filters = parentService.initFilters(getFilters(), userPreferences.getLocale());
+		ArrayStack filters = parentService.initFilters(getFilters(), getUserPreferences().getLocale());
 		setFilters(filters);
 
 		Collection<NTD> objectToDisable = new ArrayList<NTD>();

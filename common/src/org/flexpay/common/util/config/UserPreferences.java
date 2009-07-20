@@ -1,18 +1,33 @@
 package org.flexpay.common.util.config;
 
 import net.sourceforge.navigator.menu.MenuComponent;
-import org.flexpay.common.persistence.Language;
+import org.apache.commons.lang.StringUtils;
 import org.flexpay.common.actions.breadcrumbs.Crumb;
-import org.springframework.web.util.WebUtils;
+import org.flexpay.common.util.LanguageUtil;
+import org.flexpay.common.util.SecurityUtil;
+import org.flexpay.common.util.config.ApplicationConfig;
+import org.flexpay.common.persistence.DomainObject;
+import org.flexpay.common.persistence.Language;
+import org.springframework.security.GrantedAuthority;
+import org.springframework.security.userdetails.UserDetails;
+import org.springframework.security.userdetails.User;
 
-import javax.servlet.http.HttpServletRequest;
-import java.util.Locale;
-import java.util.Stack;
 import java.io.Serializable;
+import java.util.Collections;
+import java.util.Locale;
+import java.util.Set;
+import java.util.Stack;
 
-public class UserPreferences implements Serializable {
+public class UserPreferences extends DomainObject implements Serializable, UserDetails {
 
-	private String userName = "";
+	private UserDetails targetDetails = null;
+	// ldap object classes used to split properties
+	private Set<String> objectClasses = Collections.emptySet();
+
+	private String usernameStub;
+	private String fullName;
+	private String lastName;
+
 	private Locale locale;
 
 	private Integer pageSize = 20;
@@ -20,62 +35,27 @@ public class UserPreferences implements Serializable {
 
 	private MenuComponent menuComponent = new MenuComponent();
 
-	private String countryFilterValue;
-	private String regionFilterValue;
-	private String townFilterValue;
-	private String districtFilterValue;
-	private String streetFilterValue;
-	private String buildingFilterValue;
-	private String apartmentFilterValue;
-
 	private String activeMenu;
 	private Stack<Crumb> crumbs = new Stack<Crumb>();
 
-	private static final String WW_TRANS_I18_N_LOCALE = "WW_TRANS_I18N_LOCALE";
-
+	public UserPreferences() {
+	}
 
 	/**
 	 * Get current user session preferences
 	 *
-	 * @param request Http request
 	 * @return UserPreferences
 	 */
-	public static UserPreferences getPreferences(HttpServletRequest request) {
-		UserPreferences prefs = (UserPreferences) WebUtils.getSessionAttribute(
-				request, ApplicationConfig.USER_PREFERENCES_SESSION_ATTRIBUTE);
-
-		// Not found in session, create default one
-		if (prefs == null) {
-			prefs = new UserPreferences();
-			Language lang = ApplicationConfig.getDefaultLanguage();
-			prefs.setLocale(lang.getLocale());
-		}
-
-		Locale locale = (Locale) WebUtils.getSessionAttribute(request, WW_TRANS_I18_N_LOCALE);
-		if (locale != null) {
-			prefs.setLocale(locale);
-		}
-
-		return prefs;
+	public static UserPreferences getPreferences() {
+		return (UserPreferences) SecurityUtil.getAuthentication().getPrincipal();
 	}
 
-	/**
-	 * Save user preferences
-	 *
-	 * @param request	 Http request
-	 * @param preferences User preferences
-	 */
-	public static void setPreferences(HttpServletRequest request, UserPreferences preferences) {
-		WebUtils.setSessionAttribute(request,
-				ApplicationConfig.USER_PREFERENCES_SESSION_ATTRIBUTE, preferences);
+	public Set<String> getObjectClasses() {
+		return objectClasses;
 	}
 
-	public String getUserName() {
-		return userName;
-	}
-
-	public void setUserName(String userName) {
-		this.userName = userName;
+	public void setObjectClasses(Set<String> objectClasses) {
+		this.objectClasses = objectClasses;
 	}
 
 	public Locale getLocale() {
@@ -84,6 +64,19 @@ public class UserPreferences implements Serializable {
 
 	public void setLocale(Locale locale) {
 		this.locale = locale;
+	}
+
+	public String getLanguageCode() {
+		return getLocale().getLanguage();
+	}
+
+	public void setLanguageCode(String code) {
+		if (StringUtils.isNotBlank(code)) {
+			Language lang = LanguageUtil.getLanguage(new Locale(code));
+			setLocale(lang.getLocale());
+		} else {
+			setLocale(ApplicationConfig.getDefaultLocale());
+		}
 	}
 
 	public Integer getPageSize() {
@@ -100,62 +93,6 @@ public class UserPreferences implements Serializable {
 
 	public void setMenuComponent(MenuComponent menuComponent) {
 		this.menuComponent = menuComponent;
-	}
-
-	public String getCountryFilterValue() {
-		return countryFilterValue;
-	}
-
-	public void setCountryFilterValue(String countryFilterValue) {
-		this.countryFilterValue = countryFilterValue;
-	}
-
-	public String getRegionFilterValue() {
-		return regionFilterValue;
-	}
-
-	public void setRegionFilterValue(String regionFilterValue) {
-		this.regionFilterValue = regionFilterValue;
-	}
-
-	public String getTownFilterValue() {
-		return townFilterValue;
-	}
-
-	public void setTownFilterValue(String townFilterValue) {
-		this.townFilterValue = townFilterValue;
-	}
-
-	public String getDistrictFilterValue() {
-		return districtFilterValue;
-	}
-
-	public void setDistrictFilterValue(String districtFilterValue) {
-		this.districtFilterValue = districtFilterValue;
-	}
-
-	public String getStreetFilterValue() {
-		return streetFilterValue;
-	}
-
-	public void setStreetFilterValue(String streetFilterValue) {
-		this.streetFilterValue = streetFilterValue;
-	}
-
-	public String getBuildingFilterValue() {
-		return buildingFilterValue;
-	}
-
-	public void setBuildingFilterValue(String buildingFilterValue) {
-		this.buildingFilterValue = buildingFilterValue;
-	}
-
-	public String getApartmentFilterValue() {
-		return apartmentFilterValue;
-	}
-
-	public void setApartmentFilterValue(String apartmentFilterValue) {
-		this.apartmentFilterValue = apartmentFilterValue;
 	}
 
 	public String getTestProp() {
@@ -182,4 +119,102 @@ public class UserPreferences implements Serializable {
 		this.crumbs = crumbs;
 	}
 
+	public void setTargetDetails(UserDetails targetDetails) {
+		this.targetDetails = targetDetails;
+	}
+
+	public String getFullName() {
+		return fullName;
+	}
+
+	public void setFullName(String fullName) {
+		this.fullName = fullName;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+
+	/**
+	 * Returns the authorities granted to the user. Cannot return <code>null</code>.
+	 *
+	 * @return the authorities, sorted by natural key (never <code>null</code>)
+	 */
+	@Override
+	public GrantedAuthority[] getAuthorities() {
+		return targetDetails.getAuthorities();
+	}
+
+	/**
+	 * Returns the password used to authenticate the user. Cannot return <code>null</code>.
+	 *
+	 * @return the password (never <code>null</code>)
+	 */
+	@Override
+	public String getPassword() {
+		return targetDetails.getPassword();
+	}
+
+	/**
+	 * Returns the username used to authenticate the user. Cannot return <code>null</code>.
+	 *
+	 * @return the username (never <code>null</code>)
+	 */
+	@Override
+	public String getUsername() {
+		return targetDetails == null ? usernameStub : targetDetails.getUsername();
+	}
+
+	public void setUsername(String username) {
+		// hack for hibernate property access
+		if (targetDetails == null) {
+			usernameStub = username;
+		}
+	}
+
+	/**
+	 * Indicates whether the user's account has expired. An expired account cannot be authenticated.
+	 *
+	 * @return <code>true</code> if the user's account is valid (ie non-expired), <code>false</code> if no longer valid (ie
+	 *         expired)
+	 */
+	@Override
+	public boolean isAccountNonExpired() {
+		return targetDetails.isAccountNonExpired();
+	}
+
+	/**
+	 * Indicates whether the user is locked or unlocked. A locked user cannot be authenticated.
+	 *
+	 * @return <code>true</code> if the user is not locked, <code>false</code> otherwise
+	 */
+	@Override
+	public boolean isAccountNonLocked() {
+		return targetDetails.isAccountNonLocked();
+	}
+
+	/**
+	 * Indicates whether the user's credentials (password) has expired. Expired credentials prevent authentication.
+	 *
+	 * @return <code>true</code> if the user's credentials are valid (ie non-expired), <code>false</code> if no longer
+	 *         valid (ie expired)
+	 */
+	@Override
+	public boolean isCredentialsNonExpired() {
+		return targetDetails.isAccountNonExpired();
+	}
+
+	/**
+	 * Indicates whether the user is enabled or disabled. A disabled user cannot be authenticated.
+	 *
+	 * @return <code>true</code> if the user is enabled, <code>false</code> otherwise
+	 */
+	@Override
+	public boolean isEnabled() {
+		return targetDetails.isAccountNonExpired();
+	}
 }

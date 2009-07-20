@@ -1,0 +1,29 @@
+attributetype ( 1.3.6.1.4.1.1466000.4096.2.1
+    NAME 'flexpayAbCountryFilter'
+    DESC 'Preferred country filter'
+    SINGLE-VALUE
+    EQUALITY caseIgnoreMatch
+    SYNTAX 1.3.6.1.4.1.1466.115.121.1.15
+    )
+attributetype ( 1.3.6.1.4.1.1466000.4096.2.2
+    NAME 'flexpayAbRegionFilter'
+    DESC 'Preferred region filter'
+    SINGLE-VALUE
+    EQUALITY caseIgnoreMatch
+    SYNTAX 1.3.6.1.4.1.1466.115.121.1.15
+    )
+attributetype ( 1.3.6.1.4.1.1466000.4096.2.3
+    NAME 'flexpayAbTownFilter'
+    DESC 'Preferred town filter'
+    SINGLE-VALUE
+    EQUALITY caseIgnoreMatch
+    SYNTAX 1.3.6.1.4.1.1466.115.121.1.15
+    )
+
+objectclass     ( 1.3.6.1.4.1.1466000.4096.1
+    NAME 'flexpayAbPerson'
+    DESC 'Flexpay ab module user'
+    SUP flexpayPerson
+    AUXILIARY
+    MUST  ( flexpayPaymentsPaymentPointId )
+    )

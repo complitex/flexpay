@@ -52,8 +52,7 @@ public abstract class CreateAction<
 		for (Object filter : filterArrayStack) {
 			((PrimaryKeyFilter<?>) filter).initFilter(session);
 		}
-		ArrayStack filters = parentService.initFilters(filterArrayStack,
-				userPreferences.getLocale());
+		ArrayStack filters = parentService.initFilters(filterArrayStack, getUserPreferences().getLocale());
 		setFilters(filters);
 		if (isSubmit()) {
 			object = nameTimeDependentService.create(null, nameTranslations, filters, date);

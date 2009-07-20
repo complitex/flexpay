@@ -1,16 +1,11 @@
 package org.flexpay.ab.actions.country;
 
-import com.opensymphony.xwork2.ActionSupport;
-import org.apache.struts2.interceptor.ServletRequestAware;
 import org.flexpay.ab.persistence.CountryNameTranslation;
 import org.flexpay.ab.service.CountryService;
-import org.flexpay.common.exception.FlexPayException;
-import org.flexpay.common.util.config.UserPreferences;
 import org.flexpay.common.actions.FPActionSupport;
 import org.springframework.beans.factory.annotation.Required;
 import org.jetbrains.annotations.NotNull;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 public class CountriesListAction extends FPActionSupport {
@@ -22,7 +17,7 @@ public class CountriesListAction extends FPActionSupport {
 	@NotNull
 	public String doExecute() throws Exception {
 
-		translationList = countryService.getCountries(userPreferences.getLocale());
+		translationList = countryService.getCountries(getUserPreferences().getLocale());
 
 		return SUCCESS;
 	}

@@ -17,7 +17,7 @@
                 <tr>
                     <td width="100%" align="right">
                         <span class="text-small">
-                            <a href="#"><s:text name="login.user" /></a>: <sec:authentication property="principal.username"/>
+                            <a href="#"><s:text name="login.user" /></a>: <sec:authentication property="principal.fullName"/>
                         </span>
                     </td>
                     <td><img src="<s:url value="/resources/common/img/p.gif" includeParams="none" />" width="10" height="25" alt="" /></td>

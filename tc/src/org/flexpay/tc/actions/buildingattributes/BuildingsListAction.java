@@ -17,7 +17,7 @@ import org.springframework.beans.factory.annotation.Required;
 
 import java.util.List;
 
-public class BuildingsListAction extends FPActionWithPagerSupport {
+public class BuildingsListAction extends FPActionWithPagerSupport<BuildingAddress> {
 
 	private CountryFilter countryFilter = new CountryFilter();
 	private RegionFilter regionFilter = new RegionFilter();
@@ -50,7 +50,7 @@ public class BuildingsListAction extends FPActionWithPagerSupport {
 			((PrimaryKeyFilter) filter).initFilter(session);
 		}
 
-		ArrayStack filters = parentService.initFilters(filterArrayStack, userPreferences.getLocale());
+		ArrayStack filters = parentService.initFilters(filterArrayStack, getUserPreferences().getLocale());
 		setFilters(filters);
 
 		return filters;

@@ -12,4 +12,8 @@
 	<bean id="printAction" scope="prototype"
 		  class="org.flexpay.common.actions.FilePrintAction" />
 
+	<!-- Locale setter bean -->
+	<bean class="org.flexpay.common.util.config.auth.UpdateUserPreferencesApplicationListener"
+		  p:preferencesService-ref="userPreferencesService" />
+
 </beans>

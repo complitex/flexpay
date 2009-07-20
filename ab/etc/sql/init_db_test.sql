@@ -4032,3 +4032,7 @@ INSERT INTO ab_person_registrations_tbl (begin_date, end_date, person_id, apartm
 
 INSERT INTO ab_person_registrations_tbl (begin_date, end_date, person_id, apartment_id)
 	VALUES ('2008-04-12', '2100-12-31', @person_id, @apartment_ivanova_330_id);
+
+update common_users_tbl set
+		ab_country_filter='росс', ab_region_filter='новос', ab_town_filter='новос'
+where id=@user_test;

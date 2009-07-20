@@ -10,7 +10,8 @@
 	<bean id="sequenceService" class="org.flexpay.common.service.imp.SequenceServiceImpl"
 		  p:sequenceDao-ref="sequenceDao" />
 
-	<bean id="reportPrintHistoryRecordService" class="org.flexpay.common.service.imp.ReportPrintHistoryRecordServiceImpl"
+	<bean id="reportPrintHistoryRecordService"
+		  class="org.flexpay.common.service.imp.ReportPrintHistoryRecordServiceImpl"
 		  p:reportPrintHistoryRecordDao-ref="reportPrintHistoryRecordDao" />
 
 	<bean id="importErrorSupport"
@@ -303,5 +304,17 @@
 			<bean class="org.flexpay.common.persistence.registry.CommonPropertiesFactory" autowire-candidate="false" />
 		</property>
 	</bean>
+
+	<bean id="userPreferencesFactoryHolderFactory"
+		  class="org.flexpay.common.util.config.UserPreferencesFactoryHolderFactory" />
+
+	<bean id="userPreferencesFactoryHolder"
+		  factory-bean="userPreferencesFactoryHolderFactory"
+		  factory-method="getFactoryHolder"
+		  class="org.flexpay.common.util.config.UserPreferencesFactoryHolder" />
+
+	<bean id="userPreferencesFactory"
+		  class="org.flexpay.common.util.config.UserPreferencesFactoryProxy"
+		  p:holder-ref="userPreferencesFactoryHolder" />
 
 </beans>

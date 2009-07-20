@@ -2,22 +2,17 @@ package org.flexpay.common.actions;
 
 import com.opensymphony.xwork2.ActionSupport;
 import org.apache.commons.lang.StringUtils;
-import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.config.Namespace;
 import org.apache.struts2.interceptor.SessionAware;
 import org.flexpay.common.actions.breadcrumbs.Crumb;
 import org.flexpay.common.actions.interceptor.BreadCrumbAware;
-import org.flexpay.common.actions.interceptor.UserPreferencesAware;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Language;
 import org.flexpay.common.persistence.Translation;
-import org.flexpay.common.util.CollectionUtils;
-import org.flexpay.common.util.DateUtil;
-import org.flexpay.common.util.LanguageUtil;
-import org.flexpay.common.util.TranslationUtil;
-import org.flexpay.common.util.config.ApplicationConfig;
 import org.flexpay.common.util.config.UserPreferences;
+import org.flexpay.common.util.*;
+import org.flexpay.common.util.config.ApplicationConfig;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,7 +24,7 @@ import java.util.*;
  */
 @SuppressWarnings ({"UnusedDeclaration"})
 @Namespace ("")
-public abstract class FPActionSupport extends ActionSupport implements UserPreferencesAware, BreadCrumbAware, SessionAware {
+public abstract class FPActionSupport extends ActionSupport implements BreadCrumbAware, SessionAware {
 
 	protected Logger log = LoggerFactory.getLogger(getClass());
 
@@ -46,7 +41,6 @@ public abstract class FPActionSupport extends ActionSupport implements UserPrefe
 	private static final String METHOD_POST = "post";
 
 	protected Crumb crumb;
-	protected UserPreferences userPreferences;
 	@SuppressWarnings ({"RawUseOfParameterizedType"})
 	protected Map session = CollectionUtils.map();
 	protected String submitted;
@@ -86,12 +80,12 @@ public abstract class FPActionSupport extends ActionSupport implements UserPrefe
 		log.debug("Current errors: {}", getActionErrors());
 
 		// extract this domain session errors
-		String damainName = getDomainName();
+		String domainName = getDomainName();
 
 		//noinspection unchecked
 		Map<String, Collection<?>> domainNamesToErrors = (Map) session.remove(ERRORS_SESSION_ATTRIBUTE);
-		if (domainNamesToErrors != null && domainNamesToErrors.containsKey(damainName)) {
-			Collection errors = domainNamesToErrors.remove(damainName);
+		if (domainNamesToErrors != null && domainNamesToErrors.containsKey(domainName)) {
+			Collection errors = domainNamesToErrors.remove(domainName);
 			//noinspection unchecked
 			addActionErrors(errors);
 
@@ -124,17 +118,17 @@ public abstract class FPActionSupport extends ActionSupport implements UserPrefe
 	protected abstract String doExecute() throws Exception;
 
 	protected void setBreadCrumbs() {
-		if (userPreferences == null || crumb == null) {
+		if (getUserPreferences() == null || crumb == null) {
 			log.warn("No user preferences found or crumb. Action execution terminated.");
 			return;
 		}
-		
+
 		if (crumbNameKey == null) {
 			log.debug("For this action breadcrumb name not initialize.");
 			return;
 		}
 
-		Stack<Crumb> crumbs = userPreferences.getCrumbs();
+		Stack<Crumb> crumbs = getUserPreferences().getCrumbs();
 		if (crumbs == null) {
 			crumbs = new Stack<Crumb>();
 		}
@@ -151,7 +145,7 @@ public abstract class FPActionSupport extends ActionSupport implements UserPrefe
 		String qualifiedActionName = crumb.getNameSpace() + "/" + crumb.getAction();
 		Crumb crumbToReplace = findCrumbWithCurAction(qualifiedActionName);
 		if (crumbToReplace != null) {
-			deleteOldCrumbs(userPreferences.getCrumbs().indexOf(crumbToReplace));
+			deleteOldCrumbs(getUserPreferences().getCrumbs().indexOf(crumbToReplace));
 		}
 		crumb.setWildPortionOfName(crumbNameKey);
 
@@ -159,14 +153,14 @@ public abstract class FPActionSupport extends ActionSupport implements UserPrefe
 	}
 
 	protected void deleteOldCrumbs(int index) {
-		int size = userPreferences.getCrumbs().size();
+		int size = getUserPreferences().getCrumbs().size();
 		for (int i = index; i < size; i++) {
-			userPreferences.getCrumbs().remove(index);
+			getUserPreferences().getCrumbs().remove(index);
 		}
 	}
 
 	protected Crumb findCrumbWithCurAction(String qualifiedActionName) {
-		for (Crumb crumb : userPreferences.getCrumbs()) {
+		for (Crumb crumb : getUserPreferences().getCrumbs()) {
 			if (crumb.getQualifiedActionName().equals(qualifiedActionName)) {
 				return crumb;
 			}
@@ -258,12 +252,8 @@ public abstract class FPActionSupport extends ActionSupport implements UserPrefe
 		this.crumb = crumb;
 	}
 
-	public void setUserPreferences(UserPreferences userPreferences) {
-		this.userPreferences = userPreferences;
-	}
-
 	public UserPreferences getUserPreferences() {
-		return userPreferences;
+		return (UserPreferences) SecurityUtil.getAuthentication().getPrincipal();
 	}
 
 	public void setSubmitted(String submitted) {
@@ -281,12 +271,12 @@ public abstract class FPActionSupport extends ActionSupport implements UserPrefe
 	}
 
 	public String getLangName(Language lang) throws FlexPayException {
-		return LanguageUtil.getLanguageName(lang, userPreferences.getLocale())
+		return LanguageUtil.getLanguageName(lang, getUserPreferences().getLocale())
 				.getTranslation();
 	}
 
 	public <T extends Translation> T getTranslation(Set<T> translations) {
-		return TranslationUtil.getTranslation(translations, userPreferences.getLocale());
+		return TranslationUtil.getTranslation(translations, getUserPreferences().getLocale());
 	}
 
 	public <T extends Translation> String getTranslationName(Set<T> translations) {

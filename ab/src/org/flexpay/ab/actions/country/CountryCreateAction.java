@@ -8,10 +8,10 @@ import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.LangNameTranslation;
 import org.flexpay.common.persistence.Language;
+import org.flexpay.common.util.config.UserPreferences;
 import org.flexpay.common.util.LanguageUtil;
 import org.flexpay.common.util.TranslationUtil;
 import org.flexpay.common.util.config.ApplicationConfig;
-import org.flexpay.common.util.config.UserPreferences;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
@@ -103,7 +103,7 @@ public class CountryCreateAction extends FPActionSupport {
 		HttpServletRequest request = ServletActionContext.getRequest();
 
 		List<Language> langs = ApplicationConfig.getLanguages();
-		UserPreferences prefs = UserPreferences.getPreferences(request);
+		UserPreferences prefs = getUserPreferences();
 		List<CountryNameTranslation> countryNames = new ArrayList<CountryNameTranslation>();
 		for (Language lang : langs) {
 			CountryNameTranslation countryName = new CountryNameTranslation();

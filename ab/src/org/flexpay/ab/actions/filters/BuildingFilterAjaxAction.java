@@ -35,7 +35,8 @@ public class BuildingFilterAjaxAction extends FilterAjaxAction {
 		for (BuildingAddress address : addresses) {
 			FilterObject object = new FilterObject();
 			object.setValue(address.getId() + "");
-			object.setName(TranslationUtil.getBuildingNumberWithoutHouseType(address.getBuildingAttributes(), userPreferences.getLocale()));
+			object.setName(TranslationUtil.getBuildingNumberWithoutHouseType(
+					address.getBuildingAttributes(), getUserPreferences().getLocale()));
 			foundObjects.add(object);
 		}
 
@@ -46,7 +47,8 @@ public class BuildingFilterAjaxAction extends FilterAjaxAction {
 		if (filterValueLong != null) {
 			BuildingAddress address = buildingService.readFull(new Stub<BuildingAddress>(filterValueLong));
 			if (address != null) {
-				filterString = TranslationUtil.getBuildingNumberWithoutHouseType(address.getBuildingAttributes(), userPreferences.getLocale());
+				filterString = TranslationUtil.getBuildingNumberWithoutHouseType(
+						address.getBuildingAttributes(), getUserPreferences().getLocale());
 			} else {
 				filterString = "";
 			}
@@ -56,8 +58,8 @@ public class BuildingFilterAjaxAction extends FilterAjaxAction {
 	}
 
 	public void saveFilterValue() {
-		userPreferences.setBuildingFilterValue(filterValue);
-		userPreferences.setApartmentFilterValue("");
+		getUserPreferences().setBuildingFilterValue(filterValue);
+		getUserPreferences().setApartmentFilterValue("");
 	}
 
 	@Required

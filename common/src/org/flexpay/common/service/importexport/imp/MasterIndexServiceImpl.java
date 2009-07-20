@@ -13,15 +13,21 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Transactional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
 @Transactional
 public class MasterIndexServiceImpl implements MasterIndexService {
 
+	private Logger log = LoggerFactory.getLogger(getClass());
+
 	private boolean useSelfInstanceIfNotFound = true;
 	private CorrectionsService correctionsService;
 	private DataSourceDescriptionDao sourceDescriptionDao;
+
+	private Stub<DataSourceDescription> cachedDescriptionStub;
 
 	/**
 	 * Get next master index value
@@ -71,6 +77,10 @@ public class MasterIndexServiceImpl implements MasterIndexService {
 	 */
 	@NotNull
 	public Stub<DataSourceDescription> getMasterSourceDescriptionStub() {
+		if (cachedDescriptionStub != null) {
+			return cachedDescriptionStub;
+		}
+		log.info("Reading master source description");
 		List<DataSourceDescription> descriptions = sourceDescriptionDao.findMasterSourceDescription();
 		if (descriptions.isEmpty()) {
 			throw new IllegalStateException("Master index data source not found");
@@ -78,7 +88,8 @@ public class MasterIndexServiceImpl implements MasterIndexService {
 		if (descriptions.size() > 1) {
 			throw new IllegalStateException("Several master indexes found");
 		}
-		return stub(descriptions.get(0));
+		cachedDescriptionStub = stub(descriptions.get(0));
+		return cachedDescriptionStub;
 	}
 
 	@Required

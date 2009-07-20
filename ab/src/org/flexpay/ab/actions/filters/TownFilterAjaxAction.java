@@ -25,11 +25,11 @@ public class TownFilterAjaxAction extends FilterAjaxAction {
 			if (parents != null) {
 				regionIdLong = Long.parseLong(parents[0]);
 			} else {
-				if (userPreferences.getRegionFilterValue() == null) {
-					userPreferences.setRegionFilterValue(ApplicationConfig.getDefaultRegionStub().getId() + "");
+				if (getUserPreferences().getRegionFilterValue() == null) {
+					getUserPreferences().setRegionFilterValue(ApplicationConfig.getDefaultRegionStub().getId() + "");
 					regionIdLong = ApplicationConfig.getDefaultRegionStub().getId();
 				} else {
-					regionIdLong = Long.parseLong(userPreferences.getRegionFilterValue());
+					regionIdLong = Long.parseLong(getUserPreferences().getRegionFilterValue());
 				}
 			}
 		} catch (Exception e) {
@@ -58,8 +58,8 @@ public class TownFilterAjaxAction extends FilterAjaxAction {
 	public void readFilterString() {
 		Town town = null;
 		if (filterValueLong == null) {
-			if (userPreferences.getRegionFilterValue() != null
-					&& !userPreferences.getRegionFilterValue().equals(ApplicationConfig.getDefaultRegionStub().getId() + "")) {
+			if (getUserPreferences().getRegionFilterValue() != null
+					&& !getUserPreferences().getRegionFilterValue().equals(ApplicationConfig.getDefaultRegionStub().getId() + "")) {
 				filterValue = "";
 			} else {
 				filterValue = ApplicationConfig.getDefaultTownStub().getId() + "";
@@ -76,11 +76,11 @@ public class TownFilterAjaxAction extends FilterAjaxAction {
 	}
 
 	public void saveFilterValue() {
-		userPreferences.setTownFilterValue(filterValue);
-		userPreferences.setDistrictFilterValue("");
-		userPreferences.setStreetFilterValue("");
-		userPreferences.setBuildingFilterValue("");
-		userPreferences.setApartmentFilterValue("");
+		getUserPreferences().setTownFilterValue(filterValue);
+		getUserPreferences().setDistrictFilterValue("");
+		getUserPreferences().setStreetFilterValue("");
+		getUserPreferences().setBuildingFilterValue("");
+		getUserPreferences().setApartmentFilterValue("");
 	}
 
 	@Required

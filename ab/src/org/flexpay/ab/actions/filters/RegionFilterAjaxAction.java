@@ -25,11 +25,11 @@ public class RegionFilterAjaxAction extends FilterAjaxAction {
 			if (parents != null) {
 				countryIdLong = Long.parseLong(parents[0]);
 			} else {
-				if (userPreferences.getCountryFilterValue() == null) {
-					userPreferences.setCountryFilterValue(ApplicationConfig.getDefaultCountryStub().getId() + "");
+				if (getUserPreferences().getCountryFilterValue() == null) {
+					getUserPreferences().setCountryFilterValue(ApplicationConfig.getDefaultCountryStub().getId() + "");
 					countryIdLong = ApplicationConfig.getDefaultCountryStub().getId();
 				} else {
-					countryIdLong = Long.parseLong(userPreferences.getCountryFilterValue());
+					countryIdLong = Long.parseLong(getUserPreferences().getCountryFilterValue());
 				}
 			}
 		} catch (Exception e) {
@@ -58,8 +58,8 @@ public class RegionFilterAjaxAction extends FilterAjaxAction {
 	public void readFilterString() {
 		Region region = null;
 		if (filterValueLong == null) {
-			if (userPreferences.getCountryFilterValue() != null
-					&& !userPreferences.getCountryFilterValue().equals(ApplicationConfig.getDefaultCountryStub().getId() + "")) {
+			if (getUserPreferences().getCountryFilterValue() != null
+					&& !getUserPreferences().getCountryFilterValue().equals(ApplicationConfig.getDefaultCountryStub().getId() + "")) {
 				filterValue = "";
 			} else {
 				filterValue = ApplicationConfig.getDefaultRegionStub().getId() + "";
@@ -76,12 +76,12 @@ public class RegionFilterAjaxAction extends FilterAjaxAction {
 	}
 
 	public void saveFilterValue() {
-		userPreferences.setRegionFilterValue(filterValue);
-		userPreferences.setTownFilterValue("");
-		userPreferences.setDistrictFilterValue("");
-		userPreferences.setStreetFilterValue("");
-		userPreferences.setBuildingFilterValue("");
-		userPreferences.setApartmentFilterValue("");
+		getUserPreferences().setRegionFilterValue(filterValue);
+		getUserPreferences().setTownFilterValue("");
+		getUserPreferences().setDistrictFilterValue("");
+		getUserPreferences().setStreetFilterValue("");
+		getUserPreferences().setBuildingFilterValue("");
+		getUserPreferences().setApartmentFilterValue("");
 	}
 
 	@Required

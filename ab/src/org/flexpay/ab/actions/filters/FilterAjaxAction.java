@@ -2,6 +2,7 @@ package org.flexpay.ab.actions.filters;
 
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.exception.FlexPayException;
+import org.flexpay.ab.util.config.AbUserPreferences;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -124,4 +125,7 @@ public abstract class FilterAjaxAction extends FPActionSupport {
 		return foundObjects;
 	}
 
+	public AbUserPreferences getUserPreferences() {
+		return (AbUserPreferences) super.getUserPreferences();
+	}
 }

@@ -5,7 +5,6 @@ import org.flexpay.ab.persistence.BuildingAddress;
 import org.flexpay.ab.service.ApartmentService;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
-import org.flexpay.common.util.config.UserPreferences;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
@@ -56,12 +55,11 @@ public class ApartmentFilterAjaxAction extends FilterAjaxAction {
 	}
 
 	public void saveFilterValue() {
-		userPreferences.setApartmentFilterValue(filterValue);
+		getUserPreferences().setApartmentFilterValue(filterValue);
 	}
 
 	@Required
 	public void setApartmentService(ApartmentService apartmentService) {
 		this.apartmentService = apartmentService;
 	}
-
 }
