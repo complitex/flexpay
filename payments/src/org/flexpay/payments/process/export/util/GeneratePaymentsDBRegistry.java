@@ -91,21 +91,21 @@ public class GeneratePaymentsDBRegistry {
                 record.setUniqueOperationNumber(document.getOperation().getId());
 
                 /*
-                String code = "eirc.error_code.unknown_error";
+                            String code = "eirc.error_code.unknown_error";
 
-                ImportError error = new ImportError();
-                error.setErrorId(code);
-                DataSourceDescription sd = serviceProvider.getDataSourceDescription();
-                error.setSourceDescription(sd);
+                            ImportError error = new ImportError();
+                            error.setErrorId(code);
+                            DataSourceDescription sd = serviceProvider.getDataSourceDescription();
+                            error.setSourceDescription(sd);
 
-                error.setDataSourceBean("consumersDataSource");
+                            error.setDataSourceBean("consumersDataSource");
 
-                error.setSourceObjectId(String.valueOf(record.getId()));
-                error.setObjectType(classToTypeRegistry.getType(Service.class));
-                importErrorService.addError(error);
+                            error.setSourceObjectId(String.valueOf(record.getId()));
+                            error.setObjectType(classToTypeRegistry.getType(Service.class));
+                            importErrorService.addError(error);
 
-                record.setImportError(error);
-                */
+                            record.setImportError(error);
+                            */
 
                 record.setProperties(propertiesFactory.newRecordProperties());
 

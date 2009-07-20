@@ -9,6 +9,7 @@ import org.jetbrains.annotations.NotNull;
 public class ServiceProvider extends OrganizationInstance<ServiceProviderDescription, ServiceProvider> {
 
 	private DataSourceDescription dataSourceDescription;
+    private String email;
 
 	public ServiceProvider() {
 	}
@@ -25,7 +26,15 @@ public class ServiceProvider extends OrganizationInstance<ServiceProviderDescrip
 		return dataSourceDescription;
 	}
 
-	@NotNull
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    @NotNull
 	public Stub<DataSourceDescription> getDataSourceDescriptionStub() {
 		return stub(dataSourceDescription);
 	}

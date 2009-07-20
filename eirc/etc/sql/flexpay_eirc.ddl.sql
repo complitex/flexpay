@@ -1122,6 +1122,7 @@
         id bigint not null auto_increment,
         version integer not null comment 'Optimistic lock version',
         status integer not null comment 'Enabled-disabled status',
+        email varchar(255) comment 'E-mail',
         organization_id bigint not null comment 'Organization reference',
         data_source_description_id bigint not null comment 'Data source description reference',
         primary key (id)

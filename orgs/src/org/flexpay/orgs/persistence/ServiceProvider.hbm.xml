@@ -19,6 +19,11 @@
 				<comment>Enabled-disabled status</comment>
 			</column>
 		</property>
+        <property name="email">
+			<column name="email" not-null="false">
+				<comment>E-mail</comment>
+			</column>
+		</property>
 		<many-to-one name="organization" class="Organization"
 					 foreign-key="FK_orgs_service_provider_organization">
 			<column name="organization_id" not-null="true">
