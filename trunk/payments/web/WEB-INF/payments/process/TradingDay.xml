@@ -35,25 +35,17 @@
             <script>
                 <variable mapped-name="processStatus" access="write" name="PROCESS_STATUS" />
                 <variable mapped-name="canUpdateOrCreateOperation" access="write" name="CAN_UPDATE_OR_CRETAE_OPERATION" />
+                <variable name="START_TIME" mapped-name="startTime" access="write" />
                 <expression>
                     processStatus = "Открыт";
                     canUpdateOrCreateOperation = "true";
+                    startTime = new java.util.Date();
                 </expression>
             </script>
         </event>
-        <task name="CloseTradingDay" swimlane="Accounter">
-            <timer duedate="2 business day" transition="generateEndOperationDayRegistryJob">
-                <script>
-                    <variable mapped-name="autoMode" access="write" name="AUTO_MODE" />
-                    <expression>
-                        autoMode = "true";
-                    </expression>
-                </script>
-            </timer>
-        </task>
-
+        <task name="CloseTradingDay" swimlane="Accounter" />
         <task name="CloseTradingDay" swimlane="PaymentCollector">
-            <timer duedate="1 business day" transition="generateEndOperationDayRegistryJob">
+            <timer duedate="#{START_TIME} + 1 business day" transition="Пометить на закрытие">
                 <script>
                     <variable mapped-name="autoMode" access="write" name="AUTO_MODE" />
                     <expression>
@@ -121,7 +113,7 @@
         </event>
 
         <task name="Aproove" swimlane="Accounter">
-            <timer duedate="1 business day" transition="AutoModeDecision2">
+            <timer duedate="#{START_TIME} + 1 business day" transition="Подтвердить закрытие">
                 <script>
                     <variable mapped-name="autoMode" access="write" name="AUTO_MODE" />
                     <expression>
@@ -153,8 +145,9 @@
                 </expression>
             </script>
         </event>
-        <timer duedate="1 business day" transition="end-state" />
-        <task name="" swimlane="PaymentCollector" />
+        <task name="Approve" swimlane="PaymentCollector">
+            <timer duedate="#{START_TIME} + 1 business day" transition="Принять сообщение" />
+        </task>
         <transition to="end-state" name="Принять сообщение" />
     </task-node>
 

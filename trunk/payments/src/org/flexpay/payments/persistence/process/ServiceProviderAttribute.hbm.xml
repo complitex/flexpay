@@ -41,4 +41,10 @@
 		FROM ServiceProviderAttribute o
 		WHERE o.serviceProvider.id=?
 	</query>
+
+    <query name="ServiceProviderAttribute.findServiceProviderAttribute">
+        FROM ServiceProviderAttribute o
+        left outer join fetch o.serviceProvider 
+        WHERE o.serviceProvider.id = ? and o.name = ?
+    </query>
 </hibernate-mapping>

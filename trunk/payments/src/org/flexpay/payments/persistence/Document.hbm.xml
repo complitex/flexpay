@@ -437,6 +437,7 @@
 		from Document doc
 		left join fetch doc.operation op
 		left join fetch doc.service serv
+		left join fetch doc.additions adds
 		left join fetch serv.serviceType servType
 		where serv.serviceProvider.id = ?
 		and op.registerOrganization.id = ?

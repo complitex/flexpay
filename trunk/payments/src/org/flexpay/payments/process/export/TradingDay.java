@@ -140,11 +140,11 @@ public class TradingDay extends QuartzJobBean {
                 log.debug("Process {} state complited {} ", processId, processInstanceInfo.getProcessState().isCompleted());
                 log.debug("Process {} status {} ", processId, processInstanceInfo.getParameters().get("PROCESS_STATUS"));
                 log.debug("Process {} payment point {} ", processId, processInstanceInfo.getParameters().get("paymentPointId"));
-                long processInstanceId = processInstanceInfo.getProcessInstaceId();
-                ProcessInstance pi = processManager.getProcessInstance(processInstanceInfo.getProcessInstaceId());
+                //long processInstanceId = processInstanceInfo.getProcessInstaceId();
+                //ProcessInstance pi = processManager.getProcessInstance(processInstanceInfo.getProcessInstaceId());
 
-                log.error("Delete process instace {} ", processInstanceId);
-                processManager.deleteProcessInstance(processInstanceInfo);
+                //log.error("Delete process instace {} ", processInstanceId);
+                //processManager.deleteProcessInstance(processInstanceInfo);
 
             }
         } while (processes.size() > 0);

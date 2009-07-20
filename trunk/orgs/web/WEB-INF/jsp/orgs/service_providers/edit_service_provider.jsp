@@ -18,6 +18,13 @@
 				</s:iterator>
 			</td>
 		</tr>
+    <tr valign="top" class="cols_1">
+			<td class="col">
+                <s:text name="eirc.service_organization.email"/>:
+            </td>
+		  <td class="col">
+            <s:textfield name="provider.email" /></td>
+		</tr>
 		<tr valign="middle" class="cols_1">
 			<td colspan="2"><input type="submit" name="submitted" class="btn-exit" value="<s:text name="common.save"/>"/></td>
 		</tr>

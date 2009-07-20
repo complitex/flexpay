@@ -31,9 +31,7 @@
                 <entry key="providerService" value-ref="serviceProviderService" />
                 <entry key="serviceProviderAttributeService" value-ref="serviceProviderServiceAttribute" />
                 <entry key="privateKey" value="WEB-INF/payments/configs/keys/secret.key" /> 
-                <entry key="providerId" value=""/>
                 <entry key="registeredOrganizationId" value=""/>
-                <entry key="email" value=""/>
             </map>
         </property>
     </bean>

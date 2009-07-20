@@ -6,6 +6,7 @@ import org.flexpay.payments.dao.ServiceProviderAttributeDao;
 import org.flexpay.payments.persistence.process.ServiceProviderAttribute;
 import org.flexpay.payments.service.ServiceProviderAttributeService;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,12 +28,25 @@ public class ServiceProviderAttributeServiceImpl implements ServiceProviderAttri
     }
 
     /**
+        * Find service provider attribute by name for service provider
+        *
+        * @param stub Service provider
+        * @param attributeName Attribute name
+	 * @return Service providers list, empty if no service providers found
+        */
+    @Nullable
+    public ServiceProviderAttribute getServiceProviderAttribute(@NotNull Stub<ServiceProvider> stub, @NotNull String attributeName) {
+        List<ServiceProviderAttribute> attributes = serviceProviderAttributeDao.findServiceProviderAttribute(stub.getId(), attributeName);
+        return attributes.size() > 0? attributes.get(0): null;
+    }
+
+    /**
 	 * Save service provider attribute
 	 *
 	 * @param attribute New or persitent object to save
 	 */
 	@Transactional (readOnly = false)
-	public void save(ServiceProviderAttribute attribute) {
+	public void save(@NotNull ServiceProviderAttribute attribute) {
 		if (attribute.isNew()) {
 			attribute.setId(null);
 			serviceProviderAttributeDao.create(attribute);

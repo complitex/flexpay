@@ -224,7 +224,7 @@ public class GeneratePaymentsMBRegistry {
 
         // лиц. счет ЕРЦ
         String eircCount = null;
-        List<RegistryRecordContainer> containers = record.getContainers();
+        List<RegistryRecordContainer> containers = registryRecordService.getRecordContainers(record);
         for (RegistryRecordContainer container : containers) {
             if (container.getData() != null && container.getData().startsWith("53:")) {
                 eircCount = container.getData().substring(3);
