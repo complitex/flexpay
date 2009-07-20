@@ -1,16 +1,16 @@
 package org.flexpay.common.service.imp;
 
+import org.flexpay.common.dao.UserPreferencesDao;
+import org.flexpay.common.exception.FlexPayException;
+import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.service.UserPreferencesService;
 import org.flexpay.common.util.config.UserPreferences;
-import org.flexpay.common.exception.FlexPayExceptionContainer;
-import org.flexpay.common.exception.FlexPayException;
-import org.flexpay.common.dao.UserPreferencesDao;
-import org.springframework.security.userdetails.UsernameNotFoundException;
-import org.springframework.dao.DataAccessException;
-import org.springframework.beans.factory.annotation.Required;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Required;
+import org.springframework.dao.DataAccessException;
+import org.springframework.security.userdetails.UsernameNotFoundException;
 
 public class UserPreferencesServiceImpl implements UserPreferencesService {
 
@@ -38,7 +38,7 @@ public class UserPreferencesServiceImpl implements UserPreferencesService {
 
 		UserPreferences preferences = userPreferencesDao.findByUserName(username);
 		if (preferences == null) {
-			throw new UsernameNotFoundException("Cannot load user", username);
+			throw new UsernameNotFoundException("Cannot load user: " + username);
 		}
 		return preferences;
 	}

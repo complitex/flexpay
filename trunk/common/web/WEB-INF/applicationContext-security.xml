@@ -22,6 +22,7 @@
 		<!--suppress SpringModelInspection -->
 		<b:property name="authenticationManager" ref="authenticationManager" />
 		<b:property name="authenticationDetailsSource" ref="authenticationDetailsSource" />
+		<b:property name="continueFilterChainOnUnsuccessfulAuthentication" value="false" />
 	</b:bean>
 
 	<b:bean id="authenticationDetailsSource"
