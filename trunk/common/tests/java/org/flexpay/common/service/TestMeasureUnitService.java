@@ -9,12 +9,10 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 
 public class TestMeasureUnitService extends SpringBeanAwareTestCase {
 
 	@Autowired
-	@Qualifier ("measureUnitService")
 	private MeasureUnitService measureUnitService;
 
 	@Test
@@ -24,7 +22,7 @@ public class TestMeasureUnitService extends SpringBeanAwareTestCase {
 		assertNotNull("Measure unit not found", unit);
 
 		unit.setName(new MeasureUnitName("Test"));
-		measureUnitService.create(unit);
+		measureUnitService.update(unit);
 	}
 
 	@Test
@@ -35,7 +33,7 @@ public class TestMeasureUnitService extends SpringBeanAwareTestCase {
 
 		unit.setName(new MeasureUnitName(""));
 		try {
-			measureUnitService.create(unit);
+			measureUnitService.update(unit);
 		} catch (FlexPayExceptionContainer ex) {
 			// expected
 		}
@@ -44,6 +42,6 @@ public class TestMeasureUnitService extends SpringBeanAwareTestCase {
 		assertNotNull("Failed reading just saved unit", unit);
 		assertFalse("Unit names is empty", unit.getUnitNames().isEmpty());
 		unit.setName(new MeasureUnitName("----------Test-------"));
-		measureUnitService.create(unit);
+		measureUnitService.update(unit);
 	}
 }

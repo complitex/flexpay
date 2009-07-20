@@ -42,7 +42,7 @@ public class ApartmentsListAction extends FPActionWithPagerSupport<Apartment> {
 			((PrimaryKeyFilter<?>) filter).initFilter(session);
 		}
 
-		filters = parentService.initFilters(filters, userPreferences.getLocale());
+		filters = parentService.initFilters(filters, getUserPreferences().getLocale());
 		setFilters(filters);
 
 		List<ObjectSorter> sorters = CollectionUtils.<ObjectSorter>list(apartmentSorter);

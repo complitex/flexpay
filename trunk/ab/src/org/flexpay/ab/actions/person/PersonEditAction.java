@@ -9,7 +9,6 @@ import org.flexpay.ab.service.PersonService;
 import org.flexpay.ab.util.config.ApplicationConfig;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.util.DateUtil;
-import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
@@ -27,13 +26,13 @@ public class PersonEditAction extends ApartmentFilterDependentAction {
 	private PersonService personService;
 	private ApartmentService apartmentService;
 
-    @NotNull
+	@NotNull
 	public String doExecute() throws Exception {
 
 		if (isSubmit()) {
 			processSubmit();
-            return SUCCESS;
-        }
+			return SUCCESS;
+		}
 
 		if (person.getId() == null) {
 			log.info("No person id specified");
@@ -91,7 +90,6 @@ public class PersonEditAction extends ApartmentFilterDependentAction {
 		setPersonRegistrationAction.setApartmentFilter(apartmentFilter);
 		setPersonRegistrationAction.setSubmitted(submitted);
 		setPersonRegistrationAction.setSession(session);
-		setPersonRegistrationAction.setUserPreferences(userPreferences);
 	}
 
 	/**

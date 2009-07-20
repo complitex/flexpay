@@ -677,6 +677,21 @@
         primary key (id)
     );
 
+    create table common_users_tbl (
+        id bigint not null auto_increment comment 'Primary key',
+        discriminator varchar(255) not null comment 'Class hierarchy discriminator',
+        full_name varchar(255) not null comment 'Full user name',
+        last_name varchar(255) not null comment 'Last user name',
+        user_name varchar(255) not null unique comment 'User login name',
+        language_code varchar(255) not null comment 'Preferred language ISO code',
+        page_size integer comment 'Preferred listing page size',
+        ab_country_filter varchar(255) comment 'Country filter',
+        ab_region_filter varchar(255) comment 'Region filter',
+        ab_town_filter varchar(255) comment 'Town filter',
+        payments_payment_point_id bigint comment 'User payment point',
+        primary key (id)
+    ) comment='User details';
+
     create table orgs_bank_accounts_tbl (
         id bigint not null auto_increment,
         version integer not null comment 'Optiomistic lock version',

@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Required;
 
 import java.util.List;
 
-public class ApartmentsListAjaxAction extends FPActionWithPagerSupport {
+public class ApartmentsListAjaxAction extends FPActionWithPagerSupport<Apartment> {
 
 	private String[] parents;
 	private List<Apartment> apartments = list();
@@ -61,5 +61,4 @@ public class ApartmentsListAjaxAction extends FPActionWithPagerSupport {
 	public void setApartmentService(ApartmentService apartmentService) {
 		this.apartmentService = apartmentService;
 	}
-
 }

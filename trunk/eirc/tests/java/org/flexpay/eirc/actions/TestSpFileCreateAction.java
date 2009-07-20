@@ -5,7 +5,6 @@ import org.apache.commons.io.IOUtils;
 import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.service.FPFileService;
 import org.flexpay.common.util.StringUtil;
-import org.flexpay.common.util.config.UserPreferences;
 import org.flexpay.eirc.test.EircSpringBeanAwareTestCase;
 import org.jetbrains.annotations.NotNull;
 import static org.junit.Assert.assertEquals;
@@ -24,13 +23,9 @@ public class TestSpFileCreateAction extends EircSpringBeanAwareTestCase {
 
 	@Autowired
 	protected FPFileService FPFileService;
-	protected UploadFileAction uploadFileAction;
-
 	@Autowired
-	public void setUploadFileAction(@Qualifier ("spFileUploadAjaxAction") UploadFileAction uploadFileAction) {
-		uploadFileAction.setUserPreferences(new UserPreferences());
-		this.uploadFileAction = uploadFileAction;
-	}
+	@Qualifier ("spFileUploadAjaxAction")
+	protected UploadFileAction uploadFileAction;
 
 	@Test
 	@Ignore

@@ -34,7 +34,7 @@ public abstract class BuildingsFilterDependentAction extends FPActionSupport {
 			for (Object filter : filterArrayStack) {
 				((PrimaryKeyFilter<?>) filter).initFilter(session);
 			}
-			ArrayStack filters = parentService.initFilters(filterArrayStack, userPreferences.getLocale());
+			ArrayStack filters = parentService.initFilters(filterArrayStack, getUserPreferences().getLocale());
 			setFilters(filters);
 		} catch (FlexPayException e) {
 			filtersError = e.getErrorKey();
@@ -61,7 +61,7 @@ public abstract class BuildingsFilterDependentAction extends FPActionSupport {
 
 	public String getBuildingNumber(@Nullable BuildingAddress buildingAddress) throws Exception {
 		if (buildingAddress != null) {
-			return TranslationUtil.getBuildingNumber(buildingAddress.getBuildingAttributes(), userPreferences.getLocale());
+			return TranslationUtil.getBuildingNumber(buildingAddress.getBuildingAttributes(), getUserPreferences().getLocale());
 		}
 
 		return null;

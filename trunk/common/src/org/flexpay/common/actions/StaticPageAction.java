@@ -6,7 +6,7 @@ public class StaticPageAction extends FPActionSupport {
 
 	@NotNull
 	protected String doExecute() throws Exception {
-		userPreferences.getCrumbs().removeAllElements();
+		getUserPreferences().getCrumbs().removeAllElements();
 		return SUCCESS;
 	}
 

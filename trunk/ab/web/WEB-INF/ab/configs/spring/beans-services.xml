@@ -385,4 +385,23 @@
 		</property>
 	</bean>
 
+	<bean id="abUserPreferencesFactory"
+		  autowire-candidate="false"
+		  class="org.flexpay.ab.util.config.AbUserPreferencesFactory" />
+
+	<bean id="abUserPreferencesFactoryHolder"
+		  depends-on="userPreferencesFactoryHolder"
+		  factory-bean="userPreferencesFactoryHolderFactory"
+		  factory-method="getFactoryHolder"
+		  p:factory-ref="abUserPreferencesFactory" />
+
+	<bean id="abUserPreferencesContextMapper"
+		  autowire-candidate="false"
+		  class="org.flexpay.ab.dao.imp.ldap.AbUserPreferencesContextMapper" />
+
+	<bean autowire-candidate="false"
+		  factory-bean="compositeUserPreferencesContextMapperFactory"
+		  factory-method="getMapper"
+		  p:mapper-ref="abUserPreferencesContextMapper" />
+
 </beans>

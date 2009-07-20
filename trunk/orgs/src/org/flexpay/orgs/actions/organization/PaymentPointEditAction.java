@@ -95,11 +95,11 @@ public class PaymentPointEditAction extends FPActionSupport {
 	}
 
 	public String getCollectorName(@NotNull PaymentsCollector collectorStub) {
-		return organizationHelper.getName(collectorStub, userPreferences.getLocale());
+		return organizationHelper.getName(collectorStub, getUserPreferences().getLocale());
 	}
 
 	public String getCollectorName(@NotNull Organization organizationStub) {
-		return organizationHelper.getName(organizationStub, userPreferences.getLocale());
+		return organizationHelper.getName(organizationStub, getUserPreferences().getLocale());
 	}
 
 	private void initNames() {

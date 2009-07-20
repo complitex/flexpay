@@ -32,7 +32,7 @@ public class MeasureUnitDeleteAction extends FPActionSupport {
 			MeasureUnit unit = measureUnitService.readFull(new Stub<MeasureUnit>(id));
 			if (unit != null) {
 				unit.disable();
-				measureUnitService.create(unit);
+				measureUnitService.update(unit);
 			}
 		}
 

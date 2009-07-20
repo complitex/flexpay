@@ -390,7 +390,7 @@ public class OperationsListAction extends CashboxCookieWithPagerActionSupport<Op
 
 	public String getCurrencyName() {
 
-		return currencyInfoService.getDefaultCurrency().getName(userPreferences.getLocale()).getShortName();
+		return currencyInfoService.getDefaultCurrency().getName(getUserPreferences().getLocale()).getShortName();
 	}
 
 	// form data

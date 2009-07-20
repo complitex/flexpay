@@ -1,8 +1,6 @@
 package org.flexpay.ab.actions.apartment;
 
 import org.apache.commons.collections.ArrayStack;
-import org.flexpay.ab.persistence.AddressAttribute;
-import org.flexpay.ab.persistence.AddressAttributeTypeTranslation;
 import org.flexpay.ab.persistence.BuildingAddress;
 import org.flexpay.ab.persistence.filters.*;
 import org.flexpay.ab.util.TranslationUtil;
@@ -12,8 +10,6 @@ import org.flexpay.common.persistence.filter.ObjectFilter;
 import org.flexpay.common.service.ParentService;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Required;
-
-import java.util.Collection;
 
 /**
  * Same as {@link BuildingsFilterDependentAction} but uses StreetNameFilter
@@ -34,7 +30,7 @@ public abstract class BuildingsFilterDependent2Action extends FPActionWithPagerS
 			for (Object filter : filterArrayStack) {
 				((ObjectFilter) filter).initFilter(session);
 			}
-			ArrayStack filters = parentService.initFilters(filterArrayStack, userPreferences.getLocale());
+			ArrayStack filters = parentService.initFilters(filterArrayStack, getUserPreferences().getLocale());
 			setFilters(filters);
 		} catch (FlexPayException e) {
 			if (!ignoreFilterInitErrors()) {
@@ -59,7 +55,7 @@ public abstract class BuildingsFilterDependent2Action extends FPActionWithPagerS
 
 	public String getBuildingNumber(@Nullable BuildingAddress buildings) throws Exception {
 		if (buildings != null) {
-			return TranslationUtil.getBuildingNumber(buildings.getBuildingAttributes(), userPreferences.getLocale());
+			return TranslationUtil.getBuildingNumber(buildings.getBuildingAttributes(), getUserPreferences().getLocale());
 		}
 
 		return null;

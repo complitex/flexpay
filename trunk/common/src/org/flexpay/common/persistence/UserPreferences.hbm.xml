@@ -1,0 +1,49 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+		"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="org.flexpay.common.util.config">
+
+	<class name="UserPreferences" table="common_users_tbl" discriminator-value="common">
+		<comment>User details</comment>
+		<id name="id">
+			<column name="id">
+				<comment>Primary key</comment>
+			</column>
+			<generator class="native" />
+		</id>
+		<discriminator>
+			<column name="discriminator" not-null="true">
+				<comment>Class hierarchy discriminator</comment>
+			</column>
+		</discriminator>
+		<property name="fullName">
+			<column name="full_name" not-null="true">
+				<comment>Full user name</comment>
+			</column>
+		</property>
+		<property name="lastName">
+			<column name="last_name" not-null="true">
+				<comment>Last user name</comment>
+			</column>
+		</property>
+		<property name="username">
+			<column name="user_name" not-null="true" unique="true">
+				<comment>User login name</comment>
+			</column>
+		</property>
+		<property name="languageCode">
+			<column name="language_code" not-null="true">
+				<comment>Preferred language ISO code</comment>
+			</column>
+		</property>
+		<property name="pageSize">
+			<column name="page_size" not-null="false">
+				<comment>Preferred listing page size</comment>
+			</column>
+		</property>
+	</class>
+
+</hibernate-mapping>
+

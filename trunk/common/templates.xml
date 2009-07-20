@@ -20,6 +20,7 @@
 			<include name="freemarker/*.jar" />
 		</fileset>
 		<path refid="commons.lib" />
+		<path refid="spring.lib" />
 	</path>
 
 	<path id="spring.lib">
@@ -153,6 +154,12 @@
 		</fileset>
 	</path>
 
+	<path id="ldap.lib">
+		<fileset dir="${common.dir}/lib">
+			<include name="ldap/*.jar" />
+		</fileset>
+	</path>
+
 	<!-- NotNull instrumentation javac task -->
 	<taskdef name="javac2"
 			 classname="com.intellij.ant.Javac2"
@@ -261,6 +268,7 @@
 			<lib dir="${common.dir}/lib/openmq" />
 			<lib dir="${common.dir}/lib/jdbc" />
 			<lib dir="${common.dir}/lib/opensso" />
+			<lib dir="${common.dir}/lib/ldap" />
 			<lib dir="${build.dir}/lib" />
 		</war>
 	</target>

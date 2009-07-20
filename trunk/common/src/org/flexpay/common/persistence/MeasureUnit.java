@@ -9,7 +9,7 @@ import java.util.Set;
 
 public class MeasureUnit extends DomainObjectWithStatus {
 
-	public Set<MeasureUnitName> unitNames = Collections.emptySet();
+	private Set<MeasureUnitName> unitNames = Collections.emptySet();
 
 	/**
 	 * Constructs a new DomainObject.

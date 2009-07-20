@@ -95,7 +95,7 @@ public class PaymentOperationReportAction extends PaymentOperationAction {
 			uploadReportTemplates(paymentPointSuffix);
 		}
 
-		report = reportUtil.exportToPdf(reportName, params, dataSource, userPreferences.getLocale());
+		report = reportUtil.exportToPdf(reportName, params, dataSource, getUserPreferences().getLocale());
 
 
 		return FILE;
@@ -105,7 +105,7 @@ public class PaymentOperationReportAction extends PaymentOperationAction {
 		ReportPrintHistoryRecord record = new ReportPrintHistoryRecord();
 		record.setPrintDate(new Date());
 		record.setReportType(ReportType.OPERATION_REPORT);
-		record.setUserName(userPreferences.getUserName());
+		record.setUserName(getUserPreferences().getUsername());
 		reportPrintHistoryRecordService.addRecord(record);
 		return record.getId();
 	}

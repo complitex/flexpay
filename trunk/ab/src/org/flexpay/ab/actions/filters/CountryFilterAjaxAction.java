@@ -47,13 +47,13 @@ public class CountryFilterAjaxAction extends FilterAjaxAction {
 	}
 
 	public void saveFilterValue() {
-		userPreferences.setCountryFilterValue(filterValue);
-		userPreferences.setRegionFilterValue("");
-		userPreferences.setTownFilterValue("");
-		userPreferences.setDistrictFilterValue("");
-		userPreferences.setStreetFilterValue("");
-		userPreferences.setBuildingFilterValue("");
-		userPreferences.setApartmentFilterValue("");
+		getUserPreferences().setCountryFilterValue(filterValue);
+		getUserPreferences().setRegionFilterValue("");
+		getUserPreferences().setTownFilterValue("");
+		getUserPreferences().setDistrictFilterValue("");
+		getUserPreferences().setStreetFilterValue("");
+		getUserPreferences().setBuildingFilterValue("");
+		getUserPreferences().setApartmentFilterValue("");
 	}
 
 	@Required

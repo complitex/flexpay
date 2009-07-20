@@ -6,13 +6,11 @@ import com.opensymphony.xwork2.ActionProxy;
 import com.opensymphony.xwork2.interceptor.AbstractInterceptor;
 import org.apache.struts2.ServletActionContext;
 import org.flexpay.common.actions.breadcrumbs.Crumb;
-import org.flexpay.common.util.config.UserPreferences;
 import org.jetbrains.annotations.NonNls;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Stack;
 
 public class BreadCrumbInterceptor extends AbstractInterceptor {
 

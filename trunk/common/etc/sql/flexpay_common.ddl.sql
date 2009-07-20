@@ -330,6 +330,17 @@
         primary key (id)
     );
 
+    create table common_users_tbl (
+        id bigint not null auto_increment comment 'Primary key',
+        discriminator varchar(255) not null comment 'Class hierarchy discriminator',
+        full_name varchar(255) not null comment 'Full user name',
+        last_name varchar(255) not null comment 'Last user name',
+        user_name varchar(255) not null unique comment 'User login name',
+        language_code varchar(255) not null comment 'Preferred language ISO code',
+        page_size integer comment 'Preferred listing page size',
+        primary key (id)
+    ) comment='User details';
+
     alter table common_currency_names_tbl 
         add index FK_common_currency_names_tbl_currency_info_id (currency_info_id), 
         add constraint FK_common_currency_names_tbl_currency_info_id 

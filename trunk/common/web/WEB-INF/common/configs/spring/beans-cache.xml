@@ -62,7 +62,8 @@
 		</property>
 		<property name="flushingModels">
 			<props>
-				<prop key="save">cacheNames=commonMeasureUnitFlexpayCache;flushBeforeMethodExecution=true</prop>
+				<prop key="create">cacheNames=commonMeasureUnitFlexpayCache;flushBeforeMethodExecution=true</prop>
+				<prop key="update">cacheNames=commonMeasureUnitFlexpayCache;flushBeforeMethodExecution=true</prop>
 			</props>
 		</property>
 		<property name="target" ref="measureUnitServiceTarget" />

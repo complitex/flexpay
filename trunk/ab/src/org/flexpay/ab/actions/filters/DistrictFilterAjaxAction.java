@@ -5,7 +5,6 @@ import org.flexpay.ab.persistence.Town;
 import org.flexpay.ab.service.DistrictService;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
-import org.flexpay.common.util.config.UserPreferences;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
@@ -56,9 +55,9 @@ public class DistrictFilterAjaxAction extends FilterAjaxAction {
 	}
 
 	public void saveFilterValue() {
-		userPreferences.setDistrictFilterValue(filterValue);
-		userPreferences.setBuildingFilterValue("");
-		userPreferences.setApartmentFilterValue("");
+		getUserPreferences().setDistrictFilterValue(filterValue);
+		getUserPreferences().setBuildingFilterValue("");
+		getUserPreferences().setApartmentFilterValue("");
 	}
 
 	@Required

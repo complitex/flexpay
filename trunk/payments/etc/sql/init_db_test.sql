@@ -580,3 +580,9 @@ INSERT INTO payments_documents_tbl (version, operation_id, address, payer_fio, t
 				@service_50, 220.00, '123123123', '09012345067', @organization_zhko, @organization_tszh,
 				null, null);
 SELECT @document_5:=last_insert_id();
+
+-- Init users payment points
+update common_users_tbl set payments_payment_point_id=1
+where id=@user_test;
+update common_users_tbl set payments_payment_point_id=2
+where id=@user_ivanova;

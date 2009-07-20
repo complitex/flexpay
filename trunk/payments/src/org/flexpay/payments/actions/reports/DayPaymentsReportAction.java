@@ -68,7 +68,7 @@ public abstract class DayPaymentsReportAction extends CashboxCookieActionSupport
 		JRDataSource dataSource = new JRBeanCollectionDataSource(data.getOperationDetailses());
 
 		String reportName = ensureReportTemplateUploaded();
-		report = reportUtil.exportToPdf(reportName, params, dataSource, userPreferences.getLocale());
+		report = reportUtil.exportToPdf(reportName, params, dataSource, getUserPreferences().getLocale());
 
 		return FILE;
 	}

@@ -62,7 +62,7 @@ public class ServiceOrganizationAddServedBuildingAction extends FPActionWithPage
 				((PrimaryKeyFilter<?>) filter).initFilter(session);
 			}
 
-			ArrayStack filters = parentService.initFilters(filterArrayStack, userPreferences.getLocale());
+			ArrayStack filters = parentService.initFilters(filterArrayStack, getUserPreferences().getLocale());
 			setFilters(filters);
 
 			buildingsList = buildingService.getBuildings(filters, getPager());

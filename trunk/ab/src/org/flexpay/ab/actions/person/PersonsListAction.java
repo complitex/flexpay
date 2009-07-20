@@ -26,7 +26,7 @@ public class PersonsListAction extends FPActionWithPagerSupport<Person> {
 
 		if (!personSearchFilter.needFilter()) {
 			ArrayStack filters = parentService == null ? null :
-								 parentService.initFilters(getFilters(), userPreferences.getLocale());
+								 parentService.initFilters(getFilters(), getUserPreferences().getLocale());
 
 			persons = personService.findPersons(filters, getPager());
 		} else {

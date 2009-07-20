@@ -21,6 +21,7 @@
 				<value>/WEB-INF/common/configs/spring/hibernate.properties</value>
 				<value>/WEB-INF/common/configs/spring/app_server.properties</value>
 				<value>/WEB-INF/common/configs/spring/managers.properties</value>
+				<value>/WEB-INF/common/configs/spring/ldap.properties</value>
 				<value>/WEB-INF/common/configs/module.properties</value>
 			</list>
 		</property>

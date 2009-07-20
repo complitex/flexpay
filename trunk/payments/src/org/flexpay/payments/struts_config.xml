@@ -73,14 +73,6 @@
         </action>
 	</package>
 
-	<package name="ajax" namespace="dicts" extends="common">
-
-		<action name="streetSearchAjax" class="streetSearchAjaxAction">
-			<result>/WEB-INF/jsp/ab/filters/streets_search_response.jsp</result>
-		</action>
-
-	</package>
-
 	<include file="org/flexpay/payments/actions/operations/struts.xml" />
 	<include file="org/flexpay/payments/actions/registry/struts.xml" />
 	<include file="org/flexpay/payments/actions/reports/struts.xml" />

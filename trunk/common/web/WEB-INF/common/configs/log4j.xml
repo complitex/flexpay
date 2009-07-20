@@ -4,15 +4,15 @@
 <log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
 
 	<appender name="flexpay" class="org.apache.log4j.QpidCompositeRollingAppender">
-		<!-- Ensure that logs allways have the dateFormat set-->
+		<!-- Ensure that logs always have the dateFormat set-->
 		<param name="StaticLogFileName" value="false" />
 		<param name="File" value="${java.io.tmpdir}/logs/flexpay_log_COMMON_INSTANCE_LOG_NAME" />
 		<param name="Append" value="false" />
 		<!-- Change the direction so newer files have bigger numbers -->
 		<!-- So log.1 is written then log.2 etc This prevents a lot of file renames at log rollover -->
 		<param name="CountDirection" value="1" />
-		<!-- Use 50MB -->
-		<param name="MaxFileSize" value="52428800" />
+		<!-- Use 500MB -->
+		<param name="MaxFileSize" value="524288000" />
 		<param name="DatePattern" value="'.'yyyy-MM-dd" />
 		<!-- Unlimited number of backups -->
 		<param name="MaxSizeRollBackups" value="-1" />
@@ -31,15 +31,15 @@
 	</appender>
 
 	<appender name="flexpay_hist" class="org.apache.log4j.QpidCompositeRollingAppender">
-		<!-- Ensure that logs allways have the dateFormat set-->
+		<!-- Ensure that logs always have the dateFormat set-->
 		<param name="StaticLogFileName" value="false" />
 		<param name="File" value="${java.io.tmpdir}/logs/flexpay_log_history_COMMON_INSTANCE_LOG_NAME" />
 		<param name="Append" value="false" />
 		<!-- Change the direction so newer files have bigger numbers -->
 		<!-- So log.1 is written then log.2 etc This prevents a lot of file renames at log rollover -->
 		<param name="CountDirection" value="1" />
-		<!-- Use 50MB -->
-		<param name="MaxFileSize" value="52428800" />
+		<!-- Use 500MB -->
+		<param name="MaxFileSize" value="524288000" />
 		<param name="DatePattern" value="'.'yyyy-MM-dd" />
 		<!-- Unlimited number of backups -->
 		<param name="MaxSizeRollBackups" value="-1" />
