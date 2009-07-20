@@ -1,4 +1,6 @@
 -- Consumer attribute types
+select @ru_id:=id from common_languages_tbl where lang_iso_code='ru';
+
 insert into eirc_consumer_attribute_types_tbl (id, version, status, unique_code, is_temporal, discriminator, measure_unit_id)
 	values (1, 0, 0, 'ATTR_ERC_ACCOUNT', 0, 'simple', null);
 select @cons_attr_type_erc_account:=1;
