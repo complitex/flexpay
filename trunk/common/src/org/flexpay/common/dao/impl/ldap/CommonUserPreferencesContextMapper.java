@@ -1,5 +1,6 @@
 package org.flexpay.common.dao.impl.ldap;
 
+import org.apache.commons.lang.StringUtils;
 import org.flexpay.common.util.config.UserPreferences;
 import org.springframework.ldap.core.DirContextOperations;
 
@@ -9,7 +10,10 @@ public class CommonUserPreferencesContextMapper implements UserPreferencesContex
 
 		preferences.setFullName(ctx.getStringAttribute("cn"));
 		preferences.setLastName(ctx.getStringAttribute("sn"));
+		preferences.setUsername(ctx.getStringAttribute("uid"));
 		preferences.setLanguageCode(ctx.getStringAttribute("flexpayPreferedLocale"));
+		String pageSize = ctx.getStringAttribute("flexpayPreferedPagerSize");
+		preferences.setPageSize(StringUtils.isNotBlank(pageSize) ? Integer.parseInt(pageSize) : 20);
 
 		return preferences;
 	}
@@ -23,9 +27,8 @@ public class CommonUserPreferencesContextMapper implements UserPreferencesContex
 	@Override
 	public void doMapToContext(DirContextOperations ctx, UserPreferences preferences) {
 
-		ctx.setAttributeValue("cn", preferences.getFullName());
-		ctx.setAttributeValue("sn", preferences.getLastName());
 		ctx.setAttributeValue("flexpayPreferedLocale", preferences.getLanguageCode());
+		ctx.setAttributeValue("flexpayPreferedPagerSize", String.valueOf(preferences.getPageSize()));
 	}
 
 	/**

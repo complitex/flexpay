@@ -31,6 +31,7 @@ public class UserPreferencesServiceImpl implements UserPreferencesService {
 	 * @throws org.springframework.dao.DataAccessException
 	 *          if user could not be found for a repository-specific reason
 	 */
+	@NotNull
 	@Override
 	public UserPreferences loadUserByUsername(String username) throws UsernameNotFoundException, DataAccessException {
 

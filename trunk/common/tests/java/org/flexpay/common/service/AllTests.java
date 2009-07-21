@@ -7,8 +7,9 @@ import org.junit.runners.Suite;
 @Suite.SuiteClasses({
 		LanguageServiceTest.class,
 		TestMeasureUnitService.class,
-		TestCurrencyInfoService.class
+		TestCurrencyInfoService.class,
 //		,TestSendEmail.class
+		TestUserPreferencesService.class
 		})
 public class AllTests {
 
