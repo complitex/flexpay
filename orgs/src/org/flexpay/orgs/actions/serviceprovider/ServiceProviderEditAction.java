@@ -77,7 +77,12 @@ public class ServiceProviderEditAction extends FPActionSupport {
 		log.info("New Service provider descriptions: {}", serviceProvider.getDescriptions());
 
 		serviceProvider.setOrganization(juridicalPerson);
-		providerService.create(serviceProvider);
+        if (serviceProvider.isNew()) {
+		    providerService.create(serviceProvider);
+        } else {
+            serviceProvider.setEmail(provider.getEmail());
+            providerService.update(serviceProvider);
+        }
 
 		return REDIRECT_SUCCESS;
 	}
