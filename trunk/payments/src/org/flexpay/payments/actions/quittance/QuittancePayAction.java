@@ -114,7 +114,7 @@ public class QuittancePayAction extends PaymentOperationAction {
 
 	@NotNull
 	protected String getErrorResult() {
-		return SUCCESS;
+		return REDIRECT_SUCCESS;
 	}
 
 	public void setOperationBlankId(Long operationBlankId) {
