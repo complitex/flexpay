@@ -1,5 +1,8 @@
 alter table payments_document_addition_types_tbl add column code integer comment 'Document addition type code';
 
+select @ru_id:=id from common_languages_tbl where lang_iso_code='ru';
+select @en_id:=id from common_languages_tbl where lang_iso_code='en';
+
 insert into payments_document_addition_types_tbl (id, version, code)
 		values (1, 0, 1);
 insert into payments_document_addition_type_translations_tbl (name, language_id, type_id)
