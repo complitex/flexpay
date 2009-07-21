@@ -1,0 +1,83 @@
+dn: dc=flexpay,dc=org
+objectClass: domain
+objectClass: top
+dc: flexpay
+entryUUID: b688d7bf-1991-3f8d-967d-ae16ec233afd
+
+dn: uid=mixa,dc=flexpay,dc=org
+objectClass: person
+objectClass: inetOrgPerson
+objectClass: organizationalPerson
+objectClass: flexpayPaymentsPerson
+objectClass: flexpayPerson
+objectClass: top
+objectClass: flexpayPerson
+objectClass: flexpayPaymentsPerson
+uid: mixa
+cn: Mikhail Fedko
+sn: Fedko
+userPassword: {SSHA}08CqBz3T29lvHL0c/EiW0K9WYn70On4HkZ5zbQ==
+flexpayPaymentsPaymentPointId: 2
+flexpayPreferedPagerSize: 10
+flexpayPreferedLocale: en
+entryUUID: 2e23f970-4f5b-459f-a7cf-b3e4d3fc4297
+createTimestamp: 20090721062234Z
+creatorsName: cn=Directory Manager,cn=Root DNs,cn=config
+pwdChangedTime: 20090721062234.715Z
+modifyTimestamp: 20090721104532Z
+modifiersName: cn=Directory Manager,cn=Root DNs,cn=config
+
+dn: uid=juliet,dc=flexpay,dc=org
+objectClass: person
+objectClass: inetOrgPerson
+objectClass: organizationalPerson
+objectClass: flexpayAbPerson
+objectClass: flexpayPerson
+objectClass: top
+objectClass: flexpayPerson
+objectClass: flexpayAbPerson
+givenName:: 0K7Qu9C40Y8=
+flexpayAbTownFilter:: 0L3QvtCy0L7RgQ==
+uid: juliet
+flexpayAbRegionFilter:: 0L3QvtCy0L7RgQ==
+flexpayAbCountryFilter:: 0YDQvtGB
+cn:: 0KTQtdC00YzQutC+INCu0LvQuNGPINCYLg==
+sn:: 0KTQtdC00YzQutC+
+userPassword: {SSHA}OUGApV+52Ei8c65vyidraVePEAorELIeEx83Iw==
+flexpayPreferedPagerSize: 10
+flexpayPreferedLocale: en
+entryUUID: 169da16a-8698-4c8b-9adf-e8321f9d4609
+createTimestamp: 20090721074410Z
+creatorsName: cn=Directory Manager,cn=Root DNs,cn=config
+pwdChangedTime: 20090721074410.266Z
+modifyTimestamp: 20090721104757Z
+modifiersName: cn=Directory Manager,cn=Root DNs,cn=config
+
+dn: uid=test,dc=flexpay,dc=org
+objectClass: person
+objectClass: inetOrgPerson
+objectClass: organizationalPerson
+objectClass: flexpayPaymentsPerson
+objectClass: flexpayAbPerson
+objectClass: flexpayPerson
+objectClass: top
+objectClass: flexpayPerson
+objectClass: flexpayPaymentsPerson
+objectClass: flexpayAbPerson
+flexpayAbTownFilter:: 0YXQsNGA0YzQutC+0LI=
+flexpayAbRegionFilter:: 0YXQsNGA0YzQutC+0LI=
+uid: test
+flexpayAbCountryFilter:: 0YPQutGA
+cn:: 0KLQtdGB0YIg0KIuINCi0LXRgdGC0L7Qsg==
+sn:: 0KLQtdGB0YLQvtCy
+userPassword: {SSHA}hrSaJum8KLtVpDNR/+gI2ItUx6iFQ/fX8A6qqg==
+flexpayPaymentsPaymentPointId: 2
+flexpayPreferedPagerSize: 30
+flexpayPreferedLocale: en
+entryUUID: 2fae47cd-b1df-4593-a973-0ac2b6d63e8d
+pwdChangedTime: 20090721074634.518Z
+creatorsName: cn=Directory Manager,cn=Root DNs,cn=config
+createTimestamp: 20090721074634Z
+modifyTimestamp: 20090721104903Z
+modifiersName: cn=Directory Manager,cn=Root DNs,cn=config
+

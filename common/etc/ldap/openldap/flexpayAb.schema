@@ -25,5 +25,5 @@ objectclass     ( 1.3.6.1.4.1.1466000.4096.1
     DESC 'Flexpay ab module user'
     SUP flexpayPerson
     AUXILIARY
-    MUST  ( flexpayPaymentsPaymentPointId )
+    MUST  ( flexpayAbCountryFilter, flexpayAbRegionFilter, flexpayAbTownFilter )
     )

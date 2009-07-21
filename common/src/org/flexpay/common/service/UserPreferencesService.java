@@ -1,11 +1,11 @@
 package org.flexpay.common.service;
 
-import org.flexpay.common.util.config.UserPreferences;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
+import org.flexpay.common.util.config.UserPreferences;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.dao.DataAccessException;
 import org.springframework.security.userdetails.UserDetailsService;
 import org.springframework.security.userdetails.UsernameNotFoundException;
-import org.jetbrains.annotations.NotNull;
 
 public interface UserPreferencesService extends UserDetailsService {
 
@@ -23,11 +23,12 @@ public interface UserPreferencesService extends UserDetailsService {
 	 *          if user could not be found for a repository-specific reason
 	 */
 	@Override
+	@NotNull
 	UserPreferences loadUserByUsername(String username) throws UsernameNotFoundException, DataAccessException;
 
 	/**
 	 * Update UserPreferences object
-	 * 
+	 *
 	 * @param preferences UserPreferences to update
 	 * @return Updated preferences back
 	 * @throws FlexPayExceptionContainer if preferences validation fails
