@@ -219,8 +219,6 @@ public class PaymentPointServiceImpl implements PaymentPointService {
 		return filter;
 	}
 
-
-
 	public List<PaymentPoint> findAll() {
 		return paymentPointDao.listPoints();
 	}

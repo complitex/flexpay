@@ -4,9 +4,11 @@ import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.orgs.persistence.Cashbox;
+import org.flexpay.orgs.persistence.filters.CashboxFilter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.security.annotation.Secured;
+import org.apache.commons.collections.ArrayStack;
 
 import java.util.List;
 import java.util.Set;
@@ -80,5 +82,26 @@ public interface CashboxService {
 	@Secured (Roles.CASHBOX_READ)
 	@Nullable
 	List<Cashbox> findCashboxesForPaymentPoint(Long paymentPointId);
+
+	/**
+	 * Initialize cashbox filter
+	 *
+	 * @param filter filter to initialize
+	 * @return filter back
+	 */
+	@Secured(Roles.CASHBOX_READ)
+	@NotNull
+	CashboxFilter initFilter(@NotNull CashboxFilter filter);
+
+	/**
+	 * Initialize cashbox filter
+	 *
+	 * @param filters filters stack
+	 * @param filter filter to bi initialized
+	 * @return filter back
+	 */
+	@Secured(Roles.CASHBOX_READ)
+	@NotNull
+	CashboxFilter initFilter(@NotNull ArrayStack filters, @NotNull CashboxFilter filter);
 
 }

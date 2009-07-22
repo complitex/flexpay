@@ -13,17 +13,14 @@ import org.flexpay.orgs.persistence.Cashbox;
 import org.flexpay.orgs.service.OrganizationService;
 import org.flexpay.orgs.service.PaymentPointService;
 import org.flexpay.orgs.service.ServiceProviderService;
+import org.flexpay.orgs.service.CashboxService;
 import org.flexpay.payments.persistence.*;
-import org.flexpay.payments.reports.payments.PaymentPrintForm;
-import org.flexpay.payments.reports.payments.PaymentReportData;
-import org.flexpay.payments.reports.payments.PaymentsPrintInfoData;
 import static org.flexpay.payments.reports.payments.PaymentsPrintInfoData.OperationPrintInfo;
-import org.flexpay.payments.reports.payments.PaymentsReporter;
+import org.flexpay.payments.reports.payments.*;
 import org.flexpay.payments.service.DocumentService;
 import org.flexpay.payments.service.OperationService;
 import org.flexpay.payments.service.SPService;
 import org.flexpay.payments.service.ServiceTypeService;
-import org.flexpay.payments.service.statistics.OperationTypeStatistics;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
@@ -36,11 +33,23 @@ import java.util.Map;
 
 public class PaymentsReporterImpl implements PaymentsReporter {
 
+	// logger
 	private Logger log = LoggerFactory.getLogger(getClass());
 
+	// service types
+	private static final int SERVICE_TYPE_KVARTPLATA = 1;
+	private static final int SERVICE_TYPE_DOGS = 2;
+	private static final int SERVICE_TYPE_GARAGE = 3;
+	private static final int SERVICE_TYPE_WARMING = 4;
+	private static final int SERVICE_TYPE_HOT_WATER = 7;
+	private static final int SERVICE_TYPE_COLD_WATER = 6;
+	private static final int SERVICE_TYPE_SEWER = 13; // TODO: FIXME find proper one
+
+	// required services
 	private DocumentService documentService;
 	private OrganizationService organizationService;
 	private PaymentPointService paymentPointService;
+	private CashboxService cashboxService;
 	private SPService spService;
 	private ServiceProviderService serviceProviderService;
 	private ServiceTypeService serviceTypeService;
@@ -212,13 +221,6 @@ public class PaymentsReporterImpl implements PaymentsReporter {
 		return operationService.listReturnedPayments(cashbox, begin, end);
 	}
 
-
-	private Organization getOrganization(PaymentPoint paymentPoint) {
-		Long organizationId = paymentPoint.getCollector().getOrganization().getId();
-		Organization organization = organizationService.readFull(new Stub<Organization>(organizationId));
-		return organization;
-	}
-
 	private PaymentPoint getPaymentPoint(Cashbox cashbox) {
 
 		return paymentPointService.read(cashbox.getPaymentPointStub());
@@ -241,68 +243,244 @@ public class PaymentsReporterImpl implements PaymentsReporter {
 		return operationPrintInfo;
 	}
 
-	public String getServiceTypeName(Service serviceStub, Locale locale) {
+	@Override
+	public AccPaymentReportData getAccPaymentsReportData(AccPaymentsReportRequest reportRequest, Cashbox cashbox) {
 
-		Stub<Service> stub = new Stub<Service>(serviceStub);
-		Service service = spService.readFull(stub);
-		ServiceType type = serviceTypeService.read(service.getServiceTypeStub());
-		return type.getName(locale);
+		AccPaymentReportData result = new AccPaymentReportData();
+		PaymentPoint paymentPoint = getPaymentPoint(cashbox);
+		Organization collectorOrganization = organizationService.readFull(paymentPoint.getCollector().getOrganizationStub());
+
+		result.setAccountantFio("Коваль А.Н."); // TODO : use actual accountant name
+		result.setCreationDate(new Date());
+		result.setBeginDate(reportRequest.getBeginDate());
+		result.setEndDate(reportRequest.getEndDate());
+		result.setDetailses(fillDetailses(reportRequest));
+		result.setPaymentPointName(paymentPoint.getName(reportRequest.getLocale()));
+		result.setPaymentPointAddress(paymentPoint.getAddress());
+		result.setPaymentCollectorOrgName(collectorOrganization.getName(reportRequest.getLocale()));
+
+		return result;
 	}
 
-	public String getServiceProviderName(Service serviceStub, Locale locale) {
+	private List<AccPaymentReportData.PaymentDetails> fillDetailses(AccPaymentsReportRequest request) {
 
-		Stub<Service> stub = new Stub<Service>(serviceStub);
-		Service service = spService.readFull(stub);
-		if (service == null) {
-			log.warn("No service found by stub {}", serviceStub);
-			return null;
+		Long paymentPointId = request.getPaymentPointId();
+		Long cashboxId = request.getCashboxId();
+		Date beginDate = request.getBeginDate();
+		Date endDate = request.getEndDate();
+		int status = request.getPaymentStatus();
+		Locale locale = request.getLocale();
+
+		switch (request.getDetailsLevel()) {
+			case AccPaymentsReportRequest.DETAILS_LEVEL_PAYMENT_POINT:
+				if (paymentPointId == null && cashboxId == null) {
+					return getAllPaymentPointsNoDetails(status, beginDate, endDate, locale);
+				} else if (paymentPointId != null && cashboxId == null) {
+					return getPaymentPointNoDetails(paymentPointId, status, beginDate, endDate, locale);
+				}
+				break;
+			case AccPaymentsReportRequest.DETAILS_LEVEL_CASHBOX:
+				if (paymentPointId == null && cashboxId == null) {
+					return getAllPaymentPointsCashboxes(status, beginDate, endDate, locale);
+				} else if (paymentPointId != null && cashboxId == null) {
+					return getPaymentPointCashboxes(paymentPointId, status, beginDate, endDate, locale);
+				} else if (paymentPointId != null && cashboxId != null) {
+					return getCashbox(cashboxId, status, beginDate, endDate, locale);
+				}
+				break;
+			case AccPaymentsReportRequest.DETAILS_LEVEL_PAYMENT:
+				if (paymentPointId == null && cashboxId == null) {
+					return getAllPaymentPointsPayments(status, beginDate, endDate, locale);
+				} else if (paymentPointId != null && cashboxId == null) {
+					return getPaymentPointPayments(paymentPointId, status, beginDate, endDate, locale);
+				} else if (paymentPointId != null && cashboxId != null) {
+					return getCashboxPayments(cashboxId, status, beginDate, endDate, locale);
+				}
+				break;
+			default:
+				break;
 		}
-		ServiceProvider provider = serviceProviderService.read(service.getServiceProviderStub());
-		if (provider == null) {
-			log.warn("No service provider found {}", service.getServiceProviderStub());
-			return null;
-		}
-		return provider.getName(locale);
+
+		return null;
 	}
 
-	public long getPaymentsCount(List<OperationTypeStatistics> typeStatisticses) {
-		long count = 0;
-		for (OperationTypeStatistics stats : typeStatisticses) {
-			if (OperationType.isPaymentCode(stats.getOperationTypeCode())) {
-				count += stats.getCount();
+	private List<AccPaymentReportData.PaymentDetails> getAllPaymentPointsNoDetails(int status, Date beginDate, Date endDate, Locale locale) {
+
+		List<AccPaymentReportData.PaymentDetails> result = CollectionUtils.list();
+
+		List<PaymentPoint> allPaymentPoints = paymentPointService.findAll();
+		for (PaymentPoint paymentPoint : allPaymentPoints) {
+			AccPaymentReportData.PaymentDetails pointSummary = getPaymentPointSummary(new Stub<PaymentPoint>(paymentPoint.getId()), status, beginDate, endDate, locale);
+			result.add(pointSummary);
+		}
+
+		return result;
+	}
+
+	private List<AccPaymentReportData.PaymentDetails> getPaymentPointNoDetails(Long paymentPointId, int status, Date beginDate, Date endDate, Locale locale) {
+
+		AccPaymentReportData.PaymentDetails details = getPaymentPointSummary(new Stub<PaymentPoint>(paymentPointId), status, beginDate, endDate, locale);
+		return CollectionUtils.list(details);
+	}
+
+	private List<AccPaymentReportData.PaymentDetails> getAllPaymentPointsCashboxes(int status, Date beginDate, Date endDate, Locale locale) {
+
+		List<AccPaymentReportData.PaymentDetails> paymentPointSummaries = CollectionUtils.list();
+
+		List<PaymentPoint> allPaymentPoints = paymentPointService.findAll();
+		for (PaymentPoint paymentPoint : allPaymentPoints) {
+			List<AccPaymentReportData.PaymentDetails> cashboxSummaries = CollectionUtils.list();
+			List<Cashbox> cashboxes = cashboxService.findCashboxesForPaymentPoint(paymentPoint.getId());
+			for (Cashbox cashbox : cashboxes) {
+				AccPaymentReportData.PaymentDetails cashboxSummary = getCashboxSummary(new Stub<Cashbox>(cashbox.getId()), status, beginDate, endDate, locale);
+				cashboxSummaries.add(cashboxSummary);
 			}
+
+			AccPaymentReportData.PaymentDetails pointSummary = getPaymentPointSummary(new Stub<PaymentPoint>(paymentPoint.getId()), status, beginDate, endDate, locale);
+			pointSummary.setChildDetailses(cashboxSummaries);
+
+			paymentPointSummaries.add(pointSummary);
 		}
-		return count;
+
+		return paymentPointSummaries;
 	}
 
-	public BigDecimal getPaymentsSumm(List<OperationTypeStatistics> typeStatisticses) {
-		BigDecimal summ = BigDecimal.ZERO;
-		for (OperationTypeStatistics stats : typeStatisticses) {
-			if (OperationType.isPaymentCode(stats.getOperationTypeCode())) {
-				summ = summ.add(stats.getSumm());
-			}
+	private List<AccPaymentReportData.PaymentDetails> getPaymentPointCashboxes(Long paymentPointId, int status, Date beginDate, Date endDate, Locale locale) {
+
+		List<AccPaymentReportData.PaymentDetails> cashboxDetailses = CollectionUtils.list();
+		List<Cashbox> cashboxes = cashboxService.findCashboxesForPaymentPoint(paymentPointId);
+		for (Cashbox cashbox : cashboxes) {
+			AccPaymentReportData.PaymentDetails cashboxSummary = getCashboxSummary(new Stub<Cashbox>(cashbox.getId()), status, beginDate, endDate, locale);
+			cashboxDetailses.add(cashboxSummary);
 		}
-		return summ;
+
+		AccPaymentReportData.PaymentDetails paymentPointSummary = getPaymentPointSummary(new Stub<PaymentPoint>(paymentPointId), status, beginDate, endDate, locale);
+		paymentPointSummary.setChildDetailses(cashboxDetailses);
+		return CollectionUtils.list(paymentPointSummary);
 	}
 
-	public long getReturnsCount(List<OperationTypeStatistics> typeStatisticses) {
-		long count = 0;
-		for (OperationTypeStatistics stats : typeStatisticses) {
-			if (OperationType.isReturnCode(stats.getOperationTypeCode())) {
-				count += stats.getCount();
-			}
-		}
-		return count;
+	private List<AccPaymentReportData.PaymentDetails> getCashbox(Long cashboxId, int status, Date beginDate, Date endDate, Locale locale) {
+
+		AccPaymentReportData.PaymentDetails details = getCashboxSummary(new Stub<Cashbox>(cashboxId), status, beginDate, endDate, locale);
+		return CollectionUtils.list(details);
 	}
 
-	public BigDecimal getReturnsSumm(List<OperationTypeStatistics> typeStatisticses) {
-		BigDecimal summ = BigDecimal.ZERO;
-		for (OperationTypeStatistics stats : typeStatisticses) {
-			if (OperationType.isReturnCode(stats.getOperationTypeCode())) {
-				summ = summ.add(stats.getSumm());
-			}
+	private List<AccPaymentReportData.PaymentDetails> getAllPaymentPointsPayments(int status, Date beginDate, Date endDate, Locale locale) {
+
+		List<AccPaymentReportData.PaymentDetails> paymentPointSummaries = CollectionUtils.list();
+
+		List<PaymentPoint> allPaymentPoints = paymentPointService.findAll();
+		for (PaymentPoint paymentPoint : allPaymentPoints) {
+			AccPaymentReportData.PaymentDetails paymentPointSummary = getPaymentPointSummary(new Stub<PaymentPoint>(paymentPoint.getId()), status, beginDate, endDate, locale);
+			paymentPointSummary.setChildDetailses(getPaymentPointPayments(paymentPoint.getId(), status, beginDate, endDate, locale));
+			paymentPointSummaries.add(paymentPointSummary);
 		}
-		return summ;
+
+		return paymentPointSummaries;
+	}
+
+	private List<AccPaymentReportData.PaymentDetails> getPaymentPointPayments(Long paymentPointId, int status, Date beginDate, Date endDate, Locale locale) {
+
+		List<AccPaymentReportData.PaymentDetails> cashboxSummaries = CollectionUtils.list();
+
+		List<Cashbox> cashboxes = cashboxService.findCashboxesForPaymentPoint(paymentPointId);
+		for (Cashbox cashbox : cashboxes) {
+			cashboxSummaries.add(getCashboxPayments(cashbox.getId(), status, beginDate, endDate, locale).get(0));
+		}
+
+		return cashboxSummaries;
+	}
+
+	private List<AccPaymentReportData.PaymentDetails> getCashboxPayments(Long cashboxId, int status, Date beginDate, Date endDate, Locale locale) {
+
+		List<AccPaymentReportData.PaymentDetails> operationDetailses = CollectionUtils.list();
+		Cashbox cashbox = cashboxService.read(new Stub<Cashbox>(cashboxId));
+
+		List<Operation> operations;
+		switch (status) {
+			case OperationStatus.REGISTERED:
+				operations = operationService.listReceivedPayments(cashbox, beginDate, endDate);
+				break;
+			case OperationStatus.RETURNED:
+				operations = operationService.listReturnedPayments(cashbox, beginDate, endDate);
+				break;
+			default:
+				operations = CollectionUtils.list();
+				break;
+		}
+
+		for (Operation operation : operations) {
+			AccPaymentReportData.PaymentDetails operationDetails = getPaymentDetails(new Stub<Operation>(operation.getId()));
+			operationDetailses.add(operationDetails);
+		}
+
+		AccPaymentReportData.PaymentDetails result = getCashboxSummary(new Stub<Cashbox>(cashboxId), status, beginDate, endDate, locale);
+		result.setChildDetailses(operationDetailses);
+
+		return CollectionUtils.list(result);
+	}
+
+	// converts operation info into payment details
+	private AccPaymentReportData.PaymentDetails getPaymentDetails(Stub<Operation> operationStub) {
+
+		AccPaymentReportData.PaymentDetails paymentDetails = new AccPaymentReportData.PaymentDetails();
+		Operation operation = operationService.read(operationStub);
+
+		paymentDetails.setDivisionName("");
+		paymentDetails.setDivisionAddress("");
+		paymentDetails.setObjectId(operationStub.getId());
+		paymentDetails.setPaymentKvartplata(documentService.getOperationServiceSumm(operationStub, SERVICE_TYPE_KVARTPLATA));
+		paymentDetails.setPaymentDogs(documentService.getOperationServiceSumm(operationStub, SERVICE_TYPE_DOGS));
+		paymentDetails.setPaymentGarage(documentService.getOperationServiceSumm(operationStub, SERVICE_TYPE_GARAGE));
+		paymentDetails.setPaymentWarming(documentService.getOperationServiceSumm(operationStub, SERVICE_TYPE_WARMING));
+		paymentDetails.setPaymentHotWater(documentService.getOperationServiceSumm(operationStub, SERVICE_TYPE_HOT_WATER));
+		paymentDetails.setPaymentColdWater(documentService.getOperationServiceSumm(operationStub, SERVICE_TYPE_COLD_WATER));
+		paymentDetails.setPaymentSewer(documentService.getOperationServiceSumm(operationStub, SERVICE_TYPE_SEWER));
+		paymentDetails.setSumm(operation.getOperationSumm());
+
+		return paymentDetails;
+	}
+
+	// builds summary for cashbox
+	private AccPaymentReportData.PaymentDetails getCashboxSummary(Stub<Cashbox> cashboxStub, int status, Date beginDate, Date endDate, Locale locale) {
+
+		AccPaymentReportData.PaymentDetails paymentDetails = new AccPaymentReportData.PaymentDetails();
+		Cashbox cashbox = cashboxService.read(cashboxStub);
+
+		paymentDetails.setDivisionName(cashbox.getName(locale));
+		paymentDetails.setDivisionAddress("");
+		paymentDetails.setObjectId(cashboxStub.getId());
+		paymentDetails.setPaymentKvartplata(documentService.getCashboxServiceSumm(cashboxStub, status, SERVICE_TYPE_KVARTPLATA, beginDate, endDate));
+		paymentDetails.setPaymentDogs(documentService.getCashboxServiceSumm(cashboxStub, status, SERVICE_TYPE_DOGS, beginDate, endDate));
+		paymentDetails.setPaymentGarage(documentService.getCashboxServiceSumm(cashboxStub, status, SERVICE_TYPE_GARAGE, beginDate, endDate));
+		paymentDetails.setPaymentWarming(documentService.getCashboxServiceSumm(cashboxStub, status, SERVICE_TYPE_WARMING, beginDate, endDate));
+		paymentDetails.setPaymentHotWater(documentService.getCashboxServiceSumm(cashboxStub, status, SERVICE_TYPE_HOT_WATER, beginDate, endDate));
+		paymentDetails.setPaymentColdWater(documentService.getCashboxServiceSumm(cashboxStub, status, SERVICE_TYPE_COLD_WATER, beginDate, endDate));
+		paymentDetails.setPaymentSewer(documentService.getCashboxServiceSumm(cashboxStub, status, SERVICE_TYPE_SEWER, beginDate, endDate));
+		paymentDetails.setSumm(documentService.getCashboxTotalSumm(cashboxStub, status, beginDate, endDate));
+
+		return paymentDetails;
+	}
+
+	// builds summary for payment point
+	private AccPaymentReportData.PaymentDetails getPaymentPointSummary(Stub<PaymentPoint> paymentPointStub, int status, Date beginDate, Date endDate, Locale locale) {
+
+		AccPaymentReportData.PaymentDetails paymentDetails = new AccPaymentReportData.PaymentDetails();
+		PaymentPoint paymentPoint = paymentPointService.read(paymentPointStub);
+
+		paymentDetails.setDivisionName(paymentPoint.getName(locale));
+		paymentDetails.setDivisionAddress(paymentPoint.getAddress());
+		paymentDetails.setObjectId(paymentPointStub.getId());
+		paymentDetails.setPaymentKvartplata(documentService.getPaymentPointServiceSumm(paymentPointStub, status, SERVICE_TYPE_KVARTPLATA, beginDate, endDate));
+		paymentDetails.setPaymentDogs(documentService.getPaymentPointServiceSumm(paymentPointStub, status, SERVICE_TYPE_DOGS, beginDate, endDate));
+		paymentDetails.setPaymentGarage(documentService.getPaymentPointServiceSumm(paymentPointStub, status, SERVICE_TYPE_GARAGE, beginDate, endDate));
+		paymentDetails.setPaymentWarming(documentService.getPaymentPointServiceSumm(paymentPointStub, status, SERVICE_TYPE_WARMING, beginDate, endDate));
+		paymentDetails.setPaymentHotWater(documentService.getPaymentPointServiceSumm(paymentPointStub, status, SERVICE_TYPE_HOT_WATER, beginDate, endDate));
+		paymentDetails.setPaymentColdWater(documentService.getPaymentPointServiceSumm(paymentPointStub, status, SERVICE_TYPE_COLD_WATER, beginDate, endDate));
+		paymentDetails.setPaymentSewer(documentService.getPaymentPointServiceSumm(paymentPointStub, status, SERVICE_TYPE_SEWER, beginDate, endDate));
+		paymentDetails.setSumm(documentService.getPaymentPointTotalSumm(paymentPointStub, status, beginDate, endDate));
+
+		return paymentDetails;
 	}
 
 	@Required
@@ -350,4 +528,8 @@ public class PaymentsReporterImpl implements PaymentsReporter {
 		this.paymentPointService = paymentPointService;
 	}
 
+	@Required
+	public void setCashboxService(CashboxService cashboxService) {
+		this.cashboxService = cashboxService;
+	}
 }

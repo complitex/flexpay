@@ -1,15 +1,20 @@
 package org.flexpay.orgs.service.imp;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.collections.ArrayStack;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.persistence.filter.ObjectFilter;
 import org.flexpay.common.persistence.history.ModificationListener;
 import org.flexpay.common.service.internal.SessionUtils;
+import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.orgs.dao.CashboxDao;
 import org.flexpay.orgs.persistence.Cashbox;
 import org.flexpay.orgs.persistence.CashboxNameTranslation;
+import org.flexpay.orgs.persistence.filters.CashboxFilter;
+import org.flexpay.orgs.persistence.filters.PaymentPointsFilter;
 import org.flexpay.orgs.service.CashboxService;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
@@ -114,6 +119,38 @@ public class CashboxServiceImpl implements CashboxService {
 				log.debug("Disabled object: {}", cashbox);
 			}
 		}
+	}
+
+	@NotNull
+	@Override
+	public CashboxFilter initFilter(@NotNull CashboxFilter cashboxFilter) {
+
+		return initFilter(CollectionUtils.arrayStack(), cashboxFilter);
+	}
+
+	@NotNull
+	@Override
+	public CashboxFilter initFilter(@NotNull ArrayStack filters, @NotNull CashboxFilter cashboxFilter) {
+
+		List<Cashbox> cashboxes = listCashboxes(filters);
+		cashboxFilter.setCashboxes(cashboxes);
+		return cashboxFilter;
+	}
+
+	private List<Cashbox> listCashboxes(ArrayStack filters) {
+
+		if (filters.isEmpty()) {
+			return cashboxDao.findCashboxes(new Page<Cashbox>(10000, 1));
+		}
+
+		// check if payments collector filter is there
+		ObjectFilter filter = (ObjectFilter) filters.peek();
+		if (filter.needFilter() && filter instanceof PaymentPointsFilter) {
+			PaymentPointsFilter paymentPointsFilter = (PaymentPointsFilter) filter;
+			return cashboxDao.findCashboxesForPaymentPoint(paymentPointsFilter.getSelectedId());
+		}
+
+		return cashboxDao.findCashboxes(new Page<Cashbox>(10000, 1));
 	}
 
 	@NotNull
