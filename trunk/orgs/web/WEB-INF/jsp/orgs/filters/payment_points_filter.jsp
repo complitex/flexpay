@@ -4,7 +4,7 @@
 	<s:hidden name="paymentPointsFilter.selectedId" />
 	<s:property value="getTranslation(paymentPointsFilter.selected.names).name"/>
 </s:if><s:else>
-    <select name="paymentPointsFilter.selectedId" <s:if test="paymentPointsFilter.needAutoChange">onchange="this.form.submit();"</s:if> class="form-select">
+    <select name="paymentPointsFilter.selectedId" id="paymentPointsFilter.selectedId" <s:if test="paymentPointsFilter.needAutoChange">onchange="this.form.submit();"</s:if> class="form-select">
 	<s:if test="paymentPointsFilter.allowEmpty">
         <option value="-1"><s:text name="eirc.payment_point"/></option>
     </s:if>

@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ReceivedPayments" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="595" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" resourceBundle="org/flexpay/payments/i18n/ReceivedPayments">
+	<property name="ireport.scriptlethandling" value="0"/>
+	<property name="ireport.encoding" value="UTF-8"/>
+	<style name="LiberationSans-Regular" isDefault="true" fontName="LiberationSans-Regular" fontSize="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="fonts/LiberationSans-Regular.ttf" pdfEncoding="Cp1251" isPdfEmbedded="true"/>
+	<style name="LiberationSans-Bold" isDefault="false" style="LiberationSans-Regular" fontName="LiberationSans-Bold" isBold="true" pdfFontName="fonts/LiberationSans-Bold.ttf" isPdfEmbedded="true"/>
+	<parameter name="creationDate" class="java.util.Date" isForPrompting="false"/>
+	<parameter name="beginDate" class="java.util.Date" isForPrompting="false"/>
+	<parameter name="endDate" class="java.util.Date" isForPrompting="false"/>
+	<parameter name="paymentPointName" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="paymentPointAddress" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="paymentCollectorOrgName" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="accountantFio" class="java.lang.String" isForPrompting="false"/>
+	<field name="objectId" class="java.lang.Long"/>
+	<field name="divisionName" class="java.lang.String"/>
+	<field name="divisionAddress" class="java.lang.String"/>
+	<field name="paymentKvartplata" class="java.math.BigDecimal"/>
+	<field name="paymentDogs" class="java.math.BigDecimal"/>
+	<field name="paymentGarage" class="java.math.BigDecimal"/>
+	<field name="paymentWarming" class="java.math.BigDecimal"/>
+	<field name="paymentHotWater" class="java.math.BigDecimal"/>
+	<field name="paymentColdWater" class="java.math.BigDecimal"/>
+	<field name="paymentSewer" class="java.math.BigDecimal"/>
+	<field name="summ" class="java.math.BigDecimal"/>
+	<variable name="counter" class="java.lang.Integer">
+		<variableExpression><![CDATA[new Integer($V{counter}.intValue() + 1)]]></variableExpression>
+		<initialValueExpression><![CDATA[new java.lang.Integer(0)]]></initialValueExpression>
+	</variable>
+	<variable name="totalPaymentsCount" class="java.lang.Integer" calculation="Count">
+		<variableExpression><![CDATA[$F{objectId}]]></variableExpression>
+		<initialValueExpression><![CDATA[new java.lang.Integer(0)]]></initialValueExpression>
+	</variable>
+	<variable name="totalPaymentsSumm" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{summ}]]></variableExpression>
+		<initialValueExpression><![CDATA[new java.math.BigDecimal("0.00")]]></initialValueExpression>
+	</variable>
+	<variable name="kvartplataTotalCount" class="java.lang.Integer">
+		<variableExpression><![CDATA[new Integer($V{kvartplataTotalCount}.intValue() + (($F{paymentKvartplata}.doubleValue() > 0) ? 1 : 0))]]></variableExpression>
+		<initialValueExpression><![CDATA[new java.lang.Integer(0)]]></initialValueExpression>
+	</variable>
+	<variable name="kvartplataTotalSumm" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{paymentKvartplata}]]></variableExpression>
+		<initialValueExpression><![CDATA[new java.math.BigDecimal("0.00")]]></initialValueExpression>
+	</variable>
+	<variable name="dogsTotalCount" class="java.lang.Integer">
+		<variableExpression><![CDATA[new Integer($V{dogsTotalCount}.intValue() + (($F{paymentDogs}.doubleValue() > 0) ? 1 : 0))]]></variableExpression>
+		<initialValueExpression><![CDATA[new java.lang.Integer(0)]]></initialValueExpression>
+	</variable>
+	<variable name="dogsTotalSumm" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{paymentDogs}]]></variableExpression>
+		<initialValueExpression><![CDATA[new java.math.BigDecimal("0.00")]]></initialValueExpression>
+	</variable>
+	<variable name="garageTotalCount" class="java.lang.Integer">
+		<variableExpression><![CDATA[new Integer($V{garageTotalCount}.intValue() + (($F{paymentGarage}.doubleValue() > 0) ? 1 : 0))]]></variableExpression>
+		<initialValueExpression><![CDATA[new java.lang.Integer(0)]]></initialValueExpression>
+	</variable>
+	<variable name="garageTotalSumm" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{paymentGarage}]]></variableExpression>
+		<initialValueExpression><![CDATA[new java.math.BigDecimal("0.00")]]></initialValueExpression>
+	</variable>
+	<variable name="warmingTotalCount" class="java.lang.Integer">
+		<variableExpression><![CDATA[new Integer($V{warmingTotalCount}.intValue() + (($F{paymentWarming}.doubleValue() > 0) ? 1 : 0))]]></variableExpression>
+		<initialValueExpression><![CDATA[new java.lang.Integer(0)]]></initialValueExpression>
+	</variable>
+	<variable name="warmingTotalSumm" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{paymentWarming}]]></variableExpression>
+		<initialValueExpression><![CDATA[new java.math.BigDecimal("0.00")]]></initialValueExpression>
+	</variable>
+	<variable name="hotWaterTotalCount" class="java.lang.Integer">
+		<variableExpression><![CDATA[new Integer($V{hotWaterTotalCount}.intValue() + (($F{paymentHotWater}.doubleValue() > 0) ? 1 : 0))]]></variableExpression>
+		<initialValueExpression><![CDATA[new Integer(0)]]></initialValueExpression>
+	</variable>
+	<variable name="hotWaterTotalSumm" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{paymentHotWater}]]></variableExpression>
+		<initialValueExpression><![CDATA[new java.math.BigDecimal("0.00")]]></initialValueExpression>
+	</variable>
+	<variable name="coldWaterTotalCount" class="java.lang.Integer">
+		<variableExpression><![CDATA[new Integer($V{coldWaterTotalCount}.intValue() + (($F{paymentColdWater}.doubleValue() > 0) ? 1 : 0))]]></variableExpression>
+		<initialValueExpression><![CDATA[new java.lang.Integer(0)]]></initialValueExpression>
+	</variable>
+	<variable name="coldWaterTotalSumm" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{paymentColdWater}]]></variableExpression>
+		<initialValueExpression><![CDATA[new java.math.BigDecimal("0.00")]]></initialValueExpression>
+	</variable>
+	<variable name="sewerTotalCount" class="java.lang.Integer">
+		<variableExpression><![CDATA[new Integer($V{sewerTotalCount}.intValue() + (($F{paymentSewer}.doubleValue() > 0) ? 1 : 0))]]></variableExpression>
+		<initialValueExpression><![CDATA[new java.lang.Integer(0)]]></initialValueExpression>
+	</variable>
+	<variable name="sewerTotalSumm" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{paymentSewer}]]></variableExpression>
+		<initialValueExpression><![CDATA[new java.math.BigDecimal("0.00")]]></initialValueExpression>
+	</variable>
+	<background>
+		<band/>
+	</background>
+	<detail>
+		<band height="20" isSplitAllowed="false">
+			<textField>
+				<reportElement x="0" y="0" width="24" height="20"/>
+				<box leftPadding="5">
+					<pen lineWidth="0.25" lineStyle="Solid"/>
+					<topPen lineWidth="0.25" lineStyle="Solid"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression class="java.lang.Integer"><![CDATA[$V{counter}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="25" y="0" width="24" height="20"/>
+				<box leftPadding="5">
+					<pen lineWidth="0.25" lineStyle="Solid"/>
+					<topPen lineWidth="0.25" lineStyle="Solid"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression class="java.lang.Long"><![CDATA[$F{objectId}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="49" y="0" width="64" height="20"/>
+				<box leftPadding="5">
+					<pen lineWidth="0.25" lineStyle="Solid"/>
+					<topPen lineWidth="0.25" lineStyle="Solid"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{divisionName}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="192" y="0" width="45" height="20"/>
+				<box leftPadding="5">
+					<pen lineWidth="0.25" lineStyle="Solid"/>
+					<topPen lineWidth="0.25" lineStyle="Solid"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{paymentKvartplata}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="237" y="0" width="45" height="20"/>
+				<box leftPadding="5">
+					<pen lineWidth="0.25" lineStyle="Solid"/>
+					<topPen lineWidth="0.25" lineStyle="Solid"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{paymentDogs}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="282" y="0" width="45" height="20"/>
+				<box leftPadding="5">
+					<pen lineWidth="0.25" lineStyle="Solid"/>
+					<topPen lineWidth="0.25" lineStyle="Solid"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{paymentGarage}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="327" y="0" width="45" height="20"/>
+				<box leftPadding="5">
+					<pen lineWidth="0.25" lineStyle="Solid"/>
+					<topPen lineWidth="0.25" lineStyle="Solid"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{paymentWarming}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="372" y="0" width="45" height="20"/>
+				<box leftPadding="5">
+					<pen lineWidth="0.25" lineStyle="Solid"/>
+					<topPen lineWidth="0.25" lineStyle="Solid"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{paymentHotWater}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="417" y="0" width="45" height="20"/>
+				<box leftPadding="5">
+					<pen lineWidth="0.25" lineStyle="Solid"/>
+					<topPen lineWidth="0.25" lineStyle="Solid"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{paymentColdWater}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="462" y="0" width="45" height="20"/>
+				<box leftPadding="5">
+					<pen lineWidth="0.25" lineStyle="Solid"/>
+					<topPen lineWidth="0.25" lineStyle="Solid"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{paymentSewer}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="507" y="0" width="48" height="20"/>
+				<box leftPadding="5">
+					<pen lineWidth="0.25" lineStyle="Solid"/>
+					<topPen lineWidth="0.25" lineStyle="Solid"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{summ}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="113" y="0" width="79" height="20"/>
+				<box leftPadding="5">
+					<pen lineWidth="0.25" lineStyle="Solid"/>
+					<topPen lineWidth="0.25" lineStyle="Solid"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Center"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$F{divisionAddress}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

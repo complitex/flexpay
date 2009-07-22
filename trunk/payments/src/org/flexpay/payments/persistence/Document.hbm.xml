@@ -440,6 +440,7 @@
 		left join fetch doc.additions adds
 		left join fetch serv.serviceType servType
 		where serv.serviceProvider.id = ?
+		and doc.operation.operationStatus.code = ?
 		and op.registerOrganization.id = ?
 		and op.creationDate >= ? and op.creationDate <= ?
 		and doc.documentType.id = 1 and doc.documentStatus.id = 2
@@ -450,6 +451,51 @@
 		from DocumentAdditionType type
 		left join fetch type.translations
 		where type.code = ?
+	</query>
+
+	<query name="Document.findCashboxServiceSumm"><![CDATA[
+		select sum(doc.summ)
+		from Document doc
+		where doc.operation.cashbox.id = ?
+		and doc.operation.operationStatus.code = ?
+		and doc.service.serviceType.code = ?
+		and doc.operation.registerDate >= ?
+		and doc.operation.registerDate <= ?
+	]]></query>
+
+	<query name="Document.findCashboxTotalSumm"><![CDATA[
+		select sum(doc.summ)
+		from Document doc
+		where doc.operation.cashbox.id = ?
+		and doc.operation.operationStatus.code = ?
+		and doc.operation.registerDate >= ?
+		and doc.operation.registerDate <= ?
+	]]></query>
+
+	<query name="Document.findPaymentPointServiceSumm"><![CDATA[
+		select sum(doc.summ)
+		from Document doc
+		where doc.operation.paymentPoint.id = ?
+		and doc.operation.operationStatus.code = ?
+		and doc.service.serviceType.code = ?
+		and doc.operation.registerDate >= ?
+		and doc.operation.registerDate <= ?
+	]]></query>
+
+	<query name="Document.findPaymentPointTotalSumm"><![CDATA[
+		select sum(doc.summ)
+		from Document doc
+		where doc.operation.paymentPoint.id = ?
+		and doc.operation.operationStatus.code = ?
+		and doc.operation.registerDate >= ?
+		and doc.operation.registerDate <= ?
+	]]></query>
+
+	<query name="Document.findOperationServiceSumm">
+		select doc.summ
+		from Document doc
+		where doc.operation.id = ?
+		and doc.service.serviceType.code = ?
 	</query>
 
 </hibernate-mapping>

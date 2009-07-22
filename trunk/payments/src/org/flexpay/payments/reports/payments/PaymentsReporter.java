@@ -64,4 +64,7 @@ public interface PaymentsReporter {
 	 */
 	@Secured(Roles.PAYMENTS_REPORT)
 	PaymentsPrintInfoData getReturnedPaymentsPrintFormData(Date begin, Date end, Cashbox cashbox, Locale locale);
+
+	@Secured(Roles.PAYMENTS_REPORT)
+	AccPaymentReportData getAccPaymentsReportData(AccPaymentsReportRequest reportRequest, Cashbox cashbox);	
 }

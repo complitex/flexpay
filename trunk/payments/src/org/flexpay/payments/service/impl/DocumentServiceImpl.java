@@ -8,6 +8,8 @@ import org.flexpay.payments.persistence.Operation;
 import org.flexpay.payments.service.DocumentService;
 import org.flexpay.orgs.persistence.ServiceProvider;
 import org.flexpay.orgs.persistence.Organization;
+import org.flexpay.orgs.persistence.Cashbox;
+import org.flexpay.orgs.persistence.PaymentPoint;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
@@ -84,14 +86,49 @@ public class DocumentServiceImpl implements DocumentService {
 		return documentDao.listRegisteredPaymentDocuments(begin, end);
 	}
 
-    /**
+	/**
 	 * {@inheritDoc}
 	 */
     public List<Document> listRegisteredPaymentDocuments(@NotNull ServiceProvider serviceProvider, @NotNull Organization organization, @NotNull Date begin, @NotNull Date end) {
         return documentDao.listRegisteredPaymentDocumentsByServiceProvider(serviceProvider.getId(), organization.getId(), begin, end);
     }
 
-    @Required
+	@Override
+	public BigDecimal getCashboxServiceSumm(Stub<Cashbox> cashboxStub, int statusCode, int serviceTypeCode, Date beginDate, Date endDate) {
+
+		List result = documentDao.findCashboxServiceSumm(cashboxStub.getId(), statusCode, serviceTypeCode, beginDate, endDate);
+		return (BigDecimal) (result.get(0) != null ? result.get(0) : new BigDecimal("0.00"));
+	}
+
+	@Override
+	public BigDecimal getCashboxTotalSumm(Stub<Cashbox> cashboxStub, int statusCode, Date beginDate, Date endDate) {
+
+		List result = documentDao.findCashboxTotalSumm(cashboxStub.getId(), statusCode, beginDate, endDate);
+		return (BigDecimal) (result.get(0) != null ? result.get(0) : new BigDecimal("0.00"));
+	}
+
+	@Override
+	public BigDecimal getPaymentPointServiceSumm(Stub<PaymentPoint> paymentPointStub, int statusCode, int serviceTypeCode, Date beginDate, Date endDate) {
+
+		List result = documentDao.findPaymentPointServiceSumm(paymentPointStub.getId(), statusCode, serviceTypeCode, beginDate, endDate);
+		return (BigDecimal) (result.get(0) != null ? result.get(0) : new BigDecimal("0.00"));
+	}
+
+	@Override
+	public BigDecimal getPaymentPointTotalSumm(Stub<PaymentPoint> paymentPointStub, int statusCode, Date beginDate, Date endDate) {
+
+		List result = documentDao.findPaymentPointTotalSumm(paymentPointStub.getId(), statusCode, beginDate, endDate);
+		return (BigDecimal) (result.get(0) != null ? result.get(0) : new BigDecimal("0.00"));
+	}
+
+	@Override
+	public BigDecimal getOperationServiceSumm(Stub<Operation> operationStub, int serviceTypeCode) {
+
+		List result = documentDao.findOperationServiceSumm(operationStub.getId(), serviceTypeCode);
+		return (BigDecimal) (result.size() > 0 ? result.get(0) : new BigDecimal("0.00"));
+	}
+
+	@Required
 	public void setDocumentDao(DocumentDao documentDao) {
 		this.documentDao = documentDao;
 	}

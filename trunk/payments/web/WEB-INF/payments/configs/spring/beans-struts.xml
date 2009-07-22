@@ -115,12 +115,16 @@
 		  class="org.flexpay.payments.actions.reports.AccReceivedPaymentsReportAction"
 		  p:paymentPointService-ref="paymentPointService"
 		  p:cashboxService-ref="cashboxService"
+		  p:paymentsReporter-ref="paymentsReporter"
+		  p:reportUtil-ref="reportUtil"
 		  scope="prototype" />
 
 	<bean id="accReturnedPaymentsReportAction"
 		  class="org.flexpay.payments.actions.reports.AccReturnedPaymentsReportAction"
 		  p:paymentPointService-ref="paymentPointService"
 		  p:cashboxService-ref="cashboxService"
+		  p:paymentsReporter-ref="paymentsReporter"
+		  p:reportUtil-ref="reportUtil"
 		  scope="prototype" />
 
 	<bean id="importPaymentsReportAction"

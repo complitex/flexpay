@@ -5,6 +5,8 @@ import org.flexpay.payments.persistence.Document;
 import org.flexpay.payments.persistence.Operation;
 import org.flexpay.orgs.persistence.ServiceProvider;
 import org.flexpay.orgs.persistence.Organization;
+import org.flexpay.orgs.persistence.Cashbox;
+import org.flexpay.orgs.persistence.PaymentPoint;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.security.annotation.Secured;
@@ -78,4 +80,53 @@ public interface DocumentService {
 	@Secured (Roles.DOCUMENT_READ)
 	List<Document> listRegisteredPaymentDocuments(@NotNull ServiceProvider serviceProvider, @NotNull Organization organization, @NotNull Date begin, @NotNull Date end);
 
+	/**
+	 * Returns summ of payments for service in the cashbox for the period
+	 * @param cashboxStub cashbox stub
+	 * @param statusCode payment status code
+	 * @param serviceTypeCode service type code
+	 * @param beginDate begin date
+	 * @param endDate end date
+	 * @return summ of payments for service in the cashbox
+	 */
+	BigDecimal getCashboxServiceSumm(Stub<Cashbox> cashboxStub, int statusCode, int serviceTypeCode, Date beginDate, Date endDate);
+
+	/**
+	 * Returns summ of payments in the cashbox for the period
+	 * @param cashboxStub cashbox stub
+	 * @param statusCode payment status code
+	 * @param beginDate begin date
+	 * @param endDate end date
+	 * @return summ of payments in the cashbox
+	 */
+	BigDecimal getCashboxTotalSumm(Stub<Cashbox> cashboxStub, int statusCode, Date beginDate, Date endDate);
+
+	/**
+	 * Returns summ of service payments in the payment point for the period
+	 * @param paymentPointStub payment point stub
+	 * @param statusCode payment status code
+	 * @param serviceTypeCode service type code
+	 * @param beginDate begin date
+	 * @param endDate end date
+	 * @return summ of service payments in the payment point for the period
+	 */
+	BigDecimal getPaymentPointServiceSumm(Stub<PaymentPoint> paymentPointStub, int statusCode, int serviceTypeCode, Date beginDate, Date endDate);
+
+	/**
+	 * Returns total summ of payments in cashbox for the period
+	 * @param paymentPointStub payment point stub
+	 * @param statusCode payment status code
+	 * @param beginDate begin date
+	 * @param endDate end date
+	 * @return total summ of payments in cashbox for the period
+	 */
+	BigDecimal getPaymentPointTotalSumm(Stub<PaymentPoint> paymentPointStub, int statusCode, Date beginDate, Date endDate);
+
+	/**
+	 * Returns summ of service payment in operation
+	 * @param operationStub operation stub
+	 * @param serviceTypeCode service type code
+	 * @return summ of service payment in operation
+	 */
+	BigDecimal getOperationServiceSumm(Stub<Operation> operationStub, int serviceTypeCode);
 }
