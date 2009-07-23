@@ -1,7 +1,6 @@
 package org.flexpay.payments.dao.impl;
 
 import org.flexpay.common.dao.paging.Page;
-import org.flexpay.common.dao.registry.impl.RegistryDaoExtImpl;
 import org.flexpay.common.persistence.filter.RegistryTypeFilter;
 import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.orgs.persistence.filters.OrganizationFilter;

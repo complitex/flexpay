@@ -190,7 +190,7 @@
 		  p:quittanceInfoBuilder-ref="quittanceInfoBuilder" />
 
 	<bean id="serviceProviderFileProcessorTx"
-		  class="org.flexpay.eirc.service.exchange.ServiceProviderFileProcessorTx"
+		  class="org.flexpay.eirc.service.exchange.ServiceProviderFileProcessorTxImpl"
 		  p:recordWorkflowManager-ref="registryRecordWorkflowManager"
 		  p:serviceOperationsFactory-ref="serviceOperationsFactory" />
 
