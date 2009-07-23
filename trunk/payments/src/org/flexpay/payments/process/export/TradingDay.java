@@ -91,7 +91,8 @@ public class TradingDay extends QuartzJobBean {
 					logger.debug("Process Instance {} was not found", processInstanceId);
 					return false;
 				}
-				String canCreateOrUpdate = (String)context.getProcessInstance(processInstanceId).getContextInstance().getVariable(TradingDay.CAN_UPDATE_OR_CRETAE_OPERATION);
+				String canCreateOrUpdate = (String)context.getProcessInstance(processInstanceId)
+						.getContextInstance().getVariable(TradingDay.CAN_UPDATE_OR_CRETAE_OPERATION);
 				logger.debug("CAN_UPDATE_OR_CRETAE_OPERATION = {} for process instance id = {}", new Object[]{canCreateOrUpdate, processInstanceId});
 				return new Boolean(canCreateOrUpdate);
 			}
@@ -106,7 +107,7 @@ public class TradingDay extends QuartzJobBean {
 	 */
     protected void executeInternal(JobExecutionContext context) throws JobExecutionException {
 
-        log.debug("Starting traiding day at {}", new Date());
+        log.debug("Starting trading day at {}", new Date());
 
         authenticateTradingDayGenerator();
 

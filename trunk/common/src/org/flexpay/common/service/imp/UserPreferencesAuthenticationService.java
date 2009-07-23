@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Required;
 public class UserPreferencesAuthenticationService implements AuthenticationUserDetailsService {
 
 	private UserPreferencesService userPreferencesService;
-	private AuthenticationUserDetailsService detailsService;
+	private AuthenticationUserDetailsService detailsService = null;
 
 	/**
 	 * @param token The pre-authenticated authentication token
@@ -21,7 +21,9 @@ public class UserPreferencesAuthenticationService implements AuthenticationUserD
 	 */
 	@Override
 	public UserDetails loadUserDetails(Authentication token) throws UsernameNotFoundException {
-		UserDetails userDetails = detailsService.loadUserDetails(token);
+		UserDetails userDetails = token.getPrincipal() instanceof UserDetails ?
+								  (UserDetails) token.getPrincipal() :
+								  detailsService.loadUserDetails(token);
 		UserPreferences userPreferences = userPreferencesService.loadUserByUsername(token.getName());
 		userPreferences.setTargetDetails(userDetails);
 		return userPreferences;
@@ -32,7 +34,6 @@ public class UserPreferencesAuthenticationService implements AuthenticationUserD
 		this.userPreferencesService = userPreferencesService;
 	}
 
-	@Required
 	public void setDetailsService(AuthenticationUserDetailsService detailsService) {
 		this.detailsService = detailsService;
 	}

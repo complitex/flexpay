@@ -10,6 +10,15 @@
 		<param-value>FlexPay EIRC module COMMON_INSTANCE</param-value>
 	</context-param>
 
+	<!-- OpenSSO configuration-->
+	<!--<context-param>-->
+		<!--<param-name>contextConfigLocation</param-name>-->
+		<!--<param-value>-->
+			<!--/WEB-INF/applicationContext.xml-->
+			<!--/WEB-INF/applicationContext-security-opensso.xml-->
+		<!--</param-value>-->
+	<!--</context-param>-->
+
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
 		<param-value>
@@ -755,7 +764,7 @@
 	<!-- organization roles -->
 	<security-role>
 		<role-name>ROLE_PAYMENTS_OPERATION_READ</role-name>
-	</security-role>		
+	</security-role>
 
 	<security-role>
 		<role-name>ROLE_PAYMENTS_DOCUMENT_TYPE_READ</role-name>
@@ -841,9 +850,9 @@
         <role-name>ROLE_MENU_PAYMENTS_PAYMENT_POINTS</role-name>
     </security-role>
 
-	<!--<login-config>-->
-		<!--<auth-method>BASIC</auth-method>-->
-	<!--</login-config>-->
+	<!--&lt;!&ndash;<login-config>&ndash;&gt;-->
+		<!--&lt;!&ndash;<auth-method>BASIC</auth-method>&ndash;&gt;-->
+	<!--&lt;!&ndash;</login-config>&ndash;&gt;-->
 
 	<login-config>
 		<auth-method>FORM</auth-method>
