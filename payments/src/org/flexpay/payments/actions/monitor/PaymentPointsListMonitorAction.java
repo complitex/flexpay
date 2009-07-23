@@ -106,17 +106,13 @@ public class PaymentPointsListMonitorAction extends CashboxCookieWithPagerAction
             container.setName(paymentPoint.getName(getLocale()));
             container.setPaymentsCount(String.valueOf(getPaymentsCount(statistics)));
             container.setTotalSum(String.valueOf(getPaymentsSumm(statistics)));
-
-            container.setCashBox(null);
-            container.setCashierFIO(null);
-            container.setLastPayment(null);
-
             container.setStatus(status);
 
             if (operations != null && operations.size() > 0) {
                 Operation operation = operations.get(0);
                 Cashbox operationCashbox = cashboxService.read(new Stub<Cashbox>(operation.getCashbox()));
                 if (operationCashbox != null) {
+					container.setCashierFIO(operation.getCashierFio());
                     container.setCashBox(operationCashbox.getName(getLocale()));
                     container.setLastPayment(formatTime.format(operation.getCreationDate()));
                 }

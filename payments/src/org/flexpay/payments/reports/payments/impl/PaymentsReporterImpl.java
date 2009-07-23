@@ -128,9 +128,7 @@ public class PaymentsReporterImpl implements PaymentsReporter {
 		form.setPayerFIO(op.getPayerFIO());
 		form.setPaymentPointAddress(paymentPoint.getAddress());
 		form.setPaymentPointName(paymentPoint.getName());
-
-		// todo: fixme
-		form.setCashierFIO("Коваль А.Н.");
+		form.setCashierFIO(op.getCashierFio());
 
 		form.setTotal(op.getOperationSumm());
 		form.setTotalSpelling("(" + currencyToTextConverter.toText(
@@ -142,8 +140,8 @@ public class PaymentsReporterImpl implements PaymentsReporter {
 		for (Document doc : op.getDocuments()) {
 			PaymentPrintForm.PaymentDetails details = new PaymentPrintForm.PaymentDetails();
 			details.setAccountNumber(doc.getCreditorId());
-			// todo: fixme
-			details.setCounterValue("");
+
+			details.setCounterValue(""); // todo: fixme
 
 			details.setAddress(doc.getAddress());
 			details.setFio(doc.getPayerFIO());
@@ -181,7 +179,6 @@ public class PaymentsReporterImpl implements PaymentsReporter {
 		result.setPaymentPointAddress(paymentPoint.getAddress());
 		Organization collectorOrganization = organizationService.readFull(paymentPoint.getCollector().getOrganizationStub());
 		result.setPaymentCollectorOrgName(collectorOrganization.getName(locale));
-		result.setCashierFio("Коваль А.Н."); // TODO : use actual cashier name
 		return result;
 	}
 
@@ -201,7 +198,6 @@ public class PaymentsReporterImpl implements PaymentsReporter {
 		result.setPaymentPointAddress(paymentPoint.getAddress());
 		Organization collectorOrganization = organizationService.readFull(paymentPoint.getCollector().getOrganizationStub());
 		result.setPaymentCollectorOrgName(collectorOrganization.getName(locale));
-		result.setCashierFio("Коваль А.Н."); // TODO : use actual cashier name
 		return result;
 	}
 

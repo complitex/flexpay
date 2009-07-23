@@ -109,11 +109,12 @@ public class PaymentPointDetailMonitorAction extends CashboxCookieActionSupport 
                 statistics = paymentsStatisticsService.operationTypeCashboxStatistics(Stub.stub(cashbox), startDate, finishDate);
                 List<Operation> operations = operationService.listLastPaymentOperations(cashbox, startDate, finishDate);
                 String lastPayment = operations != null && operations.size() > 0? formatTime.format(operations.get(0).getCreationDate()): null;
+				String cashierFio = operations != null && operations.size() > 0 ? operations.get(0).getCashierFio() : null;
 
                 CashboxMonitorContainer container = new CashboxMonitorContainer();
                 container.setId(String.valueOf(cashbox.getId()));
                 container.setCashbox(cashbox.getName(getLocale()));
-                container.setCashierFIO(null);
+                container.setCashierFIO(cashierFio);
                 container.setLastPayment(lastPayment);
                 container.setPaymentsCount(String.valueOf(getPaymentsCount(statistics)));
                 container.setTotalSum(String.valueOf(getPaymentsSumm(statistics)));

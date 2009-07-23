@@ -1361,6 +1361,7 @@
         register_date datetime comment 'Operation registration date',
         address varchar(255) comment 'Payer address',
         payer_fio varchar(255) comment 'Payer first-middle-last names',
+        cashier_fio varchar(255) comment 'Cashier full name',
         level_id bigint not null comment 'Operation level reference',
         status_id bigint not null comment 'Operation status reference',
         type_id bigint not null comment 'Operation type reference (operation code)',

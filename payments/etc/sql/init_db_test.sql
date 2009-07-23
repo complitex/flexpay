@@ -518,26 +518,26 @@ INSERT INTO payments_service_descriptions_tbl (name, language_id, service_id)
 -- init operations
 INSERT INTO payments_operations_tbl (id, version, address, payer_fio, level_id, status_id, type_id,
 		creator, creation_date, creator_organization_id, payment_point_id, register_user, register_date, register_organization_id,
-		operation_summ, operation_input_summ, change_summ, registry_record_id, reference_operation_id)
+		operation_summ, operation_input_summ, change_summ, registry_record_id, reference_operation_id, cashier_fio)
 		VALUES (1, 0, 'ул. Иванова, д.27, кв.330', 'Федько М.А.', @operation_level_3, @operation_status_1, @operation_type_1,
 				'asemenov', '2009-04-14 12:20', @organization_tszh, @payment_point_1, 'asemenov', '2009-04-14 12:21', @organization_tszh,
-				1395.00, 1500.00, 105.00, null, null);
+				1395.00, 1500.00, 105.00, null, null, 'Семёнов А.Н.');
 SELECT @operation_1:=1;
 
 INSERT INTO payments_operations_tbl (id, version, address, payer_fio, level_id, status_id, type_id,
 		creator, creation_date, creator_organization_id, payment_point_id, register_user, register_date, register_organization_id,
-		operation_summ, operation_input_summ, change_summ, registry_record_id, reference_operation_id)
+		operation_summ, operation_input_summ, change_summ, registry_record_id, reference_operation_id, cashier_fio)
 		VALUES (2, 0, 'ул. Иванова, д.27, кв.330', 'Федько М.А.', @operation_level_3, @operation_status_2, @operation_type_1,
 				'asemenov', '2009-04-14 13:20', @organization_tszh, @payment_point_2, 'asemenov', '2009-04-14 13:21', @organization_tszh,
-				113.00, 200.00, 87.00, null, null);
+				113.00, 200.00, 87.00, null, null, 'Семёнов А.Н.');
 SELECT @operation_2:=2;
 
 INSERT INTO payments_operations_tbl (id, version, address, payer_fio, level_id, status_id, type_id,
 		creator, creation_date, creator_organization_id, payment_point_id, register_user, register_date, register_organization_id,
-		operation_summ, operation_input_summ, change_summ, registry_record_id, reference_operation_id)
+		operation_summ, operation_input_summ, change_summ, registry_record_id, reference_operation_id, cashier_fio)
 		VALUES (3, 0, 'ул. Иванова, д.27, кв.330', 'Федько М.А.', @operation_level_3, @operation_status_4, @operation_type_1,
 				'asemenov', '2009-04-14 14:20', @organization_tszh, @payment_point_1, 'asemenov', '2009-04-14 14:21', @organization_tszh,
-				220.00, 500.00, 280.00, null, null);
+				220.00, 500.00, 280.00, null, null, 'Семёнов А.Н.');
 SELECT @operation_3:=3;
 
 -- init documents
