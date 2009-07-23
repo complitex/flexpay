@@ -504,12 +504,12 @@ public class ProcessManagerImpl implements ProcessManager, Runnable {
 						TaskInstance task = taskMgmtSession.loadTaskInstance(taskId);
 
 						if (task == null) {
-							log.error("Can't find Task Instance, id: {}", taskId);
+							log.debug("Can't find Task Instance, id: {}", taskId);
 						} else {
-							log.info("Finishing Task Instance, id: {}", taskId);
+							log.debug("Finishing Task Instance, id: {}", taskId);
 							ContextInstance ci = task.getProcessInstance().getContextInstance();
 							// save the variables in ProcessInstance dictionary
-							log.debug(parameters.toString());
+							log.trace(parameters.toString());
 							ci.addVariables(parameters);
 							ci.setVariable("StartTaskCounter", 0, task.getToken());
 							// mark task as ended with job result code as decision transition value
