@@ -41,19 +41,21 @@ public class EircRegistryDaoExtImpl extends HibernateDaoSupport implements EircR
 		final List<Object> params = new ArrayList();
 		final StringBuilder hql = new StringBuilder("select distinct r from Registry r ")
 				.append("left join fetch r.spFile ")
-				.append("inner join fetch r.properties rps ")
-				.append("inner join fetch r.registryType rt ")
-				.append("inner join fetch r.registryStatus rs ")
-				.append("inner join fetch r.archiveStatus ras, ")
+				.append("left join fetch r.properties rps ")
+				.append("left join fetch r.registryType rt ")
+				.append("left join fetch r.registryStatus rs ")
+				.append("left join fetch r.archiveStatus ras, ")
 				.append("EircRegistryProperties rp ")
+				.append("left join rp.sender sender ")
+				.append("left join rp.recipient recipient ")
 				.append("where rps.id=rp.id ");
 		final StringBuilder hqlCount = new StringBuilder("select count(r) from Registry r ")
-				.append("inner join r.properties rps ")
-				.append("inner join r.registryType rt ")
-				.append("inner join r.registryStatus rs, ")
+				.append("left join r.properties rps ")
+				.append("left join r.registryType rt ")
+				.append("left join r.registryStatus rs, ")
 				.append("EircRegistryProperties rp ")
-				.append("inner join rp.sender sender ")
-				.append("inner join rp.recipient recipient ")
+				.append("left join rp.sender sender ")
+				.append("left join rp.recipient recipient ")
 				.append("where rps.id=rp.id ");
 
 		if (senderFilter.needFilter()) {
@@ -82,13 +84,13 @@ public class EircRegistryDaoExtImpl extends HibernateDaoSupport implements EircR
 			params.add(tillDate);
 		}
 
-		// retrive total count of elements
+		// retrieve total count of elements
 		Number count = (Number) getHibernateTemplate().find(hqlCount.toString(), params.toArray()).get(0);
 		pager.setTotalElements(count.intValue());
 
 		log.debug("Registries list queries: \n{}\n{}", hql, hqlCount);
 
-		// retrive elements
+		// retrieve elements
 		return getHibernateTemplate().executeFind(new HibernateCallback() {
 			public Object doInHibernate(Session session) throws HibernateException {
 				Query qCount = session.createQuery(hqlCount.toString());
