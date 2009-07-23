@@ -82,7 +82,7 @@
 	</bean>
 
 	<!-- Import-Export services -->
-	<bean id="importServiceAb" class="org.flexpay.ab.service.importexport.ImportService">
+	<bean id="importServiceAb" class="org.flexpay.ab.service.importexport.ImportServiceImpl">
 		<property name="districtDataSource" ref="districtJdbcDataSource" />
 		<property name="districtDataConverter" ref="districtDataConverter" />
 		<property name="streetTypeDataSource" ref="streetTypeJdbcDataSource" />
