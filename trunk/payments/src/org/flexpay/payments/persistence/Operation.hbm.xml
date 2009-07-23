@@ -63,6 +63,11 @@
 				<comment>Payer first-middle-last names</comment>
 			</column>
 		</property>
+		<property name="cashierFio">
+			<column name="cashier_fio" not-null="false">
+				<comment>Cashier full name</comment>
+			</column>
+		</property>
 		<many-to-one name="operationLevel" class="OperationLevel"
 					 foreign-key="FK_payments_operations_tbl_level_id">
 			<column name="level_id" not-null="true">

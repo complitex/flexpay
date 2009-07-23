@@ -90,6 +90,7 @@ public abstract class PaymentOperationAction extends CashboxCookieActionSupport 
 		operation.setOperationStatus(operationStatusService.read(OperationStatus.REGISTERED));
 		operation.setOperationLevel(operationLevelService.read(OperationLevel.AVERAGE));
 		operation.setOperationType(operationTypeService.read(OperationType.SERVICE_CASH_PAYMENT));
+		operation.setCashierFio(getUserPreferences().getFullName());
 
 		for (String serviceIndex : payments.keySet()) {
 

@@ -24,7 +24,6 @@ public class PaymentPrintForm implements Serializable {
 	private BigDecimal changeSumm;
 	private Stub<PaymentPoint> paymentPointStub;
 
-	// TODO: rename "detailses" to "details"
 	private List<PaymentDetails> detailses = Collections.emptyList();
 
 	public Date getOperationDate() {

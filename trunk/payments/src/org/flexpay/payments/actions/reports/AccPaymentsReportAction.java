@@ -70,6 +70,7 @@ public abstract class AccPaymentsReportAction extends CashboxCookieActionSupport
 
 		AccPaymentsReportRequest request = buildReportRequest();
 		AccPaymentReportData data = paymentsReporter.getAccPaymentsReportData(request, getCashbox());
+		data.setAccountantFio(getUserPreferences().getFullName());
 
 		Map<?, ?> params = map(
 				ar("beginDate", "endDate", "creationDate", "paymentPointName", "paymentPointAddress",
@@ -87,9 +88,7 @@ public abstract class AccPaymentsReportAction extends CashboxCookieActionSupport
 	private String ensureReportTemplateUploaded(AccPaymentsReportRequest request) throws Exception {
 
 		String reportName = getReportName(request);
-		//	FIXME set back before commit (disable caching)
-		//if (!reportUtil.templateUploaded(reportName)) {
-
+		if (!reportUtil.templateUploaded(reportName)) {
 			uploadReport(reportName);
 			// upload additional report files if neccessary
 			Long paymentPointId = request.getPaymentPointId();
@@ -117,7 +116,7 @@ public abstract class AccPaymentsReportAction extends CashboxCookieActionSupport
 				default:
 					break;
 			}
-		//}
+		}
 
 		return reportName;
 	}

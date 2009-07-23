@@ -62,6 +62,7 @@ public abstract class DayPaymentsReportAction extends CashboxCookieActionSupport
 		Date endDate = DateUtil.getEndOfThisDay(beginDateFilter.getDate());
 
 		PaymentsPrintInfoData data = getPaymentsData(beginDate, endDate);
+		data.setCashierFio(getUserPreferences().getFullName());
 		Map<?, ?> params = map(
 				ar("cashierFio", "creationDate", "beginDate", "endDate", "paymentPointName", "paymentPointAddress", "paymentCollectorOrgName"),
 				ar(data.getCashierFio(), data.getCreationDate(), data.getBeginDate(), data.getEndDate(), data.getPaymentPointName(), data.getPaymentPointAddress(), data.getPaymentCollectorOrgName()));

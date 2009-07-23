@@ -48,6 +48,7 @@ public class Operation extends DomainObject {
 
 	private String address;
 	private String payerFIO;
+	private String cashierFio;
 
     private Cashbox cashbox;
 
@@ -223,6 +224,14 @@ public class Operation extends DomainObject {
 
 	public void setPayerFIO(String payerFIO) {
 		this.payerFIO = payerFIO;
+	}
+
+	public String getCashierFio() {
+		return cashierFio;
+	}
+
+	public void setCashierFio(String cashierFio) {
+		this.cashierFio = cashierFio;
 	}
 
 	public Set<OperationAddition> getAdditions() {
