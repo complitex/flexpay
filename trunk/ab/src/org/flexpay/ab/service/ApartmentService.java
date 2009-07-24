@@ -23,9 +23,6 @@ import java.util.Locale;
 public interface ApartmentService extends ParentService<ApartmentFilter> {
 
 	@Secured (Roles.APARTMENT_READ)
-	List<Apartment> getApartments(Stub<BuildingAddress> addressStub, Page<Apartment> pager);
-
-	@Secured (Roles.APARTMENT_READ)
 	List<Apartment> getApartments(ArrayStack filters, Page<Apartment> pager);
 
 	/**
@@ -184,4 +181,9 @@ public interface ApartmentService extends ParentService<ApartmentFilter> {
 	@Secured (Roles.APARTMENT_READ)
 	@NotNull
 	List<Apartment> find(ArrayStack filters, List<ObjectSorter> sorters, Page<Apartment> pager);
+
+	@Secured (Roles.APARTMENT_READ)
+	@NotNull
+	List<Apartment> getApartments(@NotNull Stub<BuildingAddress> addressStub, List<ObjectSorter> sorters, Page<Apartment> pager);
+
 }

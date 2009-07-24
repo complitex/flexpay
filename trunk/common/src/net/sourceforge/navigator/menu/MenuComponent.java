@@ -140,7 +140,6 @@ public class MenuComponent extends MenuBase implements Serializable, Initializin
 	@Override
 	public String toString() {
 		ToStringBuilder sb = new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE).
-				append("MenuComponent {").
                 append("name", name).
 				append("title", title).
 				append("action", action).
@@ -150,7 +149,7 @@ public class MenuComponent extends MenuBase implements Serializable, Initializin
 		if (parent != null) {
 			sb.append("parent.name", parent.getName());
 		}
-		return sb.append("}").toString();
+		return sb.toString();
 	}
 
     @Override

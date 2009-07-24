@@ -20,14 +20,15 @@ function Filter(name, options) {
         isArray: false,
         display: "input",
         extraParams: {},
-        resultAction: null,
-        resultId: "result",
         preRequest: true,
         required: true,
         parents: []
     }, options);
 
     this.options = options;
+
+    this.listeners = [];
+    this.eraseFunctions = [];
 
     this.name = options.name;
     this.action = options.action;
@@ -47,11 +48,9 @@ function Filter(name, options) {
         }
     }
     this.haveRequiredParents = this.requiredParentsCount > 0;
-    this.resultAction = options.resultAction;
     this.preRequest = options.preRequest;
     this.required = options.required;
 
-    this.result = $("#" + options.resultId);
     this.value = $("#" + options.valueId);
     this.string = $("#" + options.filterId);
     this.string.parent().prepend('<span id="' + options.filterId + '_text" class="filter">' + this.string.val() + '</span>');
@@ -82,8 +81,6 @@ function Filter(name, options) {
             }
         }
     }
-
-    this.defaultResult = this.result.html();
 
     function findValue(li) {
         if (li == null) {
@@ -141,6 +138,24 @@ function Filter(name, options) {
 
     this.selectItem = function(li) {
         return selectItem(li);
+    };
+
+    this.addListener = function(listener) {
+        for (var i = 0; i < this.listeners.length; i++) {
+            if (this.listeners[i] == listener) {
+                return;
+            }
+        }
+        this.listeners.push(listener);
+    };
+
+    this.addEraseFunction = function(func) {
+        for (var i = 0; i < this.eraseFunctions.length; i++) {
+            if (this.eraseFunctions[i] == func) {
+                return;
+            }
+        }
+        this.eraseFunctions.push(func);
     };
 
 };
@@ -225,8 +240,10 @@ var FF = {
                 filter.autocompleter.flushCache();
             }
             this.eraseChildFilters(filter.name);
+            for (var i = 0; i < filter.eraseFunctions.length; i++) {
+                filter.eraseFunctions[i].call();
+            }
         }
-        this.filters[name].result.html(this.filters[name].defaultResult);
     },
 
     getParentParams : function (filter) {
@@ -242,11 +259,10 @@ var FF = {
     onSelect : function(filterName) {
         var filters = this.getFiltersByParentName(filterName);
         var filter = this.filters[filterName];
-        if (filter.resultAction != null && filter.value.val() != "") {
-            $.post(filter.resultAction, {parents: [filter.value.val()]},
-                function(data) {
-                    filter.result.html(data);
-                });
+        if (!filter.string.attr("readonly") || filter.readonly) {
+            for (var i = 0; i < filter.listeners.length; i++) {
+                filter.listeners[i].call();
+            }
         }
         if (filter.justText) {
             filter.text.val(filter.string.val());

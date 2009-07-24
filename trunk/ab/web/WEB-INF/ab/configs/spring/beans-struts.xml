@@ -244,6 +244,10 @@
           p:crumbNameKey="ab.crumbs.apartments_list"
           scope="prototype" />
 
+    <bean id="apartmentsListPageAction"
+          class="org.flexpay.common.actions.StaticPageAction"
+          scope="prototype" />
+
 	<bean id="apartmentEditAction"
 		  class="org.flexpay.ab.actions.apartment.ApartmentEditAction"
 		  p:apartmentService-ref="apartmentService"
@@ -274,7 +278,7 @@
           scope="prototype" />
 
     <bean id="apartmentsListAjaxAction"
-          class="org.flexpay.ab.actions.filters.ApartmentsListAjaxAction"
+          class="org.flexpay.ab.actions.apartment.ApartmentsListAjaxAction"
           p:apartmentService-ref="apartmentService"
           scope="prototype" />
 

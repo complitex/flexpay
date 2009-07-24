@@ -352,28 +352,6 @@ public class ApartmentServiceImpl implements ApartmentService {
 		return filters;
 	}
 
-	public List<Apartment> getApartments(Stub<BuildingAddress> addressStub, Page<Apartment> pager) {
-		List<Apartment> apartments = apartmentDao.findObjects(addressStub.getId(), pager);
-		Collections.sort(apartments, new Comparator<Apartment>() {
-			public int compare(Apartment a1, Apartment a2) {
-				String n1 = a1.getNumber();
-				String n2 = a2.getNumber();
-				if (n1 == null && n2 == null) {
-					return 0;
-				}
-				if (n1 == null) {
-					return -1;
-				}
-				if (n2 == null) {
-					return 1;
-				}
-				return n1.compareTo(n2);
-			}
-		});
-
-		return apartments;
-	}
-
 	public List<Apartment> getApartments(ArrayStack filters, Page<Apartment> pager) {
 		BuildingsFilter filter = (BuildingsFilter) filters.peek();
 		List<Apartment> apartments = apartmentDao.findObjects(filter.getSelectedId(), pager);
@@ -433,6 +411,19 @@ public class ApartmentServiceImpl implements ApartmentService {
 			log.info("No building found for filter {}", buildingFilter);
 			return Collections.emptyList();
 		}
+		return apartmentDaoExt.findApartments(building.getId(), sorters, pager);
+	}
+
+	@NotNull
+	@Override
+	public List<Apartment> getApartments(@NotNull Stub<BuildingAddress> addressStub, List<ObjectSorter> sorters, Page<Apartment> pager) {
+		log.debug("Finding building apartments with sorters");
+		Building building = buildingService.findBuilding(addressStub);
+		if (building == null) {
+			log.info("No building found for id {}", addressStub.getId());
+			return Collections.emptyList();
+		}
+
 		return apartmentDaoExt.findApartments(building.getId(), sorters, pager);
 	}
 

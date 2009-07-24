@@ -1,5 +1,7 @@
 package org.flexpay.ab.persistence.sorter;
 
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
 import org.flexpay.common.persistence.sorter.ObjectSorter;
 
 public class ApartmentSorter extends ObjectSorter {
@@ -15,6 +17,7 @@ public class ApartmentSorter extends ObjectSorter {
 	 *
 	 * @param query HQL query to update
 	 */
+	@Override
 	public void setFrom(StringBuilder query) {
 		query
 			.append(" left join ").append(apartmentField).append(".apartmentNumbers sortApartmentNumber ");
@@ -25,6 +28,7 @@ public class ApartmentSorter extends ObjectSorter {
 	 *
 	 * @param whereClause HQL query to update
 	 */
+	@Override
 	public void setWhere(StringBuilder whereClause) {
 		if (whereClause.length() > 0) {
 			whereClause.append(" and ");
@@ -39,6 +43,7 @@ public class ApartmentSorter extends ObjectSorter {
 	 *
 	 * @param orderByClause HQL query to update
 	 */
+	@Override
 	public void setOrderBy(StringBuilder orderByClause) {
 
 		if (orderByClause.length() > 0) {
@@ -48,4 +53,14 @@ public class ApartmentSorter extends ObjectSorter {
 		orderByClause.append(" lpad(convert(ifnull(sortApartmentNumber.value, '0'), UNSIGNED), 10, '0') ")
 				.append(getOrder());
 	}
+
+	@Override
+	public String toString() {
+		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
+				append("order", getOrder()).
+				append("active", getActive()).
+				append("apartmentField", apartmentField).
+				toString();
+	}
+
 }
