@@ -12,6 +12,7 @@ import org.jetbrains.annotations.Nullable;
 public class EircRegistryRecordProperties extends RegistryRecordProperties {
 
 	private Consumer consumer;
+	private boolean fullConsumer;
 	private Apartment apartment;
 	private Person person;
 	private Service service;
@@ -71,6 +72,20 @@ public class EircRegistryRecordProperties extends RegistryRecordProperties {
 	@Nullable
 	public Stub<Consumer> getConsumerStub() {
 		return stub(consumer);
+	}
+
+	/**
+	 * Set Consumer with all data read, useful for further processing
+	 *
+	 * @param consumer Read full consumer
+	 */
+	public void setFullConsumer(Consumer consumer) {
+		this.consumer = consumer;
+		fullConsumer = true;
+	}
+
+	public boolean hasFullConsumer() {
+		return fullConsumer;
 	}
 
 	@SuppressWarnings ({"UnnecessaryBoxing"})

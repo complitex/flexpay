@@ -6,10 +6,15 @@ import org.flexpay.eirc.persistence.Consumer;
 import org.flexpay.eirc.persistence.consumer.ConsumerAttribute;
 import org.flexpay.eirc.persistence.consumer.ConsumerAttributeTypeBase;
 import org.flexpay.eirc.test.EircSpringBeanAwareTestCase;
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.orm.hibernate3.HibernateCallback;
+
+import java.sql.SQLException;
 
 public class TestConsumerAttributes extends EircSpringBeanAwareTestCase {
 
@@ -17,6 +22,59 @@ public class TestConsumerAttributes extends EircSpringBeanAwareTestCase {
 	private ConsumerService consumerService;
 	@Autowired
 	private ConsumerAttributeTypeService attributeTypeService;
+
+	@Test
+	public void testCreateNormalAttribute() throws Exception {
+
+		Consumer consumer = consumerService.read(new Stub<Consumer>(15L));
+		assertNotNull("consumer #15 not found", consumer);
+
+		ConsumerAttributeTypeBase typeErcAcc = attributeTypeService.readFull(
+				TestConsumerAttributeTypeService.ATTR_ERC_ACCOUNT);
+		assertNotNull("attribute type #1 not found", typeErcAcc);
+
+		ConsumerAttribute attr = new ConsumerAttribute();
+		attr.setType(typeErcAcc);
+		attr.setStringValue("1234");
+		consumer.setNormalAttribute(attr);
+
+		try {
+			consumerService.save(consumer);
+		} finally {
+			removeConsumerAttributes(15L);
+		}
+	}
+
+	private void removeConsumerAttributes(final Long id) {
+		hibernateTemplate.execute(new HibernateCallback() {
+			@Override
+			public Object doInHibernate(Session session) throws HibernateException, SQLException {
+				return session.createQuery("delete from ConsumerAttribute where consumer.id=:ID")
+						.setLong("ID", id).executeUpdate();
+			}
+		});
+	}
+
+	@Test
+	public void testCreateTmpAttribute() throws Exception {
+
+		Consumer consumer = consumerService.read(new Stub<Consumer>(16L));
+		assertNotNull("consumer #15 not found", consumer);
+
+		ConsumerAttributeTypeBase typeErcAcc = attributeTypeService.readFull(
+				TestConsumerAttributeTypeService.ATTR_ERC_ACCOUNT);
+		assertNotNull("attribute type #1 not found", typeErcAcc);
+
+		ConsumerAttribute attr = new ConsumerAttribute();
+		attr.setType(typeErcAcc);
+		attr.setStringValue("1234");
+		consumer.setTmpAttributeForDate(attr, DateUtil.parseDate("2009/07/24"));
+		try {
+			consumerService.save(consumer);
+		} finally {
+			removeConsumerAttributes(16L);
+		}
+	}
 
 	@Test
 	public void testReadAttributes() throws Exception {
