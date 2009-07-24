@@ -89,12 +89,21 @@ public class SubdivisionServiceImpl implements SubdivisionService {
 	@Transactional (readOnly = false)
 	public void create(@NotNull Subdivision subdivision) throws FlexPayExceptionContainer {
 		validate(subdivision);
-		if (subdivision.isNew()) {
-			subdivision.setId(null);
-			subdivisionDao.create(subdivision);
-		} else {
-			subdivisionDao.update(subdivision);
-		}
+		subdivision.setId(null);
+		subdivisionDao.create(subdivision);
+		updateTreePaths(stub(subdivision.getHeadOrganization()));
+	}
+
+	/**
+	 * Save or update subdivision
+	 *
+	 * @param subdivision Subdivision to save
+	 * @throws FlexPayExceptionContainer if validation fails
+	 */
+	@Transactional (readOnly = false)
+	public void update(@NotNull Subdivision subdivision) throws FlexPayExceptionContainer {
+		validate(subdivision);
+		subdivisionDao.update(subdivision);
 		updateTreePaths(stub(subdivision.getHeadOrganization()));
 	}
 
