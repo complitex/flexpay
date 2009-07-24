@@ -180,15 +180,12 @@ public class MbCorrectionsFileParser extends MbFileParser {
 			Consumer consumer = consumerService.findConsumer(record.getPersonalAccountExt(), recProps.getServiceStub());
 			if (consumer == null) {
 				log.debug("No consumer found, adding creation record {}", record.getPersonalAccountExt());
-				createAccountRecord(record, fields);
-				++count;
-				record = newRecord(registry, fields, serviceCode);
-				recordStack.add(record);
+				addCreateAccountContainer(record, fields);
 			} else {
 				recProps.setConsumer(consumer);
 			}
 
-			createRecord(record, fields);
+			setInfoContainers(record, fields);
 			++count;
 		}
 
@@ -213,17 +210,11 @@ public class MbCorrectionsFileParser extends MbFileParser {
 		}
 	}
 
-	private long createAccountRecord(RegistryRecord record, String[] fields) {
-
+	private long addCreateAccountContainer(RegistryRecord record, String[] fields) {
 
 		String modificationStartDate = getModificationDate(fields[19]);
 		RegistryRecordContainer container = new RegistryRecordContainer();
 		container.setData("1:" + modificationStartDate + "::");
-		record.addContainer(container);
-
-		container = new RegistryRecordContainer();
-		container.setData("15:" + modificationStartDate + "::" + getErcAccount(fields) +
-						  ":" + getMBOrganizationStub().getId());
 		record.addContainer(container);
 
 		return 1;
@@ -237,12 +228,17 @@ public class MbCorrectionsFileParser extends MbFileParser {
 		return fields[0];
 	}
 
-	private RegistryRecord createRecord(RegistryRecord record, String[] fields) {
+	private RegistryRecord setInfoContainers(RegistryRecord record, String[] fields) {
 
 		String modificationStartDate = getModificationDate(fields[19]);
 
-		// ФИО
 		RegistryRecordContainer container = new RegistryRecordContainer();
+		container.setData("15:" + modificationStartDate + "::" + getErcAccount(fields) +
+						  ":" + getMBOrganizationStub().getId());
+		record.addContainer(container);
+
+		// ФИО
+		container = new RegistryRecordContainer();
 		container.setData("3:" + modificationStartDate + "::" + fields[2]);
 		record.addContainer(container);
 

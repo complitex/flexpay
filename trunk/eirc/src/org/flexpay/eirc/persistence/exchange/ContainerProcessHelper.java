@@ -23,6 +23,9 @@ public class ContainerProcessHelper {
 	@NotNull
 	public static Consumer getConsumer(RegistryRecord record, ServiceOperationsFactory factory) throws FlexPayException {
 		EircRegistryRecordProperties props = (EircRegistryRecordProperties) record.getProperties();
+		if (props.hasFullConsumer()) {
+			return props.getConsumer();
+		}
 		Stub<Consumer> consumerStub = props.getConsumerStub();
 		if (consumerStub == null) {
 			throw new FlexPayException("Consumer was not set up, cannot change number of habitants apartment parameter");
@@ -31,6 +34,7 @@ public class ContainerProcessHelper {
 		if (consumer == null) {
 			throw new FlexPayException("Consumer was not set up, cannot change number of habitants apartment parameter");
 		}
+		props.setFullConsumer(consumer);
 		return consumer;
 	}
 
