@@ -513,7 +513,9 @@ public class ProcessManagerImpl implements ProcessManager, Runnable {
 							ci.addVariables(parameters);
 							ci.setVariable("StartTaskCounter", 0, task.getToken());
 							// mark task as ended with job result code as decision transition value
-							task.end(transition);
+							if (task.getEnd() != null) {
+								task.end(transition);
+							}
 						}
 						return task;
 					}
