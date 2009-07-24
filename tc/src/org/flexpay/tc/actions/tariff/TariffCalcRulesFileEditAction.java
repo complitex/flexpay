@@ -1,10 +1,10 @@
 package org.flexpay.tc.actions.tariff;
 
 import org.flexpay.common.actions.FPActionSupport;
-import org.flexpay.common.persistence.file.FPFile;
-import org.flexpay.common.persistence.file.FPFileType;
 import org.flexpay.common.persistence.Language;
 import static org.flexpay.common.persistence.Stub.stub;
+import org.flexpay.common.persistence.file.FPFile;
+import org.flexpay.common.persistence.file.FPFileType;
 import org.flexpay.common.service.FPFileService;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.FPFileUtil;
@@ -97,7 +97,11 @@ public class TariffCalcRulesFileEditAction extends FPActionSupport {
 
 		}
 
-		tariffCalculationRulesFileService.save(file);
+		if (file.isNew()) {
+			tariffCalculationRulesFileService.create(file);
+		} else {
+			tariffCalculationRulesFileService.update(file);
+		}
 
 		log.info("Tariff calculation rules file created {}", file);
 

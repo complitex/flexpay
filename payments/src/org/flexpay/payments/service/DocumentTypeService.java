@@ -33,8 +33,16 @@ public interface DocumentTypeService {
 	 *
 	 * @param documentType DocumentType Object
 	 */
-	@Secured ({Roles.DOCUMENT_TYPE_ADD, Roles.DOCUMENT_TYPE_CHANGE})
-	void save(@NotNull DocumentType documentType);
+	@Secured (Roles.DOCUMENT_TYPE_ADD)
+	void create(@NotNull DocumentType documentType);
+
+	/**
+	 * Update type
+	 *
+	 * @param documentType DocumentType Object
+	 */
+	@Secured (Roles.DOCUMENT_TYPE_CHANGE)
+	void update(@NotNull DocumentType documentType);
 
 	/**
 	 * Delete DocumentType object

@@ -24,13 +24,14 @@ public class TariffServiceImpl implements TariffService {
 	}
 
 	@Transactional (readOnly = false)
-	public void save(@NotNull Tariff tariff) {
-		if (tariff.isNew()) {
-			tariff.setId(null);
-			tariffDao.create(tariff);
-		} else {
-			tariffDao.update(tariff);
-		}
+	public void create(@NotNull Tariff tariff) {
+		tariff.setId(null);
+		tariffDao.create(tariff);
+	}
+
+	@Transactional (readOnly = false)
+	public void update(@NotNull Tariff tariff) {
+		tariffDao.update(tariff);
 	}
 
 	public Tariff readFull(@NotNull Stub<Tariff> stub) {

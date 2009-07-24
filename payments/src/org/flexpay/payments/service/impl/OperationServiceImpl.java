@@ -1,20 +1,20 @@
 package org.flexpay.payments.service.impl;
 
 import org.flexpay.common.dao.paging.Page;
-import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.exception.FlexPayException;
+import org.flexpay.common.persistence.Stub;
+import org.flexpay.orgs.persistence.Cashbox;
 import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.orgs.persistence.PaymentPoint;
-import org.flexpay.orgs.persistence.Cashbox;
 import org.flexpay.payments.dao.OperationDao;
 import org.flexpay.payments.dao.OperationDaoExt;
 import org.flexpay.payments.persistence.Operation;
-import org.flexpay.payments.persistence.OperationStatus;
 import org.flexpay.payments.persistence.OperationLevel;
+import org.flexpay.payments.persistence.OperationStatus;
 import org.flexpay.payments.persistence.OperationType;
+import org.flexpay.payments.service.OperationLevelService;
 import org.flexpay.payments.service.OperationService;
 import org.flexpay.payments.service.OperationStatusService;
-import org.flexpay.payments.service.OperationLevelService;
 import org.flexpay.payments.service.OperationTypeService;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -56,13 +56,19 @@ public class OperationServiceImpl implements OperationService {
 	 * @param operation Operation Object
 	 */
 	@Transactional (readOnly = false)
-	public void save(@NotNull Operation operation) {
-		if (operation.isNew()) {
-			operation.setId(null);
-			operationDao.create(operation);
-		} else {
-			operationDao.update(operation);
-		}
+	public void create(@NotNull Operation operation) {
+		operation.setId(null);
+		operationDao.create(operation);
+	}
+
+	/**
+	 * Save operation
+	 *
+	 * @param operation Operation Object
+	 */
+	@Transactional (readOnly = false)
+	public void update(@NotNull Operation operation) {
+		operationDao.update(operation);
 	}
 
 	/**
@@ -90,17 +96,17 @@ public class OperationServiceImpl implements OperationService {
 		return operationDao.listPaymentOperations(beginDate, endDate);
 	}
 
-    public List<Operation> listLastPaymentOperations(Date beginDate, Date endDate) {
-        return operationDao.listLastPaymentOperations(beginDate, endDate);
-    }
+	public List<Operation> listLastPaymentOperations(Date beginDate, Date endDate) {
+		return operationDao.listLastPaymentOperations(beginDate, endDate);
+	}
 
-    public List<Operation> listLastPaymentOperations(PaymentPoint paymentPoint, Date beginDate, Date endDate) {
-        return operationDao.listLastPaymentPointPaymentOperations(paymentPoint.getId(), beginDate, endDate);
-    }
+	public List<Operation> listLastPaymentOperations(PaymentPoint paymentPoint, Date beginDate, Date endDate) {
+		return operationDao.listLastPaymentPointPaymentOperations(paymentPoint.getId(), beginDate, endDate);
+	}
 
-    public List<Operation> listLastPaymentOperations(Cashbox cashbox, Date beginDate, Date endDate) {
-        return operationDao.listLastCashboxPaymentOperations(cashbox.getId(), beginDate, endDate);
-    }
+	public List<Operation> listLastPaymentOperations(Cashbox cashbox, Date beginDate, Date endDate) {
+		return operationDao.listLastCashboxPaymentOperations(cashbox.getId(), beginDate, endDate);
+	}
 
 	public List<Operation> listReceivedPayments(Cashbox cashbox, Date beginDate, Date endDate) {
 		return operationDao.listPayments(cashbox.getId(), beginDate, endDate, OperationStatus.REGISTERED);

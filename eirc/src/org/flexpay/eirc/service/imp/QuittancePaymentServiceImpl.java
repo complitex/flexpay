@@ -73,7 +73,7 @@ public class QuittancePaymentServiceImpl implements QuittancePaymentService {
 		quittancePaymentDao.create(payment);
 
 		Operation operation = fromPayment(payment);
-		operationService.save(operation);
+		operationService.create(operation);
 	}
 
 	@SuppressWarnings ({"ThrowableInstanceNeverThrown"})

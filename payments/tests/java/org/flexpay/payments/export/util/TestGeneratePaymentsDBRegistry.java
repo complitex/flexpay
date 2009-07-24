@@ -42,8 +42,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
-import sun.security.provider.DSAPrivateKey;
-
 import javax.annotation.Resource;
 
 public class TestGeneratePaymentsDBRegistry extends SpringBeanAwareTestCase {
@@ -241,7 +239,7 @@ public class TestGeneratePaymentsDBRegistry extends SpringBeanAwareTestCase {
         operation.setRegisterOrganization(registerOrganization);
         operation.setRegisterDate(new Date());
         operation.setRegisterUserName(TEST_USER);
-        operationService.save(operation);
+        operationService.create(operation);
 
         operations.add(operation);
 
@@ -294,13 +292,13 @@ public class TestGeneratePaymentsDBRegistry extends SpringBeanAwareTestCase {
             document.setDocumentType(documentType);
         }
         document.setOperation(operation);
-        documentService.save(document);
+        documentService.create(document);
 
         Set<Document> documents = CollectionUtils.set();
         documents.add(document);
 
         operation.setDocuments(documents);
-        operationService.save(operation);
+        operationService.update(operation);
         
     }
 

@@ -11,8 +11,11 @@ import java.util.Set;
 
 public interface TariffService {
 
-	@Secured ({Roles.TARIFF_ADD, Roles.TARIFF_CHANGE})
-	void save(@NotNull Tariff tariff);
+	@Secured (Roles.TARIFF_ADD)
+	void create(@NotNull Tariff tariff);
+
+	@Secured (Roles.TARIFF_CHANGE)
+	void update(@NotNull Tariff tariff);
 
 	@Secured (Roles.TARIFF_READ)
 	List<Tariff> listTariffs();

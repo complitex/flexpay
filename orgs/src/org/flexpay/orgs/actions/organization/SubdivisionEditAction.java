@@ -95,7 +95,11 @@ public class SubdivisionEditAction extends FPActionSupport {
 			oldSubdivision.setName(name);
 		}
 
-		subdivisionService.save(oldSubdivision);
+		if (oldSubdivision.isNew()) {
+			subdivisionService.create(oldSubdivision);
+		} else {
+			subdivisionService.update(oldSubdivision);
+		}
 
 		return REDIRECT_SUCCESS;
 	}

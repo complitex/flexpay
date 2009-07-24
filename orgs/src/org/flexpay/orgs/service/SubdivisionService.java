@@ -41,12 +41,20 @@ public interface SubdivisionService {
 	Subdivision read(@NotNull Subdivision stub);
 
 	/**
-	 * Save or update subdivision
+	 * Save subdivision
 	 *
 	 * @param subdivision Subdivision to save
 	 * @throws FlexPayExceptionContainer if validation fails
 	 */
-	void save(@NotNull Subdivision subdivision) throws FlexPayExceptionContainer;
+	void create(@NotNull Subdivision subdivision) throws FlexPayExceptionContainer;
+
+	/**
+	 * update subdivision
+	 *
+	 * @param subdivision Subdivision to save
+	 * @throws FlexPayExceptionContainer if validation fails
+	 */
+	void update(@NotNull Subdivision subdivision) throws FlexPayExceptionContainer;
 
 	/**
 	 * Initialize subdivision filter

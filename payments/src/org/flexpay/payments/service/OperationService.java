@@ -33,8 +33,16 @@ public interface OperationService {
 	 *
 	 * @param operation Operation Object
 	 */
-	@Secured ({Roles.OPERATION_ADD, Roles.OPERATION_CHANGE})
-	void save(@NotNull Operation operation);
+	@Secured (Roles.OPERATION_ADD)
+	void create(@NotNull Operation operation);
+
+	/**
+	 * Save operation
+	 *
+	 * @param operation Operation Object
+	 */
+	@Secured (Roles.OPERATION_CHANGE)
+	void update(@NotNull Operation operation);
 
 	/**
 	 * Delete Operation object

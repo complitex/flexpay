@@ -12,6 +12,6 @@ public class TestDocumentService extends SpringBeanAwareTestCase {
 
 	@Test (expected = Exception.class)
 	public void testGetDocument() {
-		documentService.save(new Document());
+		documentService.create(new Document());
 	}
 }

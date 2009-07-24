@@ -87,7 +87,7 @@ public class SubdivisionServiceImpl implements SubdivisionService {
 	 * @throws FlexPayExceptionContainer if validation fails
 	 */
 	@Transactional (readOnly = false)
-	public void save(@NotNull Subdivision subdivision) throws FlexPayExceptionContainer {
+	public void create(@NotNull Subdivision subdivision) throws FlexPayExceptionContainer {
 		validate(subdivision);
 		if (subdivision.isNew()) {
 			subdivision.setId(null);
