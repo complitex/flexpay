@@ -48,13 +48,19 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
 	 * @param documentType DocumentType Object
 	 */
 	@Transactional (readOnly = false)
-	public void save(@NotNull DocumentType documentType) {
-		if (documentType.isNew()) {
-			documentType.setId(null);
-			documentTypeDao.create(documentType);
-		} else {
-			documentTypeDao.update(documentType);
-		}
+	public void create(@NotNull DocumentType documentType) {
+		documentType.setId(null);
+		documentTypeDao.create(documentType);
+	}
+
+	/**
+	 * Save document type
+	 *
+	 * @param documentType DocumentType Object
+	 */
+	@Transactional (readOnly = false)
+	public void update(@NotNull DocumentType documentType) {
+		documentTypeDao.update(documentType);
 	}
 
 	/**

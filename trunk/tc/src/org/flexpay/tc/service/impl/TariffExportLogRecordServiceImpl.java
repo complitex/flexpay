@@ -1,9 +1,9 @@
 package org.flexpay.tc.service.impl;
 
-import org.flexpay.tc.service.TariffExportLogRecordService;
-import org.flexpay.tc.persistence.TariffExportLogRecord;
-import org.flexpay.tc.dao.TariffExportLogRecordDao;
 import org.flexpay.common.persistence.Stub;
+import org.flexpay.tc.dao.TariffExportLogRecordDao;
+import org.flexpay.tc.persistence.TariffExportLogRecord;
+import org.flexpay.tc.service.TariffExportLogRecordService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,13 +30,19 @@ public class TariffExportLogRecordServiceImpl implements TariffExportLogRecordSe
 	 * @param tariffExportLogRecord TariffExportLogRecord
 	 */
 	@Transactional (readOnly = false)
-	public void save(@NotNull TariffExportLogRecord tariffExportLogRecord) {
-		if (tariffExportLogRecord.isNew()){
-			tariffExportLogRecord.setId(null);
-			tariffExportLogRecordDao.create(tariffExportLogRecord);
-		}else{
-			tariffExportLogRecordDao.update(tariffExportLogRecord);
-		}
+	public void create(@NotNull TariffExportLogRecord tariffExportLogRecord) {
+		tariffExportLogRecord.setId(null);
+		tariffExportLogRecordDao.create(tariffExportLogRecord);
+	}
+
+	/**
+	 * Save tariff export log record
+	 *
+	 * @param tariffExportLogRecord TariffExportLogRecord
+	 */
+	@Transactional (readOnly = false)
+	public void update(@NotNull TariffExportLogRecord tariffExportLogRecord) {
+		tariffExportLogRecordDao.update(tariffExportLogRecord);
 	}
 
 	/**
@@ -51,6 +57,7 @@ public class TariffExportLogRecordServiceImpl implements TariffExportLogRecordSe
 
 	/**
 	 * Set tariff export log record dao
+	 *
 	 * @param tariffExportLogRecordDao Tariff export log record dao
 	 */
 	@Required

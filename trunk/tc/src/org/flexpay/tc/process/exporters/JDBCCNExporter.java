@@ -121,7 +121,7 @@ public class JDBCCNExporter implements Exporter {
 				tariffExportLogRecord.setTariffBeginDate(periodBeginDate);
 				tariffExportLogRecord.setTariffExportCode(tariffExportCode);
 				tariffExportLogRecord.setExportdate(new java.util.Date());
-				tariffExportLogRecordService.save(tariffExportLogRecord);
+				tariffExportLogRecordService.create(tariffExportLogRecord);
 				if (tariffCalculationResult.getId() != null) {
 					tariffCalculationResult.setLastTariffExportLogRecord(tariffExportLogRecord);
 					tariffCalculationResultService.update(tariffCalculationResult);

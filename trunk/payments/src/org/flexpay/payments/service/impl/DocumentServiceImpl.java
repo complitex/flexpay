@@ -1,15 +1,15 @@
 package org.flexpay.payments.service.impl;
 
 import org.flexpay.common.persistence.Stub;
+import org.flexpay.orgs.persistence.Cashbox;
+import org.flexpay.orgs.persistence.Organization;
+import org.flexpay.orgs.persistence.PaymentPoint;
+import org.flexpay.orgs.persistence.ServiceProvider;
 import org.flexpay.payments.dao.DocumentDao;
 import org.flexpay.payments.dao.DocumentDaoExt;
 import org.flexpay.payments.persistence.Document;
 import org.flexpay.payments.persistence.Operation;
 import org.flexpay.payments.service.DocumentService;
-import org.flexpay.orgs.persistence.ServiceProvider;
-import org.flexpay.orgs.persistence.Organization;
-import org.flexpay.orgs.persistence.Cashbox;
-import org.flexpay.orgs.persistence.PaymentPoint;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
@@ -46,13 +46,19 @@ public class DocumentServiceImpl implements DocumentService {
 	 * @param document Document Object
 	 */
 	@Transactional (readOnly = false)
-	public void save(@NotNull Document document) {
-		if (document.isNew()) {
-			document.setId(null);
-			documentDao.create(document);
-		} else {
-			documentDao.update(document);
-		}
+	public void create(@NotNull Document document) {
+		document.setId(null);
+		documentDao.create(document);
+	}
+
+	/**
+	 * Save document
+	 *
+	 * @param document Document Object
+	 */
+	@Transactional (readOnly = false)
+	public void update(@NotNull Document document) {
+		documentDao.update(document);
 	}
 
 	/**
@@ -89,9 +95,9 @@ public class DocumentServiceImpl implements DocumentService {
 	/**
 	 * {@inheritDoc}
 	 */
-    public List<Document> listRegisteredPaymentDocuments(@NotNull ServiceProvider serviceProvider, @NotNull Organization organization, @NotNull Date begin, @NotNull Date end) {
-        return documentDao.listRegisteredPaymentDocumentsByServiceProvider(serviceProvider.getId(), organization.getId(), begin, end);
-    }
+	public List<Document> listRegisteredPaymentDocuments(@NotNull ServiceProvider serviceProvider, @NotNull Organization organization, @NotNull Date begin, @NotNull Date end) {
+		return documentDao.listRegisteredPaymentDocumentsByServiceProvider(serviceProvider.getId(), organization.getId(), begin, end);
+	}
 
 	@Override
 	public BigDecimal getCashboxServiceSumm(Stub<Cashbox> cashboxStub, int statusCode, int serviceTypeCode, Date beginDate, Date endDate) {

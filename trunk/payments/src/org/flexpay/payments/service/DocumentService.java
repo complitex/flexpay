@@ -32,8 +32,16 @@ public interface DocumentService {
 	 *
 	 * @param document Document Object
 	 */
-	@Secured ({Roles.DOCUMENT_ADD, Roles.DOCUMENT_CHANGE})
-	void save(@NotNull Document document);
+	@Secured (Roles.DOCUMENT_ADD)
+	void create(@NotNull Document document);
+
+	/**
+	 * Save document
+	 *
+	 * @param document Document Object
+	 */
+	@Secured (Roles.DOCUMENT_CHANGE)
+	void update(@NotNull Document document);
 
 	/**
 	 * Delete Document object

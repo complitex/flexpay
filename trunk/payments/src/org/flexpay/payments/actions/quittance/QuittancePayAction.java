@@ -1,15 +1,15 @@
 package org.flexpay.payments.actions.quittance;
 
 import org.flexpay.common.persistence.Stub;
-import org.flexpay.common.util.BigDecimalUtil;
 import org.flexpay.common.process.ProcessManager;
-import org.flexpay.orgs.persistence.PaymentPoint;
+import org.flexpay.common.util.BigDecimalUtil;
 import org.flexpay.orgs.persistence.Cashbox;
+import org.flexpay.orgs.persistence.PaymentPoint;
 import org.flexpay.orgs.service.PaymentPointService;
 import org.flexpay.payments.actions.PaymentOperationAction;
-import org.flexpay.payments.persistence.*;
-import org.flexpay.payments.service.*;
+import org.flexpay.payments.persistence.Operation;
 import org.flexpay.payments.process.export.TradingDay;
+import org.flexpay.payments.service.OperationService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
@@ -30,7 +30,7 @@ public class QuittancePayAction extends PaymentOperationAction {
 	protected String doExecute() throws Exception {
 
 		Operation operation = operationService.read(new Stub<Operation>(operationBlankId));
-		
+
 		Cashbox cashbox = getCashbox();
 		final Long paymentProcessId = getPaymentProcessId(cashbox);
 
@@ -44,7 +44,11 @@ public class QuittancePayAction extends PaymentOperationAction {
 			}
 
 			if (isNotEmptyOperation(operation)) {
-				operationService.save(operation);
+				if (operation.isNew()) {
+					operationService.create(operation);
+				} else {
+					operationService.update(operation);
+				}
 			} else {
 				log.debug("Zero summ for operation or zero documents for operation created. Operation was not created");
 			}
@@ -65,7 +69,11 @@ public class QuittancePayAction extends PaymentOperationAction {
 			}
 
 			if (isNotEmptyOperation(operation)) {
-				operationService.save(operation);
+				if (operation.isNew()) {
+					operationService.create(operation);
+				} else {
+					operationService.update(operation);
+				}
 			} else {
 				log.debug("Zero summ for operation or zero documents for operation created. Operation was not created");
 			}

@@ -11,8 +11,11 @@ import java.util.Set;
 
 public interface TariffCalculationRulesFileService {
 
-	@Secured ({Roles.TARIFF_CALCULATION_RULES_FILE_ADD, Roles.TARIFF_CALCULATION_RULES_FILE_CHANGE})
-	void save(@NotNull TariffCalculationRulesFile tariffCalculationRulesFile);
+	@Secured (Roles.TARIFF_CALCULATION_RULES_FILE_ADD)
+	void create(@NotNull TariffCalculationRulesFile tariffCalculationRulesFile);
+
+	@Secured (Roles.TARIFF_CALCULATION_RULES_FILE_CHANGE)
+	void update(@NotNull TariffCalculationRulesFile tariffCalculationRulesFile);
 
 	@Secured (Roles.TARIFF_CALCULATION_RULES_FILE_READ)
 	TariffCalculationRulesFile read(@NotNull Stub<TariffCalculationRulesFile> stub);

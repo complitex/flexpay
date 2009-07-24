@@ -26,13 +26,14 @@ public class TariffCalculationRulesFileServiceImpl implements TariffCalculationR
 	private TariffCalculationRulesFileDao tariffCalculationRulesFileDao;
 
 	@Transactional (readOnly = false)
-	public void save(@NotNull TariffCalculationRulesFile tariffCalculationRulesFile) {
-		if (tariffCalculationRulesFile.isNew()) {
-			tariffCalculationRulesFile.setId(null);
-			tariffCalculationRulesFileDao.create(tariffCalculationRulesFile);
-		} else {
-			tariffCalculationRulesFileDao.update(tariffCalculationRulesFile);
-		}
+	public void create(@NotNull TariffCalculationRulesFile tariffCalculationRulesFile) {
+		tariffCalculationRulesFile.setId(null);
+		tariffCalculationRulesFileDao.create(tariffCalculationRulesFile);
+	}
+
+	@Transactional (readOnly = false)
+	public void update(@NotNull TariffCalculationRulesFile tariffCalculationRulesFile) {
+		tariffCalculationRulesFileDao.update(tariffCalculationRulesFile);
 	}
 
 	public TariffCalculationRulesFile read(@NotNull Stub<TariffCalculationRulesFile> stub) {

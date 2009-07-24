@@ -20,7 +20,14 @@ public interface TariffExportLogRecordService {
 	 * @param tariffExportLogRecord TariffExportLogRecord
 	 */
 	@Secured (Roles.TARIFF_EXPORT_LOG_RECORD_ADD)
-	public void save(@NotNull TariffExportLogRecord tariffExportLogRecord);
+	public void create(@NotNull TariffExportLogRecord tariffExportLogRecord);
+
+	/**
+	 * Save tariff export log record
+	 * @param tariffExportLogRecord TariffExportLogRecord
+	 */
+	@Secured (Roles.TARIFF_EXPORT_LOG_RECORD_CHANGE)
+	public void update(@NotNull TariffExportLogRecord tariffExportLogRecord);
 
 	/**
 	 * Delete Tariff export log record

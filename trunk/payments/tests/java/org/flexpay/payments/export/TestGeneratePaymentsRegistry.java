@@ -2,19 +2,12 @@ package org.flexpay.payments.export;
 
 import static junit.framework.Assert.*;
 import org.apache.log4j.Logger;
-import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Language;
 import org.flexpay.common.persistence.ObjectWithStatus;
-import org.flexpay.common.persistence.Stub;
-import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.persistence.file.FPFile;
-import org.flexpay.common.persistence.filter.ImportErrorTypeFilter;
-import org.flexpay.common.persistence.filter.RegistryRecordStatusFilter;
 import org.flexpay.common.persistence.registry.PropertiesFactory;
-import org.flexpay.common.persistence.registry.Registry;
-import org.flexpay.common.persistence.registry.RegistryRecord;
 import org.flexpay.common.process.ProcessManager;
 import org.flexpay.common.process.exception.ProcessDefinitionException;
 import org.flexpay.common.process.exception.ProcessInstanceException;
@@ -49,7 +42,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
 import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 //@RunWith(SpringJUnit4ClassRunner.class)
@@ -265,7 +257,7 @@ public class TestGeneratePaymentsRegistry extends SpringBeanAwareTestCase {
         operation.setRegisterOrganization(registerOrganization);
         operation.setRegisterDate(new Date());
         operation.setRegisterUserName(TEST_USER);
-        operationService.save(operation);
+        operationService.create(operation);
 
         //change register date operation
         Date creationDate = operation.getRegisterDate();
@@ -357,7 +349,7 @@ public class TestGeneratePaymentsRegistry extends SpringBeanAwareTestCase {
             document.setDocumentType(documentType);
         }
         document.setOperation(operation);
-        documentService.save(document);
+        documentService.create(document);
 
         Set<Document> documents = CollectionUtils.set();
         documents.add(document);
@@ -385,11 +377,11 @@ public class TestGeneratePaymentsRegistry extends SpringBeanAwareTestCase {
             document.setDocumentType(documentType);
         }
         document.setOperation(operation);
-        documentService.save(document);
+        documentService.create(document);
         documents.add(document);
 
         operation.setDocuments(documents);
-        operationService.save(operation);
+        operationService.update(operation);
 
     }
 

@@ -1,6 +1,5 @@
 package org.flexpay.payments.actions.operations;
 
-import org.apache.commons.lang.time.DateUtils;
 import org.apache.commons.lang.StringUtils;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
@@ -8,34 +7,36 @@ import org.flexpay.common.persistence.filter.BeginDateFilter;
 import org.flexpay.common.persistence.filter.BeginTimeFilter;
 import org.flexpay.common.persistence.filter.EndDateFilter;
 import org.flexpay.common.persistence.filter.EndTimeFilter;
+import org.flexpay.common.process.ContextCallback;
+import org.flexpay.common.process.Process;
+import org.flexpay.common.process.ProcessManager;
+import org.flexpay.common.process.TaskHelper;
+import org.flexpay.common.service.CurrencyInfoService;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.DateUtil;
 import org.flexpay.common.util.SecurityUtil;
-import org.flexpay.common.process.*;
-import org.flexpay.common.process.Process;
-import org.flexpay.common.service.CurrencyInfoService;
+import org.flexpay.orgs.persistence.Cashbox;
 import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.orgs.persistence.PaymentPoint;
-import org.flexpay.orgs.persistence.Cashbox;
+import org.flexpay.orgs.service.CashboxService;
 import org.flexpay.orgs.service.OrganizationService;
 import org.flexpay.orgs.service.PaymentPointService;
-import org.flexpay.orgs.service.CashboxService;
 import org.flexpay.payments.actions.CashboxCookieWithPagerActionSupport;
 import org.flexpay.payments.persistence.*;
-import org.flexpay.payments.service.*;
-import org.flexpay.payments.process.handlers.PaymentCollectorAssignmentHandler;
 import org.flexpay.payments.process.export.TradingDay;
+import org.flexpay.payments.process.handlers.PaymentCollectorAssignmentHandler;
+import org.flexpay.payments.service.*;
+import org.jbpm.JbpmContext;
 import org.jbpm.graph.def.Transition;
 import org.jbpm.taskmgmt.exe.TaskInstance;
-import org.jbpm.JbpmContext;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.math.BigDecimal;
-import java.util.Date;
-import java.util.List;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
+import java.util.List;
 
 public class OperationsListAction extends CashboxCookieWithPagerActionSupport<Operation> {
 
@@ -251,10 +252,14 @@ public class OperationsListAction extends CashboxCookieWithPagerActionSupport<Op
 		for (Document document : operation.getDocuments()) {
 			DocumentStatus documentStatus = documentStatusService.read(Integer.parseInt(status));
 			document.setDocumentStatus(documentStatus);
-			documentService.save(document);
+			if (document.isNew()) {
+				documentService.create(document);
+			} else {
+				documentService.update(document);
+			}
 		}
 
-		operationService.save(operation);
+		operationService.update(operation);
 	}
 
 	private void loadServiceTypes() {

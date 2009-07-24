@@ -64,7 +64,8 @@ public class FileCNExporter implements Exporter {
 		tariffExportLogRecord.setTariffBeginDate((java.util.Date) params[1]);
 		tariffExportLogRecord.setTariffExportCode(tariffExportCodeServiceExt.findByCode(TariffExportCode.EXPORTED));
 		tariffExportLogRecord.setExportdate(new java.util.Date());
-		tariffExportLogRecordService.save(tariffExportLogRecord);
+
+		tariffExportLogRecordService.create(tariffExportLogRecord);
 
 		if (tariffCalculationResult.getId() != null) {
 			tariffCalculationResult.setLastTariffExportLogRecord(tariffExportLogRecord);
@@ -128,6 +129,7 @@ public class FileCNExporter implements Exporter {
 
 	/**
 	 * Set tariffExportLogRecordService
+	 *
 	 * @param tariffExportLogRecordService tariffExportLogRecordService
 	 */
 	@Required
