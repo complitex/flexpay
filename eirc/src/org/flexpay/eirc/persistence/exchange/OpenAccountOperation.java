@@ -73,7 +73,7 @@ public class OpenAccountOperation extends AbstractChangePersonalAccountOperation
 		}
 
 		createCorrections(registry, record, consumer);
-		props.setConsumer(consumer);
+		props.setFullConsumer(consumer);
 	}
 
 	private ConsumerInfo saveConsumerInfo(RegistryRecord record) {
