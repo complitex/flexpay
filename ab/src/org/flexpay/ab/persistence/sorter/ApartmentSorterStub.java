@@ -33,4 +33,5 @@ public class ApartmentSorterStub extends ApartmentSorter {
 	@Override
 	public void setOrderBy(StringBuilder orderByClause) {
 	}
+
 }

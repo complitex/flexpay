@@ -90,13 +90,28 @@ var FP = {
 	/**
 	 * Disable enter key event
 	 *
-	 * Usage: <input type=”text” name=”mytext” onKeyPress=”return disableEnterKey(event)”>
+	 * Usage: <input type="text" name="mytext" onKeyPress="return disableEnterKey(event)">
 	 *
 	 * @param e Event
 	 */
 	disableEnterKey : function(e) {
 		return e.keyCode != 13;
-	}
+	},
+
+    pagerSubmitForm : function (element) {
+        if (element.name != "pager.pageSize") {
+            element.form.submit();
+        }
+        var elms = $('select[name="pager.pageSize"]').each(function(i) {
+            if (this != element) {
+                this.name = null;
+            }
+        });
+        element.name = "pager.pageSize";
+        $("#pageSizeChanged").val(true);
+        element.form.submit();
+    }
+
 };
 
 // Array Remove - By John Resig (MIT Licensed)
