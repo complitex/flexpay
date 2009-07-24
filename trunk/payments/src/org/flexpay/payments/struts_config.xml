@@ -22,8 +22,7 @@
 	<package name="payments" namespace="/payments" extends="common">
 
 		<interceptors>
-			<interceptor name="cashboxInterceptor"
-						 class="org.flexpay.payments.actions.interceptor.CashboxInterceptor"/>
+			<interceptor name="cashboxInterceptor" class="cashboxInterceptor"/>
 
 			<interceptor-stack name="paymentsDefaultStack">
 				<interceptor-ref name="commonDefaultStack"/>
