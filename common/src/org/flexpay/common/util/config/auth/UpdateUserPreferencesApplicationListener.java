@@ -1,14 +1,18 @@
 package org.flexpay.common.util.config.auth;
 
-import org.springframework.context.ApplicationListener;
-import org.springframework.context.ApplicationEvent;
-import org.springframework.beans.factory.annotation.Required;
 import org.flexpay.common.actions.security.LogoutEvent;
+import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.service.UserPreferencesService;
 import org.flexpay.common.util.config.UserPreferences;
-import org.flexpay.common.exception.FlexPayExceptionContainer;
+import org.flexpay.common.util.SecurityUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Required;
+import org.springframework.context.ApplicationEvent;
+import org.springframework.context.ApplicationListener;
+import org.springframework.security.ui.session.HttpSessionDestroyedEvent;
+import org.springframework.security.Authentication;
+import org.springframework.security.context.SecurityContext;
 
 public class UpdateUserPreferencesApplicationListener implements ApplicationListener {
 
@@ -24,15 +28,30 @@ public class UpdateUserPreferencesApplicationListener implements ApplicationList
 	public void onApplicationEvent(ApplicationEvent appEvent) {
 
 		if (appEvent instanceof LogoutEvent) {
+			log.debug("LogoutEvent: {}", appEvent);
+
 			LogoutEvent event = (LogoutEvent) appEvent;
 			UserPreferences preferences = (UserPreferences) event.getAuthentication().getPrincipal();
-			try {
-				preferencesService.update(preferences);
-			} catch (FlexPayExceptionContainer ex) {
-				ex.error(log, "Failed updating user preferences {}", preferences);
-			} catch (Exception ex) {
-				log.error("Failed updating user preferences " + preferences, ex);
-			}
+			updateUserPreferences(preferences);
+		}
+
+		if (appEvent instanceof HttpSessionDestroyedEvent) {
+			log.debug("HttpSessionDestroyedEvent: {}", appEvent);
+			HttpSessionDestroyedEvent event = (HttpSessionDestroyedEvent) appEvent;
+			SecurityContext context = (SecurityContext) event.getSession().getAttribute("SPRING_SECURITY_CONTEXT");
+			Authentication auth = context.getAuthentication();
+			UserPreferences preferences = (UserPreferences) auth.getPrincipal();
+			updateUserPreferences(preferences);
+		}
+	}
+
+	private void updateUserPreferences(UserPreferences preferences) {
+		try {
+			preferencesService.update(preferences);
+		} catch (FlexPayExceptionContainer ex) {
+			ex.error(log, "Failed updating user preferences {}", preferences);
+		} catch (Exception ex) {
+			log.error("Failed updating user preferences " + preferences, ex);
 		}
 	}
 
