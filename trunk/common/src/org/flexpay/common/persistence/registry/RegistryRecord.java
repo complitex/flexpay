@@ -32,7 +32,7 @@ public class RegistryRecord extends DomainObject {
 	private Registry registry;
 	private RegistryRecordStatus recordStatus;
 
-	private List<RegistryRecordContainer> containers = Collections.emptyList();
+	private List<RegistryRecordContainer> containers = CollectionUtils.list();
 
 	private RegistryRecordProperties properties;
 	private ImportError importError;
@@ -166,10 +166,6 @@ public class RegistryRecord extends DomainObject {
 	}
 
 	public void addContainer(RegistryRecordContainer container) {
-		//noinspection CollectionsFieldAccessReplaceableByMethodCall
-		if (containers == Collections.EMPTY_LIST) {
-			containers = CollectionUtils.list();
-		}
 		container.setOrder(containers.size());
 		container.setRecord(this);
 		containers.add(container);

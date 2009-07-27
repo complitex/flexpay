@@ -18,7 +18,7 @@
 		<property name="senderCode" column="sender_code" />
 		<property name="recipientCode" column="recipient_code" />
 		<property name="amount" column="amount" type="big_decimal" />
-		<list name="containers" inverse="true">
+		<list name="containers" inverse="true" cascade="all-delete-orphan">
 			<key column="registry_id" not-null="true" />
 			<list-index column="order_weight" />
 			<one-to-many class="RegistryContainer" />
@@ -173,7 +173,7 @@
 		<property name="uniqueOperationNumber" column="unique_operation_number" />
 		<property name="amount" column="amount" type="big_decimal" />
 
-		<list name="containers" inverse="true">
+		<list name="containers" inverse="true" cascade="all-delete-orphan">
 			<key column="record_id" not-null="true" />
 			<list-index column="order_weight" />
 			<one-to-many class="RegistryRecordContainer" />

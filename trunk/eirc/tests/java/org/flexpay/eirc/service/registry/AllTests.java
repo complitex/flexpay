@@ -5,7 +5,8 @@ import org.junit.runners.Suite;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-		TestRegistryRecordDaoExt.class
+		TestRegistryRecordDaoExt.class,
+		TestCreateAccountAndSetAttribute.class
 		})
 public class AllTests {
 

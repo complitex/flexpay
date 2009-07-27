@@ -7,6 +7,7 @@ import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.orgs.persistence.PaymentPoint;
 import org.flexpay.orgs.service.OrganizationService;
 import org.flexpay.orgs.service.PaymentPointService;
+import org.flexpay.orgs.test.TestData;
 import org.flexpay.payments.test.PaymentsSpringBeanAwareTestCase;
 import static org.junit.Assert.assertNotNull;
 import org.junit.Test;
@@ -34,11 +35,11 @@ public class TestEndOperationDayRegistryGenerator extends PaymentsSpringBeanAwar
 		Date beginDate = df.parse("2009-07-13 00:00:00");
 		Date endDate = df.parse("2009-07-13 23:59:59");
 
-		PaymentPoint paymentPoint = paymentPointService.read(new Stub<PaymentPoint>(1L));
+		PaymentPoint paymentPoint = paymentPointService.read(TestData.PAYMENT_POINT_1);
 		assertNotNull("Payment point with id - 1 does not exist", paymentPoint);
 
-		Organization organization = organizationService.readFull(new Stub<Organization>(4L));
-		assertNotNull("Organization with id - 4 does not exist", paymentPoint);
+		Organization organization = organizationService.readFull(TestData.ORG_CN);
+		assertNotNull("Organization with id - 4 does not exist", organization);
 
 		Registry registry = endOperationDayRegistryGenerator.generate(paymentPoint, organization, beginDate, endDate);
 		assertNotNull("Operation day registry generation failed", registry);

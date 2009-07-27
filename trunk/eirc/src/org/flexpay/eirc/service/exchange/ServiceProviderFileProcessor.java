@@ -124,7 +124,7 @@ public class ServiceProviderFileProcessor implements RegistryProcessor {
 		Logger plog = ProcessLogger.getLogger(getClass());
 
 		plog.info("Starting processing records");
-		Page<RegistryRecord> pager = new Page<RegistryRecord>(50, 1);
+		Page<RegistryRecord> pager = new Page<RegistryRecord>(50);
 		Long[] minMaxIds = {null, null};
 		do {
 			plog.info("Fetching next page {}. Time spent {}", pager, watch);
