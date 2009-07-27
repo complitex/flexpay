@@ -24,29 +24,23 @@
             parents: ["town"],
             defaultValue: "<s:text name="%{userPreferences.streetFilterValue}" />"
         });
-        FF.createFilter("building", {
-            action: "<s:url action="buildingFilterAjax" namespace="/dicts" includeParams="none"/>",
-            isArray: true,
-            parents: ["street"],
-            defaultValue: "<s:text name="%{userPreferences.buildingFilterValue}" />"
-        });
 
-        FF.addListener("building", function(filter) {
+        FF.addListener("street", function(filter) {
             var id = "result";
             FF.loading(id);
-            $.post("<s:url action="apartmentsListAjax" namespace="/dicts" includeParams="none"/>",
-                    {buildingId: filter.value.val()},
+            $.post("<s:url action="buildingsListAjax" namespace="/dicts" includeParams="none"/>",
+                    {streetId: filter.value.val()},
                     function(data) {
                         $("#" + id).html(data);
                     });
         });
 
-        FF.addEraseFunction("building", function(filter) {
+        FF.addEraseFunction("street", function(filter) {
             $("#result").html('<input type="submit" class="btn-exit" '
-                    + 'onclick="$(\'#fobjects\').attr(\'action\',\'<s:url action="apartmentDelete" includeParams="none" />\');" '
+                    + 'onclick="$(\'#fobjects\').attr(\'action\',\'<s:url action="buildingDelete" includeParams="none" />\');" '
                     + 'value="<s:text name="common.delete_selected"/>"/>\n'
                     + '<input type="button" class="btn-exit" '
-                    + 'onclick="window.location = \'<s:url action="apartmentEdit"><s:param name="apartment.id" value="0"/></s:url>\'" '
+                    + 'onclick="window.location=\'<s:url action="buildingCreate" includeParams="none" />\';" '
                     + 'value="<s:text name="common.new"/>"/>');
         });
 
@@ -54,26 +48,12 @@
 
     function pagerAjax(element) {
         var isSelect = element.name == "pager.pageSize";
-        $.post("<s:url action="apartmentsListAjax" namespace="/dicts" includeParams="none"/>",
+        $.post("<s:url action="buildingsListAjax" namespace="/dicts" includeParams="none"/>",
                 {
-                    buildingId: FF.filters["building"].value.val(),
-                    "apartmentSorter.active": $("#apartmentSorterActive").val(),
-                    "apartmentSorter.order": $("#apartmentSorterOrder").val(),
+                    streetId: FF.filters["street"].value.val(),
                     pageSizeChanged: isSelect,
                     "pager.pageNumber": isSelect ? "" : element.value,
                     "pager.pageSize": isSelect ? element.value : $('select[name="pager.pageSize"]').val()
-                },
-                function(data) {
-                    $("#result").html(data);
-                });
-    }
-
-    function sorterAjax() {
-        $.post("<s:url action="apartmentsListAjax" namespace="/dicts" includeParams="none"/>",
-                {
-                    buildingId: FF.filters["building"].value.val(),
-                    "apartmentSorter.active": $("#apartmentSorterActive").val(),
-                    "apartmentSorter.order": $("#apartmentSorterOrder").val()
                 },
                 function(data) {
                     $("#result").html(data);
@@ -93,8 +73,6 @@
     </tr>
 	<tr>
 		<td class="filter"><s:text name="ab.street"/></td>
-		<td id="street_raw" colspan="3"></td>
-		<td class="filter"><s:text name="ab.building"/></td>
-		<td id="building_raw"></td>
+		<td id="street_raw" colspan="5"></td>
 	</tr>
 </table>

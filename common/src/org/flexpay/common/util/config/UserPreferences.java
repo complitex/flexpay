@@ -11,7 +11,6 @@ import org.flexpay.common.persistence.Language;
 import org.springframework.security.GrantedAuthority;
 import org.springframework.security.userdetails.UserDetails;
 import org.springframework.security.userdetails.User;
-import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
 import java.util.Collections;
@@ -80,16 +79,11 @@ public class UserPreferences extends DomainObject implements Serializable, UserD
 		}
 	}
 
-	@NotNull
 	public Integer getPageSize() {
 		return pageSize;
 	}
 
 	public void setPageSize(Integer pageSize) {
-		if (pageSize == null || pageSize <= 0) {
-			pageSize = 20;
-		}
-
 		this.pageSize = pageSize;
 	}
 
@@ -223,4 +217,5 @@ public class UserPreferences extends DomainObject implements Serializable, UserD
 	public boolean isEnabled() {
 		return targetDetails.isAccountNonExpired();
 	}
+
 }
