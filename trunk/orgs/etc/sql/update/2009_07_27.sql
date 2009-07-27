@@ -1,7 +1,7 @@
 select @orgs_base:=0x4000 + 0;
 select @payments_base:=0x3000 + 0;
-select @cashbox_type_old:=@orgs_base + 0x006;
-select @cashbox_type_new:=@payments_base + 0x008;
+select @cashbox_type_old:=@payments_base + 0x006;
+select @cashbox_type_new:=@orgs_base + 0x008;
 
 update common_data_corrections_tbl set object_type=@cashbox_type_new where object_type=@cashbox_type_old;
 update common_diffs_tbl set object_type=@cashbox_type_new where object_type=@cashbox_type_old;
