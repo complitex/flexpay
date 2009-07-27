@@ -3,6 +3,7 @@ package org.flexpay.orgs.persistence;
 import org.apache.commons.lang.StringUtils;
 import org.flexpay.common.persistence.DomainObjectWithStatus;
 import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.persistence.Language;
 import org.flexpay.common.util.TranslationUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -23,7 +24,7 @@ public class Subdivision extends DomainObjectWithStatus {
 	private Set<Subdivision> childSubdivisions = Collections.emptySet();
 
 	// tree path is a parents path devided with dots, like .1.35.24
-	private String treePath;
+	private String treePath = "";
 
 	/**
 	 * Constructs a new DomainObject.
@@ -39,7 +40,6 @@ public class Subdivision extends DomainObjectWithStatus {
 		super(stub.getId());
 	}
 
-	@NotNull
 	public Organization getHeadOrganization() {
 		return headOrganization;
 	}
@@ -153,4 +153,41 @@ public class Subdivision extends DomainObjectWithStatus {
 	public void setName(SubdivisionName name) {
 		names = TranslationUtil.setTranslation(names, this, name);
 	}
+
+	/**
+	 * Get name translation in a specified language
+	 *
+	 * @param lang Language to get translation in
+	 * @return translation if found, or <code>null</code> otherwise
+	 */
+	@Nullable
+	public SubdivisionName getNameTranslation(@NotNull Language lang) {
+
+		for (SubdivisionName translation : getNames()) {
+			if (lang.equals(translation.getLang())) {
+				return translation;
+			}
+		}
+
+		return null;
+	}
+
+	/**
+	 * Get description translation in a specified language
+	 *
+	 * @param lang Language to get translation in
+	 * @return translation if found, or <code>null</code> otherwise
+	 */
+	@Nullable
+	public SubdivisionDescription getDescriptionTranslation(@NotNull Language lang) {
+
+		for (SubdivisionDescription translation : getDescriptions()) {
+			if (lang.equals(translation.getLang())) {
+				return translation;
+			}
+		}
+
+		return null;
+	}
+
 }

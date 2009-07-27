@@ -18,9 +18,6 @@ public class ClassToTypeRegistryPayments implements ClassToTypeRegistry {
 		if (ServiceType.class.isAssignableFrom(clazz)) {
 			return MODULE_BASE + 0x002;
 		}
-		if (Cashbox.class.isAssignableFrom(clazz)) {
-			return MODULE_BASE + 0x006;
-		}
 
 		throw new IllegalArgumentException("Class " + clazz + " has no assigned type");
 	}

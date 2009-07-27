@@ -119,6 +119,8 @@ public class HistoryBuilderHelper {
 												" by master index " + externalId);
 			}
 			patcher.setReference(obj1, stub);
+		} else {
+			patcher.setReference(obj1, null);
 		}
 
 		record.setProcessingStatus(ProcessingStatus.STATUS_PROCESSED);

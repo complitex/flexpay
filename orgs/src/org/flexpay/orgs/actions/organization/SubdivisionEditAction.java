@@ -38,7 +38,8 @@ public class SubdivisionEditAction extends FPActionSupport {
 			return REDIRECT_SUCCESS;
 		}
 
-		Subdivision oldSubdivision = subdivisionService.read(subdivision);
+		Subdivision oldSubdivision = subdivision.isNew() ? new Subdivision(0L) :
+									 subdivisionService.read(stub(subdivision));
 		if (oldSubdivision == null) {
 			addActionError(getText("error.invalid_id"));
 			return REDIRECT_SUCCESS;

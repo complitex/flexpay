@@ -125,20 +125,20 @@
 	<query name="Subdivision.readFull">
 		select distinct o
 		from Subdivision o
-		left outer join fetch o.names 
-		left outer join fetch o.descriptions
-		inner join fetch o.headOrganization
-		left join fetch o.juridicalPerson 
+			left outer join fetch o.names
+			left outer join fetch o.descriptions
+			left join fetch o.headOrganization
+			left join fetch o.juridicalPerson
 		where o.id=?
 	</query>
 
 	<query name="Subdivision.findSubdivisions">
 		select distinct o
 		from Subdivision o
-		left outer join fetch o.names
-		left outer join fetch o.descriptions
-		inner join fetch o.headOrganization h
-		left join fetch o.juridicalPerson j
+			left outer join fetch o.names
+			left outer join fetch o.descriptions
+			left join fetch o.headOrganization h
+			left join fetch o.juridicalPerson j
 		where o.status=0 and h.status=0 and h.id=? or j.id=?
 		order by o.treePath 
 	</query>
