@@ -24,7 +24,6 @@ public class TestBuildingHistoryBuilder extends AbSpringBeanAwareTestCase {
 	private ObjectsFactory factory;
 
 	@Test
-	@Ignore
 	public void testBuildDiff() {
 
 		Diff diff = historyBuilder.diff(factory.newBuilding(), factory.newBuilding());
@@ -32,7 +31,6 @@ public class TestBuildingHistoryBuilder extends AbSpringBeanAwareTestCase {
 	}
 
 	@Test
-	@Ignore
 	public void testBuildDiff3() {
 
 		Diff diff = historyBuilder.diff(null, factory.newBuilding());
@@ -40,7 +38,6 @@ public class TestBuildingHistoryBuilder extends AbSpringBeanAwareTestCase {
 	}
 
 	@Test
-	@Ignore
 	public void testBuildDiff4() {
 
 		Building building = buildingService.read(TestData.IVANOVA_27);

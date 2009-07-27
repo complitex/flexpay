@@ -42,11 +42,8 @@ public class RegistryRecordServiceImpl implements RegistryRecordService {
 	 */
 	@Transactional (readOnly = false)
 	public RegistryRecord create(RegistryRecord record) {
-		registryRecordDao.create(record);
 
-		for (RegistryRecordContainer container : record.getContainers()) {
-			recordContainerDao.create(container);
-		}
+		registryRecordDao.create(record);
 
 		return record;
 	}

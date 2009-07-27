@@ -31,7 +31,7 @@ public class Consumer extends DomainObjectWithStatus {
 	private Service service;
 	private Person responsiblePerson;
 
-	private Set<ConsumerAttribute> attributes = Collections.emptySet();
+	private Set<ConsumerAttribute> attributes = CollectionUtils.set();
 
 	public Consumer() {
 	}
@@ -250,11 +250,6 @@ public class Consumer extends DomainObjectWithStatus {
 			attribute.setEnd(end);
 			toAdd.add(attribute);
 			attribute.setConsumer(this);
-		}
-
-		//noinspection CollectionsFieldAccessReplaceableByMethodCall
-		if (attributes == Collections.EMPTY_SET) {
-			attributes = CollectionUtils.set();
 		}
 
 		boolean deleted = attrs.removeAll(toDelete);

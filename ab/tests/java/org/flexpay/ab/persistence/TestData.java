@@ -7,6 +7,7 @@ public class TestData {
 	// test apartments
 	public static final Stub<Apartment> IVANOVA_27_329 = new Stub<Apartment>(1L);
 	public static final Stub<Apartment> IVANOVA_27_330 = new Stub<Apartment>(2L);
+	public static final Stub<Apartment> IVANOVA_27_1 = new Stub<Apartment>(3L);
 
 	// test buildings
 	public static final Stub<Building> IVANOVA_27 = new Stub<Building>(1L);

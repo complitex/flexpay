@@ -1,17 +1,13 @@
 package org.flexpay.payments.service;
 
-import org.flexpay.common.test.SpringBeanAwareTestCase;
 import org.flexpay.common.util.config.ApplicationConfig;
-import org.flexpay.common.persistence.Stub;
+import org.flexpay.orgs.persistence.ServiceProvider;
+import org.flexpay.orgs.service.ServiceProviderService;
+import org.flexpay.orgs.test.TestData;
 import org.flexpay.payments.dao.ServiceDaoExt;
 import org.flexpay.payments.persistence.Service;
 import org.flexpay.payments.persistence.ServiceType;
-import org.flexpay.payments.service.ServiceTypeService;
-import org.flexpay.payments.service.SPService;
 import org.flexpay.payments.test.PaymentsSpringBeanAwareTestCase;
-import org.flexpay.orgs.persistence.ServiceProvider;
-import org.flexpay.orgs.persistence.Organization;
-import org.flexpay.orgs.service.ServiceProviderService;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import org.junit.Test;
@@ -25,7 +21,6 @@ public class TestServiceDao extends PaymentsSpringBeanAwareTestCase {
 	@Autowired
 	protected ServiceDaoExt serviceDaoExt;
 	@Autowired
-	@Qualifier ("spService")
 	protected SPService spService;
 	@Autowired
 	private ServiceProviderService providerService;
@@ -36,7 +31,7 @@ public class TestServiceDao extends PaymentsSpringBeanAwareTestCase {
 	public void testGetIntersectionServices() {
 
 		// Find CN service provider
-		ServiceProvider provider = providerService.getProvider(new Stub<Organization>(4L));
+		ServiceProvider provider = providerService.getProvider(TestData.ORG_CN);
 		assertNotNull("Cannot find service provider", provider);
 
 		// Find service type by code
