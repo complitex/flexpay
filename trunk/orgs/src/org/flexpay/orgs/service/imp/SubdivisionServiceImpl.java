@@ -4,6 +4,7 @@ import org.apache.commons.lang.StringUtils;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.persistence.history.ModificationListener;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.service.internal.SessionUtils;
 import static org.flexpay.common.util.CollectionUtils.map;
@@ -18,6 +19,7 @@ import org.flexpay.orgs.persistence.filters.SubdivisionFilter;
 import org.flexpay.orgs.service.SubdivisionService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.beans.factory.annotation.Required;
 
 import java.util.List;
 import java.util.Map;
@@ -29,6 +31,7 @@ public class SubdivisionServiceImpl implements SubdivisionService {
 	private OrganizationService organizationService;
 	private SubdivisionDao subdivisionDao;
 	private SessionUtils sessionUtils;
+	private ModificationListener<Subdivision> modificationListener;
 
 	/**
 	 * Disable subdivisions.
@@ -44,6 +47,8 @@ public class SubdivisionServiceImpl implements SubdivisionService {
 			if (subdivision != null) {
 				subdivision.disable();
 				subdivisionDao.update(subdivision);
+
+				modificationListener.onDelete(subdivision);
 			}
 		}
 	}
@@ -72,12 +77,8 @@ public class SubdivisionServiceImpl implements SubdivisionService {
 	 * @param stub Subdivision stub
 	 * @return Bank
 	 */
-	public Subdivision read(@NotNull Subdivision stub) {
-		if (stub.isNotNew()) {
-			return subdivisionDao.readFull(new Stub<Subdivision>(stub).getId());
-		}
-
-		return new Subdivision(0L);
+	public Subdivision read(@NotNull Stub<Subdivision> stub) {
+		return subdivisionDao.readFull(stub.getId());
 	}
 
 	/**
@@ -91,6 +92,9 @@ public class SubdivisionServiceImpl implements SubdivisionService {
 		validate(subdivision);
 		subdivision.setId(null);
 		subdivisionDao.create(subdivision);
+
+		modificationListener.onCreate(subdivision);
+
 		updateTreePaths(stub(subdivision.getHeadOrganization()));
 	}
 
@@ -100,9 +104,20 @@ public class SubdivisionServiceImpl implements SubdivisionService {
 	 * @param subdivision Subdivision to save
 	 * @throws FlexPayExceptionContainer if validation fails
 	 */
+	@SuppressWarnings ({"ThrowableInstanceNeverThrown"})
 	@Transactional (readOnly = false)
 	public void update(@NotNull Subdivision subdivision) throws FlexPayExceptionContainer {
+
 		validate(subdivision);
+
+		Subdivision old = read(Stub.stub(subdivision));
+		if (old == null) {
+			throw new FlexPayExceptionContainer(new FlexPayException("No object found to update " + subdivision));
+		}
+
+		sessionUtils.evict(old);
+		modificationListener.onUpdate(old, subdivision);
+
 		subdivisionDao.update(subdivision);
 		updateTreePaths(stub(subdivision.getHeadOrganization()));
 	}
@@ -116,7 +131,14 @@ public class SubdivisionServiceImpl implements SubdivisionService {
 		for (Subdivision subdivision : subdivisions) {
 			String actualPath = calculateTreePath(subdivision, id2Subs);
 			if (!actualPath.equals(subdivision.getTreePath())) {
+				Subdivision old = read(Stub.stub(subdivision));
+				sessionUtils.evict(old);
 				subdivision.setTreePath(actualPath);
+
+				if (old != null) {
+					modificationListener.onUpdate(old, subdivision);
+				}
+
 				subdivisionDao.update(subdivision);
 			}
 		}
@@ -271,15 +293,23 @@ public class SubdivisionServiceImpl implements SubdivisionService {
 		subdivisionFilter.setSubdivisions(subdivisions);
 	}
 
+	@Required
 	public void setOrganizationService(OrganizationService organizationService) {
 		this.organizationService = organizationService;
 	}
 
+	@Required
 	public void setSubdivisionDao(SubdivisionDao subdivisionDao) {
 		this.subdivisionDao = subdivisionDao;
 	}
 
+	@Required
 	public void setSessionUtils(SessionUtils sessionUtils) {
 		this.sessionUtils = sessionUtils;
+	}
+
+	@Required
+	public void setModificationListener(ModificationListener<Subdivision> modificationListener) {
+		this.modificationListener = modificationListener;
 	}
 }

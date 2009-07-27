@@ -8,4 +8,6 @@ public class TestData {
 
 	public static final Stub<Bank> BANK_CN = new Stub<Bank>(1L);
 	public static final Stub<Bank> BANK_EIRC = new Stub<Bank>(2L);
+
+	public static final Stub<Subdivision> SUBDIVISION_1 = new Stub<Subdivision>(1L);
 }

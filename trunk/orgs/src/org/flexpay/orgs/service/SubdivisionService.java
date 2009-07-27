@@ -38,7 +38,7 @@ public interface SubdivisionService {
 	 * @return Bank
 	 */
 	@Nullable
-	Subdivision read(@NotNull Subdivision stub);
+	Subdivision read(@NotNull Stub<Subdivision> stub);
 
 	/**
 	 * Save subdivision

@@ -49,12 +49,12 @@ public class BankHistoryBuilder
 
 		switch (record.getFieldType()) {
 			case FIELD_BANK_IDENTIFIER_CODE:
-				log.debug("Patchng bank identifier code: {}", record);
+				log.debug("Patching bank identifier code: {}", record);
 				org.setBankIdentifierCode(record.getNewStringValueNotNull());
 				record.setProcessingStatus(ProcessingStatus.STATUS_PROCESSED);
 				return true;
 			case FIELD_CORESPONDING_ACCOUNT:
-				log.debug("Patchng bank corresponding account: {}", record);
+				log.debug("Patching bank corresponding account: {}", record);
 				org.setCorrespondingAccount(record.getNewStringValueNotNull());
 				record.setProcessingStatus(ProcessingStatus.STATUS_PROCESSED);
 				return true;
