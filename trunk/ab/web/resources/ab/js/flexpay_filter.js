@@ -15,17 +15,22 @@ function Filter(name, options) {
 
     options = $.extend({
         action: "",
-        filterId: name + "_filter",
-        valueId: "selected_" + name + "_id",
+        filterId: name + "_string",
+        valueId: name + "_selected",
+        rawId: name + "_raw",
         isArray: false,
         display: "input",
         extraParams: {},
+        defaultValue: "",
         preRequest: true,
         required: true,
         parents: []
     }, options);
 
     this.options = options;
+
+    $("#" + options.rawId).append('<input id="' + options.valueId + '" type="hidden" name="' + name + 'Filter" value="' + options.defaultValue + '" />\n' +
+                                  '<input id="' + options.filterId + '" type="text" class="form-search" value="" />');
 
     this.listeners = [];
     this.eraseFunctions = [];
@@ -36,6 +41,7 @@ function Filter(name, options) {
     this.readonly = options.display == "input-readonly";
     this.justText = options.display == "text";
     this.extraParams = options.extraParams;
+    this.defaultValue = options.defaultValue;
     this.parents = [];
     for (var i in options.parents) {
         this.parents[options.parents[i]] = options.parents[i];
@@ -241,7 +247,7 @@ var FF = {
             }
             this.eraseChildFilters(filter.name);
             for (var i = 0; i < filter.eraseFunctions.length; i++) {
-                filter.eraseFunctions[i].call();
+                filter.eraseFunctions[i].call(filter, filter);
             }
         }
     },
@@ -259,9 +265,9 @@ var FF = {
     onSelect : function(filterName) {
         var filters = this.getFiltersByParentName(filterName);
         var filter = this.filters[filterName];
-        if (!filter.string.attr("readonly") || filter.readonly) {
+        if (filter.value.val() != "" && (!filter.string.attr("readonly") || filter.readonly)) {
             for (var i = 0; i < filter.listeners.length; i++) {
-                filter.listeners[i].call();
+                filter.listeners[i].call(filter, filter);
             }
         }
         if (filter.justText) {
@@ -342,6 +348,28 @@ var FF = {
             }
         }
         return parsed;
+    },
+
+    addListener : function(filterName, func) {
+        if (this.filters[filterName] == null) {
+            alert("Incorrect filterName!");
+        }
+        this.filters[filterName].addListener(func);
+    },
+
+    addEraseFunction : function(filterName, func) {
+        if (this.filters[filterName] == null) {
+            alert("Incorrect filterName!");
+        }
+        this.filters[filterName].addEraseFunction(func);
+    },
+
+    loading : function(id) {
+        $("#" + id).append('<div class="col"><img src="' + FP.base + '/resources/common/img/indicator.gif" width="16" height="16" />' + FF.messages.loading + '</div>');
+    },
+
+    messages : {
+        loading : ""
     }
 
 };

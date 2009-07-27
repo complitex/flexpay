@@ -51,6 +51,9 @@ public interface BuildingService extends ParentService<BuildingsFilter> {
 	List<BuildingAddress> getBuildings(ArrayStack filters, Page<BuildingAddress> pager);
 
 	@Secured (Roles.BUILDING_READ)
+	List<BuildingAddress> getBuildings(@NotNull Stub<Street> stub, Page<BuildingAddress> pager);
+
+	@Secured (Roles.BUILDING_READ)
 	List<BuildingAddress> getBuildings(@NotNull Stub<Street> stub);
 
 	/**

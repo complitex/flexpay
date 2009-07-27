@@ -31,9 +31,10 @@
         <td class="th" width="1%">
             <input type="checkbox" onchange="FP.setCheckboxes(this.checked, 'objectIds');">
         </td>
-        <td colspan="2" class="th" width="98%">
+        <td class="th" width="58%">
             <%@ include file="../../sorters/apartmentSorterHeader.jsp" %>
         </td>
+        <td class="th" width="40%">&nbsp;</td>
     </tr>
 <s:iterator value="%{apartments}" status="status">
     <tr valign="middle" class="cols_1">

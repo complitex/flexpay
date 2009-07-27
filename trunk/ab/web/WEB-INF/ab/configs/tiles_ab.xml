@@ -186,7 +186,7 @@
 	<!-- Buildings -->
 	<definition name="ab.building.list" extends="ab.layout.standart">
 		<put-attribute name="title" value="ab.buildings.list.title" />
-		<put-attribute name="body" value="/WEB-INF/jsp/ab/buildings_list.jsp" />
+		<put-attribute name="body" value="/WEB-INF/jsp/ab/buildings_list_ajax.jsp" />
 	</definition>
 	<definition name="ab.building.view" extends="ab.layout.standart">
 		<put-attribute name="title" value="ab.building.view.title" />

@@ -222,6 +222,16 @@
           p:buildingService-ref="buildingService"
           scope="prototype" />
 
+    <bean id="buildingsListAjaxAction"
+          class="org.flexpay.ab.actions.buildings.BuildingsListAjaxAction"
+          p:buildingService-ref="buildingService"
+          scope="prototype" />
+
+    <bean id="buildingsListPageAction"
+          class="org.flexpay.ab.actions.buildings.BuildingsListPageAction"
+          p:crumbNameKey="ab.crumbs.buildings_list"
+          scope="prototype" />
+
 	<!-- BuildingAttributeTypes -->
 	<bean id="addressAttributeTypesListAction"
 		  class="org.flexpay.ab.actions.buildings.AddressAttributeTypesListAction"
@@ -242,10 +252,6 @@
 		  p:apartmentService-ref="apartmentService"
 		  p:parentService-ref="buildingService"
           p:crumbNameKey="ab.crumbs.apartments_list"
-          scope="prototype" />
-
-    <bean id="apartmentsListPageAction"
-          class="org.flexpay.common.actions.StaticPageAction"
           scope="prototype" />
 
 	<bean id="apartmentEditAction"
@@ -280,6 +286,11 @@
     <bean id="apartmentsListAjaxAction"
           class="org.flexpay.ab.actions.apartment.ApartmentsListAjaxAction"
           p:apartmentService-ref="apartmentService"
+          scope="prototype" />
+
+    <bean id="apartmentsListPageAction"
+          class="org.flexpay.ab.actions.apartment.ApartmentsListPageAction"
+          p:crumbNameKey="ab.crumbs.apartments_list"
           scope="prototype" />
 
 	<!-- Town types -->

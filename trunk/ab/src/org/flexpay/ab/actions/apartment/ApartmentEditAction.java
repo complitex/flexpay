@@ -2,18 +2,19 @@ package org.flexpay.ab.actions.apartment;
 
 import org.flexpay.ab.persistence.Apartment;
 import org.flexpay.ab.persistence.Building;
-import org.flexpay.ab.persistence.filters.BuildingsFilter;
+import org.flexpay.ab.persistence.BuildingAddress;
 import org.flexpay.ab.service.ApartmentService;
 import org.flexpay.ab.service.BuildingService;
 import org.flexpay.common.actions.FPActionSupport;
+import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
 public class ApartmentEditAction extends FPActionSupport {
 
-	private BuildingsFilter buildingsFilter = new BuildingsFilter();
 	private Apartment apartment = Apartment.newInstance();
+	private String buildingFilter;
 	private String apartmentNumber;
 
 	private String crumbCreateKey;
@@ -34,31 +35,29 @@ public class ApartmentEditAction extends FPActionSupport {
 			return REDIRECT_SUCCESS;
 		}
 
-		if (apartment.isNotNew()) {
-			buildingsFilter.setSelectedId(apartment.getBuildingStub().getId());
-			buildingsFilter.setReadOnly(true);
-		}
-
 		if (!isSubmit()) {
 			apartmentNumber = apartment.getNumber();
 			return INPUT;
 		}
 
-		if (!buildingsFilter.needFilter()) {
-			addActionError(getText("ab.error.apartment.invalid_buildings_id"));
-			return REDIRECT_SUCCESS;
+		Long buildingFilterLong;
+		try {
+			buildingFilterLong = Long.parseLong(buildingFilter);
+		} catch (Exception e) {
+			log.warn("Incorrect building address id in filter ({})", buildingFilter);
+			return INPUT;
 		}
 
-		Building building = buildingService.findBuilding(buildingsFilter.getSelectedStub());
+		Building building = buildingService.findBuilding(new Stub<BuildingAddress>(buildingFilterLong));
 		if (building == null) {
 			addActionError(getText("ab.error.apartment.invalid_buildings_id"));
 			return REDIRECT_SUCCESS;
 		}
 
 		apartment.setNumber(apartmentNumber);
+		apartment.setBuilding(building);
 
 		if (apartment.isNew()) {
-			apartment.setBuilding(building);
 			apartmentService.create(apartment);
 		} else {
 			apartmentService.update(apartment);
@@ -89,12 +88,12 @@ public class ApartmentEditAction extends FPActionSupport {
 		return INPUT;
 	}
 
-	public BuildingsFilter getBuildingsFilter() {
-		return buildingsFilter;
+	public String getBuildingFilter() {
+		return buildingFilter;
 	}
 
-	public void setBuildingsFilter(BuildingsFilter buildingsFilter) {
-		this.buildingsFilter = buildingsFilter;
+	public void setBuildingFilter(String buildingFilter) {
+		this.buildingFilter = buildingFilter;
 	}
 
 	public Apartment getApartment() {

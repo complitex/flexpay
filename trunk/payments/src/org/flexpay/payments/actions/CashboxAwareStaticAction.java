@@ -3,6 +3,7 @@ package org.flexpay.payments.actions;
 import org.flexpay.common.actions.StaticPageAction;
 import org.flexpay.payments.actions.interceptor.CashboxAware;
 import org.flexpay.payments.persistence.Operation;
+import org.jetbrains.annotations.NotNull;
 
 public class CashboxAwareStaticAction extends StaticPageAction implements CashboxAware {
 
@@ -12,10 +13,19 @@ public class CashboxAwareStaticAction extends StaticPageAction implements Cashbo
 	// print previously created operation
 	private Operation operation = new Operation();
 
+	@Override
+	@NotNull
+	protected String doExecute() throws Exception {
+		getUserPreferences().getCrumbs().removeAllElements();
+		return SUCCESS;
+	}
+
+	@Override
 	public Long getCashboxId() {
 		return cashboxId;
 	}
 
+	@Override
 	public void setCashboxId(Long cashboxId) {
 		this.cashboxId = cashboxId;
 	}

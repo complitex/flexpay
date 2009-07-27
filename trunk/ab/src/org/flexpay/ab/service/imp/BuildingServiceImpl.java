@@ -66,6 +66,12 @@ public class BuildingServiceImpl implements BuildingService {
 		return buildingsDao.findBuildings(streetFilter.getSelectedId(), pager);
 	}
 
+	@Override
+	public List<BuildingAddress> getBuildings(@NotNull Stub<Street> stub, Page<BuildingAddress> pager) {
+		log.debug("Getting street buildings");
+		return buildingsDao.findBuildings(stub.getId(), pager);
+	}
+
 	public List<BuildingAddress> getBuildings(@NotNull Stub<Street> stub) {
 		return buildingsDao.findBuildings(stub.getId());
 	}
