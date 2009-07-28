@@ -9,6 +9,7 @@ import org.flexpay.common.persistence.filter.MeasureUnitFilter;
 import org.flexpay.common.service.MeasureUnitService;
 import static org.flexpay.common.util.CollectionUtils.map;
 import org.flexpay.common.util.config.ApplicationConfig;
+import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.orgs.persistence.ServiceProvider;
 import org.flexpay.orgs.persistence.filters.ServiceProviderFilter;
 import org.flexpay.orgs.service.ServiceProviderService;
@@ -25,7 +26,7 @@ import org.springframework.beans.factory.annotation.Required;
 
 import java.util.Map;
 
-public class ServiceEditAction extends CashboxCookieActionSupport {
+public class ServiceEditAction extends FPActionSupport {
 
 	private Service service = new Service(0L);
 

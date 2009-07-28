@@ -4,6 +4,7 @@ import org.flexpay.common.persistence.Language;
 import static org.flexpay.common.persistence.Stub.stub;
 import static org.flexpay.common.util.CollectionUtils.map;
 import org.flexpay.common.util.config.ApplicationConfig;
+import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.payments.actions.CashboxCookieActionSupport;
 import org.flexpay.payments.persistence.ServiceType;
 import org.flexpay.payments.persistence.ServiceTypeNameTranslation;
@@ -13,7 +14,7 @@ import org.springframework.beans.factory.annotation.Required;
 
 import java.util.Map;
 
-public class ServiceTypeEditAction extends CashboxCookieActionSupport {
+public class ServiceTypeEditAction extends FPActionSupport {
 
 	private ServiceType serviceType = new ServiceType();
 	private Map<Long, String> names = map();

@@ -2,6 +2,7 @@ package org.flexpay.payments.actions.registry;
 
 import org.flexpay.common.process.ProcessManager;
 import org.flexpay.common.util.CollectionUtils;
+import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.payments.actions.CashboxCookieActionSupport;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
@@ -11,7 +12,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-public class RegistriesProcessAction extends CashboxCookieActionSupport {
+public class RegistriesProcessAction extends FPActionSupport {
 
 	private Set<Long> objectIds = new HashSet<Long>();
 

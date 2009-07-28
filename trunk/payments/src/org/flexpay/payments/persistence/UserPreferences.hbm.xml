@@ -67,6 +67,11 @@
 						<comment>User payment point</comment>
 					</column>
 				</property>
+				<property name="paymentCollectorId">
+					<column name="payment_collector_id" not-null="false">
+						<comment>User payment collector id</comment>
+					</column>
+				</property>
 			</subclass>
 
 		</subclass>

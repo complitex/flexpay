@@ -4,7 +4,7 @@
 		"http://struts.apache.org/dtds/struts-2.0.dtd">
 <struts>
 
-	<package name="quittance" namespace="/payments" extends="payments">
+	<package name="quittance" namespace="/payments" extends="payments_operator">
 
 		<action name="searchByQuittanceNumber" class="cashboxStaticPageAction">
 			<result type="tiles">payments.quittance.search.quittance_number</result>

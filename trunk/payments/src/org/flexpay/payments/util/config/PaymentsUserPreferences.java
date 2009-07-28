@@ -5,6 +5,7 @@ import org.flexpay.ab.util.config.AbUserPreferences;
 public class PaymentsUserPreferences extends AbUserPreferences {
 
 	private Long paymentPointId;
+	private Long paymentCollectorId;
 
 	protected PaymentsUserPreferences() {
 	}
@@ -19,5 +20,13 @@ public class PaymentsUserPreferences extends AbUserPreferences {
 
 	public String getPaymentPointIdStr() {
 		return paymentPointId == null ? "" : paymentPointId.toString();
+	}
+
+	public Long getPaymentCollectorId() {
+		return paymentCollectorId;
+	}
+
+	public void setPaymentCollectorId(Long paymentCollectorId) {
+		this.paymentCollectorId = paymentCollectorId;
 	}
 }

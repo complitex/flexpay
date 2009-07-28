@@ -127,7 +127,7 @@
 	<bean name="payments.quittance.search_address.operations.list" parent="payments.quittance.search_address.operations"
 		  p:name="payments.quittance.search_address.operations.list"
 		  p:title="payments.menu4.operations_list"
-		  p:action="operationsList"
+		  p:action="operationsListOperator"
 		  p:parent-ref="payments.quittance.search_address.operations">
         <property name="userRole">
             <util:constant static-field="org.flexpay.payments.service.Roles.ROLE_MENU_PAYMENTS_OPERATIONS_LIST" />
@@ -137,7 +137,7 @@
 	<bean name="payments.quittance.search_eircaccount.operations.list" parent="payments.quittance.search_eircaccount.operations"
 		  p:name="payments.quittance.search_eircaccount.operations.list"
 		  p:title="payments.menu4.operations_list"
-		  p:action="operationsList"
+		  p:action="operationsListOperator"
 		  p:parent-ref="payments.quittance.search_eircaccount.operations">
         <property name="userRole">
             <util:constant static-field="org.flexpay.payments.service.Roles.ROLE_MENU_PAYMENTS_OPERATIONS_LIST" />
@@ -147,7 +147,7 @@
 	<bean name="payments.quittance.search_quittance.operations.list" parent="payments.quittance.search_quittance.operations"
 		  p:name="payments.quittance.search_quittance.operations.list"
 		  p:title="payments.menu4.operations_list"
-		  p:action="operationsList"
+		  p:action="operationsListOperator"
 		  p:parent-ref="payments.quittance.search_quittance.operations">
         <property name="userRole">
             <util:constant static-field="org.flexpay.payments.service.Roles.ROLE_MENU_PAYMENTS_OPERATIONS_LIST" />

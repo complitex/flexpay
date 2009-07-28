@@ -12,4 +12,12 @@
 
 	</package>
 
+	<package name="operations_operator" namespace="/payments" extends="payments_operator">
+
+		<action name="operationsListOperator" class="operationsListAction">
+			<result type="tiles">payments.operations.list</result>
+		</action>
+
+	</package>
+
 </struts>
