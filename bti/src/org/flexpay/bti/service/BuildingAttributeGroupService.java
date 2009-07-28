@@ -4,10 +4,12 @@ import org.flexpay.bti.persistence.building.BuildingAttributeGroup;
 import org.flexpay.bti.persistence.filters.BuildingAttributeGroupFilter;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.Collection;
 
 public interface BuildingAttributeGroupService {
 
@@ -44,5 +46,33 @@ public interface BuildingAttributeGroupService {
 	 */
 	@NotNull
 	BuildingAttributeGroupFilter initFilter(@NotNull BuildingAttributeGroupFilter filter);
+
+	/**
+	 * Create attribute group
+	 *
+	 * @param group Attribute group to persist
+	 * @return Saved group back
+	 * @throws FlexPayExceptionContainer if validation fails
+	 */
+	@NotNull
+	BuildingAttributeGroup create(@NotNull BuildingAttributeGroup group) throws FlexPayExceptionContainer;
+
+	/**
+	 * Update attribute group
+	 *
+	 * @param group Attribute group to persist
+	 * @return Saved group back
+	 * @throws FlexPayExceptionContainer if validation fails
+	 */
+	@NotNull
+	BuildingAttributeGroup update(@NotNull BuildingAttributeGroup group) throws FlexPayExceptionContainer;
+
+	/**
+	 * Disable attribute group
+	 *
+	 * @param ids Attribute group keys to disable
+	 * @throws FlexPayExceptionContainer if validation fails
+	 */
+	void disable(@NotNull Collection<Long> ids) throws FlexPayExceptionContainer;
 
 }
