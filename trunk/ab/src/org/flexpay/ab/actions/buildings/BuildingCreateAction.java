@@ -19,8 +19,8 @@ import java.util.Map;
  */
 public class BuildingCreateAction extends FPActionSupport {
 
-	private StreetFilter streetFilter = new StreetFilter();
-	private DistrictFilter districtFilter = new DistrictFilter();
+	private String streetFilter;
+	private String districtFilter;
 
 	// type id to value mapping
 	private Map<Long, String> attributeMap = CollectionUtils.treeMap();
@@ -34,6 +34,7 @@ public class BuildingCreateAction extends FPActionSupport {
 	private Building building;
 
 	@NotNull
+	@Override
 	public String doExecute() throws Exception {
 
 		if (!isSubmit()) {
@@ -42,11 +43,19 @@ public class BuildingCreateAction extends FPActionSupport {
 		}
 
 		boolean valid = true;
-		if (!districtFilter.needFilter()) {
+		Long districtFilterLong = 0L;
+		try {
+			districtFilterLong = Long.parseLong(districtFilter);
+		} catch (Exception e) {
+			log.warn("Incorrect district id in filter ({})", districtFilter);
 			addActionError(getText("ab.buildings.create.district_required"));
 			valid = false;
 		}
-		if (!streetFilter.needFilter()) {
+		Long streetFilterLong = 0L;
+		try {
+			streetFilterLong = Long.parseLong(streetFilter);
+		} catch (Exception e) {
+			log.warn("Incorrect street id in filter ({})", streetFilter);
 			addActionError(getText("ab.buildings.create.street_required"));
 			valid = false;
 		}
@@ -68,12 +77,12 @@ public class BuildingCreateAction extends FPActionSupport {
 
 		building = objectsFactory.newBuilding();
 
-		District district = districtService.readFull(districtFilter.getSelectedStub());
+		District district = districtService.readFull(new Stub<District>(districtFilterLong));
 		building.setDistrict(district);
 
 		BuildingAddress address = new BuildingAddress();
 		address.setPrimaryStatus(true);
-		Street street = streetService.readFull(streetFilter.getSelectedStub());
+		Street street = streetService.readFull(new Stub<Street>(streetFilterLong));
 		address.setStreet(street);
 		for (Map.Entry<Long, String> attr : attributeMap.entrySet()) {
 			AddressAttributeType type = addressAttributeTypeService.read(new Stub<AddressAttributeType>(attr.getKey()));
@@ -106,6 +115,7 @@ public class BuildingCreateAction extends FPActionSupport {
 	 * @return {@link #ERROR} by default
 	 */
 	@NotNull
+	@Override
 	protected String getErrorResult() {
 		return INPUT;
 	}
@@ -118,19 +128,19 @@ public class BuildingCreateAction extends FPActionSupport {
 		return getTranslation(type.getTranslations()).getName();
 	}
 
-	public StreetFilter getStreetFilter() {
+	public String getStreetFilter() {
 		return streetFilter;
 	}
 
-	public void setStreetFilter(StreetFilter streetFilter) {
+	public void setStreetFilter(String streetFilter) {
 		this.streetFilter = streetFilter;
 	}
 
-	public DistrictFilter getDistrictFilter() {
+	public String getDistrictFilter() {
 		return districtFilter;
 	}
 
-	public void setDistrictFilter(DistrictFilter districtFilter) {
+	public void setDistrictFilter(String districtFilter) {
 		this.districtFilter = districtFilter;
 	}
 
@@ -170,4 +180,5 @@ public class BuildingCreateAction extends FPActionSupport {
 	public void setStreetService(StreetService streetService) {
 		this.streetService = streetService;
 	}
+
 }

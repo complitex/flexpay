@@ -7,7 +7,7 @@
 
 	<package name="streets" namespace="/dicts" extends="common">
 
-		<action name="streetsList" class="streetsListAction">
+		<action name="streetsList" class="streetsListPageAction">
 			<result name="success" type="tiles">ab.streets.list</result>
 		</action>
 

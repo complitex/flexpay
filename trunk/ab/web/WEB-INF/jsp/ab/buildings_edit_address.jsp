@@ -30,3 +30,8 @@
 	</table>
 </s:form>
 
+<script type="text/javascript">
+    $(function() {
+        FF.updateFilter("street", {readonly:true});
+    });
+</script>

@@ -129,6 +129,16 @@
 		where o.id=? and o.status=0 and t.invalidDate='2100-12-31'
 	</query>
 
+    <query name="Street.readFullCollection">
+        SELECT DISTINCT s
+        FROM Street s
+            join fetch s.parent
+            left join fetch s.nameTemporals t
+            left join fetch t.value v
+            left join fetch v.translations tr
+        WHERE s.id in (:ids) and s.status=0 and t.invalidDate='2100-12-31'
+    </query>
+
 	<query name="Street.findTypeTemporals">
 		select distinct stt
 		from StreetTypeTemporal stt

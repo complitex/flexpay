@@ -17,6 +17,11 @@
             <result name="prerequestResponse">/WEB-INF/jsp/ab/filters/ajax/prerequest_response.jsp</result>
         </action>
 
+        <action name="streetsListAjax" class="streetsListAjaxAction">
+            <result>/WEB-INF/jsp/ab/filters/ajax/streets_list_response.jsp</result>
+            <result name="prerequestResponse">/WEB-INF/jsp/ab/filters/ajax/prerequest_response.jsp</result>
+        </action>
+
         <action name="countryFilterAjax" class="countryFilterAjaxAction">
             <result>/WEB-INF/jsp/ab/filters/ajax/filter_response.jsp</result>
             <result name="prerequestResponse">/WEB-INF/jsp/ab/filters/ajax/prerequest_response.jsp</result>

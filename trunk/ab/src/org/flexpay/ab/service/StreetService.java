@@ -106,6 +106,16 @@ public interface StreetService extends
 	Street readFull(@NotNull Stub<Street> stub);
 
 	/**
+	 * Read streets
+	 *
+	 * @param stubs Street keys
+	 * @return Object if found, or <code>null</code> otherwise
+	 */
+	@Secured ({Roles.STREET_READ})
+	@NotNull
+	List<Street> readFull(@NotNull Collection<Long> stubs);
+
+	/**
 	 * Read object temporal name by its unique id
 	 *
 	 * @param id key
@@ -156,6 +166,10 @@ public interface StreetService extends
 	@Secured (Roles.STREET_READ)
 	@NotNull
 	List<Street> find(ArrayStack filters, List<ObjectSorter> sorters, Page<Street> pager);
+
+	@Secured (Roles.STREET_READ)
+	@NotNull
+	List<Street> getStreets(@NotNull Stub<Town> townStub, List<ObjectSorter> sorters, Page<Street> pager);
 
 	/**
 	 * Disable objects

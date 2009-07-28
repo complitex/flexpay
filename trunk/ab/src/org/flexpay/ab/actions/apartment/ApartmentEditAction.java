@@ -22,6 +22,7 @@ public class ApartmentEditAction extends FPActionSupport {
 	private ApartmentService apartmentService;
 
 	@NotNull
+	@Override
 	public String doExecute() throws Exception {
 
 		if (apartment.getId() == null) {
@@ -84,6 +85,7 @@ public class ApartmentEditAction extends FPActionSupport {
 	 * @return {@link #ERROR} by default
 	 */
 	@NotNull
+	@Override
 	protected String getErrorResult() {
 		return INPUT;
 	}

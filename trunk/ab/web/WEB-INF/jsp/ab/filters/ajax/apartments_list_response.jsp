@@ -31,7 +31,7 @@
         <td class="th" width="1%">
             <input type="checkbox" onchange="FP.setCheckboxes(this.checked, 'objectIds');">
         </td>
-        <td class="th" width="58%">
+        <td class="<s:if test="apartmentSorter.activated">th_s</s:if><s:else>th</s:else>" width="58%">
             <%@ include file="../../sorters/apartmentSorterHeader.jsp" %>
         </td>
         <td class="th" width="40%">&nbsp;</td>
@@ -45,14 +45,10 @@
             <input type="checkbox" value="<s:property value="%{id}"/>" name="objectIds"/>
         </td>
         <td class="col">
-            <a href="<s:url action="apartmentRegistration"><s:param name="apartment.id" value="%{id}"/><s:param name="buildings.id" value="%{buildingsFilter.selectedId}"/></s:url>">
-                <s:property value="%{number}"/>
-            </a>
+            <a href="<s:url action="apartmentRegistration"><s:param name="apartment.id" value="%{id}"/><s:param name="buildings.id" value="%{buildingsFilter.selectedId}"/></s:url>"><s:property value="%{number}"/></a>
         </td>
         <td class="col">
-            <a href="<s:url action="apartmentEdit"><s:param name="apartment.id" value="%{id}"/><s:param name="buildingsFilter.selectedId" value="%{buildingsFilter.selectedId}"/></s:url>">
-                <s:text name="common.edit"/>
-            </a>
+            <a href="<s:url action="apartmentEdit"><s:param name="apartment.id" value="%{id}"/><s:param name="buildingsFilter.selectedId" value="%{buildingsFilter.selectedId}"/></s:url>"><s:text name="common.edit"/></a>
         </td>
     </tr>
 </s:iterator>

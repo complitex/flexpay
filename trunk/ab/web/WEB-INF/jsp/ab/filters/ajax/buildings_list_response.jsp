@@ -40,14 +40,10 @@
                 <input type="checkbox" value="<s:property value="%{id}"/>" name="objectIds"/>
             </td>
             <td class="col">
-                <a href="<s:url value="/dicts/apartmentsList.action"><s:param name="buildingFilter" value="%{id}" /></s:url>">
-                    <s:property	value="%{@org.flexpay.ab.util.TranslationUtil@getBuildingNumber(buildingAttributes, userPreferences.locale)}"/>
-                </a>
+                <a href="<s:url value="/dicts/apartmentsList.action"><s:param name="buildingFilter" value="%{id}" /></s:url>"><s:property	value="%{@org.flexpay.ab.util.TranslationUtil@getBuildingNumber(buildingAttributes, userPreferences.locale)}"/></a>
             </td>
             <td class="col">
-                <a href="<s:url action="buildingView" includeParams="none"><s:param name="building.id" value="%{building.id}"/></s:url>">
-                    <s:text name="common.view"/>
-                </a>
+                <a href="<s:url action="buildingView" includeParams="none"><s:param name="building.id" value="%{building.id}"/></s:url>"><s:text name="common.view"/></a>
             </td>
         </tr>
     </s:iterator>

@@ -34,10 +34,15 @@
 
 		<tr>
 			<td colspan="2" valign="middle">
-				<input type="submit" class="btn-exit" name="submitted"
-					   value="<s:text name="common.save"/>" />
+				<input type="submit" class="btn-exit" name="submitted" value="<s:text name="common.save"/>" />
 			</td>
 		</tr>
 	</table>
 	<s:hidden name="street.id" value="%{street.id}" />
 </s:form>
+
+<script type="text/javascript">
+    $(function() {
+        FF.updateFilter("town", {readonly:true});
+    });
+</script>

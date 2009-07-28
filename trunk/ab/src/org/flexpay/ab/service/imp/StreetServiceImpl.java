@@ -398,10 +398,8 @@ public class StreetServiceImpl extends NameTimeDependentServiceImpl<
 		return super.find(filters, pager);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@NotNull
+	@Override
 	public List<Street> find(ArrayStack filters, List<ObjectSorter> sorters, Page<Street> pager) {
 		ObjectFilter filter = (ObjectFilter) filters.peek();
 
@@ -417,6 +415,19 @@ public class StreetServiceImpl extends NameTimeDependentServiceImpl<
 		log.debug("Finding town streets with sorters");
 		PrimaryKeyFilter<?> townFilter = (PrimaryKeyFilter<?>) filters.peek();
 		return streetDaoExt.findStreets(townFilter.getSelectedId(), sorters, pager);
+	}
+
+	@NotNull
+	@Override
+	public List<Street> getStreets(@NotNull Stub<Town> townStub, List<ObjectSorter> sorters, Page<Street> pager) {
+		log.debug("Finding streets with sorters");
+		Town town = townDao.read(townStub.getId());
+		if (town == null) {
+			log.warn("No town found for id {}", townStub.getId());
+			return Collections.emptyList();
+		}
+
+		return streetDaoExt.findStreets(townStub.getId(), sorters, pager);
 	}
 
 	/**
@@ -437,6 +448,24 @@ public class StreetServiceImpl extends NameTimeDependentServiceImpl<
 		street.getDistricts().addAll(streetDao.findDistricts(stub.getId()));
 
 		return street;
+	}
+
+	/**
+	 * Read streets
+	 *
+	 * @param stubs Street keys
+	 * @return Object if found, or <code>null</code> otherwise
+	 */
+	@NotNull
+	@Override
+	public List<Street> readFull(@NotNull Collection<Long> stubs) {
+
+		List<Street> streets = streetDao.readFullCollection(stubs, true);
+		if (log.isDebugEnabled()) {
+			log.debug("Requested {} streets, fetched {}", stubs.size(), streets.size());
+		}
+
+		return streets;
 	}
 
 	/**
@@ -494,4 +523,5 @@ public class StreetServiceImpl extends NameTimeDependentServiceImpl<
 	public void setModificationListener(ModificationListener<Street> modificationListener) {
 		this.modificationListener = modificationListener;
 	}
+
 }
