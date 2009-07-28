@@ -20,13 +20,14 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 import org.flexpay.common.process.Process;
 import org.flexpay.common.process.TaskHelper;
+import org.flexpay.common.actions.FPActionSupport;
 import org.jbpm.graph.def.Transition;
 
 import java.util.*;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 
-public class PaymentPointDetailMonitorAction extends CashboxCookieActionSupport {
+public class PaymentPointDetailMonitorAction extends FPActionSupport {
     private static final String PROCESS_STATUS = "PROCESS_STATUS";
 
     private static final SimpleDateFormat formatTime = new SimpleDateFormat("HH:mm");

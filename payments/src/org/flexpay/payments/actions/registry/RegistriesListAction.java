@@ -6,6 +6,7 @@ import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.persistence.registry.RegistryProperties;
 import org.flexpay.common.service.RegistryTypeService;
 import org.flexpay.common.util.DateUtil;
+import org.flexpay.common.actions.FPActionWithPagerSupport;
 import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.orgs.persistence.filters.OrganizationFilter;
 import org.flexpay.orgs.service.OrganizationService;
@@ -18,7 +19,7 @@ import org.springframework.beans.factory.annotation.Required;
 import java.util.Date;
 import java.util.List;
 
-public class RegistriesListAction extends CashboxCookieWithPagerActionSupport {
+public class RegistriesListAction extends FPActionWithPagerSupport {
 
 	private OrganizationFilter senderOrganizationFilter = new OrganizationFilter();
 	private OrganizationFilter recipientOrganizationFilter = new OrganizationFilter();

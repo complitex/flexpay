@@ -9,6 +9,7 @@ import org.flexpay.common.persistence.registry.RegistryRecord;
 import org.flexpay.common.service.RegistryRecordService;
 import org.flexpay.common.service.RegistryService;
 import org.flexpay.common.service.importexport.ClassToTypeRegistry;
+import org.flexpay.common.actions.FPActionWithPagerSupport;
 import org.flexpay.payments.actions.CashboxCookieWithPagerActionSupport;
 import org.flexpay.payments.persistence.ServiceType;
 import org.flexpay.payments.persistence.ServiceTypeNameTranslation;
@@ -19,7 +20,7 @@ import org.springframework.beans.factory.annotation.Required;
 import java.util.Collections;
 import java.util.List;
 
-public class RegistryViewAction extends CashboxCookieWithPagerActionSupport<RegistryRecord> {
+public class RegistryViewAction extends FPActionWithPagerSupport<RegistryRecord> {
 
 	private Registry registry = new Registry();
 	private List<RegistryRecord> records = Collections.emptyList();

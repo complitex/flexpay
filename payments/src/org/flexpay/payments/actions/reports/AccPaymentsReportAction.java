@@ -11,6 +11,7 @@ import static org.flexpay.common.util.CollectionUtils.ar;
 import static org.flexpay.common.util.CollectionUtils.map;
 import org.flexpay.common.util.DateUtil;
 import org.flexpay.common.service.reporting.ReportUtil;
+import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.orgs.persistence.filters.CashboxFilter;
 import org.flexpay.orgs.persistence.filters.PaymentPointsFilter;
 import org.flexpay.orgs.persistence.Cashbox;
@@ -28,7 +29,7 @@ import java.util.Map;
 import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
-public abstract class AccPaymentsReportAction extends CashboxCookieActionSupport {
+public abstract class AccPaymentsReportAction extends FPActionSupport {
 
 	// detailing options
 	private static final int DETAILS_OPTION_PAYMENT_POINT = 1;
@@ -128,7 +129,9 @@ public abstract class AccPaymentsReportAction extends CashboxCookieActionSupport
 	}
 
 	protected Cashbox getCashbox() {
-		return cashboxService.read(new Stub<Cashbox>(cashboxId));
+		//return cashboxService.read(new Stub<Cashbox>(cashboxId));
+		// FIXME
+		return null;
 	}
 
 	/**

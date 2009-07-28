@@ -814,6 +814,7 @@
         ab_region_filter varchar(255) comment 'Region filter',
         ab_town_filter varchar(255) comment 'Town filter',
         payments_payment_point_id bigint comment 'User payment point',
+        payment_collector_id bigint comment 'User payment collector id',
         primary key (id)
     ) comment='User details';
 

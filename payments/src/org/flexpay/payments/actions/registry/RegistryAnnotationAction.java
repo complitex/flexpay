@@ -6,6 +6,7 @@ import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.persistence.registry.RegistryContainer;
 import org.flexpay.common.util.StringUtil;
+import org.flexpay.common.actions.FPActionSupport;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 import org.apache.commons.codec.binary.Base64;
@@ -13,7 +14,7 @@ import org.apache.commons.lang.StringUtils;
 
 import java.util.List;
 
-public class RegistryAnnotationAction extends CashboxCookieActionSupport {
+public class RegistryAnnotationAction extends FPActionSupport {
     /**
      * Symbol used escape special symbols
      */

@@ -5,6 +5,7 @@ import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.process.Process;
 import org.flexpay.common.process.ProcessManager;
 import org.flexpay.common.util.DateUtil;
+import org.flexpay.common.actions.FPActionWithPagerSupport;
 import org.flexpay.orgs.persistence.PaymentPoint;
 import org.flexpay.orgs.persistence.PaymentsCollector;
 import org.flexpay.orgs.persistence.Cashbox;
@@ -19,6 +20,7 @@ import org.flexpay.payments.service.statistics.OperationTypeStatistics;
 import org.flexpay.payments.service.statistics.PaymentsStatisticsService;
 import org.flexpay.payments.service.OperationService;
 import org.flexpay.payments.process.export.TradingDay;
+import org.flexpay.payments.util.config.PaymentsUserPreferences;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
@@ -29,7 +31,7 @@ import java.util.Date;
 import java.util.Set;
 import java.text.SimpleDateFormat;
 
-public class PaymentPointsListMonitorAction extends CashboxCookieWithPagerActionSupport<PaymentPointMonitorContainer> {
+public class PaymentPointsListMonitorAction extends FPActionWithPagerSupport<PaymentPointMonitorContainer> {
 //    private static final String PROCESS_DEFINITION_NAME = "TradingDay";
 
     private static final SimpleDateFormat formatTime = new SimpleDateFormat("HH:mm");
@@ -59,27 +61,14 @@ public class PaymentPointsListMonitorAction extends CashboxCookieWithPagerAction
 
 //        List<org.flexpay.common.process.Process> processes = processManager.getProcesses(processSorterByName, page, null, null, ProcessState.RUNING, PROCESS_DEFINITION_NAME);
 
-        paymentPoints = new ArrayList<PaymentPointMonitorContainer>();
-        if (getCashboxId() == null || getCashboxId() <= 0) {
-            log.error("Cash box does not set");
-            return ERROR;
-        }
-        Cashbox currentCashbox = cashboxService.read(new Stub<Cashbox>(getCashboxId()));
-        if (currentCashbox == null) {
-            log.error("Cash box with id {} does not exist", getCashboxId());
-            return ERROR;
-        }
-        PaymentPoint currentPaymentPoint = paymentPointService.read(new Stub<PaymentPoint>(currentCashbox.getPaymentPoint()));
-        if (currentPaymentPoint == null) {
-            log.error("Payment point does not set for current cash box with if {}", currentCashbox.getId());
-            return ERROR;
-        }
+		paymentPoints = new ArrayList<PaymentPointMonitorContainer>();
+		Long paymentCollectorId = ((PaymentsUserPreferences) getUserPreferences()).getPaymentCollectorId();
+		PaymentsCollector paymentsCollector = paymentsCollectorService.read(new Stub<PaymentsCollector>(paymentCollectorId));
+		if (paymentsCollector == null) {
+			log.error("No payment collector found with id {}", paymentCollectorId);
+			return ERROR;
+		}
 
-        if (currentPaymentPoint.getCollector() == null) {
-            log.error("Collector does not set for current payment point with id {}", currentPaymentPoint.getId());
-            return ERROR;
-        }
-        PaymentsCollector paymentsCollector = paymentsCollectorService.read(new Stub<PaymentsCollector>(currentPaymentPoint.getCollector()));
         Set<PaymentPoint> lPaymentPoints = paymentsCollector.getPaymentPoints();
 //        List<PaymentPoint> lPaymentPoints = paymentPointService.listPoints(CollectionUtils.arrayStack(), page);
 //        for (Process process : processes) {

@@ -4,6 +4,7 @@ import org.flexpay.common.persistence.filter.BeginDateFilter;
 import org.flexpay.common.persistence.filter.EndDateFilter;
 import org.flexpay.common.persistence.filter.ObjectFilter;
 import org.flexpay.common.util.CollectionUtils;
+import org.flexpay.common.actions.FPActionWithPagerSupport;
 import org.flexpay.orgs.persistence.filters.ServiceProviderFilter;
 import org.flexpay.orgs.service.ServiceProviderService;
 import org.flexpay.payments.actions.CashboxCookieWithPagerActionSupport;
@@ -14,7 +15,7 @@ import org.springframework.beans.factory.annotation.Required;
 
 import java.util.List;
 
-public class ServicesListAction extends CashboxCookieWithPagerActionSupport<Service> {
+public class ServicesListAction extends FPActionWithPagerSupport<Service> {
 
 	private BeginDateFilter beginDateFilter = new BeginDateFilter();
 	private EndDateFilter endDateFilter = new EndDateFilter();

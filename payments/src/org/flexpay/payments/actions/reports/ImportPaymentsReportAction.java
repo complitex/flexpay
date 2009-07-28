@@ -13,6 +13,7 @@ import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.DateUtil;
 import org.flexpay.common.util.FPFileUtil;
 import org.flexpay.common.util.SecurityUtil;
+import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.payments.actions.CashboxCookieActionSupport;
 import org.flexpay.payments.reports.payments.PaymentReportData;
 import org.flexpay.payments.reports.payments.PaymentsReporter;
@@ -24,7 +25,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-public class ImportPaymentsReportAction extends CashboxCookieActionSupport {
+public class ImportPaymentsReportAction extends FPActionSupport {
 
 	private BeginDateFilter beginDateFilter = new BeginDateFilter(DateUtil.now());
 	private EndDateFilter endDateFilter = new EndDateFilter(DateUtil.now());
