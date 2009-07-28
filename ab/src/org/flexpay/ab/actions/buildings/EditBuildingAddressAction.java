@@ -1,17 +1,15 @@
 package org.flexpay.ab.actions.buildings;
 
 import org.flexpay.ab.persistence.*;
-import org.flexpay.ab.persistence.filters.StreetFilter;
-import org.flexpay.ab.persistence.filters.TownFilter;
 import org.flexpay.ab.service.AddressAttributeTypeService;
 import org.flexpay.ab.service.BuildingService;
-import org.flexpay.ab.service.StreetService;
 import org.flexpay.ab.service.DistrictService;
+import org.flexpay.ab.service.StreetService;
 import org.flexpay.common.actions.FPActionSupport;
+import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.util.CollectionUtils;
-import org.flexpay.common.exception.FlexPayException;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
@@ -19,24 +17,21 @@ import java.util.Map;
 
 public class EditBuildingAddressAction extends FPActionSupport {
 
-	private TownFilter townFilter = new TownFilter();
-	private StreetFilter streetFilter = new StreetFilter();
+	private String streetFilter;
 	private Building building = Building.newInstance();
 	private BuildingAddress address = new BuildingAddress();
 
 	// type id to value mapping
 	private Map<Long, String> attributeMap = CollectionUtils.treeMap();
 
+	private String crumbCreateKey;
 	private BuildingService buildingService;
 	private StreetService streetService;
 	private DistrictService districtService;
 	private AddressAttributeTypeService addressAttributeTypeService;
 
-	{
-		townFilter.setReadOnly(true);
-	}
-
 	@NotNull
+	@Override
 	public String doExecute() throws Exception {
 
 		if (building.getId() == null || address.getId() == null) {
@@ -59,7 +54,11 @@ public class EditBuildingAddressAction extends FPActionSupport {
 		}
 
 		boolean valid = true;
-		if (!streetFilter.needFilter()) {
+		Long streetFilterLong = 0L;
+		try {
+			streetFilterLong = Long.parseLong(streetFilter);
+		} catch (Exception e) {
+			log.warn("Incorrect street id in filter ({})", streetFilter);
 			addActionError(getText("ab.buildings.create.street_required"));
 			valid = false;
 		}
@@ -71,7 +70,7 @@ public class EditBuildingAddressAction extends FPActionSupport {
 			return INPUT;
 		}
 
-		Street street = streetService.readFull(streetFilter.getSelectedStub());
+		Street street = streetService.readFull(new Stub<Street>(streetFilterLong));
 		addr.setStreet(street);
 		for (Map.Entry<Long, String> attr : attributeMap.entrySet()) {
 			AddressAttributeType type = addressAttributeTypeService.read(new Stub<AddressAttributeType>(attr.getKey()));
@@ -98,13 +97,8 @@ public class EditBuildingAddressAction extends FPActionSupport {
 		}
 		log.debug("Attributes: {}", attributeMap);
 
-		if (address.isNotNew()) {
-			streetFilter.setSelected(address.getStreetStub());
-		}
-
 		District district = districtService.readFull(building.getDistrictStub());
 		assert district != null;
-		townFilter.setSelected(district.getTownStub());
 	}
 
 	/**
@@ -115,24 +109,25 @@ public class EditBuildingAddressAction extends FPActionSupport {
 	 * @return {@link #ERROR} by default
 	 */
 	@NotNull
+	@Override
 	protected String getErrorResult() {
 		return INPUT;
 	}
 
-	public StreetFilter getStreetFilter() {
+	@Override
+	protected void setBreadCrumbs() {
+		if (address.isNew()) {
+			crumbNameKey = crumbCreateKey;
+		}
+		super.setBreadCrumbs();
+	}
+
+	public String getStreetFilter() {
 		return streetFilter;
 	}
 
-	public void setStreetFilter(StreetFilter streetFilter) {
+	public void setStreetFilter(String streetFilter) {
 		this.streetFilter = streetFilter;
-	}
-
-	public TownFilter getTownFilter() {
-		return townFilter;
-	}
-
-	public void setTownFilter(TownFilter townFilter) {
-		this.townFilter = townFilter;
 	}
 
 	public Building getBuilding() {
@@ -167,6 +162,10 @@ public class EditBuildingAddressAction extends FPActionSupport {
 		return getTranslation(type.getTranslations()).getName();
 	}
 
+	public void setCrumbCreateKey(String crumbCreateKey) {
+		this.crumbCreateKey = crumbCreateKey;
+	}
+
 	@Required
 	public void setBuildingService(BuildingService buildingService) {
 		this.buildingService = buildingService;
@@ -186,4 +185,5 @@ public class EditBuildingAddressAction extends FPActionSupport {
 	public void setDistrictService(DistrictService districtService) {
 		this.districtService = districtService;
 	}
+
 }

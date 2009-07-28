@@ -156,7 +156,9 @@ jQuery.autocomplete = function(input, options) {
 
 	function onChange() {
 		// ignore if the following keys are pressed: [del] [shift] [capslock]
-		if( lastKeyPressCode == 46/* || (lastKeyPressCode > 8 && lastKeyPressCode < 32)*/ ) return $results.hide();
+		if( $input.attr("readonly") || lastKeyPressCode == 46/* || (lastKeyPressCode > 8 && lastKeyPressCode < 32)*/ ) {
+            return $results.hide();
+        }
 		var v = $input.val();
 		if (v == prev) return;
 		prev = v;

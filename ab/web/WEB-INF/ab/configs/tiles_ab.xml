@@ -124,7 +124,7 @@
 
 	<definition name="ab.streets.list" extends="ab.layout.standart">
 		<put-attribute name="title" value="ab.street.list.title" />
-		<put-attribute name="body" value="/WEB-INF/jsp/ab/streets_list.jsp" />
+		<put-attribute name="body" value="/WEB-INF/jsp/ab/streets_list_ajax.jsp" />
 	</definition>
 
 	<!-- Town types -->

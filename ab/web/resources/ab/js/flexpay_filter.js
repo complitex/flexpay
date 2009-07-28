@@ -22,6 +22,7 @@ function Filter(name, options) {
         display: "input",
         extraParams: {},
         defaultValue: "",
+        defaultString: "",
         preRequest: true,
         required: true,
         parents: []
@@ -30,7 +31,7 @@ function Filter(name, options) {
     this.options = options;
 
     $("#" + options.rawId).append('<input id="' + options.valueId + '" type="hidden" name="' + name + 'Filter" value="' + options.defaultValue + '" />\n' +
-                                  '<input id="' + options.filterId + '" type="text" class="form-search" value="" />');
+                                  '<input id="' + options.filterId + '" type="text" class="form-search" value="' + options.defaultString + '" />');
 
     this.listeners = [];
     this.eraseFunctions = [];
@@ -59,7 +60,7 @@ function Filter(name, options) {
 
     this.value = $("#" + options.valueId);
     this.string = $("#" + options.filterId);
-    this.string.parent().prepend('<span id="' + options.filterId + '_text" class="filter">' + this.string.val() + '</span>');
+    this.string.parent().prepend('<span id="' + options.filterId + '_text" class="filter" style="display:none;">' + this.string.val() + '</span>');
     this.text = $("#" + options.filterId + "_text");
 
     if (this.justText) {
@@ -164,6 +165,10 @@ function Filter(name, options) {
         this.eraseFunctions.push(func);
     };
 
+    this.displayParents = function(filter) {
+        displayParents(filter);
+    };
+
 };
 
 var FF = {
@@ -226,12 +231,19 @@ var FF = {
         }
     },
 
-    onChange : function (name) {
+    updateFilter : function(name, options) {
+        if (options.readonly) {
+            this.filters[name].readonly = true;
+        }
+        this.filters[name].displayParents(this.filters[name]);
+    },
+
+    onChange : function(name) {
         this.eraseChildFilters(name);
         this.onSelect(name);
     },
 
-    onChange2 : function (name) {
+    onChange2 : function(name) {
         this.filters[name].value.val("");
 //        this.onChange(name);
     },
@@ -293,7 +305,7 @@ var FF = {
             }
             if (parentsFilled) {
                 filter2.string.focus()
-                if (!filter2.readonly || (filter2.readonly && this.getFiltersByParentName(filter2.name).length == 0)) {
+                if (!filter2.readonly) {
                     filter2.string.removeAttr("readonly");
                 }
             }
@@ -311,7 +323,10 @@ var FF = {
                         break;
                     }
                 }
-                if (!filled && params.length > 0) {
+                if (filter2.readonly) {
+                    filter2.string.attr("readonly", true);
+                }
+                if (filter2.readonly || (!filled && params.length > 0)) {
                     filter2.string.removeClass("ac_loading");
                     return;
                 }
@@ -366,6 +381,10 @@ var FF = {
 
     loading : function(id) {
         $("#" + id).append('<div class="col"><img src="' + FP.base + '/resources/common/img/indicator.gif" width="16" height="16" />' + FF.messages.loading + '</div>');
+    },
+
+    removeFilters : function() {
+        this.filters = [];
     },
 
     messages : {

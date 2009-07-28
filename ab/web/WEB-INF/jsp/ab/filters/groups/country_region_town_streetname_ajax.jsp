@@ -22,43 +22,12 @@
         FF.createFilter("street", {
             action: "<s:url action="streetFilterAjax" namespace="/dicts" includeParams="none"/>",
             parents: ["town"],
-            defaultValue: "<s:text name="%{userPreferences.streetFilterValue}" />"
+            defaultValue: "",
+            defaultString: "<s:text name="ab.street.search" />",
+            preRequest: false,
+            required: false
         });
-
-        FF.addListener("street", function(filter) {
-            var id = "result";
-            FF.loading(id);
-            $.post("<s:url action="buildingsListAjax" namespace="/dicts" includeParams="none"/>",
-                    {streetId: filter.value.val()},
-                    function(data) {
-                        $("#" + id).html(data);
-                    });
-        });
-
-        FF.addEraseFunction("street", function(filter) {
-            $("#result").html('<input type="submit" class="btn-exit" '
-                    + 'onclick="$(\'#fobjects\').attr(\'action\',\'<s:url action="buildingDelete" includeParams="none" />\');" '
-                    + 'value="<s:text name="common.delete_selected"/>"/>\n'
-                    + '<input type="button" class="btn-exit" '
-                    + 'onclick="window.location=\'<s:url action="buildingCreate" includeParams="none" />\';" '
-                    + 'value="<s:text name="common.new"/>"/>');
-        });
-
     });
-
-    function pagerAjax(element) {
-        var isSelect = element.name == "pager.pageSize";
-        $.post("<s:url action="buildingsListAjax" namespace="/dicts" includeParams="none"/>",
-                {
-                    streetId: FF.filters["street"].value.val(),
-                    pageSizeChanged: isSelect,
-                    "pager.pageNumber": isSelect ? "" : element.value,
-                    "pager.pageSize": isSelect ? element.value : $('select[name="pager.pageSize"]').val()
-                },
-                function(data) {
-                    $("#result").html(data);
-                });
-    }
 
 </script>
 
@@ -72,7 +41,7 @@
         <td id="town_raw"></td>
     </tr>
 	<tr>
-		<td class="filter"><s:text name="ab.street"/></td>
-		<td id="street_raw" colspan="5"></td>
+        <td class="filter"><s:text name="ab.street"/></td>
+        <td id="street_raw" colspan="5"></td>
 	</tr>
 </table>
