@@ -226,58 +226,51 @@
 		  p:paymentPointService-ref="paymentPointService" />
 
 	<!-- History handlers -->
-	<bean id="orgsHistoryHandlerBase"
-		  abstract="true"
-		  autowire-candidate="false"
-		  parent="historyHandlerBase"
-		  p:historyHandlerHelper-ref="historyHandlerHelper"
-		  p:typeRegistry-ref="classToTypeRegistry" />
-
 	<bean id="bankHistoryHandler"
-		  parent="orgsHistoryHandlerBase"
+		  parent="historyHandlerBase"
 		  p:instanceService-ref="bankService"
 		  p:historyBuilder-ref="bankHistoryBuilder"
 		  class="org.flexpay.orgs.service.history.BankHistoryHandler" />
 
 	<bean id="cashboxHistoryHandler"
-		  parent="orgsHistoryHandlerBase"
+		  parent="historyHandlerBase"
 		  class="org.flexpay.orgs.service.history.CashboxHistoryHandler"
 		  p:cashboxService-ref="cashboxService"
 		  p:historyBuilder-ref="cashboxHistoryBuilder" />
 
 	<bean id="subdivisionHistoryHandler"
-		  parent="orgsHistoryHandlerBase"
+		  parent="historyHandlerBase"
 		  class="org.flexpay.orgs.service.history.SubdivisionHistoryHandler"
 		  p:subdivisionService-ref="subdivisionService"
 		  p:historyBuilder-ref="subdivisionHistoryBuilder" />
 
 	<bean id="paymentsCollectorHistoryHandler"
-		  parent="orgsHistoryHandlerBase"
+		  parent="historyHandlerBase"
 		  p:instanceService-ref="paymentsCollectorService"
 		  p:historyBuilder-ref="paymentsCollectorHistoryBuilder"
 		  class="org.flexpay.orgs.service.history.PaymentsCollectorHistoryHandler" />
 
 	<bean id="serviceOrganizationHistoryHandler"
-		  parent="orgsHistoryHandlerBase"
+		  parent="historyHandlerBase"
 		  class="org.flexpay.orgs.service.history.ServiceOrganizationHistoryHandler"
 		  p:instanceService-ref="serviceOrganizationService"
 		  p:historyBuilder-ref="serviceOrganizationHistoryBuilder"
 		  p:objectsFactory-ref="orgsObjectsFactory" />
 
 	<bean id="serviceProviderHistoryHandler"
-		  parent="orgsHistoryHandlerBase"
+		  parent="historyHandlerBase"
 		  p:instanceService-ref="serviceProviderService"
 		  p:historyBuilder-ref="serviceProviderHistoryBuilder"
 		  class="org.flexpay.orgs.service.history.ServiceProviderHistoryHandler" />
 
 	<bean id="organizationHistoryHandler"
-		  parent="orgsHistoryHandlerBase"
+		  parent="historyHandlerBase"
 		  class="org.flexpay.orgs.service.history.OrganizationHistoryHandler"
 		  p:historyBuilder-ref="organizationHistoryBuilder"
 		  p:organizationService-ref="organizationService" />
 
 	<bean id="paymentPointHistoryHandler"
-		  parent="orgsHistoryHandlerBase"
+		  parent="historyHandlerBase"
 		  class="org.flexpay.orgs.service.history.PaymentPointHistoryHandler"
 		  p:historyBuilder-ref="paymentPointHistoryBuilder"
 		  p:paymentPointService-ref="paymentPointService" />
