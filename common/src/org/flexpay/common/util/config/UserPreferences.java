@@ -3,14 +3,12 @@ package org.flexpay.common.util.config;
 import net.sourceforge.navigator.menu.MenuComponent;
 import org.apache.commons.lang.StringUtils;
 import org.flexpay.common.actions.breadcrumbs.Crumb;
-import org.flexpay.common.util.LanguageUtil;
-import org.flexpay.common.util.SecurityUtil;
-import org.flexpay.common.util.config.ApplicationConfig;
 import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.common.persistence.Language;
+import org.flexpay.common.util.LanguageUtil;
+import org.flexpay.common.util.SecurityUtil;
 import org.springframework.security.GrantedAuthority;
 import org.springframework.security.userdetails.UserDetails;
-import org.springframework.security.userdetails.User;
 
 import java.io.Serializable;
 import java.util.Collections;

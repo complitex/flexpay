@@ -1,28 +1,24 @@
 package org.flexpay.common.dao.impl;
 
-import java.util.List;
-
-import javax.naming.Name;
-
+import org.flexpay.common.dao.UserPreferencesDao;
+import org.flexpay.common.dao.impl.ldap.DnBuilder;
+import org.flexpay.common.dao.impl.ldap.UserPreferencesContextMapper;
+import org.flexpay.common.util.CollectionUtils;
+import org.flexpay.common.util.config.UserPreferences;
+import org.flexpay.common.util.config.UserPreferencesFactory;
+import org.springframework.beans.factory.annotation.Required;
 import org.springframework.ldap.core.DirContextAdapter;
 import org.springframework.ldap.core.DirContextOperations;
 import org.springframework.ldap.core.simple.AbstractParameterizedContextMapper;
 import org.springframework.ldap.core.simple.SimpleLdapTemplate;
-import org.springframework.ldap.filter.AndFilter;
-import org.springframework.ldap.filter.EqualsFilter;
-import org.springframework.beans.factory.annotation.Required;
-import org.flexpay.common.dao.UserPreferencesDao;
-import org.flexpay.common.dao.impl.ldap.DnBuilder;
-import org.flexpay.common.dao.impl.ldap.UserPreferencesContextMapper;
-import org.flexpay.common.util.config.UserPreferences;
-import org.flexpay.common.util.config.UserPreferencesFactory;
-import org.flexpay.common.util.CollectionUtils;
+
+import javax.naming.Name;
+import java.util.List;
 
 /**
- * Spring LDAP implementation of PersonDao. This implementation uses many Spring
- * LDAP features, such as the {@link DirContextAdapter},
- * {@link AbstractParameterizedContextMapper}, and {@link SimpleLdapTemplate}.
- * 
+ * Spring LDAP implementation of PersonDao. This implementation uses many Spring LDAP features, such as the {@link
+ * DirContextAdapter}, {@link AbstractParameterizedContextMapper}, and {@link SimpleLdapTemplate}.
+ *
  * @author Mattias Hellborg Arthursson
  * @author Ulrik Sandberg
  */
@@ -51,7 +47,7 @@ public class LdapUserPreferencesDaoImpl implements UserPreferencesDao {
 	/*
 	 * @see PersonDao#update(Person)
 	 */
-	public void update(UserPreferences person) {
+	public void save(UserPreferences person) {
 		DirContextOperations ctx = ldapTemplate.lookupContext(buildDn(person));
 		mapToContext(person, ctx);
 		ldapTemplate.modifyAttributes(ctx);
@@ -59,10 +55,8 @@ public class LdapUserPreferencesDaoImpl implements UserPreferencesDao {
 
 	public UserPreferences findByUserName(String userName) {
 
-		AndFilter filter = new AndFilter();
-		filter.and(new EqualsFilter("objectclass", "flexpayPerson"));
-		filter.and(dnBuilder.getUserNameFilter(userName));
-		List<UserPreferences> persons = ldapTemplate.search("", filter.encode(), new PersonContextMapper());
+		List<UserPreferences> persons = ldapTemplate.search("",
+				dnBuilder.getUserNameFilter(userName).encode(), new PersonContextMapper());
 		if (persons.isEmpty()) {
 			return null;
 		}

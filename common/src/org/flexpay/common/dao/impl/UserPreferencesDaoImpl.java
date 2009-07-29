@@ -8,8 +8,14 @@ import org.springframework.dao.support.DataAccessUtils;
 public class UserPreferencesDaoImpl extends HibernateDaoSupport implements UserPreferencesDao {
 
 	@Override
-	public void update(UserPreferences preferences) {
-		getHibernateTemplate().update(preferences);
+	public void save(UserPreferences preferences) {
+
+		if (preferences.isNew()) {
+			preferences.setId(null);
+			getHibernateTemplate().save(preferences);
+		} else {
+			getHibernateTemplate().update(preferences);
+		}
 	}
 
 	@Override

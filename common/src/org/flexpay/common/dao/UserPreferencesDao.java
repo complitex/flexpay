@@ -8,7 +8,7 @@ import org.flexpay.common.util.config.UserPreferences;
  */
 public interface UserPreferencesDao {
 
-	void update(UserPreferences preferences);
+	void save(UserPreferences preferences);
 
 	UserPreferences findByUserName(String uid);
 }

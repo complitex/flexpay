@@ -19,7 +19,11 @@ public class PaymentsUserPreferences extends AbUserPreferences {
 	}
 
 	public String getPaymentPointIdStr() {
-		return paymentPointId == null ? "" : paymentPointId.toString();
+		return paymentPointId == null ? "0" : paymentPointId.toString();
+	}
+
+	public String getPaymentCollectorIdStr() {
+		return paymentCollectorId == null ? "0" : paymentCollectorId.toString();
 	}
 
 	public Long getPaymentCollectorId() {
