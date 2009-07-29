@@ -221,11 +221,6 @@ public class ActionContext implements Serializable {
 		if (preferences != null) {
 			preferences.setLocale(locale);
 		}
-		try {
-			throw new RuntimeException("Context: " + this.toString());
-		} catch (Exception e) {
-			log.error("Locale set: " + locale, e);
-		}
     }
 
     /**

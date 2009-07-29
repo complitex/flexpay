@@ -4,7 +4,10 @@ import org.flexpay.common.dao.UserPreferencesDao;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.service.UserPreferencesService;
+import org.flexpay.common.service.UserPreferencesDefaults;
 import org.flexpay.common.util.config.UserPreferences;
+import org.flexpay.common.util.config.UserPreferencesFactory;
+import org.flexpay.common.util.CollectionUtils;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,11 +15,15 @@ import org.springframework.beans.factory.annotation.Required;
 import org.springframework.dao.DataAccessException;
 import org.springframework.security.userdetails.UsernameNotFoundException;
 
+import java.util.List;
+
 public class UserPreferencesServiceImpl implements UserPreferencesService {
 
 	private final Logger log = LoggerFactory.getLogger(getClass());
 
+	private List<UserPreferencesDefaults> defaultsSetters = CollectionUtils.list();
 	private UserPreferencesDao userPreferencesDao;
+	private UserPreferencesFactory userPreferencesFactory;
 
 	/**
 	 * Locates the user based on the username. In the actual implementation, the search may possibly be case insensitive,
@@ -39,8 +46,14 @@ public class UserPreferencesServiceImpl implements UserPreferencesService {
 
 		UserPreferences preferences = userPreferencesDao.findByUserName(username);
 		if (preferences == null) {
-			throw new UsernameNotFoundException("Cannot load user: " + username);
+			preferences = userPreferencesFactory.newInstance();
 		}
+
+		// init defaults if needed
+		for (UserPreferencesDefaults setter : defaultsSetters) {
+			setter.setDefaults(preferences);
+		}
+
 		return preferences;
 	}
 
@@ -53,11 +66,11 @@ public class UserPreferencesServiceImpl implements UserPreferencesService {
 	 *          if preferences validation fails
 	 */
 	@Override
-	public UserPreferences update(@NotNull UserPreferences preferences) throws FlexPayExceptionContainer {
+	public UserPreferences save(@NotNull UserPreferences preferences) throws FlexPayExceptionContainer {
 		validate(preferences);
 
 		log.debug("Updating user preferences {}", preferences);
-		userPreferencesDao.update(preferences);
+		userPreferencesDao.save(preferences);
 		return preferences;
 	}
 
@@ -77,5 +90,14 @@ public class UserPreferencesServiceImpl implements UserPreferencesService {
 	@Required
 	public void setUserPreferencesDao(UserPreferencesDao userPreferencesDao) {
 		this.userPreferencesDao = userPreferencesDao;
+	}
+
+	@Required
+	public void setUserPreferencesFactory(UserPreferencesFactory userPreferencesFactory) {
+		this.userPreferencesFactory = userPreferencesFactory;
+	}
+
+	public void setUserPreferencesDefaults(UserPreferencesDefaults defaultsSetter) {
+		defaultsSetters.add(defaultsSetter);
 	}
 }

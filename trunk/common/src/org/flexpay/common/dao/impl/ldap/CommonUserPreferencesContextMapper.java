@@ -27,6 +27,10 @@ public class CommonUserPreferencesContextMapper implements UserPreferencesContex
 	@Override
 	public void doMapToContext(DirContextOperations ctx, UserPreferences preferences) {
 
+		if (!preferences.getObjectClasses().contains("flexpayPerson")) {
+			ctx.addAttributeValue("objectclass", "flexpayPerson");
+			preferences.getObjectClasses().add("flexpayPerson");
+		}
 		ctx.setAttributeValue("flexpayPreferedLocale", preferences.getLanguageCode());
 		ctx.setAttributeValue("flexpayPreferedPagerSize", String.valueOf(preferences.getPageSize()));
 	}

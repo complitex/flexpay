@@ -54,12 +54,25 @@
 		  p:dnBuilder-ref="uidLdapDnBuilder"
 		  p:userPreferencesFactory-ref="userPreferencesFactory" />
 
+	<bean id="userPreferencesServiceFactory"
+		  class="org.flexpay.common.service.imp.UserPreferencesServiceFactory" />
+
+	<bean id="userPreferencesDefaultsCommon"
+		  autowire-candidate="false"
+		  class="org.flexpay.common.service.imp.UserPreferencesDefaultsCommon" />
+
 	<!--<bean id="userPreferencesService"-->
-		  <!--class="org.flexpay.common.service.imp.UserPreferencesServiceImpl"-->
-		  <!--p:userPreferencesDao-ref="ldapUserPreferencesDao" />-->
+		  <!--factory-bean="userPreferencesServiceFactory"-->
+		  <!--factory-method="getInstance"-->
+		  <!--p:userPreferencesDao-ref="ldapUserPreferencesDao"-->
+		  <!--p:userPreferencesFactory-ref="userPreferencesFactory"-->
+		  <!--p:userPreferencesDefaults-ref="userPreferencesDefaultsCommon" />-->
 
 	<bean id="userPreferencesService"
-		  class="org.flexpay.common.service.imp.UserPreferencesServiceImpl"
-		  p:userPreferencesDao-ref="userPreferencesDao" />
+		  factory-bean="userPreferencesServiceFactory"
+		  factory-method="getInstance"
+		  p:userPreferencesDao-ref="userPreferencesDao"
+		  p:userPreferencesFactory-ref="userPreferencesFactory"
+		  p:userPreferencesDefaults-ref="userPreferencesDefaultsCommon" />
 
 </beans>

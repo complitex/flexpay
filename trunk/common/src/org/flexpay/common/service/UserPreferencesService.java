@@ -33,5 +33,5 @@ public interface UserPreferencesService extends UserDetailsService {
 	 * @return Updated preferences back
 	 * @throws FlexPayExceptionContainer if preferences validation fails
 	 */
-	UserPreferences update(@NotNull UserPreferences preferences) throws FlexPayExceptionContainer;
+	UserPreferences save(@NotNull UserPreferences preferences) throws FlexPayExceptionContainer;
 }

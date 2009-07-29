@@ -5,7 +5,6 @@ import org.flexpay.common.util.config.UserPreferences;
 import org.springframework.ldap.core.DirContextOperations;
 
 import java.util.List;
-import java.util.Collection;
 
 /**
  * Mapper that holds a set of mappers and delegates all the work to them
@@ -43,9 +42,7 @@ public class CompositeUserPreferencesContextMapper implements UserPreferencesCon
 	public void doMapToContext(DirContextOperations ctx, UserPreferences preferences) {
 
 		for (UserPreferencesContextMapper mapper : mappers) {
-			if (mapper.supports(preferences)) {
-				mapper.doMapToContext(ctx, preferences);
-			}
+			mapper.doMapToContext(ctx, preferences);
 		}
 	}
 

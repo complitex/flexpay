@@ -31,6 +31,12 @@ public class AbUserPreferencesContextMapper implements UserPreferencesContextMap
 	 */
 	@Override
 	public void doMapToContext(DirContextOperations ctx, UserPreferences preferences) {
+
+		if (!preferences.getObjectClasses().contains("flexpayAbPerson")) {
+			ctx.addAttributeValue("objectclass", "flexpayAbPerson");
+			preferences.getObjectClasses().add("flexpayAbPerson");
+		}
+
 		AbUserPreferences userPreferences = (AbUserPreferences) preferences;
 		ctx.setAttributeValue("flexpayAbCountryFilter", userPreferences.getCountryFilterValue());
 		ctx.setAttributeValue("flexpayAbRegionFilter", userPreferences.getRegionFilterValue());
