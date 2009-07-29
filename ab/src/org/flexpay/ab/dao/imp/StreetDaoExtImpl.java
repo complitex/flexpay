@@ -45,6 +45,7 @@ public class StreetDaoExtImpl extends HibernateDaoSupport implements StreetDaoEx
 		whereClause.append(" where s.parent.id=").append(townId).append(" and s.status=").append(Street.STATUS_ACTIVE);
 		sorter.setWhere(whereClause);
 		hql.append(whereClause);
+		cnthql.append(whereClause);
 
 		StringBuilder orderByClause = new StringBuilder();
 		sorter.setOrderBy(orderByClause);

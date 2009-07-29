@@ -70,6 +70,7 @@ public class ApartmentDaoExtImpl extends SimpleJdbcDaoSupport implements Apartme
 		whereClause.append(" where a.building.id=").append(buildingId).append(" and a.status=").append(Apartment.STATUS_ACTIVE);
 		sorter.setWhere(whereClause);
 		hql.append(whereClause);
+		cntHql.append(whereClause);
 
 		StringBuilder orderByClause = new StringBuilder();
 		sorter.setOrderBy(orderByClause);
