@@ -6,14 +6,8 @@ import org.flexpay.common.service.CurrencyInfoService;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.DateUtil;
 import org.flexpay.common.util.TranslationUtil;
-import org.flexpay.orgs.persistence.Organization;
-import org.flexpay.orgs.persistence.PaymentPoint;
-import org.flexpay.orgs.persistence.ServiceProvider;
-import org.flexpay.orgs.persistence.Cashbox;
-import org.flexpay.orgs.service.OrganizationService;
-import org.flexpay.orgs.service.PaymentPointService;
-import org.flexpay.orgs.service.ServiceProviderService;
-import org.flexpay.orgs.service.CashboxService;
+import org.flexpay.orgs.persistence.*;
+import org.flexpay.orgs.service.*;
 import org.flexpay.payments.persistence.*;
 import static org.flexpay.payments.reports.payments.PaymentsPrintInfoData.OperationPrintInfo;
 import org.flexpay.payments.reports.payments.*;
@@ -48,6 +42,7 @@ public class PaymentsReporterImpl implements PaymentsReporter {
 	// required services
 	private DocumentService documentService;
 	private OrganizationService organizationService;
+	private PaymentsCollectorService paymentsCollectorService;
 	private PaymentPointService paymentPointService;
 	private CashboxService cashboxService;
 	private SPService spService;
@@ -240,20 +235,18 @@ public class PaymentsReporterImpl implements PaymentsReporter {
 	}
 
 	@Override
-	public AccPaymentReportData getAccPaymentsReportData(AccPaymentsReportRequest reportRequest, Cashbox cashbox) {
+	public AccPaymentReportData getAccPaymentsReportData(AccPaymentsReportRequest reportRequest, Stub<PaymentsCollector> paymentsCollectorStub) {
 
 		AccPaymentReportData result = new AccPaymentReportData();
-		PaymentPoint paymentPoint = getPaymentPoint(cashbox);
-		Organization collectorOrganization = organizationService.readFull(paymentPoint.getCollector().getOrganizationStub());
+		PaymentsCollector paymentsCollector = paymentsCollectorService.read(paymentsCollectorStub);
+		Organization collectorOrganization = organizationService.readFull(paymentsCollector.getOrganizationStub());
 
-		result.setAccountantFio("Коваль А.Н."); // TODO : use actual accountant name
 		result.setCreationDate(new Date());
 		result.setBeginDate(reportRequest.getBeginDate());
 		result.setEndDate(reportRequest.getEndDate());
 		result.setDetailses(fillDetailses(reportRequest));
-		result.setPaymentPointName(paymentPoint.getName(reportRequest.getLocale()));
-		result.setPaymentPointAddress(paymentPoint.getAddress());
 		result.setPaymentCollectorOrgName(collectorOrganization.getName(reportRequest.getLocale()));
+		result.setPaymentCollectorOrgAddress(collectorOrganization.getJuridicalAddress());
 
 		return result;
 	}
@@ -527,5 +520,10 @@ public class PaymentsReporterImpl implements PaymentsReporter {
 	@Required
 	public void setCashboxService(CashboxService cashboxService) {
 		this.cashboxService = cashboxService;
+	}
+
+	@Required
+	public void setPaymentsCollectorService(PaymentsCollectorService paymentsCollectorService) {
+		this.paymentsCollectorService = paymentsCollectorService;
 	}
 }

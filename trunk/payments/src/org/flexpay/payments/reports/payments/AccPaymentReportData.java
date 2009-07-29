@@ -9,8 +9,7 @@ public class AccPaymentReportData {
 	private Date beginDate;
 	private Date endDate;
 	private String paymentCollectorOrgName;
-	private String paymentPointName;
-	private String paymentPointAddress;
+	private String paymentCollectorOrgAddress;
 	private String accountantFio;
 	private Date creationDate;
 
@@ -145,20 +144,12 @@ public class AccPaymentReportData {
 		this.endDate = endDate;
 	}
 
-	public String getPaymentPointName() {
-		return paymentPointName;
+	public String getPaymentCollectorOrgAddress() {
+		return paymentCollectorOrgAddress;
 	}
 
-	public void setPaymentPointName(String paymentPointName) {
-		this.paymentPointName = paymentPointName;
-	}
-
-	public String getPaymentPointAddress() {
-		return paymentPointAddress;
-	}
-
-	public void setPaymentPointAddress(String paymentPointAddress) {
-		this.paymentPointAddress = paymentPointAddress;
+	public void setPaymentCollectorOrgAddress(String paymentCollectorOrgAddress) {
+		this.paymentCollectorOrgAddress = paymentCollectorOrgAddress;
 	}
 
 	public String getAccountantFio() {

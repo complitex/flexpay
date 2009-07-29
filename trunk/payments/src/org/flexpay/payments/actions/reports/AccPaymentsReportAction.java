@@ -15,12 +15,13 @@ import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.orgs.persistence.filters.CashboxFilter;
 import org.flexpay.orgs.persistence.filters.PaymentPointsFilter;
 import org.flexpay.orgs.persistence.Cashbox;
+import org.flexpay.orgs.persistence.PaymentsCollector;
 import org.flexpay.orgs.service.CashboxService;
 import org.flexpay.orgs.service.PaymentPointService;
-import org.flexpay.payments.actions.CashboxCookieActionSupport;
 import org.flexpay.payments.reports.payments.PaymentsReporter;
 import org.flexpay.payments.reports.payments.AccPaymentsReportRequest;
 import org.flexpay.payments.reports.payments.AccPaymentReportData;
+import org.flexpay.payments.util.config.PaymentsUserPreferences;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
@@ -70,14 +71,13 @@ public abstract class AccPaymentsReportAction extends FPActionSupport {
 		}
 
 		AccPaymentsReportRequest request = buildReportRequest();
-		AccPaymentReportData data = paymentsReporter.getAccPaymentsReportData(request, getCashbox());
+		Long paymentsCollectorId = ((PaymentsUserPreferences) getUserPreferences()).getPaymentCollectorId();
+		AccPaymentReportData data = paymentsReporter.getAccPaymentsReportData(request, new Stub<PaymentsCollector>(paymentsCollectorId));
 		data.setAccountantFio(getUserPreferences().getFullName());
 
 		Map<?, ?> params = map(
-				ar("beginDate", "endDate", "creationDate", "paymentPointName", "paymentPointAddress",
-						"paymentCollectorOrgName", "accountantFio"),
-				ar(data.getBeginDate(), data.getEndDate(), data.getCreationDate(), data.getPaymentPointName(), data.getPaymentPointAddress(),
-						data.getPaymentCollectorOrgName(), data.getAccountantFio()));
+				ar("beginDate", "endDate", "creationDate", "paymentCollectorOrgAddress", "paymentCollectorOrgName", "accountantFio"),
+				ar(data.getBeginDate(), data.getEndDate(), data.getCreationDate(), data.getPaymentCollectorOrgAddress(), data.getPaymentCollectorOrgName(), data.getAccountantFio()));
 		JRDataSource dataSource = new JRBeanCollectionDataSource(data.getDetailses());
 
 		String reportName = ensureReportTemplateUploaded(request);
