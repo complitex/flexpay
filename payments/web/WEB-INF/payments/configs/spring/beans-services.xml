@@ -120,6 +120,7 @@
 	<bean id="paymentsReporter"
 		  class="org.flexpay.payments.reports.payments.impl.PaymentsReporterImpl"
 		  p:organizationService-ref="organizationService"
+		  p:paymentsCollectorService-ref="paymentsCollectorService"
 		  p:paymentPointService-ref="paymentPointService"
 		  p:cashboxService-ref="cashboxService"
 		  p:documentService-ref="documentService"

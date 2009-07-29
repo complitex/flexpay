@@ -8,13 +8,6 @@
 	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
 		<defaultValueExpression><![CDATA["H:/projects/flexpay/payments/web/WEB-INF/payments/reports/"]]></defaultValueExpression>
 	</parameter>
-	<parameter name="creationDate" class="java.util.Date" isForPrompting="false"/>
-	<parameter name="beginDate" class="java.util.Date" isForPrompting="false"/>
-	<parameter name="endDate" class="java.util.Date" isForPrompting="false"/>
-	<parameter name="paymentPointName" class="java.lang.String" isForPrompting="false"/>
-	<parameter name="paymentPointAddress" class="java.lang.String" isForPrompting="false"/>
-	<parameter name="paymentCollectorOrgName" class="java.lang.String" isForPrompting="false"/>
-	<parameter name="accountantFio" class="java.lang.String" isForPrompting="false"/>
 	<field name="objectId" class="java.lang.Long"/>
 	<field name="divisionName" class="java.lang.String"/>
 	<field name="divisionAddress" class="java.lang.String"/>

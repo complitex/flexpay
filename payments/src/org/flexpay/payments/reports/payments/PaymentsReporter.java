@@ -3,6 +3,7 @@ package org.flexpay.payments.reports.payments;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.orgs.persistence.PaymentPoint;
 import org.flexpay.orgs.persistence.Cashbox;
+import org.flexpay.orgs.persistence.PaymentsCollector;
 import org.flexpay.payments.persistence.Operation;
 import org.flexpay.payments.service.Roles;
 import org.springframework.security.annotation.Secured;
@@ -66,5 +67,5 @@ public interface PaymentsReporter {
 	PaymentsPrintInfoData getReturnedPaymentsPrintFormData(Date begin, Date end, Cashbox cashbox, Locale locale);
 
 	@Secured(Roles.PAYMENTS_REPORT)
-	AccPaymentReportData getAccPaymentsReportData(AccPaymentsReportRequest reportRequest, Cashbox cashbox);	
+	AccPaymentReportData getAccPaymentsReportData(AccPaymentsReportRequest reportRequest, Stub<PaymentsCollector> paymentsCollectorStub);	
 }

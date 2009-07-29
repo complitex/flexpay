@@ -11,8 +11,7 @@
 	<parameter name="creationDate" class="java.util.Date" isForPrompting="false"/>
 	<parameter name="beginDate" class="java.util.Date" isForPrompting="false"/>
 	<parameter name="endDate" class="java.util.Date" isForPrompting="false"/>
-	<parameter name="paymentPointName" class="java.lang.String" isForPrompting="false"/>
-	<parameter name="paymentPointAddress" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="paymentCollectorOrgAddress" class="java.lang.String" isForPrompting="false"/>
 	<parameter name="paymentCollectorOrgName" class="java.lang.String" isForPrompting="false"/>
 	<parameter name="accountantFio" class="java.lang.String" isForPrompting="false"/>
 	<field name="objectId" class="java.lang.Long"/>
@@ -112,14 +111,14 @@
 				<textElement textAlignment="Center">
 					<font isBold="true"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$P{paymentCollectorOrgName} + " " + $P{paymentPointName}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{paymentCollectorOrgName}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="146" y="44" width="256" height="16"/>
 				<textElement textAlignment="Center">
 					<font isBold="true"/>
 				</textElement>
-				<textFieldExpression class="java.lang.String"><![CDATA[$P{paymentPointAddress}]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{paymentCollectorOrgAddress}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="146" y="15" width="256" height="15"/>

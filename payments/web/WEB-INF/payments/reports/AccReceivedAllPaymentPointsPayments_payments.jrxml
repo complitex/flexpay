@@ -3,14 +3,7 @@
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
 	<style name="LiberationSans-Regular" isDefault="true" fontName="LiberationSans-Regular" fontSize="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="fonts/LiberationSans-Regular.ttf" pdfEncoding="Cp1251" isPdfEmbedded="true"/>
-	<style name="LiberationSans-Bold" isDefault="false" style="LiberationSans-Regular" fontName="LiberationSans-Bold" isBold="true" pdfFontName="fonts/LiberationSans-Bold.ttf" isPdfEmbedded="true"/>
-	<parameter name="creationDate" class="java.util.Date" isForPrompting="false"/>
-	<parameter name="beginDate" class="java.util.Date" isForPrompting="false"/>
-	<parameter name="endDate" class="java.util.Date" isForPrompting="false"/>
-	<parameter name="paymentPointName" class="java.lang.String" isForPrompting="false"/>
-	<parameter name="paymentPointAddress" class="java.lang.String" isForPrompting="false"/>
-	<parameter name="paymentCollectorOrgName" class="java.lang.String" isForPrompting="false"/>
-	<parameter name="accountantFio" class="java.lang.String" isForPrompting="false"/>
+	<style name="LiberationSans-Bold" isDefault="false" style="LiberationSans-Regular" fontName="LiberationSans-Bold" isBold="true" pdfFontName="fonts/LiberationSans-Bold.ttf" isPdfEmbedded="true"/>	
 	<field name="objectId" class="java.lang.Long"/>
 	<field name="divisionName" class="java.lang.String"/>
 	<field name="divisionAddress" class="java.lang.String"/>
