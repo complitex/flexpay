@@ -48,11 +48,14 @@ public abstract class Job implements Runnable {
 
 		JobManager jobMgr = JobManager.getInstance();
 		setStart(new Date());
-		log.info("Job {} started", getId());
+
+		// prepare process logger
+		ProcessLogger.setThreadProcessId(processId);
+
+		Logger plog = ProcessLogger.getLogger(getClass());
+		plog.info("Job {} started", getId());
 
 		try {
-			// prepare process logger
-			ProcessLogger.setThreadProcessId(processId);
 
 			// setup security context
 			Authentication auth = (Authentication) parameters.get(ProcessManager.PARAM_SECURITY_CONTEXT);
@@ -61,7 +64,7 @@ public abstract class Job implements Runnable {
 			// execute
 			String transition = execute(parameters);
 
-			log.info("Job with id = {} completed with status: {}", getId(), transition);
+			plog.info("Job with id = {} completed with status: {}", getId(), transition);
 
 			if (transition.equals(RESULT_ERROR)) {
 				parameters.put(STATUS_ERROR, Boolean.TRUE);
@@ -72,12 +75,12 @@ public abstract class Job implements Runnable {
 		} catch (Throwable e) {
 			if (e instanceof FlexPayException) {
 				FlexPayException ex = (FlexPayException) e;
-				ex.error(log, "Job with id #{} completed with exception", getId());
+				ex.error(plog, "Job with id #{} completed with exception", getId());
 			} else if (e instanceof FlexPayExceptionContainer) {
 				FlexPayExceptionContainer ex = (FlexPayExceptionContainer) e;
-				ex.error(log, "Job with id #{} completed with exception", getId());
+				ex.error(plog, "Job with id #{} completed with exception", getId());
 			} else {
-				log.error("Job with id = " + getId() + " completed with exception", e);
+				plog.error("Job with id = " + getId() + " completed with exception", e);
 			}
 			parameters.put(STATUS_ERROR, Boolean.TRUE);
 			SecurityContextHolder.clearContext();
