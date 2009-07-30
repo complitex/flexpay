@@ -6,6 +6,7 @@
 		<td class="th" width="1%">&nbsp;</td>
 		<td class="th"><s:text name="ab.from"/></td>
 		<td class="th"><s:text name="ab.till"/></td>
+        <td class="th"><s:text name="common.language"/></td>
 		<td class="th"><s:text name="ab.town"/></td>
 	</tr>
 	<s:set name="index" value="-1" />
@@ -28,15 +29,17 @@
 						<s:property value="format(end)"/>
 					</s:if>
 				</td>
+                <td class="col">
+                    <s:property value="getLangName(lang)"/>
+                </td>
 				<td class="col">
 					<s:property value="name"/>
 				</td>
 			</tr>
 		</s:iterator>
 	</s:iterator>
-
 	<tr>
-		<td colspan="4">
+		<td colspan="5">
 			<input type="button" class="btn-exit"
 				   onclick="window.location='<s:url action='townEdit' includeParams="none"><s:param name="town.id" value="%{object.id}"/></s:url>';"
 				   value="<s:text name="common.edit"/>"/>

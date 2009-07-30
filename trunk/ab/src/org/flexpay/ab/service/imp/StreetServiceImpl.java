@@ -373,6 +373,26 @@ public class StreetServiceImpl extends NameTimeDependentServiceImpl<
 	}
 
 	/**
+	 * Disable streets
+	 *
+	 * @param objectIds Streets identifiers
+	 */
+	@Transactional (readOnly = false)
+	@Override
+	public void disableByIds(@NotNull Collection<Long> objectIds) {
+		for (Long id : objectIds) {
+			Street street = streetDao.read(id);
+			if (street != null) {
+				street.disable();
+				streetDao.update(street);
+
+				modificationListener.onDelete(street);
+				log.debug("Disabled: {}", street);
+			}
+		}
+	}
+
+	/**
 	 * {@inheritDoc}
 	 */
 	@Override

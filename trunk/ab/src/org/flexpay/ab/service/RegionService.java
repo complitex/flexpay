@@ -1,23 +1,46 @@
 package org.flexpay.ab.service;
 
+import org.apache.commons.collections.ArrayStack;
 import org.flexpay.ab.persistence.*;
 import org.flexpay.ab.persistence.filters.RegionFilter;
-import org.flexpay.common.service.NameTimeDependentService;
-import org.flexpay.common.service.ParentService;
-import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
-import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
-import org.flexpay.common.dao.paging.Page;
-import org.apache.commons.collections.ArrayStack;
-import org.springframework.security.annotation.Secured;
+import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
+import org.flexpay.common.service.NameTimeDependentService;
+import org.flexpay.common.service.ParentService;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.security.annotation.Secured;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 
 public interface RegionService extends
 		ParentService<RegionFilter>,
 		NameTimeDependentService<RegionName, RegionNameTemporal, Region, RegionNameTranslation> {
+
+	/**
+	 * Create Region object
+	 *
+	 * @param region Region object to save
+	 * @return saved object back
+	 * @throws FlexPayExceptionContainer if validation fails
+	 */
+	@Secured (Roles.REGION_ADD)
+	Region create(@NotNull Region region) throws FlexPayExceptionContainer;
+
+	/**
+	 * Update Region object
+	 *
+	 * @param region Region object to save
+	 * @return saved object back
+	 * @throws FlexPayExceptionContainer if validation fails
+	 */
+	@Secured (Roles.REGION_CHANGE)
+	Region update(@NotNull Region region) throws FlexPayExceptionContainer;
 
 	/**
 	 * Initialize parent filter. Possibly taking in account upper level forefather filter
@@ -89,6 +112,10 @@ public interface RegionService extends
 	@Secured(Roles.REGION_READ)
 	List<RegionName> findNames(ArrayStack filters, Page pager) throws FlexPayException;
 
+	@Secured (Roles.REGION_READ)
+	@NotNull
+	List<RegionName> findNames(@NotNull Stub<Country> stub, Page pager) throws FlexPayException;
+
 	/**
 	 * Get a list of available objects
 	 *
@@ -109,6 +136,16 @@ public interface RegionService extends
 	List<Region> find(ArrayStack filters, Page pager);
 
 	/**
+	 * Get a list of available objects
+	 *
+	 * @param stub Parent stub
+	 * @param pager   Page
+	 * @return List of Objects
+	 */
+	@Secured (Roles.REGION_READ)
+	List<Region> findSimple(@NotNull Stub<Country> stub, Page pager);
+
+	/**
 	 * Disable objects
 	 *
 	 * @param objects Objects to disable
@@ -117,6 +154,16 @@ public interface RegionService extends
 	 */
 	@Secured(Roles.REGION_DELETE)
 	void disable(Collection<Region> objects) throws FlexPayExceptionContainer;
+
+	/**
+	 * Disable objects
+	 *
+	 * @param objectIds IDs of objects to disable
+	 * @throws org.flexpay.common.exception.FlexPayExceptionContainer
+	 *          if failure occurs
+	 */
+	@Secured (Roles.REGION_DELETE)
+	void disableByIds(@NotNull Collection<Long> objectIds);
 
 	/**
 	 * Update object name translations

@@ -1,46 +1,50 @@
 package org.flexpay.ab.actions.town;
 
-import org.apache.commons.collections.ArrayStack;
-import org.flexpay.ab.actions.nametimedependent.DeleteAction;
-import org.flexpay.ab.persistence.Town;
-import org.flexpay.ab.persistence.TownName;
-import org.flexpay.ab.persistence.TownNameTemporal;
-import org.flexpay.ab.persistence.TownNameTranslation;
-import org.flexpay.ab.persistence.filters.CountryFilter;
-import org.flexpay.ab.persistence.filters.RegionFilter;
+import org.flexpay.ab.service.TownService;
+import org.flexpay.common.actions.FPActionSupport;
+import static org.flexpay.common.util.CollectionUtils.set;
+import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Required;
 
-public class TownDeleteAction extends DeleteAction<
-		TownName, TownNameTemporal, Town, TownNameTranslation> {
+import java.util.Set;
 
-	private CountryFilter countryFilter = new CountryFilter();
-	private RegionFilter regionFilter = new RegionFilter();
+public class TownDeleteAction extends FPActionSupport {
 
-	public CountryFilter getCountryFilter() {
-		return countryFilter;
+	private Set<Long> objectIds = set();
+
+	private TownService townService;
+
+	@NotNull
+	public String doExecute() throws Exception {
+
+		townService.disableByIds(objectIds);
+
+		return REDIRECT_SUCCESS;
 	}
 
-	public void setCountryFilter(CountryFilter countryFilter) {
-		this.countryFilter = countryFilter;
+	/**
+	 * Get default error execution result
+	 * <p/>
+	 * If return code starts with a {@link #PREFIX_REDIRECT} all error messages are stored in a session
+	 *
+	 * @return {@link #ERROR} by default
+	 */
+	@NotNull
+	protected String getErrorResult() {
+		return REDIRECT_SUCCESS;
 	}
 
-	public RegionFilter getRegionFilter() {
-		return regionFilter;
+	public Set<Long> getObjectIds() {
+		return objectIds;
 	}
 
-	public void setRegionFilter(RegionFilter regionFilter) {
-		this.regionFilter = regionFilter;
+	public void setObjectIds(Set<Long> objectIds) {
+		this.objectIds = objectIds;
 	}
 
-	protected ArrayStack getFilters() {
-		ArrayStack filters = new ArrayStack();
-		filters.push(countryFilter);
-		filters.push(regionFilter);
-		return filters;
-	}
-
-	protected void setFilters(ArrayStack filters) {
-		regionFilter = (RegionFilter) filters.peek(0);
-		countryFilter = (CountryFilter) filters.peek(1);
+	@Required
+	public void setTownService(TownService townService) {
+		this.townService = townService;
 	}
 
 }

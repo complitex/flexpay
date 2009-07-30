@@ -11,10 +11,10 @@
         <td colspan="4">
             <%@include file="/WEB-INF/jsp/common/filter/pager/pager.jsp" %>
             <input type="submit" class="btn-exit"
-                   onclick="$('#fobjects').attr('action','<s:url action="buildingDelete" includeParams="none" />');"
+                   onclick="$('#fobjects').attr('action','<s:url action="districtDelete" includeParams="none" />');"
                    value="<s:text name="common.delete_selected"/>"/>
             <input type="button" class="btn-exit"
-                   onclick="window.location = '<s:url action="buildingCreate" includeParams="none" />'"
+                   onclick="window.location = '<s:url action="districtEdit" includeParams="none"><s:param name="district.id" value="0" /></s:url>';"
                    value="<s:text name="common.new"/>"/>
         </td>
     </tr>
@@ -23,22 +23,23 @@
         <td class="th" width="1%">
             <input type="checkbox" onchange="FP.setCheckboxes(this.checked, 'objectIds');">
         </td>
-        <td class="th"><s:text name="ab.building"/></td>
-        <td class="th">&nbsp;</td>
+        <td class="th" width="63%"><s:text name="ab.district" /></td>
+        <td class="th" width="35%">&nbsp;</td>
     </tr>
-    <s:iterator value="%{buildings}" status="status">
+    <s:iterator value="%{districtsNames}" status="status">
         <tr valign="middle" class="cols_1">
             <td class="col_1s" align="right">
-                <s:property	value="%{#status.index + pager.thisPageFirstElementNumber + 1}"/>
+                <s:property value="%{#status.index + pager.thisPageFirstElementNumber + 1}" />&nbsp;
             </td>
             <td class="col">
-                <input type="checkbox" value="<s:property value="%{id}"/>" name="objectIds"/>
+                <input type="checkbox" value="<s:property value="%{object.id}"/>" name="objectIds"/>
             </td>
             <td class="col">
-                <a href="<s:url action="apartmentsList"><s:param name="buildingFilter" value="%{id}" /></s:url>"><s:property value="%{@org.flexpay.ab.util.TranslationUtil@getBuildingNumber(buildingAttributes, userPreferences.locale)}"/></a>
+                <s:property value="%{getTranslation(translations).name}" />
             </td>
             <td class="col">
-                <a href="<s:url action="buildingView"><s:param name="building.id" value="%{building.id}"/></s:url>"><s:text name="common.view"/></a>
+                <a href="<s:url action="districtView"><s:param name="object.id" value="%{object.id}" /></s:url>"><s:text name="common.view" /></a>&nbsp;
+                <a href="<s:url action="districtEdit"><s:param name="district.id" value="%{object.id}" /></s:url>"><s:text name="common.edit" /></a>
             </td>
         </tr>
     </s:iterator>
@@ -46,10 +47,10 @@
         <td colspan="4">
             <%@include file="/WEB-INF/jsp/common/filter/pager/pager.jsp" %>
             <input type="submit" class="btn-exit"
-                   onclick="$('#fobjects').attr('action','<s:url action="buildingDelete" includeParams="none" />');"
+                   onclick="$('#fobjects').attr('action','<s:url action="districtDelete" includeParams="none" />');"
                    value="<s:text name="common.delete_selected"/>"/>
             <input type="button" class="btn-exit"
-                   onclick="window.location = '<s:url action="buildingCreate" includeParams="none" />'"
+                   onclick="window.location = '<s:url action="districtEdit" includeParams="none"><s:param name="district.id" value="0" /></s:url>';"
                    value="<s:text name="common.new"/>"/>
         </td>
     </tr>

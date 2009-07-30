@@ -1,29 +1,49 @@
 package org.flexpay.ab.persistence;
 
 import org.flexpay.common.persistence.TemporaryName;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.Set;
+import java.util.Collections;
 
 /**
  * RegionName
  */
 public class RegionName extends TemporaryName<RegionName, RegionNameTranslation> {
 
-	/**
-	 * Constructs a new RegionName.
-	 */
 	public RegionName() {
 	}
 
 	/**
-	 * {@inheritDoc}
+	 * Copy constructor
+	 *
+	 * @param regionName Region name to copy from
 	 */
+	@SuppressWarnings ({"unchecked", "CollectionsFieldAccessReplaceableByMethodCall"})
+	public RegionName(@Nullable RegionName regionName) {
+		Set<RegionNameTranslation> translations = regionName != null ? regionName.getTranslations() : Collections.EMPTY_SET;
+		for (RegionNameTranslation translation : translations) {
+			RegionNameTranslation copy = new RegionNameTranslation(
+					translation.getName(), translation.getLang());
+			addNameTranslation(copy);
+		}
+	}
+
+	/**
+	 * Get null value
+	 *
+	 * @return Null representation of this value
+	 */
+	@Override
+	public RegionName getEmpty() {
+		return new RegionName();
+	}
+
 	@Override
 	public String toString() {
 		return super.toString();
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -35,20 +55,9 @@ public class RegionName extends TemporaryName<RegionName, RegionNameTranslation>
 		return super.equals(obj);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public int hashCode() {
 		return super.hashCode();
 	}
 
-	/**
-	 * Get null value
-	 *
-	 * @return Null representation of this value
-	 */
-	public RegionName getEmpty() {
-		return new RegionName();
-	}
 }

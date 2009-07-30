@@ -1,33 +1,52 @@
 package org.flexpay.ab.actions.region;
 
-import org.apache.commons.collections.ArrayStack;
-import org.flexpay.ab.actions.nametimedependent.DeleteAction;
-import org.flexpay.ab.persistence.Region;
-import org.flexpay.ab.persistence.RegionName;
-import org.flexpay.ab.persistence.RegionNameTemporal;
-import org.flexpay.ab.persistence.RegionNameTranslation;
-import org.flexpay.ab.persistence.filters.CountryFilter;
+import org.flexpay.ab.service.RegionService;
+import org.flexpay.common.actions.FPActionSupport;
+import static org.flexpay.common.util.CollectionUtils.set;
+import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Required;
 
-public class RegionDeleteAction extends DeleteAction<RegionName, RegionNameTemporal, Region, RegionNameTranslation> {
+import java.util.Set;
 
-	private CountryFilter countryFilter = new CountryFilter();
+public class RegionDeleteAction extends FPActionSupport {
 
-	public CountryFilter getCountryFilter() {
-		return countryFilter;
+	private Set<Long> objectIds = set();
+
+	private RegionService regionService;
+
+	@NotNull
+	@Override
+	public String doExecute() throws Exception {
+
+		regionService.disableByIds(objectIds);
+
+		return REDIRECT_SUCCESS;
 	}
 
-	public void setCountryFilter(CountryFilter countryFilter) {
-		this.countryFilter = countryFilter;
+	/**
+	 * Get default error execution result
+	 * <p/>
+	 * If return code starts with a {@link #PREFIX_REDIRECT} all error messages are stored in a session
+	 *
+	 * @return {@link #ERROR} by default
+	 */
+	@NotNull
+	@Override
+	protected String getErrorResult() {
+		return REDIRECT_SUCCESS;
 	}
 
-	protected ArrayStack getFilters() {
-		ArrayStack filters = new ArrayStack();
-		filters.push(countryFilter);
-		return filters;
+	public Set<Long> getObjectIds() {
+		return objectIds;
 	}
 
-	protected void setFilters(ArrayStack filters) {
-		countryFilter = (CountryFilter) filters.peek(0);
+	public void setObjectIds(Set<Long> objectIds) {
+		this.objectIds = objectIds;
+	}
+
+	@Required
+	public void setRegionService(RegionService regionService) {
+		this.regionService = regionService;
 	}
 
 }

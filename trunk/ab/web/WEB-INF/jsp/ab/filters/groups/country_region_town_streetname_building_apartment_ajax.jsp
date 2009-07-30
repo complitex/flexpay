@@ -6,29 +6,35 @@
 
     $(function() {
         FF.createFilter("country", {
-            action: "<s:url action="countryFilterAjax" namespace="/dicts" includeParams="none"/>"
+            action: "<s:url action="countryFilterAjax" namespace="/dicts" includeParams="none"/>",
+            defaultValue: "<s:text name="%{userPreferences.countryFilterValue}" />"
         });
         FF.createFilter("region", {
             action: "<s:url action="regionFilterAjax" namespace="/dicts" includeParams="none"/>",
-            parents: ["country"]
+            parents: ["country"],
+            defaultValue: "<s:text name="%{userPreferences.regionFilterValue}" />"
         });
         FF.createFilter("town", {
             action: "<s:url action="townFilterAjax" namespace="/dicts" includeParams="none"/>",
-            parents: ["region"]
+            parents: ["region"],
+            defaultValue: "<s:text name="%{userPreferences.townFilterValue}" />"
         });
         FF.createFilter("street", {
             action: "<s:url action="streetFilterAjax" namespace="/dicts" includeParams="none"/>",
-            parents: ["town"]
+            parents: ["town"],
+            defaultValue: "<s:text name="%{userPreferences.streetFilterValue}" />"
         });
         FF.createFilter("building", {
             action: "<s:url action="buildingFilterAjax" namespace="/dicts" includeParams="none"/>",
             isArray: true,
-            parents: ["street"]
+            parents: ["street"],
+            defaultValue: "<s:text name="%{userPreferences.buildingFilterValue}" />"
         });
-        FF.createFilter("apartment", {
+        FF.createFilter("building", {
             action: "<s:url action="apartmentFilterAjax" namespace="/dicts" includeParams="none"/>",
             isArray: true,
-            parents: ["building"]
+            parents: ["building"],
+            defaultValue: "<s:text name="%{userPreferences.apartmentFilterValue}" />"
         });
     });
 
@@ -37,18 +43,18 @@
 <table width="100%">
     <tr>
         <td class="filter"><s:text name="ab.country"/></td>
-        <td><%@include file="../ajax/country_search_filter.jsp" %></td>
+        <td id="country_raw"></td>
         <td class="filter"><s:text name="ab.region"/></td>
-        <td><%@include file="../ajax/region_search_filter.jsp" %></td>
+        <td id="region_raw"></td>
         <td class="filter"><s:text name="ab.town"/></td>
-        <td><%@include file="../ajax/town_search_filter.jsp" %></td>
+        <td id="town_raw"></td>
     </tr>
 	<tr>
 		<td class="filter"><s:text name="ab.street"/></td>
-		<td><%@include file="../ajax/street_search_filter.jsp" %></td>
+		<td id="street_raw"></td>
 		<td class="filter"><s:text name="ab.building"/></td>
-		<td><%@include file="../ajax/building_search_filter.jsp" %></td>
+		<td id="building_raw"></td>
         <td class="filter"><s:text name="ab.apartment"/></td>
-        <td><%@include file="../ajax/apartment_search_filter.jsp" %></td>
+        <td id="apartment_raw"></td>
 	</tr>
 </table>

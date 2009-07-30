@@ -58,8 +58,12 @@
 	</class>
 
 	<query name="Region.findObjects">
+        SELECT DISTINCT r
 		FROM Region r
-		WHERE r.status=? and r.parent.id=?
+            LEFT JOIN FETCH r.nameTemporals nt
+            LEFT JOIN FETCH nt.value nv
+            LEFT JOIN FETCH nv.translations ntr
+		WHERE r.status=? and r.parent.id=? and nt.invalidDate='2100-12-31'
 	</query>
 
 	<query name="Region.findObjects.count">

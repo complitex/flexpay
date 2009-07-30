@@ -27,6 +27,7 @@ public class StreetEditSimpleAction extends FPActionSupport {
 	private BeginDateFilter beginDateFilter = new BeginDateFilter(DateUtil.now());
 	private Map<Long, String> names = CollectionUtils.treeMap();
 
+	private String crumbCreateKey;
 	private TownService townService;
 	private StreetTypeService streetTypeService;
 	private StreetService streetService;
@@ -136,6 +137,14 @@ public class StreetEditSimpleAction extends FPActionSupport {
 		return INPUT;
 	}
 
+	@Override
+	protected void setBreadCrumbs() {
+		if (street.isNew()) {
+			crumbNameKey = crumbCreateKey;
+		}
+		super.setBreadCrumbs();
+	}
+
 	public Street getStreet() {
 		return street;
 	}
@@ -174,6 +183,10 @@ public class StreetEditSimpleAction extends FPActionSupport {
 
 	public void setNames(Map<Long, String> names) {
 		this.names = names;
+	}
+
+	public void setCrumbCreateKey(String crumbCreateKey) {
+		this.crumbCreateKey = crumbCreateKey;
 	}
 
 	@Required

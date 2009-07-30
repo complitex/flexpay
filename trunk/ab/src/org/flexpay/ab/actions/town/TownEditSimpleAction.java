@@ -23,8 +23,7 @@ import java.util.Map;
 
 public class TownEditSimpleAction extends FPActionSupport {
 
-    private CountryFilter countryFilter = new CountryFilter();
-    private RegionFilter regionFilter = new RegionFilter();
+    private String regionFilter;
     private TownTypeFilter townTypeFilter = new TownTypeFilter();
     private BeginDateFilter beginDateFilter = new BeginDateFilter();
 
@@ -35,11 +34,6 @@ public class TownEditSimpleAction extends FPActionSupport {
     private RegionService regionService;
     private TownTypeService townTypeService;
     private TownService townService;
-
-    public TownEditSimpleAction() {
-        // disable automatic form submit on region filter change
-        regionFilter.setNeedAutoChange(false);
-    }
 
     /**
      * Perform action execution.
@@ -84,9 +78,13 @@ public class TownEditSimpleAction extends FPActionSupport {
             return false;
         }
 
-        if (!regionFilter.needFilter()) {
-            addActionError(getText("ab.error.town.no_region"));
-        }
+		Long regionFilterLong;
+		try {
+			regionFilterLong = Long.parseLong(regionFilter);
+		} catch (Exception e) {
+			log.warn("Incorrect region id in filter ({})", regionFilter);
+			addActionError(getText("ab.error.town.no_region"));
+		}
 
         if (!townTypeFilter.needFilter()) {
             addActionError(getText("ab.error.town.no_type"));
@@ -110,7 +108,7 @@ public class TownEditSimpleAction extends FPActionSupport {
 
         // setup region for new object
         if (twn.isNew()) {
-            twn.setRegion(new Region(regionFilter.getSelectedId()));
+            twn.setRegion(new Region(Long.parseLong(regionFilter)));
             townService.create(twn);
         } else {
             townService.update(twn);
@@ -146,14 +144,6 @@ public class TownEditSimpleAction extends FPActionSupport {
 
     private void initFilters() throws Exception {
         townTypeFilter = townTypeService.initFilter(townTypeFilter, getUserPreferences().getLocale());
-
-        ArrayStack filters = CollectionUtils.arrayStack(countryFilter, regionFilter);
-        regionService.initFilters(filters, getUserPreferences().getLocale());
-
-        if (town.isNotNew()) {
-            regionFilter.setReadOnly(true);
-            countryFilter.setReadOnly(true);
-        }
     }
 
     private void initDefaults() {
@@ -171,9 +161,6 @@ public class TownEditSimpleAction extends FPActionSupport {
             townTypeFilter.setSelectedId(tmprlType.getValue().getId());
         }
 
-        if (town.isNotNew()) {
-            regionFilter.setSelectedId(town.getRegionStub().getId());
-        }
     }
 
 	@Override
@@ -184,23 +171,15 @@ public class TownEditSimpleAction extends FPActionSupport {
 		super.setBreadCrumbs();
 	}
 
-    public CountryFilter getCountryFilter() {
-        return countryFilter;
-    }
+	public String getRegionFilter() {
+		return regionFilter;
+	}
 
-    public void setCountryFilter(CountryFilter countryFilter) {
-        this.countryFilter = countryFilter;
-    }
+	public void setRegionFilter(String regionFilter) {
+		this.regionFilter = regionFilter;
+	}
 
-    public RegionFilter getRegionFilter() {
-        return regionFilter;
-    }
-
-    public void setRegionFilter(RegionFilter regionFilter) {
-        this.regionFilter = regionFilter;
-    }
-
-    public TownTypeFilter getTownTypeFilter() {
+	public TownTypeFilter getTownTypeFilter() {
         return townTypeFilter;
     }
 

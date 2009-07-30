@@ -2,12 +2,7 @@
 
 <script type="text/javascript">
     $(function() {
-        $('input[name="pager.pageNumber"]').each(function() {
-            this.setAttribute("onclick", "pagerAjax(this);")
-        });
-        $('select[name="pager.pageSize"]').each(function() {
-            this.setAttribute("onchange", "pagerAjax(this);")
-        });
+        FF.updatePager("pagerAjax(this);");
         $('input[id="apartmentSorterButton"]').each(function() {
             this.setAttribute("onclick", this.getAttribute("onclick") + "sorterAjax();")
         });
@@ -32,7 +27,7 @@
             <input type="checkbox" onchange="FP.setCheckboxes(this.checked, 'objectIds');">
         </td>
         <td class="<s:if test="apartmentSorter.activated">th_s</s:if><s:else>th</s:else>" width="58%">
-            <%@ include file="../../sorters/apartmentSorterHeader.jsp" %>
+            <%@ include file="../../sorters/apartment_sorter_header.jsp" %>
         </td>
         <td class="th" width="40%">&nbsp;</td>
     </tr>

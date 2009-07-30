@@ -387,6 +387,15 @@ var FF = {
         this.filters = [];
     },
 
+    updatePager : function(func) {
+        $('input[name="pager.pageNumber"]').each(function() {
+            this.setAttribute("onclick", func)
+        });
+        $('select[name="pager.pageSize"]').each(function() {
+            this.setAttribute("onchange", func)
+        });
+    },
+
     messages : {
         loading : ""
     }
