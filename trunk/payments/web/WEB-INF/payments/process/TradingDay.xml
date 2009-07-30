@@ -39,7 +39,7 @@
                 <expression>
                     processStatus = "Открыт";
                     canUpdateOrCreateOperation = "true";
-                    startTime = new java.util.Date();
+                    startTime = org.flexpay.common.util.DateUtil.now();
                 </expression>
             </script>
         </event>
