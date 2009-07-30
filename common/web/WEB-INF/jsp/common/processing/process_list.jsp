@@ -70,7 +70,7 @@
 
 			<s:iterator value="processList" status="status">
 		<tr valign="middle" class="cols_1">
-			<td class="col" width="1%"><s:property value="%{#status.index + 1}"/></td>
+			<td class="col" width="1%"><s:property value="%{pager.thisPageFirstElementNumber + #status.index + 1}"/></td>
 			<td class="col" width="1%">
 				<input type="checkbox" name="objectIds" value="<s:property value="%{id}"/>"/>
 			</td>
