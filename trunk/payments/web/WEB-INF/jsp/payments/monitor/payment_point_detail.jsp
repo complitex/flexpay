@@ -6,6 +6,7 @@
 <s:form action="paymentPointDetailMonitor">
     <s:hidden name="status"/>
     <s:hidden name="paymentPointId"/>
+	<s:if test="updated != null">
     <table cellpadding="3" cellspacing="1" border="0" width="100%">
         <tr>
             <td nowrap="nowrap"><s:text name="payments.payment_points.list.updated"/>&nbsp;<s:property value="updated"/></td>
@@ -77,4 +78,5 @@
             </tr>
         </s:iterator>
     </table>
+	</s:if>
 </s:form>
