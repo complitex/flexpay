@@ -30,26 +30,27 @@ public class TownName extends TemporaryName<TownName, TownNameTranslation> {
 	}
 
 	/**
-	 * Returns a string representation of the object.
+	 * Get null value
 	 *
-	 * @return a string representation of the object.
+	 * @return Null representation of this value
 	 */
+	@Override
+	public TownName getEmpty() {
+		TownName empty = new TownName();
+		empty.setObject(getObject());
+		return empty;
+	}
+
 	@Override
 	public String toString() {
 		return super.toString();
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public int hashCode() {
 		return super.hashCode();
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
@@ -61,14 +62,4 @@ public class TownName extends TemporaryName<TownName, TownNameTranslation> {
 		return super.equals(obj);
 	}
 
-	/**
-	 * Get null value
-	 *
-	 * @return Null representation of this value
-	 */
-	public TownName getEmpty() {
-		TownName empty = new TownName();
-		empty.setObject(getObject());
-		return empty;
-	}
 }

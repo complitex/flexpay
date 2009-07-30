@@ -1,6 +1,7 @@
 package org.flexpay.ab.service.imp;
 
 import org.apache.commons.collections.ArrayStack;
+import org.apache.commons.lang.StringUtils;
 import org.flexpay.ab.dao.*;
 import org.flexpay.ab.persistence.*;
 import org.flexpay.ab.persistence.filters.CountryFilter;
@@ -13,7 +14,10 @@ import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
 import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.persistence.history.ModificationListener;
+import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.service.ParentService;
+import org.flexpay.common.service.internal.SessionUtils;
 import org.flexpay.common.service.imp.NameTimeDependentServiceImpl;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.Required;
@@ -39,6 +43,8 @@ public class RegionServiceImpl extends NameTimeDependentServiceImpl<
 
 	private ParentService<CountryFilter> parentService;
 	private TownTypeService townTypeService;
+	private SessionUtils sessionUtils;
+	private ModificationListener<Region> modificationListener;
 
 	/**
 	 * TODO CHECK if region has any towns
@@ -109,6 +115,92 @@ public class RegionServiceImpl extends NameTimeDependentServiceImpl<
 
 	public RegionNameTranslation getEmptyNameTranslation() {
 		return new RegionNameTranslation();
+	}
+
+	@Transactional (readOnly = false)
+	public Region create(@NotNull Region region) throws FlexPayExceptionContainer {
+
+		validate(region);
+		region.setId(null);
+		regionDao.create(region);
+
+		modificationListener.onCreate(region);
+
+		return region;
+	}
+
+	@SuppressWarnings ({"ThrowableInstanceNeverThrown"})
+	@Transactional (readOnly = false)
+	public Region update(@NotNull Region region) throws FlexPayExceptionContainer {
+		validate(region);
+
+		Region old = readFull(stub(region));
+		if (old == null) {
+			throw new FlexPayExceptionContainer(
+					new FlexPayException("No object found to update " + region));
+		}
+		sessionUtils.evict(old);
+		modificationListener.onUpdate(old, region);
+
+		regionDao.update(region);
+
+		return region;
+	}
+
+	@SuppressWarnings ({"ThrowableInstanceNeverThrown"})
+	private void validate(@NotNull Region region) throws FlexPayExceptionContainer {
+		FlexPayExceptionContainer ex = new FlexPayExceptionContainer();
+
+		RegionNameTemporal nameTmprl = region.getCurrentNameTemporal();
+		if (nameTmprl == null || nameTmprl.getValue() == null) {
+			ex.addException(new FlexPayException("No name", "ab.error.no_current_name"));
+		} else {
+			validate(nameTmprl.getValue(), ex);
+		}
+
+		if (region.getCountry() == null) {
+			ex.addException(new FlexPayException("No country", "ab.error.region.no_country"));
+		}
+
+		if (ex.isNotEmpty()) {
+			ex.debug(log);
+			throw ex;
+		}
+	}
+
+	@SuppressWarnings ({"ThrowableInstanceNeverThrown"})
+	private void validate(@NotNull RegionName regionName, @NotNull FlexPayExceptionContainer ex) {
+
+		boolean defaultLangTranslationFound = false;
+		for (RegionNameTranslation translation : regionName.getTranslations()) {
+			if (translation.getLang().isDefault() && StringUtils.isNotEmpty(translation.getName())) {
+				defaultLangTranslationFound = true;
+			}
+		}
+
+		if (!defaultLangTranslationFound) {
+			ex.addException(new FlexPayException("No default translation", "error.no_default_translation"));
+		}
+	}
+
+	/**
+	 * Disable regions
+	 *
+	 * @param objectIds Regions identifiers
+	 */
+	@Transactional (readOnly = false)
+	@Override
+	public void disableByIds(@NotNull Collection<Long> objectIds) {
+		for (Long id : objectIds) {
+			Region region = regionDao.read(id);
+			if (region != null) {
+				region.disable();
+				regionDao.update(region);
+
+				modificationListener.onDelete(region);
+				log.debug("Disabled: {}", region);
+			}
+		}
 	}
 
 	/**
@@ -223,6 +315,16 @@ public class RegionServiceImpl extends NameTimeDependentServiceImpl<
 	@Required
 	public void setRegionNameTemporalDao(RegionNameTemporalDao regionNameTemporalDao) {
 		this.regionNameTemporalDao = regionNameTemporalDao;
+	}
+
+	@Required
+	public void setModificationListener(ModificationListener<Region> modificationListener) {
+		this.modificationListener = modificationListener;
+	}
+
+	@Required
+	public void setSessionUtils(SessionUtils sessionUtils) {
+		this.sessionUtils = sessionUtils;
 	}
 
 }

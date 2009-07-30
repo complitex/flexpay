@@ -10,12 +10,14 @@ import org.flexpay.ab.service.DistrictService;
 import org.flexpay.ab.util.config.ApplicationConfig;
 import org.flexpay.common.dao.GenericDao;
 import org.flexpay.common.dao.NameTimeDependentDao;
+import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
 import org.flexpay.common.persistence.history.ModificationListener;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.persistence.DomainObjectWithStatus;
 import org.flexpay.common.service.ParentService;
 import org.flexpay.common.service.internal.SessionUtils;
 import org.flexpay.common.service.imp.NameTimeDependentServiceImpl;
@@ -24,9 +26,7 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.Required;
 
-import java.util.Collection;
-import java.util.Locale;
-import java.util.List;
+import java.util.*;
 
 /**
  * Class DistrictServiceImpl
@@ -247,6 +247,26 @@ public class DistrictServiceImpl extends
 	}
 
 	/**
+	 * Disable districts
+	 *
+	 * @param objectIds Districts identifiers
+	 */
+	@Transactional (readOnly = false)
+	@Override
+	public void disableByIds(@NotNull Collection<Long> objectIds) {
+		for (Long id : objectIds) {
+			District district = districtDao.read(id);
+			if (district != null) {
+				district.disable();
+				districtDao.update(district);
+
+				modificationListener.onDelete(district);
+				log.debug("Disabled: {}", district);
+			}
+		}
+	}
+
+	/**
 	 * validate district before save
 	 *
 	 * @param object District object to validate
@@ -301,6 +321,7 @@ public class DistrictServiceImpl extends
 	}
 
 	@NotNull
+	@Override
 	public List<District> findByTownAndQuery(@NotNull Stub<Town> stub, @NotNull String query) {
 		return districtDao.findByTownAndQuery(stub.getId(), query);
 	}
@@ -316,14 +337,12 @@ public class DistrictServiceImpl extends
 	}
 
 	@Required
-	public void setDistrictNameTemporalDao(
-			DistrictNameTemporalDao districtNameTemporalDao) {
+	public void setDistrictNameTemporalDao(DistrictNameTemporalDao districtNameTemporalDao) {
 		this.districtNameTemporalDao = districtNameTemporalDao;
 	}
 
 	@Required
-	public void setDistrictNameTranslationDao(
-			DistrictNameTranslationDao districtNameTranslationDao) {
+	public void setDistrictNameTranslationDao(DistrictNameTranslationDao districtNameTranslationDao) {
 		this.districtNameTranslationDao = districtNameTranslationDao;
 	}
 
@@ -346,4 +365,5 @@ public class DistrictServiceImpl extends
 	public void setModificationListener(ModificationListener<District> modificationListener) {
 		this.modificationListener = modificationListener;
 	}
+
 }

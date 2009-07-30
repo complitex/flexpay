@@ -182,6 +182,16 @@ public interface StreetService extends
 	void disable(Collection<Street> objects) throws FlexPayExceptionContainer;
 
 	/**
+	 * Disable objects
+	 *
+	 * @param objectIds IDs of objects to disable
+	 * @throws org.flexpay.common.exception.FlexPayExceptionContainer
+	 *          if failure occurs
+	 */
+	@Secured (Roles.STREET_DELETE)
+	void disableByIds(@NotNull Collection<Long> objectIds) throws FlexPayExceptionContainer;
+
+	/**
 	 * Update object name translations
 	 *
 	 * @param obj			  Object to update

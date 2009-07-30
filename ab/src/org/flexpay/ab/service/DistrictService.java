@@ -87,6 +87,10 @@ public interface DistrictService extends NameTimeDependentService<
 	@Secured (Roles.DISTRICT_READ)
 	List<DistrictName> findNames(ArrayStack filters, Page pager) throws FlexPayException;
 
+	@Secured (Roles.DISTRICT_READ)
+	@NotNull
+	List<DistrictName> findNames(@NotNull Stub<Town> stub, Page pager) throws FlexPayException;
+
 	/**
 	 * Get a list of available objects
 	 *
@@ -115,6 +119,16 @@ public interface DistrictService extends NameTimeDependentService<
 	 */
 	@Secured (Roles.DISTRICT_DELETE)
 	void disable(Collection<District> objects) throws FlexPayExceptionContainer;
+
+	/**
+	 * Disable objects
+	 *
+	 * @param objectIds IDs of objects to disable
+	 * @throws org.flexpay.common.exception.FlexPayExceptionContainer
+	 *          if failure occurs
+	 */
+	@Secured (Roles.DISTRICT_DELETE)
+	void disableByIds(@NotNull Collection<Long> objectIds) throws FlexPayExceptionContainer;
 
 	/**
 	 * Update object name translations

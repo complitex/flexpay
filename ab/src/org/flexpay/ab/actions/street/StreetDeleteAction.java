@@ -1,58 +1,50 @@
 package org.flexpay.ab.actions.street;
 
-import org.apache.commons.collections.ArrayStack;
-import org.flexpay.ab.actions.nametimedependent.DeleteAction;
-import org.flexpay.ab.persistence.Street;
-import org.flexpay.ab.persistence.StreetName;
-import org.flexpay.ab.persistence.StreetNameTemporal;
-import org.flexpay.ab.persistence.StreetNameTranslation;
-import org.flexpay.ab.persistence.filters.CountryFilter;
-import org.flexpay.ab.persistence.filters.RegionFilter;
-import org.flexpay.ab.persistence.filters.TownFilter;
+import org.flexpay.ab.service.StreetService;
+import org.flexpay.common.actions.FPActionSupport;
+import static org.flexpay.common.util.CollectionUtils.set;
+import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Required;
 
-public class StreetDeleteAction extends DeleteAction<
-		StreetName, StreetNameTemporal, Street, StreetNameTranslation> {
+import java.util.Set;
 
-	private CountryFilter countryFilter = new CountryFilter();
-	private RegionFilter regionFilter = new RegionFilter();
-	private TownFilter townFilter = new TownFilter();
+public class StreetDeleteAction extends FPActionSupport {
 
-	public CountryFilter getCountryFilter() {
-		return countryFilter;
+	private Set<Long> objectIds = set();
+
+	private StreetService streetService;
+
+	@NotNull
+	public String doExecute() throws Exception {
+
+		streetService.disableByIds(objectIds);
+
+		return REDIRECT_SUCCESS;
 	}
 
-	public void setCountryFilter(CountryFilter countryFilter) {
-		this.countryFilter = countryFilter;
+	/**
+	 * Get default error execution result
+	 * <p/>
+	 * If return code starts with a {@link #PREFIX_REDIRECT} all error messages are stored in a session
+	 *
+	 * @return {@link #ERROR} by default
+	 */
+	@NotNull
+	protected String getErrorResult() {
+		return REDIRECT_SUCCESS;
 	}
 
-	public RegionFilter getRegionFilter() {
-		return regionFilter;
+	public Set<Long> getObjectIds() {
+		return objectIds;
 	}
 
-	public void setRegionFilter(RegionFilter regionFilter) {
-		this.regionFilter = regionFilter;
+	public void setObjectIds(Set<Long> objectIds) {
+		this.objectIds = objectIds;
 	}
 
-	public TownFilter getTownFilter() {
-		return townFilter;
-	}
-
-	public void setTownFilter(TownFilter townFilter) {
-		this.townFilter = townFilter;
-	}
-
-	protected ArrayStack getFilters() {
-		ArrayStack filters = new ArrayStack();
-		filters.push(countryFilter);
-		filters.push(regionFilter);
-		filters.push(townFilter);
-		return filters;
-	}
-
-	protected void setFilters(ArrayStack filters) {
-		townFilter = (TownFilter) filters.peek(0);
-		regionFilter = (RegionFilter) filters.peek(1);
-		countryFilter = (CountryFilter) filters.peek(2);
+	@Required
+	public void setStreetService(StreetService streetService) {
+		this.streetService = streetService;
 	}
 
 }

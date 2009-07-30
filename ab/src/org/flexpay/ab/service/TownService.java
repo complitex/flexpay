@@ -116,6 +116,10 @@ public interface TownService extends
 	@Secured (Roles.TOWN_READ)
 	List<TownName> findNames(ArrayStack filters, Page pager) throws FlexPayException;
 
+	@Secured (Roles.TOWN_READ)
+	@NotNull
+	List<TownName> findNames(@NotNull Stub<Region> stub, Page pager) throws FlexPayException;
+
 	/**
 	 * Get a list of available objects
 	 *
@@ -134,6 +138,16 @@ public interface TownService extends
 	 */
 	@Secured (Roles.TOWN_READ)
 	List<Town> find(ArrayStack filters, Page pager);
+
+	/**
+	 * Get a list of available objects
+	 *
+	 * @param stub Parent stub
+	 * @param pager   Page
+	 * @return List of Objects
+	 */
+	@Secured (Roles.TOWN_READ)
+	List<Town> findSimple(@NotNull Stub<Region> stub, Page pager);
 
 	/**
 	 * Lookup streets by query and region id. Query is a string
@@ -158,6 +172,16 @@ public interface TownService extends
 	 */
 	@Secured (Roles.TOWN_DELETE)
 	void disable(Collection<Town> objects) throws FlexPayExceptionContainer;
+
+	/**
+	 * Disable objects
+	 *
+	 * @param objectIds IDs of objects to disable
+	 * @throws org.flexpay.common.exception.FlexPayExceptionContainer
+	 *          if failure occurs
+	 */
+	@Secured (Roles.TOWN_DELETE)
+	void disableByIds(@NotNull Collection<Long> objectIds);
 
 	/**
 	 * Update object name translations

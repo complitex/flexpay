@@ -7,17 +7,8 @@
 
     <package name="regions" namespace="/dicts" extends="common">
 
-        <action name="regionsList" class="regionsListAction">
+        <action name="regionsList" class="regionsListPageAction">
             <result type="tiles">ab.regions.list</result>
-        </action>
-
-        <action name="regionCreate" class="regionCreateAction">
-            <result type="redirect-action">
-                <param name="actionName">regionView</param>
-                <param name="parse">true</param>
-                <param name="object.id">${object.id}</param>
-            </result>
-            <result type="tiles" name="input">ab.region.create</result>
         </action>
 
         <action name="regionView" class="regionViewAction">
@@ -26,10 +17,10 @@
         </action>
 
         <action name="regionEdit" class="regionEditAction">
-            <result type="redirect-action">
+            <result name="redirectSuccess" type="redirect-action">
                 <param name="actionName">regionView</param>
                 <param name="parse">true</param>
-                <param name="object.id">${object.id}</param>
+                <param name="object.id">${region.id}</param>
             </result>
             <result type="tiles" name="input">ab.region.edit</result>
         </action>

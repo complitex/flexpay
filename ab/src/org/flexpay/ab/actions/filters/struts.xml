@@ -22,6 +22,21 @@
             <result name="prerequestResponse">/WEB-INF/jsp/ab/filters/ajax/prerequest_response.jsp</result>
         </action>
 
+        <action name="districtsListAjax" class="districtsListAjaxAction">
+            <result>/WEB-INF/jsp/ab/filters/ajax/districts_list_response.jsp</result>
+            <result name="prerequestResponse">/WEB-INF/jsp/ab/filters/ajax/prerequest_response.jsp</result>
+        </action>
+
+        <action name="townsListAjax" class="townsListAjaxAction">
+            <result>/WEB-INF/jsp/ab/filters/ajax/towns_list_response.jsp</result>
+            <result name="prerequestResponse">/WEB-INF/jsp/ab/filters/ajax/prerequest_response.jsp</result>
+        </action>
+
+        <action name="regionsListAjax" class="regionsListAjaxAction">
+            <result>/WEB-INF/jsp/ab/filters/ajax/regions_list_response.jsp</result>
+            <result name="prerequestResponse">/WEB-INF/jsp/ab/filters/ajax/prerequest_response.jsp</result>
+        </action>
+
         <action name="countryFilterAjax" class="countryFilterAjaxAction">
             <result>/WEB-INF/jsp/ab/filters/ajax/filter_response.jsp</result>
             <result name="prerequestResponse">/WEB-INF/jsp/ab/filters/ajax/prerequest_response.jsp</result>

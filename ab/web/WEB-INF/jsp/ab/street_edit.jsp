@@ -3,6 +3,8 @@
 <s:actionerror />
 
 <s:form action="streetEdit" method="post">
+    <s:hidden name="street.id" value="%{street.id}" />
+
 	<%@ include file="filters/groups/country_region_town_ajax.jsp" %>
 	<table cellpadding="3" cellspacing="1" border="0" width="100%">
 
@@ -38,11 +40,11 @@
 			</td>
 		</tr>
 	</table>
-	<s:hidden name="street.id" value="%{street.id}" />
 </s:form>
-
-<script type="text/javascript">
-    $(function() {
-        FF.updateFilter("town", {readonly:true});
-    });
-</script>
+<s:if test="%{street.id != 0}">
+    <script type="text/javascript">
+        $(function() {
+            FF.updateFilter("town", {readonly:true});
+        });
+    </script>
+</s:if>

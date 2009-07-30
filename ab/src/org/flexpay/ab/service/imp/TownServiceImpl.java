@@ -351,6 +351,26 @@ public class TownServiceImpl extends NameTimeDependentServiceImpl<
 		}
 	}
 
+	/**
+	 * Disable towns
+	 *
+	 * @param objectIds Towns identifiers
+	 */
+	@Transactional (readOnly = false)
+	@Override
+	public void disableByIds(@NotNull Collection<Long> objectIds) {
+		for (Long id : objectIds) {
+			Town town = townDao.read(id);
+			if (town != null) {
+				town.disable();
+				townDao.update(town);
+
+				modificationListener.onDelete(town);
+				log.debug("Disabled: {}", town);
+			}
+		}
+	}
+
 	@NotNull
 	public List<Town> findByRegionAndQuery(@NotNull Stub<Region> stub, @NotNull String query) {
 		return townDao.findByRegionAndQuery(stub.getId(), query);
@@ -431,4 +451,5 @@ public class TownServiceImpl extends NameTimeDependentServiceImpl<
 	public void setSessionUtils(SessionUtils sessionUtils) {
 		this.sessionUtils = sessionUtils;
 	}
+
 }

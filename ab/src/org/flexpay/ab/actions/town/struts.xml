@@ -7,7 +7,7 @@
 
 	<package name="towns" namespace="/dicts" extends="common">
 
-		<action name="townsList" class="townsListAction">
+		<action name="townsList" class="townsListPageAction">
 			<result type="tiles">ab.towns.list</result>
 		</action>
 

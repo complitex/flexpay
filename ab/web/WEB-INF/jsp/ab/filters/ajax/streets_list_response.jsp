@@ -2,12 +2,7 @@
 
 <script type="text/javascript">
     $(function() {
-        $('input[name="pager.pageNumber"]').each(function() {
-            this.setAttribute("onclick", "pagerAjax(this);")
-        });
-        $('select[name="pager.pageSize"]').each(function() {
-            this.setAttribute("onchange", "pagerAjax(this);")
-        });
+        FF.updatePager("pagerAjax(this);");
         $('input[id="streetSorterByNameButton"]').each(function() {
             this.setAttribute("onclick", this.getAttribute("onclick") + "sorterAjax();")
         });
@@ -35,10 +30,10 @@
                                          onchange="FP.setCheckboxes(this.checked, 'objectIds');">
         </td>
         <td class="<s:if test="streetSorterByName.activated">th_s</s:if><s:else>th</s:else>" width="31%" nowrap="nowrap">
-            <%@ include file="../../sorters/streetSortByNameHeader.jsp" %>
+            <%@ include file="../../sorters/street_sort_by_name_header.jsp" %>
         </td>
         <td class="<s:if test="streetSorterByType.activated">th_s</s:if><s:else>th</s:else>" width="32%" nowrap="nowrap">
-            <%@ include file="../../sorters/streetSortByTypeHeader.jsp" %>
+            <%@ include file="../../sorters/street_sort_by_type_header.jsp" %>
         <td class="th" width="35%">&nbsp;</td>
     </tr>
     <s:iterator value="%{streets}" status="status">
@@ -50,14 +45,14 @@
                 <input type="checkbox" value="<s:property value="%{id}"/>" name="objectIds"/>
             </td>
             <td class="col">
-                <a href="<s:url value="/dicts/buildingsList.action"><s:param name="streetFilter" value="%{id}" /></s:url>"><s:property value="%{getTranslation(getCurrentName().translations).name}"/></a>
+                <a href="<s:url action="buildingsList"><s:param name="streetFilter" value="%{id}" /></s:url>"><s:property value="%{getTranslation(getCurrentName().translations).name}"/></a>
             </td>
             <td class="col">
                 <s:property value="%{getTranslation(getCurrentType().translations).name}"/>
             </td>
             <td class="col">
-                <a href="<s:url value="/dicts/streetView.action?object.id=%{id}"/>"><s:text name="common.view"/></a>&nbsp;
-                <a href="<s:url value="/dicts/streetEdit.action?street.id=%{id}"/>"><s:text name="common.edit"/></a>
+                <a href="<s:url action="streetView"><s:param name="object.id" value="%{id}" /></s:url>"><s:text name="common.view"/></a>&nbsp;
+                <a href="<s:url action="streetEdit"><s:param name="street.id" value="%{id}" /></s:url>"><s:text name="common.edit"/></a>
             </td>
         </tr>
     </s:iterator>

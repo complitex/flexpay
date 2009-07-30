@@ -3,6 +3,9 @@
 <s:actionerror />
 
 <s:form action="districtEdit" method="post">
+
+    <s:hidden name="district.id" value="%{district.id}" />
+
 	<%@ include file="filters/groups/country_region_town_ajax.jsp" %>
 	<table cellpadding="3" cellspacing="1" border="0" width="100%">
 
@@ -27,10 +30,15 @@
 
 		<tr>
 			<td colspan="2" valign="middle">
-				<input type="submit" class="btn-exit" name="submitted"
-					   value="<s:text name="common.save"/>" />
+				<input type="submit" class="btn-exit" name="submitted" value="<s:text name="common.save"/>" />
 			</td>
 		</tr>
 	</table>
-	<s:hidden name="district.id" value="%{district.id}" />
 </s:form>
+<s:if test="%{district.id != 0}">
+    <script type="text/javascript">
+        $(function() {
+            FF.updateFilter("town", {readonly:true});
+        });
+    </script>
+</s:if>

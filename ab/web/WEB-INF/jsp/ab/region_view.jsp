@@ -1,4 +1,3 @@
-
 <%@ include file="/WEB-INF/jsp/common/taglibs.jsp" %>
 
 <table cellpadding="3" cellspacing="1" border="0" width="100%">
@@ -36,25 +35,14 @@
 				<td class="col">
 					<s:property value="name"/>
 				</td>
-				<td class="col">
-					<s:if test="#{#rowstatus.index > index}">
-						<s:set name="index" value="#rowstatus.index" />
-						<a href="<s:url action='regionEdit'><s:param name="temporalId" value="%{temporalId}"/></s:url>">
-							<s:text name="ab.edit"/>
-						</a>
-					</s:if>
-				</td>
 			</tr>
 		</s:iterator>
 	</s:iterator>
-	<tr>
-		<td colspan="6" height="3" bgcolor="#4a4f4f"/>
-	</tr>
-	<tr>
-		<td colspan="6">
-			<input type="button" class="btn-exit"
-				   onclick="window.location='<s:url action='regionEdit'><s:param name="temporalId" value="0"/></s:url>';"
-				   value="<s:text name="common.add"/>"/>
-		</td>
-	</tr>
+    <tr>
+        <td colspan="5">
+            <input type="button" class="btn-exit"
+                   onclick="window.location='<s:url action="regionEdit" includeParams="none"><s:param name="region.id" value="%{object.id}"/></s:url>';"
+                   value="<s:text name="common.edit"/>"/>
+        </td>
+    </tr>
 </table>

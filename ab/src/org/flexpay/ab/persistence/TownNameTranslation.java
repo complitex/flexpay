@@ -22,11 +22,6 @@ public class TownNameTranslation extends Translation {
 		super(name, language);
 	}
 
-	/**
-	 * Returns a string representation of the object.
-	 *
-	 * @return a string representation of the object.
-	 */
 	@Override
 	public String toString() {
 		return new ToStringBuilder(this, ToStringStyle.SIMPLE_STYLE)
@@ -36,17 +31,11 @@ public class TownNameTranslation extends Translation {
 				.toString();
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public int hashCode() {
 		return super.hashCode();
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) {
@@ -56,4 +45,5 @@ public class TownNameTranslation extends Translation {
 		}
 		return super.equals(o);
 	}
+
 }

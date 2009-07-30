@@ -4,9 +4,12 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.flexpay.common.persistence.NameTimeDependentChild;
 import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.util.DateUtil;
+import org.flexpay.ab.util.config.ApplicationConfig;
 
 import java.util.Collections;
 import java.util.Set;
+import java.util.Date;
 
 /**
  * Region
@@ -15,9 +18,6 @@ public class Region extends NameTimeDependentChild<RegionName, RegionNameTempora
 
 	private Set<Town> towns = Collections.emptySet();
 
-	/**
-	 * Constructs a new Region.
-	 */
 	public Region() {
 	}
 
@@ -34,27 +34,54 @@ public class Region extends NameTimeDependentChild<RegionName, RegionNameTempora
 		return new RegionNameTemporal(this);
 	}
 
-	/**
-	 * Getter for property 'towns'.
-	 *
-	 * @return Value for property 'towns'.
-	 */
 	public Set<Town> getTowns() {
 		return this.towns;
 	}
 
-	/**
-	 * Setter for property 'towns'.
-	 *
-	 * @param towns Value to set for property 'towns'.
-	 */
 	public void setTowns(Set<Town> towns) {
 		this.towns = towns;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
+	public Stub<Country> getCountryStub() {
+		return new Stub<Country>(getParent().getId());
+	}
+
+	public void setCountry(Country country) {
+		setParent(country);
+	}
+
+	public Country getCountry() {
+		return (Country) getParent();
+	}
+
+	public void setNameForDate(RegionName name, Date beginDate) {
+		setNameForDates(name, beginDate, ApplicationConfig.getFutureInfinite());
+	}
+
+	public void setNameForDates(RegionName name, Date beginDate, Date endDate) {
+		if (beginDate.after(endDate)) {
+			throw new RuntimeException("Invalid begin-end dates: [" + DateUtil.format(beginDate) +
+									   ", " + DateUtil.format(endDate) + "]");
+		}
+		if (beginDate.before(ApplicationConfig.getPastInfinite())) {
+			beginDate = ApplicationConfig.getPastInfinite();
+		}
+		if (endDate.after(ApplicationConfig.getFutureInfinite())) {
+			endDate = ApplicationConfig.getFutureInfinite();
+		}
+
+		name.setObject(this);
+
+		RegionNameTemporal temporal = new RegionNameTemporal();
+		temporal.setBegin(beginDate);
+		temporal.setEnd(endDate);
+		temporal.setValue(name);
+		temporal.setObject(this);
+
+		addNameTemporal(temporal);
+	}
+
+	@Override
 	public String toString() {
 		return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
 				.append("id", getId())
@@ -63,24 +90,15 @@ public class Region extends NameTimeDependentChild<RegionName, RegionNameTempora
 				.toString();
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public boolean equals(Object obj) {
 		return this == obj || obj instanceof Region && super.equals(obj);
 
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public int hashCode() {
 		return super.hashCode();
 	}
 
-	public Stub<Country> getCountryStub() {
-		return new Stub<Country>(getParent().getId());
-	}
 }

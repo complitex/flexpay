@@ -6,6 +6,7 @@ import org.flexpay.ab.service.DistrictService;
 import org.flexpay.ab.service.TownService;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.persistence.Language;
+import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.persistence.filter.BeginDateFilter;
 import org.flexpay.common.util.CollectionUtils;
@@ -19,13 +20,14 @@ import java.util.Map;
 public class DistrictEditSimpleAction extends FPActionSupport {
 
 	private District district = new District();
-	private TownFilter townFilter = new TownFilter();
+	private String townFilter;
 	private BeginDateFilter beginDateFilter = new BeginDateFilter(DateUtil.now());
 
+	private Map<Long, String> names = CollectionUtils.treeMap();
+
+	private String crumbCreateKey;
 	private TownService townService;
 	private DistrictService districtService;
-
-	private Map<Long, String> names = CollectionUtils.treeMap();
 
 	/**
 	 * Perform action execution.
@@ -36,6 +38,7 @@ public class DistrictEditSimpleAction extends FPActionSupport {
 	 * @throws Exception if failure occurs
 	 */
 	@NotNull
+	@Override
 	protected String doExecute() throws Exception {
 
 		if (district.getId() == null) {
@@ -56,8 +59,11 @@ public class DistrictEditSimpleAction extends FPActionSupport {
 		}
 
 		// no town selected in filter
-		if (!townFilter.needFilter()) {
-			log.debug("!!!!!!!!!!!!!! no town filter value selected");
+		Long townFilterLong;
+		try {
+			townFilterLong = Long.parseLong(townFilter);
+		} catch (Exception e) {
+			log.warn("Incorrect town id in filter ({})", townFilter);
 			addActionError(getText("error.ab.district.no_town"));
 			return INPUT;
 		}
@@ -75,7 +81,7 @@ public class DistrictEditSimpleAction extends FPActionSupport {
 		dstrct.setNameForDate(districtName, beginDateFilter.getDate());
 
 		if (dstrct.isNew()) {
-			dstrct.setParent(townService.readFull(townFilter.getSelectedStub()));
+			dstrct.setParent(townService.readFull(new Stub<Town>(townFilterLong)));
 			districtService.create(dstrct);
 		} else {
 			log.debug("Updated names: {}", dstrct.getNameTemporals());
@@ -93,13 +99,6 @@ public class DistrictEditSimpleAction extends FPActionSupport {
 		if (temporal != null) {
 			beginDateFilter.setDate(temporal.getBegin());
 		}
-
-		// init town filter if object is not new
-		if (district.isNotNew()) {
-			townFilter.setSelectedId(district.getTownStub().getId());
-			townFilter.setReadOnly(true);
-		}
-		townFilter.setAllowEmpty(false);
 
 		// init translations
 		DistrictName districtName = temporal != null ? temporal.getValue() : null;
@@ -125,8 +124,17 @@ public class DistrictEditSimpleAction extends FPActionSupport {
 	 * @return {@link #ERROR} by default
 	 */
 	@NotNull
+	@Override
 	protected String getErrorResult() {
 		return INPUT;
+	}
+
+	@Override
+	protected void setBreadCrumbs() {
+		if (district.isNew()) {
+			crumbNameKey = crumbCreateKey;
+		}
+		super.setBreadCrumbs();
 	}
 
 	public District getDistrict() {
@@ -137,11 +145,11 @@ public class DistrictEditSimpleAction extends FPActionSupport {
 		this.district = district;
 	}
 
-	public TownFilter getTownFilter() {
+	public String getTownFilter() {
 		return townFilter;
 	}
 
-	public void setTownFilter(TownFilter townFilter) {
+	public void setTownFilter(String townFilter) {
 		this.townFilter = townFilter;
 	}
 
@@ -161,6 +169,10 @@ public class DistrictEditSimpleAction extends FPActionSupport {
 		this.names = names;
 	}
 
+	public void setCrumbCreateKey(String crumbCreateKey) {
+		this.crumbCreateKey = crumbCreateKey;
+	}
+
 	@Required
 	public void setTownService(TownService townService) {
 		this.townService = townService;
@@ -170,4 +182,5 @@ public class DistrictEditSimpleAction extends FPActionSupport {
 	public void setDistrictService(DistrictService districtService) {
 		this.districtService = districtService;
 	}
+
 }
