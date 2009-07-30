@@ -16,6 +16,7 @@
                     <s:if test="%{pager.pageSize == 30}">selected</s:if> >30
             </option>
         </select>&nbsp;
+        <input type="hidden" id="pageNumber" name="pager.pageNumber" value="" />
 		<s:text name="common.pages"/>:&nbsp;
 		<s:if test="%{pager.isFirstPage() == false}">
 			<input type="button" name="pager.pageNumber" value="1" class="btn-link" onclick="FP.pagerSubmitForm(this);" />&nbsp;
