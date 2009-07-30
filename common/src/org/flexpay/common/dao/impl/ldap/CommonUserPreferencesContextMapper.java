@@ -11,9 +11,12 @@ public class CommonUserPreferencesContextMapper implements UserPreferencesContex
 		preferences.setFullName(ctx.getStringAttribute("cn"));
 		preferences.setLastName(ctx.getStringAttribute("sn"));
 		preferences.setUsername(ctx.getStringAttribute("uid"));
-		preferences.setLanguageCode(ctx.getStringAttribute("flexpayPreferedLocale"));
-		String pageSize = ctx.getStringAttribute("flexpayPreferedPagerSize");
-		preferences.setPageSize(StringUtils.isNotBlank(pageSize) ? Integer.parseInt(pageSize) : 20);
+
+		if (preferences.getObjectClasses().contains("flexpayPerson")) {
+			preferences.setLanguageCode(ctx.getStringAttribute("flexpayPreferedLocale"));
+			String pageSize = ctx.getStringAttribute("flexpayPreferedPagerSize");
+			preferences.setPageSize(StringUtils.isNotBlank(pageSize) ? Integer.parseInt(pageSize) : 20);
+		}
 
 		return preferences;
 	}
@@ -43,6 +46,6 @@ public class CommonUserPreferencesContextMapper implements UserPreferencesContex
 	 */
 	@Override
 	public boolean supports(UserPreferences preferences) {
-		return preferences.getObjectClasses().contains("flexpayPerson");
+		return true;
 	}
 }
