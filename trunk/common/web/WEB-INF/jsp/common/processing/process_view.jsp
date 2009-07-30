@@ -1,4 +1,3 @@
-
 <%@ include file="/WEB-INF/jsp/common/taglibs.jsp" %>
 
 <script type="text/javascript">
@@ -18,6 +17,9 @@
 
 </script>
 
+<s:actionerror/>
+
+<s:if test="process != null">
 <table cellpadding="3" cellspacing="1" border="0" width="100%">
 
     <tr>
@@ -114,3 +116,4 @@
     </tr>
 
 </table>
+</s:if>
