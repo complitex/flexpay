@@ -26,16 +26,6 @@
 			</result>
 		</action>
 
-		<action name="paymentOperationReportAction" class="paymentOperationReportAction">
-			<result type="redirect-action">operationsList</result>
-			<result name="file" type="redirect-action">
-				<param name="actionName">print</param>
-				<param name="namespace">/common</param>
-				<param name="parse">true</param>
-				<param name="file.id">${report.id}</param>
-			</result>
-		</action>
-
 	</package>
 
 	<package name="reports" namespace="/payments" extends="payments">
@@ -71,7 +61,15 @@
 			</result>
 		</action>
 
-
+		<action name="paymentOperationReportAction" class="paymentOperationReportAction">
+			<result type="redirect-action">operationsList</result>
+			<result name="file" type="redirect-action">
+				<param name="actionName">print</param>
+				<param name="namespace">/common</param>
+				<param name="parse">true</param>
+				<param name="file.id">${report.id}</param>
+			</result>
+		</action>
 
 	</package>
 

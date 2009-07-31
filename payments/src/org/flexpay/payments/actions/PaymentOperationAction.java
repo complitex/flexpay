@@ -50,6 +50,7 @@ public abstract class PaymentOperationAction extends CashboxCookieActionSupport 
 	private DocumentTypeService documentTypeService;
 	private DocumentStatusService documentStatusService;
 	private DocumentAdditionTypeService documentAdditionTypeService;
+	protected OperationService operationService;
 	private OperationLevelService operationLevelService;
 	private OperationStatusService operationStatusService;
 	private OperationTypeService operationTypeService;
@@ -69,11 +70,13 @@ public abstract class PaymentOperationAction extends CashboxCookieActionSupport 
 	protected Operation createOperation(Cashbox cashbox) throws FlexPayException {
 
 		Operation op = new Operation();
-		fillOperation(op, cashbox);
+		fillOperation(op);
 		return op;
 	}
 
-	protected void fillOperation(Operation operation, Cashbox cashbox) throws FlexPayException {
+	protected void fillOperation(Operation operation) throws FlexPayException {
+
+		Cashbox cashbox = cashboxService.read(new Stub<Cashbox>(operation.getCashbox().getId()));
 
 		Organization organization = cashbox.getPaymentPoint().getCollector().getOrganization();
 		operation.setOperationSumm(totalToPay);
@@ -376,4 +379,10 @@ public abstract class PaymentOperationAction extends CashboxCookieActionSupport 
 	public void setCountryService(CountryService countryService) {
 		this.countryService = countryService;
 	}
+
+	@Required
+	public void setOperationService(OperationService operationService) {
+		this.operationService = operationService;
+	}
+	
 }
