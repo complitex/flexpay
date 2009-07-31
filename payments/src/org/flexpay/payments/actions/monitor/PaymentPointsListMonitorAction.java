@@ -4,8 +4,11 @@ import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.process.Process;
 import org.flexpay.common.process.ProcessManager;
+import org.flexpay.common.process.exception.ProcessInstanceException;
+import org.flexpay.common.process.exception.ProcessDefinitionException;
 import org.flexpay.common.util.DateUtil;
 import org.flexpay.common.actions.FPActionWithPagerSupport;
+import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.orgs.persistence.PaymentPoint;
 import org.flexpay.orgs.persistence.PaymentsCollector;
 import org.flexpay.orgs.persistence.Cashbox;
@@ -19,20 +22,23 @@ import org.flexpay.payments.persistence.Operation;
 import org.flexpay.payments.service.statistics.OperationTypeStatistics;
 import org.flexpay.payments.service.statistics.PaymentsStatisticsService;
 import org.flexpay.payments.service.OperationService;
+import org.flexpay.payments.service.Roles;
 import org.flexpay.payments.process.export.TradingDay;
 import org.flexpay.payments.util.config.PaymentsUserPreferences;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.security.annotation.Secured;
+import org.quartz.JobExecutionException;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Date;
-import java.util.Set;
+import java.util.*;
 import java.text.SimpleDateFormat;
+import java.io.Serializable;
 
 public class PaymentPointsListMonitorAction extends FPActionWithPagerSupport<PaymentPointMonitorContainer> {
-//    private static final String PROCESS_DEFINITION_NAME = "TradingDay";
+    private static final String PROCESS_DEFINITION_NAME = "TradingDay";
+    private static final String DISABLE = "disable";
+    private static final String ENABLE = "enable";
 
     private static final SimpleDateFormat formatTime = new SimpleDateFormat("HH:mm");
 
@@ -41,6 +47,8 @@ public class PaymentPointsListMonitorAction extends FPActionWithPagerSupport<Pay
     private String updated;
     private String update;
     private String detail;
+    private String paymentPointId;
+    private String action;
     private List<PaymentPointMonitorContainer> paymentPoints;
 
     private ProcessManager processManager;
@@ -74,6 +82,15 @@ public class PaymentPointsListMonitorAction extends FPActionWithPagerSupport<Pay
 //        for (Process process : processes) {
         for (PaymentPoint paymentPoint : lPaymentPoints) {
             paymentPoint = paymentPointService.read(new Stub<PaymentPoint>(paymentPoint));
+            PaymentPointMonitorContainer container = new PaymentPointMonitorContainer();
+
+            if (String.valueOf(paymentPoint.getId()).equals(paymentPointId)) {
+                if (getText(DISABLE).equals(action) && paymentPoint.getTradingDayProcessInstanceId() != null) {
+                    disableTradingDay(paymentPoint);
+                } if (getText(ENABLE).equals(action) && paymentPoint.getTradingDayProcessInstanceId() == null) {
+                    enableTradingDay(paymentsCollector, paymentPoint);
+                }
+            }
 
             Date startDate = DateUtil.now();
             Date finishDate = new Date();
@@ -90,12 +107,17 @@ public class PaymentPointsListMonitorAction extends FPActionWithPagerSupport<Pay
             List<OperationTypeStatistics> statistics = paymentsStatisticsService.operationTypePaymentPointStatistics(Stub.stub(paymentPoint), startDate, finishDate);
             List<Operation> operations = operationService.listLastPaymentOperations(paymentPoint, startDate, finishDate);
 
-            PaymentPointMonitorContainer container = new PaymentPointMonitorContainer();
             container.setId(String.valueOf(paymentPoint.getId()));
             container.setName(paymentPoint.getName(getLocale()));
             container.setPaymentsCount(String.valueOf(getPaymentsCount(statistics)));
             container.setTotalSum(String.valueOf(getPaymentsSumm(statistics)));
             container.setStatus(status);
+
+            if (paymentPoint.getTradingDayProcessInstanceId() != null) {
+                container.setActionName(getText(DISABLE));
+            } else {
+                container.setActionName(getText(ENABLE));
+            }
 
             if (operations != null && operations.size() > 0) {
                 Operation operation = operations.get(0);
@@ -115,6 +137,50 @@ public class PaymentPointsListMonitorAction extends FPActionWithPagerSupport<Pay
 
         updated = formatTime.format(new Date());
         return SUCCESS;
+    }
+
+    @Secured (Roles.TRADING_DAY_ADMIN_ACTION)
+    private void enableTradingDay(PaymentsCollector paymentsCollector, PaymentPoint paymentPoint) throws JobExecutionException {
+        Map<Serializable, Serializable> parameters = new HashMap<Serializable, Serializable>();
+
+        parameters.put("paymentPointId", paymentPoint.getCollector().getOrganization().getId());
+        log.debug("Set paymentPointId {}", paymentPoint.getId());
+
+        //fill begin and end date
+        Date beginDate = new Date();
+        parameters.put("beginDate", beginDate);
+        log.debug("Set beginDate {}", beginDate);
+
+        parameters.put("endDate", DateUtil.getEndOfThisDay(new Date()));
+        log.debug("Set endDate {}", DateUtil.getEndOfThisDay(new Date()));
+
+        Long recipientOrganizationId = paymentsCollector.getOrganization().getId();
+        parameters.put("organizationId", recipientOrganizationId);
+        log.debug("Set organizationId {}", recipientOrganizationId);
+
+        try {
+            paymentPoint.setTradingDayProcessInstanceId(processManager.createProcess(PROCESS_DEFINITION_NAME, parameters));
+            paymentPointService.update(paymentPoint);
+        } catch (ProcessInstanceException e) {
+            log.error("Failed run process trading day", e);
+            throw new JobExecutionException(e);
+        } catch (ProcessDefinitionException e) {
+            log.error("Process trading day not started", e);
+            throw new JobExecutionException(e);
+        } catch (FlexPayExceptionContainer flexPayExceptionContainer) {
+            log.error("Payment point did not save", flexPayExceptionContainer);
+            // TODO Kill the process!!!
+        }
+    }
+
+    @Secured (Roles.TRADING_DAY_ADMIN_ACTION)
+    private void disableTradingDay(PaymentPoint paymentPoint) throws FlexPayExceptionContainer {
+        Process process = processManager.getProcessInstanceInfo(paymentPoint.getTradingDayProcessInstanceId());
+        if (process != null) {
+            processManager.deleteProcessInstance(process);
+        }
+        paymentPoint.setTradingDayProcessInstanceId(null);
+        paymentPointService.update(paymentPoint);
     }
 
     /**
@@ -171,6 +237,22 @@ public class PaymentPointsListMonitorAction extends FPActionWithPagerSupport<Pay
 
     public void setPaymentPoints(List<PaymentPointMonitorContainer> paymentPoints) {
         this.paymentPoints = paymentPoints;
+    }
+
+    public String getPaymentPointId() {
+        return paymentPointId;
+    }
+
+    public void setPaymentPointId(String paymentPointId) {
+        this.paymentPointId = paymentPointId;
+    }
+
+    public String getAction() {
+        return action;
+    }
+
+    public void setAction(String action) {
+        this.action = action;
     }
 
     @Required

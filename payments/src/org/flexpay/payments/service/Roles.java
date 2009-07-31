@@ -38,6 +38,8 @@ public abstract class Roles {
 
 	public static final String PAYMENTS_REPORT = PREFIX + "PAYMENTS_REPORT";
 
+    public static final String TRADING_DAY_ADMIN_ACTION = PREFIX + "TRADING_DAY_ADMIN_ACTION";
+
 	// menu roles
 	// level 1
 	public static final String MENU_PAYMENTS_PREFIX = "ROLE_MENU_PAYMENTS";

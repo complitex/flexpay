@@ -237,6 +237,10 @@
 		<role-name>ROLE_PAYMENTS_PAYMENTS_REPORT</role-name>
 	</security-role>
 
+    <security-role>
+        <role-name>ROLE_PAYMENTS_TRADING_DAY_ADMIN_ACTION</role-name>
+    </security-role>
+
     <!-- cashbox roles -->
     <security-role>
         <role-name>ROLE_ORGS_CASHBOX_READ</role-name>

@@ -17,4 +17,8 @@ public interface PaymentPointDao extends GenericDao<PaymentPoint, Long> {
 
 	List<PaymentPoint> listPoints();
 
+    List<PaymentPoint> listPaymentPointsWithTradingDay();
+
+    List<PaymentPoint> listPaymentPointsWithoutTradingDay();
+
 }

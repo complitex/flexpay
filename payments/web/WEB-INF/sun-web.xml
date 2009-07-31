@@ -199,6 +199,11 @@
 	</security-role-mapping>
 
     <security-role-mapping>
+        <role-name>ROLE_PAYMENTS_TRADING_DAY_ADMIN_ACTION</role-name>
+        <group-name>PAYMENTS_FULL_ACCESS</group-name>
+    </security-role-mapping>
+
+    <security-role-mapping>
         <role-name>ROLE_MENU_PAYMENTS_ACCOUNTANT</role-name>
         <group-name>PAYMENTS_FULL_ACCESS</group-name>
     </security-role-mapping>
