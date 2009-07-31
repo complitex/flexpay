@@ -36,6 +36,22 @@ public interface PaymentPointService {
 	@NotNull
 	List<PaymentPoint> listCollectorPoints(@NotNull ArrayStack filters, @NotNull Page<PaymentPoint> pager);
 
+     /**
+     * Payment point`s tradingDayProcessInstanceId is not null.
+     *
+     * @return list payment points
+     */
+    @NotNull
+    List<PaymentPoint> listPaymentPointsWithTradingDay();
+
+    /**
+     * Payment point`s tradingDayProcessInstanceId is null.
+     *
+     * @return list payment points
+     */
+    @NotNull
+    List<PaymentPoint> listPaymentPointsWithoutTradingDay();
+
 	/**
 	 * Read full payment point info
 	 *

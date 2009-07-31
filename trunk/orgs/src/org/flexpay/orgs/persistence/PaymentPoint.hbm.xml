@@ -108,5 +108,21 @@
 			left join fetch o.names
 		where o.id=?
 	</query>
+
+    <query name="PaymentPoint.listPaymentPointsWithTradingDay">
+        select distinct o
+		from PaymentPoint o
+			inner join fetch o.collector
+			left join fetch o.names
+		where o.tradingDayProcessInstanceId is not null
+    </query>
+
+    <query name="PaymentPoint.listPaymentPointsWithoutTradingDay">
+        select distinct o
+		from PaymentPoint o
+			inner join fetch o.collector
+			left join fetch o.names
+		where o.tradingDayProcessInstanceId is null
+    </query>
 	
 </hibernate-mapping>

@@ -15,7 +15,9 @@ import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.DateUtil;
 import org.flexpay.common.util.SecurityUtil;
 import org.flexpay.orgs.persistence.PaymentPoint;
+import org.flexpay.orgs.persistence.PaymentsCollector;
 import org.flexpay.orgs.service.PaymentPointService;
+import org.flexpay.orgs.service.PaymentsCollectorService;
 import org.jbpm.JbpmContext;
 import org.jbpm.graph.exe.ProcessInstance;
 import org.jetbrains.annotations.NotNull;
@@ -46,11 +48,10 @@ public class TradingDay extends QuartzJobBean {
     private static final long TIME_OUT = 10000;
     private static final ProcessSorterByName processSorterByName = new ProcessSorterByName();
 
-	private Long organizationId;
-	private List<String> paymentPoints;
 
     private ProcessManager processManager;
     private PaymentPointService paymentPointService;
+    private PaymentsCollectorService paymentsCollectorService;
 
     /**
      * Set of authorities names for payments registry
@@ -151,10 +152,9 @@ public class TradingDay extends QuartzJobBean {
         } while (processes.size() > 0);
         log.debug("All processes finished");
 
-        for (String paymentPoint : paymentPoints) {
+        for (PaymentPoint pp : paymentPointService.listPaymentPointsWithTradingDay()) {
+            Long paymentPointId = pp.getId();
             Map<Serializable, Serializable> parameters = new HashMap<Serializable, Serializable>();
-            Long paymentPointId = Long.parseLong(paymentPoint);
-            PaymentPoint pp = paymentPointService.read(new Stub<PaymentPoint>(paymentPointId));
             if (pp == null) {
                 log.error("Payment point with id {} not found", paymentPointId);
             } else {
@@ -169,8 +169,9 @@ public class TradingDay extends QuartzJobBean {
                 parameters.put("endDate", DateUtil.getEndOfThisDay(new Date()));
                 log.debug("Set endDate {}", DateUtil.getEndOfThisDay(new Date()));
 
-                parameters.put("organizationId", organizationId);
-                log.debug("Set organizationId {}", organizationId);
+                PaymentsCollector paymentsPointCollector = paymentsCollectorService.read(Stub.stub(pp.getCollector()));
+                parameters.put("organizationId", paymentsPointCollector.getOrganization().getId());
+                log.debug("Set organizationId {}", paymentsPointCollector.getOrganization().getId());
 
                 try {
                     pp.setTradingDayProcessInstanceId(processManager.createProcess(PROCESS_DEFINITION_NAME, parameters));
@@ -196,16 +197,6 @@ public class TradingDay extends QuartzJobBean {
 		SecurityUtil.authenticate(USER_TRADING_DAY, USER_TRADING_DAY_AUTHORITIES);
 	}
 
-    @Required
-    public void setPaymentPoints(List<String> paymentPoints) {
-        this.paymentPoints = paymentPoints;
-    }
-
-	@Required
-	public void setOrganizationId(Long organizationId) {
-		this.organizationId = organizationId;
-	}
-
 	@Required
     public void setPaymentPointService(PaymentPointService paymentPointService) {
         this.paymentPointService = paymentPointService;
@@ -216,4 +207,8 @@ public class TradingDay extends QuartzJobBean {
         this.processManager = processManager;
     }
 
+    @Required
+    public void setPaymentsCollectorService(PaymentsCollectorService paymentsCollectorService) {
+        this.paymentsCollectorService = paymentsCollectorService;
+    }
 }

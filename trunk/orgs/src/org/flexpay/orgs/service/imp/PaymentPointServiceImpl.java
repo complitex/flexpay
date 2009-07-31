@@ -84,6 +84,26 @@ public class PaymentPointServiceImpl implements PaymentPointService {
 		return CollectionUtils.list();
 	}
 
+    /**
+     * Payment point`s tradingDayProcessInstanceId is not null.
+     *
+     * @return list payment points
+     */
+    @NotNull
+    public List<PaymentPoint> listPaymentPointsWithTradingDay() {
+        return paymentPointDao.listPaymentPointsWithTradingDay();
+    }
+
+    /**
+     * Payment point`s tradingDayProcessInstanceId is null.
+     *
+     * @return list payment points
+     */
+    @NotNull
+    public List<PaymentPoint> listPaymentPointsWithoutTradingDay() {
+        return paymentPointDao.listPaymentPointsWithoutTradingDay();
+    }
+
 	/**
 	 * Read full payment point info
 	 *

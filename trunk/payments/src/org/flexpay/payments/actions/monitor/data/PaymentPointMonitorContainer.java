@@ -9,6 +9,7 @@ public class PaymentPointMonitorContainer {
     private String cashBox;
     private String cashierFIO;
     private String lastPayment;
+    private String actionName;
 
     public String getId() {
         return id;
@@ -72,5 +73,13 @@ public class PaymentPointMonitorContainer {
 
     public void setLastPayment(String lastPayment) {
         this.lastPayment = lastPayment;
+    }
+
+    public String getActionName() {
+        return actionName;
+    }
+
+    public void setActionName(String actionName) {
+        this.actionName = actionName;
     }
 }

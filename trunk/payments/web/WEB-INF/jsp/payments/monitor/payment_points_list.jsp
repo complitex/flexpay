@@ -1,3 +1,4 @@
+<%@ page import="org.flexpay.payments.service.Roles" %>
 <%@ include file="/WEB-INF/jsp/common/taglibs.jsp" %>
 <%@include file="/WEB-INF/jsp/payments/include/stylesheet.jsp" %>
 
@@ -35,6 +36,9 @@
       <td class="th"><s:text name="payments.payment_points.list.cash_box"/></td>
       <td class="th"><s:text name="payments.payment_points.list.FIO_cashier"/></td>
       <td class="th"><s:text name="payments.payment_points.list.last_payment"/></td>
+      <sec:authorize ifAnyGranted="<%=Roles.TRADING_DAY_ADMIN_ACTION%>">
+        <td class="th"><s:text name="payments.payment_points.list.action"/></td>
+      </sec:authorize>
     </tr>
 
     <s:iterator value="paymentPoints" id="paymentPointDetail">
@@ -50,6 +54,14 @@
         <td nowrap="nowrap"><s:property value="cashBox"/></td>
         <td nowrap="nowrap"><s:property value="cashierFIO"/></td>
         <td nowrap="nowrap"><s:property value="lastPayment"/></td>
+        <sec:authorize ifAnyGranted="<%=Roles.TRADING_DAY_ADMIN_ACTION%>">
+          <td nowrap="nowrap">
+            <a href="<s:url action='paymentPointsListMonitor.action'><s:param name="paymentPointId" value="%{id}"/>
+                                                              <s:param name="action" value="%{actionName}"/></s:url>">
+              <s:property value="actionName" />
+            </a>
+          </td>
+        </sec:authorize>
       </tr>
     </s:iterator>
   </table>
