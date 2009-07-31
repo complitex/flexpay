@@ -68,7 +68,7 @@ public class PaymentOperationReportAction extends PaymentOperationAction {
 		}
 
 		if (copy) {
-			form.setQuittanceNumber(form.getQuittanceNumber() + " КОПИЯ"); // FIXME I18N
+			form.setQuittanceNumber(form.getQuittanceNumber() + " " + getText("payments.quittance.copy"));
 		} else {
 			addPrintHistoryRecord();
 		}
