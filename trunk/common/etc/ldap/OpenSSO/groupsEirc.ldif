@@ -1404,3 +1404,10 @@ objectClass: groupofuniquenames
 objectClass: top
 objectClass: groupofurls
 cn: MENU_PAYMENTS_PAYMENT_POINTS
+
+# PAYMENTS_TRADING_DAY_ADMIN_ACTION, groups, opensso.java.net
+dn: cn=PAYMENTS_TRADING_DAY_ADMIN_ACTION,ou=groups,dc=opensso,dc=java,dc=net
+objectClass: groupofuniquenames
+objectClass: top
+objectClass: groupofurls
+cn: PAYMENTS_TRADING_DAY_ADMIN_ACTION
