@@ -555,6 +555,10 @@
 		<role-name>ROLE_PAYMENTS_SERVICE_TYPE_DELETE</role-name>
 	</security-role>
 
+    <security-role>
+        <role-name>ROLE_PAYMENTS_TRADING_DAY_ADMIN_ACTION</role-name>
+    </security-role>
+
 	<security-role>
 		<role-name>ROLE_EIRC_FILE_UPLOAD</role-name>
 	</security-role>
