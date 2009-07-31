@@ -12,7 +12,6 @@ import org.flexpay.common.service.ReportPrintHistoryRecordService;
 import static org.flexpay.common.util.CollectionUtils.ar;
 import static org.flexpay.common.util.CollectionUtils.map;
 import org.flexpay.common.util.config.ApplicationConfig;
-import org.flexpay.orgs.persistence.Cashbox;
 import org.flexpay.payments.actions.PaymentOperationAction;
 import org.flexpay.payments.persistence.*;
 import org.flexpay.payments.reports.payments.PaymentPrintForm;
@@ -29,7 +28,7 @@ public class PaymentOperationReportAction extends PaymentOperationAction {
 	private static final String REPORT_BASE_NAME = "DoubleQuittancePayment";
 
 	private Long operationId;
-	private Long operationBlankId;
+
 	private Boolean copy = false;
 
 	private FPFile report;
@@ -50,22 +49,18 @@ public class PaymentOperationReportAction extends PaymentOperationAction {
 	protected String doExecute() throws Exception {
 
 		PaymentPrintForm form;
-		Operation operation;
-		if (operationId != null) {
-			form = paymentsReporter.getPaymentPrintFormData(new Stub<Operation>(operationId));
-		} else {
-			Cashbox cashbox = cashboxService.read(new Stub<Cashbox>(cashboxId));
-			if (cashbox == null) {
-				log.warn("Can't find cashbox with id {}", cashboxId);
-				addActionError(getText("payments.errors.cashbox_id_is_bad", "" + cashboxId));
-				return SUCCESS;
-			}
-			log.debug("Found cashbox {}", cashbox);
 
-			operation = createOperation(cashbox);
-			operation.setId(operationBlankId);
-			form = paymentsReporter.getPaymentPrintFormData(operation);
+		if (operationId == null) {
+			addActionError(getText("error.no_id"));
+			return SUCCESS;
 		}
+
+
+		Operation op = operationService.read(new Stub<Operation>(operationId));
+		if (!copy) {
+			fillOperation(op);
+		}
+		form = paymentsReporter.getPaymentPrintFormData(op);
 
 		if (form == null) {
 			addActionError(getText("error.no_id"));
@@ -152,10 +147,6 @@ public class PaymentOperationReportAction extends PaymentOperationAction {
 
 	public void setOperationId(Long operationId) {
 		this.operationId = operationId;
-	}
-
-	public void setOperationBlankId(Long operationBlankId) {
-		this.operationBlankId = operationBlankId;
 	}
 
 	public void setCopy(Boolean copy) {

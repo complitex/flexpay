@@ -48,7 +48,7 @@ public class PaymentsReporterImpl implements PaymentsReporter {
 	private SPService spService;
 	private ServiceProviderService serviceProviderService;
 	private ServiceTypeService serviceTypeService;
-	private OperationService operationService;
+	protected OperationService operationService;
 	private CurrencyToTextConverter currencyToTextConverter;
 	private CurrencyInfoService currencyInfoService;
 

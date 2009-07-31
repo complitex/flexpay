@@ -19,17 +19,17 @@ public class QuittancePayAction extends PaymentOperationAction {
 
 	private static final String TRADING_DAY_CLOSED = "tradingDayClosed"; // tiles result name
 
-	private Long operationBlankId;
+	private Long operationId;
 
 	// required services
 	private ProcessManager processManager;
-	private OperationService operationService;
+
 	private PaymentPointService paymentPointService;
 
 	@NotNull
 	protected String doExecute() throws Exception {
 
-		Operation operation = operationService.read(new Stub<Operation>(operationBlankId));
+		Operation operation = operationService.read(new Stub<Operation>(operationId));
 
 		Cashbox cashbox = getCashbox();
 		final Long paymentProcessId = getPaymentProcessId(cashbox);
@@ -37,7 +37,7 @@ public class QuittancePayAction extends PaymentOperationAction {
 		if (paymentProcessId == null || paymentProcessId == 0) {
 			log.debug("TradingDay process id not found for Payment point id = {}", cashbox.getPaymentPoint().getId());
 
-			fillOperation(operation, cashbox);
+			fillOperation(operation);
 			if (!isValidOperation(operation)) {
 				addActionError(getText("payments.error.operation_is_incorrect"));
 				return REDIRECT_SUCCESS;
@@ -62,7 +62,7 @@ public class QuittancePayAction extends PaymentOperationAction {
 				return TRADING_DAY_CLOSED;
 			}
 
-			fillOperation(operation, cashbox);
+			fillOperation(operation);
 			if (!isValidOperation(operation)) {
 				addActionError(getText("payments.error.operation_is_incorrect"));
 				return REDIRECT_SUCCESS;
@@ -125,13 +125,8 @@ public class QuittancePayAction extends PaymentOperationAction {
 		return REDIRECT_SUCCESS;
 	}
 
-	public void setOperationBlankId(Long operationBlankId) {
-		this.operationBlankId = operationBlankId;
-	}
-
-	@Required
-	public void setOperationService(OperationService operationService) {
-		this.operationService = operationService;
+	public void setOperationId(Long operationId) {
+		this.operationId = operationId;
 	}
 
 	@Required
