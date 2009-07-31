@@ -202,6 +202,7 @@
 
 <table cellpadding="3" cellspacing="1" border="0" width="100%" class="operations">
 
+	<s:if test="processStatus != null">
     <tr>
         <td colspan="11" nowrap="nowrap">
             <fieldset class="fieldset">
@@ -220,6 +221,7 @@
             </fieldset>
         </td>
     </tr>
+	</s:if>
 
     <s:if test="%{operationsListIsEmpty()}">
         <tr>
