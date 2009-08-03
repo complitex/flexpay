@@ -1,40 +1,43 @@
 package org.flexpay.eirc.service.exchange;
 
-import org.flexpay.common.dao.paging.Page;
+import org.apache.commons.lang.time.StopWatch;
+import org.flexpay.common.dao.paging.FetchRange;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
-import org.flexpay.common.persistence.file.FPFile;
-import org.flexpay.common.persistence.ImportError;
 import org.flexpay.common.persistence.DataSourceDescription;
+import org.flexpay.common.persistence.ImportError;
 import org.flexpay.common.persistence.Stub;
-import org.flexpay.payments.persistence.EircRegistryProperties;
-import org.flexpay.common.persistence.registry.RegistryRecord;
 import static org.flexpay.common.persistence.Stub.stub;
-import org.flexpay.common.service.importexport.ClassToTypeRegistry;
-import org.flexpay.common.service.importexport.ImportErrorsSupport;
-import org.flexpay.common.service.importexport.RawDataSource;
-import org.flexpay.common.service.RegistryService;
-import org.flexpay.common.service.RegistryRecordService;
-import org.flexpay.eirc.dao.importexport.InMemoryRawConsumersDataSource;
-import org.flexpay.eirc.dao.importexport.RawConsumersDataSource;
-import org.flexpay.eirc.persistence.Consumer;
+import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.persistence.registry.Registry;
-import org.flexpay.eirc.persistence.exchange.Operation;
-import org.flexpay.eirc.persistence.exchange.ServiceOperationsFactory;
+import org.flexpay.common.persistence.registry.RegistryRecord;
 import org.flexpay.common.persistence.registry.workflow.RegistryRecordWorkflowManager;
 import org.flexpay.common.persistence.registry.workflow.RegistryWorkflowManager;
 import org.flexpay.common.persistence.registry.workflow.TransitionNotAllowed;
-import org.flexpay.common.service.RegistryFileService;
 import org.flexpay.common.process.ProcessLogger;
+import org.flexpay.common.service.RegistryFileService;
+import org.flexpay.common.service.RegistryRecordService;
+import org.flexpay.common.service.RegistryService;
+import org.flexpay.common.service.fetch.ReadHints;
+import org.flexpay.common.service.fetch.ReadHintsHolder;
+import org.flexpay.common.service.importexport.ClassToTypeRegistry;
+import org.flexpay.common.service.importexport.ImportErrorsSupport;
+import org.flexpay.common.service.importexport.RawDataSource;
+import org.flexpay.eirc.dao.importexport.InMemoryRawConsumersDataSource;
+import org.flexpay.eirc.dao.importexport.RawConsumersDataSource;
+import org.flexpay.eirc.persistence.Consumer;
+import org.flexpay.eirc.persistence.exchange.DelayedUpdate;
+import org.flexpay.eirc.persistence.exchange.Operation;
+import org.flexpay.eirc.persistence.exchange.ServiceOperationsFactory;
 import org.flexpay.eirc.service.importexport.EircImportService;
 import org.flexpay.eirc.service.importexport.RawConsumerData;
-import org.flexpay.orgs.service.ServiceProviderService;
 import org.flexpay.orgs.persistence.ServiceProvider;
+import org.flexpay.orgs.service.ServiceProviderService;
+import org.flexpay.payments.persistence.EircRegistryProperties;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
-import org.apache.commons.lang.time.StopWatch;
 
 import java.util.Collection;
 import java.util.List;
@@ -117,19 +120,19 @@ public class ServiceProviderFileProcessor implements RegistryProcessor {
 		}
 	}
 
-	public void processRegistry(Registry registry) throws Exception {
+	public void processRegistry(@NotNull Registry registry) throws Exception {
 
 		StopWatch watch = new StopWatch();
 		watch.start();
 		Logger plog = ProcessLogger.getLogger(getClass());
 
 		plog.info("Starting processing records");
-		Page<RegistryRecord> pager = new Page<RegistryRecord>(50);
-		Long[] minMaxIds = {null, null};
+		FetchRange range = new FetchRange(50);
+		ReadHintsHolder.setHints(new ReadHints());
 		do {
-			plog.info("Fetching next page {}. Time spent {}", pager, watch);
-			processRegistry(registry, pager, minMaxIds);
-		} while (pager.getThisPageFirstElementNumber() <= (minMaxIds[1] - minMaxIds[0]));
+			plog.info("Fetching next page {}. Time spent {}", range, watch);
+			processRegistry(registry, range);
+		} while (range.hasMore());
 		plog.info("No more records to process");
 
 		watch.stop();
@@ -139,15 +142,13 @@ public class ServiceProviderFileProcessor implements RegistryProcessor {
 	/**
 	 * Run next registry records batch processing
 	 *
-	 * @param registry  Registry those records to process
-	 * @param pager	 Page
-	 * @param minMaxIds Cached minimum and maximum registry record ids to process
+	 * @param registry Registry those records to process
+	 * @param range	Fetch range
 	 * @throws Exception if failure occurs
 	 */
-	private void processRegistry(Registry registry, Page<RegistryRecord> pager, Long[] minMaxIds) throws Exception {
+	private void processRegistry(Registry registry, FetchRange range) throws Exception {
 
-		log.info("Fetching for records: {}", pager);
-		List<RegistryRecord> records = registryFileService.getRecordsForProcessing(stub(registry), pager, minMaxIds);
+		List<RegistryRecord> records = registryFileService.getRecordsForProcessing(stub(registry), range);
 		for (RegistryRecord record : records) {
 			try {
 				processorTx.processRecord(registry, record);
@@ -155,7 +156,7 @@ public class ServiceProviderFileProcessor implements RegistryProcessor {
 				handleError(t, registry, record);
 			}
 		}
-		pager.setPageNumber(pager.getPageNumber() + 1);
+		range.nextPage();
 	}
 
 	private void handleError(Throwable t, Registry registry, RegistryRecord record) throws Exception {
@@ -258,7 +259,8 @@ public class ServiceProviderFileProcessor implements RegistryProcessor {
 		// process header containers
 		try {
 			Operation op = serviceOperationsFactory.getContainerOperation(registry);
-			op.process(registry, null);
+			DelayedUpdate update = op.process(registry, null);
+			update.doUpdate();
 		} catch (Exception e) {
 			log.error("Failed constructing container for registry: " + registry, e);
 			// in processing, notify have error

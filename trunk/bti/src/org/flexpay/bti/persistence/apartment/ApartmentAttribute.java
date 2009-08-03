@@ -1,36 +1,74 @@
 package org.flexpay.bti.persistence.apartment;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
-import org.apache.commons.lang.builder.ToStringStyle;
+import org.flexpay.common.persistence.TemporalValueObject;
 
-import java.util.Date;
+public class ApartmentAttribute extends TemporalValueObject implements Comparable<ApartmentAttribute> {
 
-public class ApartmentAttribute extends ApartmentAttributeBase {
+	private int isTemporal = 0;
+	private BtiApartment apartment;
+	private ApartmentAttributeType attributeType;
 
-	private String value;
-
-	public String getValue() {
-		return value;
+	public int getTemporal() {
+		return isTemporal;
 	}
 
-	public void setValue(String value) {
-		this.value = value;
+	public void setTemporal(int temporal) {
+		isTemporal = temporal;
 	}
 
-	public String getValueForDate(Date td) {
-		return value;
+	public BtiApartment getApartment() {
+		return apartment;
 	}
 
-	public void setValueForDates(String value, Date beginDt, Date endDt) {
-		this.value = value;
+	public void setApartment(BtiApartment apartment) {
+		this.apartment = apartment;
+	}
+
+	public ApartmentAttributeType getAttributeType() {
+		return attributeType;
+	}
+
+	public void setAttributeType(ApartmentAttributeType attributeType) {
+		this.attributeType = attributeType;
 	}
 
 	@Override
-	public String toString() {
-		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
-				append("id", getId()).
-				append("value", value).
-				toString();
+	public int compareTo(ApartmentAttribute o) {
+		return getBegin().compareTo(o.getBegin());
 	}
 
+	@Override
+	protected ToStringBuilder buildToString(ToStringBuilder builder) {
+		return super.buildToString(builder)
+				.append("type-id", attributeType == null ? null : attributeType.getId())
+				.append("apartment-id", apartment == null ? null : apartment.getId());
+	}
+
+	public ApartmentAttribute copy() {
+
+		ApartmentAttribute attribute = new ApartmentAttribute();
+		attribute.setApartment(apartment);
+		attribute.setAttributeType(attributeType);
+		attribute.setBegin(getBegin());
+		attribute.setEnd(getEnd());
+		attribute.setTemporal(getTemporal());
+		if (isBool()) {
+			attribute.setBoolValue(isBoolValue());
+		} else if (isDate()) {
+			attribute.setDateValue(getDateValue());
+		} else if (isDecimal()) {
+			attribute.setDecimalValue(getDecimalValue());
+		} else if (isDouble()) {
+			attribute.setDoubleValue(getDoubleValue());
+		} else if (isInt()) {
+			attribute.setIntValue(getIntValue());
+		} else if (isLong()) {
+			attribute.setLongValue(getLongValue());
+		} else if (isString()) {
+			attribute.setStringValue(getStringValue());
+		}
+
+		return attribute;
+	}
 }

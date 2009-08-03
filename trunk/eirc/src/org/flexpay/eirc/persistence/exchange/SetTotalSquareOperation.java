@@ -1,12 +1,9 @@
 package org.flexpay.eirc.persistence.exchange;
 
 import org.flexpay.bti.persistence.apartment.ApartmentAttributeConfig;
-import org.flexpay.bti.persistence.apartment.ApartmentAttributeType;
-import org.flexpay.bti.persistence.apartment.BtiApartment;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.persistence.registry.RegistryRecord;
-import org.flexpay.eirc.persistence.Consumer;
 
 import java.util.List;
 
@@ -30,9 +27,9 @@ public class SetTotalSquareOperation extends AbstractChangePersonalAccountOperat
 	 * @throws org.flexpay.common.exception.FlexPayException
 	 *          if failure occurs
 	 */
-	public void process(Registry registry, RegistryRecord record) throws FlexPayException {
+	public DelayedUpdate process(Registry registry, RegistryRecord record) throws FlexPayException {
 
-		ContainerProcessHelper.updateApartmentAttribute(record, newValue,
+		return ContainerProcessHelper.updateApartmentAttribute(record, newValue,
 				ApartmentAttributeConfig.ATTR_TOTAL_SQUARE, factory);
 	}
 

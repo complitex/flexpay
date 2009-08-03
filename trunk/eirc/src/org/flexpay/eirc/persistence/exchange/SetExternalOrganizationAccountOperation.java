@@ -1,18 +1,19 @@
 package org.flexpay.eirc.persistence.exchange;
 
+import org.apache.commons.lang.StringUtils;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.persistence.registry.RegistryRecord;
-import org.flexpay.common.util.StringUtil;
-import org.flexpay.orgs.persistence.Organization;
-import org.flexpay.eirc.util.config.ApplicationConfig;
 import org.flexpay.eirc.persistence.Consumer;
-import org.flexpay.eirc.persistence.consumer.ConsumerAttributeTypeBase;
+import org.flexpay.eirc.persistence.exchange.delayed.DelayedUpdateConsumer;
+import org.flexpay.eirc.persistence.exchange.delayed.DelayedUpdateNope;
 import org.flexpay.eirc.persistence.consumer.ConsumerAttribute;
+import org.flexpay.eirc.persistence.consumer.ConsumerAttributeTypeBase;
+import org.flexpay.eirc.util.config.ApplicationConfig;
+import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.payments.persistence.quittance.ConsumerAttributes;
-import org.apache.commons.lang.StringUtils;
 
 import java.util.List;
 
@@ -49,7 +50,7 @@ public class SetExternalOrganizationAccountOperation extends AbstractChangePerso
 	 *          if failure occurs
 	 */
 	@Override
-	public void process(Registry registry, RegistryRecord record) throws FlexPayException, FlexPayExceptionContainer {
+	public DelayedUpdate process(Registry registry, RegistryRecord record) throws FlexPayException, FlexPayExceptionContainer {
 
 		Organization organization = factory.getOrganizationService().readFull(new Stub<Organization>(organizationId));
 		if (organization == null) {
@@ -57,11 +58,13 @@ public class SetExternalOrganizationAccountOperation extends AbstractChangePerso
 		}
 
 		if (ApplicationConfig.getMbOrganizationStub().sameId(organization)) {
-			setMbAccountNumber(record);
+			return setMbAccountNumber(record);
 		}
+
+		return DelayedUpdateNope.INSTANCE;
 	}
 
-	private void setMbAccountNumber(RegistryRecord record) throws FlexPayException, FlexPayExceptionContainer {
+	private DelayedUpdate setMbAccountNumber(RegistryRecord record) throws FlexPayException, FlexPayExceptionContainer {
 
 		Consumer consumer = ContainerProcessHelper.getConsumer(record, factory);
 		ConsumerAttributeTypeBase type = factory.getConsumerAttributeTypeService()
@@ -76,7 +79,9 @@ public class SetExternalOrganizationAccountOperation extends AbstractChangePerso
 			attribute.setType(type);
 			attribute.setStringValue(newValue);
 			consumer.setTmpAttributeForDate(attribute, changeApplyingDate);
-			factory.getConsumerService().save(consumer);
+			return new DelayedUpdateConsumer(consumer, factory.getConsumerService());
 		}
+
+		return DelayedUpdateNope.INSTANCE;
 	}
 }

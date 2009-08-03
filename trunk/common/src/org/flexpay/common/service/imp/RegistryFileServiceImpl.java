@@ -1,18 +1,19 @@
 package org.flexpay.common.service.imp;
 
-import org.flexpay.common.dao.paging.Page;
-import org.flexpay.common.persistence.file.FPFile;
-import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.dao.paging.FetchRange;
 import org.flexpay.common.dao.registry.RegistryDao;
 import org.flexpay.common.dao.registry.RegistryFileDaoExt;
 import org.flexpay.common.dao.registry.RegistryRecordDao;
-import org.flexpay.common.dao.registry.RegistryRecordDaoExt;
-import org.flexpay.common.persistence.registry.RegistryRecord;
+import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.persistence.registry.Registry;
+import org.flexpay.common.persistence.registry.RegistryRecord;
 import org.flexpay.common.service.RegistryFileService;
+import org.flexpay.common.service.fetch.ReadHints;
+import org.flexpay.common.service.fetch.ReadHintsHolder;
+import org.flexpay.common.service.imp.fetch.ProcessingReadHintsHandlerFactory;
+import org.flexpay.common.util.CollectionUtils;
 import org.jetbrains.annotations.NotNull;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,12 +22,11 @@ import java.util.List;
 @Transactional (readOnly = true)
 public class RegistryFileServiceImpl implements RegistryFileService {
 
-	private Logger log = LoggerFactory.getLogger(getClass());
-
 	private RegistryDao registryDao;
 	private RegistryFileDaoExt registryFileDaoExt;
 	private RegistryRecordDao registryRecordDao;
-	private RegistryRecordDaoExt registryRecordDaoExt;
+
+	private List<ProcessingReadHintsHandlerFactory> readHintsHandlerFactories = CollectionUtils.list();
 
 	/**
 	 * Get registries for file
@@ -41,27 +41,26 @@ public class RegistryFileServiceImpl implements RegistryFileService {
 	/**
 	 * Get registry records for processing
 	 *
-	 * @param registry  Registry header
-	 * @param pager	 Page
-	 * @param minMaxIds cached minimum and maximum registry record keys
+	 * @param registry Registry header
+	 * @param range	Fetch range
 	 * @return list of records
 	 */
-	public List<RegistryRecord> getRecordsForProcessing(@NotNull Stub<Registry> registry, Page<RegistryRecord> pager, Long[] minMaxIds) {
+	public List<RegistryRecord> getRecordsForProcessing(@NotNull Stub<Registry> registry, FetchRange range) {
 
-		// cache min-max rerecord ids
-		if (minMaxIds[0] == null || minMaxIds[1] == null) {
-			Long[] values = registryRecordDaoExt.getMinMaxIdsForProcessing(registry.getId());
-			minMaxIds[0] = values[0];
-			minMaxIds[1] = values[1];
+		List<RegistryRecord> records = registryRecordDao.listRecordsForProcessing(registry.getId(), range);
 
-			log.info("Min and max are {}, {}", values[0], values[1]);
+		ReadHints hints = ReadHintsHolder.getHints();
+		if (hints == null) {
+			return records;
 		}
-		Long lowerBound = minMaxIds[0] + pager.getThisPageFirstElementNumber();
-		Long upperBound = minMaxIds[0] + pager.getThisPageLastElementNumber();
 
-		log.info("Bounds: [{}, {}]", lowerBound, upperBound);
+		for (ProcessingReadHintsHandlerFactory factory : readHintsHandlerFactories) {
+			if (factory.supports(hints)) {
+				factory.getInstance(registry, range, records).read();
+			}
+		}
 
-		return registryRecordDao.listRecordsForProcessing(registry.getId(), lowerBound, upperBound);
+		return records;
 	}
 
 	/**
@@ -85,13 +84,16 @@ public class RegistryFileServiceImpl implements RegistryFileService {
 	}
 
 	@Required
-	public void setRegistryRecordDaoExt(RegistryRecordDaoExt registryRecordDaoExt) {
-		this.registryRecordDaoExt = registryRecordDaoExt;
-	}
-
-	@Required
 	public void setRegistryFileDaoExt(RegistryFileDaoExt registryFileDaoExt) {
 		this.registryFileDaoExt = registryFileDaoExt;
 	}
 
+	/**
+	 * Add hints read handler factory
+	 *
+	 * @param factory ProcessingReadHintsHandlerFactory
+	 */
+	public void setReadHintsHandlerFactory(ProcessingReadHintsHandlerFactory factory) {
+		readHintsHandlerFactories.add(factory);
+	}
 }

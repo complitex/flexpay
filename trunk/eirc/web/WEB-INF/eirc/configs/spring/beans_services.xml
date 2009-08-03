@@ -231,4 +231,24 @@
 		</property>
 	</bean>
 
+	<bean id="apartmentAttributeReadHintsHandlerFactory"
+		  class="org.flexpay.eirc.service.imp.fetch.ApartmentAttributeReadHintsHandlerFactory"
+		  p:recordPropertiesDao-ref="eircRegistryRecordPropertiesDao" />
+
+	<bean id="consumerReadHintsHandlerFactory"
+		  class="org.flexpay.eirc.service.imp.fetch.ConsumerReadHintsHandlerFactory"
+		  p:recordPropertiesDao-ref="eircRegistryRecordPropertiesDao" />
+
+	<bean autowire-candidate="false"
+		  parent="registryFileService"
+		  factory-bean="registryFileServiceFactory"
+		  factory-method="getRegistryFileService"
+		  p:readHintsHandlerFactory-ref="apartmentAttributeReadHintsHandlerFactory" />
+
+	<bean autowire-candidate="false"
+		  parent="registryFileService"
+		  factory-bean="registryFileServiceFactory"
+		  factory-method="getRegistryFileService"
+		  p:readHintsHandlerFactory-ref="consumerReadHintsHandlerFactory" />
+
 </beans>

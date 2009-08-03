@@ -3,17 +3,17 @@ package org.flexpay.eirc.persistence.exchange;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.time.DateUtils;
 import org.flexpay.common.exception.FlexPayException;
-import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Stub;
-import org.flexpay.payments.persistence.EircRegistryProperties;
 import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.persistence.registry.RegistryRecord;
 import org.flexpay.eirc.persistence.Consumer;
 import org.flexpay.eirc.persistence.EircRegistryRecordProperties;
+import org.flexpay.eirc.persistence.exchange.delayed.DelayedUpdateQuittanceDetails;
 import org.flexpay.eirc.persistence.account.QuittanceDetails;
 import org.flexpay.eirc.service.ConsumerService;
 import org.flexpay.eirc.service.QuittanceService;
 import org.flexpay.orgs.persistence.ServiceProvider;
+import org.flexpay.payments.persistence.EircRegistryProperties;
 
 import java.math.BigDecimal;
 import java.util.Calendar;
@@ -85,6 +85,7 @@ public class BaseContainerOperation extends ContainerOperation {
 		if (serviceId != null && !"#".equals(serviceId)) {
 			EircRegistryProperties props = (EircRegistryProperties) registry.getProperties();
 			ServiceProvider provider = factory.getServiceProviderService().read(props.getServiceProviderStub());
+			// todo save read full consumer in properties
 			consumer = consumerService.findConsumer(
 					new Stub<ServiceProvider>(provider), record.getPersonalAccountExt(), serviceId);
 			if (consumer == null) {
@@ -109,7 +110,7 @@ public class BaseContainerOperation extends ContainerOperation {
 	 * @param record   Registry record
 	 * @throws FlexPayException if failure occurs
 	 */
-	public void process(Registry registry, RegistryRecord record) throws FlexPayException {
+	public DelayedUpdate process(Registry registry, RegistryRecord record) throws FlexPayException {
 		QuittanceService quittanceService = factory.getQuittanceService();
 
 		EircRegistryRecordProperties props = (EircRegistryRecordProperties) record.getProperties();
@@ -135,14 +136,6 @@ public class BaseContainerOperation extends ContainerOperation {
 		details.setPayment(payment);
 		details.setMonth(DateUtils.truncate(registry.getFromDate(), Calendar.MONTH));
 
-		// TODO: check if there is a quittance for this account for this month
-
-		try {
-			quittanceService.save(details);
-		} catch (FlexPayExceptionContainer container) {
-			FlexPayException e = container.getExceptions().iterator().next();
-			log.error("Failed saving quittance details, first error is ", e);
-			throw e;
-		}
+		return new DelayedUpdateQuittanceDetails(details, quittanceService);
 	}
 }

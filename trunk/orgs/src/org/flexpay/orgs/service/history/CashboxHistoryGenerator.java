@@ -7,7 +7,6 @@ import org.flexpay.common.persistence.history.ProcessingStatus;
 import org.flexpay.common.service.DiffService;
 import org.flexpay.orgs.persistence.Cashbox;
 import org.flexpay.orgs.service.CashboxService;
-import org.flexpay.orgs.service.history.CashboxHistoryBuilder;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,6 +19,7 @@ public class CashboxHistoryGenerator implements HistoryGenerator<Cashbox> {
 	private DiffService diffService;
 	private CashboxHistoryBuilder historyBuilder;
 	private CashboxService cashboxService;
+	private CashboxReferencesHistoryGenerator referencesHistoryGenerator;
 
 	/**
 	 * Do generation
@@ -39,9 +39,13 @@ public class CashboxHistoryGenerator implements HistoryGenerator<Cashbox> {
 			return;
 		}
 
-		Diff diff = historyBuilder.diff(null, cashbox);
-		diff.setProcessingStatus(ProcessingStatus.STATUS_PROCESSED);
-		diffService.create(diff);
+		referencesHistoryGenerator.generateReferencesHistory(cashbox);
+
+		if (!diffService.hasDiffs(cashbox)) {
+			Diff diff = historyBuilder.diff(null, cashbox);
+			diff.setProcessingStatus(ProcessingStatus.STATUS_PROCESSED);
+			diffService.create(diff);
+		}
 	}
 
 	@Required
@@ -57,5 +61,10 @@ public class CashboxHistoryGenerator implements HistoryGenerator<Cashbox> {
 	@Required
 	public void setCashboxService(CashboxService cashboxService) {
 		this.cashboxService = cashboxService;
+	}
+
+	@Required
+	public void setReferencesHistoryGenerator(CashboxReferencesHistoryGenerator referencesHistoryGenerator) {
+		this.referencesHistoryGenerator = referencesHistoryGenerator;
 	}
 }

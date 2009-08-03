@@ -303,10 +303,12 @@
 
 	<target name="template.run.standalone">
 		<antcall target="template.set_db_name" />
+		<antcall target="template.set_test_db_name" />
 		<java classpathref="classpath"
 			  classname="org.flexpay.common.util.standalone.ApplicationRunner"
 			  dir="${build.dir}/web" fork="yes">
-			<jvmarg value="-Xmx350m" />
+			<jvmarg value="-Xmx750m" />
+			<!--<jvmarg value="-Xmx350m" />-->
 			<jvmarg value="-XX:+HeapDumpOnOutOfMemoryError" />
 			<sysproperty key="log4j.configuration"
 						 value="WEB-INF/common/configs/log4j.xml" />

@@ -3,21 +3,25 @@ package org.flexpay.eirc.persistence.exchange;
 import org.flexpay.ab.persistence.Apartment;
 import org.flexpay.ab.persistence.Person;
 import org.flexpay.common.exception.FlexPayException;
-import org.flexpay.common.exception.FlexPayExceptionContainer;
-import org.flexpay.common.persistence.DataCorrection;
-import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.DataSourceDescription;
-import org.flexpay.payments.persistence.EircRegistryProperties;
+import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.persistence.registry.RegistryRecord;
 import org.flexpay.common.persistence.registry.RegistryType;
-import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.service.importexport.CorrectionsService;
 import org.flexpay.eirc.dao.importexport.RawConsumersDataUtil;
-import org.flexpay.eirc.persistence.*;
+import org.flexpay.eirc.persistence.Consumer;
+import org.flexpay.eirc.persistence.ConsumerInfo;
+import org.flexpay.eirc.persistence.EircRegistryRecordProperties;
+import org.flexpay.eirc.persistence.exchange.delayed.DelayedUpdateConsumer;
+import org.flexpay.eirc.persistence.exchange.delayed.DelayedUpdateCorrection;
+import org.flexpay.eirc.persistence.exchange.delayed.DelayedUpdateNope;
+import org.flexpay.eirc.persistence.exchange.delayed.DelayedUpdatesContainer;
 import org.flexpay.eirc.service.ConsumerService;
 import org.flexpay.eirc.service.importexport.RawConsumerData;
 import org.flexpay.eirc.util.config.ApplicationConfig;
 import org.flexpay.orgs.persistence.ServiceProvider;
+import org.flexpay.payments.persistence.EircRegistryProperties;
 import org.flexpay.payments.persistence.Service;
 
 import java.text.ParseException;
@@ -63,10 +67,10 @@ public class OpenSubserviceAccountOperation extends ContainerOperation {
 	 * @param record   Registry record
 	 * @throws FlexPayException if failure occurs
 	 */
-	public void process(Registry registry, RegistryRecord record) throws FlexPayException {
+	public DelayedUpdate process(Registry registry, RegistryRecord record) throws FlexPayException {
 
 		if (!validate(registry, record)) {
-			return;
+			return DelayedUpdateNope.INSTANCE;
 		}
 
 		EircRegistryRecordProperties props = (EircRegistryRecordProperties) record.getProperties();
@@ -90,17 +94,11 @@ public class OpenSubserviceAccountOperation extends ContainerOperation {
 		consumer.setEircAccount(base.getEircAccount());
 
 		saveConsumerInfo(record, consumer);
-		ConsumerService consumerService = factory.getConsumerService();
-		try {
-			consumerService.save(consumer);
-		} catch (FlexPayExceptionContainer c) {
-			for (FlexPayException exception : c.getExceptions()) {
-				log.error("Failed saving subconsumer", exception);
-			}
-			throw new FlexPayException("Failed creating subconsumer");
-		}
+		DelayedUpdatesContainer container = new DelayedUpdatesContainer();
+		container.addUpdate(new DelayedUpdateConsumer(consumer, factory.getConsumerService()));
 
-		createCorrection(registry, record, consumer);
+		createCorrection(registry, record, consumer, container);
+		return container;
 	}
 
 	private void saveConsumerInfo(RegistryRecord record, Consumer consumer) {
@@ -111,7 +109,7 @@ public class OpenSubserviceAccountOperation extends ContainerOperation {
 	}
 
 
-	private void createCorrection(Registry registry, RegistryRecord record, Consumer consumer) {
+	private void createCorrection(Registry registry, RegistryRecord record, Consumer consumer, DelayedUpdatesContainer container) {
 
 		CorrectionsService correctionsService = factory.getCorrectionsService();
 
@@ -122,14 +120,13 @@ public class OpenSubserviceAccountOperation extends ContainerOperation {
 		EircRegistryProperties props = (EircRegistryProperties) registry.getProperties();
 		ServiceProvider provider = factory.getServiceProviderService().read(props.getServiceProviderStub());
 		Stub<DataSourceDescription> sd = provider.getDataSourceDescriptionStub();
-		DataCorrection corr = correctionsService.getStub(shortId, consumer, sd);
-		correctionsService.save(corr);
+
+		container.addUpdate(new DelayedUpdateCorrection(correctionsService, consumer, shortId, sd));
 
 		// add full consumer correction
 		String fullId = data.getFullConsumerId();
 		if (!fullId.equals(shortId)) {
-			corr = correctionsService.getStub(fullId, consumer, sd);
-			correctionsService.save(corr);
+			container.addUpdate(new DelayedUpdateCorrection(correctionsService, consumer, fullId, sd));
 		}
 	}
 

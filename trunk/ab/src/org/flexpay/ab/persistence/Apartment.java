@@ -38,7 +38,6 @@ public class Apartment extends DomainObjectWithStatus {
 		return new Apartment();
 	}
 
-	@Nullable
 	public Building getBuilding() {
 		return building;
 	}

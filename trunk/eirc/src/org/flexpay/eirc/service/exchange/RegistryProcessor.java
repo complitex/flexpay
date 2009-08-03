@@ -69,5 +69,5 @@ public interface RegistryProcessor {
 	 * @param registry Registry to process
 	 * @throws Exception if failure occurs
 	 */
-	void processRegistry(Registry registry) throws Exception;
+	void processRegistry(@NotNull Registry registry) throws Exception;
 }

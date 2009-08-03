@@ -105,6 +105,10 @@ public class Consumer extends DomainObjectWithStatus {
 		this.eircAccount = eircAccount;
 	}
 
+	public boolean isEircAccountNew() {
+		return eircAccount == null || eircAccount.isNew();
+	}
+
 	public Stub<EircAccount> getEircAccountStub() {
 		return stub(eircAccount);
 	}
@@ -252,8 +256,8 @@ public class Consumer extends DomainObjectWithStatus {
 			attribute.setConsumer(this);
 		}
 
-		boolean deleted = attrs.removeAll(toDelete);
-		deleted |= attributes.removeAll(toDelete);
+		attrs.removeAll(toDelete);
+		attributes.removeAll(toDelete);
 		attrs.addAll(toAdd);
 		attributes.addAll(toAdd);
 	}

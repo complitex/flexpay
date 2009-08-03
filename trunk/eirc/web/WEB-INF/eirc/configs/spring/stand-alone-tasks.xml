@@ -6,19 +6,20 @@
 		   http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
 		   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
-	<bean class="org.flexpay.eirc.util.standalone.RunSpFileProcessing" id="spFileProcessingRunner"
-          p:moduleName="${flexpay.module.name.eirc}"
+	<bean id="spFileProcessingRunner"
+		  class="org.flexpay.eirc.util.standalone.RunSpFileProcessing"
+		  p:moduleName="${flexpay.module.name.eirc}"
 		  p:fileAction-ref="spFileAction"
 		  p:spFileUploadAjaxAction-ref="spFileUploadAjaxAction"
 		  p:fileService-ref="registryFileService"
 		  p:spRegistryDao-ref="spRegistryDao"
-          p:fpFileService-ref="fpFileService"
+		  p:fpFileService-ref="fpFileService"
 		  p:registryService-ref="registryService"
 		  p:registryProcessor-ref="registryProcessor" />
 
 	<bean class="org.flexpay.eirc.util.standalone.RunGenerateQuittancesPDF"
 		  id="runGenerateQuittancesPDF"
-          p:job-ref="generateQuittancesPDFJob" />
+		  p:job-ref="generateQuittancesPDFJob" />
 
 	<bean class="org.flexpay.common.util.standalone.StandaloneTasksHolder"
 		  parent="commonStandAloneTasksHolder"
@@ -26,9 +27,9 @@
 		<property name="standaloneTasks">
 			<list>
 				<!-- run sp file processing -->
-				<!--<ref bean="spFileProcessingRunner" />-->
+				<ref bean="spFileProcessingRunner" />
 				<!-- Generate PDF -->
-				<ref bean="runGenerateQuittancesPDF" />
+				<!--<ref bean="runGenerateQuittancesPDF" />-->
 			</list>
 		</property>
 	</bean>

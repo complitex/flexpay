@@ -680,6 +680,7 @@
         ab_region_filter varchar(255) comment 'Region filter',
         ab_town_filter varchar(255) comment 'Town filter',
         payments_payment_point_id bigint comment 'User payment point',
+        payment_collector_id bigint comment 'User payment collector id',
         primary key (id)
     ) comment='User details';
 
@@ -829,6 +830,7 @@
         id bigint not null auto_increment,
         version integer not null comment 'Optimistic lock version',
         status integer not null comment 'Enabled-disabled status',
+        email varchar(255) comment 'E-mail',
         organization_id bigint not null comment 'Organization reference',
         data_source_description_id bigint not null comment 'Data source description reference',
         primary key (id)
@@ -1052,6 +1054,7 @@
         register_date datetime comment 'Operation registration date',
         address varchar(255) comment 'Payer address',
         payer_fio varchar(255) comment 'Payer first-middle-last names',
+        cashier_fio varchar(255) comment 'Cashier full name',
         level_id bigint not null comment 'Operation level reference',
         status_id bigint not null comment 'Operation status reference',
         type_id bigint not null comment 'Operation type reference (operation code)',

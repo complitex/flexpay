@@ -46,7 +46,7 @@
 	</category>
 
 	<category name="jdbc.sqlonly" additivity="false">
-		<priority value="FATAL" />
+		<priority value="error" />
 		<appender-ref ref="flexpay" />
 	</category>
 

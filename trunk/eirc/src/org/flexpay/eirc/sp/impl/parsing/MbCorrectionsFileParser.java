@@ -14,8 +14,8 @@ import org.flexpay.eirc.persistence.EircRegistryRecordProperties;
 import org.flexpay.eirc.sp.impl.MbFileParser;
 import org.flexpay.eirc.sp.impl.MbFileValidator;
 import org.flexpay.eirc.util.config.ApplicationConfig;
-import org.flexpay.orgs.persistence.ServiceProvider;
 import org.flexpay.orgs.persistence.Organization;
+import org.flexpay.orgs.persistence.ServiceProvider;
 import org.flexpay.payments.persistence.EircRegistryProperties;
 import org.flexpay.payments.persistence.Service;
 import org.flexpay.payments.persistence.ServiceType;
@@ -173,7 +173,6 @@ public class MbCorrectionsFileParser extends MbFileParser {
 				return 0;
 			}
 			RegistryRecord record = newRecord(registry, fields, serviceCode);
-			recordStack.add(record);
 
 			// check if consumer already exists and does not create account
 			EircRegistryRecordProperties recProps = (EircRegistryRecordProperties) record.getProperties();
@@ -186,7 +185,10 @@ public class MbCorrectionsFileParser extends MbFileParser {
 			}
 
 			setInfoContainers(record, fields);
-			++count;
+			if (!record.getContainers().isEmpty()) {
+				++count;
+				recordStack.add(record);
+			}
 		}
 
 		return count;
@@ -283,11 +285,6 @@ public class MbCorrectionsFileParser extends MbFileParser {
 			container.setData("12:" + modificationStartDate + "::" + fields[16]);
 			record.addContainer(container);
 		}
-
-		container = new RegistryRecordContainer();
-		container.setData("15:" + modificationStartDate + "::" + getErcAccount(fields) +
-						  ":" + getMBOrganizationStub().getId());
-		record.addContainer(container);
 
 		return record;
 	}

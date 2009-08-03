@@ -11,6 +11,7 @@ import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.service.importexport.CorrectionsService;
 import org.flexpay.eirc.dao.importexport.RawConsumersDataUtil;
 import org.flexpay.eirc.persistence.*;
+import org.flexpay.eirc.persistence.exchange.delayed.DelayedUpdateNope;
 import org.flexpay.eirc.service.importexport.RawConsumerData;
 import org.flexpay.orgs.persistence.ServiceProvider;
 import org.flexpay.payments.persistence.Service;
@@ -39,7 +40,7 @@ public class CloseAccountOperation extends AbstractChangePersonalAccountOperatio
 	 * @throws org.flexpay.common.exception.FlexPayException
 	 *          if failure occurs
 	 */
-	public void process(Registry registry, RegistryRecord record) throws FlexPayException {
+	public DelayedUpdate process(Registry registry, RegistryRecord record) throws FlexPayException {
 
 		EircRegistryRecordProperties props = (EircRegistryRecordProperties) record.getProperties();
 		Consumer consumer = props.getConsumer();
@@ -73,6 +74,9 @@ public class CloseAccountOperation extends AbstractChangePersonalAccountOperatio
 				removeCorrections(c, record, sd);
 			}
 		}
+
+		// do not do any delayed updates for now
+		return DelayedUpdateNope.INSTANCE;
 	}
 
 	private void disableConsumer(Consumer consumer) throws FlexPayException {

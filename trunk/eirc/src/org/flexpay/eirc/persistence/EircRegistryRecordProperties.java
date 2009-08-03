@@ -14,6 +14,7 @@ public class EircRegistryRecordProperties extends RegistryRecordProperties {
 	private Consumer consumer;
 	private boolean fullConsumer;
 	private Apartment apartment;
+	private boolean fullApartment;
 	private Person person;
 	private Service service;
 
@@ -86,6 +87,15 @@ public class EircRegistryRecordProperties extends RegistryRecordProperties {
 
 	public boolean hasFullConsumer() {
 		return fullConsumer;
+	}
+
+	public void setFullApartment(Apartment apartment) {
+		this.apartment = apartment;
+		fullApartment = true;
+	}
+
+	public boolean hasFullApartment() {
+		return fullApartment;
 	}
 
 	@SuppressWarnings ({"UnnecessaryBoxing"})

@@ -59,9 +59,13 @@
 		  p:fpFileTypeDao-ref="fpFileTypeDao"
 		  p:fpModuleDao-ref="fpModuleDao" />
 
+	<bean id="nopeReferencesHistoryGenerator"
+		  class="org.flexpay.common.persistence.history.impl.NopeReferencesHistoryGenerator" />
+
 	<bean id="measureUnitModificationListener"
 		  parent="historyChangesListenerBase"
-		  p:historyBuilder-ref="measureUnitHistoryBuilder" />
+		  p:historyBuilder-ref="measureUnitHistoryBuilder"
+		  p:referencesHistoryGenerator-ref="nopeReferencesHistoryGenerator" />
 
 	<bean id="measureUnitServiceTarget"
 		  class="org.flexpay.common.service.imp.MeasureUnitServiceImpl"
@@ -70,11 +74,15 @@
 		  p:modificationListener-ref="measureUnitModificationListener"
 		  p:measureUnitDao-ref="measureUnitDao" />
 
+	<bean id="registryFileServiceFactory"
+		  class="org.flexpay.common.service.imp.RegistryFileServiceFactory" />
+
 	<bean id="registryFileService"
 		  class="org.flexpay.common.service.imp.RegistryFileServiceImpl"
+		  factory-bean="registryFileServiceFactory"
+		  factory-method="getRegistryFileService"
 		  p:registryDao-ref="spRegistryDao"
 		  p:registryRecordDao-ref="spRegistryRecordDao"
-		  p:registryRecordDaoExt-ref="spRegistryRecordDaoExt"
 		  p:registryFileDaoExt-ref="registryFileDaoExt" />
 
 	<bean id="registryTypeService"

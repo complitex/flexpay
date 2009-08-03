@@ -20,6 +20,7 @@ public class DistrictHistoryGenerator implements HistoryGenerator<District> {
 	private DiffService diffService;
 
 	private DistrictHistoryBuilder historyBuilder;
+	private DistrictReferencesHistoryGenerator referencesHistoryGenerator;
 
 	/**
 	 * Do generation
@@ -36,6 +37,8 @@ public class DistrictHistoryGenerator implements HistoryGenerator<District> {
 			log.warn("District not found {}", district);
 			return;
 		}
+
+		referencesHistoryGenerator.generateReferencesHistory(district);
 
 		if (diffService.hasDiffs(district)) {
 			log.info("District already has history, do nothing {}", district);
@@ -62,5 +65,10 @@ public class DistrictHistoryGenerator implements HistoryGenerator<District> {
 	@Required
 	public void setHistoryBuilder(DistrictHistoryBuilder historyBuilder) {
 		this.historyBuilder = historyBuilder;
+	}
+
+	@Required
+	public void setReferencesHistoryGenerator(DistrictReferencesHistoryGenerator referencesHistoryGenerator) {
+		this.referencesHistoryGenerator = referencesHistoryGenerator;
 	}
 }

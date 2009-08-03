@@ -1,7 +1,6 @@
 package org.flexpay.common.dao.registry;
 
 import org.flexpay.common.dao.paging.Page;
-import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.persistence.filter.ImportErrorTypeFilter;
 import org.flexpay.common.persistence.filter.RegistryRecordStatusFilter;
 import org.flexpay.common.persistence.registry.RegistryRecord;
@@ -16,8 +15,8 @@ public interface RegistryRecordDaoExt {
 	 * List registry records for import operation
 	 *
 	 * @param id	Registry id
-	 * @param minId Minimum registry record id to retrive
-	 * @param maxId Maximum registry record id to retrive
+	 * @param minId Minimum registry record id to retrieve
+	 * @param maxId Maximum registry record id to retrieve
 	 * @return list of records
 	 */
 	List<RegistryRecord> listRecordsForImport(Long id, Long minId, Long maxId);
@@ -37,7 +36,7 @@ public interface RegistryRecordDaoExt {
 	/**
 	 * Find registries by identifiers
 	 *
-	 * @param registryId Registr identifier
+	 * @param registryId Registry identifier
 	 * @param objectIds  Set of registry identifiers
 	 * @return collection of registries
 	 */

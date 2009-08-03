@@ -200,10 +200,10 @@
 		<appender-ref ref="flexpay" />
 	</category>
 
-	<category name="org.springframework.security" additivity="false">
-		<priority value="debug" />
-		<appender-ref ref="security" />
-	</category>
+	<!--<category name="org.springframework.security" additivity="false">-->
+		<!--<priority value="debug" />-->
+		<!--<appender-ref ref="security" />-->
+	<!--</category>-->
 
 	<category name="org.flexpay.common.actions.security" additivity="false">
 		<priority value="debug" />

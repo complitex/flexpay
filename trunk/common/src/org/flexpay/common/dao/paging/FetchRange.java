@@ -18,6 +18,13 @@ public class FetchRange implements Serializable {
 
 	private int pageSize = 20;
 
+	public FetchRange() {
+	}
+
+	public FetchRange(int pageSize) {
+		this.pageSize = pageSize;
+	}
+
 	public Long getMinId() {
 		return minId;
 	}
@@ -93,6 +100,11 @@ public class FetchRange implements Serializable {
 
 	@Override
 	public String toString() {
+		long percent = (maxId == null || minId == null || lowerBound == null || upperBound == null) ?
+					   0 :
+					   (maxId.equals(minId)) ?
+					   100 :
+					   (long)(100.0 * (lowerBound - minId) / (maxId - minId));
 		return new ToStringBuilder(this).
 				append("minId", minId).
 				append("maxId", maxId).
@@ -100,6 +112,7 @@ public class FetchRange implements Serializable {
 				append("lowerBound", lowerBound).
 				append("upperBound", upperBound).
 				append("pageSize", pageSize).
+				append(" " + percent + "% ").
 				toString();
 	}
 
