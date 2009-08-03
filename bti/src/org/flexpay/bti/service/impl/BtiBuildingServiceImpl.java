@@ -1,6 +1,7 @@
 package org.flexpay.bti.service.impl;
 
 import org.flexpay.ab.dao.BuildingDao;
+import org.flexpay.ab.persistence.Building;
 import org.flexpay.ab.persistence.BuildingAddress;
 import org.flexpay.ab.persistence.Town;
 import org.flexpay.bti.dao.BtiBuildingDaoExt;
@@ -25,7 +26,7 @@ public class BtiBuildingServiceImpl implements BtiBuildingService {
 	 * @param stub building stub to read
 	 * @return Building if found, or <code>null</code> otherwise
 	 */
-	public BtiBuilding readWithAttributes(Stub<BtiBuilding> stub) {
+	public BtiBuilding readWithAttributes(Stub<? extends Building> stub) {
 		return btiBuildingDaoExt.readBuildingWithAttributes(stub.getId());
 	}
 
@@ -54,6 +55,7 @@ public class BtiBuildingServiceImpl implements BtiBuildingService {
 
 	/**
 	 * Find all BtiBuilding in the town
+	 *
 	 * @param town town to search
 	 * @return BtiBuilding list in town
 	 */

@@ -2,6 +2,7 @@ package org.flexpay.bti.service;
 
 import org.flexpay.ab.persistence.BuildingAddress;
 import org.flexpay.ab.persistence.Town;
+import org.flexpay.ab.persistence.Building;
 import org.flexpay.bti.persistence.building.BtiBuilding;
 import org.flexpay.common.persistence.Stub;
 import org.jetbrains.annotations.NotNull;
@@ -18,7 +19,7 @@ public interface BtiBuildingService {
 	 * @return Building if found, or <code>null</code> otherwise
 	 */
 	@Nullable
-	BtiBuilding readWithAttributes(Stub<BtiBuilding> stub);
+	BtiBuilding readWithAttributes(Stub<? extends Building> stub);
 
 	/**
 	 * Read bti building with associated attributes

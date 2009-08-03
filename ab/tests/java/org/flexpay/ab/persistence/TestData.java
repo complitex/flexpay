@@ -2,7 +2,7 @@ package org.flexpay.ab.persistence;
 
 import org.flexpay.common.persistence.Stub;
 
-public class TestData {
+public abstract class TestData {
 
 	// test apartments
 	public static final Stub<Apartment> IVANOVA_27_329 = new Stub<Apartment>(1L);
