@@ -4,13 +4,13 @@
 <s:actionerror/>
 
 <form id="fobjects" method="post" action="<s:url action="eircAccountCreateForm2" includeParams="none" />">
-    <input type="hidden" name="apartmentId" value="<s:property value="apartmentId"/>"/>
+    <input type="hidden" name="apartmentFilter" value="<s:property value="apartmentFilter"/>"/>
 
     <table cellpadding="3" cellspacing="1" border="0" width="100%">
 		<tr>
 			<td colspan="7">
-				<s:textfield name="searchString" value="%{searchString}"/>
-				<input type="submit" class="btn-exit" value="<s:text name="menu1.search"/>"/>
+				<s:textfield name="personSearchString" value="%{personSearchString}"/>
+				<input type="submit" class="btn-exit" value="<s:text name="common.search"/>"/>
 			</td>
 		</tr>
 		<tr>

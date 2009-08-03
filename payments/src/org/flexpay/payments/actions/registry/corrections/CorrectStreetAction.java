@@ -1,7 +1,7 @@
 package org.flexpay.payments.actions.registry.corrections;
 
-import org.flexpay.ab.actions.street.StreetsListAction;
 import org.flexpay.ab.persistence.Street;
+import org.flexpay.common.actions.FPActionWithPagerSupport;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.persistence.Stub;
@@ -11,15 +11,15 @@ import org.flexpay.common.service.RegistryRecordService;
 import org.flexpay.common.service.importexport.CorrectionsService;
 import org.flexpay.orgs.persistence.ServiceProvider;
 import org.flexpay.orgs.service.ServiceProviderService;
+import org.flexpay.payments.actions.interceptor.CashboxAware;
 import org.flexpay.payments.persistence.EircRegistryProperties;
 import org.flexpay.payments.persistence.ServiceType;
 import org.flexpay.payments.persistence.ServiceTypeNameTranslation;
 import org.flexpay.payments.service.ServiceTypeService;
-import org.flexpay.payments.actions.interceptor.CashboxAware;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
-public class CorrectStreetAction extends StreetsListAction implements CashboxAware {
+public class CorrectStreetAction extends FPActionWithPagerSupport<Street> implements CashboxAware {
 
 	protected String setupType;
 	protected Street object = new Street();
@@ -32,6 +32,7 @@ public class CorrectStreetAction extends StreetsListAction implements CashboxAwa
 	protected ServiceProviderService serviceProviderService;
 
 	@NotNull
+	@Override
 	public String doExecute() throws Exception {
 
 		record = recordService.read(record.getId());
@@ -42,7 +43,7 @@ public class CorrectStreetAction extends StreetsListAction implements CashboxAwa
 			ServiceProvider provider = serviceProviderService.read(props.getServiceProviderStub());
 			if (provider == null) {
 				addActionError(getText("error.eirc.data_source_not_found"));
-				return super.doExecute();
+				return SUCCESS;
 			}
 			Stub<DataSourceDescription> sd = provider.getDataSourceDescriptionStub();
 
@@ -51,7 +52,7 @@ public class CorrectStreetAction extends StreetsListAction implements CashboxAwa
 			record = recordService.removeError(record);
 			return "complete";
 		}
-		return super.doExecute();
+		return SUCCESS;
 	}
 
     protected void saveCorrection(Stub<DataSourceDescription> sd) {
@@ -68,7 +69,7 @@ public class CorrectStreetAction extends StreetsListAction implements CashboxAwa
 	@NotNull
 	@Override
 	protected String getErrorResult() {
-		return "street".equals(setupType) ? "complete" : super.getErrorResult();
+		return "street".equals(setupType) ? "complete" : SUCCESS;
 	}
 
 	public String getServiceTypeName(ServiceType typeStub) throws FlexPayException {

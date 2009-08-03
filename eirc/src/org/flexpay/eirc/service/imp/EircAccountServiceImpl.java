@@ -10,6 +10,7 @@ import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.common.service.SequenceService;
 import org.flexpay.common.util.Luhn;
 import org.flexpay.common.util.StringUtil;
@@ -141,6 +142,19 @@ public class EircAccountServiceImpl implements EircAccountService {
 		}
 
 		return eircAccountDao.findObjects(pager);
+	}
+
+	@Override
+	public List<EircAccount> getAccounts(@Nullable Stub<Apartment> stub, String personFio, Page<EircAccount> pager) {
+		if (personFio != null) {
+			String str = "%" + personFio + "%";
+			return eircAccountDao.findByPersonFIO(str, str, pager);
+		}
+		if (stub == null) {
+			return eircAccountDao.findObjects(pager);
+		} else {
+			return eircAccountDao.findByApartment(stub.getId(), pager);
+		}
 	}
 
 	/**

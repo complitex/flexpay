@@ -1,11 +1,9 @@
 package org.flexpay.payments.actions.registry.corrections;
 
-import org.apache.commons.collections.ArrayStack;
-import org.flexpay.ab.actions.apartment.ApartmentsListAction;
 import org.flexpay.ab.persistence.Apartment;
 import org.flexpay.ab.persistence.BuildingAddress;
 import org.flexpay.ab.persistence.Street;
-import org.flexpay.ab.persistence.filters.*;
+import org.flexpay.common.actions.FPActionWithPagerSupport;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.persistence.ImportError;
@@ -17,22 +15,20 @@ import org.flexpay.common.service.importexport.ClassToTypeRegistry;
 import org.flexpay.common.service.importexport.CorrectionsService;
 import org.flexpay.orgs.persistence.ServiceProvider;
 import org.flexpay.orgs.service.ServiceProviderService;
+import org.flexpay.payments.actions.interceptor.CashboxAware;
 import org.flexpay.payments.persistence.EircRegistryProperties;
 import org.flexpay.payments.persistence.ServiceType;
 import org.flexpay.payments.persistence.ServiceTypeNameTranslation;
 import org.flexpay.payments.service.ServiceTypeService;
-import org.flexpay.payments.actions.interceptor.CashboxAware;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
-public class CorrectAddressAction extends ApartmentsListAction implements CashboxAware {
+public class CorrectAddressAction extends FPActionWithPagerSupport<Apartment> implements CashboxAware {
 
 	protected String setupType;
 	protected Apartment object = Apartment.newInstance();
 	protected RegistryRecord record = new RegistryRecord();
 	protected Long cashboxId;
-
-	protected DistrictFilter districtFilter = new DistrictFilter();
 
 	protected CorrectionsService correctionsService;
 	protected RegistryRecordService recordService;
@@ -41,6 +37,7 @@ public class CorrectAddressAction extends ApartmentsListAction implements Cashbo
 	protected ServiceProviderService serviceProviderService;
 
 	@NotNull
+	@Override
 	public String doExecute() throws Exception {
 
 		record = recordService.read(record.getId());
@@ -51,7 +48,7 @@ public class CorrectAddressAction extends ApartmentsListAction implements Cashbo
 			ServiceProvider provider = serviceProviderService.read(props.getServiceProviderStub());
 			if (provider == null) {
 				addActionError(getText("error.eirc.data_source_not_found"));
-				return super.doExecute();
+				return SUCCESS;
 			}
 			Stub<DataSourceDescription> sd = provider.getDataSourceDescriptionStub();
 
@@ -60,7 +57,7 @@ public class CorrectAddressAction extends ApartmentsListAction implements Cashbo
 			record = recordService.removeError(record);
 			return "complete";
 		}
-		return super.doExecute();
+		return SUCCESS;
 	}
 
     protected void saveCorrection(Stub<DataSourceDescription> sd) {
@@ -76,13 +73,32 @@ public class CorrectAddressAction extends ApartmentsListAction implements Cashbo
 	@NotNull
 	@Override
 	protected String getErrorResult() {
-		return "apartment".equals(setupType) ? "complete" : super.getErrorResult();
+		return "apartment".equals(setupType) ? "complete" : SUCCESS;
 	}
 
 	public String getServiceTypeName(ServiceType typeStub) throws FlexPayException {
 		ServiceType type = serviceTypeService.read(stub(typeStub));
 		ServiceTypeNameTranslation name = getTranslation(type.getTypeNames());
 		return name == null ? "Unknown" : name.getName();
+	}
+
+	public boolean getCanCreateApartment() {
+		ImportError error = record.getImportError();
+		return error != null &&
+			   (typeRegistry.getType(Apartment.class) == error.getObjectType() ||
+				typeRegistry.getType(Apartment.class) == error.getObjectType());
+
+	}
+
+	public boolean getCanCreateBuilding() {
+		ImportError error = record.getImportError();
+		return error != null && typeRegistry.getType(BuildingAddress.class) == error.getObjectType();
+
+	}
+
+	public boolean getCanCreateStreet() {
+		ImportError error = record.getImportError();
+		return error != null && typeRegistry.getType(Street.class) == error.getObjectType();
 	}
 
 	public String getSetupType() {
@@ -109,59 +125,12 @@ public class CorrectAddressAction extends ApartmentsListAction implements Cashbo
 		this.record = record;
 	}
 
-	public DistrictFilter getDistrictFilter() {
-		return districtFilter;
-	}
-
-	public void setDistrictFilter(DistrictFilter districtFilter) {
-		this.districtFilter = districtFilter;
-	}
-
-	public ArrayStack getFilters() {
-		ArrayStack filters = new ArrayStack();
-		filters.push(countryFilter);
-		filters.push(regionFilter);
-		filters.push(townFilter);
-		filters.push(districtFilter);
-		filters.push(streetNameFilter);
-		filters.push(buildingsFilter);
-
-		return filters;
-	}
-
-	public void setFilters(ArrayStack filters) {
-		int n = 5;
-		countryFilter = (CountryFilter) filters.peek(n--);
-		regionFilter = (RegionFilter) filters.peek(n--);
-		townFilter = (TownFilter) filters.peek(n--);
-		districtFilter = (DistrictFilter) filters.peek(n--);
-		streetNameFilter = (StreetNameFilter) filters.peek(n--);
-		buildingsFilter = (BuildingsFilter) filters.peek(n);
-	}
-
-	public boolean getCanCreateApartment() {
-		ImportError error = record.getImportError();
-		return error != null &&
-			   (typeRegistry.getType(Apartment.class) == error.getObjectType() ||
-				typeRegistry.getType(Apartment.class) == error.getObjectType());
-
-	}
-
-	public boolean getCanCreateBuilding() {
-		ImportError error = record.getImportError();
-		return error != null && typeRegistry.getType(BuildingAddress.class) == error.getObjectType();
-
-	}
-
-	public boolean getCanCreateStreet() {
-		ImportError error = record.getImportError();
-		return error != null && typeRegistry.getType(Street.class) == error.getObjectType();
-	}
-
+	@Override
 	public Long getCashboxId() {
 		return cashboxId;
 	}
 
+	@Override
 	public void setCashboxId(Long cashboxId) {
 		this.cashboxId = cashboxId;
 	}

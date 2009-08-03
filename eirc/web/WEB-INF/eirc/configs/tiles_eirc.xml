@@ -279,8 +279,12 @@
 	<!-- EIRC Account -->
 	<definition name="eirc.eirc_account.list" extends="eirc.dictionaries">
 		<put-attribute name="title" value="eirc.eirc_account.list" />
-		<put-attribute name="body" value="/WEB-INF/jsp/eirc/eirc_account/eirc_account_list.jsp" />
+		<put-attribute name="body" value="/WEB-INF/jsp/eirc/eirc_account/eirc_accounts_list.jsp" />
 	</definition>
+    <definition name="eirc.eirc_account.list_page" extends="eirc.dictionaries">
+        <put-attribute name="title" value="eirc.eirc_account.list" />
+        <put-attribute name="body" value="/WEB-INF/jsp/eirc/eirc_account/eirc_accounts_list_page.jsp" />
+    </definition>
 	<definition name="eirc.eirc_account.view" extends="eirc.dictionaries">
 		<put-attribute name="title" value="eirc.eirc_account.view" />
 		<put-attribute name="body" value="/WEB-INF/jsp/eirc/eirc_account/eirc_account_view.jsp" />

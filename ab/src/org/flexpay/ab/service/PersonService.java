@@ -27,6 +27,16 @@ public interface PersonService {
 	List<Person> findPersons(ArrayStack filters, Page<Person> pager);
 
 	/**
+	 * List persons
+	 *
+	 * @param stub Apartment stub
+	 * @param pager Paging filter
+	 * @return List of persons
+	 */
+	@Secured (Roles.PERSON_READ)
+	List<Person> getPersons(Stub<Apartment> stub, Page<Person> pager);
+
+	/**
 	 * List persons with identities
 	 *
 	 * @param range FetchRange 

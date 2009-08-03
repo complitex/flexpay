@@ -12,7 +12,7 @@ public class CorrectStreetAction extends org.flexpay.payments.actions.registry.c
 	private RawConsumersDataSource consumersDataSource;
 
     @Override
-    protected void saveCorrection(Stub<DataSourceDescription> sd) {
+    public void saveCorrection(Stub<DataSourceDescription> sd) {
         RawConsumerData data = consumersDataSource.getById(String.valueOf(record.getId()));
 
         // add correction for street
@@ -24,4 +24,5 @@ public class CorrectStreetAction extends org.flexpay.payments.actions.registry.c
 	public void setConsumersDataSource(RawConsumersDataSource consumersDataSource) {
 		this.consumersDataSource = consumersDataSource;
 	}
+
 }

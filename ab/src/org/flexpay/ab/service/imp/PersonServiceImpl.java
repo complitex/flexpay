@@ -54,6 +54,11 @@ public class PersonServiceImpl implements PersonService {
 		return personDao.findObjects(pager, DomainObjectWithStatus.STATUS_ACTIVE);
 	}
 
+	@Override
+	public List<Person> getPersons(Stub<Apartment> stub, Page<Person> pager) {
+		return personDao.findPersonsInApartment(stub.getId(), DomainObjectWithStatus.STATUS_ACTIVE, pager);
+	}
+
 	/**
 	 * List persons with identities
 	 *

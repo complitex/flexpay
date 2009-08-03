@@ -11,6 +11,15 @@
 			<result type="tiles">eirc.eirc_account.list</result>
 		</action>
 
+        <action name="eircAccountsListPage" class="eircAccountsListPageAction">
+            <result type="tiles">eirc.eirc_account.list_page</result>
+        </action>
+
+        <action name="eircAccountsListAjax" class="eircAccountsListAjaxAction">
+            <result>/WEB-INF/jsp/eirc/eirc_account/eirc_accounts_list.jsp</result>
+            <result name="prerequestResponse">/WEB-INF/jsp/ab/filters/ajax/prerequest_response.jsp</result>
+        </action>
+
 		<action name="eircAccountView" class="eircAccountViewAction">
 			<result name="success" type="tiles">eirc.eirc_account.view</result>
 			<result name="redirectError" type="redirect-action">eircAccountsList</result>
