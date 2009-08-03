@@ -102,6 +102,7 @@ var FP = {
         if (element.name != "pager.pageSize") {
             $("#pageNumber").val(element.value);
             element.form.submit();
+            return true;
         }
         var elms = $('select[name="pager.pageSize"]').each(function(i) {
             if (this != element) {

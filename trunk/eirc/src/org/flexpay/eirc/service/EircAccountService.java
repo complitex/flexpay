@@ -5,6 +5,7 @@ import org.flexpay.ab.persistence.Apartment;
 import org.flexpay.ab.persistence.Person;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
+import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.eirc.persistence.EircAccount;
 import org.jetbrains.annotations.NotNull;
@@ -56,6 +57,16 @@ public interface EircAccountService {
 	 */
 	@Secured (Roles.ACCOUNT_READ)
 	List<EircAccount> findAccounts(ArrayStack filters, Page<EircAccount> pager);
+
+	/**
+	 * Find EircAccounts
+	 *
+	 * @param stub Stub of apartment
+	 * @param pager   Accounts pager
+	 * @return List of EircAccount
+	 */
+	@Secured (Roles.ACCOUNT_READ)
+	List<EircAccount> getAccounts(@Nullable Stub<Apartment> stub, String personFio, Page<EircAccount> pager);
 
 	/**
 	 * Read full account info, includes person and service

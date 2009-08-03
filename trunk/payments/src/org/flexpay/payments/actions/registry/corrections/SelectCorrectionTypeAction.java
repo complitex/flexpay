@@ -19,6 +19,7 @@ public class SelectCorrectionTypeAction extends CashboxCookieActionSupport {
 	private RegistryRecord record = new RegistryRecord();
 
 	@NotNull
+	@Override
 	public String doExecute() throws Exception {
 		if (record.getId() == null) {
 			addActionError(getText("error.registry.record.not_specified"));
@@ -36,14 +37,11 @@ public class SelectCorrectionTypeAction extends CashboxCookieActionSupport {
 			int objectType = importError.getObjectType();
 			if (checkStreetType(objectType)) {
 				return "street";
-			}
-			if (checkBuildingType(objectType)) {
+			} else if (checkBuildingType(objectType)) {
 				return "building";
-			}
-			if (checkApartmentType(objectType)) {
+			} else if (checkApartmentType(objectType)) {
 				return "apartment";
-			}
-			if (checkPersonType(objectType)) {
+			} else if (checkPersonType(objectType)) {
 				return "person";
 			}
 
@@ -66,8 +64,7 @@ public class SelectCorrectionTypeAction extends CashboxCookieActionSupport {
     }
 
     protected boolean checkStreetType(int objectType) {
-        return typeRegistry.getType(StreetType.class) == objectType ||
-					typeRegistry.getType(Street.class) == objectType;
+        return typeRegistry.getType(StreetType.class) == objectType || typeRegistry.getType(Street.class) == objectType;
     }
 
 	/**
@@ -78,6 +75,7 @@ public class SelectCorrectionTypeAction extends CashboxCookieActionSupport {
 	 * @return {@link #ERROR} by default
 	 */
 	@NotNull
+	@Override
 	protected String getErrorResult() {
 		return ERROR;
 	}

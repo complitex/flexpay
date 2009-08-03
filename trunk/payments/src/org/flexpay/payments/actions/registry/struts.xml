@@ -51,7 +51,22 @@
 			</result>
 		</action>
 
-		<action name="registryRecordCorrectAddress" class="correctRecordAddressAction">
+        <action name="apartmentsDialogListAjax" class="apartmentsListAjaxAction">
+            <result>/WEB-INF/jsp/payments/data/correspondence/apartments_list.jsp</result>
+            <result name="prerequestResponse">/WEB-INF/jsp/ab/filters/ajax/prerequest_response.jsp</result>
+        </action>
+
+        <action name="streetsDialogListAjax" class="streetsListAjaxAction">
+            <result>/WEB-INF/jsp/payments/data/correspondence/streets_list.jsp</result>
+            <result name="prerequestResponse">/WEB-INF/jsp/ab/filters/ajax/prerequest_response.jsp</result>
+        </action>
+
+        <action name="buildingsDialogListAjax" class="buildingsListAjaxAction">
+            <result>/WEB-INF/jsp/payments/data/correspondence/buildings_list.jsp</result>
+            <result name="prerequestResponse">/WEB-INF/jsp/ab/filters/ajax/prerequest_response.jsp</result>
+        </action>
+
+		<action name="registryRecordCorrectAddress" class="correctAddressAction">
 			<result type="tiles">payments.registry.record.correct_address</result>
 			<result name="complete" type="tiles">payments.registry.record.correct_address_complete</result>
 		</action>

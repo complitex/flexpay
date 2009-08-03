@@ -12,14 +12,14 @@ import org.springframework.beans.factory.annotation.Required;
 public class EircAccountCreateAction extends FPActionSupport {
 
 	private Long personId;
-	private Long apartmentId;
+	private Long apartmentFilter;
 	private EircAccount eircAccount;
 
 	private EircAccountService eircAccountService;
 
 	@NotNull
 	public String doExecute() throws FlexPayExceptionContainer {
-		if (apartmentId == null) {
+		if (apartmentFilter == null) {
 			addActionError(getText("eirc.error.account.create.no_apartment"));
 			return "redirectForm1";
 		} else if (personId == null) {
@@ -27,7 +27,7 @@ public class EircAccountCreateAction extends FPActionSupport {
 			return "redirectForm2";
 		} else {
 			eircAccount = new EircAccount();
-			eircAccount.setApartment(new Apartment(apartmentId));
+			eircAccount.setApartment(new Apartment(apartmentFilter));
 			eircAccount.setPerson(new Person(personId));
 			eircAccountService.create(eircAccount);
 
@@ -51,16 +51,16 @@ public class EircAccountCreateAction extends FPActionSupport {
 		this.personId = personId;
 	}
 
-	public void setApartmentId(Long apartmentId) {
-		this.apartmentId = apartmentId;
-	}
-
 	public Long getPersonId() {
 		return personId;
 	}
 
-	public Long getApartmentId() {
-		return apartmentId;
+	public Long getApartmentFilter() {
+		return apartmentFilter;
+	}
+
+	public void setApartmentFilter(Long apartmentFilter) {
+		this.apartmentFilter = apartmentFilter;
 	}
 
 	public EircAccount getEircAccount() {

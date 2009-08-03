@@ -195,14 +195,30 @@
 		</many-to-one>
 	</class>
 
-	<query name="PersonRegistration.listRegistrants"><![CDATA[
-		select distinct p
-		from Person p
-			left join fetch p.personIdentities pi
-			inner join fetch pi.identityType
-			inner join p.personRegistrations r
-		where r.apartment.id=? and r.beginDate <= current_date() and current_date() <= r.endDate
-	]]></query>
+    <query name="PersonRegistration.listRegistrants"><![CDATA[
+        select distinct p
+        from Person p
+            left join fetch p.personIdentities pi
+            inner join fetch pi.identityType
+            inner join p.personRegistrations r
+        where r.apartment.id=? and r.beginDate <= current_date() and current_date() <= r.endDate
+    ]]></query>
+
+    <query name="Person.findPersonsInApartment"><![CDATA[
+        select distinct p
+        from Person p
+            left join fetch p.personIdentities pi
+            inner join fetch pi.identityType
+            inner join p.personRegistrations r
+        where r.apartment.id=? and r.beginDate <= current_date() and current_date() <= r.endDate and p.status=?
+    ]]></query>
+
+    <query name="Person.findPersonsInApartment.count"><![CDATA[
+        select count(*)
+        from Person p
+            inner join p.personRegistrations r
+        where r.apartment.id=? and r.beginDate <= current_date() and current_date() <= r.endDate and p.status=?
+    ]]></query>
 
 	<query name="Person.findObjects">
 		FROM Person o

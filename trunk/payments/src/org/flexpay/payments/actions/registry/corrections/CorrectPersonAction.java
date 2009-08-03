@@ -35,6 +35,7 @@ public class CorrectPersonAction extends PersonsListAction implements CashboxAwa
 	 * @throws Exception if failure occurs
 	 */
 	@NotNull
+	@Override
 	protected String doExecute() throws Exception {
 		record = recordService.read(record.getId());
 
@@ -68,6 +69,7 @@ public class CorrectPersonAction extends PersonsListAction implements CashboxAwa
 	 * @return {@link #ERROR} by default
 	 */
 	@NotNull
+	@Override
 	protected String getErrorResult() {
 		return "person".equals(setupType) ? "complete" : super.getErrorResult();
 	}
@@ -96,10 +98,12 @@ public class CorrectPersonAction extends PersonsListAction implements CashboxAwa
 		this.record = record;
 	}
 
+	@Override
 	public Long getCashboxId() {
 		return cashboxId;
 	}
 
+	@Override
 	public void setCashboxId(Long cashboxId) {
 		this.cashboxId = cashboxId;
 	}

@@ -12,11 +12,11 @@ public class CorrectAddressAction extends org.flexpay.payments.actions.registry.
 	private RawConsumersDataSource consumersDataSource;
 
     @Override
-    protected void saveCorrection(Stub<DataSourceDescription> sd) {
+    public void saveCorrection(Stub<DataSourceDescription> sd) {
         RawConsumerData data = consumersDataSource.getById(String.valueOf(record.getId()));
 
         // add correction for apartment
-        DataCorrection correction = correctionsService.getStub(data.getPersonFIOId(), object, sd);
+        DataCorrection correction = correctionsService.getStub(data.getApartmentId(), object, sd);
         correctionsService.save(correction);
     }
 
@@ -24,4 +24,5 @@ public class CorrectAddressAction extends org.flexpay.payments.actions.registry.
 	public void setConsumersDataSource(RawConsumersDataSource consumersDataSource) {
 		this.consumersDataSource = consumersDataSource;
 	}
+
 }

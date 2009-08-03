@@ -47,13 +47,6 @@
           p:crumbNameKey="ab.crumbs.region_edit"
           scope="prototype" />
 
-	<bean id="regionsListAction"
-		  class="org.flexpay.ab.actions.region.RegionsListAction"
-		  p:nameTimeDependentService-ref="regionService"
-		  p:parentService-ref="countryService"
-          p:crumbNameKey="ab.crumbs.regions_list"
-          scope="prototype" />
-
 	<bean id="regionDeleteAction"
 		  class="org.flexpay.ab.actions.region.RegionDeleteAction"
           p:regionService-ref="regionService"
@@ -90,13 +83,6 @@
           p:crumbCreateKey="ab.crumbs.town_create"
           scope="prototype" />
 
-	<bean id="townsListAction"
-		  class="org.flexpay.ab.actions.town.TownsListAction"
-		  p:nameTimeDependentService-ref="townService"
-		  p:parentService-ref="regionService"
-          p:crumbNameKey="ab.crumbs.towns_list"
-          scope="prototype" />
-
 	<bean id="townDeleteAction"
 		  class="org.flexpay.ab.actions.town.TownDeleteAction"
 		  p:townService-ref="townService"
@@ -130,13 +116,6 @@
 		  p:townService-ref="townService"
           p:crumbCreateKey="ab.crumbs.district_create"
           p:crumbNameKey="ab.crumbs.district_edit"
-          scope="prototype" />
-
-	<bean id="districtsListAction"
-		  class="org.flexpay.ab.actions.district.DistrictsListAction"
-		  p:nameTimeDependentService-ref="districtService"
-		  p:parentService-ref="townService"
-          p:crumbNameKey="ab.crumbs.districts_list"
           scope="prototype" />
 
 	<bean id="districtDeleteAction"
@@ -183,12 +162,6 @@
           p:crumbNameKey="ab.crumbs.street_district_edit"
           scope="prototype" />
 
-	<bean id="streetsListAction"
-		  class="org.flexpay.ab.actions.street.StreetsListAction"
-		  p:streetService-ref="streetService"
-          p:crumbNameKey="ab.crumbs.streets_list"
-          scope="prototype" />
-
 	<bean id="streetDeleteAction"
 		  class="org.flexpay.ab.actions.street.StreetDeleteAction"
 		  p:streetService-ref="streetService"
@@ -215,13 +188,6 @@
           scope="prototype" />
 
 	<!-- Buildings -->
-	<bean id="buildingsListAction"
-		  class="org.flexpay.ab.actions.buildings.BuildingsListAction"
-		  p:buildingService-ref="buildingService"
-		  p:parentService-ref="streetService"
-          p:crumbNameKey="ab.crumbs.buildings_list"
-          scope="prototype" />
-
 	<bean id="buildingCreateAction"
 		  class="org.flexpay.ab.actions.buildings.BuildingCreateAction"
 		  p:buildingService-ref="buildingService"
@@ -288,13 +254,6 @@
           scope="prototype" />
 
 	<!-- Apartments -->
-	<bean id="apartmentsListAction"
-		  class="org.flexpay.ab.actions.apartment.ApartmentsListAction"
-		  p:apartmentService-ref="apartmentService"
-		  p:parentService-ref="buildingService"
-          p:crumbNameKey="ab.crumbs.apartments_list"
-          scope="prototype" />
-
 	<bean id="apartmentEditAction"
 		  class="org.flexpay.ab.actions.apartment.ApartmentEditAction"
 		  p:apartmentService-ref="apartmentService"

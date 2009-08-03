@@ -1,4 +1,3 @@
-
 <%@ include file="/WEB-INF/jsp/common/taglibs.jsp" %>
 
 <table cellpadding="3" cellspacing="1" border="0" width="100%">
@@ -9,7 +8,7 @@
     </tr>
 	<tr class="cols_1">
         <td class="col">
-	        <input type="radio" id="address" name="type" onclick="window.location='<s:url action="registryRecordCorrectAddress" includeParams="none" />';" /> <s:text name="ab.address" />
+	        <input type="radio" id="address" name="type" onclick="window.location='<s:url action="registryRecordCorrectAddress"><s:param name="record.id" value="%{record.id}" /></s:url>';" /> <s:text name="ab.address" />
 	    </td>
     </tr>
 	<tr class="cols_1">

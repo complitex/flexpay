@@ -131,7 +131,7 @@
             title: "<s:text name="eirc.registry.view.dialog_title" />",
             autoOpen: false,
             buttons: {
-                '<s:text name="common.cancel" />' : function() {
+                "<s:text name="common.cancel" />" : function() {
                     $(this).html("").dialog("destroy");
                 }
             }

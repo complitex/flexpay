@@ -53,11 +53,6 @@
 	</definition>
 
 	<!-- Regions -->
-	<definition name="ab.region.create" extends="ab.layout.standart">
-		<put-attribute name="title" value="ab.region.create.title" />
-		<put-attribute name="body" value="/WEB-INF/jsp/ab/region_create.jsp" />
-	</definition>
-
 	<definition name="ab.region.view" extends="ab.layout.standart">
 		<put-attribute name="title" value="ab.region.view.title" />
 		<put-attribute name="body" value="/WEB-INF/jsp/ab/region_view.jsp" />

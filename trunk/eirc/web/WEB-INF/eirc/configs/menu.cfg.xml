@@ -187,7 +187,7 @@
 	<bean parent="eirc_dicts_organizations"
 		  p:name="eirc.eirc_accounts"
 		  p:title="eirc.eirc_account.list"
-		  p:action="eircAccountsList"
+		  p:action="eircAccountsListPage"
 		  p:parent-ref="eirc_dicts_organizations">
         <property name="userRole">
             <util:constant static-field="org.flexpay.eirc.service.Roles.ROLE_MENU_EIRC_DICTS_EIRC_ACCOUNTS" />
