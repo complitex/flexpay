@@ -4,6 +4,7 @@ import static org.flexpay.ab.service.Roles.*;
 import static org.flexpay.common.service.Roles.PROCESS_READ;
 import org.flexpay.common.test.SpringBeanAwareTestCase;
 import org.flexpay.common.util.SecurityUtil;
+import org.flexpay.common.util.config.UserPreferences;
 import org.junit.BeforeClass;
 import org.springframework.security.Authentication;
 import org.springframework.security.GrantedAuthority;
@@ -47,7 +48,9 @@ public class AbSpringBeanAwareTestCase extends SpringBeanAwareTestCase {
 				PROCESS_READ
 		);
 		User user = new User("test", "test", true, true, true, true, authorities);
-		Authentication auth = new AnonymousAuthenticationToken("key", user, authorities);
+		UserPreferences preferences = new UserPreferences();
+		preferences.setTargetDetails(user);
+		Authentication auth = new AnonymousAuthenticationToken("key", preferences, authorities);
 		SecurityContextHolder.getContext().setAuthentication(auth);
 	}
 }
