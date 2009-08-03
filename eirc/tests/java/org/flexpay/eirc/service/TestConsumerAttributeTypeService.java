@@ -1,18 +1,18 @@
 package org.flexpay.eirc.service;
 
-import org.flexpay.common.test.SpringBeanAwareTestCase;
-import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
-import org.flexpay.eirc.persistence.consumer.ConsumerAttributeTypeSimple;
+import org.flexpay.common.persistence.Stub;
 import org.flexpay.eirc.persistence.consumer.ConsumerAttributeTypeBase;
 import org.flexpay.eirc.persistence.consumer.ConsumerAttributeTypeEnum;
 import org.flexpay.eirc.persistence.consumer.ConsumerAttributeTypeEnumValue;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.junit.Test;
+import org.flexpay.eirc.persistence.consumer.ConsumerAttributeTypeSimple;
+import org.flexpay.eirc.test.EircSpringBeanAwareTestCase;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
-public class TestConsumerAttributeTypeService extends SpringBeanAwareTestCase {
+public class TestConsumerAttributeTypeService extends EircSpringBeanAwareTestCase {
 
 	@Autowired
 	private ConsumerAttributeTypeService attributeTypeService;

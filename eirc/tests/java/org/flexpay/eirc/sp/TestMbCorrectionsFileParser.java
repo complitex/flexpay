@@ -1,10 +1,9 @@
 package org.flexpay.eirc.sp;
 
-import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.persistence.registry.Registry;
-import org.flexpay.common.service.importexport.ClassToTypeRegistry;
 import org.flexpay.common.service.RegistryService;
+import org.flexpay.common.service.importexport.ClassToTypeRegistry;
 import org.flexpay.eirc.actions.TestSpFileCreateAction;
 import org.flexpay.eirc.service.exchange.RegistryProcessor;
 import org.flexpay.eirc.sp.impl.validation.MbCorrectionsFileValidator;
@@ -25,7 +24,7 @@ public class TestMbCorrectionsFileParser extends TestSpFileCreateAction {
 	private FileParser parser;
 	@Autowired
 	private EircRegistryService eircRegistryService;
-    @Autowired
+	@Autowired
 	private RegistryService registryService;
 
 	@Autowired
@@ -42,22 +41,10 @@ public class TestMbCorrectionsFileParser extends TestSpFileCreateAction {
 
 		FPFile newFile = createSpFile("org/flexpay/eirc/sp/20090605m_10.ls");
 
-		try {
-			List<Registry> registries = parser.parse(newFile);
-			assertNotNull("Registry parse failed", registries);
+		List<Registry> registries = parser.parse(newFile);
+		assertNotNull("Registry parse failed", registries);
 
-			registryProcessor.registriesProcess(registries);
-
-			for (Registry registry : registries) {
-				registryService.deleteRecords(stub(registry));
-				registryService.delete(registry);
-			}
-		} catch (Exception e) {
-			log.error("Error with parsing file", e);
-			throw e;
-		}
-
-//		deleteFile(newFile);
+		registryProcessor.registriesProcess(registries);
 	}
 
 	@Before

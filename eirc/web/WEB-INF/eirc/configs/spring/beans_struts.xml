@@ -56,7 +56,10 @@
 		  p:quittanceService-ref="quittanceService"
 		  p:accountService-ref="eircAccountService" />
 
-	<bean id="quittanceSearchByAddressAction" scope="prototype" parent="eircAccountsListAction"
+	<bean id="quittanceSearchByAddressAction"
+		  scope="prototype"
+		  parent="eircAccountsListAction"
+		  autowire-candidate="false"
 		  class="org.flexpay.eirc.actions.quittance.QuittanceSearchByAddressAction"
 		  p:quittanceService-ref="quittanceService" />
 

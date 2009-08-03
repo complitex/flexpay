@@ -33,6 +33,7 @@ public class EircSpringBeanAwareTestCase extends SpringBeanAwareTestCase {
 				DISTRICT_READ,
 				TOWN_READ,
 				REGION_READ,
+				COUNTRY_READ,
 				TOWN_TYPE_READ,
 				STREET_TYPE_READ,
 				SERVICE_READ,

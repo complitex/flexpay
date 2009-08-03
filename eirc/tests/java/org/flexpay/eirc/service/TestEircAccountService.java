@@ -3,6 +3,7 @@ package org.flexpay.eirc.service;
 import org.apache.commons.collections.ArrayStack;
 import org.flexpay.ab.persistence.filters.ApartmentFilter;
 import org.flexpay.ab.persistence.filters.PersonSearchFilter;
+import org.flexpay.ab.persistence.TestData;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.eirc.persistence.EircAccount;
@@ -21,7 +22,7 @@ public class TestEircAccountService extends EircSpringBeanAwareTestCase {
 	@Test
 	public void testFindEircAccountByApartment() {
 
-		ApartmentFilter apartmentFilter = new ApartmentFilter(330L);
+		ApartmentFilter apartmentFilter = new ApartmentFilter(TestData.IVANOVA_27_330.getId());
 		ArrayStack filters = CollectionUtils.arrayStack(apartmentFilter);
 
 		List<EircAccount> accounts = eircAccountService.findAccounts(filters, new Page<EircAccount>());
@@ -39,7 +40,7 @@ public class TestEircAccountService extends EircSpringBeanAwareTestCase {
 	@Test
 	public void testFindEircAccountByApartment2() {
 
-		ApartmentFilter apartmentFilter = new ApartmentFilter(330L);
+		ApartmentFilter apartmentFilter = new ApartmentFilter(TestData.IVANOVA_27_330.getId());
 		ArrayStack filters = CollectionUtils.arrayStack(new PersonSearchFilter(), apartmentFilter);
 
 		List<EircAccount> accounts = eircAccountService.findAccounts(filters, new Page<EircAccount>());

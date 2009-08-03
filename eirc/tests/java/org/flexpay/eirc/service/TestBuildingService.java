@@ -1,11 +1,11 @@
 package org.flexpay.eirc.service;
 
-import org.flexpay.common.test.SpringBeanAwareTestCase;
+import org.flexpay.eirc.test.EircSpringBeanAwareTestCase;
 import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 import static org.springframework.dao.support.DataAccessUtils.intResult;
 
-public class TestBuildingService extends SpringBeanAwareTestCase {
+public class TestBuildingService extends EircSpringBeanAwareTestCase {
 
 	@Test
 	public void testAllBuildingsAreValid() throws Throwable {
