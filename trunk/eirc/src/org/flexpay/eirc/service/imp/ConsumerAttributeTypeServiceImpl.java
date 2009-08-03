@@ -67,7 +67,7 @@ public class ConsumerAttributeTypeServiceImpl implements ConsumerAttributeTypeSe
 		}
 		if (!defaultNameFound) {
 			ex.addException(new FlexPayException(
-					"No default lang name", "common.error.no_default_lang_name"));
+					"No default name", "common.error.no_default_lang_name"));
 		}
 
 		// validate enum values

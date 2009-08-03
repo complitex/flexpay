@@ -14,6 +14,8 @@ import org.flexpay.common.test.SpringBeanAwareTestCase;
 import org.flexpay.common.util.StringUtil;
 import org.flexpay.eirc.service.exchange.ServiceProviderFileProcessor;
 import org.flexpay.payments.service.EircRegistryService;
+import static org.junit.Assert.assertNotNull;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -34,8 +36,11 @@ public class TestSetNumberOfHabitantsOperation extends SpringBeanAwareTestCase {
 	private ServiceOperationsFactory factory;
 
 	@Test
+	@Ignore
+	@Deprecated
 	public void testProcess() throws FlexPayException, FlexPayExceptionContainer {
 		Registry registry = registryService.read(new Stub<Registry>(13L));
+		assertNotNull("Registry not found", registry);
 		List<RegistryRecord> records = registryFileService.getRecordsForProcessing(stub(registry), new FetchRange());
 		for (RegistryRecord record : records) {
 			List<String> containers = new ArrayList<String>();
@@ -55,5 +60,4 @@ public class TestSetNumberOfHabitantsOperation extends SpringBeanAwareTestCase {
 			update.doUpdate();
 		}
 	}
-
 }

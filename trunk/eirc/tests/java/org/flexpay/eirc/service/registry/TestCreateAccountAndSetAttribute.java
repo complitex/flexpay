@@ -61,7 +61,6 @@ public class TestCreateAccountAndSetAttribute extends EircSpringBeanAwareTestCas
 
 		// add create account and change ERC account number containers
 		PersistentList list = (PersistentList) record.getContainers();
-		System.out.println("List wrapper: " + list.isWrapper(Collections.EMPTY_LIST));
 		record.addContainer(new RegistryRecordContainer("1:01062009::"));
 		record.addContainer(new RegistryRecordContainer("15:01062009::ERC0808080:" + getMBOrganizationStub().getId()));
 		recordService.update(record);
