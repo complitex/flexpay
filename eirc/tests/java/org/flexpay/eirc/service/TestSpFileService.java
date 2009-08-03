@@ -1,6 +1,7 @@
 package org.flexpay.eirc.service;
 
 import org.flexpay.common.dao.paging.Page;
+import org.flexpay.common.dao.paging.FetchRange;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.registry.RegistryRecord;
 import org.flexpay.common.persistence.registry.Registry;
@@ -18,11 +19,11 @@ public class TestSpFileService extends SpringBeanAwareTestCase {
 	@Test
 	public void testFindRecordsForProcessing() {
 
-		Page<RegistryRecord> pager = new Page<RegistryRecord>(500, 4);
-		fileService.getRecordsForProcessing(new Stub<Registry>(33L), pager, CollectionUtils.ar(null, 21000L));
+		FetchRange range = new FetchRange(500);
+		fileService.getRecordsForProcessing(new Stub<Registry>(33L), range);
 
-		pager.setPageNumber(pager.getPageNumber() + 1);
-		fileService.getRecordsForProcessing(new Stub<Registry>(33L), pager, CollectionUtils.ar(0L, 21000L));
+		range.nextPage();
+		fileService.getRecordsForProcessing(new Stub<Registry>(33L), range);
 	}
 
 }

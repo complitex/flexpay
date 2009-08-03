@@ -37,7 +37,8 @@
 
 	<bean id="buildingAttributeGroupModificationListener"
 		  parent="historyChangesListenerBase"
-		  p:historyBuilder-ref="buildingAttributeGroupHistoryBuilder" />
+		  p:historyBuilder-ref="buildingAttributeGroupHistoryBuilder"
+		  p:referencesHistoryGenerator-ref="nopeReferencesHistoryGenerator" />
 
 	<bean id="buildingAttributeGroupServiceTarget"
 		  class="org.flexpay.bti.service.impl.BuildingAttributeGroupServiceImpl"

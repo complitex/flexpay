@@ -1,15 +1,15 @@
 package org.flexpay.payments.service.history;
 
-import org.flexpay.common.persistence.history.HistoryGenerator;
-import org.flexpay.common.persistence.history.Diff;
-import org.flexpay.common.persistence.history.ProcessingStatus;
 import static org.flexpay.common.persistence.Stub.stub;
+import org.flexpay.common.persistence.history.Diff;
+import org.flexpay.common.persistence.history.HistoryGenerator;
+import org.flexpay.common.persistence.history.ProcessingStatus;
 import org.flexpay.common.service.DiffService;
 import org.flexpay.payments.persistence.Service;
 import org.flexpay.payments.service.SPService;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
 public class ServiceHistoryGenerator implements HistoryGenerator<Service> {
@@ -19,6 +19,7 @@ public class ServiceHistoryGenerator implements HistoryGenerator<Service> {
 	private DiffService diffService;
 	private SPService spService;
 	private ServiceHistoryBuilder historyBuilder;
+	private ServiceReferencesHistoryGenerator referencesHistoryGenerator;
 
 	/**
 	 * Do generation
@@ -38,9 +39,13 @@ public class ServiceHistoryGenerator implements HistoryGenerator<Service> {
 			return;
 		}
 
-		Diff diff = historyBuilder.diff(null, service);
-		diff.setProcessingStatus(ProcessingStatus.STATUS_PROCESSED);
-		diffService.create(diff);
+		referencesHistoryGenerator.generateReferencesHistory(service);
+
+		if (!diffService.hasDiffs(service)) {
+			Diff diff = historyBuilder.diff(null, service);
+			diff.setProcessingStatus(ProcessingStatus.STATUS_PROCESSED);
+			diffService.create(diff);
+		}
 	}
 
 	@Required
@@ -56,5 +61,10 @@ public class ServiceHistoryGenerator implements HistoryGenerator<Service> {
 	@Required
 	public void setHistoryBuilder(ServiceHistoryBuilder historyBuilder) {
 		this.historyBuilder = historyBuilder;
+	}
+
+	@Required
+	public void setReferencesHistoryGenerator(ServiceReferencesHistoryGenerator referencesHistoryGenerator) {
+		this.referencesHistoryGenerator = referencesHistoryGenerator;
 	}
 }

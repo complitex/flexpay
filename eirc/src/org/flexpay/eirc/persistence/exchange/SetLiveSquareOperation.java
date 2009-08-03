@@ -27,10 +27,10 @@ public class SetLiveSquareOperation extends AbstractChangePersonalAccountOperati
 	 * @throws org.flexpay.common.exception.FlexPayException
 	 *          if failure occurs
 	 */
-	public void process(Registry registry, RegistryRecord record) throws FlexPayException {
+	public DelayedUpdate process(Registry registry, RegistryRecord record) throws FlexPayException {
 
-		ContainerProcessHelper.updateApartmentAttribute(record, newValue, ApartmentAttributeConfig.ATTR_LIVE_SQUARE, factory);
-
+		return ContainerProcessHelper.updateApartmentAttribute(record, newValue,
+				ApartmentAttributeConfig.ATTR_LIVE_SQUARE, factory);
 	}
 
 }

@@ -50,8 +50,10 @@ public class TariffCalculationResultServiceImpl implements TariffCalculationResu
 	 * @param tariff		  tariff
 	 */
 	@Transactional (readOnly = false)
-	public void add(@NotNull BigDecimal value, Date creationDate, Date calculationDate, @NotNull Building building, @NotNull Tariff tariff) {
-		TariffCalculationResult tariffCalculationResult = new TariffCalculationResult(value, creationDate, calculationDate, building, tariff);
+	public void add(@NotNull BigDecimal value, Date creationDate, Date calculationDate,
+				 @NotNull Building building, @NotNull Tariff tariff) {
+		TariffCalculationResult tariffCalculationResult = new TariffCalculationResult(
+				value, creationDate, calculationDate, building, tariff);
 		add(tariffCalculationResult);
 	}
 
@@ -74,15 +76,20 @@ public class TariffCalculationResultServiceImpl implements TariffCalculationResu
 	 * @param buildingStub tariff calculation result building
 	 * @return tariff calculation result list
 	 */
-	public List<TariffCalculationResult> getTariffCalcResultsByCalcDateAndBuilding(@NotNull Date calcDate, @NotNull Stub<Building> buildingStub) {
+	public List<TariffCalculationResult> getTariffCalcResultsByCalcDateAndBuilding(
+			@NotNull Date calcDate, @NotNull Stub<Building> buildingStub) {
 		return tariffCalculationResultDao.findByCalcDateAndBuilding(calcDate, buildingStub.getId());
 	}
 
-	public TariffCalculationResult findTariffCalcResults(@NotNull Date calcDate, @NotNull Stub<Tariff> tariffStub, @NotNull Stub<Building> buildingStub) throws FlexPayException {
-		List<TariffCalculationResult> results = tariffCalculationResultDao.findByCalcDateTariffAndBuilding(calcDate, tariffStub.getId(), buildingStub.getId());
+	public TariffCalculationResult findTariffCalcResults(
+			@NotNull Date calcDate, @NotNull Stub<Tariff> tariffStub, @NotNull Stub<Building> buildingStub)
+			throws FlexPayException {
+		List<TariffCalculationResult> results = tariffCalculationResultDao
+				.findByCalcDateTariffAndBuilding(calcDate, tariffStub.getId(), buildingStub.getId());
 
 		if (results.size() > 1) {
-			throw new FlexPayException("Unexpected data fetch result. There should be only one tariff calculation result for calculation date, tariff and building");
+			throw new FlexPayException("Unexpected data fetch result. There should be only one " +
+									   "tariff calculation result for calculation date, tariff and building");
 		}
 
 		return results.get(0);
@@ -92,7 +99,8 @@ public class TariffCalculationResultServiceImpl implements TariffCalculationResu
 		return tariffCalculationResultDao.readFull(stub.getId());
 	}
 
-	public List<TariffCalculationResult> getTariffCalcResultsByCalcDateAndAddressId(@NotNull Date calcDate, @NotNull Stub<BuildingAddress> addressStub) {
+	public List<TariffCalculationResult> getTariffCalcResultsByCalcDateAndAddressId(
+			@NotNull Date calcDate, @NotNull Stub<BuildingAddress> addressStub) {
 		return tariffCalculationResultDao.findByCalcDateAndAddressId(calcDate, addressStub.getId());
 	}
 

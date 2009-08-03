@@ -40,6 +40,10 @@
 		  class="org.flexpay.eirc.dao.imp.EircAccountDaoExtImpl"
 		  p:hibernateTemplate-ref="hibernateTemplate" />
 
+	<bean id="eircRegistryRecordPropertiesDao"
+		  class="org.flexpay.eirc.dao.imp.EircRegistryRecordPropertiesDaoImpl"
+		  p:hibernateTemplate-ref="hibernateTemplate" />
+
 	<bean id="quittanceDaoExt"
 		  class="org.flexpay.eirc.dao.imp.QuittanceDaoExtImpl"
 		  p:jdbcTemplate-ref="jdbcTemplate" />

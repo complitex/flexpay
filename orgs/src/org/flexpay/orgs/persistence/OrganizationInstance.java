@@ -36,7 +36,6 @@ public abstract class OrganizationInstance<
 		super(id);
 	}
 
-	@Nullable
 	public Organization getOrganization() {
 		return organization;
 	}

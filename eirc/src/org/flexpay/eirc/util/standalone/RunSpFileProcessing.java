@@ -17,6 +17,7 @@ import org.flexpay.eirc.service.exchange.RegistryProcessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.util.Assert;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -47,9 +48,9 @@ public class RunSpFileProcessing implements StandaloneTask {
 //			loadRegistryQuittancesBig();
 //			importRecords();
 //			importOpenAccounts();
-//			processOpenAccounts();
+			processOpenAccounts();
 //			importQuittancesBig();
-			processQuittancesBig();
+//			processQuittancesBig();
 		} catch (Throwable e) {
 			log.error("Failed processing registry file", e);
 		}
@@ -68,7 +69,7 @@ public class RunSpFileProcessing implements StandaloneTask {
 	}
 
 	private void processOpenAccounts() throws Throwable {
-		processRegistry(1L);
+		processRegistry(37L);
 	}
 
 	private void importQuittancesBig() throws Throwable {
@@ -81,7 +82,7 @@ public class RunSpFileProcessing implements StandaloneTask {
 
 	private void processRegistry(Long registryId) throws Throwable {
 		Registry registry = registryService.readWithContainers(new Stub<Registry>(registryId));
-
+		Assert.notNull(registry, "Registry not found #" + registryId);
 		try {
 			log.debug("Starting registry processing");
 			long time = System.currentTimeMillis();

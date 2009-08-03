@@ -13,3 +13,9 @@ from eirc_consumers_tbl c
 where s.provider_id=@provider_id;
 
 delete from common_data_corrections_tbl where data_source_description_id=@ds_id;
+
+-- remove eirc accounts where there is no consumers
+delete a
+from eirc_eirc_accounts_tbl a
+	left outer join eirc_consumers_tbl c on c.eirc_account_id=a.id
+where c.id is null;

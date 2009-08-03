@@ -46,11 +46,12 @@ public abstract class Operation {
 	 *
 	 * @param registry Registry header
 	 * @param record   Registry record
+	 * @return DelayedUpdate object
 	 * @throws org.flexpay.common.exception.FlexPayException
 	 *          if failure occurs
 	 * @throws org.flexpay.common.exception.FlexPayExceptionContainer
 	 *          if failure occurs
 	 */
-	abstract public void process(Registry registry, RegistryRecord record) throws FlexPayException, FlexPayExceptionContainer;
+	abstract public DelayedUpdate process(Registry registry, RegistryRecord record) throws FlexPayException, FlexPayExceptionContainer;
 
 }

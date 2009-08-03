@@ -1,10 +1,7 @@
 package org.flexpay.common.persistence.history.impl;
 
 import org.flexpay.common.persistence.DomainObject;
-import org.flexpay.common.persistence.history.ModificationListener;
-import org.flexpay.common.persistence.history.HistoryBuilder;
-import org.flexpay.common.persistence.history.Diff;
-import org.flexpay.common.persistence.history.ProcessingStatus;
+import org.flexpay.common.persistence.history.*;
 import org.flexpay.common.service.DiffService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
@@ -17,6 +14,7 @@ public class ModificationListenerImpl<T extends DomainObject> implements Modific
 
 	private HistoryBuilder<T> historyBuilder;
 	private DiffService diffService;
+	private ReferencesHistoryGenerator<T> referencesHistoryGenerator;
 
 	private void createDiff(Diff diff) {
 		// check if the result of this operation is a sync
@@ -44,6 +42,8 @@ public class ModificationListenerImpl<T extends DomainObject> implements Modific
 
 		log.debug("On CREATE: {}", obj);
 
+		referencesHistoryGenerator.generateReferencesHistory(obj);
+
 		Diff diff = historyBuilder.diff(null, obj);
 		createDiff(diff);
 	}
@@ -64,6 +64,8 @@ public class ModificationListenerImpl<T extends DomainObject> implements Modific
 			onCreate(objOld);
 			log.debug("On UPDATE, just created old obj history");
 		}
+
+		referencesHistoryGenerator.generateReferencesHistory(obj);
 
 		Diff diff = historyBuilder.diff(objOld, obj);
 		createDiff(diff);
@@ -89,5 +91,10 @@ public class ModificationListenerImpl<T extends DomainObject> implements Modific
 	@Required
 	public void setDiffService(DiffService diffService) {
 		this.diffService = diffService;
+	}
+
+	@Required
+	public void setReferencesHistoryGenerator(ReferencesHistoryGenerator<T> referencesHistoryGenerator) {
+		this.referencesHistoryGenerator = referencesHistoryGenerator;
 	}
 }

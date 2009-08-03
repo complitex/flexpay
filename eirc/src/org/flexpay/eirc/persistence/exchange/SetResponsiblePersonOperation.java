@@ -3,8 +3,6 @@ package org.flexpay.eirc.persistence.exchange;
 import org.apache.commons.lang.StringUtils;
 import org.flexpay.ab.persistence.Person;
 import org.flexpay.common.exception.FlexPayException;
-import org.flexpay.common.exception.FlexPayExceptionContainer;
-import org.flexpay.common.persistence.DataCorrection;
 import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.persistence.ImportError;
 import org.flexpay.common.persistence.Stub;
@@ -16,6 +14,7 @@ import org.flexpay.eirc.persistence.Consumer;
 import org.flexpay.eirc.persistence.ConsumerInfo;
 import org.flexpay.eirc.persistence.EircAccount;
 import org.flexpay.eirc.persistence.exchange.conditions.AccountPersonChangeCondition;
+import org.flexpay.eirc.persistence.exchange.delayed.*;
 import org.flexpay.eirc.service.ConsumerService;
 import org.flexpay.eirc.service.EircAccountService;
 import org.flexpay.eirc.service.importexport.ImportUtil;
@@ -47,7 +46,13 @@ public class SetResponsiblePersonOperation extends AbstractChangePersonalAccount
 	 * @throws org.flexpay.common.exception.FlexPayException
 	 *          if failure occurs
 	 */
-	public void process(Registry registry, RegistryRecord record) throws FlexPayException {
+	public DelayedUpdate process(Registry registry, RegistryRecord record) throws FlexPayException {
+
+		if (true) {
+			return DelayedUpdateNope.INSTANCE;
+		}
+
+		DelayedUpdatesContainer container = new DelayedUpdatesContainer();
 
 		Consumer consumer = ContainerProcessHelper.getConsumer(record, factory);
 
@@ -63,12 +68,13 @@ public class SetResponsiblePersonOperation extends AbstractChangePersonalAccount
 		info.setMiddleName(mName);
 		info.setLastName(lName);
 
-		factory.getConsumerInfoService().save(info);
+		container.addUpdate(new DelayedUpdateConsumerInfo(info, factory.getConsumerInfoService()));
 
 		log.debug("Updated consumer info first-middle-last names");
 
 		EircAccountService accountService = factory.getAccountService();
-		EircAccount eircAccount = accountService.readFull(consumer.getEircAccountStub());
+		EircAccount eircAccount = consumer.isEircAccountNew() ? consumer.getEircAccount() :
+								  accountService.readFull(consumer.getEircAccountStub());
 		if (eircAccount == null) {
 			throw new IllegalStateException("EIRC account not found for consumer #" + consumer.getId());
 		}
@@ -76,7 +82,7 @@ public class SetResponsiblePersonOperation extends AbstractChangePersonalAccount
 		// setup consumers responsible person
 		Person person = findResponsiblePerson(record, fName, mName, lName);
 		setupResponsiblePerson(info, person, eircAccount);
-		saveConsumers(eircAccount, info);
+		saveConsumers(eircAccount, info, container);
 
 		log.debug("Set responsible person: {}", person);
 
@@ -84,53 +90,32 @@ public class SetResponsiblePersonOperation extends AbstractChangePersonalAccount
 		AccountPersonChangeCondition condition = factory.getConditionsFactory().getAccountPersonChangeCondition();
 		if (condition.needUpdatePerson(eircAccount, consumer)) {
 			eircAccount.setPerson(person);
-			saveAccount(eircAccount);
+			container.addUpdate(new DelayedUpdateEircAccount(eircAccount, factory.getAccountService()));
 		}
 
 		// update corrections
 		EircRegistryProperties registryProperties = (EircRegistryProperties) registry.getProperties();
 		ServiceProvider provider = factory.getServiceProviderService().read(registryProperties.getServiceProviderStub());
 		Stub<DataSourceDescription> sd = provider.getDataSourceDescriptionStub();
-		updateCorrections(info, record, eircAccount, sd);
+		updateCorrections(info, record, eircAccount, sd, container);
+
+		return container;
 	}
 
 	/**
 	 * Save updated consumers
 	 *
-	 * @param account EircAccount that consumers to be saved
-	 * @param info	ConsumerInfo used to find consumers to save
-	 * @throws FlexPayException if failure occurs
+	 * @param account   EircAccount that consumers to be saved
+	 * @param info	  ConsumerInfo used to find consumers to save
+	 * @param container Delayed o[erations container
 	 */
-	private void saveConsumers(EircAccount account, ConsumerInfo info) throws FlexPayException {
+	private void saveConsumers(EircAccount account, ConsumerInfo info, DelayedUpdatesContainer container) {
 
-		try {
-			ConsumerService service = factory.getConsumerService();
-			for (Consumer consumer : account.getConsumers()) {
-				if (info.equals(consumer.getConsumerInfo())) {
-					service.save(consumer);
-				}
+		ConsumerService service = factory.getConsumerService();
+		for (Consumer consumer : account.getConsumers()) {
+			if (info.equals(consumer.getConsumerInfo())) {
+				container.addUpdate(new DelayedUpdateConsumer(consumer, service));
 			}
-		} catch (FlexPayExceptionContainer e) {
-			throw e.getFirstException();
-		}
-	}
-
-	/**
-	 * Save eirc account
-	 *
-	 * @param account Eirc account to save
-	 * @throws FlexPayException if failure occurs
-	 */
-	private void saveAccount(EircAccount account) throws FlexPayException {
-
-		try {
-			if (account.isNew()) {
-				factory.getAccountService().create(account);
-			} else {
-				factory.getAccountService().update(account);
-			}
-		} catch (FlexPayExceptionContainer e) {
-			throw e.getFirstException();
 		}
 	}
 
@@ -161,11 +146,10 @@ public class SetResponsiblePersonOperation extends AbstractChangePersonalAccount
 		}
 	}
 
-	private void updateCorrections(ConsumerInfo info, RegistryRecord record,
-								   EircAccount account, Stub<DataSourceDescription> sd)
+	private void updateCorrections(ConsumerInfo info, RegistryRecord record, EircAccount account,
+								   Stub<DataSourceDescription> sd, DelayedUpdatesContainer container)
 			throws FlexPayException {
 
-		RawConsumerData dataOld = RawConsumersDataUtil.convert(record);
 		RawConsumerData data = RawConsumersDataUtil.convert(record);
 
 //		List<String> fields = RegistryUtil.parseFIO(newValue);
@@ -184,29 +168,17 @@ public class SetResponsiblePersonOperation extends AbstractChangePersonalAccount
 
 				// update corrections (by internal service id)
 				String serviceCode = String.valueOf(consumer.getService().getId());
-				DataCorrection c = buildCorrection(dataOld, consumer, serviceCode, sd);
 				setServiceCode(data, serviceCode);
-				c.setExternalId(data.getFullConsumerId());
-				service.save(c);
+				container.addUpdate(new DelayedUpdateCorrection(service, consumer, data.getFullConsumerId(), sd));
 
 				// and now by external service code
 				serviceCode = consumer.getService().getExternalCode();
 				if (StringUtils.isNotBlank(serviceCode)) {
-					c = buildCorrection(dataOld, consumer, serviceCode, sd);
 					setServiceCode(data, serviceCode);
-					c.setExternalId(data.getFullConsumerId());
-					service.save(c);
+					container.addUpdate(new DelayedUpdateCorrection(service, consumer, data.getFullConsumerId(), sd));
 				}
 			}
 		}
-	}
-
-	private DataCorrection buildCorrection(RawConsumerData data, Consumer consumer,
-										   String serviceCode, Stub<DataSourceDescription> sd) {
-		CorrectionsService service = factory.getCorrectionsService();
-		setServiceCode(data, serviceCode);
-
-		return service.getStub(data.getFullConsumerId(), consumer, sd);
 	}
 
 	private void setServiceCode(RawConsumerData data, String serviceCode) {

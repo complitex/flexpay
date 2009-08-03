@@ -5,7 +5,8 @@ import org.junit.runners.Suite;
 
 @RunWith (Suite.class)
 @Suite.SuiteClasses ({
-		TestServedBuildingDao.class
+		TestServedBuildingDao.class,
+		TestEircRegistryRecordPropertiesDao.class
 })
 public class AllTests {
 

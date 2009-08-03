@@ -164,7 +164,7 @@
 				<comment>Consumer info used to create account</comment>
 			</column>
 		</many-to-one>
-		<set name="consumers" inverse="true" cascade="all-delete-orphan">
+		<set name="consumers" inverse="true">
 			<key column="eirc_account_id" not-null="true"/>
 			<one-to-many class="Consumer"/>
 		</set>

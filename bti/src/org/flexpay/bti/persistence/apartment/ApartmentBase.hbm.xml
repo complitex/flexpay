@@ -44,7 +44,7 @@
 
             <set name="attributes" cascade="all-delete-orphan" inverse="true">
                 <key column="apartment_id" not-null="true" />
-                <one-to-many class="org.flexpay.bti.persistence.apartment.ApartmentAttributeBase" />
+                <one-to-many class="org.flexpay.bti.persistence.apartment.ApartmentAttribute" />
             </set>
 
         </subclass>

@@ -4,6 +4,7 @@ import org.flexpay.common.persistence.registry.RegistryRecord;
 import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.eirc.persistence.exchange.Operation;
 import org.flexpay.eirc.persistence.exchange.ServiceOperationsFactory;
+import org.flexpay.eirc.persistence.exchange.DelayedUpdate;
 import org.flexpay.common.persistence.registry.workflow.RegistryRecordWorkflowManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,7 +44,8 @@ public class ServiceProviderFileProcessorTxImpl implements ServiceProviderFilePr
 		log.debug("Record to process: {}", record);
 
 		Operation op = serviceOperationsFactory.getOperation(registry, record);
-		op.process(registry, record);
+		DelayedUpdate update = op.process(registry, record);
+		update.doUpdate();
 		recordWorkflowManager.setNextSuccessStatus(record);
 	}
 

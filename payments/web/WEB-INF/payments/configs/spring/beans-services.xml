@@ -90,7 +90,8 @@
 
 	<bean id="serviceTypeHistoryChangesListener"
 		  parent="historyChangesListenerBase"
-		  p:historyBuilder-ref="serviceTypeHistoryBuilder" />
+		  p:historyBuilder-ref="serviceTypeHistoryBuilder"
+		  p:referencesHistoryGenerator-ref="nopeReferencesHistoryGenerator" />
 
 	<bean id="serviceTypeServiceTarget"
 		  class="org.flexpay.payments.service.impl.ServiceTypeServiceImpl"
@@ -100,9 +101,15 @@
 		  p:modificationListener-ref="serviceTypeHistoryChangesListener"
 		  autowire-candidate="false" />
 
+	<bean id="serviceReferencesHistoryGenerator"
+		  class="org.flexpay.payments.service.history.ServiceReferencesHistoryGenerator"
+		  p:measureUnitHistoryGenerator-ref="measureUnitHistoryGenerator"
+		  p:providerHistoryGenerator-ref="serviceProviderHistoryGenerator" />
+
 	<bean id="serviceHistoryChangesListener"
 		  parent="historyChangesListenerBase"
-		  p:historyBuilder-ref="serviceHistoryBuilder" />
+		  p:historyBuilder-ref="serviceHistoryBuilder"
+		  p:referencesHistoryGenerator-ref="serviceReferencesHistoryGenerator" />
 
 	<bean id="spServiceTarget"
 		  class="org.flexpay.payments.service.impl.SPServiceImpl"
@@ -199,7 +206,8 @@
 		  class="org.flexpay.payments.service.history.ServiceHistoryGenerator"
 		  p:diffService-ref="diffService"
 		  p:historyBuilder-ref="serviceHistoryBuilder"
-		  p:spService-ref="spService" />
+		  p:spService-ref="spService"
+		  p:referencesHistoryGenerator-ref="serviceReferencesHistoryGenerator" />
 
 	<!-- Histrory handlers -->
 	<bean id="paymentsHistoryHandlerBase"

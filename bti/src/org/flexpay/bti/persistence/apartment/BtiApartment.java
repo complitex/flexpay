@@ -4,17 +4,16 @@ import org.flexpay.ab.persistence.Apartment;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.DateUtil;
+import org.flexpay.common.util.DateIntervalUtil;
 import org.flexpay.common.util.config.ApplicationConfig;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Collections;
-import java.util.Date;
-import java.util.Set;
+import java.util.*;
 
 public class BtiApartment extends Apartment {
 
-	private Set<ApartmentAttributeBase> attributes = Collections.emptySet();
+	private Set<ApartmentAttribute> attributes = Collections.emptySet();
 
 	protected BtiApartment() {
 	}
@@ -31,15 +30,49 @@ public class BtiApartment extends Apartment {
 		return new BtiApartment();
 	}
 
-	public Set<ApartmentAttributeBase> getAttributes() {
+	public Set<ApartmentAttribute> getAttributes() {
 		return attributes;
 	}
 
-	@Nullable
-	public ApartmentAttributeBase getAttribute(ApartmentAttributeType attributeType) {
+	public void setAttributes(Set<ApartmentAttribute> attributes) {
+		this.attributes = attributes;
+	}
 
-		for (ApartmentAttributeBase attribute : attributes) {
-			if (attribute.getAttributeType().equals(attributeType)) {
+	private Map<ApartmentAttributeType, SortedSet<ApartmentAttribute>> splitCache = null;
+
+	private Map<ApartmentAttributeType, SortedSet<ApartmentAttribute>> splitAttributes() {
+
+		if (splitCache != null) {
+			return splitCache;
+		}
+
+		Map<ApartmentAttributeType, SortedSet<ApartmentAttribute>> result = CollectionUtils.map();
+		for (ApartmentAttribute attribute : getAttributes()) {
+			ApartmentAttributeType type = attribute.getAttributeType();
+			SortedSet<ApartmentAttribute> group = result.get(type);
+			if (group == null) {
+				group = CollectionUtils.treeSet();
+				result.put(type, group);
+			}
+			group.add(attribute);
+		}
+
+		splitCache = result;
+
+		return result;
+	}
+
+	@Nullable
+	public ApartmentAttribute getCurrentAttribute(ApartmentAttributeType attributeType) {
+		return getAttributeForDate(attributeType, DateUtil.now());
+	}
+
+	@Nullable
+	public ApartmentAttribute getAttributeForDate(ApartmentAttributeType attributeType, Date date) {
+
+		SortedSet<ApartmentAttribute> attrs = findAttributes(attributeType);
+		for (ApartmentAttribute attribute : attrs) {
+			if (DateIntervalUtil.includes(date, attribute.getBegin(), attribute.getEnd())) {
 				return attribute;
 			}
 		}
@@ -47,83 +80,117 @@ public class BtiApartment extends Apartment {
 		return null;
 	}
 
-	public void setAttributes(Set<ApartmentAttributeBase> attributes) {
-		this.attributes = attributes;
-	}
-
-	public void setAttribute(ApartmentAttributeBase attribute) {
-		//noinspection CollectionsFieldAccessReplaceableByMethodCall
-		if (attributes == Collections.EMPTY_SET) {
-			attributes = CollectionUtils.set();
+	/**
+	 * Set normal consumer attribute
+	 *
+	 * @param attribute Consumer attribute
+	 */
+	public void setNormalAttribute(@NotNull ApartmentAttribute attribute) {
+		if (attribute.notEmpty()) {
+			attribute.setTemporal(0);
 		}
+		doSetAttributeForDates(attribute, ApplicationConfig.getPastInfinite(), ApplicationConfig.getFutureInfinite());
+	}
 
-		attribute.setApartment(this);
+	/**
+	 * Set temporal consumer attribute from now till future infinite
+	 *
+	 * @param attribute Consumer attribute
+	 */
+	public void setCurrentTmpAttribute(@NotNull ApartmentAttribute attribute) {
+		setTmpAttributeForDate(attribute, DateUtil.now());
+	}
 
-		ApartmentAttributeBase oldAttribute = getAttribute(attribute.getAttributeType());
-		if (oldAttribute != null) {
-			attributes.remove(oldAttribute);
+	/**
+	 * Set temporal consumer attribute from <code>date</code> till future infinite
+	 *
+	 * @param attribute Consumer attribute
+	 * @param date	  attribute begin date
+	 */
+	public void setTmpAttributeForDate(@NotNull ApartmentAttribute attribute, Date date) {
+		setTmpAttributeForDates(attribute, date, ApplicationConfig.getFutureInfinite());
+	}
+
+	/**
+	 * Set temporal consumer attribute from <code>date</code> till future infinite
+	 *
+	 * @param attribute Consumer attribute
+	 * @param begin	 attribute begin date
+	 * @param end	   attribute end date
+	 */
+	public void setTmpAttributeForDates(@NotNull ApartmentAttribute attribute, Date begin, Date end) {
+		if (attribute.notEmpty()) {
+			attribute.setTemporal(1);
 		}
-		attributes.add(attribute);
+		doSetAttributeForDates(attribute, begin, end);
 	}
 
-	public void setNormalAttribute(ApartmentAttributeType type, String value) {
+	private void doSetAttributeForDates(@NotNull ApartmentAttribute attribute, Date begin, Date end) {
 
-		ApartmentAttributeBase attribute = new ApartmentAttribute();
-		attribute.setAttributeType(type);
-		attribute.setCurrentValue(value);
-		setAttribute(attribute);
-	}
-
-	public void setCurrentTmpAttribute(ApartmentAttributeType type, String value) {
-		setTmpAttributeForDate(type, value, DateUtil.now());
-	}
-
-	public void setTmpAttributeForDate(ApartmentAttributeType type, String value, Date begin) {
-		setTmpAttributeForDates(type, value, begin, ApplicationConfig.getFutureInfinite());
-	}
-
-	public void setTmpAttributeForDates(ApartmentAttributeType type, String value, Date begin, Date end) {
-
-		ApartmentAttributeBase attribute = new ApartmentTempAttribute();
-		attribute.setAttributeType(type);
-		attribute.setValueForDates(value, begin, end);
-		setAttribute(attribute);
-	}
-
-	public void addAttribute(ApartmentAttributeBase attribute) {
-		//noinspection CollectionsFieldAccessReplaceableByMethodCall
-		if (attributes == Collections.EMPTY_SET) {
-			attributes = CollectionUtils.set();
+		if (begin.before(ApplicationConfig.getPastInfinite())) {
+			begin = ApplicationConfig.getPastInfinite();
 		}
-
-		attribute.setApartment(this);
-		attributes.add(attribute);
-	}
-
-	public void removeAttribute(ApartmentAttributeType type) {
-		if (attributes.isEmpty()) {
-			return;
+		if (end.after(ApplicationConfig.getFutureInfinite())) {
+			end = ApplicationConfig.getFutureInfinite();
 		}
+		begin = DateUtil.truncateDay(begin);
+		end = DateUtil.truncateDay(end);
 
-		ApartmentAttributeBase theAttribute = null;
-		for (ApartmentAttributeBase attribute : attributes) {
-			ApartmentAttributeType attributeType = attribute.getAttributeType();
-
-			if (attributeType != null && attributeType.equals(type)) {
-				theAttribute = attribute;
+		SortedSet<ApartmentAttribute> attrs = findAttributes(attribute.getAttributeType());
+		Set<ApartmentAttribute> toDelete = CollectionUtils.set();
+		Set<ApartmentAttribute> toAdd = CollectionUtils.set();
+		for (ApartmentAttribute old : attrs) {
+			old.setTemporal(attribute.getTemporal());
+			if (DateIntervalUtil.areIntersecting(old.getBegin(), old.getEnd(), begin, end)) {
+				if (old.getBegin().before(begin)) {
+					ApartmentAttribute copy = old.copy();
+					copy.setEnd(DateUtil.previous(begin));
+					toAdd.add(copy);
+				}
+				if (old.getEnd().after(end)) {
+					ApartmentAttribute copy = old.copy();
+					copy.setBegin(DateUtil.next(end));
+					toAdd.add(copy);
+				}
+				toDelete.add(old);
 			}
 		}
 
-		if (theAttribute != null) {
-			attributes.remove(theAttribute);
+		if (attribute.notEmpty()) {
+			attribute.setBegin(begin);
+			attribute.setEnd(end);
+			toAdd.add(attribute);
+			attribute.setApartment(this);
 		}
+
+		attrs.removeAll(toDelete);
+		attributes.removeAll(toDelete);
+		attrs.addAll(toAdd);
+		attributes.addAll(toAdd);
 	}
 
-	public void removeAttribute(ApartmentAttributeBase attribute) {
-		if (attributes.isEmpty()) {
-			return;
+	@NotNull
+	private SortedSet<ApartmentAttribute> findAttributes(ApartmentAttributeType type) {
+
+		Map<ApartmentAttributeType, SortedSet<ApartmentAttribute>> splittedAttributes = splitAttributes();
+		SortedSet<ApartmentAttribute> attrs = splittedAttributes.get(type);
+		if (attrs == null) {
+			attrs = CollectionUtils.treeSet();
+			splittedAttributes.put(type, attrs);
 		}
 
-		attributes.remove(attribute);
+		return attrs;
+	}
+
+	public List<ApartmentAttribute> currentAttributes() {
+		List<ApartmentAttribute> result = CollectionUtils.list();
+		Date now = DateUtil.now();
+		for (ApartmentAttribute attribute : attributes) {
+			if (DateIntervalUtil.includes(now, attribute.getBegin(), attribute.getEnd())) {
+				result.add(attribute);
+			}
+		}
+
+		return result;
 	}
 }

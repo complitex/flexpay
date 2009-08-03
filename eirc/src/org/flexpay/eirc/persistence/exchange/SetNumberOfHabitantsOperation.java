@@ -27,9 +27,10 @@ public class SetNumberOfHabitantsOperation extends AbstractChangePersonalAccount
 	 * @throws org.flexpay.common.exception.FlexPayException
 	 *          if failure occurs
 	 */
-	public void process(Registry registry, RegistryRecord record) throws FlexPayException {
+	public DelayedUpdate process(Registry registry, RegistryRecord record) throws FlexPayException {
 
-		ContainerProcessHelper.updateApartmentAttribute(record, newValue, ApartmentAttributeConfig.ATTR_NUMBER_OF_HABITANTS, factory);
+		return ContainerProcessHelper.updateApartmentAttribute(record, newValue,
+				ApartmentAttributeConfig.ATTR_NUMBER_OF_HABITANTS, factory);
 
 	}
 

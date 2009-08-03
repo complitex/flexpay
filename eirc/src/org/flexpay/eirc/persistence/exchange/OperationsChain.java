@@ -5,6 +5,7 @@ import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.registry.RegistryRecord;
 import org.flexpay.common.persistence.registry.Registry;
+import org.flexpay.eirc.persistence.exchange.delayed.DelayedUpdatesContainer;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -23,10 +24,15 @@ public class OperationsChain extends Operation {
 	 * 
 	 * @throws org.flexpay.common.exception.FlexPayException
 	 */
-	public void process(Registry registry, RegistryRecord record) throws FlexPayException, FlexPayExceptionContainer {
-		for (Operation container : containers) {
-			container.process(registry, record);
+	public DelayedUpdate process(Registry registry, RegistryRecord record) throws FlexPayException, FlexPayExceptionContainer {
+
+		DelayedUpdatesContainer container = new DelayedUpdatesContainer();
+		for (Operation operation : containers) {
+			DelayedUpdate update = operation.process(registry, record);
+			container.addUpdate(update);
 		}
+
+		return container;
 	}
 
 	/**

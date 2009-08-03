@@ -1,7 +1,8 @@
 package org.flexpay.eirc.persistence.exchange;
 
-import org.flexpay.common.dao.paging.Page;
+import org.flexpay.common.dao.paging.FetchRange;
 import org.flexpay.common.exception.FlexPayException;
+import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.persistence.registry.Registry;
@@ -11,8 +12,8 @@ import org.flexpay.common.service.RegistryFileService;
 import org.flexpay.common.service.RegistryService;
 import org.flexpay.common.test.SpringBeanAwareTestCase;
 import org.flexpay.common.util.StringUtil;
-import org.flexpay.payments.service.EircRegistryService;
 import org.flexpay.eirc.service.exchange.ServiceProviderFileProcessor;
+import org.flexpay.payments.service.EircRegistryService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -25,7 +26,7 @@ public class TestSetNumberOfHabitantsOperation extends SpringBeanAwareTestCase {
 	private ServiceProviderFileProcessor serviceProviderFileProcessor;
 	@Autowired
 	private EircRegistryService eircRegistryService;
-    @Autowired
+	@Autowired
 	private RegistryService registryService;
 	@Autowired
 	private RegistryFileService registryFileService;
@@ -33,15 +34,16 @@ public class TestSetNumberOfHabitantsOperation extends SpringBeanAwareTestCase {
 	private ServiceOperationsFactory factory;
 
 	@Test
-	public void testProcess() throws FlexPayException {
+	public void testProcess() throws FlexPayException, FlexPayExceptionContainer {
 		Registry registry = registryService.read(new Stub<Registry>(13L));
-		List<RegistryRecord> records = registryFileService.getRecordsForProcessing(stub(registry), new Page<RegistryRecord>(), new Long[] {null, null});
+		List<RegistryRecord> records = registryFileService.getRecordsForProcessing(stub(registry), new FetchRange());
 		for (RegistryRecord record : records) {
 			List<String> containers = new ArrayList<String>();
 
 			for (RegistryRecordContainer c : record.getContainers()) {
 				if (c != null) {
-					List<String> data = StringUtil.splitEscapable(c.getData(), Operation.CONTAINER_DATA_DELIMITER, Operation.ESCAPE_SYMBOL);
+					List<String> data = StringUtil.splitEscapable(c.getData(),
+							Operation.CONTAINER_DATA_DELIMITER, Operation.ESCAPE_SYMBOL);
 					if ("4".equals(data.get(0))) {
 						containers = data;
 						break;
@@ -49,7 +51,8 @@ public class TestSetNumberOfHabitantsOperation extends SpringBeanAwareTestCase {
 				}
 			}
 			SetNumberOfHabitantsOperation op = new SetNumberOfHabitantsOperation(factory, containers);
-			op.process(registry, record);
+			DelayedUpdate update = op.process(registry, record);
+			update.doUpdate();
 		}
 	}
 

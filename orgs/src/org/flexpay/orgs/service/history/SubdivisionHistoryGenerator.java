@@ -19,6 +19,7 @@ public class SubdivisionHistoryGenerator implements HistoryGenerator<Subdivision
 	private DiffService diffService;
 	private SubdivisionHistoryBuilder historyBuilder;
 	private SubdivisionService subdivisionService;
+	private SubdivisionReferencesHistoryGenerator referencesHistoryGenerator;
 
 	/**
 	 * Do generation
@@ -38,9 +39,13 @@ public class SubdivisionHistoryGenerator implements HistoryGenerator<Subdivision
 			return;
 		}
 
-		Diff diff = historyBuilder.diff(null, subdivision);
-		diff.setProcessingStatus(ProcessingStatus.STATUS_PROCESSED);
-		diffService.create(diff);
+		referencesHistoryGenerator.generateReferencesHistory(subdivision);
+
+		if (!diffService.hasDiffs(subdivision)) {
+			Diff diff = historyBuilder.diff(null, subdivision);
+			diff.setProcessingStatus(ProcessingStatus.STATUS_PROCESSED);
+			diffService.create(diff);
+		}
 	}
 
 	@Required
@@ -56,5 +61,10 @@ public class SubdivisionHistoryGenerator implements HistoryGenerator<Subdivision
 	@Required
 	public void setHistoryBuilder(SubdivisionHistoryBuilder historyBuilder) {
 		this.historyBuilder = historyBuilder;
+	}
+
+	@Required
+	public void setReferencesHistoryGenerator(SubdivisionReferencesHistoryGenerator referencesHistoryGenerator) {
+		this.referencesHistoryGenerator = referencesHistoryGenerator;
 	}
 }

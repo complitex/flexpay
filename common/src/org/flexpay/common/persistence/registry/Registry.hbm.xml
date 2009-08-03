@@ -295,14 +295,21 @@
 		where rr.registry.id=? and rr.id>=? and rr.id<=? and rrs.code NOT IN (4)
 	]]></query>
 
+	<query name="RegistryRecord.listRecordsForProcessing.stats"><![CDATA[
+		select distinct min(rr.id), max(rr.id), count(rr.id)
+		from RegistryRecord rr
+			left join rr.recordStatus rrs
+		where rr.registry.id=? and rrs.code NOT IN (2, 4)
+	]]></query>
+
 	<query name="RegistryRecord.listRecordsForProcessing"><![CDATA[
 		select distinct rr
 		from RegistryRecord rr
-			inner join fetch rr.properties 
-			inner join fetch rr.registry r
-			inner join fetch r.properties
-			inner join fetch r.registryStatus rs
-			inner join fetch rr.recordStatus rrs
+			left join fetch rr.properties
+			left join fetch rr.registry r
+			left join fetch r.properties
+			left join fetch r.registryStatus rs
+			left join fetch rr.recordStatus rrs
 			left join fetch rr.importError
 			left join fetch rr.containers
 		where r.id=? and rr.id>=? and rr.id<=? and rrs.code NOT IN (2, 4)

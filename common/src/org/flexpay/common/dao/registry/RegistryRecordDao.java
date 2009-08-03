@@ -13,12 +13,11 @@ public interface RegistryRecordDao extends GenericDao<RegistryRecord, Long> {
 	 * List registry records
 	 *
 	 * @param registryId   Registry header id
-	 * @param lowerBoundId Lower bound of records to fetch
-	 * @param upperBoundId	Hi bound of records to fetch
+	 * @param range FetchRange
 	 * @return list of registry records
 	 */
 	@NotNull
-	List<RegistryRecord> listRecordsForProcessing(Long registryId, Long lowerBoundId, Long upperBoundId);
+	List<RegistryRecord> listRecordsForProcessing(Long registryId, FetchRange range);
 
 	/**
 	 * List registry records

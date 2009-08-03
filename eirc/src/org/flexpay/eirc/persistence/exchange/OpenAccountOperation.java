@@ -5,20 +5,24 @@ import org.flexpay.ab.persistence.Person;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.DataCorrection;
-import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.DataSourceDescription;
-import org.flexpay.payments.persistence.EircRegistryProperties;
+import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.persistence.registry.RegistryRecord;
 import org.flexpay.common.persistence.registry.RegistryType;
-import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.service.importexport.CorrectionsService;
 import org.flexpay.eirc.dao.importexport.RawConsumersDataUtil;
-import org.flexpay.eirc.persistence.*;
+import org.flexpay.eirc.persistence.Consumer;
+import org.flexpay.eirc.persistence.ConsumerInfo;
+import org.flexpay.eirc.persistence.EircAccount;
+import org.flexpay.eirc.persistence.EircRegistryRecordProperties;
+import org.flexpay.eirc.persistence.exchange.delayed.*;
 import org.flexpay.eirc.service.ConsumerService;
 import org.flexpay.eirc.service.EircAccountService;
 import org.flexpay.eirc.service.importexport.RawConsumerData;
 import org.flexpay.eirc.util.config.ApplicationConfig;
 import org.flexpay.orgs.persistence.ServiceProvider;
+import org.flexpay.payments.persistence.EircRegistryProperties;
 import org.flexpay.payments.persistence.Service;
 
 import java.util.List;
@@ -43,13 +47,20 @@ public class OpenAccountOperation extends AbstractChangePersonalAccountOperation
 	 * @param record   Registry record
 	 * @throws FlexPayException if failure occurs
 	 */
-	public void process(Registry registry, RegistryRecord record) throws FlexPayException {
+	public DelayedUpdate process(Registry registry, RegistryRecord record)
+			throws FlexPayException, FlexPayExceptionContainer {
 
 		if (!validate(registry, record)) {
-			return;
+			return DelayedUpdateNope.INSTANCE;
 		}
+		DelayedUpdatesContainer container = new DelayedUpdatesContainer();
+
 		ConsumerInfo info = saveConsumerInfo(record);
-		EircAccount account = getEircAccount(record, info);
+		DelayedUpdate update = new DelayedUpdateConsumerInfo(info, factory.getConsumerInfoService());
+		update.doUpdate();
+//		container.addUpdate(update);
+
+		EircAccount account = getEircAccount(record, info, container);
 
 		EircRegistryRecordProperties props = (EircRegistryRecordProperties) record.getProperties();
 		Consumer consumer = new Consumer();
@@ -62,18 +73,12 @@ public class OpenAccountOperation extends AbstractChangePersonalAccountOperation
 		consumer.setEircAccount(account);
 		consumer.setConsumerInfo(info);
 
-		ConsumerService consumerService = factory.getConsumerService();
-		try {
-			consumerService.save(consumer);
-		} catch (FlexPayExceptionContainer c) {
-			for (FlexPayException exception : c.getExceptions()) {
-				log.error("Failed saving consumer", exception);
-			}
-			throw new FlexPayException("Failed creating consumer");
-		}
+		container.addUpdate(new DelayedUpdateConsumer(consumer, factory.getConsumerService()));
 
-		createCorrections(registry, record, consumer);
+		createCorrections(registry, record, consumer, container);
 		props.setFullConsumer(consumer);
+
+		return container;
 	}
 
 	private ConsumerInfo saveConsumerInfo(RegistryRecord record) {
@@ -91,12 +96,10 @@ public class OpenAccountOperation extends AbstractChangePersonalAccountOperation
 		info.setBuildingBulk(record.getBuildingBulkNum());
 		info.setApartmentNumber(record.getApartmentNum());
 
-		factory.getConsumerInfoService().save(info);
-
 		return info;
 	}
 
-	private void createCorrections(Registry registry, RegistryRecord record, Consumer consumer) {
+	private void createCorrections(Registry registry, RegistryRecord record, Consumer consumer, DelayedUpdatesContainer container) {
 
 		CorrectionsService correctionsService = factory.getCorrectionsService();
 
@@ -105,15 +108,15 @@ public class OpenAccountOperation extends AbstractChangePersonalAccountOperation
 		RawConsumerData data = RawConsumersDataUtil.convert(registry, record);
 		ServiceProvider provider = factory.getServiceProviderService().read(props.getServiceProviderStub());
 		Stub<DataSourceDescription> sd = provider.getDataSourceDescriptionStub();
-		DataCorrection corr = correctionsService.getStub(data.getShortConsumerId(), consumer, sd);
-		correctionsService.save(corr);
+
+		container.addUpdate(new DelayedUpdateCorrection(correctionsService, consumer, data.getShortConsumerId(), sd));
 
 		// add full consumer correction
-		corr = correctionsService.getStub(data.getFullConsumerId(), consumer, sd);
-		correctionsService.save(corr);
+		container.addUpdate(new DelayedUpdateCorrection(correctionsService, consumer, data.getFullConsumerId(), sd));
 	}
 
 	private Service findService(Registry registry, RegistryRecord record) throws FlexPayException {
+
 		ConsumerService consumerService = factory.getConsumerService();
 		EircRegistryProperties props = (EircRegistryProperties) registry.getProperties();
 		ServiceProvider provider = factory.getServiceProviderService().read(props.getServiceProviderStub());
@@ -129,12 +132,14 @@ public class OpenAccountOperation extends AbstractChangePersonalAccountOperation
 	/**
 	 * Check if EIRC account exists, and create a new one if necessary
 	 *
-	 * @param record RegistryRecord
-	 * @param info ConsumerInfo
+	 * @param record	RegistryRecord
+	 * @param info	  ConsumerInfo
+	 * @param container Updates container
 	 * @return EircAccount instance
 	 * @throws FlexPayException if failure occurs
 	 */
-	private EircAccount getEircAccount(RegistryRecord record, ConsumerInfo info) throws FlexPayException {
+	private EircAccount getEircAccount(RegistryRecord record, ConsumerInfo info, DelayedUpdatesContainer container)
+			throws FlexPayException, FlexPayExceptionContainer {
 
 		EircAccountService accountService = factory.getAccountService();
 
@@ -153,14 +158,9 @@ public class OpenAccountOperation extends AbstractChangePersonalAccountOperation
 		account.setApartment(props.getApartment());
 		account.setConsumerInfo(info);
 
-		try {
-			accountService.create(account);
-		} catch (FlexPayExceptionContainer c) {
-			for (FlexPayException exception : c.getExceptions()) {
-				log.error("Failed saving account", exception);
-			}
-			throw new FlexPayException("Failed creating EIRC account");
-		}
+		DelayedUpdate update = new DelayedUpdateEircAccount(account, accountService);
+		update.doUpdate();
+//		container.addUpdate(update);
 
 		return account;
 	}

@@ -5,17 +5,11 @@
 
 <hibernate-mapping package="org.flexpay.bti.persistence.apartment">
 
-    <class name="ApartmentAttributeBase" abstract="true" table="bti_apartment_attributes_tbl">
+    <class name="ApartmentAttribute" abstract="true" table="bti_apartment_attributes_tbl">
         <comment>Apartment attributes</comment>
         <id name="id" column="id">
             <generator class="native"/>
         </id>
-
-        <discriminator type="string">
-            <column name="discriminator" not-null="true">
-                <comment>Class hierarchy descriminator</comment>
-            </column>
-        </discriminator>
 
         <many-to-one name="apartment" class="BtiApartment"
                      foreign-key="FK_bti_apartment_attributes_tbl_apartment_id">
@@ -31,76 +25,68 @@
             </column>
         </many-to-one>
 
-        <subclass name="ApartmentAttribute" discriminator-value="normal">
-            <property name="value">
-                <column name="normal_attribute_value">
-                    <comment>Attribute value</comment>
-                </column>
-            </property>
-        </subclass>
-
-        <!-- map temp attributes to the same table -->
-        <subclass name="ApartmentTempAttribute" discriminator-value="tmp">
-            <set name="values" inverse="true" cascade="all-delete-orphan">
-                <key column="attribute_id" not-null="true"/>
-                <one-to-many class="ApartmentTempAttributeValue"/>
-            </set>
-        </subclass>
-
+		<property name="dateValue">
+			<column name="date_value" not-null="false" sql-type="datetime">
+				<comment>Optional date value</comment>
+			</column>
+		</property>
+		<property name="intValue">
+			<column name="int_value" not-null="false">
+				<comment>Optional int value</comment>
+			</column>
+		</property>
+		<property name="boolValue">
+			<column name="bool_value" not-null="false">
+				<comment>Optional boolean value</comment>
+			</column>
+		</property>
+		<property name="longValue">
+			<column name="long_value" not-null="false">
+				<comment>Optional long value</comment>
+			</column>
+		</property>
+		<property name="stringValue">
+			<column name="string_value" not-null="false">
+				<comment>Optional string value</comment>
+			</column>
+		</property>
+		<property name="doubleValue">
+			<column name="double_value" not-null="false">
+				<comment>Optional double value</comment>
+			</column>
+		</property>
+		<property name="decimalValue">
+			<column name="decimal_value" not-null="false" scale="5">
+				<comment>Optional double value</comment>
+			</column>
+		</property>
+		<property name="valueType">
+			<column name="value_type" not-null="true">
+				<comment>Value type discriminator</comment>
+			</column>
+		</property>
+		<property name="begin" type="date">
+			<column name="begin_date">
+				<comment>Attribute value begin date</comment>
+			</column>
+		</property>
+		<property name="end" type="date">
+			<column name="end_date">
+				<comment>Attribute value end date</comment>
+			</column>
+		</property>
+		<property name="temporal">
+			<column name="temporal_flag" not-null="true">
+				<comment>Temporal attribute flag</comment>
+			</column>
+		</property>
     </class>
 
-    <class name="ApartmentTempAttributeValue" table="bti_apartment_attribute_temp_values_tbl">
-        <comment>Temporal values for apartment attributes</comment>
-        <id name="id" column="id">
-            <generator class="native"/>
-        </id>
-        <property name="value">
-            <column name="attribute_value">
-                <comment>Attribute value</comment>
-            </column>
-        </property>
-        <property name="begin">
-            <column name="begin_date" not-null="true">
-                <comment>Value begin date</comment>
-            </column>
-        </property>
-        <property name="end">
-            <column name="end_date" not-null="true">
-                <comment>Value end date</comment>
-            </column>
-        </property>
-        <many-to-one name="attribute" class="ApartmentTempAttribute"
-                     foreign-key="FK_bti_apartment_attribute_temp_values_tbl_attr_id">
-            <column name="attribute_id" not-null="true">
-                <comment>Temporal attribute reference</comment>
-            </column>
-        </many-to-one>
-    </class>
-
-    <query name="ApartmentAttributeBase.findAttributes">
-        select distinct b
-        from ApartmentAttributeBase b
-        where b.apartment.id = ?
-    </query>
-
-    <query name="ApartmentAttributeBase.readSimpleAttributes">
+    <query name="ApartmentAttribute.findWithAttributes">
         select distinct a
-        from ApartmentAttribute a
-        	inner join fetch a.attributeType
-        where a.apartment.id=?
-    </query>
-
-    <query name="ApartmentAttributeBase.readTmpAttributes">
-        select distinct a
-        from ApartmentTempAttribute a
-			left join fetch a.values
-			inner join fetch a.attributeType
-        where a.apartment.id=?
-    </query>
-
-    <query name="BtiApartment.find">
-        from BtiApartment
-        where id=?
+        from BtiApartment a
+        	left join fetch a.attributes
+        where a.id = ?
     </query>
 
 </hibernate-mapping>
