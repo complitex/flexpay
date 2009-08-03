@@ -29,7 +29,7 @@ public class AddressAttributeTypeHistoryGenerator implements HistoryGenerator<Ad
 	public void generateFor(@NotNull AddressAttributeType obj) {
 
 		if (diffService.hasDiffs(obj)) {
-			log.info("Address attribute type already has history, do nothing {}", obj);
+			log.info("Address attribute type already has history, do nothing #{}", obj.getId());
 			return;
 		}
 

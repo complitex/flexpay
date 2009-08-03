@@ -29,7 +29,7 @@ public class StreetHistoryGenerator implements HistoryGenerator<Street> {
 	 */
 	public void generateFor(@NotNull Street obj) {
 
-		log.debug("starting generating history for street {}", obj);
+		log.debug("starting generating history for street #{}", obj.getId());
 
 		// create street history
 		Street street = streetService.readFull(stub(obj));
@@ -38,7 +38,7 @@ public class StreetHistoryGenerator implements HistoryGenerator<Street> {
 			return;
 		}
 
-		referencesHistoryGenerator.generateReferencesHistory(obj);
+		referencesHistoryGenerator.generateReferencesHistory(street);
 
 		if (!diffService.hasDiffs(street)) {
 			Diff diff = historyBuilder.diff(null, street);
@@ -47,7 +47,6 @@ public class StreetHistoryGenerator implements HistoryGenerator<Street> {
 		} else {
 			log.debug("Street already has history, do nothing {}", street);
 		}
-		log.debug("Ended generating history for street {}", obj);
 	}
 
 	@Required

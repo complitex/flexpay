@@ -29,7 +29,7 @@ public class DistrictHistoryGenerator implements HistoryGenerator<District> {
 	 */
 	public void generateFor(@NotNull District obj) {
 
-		log.debug("starting generating history for district {}", obj);
+		log.debug("starting generating history for district #{}", obj.getId());
 
 		// create district history
 		District district = districtService.readFull(stub(obj));
@@ -41,7 +41,7 @@ public class DistrictHistoryGenerator implements HistoryGenerator<District> {
 		referencesHistoryGenerator.generateReferencesHistory(district);
 
 		if (diffService.hasDiffs(district)) {
-			log.info("District already has history, do nothing {}", district);
+			log.debug("District already has history, do nothing {}", district);
 			return;
 		}
 
@@ -49,7 +49,7 @@ public class DistrictHistoryGenerator implements HistoryGenerator<District> {
 		diff.setProcessingStatus(ProcessingStatus.STATUS_PROCESSED);
 		diffService.create(diff);
 
-		log.debug("Ended generating history for district {}", obj);
+		log.debug("Ended generating history for district {}", district);
 	}
 
 	@Required

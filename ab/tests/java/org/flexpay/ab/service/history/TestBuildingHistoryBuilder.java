@@ -77,7 +77,7 @@ public class TestBuildingHistoryBuilder extends AbSpringBeanAwareTestCase {
 		assertEquals("Invalid primary status patch", oldAddress.getStreetStub(), newAddress.getStreetStub());
 
 		BuildingAddress toDelete = building.getAddressOnStreet(TestData.ROSSIISKAYA);
-		assertNotNull("No address found on IVANOVA", toDelete);
+		assertNotNull("No address found on ROSSIISKAYA", toDelete);
 		toDelete.disable();
 		diff = historyBuilder.diff(newBuilding, building);
 		historyBuilder.patch(newBuilding, diff);
@@ -87,6 +87,6 @@ public class TestBuildingHistoryBuilder extends AbSpringBeanAwareTestCase {
 				++addressCount;
 			}
 		}
-		assertEquals("Address delete patch failed", 1, addressCount);
+		assertEquals("Address delete patch failed", 2, addressCount);
 	}
 }

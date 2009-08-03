@@ -336,12 +336,16 @@
 	<bean id="apartmentHistoryGenerator"
 		  class="org.flexpay.ab.service.history.ApartmentHistoryGenerator"
 		  p:diffService-ref="diffService"
-		  p:historyBuilder-ref="apartmentHistoryBuilder" />
+		  p:historyBuilder-ref="apartmentHistoryBuilder"
+		  p:apartmentService-ref="apartmentService"
+		  p:referencesHistoryGenerator-ref="apartmentReferencesHistoryGenerator" />
 
 	<bean id="personHistoryGenerator"
 		  class="org.flexpay.ab.service.history.PersonHistoryGenerator"
 		  p:diffService-ref="diffService"
-		  p:historyBuilder-ref="personHistoryBuilder" />
+		  p:historyBuilder-ref="personHistoryBuilder"
+		  p:personService-ref="personService"
+		  p:referencesHistoryGenerator-ref="personReferencesHistoryGenerator" />
 
 	<bean id="personsHistoryGenerator"
 		  class="org.flexpay.ab.service.history.PersonsHistoryGenerator"

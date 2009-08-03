@@ -29,7 +29,7 @@ public class BuildingHistoryGenerator implements HistoryGenerator<Building> {
 	 */
 	public void generateFor(@NotNull Building obj) {
 
-		log.debug("starting generating history for building {}", obj);
+		log.debug("starting generating history for building #{}", obj.getId());
 
 		// create building history
 		Building building = buildingService.read(stub(obj));
@@ -38,15 +38,13 @@ public class BuildingHistoryGenerator implements HistoryGenerator<Building> {
 			return;
 		}
 
-		referencesHistoryGenerator.generateReferencesHistory(obj);
+		referencesHistoryGenerator.generateReferencesHistory(building);
 
 		if (!diffService.hasDiffs(building)) {
 			Diff diff = historyBuilder.diff(null, building);
 			diff.setProcessingStatus(ProcessingStatus.STATUS_PROCESSED);
 			diffService.create(diff);
 		}
-
-		log.debug("Ended generating history for building {}", obj);
 	}
 
 	@Required

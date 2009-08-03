@@ -29,7 +29,7 @@ public class TownHistoryGenerator implements HistoryGenerator<Town> {
 	 */
 	public void generateFor(@NotNull Town obj) {
 
-		log.debug("starting generating history for town {}", obj);
+		log.debug("starting generating history for town #{}", obj.getId());
 
 		// now create town history
 		Town town = townService.readFull(stub(obj));
@@ -47,7 +47,7 @@ public class TownHistoryGenerator implements HistoryGenerator<Town> {
 			diff.setProcessingStatus(ProcessingStatus.STATUS_PROCESSED);
 			diffService.create(diff);
 
-			log.debug("Ended generating history for town {}", obj);
+			log.debug("Ended generating history for town {}", town);
 		} else {
 			log.info("Town already has history, do nothing {}", town);
 		}

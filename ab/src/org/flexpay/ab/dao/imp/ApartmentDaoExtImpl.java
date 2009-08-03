@@ -53,6 +53,7 @@ public class ApartmentDaoExtImpl extends SimpleJdbcDaoSupport implements Apartme
 	 * @param pager	  Pager
 	 * @return List of apartments
 	 */
+	@SuppressWarnings ({"unchecked"})
 	@NotNull
 	@Override
 	public List<Apartment> findApartments(Long buildingId, Collection<ObjectSorter> sorters, final Page<Apartment> pager) {
@@ -70,7 +71,7 @@ public class ApartmentDaoExtImpl extends SimpleJdbcDaoSupport implements Apartme
 		whereClause.append(" where a.building.id=").append(buildingId).append(" and a.status=").append(Apartment.STATUS_ACTIVE);
 		sorter.setWhere(whereClause);
 		hql.append(whereClause);
-		cntHql.append(whereClause);
+		cntHql.append(" where a.building.id=").append(buildingId);
 
 		StringBuilder orderByClause = new StringBuilder();
 		sorter.setOrderBy(orderByClause);
@@ -78,7 +79,6 @@ public class ApartmentDaoExtImpl extends SimpleJdbcDaoSupport implements Apartme
 			hql.append(" ORDER BY ").append(orderByClause);
 		}
 
-		//noinspection unchecked
 		return hibernateTemplate.executeFind(new HibernateCallback() {
 			public List<?> doInHibernate(Session session) throws HibernateException {
 				Query cntQuery = session.createQuery(cntHql.toString());
