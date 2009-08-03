@@ -19,8 +19,8 @@ update bti_apartment_attributes_tbl set
 where discriminator='normal';
 
 -- migrate tmp attributes (value_type=4 is a string)
-insert into bti_apartment_attributes_tbl (apartment_id, attribute_type_id, value_type, string_value, begin_date, end_date, temporal_flag)
-	(select a.apartment_id, a.attribute_type_id, 4, v.attribute_value, v.begin_date, v.end_date, 1
+insert into bti_apartment_attributes_tbl (apartment_id, attribute_type_id, value_type, string_value, begin_date, end_date, temporal_flag, discriminator)
+	(select a.apartment_id, a.attribute_type_id, 4, v.attribute_value, v.begin_date, v.end_date, 1, 'hz'
 	from bti_apartment_attributes_tbl a
 			left outer join bti_apartment_attribute_temp_values_tbl v on v.attribute_id=a.id
 	where a.discriminator='tmp');
