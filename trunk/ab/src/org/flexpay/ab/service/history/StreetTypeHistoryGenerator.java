@@ -29,7 +29,7 @@ public class StreetTypeHistoryGenerator implements HistoryGenerator<StreetType> 
 	public void generateFor(@NotNull StreetType obj) {
 
 		if (diffService.hasDiffs(obj)) {
-			log.info("Street type already has history, do nothing {}", obj);
+			log.info("Street type already has history, do nothing #{}", obj.getId());
 			return;
 		}
 

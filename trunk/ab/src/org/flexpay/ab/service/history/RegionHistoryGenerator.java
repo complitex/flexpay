@@ -28,7 +28,7 @@ public class RegionHistoryGenerator implements HistoryGenerator<Region> {
 	 */
 	public void generateFor(@NotNull Region obj) {
 
-		log.debug("starting generating history for region {}", obj);
+		log.debug("starting generating history for region #{}", obj.getId());
 
 		// create region history
 		Region region = regionService.readFull(stub(obj));
@@ -44,7 +44,6 @@ public class RegionHistoryGenerator implements HistoryGenerator<Region> {
 		} else {
 			log.info("Region already has history, do nothing {}", region);
 		}
-		log.debug("Ended generating history for region {}", obj);
 	}
 
 	@Required

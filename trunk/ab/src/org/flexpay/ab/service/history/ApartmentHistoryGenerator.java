@@ -1,9 +1,12 @@
 package org.flexpay.ab.service.history;
 
 import org.flexpay.ab.persistence.Apartment;
+import org.flexpay.ab.persistence.Building;
+import org.flexpay.ab.service.ApartmentService;
 import org.flexpay.common.persistence.history.Diff;
 import org.flexpay.common.persistence.history.HistoryGenerator;
 import org.flexpay.common.persistence.history.ProcessingStatus;
+import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.service.DiffService;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
@@ -16,23 +19,33 @@ public class ApartmentHistoryGenerator implements HistoryGenerator<Apartment> {
 
 	private DiffService diffService;
 
+	private ApartmentService apartmentService;
 	private ApartmentHistoryBuilder historyBuilder;
+	private ApartmentReferencesHistoryGenerator referencesHistoryGenerator;
 
 	/**
 	 * Do generation
 	 *
-	 * @param apartment Object to generate history for
+	 * @param obj Object to generate history for
 	 */
-	public void generateFor(@NotNull Apartment apartment) {
+	public void generateFor(@NotNull Apartment obj) {
 
-		log.debug("starting generating history for apartment {}", apartment);
+		log.debug("starting generating history for apartment #{}", obj.getId());
 
-		// create apartment history
-		Diff diff = historyBuilder.diff(null, apartment);
-		diff.setProcessingStatus(ProcessingStatus.STATUS_PROCESSED);
-		diffService.create(diff);
+		Apartment apartment = apartmentService.readFull(stub(obj));
+		if (apartment == null) {
+			log.warn("Apartment not found {}", obj);
+			return;
+		}
 
-		log.debug("Ended generating history for apartment {}", apartment);
+		referencesHistoryGenerator.generateReferencesHistory(apartment);
+
+		if (!diffService.hasDiffs(apartment)) {
+			// create apartment history
+			Diff diff = historyBuilder.diff(null, apartment);
+			diff.setProcessingStatus(ProcessingStatus.STATUS_PROCESSED);
+			diffService.create(diff);
+		}
 	}
 
 	@Required
@@ -43,5 +56,15 @@ public class ApartmentHistoryGenerator implements HistoryGenerator<Apartment> {
 	@Required
 	public void setHistoryBuilder(ApartmentHistoryBuilder historyBuilder) {
 		this.historyBuilder = historyBuilder;
+	}
+
+	@Required
+	public void setApartmentService(ApartmentService apartmentService) {
+		this.apartmentService = apartmentService;
+	}
+
+	@Required
+	public void setReferencesHistoryGenerator(ApartmentReferencesHistoryGenerator referencesHistoryGenerator) {
+		this.referencesHistoryGenerator = referencesHistoryGenerator;
 	}
 }

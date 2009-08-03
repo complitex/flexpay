@@ -29,7 +29,7 @@ public class TownTypeHistoryGenerator implements HistoryGenerator<TownType> {
 	public void generateFor(@NotNull TownType obj) {
 
 		if (diffService.hasDiffs(obj)) {
-			log.info("Town type already has history, do nothing {}", obj);
+			log.info("Town type already has history, do nothing #{}", obj.getId());
 			return;
 		}
 

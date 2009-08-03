@@ -1,6 +1,8 @@
 package org.flexpay.ab.service.history;
 
 import org.flexpay.ab.persistence.Person;
+import org.flexpay.ab.service.PersonService;
+import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.persistence.history.Diff;
 import org.flexpay.common.persistence.history.HistoryGenerator;
 import org.flexpay.common.persistence.history.ProcessingStatus;
@@ -17,20 +19,32 @@ public class PersonHistoryGenerator implements HistoryGenerator<Person> {
 	private DiffService diffService;
 
 	private PersonHistoryBuilder historyBuilder;
+	private PersonService personService;
+	private PersonReferencesHistoryGenerator referencesHistoryGenerator;
 
 	/**
 	 * Do generation
 	 *
-	 * @param person Object to generate history for
+	 * @param obj Object to generate history for
 	 */
-	public void generateFor(@NotNull Person person) {
+	public void generateFor(@NotNull Person obj) {
 
-		log.debug("starting generating history for person {}", person);
+		log.debug("starting generating history for person #{}", obj.getId());
 
 		// create apartment history
-		Diff diff = historyBuilder.diff(null, person);
-		diff.setProcessingStatus(ProcessingStatus.STATUS_PROCESSED);
-		diffService.create(diff);
+		Person person = personService.read(stub(obj));
+		if (person == null) {
+			log.warn("Person not found", obj);
+			return;
+		}
+
+		referencesHistoryGenerator.generateReferencesHistory(person);
+
+		if (!diffService.hasDiffs(person)) {
+			Diff diff = historyBuilder.diff(null, person);
+			diff.setProcessingStatus(ProcessingStatus.STATUS_PROCESSED);
+			diffService.create(diff);
+		}
 
 		log.debug("Ended generating history for person {}", person);
 	}
@@ -43,5 +57,15 @@ public class PersonHistoryGenerator implements HistoryGenerator<Person> {
 	@Required
 	public void setHistoryBuilder(PersonHistoryBuilder historyBuilder) {
 		this.historyBuilder = historyBuilder;
+	}
+
+	@Required
+	public void setPersonService(PersonService personService) {
+		this.personService = personService;
+	}
+
+	@Required
+	public void setReferencesHistoryGenerator(PersonReferencesHistoryGenerator referencesHistoryGenerator) {
+		this.referencesHistoryGenerator = referencesHistoryGenerator;
 	}
 }

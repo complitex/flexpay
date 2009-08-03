@@ -82,23 +82,7 @@ public class Region extends NameTimeDependentChild<RegionName, RegionNameTempora
 	}
 
 	@Override
-	public String toString() {
-		return new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE)
-				.append("id", getId())
-				.append("Status", getStatus())
-				.append("Names", getNamesTimeLine())
-				.toString();
-	}
-
-	@Override
 	public boolean equals(Object obj) {
 		return this == obj || obj instanceof Region && super.equals(obj);
-
 	}
-
-	@Override
-	public int hashCode() {
-		return super.hashCode();
-	}
-
 }

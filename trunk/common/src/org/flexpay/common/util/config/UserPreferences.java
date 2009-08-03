@@ -57,7 +57,10 @@ public class UserPreferences extends DomainObject implements Serializable, UserD
 	}
 
 	public Locale getLocale() {
-		return locale;
+		if (locale == null) {
+			locale = ApplicationConfig.getDefaultLocale();
+		}
+		return locale; 
 	}
 
 	public void setLocale(Locale locale) {
