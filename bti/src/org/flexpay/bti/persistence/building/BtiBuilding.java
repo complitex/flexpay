@@ -3,18 +3,17 @@ package org.flexpay.bti.persistence.building;
 import org.flexpay.ab.persistence.Building;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.util.CollectionUtils;
+import org.flexpay.common.util.DateIntervalUtil;
 import org.flexpay.common.util.DateUtil;
 import org.flexpay.common.util.config.ApplicationConfig;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Collections;
-import java.util.Date;
-import java.util.Set;
+import java.util.*;
 
 public class BtiBuilding extends Building {
 
-	private Set<BuildingAttributeBase> attributes = Collections.emptySet();
+	private Set<BuildingAttribute> attributes = Collections.emptySet();
 
 	protected BtiBuilding() {
 	}
@@ -31,103 +30,168 @@ public class BtiBuilding extends Building {
 		return new BtiBuilding();
 	}
 
-	public Set<BuildingAttributeBase> getAttributes() {
+	public Set<BuildingAttribute> getAttributes() {
 		return attributes;
 	}
 
-	@Nullable
-    public BuildingAttributeBase getAttribute(BuildingAttributeType attributeType) {
-        if (attributes.isEmpty()) {
-            return null;
-        }
-
-        for (BuildingAttributeBase attribute : attributes) {
-            if (attribute.getAttributeType().equals(attributeType)) {
-                return attribute;
-            }
-        }
-
-        return null;
-    }
-
-	public void setAttributes(Set<BuildingAttributeBase> attributes) {
+	public void setAttributes(Set<BuildingAttribute> attributes) {
 		this.attributes = attributes;
 	}
 
-	public void setAttribute(BuildingAttributeBase attribute) {
-		//noinspection CollectionsFieldAccessReplaceableByMethodCall
-		if (attributes.isEmpty()) {
-			attributes = CollectionUtils.set();
+	private Map<BuildingAttributeType, SortedSet<BuildingAttribute>> splitCache = null;
+
+	private Map<BuildingAttributeType, SortedSet<BuildingAttribute>> splitAttributes() {
+
+		if (splitCache != null) {
+			return splitCache;
 		}
 
-		attribute.setBuilding(this);
-
-		BuildingAttributeBase oldAttribute = getAttribute(attribute.getAttributeType());
-		if (oldAttribute != null) {
-			attributes.remove(oldAttribute);
-		}
-		attributes.add(attribute);
-	}
-
-	public void setNormalAttribute(BuildingAttributeType type, String value) {
-
-		BuildingAttributeBase attribute = new BuildingAttribute();
-		attribute.setAttributeType(type);
-		attribute.setCurrentValue(value);
-		setAttribute(attribute);
-	}
-
-	public void setCurrentTmpAttribute(BuildingAttributeType type, String value) {
-		setTmpAttributeForDate(type, value, DateUtil.now());
-	}
-
-	public void setTmpAttributeForDate(BuildingAttributeType type, String value, Date begin) {
-		setTmpAttributeForDates(type, value, begin, ApplicationConfig.getFutureInfinite());
-	}
-
-	public void setTmpAttributeForDates(BuildingAttributeType type, String value, Date begin, Date end) {
-
-		BuildingAttributeBase attribute = new BuildingTempAttribute();
-		attribute.setAttributeType(type);
-		attribute.setValueForDates(value, begin, end);
-		setAttribute(attribute);
-	}
-
-	public void addAttribute(BuildingAttributeBase attribute) {
-		//noinspection CollectionsFieldAccessReplaceableByMethodCall
-		if (attributes.isEmpty()) {
-			attributes = CollectionUtils.set();
+		Map<BuildingAttributeType, SortedSet<BuildingAttribute>> result = CollectionUtils.map();
+		for (BuildingAttribute attribute : getAttributes()) {
+			BuildingAttributeType type = attribute.getAttributeType();
+			SortedSet<BuildingAttribute> group = result.get(type);
+			if (group == null) {
+				group = CollectionUtils.treeSet();
+				result.put(type, group);
+			}
+			group.add(attribute);
 		}
 
-		attribute.setBuilding(this);
-		attributes.add(attribute);
+		splitCache = result;
+
+		return result;
 	}
 
-    public void removeAttribute(BuildingAttributeType type) {
-        if (attributes.isEmpty()) {
-			return;
+	@Nullable
+	public BuildingAttribute getCurrentAttribute(BuildingAttributeType attributeType) {
+		return getAttributeForDate(attributeType, DateUtil.now());
+	}
+
+	@Nullable
+	public BuildingAttribute getAttributeForDate(BuildingAttributeType attributeType, Date date) {
+
+		SortedSet<BuildingAttribute> attrs = findAttributes(attributeType);
+		for (BuildingAttribute attribute : attrs) {
+			if (DateIntervalUtil.includes(date, attribute.getBegin(), attribute.getEnd())) {
+				return attribute;
+			}
 		}
 
-        BuildingAttributeBase theAttribute = null;
-        for (BuildingAttributeBase attribute : attributes) {
-            BuildingAttributeType attributeType = attribute.getAttributeType();
+		return null;
+	}
 
-            if (attributeType != null && attributeType.equals(type)) {
-                theAttribute = attribute;
-            }
-        }
+	/**
+	 * Set normal attribute
+	 *
+	 * @param attribute Attribute
+	 */
+	public void setNormalAttribute(@NotNull BuildingAttribute attribute) {
+		if (attribute.notEmpty()) {
+			attribute.setTemporal(0);
+		}
+		doSetAttributeForDates(attribute, ApplicationConfig.getPastInfinite(), ApplicationConfig.getFutureInfinite());
+	}
 
-        if (theAttribute != null) {
-            attributes.remove(theAttribute);
-        }
-    }
+	/**
+	 * Set temporal attribute from now till future infinite
+	 *
+	 * @param attribute Attribute
+	 */
+	public void setCurrentTmpAttribute(@NotNull BuildingAttribute attribute) {
+		setTmpAttributeForDate(attribute, DateUtil.now());
+	}
 
-    public void removeAttribute(BuildingAttributeBase attribute) {
-        if (attributes.isEmpty()) {
-			return;
+	/**
+	 * Set temporal attribute from <code>date</code> till future infinite
+	 *
+	 * @param attribute Attribute
+	 * @param date	  attribute begin date
+	 */
+	public void setTmpAttributeForDate(@NotNull BuildingAttribute attribute, Date date) {
+		setTmpAttributeForDates(attribute, date, ApplicationConfig.getFutureInfinite());
+	}
+
+	/**
+	 * Set temporal attribute from <code>date</code> till future infinite
+	 *
+	 * @param attribute Attribute
+	 * @param begin	 attribute begin date
+	 * @param end	   attribute end date
+	 */
+	public void setTmpAttributeForDates(@NotNull BuildingAttribute attribute, Date begin, Date end) {
+		if (attribute.notEmpty()) {
+			attribute.setTemporal(1);
+		}
+		doSetAttributeForDates(attribute, begin, end);
+	}
+
+	private void doSetAttributeForDates(@NotNull BuildingAttribute attribute, Date begin, Date end) {
+
+		if (begin.before(ApplicationConfig.getPastInfinite())) {
+			begin = ApplicationConfig.getPastInfinite();
+		}
+		if (end.after(ApplicationConfig.getFutureInfinite())) {
+			end = ApplicationConfig.getFutureInfinite();
+		}
+		begin = DateUtil.truncateDay(begin);
+		end = DateUtil.truncateDay(end);
+
+		SortedSet<BuildingAttribute> attrs = findAttributes(attribute.getAttributeType());
+		Set<BuildingAttribute> toDelete = CollectionUtils.set();
+		Set<BuildingAttribute> toAdd = CollectionUtils.set();
+		for (BuildingAttribute old : attrs) {
+			old.setTemporal(attribute.getTemporal());
+			if (DateIntervalUtil.areIntersecting(old.getBegin(), old.getEnd(), begin, end)) {
+				if (old.getBegin().before(begin)) {
+					BuildingAttribute copy = old.copy();
+					copy.setEnd(DateUtil.previous(begin));
+					toAdd.add(copy);
+				}
+				if (old.getEnd().after(end)) {
+					BuildingAttribute copy = old.copy();
+					copy.setBegin(DateUtil.next(end));
+					toAdd.add(copy);
+				}
+				toDelete.add(old);
+			}
 		}
 
-        attributes.remove(attribute);
-    }
+		if (attribute.notEmpty()) {
+			attribute.setBegin(begin);
+			attribute.setEnd(end);
+			toAdd.add(attribute);
+			attribute.setBuilding(this);
+		}
+
+		attrs.removeAll(toDelete);
+		attributes.removeAll(toDelete);
+		attrs.addAll(toAdd);
+		attributes.addAll(toAdd);
+	}
+
+	@NotNull
+	private SortedSet<BuildingAttribute> findAttributes(BuildingAttributeType type) {
+
+		Map<BuildingAttributeType, SortedSet<BuildingAttribute>> splittedAttributes = splitAttributes();
+		SortedSet<BuildingAttribute> attrs = splittedAttributes.get(type);
+		if (attrs == null) {
+			attrs = CollectionUtils.treeSet();
+			splittedAttributes.put(type, attrs);
+		}
+
+		return attrs;
+	}
+
+	public List<BuildingAttribute> currentAttributes() {
+		List<BuildingAttribute> result = CollectionUtils.list();
+		Date now = DateUtil.now();
+		for (BuildingAttribute attribute : attributes) {
+			if (DateIntervalUtil.includes(now, attribute.getBegin(), attribute.getEnd())) {
+				result.add(attribute);
+			}
+		}
+
+		return result;
+	}
 
 }

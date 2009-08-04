@@ -81,9 +81,9 @@ public class BtiApartment extends Apartment {
 	}
 
 	/**
-	 * Set normal consumer attribute
+	 * Set normal attribute
 	 *
-	 * @param attribute Consumer attribute
+	 * @param attribute Attribute
 	 */
 	public void setNormalAttribute(@NotNull ApartmentAttribute attribute) {
 		if (attribute.notEmpty()) {
@@ -93,18 +93,18 @@ public class BtiApartment extends Apartment {
 	}
 
 	/**
-	 * Set temporal consumer attribute from now till future infinite
+	 * Set temporal attribute from now till future infinite
 	 *
-	 * @param attribute Consumer attribute
+	 * @param attribute Attribute
 	 */
 	public void setCurrentTmpAttribute(@NotNull ApartmentAttribute attribute) {
 		setTmpAttributeForDate(attribute, DateUtil.now());
 	}
 
 	/**
-	 * Set temporal consumer attribute from <code>date</code> till future infinite
+	 * Set temporal attribute from <code>date</code> till future infinite
 	 *
-	 * @param attribute Consumer attribute
+	 * @param attribute Attribute
 	 * @param date	  attribute begin date
 	 */
 	public void setTmpAttributeForDate(@NotNull ApartmentAttribute attribute, Date date) {
@@ -112,9 +112,9 @@ public class BtiApartment extends Apartment {
 	}
 
 	/**
-	 * Set temporal consumer attribute from <code>date</code> till future infinite
+	 * Set temporal attribute from <code>date</code> till future infinite
 	 *
-	 * @param attribute Consumer attribute
+	 * @param attribute Attribute
 	 * @param begin	 attribute begin date
 	 * @param end	   attribute end date
 	 */

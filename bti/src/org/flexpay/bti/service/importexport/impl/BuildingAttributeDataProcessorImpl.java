@@ -2,6 +2,7 @@ package org.flexpay.bti.service.importexport.impl;
 
 import org.flexpay.bti.persistence.building.BtiBuilding;
 import org.flexpay.bti.persistence.building.BuildingAttributeType;
+import org.flexpay.bti.persistence.building.BuildingAttribute;
 import org.flexpay.bti.service.BtiBuildingService;
 import org.flexpay.bti.service.BuildingAttributeTypeService;
 import org.flexpay.bti.service.importexport.BuildingAttributeData;
@@ -41,10 +42,13 @@ public class BuildingAttributeDataProcessorImpl implements BuildingAttributeData
 				log.info("No attribute type found by name {}, skipping", pair.getKey());
 				continue;
 			}
+			BuildingAttribute attribute = new BuildingAttribute();
+			attribute.setAttributeType(type);
+			attribute.setStringValue(pair.getValue());
 			if (type.isTemp()) {
-				building.setTmpAttributeForDates(type, pair.getValue(), begin, end);
+				building.setTmpAttributeForDates(attribute, begin, end);
 			} else {
-				building.setNormalAttribute(type, pair.getValue());
+				building.setNormalAttribute(attribute);
 			}
 		}
 

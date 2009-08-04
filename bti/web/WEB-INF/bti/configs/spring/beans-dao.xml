@@ -92,7 +92,7 @@
 		<property name="proxyInterfaces" value="org.flexpay.bti.dao.BuildingAttributeDao" />
 		<property name="target">
 			<bean parent="abstractDaoTarget">
-				<constructor-arg value="org.flexpay.bti.persistence.building.BuildingAttributeBase" />
+				<constructor-arg value="org.flexpay.bti.persistence.building.BuildingAttribute" />
 			</bean>
 		</property>
 	</bean>

@@ -1,10 +1,13 @@
 package org.flexpay.bti.service;
 
 import org.flexpay.bti.dao.BuildingAttributeDao;
-import org.flexpay.bti.persistence.building.*;
+import org.flexpay.bti.persistence.building.BtiBuilding;
+import org.flexpay.bti.persistence.building.BuildingAttribute;
+import org.flexpay.bti.persistence.building.BuildingAttributeType;
+import org.flexpay.bti.persistence.building.BuildingAttributeTypeSimple;
+import org.flexpay.bti.test.BtiSpringBeanAwareTestCase;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.persistence.Stub;
-import org.flexpay.common.test.SpringBeanAwareTestCase;
 import org.flexpay.common.util.config.ApplicationConfig;
 import static org.junit.Assert.*;
 import org.junit.Test;
@@ -13,7 +16,7 @@ import static org.springframework.dao.support.DataAccessUtils.intResult;
 
 import java.util.List;
 
-public class TestBuildingService extends SpringBeanAwareTestCase {
+public class TestBuildingService extends BtiSpringBeanAwareTestCase {
 
 	@Autowired
 	private BuildingAttributeService attributeService;
@@ -36,8 +39,8 @@ public class TestBuildingService extends SpringBeanAwareTestCase {
 
 	@Test
 	public void testListAttributes() {
-		List<BuildingAttributeBase> attributes = attributeService.listAttributes(
-				BUILDING_STUB, new Page<BuildingAttributeBase>());
+		List<BuildingAttribute> attributes = attributeService.listAttributes(
+				BUILDING_STUB, new Page<BuildingAttribute>());
 
 		assertFalse("No attributes found", attributes.isEmpty());
 	}
@@ -45,12 +48,14 @@ public class TestBuildingService extends SpringBeanAwareTestCase {
 	@Test
 	public void testCreateAttribute() {
 
-		BuildingTempAttribute attribute = new BuildingTempAttribute();
+		BuildingAttribute attribute = new BuildingAttribute();
 
 		attribute.setBuilding(new BtiBuilding(BUILDING_STUB));
 		attribute.setAttributeType(new BuildingAttributeTypeSimple(ATTRIBUTE_TYPE_STUB));
-		attribute.setValueForDates("Test attribute value",
-				ApplicationConfig.getPastInfinite(), ApplicationConfig.getPastInfinite());
+		attribute.setStringValue("Test attribute value");
+		attribute.setTemporal(1);
+		attribute.setBegin(ApplicationConfig.getPastInfinite());
+		attribute.setEnd(ApplicationConfig.getPastInfinite());
 
 		try {
 			attributeDao.create(attribute);
@@ -66,7 +71,10 @@ public class TestBuildingService extends SpringBeanAwareTestCase {
 		assertNotNull("Building not found", building);
 
 		BuildingAttributeType type = attributeTypeService.findTypeByName("Habitans count");
-		building.setNormalAttribute(type, "4");
+		BuildingAttribute attribute = new BuildingAttribute();
+		attribute.setAttributeType(type);
+		attribute.setStringValue("4");
+		building.setNormalAttribute(attribute);
 
 		buildingService.updateAttributes(building);
 	}
@@ -78,7 +86,10 @@ public class TestBuildingService extends SpringBeanAwareTestCase {
 		assertNotNull("Building not found", building);
 
 		BuildingAttributeType type = attributeTypeService.findTypeByName("Habitans count");
-		building.setCurrentTmpAttribute(type, "4");
+		BuildingAttribute attribute = new BuildingAttribute();
+		attribute.setAttributeType(type);
+		attribute.setStringValue("4");
+		building.setCurrentTmpAttribute(attribute);
 
 		buildingService.updateAttributes(building);
 	}

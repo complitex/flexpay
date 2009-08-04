@@ -115,12 +115,12 @@ public class BuildingAttributesEditAction extends FPActionSupport {
 		List<BuildingAttributeType> attributeTypes = buildingAttributeTypeService.listTypes();
 		for (BuildingAttributeType type : attributeTypes) {
 
-			BuildingAttributeBase attribute = btiBuilding.getAttribute(type);
+			BuildingAttribute attribute = btiBuilding.getAttributeForDate(type, attributeDate);
 			putAttribute(type, attribute);
 		}
 	}
 
-	private void putAttribute(BuildingAttributeType type, BuildingAttributeBase attribute) throws FlexPayException {
+	private void putAttribute(BuildingAttributeType type, BuildingAttribute attribute) throws FlexPayException {
 
 		BuildingAttributeGroup group = buildingAttributeGroupService.readFull(stub(type.getGroup()));
 		if (group == null) {
@@ -134,7 +134,7 @@ public class BuildingAttributesEditAction extends FPActionSupport {
 		}
 
 		if (attribute != null) {
-			attributeMapDBValues.put(type.getId(), attribute.getValueForDate(attributeDate));
+			attributeMapDBValues.put(type.getId(), attribute.getStringValue());
 		} else {
 			attributeMapDBValues.put(type.getId(), "");
 		}
@@ -161,22 +161,10 @@ public class BuildingAttributesEditAction extends FPActionSupport {
 			String value = attributeMap.get(typeId);
 			BuildingAttributeType type = getAttributeTypeById(typeId);
 
-			if (StringUtils.isEmpty(value)) {
-				btiBuilding.removeAttribute(type);
-				continue;
-			}
-
-			BuildingAttributeBase attribute = btiBuilding.getAttribute(type);
-
-			if (attribute != null) {
-				attribute.setValueForDate(value, attributeDate);
-			} else {
-				attribute = new BuildingTempAttribute();
-				attribute.setAttributeType(type);
-				attribute.setValueForDate(value, attributeDate);
-			}
-
-			btiBuilding.setAttribute(attribute);
+			BuildingAttribute attribute = new BuildingAttribute();
+			attribute.setAttributeType(type);
+			attribute.setStringValue(value);
+			btiBuilding.setTmpAttributeForDate(attribute, attributeDate);
 		}
 
 		btiBuildingService.updateAttributes(btiBuilding);
@@ -192,8 +180,7 @@ public class BuildingAttributesEditAction extends FPActionSupport {
 
 		for (Long typeId : attributeMapDBValues.keySet()) {
 			BuildingAttributeType type = getAttributeTypeById(typeId);
-
-			if (type.getGroup().getId().equals(groupId)) {
+			if (groupId.equals(type.getGroup().getId())) {
 				result.add(typeId);
 			}
 		}
