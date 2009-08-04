@@ -6,6 +6,8 @@ import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.util.config.ApplicationConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.*;
 import java.util.Calendar;
@@ -56,7 +58,7 @@ public class FPFileUtil {
 		return new File(getFileLocalPath(fpFile));
 	}
 
-	private static File createFile(FPFile fpFile) throws IOException {
+	private static File createFile(@NotNull FPFile fpFile) throws IOException {
 
 		String name = fpFile.getOriginalName();
 		String localPath = getLocalDirPath(fpFile.getModule().getName(), fpFile.getCreationDate());
@@ -92,7 +94,7 @@ public class FPFileUtil {
 	 * @param fpFile flexpay file
 	 * @throws IOException if an error occurred
 	 */
-	public static void createEmptyFile(FPFile fpFile) throws IOException {
+	public static void createEmptyFile(@NotNull FPFile fpFile) throws IOException {
 		createFile(fpFile);
 	}
 
@@ -103,7 +105,7 @@ public class FPFileUtil {
 	 * @param fpFile flexpay file
 	 * @throws IOException if an error occurred
 	 */
-	public static void copy(File file, FPFile fpFile) throws IOException {
+	public static void copy(@Nullable File file, @NotNull FPFile fpFile) throws IOException {
 
 		File fileOnServer = createFile(fpFile);
 		if (file != null && file.length() > 0) {
@@ -119,7 +121,7 @@ public class FPFileUtil {
 	 * @throws IOException if an error occurred
 	 */
 	@SuppressWarnings ({"IOResourceOpenedButNotSafelyClosed"})
-	public static void copy(InputStream is, FPFile fpFile) throws IOException {
+	public static void copy(@NotNull InputStream is, @NotNull FPFile fpFile) throws IOException {
 
 		File fileOnServer = createFile(fpFile);
 
