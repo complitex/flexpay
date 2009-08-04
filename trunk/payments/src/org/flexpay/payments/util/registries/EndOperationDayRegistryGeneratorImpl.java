@@ -10,7 +10,6 @@ import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.orgs.persistence.PaymentPoint;
 import org.flexpay.payments.persistence.Document;
 import org.flexpay.payments.persistence.Operation;
-import org.flexpay.payments.service.DocumentService;
 import org.flexpay.payments.service.OperationService;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -30,7 +29,6 @@ public class EndOperationDayRegistryGeneratorImpl implements EndOperationDayRegi
 
 	protected Logger log = LoggerFactory.getLogger(getClass());
 
-	private DocumentService documentService;
 	private OperationService operationService;
 	private RegistryRecordService registryRecordService;
 	private RegistryRecordStatusService registryRecordStatusService;
@@ -161,11 +159,6 @@ public class EndOperationDayRegistryGeneratorImpl implements EndOperationDayRegi
 	@Required
 	public void setOperationService(OperationService operationService) {
 		this.operationService = operationService;
-	}
-
-	@Required
-	public void setDocumentService(DocumentService documentService) {
-		this.documentService = documentService;
 	}
 
 	@Required

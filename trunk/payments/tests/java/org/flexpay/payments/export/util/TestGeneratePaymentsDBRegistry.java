@@ -14,6 +14,7 @@ import org.flexpay.common.persistence.registry.PropertiesFactory;
 import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.persistence.registry.RegistryRecord;
 import org.flexpay.common.service.*;
+import org.flexpay.common.service.importexport.ClassToTypeRegistry;
 import org.flexpay.common.service.importexport.ImportErrorService;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.orgs.persistence.*;
@@ -24,15 +25,12 @@ import org.flexpay.orgs.service.ServiceProviderService;
 import org.flexpay.payments.persistence.*;
 import org.flexpay.payments.process.export.util.GeneratePaymentsDBRegistry;
 import org.flexpay.payments.service.*;
-import org.flexpay.payments.service.importexport.imp.ClassToTypeRegistryPayments;
 import org.flexpay.payments.test.PaymentsSpringBeanAwareTestCase;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 
-import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
@@ -43,7 +41,6 @@ public class TestGeneratePaymentsDBRegistry extends PaymentsSpringBeanAwareTestC
 	@Autowired
 	private OperationService operationService;
 	@Autowired
-	//@Qualifier("organizationService")
 	private OrganizationService organizationService;
 	@Autowired
 	private OperationTypeService operationTypeService;
@@ -52,27 +49,22 @@ public class TestGeneratePaymentsDBRegistry extends PaymentsSpringBeanAwareTestC
 	@Autowired
 	private OperationStatusService operationStatusService;
 	@Autowired
-	@Qualifier ("documentTypeService")
 	private DocumentTypeService documentTypeService;
 	@Autowired
-	@Qualifier ("documentStatusService")
 	private DocumentStatusService documentStatusService;
 	@Autowired
 	private DocumentService documentService;
 	@Autowired
-	@Qualifier ("spService")
 	private SPService spService;
 	@Autowired
 	private ServiceTypeService serviceTypeService;
 	@Autowired
-	@Qualifier ("serviceProviderService")
 	private ServiceProviderService serviceProviderService;
 
 	@Autowired
 	private FPFileService fpFileService;
 
 	@Autowired
-	@Qualifier ("registryArchiveStatusService")
 	private RegistryArchiveStatusService registryArchiveStatusService;
 	@Autowired
 	private RegistryRecordService registryRecordService;
@@ -92,11 +84,8 @@ public class TestGeneratePaymentsDBRegistry extends PaymentsSpringBeanAwareTestC
 	private PropertiesFactory propertiesFactory;
 	@Autowired
 	private DocumentAdditionTypeService documentAdditionTypeService;
-
-	@Resource (name = "classToTypeRegistryPayments")
-	//@Qualifier("classToTypeRegistryPayments")
-	private ClassToTypeRegistryPayments classToTypeRegistryPayments;
-
+	@Autowired
+	private ClassToTypeRegistry classToTypeRegistry;
 	@Autowired
 	private ImportErrorService importErrorService;
 
@@ -281,6 +270,8 @@ public class TestGeneratePaymentsDBRegistry extends PaymentsSpringBeanAwareTestC
 	}
 
 	@Test
+	@Ignore
+	@Deprecated
 	public void testCreateDBRegistry() throws FlexPayException {
 		assertNotNull(serviceProvider);
 		assertEquals(1, operations.size());
