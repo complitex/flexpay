@@ -48,7 +48,7 @@
 
 			<set name="attributes" cascade="all-delete-orphan" inverse="true">
 				<key column="building_id" not-null="true" />
-				<one-to-many class="org.flexpay.bti.persistence.building.BuildingAttributeBase" />
+				<one-to-many class="org.flexpay.bti.persistence.building.BuildingAttribute" />
 			</set>
 
 		</subclass>

@@ -1,7 +1,7 @@
 package org.flexpay.bti.service;
 
 import org.flexpay.bti.persistence.building.BtiBuilding;
-import org.flexpay.bti.persistence.building.BuildingAttributeBase;
+import org.flexpay.bti.persistence.building.BuildingAttribute;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.test.SpringBeanAwareTestCase;
@@ -20,23 +20,23 @@ public class TestBuildingAttributeService extends SpringBeanAwareTestCase {
 	@Test
 	public void testGetAttributes() {
 
-		List<BuildingAttributeBase> attributes = attributeService.listAttributes(
-				new Stub<BtiBuilding>(1L), new Page<BuildingAttributeBase>());
+		List<BuildingAttribute> attributes = attributeService.listAttributes(
+				new Stub<BtiBuilding>(1L), new Page<BuildingAttribute>());
 		assertFalse("No attributes found", attributes.isEmpty());
 
-		for (BuildingAttributeBase attr : attributes) {
-			assertNotNull("No attribute value", attr.getCurrentValue());
+		for (BuildingAttribute attr : attributes) {
+			assertNotNull("No attribute value", attr.getStringValue());
 		}
 	}
 
 	@Test
 	public void testGetAttributes2() {
 
-		List<BuildingAttributeBase> attributes = attributeService.listAttributes(new Stub<BtiBuilding>(1L));
+		List<BuildingAttribute> attributes = attributeService.listAttributes(new Stub<BtiBuilding>(1L));
 		assertFalse("No attributes found", attributes.isEmpty());
 
-		for (BuildingAttributeBase attr : attributes) {
-			assertNotNull("No attribute value", attr.getCurrentValue());
+		for (BuildingAttribute attr : attributes) {
+			assertNotNull("No attribute value", attr.getStringValue());
 		}
 	}
 }

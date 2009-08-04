@@ -1,7 +1,7 @@
 package org.flexpay.bti.service;
 
 import org.flexpay.bti.persistence.building.BtiBuilding;
-import org.flexpay.bti.persistence.building.BuildingAttributeBase;
+import org.flexpay.bti.persistence.building.BuildingAttribute;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.persistence.Stub;
 import org.jetbrains.annotations.NotNull;
@@ -17,8 +17,8 @@ public interface BuildingAttributeService {
 	 * @param pager Page
 	 * @return list of building attributes
 	 */
-	List<BuildingAttributeBase> listAttributes(@NotNull Stub<BtiBuilding> stub, Page<BuildingAttributeBase> pager);
+	List<BuildingAttribute> listAttributes(@NotNull Stub<BtiBuilding> stub, Page<BuildingAttribute> pager);
 
-    List<BuildingAttributeBase> listAttributes(@NotNull Stub<BtiBuilding> stub);
+	List<BuildingAttribute> listAttributes(@NotNull Stub<BtiBuilding> stub);
 
 }

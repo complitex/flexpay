@@ -85,7 +85,8 @@
     <query name="ApartmentAttribute.findWithAttributes">
         select distinct a
         from BtiApartment a
-        	left join fetch a.attributes
+        	left join fetch a.attributes at
+        	left join fetch at.attributeType
         where a.id = ?
     </query>
 

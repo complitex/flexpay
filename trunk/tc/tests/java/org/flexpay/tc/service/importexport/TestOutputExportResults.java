@@ -95,8 +95,10 @@ public class TestOutputExportResults extends SpringBeanAwareTestCase {
 			List<Long> buildingIds = tariffCalculationResultService.getAddressIds(calcDate);
 
 			for (Long buildingId : buildingIds) {
-				List<TariffExportLogRecord> records = (List<TariffExportLogRecord>) hibernateTemplate.find(hql, new Object[]{tariffBeginDate, buildingId});
-				log.info("Found {} log records for date: {} and building #{}", new Object[]{records.size(), tariffBeginDate, buildingId});
+				List<TariffExportLogRecord> records = (List<TariffExportLogRecord>) hibernateTemplate.find(
+						hql, new Object[]{tariffBeginDate, buildingId});
+				log.info("Found {} log records for date: {} and building #{}",
+						new Object[]{records.size(), tariffBeginDate, buildingId});
 
 				List<Long> exportedTariffIds = CollectionUtils.list();
 				for (TariffExportLogRecord record : records) {
@@ -111,7 +113,8 @@ public class TestOutputExportResults extends SpringBeanAwareTestCase {
 						continue;
 					}
 
-					List<TariffCalculationResult> results = (List<TariffCalculationResult>) hibernateTemplate.find(hqlGetResult, new Object[]{record.getId()});
+					List<TariffCalculationResult> results = (List<TariffCalculationResult>) hibernateTemplate.find(
+							hqlGetResult, new Object[]{record.getId()});
 					if (results.size() > 1) {
 						log.error("Unexpected number of results for log record: {}", results.size());
 						throw new RuntimeException("Unexpected number of results for log record: " + results.size());
@@ -135,9 +138,11 @@ public class TestOutputExportResults extends SpringBeanAwareTestCase {
 		System.out.println("Results printed to file: " + tmpFile.getAbsolutePath());
 	}
 
-	private void write(ReloadableResourceBundleMessageSource ms, Writer wr, TariffExportLogRecord record, TariffCalculationResult result) throws Exception {
+	private void write(ReloadableResourceBundleMessageSource ms, Writer wr,
+					   TariffExportLogRecord record, TariffCalculationResult result) throws Exception {
 		// формат записи в файл
-		// 1) Адрес дома (улица, номер дома и так далее) 2) код дома в ЦН 3) название тарифа 4) значение тарифа 5) код тарифа 6) tariff export code
+		// 1) Адрес дома (улица, номер дома и так далее) 2) код дома в ЦН
+		// 3) название тарифа 4) значение тарифа 5) код тарифа 6) tariff export code
 		Building building = record.getBuilding();
 		String address = addressService.getBuildingAddress(stub(building), ApplicationConfig.getDefaultLocale());
 		building = buildingService.read(stub(building));
@@ -172,7 +177,8 @@ public class TestOutputExportResults extends SpringBeanAwareTestCase {
 		List<BuildingAddress> buildingAddressList = buildingService.getBuildingBuildings(buildingStub);
 
 		for (BuildingAddress buildingAddress : buildingAddressList) {
-			String externalId = correctionsService.getExternalId(buildingAddress.getId(), classToTypeRegistry.getType(BuildingAddress.class), dataSourceDescriptionStub);
+			String externalId = correctionsService.getExternalId(buildingAddress.getId(),
+					classToTypeRegistry.getType(BuildingAddress.class), dataSourceDescriptionStub);
 
 			if (externalId != null) {
 				return externalId;

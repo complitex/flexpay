@@ -404,15 +404,6 @@
         primary key (id)
     ) comment='Apartment attributes';
 
-    create table bti_building_attribute_temp_values_tbl (
-        id bigint not null auto_increment,
-        attribute_value varchar(255) comment 'Attribute value',
-        begin_date datetime not null comment 'Value begin date',
-        end_date datetime not null comment 'Value end date',
-        attribute_id bigint not null comment 'Temporal attribute reference',
-        primary key (id)
-    ) comment='Temporal values for building attributes';
-
     create table bti_building_attribute_type_enum_values_tbl (
         id bigint not null auto_increment,
         order_value integer not null comment 'Relatiove order value',
@@ -457,10 +448,19 @@
 
     create table bti_building_attributes_tbl (
         id bigint not null auto_increment,
-        discriminator varchar(255) not null comment 'Class hierarchy descriminator',
         building_id bigint not null comment 'Building reference',
         attribute_type_id bigint not null comment 'Attribute type reference',
-        normal_attribute_value varchar(255) comment 'Attribute value',
+        date_value datetime comment 'Optional date value',
+        int_value integer comment 'Optional int value',
+        bool_value bit comment 'Optional boolean value',
+        long_value bigint comment 'Optional long value',
+        string_value varchar(255) comment 'Optional string value',
+        double_value double precision comment 'Optional double value',
+        decimal_value decimal(19,5) comment 'Optional double value',
+        value_type integer not null comment 'Value type discriminator',
+        begin_date date comment 'Attribute value begin date',
+        end_date date comment 'Attribute value end date',
+        temporal_flag integer not null comment 'Temporal attribute flag',
         primary key (id)
     ) comment='Building attributes';
 
@@ -1820,12 +1820,6 @@
         add constraint FK_bti_apartment_attributes_tbl_apartment_id 
         foreign key (apartment_id) 
         references ab_apartments_tbl (id);
-
-    alter table bti_building_attribute_temp_values_tbl 
-        add index FK_bti_building_attribute_temp_values_tbl_attr_id (attribute_id), 
-        add constraint FK_bti_building_attribute_temp_values_tbl_attr_id 
-        foreign key (attribute_id) 
-        references bti_building_attributes_tbl (id);
 
     alter table bti_building_attribute_type_enum_values_tbl 
         add index bti_building_attribute_type_enum_values_tbl_enum_id (attribute_type_enum_id), 

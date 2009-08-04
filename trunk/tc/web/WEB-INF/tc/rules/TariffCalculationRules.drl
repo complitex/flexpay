@@ -3,7 +3,7 @@ dialect "java"
 
 import org.drools.WorkingMemory;
 import org.flexpay.bti.persistence.building.BtiBuilding;
-import org.flexpay.bti.persistence.building.BuildingAttributeBase;
+import org.flexpay.bti.persistence.building.BuildingAttribute;
 import org.flexpay.bti.persistence.building.BuildingAttributeConfig;
 import org.flexpay.bti.service.BuildingAttributeTypeService;
 import org.flexpay.tc.persistence.TariffCalculationResult;
@@ -30,12 +30,12 @@ global TariffServiceExt tariffServiceExt;
 
 function BigDecimal getAttributeValue(BtiBuilding building, String attributeCode, WorkingMemory wm) {
     BuildingAttributeTypeService bats = (BuildingAttributeTypeService) wm.getGlobal("buildingAttributeTypeService");
-    BuildingAttributeBase ba = building.getAttribute(bats.findTypeByName(attributeCode));
+    Date calcDate = (Date) wm.getGlobal("calculationDate");
+    BuildingAttribute ba = building.getAttributeForDate(bats.findTypeByName(attributeCode), calcDate);
     if (ba == null) {
         return BigDecimal.ZERO;
     }
-    Date calcDate = (Date) wm.getGlobal("calculationDate");
-    String v = ba.getValueForDate(calcDate);
+    String v = ba.getStringValue();
     return v == null || v.equals("") ? BigDecimal.ZERO : new BigDecimal(v);
 }
 
