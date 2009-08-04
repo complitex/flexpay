@@ -432,7 +432,7 @@
 		group by op.id 
 	]]></query>
 
-    <query name="Document.listRegisteredPaymentDocumentsByServiceProvider"><![CDATA[
+    <query name="Document.listPaymentDocumentsByServiceProvider"><![CDATA[
 		select distinct doc
 		from Document doc
 		left join fetch doc.operation op
@@ -440,10 +440,9 @@
 		left join fetch doc.additions adds
 		left join fetch serv.serviceType servType
 		where serv.serviceProvider.id = ?
-		and doc.operation.operationStatus.code = ?
 		and op.registerOrganization.id = ?
 		and op.creationDate >= ? and op.creationDate <= ?
-		and doc.documentType.id = 1 and doc.documentStatus.id = 2
+		and doc.documentType.code = ? and doc.documentStatus.code = ?
 	]]></query>
 
 	<query name="DocumentAdditionType.findTypeByCode">
