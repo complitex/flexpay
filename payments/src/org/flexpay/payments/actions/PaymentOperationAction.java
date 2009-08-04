@@ -76,7 +76,7 @@ public abstract class PaymentOperationAction extends CashboxCookieActionSupport 
 
 	protected void fillOperation(Operation operation) throws FlexPayException {
 
-		Cashbox cashbox = cashboxService.read(new Stub<Cashbox>(operation.getCashbox().getId()));
+		Cashbox cashbox = cashboxService.read(operation.getCashboxStub());
 
 		Organization organization = cashbox.getPaymentPoint().getCollector().getOrganization();
 		operation.setOperationSumm(totalToPay);

@@ -9,7 +9,6 @@ import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.service.FPFileService;
 import org.flexpay.common.util.FPFileUtil;
 import org.flexpay.common.util.StringUtil;
-import org.flexpay.common.util.config.ApplicationConfig;
 import org.flexpay.common.util.io.ReaderCallback;
 import org.flexpay.payments.process.export.util.RegistryWriter;
 import org.flexpay.payments.test.PaymentsSpringBeanAwareTestCase;
@@ -18,8 +17,10 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.io.*;
-import java.net.URISyntaxException;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.security.SignatureException;
 
 public class TestRegistryWriter extends PaymentsSpringBeanAwareTestCase {
@@ -34,7 +35,7 @@ public class TestRegistryWriter extends PaymentsSpringBeanAwareTestCase {
 
 	@Before
 	public void startUp() throws IOException {
-		file = getTestFile();
+		file = createTestFile();
 	}
 
 	@After
@@ -51,8 +52,7 @@ public class TestRegistryWriter extends PaymentsSpringBeanAwareTestCase {
 	}
 
 	@Test
-	public void testWriteLine1() throws IOException, FlexPayException, URISyntaxException, SignatureException {
-		FPFile file = getTestFile();
+	public void testWriteLine1() throws IOException, FlexPayException, SignatureException {
 		RegistryWriter rw = new RegistryWriter(file);
 		try {
 			rw.writeLine("line1");
@@ -65,9 +65,8 @@ public class TestRegistryWriter extends PaymentsSpringBeanAwareTestCase {
 	}
 
 	@Test
-	public void testWriteLine2() throws IOException, FlexPayException, URISyntaxException, SignatureException {
+	public void testWriteLine2() throws IOException, FlexPayException, SignatureException {
 		final char separator = ',';
-		FPFile file = getTestFile();
 		RegistryWriter rw = new RegistryWriter(file, separator, RegistryWriter.NO_QUOTE_CHARACTER);
 		String[] line1 = new String[]{"ceil11", "ceil12"};
 		String[] line2 = new String[]{"ceil21", "ceil22", "ceil23"};
@@ -89,9 +88,8 @@ public class TestRegistryWriter extends PaymentsSpringBeanAwareTestCase {
 	}
 
 	@Test
-	public void testWriteLine3() throws IOException, FlexPayException, URISyntaxException, SignatureException {
+	public void testWriteLine3() throws IOException, FlexPayException, SignatureException {
 		final char separator = ',';
-		FPFile file = getTestFile();
 		RegistryWriter rw = new RegistryWriter(file);
 		String[] line1 = new String[]{"ceil11", "ceil12"};
 		String[] line2 = new String[]{"ceil21", "ceil22", "ceil23"};
@@ -115,9 +113,8 @@ public class TestRegistryWriter extends PaymentsSpringBeanAwareTestCase {
 	}
 
 	@Test
-	public void testWriteLine4() throws IOException, FlexPayException, URISyntaxException, SignatureException {
+	public void testWriteLine4() throws IOException, FlexPayException, SignatureException {
 		final char separator = ',';
-		FPFile file = getTestFile();
 		RegistryWriter rw = new RegistryWriter(file, separator, RegistryWriter.NO_QUOTE_CHARACTER);
 		final String line1 = "line1";
 		final String line2 = "line2";
@@ -141,9 +138,8 @@ public class TestRegistryWriter extends PaymentsSpringBeanAwareTestCase {
 	}
 
 	@Test
-	public void testWriteLine5() throws IOException, FlexPayException, URISyntaxException, SignatureException {
+	public void testWriteLine5() throws IOException, FlexPayException, SignatureException {
 		final char separator = ',';
-		FPFile file = getTestFile();
 		RegistryWriter rw = new RegistryWriter(file, separator, RegistryWriter.NO_QUOTE_CHARACTER);
 		final char ch1 = '_';
 		final char ch2 = '+';
@@ -204,17 +200,12 @@ public class TestRegistryWriter extends PaymentsSpringBeanAwareTestCase {
 		}
 	}
 
-	private FPFile getTestFile() throws IOException {
+	private FPFile createTestFile() throws IOException {
 
 		FPFile file = new FPFile();
 		file.setOriginalName(StringUtil.getFileName(fileName));
 		file.setModule(fileService.getModuleByName("payments"));
-		InputStream is = ApplicationConfig.getResourceAsStream(fileName);
-		try {
-			FPFileUtil.copy(is, file);
-		} finally {
-			IOUtils.closeQuietly(is);
-		}
+		FPFileUtil.createEmptyFile(file);
 		return file;
 	}
 }
