@@ -262,6 +262,10 @@ public class Operation extends DomainObject {
         this.cashbox = cashbox;
     }
 
+	public Stub<Cashbox> getCashboxStub() {
+		return stub(cashbox);
+	}
+
     @Override
 	public String toString() {
 		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).

@@ -1,7 +1,11 @@
 package org.flexpay.payments.action.reports;
 
 import org.flexpay.common.actions.FPActionSupport;
+import static org.flexpay.orgs.persistence.TestData.CASHBOX_1;
+import static org.flexpay.orgs.persistence.TestData.CASHBOX_2;
 import org.flexpay.payments.actions.reports.PaymentOperationReportAction;
+import static org.flexpay.payments.persistence.TestData.OPERATION;
+import static org.flexpay.payments.persistence.TestData.OPERATION_2;
 import org.flexpay.payments.test.PaymentsSpringBeanAwareTestCase;
 import static org.junit.Assert.assertEquals;
 import org.junit.Test;
@@ -15,22 +19,22 @@ public class TestPaymentOperationReportAction extends PaymentsSpringBeanAwareTes
 	@Test
 	public void testBuildPrintForm() throws Exception {
 
-//		action.setOperation(new Operation(TestData.OPERATION));
-
-		action.setCashboxId(1L);
+		action.setOperationId(OPERATION.getId());
+		action.setCashboxId(CASHBOX_1.getId());
+		action.setCopy(true);
 
 		assertEquals("Action execute failed", FPActionSupport.FILE, action.execute());
-		assertEquals("Invalid per payment point report", "QuittancePayment_1.pdf", action.getReport().getOriginalName());
+		assertEquals("Invalid per payment point report", "DoubleQuittancePayment_1.pdf", action.getReport().getOriginalName());
 	}
 
 	@Test
 	public void testBuildPrintForm2() throws Exception {
 
-//		action.setOperation(new Operation(TestData.OPERATION_2));
-
-		action.setCashboxId(1L);
+		action.setOperationId(OPERATION_2.getId());
+		action.setCashboxId(CASHBOX_2.getId());
+		action.setCopy(true);
 
 		assertEquals("Action execute failed", FPActionSupport.FILE, action.execute());
-		assertEquals("Invalid per payment point report", "QuittancePayment.pdf", action.getReport().getOriginalName());
+		assertEquals("Invalid per payment point report", "DoubleQuittancePayment.pdf", action.getReport().getOriginalName());
 	}
 }

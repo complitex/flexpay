@@ -10,4 +10,7 @@ public class TestData {
 	public static final Stub<Bank> BANK_EIRC = new Stub<Bank>(2L);
 
 	public static final Stub<Subdivision> SUBDIVISION_1 = new Stub<Subdivision>(1L);
+
+	public static final Stub<Cashbox> CASHBOX_1 = new Stub<Cashbox>(1L);
+	public static final Stub<Cashbox> CASHBOX_2 = new Stub<Cashbox>(2L);
 }
