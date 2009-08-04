@@ -14,7 +14,7 @@
 		<property name="mapping">
 			<map>
 				<entry key="1" value="1002" />
-				<entry key="2" value="9" />
+				<entry key="2" value="1" />
 				<entry key="3" value="5" />
 				<entry key="4" value="8" />
 				<entry key="5" value="7" />
