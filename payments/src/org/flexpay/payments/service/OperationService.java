@@ -1,13 +1,12 @@
 package org.flexpay.payments.service;
 
 import org.flexpay.common.dao.paging.Page;
-import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.exception.FlexPayException;
+import org.flexpay.common.persistence.Stub;
+import org.flexpay.orgs.persistence.Cashbox;
 import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.orgs.persistence.PaymentPoint;
-import org.flexpay.orgs.persistence.Cashbox;
 import org.flexpay.payments.persistence.Operation;
-import org.flexpay.payments.persistence.OperationStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.security.annotation.Secured;
@@ -72,7 +71,7 @@ public interface OperationService {
 	 * @param endDate   higher bound for operation creation date
 	 * @return list of operations
 	 */
-	//@Secured(Roles.OPERATION_READ)
+	@Secured (Roles.OPERATION_READ)
 	List<Operation> listPaymentOperations(Date beginDate, Date endDate);
 
 	/**
@@ -83,7 +82,7 @@ public interface OperationService {
 	 * @param endDate   higher bound for operation creation date
 	 * @return list of operations
 	 */
-	//@Secured(Roles.OPERATION_READ)
+	@Secured (Roles.OPERATION_READ)
 	List<Operation> listLastPaymentOperations(Date beginDate, Date endDate);
 
 	/**
@@ -95,7 +94,7 @@ public interface OperationService {
 	 * @param endDate	  higher bound for operation creation date
 	 * @return list of operations
 	 */
-	//@Secured(Roles.OPERATION_READ)
+	@Secured (Roles.OPERATION_READ)
 	List<Operation> listLastPaymentOperations(PaymentPoint paymentPoint, Date beginDate, Date endDate);
 
 	/**
@@ -107,7 +106,7 @@ public interface OperationService {
 	 * @param endDate   higher bound for operation creation date
 	 * @return list of operations
 	 */
-	//@Secured(Roles.OPERATION_READ)
+	@Secured (Roles.OPERATION_READ)
 	List<Operation> listLastPaymentOperations(Cashbox cashbox, Date beginDate, Date endDate);
 
 	/**
@@ -129,7 +128,7 @@ public interface OperationService {
 	 * @param endDate	  higher bound for operation registration date
 	 * @return list of payment operations
 	 */
-	//@Secured (Roles.OPERATION_READ)
+	@Secured (Roles.OPERATION_READ)
 	List<Operation> listReceivedPayments(PaymentPoint paymentPoint, Date beginDate, Date endDate);
 
 	/**
@@ -185,8 +184,9 @@ public interface OperationService {
 
 	/**
 	 * Creates new operation with no data and BLANK state
+	 *
 	 * @return new operation instance
 	 */
-	@Secured(Roles.OPERATION_ADD)
+	@Secured (Roles.OPERATION_ADD)
 	Operation createBlankOperation(BigDecimal operationSumm, String creator, Organization creatorOrganization, PaymentPoint paymentPoint, Cashbox cashBox) throws FlexPayException;
 }

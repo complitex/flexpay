@@ -174,7 +174,6 @@
 
 	<bean id="endOperationDayRegistryGenerator"
 		  class="org.flexpay.payments.util.registries.EndOperationDayRegistryGeneratorImpl"
-		  p:documentService-ref="documentService"
 		  p:operationService-ref="operationService"
 		  p:propertiesFactory-ref="propertiesFactory"
 		  p:registryArchiveStatusService-ref="registryArchiveStatusService"

@@ -1,6 +1,5 @@
 package org.flexpay.payments.util.registries;
 
-import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.service.RegistryService;
 import org.flexpay.orgs.persistence.Organization;
@@ -32,8 +31,8 @@ public class TestEndOperationDayRegistryGenerator extends PaymentsSpringBeanAwar
 
 		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-		Date beginDate = df.parse("2009-07-13 00:00:00");
-		Date endDate = df.parse("2009-07-13 23:59:59");
+		Date beginDate = df.parse("2009-04-14 00:00:00");
+		Date endDate = df.parse("2009-04-14 23:59:59");
 
 		PaymentPoint paymentPoint = paymentPointService.read(TestData.PAYMENT_POINT_1);
 		assertNotNull("Payment point with id - 1 does not exist", paymentPoint);
