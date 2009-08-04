@@ -86,7 +86,8 @@ public interface DocumentService {
 	 * 		   and type CASH_PAYMENT which were created in time period
 	 */
 	@Secured (Roles.DOCUMENT_READ)
-	List<Document> listRegisteredPaymentDocuments(@NotNull ServiceProvider serviceProvider, @NotNull Organization organization, @NotNull Date begin, @NotNull Date end);
+	List<Document> listRegisteredPaymentDocuments(@NotNull ServiceProvider serviceProvider,
+												  @NotNull Organization organization, @NotNull Date begin, @NotNull Date end);
 
 	/**
 	 * Returns summ of payments for service in the cashbox for the period

@@ -2,6 +2,7 @@ package org.flexpay.payments.test;
 
 import org.flexpay.common.test.SpringBeanAwareTestCase;
 import org.flexpay.common.util.SecurityUtil;
+import org.flexpay.common.util.config.UserPreferences;
 import static org.flexpay.ab.service.Roles.*;
 import static org.flexpay.orgs.service.Roles.*;
 import static org.flexpay.payments.service.Roles.*;
@@ -47,6 +48,8 @@ public class PaymentsSpringBeanAwareTestCase extends SpringBeanAwareTestCase {
 				CASHBOX_READ,
 				PAYMENT_POINT_READ,
 				OPERATION_READ,
+				DOCUMENT_READ,
+				DOCUMENT_TYPE_READ,
 				ORGANIZATION_ADD,
 				SERVICE_ORGANIZATION_ADD,
 				SERVICE_PROVIDER_ADD,
@@ -59,10 +62,13 @@ public class PaymentsSpringBeanAwareTestCase extends SpringBeanAwareTestCase {
 				CASHBOX_ADD,
 				CASHBOX_CHANGE,
 				OPERATION_ADD,
-				OPERATION_CHANGE
+				OPERATION_CHANGE,
+				DOCUMENT_ADD
 		);
 		User user = new User("test", "test", true, true, true, true, authorities);
-		Authentication auth = new AnonymousAuthenticationToken("key", user, authorities);
+		UserPreferences preferences = new UserPreferences();
+		preferences.setTargetDetails(user);
+		Authentication auth = new AnonymousAuthenticationToken("key", preferences, authorities);
 		SecurityContextHolder.getContext().setAuthentication(auth);
 	}
 }

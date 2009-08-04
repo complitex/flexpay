@@ -2,8 +2,8 @@
 
 -- Init service types
 -- kvartplata
-INSERT INTO payments_service_types_tbl (id, status, code) VALUES (9, 0, 9);
-SELECT @service_kvartplata:=9;
+INSERT INTO payments_service_types_tbl (id, status, code) VALUES (1, 0, 1);
+SELECT @service_kvartplata:=1;
 INSERT INTO payments_service_type_name_translations_tbl (name, description, language_id, service_type_id)
 	VALUES ('Квартплата', 'Описание', @ru_id, @service_kvartplata);
 
