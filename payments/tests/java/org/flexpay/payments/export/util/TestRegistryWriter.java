@@ -12,6 +12,7 @@ import org.flexpay.common.util.StringUtil;
 import org.flexpay.common.util.config.ApplicationConfig;
 import org.flexpay.common.util.io.ReaderCallback;
 import org.flexpay.payments.process.export.util.RegistryWriter;
+import org.flexpay.payments.test.PaymentsSpringBeanAwareTestCase;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -21,7 +22,8 @@ import java.io.*;
 import java.net.URISyntaxException;
 import java.security.SignatureException;
 
-public class TestRegistryWriter {
+public class TestRegistryWriter extends PaymentsSpringBeanAwareTestCase {
+
 	private static final String fileName = "org/flexpay/payments/export/util/testFile.dat";
 	private static final String FILE_ENCODING = "cp866";
 
@@ -44,11 +46,8 @@ public class TestRegistryWriter {
 	public void testBase64() {
 		String s = "`1234567890-=qwertyuiop[]\\asdfghjkl;'zxcvbnm,./\n~!@#$%^&*()_+QWERTYUIOP{}|ASDFGHJKL:\"ZXCVBNM<>?\n";
 		String encode = new String(Base64.encodeBase64(s.getBytes()));
-		System.out.println(encode);
-		System.out.print("Size=" + encode.length());
 		String decode = new String(Base64.decodeBase64(encode.getBytes()));
-		System.out.println(decode);
-		System.out.print("Size=" + decode.length());
+		assertEquals("Invalid decode", s, decode);
 	}
 
 	@Test
@@ -209,6 +208,7 @@ public class TestRegistryWriter {
 
 		FPFile file = new FPFile();
 		file.setOriginalName(StringUtil.getFileName(fileName));
+		file.setModule(fileService.getModuleByName("payments"));
 		InputStream is = ApplicationConfig.getResourceAsStream(fileName);
 		try {
 			FPFileUtil.copy(is, file);
