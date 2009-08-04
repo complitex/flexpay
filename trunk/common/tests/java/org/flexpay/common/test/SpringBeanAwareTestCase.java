@@ -2,6 +2,7 @@ package org.flexpay.common.test;
 
 import static org.flexpay.common.service.Roles.*;
 import org.flexpay.common.util.SecurityUtil;
+import org.flexpay.common.util.config.UserPreferences;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.quartz.Scheduler;
@@ -67,7 +68,9 @@ public abstract class SpringBeanAwareTestCase extends AbstractJUnit4SpringContex
 				PROCESS_READ
 		);
 		User user = new User("test", "test", true, true, true, true, authorities);
-		Authentication auth = new AnonymousAuthenticationToken("key", user, authorities);
+		UserPreferences preferences = new UserPreferences();
+		preferences.setTargetDetails(user);
+		Authentication auth = new AnonymousAuthenticationToken("key", preferences, authorities);
 		SecurityContextHolder.getContext().setAuthentication(auth);
 	}
 }

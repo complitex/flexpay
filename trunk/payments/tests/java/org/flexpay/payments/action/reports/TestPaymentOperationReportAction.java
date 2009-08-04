@@ -21,8 +21,6 @@ public class TestPaymentOperationReportAction extends PaymentsSpringBeanAwareTes
 
 		assertEquals("Action execute failed", FPActionSupport.FILE, action.execute());
 		assertEquals("Invalid per payment point report", "QuittancePayment_1.pdf", action.getReport().getOriginalName());
-
-		System.out.println("File: " + action.getReport().getNameOnServer());
 	}
 
 	@Test
@@ -34,7 +32,5 @@ public class TestPaymentOperationReportAction extends PaymentsSpringBeanAwareTes
 
 		assertEquals("Action execute failed", FPActionSupport.FILE, action.execute());
 		assertEquals("Invalid per payment point report", "QuittancePayment.pdf", action.getReport().getOriginalName());
-
-		System.out.println("File: " + action.getReport().getNameOnServer());
 	}
 }
