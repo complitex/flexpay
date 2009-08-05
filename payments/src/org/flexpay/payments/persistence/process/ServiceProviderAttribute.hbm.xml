@@ -12,7 +12,12 @@
 			</column>
 			<generator class="native" />
 		</id>
-		<natural-id mutable="false">
+        <version name="version" access="field">
+			<column name="version">
+				<comment>Optimistic lock version</comment>
+			</column>
+		</version>
+		<properties name="service_provider_name_attribute_type_pair" unique="true">
 			<property name="name">
 				<column name="name" not-null="true" length="50">
 					<comment>Attribute name</comment>
@@ -24,12 +29,7 @@
 					<comment>Service provider reference</comment>
 				</column>
 			</many-to-one>
-		</natural-id>
-		<version name="version" access="field">
-			<column name="version">
-				<comment>Optimistic lock version</comment>
-			</column>
-		</version>
+		</properties>
 		<property name="value">
 			<column name="value" not-null="false" length="255">
 				<comment>Attribute value</comment>
