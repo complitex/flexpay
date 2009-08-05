@@ -50,30 +50,39 @@
 
 	<!-- Run tests -->
 	<target name="run.tests">
+		<antcall target="clean.all" />
 		<antcall target="common.db-test" />
 		<antcall target="common.runtests" />
 
+		<antcall target="clean.all" />
 		<antcall target="ab.db-test" />
 		<antcall target="ab.runtests" />
 
+		<antcall target="clean.all" />
 		<antcall target="bti.db-test" />
 		<antcall target="bti.runtests" />
 
+		<antcall target="clean.all" />
 		<antcall target="tc.db-test" />
 		<antcall target="tc.runtests" />
 
+		<antcall target="clean.all" />
         <antcall target="orgs.db-test" />
         <antcall target="orgs.runtests" />
 
+		<antcall target="clean.all" />
         <antcall target="payments.db-test" />
         <antcall target="payments.runtests" />
 
+		<antcall target="clean.all" />
         <antcall target="rent.db-test" />
         <antcall target="rent.runtests" />
 
+		<antcall target="clean.all" />
         <antcall target="eirc.db-test" />
 		<antcall target="eirc.runtests" />
 
+		<antcall target="clean.all" />
 		<antcall target="sz.db-test" />
 		<antcall target="sz.runtests" />
 	</target>
