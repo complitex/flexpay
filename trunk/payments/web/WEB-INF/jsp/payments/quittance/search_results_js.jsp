@@ -2,8 +2,6 @@
 
 <script type="text/javascript">
 
-	
-
 	/**
 	 *	Common functions
 	 */
@@ -142,13 +140,11 @@
 		if (totalPaySumm > inputSumm) {
 			// show error
 			$(errorCell).text('<s:text name="payments.quittances.quittance_pay.input_summ_is_too_small"/>');
-//			$(previousRow).css("display", "table-row");
 			$(previousRow).show();
 			addErrorField('inputSumm');
 			return false;
 		} else {
 			$(errorCell).text('');
-//			$(previousRow).css('display', 'none');
 			$(previousRow).hide();
 			removeErrorField('inputSumm');
 			return true;
@@ -249,10 +245,28 @@
 	}
 
 	function doPrintQuittance() {
-		$("#quittancePayForm").attr("action", "<s:url action="paymentOperationReportAction" />").attr("target", "_blank").submit();
-		$("#quittancePayForm").removeAttr('action');
-		$("#quittancePayForm").removeAttr('target');
-		enablePayment();
+
+		var errorSpan = $('#indicator').prev('span');
+		errorSpan.hide();
+		$('#indicator').show();
+
+		$.getJSON('<s:url action="createBlankOperation" includeParams="none"/>', {},
+				function(data) {
+					if (data.status == 0) {
+						$('#operationId').val(data.operationId);
+						$('#indicator').hide();
+
+						$("#quittancePayForm").attr("action", "<s:url action="paymentOperationReportAction" />").attr("target", "_blank").submit();
+						$("#quittancePayForm").removeAttr('action');
+						$("#quittancePayForm").removeAttr('target');
+						enablePayment();
+					} else {
+						$('#indicator').hide();
+						errorSpan.text('<s:text name="payments.error.creating_operation_server_error"/>');
+						errorSpan.show();
+					}
+				}
+		);
 	}
 
 	/*
@@ -411,4 +425,5 @@
 			doPayQuittance();
 		});
 	};
+
 </script>

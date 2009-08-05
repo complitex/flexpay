@@ -76,6 +76,12 @@
 		  p:crumbNameKey="payments.crumbs.operations_list"
 		  scope="prototype" />
 
+	<bean id="createBlankOperationAction"
+		  class="org.flexpay.payments.actions.operations.CreateBlankOperationAction"
+		  p:cashboxService-ref="cashboxService"
+		  p:operationService-ref="operationService"
+		  scope="prototype" />
+
     <!-- payment points monitor actions -->
 	<bean id="paymentPointsListMonitorAction"
 		  class="org.flexpay.payments.actions.monitor.PaymentPointsListMonitorAction"

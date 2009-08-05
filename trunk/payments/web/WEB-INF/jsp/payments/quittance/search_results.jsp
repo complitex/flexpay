@@ -86,6 +86,8 @@
 
 			<tr>
 				<td colspan="5" style="text-align:right;">
+					<span style="display: none;">&nbsp;</span>
+					<img id="indicator" src="<s:url value="/resources/common/img/indicator.gif"/>" style="display: none;"/>
 					<input type="button" id="printQuittanceButton" class="btn-exit" style="width: 80px;"
 						   value="<s:text name="payments.quittances.quittance_pay.print_quittance"/>"/>
 				</td>
@@ -96,8 +98,7 @@
 				<s:hidden name="actionName" value="%{actionName}"/>
 				<s:hidden name="apartmentId" value="%{apartmentId}"/>
                 <s:hidden name="submitted" value="true" />
-
-				<s:hidden name="operationId" value="%{operationBlankId}" />
+				<s:hidden name="operationId" id="operationId" value=""/>
 			</tr>
 
 		</table>

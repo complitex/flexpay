@@ -43,7 +43,6 @@ public class SearchQuittanceAction extends CashboxCookieActionSupport {
 	private String searchCriteria;
 	private QuittanceDetailsResponse.QuittanceInfo[] quittanceInfos;
 	private String actionName;
-	private Long operationBlankId;
 
 	// required services
 	private OperationService operationService;
@@ -64,26 +63,11 @@ public class SearchQuittanceAction extends CashboxCookieActionSupport {
 			quittanceInfos = response.getInfos();
 			filterSubservices();
 			filterNegativeSumms();
-
-			// creating blank operation
-			Cashbox cashbox = getCashbox();
-			Organization organization = cashbox.getPaymentPoint().getCollector().getOrganization();
-			Operation newOperationBlank = operationService.createBlankOperation(BigDecimal.valueOf(0), SecurityUtil.getUserName(), organization, cashbox.getPaymentPoint(), cashbox );
-			operationBlankId = newOperationBlank.getId();
 		} else {
 			addActionError(getErrorMessage(response.getErrorCode()));
 		}
 
 		return SUCCESS;
-	}
-
-	private Cashbox getCashbox() {
-		Cashbox cashbox = cashboxService.read(new Stub<Cashbox>(cashboxId));
-		log.debug("Found cashbox {}", cashbox);
-		if (cashbox == null) {
-			throw new IllegalArgumentException("Invalid cashbox id: " + cashboxId);
-		}
-		return cashbox;
 	}
 
 	private QuittanceDetailsRequest buildQuittanceRequest() throws FlexPayException {
@@ -300,10 +284,6 @@ public class SearchQuittanceAction extends CashboxCookieActionSupport {
 
 	public void setActionName(String actionName) {
 		this.actionName = actionName;
-	}
-
-	public Long getOperationBlankId() {
-		return operationBlankId;
 	}
 
 	// required services
