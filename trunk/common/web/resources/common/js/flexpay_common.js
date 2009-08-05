@@ -3,6 +3,13 @@ var FP = {
 	// key code constants
 	TAB_KEY_CODE: 9,
 	ENTER_KEY_CODE: 13,
+	BACKSPACE_KEY_CODE: 8,
+	DELETE_KEY_CODE: 46,
+	LEFT_KEY_CODE: 37,
+	RIGHT_KEY_CODE: 39,
+	HOME_KEY_CODE: 36,
+	END_KEY_CODE: 35,
+
 
     base : "",
 
