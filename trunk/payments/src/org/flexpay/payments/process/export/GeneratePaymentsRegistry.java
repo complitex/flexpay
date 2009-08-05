@@ -1,5 +1,6 @@
 package org.flexpay.payments.process.export;
 
+import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.process.Process;
 import org.flexpay.common.process.ProcessManager;
@@ -7,9 +8,8 @@ import org.flexpay.common.process.exception.ProcessDefinitionException;
 import org.flexpay.common.process.exception.ProcessInstanceException;
 import org.flexpay.common.service.Roles;
 import org.flexpay.common.util.CollectionUtils;
-import org.flexpay.common.util.SecurityUtil;
 import org.flexpay.common.util.DateUtil;
-import org.flexpay.common.dao.paging.Page;
+import org.flexpay.common.util.SecurityUtil;
 import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.orgs.persistence.ServiceProvider;
 import org.flexpay.orgs.service.ServiceProviderService;
@@ -19,13 +19,14 @@ import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.scheduling.quartz.QuartzJobBean;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
+import org.springframework.scheduling.quartz.QuartzJobBean;
 
-import java.io.Serializable;
-import java.io.IOException;
 import java.io.File;
+import java.io.IOException;
+import java.io.Serializable;
 import java.util.*;
 
 public class GeneratePaymentsRegistry extends QuartzJobBean {
@@ -38,7 +39,7 @@ public class GeneratePaymentsRegistry extends QuartzJobBean {
     private static final Integer PAGE_SIZE = 20;
 
     private Long registeredOrganizationId;
-    private Resource privateKey;
+    private FileSystemResource privateKey;
 
     private ProcessManager processManager;
     private ServiceProviderService serviceProviderService;
@@ -93,13 +94,13 @@ public class GeneratePaymentsRegistry extends QuartzJobBean {
                         parameters.put("ServiceProviderId", serviceProvider.getId());
                         parameters.put("RegisteredOrganizationId", registeredOrganizationId);
                         parameters.put("Email", serviceProvider.getEmail());
-                        try {
-                            File f = privateKey.getFile();
-                            log.debug("set PrivateKey='{}'", f.getAbsolutePath());
-                            parameters.put("PrivateKey", f);
-                        } catch (IOException e) {
-                            log.error("did not set PrivateKey", e);
-                        }
+                        //try {
+                        File f = privateKey.getFile();
+                        log.debug("set PrivateKey='{}'", f.getAbsolutePath());
+                        parameters.put("PrivateKey", f);
+                        //} catch (IOException e) {
+                        //    log.error("did not set PrivateKey URI={}", e);
+                        //}
 
                         long processId = processManager.createProcess("GeneratePaymentsRegisryProcess", parameters);
                         listProcessInstanesId.add(processId);
@@ -210,7 +211,7 @@ public class GeneratePaymentsRegistry extends QuartzJobBean {
         this.serviceProviderAttributeService = serviceProviderAttributeService;
     }
 
-    public void setPrivateKey(Resource privateKey) {
+    public void setPrivateKey(FileSystemResource privateKey) {
         this.privateKey = privateKey;
     }
 }
