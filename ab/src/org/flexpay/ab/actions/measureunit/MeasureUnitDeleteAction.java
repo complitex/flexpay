@@ -24,6 +24,7 @@ public class MeasureUnitDeleteAction extends FPActionSupport {
 	 * @throws Exception if failure occurs
 	 */
 	@NotNull
+	@Override
 	protected String doExecute() throws Exception {
 
 		log.debug("Deleting measure units: {}", objectIds);
@@ -47,6 +48,7 @@ public class MeasureUnitDeleteAction extends FPActionSupport {
 	 * @return {@link #ERROR} by default
 	 */
 	@NotNull
+	@Override
 	protected String getErrorResult() {
 		return REDIRECT_SUCCESS;
 	}

@@ -16,6 +16,7 @@ public class TownTypeViewAction extends FPActionSupport {
 	private TownTypeService townTypeService;
 
 	@NotNull
+	@Override
 	public String doExecute() throws Exception {
 		townType = townTypeService.read(new Stub<TownType>(id));
 
@@ -30,6 +31,7 @@ public class TownTypeViewAction extends FPActionSupport {
 	 * @return {@link #ERROR} by default
 	 */
 	@NotNull
+	@Override
 	protected String getErrorResult() {
 		return SUCCESS;
 	}

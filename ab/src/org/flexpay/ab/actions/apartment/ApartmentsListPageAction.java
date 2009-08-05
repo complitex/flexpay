@@ -8,8 +8,8 @@ public class ApartmentsListPageAction extends FPActionSupport {
 
 	private String buildingFilter;
 
-	@Override
 	@NotNull
+	@Override
 	protected String doExecute() throws Exception {
 		if (buildingFilter != null) {
 			AbUserPreferences up = (AbUserPreferences) getUserPreferences();

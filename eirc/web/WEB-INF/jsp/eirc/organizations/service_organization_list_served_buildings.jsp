@@ -1,5 +1,5 @@
-
 <%@include file="/WEB-INF/jsp/common/taglibs.jsp" %>
+
 <s:actionerror />
 
 <s:form id="fServiceOrganizations" action="serviceOrganizationRemoveServedBuildings">
@@ -32,7 +32,9 @@
             <td colspan="10">
                 <%@include file="/WEB-INF/jsp/common/filter/pager/pager.jsp" %>
                 <input type="submit" value="<s:text name="eirc.remove_served_buildings" />" class="btn-exit" name="submitted" />
-                <input type="button" class="btn-exit" onclick="location.href='<s:url action="serviceOrganizationAddServedBuilding"><s:param name="serviceOrganization.id" value="%{serviceOrganization.id}" /></s:url>'" value="<s:text name="eirc.add_served_buildings"/>" />
+                <input type="button" class="btn-exit"
+                       onclick="window.location='<s:url action="serviceOrganizationAddServedBuildingPage"><s:param name="serviceOrganization.id" value="%{serviceOrganization.id}" /></s:url>'"
+                       value="<s:text name="eirc.add_served_buildings"/>" />
             </td>
         </tr>
     </table>

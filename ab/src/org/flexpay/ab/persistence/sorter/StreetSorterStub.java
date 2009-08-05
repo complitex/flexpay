@@ -10,6 +10,7 @@ public class StreetSorterStub extends StreetSorter {
 	 *
 	 * @param query HQL query to update
 	 */
+	@Override
 	public void setFrom(StringBuilder query) {
 	}
 
@@ -30,4 +31,5 @@ public class StreetSorterStub extends StreetSorter {
 	@Override
 	public void setWhere(StringBuilder query) {
 	}
+
 }

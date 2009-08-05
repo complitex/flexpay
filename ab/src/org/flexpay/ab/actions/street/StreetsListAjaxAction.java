@@ -31,8 +31,8 @@ public class StreetsListAjaxAction extends FPActionWithPagerSupport<Street> {
 
 	private StreetService streetService;
 
-	@Override
 	@NotNull
+	@Override
 	public String doExecute() throws Exception {
 
 		Long streetIdLong = null;
@@ -84,8 +84,8 @@ public class StreetsListAjaxAction extends FPActionWithPagerSupport<Street> {
 	 *
 	 * @return {@link #ERROR} by default
 	 */
-	@Override
 	@NotNull
+	@Override
 	protected String getErrorResult() {
 		return SUCCESS;
 	}

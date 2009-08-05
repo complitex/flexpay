@@ -17,6 +17,7 @@ public class TownFilterAjaxAction extends FilterAjaxAction {
 	private TownService townService;
 
 	@NotNull
+	@Override
 	public String doExecute() throws FlexPayException {
 
 		Long regionIdLong = null;
@@ -55,6 +56,7 @@ public class TownFilterAjaxAction extends FilterAjaxAction {
 		return SUCCESS;
 	}
 
+	@Override
 	public void readFilterString() {
 		Town town = null;
 		if (filterValueLong == null) {
@@ -75,6 +77,7 @@ public class TownFilterAjaxAction extends FilterAjaxAction {
 		}
 	}
 
+	@Override
 	public void saveFilterValue() {
 		getUserPreferences().setTownFilterValue(filterValue);
 		getUserPreferences().setDistrictFilterValue("");

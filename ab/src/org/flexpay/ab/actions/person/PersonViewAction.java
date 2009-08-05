@@ -18,6 +18,7 @@ public class PersonViewAction extends FPActionSupport {
 	private ApartmentService apartmentService;
 
 	@NotNull
+	@Override
 	public String doExecute() throws Exception {
 
         log.debug("Object: {}", person);
@@ -43,6 +44,7 @@ public class PersonViewAction extends FPActionSupport {
 	 * @return {@link #ERROR} by default
 	 */
 	@NotNull
+	@Override
 	protected String getErrorResult() {
 		return SUCCESS;
 	}

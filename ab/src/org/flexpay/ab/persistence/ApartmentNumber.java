@@ -1,9 +1,9 @@
 package org.flexpay.ab.persistence;
 
-import org.flexpay.common.persistence.DomainObject;
-import org.flexpay.common.util.DateUtil;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
+import org.flexpay.common.persistence.DomainObject;
+import org.flexpay.common.util.DateUtil;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Date;
@@ -17,9 +17,6 @@ public class ApartmentNumber extends DomainObject implements Comparable<Apartmen
 	private Date begin;
 	private Date end;
 	private String value;
-
-	public ApartmentNumber() {
-	}
 
 	public Apartment getApartment() {
 		return this.apartment;
@@ -54,10 +51,12 @@ public class ApartmentNumber extends DomainObject implements Comparable<Apartmen
 		this.value = value;
 	}
 
+	@Override
 	public int compareTo(ApartmentNumber o) {
 		return begin.compareTo(o.begin);
 	}
 
+	@Override
 	public String toString() {
 		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE)
 				.append("id", getId())
@@ -66,4 +65,5 @@ public class ApartmentNumber extends DomainObject implements Comparable<Apartmen
 				.append("end", DateUtil.format(end))
 				.toString();
 	}
+
 }

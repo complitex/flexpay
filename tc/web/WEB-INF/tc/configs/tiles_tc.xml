@@ -4,6 +4,33 @@
 
 <tiles-definitions>
 
+    <definition name="tc.main.dicts" extends="ab.layout.standart">
+        <put-attribute name="title" value="tc.menu1.title" />
+    </definition>
+
+    <definition name="tc.main.import_export" extends="ab.layout.standart">
+        <put-attribute name="title" value="tc.menu1.title" />
+    </definition>
+
+    <definition name="tc.main.data" extends="ab.layout.standart">
+        <put-attribute name="title" value="tc.menu1.title" />
+    </definition>
+
+    <definition name="tc.main.other_dicts" extends="ab.layout.standart">
+        <put-attribute name="title" value="tc.menu1.title" />
+    </definition>
+
+    <definition name="tc.main.import_export2" extends="ab.layout.standart">
+        <put-attribute name="title" value="tc.menu1.title" />
+    </definition>
+
+    <definition name="tc.main.processes" extends="ab.layout.standart">
+        <put-attribute name="title" value="tc.menu1.title" />
+    </definition>
+
+    <definition name="tc.main.data2" extends="ab.layout.standart">
+        <put-attribute name="title" value="tc.menu1.title" />
+    </definition>
 
 	<definition name="tc.dictionaries" extends="ab.layout.standart">
 		<put-attribute name="title" value="tc.menu2.dictionaries" />
@@ -49,7 +76,7 @@
 
 	<definition name="tc.building_attributes.list" extends="tc.data">
 		<put-attribute name="title" value="tc.buildings_list.title" />
-		<put-attribute name="body" value="/WEB-INF/jsp/tc/building_attributes/buildings_list.jsp" />
+		<put-attribute name="body" value="/WEB-INF/jsp/tc/building_attributes/buildings_list_page.jsp" />
 	</definition>
 
 	<definition name="tc.building_attributes.edit" extends="tc.data">

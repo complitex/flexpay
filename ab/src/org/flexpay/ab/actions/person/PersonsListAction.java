@@ -22,6 +22,7 @@ public class PersonsListAction extends FPActionWithPagerSupport<Person> {
 	private PersonService personService;
 
 	@NotNull
+	@Override
 	protected String doExecute() throws Exception {
 
 		if (!personSearchFilter.needFilter()) {
@@ -45,6 +46,7 @@ public class PersonsListAction extends FPActionWithPagerSupport<Person> {
 	 * @return {@link #ERROR} by default
 	 */
 	@NotNull
+	@Override
 	protected String getErrorResult() {
 		return SUCCESS;
 	}

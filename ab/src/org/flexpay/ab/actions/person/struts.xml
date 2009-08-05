@@ -49,12 +49,12 @@
 				<param name="actionName">personEdit</param>
 				<param name="parse">true</param>
 				<param name="person.id">${person.id}</param>
-				<param name="countryFilter.selectedId">${countryFilter.selectedId}</param>
-				<param name="regionFilter.selectedId">${regionFilter.selectedId}</param>
-				<param name="townFilter.selectedId">${townFilter.selectedId}</param>
-				<param name="streetFilter.selectedId">${streetFilter.selectedId}</param>
-				<param name="buildingsFilter.selectedId">${buildingsFilter.selectedId}</param>
-				<param name="apartmentFilter.selectedId">${apartmentFilter.selectedId}</param>
+                <param name="countryFilter">${countryFilter}</param>
+                <param name="regionFilter">${regionFilter}</param>
+                <param name="townFilter">${townFilter}</param>
+                <param name="streetFilter">${streetFilter}</param>
+                <param name="buildingFilter">${buildingFilter}</param>
+                <param name="apartmentFilter">${apartmentFilter}</param>
 			</result>
 			<result name="redirectSuccess" type="redirect-action">
 				<param name="actionName">personEdit</param>

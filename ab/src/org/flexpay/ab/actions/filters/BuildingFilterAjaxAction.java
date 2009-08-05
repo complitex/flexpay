@@ -17,6 +17,7 @@ public class BuildingFilterAjaxAction extends FilterAjaxAction {
 	private BuildingService buildingService;
 
 	@NotNull
+	@Override
 	public String doExecute() throws FlexPayException {
 
 		Long streetIdLong;
@@ -43,6 +44,7 @@ public class BuildingFilterAjaxAction extends FilterAjaxAction {
 		return SUCCESS;
 	}
 
+	@Override
 	public void readFilterString() throws FlexPayException {
 		if (filterValueLong != null) {
 			BuildingAddress address = buildingService.readFull(new Stub<BuildingAddress>(filterValueLong));
@@ -57,6 +59,7 @@ public class BuildingFilterAjaxAction extends FilterAjaxAction {
 		}
 	}
 
+	@Override
 	public void saveFilterValue() {
 		getUserPreferences().setBuildingFilterValue(filterValue);
 		getUserPreferences().setApartmentFilterValue("");

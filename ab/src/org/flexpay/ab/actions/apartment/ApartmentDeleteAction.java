@@ -15,6 +15,7 @@ public class ApartmentDeleteAction extends FPActionSupport {
 	private ApartmentService apartmentService;
 
 	@NotNull
+	@Override
 	public String doExecute() throws Exception {
 
 		apartmentService.disable(objectIds);
@@ -30,6 +31,7 @@ public class ApartmentDeleteAction extends FPActionSupport {
 	 * @return {@link #ERROR} by default
 	 */
 	@NotNull
+	@Override
 	protected String getErrorResult() {
 		return REDIRECT_SUCCESS;
 	}

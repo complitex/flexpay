@@ -16,6 +16,7 @@ public class DistrictFilterAjaxAction extends FilterAjaxAction {
 	private DistrictService districtService;
 
 	@NotNull
+	@Override
 	public String doExecute() throws FlexPayException {
 
 		Long townIdLong;
@@ -41,6 +42,7 @@ public class DistrictFilterAjaxAction extends FilterAjaxAction {
 		return SUCCESS;
 	}
 
+	@Override
 	public void readFilterString() {
 		if (filterValueLong != null) {
 			District district = districtService.readFull(new Stub<District>(filterValueLong));
@@ -54,6 +56,7 @@ public class DistrictFilterAjaxAction extends FilterAjaxAction {
 		}
 	}
 
+	@Override
 	public void saveFilterValue() {
 		getUserPreferences().setDistrictFilterValue(filterValue);
 		getUserPreferences().setBuildingFilterValue("");

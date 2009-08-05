@@ -19,6 +19,7 @@ public class BuildingDeleteAction extends FPActionSupport {
 	private BuildingService buildingService;
 
 	@NotNull
+	@Override
 	public String doExecute() throws Exception {
 
 		boolean wasDeleted = false;
@@ -56,6 +57,7 @@ public class BuildingDeleteAction extends FPActionSupport {
 	 * @return {@link #ERROR} by default
 	 */
 	@NotNull
+	@Override
 	protected String getErrorResult() {
 		return REDIRECT_SUCCESS;
 	}

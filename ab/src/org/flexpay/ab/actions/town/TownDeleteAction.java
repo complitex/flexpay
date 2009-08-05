@@ -15,6 +15,7 @@ public class TownDeleteAction extends FPActionSupport {
 	private TownService townService;
 
 	@NotNull
+	@Override
 	public String doExecute() throws Exception {
 
 		townService.disableByIds(objectIds);
@@ -30,6 +31,7 @@ public class TownDeleteAction extends FPActionSupport {
 	 * @return {@link #ERROR} by default
 	 */
 	@NotNull
+	@Override
 	protected String getErrorResult() {
 		return REDIRECT_SUCCESS;
 	}

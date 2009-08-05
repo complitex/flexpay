@@ -24,6 +24,7 @@ public class MeasureUnitsListAction extends FPActionSupport {
 	 * @throws Exception if failure occurs
 	 */
 	@NotNull
+	@Override
 	protected String doExecute() throws Exception {
 		units = measureUnitService.listUnits();
 		return SUCCESS;
@@ -37,6 +38,7 @@ public class MeasureUnitsListAction extends FPActionSupport {
 	 * @return {@link #ERROR} by default
 	 */
 	@NotNull
+	@Override
 	protected String getErrorResult() {
 		return SUCCESS;
 	}

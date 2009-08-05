@@ -20,8 +20,8 @@ public class TownsListAjaxAction extends FPActionWithPagerSupport<Town> {
 
 	private TownService townService;
 
-	@Override
 	@NotNull
+	@Override
 	public String doExecute() throws Exception {
 
 		Long regionIdLong = null;
@@ -47,8 +47,8 @@ public class TownsListAjaxAction extends FPActionWithPagerSupport<Town> {
 	 *
 	 * @return {@link #ERROR} by default
 	 */
-	@Override
 	@NotNull
+	@Override
 	protected String getErrorResult() {
 		return SUCCESS;
 	}

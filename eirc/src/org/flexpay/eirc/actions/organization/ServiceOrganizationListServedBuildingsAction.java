@@ -25,6 +25,7 @@ public class ServiceOrganizationListServedBuildingsAction extends FPActionWithPa
 	private ServiceOrganizationService serviceOrganizationService;
 
 	@NotNull
+	@Override
 	public String doExecute() throws Exception {
 
 		if (serviceOrganization.getId() == null) {
@@ -61,6 +62,7 @@ public class ServiceOrganizationListServedBuildingsAction extends FPActionWithPa
 	 * @return {@link #ERROR} by default
 	 */
 	@NotNull
+	@Override
 	protected String getErrorResult() {
 		return SUCCESS;
 	}

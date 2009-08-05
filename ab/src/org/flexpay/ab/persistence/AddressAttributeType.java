@@ -1,5 +1,7 @@
 package org.flexpay.ab.persistence;
 
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
 import org.flexpay.ab.util.config.ApplicationConfig;
 import org.flexpay.common.persistence.DomainObjectWithStatus;
 import org.flexpay.common.persistence.Language;
@@ -29,20 +31,10 @@ public class AddressAttributeType extends DomainObjectWithStatus {
 		super(stub.getId());
 	}
 
-	/**
-	 * Getter for property 'translations'.
-	 *
-	 * @return Value for property 'translations'.
-	 */
 	public Set<AddressAttributeTypeTranslation> getTranslations() {
 		return translations;
 	}
 
-	/**
-	 * Setter for property 'translations'.
-	 *
-	 * @param translations Value to set for property 'translations'.
-	 */
 	public void setTranslations(Set<AddressAttributeTypeTranslation> translations) {
 		this.translations = translations;
 	}
@@ -97,4 +89,13 @@ public class AddressAttributeType extends DomainObjectWithStatus {
 
 		return null;
 	}
+
+	@Override
+	public String toString() {
+		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
+				append("id", getId()).
+				append("status", getStatus()).
+				toString();
+	}
+
 }

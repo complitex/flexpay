@@ -22,6 +22,7 @@ public class IdentityTypeEditAction extends FPActionSupport {
 	private IdentityTypeService identityTypeService;
 
 	@NotNull
+	@Override
 	public String doExecute() throws Exception {
 
 		if (identityType.getId() == null) {
@@ -77,6 +78,7 @@ public class IdentityTypeEditAction extends FPActionSupport {
 	 * @return {@link #ERROR} by default
 	 */
 	@NotNull
+	@Override
 	protected String getErrorResult() {
 		return INPUT;
 	}

@@ -174,4 +174,5 @@ public class Building extends DomainObjectWithStatus {
 			address.setPrimaryStatus(stub.sameId(address));
 		}
 	}
+
 }

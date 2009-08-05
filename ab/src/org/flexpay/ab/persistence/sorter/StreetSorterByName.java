@@ -16,6 +16,7 @@ public class StreetSorterByName extends StreetSorter {
 		super(lang);
 	}
 
+	@Override
 	public void setFrom(StringBuilder query) {
 		Language defaultLang = ApplicationConfig.getDefaultLanguage();
 		query
@@ -44,4 +45,5 @@ public class StreetSorterByName extends StreetSorter {
 				.append("sortNameTemporal.begin <= current_date() and ")
 				.append("sortNameTemporal.end > current_date()) ");
 	}
+
 }

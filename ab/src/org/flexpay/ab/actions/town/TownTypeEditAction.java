@@ -23,6 +23,7 @@ public class TownTypeEditAction extends FPActionSupport {
 	private TownTypeService townTypeService;
 
 	@NotNull
+	@Override
 	public String doExecute() throws Exception {
 
 		if (townType.getId() == null) {
@@ -66,6 +67,7 @@ public class TownTypeEditAction extends FPActionSupport {
 	 * @return {@link #ERROR} by default
 	 */
 	@NotNull
+	@Override
 	protected String getErrorResult() {
 		return INPUT;
 	}

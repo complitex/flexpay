@@ -12,7 +12,7 @@ import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Required;
 
 /**
- * Same as {@link BuildingsFilterDependentAction} but uses StreetNameFilter
+ * Uses StreetNameFilter
  */
 public abstract class BuildingsFilterDependent2Action extends FPActionWithPagerSupport {
 

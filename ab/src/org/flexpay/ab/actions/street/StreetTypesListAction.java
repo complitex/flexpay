@@ -15,6 +15,7 @@ public class StreetTypesListAction extends FPActionSupport {
 	private StreetTypeService streetTypeService;
 
 	@NotNull
+	@Override
 	public String doExecute() throws Exception {
 		streetTypes = streetTypeService.getEntities();
 
@@ -29,6 +30,7 @@ public class StreetTypesListAction extends FPActionSupport {
 	 * @return {@link #ERROR} by default
 	 */
 	@NotNull
+	@Override
 	protected String getErrorResult() {
 		return SUCCESS;
 	}

@@ -123,6 +123,7 @@
         </property>
     </bean>
 
+<!--
 	<bean name="eirc_quittances_payment" parent="eirc_quittances"
 		  p:name="eirc.quittance_payment"
 		  p:title="eirc.quittances.quittance_pay.title"
@@ -132,6 +133,7 @@
             <util:constant static-field="org.flexpay.eirc.service.Roles.ROLE_MENU_EIRC_QUITTANCES_PAYFORM" />
         </property>
     </bean>
+-->
 
 	<bean name="eirc_quittances_packets" parent="eirc_quittances"
 		  p:name="eirc.packets"
@@ -305,6 +307,7 @@
         </property>
     </bean>
 
+<!--
 	<bean parent="eirc_quittances_payment"
 		  p:name="eirc.quittance_pay_form"
 		  p:title="eirc.quittances.payment.number_search"
@@ -334,6 +337,7 @@
             <util:constant static-field="org.flexpay.eirc.service.Roles.ROLE_MENU_EIRC_QUITTANCES_PAYFORM" />
         </property>
     </bean>
+-->
 
 	<bean parent="eirc_quittances_packets"
 		  p:name="eirc.quittance_packet"

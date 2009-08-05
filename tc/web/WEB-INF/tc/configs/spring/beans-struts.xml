@@ -36,12 +36,6 @@
 	<!-- end of tariff calculation rules files section -->
 
 	<!-- building attributes section -->
-	<bean id="tcBuildingsListAction"
-		  class="org.flexpay.tc.actions.buildingattributes.BuildingsListAction"
-		  p:buildingService-ref="buildingService"
-		  p:parentService-ref="streetService"
-		  scope="prototype" />
-
 	<bean id="buildingAttributesEditAction"
 		  class="org.flexpay.tc.actions.buildingattributes.BuildingAttributesEditAction"
 		  p:addressService-ref="addressService"

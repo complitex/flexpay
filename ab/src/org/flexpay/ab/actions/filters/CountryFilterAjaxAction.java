@@ -19,6 +19,7 @@ public class CountryFilterAjaxAction extends FilterAjaxAction {
 	private CountryService countryService;
 
 	@NotNull
+	@Override
 	public String doExecute() throws FlexPayException {
 
 		List<Country> countries = countryService.findByQuery("%" + q + "%");
@@ -35,6 +36,7 @@ public class CountryFilterAjaxAction extends FilterAjaxAction {
 		return SUCCESS;
 	}
 
+	@Override
 	public void readFilterString() {
 		Country country;
 		if (filterValueLong == null) {
@@ -46,6 +48,7 @@ public class CountryFilterAjaxAction extends FilterAjaxAction {
 		filterString = getTranslation(country.getCountryNames()).getName();
 	}
 
+	@Override
 	public void saveFilterValue() {
 		getUserPreferences().setCountryFilterValue(filterValue);
 		getUserPreferences().setRegionFilterValue("");

@@ -94,7 +94,6 @@
 			<result type="tiles">eirc.organization.payment_point.details</result>
 		</action>
 
-
         <!-- Service organizations -->
         <action name="serviceOrganizationsList" class="serviceOrganizationsListAction">
             <result type="tiles">eirc.organization.service_organizations.list</result>
@@ -111,6 +110,19 @@
 
         <action name="serviceOrganizationListServedBuildings" class="serviceOrganizationListServedBuildingsAction">
             <result type="tiles">eirc.organization.service_organization.list_served_buildings</result>
+        </action>
+
+        <action name="serviceOrganizationListServedBuildingsAjax" class="buildingsListAjaxAction">
+            <result>/WEB-INF/jsp/eirc/organizations/buildings_list.jsp</result>
+        </action>
+
+        <action name="serviceOrganizationAddServedBuildingPage" class="serviceOrganizationAddServedBuildingPageAction">
+            <result name="input" type="tiles">eirc.organization.service_organization.add_served_building</result>
+            <result name="redirectSuccess" type="redirect-action">
+                <param name="actionName">serviceOrganizationListServedBuildings</param>
+                <param name="parse">true</param>
+                <param name="serviceOrganization.id">${serviceOrganization.id}</param>
+            </result>
         </action>
 
         <action name="serviceOrganizationAddServedBuilding" class="serviceOrganizationAddServedBuildingAction">

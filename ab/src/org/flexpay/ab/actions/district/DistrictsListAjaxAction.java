@@ -18,8 +18,8 @@ public class DistrictsListAjaxAction extends FPActionWithPagerSupport<DistrictNa
 
 	private DistrictService districtService;
 
-	@Override
 	@NotNull
+	@Override
 	public String doExecute() throws Exception {
 
 		Long townIdLong;
@@ -44,8 +44,8 @@ public class DistrictsListAjaxAction extends FPActionWithPagerSupport<DistrictNa
 	 *
 	 * @return {@link #ERROR} by default
 	 */
-	@Override
 	@NotNull
+	@Override
 	protected String getErrorResult() {
 		return SUCCESS;
 	}

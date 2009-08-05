@@ -46,6 +46,8 @@
 
     function pagerAjax(element) {
         var isSelect = element.name == "pager.pageSize";
+        var id = "result";
+        FF.loading(id);
         $.post("<s:url action="apartmentsListAjax" namespace="/dicts" includeParams="none"/>",
                 {
                     buildingId: FF.filters["building"].value.val(),
@@ -56,7 +58,7 @@
                     "pager.pageSize": isSelect ? element.value : $('select[name="pager.pageSize"]').val()
                 },
                 function(data) {
-                    $("#result").html(data);
+                    $("#" + id).html(data);
                 });
     }
 

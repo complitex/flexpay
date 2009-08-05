@@ -18,4 +18,5 @@ public abstract class StreetSorter extends I18nObjectSorter {
 	public void setStreetField(String streetField) {
 		this.streetField = streetField;
 	}
+
 }

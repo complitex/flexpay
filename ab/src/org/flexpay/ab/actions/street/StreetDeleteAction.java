@@ -15,6 +15,7 @@ public class StreetDeleteAction extends FPActionSupport {
 	private StreetService streetService;
 
 	@NotNull
+	@Override
 	public String doExecute() throws Exception {
 
 		streetService.disableByIds(objectIds);
@@ -30,6 +31,7 @@ public class StreetDeleteAction extends FPActionSupport {
 	 * @return {@link #ERROR} by default
 	 */
 	@NotNull
+	@Override
 	protected String getErrorResult() {
 		return REDIRECT_SUCCESS;
 	}

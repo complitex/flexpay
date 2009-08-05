@@ -7,7 +7,6 @@
 	<definition name="ab.layout.standart" template="/WEB-INF/jsp/common/layouts/standart.jsp">
 		<put-attribute name="title" value="ab.main.title" />
 		<put-attribute name="header" value="/WEB-INF/jsp/common/header.jsp" />
-		<!--<put-attribute name="body" value="/WEB-INF/jsp/ab/main.jsp" />-->
         <put-attribute name="breadCrumbs" value="/WEB-INF/jsp/common/layouts/bread_crumbs.jsp" />
         <put-attribute name="language" value="/WEB-INF/jsp/common/layouts/language_switch.jsp" />
 		<put-attribute name="tip" value="/WEB-INF/jsp/common/includes/tip.jsp" />
@@ -15,7 +14,6 @@
 	</definition>
 
 	<definition name="ab.layout.content" template="/WEB-INF/jsp/common/layouts/content_only.jsp">
-		<!--<put-attribute name="body" value="/WEB-INF/jsp/ab/main.jsp" />-->
 	</definition>
 
 	<definition name="ab.main" extends="ab.layout.standart">

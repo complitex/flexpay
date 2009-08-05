@@ -23,6 +23,7 @@ public class StreetTypeEditAction extends FPActionSupport {
 	private StreetTypeService streetTypeService;
 
 	@NotNull
+	@Override
 	public String doExecute() throws Exception {
 
 		if (streetType.getId() == null) {
@@ -66,6 +67,7 @@ public class StreetTypeEditAction extends FPActionSupport {
 	 * @return {@link #ERROR} by default
 	 */
 	@NotNull
+	@Override
 	protected String getErrorResult() {
 		return INPUT;
 	}

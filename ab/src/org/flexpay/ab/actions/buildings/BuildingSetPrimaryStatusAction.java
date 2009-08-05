@@ -18,6 +18,7 @@ public class BuildingSetPrimaryStatusAction extends FPActionSupport {
 	private BuildingService buildingService;
 
 	@NotNull
+	@Override
 	public String doExecute() throws Exception {
 
 		Stub<BuildingAddress> addressStub = stub(buildings);
@@ -41,6 +42,7 @@ public class BuildingSetPrimaryStatusAction extends FPActionSupport {
 	 * @return {@link #ERROR} by default
 	 */
 	@NotNull
+	@Override
 	protected String getErrorResult() {
 		return REDIRECT_SUCCESS;
 	}
@@ -65,4 +67,5 @@ public class BuildingSetPrimaryStatusAction extends FPActionSupport {
 	public void setBuildingService(BuildingService buildingService) {
 		this.buildingService = buildingService;
 	}
+
 }

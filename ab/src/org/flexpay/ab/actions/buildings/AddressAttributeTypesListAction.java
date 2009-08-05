@@ -15,6 +15,7 @@ public class AddressAttributeTypesListAction extends FPActionSupport {
 	private AddressAttributeTypeService addressAttributeTypeService;
 
 	@NotNull
+	@Override
 	public String doExecute() {
 		types = addressAttributeTypeService.getAttributeTypes();
 
@@ -29,6 +30,7 @@ public class AddressAttributeTypesListAction extends FPActionSupport {
 	 * @return {@link #ERROR} by default
 	 */
 	@NotNull
+	@Override
 	protected String getErrorResult() {
 		return SUCCESS;
 	}

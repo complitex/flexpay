@@ -19,6 +19,7 @@ public class PersonSaveFIOAction extends FPActionSupport {
 	private IdentityTypeService identityTypeService;
 
 	@NotNull
+	@Override
 	public String doExecute() throws Exception {
 
 		if (isNotSubmit()) {
@@ -70,6 +71,7 @@ public class PersonSaveFIOAction extends FPActionSupport {
 	 * @return {@link #ERROR} by default
 	 */
 	@NotNull
+	@Override
 	protected String getErrorResult() {
 		return REDIRECT_ERROR;
 	}

@@ -15,6 +15,7 @@ public class IdentityTypesListAction extends FPActionSupport {
 	private IdentityTypeService identityTypeService;
 
 	@NotNull
+	@Override
 	public String doExecute() throws Exception {
 		identityTypes = identityTypeService.getEntities();
 
@@ -29,6 +30,7 @@ public class IdentityTypesListAction extends FPActionSupport {
 	 * @return {@link #ERROR} by default
 	 */
 	@NotNull
+	@Override
 	protected String getErrorResult() {
 		return SUCCESS;
 	}

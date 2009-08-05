@@ -19,8 +19,8 @@ public class RegionsListAjaxAction extends FPActionWithPagerSupport<Region> {
 
 	private RegionService regionService;
 
-	@Override
 	@NotNull
+	@Override
 	public String doExecute() throws Exception {
 
 		Long countryIdLong = null;
@@ -46,8 +46,8 @@ public class RegionsListAjaxAction extends FPActionWithPagerSupport<Region> {
 	 *
 	 * @return {@link #ERROR} by default
 	 */
-	@Override
 	@NotNull
+	@Override
 	protected String getErrorResult() {
 		return SUCCESS;
 	}

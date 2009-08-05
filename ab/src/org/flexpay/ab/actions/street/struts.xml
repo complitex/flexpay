@@ -34,14 +34,6 @@
 			</result>
 		</action>
 
-		<action name="streetSearchAjax" class="streetSearchAjaxAction">
-            <result>/WEB-INF/jsp/ab/filters/streets_search_response.jsp</result>
-		</action>
-
-		<!--<action name="building_ajax" class="buildingAjaxAction">-->
-			<!--<result name="success" type="dispatcher">/WEB-INF/jsp/eirc/data/correspondence/building_ajax.jsp</result>-->
-		<!--</action>-->
-
 	</package>
 
 	<package name="street_types" namespace="/dicts" extends="common">

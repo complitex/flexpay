@@ -16,6 +16,7 @@ public class StreetTypeViewAction extends FPActionSupport {
 	private StreetTypeService streetTypeService;
 
 	@NotNull
+	@Override
 	public String doExecute() throws Exception {
 		streetType = streetTypeService.read(new Stub<StreetType>(id));
 
@@ -30,6 +31,7 @@ public class StreetTypeViewAction extends FPActionSupport {
 	 * @return {@link #ERROR} by default
 	 */
 	@NotNull
+	@Override
 	protected String getErrorResult() {
 		return SUCCESS;
 	}
