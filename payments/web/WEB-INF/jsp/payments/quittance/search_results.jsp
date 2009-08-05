@@ -42,9 +42,8 @@
 						<td class="col"><s:textfield name="payments['%{#serviceIndx}']"
 													 id="payments_%{#serviceIndx}"
 													 value="%{outgoingBalance}"
-													 onchange="onChangePaymentHandler('payments_%{#serviceIndx}');"
+													 onchange="onChangePaymentHandler('payments_%{#serviceIndx}');"													 
 													 cssStyle="width:100%;text-align:right;"/></td>
-
 					</tr>
 				</s:iterator>
 			</s:iterator>

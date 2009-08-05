@@ -105,14 +105,12 @@
 		if (isValidPaymentValue(paymentValue)) {
 			// hide error
 			$(errorCell).text('');
-//			$(previousRow).css('display', 'none');
 			$(previousRow).hide();
 			removeErrorField(fieldId);
 			return true;
 		} else {
 			// show error
 			$(errorCell).text('<s:text name="eirc.error.quittances.quittance_pay.invalid_pay_value"/>');
-//			$(previousRow).css("display", "table-row");
 			$(previousRow).show();
 			addErrorField(fieldId);
 			return false;
@@ -393,6 +391,28 @@
 
 		$('#payments_<s:property value="#serviceIndx"/>').bind('keypress', function(event) {
 			updateCurrentFieldIndex(event);
+
+			console.log('Key code: ' + event.keyCode);
+
+			switch (event.keyCode) {
+				case FP.TAB_KEY_CODE:
+				case FP.ENTER_KEY_CODE:
+				case FP.BACKSPACE_KEY_CODE:
+				case FP.DELETE_KEY_CODE:
+				case FP.LEFT_KEY_CODE:
+				case FP.RIGHT_KEY_CODE:
+				case FP.HOME_KEY_CODE:
+				case FP.END_KEY_CODE:
+					break;
+				case 0:
+					if (!(event.charCode == 46 || (event.charCode >= 48 && event.charCode <= 57))) {
+						event.preventDefault();
+					}
+					break;
+				default:					
+					event.preventDefault();
+					break;
+			}
 		});
 		</s:iterator>
 		</s:iterator>
