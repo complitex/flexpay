@@ -11,6 +11,8 @@ public class TestData {
 
 	public static final Stub<Subdivision> SUBDIVISION_1 = new Stub<Subdivision>(1L);
 
+	public static final Stub<PaymentPoint> PAYMENT_POINT_1 = new Stub<PaymentPoint>(1L);
+
 	public static final Stub<Cashbox> CASHBOX_1 = new Stub<Cashbox>(1L);
 	public static final Stub<Cashbox> CASHBOX_2 = new Stub<Cashbox>(2L);
 }

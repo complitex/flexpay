@@ -112,8 +112,8 @@ public class OperationServiceImpl implements OperationService {
 		return operationDao.listPayments(cashbox.getId(), beginDate, endDate, OperationStatus.REGISTERED);
 	}
 
-	public List<Operation> listReceivedPayments(PaymentPoint paymentPoint, Date beginDate, Date endDate) {
-		return operationDao.listPaymentsByPaymentPoint(paymentPoint.getId(), beginDate, endDate, OperationStatus.REGISTERED);
+	public List<Operation> listReceivedPayments(Stub<PaymentPoint> stub, Date beginDate, Date endDate) {
+		return operationDao.listPaymentsByPaymentPoint(stub.getId(), beginDate, endDate, OperationStatus.REGISTERED);
 	}
 
 	public List<Operation> listReceivedPayments(Organization organization, Date beginDate, Date endDate) {

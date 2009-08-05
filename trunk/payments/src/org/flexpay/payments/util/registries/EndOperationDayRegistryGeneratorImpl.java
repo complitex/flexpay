@@ -2,6 +2,7 @@ package org.flexpay.payments.util.registries;
 
 import org.apache.commons.lang.StringUtils;
 import org.flexpay.common.exception.FlexPayException;
+import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.persistence.registry.*;
 import org.flexpay.common.service.*;
 import org.flexpay.common.util.RegistryUtil;
@@ -45,7 +46,7 @@ public class EndOperationDayRegistryGeneratorImpl implements EndOperationDayRegi
 
 		log.info("Start generating end operation day registry...");
 
-		List<Operation> operations = operationService.listReceivedPayments(paymentPoint, beginDate, endDate);
+		List<Operation> operations = operationService.listReceivedPayments(stub(paymentPoint), beginDate, endDate);
 		log.debug("Found {} operations", operations.size());
 
 		Registry registry = new Registry();

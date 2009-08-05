@@ -22,9 +22,9 @@ import org.flexpay.orgs.service.ServiceProviderService;
 import org.flexpay.payments.persistence.*;
 import org.flexpay.payments.process.export.GeneratePaymentsRegistry;
 import org.flexpay.payments.service.*;
-import org.flexpay.payments.service.Roles;
 import org.flexpay.payments.test.PaymentsSpringBeanAwareTestCase;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.quartz.JobExecutionContext;
 import org.quartz.SchedulerException;
@@ -360,6 +360,7 @@ public class TestGeneratePaymentsRegistry extends PaymentsSpringBeanAwareTestCas
 	}
 
 	@Test
+	@Ignore
 	public void testStartTradingDay() throws ProcessInstanceException, ProcessDefinitionException, InterruptedException, SchedulerException, IOException {
 		GeneratePaymentsRegistry jobScheduler = new GeneratePaymentsRegistry();
 		jobScheduler.setProcessManager(tProcessManager);

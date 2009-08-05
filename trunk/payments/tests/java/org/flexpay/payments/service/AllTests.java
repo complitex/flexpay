@@ -8,7 +8,8 @@ import org.junit.runners.Suite;
 		org.flexpay.payments.service.statistics.AllTests.class,
 		TestDocumentService.class,
 		TestServiceDao.class,
-		TestObjectsServices.class
+		TestObjectsServices.class,
+		TestOperationService.class
 })
 public class AllTests {
 
