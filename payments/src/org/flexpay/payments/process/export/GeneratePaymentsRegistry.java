@@ -39,7 +39,7 @@ public class GeneratePaymentsRegistry extends QuartzJobBean {
     private static final Integer PAGE_SIZE = 20;
 
     private Long registeredOrganizationId;
-    private FileSystemResource privateKey;
+    private Resource privateKey;
 
     private ProcessManager processManager;
     private ServiceProviderService serviceProviderService;
@@ -94,13 +94,13 @@ public class GeneratePaymentsRegistry extends QuartzJobBean {
                         parameters.put("ServiceProviderId", serviceProvider.getId());
                         parameters.put("RegisteredOrganizationId", registeredOrganizationId);
                         parameters.put("Email", serviceProvider.getEmail());
-                        //try {
-                        File f = privateKey.getFile();
-                        log.debug("set PrivateKey='{}'", f.getAbsolutePath());
-                        parameters.put("PrivateKey", f);
-                        //} catch (IOException e) {
-                        //    log.error("did not set PrivateKey URI={}", e);
-                        //}
+                        try {
+                            File f = privateKey.getFile();
+                            log.debug("set PrivateKey='{}'", f.getAbsolutePath());
+                            parameters.put("PrivateKey", f);
+                        } catch (IOException e) {
+                            log.error("did not set PrivateKey URI={}", e);
+                        }
 
                         long processId = processManager.createProcess("GeneratePaymentsRegisryProcess", parameters);
                         listProcessInstanesId.add(processId);
@@ -211,7 +211,7 @@ public class GeneratePaymentsRegistry extends QuartzJobBean {
         this.serviceProviderAttributeService = serviceProviderAttributeService;
     }
 
-    public void setPrivateKey(FileSystemResource privateKey) {
-        this.privateKey = privateKey;
+    public void setPrivateKey(String privateKey) {
+        this.privateKey = new FileSystemResource(privateKey);
     }
 }
