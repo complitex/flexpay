@@ -11,6 +11,7 @@ import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.orgs.service.OrganizationService;
 import org.flexpay.payments.process.export.util.GeneratePaymentsMBRegistry;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.core.io.Resource;
 
 import java.io.*;
 import java.util.Map;
@@ -89,19 +90,9 @@ public class GeneratePaymentsMBRegistryJob extends Job {
 		}
 
         if (parameters.containsKey("PrivateKey")) {
-            String privateKey = (String) parameters.get("PrivateKey");
-            File privateKeyFile = null;
-            try {
-                URI uri = new URI(privateKey);
-                privateKeyFile = new File(uri);
-            } catch (Exception e) {
-                log.debug("Private key is not uri '{}': {}", privateKey, e);
-            }
+            File privateKeyFile = (File)parameters.get("PrivateKey");
             DataInputStream dis = null;
             try {
-                if (privateKeyFile == null || !privateKeyFile.exists()) {
-                    privateKeyFile = new File (privateKey);
-                }
                 dis = new DataInputStream(new FileInputStream(privateKeyFile));
                 byte[] privKeyBytes = new byte[(int)privateKeyFile.length()];
                 dis.read(privKeyBytes);
@@ -119,7 +110,7 @@ public class GeneratePaymentsMBRegistryJob extends Job {
 
                 generatePaymentsMBRegistry.setSignature(instance);                
             } catch (Exception e) {
-                log.error("Error create signature '{}': {}", privateKey, e);
+                log.error("Error create signature '{}': {}", privateKeyFile.getAbsolutePath(), e);
             } finally {
                 if (dis != null) {
                     try {

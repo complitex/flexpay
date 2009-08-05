@@ -21,8 +21,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.quartz.QuartzJobBean;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.core.io.Resource;
 
 import java.io.Serializable;
+import java.io.IOException;
+import java.io.File;
 import java.util.*;
 
 public class GeneratePaymentsRegistry extends QuartzJobBean {
@@ -35,7 +38,7 @@ public class GeneratePaymentsRegistry extends QuartzJobBean {
     private static final Integer PAGE_SIZE = 20;
 
     private Long registeredOrganizationId;
-    private String privateKey;
+    private Resource privateKey;
 
     private ProcessManager processManager;
     private ServiceProviderService serviceProviderService;
@@ -90,8 +93,13 @@ public class GeneratePaymentsRegistry extends QuartzJobBean {
                         parameters.put("ServiceProviderId", serviceProvider.getId());
                         parameters.put("RegisteredOrganizationId", registeredOrganizationId);
                         parameters.put("Email", serviceProvider.getEmail());
-                        log.debug("set PrivateKey='{}'", privateKey);
-                        parameters.put("PrivateKey", privateKey);
+                        try {
+                            File f = privateKey.getFile();
+                            log.debug("set PrivateKey='{}'", f.getAbsolutePath());
+                            parameters.put("PrivateKey", f);
+                        } catch (IOException e) {
+                            log.error("did not set PrivateKey", e);
+                        }
 
                         long processId = processManager.createProcess("GeneratePaymentsRegisryProcess", parameters);
                         listProcessInstanesId.add(processId);
@@ -202,7 +210,7 @@ public class GeneratePaymentsRegistry extends QuartzJobBean {
         this.serviceProviderAttributeService = serviceProviderAttributeService;
     }
 
-    public void setPrivateKey(String privateKey) {
+    public void setPrivateKey(Resource privateKey) {
         this.privateKey = privateKey;
     }
 }
