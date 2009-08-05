@@ -540,6 +540,15 @@ INSERT INTO payments_operations_tbl (id, version, address, payer_fio, level_id, 
 				220.00, 500.00, 280.00, null, null, 'Семёнов А.Н.');
 SELECT @operation_3:=3;
 
+-- Registered operation
+INSERT INTO payments_operations_tbl (id, version, address, payer_fio, level_id, status_id, type_id,
+		creator, creation_date, creator_organization_id, payment_point_id, register_user, register_date, register_organization_id,
+		operation_summ, operation_input_summ, change_summ, registry_record_id, reference_operation_id, cashier_fio)
+		VALUES (4, 0, 'ул. Иванова, д.27, кв.330', 'Федько М.А.', @operation_level_3, @operation_status_2, @operation_type_1,
+				'asemenov', '2009-04-14 14:20', @organization_tszh, @payment_point_1, 'asemenov', '2009-04-14 14:41', @organization_tszh,
+				220.00, 500.00, 280.00, null, null, 'Семёнов А.Н.');
+SELECT @operation_4:=4;
+
 -- init documents
 INSERT INTO payments_documents_tbl (version, operation_id, address, payer_fio, type_id, status_id,
 		service_id, summ, creditor_id, debtor_id, creditor_organization_id, debtor_organization_id,
@@ -580,6 +589,13 @@ INSERT INTO payments_documents_tbl (version, operation_id, address, payer_fio, t
 				@service_50, 220.00, '123123123', '09012345067', @organization_zhko, @organization_tszh,
 				null, null);
 SELECT @document_5:=last_insert_id();
+
+INSERT INTO payments_documents_tbl (version, operation_id, address, payer_fio, type_id, status_id,
+		service_id, summ, creditor_id, debtor_id, creditor_organization_id, debtor_organization_id,
+		reference_document_id, registry_record_id)
+		VALUES (0, @operation_4, 'ул. Иванова, д.27, кв.330', 'Федько М.А.', @doc_type_1, @doc_status_4,
+				@service_50, 220.00, '123123123', '09012345067', @organization_zhko, @organization_tszh,
+				null, null);
 
 -- Init users payment points
 update common_users_tbl set payments_payment_point_id=1

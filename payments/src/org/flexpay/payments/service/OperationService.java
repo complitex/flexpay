@@ -123,13 +123,13 @@ public interface OperationService {
 	/**
 	 * List of all payment operations which has status REGISTERED inside time interval and organization
 	 *
-	 * @param paymentPoint paymentPoint
-	 * @param beginDate	lower bound for operation registration date
-	 * @param endDate	  higher bound for operation registration date
+	 * @param stub Payment point stub
+	 * @param beginDate lower bound for operation registration date
+	 * @param endDate   higher bound for operation registration date
 	 * @return list of payment operations
 	 */
 	@Secured (Roles.OPERATION_READ)
-	List<Operation> listReceivedPayments(PaymentPoint paymentPoint, Date beginDate, Date endDate);
+	List<Operation> listReceivedPayments(Stub<PaymentPoint> stub, Date beginDate, Date endDate);
 
 	/**
 	 * List of all payment operations which has status REGISTERED inside time interval and organization
