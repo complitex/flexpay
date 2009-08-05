@@ -55,7 +55,6 @@ public class PaymentOperationReportAction extends PaymentOperationAction {
 			return SUCCESS;
 		}
 
-
 		Operation op = operationService.read(new Stub<Operation>(operationId));
 		if (!copy) {
 			fillOperation(op);
@@ -69,9 +68,9 @@ public class PaymentOperationReportAction extends PaymentOperationAction {
 
 		if (copy) {
 			form.setQuittanceNumber(form.getQuittanceNumber() + " " + getText("payments.quittance.copy"));
-		} else {
-			addPrintHistoryRecord();
 		}
+
+		addPrintHistoryRecord();
 
 		Map<String, Object> params = map(
 				ar("operationDate", "organizationName", "quittanceNumber",

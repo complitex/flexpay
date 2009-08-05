@@ -18,6 +18,10 @@
 			<result type="tiles">payments.operations.list</result>
 		</action>
 
+		<action name="createBlankOperation" class="createBlankOperationAction">
+			<result>/WEB-INF/jsp/payments/operations/blank_operation_response.jsp</result>
+		</action>
+		
 	</package>
 
 </struts>
