@@ -97,11 +97,20 @@
 		  p:serviceOrganizationService-ref="eircServiceOrganizationService"
 		  p:addressService-ref="addressService" />
 
-	<bean id="serviceOrganizationAddServedBuildingAction" scope="prototype"
+    <bean id="servedBuildingsListAction"
+          class="org.flexpay.common.actions.StaticPageAction"
+          p:crumbNameKey="eirc.crumbs.served_buildings_list"
+          scope="prototype" />
+
+	<bean id="serviceOrganizationAddServedBuildingAction"
 		  class="org.flexpay.eirc.actions.organization.ServiceOrganizationAddServedBuildingAction"
-		  p:parentService-ref="streetService"
-		  p:buildingService-ref="buildingService"
-		  p:serviceOrganizationService-ref="eircServiceOrganizationService" />
+		  p:serviceOrganizationService-ref="eircServiceOrganizationService"
+          scope="prototype" />
+
+    <bean id="serviceOrganizationAddServedBuildingPageAction"
+          class="org.flexpay.eirc.actions.organization.ServiceOrganizationAddServedBuildingPageAction"
+          p:serviceOrganizationService-ref="eircServiceOrganizationService"
+          scope="prototype" />
 
 	<bean id="serviceOrganizationRemoveServedBuildingsAction" scope="prototype"
 		  class="org.flexpay.eirc.actions.organization.ServiceOrganizationRemoveServedBuildingsAction"

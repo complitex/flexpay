@@ -19,8 +19,8 @@ public class BuildingsListAjaxAction extends FPActionWithPagerSupport<BuildingAd
 
 	private BuildingService buildingService;
 
-	@Override
 	@NotNull
+	@Override
 	public String doExecute() throws Exception {
 
 		Long streetIdLong;
@@ -45,8 +45,8 @@ public class BuildingsListAjaxAction extends FPActionWithPagerSupport<BuildingAd
 	 *
 	 * @return {@link #ERROR} by default
 	 */
-	@Override
 	@NotNull
+	@Override
 	protected String getErrorResult() {
 		return SUCCESS;
 	}

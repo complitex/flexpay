@@ -23,8 +23,8 @@ public class ApartmentsListAjaxAction extends FPActionWithPagerSupport<Apartment
 
 	private ApartmentService apartmentService;
 
-	@Override
 	@NotNull
+	@Override
 	public String doExecute() throws Exception {
 
 		List<ObjectSorter> sorters = CollectionUtils.<ObjectSorter>list(apartmentSorter);
@@ -55,8 +55,8 @@ public class ApartmentsListAjaxAction extends FPActionWithPagerSupport<Apartment
 	 *
 	 * @return {@link #ERROR} by default
 	 */
-	@Override
 	@NotNull
+	@Override
 	protected String getErrorResult() {
 		return SUCCESS;
 	}

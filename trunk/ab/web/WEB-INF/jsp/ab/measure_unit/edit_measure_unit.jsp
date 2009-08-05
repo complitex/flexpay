@@ -1,4 +1,3 @@
-
 <%@ include file="/WEB-INF/jsp/common/taglibs.jsp" %>
 
 <s:actionerror />
@@ -14,8 +13,9 @@
             </td>
         </tr>
 		<tr valign="middle">
-			<td colspan="2"><input type="submit" class="btn-exit" name="submitted"
-								   value="<s:text name="common.save"/>"/></td>
+			<td colspan="2">
+                <input type="submit" class="btn-exit" name="submitted" value="<s:text name="common.save"/>" />
+            </td>
 		</tr>
 	</table>
 </s:form>

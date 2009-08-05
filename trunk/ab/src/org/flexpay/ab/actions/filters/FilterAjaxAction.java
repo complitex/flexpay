@@ -42,6 +42,7 @@ public abstract class FilterAjaxAction extends FPActionSupport {
 	protected Boolean saveFilterValue;
 	protected List<FilterObject> foundObjects;
 
+	@Override
 	public String execute() throws Exception {
 
 		try {
@@ -85,6 +86,7 @@ public abstract class FilterAjaxAction extends FPActionSupport {
 	 * @return {@link #ERROR} by default
 	 */
 	@NotNull
+	@Override
 	protected String getErrorResult() {
 		return SUCCESS;
 	}
@@ -125,7 +127,9 @@ public abstract class FilterAjaxAction extends FPActionSupport {
 		return foundObjects;
 	}
 
+	@Override
 	public AbUserPreferences getUserPreferences() {
 		return (AbUserPreferences) super.getUserPreferences();
 	}
+
 }

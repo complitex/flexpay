@@ -23,6 +23,7 @@ public class BuildingViewAction extends FPActionSupport {
 	}
 
 	@NotNull
+	@Override
 	public String doExecute() throws FlexPayException {
 
 		if (building.getId() == null) {

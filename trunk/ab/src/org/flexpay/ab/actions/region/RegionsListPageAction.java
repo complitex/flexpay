@@ -8,8 +8,8 @@ public class RegionsListPageAction extends FPActionSupport {
 
 	private String countryFilter;
 
-	@Override
 	@NotNull
+	@Override
 	protected String doExecute() throws Exception {
 		if (countryFilter != null) {
 			AbUserPreferences up = (AbUserPreferences) getUserPreferences();

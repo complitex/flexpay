@@ -30,6 +30,7 @@ public class MeasureUnitEditAction extends FPActionSupport {
 	 * @throws Exception if failure occurs
 	 */
 	@NotNull
+	@Override
 	protected String doExecute() throws Exception {
 
 		if (measureUnit.getId() == null) {
@@ -82,6 +83,7 @@ public class MeasureUnitEditAction extends FPActionSupport {
 	 * @return {@link #ERROR} by default
 	 */
 	@NotNull
+	@Override
 	protected String getErrorResult() {
 		return INPUT;
 	}

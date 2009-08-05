@@ -1,16 +1,6 @@
 package org.flexpay.ab.actions.district;
 
-import org.apache.commons.collections.ArrayStack;
-import org.flexpay.ab.actions.nametimedependent.DeleteAction;
-import org.flexpay.ab.persistence.District;
-import org.flexpay.ab.persistence.DistrictName;
-import org.flexpay.ab.persistence.DistrictNameTemporal;
-import org.flexpay.ab.persistence.DistrictNameTranslation;
-import org.flexpay.ab.persistence.filters.CountryFilter;
-import org.flexpay.ab.persistence.filters.RegionFilter;
-import org.flexpay.ab.persistence.filters.TownFilter;
 import org.flexpay.ab.service.DistrictService;
-import org.flexpay.ab.service.ApartmentService;
 import static org.flexpay.common.util.CollectionUtils.set;
 import org.flexpay.common.actions.FPActionSupport;
 import org.jetbrains.annotations.NotNull;
@@ -25,6 +15,7 @@ public class DistrictDeleteAction extends FPActionSupport {
 	private DistrictService districtService;
 
 	@NotNull
+	@Override
 	public String doExecute() throws Exception {
 
 		districtService.disableByIds(objectIds);
@@ -40,6 +31,7 @@ public class DistrictDeleteAction extends FPActionSupport {
 	 * @return {@link #ERROR} by default
 	 */
 	@NotNull
+	@Override
 	protected String getErrorResult() {
 		return REDIRECT_SUCCESS;
 	}

@@ -1,12 +1,10 @@
 package org.flexpay.ab.actions.person;
 
-import org.flexpay.ab.actions.apartment.ApartmentFilterDependentAction;
-import org.flexpay.ab.persistence.Person;
-import org.flexpay.ab.persistence.PersonIdentity;
-import org.flexpay.ab.persistence.PersonRegistration;
-import org.flexpay.ab.service.ApartmentService;
-import org.flexpay.ab.service.PersonService;
+import org.flexpay.ab.persistence.*;
+import org.flexpay.ab.service.*;
 import org.flexpay.ab.util.config.ApplicationConfig;
+import org.flexpay.common.actions.FPActionSupport;
+import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.util.DateUtil;
 import org.jetbrains.annotations.NotNull;
@@ -14,19 +12,30 @@ import org.springframework.beans.factory.annotation.Required;
 
 import java.util.Date;
 
-public class PersonEditAction extends ApartmentFilterDependentAction {
+public class PersonEditAction extends FPActionSupport {
 
 	private Person person = new Person();
 	private Date beginDate = DateUtil.now();
 	private Date endDate = ApplicationConfig.getFutureInfinite();
 	private String editType;
+	private String countryFilter;
+	private String regionFilter;
+	private String townFilter;
+	private String streetFilter;
+	private String buildingFilter;
+	private String apartmentFilter;
 
 	private String crumbCreateKey;
 	private SetPersonRegistrationAction setPersonRegistrationAction;
 	private PersonService personService;
+	private RegionService regionService;
+	private TownService townService;
+	private StreetService streetService;
+	private BuildingService buildingService;
 	private ApartmentService apartmentService;
 
 	@NotNull
+	@Override
 	public String doExecute() throws Exception {
 
 		if (isSubmit()) {
@@ -48,17 +57,24 @@ public class PersonEditAction extends ApartmentFilterDependentAction {
 			}
 		}
 
-		if (getCountryFilter().getSelectedId() == null) {
+		if (countryFilter == null) {
 			PersonRegistration registration = person.getCurrentRegistration();
 			if (registration != null) {
-				apartmentService.fillFilterIds(stub(registration.getApartment()), getFilters());
+				Building building = apartmentService.getBuilding(new Stub<Apartment>(registration.getApartment()));;
+				BuildingAddress address = buildingService.getFirstBuildings(new Stub<Building>(building.getId()));
+				Street street = streetService.readFull(address.getStreetStub());
+				Town town = townService.readFull(street.getTownStub());
+				Region region = regionService.readFull(town.getRegionStub());
+				apartmentFilter = registration.getApartment().getId() + "";
+				buildingFilter = address.getId() + "";
+				streetFilter = address.getStreetStub().getId() + "";
+				townFilter = town.getId() + "";
+				regionFilter = region.getId() + "";
+				countryFilter = region.getCountryStub().getId() + "";
 				beginDate = registration.getBeginDate();
 				endDate = registration.getEndDate();
 			}
 		}
-
-		initFilters();
-		apartmentFilter.setNeedAutoChange(false);
 
 		return INPUT;
 	}
@@ -86,7 +102,7 @@ public class PersonEditAction extends ApartmentFilterDependentAction {
 		setPersonRegistrationAction.setRegionFilter(regionFilter);
 		setPersonRegistrationAction.setTownFilter(townFilter);
 		setPersonRegistrationAction.setStreetFilter(streetFilter);
-		setPersonRegistrationAction.setBuildingsFilter(buildingsFilter);
+		setPersonRegistrationAction.setBuildingFilter(buildingFilter);
 		setPersonRegistrationAction.setApartmentFilter(apartmentFilter);
 		setPersonRegistrationAction.setSubmitted(submitted);
 		setPersonRegistrationAction.setSession(session);
@@ -100,6 +116,7 @@ public class PersonEditAction extends ApartmentFilterDependentAction {
 	 * @return {@link #ERROR} by default
 	 */
 	@NotNull
+	@Override
 	protected String getErrorResult() {
 		return INPUT;
 	}
@@ -118,6 +135,54 @@ public class PersonEditAction extends ApartmentFilterDependentAction {
 		log.debug("Person FIO: {}", fio);
 
 		return fio != null ? fio : new PersonIdentity();
+	}
+
+	public String getCountryFilter() {
+		return countryFilter;
+	}
+
+	public void setCountryFilter(String countryFilter) {
+		this.countryFilter = countryFilter;
+	}
+
+	public String getRegionFilter() {
+		return regionFilter;
+	}
+
+	public void setRegionFilter(String regionFilter) {
+		this.regionFilter = regionFilter;
+	}
+
+	public String getTownFilter() {
+		return townFilter;
+	}
+
+	public void setTownFilter(String townFilter) {
+		this.townFilter = townFilter;
+	}
+
+	public String getStreetFilter() {
+		return streetFilter;
+	}
+
+	public void setStreetFilter(String streetFilter) {
+		this.streetFilter = streetFilter;
+	}
+
+	public String getBuildingFilter() {
+		return buildingFilter;
+	}
+
+	public void setBuildingFilter(String buildingFilter) {
+		this.buildingFilter = buildingFilter;
+	}
+
+	public String getApartmentFilter() {
+		return apartmentFilter;
+	}
+
+	public void setApartmentFilter(String apartmentFilter) {
+		this.apartmentFilter = apartmentFilter;
 	}
 
 	public Person getPerson() {
@@ -173,6 +238,26 @@ public class PersonEditAction extends ApartmentFilterDependentAction {
 	@Required
 	public void setApartmentService(ApartmentService apartmentService) {
 		this.apartmentService = apartmentService;
+	}
+
+	@Required
+	public void setRegionService(RegionService regionService) {
+		this.regionService = regionService;
+	}
+
+	@Required
+	public void setTownService(TownService townService) {
+		this.townService = townService;
+	}
+
+	@Required
+	public void setStreetService(StreetService streetService) {
+		this.streetService = streetService;
+	}
+
+	@Required
+	public void setBuildingService(BuildingService buildingService) {
+		this.buildingService = buildingService;
 	}
 
 }

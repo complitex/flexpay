@@ -1,21 +1,17 @@
 package org.flexpay.eirc.actions.organization;
 
+import org.flexpay.ab.service.BuildingService;
 import org.flexpay.common.actions.FPActionSupport;
 import static org.flexpay.common.persistence.Stub.stub;
-import static org.flexpay.common.util.CollectionUtils.set;
+import org.flexpay.common.service.ParentService;
 import org.flexpay.eirc.persistence.EircServiceOrganization;
-import org.flexpay.eirc.persistence.ServedBuilding;
 import org.flexpay.eirc.service.ServiceOrganizationService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
-import java.util.List;
-import java.util.Set;
-
-public class ServiceOrganizationAddServedBuildingAction extends FPActionSupport {
+public class ServiceOrganizationAddServedBuildingPageAction extends FPActionSupport {
 
 	private EircServiceOrganization serviceOrganization = EircServiceOrganization.newInstance();
-	private Set<Long> objectIds = set();
 
 	private ServiceOrganizationService serviceOrganizationService;
 
@@ -34,19 +30,7 @@ public class ServiceOrganizationAddServedBuildingAction extends FPActionSupport 
 			return REDIRECT_SUCCESS;
 		}
 
-		log.info("Served building ids: {}", objectIds);
-
-		if (objectIds.size() > 0) {
-
-			List<ServedBuilding> servedBuildingList = serviceOrganizationService.findServedBuildings(objectIds);
-
-			for (ServedBuilding sb : servedBuildingList) {
-				sb.setServiceOrganization(serviceOrganization);
-				serviceOrganizationService.saveServedBuilding(sb);
-			}
-		}
-
-		return REDIRECT_SUCCESS;
+		return INPUT;
 	}
 
 	/**
@@ -68,14 +52,6 @@ public class ServiceOrganizationAddServedBuildingAction extends FPActionSupport 
 
 	public void setServiceOrganization(EircServiceOrganization serviceOrganization) {
 		this.serviceOrganization = serviceOrganization;
-	}
-
-	public Set<Long> getObjectIds() {
-		return objectIds;
-	}
-
-	public void setObjectIds(Set<Long> objectIds) {
-		this.objectIds = objectIds;
 	}
 
 	@Required

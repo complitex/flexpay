@@ -16,6 +16,7 @@ public class ApartmentFilterAjaxAction extends FilterAjaxAction {
 	private ApartmentService apartmentService;
 
 	@NotNull
+	@Override
 	public String doExecute() throws FlexPayException {
 
 		Long addressIdLong;
@@ -41,6 +42,7 @@ public class ApartmentFilterAjaxAction extends FilterAjaxAction {
 		return SUCCESS;
 	}
 
+	@Override
 	public void readFilterString() {
 		if (filterValueLong != null) {
 			try {
@@ -54,6 +56,7 @@ public class ApartmentFilterAjaxAction extends FilterAjaxAction {
 		}
 	}
 
+	@Override
 	public void saveFilterValue() {
 		getUserPreferences().setApartmentFilterValue(filterValue);
 	}
@@ -62,4 +65,5 @@ public class ApartmentFilterAjaxAction extends FilterAjaxAction {
 	public void setApartmentService(ApartmentService apartmentService) {
 		this.apartmentService = apartmentService;
 	}
+
 }

@@ -19,6 +19,7 @@ public class StreetFilterAjaxAction extends FilterAjaxAction {
 	private StreetService streetService;
 
 	@NotNull
+	@Override
 	public String doExecute() throws FlexPayException {
 
 		Long townIdLong;
@@ -45,6 +46,7 @@ public class StreetFilterAjaxAction extends FilterAjaxAction {
 		return SUCCESS;
 	}
 
+	@Override
 	public void readFilterString() {
 		if (filterValueLong != null) {
 			Street street = streetService.readFull(new Stub<Street>(filterValueLong));
@@ -59,6 +61,7 @@ public class StreetFilterAjaxAction extends FilterAjaxAction {
 		}
 	}
 
+	@Override
 	public void saveFilterValue() {
 		getUserPreferences().setStreetFilterValue(filterValue);
 		getUserPreferences().setBuildingFilterValue("");

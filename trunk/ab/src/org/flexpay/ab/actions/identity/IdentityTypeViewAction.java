@@ -15,6 +15,7 @@ public class IdentityTypeViewAction extends FPActionSupport {
 	private IdentityTypeService identityTypeService;
 
     @NotNull
+	@Override
     public String doExecute() throws Exception {
         identityType = identityTypeService.read(new Stub<IdentityType>(id));
 
@@ -29,6 +30,7 @@ public class IdentityTypeViewAction extends FPActionSupport {
      * @return {@link #ERROR} by default
      */
     @NotNull
+	@Override
     protected String getErrorResult() {
         return SUCCESS;
     }

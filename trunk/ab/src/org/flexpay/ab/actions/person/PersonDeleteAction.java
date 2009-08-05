@@ -15,6 +15,7 @@ public class PersonDeleteAction extends FPActionSupport {
 	private PersonService personService;
 
 	@NotNull
+	@Override
 	public String doExecute() throws Exception {
 		personService.disable(objectIds);
 		return REDIRECT_SUCCESS;
@@ -28,6 +29,7 @@ public class PersonDeleteAction extends FPActionSupport {
 	 * @return {@link #ERROR} by default
 	 */
 	@NotNull
+	@Override
 	protected String getErrorResult() {
 		return REDIRECT_SUCCESS;
 	}

@@ -15,6 +15,7 @@ public class CountriesListAction extends FPActionSupport {
 	private CountryService countryService;
 
 	@NotNull
+	@Override
 	public String doExecute() throws Exception {
 
 		translationList = countryService.getCountries(getUserPreferences().getLocale());
@@ -30,6 +31,7 @@ public class CountriesListAction extends FPActionSupport {
 	 * @return {@link #ERROR} by default
 	 */
 	@NotNull
+	@Override
 	protected String getErrorResult() {
 		return SUCCESS;
 	}

@@ -19,6 +19,7 @@ public class ServiceOrganizationRemoveServedBuildingsAction extends FPActionSupp
 	private ServiceOrganizationService serviceOrganizationService;
 
 	@NotNull
+	@Override
 	public String doExecute() throws Exception {
 
         if (serviceOrganization.getId() == null) {
@@ -45,6 +46,7 @@ public class ServiceOrganizationRemoveServedBuildingsAction extends FPActionSupp
 	 * @return {@link #ERROR} by default
 	 */
 	@NotNull
+	@Override
 	protected String getErrorResult() {
 		return REDIRECT_SUCCESS;
 	}

@@ -27,6 +27,7 @@ public class ApartmentRegistrationAction extends FPActionSupport {
 	private CountryService countryService;
 
 	@NotNull
+	@Override
 	public String doExecute() throws FlexPayException {
 
 		apartment = apartmentService.readWithPersons(stub(apartment));
@@ -48,6 +49,7 @@ public class ApartmentRegistrationAction extends FPActionSupport {
 	 * @return {@link #ERROR} by default
 	 */
 	@NotNull
+	@Override
 	protected String getErrorResult() {
 		return SUCCESS;
 	}

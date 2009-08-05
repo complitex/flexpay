@@ -2,8 +2,7 @@
 
 <s:actionerror/>
 
-<form id="fobjects" method="post"
-	  action="<s:url action="eircAccountsList" namespace="/eirc" includeParams="none" />">
+<form id="fobjects">
 
 	<%@ include file="/WEB-INF/jsp/ab/filters/groups/country_region_town_street_building_apartment_ajax.jsp" %>
     <table>

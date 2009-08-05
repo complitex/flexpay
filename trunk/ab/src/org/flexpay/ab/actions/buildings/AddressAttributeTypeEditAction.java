@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Required;
 
 import java.util.Map;
 
-
 public class AddressAttributeTypeEditAction extends FPActionSupport {
 
 	private AddressAttributeType attributeType = new AddressAttributeType();
@@ -23,6 +22,7 @@ public class AddressAttributeTypeEditAction extends FPActionSupport {
 	private AddressAttributeTypeService addressAttributeTypeService;
 
 	@NotNull
+	@Override
 	public String doExecute() throws Exception {
 
 		if (attributeType.getId() == null) {
@@ -84,6 +84,7 @@ public class AddressAttributeTypeEditAction extends FPActionSupport {
 	 * @return {@link #ERROR} by default
 	 */
 	@NotNull
+	@Override
 	protected String getErrorResult() {
 		return INPUT;
 	}

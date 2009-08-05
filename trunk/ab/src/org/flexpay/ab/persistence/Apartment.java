@@ -289,4 +289,5 @@ public class Apartment extends DomainObjectWithStatus {
 		number.setApartment(this);
 		apartmentNumbers.add(number);
 	}
+
 }

@@ -26,13 +26,6 @@
           scope="prototype" />
 
 	<!-- Regions -->
-	<bean id="regionCreateAction"
-		  class="org.flexpay.ab.actions.region.RegionCreateAction"
-		  p:nameTimeDependentService-ref="regionService"
-		  p:parentService-ref="countryService"
-          p:crumbNameKey="ab.crumbs.region_create"
-          scope="prototype" />
-
 	<bean id="regionViewAction"
 		  class="org.flexpay.ab.actions.region.RegionViewAction"
 		  p:nameTimeDependentService-ref="regionService"
@@ -165,11 +158,6 @@
 	<bean id="streetDeleteAction"
 		  class="org.flexpay.ab.actions.street.StreetDeleteAction"
 		  p:streetService-ref="streetService"
-          scope="prototype" />
-
-    <bean id="streetSearchAjaxAction"
-          class="org.flexpay.ab.actions.street.StreetSearchAjaxAction"
-          p:streetService-ref="streetService"
           scope="prototype" />
 
 	<bean id="streetFilterAjaxAction"
@@ -408,9 +396,12 @@
 
 	<bean id="personEditAction"
 		  class="org.flexpay.ab.actions.person.PersonEditAction"
-		  p:parentService-ref="apartmentService"
 		  p:personService-ref="personService"
-		  p:apartmentService-ref="apartmentService"
+		  p:regionService-ref="regionService"
+          p:townService-ref="townService"
+          p:streetService-ref="streetService"
+          p:buildingService-ref="buildingService"
+          p:apartmentService-ref="apartmentService"
 		  p:setPersonRegistrationAction-ref="setPersonRegistrationAction"
           p:crumbNameKey="ab.crumbs.person_edit"
           p:crumbCreateKey="ab.crumbs.person_create"
@@ -424,8 +415,12 @@
 
 	<bean id="setPersonRegistrationAction"
 		  class="org.flexpay.ab.actions.person.SetPersonRegistrationAction"
-		  p:parentService-ref="apartmentService"
 		  p:personService-ref="personService"
+          p:regionService-ref="regionService"
+          p:townService-ref="townService"
+          p:streetService-ref="streetService"
+          p:buildingService-ref="buildingService"
+          p:apartmentService-ref="apartmentService"
           scope="prototype" />
 
 </beans>

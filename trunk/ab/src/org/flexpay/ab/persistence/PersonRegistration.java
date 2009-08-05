@@ -1,5 +1,7 @@
 package org.flexpay.ab.persistence;
 
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
 import org.flexpay.common.persistence.DomainObject;
 import org.jetbrains.annotations.NotNull;
 
@@ -12,59 +14,35 @@ public class PersonRegistration extends DomainObject implements Comparable<Perso
 	private Date beginDate;
 	private Date endDate;
 
-	/**
-	 * @return the person
-	 */
 	public Person getPerson() {
 		return person;
 	}
 
-	/**
-	 * @param person the person to set
-	 */
 	public void setPerson(Person person) {
 		this.person = person;
 	}
 
-	/**
-	 * @return the apartment
-	 */
 	@NotNull
 	public Apartment getApartment() {
 		return apartment;
 	}
 
-	/**
-	 * @param apartment the apartment to set
-	 */
 	public void setApartment(@NotNull Apartment apartment) {
 		this.apartment = apartment;
 	}
 
-	/**
-	 * @return the beginDate
-	 */
 	public Date getBeginDate() {
 		return beginDate;
 	}
 
-	/**
-	 * @param beginDate the beginDate to set
-	 */
 	public void setBeginDate(Date beginDate) {
 		this.beginDate = beginDate;
 	}
 
-	/**
-	 * @return the endDate
-	 */
 	public Date getEndDate() {
 		return endDate;
 	}
 
-	/**
-	 * @param endDate the endDate to set
-	 */
 	public void setEndDate(Date endDate) {
 		this.endDate = endDate;
 	}
@@ -73,6 +51,7 @@ public class PersonRegistration extends DomainObject implements Comparable<Perso
 		return beginDate.compareTo(date) <= 0 && date.compareTo(endDate) <= 0;
 	}
 
+	@Override
 	public int compareTo(PersonRegistration o) {
 		return beginDate.compareTo(o.beginDate);
 	}
@@ -85,4 +64,14 @@ public class PersonRegistration extends DomainObject implements Comparable<Perso
 		result.setEndDate(endDate);
 		return result;
 	}
+
+	@Override
+	public String toString() {
+		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
+				append("id", getId()).
+				append("beginDate", beginDate).
+				append("endDate", endDate).
+				toString();
+	}
+
 }

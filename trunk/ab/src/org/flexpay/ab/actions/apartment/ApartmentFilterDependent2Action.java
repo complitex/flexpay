@@ -4,7 +4,7 @@ import org.apache.commons.collections.ArrayStack;
 import org.flexpay.ab.persistence.filters.ApartmentFilter;
 
 /**
- * Same as {@link ApartmentFilterDependentAction} but uses StreetNameFilter
+ * Uses StreetNameFilter
  */
 public abstract class ApartmentFilterDependent2Action extends BuildingsFilterDependent2Action {
 

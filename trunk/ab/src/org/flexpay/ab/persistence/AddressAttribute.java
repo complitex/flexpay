@@ -20,9 +20,6 @@ public class AddressAttribute extends DomainObjectWithStatus {
 	private AddressAttributeType addressAttributeType;
 	private String value;
 
-	public AddressAttribute() {
-	}
-
 	public BuildingAddress getBuildings() {
 		return this.buildingAddress;
 	}
@@ -45,37 +42,6 @@ public class AddressAttribute extends DomainObjectWithStatus {
 
 	public void setValue(String value) {
 		this.value = value;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
-		} else if (!(obj instanceof AddressAttribute)) {
-			return false;
-		}
-
-		AddressAttribute that = (AddressAttribute) obj;
-		return new EqualsBuilder()
-				.append(value, that.getValue())
-				.append(addressAttributeType, that.getBuildingAttributeType())
-				.isEquals();
-	}
-
-	public int hashCode() {
-		return new HashCodeBuilder()
-				.append(value)
-				.append(addressAttributeType)
-				.toHashCode();
-	}
-
-	@Override
-	public String toString() {
-		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE)
-				.append("id", getId())
-				.append("value", value)
-				.append("type", addressAttributeType)
-				.toString();
 	}
 
 	public String format(Locale locale, boolean shortMode) throws FlexPayException {
@@ -109,4 +75,38 @@ public class AddressAttribute extends DomainObjectWithStatus {
 
 		return "";
 	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		} else if (!(obj instanceof AddressAttribute)) {
+			return false;
+		}
+
+		AddressAttribute that = (AddressAttribute) obj;
+		return new EqualsBuilder()
+				.append(value, that.getValue())
+				.append(addressAttributeType, that.getBuildingAttributeType())
+				.isEquals();
+	}
+
+	@Override
+	public int hashCode() {
+		return new HashCodeBuilder()
+				.append(value)
+				.append(addressAttributeType)
+				.toHashCode();
+	}
+
+	@Override
+	public String toString() {
+		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE)
+				.append("id", getId())
+				.append("status", getStatus())
+				.append("value", value)
+				.append("type", addressAttributeType)
+				.toString();
+	}
+
 }
