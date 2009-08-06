@@ -8,68 +8,68 @@
     <package name="filters" namespace="/dicts" extends="common">
 
         <action name="apartmentsListAjax" class="apartmentsListAjaxAction">
-            <result>/WEB-INF/jsp/ab/filters/ajax/apartments_list_response.jsp</result>
-            <result name="prerequestResponse">/WEB-INF/jsp/ab/filters/ajax/prerequest_response.jsp</result>
+            <result>/WEB-INF/jsp/ab/apartments/apartments_list.jsp</result>
+            <result name="prerequestResponse">/WEB-INF/jsp/ab/filters/prerequest_response.jsp</result>
         </action>
 
         <action name="buildingsListAjax" class="buildingsListAjaxAction">
-            <result>/WEB-INF/jsp/ab/filters/ajax/buildings_list_response.jsp</result>
-            <result name="prerequestResponse">/WEB-INF/jsp/ab/filters/ajax/prerequest_response.jsp</result>
+            <result>/WEB-INF/jsp/ab/buildings/buildings_list.jsp</result>
+            <result name="prerequestResponse">/WEB-INF/jsp/ab/filters/prerequest_response.jsp</result>
         </action>
 
         <action name="streetsListAjax" class="streetsListAjaxAction">
-            <result>/WEB-INF/jsp/ab/filters/ajax/streets_list_response.jsp</result>
-            <result name="prerequestResponse">/WEB-INF/jsp/ab/filters/ajax/prerequest_response.jsp</result>
+            <result>/WEB-INF/jsp/ab/streets/streets_list.jsp</result>
+            <result name="prerequestResponse">/WEB-INF/jsp/ab/filters/prerequest_response.jsp</result>
         </action>
 
         <action name="districtsListAjax" class="districtsListAjaxAction">
-            <result>/WEB-INF/jsp/ab/filters/ajax/districts_list_response.jsp</result>
-            <result name="prerequestResponse">/WEB-INF/jsp/ab/filters/ajax/prerequest_response.jsp</result>
+            <result>/WEB-INF/jsp/ab/districts/districts_list.jsp</result>
+            <result name="prerequestResponse">/WEB-INF/jsp/ab/filters/prerequest_response.jsp</result>
         </action>
 
         <action name="townsListAjax" class="townsListAjaxAction">
-            <result>/WEB-INF/jsp/ab/filters/ajax/towns_list_response.jsp</result>
-            <result name="prerequestResponse">/WEB-INF/jsp/ab/filters/ajax/prerequest_response.jsp</result>
+            <result>/WEB-INF/jsp/ab/towns/towns_list.jsp</result>
+            <result name="prerequestResponse">/WEB-INF/jsp/ab/filters/prerequest_response.jsp</result>
         </action>
 
         <action name="regionsListAjax" class="regionsListAjaxAction">
-            <result>/WEB-INF/jsp/ab/filters/ajax/regions_list_response.jsp</result>
-            <result name="prerequestResponse">/WEB-INF/jsp/ab/filters/ajax/prerequest_response.jsp</result>
+            <result>/WEB-INF/jsp/ab/regions/regions_list.jsp</result>
+            <result name="prerequestResponse">/WEB-INF/jsp/ab/filters/prerequest_response.jsp</result>
         </action>
 
         <action name="countryFilterAjax" class="countryFilterAjaxAction">
-            <result>/WEB-INF/jsp/ab/filters/ajax/filter_response.jsp</result>
-            <result name="prerequestResponse">/WEB-INF/jsp/ab/filters/ajax/prerequest_response.jsp</result>
+            <result>/WEB-INF/jsp/ab/filters/filter_response.jsp</result>
+            <result name="prerequestResponse">/WEB-INF/jsp/ab/filters/prerequest_response.jsp</result>
         </action>
 
         <action name="regionFilterAjax" class="regionFilterAjaxAction">
-            <result>/WEB-INF/jsp/ab/filters/ajax/filter_response.jsp</result>
-            <result name="prerequestResponse">/WEB-INF/jsp/ab/filters/ajax/prerequest_response.jsp</result>
+            <result>/WEB-INF/jsp/ab/filters/filter_response.jsp</result>
+            <result name="prerequestResponse">/WEB-INF/jsp/ab/filters/prerequest_response.jsp</result>
         </action>
 
         <action name="townFilterAjax" class="townFilterAjaxAction">
-            <result>/WEB-INF/jsp/ab/filters/ajax/filter_response.jsp</result>
-            <result name="prerequestResponse">/WEB-INF/jsp/ab/filters/ajax/prerequest_response.jsp</result>
+            <result>/WEB-INF/jsp/ab/filters/filter_response.jsp</result>
+            <result name="prerequestResponse">/WEB-INF/jsp/ab/filters/prerequest_response.jsp</result>
         </action>
 
         <action name="districtFilterAjax" class="districtFilterAjaxAction">
-            <result>/WEB-INF/jsp/ab/filters/ajax/filter_response.jsp</result>
-            <result name="prerequestResponse">/WEB-INF/jsp/ab/filters/ajax/prerequest_response.jsp</result>
+            <result>/WEB-INF/jsp/ab/filters/filter_response.jsp</result>
+            <result name="prerequestResponse">/WEB-INF/jsp/ab/filters/prerequest_response.jsp</result>
         </action>
 
         <action name="streetFilterAjax" class="streetFilterAjaxAction">
-            <result>/WEB-INF/jsp/ab/filters/ajax/filter_response.jsp</result>
-            <result name="prerequestResponse">/WEB-INF/jsp/ab/filters/ajax/prerequest_response.jsp</result>
+            <result>/WEB-INF/jsp/ab/filters/filter_response.jsp</result>
+            <result name="prerequestResponse">/WEB-INF/jsp/ab/filters/prerequest_response.jsp</result>
         </action>
 
         <action name="buildingFilterAjax" class="buildingFilterAjaxAction">
-            <result>/WEB-INF/jsp/ab/filters/ajax/filter_response.jsp</result>
-            <result name="prerequestResponse">/WEB-INF/jsp/ab/filters/ajax/prerequest_response.jsp</result>
+            <result>/WEB-INF/jsp/ab/filters/filter_response.jsp</result>
+            <result name="prerequestResponse">/WEB-INF/jsp/ab/filters/prerequest_response.jsp</result>
         </action>
 
         <action name="apartmentFilterAjax" class="apartmentFilterAjaxAction">
-            <result>/WEB-INF/jsp/ab/filters/ajax/filter_response.jsp</result>
-            <result name="prerequestResponse">/WEB-INF/jsp/ab/filters/ajax/prerequest_response.jsp</result>
+            <result>/WEB-INF/jsp/ab/filters/filter_response.jsp</result>
+            <result name="prerequestResponse">/WEB-INF/jsp/ab/filters/prerequest_response.jsp</result>
         </action>
 
     </package>

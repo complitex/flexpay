@@ -1,13 +1,6 @@
-<%@ include file="/WEB-INF/jsp/common/taglibs.jsp" %>
-
-<script type="text/javascript">
-    $(function() {
-        FF.updatePager("pagerAjax(this);");
-    });
-</script>
+<%@include file="/WEB-INF/jsp/common/taglibs.jsp" %>
 
 <table cellpadding="3" cellspacing="1" border="0" width="100%">
-
     <tr>
         <td class="th" width="1%">&nbsp;</td>
         <td class="th" width="1%">&nbsp;</td>
@@ -29,7 +22,7 @@
     </s:iterator>
     <tr>
         <td colspan="3">
-            <%@ include file="/WEB-INF/jsp/common/filter/pager/pager.jsp" %>
+            <%@include file="/WEB-INF/jsp/common/filter/pager/pager_ajax.jsp" %>
             <input type="hidden" id="setupType" name="setupType" value="setupType" />
             <input type="submit" onclick="$('#setupType').val('street');" class="btn-exit" value="<s:text name="common.set"/>" />
         </td>

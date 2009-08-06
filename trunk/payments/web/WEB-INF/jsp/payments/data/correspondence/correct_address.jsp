@@ -15,35 +15,35 @@
 </form>
 
 <script type="text/javascript">
+
+    var shadowId = "shadow";
+    var resultId = "result";
+
     $(function() {
+
+        FP.createShadow(shadowId);
+
         FF.addListener("building", function(filter) {
-            var id = "result";
-            FF.loading(id);
+            FP.resizeShadow(shadowId, resultId, {visibility:"visible"});
             $.post("<s:url action="apartmentsDialogListAjax" namespace="/payments" includeParams="none"/>",
                     {buildingId: filter.value.val()},
                     function(data) {
-                        $("#" + id).html(data);
+                        $("#" + resultId).html(data);
+                        FP.hideShadow(shadowId);
                     });
         });
-
         FF.addEraseFunction("building", function(filter) {
-            $("#result").html("");
+            $("#" + resultId).html("");
         });
-
     });
 
     function pagerAjax(element) {
-        var isSelect = element.name == "pager.pageSize";
-        $.post("<s:url action="apartmentsDialogListAjax" namespace="/payments" includeParams="none"/>",
-                {
-                    buildingId: FF.filters["building"].value.val(),
-                    pageSizeChanged: isSelect,
-                    "pager.pageNumber": isSelect ? "" : element.value,
-                    "pager.pageSize": isSelect ? element.value : $('select[name="pager.pageSize"]').val()
-                },
-                function(data) {
-                    $("#result").html(data);
-                });
+        FP.pagerAjax(element, {
+            action:"<s:url action="apartmentsDialogListAjax" namespace="/payments" includeParams="none"/>",
+            params:{
+                buildingId: FF.filters["building"].value.val()
+            }
+        });
     }
 
 </script>

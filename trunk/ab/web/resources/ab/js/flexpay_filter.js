@@ -165,6 +165,12 @@ function Filter(name, options) {
         this.eraseFunctions.push(func);
     };
 
+    this.erase = function() {
+        for (var i = 0; i < this.eraseFunctions.length; i++) {
+            this.eraseFunctions[i].call(this, this);
+        }
+    };
+
     this.displayParents = function(filter) {
         displayParents(filter);
     };
@@ -258,9 +264,7 @@ var FF = {
                 filter.autocompleter.flushCache();
             }
             this.eraseChildFilters(filter.name);
-            for (var i = 0; i < filter.eraseFunctions.length; i++) {
-                filter.eraseFunctions[i].call(filter, filter);
-            }
+            filter.erase();
         }
     },
 
@@ -379,25 +383,8 @@ var FF = {
         this.filters[filterName].addEraseFunction(func);
     },
 
-    loading : function(id) {
-        $("#" + id).append('<div class="col"><img src="' + FP.base + '/resources/common/img/indicator.gif" width="16" height="16" />' + FF.messages.loading + '</div>');
-    },
-
     removeFilters : function() {
         this.filters = [];
-    },
-
-    updatePager : function(func) {
-        $('input[name="pager.pageNumber"]').each(function() {
-            this.setAttribute("onclick", func)
-        });
-        $('select[name="pager.pageSize"]').each(function() {
-            this.setAttribute("onchange", func)
-        });
-    },
-
-    messages : {
-        loading : ""
     }
 
 };

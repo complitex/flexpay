@@ -1,6 +1,6 @@
-<%@ include file="/WEB-INF/jsp/common/taglibs.jsp" %>
+<%@include file="/WEB-INF/jsp/common/taglibs.jsp" %>
 
-<s:actionerror/>
+<s:actionerror />
 
 <s:form action="serviceOrganizationAddServedBuilding">
 
@@ -16,43 +16,42 @@
             <td id="result">
                 <input type="button" class="btn-exit"
                        onclick="window.location='<s:url action="serviceOrganizationsList"><s:param name="serviceOrganization.id" value="%{id}" /></s:url>'"
-                       value="<s:text name="common.cancel"/>"/>
+                       value="<s:text name="common.cancel"/>" />
             </td>
 		</tr>
     </table>
 </s:form>
 
 <script type="text/javascript">
+
+    var shadowId = "shadow";
+    var resultId = "result";
+
     $(function() {
+
+        FP.createShadow(shadowId);
+
         FF.addListener("street", function(filter) {
-            var id = "result";
-            FF.loading(id);
+            FP.resizeShadow(shadowId, resultId, {visibility:"visible"});
             $.post("<s:url action="serviceOrganizationListServedBuildingsAjax" namespace="/eirc" includeParams="none"/>",
                     {streetId: filter.value.val()},
                     function(data) {
-                        $("#" + id).html(data);
+                        $("#" + resultId).html(data);
+                        FP.hideShadow(shadowId);
                     });
         });
-
         FF.addEraseFunction("street", function(filter) {
-            $("#result").html('<input type="button" class="btn-exit"'
+            $("#" + resultId).html('<input type="button" class="btn-exit"'
                    + 'onclick="window.location=\'<s:url action="serviceOrganizationListServedBuildings"><s:param name="serviceOrganization.id" value="%{id}" /></s:url>\'"'
                    + 'value="<s:text name="common.cancel"/>"/>');
         });
     });
 
     function pagerAjax(element) {
-        var isSelect = element.name == "pager.pageSize";
-        $.post("<s:url action="serviceOrganizationListServedBuildingsAjax" namespace="/eirc" includeParams="none"/>",
-                {
-                    streetId: FF.filters["street"].value.val(),
-                    pageSizeChanged: isSelect,
-                    "pager.pageNumber": isSelect ? "" : element.value,
-                    "pager.pageSize": isSelect ? element.value : $('select[name="pager.pageSize"]').val()
-                },
-                function(data) {
-                    $("#result").html(data);
-                });
+        FP.pagerAjax(element, {
+            action:"<s:url action="serviceOrganizationListServedBuildingsAjax" namespace="/eirc" includeParams="none"/>",
+            params:{streetId: FF.filters["street"].value.val()}
+        });
     }
 
 </script>

@@ -1,10 +1,4 @@
-<%@ include file="/WEB-INF/jsp/common/taglibs.jsp" %>
-
-<script type="text/javascript">
-    $(function() {
-        FF.updatePager("pagerAjax(this);");
-    });
-</script>
+<%@include file="/WEB-INF/jsp/common/taglibs.jsp" %>
 
 <table cellpadding="3" cellspacing="1" border="0" width="100%">
     <tr>
@@ -47,7 +41,7 @@
     </s:iterator>
     <tr>
         <td colspan="5">
-            <%@include file="/WEB-INF/jsp/common/filter/pager/pager.jsp" %>
+            <%@include file="/WEB-INF/jsp/common/filter/pager/pager_ajax.jsp" %>
             <input type="button" class="btn-exit"
                    onclick="window.location='<s:url action="eircAccountCreateForm1" includeParams="none" />';"
                    value="<s:text name="common.new"/>"/>

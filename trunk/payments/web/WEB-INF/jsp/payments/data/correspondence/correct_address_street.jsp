@@ -13,45 +13,45 @@
 </form>
 
 <script type="text/javascript">
+
+    var shadowId = "shadow";
+    var resultId = "result";
+
     $(function() {
+
+        FP.createShadow(shadowId);
+
         FF.addListener("town", function(filter) {
-            var id = "result";
-            FF.loading(id);
+            FP.resizeShadow(shadowId, resultId, {visibility:"visible"});
             $.post("<s:url action="streetsDialogListAjax" namespace="/payments" includeParams="none"/>",
                     {townId: filter.value.val()},
                     function(data) {
-                        $("#" + id).html(data);
+                        $("#" + resultId).html(data);
+                        FP.hideShadow(shadowId);
                     });
         });
-
         FF.addEraseFunction("town", function(filter) {
-            $("#result").html("");
+            $("#" + resultId).html("");
         });
-
         FF.addListener("street", function(filter) {
-            var id = "result";
-            FF.loading(id);
+            FP.resizeShadow(shadowId, resultId, {visibility:"visible"});
             $.post("<s:url action="streetsDialogListAjax" namespace="/payments" includeParams="none"/>",
                     {streetId: filter.value.val()},
                     function(data) {
-                        $("#" + id).html(data);
+                        $("#" + resultId).html(data);
+                        FP.hideShadow(shadowId);
                     });
         });
 
     });
 
     function pagerAjax(element) {
-        var isSelect = element.name == "pager.pageSize";
-        $.post("<s:url action="streetsDialogListAjax" namespace="/payments" includeParams="none"/>",
-                {
-                    townId: FF.filters["town"].value.val(),
-                    pageSizeChanged: isSelect,
-                    "pager.pageNumber": isSelect ? "" : element.value,
-                    "pager.pageSize": isSelect ? element.value : $('select[name="pager.pageSize"]').val()
-                },
-                function(data) {
-                    $("#result").html(data);
-                });
+        FP.pagerAjax(element, {
+            action:"<s:url action="streetsDialogListAjax" namespace="/payments" includeParams="none"/>",
+            params:{
+                townId: FF.filters["town"].value.val()
+            }
+        });
     }
 
 </script>

@@ -1,19 +1,13 @@
-<%@ include file="/WEB-INF/jsp/common/taglibs.jsp" %>
-
-<script type="text/javascript">
-    $(function() {
-        FF.updatePager("pagerAjax(this);");
-    });
-</script>
+<%@include file="/WEB-INF/jsp/common/taglibs.jsp" %>
 
 <table cellpadding="3" cellspacing="1" border="0" width="100%">
     <tr>
         <td colspan="4">
-            <%@ include file="/WEB-INF/jsp/common/filter/pager/pager.jsp" %>
-            <input type="submit" class="btn-exit" name="submitted" value="<s:text name="eirc.add_served_buildings"/>"/>
+            <%@include file="/WEB-INF/jsp/common/filter/pager/pager_ajax.jsp" %>
+            <input type="submit" class="btn-exit" name="submitted" value="<s:text name="eirc.add_served_buildings"/>" />
             <input type="button" class="btn-exit"
                    onclick="window.location='<s:url action="serviceOrganizationsList" includeParams="none" />'"
-                   value="<s:text name="common.cancel"/>"/>
+                   value="<s:text name="common.cancel"/>" />
         </td>
     </tr>
     <tr>
@@ -31,7 +25,7 @@
                 <s:property	value="%{#status.index + pager.thisPageFirstElementNumber + 1}"/>
             </td>
             <td class="col">
-                <input type="checkbox" value="<s:property value="%{building.id}"/>" name="objectIds"/>
+                <input type="checkbox" value="<s:property value="%{id}"/>" name="objectIds"/>
             </td>
             <td class="col">
                 <s:property	value="%{@org.flexpay.ab.util.TranslationUtil@getBuildingNumber(buildingAttributes, userPreferences.locale)}"/>
@@ -40,11 +34,11 @@
     </s:iterator>
     <tr>
         <td colspan="4">
-            <%@ include file="/WEB-INF/jsp/common/filter/pager/pager.jsp" %>
-            <input type="submit" class="btn-exit" name="submitted" value="<s:text name="eirc.add_served_buildings"/>"/>
+            <%@include file="/WEB-INF/jsp/common/filter/pager/pager_ajax.jsp" %>
+            <input type="submit" class="btn-exit" name="submitted" value="<s:text name="eirc.add_served_buildings"/>" />
             <input type="button" class="btn-exit"
                    onclick="window.location='<s:url action="serviceOrganizationsList" includeParams="none" />'"
-                   value="<s:text name="common.cancel"/>"/>
+                   value="<s:text name="common.cancel"/>" />
         </td>
     </tr>
 </table>

@@ -1,7 +1,7 @@
-
-<%@ include file="/WEB-INF/jsp/common/taglibs.jsp" %>
+<%@include file="/WEB-INF/jsp/common/taglibs.jsp" %>
 
 <s:actionerror />
+
 <s:form action="editStreetType">
 	<s:hidden name="streetType.id" />
 	<table cellpadding="3" cellspacing="1" border="0" width="100%">

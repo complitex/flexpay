@@ -10,8 +10,11 @@ var FP = {
 	HOME_KEY_CODE: 36,
 	END_KEY_CODE: 35,
 
-
     base : "",
+
+    messages : {
+        loading : ""
+    },
 
     // Set checkboxes group (names starts with prefix) state to checked
     setCheckboxes : function (checked, prefix) {
@@ -119,6 +122,57 @@ var FP = {
         element.name = "pager.pageSize";
         $("#pageSizeChanged").val(true);
         element.form.submit();
+    },
+
+    createShadow : function(id) {
+        $("body").append('<div id="' + id + '" class="shadow"><img src="' + this.base + '/resources/common/img/indicator_big.gif" width="32" height="32" />' + this.messages.loading + '</div>');
+    },
+
+    resizeShadow : function (shadowId, elementId, params) {
+        var s = $("#" + shadowId);
+        if (s == null) {
+            return;
+        }
+        if (elementId != null) {
+            var el = $("#" + elementId);
+            s.css("height", el.innerHeight()).css("width", el.innerWidth()).
+                    css("left", el.position().left).css("top", el.position().top);
+        }
+        for (var i in params) {
+            s.css(i, params[i]);
+        }
+    },
+
+    hideShadow : function(shadowId) {
+        FP.resizeShadow(shadowId, null, {visibility:"hidden"});
+    },
+
+    pagerAjax : function(element, opt) {
+        opt = opt || {};
+
+        opt = $.extend({
+            action: "",
+            shadowId: "shadow",
+            resultId: "result",
+            pageSizeChangedName:"pageSizeChanged",
+            pageNumberName:"pager.pageNumber",
+            pageSizeName:"pager.pageSize",
+            params: {}
+        }, opt);
+
+        var params = opt.params;
+        var shadowId = opt.shadowId;
+        var resultId = opt.resultId;
+
+        var isSelect = element.name == opt.pageSizeName;
+        FP.resizeShadow(shadowId, resultId, {visibility:"visible"});
+        params[opt.pageSizeChangedName] = isSelect;
+        params[opt.pageNumberName] = isSelect ? "" : element.value;
+        params[opt.pageSizeName] = isSelect ? element.value : $('select[name="' + opt.pageSizeName + '"]').val();
+        $.post(opt.action, params, function(data) {
+                    $("#" + resultId).html(data);
+                    FP.hideShadow(shadowId);
+                });
     }
 
 };

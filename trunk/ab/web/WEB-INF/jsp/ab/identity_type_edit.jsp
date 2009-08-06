@@ -1,5 +1,4 @@
-
-<%@ include file="/WEB-INF/jsp/common/taglibs.jsp" %>
+<%@include file="/WEB-INF/jsp/common/taglibs.jsp" %>
 
 <s:actionerror />
 <s:form action="identityTypeEdit">
