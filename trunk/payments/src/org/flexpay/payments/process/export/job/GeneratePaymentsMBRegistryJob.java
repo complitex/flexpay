@@ -97,42 +97,43 @@ public class GeneratePaymentsMBRegistryJob extends Job {
 
         if (parameters.containsKey("PrivateKey")) {
             String privateKey = (String)parameters.get("PrivateKey");
-            DataInputStream dis = null;
-            try {
-                dis = new DataInputStream(ApplicationConfig.getResourceAsStream(privateKey));
-                byte[] buffer = new byte[BUFFER_SIZE];
-                byte[] privKeyBytes = new byte[0];
-                int off = 0;
-                int countRead;
-                while ((countRead = dis.read(buffer, off, BUFFER_SIZE)) > 0) {
-                    int continuePos = off;
-                    off += countRead;
-                    privKeyBytes = Arrays.copyOf(privKeyBytes, off);
-                    System.arraycopy(buffer, 0, privKeyBytes, continuePos, countRead);
-                }
-                dis.close();
-                dis = null;
+            if (ApplicationConfig.isResourceAvailable(privateKey)) {
+                DataInputStream dis = null;
+                try {
+                    dis = new DataInputStream(ApplicationConfig.getResourceAsStream(privateKey));
+                    byte[] privKeyBytes = new byte[BUFFER_SIZE];
+                    int off = 0;
+                    int countRead;
+                    while ((countRead = dis.read(privKeyBytes, off, BUFFER_SIZE)) > 0) {
+                        off += countRead;
+                        privKeyBytes = Arrays.copyOf(privKeyBytes, off + BUFFER_SIZE);
+                    }
+                    dis.close();
+                    dis = null;
 
-                KeyFactory keyFactory = KeyFactory.getInstance("RSA");
+                    KeyFactory keyFactory = KeyFactory.getInstance("RSA");
 
-                // decode private key
-                PKCS8EncodedKeySpec privSpec = new PKCS8EncodedKeySpec(privKeyBytes);
-                PrivateKey privKey = keyFactory.generatePrivate(privSpec);
+                    // decode private key
+                    PKCS8EncodedKeySpec privSpec = new PKCS8EncodedKeySpec(privKeyBytes);
+                    PrivateKey privKey = keyFactory.generatePrivate(privSpec);
 
-                Signature instance = Signature.getInstance("SHA1withRSA");
-                instance.initSign(privKey);
+                    Signature instance = Signature.getInstance("SHA1withRSA");
+                    instance.initSign(privKey);
 
-                generatePaymentsMBRegistry.setSignature(instance);                
-            } catch (Exception e) {
-                log.error("Error create signature '{}': {}", privateKey, e);
-            } finally {
-                if (dis != null) {
-                    try {
-                        dis.close();
-                    } catch (IOException e) {
-                        log.warn("Error close stream of private key", e);
+                    generatePaymentsMBRegistry.setSignature(instance);                
+                } catch (Exception e) {
+                    log.error("Error create signature '{}': {}", privateKey, e);
+                } finally {
+                    if (dis != null) {
+                        try {
+                            dis.close();
+                        } catch (IOException e) {
+                            log.warn("Error close stream of private key", e);
+                        }
                     }
                 }
+            } else {
+                log.error("Resource {} not found", privateKey);
             }
         }
 
