@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 
+//TODO: Reconstruct this class for new structure without HttpServletRequest
 public class CountryCreateAction extends FPActionSupport {
 
 	private CountryService countryService;

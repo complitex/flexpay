@@ -1,15 +1,11 @@
-<%@ include file="/WEB-INF/jsp/common/taglibs.jsp" %>
+<%@include file="/WEB-INF/jsp/common/taglibs.jsp" %>
 
-<script type="text/javascript">
-    $(function() {
-        FF.updatePager("pagerAjax(this);");
-    });
-</script>
+<s:actionerror />
 
 <table cellpadding="3" cellspacing="1" border="0" width="100%">
     <tr>
         <td colspan="5">
-            <%@include file="/WEB-INF/jsp/common/filter/pager/pager.jsp" %>
+            <%@include file="/WEB-INF/jsp/common/filter/pager/pager_ajax.jsp" %>
         </td>
     </tr>
     <tr>
@@ -42,7 +38,7 @@
     </s:iterator>
     <tr>
         <td colspan="5">
-            <%@include file="/WEB-INF/jsp/common/filter/pager/pager.jsp" %>
+            <%@include file="/WEB-INF/jsp/common/filter/pager/pager_ajax.jsp" %>
         </td>
     </tr>
 </table>

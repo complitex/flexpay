@@ -1,7 +1,5 @@
 <%@include file="/WEB-INF/jsp/common/taglibs.jsp" %>
 
-<s:actionerror />
-
 <table cellpadding="3" cellspacing="1" border="0" width="100%">
     <tr>
         <td>
@@ -14,34 +12,33 @@
 </table>
 
 <script type="text/javascript">
+
+    var shadowId = "shadow";
+    var resultId = "result";
+
     $(function() {
+
+        FP.createShadow(shadowId);
+
         FF.addListener("street", function(filter) {
-            var id = "result";
-            FF.loading(id);
+            FP.resizeShadow(shadowId, resultId, {visibility:"visible"});
             $.post("<s:url action="buildingsListAjax" namespace="/tc" includeParams="none"/>",
                     {streetId: filter.value.val()},
                     function(data) {
-                        $("#" + id).html(data);
+                        $("#" + resultId).html(data);
+                        FP.hideShadow(shadowId);
                     });
         });
-
         FF.addEraseFunction("street", function(filter) {
-            $("#result").html("");
+            $("#" + resultId).html("");
         });
     });
 
     function pagerAjax(element) {
-        var isSelect = element.name == "pager.pageSize";
-        $.post("<s:url action="buildingsListAjax" namespace="/tc" includeParams="none"/>",
-                {
-                    streetId: FF.filters["street"].value.val(),
-                    pageSizeChanged: isSelect,
-                    "pager.pageNumber": isSelect ? "" : element.value,
-                    "pager.pageSize": isSelect ? element.value : $('select[name="pager.pageSize"]').val()
-                },
-                function(data) {
-                    $("#result").html(data);
-                });
+        FP.pagerAjax(element, {
+            action:"<s:url action="buildingsListAjax" namespace="/tc" includeParams="none"/>",
+            params:{streetId: FF.filters["street"].value.val()}
+        });
     }
 
 </script>
