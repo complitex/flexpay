@@ -1,11 +1,15 @@
 package org.flexpay.ab.actions.region;
 
+import org.apache.commons.collections.ArrayStack;
 import org.apache.commons.lang.StringUtils;
-import org.flexpay.ab.persistence.Country;
 import org.flexpay.ab.persistence.Region;
+import org.flexpay.ab.persistence.filters.CountryFilter;
+import org.flexpay.ab.persistence.sorter.RegionSorter;
 import org.flexpay.ab.service.RegionService;
 import org.flexpay.common.actions.FPActionWithPagerSupport;
-import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.persistence.DomainObject;
+import org.flexpay.common.persistence.sorter.ObjectSorter;
+import org.flexpay.common.util.CollectionUtils;
 import static org.flexpay.common.util.CollectionUtils.list;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
@@ -17,6 +21,7 @@ public class RegionsListAjaxAction extends FPActionWithPagerSupport<Region> {
 	private String countryId;
 	private List<Region> regions = list();
 
+	private RegionSorter regionSorter = new RegionSorter();
 	private RegionService regionService;
 
 	@NotNull
@@ -33,8 +38,11 @@ public class RegionsListAjaxAction extends FPActionWithPagerSupport<Region> {
 			}
 		}
 
-		regions = regionService.findSimple(new Stub<Country>(countryIdLong), getPager());
-		log.info("Total regions found: {}", regions);
+		ArrayStack filters = CollectionUtils.arrayStack(new CountryFilter(countryIdLong));
+		List<ObjectSorter> sorters = CollectionUtils.<ObjectSorter>list(regionSorter);
+		List<Region> regionStubs = regionService.find(filters, sorters, getPager());
+		log.debug("Total regions found: {}", regions);
+		regions = regionService.readFull(DomainObject.collectionIds(regionStubs), true);
 
 		return SUCCESS;
 	}
@@ -58,6 +66,14 @@ public class RegionsListAjaxAction extends FPActionWithPagerSupport<Region> {
 
 	public List<Region> getRegions() {
 		return regions;
+	}
+
+	public RegionSorter getRegionSorter() {
+		return regionSorter;
+	}
+
+	public void setRegionSorter(RegionSorter regionSorter) {
+		this.regionSorter = regionSorter;
 	}
 
 	@Required
