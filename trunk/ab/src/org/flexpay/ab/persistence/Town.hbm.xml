@@ -96,6 +96,24 @@
 		WHERE t.id=? and nt.invalidDate='2100-12-31' and tt.invalidDate='2100-12-31'
 	</query>
 
+	<query name="Town.readFullCollection">
+		SELECT DISTINCT t
+		FROM Town t
+			LEFT JOIN FETCH t.nameTemporals nt
+			LEFT JOIN FETCH nt.value nv
+			LEFT JOIN FETCH nv.translations ntr
+		WHERE t.id in (:ids) and nt.invalidDate='2100-12-31'
+	</query>
+
+	<query name="Town.findFullTownsWithTypes">
+		SELECT DISTINCT t
+		FROM Town t
+			LEFT JOIN FETCH t.typeTemporals nt
+			LEFT JOIN FETCH nt.value nv
+			LEFT JOIN FETCH nv.translations ntr
+		WHERE t.id in (:list_1) and nt.invalidDate='2100-12-31'
+	</query>
+
     <query name="Town.findByRegionAndQuery">
         select distinct t
         from Town t

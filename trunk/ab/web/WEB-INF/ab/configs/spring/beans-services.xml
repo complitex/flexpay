@@ -11,6 +11,7 @@
 		  class="org.flexpay.ab.service.imp.CountryServiceImpl"
 		  autowire-candidate="false"
 		  p:countryDao-ref="countryDao"
+		  p:countryDaoExt-ref="countryDaoExt"
 		  p:countryNameDao-ref="countryNameDao" />
 
 	<bean id="regionHistoryChangesListener"
@@ -24,9 +25,9 @@
 		  p:parentService-ref="countryService"
 		  p:townTypeService-ref="townTypeService"
 		  p:regionDao-ref="regionDao"
+		  p:regionDaoExt-ref="regionDaoExt"
 		  p:regionNameDao-ref="regionNameDao"
 		  p:regionNameTemporalDao-ref="regionNameTemporalDao"
-		  p:regionNameTranslationDao-ref="regionNameTranslationDao"
 		  p:countryDao-ref="countryDao"
 		  p:sessionUtils-ref="sessionUtils"
 		  p:modificationListener-ref="regionHistoryChangesListener" />
@@ -47,8 +48,8 @@
 		  p:parentService-ref="regionService"
 		  p:regionDao-ref="regionDao"
 		  p:townDao-ref="townDao"
+		  p:townDaoExt-ref="townDaoExt"
 		  p:townNameDao-ref="townNameDao"
-		  p:townNameTranslationDao-ref="townNameTranslationDao"
 		  p:townNameTemporalDao-ref="townNameTemporalDao"
 		  p:townTypeService-ref="townTypeService"
 		  p:sessionUtils-ref="sessionUtils"
@@ -69,9 +70,9 @@
 		  p:parentService-ref="townService"
 		  p:townDao-ref="townDao"
 		  p:districtDao-ref="districtDao"
+		  p:districtDaoExt-ref="districtDaoExt"
 		  p:districtNameDao-ref="districtNameDao"
 		  p:districtNameTemporalDao-ref="districtNameTemporalDao"
-		  p:districtNameTranslationDao-ref="districtNameTranslationDao"
 		  p:sessionUtils-ref="sessionUtils"
 		  p:modificationListener-ref="districtHistoryChangesListener" />
 
@@ -94,7 +95,6 @@
 		  p:streetDaoExt-ref="streetDaoExt"
 		  p:streetNameDao-ref="streetNameDao"
 		  p:streetNameTemporalDao-ref="streetNameTemporalDao"
-		  p:streetNameTranslationDao-ref="streetNameTranslationDao"
 		  p:sessionUtils-ref="sessionUtils"
 		  p:modificationListener-ref="streetHistoryChangesListener" />
 

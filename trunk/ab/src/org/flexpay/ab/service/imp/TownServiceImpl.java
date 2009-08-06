@@ -11,25 +11,25 @@ import org.flexpay.ab.service.TownService;
 import org.flexpay.ab.service.TownTypeService;
 import org.flexpay.common.dao.GenericDao;
 import org.flexpay.common.dao.NameTimeDependentDao;
+import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
+import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.persistence.TimeLine;
-import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.filter.ObjectFilter;
 import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
 import org.flexpay.common.persistence.history.ModificationListener;
+import org.flexpay.common.persistence.sorter.ObjectSorter;
 import org.flexpay.common.service.ParentService;
-import org.flexpay.common.service.internal.SessionUtils;
 import org.flexpay.common.service.imp.NameTimeDependentServiceImpl;
+import org.flexpay.common.service.internal.SessionUtils;
+import org.flexpay.common.util.CollectionUtils;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 @Transactional (readOnly = true, rollbackFor = Exception.class)
 public class TownServiceImpl extends NameTimeDependentServiceImpl<
@@ -37,9 +37,9 @@ public class TownServiceImpl extends NameTimeDependentServiceImpl<
 		implements TownService {
 
 	private TownDao townDao;
+	private TownDaoExt townDaoExt;
 	private TownNameDao townNameDao;
 	private TownNameTemporalDao townNameTemporalDao;
-	private TownNameTranslationDao townNameTranslationDao;
 	private RegionDao regionDao;
 
 	private ParentService<RegionFilter> parentService;
@@ -92,15 +92,6 @@ public class TownServiceImpl extends NameTimeDependentServiceImpl<
 	 */
 	protected GenericDao<TownName, Long> getNameValueDao() {
 		return townNameDao;
-	}
-
-	/**
-	 * Get DAO implementation working with name translations
-	 *
-	 * @return GenericDao implementation
-	 */
-	protected GenericDao<TownNameTranslation, Long> getNameTranslationDao() {
-		return townNameTranslationDao;
 	}
 
 	/**
@@ -196,7 +187,7 @@ public class TownServiceImpl extends NameTimeDependentServiceImpl<
 	private boolean isFilterValid(TownFilter filter) {
 		for (TownNameTranslation nameTranslation : filter.getNames()) {
 			TownName name = (TownName) nameTranslation.getTranslatable();
-			if (name.getObject().getId().equals(filter.getSelectedId())) {
+			if (filter.getSelectedStub().sameId((Town) name.getObject())) {
 				return true;
 			}
 		}
@@ -417,14 +408,45 @@ public class TownServiceImpl extends NameTimeDependentServiceImpl<
 		}
 	}
 
-	@Required
-	public void setTownNameTemporalDao(TownNameTemporalDao townNameTemporalDao) {
-		this.townNameTemporalDao = townNameTemporalDao;
+	@NotNull
+	@Override
+	public List<Town> find(ArrayStack filters, List<ObjectSorter> sorters, Page<Town> pager) {
+
+		log.debug("Finding towns with sorters");
+		PrimaryKeyFilter<?> regionFilter = (PrimaryKeyFilter<?>) filters.peek();
+		return townDaoExt.findTowns(regionFilter.getSelectedId(), sorters, pager);
+	}
+
+	/**
+	 * Read towns
+	 *
+	 * @param stubs		 town keys
+	 * @param preserveOrder Whether to preserve order of objects
+	 * @return Objects if found, or <code>null</code> otherwise
+	 */
+	@NotNull
+	@Override
+	public List<Town> readFull(@NotNull Collection<Long> stubs, boolean preserveOrder) {
+
+		List<Town> towns = townDao.readFullCollection(stubs, preserveOrder);
+		// merge town types
+		List<Town> townTypes = townDao.findFullTownsWithTypes(stubs);
+		Map<Long, Town> map = CollectionUtils.map();
+		for (Town t : townTypes) {
+			map.put(t.getId(), t);
+		}
+		for (Town town : towns) {
+			if (map.containsKey(town.getId())) {
+				town.setTypeTemporals(map.get(town.getId()).getTypeTemporals());
+			}
+		}
+
+		return towns;
 	}
 
 	@Required
-	public void setTownNameTranslationDao(TownNameTranslationDao townNameTranslationDao) {
-		this.townNameTranslationDao = townNameTranslationDao;
+	public void setTownNameTemporalDao(TownNameTemporalDao townNameTemporalDao) {
+		this.townNameTemporalDao = townNameTemporalDao;
 	}
 
 	@Required
@@ -452,4 +474,8 @@ public class TownServiceImpl extends NameTimeDependentServiceImpl<
 		this.sessionUtils = sessionUtils;
 	}
 
+	@Required
+	public void setTownDaoExt(TownDaoExt townDaoExt) {
+		this.townDaoExt = townDaoExt;
+	}
 }

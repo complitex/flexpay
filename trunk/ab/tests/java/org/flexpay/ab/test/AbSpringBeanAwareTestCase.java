@@ -28,6 +28,7 @@ public class AbSpringBeanAwareTestCase extends SpringBeanAwareTestCase {
 				DISTRICT_READ,
 				TOWN_READ,
 				REGION_READ,
+				COUNTRY_READ,
 				TOWN_TYPE_READ,
 				STREET_TYPE_READ,
 				STREET_TYPE_ADD,
@@ -45,6 +46,8 @@ public class AbSpringBeanAwareTestCase extends SpringBeanAwareTestCase {
 				TOWN_CHANGE,
 				PERSON_ADD,
 				PERSON_CHANGE,
+				COUNTRY_ADD,
+				COUNTRY_CHANGE,
 				PROCESS_READ
 		);
 		User user = new User("test", "test", true, true, true, true, authorities);

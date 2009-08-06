@@ -77,8 +77,17 @@
 			LEFT JOIN FETCH t.value v
 			LEFT JOIN FETCH v.translations tr
 			LEFT JOIN FETCH tr.lang l
-			LEFT JOIN FETCH l.translations
 		WHERE r.id=? and t.invalidDate='2100-12-31'
+	</query>
+
+	<query name="Region.readFullCollection">
+		SELECT DISTINCT r
+		FROM Region r
+			LEFT JOIN FETCH r.nameTemporals t
+			LEFT JOIN FETCH t.value v
+			LEFT JOIN FETCH v.translations tr
+			LEFT JOIN FETCH tr.lang l
+		WHERE r.id in (:ids) and t.invalidDate='2100-12-31'
 	</query>
 
     <query name="Region.findByCountryAndQuery">

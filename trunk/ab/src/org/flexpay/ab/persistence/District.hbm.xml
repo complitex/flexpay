@@ -79,6 +79,16 @@
 		WHERE o.id=? and t.invalidDate='2100-12-31'
 	</query>
 
+	<query name="District.readFullCollection">
+		SELECT DISTINCT o
+		FROM District o
+			join fetch o.parent
+			LEFT JOIN FETCH o.nameTemporals t
+			LEFT JOIN FETCH t.value v
+			LEFT JOIN FETCH v.translations tr
+		WHERE o.id in (:ids) and t.invalidDate='2100-12-31'
+	</query>
+
 	<query name="DistrictNameTemporal.readFull">
 		SELECT DISTINCT t
 		FROM DistrictNameTemporal t

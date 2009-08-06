@@ -8,6 +8,7 @@ import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
+import org.flexpay.common.persistence.sorter.ObjectSorter;
 import org.flexpay.common.service.NameTimeDependentService;
 import org.flexpay.common.service.ParentService;
 import org.jetbrains.annotations.NotNull;
@@ -49,22 +50,23 @@ public interface RegionService extends
 	 * @param forefatherFilter Upper level filter
 	 * @param locale		   Locale to get parent names in
 	 * @return Initialised filter
-	 * @throws org.flexpay.common.exception.FlexPayException if failure occurs
+	 * @throws org.flexpay.common.exception.FlexPayException
+	 *          if failure occurs
 	 */
-	@Secured(Roles.REGION_READ)
+	@Secured (Roles.REGION_READ)
 	RegionFilter initFilter(RegionFilter parentFilter, PrimaryKeyFilter forefatherFilter, Locale locale)
 			throws FlexPayException;
 
 	/**
-	 * Initialize filters. <p>Filters are coming from the most significant to less
-	 * significant ones order, like CountryFilter, RegionFilter, TownFilter for example</p>
+	 * Initialize filters. <p>Filters are coming from the most significant to less significant ones order, like
+	 * CountryFilter, RegionFilter, TownFilter for example</p>
 	 *
 	 * @param filters Filters to init
 	 * @param locale  Locale to get parent names in
 	 * @return Initialised filters stack
 	 * @throws FlexPayException if failure occurs
 	 */
-	@Secured(Roles.REGION_READ)
+	@Secured (Roles.REGION_READ)
 	ArrayStack initFilters(ArrayStack filters, Locale locale) throws FlexPayException;
 
 	/**
@@ -78,7 +80,7 @@ public interface RegionService extends
 	 * @throws org.flexpay.common.exception.FlexPayExceptionContainer
 	 *          if operation fails
 	 */
-	@Secured(Roles.REGION_ADD)
+	@Secured (Roles.REGION_ADD)
 	Region create(Region object, List<RegionNameTranslation> nameTranslations, ArrayStack filters, Date from)
 			throws FlexPayExceptionContainer;
 
@@ -88,8 +90,19 @@ public interface RegionService extends
 	 * @param stub Object stub
 	 * @return object, or <code>null</code> if object not found
 	 */
-	@Secured(Roles.REGION_READ)
+	@Secured (Roles.REGION_READ)
 	Region readFull(@NotNull Stub<Region> stub);
+
+	/**
+	 * Read regions
+	 *
+	 * @param stubs		 Region keys
+	 * @param preserveOrder Whether to preserve order of objects
+	 * @return Objects if found, or <code>null</code> otherwise
+	 */
+	@Secured ({Roles.REGION_READ})
+	@NotNull
+	List<Region> readFull(@NotNull Collection<Long> stubs, boolean preserveOrder);
 
 	/**
 	 * Read object temporal name by its unique id
@@ -97,7 +110,7 @@ public interface RegionService extends
 	 * @param id key
 	 * @return object temporal name , or <code>null</code> if not found
 	 */
-	@Secured(Roles.REGION_READ)
+	@Secured (Roles.REGION_READ)
 	RegionNameTemporal readTemporalName(Long id);
 
 	/**
@@ -109,12 +122,8 @@ public interface RegionService extends
 	 * @throws org.flexpay.common.exception.FlexPayException
 	 *          if failure occurs
 	 */
-	@Secured(Roles.REGION_READ)
-	List<RegionName> findNames(ArrayStack filters, Page pager) throws FlexPayException;
-
 	@Secured (Roles.REGION_READ)
-	@NotNull
-	List<RegionName> findNames(@NotNull Stub<Country> stub, Page pager) throws FlexPayException;
+	List<RegionName> findNames(ArrayStack filters, Page pager) throws FlexPayException;
 
 	/**
 	 * Get a list of available objects
@@ -122,7 +131,7 @@ public interface RegionService extends
 	 * @param filters Parent filters
 	 * @return List of Objects
 	 */
-	@Secured(Roles.REGION_READ)
+	@Secured (Roles.REGION_READ)
 	List<Region> find(ArrayStack filters);
 
 	/**
@@ -132,18 +141,8 @@ public interface RegionService extends
 	 * @param pager   Page
 	 * @return List of Objects
 	 */
-	@Secured(Roles.REGION_READ)
-	List<Region> find(ArrayStack filters, Page pager);
-
-	/**
-	 * Get a list of available objects
-	 *
-	 * @param stub Parent stub
-	 * @param pager   Page
-	 * @return List of Objects
-	 */
 	@Secured (Roles.REGION_READ)
-	List<Region> findSimple(@NotNull Stub<Country> stub, Page pager);
+	List<Region> find(ArrayStack filters, Page pager);
 
 	/**
 	 * Disable objects
@@ -152,15 +151,13 @@ public interface RegionService extends
 	 * @throws org.flexpay.common.exception.FlexPayExceptionContainer
 	 *          if failure occurs
 	 */
-	@Secured(Roles.REGION_DELETE)
+	@Secured (Roles.REGION_DELETE)
 	void disable(Collection<Region> objects) throws FlexPayExceptionContainer;
 
 	/**
 	 * Disable objects
 	 *
 	 * @param objectIds IDs of objects to disable
-	 * @throws org.flexpay.common.exception.FlexPayExceptionContainer
-	 *          if failure occurs
 	 */
 	@Secured (Roles.REGION_DELETE)
 	void disableByIds(@NotNull Collection<Long> objectIds);
@@ -176,7 +173,7 @@ public interface RegionService extends
 	 * @throws org.flexpay.common.exception.FlexPayExceptionContainer
 	 *          exceptions container
 	 */
-	@Secured(Roles.REGION_CHANGE)
+	@Secured (Roles.REGION_CHANGE)
 	Region updateNameTranslations(Region obj, Long temporalId, List<RegionNameTranslation> nameTranslations, Date date)
 			throws FlexPayExceptionContainer;
 
@@ -194,17 +191,16 @@ public interface RegionService extends
 	 * @param filter Parent object filter
 	 * @return Object if found, or <code>null</code> otherwise
 	 */
-	@Secured(Roles.REGION_READ)
+	@Secured (Roles.REGION_READ)
 	@NotNull
 	List<Region> findByName(String name, PrimaryKeyFilter filter);
 
 	/**
-	 * Lookup regions by query and country id. Query is a string
-	 * which may contains in folow string:
-	 *
+	 * Lookup regions by query and country id. Query is a string which may contains in folow string:
+	 * <p/>
 	 * region_name
 	 *
-	 * @param stub CountryStub
+	 * @param stub  CountryStub
 	 * @param query searching string
 	 * @return List of founded regions
 	 */
@@ -212,4 +208,14 @@ public interface RegionService extends
 	@NotNull
 	List<Region> findByCountryAndQuery(@NotNull Stub<Country> stub, @NotNull String query);
 
+	/**
+	 * Get a list of available objects
+	 *
+	 * @param filters Parent filters
+	 * @param sorters Stack of sorters
+	 * @param pager   Page
+	 * @return List of Objects
+	 */
+	@Secured (Roles.REGION_READ)
+	List<Region> find(ArrayStack filters, List<ObjectSorter> sorters, Page<Region> pager);
 }

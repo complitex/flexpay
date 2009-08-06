@@ -41,10 +41,17 @@
 	<query name="Country.readFull">
 		SELECT DISTINCT c
 		FROM Country c
-		LEFT JOIN FETCH c.countryNames tr
-		LEFT JOIN FETCH tr.lang l
-		LEFT JOIN FETCH l.translations
+			LEFT JOIN FETCH c.countryNames tr
+			LEFT JOIN FETCH tr.lang l
 		WHERE c.id=?
+	</query>
+
+	<query name="Country.readFullCollection">
+		SELECT DISTINCT c
+		FROM Country c
+			LEFT JOIN FETCH c.countryNames tr
+			LEFT JOIN FETCH tr.lang l
+		WHERE c.id in (:ids)
 	</query>
 
     <query name="Country.findByQuery">

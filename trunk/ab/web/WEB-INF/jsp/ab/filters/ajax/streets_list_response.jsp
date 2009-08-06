@@ -4,10 +4,10 @@
     $(function() {
         FF.updatePager("pagerAjax(this);");
         $('input[id="streetSorterByNameButton"]').each(function() {
-            this.setAttribute("onclick", this.getAttribute("onclick") + "sorterAjax();")
+            this.setAttribute("onclick", this.getAttribute("onclick") + "sorterAjax();");
         });
         $('input[id="streetSorterByTypeButton"]').each(function() {
-            this.setAttribute("onclick", this.getAttribute("onclick") + "sorterAjax();")
+            this.setAttribute("onclick", this.getAttribute("onclick") + "sorterAjax();");
         });
     });
 </script>

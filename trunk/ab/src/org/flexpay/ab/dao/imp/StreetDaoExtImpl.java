@@ -14,7 +14,6 @@ import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
 import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 
 public class StreetDaoExtImpl extends HibernateDaoSupport implements StreetDaoExt {
@@ -45,7 +44,7 @@ public class StreetDaoExtImpl extends HibernateDaoSupport implements StreetDaoEx
 		whereClause.append(" where s.parent.id=").append(townId).append(" and s.status=").append(Street.STATUS_ACTIVE);
 		sorter.setWhere(whereClause);
 		hql.append(whereClause);
-		cnthql.append(" where s.parent.id=").append(townId);
+		cnthql.append(" where s.parent.id=").append(townId).append(" and s.status=").append(Street.STATUS_ACTIVE);
 
 		StringBuilder orderByClause = new StringBuilder();
 		sorter.setOrderBy(orderByClause);

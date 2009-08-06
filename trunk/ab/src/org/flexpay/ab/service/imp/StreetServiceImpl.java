@@ -39,7 +39,6 @@ public class StreetServiceImpl extends NameTimeDependentServiceImpl<
 	private StreetDaoExt streetDaoExt;
 	private StreetNameDao streetNameDao;
 	private StreetNameTemporalDao streetNameTemporalDao;
-	private StreetNameTranslationDao streetNameTranslationDao;
 	private TownDao townDao;
 
 	private ParentService<TownFilter> parentService;
@@ -72,15 +71,6 @@ public class StreetServiceImpl extends NameTimeDependentServiceImpl<
 	 */
 	protected GenericDao<StreetName, Long> getNameValueDao() {
 		return streetNameDao;
-	}
-
-	/**
-	 * Get DAO implementation working with name translations
-	 *
-	 * @return GenericDao implementation
-	 */
-	protected GenericDao<StreetNameTranslation, Long> getNameTranslationDao() {
-		return streetNameTranslationDao;
 	}
 
 	/**
@@ -520,11 +510,6 @@ public class StreetServiceImpl extends NameTimeDependentServiceImpl<
 	}
 
 	@Required
-	public void setStreetNameTranslationDao(StreetNameTranslationDao streetNameTranslationDao) {
-		this.streetNameTranslationDao = streetNameTranslationDao;
-	}
-
-	@Required
 	public void setTownDao(TownDao townDao) {
 		this.townDao = townDao;
 	}
@@ -543,5 +528,4 @@ public class StreetServiceImpl extends NameTimeDependentServiceImpl<
 	public void setModificationListener(ModificationListener<Street> modificationListener) {
 		this.modificationListener = modificationListener;
 	}
-
 }
