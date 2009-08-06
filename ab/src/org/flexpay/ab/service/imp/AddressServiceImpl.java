@@ -1,9 +1,9 @@
 package org.flexpay.ab.service.imp;
 
 import org.flexpay.ab.persistence.Apartment;
+import org.flexpay.ab.persistence.Building;
 import org.flexpay.ab.persistence.BuildingAddress;
 import org.flexpay.ab.persistence.Street;
-import org.flexpay.ab.persistence.Building;
 import org.flexpay.ab.service.AddressService;
 import org.flexpay.ab.service.ApartmentService;
 import org.flexpay.ab.service.BuildingService;
@@ -13,8 +13,8 @@ import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Locale;
@@ -69,6 +69,29 @@ public class AddressServiceImpl implements AddressService {
 		return street.format(locale, true) + ", " + buildingAddress.format(locale, true);
 	}
 
+	/**
+	 * Get Building address on street
+	 *
+	 * @param stub	   Building stub
+	 * @param streetStub Street stub to get address on
+	 * @param locale	 Locale to get address in
+	 * @return Building address
+	 * @throws Exception if failure occurs
+	 */
+	@NotNull
+	@Override
+	public String getBuildingAddressOnStreet(@NotNull Stub<Building> stub, @NotNull Stub<Street> streetStub,
+											 @Nullable Locale locale) throws Exception {
+		Building building = buildingService.read(stub);
+		BuildingAddress address = building.getAddressOnStreet(streetStub);
+		if (address == null) {
+			throw new IllegalStateException("Building #" + stub.getId() +
+											" does not have any address on street #" + streetStub.getId());
+		}
+
+		return getBuildingsAddress(stub(address), locale);
+	}
+
 	@NotNull
 	public String getBuildingAddress(@NotNull Stub<Building> stub, @Nullable Locale locale) throws Exception {
 
@@ -79,7 +102,7 @@ public class AddressServiceImpl implements AddressService {
 				candidate = buildingAddress;
 			}
 		}
-		if (candidate == null){
+		if (candidate == null) {
 			if (buildingses.size() > 0) {
 				candidate = buildingses.get(0);
 			} else {

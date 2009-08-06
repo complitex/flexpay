@@ -16,7 +16,8 @@ import org.junit.runners.Suite;
 		TestI18nQuery.class,
 		TestAddressService.class,
 		TestTownService.class,
-		TestPersonService.class
+		TestPersonService.class,
+		TestAddressAttributeTypeService.class
 //		, TestSecurity.class
 })
 public class AllTests {

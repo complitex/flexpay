@@ -281,7 +281,8 @@
 	</bean>
 
 	<bean id="buildingsDaoExt" class="org.flexpay.ab.dao.imp.BuildingsDaoExtImpl"
-		  p:hibernateTemplate-ref="hibernateTemplate" />
+		  p:hibernateTemplate-ref="hibernateTemplate"
+		  p:addressAttributeTypeService-ref="addressAttributeTypeService" />
 
 	<bean id="apartmentDaoExt"
 		  class="org.flexpay.ab.dao.imp.ApartmentDaoExtImpl"

@@ -50,6 +50,8 @@
                 {
                     streetId: FF.filters["street"].value.val(),
                     pageSizeChanged: isSelect,
+					"buildingsSorter.active": $("#buildingsSorterActive").val(),
+					"buildingsSorter.order": $("#buildingsSorterOrder").val(),
                     "pager.pageNumber": isSelect ? "" : element.value,
                     "pager.pageSize": isSelect ? element.value : $('select[name="pager.pageSize"]').val()
                 },
@@ -57,5 +59,17 @@
                     $("#result").html(data);
                 });
     }
+
+	function sorterAjax() {
+		$.post("<s:url action="buildingsListAjax" namespace="/dicts" includeParams="none"/>",
+				{
+					streetId: FF.filters["street"].value.val(),
+					"buildingsSorter.active": $("#buildingsSorterActive").val(),
+					"buildingsSorter.order": $("#buildingsSorterOrder").val()
+				},
+				function(data) {
+					$("#result").html(data);
+				});
+	}
 
 </script>

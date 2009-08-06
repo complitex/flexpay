@@ -23,7 +23,7 @@ public interface AddressAttributeTypeService {
 	AddressAttributeType read(@NotNull Stub<AddressAttributeType> stub);
 
 	/**
-	 * Get building attribute types
+	 * Get building attribute types sorted using AddressAttributeType natural comparator
 	 *
 	 * @return BuildingAttributeType list
 	 */

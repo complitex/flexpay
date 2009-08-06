@@ -182,6 +182,15 @@
 		WHERE o.id=? and o.status=0
 	</query>
 
+	<query name="BuildingAddress.readFullCollection">
+		select distinct o
+		FROM BuildingAddress o
+			LEFT JOIN FETCH o.buildingAttributes attrs
+			LEFT JOIN FETCH attrs.buildingAttributeType attrType
+			LEFT JOIN FETCH attrType.translations attrTypeTr
+		WHERE o.id in (:ids) and o.status=0
+	</query>
+
 	<query name="BuildingAddress.findBuildings.count">
 		select count(*) from BuildingAddress o where o.status=0 and o.street.id=?
 	</query>

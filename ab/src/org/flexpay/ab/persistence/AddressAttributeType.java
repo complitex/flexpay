@@ -16,7 +16,7 @@ import java.util.Set;
 /**
  * Building address attribute type
  */
-public class AddressAttributeType extends DomainObjectWithStatus {
+public class AddressAttributeType extends DomainObjectWithStatus implements Comparable<AddressAttributeType> {
 
 	private Set<AddressAttributeTypeTranslation> translations = Collections.emptySet();
 
@@ -98,4 +98,33 @@ public class AddressAttributeType extends DomainObjectWithStatus {
 				toString();
 	}
 
+	@Override
+	public int compareTo(AddressAttributeType o) {
+		return -compareAscTo(o);
+	}
+
+	private int compareAscTo(AddressAttributeType o) {
+		boolean oIsBuildingNumber = o.isBuildingNumber();
+		boolean thisIsBuildingNumber = isBuildingNumber();
+		if (oIsBuildingNumber != thisIsBuildingNumber) {
+			return thisIsBuildingNumber ? 1 : -1;
+		}
+		boolean oIsBulkNumber = o.isBulkNumber();
+		boolean thisIsBulkNumber = isBulkNumber();
+		if (oIsBulkNumber != thisIsBulkNumber) {
+			return thisIsBuildingNumber ? 1 : -1;
+		}
+		boolean oIsPartNumber = o.isPartNumber();
+		boolean thisIsPartNumber = isPartNumber();
+		if (oIsPartNumber != thisIsPartNumber) {
+			return thisIsBuildingNumber ? 1 : -1;
+		}
+
+		Long id = getId();
+		Long oId = o.getId();
+		return id == null && oId == null ? 0 :
+			   id == null ? -1 :
+			   oId == null ? 1 :
+			   id.compareTo(oId);
+	}
 }
