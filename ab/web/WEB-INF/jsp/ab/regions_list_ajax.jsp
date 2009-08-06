@@ -49,6 +49,8 @@
         $.post("<s:url action="regionsListAjax" namespace="/dicts" includeParams="none"/>",
                 {
                     countryId: FF.filters["country"].value.val(),
+					"regionSorter.active": $("#regionSorterActive").val(),
+					"regionSorter.order": $("#regionSorterOrder").val(),
                     pageSizeChanged: isSelect,
                     "pager.pageNumber": isSelect ? "" : element.value,
                     "pager.pageSize": isSelect ? element.value : $('select[name="pager.pageSize"]').val()
@@ -57,5 +59,17 @@
                     $("#result").html(data);
                 });
     }
+
+	function sorterAjax() {
+		$.post("<s:url action="regionsListAjax" namespace="/dicts" includeParams="none"/>",
+				{
+					countryId: FF.filters["country"].value.val(),
+					"regionSorter.active": $("#regionSorterActive").val(),
+					"regionSorter.order": $("#regionSorterOrder").val()
+				},
+				function(data) {
+					$("#result").html(data);
+				});
+	}
 
 </script>

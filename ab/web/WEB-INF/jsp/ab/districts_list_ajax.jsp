@@ -49,6 +49,8 @@
         $.post("<s:url action="districtsListAjax" namespace="/dicts" includeParams="none"/>",
                 {
                     townId: FF.filters["town"].value.val(),
+					"districtSorter.active": $("#districtSorterActive").val(),
+					"districtSorter.order": $("#districtSorterOrder").val(),
                     pageSizeChanged: isSelect,
                     "pager.pageNumber": isSelect ? "" : element.value,
                     "pager.pageSize": isSelect ? element.value : $('select[name="pager.pageSize"]').val()
@@ -58,4 +60,15 @@
                 });
     }
 
+	function sorterAjax() {
+		$.post("<s:url action="districtsListAjax" namespace="/dicts" includeParams="none"/>",
+				{
+					townId: FF.filters["town"].value.val(),
+					"districtSorter.active": $("#districtSorterActive").val(),
+					"districtSorter.order": $("#districtSorterOrder").val()
+				},
+				function(data) {
+					$("#result").html(data);
+				});
+	}
 </script>

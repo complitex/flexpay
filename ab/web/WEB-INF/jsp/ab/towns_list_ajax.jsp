@@ -49,6 +49,10 @@
         $.post("<s:url action="townsListAjax" namespace="/dicts" includeParams="none"/>",
                 {
                     regionId: FF.filters["region"].value.val(),
+					"townSorterByName.active": $("#townSorterByNameActive").val(),
+					"townSorterByName.order": $("#townSorterByNameOrder").val(),
+					"townSorterByType.active": $("#townSorterByTypeActive").val(),
+					"townSorterByType.order": $("#townSorterByTypeOrder").val(),
                     pageSizeChanged: isSelect,
                     "pager.pageNumber": isSelect ? "" : element.value,
                     "pager.pageSize": isSelect ? element.value : $('select[name="pager.pageSize"]').val()
@@ -57,5 +61,19 @@
                     $("#result").html(data);
                 });
     }
+
+	function sorterAjax() {
+		$.post("<s:url action="townsListAjax" namespace="/dicts" includeParams="none"/>",
+				{
+					regionId: FF.filters["region"].value.val(),
+					"townSorterByName.active": $("#townSorterByNameActive").val(),
+					"townSorterByName.order": $("#townSorterByNameOrder").val(),
+					"townSorterByType.active": $("#townSorterByTypeActive").val(),
+					"townSorterByType.order": $("#townSorterByTypeOrder").val()
+				},
+				function(data) {
+					$("#result").html(data);
+				});
+	}
 
 </script>
