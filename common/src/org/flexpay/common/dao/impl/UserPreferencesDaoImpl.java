@@ -1,14 +1,22 @@
 package org.flexpay.common.dao.impl;
 
+import org.apache.commons.lang.StringUtils;
 import org.flexpay.common.dao.UserPreferencesDao;
 import org.flexpay.common.util.config.UserPreferences;
-import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 import org.springframework.dao.support.DataAccessUtils;
+import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
 public class UserPreferencesDaoImpl extends HibernateDaoSupport implements UserPreferencesDao {
 
 	@Override
 	public void save(UserPreferences preferences) {
+
+		if (StringUtils.isEmpty(preferences.getFullName())) {
+			preferences.setFullName(preferences.getUsername());
+		}
+		if (StringUtils.isEmpty(preferences.getLastName())) {
+			preferences.setLastName(preferences.getUsername());
+		}
 
 		if (preferences.isNew()) {
 			preferences.setId(null);

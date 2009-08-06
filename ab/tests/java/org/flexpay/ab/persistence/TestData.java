@@ -25,4 +25,13 @@ public abstract class TestData {
 
 	// test districts
 	public static final Stub<District> DISTRICT_SOVETSKII = new Stub<District>(1L);
+
+	// test towns
+	public static final Stub<Town> TOWN_NSK = new Stub<Town>(2L);
+
+	// test regions
+	public static final Stub<Region> REGION_NSK = new Stub<Region>(1000L);
+
+	// test countries
+	public static final Stub<Country> COUNTRY_RUS = new Stub<Country>(1L);
 }

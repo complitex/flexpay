@@ -302,4 +302,8 @@ public abstract class FPActionSupport extends ActionSupport implements BreadCrum
 		this.crumbNameKey = crumbNameKey;
 	}
 
+	protected Language getLanguage() {
+		Locale locale = getUserPreferences().getLocale();
+		return LanguageUtil.getLanguage(locale);
+	}
 }

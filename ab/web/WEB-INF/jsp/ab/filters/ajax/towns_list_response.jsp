@@ -3,8 +3,16 @@
 <script type="text/javascript">
     $(function() {
         FF.updatePager("pagerAjax(this);");
+		$('input[id="townSorterByNameButton"]').each(function() {
+			this.setAttribute("onclick", this.getAttribute("onclick") + "sorterAjax();");
+		});
+		$('input[id="townSorterByTypeButton"]').each(function() {
+			this.setAttribute("onclick", this.getAttribute("onclick") + "sorterAjax();");
+		});
     });
 </script>
+
+<s:actionerror />
 
 <table cellpadding="3" cellspacing="1" border="0" width="100%">
     <tr>
@@ -23,8 +31,12 @@
         <td class="th" width="1%">
             <input type="checkbox" onchange="FP.setCheckboxes(this.checked, 'objectIds');" />
         </td>
-        <td class="th" width="32%"><s:text name="ab.town_type"/></td>
-        <td class="th" width="31%"><s:text name="ab.town"/></td>
+		<td class="<s:if test="townSorterByType.activated">th_s</s:if><s:else>th</s:else>" width="32%" nowrap="nowrap">
+			<%@ include file="../../sorters/town_sort_by_type_header.jsp" %>
+		</td>
+		<td class="<s:if test="townSorterByName.activated">th_s</s:if><s:else>th</s:else>" width="31%" nowrap="nowrap">
+			<%@ include file="../../sorters/town_sort_by_name_header.jsp" %>
+		</td>
         <td class="th" width="35%">&nbsp;</td>
     </tr>
     <s:iterator value="%{towns}" status="status">

@@ -3,8 +3,13 @@
 <script type="text/javascript">
     $(function() {
         FF.updatePager("pagerAjax(this);");
+		$('input[id="regionSorterButton"]').each(function() {
+			this.setAttribute("onclick", this.getAttribute("onclick") + "sorterAjax();");
+		});
     });
 </script>
+
+<s:actionerror />
 
 <table cellpadding="3" cellspacing="1" border="0" width="100%">
     <tr>
@@ -23,7 +28,9 @@
         <td class="th" width="1%">
             <input type="checkbox" onchange="FP.setCheckboxes(this.checked, 'objectIds');" />
         </td>
-        <td class="th" width="63%"><s:text name="ab.region"/></td>
+		<td class="<s:if test="regionSorter.activated">th_s</s:if><s:else>th</s:else>" width="63%">
+			<%@ include file="../../sorters/region_sorter_header.jsp" %>
+		</td>
         <td class="th" width="35%">&nbsp;</td>
     </tr>
     <s:iterator value="%{regions}" status="status">

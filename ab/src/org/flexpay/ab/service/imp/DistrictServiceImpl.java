@@ -13,20 +13,22 @@ import org.flexpay.common.dao.NameTimeDependentDao;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
+import org.flexpay.common.persistence.Stub;
+import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
 import org.flexpay.common.persistence.history.ModificationListener;
-import static org.flexpay.common.persistence.Stub.stub;
-import org.flexpay.common.persistence.Stub;
-import org.flexpay.common.persistence.DomainObjectWithStatus;
+import org.flexpay.common.persistence.sorter.ObjectSorter;
 import org.flexpay.common.service.ParentService;
-import org.flexpay.common.service.internal.SessionUtils;
 import org.flexpay.common.service.imp.NameTimeDependentServiceImpl;
+import org.flexpay.common.service.internal.SessionUtils;
 import org.flexpay.common.util.DateUtil;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.List;
+import java.util.Locale;
 
 /**
  * Class DistrictServiceImpl
@@ -37,9 +39,9 @@ public class DistrictServiceImpl extends
 		implements DistrictService {
 
 	private DistrictDao districtDao;
+	private DistrictDaoExt districtDaoExt;
 	private DistrictNameDao districtNameDao;
 	private DistrictNameTemporalDao districtNameTemporalDao;
-	private DistrictNameTranslationDao districtNameTranslationDao;
 	private TownDao townDao;
 
 	private ParentService<TownFilter> parentService;
@@ -57,10 +59,6 @@ public class DistrictServiceImpl extends
 
 	protected GenericDao<DistrictName, Long> getNameValueDao() {
 		return districtNameDao;
-	}
-
-	protected GenericDao<DistrictNameTranslation, Long> getNameTranslationDao() {
-		return districtNameTranslationDao;
 	}
 
 	protected GenericDao<Town, Long> getParentDao() {
@@ -143,7 +141,7 @@ public class DistrictServiceImpl extends
 		for (DistrictNameTranslation nameTranslation : filter.getNames()) {
 			DistrictName name = (DistrictName) nameTranslation
 					.getTranslatable();
-			if (name.getObject().getId().equals(filter.getSelectedId())) {
+			if (filter.getSelectedStub().sameId((District) name.getObject())) {
 				return true;
 			}
 		}
@@ -322,6 +320,28 @@ public class DistrictServiceImpl extends
 
 	@NotNull
 	@Override
+	public List<District> find(ArrayStack filters, List<ObjectSorter> sorters, Page<District> pager) {
+
+		log.debug("Finding town districts with sorters");
+		PrimaryKeyFilter<?> townFilter = (PrimaryKeyFilter<?>) filters.peek();
+		return districtDaoExt.findDistricts(townFilter.getSelectedId(), sorters, pager);
+	}
+
+	/**
+	 * Read districts
+	 *
+	 * @param stubs		 district keys
+	 * @param preserveOrder Whether to preserve order of objects
+	 * @return Objects if found, or <code>null</code> otherwise
+	 */
+	@NotNull
+	@Override
+	public List<District> readFull(@NotNull Collection<Long> stubs, boolean preserveOrder) {
+		return districtDao.readFullCollection(stubs, preserveOrder);
+	}
+
+	@NotNull
+	@Override
 	public List<District> findByTownAndQuery(@NotNull Stub<Town> stub, @NotNull String query) {
 		return districtDao.findByTownAndQuery(stub.getId(), query);
 	}
@@ -339,11 +359,6 @@ public class DistrictServiceImpl extends
 	@Required
 	public void setDistrictNameTemporalDao(DistrictNameTemporalDao districtNameTemporalDao) {
 		this.districtNameTemporalDao = districtNameTemporalDao;
-	}
-
-	@Required
-	public void setDistrictNameTranslationDao(DistrictNameTranslationDao districtNameTranslationDao) {
-		this.districtNameTranslationDao = districtNameTranslationDao;
 	}
 
 	@Required
@@ -366,4 +381,8 @@ public class DistrictServiceImpl extends
 		this.modificationListener = modificationListener;
 	}
 
+	@Required
+	public void setDistrictDaoExt(DistrictDaoExt districtDaoExt) {
+		this.districtDaoExt = districtDaoExt;
+	}
 }

@@ -179,7 +179,7 @@ INSERT INTO ab_street_type_translations_tbl (name, short_name, language_id, stre
 INSERT INTO ab_street_type_translations_tbl (name, short_name, language_id, street_type_id)
 	VALUES ('Highway', 'hig', @en_id, @street_type_id);
 
--- init reegionns
+-- init regions
 INSERT INTO ab_regions_tbl (id, status, country_id) VALUES (1000, 0, @russia_id);
 SELECT @region_novosibirskaya_obl_id:=1000;
 INSERT INTO ab_region_names_tbl (region_id) VALUES (@region_novosibirskaya_obl_id);

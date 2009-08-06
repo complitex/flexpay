@@ -3,6 +3,7 @@ package org.flexpay.common.persistence.sorter;
 import org.flexpay.common.persistence.Language;
 import org.flexpay.common.util.config.ApplicationConfig;
 import org.jetbrains.annotations.NotNull;
+import org.apache.commons.lang.builder.ToStringBuilder;
 
 /**
  * Base class for HQL sorters that support i18n
@@ -45,5 +46,14 @@ public abstract class I18nObjectSorter extends ObjectSorter {
 				.append(TRANSLATION_1).append(".name, ")
 				.append(TRANSLATION_2).append(".name) ")
 				.append(getOrder());
+	}
+
+	@Override
+	public String toString() {
+		return new ToStringBuilder(this).
+				append("order", getOrder()).
+				append("active", isActivated()).
+				append("language", getLang()).
+				toString();
 	}
 }

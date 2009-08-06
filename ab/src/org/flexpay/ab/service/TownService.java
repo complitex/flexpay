@@ -1,22 +1,24 @@
 package org.flexpay.ab.service;
 
+import org.apache.commons.collections.ArrayStack;
 import org.flexpay.ab.persistence.*;
 import org.flexpay.ab.persistence.filters.TownFilter;
+import org.flexpay.common.dao.paging.Page;
+import org.flexpay.common.exception.FlexPayException;
+import org.flexpay.common.exception.FlexPayExceptionContainer;
+import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
+import org.flexpay.common.persistence.sorter.ObjectSorter;
 import org.flexpay.common.service.NameTimeDependentService;
 import org.flexpay.common.service.ParentService;
-import org.flexpay.common.exception.FlexPayExceptionContainer;
-import org.flexpay.common.exception.FlexPayException;
-import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
-import org.flexpay.common.persistence.Stub;
-import org.flexpay.common.dao.paging.Page;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.security.annotation.Secured;
-import org.apache.commons.collections.ArrayStack;
 
-import java.util.Locale;
-import java.util.List;
-import java.util.Date;
 import java.util.Collection;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 
 /**
  * Town service
@@ -93,7 +95,19 @@ public interface TownService extends
 	 * @return object, or <code>null</code> if object not found
 	 */
 	@Secured (Roles.TOWN_READ)
+	@Nullable
 	Town readFull(@NotNull Stub<Town> stub);
+
+	/**
+	 * Read towns
+	 *
+	 * @param stubs		 town keys
+	 * @param preserveOrder Whether to preserve order of objects
+	 * @return Objects if found, or <code>null</code> otherwise
+	 */
+	@Secured ({Roles.TOWN_READ})
+	@NotNull
+	List<Town> readFull(@NotNull Collection<Long> stubs, boolean preserveOrder);
 
 	/**
 	 * Read object temporal name by its unique id
@@ -116,10 +130,6 @@ public interface TownService extends
 	@Secured (Roles.TOWN_READ)
 	List<TownName> findNames(ArrayStack filters, Page pager) throws FlexPayException;
 
-	@Secured (Roles.TOWN_READ)
-	@NotNull
-	List<TownName> findNames(@NotNull Stub<Region> stub, Page pager) throws FlexPayException;
-
 	/**
 	 * Get a list of available objects
 	 *
@@ -140,22 +150,11 @@ public interface TownService extends
 	List<Town> find(ArrayStack filters, Page pager);
 
 	/**
-	 * Get a list of available objects
-	 *
-	 * @param stub Parent stub
-	 * @param pager   Page
-	 * @return List of Objects
-	 */
-	@Secured (Roles.TOWN_READ)
-	List<Town> findSimple(@NotNull Stub<Region> stub, Page pager);
-
-	/**
-	 * Lookup streets by query and region id. Query is a string
-	 * which may contains in folow string:
-	 *
+	 * Lookup streets by query and region id. Query is a string which may contains in folow string:
+	 * <p/>
 	 * town_name
 	 *
-	 * @param stub RegionStub
+	 * @param stub  RegionStub
 	 * @param query searching string
 	 * @return List of founded towns
 	 */
@@ -177,8 +176,6 @@ public interface TownService extends
 	 * Disable objects
 	 *
 	 * @param objectIds IDs of objects to disable
-	 * @throws org.flexpay.common.exception.FlexPayExceptionContainer
-	 *          if failure occurs
 	 */
 	@Secured (Roles.TOWN_DELETE)
 	void disableByIds(@NotNull Collection<Long> objectIds);
@@ -216,4 +213,15 @@ public interface TownService extends
 	@Secured (Roles.TOWN_READ)
 	@NotNull
 	List<Town> findByName(String name, PrimaryKeyFilter filter);
+
+	/**
+	 * Get a list of available objects
+	 *
+	 * @param filters Parent filters
+	 * @param sorters Stack of sorters
+	 * @param pager   Page
+	 * @return List of Objects
+	 */
+	@Secured (Roles.TOWN_READ)
+	List<Town> find(ArrayStack filters, List<ObjectSorter> sorters, Page<Town> pager);
 }

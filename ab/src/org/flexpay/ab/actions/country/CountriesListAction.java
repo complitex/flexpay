@@ -1,24 +1,39 @@
 package org.flexpay.ab.actions.country;
 
-import org.flexpay.ab.persistence.CountryNameTranslation;
+import org.apache.commons.collections.ArrayStack;
+import org.flexpay.ab.persistence.Country;
+import org.flexpay.ab.persistence.sorter.CountrySorter;
 import org.flexpay.ab.service.CountryService;
 import org.flexpay.common.actions.FPActionSupport;
-import org.springframework.beans.factory.annotation.Required;
+import org.flexpay.common.persistence.DomainObject;
+import org.flexpay.common.persistence.sorter.ObjectSorter;
+import org.flexpay.common.util.CollectionUtils;
+import org.flexpay.common.dao.paging.Page;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Required;
 
 import java.util.List;
 
 public class CountriesListAction extends FPActionSupport {
 
-	private List<CountryNameTranslation> translationList;
+	private List<Country> countries;
 
+	private CountrySorter countrySorter = new CountrySorter();
 	private CountryService countryService;
 
 	@NotNull
 	@Override
 	public String doExecute() throws Exception {
 
-		translationList = countryService.getCountries(getUserPreferences().getLocale());
+		ArrayStack filters = CollectionUtils.arrayStack();
+		countrySorter.setLang(getLanguage());
+		List<ObjectSorter> sorters = CollectionUtils.<ObjectSorter>list(countrySorter);
+		List<Country> countriesStubs = countryService.find(filters, sorters, new Page<Country>());
+
+		log.debug("Total countries found: ", countriesStubs);
+		log.debug("Country sorter: {}", countrySorter);
+
+		countries = countryService.readFull(DomainObject.collectionIds(countriesStubs), true);
 
 		return SUCCESS;
 	}
@@ -36,8 +51,16 @@ public class CountriesListAction extends FPActionSupport {
 		return SUCCESS;
 	}
 
-	public List<CountryNameTranslation> getTranslationList() {
-		return translationList;
+	public List<Country> getCountries() {
+		return countries;
+	}
+
+	public CountrySorter getCountrySorter() {
+		return countrySorter;
+	}
+
+	public void setCountrySorter(CountrySorter countrySorter) {
+		this.countrySorter = countrySorter;
 	}
 
 	@Required

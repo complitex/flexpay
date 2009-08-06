@@ -12,13 +12,11 @@ import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.persistence.sorter.ObjectSorter;
 import org.flexpay.common.util.CollectionUtils;
 import static org.flexpay.common.util.CollectionUtils.list;
-import org.flexpay.common.util.LanguageUtil;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 public class StreetsListAjaxAction extends FPActionWithPagerSupport<Street> {
 
@@ -50,10 +48,8 @@ public class StreetsListAjaxAction extends FPActionWithPagerSupport<Street> {
 			return SUCCESS;
 		}
 
-		Locale locale = getUserPreferences().getLocale();
-
-		streetSorterByName.setLang(LanguageUtil.getLanguage(locale));
-		streetSorterByType.setLang(LanguageUtil.getLanguage(locale));
+		streetSorterByName.setLang(getLanguage());
+		streetSorterByType.setLang(getLanguage());
 
 		List<ObjectSorter> sorters = CollectionUtils.<ObjectSorter>list(streetSorterByName, streetSorterByType);
 
@@ -67,7 +63,9 @@ public class StreetsListAjaxAction extends FPActionWithPagerSupport<Street> {
 		}
 
 		List<Street> streetsStubs = streetService.getStreets(new Stub<Town>(townIdLong), sorters, getPager());
-		log.info("Total streets found: {}", streetsStubs);
+		if (log.isDebugEnabled()) {
+			log.info("Total streets found: {}", streetsStubs.size());
+		}
 		streets = new ArrayList<Street>();
 
 		for (Street street : streetsStubs) {

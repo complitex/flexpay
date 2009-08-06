@@ -8,6 +8,7 @@ import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
+import org.flexpay.common.persistence.sorter.ObjectSorter;
 import org.flexpay.common.service.NameTimeDependentService;
 import org.flexpay.common.service.ParentService;
 import org.jetbrains.annotations.NotNull;
@@ -19,8 +20,8 @@ import java.util.List;
 import java.util.Locale;
 
 public interface DistrictService extends NameTimeDependentService<
-        DistrictName, DistrictNameTemporal, District, DistrictNameTranslation>,
-        ParentService<DistrictFilter> {
+		DistrictName, DistrictNameTemporal, District, DistrictNameTranslation>,
+		ParentService<DistrictFilter> {
 
 	/**
 	 * Create District object
@@ -67,6 +68,17 @@ public interface DistrictService extends NameTimeDependentService<
 	District readFull(@NotNull Stub<District> stub);
 
 	/**
+	 * Read districts
+	 *
+	 * @param stubs		 district keys
+	 * @param preserveOrder Whether to preserve order of objects
+	 * @return Objects if found, or <code>null</code> otherwise
+	 */
+	@Secured ({Roles.DISTRICT_READ})
+	@NotNull
+	List<District> readFull(@NotNull Collection<Long> stubs, boolean preserveOrder);
+
+	/**
 	 * Read object temporal name by its unique id
 	 *
 	 * @param id key
@@ -86,10 +98,6 @@ public interface DistrictService extends NameTimeDependentService<
 	 */
 	@Secured (Roles.DISTRICT_READ)
 	List<DistrictName> findNames(ArrayStack filters, Page pager) throws FlexPayException;
-
-	@Secured (Roles.DISTRICT_READ)
-	@NotNull
-	List<DistrictName> findNames(@NotNull Stub<Town> stub, Page pager) throws FlexPayException;
 
 	/**
 	 * Get a list of available objects
@@ -192,12 +200,11 @@ public interface DistrictService extends NameTimeDependentService<
 
 
 	/**
-	 * Lookup districts by query and town id. Query is a string
-	 * which may contains in folow string:
-	 *
+	 * Lookup districts by query and town id. Query is a string which may contains in folow string:
+	 * <p/>
 	 * district_name
 	 *
-	 * @param stub TownStub
+	 * @param stub  TownStub
 	 * @param query searching string
 	 * @return List of founded districts
 	 */
@@ -205,4 +212,14 @@ public interface DistrictService extends NameTimeDependentService<
 	@NotNull
 	List<District> findByTownAndQuery(@NotNull Stub<Town> stub, @NotNull String query);
 
+	/**
+	 * Get a list of available objects
+	 *
+	 * @param filters Parent filters
+	 * @param sorters Stack of sorters
+	 * @param pager   Page
+	 * @return List of Objects
+	 */
+	@Secured(Roles.DISTRICT_READ)
+	List<District> find(ArrayStack filters, List<ObjectSorter> sorters, Page<District> pager);
 }

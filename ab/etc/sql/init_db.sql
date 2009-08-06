@@ -2,14 +2,14 @@ INSERT INTO common_flexpay_modules_tbl (name) VALUES ('ab');
 SELECT @module_ab:=last_insert_id();
 
 -- Init Countries table
-INSERT INTO ab_countries_tbl (status) values (0);
-SELECT @russia_id:=last_insert_id();
+INSERT INTO ab_countries_tbl (id, status) values (1, 0);
+SELECT @russia_id:=1;
 
-INSERT INTO ab_countries_tbl (status) values (0);
-SELECT @usa_id:=last_insert_id();
+INSERT INTO ab_countries_tbl (id, status) values (2, 0);
+SELECT @usa_id:=2;
 
-INSERT INTO ab_countries_tbl (status) values (0);
-SELECT @ukraine_id:=last_insert_id();
+INSERT INTO ab_countries_tbl (id, status) values (3, 0);
+SELECT @ukraine_id:=3;
 
 INSERT INTO ab_country_name_translations_tbl (name, short_name, country_id, language_id)
 	VALUES ('Соединеные Штаты Америки', 'США', @usa_id, @ru_id);
@@ -22,7 +22,7 @@ INSERT INTO ab_country_name_translations_tbl (name, short_name, country_id, lang
 INSERT INTO ab_country_name_translations_tbl (name, short_name, country_id, language_id)
 	VALUES ('Украина', 'УК', @ukraine_id, @ru_id);
 INSERT INTO ab_country_name_translations_tbl (name, short_name, country_id, language_id)
-	VALUES ('Ukraine', 'RU', @ukraine_id, @en_id);
+	VALUES ('Ukraine', 'UA', @ukraine_id, @en_id);
 
 -- Init Regions table
 INSERT INTO ab_regions_tbl (id, status, country_id) VALUES (1, 0, @ukraine_id);

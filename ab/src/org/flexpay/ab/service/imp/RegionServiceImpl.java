@@ -10,22 +10,24 @@ import org.flexpay.ab.persistence.filters.TownTypeFilter;
 import org.flexpay.ab.service.RegionService;
 import org.flexpay.ab.service.TownTypeService;
 import org.flexpay.common.dao.GenericDao;
+import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
-import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
 import org.flexpay.common.persistence.Stub;
-import org.flexpay.common.persistence.history.ModificationListener;
 import static org.flexpay.common.persistence.Stub.stub;
+import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
+import org.flexpay.common.persistence.history.ModificationListener;
+import org.flexpay.common.persistence.sorter.ObjectSorter;
 import org.flexpay.common.service.ParentService;
-import org.flexpay.common.service.internal.SessionUtils;
 import org.flexpay.common.service.imp.NameTimeDependentServiceImpl;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.beans.factory.annotation.Required;
+import org.flexpay.common.service.internal.SessionUtils;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Required;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
-import java.util.Locale;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Region service layer implementation
@@ -36,9 +38,9 @@ public class RegionServiceImpl extends NameTimeDependentServiceImpl<
 		implements RegionService {
 
 	private RegionDao regionDao;
+	private RegionDaoExt regionDaoExt;
 	private RegionNameDao regionNameDao;
 	private RegionNameTemporalDao regionNameTemporalDao;
-	private RegionNameTranslationDao regionNameTranslationDao;
 	private CountryDao countryDao;
 
 	private ParentService<CountryFilter> parentService;
@@ -81,15 +83,6 @@ public class RegionServiceImpl extends NameTimeDependentServiceImpl<
 	 */
 	protected RegionNameDao getNameValueDao() {
 		return regionNameDao;
-	}
-
-	/**
-	 * Get DAO implementation working with name translations
-	 *
-	 * @return GenericDao implementation
-	 */
-	protected RegionNameTranslationDao getNameTranslationDao() {
-		return regionNameTranslationDao;
 	}
 
 	/**
@@ -269,12 +262,34 @@ public class RegionServiceImpl extends NameTimeDependentServiceImpl<
 	private boolean isFilterValid(RegionFilter filter) {
 		for (RegionNameTranslation nameTranslation : filter.getNames()) {
 			RegionName regionName = (RegionName) nameTranslation.getTranslatable();
-			if (regionName.getObject().getId().equals(filter.getSelectedId())) {
+			if (filter.getSelectedStub().sameId((Region) regionName.getObject())) {
 				return true;
 			}
 		}
 
 		return false;
+	}
+
+	@NotNull
+	@Override
+	public List<Region> find(ArrayStack filters, List<ObjectSorter> sorters, Page<Region> pager) {
+
+		log.debug("Finding regions with sorters");
+		PrimaryKeyFilter<?> countryFilter = (PrimaryKeyFilter<?>) filters.peek();
+		return regionDaoExt.findRegions(countryFilter.getSelectedId(), sorters, pager);
+	}
+
+	/**
+	 * Read regions
+	 *
+	 * @param stubs		 Region keys
+	 * @param preserveOrder Whether to preserve order of objects
+	 * @return Objects if found, or <code>null</code> otherwise
+	 */
+	@NotNull
+	@Override
+	public List<Region> readFull(@NotNull Collection<Long> stubs, boolean preserveOrder) {
+		return regionDao.readFullCollection(stubs, preserveOrder);
 	}
 
 	@NotNull
@@ -308,11 +323,6 @@ public class RegionServiceImpl extends NameTimeDependentServiceImpl<
 	}
 
 	@Required
-	public void setRegionNameTranslationDao(RegionNameTranslationDao regionNameTranslationDao) {
-		this.regionNameTranslationDao = regionNameTranslationDao;
-	}
-
-	@Required
 	public void setRegionNameTemporalDao(RegionNameTemporalDao regionNameTemporalDao) {
 		this.regionNameTemporalDao = regionNameTemporalDao;
 	}
@@ -327,4 +337,8 @@ public class RegionServiceImpl extends NameTimeDependentServiceImpl<
 		this.sessionUtils = sessionUtils;
 	}
 
+	@Required
+	public void setRegionDaoExt(RegionDaoExt regionDaoExt) {
+		this.regionDaoExt = regionDaoExt;
+	}
 }

@@ -57,13 +57,6 @@ public abstract class NameTimeDependentServiceImpl<
 	protected abstract GenericDao<TV, Long> getNameValueDao();
 
 	/**
-	 * Get DAO implementation working with name translations
-	 *
-	 * @return GenericDao implementation
-	 */
-	protected abstract GenericDao<T, Long> getNameTranslationDao();
-
-	/**
 	 * Get DAO implementation working with parent objects
 	 *
 	 * @return GenericDao implementation
@@ -174,35 +167,6 @@ public abstract class NameTimeDependentServiceImpl<
 
 		List<NTD> ntds = getNameTimeDependentDao().findObjects(pager,
 				ObjectWithStatus.STATUS_ACTIVE, filter.getSelectedId());
-		List<TV> names = new ArrayList<TV>(ntds.size());
-
-		// Get last temporal in each object names time line
-		for (NTD ntd : ntds) {
-			Collection<DI> temporals = ntd.getNameTemporals();
-			LinkedList<DI> wrapper = new LinkedList<DI>(temporals);
-			if (wrapper.isEmpty()) {
-				log.info("Found NTD, but no temporals: {}", ntd);
-			} else {
-				DI temporal = wrapper.getLast();
-				names.add(getNameValueDao().readFull(temporal.getValue().getId()));
-			}
-		}
-
-		return names;
-	}
-
-	/**
-	 * Get temporal names
-	 *
-	 * @param stub parent stub
-	 * @param pager   Objects list pager
-	 * @return List of names
-	 * @throws FlexPayException if failure occurs
-	 */
-	@NotNull
-	public List<TV> findNames(@NotNull Stub<Parent> stub, Page pager) throws FlexPayException {
-
-		List<NTD> ntds = getNameTimeDependentDao().findObjects(pager, ObjectWithStatus.STATUS_ACTIVE, stub.getId());
 		List<TV> names = new ArrayList<TV>(ntds.size());
 
 		// Get last temporal in each object names time line
@@ -478,11 +442,6 @@ public abstract class NameTimeDependentServiceImpl<
 		PrimaryKeyFilter filter = (PrimaryKeyFilter) filters.peek();
 		return getNameTimeDependentDao().findObjects(
 				pager, ObjectWithStatus.STATUS_ACTIVE, filter.getSelectedId());
-	}
-
-	public List<NTD> findSimple(@NotNull Stub<Parent> stub, Page pager) {
-		return getNameTimeDependentDao().findObjects(
-				pager, ObjectWithStatus.STATUS_ACTIVE, stub.getId());
 	}
 
 	/**

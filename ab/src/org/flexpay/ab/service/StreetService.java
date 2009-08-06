@@ -109,7 +109,7 @@ public interface StreetService extends
 	 * Read streets
 	 *
 	 * @param stubs Street keys
-	 * @return Object if found, or <code>null</code> otherwise
+	 * @return Objects if found, or <code>null</code> otherwise
 	 */
 	@Secured ({Roles.STREET_READ})
 	@NotNull

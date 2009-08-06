@@ -2,46 +2,60 @@ package org.flexpay.ab.service.imp;
 
 import org.apache.commons.collections.ArrayStack;
 import org.apache.commons.lang.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.flexpay.ab.dao.CountryDao;
+import org.flexpay.ab.dao.CountryDaoExt;
 import org.flexpay.ab.dao.CountryNameTranslationDao;
 import org.flexpay.ab.persistence.Country;
 import org.flexpay.ab.persistence.CountryNameTranslation;
 import org.flexpay.ab.persistence.filters.CountryFilter;
 import org.flexpay.ab.service.CountryService;
+import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Language;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
+import org.flexpay.common.persistence.sorter.ObjectSorter;
 import org.flexpay.common.util.LanguageUtil;
 import org.flexpay.common.util.config.ApplicationConfig;
-import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.transaction.annotation.Transactional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
 @Transactional (readOnly = true)
 public class CountryServiceImpl implements CountryService {
 
-	@NonNls
 	private Logger log = LoggerFactory.getLogger(getClass());
 
 	private CountryDao countryDao;
+	private CountryDaoExt countryDaoExt;
 	private CountryNameTranslationDao countryNameTranslationDao;
 
 	public Country readFull(@NotNull Stub<Country> stub) {
 		return countryDao.readFull(stub.getId());
 	}
 
-    @Transactional (readOnly = false)
+	/**
+	 * Read countries
+	 *
+	 * @param stubs		 Region keys
+	 * @param preserveOrder Whether to preserve order of objects
+	 * @return Objects if found, or <code>null</code> otherwise
+	 */
+	@NotNull
+	@Override
+	public List<Country> readFull(@NotNull Collection<Long> stubs, boolean preserveOrder) {
+		return countryDao.readFullCollection(stubs, preserveOrder);
+	}
+
+	@Transactional (readOnly = false)
 	public Country create(List<CountryNameTranslation> countryNames) {
 		Country country = new Country();
-		country.setStatus(Country.STATUS_ACTIVE);
 
-		log.info("Country names to persiste: {}", countryNames);
+		log.info("Country names to persist: {}", countryNames);
 
 		Set<CountryNameTranslation> names = new HashSet<CountryNameTranslation>();
 		for (CountryNameTranslation name : countryNames) {
@@ -78,7 +92,7 @@ public class CountryServiceImpl implements CountryService {
 		for (Country country : countries) {
 			CountryNameTranslation name = getCountryName(country, language, defaultLang);
 			if (name == null) {
-				log.error("No name for country: {} : {}, {}", new Object[] {language.getLangIsoCode(), defaultLang.getLangIsoCode(), country});
+				log.error("No name for country: {} : {}, {}", new Object[]{language.getLangIsoCode(), defaultLang.getLangIsoCode(), country});
 				continue;
 			}
 			name.setLangTranslation(LanguageUtil.getLanguageName(name.getLang(), locale));
@@ -166,23 +180,31 @@ public class CountryServiceImpl implements CountryService {
 		return initFilter(parentFilter, locale);
 	}
 
-    /**
-     * {@inheritDoc}
-     */
-    public boolean isNameAvailable(@NotNull String name, @NotNull Language language) {
+	/**
+	 * {@inheritDoc}
+	 */
+	public boolean isNameAvailable(@NotNull String name, @NotNull Language language) {
 
-        List<CountryNameTranslation> translations = countryNameTranslationDao.findByName(name, language);
-        return translations.size() == 0;
-    }
+		List<CountryNameTranslation> translations = countryNameTranslationDao.findByName(name, language);
+		return translations.size() == 0;
+	}
 
-    /**
-     * {@inheritDoc}
-     */
-    public boolean isShortNameAvailable(@NotNull String shortName, @NotNull Language language) {
+	/**
+	 * {@inheritDoc}
+	 */
+	public boolean isShortNameAvailable(@NotNull String shortName, @NotNull Language language) {
 
-        List<CountryNameTranslation> translations = countryNameTranslationDao.findByShortName(shortName, language);
-        return translations.size() == 0;
-    }
+		List<CountryNameTranslation> translations = countryNameTranslationDao.findByShortName(shortName, language);
+		return translations.size() == 0;
+	}
+
+	@NotNull
+	@Override
+	public List<Country> find(ArrayStack filters, List<ObjectSorter> sorters, Page<Country> pager) {
+
+		log.debug("Finding countries with sorters");
+		return countryDaoExt.findCountries(sorters, pager);
+	}
 
 	@NotNull
 	public List<Country> findByQuery(@NotNull String query) {
@@ -190,7 +212,7 @@ public class CountryServiceImpl implements CountryService {
 	}
 
 	@Required
-    public void setCountryDao(CountryDao countryDao) {
+	public void setCountryDao(CountryDao countryDao) {
 		this.countryDao = countryDao;
 	}
 
@@ -199,4 +221,8 @@ public class CountryServiceImpl implements CountryService {
 		this.countryNameTranslationDao = countryNameTranslationDao;
 	}
 
+	@Required
+	public void setCountryDaoExt(CountryDaoExt countryDaoExt) {
+		this.countryDaoExt = countryDaoExt;
+	}
 }

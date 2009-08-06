@@ -4,7 +4,7 @@
     $(function() {
         FF.updatePager("pagerAjax(this);");
         $('input[id="apartmentSorterButton"]').each(function() {
-            this.setAttribute("onclick", this.getAttribute("onclick") + "sorterAjax();")
+            this.setAttribute("onclick", this.getAttribute("onclick") + "sorterAjax();");
         });
     });
 </script>
