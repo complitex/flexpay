@@ -11,6 +11,8 @@ import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.persistence.history.ModificationListener;
 import org.flexpay.common.service.internal.SessionUtils;
+import static org.flexpay.common.util.CollectionUtils.list;
+import static org.flexpay.common.util.CollectionUtils.treeSet;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
@@ -140,7 +142,8 @@ public class AddressAttributeTypeServiceImpl implements AddressAttributeTypeServ
 	 */
 	public List<AddressAttributeType> getAttributeTypes() {
 
-		return addressAttributeTypeDao.findAttributeTypes();
+		List<AddressAttributeType> types = addressAttributeTypeDao.findAttributeTypes();
+		return list(treeSet(types));
 	}
 
 	@Required

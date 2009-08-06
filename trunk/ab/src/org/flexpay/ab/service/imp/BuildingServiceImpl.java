@@ -16,6 +16,7 @@ import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.persistence.sorter.ObjectSorter;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
 import org.flexpay.common.persistence.history.ModificationListener;
@@ -64,6 +65,12 @@ public class BuildingServiceImpl implements BuildingService {
 
 		log.debug("Getting street buildings");
 		return buildingsDao.findBuildings(streetFilter.getSelectedId(), pager);
+	}
+
+	@NotNull
+	@Override
+	public List<BuildingAddress> getBuildings(ArrayStack filters, List<? extends ObjectSorter> sorters, Page<BuildingAddress> pager) {
+		return buildingsDaoExt.findBuildingAddresses(filters, sorters, pager);
 	}
 
 	@Override
@@ -334,6 +341,18 @@ public class BuildingServiceImpl implements BuildingService {
 
 			log.info("Disabled: {}", object);
 		}
+	}
+
+	/**
+	 * Read full address info by their ids
+	 *
+	 * @param addressIds	Address ids
+	 * @param preserveOrder Whether to preserve elements order
+	 * @return List of buildings
+	 */
+	@Override
+	public List<BuildingAddress> readFullAddresses(Collection<Long> addressIds, boolean preserveOrder) {
+		return buildingsDao.readFullCollection(addressIds, preserveOrder);
 	}
 
 	/**

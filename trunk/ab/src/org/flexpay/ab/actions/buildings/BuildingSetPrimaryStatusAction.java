@@ -3,7 +3,6 @@ package org.flexpay.ab.actions.buildings;
 import org.flexpay.ab.persistence.Building;
 import org.flexpay.ab.persistence.BuildingAddress;
 import org.flexpay.ab.service.BuildingService;
-import org.flexpay.ab.service.AddressService;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.persistence.Stub.stub;

@@ -2,8 +2,6 @@ package org.flexpay.ab.actions.buildings;
 
 import org.apache.commons.lang.StringUtils;
 import org.flexpay.ab.persistence.*;
-import org.flexpay.ab.persistence.filters.DistrictFilter;
-import org.flexpay.ab.persistence.filters.StreetFilter;
 import org.flexpay.ab.service.*;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.exception.FlexPayException;

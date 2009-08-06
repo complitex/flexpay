@@ -15,6 +15,7 @@ import org.junit.runners.Suite;
 		TestHQLSortTowns.class,
 		TestHQLSortStreets.class,
 		TestHQLSortDistricts.class,
+		TestHQLSortBuildings.class,
 		TestHQLSortApartments.class
 })
 public class AllTests {

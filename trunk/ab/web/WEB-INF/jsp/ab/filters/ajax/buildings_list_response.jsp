@@ -3,6 +3,9 @@
 <script type="text/javascript">
     $(function() {
         FF.updatePager("pagerAjax(this);");
+		$('input[id="buildingsSorterButton"]').each(function() {
+			this.setAttribute("onclick", this.getAttribute("onclick") + "sorterAjax();");
+		});
     });
 </script>
 
@@ -23,6 +26,9 @@
         <td class="th" width="1%">
             <input type="checkbox" onchange="FP.setCheckboxes(this.checked, 'objectIds');">
         </td>
+		<td class="<s:if test="buildingsSorter.activated">th_s</s:if><s:else>th</s:else>">
+			<%@ include file="../../sorters/buildings_sorter_header.jsp" %>
+		</td>
         <td class="th"><s:text name="ab.building"/></td>
         <td class="th">&nbsp;</td>
     </tr>

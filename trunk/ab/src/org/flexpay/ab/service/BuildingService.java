@@ -8,15 +8,16 @@ import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
+import org.flexpay.common.persistence.sorter.ObjectSorter;
 import org.flexpay.common.service.ParentService;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.security.annotation.Secured;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
-import java.util.Collection;
 
 public interface BuildingService extends ParentService<BuildingsFilter> {
 
@@ -49,6 +50,10 @@ public interface BuildingService extends ParentService<BuildingsFilter> {
 
 	@Secured (Roles.BUILDING_READ)
 	List<BuildingAddress> getBuildings(ArrayStack filters, Page<BuildingAddress> pager);
+
+	@Secured (Roles.BUILDING_READ)
+	@NotNull
+	List<BuildingAddress> getBuildings(ArrayStack filters, List<? extends ObjectSorter> sorters, Page<BuildingAddress> pager);
 
 	@Secured (Roles.BUILDING_READ)
 	List<BuildingAddress> getBuildings(@NotNull Stub<Street> stub, Page<BuildingAddress> pager);
@@ -132,6 +137,7 @@ public interface BuildingService extends ParentService<BuildingsFilter> {
 	 */
 	@NotNull
 	List<Building> findStreetBuildings(Stub<Street> stub);
+
 	/**
 	 * Read building info
 	 *
@@ -170,4 +176,13 @@ public interface BuildingService extends ParentService<BuildingsFilter> {
 	 */
 	@Secured (Roles.BUILDING_DELETE)
 	void disable(Collection<Building> buildings);
+
+	/**
+	 * Read full address info by their ids
+	 *
+	 * @param addressIds Address ids
+	 * @param preserveOrder Whether to preserve elements order
+	 * @return List of buildings
+	 */
+	List<BuildingAddress> readFullAddresses(Collection<Long> addressIds, boolean preserveOrder);
 }

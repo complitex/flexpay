@@ -76,7 +76,7 @@ public class TranslationUtil {
 														  getTranslation(type.getTranslations()) :
 														  getTranslation(type.getTranslations(), locale);
 			if (streetTypeTranslation != null) {
-				streetTypeStr = streetTypeTranslation.getShortName() != null ? streetTypeTranslation.getShortName() : streetTypeTranslation.getName();
+				streetTypeStr = streetTypeTranslation.getShortName();
 			}
 		}
 		return streetTypeStr;
@@ -136,7 +136,7 @@ public class TranslationUtil {
 			if (attribute == null) {
 				continue;
 			}
-			if (!ApplicationConfig.getBuildingHouseType().getId().equals(attribute.getBuildingAttributeType().getId())) {
+			if (!ApplicationConfig.getBuildingHouseType().equals(attribute.getBuildingAttributeType())) {
 				AddressAttributeTypeTranslation attributeTypeTranslation =
 						locale == null ? getTranslation(attribute.getBuildingAttributeType().getTranslations()) :
 								getTranslation(attribute.getBuildingAttributeType().getTranslations(), locale);
