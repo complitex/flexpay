@@ -7,14 +7,18 @@ import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.process.job.Job;
 import org.flexpay.common.service.FPFileService;
 import org.flexpay.common.service.RegistryService;
+import org.flexpay.common.util.config.ApplicationConfig;
 import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.orgs.service.OrganizationService;
 import org.flexpay.payments.process.export.util.GeneratePaymentsMBRegistry;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.core.io.Resource;
+import org.apache.commons.lang.ArrayUtils;
+import org.jbpm.util.ArrayUtil;
 
 import java.io.*;
 import java.util.Map;
+import java.util.Arrays;
 import java.net.URL;
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -22,8 +26,10 @@ import java.net.URISyntaxException;
 import java.security.*;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.InvalidKeySpecException;
+import java.nio.ByteBuffer;
 
 public class GeneratePaymentsMBRegistryJob extends Job {
+    private static final int BUFFER_SIZE = 1024;
 
 	private FPFileService fpFileService;
 	private GeneratePaymentsMBRegistry generatePaymentsMBRegistry;
@@ -90,12 +96,20 @@ public class GeneratePaymentsMBRegistryJob extends Job {
 		}
 
         if (parameters.containsKey("PrivateKey")) {
-            File privateKeyFile = (File)parameters.get("PrivateKey");
+            String privateKey = (String)parameters.get("PrivateKey");
             DataInputStream dis = null;
             try {
-                dis = new DataInputStream(new FileInputStream(privateKeyFile));
-                byte[] privKeyBytes = new byte[(int)privateKeyFile.length()];
-                dis.read(privKeyBytes);
+                dis = new DataInputStream(ApplicationConfig.getResourceAsStream(privateKey));
+                byte[] buffer = new byte[BUFFER_SIZE];
+                byte[] privKeyBytes = new byte[0];
+                int off = 0;
+                int countRead;
+                while ((countRead = dis.read(buffer, off, BUFFER_SIZE)) > 0) {
+                    int continuePos = off;
+                    off += countRead;
+                    privKeyBytes = Arrays.copyOf(privKeyBytes, off);
+                    System.arraycopy(buffer, 0, privKeyBytes, continuePos, countRead);
+                }
                 dis.close();
                 dis = null;
 
@@ -110,7 +124,7 @@ public class GeneratePaymentsMBRegistryJob extends Job {
 
                 generatePaymentsMBRegistry.setSignature(instance);                
             } catch (Exception e) {
-                log.error("Error create signature '{}': {}", privateKeyFile.getAbsolutePath(), e);
+                log.error("Error create signature '{}': {}", privateKey, e);
             } finally {
                 if (dis != null) {
                     try {
