@@ -2,7 +2,7 @@
 
 <s:actionerror />
 
-<s:form action="districtEdit" method="post">
+<s:form action="districtEdit">
 
     <s:hidden name="district.id" value="%{district.id}" />
 
