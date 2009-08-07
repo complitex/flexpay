@@ -402,7 +402,7 @@ INSERT INTO ab_region_names_tbl (region_id)
 	VALUES (@region_id);
 SELECT @region_name_id:=last_insert_id();
 INSERT INTO ab_region_name_translations_tbl (name, region_name_id, language_id)
-	VALUES ('Алтайский край', @region_name_id, @ru_id);
+	VALUES ('алтайский край', @region_name_id, @ru_id);
 INSERT INTO ab_region_names_temporal_tbl (region_id, region_name_id, begin_date, end_date, create_date, invalid_date)
 	VALUES (@region_id, @region_name_id, '1900-01-01', '2100-12-31', '2008-01-01', '2100-12-31');
 
@@ -462,7 +462,7 @@ INSERT INTO ab_region_names_tbl (region_id)
 	VALUES (@region_id);
 SELECT @region_name_id:=last_insert_id();
 INSERT INTO ab_region_name_translations_tbl (name, region_name_id, language_id)
-	VALUES ('Амурская область', @region_name_id, @ru_id);
+	VALUES ('амурская область', @region_name_id, @ru_id);
 INSERT INTO ab_region_names_temporal_tbl (region_id, region_name_id, begin_date, end_date, create_date, invalid_date)
 	VALUES (@region_id, @region_name_id, '1900-01-01', '2100-12-31', '2008-01-01', '2100-12-31');
 
@@ -472,7 +472,7 @@ INSERT INTO ab_region_names_tbl (region_id)
 	VALUES (@region_id);
 SELECT @region_name_id:=last_insert_id();
 INSERT INTO ab_region_name_translations_tbl (name, region_name_id, language_id)
-	VALUES ('Архангельская область', @region_name_id, @ru_id);
+	VALUES ('архангельская область', @region_name_id, @ru_id);
 INSERT INTO ab_region_names_temporal_tbl (region_id, region_name_id, begin_date, end_date, create_date, invalid_date)
 	VALUES (@region_id, @region_name_id, '1900-01-01', '2100-12-31', '2008-01-01', '2100-12-31');
 
@@ -482,7 +482,7 @@ INSERT INTO ab_region_names_tbl (region_id)
 	VALUES (@region_id);
 SELECT @region_name_id:=last_insert_id();
 INSERT INTO ab_region_name_translations_tbl (name, region_name_id, language_id)
-	VALUES ('Астраханская область', @region_name_id, @ru_id);
+	VALUES ('астраханская область', @region_name_id, @ru_id);
 INSERT INTO ab_region_names_temporal_tbl (region_id, region_name_id, begin_date, end_date, create_date, invalid_date)
 	VALUES (@region_id, @region_name_id, '1900-01-01', '2100-12-31', '2008-01-01', '2100-12-31');
 
@@ -1697,7 +1697,7 @@ SELECT @street_id_krasniy:=4;
 INSERT INTO ab_street_names_tbl (street_id) VALUES (@street_id_krasniy);
 SELECT @street_name_id:=last_insert_id();
 INSERT INTO ab_street_name_translations_tbl (name, street_name_id, language_id)
-	VALUES ('Красный проспект', @street_name_id, @ru_id);
+	VALUES ('красный проспект', @street_name_id, @ru_id);
 INSERT INTO ab_street_name_translations_tbl (name, street_name_id, language_id)
 	VALUES ('Krasnii prospekt', @street_name_id, @en_id);
 INSERT INTO ab_street_names_temporal_tbl (street_id, street_name_id, begin_date, end_date, create_date, invalid_date)
