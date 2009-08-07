@@ -36,7 +36,9 @@ public class RegionName extends TemporaryName<RegionName, RegionNameTranslation>
 	 */
 	@Override
 	public RegionName getEmpty() {
-		return new RegionName();
+		RegionName regionName = new RegionName();
+		regionName.setObject(getObject());
+		return regionName;
 	}
 
 	@Override
