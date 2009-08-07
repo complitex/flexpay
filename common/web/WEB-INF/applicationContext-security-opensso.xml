@@ -98,6 +98,7 @@
 	<b:bean id="authenticationEntryPoint"
 			class="com.sun.identity.provider.springsecurity.OpenSSOProcessingFilterEntryPoint">
 		<b:property name="loginUrl" value="http://opensso-dev.flexpay.complitex:8080/opensso/UI/Login" />
+		<!-- <b:property name="gotoUrl" value="http://dev.flexpay.complitex:8080/eirc/j_spring_security_check" /> -->
 		<b:property name="filterProcessesUrl" value="/j_spring_security_check" />
 	</b:bean>
 
