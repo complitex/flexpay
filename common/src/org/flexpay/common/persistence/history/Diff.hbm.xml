@@ -20,6 +20,11 @@
 				<comment>Object type</comment>
 			</column>
 		</property>
+		<property name="objectTypeName">
+			<column name="object_type_name" not-null="false">
+				<comment>Object type class name</comment>
+			</column>
+		</property>
 		<property name="objectId">
 			<column name="object_id" not-null="true">
 				<comment>Internal object reference</comment>

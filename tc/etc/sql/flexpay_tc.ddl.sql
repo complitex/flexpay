@@ -502,6 +502,7 @@
         id bigint not null auto_increment,
         operation_time datetime not null comment 'Operation timestamp',
         object_type integer not null comment 'Object type',
+        object_type_name varchar(255) comment 'Object type class name',
         object_id bigint not null comment 'Internal object reference',
         operation_type integer not null comment 'Operation type (create-update-delete)',
         user_name varchar(255) not null comment 'User name performed operation',

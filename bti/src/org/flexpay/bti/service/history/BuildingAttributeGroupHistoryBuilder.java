@@ -30,7 +30,7 @@ public class BuildingAttributeGroupHistoryBuilder extends HistoryBuilderBase<Bui
 	 */
 	protected void doDiff(@Nullable BuildingAttributeGroup g1, @NotNull BuildingAttributeGroup g2, @NotNull Diff diff) {
 
-		log.debug("creating new building attributes diff");
+		log.debug("creating new building attribute type groups diff");
 		if (!g2.isActive()) {
 			diff.setOperationType(HistoryOperationType.TYPE_DELETE);
 		}

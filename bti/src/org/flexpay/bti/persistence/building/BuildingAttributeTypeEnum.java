@@ -87,7 +87,7 @@ public class BuildingAttributeTypeEnum extends BuildingAttributeType {
 	 *
 	 * @param enumValues Order to value map to set up
 	 */
-	public void setRawValues(Map<Integer, String> enumValues) {
+	public void rawValues(Map<Integer, String> enumValues) {
 
 		Map<Integer, String> newValues = CollectionUtils.map(enumValues);
 		Map<Integer, BuildingAttributeTypeEnumValue> valuesMap = CollectionUtils.map();
@@ -119,5 +119,15 @@ public class BuildingAttributeTypeEnum extends BuildingAttributeType {
 			value.setTypeEnum(this);
 			values.add(value);
 		}
+	}
+
+	public Map<Integer, String> rawValues() {
+
+		Map<Integer, String> result = CollectionUtils.map();
+		for (BuildingAttributeTypeEnumValue value : values) {
+			result.put(value.getOrder(), value.getValue());
+		}
+
+		return result;
 	}
 }

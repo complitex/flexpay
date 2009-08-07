@@ -79,7 +79,7 @@ public class TestBuildingAttributeTypeService extends SpringBeanAwareTestCase {
 		BuildingAttributeTypeEnum enumType = (BuildingAttributeTypeEnum) type;
 
 		Map<Integer, String> newValues = map(ar(0, 1), ar("Пермский", "Московский"));
-		enumType.setRawValues(newValues);
+		enumType.rawValues(newValues);
 
 		assertEquals("Invalid set raw values", 2, enumType.getValues().size());
 

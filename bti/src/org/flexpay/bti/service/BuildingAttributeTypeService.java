@@ -8,6 +8,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.Set;
+import java.util.Collection;
 
 public interface BuildingAttributeTypeService {
 
@@ -62,4 +64,10 @@ public interface BuildingAttributeTypeService {
 	@Nullable
 	BuildingAttributeType findTypeByName(String typeName);
 
+	/**
+	 * Disable attribute types
+	 *
+	 * @param ids Attribute type identifiers
+	 */
+	void disable(Collection<Long> ids);
 }
