@@ -9,7 +9,10 @@ import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Stub;
+import static org.flexpay.common.persistence.Stub.stub;
+import org.flexpay.common.persistence.history.ModificationListener;
 import org.flexpay.common.util.CollectionUtils;
+import org.flexpay.common.service.internal.SessionUtils;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Set;
+import java.util.Collection;
 
 @Transactional (readOnly = true)
 public class BuildingAttributeTypeServiceImpl implements BuildingAttributeTypeService {
@@ -27,6 +31,9 @@ public class BuildingAttributeTypeServiceImpl implements BuildingAttributeTypeSe
 	private BuildingAttributeTypeDao attributeTypeDao;
 	private BuildingAttributeTypeDaoExt attributeTypeDaoExt;
 
+	private SessionUtils sessionUtils;
+	private ModificationListener<BuildingAttributeType> modificationListener;
+
 	/**
 	 * Read full type info
 	 *
@@ -35,6 +42,25 @@ public class BuildingAttributeTypeServiceImpl implements BuildingAttributeTypeSe
 	 */
 	public BuildingAttributeType readFull(@NotNull Stub<BuildingAttributeType> stub) {
 		return attributeTypeDaoExt.readFull(stub.getId());
+	}
+
+	/**
+	 * Disable attribute types
+	 *
+	 * @param ids Attribute type identifiers
+	 */
+	@Override
+	@Transactional (readOnly = false)
+	public void disable(Collection<Long> ids) {
+		for (Long id : ids) {
+			BuildingAttributeType type = readFull(new Stub<BuildingAttributeType>(id));
+			if (type != null) {
+				type.disable();
+				attributeTypeDao.update(type);
+
+				modificationListener.onDelete(type);
+			}
+		}
 	}
 
 	/**
@@ -50,6 +76,7 @@ public class BuildingAttributeTypeServiceImpl implements BuildingAttributeTypeSe
 
 		type.setId(null);
 		attributeTypeDao.create(type);
+		modificationListener.onCreate(type);
 		return type;
 	}
 
@@ -60,9 +87,18 @@ public class BuildingAttributeTypeServiceImpl implements BuildingAttributeTypeSe
 	 * @return type back
 	 * @throws FlexPayExceptionContainer if validation fails
 	 */
+	@SuppressWarnings ({"ThrowableInstanceNeverThrown"})
 	@Transactional (readOnly = false)
 	public BuildingAttributeType update(@NotNull BuildingAttributeType type) throws FlexPayExceptionContainer {
 		validate(type);
+
+		BuildingAttributeType old = readFull(stub(type));
+		if (old == null) {
+			throw new FlexPayExceptionContainer(
+					new FlexPayException("No object found to update " + type));
+		}
+		sessionUtils.evict(old);
+		modificationListener.onUpdate(old, type);
 
 		attributeTypeDao.update(type);
 		return type;
@@ -174,4 +210,13 @@ public class BuildingAttributeTypeServiceImpl implements BuildingAttributeTypeSe
 		this.attributeTypeDaoExt = attributeTypeDaoExt;
 	}
 
+	@Required
+	public void setSessionUtils(SessionUtils sessionUtils) {
+		this.sessionUtils = sessionUtils;
+	}
+
+	@Required
+	public void setModificationListener(ModificationListener<BuildingAttributeType> modificationListener) {
+		this.modificationListener = modificationListener;
+	}
 }

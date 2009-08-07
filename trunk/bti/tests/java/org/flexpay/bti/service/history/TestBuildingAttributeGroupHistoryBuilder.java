@@ -21,7 +21,7 @@ public class TestBuildingAttributeGroupHistoryBuilder extends BtiSpringBeanAware
 	private BuildingAttributeGroupHistoryBuilder historyBuilder;
 
 	@Test
-	public void testPatchSubdivision() {
+	public void testPatchGroup() {
 
 		BuildingAttributeGroup group = groupService.readFull(TestData.GROUP_1);
 		assertNotNull("Group #1 not found", group);

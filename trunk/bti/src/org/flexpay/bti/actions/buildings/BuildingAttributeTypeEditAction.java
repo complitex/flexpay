@@ -97,7 +97,7 @@ public class BuildingAttributeTypeEditAction extends FPActionSupport {
 		if (type instanceof BuildingAttributeTypeEnum) {
 			BuildingAttributeTypeEnum typeEnum = (BuildingAttributeTypeEnum) type;
 			log.debug("Before setting values: {}", typeEnum.getValues());
-			typeEnum.setRawValues(enumValues);
+			typeEnum.rawValues(enumValues);
 			log.debug("After setting values: {}", typeEnum.getValues());
 		}
 

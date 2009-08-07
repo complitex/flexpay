@@ -15,6 +15,7 @@ public class ModificationListenerImpl<T extends DomainObject> implements Modific
 	private HistoryBuilder<T> historyBuilder;
 	private DiffService diffService;
 	private ReferencesHistoryGenerator<T> referencesHistoryGenerator;
+	private DiffProcessor<T> diffProcessor = new DiffProcessorNope<T>();
 
 	private void createDiff(Diff diff) {
 		// check if the result of this operation is a sync
@@ -45,6 +46,8 @@ public class ModificationListenerImpl<T extends DomainObject> implements Modific
 		referencesHistoryGenerator.generateReferencesHistory(obj);
 
 		Diff diff = historyBuilder.diff(null, obj);
+		diffProcessor.onCreate(obj, diff);
+		diff.setProcessingStatus(ProcessingStatus.STATUS_PROCESSED);
 		createDiff(diff);
 	}
 
@@ -68,6 +71,8 @@ public class ModificationListenerImpl<T extends DomainObject> implements Modific
 		referencesHistoryGenerator.generateReferencesHistory(obj);
 
 		Diff diff = historyBuilder.diff(objOld, obj);
+		diffProcessor.onUpdate(objOld, obj, diff);
+		diff.setProcessingStatus(ProcessingStatus.STATUS_PROCESSED);
 		createDiff(diff);
 	}
 
@@ -79,6 +84,7 @@ public class ModificationListenerImpl<T extends DomainObject> implements Modific
 	public void onDelete(@NotNull T obj) {
 
 		Diff diff = historyBuilder.deleteDiff(obj);
+		diffProcessor.onDelete(obj, diff);
 		diff.setProcessingStatus(ProcessingStatus.STATUS_PROCESSED);
 		diffService.create(diff);
 	}
@@ -96,5 +102,9 @@ public class ModificationListenerImpl<T extends DomainObject> implements Modific
 	@Required
 	public void setReferencesHistoryGenerator(ReferencesHistoryGenerator<T> referencesHistoryGenerator) {
 		this.referencesHistoryGenerator = referencesHistoryGenerator;
+	}
+
+	public void setDiffProcessor(DiffProcessor<T> diffProcessor) {
+		this.diffProcessor = diffProcessor;
 	}
 }

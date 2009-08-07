@@ -29,11 +29,26 @@
 		  p:btiApartmentDaoExt-ref="btiApartmentDaoExt" />
 
 	<!-- Buildings -->
+	<bean id="buildingAttributeTypeReferencesHistoryGenerator"
+		  class="org.flexpay.bti.service.history.BuildingAttributeTypeReferencesHistoryGenerator"
+		  p:groupHistoryGenerator-ref="buildingAttributeGroupHistoryGenerator" />
+
+	<bean id="buildingAttributeTypeDiffProcessor"
+		  class="org.flexpay.bti.service.history.BuildingAttributeTypeDiffProcessor" />
+
+	<bean id="buildingAttributeTypeModificationListener"
+		  parent="historyChangesListenerBase"
+		  p:historyBuilder-ref="buildingAttributeTypeHistoryBuilder"
+		  p:referencesHistoryGenerator-ref="buildingAttributeTypeReferencesHistoryGenerator"
+		  p:diffProcessor-ref="buildingAttributeTypeDiffProcessor" />
+
 	<bean id="buildingAttributeTypeServiceTarget"
 		  class="org.flexpay.bti.service.impl.BuildingAttributeTypeServiceImpl"
 		  autowire-candidate="false"
 		  p:attributeTypeDao-ref="buildingAttributeTypeDao"
-		  p:attributeTypeDaoExt-ref="buildingAttributeTypeDaoExt" />
+		  p:attributeTypeDaoExt-ref="buildingAttributeTypeDaoExt"
+		  p:sessionUtils-ref="sessionUtils"
+		  p:modificationListener-ref="buildingAttributeTypeModificationListener" />
 
 	<bean id="buildingAttributeGroupModificationListener"
 		  parent="historyChangesListenerBase"
@@ -68,12 +83,23 @@
 		  parent="historyBuilderBase"
 		  class="org.flexpay.bti.service.history.BuildingAttributeGroupHistoryBuilder" />
 
+	<bean id="buildingAttributeTypeHistoryBuilder"
+		  parent="historyBuilderBase"
+		  class="org.flexpay.bti.service.history.BuildingAttributeTypeHistoryBuilder"
+		  p:attributeGroupService-ref="buildingAttributeGroupService" />
+
 	<!-- History generators -->
 	<bean id="buildingAttributeGroupHistoryGenerator"
 		  class="org.flexpay.bti.service.history.BuildingAttributeGroupHistoryGenerator"
 		  p:diffService-ref="diffService"
 		  p:historyBuilder-ref="buildingAttributeGroupHistoryBuilder"
 		  p:groupService-ref="buildingAttributeGroupService" />
+
+	<bean id="buildingAttributeTypeHistoryGenerator"
+		  class="org.flexpay.bti.service.history.BuildingAttributeTypeHistoryGenerator"
+		  p:diffService-ref="diffService"
+		  p:historyBuilder-ref="buildingAttributeTypeHistoryBuilder"
+		  p:typeService-ref="buildingAttributeTypeService" />
 
 	<!-- History handlers -->
 	<bean id="buildingAttributeGroupHistoryHandler"
@@ -82,9 +108,16 @@
 		  p:attributeGroupService-ref="buildingAttributeGroupService"
 		  class="org.flexpay.bti.service.history.BuildingAttributeGroupHistoryHandler" />
 
+	<bean id="buildingAttributeTypeHistoryHandler"
+		  parent="historyHandlerBase"
+		  p:historyBuilder-ref="buildingAttributeTypeHistoryBuilder"
+		  p:attributeTypeService-ref="buildingAttributeTypeService"
+		  class="org.flexpay.bti.service.history.BuildingAttributeTypeHistoryHandler" />
+
 	<bean id="btiObjectsSyncer" parent="objectsSyncer">
 		<property name="handlers">
 			<list merge="true">
+				<ref bean="buildingAttributeTypeHistoryHandler" />
 				<ref bean="buildingAttributeGroupHistoryHandler" />
 			</list>
 		</property>

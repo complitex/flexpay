@@ -17,6 +17,7 @@ public class Diff extends DomainObject {
 
 	private Date operationTime;
 	private Integer objectType;
+	private String objectTypeName;
 	private Long objectId;
 	private int operationType;
 	private String userName;
@@ -112,6 +113,14 @@ public class Diff extends DomainObject {
 		this.instanceId = instanceId;
 	}
 
+	public String getObjectTypeName() {
+		return objectTypeName;
+	}
+
+	public void setObjectTypeName(String objectTypeName) {
+		this.objectTypeName = objectTypeName;
+	}
+
 	@Override
 	public String toString() {
 		return new ToStringBuilder(this).
@@ -119,6 +128,7 @@ public class Diff extends DomainObject {
 				append("operationTime", operationTime).
 				append("operationType", operationType).
 				append("objectType", objectType).
+				append("objectTypeName", objectTypeName).
 				append("objectId", objectId).
 				append("userName", userName).
 				append("masterIndex", masterIndex).
@@ -165,6 +175,7 @@ public class Diff extends DomainObject {
 		copy.setId(getId());
 		copy.setOperationTime(operationTime);
 		copy.setObjectType(objectType);
+		copy.setObjectTypeName(objectTypeName);
 		copy.setObjectId(objectId);
 		copy.setOperationType(operationType);
 		copy.setUserName(userName);
