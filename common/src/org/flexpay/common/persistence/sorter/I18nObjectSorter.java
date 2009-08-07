@@ -42,9 +42,9 @@ public abstract class I18nObjectSorter extends ObjectSorter {
 			orderByClause.append(",");
 		}
 
-		orderByClause.append(" ifnull(")
+		orderByClause.append(" upper(ifnull(")
 				.append(TRANSLATION_1).append(".name, ")
-				.append(TRANSLATION_2).append(".name) ")
+				.append(TRANSLATION_2).append(".name)) ")
 				.append(getOrder());
 	}
 
