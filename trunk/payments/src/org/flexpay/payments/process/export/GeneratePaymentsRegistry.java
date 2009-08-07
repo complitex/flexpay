@@ -12,7 +12,9 @@ import org.flexpay.common.util.DateUtil;
 import org.flexpay.common.util.SecurityUtil;
 import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.orgs.persistence.ServiceProvider;
+import org.flexpay.orgs.persistence.PaymentsCollector;
 import org.flexpay.orgs.service.ServiceProviderService;
+import org.flexpay.orgs.service.PaymentsCollectorService;
 import org.flexpay.payments.persistence.process.ServiceProviderAttribute;
 import org.flexpay.payments.service.ServiceProviderAttributeService;
 import org.quartz.JobExecutionContext;
@@ -44,6 +46,7 @@ public class GeneratePaymentsRegistry extends QuartzJobBean {
     private ProcessManager processManager;
     private ServiceProviderService serviceProviderService;
     private ServiceProviderAttributeService serviceProviderAttributeService;
+    private PaymentsCollectorService paymentsCollectorService;
 
     /**
      * Set of authorities names for payments registry
@@ -66,44 +69,46 @@ public class GeneratePaymentsRegistry extends QuartzJobBean {
         try {
             authenticatePaymentsRegistryGenerator();
 
-            //ServiceProvider serviceProvider = serviceProviderService.read(new Stub<ServiceProvider>(providerId));
+            Page<PaymentsCollector> paymentsCollectorsPage = new Page<PaymentsCollector>(PAGE_SIZE);
+            List<PaymentsCollector> listPaymentsCollectors;
 
-            Page<ServiceProvider> page = new Page<ServiceProvider>(PAGE_SIZE);
-            List<ServiceProvider> allServiceProviders;
+            Page<ServiceProvider> serviceProvidersPage = new Page<ServiceProvider>(PAGE_SIZE);
+            List<ServiceProvider> listServiceProviders;
             List<Long> listProcessInstanesId = new ArrayList<Long>();
-            while((allServiceProviders = serviceProviderService.listInstances(page)).size() > 0) {
-                for (ServiceProvider serviceProvider : allServiceProviders) {
-                    Organization organization = serviceProvider.getOrganization();
-                    if (organization != null && organization.getId() != null) {
-                        //List<ServiceProviderAttribute> attributes = serviceProviderAttributeService.listServiceProviderAttributes(Stub.stub(serviceProvider));
-                        Map<Serializable, Serializable> parameters = new HashMap<Serializable, Serializable>();
-                        ServiceProviderAttribute lastProcessedDateAttribute = serviceProviderAttributeService.getServiceProviderAttribute(Stub.stub(serviceProvider), LAST_PROCESSED_DATE);
 
-                        /*
-                        if (attributes.size() > 0) {
-                            ServiceProviderAttribute lastProcessedDateAttribute = attributes.get(0);
-                            parameters.put(lastProcessedDateAttribute.getName(), lastProcessedDateAttribute.getValue());
-                        } */
-                        if (lastProcessedDateAttribute != null) {
-                            parameters.put(lastProcessedDateAttribute.getName(), lastProcessedDateAttribute.getValue());
+            while((listPaymentsCollectors = paymentsCollectorService.listInstances(paymentsCollectorsPage)).size() > 0) {
+                for (PaymentsCollector paymentsCollector : listPaymentsCollectors) {
+
+                    while((listServiceProviders = serviceProviderService.listInstances(serviceProvidersPage)).size() > 0) {
+                        for (ServiceProvider serviceProvider : listServiceProviders) {
+                            Organization organization = serviceProvider.getOrganization();
+                            if (organization != null && organization.getId() != null) {
+                                Map<Serializable, Serializable> parameters = new HashMap<Serializable, Serializable>();
+                                ServiceProviderAttribute lastProcessedDateAttribute = serviceProviderAttributeService.getServiceProviderAttribute(Stub.stub(serviceProvider), LAST_PROCESSED_DATE);
+
+                                if (lastProcessedDateAttribute != null) {
+                                    parameters.put(lastProcessedDateAttribute.getName(), lastProcessedDateAttribute.getValue());
+                                }
+
+                                Date finishDate = DateUtil.now();
+                                parameters.put("finishDate", finishDate);
+                                parameters.put("OrganizationId", organization.getId());
+                                parameters.put("ServiceProviderId", serviceProvider.getId());
+                                parameters.put("RegisteredOrganizationId", paymentsCollector.getOrganization().getId());
+                                parameters.put("Email", serviceProvider.getEmail());
+                                parameters.put("PrivateKey", privateKey);
+
+
+                                long processId = processManager.createProcess("GeneratePaymentsRegisryProcess", parameters);
+                                listProcessInstanesId.add(processId);
+                            } else {
+                                log.error("Organization did not find for service provider with id {}", serviceProvider.getId());
+                            }
                         }
-
-                        Date finishDate = DateUtil.now();
-                        parameters.put("finishDate", finishDate);
-                        parameters.put("OrganizationId", organization.getId());
-                        parameters.put("ServiceProviderId", serviceProvider.getId());
-                        parameters.put("RegisteredOrganizationId", registeredOrganizationId);
-                        parameters.put("Email", serviceProvider.getEmail());
-                        parameters.put("PrivateKey", privateKey);
-
-
-                        long processId = processManager.createProcess("GeneratePaymentsRegisryProcess", parameters);
-                        listProcessInstanesId.add(processId);
-                    } else {
-                        log.error("Organization did not find for service provider with id {}", serviceProvider.getId());
+                        serviceProvidersPage.nextPage();
                     }
                 }
-                page.nextPage();
+                paymentsCollectorsPage.nextPage();
             }
 
             do {
@@ -132,11 +137,6 @@ public class GeneratePaymentsRegistry extends QuartzJobBean {
 
                         if (lastProcessedDate != null && serviceProvider != null) {
                             ServiceProviderAttribute lastProcessedDateAttribute = serviceProviderAttributeService.getServiceProviderAttribute(Stub.stub(serviceProvider), LAST_PROCESSED_DATE);
-                            /*
-                            ServiceProviderAttribute lastProcessedDateAttribute = null;
-                            if (attributes.size() > 0) {
-                                lastProcessedDateAttribute = attributes.get(0);
-                            } */
 
                             if (lastProcessedDateAttribute == null) {
                                 lastProcessedDateAttribute = new ServiceProviderAttribute();
@@ -161,11 +161,6 @@ public class GeneratePaymentsRegistry extends QuartzJobBean {
                         }
                         
                         tmpListProcessInstanesId.remove(processId);
-                        /*
-                                        JobDataMap contextParameters = context.getMergedJobDataMap();
-                                        for (Map.Entry<Serializable, Serializable> param : parameters.entrySet()) {
-                                            contextParameters.put(param.getKey(), param.getValue());
-                                        } */
                     }
                 }
                 listProcessInstanesId = tmpListProcessInstanesId;
@@ -204,6 +199,11 @@ public class GeneratePaymentsRegistry extends QuartzJobBean {
     @Required
     public void setServiceProviderAttributeService(ServiceProviderAttributeService serviceProviderAttributeService) {
         this.serviceProviderAttributeService = serviceProviderAttributeService;
+    }
+
+    @Required
+    public void setPaymentsCollectorService(PaymentsCollectorService paymentsCollectorService) {
+        this.paymentsCollectorService = paymentsCollectorService;
     }
 
     public void setPrivateKey(String privateKey) {
