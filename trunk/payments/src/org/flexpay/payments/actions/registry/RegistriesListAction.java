@@ -41,6 +41,9 @@ public class RegistriesListAction extends FPActionWithPagerSupport {
 
 		registryTypeService.initFilter(registryTypeFilter);
 
+		fromDate = DateUtil.truncateDay(fromDate);
+		tillDate = DateUtil.getEndOfThisDay(tillDate);
+		
 		registries = eircRegistryService.findObjects(senderOrganizationFilter, recipientOrganizationFilter,
 				registryTypeFilter, fromDate, tillDate, getPager());
 
