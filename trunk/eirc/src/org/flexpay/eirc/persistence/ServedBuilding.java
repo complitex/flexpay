@@ -9,6 +9,8 @@ import org.jetbrains.annotations.NotNull;
 
 public class ServedBuilding extends BtiBuilding {
 
+	private ServiceOrganization serviceOrganization;
+
 	public ServedBuilding() {
 	}
 
@@ -23,8 +25,6 @@ public class ServedBuilding extends BtiBuilding {
 	public static ServedBuilding newInstance() {
 		return new ServedBuilding();
 	}
-
-	private ServiceOrganization serviceOrganization;
 
 	public ServiceOrganization getServiceOrganization() {
 		return serviceOrganization;
