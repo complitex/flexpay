@@ -40,7 +40,6 @@ public class GeneratePaymentsRegistry extends QuartzJobBean {
     private static final long TIME_OUT = 10000;
     private static final Integer PAGE_SIZE = 20;
 
-    private Long registeredOrganizationId;
     private String privateKey;
 
     private ProcessManager processManager;
@@ -76,10 +75,13 @@ public class GeneratePaymentsRegistry extends QuartzJobBean {
             Page<ServiceProvider> serviceProvidersPage = new Page<ServiceProvider>(PAGE_SIZE);
             List<ServiceProvider> listServiceProviders;
             List<Long> listProcessInstanesId = new ArrayList<Long>();
+            List<Map<Serializable, Serializable>> waitingProcessData = new ArrayList<Map<Serializable, Serializable>>();
 
             while((listPaymentsCollectors = paymentsCollectorService.listInstances(paymentsCollectorsPage)).size() > 0) {
                 for (PaymentsCollector paymentsCollector : listPaymentsCollectors) {
+                    log.debug("Payment collector (registered) organization {}", paymentsCollector.getOrganization().getId());
 
+                    serviceProvidersPage.setPageNumber(0);
                     while((listServiceProviders = serviceProviderService.listInstances(serviceProvidersPage)).size() > 0) {
                         for (ServiceProvider serviceProvider : listServiceProviders) {
                             Organization organization = serviceProvider.getOrganization();
@@ -99,6 +101,7 @@ public class GeneratePaymentsRegistry extends QuartzJobBean {
                                 parameters.put("Email", serviceProvider.getEmail());
                                 parameters.put("PrivateKey", privateKey);
 
+                                waitingProcessData.add(parameters);
 
                                 long processId = processManager.createProcess("GeneratePaymentsRegisryProcess", parameters);
                                 listProcessInstanesId.add(processId);
@@ -113,7 +116,9 @@ public class GeneratePaymentsRegistry extends QuartzJobBean {
             }
 
             do {
-                log.debug("Waiting GeneratePaymentsRegisryProcess processes will complete for organization {} ...", registeredOrganizationId);
+                for (Map<Serializable, Serializable> param : waitingProcessData) {
+                    log.debug("Waiting GeneratePaymentsRegisryProcess processes will complete for: {} ...", param);
+                }
                 try {
                     Thread.sleep(TIME_OUT);
                 } catch (InterruptedException e) {
@@ -122,6 +127,7 @@ public class GeneratePaymentsRegistry extends QuartzJobBean {
                 }
 
                 List<Long> tmpListProcessInstanesId = new ArrayList<Long>(listProcessInstanesId);
+                waitingProcessData = new ArrayList<Map<Serializable, Serializable>>();
 
                 for (Long processId : listProcessInstanesId) {
                     Process process;
@@ -129,6 +135,7 @@ public class GeneratePaymentsRegistry extends QuartzJobBean {
                     process = processManager.getProcessInstanceInfo(processId);
 
                     if (process.getProcessState().isCompleted()) {
+                        log.debug("Process {} completed: {} ", processId, process.getParameters());
 
                         Map<Serializable, Serializable> parameters = process.getParameters();
 
@@ -162,6 +169,9 @@ public class GeneratePaymentsRegistry extends QuartzJobBean {
                         }
                         
                         tmpListProcessInstanesId.remove(processId);
+                    } else {
+                        log.debug("Process {} has status {}", processId, process.getProcessState());
+                        waitingProcessData.add(process.getParameters());
                     }
                 }
                 listProcessInstanesId = tmpListProcessInstanesId;
@@ -180,11 +190,6 @@ public class GeneratePaymentsRegistry extends QuartzJobBean {
      */
     private static void authenticatePaymentsRegistryGenerator() {
         SecurityUtil.authenticate(USER_PAYMENTS_REGISTRY_GENERATOR, USER_PAYMENTS_REGISTRY_GENERATOR_AUTHORITIES);
-    }
-
-    @Required
-    public void setRegisteredOrganizationId(Long registeredOrganizationId) {
-        this.registeredOrganizationId = registeredOrganizationId;
     }
 
     @Required

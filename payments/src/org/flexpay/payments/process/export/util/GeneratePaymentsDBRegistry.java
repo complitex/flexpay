@@ -68,11 +68,13 @@ public class GeneratePaymentsDBRegistry {
 
         BigDecimal summ = new BigDecimal(0);
         Long recordsNumber = 0L;
+        Long errorsNumber = 0L;
+        RegistryRecordStatus statusProcessed = registryRecordStatusService.findByCode(RegistryRecordStatus.PROCESSED);
+        DocumentAdditionType documentErcType = documentAdditionTypeService.findTypeByCode(DocumentAdditionType.CODE_ERC_ACCOUNT);
         for (Document document : documents) {
             if (document.getRegistryRecord() == null) {
                 RegistryRecord record = new RegistryRecord();
-                RegistryRecordStatus status = registryRecordStatusService.findByCode(RegistryRecordStatus.PROCESSED);
-                record.setRecordStatus(status);
+                record.setRecordStatus(statusProcessed);
                 record.setAmount(document.getSumm());
                 record.setServiceCode("#" + document.getService().getServiceType().getCode());
                 record.setPersonalAccountExt(document.getDebtorId());
@@ -90,27 +92,9 @@ public class GeneratePaymentsDBRegistry {
                 record.setApartmentNum(document.getApartmentNumber());
                 record.setUniqueOperationNumber(document.getOperation().getId());
 
-                /*
-                            String code = "eirc.error_code.unknown_error";
-
-                            ImportError error = new ImportError();
-                            error.setErrorId(code);
-                            DataSourceDescription sd = serviceProvider.getDataSourceDescription();
-                            error.setSourceDescription(sd);
-
-                            error.setDataSourceBean("consumersDataSource");
-
-                            error.setSourceObjectId(String.valueOf(record.getId()));
-                            error.setObjectType(classToTypeRegistry.getType(Service.class));
-                            importErrorService.addError(error);
-
-                            record.setImportError(error);
-                            */
-
                 record.setProperties(propertiesFactory.newRecordProperties());
 
                 DocumentAddition ercAccountAddition = null;
-                DocumentAdditionType documentErcType = documentAdditionTypeService.findTypeByCode(DocumentAdditionType.CODE_ERC_ACCOUNT);
                 if (documentErcType != null) {
                     for (DocumentAddition documentAddition : document.getAdditions()) {
                         if (documentErcType.equals(documentAddition.getAdditionType())) {
@@ -140,16 +124,17 @@ public class GeneratePaymentsDBRegistry {
 
                 try {
                     registryRecordService.create(record);
+                    summ = summ.add(document.getSumm());
+                    recordsNumber++;
                 } catch (FlexPayException e) {
-                    registry.setRegistryStatus(registryStatusService.findByCode(RegistryStatus.CREATING_CANCELED));
+                    errorsNumber++;
+                    log.error("Registry record for document {} did not create", String.valueOf(document.getId()), e);
                 }
-
-                summ = summ.add(document.getSumm());
-                recordsNumber++;
             }
         }
         registry.setAmount(summ);
         registry.setRecordsNumber(recordsNumber);
+        registry.setErrorsNumber(errorsNumber.intValue());
         registry.setRegistryStatus(registryStatusService.findByCode(RegistryStatus.CREATED));
         registryService.update(registry);
 
