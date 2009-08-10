@@ -12,6 +12,8 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.Collection;
+
 public class TestConsumerAttributeTypeService extends EircSpringBeanAwareTestCase {
 
 	@Autowired
@@ -42,9 +44,21 @@ public class TestConsumerAttributeTypeService extends EircSpringBeanAwareTestCas
 
 		ConsumerAttributeTypeEnum type = (ConsumerAttributeTypeEnum) attributeTypeService.readFull(ATTR_BOOK_COLOR);
 		assertNotNull("type find failed", type);
-		ConsumerAttributeTypeEnumValue enumValue = new ConsumerAttributeTypeEnumValue();
-		enumValue.setStringValue("RED");
-		type.addValue(enumValue);
+
+		boolean hasAttribute = false;
+		Collection<ConsumerAttributeTypeEnumValue> values = type.getValues();
+		for (ConsumerAttributeTypeEnumValue value : values) {
+			if (value.isString() && "RED".equals(value.getStringValue())) {
+				hasAttribute = true;
+				break;
+			}
+		}
+
+		if (!hasAttribute) {
+			ConsumerAttributeTypeEnumValue enumValue = new ConsumerAttributeTypeEnumValue();
+			enumValue.setStringValue("RED");
+			type.addValue(enumValue);
+		}
 
 		attributeTypeService.update(type);
 	}

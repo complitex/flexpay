@@ -49,13 +49,15 @@ public interface GenericDao<T, PK extends Serializable> {
 	 * Read full persistent objects info
 	 *
 	 * @param ids Object identifiers
-	 * @param preserveOrder
+	 * @param preserveOrder wether to preserve order of elements
 	 * @return Objects found
 	 */
 	@NotNull
 	List<T> readFullCollection(@NotNull Collection<PK> ids, boolean preserveOrder);
 
 	void update(@NotNull T transientObject);
+
+	T merge(@NotNull T object);
 
 	void delete(@NotNull T persistentObject);
 
