@@ -3,9 +3,7 @@ package org.flexpay.ab.service.history;
 import org.flexpay.ab.persistence.Building;
 import org.flexpay.ab.service.BuildingService;
 import static org.flexpay.common.persistence.Stub.stub;
-import org.flexpay.common.persistence.history.Diff;
-import org.flexpay.common.persistence.history.HistoryGenerator;
-import org.flexpay.common.persistence.history.ProcessingStatus;
+import org.flexpay.common.persistence.history.*;
 import org.flexpay.common.service.DiffService;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
@@ -19,8 +17,8 @@ public class BuildingHistoryGenerator implements HistoryGenerator<Building> {
 	private BuildingService buildingService;
 	private DiffService diffService;
 
-	private BuildingHistoryBuilder historyBuilder;
-	private BuildingReferencesHistoryGenerator referencesHistoryGenerator;
+	private HistoryBuilder<Building> historyBuilder;
+	private ReferencesHistoryGenerator<Building> referencesHistoryGenerator;
 
 	/**
 	 * Do generation
@@ -58,12 +56,12 @@ public class BuildingHistoryGenerator implements HistoryGenerator<Building> {
 	}
 
 	@Required
-	public void setHistoryBuilder(BuildingHistoryBuilder historyBuilder) {
+	public void setHistoryBuilder(HistoryBuilder<Building> historyBuilder) {
 		this.historyBuilder = historyBuilder;
 	}
 
 	@Required
-	public void setReferencesHistoryGenerator(BuildingReferencesHistoryGenerator referencesHistoryGenerator) {
+	public void setReferencesHistoryGenerator(ReferencesHistoryGenerator<Building> referencesHistoryGenerator) {
 		this.referencesHistoryGenerator = referencesHistoryGenerator;
 	}
 }

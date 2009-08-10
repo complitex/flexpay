@@ -112,12 +112,23 @@ public interface BuildingService extends ParentService<BuildingsFilter> {
 	/**
 	 * Read full buildings info
 	 *
-	 * @param stub Buildins stub
-	 * @return Buildings if found, or <code>null</code> othrwise
+	 * @param stub Buildings stub
+	 * @return Buildings if found, or <code>null</code> otherwise
 	 */
 	@Secured (Roles.BUILDING_READ)
 	@Nullable
 	BuildingAddress readFull(@NotNull Stub<BuildingAddress> stub);
+
+	/**
+	 * Read full buildings info
+	 *
+	 * @param ids Buildings keys
+	 * @param preserveOrder Whether to preserve order of buildings
+	 * @return Buildings found
+	 */
+	@Secured (Roles.BUILDING_READ)
+	@NotNull
+	List<Building> readFull(Collection<Long> ids, boolean preserveOrder);
 
 	/**
 	 * Find all Buildings relation for building stub

@@ -8,6 +8,8 @@ import org.flexpay.common.persistence.history.Diff;
 import org.flexpay.common.persistence.history.HistoryOperationType;
 import org.flexpay.common.persistence.history.HistoryRecord;
 import org.flexpay.common.persistence.history.ProcessingStatus;
+import org.flexpay.common.persistence.history.builder.ReferenceExtractor;
+import org.flexpay.common.persistence.history.builder.ReferencePatcher;
 import org.flexpay.common.persistence.history.impl.HistoryBuilderBase;
 import static org.flexpay.common.util.CollectionUtils.ar;
 import org.flexpay.common.util.EqualsHelper;
@@ -52,6 +54,20 @@ public class BuildingHistoryBuilder extends HistoryBuilderBase<Building> {
 		buildDistrictReferenceDiff(buildingOld, b2, diff);
 
 		buildAddressDiff(buildingOld, b2, diff);
+		doInstanceDiff(buildingOld, b2, diff);
+	}
+
+	/**
+	 * Do any module specific diff building.
+	 * <p/>
+	 * Point to extension.
+	 *
+	 * @param b1   First building
+	 * @param b2   Second building
+	 * @param diff Diff to store history records in
+	 */
+	protected void doInstanceDiff(@NotNull Building b1, @NotNull Building b2, @NotNull Diff diff) {
+
 	}
 
 	private void buildAddressDiff(@NotNull Building b1, @NotNull Building b2, @NotNull Diff diff) {
@@ -140,34 +156,18 @@ public class BuildingHistoryBuilder extends HistoryBuilderBase<Building> {
 
 	private void buildDistrictReferenceDiff(@NotNull Building b1, @NotNull Building b2, @NotNull Diff diff) {
 
-		boolean noParent = (b1.getDistrict() == null || b1.getDistrict().isNew()) &&
-						   (b2.getDistrict() == null || b2.getDistrict().isNew());
+		log.debug("building district reference");
 
-		// no parent found in both objects, nothing to do
-		if (noParent) {
-			return;
-		}
+		builderHelper.buildReferenceDiff(b1, b2, diff, new ReferenceExtractor<District, Building>() {
 
-		boolean sameParent = b1.getDistrict() != null && b1.getDistrict().isNotNew() &&
-							 b2.getDistrict() != null && b2.getDistrict().isNotNew() &&
-							 b1.getDistrictStub().equals(b2.getDistrictStub());
-		// same parent found in both objects, nothing to do
-		if (sameParent) {
-			return;
-		}
+			public District getReference(Building obj) {
+				return obj.getDistrict();
+			}
 
-		HistoryRecord rec = new HistoryRecord();
-		rec.setFieldType(FIELD_DISTRICT_ID);
-		rec.setOldStringValue(
-				b1.getDistrict() == null || b1.getDistrict().isNew() ?
-				null :
-				masterIndexService.getMasterIndex(b1.getDistrict()));
-		rec.setNewStringValue(
-				b2.getDistrict() == null || b2.getDistrict().isNew() ?
-				null :
-				masterIndexService.getMasterIndex(b2.getDistrict()));
-		diff.addRecord(rec);
-		log.debug("Added district ref diff record: {}", rec);
+			public int getReferenceField() {
+				return FIELD_DISTRICT_ID;
+			}
+		});
 	}
 
 	/**
@@ -194,9 +194,40 @@ public class BuildingHistoryBuilder extends HistoryBuilderBase<Building> {
 					patchDeletedAddress(building, record);
 					break;
 				default:
-					log.warn("Unsupported field type {}", record);
+					if (supportsField(record.getFieldType())) {
+						doInstancePatch(building, record);
+					} else {
+						log.warn("Unsupported field type {}", record);
+						record.setProcessingStatus(ProcessingStatus.STATUS_IGNORED);
+					}
 			}
 		}
+	}
+
+
+
+	/**
+	 * Check if module can handle field processing
+	 * <p/>
+	 * Point to extension.
+	 *
+	 * @param fieldType History record to process
+	 * @return <code>true</code>
+	 */
+	protected boolean supportsField(int fieldType) {
+		return false;
+	}
+
+	/**
+	 * Do any module specific patch operations.
+	 * <p/>
+	 * Point to extension.
+	 *
+	 * @param building Building to patch
+	 * @param record History record to process
+	 */
+	protected void doInstancePatch(@NotNull Building building, HistoryRecord record) {
+
 	}
 
 	private void patchDeletedAddress(@NotNull Building building, @NotNull HistoryRecord record) {
@@ -276,19 +307,15 @@ public class BuildingHistoryBuilder extends HistoryBuilderBase<Building> {
 	private void patchDistrictReference(@NotNull Building building, @NotNull HistoryRecord record) {
 		log.debug("Patching district reference {}", record);
 
-		District district = null;
-		if (record.getNewStringValue() != null) {
-			String externalId = record.getNewStringValue();
-			Stub<District> stub = correctionsService.findCorrection(
-					externalId, District.class, masterIndexService.getMasterSourceDescriptionStub());
-			if (stub == null) {
-				throw new IllegalStateException("Cannot find district by master index: " + externalId);
+		builderHelper.patchReference(building, record, new ReferencePatcher<District, Building>() {
+			public Class<District> getType() {
+				return District.class;
 			}
-			district = new District(stub);
-		}
 
-		building.setDistrict(district);
-		record.setProcessingStatus(ProcessingStatus.STATUS_PROCESSED);
+			public void setReference(Building obj, Stub<District> ref) {
+				obj.setDistrict(new District(ref));
+			}
+		});
 	}
 
 	@Required
