@@ -58,7 +58,8 @@ public class GeneratePaymentsRegistry extends QuartzJobBean {
             org.flexpay.payments.service.Roles.DOCUMENT_READ,
             org.flexpay.orgs.service.Roles.ORGANIZATION_READ,
             org.flexpay.orgs.service.Roles.SERVICE_PROVIDER_READ,
-            org.flexpay.payments.service.Roles.SERVICE_TYPE_READ
+            org.flexpay.payments.service.Roles.SERVICE_TYPE_READ,
+            org.flexpay.orgs.service.Roles.PAYMENTS_COLLECTOR_READ
     );
     private static final String LAST_PROCESSED_DATE = "lastProcessedDate";
 
