@@ -489,6 +489,12 @@ public class StreetServiceImpl extends NameTimeDependentServiceImpl<
 		return streetDao.findDistricts(stub.getId());
 	}
 
+	@Override
+	@Transactional (readOnly = false)
+	public void delete(Street street) {
+		streetDaoExt.deleteStreet(street.getId());
+	}
+
 	@Required
 	public void setStreetDao(StreetDao streetDao) {
 		this.streetDao = streetDao;

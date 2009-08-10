@@ -21,4 +21,6 @@ public interface StreetDaoExt {
 	 */
 	@NotNull
 	List<Street> findStreets(Long townId, Collection<ObjectSorter> sorters, Page<Street> pager);
+
+	void deleteStreet(Long streetId);
 }
