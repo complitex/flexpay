@@ -6,6 +6,7 @@ import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.orgs.persistence.ServiceOrganization;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class ServedBuilding extends BtiBuilding {
 
@@ -34,7 +35,8 @@ public class ServedBuilding extends BtiBuilding {
 		this.serviceOrganization = serviceOrganization;
 	}
 
+	@Nullable
 	public Stub<ServiceOrganization> getServiceOrganizationStub() {
-		return stub(serviceOrganization);
+		return serviceOrganization == null ? null : stub(serviceOrganization);
 	}
 }

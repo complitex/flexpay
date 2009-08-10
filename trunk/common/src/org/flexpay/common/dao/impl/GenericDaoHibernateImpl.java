@@ -31,7 +31,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Hibernate implementation of GenericDao A typesafe implementation of CRUD and finder methods based on Hibernate and
+ * Hibernate implementation of GenericDao A type safe implementation of CRUD and finder methods based on Hibernate and
  * Spring AOP The finders are implemented through the executeFinder method. Normally called by the
  * FinderIntroductionInterceptor
  */
@@ -127,6 +127,11 @@ public class GenericDaoHibernateImpl<T, PK extends Serializable>
 
 	public void update(@NotNull T o) {
 		hibernateTemplate.update(o);
+	}
+
+	@Override
+	public T merge(@NotNull T object) {
+		return (T) hibernateTemplate.merge(object);
 	}
 
 	public void delete(@NotNull T o) {
