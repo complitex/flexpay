@@ -8,13 +8,12 @@ import org.flexpay.eirc.service.ServiceOrganizationService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
-import java.util.HashSet;
 import java.util.Set;
 
 public class ServiceOrganizationRemoveServedBuildingsAction extends FPActionSupport {
 
 	private Set<Long> objectIds = set();
-    private EircServiceOrganization serviceOrganization = EircServiceOrganization.newInstance();
+	private EircServiceOrganization serviceOrganization = EircServiceOrganization.newInstance();
 
 	private ServiceOrganizationService serviceOrganizationService;
 
@@ -22,18 +21,18 @@ public class ServiceOrganizationRemoveServedBuildingsAction extends FPActionSupp
 	@Override
 	public String doExecute() throws Exception {
 
-        if (serviceOrganization.getId() == null) {
-            addActionError(getText("error.no_id"));
-            return REDIRECT_SUCCESS;
-        }
+		if (serviceOrganization.getId() == null) {
+			addActionError(getText("error.no_id"));
+			return REDIRECT_SUCCESS;
+		}
 
-        serviceOrganization = (EircServiceOrganization) serviceOrganizationService.read(stub(serviceOrganization));
-        if (serviceOrganization == null) {
-            addActionError(getText("error.invalid_id"));
-            return REDIRECT_SUCCESS;
-        }
+		serviceOrganization = serviceOrganizationService.read(stub(serviceOrganization));
+		if (serviceOrganization == null) {
+			addActionError(getText("error.invalid_id"));
+			return REDIRECT_SUCCESS;
+		}
 
-        serviceOrganizationService.removeServedBuildings(objectIds);
+		serviceOrganizationService.removeServedBuildings(objectIds);
 
 		return REDIRECT_SUCCESS;
 	}
@@ -59,17 +58,17 @@ public class ServiceOrganizationRemoveServedBuildingsAction extends FPActionSupp
 		this.objectIds = objectIds;
 	}
 
-    public EircServiceOrganization getServiceOrganization() {
-        return serviceOrganization;
-    }
+	public EircServiceOrganization getServiceOrganization() {
+		return serviceOrganization;
+	}
 
-    public void setServiceOrganization(EircServiceOrganization serviceOrganization) {
-        this.serviceOrganization = serviceOrganization;
-    }
+	public void setServiceOrganization(EircServiceOrganization serviceOrganization) {
+		this.serviceOrganization = serviceOrganization;
+	}
 
 	@Required
-    public void setServiceOrganizationService(ServiceOrganizationService serviceOrganizationService) {
-        this.serviceOrganizationService = serviceOrganizationService;
-    }
+	public void setServiceOrganizationService(ServiceOrganizationService serviceOrganizationService) {
+		this.serviceOrganizationService = serviceOrganizationService;
+	}
 
 }

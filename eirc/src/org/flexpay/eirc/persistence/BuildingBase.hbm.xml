@@ -65,4 +65,23 @@
 
 	</class>
 
+	<query name="Building.readFull">
+		select distinct b
+		from ServedBuilding b
+			left join fetch b.buildingses bs
+			left join fetch bs.street
+			left join fetch bs.buildingAttributes ba
+			left join fetch ba.buildingAttributeType
+		where b.id=?
+	</query>
+
+	<query name="Building.readFullCollection">
+		select distinct b
+		from ServedBuilding b
+			left join fetch b.buildingses bs
+			left join fetch bs.buildingAttributes ba
+			left join fetch ba.buildingAttributeType
+		where b.id in (:ids)
+	</query>
+
 </hibernate-mapping>

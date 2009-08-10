@@ -6,7 +6,7 @@ import org.flexpay.eirc.persistence.Consumer;
 
 public class ClassToTypeRegistryEirc implements ClassToTypeRegistry {
 
-	private static final int MODULE_BASE = 0x5000;
+	public static final int MODULE_BASE = 0x5000;
 
     @Override
     public int getType(Class<? extends DomainObject> clazz) {

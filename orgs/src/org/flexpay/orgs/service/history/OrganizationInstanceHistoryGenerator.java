@@ -32,23 +32,21 @@ public class OrganizationInstanceHistoryGenerator<
 	public void generateFor(@NotNull T obj) {
 
 		if (diffService.hasDiffs(obj)) {
-			log.debug("Instance already has history, do nothing {}", obj);
+			log.debug("Instance already has history, do nothing {}", obj.getId());
 			return;
 		}
 
 		T org = instanceService.read(stub(obj));
 		if (org == null) {
-			log.warn("Requested organization instance history generation, but not found: {}", obj);
+			log.warn("Requested organization instance history generation, but not found: {}", obj.getId());
 			return;
 		}
 
 		referencesHistoryGenerator.generateReferencesHistory(org);
 
-		if (!diffService.hasDiffs(org)) {
-			Diff diff = historyBuilder.diff(null, org);
-			diff.setProcessingStatus(ProcessingStatus.STATUS_PROCESSED);
-			diffService.create(diff);
-		}
+		Diff diff = historyBuilder.diff(null, org);
+		diff.setProcessingStatus(ProcessingStatus.STATUS_PROCESSED);
+		diffService.create(diff);
 	}
 
 	@Required

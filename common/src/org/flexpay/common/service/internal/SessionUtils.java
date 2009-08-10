@@ -1,5 +1,7 @@
 package org.flexpay.common.service.internal;
 
+import org.flexpay.common.persistence.DomainObject;
+
 import java.util.Collection;
 
 /**
@@ -24,4 +26,13 @@ public interface SessionUtils {
 	 * @param c Collection that elements should be evicted
 	 */
 	public void evict(Collection<?> c);
+
+	/**
+	 * Check if object is a proxy and get real domain object
+	 *
+	 * @param obj Object to unproxy
+	 * @param <T> Object type
+	 * @return Object back
+	 */
+	public <T> T unproxy(T obj);
 }

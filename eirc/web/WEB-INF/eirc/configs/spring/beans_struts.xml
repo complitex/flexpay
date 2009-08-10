@@ -98,26 +98,29 @@
 		  p:addressService-ref="addressService" />
 
     <bean id="servedBuildingsListAction"
+		  scope="prototype"
           class="org.flexpay.common.actions.StaticPageAction"
-          p:crumbNameKey="eirc.crumbs.served_buildings_list"
-          scope="prototype" />
+          p:crumbNameKey="eirc.crumbs.served_buildings_list" />
 
 	<bean id="serviceOrganizationAddServedBuildingAction"
+		  scope="prototype"
 		  class="org.flexpay.eirc.actions.organization.ServiceOrganizationAddServedBuildingAction"
 		  p:serviceOrganizationService-ref="eircServiceOrganizationService"
-          scope="prototype" />
+          p:buildingService-ref="buildingService" />
 
     <bean id="serviceOrganizationAddServedBuildingPageAction"
+		  scope="prototype"
           class="org.flexpay.eirc.actions.organization.ServiceOrganizationAddServedBuildingPageAction"
-          p:serviceOrganizationService-ref="eircServiceOrganizationService"
-          scope="prototype" />
+          p:serviceOrganizationService-ref="eircServiceOrganizationService" />
 
-	<bean id="serviceOrganizationRemoveServedBuildingsAction" scope="prototype"
+	<bean id="serviceOrganizationRemoveServedBuildingsAction"
+		  scope="prototype"
 		  class="org.flexpay.eirc.actions.organization.ServiceOrganizationRemoveServedBuildingsAction"
 		  p:serviceOrganizationService-ref="eircServiceOrganizationService" />
 
 	<!-- Corrections -->
-	<bean id="selectCorrectionTypeAction" scope="prototype"
+	<bean id="selectCorrectionTypeAction"
+		  scope="prototype"
 		  class="org.flexpay.eirc.actions.registry.corrections.SelectCorrectionTypeAction"
 		  p:registryRecordService-ref="registryRecordService"
 		  p:typeRegistry-ref="classToTypeRegistry" />

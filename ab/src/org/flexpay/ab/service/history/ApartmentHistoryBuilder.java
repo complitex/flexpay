@@ -148,6 +148,7 @@ public class ApartmentHistoryBuilder extends HistoryBuilderBase<Apartment> {
 					break;
 				default:
 					log.warn("Unsupported field type {}", record);
+					record.setProcessingStatus(ProcessingStatus.STATUS_IGNORED);
 			}
 		}
 	}

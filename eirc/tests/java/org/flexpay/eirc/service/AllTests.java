@@ -8,13 +8,15 @@ import org.junit.runners.Suite;
 		org.flexpay.eirc.service.importexport.AllTests.class,
 		org.flexpay.eirc.service.exchange.AllTests.class,
 		org.flexpay.eirc.service.registry.AllTests.class,
+		org.flexpay.eirc.service.history.AllTests.class,
 		TestBuildingService.class,
 		TestEircAccountService.class,
 		TestSpFileService.class,
 		TestQuittanceService.class,
 		TestQuittancePacketService.class,
 		TestConsumerAttributeTypeService.class,
-		TestConsumerAttributes.class
+		TestConsumerAttributes.class,
+		TestServiceOrganizationService.class
 })
 public class AllTests {
 

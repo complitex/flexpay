@@ -14,6 +14,7 @@ import org.flexpay.common.util.config.ApplicationConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
+import org.apache.commons.lang.ObjectUtils;
 
 import java.util.List;
 
@@ -81,6 +82,12 @@ public class HistoryBuilderHelper {
 		return id != null && id > 0L;
 	}
 
+	private boolean equalsRef(DomainObject obj1, DomainObject obj2) {
+		Long id1 = obj1 == null ? null : obj1.getId();
+		Long id2 = obj2 == null ? null : obj2.getId();
+		return ObjectUtils.equals(id1, id2);
+	}
+
 	public <Ref extends DomainObject, DO extends DomainObject>
 	void buildReferenceDiff(DO obj1, DO obj2, Diff diff, ReferenceExtractor<Ref, DO> extractor) {
 
@@ -93,7 +100,7 @@ public class HistoryBuilderHelper {
 			return;
 		}
 
-		boolean sameRef = isNotNew(ref1) && isNotNew(ref2) && ref1.equals(ref2);
+		boolean sameRef = isNotNew(ref1) && isNotNew(ref2) && equalsRef(ref1, ref2);
 		// same reference found in both objects, nothing to do
 		if (sameRef) {
 			return;

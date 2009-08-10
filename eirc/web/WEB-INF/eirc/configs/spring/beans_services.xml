@@ -163,7 +163,8 @@
 		  parent="serviceOrganizationServiceTarget"
 		  autowire-candidate="false"
 		  class="org.flexpay.eirc.service.imp.ServiceOrganizationServiceImpl"
-		  p:servedBuildingDao-ref="servedBuildingDao" />
+		  p:servedBuildingDao-ref="servedBuildingDao"
+		  p:buildingService-ref="buildingService" />
 
 	<bean id="quittanceNumberService"
 		  class="org.flexpay.eirc.service.imp.QuittanceNumberServiceImpl" />
@@ -251,4 +252,21 @@
 		  factory-method="getRegistryFileService"
 		  p:readHintsHandlerFactory-ref="consumerReadHintsHandlerFactory" />
 
+	<bean id="servedBuildingHistoryBuilder"
+		  parent="abBuildingHistoryBuilder"
+		  class="org.flexpay.eirc.service.history.ServedBuildingHistoryBuilder"
+		  p:serviceOrganizationService-ref="serviceOrganizationService" />
+
+	<bean depends-on="buildingHistoryBuilderHolder"
+		  class="org.flexpay.ab.service.history.BuildingHistoryBuilderHolder"
+		  p:builder-ref="servedBuildingHistoryBuilder" />
+
+	<bean id="servedBuildingReferencesHistoryGenerator"
+		  parent="abBuildingReferencesHistoryGenerator"
+		  class="org.flexpay.eirc.service.history.ServedBuildingReferencesHistoryGenerator"
+		  p:serviceOrganizationHistoryGenerator-ref="serviceOrganizationHistoryGenerator" />
+
+	<bean depends-on="buildingReferencesHistoryGeneratorHolder"
+		  class="org.flexpay.ab.service.history.BuildingReferencesHistoryGeneratorHolder"
+		  p:referencesHistoryGenerator-ref="servedBuildingReferencesHistoryGenerator" />
 </beans>

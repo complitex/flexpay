@@ -1,6 +1,7 @@
 package org.flexpay.ab.service.imp;
 
 import org.apache.commons.collections.ArrayStack;
+import org.apache.commons.lang.ClassUtils;
 import org.apache.commons.lang.StringUtils;
 import org.flexpay.ab.dao.BuildingDao;
 import org.flexpay.ab.dao.BuildingsDao;
@@ -9,17 +10,17 @@ import org.flexpay.ab.persistence.*;
 import org.flexpay.ab.persistence.filters.BuildingsFilter;
 import org.flexpay.ab.persistence.filters.DistrictFilter;
 import org.flexpay.ab.persistence.filters.StreetFilter;
-import org.flexpay.ab.service.BuildingService;
 import org.flexpay.ab.service.AddressService;
+import org.flexpay.ab.service.BuildingService;
 import org.flexpay.ab.util.config.ApplicationConfig;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Stub;
-import org.flexpay.common.persistence.sorter.ObjectSorter;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
 import org.flexpay.common.persistence.history.ModificationListener;
+import org.flexpay.common.persistence.sorter.ObjectSorter;
 import org.flexpay.common.service.ParentService;
 import org.flexpay.common.service.internal.SessionUtils;
 import org.flexpay.common.util.CollectionUtils;
@@ -95,7 +96,7 @@ public class BuildingServiceImpl implements BuildingService {
 
 		ArrayStack filters = new ArrayStack();
 		filters.push(forefatherFilter);
-		Page pager = new Page(100000, 1);
+		Page<BuildingAddress> pager = new Page<BuildingAddress>(100000, 1);
 		parentFilter.setBuildingses(getBuildings(filters, pager));
 
 		List<BuildingAddress> names = parentFilter.getBuildingses();
@@ -177,7 +178,7 @@ public class BuildingServiceImpl implements BuildingService {
 		ArrayStack filters = new ArrayStack();
 		filters.push(districtFilter);
 		filters.push(streetFilter);
-		Page pager = new Page(100000, 1);
+		Page<BuildingAddress> pager = new Page<BuildingAddress>(100000, 1);
 		buildingFilter.setBuildingses(getBuildings(filters, pager));
 
 		List<BuildingAddress> names = buildingFilter.getBuildingses();
@@ -323,6 +324,19 @@ public class BuildingServiceImpl implements BuildingService {
 	}
 
 	/**
+	 * Read full buildings info
+	 *
+	 * @param ids		   Buildings keys
+	 * @param preserveOrder Whether to preserve order of buildings
+	 * @return Buildings found
+	 */
+	@NotNull
+	@Override
+	public List<Building> readFull(Collection<Long> ids, boolean preserveOrder) {
+		return buildingDao.readFullCollection(ids, preserveOrder);
+	}
+
+	/**
 	 * Disable buildings
 	 *
 	 * @param buildings Buildings to disable
@@ -399,7 +413,7 @@ public class BuildingServiceImpl implements BuildingService {
 		sessionUtils.evict(old);
 		modificationListener.onUpdate(old, building);
 
-		buildingDao.update(building);
+		building = buildingDao.merge(building);
 
 		return building;
 	}

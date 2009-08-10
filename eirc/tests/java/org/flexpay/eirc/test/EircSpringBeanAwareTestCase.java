@@ -42,7 +42,10 @@ public class EircSpringBeanAwareTestCase extends SpringBeanAwareTestCase {
 				SERVICE_PROVIDER_READ,
 				BANK_READ,
 				ORGANIZATION_READ,
-				ACCOUNT_ADD
+				ACCOUNT_ADD,
+				SERVICE_ORGANIZATION_ADD_SERVED_BUILDINGS,
+				SERVICE_ORGANIZATION_REMOVE_SERVED_BUILDINGS,
+				BUILDING_CHANGE
 		);
 		User user = new User("test", "test", true, true, true, true, authorities);
 		UserPreferences preferences = new UserPreferences();
