@@ -261,4 +261,5 @@ public interface StreetService extends
 	@Secured (Roles.DISTRICT_READ)
 	List<District> getStreetDistricts(@NotNull Stub<Street> stub);
 
+	void delete(Street street);
 }

@@ -207,4 +207,26 @@
               and lower(tr.name) like ?
     </query>
 
+    <query name="Street.deleteStreet">
+        delete from Street where id=?
+    </query>
+
+    <query name="Street.deleteTypeTemporals">
+        delete from StreetTypeTemporal t where t.object.id=?
+    </query>
+
+    <query name="Street.deleteNameTemporals">
+        delete from StreetNameTemporal t where t.object.id=?
+    </query>
+
+    <query name="Street.deleteNames">
+        delete from StreetName n where n.object.id=?
+    </query>
+
+    <query name="Street.deleteNameTranslations">
+        delete from StreetNameTranslation where translatable.id in (
+        select id from StreetName n where n.object.id=?
+        )
+    </query>
+
 </hibernate-mapping>
