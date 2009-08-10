@@ -1,7 +1,6 @@
 package org.flexpay.ab.actions.town;
 
 import org.apache.commons.collections.ArrayStack;
-import org.apache.commons.lang.StringUtils;
 import org.flexpay.ab.persistence.Town;
 import org.flexpay.ab.persistence.filters.RegionFilter;
 import org.flexpay.ab.persistence.sorter.TownSorterByName;
@@ -19,7 +18,7 @@ import java.util.List;
 
 public class TownsListAjaxAction extends FPActionWithPagerSupport<Town> {
 
-	private String regionId;
+	private Long regionFilter;
 	private List<Town> towns = list();
 
 	private TownSorterByName townSorterByName = new TownSorterByName();
@@ -30,25 +29,20 @@ public class TownsListAjaxAction extends FPActionWithPagerSupport<Town> {
 	@Override
 	public String doExecute() throws Exception {
 
-		Long regionIdLong = null;
-		if (StringUtils.isNotBlank(regionId)) {
-			try {
-				regionIdLong = Long.parseLong(regionId);
-			} catch (Exception e) {
-				log.warn("Incorrect region id in filter ({})", regionId);
-				return SUCCESS;
-			}
+		if (regionFilter == null || regionFilter <= 0) {
+			log.warn("Incorrect region id in filter ({})", regionFilter);
+			return SUCCESS;
 		}
 
 		townSorterByName.setLang(getLanguage());
 		townSorterByType.setLang(getLanguage());
 
-		ArrayStack filters = CollectionUtils.arrayStack(new RegionFilter(regionIdLong));
+		ArrayStack filters = CollectionUtils.arrayStack(new RegionFilter(regionFilter));
 		List<ObjectSorter> sorters = CollectionUtils.<ObjectSorter>list(townSorterByName, townSorterByType);
 		List<Town> townStubs = townService.find(filters, sorters, getPager());
 
 		if (log.isDebugEnabled()) {
-			log.info("Total towns found: {}", towns.size());
+			log.info("Total towns found: {}", townStubs.size());
 		}
 
 		towns = townService.readFull(DomainObject.collectionIds(townStubs), true);
@@ -70,8 +64,8 @@ public class TownsListAjaxAction extends FPActionWithPagerSupport<Town> {
 		return SUCCESS;
 	}
 
-	public void setRegionId(String regionId) {
-		this.regionId = regionId;
+	public void setRegionFilter(Long regionFilter) {
+		this.regionFilter = regionFilter;
 	}
 
 	public List<Town> getTowns() {

@@ -36,6 +36,7 @@ public abstract class I18nObjectSorter extends ObjectSorter {
 	 *
 	 * @param orderByClause HQL query to update
 	 */
+	@Override
 	public void setOrderBy(StringBuilder orderByClause) {
 
 		if (orderByClause.length() > 0) {

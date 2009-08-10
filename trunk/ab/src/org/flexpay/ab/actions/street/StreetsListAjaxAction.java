@@ -1,6 +1,5 @@
 package org.flexpay.ab.actions.street;
 
-import org.apache.commons.lang.StringUtils;
 import org.flexpay.ab.persistence.Street;
 import org.flexpay.ab.persistence.Town;
 import org.flexpay.ab.persistence.sorter.StreetSorterByName;
@@ -20,8 +19,8 @@ import java.util.List;
 
 public class StreetsListAjaxAction extends FPActionWithPagerSupport<Street> {
 
-	private String streetId;
-	private String townId;
+	private Long streetFilter;
+	private Long townFilter;
 	private List<Street> streets = list();
 
 	private StreetSorterByName streetSorterByName = new StreetSorterByName();
@@ -33,18 +32,9 @@ public class StreetsListAjaxAction extends FPActionWithPagerSupport<Street> {
 	@Override
 	public String doExecute() throws Exception {
 
-		Long streetIdLong = null;
-		if (StringUtils.isNotBlank(streetId)) {
-			try {
-				streetIdLong = Long.parseLong(streetId);
-			} catch (Exception e) {
-				log.warn("Incorrect street id in filter ({})", streetId);
-			}
-		}
-
-		if (streetIdLong != null) {
+		if (streetFilter != null && streetFilter > 0) {
 			streets = new ArrayList<Street>();
-			streets.add(streetService.readFull(new Stub<Street>(streetIdLong)));
+			streets.add(streetService.readFull(new Stub<Street>(streetFilter)));
 			return SUCCESS;
 		}
 
@@ -53,16 +43,12 @@ public class StreetsListAjaxAction extends FPActionWithPagerSupport<Street> {
 
 		List<ObjectSorter> sorters = CollectionUtils.<ObjectSorter>list(streetSorterByName, streetSorterByType);
 
-		Long townIdLong;
-
-		try {
-			townIdLong = Long.parseLong(townId);
-		} catch (Exception e) {
-			log.warn("Incorrect town id in filter ({})", townId);
+		if (townFilter == null || townFilter <= 0) {
+			log.warn("Incorrect town id in filter ({})", townFilter);
 			return SUCCESS;
 		}
 
-		List<Street> streetsStubs = streetService.getStreets(new Stub<Town>(townIdLong), sorters, getPager());
+		List<Street> streetsStubs = streetService.getStreets(new Stub<Town>(townFilter), sorters, getPager());
 		if (log.isDebugEnabled()) {
 			log.info("Total streets found: {}", streetsStubs.size());
 		}
@@ -88,12 +74,12 @@ public class StreetsListAjaxAction extends FPActionWithPagerSupport<Street> {
 		return SUCCESS;
 	}
 
-	public void setTownId(String townId) {
-		this.townId = townId;
+	public void setStreetFilter(Long streetFilter) {
+		this.streetFilter = streetFilter;
 	}
 
-	public void setStreetId(String streetId) {
-		this.streetId = streetId;
+	public void setTownFilter(Long townFilter) {
+		this.townFilter = townFilter;
 	}
 
 	public List<Street> getStreets() {

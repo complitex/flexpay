@@ -7,33 +7,33 @@
     $(function() {
         FF.createFilter("country", {
             action: "<s:url action="countryFilterAjax" namespace="/dicts" includeParams="none"/>",
-            defaultValue: "<s:text name="%{userPreferences.countryFilterValue}" />"
+            defaultValue: "<s:text name="%{userPreferences.countryFilter}" />"
         });
         FF.createFilter("region", {
             action: "<s:url action="regionFilterAjax" namespace="/dicts" includeParams="none"/>",
             parents: ["country"],
-            defaultValue: "<s:text name="%{userPreferences.regionFilterValue}" />"
+            defaultValue: "<s:text name="%{userPreferences.regionFilter}" />"
         });
         FF.createFilter("town", {
             action: "<s:url action="townFilterAjax" namespace="/dicts" includeParams="none"/>",
             parents: ["region"],
-            defaultValue: "<s:text name="%{userPreferences.townFilterValue}" />"
+            defaultValue: "<s:text name="%{userPreferences.townFilter}" />"
         });
         FF.createFilter("district", {
             action: "<s:url action="districtFilterAjax" namespace="/dicts" includeParams="none"/>",
             parents: ["town"],
-            defaultValue: "<s:text name="%{userPreferences.districtFilterValue}" />"
+            defaultValue: "<s:text name="%{userPreferences.districtFilter}" />"
         });
         FF.createFilter("street", {
             action: "<s:url action="streetFilterAjax" namespace="/dicts" includeParams="none"/>",
             parents: ["town"],
-            defaultValue: "<s:text name="%{userPreferences.streetFilterValue}" />"
+            defaultValue: "<s:text name="%{userPreferences.streetFilter}" />"
         });
         FF.createFilter("building", {
             action: "<s:url action="buildingFilterAjax" namespace="/dicts" includeParams="none"/>",
             parents: ["district", "street"],
             isArray: true,
-            defaultValue: "<s:text name="%{userPreferences.buildingFilterValue}" />"
+            defaultValue: "<s:text name="%{userPreferences.buildingFilter}" />"
         });
     });
 

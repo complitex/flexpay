@@ -4,71 +4,72 @@ import org.flexpay.common.util.config.UserPreferences;
 
 public class AbUserPreferences extends UserPreferences {
 
+	private Long countryFilter = 0L;
+	private Long regionFilter = 0L;
+	private Long townFilter = 0L;
+	private Long districtFilter = 0L;
+	private Long streetFilter = 0L;
+	private Long buildingFilter = 0L;
+	private Long apartmentFilter = 0L;
+
 	protected AbUserPreferences() {
-		
+
 	}
 
-	private String countryFilterValue;
-	private String regionFilterValue;
-	private String townFilterValue;
-	private String districtFilterValue;
-	private String streetFilterValue;
-	private String buildingFilterValue;
-	private String apartmentFilterValue;
-
-	public String getCountryFilterValue() {
-		return countryFilterValue;
+	public Long getCountryFilter() {
+		return countryFilter;
 	}
 
-	public void setCountryFilterValue(String countryFilterValue) {
-		this.countryFilterValue = countryFilterValue;
+	public void setCountryFilter(Long countryFilter) {
+		this.countryFilter = countryFilter;           
 	}
 
-	public String getRegionFilterValue() {
-		return regionFilterValue;
+	public Long getRegionFilter() {
+		return regionFilter;
 	}
 
-	public void setRegionFilterValue(String regionFilterValue) {
-		this.regionFilterValue = regionFilterValue;
+	public void setRegionFilter(Long regionFilter) {
+		this.regionFilter = regionFilter;
 	}
 
-	public String getTownFilterValue() {
-		return townFilterValue;
+	public Long getTownFilter() {
+		return townFilter;
 	}
 
-	public void setTownFilterValue(String townFilterValue) {
-		this.townFilterValue = townFilterValue;
+	public void setTownFilter(Long townFilter) {
+		this.townFilter = townFilter;
 	}
 
-	public String getDistrictFilterValue() {
-		return districtFilterValue;
+	public Long getDistrictFilter() {
+		return districtFilter;
 	}
 
-	public void setDistrictFilterValue(String districtFilterValue) {
-		this.districtFilterValue = districtFilterValue;
+	public void setDistrictFilter(Long districtFilter) {
+		this.districtFilter = districtFilter;
 	}
 
-	public String getStreetFilterValue() {
-		return streetFilterValue;
+	public Long getStreetFilter() {
+		return streetFilter;
 	}
 
-	public void setStreetFilterValue(String streetFilterValue) {
-		this.streetFilterValue = streetFilterValue;
+	public void setStreetFilter(Long streetFilter) {
+		this.streetFilter = streetFilter;
 	}
 
-	public String getBuildingFilterValue() {
-		return buildingFilterValue;
+	public Long getBuildingFilter() {
+		return buildingFilter;
 	}
 
-	public void setBuildingFilterValue(String buildingFilterValue) {
-		this.buildingFilterValue = buildingFilterValue;
+	public void setBuildingFilter(Long buildingFilter) {
+		this.buildingFilter = buildingFilter;
 	}
 
-	public String getApartmentFilterValue() {
-		return apartmentFilterValue;
+	public Long getApartmentFilter() {
+		return apartmentFilter;
 	}
 
-	public void setApartmentFilterValue(String apartmentFilterValue) {
-		this.apartmentFilterValue = apartmentFilterValue;
+	public void setApartmentFilter(Long apartmentFilter) {
+		this.apartmentFilter = apartmentFilter;
 	}
+
 }

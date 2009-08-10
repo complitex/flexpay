@@ -130,17 +130,27 @@ var FP = {
 
     resizeShadow : function (shadowId, elementId, params) {
         var s = $("#" + shadowId);
-        if (s == null) {
-            return;
+        if (s.length == 0) {
+            FP.createShadow(shadowId);
+            s = $("#" + shadowId);
         }
         if (elementId != null) {
             var el = $("#" + elementId);
             s.css("height", el.innerHeight()).css("width", el.innerWidth()).
                     css("left", el.position().left).css("top", el.position().top);
         }
-        for (var i in params) {
-            s.css(i, params[i]);
+        if (params["background-color"] == null) {
+            params["background-color"] = "#eeeded";
         }
+        s.css(params);
+    },
+
+    showShadowText : function (shadowId, elementId) {
+        FP.resizeShadow(shadowId, elementId, {visibility: "visible", "background-color":""});
+    },
+
+    showShadow : function (shadowId, elementId) {
+        FP.resizeShadow(shadowId, elementId, {visibility:"visible"});
     },
 
     hideShadow : function(shadowId) {
@@ -164,11 +174,18 @@ var FP = {
         var shadowId = opt.shadowId;
         var resultId = opt.resultId;
 
-        var isSelect = element.name == opt.pageSizeName;
-        FP.resizeShadow(shadowId, resultId, {visibility:"visible"});
-        params[opt.pageSizeChangedName] = isSelect;
-        params[opt.pageNumberName] = isSelect ? "" : element.value;
-        params[opt.pageSizeName] = isSelect ? element.value : $('select[name="' + opt.pageSizeName + '"]').val();
+        if ($("#" + resultId).innerHeight() < 40) {
+            FP.showShadowText(shadowId, resultId);
+        } else {
+            FP.showShadow(shadowId, resultId);
+        }
+        if (element != null) {
+            var isSelect = element.name == opt.pageSizeName;
+            params[opt.pageSizeChangedName] = isSelect;
+            params[opt.pageNumberName] = isSelect ? "" : element.value;
+            params[opt.pageSizeName] = isSelect ? element.value : $('select[name="' + opt.pageSizeName + '"]').val();
+        }
+
         $.post(opt.action, params, function(data) {
                     $("#" + resultId).html(data);
                     FP.hideShadow(shadowId);

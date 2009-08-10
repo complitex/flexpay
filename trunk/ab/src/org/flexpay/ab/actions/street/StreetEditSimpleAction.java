@@ -2,27 +2,29 @@ package org.flexpay.ab.actions.street;
 
 import org.flexpay.ab.persistence.*;
 import org.flexpay.ab.persistence.filters.StreetTypeFilter;
-import org.flexpay.ab.persistence.filters.TownFilter;
 import org.flexpay.ab.service.StreetService;
 import org.flexpay.ab.service.StreetTypeService;
 import org.flexpay.ab.service.TownService;
+import org.flexpay.ab.util.config.ApplicationConfig;
 import org.flexpay.common.actions.FPActionSupport;
+import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Language;
-import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.persistence.filter.BeginDateFilter;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.DateUtil;
-import org.flexpay.common.util.config.ApplicationConfig;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.util.Map;
 
+/**
+ * Street simple editor
+ */
 public class StreetEditSimpleAction extends FPActionSupport {
 
 	private Street street = new Street();
-	private String townFilter;
+	private Long townFilter;
 	private StreetTypeFilter streetTypeFilter = new StreetTypeFilter();
 	private BeginDateFilter beginDateFilter = new BeginDateFilter(DateUtil.now());
 	private Map<Long, String> names = CollectionUtils.treeMap();
@@ -36,71 +38,88 @@ public class StreetEditSimpleAction extends FPActionSupport {
 	@Override
 	protected String doExecute() throws Exception {
 
-		if (street.getId() == null) {
-			addActionError(getText("error.no_id"));
-			return REDIRECT_SUCCESS;
-		}
-
 		Street strt = street.isNew() ? street : streetService.readFull(stub(street));
-		if (strt == null) {
-			addActionError(getText("common.object_not_selected"));
+		initFilters();
+
+		if (isSubmit()) {
+			if (!doValidate(strt)) {
+				return INPUT;
+			}
+			updateStreet(strt);
+
 			return REDIRECT_SUCCESS;
 		}
 
-		streetTypeService.initFilter(streetTypeFilter, getLocale());
+		street = strt;
+		initData();
+		return INPUT;
 
-		if (!isSubmit()) {
-			street = strt;
-			initData();
-			return INPUT;
-		}
+	}
 
-		Long townFilterLong;
-		try {
-			townFilterLong = Long.parseLong(townFilter);
-		} catch (Exception e) {
-			log.warn("Incorrect town id in filter ({})", townFilter);
-			addActionError(getText("ab.error.street.no_town"));
-			return INPUT;
-		}
+	/*
+	* Creates new street if it is a new one (haven't been yet persisted) or updates persistent one
+	*/
+	private void updateStreet(Street strt) throws FlexPayExceptionContainer {
 
-		// no town selected in filter
-		if (!streetTypeFilter.needFilter()) {
-			log.debug("!!!!!!!!!!!!!! no street type filter value selected");
-			addActionError(getText("ab.error.street.no_type"));
-			return INPUT;
-		}
-
-		StreetName districtName = new StreetName();
-		for (Map.Entry<Long, String> name : names.entrySet()) {
-			String value = name.getValue();
-			Language lang = getLang(name.getKey());
-			districtName.setTranslation(new StreetNameTranslation(value, lang));
-		}
-		log.debug("Street name to set: {}", districtName);
-		strt.setNameForDate(districtName, beginDateFilter.getDate());
-
+		StreetName streetName = getStreetName();
+		strt.setNameForDate(streetName, beginDateFilter.getDate());
 		strt.setTypeForDate(new StreetType(streetTypeFilter.getSelectedStub()), beginDateFilter.getDate());
 
 		if (strt.isNew()) {
-			strt.setParent(townService.readFull(new Stub<Town>(townFilterLong)));
+			strt.setParent(new Town(townFilter));
 			streetService.create(strt);
 		} else {
-			log.debug("Updated names: {}", strt.getNameTemporals());
 			streetService.update(strt);
 		}
 
-		addActionError(getText("ab.street.saved"));
-		return REDIRECT_SUCCESS;
+	}
+
+	private StreetName getStreetName() {
+
+		StreetName streetName = new StreetName();
+		for (Map.Entry<Long, String> name : names.entrySet()) {
+			String value = name.getValue();
+			Language lang = getLang(name.getKey());
+			streetName.setTranslation(new StreetNameTranslation(value, lang));
+		}
+
+		return streetName;
+	}
+
+	private boolean doValidate(Street strt) {
+
+		if (strt.getId() == null) {
+			addActionError(getText("error.invalid_id"));
+			return false;
+		}
+
+		if (strt == null) {
+			addActionError(getText("common.object_not_selected"));
+			return false;
+		}
+
+		if (townFilter == null || townFilter <= 0) {
+			log.warn("Incorrect town id in filter ({})", townFilter);
+			addActionError(getText("ab.error.street.no_town"));
+		}
+
+		if (!streetTypeFilter.needFilter()) {
+			addActionError(getText("ab.error.street.no_type"));
+		}
+
+		return !hasActionErrors();
+	}
+
+
+	private void initFilters() throws Exception {
+		streetTypeFilter = streetTypeService.initFilter(streetTypeFilter, getUserPreferences().getLocale());
 	}
 
 	private void initData() {
 
 		// init begin date filter
 		StreetNameTemporal temporal = street.getCurrentNameTemporal();
-		if (temporal != null) {
-			beginDateFilter.setDate(temporal.getBegin());
-		}
+		beginDateFilter.setDate(temporal != null ? temporal.getBegin() : ApplicationConfig.getPastInfinite());
 
 		// init type filter
 		StreetType type = street.getCurrentType();
@@ -109,19 +128,20 @@ public class StreetEditSimpleAction extends FPActionSupport {
 		}
 
 		// init translations
-		StreetName districtName = temporal != null ? temporal.getValue() : null;
-		if (districtName != null) {
-			for (StreetNameTranslation name : districtName.getTranslations()) {
+		StreetName streetName = temporal != null ? temporal.getValue() : null;
+		if (streetName != null) {
+			for (StreetNameTranslation name : streetName.getTranslations()) {
 				names.put(name.getLang().getId(), name.getName());
 			}
 		}
 
-		for (Language lang : ApplicationConfig.getLanguages()) {
+		for (Language lang : org.flexpay.common.util.config.ApplicationConfig.getLanguages()) {
 			if (names.containsKey(lang.getId())) {
 				continue;
 			}
 			names.put(lang.getId(), "");
 		}
+
 	}
 
 	/**
@@ -153,11 +173,11 @@ public class StreetEditSimpleAction extends FPActionSupport {
 		this.street = street;
 	}
 
-	public String getTownFilter() {
+	public Long getTownFilter() {
 		return townFilter;
 	}
 
-	public void setTownFilter(String townFilter) {
+	public void setTownFilter(Long townFilter) {
 		this.townFilter = townFilter;
 	}
 

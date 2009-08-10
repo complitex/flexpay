@@ -17,21 +17,15 @@
 
 <script type="text/javascript">
 
-    var shadowId = "shadow";
     var resultId = "result";
 
     $(function() {
 
-        FP.createShadow(shadowId);
-
         FF.addListener("region", function(filter) {
-            FP.resizeShadow(shadowId, resultId, {visibility:"visible"});
-            $.post("<s:url action="townsListAjax" namespace="/dicts" includeParams="none"/>",
-                    {regionId: filter.value.val()},
-                    function(data) {
-                        $("#" + resultId).html(data);
-                        FP.hideShadow(shadowId);
-                    });
+            FP.pagerAjax(null, {
+                action:"<s:url action="townsListAjax" namespace="/dicts" includeParams="none"/>",
+                params:{regionFilter: FF.filters["region"].value.val()}
+            });
         });
         FF.addEraseFunction("region", function(filter) {
             $("#" + resultId).html('<input type="button" class="btn-exit" '
@@ -44,7 +38,7 @@
         FP.pagerAjax(element, {
             action:"<s:url action="townsListAjax" namespace="/dicts" includeParams="none"/>",
             params:{
-                regionId: FF.filters["region"].value.val(),
+                regionFilter: FF.filters["region"].value.val(),
                 "townSorterByName.active": $("#townSorterByNameActive").val(),
                 "townSorterByName.order": $("#townSorterByNameOrder").val(),
                 "townSorterByType.active": $("#townSorterByTypeActive").val(),
@@ -54,17 +48,7 @@
     }
 
 	function sorterAjax() {
-		$.post("<s:url action="townsListAjax" namespace="/dicts" includeParams="none"/>",
-				{
-					regionId: FF.filters["region"].value.val(),
-					"townSorterByName.active": $("#townSorterByNameActive").val(),
-					"townSorterByName.order": $("#townSorterByNameOrder").val(),
-					"townSorterByType.active": $("#townSorterByTypeActive").val(),
-					"townSorterByType.order": $("#townSorterByTypeOrder").val()
-				},
-				function(data) {
-					$("#result").html(data);
-				});
+        pagerAjax(null);
 	}
 
 </script>

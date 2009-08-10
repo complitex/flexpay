@@ -1,11 +1,11 @@
 package org.flexpay.ab.actions.apartment;
 
 import org.flexpay.ab.persistence.Apartment;
-import org.flexpay.ab.persistence.Building;
 import org.flexpay.ab.persistence.BuildingAddress;
 import org.flexpay.ab.service.ApartmentService;
 import org.flexpay.ab.service.BuildingService;
 import org.flexpay.common.actions.FPActionSupport;
+import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.jetbrains.annotations.NotNull;
@@ -14,7 +14,7 @@ import org.springframework.beans.factory.annotation.Required;
 public class ApartmentEditAction extends FPActionSupport {
 
 	private Apartment apartment = Apartment.newInstance();
-	private String buildingFilter;
+	private Long buildingFilter;
 	private String apartmentNumber;
 
 	private String crumbCreateKey;
@@ -25,48 +25,52 @@ public class ApartmentEditAction extends FPActionSupport {
 	@Override
 	public String doExecute() throws Exception {
 
-		if (apartment.getId() == null) {
-			addActionError(getText("error.no_id"));
-			return REDIRECT_SUCCESS;
-		}
-
 		apartment = apartment.isNew() ? apartment : apartmentService.readFull(stub(apartment));
-		if (apartment == null) {
-			addActionError(getText("error.invalid_id"));
+
+		if (isSubmit()) {
+			if (!doValidate()) {
+				return INPUT;
+			}
+			updateApartment();
+
 			return REDIRECT_SUCCESS;
 		}
 
-		if (!isSubmit()) {
-			apartmentNumber = apartment.getNumber();
-			return INPUT;
-		}
+		apartmentNumber = apartment.getNumber();
 
-		Long buildingFilterLong;
-		try {
-			buildingFilterLong = Long.parseLong(buildingFilter);
-		} catch (Exception e) {
-			log.warn("Incorrect building address id in filter ({})", buildingFilter);
-			return INPUT;
-		}
+		return INPUT;
 
-		Building building = buildingService.findBuilding(new Stub<BuildingAddress>(buildingFilterLong));
-		if (building == null) {
-			addActionError(getText("ab.error.apartment.invalid_buildings_id"));
-			return REDIRECT_SUCCESS;
-		}
+	}
 
+	private void updateApartment() throws FlexPayExceptionContainer {
 		apartment.setNumber(apartmentNumber);
-		apartment.setBuilding(building);
 
 		if (apartment.isNew()) {
+			apartment.setBuilding(buildingService.findBuilding(new Stub<BuildingAddress>(buildingFilter)));
 			apartmentService.create(apartment);
 		} else {
 			apartmentService.update(apartment);
 		}
+	}
 
-		addActionError(getText("ab.apartment.saved"));
+	private boolean doValidate() {
 
-		return REDIRECT_SUCCESS;
+		if (apartment.getId() == null) {
+			addActionError(getText("error.invalid_id"));
+			return false;
+		}
+
+		if (apartment == null) {
+			addActionError(getText("common.object_not_selected"));
+			return false;
+		}
+
+		if (buildingFilter == null || buildingFilter <= 0) {
+			log.warn("Incorrect building address id in filter ({})", buildingFilter);
+			addActionError(getText("ab.error.apartment.no_building"));
+		}
+
+		return !hasActionErrors();
 	}
 
 	@Override
@@ -90,11 +94,11 @@ public class ApartmentEditAction extends FPActionSupport {
 		return INPUT;
 	}
 
-	public String getBuildingFilter() {
+	public Long getBuildingFilter() {
 		return buildingFilter;
 	}
 
-	public void setBuildingFilter(String buildingFilter) {
+	public void setBuildingFilter(Long buildingFilter) {
 		this.buildingFilter = buildingFilter;
 	}
 

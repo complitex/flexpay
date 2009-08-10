@@ -21,9 +21,9 @@ public class DistrictDaoExtImpl extends HibernateDaoSupport implements DistrictD
 	/**
 	 * Find and sort districts
 	 *
-	 * @param townId  Town key
+	 * @param townId Town key
 	 * @param sorters Collection of sorters
-	 * @param pager   Pager
+	 * @param pager Pager
 	 * @return List of districts
 	 */
 	@SuppressWarnings ({"unchecked"})
@@ -44,7 +44,7 @@ public class DistrictDaoExtImpl extends HibernateDaoSupport implements DistrictD
 		whereClause.append(" where d.parent.id=").append(townId).append(" and d.status=").append(District.STATUS_ACTIVE);
 		sorter.setWhere(whereClause);
 		hql.append(whereClause);
-		cnthql.append(" where d.parent.id=").append(townId).append(District.STATUS_ACTIVE);
+		cnthql.append(" where d.parent.id=").append(townId).append(" and d.status=").append(District.STATUS_ACTIVE);
 
 		StringBuilder orderByClause = new StringBuilder();
 		sorter.setOrderBy(orderByClause);

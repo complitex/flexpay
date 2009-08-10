@@ -39,24 +39,23 @@ public class CountryFilterAjaxAction extends FilterAjaxAction {
 	@Override
 	public void readFilterString() {
 		Country country;
-		if (filterValueLong == null) {
-			filterValue = ApplicationConfig.getDefaultCountryStub().getId() + "";
-			country = countryService.readFull(ApplicationConfig.getDefaultCountryStub());
-		} else {
-			country = countryService.readFull(new Stub<Country>(filterValueLong));
+		if (filterValueLong == null || filterValueLong == 0) {
+			filterValueLong = ApplicationConfig.getDefaultCountryStub().getId();
+			filterValue = filterValueLong + "";
 		}
+		country = countryService.readFull(new Stub<Country>(filterValueLong));
 		filterString = getTranslation(country.getCountryNames()).getName();
 	}
 
 	@Override
 	public void saveFilterValue() {
-		getUserPreferences().setCountryFilterValue(filterValue);
-		getUserPreferences().setRegionFilterValue("");
-		getUserPreferences().setTownFilterValue("");
-		getUserPreferences().setDistrictFilterValue("");
-		getUserPreferences().setStreetFilterValue("");
-		getUserPreferences().setBuildingFilterValue("");
-		getUserPreferences().setApartmentFilterValue("");
+		getUserPreferences().setCountryFilter(filterValueLong);
+		getUserPreferences().setRegionFilter(0L);
+		getUserPreferences().setTownFilter(0L);
+		getUserPreferences().setDistrictFilter(0L);
+		getUserPreferences().setStreetFilter(0L);
+		getUserPreferences().setBuildingFilter(0L);
+		getUserPreferences().setApartmentFilter(0L);
 	}
 
 	@Required

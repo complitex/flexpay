@@ -45,17 +45,17 @@
 		</property>
 
 		<subclass name="org.flexpay.ab.util.config.AbUserPreferences" discriminator-value="common">
-			<property name="countryFilterValue">
+			<property name="countryFilter">
 				<column name="ab_country_filter" not-null="false">
 					<comment>Country filter</comment>
 				</column>
 			</property>
-			<property name="regionFilterValue">
+			<property name="regionFilter">
 				<column name="ab_region_filter" not-null="false">
 					<comment>Region filter</comment>
 				</column>
 			</property>
-			<property name="townFilterValue">
+			<property name="townFilter">
 				<column name="ab_town_filter" not-null="false">
 					<comment>Town filter</comment>
 				</column>

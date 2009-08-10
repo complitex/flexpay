@@ -17,8 +17,8 @@ import java.util.Map;
  */
 public class BuildingCreateAction extends FPActionSupport {
 
-	private String streetFilter;
-	private String districtFilter;
+	private Long streetFilter;
+	private Long districtFilter;
 
 	// type id to value mapping
 	private Map<Long, String> attributeMap = CollectionUtils.treeMap();
@@ -41,22 +41,17 @@ public class BuildingCreateAction extends FPActionSupport {
 		}
 
 		boolean valid = true;
-		Long districtFilterLong = 0L;
-		try {
-			districtFilterLong = Long.parseLong(districtFilter);
-		} catch (Exception e) {
+		if (districtFilter == null || districtFilter <= 0) {
 			log.warn("Incorrect district id in filter ({})", districtFilter);
 			addActionError(getText("ab.buildings.create.district_required"));
 			valid = false;
 		}
-		Long streetFilterLong = 0L;
-		try {
-			streetFilterLong = Long.parseLong(streetFilter);
-		} catch (Exception e) {
+		if (streetFilter == null || streetFilter <= 0) {
 			log.warn("Incorrect street id in filter ({})", streetFilter);
 			addActionError(getText("ab.buildings.create.street_required"));
 			valid = false;
 		}
+
 		boolean allAttributesAreNull = true;
 		for (String value : attributeMap.values()) {
 			if (!StringUtils.isBlank(value)) {
@@ -75,12 +70,12 @@ public class BuildingCreateAction extends FPActionSupport {
 
 		building = objectsFactory.newBuilding();
 
-		District district = districtService.readFull(new Stub<District>(districtFilterLong));
+		District district = districtService.readFull(new Stub<District>(districtFilter));
 		building.setDistrict(district);
 
 		BuildingAddress address = new BuildingAddress();
 		address.setPrimaryStatus(true);
-		Street street = streetService.readFull(new Stub<Street>(streetFilterLong));
+		Street street = streetService.readFull(new Stub<Street>(streetFilter));
 		address.setStreet(street);
 		for (Map.Entry<Long, String> attr : attributeMap.entrySet()) {
 			AddressAttributeType type = addressAttributeTypeService.read(new Stub<AddressAttributeType>(attr.getKey()));
@@ -126,19 +121,19 @@ public class BuildingCreateAction extends FPActionSupport {
 		return getTranslation(type.getTranslations()).getName();
 	}
 
-	public String getStreetFilter() {
+	public Long getStreetFilter() {
 		return streetFilter;
 	}
 
-	public void setStreetFilter(String streetFilter) {
+	public void setStreetFilter(Long streetFilter) {
 		this.streetFilter = streetFilter;
 	}
 
-	public String getDistrictFilter() {
+	public Long getDistrictFilter() {
 		return districtFilter;
 	}
 
-	public void setDistrictFilter(String districtFilter) {
+	public void setDistrictFilter(Long districtFilter) {
 		this.districtFilter = districtFilter;
 	}
 

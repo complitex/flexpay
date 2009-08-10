@@ -62,27 +62,27 @@
 		$(function() {
 			FF.createFilter("town", {
 				action: "<s:url action="townFilterAjax" namespace="/dicts" includeParams="none"/>",
-                defaultValue: "<s:text name="%{userPreferences.townFilterValue}" />"
+                defaultValue: "<s:text name="%{userPreferences.townFilter}" />"
 			});
 			FF.createFilter("street", {
 				action: "<s:url action="streetFilterAjax" namespace="/dicts" includeParams="none"/>",
 				parents: ["town"],
 				preRequest:false,
-                defaultValue: "<s:text name="%{userPreferences.streetFilterValue}" />"
+                defaultValue: "<s:text name="%{userPreferences.streetFilter}" />"
 			});
 			FF.createFilter("building", {
 				action: "<s:url action="buildingFilterAjax" namespace="/dicts" includeParams="none"/>",
 				isArray: true,
 				parents: ["street"],
 				preRequest:false,
-                defaultValue: "<s:text name="%{userPreferences.buildingFilterValue}" />"
+                defaultValue: "<s:text name="%{userPreferences.buildingFilter}" />"
 			});
 			FF.createFilter("apartment", {
 				action: "<s:url action="apartmentFilterAjax" namespace="/dicts" includeParams="none"/>",
 				isArray: true,
 				parents: ["building"],
 				preRequest:false,
-                defaultValue: "<s:text name="%{userPreferences.apartmentFilterValue}" />"
+                defaultValue: "<s:text name="%{userPreferences.apartmentFilter}" />"
 			});
 		});
 

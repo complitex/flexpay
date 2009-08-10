@@ -44,7 +44,7 @@
                     <a href="<s:url action="apartmentsList"><s:param name="buildingFilter" value="%{id}" /></s:url>"><s:property value="%{@org.flexpay.ab.util.TranslationUtil@getBuildingNumber(buildingAttributes, userPreferences.locale)}"/></a>
                 </td>
                 <td class="col">
-                    <a href="<s:url action="buildingView"><s:param name="building.id" value="%{id}"/></s:url>"><s:text name="common.view"/></a>
+                    <a href="<s:url action="buildingView"><s:param name="building.id" value="%{building.id}"/></s:url>"><s:text name="common.view"/></a>
                 </td>
             </tr>
         </s:iterator>

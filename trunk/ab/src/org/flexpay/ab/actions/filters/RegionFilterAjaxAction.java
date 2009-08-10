@@ -4,6 +4,7 @@ import org.flexpay.ab.persistence.Country;
 import org.flexpay.ab.persistence.Region;
 import org.flexpay.ab.service.RegionService;
 import org.flexpay.ab.util.config.ApplicationConfig;
+import org.flexpay.ab.util.config.AbUserPreferences;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
 import org.jetbrains.annotations.NotNull;
@@ -20,29 +21,30 @@ public class RegionFilterAjaxAction extends FilterAjaxAction {
 	@Override
 	public String doExecute() throws FlexPayException {
 
-		Long countryIdLong;
+		Long countryId;
+		AbUserPreferences up = getUserPreferences();
 
 		try {
 			if (parents != null) {
-				countryIdLong = Long.parseLong(parents[0]);
+				countryId = Long.parseLong(parents[0]);
 			} else {
-				if (getUserPreferences().getCountryFilterValue() == null) {
-					getUserPreferences().setCountryFilterValue(ApplicationConfig.getDefaultCountryStub().getId() + "");
-					countryIdLong = ApplicationConfig.getDefaultCountryStub().getId();
-				} else {
-					countryIdLong = Long.parseLong(getUserPreferences().getCountryFilterValue());
+				if (up.getCountryFilter() == null || up.getCountryFilter() == 0) {
+					up.setCountryFilter(ApplicationConfig.getDefaultCountryStub().getId());
 				}
+				countryId = up.getCountryFilter();
 			}
 		} catch (Exception e) {
 			log.warn("Incorrect country id in filter ({})", parents[0]);
 			return SUCCESS;
 		}
-		if (countryIdLong == null) {
+		if (countryId == null) {
 			log.warn("Can't get country id in filter ({})");
+			return SUCCESS;
+		} else if (countryId == 0) {
 			return SUCCESS;
 		}
 
-		List<Region> regions = regionService.findByCountryAndQuery(new Stub<Country>(countryIdLong), "%" + q + "%");
+		List<Region> regions = regionService.findByCountryAndQuery(new Stub<Country>(countryId), "%" + q + "%");
 		log.debug("Found regions: {}", regions);
 
 		foundObjects = new ArrayList<FilterObject>();
@@ -59,15 +61,18 @@ public class RegionFilterAjaxAction extends FilterAjaxAction {
 	@Override
 	public void readFilterString() {
 		Region region = null;
+		AbUserPreferences up = getUserPreferences();
+
 		if (filterValueLong == null) {
-			if (getUserPreferences().getCountryFilterValue() != null
-					&& !getUserPreferences().getCountryFilterValue().equals(ApplicationConfig.getDefaultCountryStub().getId() + "")) {
-				filterValue = "";
+			if (up.getCountryFilter() != null
+					&& !up.getCountryFilter().equals(ApplicationConfig.getDefaultCountryStub().getId() + "")) {
+				filterValueLong = 0L;
 			} else {
-				filterValue = ApplicationConfig.getDefaultRegionStub().getId() + "";
-				region = regionService.readFull(ApplicationConfig.getDefaultRegionStub());
+				filterValueLong = ApplicationConfig.getDefaultRegionStub().getId();
 			}
-		} else {
+			filterValue = filterValueLong + "";
+		}
+		if (filterValueLong > 0) {
 			region = regionService.readFull(new Stub<Region>(filterValueLong));
 		}
 		if (region != null && region.getCurrentName() != null) {
@@ -79,12 +84,12 @@ public class RegionFilterAjaxAction extends FilterAjaxAction {
 
 	@Override
 	public void saveFilterValue() {
-		getUserPreferences().setRegionFilterValue(filterValue);
-		getUserPreferences().setTownFilterValue("");
-		getUserPreferences().setDistrictFilterValue("");
-		getUserPreferences().setStreetFilterValue("");
-		getUserPreferences().setBuildingFilterValue("");
-		getUserPreferences().setApartmentFilterValue("");
+		getUserPreferences().setRegionFilter(filterValueLong);
+		getUserPreferences().setTownFilter(0L);
+		getUserPreferences().setDistrictFilter(0L);
+		getUserPreferences().setStreetFilter(0L);
+		getUserPreferences().setBuildingFilter(0L);
+		getUserPreferences().setApartmentFilter(0L);
 	}
 
 	@Required

@@ -19,16 +19,19 @@ public class DistrictFilterAjaxAction extends FilterAjaxAction {
 	@Override
 	public String doExecute() throws FlexPayException {
 
-		Long townIdLong;
+		Long townId;
 
 		try {
-			townIdLong = Long.parseLong(parents[0]);
+			townId = Long.parseLong(parents[0]);
 		} catch (Exception e) {
 			log.warn("Incorrect town id in filter ({})", parents[0]);
 			return SUCCESS;
 		}
+		if (townId == 0) {
+			return SUCCESS;
+		}
 
-		List<District> districts = districtService.findByTownAndQuery(new Stub<Town>(townIdLong), "%" + q + "%");
+		List<District> districts = districtService.findByTownAndQuery(new Stub<Town>(townId), "%" + q + "%");
 		log.debug("Found districts: {}", districts);
 
 		foundObjects = new ArrayList<FilterObject>();
@@ -44,7 +47,7 @@ public class DistrictFilterAjaxAction extends FilterAjaxAction {
 
 	@Override
 	public void readFilterString() {
-		if (filterValueLong != null) {
+		if (filterValueLong != null && filterValueLong > 0) {
 			District district = districtService.readFull(new Stub<District>(filterValueLong));
 			if (district != null && district.getCurrentName() != null) {
 				filterString = getTranslation(district.getCurrentName().getTranslations()).getName();
@@ -58,9 +61,9 @@ public class DistrictFilterAjaxAction extends FilterAjaxAction {
 
 	@Override
 	public void saveFilterValue() {
-		getUserPreferences().setDistrictFilterValue(filterValue);
-		getUserPreferences().setBuildingFilterValue("");
-		getUserPreferences().setApartmentFilterValue("");
+		getUserPreferences().setDistrictFilter(filterValueLong);
+		getUserPreferences().setBuildingFilter(0L);
+		getUserPreferences().setApartmentFilter(0L);
 	}
 
 	@Required

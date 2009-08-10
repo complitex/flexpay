@@ -48,10 +48,7 @@ public class AddressAttributeTypeEditAction extends FPActionSupport {
 		for (Map.Entry<Long, String> name : names.entrySet()) {
 			String value = name.getValue();
 			Language lang = getLang(name.getKey());
-			AddressAttributeTypeTranslation translation = new AddressAttributeTypeTranslation();
-			translation.setLang(lang);
-			translation.setName(value);
-			type.setTranslation(translation);
+			type.setTranslation(new AddressAttributeTypeTranslation(value, lang));
 		}
 
 		if (type.isNew()) {

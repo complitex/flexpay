@@ -683,9 +683,9 @@
         user_name varchar(255) not null unique comment 'User login name',
         language_code varchar(255) not null comment 'Preferred language ISO code',
         page_size integer comment 'Preferred listing page size',
-        ab_country_filter varchar(255) comment 'Country filter',
-        ab_region_filter varchar(255) comment 'Region filter',
-        ab_town_filter varchar(255) comment 'Town filter',
+        ab_country_filter bigint comment 'Country filter',
+        ab_region_filter bigint comment 'Region filter',
+        ab_town_filter bigint comment 'Town filter',
         primary key (id)
     ) comment='User details';
 

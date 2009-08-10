@@ -4,6 +4,7 @@ import org.flexpay.common.dao.impl.ldap.UserPreferencesContextMapper;
 import org.flexpay.common.util.config.UserPreferences;
 import org.flexpay.ab.util.config.AbUserPreferences;
 import org.springframework.ldap.core.DirContextOperations;
+import org.apache.commons.lang.StringUtils;
 
 public class AbUserPreferencesContextMapper implements UserPreferencesContextMapper {
 
@@ -17,9 +18,9 @@ public class AbUserPreferencesContextMapper implements UserPreferencesContextMap
 	@Override
 	public UserPreferences doMapFromContext(DirContextOperations ctx, UserPreferences preferences) {
 		AbUserPreferences userPreferences = (AbUserPreferences) preferences;
-		userPreferences.setCountryFilterValue(ctx.getStringAttribute("flexpayAbCountryFilter"));
-		userPreferences.setRegionFilterValue(ctx.getStringAttribute("flexpayAbRegionFilter"));
-		userPreferences.setTownFilterValue(ctx.getStringAttribute("flexpayAbTownFilter"));
+		userPreferences.setCountryFilter(getFilterValue("flexpayAbCountryFilter", 0L, ctx));
+		userPreferences.setRegionFilter(getFilterValue("flexpayAbRegionFilter", 0L, ctx));
+		userPreferences.setTownFilter(getFilterValue("flexpayAbTownFilter", 0L, ctx));
 		return preferences;
 	}
 
@@ -38,9 +39,14 @@ public class AbUserPreferencesContextMapper implements UserPreferencesContextMap
 		}
 
 		AbUserPreferences userPreferences = (AbUserPreferences) preferences;
-		ctx.setAttributeValue("flexpayAbCountryFilter", userPreferences.getCountryFilterValue());
-		ctx.setAttributeValue("flexpayAbRegionFilter", userPreferences.getRegionFilterValue());
-		ctx.setAttributeValue("flexpayAbTownFilter", userPreferences.getTownFilterValue());
+		ctx.setAttributeValue("flexpayAbCountryFilter", userPreferences.getCountryFilter());
+		ctx.setAttributeValue("flexpayAbRegionFilter", userPreferences.getRegionFilter());
+		ctx.setAttributeValue("flexpayAbTownFilter", userPreferences.getTownFilter());
+	}
+
+	private Long getFilterValue(String attributeName, Long defaultValue, DirContextOperations ctx) {
+		String filterValue = ctx.getStringAttribute(attributeName);
+		return StringUtils.isNotBlank(filterValue) ? Long.parseLong(filterValue) : defaultValue;
 	}
 
 	/**
@@ -53,4 +59,5 @@ public class AbUserPreferencesContextMapper implements UserPreferencesContextMap
 	public boolean supports(UserPreferences preferences) {
 		return preferences.getObjectClasses().contains("flexpayAbPerson");
 	}
+
 }

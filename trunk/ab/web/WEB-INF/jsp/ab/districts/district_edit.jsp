@@ -14,7 +14,7 @@
 				<s:text name="common.begin_date" />
 			</td>
 			<td class="col">
-				<%@ include file="/WEB-INF/jsp/common/filter/begin_date_filter.jsp" %>
+				<%@include file="/WEB-INF/jsp/common/filter/begin_date_filter.jsp" %>
 			</td>
 		</tr>
 

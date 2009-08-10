@@ -15,7 +15,7 @@ import java.util.List;
 
 public class BuildingsListAjaxAction extends FPActionWithPagerSupport<BuildingAddress> {
 
-	private String streetId;
+	private Long streetFilter;
 	private List<BuildingAddress> buildings = list();
 
 	private BuildingsSorter buildingsSorter = new BuildingsSorter();
@@ -25,17 +25,13 @@ public class BuildingsListAjaxAction extends FPActionWithPagerSupport<BuildingAd
 	@Override
 	public String doExecute() throws Exception {
 
-		Long streetIdLong;
-
-		try {
-			streetIdLong = Long.parseLong(streetId);
-		} catch (Exception e) {
-			log.warn("Incorrect street id in filter ({})", streetId);
+		if (streetFilter == null || streetFilter <= 0) {
+			log.warn("Incorrect street id in filter ({})", streetFilter);
 			return SUCCESS;
 		}
 
 		List<BuildingAddress> addresses = buildingService.getBuildings(
-				arrayStack(new StreetFilter(streetIdLong)), list(buildingsSorter), getPager());
+				arrayStack(new StreetFilter(streetFilter)), list(buildingsSorter), getPager());
 
 		if (log.isDebugEnabled()) {
 			log.debug("Total buildings found: {}", buildings.size());
@@ -59,8 +55,8 @@ public class BuildingsListAjaxAction extends FPActionWithPagerSupport<BuildingAd
 		return SUCCESS;
 	}
 
-	public void setStreetId(String streetId) {
-		this.streetId = streetId;
+	public void setStreetFilter(Long streetFilter) {
+		this.streetFilter = streetFilter;
 	}
 
 	public List<BuildingAddress> getBuildings() {

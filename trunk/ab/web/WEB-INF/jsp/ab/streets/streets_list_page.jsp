@@ -17,35 +17,28 @@
 
 <script type="text/javascript">
 
-    var shadowId = "shadow";
     var resultId = "result";
 
     $(function() {
 
-        FP.createShadow(shadowId);
-
         FF.addListener("town", function(filter) {
-            FP.resizeShadow(shadowId, resultId, {visibility:"visible"});
-            $.post("<s:url action="streetsListAjax" namespace="/dicts" includeParams="none"/>",
-                    {townId: filter.value.val()},
-                    function(data) {
-                        $("#" + resultId).html(data);
-                        FP.hideShadow(shadowId);
-                    });
+            FP.pagerAjax(null, {
+                action:"<s:url action="streetsListAjax" namespace="/dicts" includeParams="none"/>",
+                params:{townFilter: FF.filters["town"].value.val()}
+            });
         });
+
         FF.addEraseFunction("town", function(filter) {
             $("#" + resultId).html('<input type="button" class="btn-exit" '
                     + 'onclick="window.location = \'<s:url action="streetEdit"><s:param name="street.id" value="0"/></s:url>\'" '
                     + 'value="<s:text name="common.new"/>"/>');
         });
+
         FF.addListener("street", function(filter) {
-            FP.resizeShadow(shadowId, resultId, {visibility:"visible"});
-            $.post("<s:url action="streetsListAjax" namespace="/dicts" includeParams="none"/>",
-                    {streetId: filter.value.val()},
-                    function(data) {
-                        $("#" + resultId).html(data);
-                        FP.hideShadow(shadowId);
-                    });
+            FP.pagerAjax(null, {
+                action:"<s:url action="streetsListAjax" namespace="/dicts" includeParams="none"/>",
+                params:{streetFilter: FF.filters["street"].value.val()}
+            });
         });
 
     });
@@ -54,7 +47,7 @@
         FP.pagerAjax(element, {
             action:"<s:url action="streetsListAjax" namespace="/dicts" includeParams="none"/>",
             params:{
-                townId: FF.filters["town"].value.val(),
+                townFilter: FF.filters["town"].value.val(),
                 "streetSorterByName.active": $("#streetSorterByNameActive").val(),
                 "streetSorterByName.order": $("#streetSorterByNameOrder").val(),
                 "streetSorterByType.active": $("#streetSorterByTypeActive").val(),
@@ -64,17 +57,7 @@
     }
 
     function sorterAjax() {
-        $.post("<s:url action="streetsListAjax" namespace="/dicts" includeParams="none"/>",
-                {
-                    townId: FF.filters["town"].value.val(),
-                    "streetSorterByName.active": $("#streetSorterByNameActive").val(),
-                    "streetSorterByName.order": $("#streetSorterByNameOrder").val(),
-                    "streetSorterByType.active": $("#streetSorterByTypeActive").val(),
-                    "streetSorterByType.order": $("#streetSorterByTypeOrder").val()
-                },
-                function(data) {
-                    $("#result").html(data);
-                });
+        pagerAjax(null);
     }
 
 </script>

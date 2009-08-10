@@ -21,7 +21,8 @@ function Filter(name, options) {
         isArray: false,
         display: "input",
         extraParams: {},
-        defaultValue: "",
+        defaultValue: 0,
+        valueType: "number",
         defaultString: "",
         preRequest: true,
         required: true,
@@ -29,6 +30,20 @@ function Filter(name, options) {
     }, options);
 
     this.options = options;
+
+    var dv = options.defaultValue;
+
+    this.isString = options.valueType == "string";
+    this.isNumber = options.valueType == "number";
+
+    if (this.isString) {
+        options.defaultValue = dv + "";
+    } else if (this.isNumber) {
+        options.defaultValue = dv == null || dv == "" ? 0 : parseInt(dv);
+    } else {
+        alert("Unknown value type");
+        return false;
+    }
 
     $("#" + options.rawId).append('<input id="' + options.valueId + '" type="hidden" name="' + name + 'Filter" value="' + options.defaultValue + '" />\n' +
                                   '<input id="' + options.filterId + '" type="text" class="form-search" value="' + options.defaultString + '" />');
@@ -212,7 +227,9 @@ var FF = {
         if (filter.preRequest) {
             var k = 0;
             for (var i in filter.parents) {
-                if (this.filters[i].preRequest && this.filters[i].value.val() != "") {
+                var f = this.filters[i];
+                var v = f.value.val();
+                if (f.preRequest && ((f.isString && v != "") || (f.isNumber && v != "0"))) {
                     k++;
                 }
             }
@@ -250,7 +267,12 @@ var FF = {
     },
 
     onChange2 : function(name) {
-        this.filters[name].value.val("");
+        var f = this.filters[name];
+        if (f.isString) {
+            f.value.val("");
+        } else if (f.isNumber) {
+            f.value.val("0");
+        }
 //        this.onChange(name);
     },
 
@@ -258,7 +280,11 @@ var FF = {
         var filters = this.getFiltersByParentName(name);
         for (var i in filters) {
             var filter = filters[i];
-            filter.value.val("");
+            if (filter.isString) {
+                filter.value.val("");
+            } else if (filter.isNumber) {
+                filter.value.val("0");
+            }
             filter.string.val("").attr("readonly", true);
             if (filter.autocompleter != null) {
                 filter.autocompleter.flushCache();
@@ -281,7 +307,8 @@ var FF = {
     onSelect : function(filterName) {
         var filters = this.getFiltersByParentName(filterName);
         var filter = this.filters[filterName];
-        if (filter.value.val() != "" && (!filter.string.attr("readonly") || filter.readonly)) {
+        var v = filter.value.val();
+        if (((v != "" && filter.isString) || (v != "0" && filter.isNumber)) && (!filter.string.attr("readonly") || filter.readonly)) {
             for (var i = 0; i < filter.listeners.length; i++) {
                 filter.listeners[i].call(filter, filter);
             }
@@ -297,10 +324,13 @@ var FF = {
             var parentsFilled = true;
             var filledParentsCount = 0;
             for (var i1 in filter2.parents) {
-                if (this.filters[i1].value.val() != "") {
+                var f = this.filters[i1];
+                var v = f.value.val();
+                var t = f.valueType;
+                if ((v != "" && f.isString) || (v != "0" && f.isNumber)) {
                     filledParentsCount++;
                 }
-                if (this.filters[i1].value.val() == "" && this.filters[i1].required) {
+                if ((v == "" && f.isString) || (v == "0" && f.isNumber) && f.required) {
                     parentsFilled = false;
                 }
             }

@@ -6,19 +6,19 @@ import org.jetbrains.annotations.NotNull;
 
 public class TownsListPageAction extends FPActionSupport {
 
-	private String regionFilter;
+	private Long regionFilter;
 
 	@NotNull
 	@Override
 	protected String doExecute() throws Exception {
 		if (regionFilter != null) {
 			AbUserPreferences up = (AbUserPreferences) getUserPreferences();
-			up.setRegionFilterValue(regionFilter);
-			up.setTownFilterValue("");
-			up.setDistrictFilterValue("");
-			up.setStreetFilterValue("");
-			up.setBuildingFilterValue("");
-			up.setApartmentFilterValue("");
+			up.setRegionFilter(regionFilter);
+			up.setTownFilter(0L);
+			up.setDistrictFilter(0L);
+			up.setStreetFilter(0L);
+			up.setBuildingFilter(0L);
+			up.setApartmentFilter(0L);
 		}
 
 		return SUCCESS;
@@ -30,7 +30,7 @@ public class TownsListPageAction extends FPActionSupport {
 		return SUCCESS;
 	}
 
-	public void setRegionFilter(String regionFilter) {
+	public void setRegionFilter(Long regionFilter) {
 		this.regionFilter = regionFilter;
 	}
 

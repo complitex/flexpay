@@ -17,7 +17,7 @@
             <td class="col"><s:text name="ab.country_shortname"/></td>
             <td class="col">
                 <s:iterator value="shortNames"><s:set name="l" value="%{getLang(key)}" />
-                    <s:textfield name="shortNames[%{key}]" value="%{value}" />(<s:if test="%{#l.default}">*</s:if><s:property
+                    <s:textfield name="shortNames[%{key}]" value="%{value}" maxlength="5" />(<s:if test="%{#l.default}">*</s:if><s:property
                             value="%{getLangName(#l)}" />)<br />
                 </s:iterator>
             </td>

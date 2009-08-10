@@ -4,7 +4,6 @@ import org.flexpay.ab.persistence.*;
 import org.flexpay.ab.service.CountryService;
 import org.flexpay.ab.service.RegionService;
 import org.flexpay.ab.util.config.ApplicationConfig;
-import org.flexpay.common.actions.ActionUtil;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Language;
@@ -21,11 +20,10 @@ import java.util.Map;
  */
 public class RegionEditSimpleAction extends FPActionSupport {
 
-    private String countryFilter;
+	private Region region = new Region();
+    private Long countryFilter;
     private BeginDateFilter beginDateFilter = new BeginDateFilter();
-
     private Map<Long, String> names = CollectionUtils.treeMap();
-    private Region region = new Region();
 
 	private String crumbCreateKey;
     private CountryService countryService;
@@ -47,26 +45,23 @@ public class RegionEditSimpleAction extends FPActionSupport {
         }
 
         region = rgn;
-        initDefaults();
+        initData();
         return INPUT;
     }
 
     private boolean doValidate(Region rgn) {
 
         if (region.getId() == null) {
-            addActionError(getText("common.object_not_selected"));
-            return false;
-        }
-
-        if (rgn == null) {
             addActionError(getText("error.invalid_id"));
             return false;
         }
 
-		Long countryFilterLong;
-		try {
-			countryFilterLong = Long.parseLong(countryFilter);
-		} catch (Exception e) {
+        if (rgn == null) {
+            addActionError(getText("common.object_not_selected"));
+            return false;
+        }
+
+		if (countryFilter == null || countryFilter <= 0) {
 			log.warn("Incorrect country id in filter ({})", countryFilter);
 			addActionError(getText("ab.error.region.no_country"));
 		}
@@ -88,7 +83,7 @@ public class RegionEditSimpleAction extends FPActionSupport {
 
         // setup region for new object
         if (rgn.isNew()) {
-            rgn.setCountry(new Country(Long.parseLong(countryFilter)));
+            rgn.setCountry(new Country(countryFilter));
             regionService.create(rgn);
         } else {
             regionService.update(rgn);
@@ -101,10 +96,7 @@ public class RegionEditSimpleAction extends FPActionSupport {
         for (Map.Entry<Long, String> name : names.entrySet()) {
             String value = name.getValue();
             Language lang = getLang(name.getKey());
-            RegionNameTranslation translation = new RegionNameTranslation();
-            translation.setLang(lang);
-            translation.setName(value);
-            regionName.addNameTranslation(translation);
+            regionName.setTranslation(new RegionNameTranslation(value, lang));
         }
 
         return regionName;
@@ -123,15 +115,24 @@ public class RegionEditSimpleAction extends FPActionSupport {
         return INPUT;
     }
 
-    private void initDefaults() {
-        RegionNameTemporal tmprl = region.getCurrentNameTemporal();
-        if (tmprl == null) {
-            names = ActionUtil.getLangIdsToTranslations(new RegionName());
-            beginDateFilter.setDate(ApplicationConfig.getPastInfinite());
-        } else {
-            names = ActionUtil.getLangIdsToTranslations(tmprl.getValue());
-            beginDateFilter.setDate(tmprl.getBegin());
-        }
+    private void initData() {
+        RegionNameTemporal temporal = region.getCurrentNameTemporal();
+		beginDateFilter.setDate(temporal != null ? temporal.getBegin() : ApplicationConfig.getPastInfinite());
+
+		RegionName regionName = temporal != null ? temporal.getValue() : null;
+		if (regionName != null) {
+			for (RegionNameTranslation name : regionName.getTranslations()) {
+				names.put(name.getLang().getId(), name.getName());
+			}
+		}
+
+		for (Language lang : org.flexpay.common.util.config.ApplicationConfig.getLanguages()) {
+			if (names.containsKey(lang.getId())) {
+				continue;
+			}
+			names.put(lang.getId(), "");
+		}
+
     }
 
 	@Override
@@ -142,7 +143,11 @@ public class RegionEditSimpleAction extends FPActionSupport {
 		super.setBreadCrumbs();
 	}
 
-	public void setCountryFilter(String countryFilter) {
+	public Long getCountryFilter() {
+		return countryFilter;
+	}
+
+	public void setCountryFilter(Long countryFilter) {
 		this.countryFilter = countryFilter;
 	}
 

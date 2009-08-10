@@ -17,7 +17,11 @@
 		</action>
 
 		<action name="streetEdit" class="streetEditAction">
-			<result name="redirectSuccess" type="redirect-action">streetsList</result>
+            <result name="redirectSuccess" type="redirect-action">
+                <param name="actionName">streetView</param>
+                <param name="parse">true</param>
+                <param name="object.id">${street.id}</param>
+            </result>
 			<result type="tiles" name="input">ab.street.edit</result>
 		</action>
 

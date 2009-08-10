@@ -1,17 +1,16 @@
 package org.flexpay.ab.actions.district;
 
 import org.flexpay.ab.persistence.*;
-import org.flexpay.ab.persistence.filters.TownFilter;
 import org.flexpay.ab.service.DistrictService;
 import org.flexpay.ab.service.TownService;
+import org.flexpay.ab.util.config.ApplicationConfig;
 import org.flexpay.common.actions.FPActionSupport;
+import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Language;
-import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.persistence.filter.BeginDateFilter;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.DateUtil;
-import org.flexpay.common.util.config.ApplicationConfig;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
@@ -20,7 +19,7 @@ import java.util.Map;
 public class DistrictEditSimpleAction extends FPActionSupport {
 
 	private District district = new District();
-	private String townFilter;
+	private Long townFilter;
 	private BeginDateFilter beginDateFilter = new BeginDateFilter(DateUtil.now());
 
 	private Map<Long, String> names = CollectionUtils.treeMap();
@@ -41,64 +40,82 @@ public class DistrictEditSimpleAction extends FPActionSupport {
 	@Override
 	protected String doExecute() throws Exception {
 
-		if (district.getId() == null) {
-			addActionError(getText("error.no_id"));
+		District dstrct = district.isNew() ? district : districtService.readFull(stub(district));
+
+		if (isSubmit()) {
+			if (!doValidate(dstrct)) {
+				return INPUT;
+			}
+			updateDistrict(dstrct);
+
 			return REDIRECT_SUCCESS;
 		}
 
-		District dstrct = district.isNew() ? district : districtService.readFull(stub(district));
+		district = dstrct;
+		initData();
+
+		return INPUT;
+
+	}
+
+	private boolean doValidate(District dstrct) {
+
+		if (dstrct.getId() == null) {
+			addActionError(getText("error.invalid_id"));
+			return false;
+		}
+
 		if (dstrct == null) {
 			addActionError(getText("common.object_not_selected"));
-			return REDIRECT_SUCCESS;
+			return false;
 		}
 
-		if (!isSubmit()) {
-			district = dstrct;
-			initData();
-			return INPUT;
-		}
-
-		// no town selected in filter
-		Long townFilterLong;
-		try {
-			townFilterLong = Long.parseLong(townFilter);
-		} catch (Exception e) {
+		if (townFilter == null || townFilter <= 0) {
 			log.warn("Incorrect town id in filter ({})", townFilter);
 			addActionError(getText("error.ab.district.no_town"));
-			return INPUT;
 		}
+
+		if (!beginDateFilter.needFilter()) {
+			addActionError(getText("ab.error.town.no_begin_date"));
+		}
+
+		return !hasActionErrors();
+	}
+
+	/*
+	* Creates new district if it is a new one (haven't been yet persisted) or updates persistent one
+	*/
+	private void updateDistrict(District dstrct) throws FlexPayExceptionContainer {
+
+		DistrictName districtName = getDistrictName();
+		dstrct.setNameForDate(districtName, beginDateFilter.getDate());
+
+		if (dstrct.isNew()) {
+			dstrct.setParent(new Town(townFilter));
+			districtService.create(dstrct);
+		} else {
+			districtService.update(dstrct);
+		}
+
+	}
+
+	private DistrictName getDistrictName() {
 
 		DistrictName districtName = new DistrictName();
 		for (Map.Entry<Long, String> name : names.entrySet()) {
 			String value = name.getValue();
 			Language lang = getLang(name.getKey());
-			DistrictNameTranslation translation = new DistrictNameTranslation();
-			translation.setLang(lang);
-			translation.setName(value);
-			districtName.setTranslation(translation);
-		}
-		log.debug("District name to set: {}", districtName);
-		dstrct.setNameForDate(districtName, beginDateFilter.getDate());
-
-		if (dstrct.isNew()) {
-			dstrct.setParent(townService.readFull(new Stub<Town>(townFilterLong)));
-			districtService.create(dstrct);
-		} else {
-			log.debug("Updated names: {}", dstrct.getNameTemporals());
-			districtService.update(dstrct);
+			districtName.setTranslation(new DistrictNameTranslation(value, lang));
 		}
 
-		addActionError(getText("ab.district.saved"));
-		return REDIRECT_SUCCESS;
+		return districtName;
 	}
 
 	private void initData() {
 
 		// init begin date filter
 		DistrictNameTemporal temporal = district.getCurrentNameTemporal();
-		if (temporal != null) {
-			beginDateFilter.setDate(temporal.getBegin());
-		}
+		beginDateFilter.setDate(temporal != null ? temporal.getBegin() : ApplicationConfig.getPastInfinite());
 
 		// init translations
 		DistrictName districtName = temporal != null ? temporal.getValue() : null;
@@ -108,7 +125,7 @@ public class DistrictEditSimpleAction extends FPActionSupport {
 			}
 		}
 
-		for (Language lang : ApplicationConfig.getLanguages()) {
+		for (Language lang : org.flexpay.common.util.config.ApplicationConfig.getLanguages()) {
 			if (names.containsKey(lang.getId())) {
 				continue;
 			}
@@ -145,11 +162,11 @@ public class DistrictEditSimpleAction extends FPActionSupport {
 		this.district = district;
 	}
 
-	public String getTownFilter() {
+	public Long getTownFilter() {
 		return townFilter;
 	}
 
-	public void setTownFilter(String townFilter) {
+	public void setTownFilter(Long townFilter) {
 		this.townFilter = townFilter;
 	}
 
