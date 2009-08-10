@@ -139,10 +139,24 @@ public class StreetTypeServiceImpl implements StreetTypeService {
 	 * @param locale		   Locale to get filter translations in
 	 * @throws FlexPayException if failure occurs
 	 */
-	public void initFilter(StreetTypeFilter streetTypeFilter, Locale locale)
+	public StreetTypeFilter initFilter(StreetTypeFilter streetTypeFilter, Locale locale)
 			throws FlexPayException {
+
 		List<StreetTypeTranslation> translations = getTranslations(locale);
+
+		if (streetTypeFilter == null) {
+			streetTypeFilter = new StreetTypeFilter();
+		}
 		streetTypeFilter.setNames(translations);
+
+		if (streetTypeFilter.getSelectedId() == null) {
+			if (translations.size() == 0) {
+				throw new FlexPayException("No street types", "ab.no_street_types");
+			}
+			streetTypeFilter.setSelectedId(translations.get(0).getId());
+		}
+		return streetTypeFilter;
+
 	}
 
 	/**

@@ -6,18 +6,18 @@ import org.jetbrains.annotations.NotNull;
 
 public class DistrictsListPageAction extends FPActionSupport {
 
-	private String townFilter;
+	private Long townFilter;
 
 	@NotNull
 	@Override
 	protected String doExecute() throws Exception {
 		if (townFilter != null) {
 			AbUserPreferences up = (AbUserPreferences) getUserPreferences();
-			up.setTownFilterValue(townFilter);
-			up.setDistrictFilterValue("");
-			up.setStreetFilterValue("");
-			up.setBuildingFilterValue("");
-			up.setApartmentFilterValue("");
+			up.setTownFilter(townFilter);
+			up.setDistrictFilter(0L);
+			up.setStreetFilter(0L);
+			up.setBuildingFilter(0L);
+			up.setApartmentFilter(0L);
 		}
 
 		return SUCCESS;
@@ -29,7 +29,7 @@ public class DistrictsListPageAction extends FPActionSupport {
 		return SUCCESS;
 	}
 
-	public void setTownFilter(String townFilter) {
+	public void setTownFilter(Long townFilter) {
 		this.townFilter = townFilter;
 	}
 

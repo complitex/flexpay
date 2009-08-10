@@ -22,16 +22,19 @@ public class StreetFilterAjaxAction extends FilterAjaxAction {
 	@Override
 	public String doExecute() throws FlexPayException {
 
-		Long townIdLong;
+		Long townId;
 
 		try {
-			townIdLong = Long.parseLong(parents[0]);
+			townId = Long.parseLong(parents[0]);
 		} catch (Exception e) {
 			log.warn("Incorrect town id in filter ({})", parents[0]);
 			return SUCCESS;
 		}
+		if (townId == 0) {
+			return SUCCESS;
+		}
 
-		List<Street> streets = streetService.findByTownAndQuery(new Stub<Town>(townIdLong), "%" + q + "%");
+		List<Street> streets = streetService.findByTownAndQuery(new Stub<Town>(townId), "%" + q + "%");
 		log.debug("Found streets: {}", streets);
 
 		foundObjects = new ArrayList<FilterObject>();
@@ -48,7 +51,7 @@ public class StreetFilterAjaxAction extends FilterAjaxAction {
 
 	@Override
 	public void readFilterString() {
-		if (filterValueLong != null) {
+		if (filterValueLong != null && filterValueLong > 0) {
 			Street street = streetService.readFull(new Stub<Street>(filterValueLong));
 			if (street != null && street.getCurrentName() != null) {
 				filterString = getTranslation(street.getCurrentType().getTranslations()).getShortName()
@@ -63,9 +66,9 @@ public class StreetFilterAjaxAction extends FilterAjaxAction {
 
 	@Override
 	public void saveFilterValue() {
-		getUserPreferences().setStreetFilterValue(filterValue);
-		getUserPreferences().setBuildingFilterValue("");
-		getUserPreferences().setApartmentFilterValue("");
+		getUserPreferences().setStreetFilter(filterValueLong);
+		getUserPreferences().setBuildingFilter(0L);
+		getUserPreferences().setApartmentFilter(0L);
 	}
 
 	@Required

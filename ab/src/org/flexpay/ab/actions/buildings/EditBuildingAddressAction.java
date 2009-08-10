@@ -17,7 +17,7 @@ import java.util.Map;
 
 public class EditBuildingAddressAction extends FPActionSupport {
 
-	private String streetFilter;
+	private Long streetFilter;
 	private Building building = Building.newInstance();
 	private BuildingAddress address = new BuildingAddress();
 
@@ -54,10 +54,7 @@ public class EditBuildingAddressAction extends FPActionSupport {
 		}
 
 		boolean valid = true;
-		Long streetFilterLong = 0L;
-		try {
-			streetFilterLong = Long.parseLong(streetFilter);
-		} catch (Exception e) {
+		if (streetFilter == null || streetFilter <= 0) {
 			log.warn("Incorrect street id in filter ({})", streetFilter);
 			addActionError(getText("ab.buildings.create.street_required"));
 			valid = false;
@@ -70,7 +67,7 @@ public class EditBuildingAddressAction extends FPActionSupport {
 			return INPUT;
 		}
 
-		Street street = streetService.readFull(new Stub<Street>(streetFilterLong));
+		Street street = streetService.readFull(new Stub<Street>(streetFilter));
 		addr.setStreet(street);
 		for (Map.Entry<Long, String> attr : attributeMap.entrySet()) {
 			AddressAttributeType type = addressAttributeTypeService.read(new Stub<AddressAttributeType>(attr.getKey()));
@@ -122,11 +119,11 @@ public class EditBuildingAddressAction extends FPActionSupport {
 		super.setBreadCrumbs();
 	}
 
-	public String getStreetFilter() {
+	public Long getStreetFilter() {
 		return streetFilter;
 	}
 
-	public void setStreetFilter(String streetFilter) {
+	public void setStreetFilter(Long streetFilter) {
 		this.streetFilter = streetFilter;
 	}
 

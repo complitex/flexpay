@@ -7,7 +7,7 @@
     $(function() {
         FF.createFilter("country", {
             action: "<s:url action="countryFilterAjax" namespace="/dicts" includeParams="none"/>",
-            defaultValue: "<s:text name="%{userPreferences.countryFilterValue}" />"
+            defaultValue: "<s:text name="%{userPreferences.countryFilter}" />"
         });
     });
 

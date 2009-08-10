@@ -18,7 +18,7 @@
                 <%@include file="/WEB-INF/jsp/common/filter/pager/pager_ajax.jsp" %>
                 <input type="submit" class="btn-exit" value="<s:text name="common.delete_selected"/>"/>
                 <input type="button" class="btn-exit"
-                       onclick="window.location = '<s:url action="districtEdit" includeParams="none"><s:param name="district.id" value="0" /></s:url>';"
+                       onclick="window.location='<s:url action="districtEdit" includeParams="none"><s:param name="district.id" value="0" /></s:url>';"
                        value="<s:text name="common.new"/>"/>
             </td>
         </tr>
@@ -28,7 +28,7 @@
                 <input type="checkbox" onchange="FP.setCheckboxes(this.checked, 'objectIds');">
             </td>
             <td class="<s:if test="districtSorter.activated">th_s</s:if><s:else>th</s:else>" width="63%">
-                <%@ include file="../sorters/district_sorter_header.jsp" %>
+                <%@include file="../sorters/district_sorter_header.jsp" %>
             </td>
             <td class="th" width="35%">&nbsp;</td>
         </tr>
@@ -54,7 +54,7 @@
                 <%@include file="/WEB-INF/jsp/common/filter/pager/pager_ajax.jsp" %>
                 <input type="submit" class="btn-exit" value="<s:text name="common.delete_selected"/>"/>
                 <input type="button" class="btn-exit"
-                       onclick="window.location = '<s:url action="districtEdit" includeParams="none"><s:param name="district.id" value="0" /></s:url>';"
+                       onclick="window.location='<s:url action="districtEdit" includeParams="none"><s:param name="district.id" value="0" /></s:url>';"
                        value="<s:text name="common.new"/>"/>
             </td>
         </tr>

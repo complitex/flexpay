@@ -13,4 +13,5 @@ public class AbUserPreferencesFactory implements UserPreferencesFactory {
 	public AbUserPreferences newInstance() {
 		return new AbUserPreferences();
 	}
+
 }

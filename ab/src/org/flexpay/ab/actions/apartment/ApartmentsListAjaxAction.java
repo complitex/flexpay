@@ -16,7 +16,7 @@ import java.util.List;
 
 public class ApartmentsListAjaxAction extends FPActionWithPagerSupport<Apartment> {
 
-	private String buildingId;
+	private Long buildingFilter;
 	private List<Apartment> apartments = list();
 
 	protected ApartmentSorter apartmentSorter = new ApartmentSorter();
@@ -29,21 +29,17 @@ public class ApartmentsListAjaxAction extends FPActionWithPagerSupport<Apartment
 
 		List<ObjectSorter> sorters = CollectionUtils.<ObjectSorter>list(apartmentSorter);
 
-		Long buildingIdLong;
-
-		try {
-			buildingIdLong = Long.parseLong(buildingId);
-		} catch (Exception e) {
-			log.warn("Incorrect building address id in filter ({})", buildingId);
+		if (buildingFilter == null || buildingFilter <= 0) {
+			log.warn("Incorrect building id in filter ({})", buildingFilter);
 			return SUCCESS;
 		}
 
-		apartments = apartmentService.getApartments(new Stub<BuildingAddress>(buildingIdLong), sorters, getPager());
-		log.info("Total apartments found: {}", apartments);
+		apartments = apartmentService.getApartments(new Stub<BuildingAddress>(buildingFilter), sorters, getPager());
+		log.debug("Total apartments found: {}", apartments);
 		apartments = apartmentService.readFull(Apartment.collectionIds(apartments));
-		log.info("Total apartments readFull: {}", apartments);
+		log.debug("Total apartments readFull: {}", apartments);
 
-		log.info("Found apartments: {}", apartments);
+		log.debug("Found apartments: {}", apartments);
 
 		return SUCCESS;
 	}
@@ -61,8 +57,8 @@ public class ApartmentsListAjaxAction extends FPActionWithPagerSupport<Apartment
 		return SUCCESS;
 	}
 
-	public void setBuildingId(String buildingId) {
-		this.buildingId = buildingId;
+	public void setBuildingFilter(Long buildingFilter) {
+		this.buildingFilter = buildingFilter;
 	}
 
 	public List<Apartment> getApartments() {

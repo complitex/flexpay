@@ -17,21 +17,15 @@
 
 <script type="text/javascript">
 
-    var shadowId = "shadow";
     var resultId = "result";
 
     $(function() {
 
-        FP.createShadow(shadowId);
-
         FF.addListener("building", function(filter) {
-            FP.resizeShadow(shadowId, resultId, {visibility:"visible"});
-            $.post("<s:url action="apartmentsListAjax" namespace="/dicts" includeParams="none"/>",
-                    {buildingId: filter.value.val()},
-                    function(data) {
-                        $("#" + resultId).html(data);
-                        FP.hideShadow(shadowId);
-                    });
+            FP.pagerAjax(null, {
+                action:"<s:url action="apartmentsListAjax" namespace="/dicts" includeParams="none"/>",
+                params:{buildingFilter: FF.filters["building"].value.val()}
+            });
         });
         FF.addEraseFunction("building", function(filter) {
             $("#" + resultId).html('<input type="button" class="btn-exit" '
@@ -44,7 +38,7 @@
         FP.pagerAjax(element, {
             action:"<s:url action="apartmentsListAjax" namespace="/dicts" includeParams="none"/>",
             params:{
-                buildingId: FF.filters["building"].value.val(),
+                buildingFilter: FF.filters["building"].value.val(),
                 "apartmentSorter.active": $("#apartmentSorterActive").val(),
                 "apartmentSorter.order": $("#apartmentSorterOrder").val()
             }
@@ -52,15 +46,7 @@
     }
 
     function sorterAjax() {
-        $.post("<s:url action="apartmentsListAjax" namespace="/dicts" includeParams="none"/>",
-                {
-                    buildingId: FF.filters["building"].value.val(),
-                    "apartmentSorter.active": $("#apartmentSorterActive").val(),
-                    "apartmentSorter.order": $("#apartmentSorterOrder").val()
-                },
-                function(data) {
-                    $("#result").html(data);
-                });
+        pagerAjax(null);
     }
 
 </script>

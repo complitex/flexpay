@@ -17,7 +17,11 @@
 		</action>
 
 		<action name="districtEdit" class="districtEditAction">
-			<result name="redirectSuccess" type="redirect-action">districtsList</result>
+            <result name="redirectSuccess" type="redirect-action">
+                <param name="actionName">districtView</param>
+                <param name="parse">true</param>
+                <param name="object.id">${district.id}</param>
+            </result>
 			<result type="tiles" name="input">ab.district.edit</result>
 		</action>
 

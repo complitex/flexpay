@@ -7,17 +7,17 @@
     $(function() {
         FF.createFilter("country", {
             action: "<s:url action="countryFilterAjax" namespace="/dicts" includeParams="none"/>",
-            defaultValue: "<s:text name="%{userPreferences.countryFilterValue}" />"
+            defaultValue: "<s:text name="%{userPreferences.countryFilter}" />"
         });
         FF.createFilter("region", {
             action: "<s:url action="regionFilterAjax" namespace="/dicts" includeParams="none"/>",
             parents: ["country"],
-            defaultValue: "<s:text name="%{userPreferences.regionFilterValue}" />"
+            defaultValue: "<s:text name="%{userPreferences.regionFilter}" />"
         });
         FF.createFilter("town", {
             action: "<s:url action="townFilterAjax" namespace="/dicts" includeParams="none"/>",
             parents: ["region"],
-            defaultValue: "<s:text name="%{userPreferences.townFilterValue}" />"
+            defaultValue: "<s:text name="%{userPreferences.townFilter}" />"
         });
         FF.createFilter("street", {
             action: "<s:url action="streetFilterAjax" namespace="/dicts" includeParams="none"/>",

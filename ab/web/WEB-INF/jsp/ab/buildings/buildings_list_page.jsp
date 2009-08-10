@@ -17,22 +17,17 @@
 
 <script type="text/javascript">
 
-    var shadowId = "shadow";
     var resultId = "result";
 
     $(function() {
 
-        FP.createShadow(shadowId);
-
         FF.addListener("street", function(filter) {
-            FP.resizeShadow(shadowId, resultId, {visibility:"visible"});
-            $.post("<s:url action="buildingsListAjax" namespace="/dicts" includeParams="none"/>",
-                    {streetId: filter.value.val()},
-                    function(data) {
-                        $("#" + resultId).html(data);
-                        FP.hideShadow(shadowId);
-                    });
+            FP.pagerAjax(null, {
+                action:"<s:url action="buildingsListAjax" namespace="/dicts" includeParams="none"/>",
+                params:{streetFilter: FF.filters["street"].value.val()}
+            });
         });
+
         FF.addEraseFunction("street", function(filter) {
             $("#" + resultId).html('<input type="button" class="btn-exit" '
                     + 'onclick="window.location=\'<s:url action="buildingCreate" includeParams="none" />\';" '
@@ -44,7 +39,7 @@
         FP.pagerAjax(element, {
             action:"<s:url action="buildingsListAjax" namespace="/dicts" includeParams="none"/>",
             params:{
-                streetId: FF.filters["street"].value.val(),
+                streetFilter: FF.filters["street"].value.val(),
                 "buildingsSorter.active": $("#buildingsSorterActive").val(),
                 "buildingsSorter.order": $("#buildingsSorterOrder").val()
             }
@@ -52,15 +47,7 @@
     }
 
     function sorterAjax() {
-        $.post("<s:url action="buildingsListAjax" namespace="/dicts" includeParams="none"/>",
-                {
-                    streetId: FF.filters["street"].value.val(),
-                    "buildingsSorter.active": $("#buildingsSorterActive").val(),
-                    "buildingsSorter.order": $("#buildingsSorterOrder").val()
-                },
-                function(data) {
-                    $("#result").html(data);
-                });
+        pagerAjax(null);
     }
 
 </script>

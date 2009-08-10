@@ -6,7 +6,6 @@ import org.flexpay.ab.service.RegionService;
 import org.flexpay.ab.service.TownService;
 import org.flexpay.ab.service.TownTypeService;
 import org.flexpay.ab.util.config.ApplicationConfig;
-import org.flexpay.common.actions.ActionUtil;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Language;
@@ -18,14 +17,16 @@ import org.springframework.beans.factory.annotation.Required;
 
 import java.util.Map;
 
+/**
+ * Town simple editor
+ */
 public class TownEditSimpleAction extends FPActionSupport {
 
-    private String regionFilter;
+	private Town town = new Town();
+    private Long regionFilter;
     private TownTypeFilter townTypeFilter = new TownTypeFilter();
     private BeginDateFilter beginDateFilter = new BeginDateFilter();
-
     private Map<Long, String> names = CollectionUtils.treeMap();
-    private Town town = new Town();
 
 	private String crumbCreateKey;
     private RegionService regionService;
@@ -48,38 +49,32 @@ public class TownEditSimpleAction extends FPActionSupport {
         initFilters();
 
         if (isSubmit()) {
-
-            if (!doValidate()) {
+            if (!doValidate(twn)) {
                 return INPUT;
             }
-
             updateTown(twn);
 
             return REDIRECT_SUCCESS;
         }
 
         town = twn;
-        initDefaults();
+        initData();
         return INPUT;
     }
 
-    private boolean doValidate() {
+    private boolean doValidate(Town twn) {
 
         if (town.getId() == null) {
-            addActionError(getText("common.object_not_selected"));
+			addActionError(getText("error.invalid_id"));
             return false;
         }
 
-        Town twn = town.isNew() ? town : townService.readFull(stub(town));
         if (twn == null) {
-            addActionError(getText("error.invalid_id"));
+			addActionError(getText("common.object_not_selected"));
             return false;
         }
 
-		Long regionFilterLong;
-		try {
-			regionFilterLong = Long.parseLong(regionFilter);
-		} catch (Exception e) {
+		if (regionFilter == null || regionFilter <= 0) {
 			log.warn("Incorrect region id in filter ({})", regionFilter);
 			addActionError(getText("ab.error.town.no_region"));
 		}
@@ -106,7 +101,7 @@ public class TownEditSimpleAction extends FPActionSupport {
 
         // setup region for new object
         if (twn.isNew()) {
-            twn.setRegion(new Region(Long.parseLong(regionFilter)));
+            twn.setRegion(new Region(regionFilter));
             townService.create(twn);
         } else {
             townService.update(twn);
@@ -119,10 +114,7 @@ public class TownEditSimpleAction extends FPActionSupport {
         for (Map.Entry<Long, String> name : names.entrySet()) {
             String value = name.getValue();
             Language lang = getLang(name.getKey());
-            TownNameTranslation translation = new TownNameTranslation();
-            translation.setLang(lang);
-            translation.setName(value);
-            townName.addNameTranslation(translation);
+            townName.setTranslation(new TownNameTranslation(value, lang));
         }
 
         return townName;
@@ -145,20 +137,28 @@ public class TownEditSimpleAction extends FPActionSupport {
         townTypeFilter = townTypeService.initFilter(townTypeFilter, getUserPreferences().getLocale());
     }
 
-    private void initDefaults() {
-        TownNameTemporal tmprl = town.getCurrentNameTemporal();
-        if (tmprl == null) {
-            names = ActionUtil.getLangIdsToTranslations(new TownName());
-            beginDateFilter.setDate(ApplicationConfig.getPastInfinite());
-        } else {
-            names = ActionUtil.getLangIdsToTranslations(tmprl.getValue());
-            beginDateFilter.setDate(tmprl.getBegin());
-        }
+    private void initData() {
+        TownNameTemporal temporal = town.getCurrentNameTemporal();
+		beginDateFilter.setDate(temporal != null ? temporal.getBegin() : ApplicationConfig.getPastInfinite());
 
-        TownTypeTemporal tmprlType = town.getCurrentTypeTemporal();
-        if (tmprlType != null) {
-            townTypeFilter.setSelectedId(tmprlType.getValue().getId());
-        }
+		TownTypeTemporal tmprlType = town.getCurrentTypeTemporal();
+		if (tmprlType != null) {
+			townTypeFilter.setSelectedId(tmprlType.getValue().getId());
+		}
+
+		TownName townName = temporal != null ? temporal.getValue() : null;
+		if (townName != null) {
+			for (TownNameTranslation name : townName.getTranslations()) {
+				names.put(name.getLang().getId(), name.getName());
+			}
+		}
+
+		for (Language lang : org.flexpay.common.util.config.ApplicationConfig.getLanguages()) {
+			if (names.containsKey(lang.getId())) {
+				continue;
+			}
+			names.put(lang.getId(), "");
+		}
 
     }
 
@@ -170,11 +170,11 @@ public class TownEditSimpleAction extends FPActionSupport {
 		super.setBreadCrumbs();
 	}
 
-	public String getRegionFilter() {
+	public Long getRegionFilter() {
 		return regionFilter;
 	}
 
-	public void setRegionFilter(String regionFilter) {
+	public void setRegionFilter(Long regionFilter) {
 		this.regionFilter = regionFilter;
 	}
 

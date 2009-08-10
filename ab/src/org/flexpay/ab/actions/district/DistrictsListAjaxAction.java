@@ -17,7 +17,7 @@ import java.util.List;
 
 public class DistrictsListAjaxAction extends FPActionWithPagerSupport<District> {
 
-	private String townId;
+	private Long townFilter;
 	private List<District> districts = list();
 
 	private DistrictSorter districtSorter = new DistrictSorter();
@@ -27,22 +27,18 @@ public class DistrictsListAjaxAction extends FPActionWithPagerSupport<District> 
 	@Override
 	public String doExecute() throws Exception {
 
-		Long townIdLong;
-
-		try {
-			townIdLong = Long.parseLong(townId);
-		} catch (Exception e) {
-			log.warn("Incorrect town id in filter ({})", townId);
+		if (townFilter == null || townFilter <= 0) {
+			log.warn("Incorrect town id in filter ({})", townFilter);
 			return SUCCESS;
 		}
 
-		ArrayStack filters = CollectionUtils.arrayStack(new TownFilter(townIdLong));
+		ArrayStack filters = CollectionUtils.arrayStack(new TownFilter(townFilter));
 		districtSorter.setLang(getLanguage());
 		List<ObjectSorter> sorters = CollectionUtils.<ObjectSorter>list(districtSorter);
 		List<District> districtStubs = districtService.find(filters, sorters, getPager());
 
 		if (log.isDebugEnabled()) {
-			log.debug("Total districts found: {}", districts.size());
+			log.debug("Total districts found: {}", districtStubs.size());
 		}
 
 		districts = districtService.readFull(DomainObject.collectionIds(districtStubs), true);
@@ -63,8 +59,8 @@ public class DistrictsListAjaxAction extends FPActionWithPagerSupport<District> 
 		return SUCCESS;
 	}
 
-	public void setTownId(String townId) {
-		this.townId = townId;
+	public void setTownFilter(Long townFilter) {
+		this.townFilter = townFilter;
 	}
 
 	public List<District> getDistricts() {

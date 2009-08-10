@@ -33,4 +33,5 @@ public class PaymentsUserPreferences extends AbUserPreferences {
 	public void setPaymentCollectorId(Long paymentCollectorId) {
 		this.paymentCollectorId = paymentCollectorId;
 	}
+
 }

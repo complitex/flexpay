@@ -11,9 +11,6 @@ import org.flexpay.common.persistence.Translation;
  */
 public class RegionNameTranslation extends Translation {
 
-	/**
-	 * Constructs a new RegionNameTranslation.
-	 */
 	public RegionNameTranslation() {
 	}
 

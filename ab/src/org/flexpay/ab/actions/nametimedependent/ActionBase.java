@@ -14,7 +14,7 @@ public abstract class ActionBase<
 		TV extends TemporaryValue<TV>,
 		DI extends NameDateInterval<TV, DI>,
 		NTD extends NameTimeDependentChild<TV, DI>,
-		T extends Translation> extends FPActionWithPagerSupport {
+		T extends Translation> extends FPActionWithPagerSupport<NTD> {
 
 	protected NameTimeDependentService<TV, DI, NTD, T> nameTimeDependentService;
 	protected ParentService<?> parentService;

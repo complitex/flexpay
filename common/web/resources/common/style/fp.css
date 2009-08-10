@@ -524,7 +524,6 @@ input[readonly] {
     vertical-align:middle;
     z-index:99;
     color: #666666;
-    background-color: #eeeded;
     font-weight:bold;
     font-size:16px;
 }

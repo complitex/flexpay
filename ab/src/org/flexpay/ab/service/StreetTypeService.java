@@ -36,7 +36,7 @@ public interface StreetTypeService extends
 	 * @throws FlexPayException if failure occurs
 	 */
 	@Secured (Roles.STREET_TYPE_READ)
-	void initFilter(StreetTypeFilter streetTypeFilter, Locale locale) throws FlexPayException;
+	StreetTypeFilter initFilter(StreetTypeFilter streetTypeFilter, Locale locale) throws FlexPayException;
 
 	/**
 	 * Read Entity object by its unique id

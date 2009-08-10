@@ -6,16 +6,16 @@ import org.jetbrains.annotations.NotNull;
 
 public class BuildingsListPageAction extends FPActionSupport {
 
-	private String streetFilter;
+	private Long streetFilter;
 
 	@NotNull
 	@Override
 	protected String doExecute() throws Exception {
 		if (streetFilter != null) {
 			AbUserPreferences up = (AbUserPreferences) getUserPreferences();
-			up.setStreetFilterValue(streetFilter);
-			up.setBuildingFilterValue("");
-			up.setApartmentFilterValue("");
+			up.setStreetFilter(streetFilter);
+			up.setBuildingFilter(0L);
+			up.setApartmentFilter(0L);
 		}
 
 		return SUCCESS;
@@ -27,7 +27,7 @@ public class BuildingsListPageAction extends FPActionSupport {
 		return SUCCESS;
 	}
 
-	public void setStreetFilter(String streetFilter) {
+	public void setStreetFilter(Long streetFilter) {
 		this.streetFilter = streetFilter;
 	}
 

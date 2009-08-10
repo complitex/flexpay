@@ -17,22 +17,17 @@
 
 <script type="text/javascript">
 
-    var shadowId = "shadow";
     var resultId = "result";
 
     $(function() {
 
-        FP.createShadow(shadowId);
-
         FF.addListener("country", function(filter) {
-            FP.resizeShadow(shadowId, resultId, {visibility:"visible"});
-            $.post("<s:url action="regionsListAjax" namespace="/dicts" includeParams="none"/>",
-                    {countryId: filter.value.val()},
-                    function(data) {
-                        $("#" + resultId).html(data);
-                        FP.hideShadow(shadowId);
-                    });
+            FP.pagerAjax(null, {
+                action:"<s:url action="regionsListAjax" namespace="/dicts" includeParams="none"/>",
+                params:{countryFilter: FF.filters["country"].value.val()}
+            });
         });
+
         FF.addEraseFunction("country", function(filter) {
             $("#" + resultId).html('<input type="button" class="btn-exit" '
                     + 'onclick="window.location=\'<s:url action="regionEdit" includeParams="none"><s:param name="region.id" value="0" /></s:url>\';" '
@@ -44,7 +39,7 @@
         FP.pagerAjax(element, {
             action:"<s:url action="regionsListAjax" namespace="/dicts" includeParams="none"/>",
             params:{
-                countryId: FF.filters["country"].value.val(),
+                countryFilter: FF.filters["country"].value.val(),
                 "regionSorter.active": $("#regionSorterActive").val(),
                 "regionSorter.order": $("#regionSorterOrder").val()
             }
@@ -52,15 +47,7 @@
     }
 
 	function sorterAjax() {
-		$.post("<s:url action="regionsListAjax" namespace="/dicts" includeParams="none"/>",
-				{
-					countryId: FF.filters["country"].value.val(),
-					"regionSorter.active": $("#regionSorterActive").val(),
-					"regionSorter.order": $("#regionSorterOrder").val()
-				},
-				function(data) {
-					$("#" + resultId).html(data);
-				});
+        pagerAjax(null);
 	}
 
 </script>

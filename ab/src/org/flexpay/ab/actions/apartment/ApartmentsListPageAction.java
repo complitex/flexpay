@@ -6,15 +6,15 @@ import org.jetbrains.annotations.NotNull;
 
 public class ApartmentsListPageAction extends FPActionSupport {
 
-	private String buildingFilter;
+	private Long buildingFilter;
 
 	@NotNull
 	@Override
 	protected String doExecute() throws Exception {
 		if (buildingFilter != null) {
 			AbUserPreferences up = (AbUserPreferences) getUserPreferences();
-			up.setBuildingFilterValue(buildingFilter);
-			up.setApartmentFilterValue("");
+			up.setBuildingFilter(buildingFilter);
+			up.setApartmentFilter(0L);
 		}
 
 		return SUCCESS;
@@ -26,7 +26,7 @@ public class ApartmentsListPageAction extends FPActionSupport {
 		return SUCCESS;
 	}
 
-	public void setBuildingFilter(String buildingFilter) {
+	public void setBuildingFilter(Long buildingFilter) {
 		this.buildingFilter = buildingFilter;
 	}
 

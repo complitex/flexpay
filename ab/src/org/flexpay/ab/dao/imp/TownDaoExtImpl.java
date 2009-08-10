@@ -21,8 +21,8 @@ public class TownDaoExtImpl extends HibernateDaoSupport implements TownDaoExt {
 	/**
 	 * Find and sort towns
 	 *
-	 * @param regionId region key
-	 * @param sorters  Collection of sorters
+	 * @param regionId Region key
+	 * @param sorters Collection of sorters
 	 * @param pager	Pager
 	 * @return List of towns
 	 */

@@ -19,16 +19,19 @@ public class ApartmentFilterAjaxAction extends FilterAjaxAction {
 	@Override
 	public String doExecute() throws FlexPayException {
 
-		Long addressIdLong;
+		Long addressId;
 
 		try {
-			addressIdLong = Long.parseLong(parents[0]);
+			addressId = Long.parseLong(parents[0]);
 		} catch (Exception e) {
 			log.warn("Incorrect building address id in filter ({})", parents[0]);
 			return SUCCESS;
 		}
+		if (addressId == 0) {
+			return SUCCESS;
+		}
 
-		List<Apartment> apartments = apartmentService.getApartments(new Stub<BuildingAddress>(addressIdLong));
+		List<Apartment> apartments = apartmentService.getApartments(new Stub<BuildingAddress>(addressId));
 		log.debug("Found apartments: {}", apartments);
 
 		foundObjects = new ArrayList<FilterObject>();
@@ -44,7 +47,7 @@ public class ApartmentFilterAjaxAction extends FilterAjaxAction {
 
 	@Override
 	public void readFilterString() {
-		if (filterValueLong != null) {
+		if (filterValueLong != null && filterValueLong > 0) {
 			try {
 				filterString = apartmentService.getApartmentNumber(new Stub<Apartment>(filterValueLong));
 			} catch (Exception e) {
@@ -58,7 +61,7 @@ public class ApartmentFilterAjaxAction extends FilterAjaxAction {
 
 	@Override
 	public void saveFilterValue() {
-		getUserPreferences().setApartmentFilterValue(filterValue);
+		getUserPreferences().setApartmentFilter(filterValueLong);
 	}
 
 	@Required

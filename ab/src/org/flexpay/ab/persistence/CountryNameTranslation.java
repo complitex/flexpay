@@ -8,6 +8,8 @@ import org.flexpay.common.persistence.Translation;
 
 public class CountryNameTranslation extends Translation {
 
+	public static final Integer SHORT_NAME_LENGTH = 5;
+
 	private String shortName;
 
 	private transient LangNameTranslation langTranslation;

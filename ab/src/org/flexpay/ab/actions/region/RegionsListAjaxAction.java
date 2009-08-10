@@ -1,7 +1,6 @@
 package org.flexpay.ab.actions.region;
 
 import org.apache.commons.collections.ArrayStack;
-import org.apache.commons.lang.StringUtils;
 import org.flexpay.ab.persistence.Region;
 import org.flexpay.ab.persistence.filters.CountryFilter;
 import org.flexpay.ab.persistence.sorter.RegionSorter;
@@ -18,7 +17,7 @@ import java.util.List;
 
 public class RegionsListAjaxAction extends FPActionWithPagerSupport<Region> {
 
-	private String countryId;
+	private Long countryFilter;
 	private List<Region> regions = list();
 
 	private RegionSorter regionSorter = new RegionSorter();
@@ -28,20 +27,19 @@ public class RegionsListAjaxAction extends FPActionWithPagerSupport<Region> {
 	@Override
 	public String doExecute() throws Exception {
 
-		Long countryIdLong = null;
-		if (StringUtils.isNotBlank(countryId)) {
-			try {
-				countryIdLong = Long.parseLong(countryId);
-			} catch (Exception e) {
-				log.warn("Incorrect country id in filter ({})", countryId);
-				return SUCCESS;
-			}
+		if (countryFilter == null || countryFilter <= 0) {
+			log.warn("Incorrect country id in filter ({})", countryFilter);
+			return SUCCESS;
 		}
 
-		ArrayStack filters = CollectionUtils.arrayStack(new CountryFilter(countryIdLong));
+		ArrayStack filters = CollectionUtils.arrayStack(new CountryFilter(countryFilter));
 		List<ObjectSorter> sorters = CollectionUtils.<ObjectSorter>list(regionSorter);
 		List<Region> regionStubs = regionService.find(filters, sorters, getPager());
-		log.debug("Total regions found: {}", regions);
+
+		if (log.isDebugEnabled()) {
+			log.debug("Total regions found: {}", regionStubs.size());
+		}
+
 		regions = regionService.readFull(DomainObject.collectionIds(regionStubs), true);
 
 		return SUCCESS;
@@ -60,8 +58,8 @@ public class RegionsListAjaxAction extends FPActionWithPagerSupport<Region> {
 		return SUCCESS;
 	}
 
-	public void setCountryId(String countryId) {
-		this.countryId = countryId;
+	public void setCountryFilter(Long countryFilter) {
+		this.countryFilter = countryFilter;
 	}
 
 	public List<Region> getRegions() {
