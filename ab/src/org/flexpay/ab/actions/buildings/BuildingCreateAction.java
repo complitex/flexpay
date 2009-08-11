@@ -3,6 +3,7 @@ package org.flexpay.ab.actions.buildings;
 import org.apache.commons.lang.StringUtils;
 import org.flexpay.ab.persistence.*;
 import org.flexpay.ab.service.*;
+import org.flexpay.ab.util.config.ApplicationConfig;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
@@ -40,7 +41,40 @@ public class BuildingCreateAction extends FPActionSupport {
 			return INPUT;
 		}
 
+		if (!doValidate()) {
+			return INPUT;
+		}
+
+		building = objectsFactory.newBuilding();
+		building.setDistrict(new District(districtFilter));
+
+		BuildingAddress address = new BuildingAddress();
+		address.setPrimaryStatus(true);
+		address.setStreet(new Street(streetFilter));
+		for (Map.Entry<Long, String> attr : attributeMap.entrySet()) {
+			AddressAttributeType type = addressAttributeTypeService.read(new Stub<AddressAttributeType>(attr.getKey()));
+			address.setBuildingAttribute(attr.getValue(), type);
+		}
+		building.addAddress(address);
+
+		log.debug("About to save new building");
+		buildingService.create(building);
+
+		addActionError(getText("ab.building.saved"));
+
+		return REDIRECT_SUCCESS;
+	}
+
+	private boolean doValidate() {
+
 		boolean valid = true;
+
+		Long buildingNumberAttributeId = ApplicationConfig.getBuildingAttributeTypeNumber().getId();		
+		if (StringUtils.isEmpty(attributeMap.get(buildingNumberAttributeId))) {
+			addActionError(getText("ab.buildings.create.building_number_required"));
+			valid = false;
+		}
+
 		if (districtFilter == null || districtFilter <= 0) {
 			log.warn("Incorrect district id in filter ({})", districtFilter);
 			addActionError(getText("ab.buildings.create.district_required"));
@@ -64,28 +98,7 @@ public class BuildingCreateAction extends FPActionSupport {
 			valid = false;
 		}
 
-		if (!valid) {
-			return INPUT;
-		}
-
-		building = objectsFactory.newBuilding();
-		building.setDistrict(new District(districtFilter));
-
-		BuildingAddress address = new BuildingAddress();
-		address.setPrimaryStatus(true);
-		address.setStreet(new Street(streetFilter));
-		for (Map.Entry<Long, String> attr : attributeMap.entrySet()) {
-			AddressAttributeType type = addressAttributeTypeService.read(new Stub<AddressAttributeType>(attr.getKey()));
-			address.setBuildingAttribute(attr.getValue(), type);
-		}
-		building.addAddress(address);
-
-		log.debug("About to save new building");
-		buildingService.create(building);
-
-		addActionError(getText("ab.building.saved"));
-
-		return REDIRECT_SUCCESS;
+		return valid;
 	}
 
 	private void setupAttributes() {
