@@ -1,4 +1,4 @@
-alter table common_diffs_tbl
+alter table common_history_records_tbl
 	add column old_decimal_value decimal(19,5) comment 'Optional old decimal value',
 	add column new_decimal_value decimal(19,5) comment 'Optional new decimal value';
 
