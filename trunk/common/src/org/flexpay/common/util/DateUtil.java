@@ -16,6 +16,7 @@ import java.util.Map;
 public class DateUtil {
 
 	private static final String FLEXPAY_DATE_FORMAT = "yyyy/MM/dd";
+	private static final String FLEXPAY_DATE_FORMAT2 = "yyyy-MM-dd";
 	private static final String FLEXPAY_MONTH_FORMAT = "yyyy/MM";
 
 	public static final Map<Integer, String> MONTHS = treeMap(
@@ -76,15 +77,19 @@ public class DateUtil {
 	}
 
 	/**
-	 * Parse date in yyyy/MM/dd farmat, if parse fails - return default date
+	 * Parse date in yyyy/MM/dd or yyyy-MM-dd formats
 	 *
-	 * @param date		String in yyyy/MM/dd format, possibly empty
+	 * @param date		String in yyyy/MM/dd or yyyy-MM-dd format, possibly empty
 	 * @throws ParseException if parsing fails
 	 * @return Date
 	 */
 	@NotNull
 	public static Date parseDate(String date) throws ParseException {
-		return new SimpleDateFormat(FLEXPAY_DATE_FORMAT).parse(date);
+		try {
+			return new SimpleDateFormat(FLEXPAY_DATE_FORMAT).parse(date);
+		} catch (ParseException ex) {
+			return new SimpleDateFormat(FLEXPAY_DATE_FORMAT2).parse(date);
+		}
 	}
 
 	/**

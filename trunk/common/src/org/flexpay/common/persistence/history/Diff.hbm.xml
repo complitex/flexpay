@@ -127,6 +127,16 @@
 				<comment>Optional new double value</comment>
 			</column>
 		</property>
+		<property name="oldDecimalValue">
+			<column name="old_decimal_value" not-null="false" scale="5">
+				<comment>Optional old decimal value</comment>
+			</column>
+		</property>
+		<property name="newDecimalValue">
+			<column name="new_decimal_value" not-null="false" scale="5">
+				<comment>Optional new decimal value</comment>
+			</column>
+		</property>
 		<property name="fieldType">
 			<column name="field_type" not-null="true">
 				<comment>Field type value is modified for</comment>

@@ -11,6 +11,14 @@ INSERT INTO common_language_names_tbl (translation_from_language_id, language_id
     (@en_id, @ru_id, 'Russian'),
     (@en_id, @en_id, 'English');
 
+select @TYPE_BOOLEAN := 1;
+select @TYPE_INT := 2;
+select @TYPE_LONG := 3;
+select @TYPE_STRING := 4;
+select @TYPE_DATE := 5;
+select @TYPE_DOUBLE := 6;
+select @TYPE_DECIMAL := 7;
+
 INSERT INTO common_dual_tbl (id) VALUES (1);
 
 -- init measure units

@@ -253,20 +253,20 @@
 		  p:readHintsHandlerFactory-ref="consumerReadHintsHandlerFactory" />
 
 	<bean id="servedBuildingHistoryBuilder"
-		  parent="abBuildingHistoryBuilder"
+		  parent="btiBuildingHistoryBuilder"
 		  class="org.flexpay.eirc.service.history.ServedBuildingHistoryBuilder"
 		  p:serviceOrganizationService-ref="serviceOrganizationService" />
 
-	<bean depends-on="buildingHistoryBuilderHolder"
+	<bean depends-on="btiBuildingHistoryBuilderHolder"
 		  class="org.flexpay.ab.service.history.BuildingHistoryBuilderHolder"
 		  p:builder-ref="servedBuildingHistoryBuilder" />
 
 	<bean id="servedBuildingReferencesHistoryGenerator"
-		  parent="abBuildingReferencesHistoryGenerator"
+		  parent="btiBuildingReferencesHistoryGenerator"
 		  class="org.flexpay.eirc.service.history.ServedBuildingReferencesHistoryGenerator"
 		  p:serviceOrganizationHistoryGenerator-ref="serviceOrganizationHistoryGenerator" />
 
-	<bean depends-on="buildingReferencesHistoryGeneratorHolder"
+	<bean depends-on="btiBuildingReferencesHistoryGeneratorHolder"
 		  class="org.flexpay.ab.service.history.BuildingReferencesHistoryGeneratorHolder"
 		  p:referencesHistoryGenerator-ref="servedBuildingReferencesHistoryGenerator" />
 </beans>

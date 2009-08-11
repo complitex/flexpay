@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Collection;
 
 @Transactional (readOnly = true)
 public class BtiBuildingServiceImpl implements BtiBuildingService {
@@ -28,6 +29,18 @@ public class BtiBuildingServiceImpl implements BtiBuildingService {
 	 */
 	public BtiBuilding readWithAttributes(Stub<? extends Building> stub) {
 		return btiBuildingDaoExt.readBuildingWithAttributes(stub.getId());
+	}
+
+	/**
+	 * Read bti buildings with associated attributes
+	 *
+	 * @param ids buildings identifiers to read
+	 * @return Buildings list
+	 */
+	@NotNull
+	@Override
+	public List<BtiBuilding> readWithAttributes(Collection<Long> ids) {
+		return btiBuildingDaoExt.readBuildingWithAttributes(ids);
 	}
 
 	/**

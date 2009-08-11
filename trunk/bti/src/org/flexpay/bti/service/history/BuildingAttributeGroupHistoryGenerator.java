@@ -28,13 +28,13 @@ public class BuildingAttributeGroupHistoryGenerator implements HistoryGenerator<
 	public void generateFor(@NotNull BuildingAttributeGroup obj) {
 
 		if (diffService.hasDiffs(obj)) {
-			log.debug("BuildingAttributeGroup already has history, do nothing {}", obj);
+			log.debug("BuildingAttributeGroup already has history, do nothing {}", obj.getId());
 			return;
 		}
 
 		BuildingAttributeGroup group = groupService.readFull(stub(obj));
 		if (group == null) {
-			log.warn("Requested group history generation, but not found: {}", obj);
+			log.warn("Requested group history generation, but not found: {}", obj.getId());
 			return;
 		}
 

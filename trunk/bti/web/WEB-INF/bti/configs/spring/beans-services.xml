@@ -66,6 +66,16 @@
 		  class="org.flexpay.bti.service.impl.BuildingAttributeServiceImpl"
 		  p:buildingDaoExt-ref="btiBuildingDaoExt" />
 
+	<bean id="btiBuildingPropertiesInitializer"
+		  class="org.flexpay.bti.service.impl.BtiBuildingPropertiesInitializer"
+		  p:btiBuildingService-ref="btiBuildingService"
+		  p:sessionUtils-ref="sessionUtils" />
+
+	<bean id="btiBuildingPropertiesInitializerHolder"
+		  factory-bean="buildingPropertiesInitializerHolderFactory"
+		  factory-method="getHolder"
+		  p:initializer-ref="btiBuildingPropertiesInitializer" />
+
 	<bean id="btiBuildingService"
 		  class="org.flexpay.bti.service.impl.BtiBuildingServiceImpl"
 		  p:buildingDao-ref="buildingDao"
@@ -99,7 +109,8 @@
 		  class="org.flexpay.bti.service.history.BuildingAttributeTypeHistoryGenerator"
 		  p:diffService-ref="diffService"
 		  p:historyBuilder-ref="buildingAttributeTypeHistoryBuilder"
-		  p:typeService-ref="buildingAttributeTypeService" />
+		  p:typeService-ref="buildingAttributeTypeService"
+		  p:referencesHistoryGenerator-ref="buildingAttributeTypeReferencesHistoryGenerator" />
 
 	<!-- History handlers -->
 	<bean id="buildingAttributeGroupHistoryHandler"
@@ -113,6 +124,26 @@
 		  p:historyBuilder-ref="buildingAttributeTypeHistoryBuilder"
 		  p:attributeTypeService-ref="buildingAttributeTypeService"
 		  class="org.flexpay.bti.service.history.BuildingAttributeTypeHistoryHandler" />
+
+	<bean id="btiBuildingHistoryBuilder"
+		  parent="abBuildingHistoryBuilder"
+		  class="org.flexpay.bti.service.history.BtiBuildingHistoryBuilder"
+		  p:attributeTypeService-ref="buildingAttributeTypeService" />
+
+	<bean id="btiBuildingHistoryBuilderHolder"
+		  depends-on="buildingHistoryBuilderHolder"
+		  class="org.flexpay.ab.service.history.BuildingHistoryBuilderHolder"
+		  p:builder-ref="btiBuildingHistoryBuilder" />
+
+	<bean id="btiBuildingReferencesHistoryGenerator"
+		  parent="abBuildingReferencesHistoryGenerator"
+		  class="org.flexpay.bti.service.history.BtiBuildingReferencesHistoryGenerator"
+		  p:btiAttributeTypeHistoryGenerator-ref="buildingAttributeTypeHistoryGenerator" />
+
+	<bean id="btiBuildingReferencesHistoryGeneratorHolder"
+		  depends-on="buildingReferencesHistoryGeneratorHolder"
+		  class="org.flexpay.ab.service.history.BuildingReferencesHistoryGeneratorHolder"
+		  p:referencesHistoryGenerator-ref="btiBuildingReferencesHistoryGenerator" />
 
 	<bean id="btiObjectsSyncer" parent="objectsSyncer">
 		<property name="handlers">

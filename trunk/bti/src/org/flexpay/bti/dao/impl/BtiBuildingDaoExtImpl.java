@@ -6,8 +6,13 @@ import org.flexpay.bti.persistence.building.BtiBuilding;
 import org.flexpay.common.persistence.Stub;
 import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
+import org.springframework.orm.hibernate3.HibernateCallback;
+import org.hibernate.Session;
+import org.hibernate.HibernateException;
 
 import java.util.List;
+import java.util.Collection;
+import java.sql.SQLException;
 
 public class BtiBuildingDaoExtImpl extends HibernateDaoSupport implements BtiBuildingDaoExt {
 
@@ -33,4 +38,15 @@ public class BtiBuildingDaoExtImpl extends HibernateDaoSupport implements BtiBui
 		return (List<BtiBuilding>) getHibernateTemplate().findByNamedQuery("BtiBuilding.findByTown", town.getId());
 	}
 
+	@SuppressWarnings ({"unchecked"})
+	@Override
+	public List<BtiBuilding> readBuildingWithAttributes(final Collection<Long> ids) {
+		return (List<BtiBuilding>) getHibernateTemplate().executeFind(new HibernateCallback() {
+			@Override
+			public List doInHibernate(Session session) throws HibernateException, SQLException {
+				return session.getNamedQuery("BtiBuilding.findBuildingWithAttributesCollection")
+						.setParameterList("ids", ids).list();
+			}
+		});
+	}
 }

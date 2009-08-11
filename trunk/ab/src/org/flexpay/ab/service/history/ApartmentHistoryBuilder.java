@@ -1,12 +1,11 @@
 package org.flexpay.ab.service.history;
 
-import org.apache.commons.lang.StringUtils;
 import org.flexpay.ab.persistence.Apartment;
 import org.flexpay.ab.persistence.ApartmentNumber;
 import org.flexpay.ab.persistence.Building;
 import org.flexpay.ab.service.ObjectsFactory;
-import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.DomainObject;
+import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.history.Diff;
 import org.flexpay.common.persistence.history.HistoryRecord;
 import org.flexpay.common.persistence.history.ProcessingStatus;

@@ -6,7 +6,8 @@ import org.junit.runners.Suite;
 @RunWith (Suite.class)
 @Suite.SuiteClasses ({
 		TestBuildingAttributeGroupHistoryBuilder.class,
-		TestBuildingAttributeTypeHistoryBuilder.class
+		TestBuildingAttributeTypeHistoryBuilder.class,
+		TestBtiBuildingHistoryBuilder.class
 })
 public class AllTests {
 

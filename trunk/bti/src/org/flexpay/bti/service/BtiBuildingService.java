@@ -1,13 +1,14 @@
 package org.flexpay.bti.service;
 
+import org.flexpay.ab.persistence.Building;
 import org.flexpay.ab.persistence.BuildingAddress;
 import org.flexpay.ab.persistence.Town;
-import org.flexpay.ab.persistence.Building;
 import org.flexpay.bti.persistence.building.BtiBuilding;
 import org.flexpay.common.persistence.Stub;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Collection;
 import java.util.List;
 
 public interface BtiBuildingService {
@@ -20,6 +21,15 @@ public interface BtiBuildingService {
 	 */
 	@Nullable
 	BtiBuilding readWithAttributes(Stub<? extends Building> stub);
+
+	/**
+	 * Read bti buildings with associated attributes
+	 *
+	 * @param ids buildings identifiers to read
+	 * @return Buildings list
+	 */
+	@NotNull
+	List<BtiBuilding> readWithAttributes(Collection<Long> ids);
 
 	/**
 	 * Read bti building with associated attributes
@@ -40,9 +50,9 @@ public interface BtiBuildingService {
 
 	/**
 	 * Find all BtiBuilding in the town
+	 *
 	 * @param town town to search
 	 * @return BtiBuilding list in town
 	 */
 	List<BtiBuilding> findByTown(Stub<Town> town);
-
 }

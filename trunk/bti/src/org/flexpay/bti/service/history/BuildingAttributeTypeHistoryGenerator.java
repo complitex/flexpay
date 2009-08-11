@@ -29,13 +29,13 @@ public class BuildingAttributeTypeHistoryGenerator implements HistoryGenerator<B
 	public void generateFor(@NotNull BuildingAttributeType obj) {
 
 		if (diffService.hasDiffs(obj)) {
-			log.debug("BuildingAttributeType already has history, do nothing {}", obj);
+			log.debug("BuildingAttributeType already has history, do nothing {}", obj.getId());
 			return;
 		}
 
 		BuildingAttributeType group = typeService.readFull(stub(obj));
 		if (group == null) {
-			log.warn("Requested type history generation, but not found: {}", obj);
+			log.warn("Requested type history generation, but not found: {}", obj.getId());
 			return;
 		}
 
@@ -61,5 +61,10 @@ public class BuildingAttributeTypeHistoryGenerator implements HistoryGenerator<B
 	@Required
 	public void setTypeService(BuildingAttributeTypeService typeService) {
 		this.typeService = typeService;
+	}
+
+	@Required
+	public void setReferencesHistoryGenerator(BuildingAttributeTypeReferencesHistoryGenerator referencesHistoryGenerator) {
+		this.referencesHistoryGenerator = referencesHistoryGenerator;
 	}
 }

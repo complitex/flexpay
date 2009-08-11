@@ -1,15 +1,15 @@
 package org.flexpay.common.persistence.history;
 
 import org.flexpay.common.persistence.DomainObject;
-import org.flexpay.common.util.config.ApplicationConfig;
 import static org.flexpay.common.util.CollectionUtils.list;
+import org.flexpay.common.util.config.ApplicationConfig;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Iterator;
-import static java.util.Collections.min;
+import java.util.Collection;
 import static java.util.Collections.max;
+import static java.util.Collections.min;
+import java.util.Date;
+import java.util.Iterator;
 
 /**
  * Abstract implementation of algorithm building diff for to temporal objects timelines
@@ -20,13 +20,13 @@ public class TemporalObjectsHistoryBuildHelper {
 	 * Build diff for two timelines
 	 *
 	 * @param extractor Data extractor
-	 * @param ts1 the first timeline, ordered by beginDate
-	 * @param ts2 the second timeline, ordered by beginDate
-	 * @param diff Diff to store changes in
-	 * @param <T> Temporal objects type
+	 * @param ts1	   the first timeline, ordered by beginDate
+	 * @param ts2	   the second timeline, ordered by beginDate
+	 * @param diff	  Diff to store changes in
+	 * @param <T>       Temporal objects type
 	 */
 	public static <T extends DomainObject> void buildDiff(
-			TemporalDataExtractor<T> extractor, List<T> ts1, List<T> ts2, Diff diff) {
+			TemporalDataExtractor<T> extractor, Collection<T> ts1, Collection<T> ts2, Diff diff) {
 
 		Iterator<T> it1 = ts1.iterator();
 		Iterator<T> it2 = ts2.iterator();
@@ -113,6 +113,7 @@ public class TemporalObjectsHistoryBuildHelper {
 		 * @return Temporal begin date
 		 */
 		Date getBeginDate(T obj);
+
 		/**
 		 * Extract end date of an object
 		 *
@@ -125,10 +126,10 @@ public class TemporalObjectsHistoryBuildHelper {
 		 * Callback method used to generate actual changes
 		 *
 		 * @param begin Interval begin date
-		 * @param end Interval end date
-		 * @param t1 first temporal
-		 * @param t2 second temporal
-		 * @param diff Diff to store changes in
+		 * @param end   Interval end date
+		 * @param t1	first temporal
+		 * @param t2	second temporal
+		 * @param diff  Diff to store changes in
 		 */
 		void buildDiff(Date begin, Date end, T t1, T t2, Diff diff);
 	}

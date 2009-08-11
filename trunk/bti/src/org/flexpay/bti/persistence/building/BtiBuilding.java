@@ -13,7 +13,7 @@ import java.util.*;
 
 public class BtiBuilding extends Building {
 
-	private Set<BuildingAttribute> attributes = Collections.emptySet();
+	private Set<BuildingAttribute> attributes = CollectionUtils.set();
 
 	protected BtiBuilding() {
 	}
@@ -70,7 +70,7 @@ public class BtiBuilding extends Building {
 	@Nullable
 	public BuildingAttribute getAttributeForDate(BuildingAttributeType attributeType, Date date) {
 
-		SortedSet<BuildingAttribute> attrs = findAttributes(attributeType);
+		SortedSet<BuildingAttribute> attrs = attributesOfType(attributeType);
 		for (BuildingAttribute attribute : attrs) {
 			if (DateIntervalUtil.includes(date, attribute.getBegin(), attribute.getEnd())) {
 				return attribute;
@@ -136,7 +136,7 @@ public class BtiBuilding extends Building {
 		begin = DateUtil.truncateDay(begin);
 		end = DateUtil.truncateDay(end);
 
-		SortedSet<BuildingAttribute> attrs = findAttributes(attribute.getAttributeType());
+		SortedSet<BuildingAttribute> attrs = attributesOfType(attribute.getAttributeType());
 		Set<BuildingAttribute> toDelete = CollectionUtils.set();
 		Set<BuildingAttribute> toAdd = CollectionUtils.set();
 		for (BuildingAttribute old : attrs) {
@@ -170,7 +170,7 @@ public class BtiBuilding extends Building {
 	}
 
 	@NotNull
-	private SortedSet<BuildingAttribute> findAttributes(BuildingAttributeType type) {
+	public SortedSet<BuildingAttribute> attributesOfType(BuildingAttributeType type) {
 
 		Map<BuildingAttributeType, SortedSet<BuildingAttribute>> splittedAttributes = splitAttributes();
 		SortedSet<BuildingAttribute> attrs = splittedAttributes.get(type);
@@ -180,6 +180,10 @@ public class BtiBuilding extends Building {
 		}
 
 		return attrs;
+	}
+
+	public Set<BuildingAttributeType> attributeTypes() {
+		return splitAttributes().keySet();
 	}
 
 	public List<BuildingAttribute> currentAttributes() {
@@ -193,5 +197,4 @@ public class BtiBuilding extends Building {
 
 		return result;
 	}
-
 }

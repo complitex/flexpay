@@ -609,6 +609,8 @@
         new_string_value varchar(255) comment 'Optional new string value',
         old_double_value double precision comment 'Optional old double value',
         new_double_value double precision comment 'Optional new double value',
+        old_decimal_value decimal(19,5) comment 'Optional old decimal value',
+        new_decimal_value decimal(19,5) comment 'Optional new decimal value',
         field_type integer not null comment 'Field type value is modified for',
         operation_order integer not null comment 'Object modification operation order',
         language_code varchar(255) comment 'Optional language iso code for multilang fields',

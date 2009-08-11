@@ -43,6 +43,13 @@ public class CollectionUtils {
 		return new HashSet<T>(ts);
 	}
 
+	@NotNull
+	public static <T> Set<T> set(Collection<T> ts, Collection<T> ts2) {
+		Set<T> set = new HashSet<T>(ts);
+		set.addAll(ts2);
+		return set;
+	}
+
 	/**
 	 * Create an instance of HashMap
 	 *
