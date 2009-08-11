@@ -1,7 +1,7 @@
 package org.flexpay.eirc.service.history;
 
 import org.flexpay.ab.persistence.Building;
-import org.flexpay.ab.service.history.BuildingHistoryBuilder;
+import org.flexpay.bti.service.history.BtiBuildingHistoryBuilder;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.history.Diff;
 import org.flexpay.common.persistence.history.HistoryRecord;
@@ -14,7 +14,7 @@ import org.flexpay.orgs.service.ServiceOrganizationService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
-public class ServedBuildingHistoryBuilder extends BuildingHistoryBuilder {
+public class ServedBuildingHistoryBuilder extends BtiBuildingHistoryBuilder {
 
 	public static final int FIELD_SERVICE_ORGANIZATION_ID = ClassToTypeRegistryEirc.MODULE_BASE + 1;
 
@@ -32,6 +32,7 @@ public class ServedBuildingHistoryBuilder extends BuildingHistoryBuilder {
 	@Override
 	protected void doInstanceDiff(@NotNull Building b1, @NotNull Building b2, @NotNull Diff diff) {
 		super.doInstanceDiff(b1, b2, diff);
+
 		buildServiceOrganizationRefDiff((ServedBuilding) b1, (ServedBuilding) b2, diff);
 	}
 
@@ -88,7 +89,7 @@ public class ServedBuildingHistoryBuilder extends BuildingHistoryBuilder {
 
 			public void setReference(ServedBuilding obj, Stub<ServiceOrganization> ref) {
 				ServiceOrganization organization = ref == null ? null :
-						serviceOrganizationService.read(ref);
+												   serviceOrganizationService.read(ref);
 				obj.setServiceOrganization(organization);
 			}
 		});

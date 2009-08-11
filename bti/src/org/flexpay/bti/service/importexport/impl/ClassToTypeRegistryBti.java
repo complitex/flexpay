@@ -7,7 +7,7 @@ import org.flexpay.bti.persistence.building.BuildingAttributeType;
 
 public class ClassToTypeRegistryBti implements ClassToTypeRegistry {
 
-	private static final int MODULE_BASE = 0x2000;
+	public static final int MODULE_BASE = 0x2000;
 
 	@Override
 	public int getType(Class<? extends DomainObject> clazz) {

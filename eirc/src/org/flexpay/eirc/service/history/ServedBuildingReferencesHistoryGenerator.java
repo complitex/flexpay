@@ -1,7 +1,7 @@
 package org.flexpay.eirc.service.history;
 
 import org.flexpay.ab.persistence.Building;
-import org.flexpay.ab.service.history.BuildingReferencesHistoryGenerator;
+import org.flexpay.bti.service.history.BtiBuildingReferencesHistoryGenerator;
 import org.flexpay.eirc.persistence.ServedBuilding;
 import org.flexpay.orgs.persistence.ServiceOrganization;
 import org.flexpay.orgs.persistence.ServiceOrganizationDescription;
@@ -9,7 +9,7 @@ import org.flexpay.orgs.service.history.OrganizationInstanceHistoryGenerator;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
-public class ServedBuildingReferencesHistoryGenerator extends BuildingReferencesHistoryGenerator {
+public class ServedBuildingReferencesHistoryGenerator extends BtiBuildingReferencesHistoryGenerator {
 
 	private OrganizationInstanceHistoryGenerator<
 			ServiceOrganizationDescription, ServiceOrganization> serviceOrganizationHistoryGenerator;

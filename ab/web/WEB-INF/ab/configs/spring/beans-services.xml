@@ -118,12 +118,20 @@
 		  p:historyBuilder-ref="buildingHistoryBuilder"
 		  p:referencesHistoryGenerator-ref="buildingReferencesHistoryGenerator" />
 
+	<bean id="buildingPropertiesInitializerHolderFactory"
+		  class="org.flexpay.common.service.PropertiesInitializerHolderFactory" />
+
+	<bean id="buildingPropertiesInitializerHolder"
+		  factory-bean="buildingPropertiesInitializerHolderFactory"
+		  factory-method="getHolder" />
+
 	<bean id="buildingServiceTarget"
 		  class="org.flexpay.ab.service.imp.BuildingServiceImpl"
 		  autowire-candidate="false"
 		  p:buildingDao-ref="buildingDao"
 		  p:buildingsDao-ref="buildingsDao"
 		  p:buildingsDaoExt-ref="buildingsDaoExt"
+		  p:propertiesInitializerHolder-ref="buildingPropertiesInitializerHolder"
 		  p:addressService-ref="addressService"
 		  p:parentService-ref="streetService"
 		  p:districtParentService-ref="districtService"

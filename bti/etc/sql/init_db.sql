@@ -134,6 +134,9 @@ INSERT INTO bti_building_attribute_types_tbl (id, discriminator, group_id, uniqu
         (49,'simple',@attribute_group_2,'ATTR_OPEN_ELECTRIC_WIRING_APARTMENT_NUMBER', 0),
         (50,'simple',@attribute_group_2,'ATTR_OPEN_ELECTRIC_WIRING_APARTMENT_NUMBER_2', 0);
 
+select @building_attr_type_build_year:=7;
+select @building_attr_type_apartments_number:=12;
+
 INSERT INTO bti_building_attribute_type_names_tbl (id, name, language_id, attribute_type_id) VALUES
 		(7,'Номер участка',@ru_id,4),
 		(8,'Habitans count',@en_id,5),

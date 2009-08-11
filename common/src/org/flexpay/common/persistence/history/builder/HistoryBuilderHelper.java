@@ -66,7 +66,7 @@ public class HistoryBuilderHelper {
 		}
 
 		T tr = patcher.getNotNullTranslation(obj1, lang);
-		// unsure lang is set
+		// ensure lang is set
 		tr.setLang(lang);
 		patcher.setTranslation(obj1, tr, record.getNewStringValueNotNull());
 		record.setProcessingStatus(ProcessingStatus.STATUS_PROCESSED);

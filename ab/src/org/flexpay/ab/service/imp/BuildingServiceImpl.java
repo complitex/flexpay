@@ -1,7 +1,6 @@
 package org.flexpay.ab.service.imp;
 
 import org.apache.commons.collections.ArrayStack;
-import org.apache.commons.lang.ClassUtils;
 import org.apache.commons.lang.StringUtils;
 import org.flexpay.ab.dao.BuildingDao;
 import org.flexpay.ab.dao.BuildingsDao;
@@ -22,6 +21,8 @@ import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
 import org.flexpay.common.persistence.history.ModificationListener;
 import org.flexpay.common.persistence.sorter.ObjectSorter;
 import org.flexpay.common.service.ParentService;
+import org.flexpay.common.service.PropertiesInitializerHolder;
+import org.flexpay.common.service.PropertiesInitializer;
 import org.flexpay.common.service.internal.SessionUtils;
 import org.flexpay.common.util.CollectionUtils;
 import static org.flexpay.common.util.CollectionUtils.list;
@@ -46,6 +47,8 @@ public class BuildingServiceImpl implements BuildingService {
 	private BuildingDao buildingDao;
 	private BuildingsDao buildingsDao;
 	private BuildingsDaoExt buildingsDaoExt;
+
+	private PropertiesInitializerHolder<Building> propertiesInitializerHolder;
 
 	private AddressService addressService;
 	private ParentService<StreetFilter> parentService;
@@ -333,7 +336,12 @@ public class BuildingServiceImpl implements BuildingService {
 	@NotNull
 	@Override
 	public List<Building> readFull(Collection<Long> ids, boolean preserveOrder) {
-		return buildingDao.readFullCollection(ids, preserveOrder);
+		List<Building> buildings = buildingDao.readFullCollection(ids, preserveOrder);
+		for (PropertiesInitializer<Building> initializer : propertiesInitializerHolder.getInitializers()) {
+			initializer.init(buildings);
+		}
+
+		return buildings;
 	}
 
 	/**
@@ -488,7 +496,15 @@ public class BuildingServiceImpl implements BuildingService {
 	}
 
 	public Building read(@NotNull Stub<Building> stub) {
-		return buildingDao.readFull(stub.getId());
+		Building building = buildingDao.readFull(stub.getId());
+		if (building == null) {
+			return null;
+		}
+
+		for (PropertiesInitializer<Building> initializer : propertiesInitializerHolder.getInitializers()) {
+			initializer.init(building);
+		}
+		return building;
 	}
 
 	@Required
@@ -531,4 +547,8 @@ public class BuildingServiceImpl implements BuildingService {
 		this.addressService = addressService;
 	}
 
+	@Required
+	public void setPropertiesInitializerHolder(PropertiesInitializerHolder<Building> propertiesInitializerHolder) {
+		this.propertiesInitializerHolder = propertiesInitializerHolder;
+	}
 }

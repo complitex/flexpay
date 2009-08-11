@@ -104,6 +104,14 @@
         where b.id=?
     </query>
 
+    <query name="BtiBuilding.findBuildingWithAttributesCollection">
+		select distinct b
+        from BtiBuilding b
+        	left join fetch b.attributes a
+        	left join fetch a.attributeType
+        where b.id in (:ids)
+    </query>
+
     <query name="BtiBuilding.findBuildingWithAttributesByAddress">
         select distinct b
         from BtiBuilding b

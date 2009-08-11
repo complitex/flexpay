@@ -5,6 +5,7 @@ import org.flexpay.bti.persistence.building.BtiBuilding;
 import org.flexpay.common.persistence.Stub;
 
 import java.util.List;
+import java.util.Collection;
 
 public interface BtiBuildingDaoExt {
 
@@ -14,4 +15,5 @@ public interface BtiBuildingDaoExt {
 
 	List<BtiBuilding> findByTown(Stub<Town> town);
 
+	List<BtiBuilding> readBuildingWithAttributes(Collection<Long> ids);
 }

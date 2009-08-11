@@ -9,6 +9,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Date;
+import java.math.BigDecimal;
 
 /**
  * Single object field modification record
@@ -27,6 +28,9 @@ public class HistoryRecord extends DomainObject {
 	private Date newDateValue;
 	private Double oldDoubleValue;
 	private Double newDoubleValue;
+	// decimals scale is 5
+	private BigDecimal oldDecimalValue;
+	private BigDecimal newDecimalValue;
 	private int fieldType;
 	private int operationOrder;
 	private String language;
@@ -168,6 +172,24 @@ public class HistoryRecord extends DomainObject {
 
 	public void setNewDoubleValue(Double newDoubleValue) {
 		this.newDoubleValue = newDoubleValue;
+	}
+
+	@Nullable
+	public BigDecimal getOldDecimalValue() {
+		return oldDecimalValue;
+	}
+
+	public void setOldDecimalValue(BigDecimal oldDecimalValue) {
+		this.oldDecimalValue = oldDecimalValue;
+	}
+
+	@Nullable
+	public BigDecimal getNewDecimalValue() {
+		return newDecimalValue;
+	}
+
+	public void setNewDecimalValue(BigDecimal newDecimalValue) {
+		this.newDecimalValue = newDecimalValue;
 	}
 
 	public int getFieldType() {
