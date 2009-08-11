@@ -26,7 +26,7 @@ public class StreetEditSimpleAction extends FPActionSupport {
 	private Street street = new Street();
 	private Long townFilter;
 	private StreetTypeFilter streetTypeFilter = new StreetTypeFilter();
-	private BeginDateFilter beginDateFilter = new BeginDateFilter(DateUtil.now());
+	private BeginDateFilter beginDateFilter = new BeginDateFilter();
 	private Map<Long, String> names = CollectionUtils.treeMap();
 
 	private String crumbCreateKey;
@@ -107,6 +107,10 @@ public class StreetEditSimpleAction extends FPActionSupport {
 			addActionError(getText("ab.error.street.no_type"));
 		}
 
+		if (!beginDateFilter.needFilter()) {
+			addActionError(getText("ab.error.street.no_begin_date"));
+		}
+
 		return !hasActionErrors();
 	}
 
@@ -119,7 +123,7 @@ public class StreetEditSimpleAction extends FPActionSupport {
 
 		// init begin date filter
 		StreetNameTemporal temporal = street.getCurrentNameTemporal();
-		beginDateFilter.setDate(temporal != null ? temporal.getBegin() : ApplicationConfig.getPastInfinite());
+		beginDateFilter.setDate(temporal != null ? temporal.getBegin() : DateUtil.now());
 
 		// init type filter
 		StreetType type = street.getCurrentType();

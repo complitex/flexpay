@@ -1,11 +1,10 @@
-
-<%@ include file="/WEB-INF/jsp/common/taglibs.jsp" %>
+<%@include file="/WEB-INF/jsp/common/taglibs.jsp" %>
 
 <%@include file="/WEB-INF/jsp/common/includes/jquery_ui.jsp"%>
 
 <script type="text/javascript">
-    FP.calendars("#dateIntervalBegin", true);
-    FP.calendars("#dateIntervalEnd", true);
+    FP.calendars("dateIntervalBegin", true);
+    FP.calendars("dateIntervalEnd", true);
 </script>
 
 <s:text name="ab.from"/>

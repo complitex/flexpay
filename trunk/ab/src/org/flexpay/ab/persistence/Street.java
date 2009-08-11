@@ -47,47 +47,22 @@ public class Street extends NameTimeDependentChild<StreetName, StreetNameTempora
 		return new StreetNameTemporal(this);
 	}
 
-	/**
-	 * Getter for property 'districts'.
-	 *
-	 * @return Value for property 'districts'.
-	 */
 	public Set<District> getDistricts() {
 		return districts;
 	}
 
-	/**
-	 * Setter for property 'districts'.
-	 *
-	 * @param districts Value to set for property 'districts'.
-	 */
 	public void setDistricts(Set<District> districts) {
 		this.districts = districts;
 	}
 
-	/**
-	 * Getter for property 'buildingses'.
-	 *
-	 * @return Value for property 'buildingses'.
-	 */
 	public Set<BuildingAddress> getBuildingses() {
 		return buildingses;
 	}
 
-	/**
-	 * Setter for property 'buildingses'.
-	 *
-	 * @param buildingses Value to set for property 'buildingses'.
-	 */
 	public void setBuildingses(Set<BuildingAddress> buildingses) {
 		this.buildingses = buildingses;
 	}
 
-	/**
-	 * Getter for property 'typesTimeLine'.
-	 *
-	 * @return Value for property 'typesTimeLine'.
-	 */
 	@NotNull
 	public TimeLine<StreetType, StreetTypeTemporal> getTypesTimeLine() {
 
@@ -148,11 +123,6 @@ public class Street extends NameTimeDependentChild<StreetName, StreetNameTempora
 		addTypeTemporal(temporal);
 	}
 
-	/**
-	 * Setter for property 'typesTimeLine'.
-	 *
-	 * @param typesTimeLine Value to set for property 'typesTimeLine'.
-	 */
 	public void setTypesTimeLine(TimeLine<StreetType, StreetTypeTemporal> typesTimeLine) {
 		this.typesTimeLine = typesTimeLine;
 
@@ -162,25 +132,13 @@ public class Street extends NameTimeDependentChild<StreetName, StreetNameTempora
 		typeTemporals.addAll(typesTimeLine.getIntervals());
 	}
 
-	/**
-	 * Setter for property 'typeTemporals'.
-	 *
-	 * @param typeTemporals Value to set for property 'typeTemporals'.
-	 */
 	public void setTypeTemporals(SortedSet<StreetTypeTemporal> typeTemporals) {
-
 		this.typeTemporals = typeTemporals;
 		typesTimeLine = new TimeLine<StreetType, StreetTypeTemporal>(typeTemporals);
 	}
 
-	/**
-	 * Getter for property 'typesTimeLine'.
-	 *
-	 * @return Value for property 'typesTimeLine'.
-	 */
 	@NotNull
 	public SortedSet<StreetTypeTemporal> getTypeTemporals() {
-
 		return typeTemporals;
 	}
 
@@ -213,15 +171,6 @@ public class Street extends NameTimeDependentChild<StreetName, StreetNameTempora
 	@Nullable
 	public StreetType getCurrentType() {
 		return getTypeForDate(DateUtil.now());
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public boolean equals(Object obj) {
-
-		return obj instanceof Street && super.equals(obj);
 	}
 
 	@NotNull
@@ -305,4 +254,10 @@ public class Street extends NameTimeDependentChild<StreetName, StreetNameTempora
 
 		addNameTemporal(temporal);
 	}
+
+	@Override
+	public boolean equals(Object obj) {
+		return obj instanceof Street && super.equals(obj);
+	}
+
 }

@@ -80,17 +80,17 @@ var FP = {
         return buffer.join("");
     },
 
-    calendars : function(arg, withImg) {
+    calendars : function(id, withImg) {
         $(function() {
             if (withImg) {
-                $(arg).datepicker({
+                $("#" + id).datepicker({
                     showOn: "both",
                     dateFormat: "yy/mm/dd",
                     buttonImage: FP.base + "/resources/common/js/jquery/jquery-ui/images/calendar.gif",
                     buttonImageOnly: true
                 });
             } else {
-                $(arg).datepicker({
+                $("#" + id).datepicker({
                     dateFormat: "yy/mm/dd"
                 });
             }

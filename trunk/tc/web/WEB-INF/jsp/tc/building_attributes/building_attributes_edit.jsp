@@ -1,6 +1,6 @@
+<%@page import="org.flexpay.bti.persistence.building.BuildingAttributeTypeSimple" %>
+<%@page import="org.flexpay.bti.persistence.building.BuildingAttributeTypeEnum" %>
 
-<%@ page import="org.flexpay.bti.persistence.building.BuildingAttributeTypeSimple" %>
-<%@ page import="org.flexpay.bti.persistence.building.BuildingAttributeTypeEnum" %>
 <%@include file="/WEB-INF/jsp/common/taglibs.jsp" %>
 
 <%@include file="/WEB-INF/jsp/common/includes/jquery_ui.jsp"%>
@@ -25,7 +25,7 @@
     }
 
     // attribute date picker configuration
-    FP.calendars("#buildingAttributesEdit_attributeDate", true);
+    FP.calendars("buildingAttributesEdit_attributeDate", true);
 </script>
 
 <s:actionerror />

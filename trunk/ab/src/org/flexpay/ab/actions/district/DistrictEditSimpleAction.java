@@ -20,7 +20,7 @@ public class DistrictEditSimpleAction extends FPActionSupport {
 
 	private District district = new District();
 	private Long townFilter;
-	private BeginDateFilter beginDateFilter = new BeginDateFilter(DateUtil.now());
+	private BeginDateFilter beginDateFilter = new BeginDateFilter();
 
 	private Map<Long, String> names = CollectionUtils.treeMap();
 
@@ -76,7 +76,7 @@ public class DistrictEditSimpleAction extends FPActionSupport {
 		}
 
 		if (!beginDateFilter.needFilter()) {
-			addActionError(getText("ab.error.town.no_begin_date"));
+			addActionError(getText("ab.error.district.no_begin_date"));
 		}
 
 		return !hasActionErrors();
@@ -115,7 +115,7 @@ public class DistrictEditSimpleAction extends FPActionSupport {
 
 		// init begin date filter
 		DistrictNameTemporal temporal = district.getCurrentNameTemporal();
-		beginDateFilter.setDate(temporal != null ? temporal.getBegin() : ApplicationConfig.getPastInfinite());
+		beginDateFilter.setDate(temporal != null ? temporal.getBegin() : DateUtil.now());
 
 		// init translations
 		DistrictName districtName = temporal != null ? temporal.getValue() : null;
