@@ -69,14 +69,11 @@ public class BuildingCreateAction extends FPActionSupport {
 		}
 
 		building = objectsFactory.newBuilding();
-
-		District district = districtService.readFull(new Stub<District>(districtFilter));
-		building.setDistrict(district);
+		building.setDistrict(new District(districtFilter));
 
 		BuildingAddress address = new BuildingAddress();
 		address.setPrimaryStatus(true);
-		Street street = streetService.readFull(new Stub<Street>(streetFilter));
-		address.setStreet(street);
+		address.setStreet(new Street(streetFilter));
 		for (Map.Entry<Long, String> attr : attributeMap.entrySet()) {
 			AddressAttributeType type = addressAttributeTypeService.read(new Stub<AddressAttributeType>(attr.getKey()));
 			address.setBuildingAttribute(attr.getValue(), type);

@@ -93,6 +93,7 @@ public interface StreetService extends
 	 *          if operation fails
 	 */
 	@Secured (Roles.STREET_ADD)
+	@Override
 	Street create(Street object, List<StreetNameTranslation> nameTranslations, ArrayStack filters, Date from)
 			throws FlexPayExceptionContainer;
 
@@ -103,6 +104,7 @@ public interface StreetService extends
 	 * @return object, or <code>null</code> if object not found
 	 */
 	@Secured (Roles.STREET_READ)
+	@Override
 	Street readFull(@NotNull Stub<Street> stub);
 
 	/**
@@ -122,6 +124,7 @@ public interface StreetService extends
 	 * @return object temporal name , or <code>null</code> if not found
 	 */
 	@Secured (Roles.STREET_READ)
+	@Override
 	StreetNameTemporal readTemporalName(Long id);
 
 	/**
@@ -134,6 +137,7 @@ public interface StreetService extends
 	 *          if failure occurs
 	 */
 	@Secured (Roles.STREET_READ)
+	@Override
 	List<StreetName> findNames(ArrayStack filters, Page pager) throws FlexPayException;
 
 	/**
@@ -143,6 +147,7 @@ public interface StreetService extends
 	 * @return List of Objects
 	 */
 	@Secured (Roles.STREET_READ)
+	@Override
 	List<Street> find(ArrayStack filters);
 
 	/**
@@ -153,6 +158,7 @@ public interface StreetService extends
 	 * @return List of Objects
 	 */
 	@Secured (Roles.STREET_READ)
+	@Override
 	List<Street> find(ArrayStack filters, Page pager);
 
 	/**
@@ -179,6 +185,7 @@ public interface StreetService extends
 	 *          if failure occurs
 	 */
 	@Secured (Roles.STREET_DELETE)
+	@Override
 	void disable(Collection<Street> objects) throws FlexPayExceptionContainer;
 
 	/**
@@ -203,6 +210,7 @@ public interface StreetService extends
 	 *          exceptions container
 	 */
 	@Secured (Roles.STREET_CHANGE)
+	@Override
 	Street updateNameTranslations(Street obj, Long temporalId, List<StreetNameTranslation> nameTranslations, Date date)
 			throws FlexPayExceptionContainer;
 
@@ -212,6 +220,7 @@ public interface StreetService extends
 	 * @return name translation
 	 */
 	@Secured (Roles.STREET_READ)
+	@Override
 	StreetNameTranslation getEmptyNameTranslation();
 
 	/**
@@ -223,6 +232,7 @@ public interface StreetService extends
 	 */
 	@Secured (Roles.STREET_READ)
 	@NotNull
+	@Override
 	List<Street> findByName(String name, PrimaryKeyFilter filter);
 
 	/**
@@ -236,6 +246,7 @@ public interface StreetService extends
 	 *          if failure occurs
 	 */
 	@Secured (Roles.STREET_READ)
+	@Override
 	StreetFilter initFilter(StreetFilter parentFilter, PrimaryKeyFilter forefatherFilter, Locale locale) throws FlexPayException;
 
 	/**
@@ -249,6 +260,7 @@ public interface StreetService extends
 	 *          if failure occurs
 	 */
 	@Secured (Roles.STREET_READ)
+	@Override
 	ArrayStack initFilters(ArrayStack filters, Locale locale) throws FlexPayException;
 
 	/**

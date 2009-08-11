@@ -1,4 +1,3 @@
-
 <%@include file="/WEB-INF/jsp/common/taglibs.jsp"%>
 
 <%@include file="/WEB-INF/jsp/common/includes/jquery_ui.jsp"%>
@@ -21,7 +20,7 @@
         $("#form").submit();
     }
 
-    FP.calendars("#tariffBegin", true);
+    FP.calendars("tariffBegin", true);
 
 </script>
 

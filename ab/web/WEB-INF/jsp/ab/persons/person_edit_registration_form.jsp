@@ -40,8 +40,8 @@
 
     });
 
-    FP.calendars("#beginDate", true);
-    FP.calendars("#endDate", true);
+    FP.calendars("beginDate", true);
+    FP.calendars("endDate", true);
 </script>
 
 <form id="srform" method="post" action="<s:url includeParams="none" />">

@@ -3,7 +3,7 @@
 <%@include file="/WEB-INF/jsp/common/includes/jquery_ui.jsp"%>
 
 <script type="text/javascript">
-    FP.calendars("#birthDate", true);
+    FP.calendars("birthDate", true);
 </script>
 
 <s:form action="personEditFIO">

@@ -10,6 +10,7 @@ import org.flexpay.common.persistence.Language;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.persistence.filter.BeginDateFilter;
 import org.flexpay.common.util.CollectionUtils;
+import org.flexpay.common.util.DateUtil;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
@@ -117,7 +118,7 @@ public class RegionEditSimpleAction extends FPActionSupport {
 
     private void initData() {
         RegionNameTemporal temporal = region.getCurrentNameTemporal();
-		beginDateFilter.setDate(temporal != null ? temporal.getBegin() : ApplicationConfig.getPastInfinite());
+		beginDateFilter.setDate(temporal != null ? temporal.getBegin() : DateUtil.now());
 
 		RegionName regionName = temporal != null ? temporal.getValue() : null;
 		if (regionName != null) {

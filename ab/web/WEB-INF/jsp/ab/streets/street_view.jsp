@@ -83,7 +83,7 @@
 				   onclick="window.location='<s:url action="streetEdit" includeParams="none"><s:param name="street.id" value="%{object.id}"/></s:url>';"
 				   value="<s:text name="common.edit"/>"/>
 			<input type="button" class="btn-exit" title="<s:text name="ab.street.manage.districts"/>"
-				   onclick="window.location='<s:url action='streetDistrictEdit'><s:param name="street.id" value="%{object.id}"/></s:url>';"
+				   onclick="window.location='<s:url action="streetDistrictEdit" includeParams="none"><s:param name="street.id" value="%{object.id}"/></s:url>';"
 				   value="<s:text name="ab.street.manage.districts"/>"/>
 		</td>
 	</tr>
