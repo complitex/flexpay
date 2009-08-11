@@ -33,17 +33,28 @@ public class LanguageUtil {
 	/**
 	 * Get language name for locale
 	 *
-	 * @param language Language
-	 * @param locale   Locale to get name for
+	 * @param languageStub Language
+	 * @param locale	   Locale to get name for
 	 * @return LanguageName in specified locale
 	 * @throws FlexPayException if no locale specified for
 	 */
-	public static LangNameTranslation getLanguageName(Language language, Locale locale)
+	public static LangNameTranslation getLanguageName(Language languageStub, Locale locale)
 			throws FlexPayException {
 		Language from = getLanguage(locale);
-		for (LangNameTranslation name : language.getTranslations()) {
-			if (name.getTranslationFrom().equals(from)) {
-				return name;
+
+		Language languageToTranslate = null;
+		List<Language> languages = ApplicationConfig.getLanguages();
+		for (Language lang : languages) {
+			if (lang.getId().equals(languageStub.getId())) {
+				languageToTranslate = lang;
+			}
+		}
+
+		if (languageToTranslate != null) {
+			for (LangNameTranslation name : languageToTranslate.getTranslations()) {
+				if (name.getTranslationFrom().equals(from)) {
+					return name;
+				}
 			}
 		}
 
