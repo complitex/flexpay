@@ -37,9 +37,9 @@
 		</property>
 		<property name="flushingModels">
 			<props>
-				<prop key="create">cacheNames=commonFlexpayCache</prop>
-				<prop key="update">cacheNames=commonFlexpayCache</prop>
-				<prop key="disable">cacheNames=commonFlexpayCache</prop>
+				<prop key="create">cacheNames=commonFlexpayCache;flushBeforeMethodExecution=true</prop>
+				<prop key="update">cacheNames=commonFlexpayCache;flushBeforeMethodExecution=true</prop>
+				<prop key="disable">cacheNames=commonFlexpayCache;flushBeforeMethodExecution=true</prop>
 			</props>
 		</property>
 		<property name="target" ref="identityTypeServiceTarget" />
@@ -56,9 +56,9 @@
 		</property>
 		<property name="flushingModels">
 			<props>
-				<prop key="create">cacheNames=commonFlexpayCache</prop>
-				<prop key="update">cacheNames=commonFlexpayCache</prop>
-				<prop key="disable">cacheNames=commonFlexpayCache</prop>
+				<prop key="create">cacheNames=commonFlexpayCache;flushBeforeMethodExecution=true</prop>
+				<prop key="update">cacheNames=commonFlexpayCache;flushBeforeMethodExecution=true</prop>
+				<prop key="disable">cacheNames=commonFlexpayCache;flushBeforeMethodExecution=true</prop>
 			</props>
 		</property>
 		<property name="target" ref="townTypeServiceTarget" />
@@ -93,10 +93,9 @@
 		</property>
 		<property name="flushingModels">
 			<props>
-				<prop key="create">cacheNames=commonFlexpayCache</prop>
-				<prop key="update*">cacheNames=commonFlexpayCache</prop>
-				<prop key="disable*">cacheNames=commonFlexpayCache</prop>
-				<prop key="save*">cacheNames=commonFlexpayCache</prop>
+				<prop key="create">cacheNames=commonFlexpayCache;flushBeforeMethodExecution=true</prop>
+				<prop key="update*">cacheNames=commonFlexpayCache;flushBeforeMethodExecution=true</prop>
+				<prop key="disable*">cacheNames=commonFlexpayCache;flushBeforeMethodExecution=true</prop>
 			</props>
 		</property>
 		<property name="target" ref="streetServiceTarget" />
@@ -112,10 +111,9 @@
 		</property>
 		<property name="flushingModels">
 			<props>
-				<prop key="create">cacheNames=abCountryFlexpayCache</prop>
-				<prop key="update*">cacheNames=abCountryFlexpayCache</prop>
-				<prop key="disable*">cacheNames=abCountryFlexpayCache</prop>
-				<prop key="save*">cacheNames=abCountryFlexpayCache</prop>
+				<prop key="create">cacheNames=abCountryFlexpayCache;flushBeforeMethodExecution=true</prop>
+				<prop key="update*">cacheNames=abCountryFlexpayCache;flushBeforeMethodExecution=true</prop>
+				<prop key="disable*">cacheNames=abCountryFlexpayCache;flushBeforeMethodExecution=true</prop>
 			</props>
 		</property>
 		<property name="target" ref="countryServiceTarget" />
@@ -131,10 +129,9 @@
 		</property>
 		<property name="flushingModels">
 			<props>
-				<prop key="create">cacheNames=abRegionFlexpayCache</prop>
-				<prop key="update*">cacheNames=abRegionFlexpayCache</prop>
-				<prop key="disable*">cacheNames=abRegionFlexpayCache</prop>
-				<prop key="save*">cacheNames=abRegionFlexpayCache</prop>
+				<prop key="create">cacheNames=abRegionFlexpayCache;flushBeforeMethodExecution=true</prop>
+				<prop key="update*">cacheNames=abRegionFlexpayCache;flushBeforeMethodExecution=true</prop>
+				<prop key="disable*">cacheNames=abRegionFlexpayCache;flushBeforeMethodExecution=true</prop>
 			</props>
 		</property>
 		<property name="target" ref="regionServiceTarget" />
@@ -150,10 +147,9 @@
 		</property>
 		<property name="flushingModels">
 			<props>
-				<prop key="create">cacheNames=abRegionFlexpayCache</prop>
-				<prop key="update*">cacheNames=abRegionFlexpayCache</prop>
-				<prop key="disable*">cacheNames=abRegionFlexpayCache</prop>
-				<prop key="save*">cacheNames=abRegionFlexpayCache</prop>
+				<prop key="create">cacheNames=abRegionFlexpayCache;flushBeforeMethodExecution=true</prop>
+				<prop key="update*">cacheNames=abRegionFlexpayCache;flushBeforeMethodExecution=true</prop>
+				<prop key="disable*">cacheNames=abRegionFlexpayCache;flushBeforeMethodExecution=true</prop>
 			</props>
 		</property>
 		<property name="target" ref="townServiceTarget" />
@@ -187,10 +183,9 @@
 		</property>
 		<property name="flushingModels">
 			<props>
-				<prop key="create*">cacheNames=commonFlexpayCache</prop>
-				<prop key="update*">cacheNames=commonFlexpayCache</prop>
-				<prop key="disable*">cacheNames=commonFlexpayCache</prop>
-				<prop key="save*">cacheNames=commonFlexpayCache</prop>
+				<prop key="create">cacheNames=commonFlexpayCache;flushBeforeMethodExecution=true</prop>
+				<prop key="update">cacheNames=commonFlexpayCache;flushBeforeMethodExecution=true</prop>
+				<prop key="disable">cacheNames=commonFlexpayCache;flushBeforeMethodExecution=true</prop>
 			</props>
 		</property>
 		<property name="target" ref="addressAttributeTypeServiceTarget" />

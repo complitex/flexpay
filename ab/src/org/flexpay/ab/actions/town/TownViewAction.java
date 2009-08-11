@@ -1,16 +1,26 @@
 package org.flexpay.ab.actions.town;
 
 import org.flexpay.ab.actions.nametimedependent.ObjectViewAction;
-import org.flexpay.ab.persistence.Town;
-import org.flexpay.ab.persistence.TownName;
-import org.flexpay.ab.persistence.TownNameTemporal;
-import org.flexpay.ab.persistence.TownNameTranslation;
+import org.flexpay.ab.persistence.*;
+import org.flexpay.ab.service.TownTypeService;
+import org.flexpay.common.persistence.Stub;
+import org.springframework.beans.factory.annotation.Required;
 
 public class TownViewAction extends ObjectViewAction<
 		TownName, TownNameTemporal, Town, TownNameTranslation> {
+
+	private TownTypeService townTypeService;
 
 	public TownViewAction() {
 		setObject(new Town());
 	}
 
+	public TownType type(Long id) {
+		return townTypeService.read(new Stub<TownType>(id));
+	}
+
+	@Required
+	public void setTownTypeService(TownTypeService townTypeService) {
+		this.townTypeService = townTypeService;
+	}
 }
