@@ -86,18 +86,6 @@ public class BuildingCreateAction extends FPActionSupport {
 			valid = false;
 		}
 
-		boolean allAttributesAreNull = true;
-		for (String value : attributeMap.values()) {
-			if (!StringUtils.isBlank(value)) {
-				allAttributesAreNull = false;
-				break;
-			}
-		}
-		if (attributeMap.isEmpty() || allAttributesAreNull) {
-			addActionError(getText("ab.buildings.create.buildings_attr_required"));
-			valid = false;
-		}
-
 		return valid;
 	}
 

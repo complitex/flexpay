@@ -94,11 +94,6 @@ public class EditBuildingAddressAction extends FPActionSupport {
 			valid = false;
 		}
 
-		if (attributeMap.isEmpty()) {
-			addActionError(getText("ab.buildings.create.buildings_attr_required"));
-			valid = false;
-		}
-		
 		return valid;
 	}
 
