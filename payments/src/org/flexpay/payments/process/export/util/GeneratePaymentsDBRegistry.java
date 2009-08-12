@@ -12,6 +12,7 @@ import org.flexpay.payments.persistence.DocumentAddition;
 import org.flexpay.payments.service.DocumentService;
 import org.flexpay.payments.service.OperationService;
 import org.flexpay.payments.service.DocumentAdditionTypeService;
+import org.flexpay.payments.util.config.ApplicationConfig;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
@@ -22,10 +23,13 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.text.SimpleDateFormat;
 
-public class GeneratePaymentsDBRegistry {
+public class        GeneratePaymentsDBRegistry {
 
     private final Logger log = LoggerFactory.getLogger(getClass());
+
+    private static final SimpleDateFormat registryDateFormat = new SimpleDateFormat("ddMMyyy");
 
     private RegistryService registryService;
     private RegistryRecordService registryRecordService;
@@ -115,7 +119,7 @@ public class GeneratePaymentsDBRegistry {
                 if (ercAccountAddition != null) {
                     container = new RegistryRecordContainer();
                     container.setOrder(1);
-                    container.setData("53:" + ercAccountAddition.getStringValue());
+                    container.setData("15:" + registryDateFormat.format(new Date()) + ":" + ercAccountAddition.getStringValue() + ApplicationConfig.getMbOrganizationStub().getId());
                     container.setRecord(record);
                     containers.add(container);
                 }
