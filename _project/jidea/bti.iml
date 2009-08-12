@@ -58,7 +58,7 @@
             <attribute name="URI" value="/WEB-INF/lib" />
             <url>jar://$MODULE_DIR$/../../common/lib/ajax/json-lib-2.0-jdk15.jar!/</url>
           </containerElement>
-          <containerElement type="library" name="AJax" level="project">
+          <containerElement type="library" name="Ajax" level="project">
             <attribute name="method" value="0" />
             <attribute name="URI" value="/WEB-INF/lib" />
           </containerElement>
@@ -197,7 +197,7 @@
     <orderEntry type="library" name="Struts2" level="project" />
     <orderEntry type="library" name="hibernate3" level="project" />
     <orderEntry type="library" name="spring2" level="project" />
-    <orderEntry type="library" name="AJax" level="project" />
+    <orderEntry type="library" name="Ajax" level="project" />
     <orderEntry type="library" name="JBPM" level="project" />
     <orderEntry type="library" name="Quartz" level="project" />
     <orderEntry type="library" name="Jetbrains" level="project" />

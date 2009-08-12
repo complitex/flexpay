@@ -36,7 +36,7 @@
             <attribute name="method" value="1" />
             <attribute name="URI" value="/WEB-INF/classes" />
           </containerElement>
-          <containerElement type="library" name="AJax" level="project">
+          <containerElement type="library" name="Ajax" level="project">
             <attribute name="method" value="0" />
             <attribute name="URI" value="/WEB-INF/lib" />
           </containerElement>
@@ -282,7 +282,7 @@
     <orderEntry type="library" name="logging" level="project" />
     <orderEntry type="library" name="JUnit" level="project" />
     <orderEntry type="library" name="spring2" level="project" />
-    <orderEntry type="library" name="AJax" level="project" />
+    <orderEntry type="library" name="Ajax" level="project" />
     <orderEntry type="library" name="Commons" level="project" />
     <orderEntry type="library" name="JBPM" level="project" />
     <orderEntry type="library" name="Quartz" level="project" />
