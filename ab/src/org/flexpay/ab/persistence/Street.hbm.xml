@@ -126,6 +126,7 @@
 			left join fetch o.nameTemporals t
 			left join fetch t.value v
 			left join fetch v.translations tr
+			left join fetch o.districts 
 		where o.id=? and o.status=0 and t.invalidDate='2100-12-31'
 	</query>
 
