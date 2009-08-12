@@ -216,7 +216,7 @@ public class GeneratePaymentsMBRegistry {
     }
 
     @NotNull
-    private String[] createInfoLine(@NotNull RegistryRecord record) {
+    private String[] createInfoLine(@NotNull RegistryRecord record) throws FlexPayException {
         List<String> infoLine = new ArrayList<String>();
 
         // код квитанции
@@ -227,8 +227,11 @@ public class GeneratePaymentsMBRegistry {
         List<RegistryRecordContainer> containers = registryRecordService.getRecordContainers(record);
         for (RegistryRecordContainer container : containers) {
             if (container.getData() != null && container.getData().startsWith("53:")) {
-                eircCount = container.getData().substring(3);
-                break;
+                String[] contenerFields = container.getData().split(":");
+                if (contenerFields.length >= 2) {
+                    eircCount = contenerFields[1];
+                    break;
+                }
             }
         }
         infoLine.add(createCellData(eircCount, tableHeader[1].length(), ' '));
@@ -268,10 +271,16 @@ public class GeneratePaymentsMBRegistry {
 
         // услуга
         String serviceCode = record.getServiceCode();
+        if (serviceCode == null) {
+            throw new FlexPayException("Registry record`s service code is null. Regisry record Id: " + record.getId());
+        }
         if (serviceCode.startsWith("#")) {
             int innerServiceCode = Integer.parseInt(serviceCode.substring(1));
             ServiceType serviceType = serviceTypeService.getServiceType(innerServiceCode);
             serviceCode = serviceTypesMapper.getMegabankCode(Stub.stub(serviceType));
+            if (serviceCode == null) {
+                throw new FlexPayException("Can not find MB service code. Service code: " + serviceCode + ", registry record Id: " + record.getId());
+            }
         }
         while (serviceCode.length() < 2) {
             serviceCode = "0" + serviceCode;
