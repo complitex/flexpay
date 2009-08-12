@@ -5,6 +5,7 @@ import org.flexpay.ab.service.AddressAttributeTypeService;
 import org.flexpay.ab.service.BuildingService;
 import org.flexpay.ab.service.DistrictService;
 import org.flexpay.ab.service.StreetService;
+import org.flexpay.ab.util.config.ApplicationConfig;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
@@ -12,6 +13,7 @@ import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.util.CollectionUtils;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
+import org.apache.commons.lang.StringUtils;
 
 import java.util.Map;
 
@@ -53,17 +55,7 @@ public class EditBuildingAddressAction extends FPActionSupport {
 			return INPUT;
 		}
 
-		boolean valid = true;
-		if (streetFilter == null || streetFilter <= 0) {
-			log.warn("Incorrect street id in filter ({})", streetFilter);
-			addActionError(getText("ab.buildings.create.street_required"));
-			valid = false;
-		}
-		if (attributeMap.isEmpty()) {
-			addActionError(getText("ab.buildings.create.buildings_attr_required"));
-			valid = false;
-		}
-		if (!valid) {
+		if (!doValidate()) {
 			return INPUT;
 		}
 
@@ -84,6 +76,30 @@ public class EditBuildingAddressAction extends FPActionSupport {
 		addActionError(getText("ab.building.saved"));
 
 		return REDIRECT_SUCCESS;
+	}
+
+	private boolean doValidate() {
+
+		boolean valid = true;
+
+		Long buildingNumberAttributeId = ApplicationConfig.getBuildingAttributeTypeNumber().getId();
+		if (StringUtils.isEmpty(attributeMap.get(buildingNumberAttributeId))) {
+			addActionError(getText("ab.buildings.create.building_number_required"));
+			valid = false;
+		}
+
+		if (streetFilter == null || streetFilter <= 0) {
+			log.warn("Incorrect street id in filter ({})", streetFilter);
+			addActionError(getText("ab.buildings.create.street_required"));
+			valid = false;
+		}
+
+		if (attributeMap.isEmpty()) {
+			addActionError(getText("ab.buildings.create.buildings_attr_required"));
+			valid = false;
+		}
+		
+		return valid;
 	}
 
 	private void setupAttributes() {
