@@ -327,8 +327,8 @@ public class StreetServiceImpl extends NameTimeDependentServiceImpl<
 					FlexPayException e = new FlexPayException("No translation", "error.no_default_translation",
 							temporal.getBegin(), temporal.getEnd());
 					ex.addException(e);
-
 					log.debug("Period: {} - {} is empty ", temporal.getBegin(), temporal.getEnd());
+					break;
 				}
 			}
 
