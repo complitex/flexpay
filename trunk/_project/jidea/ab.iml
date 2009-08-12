@@ -7,8 +7,8 @@
     <facet type="web" name="Web">
       <configuration>
         <descriptors>
-          <deploymentDescriptor name="sun-web.xml" url="file://$MODULE_DIR$/../../ab/web/WEB-INF/sun-web.xml" optional="false" version="2.5.0" />
-          <deploymentDescriptor name="web.xml" url="file://$MODULE_DIR$/../../ab/web/WEB-INF/web.xml" optional="false" version="2.5" />
+          <deploymentDescriptor name="sun-web.xml" url="file://$MODULE_DIR$/../../ab/web/WEB-INF/sun-web.xml" />
+          <deploymentDescriptor name="web.xml" url="file://$MODULE_DIR$/../../ab/web/WEB-INF/web.xml" />
         </descriptors>
         <webroots>
           <root url="file://$MODULE_DIR$/../../ab/web" relative="/" />
@@ -71,7 +71,7 @@
           <unit-entry name="flexpay" value="adcaabfc-5767-4e94-8aa8-d6f88d6db163" />
           <unit-entry name="flexpaySessionFactory" value="adcaabfc-5767-4e94-8aa8-d6f88d6db163" />
         </datasource-map>
-        <deploymentDescriptor name="hibernate.cfg.xml" url="file://$MODULE_DIR$/../../ab/web/WEB-INF/hibernate.cfg.xml" optional="false" version="3.0" />
+        <deploymentDescriptor name="hibernate.cfg.xml" url="file://$MODULE_DIR$/../../ab/web/WEB-INF/hibernate.cfg.xml" />
       </configuration>
     </facet>
     <facet type="Spring" name="Spring">
@@ -118,6 +118,9 @@
     <output url="file://$MODULE_DIR$/../../_build/classes" />
     <output-test url="file://$MODULE_DIR$/../../_build/classes" />
     <exclude-output />
+    <content url="file://$MODULE_DIR$/../../_build">
+      <excludeFolder url="file://$MODULE_DIR$/../../_build" />
+    </content>
     <content url="file://$MODULE_DIR$/../../ab">
       <sourceFolder url="file://$MODULE_DIR$/../../ab/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../ab/tests/java" isTestSource="true" />
@@ -142,7 +145,7 @@
     <orderEntry type="module" module-name="common" />
     <orderEntry type="library" name="logging" level="project" />
     <orderEntry type="library" name="Commons" level="project" />
-    <orderEntry type="library" name="Ajax" level="project" />
+    <orderEntry type="library" name="AJax" level="project" />
     <orderEntry type="library" name="JBPM" level="project" />
     <orderEntry type="library" name="Quartz" level="project" />
     <orderEntry type="library" name="Jetbrains" level="project" />
