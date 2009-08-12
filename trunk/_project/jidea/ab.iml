@@ -118,9 +118,6 @@
     <output url="file://$MODULE_DIR$/../../_build/classes" />
     <output-test url="file://$MODULE_DIR$/../../_build/classes" />
     <exclude-output />
-    <content url="file://$MODULE_DIR$/../../_build">
-      <excludeFolder url="file://$MODULE_DIR$/../../_build" />
-    </content>
     <content url="file://$MODULE_DIR$/../../ab">
       <sourceFolder url="file://$MODULE_DIR$/../../ab/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/../../ab/tests/java" isTestSource="true" />
@@ -145,7 +142,7 @@
     <orderEntry type="module" module-name="common" />
     <orderEntry type="library" name="logging" level="project" />
     <orderEntry type="library" name="Commons" level="project" />
-    <orderEntry type="library" name="AJax" level="project" />
+    <orderEntry type="library" name="Ajax" level="project" />
     <orderEntry type="library" name="JBPM" level="project" />
     <orderEntry type="library" name="Quartz" level="project" />
     <orderEntry type="library" name="Jetbrains" level="project" />
