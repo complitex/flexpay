@@ -291,21 +291,11 @@ public class DistrictServiceImpl extends
 			if (!first || temporals.size() == 1) {
 				DistrictName name = object.getNameForDate(DateUtil.now());
 				if (name == null || StringUtils.isBlank(name.getDefaultNameTranslation())) {
-
-					if (ApplicationConfig.getPastInfinite().equals(temporal.getBegin())
-						&& ApplicationConfig.getFutureInfinite().equals(temporal.getEnd())) {
-
 						FlexPayException e = new FlexPayException("No translation", "error.ab.district.no_default_translation",
 								temporal.getBegin(), temporal.getEnd());
 						ex.addException(e);
-						break;
-
-					} else {
-						FlexPayException e = new FlexPayException("No translation", "error.ab.district.no_default_translation_for_period",
-								temporal.getBegin(), temporal.getEnd());
-						ex.addException(e);
 						log.debug("Period: {} - {} is empty ", temporal.getBegin(), temporal.getEnd());
-					}
+						break;
 				}
 			}
 
