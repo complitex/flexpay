@@ -4,35 +4,49 @@ import org.flexpay.ab.persistence.TownType;
 import org.flexpay.ab.service.TownTypeService;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.actions.FPActionSupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
 
-//TODO: This class has a out-of-date structure. Must be remake
-public class TownTypeDeleteAction {
 
-    protected Logger log = LoggerFactory.getLogger(getClass());
+public class TownTypeDeleteAction extends FPActionSupport {
 
-    private TownTypeService townTypeService;
-    private List<Long> idList;
+	// form data
+	private List<Long> idList;
 
-    public String execute() throws Exception {
+	// required services
+	private TownTypeService townTypeService;
+
+	@NotNull
+	@Override
+	protected String doExecute() throws Exception {
+
 		List<TownType> townTypeToDelete = CollectionUtils.list();
 		for (Long id : idList) {
 			townTypeToDelete.add(townTypeService.read(new Stub<TownType>(id)));
 		}
+
 		try {
 			townTypeService.disable(townTypeToDelete);
 		} catch (RuntimeException e) {
-            log.error("Failled delete town type", e);
+            log.error("Failed delete town type", e);
 		}
 
-		return "afterSubmit";
+		return SUCCESS;
 	}
 
+	@NotNull
+	@Override
+	protected String getErrorResult() {
+		return SUCCESS;
+	}
+
+	// form data
 	public List<Long> getIdList() {
 		return idList;
 	}
@@ -41,9 +55,9 @@ public class TownTypeDeleteAction {
 		this.idList = idList;
 	}
 
+	// required services
 	@Required
 	public void setTownTypeService(TownTypeService townTypeService) {
 		this.townTypeService = townTypeService;
 	}
-
 }

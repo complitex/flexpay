@@ -47,7 +47,7 @@
 		</action>
 
 		<action name="townTypeDelete" class="townTypeDeleteAction">
-			<result name="afterSubmit" type="redirect">townTypesList.action</result>
+			<result type="redirect">townTypesList.action</result>
 		</action>
 
 	</package>
