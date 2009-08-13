@@ -56,14 +56,15 @@
 		<property name="cacheProviderFacade" ref="cacheProviderFacade" />
 		<property name="cachingModels">
 			<props>
+                <prop key="read*">cacheName=commonMeasureUnitFlexpayCache</prop>
 				<prop key="list*">cacheName=commonMeasureUnitFlexpayCache</prop>
-				<prop key="readFull">cacheName=commonMeasureUnitFlexpayCache</prop>
 			</props>
 		</property>
 		<property name="flushingModels">
 			<props>
 				<prop key="create">cacheNames=commonMeasureUnitFlexpayCache;flushBeforeMethodExecution=true</prop>
 				<prop key="update">cacheNames=commonMeasureUnitFlexpayCache;flushBeforeMethodExecution=true</prop>
+                <prop key="disable*">cacheNames=commonMeasureUnitFlexpayCache;flushBeforeMethodExecution=true</prop>
 			</props>
 		</property>
 		<property name="target" ref="measureUnitServiceTarget" />
