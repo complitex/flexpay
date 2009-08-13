@@ -21,7 +21,7 @@
 		</action>
 
 		<action name="identityTypeDelete" class="identityTypeDeleteAction">
-			<result name="afterSubmit" type="redirect">identityTypesList.action</result>
+			<result type="redirect">identityTypesList.action</result>
 		</action>
 
 	</package>

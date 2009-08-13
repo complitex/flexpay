@@ -4,27 +4,28 @@ import org.flexpay.ab.persistence.StreetType;
 import org.flexpay.ab.service.StreetTypeService;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.actions.FPActionSupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-//TODO: This class has a out-of-date structure. Must be remake
-public class StreetTypeDeleteAction {
+public class StreetTypeDeleteAction extends FPActionSupport {
 
-	private Logger log = LoggerFactory.getLogger(getClass());
-
+	// form data
 	private Set<Long> idList = new HashSet<Long>();
 
+	// required services
 	private StreetTypeService streetTypeService;
 
-	public String execute() throws Exception {
-
-		log.debug("Ids of street types to disable: {}", idList);
+	@NotNull
+	@Override
+	protected String doExecute() throws Exception {
 
 		List<StreetType> streetTypeToDelete = CollectionUtils.list();
 		for (Long id : idList) {
@@ -36,9 +37,17 @@ public class StreetTypeDeleteAction {
 			log.error("Failed disabling street types", e);
 		}
 
-		return "afterSubmit";
+		return SUCCESS;
 	}
 
+	@NotNull
+	@Override
+	protected String getErrorResult() {
+
+		return SUCCESS;
+	}
+
+	// form data
 	public Set<Long> getIdList() {
 		return idList;
 	}
@@ -47,6 +56,7 @@ public class StreetTypeDeleteAction {
 		this.idList = idList;
 	}
 
+	// required services
 	@Required
 	public void setStreetTypeService(StreetTypeService streetTypeService) {
 		this.streetTypeService = streetTypeService;
