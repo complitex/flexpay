@@ -9,9 +9,6 @@ import org.jetbrains.annotations.NotNull;
  */
 public class TownType extends TemporaryType<TownType, TownTypeTranslation> {
 
-	/**
-	 * Constructs a new TownType.
-	 */
 	public TownType() {
 	}
 
@@ -24,20 +21,18 @@ public class TownType extends TemporaryType<TownType, TownTypeTranslation> {
 	}
 
 	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public boolean equals(Object obj) {
-
-		return obj instanceof TownType && super.equals(obj);
-	}
-
-	/**
 	 * Get null value
 	 *
 	 * @return Null representation of this value
 	 */
+	@Override
 	public TownType getEmpty() {
 		return new TownType();
 	}
+
+	@Override
+	public boolean equals(Object obj) {
+		return obj instanceof TownType && super.equals(obj);
+	}
+
 }

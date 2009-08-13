@@ -1,18 +1,16 @@
 package org.flexpay.ab.actions.country;
 
+import org.apache.commons.lang.StringUtils;
 import org.flexpay.ab.persistence.CountryNameTranslation;
 import org.flexpay.ab.service.CountryService;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Language;
-import org.flexpay.common.util.config.ApplicationConfig;
-import org.flexpay.common.util.config.UserPreferences;
 import org.flexpay.common.util.CollectionUtils;
+import org.flexpay.common.util.config.ApplicationConfig;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
-import org.apache.commons.lang.StringUtils;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -28,7 +26,7 @@ public class CountryCreateAction extends FPActionSupport {
 	@Override
 	public String doExecute() throws FlexPayException {
 
-		if (!isSubmit()) {
+		if (isNotSubmit()) {
 			initData();
 			return INPUT;
 		}

@@ -55,11 +55,6 @@ public class ApartmentEditAction extends FPActionSupport {
 
 	private boolean doValidate() {
 
-		if (apartment.getId() == null) {
-			addActionError(getText("error.invalid_id"));
-			return false;
-		}
-
 		if (apartment == null) {
 			addActionError(getText("common.object_not_selected"));
 			return false;

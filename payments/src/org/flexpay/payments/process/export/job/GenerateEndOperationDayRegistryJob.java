@@ -30,6 +30,7 @@ public class GenerateEndOperationDayRegistryJob extends Job {
     private ExportBankPaymentsRegistry exportBankPaymentsRegistry;
 	private PaymentsCollectorService paymentsCollectorService;
 
+	@Override
     public String execute(Map<Serializable, Serializable> parameters) throws FlexPayException {
 
 		log.info("Start process generating end operation day registry and save it to file...");
@@ -55,18 +56,18 @@ public class GenerateEndOperationDayRegistryJob extends Job {
 
 		Registry registry = registryGenerator.generate(paymentPoint, organization, beginDate, endDate);
 
-		if (registry != null){
+		if (registry != null) {
 			registry = exportBankPaymentsRegistry.export(registry);
 			parameters.put("FileId", registry.getSpFile().getId());
 			PaymentsCollector paymentsCollector = paymentsCollectorService.read(new Stub<PaymentsCollector>(paymentPoint.getCollector().getId()));
-			if (paymentsCollector != null ){
+			if (paymentsCollector != null ) {
 				parameters.put("Email", paymentsCollector.getEmail());
 			}			
 
 			log.info("Process end operation day registry and save it to file finished...");
 
 			return RESULT_NEXT;
-		}else{
+		} else {
 			return RESULT_NO_REGISTRY_CREATED;
 		}
     }
@@ -95,4 +96,5 @@ public class GenerateEndOperationDayRegistryJob extends Job {
 	public void setPaymentsCollectorService(PaymentsCollectorService paymentsCollectorService) {
 		this.paymentsCollectorService = paymentsCollectorService;
 	}
+
 }

@@ -3,7 +3,6 @@ package org.flexpay.ab.actions.region;
 import org.flexpay.ab.persistence.*;
 import org.flexpay.ab.service.CountryService;
 import org.flexpay.ab.service.RegionService;
-import org.flexpay.ab.util.config.ApplicationConfig;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Language;
@@ -34,30 +33,24 @@ public class RegionEditSimpleAction extends FPActionSupport {
 	@Override
     protected String doExecute() throws Exception {
 
-        Region rgn = region.isNew() ? region : regionService.readFull(stub(region));
+        region = region.isNew() ? region : regionService.readFull(stub(region));
 
         if (isSubmit()) {
-            if (!doValidate(rgn)) {
+            if (!doValidate()) {
                 return INPUT;
             }
-            updateRegion(rgn);
+            updateRegion();
 
             return REDIRECT_SUCCESS;
         }
 
-        region = rgn;
         initData();
         return INPUT;
     }
 
-    private boolean doValidate(Region rgn) {
+    private boolean doValidate() {
 
-        if (region.getId() == null) {
-            addActionError(getText("error.invalid_id"));
-            return false;
-        }
-
-        if (rgn == null) {
+        if (region == null) {
             addActionError(getText("common.object_not_selected"));
             return false;
         }
@@ -77,17 +70,17 @@ public class RegionEditSimpleAction extends FPActionSupport {
     /*
     * Creates new region if it is a new one (haven't been yet persisted) or updates persistent one
     */
-    private void updateRegion(Region rgn) throws FlexPayExceptionContainer {
+    private void updateRegion() throws FlexPayExceptionContainer {
 
         RegionName regionName = getRegionName();
-        rgn.setNameForDate(regionName, beginDateFilter.getDate());
+        region.setNameForDate(regionName, beginDateFilter.getDate());
 
         // setup region for new object
-        if (rgn.isNew()) {
-            rgn.setCountry(new Country(countryFilter));
-            regionService.create(rgn);
+        if (region.isNew()) {
+            region.setCountry(new Country(countryFilter));
+            regionService.create(region);
         } else {
-            regionService.update(rgn);
+            regionService.update(region);
         }
     }
 

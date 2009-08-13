@@ -3,6 +3,7 @@ package org.flexpay.ab.actions.identity;
 import org.flexpay.ab.persistence.IdentityType;
 import org.flexpay.ab.service.IdentityTypeService;
 import org.flexpay.common.util.CollectionUtils;
+import static org.flexpay.common.util.CollectionUtils.set;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.actions.FPActionSupport;
 import org.springframework.beans.factory.annotation.Required;
@@ -12,55 +13,36 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
-
+import java.util.Set;
 
 public class IdentityTypeDeleteAction extends FPActionSupport {
 
-	private Logger log = LoggerFactory.getLogger(getClass());
+	private Set<Long> objectIds = set();
 
-	// form data
-	private List<Long> idList;
-
-	// required services
 	private IdentityTypeService identityTypeService;
 
 	@NotNull
 	@Override
 	protected String doExecute() throws Exception {
 
-		List<IdentityType> identityTypeToDelete = CollectionUtils.list();
-		for (Long id : idList) {
-			identityTypeToDelete.add(identityTypeService.read(new Stub<IdentityType>(id)));
-		}
+		identityTypeService.disableByIds(objectIds);
 
-		try {
-			identityTypeService.disable(identityTypeToDelete);
-		} catch (RuntimeException e) {
-			log.error("Failed disabling identity types", e);
-		}
-
-		return SUCCESS;
+		return REDIRECT_SUCCESS;
 	}
 
 	@NotNull
 	@Override
 	protected String getErrorResult() {
-
-		return SUCCESS;
+		return REDIRECT_SUCCESS;
 	}
 
-	// form data
-	public List<Long> getIdList() {
-		return idList;
+	public void setObjectIds(Set<Long> objectIds) {
+		this.objectIds = objectIds;
 	}
 
-	public void setIdList(List<Long> idList) {
-		this.idList = idList;
-	}
-
-	// required services
 	@Required
 	public void setIdentityTypeService(IdentityTypeService identityTypeService) {
 		this.identityTypeService = identityTypeService;
 	}
+
 }

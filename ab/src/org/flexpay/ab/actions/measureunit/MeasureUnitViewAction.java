@@ -1,29 +1,30 @@
-package org.flexpay.ab.actions.town;
+package org.flexpay.ab.actions.measureunit;
 
-import org.flexpay.ab.persistence.TownType;
-import org.flexpay.ab.service.TownTypeService;
 import org.flexpay.common.actions.FPActionSupport;
+import org.flexpay.common.persistence.MeasureUnit;
 import static org.flexpay.common.persistence.Stub.stub;
+import org.flexpay.common.service.MeasureUnitService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
-public class TownTypeViewAction extends FPActionSupport {
+public class MeasureUnitViewAction extends FPActionSupport {
 
-	private TownType townType = new TownType();
+	private MeasureUnit measureUnit = new MeasureUnit();
 
-	private TownTypeService townTypeService;
+	private MeasureUnitService measureUnitService;
 
 	@NotNull
 	@Override
 	public String doExecute() throws Exception {
 
-		if (townType.isNew()) {
+		if (measureUnit.isNew()) {
 			log.error(getText("error.invalid_id"));
 			return REDIRECT_ERROR;
 		}
-		townType = townTypeService.read(stub(townType));
 
-		if (townType == null) {
+		measureUnit = measureUnitService.readFull(stub(measureUnit));
+
+		if (measureUnit == null) {
 			log.error(getText("common.object_not_selected"));
 			return REDIRECT_ERROR;
 		}
@@ -44,17 +45,17 @@ public class TownTypeViewAction extends FPActionSupport {
 		return REDIRECT_ERROR;
 	}
 
-	public TownType getTownType() {
-		return townType;
+	public MeasureUnit getMeasureUnit() {
+		return measureUnit;
 	}
 
-	public void setTownType(TownType townType) {
-		this.townType = townType;
+	public void setMeasureUnit(MeasureUnit measureUnit) {
+		this.measureUnit = measureUnit;
 	}
 
 	@Required
-	public void setTownTypeService(TownTypeService townTypeService) {
-		this.townTypeService = townTypeService;
+	public void setMeasureUnitService(MeasureUnitService measureUnitService) {
+		this.measureUnitService = measureUnitService;
 	}
 
 }

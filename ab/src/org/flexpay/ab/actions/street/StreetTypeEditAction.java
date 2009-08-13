@@ -1,5 +1,6 @@
 package org.flexpay.ab.actions.street;
 
+import org.apache.commons.lang.StringUtils;
 import org.flexpay.ab.persistence.StreetType;
 import org.flexpay.ab.persistence.StreetTypeTranslation;
 import org.flexpay.ab.service.StreetTypeService;
@@ -26,15 +27,14 @@ public class StreetTypeEditAction extends FPActionSupport {
 	@Override
 	public String doExecute() throws Exception {
 
-		if (streetType.getId() == null) {
+		streetType = streetType.isNew() ? streetType : streetTypeService.read(stub(streetType));
+
+		if (streetType == null) {
 			addActionError(getText("common.object_not_selected"));
 			return REDIRECT_SUCCESS;
 		}
 
-		StreetType type = streetType.isNew() ? streetType : streetTypeService.read(stub(streetType));
-
 		if (isNotSubmit()) {
-			streetType = type;
 			initNames();
 			return INPUT;
 		}
@@ -43,17 +43,31 @@ public class StreetTypeEditAction extends FPActionSupport {
 		for (Map.Entry<Long, String> name : names.entrySet()) {
 			String value = name.getValue();
 			Language lang = getLang(name.getKey());
+			if (lang.isDefault()) {
+				boolean error = false;
+				if (StringUtils.isEmpty(value)) {
+					addActionError(getText("ab.error.street_type.full_name_is_required"));
+					error = true;
+				}
+				if (StringUtils.isEmpty(shortNames.get(name.getKey()))) {
+					addActionError(getText("ab.error.street_type.short_name_is_required"));
+					error = true;
+				}
+				if (error) {
+					return INPUT;
+				}
+			}
 			StreetTypeTranslation translation = new StreetTypeTranslation();
 			translation.setLang(lang);
 			translation.setName(value);
 			translation.setShortName(shortNames.get(name.getKey()));
-			type.setTranslation(translation);
+			streetType.setTranslation(translation);
 		}
 
-		if (type.isNew()) {
-			streetTypeService.create(type);
+		if (streetType.isNew()) {
+			streetTypeService.create(streetType);
 		} else {
-			streetTypeService.update(type);
+			streetTypeService.update(streetType);
 		}
 
 		return REDIRECT_SUCCESS;

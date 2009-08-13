@@ -2,7 +2,7 @@
 
 <s:actionerror />
 
-<s:form id="fobjects" action="measureUnitsList" namespace="/dicts">
+<s:form action="measureUnitsList" namespace="/dicts">
 
 	<table cellpadding="3" cellspacing="1" border="0" width="100%">
 		<tr>
@@ -16,25 +16,27 @@
 		<s:iterator value="units" status="rowstatus">
 			<tr valign="middle" class="cols_1">
 				<td class="col_1s"><s:property value="#rowstatus.index + 1" /></td>
-				<td class="col"><s:checkbox name="objectIds" fieldValue="%{id}" /></td>
 				<td class="col">
-					<s:property value="getTranslation(unitNames).name" />
+                    <input type="checkbox" name="objectIds" value="<s:property value="%{id}"/>" />
+                </td>
+				<td class="col">
+                    <a href="<s:url action="measureUnitView"><s:param name="measureUnit.id" value="%{id}"/></s:url>">
+    					<s:property value="getTranslation(unitNames).name" />
+                    </a>
 				</td>
 				<td class="col">
-					<a href="<s:url action="measureUnitEdit"><s:param name="measureUnit.id" value="%{id}"/></s:url>"><s:text name="ab.edit" /></a>
+					<a href="<s:url action="measureUnitEdit"><s:param name="measureUnit.id" value="%{id}"/></s:url>"><s:text name="common.edit" /></a>
 				</td>
 			</tr>
 		</s:iterator>
-
 		<tr>
 			<td colspan="4">
-				<input type="submit" class="btn-exit"
-					   onclick="$('#fobjects').attr('action','<s:url action="measureUnitDelete" includeParams="none" />');"
-					   value="<s:text name="common.delete_selected"/>"/>
+                <input type="submit" class="btn-exit" value="<s:text name="common.delete_selected"/>" />
 				<input type="button" class="btn-exit"
 					   onclick="window.location='<s:url action="measureUnitEdit"><s:param name="measureUnit.id" value="0" /></s:url>';"
 					   value="<s:text name="common.new"/>" />
 			</td>
 		</tr>
 	</table>
+
 </s:form>

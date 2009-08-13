@@ -13,7 +13,7 @@
 
 		<action name="townView" class="townViewAction">
 			<result type="tiles">ab.town.view</result>
-			<result type="redirect" name="redirectError">townsList.action</result>
+			<result name="redirectError" type="redirect">townsList.action</result>
 		</action>
 
 		<action name="townEdit" class="townEditAction">
@@ -22,7 +22,7 @@
 				<param name="parse">true</param>
 				<param name="object.id">${town.id}</param>
 			</result>
-			<result type="tiles" name="input">ab.town.edit</result>
+			<result name="input" type="tiles">ab.town.edit</result>
 		</action>
 
 		<action name="townDelete" class="townDeleteAction">
@@ -34,20 +34,25 @@
 	<package name="town_types" namespace="/dicts" extends="common">
 
 		<action name="townTypeView" class="townTypeViewAction">
-			<result name="success" type="tiles">ab.town_type.view</result>
+			<result type="tiles">ab.town_type.view</result>
+            <result name="redirectError" type="redirect-action">townTypesList</result>
 		</action>
 
 		<action name="townTypesList" class="townTypesListAction">
-			<result name="success" type="tiles">ab.town_type.list</result>
+			<result type="tiles">ab.town_type.list</result>
 		</action>
 
-		<action name="editTownType" class="townTypeEditAction">
-			<result name="input" type="tiles">ab.town_type.edit</result>
-			<result name="redirectSuccess" type="redirect-action">townTypesList</result>
+		<action name="townTypeEdit" class="townTypeEditAction">
+            <result name="redirectSuccess" type="redirect-action">
+                <param name="actionName">townTypeView</param>
+                <param name="parse">true</param>
+                <param name="townType.id">${townType.id}</param>
+            </result>
+            <result name="input" type="tiles">ab.town_type.edit</result>
 		</action>
 
 		<action name="townTypeDelete" class="townTypeDeleteAction">
-			<result type="redirect">townTypesList.action</result>
+            <result name="redirectSuccess" type="redirect-action">townTypesList</result>
 		</action>
 
 	</package>

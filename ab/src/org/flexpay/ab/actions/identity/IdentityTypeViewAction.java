@@ -3,21 +3,31 @@ package org.flexpay.ab.actions.identity;
 import org.flexpay.ab.persistence.IdentityType;
 import org.flexpay.ab.service.IdentityTypeService;
 import org.flexpay.common.actions.FPActionSupport;
-import org.flexpay.common.persistence.Stub;
+import static org.flexpay.common.persistence.Stub.stub;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
 public class IdentityTypeViewAction extends FPActionSupport {
 
-    private Long id;
-    private IdentityType identityType;
+    private IdentityType identityType = new IdentityType();
 
 	private IdentityTypeService identityTypeService;
 
     @NotNull
 	@Override
     public String doExecute() throws Exception {
-        identityType = identityTypeService.read(new Stub<IdentityType>(id));
+
+		if (identityType.isNew()) {
+			log.error(getText("error.invalid_id"));
+			return REDIRECT_ERROR;
+		}
+
+        identityType = identityTypeService.read(stub(identityType));
+
+		if (identityType == null) {
+			log.error(getText("common.object_not_selected"));
+			return REDIRECT_ERROR;
+		}
 
         return SUCCESS;
     }
@@ -32,16 +42,16 @@ public class IdentityTypeViewAction extends FPActionSupport {
     @NotNull
 	@Override
     protected String getErrorResult() {
-        return SUCCESS;
+		return REDIRECT_ERROR;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+	public IdentityType getIdentityType() {
+		return identityType;
+	}
 
-    public IdentityType getIdentityType() {
-        return identityType;
-    }
+	public void setIdentityType(IdentityType identityType) {
+		this.identityType = identityType;
+	}
 
 	@Required
     public void setIdentityTypeService(IdentityTypeService identityTypeService) {

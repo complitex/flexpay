@@ -12,4 +12,5 @@ public interface EndOperationDayRegistryGenerator {
 
 	public Registry generate(@NotNull PaymentPoint paymentPoint, @NotNull Organization organization,
 							 @NotNull Date beginDate, @NotNull Date endDate) throws FlexPayException;
+
 }

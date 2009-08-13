@@ -2,7 +2,7 @@
 
 <s:actionerror/>
 
-<s:form action="streetDistrictEdit" method="post">
+<s:form action="streetDistrictEdit">
 
     <s:hidden name="street.id" value="%{street.id}"/>
 

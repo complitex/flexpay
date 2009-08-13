@@ -30,8 +30,10 @@
 	</table>
 </s:form>
 
-<script type="text/javascript">
-    $(function() {
-        FF.updateFilter("street", {readonly:true});
-    });
-</script>
+<s:if test="%{address.id != 0}">
+    <script type="text/javascript">
+        $(function() {
+            FF.updateFilter("street", {readonly:true});
+        });
+    </script>
+</s:if>

@@ -1,5 +1,7 @@
 package org.flexpay.ab.persistence;
 
+import org.flexpay.ab.util.config.ApplicationConfig;
+import org.flexpay.common.persistence.Language;
 import org.flexpay.common.persistence.Translation;
 
 /**
@@ -7,17 +9,20 @@ import org.flexpay.common.persistence.Translation;
  */
 public class IdentityTypeTranslation extends Translation {
 
-	/**
-	 * Constructs a new IdentityTypeTranslation.
-	 */
 	public IdentityTypeTranslation() {
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
+	public IdentityTypeTranslation(String name) {
+		super(name, ApplicationConfig.getDefaultLanguage());
+	}
+
+	public IdentityTypeTranslation(String name, Language language) {
+		super(name, language);
+	}
+
 	@Override
 	public boolean equals(Object o) {
 		return o instanceof IdentityTypeTranslation && super.equals(o);
 	}
+
 }

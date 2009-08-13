@@ -36,7 +36,7 @@ public class BuildingCreateAction extends FPActionSupport {
 	@Override
 	public String doExecute() throws Exception {
 
-		if (!isSubmit()) {
+		if (isNotSubmit()) {
 			setupAttributes();
 			return INPUT;
 		}

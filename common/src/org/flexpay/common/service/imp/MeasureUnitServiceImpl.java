@@ -16,8 +16,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
 import java.util.List;
@@ -40,7 +40,6 @@ public class MeasureUnitServiceImpl implements MeasureUnitService {
 	 */
 	@Nullable
 	public MeasureUnit readFull(@NotNull Stub<? extends MeasureUnit> stub) {
-		log.debug("read called");
 		return measureUnitDao.readFull(stub.getId());
 	}
 
@@ -50,6 +49,7 @@ public class MeasureUnitServiceImpl implements MeasureUnitService {
 	 * @return List of Measure units
 	 */
 	@NotNull
+	@Override
 	public List<MeasureUnit> listUnits() {
 		return measureUnitDao.listUnits();
 	}
@@ -88,6 +88,7 @@ public class MeasureUnitServiceImpl implements MeasureUnitService {
 	 * @return Filter back, or a new instance if filter is <code>null</code>
 	 */
 	@NotNull
+	@Override
 	public MeasureUnitFilter initFilter(@Nullable MeasureUnitFilter filter) {
 
 		if (filter == null) {
@@ -108,6 +109,7 @@ public class MeasureUnitServiceImpl implements MeasureUnitService {
 	 */
 	@Transactional (readOnly = false)
 	@NotNull
+	@Override
 	public MeasureUnit create(@NotNull MeasureUnit unit) throws FlexPayExceptionContainer {
 
 		validate(unit);
@@ -188,4 +190,5 @@ public class MeasureUnitServiceImpl implements MeasureUnitService {
 	public void setModificationListener(ModificationListener<MeasureUnit> modificationListener) {
 		this.modificationListener = modificationListener;
 	}
+
 }

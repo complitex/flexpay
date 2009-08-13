@@ -41,6 +41,7 @@ public class IdentityTypeServiceImpl implements IdentityTypeService {
 	 * @return IdentityType object, or <code>null</code> if object not found
 	 */
 	@Nullable
+	@Override
 	public IdentityType read(@NotNull Stub<IdentityType> stub) {
 
 		return identityTypeDao.readFull(stub.getId());
@@ -52,6 +53,7 @@ public class IdentityTypeServiceImpl implements IdentityTypeService {
 	 * @param identityTypes IdentityTypes to disable
 	 */
 	@Transactional (readOnly = false)
+	@Override
 	public void disable(Collection<IdentityType> identityTypes) {
 		log.info("{} types to disable", identityTypes.size());
 		for (IdentityType type : identityTypes) {
@@ -64,6 +66,21 @@ public class IdentityTypeServiceImpl implements IdentityTypeService {
 		}
 	}
 
+	@Transactional (readOnly = false)
+	@Override
+	public void disableByIds(@NotNull Collection<Long> objectIds) {
+		for (Long id : objectIds) {
+			IdentityType identityType = identityTypeDao.readFull(id);
+			if (identityType != null) {
+				identityType.disable();
+				identityTypeDao.update(identityType);
+
+				modificationListener.onDelete(identityType);
+				log.debug("Disabled: {}", identityType);
+			}
+		}
+	}
+
 	/**
 	 * Create Entity
 	 *
@@ -73,6 +90,7 @@ public class IdentityTypeServiceImpl implements IdentityTypeService {
 	 *          if validation fails
 	 */
 	@Transactional (readOnly = false)
+	@Override
 	public IdentityType create(@NotNull IdentityType identityType) throws FlexPayExceptionContainer {
 
 		validate(identityType);
@@ -93,6 +111,7 @@ public class IdentityTypeServiceImpl implements IdentityTypeService {
 	 */
 	@SuppressWarnings ({"ThrowableInstanceNeverThrown"})
 	@Transactional (readOnly = false)
+	@Override
 	public IdentityType update(@NotNull IdentityType identityType) throws FlexPayExceptionContainer {
 
 		validate(identityType);
@@ -140,6 +159,7 @@ public class IdentityTypeServiceImpl implements IdentityTypeService {
 	 * @return IdentityType if found, or <code>null</code> otherwise
 	 */
 	@Nullable
+	@Override
 	public IdentityType getType(int typeId) {
 
 		for (IdentityType type : getEntities()) {
@@ -157,6 +177,7 @@ public class IdentityTypeServiceImpl implements IdentityTypeService {
 	 * @param typeName Type name
 	 * @return IdentityType if found, or <code>null</code> otherwise
 	 */
+	@Override
 	public IdentityType getType(String typeName) {
 		if (IdentityType.TYPE_NAME_PASSPORT.equals(typeName)) {
 			return getType(IdentityType.TYPE_PASSPORT);
@@ -175,6 +196,7 @@ public class IdentityTypeServiceImpl implements IdentityTypeService {
 	 * @return List of IdentityType
 	 */
 	@NotNull
+	@Override
 	public List<IdentityType> getEntities() {
 		return identityTypeDao.listIdentityTypes(IdentityType.STATUS_ACTIVE);
 	}
@@ -193,4 +215,5 @@ public class IdentityTypeServiceImpl implements IdentityTypeService {
 	public void setModificationListener(ModificationListener<IdentityType> modificationListener) {
 		this.modificationListener = modificationListener;
 	}
+
 }

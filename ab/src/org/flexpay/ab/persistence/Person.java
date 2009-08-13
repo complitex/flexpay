@@ -22,9 +22,6 @@ public class Person extends DomainObjectWithStatus {
 	private Set<PersonIdentity> personIdentities = Collections.emptySet();
 	private Set<PersonRegistration> personRegistrations = Collections.emptySet();
 
-	/**
-	 * Constructs a new Person.
-	 */
 	public Person() {
 	}
 
@@ -36,40 +33,20 @@ public class Person extends DomainObjectWithStatus {
 		super(stub.getId());
 	}
 
-	/**
-	 * Getter for property 'personAttributes'.
-	 *
-	 * @return Value for property 'personAttributes'.
-	 */
 	@NotNull
 	public Set<PersonAttribute> getPersonAttributes() {
 		return personAttributes;
 	}
 
-	/**
-	 * Setter for property 'personAttributes'.
-	 *
-	 * @param personAttributes Value to set for property 'personAttributes'.
-	 */
 	public void setPersonAttributes(@NotNull Set<PersonAttribute> personAttributes) {
 		this.personAttributes = personAttributes;
 	}
 
-	/**
-	 * Getter for property 'personIdentities'.
-	 *
-	 * @return Value for property 'personIdentities'.
-	 */
 	@NotNull
 	public Set<PersonIdentity> getPersonIdentities() {
 		return personIdentities;
 	}
 
-	/**
-	 * Setter for property 'personIdentities'.
-	 *
-	 * @param personIdentities Value to set for property 'personIdentities'.
-	 */
 	public void setPersonIdentities(@NotNull Set<PersonIdentity> personIdentities) {
 		this.personIdentities = personIdentities;
 	}
@@ -270,16 +247,10 @@ public class Person extends DomainObjectWithStatus {
 		personRegistrations.addAll(registrations);
 	}
 
-	/**
-	 * @return the personRegistrations
-	 */
 	public Set<PersonRegistration> getPersonRegistrations() {
 		return personRegistrations;
 	}
 
-	/**
-	 * @param personRegistrations the personRegistrations to set
-	 */
 	public void setPersonRegistrations(Set<PersonRegistration> personRegistrations) {
 		this.personRegistrations = personRegistrations;
 	}
@@ -386,11 +357,9 @@ public class Person extends DomainObjectWithStatus {
 		return pi.getLastName() + " " + pi.getFirstName() + " " + pi.getMiddleName();
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public boolean equals(Object obj) {
 		return obj instanceof Person && super.equals(obj);
 	}
+
 }
