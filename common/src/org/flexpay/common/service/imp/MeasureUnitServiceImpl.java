@@ -65,12 +65,13 @@ public class MeasureUnitServiceImpl implements MeasureUnitService {
 		return MeasureUnit.class;
 	}
 
+	@Transactional (readOnly = false)
 	@Override
 	public void disable(@NotNull Collection<Long> ids) {
 
 		log.debug("Disabling service types");
 		for (Long id : ids) {
-			MeasureUnit unit = readFull(new Stub<MeasureUnit>(id));
+			MeasureUnit unit = measureUnitDao.read(id);
 			if (unit != null) {
 				unit.disable();
 				measureUnitDao.update(unit);

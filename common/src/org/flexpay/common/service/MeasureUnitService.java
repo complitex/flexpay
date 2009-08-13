@@ -8,6 +8,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.Collection;
 
 /**
  * Service helping working with MeasureUnit-s
@@ -51,6 +52,9 @@ public interface MeasureUnitService extends DomainObjectService<MeasureUnit> {
 	@NotNull
 	@Override
 	MeasureUnit create(@NotNull MeasureUnit unit) throws FlexPayExceptionContainer;
+
+	@Override
+	void disable(@NotNull Collection<Long> ids);
 
 	/**
 	 * Update measure unit
