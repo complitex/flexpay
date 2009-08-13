@@ -3,6 +3,7 @@ package org.flexpay.ab.actions.identity;
 import org.flexpay.ab.persistence.IdentityType;
 import org.flexpay.ab.service.IdentityTypeService;
 import org.flexpay.common.actions.FPActionSupport;
+import static org.flexpay.common.util.CollectionUtils.list;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
@@ -10,7 +11,7 @@ import java.util.List;
 
 public class IdentityTypesListAction extends FPActionSupport {
 
-	private List<IdentityType> identityTypes;
+	private List<IdentityType> identityTypes = list();
 
 	private IdentityTypeService identityTypeService;
 

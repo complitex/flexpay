@@ -4,9 +4,9 @@
 	<tr>
 		<td class="th" width="1%">&nbsp;</td>
 		<td class="th"><s:text name="ab.language"/></td>
-		<td class="th"><s:text name="ab.identity_type"/></td>
+		<td class="th"><s:text name="common.measure_unit"/></td>
 	</tr>
-	<s:iterator value="identityType.translations" status="rowstatus">
+	<s:iterator value="measureUnit.unitNames" status="rowstatus">
 		<tr valign="middle" class="cols_1">
 			<td class="col_1s">
 				<s:property value="#rowstatus.index + 1"/>
@@ -28,7 +28,7 @@
 	<tr>
 		<td colspan="3">
             <input type="button" class="btn-exit"
-                   onclick="window.location='<s:url action="identityTypeEdit"><s:param name="identityType.id" value="%{identityType.id}" /></s:url>';"
+                   onclick="window.location='<s:url action="measureUnitEdit"><s:param name="measureUnit.id" value="%{measureUnit.id}" /></s:url>';"
                    value="<s:text name="common.edit" />" />
 		</td>
 	</tr>

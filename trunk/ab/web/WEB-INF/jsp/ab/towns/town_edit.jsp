@@ -2,13 +2,13 @@
 
 <s:actionerror />
 
-<s:form action="townEdit" method="post">
+<s:form action="townEdit">
 	<s:hidden name="town.id" value="%{town.id}" />
 
 	<table cellpadding="3" cellspacing="1" border="0" width="100%">
 		<tr>
 			<td colspan="2">
-				<%@ include file="../filters/groups/country_region_ajax.jsp" %>
+				<%@include file="../filters/groups/country_region_ajax.jsp" %>
 			</td>
 		</tr>
         <tr valign="middle" class="cols_1">
@@ -16,13 +16,13 @@
                 <s:text name="common.begin_date" />
             </td>
             <td class="col">
-                <%@ include file="/WEB-INF/jsp/common/filter/begin_date_filter.jsp" %>
+                <%@include file="/WEB-INF/jsp/common/filter/begin_date_filter.jsp" %>
             </td>
         </tr>
 		<tr valign="top" class="cols_1">
 			<td class="col"><s:text name="ab.town_type" />:</td>
 			<td class="col">
-				<%@ include file="../filters/town_type_filter.jsp" %>
+				<%@include file="../filters/town_type_filter.jsp" %>
 			</td>
 		</tr>
 		<tr valign="top" class="cols_1">

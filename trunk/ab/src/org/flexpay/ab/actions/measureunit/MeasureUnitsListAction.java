@@ -5,13 +5,14 @@ import org.flexpay.common.persistence.MeasureUnit;
 import org.flexpay.common.service.MeasureUnitService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
+import static org.flexpay.common.util.CollectionUtils.list;
 
 import java.util.Collections;
 import java.util.List;
 
 public class MeasureUnitsListAction extends FPActionSupport {
 
-	private List<MeasureUnit> units = Collections.emptyList();
+	private List<MeasureUnit> units = list();
 
 	private MeasureUnitService measureUnitService;
 

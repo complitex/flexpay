@@ -30,11 +30,11 @@
             <td class="th" width="1%">
                 <input type="checkbox" onchange="FP.setCheckboxes(this.checked, 'objectIds');" />
             </td>
-            <td class="<s:if test="townSorterByType.activated">th_s</s:if><s:else>th</s:else>" width="32%" nowrap="nowrap">
-                <%@ include file="../sorters/town_sort_by_type_header.jsp" %>
-            </td>
             <td class="<s:if test="townSorterByName.activated">th_s</s:if><s:else>th</s:else>" width="31%" nowrap="nowrap">
                 <%@ include file="../sorters/town_sort_by_name_header.jsp" %>
+            </td>
+            <td class="<s:if test="townSorterByType.activated">th_s</s:if><s:else>th</s:else>" width="32%" nowrap="nowrap">
+                <%@ include file="../sorters/town_sort_by_type_header.jsp" %>
             </td>
             <td class="th" width="35%">&nbsp;</td>
         </tr>
@@ -47,10 +47,10 @@
                     <input type="checkbox" value="<s:property value="%{id}"/>" name="objectIds"/>
                 </td>
                 <td class="col">
-                    <s:property value="%{getTranslation(getCurrentType().translations).name}"/>
+                    <a href="<s:url action="streetsList"><s:param name="townFilter" value="%{id}" /></s:url>"><s:property value="%{getTranslation(getCurrentName().translations).name}"/></a>
                 </td>
                 <td class="col">
-                    <a href="<s:url action="streetsList"><s:param name="townFilter" value="%{id}" /></s:url>"><s:property value="%{getTranslation(getCurrentName().translations).name}"/></a>
+                    <s:property value="%{getTranslation(getCurrentType().translations).name}"/>
                 </td>
                 <td class="col">
                     <a href="<s:url action="townView"><s:param name="object.id" value="%{id}" /></s:url>"><s:text name="common.view"/></a>&nbsp;

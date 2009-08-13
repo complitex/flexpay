@@ -10,6 +10,7 @@ import static org.flexpay.common.persistence.Stub.stub;
 import static org.flexpay.common.util.CollectionUtils.treeMap;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
+import org.apache.commons.lang.StringUtils;
 
 import java.util.Map;
 
@@ -25,15 +26,14 @@ public class IdentityTypeEditAction extends FPActionSupport {
 	@Override
 	public String doExecute() throws Exception {
 
-		if (identityType.getId() == null) {
+		identityType = identityType.isNew() ? identityType : identityTypeService.read(stub(identityType));
+
+		if (identityType == null) {
 			addActionError(getText("common.object_not_selected"));
 			return REDIRECT_SUCCESS;
 		}
 
-		IdentityType type = identityType.isNew() ? identityType : identityTypeService.read(stub(identityType));
-
 		if (isNotSubmit()) {
-			identityType = type;
 			initTranslations();
 			return INPUT;
 		}
@@ -42,16 +42,17 @@ public class IdentityTypeEditAction extends FPActionSupport {
 		for (Map.Entry<Long, String> name : names.entrySet()) {
 			String value = name.getValue();
 			Language lang = getLang(name.getKey());
-			IdentityTypeTranslation translation = new IdentityTypeTranslation();
-			translation.setLang(lang);
-			translation.setName(value);
-			type.setTranslation(translation);
+			if (lang.isDefault() && StringUtils.isEmpty(value)) {
+				addActionError(getText("ab.error.identity_type.full_name_is_required"));
+				return INPUT;
+			}
+			identityType.setTranslation(new IdentityTypeTranslation(value, lang));
 		}
 
-		if (type.isNew()) {
-			identityTypeService.create(type);
+		if (identityType.isNew()) {
+			identityTypeService.create(identityType);
 		} else {
-			identityTypeService.update(type);
+			identityTypeService.update(identityType);
 		}
 
 		return REDIRECT_SUCCESS;

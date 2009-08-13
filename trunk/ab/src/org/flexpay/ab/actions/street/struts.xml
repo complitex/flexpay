@@ -8,12 +8,12 @@
 	<package name="streets" namespace="/dicts" extends="common">
 
 		<action name="streetsList" class="streetsListPageAction">
-			<result name="success" type="tiles">ab.streets.list</result>
+			<result type="tiles">ab.streets.list</result>
 		</action>
 
 		<action name="streetView" class="streetViewAction">
 			<result type="tiles">ab.street.view</result>
-			<result type="redirect" name="redirectError">streetsList.action</result>
+			<result name="redirectError" type="redirect-action">streetsList</result>
 		</action>
 
 		<action name="streetEdit" class="streetEditAction">
@@ -22,15 +22,15 @@
                 <param name="parse">true</param>
                 <param name="object.id">${street.id}</param>
             </result>
-			<result type="tiles" name="input">ab.street.edit</result>
+			<result name="input" type="tiles">ab.street.edit</result>
 		</action>
 
 		<action name="streetDelete" class="streetDeleteAction">
-			<result name="redirectSuccess" type="redirect">streetsList.action</result>
+			<result name="redirectSuccess" type="redirect-action">streetsList</result>
 		</action>
 
 		<action name="streetDistrictEdit" class="streetDistrictEditAction">
-			<result type="tiles" name="input">ab.street.edit.districts</result>
+			<result name="input" type="tiles">ab.street.edit.districts</result>
 			<result type="redirect-action">
 				<param name="actionName">streetView</param>
 				<param name="parse">true</param>
@@ -43,20 +43,25 @@
 	<package name="street_types" namespace="/dicts" extends="common">
 
 		<action name="streetTypeView" class="streetTypeViewAction">
-			<result name="success" type="tiles">ab.street_type.view</result>
+			<result type="tiles">ab.street_type.view</result>
+            <result name="redirectError" type="redirect-action">streetTypesList</result>
 		</action>
 
 		<action name="streetTypesList" class="streetTypesListAction">
-			<result name="success" type="tiles">ab.street_type.list</result>
+			<result type="tiles">ab.street_type.list</result>
 		</action>
 
-		<action name="editStreetType" class="streetTypeEditAction">
+		<action name="streetTypeEdit" class="streetTypeEditAction">
+            <result name="redirectSuccess" type="redirect-action">
+                <param name="actionName">streetTypeView</param>
+                <param name="parse">true</param>
+                <param name="streetType.id">${streetType.id}</param>
+            </result>
 			<result name="input" type="tiles">ab.street_type.edit</result>
-			<result name="redirectSuccess" type="redirect-action">streetTypesList</result>
 		</action>
 
 		<action name="streetTypeDelete" class="streetTypeDeleteAction">
-			<result type="redirect">streetTypesList.action</result>
+			<result name="redirectSuccess" type="redirect-action">streetTypesList</result>
 		</action>
 
 	</package>

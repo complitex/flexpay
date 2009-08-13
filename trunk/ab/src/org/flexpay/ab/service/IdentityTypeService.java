@@ -41,6 +41,7 @@ public interface IdentityTypeService extends
 	 * @return Entity object, or <code>null</code> if object not found
 	 */
 	@Secured (Roles.IDENTITY_TYPE_READ)
+	@Override
 	IdentityType read(Stub<IdentityType> stub);
 
 	/**
@@ -50,6 +51,7 @@ public interface IdentityTypeService extends
 	 */
 	@Secured (Roles.IDENTITY_TYPE_READ)
 	@NotNull
+	@Override
 	List<IdentityType> getEntities();
 
 	/**
@@ -58,7 +60,16 @@ public interface IdentityTypeService extends
 	 * @param entity Entity to disable
 	 */
 	@Secured (Roles.IDENTITY_TYPE_DELETE)
+	@Override
 	void disable(Collection<IdentityType> entity);
+
+	/**
+	 * Disable objects
+	 *
+	 * @param objectIds IDs of objects to disable
+	 */
+	@Secured (Roles.IDENTITY_TYPE_DELETE)
+	void disableByIds(@NotNull Collection<Long> objectIds);
 
 	/**
 	 * Create Entity
@@ -69,6 +80,7 @@ public interface IdentityTypeService extends
 	 *          if validation fails
 	 */
 	@Secured (Roles.IDENTITY_TYPE_ADD)
+	@Override
 	IdentityType create(@NotNull IdentityType identityType) throws FlexPayExceptionContainer;
 
 	/**
@@ -80,5 +92,7 @@ public interface IdentityTypeService extends
 	 *          if validation fails
 	 */
 	@Secured (Roles.IDENTITY_TYPE_CHANGE)
+	@Override
 	IdentityType update(@NotNull IdentityType entity) throws FlexPayExceptionContainer;
+
 }

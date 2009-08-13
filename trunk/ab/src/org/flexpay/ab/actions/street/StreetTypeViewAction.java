@@ -3,22 +3,31 @@ package org.flexpay.ab.actions.street;
 import org.flexpay.ab.persistence.StreetType;
 import org.flexpay.ab.service.StreetTypeService;
 import org.flexpay.common.actions.FPActionSupport;
-import org.flexpay.common.persistence.Stub;
+import static org.flexpay.common.persistence.Stub.stub;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
-//TODO: This class has a out-of-date structure. Must be remake
 public class StreetTypeViewAction extends FPActionSupport {
 
-	private Long id;
-	private StreetType streetType;
+	private StreetType streetType = new StreetType();
 
 	private StreetTypeService streetTypeService;
 
 	@NotNull
 	@Override
 	public String doExecute() throws Exception {
-		streetType = streetTypeService.read(new Stub<StreetType>(id));
+
+		if (streetType.isNew()) {
+			log.error(getText("error.invalid_id"));
+			return REDIRECT_ERROR;
+		}
+
+		streetType = streetTypeService.read(stub(streetType));
+
+		if (streetType == null) {
+			log.error(getText("common.object_not_selected"));
+			return REDIRECT_ERROR;
+		}
 
 		return SUCCESS;
 	}
@@ -33,15 +42,15 @@ public class StreetTypeViewAction extends FPActionSupport {
 	@NotNull
 	@Override
 	protected String getErrorResult() {
-		return SUCCESS;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
+		return REDIRECT_ERROR;
 	}
 
 	public StreetType getStreetType() {
 		return streetType;
+	}
+
+	public void setStreetType(StreetType streetType) {
+		this.streetType = streetType;
 	}
 
 	@Required

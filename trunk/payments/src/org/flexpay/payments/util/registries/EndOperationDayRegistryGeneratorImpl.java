@@ -41,13 +41,16 @@ public class EndOperationDayRegistryGeneratorImpl implements EndOperationDayRegi
 
 	@Transactional (propagation = Propagation.NOT_SUPPORTED, readOnly = false)
 	@Nullable
+	@Override
 	public Registry generate(@NotNull PaymentPoint paymentPoint, @NotNull Organization organization,
 							 @NotNull Date beginDate, @NotNull Date endDate) throws FlexPayException {
 
 		log.info("Start generating end operation day registry...");
 
 		List<Operation> operations = operationService.listReceivedPayments(stub(paymentPoint), beginDate, endDate);
-		log.debug("Found {} operations", operations.size());
+		if (log.isDebugEnabled()) {
+			log.debug("Found {} operations", operations.size());
+		}
 
 		Registry registry = new Registry();
 

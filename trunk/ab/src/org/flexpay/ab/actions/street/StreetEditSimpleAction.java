@@ -5,7 +5,6 @@ import org.flexpay.ab.persistence.filters.StreetTypeFilter;
 import org.flexpay.ab.service.StreetService;
 import org.flexpay.ab.service.StreetTypeService;
 import org.flexpay.ab.service.TownService;
-import org.flexpay.ab.util.config.ApplicationConfig;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Language;
@@ -38,19 +37,18 @@ public class StreetEditSimpleAction extends FPActionSupport {
 	@Override
 	protected String doExecute() throws Exception {
 
-		Street strt = street.isNew() ? street : streetService.readFull(stub(street));
+		street = street.isNew() ? street : streetService.readFull(stub(street));
 		initFilters();
 
 		if (isSubmit()) {
-			if (!doValidate(strt)) {
+			if (!doValidate()) {
 				return INPUT;
 			}
-			updateStreet(strt);
+			updateStreet();
 
 			return REDIRECT_SUCCESS;
 		}
 
-		street = strt;
 		initData();
 		return INPUT;
 
@@ -59,17 +57,17 @@ public class StreetEditSimpleAction extends FPActionSupport {
 	/*
 	* Creates new street if it is a new one (haven't been yet persisted) or updates persistent one
 	*/
-	private void updateStreet(Street strt) throws FlexPayExceptionContainer {
+	private void updateStreet() throws FlexPayExceptionContainer {
 
 		StreetName streetName = getStreetName();
-		strt.setNameForDate(streetName, beginDateFilter.getDate());
-		strt.setTypeForDate(new StreetType(streetTypeFilter.getSelectedStub()), beginDateFilter.getDate());
+		street.setNameForDate(streetName, beginDateFilter.getDate());
+		street.setTypeForDate(new StreetType(streetTypeFilter.getSelectedStub()), beginDateFilter.getDate());
 
-		if (strt.isNew()) {
-			strt.setParent(new Town(townFilter));
-			streetService.create(strt);
+		if (street.isNew()) {
+			street.setParent(new Town(townFilter));
+			streetService.create(street);
 		} else {
-			streetService.update(strt);
+			streetService.update(street);
 		}
 
 	}
@@ -86,14 +84,9 @@ public class StreetEditSimpleAction extends FPActionSupport {
 		return streetName;
 	}
 
-	private boolean doValidate(Street strt) {
+	private boolean doValidate() {
 
-		if (strt.getId() == null) {
-			addActionError(getText("error.invalid_id"));
-			return false;
-		}
-
-		if (strt == null) {
+		if (street == null) {
 			addActionError(getText("common.object_not_selected"));
 			return false;
 		}

@@ -8,20 +8,25 @@
 	<package name="identity_types" namespace="/dicts" extends="common">
 
 		<action name="identityTypeView" class="identityTypeViewAction">
-			<result name="success" type="tiles">ab.identity_type.view</result>
+			<result type="tiles">ab.identity_type.view</result>
+            <result name="redirectError" type="redirect-action">identityTypesList</result>
 		</action>
 
 		<action name="identityTypesList" class="identityTypesListAction">
-			<result name="success" type="tiles">ab.identity_type.list</result>
+			<result type="tiles">ab.identity_type.list</result>
 		</action>
 
 		<action name="identityTypeEdit" class="identityTypeEditAction">
+            <result name="redirectSuccess" type="redirect-action">
+                <param name="actionName">identityTypeView</param>
+                <param name="parse">true</param>
+                <param name="identityType.id">${identityType.id}</param>
+            </result>
 			<result name="input" type="tiles">ab.identity_type.edit</result>
-			<result name="redirectSuccess" type="redirect-action">identityTypesList</result>
 		</action>
 
 		<action name="identityTypeDelete" class="identityTypeDeleteAction">
-			<result type="redirect">identityTypesList.action</result>
+			<result name="redirectSuccess" type="redirect-action">identityTypesList</result>
 		</action>
 
 	</package>

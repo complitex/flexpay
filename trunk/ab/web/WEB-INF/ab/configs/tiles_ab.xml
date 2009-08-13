@@ -123,7 +123,7 @@
 	<!-- Town types -->
 	<definition name="ab.town_type.list" extends="ab.layout.standart">
 		<put-attribute name="title" value="ab.town_type.list.title" />
-		<put-attribute name="body" value="/WEB-INF/jsp/ab/towns/town_type_list.jsp" />
+		<put-attribute name="body" value="/WEB-INF/jsp/ab/towns/town_types_list.jsp" />
 	</definition>
 	<definition name="ab.town_type.view" extends="ab.layout.standart">
 		<put-attribute name="title" value="ab.town_type.view.title" />
@@ -137,7 +137,7 @@
 	<!-- Street types -->
 	<definition name="ab.street_type.list" extends="ab.layout.standart">
 		<put-attribute name="title" value="ab.street_type.list.title" />
-		<put-attribute name="body" value="/WEB-INF/jsp/ab/streets/street_type_list.jsp" />
+		<put-attribute name="body" value="/WEB-INF/jsp/ab/streets/street_types_list.jsp" />
 	</definition>
 	<definition name="ab.street_type.view" extends="ab.layout.standart">
 		<put-attribute name="title" value="ab.street_type.view.title" />
@@ -151,7 +151,7 @@
 	<!-- Identity types -->
 	<definition name="ab.identity_type.list" extends="ab.layout.standart">
 		<put-attribute name="title" value="ab.identity_type.list.title" />
-		<put-attribute name="body" value="/WEB-INF/jsp/ab/identity_types/identity_type_list.jsp" />
+		<put-attribute name="body" value="/WEB-INF/jsp/ab/identity_types/identity_types_list.jsp" />
 	</definition>
 	<definition name="ab.identity_type.view" extends="ab.layout.standart">
 		<put-attribute name="title" value="ab.identity_type.view.title" />
@@ -227,13 +227,17 @@
 	</definition>
 
 	<!-- Measure units -->
+    <definition name="ab.measure_unit.view" extends="ab.layout.standart">
+        <put-attribute name="title" value="common.measure_units.view.title" />
+        <put-attribute name="body" value="/WEB-INF/jsp/ab/measure_units/measure_unit_view.jsp" />
+    </definition>
 	<definition name="ab.measure_unit.list" extends="ab.layout.standart">
 		<put-attribute name="title" value="common.measure_units.list.title" />
-		<put-attribute name="body" value="/WEB-INF/jsp/ab/measure_unit/measure_units_list.jsp" />
+		<put-attribute name="body" value="/WEB-INF/jsp/ab/measure_units/measure_units_list.jsp" />
 	</definition>
 	<definition name="ab.measure_unit.edit" extends="ab.layout.standart">
 		<put-attribute name="title" value="common.measure_units.edit.title" />
-		<put-attribute name="body" value="/WEB-INF/jsp/ab/measure_unit/measure_unit_edit.jsp" />
+		<put-attribute name="body" value="/WEB-INF/jsp/ab/measure_units/measure_unit_edit.jsp" />
 	</definition>
 
 

@@ -18,7 +18,7 @@
         </select>&nbsp;
         <input type="hidden" id="pageNumber" name="pager.pageNumber" value="" />
 		<s:text name="common.pages"/>:&nbsp;
-		<s:if test="%{pager.isFirstPage() == false}">
+		<s:if test="%{!pager.isFirstPage()}">
 			<input type="button" name="pager.pageNumber" value="1" class="btn-link" onclick="pagerAjax(this);" />&nbsp;
 		</s:if>
 
@@ -41,7 +41,7 @@
 			...&nbsp;
 		</s:if>
 
-		<s:if test="%{pager.isLastPage() == false}">
+		<s:if test="%{!pager.isLastPage()}">
 			<input type="button" name="pager.pageNumber" value="<s:property value="%{pager.lastPageNumber}"/>"
 				   class="btn-link" onclick="pagerAjax(this);" />&nbsp;
 		</s:if>

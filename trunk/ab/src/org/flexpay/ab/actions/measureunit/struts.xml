@@ -7,13 +7,22 @@
 
 	<package name="measure_units" namespace="/dicts" extends="common">
 
+        <action name="measureUnitView" class="measureUnitViewAction">
+            <result type="tiles">ab.measure_unit.view</result>
+            <result name="redirectError" type="redirect-action">measureUnitsList</result>
+        </action>
+
 		<action name="measureUnitsList" class="measureUnitsListAction">
-			<result name="success" type="tiles">ab.measure_unit.list</result>
+			<result type="tiles">ab.measure_unit.list</result>
 		</action>
 
 		<action name="measureUnitEdit" class="measureUnitEditAction">
+            <result name="redirectSuccess" type="redirect-action">
+                <param name="actionName">measureUnitView</param>
+                <param name="parse">true</param>
+                <param name="measureUnit.id">${measureUnit.id}</param>
+            </result>
 			<result name="input" type="tiles">ab.measure_unit.edit</result>
-			<result name="redirectSuccess" type="redirect-action">measureUnitsList</result>
 		</action>
 
 		<action name="measureUnitDelete" class="measureUnitDeleteAction">

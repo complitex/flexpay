@@ -36,10 +36,6 @@ public class TownDeleteAction extends FPActionSupport {
 		return REDIRECT_SUCCESS;
 	}
 
-	public Set<Long> getObjectIds() {
-		return objectIds;
-	}
-
 	public void setObjectIds(Set<Long> objectIds) {
 		this.objectIds = objectIds;
 	}

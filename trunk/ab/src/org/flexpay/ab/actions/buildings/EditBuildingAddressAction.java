@@ -1,5 +1,6 @@
 package org.flexpay.ab.actions.buildings;
 
+import org.apache.commons.lang.StringUtils;
 import org.flexpay.ab.persistence.*;
 import org.flexpay.ab.service.AddressAttributeTypeService;
 import org.flexpay.ab.service.BuildingService;
@@ -13,7 +14,6 @@ import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.util.CollectionUtils;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
-import org.apache.commons.lang.StringUtils;
 
 import java.util.Map;
 
@@ -36,21 +36,20 @@ public class EditBuildingAddressAction extends FPActionSupport {
 	@Override
 	public String doExecute() throws Exception {
 
-		if (building.getId() == null || address.getId() == null) {
+		if (building.getId() == null) {
 			addActionError(getText("error.no_id"));
 			return REDIRECT_ERROR;
 		}
 
 		building = buildingService.read(stub(building));
-		BuildingAddress addr = address.isNew() ? address : building.getAddress(stub(address));
-		if (addr == null) {
+		address = address.isNew() ? address : building.getAddress(stub(address));
+		if (address == null) {
 			log.warn("Building address mismatch: {}, {}", building, address);
 			addActionError(getText("error.ab.internal.address_building_mismatch"));
 			return REDIRECT_ERROR;
 		}
 
-		if (!isSubmit()) {
-			address = addr;
+		if (isNotSubmit()) {
 			setupAttributes();
 			return INPUT;
 		}
@@ -60,15 +59,12 @@ public class EditBuildingAddressAction extends FPActionSupport {
 		}
 
 		Street street = streetService.readFull(new Stub<Street>(streetFilter));
-		addr.setStreet(street);
+		address.setStreet(street);
 		for (Map.Entry<Long, String> attr : attributeMap.entrySet()) {
 			AddressAttributeType type = addressAttributeTypeService.read(new Stub<AddressAttributeType>(attr.getKey()));
-			addr.setBuildingAttribute(attr.getValue(), type);
+			address.setBuildingAttribute(attr.getValue(), type);
 		}
-		if (addr.isNew()) {
-			addr.setId(null);
-		}
-		building.addAddress(addr);
+		building.addAddress(address);
 
 		log.debug("About to update building");
 		buildingService.update(building);

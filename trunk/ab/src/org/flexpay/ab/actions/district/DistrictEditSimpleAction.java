@@ -3,7 +3,6 @@ package org.flexpay.ab.actions.district;
 import org.flexpay.ab.persistence.*;
 import org.flexpay.ab.service.DistrictService;
 import org.flexpay.ab.service.TownService;
-import org.flexpay.ab.util.config.ApplicationConfig;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Language;
@@ -40,32 +39,26 @@ public class DistrictEditSimpleAction extends FPActionSupport {
 	@Override
 	protected String doExecute() throws Exception {
 
-		District dstrct = district.isNew() ? district : districtService.readFull(stub(district));
+		district = district.isNew() ? district : districtService.readFull(stub(district));
 
 		if (isSubmit()) {
-			if (!doValidate(dstrct)) {
+			if (!doValidate()) {
 				return INPUT;
 			}
-			updateDistrict(dstrct);
+			updateDistrict();
 
 			return REDIRECT_SUCCESS;
 		}
 
-		district = dstrct;
 		initData();
 
 		return INPUT;
 
 	}
 
-	private boolean doValidate(District dstrct) {
+	private boolean doValidate() {
 
-		if (dstrct.getId() == null) {
-			addActionError(getText("error.invalid_id"));
-			return false;
-		}
-
-		if (dstrct == null) {
+		if (district == null) {
 			addActionError(getText("common.object_not_selected"));
 			return false;
 		}
@@ -85,16 +78,16 @@ public class DistrictEditSimpleAction extends FPActionSupport {
 	/*
 	* Creates new district if it is a new one (haven't been yet persisted) or updates persistent one
 	*/
-	private void updateDistrict(District dstrct) throws FlexPayExceptionContainer {
+	private void updateDistrict() throws FlexPayExceptionContainer {
 
 		DistrictName districtName = getDistrictName();
-		dstrct.setNameForDate(districtName, beginDateFilter.getDate());
+		district.setNameForDate(districtName, beginDateFilter.getDate());
 
-		if (dstrct.isNew()) {
-			dstrct.setParent(new Town(townFilter));
-			districtService.create(dstrct);
+		if (district.isNew()) {
+			district.setParent(new Town(townFilter));
+			districtService.create(district);
 		} else {
-			districtService.update(dstrct);
+			districtService.update(district);
 		}
 
 	}

@@ -74,6 +74,14 @@ public interface StreetTypeService extends
 	void disable(Collection<StreetType> entities);
 
 	/**
+	 * Disable objects
+	 *
+	 * @param objectIds IDs of objects to disable
+	 */
+	@Secured (Roles.STREET_TYPE_DELETE)
+	void disableByIds(@NotNull Collection<Long> objectIds);
+
+	/**
 	 * Create Entity
 	 *
 	 * @param streetType Entity to save

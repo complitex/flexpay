@@ -5,6 +5,7 @@
 		<td class="th">&nbsp;</td>
 		<td class="th"><s:text name="ab.from"/></td>
 		<td class="th"><s:text name="ab.till"/></td>
+        <td class="th"><s:text name="common.language" /></td>
 		<td class="th"><s:text name="ab.street"/></td>
 	</tr>
 	<s:set name="index" value="1" />
@@ -40,6 +41,7 @@
 		<td class="th">&nbsp;</td>
 		<td class="th"><s:text name="ab.from"/></td>
 		<td class="th"><s:text name="ab.till"/></td>
+        <td class="th"><s:text name="common.language" /></td>
 		<td class="th"><s:text name="ab.street.type"/></td>
 	</tr>
 	<s:set name="index" value="1" />
@@ -74,20 +76,20 @@
 	<tr>
 		<td class="th">&nbsp;</td>
 		<td class="th"><s:text name="ab.district"/></td>
-		<td class="th" colspan="2">&nbsp;</td>
+		<td class="th" colspan="3">&nbsp;</td>
 	</tr>
 	<s:iterator value="%{districts}" status="status">
 		<tr valign="middle" class="cols_1">
 			<td class="col_1s" align="right"><s:property
 					value="%{#status.index + 1}"/>&nbsp;</td>
 			<td class="col"><s:property value="%{getTranslation(currentName.translations).name}"/></td>
-			<td class="col" colspan="2">
+			<td class="col" colspan="3">
 				<a href="<s:url value="/dicts/districtView.action?object.id=%{object.id}"/>"><s:text
 						name="common.view"/></a></td>
 		</tr>
 	</s:iterator>
 	<tr>
-		<td colspan="4">
+		<td colspan="5">
 			<input type="button" class="btn-exit" title="<s:text name="ab.street.add_street_name"/>"
 				   onclick="window.location='<s:url action="streetEdit" includeParams="none"><s:param name="street.id" value="%{object.id}"/></s:url>';"
 				   value="<s:text name="common.edit"/>"/>

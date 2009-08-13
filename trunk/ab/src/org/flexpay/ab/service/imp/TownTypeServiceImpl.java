@@ -43,17 +43,13 @@ public class TownTypeServiceImpl implements TownTypeService {
 	 * @return List of TownTypes
 	 * @throws FlexPayException if failure occurs
 	 */
-	private List<TownTypeTranslation> getTranslations(Locale locale)
-			throws FlexPayException {
+	private List<TownTypeTranslation> getTranslations(Locale locale) throws FlexPayException {
 
 		log.debug("Getting list of TownTypes");
-		List<TownType> townTypes = townTypeDao
-				.listTownTypes(TownType.STATUS_ACTIVE);
-		List<TownTypeTranslation> translations = new ArrayList<TownTypeTranslation>(
-				townTypes.size());
+		List<TownType> townTypes = townTypeDao.listTownTypes(TownType.STATUS_ACTIVE);
+		List<TownTypeTranslation> translations = new ArrayList<TownTypeTranslation>();
 
 		log.debug("TownTypes: {}", townTypes);
-
 
 		for (TownType townType : townTypes) {
 			TownTypeTranslation translation = TranslationUtil.getTranslation(
@@ -77,6 +73,7 @@ public class TownTypeServiceImpl implements TownTypeService {
 	 *          if validation fails
 	 */
 	@Transactional (readOnly = false)
+	@Override
 	public TownType create(@NotNull TownType townType) throws FlexPayExceptionContainer {
 
 		validate(townType);
@@ -96,9 +93,10 @@ public class TownTypeServiceImpl implements TownTypeService {
 	 * @throws FlexPayExceptionContainer if validation fails
 	 */
 	@Transactional (readOnly = false)
+	@Override
 	public TownType update(@NotNull TownType type) throws FlexPayExceptionContainer {
 
-		validate(type);
+//		validate(type);
 
 		TownType oldType = read(stub(type));
 		sessionUtils.evict(oldType);
@@ -138,6 +136,7 @@ public class TownTypeServiceImpl implements TownTypeService {
 	 * @param stub Entity stub
 	 * @return TownType object, or <code>null</code> if object not found
 	 */
+	@Override
 	public TownType read(Stub<TownType> stub) {
 		return townTypeDao.readFull(stub.getId());
 	}
@@ -148,9 +147,12 @@ public class TownTypeServiceImpl implements TownTypeService {
 	 * @param townTypes TownTypes to disable
 	 */
 	@Transactional (readOnly = false)
+	@Override
 	public void disable(Collection<TownType> townTypes) {
 
-		log.info("{} types to disable", townTypes.size());
+		if (log.isDebugEnabled()) {
+			log.debug("{} types to disable", townTypes.size());
+		}
 		for (TownType townType : townTypes) {
 
 			townType.setStatus(TownType.STATUS_DISABLED);
@@ -158,13 +160,26 @@ public class TownTypeServiceImpl implements TownTypeService {
 
 			modificationListener.onDelete(townType);
 
-			log.info("Disabled: {}", townType);
+			log.debug("Disabled: {}", townType);
 		}
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
+	@Transactional (readOnly = false)
+	@Override
+	public void disableByIds(@NotNull Collection<Long> objectIds) {
+		for (Long id : objectIds) {
+			TownType townType = townTypeDao.read(id);
+			if (townType != null) {
+				townType.disable();
+				townTypeDao.update(townType);
+
+				modificationListener.onDelete(townType);
+				log.debug("Disabled: {}", townType);
+			}
+		}
+	}
+
+	@Override
 	public TownTypeFilter initFilter(TownTypeFilter townTypeFilter,
 									 Locale locale) throws FlexPayException {
 		List<TownTypeTranslation> translations = getTranslations(locale);
@@ -189,6 +204,7 @@ public class TownTypeServiceImpl implements TownTypeService {
 	 * @return List of TownType
 	 */
 	@NotNull
+	@Override
 	public List<TownType> getEntities() {
 		return townTypeDao.listTownTypes(TownType.STATUS_ACTIVE);
 	}
@@ -207,4 +223,5 @@ public class TownTypeServiceImpl implements TownTypeService {
 	public void setSessionUtils(SessionUtils sessionUtils) {
 		this.sessionUtils = sessionUtils;
 	}
+
 }

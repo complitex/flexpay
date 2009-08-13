@@ -358,6 +358,12 @@
 		  scope="prototype" />
 
 	<!-- Measure units -->
+    <bean id="measureUnitViewAction"
+          class="org.flexpay.ab.actions.measureunit.MeasureUnitViewAction"
+          p:measureUnitService-ref="measureUnitService"
+          p:crumbNameKey="ab.crumbs.measure_unit_view"
+          scope="prototype" />
+
 	<bean id="measureUnitsListAction"
 		  class="org.flexpay.ab.actions.measureunit.MeasureUnitsListAction"
 		  p:measureUnitService-ref="measureUnitService"

@@ -2,10 +2,10 @@
 
 <s:actionerror />
 
-<s:form action="streetEdit" method="post">
+<s:form action="streetEdit">
     <s:hidden name="street.id" value="%{street.id}" />
 
-	<%@ include file="../filters/groups/country_region_town_ajax.jsp" %>
+	<%@include file="../filters/groups/country_region_town_ajax.jsp" %>
 	<table cellpadding="3" cellspacing="1" border="0" width="100%">
 
 		<tr valign="middle" class="cols_1">
@@ -13,14 +13,14 @@
 				<s:text name="common.begin_date" />
 			</td>
 			<td class="col">
-				<%@ include file="/WEB-INF/jsp/common/filter/begin_date_filter.jsp" %>
+				<%@include file="/WEB-INF/jsp/common/filter/begin_date_filter.jsp" %>
 			</td>
 		</tr>
 
 		<tr valign="top" class="cols_1">
 			<td class="col"><s:text name="ab.street.type" />:</td>
 			<td class="col">
-				<%@ include file="../filters/street_type_filter.jsp"%>
+				<%@include file="../filters/street_type_filter.jsp"%>
 			</td>
 		</tr>
 

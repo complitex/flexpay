@@ -5,7 +5,6 @@ import org.flexpay.ab.persistence.filters.TownTypeFilter;
 import org.flexpay.ab.service.RegionService;
 import org.flexpay.ab.service.TownService;
 import org.flexpay.ab.service.TownTypeService;
-import org.flexpay.ab.util.config.ApplicationConfig;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Language;
@@ -46,31 +45,25 @@ public class TownEditSimpleAction extends FPActionSupport {
 	@Override
     protected String doExecute() throws Exception {
 
-        Town twn = town.isNew() ? town : townService.readFull(stub(town));
+        town = town.isNew() ? town : townService.readFull(stub(town));
         initFilters();
 
         if (isSubmit()) {
-            if (!doValidate(twn)) {
+            if (!doValidate()) {
                 return INPUT;
             }
-            updateTown(twn);
+            updateTown();
 
             return REDIRECT_SUCCESS;
         }
 
-        town = twn;
         initData();
         return INPUT;
     }
 
-    private boolean doValidate(Town twn) {
+    private boolean doValidate() {
 
-        if (town.getId() == null) {
-			addActionError(getText("error.invalid_id"));
-            return false;
-        }
-
-        if (twn == null) {
+        if (town == null) {
 			addActionError(getText("common.object_not_selected"));
             return false;
         }
@@ -94,18 +87,18 @@ public class TownEditSimpleAction extends FPActionSupport {
     /*
     * Creates new town if it is a new one (haven't been yet persisted) or updates persistent one
     */
-    private void updateTown(Town twn) throws FlexPayExceptionContainer {
+    private void updateTown() throws FlexPayExceptionContainer {
 
         TownName townName = getTownName();
-        twn.setNameForDate(townName, beginDateFilter.getDate());
-        twn.setTypeForDate(new TownType(townTypeFilter.getSelectedId()), beginDateFilter.getDate());
+        town.setNameForDate(townName, beginDateFilter.getDate());
+        town.setTypeForDate(new TownType(townTypeFilter.getSelectedId()), beginDateFilter.getDate());
 
         // setup region for new object
-        if (twn.isNew()) {
-            twn.setRegion(new Region(regionFilter));
-            townService.create(twn);
+        if (town.isNew()) {
+            town.setRegion(new Region(regionFilter));
+            townService.create(town);
         } else {
-            townService.update(twn);
+            townService.update(town);
         }
     }
 

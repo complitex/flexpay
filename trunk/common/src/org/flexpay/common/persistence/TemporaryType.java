@@ -24,40 +24,30 @@ public abstract class TemporaryType<TV extends TemporaryValue<TV>, T extends Tra
 		super(id);
 	}
 
-	/**
-	 * Getter for property 'translations'.
-	 *
-	 * @return Value for property 'translations'.
-	 */
 	public Set<T> getTranslations() {
 		return translations;
 	}
 
-	/**
-	 * Setter for property 'translations'.
-	 *
-	 * @param translations Value to set for property 'translations'.
-	 */
 	public void setTranslations(Set<T> translations) {
 		this.translations = translations;
 	}
 
-	/**
-	 * Getter for property 'status'.
-	 *
-	 * @return Value for property 'status'.
-	 */
+	@Override
 	public int getStatus() {
 		return status;
 	}
 
-	/**
-	 * Setter for property 'status'.
-	 *
-	 * @param status Value to set for property 'status'.
-	 */
+	@Override
 	public void setStatus(int status) {
 		this.status = status;
+	}
+
+	public void disable() {
+		status = STATUS_DISABLED;
+	}
+
+	public void activate() {
+		status = STATUS_ACTIVE;
 	}
 
 	/**
@@ -66,16 +56,7 @@ public abstract class TemporaryType<TV extends TemporaryValue<TV>, T extends Tra
 	 * @return <code>true</code> if object status is active, or <code>false</code> otherwise
 	 */
 	public boolean isActive() {
-		return status == ObjectWithStatus.STATUS_ACTIVE;
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public boolean equals(Object obj) {
-
-		return obj instanceof TemporaryType && super.equals(obj);
+		return status == STATUS_ACTIVE;
 	}
 
 	/**
@@ -92,10 +73,10 @@ public abstract class TemporaryType<TV extends TemporaryValue<TV>, T extends Tra
 	 *
 	 * @return <code>true</code> if this value is empty, or <code>false</code> otherwise
 	 */
+	@Override
 	public boolean isEmpty() {
 		return isNew();
 	}
-
 
 	/**
 	 * Get type translation in a specified language
@@ -123,4 +104,10 @@ public abstract class TemporaryType<TV extends TemporaryValue<TV>, T extends Tra
 	public T getDefaultTranslation() {
 		return getTranslation(ApplicationConfig.getDefaultLanguage());
 	}
+
+	@Override
+	public boolean equals(Object obj) {
+		return obj instanceof TemporaryType && super.equals(obj);
+	}
+
 }

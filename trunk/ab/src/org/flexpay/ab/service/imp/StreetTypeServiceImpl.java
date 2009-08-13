@@ -72,6 +72,7 @@ public class StreetTypeServiceImpl implements StreetTypeService {
 	 * @param stub Entity stub
 	 * @return StreetType object, or <code>null</code> if object not found
 	 */
+	@Override
 	public StreetType read(Stub<StreetType> stub) {
 		return streetTypeDao.readFull(stub.getId());
 	}
@@ -82,6 +83,7 @@ public class StreetTypeServiceImpl implements StreetTypeService {
 	 * @param stub Object stub
 	 * @return object, or <code>null</code> if object not found
 	 */
+	@Override
 	public StreetType readFull(@NotNull Stub<StreetType> stub) {
 		return streetTypeDao.readFull(stub.getId());
 	}
@@ -92,6 +94,7 @@ public class StreetTypeServiceImpl implements StreetTypeService {
 	 * @param streetTypes StreetTypes to disable
 	 */
 	@Transactional (readOnly = false)
+	@Override
 	public void disable(Collection<StreetType> streetTypes) {
 		log.info("{} types to disable", streetTypes.size());
 		for (StreetType streetType : streetTypes) {
@@ -104,7 +107,23 @@ public class StreetTypeServiceImpl implements StreetTypeService {
 		}
 	}
 
+	@Transactional (readOnly = false)
+	@Override
+	public void disableByIds(@NotNull Collection<Long> objectIds) {
+		for (Long id : objectIds) {
+			StreetType streetType = streetTypeDao.read(id);
+			if (streetType != null) {
+				streetType.disable();
+				streetTypeDao.update(streetType);
+
+				modificationListener.onDelete(streetType);
+				log.debug("Disabled: {}", streetType);
+			}
+		}
+	}
+
 	@Nullable
+	@Override
 	public StreetType findTypeByName(@NotNull String typeName) throws FlexPayException {
 		for (StreetType type : getEntities()) {
 			for (StreetTypeTranslation ourType : type.getTranslations()) {
@@ -139,6 +158,7 @@ public class StreetTypeServiceImpl implements StreetTypeService {
 	 * @param locale		   Locale to get filter translations in
 	 * @throws FlexPayException if failure occurs
 	 */
+	@Override
 	public StreetTypeFilter initFilter(StreetTypeFilter streetTypeFilter, Locale locale)
 			throws FlexPayException {
 
@@ -168,6 +188,7 @@ public class StreetTypeServiceImpl implements StreetTypeService {
 	 *          if validation fails
 	 */
 	@Transactional (readOnly = false)
+	@Override
 	public StreetType create(@NotNull StreetType streetType) throws FlexPayExceptionContainer {
 
 		validate(streetType);
@@ -188,6 +209,7 @@ public class StreetTypeServiceImpl implements StreetTypeService {
 	 */
 	@SuppressWarnings ({"ThrowableInstanceNeverThrown"})
 	@Transactional (readOnly = false)
+	@Override
 	public StreetType update(@NotNull StreetType streetType) throws FlexPayExceptionContainer {
 
 		validate(streetType);
@@ -234,6 +256,7 @@ public class StreetTypeServiceImpl implements StreetTypeService {
 	 * @return List of StreetType
 	 */
 	@NotNull
+	@Override
 	public List<StreetType> getEntities() {
 		return streetTypeDao.listStreetTypes(StreetType.STATUS_ACTIVE);
 	}
@@ -257,4 +280,5 @@ public class StreetTypeServiceImpl implements StreetTypeService {
 	public void setModificationListener(ModificationListener<StreetType> modificationListener) {
 		this.modificationListener = modificationListener;
 	}
+
 }

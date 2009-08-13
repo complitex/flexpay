@@ -63,6 +63,7 @@
 	<query name="MeasureUnit.listUnits">
 		select distinct o
 		from MeasureUnit o
+            left join fetch o.unitNames
 		where o.status=0
 	</query>
 

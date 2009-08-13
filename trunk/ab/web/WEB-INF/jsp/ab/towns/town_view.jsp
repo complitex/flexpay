@@ -41,7 +41,8 @@
 		<td class="th">&nbsp;</td>
 		<td class="th"><s:text name="ab.from"/></td>
 		<td class="th"><s:text name="ab.till"/></td>
-		<td class="th"><s:text name="ab.town.type"/></td>
+        <td class="th"><s:text name="common.language" /></td>
+		<td class="th"><s:text name="ab.town_type"/></td>
 	</tr>
 	<s:set name="index" value="1" />
 	<s:iterator value="object.typesTimeLine.intervals" status="rowstatus">

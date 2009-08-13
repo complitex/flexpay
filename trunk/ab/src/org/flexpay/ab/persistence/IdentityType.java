@@ -1,7 +1,5 @@
 package org.flexpay.ab.persistence;
 
-import org.apache.commons.lang.builder.ToStringBuilder;
-import org.apache.commons.lang.builder.ToStringStyle;
 import org.flexpay.common.persistence.DomainObjectWithStatus;
 import org.flexpay.common.persistence.Language;
 import org.flexpay.common.persistence.Stub;
@@ -31,9 +29,6 @@ public class IdentityType extends DomainObjectWithStatus implements Comparable<I
 
 	private Set<IdentityTypeTranslation> translations = Collections.emptySet();
 
-	/**
-	 * Constructs a new IdentityType.
-	 */
 	public IdentityType() {
 	}
 
@@ -45,20 +40,10 @@ public class IdentityType extends DomainObjectWithStatus implements Comparable<I
 		super(stub.getId());
 	}
 
-	/**
-	 * Getter for property 'translations'.
-	 *
-	 * @return Value for property 'translations'.
-	 */
 	public Set<IdentityTypeTranslation> getTranslations() {
 		return translations;
 	}
 
-	/**
-	 * Setter for property 'translations'.
-	 *
-	 * @param translations Value to set for property 'translations'.
-	 */
 	public void setTranslations(Set<IdentityTypeTranslation> translations) {
 		this.translations = translations;
 	}
@@ -99,4 +84,5 @@ public class IdentityType extends DomainObjectWithStatus implements Comparable<I
 	public int compareTo(IdentityType o) {
 		return getId().compareTo(o.getId());
 	}
+
 }
