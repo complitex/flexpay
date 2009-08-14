@@ -23,7 +23,7 @@
     <task-node name="generatePaymentsDBRegistryJob">
 		<task swimlane="worker" blocking="yes" />
 		<transition name="next" to="generatePaymentsMBRegistryJob" />
-		<transition name="error" to="end" />
+		<transition name="error" to="deleteFPFileJob" />
 	</task-node>
 
     <task-node name="generatePaymentsMBRegistryJob">
@@ -37,6 +37,12 @@
 		<transition name="next" to="end" />
 		<transition name="error" to="end" />
 	</task-node>
+
+    <task-node name="deleteFPFileJob">
+        <task swimlane="worker" blocking="yes" />
+        <transition name="next" to="end" />
+        <transition name="error" to="end" />
+    </task-node>
 
 	<end-state name="end" />
 

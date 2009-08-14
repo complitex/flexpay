@@ -136,8 +136,12 @@ public class GeneratePaymentsMBRegistryJob extends Job {
                 log.error("Resource {} not found", privateKey);
             }
         }
-
-		generatePaymentsMBRegistry.exportToMegaBank(registry, spFile, organization);
+        try {
+		    generatePaymentsMBRegistry.exportToMegaBank(registry, spFile, organization);
+        } catch (FlexPayException ex) {
+            log.error("Failture generation registry", ex);
+            return RESULT_ERROR;
+        }
 
 		spFile.updateSize();
 		fpFileService.update(spFile);

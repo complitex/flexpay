@@ -115,6 +115,8 @@ public class GeneratePaymentsRegistry extends QuartzJobBean {
                 paymentsCollectorsPage.nextPage();
             }
 
+            List<Long> registries = new ArrayList<Long>();
+
             do {
                 for (Map<Serializable, Serializable> param : waitingProcessData) {
                     log.debug("Waiting GeneratePaymentsRegisryProcess processes will complete for: {} ...", param);
@@ -167,7 +169,13 @@ public class GeneratePaymentsRegistry extends QuartzJobBean {
                             }
 
                         }
-                        
+
+                        if (parameters.containsKey("RegistryId")) {
+                            Long registryId = (Long)parameters.get("RegistryId");
+                            if (registryId != null) {
+                                registries.add(registryId);
+                            }
+                        }
                         tmpListProcessInstanesId.remove(processId);
                     } else {
                         log.debug("Process {} has status {}", processId, process.getProcessState());
@@ -176,6 +184,7 @@ public class GeneratePaymentsRegistry extends QuartzJobBean {
                 }
                 listProcessInstanesId = tmpListProcessInstanesId;
             } while (listProcessInstanesId.size() > 0);
+            context.getMergedJobDataMap().put("Registries", registries);
         } catch (ProcessInstanceException e) {
             log.error("Failed run process generate payments registry", e);
             throw new JobExecutionException(e);
