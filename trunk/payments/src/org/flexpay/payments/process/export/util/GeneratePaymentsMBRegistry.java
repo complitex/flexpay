@@ -174,6 +174,7 @@ public class GeneratePaymentsMBRegistry {
 
             rg.close();
             byte[] sign = rg.getSign();
+            log.debug("Registry file size={}", rg.getFileSize());
 
             // служебные строки
             rg = new RegistryWriter(file, '|', RegistryWriter.NO_QUOTE_CHARACTER, RegistryWriter.NO_ESCAPE_CHARACTER);

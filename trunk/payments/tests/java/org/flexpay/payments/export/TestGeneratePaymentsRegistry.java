@@ -5,15 +5,21 @@ import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Language;
 import org.flexpay.common.persistence.ObjectWithStatus;
+import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.persistence.filter.RegistryRecordStatusFilter;
 import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.persistence.registry.PropertiesFactory;
+import org.flexpay.common.persistence.registry.Registry;
+import org.flexpay.common.persistence.registry.RegistryRecord;
 import org.flexpay.common.process.ProcessManager;
 import org.flexpay.common.process.exception.ProcessDefinitionException;
 import org.flexpay.common.process.exception.ProcessInstanceException;
 import org.flexpay.common.service.*;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.DateUtil;
+import org.flexpay.common.util.config.ApplicationConfig;
 import org.flexpay.common.util.io.ReaderCallback;
+import org.flexpay.common.dao.paging.Page;
 import org.flexpay.orgs.persistence.*;
 import org.flexpay.orgs.service.OrganizationService;
 import org.flexpay.orgs.service.PaymentPointService;
@@ -23,8 +29,8 @@ import org.flexpay.payments.persistence.*;
 import org.flexpay.payments.process.export.GeneratePaymentsRegistry;
 import org.flexpay.payments.service.*;
 import org.flexpay.payments.test.PaymentsSpringBeanAwareTestCase;
+import org.flexpay.ab.persistence.filters.ImportErrorTypeFilter;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.quartz.JobExecutionContext;
 import org.quartz.SchedulerException;
@@ -34,20 +40,21 @@ import org.quartz.spi.TriggerFiredBundle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.scheduling.quartz.CronTriggerBean;
+import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.Resource;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.Reader;
+import java.io.*;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+import java.security.*;
+import java.security.spec.PKCS8EncodedKeySpec;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.X509EncodedKeySpec;
 
 public class TestGeneratePaymentsRegistry extends PaymentsSpringBeanAwareTestCase {
 
 	private static final String FILE_ENCODING = "cp866";
+    private static final int BUFFER_SIZE = 1024;
 
 	//    @Resource(name = "processManager")
 	@Autowired
@@ -157,28 +164,28 @@ public class TestGeneratePaymentsRegistry extends PaymentsSpringBeanAwareTestCas
 		organizationService.create(registerOrganization);
 
 		//create organization
-		Organization organization = new Organization();
-		organization.setStatus(ObjectWithStatus.STATUS_ACTIVE);
-		organization.setIndividualTaxNumber("111");
-		organization.setKpp("222");
-		organization.setJuridicalAddress("Kharkov");
-		organization.setPostalAddress("Kharkov");
+		Organization recipientOrganization = new Organization();
+		recipientOrganization.setStatus(ObjectWithStatus.STATUS_ACTIVE);
+		recipientOrganization.setIndividualTaxNumber("111");
+		recipientOrganization.setKpp("222");
+		recipientOrganization.setJuridicalAddress("Kharkov");
+		recipientOrganization.setPostalAddress("Kharkov");
 
 		organizationName = new OrganizationName();
 		organizationName.setLang(lang);
 		organizationName.setName("test organization name");
-		organization.setName(organizationName);
+		recipientOrganization.setName(organizationName);
 
 		organizationDescription = new OrganizationDescription();
 		organizationDescription.setLang(lang);
 		organizationDescription.setName("test organization description");
-		organization.setDescription(organizationDescription);
+		recipientOrganization.setDescription(organizationDescription);
 
-		organizationService.create(organization);
+		organizationService.create(recipientOrganization);
 
 		//create service2 provider
 		serviceProvider = new ServiceProvider();
-		serviceProvider.setOrganization(organization);
+		serviceProvider.setOrganization(recipientOrganization);
 		serviceProvider.setStatus(ServiceProvider.STATUS_ACTIVE);
 		serviceProvider.setEmail("test@test.ru");
 
@@ -360,11 +367,9 @@ public class TestGeneratePaymentsRegistry extends PaymentsSpringBeanAwareTestCas
 	}
 
 	@Test
-	@Ignore
-	public void testStartTradingDay() throws ProcessInstanceException, ProcessDefinitionException, InterruptedException, SchedulerException, IOException {
+	public void testStartTradingDay() throws ProcessInstanceException, ProcessDefinitionException, InterruptedException, SchedulerException, IOException, InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException {
 		GeneratePaymentsRegistry jobScheduler = new GeneratePaymentsRegistry();
 		jobScheduler.setProcessManager(tProcessManager);
-		jobScheduler.setRegisteredOrganizationId(registerOrganization.getId());
 		jobScheduler.setProviderService(tProviderService);
 		jobScheduler.setServiceProviderAttributeService(tProviderAttributeService);
 		jobScheduler.setPrivateKey("WEB-INF/payments/configs/keys/secret.key");
@@ -378,6 +383,36 @@ public class TestGeneratePaymentsRegistry extends PaymentsSpringBeanAwareTestCas
 		jobScheduler.execute(schedulerContext);
 		log.debug("finish jobScheduler");
 
+        List<Long> registries = (List<Long>)schedulerContext.getMergedJobDataMap().get("Registries");
+        assertNotNull(registries);
+
+        assertTrue(registries.size() > 0);
+
+        int i = 0;
+        for (Long registryId : registries) {
+            Registry registry = registryService.read(new Stub<Registry>(registryId));
+            assertNotNull(registry);
+            if (registry.getRecipientCode().equals(serviceProvider.getOrganization().getId()) && registry.getSenderCode().equals(registerOrganization.getId())) {
+                FPFile registrySpFile = registry.getSpFile();
+                assertNotNull(registrySpFile);
+                registrySpFile = fpFileService.read(Stub.stub(registrySpFile));
+                assertEquals(2, registry.getRecordsNumber().intValue());
+				assertEquals(303, registry.getAmount().intValue());
+                Page<RegistryRecord> page = new Page<RegistryRecord>(20);
+				List<RegistryRecord> records = registryRecordService.listRecords(registry,
+						new ImportErrorTypeFilter(),
+						new RegistryRecordStatusFilter(),
+						page);
+				assertEquals(2, records.size());
+                //assertDigitalSignatureCountLine(registrySpFile, 3);
+                assertDigitalSignature(registrySpFile, "WEB-INF/payments/configs/keys/public.key");
+				//assertTotalCountLine(spFile, 15);
+				assertRecordCountLine(registrySpFile, 2);
+				fpFileService.deleteFromFileSystem(registrySpFile);
+                i++;
+            }
+        }
+        assertEquals(1, i);
 		/*
 				Map parameters = schedulerContext.getMergedJobDataMap();
 
@@ -481,7 +516,7 @@ public class TestGeneratePaymentsRegistry extends PaymentsSpringBeanAwareTestCas
 				String line;
 				boolean startSignature = false;
 				while ((line = reader.readLine()) != null) {
-					if (line.startsWith("-----------------------------------------------")) {
+					if (line.startsWith("______")) {
 						if (startSignature) {
 							assertEquals(n, i);
 							return;
@@ -495,4 +530,97 @@ public class TestGeneratePaymentsRegistry extends PaymentsSpringBeanAwareTestCas
 			}
 		});
 	}
+
+    private static void assertDigitalSignature(FPFile file, String key) throws IOException, InvalidKeyException, InvalidKeySpecException, NoSuchAlgorithmException {
+        final Signature sign = readPublicSignature(key);
+		file.withReader(FILE_ENCODING, new ReaderCallback() {
+			public void read(Reader r) throws IOException {
+				@SuppressWarnings ({"IOResourceOpenedButNotSafelyClosed"})
+				BufferedReader reader = new BufferedReader(r);
+
+				String line;
+				int startSignature = -1;
+                String signature = "";
+                int i = 0;
+                int fileSize = 0;
+                try {
+                    while ((line = reader.readLine()) != null) {
+                        System.out.print(++i + ":");
+                        if (line.startsWith("_____") && startSignature <= 0) {
+                            startSignature++;
+                            System.out.println("startSignature=" + startSignature);
+                        } else if (startSignature == 0 && line.length() > 0) {
+                            if (signature.length() > 0) {
+                                line = "\n" + line;
+                            }
+                            signature += line;
+                            System.out.println();
+                        } else if (startSignature > 0) {
+                            line = line + "\n";
+                            fileSize += line.getBytes(FILE_ENCODING).length;
+                            sign.update(line.getBytes(FILE_ENCODING));
+                            System.out.print(line);
+                        }
+                    }
+                    System.out.println("signature:" + signature);
+                    System.out.println("signature length:" + signature.getBytes(FILE_ENCODING).length);
+                    System.out.println("file size:" + fileSize);
+                    assertTrue("Assert verify file", sign.verify(signature.getBytes(FILE_ENCODING)));
+                } catch (SignatureException ex) {
+                    assertTrue(ex.getMessage(), false);
+                }
+			}
+		});
+	}
+
+    private static Signature readPublicSignature(String key) throws NoSuchAlgorithmException, IOException, InvalidKeySpecException, InvalidKeyException {
+        KeyFactory keyFactory = KeyFactory.getInstance("RSA");
+
+        byte[] pubKeyBytes = getDataFile(key);
+
+        // decode public key
+        X509EncodedKeySpec pubSpec = new X509EncodedKeySpec(pubKeyBytes);
+        PublicKey pubKey = keyFactory.generatePublic(pubSpec);
+
+        Signature instance = Signature.getInstance("SHA1withRSA");
+        instance.initVerify(pubKey);
+        return instance;
+    }
+
+    @Nullable
+    private static byte[] getDataFile(String file) throws IOException {
+        InputStream is = ApplicationConfig.getResourceAsStream(file);
+        if (is == null) {
+            return null;
+        }
+        InputStream dis = new DataInputStream(is);
+        byte[] data = new byte[BUFFER_SIZE];
+        int off = 0;
+        int countRead;
+        while ((countRead = dis.read(data, off, BUFFER_SIZE)) > 0) {
+            off += countRead;
+            data = Arrays.copyOf(data, off + BUFFER_SIZE);
+        }
+        dis.close();
+        is.close();
+        return data;
+    }
+
+    private static byte[] getDataFile(InputStream is, int off, int len) throws IOException {
+        DataInputStream dis = new DataInputStream(is);
+        int curLen = BUFFER_SIZE;
+        if (len > 0 && curLen > len) {
+            curLen = len;
+        }
+        byte[] privKeyBytes = new byte[curLen];
+        int countRead;
+        while ((off < len || len < 0) && (countRead = dis.read(privKeyBytes, off, curLen)) > 0) {
+            off += countRead;
+            if (len > 0 && off + BUFFER_SIZE > len) {
+                curLen = len - off;
+            }
+            privKeyBytes = Arrays.copyOf(privKeyBytes, off + curLen);
+        }
+        return privKeyBytes;
+    }
 }

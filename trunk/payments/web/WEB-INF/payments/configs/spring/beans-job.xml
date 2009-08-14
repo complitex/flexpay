@@ -15,6 +15,11 @@
           p:fileName="${payments.scheduler.file.name}"
           scope="prototype" />
 
+    <bean id="deleteFPFileJob"
+          class="org.flexpay.payments.process.export.job.DeleteFPFileJob"
+          p:fpFileService-ref="fpFileService"
+          scope="prototype" />
+
     <bean id="generatePaymentsDBRegistryJob"
           class="org.flexpay.payments.process.export.job.GeneratePaymentsDBRegistryJob"
           p:fpFileService-ref="fpFileService"

@@ -271,8 +271,6 @@ public class TestGeneratePaymentsDBRegistry extends PaymentsSpringBeanAwareTestC
 	}
 
 	@Test
-	@Ignore
-	@Deprecated
 	public void testCreateDBRegistry() throws FlexPayException {
 		assertNotNull(serviceProvider);
 		assertEquals(1, operations.size());
