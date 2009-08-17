@@ -8,6 +8,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -75,4 +76,13 @@ public interface RegistryService {
 	 */
 	void deleteRecords(Stub<Registry> stub);
 
+	/**
+	 * Returns number of registries which corresponds following parameters
+	 * @param typeCode registry type code
+	 * @param recipientCode recipient organization id
+	 * @param from lower bound for createion date
+	 * @param till higher bound for creation date
+	 * @return number of registries which corresponds following parameters
+	 */
+	Long getRegistriesCount(int typeCode, Long recipientCode, Date from, Date till);
 }

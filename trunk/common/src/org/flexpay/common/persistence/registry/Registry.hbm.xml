@@ -270,6 +270,15 @@
 		where r.id=?
 	</query>
 
+	<query name="Registry.findRegistriesCount"><![CDATA[
+		select count(registry)
+		from Registry registry
+		where registry.registryType.code = ?
+		and registry.recipientCode = ?
+		and registry.creationDate >= ?
+		and registry.creationDate <= ?
+	]]></query>
+
 	<query name="RegistryRecord.getMinMaxRecordsForProcessing"><![CDATA[
 		select min(rr.id), max(rr.id)
 		from RegistryRecord rr
