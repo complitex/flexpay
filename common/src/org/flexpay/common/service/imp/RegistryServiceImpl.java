@@ -1,5 +1,6 @@
 package org.flexpay.common.service.imp;
 
+import org.apache.commons.lang.StringUtils;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.dao.registry.RegistryContainerDao;
 import org.flexpay.common.dao.registry.RegistryDao;
@@ -16,7 +17,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Transactional;
-import org.apache.commons.lang.StringUtils;
 
 import java.util.*;
 
@@ -149,6 +149,15 @@ public class RegistryServiceImpl implements RegistryService {
 		return registryDaoExt.findRegistries(objectIds);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public Long getRegistriesCount(int typeCode, Long recipientCode, Date from, Date till) {
+		
+		return (Long) (registryDao.findRegistriesCount(typeCode, recipientCode, from, till)).get(0);
+	}
+
 	@Required
 	public void setSpRegistryDao(RegistryDao registryDao) {
 		this.registryDao = registryDao;
@@ -168,5 +177,4 @@ public class RegistryServiceImpl implements RegistryService {
 	public void setRegistryContainerDao(RegistryContainerDao registryContainerDao) {
 		this.registryContainerDao = registryContainerDao;
 	}
-
 }

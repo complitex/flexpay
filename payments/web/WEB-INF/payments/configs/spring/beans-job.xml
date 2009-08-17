@@ -7,6 +7,11 @@
 		   http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
 		   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
+	<bean id="generatePaymentRegistryFileNameJob"
+		  class="org.flexpay.payments.process.export.job.GeneratePaymentsRegistryFileNameJob"
+		  p:registryService-ref="registryService"
+		  scope="prototype"/>
+
 	<bean id="createFPFileJob"
           class="org.flexpay.payments.process.export.job.CreateFPFileJob"
           p:fpFileService-ref="fpFileService"

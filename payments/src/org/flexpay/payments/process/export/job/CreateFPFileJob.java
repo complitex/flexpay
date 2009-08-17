@@ -12,6 +12,8 @@ import java.util.Map;
 
 public class CreateFPFileJob extends Job {
 
+	public static String GENERATED_FILE_NAME_PARAMETER_NAME = "GeneratedFileName";
+
     private String moduleName;
     private String userName;
     private String fileName;
@@ -19,11 +21,20 @@ public class CreateFPFileJob extends Job {
     private FPFileService fpFileService;
 
     public String execute(Map<Serializable, Serializable> parameters) throws FlexPayException {
-        FPFile fpFile = null;
+
+		FPFile fpFile = null;
         try {
             fpFile = new FPFile();
             fpFile.setModule(fpFileService.getModuleByName(moduleName));
             fpFile.setUserName(userName);
+
+			String generatedFileName = (String) parameters.get(GENERATED_FILE_NAME_PARAMETER_NAME);
+			if (generatedFileName != null) {
+				fpFile.setOriginalName(generatedFileName);
+			} else {
+				fpFile.setOriginalName(fileName);
+			}
+
             fpFile.setOriginalName(fileName);
             FPFileUtil.createEmptyFile(fpFile);
 

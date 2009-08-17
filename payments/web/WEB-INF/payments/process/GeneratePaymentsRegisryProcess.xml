@@ -11,8 +11,14 @@
 
 
 	<start-state name="start">
-		<transition to="createFPFileJob" />
+		<transition to="generatePaymentRegistryFileNameJob" />
 	</start-state>
+
+	<task-node name="generatePaymentRegistryFileNameJob">
+		<task swimlane="worker" blocking="yes" />
+		<transition name="next" to="createFPFileJob" />
+		<transition name="error" to="end" />		
+	</task-node>
 
 	<task-node name="createFPFileJob">
 		<task swimlane="worker" blocking="yes" />
