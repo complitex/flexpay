@@ -16,23 +16,26 @@
 		from EircRegistryRecordProperties p
 			left join fetch p.consumer c
 			left join fetch c.attributes a
-			left join fetch a.type 
-		where p.record.registry.id=? and p.record.id between ? and ?
-		order by p.record.id
+			left join fetch a.type t
+			left join p.record r
+		where r.registry.id=? and r.id between ? and ? and r.recordStatus.code NOT IN (2, 4)
+		order by r.id
 	</query>
 
 	<sql-query name="EircRegistryRecordProperties.findWithApartmentAttributes">
 		<return alias="pr" class="org.flexpay.eirc.persistence.EircRegistryRecordProperties" />
 		<return alias="ap" class="org.flexpay.bti.persistence.apartment.BtiApartment" />
-		<return-join alias="at" property="ap.attributes" />
+		<load-collection alias="at" role="org.flexpay.bti.persistence.apartment.BtiApartment.attributes" />
+		<!--<return-join alias="at" property="ap.attributes" />-->
 		<return-join alias="type" property="at.attributeType" />
 		select distinct {pr.*}, {ap.*}, {at.*}, {type.*}
 		from common_registry_record_properties_tbl pr
 			left outer join common_registry_records_tbl rr on pr.record_id=rr.id
+			left outer join common_registry_record_statuses_tbl rs on rr.record_status_id=rs.id
 			left outer join ab_apartments_tbl ap on pr.apartment_id=ap.id
 			left outer join bti_apartment_attributes_tbl at on at.apartment_id=ap.id
 			left outer join bti_apartment_attribute_types_tbl type on at.attribute_type_id=type.id
-		where rr.registry_id=? and rr.id between ? and ?
+		where rr.registry_id=? and rr.id between ? and ? and rs.code NOT IN (2, 4)
 	</sql-query>
 
 </hibernate-mapping>
