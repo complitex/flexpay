@@ -7,16 +7,19 @@ import org.flexpay.common.persistence.registry.RegistryRecord;
 import org.flexpay.common.service.imp.fetch.ProcessingReadHintsHandler;
 import org.flexpay.eirc.dao.EircRegistryRecordPropertiesDao;
 import org.flexpay.eirc.persistence.EircRegistryRecordProperties;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Iterator;
 import java.util.List;
 
 public class ApartmentAttributeReadHintsHandler extends ProcessingReadHintsHandler {
 
+	private Logger log = LoggerFactory.getLogger(getClass());
 	private EircRegistryRecordPropertiesDao recordPropertiesDao;
 
 	public ApartmentAttributeReadHintsHandler(Stub<Registry> registryStub, FetchRange range, List<RegistryRecord> records,
-									EircRegistryRecordPropertiesDao recordPropertiesDao) {
+											  EircRegistryRecordPropertiesDao recordPropertiesDao) {
 		super(registryStub, range, records);
 		this.recordPropertiesDao = recordPropertiesDao;
 	}
@@ -32,6 +35,8 @@ public class ApartmentAttributeReadHintsHandler extends ProcessingReadHintsHandl
 			EircRegistryRecordProperties fetchedProp = propsIt.next();
 
 			if (!prop.equals(fetchedProp)) {
+				log.error("Invalid properties read: expected {}, but found {}, fetch range: {}",
+						new Object[]{prop, fetchedProp, range});
 				throw new IllegalStateException("Invalid properties read, expected the same set");
 			}
 
