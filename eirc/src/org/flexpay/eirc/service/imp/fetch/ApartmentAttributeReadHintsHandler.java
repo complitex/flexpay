@@ -30,13 +30,20 @@ public class ApartmentAttributeReadHintsHandler extends ProcessingReadHintsHandl
 		List<EircRegistryRecordProperties> props = recordPropertiesDao.findWithApartmentAttributes(
 				registryStub.getId(), range.getLowerBound(), range.getUpperBound());
 		Iterator<EircRegistryRecordProperties> propsIt = props.iterator();
+
+		EircRegistryRecordProperties prev = null;
 		for (RegistryRecord record : records) {
 			EircRegistryRecordProperties prop = (EircRegistryRecordProperties) record.getProperties();
 			EircRegistryRecordProperties fetchedProp = propsIt.next();
+			// skip duplicates
+			while (prev != null && fetchedProp.equals(prev)) {
+				fetchedProp = propsIt.next();
+			}
+			prev = fetchedProp;
 
 			if (!prop.equals(fetchedProp)) {
 				log.error("Invalid properties read: expected {}, but found {}, fetch range: {}",
-						new Object[]{prop, fetchedProp, range});
+						new Object[] {prop, fetchedProp, range});
 				throw new IllegalStateException("Invalid properties read, expected the same set");
 			}
 
