@@ -19,3 +19,5 @@ alter table payments_registry_delivery_history_tbl
     add constraint FK_payments_registry_delivery_history_tbl_registry_id
     foreign key (registry_id)
     references common_registries_tbl (id);
+
+update common_version_tbl set last_modified_date='2009-08-19', date_version=0;
