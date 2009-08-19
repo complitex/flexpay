@@ -21,8 +21,8 @@ function Filter(name, options) {
         isArray: false,
         display: "input",
         extraParams: {},
-        defaultValue: 0,
         valueType: "number",
+        defaultValue: 0,
         defaultString: "",
         preRequest: true,
         required: true,
@@ -46,7 +46,8 @@ function Filter(name, options) {
     }
 
     $("#" + options.rawId).append('<input id="' + options.valueId + '" type="hidden" name="' + name + 'Filter" value="' + options.defaultValue + '" />\n' +
-                                  '<input id="' + options.filterId + '" type="text" class="form-search" value="' + options.defaultString + '" />');
+                                  '<input id="' + options.filterId + '" type="text" tabindex="1" class="form-search" value="' + options.defaultString + '"' +
+                                  'onchange="FF.onChange2(\'' + name + '\');" />');
 
     this.listeners = [];
     this.eraseFunctions = [];
@@ -221,8 +222,6 @@ var FF = {
     createFilter : function (name, options) {
         var filter = new Filter(name, options);
         this.filters[name] = filter;
-        filter.string.attr("onchange", "FF.onChange2('" + name + "');");
-        filter.string.attr("tabIndex", "1");
         this.filters.splice(this.filters.length - 1, 1);
         if (filter.preRequest) {
             var k = 0;

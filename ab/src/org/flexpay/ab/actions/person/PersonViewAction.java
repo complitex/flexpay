@@ -21,8 +21,6 @@ public class PersonViewAction extends FPActionSupport {
 	@Override
 	public String doExecute() throws Exception {
 
-        log.debug("Object: {}", person);
-
         if (person.isNew()) {
 			addActionError(getText("error.no_id"));
 			return SUCCESS;
@@ -51,10 +49,6 @@ public class PersonViewAction extends FPActionSupport {
 
 	public Person getPerson() {
 		return person;
-	}
-
-	public void setPerson(Person person) {
-		this.person = person;
 	}
 
 	public String getAddress() {

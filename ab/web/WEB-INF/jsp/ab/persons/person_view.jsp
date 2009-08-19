@@ -2,7 +2,7 @@
 
 <input type="button" class="btn-exit"
        onclick="window.location='<s:url action="personEdit"><s:param name="person.id" value="person.id"/></s:url>';"
-       value="<s:text name="common.edit"/>"/>
+       value="<s:text name="common.edit"/>" />
 
 <%@include file="person_view_fio.jsp" %>
 

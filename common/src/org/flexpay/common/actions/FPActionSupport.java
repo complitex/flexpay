@@ -29,6 +29,7 @@ public abstract class FPActionSupport extends ActionSupport implements BreadCrum
 	protected Logger log = LoggerFactory.getLogger(getClass());
 
 	private static final String ERRORS_SESSION_ATTRIBUTE = FPActionSupport.class.getName() + ".ERRORS";
+	private static final String MESSAGES_SESSION_ATTRIBUTE = FPActionSupport.class.getName() + ".MESSAGES";
 	protected static final String PREFIX_REDIRECT = "redirect";
 
 	public static final String REDIRECT_ERROR = "redirectError";
@@ -79,32 +80,57 @@ public abstract class FPActionSupport extends ActionSupport implements BreadCrum
 		}
 
 		log.debug("Current errors: {}", getActionErrors());
+		log.debug("Current messages: {}", getActionMessages());
 
-		// extract this domain session errors
+		addSessionMessages(result, ERRORS_SESSION_ATTRIBUTE);
+		addSessionMessages(result, MESSAGES_SESSION_ATTRIBUTE);
+
+		return result;
+	}
+
+	private void addSessionMessages(String result, String sessionAttribute) {
+
+		boolean isError = false;
+		boolean isMessage = false;
+
+		if (ERRORS_SESSION_ATTRIBUTE.equals(sessionAttribute)) {
+			isError = true;
+		} else if (MESSAGES_SESSION_ATTRIBUTE.equals(sessionAttribute)) {
+			isMessage = true;
+		} else {
+			return;
+		}
+
+		// extract this domain session messages
 		String domainName = getDomainName();
 
 		//noinspection unchecked
-		Map<String, Collection<?>> domainNamesToErrors = (Map) session.remove(ERRORS_SESSION_ATTRIBUTE);
-		if (domainNamesToErrors != null && domainNamesToErrors.containsKey(domainName)) {
-			Collection errors = domainNamesToErrors.remove(domainName);
+		Map<String, Collection<String>> domainNamesToMessages = (Map) session.remove(sessionAttribute);
+		if (domainNamesToMessages != null && domainNamesToMessages.containsKey(domainName)) {
+			Collection<String> messages = (Collection) domainNamesToMessages.remove(domainName);
 			//noinspection unchecked
-			addActionErrors(errors);
+			if (isError) {
+				addActionErrors(messages);
+			} else if (isMessage) {
+				addActionMessages(messages);
+			}
 
-			log.debug("Added errors: {}", errors);
+			if (log.isDebugEnabled()) {
+				log.debug("Added session {}: {}", (isError ? "errors" : isMessage ? "messages" : "unknown"), messages);
+			}
 		}
 
-		// put all errors to session if redirecting
+		// put all messages to session if redirecting
 		if (result.startsWith(PREFIX_REDIRECT)) {
-			Collection<?> errors = getActionErrors();
-			if (domainNamesToErrors == null) {
-				domainNamesToErrors = CollectionUtils.map();
+			Collection<String> messages = isError ? getActionErrors() : isMessage ? getActionMessages() : CollectionUtils.set();
+			if (domainNamesToMessages == null) {
+				domainNamesToMessages = CollectionUtils.map();
 			}
-			domainNamesToErrors.put(getDomainName(), errors);
+			domainNamesToMessages.put(getDomainName(), messages);
 		}
 		//noinspection unchecked
-		session.put(ERRORS_SESSION_ATTRIBUTE, domainNamesToErrors);
+		session.put(sessionAttribute, domainNamesToMessages);
 
-		return result;
 	}
 
 	/**
@@ -202,6 +228,23 @@ public abstract class FPActionSupport extends ActionSupport implements BreadCrum
 
 		for (String msg : errorMessages) {
 			addActionError(msg);
+		}
+	}
+
+	/**
+	 * Add several action messages
+	 *
+	 * @param messages Collection of messages
+	 */
+	@SuppressWarnings ({"unchecked"})
+	public void addActionMessages(Collection<String> messages) {
+
+		if (messages == null || messages.isEmpty()) {
+			return;
+		}
+
+		for (String msg : messages) {
+			addActionMessage(msg);
 		}
 	}
 

@@ -21,11 +21,11 @@
 		</action>
 
 		<action name="apartmentRegistration" class="apartmentRegistrationAction">
-			<result name="success" type="tiles">ab.apartment.registrations</result>
+			<result type="tiles">ab.apartment.registrations</result>
 		</action>
 
 		<action name="apartmentRegistrationsHistory" class="apartmentRegistrationAction">
-			<result name="success" type="tiles">ab.apartment.registrations_history</result>
+			<result type="tiles">ab.apartment.registrations_history</result>
 		</action>
 
 	</package>

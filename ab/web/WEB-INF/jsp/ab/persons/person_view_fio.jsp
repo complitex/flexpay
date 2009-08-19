@@ -17,8 +17,11 @@
 		<td class="col_1"><s:property value="%{#fio.middleName}"/></td>
 		<td class="col_1"><s:text name="ab.person.sex"/></td>
 		<td class="col_1">
-			<s:if test="%{#fio.isMan()}"><s:text name="ab.person.sex.man"/></s:if>
-			<s:if test="%{#fio.isWoman()}"><s:text name="ab.person.sex.woman"/></s:if>
+			<s:if test="%{#fio.isMan()}">
+                <s:text name="ab.person.sex.man" />
+            </s:if><s:elseif test="%{#fio.isWoman()}">
+                <s:text name="ab.person.sex.woman"/>
+            </s:elseif>
 		</td>
 	</tr>
 	<tr class="cols_1">

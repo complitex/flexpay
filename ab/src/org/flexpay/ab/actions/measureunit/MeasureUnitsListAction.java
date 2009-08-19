@@ -3,11 +3,10 @@ package org.flexpay.ab.actions.measureunit;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.persistence.MeasureUnit;
 import org.flexpay.common.service.MeasureUnitService;
+import static org.flexpay.common.util.CollectionUtils.list;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
-import static org.flexpay.common.util.CollectionUtils.list;
 
-import java.util.Collections;
 import java.util.List;
 
 public class MeasureUnitsListAction extends FPActionSupport {
@@ -16,14 +15,6 @@ public class MeasureUnitsListAction extends FPActionSupport {
 
 	private MeasureUnitService measureUnitService;
 
-	/**
-	 * Perform action execution.
-	 * <p/>
-	 * If return code starts with a {@link #PREFIX_REDIRECT} all error messages are stored in a session
-	 *
-	 * @return execution result code
-	 * @throws Exception if failure occurs
-	 */
 	@NotNull
 	@Override
 	protected String doExecute() throws Exception {
