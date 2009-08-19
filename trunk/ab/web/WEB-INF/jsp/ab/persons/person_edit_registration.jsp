@@ -5,7 +5,7 @@
 
 <script type="text/javascript">
 
-    $(function() {
+    $("#formRegistration").ready(function() {
         FF.createFilter("country", {
             action: "<s:url action="countryFilterAjax" namespace="/dicts" includeParams="none"/>",
             defaultValue: "<s:text name="%{countryFilter != null ? countryFilter : ''}" />"
@@ -42,12 +42,10 @@
 
     FP.calendars("beginDate", true);
     FP.calendars("endDate", true);
+
 </script>
 
-<form id="srform" method="post" action="<s:url includeParams="none" />">
-
-    <s:hidden name="person.id" value="%{person.id}"/>
-    <s:hidden name="editType" value="registration" />
+<form id="formRegistration">
 
     <table cellpadding="3" cellspacing="1" border="0" width="100%">
         <tr class="cols_1">
@@ -76,19 +74,20 @@
                 <s:text name="ab.person.registration.begin_date"/>
             </td>
             <td>
-                <input type="text" name="beginDateStr" id="beginDate" value="<s:property value="format(beginDate)"/>" readonly="readonly" />
+                <s:textfield name="beginDate" readonly="true" />
             </td>
             <td class="filter">
                 <s:text name="ab.person.registration.end_date"/>
             </td>
             <td>
-                <input type="text" name="endDateStr" id="endDate" value="<s:property value="format(endDate)"/>" readonly="readonly" />
+                <s:textfield name="endDate" readonly="true" />
             </td>
         </tr>
         <tr>
             <td colspan="3">
-                <input type="submit" class="btn-exit" name="submitted" id="sbmt-btn" value="<s:text name="common.save"/>"/>
+                <input type="button" class="btn-exit" value="<s:text name="common.save"/>" onclick="submitRegistration();" />
             </td>
         </tr>
     </table>
+
 </form>

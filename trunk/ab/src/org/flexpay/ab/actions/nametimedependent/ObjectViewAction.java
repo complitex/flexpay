@@ -17,6 +17,7 @@ public abstract class ObjectViewAction<
 	protected NTD object;
 
 	@NotNull
+	@Override
 	public String doExecute() {
 
 		log.info("Object: {}", object);
@@ -41,6 +42,7 @@ public abstract class ObjectViewAction<
 	 * @return {@link #ERROR} by default
 	 */
 	@NotNull
+	@Override
 	protected String getErrorResult() {
 		return REDIRECT_ERROR;
 	}
@@ -53,10 +55,12 @@ public abstract class ObjectViewAction<
 		this.object = object;
 	}
 
+	@Override
 	protected ArrayStack getFilters() {
 		return null;
 	}
 
+	@Override
 	protected void setFilters(ArrayStack filters) {
 	}
 

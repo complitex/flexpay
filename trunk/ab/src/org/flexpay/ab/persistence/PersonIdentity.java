@@ -153,20 +153,10 @@ public class PersonIdentity extends DomainObjectWithStatus implements Comparable
 		this.personIdentityAttributes = personIdentityAttributes;
 	}
 
-	/**
-	 * Getter for property 'birthDate'.
-	 *
-	 * @return Value for property 'birthDate'.
-	 */
 	public Date getBirthDate() {
 		return birthDate;
 	}
 
-	/**
-	 * Setter for property 'birthDate'.
-	 *
-	 * @param birthDate Value to set for property 'birthDate'.
-	 */
 	public void setBirthDate(Date birthDate) {
 
 		if (birthDate == null) {
@@ -183,38 +173,18 @@ public class PersonIdentity extends DomainObjectWithStatus implements Comparable
 		setBirthDate(DateUtil.parseBeginDate(date));
 	}
 
-	/**
-	 * Getter for property 'person'.
-	 *
-	 * @return Value for property 'person'.
-	 */
 	public Person getPerson() {
 		return person;
 	}
 
-	/**
-	 * Setter for property 'person'.
-	 *
-	 * @param person Value to set for property 'person'.
-	 */
 	public void setPerson(Person person) {
 		this.person = person;
 	}
 
-	/**
-	 * Getter for property 'default'.
-	 *
-	 * @return Value for property 'default'.
-	 */
 	public boolean isDefault() {
 		return isDefault;
 	}
 
-	/**
-	 * Setter for property 'default'.
-	 *
-	 * @param isDefault Value to set for property 'default'.
-	 */
 	public void setDefault(boolean isDefault) {
 		this.isDefault = isDefault;
 	}
@@ -299,23 +269,6 @@ public class PersonIdentity extends DomainObjectWithStatus implements Comparable
 				.isEquals();
 	}
 
-	@Override
-	public String toString() {
-		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE)
-				.append("id", getId())
-				.append("status", getStatus())
-				.append("firstName", firstName)
-				.append("middleName", middleName)
-				.append("lastName", lastName)
-				.append("begin", beginDate != null ? DateUtil.format(beginDate) : null)
-				.append("end", endDate != null ? DateUtil.format(endDate) : null)
-				.append("birthday", birthDate)
-				.append("organization", organization)
-				.append("serialNumber", serialNumber)
-				.append("documentNumber", documentNumber)
-				.toString();
-	}
-
 	public static PersonIdentity newCopy(PersonIdentity oldIdentity) {
 		PersonIdentity identity = new PersonIdentity();
 		identity.setIdentityType(oldIdentity.getIdentityType());
@@ -337,6 +290,7 @@ public class PersonIdentity extends DomainObjectWithStatus implements Comparable
 		return identity;
 	}
 
+	@Override
 	public int compareTo(PersonIdentity o) {
 		return beginDate.compareTo(o.beginDate);
 	}
@@ -346,4 +300,22 @@ public class PersonIdentity extends DomainObjectWithStatus implements Comparable
 			   StringUtils.equals(serialNumber, o.serialNumber) &&
 			   StringUtils.equals(documentNumber, o.documentNumber);
 	}
+
+	@Override
+	public String toString() {
+		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE)
+				.append("id", getId())
+				.append("status", getStatus())
+				.append("firstName", firstName)
+				.append("middleName", middleName)
+				.append("lastName", lastName)
+				.append("beginDate", beginDate != null ? DateUtil.format(beginDate) : null)
+				.append("endDate", endDate != null ? DateUtil.format(endDate) : null)
+				.append("birthDate", birthDate != null ? DateUtil.format(birthDate) : null)
+				.append("organization", organization)
+				.append("serialNumber", serialNumber)
+				.append("documentNumber", documentNumber)
+				.toString();
+	}
+
 }

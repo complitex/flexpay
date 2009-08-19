@@ -58,8 +58,7 @@ public class EditBuildingAddressAction extends FPActionSupport {
 			return INPUT;
 		}
 
-		Street street = streetService.readFull(new Stub<Street>(streetFilter));
-		address.setStreet(street);
+		address.setStreet(new Street(streetFilter));
 		for (Map.Entry<Long, String> attr : attributeMap.entrySet()) {
 			AddressAttributeType type = addressAttributeTypeService.read(new Stub<AddressAttributeType>(attr.getKey()));
 			address.setBuildingAttribute(attr.getValue(), type);

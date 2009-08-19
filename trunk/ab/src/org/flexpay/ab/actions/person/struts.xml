@@ -21,47 +21,26 @@
 
 		<action name="personEdit" class="personEditAction">
 			<result name="input" type="tiles">ab.person.edit</result>
-			<result type="redirect-action">
-				<param name="actionName">personView</param>
-				<param name="parse">true</param>
-				<param name="person.id">${person.id}</param>
-			</result>
 			<result name="redirectError" type="redirect-action">
 				<param name="actionName">personsList</param>
 			</result>
 		</action>
 
-		<action name="personEditFIO" class="personSaveFIOAction">
-			<result name="redirectError" type="redirect-action">
-				<param name="actionName">personEdit</param>
-				<param name="parse">true</param>
-				<param name="person.id">${person.id}</param>
-			</result>
-			<result name="redirectSuccess" type="redirect-action">
-				<param name="actionName">personEdit</param>
-				<param name="parse">true</param>
-				<param name="person.id">${person.id}</param>
-			</result>
+        <action name="personEditRegistrationForm" class="personEditRegistrationFormAction">
+            <result>/WEB-INF/jsp/ab/persons/person_edit_registration.jsp</result>
+        </action>
+
+		<action name="personSaveFIO" class="personSaveFIOAction">
+            <result>/WEB-INF/jsp/ab/persons/person_response.jsp</result>
 		</action>
 
-		<action name="setPersonRegistration" class="setPersonRegistrationAction">
-			<result name="redirectError" type="redirect-action">
-				<param name="actionName">personEdit</param>
-				<param name="parse">true</param>
-				<param name="person.id">${person.id}</param>
-                <param name="countryFilter">${countryFilter}</param>
-                <param name="regionFilter">${regionFilter}</param>
-                <param name="townFilter">${townFilter}</param>
-                <param name="streetFilter">${streetFilter}</param>
-                <param name="buildingFilter">${buildingFilter}</param>
-                <param name="apartmentFilter">${apartmentFilter}</param>
-			</result>
-			<result name="redirectSuccess" type="redirect-action">
-				<param name="actionName">personEdit</param>
-				<param name="parse">true</param>
-				<param name="person.id">${person.id}</param>
-			</result>
+		<action name="personSaveRegistration" class="personSaveRegistrationAction">
+            <result>/WEB-INF/jsp/ab/persons/person_response.jsp</result>
 		</action>
+
+        <action name="personViewIdentities" class="personViewIdentitiesAction">
+            <result>/WEB-INF/jsp/ab/persons/person_view_identities.jsp</result>
+        </action>
 
 	</package>
 

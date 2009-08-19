@@ -11,8 +11,7 @@
 	</tr>
 	<s:iterator value="person.personAttributes" status="rowstatus">
 		<tr class="cols_1">
-			<td class="col" align="right"><s:property
-					value="%{#rowstatus.index + 1}"/>&nbsp;</td>
+			<td class="col" align="right"><s:property value="%{#rowstatus.index + 1}"/>&nbsp;</td>
 			<td class="col"><s:property value="%{name}"/></td>
 			<td class="col"><s:property value="%{value}"/></td>
 		</tr>

@@ -22,10 +22,6 @@ public class PersonSaveFIOAction extends FPActionSupport {
 	@Override
 	public String doExecute() throws Exception {
 
-		if (isNotSubmit()) {
-			return REDIRECT_SUCCESS;
-		}
-
 		if (person.isNotNew()) {
 			person = personService.read(stub(person));
 		}
@@ -42,6 +38,8 @@ public class PersonSaveFIOAction extends FPActionSupport {
 		// set default identity flag to true if person is new 
 		if (person.isNew()) {
 			identity.setDefault(true);
+		} else {
+			identity.setDefault(person.getFIOIdentity().isDefault());
 		}
 
 		boolean modified = person.setFIOIdentity(identity);
@@ -52,15 +50,12 @@ public class PersonSaveFIOAction extends FPActionSupport {
 			} else {
 				personService.update(person);
 			}
-			addActionError(getText("ab.person.fio.updated"));
-			if (log.isInfoEnabled()) {
-				log.info("Saved, errors: {}", getActionErrors());
-			}
+			addActionMessage(getText("ab.person.fio.saved"));
 		} else {
 			log.info("Not modified");
 		}
 
-		return REDIRECT_SUCCESS;
+		return SUCCESS;
 	}
 
 	/**
@@ -73,7 +68,7 @@ public class PersonSaveFIOAction extends FPActionSupport {
 	@NotNull
 	@Override
 	protected String getErrorResult() {
-		return REDIRECT_ERROR;
+		return SUCCESS;
 	}
 
 	public Person getPerson() {

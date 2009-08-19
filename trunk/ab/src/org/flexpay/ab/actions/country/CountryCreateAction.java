@@ -53,10 +53,8 @@ public class CountryCreateAction extends FPActionSupport {
 				addActionError(getText("ab.error.country.short_name_is_too_long", new String[] {CountryNameTranslation.SHORT_NAME_LENGTH + ""}));
 				return INPUT;
 			}
-			CountryNameTranslation translation = new CountryNameTranslation();
+			CountryNameTranslation translation = new CountryNameTranslation(value, lang);
 			translation.setShortName(shortNames.get(name.getKey()));
-			translation.setName(value);
-			translation.setLang(lang);
 			countryNames.add(translation);
 		}
 

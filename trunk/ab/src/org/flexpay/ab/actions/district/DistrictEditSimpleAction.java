@@ -27,14 +27,6 @@ public class DistrictEditSimpleAction extends FPActionSupport {
 	private TownService townService;
 	private DistrictService districtService;
 
-	/**
-	 * Perform action execution.
-	 * <p/>
-	 * If return code starts with a {@link #PREFIX_REDIRECT} all error messages are stored in a session
-	 *
-	 * @return execution result code
-	 * @throws Exception if failure occurs
-	 */
 	@NotNull
 	@Override
 	protected String doExecute() throws Exception {

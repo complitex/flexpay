@@ -5,6 +5,9 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.flexpay.common.persistence.LangNameTranslation;
 import org.flexpay.common.persistence.Translation;
+import org.flexpay.common.persistence.Language;
+import org.flexpay.ab.util.config.ApplicationConfig;
+import org.jetbrains.annotations.NotNull;
 
 public class CountryNameTranslation extends Translation {
 
@@ -13,6 +16,17 @@ public class CountryNameTranslation extends Translation {
 	private String shortName;
 
 	private transient LangNameTranslation langTranslation;
+
+	public CountryNameTranslation() {
+	}
+
+	public CountryNameTranslation(@NotNull String name) {
+		super(name, ApplicationConfig.getDefaultLanguage());
+	}
+
+	public CountryNameTranslation(@NotNull String name, @NotNull Language lang) {
+		super(name, lang);
+	}
 
 	public String getShortName() {
 		return shortName;

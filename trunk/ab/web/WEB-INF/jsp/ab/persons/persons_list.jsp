@@ -1,13 +1,13 @@
 <%@include file="/WEB-INF/jsp/common/taglibs.jsp" %>
 
-<s:actionerror/>
+<s:actionerror />
+<s:actionmessage />
 
 <s:form action="personDelete">
 
 	<%@include file="../filters/groups/person_search.jsp" %>
 
 	<table cellpadding="3" cellspacing="1" border="0" width="100%">
-
 		<tr>
 			<td class="th" width="1%">&nbsp;</td>
 			<td class="th" width="1%">
@@ -30,8 +30,7 @@
 				<td class="col"><s:property value="%{#person.defaultIdentity.lastName}"/></td>
 				<td class="col"><s:property value="%{#person.defaultIdentity.firstName}"/></td>
 				<td class="col"><s:property value="%{#person.defaultIdentity.middleName}"/></td>
-				<td class="col"><s:property
-						value="format(#person.defaultIdentity.birthDate)"/></td>
+				<td class="col"><s:property value="format(#person.defaultIdentity.birthDate)"/></td>
 				<td class="col">
 					<a href="<s:url action="personView"><s:param name="person.id" value="%{id}"/></s:url>">
 						<s:text name="common.view"/></a>

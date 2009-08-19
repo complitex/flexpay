@@ -133,6 +133,7 @@ public class PersonServiceImpl implements PersonService {
 	 * @throws org.flexpay.common.exception.FlexPayExceptionContainer
 	 *          if validation fails
 	 */
+	//TODO: не работает, мать его!!! :-\
 	@SuppressWarnings ({"ThrowableInstanceNeverThrown"})
 	@Transactional (readOnly = false)
 	public Person update(@NotNull Person person) throws FlexPayExceptionContainer {

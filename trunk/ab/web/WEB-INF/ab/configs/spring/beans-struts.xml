@@ -402,17 +402,16 @@
 		  scope="prototype" />
 
 	<bean id="personEditAction"
-		  class="org.flexpay.ab.actions.person.PersonEditAction"
+		  class="org.flexpay.ab.actions.person.PersonEditPageAction"
 		  p:personService-ref="personService"
-		  p:regionService-ref="regionService"
-		  p:townService-ref="townService"
-		  p:streetService-ref="streetService"
-		  p:buildingService-ref="buildingService"
-		  p:apartmentService-ref="apartmentService"
-		  p:setPersonRegistrationAction-ref="setPersonRegistrationAction"
 		  p:crumbNameKey="ab.crumbs.person_edit"
 		  p:crumbCreateKey="ab.crumbs.person_create"
 		  scope="prototype" />
+
+    <bean id="personViewIdentitiesAction"
+          class="org.flexpay.ab.actions.person.PersonViewIdentitiesAction"
+          p:personService-ref="personService"
+          scope="prototype" />
 
 	<bean id="personSaveFIOAction"
 		  class="org.flexpay.ab.actions.person.PersonSaveFIOAction"
@@ -420,14 +419,18 @@
 		  p:identityTypeService-ref="identityTypeService"
 		  scope="prototype" />
 
-	<bean id="setPersonRegistrationAction"
-		  class="org.flexpay.ab.actions.person.SetPersonRegistrationAction"
-		  p:personService-ref="personService"
-		  p:regionService-ref="regionService"
-		  p:townService-ref="townService"
-		  p:streetService-ref="streetService"
-		  p:buildingService-ref="buildingService"
-		  p:apartmentService-ref="apartmentService"
-		  scope="prototype" />
+    <bean id="personSaveRegistrationAction"
+          class="org.flexpay.ab.actions.person.PersonSaveRegistrationAction"
+          p:personService-ref="personService"
+          scope="prototype" />
+
+    <bean id="personEditRegistrationFormAction"
+          class="org.flexpay.ab.actions.person.PersonEditRegistrationFormAction"
+          p:regionService-ref="regionService"
+          p:townService-ref="townService"
+          p:streetService-ref="streetService"
+          p:buildingService-ref="buildingService"
+          p:apartmentService-ref="apartmentService"
+          scope="prototype" />
 
 </beans>

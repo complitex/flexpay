@@ -30,7 +30,8 @@
 
 		<tr>
 			<td colspan="2" valign="middle">
-				<input type="submit" class="btn-exit" name="submitted" value="<s:text name="common.save"/>" />
+                <s:submit cssClass="btn-exit" name="submitted" value="%{getText('common.save')}" />
+				<%--<input type="submit" class="btn-exit" name="submitted" value="<s:text name="common.save"/>" />--%>
 			</td>
 		</tr>
 	</table>

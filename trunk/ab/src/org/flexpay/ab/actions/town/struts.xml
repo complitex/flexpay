@@ -13,7 +13,7 @@
 
 		<action name="townView" class="townViewAction">
 			<result type="tiles">ab.town.view</result>
-			<result name="redirectError" type="redirect">townsList.action</result>
+			<result name="redirectError" type="redirect-action">townsList</result>
 		</action>
 
 		<action name="townEdit" class="townEditAction">
@@ -26,7 +26,7 @@
 		</action>
 
 		<action name="townDelete" class="townDeleteAction">
-			<result name="redirectSuccess" type="redirect">townsList.action</result>
+			<result name="redirectSuccess" type="redirect-action">townsList</result>
 		</action>
 
 	</package>
