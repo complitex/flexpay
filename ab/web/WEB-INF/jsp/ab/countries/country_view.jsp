@@ -4,10 +4,10 @@
     <tr>
         <td class="th" width="1%">&nbsp;</td>
         <td class="th"><s:text name="ab.language"/></td>
-        <td class="th"><s:text name="ab.street_type"/></td>
+        <td class="th"><s:text name="ab.country"/></td>
         <td class="th"><s:text name="ab.short_name"/></td>
     </tr>
-    <s:iterator value="streetType.translations" status="rowstatus">
+    <s:iterator value="country.countryNames" status="rowstatus">
         <tr valign="middle" class="cols_1">
             <td class="col_1s">
                 <s:property value="#rowstatus.index + 1" />
@@ -26,14 +26,4 @@
             </td>
         </tr>
     </s:iterator>
-    <tr>
-        <td colspan="4" height="3" bgcolor="#4a4f4f"/>
-    </tr>
-    <tr>
-        <td colspan="4">
-            <input type="button" class="btn-exit"
-                   onclick="window.location='<s:url action="streetTypeEdit"><s:param name="streetType.id" value="%{streetType.id}" /></s:url>';"
-                   value="<s:text name="common.edit" />" />
-        </td>
-    </tr>
 </table>

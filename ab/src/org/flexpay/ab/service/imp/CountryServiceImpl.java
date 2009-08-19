@@ -41,9 +41,9 @@ public class CountryServiceImpl implements CountryService {
 	/**
 	 * Read countries
 	 *
-	 * @param stubs		 Region keys
+ 	 * @param stubs Country keys
 	 * @param preserveOrder Whether to preserve order of objects
-	 * @return Objects if found, or <code>null</code> otherwise
+	 * @return Objects if found
 	 */
 	@NotNull
 	@Override
@@ -180,20 +180,12 @@ public class CountryServiceImpl implements CountryService {
 		return initFilter(parentFilter, locale);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	public boolean isNameAvailable(@NotNull String name, @NotNull Language language) {
-
 		List<CountryNameTranslation> translations = countryNameTranslationDao.findByName(name, language);
 		return translations.size() == 0;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	public boolean isShortNameAvailable(@NotNull String shortName, @NotNull Language language) {
-
 		List<CountryNameTranslation> translations = countryNameTranslationDao.findByShortName(shortName, language);
 		return translations.size() == 0;
 	}
@@ -225,4 +217,5 @@ public class CountryServiceImpl implements CountryService {
 	public void setCountryDaoExt(CountryDaoExt countryDaoExt) {
 		this.countryDaoExt = countryDaoExt;
 	}
+
 }

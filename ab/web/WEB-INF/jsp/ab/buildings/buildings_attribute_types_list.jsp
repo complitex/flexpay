@@ -13,7 +13,11 @@
 		<s:iterator value="types" status="status">
 			<tr valign="middle" class="cols_1">
 				<td class="col_1s"><s:property value="%{#status.index + 1}" /></td>
-				<td class="col_1s"><s:property value="%{getTranslation(translations).name}" /></td>
+				<td class="col_1s">
+                    <a href="<s:url action="addressAttributeTypeView"><s:param name="attributeType.id" value="%{id}" /></s:url>">
+                        <s:property value="getTranslation(translations).name" />
+                    </a>
+                </td>
 				<td class="col_1s">
 					<a href="<s:url action="addressAttributeTypeEdit"><s:param name="attributeType.id" value="%{id}"/></s:url>">
 						<s:text name="common.edit" />
