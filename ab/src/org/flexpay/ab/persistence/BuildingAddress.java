@@ -53,6 +53,7 @@ public class BuildingAddress extends DomainObjectWithStatus {
 		this.building = building;
 	}
 
+	@NotNull
 	public Set<AddressAttribute> getBuildingAttributes() {
 		return addressAttributes;
 	}
