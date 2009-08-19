@@ -23,7 +23,7 @@ public class BuildingAddress extends DomainObjectWithStatus {
 
 	private Street street;
 	private Building building;
-	private Set<AddressAttribute> addressAttributes = Collections.emptySet();
+	private Set<AddressAttribute> addressAttributes = CollectionUtils.set();
 	private boolean primaryStatus;
 
 	public BuildingAddress() {
@@ -37,7 +37,6 @@ public class BuildingAddress extends DomainObjectWithStatus {
 		super(stub.getId());
 	}
 
-	@NotNull
 	public Street getStreet() {
 		return this.street;
 	}
@@ -46,7 +45,6 @@ public class BuildingAddress extends DomainObjectWithStatus {
 		this.street = street;
 	}
 
-	@NotNull
 	public Building getBuilding() {
 		return this.building;
 	}
@@ -55,7 +53,6 @@ public class BuildingAddress extends DomainObjectWithStatus {
 		this.building = building;
 	}
 
-	@NotNull
 	public Set<AddressAttribute> getBuildingAttributes() {
 		return addressAttributes;
 	}

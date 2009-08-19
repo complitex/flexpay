@@ -14,15 +14,17 @@
 				<a href="<s:url action="editBuildingAddress"><s:param name="building.id" value="building.id"/><s:param name="address.id" value="id"/></s:url>">
 					<s:text name="common.edit" />
 				</a>
+
+				<s:if test="!primaryStatus">
+				&nbsp;
+				<a href="<s:url action="buildingSetPrimaryStatus" includeParams="none" ><s:param name="buildings.id" value="id" /><s:param name="redirectBuildingsId" value="building.id" /></s:url>">
+				   <s:text name="ab.buildings.set_primary_status"/>
+				</a>
 				&nbsp;
 				<a href="<s:url action="buildingDelete" includeParams="none" />?objectIds=<s:property value="id" />&redirectBuildingsId=<s:property value="building.id" />">
 					<s:text name="ab.delete"/>
 				</a>
-				<s:if test="!primaryStatus">
-					&nbsp;
-					<a href="<s:url action="buildingSetPrimaryStatus" includeParams="none" ><s:param name="buildings.id" value="id" /><s:param name="redirectBuildingsId" value="building.id" /></s:url>">
-						   <s:text name="ab.buildings.set_primary_status"/></a>
-				</s:if>
+				</s:if>				
 			</td>
 		</tr>
 	</s:iterator>
