@@ -7,16 +7,19 @@ import org.flexpay.ab.util.config.ApplicationConfig;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.persistence.Language;
 import static org.flexpay.common.persistence.Stub.stub;
+import org.flexpay.common.util.CollectionUtils;
 import static org.flexpay.common.util.CollectionUtils.treeMap;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.util.Map;
+import java.util.Set;
 
 public class AddressAttributeTypeEditAction extends FPActionSupport {
 
 	private AddressAttributeType attributeType = new AddressAttributeType();
 	private Map<Long, String> names = treeMap();
+	private Map<Long, String> shortNames = treeMap();
 
 	private String crumbCreateKey;
 	private AddressAttributeTypeService addressAttributeTypeService;
@@ -45,10 +48,19 @@ public class AddressAttributeTypeEditAction extends FPActionSupport {
 		}
 
 		// init translations
-		for (Map.Entry<Long, String> name : names.entrySet()) {
-			String value = name.getValue();
-			Language lang = getLang(name.getKey());
-			type.setTranslation(new AddressAttributeTypeTranslation(value, lang));
+		Set<AddressAttributeTypeTranslation> newTranslations = CollectionUtils.set();
+		for (Long languageId : names.keySet()) {
+			Language lang = getLang(languageId);
+			String name = names.get(languageId);
+			String shortName = shortNames.get(languageId);
+			AddressAttributeTypeTranslation translation = type.getTranslation(lang);
+			if (translation != null) {
+				translation.setName(name);
+				translation.setShortName(shortName);
+			} else {
+				translation = new AddressAttributeTypeTranslation(name, shortName, lang);
+				type.setTranslation(translation);
+			}
 		}
 
 		if (type.isNew()) {
@@ -64,11 +76,13 @@ public class AddressAttributeTypeEditAction extends FPActionSupport {
 
 		for (AddressAttributeTypeTranslation translation : attributeType.getTranslations()) {
 			names.put(translation.getLang().getId(), translation.getName());
+			shortNames.put(translation.getLang().getId(), translation.getShortName());
 		}
 
 		for (Language language : ApplicationConfig.getLanguages()) {
 			if (!names.containsKey(language.getId())) {
 				names.put(language.getId(), "");
+				shortNames.put(language.getId(), "");
 			}
 		}
 	}
@@ -108,6 +122,14 @@ public class AddressAttributeTypeEditAction extends FPActionSupport {
 
 	public void setNames(Map<Long, String> names) {
 		this.names = names;
+	}
+
+	public Map<Long, String> getShortNames() {
+		return shortNames;
+	}
+
+	public void setShortNames(Map<Long, String> shortNames) {
+		this.shortNames = shortNames;
 	}
 
 	public void setCrumbCreateKey(String crumbCreateKey) {
