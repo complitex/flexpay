@@ -12,8 +12,17 @@
         </action>
 
         <action name="countryCreate" class="countryCreateAction">
-            <result name="redirectSuccess" type="redirect-action">countriesList</result>
             <result type="tiles" name="input">ab.country.create</result>
+            <result name="redirectSuccess" type="redirect-action">
+                <param name="actionName">countryView</param>
+                <param name="parse">true</param>
+                <param name="country.id">${country.id}</param>
+            </result>
+        </action>
+
+        <action name="countryView" class="countryViewAction">
+            <result type="tiles">ab.country.view</result>
+            <result name="redirectError" type="redirect-action">countriesList</result>
         </action>
 
     </package>

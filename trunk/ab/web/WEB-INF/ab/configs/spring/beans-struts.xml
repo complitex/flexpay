@@ -20,6 +20,12 @@
 		  p:countryService-ref="countryService"
 		  scope="prototype" />
 
+    <bean id="countryViewAction"
+          class="org.flexpay.ab.actions.country.CountryViewAction"
+          p:countryService-ref="countryService"
+          p:crumbNameKey="ab.crumbs.country_view"
+          scope="prototype" />
+
 	<bean id="countryFilterAjaxAction"
 		  class="org.flexpay.ab.actions.filters.CountryFilterAjaxAction"
 		  p:countryService-ref="countryService"
@@ -241,6 +247,12 @@
 		  p:crumbNameKey="ab.crumbs.address_attribute_type_edit"
 		  p:crumbCreateKey="ab.crumbs.address_attribute_type_create"
 		  scope="prototype" />
+
+    <bean id="addressAttributeTypeViewAction"
+          class="org.flexpay.ab.actions.buildings.AddressAttributeTypeViewAction"
+          p:buildingAttributeTypeService-ref="addressAttributeTypeService"
+          p:crumbNameKey="ab.crumbs.address_attribute_type_view"
+          scope="prototype" />
 
 	<!-- Apartments -->
 	<bean id="apartmentEditAction"

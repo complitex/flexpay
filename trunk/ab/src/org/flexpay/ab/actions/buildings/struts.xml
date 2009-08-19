@@ -48,7 +48,7 @@
 			<result name="redirectSuccess" type="redirect-action">
 				<param name="actionName">buildingView</param>
 				<param name="parse">true</param>
-				<param name="building.id">${redirectBuildingsId!=null ? redirectBuildingsId : buildings.id}</param>
+				<param name="building.id">${redirectBuildingsId != null ? redirectBuildingsId : buildings.id}</param>
 			</result>
 		</action>
 
@@ -57,9 +57,18 @@
 		</action>
 
 		<action name="addressAttributeTypeEdit" class="addressAttributeTypeEditAction">
-			<result name="input" type="tiles">ab.buildings.attribute_types.edit</result>
-			<result name="redirectSuccess" type="redirect-action">addressAttributeTypesList</result>
+			<result name="input" type="tiles">ab.buildings.attribute_type.edit</result>
+            <result name="redirectSuccess" type="redirect-action">
+                <param name="actionName">addressAttributeTypeView</param>
+                <param name="parse">true</param>
+                <param name="attributeType.id">${attributeType.id}</param>
+            </result>
 		</action>
+
+        <action name="addressAttributeTypeView" class="addressAttributeTypeViewAction">
+            <result type="tiles">ab.buildings.attribute_type.view</result>
+            <result name="redirectError" type="redirect-action">addressAttributeTypesList</result>
+        </action>
 
 	</package>
 
