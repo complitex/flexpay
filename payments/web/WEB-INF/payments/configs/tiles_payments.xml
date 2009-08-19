@@ -121,6 +121,11 @@
 		<put-attribute name="body" value="/WEB-INF/jsp/payments/registry/edit_registry_annotation.jsp" />
 	</definition>
 
+    <definition name="payments.registry.delivery_history" extends="ab.layout.standart">
+		<put-attribute name="title" value="payments.registry.delivery_history.title"/>
+		<put-attribute name="body" value="/WEB-INF/jsp/payments/registry/registry_delivery_history.jsp"/>
+	</definition>
+
 	<!-- Registry record corrections -->
 	<definition name="payments.select_correction_type" extends="ab.layout.content">
 		<put-attribute name="body" value="/WEB-INF/jsp/payments/data/correspondence/select_correction_type.jsp" />

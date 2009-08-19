@@ -7,11 +7,12 @@ import org.flexpay.common.service.*;
 import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.orgs.persistence.ServiceProvider;
 import org.flexpay.payments.persistence.Document;
-import org.flexpay.payments.persistence.DocumentAddition;
 import org.flexpay.payments.persistence.DocumentAdditionType;
-import org.flexpay.payments.service.DocumentAdditionTypeService;
+import org.flexpay.payments.persistence.DocumentAddition;
+import org.flexpay.payments.persistence.EircRegistryProperties;
 import org.flexpay.payments.service.DocumentService;
 import org.flexpay.payments.service.OperationService;
+import org.flexpay.payments.service.DocumentAdditionTypeService;
 import org.flexpay.payments.util.config.ApplicationConfig;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -20,10 +21,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.text.SimpleDateFormat;
 
 public class GeneratePaymentsDBRegistry {
 
@@ -67,7 +68,13 @@ public class GeneratePaymentsDBRegistry {
         registry.setRegistryStatus(registryStatusService.findByCode(RegistryStatus.CREATING));
         registry.setFromDate(fromDate);
         registry.setTillDate(tillDate);
-        registry.setProperties(propertiesFactory.newRegistryProperties());
+
+        EircRegistryProperties registryProperties = (EircRegistryProperties)propertiesFactory.newRegistryProperties();
+        registryProperties.setRecipient(serviceProvider.getOrganization());
+        registryProperties.setSender(registerOrganization);
+        registryProperties.setServiceProvider(serviceProvider);
+        registry.setProperties(registryProperties);
+        
         registryService.create(registry);
 
         BigDecimal summ = new BigDecimal(0);

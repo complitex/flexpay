@@ -1378,6 +1378,16 @@
         primary key (id)
     ) comment='Operations';
 
+    create table payments_registry_delivery_history_tbl (
+        id bigint not null auto_increment comment 'Primary key',
+        version integer not null comment 'Optimistic lock version',
+        registry_id bigint not null comment 'Registry reference',
+        delivery_date datetime not null comment 'Delivery date',
+        email varchar(255) not null comment 'E-mail',
+        file_id bigint not null comment 'File reference',
+        primary key (id)
+    ) comment='Registry delivery history';
+
     create table payments_service_descriptions_tbl (
         id bigint not null auto_increment,
         name varchar(255),
@@ -2667,6 +2677,18 @@
         add constraint FK_payments_operations_tbl_creator_organization_id 
         foreign key (creator_organization_id) 
         references orgs_organizations_tbl (id);
+
+    alter table payments_registry_delivery_history_tbl 
+        add index FK_payments_registry_delivery_history_tbl_file_id (file_id), 
+        add constraint FK_payments_registry_delivery_history_tbl_file_id 
+        foreign key (file_id) 
+        references common_files_tbl (id);
+
+    alter table payments_registry_delivery_history_tbl 
+        add index FK_payments_registry_delivery_history_tbl_registry_id (registry_id), 
+        add constraint FK_payments_registry_delivery_history_tbl_registry_id 
+        foreign key (registry_id) 
+        references common_registries_tbl (id);
 
     alter table payments_service_descriptions_tbl 
         add index FK_payments_service_description_service (service_id), 

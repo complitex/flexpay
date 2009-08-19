@@ -244,7 +244,7 @@
           p:name="payments.registers"
           p:title="payments.menu2.registry"
           p:namespace="/payments"
-          p:action="registriesList"
+          p:action="emptyPage"
           p:parent-ref="payments.acc">
         <property name="userRole">
             <util:constant static-field="org.flexpay.payments.service.Roles.ROLE_MENU_PAYMENTS_REGISTERS" />
@@ -291,6 +291,16 @@
           p:parent-ref="payments.dictionaries">
         <property name="userRole">
             <util:constant static-field="org.flexpay.payments.service.Roles.ROLE_MENU_PAYMENTS_PAYMENT_POINTS" />
+        </property>
+    </bean>
+
+    <bean name="payments.registers.registers" parent="payments.registers"
+          p:name="payments.registers2"
+          p:title="payments.menu3.registry"
+          p:action="emptyPage"
+          p:parent-ref="payments.registers">
+        <property name="userRole">
+            <util:constant static-field="org.flexpay.payments.service.Roles.ROLE_MENU_PAYMENTS_REGISTERS" />
         </property>
     </bean>
 
@@ -342,6 +352,28 @@
           p:parent-ref="payments.dictionaries.payment_points">
         <property name="userRole">
             <util:constant static-field="org.flexpay.payments.service.Roles.ROLE_MENU_PAYMENTS_CASHBOXES" />
+        </property>
+    </bean>
+
+    <bean name="payments.registers.list" parent="payments.registers.registers"
+          p:name="payments.registers.list"
+          p:title="payments.menu4.registries"
+          p:namespace="/payments"
+          p:action="registriesList"
+          p:parent-ref="payments.registers.registers">
+        <property name="userRole">
+            <util:constant static-field="org.flexpay.payments.service.Roles.ROLE_MENU_PAYMENTS_REGISTERS" />
+        </property>
+    </bean>
+
+    <bean name="payments.registers.delivery_history" parent="payments.registers.registers"
+          p:name="payments.registers.delivery_history"
+          p:title="payments.menu4.registry_delivery_history"
+          p:namespace="/payments"
+          p:action="registryDeliveryHistory"
+          p:parent-ref="payments.registers.registers">
+        <property name="userRole">
+            <util:constant static-field="org.flexpay.payments.service.Roles.ROLE_MENU_PAYMENTS_REGISTERS" />
         </property>
     </bean>
 </beans>
