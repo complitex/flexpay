@@ -1,10 +1,11 @@
 package org.flexpay.ab.persistence;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
-import org.apache.commons.lang.StringUtils;
 import org.flexpay.common.persistence.Language;
 import org.flexpay.common.persistence.Translation;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * BuildingAttributeTypeTranslation
@@ -18,6 +19,11 @@ public class AddressAttributeTypeTranslation extends Translation {
 
 	public AddressAttributeTypeTranslation(String name, Language lang) {
 		super(name, lang);
+	}
+
+	public AddressAttributeTypeTranslation(@NotNull String name, String shortName, @NotNull Language lang) {
+		super(name, lang);
+		this.shortName = shortName;
 	}
 
 	public String getShortName() {

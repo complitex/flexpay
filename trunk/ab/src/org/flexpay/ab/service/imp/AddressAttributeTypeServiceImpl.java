@@ -37,9 +37,16 @@ public class AddressAttributeTypeServiceImpl implements AddressAttributeTypeServ
 		FlexPayExceptionContainer container = new FlexPayExceptionContainer();
 
 		boolean defaultLangTranslationFound = false;
+		boolean defaultLangShortNameTranslationFound = false;
 		for (AddressAttributeTypeTranslation translation : type.getTranslations()) {
-			if (translation.getLang().isDefault() && StringUtils.isNotEmpty(translation.getName())) {
-				defaultLangTranslationFound = true;
+			if (translation.getLang().isDefault()) {
+				if (StringUtils.isNotEmpty(translation.getName())) {
+					defaultLangTranslationFound = true;
+				}
+
+				if (StringUtils.isNotEmpty(translation.getShortName())) {
+					defaultLangShortNameTranslationFound = true;
+				}
 			}
 		}
 
@@ -48,6 +55,12 @@ public class AddressAttributeTypeServiceImpl implements AddressAttributeTypeServ
 					"No default translation", "error.no_default_translation"));
 		}
 
+		if (!defaultLangShortNameTranslationFound) {
+			container.addException(new FlexPayException(
+					"No default short name translation", "error.no_default_short_translation"
+			));
+		}
+		
 		// todo check if there is already a type with a specified name
 
 		if (container.isNotEmpty()) {
