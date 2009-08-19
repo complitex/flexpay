@@ -233,4 +233,13 @@
           p:registryService-ref="registryService"
           scope="prototype" />
 
+    <bean id="registryDeliveryHistoryAction"
+          class="org.flexpay.payments.actions.registry.RegistryDeliveryHistoryAction"
+          p:crumbNameKey="payments.crumbs.registry_delivery_history"
+          p:organizationService-ref="organizationService"
+          p:processManager-ref="processManagerPayments"
+          p:providerService-ref="serviceProviderService"
+          p:registryDeliveryHistoryService-ref="registryDeliveryHistoryService"
+          scope="prototype" />
+
 </beans>

@@ -40,6 +40,17 @@
 		</property>
 	</bean>
 
+    <bean id="paymentsPropertiesFactory" depends-on="propertiesFactory" autowire-candidate="false"
+		  factory-bean="propertiesFactoryHolder" factory-method="getFactory">
+		<property name="factory">
+			<bean class="org.flexpay.payments.persistence.PaymentsPropertiesFactory" autowire-candidate="false" />
+		</property>
+	</bean>
+
+    <bean id="registryDeliveryHistoryService"
+          class="org.flexpay.payments.service.impl.RegistryDeliveryHistoryServiceImpl"
+          p:registryDeliveryHistoryDao-ref="registryDeliveryHistoryDao" />
+
 	<bean id="eircRegistryService"
 		  class="org.flexpay.payments.service.impl.EircRegistryServiceImpl"
 		  p:registryDaoExt-ref="eircRegistryDaoExt"
@@ -153,7 +164,7 @@
 		  p:registryStatusService-ref="registryStatusService"
 		  p:registryTypeService-ref="registryTypeService"
 		  p:registryRecordStatusService-ref="registryRecordStatusService"
-		  p:propertiesFactory-ref="propertiesFactory"
+		  p:propertiesFactory-ref="paymentsPropertiesFactory"
 		  p:documentAdditionTypeService-ref="documentAdditionTypeService" />
 
 	<bean id="generatePaymentsMBRegistry"

@@ -98,7 +98,7 @@ public class GeneratePaymentsRegistry extends QuartzJobBean {
                                 parameters.put("OrganizationId", organization.getId());
                                 parameters.put("ServiceProviderId", serviceProvider.getId());
                                 parameters.put("RegisteredOrganizationId", paymentsCollector.getOrganization().getId());
-                                parameters.put("Email", serviceProvider.getEmail());
+                                //parameters.put("Email", serviceProvider.getEmail());
                                 parameters.put("PrivateKey", privateKey);
 
                                 waitingProcessData.add(parameters);

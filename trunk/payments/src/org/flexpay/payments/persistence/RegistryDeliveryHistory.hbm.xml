@@ -1,0 +1,62 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+		"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="org.flexpay.payments.persistence">
+
+	<class name="RegistryDeliveryHistory" table="payments_registry_delivery_history_tbl" optimistic-lock="version">
+        <comment>Registry delivery history</comment>
+		<id name="id">
+			<column name="id">
+				<comment>Primary key</comment>
+			</column>
+			<generator class="native" />
+		</id>
+		<version name="version" access="field">
+			<column name="version" not-null="true">
+				<comment>Optimistic lock version</comment>
+			</column>
+		</version>
+		<many-to-one name="registry" class="org.flexpay.common.persistence.registry.Registry"
+					 foreign-key="FK_payments_registry_delivery_history_tbl_registry_id">
+			<column name="registry_id" not-null="true">
+				<comment>Registry reference</comment>
+			</column>
+		</many-to-one>
+        <property name="deliveryDate" type="timestamp">
+            <column name="delivery_date" not-null="true">
+				<comment>Delivery date</comment>
+			</column>
+        </property>
+        <property name="email">
+            <column name="email" not-null="true">
+				<comment>E-mail</comment>
+			</column>
+        </property>
+        <many-to-one name="spFile" class="org.flexpay.common.persistence.file.FPFile"
+					 foreign-key="FK_payments_registry_delivery_history_tbl_file_id">
+			<column name="file_id" not-null="true">
+				<comment>File reference</comment>
+			</column>
+		</many-to-one>
+	</class>
+
+    <query name="RegistryDeliveryHistory.readFull">
+        select distinct o
+		from RegistryDeliveryHistory o
+		left join fetch o.registry reg
+		where o.id = ?
+    </query>
+
+    <query name="RegistryDeliveryHistory.listRegistryDeliveryHistories"><![CDATA[
+        select distinct o
+		from RegistryDeliveryHistory o
+		inner join fetch o.registry registry
+		inner join fetch o.registry.properties
+		inner join fetch o.registry.registryType
+		where registry.fromDate >= ? and registry.tillDate <= ?
+		order by o.deliveryDate desc
+    ]]></query>
+
+</hibernate-mapping>

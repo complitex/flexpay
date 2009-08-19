@@ -99,6 +99,12 @@
 			<result name="redirectError" type="redirect-action">registriesList</result>
 		</action>
 
+        <action name="registryDeliveryHistory" class="registryDeliveryHistoryAction">
+			<result type="tiles">payments.registry.delivery_history</result>
+            <result name="success" type="tiles">payments.registry.delivery_history</result>
+            <result name="error" type="tiles">payments.registry.delivery_history</result>
+		</action>
+
 	</package>
 
 </struts>
