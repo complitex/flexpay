@@ -82,6 +82,7 @@ public class RegistryDeliveryHistoryAction extends CashboxCookieWithPagerActionS
 
         deliveryHistory.clear();
         List<RegistryDeliveryHistory> histories = loadRegistryDeliveryHistories();
+        log.debug("count registry delivery history: {}", histories.size());
         for (RegistryDeliveryHistory history : histories) {
             SentRegistryContainer container = new SentRegistryContainer();
             container.setId(history.getId());
@@ -105,6 +106,8 @@ public class RegistryDeliveryHistoryAction extends CashboxCookieWithPagerActionS
             } else {
                 log.warn("Service provider does not content in properties {}", history.getRegistry().getId());
             }
+            log.debug("add container with history {}", history.getId());
+            deliveryHistory.add(container);
         }
 
         return SUCCESS;
@@ -132,20 +135,20 @@ public class RegistryDeliveryHistoryAction extends CashboxCookieWithPagerActionS
 		return endDateFilter;
 	}
 
-    public Date getBeginDate() {
-        return beginDate;
+    public String getBeginDate() {
+        return DateUtil.format(beginDate);
     }
 
-    public void setBeginDate(Date beginDate) {
-        this.beginDate = beginDate;
+    public void setBeginDate(String beginDate) {
+        this.beginDate = DateUtil.parseBeginDate(beginDate);
     }
 
-    public Date getEndDate() {
-        return endDate;
+    public String getEndDate() {
+        return DateUtil.format(endDate);
     }
 
-    public void setEndDate(Date endDate) {
-        this.endDate = endDate;
+    public void setEndDate(String endDate) {
+        this.endDate = DateUtil.parseBeginDate(endDate);
     }
 
     public void setObjectIds(Set<Long> objectIds) {
@@ -158,8 +161,9 @@ public class RegistryDeliveryHistoryAction extends CashboxCookieWithPagerActionS
 
     // load history according to search criteria
 	private List<RegistryDeliveryHistory> loadRegistryDeliveryHistories() {
-        Date begin = beginDateFilter.getDate();
-        Date end = DateUtil.getEndOfThisDay(endDateFilter.getDate());
+        final Date begin = beginDateFilter.getDate();
+        final Date end = DateUtil.getEndOfThisDay(endDateFilter.getDate());
+        log.debug("get delivery history in date range: {} - {}", new Object[] {begin, end});
 
         return registryDeliveryHistoryService.listRegistryDeliveryHistories(getPager(), begin, end);
 	}
