@@ -6,7 +6,7 @@
         <td class="th" width="1%">&nbsp;</td>
         <td class="th"><s:text name="ab.building"/></td>
     </tr>
-    <s:iterator value="%{buildings}" status="status">
+    <s:iterator value="%{buildings}" status="status" id="buildingAddress">
     <tr valign="middle" class="cols_1">
         <td class="col_1s" align="right">
             <s:property value="%{#status.index + pager.thisPageFirstElementNumber + 1}"/>
@@ -15,7 +15,7 @@
             <input type="radio" value="<s:property value="%{id}"/>" name="object.id"/>
         </td>
         <td class="col">
-            <s:property value="%{@org.flexpay.ab.util.TranslationUtil@getBuildingNumber(buildingAttributes, userPreferences.locale)}"/>
+            <s:property value="%{@org.flexpay.ab.util.TranslationUtil@getBuildingNumber(#buildingAddress, userPreferences.locale)}"/>
         </td>
     </tr>
     </s:iterator>

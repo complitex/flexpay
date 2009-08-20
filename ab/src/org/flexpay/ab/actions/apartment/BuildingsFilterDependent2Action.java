@@ -53,9 +53,9 @@ public abstract class BuildingsFilterDependent2Action extends FPActionWithPagerS
 		return filters;
 	}
 
-	public String getBuildingNumber(@Nullable BuildingAddress buildings) throws Exception {
-		if (buildings != null) {
-			return TranslationUtil.getBuildingNumber(buildings.getBuildingAttributes(), getUserPreferences().getLocale());
+	public String getBuildingNumber(@Nullable BuildingAddress buildingAddress) throws Exception {
+		if (buildingAddress != null) {
+			return TranslationUtil.getBuildingNumber(buildingAddress, getUserPreferences().getLocale());
 		}
 
 		return null;

@@ -3,6 +3,7 @@ package org.flexpay.ab.persistence;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
+import org.flexpay.ab.util.TranslationUtil;
 import org.flexpay.ab.util.config.ApplicationConfig;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.DomainObjectWithStatus;
@@ -183,31 +184,7 @@ public class BuildingAddress extends DomainObjectWithStatus {
 
 	public String format(Locale locale, boolean shortMode) throws FlexPayException {
 
-		StringBuilder result = new StringBuilder();
-		AddressAttribute attribute = getNumberAttribute();
-		if (attribute != null) {
-			result.append(attribute.format(locale, shortMode));
-		}
-		attribute = getBulkAttribute();
-		if (attribute != null) {
-			result.append(", ").
-					append(attribute.format(locale, shortMode));
-		}
-		attribute = getPartAttribute();
-		if (attribute != null) {
-			result.append(", ").
-					append(attribute.format(locale, shortMode));
-		}
-
-		for (AddressAttribute attr : addressAttributes) {
-			AddressAttributeType attrType = attr.getBuildingAttributeType();
-			if (!attrType.isBuildingNumber() && !attrType.isBulkNumber() && !attrType.isPartNumber()) {
-				result.append(", ").
-						append(attr.format(locale, shortMode));
-			}
-		}
-
-		return result.toString();
+		return TranslationUtil.getBuildingNumber(this, locale);		
 	}
 
 	/**
