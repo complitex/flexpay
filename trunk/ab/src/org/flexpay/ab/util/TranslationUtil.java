@@ -7,8 +7,8 @@ import static org.flexpay.common.util.TranslationUtil.getTranslation;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Locale;
 import java.util.Collection;
+import java.util.Locale;
 
 public class TranslationUtil {
 
@@ -82,47 +82,43 @@ public class TranslationUtil {
 		return streetTypeStr;
 	}
 
-	public static String getBuildingNumber(@Nullable Collection<AddressAttribute> attributes) throws FlexPayException {
-		return getBuildingNumber(attributes, org.flexpay.common.util.config.ApplicationConfig.getDefaultLocale());
+	public static String getBuildingNumber(@Nullable BuildingAddress buildingAddress) throws FlexPayException {
+		return getBuildingNumber(buildingAddress, org.flexpay.common.util.config.ApplicationConfig.getDefaultLocale());
 	}
 
-	public static String getBuildingNumber(@Nullable Collection<AddressAttribute> attributes, @Nullable Locale locale) throws FlexPayException {
+	public static String getBuildingNumber(@Nullable BuildingAddress buildingAddress, @Nullable Locale locale) throws FlexPayException {
+		return getBuildingNumber(buildingAddress, true, locale);
+	}
 
-		if (attributes == null) {
-			return null;
+	public static String getBuildingNumber(@Nullable BuildingAddress buildingAddress, boolean shortMode, @Nullable Locale locale) throws FlexPayException {
+
+		StringBuilder result = new StringBuilder();
+		AddressAttribute attribute = buildingAddress.getNumberAttribute();
+		if (attribute != null) {
+			result.append(attribute.format(locale, shortMode));
+		}
+		
+		attribute = buildingAddress.getBulkAttribute();
+		if (attribute != null) {
+			result.append(", ").
+					append(attribute.format(locale, shortMode));
 		}
 
-		String building = "";
-		String bulk = "";
-		String part = "";
-		for (AddressAttribute attribute : attributes) {
-			if (attribute == null) {
-				continue;
-			}
-			AddressAttributeTypeTranslation att =
-					locale == null ? getTranslation(attribute.getBuildingAttributeType().getTranslations()) :
-							getTranslation(attribute.getBuildingAttributeType().getTranslations(), locale);
-			String v = new StringBuilder().
-					append(att.getShortName() != null ? att.getShortName() : att.getName()).
-					append(" ").
-					append(attribute.getValue()).
-					toString().trim();
-			if (attribute.getBuildingAttributeType().isPartNumber()) {
-				part = v;
-			} else if (attribute.getBuildingAttributeType().isBulkNumber()) {
-				bulk = v;
-			} else if (attribute.getBuildingAttributeType().isBuildingNumber()) {
-				building = v;
+		attribute = buildingAddress.getPartAttribute();
+		if (attribute != null) {
+			result.append(", ").
+					append(attribute.format(locale, shortMode));
+		}
+
+		for (AddressAttribute attr : buildingAddress.getBuildingAttributes()) {
+			AddressAttributeType attrType = attr.getBuildingAttributeType();
+			if (!attrType.isBuildingNumber() && !attrType.isBulkNumber() && !attrType.isPartNumber()) {
+				result.append(", ").
+						append(attr.format(locale, shortMode));
 			}
 		}
 
-		return new StringBuilder().
-				append(building).
-				append(" ").
-				append(bulk).
-				append(" ").
-				append(part).
-				toString();
+		return result.toString();
 	}
 
 	public static String getBuildingNumberWithoutHouseType(@Nullable Collection<AddressAttribute> attributes, @Nullable Locale locale) throws FlexPayException {

@@ -19,7 +19,7 @@
             <s:text name="ab.building"/>
         </td>
     </tr>
-    <s:iterator value="%{buildings}" status="status">
+    <s:iterator value="%{buildings}" status="status" id="buildingAddress">
         <tr valign="middle" class="cols_1">
             <td class="col_1s" align="right">
                 <s:property	value="%{#status.index + pager.thisPageFirstElementNumber + 1}"/>
@@ -28,7 +28,7 @@
                 <input type="checkbox" value="<s:property value="%{id}"/>" name="objectIds"/>
             </td>
             <td class="col">
-                <s:property	value="%{@org.flexpay.ab.util.TranslationUtil@getBuildingNumber(buildingAttributes, userPreferences.locale)}"/>
+                <s:property	value="%{@org.flexpay.ab.util.TranslationUtil@getBuildingNumber(#buildingAddress, userPreferences.locale)}"/>
             </td>
         </tr>
     </s:iterator>
