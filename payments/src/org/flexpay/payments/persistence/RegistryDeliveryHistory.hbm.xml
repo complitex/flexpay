@@ -55,7 +55,7 @@
 		inner join fetch o.registry registry
 		inner join fetch o.registry.properties
 		inner join fetch o.registry.registryType
-		where registry.fromDate >= ? and registry.tillDate <= ?
+		where registry.creationDate between ? and ?
 		order by o.deliveryDate desc
     ]]></query>
 
