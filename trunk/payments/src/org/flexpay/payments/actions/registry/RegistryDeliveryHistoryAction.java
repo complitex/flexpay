@@ -6,6 +6,7 @@ import org.flexpay.payments.persistence.RegistryDeliveryHistory;
 import org.flexpay.payments.persistence.EircRegistryProperties;
 import org.flexpay.payments.service.RegistryDeliveryHistoryService;
 import org.flexpay.common.util.DateUtil;
+import org.flexpay.common.util.TranslationUtil;
 import org.flexpay.common.persistence.filter.BeginDateFilter;
 import org.flexpay.common.persistence.filter.EndDateFilter;
 import org.flexpay.common.persistence.Stub;
@@ -102,7 +103,7 @@ public class RegistryDeliveryHistoryAction extends CashboxCookieWithPagerActionS
                 log.warn("Recipient does not content in registry properties {}", history.getRegistry().getId());
             }
             if (provider != null) {
-                container.setServiceProvider(provider.getName(getLocale()));
+                container.setServiceProvider(TranslationUtil.getTranslation(provider.getDescriptions(), getLocale()).getName());
             } else {
                 log.warn("Service provider does not content in properties {}", history.getRegistry().getId());
             }
