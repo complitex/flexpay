@@ -59,4 +59,11 @@
 		order by o.deliveryDate desc
     ]]></query>
 
+    <query name="RegistryDeliveryHistory.listRegistryDeliveryHistories.count"><![CDATA[
+        select count(o)
+		from RegistryDeliveryHistory o
+		inner join o.registry registry
+		where registry.fromDate >= ? and registry.tillDate <= ?
+    ]]></query>
+
 </hibernate-mapping>
