@@ -46,6 +46,7 @@
         <td class="col" width="1%">
           <input type="checkbox" name="objectIds" value="<s:property value="%{id}"/>"/>
         </td>
+        <td nowrap="nowrap"><s:property value="registryId"/></td>
         <td nowrap="nowrap"><s:property value="dateFrom"/></td>
         <td nowrap="nowrap"><s:property value="dateTo"/></td>
         <td nowrap="nowrap"><s:property value="dateDelivery"/></td>
