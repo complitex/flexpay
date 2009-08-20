@@ -199,6 +199,14 @@ public class BuildingAddress extends DomainObjectWithStatus {
 					append(attribute.format(locale, shortMode));
 		}
 
+		for (AddressAttribute attr : addressAttributes) {
+			AddressAttributeType attrType = attr.getBuildingAttributeType();
+			if (!attrType.isBuildingNumber() && !attrType.isBulkNumber() && !attrType.isPartNumber()) {
+				result.append(", ").
+						append(attr.format(locale, shortMode));
+			}
+		}
+
 		return result.toString();
 	}
 
