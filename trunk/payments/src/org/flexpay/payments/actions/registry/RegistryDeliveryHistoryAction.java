@@ -20,8 +20,10 @@ import org.springframework.beans.factory.annotation.Required;
 
 import java.util.*;
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 
 public class RegistryDeliveryHistoryAction extends CashboxCookieWithPagerActionSupport<RegistryDeliveryHistory> {
+    private static final String TIME_FORMAT = "HH:mm";
 
     // date filters
 	private BeginDateFilter beginDateFilter = new BeginDateFilter();
@@ -81,6 +83,8 @@ public class RegistryDeliveryHistoryAction extends CashboxCookieWithPagerActionS
             }
         }
 
+        SimpleDateFormat tf = new SimpleDateFormat(TIME_FORMAT);
+
         deliveryHistory.clear();
         List<RegistryDeliveryHistory> histories = loadRegistryDeliveryHistories();
         log.debug("count registry delivery history: {}", histories.size());
@@ -90,7 +94,7 @@ public class RegistryDeliveryHistoryAction extends CashboxCookieWithPagerActionS
             container.setRegistryId(history.getRegistry().getId());
             container.setDateFrom(DateUtil.format(history.getRegistry().getFromDate()));
             container.setDateTo(DateUtil.format(history.getRegistry().getTillDate()));
-            container.setDateDelivery(DateUtil.format(history.getDeliveryDate()));
+            container.setDateDelivery(DateUtil.format(history.getDeliveryDate()) + " " + tf.format(history.getDeliveryDate()));
             container.setTypeRegistry(getText(history.getRegistry().getRegistryType().getI18nName()));
 
             EircRegistryProperties prop = (EircRegistryProperties)history.getRegistry().getProperties();
@@ -183,8 +187,8 @@ public class RegistryDeliveryHistoryAction extends CashboxCookieWithPagerActionS
 	}
 
 	private void initFiltersWithDefaults() {
-        beginDate = DateUtil.getEndOfThisDay(new Date(0));
-        endDate = DateUtil.now();
+        endDate = new Date();
+        beginDate = DateUtil.previous(DateUtil.previous(endDate));
 
 		beginDateFilter.setDate(beginDate);
 		endDateFilter.setDate(endDate);
