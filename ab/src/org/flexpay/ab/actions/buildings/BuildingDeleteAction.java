@@ -23,6 +23,7 @@ public class BuildingDeleteAction extends FPActionSupport {
 	public String doExecute() throws Exception {
 
 		boolean wasDeleted = false;
+		boolean primaryAddressError = false;
 		for (Long id : objectIds) {
 			Stub<BuildingAddress> addressStub = new Stub<BuildingAddress>(id);
 			Building building = buildingService.findBuilding(addressStub);
@@ -31,6 +32,11 @@ public class BuildingDeleteAction extends FPActionSupport {
 			}
 			BuildingAddress address = building.getAddress(addressStub);
 			if (address == null) {
+				continue;
+			}
+
+			if (address.isPrimary()) {
+				primaryAddressError = true;
 				continue;
 			}
 
@@ -44,6 +50,10 @@ public class BuildingDeleteAction extends FPActionSupport {
 			addActionError(getText("ab.building.address_deleted"));
 		} else {
 			addActionError(getText("ab.building.no_address_deleted"));
+		}
+
+		if (primaryAddressError) {
+			addActionError(getText("ab.building.primary_address_cannot_be_deleted"));
 		}
 
 		return redirectBuildingsId == null ? REDIRECT_SUCCESS : REDIRECT_INPUT;
