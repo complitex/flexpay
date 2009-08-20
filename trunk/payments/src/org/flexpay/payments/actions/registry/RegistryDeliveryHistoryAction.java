@@ -61,7 +61,7 @@ public class RegistryDeliveryHistoryAction extends CashboxCookieWithPagerActionS
                     parameters.put("FileId", history.getSpFile().getId());
                     parameters.put("RegistryId", history.getRegistry().getId());
                     try {
-                        Long processId = processManager.createProcess("SendRegisry", parameters);
+                        Long processId = processManager.createProcess("SendRegistry", parameters);
                         if (processId != null && processId > 0) {
                             log.debug("Sent e-mail by registry delivery history {} in process {}", new Object[]{historyId, processId});
                             addActionMessage(getText("payments.registry.delivery_history.mail_sent"));
@@ -161,7 +161,7 @@ public class RegistryDeliveryHistoryAction extends CashboxCookieWithPagerActionS
 
     // load history according to search criteria
 	private List<RegistryDeliveryHistory> loadRegistryDeliveryHistories() {
-        final Date begin = beginDateFilter.getDate();
+        final Date begin = DateUtil.truncateDay(beginDateFilter.getDate());
         final Date end = DateUtil.getEndOfThisDay(endDateFilter.getDate());
         log.debug("get delivery history in date range: {} - {}", new Object[] {begin, end});
 
