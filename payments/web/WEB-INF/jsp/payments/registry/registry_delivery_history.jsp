@@ -1,5 +1,4 @@
 <%@ include file="/WEB-INF/jsp/common/taglibs.jsp" %>
-<%@include file="/WEB-INF/jsp/payments/include/stylesheet.jsp" %>
 
 <s:actionerror/>
 <s:actionmessage />
@@ -19,19 +18,19 @@
       <td class="col">
           <%@include file="/WEB-INF/jsp/common/filter/end_date_filter.jsp" %>
       </td>
-      <td class="col">
+      <td>
         <input type="submit" name="filterSubmitted" class="btn-exit"
                                        value="<s:text name="payments.registry.delivery_history.filter"/>"/>
       </td>
     </tr>
     <tr>
-      <td colspan="5" class="col" align="right">
+      <td colspan="5" align="right">
         <%@include file="/WEB-INF/jsp/common/filter/pager/pager.jsp" %>
       </td>
     </tr>
   </table>
 
-  <table cellpadding="3" cellspacing="1" border="0" width="100%" class="payment_points_list">
+  <table cellpadding="3" cellspacing="1" border="0" width="100%">
     <tr>
       <td class="th"><input type="checkbox" onchange="FP.setCheckboxes(this.checked, 'objectIds');"></td>
       <td class="th"><s:text name="payments.registry.delivery_history.registry_id"/></td>
@@ -65,10 +64,10 @@
   
   <table cellpadding="3" cellspacing="1" border="0" width="100%">
     <tr>
-      <td colspan="4" class="col">
-				<input type="submit" name="submitted" class="" value="<s:text name="payments.registry.delivery_history.repeat_send" />"/>
+      <td colspan="4">
+				<input type="submit" name="submitted" class="btn-exit" value="<s:text name="payments.registry.delivery_history.repeat_send" />"/>
 			</td>
-      <td colspan="4" align="right" class="col">
+      <td colspan="4" align="right">
         <%@include file="/WEB-INF/jsp/common/filter/pager/pager.jsp" %>
       </td>
     </tr>

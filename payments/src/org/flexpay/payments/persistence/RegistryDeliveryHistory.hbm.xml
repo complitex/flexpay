@@ -63,7 +63,7 @@
         select count(o)
 		from RegistryDeliveryHistory o
 		inner join o.registry registry
-		where registry.fromDate >= ? and registry.tillDate <= ?
+		where registry.creationDate between ? and ?
     ]]></query>
 
 </hibernate-mapping>
