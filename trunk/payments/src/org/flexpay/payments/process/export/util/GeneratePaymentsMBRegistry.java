@@ -54,13 +54,13 @@ public class GeneratePaymentsMBRegistry {
             "Дом    ",
             "Кв. ",
             "Услуга       ",
-            "Нач. ",
+            " Нач. ",
             " Кон. ",
             "Рзн",
             "Дата пл.",
-            "с     ",
-            "по    ",
-            "Всего"
+            "   с  ",
+            "   по ",
+            "Всего  "
     };
     private static final Map<String, String> serviceNames = new HashMap<String, String>();
 
@@ -115,25 +115,25 @@ public class GeneratePaymentsMBRegistry {
 
             // заголовочные строки
             log.info("Write header lines");
-            rg.writeLine("Реестр поступивших платежей. Мемориальный ордер №" + registry.getId());
-            rg.writeLine("Для \"" + organization.getName(getLocation()) + "\". День распределения платежей " + dateFormat.format(new Date()) + ".");
+            rg.writeLine("\tРеестр поступивших платежей. Мемориальный ордер №" + registry.getId());
+            rg.writeLine("\tДля \"" + organization.getName(getLocation()) + "\". День распределения платежей " + dateFormat.format(new Date()) + ".");
             rg.writeCharToLine(' ', 128);
             rg.writeCharToLine(' ', 128);
             BigDecimal amount = registry.getAmount();
             if (amount == null) {
                 amount = new BigDecimal(0);
             }
-            rg.writeLine("Всего " + amount.intValue() + " коп. Суммы указаны в копейках. Всего строк " + registry.getRecordsNumber());
+            rg.writeLine("\tВсего " + amount.intValue() + " коп. Суммы указаны в копейках. Всего строк " + registry.getRecordsNumber());
             rg.writeCharToLine(' ', 128);
 
             // шапка таблицы
             log.info("Write table header lines");
+            rg.write("|".getBytes());
             rg.writeLine(tableHeader);
             StringBuffer bf = new StringBuffer();
+            boolean startTable = true;
             for (String s : tableHeader) {
-                if (bf.length() > 0) {
-                    bf.append('+');
-                }
+                bf.append('+');
                 for (int i = 0; i < s.length(); i++) {
                     bf.append('-');
                 }
@@ -219,6 +219,8 @@ public class GeneratePaymentsMBRegistry {
     @NotNull
     private String[] createInfoLine(@NotNull RegistryRecord record) throws FlexPayException {
         List<String> infoLine = new ArrayList<String>();
+        //граница таблицы
+        infoLine.add(createCellData("", 0, ' '));
 
         // код квитанции
         infoLine.add(createCellData(String.valueOf(record.getUniqueOperationNumber()), tableHeader[0].length(), ' '));
@@ -359,13 +361,12 @@ public class GeneratePaymentsMBRegistry {
                     }
                 }
             }
-            while (m < 2) {
+            while (m < 1) {
                 rg.writeLine("");
                 m++;
             }
             return;
         }
-        rg.writeLine("");
         rg.writeLine("");
         rg.writeLine("");
     }
