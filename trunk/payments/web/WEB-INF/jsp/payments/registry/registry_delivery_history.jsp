@@ -10,20 +10,22 @@
 
   <table cellpadding="3" cellspacing="1" border="0" width="100%">
     <tr>
-      <td nowrap="nowrap"><s:text name="payments.registry.delivery_history.date_from"/></td>
-      <td nowrap="nowrap">
+      <td class="col"><s:text name="payments.registry.delivery_history.date_from"/></td>
+      <td class="col">
           <%@include file="/WEB-INF/jsp/common/filter/begin_date_filter.jsp" %>
       </td>
 
-      <td nowrap="nowrap"><s:text name="payments.registry.delivery_history.date_till"/></td>
-      <td nowrap="nowrap">
+      <td class="col"><s:text name="payments.registry.delivery_history.date_till"/></td>
+      <td class="col">
           <%@include file="/WEB-INF/jsp/common/filter/end_date_filter.jsp" %>
       </td>
-      <td nowrap="nowrap">
+      <td class="col">
         <input type="submit" name="filterSubmitted" class="btn-exit"
                                        value="<s:text name="payments.registry.delivery_history.filter"/>"/>
       </td>
-      <td nowrap="nowrap" align="right">
+    </tr>
+    <tr>
+      <td colspan="5" class="col" align="right">
         <%@include file="/WEB-INF/jsp/common/filter/pager/pager.jsp" %>
       </td>
     </tr>
@@ -46,23 +48,27 @@
         <td class="col" width="1%">
           <input type="checkbox" name="objectIds" value="<s:property value="%{id}"/>"/>
         </td>
-        <td nowrap="nowrap"><s:property value="registryId"/></td>
-        <td nowrap="nowrap"><s:property value="dateFrom"/></td>
-        <td nowrap="nowrap"><s:property value="dateTo"/></td>
-        <td nowrap="nowrap"><s:property value="dateDelivery"/></td>
-        <td nowrap="nowrap"><s:property value="typeRegistry"/></td>
-        <td nowrap="nowrap"><s:property value="recipient"/></td>
-        <td nowrap="nowrap"><s:property value="serviceProvider"/></td>
+        <td class="col">
+          <a href="<s:url action="registryView"><s:param name="registry.id" value="%{registryId}"/></s:url>">
+            <s:property value="registryId"/>
+          </a>
+        </td>
+        <td class="col"><s:property value="dateFrom"/></td>
+        <td class="col"><s:property value="dateTo"/></td>
+        <td class="col"><s:property value="dateDelivery"/></td>
+        <td class="col"><s:property value="typeRegistry"/></td>
+        <td class="col"><s:property value="recipient"/></td>
+        <td class="col"><s:property value="serviceProvider"/></td>
       </tr>
     </s:iterator>
   </table>
   
   <table cellpadding="3" cellspacing="1" border="0" width="100%">
     <tr>
-      <td colspan="5">
+      <td colspan="4" class="col">
 				<input type="submit" name="submitted" class="" value="<s:text name="payments.registry.delivery_history.repeat_send" />"/>
 			</td>
-      <td align="right">
+      <td colspan="4" align="right" class="col">
         <%@include file="/WEB-INF/jsp/common/filter/pager/pager.jsp" %>
       </td>
     </tr>
