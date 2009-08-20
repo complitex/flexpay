@@ -494,7 +494,7 @@ public class TestGeneratePaymentsRegistry extends PaymentsSpringBeanAwareTestCas
 				String line;
 				boolean startRecords = false;
 				while ((line = reader.readLine()) != null) {
-					if (line.startsWith("--------+")) {
+					if (line.startsWith("+--------+")) {
 						startRecords = true;
 					}
 					if (line.contains("|Test") && startRecords) {
