@@ -90,7 +90,7 @@ public class RegistryDeliveryHistoryAction extends CashboxCookieWithPagerActionS
             container.setDateFrom(DateUtil.format(history.getRegistry().getFromDate()));
             container.setDateTo(DateUtil.format(history.getRegistry().getTillDate()));
             container.setDateDelivery(DateUtil.format(history.getDeliveryDate()));
-            container.setTypeRegistry(history.getRegistry().getRegistryType().getI18nName());
+            container.setTypeRegistry(getText(history.getRegistry().getRegistryType().getI18nName()));
 
             EircRegistryProperties prop = (EircRegistryProperties)history.getRegistry().getProperties();
             Organization recipient = organizationService.readFull(prop.getRecipientStub());
