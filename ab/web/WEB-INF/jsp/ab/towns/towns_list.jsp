@@ -1,14 +1,7 @@
 <%@include file="/WEB-INF/jsp/common/taglibs.jsp" %>
 
 <script type="text/javascript">
-    $(function() {
-		$('input[id="townSorterByNameButton"]').each(function() {
-			this.setAttribute("onclick", this.getAttribute("onclick") + "sorterAjax();");
-		});
-		$('input[id="townSorterByTypeButton"]').each(function() {
-			this.setAttribute("onclick", this.getAttribute("onclick") + "sorterAjax();");
-		});
-    });
+    FP.switchSorter(["townSorterByNameButton", "townSorterByTypeButton"]);
 </script>
 
 <s:actionerror />

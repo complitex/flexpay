@@ -1,11 +1,7 @@
 <%@include file="/WEB-INF/jsp/common/taglibs.jsp" %>
 
 <script type="text/javascript">
-    $(function() {
-        $('input[id="apartmentSorterButton"]').each(function() {
-            this.setAttribute("onclick", this.getAttribute("onclick") + "sorterAjax();");
-        });
-    });
+    FP.switchSorter("apartmentSorterButton");
 </script>
 
 <s:actionerror />
@@ -16,10 +12,10 @@
         <tr>
             <td colspan="4">
                 <%@include file="/WEB-INF/jsp/common/filter/pager/pager_ajax.jsp" %>
-                <input type="submit" class="btn-exit" value="<s:text name="common.delete_selected"/>"/>
+                <input type="submit" class="btn-exit" value="<s:text name="common.delete_selected"/>" />
                 <input type="button" class="btn-exit"
                        onclick="window.location='<s:url action="apartmentEdit"><s:param name="apartment.id" value="0"/></s:url>'"
-                       value="<s:text name="common.new"/>"/>
+                       value="<s:text name="common.new"/>" />
             </td>
         </tr>
         <tr>
@@ -38,7 +34,7 @@
                     <s:property value="%{#status.index + pager.thisPageFirstElementNumber + 1}"/>
                 </td>
                 <td class="col">
-                    <input type="checkbox" value="<s:property value="%{id}"/>" name="objectIds"/>
+                    <input type="checkbox" value="<s:property value="%{id}"/>" name="objectIds" />
                 </td>
                 <td class="col">
                     <a href="<s:url action="apartmentRegistration"><s:param name="apartment.id" value="%{id}"/><s:param name="buildings.id" value="%{buildingsFilter.selectedId}"/></s:url>"><s:property value="%{number}"/></a>
@@ -50,11 +46,11 @@
         </s:iterator>
         <tr>
             <td colspan="4">
-                <%@include file="/WEB-INF/jsp/common/filter/pager/pager_ajax.jsp" %>
-                <input type="submit" class="btn-exit" value="<s:text name="common.delete_selected"/>"/>
+                <%@include file="/WEB-INF/jsp/common/filter/pager/pager_ajax.jsp"%>
+                <input type="submit" class="btn-exit" value="<s:text name="common.delete_selected"/>" />
                 <input type="button" class="btn-exit"
                        onclick="window.location='<s:url action="apartmentEdit"><s:param name="apartment.id" value="0"/></s:url>'"
-                       value="<s:text name="common.new"/>"/>
+                       value="<s:text name="common.new"/>" />
             </td>
         </tr>
     </table>

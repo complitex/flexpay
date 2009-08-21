@@ -190,6 +190,30 @@ var FP = {
                     $("#" + resultId).html(data);
                     FP.hideShadow(shadowId);
                 });
+    },
+
+    switchSorter : function(arg) {
+        $(function() {
+            if (arg == null || arg.length == 0) {
+                return;
+            }
+            var ids = [];
+            if (typeof arg === "string") {
+                ids[0] = arg;
+            } else {
+                ids = arg;
+            }
+            $.protify(ids).each(function(id) {
+                $('input[id="' + id + '"]').each(function() {
+                    if ($.browser.msie) {
+                        $(this).before('<input type="button" id="' + this.id + '" class="btn-link" value="' + this.value + '" ' +
+                            'onclick="' + this.onclick.getBody() + ';sorterAjax();" />').remove();
+                    } else {
+                        this.setAttribute("onclick", this.getAttribute("onclick") + "sorterAjax();");
+                    }
+                });
+            });
+        });
     }
 
 };
@@ -208,4 +232,11 @@ String.prototype.trim = function() {
 
     }
     return str.slice(0, i + 1);
+};
+
+Function.prototype.getBody = function() {
+    // Get content between first { and last }
+    var m = this.toString().match(/\{([\s\S]*)\}/m)[1];
+    // Strip comments
+    return m.replace(/^\s*\/\/.*$/mg,'');
 };
