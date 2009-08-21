@@ -1,15 +1,10 @@
 <%@include file="/WEB-INF/jsp/common/taglibs.jsp" %>
 
 <script type="text/javascript">
-    $(function() {
-        $('input[id="streetSorterByNameButton"]').each(function() {
-            this.setAttribute("onclick", this.getAttribute("onclick") + "sorterAjax();");
-        });
-        $('input[id="streetSorterByTypeButton"]').each(function() {
-            this.setAttribute("onclick", this.getAttribute("onclick") + "sorterAjax();");
-        });
-    });
+    FP.switchSorter(["streetSorterByNameButton", "streetSorterByTypeButton"]);
 </script>
+
+<s:actionerror />
 
 <s:form id="fobjects" action="streetDelete" namespace="/dicts">
 

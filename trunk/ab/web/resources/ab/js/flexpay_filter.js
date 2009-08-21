@@ -191,6 +191,8 @@ function Filter(name, options) {
         displayParents(filter);
     };
 
+    return true;
+
 };
 
 var FF = {
