@@ -198,6 +198,8 @@
 		  p:buildingService-ref="buildingService"
 		  p:addressAttributeTypeService-ref="addressAttributeTypeService"
 		  p:streetService-ref="streetService"
+		  p:townService-ref="townService"
+		  p:regionService-ref="regionService"
 		  p:districtService-ref="districtService"
 		  p:crumbNameKey="ab.crumbs.building_address_create"
 		  p:crumbCreateKey="ab.crumbs.building_address_edit"
