@@ -2,10 +2,7 @@ package org.flexpay.ab.actions.buildings;
 
 import org.apache.commons.lang.StringUtils;
 import org.flexpay.ab.persistence.*;
-import org.flexpay.ab.service.AddressAttributeTypeService;
-import org.flexpay.ab.service.BuildingService;
-import org.flexpay.ab.service.DistrictService;
-import org.flexpay.ab.service.StreetService;
+import org.flexpay.ab.service.*;
 import org.flexpay.ab.util.config.ApplicationConfig;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.exception.FlexPayException;
@@ -19,7 +16,12 @@ import java.util.Map;
 
 public class EditBuildingAddressAction extends FPActionSupport {
 
+	// filters
+	private Long countryFilter;
+	private Long regionFilter;
+	private Long townFilter;
 	private Long streetFilter;
+
 	private Building building = Building.newInstance();
 	private BuildingAddress address = new BuildingAddress();
 
@@ -29,6 +31,8 @@ public class EditBuildingAddressAction extends FPActionSupport {
 	private String crumbCreateKey;
 	private BuildingService buildingService;
 	private StreetService streetService;
+	private TownService townService;
+	private RegionService regionService;
 	private DistrictService districtService;
 	private AddressAttributeTypeService addressAttributeTypeService;
 
@@ -50,6 +54,9 @@ public class EditBuildingAddressAction extends FPActionSupport {
 		}
 
 		if (isNotSubmit()) {
+			if (address.isNotNew()) {
+				setupFilters();
+			}			
 			setupAttributes();
 			return INPUT;
 		}
@@ -92,6 +99,18 @@ public class EditBuildingAddressAction extends FPActionSupport {
 		return valid;
 	}
 
+	private void setupFilters() {
+
+		Street street = streetService.readFull(address.getStreetStub());
+		Town town = townService.readFull(street.getTownStub());
+		Region region = regionService.readFull(town.getRegionStub());
+
+		streetFilter = address.getStreetStub().getId();
+		townFilter = town.getId();
+		regionFilter = region.getId();
+		countryFilter = region.getCountryStub().getId();
+	}
+
 	private void setupAttributes() {
 
 		for (AddressAttributeType type : addressAttributeTypeService.getAttributeTypes()) {
@@ -123,6 +142,18 @@ public class EditBuildingAddressAction extends FPActionSupport {
 			crumbNameKey = crumbCreateKey;
 		}
 		super.setBreadCrumbs();
+	}
+
+	public Long getCountryFilter() {
+		return countryFilter;
+	}
+
+	public Long getRegionFilter() {
+		return regionFilter;
+	}
+
+	public Long getTownFilter() {
+		return townFilter;
 	}
 
 	public Long getStreetFilter() {
@@ -175,6 +206,16 @@ public class EditBuildingAddressAction extends FPActionSupport {
 	}
 
 	@Required
+	public void setTownService(TownService townService) {
+		this.townService = townService;
+	}
+
+	@Required
+	public void setRegionService(RegionService regionService) {
+		this.regionService = regionService;
+	}
+
+	@Required
 	public void setStreetService(StreetService streetService) {
 		this.streetService = streetService;
 	}
@@ -188,5 +229,4 @@ public class EditBuildingAddressAction extends FPActionSupport {
 	public void setDistrictService(DistrictService districtService) {
 		this.districtService = districtService;
 	}
-
 }
