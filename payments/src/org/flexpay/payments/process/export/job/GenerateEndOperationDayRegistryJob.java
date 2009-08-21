@@ -57,7 +57,7 @@ public class GenerateEndOperationDayRegistryJob extends Job {
 		Registry registry = registryGenerator.generate(paymentPoint, organization, beginDate, endDate);
 
 		if (registry != null) {
-			registry = exportBankPaymentsRegistry.export(registry);
+			registry = exportBankPaymentsRegistry.generateAndAttachFile(registry);
 			parameters.put("FileId", registry.getSpFile().getId());
 			PaymentsCollector paymentsCollector = paymentsCollectorService.read(new Stub<PaymentsCollector>(paymentPoint.getCollector().getId()));
 			if (paymentsCollector != null ) {

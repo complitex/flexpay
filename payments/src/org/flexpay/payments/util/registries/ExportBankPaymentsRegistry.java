@@ -26,18 +26,13 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-public class ExportBankPaymentsRegistry {
+public class ExportBankPaymentsRegistry extends RegistryFPFileFormat {
 
 	private Logger log = LoggerFactory.getLogger(getClass());
 
 	private String moduleName;
-	private FPFileService fpFileService;
-	private RegistryService registryService;
-	private RegistryRecordService registryRecordService;
 
-	public Registry export(@NotNull Registry registry) throws FlexPayException {
-
-		log.info("Start exporting payments registry with id = {}", registry.getId());
+    protected FPFile generateFile(@NotNull Registry registry) throws FlexPayException {
 
 		FetchRange fetchRange = new FetchRange();
 		List<RegistryRecord> records = registryRecordService.listRecordsForExport(registry, fetchRange);
@@ -74,176 +69,26 @@ public class ExportBankPaymentsRegistry {
 			return null;
 		}
 
-		BufferedWriter writer = null;
-
-		try {
-
-			//noinspection IOResourceOpenedButNotSafelyClosed
-			writer = new BufferedWriter(new OutputStreamWriter(fpFile.getOutputStream(), RegistryUtil.EXPORT_FILE_ENCODING));
-
-			writer.write(buildHeader(registry));
-			writer.newLine();
-
-			do {
-				for (RegistryRecord record : records) {
-					writer.write(buildRecord(registry, record));
-					writer.newLine();
-				}
-				fetchRange.nextPage();
-			} while ((records = registryRecordService.listRecordsForExport(registry, fetchRange)).size() > 0);
-
-			writer.write(buildFooter(registry));
-			writer.newLine();
-
-		} catch (IOException e) {
-			log.error("Error with writing export-file for registry", e);
-			return null;
-		} finally {
-			IOUtils.closeQuietly(writer);
-		}
-
-		fpFile.updateSize();
-		fpFile = fpFileService.create(fpFile);
-
-		registry.setSpFile(fpFile);
-
-		registry = registryService.update(registry);
-
-		log.info("Finish exporting payments registry with id = {}", registry.getId());
-
-		return registry;
-
-	}
-
-	private String buildHeader(Registry registry) {
-
-		StringBuilder header = new StringBuilder();
-
-		log.debug("Building header for registry = {}", registry);
-
-		SimpleDateFormat dfCreation = new SimpleDateFormat(RegistryUtil.REGISTRY_CREATION_DATE_FORMAT);
-		SimpleDateFormat dfFrom = new SimpleDateFormat(RegistryUtil.REGISTRY_DATE_FROM_FORMAT);
-		SimpleDateFormat dfTill = new SimpleDateFormat(RegistryUtil.REGISTRY_DATE_TILL_FORMAT);
-
-		header.append(RegistryUtil.REGISTY_HEADER_MESSAGE_TYPE_CHAR).
-				append(RegistryUtil.FIELD_SEPARATOR).
-				append(StringUtil.getString(registry.getId())).
-				append(RegistryUtil.FIELD_SEPARATOR).
-				append(StringUtil.getString(registry.getRegistryType().getCode())).
-				append(RegistryUtil.FIELD_SEPARATOR).
-				append(StringUtil.getString(registry.getRecordsNumber())).
-				append(RegistryUtil.FIELD_SEPARATOR).
-				append(StringUtil.getString(dfCreation.format(registry.getCreationDate()))).
-				append(RegistryUtil.FIELD_SEPARATOR).
-				append(StringUtil.getString(dfFrom.format(registry.getFromDate()))).
-				append(RegistryUtil.FIELD_SEPARATOR).
-				append(StringUtil.getString(dfTill.format(registry.getTillDate()))).
-				append(RegistryUtil.FIELD_SEPARATOR).
-				append(StringUtil.getString(registry.getSenderCode())).
-				append(RegistryUtil.FIELD_SEPARATOR).
-				append(StringUtil.getString(registry.getRecipientCode())).
-				append(RegistryUtil.FIELD_SEPARATOR).
-				append(StringUtil.getString(registry.getAmount())).
-				append(RegistryUtil.FIELD_SEPARATOR);
-
-		log.debug("File header = {}", header.toString());
-
-		return header.toString();
-	}
-
-	private String buildRecord(Registry registry, RegistryRecord record) {
-
-		log.debug("Building string for record = {}", record);
-
-		SimpleDateFormat df = new SimpleDateFormat(RegistryUtil.OPERATION_DATE_FORMAT);
-
-		StringBuilder sb = new StringBuilder();
-		sb.append(RegistryUtil.REGISTRY_RECORD_MESSAGE_TYPE_CHAR).
-				append(RegistryUtil.FIELD_SEPARATOR).
-				append(StringUtil.getString(registry.getId())).
-				append(RegistryUtil.FIELD_SEPARATOR).
-				append(StringUtil.getString(record.getServiceCode())).
-				append(RegistryUtil.FIELD_SEPARATOR).
-				append(StringUtil.getString(record.getPersonalAccountExt())).
-				append(RegistryUtil.FIELD_SEPARATOR).
-				//default city is empty
-//				append(StringUtil.getString(record.getCity())).
-						append(RegistryUtil.ADDRESS_SEPARATOR).
-				append(StringUtil.getString(record.getStreetType())).
-				append(RegistryUtil.ADDRESS_SEPARATOR).
-				append(StringUtil.getString(record.getStreetName())).
-				append(RegistryUtil.ADDRESS_SEPARATOR).
-				append(StringUtil.getString(record.getBuildingNum())).
-				append(RegistryUtil.ADDRESS_SEPARATOR).
-				append(StringUtil.getString(record.getBuildingBulkNum())).
-				append(RegistryUtil.ADDRESS_SEPARATOR).
-				append(StringUtil.getString(record.getApartmentNum())).
-				append(RegistryUtil.FIELD_SEPARATOR).
-				append(StringUtil.getString(record.getLastName())).
-				append(RegistryUtil.FIO_SEPARATOR).
-				append(StringUtil.getString(record.getFirstName())).
-				append(RegistryUtil.FIO_SEPARATOR).
-				append(StringUtil.getString(record.getMiddleName())).
-				append(RegistryUtil.FIELD_SEPARATOR).
-				append(StringUtil.getString(df.format(record.getOperationDate()))).
-				append(RegistryUtil.FIELD_SEPARATOR).
-				append(StringUtil.getString(record.getUniqueOperationNumber())).
-				append(RegistryUtil.FIELD_SEPARATOR).
-				append(StringUtil.getString(record.getAmount())).
-				append(RegistryUtil.FIELD_SEPARATOR);
-
-		int i = 1;
-		int total = record.getContainers().size();
-
-		for (RegistryRecordContainer container : record.getContainers()) {
-
-			sb.append(StringUtil.getString(container.getData()));
-			if (i != total) {
-				sb.append(RegistryUtil.CONTAINER_SEPARATOR);
-			}
-
-			i++;
-		}
-
-		log.debug("File record = {}", sb.toString());
-
-		return sb.toString();
-
-	}
-
-	private String buildFooter(Registry registry) {
-
-		StringBuilder footer = new StringBuilder();
-
-		log.debug("Building footer for registry = {}", registry);
-
-		footer.append(RegistryUtil.REGISTRY_FOOTER_MESSAGE_TYPE_CHAR).
-				append(RegistryUtil.FIELD_SEPARATOR).
-				append(StringUtil.getString(registry.getId()));
-
-		log.debug("File footer = {}", footer.toString());
-
-		return footer.toString();
+		return fpFileService.create(fpFile);
 	}
 
 	@Required
-	public void setModuleName(String moduleName) {
+	final public void setModuleName(String moduleName) {
 		this.moduleName = moduleName;
 	}
 
-	@Required
-	public void setFpFileService(FPFileService fpFileService) {
-		this.fpFileService = fpFileService;
-	}
+    @Required
+    final public void setFpFileService(FPFileService fpFileService) {
+        this.fpFileService = fpFileService;
+    }
 
-	@Required
-	public void setRegistryService(RegistryService registryService) {
-		this.registryService = registryService;
-	}
+    @Required
+    final public void setRegistryService(RegistryService registryService) {
+        this.registryService = registryService;
+    }
 
-	@Required
-	public void setRegistryRecordService(RegistryRecordService registryRecordService) {
-		this.registryRecordService = registryRecordService;
-	}
-
+    @Required
+    final public void setRegistryRecordService(RegistryRecordService registryRecordService) {
+        this.registryRecordService = registryRecordService;
+    }
 }
