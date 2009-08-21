@@ -14,6 +14,7 @@ import org.flexpay.common.service.RegistryRecordService;
 import org.flexpay.common.service.RegistryService;
 import org.flexpay.common.util.RegistryUtil;
 import org.flexpay.common.util.StringUtil;
+import org.flexpay.common.util.io.WriterCallback;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,6 +22,7 @@ import org.slf4j.LoggerFactory;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
@@ -42,36 +44,36 @@ public abstract class RegistryFPFileFormat {
 
     protected abstract FPFile generateFile(@NotNull Registry registry) throws FlexPayException;
 
-    protected Registry export(@NotNull Registry registry, FPFile fpFile) throws FlexPayException {
+    protected Registry export(@NotNull final Registry registry, FPFile fpFile) throws FlexPayException {
 
-        BufferedWriter writer = null;
 
         try {
-            FetchRange fetchRange = new FetchRange();
-            List<RegistryRecord> records = registryRecordService.listRecordsForExport(registry, fetchRange);
+            fpFile.withWriter(RegistryUtil.EXPORT_FILE_ENCODING, new WriterCallback() {
+                public void write(Writer w) throws IOException {
+                    FetchRange fetchRange = new FetchRange();
+                    List<RegistryRecord> records = registryRecordService.listRecordsForExport(registry, fetchRange);
 
-            //noinspection IOResourceOpenedButNotSafelyClosed
-            writer = new BufferedWriter(new OutputStreamWriter(fpFile.getOutputStream(), RegistryUtil.EXPORT_FILE_ENCODING));
+                    //noinspection IOResourceOpenedButNotSafelyClosed
 
-            writer.write(buildHeader(registryService.readWithContainers(Stub.stub(registry))));
-            writer.newLine();
+                    w.write(buildHeader(registryService.readWithContainers(Stub.stub(registry))));
+                    w.write('\n');
 
-            do {
-                for (RegistryRecord record : records) {
-                    writer.write(buildRecord(registry, record));
-                    writer.newLine();
+                    do {
+                        for (RegistryRecord record : records) {
+                            w.write(buildRecord(registry, record));
+                            w.write('\n');
+                        }
+                        fetchRange.nextPage();
+                    } while ((records = registryRecordService.listRecordsForExport(registry, fetchRange)).size() > 0);
+
+                    w.write(buildFooter(registry));
+                    w.write('\n');
                 }
-                fetchRange.nextPage();
-            } while ((records = registryRecordService.listRecordsForExport(registry, fetchRange)).size() > 0);
-
-            writer.write(buildFooter(registry));
-            writer.newLine();
+            });
 
         } catch (IOException e) {
             log.error("Error with writing export-file for registry", e);
             return null;
-        } finally {
-            IOUtils.closeQuietly(writer);
         }
 
         fpFile.updateSize();
@@ -79,9 +81,7 @@ public abstract class RegistryFPFileFormat {
 
         registry.setSpFile(fpFile);
 
-        registry = registryService.update(registry);
-
-        return registry;
+        return registryService.update(registry);
 
     }
 
