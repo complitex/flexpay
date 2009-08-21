@@ -44,7 +44,7 @@ public class TestExportBankPaymentsRegistry extends PaymentsSpringBeanAwareTestC
 
 		Registry registry = endOperationDayRegistryGenerator.generate(paymentPoint, organization, beginDate, endDate);
 		assertNotNull("Operation day registry generation failed", registry);
-		exportBankPaymentsRegistry.export(registry);
+		exportBankPaymentsRegistry.generateAndAttachFile(registry);
 
 //		registryService.deleteRecords(Stub.stub(registry));
 //		registryService.delete(registry);
