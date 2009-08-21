@@ -4,10 +4,10 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.util.config.ApplicationConfig;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.util.Calendar;
@@ -67,22 +67,19 @@ public class FPFileUtil {
 			throw new IOException("Failed creating localDir: " + localDir);
 		}
 
+		String nameWithoutExt = StringUtil.getFileNameWithoutExtension(name);
+		String ext = StringUtil.getFileExtension(name);
+
 		if (LOG.isDebugEnabled()) {
-			LOG.debug("File: {}, File name: {}, Extension: {}", new Object[]{
-					StringUtil.getFileNameWithoutExtension(name),
-					StringUtil.getFileName(name),
-					StringUtil.getFileExtension(name)
-			});
+			LOG.debug("File: {}, File name: {}, Extension: {}", new Object[] {nameWithoutExt, StringUtil.getFileName(name), ext});
 		}
 
-		String fileName = StringUtil.getFileNameWithoutExtension(name) + "_";
+		String fileName = nameWithoutExt + "_";
 		// see File.createTempFile
 		if (fileName.length() < 3) {
 			fileName += "__";
 		}
-		File tmpFile = File.createTempFile(
-				fileName,
-				StringUtil.getFileExtension(name), localDir);
+		File tmpFile = File.createTempFile(fileName, ext, localDir);
 		fpFile.setNameOnServer(tmpFile.getName());
 
 		return tmpFile;

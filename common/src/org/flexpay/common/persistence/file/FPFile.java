@@ -1,16 +1,16 @@
 package org.flexpay.common.persistence.file;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
-import org.apache.commons.io.IOUtils;
+import org.flexpay.common.persistence.DomainObject;
+import org.flexpay.common.persistence.FPModule;
 import org.flexpay.common.util.FPFileUtil;
 import org.flexpay.common.util.StringUtil;
 import org.flexpay.common.util.io.InputStreamCallback;
 import org.flexpay.common.util.io.OutputStreamCallback;
 import org.flexpay.common.util.io.ReaderCallback;
 import org.flexpay.common.util.io.WriterCallback;
-import org.flexpay.common.persistence.DomainObject;
-import org.flexpay.common.persistence.FPModule;
 import org.jetbrains.annotations.NotNull;
 
 import javax.activation.DataSource;
@@ -181,8 +181,8 @@ public class FPFile extends DomainObject implements DataSource {
 				append("id", getId()).
 				append("nameOnServer", nameOnServer).
 				append("originalName", originalName).
-				append("size", size).
 				append("userName", userName).
+				append("size", size).
 				append("creationDate", creationDate).
 				toString();
 	}
