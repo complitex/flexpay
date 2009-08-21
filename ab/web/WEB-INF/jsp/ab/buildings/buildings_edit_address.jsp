@@ -35,8 +35,6 @@
 	<s:hidden name="building.id" value="%{building.id}" />
 	<s:hidden name="address.id" value="%{address.id}" />
 
-	<%--<%@ include file="../filters/groups/country_region_town_street_ajax.jsp" %>--%>
-	<%-- TODO replace with filters --%>
 	<table width="100%">
 		<tr>
 			<td class="filter"><s:text name="ab.country"/></td>
