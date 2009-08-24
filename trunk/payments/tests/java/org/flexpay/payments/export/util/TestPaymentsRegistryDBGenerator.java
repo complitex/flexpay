@@ -287,8 +287,7 @@ public class TestPaymentsRegistryDBGenerator extends PaymentsSpringBeanAwareTest
 		Date currDate = new Date();
 
 		PaymentsRegistryDBGeneratorImpl DBGeneratorImpl = new PaymentsRegistryDBGeneratorImpl();
-
-		DBGeneratorImpl.setOperationService(operationService);
+		
 		DBGeneratorImpl.setDocumentService(documentService);
 		DBGeneratorImpl.setRegistryArchiveStatusService(registryArchiveStatusService);
 		DBGeneratorImpl.setRegistryRecordService(registryRecordService);

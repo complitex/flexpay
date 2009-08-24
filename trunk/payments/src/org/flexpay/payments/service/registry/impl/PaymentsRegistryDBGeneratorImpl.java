@@ -40,7 +40,6 @@ public class PaymentsRegistryDBGeneratorImpl implements PaymentsRegistryDBGenera
     private RegistryArchiveStatusService registryArchiveStatusService;
     private RegistryRecordStatusService registryRecordStatusService;
     private PropertiesFactory propertiesFactory;
-	private OperationService operationService;
     private DocumentService documentService;
     private DocumentAdditionTypeService documentAdditionTypeService;
 
@@ -48,128 +47,159 @@ public class PaymentsRegistryDBGeneratorImpl implements PaymentsRegistryDBGenera
     public Registry createDBRegistry(@NotNull FPFile spFile, @NotNull ServiceProvider serviceProvider, @NotNull Organization registerOrganization,
 									 @NotNull Date fromDate, @NotNull Date tillDate) throws FlexPayException {
 
-        log.info("Get document by service provider {}, registered {} organization", new Object[]{serviceProvider.getId(), registerOrganization.getId()});
+        log.info("Searching documents for service provider {} and registered in organization {}",
+				new Object[] { serviceProvider.getId(), registerOrganization.getId() });
 
         List<Document> documents = getDocuments(serviceProvider, registerOrganization, fromDate, tillDate);
 
-        log.info("Count documents {}", documents.size());
-
         if (documents.size() == 0) {
+			log.info("No documents were found. No registry will be created.");
             return null;
         }
 
+		log.info("{} documents found", documents.size());
+
         Registry registry = new Registry();
-
-        registry.setRecipientCode(serviceProvider.getOrganization().getId());
-        registry.setSenderCode(registerOrganization.getId());
-        registry.setCreationDate(new Date());
-        registry.setSpFile(spFile);
-        registry.setRegistryType(registryTypeService.findByCode(getPaymentsType()));
-        registry.setArchiveStatus(registryArchiveStatusService.findByCode(RegistryArchiveStatus.NONE));
-        registry.setRegistryStatus(registryStatusService.findByCode(RegistryStatus.CREATING));
-        registry.setFromDate(fromDate);
-        registry.setTillDate(tillDate);
-
-        EircRegistryProperties registryProperties = (EircRegistryProperties)propertiesFactory.newRegistryProperties();
-        registryProperties.setRecipient(serviceProvider.getOrganization());
-        registryProperties.setSender(registerOrganization);
-        registryProperties.setServiceProvider(serviceProvider);
-        registry.setProperties(registryProperties);
-        
+		fillRegistryData(spFile, serviceProvider, registerOrganization, fromDate, tillDate, registry);
         registryService.create(registry);
 
-        BigDecimal summ = new BigDecimal(0);
+        BigDecimal totalSumm = new BigDecimal(0);
         Long recordsNumber = 0L;
         Long errorsNumber = 0L;
-        RegistryRecordStatus statusProcessed = registryRecordStatusService.findByCode(RegistryRecordStatus.PROCESSED);
-        DocumentAdditionType documentErcType = documentAdditionTypeService.findTypeByCode(DocumentAdditionType.CODE_ERC_ACCOUNT);
         for (Document document : documents) {
             if (document.getRegistryRecord() == null) {
-                RegistryRecord record = new RegistryRecord();
-                record.setRecordStatus(statusProcessed);
-                record.setAmount(document.getSumm());
-                record.setServiceCode("#" + document.getService().getServiceType().getCode());
-                record.setPersonalAccountExt(document.getDebtorId());
-                record.setOperationDate(document.getOperation().getCreationDate());
-                record.setRegistry(registry);
-
-                record.setLastName(document.getLastName());
-                record.setMiddleName(document.getMiddleName());
-                record.setFirstName(document.getFirstName());
-                record.setCity(document.getTown());
-                record.setStreetType(document.getStreetType());
-                record.setStreetName(document.getStreetName());
-                record.setBuildingNum(document.getBuildingNumber());
-                record.setBuildingBulkNum(document.getBuildingBulk());
-                record.setApartmentNum(document.getApartmentNumber());
-                record.setUniqueOperationNumber(document.getOperation().getId());
-
-                record.setProperties(propertiesFactory.newRecordProperties());
-
-                DocumentAddition ercAccountAddition = null;
-                if (documentErcType != null) {
-                    for (DocumentAddition documentAddition : document.getAdditions()) {
-                        if (documentErcType.equals(documentAddition.getAdditionType())) {
-                            ercAccountAddition = documentAddition;
-                            break;
-                        }
-                    }
-                }
-
-                List<RegistryRecordContainer> containers = new ArrayList<RegistryRecordContainer>();
-
-                RegistryRecordContainer container = new RegistryRecordContainer();
-                container.setOrder(0);
-                container.setData("50:" + document.getDebtorId());
-                container.setRecord(record);
-                containers.add(container);
-
-                if (ercAccountAddition != null) {
-                    container = new RegistryRecordContainer();
-                    container.setOrder(1);
-                    container.setData("53:" + ercAccountAddition.getStringValue() + ":" + ApplicationConfig.getMbOrganizationStub().getId());
-                    container.setRecord(record);
-                    containers.add(container);
-                }
-
-                record.setContainers(containers);
-
+				RegistryRecord record = buildRecord(registry, document);
                 try {
-                    registryRecordService.create(record);
-                    summ = summ.add(document.getSumm());
+					registryRecordService.create(record);
+                    totalSumm = totalSumm.add(document.getSumm());
                     recordsNumber++;
                 } catch (FlexPayException e) {
                     errorsNumber++;
-                    log.error("Registry record for document {} did not create", String.valueOf(document.getId()), e);
+                    log.error("Registry record for document {} was not created", String.valueOf(document.getId()), e);
                 }
             }
         }
-        registry.setAmount(summ);
-        registry.setRecordsNumber(recordsNumber);
-        registry.setErrorsNumber(errorsNumber.intValue());
-        registry.setRegistryStatus(registryStatusService.findByCode(RegistryStatus.CREATED));
+
+		setRegistryTotals(registry, totalSumm, recordsNumber, errorsNumber);
+		registry.setRegistryStatus(registryStatusService.findByCode(RegistryStatus.CREATED));
         registryService.update(registry);
 
-		log.info("Created db registry: id = {}, recordsNumber = {}, amount = {}", new Object[] {registry.getId(), recordsNumber, summ});
+		log.info("Created db registry: id = {}, recordsNumber = {}, amount = {}", new Object[] {registry.getId(), recordsNumber, totalSumm});
 
         return registry;
 
     }
-    /*
-    @NotNull
-    private List<Operation> getOperations(@NotNull Organization organization,
-                                          @NotNull Date startDate,
-                                          @NotNull Date endDate) {
 
-        return operationService.listReceivedPayments(organization, startDate, endDate);
-    }
-    */
+	private void setRegistryTotals(Registry registry, BigDecimal totalSumm, Long recordsNumber, Long errorsNumber) {
+		registry.setAmount(totalSumm);
+		registry.setRecordsNumber(recordsNumber);
+		registry.setErrorsNumber(errorsNumber.intValue());
+	}
 
-    @NotNull
+	private void fillRegistryData(FPFile spFile, ServiceProvider serviceProvider, Organization registerOrganization,
+								  Date fromDate, Date tillDate, Registry registry) {
+
+		registry.setRecipientCode(serviceProvider.getOrganization().getId());
+		registry.setSenderCode(registerOrganization.getId());
+		registry.setCreationDate(new Date());
+		registry.setSpFile(spFile);
+		registry.setRegistryType(registryTypeService.findByCode(getPaymentsType()));
+		registry.setArchiveStatus(registryArchiveStatusService.findByCode(RegistryArchiveStatus.NONE));
+		registry.setRegistryStatus(registryStatusService.findByCode(RegistryStatus.CREATING));
+		registry.setFromDate(fromDate);
+		registry.setTillDate(tillDate);
+
+		EircRegistryProperties registryProperties = (EircRegistryProperties)propertiesFactory.newRegistryProperties();
+		registryProperties.setRecipient(serviceProvider.getOrganization());
+		registryProperties.setSender(registerOrganization);
+		registryProperties.setServiceProvider(serviceProvider);
+		registry.setProperties(registryProperties);
+	}
+
+	private RegistryRecord buildRecord(Registry registry, Document document) throws FlexPayException {
+
+		RegistryRecordStatus statusProcessed = getRecordStatusProcessed();
+
+		RegistryRecord record = new RegistryRecord();
+		record.setRecordStatus(statusProcessed);
+		record.setAmount(document.getSumm());
+		record.setServiceCode("#" + document.getService().getServiceType().getCode());
+		record.setPersonalAccountExt(document.getDebtorId());
+		record.setOperationDate(document.getOperation().getCreationDate());
+		record.setRegistry(registry);
+		record.setLastName(document.getLastName());
+		record.setMiddleName(document.getMiddleName());
+		record.setFirstName(document.getFirstName());
+		record.setCity(document.getTown());
+		record.setStreetType(document.getStreetType());
+		record.setStreetName(document.getStreetName());
+		record.setBuildingNum(document.getBuildingNumber());
+		record.setBuildingBulkNum(document.getBuildingBulk());
+		record.setApartmentNum(document.getApartmentNumber());
+		record.setUniqueOperationNumber(document.getOperation().getId());
+		record.setProperties(propertiesFactory.newRecordProperties());
+		record.setContainers(buildRecordContainers(document, record));
+
+		return record;
+	}
+
+	@NotNull
+	private RegistryRecordStatus getRecordStatusProcessed() {
+		
+		return registryRecordStatusService.findByCode(RegistryRecordStatus.PROCESSED);
+	}
+
+	private List<RegistryRecordContainer> buildRecordContainers(Document document, RegistryRecord record)
+																throws FlexPayException {
+
+		List<RegistryRecordContainer> containers = new ArrayList<RegistryRecordContainer>();
+
+		RegistryRecordContainer container = new RegistryRecordContainer();
+		container.setOrder(0);
+		container.setData("50:" + document.getDebtorId());
+		container.setRecord(record);
+		containers.add(container);
+
+		DocumentAddition ercAccountAddition = getErcAccountAddition(document);
+		if (ercAccountAddition != null) {
+			container = new RegistryRecordContainer();
+			container.setOrder(1);
+			container.setData("53:" + ercAccountAddition.getStringValue() + ":" + ApplicationConfig.getMbOrganizationStub().getId());
+			container.setRecord(record);
+			containers.add(container);
+		}
+
+		return containers;
+	}
+
+	private DocumentAddition getErcAccountAddition(Document document) throws FlexPayException {
+
+		DocumentAdditionType documentErcType = getErcAccountDocAdditionType();
+		if (documentErcType == null) {
+			log.warn("No ERC account document addition type found");
+			return null;
+		}
+
+		for (DocumentAddition documentAddition : document.getAdditions()) {
+			if (documentErcType.equals(documentAddition.getAdditionType())) {
+				return documentAddition;
+			}
+		}
+
+		return null;
+	}
+
+	private DocumentAdditionType getErcAccountDocAdditionType() throws FlexPayException {
+
+		return documentAdditionTypeService.findTypeByCode(DocumentAdditionType.CODE_ERC_ACCOUNT);
+	}
+
+	@NotNull
     private List<Document> getDocuments(@NotNull ServiceProvider serviceProvider,
                                         @NotNull Organization registerdOrganization,
                                         @NotNull Date startDate,
                                         @NotNull Date endDate) {
+
         return documentService.listRegisteredPaymentDocuments(serviceProvider, registerdOrganization, startDate, endDate);
     }
 
@@ -201,11 +231,6 @@ public class PaymentsRegistryDBGeneratorImpl implements PaymentsRegistryDBGenera
 	@Required
     public void setRegistryArchiveStatusService(RegistryArchiveStatusService registryArchiveStatusService) {
         this.registryArchiveStatusService = registryArchiveStatusService;
-    }
-
-	@Required
-    public void setOperationService(OperationService operationService) {
-        this.operationService = operationService;
     }
 
     @Required
