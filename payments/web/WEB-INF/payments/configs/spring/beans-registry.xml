@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:p="http://www.springframework.org/schema/p"
+	   xmlns:context="http://www.springframework.org/schema/context"
+	   xsi:schemaLocation="
+		   http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+		   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
+
+	<bean id="paymentsRegistryDBGenerator"
+		  class="org.flexpay.payments.service.registry.impl.PaymentsRegistryDBGeneratorImpl"
+		  p:operationService-ref="operationService"
+		  p:documentService-ref="documentService"
+		  p:registryArchiveStatusService-ref="registryArchiveStatusService"
+		  p:registryRecordService-ref="registryRecordService"
+		  p:registryService-ref="registryService"
+		  p:registryStatusService-ref="registryStatusService"
+		  p:registryTypeService-ref="registryTypeService"
+		  p:registryRecordStatusService-ref="registryRecordStatusService"
+		  p:propertiesFactory-ref="paymentsPropertiesFactory"
+		  p:documentAdditionTypeService-ref="documentAdditionTypeService" />
+
+	<bean id="paymentsRegistryMBGenerator"
+		  class="org.flexpay.payments.service.registry.impl.PaymentsRegistryMBGeneratorImpl"
+		  p:fpFileService-ref="fpFileService"
+		  p:registryRecordService-ref="registryRecordService"
+		  p:registryService-ref="registryService"
+		  p:registryStatusService-ref="registryStatusService"
+		  p:serviceTypeService-ref="serviceTypeService"
+		  p:serviceTypesMapper-ref="mbServiceTypeMapper" />
+
+</beans>

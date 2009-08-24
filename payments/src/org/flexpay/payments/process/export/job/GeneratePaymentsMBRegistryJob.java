@@ -10,29 +10,20 @@ import org.flexpay.common.service.RegistryService;
 import org.flexpay.common.util.config.ApplicationConfig;
 import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.orgs.service.OrganizationService;
-import org.flexpay.payments.process.export.util.GeneratePaymentsMBRegistry;
+import org.flexpay.payments.service.registry.PaymentsRegistryMBGenerator;
 import org.springframework.beans.factory.annotation.Required;
-import org.springframework.core.io.Resource;
-import org.apache.commons.lang.ArrayUtils;
-import org.jbpm.util.ArrayUtil;
 
 import java.io.*;
 import java.util.Map;
 import java.util.Arrays;
-import java.net.URL;
-import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.security.*;
 import java.security.spec.PKCS8EncodedKeySpec;
-import java.security.spec.InvalidKeySpecException;
-import java.nio.ByteBuffer;
 
 public class GeneratePaymentsMBRegistryJob extends Job {
     private static final int BUFFER_SIZE = 1024;
 
 	private FPFileService fpFileService;
-	private GeneratePaymentsMBRegistry generatePaymentsMBRegistry;
+	private PaymentsRegistryMBGenerator paymentsRegistryMBGenerator;
 	private OrganizationService organizationService;
 	private RegistryService registryService;
 
@@ -120,7 +111,7 @@ public class GeneratePaymentsMBRegistryJob extends Job {
                     Signature instance = Signature.getInstance("SHA1withRSA");
                     instance.initSign(privKey);
 
-                    generatePaymentsMBRegistry.setSignature(instance);                
+                    paymentsRegistryMBGenerator.setSignature(instance);
                 } catch (Exception e) {
                     log.error("Error create signature '{}': {}", privateKey, e);
                 } finally {
@@ -137,7 +128,7 @@ public class GeneratePaymentsMBRegistryJob extends Job {
             }
         }
         try {
-		    generatePaymentsMBRegistry.exportToMegaBank(registry, spFile, organization);
+		    paymentsRegistryMBGenerator.exportToMegaBank(registry, spFile, organization);
         } catch (FlexPayException ex) {
             log.error("Failture generation registry", ex);
             return RESULT_ERROR;
@@ -154,8 +145,8 @@ public class GeneratePaymentsMBRegistryJob extends Job {
 	}
 
 	@Required
-	public void setGeneratePaymentsMBRegistry(GeneratePaymentsMBRegistry generatePaymentsMBRegistry) {
-		this.generatePaymentsMBRegistry = generatePaymentsMBRegistry;
+	public void setRegistryPaymentsMBGenerator(PaymentsRegistryMBGenerator paymentsRegistryMBGenerator) {
+		this.paymentsRegistryMBGenerator = paymentsRegistryMBGenerator;
 	}
 
 	@Required

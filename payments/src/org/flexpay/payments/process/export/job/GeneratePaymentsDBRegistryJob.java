@@ -10,7 +10,7 @@ import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.orgs.persistence.ServiceProvider;
 import org.flexpay.orgs.service.OrganizationService;
 import org.flexpay.orgs.service.ServiceProviderService;
-import org.flexpay.payments.process.export.util.GeneratePaymentsDBRegistry;
+import org.flexpay.payments.service.registry.PaymentsRegistryDBGenerator;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.io.Serializable;
@@ -21,7 +21,7 @@ public class GeneratePaymentsDBRegistryJob extends Job {
 
 	// required services
 	private FPFileService fpFileService;
-	private GeneratePaymentsDBRegistry generatePaymentsDBRegistry;
+	private PaymentsRegistryDBGenerator paymentsRegistryDBGenerator;
 	private OrganizationService organizationService;
 	private ServiceProviderService serviceProviderService;
 
@@ -59,7 +59,7 @@ public class GeneratePaymentsDBRegistryJob extends Job {
 		Date lastProcessedDateOldValue = getLastProcessedDateOldValue(parameters);
 		Date lastProcessedDate = getLastProcessedDate(parameters);
 
-		Registry registry = generatePaymentsDBRegistry.createDBRegestry(file, serviceProvider, registeredOrganization,
+		Registry registry = paymentsRegistryDBGenerator.createDBRegistry(file, serviceProvider, registeredOrganization,
 																		lastProcessedDateOldValue, lastProcessedDate);
 		parameters.put(LAST_PROCESSED_DATE_PARAMETER_NAME, String.valueOf(lastProcessedDate.getTime()));
 
@@ -166,8 +166,8 @@ public class GeneratePaymentsDBRegistryJob extends Job {
 	}
 
 	@Required
-	public void setGeneratePaymentsDBRegistry(GeneratePaymentsDBRegistry generatePaymentsDBRegistry) {
-		this.generatePaymentsDBRegistry = generatePaymentsDBRegistry;
+	public void setPaymentsRegistryDBGenerator(PaymentsRegistryDBGenerator paymentsRegistryDBGenerator) {
+		this.paymentsRegistryDBGenerator = paymentsRegistryDBGenerator;
 	}
 
 	@Required
