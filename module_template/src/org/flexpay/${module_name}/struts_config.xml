@@ -12,7 +12,7 @@
 
 	<package name="${module_name}" namespace="/${module_name}" extends="common">
 
-		<action name="main" class="staticPageAction">
+		<action name="main" class="menuPageAction">
 			<result type="tiles">${module_name}.main</result>
 		</action>
 

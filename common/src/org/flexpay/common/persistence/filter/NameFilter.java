@@ -1,8 +1,8 @@
 package org.flexpay.common.persistence.filter;
 
 import org.flexpay.common.persistence.DomainObject;
-import org.flexpay.common.persistence.Translation;
 import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.persistence.Translation;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
@@ -23,22 +23,13 @@ public class NameFilter<T extends DomainObject, Tr extends Translation> extends 
 		super(stub);
 	}
 
-	/**
-	 * Getter for property 'names'.
-	 *
-	 * @return Value for property 'names'.
-	 */
 	@NotNull
 	public Collection<Tr> getNames() {
 		return translations;
 	}
 
-	/**
-	 * Setter for property 'names'.
-	 *
-	 * @param names Value to set for property 'names'.
-	 */
 	public void setNames(@NotNull Collection<Tr> names) {
 		this.translations = names;
 	}
+
 }

@@ -6,7 +6,6 @@ import org.flexpay.common.persistence.sorter.ObjectSorter;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 
 public interface StreetDaoExt {
@@ -22,5 +21,9 @@ public interface StreetDaoExt {
 	@NotNull
 	List<Street> findStreets(Long townId, Collection<ObjectSorter> sorters, Page<Street> pager);
 
+	@NotNull
+	List<Street> findByTownAndQuery(Long townId, Collection<ObjectSorter> sorters, String query, Page<Street> pager);
+
 	void deleteStreet(Long streetId);
+
 }

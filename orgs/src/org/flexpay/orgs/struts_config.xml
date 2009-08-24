@@ -12,7 +12,7 @@
 
 	<package name="orgs" namespace="/orgs" extends="common">
 
-		<action name="main" class="staticPageAction">
+		<action name="main" class="menuPageAction">
 			<result type="tiles">orgs.main</result>
 		</action>
 

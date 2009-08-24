@@ -3,7 +3,17 @@
 <table cellpadding="3" cellspacing="1" border="0" width="100%">
     <tr>
         <td>
-            <%@include file="../filters/groups/country_region_town_streetname_ajax.jsp" %>
+            <%@include file="../filters/groups/country_region_town_ajax.jsp" %>
+            <table width="100%">
+                <tr>
+                    <td class="filter"><s:text name="ab.street"/></td>
+                    <td colspan="5">
+                        <input type="text" name="streetFilter.searchString" class="form-textfield"
+                               value="<s:property value="%{streetFilter.searchString}" />"/>
+                        <input type="button" onclick="pagerAjax(null);" value="<s:text name="common.search" />" />
+                    </td>
+                </tr>
+            </table>
         </td>
     </tr>
     <tr>
@@ -34,13 +44,6 @@
                     + 'value="<s:text name="common.new"/>"/>');
         });
 
-        FF.addListener("street", function(filter) {
-            FP.pagerAjax(null, {
-                action:"<s:url action="streetsListAjax" namespace="/dicts" includeParams="none"/>",
-                params:{streetFilter: FF.filters["street"].value.val()}
-            });
-        });
-
     });
 
     function pagerAjax(element) {
@@ -48,6 +51,7 @@
             action:"<s:url action="streetsListAjax" namespace="/dicts" includeParams="none"/>",
             params:{
                 townFilter: FF.filters["town"].value.val(),
+                "streetFilter.searchString": $("input[name='streetFilter.searchString']").get(0).value,
                 "streetSorterByName.active": $("#streetSorterByNameActive").val(),
                 "streetSorterByName.order": $("#streetSorterByNameOrder").val(),
                 "streetSorterByType.active": $("#streetSorterByTypeActive").val(),

@@ -2,6 +2,7 @@ package org.flexpay.ab.actions.street;
 
 import org.flexpay.ab.persistence.Street;
 import org.flexpay.ab.persistence.Town;
+import org.flexpay.ab.persistence.filters.StreetSearchFilter;
 import org.flexpay.ab.persistence.sorter.StreetSorterByName;
 import org.flexpay.ab.persistence.sorter.StreetSorterByType;
 import org.flexpay.ab.service.StreetService;
@@ -19,8 +20,8 @@ import java.util.List;
 
 public class StreetsListAjaxAction extends FPActionWithPagerSupport<Street> {
 
-	private Long streetFilter;
 	private Long townFilter;
+	private StreetSearchFilter streetFilter = new StreetSearchFilter();
 	private List<Street> streets = list();
 
 	private StreetSorterByName streetSorterByName = new StreetSorterByName();
@@ -32,12 +33,6 @@ public class StreetsListAjaxAction extends FPActionWithPagerSupport<Street> {
 	@Override
 	public String doExecute() throws Exception {
 
-		if (streetFilter != null && streetFilter > 0) {
-			streets = new ArrayList<Street>();
-			streets.add(streetService.readFull(new Stub<Street>(streetFilter)));
-			return SUCCESS;
-		}
-
 		streetSorterByName.setLang(getLanguage());
 		streetSorterByType.setLang(getLanguage());
 
@@ -48,7 +43,14 @@ public class StreetsListAjaxAction extends FPActionWithPagerSupport<Street> {
 			return SUCCESS;
 		}
 
-		List<Street> streetsStubs = streetService.getStreets(new Stub<Town>(townFilter), sorters, getPager());
+		List<Street> streetsStubs;
+
+		if (streetFilter.needFilter()) {
+			streetsStubs = streetService.findByTownAndQuery(new Stub<Town>(townFilter), sorters, 
+					"%" + streetFilter.getSearchString() + "%", getPager());
+		} else {
+			streetsStubs = streetService.getStreets(new Stub<Town>(townFilter), sorters, getPager());
+		}
 		if (log.isDebugEnabled()) {
 			log.info("Total streets found: {}", streetsStubs.size());
 		}
@@ -74,7 +76,7 @@ public class StreetsListAjaxAction extends FPActionWithPagerSupport<Street> {
 		return SUCCESS;
 	}
 
-	public void setStreetFilter(Long streetFilter) {
+	public void setStreetFilter(StreetSearchFilter streetFilter) {
 		this.streetFilter = streetFilter;
 	}
 

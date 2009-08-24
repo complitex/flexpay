@@ -15,23 +15,23 @@
 
 	<package name="sz" namespace="/sz" extends="common">
 
-		<action name="main" class="staticPageAction">
+		<action name="main" class="menuPageAction">
 			<result type="tiles">sz.dictionaries</result>
 		</action>
 
-        <action name="mainDicts" class="staticPageAction">
+        <action name="mainDicts" class="menuPageAction">
             <result type="tiles">sz.main.dics</result>
         </action>
 
-        <action name="mainImport" class="staticPageAction">
+        <action name="mainImport" class="menuPageAction">
             <result type="tiles">sz.main.import</result>
         </action>
 
-        <action name="mainOtherDicts" class="staticPageAction">
+        <action name="mainOtherDicts" class="menuPageAction">
             <result type="tiles">sz.main.other_dics</result>
         </action>
 
-        <action name="mainImportImport" class="staticPageAction">
+        <action name="mainImportImport" class="menuPageAction">
             <result type="tiles">sz.main.import_import</result>
         </action>
 

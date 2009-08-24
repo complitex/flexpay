@@ -17,7 +17,7 @@
 			<result type="tiles">payments.security.get_identity_cookie</result>
 		</action>
 
-		<action name="main" class="staticPageAction">
+		<action name="main" class="menuPageAction">
 			<result type="tiles">payments.main</result>
 		</action>
 

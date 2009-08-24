@@ -17,8 +17,10 @@ public class PersonDeleteAction extends FPActionSupport {
 	@NotNull
 	@Override
 	public String doExecute() throws Exception {
+
 		personService.disable(objectIds);
-		return REDIRECT_SUCCESS;
+
+		return SUCCESS;
 	}
 
 	/**
@@ -31,7 +33,7 @@ public class PersonDeleteAction extends FPActionSupport {
 	@NotNull
 	@Override
 	protected String getErrorResult() {
-		return REDIRECT_SUCCESS;
+		return SUCCESS;
 	}
 
 	public Set<Long> getObjectIds() {

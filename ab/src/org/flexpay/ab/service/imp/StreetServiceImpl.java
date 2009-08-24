@@ -51,6 +51,7 @@ public class StreetServiceImpl extends NameTimeDependentServiceImpl<
 	 *
 	 * @return GenericDao implementation
 	 */
+	@Override
 	protected NameTimeDependentDao<Street, Long> getNameTimeDependentDao() {
 		return streetDao;
 	}
@@ -60,6 +61,7 @@ public class StreetServiceImpl extends NameTimeDependentServiceImpl<
 	 *
 	 * @return GenericDao implementation
 	 */
+	@Override
 	protected GenericDao<StreetNameTemporal, Long> getNameTemporalDao() {
 		return streetNameTemporalDao;
 	}
@@ -69,6 +71,7 @@ public class StreetServiceImpl extends NameTimeDependentServiceImpl<
 	 *
 	 * @return GenericDao implementation
 	 */
+	@Override
 	protected GenericDao<StreetName, Long> getNameValueDao() {
 		return streetNameDao;
 	}
@@ -78,6 +81,7 @@ public class StreetServiceImpl extends NameTimeDependentServiceImpl<
 	 *
 	 * @return GenericDao implementation
 	 */
+	@Override
 	protected GenericDao<Town, Long> getParentDao() {
 		return townDao;
 	}
@@ -87,6 +91,7 @@ public class StreetServiceImpl extends NameTimeDependentServiceImpl<
 	 *
 	 * @return Value for property 'newNameTemporal'.
 	 */
+	@Override
 	protected StreetNameTemporal getNewNameTemporal() {
 		return new StreetNameTemporal();
 	}
@@ -96,6 +101,7 @@ public class StreetServiceImpl extends NameTimeDependentServiceImpl<
 	 *
 	 * @return Value for property 'newNameTimeDependent'.
 	 */
+	@Override
 	protected Street getNewNameTimeDependent() {
 		return new Street();
 	}
@@ -105,6 +111,7 @@ public class StreetServiceImpl extends NameTimeDependentServiceImpl<
 	 *
 	 * @return Value for property 'emptyName'.
 	 */
+	@Override
 	protected StreetName getEmptyName() {
 		return new StreetName();
 	}
@@ -116,6 +123,7 @@ public class StreetServiceImpl extends NameTimeDependentServiceImpl<
 	 * @param container Exceptions container to add exception for
 	 * @return <code>true</code> if operation allowed, or <code>false</otherwise>
 	 */
+	@Override
 	protected boolean canDisable(Street street, FlexPayExceptionContainer container) {
 		return true;
 	}
@@ -125,6 +133,7 @@ public class StreetServiceImpl extends NameTimeDependentServiceImpl<
 	 *
 	 * @return Localization key base
 	 */
+	@Override
 	protected String getI18nKeyBase() {
 		return "ab.street";
 	}
@@ -134,6 +143,7 @@ public class StreetServiceImpl extends NameTimeDependentServiceImpl<
 	 *
 	 * @return name translation
 	 */
+	@Override
 	public StreetNameTranslation getEmptyNameTranslation() {
 		return new StreetNameTranslation();
 	}
@@ -146,6 +156,7 @@ public class StreetServiceImpl extends NameTimeDependentServiceImpl<
 	 * @return saved street object
 	 */
 	@Transactional (readOnly = false, rollbackFor = Exception.class)
+	@Override
 	public Street saveDistricts(Street street, Set<Long> objectIds) {
 		Set<District> districts = new HashSet<District>();
 		for (Long id : objectIds) {
@@ -158,9 +169,7 @@ public class StreetServiceImpl extends NameTimeDependentServiceImpl<
 		return street;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
+	@Override
 	public StreetFilter initFilter(StreetFilter parentFilter, PrimaryKeyFilter forefatherFilter, Locale locale)
 			throws FlexPayException {
 
@@ -194,9 +203,7 @@ public class StreetServiceImpl extends NameTimeDependentServiceImpl<
 		return false;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
+	@Override
 	public ArrayStack initFilters(ArrayStack filters, Locale locale) throws FlexPayException {
 		if (filters == null) {
 			filters = new ArrayStack();
@@ -232,15 +239,12 @@ public class StreetServiceImpl extends NameTimeDependentServiceImpl<
 	}
 
 	@NotNull
+	@Override
 	public List<Street> findByTownAndName(@NotNull Stub<Town> stub, @NotNull String name) {
 		return streetDao.findByTownAndName(stub.getId(), name);
 	}
 
-	@NotNull
-	public List<Street> findByTownAndQuery(@NotNull Stub<Town> stub, @NotNull String query) {
-		return streetDao.findByTownAndQuery(stub.getId(), query);
-	}
-
+	@Override
 	public String format(@NotNull Stub<Street> stub, @NotNull Locale locale, boolean shortMode) throws FlexPayException {
 		Street street = streetDao.read(stub.getId());
 		if (street == null) {
@@ -259,6 +263,7 @@ public class StreetServiceImpl extends NameTimeDependentServiceImpl<
 	 */
 	@Transactional (readOnly = false)
 	@NotNull
+	@Override
 	public Street create(@NotNull Street object) throws FlexPayExceptionContainer {
 
 		validate(object);
@@ -281,6 +286,7 @@ public class StreetServiceImpl extends NameTimeDependentServiceImpl<
 	@SuppressWarnings ({"ThrowableInstanceNeverThrown"})
 	@Transactional (readOnly = false)
 	@NotNull
+	@Override
 	public Street update(@NotNull Street object) throws FlexPayExceptionContainer {
 
 		validate(object);
@@ -382,9 +388,6 @@ public class StreetServiceImpl extends NameTimeDependentServiceImpl<
 		}
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public List<Street> find(ArrayStack filters, Page pager) {
 		ObjectFilter filter = (ObjectFilter) filters.peek();
@@ -438,6 +441,25 @@ public class StreetServiceImpl extends NameTimeDependentServiceImpl<
 		}
 
 		return streetDaoExt.findStreets(townStub.getId(), sorters, pager);
+	}
+
+	@NotNull
+	@Override
+	public List<Street> findByTownAndQuery(@NotNull Stub<Town> townStub, List<ObjectSorter> sorters, @NotNull String query, Page<Street> pager) {
+		log.debug("Finding streets with sorters and query");
+		Town town = townDao.read(townStub.getId());
+		if (town == null) {
+			log.warn("No town found for id {}", townStub.getId());
+			return Collections.emptyList();
+		}
+
+		return streetDaoExt.findByTownAndQuery(townStub.getId(), sorters, query, pager);
+	}
+
+	@NotNull
+	@Override
+	public List<Street> findByTownAndQuery(@NotNull Stub<Town> stub, @NotNull String query) {
+		return streetDao.findByTownAndQuery(stub.getId(), query);
 	}
 
 	/**
@@ -534,4 +556,5 @@ public class StreetServiceImpl extends NameTimeDependentServiceImpl<
 	public void setModificationListener(ModificationListener<Street> modificationListener) {
 		this.modificationListener = modificationListener;
 	}
+
 }

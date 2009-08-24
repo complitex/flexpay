@@ -41,20 +41,6 @@ public interface StreetService extends
 	@NotNull
 	List<Street> findByTownAndName(@NotNull Stub<Town> stub, @NotNull String name);
 
-	/**
-	 * Lookup streets by query and town id. Query is a string
-	 * which may contains in folow string:
-	 *
-	 * street_type street_name
-	 *
-	 * @param stub TownStub
-	 * @param query searching string
-	 * @return List of founded streets
-	 */
-	@Secured (Roles.STREET_READ)
-	@NotNull
-	List<Street> findByTownAndQuery(@NotNull Stub<Town> stub, @NotNull String query);
-
 	@Secured (Roles.STREET_READ)
 	String format(@NotNull Stub<Street> stub, @NotNull Locale locale, boolean shortMode)
 			throws FlexPayException;
@@ -176,6 +162,37 @@ public interface StreetService extends
 	@Secured (Roles.STREET_READ)
 	@NotNull
 	List<Street> getStreets(@NotNull Stub<Town> townStub, List<ObjectSorter> sorters, Page<Street> pager);
+
+	/**
+	 * Lookup streets by query and town id. Query is a string
+	 * which may contains in folow string:
+	 *
+	 * street_type street_name
+	 *
+	 * @param townStub TownStub
+	 * @param query searching string
+	 * @param sorters sorters
+	 * @param pager pager
+	 *
+	 * @return List of founded streets
+	 */
+	@Secured (Roles.STREET_READ)
+	@NotNull
+	List<Street> findByTownAndQuery(@NotNull Stub<Town> townStub, List<ObjectSorter> sorters, @NotNull String query, Page<Street> pager);
+
+	/**
+	 * Lookup streets by query and town id. Query is a string
+	 * which may contains in folow string:
+	 *
+	 * street_type street_name
+	 *
+	 * @param stub TownStub
+	 * @param query searching string
+	 * @return List of founded streets
+	 */
+	@Secured (Roles.STREET_READ)
+	@NotNull
+	List<Street> findByTownAndQuery(@NotNull Stub<Town> stub, @NotNull String query);
 
 	/**
 	 * Disable objects

@@ -12,43 +12,43 @@
 
 	<package name="tc" namespace="/tc" extends="common">
 
-		<action name="main" class="staticPageAction">
+		<action name="main" class="menuPageAction">
 			<result type="tiles">tc.dictionaries</result>
 		</action>
 
-        <action name="mainDicts" class="staticPageAction">
+        <action name="mainDicts" class="menuPageAction">
             <result type="tiles">tc.main.dicts</result>
         </action>
 
-        <action name="mainImportExport" class="staticPageAction">
+        <action name="mainImportExport" class="menuPageAction">
             <result type="tiles">tc.main.import_export</result>
         </action>
 
-        <action name="mainData" class="staticPageAction">
+        <action name="mainData" class="menuPageAction">
             <result type="tiles">tc.main.data</result>
         </action>
 
-        <action name="mainOtherDicts" class="staticPageAction">
+        <action name="mainOtherDicts" class="menuPageAction">
             <result type="tiles">tc.main.other_dicts</result>
         </action>
 
-        <action name="mainImportExport2" class="staticPageAction">
+        <action name="mainImportExport2" class="menuPageAction">
             <result type="tiles">tc.main.import_export2</result>
         </action>
 
-        <action name="mainProcesses" class="staticPageAction">
+        <action name="mainProcesses" class="menuPageAction">
             <result type="tiles">tc.main.processes</result>
         </action>
 
-        <action name="mainData2" class="staticPageAction">
+        <action name="mainData2" class="menuPageAction">
             <result type="tiles">tc.main.data2</result>
         </action>
 
-		<action name="importexport" class="staticPageAction">
+		<action name="importexport" class="menuPageAction">
 			<result type="tiles">tc.importexport</result>
 		</action>
 
-		<action name="data" class="staticPageAction">
+		<action name="data" class="menuPageAction">
 			<result type="tiles">tc.data</result>
 		</action>
 
