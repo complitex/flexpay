@@ -10,7 +10,8 @@ import org.flexpay.common.service.FPFileService;
 import org.flexpay.common.util.FPFileUtil;
 import org.flexpay.common.util.StringUtil;
 import org.flexpay.common.util.io.ReaderCallback;
-import org.flexpay.payments.process.export.util.RegistryWriter;
+import org.flexpay.payments.service.registry.impl.RegistryWriterImpl;
+import org.flexpay.payments.service.registry.RegistryWriter;
 import org.flexpay.payments.test.PaymentsSpringBeanAwareTestCase;
 import org.junit.After;
 import org.junit.Before;
@@ -53,7 +54,7 @@ public class TestRegistryWriter extends PaymentsSpringBeanAwareTestCase {
 
 	@Test
 	public void testWriteLine1() throws IOException, FlexPayException, SignatureException {
-		RegistryWriter rw = new RegistryWriter(file);
+		RegistryWriter rw = new RegistryWriterImpl(file);
 		try {
 			rw.writeLine("line1");
 			rw.writeLine("line2");
@@ -67,7 +68,7 @@ public class TestRegistryWriter extends PaymentsSpringBeanAwareTestCase {
 	@Test
 	public void testWriteLine2() throws IOException, FlexPayException, SignatureException {
 		final char separator = ',';
-		RegistryWriter rw = new RegistryWriter(file, separator, RegistryWriter.NO_QUOTE_CHARACTER);
+		RegistryWriter rw = new RegistryWriterImpl(file, separator, RegistryWriter.NO_QUOTE_CHARACTER);
 		String[] line1 = new String[]{"ceil11", "ceil12"};
 		String[] line2 = new String[]{"ceil21", "ceil22", "ceil23"};
 		try {
@@ -90,7 +91,7 @@ public class TestRegistryWriter extends PaymentsSpringBeanAwareTestCase {
 	@Test
 	public void testWriteLine3() throws IOException, FlexPayException, SignatureException {
 		final char separator = ',';
-		RegistryWriter rw = new RegistryWriter(file);
+		RegistryWriter rw = new RegistryWriterImpl(file);
 		String[] line1 = new String[]{"ceil11", "ceil12"};
 		String[] line2 = new String[]{"ceil21", "ceil22", "ceil23"};
 		try {
@@ -115,7 +116,7 @@ public class TestRegistryWriter extends PaymentsSpringBeanAwareTestCase {
 	@Test
 	public void testWriteLine4() throws IOException, FlexPayException, SignatureException {
 		final char separator = ',';
-		RegistryWriter rw = new RegistryWriter(file, separator, RegistryWriter.NO_QUOTE_CHARACTER);
+		RegistryWriter rw = new RegistryWriterImpl(file, separator, RegistryWriter.NO_QUOTE_CHARACTER);
 		final String line1 = "line1";
 		final String line2 = "line2";
 		try {
@@ -140,7 +141,7 @@ public class TestRegistryWriter extends PaymentsSpringBeanAwareTestCase {
 	@Test
 	public void testWriteLine5() throws IOException, FlexPayException, SignatureException {
 		final char separator = ',';
-		RegistryWriter rw = new RegistryWriter(file, separator, RegistryWriter.NO_QUOTE_CHARACTER);
+		RegistryWriter rw = new RegistryWriterImpl(file, separator, RegistryWriter.NO_QUOTE_CHARACTER);
 		final char ch1 = '_';
 		final char ch2 = '+';
 		try {

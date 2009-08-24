@@ -1,4 +1,4 @@
-package org.flexpay.payments.process.export.util;
+package org.flexpay.payments.service.registry.impl;
 
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
@@ -19,6 +19,9 @@ import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.payments.persistence.ServiceType;
 import org.flexpay.payments.service.ServiceTypeService;
 import org.flexpay.payments.util.ServiceTypesMapper;
+import org.flexpay.payments.service.registry.impl.RegistryWriterImpl;
+import org.flexpay.payments.service.registry.PaymentsRegistryMBGenerator;
+import org.flexpay.payments.service.registry.RegistryWriter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
@@ -34,7 +37,7 @@ import java.security.SignatureException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-public class GeneratePaymentsMBRegistry {
+public class PaymentsRegistryMBGeneratorImpl implements PaymentsRegistryMBGenerator {
 
     private final Logger log = LoggerFactory.getLogger(getClass());
 
@@ -44,6 +47,7 @@ public class GeneratePaymentsMBRegistry {
     private static final SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
     private static final SimpleDateFormat paymentDateFormat = new SimpleDateFormat("yyyyMMdd");
     private static final SimpleDateFormat paymentPeriodDateFormat = new SimpleDateFormat("yyyyMM");
+
     private static final String[] tableHeader = {
             "код квит",
             "л.с. ЕРЦ ",
@@ -110,7 +114,7 @@ public class GeneratePaymentsMBRegistry {
 
             FPFileUtil.createEmptyFile(tmpFile);
 
-            rg = new RegistryWriter(tmpFile, '|', RegistryWriter.NO_QUOTE_CHARACTER, RegistryWriter.NO_ESCAPE_CHARACTER);
+            rg = new RegistryWriterImpl(tmpFile, '|', RegistryWriter.NO_QUOTE_CHARACTER, RegistryWriter.NO_ESCAPE_CHARACTER);
             rg.setSignature(signature);
 
             // заголовочные строки
@@ -177,7 +181,7 @@ public class GeneratePaymentsMBRegistry {
             log.debug("Registry file size={}", rg.getFileSize());
 
             // служебные строки
-            rg = new RegistryWriter(file, '|', RegistryWriter.NO_QUOTE_CHARACTER, RegistryWriter.NO_ESCAPE_CHARACTER);
+            rg = new RegistryWriterImpl(file, '|', RegistryWriter.NO_QUOTE_CHARACTER, RegistryWriter.NO_ESCAPE_CHARACTER);
             
             log.info("Writing service lines");
             rg.writeCharToLine('_', 128);

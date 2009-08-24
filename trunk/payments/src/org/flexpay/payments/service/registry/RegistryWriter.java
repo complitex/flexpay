@@ -1,0 +1,42 @@
+package org.flexpay.payments.service.registry;
+
+import org.jetbrains.annotations.Nullable;
+import org.jetbrains.annotations.NotNull;
+import org.flexpay.common.exception.FlexPayException;
+
+import java.io.IOException;
+import java.security.SignatureException;
+import java.security.Signature;
+
+public interface RegistryWriter {
+
+	char NO_QUOTE_CHARACTER = '\u0000';
+	char NO_ESCAPE_CHARACTER = '\u0000';
+	String DEFAULT_LINE_END = "\n";
+
+	void writeLine(@Nullable String[] nextLine) throws IOException, SignatureException;
+
+	void write(@NotNull byte[] bytes, int off, int len) throws SignatureException, IOException;
+
+	void write(@NotNull byte[] bytes) throws SignatureException, IOException;
+
+	void writeLine(@Nullable String nextLine) throws IOException, SignatureException;
+
+	void writeLine(@Nullable byte[] nextLine) throws IOException, SignatureException;
+
+	void writeCharToLine(char ch, int count) throws IOException, SignatureException;
+
+	byte[] getSign() throws SignatureException;
+
+	void setSignature(Signature signature);
+
+	long getFileSize() throws FlexPayException;
+
+	void flush() throws FlexPayException;
+
+	void close() throws FlexPayException;
+
+	void setFileEncoding(@NotNull String fileEncoding);
+
+	String getFileEncoding();
+}

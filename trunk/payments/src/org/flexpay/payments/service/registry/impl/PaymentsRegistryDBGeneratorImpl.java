@@ -1,4 +1,4 @@
-package org.flexpay.payments.process.export.util;
+package org.flexpay.payments.service.registry.impl;
 
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.file.FPFile;
@@ -14,6 +14,7 @@ import org.flexpay.payments.service.DocumentService;
 import org.flexpay.payments.service.OperationService;
 import org.flexpay.payments.service.DocumentAdditionTypeService;
 import org.flexpay.payments.util.config.ApplicationConfig;
+import org.flexpay.payments.service.registry.PaymentsRegistryDBGenerator;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
@@ -26,7 +27,7 @@ import java.util.Date;
 import java.util.List;
 import java.text.SimpleDateFormat;
 
-public class GeneratePaymentsDBRegistry {
+public class PaymentsRegistryDBGeneratorImpl implements PaymentsRegistryDBGenerator {
 
     private final Logger log = LoggerFactory.getLogger(getClass());
 
@@ -44,7 +45,7 @@ public class GeneratePaymentsDBRegistry {
     private DocumentAdditionTypeService documentAdditionTypeService;
 
     @Nullable
-    public Registry createDBRegestry(@NotNull FPFile spFile, @NotNull ServiceProvider serviceProvider, @NotNull Organization registerOrganization,
+    public Registry createDBRegistry(@NotNull FPFile spFile, @NotNull ServiceProvider serviceProvider, @NotNull Organization registerOrganization,
 									 @NotNull Date fromDate, @NotNull Date tillDate) throws FlexPayException {
 
         log.info("Get document by service provider {}, registered {} organization", new Object[]{serviceProvider.getId(), registerOrganization.getId()});

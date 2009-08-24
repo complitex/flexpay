@@ -1,7 +1,8 @@
-package org.flexpay.payments.process.export.util;
+package org.flexpay.payments.service.registry.impl;
 
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.file.FPFile;
+import org.flexpay.payments.service.registry.RegistryWriter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
@@ -11,7 +12,7 @@ import java.io.*;
 import java.security.Signature;
 import java.security.SignatureException;
 
-public class RegistryWriter {
+public class RegistryWriterImpl implements RegistryWriter {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
     private BufferedOutputStream bos;
@@ -29,42 +30,36 @@ public class RegistryWriter {
 
     private String fileEncoding;
 
-    public static final char DEFAULT_ESCAPE_CHARACTER = '"';
+    private static final char DEFAULT_ESCAPE_CHARACTER = '"';
 
-    public static final char DEFAULT_SEPARATOR = ',';
+    private static final char DEFAULT_SEPARATOR = ',';
 
-    public static final char DEFAULT_QUOTE_CHARACTER = '"';
-
-    public static final char NO_QUOTE_CHARACTER = '\u0000';
-
-    public static final char NO_ESCAPE_CHARACTER = '\u0000';
-
-    public static final String DEFAULT_LINE_END = "\n";
+    private static final char DEFAULT_QUOTE_CHARACTER = '"';
 
     private Signature signature;
 
 
-    public RegistryWriter(@NotNull FPFile file) throws IOException {
+    public RegistryWriterImpl(@NotNull FPFile file) throws IOException {
         this(file, DEFAULT_SEPARATOR);
     }
 
-    public RegistryWriter(@NotNull FPFile file, char separator) throws IOException {
+    public RegistryWriterImpl(@NotNull FPFile file, char separator) throws IOException {
         this(file, separator, DEFAULT_QUOTE_CHARACTER);
     }
 
-    public RegistryWriter(@NotNull FPFile file, char separator, char quotechar) throws IOException {
+    public RegistryWriterImpl(@NotNull FPFile file, char separator, char quotechar) throws IOException {
         this(file, separator, quotechar, DEFAULT_ESCAPE_CHARACTER);
     }
 
-    public RegistryWriter(@NotNull FPFile file, char separator, char quotechar, char escapechar) throws IOException {
+    public RegistryWriterImpl(@NotNull FPFile file, char separator, char quotechar, char escapechar) throws IOException {
         this(file, separator, quotechar, escapechar, DEFAULT_LINE_END);
     }
 
-    public RegistryWriter(@NotNull FPFile file, char separator, char quotechar, @NotNull String lineEnd) throws IOException {
+    public RegistryWriterImpl(@NotNull FPFile file, char separator, char quotechar, @NotNull String lineEnd) throws IOException {
         this(file, separator, quotechar, DEFAULT_ESCAPE_CHARACTER, lineEnd);
     }
 
-    public RegistryWriter(@NotNull FPFile file, char separator, char quotechar, char escapechar, @NotNull String lineEnd) throws IOException {
+    public RegistryWriterImpl(@NotNull FPFile file, char separator, char quotechar, char escapechar, @NotNull String lineEnd) throws IOException {
         this.file = file;
         this.bos = new BufferedOutputStream(file.getOutputStream());
         this.separator = separator;
@@ -75,7 +70,7 @@ public class RegistryWriter {
         size = 0;
     }
 
-    public void writeLine(@Nullable String[] nextLine) throws IOException, SignatureException {
+	public void writeLine(@Nullable String[] nextLine) throws IOException, SignatureException {
 
         if (nextLine == null)
             return;

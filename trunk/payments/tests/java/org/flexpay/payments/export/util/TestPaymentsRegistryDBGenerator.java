@@ -23,13 +23,12 @@ import org.flexpay.orgs.service.PaymentPointService;
 import org.flexpay.orgs.service.PaymentsCollectorService;
 import org.flexpay.orgs.service.ServiceProviderService;
 import org.flexpay.payments.persistence.*;
-import org.flexpay.payments.process.export.util.GeneratePaymentsDBRegistry;
+import org.flexpay.payments.service.registry.impl.PaymentsRegistryDBGeneratorImpl;
 import org.flexpay.payments.service.*;
 import org.flexpay.payments.test.PaymentsSpringBeanAwareTestCase;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.Ignore;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.math.BigDecimal;
@@ -38,7 +37,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
-public class TestGeneratePaymentsDBRegistry extends PaymentsSpringBeanAwareTestCase {
+public class TestPaymentsRegistryDBGenerator extends PaymentsSpringBeanAwareTestCase {
+
 	@Autowired
 	private OperationService operationService;
 	@Autowired
@@ -286,25 +286,25 @@ public class TestGeneratePaymentsDBRegistry extends PaymentsSpringBeanAwareTestC
 
 		Date currDate = new Date();
 
-		GeneratePaymentsDBRegistry generate = new GeneratePaymentsDBRegistry();
+		PaymentsRegistryDBGeneratorImpl DBGeneratorImpl = new PaymentsRegistryDBGeneratorImpl();
 
-		generate.setOperationService(operationService);
-		generate.setDocumentService(documentService);
-		generate.setRegistryArchiveStatusService(registryArchiveStatusService);
-		generate.setRegistryRecordService(registryRecordService);
-		generate.setRegistryService(registryService);
-		generate.setRegistryStatusService(registryStatusService);
-		generate.setRegistryTypeService(registryTypeService);
-		generate.setRegistryRecordStatusService(registryRecordStatusService);
-		generate.setPropertiesFactory(propertiesFactory);
-		generate.setDocumentAdditionTypeService(documentAdditionTypeService);
+		DBGeneratorImpl.setOperationService(operationService);
+		DBGeneratorImpl.setDocumentService(documentService);
+		DBGeneratorImpl.setRegistryArchiveStatusService(registryArchiveStatusService);
+		DBGeneratorImpl.setRegistryRecordService(registryRecordService);
+		DBGeneratorImpl.setRegistryService(registryService);
+		DBGeneratorImpl.setRegistryStatusService(registryStatusService);
+		DBGeneratorImpl.setRegistryTypeService(registryTypeService);
+		DBGeneratorImpl.setRegistryRecordStatusService(registryRecordStatusService);
+		DBGeneratorImpl.setPropertiesFactory(propertiesFactory);
+		DBGeneratorImpl.setDocumentAdditionTypeService(documentAdditionTypeService);
 
-		Registry registry = generate.createDBRegestry(spFile, serviceProvider, registerOrganization,
+		Registry registry = DBGeneratorImpl.createDBRegistry(spFile, serviceProvider, registerOrganization,
 				new Date(currDate.getTime() + 1000), new Date(currDate.getTime() + 10000));
 		assertNull(registry);
 		//assertEquals(0, registry.getRecordsNumber().intValue());
 
-		registry = generate.createDBRegestry(spFile, serviceProvider, registerOrganization,
+		registry = DBGeneratorImpl.createDBRegistry(spFile, serviceProvider, registerOrganization,
 				new Date(currDate.getTime() - 100000), new Date(currDate.getTime() + 1000));
 		assertNotNull(registry);
 		assertEquals(1, registry.getRecordsNumber().intValue());
