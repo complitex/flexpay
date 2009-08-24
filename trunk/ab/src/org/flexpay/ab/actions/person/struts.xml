@@ -7,16 +7,8 @@
 
 	<package name="persons" namespace="/dicts" extends="common">
 
-		<action name="personsList" class="personsListAction">
-			<result type="tiles">ab.person.list</result>
-		</action>
-
 		<action name="personView" class="personViewAction">
 			<result type="tiles">ab.person.view</result>
-		</action>
-
-        <action name="personDelete" class="personDeleteAction">
-			<result name="redirectSuccess" type="redirect-action">personsList</result>
 		</action>
 
 		<action name="personEdit" class="personEditAction">
@@ -24,6 +16,18 @@
 			<result name="redirectError" type="redirect-action">
 				<param name="actionName">personsList</param>
 			</result>
+		</action>
+
+        <action name="personsList" class="personsListPageAction">
+            <result type="tiles">ab.person.list</result>
+        </action>
+
+        <action name="personsListAjax" class="personsListAction">
+            <result>/WEB-INF/jsp/ab/persons/persons_list.jsp</result>
+        </action>
+
+        <action name="personDelete" class="personDeleteAction">
+            <result>/WEB-INF/jsp/ab/simple_response.jsp</result>
 		</action>
 
         <action name="personEditRegistrationForm" class="personEditRegistrationFormAction">

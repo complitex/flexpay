@@ -1,7 +1,9 @@
 package org.flexpay.ab.persistence.filters;
 
-import org.flexpay.common.persistence.filter.ObjectFilter;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
+import org.flexpay.common.persistence.filter.ObjectFilter;
 
 /**
  * Helper filter
@@ -28,6 +30,14 @@ public class PersonSearchFilter extends ObjectFilter {
 	@Override
 	public boolean needFilter() {
 		return StringUtils.isNotBlank(searchString);
+	}
+
+	@Override
+	public String toString() {
+		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
+				append("readOnly", isReadOnly()).
+				append("searchString", searchString).
+				toString();
 	}
 
 }

@@ -419,8 +419,11 @@
 	<bean id="personsListAction"
 		  class="org.flexpay.ab.actions.person.PersonsListAction"
 		  p:personService-ref="personService"
-		  p:crumbNameKey="ab.crumbs.persons_list"
 		  scope="prototype" />
+
+    <bean id="personsListPageAction" parent="staticPageAction"
+          p:crumbNameKey="ab.crumbs.persons_list"
+          scope="prototype" />
 
 	<bean id="personViewAction"
 		  class="org.flexpay.ab.actions.person.PersonViewAction"

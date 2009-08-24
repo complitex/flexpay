@@ -59,7 +59,7 @@
                     endDate:$("#endDate").val()
                 },
                 function(data) {
-                    $("#response").html(data)
+                    $("#response").html(data);
                 });
     }
 

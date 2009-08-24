@@ -169,7 +169,7 @@
 	<!-- Persons -->
 	<definition name="ab.person.list" extends="ab.layout.standart">
 		<put-attribute name="title" value="ab.persons.list.title" />
-		<put-attribute name="body" value="/WEB-INF/jsp/ab/persons/persons_list.jsp" />
+		<put-attribute name="body" value="/WEB-INF/jsp/ab/persons/persons_list_page.jsp" />
 	</definition>
 	<definition name="ab.person.view" extends="ab.layout.standart">
 		<put-attribute name="title" value="ab.person.view.title" />
