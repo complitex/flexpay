@@ -206,8 +206,11 @@ var FP = {
             $.protify(ids).each(function(id) {
                 $('input[id="' + id + '"]').each(function() {
                     if ($.browser.msie) {
-                        $(this).before('<input type="button" id="' + this.id + '" class="btn-link" value="' + this.value + '" ' +
-                            'onclick="' + this.onclick.getBody() + ';sorterAjax();" />').remove();
+                        var f = new Function(this.onclick.getBody());
+                        this.onclick = function() {
+                            f();
+                            sorterAjax();
+                        };
                     } else {
                         this.setAttribute("onclick", this.getAttribute("onclick") + "sorterAjax();");
                     }

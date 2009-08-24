@@ -5,21 +5,25 @@ import net.sourceforge.navigator.menu.MenuComponent;
 import javax.servlet.jsp.JspException;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 public class FPMenuDisplayer extends AbstractMenuDisplayer {
 
 	private Map<Integer, MenuComponent> levelComponents = new HashMap<Integer, MenuComponent>();
 
     public void display(MenuComponent menu) throws JspException, IOException {
-		if (levelBegin == null) {
-			levelBegin = 1;
-		}
 
 		if (menu.getMenuComponents().length == 0) {
 			log.error("Incorrect settings for struts-menu");
 			return;
+		}
+
+		Locale locale = userPreferences.getLocale();
+
+		if (levelBegin == null) {
+			levelBegin = 1;
 		}
 
 		if (activeMenu == null) {
@@ -39,11 +43,11 @@ public class FPMenuDisplayer extends AbstractMenuDisplayer {
 			for (int i = 0; i < levelComponents.size(); i++) {
 				MenuComponent component = levelComponents.get(i);
 				if (component.isActive(activeMenuBranch)) {
-					displayComponents(component, levelBegin);
+					displayComponents(component, levelBegin, locale);
 				}
 			}
 		} else {
-			displayComponents(menu, levelBegin);
+			displayComponents(menu, levelBegin, locale);
 		}
 
     }
@@ -100,7 +104,7 @@ public class FPMenuDisplayer extends AbstractMenuDisplayer {
 		return false;
 	}
 
-    protected void displayComponents(MenuComponent menu, int level) throws JspException, IOException {
+    protected void displayComponents(MenuComponent menu, int level, Locale locale) throws JspException, IOException {
 
         MenuComponent[] components = menu.getMenuComponents();
 
@@ -109,10 +113,10 @@ public class FPMenuDisplayer extends AbstractMenuDisplayer {
 		}
 
 		if (level == 1 || level == 2) {
-			displayTabLevel(menu, level);
+			displayTabLevel(menu, level, locale);
 			for (MenuComponent component : components) {
 				if (component.isActive(activeMenuBranch)) {
-					displayComponents(component, level + 1);
+					displayComponents(component, level + 1, locale);
 					return;
 				}
 			}
@@ -124,36 +128,36 @@ public class FPMenuDisplayer extends AbstractMenuDisplayer {
 			if (hasMenuAccess(component)) {
 				if (level == 3) {
 					if (component.isFirst()) {
-						out.println(displayStrings.getMessage("left.menu.top", getTitle(menu)));
+						out.println(displayStrings.getMessage(locale, "left.menu.top", getTitle(menu)));
 					}
 					if (component.isActive(activeMenuBranch)) {
-						out.println(displayStrings.getMessage("left.menu.top_item.top_active",
+						out.println(displayStrings.getMessage(locale, "left.menu.top_item.top_active",
 								component.getUrl() != null ? component.getUrl() : component.getAction(), getMenuToolTip(component), getTitle(component)));
 					} else {
-						out.println(displayStrings.getMessage("left.menu.top_item.top",
+						out.println(displayStrings.getMessage(locale, "left.menu.top_item.top",
 								component.getUrl() != null ? component.getUrl() : component.getAction(), getMenuToolTip(component), getTitle(component)));
 					}
 				}
 				if (component.getMenuComponents().length > 0) {
-					displayComponents(component, level + 1);
+					displayComponents(component, level + 1, locale);
 				} else {
 					if (component.getRequiredAuthority() == null || rolesGranted.contains(component.getRequiredAuthority())) {
 						if (component.isActive(activeMenuBranch)) {
-							out.println(displayStrings.getMessage("left.menu.item_active", getTitle(component)));
+							out.println(displayStrings.getMessage(locale, "left.menu.item_active", getTitle(component)));
 						} else {
-							out.println(displayStrings.getMessage("left.menu.item", component.getUrl() != null ? component.getUrl() : component.getAction(),
+							out.println(displayStrings.getMessage(locale, "left.menu.item", component.getUrl() != null ? component.getUrl() : component.getAction(),
 									getMenuTarget(component), getMenuToolTip(component), getTitle(component)));
 						}
 					}
 				}
 				if (level == 3) {
-					out.println(displayStrings.getMessage("left.menu.top_item.bottom"));
+					out.println(displayStrings.getMessage(locale, "left.menu.top_item.bottom"));
 				}
 			}
 		}
 
 		if (level == 3) {
-			out.println(displayStrings.getMessage("left.menu.bottom"));
+			out.println(displayStrings.getMessage(locale, "left.menu.bottom"));
 		}
 
     }
@@ -164,9 +168,9 @@ public class FPMenuDisplayer extends AbstractMenuDisplayer {
 				&& hasMenuAccess(component.getParent());
 	}
 
-	public void displayTabLevel(MenuComponent menu, int level) throws IOException {
+	public void displayTabLevel(MenuComponent menu, int level, Locale locale) throws IOException {
 
-		out.println(displayStrings.getMessage("tab.menu.level" + level + ".top"));
+		out.println(displayStrings.getMessage(locale, "tab.menu.level" + level + ".top"));
 
         int len = menu.getMenuComponents().length;
         int i = 1;
@@ -175,26 +179,26 @@ public class FPMenuDisplayer extends AbstractMenuDisplayer {
 			if (hasMenuAccess(component)) {
 				if (level == 1) {
 					if ((activeMenuBranch == null && i == len) || component.isActive(activeMenuBranch)) {
-						out.println(displayStrings.getMessage("tab.menu.level1_active.item", getTitle(component)));
+						out.println(displayStrings.getMessage(locale, "tab.menu.level1_active.item", getTitle(component)));
 					} else {
-						out.println(displayStrings.getMessage("tab.menu.level1.item", component.getUrl() != null ? component.getUrl() : component.getAction(),
+						out.println(displayStrings.getMessage(locale, "tab.menu.level1.item", component.getUrl() != null ? component.getUrl() : component.getAction(),
 								getMenuTarget(component), getMenuToolTip(component), getTitle(component)));
 					}
 				} else {
-					out.println(displayStrings.getMessage("tab.menu.level2" + (i == 1 ? ".first_item" : ".item"), 
+					out.println(displayStrings.getMessage(locale, "tab.menu.level2" + (i == 1 ? ".first_item" : ".item"),
 							component.getUrl() != null ? component.getUrl() : component.getAction(),
 							getMenuTarget(component), getMenuToolTip(component), getTitle(component)));
 					if (i < len) {
-						out.println(displayStrings.getMessage("tab.menu.level2.separator"));
+						out.println(displayStrings.getMessage(locale, "tab.menu.level2.separator"));
 					} else {
-						out.println(displayStrings.getMessage("tab.menu.level2.last_item"));
+						out.println(displayStrings.getMessage(locale, "tab.menu.level2.last_item"));
 					}
 				}
 			}
             i++;
 		}
 
-		out.println(displayStrings.getMessage("tab.menu.level" + level + ".bottom"));
+		out.println(displayStrings.getMessage(locale, "tab.menu.level" + level + ".bottom"));
 
 	}
 

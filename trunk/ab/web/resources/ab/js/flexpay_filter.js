@@ -339,7 +339,7 @@ var FF = {
                 parentsFilled = false;
             }
             if (parentsFilled) {
-                filter2.string.focus()
+                filter2.string.focus();
                 if (!filter2.readonly) {
                     filter2.string.removeAttr("readonly");
                 }
