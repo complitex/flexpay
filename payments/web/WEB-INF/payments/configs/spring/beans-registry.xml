@@ -8,8 +8,7 @@
 		   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
 	<bean id="paymentsRegistryDBGenerator"
-		  class="org.flexpay.payments.service.registry.impl.PaymentsRegistryDBGeneratorImpl"
-		  p:operationService-ref="operationService"
+		  class="org.flexpay.payments.service.registry.impl.PaymentsRegistryDBGeneratorImpl"		  
 		  p:documentService-ref="documentService"
 		  p:registryArchiveStatusService-ref="registryArchiveStatusService"
 		  p:registryRecordService-ref="registryRecordService"
