@@ -372,13 +372,21 @@ jQuery.autocomplete = function(input, options) {
 			ul.appendChild(li);
 
 			$(li).hover(
-				function() { $("li", ul).removeClass("ac_over"); $(this).addClass("ac_over"); active = $("li", ul).indexOf($(this).get(0)); },
+				function() {
+                    $("li", ul).removeClass("ac_over");
+                    $(this).addClass("ac_over");
+                    active = $("li", ul).indexOf($(this).get(0));
+                },
 				function() { $(this).removeClass("ac_over"); }
 			).click(function(e) {
 				e.preventDefault();
 				e.stopPropagation();
 				selectItem(this);
 			});
+            if (i == 0 && num > 1) {
+                $(li).addClass("ac_over");
+                active = 0;
+            }
 
 		}
 		$(ul).mousedown(function() {
