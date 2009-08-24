@@ -1,6 +1,7 @@
 package org.flexpay.ab.actions.country;
 
 import org.apache.commons.lang.StringUtils;
+import org.flexpay.ab.persistence.Country;
 import org.flexpay.ab.persistence.CountryNameTranslation;
 import org.flexpay.ab.service.CountryService;
 import org.flexpay.common.actions.FPActionSupport;
@@ -19,6 +20,7 @@ public class CountryCreateAction extends FPActionSupport {
 
 	private Map<Long, String> names = CollectionUtils.treeMap();
 	private Map<Long, String> shortNames = CollectionUtils.treeMap();
+	private Country country = new Country();
 
 	private CountryService countryService;
 
@@ -58,7 +60,7 @@ public class CountryCreateAction extends FPActionSupport {
 			countryNames.add(translation);
 		}
 
-		countryService.create(countryNames);
+		country = countryService.create(countryNames);
 
 		addActionError(getText("ab.country.created"));
 		return REDIRECT_SUCCESS;
@@ -83,6 +85,10 @@ public class CountryCreateAction extends FPActionSupport {
 			names.put(lang.getId(), "");
 			shortNames.put(lang.getId(), "");
 		}
+	}
+
+	public Country getCountry() {
+		return country;
 	}
 
 	public Map<Long, String> getNames() {

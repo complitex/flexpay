@@ -49,4 +49,8 @@
         pagerAjax(null);
     }
 
+    function deleteAjax() {
+        FP.deleteElements("<s:url action="apartmentDelete" namespace="/dicts" includeParams="none" />", "objectIds", pagerAjax);
+    }
+
 </script>

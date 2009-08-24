@@ -4,15 +4,13 @@
     FP.switchSorter("buildingsSorterButton");
 </script>
 
-<s:actionerror />
-
-<s:form action="buildingDelete" namespace="/dicts">
+<form>
 
     <table cellpadding="3" cellspacing="1" border="0" width="100%">
         <tr>
             <td colspan="4">
                 <%@include file="/WEB-INF/jsp/common/filter/pager/pager_ajax.jsp" %>
-                <input type="submit" class="btn-exit" value="<s:text name="common.delete_selected"/>"/>
+                <input type="button" class="btn-exit" value="<s:text name="common.delete_selected"/>" onclick="deleteAjax();" />
                 <input type="button" class="btn-exit"
                        onclick="window.location = '<s:url action="buildingCreate" includeParams="none" />'"
                        value="<s:text name="common.new"/>"/>
@@ -47,7 +45,7 @@
         <tr>
             <td colspan="4">
                 <%@include file="/WEB-INF/jsp/common/filter/pager/pager_ajax.jsp" %>
-                <input type="submit" class="btn-exit" value="<s:text name="common.delete_selected"/>"/>
+                <input type="button" class="btn-exit" value="<s:text name="common.delete_selected"/>" onclick="deleteAjax();" />
                 <input type="button" class="btn-exit"
                        onclick="window.location = '<s:url action="buildingCreate" includeParams="none" />'"
                        value="<s:text name="common.new"/>"/>
@@ -55,4 +53,4 @@
         </tr>
     </table>
 
-</s:form>
+</form>

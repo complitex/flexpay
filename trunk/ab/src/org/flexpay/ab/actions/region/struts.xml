@@ -11,6 +11,15 @@
             <result type="tiles">ab.regions.list</result>
         </action>
 
+        <action name="regionsListAjax" class="regionsListAjaxAction">
+            <result>/WEB-INF/jsp/ab/regions/regions_list.jsp</result>
+            <result name="prerequestResponse">/WEB-INF/jsp/ab/filters/prerequest_response.jsp</result>
+        </action>
+
+        <action name="regionDelete" class="regionDeleteAction">
+            <result>/WEB-INF/jsp/ab/simple_response.jsp</result>
+        </action>
+
         <action name="regionView" class="regionViewAction">
             <result type="tiles">ab.region.view</result>
             <result name="redirectError" type="redirect-action">regionsList</result>
@@ -23,10 +32,6 @@
                 <param name="object.id">${region.id}</param>
             </result>
             <result type="tiles" name="input">ab.region.edit</result>
-        </action>
-
-        <action name="regionDelete" class="regionDeleteAction">
-            <result name="redirectSuccess" type="redirect-action">regionsList</result>
         </action>
 
     </package>

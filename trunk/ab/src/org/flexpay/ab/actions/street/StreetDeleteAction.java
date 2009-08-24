@@ -20,7 +20,7 @@ public class StreetDeleteAction extends FPActionSupport {
 
 		streetService.disableByIds(objectIds);
 
-		return REDIRECT_SUCCESS;
+		return SUCCESS;
 	}
 
 	/**
@@ -33,7 +33,7 @@ public class StreetDeleteAction extends FPActionSupport {
 	@NotNull
 	@Override
 	protected String getErrorResult() {
-		return REDIRECT_SUCCESS;
+		return SUCCESS;
 	}
 
 	public Set<Long> getObjectIds() {

@@ -11,6 +11,11 @@
 			<result type="tiles">ab.building.list</result>
 		</action>
 
+        <action name="buildingsListAjax" class="buildingsListAjaxAction">
+            <result>/WEB-INF/jsp/ab/buildings/buildings_list.jsp</result>
+            <result name="prerequestResponse">/WEB-INF/jsp/ab/filters/prerequest_response.jsp</result>
+        </action>
+
 		<action name="buildingCreate" class="buildingCreateAction">
 			<result name="input" type="tiles">ab.buildings.create</result>
 			<result name="redirectSuccess" type="redirect-action">
@@ -36,7 +41,7 @@
 		</action>
 
 		<action name="buildingDelete" class="buildingDeleteAction">
-			<result name="redirectSuccess" type="redirect-action">buildingsList</result>
+            <result>/WEB-INF/jsp/ab/simple_response.jsp</result>
 			<result name="redirectInput" type="redirect-action">
 				<param name="actionName">buildingView</param>
 				<param name="parse">true</param>
@@ -52,9 +57,13 @@
 			</result>
 		</action>
 
-		<action name="addressAttributeTypesList" class="addressAttributeTypesListAction">
-			<result type="tiles">ab.buildings.attribute_types.list</result>
+		<action name="addressAttributeTypesListAjax" class="addressAttributeTypesListAction">
+			<result>/WEB-INF/jsp/ab/buildings/buildings_attribute_types_list.jsp</result>
 		</action>
+
+        <action name="addressAttributeTypesList" class="addressAttributeTypesListPageAction">
+            <result type="tiles">ab.buildings.attribute_types.list</result>
+        </action>
 
 		<action name="addressAttributeTypeEdit" class="addressAttributeTypeEditAction">
 			<result name="input" type="tiles">ab.buildings.attribute_type.edit</result>

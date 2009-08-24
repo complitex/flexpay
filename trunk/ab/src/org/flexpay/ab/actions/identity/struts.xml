@@ -12,10 +12,6 @@
             <result name="redirectError" type="redirect-action">identityTypesList</result>
 		</action>
 
-		<action name="identityTypesList" class="identityTypesListAction">
-			<result type="tiles">ab.identity_type.list</result>
-		</action>
-
 		<action name="identityTypeEdit" class="identityTypeEditAction">
             <result name="redirectSuccess" type="redirect-action">
                 <param name="actionName">identityTypeView</param>
@@ -25,8 +21,16 @@
 			<result name="input" type="tiles">ab.identity_type.edit</result>
 		</action>
 
+        <action name="identityTypesList" class="identityTypesListPageAction">
+            <result type="tiles">ab.identity_type.list</result>
+        </action>
+
+        <action name="identityTypesListAjax" class="identityTypesListAction">
+            <result>/WEB-INF/jsp/ab/identity_types/identity_types_list.jsp</result>
+        </action>
+
 		<action name="identityTypeDelete" class="identityTypeDeleteAction">
-			<result name="redirectSuccess" type="redirect-action">identityTypesList</result>
+            <result>/WEB-INF/jsp/ab/simple_response.jsp</result>
 		</action>
 
 	</package>

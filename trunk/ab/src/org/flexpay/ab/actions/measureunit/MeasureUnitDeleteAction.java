@@ -23,7 +23,7 @@ public class MeasureUnitDeleteAction extends FPActionSupport {
 
 		measureUnitService.disable(objectIds);
 
-		return REDIRECT_SUCCESS;
+		return SUCCESS;
 	}
 
 	/**
@@ -36,7 +36,7 @@ public class MeasureUnitDeleteAction extends FPActionSupport {
 	@NotNull
 	@Override
 	protected String getErrorResult() {
-		return REDIRECT_SUCCESS;
+		return SUCCESS;
 	}
 
 	public void setObjectIds(Set<Long> objectIds) {

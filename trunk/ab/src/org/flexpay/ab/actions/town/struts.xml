@@ -11,6 +11,15 @@
 			<result type="tiles">ab.towns.list</result>
 		</action>
 
+        <action name="townsListAjax" class="townsListAjaxAction">
+            <result>/WEB-INF/jsp/ab/towns/towns_list.jsp</result>
+            <result name="prerequestResponse">/WEB-INF/jsp/ab/filters/prerequest_response.jsp</result>
+        </action>
+
+        <action name="townDelete" class="townDeleteAction">
+            <result>/WEB-INF/jsp/ab/simple_response.jsp</result>
+        </action>
+
 		<action name="townView" class="townViewAction">
 			<result type="tiles">ab.town.view</result>
 			<result name="redirectError" type="redirect-action">townsList</result>
@@ -25,10 +34,6 @@
 			<result name="input" type="tiles">ab.town.edit</result>
 		</action>
 
-		<action name="townDelete" class="townDeleteAction">
-			<result name="redirectSuccess" type="redirect-action">townsList</result>
-		</action>
-
 	</package>
 
 	<package name="town_types" namespace="/dicts" extends="common">
@@ -36,10 +41,6 @@
 		<action name="townTypeView" class="townTypeViewAction">
 			<result type="tiles">ab.town_type.view</result>
             <result name="redirectError" type="redirect-action">townTypesList</result>
-		</action>
-
-		<action name="townTypesList" class="townTypesListAction">
-			<result type="tiles">ab.town_type.list</result>
 		</action>
 
 		<action name="townTypeEdit" class="townTypeEditAction">
@@ -51,8 +52,16 @@
             <result name="input" type="tiles">ab.town_type.edit</result>
 		</action>
 
+        <action name="townTypesList" class="townTypesListPageAction">
+            <result type="tiles">ab.town_type.list</result>
+        </action>
+
+        <action name="townTypesListAjax" class="townTypesListAction">
+            <result>/WEB-INF/jsp/ab/towns/town_types_list.jsp</result>
+        </action>
+
 		<action name="townTypeDelete" class="townTypeDeleteAction">
-            <result name="redirectSuccess" type="redirect-action">townTypesList</result>
+            <result>/WEB-INF/jsp/ab/simple_response.jsp</result>
 		</action>
 
 	</package>

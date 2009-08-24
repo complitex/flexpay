@@ -12,12 +12,16 @@
 	<bean id="countriesListAction"
 		  class="org.flexpay.ab.actions.country.CountriesListAction"
 		  p:countryService-ref="countryService"
-		  p:crumbNameKey="ab.crumbs.countries_list"
 		  scope="prototype" />
+
+    <bean id="countriesListPageAction" parent="staticPageAction"
+          p:crumbNameKey="ab.crumbs.countries_list"
+          scope="prototype" />
 
 	<bean id="countryCreateAction"
 		  class="org.flexpay.ab.actions.country.CountryCreateAction"
 		  p:countryService-ref="countryService"
+          p:crumbNameKey="ab.crumbs.country_create"
 		  scope="prototype" />
 
     <bean id="countryViewAction"
@@ -240,8 +244,11 @@
 	<bean id="addressAttributeTypesListAction"
 		  class="org.flexpay.ab.actions.buildings.AddressAttributeTypesListAction"
 		  p:buildingAttributeTypeService-ref="addressAttributeTypeService"
-		  p:crumbNameKey="ab.crumbs.address_attribute_types_list"
 		  scope="prototype" />
+
+    <bean id="addressAttributeTypesListPageAction" parent="staticPageAction"
+          p:crumbNameKey="ab.crumbs.address_attribute_types_list"
+          scope="prototype" />
 
 	<bean id="addressAttributeTypeEditAction"
 		  class="org.flexpay.ab.actions.buildings.AddressAttributeTypeEditAction"
@@ -300,8 +307,11 @@
 	<bean id="townTypesListAction"
 		  class="org.flexpay.ab.actions.town.TownTypesListAction"
 		  p:townTypeService-ref="townTypeService"
-		  p:crumbNameKey="ab.crumbs.town_types_list"
 		  scope="prototype" />
+
+    <bean id="townTypesListPageAction" parent="staticPageAction"
+          p:crumbNameKey="ab.crumbs.town_types_list"
+          scope="prototype" />
 
 	<bean id="townTypeViewAction"
 		  class="org.flexpay.ab.actions.town.TownTypeViewAction"
@@ -325,8 +335,11 @@
 	<bean id="streetTypesListAction"
 		  class="org.flexpay.ab.actions.street.StreetTypesListAction"
 		  p:streetTypeService-ref="streetTypeService"
-		  p:crumbNameKey="ab.crumbs.street_types_list"
 		  scope="prototype" />
+
+    <bean id="streetTypesListPageAction" parent="staticPageAction"
+          p:crumbNameKey="ab.crumbs.street_types_list"
+          scope="prototype" />
 
 	<bean id="streetTypeViewAction"
 		  class="org.flexpay.ab.actions.street.StreetTypeViewAction"
@@ -350,8 +363,11 @@
 	<bean id="identityTypesListAction"
 		  class="org.flexpay.ab.actions.identity.IdentityTypesListAction"
 		  p:identityTypeService-ref="identityTypeService"
-		  p:crumbNameKey="ab.crumbs.identity_types_list"
 		  scope="prototype" />
+
+    <bean id="identityTypesListPageAction" parent="staticPageAction"
+          p:crumbNameKey="ab.crumbs.identity_types_list"
+          scope="prototype" />
 
 	<bean id="identityTypeViewAction"
 		  class="org.flexpay.ab.actions.identity.IdentityTypeViewAction"
@@ -381,8 +397,11 @@
 	<bean id="measureUnitsListAction"
 		  class="org.flexpay.ab.actions.measureunit.MeasureUnitsListAction"
 		  p:measureUnitService-ref="measureUnitService"
-		  p:crumbNameKey="ab.crumbs.measure_units_list"
 		  scope="prototype" />
+
+    <bean id="measureUnitsListPageAction" parent="staticPageAction"
+          p:crumbNameKey="ab.crumbs.measure_units_list"
+          scope="prototype" />
 
 	<bean id="measureUnitEditAction"
 		  class="org.flexpay.ab.actions.measureunit.MeasureUnitEditAction"
