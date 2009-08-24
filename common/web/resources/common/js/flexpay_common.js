@@ -217,7 +217,34 @@ var FP = {
                 });
             });
         });
+    },
+
+    deleteElements : function(action, name, callback, opt) {
+
+        opt = opt || {};
+
+        opt = $.extend({
+            shadowId: "shadow",
+            resultId: "result"
+        });
+
+        FP.showShadow(opt.shadowId, opt.resultId);
+        var ids = [];
+        $("input[name='" + name + "']:checked").each(function() {
+            ids[ids.length] = this.value;
+        });
+        if (ids.length == 0) {
+            FP.hideShadow(opt.shadowId, opt.resultId);
+            return;
+        }
+        var params = {};
+        params[name] = ids;
+        $.post(action, params,
+                function(data) {
+                    callback(null);
+                });
     }
+
 
 };
 

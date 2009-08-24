@@ -42,7 +42,7 @@
 
 	<definition name="ab.country.list" extends="ab.layout.standart">
 		<put-attribute name="title" value="ab.country.list.title" />
-		<put-attribute name="body" value="/WEB-INF/jsp/ab/countries/countries_list.jsp" />
+		<put-attribute name="body" value="/WEB-INF/jsp/ab/countries/countries_list_page.jsp" />
 	</definition>
 
 	<definition name="ab.country.create" extends="ab.layout.standart">
@@ -116,8 +116,7 @@
 
 	<definition name="ab.street.edit.districts" extends="ab.layout.standart">
 		<put-attribute name="title" value="ab.street.edit.districts.title" />
-		<put-attribute name="body"
-					   value="/WEB-INF/jsp/ab/streets/street_edit_districts_list.jsp" />
+		<put-attribute name="body" value="/WEB-INF/jsp/ab/streets/street_edit_districts_list.jsp" />
 	</definition>
 
 	<definition name="ab.streets.list" extends="ab.layout.standart">
@@ -128,7 +127,7 @@
 	<!-- Town types -->
 	<definition name="ab.town_type.list" extends="ab.layout.standart">
 		<put-attribute name="title" value="ab.town_type.list.title" />
-		<put-attribute name="body" value="/WEB-INF/jsp/ab/towns/town_types_list.jsp" />
+		<put-attribute name="body" value="/WEB-INF/jsp/ab/towns/town_types_list_page.jsp" />
 	</definition>
 	<definition name="ab.town_type.view" extends="ab.layout.standart">
 		<put-attribute name="title" value="ab.town_type.view.title" />
@@ -142,7 +141,7 @@
 	<!-- Street types -->
 	<definition name="ab.street_type.list" extends="ab.layout.standart">
 		<put-attribute name="title" value="ab.street_type.list.title" />
-		<put-attribute name="body" value="/WEB-INF/jsp/ab/streets/street_types_list.jsp" />
+		<put-attribute name="body" value="/WEB-INF/jsp/ab/streets/street_types_list_page.jsp" />
 	</definition>
 	<definition name="ab.street_type.view" extends="ab.layout.standart">
 		<put-attribute name="title" value="ab.street_type.view.title" />
@@ -156,7 +155,7 @@
 	<!-- Identity types -->
 	<definition name="ab.identity_type.list" extends="ab.layout.standart">
 		<put-attribute name="title" value="ab.identity_type.list.title" />
-		<put-attribute name="body" value="/WEB-INF/jsp/ab/identity_types/identity_types_list.jsp" />
+		<put-attribute name="body" value="/WEB-INF/jsp/ab/identity_types/identity_types_list_page.jsp" />
 	</definition>
 	<definition name="ab.identity_type.view" extends="ab.layout.standart">
 		<put-attribute name="title" value="ab.identity_type.view.title" />
@@ -202,7 +201,7 @@
 	<!-- BuildingAttributeTypes -->
 	<definition name="ab.buildings.attribute_types.list" extends="ab.layout.standart">
 		<put-attribute name="title" value="ab.buildings.attribute_types.list" />
-		<put-attribute name="body" value="/WEB-INF/jsp/ab/buildings/buildings_attribute_types_list.jsp" />
+		<put-attribute name="body" value="/WEB-INF/jsp/ab/buildings/buildings_attribute_types_list_page.jsp" />
 	</definition>
 	<definition name="ab.buildings.attribute_type.edit" extends="ab.layout.standart">
 		<put-attribute name="title" value="ab.buildings.attribute_type.edit" />
@@ -238,7 +237,7 @@
     </definition>
 	<definition name="ab.measure_unit.list" extends="ab.layout.standart">
 		<put-attribute name="title" value="common.measure_units.list.title" />
-		<put-attribute name="body" value="/WEB-INF/jsp/ab/measure_units/measure_units_list.jsp" />
+		<put-attribute name="body" value="/WEB-INF/jsp/ab/measure_units/measure_units_list_page.jsp" />
 	</definition>
 	<definition name="ab.measure_unit.edit" extends="ab.layout.standart">
 		<put-attribute name="title" value="common.measure_units.edit.title" />

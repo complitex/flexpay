@@ -51,4 +51,8 @@
         pagerAjax(null);
 	}
 
+    function deleteAjax() {
+        FP.deleteElements("<s:url action="townDelete" namespace="/dicts" includeParams="none" />", "objectIds", pagerAjax);
+    }
+
 </script>

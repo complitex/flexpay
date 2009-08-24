@@ -20,7 +20,7 @@ public class DistrictDeleteAction extends FPActionSupport {
 
 		districtService.disableByIds(objectIds);
 
-		return REDIRECT_SUCCESS;
+		return SUCCESS;
 	}
 
 	/**
@@ -33,7 +33,7 @@ public class DistrictDeleteAction extends FPActionSupport {
 	@NotNull
 	@Override
 	protected String getErrorResult() {
-		return REDIRECT_SUCCESS;
+		return SUCCESS;
 	}
 
 	public Set<Long> getObjectIds() {

@@ -56,7 +56,7 @@ public class BuildingDeleteAction extends FPActionSupport {
 			addActionError(getText("ab.building.primary_address_cannot_be_deleted"));
 		}
 
-		return redirectBuildingsId == null ? REDIRECT_SUCCESS : REDIRECT_INPUT;
+		return redirectBuildingsId == null ? SUCCESS : REDIRECT_INPUT;
 	}
 
 	/**
@@ -69,7 +69,7 @@ public class BuildingDeleteAction extends FPActionSupport {
 	@NotNull
 	@Override
 	protected String getErrorResult() {
-		return REDIRECT_SUCCESS;
+		return SUCCESS;
 	}
 
 	public void setObjectIds(List<Long> objectIds) {

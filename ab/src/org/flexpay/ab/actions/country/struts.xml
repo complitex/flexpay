@@ -7,8 +7,12 @@
 
     <package name="countries" namespace="/dicts" extends="common">
 
-        <action name="countriesList" class="countriesListAction">
+        <action name="countriesList" class="countriesListPageAction">
             <result type="tiles">ab.country.list</result>
+        </action>
+
+        <action name="countriesListAjax" class="countriesListAction">
+            <result>/WEB-INF/jsp/ab/countries/countries_list.jsp</result>
         </action>
 
         <action name="countryCreate" class="countryCreateAction">

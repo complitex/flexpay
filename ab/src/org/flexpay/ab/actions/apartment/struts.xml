@@ -11,12 +11,17 @@
 			<result type="tiles">ab.apartment.list</result>
 		</action>
 
+        <action name="apartmentsListAjax" class="apartmentsListAjaxAction">
+            <result>/WEB-INF/jsp/ab/apartments/apartments_list.jsp</result>
+            <result name="prerequestResponse">/WEB-INF/jsp/ab/filters/prerequest_response.jsp</result>
+        </action>
+
+        <action name="apartmentDelete" class="apartmentDeleteAction">
+            <result>/WEB-INF/jsp/ab/simple_response.jsp</result>
+        </action>
+
 		<action name="apartmentEdit" class="apartmentEditAction">
 			<result name="input" type="tiles">ab.apartment.edit</result>
-			<result name="redirectSuccess" type="redirect-action">apartmentsList</result>
-		</action>
-
-		<action name="apartmentDelete" class="apartmentDeleteAction">
 			<result name="redirectSuccess" type="redirect-action">apartmentsList</result>
 		</action>
 

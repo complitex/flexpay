@@ -11,6 +11,15 @@
 			<result type="tiles">ab.districts.list</result>
 		</action>
 
+        <action name="districtsListAjax" class="districtsListAjaxAction">
+            <result>/WEB-INF/jsp/ab/districts/districts_list.jsp</result>
+            <result name="prerequestResponse">/WEB-INF/jsp/ab/filters/prerequest_response.jsp</result>
+        </action>
+
+        <action name="districtDelete" class="districtDeleteAction">
+            <result>/WEB-INF/jsp/ab/simple_response.jsp</result>
+        </action>
+
 		<action name="districtView" class="districtViewAction">
 			<result type="tiles">ab.district.view</result>
 			<result name="redirectError" type="redirect-action">districtsList</result>
@@ -23,10 +32,6 @@
                 <param name="object.id">${district.id}</param>
             </result>
 			<result name="input" type="tiles">ab.district.edit</result>
-		</action>
-
-		<action name="districtDelete" class="districtDeleteAction">
-			<result name="redirectSuccess" type="redirect-action">districtsList</result>
 		</action>
 
 	</package>

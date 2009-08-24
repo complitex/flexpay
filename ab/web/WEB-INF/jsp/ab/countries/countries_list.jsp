@@ -2,8 +2,15 @@
 
 <s:actionerror />
 
-<s:form action="countriesList" namespace="/dicts">
+<form>
     <table cellpadding="3" cellspacing="1" border="0" width="100%">
+        <tr>
+            <td colspan="4">
+                <input type="button" class="btn-exit"
+                       onclick="window.location='<s:url action="countryCreate" includeParams="none" />';"
+                       value="<s:text name="common.new"/>"/>
+            </td>
+        </tr>
         <tr>
             <td class="th" width="1%">&nbsp;</td>
             <td class="<s:if test="countrySorter.activated">th_s</s:if><s:else>th</s:else>">
@@ -35,4 +42,4 @@
             </td>
         </tr>
     </table>
-</s:form>
+</form>

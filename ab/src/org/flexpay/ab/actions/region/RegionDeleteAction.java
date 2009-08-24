@@ -20,7 +20,7 @@ public class RegionDeleteAction extends FPActionSupport {
 
 		regionService.disableByIds(objectIds);
 
-		return REDIRECT_SUCCESS;
+		return SUCCESS;
 	}
 
 	/**
@@ -33,7 +33,7 @@ public class RegionDeleteAction extends FPActionSupport {
 	@NotNull
 	@Override
 	protected String getErrorResult() {
-		return REDIRECT_SUCCESS;
+		return SUCCESS;
 	}
 
 	public Set<Long> getObjectIds() {

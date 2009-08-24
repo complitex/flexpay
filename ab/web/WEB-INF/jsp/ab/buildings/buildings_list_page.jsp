@@ -50,4 +50,8 @@
         pagerAjax(null);
     }
 
+    function deleteAjax() {
+        FP.deleteElements("<s:url action="buildingDelete" namespace="/dicts" includeParams="none" />", "objectIds", pagerAjax);
+    }
+
 </script>

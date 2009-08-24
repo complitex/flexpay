@@ -11,6 +11,15 @@
 			<result type="tiles">ab.streets.list</result>
 		</action>
 
+        <action name="streetsListAjax" class="streetsListAjaxAction">
+            <result>/WEB-INF/jsp/ab/streets/streets_list.jsp</result>
+            <result name="prerequestResponse">/WEB-INF/jsp/ab/filters/prerequest_response.jsp</result>
+        </action>
+
+        <action name="streetDelete" class="streetDeleteAction">
+            <result>/WEB-INF/jsp/ab/simple_response.jsp</result>
+        </action>
+
 		<action name="streetView" class="streetViewAction">
 			<result type="tiles">ab.street.view</result>
 			<result name="redirectError" type="redirect-action">streetsList</result>
@@ -23,10 +32,6 @@
                 <param name="object.id">${street.id}</param>
             </result>
 			<result name="input" type="tiles">ab.street.edit</result>
-		</action>
-
-		<action name="streetDelete" class="streetDeleteAction">
-			<result name="redirectSuccess" type="redirect-action">streetsList</result>
 		</action>
 
 		<action name="streetDistrictEdit" class="streetDistrictEditAction">
@@ -47,10 +52,6 @@
             <result name="redirectError" type="redirect-action">streetTypesList</result>
 		</action>
 
-		<action name="streetTypesList" class="streetTypesListAction">
-			<result type="tiles">ab.street_type.list</result>
-		</action>
-
 		<action name="streetTypeEdit" class="streetTypeEditAction">
             <result name="redirectSuccess" type="redirect-action">
                 <param name="actionName">streetTypeView</param>
@@ -60,8 +61,16 @@
 			<result name="input" type="tiles">ab.street_type.edit</result>
 		</action>
 
+        <action name="streetTypesList" class="streetTypesListPageAction">
+            <result type="tiles">ab.street_type.list</result>
+        </action>
+
+        <action name="streetTypesListAjax" class="streetTypesListAction">
+            <result>/WEB-INF/jsp/ab/streets/street_types_list.jsp</result>
+        </action>
+
 		<action name="streetTypeDelete" class="streetTypeDeleteAction">
-			<result name="redirectSuccess" type="redirect-action">streetTypesList</result>
+            <result>/WEB-INF/jsp/ab/simple_response.jsp</result>
 		</action>
 
 	</package>
