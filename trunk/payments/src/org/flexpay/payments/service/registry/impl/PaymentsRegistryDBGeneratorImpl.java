@@ -119,7 +119,7 @@ public class PaymentsRegistryDBGeneratorImpl implements PaymentsRegistryDBGenera
 		RegistryRecord record = new RegistryRecord();
 		record.setRecordStatus(statusProcessed);
 		record.setAmount(document.getSumm());
-		record.setServiceCode("#" + document.getService().getServiceType().getCode());
+		record.setServiceCode(document.getService().registryCode());
 		record.setPersonalAccountExt(document.getDebtorId());
 		record.setOperationDate(document.getOperation().getCreationDate());
 		record.setRegistry(registry);
