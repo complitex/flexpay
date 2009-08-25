@@ -1,7 +1,7 @@
 package org.flexpay.eirc.service.exchange;
 
-import org.flexpay.common.persistence.registry.Registry;
-import org.flexpay.common.persistence.registry.RegistryRecord;
+import org.flexpay.eirc.persistence.exchange.ProcessingContext;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -13,11 +13,18 @@ import org.springframework.transaction.annotation.Transactional;
 public interface ServiceProviderFileProcessorTx {
 
 	/**
-	 * Run processing on single registry record
+	 * Prepare delayed updates for single registry record
 	 *
-	 * @param registry Registry header
-	 * @param record   Registry record
+	 * @param context Processing context
 	 * @throws Exception if failure occurs
 	 */
-	void processRecord(Registry registry, RegistryRecord record) throws Exception;
+	void prepareRecordUpdates(@NotNull ProcessingContext context) throws Exception;
+
+	/**
+	 * Do delayed update
+	 *
+	 * @param context ProcessingContext
+	 * @throws Exception if failure occurs
+	 */
+	void doUpdate(@NotNull ProcessingContext context) throws Exception;
 }

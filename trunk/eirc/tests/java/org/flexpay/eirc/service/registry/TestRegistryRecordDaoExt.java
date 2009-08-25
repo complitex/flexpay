@@ -11,16 +11,16 @@ import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.persistence.registry.RegistryRecord;
 import org.flexpay.common.persistence.registry.RegistryRecordStatus;
 import org.flexpay.common.service.importexport.ClassToTypeRegistry;
-import org.flexpay.common.test.SpringBeanAwareTestCase;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.eirc.persistence.filters.ImportErrorTypeFilter;
+import org.flexpay.eirc.test.EircSpringBeanAwareTestCase;
 import static org.junit.Assert.assertNotNull;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
-public class TestRegistryRecordDaoExt extends SpringBeanAwareTestCase {
+public class TestRegistryRecordDaoExt extends EircSpringBeanAwareTestCase {
 
 	@Autowired
 	protected RegistryRecordDaoExt recordDaoExt;

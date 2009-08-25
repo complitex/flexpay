@@ -281,4 +281,14 @@ public class Operation extends DomainObject {
 				append("operationStatus", operationStatus).
 				toString();
 	}
+
+	public BigDecimal documentsSumm() {
+
+		BigDecimal summ = BigDecimal.ZERO;
+		for (Document document : documents) {
+			summ = summ.add(document.getSumm());
+		}
+
+		return summ;
+	}
 }

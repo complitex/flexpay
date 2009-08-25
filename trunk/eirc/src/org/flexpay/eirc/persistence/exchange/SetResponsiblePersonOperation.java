@@ -6,8 +6,8 @@ import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.persistence.ImportError;
 import org.flexpay.common.persistence.Stub;
-import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.persistence.registry.RegistryRecord;
+import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.service.importexport.CorrectionsService;
 import org.flexpay.eirc.dao.importexport.RawConsumersDataUtil;
 import org.flexpay.eirc.persistence.Consumer;
@@ -21,6 +21,7 @@ import org.flexpay.eirc.service.importexport.ImportUtil;
 import org.flexpay.eirc.service.importexport.RawConsumerData;
 import org.flexpay.orgs.persistence.ServiceProvider;
 import org.flexpay.payments.persistence.EircRegistryProperties;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -41,19 +42,15 @@ public class SetResponsiblePersonOperation extends AbstractChangePersonalAccount
 	/**
 	 * Process operation
 	 *
-	 * @param registry Registry header
-	 * @param record   Registry record
+	 * @param context
 	 * @throws org.flexpay.common.exception.FlexPayException
 	 *          if failure occurs
 	 */
-	public DelayedUpdate process(Registry registry, RegistryRecord record) throws FlexPayException {
-
-		if (true) {
-			return DelayedUpdateNope.INSTANCE;
-		}
+	public DelayedUpdate process(@NotNull ProcessingContext context) throws FlexPayException {
 
 		DelayedUpdatesContainer container = new DelayedUpdatesContainer();
 
+		RegistryRecord record = context.getCurrentRecord();
 		Consumer consumer = ContainerProcessHelper.getConsumer(record, factory);
 
 		// find consumer and set FIO here
@@ -94,6 +91,7 @@ public class SetResponsiblePersonOperation extends AbstractChangePersonalAccount
 		}
 
 		// update corrections
+		Registry registry = context.getRegistry();
 		EircRegistryProperties registryProperties = (EircRegistryProperties) registry.getProperties();
 		ServiceProvider provider = factory.getServiceProviderService().read(registryProperties.getServiceProviderStub());
 		Stub<DataSourceDescription> sd = provider.getDataSourceDescriptionStub();

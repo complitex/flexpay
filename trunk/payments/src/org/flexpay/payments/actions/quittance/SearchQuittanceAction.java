@@ -7,16 +7,11 @@ import org.flexpay.ab.service.PersonService;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.util.CollectionUtils;
-import org.flexpay.common.util.SecurityUtil;
 import org.flexpay.orgs.persistence.ServiceProvider;
-import org.flexpay.orgs.persistence.Organization;
-import org.flexpay.orgs.persistence.PaymentPoint;
-import org.flexpay.orgs.persistence.Cashbox;
 import org.flexpay.orgs.service.ServiceProviderService;
 import org.flexpay.orgs.service.CashboxService;
 import org.flexpay.payments.actions.CashboxCookieActionSupport;
 import org.flexpay.payments.persistence.Service;
-import org.flexpay.payments.persistence.Operation;
 import org.flexpay.payments.persistence.quittance.QuittanceDetailsRequest;
 import org.flexpay.payments.persistence.quittance.QuittanceDetailsResponse;
 import org.flexpay.payments.persistence.quittance.ConsumerAttributes;
@@ -189,7 +184,7 @@ public class SearchQuittanceAction extends CashboxCookieActionSupport {
 		Long serviceId = getServiceId(serviceMasterIndex);
 		Service service = spService.readFull(new Stub<Service>(serviceId));
 		assert service != null;
-		ServiceProvider serviceProvider = serviceProviderService.read(service.getServiceProviderStub());
+		ServiceProvider serviceProvider = serviceProviderService.read(service.providerStub());
 		assert serviceProvider != null;
 		return serviceProvider.getName();
 	}

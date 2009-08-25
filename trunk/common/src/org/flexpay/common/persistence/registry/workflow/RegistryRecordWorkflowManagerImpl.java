@@ -12,10 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Helper class for registry records workflow
@@ -160,6 +157,22 @@ public class RegistryRecordWorkflowManagerImpl implements RegistryRecordWorkflow
 		}
 
 		setNextStatus(record, allowedCodes.get(0));
+	}
+
+	/**
+	 * Set next success registry records status
+	 *
+	 * @param records Registry records to update
+	 * @throws org.flexpay.common.persistence.registry.workflow.TransitionNotAllowed
+	 *          if success transition is not allowed for some of the records
+	 */
+	@Override
+	@Transactional (readOnly = false)
+	public void setNextSuccessStatus(Collection<RegistryRecord> records) throws TransitionNotAllowed {
+
+		for (RegistryRecord record : records) {
+			setNextSuccessStatus(record);
+		}
 	}
 
 	/**

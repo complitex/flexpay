@@ -1,9 +1,8 @@
 package org.flexpay.eirc.persistence.exchange;
 
 import org.flexpay.common.exception.FlexPayException;
-import org.flexpay.common.persistence.registry.Registry;
-import org.flexpay.common.persistence.registry.RegistryRecord;
 import org.flexpay.eirc.persistence.exchange.delayed.DelayedUpdateNope;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -13,7 +12,7 @@ public class SetPrivilegeApprovalDocumentOperation extends AbstractChangePersona
 		super(datum);
 	}
 
-	public DelayedUpdate process(Registry registry, RegistryRecord record) throws FlexPayException {
+	public DelayedUpdate process(@NotNull ProcessingContext context) throws FlexPayException {
 		return DelayedUpdateNope.INSTANCE;
 	}
 

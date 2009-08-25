@@ -1,17 +1,17 @@
 package org.flexpay.eirc.dao;
 
-import org.flexpay.common.test.SpringBeanAwareTestCase;
 import org.flexpay.common.util.CollectionUtils;
+import org.flexpay.eirc.test.EircSpringBeanAwareTestCase;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
 import java.util.Collection;
 
-public class TestServedBuildingDao extends SpringBeanAwareTestCase {
+public class TestServedBuildingDao extends EircSpringBeanAwareTestCase {
 
 	@Autowired
-	@Qualifier("servedBuildingDao")
+	@Qualifier ("servedBuildingDao")
 	private ServedBuildingDao servedBuildingDao;
 
 	@Test

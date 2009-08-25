@@ -148,7 +148,7 @@ public class PaymentsReporterImpl implements PaymentsReporter {
 			Service service = spService.readFull(doc.getServiceStub());
 			details.setServiceName(service.getServiceType().getName());
 
-			ServiceProvider provider = serviceProviderService.read(service.getServiceProviderStub());
+			ServiceProvider provider = serviceProviderService.read(service.providerStub());
 			details.setServiceProviderName(provider.getName());
 
 			detailses.add(details);
@@ -226,7 +226,7 @@ public class PaymentsReporterImpl implements PaymentsReporter {
 		// setting service payments
 		Map<Integer, BigDecimal> servicePayments = CollectionUtils.map();
 		for (Document document : operation.getDocuments()) {
-			ServiceType serviceType = serviceTypeService.read(document.getService().getServiceTypeStub());
+			ServiceType serviceType = serviceTypeService.read(document.getService().serviceTypeStub());
 			servicePayments.put(serviceType.getCode(), document.getSumm());
 		}
 		operationPrintInfo.setServicePayments(servicePayments);

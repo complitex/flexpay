@@ -7,6 +7,7 @@ import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.common.persistence.FPModule;
 import org.flexpay.common.util.FPFileUtil;
 import org.flexpay.common.util.StringUtil;
+import org.flexpay.common.util.FileSource;
 import org.flexpay.common.util.io.InputStreamCallback;
 import org.flexpay.common.util.io.OutputStreamCallback;
 import org.flexpay.common.util.io.ReaderCallback;
@@ -187,4 +188,25 @@ public class FPFile extends DomainObject implements DataSource {
 				toString();
 	}
 
+	/**
+	 * Create source file from this file
+	 *
+	 * @return FileSource
+	 * @throws Exception if failure occurs
+	 */
+	public FileSource toFileSourece() throws Exception {
+		File file = FPFileUtil.getFileOnServer(this);
+		if (file == null) {
+			throw new FileNotFoundException("For FPFile(id=" + getId()
+											+ ") not found temp file: " + getNameOnServer());
+		}
+
+		String type = "";
+		if (getOriginalName().endsWith(".zip")) {
+			type = "zip";
+		} else if (getOriginalName().endsWith(".gz")) {
+			type = "gzip";
+		}
+		return new FileSource(file, type);
+	}
 }

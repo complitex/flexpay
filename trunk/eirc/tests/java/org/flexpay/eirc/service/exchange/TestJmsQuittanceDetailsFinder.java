@@ -36,8 +36,8 @@ public class TestJmsQuittanceDetailsFinder extends EircSpringBeanAwareTestCase {
 
 		Requester r1 = new Requester(number);
 		Requester r2 = new Requester(number);
-		Thread thr1 =  new Thread(r1);
-		Thread thr2 =  new Thread(r2);
+		Thread thr1 = new Thread(r1);
+		Thread thr2 = new Thread(r2);
 
 		thr1.start();
 		Thread.sleep(1);

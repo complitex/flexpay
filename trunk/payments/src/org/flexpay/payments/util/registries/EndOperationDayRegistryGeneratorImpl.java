@@ -96,7 +96,7 @@ public class EndOperationDayRegistryGeneratorImpl implements EndOperationDayRegi
 				record.setOperationDate(operation.getCreationDate());
 				record.setRecordStatus(recordStatus);
 
-				record.setServiceCode(String.valueOf(document.getService().getServiceType().getCode()));
+				record.setServiceCode(document.getService().registryCode());
 				record.setPersonalAccountExt(document.getCreditorId());
 				record.setUniqueOperationNumber(document.getId());
 
@@ -112,22 +112,16 @@ public class EndOperationDayRegistryGeneratorImpl implements EndOperationDayRegi
 				record.setBuildingNum(StringUtils.stripToEmpty(document.getBuildingNumber()));
 				record.setApartmentNum(StringUtils.stripToEmpty(document.getApartmentNumber()));
 
-				List<RegistryRecordContainer> containers = new ArrayList<RegistryRecordContainer>();
-
 				RegistryRecordContainer container = new RegistryRecordContainer();
 				BigDecimal summ = document.getSumm().setScale(2, BigDecimal.ROUND_HALF_UP);
 				record.setAmount(summ);
 
 				totalSumm = totalSumm.add(summ);
-				container.setOrder(0);
 				container.setData(RegistryUtil.BANK_PAYMENT_CONTAINER_CODE + RegistryUtil.CONTAINER_BODY_SEPARATOR +
 								  StringUtil.getString(paymentPoint.getId()) + RegistryUtil.CONTAINER_BODY_SEPARATOR +
 								  StringUtil.getString(operation.getId()) + RegistryUtil.CONTAINER_BODY_SEPARATOR +
 								  StringUtil.getString(operation.getOperationSumm()));
-				container.setRecord(record);
-				containers.add(container);
-
-				record.setContainers(containers);
+				record.addContainer(container);
 
 				RegistryRecordProperties recordProperties = propertiesFactory.newRecordProperties();
 				recordProperties.setRecord(record);

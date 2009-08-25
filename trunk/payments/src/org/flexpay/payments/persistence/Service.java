@@ -45,7 +45,7 @@ public class Service extends DomainObjectWithStatus {
 	}
 
 	@NotNull
-	public Stub<ServiceProvider> getServiceProviderStub() {
+	public Stub<ServiceProvider> providerStub() {
 		return stub(serviceProvider);
 	}
 
@@ -71,6 +71,16 @@ public class Service extends DomainObjectWithStatus {
 
 	public void setExternalCode(String externalCode) {
 		this.externalCode = externalCode;
+	}
+
+	/**
+	 * Get flexpay registry representation of this service code, i.e. if external code available this is '#'+externalCode
+	 * otherwise this is service id
+	 *
+	 * @return FlexPay registry format service code
+	 */
+	public String registryCode() {
+		return StringUtils.isBlank(externalCode) ? String.valueOf(getId()) : "#" + externalCode;
 	}
 
 	public Date getBeginDate() {
@@ -132,7 +142,7 @@ public class Service extends DomainObjectWithStatus {
 	 *
 	 * @return Parent service stub
 	 */
-	public Stub<Service> getParentServiceStub() {
+	public Stub<Service> parentServiceStub() {
 		return stub(parentService);
 	}
 
@@ -175,7 +185,7 @@ public class Service extends DomainObjectWithStatus {
 	 * @return Measure unit stub
 	 */
 	@NotNull
-	public Stub<MeasureUnit> getMeasureUnitStub() {
+	public Stub<MeasureUnit> measureUnitStub() {
 		return stub(measureUnit);
 	}
 
@@ -185,7 +195,7 @@ public class Service extends DomainObjectWithStatus {
 		return description != null ? description.getName() : "";
 	}
 
-	public Stub<ServiceType> getServiceTypeStub() {
+	public Stub<ServiceType> serviceTypeStub() {
 		return new Stub<ServiceType>(serviceType);
 	}
 

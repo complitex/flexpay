@@ -2,15 +2,15 @@ package org.flexpay.eirc.process.quittance;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.time.StopWatch;
-import org.flexpay.common.test.SpringBeanAwareTestCase;
 import org.flexpay.eirc.actions.quittance.QuittancePayAction;
 import org.flexpay.eirc.persistence.account.Quittance;
+import org.flexpay.eirc.test.EircSpringBeanAwareTestCase;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.*;
 
-public class TestStressLoadQuittanceFinderService extends SpringBeanAwareTestCase {
+public class TestStressLoadQuittanceFinderService extends EircSpringBeanAwareTestCase {
 
 	@Autowired
 	private QuittancePayAction quittancePayAction;

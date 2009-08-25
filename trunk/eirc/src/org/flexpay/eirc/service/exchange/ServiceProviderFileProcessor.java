@@ -28,6 +28,7 @@ import org.flexpay.eirc.dao.importexport.RawConsumersDataSource;
 import org.flexpay.eirc.persistence.Consumer;
 import org.flexpay.eirc.persistence.exchange.DelayedUpdate;
 import org.flexpay.eirc.persistence.exchange.Operation;
+import org.flexpay.eirc.persistence.exchange.ProcessingContext;
 import org.flexpay.eirc.persistence.exchange.ServiceOperationsFactory;
 import org.flexpay.eirc.service.importexport.EircImportService;
 import org.flexpay.eirc.service.importexport.RawConsumerData;
@@ -104,8 +105,11 @@ public class ServiceProviderFileProcessor implements RegistryProcessor {
 
 				log.info("Starting processing registry #{}", registry.getId());
 
-				importConsumers(registry);
-				processRegistry(registry);
+				ProcessingContext context = new ProcessingContext();
+				context.setRegistry(registry);
+
+				importConsumers(context);
+				processRegistry(context);
 			} catch (Throwable e) {
 				String errMsg = "Failed processing registry: " + registry;
 				log.error(errMsg, e);
@@ -120,7 +124,7 @@ public class ServiceProviderFileProcessor implements RegistryProcessor {
 		}
 	}
 
-	public void processRegistry(@NotNull Registry registry) throws Exception {
+	public void processRegistry(@NotNull ProcessingContext context) throws Exception {
 
 		StopWatch watch = new StopWatch();
 		watch.start();
@@ -129,37 +133,35 @@ public class ServiceProviderFileProcessor implements RegistryProcessor {
 		plog.info("Starting processing records");
 		FetchRange range = new FetchRange(50);
 		ReadHintsHolder.setHints(new ReadHints());
+		Long operationId = null;
 		do {
 			plog.info("Fetching next page {}. Time spent {}", range, watch);
-			processRegistry(registry, range);
+			List<RegistryRecord> records = registryFileService.getRecordsForProcessing(
+					stub(context.getRegistry()), range);
+			for (RegistryRecord record : records) {
+				try {
+
+					if (operationId == null || operationId.equals(record.getUniqueOperationNumber())) {
+						operationId = record.getUniqueOperationNumber();
+						processorTx.doUpdate(context);
+					}
+
+					context.setCurrentRecord(record);
+					processorTx.prepareRecordUpdates(context);
+				} catch (Throwable t) {
+					handleError(t, context);
+				}
+			}
+			range.nextPage();
 		} while (range.hasMore());
+		processorTx.doUpdate(context);
 		plog.info("No more records to process");
 
 		watch.stop();
 		plog.info("Import finished. Time spent {}", watch);
 	}
 
-	/**
-	 * Run next registry records batch processing
-	 *
-	 * @param registry Registry those records to process
-	 * @param range	Fetch range
-	 * @throws Exception if failure occurs
-	 */
-	private void processRegistry(Registry registry, FetchRange range) throws Exception {
-
-		List<RegistryRecord> records = registryFileService.getRecordsForProcessing(stub(registry), range);
-		for (RegistryRecord record : records) {
-			try {
-				processorTx.processRecord(registry, record);
-			} catch (Throwable t) {
-				handleError(t, registry, record);
-			}
-		}
-		range.nextPage();
-	}
-
-	private void handleError(Throwable t, Registry registry, RegistryRecord record) throws Exception {
+	private void handleError(Throwable t, ProcessingContext context) throws Exception {
 		String code = "eirc.error_code.unknown_error";
 		if (t instanceof FlexPayExceptionContainer) {
 			t = ((FlexPayExceptionContainer) t).getExceptions().iterator().next();
@@ -170,7 +172,7 @@ public class ServiceProviderFileProcessor implements RegistryProcessor {
 
 		ImportError error = new ImportError();
 		error.setErrorId(code);
-		EircRegistryProperties props = (EircRegistryProperties) registry.getProperties();
+		EircRegistryProperties props = (EircRegistryProperties) context.getRegistry().getProperties();
 		ServiceProvider provider = serviceProviderService.read(props.getServiceProviderStub());
 		DataSourceDescription sd = provider.getDataSourceDescription();
 		error.setSourceDescription(sd);
@@ -178,18 +180,24 @@ public class ServiceProviderFileProcessor implements RegistryProcessor {
 		// todo remove hardcoded value
 		error.setDataSourceBean("consumersDataSource");
 
-		error.setSourceObjectId(String.valueOf(record.getId()));
+		error.setSourceObjectId(String.valueOf(context.getCurrentRecord().getId()));
 		error.setObjectType(classToTypeRegistry.getType(Consumer.class));
-		recordWorkflowManager.setNextErrorStatus(record, error);
+
+		// also set error for operation records update
+		for (RegistryRecord record : context.getOperationRecords()) {
+			if (record != context.getCurrentRecord()) {
+				recordWorkflowManager.setNextErrorStatus(record, error);
+			}
+		}
 	}
 
-	public void importConsumers(Registry registry) throws Exception {
+	public void importConsumers(ProcessingContext context) throws Exception {
 
-		processHeader(registry);
+		processHeader(context);
 		log.info("Starting importing consumers");
-		rawConsumersDataSource.setRegistry(registry);
+		rawConsumersDataSource.setRegistry(context.getRegistry());
 
-		setupRecordsConsumer(registry, rawConsumersDataSource);
+		setupRecordsConsumer(context.getRegistry(), rawConsumersDataSource);
 	}
 
 	public void startRegistryProcessing(Registry registry) throws TransitionNotAllowed {
@@ -208,15 +216,27 @@ public class ServiceProviderFileProcessor implements RegistryProcessor {
 			startRegistryProcessing(registry);
 			setupRecordsConsumers(registry, recordIds);
 
+			ProcessingContext context = new ProcessingContext();
+			context.setRegistry(registry);
+
 			// refresh records
 			Collection<RegistryRecord> records = registryRecordService.findObjects(registry, recordIds);
+			Long operationId = null;
 			for (RegistryRecord record : records) {
 				try {
-					processorTx.processRecord(registry, record);
+
+					if (operationId == null || operationId.equals(record.getUniqueOperationNumber())) {
+						operationId = record.getUniqueOperationNumber();
+						processorTx.doUpdate(context);
+					}
+
+					context.setCurrentRecord(record);
+					processorTx.prepareRecordUpdates(null);
 				} catch (Throwable t) {
-					handleError(t, registry, record);
+					handleError(t, context);
 				}
 			}
+			processorTx.doUpdate(context);
 		} catch (Throwable t) {
 			String errMsg = "Failed processing registry: " + registry;
 			log.error(errMsg, t);
@@ -251,20 +271,20 @@ public class ServiceProviderFileProcessor implements RegistryProcessor {
 	/**
 	 * Run processing on registry header
 	 *
-	 * @param registry Registry header
+	 * @param context ProcessingContext
 	 * @throws Exception if failure occurs
 	 */
-	private void processHeader(Registry registry) throws Exception {
+	private void processHeader(ProcessingContext context) throws Exception {
 
 		// process header containers
 		try {
-			Operation op = serviceOperationsFactory.getContainerOperation(registry);
-			DelayedUpdate update = op.process(registry, null);
+			Operation op = serviceOperationsFactory.getContainerOperation(context.getRegistry());
+			DelayedUpdate update = op.process(context);
 			update.doUpdate();
 		} catch (Exception e) {
-			log.error("Failed constructing container for registry: " + registry, e);
+			log.error("Failed constructing container for registry: " + context.getRegistry(), e);
 			// in processing, notify have error
-			registryWorkflowManager.setNextErrorStatus(registry);
+			registryWorkflowManager.setNextErrorStatus(context.getRegistry());
 			throw e;
 		}
 	}

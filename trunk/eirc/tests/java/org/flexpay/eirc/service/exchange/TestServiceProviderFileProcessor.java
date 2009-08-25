@@ -2,8 +2,8 @@ package org.flexpay.eirc.service.exchange;
 
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
-import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.persistence.ImportError;
+import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.persistence.filter.RegistryRecordStatusFilter;
 import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.persistence.registry.RegistryRecord;
@@ -16,7 +16,6 @@ import org.flexpay.payments.service.SPService;
 import static org.junit.Assert.*;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.annotation.NotTransactional;
 
 import java.util.List;
@@ -28,13 +27,12 @@ public class TestServiceProviderFileProcessor extends TestSpFileAction {
 	@Autowired
 	protected ExchangeHelper exchangeHelper;
 	@Autowired
-	@Qualifier ("spService")
 	protected SPService spService;
 	@Autowired
 	protected RegistryRecordService registryRecordService;
 	@Autowired
 	protected EircRegistryService eircRegistryService;
-    @Autowired
+	@Autowired
 	protected RegistryService registryService;
 
 	@Test

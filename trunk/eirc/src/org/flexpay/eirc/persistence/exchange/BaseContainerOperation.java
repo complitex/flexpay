@@ -14,6 +14,7 @@ import org.flexpay.eirc.service.ConsumerService;
 import org.flexpay.eirc.service.QuittanceService;
 import org.flexpay.orgs.persistence.ServiceProvider;
 import org.flexpay.payments.persistence.EircRegistryProperties;
+import org.jetbrains.annotations.NotNull;
 
 import java.math.BigDecimal;
 import java.util.Calendar;
@@ -106,13 +107,13 @@ public class BaseContainerOperation extends ContainerOperation {
 	/**
 	 * Process operation
 	 *
-	 * @param registry Registry header
-	 * @param record   Registry record
+	 * @param context processing context
 	 * @throws FlexPayException if failure occurs
 	 */
-	public DelayedUpdate process(Registry registry, RegistryRecord record) throws FlexPayException {
+	public DelayedUpdate process(@NotNull ProcessingContext context) throws FlexPayException {
 		QuittanceService quittanceService = factory.getQuittanceService();
 
+		RegistryRecord record = context.getCurrentRecord();
 		EircRegistryRecordProperties props = (EircRegistryRecordProperties) record.getProperties();
 		if (props.getConsumer() == null) {
 			throw new FlexPayException("Record consumer not set up");
@@ -123,7 +124,7 @@ public class BaseContainerOperation extends ContainerOperation {
 		}
 
 		QuittanceDetails details = new QuittanceDetails();
-		details.setConsumer(getConsumer(registry, record));
+		details.setConsumer(getConsumer(context.getRegistry(), record));
 		details.setRegistryRecord(record);
 		details.setIncomingBalance(incomingBalance);
 		details.setOutgoingBalance(outgoingBalance);
@@ -134,7 +135,7 @@ public class BaseContainerOperation extends ContainerOperation {
 		details.setBenifit(benifit);
 		details.setSubsidy(subsidy);
 		details.setPayment(payment);
-		details.setMonth(DateUtils.truncate(registry.getFromDate(), Calendar.MONTH));
+		details.setMonth(DateUtils.truncate(context.getRegistry().getFromDate(), Calendar.MONTH));
 
 		return new DelayedUpdateQuittanceDetails(details, quittanceService);
 	}

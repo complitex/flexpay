@@ -1,7 +1,7 @@
 package org.flexpay.eirc.actions;
 
 import org.apache.commons.io.IOUtils;
-import org.flexpay.common.test.SpringBeanAwareTestCase;
+import org.flexpay.eirc.test.EircSpringBeanAwareTestCase;
 import org.flexpay.eirc.util.config.ApplicationConfig;
 import static org.junit.Assert.assertNotNull;
 import org.junit.Test;
@@ -9,7 +9,7 @@ import org.springframework.test.annotation.NotTransactional;
 
 import java.io.InputStream;
 
-public class TestPrintTicketAction extends SpringBeanAwareTestCase {
+public class TestPrintTicketAction extends EircSpringBeanAwareTestCase {
 
 	@Test
 	@NotTransactional

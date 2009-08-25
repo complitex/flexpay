@@ -1,17 +1,17 @@
 package org.flexpay.eirc.process.quittance.report.util;
 
 import org.flexpay.common.persistence.Stub;
-import org.flexpay.common.test.TransactionalSpringBeanAwareTestCase;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.eirc.dao.QuittanceDao;
-import org.flexpay.payments.persistence.Service;
 import org.flexpay.eirc.persistence.EircServiceOrganization;
-import org.flexpay.payments.persistence.ServiceType;
 import org.flexpay.eirc.persistence.account.Quittance;
 import org.flexpay.eirc.process.quittance.report.ServiceGroup;
 import org.flexpay.eirc.process.quittance.report.ServiceTotals;
 import org.flexpay.eirc.process.quittance.report.ServiceTotalsBase;
 import org.flexpay.eirc.process.quittance.report.SubServiceTotals;
+import org.flexpay.eirc.test.EircSpringBeanAwareTestCase;
+import org.flexpay.payments.persistence.Service;
+import org.flexpay.payments.persistence.ServiceType;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import org.junit.Ignore;
@@ -20,7 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.*;
 
-public class TestQuittanceInfoGenerator extends TransactionalSpringBeanAwareTestCase {
+public class TestQuittanceInfoGenerator extends EircSpringBeanAwareTestCase {
 
 	@Autowired
 	private QuittanceDao quittanceDao;

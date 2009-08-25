@@ -64,8 +64,8 @@ public class TestServiceHistoryBuilder extends PaymentsSpringBeanAwareTestCase {
 
 		historyBuilder.patch(copy, diff);
 
-		assertEquals("Invalid provider patch", service.getServiceProviderStub(), copy.getServiceProviderStub());
-		assertEquals("Invalid type patch", service.getServiceTypeStub(), copy.getServiceTypeStub());
+		assertEquals("Invalid provider patch", service.providerStub(), copy.providerStub());
+		assertEquals("Invalid type patch", service.serviceTypeStub(), copy.serviceTypeStub());
 		assertEquals("Invalid code patch", service.getExternalCode(), copy.getExternalCode());
 		assertNotNull("No begin date", copy.getBeginDate());
 		assertEquals("Invalid begin date patch", service.getBeginDate(), copy.getBeginDate());
@@ -76,24 +76,24 @@ public class TestServiceHistoryBuilder extends PaymentsSpringBeanAwareTestCase {
 
 	private void generateReferencesHistory(Service service) {
 
-		ServiceProvider provider = serviceProviderService.read(service.getServiceProviderStub());
+		ServiceProvider provider = serviceProviderService.read(service.providerStub());
 		assertNotNull("No provider found", provider);
 		Organization organization = organizationService.readFull(provider.getOrganizationStub());
 		assertNotNull("No organization found", organization);
 		organizationHistoryGenerator.generateFor(organization);
 		serviceProviderHistoryGenerator.generateFor(provider);
 		if (service.hasMeasureUnit()) {
-			MeasureUnit measureUnit = measureUnitService.readFull(service.getMeasureUnitStub());
-			assertNotNull("Measure unit not found: " + service.getMeasureUnitStub(), measureUnit);
+			MeasureUnit measureUnit = measureUnitService.readFull(service.measureUnitStub());
+			assertNotNull("Measure unit not found: " + service.measureUnitStub(), measureUnit);
 			measureUnitHistoryGenerator.generateFor(measureUnit);
 		}
-		ServiceType type = serviceTypeService.read(service.getServiceTypeStub());
+		ServiceType type = serviceTypeService.read(service.serviceTypeStub());
 		assertNotNull("Type not found", type);
 		serviceTypeHistoryGenerator.generateFor(type);
 
 		if (service.isSubService()) {
-			Service parent = spService.readFull(service.getParentServiceStub());
-			assertNotNull("Parent service not found: " + service.getParentServiceStub(), parent);
+			Service parent = spService.readFull(service.parentServiceStub());
+			assertNotNull("Parent service not found: " + service.parentServiceStub(), parent);
 			generateReferencesHistory(parent);
 			serviceHistoryGenerator.generateFor(parent);
 		}

@@ -23,6 +23,7 @@ import org.flexpay.eirc.util.config.ApplicationConfig;
 import org.flexpay.orgs.persistence.ServiceProvider;
 import org.flexpay.payments.persistence.EircRegistryProperties;
 import org.flexpay.payments.persistence.Service;
+import org.jetbrains.annotations.NotNull;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -63,12 +64,13 @@ public class OpenSubserviceAccountOperation extends ContainerOperation {
 	/**
 	 * Process operation
 	 *
-	 * @param registry Registry header
-	 * @param record   Registry record
+	 * @param context
 	 * @throws FlexPayException if failure occurs
 	 */
-	public DelayedUpdate process(Registry registry, RegistryRecord record) throws FlexPayException {
+	public DelayedUpdate process(@NotNull ProcessingContext context) throws FlexPayException {
 
+		Registry registry = context.getRegistry();
+		RegistryRecord record = context.getCurrentRecord();
 		if (!validate(registry, record)) {
 			return DelayedUpdateNope.INSTANCE;
 		}

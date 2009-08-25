@@ -3,6 +3,7 @@ package org.flexpay.eirc.service.exchange;
 import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.persistence.registry.workflow.TransitionNotAllowed;
+import org.flexpay.eirc.persistence.exchange.ProcessingContext;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
@@ -21,7 +22,8 @@ public interface RegistryProcessor {
 	/**
 	 * Run processing of a <code>registries</code>
 	 * <p/>
-	 * Handles {@link #startRegistryProcessing(org.flexpay.common.persistence.registry.Registry)} and {@link #endRegistryProcessing(org.flexpay.common.persistence.registry.Registry)} internally.
+	 * Handles {@link #startRegistryProcessing(org.flexpay.common.persistence.registry.Registry)} and {@link
+	 * #endRegistryProcessing(org.flexpay.common.persistence.registry.Registry)} internally.
 	 *
 	 * @param registries Registries to process
 	 * @throws Exception if failure occurs
@@ -31,7 +33,8 @@ public interface RegistryProcessor {
 	/**
 	 * Process a limited number of registry records.
 	 * <p/>
-	 * Handles {@link #startRegistryProcessing(org.flexpay.common.persistence.registry.Registry)} and {@link #endRegistryProcessing(org.flexpay.common.persistence.registry.Registry)} internally.
+	 * Handles {@link #startRegistryProcessing(org.flexpay.common.persistence.registry.Registry)} and {@link
+	 * #endRegistryProcessing(org.flexpay.common.persistence.registry.Registry)} internally.
 	 *
 	 * @param registry  Registry that records are to be processed
 	 * @param recordIds Record identifiers
@@ -58,10 +61,10 @@ public interface RegistryProcessor {
 	/**
 	 * Setup consumers for registry records
 	 *
-	 * @param registry Registry to import
+	 * @param context Processing context
 	 * @throws Exception if failure occurs
 	 */
-	void importConsumers(Registry registry) throws Exception;
+	void importConsumers(ProcessingContext context) throws Exception;
 
 	/**
 	 * Process single registry, import operation should have bein completed before
@@ -69,5 +72,5 @@ public interface RegistryProcessor {
 	 * @param registry Registry to process
 	 * @throws Exception if failure occurs
 	 */
-	void processRegistry(@NotNull Registry registry) throws Exception;
+	void processRegistry(@NotNull ProcessingContext registry) throws Exception;
 }
