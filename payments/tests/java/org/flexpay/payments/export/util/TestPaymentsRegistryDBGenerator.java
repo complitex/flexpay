@@ -24,6 +24,7 @@ import org.flexpay.orgs.service.PaymentsCollectorService;
 import org.flexpay.orgs.service.ServiceProviderService;
 import org.flexpay.payments.persistence.*;
 import org.flexpay.payments.service.registry.impl.PaymentsRegistryDBGeneratorImpl;
+import org.flexpay.payments.service.registry.PaymentsRegistryDBGenerator;
 import org.flexpay.payments.service.*;
 import org.flexpay.payments.test.PaymentsSpringBeanAwareTestCase;
 import org.junit.After;
@@ -61,10 +62,8 @@ public class TestPaymentsRegistryDBGenerator extends PaymentsSpringBeanAwareTest
 	private ServiceTypeService serviceTypeService;
 	@Autowired
 	private ServiceProviderService serviceProviderService;
-
 	@Autowired
 	private FPFileService fpFileService;
-
 	@Autowired
 	private RegistryArchiveStatusService registryArchiveStatusService;
 	@Autowired
@@ -89,6 +88,8 @@ public class TestPaymentsRegistryDBGenerator extends PaymentsSpringBeanAwareTest
 	private ClassToTypeRegistry classToTypeRegistry;
 	@Autowired
 	private ImportErrorService importErrorService;
+	@Autowired
+	private PaymentsRegistryDBGenerator paymentsRegistryDBGenerator;
 
 	private ServiceProvider serviceProvider;
 	private Organization registerOrganization;
@@ -211,19 +212,6 @@ public class TestPaymentsRegistryDBGenerator extends PaymentsSpringBeanAwareTest
 		int code = 3;
 		ServiceType serviceType;
 		serviceType = serviceTypeService.getServiceType(code);
-		/*
-				if (serviceType == null) {
-					serviceType = new ServiceType();
-					serviceType.setCode(code);
-					serviceType.setStatus(ServiceType.STATUS_ACTIVE);
-					ServiceTypeNameTranslation serviceTypeName = new ServiceTypeNameTranslation();
-					serviceTypeName.setLang(LANG);
-					serviceTypeName.setDescription("type name description");
-					serviceTypeName.setName("type name");
-					serviceType.setTypeName(serviceTypeName);
-					serviceTypeService.create(serviceType);
-				}
-				*/
 
 		ServiceDescription serviceDescription = new ServiceDescription();
 		serviceDescription.setLang(LANG);
@@ -262,14 +250,6 @@ public class TestPaymentsRegistryDBGenerator extends PaymentsSpringBeanAwareTest
 
 	}
 
-	@After
-	public void tearDown() {
-		//clearTestData();
-		/*if (operation != null) {
-					operationService.delete(new Stub<Operation>(operation));
-				}*/
-	}
-
 	@Test
 	public void testCreateDBRegistry() throws FlexPayException {
 		assertNotNull(serviceProvider);
@@ -286,24 +266,12 @@ public class TestPaymentsRegistryDBGenerator extends PaymentsSpringBeanAwareTest
 
 		Date currDate = new Date();
 
-		PaymentsRegistryDBGeneratorImpl DBGeneratorImpl = new PaymentsRegistryDBGeneratorImpl();
-		
-		DBGeneratorImpl.setDocumentService(documentService);
-		DBGeneratorImpl.setRegistryArchiveStatusService(registryArchiveStatusService);
-		DBGeneratorImpl.setRegistryRecordService(registryRecordService);
-		DBGeneratorImpl.setRegistryService(registryService);
-		DBGeneratorImpl.setRegistryStatusService(registryStatusService);
-		DBGeneratorImpl.setRegistryTypeService(registryTypeService);
-		DBGeneratorImpl.setRegistryRecordStatusService(registryRecordStatusService);
-		DBGeneratorImpl.setPropertiesFactory(propertiesFactory);
-		DBGeneratorImpl.setDocumentAdditionTypeService(documentAdditionTypeService);
-
-		Registry registry = DBGeneratorImpl.createDBRegistry(spFile, serviceProvider, registerOrganization,
+		Registry registry = paymentsRegistryDBGenerator.createDBRegistry(spFile, serviceProvider, registerOrganization,
 				new Date(currDate.getTime() + 1000), new Date(currDate.getTime() + 10000));
-		assertNull(registry);
+		assertNull("Registry generation should do nothing", registry);
 		//assertEquals(0, registry.getRecordsNumber().intValue());
 
-		registry = DBGeneratorImpl.createDBRegistry(spFile, serviceProvider, registerOrganization,
+		registry = paymentsRegistryDBGenerator.createDBRegistry(spFile, serviceProvider, registerOrganization,
 				new Date(currDate.getTime() - 100000), new Date(currDate.getTime() + 1000));
 		assertNotNull(registry);
 		assertEquals(1, registry.getRecordsNumber().intValue());
@@ -316,11 +284,4 @@ public class TestPaymentsRegistryDBGenerator extends PaymentsSpringBeanAwareTest
 				page);
 		assertEquals(1, records.size());
 	}
-
-	/*private void clearTestData() {
-			for (Operation operation : operations) {
-				operationService.delete(Stub.stub(operation));
-			}
-			organizationService.delete(Stub.stub(organization));
-		}*/
 }
