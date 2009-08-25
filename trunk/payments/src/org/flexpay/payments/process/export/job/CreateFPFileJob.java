@@ -5,6 +5,7 @@ import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.process.job.Job;
 import org.flexpay.common.service.FPFileService;
 import org.flexpay.common.util.FPFileUtil;
+import static org.flexpay.payments.process.export.job.GeneratePaymentsRegistryParameterNames.GENERATED_FILE_NAME;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.io.Serializable;
@@ -12,15 +13,13 @@ import java.util.Map;
 
 public class CreateFPFileJob extends Job {
 
-	public static String GENERATED_FILE_NAME_PARAMETER_NAME = "GeneratedFileName";
-
     private String moduleName;
     private String userName;
     private String fileName;
 
     private FPFileService fpFileService;
 
-    public String execute(Map<Serializable, Serializable> parameters) throws FlexPayException {
+	public String execute(Map<Serializable, Serializable> parameters) throws FlexPayException {
 
 		FPFile fpFile = null;
         try {
@@ -28,19 +27,17 @@ public class CreateFPFileJob extends Job {
             fpFile.setModule(fpFileService.getModuleByName(moduleName));
             fpFile.setUserName(userName);
 
-			String generatedFileName = (String) parameters.get(GENERATED_FILE_NAME_PARAMETER_NAME);
+			String generatedFileName = (String) parameters.get(GENERATED_FILE_NAME);
 			if (generatedFileName != null) {
 				fpFile.setOriginalName(generatedFileName);
 			} else {
 				fpFile.setOriginalName(fileName);
 			}
 
-            fpFile.setOriginalName(fileName);
             FPFileUtil.createEmptyFile(fpFile);
-
             fpFileService.create(fpFile);
-            //parameters.put("File", fpFile);
-            parameters.put("FileId", fpFile.getId());
+            parameters.put(GeneratePaymentsRegistryParameterNames.FILE_ID, fpFile.getId());
+
             log.info("File created {}", fpFile);
         } catch (Exception e) {
             log.error("Unknown file type", e);

@@ -5,6 +5,8 @@ import org.flexpay.common.persistence.registry.RegistryType;
 import org.flexpay.common.process.job.Job;
 import org.flexpay.common.service.RegistryService;
 import org.flexpay.common.util.DateUtil;
+import static org.flexpay.payments.process.export.job.GeneratePaymentsRegistryParameterNames.GENERATED_FILE_NAME;
+import static org.flexpay.payments.process.export.job.GeneratePaymentsRegistryParameterNames.ORGANIZATION_ID;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.io.Serializable;
@@ -14,16 +16,13 @@ import java.util.Map;
 
 public class GeneratePaymentsRegistryFileNameJob extends Job {
 
-	public static String GENERATED_FILE_NAME_PARAMETER_NAME = "GeneratedFileName";
-	public static String ORGANIZATION_ID_PARAMETER_NAME = "OrganizationId";
-
 	private RegistryService registryService;
 
 	@Override
 	public String execute(Map<Serializable, Serializable> parameters) throws FlexPayException {
 
 		String fileName = generatePaymentsRegistryFileName(parameters);
-		parameters.put(GENERATED_FILE_NAME_PARAMETER_NAME, fileName);
+		parameters.put(GENERATED_FILE_NAME, fileName);
 
 		return RESULT_NEXT;
 	}
@@ -45,7 +44,7 @@ public class GeneratePaymentsRegistryFileNameJob extends Job {
 
 	private String getOrganizationId(Map<Serializable, Serializable> parameters) {
 
-		Long paramValue = (Long) parameters.get(ORGANIZATION_ID_PARAMETER_NAME);
+		Long paramValue = (Long) parameters.get(ORGANIZATION_ID);
 		String strValue = paramValue.toString();
 
 		if (strValue.length() == 5) {
@@ -71,7 +70,7 @@ public class GeneratePaymentsRegistryFileNameJob extends Job {
 
 	private String getSerialNumber(Map<Serializable, Serializable> parameters) {
 
-		Long organizationId = (Long) parameters.get(ORGANIZATION_ID_PARAMETER_NAME);
+		Long organizationId = (Long) parameters.get(ORGANIZATION_ID);
 
 		Date now = new Date();
 		Date dayStart = DateUtil.truncateDay(now);

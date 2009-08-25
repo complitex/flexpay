@@ -3,19 +3,18 @@ package org.flexpay.payments.process.export.job;
 import org.apache.commons.lang.StringUtils;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
-import org.flexpay.common.persistence.registry.Registry;
-import org.flexpay.common.persistence.registry.RegistryProperties;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.persistence.file.FPFile;
+import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.process.job.Job;
 import org.flexpay.common.service.FPFileService;
 import org.flexpay.common.service.RegistryService;
-import org.flexpay.common.util.StringUtil;
+import org.flexpay.orgs.persistence.ServiceProvider;
+import org.flexpay.orgs.service.ServiceProviderService;
 import org.flexpay.payments.persistence.EircRegistryProperties;
 import org.flexpay.payments.persistence.RegistryDeliveryHistory;
+import static org.flexpay.payments.process.export.job.GeneratePaymentsRegistryParameterNames.*;
 import org.flexpay.payments.service.RegistryDeliveryHistoryService;
-import org.flexpay.orgs.service.ServiceProviderService;
-import org.flexpay.orgs.persistence.ServiceProvider;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -23,8 +22,8 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.io.Serializable;
-import java.util.Map;
 import java.util.Date;
+import java.util.Map;
 
 public class SendRegistryJob extends Job {
 
@@ -41,16 +40,16 @@ public class SendRegistryJob extends Job {
 
 		FPFile spFile = null;
 
-		if (parameters.containsKey("File")) {
-			Object o = parameters.get("File");
+		if (parameters.containsKey(FILE)) {
+			Object o = parameters.get(FILE);
 			if (o instanceof FPFile && ((FPFile) o).getId() != null) {
 				spFile = (FPFile) o;
 				spFile = fpFileService.read(stub(spFile));
 			} else {
 				log.warn("Invalid file`s instance class");
 			}
-		} else if (parameters.containsKey("FileId")) {
-			Long fileId = (Long) parameters.get("FileId");
+		} else if (parameters.containsKey(FILE_ID)) {
+			Long fileId = (Long) parameters.get(FILE_ID);
 			spFile = fpFileService.read(new Stub<FPFile>(fileId));
 		}
 
@@ -61,15 +60,15 @@ public class SendRegistryJob extends Job {
 
         Registry registry = null;
 
-		if (parameters.containsKey("Registry")) {
-			Object o = parameters.get("Registry");
+		if (parameters.containsKey(REGISTRY)) {
+			Object o = parameters.get(REGISTRY);
 			if (o instanceof Registry) {
 				registry = (Registry) o;
 			} else {
 				log.warn("Invalid registry`s instance class");
 			}
-		} else if (parameters.containsKey("RegistryId")) {
-			Long registryId = (Long) parameters.get("RegistryId");
+		} else if (parameters.containsKey(REGISTRY_ID)) {
+			Long registryId = (Long) parameters.get(REGISTRY_ID);
 			registry = registryService.read(new Stub<Registry>(registryId));
 		}
 
