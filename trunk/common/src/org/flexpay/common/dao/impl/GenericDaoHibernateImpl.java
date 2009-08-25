@@ -9,8 +9,9 @@ import org.flexpay.common.dao.finder.impl.SimpleFinderArgumentTypeFactory;
 import org.flexpay.common.dao.finder.impl.SimpleFinderNamingStrategy;
 import org.flexpay.common.dao.paging.FetchRange;
 import org.flexpay.common.dao.paging.Page;
-import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.persistence.DomainObject;
+import org.flexpay.common.persistence.Range;
+import org.flexpay.common.util.CollectionUtils;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -90,7 +91,7 @@ public class GenericDaoHibernateImpl<T, PK extends Serializable>
 	/**
 	 * Read full persistent objects info
 	 *
-	 * @param ids Object identifiers
+	 * @param ids		   Object identifiers
 	 * @param preserveOrder whether to save order of elements
 	 * @return Objects found
 	 */
@@ -190,6 +191,24 @@ public class GenericDaoHibernateImpl<T, PK extends Serializable>
 							continue;
 						}
 						int nParam = i - fix;
+						if (values[i] instanceof Range) {
+							Range<?> rangeParam = (Range<?>) values[i];
+							queryObject.setParameter(nParam, rangeParam.getStart());
+							queryObject.setParameter(nParam + 1, rangeParam.getEnd());
+							if (queryCount != null) {
+								queryCount.setParameter(nParam, rangeParam.getStart());
+								queryCount.setParameter(nParam + 1, rangeParam.getEnd());
+							}
+							if (queryStats != null) {
+								// stats query should not contain additional "between ? and ?"
+								nParam = fetchRangeParamPosition != 0 ? nParam - 2 : nParam;
+								queryStats.setParameter(nParam, rangeParam.getStart());
+								queryStats.setParameter(nParam + 1, rangeParam.getEnd());
+							}
+							// skip 2 range parameters and add thrown away 1 argument
+							fix += -2 + 1;
+							continue;
+						}
 						// handle collection parameter
 						if (values[i] instanceof Collection) {
 							queryObject.setParameterList(PARAM_LIST_PREFIX + nNamedParam, (Collection<?>) values[i]);
@@ -256,7 +275,7 @@ public class GenericDaoHibernateImpl<T, PK extends Serializable>
 					}
 
 					queryObject.setLong(fetchRangeParamPosition, range.getLowerBound());
-					queryObject.setLong(fetchRangeParamPosition+1, range.getUpperBound());
+					queryObject.setLong(fetchRangeParamPosition + 1, range.getUpperBound());
 				} else if (range != null) {
 					throw new IllegalStateException("Found FetchRange parameter, but no stats query found: "
 													+ getStatsQueryName(queryName));

@@ -10,6 +10,13 @@ public class RegistryContainer extends DomainObject {
 	private String data;
 	private Registry registry;
 
+	public RegistryContainer() {
+	}
+
+	public RegistryContainer(String data) {
+		this.data = data;
+	}
+
 	public int getOrder() {
 		return order;
 	}

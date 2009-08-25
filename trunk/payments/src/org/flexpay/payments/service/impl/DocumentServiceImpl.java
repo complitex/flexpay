@@ -1,6 +1,7 @@
 package org.flexpay.payments.service.impl;
 
 import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.persistence.DateRange;
 import org.flexpay.orgs.persistence.Cashbox;
 import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.orgs.persistence.PaymentPoint;
@@ -97,8 +98,10 @@ public class DocumentServiceImpl implements DocumentService {
 	/**
 	 * {@inheritDoc}
 	 */
-	public List<Document> listRegisteredPaymentDocuments(@NotNull ServiceProvider serviceProvider, @NotNull Organization organization, @NotNull Date begin, @NotNull Date end) {
-		return documentDao.listPaymentDocumentsByServiceProvider(serviceProvider.getId(), organization.getId(), begin, end, DocumentType.CASH_PAYMENT, DocumentStatus.REGISTERED);
+	public List<Document> listRegisteredPaymentDocuments(
+			@NotNull Stub<ServiceProvider> providerStub, @NotNull Stub<Organization> orgStub, @NotNull DateRange range) {
+		return documentDao.listPaymentDocumentsByServiceProvider(
+				providerStub.getId(), orgStub.getId(), range, DocumentType.CASH_PAYMENT, DocumentStatus.REGISTERED);
 	}
 
 	@Override

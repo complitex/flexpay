@@ -2,6 +2,7 @@ package org.flexpay.payments.process.export.job;
 
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.persistence.DateRange;
 import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.process.job.Job;
@@ -21,18 +22,11 @@ import java.util.Map;
 public class GeneratePaymentsDBRegistryJob extends Job {
 
 	// required services
-	private FPFileService fpFileService;
 	private PaymentsRegistryDBGenerator paymentsRegistryDBGenerator;
 	private OrganizationService organizationService;
 	private ServiceProviderService serviceProviderService;
 
 	public String execute(Map<Serializable, Serializable> parameters) throws FlexPayException {
-
-		FPFile file = getFile(parameters);
-		if (file == null) {
-			log.error("File was not found as a job parameter");
-			return RESULT_ERROR;
-		}
 
 		Organization registeredOrganization = getRegisteredOrganization(parameters);
 		if (registeredOrganization == null) {
@@ -49,8 +43,9 @@ public class GeneratePaymentsDBRegistryJob extends Job {
 		Date lastProcessedDateOldValue = getLastProcessedDateOldValue(parameters);
 		Date lastProcessedDate = getLastProcessedDate(parameters);
 
-		Registry registry = paymentsRegistryDBGenerator.createDBRegistry(file, serviceProvider, registeredOrganization,
-																		lastProcessedDateOldValue, lastProcessedDate);
+		DateRange range = new DateRange(lastProcessedDateOldValue, lastProcessedDate);
+		Registry registry = paymentsRegistryDBGenerator.createDBRegistry(
+				serviceProvider, registeredOrganization, range);
 		parameters.put(LAST_PROCESSED_DATE, String.valueOf(lastProcessedDate.getTime()));
 
 		if (registry == null) {
@@ -61,26 +56,6 @@ public class GeneratePaymentsDBRegistryJob extends Job {
 		parameters.put(REGISTRY_ID, registry.getId());
 
 		return RESULT_NEXT;
-	}
-
-	private FPFile getFile(Map<Serializable, Serializable> parameters) {
-
-		FPFile file = null;
-
-		if (parameters.containsKey(FILE)) {
-			Object o = parameters.get(FILE);
-			if (o instanceof FPFile) {
-				file = (FPFile) o;
-			} else {
-				log.error("Invalid file parameter class");
-				return null;
-			}
-		} else if (parameters.containsKey(FILE_ID)) {
-			Long fileId = (Long) parameters.get(FILE_ID);
-			file = fpFileService.read(new Stub<FPFile>(fileId));
-		}
-
-		return file;
 	}
 
 	private Organization getRegisteredOrganization(Map<Serializable, Serializable> parameters) {
@@ -148,11 +123,6 @@ public class GeneratePaymentsDBRegistryJob extends Job {
 		}
 
 		return oldLastProcessedDate;
-	}
-
-	@Required
-	public void setFpFileService(FPFileService fpFileService) {
-		this.fpFileService = fpFileService;
 	}
 
 	@Required

@@ -6,7 +6,7 @@ import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.orgs.persistence.PaymentPoint;
 import org.flexpay.orgs.service.OrganizationService;
 import org.flexpay.orgs.service.PaymentPointService;
-import org.flexpay.orgs.test.TestData;
+import org.flexpay.orgs.persistence.TestData;
 import org.flexpay.payments.test.PaymentsSpringBeanAwareTestCase;
 import static org.junit.Assert.assertNotNull;
 import org.junit.Test;
