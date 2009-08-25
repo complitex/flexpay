@@ -15,7 +15,7 @@ import org.flexpay.eirc.util.config.ApplicationConfig;
 import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.orgs.service.OrganizationService;
 import org.flexpay.orgs.service.ServiceProviderService;
-import static org.flexpay.orgs.test.TestData.ORG_CN;
+import static org.flexpay.orgs.persistence.TestData.ORG_CN;
 import org.flexpay.payments.persistence.EircRegistryProperties;
 import org.flexpay.payments.service.SPService;
 import static org.flexpay.payments.test.TestData.SRV_KVARPLATA;

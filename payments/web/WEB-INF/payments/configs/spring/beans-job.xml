@@ -27,7 +27,6 @@
 
     <bean id="generatePaymentsDBRegistryJob"
           class="org.flexpay.payments.process.export.job.GeneratePaymentsDBRegistryJob"
-          p:fpFileService-ref="fpFileService"
           p:paymentsRegistryDBGenerator-ref="paymentsRegistryDBGenerator"
           p:organizationService-ref="organizationService"
           p:serviceProviderService-ref="serviceProviderService"

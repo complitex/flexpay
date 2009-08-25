@@ -3,7 +3,11 @@ package org.flexpay.payments.service.registry.impl;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.persistence.registry.*;
+import org.flexpay.common.persistence.DateRange;
+import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.service.*;
+import org.flexpay.common.service.importexport.ClassToTypeRegistry;
+import org.flexpay.common.service.importexport.MasterIndexService;
 import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.orgs.persistence.ServiceProvider;
 import org.flexpay.payments.persistence.Document;
@@ -37,15 +41,18 @@ public class PaymentsRegistryDBGeneratorImpl implements PaymentsRegistryDBGenera
 	private PropertiesFactory propertiesFactory;
 	private DocumentService documentService;
 	private DocumentAdditionTypeService documentAdditionTypeService;
+	private ClassToTypeRegistry typeRegistry;
+	private MasterIndexService masterIndexService;
 
 	@Nullable
-	public Registry createDBRegistry(@NotNull FPFile spFile, @NotNull ServiceProvider serviceProvider, @NotNull Organization registerOrganization,
-									 @NotNull Date fromDate, @NotNull Date tillDate) throws FlexPayException {
+	public Registry createDBRegistry(@NotNull ServiceProvider serviceProvider,
+								  @NotNull Organization registerOrganization,
+								  @NotNull DateRange range) throws FlexPayException {
 
 		log.info("Searching documents for service provider {} and registered in organization {}",
 				new Object[]{serviceProvider.getId(), registerOrganization.getId()});
 
-		List<Document> documents = getDocuments(serviceProvider, registerOrganization, fromDate, tillDate);
+		List<Document> documents = getDocuments(serviceProvider, registerOrganization, range);
 
 		if (documents.size() == 0) {
 			log.info("No documents were found. No registry will be created.");
@@ -55,7 +62,7 @@ public class PaymentsRegistryDBGeneratorImpl implements PaymentsRegistryDBGenera
 		log.info("{} documents found", documents.size());
 
 		Registry registry = new Registry();
-		fillRegistryData(spFile, serviceProvider, registerOrganization, fromDate, tillDate, registry);
+		fillRegistryData(serviceProvider, registerOrganization, range, registry);
 		registryService.create(registry);
 
 		BigDecimal totalSumm = new BigDecimal(0);
@@ -92,24 +99,41 @@ public class PaymentsRegistryDBGeneratorImpl implements PaymentsRegistryDBGenera
 		registry.setErrorsNumber(errorsNumber.intValue());
 	}
 
-	private void fillRegistryData(FPFile spFile, ServiceProvider serviceProvider, Organization registerOrganization,
-								  Date fromDate, Date tillDate, Registry registry) {
+	private void fillRegistryData(ServiceProvider serviceProvider, Organization registerOrganization,
+								  DateRange range, Registry registry) {
 
 		registry.setRecipientCode(serviceProvider.getOrganization().getId());
 		registry.setSenderCode(registerOrganization.getId());
 		registry.setCreationDate(new Date());
-		registry.setSpFile(spFile);
-		registry.setRegistryType(registryTypeService.findByCode(getPaymentsType()));
+		registry.setRegistryType(registryTypeService.findByCode(RegistryType.TYPE_CASH_PAYMENTS));
 		registry.setArchiveStatus(registryArchiveStatusService.findByCode(RegistryArchiveStatus.NONE));
 		registry.setRegistryStatus(registryStatusService.findByCode(RegistryStatus.CREATING));
-		registry.setFromDate(fromDate);
-		registry.setTillDate(tillDate);
+		registry.setFromDate(range.getStart());
+		registry.setTillDate(range.getEnd());
 
 		EircRegistryProperties registryProperties = (EircRegistryProperties) propertiesFactory.newRegistryProperties();
 		registryProperties.setRecipient(serviceProvider.getOrganization());
 		registryProperties.setSender(registerOrganization);
 		registryProperties.setServiceProvider(serviceProvider);
 		registry.setProperties(registryProperties);
+
+		// add identifiers sync containers
+		registry.addContainer(new RegistryContainer(
+				"502" +
+				":" + typeRegistry.getType(Organization.class) +
+				":" + registerOrganization.getId() +
+				":" +
+				":" + masterIndexService.getMasterIndex(registerOrganization) +
+				":1"
+		));
+		registry.addContainer(new RegistryContainer(
+				"502" +
+				":" + typeRegistry.getType(Organization.class) +
+				":" + serviceProvider.getOrganization().getId() +
+				":" +
+				":" + masterIndexService.getMasterIndex(serviceProvider.getOrganization()) +
+				":1"
+		));
 	}
 
 	private RegistryRecord buildRecord(Registry registry, Document document) throws FlexPayException {
@@ -192,17 +216,11 @@ public class PaymentsRegistryDBGeneratorImpl implements PaymentsRegistryDBGenera
 	}
 
 	@NotNull
-	private List<Document> getDocuments(@NotNull ServiceProvider serviceProvider,
-										@NotNull Organization registeredOrganization,
-										@NotNull Date startDate,
-										@NotNull Date endDate) {
+	private List<Document> getDocuments(
+			ServiceProvider serviceProvider, Organization registeredOrganization, DateRange range) {
 
-		return documentService.listRegisteredPaymentDocuments(serviceProvider, registeredOrganization, startDate, endDate);
-	}
-
-	@NotNull
-	private Integer getPaymentsType() {
-		return RegistryType.TYPE_CASH_PAYMENTS;
+		return documentService.listRegisteredPaymentDocuments(
+				stub(serviceProvider), stub(registeredOrganization), range);
 	}
 
 	@Required
@@ -248,5 +266,13 @@ public class PaymentsRegistryDBGeneratorImpl implements PaymentsRegistryDBGenera
 	@Required
 	public void setDocumentAdditionTypeService(DocumentAdditionTypeService documentAdditionTypeService) {
 		this.documentAdditionTypeService = documentAdditionTypeService;
+	}
+
+	public void setTypeRegistry(ClassToTypeRegistry typeRegistry) {
+		this.typeRegistry = typeRegistry;
+	}
+
+	public void setMasterIndexService(MasterIndexService masterIndexService) {
+		this.masterIndexService = masterIndexService;
 	}
 }
