@@ -22,53 +22,74 @@ import java.util.Map;
 public class GenerateEndOperationDayRegistryJob extends Job {
 
 	public final static String RESULT_NO_REGISTRY_CREATED = "No registry created";
-	private PaymentPointService paymentPointService;
+
+	// required services
 	private OrganizationService organizationService;
+	private PaymentsCollectorService paymentsCollectorService;
+	private PaymentPointService paymentPointService;
+
+
     private EndOperationDayRegistryGenerator registryGenerator;
     private ExportBankPaymentsRegistry exportBankPaymentsRegistry;
-	private PaymentsCollectorService paymentsCollectorService;
 
 	@Override
     public String execute(Map<Serializable, Serializable> parameters) throws FlexPayException {
 
 		log.info("Start process generating end operation day registry and save it to file...");
 
-		Long pointId = (Long) parameters.get(PAYMENT_POINT_ID);
-		PaymentPoint paymentPoint = paymentPointService.read(new Stub<PaymentPoint>(pointId));
+		PaymentPoint paymentPoint = getPaymentPoint(parameters);
 		if (paymentPoint == null) {
-			log.error("Payment point with id - {} does not exist", pointId);
+			log.error("Payment point was not found (searching by id {})", parameters.get(PAYMENT_POINT_ID));
 			return RESULT_ERROR;
 		}
-		log.debug("Found paymentPoint - {}", paymentPoint);
 
-		Long organizationId = (Long) parameters.get(ORGANIZATION_ID);
-		Organization organization = organizationService.readFull(new Stub<Organization>(organizationId));
+		log.debug("Payment point found: {}", paymentPoint);
+
+		Organization organization = getOrganization(parameters);
 		if (organization == null) {
-			log.error("Organization with id - {} does not exist", organizationId);
+			log.error("Organization was not found (searching by id {})", parameters.get(ORGANIZATION_ID));
 			return RESULT_ERROR;
 		}
-		log.debug("Found organization - {}", organization);
+
+		log.debug("Organization found: {}", organization);
 
 		Date beginDate = (Date) parameters.get(BEGIN_DATE);
 		Date endDate = (Date) parameters.get(END_DATE);
 
 		Registry registry = registryGenerator.generate(paymentPoint, organization, beginDate, endDate);
-
-		if (registry != null) {
-			registry = exportBankPaymentsRegistry.generateAndAttachFile(registry);
-			parameters.put(FILE_ID, registry.getSpFile().getId());
-			PaymentsCollector paymentsCollector = paymentsCollectorService.read(new Stub<PaymentsCollector>(paymentPoint.getCollector().getId()));
-			if (paymentsCollector != null ) {
-				parameters.put(EMAIL, paymentsCollector.getEmail());
-			}			
-
-			log.info("Process end operation day registry and save it to file finished...");
-
-			return RESULT_NEXT;
-		} else {
+		if (registry == null) {
 			return RESULT_NO_REGISTRY_CREATED;
 		}
+
+		registry = exportBankPaymentsRegistry.generateAndAttachFile(registry);
+		parameters.put(FILE_ID, registry.getSpFile().getId());
+
+		PaymentsCollector paymentsCollector = getPaymentsCollector(paymentPoint);
+		if (paymentsCollector != null ) {
+			parameters.put(EMAIL, paymentsCollector.getEmail());
+		}
+
+		log.info("Process end operation day registry and save it to file finished...");
+
+		return RESULT_NEXT;
     }
+
+	private PaymentsCollector getPaymentsCollector(PaymentPoint paymentPoint) {
+
+		return paymentsCollectorService.read(new Stub<PaymentsCollector>(paymentPoint.getCollector().getId()));
+	}
+
+	private PaymentPoint getPaymentPoint(Map<Serializable, Serializable> parameters) {
+
+		Long pointId = (Long) parameters.get(PAYMENT_POINT_ID);
+		return paymentPointService.read(new Stub<PaymentPoint>(pointId));
+	}
+
+	private Organization getOrganization(Map<Serializable, Serializable> parameters) {
+
+		Long organizationId = (Long) parameters.get(ORGANIZATION_ID);
+		return organizationService.readFull(new Stub<Organization>(organizationId));
+	}
 
 	@Required
 	public void setPaymentPointService(PaymentPointService paymentPointService) {

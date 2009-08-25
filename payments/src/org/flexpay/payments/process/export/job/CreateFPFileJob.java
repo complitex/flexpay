@@ -27,15 +27,10 @@ public class CreateFPFileJob extends Job {
             fpFile.setModule(fpFileService.getModuleByName(moduleName));
             fpFile.setUserName(userName);
 
-			String generatedFileName = (String) parameters.get(GENERATED_FILE_NAME);
-			if (generatedFileName != null) {
-				fpFile.setOriginalName(generatedFileName);
-			} else {
-				fpFile.setOriginalName(fileName);
-			}
-
-            FPFileUtil.createEmptyFile(fpFile);
+			setFileName(parameters, fpFile);
+			FPFileUtil.createEmptyFile(fpFile);
             fpFileService.create(fpFile);
+
             parameters.put(GeneratePaymentsRegistryParameterNames.FILE_ID, fpFile.getId());
 
             log.info("File created {}", fpFile);
@@ -52,6 +47,16 @@ public class CreateFPFileJob extends Job {
         }
         return RESULT_NEXT;
     }
+
+	private void setFileName(Map<Serializable, Serializable> parameters, FPFile fpFile) {
+
+		String generatedFileName = (String) parameters.get(GENERATED_FILE_NAME);
+		if (generatedFileName != null) {
+			fpFile.setOriginalName(generatedFileName);
+		} else {
+			fpFile.setOriginalName(fileName);
+		}
+	}
 
 	@Required
     public void setModuleName(String moduleName) {
