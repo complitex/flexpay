@@ -3,9 +3,8 @@ package org.flexpay.eirc.persistence.exchange;
 import org.apache.commons.lang.StringUtils;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
-import org.flexpay.common.persistence.registry.RegistryRecord;
-import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.eirc.persistence.exchange.delayed.DelayedUpdatesContainer;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -23,12 +22,13 @@ public class OperationsChain extends Operation {
 	 * Process all containers in a chain
 	 * 
 	 * @throws org.flexpay.common.exception.FlexPayException
+	 * @param context processing context
 	 */
-	public DelayedUpdate process(Registry registry, RegistryRecord record) throws FlexPayException, FlexPayExceptionContainer {
+	public DelayedUpdate process(@NotNull ProcessingContext context) throws FlexPayException, FlexPayExceptionContainer {
 
 		DelayedUpdatesContainer container = new DelayedUpdatesContainer();
 		for (Operation operation : containers) {
-			DelayedUpdate update = operation.process(registry, record);
+			DelayedUpdate update = operation.process(context);
 			container.addUpdate(update);
 		}
 

@@ -3,8 +3,8 @@ package org.flexpay.eirc.process.quittance;
 import org.flexpay.common.process.Process;
 import org.flexpay.common.process.ProcessManager;
 import org.flexpay.common.process.ProcessState;
-import org.flexpay.common.test.SpringBeanAwareTestCase;
 import org.flexpay.common.util.CollectionUtils;
+import org.flexpay.eirc.test.EircSpringBeanAwareTestCase;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 import org.junit.Test;
@@ -15,7 +15,7 @@ import java.io.Serializable;
 import java.util.GregorianCalendar;
 import java.util.Map;
 
-public class TestRunDuplicateQuittanceJobs extends SpringBeanAwareTestCase {
+public class TestRunDuplicateQuittanceJobs extends EircSpringBeanAwareTestCase {
 
 	@Autowired
 	@Qualifier ("processManager")

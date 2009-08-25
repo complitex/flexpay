@@ -4,6 +4,8 @@ import org.flexpay.common.persistence.ImportError;
 import org.flexpay.common.persistence.registry.RegistryRecord;
 import org.flexpay.common.persistence.registry.RegistryRecordStatus;
 
+import java.util.Collection;
+
 /**
  * Helper class for registry records workflow
  */
@@ -57,6 +59,14 @@ public interface RegistryRecordWorkflowManager {
 	 */
 	void setNextSuccessStatus(RegistryRecord record) throws TransitionNotAllowed;
 
+	/**
+	 * Set next success registry records status
+	 *
+	 * @param records Registry records to update
+	 * @throws org.flexpay.common.persistence.registry.workflow.TransitionNotAllowed
+	 *          if success transition is not allowed for some of the records
+	 */
+	void setNextSuccessStatus(Collection<RegistryRecord> records) throws TransitionNotAllowed;
 	/**
 	 * Set record status to fixed and invalidate error
 	 *

@@ -14,6 +14,7 @@ import org.flexpay.eirc.actions.SpFileAction;
 import org.flexpay.eirc.actions.UploadFileAction;
 import org.flexpay.common.dao.registry.RegistryDao;
 import org.flexpay.eirc.service.exchange.RegistryProcessor;
+import org.flexpay.eirc.persistence.exchange.ProcessingContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
@@ -86,7 +87,9 @@ public class RunSpFileProcessing implements StandaloneTask {
 		try {
 			log.debug("Starting registry processing");
 			long time = System.currentTimeMillis();
-			registryProcessor.processRegistry(registry);
+			ProcessingContext context = new ProcessingContext();
+			context.setRegistry(registry);
+			registryProcessor.processRegistry(context);
 
 			if (log.isDebugEnabled()) {
 				log.debug("Processing took {} ms", System.currentTimeMillis() - time);
@@ -107,8 +110,10 @@ public class RunSpFileProcessing implements StandaloneTask {
 		log.debug("Starting registry importing");
 		registryProcessor.startRegistryProcessing(registry);
 
+		ProcessingContext context = new ProcessingContext();
+		context.setRegistry(registry);
 		try {
-			registryProcessor.importConsumers(registry);
+			registryProcessor.importConsumers(context);
 		} finally {
 			registryProcessor.endRegistryProcessing(registry);
 		}

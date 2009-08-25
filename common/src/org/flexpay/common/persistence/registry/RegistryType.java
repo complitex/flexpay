@@ -71,4 +71,7 @@ public class RegistryType extends DomainObject {
 				toString();
 	}
 
+	public boolean isPayments() {
+		return code == TYPE_CASH_PAYMENTS || code == TYPE_CASHLESS_PAYMENTS;
+	}
 }

@@ -4,7 +4,6 @@ import org.flexpay.ab.persistence.Apartment;
 import org.flexpay.ab.persistence.Person;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
-import org.flexpay.common.persistence.DataCorrection;
 import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.registry.Registry;
@@ -24,6 +23,7 @@ import org.flexpay.eirc.util.config.ApplicationConfig;
 import org.flexpay.orgs.persistence.ServiceProvider;
 import org.flexpay.payments.persistence.EircRegistryProperties;
 import org.flexpay.payments.persistence.Service;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -43,12 +43,14 @@ public class OpenAccountOperation extends AbstractChangePersonalAccountOperation
 	/**
 	 * Process operation
 	 *
-	 * @param registry Registry header
-	 * @param record   Registry record
+	 * @param context ProcessingContext
 	 * @throws FlexPayException if failure occurs
 	 */
-	public DelayedUpdate process(Registry registry, RegistryRecord record)
+	public DelayedUpdate process(@NotNull ProcessingContext context)
 			throws FlexPayException, FlexPayExceptionContainer {
+
+		RegistryRecord record = context.getCurrentRecord();
+		Registry registry = context.getRegistry();
 
 		if (!validate(registry, record)) {
 			return DelayedUpdateNope.INSTANCE;
@@ -78,7 +80,9 @@ public class OpenAccountOperation extends AbstractChangePersonalAccountOperation
 		createCorrections(registry, record, consumer, container);
 		props.setFullConsumer(consumer);
 
-		return container;
+		container.doUpdate();
+
+		return DelayedUpdateNope.INSTANCE;
 	}
 
 	private ConsumerInfo saveConsumerInfo(RegistryRecord record) {

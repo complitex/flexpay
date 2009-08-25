@@ -14,6 +14,7 @@ import org.flexpay.eirc.service.importexport.ImportUtil;
 import org.flexpay.orgs.service.OrganizationService;
 import org.flexpay.orgs.service.ServiceProviderService;
 import org.flexpay.payments.service.SPService;
+import org.flexpay.payments.service.OperationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
@@ -25,6 +26,8 @@ public class ServiceOperationsFactory {
 
 	protected Logger log = LoggerFactory.getLogger(getClass());
 
+	private OperationService operationService;
+	private PaymentPointService paymentPointService;
 	private RegistryFileService registryFileService;
 	private SPService spService;
 	private EircAccountService accountService;
@@ -157,15 +160,22 @@ public class ServiceOperationsFactory {
 				checkContainer(registry, "Open subaccount", RegistryType.TYPE_INFO);
 				return new OpenSubserviceAccountOperation(this, datum);
 			case 15:
-				checkContainer(registry, "External Org account", RegistryType.TYPE_INFO);
 				return new SetExternalOrganizationAccountOperation(this, datum);
 
 			// Payment
-//			case 50:
+			case 50:
+				checkContainer(registry, "Simple payment", RegistryType.TYPE_CASH_PAYMENTS);
+				return new SimplePaymentOperation(this, datum);
+			case 52:
+				checkContainer(registry, "Bank payment", RegistryType.TYPE_CASH_PAYMENTS);
+				return new BankPaymentOperation(this, datum);
 
 			// General info
 			case 100:
 				return new BaseContainerOperation(this, datum);
+
+			case 500:
+				return new PaymentPointSetupOperation(this, datum);
 		}
 
 		throw new InvalidContainerException("Unknown container type: " +
@@ -331,5 +341,23 @@ public class ServiceOperationsFactory {
 	@Required
 	public void setConsumerAttributeTypeService(ConsumerAttributeTypeService consumerAttributeTypeService) {
 		this.consumerAttributeTypeService = consumerAttributeTypeService;
+	}
+
+	public OperationService getOperationService() {
+		return operationService;
+	}
+
+	@Required
+	public void setOperationService(OperationService operationService) {
+		this.operationService = operationService;
+	}
+
+	public PaymentPointService getPaymentPointService() {
+		return paymentPointService;
+	}
+
+	@Required
+	public void setPaymentPointService(PaymentPointService paymentPointService) {
+		this.paymentPointService = paymentPointService;
 	}
 }

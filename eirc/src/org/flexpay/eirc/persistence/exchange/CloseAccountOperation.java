@@ -15,6 +15,7 @@ import org.flexpay.eirc.persistence.exchange.delayed.DelayedUpdateNope;
 import org.flexpay.eirc.service.importexport.RawConsumerData;
 import org.flexpay.orgs.persistence.ServiceProvider;
 import org.flexpay.payments.persistence.Service;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -35,12 +36,14 @@ public class CloseAccountOperation extends AbstractChangePersonalAccountOperatio
 	/**
 	 * Process operation
 	 *
-	 * @param registry Registry header
-	 * @param record   Registry record
+	 * @param context ProcessingContext 
 	 * @throws org.flexpay.common.exception.FlexPayException
 	 *          if failure occurs
 	 */
-	public DelayedUpdate process(Registry registry, RegistryRecord record) throws FlexPayException {
+	public DelayedUpdate process(@NotNull ProcessingContext context) throws FlexPayException {
+
+		RegistryRecord record = context.getCurrentRecord();
+		Registry registry = context.getRegistry();
 
 		EircRegistryRecordProperties props = (EircRegistryRecordProperties) record.getProperties();
 		Consumer consumer = props.getConsumer();

@@ -10,9 +10,9 @@ import org.flexpay.common.persistence.registry.RegistryRecord;
 import org.flexpay.common.persistence.registry.RegistryRecordContainer;
 import org.flexpay.common.service.RegistryFileService;
 import org.flexpay.common.service.RegistryService;
-import org.flexpay.common.test.SpringBeanAwareTestCase;
 import org.flexpay.common.util.StringUtil;
 import org.flexpay.eirc.service.exchange.ServiceProviderFileProcessor;
+import org.flexpay.eirc.test.EircSpringBeanAwareTestCase;
 import org.flexpay.payments.service.EircRegistryService;
 import static org.junit.Assert.assertNotNull;
 import org.junit.Ignore;
@@ -22,7 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TestSetNumberOfHabitantsOperation extends SpringBeanAwareTestCase {
+public class TestSetNumberOfHabitantsOperation extends EircSpringBeanAwareTestCase {
 
 	@Autowired
 	private ServiceProviderFileProcessor serviceProviderFileProcessor;
@@ -56,7 +56,7 @@ public class TestSetNumberOfHabitantsOperation extends SpringBeanAwareTestCase {
 				}
 			}
 			SetNumberOfHabitantsOperation op = new SetNumberOfHabitantsOperation(factory, containers);
-			DelayedUpdate update = op.process(registry, record);
+			DelayedUpdate update = op.process(null);
 			update.doUpdate();
 		}
 	}

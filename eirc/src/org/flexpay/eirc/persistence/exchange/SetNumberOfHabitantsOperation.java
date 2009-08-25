@@ -2,8 +2,8 @@ package org.flexpay.eirc.persistence.exchange;
 
 import org.flexpay.bti.persistence.apartment.ApartmentAttributeConfig;
 import org.flexpay.common.exception.FlexPayException;
-import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.persistence.registry.RegistryRecord;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -22,13 +22,13 @@ public class SetNumberOfHabitantsOperation extends AbstractChangePersonalAccount
 	/**
 	 * Process operation
 	 *
-	 * @param registry Registry header
-	 * @param record   Registry record
+	 * @param context
 	 * @throws org.flexpay.common.exception.FlexPayException
 	 *          if failure occurs
 	 */
-	public DelayedUpdate process(Registry registry, RegistryRecord record) throws FlexPayException {
+	public DelayedUpdate process(@NotNull ProcessingContext context) throws FlexPayException {
 
+		RegistryRecord record = context.getCurrentRecord();
 		return ContainerProcessHelper.updateApartmentAttribute(record, newValue,
 				ApartmentAttributeConfig.ATTR_NUMBER_OF_HABITANTS, factory);
 

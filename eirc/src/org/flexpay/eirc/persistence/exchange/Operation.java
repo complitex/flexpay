@@ -6,6 +6,7 @@ import org.flexpay.common.persistence.registry.RegistryRecord;
 import org.flexpay.common.persistence.registry.Registry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.jetbrains.annotations.NotNull;
 
 public abstract class Operation {
 
@@ -44,14 +45,13 @@ public abstract class Operation {
 	/**
 	 * Process operation
 	 *
-	 * @param registry Registry header
-	 * @param record   Registry record
+	 * @param context ProcessingContext
 	 * @return DelayedUpdate object
 	 * @throws org.flexpay.common.exception.FlexPayException
 	 *          if failure occurs
 	 * @throws org.flexpay.common.exception.FlexPayExceptionContainer
 	 *          if failure occurs
 	 */
-	abstract public DelayedUpdate process(Registry registry, RegistryRecord record) throws FlexPayException, FlexPayExceptionContainer;
+	abstract public DelayedUpdate process(@NotNull ProcessingContext context) throws FlexPayException, FlexPayExceptionContainer;
 
 }

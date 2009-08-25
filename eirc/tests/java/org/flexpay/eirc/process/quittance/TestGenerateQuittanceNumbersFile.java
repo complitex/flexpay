@@ -1,23 +1,23 @@
 package org.flexpay.eirc.process.quittance;
 
-import org.flexpay.common.test.SpringBeanAwareTestCase;
+import org.apache.commons.io.IOUtils;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.util.CollectionUtils;
-import org.flexpay.eirc.service.QuittanceService;
-import org.flexpay.eirc.process.QuittanceNumberService;
 import org.flexpay.eirc.persistence.account.Quittance;
+import org.flexpay.eirc.process.QuittanceNumberService;
+import org.flexpay.eirc.service.QuittanceService;
+import org.flexpay.eirc.test.EircSpringBeanAwareTestCase;
 import org.flexpay.orgs.persistence.ServiceOrganization;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.junit.Test;
-import org.apache.commons.io.IOUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 
+import java.io.*;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
-import java.util.Calendar;
-import java.io.*;
 
-public class TestGenerateQuittanceNumbersFile extends SpringBeanAwareTestCase {
+public class TestGenerateQuittanceNumbersFile extends EircSpringBeanAwareTestCase {
 
 	@Autowired
 	private QuittanceService quittanceService;

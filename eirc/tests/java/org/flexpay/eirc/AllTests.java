@@ -8,8 +8,8 @@ import org.flexpay.eirc.util.TestBigDecimal;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
-@RunWith(Suite.class)
-@Suite.SuiteClasses({
+@RunWith (Suite.class)
+@Suite.SuiteClasses ({
 		TestProcess.class,
 		org.flexpay.eirc.actions.AllTests.class,
 		org.flexpay.eirc.dao.AllTests.class,
@@ -19,7 +19,7 @@ import org.junit.runners.Suite;
 		org.flexpay.eirc.persistence.AllTests.class,
 		org.flexpay.eirc.process.AllTests.class,
 		TestBigDecimal.class
-        })
+})
 public class AllTests extends TestCase {
 
 	public static Test suite() {

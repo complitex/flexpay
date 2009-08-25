@@ -94,7 +94,6 @@ public class ConsumerAttributeTypeServiceImpl implements ConsumerAttributeTypeSe
 		}
 
 		if (ex.isNotEmpty()) {
-			ex.error(log, "Consumer attribute type validation failed");
 			throw ex;
 		}
 	}

@@ -171,7 +171,7 @@ public class SPServiceImpl implements SPService {
 			Service parentStub = service.getParentService();
 			@SuppressWarnings ({"ConstantConditions"})
 			Service parent = serviceDao.read(parentStub.getId());
-			Long parentProviderId = parent.getServiceProviderStub().getId();
+			Long parentProviderId = parent.providerStub().getId();
 			if (!parentProviderId.equals(service.getServiceProvider().getId())) {
 				container.addException(new FlexPayException("Subservice wrong provider",
 						"eirc.error.service.invalid_parent_service_provider"));

@@ -1,5 +1,6 @@
 package org.flexpay.eirc.service.registry;
 
+import static org.flexpay.ab.persistence.TestData.IVANOVA_27_1;
 import org.flexpay.ab.service.ApartmentService;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
@@ -7,24 +8,22 @@ import org.flexpay.common.persistence.registry.*;
 import org.flexpay.common.service.*;
 import org.flexpay.common.util.DateUtil;
 import org.flexpay.eirc.persistence.EircRegistryRecordProperties;
+import org.flexpay.eirc.persistence.exchange.ProcessingContext;
 import org.flexpay.eirc.service.exchange.ServiceProviderFileProcessor;
 import org.flexpay.eirc.test.EircSpringBeanAwareTestCase;
 import org.flexpay.eirc.util.config.ApplicationConfig;
 import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.orgs.service.OrganizationService;
 import org.flexpay.orgs.service.ServiceProviderService;
-import static org.flexpay.ab.persistence.TestData.*;
-import static org.flexpay.orgs.test.TestData.*;
-import static org.flexpay.payments.test.TestData.*;
+import static org.flexpay.orgs.test.TestData.ORG_CN;
 import org.flexpay.payments.persistence.EircRegistryProperties;
 import org.flexpay.payments.service.SPService;
+import static org.flexpay.payments.test.TestData.SRV_KVARPLATA;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.hibernate.collection.PersistentList;
 
 import java.math.BigDecimal;
 import java.text.ParseException;
-import java.util.Collections;
 
 public class TestCreateAccountAndSetAttribute extends EircSpringBeanAwareTestCase {
 
@@ -60,12 +59,13 @@ public class TestCreateAccountAndSetAttribute extends EircSpringBeanAwareTestCas
 		RegistryRecord record = createRecord(registry);
 
 		// add create account and change ERC account number containers
-		PersistentList list = (PersistentList) record.getContainers();
 		record.addContainer(new RegistryRecordContainer("1:01062009::"));
 		record.addContainer(new RegistryRecordContainer("15:01062009::ERC0808080:" + getMBOrganizationStub().getId()));
 		recordService.update(record);
 
-		serviceProviderFileProcessor.processRegistry(registry);
+		ProcessingContext context = new ProcessingContext();
+		context.setRegistry(registry);
+		serviceProviderFileProcessor.processRegistry(context);
 	}
 
 	private RegistryRecord createRecord(Registry registry) throws ParseException, FlexPayException {

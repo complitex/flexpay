@@ -1,12 +1,12 @@
 package org.flexpay.eirc.actions;
 
+import org.flexpay.common.dao.registry.RegistryDao;
+import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.persistence.registry.Registry;
-import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.process.ProcessManager;
-import static org.flexpay.common.util.CollectionUtils.ar;
-import org.flexpay.common.dao.registry.RegistryDao;
 import org.flexpay.common.service.RegistryFileService;
+import static org.flexpay.common.util.CollectionUtils.ar;
 import org.jetbrains.annotations.NonNls;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;

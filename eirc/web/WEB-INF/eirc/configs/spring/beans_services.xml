@@ -80,6 +80,8 @@
 		  p:spService-ref="spService"
 		  p:spFileService-ref="registryFileService"
 		  p:quittanceService-ref="quittanceService"
+		  p:operationService-ref="operationService"
+		  p:paymentPointService-ref="eircPaymentPointService"
 		  p:organizationService-ref="organizationService"
 		  p:serviceProviderService-ref="serviceProviderService"
 		  p:reportPeriodService-ref="reportPeriodService"

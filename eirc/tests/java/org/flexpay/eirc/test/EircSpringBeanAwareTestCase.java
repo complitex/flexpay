@@ -1,6 +1,7 @@
 package org.flexpay.eirc.test;
 
 import static org.flexpay.ab.service.Roles.*;
+import static org.flexpay.common.service.Roles.PROCESS_DEFINITION_UPLOAD_NEW;
 import org.flexpay.common.test.SpringBeanAwareTestCase;
 import org.flexpay.common.util.SecurityUtil;
 import org.flexpay.common.util.config.UserPreferences;
@@ -45,7 +46,8 @@ public class EircSpringBeanAwareTestCase extends SpringBeanAwareTestCase {
 				ACCOUNT_ADD,
 				SERVICE_ORGANIZATION_ADD_SERVED_BUILDINGS,
 				SERVICE_ORGANIZATION_REMOVE_SERVED_BUILDINGS,
-				BUILDING_CHANGE
+				BUILDING_CHANGE,
+				PROCESS_DEFINITION_UPLOAD_NEW
 		);
 		User user = new User("test", "test", true, true, true, true, authorities);
 		UserPreferences preferences = new UserPreferences();

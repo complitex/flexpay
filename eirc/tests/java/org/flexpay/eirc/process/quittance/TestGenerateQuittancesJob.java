@@ -1,7 +1,7 @@
 package org.flexpay.eirc.process.quittance;
 
-import org.flexpay.common.test.SpringBeanAwareTestCase;
 import org.flexpay.common.util.CollectionUtils;
+import org.flexpay.eirc.test.EircSpringBeanAwareTestCase;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -10,7 +10,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Map;
 
-public class TestGenerateQuittancesJob extends SpringBeanAwareTestCase {
+public class TestGenerateQuittancesJob extends EircSpringBeanAwareTestCase {
 
 	@Autowired
 	private GenerateQuittanceJob job;

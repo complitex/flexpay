@@ -1,14 +1,14 @@
 package org.flexpay.eirc;
 
 import org.flexpay.common.process.ProcessManager;
-import org.flexpay.common.test.SpringBeanAwareTestCase;
+import org.flexpay.eirc.test.EircSpringBeanAwareTestCase;
 import org.jbpm.graph.def.ProcessDefinition;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.annotation.NotTransactional;
 
-public class TestProcess extends SpringBeanAwareTestCase {
+public class TestProcess extends EircSpringBeanAwareTestCase {
 
 	@Autowired
 	@Qualifier ("processManager")

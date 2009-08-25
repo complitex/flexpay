@@ -11,13 +11,12 @@ import org.flexpay.common.persistence.registry.workflow.RegistryWorkflowManager;
 import org.flexpay.common.process.ProcessLogger;
 import org.flexpay.common.service.RegistryArchiveStatusService;
 import org.flexpay.common.service.RegistryRecordService;
-import org.flexpay.common.service.RegistryTypeService;
 import org.flexpay.common.service.RegistryService;
+import org.flexpay.common.service.RegistryTypeService;
 import org.flexpay.common.service.internal.SessionUtils;
-import org.flexpay.common.util.FPFileUtil;
+import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.FileSource;
 import org.flexpay.common.util.StringUtil;
-import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.eirc.persistence.EircRegistryRecordProperties;
 import org.flexpay.eirc.persistence.exchange.Operation;
 import org.flexpay.eirc.service.ConsumerService;
@@ -40,8 +39,6 @@ import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.text.DateFormat;
@@ -60,7 +57,7 @@ public class RegistryFileParser implements FileParser {
 	private static final int MAX_CONTAINER_SIZE = 2048;
 
 	private EircRegistryService eircRegistryService;
-    private RegistryService registryService;
+	private RegistryService registryService;
 	private RegistryRecordService registryRecordService;
 	private RegistryTypeService registryTypeService;
 	private RegistryArchiveStatusService registryArchiveStatusService;
@@ -75,7 +72,7 @@ public class RegistryFileParser implements FileParser {
 
 	private PropertiesFactory propertiesFactory;
 
-    @SuppressWarnings ({"ConstantConditions"})
+	@SuppressWarnings ({"ConstantConditions"})
 	@Transactional (propagation = Propagation.NOT_SUPPORTED)
 	public List<Registry> parse(FPFile spFile) throws Exception {
 
@@ -133,23 +130,7 @@ public class RegistryFileParser implements FileParser {
 	 * @throws Exception if failure occurs
 	 */
 	private FileSource openRegistryFile(FPFile spFile) throws Exception {
-		File file = FPFileUtil.getFileOnServer(spFile);
-		if (file == null) {
-			throw new FileNotFoundException("For FPFile(id=" + spFile.getId()
-											+ ") not found temp file: " + spFile.getNameOnServer());
-		}
-
-		log.debug("Opening registry file: {}", spFile);
-
-		String type = "";
-		if (spFile.getOriginalName().endsWith(".zip")) {
-			log.debug("zip file");
-			type = "zip";
-		} else if (spFile.getOriginalName().endsWith(".gz")) {
-			log.debug("gzip file");
-			type = "gzip";
-		}
-		return new FileSource(file, type);
+		return spFile.toFileSourece();
 	}
 
 	@Transactional (propagation = Propagation.NOT_SUPPORTED)
@@ -243,7 +224,7 @@ public class RegistryFileParser implements FileParser {
 			}
 			log.info("Recipient: {}\n sender: {}", recipient, sender);
 
-			ServiceProvider provider = providerService.getProvider(new Stub<Organization>(newRegistry.getSenderCode()));
+			ServiceProvider provider = getProvider(newRegistry);
 			if (provider == null) {
 				log.error("Failed processing registry header, provider not found: #{}", newRegistry.getSenderCode());
 				throw new FlexPayException("Cannot find service provider " + newRegistry.getSenderCode());
@@ -260,6 +241,18 @@ public class RegistryFileParser implements FileParser {
 			log.error("Header parse error", e);
 			throw new RegistryFormatException("Header parse error");
 		}
+	}
+
+	private ServiceProvider getProvider(Registry registry) throws FlexPayException {
+		// for payments registry assume recipient is a service provider
+		if (registry.getRegistryType().isPayments()) {
+			Stub<Organization> recipient = new Stub<Organization>(registry.getRecipientCode());
+			if (recipient.sameId(ApplicationConfig.getSelfOrganization())) {
+				throw new FlexPayException("Expected service provider recipient, but recieved eirc code");
+			}
+			return providerService.getProvider(recipient);
+		}
+		return providerService.getProvider(new Stub<Organization>(registry.getSenderCode()));
 	}
 
 	/**
@@ -445,12 +438,12 @@ public class RegistryFileParser implements FileParser {
 		registryWorkflowManager.setNextSuccessStatus(registry);
 	}
 
-    @Required
-    public void setRegistryService(RegistryService registryService) {
-        this.registryService = registryService;
-    }
+	@Required
+	public void setRegistryService(RegistryService registryService) {
+		this.registryService = registryService;
+	}
 
-    @Required
+	@Required
 	public void setEircRegistryService(EircRegistryService eircRegistryService) {
 		this.eircRegistryService = eircRegistryService;
 	}

@@ -1,5 +1,6 @@
 package org.flexpay.eirc.service.exchange;
 
+import org.apache.commons.lang.time.StopWatch;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.eirc.persistence.account.Quittance;
 import org.flexpay.eirc.process.QuittanceNumberService;
@@ -13,7 +14,6 @@ import static org.junit.Assert.assertNotNull;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.apache.commons.lang.time.StopWatch;
 
 public class TestQuittanceDetailsFinder extends EircSpringBeanAwareTestCase {
 
