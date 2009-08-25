@@ -22,6 +22,11 @@ public class GeneratePaymentsRegistryFileNameJob extends Job {
 	public String execute(Map<Serializable, Serializable> parameters) throws FlexPayException {
 
 		String fileName = generatePaymentsRegistryFileName(parameters);
+		if (fileName == null) {
+			log.error("Registry file name generation failed");
+			return RESULT_ERROR;
+		}
+		
 		parameters.put(GENERATED_FILE_NAME, fileName);
 
 		return RESULT_NEXT;
@@ -45,6 +50,11 @@ public class GeneratePaymentsRegistryFileNameJob extends Job {
 	private String getOrganizationId(Map<Serializable, Serializable> parameters) {
 
 		Long paramValue = (Long) parameters.get(ORGANIZATION_ID);
+		if (paramValue == null) {
+			log.error("Organization id was not found as a job parameter");
+			return null;
+		}
+
 		String strValue = paramValue.toString();
 
 		if (strValue.length() == 5) {

@@ -10,7 +10,7 @@ public interface GeneratePaymentsRegistryParameterNames {
 	String PAYMENT_POINT_ID = "paymentPointId";
 
 	String ORGANIZATION = "Organization";
-	String ORGANIZATION_ID = "organizationId";
+	String ORGANIZATION_ID = "OrganizationId";
 
 	String REGISTERED_ORGANIZATION = "RegisteredOrganization";
 	String REGISTERED_ORGANIZATION_ID = "RegisteredOrganizationId";

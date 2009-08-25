@@ -27,85 +27,66 @@ import java.util.Map;
 
 public class SendRegistryJob extends Job {
 
-	private FPFileService fpFileService;
-    private RegistryService registryService;
-    private ServiceProviderService providerService;
-    private RegistryDeliveryHistoryService registryDeliveryHistoryService;
 	private String emailPassword;
 	private String emailUserName;
 	private String smtpHost;
 	private String emailFrom;
 
+	// required services
+	private FPFileService fpFileService;
+    private RegistryService registryService;
+    private ServiceProviderService providerService;
+    private RegistryDeliveryHistoryService registryDeliveryHistoryService;
+
 	public String execute(Map<Serializable, Serializable> parameters) throws FlexPayException {
 
-		FPFile spFile = null;
-
-		if (parameters.containsKey(FILE)) {
-			Object o = parameters.get(FILE);
-			if (o instanceof FPFile && ((FPFile) o).getId() != null) {
-				spFile = (FPFile) o;
-				spFile = fpFileService.read(stub(spFile));
-			} else {
-				log.warn("Invalid file`s instance class");
-			}
-		} else if (parameters.containsKey(FILE_ID)) {
-			Long fileId = (Long) parameters.get(FILE_ID);
-			spFile = fpFileService.read(new Stub<FPFile>(fileId));
-		}
-
-		if (spFile == null) {
-			log.warn("Did not find file in job parameters");
+		FPFile file = getFile(parameters);
+		if (file == null) {
+			log.error("File was not found as a job parameter");
 			return RESULT_ERROR;
 		}
 
-        Registry registry = null;
-
-		if (parameters.containsKey(REGISTRY)) {
-			Object o = parameters.get(REGISTRY);
-			if (o instanceof Registry) {
-				registry = (Registry) o;
-			} else {
-				log.warn("Invalid registry`s instance class");
-			}
-		} else if (parameters.containsKey(REGISTRY_ID)) {
-			Long registryId = (Long) parameters.get(REGISTRY_ID);
-			registry = registryService.read(new Stub<Registry>(registryId));
-		}
-
+        Registry registry = getRegistry(parameters);
         if (registry == null) {
-            log.warn("Did not find registry in job parameters");
+            log.error("Registry was not found as a job parameter");
             return RESULT_ERROR;
         }
+
         if (registry.getProperties() == null || !(registry.getProperties() instanceof EircRegistryProperties)) {
-            log.warn("Registry {} don`t content registry properties", registry.getId());
+            log.error("Registry {} doesn`t contain properties", registry.getId());
             return RESULT_ERROR;
         }
 
         EircRegistryProperties properties = (EircRegistryProperties)registry.getProperties();
         ServiceProvider serviceProvider = providerService.read(properties.getServiceProviderStub());
         if (serviceProvider == null) {
-            log.warn("Registry {} properties don`t content service provider", registry.getId());
+            log.error("Registry {} properties don`t content service provider", registry.getId());
             return RESULT_ERROR;
         }
         if (StringUtils.isEmpty(serviceProvider.getEmail())) {
-            log.warn("Service provider {} of registry {} does not content e-mail", new Object[]{serviceProvider.getId(), registry.getId()});
+            log.error("Service provider {} of registry {} does not have an e-mail", new Object[]{serviceProvider.getId(), registry.getId()});
             return RESULT_ERROR;
         }
 
 		try {
-			send(emailFrom, serviceProvider.getEmail(), "", emailUserName, emailPassword, smtpHost, spFile, spFile.getOriginalName());
-            RegistryDeliveryHistory registryDeliveryHistory = new RegistryDeliveryHistory();
-            registryDeliveryHistory.setDeliveryDate(new Date());
-            registryDeliveryHistory.setEmail(serviceProvider.getEmail());
-            registryDeliveryHistory.setSpFile(spFile);
-            registryDeliveryHistory.setRegistry(registry);
-            registryDeliveryHistoryService.create(registryDeliveryHistory);
+			send(emailFrom, serviceProvider.getEmail(), "", emailUserName, emailPassword, smtpHost, file, file.getOriginalName());
+			addToDeliveryHistory(file, registry, serviceProvider);
 		} catch (FlexPayException e) {
-			log.warn("Send file exception", e);
+			log.error("Error sending file", e);
 			return RESULT_ERROR;
 		}
 
 		return RESULT_NEXT;
+	}
+
+	private void addToDeliveryHistory(FPFile file, Registry registry, ServiceProvider serviceProvider) {
+
+		RegistryDeliveryHistory registryDeliveryHistory = new RegistryDeliveryHistory();
+		registryDeliveryHistory.setDeliveryDate(new Date());
+		registryDeliveryHistory.setEmail(serviceProvider.getEmail());
+		registryDeliveryHistory.setSpFile(file);
+		registryDeliveryHistory.setRegistry(registry);
+		registryDeliveryHistoryService.create(registryDeliveryHistory);
 	}
 
 	private void send(String emailFrom, String emailTo, String subject, String userName, String userPassword, String smptHost, FPFile attachment, String attachmentName)
@@ -142,6 +123,46 @@ public class SendRegistryJob extends Job {
 		}
 
 	}
+
+	private FPFile getFile(Map<Serializable, Serializable> parameters) {
+
+		FPFile spFile = null;
+
+		if (parameters.containsKey(FILE)) {
+			Object o = parameters.get(FILE);
+			if (o instanceof FPFile && ((FPFile) o).getId() != null) {
+				spFile = (FPFile) o;
+				spFile = fpFileService.read(stub(spFile));
+			} else {
+				log.error("Invalid file`s instance class");
+			}
+		} else if (parameters.containsKey(FILE_ID)) {
+			Long fileId = (Long) parameters.get(FILE_ID);
+			spFile = fpFileService.read(new Stub<FPFile>(fileId));
+		}
+
+		return spFile;
+	}
+
+	private Registry getRegistry(Map<Serializable, Serializable> parameters) {
+
+		Registry registry = null;
+
+		if (parameters.containsKey(REGISTRY)) {
+			Object o = parameters.get(REGISTRY);
+			if (o instanceof Registry) {
+				registry = (Registry) o;
+			} else {
+				log.error("Invalid registry`s instance class");
+			}
+		} else if (parameters.containsKey(REGISTRY_ID)) {
+			Long registryId = (Long) parameters.get(REGISTRY_ID);
+			registry = registryService.read(new Stub<Registry>(registryId));
+		}
+
+		return registry;
+	}
+
 
 	@Required
 	public void setFpFileService(FPFileService fpFileService) {

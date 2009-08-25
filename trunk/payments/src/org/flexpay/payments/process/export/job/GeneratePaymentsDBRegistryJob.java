@@ -28,7 +28,7 @@ public class GeneratePaymentsDBRegistryJob extends Job {
 
 	public String execute(Map<Serializable, Serializable> parameters) throws FlexPayException {
 
-		FPFile file = getFileParameter(parameters);
+		FPFile file = getFile(parameters);
 		if (file == null) {
 			log.error("File was not found as a job parameter");
 			return RESULT_ERROR;
@@ -63,7 +63,7 @@ public class GeneratePaymentsDBRegistryJob extends Job {
 		return RESULT_NEXT;
 	}
 
-	private FPFile getFileParameter(Map<Serializable, Serializable> parameters) {
+	private FPFile getFile(Map<Serializable, Serializable> parameters) {
 
 		FPFile file = null;
 
