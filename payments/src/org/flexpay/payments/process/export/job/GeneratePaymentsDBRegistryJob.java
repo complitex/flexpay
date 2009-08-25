@@ -10,6 +10,7 @@ import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.orgs.persistence.ServiceProvider;
 import org.flexpay.orgs.service.OrganizationService;
 import org.flexpay.orgs.service.ServiceProviderService;
+import static org.flexpay.payments.process.export.job.GeneratePaymentsRegistryParameterNames.*;
 import org.flexpay.payments.service.registry.PaymentsRegistryDBGenerator;
 import org.springframework.beans.factory.annotation.Required;
 
@@ -24,17 +25,6 @@ public class GeneratePaymentsDBRegistryJob extends Job {
 	private PaymentsRegistryDBGenerator paymentsRegistryDBGenerator;
 	private OrganizationService organizationService;
 	private ServiceProviderService serviceProviderService;
-
-	// parameter names
-	private static final String FILE_PARAMETER_NAME = "File";
-	private static final String FILE_ID_PARAMETER_NAME = "FileId";
-	private static final String REGISTERED_ORGANIZATION_PARAMETER_NAME = "RegisteredOrganization";
-	private static final String REGISTERED_ORGANIZATION_ID_PARAMETER_NAME = "RegisteredOrganizationId";
-	private static final String SERVICE_PROVIDER_ID_PARAMETER_NAME = "ServiceProviderId";
-	private static final String SERVICE_PROVIDER_PARAMETER_NAME = "ServiceProvider";
-	private static final String FINISH_DATE_PARAMETER_NAME = "finishDate";
-	private static final String LAST_PROCESSED_DATE_PARAMETER_NAME = "lastProcessedDate";
-	private static final String REGISTRY_ID_PARAMETER_NAME = "RegistryId";
 
 	public String execute(Map<Serializable, Serializable> parameters) throws FlexPayException {
 
@@ -61,14 +51,14 @@ public class GeneratePaymentsDBRegistryJob extends Job {
 
 		Registry registry = paymentsRegistryDBGenerator.createDBRegistry(file, serviceProvider, registeredOrganization,
 																		lastProcessedDateOldValue, lastProcessedDate);
-		parameters.put(LAST_PROCESSED_DATE_PARAMETER_NAME, String.valueOf(lastProcessedDate.getTime()));
+		parameters.put(LAST_PROCESSED_DATE, String.valueOf(lastProcessedDate.getTime()));
 
 		if (registry == null) {
 			log.error("Empty registry created. Returning error result.");
 			return RESULT_ERROR;
 		}
 
-		parameters.put(REGISTRY_ID_PARAMETER_NAME, registry.getId());
+		parameters.put(REGISTRY_ID, registry.getId());
 
 		return RESULT_NEXT;
 	}
@@ -77,16 +67,16 @@ public class GeneratePaymentsDBRegistryJob extends Job {
 
 		FPFile file = null;
 
-		if (parameters.containsKey(FILE_PARAMETER_NAME)) {
-			Object o = parameters.get(FILE_PARAMETER_NAME);
+		if (parameters.containsKey(FILE)) {
+			Object o = parameters.get(FILE);
 			if (o instanceof FPFile) {
 				file = (FPFile) o;
 			} else {
 				log.error("Invalid file parameter class");
 				return null;
 			}
-		} else if (parameters.containsKey(FILE_ID_PARAMETER_NAME)) {
-			Long fileId = (Long) parameters.get(FILE_ID_PARAMETER_NAME);
+		} else if (parameters.containsKey(FILE_ID)) {
+			Long fileId = (Long) parameters.get(FILE_ID);
 			file = fpFileService.read(new Stub<FPFile>(fileId));
 		}
 
@@ -97,16 +87,16 @@ public class GeneratePaymentsDBRegistryJob extends Job {
 
 		Organization registeredOrganization = null;
 
-		if (parameters.containsKey(REGISTERED_ORGANIZATION_PARAMETER_NAME)) {
-			Object o = parameters.get(REGISTERED_ORGANIZATION_PARAMETER_NAME);
+		if (parameters.containsKey(REGISTERED_ORGANIZATION)) {
+			Object o = parameters.get(REGISTERED_ORGANIZATION);
 			if (o instanceof Organization) {
 				registeredOrganization = (Organization) o;
 			} else {
 				log.error("Invalid registered organization parameter class");
 				return null;
 			}
-		} else if (parameters.containsKey(REGISTERED_ORGANIZATION_ID_PARAMETER_NAME)) {
-			Long organizationId = (Long) parameters.get(REGISTERED_ORGANIZATION_ID_PARAMETER_NAME);
+		} else if (parameters.containsKey(REGISTERED_ORGANIZATION_ID)) {
+			Long organizationId = (Long) parameters.get(REGISTERED_ORGANIZATION_ID);
 			registeredOrganization = organizationService.readFull(new Stub<Organization>(organizationId));
 		}
 
@@ -117,16 +107,16 @@ public class GeneratePaymentsDBRegistryJob extends Job {
 
 		ServiceProvider serviceProvider = null;
 
-		if (parameters.containsKey(SERVICE_PROVIDER_PARAMETER_NAME)) {
-			Object o = parameters.get(SERVICE_PROVIDER_PARAMETER_NAME);
+		if (parameters.containsKey(SERVICE_PROVIDER)) {
+			Object o = parameters.get(SERVICE_PROVIDER);
 			if (o instanceof ServiceProvider) {
 				serviceProvider = (ServiceProvider) o;
 			} else {
 				log.error("Invalid service provider parameter class");
 				return null;
 			}
-		} else if (parameters.containsKey(SERVICE_PROVIDER_ID_PARAMETER_NAME)) {
-			Long serviceProviderId = (Long) parameters.get(SERVICE_PROVIDER_ID_PARAMETER_NAME);
+		} else if (parameters.containsKey(SERVICE_PROVIDER_ID)) {
+			Long serviceProviderId = (Long) parameters.get(SERVICE_PROVIDER_ID);
 			serviceProvider = serviceProviderService.read(new Stub<ServiceProvider>(serviceProviderId));
 		}
 
@@ -137,8 +127,8 @@ public class GeneratePaymentsDBRegistryJob extends Job {
 
 		Date lastProcessedDate = new Date();
 
-		if (parameters.containsKey(FINISH_DATE_PARAMETER_NAME)) {
-			lastProcessedDate = (Date) parameters.get(FINISH_DATE_PARAMETER_NAME);
+		if (parameters.containsKey(FINISH_DATE)) {
+			lastProcessedDate = (Date) parameters.get(FINISH_DATE);
 		}
 
 		return lastProcessedDate;
@@ -148,7 +138,7 @@ public class GeneratePaymentsDBRegistryJob extends Job {
 
 		Date oldLastProcessedDate = new Date(0);
 
-		String oldLastProcessedDateParamValue = (String) parameters.get(LAST_PROCESSED_DATE_PARAMETER_NAME);
+		String oldLastProcessedDateParamValue = (String) parameters.get(LAST_PROCESSED_DATE);
 		if (oldLastProcessedDateParamValue != null) {
 			try {
 				oldLastProcessedDate = new Date(Long.parseLong(oldLastProcessedDateParamValue));
