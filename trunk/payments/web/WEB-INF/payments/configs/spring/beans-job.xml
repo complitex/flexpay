@@ -23,6 +23,7 @@
     <bean id="deleteFPFileJob"
           class="org.flexpay.payments.process.export.job.DeleteFPFileJob"
           p:fpFileService-ref="fpFileService"
+		  p:registryService-ref="registryService"
           scope="prototype" />
 
     <bean id="generatePaymentsDBRegistryJob"
