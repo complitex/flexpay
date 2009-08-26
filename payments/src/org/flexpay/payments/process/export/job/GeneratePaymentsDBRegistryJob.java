@@ -55,7 +55,7 @@ public class GeneratePaymentsDBRegistryJob extends Job {
 
 		parameters.put(REGISTRY_ID, registry.getId());
 
-		return RESULT_NEXT;
+		 return RESULT_NEXT;
 	}
 
 	private Organization getRegisteredOrganization(Map<Serializable, Serializable> parameters) {
