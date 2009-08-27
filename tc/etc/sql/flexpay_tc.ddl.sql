@@ -722,9 +722,9 @@
 
     create table common_registry_fpfiles_tbl (
         registry_id bigint not null,
-        elt bigint not null,
-        idx bigint not null,
-        primary key (registry_id, idx)
+        fpfile_id bigint not null,
+        registry_fpfile_type_id bigint not null,
+        primary key (registry_id, registry_fpfile_type_id)
     );
 
     create table common_registry_properties_tbl (
@@ -1470,22 +1470,22 @@
         references common_registries_tbl (id);
 
     alter table common_registry_fpfiles_tbl 
-        add index FKC69F493E7DDE2622 (idx), 
-        add constraint FKC69F493E7DDE2622 
-        foreign key (idx) 
+        add index FK_common_registry_fpfiles_tbl_fpfile_id (fpfile_id), 
+        add constraint FK_common_registry_fpfiles_tbl_fpfile_id 
+        foreign key (fpfile_id) 
+        references common_files_tbl (id);
+
+    alter table common_registry_fpfiles_tbl 
+        add index FK_common_registry_fpfiles_tbl_registry_fpfile_type_id (registry_fpfile_type_id), 
+        add constraint FK_common_registry_fpfiles_tbl_registry_fpfile_type_id 
+        foreign key (registry_fpfile_type_id) 
         references common_registry_fpfile_types_tbl (id);
 
     alter table common_registry_fpfiles_tbl 
-        add index FKC69F493E3B128842 (registry_id), 
-        add constraint FKC69F493E3B128842 
+        add index FK_common_registry_fpfiles_tbl_registry_id (registry_id), 
+        add constraint FK_common_registry_fpfiles_tbl_registry_id 
         foreign key (registry_id) 
         references common_registries_tbl (id);
-
-    alter table common_registry_fpfiles_tbl 
-        add index FKC69F493E925958FC (elt), 
-        add constraint FKC69F493E925958FC 
-        foreign key (elt) 
-        references common_files_tbl (id);
 
     alter table common_registry_properties_tbl 
         add index FK_common_registry_properties_tbl_registry_id (registry_id), 
