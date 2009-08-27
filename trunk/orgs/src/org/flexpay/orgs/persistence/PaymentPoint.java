@@ -5,6 +5,7 @@ import org.apache.commons.lang.builder.ToStringStyle;
 import org.flexpay.common.persistence.DomainObjectWithStatus;
 import org.flexpay.common.persistence.Language;
 import org.flexpay.common.persistence.Stub;
+import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.util.TranslationUtil;
 import org.flexpay.common.util.config.ApplicationConfig;
 import org.jetbrains.annotations.NotNull;
@@ -117,4 +118,7 @@ public class PaymentPoint extends DomainObjectWithStatus {
 				toString();
 	}
 
+	public Stub<PaymentsCollector> collectorStub() {
+		return stub(collector);
+	}
 }

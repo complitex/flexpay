@@ -19,7 +19,8 @@
 		  p:propertiesFactory-ref="paymentsPropertiesFactory"
 		  p:documentAdditionTypeService-ref="documentAdditionTypeService"
 		  p:typeRegistry-ref="classToTypeRegistry"
-		  p:masterIndexService-ref="masterIndexService" />
+		  p:masterIndexService-ref="masterIndexService"
+		  p:organizationHistoryGenerator-ref="organizationHistoryGenerator" />
 
 	<bean id="paymentsRegistryMBGenerator"
 		  class="org.flexpay.payments.service.registry.impl.PaymentsRegistryMBGeneratorImpl"

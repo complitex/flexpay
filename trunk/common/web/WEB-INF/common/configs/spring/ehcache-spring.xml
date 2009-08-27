@@ -105,6 +105,12 @@
 		   overflowToDisk="true"
 		   memoryStoreEvictionPolicy="LRU" />
 
+	<cache name="flexpayPaymentsROCache"
+		   maxElementsInMemory="500"
+		   eternal="true"
+		   overflowToDisk="true"
+		   memoryStoreEvictionPolicy="LRU" />
+
 	<cache name="paymentsServiceTypeCache"
 		   maxElementsInMemory="50"
 		   eternal="true"

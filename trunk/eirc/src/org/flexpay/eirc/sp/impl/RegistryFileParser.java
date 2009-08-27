@@ -13,6 +13,9 @@ import org.flexpay.common.service.RegistryArchiveStatusService;
 import org.flexpay.common.service.RegistryRecordService;
 import org.flexpay.common.service.RegistryService;
 import org.flexpay.common.service.RegistryTypeService;
+import org.flexpay.common.service.importexport.MasterIndexService;
+import org.flexpay.common.service.importexport.CorrectionsService;
+import org.flexpay.common.service.importexport.ClassToTypeRegistry;
 import org.flexpay.common.service.internal.SessionUtils;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.FileSource;
@@ -38,6 +41,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.InputStream;
 import java.math.BigDecimal;
@@ -69,6 +73,10 @@ public class RegistryFileParser implements FileParser {
 	private OrganizationService organizationService;
 	private ServiceProviderService providerService;
 	private ConsumerService consumerService;
+
+	private MasterIndexService masterIndexService;
+	private CorrectionsService correctionsService;
+	private ClassToTypeRegistry typeRegistry;
 
 	private PropertiesFactory propertiesFactory;
 
@@ -163,10 +171,10 @@ public class RegistryFileParser implements FileParser {
 
 	@Transactional (readOnly = false, propagation = Propagation.REQUIRED)
 	private Registry processHeader(FPFile spFile, List<String> messageFieldList) throws Exception {
-		if (messageFieldList.size() < 11) {
+		if (messageFieldList.size() < 10) {
 			throw new RegistryFormatException(
 					"Message header error, invalid number of fields: "
-					+ messageFieldList.size() + ", expected 11");
+					+ messageFieldList.size() + ", expected at least 10");
 		}
 
 		log.info("adding header: {}", messageFieldList);
@@ -196,32 +204,17 @@ public class RegistryFileParser implements FileParser {
 			if (StringUtils.isNotEmpty(amountStr)) {
 				newRegistry.setAmount(new BigDecimal(amountStr));
 			}
-			newRegistry.setContainers(parseContainers(newRegistry, messageFieldList.get(++n)));
+			if (messageFieldList.size() > n) {
+				parseContainers(newRegistry, messageFieldList.get(++n));
+			}
 
 			log.info("Creating new registry: {}", newRegistry);
 
 			EircRegistryProperties props = (EircRegistryProperties) propertiesFactory.newRegistryProperties();
 			newRegistry.setProperties(props);
 
-			Organization recipient;
-			if (newRegistry.getRecipientCode() == 0) {
-				log.debug("Recipient is EIRC, code=0");
-				recipient = ApplicationConfig.getSelfOrganization();
-			} else {
-				log.debug("Recipient is fetched via code={}", newRegistry.getRecipientCode());
-				recipient = organizationService.readFull(props.getRecipientStub());
-			}
-			props.setRecipient(recipient);
-			if (recipient == null) {
-				log.error("Failed processing registry header, recipient not found: #{}", newRegistry.getRecipientCode());
-				throw new FlexPayException("Cannot find recipient organization " + newRegistry.getRecipientCode());
-			}
-			Organization sender = organizationService.readFull(props.getSenderStub());
-			props.setSender(sender);
-			if (sender == null) {
-				log.error("Failed processing registry header, sender not found: #{}", newRegistry.getSenderCode());
-				throw new FlexPayException("Cannot find sender organization " + newRegistry.getSenderCode());
-			}
+			Organization recipient = setRecipient(newRegistry, props);
+			Organization sender = setSender(newRegistry, props);
 			log.info("Recipient: {}\n sender: {}", recipient, sender);
 
 			ServiceProvider provider = getProvider(newRegistry);
@@ -241,6 +234,80 @@ public class RegistryFileParser implements FileParser {
 			log.error("Header parse error", e);
 			throw new RegistryFormatException("Header parse error");
 		}
+	}
+
+	private Organization setSender(Registry registry, EircRegistryProperties props) throws FlexPayException {
+
+		log.debug("Fetching sender via code={}", registry.getSenderCode());
+		Organization sender = findOrgByRegistryCorrections(registry, registry.getSenderCode());
+		if (sender == null) {
+			sender = organizationService.readFull(props.getSenderStub());
+		}
+		props.setSender(sender);
+		if (sender == null) {
+			log.error("Failed processing registry header, sender not found: #{}", registry.getSenderCode());
+			throw new FlexPayException("Cannot find sender organization " + registry.getSenderCode());
+		}
+		return sender;
+	}
+
+	private Organization setRecipient(Registry registry, EircRegistryProperties props) throws FlexPayException {
+		Organization recipient;
+		if (registry.getRecipientCode() == 0) {
+			log.debug("Recipient is EIRC, code=0");
+			recipient = ApplicationConfig.getSelfOrganization();
+		} else {
+			log.debug("Fetching recipient via code={}", registry.getRecipientCode());
+			recipient = findOrgByRegistryCorrections(registry, registry.getRecipientCode());
+			if (recipient == null) {
+				recipient = organizationService.readFull(props.getRecipientStub());
+			}
+		}
+		props.setRecipient(recipient);
+		if (recipient == null) {
+			log.error("Failed processing registry header, recipient not found: #{}", registry.getRecipientCode());
+			throw new FlexPayException("Cannot find recipient organization " + registry.getRecipientCode());
+		}
+		return recipient;
+	}
+
+	@Nullable
+	private Organization findOrgByRegistryCorrections(Registry registry, Long code) {
+
+		for (RegistryContainer container : registry.getContainers()) {
+			String data = container.getData();
+			log.debug("Candidate: {}", data);
+			if (data.startsWith("502"+Operation.CONTAINER_DATA_DELIMITER)) {
+				List<String> datum = StringUtil.splitEscapable(
+								data, Operation.CONTAINER_DATA_DELIMITER, Operation.ESCAPE_SYMBOL);
+				// skip if correction is not for Organization type
+				if (Integer.parseInt(datum.get(1)) != typeRegistry.getType(Organization.class)) {
+					continue;
+				}
+				// skip if correction is not for the object with requested code
+				if (Long.parseLong(datum.get(2)) != code) {
+					continue;
+				}
+
+				if (StringUtils.isNotBlank(datum.get(4)) && "1".equals(datum.get(5))) {
+					Stub<Organization> stub = correctionsService.findCorrection(
+							datum.get(4), Organization.class, masterIndexService.getMasterSourceDescriptionStub());
+					if (stub == null) {
+						throw new IllegalStateException("Expected master correction for organization, " +
+														"but not found: " + data);
+					}
+					log.debug("Found organization by master correction: {}", datum.get(4));
+					Organization org = organizationService.readFull(stub);
+					if (org == null) {
+						throw new IllegalStateException("Existing master correction for organization " +
+														"references nowhere: " + data);
+					}
+					return org;
+				}
+			}
+		}
+
+		return null;
 	}
 
 	private ServiceProvider getProvider(Registry registry) throws FlexPayException {
@@ -351,7 +418,7 @@ public class RegistryFileParser implements FileParser {
 				record.setAmount(new BigDecimal(amountStr));
 			}
 
-			// setupcon containers
+			// setup containers
 			String containersStr = messageFieldList.get(++n);
 			if (StringUtils.isNotEmpty(containersStr)) {
 				record.setContainers(parseContainers(record, containersStr));
@@ -394,13 +461,11 @@ public class RegistryFileParser implements FileParser {
 		return result;
 	}
 
-	private List<RegistryContainer> parseContainers(Registry registry, String containersData)
+	private void parseContainers(Registry registry, String containersData)
 			throws RegistryFormatException {
 
 		List<String> containers = StringUtil.splitEscapable(
 				containersData, Operation.CONTAINER_DELIMITER, Operation.ESCAPE_SYMBOL);
-		List<RegistryContainer> result = new ArrayList<RegistryContainer>(containers.size());
-		int n = 0;
 		for (String data : containers) {
 			if (StringUtils.isBlank(data)) {
 				continue;
@@ -408,14 +473,8 @@ public class RegistryFileParser implements FileParser {
 			if (data.length() > MAX_CONTAINER_SIZE) {
 				throw new RegistryFormatException("Too long container found: " + data);
 			}
-			RegistryContainer container = new RegistryContainer();
-			container.setOrder(n++);
-			container.setRegistry(registry);
-			container.setData(data);
-			result.add(container);
+			registry.addContainer(new RegistryContainer(data));
 		}
-
-		return result;
 	}
 
 	private void processFooter(List<String> messageFieldList)
@@ -498,4 +557,18 @@ public class RegistryFileParser implements FileParser {
 		this.propertiesFactory = propertiesFactory;
 	}
 
+	@Required
+	public void setMasterIndexService(MasterIndexService masterIndexService) {
+		this.masterIndexService = masterIndexService;
+	}
+
+	@Required
+	public void setCorrectionsService(CorrectionsService correctionsService) {
+		this.correctionsService = correctionsService;
+	}
+
+	@Required
+	public void setTypeRegistry(ClassToTypeRegistry typeRegistry) {
+		this.typeRegistry = typeRegistry;
+	}
 }

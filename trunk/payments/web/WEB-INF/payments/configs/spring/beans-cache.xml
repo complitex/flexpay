@@ -96,4 +96,49 @@
 		<property name="target" ref="serviceProviderServiceAttributeTarget" />
 	</bean>
 
+	<bean id="operationLevelService"
+		  class="org.springmodules.cache.interceptor.proxy.CacheProxyFactoryBean">
+		<property name="cacheProviderFacade" ref="cacheProviderFacade" />
+		<property name="cachingModels">
+			<props>
+                <prop key="read">cacheName=flexpayPaymentsROCache</prop>
+			</props>
+		</property>
+		<property name="flushingModels">
+			<props>
+			</props>
+		</property>
+		<property name="target" ref="operationLevelServiceTarget" />
+	</bean>
+
+	<bean id="operationStatusService"
+		  class="org.springmodules.cache.interceptor.proxy.CacheProxyFactoryBean">
+		<property name="cacheProviderFacade" ref="cacheProviderFacade" />
+		<property name="cachingModels">
+			<props>
+                <prop key="read">cacheName=flexpayPaymentsROCache</prop>
+			</props>
+		</property>
+		<property name="flushingModels">
+			<props>
+			</props>
+		</property>
+		<property name="target" ref="operationStatusServiceTarget" />
+	</bean>
+
+	<bean id="operationTypeService"
+		  class="org.springmodules.cache.interceptor.proxy.CacheProxyFactoryBean">
+		<property name="cacheProviderFacade" ref="cacheProviderFacade" />
+		<property name="cachingModels">
+			<props>
+                <prop key="read">cacheName=flexpayPaymentsROCache</prop>
+			</props>
+		</property>
+		<property name="flushingModels">
+			<props>
+			</props>
+		</property>
+		<property name="target" ref="operationTypeServiceTarget" />
+	</bean>
+
 </beans>

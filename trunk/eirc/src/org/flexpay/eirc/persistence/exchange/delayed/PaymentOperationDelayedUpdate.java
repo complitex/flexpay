@@ -11,6 +11,8 @@ import org.flexpay.payments.persistence.Document;
 import org.flexpay.payments.persistence.Operation;
 import org.flexpay.payments.service.OperationService;
 import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
 import java.util.Map;
@@ -18,6 +20,8 @@ import java.util.List;
 
 public class PaymentOperationDelayedUpdate implements
 		DelayedUpdate, UpdatesListener, PaymentPointAwareUpdate, ExternalOrganizationAccountAwareUpdate {
+
+	private static final Logger log = LoggerFactory.getLogger(PaymentOperationDelayedUpdate.class);
 
 	private OperationService operationService;
 
@@ -29,6 +33,7 @@ public class PaymentOperationDelayedUpdate implements
 
 	public PaymentOperationDelayedUpdate(OperationService operationService) {
 		this.operationService = operationService;
+		log.debug("New payment operation update created.");
 	}
 
 	public Operation getOperation() {
@@ -36,6 +41,7 @@ public class PaymentOperationDelayedUpdate implements
 	}
 
 	public void addDocument(Document doc) {
+		log.debug("adding document {}", doc);
 		operation.addDocument(doc);
 		record2DocumentMap.put(currentRecord, doc);
 	}
@@ -56,6 +62,7 @@ public class PaymentOperationDelayedUpdate implements
 	 */
 	@Override
 	public void setPoint(PaymentPoint point) {
+		log.debug("Setting payment point {}", point);
 		operation.setPaymentPoint(point);
 	}
 
@@ -75,6 +82,7 @@ public class PaymentOperationDelayedUpdate implements
 			throw new FlexPayException("Summ mismatch, expected " + operation.getOperationSumm() +
 									   ", but found " + summ);
 		}
+		log.debug("Adding payment operation {}", operation);
 		operationService.create(operation);
 	}
 

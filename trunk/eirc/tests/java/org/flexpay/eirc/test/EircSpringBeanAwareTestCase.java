@@ -7,8 +7,7 @@ import org.flexpay.common.util.SecurityUtil;
 import org.flexpay.common.util.config.UserPreferences;
 import static org.flexpay.eirc.service.Roles.*;
 import static org.flexpay.orgs.service.Roles.*;
-import static org.flexpay.payments.service.Roles.SERVICE_READ;
-import static org.flexpay.payments.service.Roles.SERVICE_TYPE_READ;
+import static org.flexpay.payments.service.Roles.*;
 import org.junit.BeforeClass;
 import org.springframework.security.Authentication;
 import org.springframework.security.GrantedAuthority;
@@ -28,6 +27,7 @@ public class EircSpringBeanAwareTestCase extends SpringBeanAwareTestCase {
 				ACCOUNT_READ,
 				PERSON_READ,
 				APARTMENT_READ,
+				OPERATION_ADD,
 				BUILDING_ATTRIBUTE_TYPE_READ,
 				BUILDING_READ,
 				STREET_READ,
@@ -41,13 +41,16 @@ public class EircSpringBeanAwareTestCase extends SpringBeanAwareTestCase {
 				SERVICE_TYPE_READ,
 				SERVICE_ORGANIZATION_READ,
 				SERVICE_PROVIDER_READ,
+				PAYMENT_POINT_READ,
 				BANK_READ,
 				ORGANIZATION_READ,
 				ACCOUNT_ADD,
 				SERVICE_ORGANIZATION_ADD_SERVED_BUILDINGS,
 				SERVICE_ORGANIZATION_REMOVE_SERVED_BUILDINGS,
 				BUILDING_CHANGE,
-				PROCESS_DEFINITION_UPLOAD_NEW
+				PROCESS_DEFINITION_UPLOAD_NEW,
+				DOCUMENT_READ,
+				DOCUMENT_TYPE_READ
 		);
 		User user = new User("test", "test", true, true, true, true, authorities);
 		UserPreferences preferences = new UserPreferences();
@@ -55,5 +58,4 @@ public class EircSpringBeanAwareTestCase extends SpringBeanAwareTestCase {
 		Authentication auth = new AnonymousAuthenticationToken("key", preferences, authorities);
 		SecurityContextHolder.getContext().setAuthentication(auth);
 	}
-
 }

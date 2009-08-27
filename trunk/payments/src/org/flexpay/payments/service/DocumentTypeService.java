@@ -1,6 +1,7 @@
 package org.flexpay.payments.service;
 
 import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.payments.persistence.DocumentType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -23,10 +24,11 @@ public interface DocumentTypeService {
 	 *
 	 * @param code document type code
 	 * @return DocumentType object
+	 * @throws FlexPayException if lookup fails
 	 */
 	@Secured (Roles.DOCUMENT_TYPE_READ)
-	@Nullable
-	DocumentType read(int code);
+	@NotNull
+	DocumentType read(int code) throws FlexPayException;
 
 	/**
 	 * Save type

@@ -2,6 +2,7 @@ package org.flexpay.payments.process.export.job;
 
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.process.job.Job;
 import org.flexpay.orgs.persistence.Organization;
@@ -29,11 +30,11 @@ public class GenerateEndOperationDayRegistryJob extends Job {
 	private PaymentPointService paymentPointService;
 
 
-    private EndOperationDayRegistryGenerator registryGenerator;
-    private ExportBankPaymentsRegistry exportBankPaymentsRegistry;
+	private EndOperationDayRegistryGenerator registryGenerator;
+	private ExportBankPaymentsRegistry exportBankPaymentsRegistry;
 
 	@Override
-    public String execute(Map<Serializable, Serializable> parameters) throws FlexPayException {
+	public String execute(Map<Serializable, Serializable> parameters) throws FlexPayException {
 
 		log.info("Start process generating end operation day registry and save it to file...");
 
@@ -61,22 +62,22 @@ public class GenerateEndOperationDayRegistryJob extends Job {
 			return RESULT_NO_REGISTRY_CREATED;
 		}
 
-		registry = exportBankPaymentsRegistry.generateAndAttachFile(registry);
-		parameters.put(FILE_ID, registry.getSpFile().getId());
+		FPFile file = exportBankPaymentsRegistry.generateAndAttachFile(registry);
+		parameters.put(FILE_ID, file.getId());
 
 		PaymentsCollector paymentsCollector = getPaymentsCollector(paymentPoint);
-		if (paymentsCollector != null ) {
+		if (paymentsCollector != null) {
 			parameters.put(EMAIL, paymentsCollector.getEmail());
 		}
 
 		log.info("Process end operation day registry and save it to file finished...");
 
 		return RESULT_NEXT;
-    }
+	}
 
 	private PaymentsCollector getPaymentsCollector(PaymentPoint paymentPoint) {
 
-		return paymentsCollectorService.read(new Stub<PaymentsCollector>(paymentPoint.getCollector().getId()));
+		return paymentsCollectorService.read(paymentPoint.collectorStub());
 	}
 
 	private PaymentPoint getPaymentPoint(Map<Serializable, Serializable> parameters) {

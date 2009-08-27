@@ -8,12 +8,15 @@ import org.flexpay.payments.service.OperationStatusService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Transactional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
 @Transactional (readOnly = true)
 public class OperationStatusServiceImpl implements OperationStatusService {
 
+	private Logger log = LoggerFactory.getLogger(getClass());
 	private OperationStatusDao operationStatusDao;
 
 	/**
@@ -23,6 +26,7 @@ public class OperationStatusServiceImpl implements OperationStatusService {
 	 * @return OperationStatus if found, or <code>null</code> otherwise
 	 */
 	public OperationStatus read(@NotNull Stub<OperationStatus> stub) {
+		log.debug("Reading {}", stub);
 		return operationStatusDao.readFull(stub.getId());
 	}
 
@@ -37,6 +41,7 @@ public class OperationStatusServiceImpl implements OperationStatusService {
 	@NotNull
 	public OperationStatus read(int code) throws FlexPayException {
 
+		log.debug("Reading {}", code);
 		List<OperationStatus> statuses = operationStatusDao.findByCode(code);
 		if (statuses.isEmpty()) {
 			throw new FlexPayException("Status not found #" + code);

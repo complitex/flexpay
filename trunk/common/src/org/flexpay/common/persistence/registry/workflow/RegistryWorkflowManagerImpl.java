@@ -132,7 +132,11 @@ public class RegistryWorkflowManagerImpl implements RegistryWorkflowManager {
 	 * @return registry status
 	 */
 	private Integer code(Registry registry) {
-		return registry.getRegistryStatus().getCode();
+		int code = registry.getRegistryStatus().getCode();
+		if (0 < code || transitions.size() <= code) {
+			throw new IllegalStateException("Invalid registry status code: " + code);
+		}
+		return code;
 	}
 
 	/**

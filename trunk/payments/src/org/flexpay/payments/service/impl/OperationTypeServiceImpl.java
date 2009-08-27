@@ -8,12 +8,15 @@ import org.flexpay.payments.service.OperationTypeService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Transactional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
 @Transactional (readOnly = true)
 public class OperationTypeServiceImpl implements OperationTypeService {
 
+	private Logger log = LoggerFactory.getLogger(getClass());
 	private OperationTypeDao operationTypeDao;
 
 	/**
@@ -23,6 +26,7 @@ public class OperationTypeServiceImpl implements OperationTypeService {
 	 * @return OperationType if found, or <code>null</code> otherwise
 	 */
 	public OperationType read(@NotNull Stub<OperationType> stub) {
+		log.debug("Reading {}", stub);
 		return operationTypeDao.readFull(stub.getId());
 	}
 
@@ -37,6 +41,7 @@ public class OperationTypeServiceImpl implements OperationTypeService {
 	@NotNull
 	public OperationType read(int code) throws FlexPayException {
 
+		log.debug("Reading {}", code);
 		List<OperationType> types = operationTypeDao.findByCode(code);
 		if (types.isEmpty()) {
 			throw new FlexPayException("Type not found #" + code);

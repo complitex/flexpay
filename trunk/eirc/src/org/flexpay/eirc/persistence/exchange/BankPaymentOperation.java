@@ -3,11 +3,12 @@ package org.flexpay.eirc.persistence.exchange;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.registry.RegistryRecord;
+import org.flexpay.common.persistence.registry.RegistryType;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.eirc.persistence.exchange.delayed.PaymentOperationDelayedUpdate;
 import org.flexpay.eirc.persistence.exchange.delayed.DelayedUpdateNope;
-import org.flexpay.payments.persistence.Document;
-import org.flexpay.payments.persistence.EircRegistryProperties;
+import org.flexpay.payments.persistence.*;
+import org.flexpay.payments.persistence.Operation;
 import org.flexpay.orgs.persistence.Organization;
 import org.jetbrains.annotations.NotNull;
 
@@ -56,6 +57,8 @@ public class BankPaymentOperation extends ContainerOperation {
 		EircRegistryProperties props = (EircRegistryProperties) context.getRegistry().getProperties();
 
 		Document document = new Document();
+		setDocumentType(context, document);
+		document.setDocumentStatus(factory.getDocumentStatusService().read(DocumentStatus.REGISTERED));
 		document.setSumm(record.getAmount());
 		document.setService(factory.getConsumerService().findService(
 				props.getServiceProviderStub(), record.getServiceCode()));
@@ -95,7 +98,11 @@ public class BankPaymentOperation extends ContainerOperation {
 		if (update == null) {
 			update = new PaymentOperationDelayedUpdate(factory.getOperationService());
 			update.setOperationId(operationId);
-			update.getOperation().setOperationSumm(summ);
+			org.flexpay.payments.persistence.Operation operation = update.getOperation();
+			operation.setOperationSumm(summ);
+			setOperationType(context, operation);
+			operation.setOperationLevel(factory.getOperationLevelService().read(OperationLevel.AVERAGE));
+			operation.setOperationStatus(factory.getOperationStatusService().read(OperationStatus.REGISTERED));
 
 			Organization org = factory.getOrganizationService().readFull(new Stub<Organization>(organizationId));
 			if (org == null) {
@@ -110,5 +117,37 @@ public class BankPaymentOperation extends ContainerOperation {
 		}
 
 		return update;
+	}
+
+	private void setOperationType(ProcessingContext context, Operation operation) throws FlexPayException {
+
+		RegistryType type = context.getRegistry().getRegistryType();
+		if (type.isCashPayments()) {
+			operation.setOperationType(factory.getOperationTypeService().read(OperationType.SERVICE_CASH_PAYMENT));
+			return;
+		}
+
+		if (type.isCashlessPayments()) {
+			operation.setOperationType(factory.getOperationTypeService().read(OperationType.SERVICE_CASHLESS_PAYMENT));
+			return;
+		}
+
+		throw new FlexPayException("Invalid registry type for bank payments container: #" + type.getCode());
+	}
+
+	private void setDocumentType(ProcessingContext context, Document document) throws FlexPayException {
+
+		RegistryType type = context.getRegistry().getRegistryType();
+		if (type.isCashPayments()) {
+			document.setDocumentType(factory.getDocumentTypeService().read(DocumentType.CASH_PAYMENT));
+			return;
+		}
+
+		if (type.isCashlessPayments()) {
+			document.setDocumentType(factory.getDocumentTypeService().read(DocumentType.CASHLESS_PAYMENT));
+			return;
+		}
+
+		throw new FlexPayException("Invalid registry type for bank payments container: #" + type.getCode());
 	}
 }

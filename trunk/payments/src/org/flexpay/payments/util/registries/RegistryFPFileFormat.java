@@ -1,5 +1,6 @@
 package org.flexpay.payments.util.registries;
 
+import org.apache.commons.lang.time.StopWatch;
 import org.flexpay.common.dao.paging.FetchRange;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
@@ -11,37 +12,65 @@ import org.flexpay.common.persistence.registry.RegistryRecordContainer;
 import org.flexpay.common.service.FPFileService;
 import org.flexpay.common.service.RegistryRecordService;
 import org.flexpay.common.service.RegistryService;
+import org.flexpay.common.util.FPFileUtil;
 import org.flexpay.common.util.RegistryUtil;
+import org.flexpay.common.util.SecurityUtil;
 import org.flexpay.common.util.StringUtil;
 import org.flexpay.common.util.io.WriterCallback;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Required;
 
 import java.io.IOException;
 import java.io.Writer;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
-public abstract class RegistryFPFileFormat {
+public class RegistryFPFileFormat {
 	private Logger log = LoggerFactory.getLogger(getClass());
+
+	private String moduleName;
 
 	protected FPFileService fpFileService;
 	protected RegistryService registryService;
 	protected RegistryRecordService registryRecordService;
 
-	final public Registry generateAndAttachFile(@NotNull Registry registry) throws FlexPayException {
-		log.info("Start generate and attach file in flexpay format to registry with id = {}", registry.getId());
+	public FPFile generateAndAttachFile(@NotNull Registry registry) throws FlexPayException {
 
-		Registry result = export(registry, generateFile(registry));
+		log.info("Start generating FPfile for registry #{}", registry.getId());
 
-		log.info("Finish generating and attaching file in flexpay format to registry with id = {}", registry.getId());
+		StopWatch watch = new StopWatch();
+		watch.start();
+		FPFile result = export(registry, createFile(registry));
+
+		log.info("Finished dumping registry #{}, time spent {}", registry.getId(), watch);
 		return result;
 	}
 
-	protected abstract FPFile generateFile(@NotNull Registry registry) throws FlexPayException;
+	protected String fileName(Registry registry) throws FlexPayException {
+		return "ree_" + registry.getId() + ".ree_" + registry.getRegistryType().getCode();
+	}
 
-	protected Registry export(@NotNull final Registry registry, FPFile fpFile) throws FlexPayException {
+	protected FPFile createFile(@NotNull Registry registry) throws FlexPayException {
+
+		FPFile fpFile = new FPFile();
+		String userName = SecurityUtil.getUserName();
+		fpFile.setOriginalName(fileName(registry));
+		fpFile.setModule(fpFileService.getModuleByName(moduleName));
+		fpFile.setUserName(userName);
+
+		try {
+			FPFileUtil.createEmptyFile(fpFile);
+		} catch (IOException e) {
+			log.error("Can't create export-file for registry #" + registry.getId(), e);
+			return null;
+		}
+
+		return fpFileService.create(fpFile);
+	}
+
+	protected FPFile export(@NotNull final Registry registry, FPFile fpFile) throws FlexPayException {
 
 		try {
 			fpFile.withWriter(RegistryUtil.EXPORT_FILE_ENCODING, new WriterCallback() {
@@ -73,7 +102,8 @@ public abstract class RegistryFPFileFormat {
 		fpFile = fpFileService.update(fpFile);
 		registry.setSpFile(fpFile);
 
-		return registryService.update(registry);
+		registryService.update(registry);
+		return fpFile;
 	}
 
 	protected String buildHeader(Registry registry) {
@@ -106,11 +136,15 @@ public abstract class RegistryFPFileFormat {
 				append(RegistryUtil.FIELD_SEPARATOR).
 				append(StringUtil.getString(registry.getAmount()));
 		List<RegistryContainer> containers = registry.getContainers();
-		if (containers.size() == 0) {
+		if (!containers.isEmpty()) {
 			header.append(RegistryUtil.FIELD_SEPARATOR);
-		} else {
+			boolean first = true;
 			for (RegistryContainer container : containers) {
-				header.append(RegistryUtil.FIELD_SEPARATOR).append(container.getData());
+				if (!first) {
+					header.append(RegistryUtil.CONTAINER_SEPARATOR);
+				}
+				header.append(container.getData());
+				first = false;
 			}
 		}
 
@@ -191,5 +225,10 @@ public abstract class RegistryFPFileFormat {
 		log.debug("File footer = {}", footer.toString());
 
 		return footer.toString();
+	}
+
+	@Required
+	public void setModuleName(String moduleName) {
+		this.moduleName = moduleName;
 	}
 }

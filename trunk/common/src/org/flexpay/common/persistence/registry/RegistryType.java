@@ -74,4 +74,12 @@ public class RegistryType extends DomainObject {
 	public boolean isPayments() {
 		return code == TYPE_CASH_PAYMENTS || code == TYPE_CASHLESS_PAYMENTS;
 	}
+
+	public boolean isCashPayments() {
+		return code == TYPE_CASH_PAYMENTS;
+	}
+
+	public boolean isCashlessPayments() {
+		return code == TYPE_CASHLESS_PAYMENTS;
+	}
 }
