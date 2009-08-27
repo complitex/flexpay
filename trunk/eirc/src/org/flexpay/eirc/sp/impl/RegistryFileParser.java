@@ -9,10 +9,7 @@ import org.flexpay.common.persistence.registry.*;
 import org.flexpay.common.persistence.registry.workflow.RegistryRecordWorkflowManager;
 import org.flexpay.common.persistence.registry.workflow.RegistryWorkflowManager;
 import org.flexpay.common.process.ProcessLogger;
-import org.flexpay.common.service.RegistryArchiveStatusService;
-import org.flexpay.common.service.RegistryRecordService;
-import org.flexpay.common.service.RegistryService;
-import org.flexpay.common.service.RegistryTypeService;
+import org.flexpay.common.service.*;
 import org.flexpay.common.service.importexport.MasterIndexService;
 import org.flexpay.common.service.importexport.CorrectionsService;
 import org.flexpay.common.service.importexport.ClassToTypeRegistry;
@@ -79,6 +76,8 @@ public class RegistryFileParser implements FileParser {
 	private ClassToTypeRegistry typeRegistry;
 
 	private PropertiesFactory propertiesFactory;
+
+    private RegistryFPFileTypeService registryFPFileTypeService;
 
 	@SuppressWarnings ({"ConstantConditions"})
 	@Transactional (propagation = Propagation.NOT_SUPPORTED)
@@ -184,7 +183,7 @@ public class RegistryFileParser implements FileParser {
 		Registry newRegistry = new Registry();
 		newRegistry.setArchiveStatus(registryArchiveStatusService.findByCode(RegistryArchiveStatus.NONE));
 		registryWorkflowManager.setInitialStatus(newRegistry);
-		newRegistry.setSpFile(spFile);
+		newRegistry.getFiles().put(registryFPFileTypeService.findByCode(RegistryFPFileType.MB_FORMAT), spFile);
 		try {
 			int n = 0;
 			newRegistry.setRegistryNumber(Long.valueOf(messageFieldList.get(++n)));
@@ -571,4 +570,9 @@ public class RegistryFileParser implements FileParser {
 	public void setTypeRegistry(ClassToTypeRegistry typeRegistry) {
 		this.typeRegistry = typeRegistry;
 	}
+    
+    @Required
+    public void setRegistryFPFileTypeService(RegistryFPFileTypeService registryFPFileTypeService) {
+        this.registryFPFileTypeService = registryFPFileTypeService;
+    }
 }
