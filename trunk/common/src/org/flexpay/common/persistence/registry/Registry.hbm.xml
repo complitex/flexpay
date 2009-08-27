@@ -30,12 +30,6 @@
 			</column>
 		</many-to-one>
 
-		<many-to-one name="spFile" foreign-key="FK_common_registries_tbl_file_id"
-					 class="org.flexpay.common.persistence.file.FPFile">
-			<column name="file_id" not-null="false">
-				<comment>Registry file reference</comment>
-			</column>
-		</many-to-one>
 		<many-to-one name="registryStatus" class="RegistryStatus"
 					 foreign-key="FK_common_registries_tbl_status_id">
 			<column name="registry_status_id" not-null="true">
@@ -51,6 +45,12 @@
 		<one-to-one name="properties" cascade="all" constrained="true"
 					foreign-key="FK_common_registries_tbl_properties_id"
 					class="RegistryProperties" fetch="join" property-ref="registry" />
+
+        <map name="files" table="common_registry_fpfiles_tbl" fetch="join" cascade="all">
+            <key column="registry_id" not-null="true"/>
+            <map-key-many-to-many class="org.flexpay.common.persistence.registry.RegistryFPFileType"/>
+            <many-to-many class="org.flexpay.common.persistence.file.FPFile"/>
+        </map>
 	</class>
 
 	<class name="RegistryContainer" table="common_registry_containers_tbl">
@@ -112,6 +112,22 @@
 			</column>
 		</property>
 	</class>
+
+    <class name="RegistryFPFileType" table="common_registry_fpfile_types_tbl" optimistic-lock="version">
+        <id name="id" column="id">
+			<generator class="native" />
+		</id>
+		<version name="version" access="field">
+			<column name="version">
+				<comment>Optimistic locking version</comment>
+			</column>
+		</version>
+		<property name="code">
+			<column name="code" not-null="true" unique="true">
+				<comment>FP file registry type code</comment>
+			</column>
+		</property>
+    </class>
 
 	<class name="RegistryStatus" table="common_registry_statuses_tbl" optimistic-lock="version">
 		<id name="id" column="id">
@@ -203,17 +219,20 @@
 	</class>
 
 	<query name="Registry.listRegistries.count">
-		select count(*) from Registry sr where sr.spFile.id = ?
+		select count(*) from Registry r
+		inner join r.files f
+		where f.id = ?
 	</query>
 
 	<query name="Registry.listRegistries">
 		select distinct r
 		from Registry r
+		inner join fetch r.files f
 		inner join fetch r.registryType
 		inner join fetch r.registryStatus
 		inner join fetch r.properties 
 		left join fetch r.containers
-		where r.spFile.id = ?
+		where f.id = ?
 	</query>
 
 	<query name="Registry.listRegistryWithContainers">
@@ -223,6 +242,7 @@
 		inner join fetch r.registryStatus
 		inner join fetch r.properties
 		left join fetch r.containers
+		left join fetch r.files
 		where r.id=?
 	</query>
 
@@ -230,11 +250,15 @@
 		select distinct r
 		from Registry r
 			inner join fetch r.properties
+			left join fetch r.files
 		where r.registryNumber=? and r.senderCode=?
 	</query>
 
 	<query name="Registry.findObjects">
-		from Registry r where r.spFile.id=?
+        select distinct r
+		from Registry r
+		    inner join fetch r.files f
+		where f.id=?
 	</query>
 
 	<query name="Registry.deleteRecords">
@@ -258,7 +282,10 @@
 	</query>
 
 	<query name="Registry.findObjects.count">
-		select count(*) from Registry r where r.spFile.id=?
+		select count(*)
+		from Registry r
+		inner join r.files f
+		 where f.id=?
 	</query>
 
 	<query name="Registry.readFull">
@@ -267,6 +294,7 @@
 		inner join fetch r.registryType
 		inner join fetch r.registryStatus
 		inner join fetch r.properties
+		left join fetch r.files 
 		where r.id=?
 	</query>
 
@@ -411,6 +439,10 @@
 		from RegistryRecordContainer c
 		where c.record.id=?
 		order by c.order
+	</query>
+
+    <query name="RegistryFPFileType.findByCode">
+		from RegistryFPFileType t where t.code=?
 	</query>
 
 </hibernate-mapping>

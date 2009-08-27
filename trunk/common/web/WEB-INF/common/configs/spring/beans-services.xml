@@ -99,6 +99,11 @@
 		  class="org.flexpay.common.service.imp.RegistryArchiveStatusServiceImpl"
 		  p:registryArchiveStatusDao-ref="registryArchiveStatusDao" />
 
+	<bean id="registryFPFileTypeServiceTarget"
+		  autowire-candidate="false"
+		  class="org.flexpay.common.service.imp.RegistryFPFileTypeServiceImpl"
+		  p:fpFileRegistryTypeDao-ref="registryFPFileTypeDao" />
+
 	<bean id="registryRecordStatusService"
 		  class="org.flexpay.common.service.imp.RegistryRecordStatusServiceImpl"
 		  p:spRegistryRecordStatusDao-ref="registryRecordStatusDao" />

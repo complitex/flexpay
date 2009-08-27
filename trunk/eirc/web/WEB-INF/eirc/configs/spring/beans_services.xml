@@ -22,7 +22,8 @@
 		  p:propertiesFactory-ref="propertiesFactory"
 		  p:typeRegistry-ref="classToTypeRegistry"
 		  p:correctionsService-ref="correctionsService"
-		  p:masterIndexService-ref="masterIndexService" />
+		  p:masterIndexService-ref="masterIndexService"
+          p:registryFPFileTypeService-ref="registryFPFileTypeService" />
 
 
 	<bean id="mbFileValidator"
@@ -61,11 +62,13 @@
 	<bean id="mbChargesFileParser"
 		  parent="mbFileParser"
 		  class="org.flexpay.eirc.sp.impl.parsing.MbChargesFileParser"
-		  p:validator-ref="mbChargesFileValidator" />
+		  p:validator-ref="mbChargesFileValidator"
+          p:registryFPFileTypeService-ref="registryFPFileTypeService" />
 
 	<bean id="mbCorrectionsFileParser"
 		  parent="mbFileParser"
 		  class="org.flexpay.eirc.sp.impl.parsing.MbCorrectionsFileParser"
+          p:registryFPFileTypeService-ref="registryFPFileTypeService"
 		  p:validator-ref="mbCorrectionsFileValidator" />
 
 	<bean id="eircAccountService"

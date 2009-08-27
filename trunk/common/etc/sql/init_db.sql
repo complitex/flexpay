@@ -136,6 +136,13 @@ SELECT @sp_registry_archive_status_archived:=last_insert_id();
 INSERT INTO common_registry_archive_statuses_tbl (code) VALUES (3);
 SELECT @sp_registry_archive_status_canceled:=last_insert_id();
 
+-- Init FPFileRegistryTypes
+INSERT INTO common_registry_fpfile_types_tbl (version, code) VALUES (0, 0);
+SELECT @sp_registry_file_fp_format:=last_insert_id();
+
+INSERT INTO common_registry_fpfile_types_tbl (version, code) VALUES (0, 1);
+SELECT @sp_registry_file_mb_format:=last_insert_id();
+
 -- Init RegistryRecordStatus
 INSERT INTO common_registry_record_statuses_tbl (id, code) VALUES (1, 1);
 select @record_status_loaded:=1;

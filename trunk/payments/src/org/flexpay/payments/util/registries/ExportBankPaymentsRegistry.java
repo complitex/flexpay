@@ -8,6 +8,7 @@ import org.flexpay.common.persistence.registry.RegistryRecordContainer;
 import org.flexpay.common.service.FPFileService;
 import org.flexpay.common.service.RegistryRecordService;
 import org.flexpay.common.service.RegistryService;
+import org.flexpay.common.util.FPFileUtil;
 import org.flexpay.common.util.RegistryUtil;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;

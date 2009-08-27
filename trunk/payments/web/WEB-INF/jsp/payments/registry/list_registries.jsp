@@ -42,7 +42,8 @@
       <td class="th"><s:text name="payments.registry.annotation.change"/></td>
       <td class="th">&nbsp;</td>
 
-      <td class="th"><s:text name="eirc.registry.file_download"/></td>
+      <td class="th"><s:text name="eirc.registry.mb.file_download"/></td>
+      <td class="th"><s:text name="eirc.registry.fp.file_download"/></td>
     </tr>
     <s:iterator value="registries" status="status">
       <tr valign="middle" class="cols_1">
@@ -66,8 +67,12 @@
                   name="common.view"/></a>
         </td>
         <td class="col">
-          <a href="<s:url value='/download/' includeParams="none"/><s:property value="%{spFile.id}"/>.registry"><s:property
-                  value="spFile.originalName"/></a>
+          <a href="<s:url value='/download/' includeParams="none"/><s:property value="getRegistryFileInMBFormat(registry).id"/>.registry"><s:property
+                  value="getRegistryFileInMBFormat(registry).originalName"/></a>
+        </td>
+        <td class="col">
+          <a href="<s:url value='/download/' includeParams="none"/><s:property value="getRegistryFileInFPFormat(registry).id"/>.registry"><s:property
+                  value="getRegistryFileInFPFormat(registry).originalName"/></a>
         </td>
       </tr>
     </s:iterator>

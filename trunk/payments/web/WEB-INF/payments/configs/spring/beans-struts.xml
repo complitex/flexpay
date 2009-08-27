@@ -217,7 +217,8 @@
           p:crumbNameKey="payments.crumbs.registries_list"
           p:eircRegistryService-ref="eircRegistryService"
           p:organizationService-ref="organizationService"
-          p:registryTypeService-ref="registryTypeService" />
+          p:registryTypeService-ref="registryTypeService"
+          p:registryFPFileTypeService-ref="registryFPFileTypeService" />
 
     <bean id="registriesProcessAction" scope="prototype"
           class="org.flexpay.payments.actions.registry.RegistriesProcessAction"

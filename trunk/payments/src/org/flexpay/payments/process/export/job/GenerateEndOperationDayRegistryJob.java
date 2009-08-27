@@ -4,7 +4,9 @@ import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.persistence.registry.Registry;
+import org.flexpay.common.persistence.registry.RegistryFPFileType;
 import org.flexpay.common.process.job.Job;
+import org.flexpay.common.service.RegistryFPFileTypeService;
 import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.orgs.persistence.PaymentPoint;
 import org.flexpay.orgs.persistence.PaymentsCollector;
@@ -32,7 +34,8 @@ public class GenerateEndOperationDayRegistryJob extends Job {
 
 	private EndOperationDayRegistryGenerator registryGenerator;
 	private ExportBankPaymentsRegistry exportBankPaymentsRegistry;
-
+    private RegistryFPFileTypeService registryFPFileTypeService;
+    
 	@Override
 	public String execute(Map<Serializable, Serializable> parameters) throws FlexPayException {
 
@@ -117,4 +120,8 @@ public class GenerateEndOperationDayRegistryJob extends Job {
 		this.paymentsCollectorService = paymentsCollectorService;
 	}
 
+    @Required
+    public void setRegistryFPFileTypeService(RegistryFPFileTypeService registryFPFileTypeService) {
+        this.registryFPFileTypeService = registryFPFileTypeService;
+    }
 }

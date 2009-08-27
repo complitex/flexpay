@@ -104,4 +104,16 @@
 		<property name="target" ref="registryStatusServiceTarget" />
 	</bean>
 
+    <bean id="registryFPFileTypeService"
+		  class="org.springmodules.cache.interceptor.proxy.CacheProxyFactoryBean">
+		<property name="cacheProviderFacade" ref="cacheProviderFacade" />
+		<property name="cachingModels">
+			<props>
+				<prop key="read">cacheName=flexpayCache</prop>
+				<prop key="findByCode">cacheName=flexpayCache</prop>
+			</props>
+		</property>
+		<property name="target" ref="registryFPFileTypeServiceTarget" />
+	</bean>
+
 </beans>

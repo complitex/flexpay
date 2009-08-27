@@ -9,6 +9,7 @@ import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.persistence.registry.*;
 import org.flexpay.common.process.ProcessLogger;
 import org.flexpay.common.util.CollectionUtils;
+import org.flexpay.common.service.RegistryFPFileTypeService;
 import org.flexpay.eirc.persistence.Consumer;
 import org.flexpay.eirc.persistence.EircRegistryRecordProperties;
 import org.flexpay.eirc.sp.impl.MbFileParser;
@@ -23,6 +24,7 @@ import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.beans.factory.annotation.Required;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -37,6 +39,8 @@ import java.util.Set;
 public class MbCorrectionsFileParser extends MbFileParser {
 
 	private final String MODIFICATIONS_START_DATE_FORMAT = "ddMMyy";
+
+    private RegistryFPFileTypeService registryFPFileTypeService;
 
 	@Transactional (propagation = Propagation.NOT_SUPPORTED, readOnly = false)
 	protected List<Registry> parseFile(@NotNull FPFile spFile) throws FlexPayException {
@@ -117,7 +121,7 @@ public class MbCorrectionsFileParser extends MbFileParser {
 
 	private void initRegistry(FPFile spFile, Registry registry) {
 		registry.setCreationDate(new Date());
-		registry.setSpFile(spFile);
+		registry.getFiles().put(registryFPFileTypeService.findByCode(RegistryFPFileType.MB_FORMAT), spFile);
 		registry.setArchiveStatus(registryArchiveStatusService.findByCode(RegistryArchiveStatus.NONE));
 		registry.setRegistryStatus(registryStatusService.findByCode(RegistryStatus.LOADING));
 	}
@@ -340,4 +344,9 @@ public class MbCorrectionsFileParser extends MbFileParser {
 
 		return services;
 	}
+
+    @Required
+    public void setRegistryFPFileTypeService(RegistryFPFileTypeService registryFPFileTypeService) {
+        this.registryFPFileTypeService = registryFPFileTypeService;
+    }
 }

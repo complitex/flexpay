@@ -4,7 +4,10 @@ import org.apache.commons.lang.time.DateUtils;
 import org.flexpay.common.persistence.filter.RegistryTypeFilter;
 import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.persistence.registry.RegistryProperties;
+import org.flexpay.common.persistence.registry.RegistryFPFileType;
+import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.service.RegistryTypeService;
+import org.flexpay.common.service.RegistryFPFileTypeService;
 import org.flexpay.common.util.DateUtil;
 import org.flexpay.common.actions.FPActionWithPagerSupport;
 import org.flexpay.orgs.persistence.Organization;
@@ -32,6 +35,7 @@ public class RegistriesListAction extends FPActionWithPagerSupport {
 	private OrganizationService organizationService;
 	private EircRegistryService eircRegistryService;
 	private RegistryTypeService registryTypeService;
+    private RegistryFPFileTypeService registryFPFileTypeService;
 
 	@NotNull
 	public String doExecute() throws Exception {
@@ -123,6 +127,14 @@ public class RegistriesListAction extends FPActionWithPagerSupport {
 		return organizationService.readFull(props.getRecipientStub());
 	}
 
+    public FPFile getRegistryFileInMBFormat(Registry registry) {
+        return registry.getFiles().get(registryFPFileTypeService.findByCode(RegistryFPFileType.MB_FORMAT));
+    }
+
+    public FPFile getRegistryFileInFPFormat(Registry registry) {
+        return registry.getFiles().get(registryFPFileTypeService.findByCode(RegistryFPFileType.FP_FORMAT));
+    }
+
 	@Required
 	public void setEircRegistryService(EircRegistryService eircRegistryService) {
 		this.eircRegistryService = eircRegistryService;
@@ -137,4 +149,9 @@ public class RegistriesListAction extends FPActionWithPagerSupport {
 	public void setRegistryTypeService(RegistryTypeService registryTypeService) {
 		this.registryTypeService = registryTypeService;
 	}
+
+    @Required
+    public void setRegistryFPFileTypeService(RegistryFPFileTypeService registryFPFileTypeService) {
+        this.registryFPFileTypeService = registryFPFileTypeService;
+    }
 }

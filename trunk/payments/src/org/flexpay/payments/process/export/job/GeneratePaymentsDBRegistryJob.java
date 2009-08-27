@@ -1,12 +1,10 @@
 package org.flexpay.payments.process.export.job;
 
 import org.flexpay.common.exception.FlexPayException;
-import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.DateRange;
-import org.flexpay.common.persistence.file.FPFile;
+import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.process.job.Job;
-import org.flexpay.common.service.FPFileService;
 import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.orgs.persistence.ServiceProvider;
 import org.flexpay.orgs.service.OrganizationService;
