@@ -1,15 +1,15 @@
 package org.flexpay.payments.service.registry.impl;
 
 import org.flexpay.common.exception.FlexPayException;
-import org.flexpay.common.persistence.file.FPFile;
-import org.flexpay.common.persistence.registry.*;
 import org.flexpay.common.persistence.DateRange;
 import static org.flexpay.common.persistence.Stub.stub;
+import org.flexpay.common.persistence.registry.*;
 import org.flexpay.common.service.*;
 import org.flexpay.common.service.importexport.ClassToTypeRegistry;
 import org.flexpay.common.service.importexport.MasterIndexService;
 import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.orgs.persistence.ServiceProvider;
+import org.flexpay.orgs.service.history.OrganizationHistoryGenerator;
 import org.flexpay.payments.persistence.Document;
 import org.flexpay.payments.persistence.DocumentAddition;
 import org.flexpay.payments.persistence.DocumentAdditionType;
@@ -43,11 +43,12 @@ public class PaymentsRegistryDBGeneratorImpl implements PaymentsRegistryDBGenera
 	private DocumentAdditionTypeService documentAdditionTypeService;
 	private ClassToTypeRegistry typeRegistry;
 	private MasterIndexService masterIndexService;
+	private OrganizationHistoryGenerator organizationHistoryGenerator;
 
 	@Nullable
 	public Registry createDBRegistry(@NotNull ServiceProvider serviceProvider,
-								  @NotNull Organization registerOrganization,
-								  @NotNull DateRange range) throws FlexPayException {
+									 @NotNull Organization registerOrganization,
+									 @NotNull DateRange range) throws FlexPayException {
 
 		log.info("Searching documents for service provider {} and registered in organization {}",
 				new Object[]{serviceProvider.getId(), registerOrganization.getId()});
@@ -116,6 +117,10 @@ public class PaymentsRegistryDBGeneratorImpl implements PaymentsRegistryDBGenera
 		registryProperties.setSender(registerOrganization);
 		registryProperties.setServiceProvider(serviceProvider);
 		registry.setProperties(registryProperties);
+
+		// TODO: remove this dirty hack
+		organizationHistoryGenerator.generateFor(registerOrganization);
+		organizationHistoryGenerator.generateFor(serviceProvider.getOrganization());
 
 		// add identifiers sync containers
 		registry.addContainer(new RegistryContainer(
@@ -268,11 +273,18 @@ public class PaymentsRegistryDBGeneratorImpl implements PaymentsRegistryDBGenera
 		this.documentAdditionTypeService = documentAdditionTypeService;
 	}
 
+	@Required
 	public void setTypeRegistry(ClassToTypeRegistry typeRegistry) {
 		this.typeRegistry = typeRegistry;
 	}
 
+	@Required
 	public void setMasterIndexService(MasterIndexService masterIndexService) {
 		this.masterIndexService = masterIndexService;
+	}
+
+	@Required
+	public void setOrganizationHistoryGenerator(OrganizationHistoryGenerator organizationHistoryGenerator) {
+		this.organizationHistoryGenerator = organizationHistoryGenerator;
 	}
 }

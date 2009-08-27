@@ -87,15 +87,18 @@
 		  p:operationDao-ref="operationDao"
 		  p:operationDaoExt-ref="operationDaoExt" />
 
-	<bean id="operationTypeService"
+	<bean id="operationTypeServiceTarget"
+		  autowire-candidate="false"
 		  class="org.flexpay.payments.service.impl.OperationTypeServiceImpl"
 		  p:operationTypeDao-ref="operationTypeDao" />
 
-	<bean id="operationStatusService"
+	<bean id="operationStatusServiceTarget"
+		  autowire-candidate="false"
 		  class="org.flexpay.payments.service.impl.OperationStatusServiceImpl"
 		  p:operationStatusDao-ref="operationStatusDao" />
 
-	<bean id="operationLevelService"
+	<bean id="operationLevelServiceTarget"
+		  autowire-candidate="false"
 		  class="org.flexpay.payments.service.impl.OperationLevelServiceImpl"
 		  p:levelDao-ref="operationLevelDao" />
 

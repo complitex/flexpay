@@ -8,12 +8,15 @@ import org.flexpay.payments.service.OperationLevelService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Transactional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
 @Transactional (readOnly = true)
 public class OperationLevelServiceImpl implements OperationLevelService {
 
+	private Logger log = LoggerFactory.getLogger(getClass());
 	private OperationLevelDao levelDao;
 
 	/**
@@ -23,6 +26,7 @@ public class OperationLevelServiceImpl implements OperationLevelService {
 	 * @return OperationLevel if found, or <code>null</code> otherwise
 	 */
 	public OperationLevel read(@NotNull Stub<OperationLevel> stub) {
+		log.debug("Reading {}", stub);
 		return levelDao.readFull(stub.getId());
 	}
 
@@ -36,6 +40,8 @@ public class OperationLevelServiceImpl implements OperationLevelService {
 	 */
 	@NotNull
 	public OperationLevel read(int code) throws FlexPayException {
+
+		log.debug("Reading {}", code);
 		List<OperationLevel> levels = levelDao.findByCode(code);
 		if (levels.isEmpty()) {
 			throw new FlexPayException("Level not found #" + code);

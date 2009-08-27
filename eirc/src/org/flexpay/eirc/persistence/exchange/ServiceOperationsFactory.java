@@ -13,8 +13,7 @@ import org.flexpay.eirc.service.*;
 import org.flexpay.eirc.service.importexport.ImportUtil;
 import org.flexpay.orgs.service.OrganizationService;
 import org.flexpay.orgs.service.ServiceProviderService;
-import org.flexpay.payments.service.SPService;
-import org.flexpay.payments.service.OperationService;
+import org.flexpay.payments.service.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
@@ -27,6 +26,11 @@ public class ServiceOperationsFactory {
 	protected Logger log = LoggerFactory.getLogger(getClass());
 
 	private OperationService operationService;
+	private OperationLevelService operationLevelService;
+	private OperationTypeService operationTypeService;
+	private OperationStatusService operationStatusService;
+	private DocumentStatusService documentStatusService;
+	private DocumentTypeService documentTypeService;
 	private PaymentPointService paymentPointService;
 	private RegistryFileService registryFileService;
 	private SPService spService;
@@ -359,5 +363,50 @@ public class ServiceOperationsFactory {
 	@Required
 	public void setPaymentPointService(PaymentPointService paymentPointService) {
 		this.paymentPointService = paymentPointService;
+	}
+
+	public OperationLevelService getOperationLevelService() {
+		return operationLevelService;
+	}
+
+	@Required
+	public void setOperationLevelService(OperationLevelService operationLevelService) {
+		this.operationLevelService = operationLevelService;
+	}
+
+	public OperationTypeService getOperationTypeService() {
+		return operationTypeService;
+	}
+
+	@Required
+	public void setOperationTypeService(OperationTypeService operationTypeService) {
+		this.operationTypeService = operationTypeService;
+	}
+
+	public OperationStatusService getOperationStatusService() {
+		return operationStatusService;
+	}
+
+	@Required
+	public void setOperationStatusService(OperationStatusService operationStatusService) {
+		this.operationStatusService = operationStatusService;
+	}
+
+	public DocumentStatusService getDocumentStatusService() {
+		return documentStatusService;
+	}
+
+	@Required
+	public void setDocumentStatusService(DocumentStatusService documentStatusService) {
+		this.documentStatusService = documentStatusService;
+	}
+
+	public DocumentTypeService getDocumentTypeService() {
+		return documentTypeService;
+	}
+
+	@Required
+	public void setDocumentTypeService(DocumentTypeService documentTypeService) {
+		this.documentTypeService = documentTypeService;
 	}
 }

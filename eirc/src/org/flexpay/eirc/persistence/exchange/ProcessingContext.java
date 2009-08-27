@@ -66,6 +66,9 @@ public class ProcessingContext {
 		for (DelayedUpdate update : operationUpdates) {
 			update.doUpdate();
 		}
+		for (DelayedUpdate update : currentRecordUpdates) {
+			update.doUpdate();
+		}
 	}
 
 	public void visitCurrentRecordUpdates(DelayedUpdateVisitor visitor) {

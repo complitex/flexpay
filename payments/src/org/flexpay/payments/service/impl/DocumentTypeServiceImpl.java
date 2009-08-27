@@ -1,6 +1,7 @@
 package org.flexpay.payments.service.impl;
 
 import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.payments.dao.DocumentTypeDao;
 import org.flexpay.payments.persistence.DocumentType;
 import org.flexpay.payments.service.DocumentTypeService;
@@ -28,6 +29,7 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
 	 */
 	@Nullable
 	public DocumentType read(@NotNull Stub<DocumentType> typeStub) {
+		log.debug("Read type: {}", typeStub);
 		return documentTypeDao.readFull(typeStub.getId());
 	}
 
@@ -36,10 +38,16 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
 	 *
 	 * @param code document type code
 	 * @return DocumentType object
+	 * @throws FlexPayException if lookup fails
 	 */
-	public DocumentType read(int code) {
+	@NotNull
+	public DocumentType read(int code) throws FlexPayException {
+		log.debug("Read type: {}", code);
 		List<DocumentType> types = documentTypeDao.findByCode(code);
-		return types.isEmpty() ? null : types.get(0);
+		if (types.isEmpty()) {
+			throw new FlexPayException("Type not found #" + code);
+		}
+		return types.get(0);
 	}
 
 	/**
@@ -84,5 +92,4 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
 	public void setDocumentTypeDao(DocumentTypeDao documentTypeDao) {
 		this.documentTypeDao = documentTypeDao;
 	}
-
 }

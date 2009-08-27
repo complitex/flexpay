@@ -7,7 +7,9 @@ import org.junit.runners.Suite;
 @Suite.SuiteClasses ({
 		TestMbCorrectionsFileValidator.class,
 		TestMbCorrectionsFileParser.class,
-		TestMbChargesFileParser.class
+		TestMbCorrectionsFileParser.class,
+		TestMbChargesFileParser.class,
+		TestPaymentsRegistryProcessing.class
 })
 public class AllTests {
 

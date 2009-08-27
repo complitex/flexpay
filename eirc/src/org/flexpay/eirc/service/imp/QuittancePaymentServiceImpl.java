@@ -101,8 +101,10 @@ public class QuittancePaymentServiceImpl implements QuittancePaymentService {
 		}
 
 		EircAccount account = payment.getQuittance().getEircAccount();
-		DocumentType documentType = documentTypeService.read(DocumentType.CASH_PAYMENT);
-		if (documentType == null) {
+		DocumentType documentType;
+		try {
+			documentType = documentTypeService.read(DocumentType.CASH_PAYMENT);
+		} catch (FlexPayException ex) {
 			throw new FlexPayExceptionContainer(new FlexPayException(
 					"No doc type", "eirc.error.quittance.pay.no_doc_cash_payment"));
 		}

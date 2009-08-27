@@ -19,7 +19,10 @@
 		  p:registryWorkflowManager-ref="registryWorkflowManager"
 		  p:recordWorkflowManager-ref="registryRecordWorkflowManager"
 		  p:sessionUtils-ref="sessionUtils"
-		  p:propertiesFactory-ref="propertiesFactory" />
+		  p:propertiesFactory-ref="propertiesFactory"
+		  p:typeRegistry-ref="classToTypeRegistry"
+		  p:correctionsService-ref="correctionsService"
+		  p:masterIndexService-ref="masterIndexService" />
 
 
 	<bean id="mbFileValidator"
@@ -81,6 +84,11 @@
 		  p:spFileService-ref="registryFileService"
 		  p:quittanceService-ref="quittanceService"
 		  p:operationService-ref="operationService"
+		  p:operationLevelService-ref="operationLevelService"
+		  p:operationTypeService-ref="operationTypeService"
+		  p:operationStatusService-ref="operationStatusService"
+		  p:documentStatusService-ref="documentStatusService"
+		  p:documentTypeService-ref="documentTypeService"
 		  p:paymentPointService-ref="eircPaymentPointService"
 		  p:organizationService-ref="organizationService"
 		  p:serviceProviderService-ref="serviceProviderService"
