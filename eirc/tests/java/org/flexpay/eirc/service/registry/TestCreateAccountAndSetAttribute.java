@@ -117,7 +117,6 @@ public class TestCreateAccountAndSetAttribute extends EircSpringBeanAwareTestCas
 		registry.setRecipientCode(ApplicationConfig.getSelfOrganization().getId());
 		registry.setAmount(BigDecimal.ZERO);
 
-		registry.setSpFile(null);
 		registry.setRegistryType(typeService.findByCode(RegistryType.TYPE_INFO));
 		registry.setRegistryStatus(statusService.findByCode(RegistryStatus.LOADED));
 		registry.setArchiveStatus(archiveStatusService.findByCode(RegistryArchiveStatus.NONE));

@@ -4,9 +4,11 @@ import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.persistence.registry.Registry;
+import org.flexpay.common.persistence.registry.RegistryFPFileType;
 import org.flexpay.common.process.job.Job;
 import org.flexpay.common.service.FPFileService;
 import org.flexpay.common.service.RegistryService;
+import org.flexpay.common.service.RegistryFPFileTypeService;
 import org.flexpay.common.util.config.ApplicationConfig;
 import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.orgs.service.OrganizationService;
@@ -32,6 +34,7 @@ public class GeneratePaymentsMBRegistryJob extends Job {
 	private PaymentsRegistryMBGenerator paymentsRegistryMBGenerator;
 	private OrganizationService organizationService;
 	private RegistryService registryService;
+    private RegistryFPFileTypeService registryFPFileTypeService;
 	private static final String RSA_KEY_ALGORITHM = "RSA";
 	private static final String SHA1_WITH_RSA_SIGNATURE_ALGORITHM = "SHA1withRSA";
 
@@ -72,6 +75,8 @@ public class GeneratePaymentsMBRegistryJob extends Job {
 
 		file.updateSize();
 		fpFileService.update(file);
+        registry.getFiles().put(registryFPFileTypeService.findByCode(RegistryFPFileType.MB_FORMAT), file);
+        registryService.update(registry);
 		
 		return RESULT_NEXT;
 	}
@@ -200,4 +205,8 @@ public class GeneratePaymentsMBRegistryJob extends Job {
 		this.registryService = registryService;
 	}
 
+    @Required
+    public void setRegistryFPFileTypeService(RegistryFPFileTypeService registryFPFileTypeService) {
+        this.registryFPFileTypeService = registryFPFileTypeService;
+    }
 }

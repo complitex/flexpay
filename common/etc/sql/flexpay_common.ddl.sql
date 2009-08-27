@@ -230,7 +230,6 @@
         recipient_code bigint,
         amount decimal(19,2),
         registry_type_id bigint not null comment 'Registry type reference',
-        file_id bigint comment 'Registry file reference',
         registry_status_id bigint not null comment 'Registry status reference',
         archive_status_id bigint not null comment 'Registry archive status reference',
         primary key (id)
@@ -248,6 +247,20 @@
         order_weight integer not null comment 'Order of the container in a registry',
         registry_id bigint not null comment 'Registry reference',
         primary key (id)
+    );
+
+    create table common_registry_fpfile_types_tbl (
+        id bigint not null auto_increment,
+        version integer not null comment 'Optimistic locking version',
+        code integer not null unique comment 'FP file registry type code',
+        primary key (id)
+    );
+
+    create table common_registry_fpfiles_tbl (
+        registry_id bigint not null,
+        elt bigint not null,
+        idx bigint not null,
+        primary key (registry_id, idx)
     );
 
     create table common_registry_properties_tbl (
@@ -465,12 +478,6 @@
         references common_languages_tbl (id);
 
     alter table common_registries_tbl 
-        add index FK_common_registries_tbl_file_id (file_id), 
-        add constraint FK_common_registries_tbl_file_id 
-        foreign key (file_id) 
-        references common_files_tbl (id);
-
-    alter table common_registries_tbl 
         add index FK_common_registries_tbl_archive_status_id (archive_status_id), 
         add constraint FK_common_registries_tbl_archive_status_id 
         foreign key (archive_status_id) 
@@ -493,6 +500,24 @@
         add constraint FK_common_registry_containers_tbl_registry_id 
         foreign key (registry_id) 
         references common_registries_tbl (id);
+
+    alter table common_registry_fpfiles_tbl 
+        add index FKC69F493E7DDE2622 (idx), 
+        add constraint FKC69F493E7DDE2622 
+        foreign key (idx) 
+        references common_registry_fpfile_types_tbl (id);
+
+    alter table common_registry_fpfiles_tbl 
+        add index FKC69F493E3B128842 (registry_id), 
+        add constraint FKC69F493E3B128842 
+        foreign key (registry_id) 
+        references common_registries_tbl (id);
+
+    alter table common_registry_fpfiles_tbl 
+        add index FKC69F493E925958FC (elt), 
+        add constraint FKC69F493E925958FC 
+        foreign key (elt) 
+        references common_files_tbl (id);
 
     alter table common_registry_properties_tbl 
         add index FK_common_registry_properties_tbl_registry_id (registry_id), 

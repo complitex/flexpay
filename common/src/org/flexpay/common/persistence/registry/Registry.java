@@ -8,9 +8,7 @@ import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.util.CollectionUtils;
 
 import java.math.BigDecimal;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * Registry header for flexpay exchange file
@@ -26,13 +24,13 @@ public class Registry extends DomainObject {
 	private Long recipientCode;
 	private BigDecimal amount;
 
-	private FPFile spFile;
 	private RegistryType registryType;
 	private RegistryStatus registryStatus;
 	private RegistryArchiveStatus archiveStatus;
 	private RegistryProperties properties;
 
 	private List<RegistryContainer> containers = CollectionUtils.list();
+    private Map<RegistryFPFileType, FPFile> files = new HashMap<RegistryFPFileType, FPFile>();
 
 	private int errorsNumber;
 
@@ -49,14 +47,6 @@ public class Registry extends DomainObject {
 
 	public void setRegistryStatus(RegistryStatus registryStatus) {
 		this.registryStatus = registryStatus;
-	}
-
-	public FPFile getSpFile() {
-		return spFile;
-	}
-
-	public void setSpFile(FPFile spFile) {
-		this.spFile = spFile;
 	}
 
 	public RegistryType getRegistryType() {
@@ -156,7 +146,15 @@ public class Registry extends DomainObject {
 		this.properties = properties;
 	}
 
-	public int getErrorsNumber() {
+    public Map<RegistryFPFileType, FPFile> getFiles() {
+        return files;
+    }
+
+    public void setFiles(Map<RegistryFPFileType, FPFile> files) {
+        this.files = files;
+    }
+
+    public int getErrorsNumber() {
 		return errorsNumber;
 	}
 

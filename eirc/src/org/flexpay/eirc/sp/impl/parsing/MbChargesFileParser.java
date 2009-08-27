@@ -11,6 +11,7 @@ import org.flexpay.common.persistence.registry.*;
 import org.flexpay.common.process.ProcessLogger;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.DateUtil;
+import org.flexpay.common.service.RegistryFPFileTypeService;
 import org.flexpay.eirc.persistence.EircRegistryRecordProperties;
 import org.flexpay.eirc.sp.impl.MbFileParser;
 import org.flexpay.eirc.sp.impl.ParseContext;
@@ -23,6 +24,7 @@ import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.beans.factory.annotation.Required;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -39,6 +41,8 @@ public class MbChargesFileParser extends MbFileParser {
 	public static final String OPERATION_DATE_FORMAT = "MMyy";
 	public static final String INCOME_PERIOD_DATE_FORMAT = "MMyy";
 
+    private RegistryFPFileTypeService registryFPFileTypeService;
+
 	@Transactional (propagation = Propagation.NOT_SUPPORTED, readOnly = false)
 	protected List<Registry> parseFile(@NotNull FPFile spFile) throws FlexPayException {
 
@@ -50,7 +54,7 @@ public class MbChargesFileParser extends MbFileParser {
 			//noinspection IOResourceOpenedButNotSafelyClosed
 			reader = new BufferedReader(new InputStreamReader(spFile.getInputStream(), REGISTRY_FILE_ENCODING));
 			registry.setCreationDate(new Date());
-			registry.setSpFile(spFile);
+			registry.getFiles().put(registryFPFileTypeService.findByCode(RegistryFPFileType.MB_FORMAT), spFile);
 			registry.setRegistryType(registryTypeService.findByCode(RegistryType.TYPE_QUITTANCE));
 			registry.setArchiveStatus(registryArchiveStatusService.findByCode(RegistryArchiveStatus.NONE));
 			registry.setRegistryStatus(registryStatusService.findByCode(RegistryStatus.LOADING));
@@ -274,4 +278,9 @@ public class MbChargesFileParser extends MbFileParser {
 
 		return services;
 	}
+
+    @Required
+    public void setRegistryFPFileTypeService(RegistryFPFileTypeService registryFPFileTypeService) {
+        this.registryFPFileTypeService = registryFPFileTypeService;
+    }
 }

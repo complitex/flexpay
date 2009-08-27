@@ -5,13 +5,11 @@ import org.flexpay.common.dao.paging.FetchRange;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.file.FPFile;
-import org.flexpay.common.persistence.registry.Registry;
-import org.flexpay.common.persistence.registry.RegistryContainer;
-import org.flexpay.common.persistence.registry.RegistryRecord;
-import org.flexpay.common.persistence.registry.RegistryRecordContainer;
+import org.flexpay.common.persistence.registry.*;
 import org.flexpay.common.service.FPFileService;
 import org.flexpay.common.service.RegistryRecordService;
 import org.flexpay.common.service.RegistryService;
+import org.flexpay.common.service.RegistryFPFileTypeService;
 import org.flexpay.common.util.FPFileUtil;
 import org.flexpay.common.util.RegistryUtil;
 import org.flexpay.common.util.SecurityUtil;
@@ -35,6 +33,7 @@ public class RegistryFPFileFormat {
 	protected FPFileService fpFileService;
 	protected RegistryService registryService;
 	protected RegistryRecordService registryRecordService;
+    protected RegistryFPFileTypeService registryFPFileTypeService;
 
 	public FPFile generateAndAttachFile(@NotNull Registry registry) throws FlexPayException {
 
@@ -100,7 +99,7 @@ public class RegistryFPFileFormat {
 		}
 
 		fpFile = fpFileService.update(fpFile);
-		registry.setSpFile(fpFile);
+        registry.getFiles().put(registryFPFileTypeService.findByCode(RegistryFPFileType.FP_FORMAT), fpFile);
 
 		registryService.update(registry);
 		return fpFile;

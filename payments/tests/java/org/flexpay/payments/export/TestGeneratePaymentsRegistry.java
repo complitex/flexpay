@@ -11,6 +11,7 @@ import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.persistence.registry.PropertiesFactory;
 import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.persistence.registry.RegistryRecord;
+import org.flexpay.common.persistence.registry.RegistryFPFileType;
 import org.flexpay.common.process.ProcessManager;
 import org.flexpay.common.process.exception.ProcessDefinitionException;
 import org.flexpay.common.process.exception.ProcessInstanceException;
@@ -47,7 +48,6 @@ import java.io.*;
 import java.math.BigDecimal;
 import java.util.*;
 import java.security.*;
-import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.X509EncodedKeySpec;
 
@@ -121,6 +121,9 @@ public class TestGeneratePaymentsRegistry extends PaymentsSpringBeanAwareTestCas
 	private RegistryRecordStatusService registryRecordStatusService;
 	@Autowired
 	private PropertiesFactory propertiesFactory;
+    @Autowired
+    @Qualifier("registryFPFileTypeService")
+    private RegistryFPFileTypeService registryFPFileTypeService;
 
 	private ServiceProvider serviceProvider;
 	private Organization registerOrganization;
@@ -183,7 +186,7 @@ public class TestGeneratePaymentsRegistry extends PaymentsSpringBeanAwareTestCas
 
 		organizationService.create(recipientOrganization);
 
-		//create service2 provider
+		//create service1 provider
 		serviceProvider = new ServiceProvider();
 		serviceProvider.setOrganization(recipientOrganization);
 		serviceProvider.setStatus(ServiceProvider.STATUS_ACTIVE);
@@ -191,7 +194,7 @@ public class TestGeneratePaymentsRegistry extends PaymentsSpringBeanAwareTestCas
 
 		ServiceProviderDescription serviceProviderDescription = new ServiceProviderDescription();
 		serviceProviderDescription.setLang(lang);
-		serviceProviderDescription.setName("test service2 provider description");
+		serviceProviderDescription.setName("test service1 provider description");
 		serviceProvider.setDescription(serviceProviderDescription);
 
 		tProviderService.create(serviceProvider);
@@ -251,7 +254,7 @@ public class TestGeneratePaymentsRegistry extends PaymentsSpringBeanAwareTestCas
 		DocumentType documentType = documentTypeService.read(DocumentType.CASH_PAYMENT);
 		//get document status
 		DocumentStatus documentStatus = documentStatusService.read(DocumentStatus.REGISTERED);
-		//get document service2
+		//get document service1
 		int code = 3;
 		ServiceType serviceType2;
 		serviceType2 = serviceTypeService.getServiceType(code);
@@ -286,14 +289,14 @@ public class TestGeneratePaymentsRegistry extends PaymentsSpringBeanAwareTestCas
 		serviceDescription.setLang(lang);
 		serviceDescription.setName("description");
 
-		Service service2 = new Service();
-		service2.setBeginDate(new Date());
-		service2.setEndDate(new Date(service2.getBeginDate().getTime() + 100000));
-		service2.setServiceType(serviceType2);
-		service2.setExternalCode("2");
-		service2.setDescription(serviceDescription);
-		service2.setServiceProvider(serviceProvider);
-		spService.create(service2);
+		Service service1 = new Service();
+		service1.setBeginDate(new Date());
+		service1.setEndDate(new Date(service1.getBeginDate().getTime() + 100000));
+		service1.setServiceType(serviceType2);
+		service1.setExternalCode("1");
+		service1.setDescription(serviceDescription);
+		service1.setServiceProvider(serviceProvider);
+		spService.create(service1);
 
 		Service service4 = new Service();
 		service4.setBeginDate(new Date());
@@ -314,7 +317,7 @@ public class TestGeneratePaymentsRegistry extends PaymentsSpringBeanAwareTestCas
 		document.setCreditorOrganization(registerOrganization);
 		document.setDebtorOrganization(registerOrganization);
 		document.setDebtorId(registerOrganization.getId().toString());
-		document.setService(service2);
+		document.setService(service1);
 		document.setAddress("Test address");
 		document.setLastName("Test Last Name");
 		document.setMiddleName("Test Middle Name");
@@ -388,13 +391,15 @@ public class TestGeneratePaymentsRegistry extends PaymentsSpringBeanAwareTestCas
 
         assertTrue(registries.size() > 0);
 
+        RegistryFPFileType mbFormat = registryFPFileTypeService.findByCode(RegistryFPFileType.MB_FORMAT);
+        assertNotNull("Registry file MB format not found", mbFormat);
         int i = 0;
         for (Long registryId : registries) {
             Registry registry = registryService.read(new Stub<Registry>(registryId));
-            assertNotNull(registry);
+            assertNotNull("Registry with id=" + registryId + " not found", registry);
             if (registry.getRecipientCode().equals(serviceProvider.getOrganization().getId()) && registry.getSenderCode().equals(registerOrganization.getId())) {
-                FPFile registrySpFile = registry.getSpFile();
-                assertNotNull(registrySpFile);
+                FPFile registrySpFile = registry.getFiles().get(mbFormat);
+                assertNotNull("MB file not found for registry id=" + registryId, registrySpFile);
                 registrySpFile = fpFileService.read(Stub.stub(registrySpFile));
                 assertEquals(2, registry.getRecordsNumber().intValue());
 				assertEquals(303, registry.getAmount().intValue());
