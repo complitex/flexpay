@@ -1,3 +1,6 @@
+DROP TABLE IF EXISTS common_registry_fpfiles_tbl;
+DROP TABLE IF EXISTS common_registry_fpfile_types_tbl;
+
 create table common_registry_fpfile_types_tbl (
     id bigint not null auto_increment,
     version integer not null comment 'Optimistic locking version',
@@ -7,42 +10,38 @@ create table common_registry_fpfile_types_tbl (
 
 create table common_registry_fpfiles_tbl (
     registry_id bigint not null,
-    elt bigint not null,
-    idx bigint not null,
-    primary key (registry_id, idx)
+    fpfile_id bigint not null,
+    registry_fpfile_type_id bigint not null,
+    primary key (registry_id, registry_fpfile_type_id)
 );
 
 alter table common_registry_fpfiles_tbl
-    add index FKC93365EB7DDE2622 (idx),
-    add constraint FKC93365EB7DDE2622
-    foreign key (idx)
+    add index FK_common_registry_fpfiles_tbl_fpfile_id (fpfile_id),
+    add constraint FK_common_registry_fpfiles_tbl_fpfile_id
+    foreign key (fpfile_id)
+    references common_files_tbl (id);
+
+alter table common_registry_fpfiles_tbl
+    add index FK_common_registry_fpfiles_tbl_registry_fpfile_type_id (registry_fpfile_type_id),
+    add constraint FK_common_registry_fpfiles_tbl_registry_fpfile_type_id
+    foreign key (registry_fpfile_type_id)
     references common_registry_fpfile_types_tbl (id);
 
 alter table common_registry_fpfiles_tbl
-    add index FKC93365EB3B128842 (registry_id),
-    add constraint FKC93365EB3B128842
+    add index FK_common_registry_fpfiles_tbl_registry_id (registry_id),
+    add constraint FK_common_registry_fpfiles_tbl_registry_id
     foreign key (registry_id)
     references common_registries_tbl (id);
 
-alter table common_registry_fpfiles_tbl
-    add index FKC93365EB925958FC (elt),
-    add constraint FKC93365EB925958FC
-    foreign key (elt)
-    references common_files_tbl (id);
-
 INSERT INTO common_registry_fpfile_types_tbl (version, code) VALUES (0, 0);
-SELECT @sp_registry_file_fp_format:=last_insert_id();
-
-INSERT INTO common_registry_fpfile_types_tbl (version, code) VALUES (0, 1);
-SELECT @sp_registry_file_mb_format:=last_insert_id();
-
-INSERT INTO common_registry_fpfiles_tbl (registry_id, elt, idx) VALUES
-        (select r.id, r.file_id, @sp_registry_file_fp_format from common_registries_tbl r
+INSERT INTO common_registry_fpfiles_tbl (registry_id, fpfile_id, registry_fpfile_type_id) VALUES
+        (select r.id, r.file_id, last_insert_id() from common_registries_tbl r
                 inner join common_registry_types_tbl rt on r.registry_type_id=rt.id
                 where rt.code=12);
 
-INSERT INTO common_registry_fpfiles_tbl (registry_id, elt, idx) VALUES
-        (select r.id, r.file_id, @sp_registry_file_mb_format from common_registries_tbl r
+INSERT INTO common_registry_fpfile_types_tbl (version, code) VALUES (0, 1);
+INSERT INTO common_registry_fpfiles_tbl (registry_id, fpfile_id, registry_fpfile_type_id) VALUES
+        (select r.id, r.file_id, last_insert_id() from common_registries_tbl r
                 inner join common_registry_types_tbl rt on r.registry_type_id=rt.id
                 where rt.code!=12);
 
