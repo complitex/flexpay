@@ -17,6 +17,6 @@ public class TestBuildingDeleteAction extends AbSpringBeanAwareTestCase {
 
 		action.setObjectIds(list(2L));
 
-		assertEquals("Invalid action result", BuildingDeleteAction.REDIRECT_SUCCESS, action.execute());
+		assertEquals("Invalid action result", BuildingDeleteAction.SUCCESS, action.execute());
 	}
 }
