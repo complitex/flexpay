@@ -47,9 +47,13 @@
 					class="RegistryProperties" fetch="join" property-ref="registry" />
 
         <map name="files" table="common_registry_fpfiles_tbl" fetch="join" cascade="all">
-            <key column="registry_id" not-null="true"/>
-            <map-key-many-to-many class="org.flexpay.common.persistence.registry.RegistryFPFileType"/>
-            <many-to-many class="org.flexpay.common.persistence.file.FPFile"/>
+            <key column="registry_id" not-null="true" foreign-key="FK_common_registry_fpfiles_tbl_registry_id"/>
+            <map-key-many-to-many column="registry_fpfile_type_id"
+                                  class="org.flexpay.common.persistence.registry.RegistryFPFileType"
+                                  foreign-key="FK_common_registry_fpfiles_tbl_registry_fpfile_type_id"/>
+            <many-to-many column="fpfile_id"
+                          class="org.flexpay.common.persistence.file.FPFile"
+                          foreign-key="FK_common_registry_fpfiles_tbl_fpfile_id"/>
         </map>
 	</class>
 

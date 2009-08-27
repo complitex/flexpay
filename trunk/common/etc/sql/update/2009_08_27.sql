@@ -34,17 +34,17 @@ alter table common_registry_fpfiles_tbl
     references common_registries_tbl (id);
 
 INSERT INTO common_registry_fpfile_types_tbl (version, code) VALUES (0, 0);
-INSERT INTO common_registry_fpfiles_tbl (registry_id, fpfile_id, registry_fpfile_type_id) VALUES
+INSERT INTO common_registry_fpfiles_tbl (registry_id, fpfile_id, registry_fpfile_type_id) 
         (select r.id, r.file_id, last_insert_id() from common_registries_tbl r
                 inner join common_registry_types_tbl rt on r.registry_type_id=rt.id
                 where rt.code=12);
 
 INSERT INTO common_registry_fpfile_types_tbl (version, code) VALUES (0, 1);
-INSERT INTO common_registry_fpfiles_tbl (registry_id, fpfile_id, registry_fpfile_type_id) VALUES
+INSERT INTO common_registry_fpfiles_tbl (registry_id, fpfile_id, registry_fpfile_type_id)
         (select r.id, r.file_id, last_insert_id() from common_registries_tbl r
                 inner join common_registry_types_tbl rt on r.registry_type_id=rt.id
                 where rt.code!=12);
 
-alter table common_files_tbl drop index FK_common_registries_tbl_file_id, drop column file_id;
+alter table common_registries_tbl drop column file_id;
 
 update common_version_tbl set last_modified_date='2009-08-27', date_version=0;
