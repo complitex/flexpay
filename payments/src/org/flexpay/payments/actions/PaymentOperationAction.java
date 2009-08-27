@@ -18,7 +18,7 @@ import org.flexpay.orgs.service.CashboxService;
 import org.flexpay.payments.persistence.*;
 import org.flexpay.payments.persistence.quittance.QuittanceDetailsResponse;
 import org.flexpay.payments.service.*;
-import org.flexpay.payments.util.ServiceFullIndexUtil;
+import org.flexpay.payments.actions.quittance.SearchQuittanceAction;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.math.BigDecimal;
@@ -113,7 +113,7 @@ public abstract class PaymentOperationAction extends CashboxCookieActionSupport 
 	private Document buildDocument(String serviceFullIndex, Cashbox cashbox) throws FlexPayException {
 		
 		BigDecimal documentSumm = payments.get(serviceFullIndex);
-		String serviceId = ServiceFullIndexUtil.getServiceIdFromIndex(serviceFullIndex);
+		String serviceId = SearchQuittanceAction.ServiceFullIndexUtil.getServiceIdFromIndex(serviceFullIndex);
 		Service service = spService.readFull(new Stub<Service>(Long.parseLong(serviceId)));
 		ServiceProvider serviceProvider = serviceProviderService.read(new Stub<ServiceProvider>(service.getServiceProvider().getId()));
 		Organization serviceProviderOrganization = serviceProvider.getOrganization();
