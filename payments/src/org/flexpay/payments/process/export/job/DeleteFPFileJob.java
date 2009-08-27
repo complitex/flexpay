@@ -3,6 +3,7 @@ package org.flexpay.payments.process.export.job;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.registry.Registry;
+import org.flexpay.common.persistence.registry.RegistryFPFileType;
 import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.process.job.Job;
 import org.flexpay.common.service.FPFileService;
@@ -46,7 +47,16 @@ public class DeleteFPFileJob extends Job {
 		}
 
 		Registry registry = registries.get(0);
-		registry.setSpFile(null);
+        RegistryFPFileType fileType = null;
+        for (Map.Entry<RegistryFPFileType, FPFile> fileEntry : registry.getFiles().entrySet()) {
+            if (fileEntry.getValue().getId() == file.getId()) {
+                fileType = fileEntry.getKey();
+                break;
+            }
+        }
+        if (fileType == null) {
+            log.info("Not found file id {} in registry id {}", new Object[]{file.getId(), registry.getId()});
+        }
 		registryService.update(registry);
 	}
 
