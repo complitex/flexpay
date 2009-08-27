@@ -53,10 +53,11 @@ public class EditBuildingAddressAction extends FPActionSupport {
 			return REDIRECT_ERROR;
 		}
 
+		if (address.isNotNew()) {
+			setupFilters();
+		}
+
 		if (isNotSubmit()) {
-			if (address.isNotNew()) {
-				setupFilters();
-			}			
 			setupAttributes();
 			return INPUT;
 		}
