@@ -93,7 +93,7 @@
 			LEFT JOIN FETCH it.translations ittr
 			LEFT JOIN FETCH ittr.lang lang
 			LEFT JOIN FETCH lang.translations
-		WHERE a.id=? and p.status=0
+		WHERE a.id = ? and p.status = 0 and pi.status = 0
 	</query>
 
 </hibernate-mapping>
