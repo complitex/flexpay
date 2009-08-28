@@ -285,7 +285,7 @@ public class PaymentsRegistryMBGeneratorImpl implements PaymentsRegistryMBGenera
 			ServiceType serviceType = serviceTypeService.getServiceType(innerServiceCode);
 			serviceCode = serviceTypesMapper.getMegabankCode(Stub.stub(serviceType));
 			if (serviceCode == null) {
-				throw new FlexPayException("Can not find MB service code. Service : " + serviceCode + ", registry record Id: " + record.getId());
+				throw new FlexPayException("Can not find MB service code. Service : " + serviceType + ", registry record Id: " + record.getId());
 			}
 		}
 		while (serviceCode.length() < 2) {
