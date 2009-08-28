@@ -20,7 +20,7 @@ import org.flexpay.eirc.persistence.exchange.delayed.DelayedUpdatesContainer;
 import org.flexpay.eirc.service.ConsumerService;
 import org.flexpay.eirc.service.importexport.RawConsumerData;
 import org.flexpay.eirc.util.config.ApplicationConfig;
-import org.flexpay.orgs.persistence.ServiceProvider;
+import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.payments.persistence.EircRegistryProperties;
 import org.flexpay.payments.persistence.Service;
 import org.jetbrains.annotations.NotNull;
@@ -64,7 +64,7 @@ public class OpenSubserviceAccountOperation extends ContainerOperation {
 	/**
 	 * Process operation
 	 *
-	 * @param context
+	 * @param context ProcessingContext
 	 * @throws FlexPayException if failure occurs
 	 */
 	public DelayedUpdate process(@NotNull ProcessingContext context) throws FlexPayException {
@@ -120,8 +120,8 @@ public class OpenSubserviceAccountOperation extends ContainerOperation {
 		data.addNameValuePair(RawConsumerData.FIELD_SERVICE_CODE, subserviceId);
 		String shortId = data.getShortConsumerId();
 		EircRegistryProperties props = (EircRegistryProperties) registry.getProperties();
-		ServiceProvider provider = factory.getServiceProviderService().read(props.getServiceProviderStub());
-		Stub<DataSourceDescription> sd = provider.getDataSourceDescriptionStub();
+		Organization sender = factory.getOrganizationService().readFull(props.getSenderStub());
+		Stub<DataSourceDescription> sd = sender.sourceDescriptionStub();
 
 		container.addUpdate(new DelayedUpdateCorrection(correctionsService, consumer, shortId, sd));
 
@@ -136,10 +136,9 @@ public class OpenSubserviceAccountOperation extends ContainerOperation {
 
 		ConsumerService consumerService = factory.getConsumerService();
 		EircRegistryProperties props = (EircRegistryProperties) registry.getProperties();
-		ServiceProvider provider = factory.getServiceProviderService().read(props.getServiceProviderStub());
-		Service service = consumerService.findService(new Stub<ServiceProvider>(provider), subserviceId);
+		Service service = consumerService.findService(props.getServiceProviderStub(), subserviceId);
 		if (service == null) {
-			throw new FlexPayException("Cannot find subservice for provider " + provider +
+			throw new FlexPayException("Cannot find subservice for provider " + props.getServiceProviderStub() +
 									   " code: " + subserviceId);
 		}
 
@@ -175,9 +174,9 @@ public class OpenSubserviceAccountOperation extends ContainerOperation {
 		data.addNameValuePair(RawConsumerData.FIELD_SERVICE_CODE, subserviceId);
 		String id = data.getShortConsumerId();
 		EircRegistryProperties registryProps = (EircRegistryProperties) registry.getProperties();
-		ServiceProvider provider = factory.getServiceProviderService().read(registryProps.getServiceProviderStub());
+		Organization sender = factory.getOrganizationService().readFull(registryProps.getSenderStub());
 		Stub<Consumer> persistent = factory.getCorrectionsService().findCorrection(
-				id, Consumer.class, provider.getDataSourceDescriptionStub());
+				id, Consumer.class, sender.sourceDescriptionStub());
 		if (persistent != null) {
 			log.info("Already existing subconsumer: {}", id);
 			return false;

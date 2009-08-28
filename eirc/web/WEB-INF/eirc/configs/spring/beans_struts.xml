@@ -132,7 +132,7 @@
 		  p:recordService-ref="registryRecordService"
 		  p:serviceTypeService-ref="serviceTypeService"
 		  p:typeRegistry-ref="classToTypeRegistry"
-		  p:serviceProviderService-ref="serviceProviderService"
+		  p:organizationService-ref="organizationService"
           scope="prototype" />
 
 	<bean id="correctBuildingAddressAction"
@@ -141,7 +141,7 @@
 		  p:correctionsService-ref="correctionsService"
 		  p:recordService-ref="registryRecordService"
 		  p:serviceTypeService-ref="serviceTypeService"
-		  p:serviceProviderService-ref="serviceProviderService"
+		  p:organizationService-ref="organizationService"
           scope="prototype" />
 
 	<bean id="correctStreetAddressAction"
@@ -150,7 +150,7 @@
 		  p:correctionsService-ref="correctionsService"
 		  p:recordService-ref="registryRecordService"
 		  p:serviceTypeService-ref="serviceTypeService"
-		  p:serviceProviderService-ref="serviceProviderService"
+		  p:organizationService-ref="organizationService"
           scope="prototype" />
 
 	<bean id="correctPersonAction" scope="prototype" parent="personsListAction"
@@ -158,7 +158,7 @@
 		  p:consumersDataSource-ref="consumersDataSource"
 		  p:correctionsService-ref="correctionsService"
 		  p:recordService-ref="registryRecordService"
-		  p:serviceProviderService-ref="serviceProviderService" />
+		  p:organizationService-ref="organizationService" />
 
     <bean id="registryViewAction" scope="prototype"
           class="org.flexpay.eirc.actions.registry.RegistryViewAction"

@@ -1,15 +1,14 @@
 package org.flexpay.orgs.service;
 
-import org.flexpay.orgs.test.OrgsSpringBeanAwareTestCase;
-import org.flexpay.orgs.persistence.*;
-import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.persistence.Language;
-import org.flexpay.common.persistence.DataSourceDescription;
+import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.util.config.ApplicationConfig;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.junit.Before;
+import org.flexpay.orgs.persistence.*;
+import org.flexpay.orgs.test.OrgsSpringBeanAwareTestCase;
 import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class TestInstanceService extends OrgsSpringBeanAwareTestCase {
 
@@ -67,7 +66,6 @@ public class TestInstanceService extends OrgsSpringBeanAwareTestCase {
 		ServiceProvider org = new ServiceProvider();
 		org.setOrganization(organization);
 		org.setDescription(new ServiceProviderDescription("TEST", lang()));
-		org.setDataSourceDescription(new DataSourceDescription("TEST-PROVIDER-SOURCE"));
 		serviceProviderService.create(org);
 
 		org.setDescription(new ServiceProviderDescription("TEST-UPDATE", lang()));

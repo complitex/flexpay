@@ -7,6 +7,8 @@ import org.flexpay.common.persistence.registry.*;
 import org.flexpay.common.service.RegistryFileService;
 import org.flexpay.common.service.importexport.CorrectionsService;
 import org.flexpay.common.service.importexport.ImportErrorService;
+import org.flexpay.common.service.importexport.MasterIndexService;
+import org.flexpay.common.service.importexport.ClassToTypeRegistry;
 import org.flexpay.common.util.StringUtil;
 import org.flexpay.eirc.persistence.exchange.conditions.ConditionsFactory;
 import org.flexpay.eirc.service.*;
@@ -43,6 +45,8 @@ public class ServiceOperationsFactory {
 	private ServiceProviderService serviceProviderService;
 	private ReportPeriodService reportPeriodService;
 	private CorrectionsService correctionsService;
+	private MasterIndexService masterIndexService;
+	private ClassToTypeRegistry classToTypeRegistry;
 	private BtiApartmentService btiApartmentService;
 	private ApartmentAttributeTypeService apartmentAttributeTypeService;
 
@@ -180,6 +184,8 @@ public class ServiceOperationsFactory {
 
 			case 500:
 				return new PaymentPointSetupOperation(this, datum);
+			case 502:
+				return new ObjectIdentifierSyncOperation(this, datum);
 		}
 
 		throw new InvalidContainerException("Unknown container type: " +
@@ -408,5 +414,23 @@ public class ServiceOperationsFactory {
 	@Required
 	public void setDocumentTypeService(DocumentTypeService documentTypeService) {
 		this.documentTypeService = documentTypeService;
+	}
+
+	public MasterIndexService getMasterIndexService() {
+		return masterIndexService;
+	}
+
+	@Required
+	public void setMasterIndexService(MasterIndexService masterIndexService) {
+		this.masterIndexService = masterIndexService;
+	}
+
+	public ClassToTypeRegistry getClassToTypeRegistry() {
+		return classToTypeRegistry;
+	}
+
+	@Required
+	public void setClassToTypeRegistry(ClassToTypeRegistry classToTypeRegistry) {
+		this.classToTypeRegistry = classToTypeRegistry;
 	}
 }

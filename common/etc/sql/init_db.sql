@@ -48,7 +48,7 @@ SELECT @source_description_master_index:=2002;
 
 insert into common_data_source_descriptions_tbl (id, description)
 	values (2, 'Харьковский центр начислений');
-SELECT @source_description_id:=2;
+SELECT @source_description_cn:=2;
 
 -- Init modules
 INSERT INTO common_flexpay_modules_tbl (name) VALUES ('common');

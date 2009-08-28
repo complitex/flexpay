@@ -1,31 +1,30 @@
 package org.flexpay.orgs.service.imp;
 
-import org.flexpay.orgs.service.ServiceProviderService;
-import org.flexpay.orgs.persistence.ServiceProvider;
+import org.apache.commons.lang.StringUtils;
+import org.flexpay.common.dao.paging.Page;
+import org.flexpay.common.exception.FlexPayException;
+import org.flexpay.common.exception.FlexPayExceptionContainer;
+import org.flexpay.common.persistence.Stub;
+import static org.flexpay.common.persistence.Stub.stub;
+import org.flexpay.common.persistence.history.ModificationListener;
+import org.flexpay.common.service.internal.SessionUtils;
+import org.flexpay.orgs.dao.ServiceProviderDao;
+import org.flexpay.orgs.dao.ServiceProviderDaoExt;
 import org.flexpay.orgs.persistence.Organization;
+import org.flexpay.orgs.persistence.ServiceProvider;
 import org.flexpay.orgs.persistence.ServiceProviderDescription;
 import org.flexpay.orgs.persistence.filters.OrganizationFilter;
 import org.flexpay.orgs.persistence.filters.ServiceProviderFilter;
-import org.flexpay.orgs.dao.ServiceProviderDao;
-import org.flexpay.orgs.dao.ServiceProviderDaoExt;
-import org.flexpay.common.dao.paging.Page;
-import org.flexpay.common.dao.DataSourceDescriptionDao;
-import org.flexpay.common.exception.FlexPayExceptionContainer;
-import org.flexpay.common.exception.FlexPayException;
-import org.flexpay.common.persistence.DataSourceDescription;
-import org.flexpay.common.persistence.Stub;
-import org.flexpay.common.persistence.history.ModificationListener;
-import org.flexpay.common.service.internal.SessionUtils;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.beans.factory.annotation.Required;
-import org.apache.commons.lang.StringUtils;
+import org.flexpay.orgs.service.ServiceProviderService;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Required;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-import java.util.ArrayList;
 
 @Transactional (readOnly = true)
 public class ServiceProviderServiceImpl implements ServiceProviderService {
@@ -34,7 +33,6 @@ public class ServiceProviderServiceImpl implements ServiceProviderService {
 
 	private ServiceProviderDao serviceProviderDao;
 	private ServiceProviderDaoExt serviceProviderDaoExt;
-	private DataSourceDescriptionDao dataSourceDescriptionDao;
 
 	private SessionUtils sessionUtils;
 	private ModificationListener<ServiceProvider> modificationListener;
@@ -45,6 +43,7 @@ public class ServiceProviderServiceImpl implements ServiceProviderService {
 	 * @param stub provider stub
 	 * @return ServiceProvider
 	 */
+	@SuppressWarnings ({"unchecked"})
 	public <T extends ServiceProvider> T read(@NotNull Stub<T> stub) {
 		log.debug("Service provider read {}", stub);
 		return (T) serviceProviderDao.readFull(stub.getId());
@@ -89,6 +88,8 @@ public class ServiceProviderServiceImpl implements ServiceProviderService {
 			if (provider != null) {
 				provider.disable();
 				serviceProviderDao.update(provider);
+
+				modificationListener.onDelete(provider);
 			}
 		}
 	}
@@ -96,7 +97,7 @@ public class ServiceProviderServiceImpl implements ServiceProviderService {
 	/**
 	 * Save service provider
 	 *
-	 * @param serviceProvider New or persitent object to save
+	 * @param serviceProvider New or persistent object to save
 	 * @throws org.flexpay.common.exception.FlexPayExceptionContainer
 	 *          if provider validation fails
 	 */
@@ -106,13 +107,8 @@ public class ServiceProviderServiceImpl implements ServiceProviderService {
 		validate(serviceProvider);
 		serviceProvider.setId(null);
 
-		// create data source description with provider default description text
-		DataSourceDescription sd = new DataSourceDescription();
-		sd.setDescription(serviceProvider.getDefaultDescription());
-		dataSourceDescriptionDao.create(sd);
-		serviceProvider.setDataSourceDescription(sd);
-
 		serviceProviderDao.create(serviceProvider);
+		modificationListener.onCreate(serviceProvider);
 
 		return serviceProvider;
 	}
@@ -125,10 +121,19 @@ public class ServiceProviderServiceImpl implements ServiceProviderService {
 	 * @throws org.flexpay.common.exception.FlexPayExceptionContainer
 	 *          if provider validation fails
 	 */
+	@SuppressWarnings ({"ThrowableInstanceNeverThrown"})
 	@NotNull
 	@Transactional (readOnly = false)
 	public ServiceProvider update(@NotNull ServiceProvider serviceProvider) throws FlexPayExceptionContainer {
 		validate(serviceProvider);
+
+		ServiceProvider old = read(stub(serviceProvider));
+		if (old == null) {
+			throw new FlexPayExceptionContainer(
+					new FlexPayException("No object found to update " + serviceProvider));
+		}
+		sessionUtils.evict(old);
+		modificationListener.onUpdate(old, serviceProvider);
 
 		serviceProviderDao.update(serviceProvider);
 		return serviceProvider;
@@ -238,11 +243,6 @@ public class ServiceProviderServiceImpl implements ServiceProviderService {
 	@Required
 	public void setServiceProviderDaoExt(ServiceProviderDaoExt serviceProviderDaoExt) {
 		this.serviceProviderDaoExt = serviceProviderDaoExt;
-	}
-
-	@Required
-	public void setDataSourceDescriptionDao(DataSourceDescriptionDao dataSourceDescriptionDao) {
-		this.dataSourceDescriptionDao = dataSourceDescriptionDao;
 	}
 
 	@Required

@@ -2,30 +2,38 @@
 -- Init organizations
 -- EIRC is the first one, ID=1
 -- CN is the fourth one, ID=4
-INSERT INTO orgs_organizations_tbl (id, status, version, juridical_address, postal_address, individual_tax_number, kpp)
-	VALUES (1, 0, 0, 'ADDR', 'ADDR', '-------', '123');
+INSERT INTO common_data_source_descriptions_tbl (description) VALUES ('EIRC DS');
+select @sd:=last_insert_id();
+INSERT INTO orgs_organizations_tbl (id, status, version, juridical_address, postal_address, individual_tax_number, kpp, data_source_description_id)
+	VALUES (1, 0, 0, 'ADDR', 'ADDR', '-------', '123', @sd);
 SELECT @organization_eirc:=1;
 INSERT INTO orgs_organization_descriptions_tbl (name, language_id, organization_id)
 	VALUES ('Eirc itself', @ru_id, @organization_eirc);
 INSERT INTO orgs_organization_names_tbl (name, language_id, organization_id)
 	VALUES ('EIRC', @ru_id, @organization_eirc);
 
-INSERT INTO orgs_organizations_tbl (id, status, version, juridical_address, postal_address, individual_tax_number, kpp)
-	VALUES (2, 0, 0, 'Иванова 27-315', 'Иванова 27-314', '123123123', '123');
+INSERT INTO common_data_source_descriptions_tbl (description) VALUES ('ЖКО DS');
+select @sd:=last_insert_id();
+INSERT INTO orgs_organizations_tbl (id, status, version, juridical_address, postal_address, individual_tax_number, kpp, data_source_description_id)
+	VALUES (2, 0, 0, 'Иванова 27-315', 'Иванова 27-314', '123123123', '123', @sd);
 SELECT @organization_zhko:=2;
 INSERT INTO orgs_organization_descriptions_tbl (name, language_id, organization_id)
 	VALUES ('Test organization', @ru_id, @organization_zhko);
 INSERT INTO orgs_organization_names_tbl (name, language_id, organization_id)
 	VALUES ('ЖКО', @ru_id, @organization_zhko);
-INSERT INTO orgs_organizations_tbl (id, status, version, juridical_address, postal_address, individual_tax_number, kpp)
-	VALUES (3, 0, 0, 'Иванова 1', 'Иванова 2', '456456456', '56');
+
+INSERT INTO common_data_source_descriptions_tbl (description) VALUES ('ТСЖ DS');
+select @sd:=last_insert_id();
+INSERT INTO orgs_organizations_tbl (id, status, version, juridical_address, postal_address, individual_tax_number, kpp, data_source_description_id)
+	VALUES (3, 0, 0, 'Иванова 1', 'Иванова 2', '456456456', '56', @sd);
 SELECT @organization_tszh:=3;
 INSERT INTO orgs_organization_descriptions_tbl (name, language_id, organization_id)
 	VALUES ('Test organization 2', @ru_id, @organization_tszh);
 INSERT INTO orgs_organization_names_tbl (name, language_id, organization_id)
 	VALUES ('ТСЖ', @ru_id, @organization_tszh);
-INSERT INTO orgs_organizations_tbl (id, status, version, juridical_address, postal_address, individual_tax_number, kpp)
-	VALUES (4, 0, 0, 'Иванова 26-315', 'Иванова 26-314', '1111111', '56');
+
+INSERT INTO orgs_organizations_tbl (id, status, version, juridical_address, postal_address, individual_tax_number, kpp, data_source_description_id)
+	VALUES (4, 0, 0, 'Иванова 26-315', 'Иванова 26-314', '1111111', '56', @source_description_cn);
 SELECT @organization_cn:=4;
 INSERT INTO orgs_organization_descriptions_tbl (name, language_id, organization_id)
 	VALUES ('Calculation center', @ru_id, @organization_cn);
@@ -96,15 +104,17 @@ INSERT INTO orgs_bank_descriptions_tbl (version, name, language_id, bank_id)
 
 
 -- Init service providers
-INSERT INTO orgs_service_providers_tbl(id, status, version, organization_id, data_source_description_id)
-	VALUES (1, 0, 0, @organization_cn, @source_description_id);
+INSERT INTO orgs_service_providers_tbl(id, status, version, organization_id)
+	VALUES (1, 0, 0, @organization_cn);
 SELECT @service_provider_cn:=1;
 INSERT INTO orgs_service_provider_descriptions_tbl (version, name, language_id, service_provider_id)
 	VALUES (0, 'ПУ ЦН', @ru_id, @service_provider_cn);
 
 -- Init service organizations
-INSERT INTO orgs_organizations_tbl (id, status, version, juridical_address, postal_address, individual_tax_number, kpp)
-	VALUES (5, 0, 0, 'Демакова-3', 'Демакова-3', '56', '56');
+INSERT INTO common_data_source_descriptions_tbl (description) VALUES ('EIRC DS');
+select @sd:=last_insert_id();
+INSERT INTO orgs_organizations_tbl (id, status, version, juridical_address, postal_address, individual_tax_number, kpp, data_source_description_id)
+	VALUES (5, 0, 0, 'Демакова-3', 'Демакова-3', '56', '56', @sd);
 SELECT @organization_service_org_1:=5;
 INSERT INTO orgs_organization_descriptions_tbl (name, language_id, organization_id)
 	VALUES ('Тестовая обсл. организация', @ru_id, @organization_service_org_1);

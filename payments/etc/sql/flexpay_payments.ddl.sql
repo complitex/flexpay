@@ -784,6 +784,7 @@
         kpp varchar(255) not null,
         juridical_address varchar(255) not null comment 'Juridical address',
         postal_address varchar(255) not null comment 'Postal address',
+        data_source_description_id bigint not null comment 'Data source description reference',
         primary key (id)
     );
 
@@ -857,7 +858,6 @@
         status integer not null comment 'Enabled-disabled status',
         email varchar(255) comment 'E-mail',
         organization_id bigint not null comment 'Organization reference',
-        data_source_description_id bigint not null comment 'Data source description reference',
         primary key (id)
     );
 
@@ -1782,6 +1782,12 @@
         foreign key (language_id) 
         references common_languages_tbl (id);
 
+    alter table orgs_organizations_tbl 
+        add index FK_orgs_organization_data_source_description (data_source_description_id), 
+        add constraint FK_orgs_organization_data_source_description 
+        foreign key (data_source_description_id) 
+        references common_data_source_descriptions_tbl (id);
+
     alter table orgs_payment_point_names_tbl 
         add index FK_orgs_payment_point_names_tbl_point (payment_point_id), 
         add constraint FK_orgs_payment_point_names_tbl_point 
@@ -1853,12 +1859,6 @@
         add constraint FK_orgs_service_provider_organization 
         foreign key (organization_id) 
         references orgs_organizations_tbl (id);
-
-    alter table orgs_service_providers_tbl 
-        add index FK_orgs_service_provider_data_source_description (data_source_description_id), 
-        add constraint FK_orgs_service_provider_data_source_description 
-        foreign key (data_source_description_id) 
-        references common_data_source_descriptions_tbl (id);
 
     alter table orgs_subdivision_descriptions_tbl 
         add index FK_orgs_subdivision_descriptions_tbl_subdivision_id (subdivision_id), 

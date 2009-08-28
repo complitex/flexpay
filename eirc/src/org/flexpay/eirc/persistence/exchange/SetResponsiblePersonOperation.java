@@ -6,8 +6,8 @@ import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.persistence.ImportError;
 import org.flexpay.common.persistence.Stub;
-import org.flexpay.common.persistence.registry.RegistryRecord;
 import org.flexpay.common.persistence.registry.Registry;
+import org.flexpay.common.persistence.registry.RegistryRecord;
 import org.flexpay.common.service.importexport.CorrectionsService;
 import org.flexpay.eirc.dao.importexport.RawConsumersDataUtil;
 import org.flexpay.eirc.persistence.Consumer;
@@ -19,7 +19,7 @@ import org.flexpay.eirc.service.ConsumerService;
 import org.flexpay.eirc.service.EircAccountService;
 import org.flexpay.eirc.service.importexport.ImportUtil;
 import org.flexpay.eirc.service.importexport.RawConsumerData;
-import org.flexpay.orgs.persistence.ServiceProvider;
+import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.payments.persistence.EircRegistryProperties;
 import org.jetbrains.annotations.NotNull;
 
@@ -42,7 +42,7 @@ public class SetResponsiblePersonOperation extends AbstractChangePersonalAccount
 	/**
 	 * Process operation
 	 *
-	 * @param context
+	 * @param context ProcessingContext
 	 * @throws org.flexpay.common.exception.FlexPayException
 	 *          if failure occurs
 	 */
@@ -93,8 +93,8 @@ public class SetResponsiblePersonOperation extends AbstractChangePersonalAccount
 		// update corrections
 		Registry registry = context.getRegistry();
 		EircRegistryProperties registryProperties = (EircRegistryProperties) registry.getProperties();
-		ServiceProvider provider = factory.getServiceProviderService().read(registryProperties.getServiceProviderStub());
-		Stub<DataSourceDescription> sd = provider.getDataSourceDescriptionStub();
+		Organization sender = factory.getOrganizationService().readFull(registryProperties.getSenderStub());
+		Stub<DataSourceDescription> sd = sender.sourceDescriptionStub();
 		updateCorrections(info, record, eircAccount, sd, container);
 
 		return container;

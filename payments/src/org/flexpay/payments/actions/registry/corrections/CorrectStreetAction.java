@@ -9,8 +9,8 @@ import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.persistence.registry.RegistryRecord;
 import org.flexpay.common.service.RegistryRecordService;
 import org.flexpay.common.service.importexport.CorrectionsService;
-import org.flexpay.orgs.persistence.ServiceProvider;
-import org.flexpay.orgs.service.ServiceProviderService;
+import org.flexpay.orgs.persistence.Organization;
+import org.flexpay.orgs.service.OrganizationService;
 import org.flexpay.payments.actions.interceptor.CashboxAware;
 import org.flexpay.payments.persistence.EircRegistryProperties;
 import org.flexpay.payments.persistence.ServiceType;
@@ -29,7 +29,7 @@ public class CorrectStreetAction extends FPActionWithPagerSupport<Street> implem
 	protected CorrectionsService correctionsService;
 	protected RegistryRecordService recordService;
 	protected ServiceTypeService serviceTypeService;
-	protected ServiceProviderService serviceProviderService;
+	protected OrganizationService organizationService;
 
 	@NotNull
 	@Override
@@ -40,12 +40,12 @@ public class CorrectStreetAction extends FPActionWithPagerSupport<Street> implem
 		if ("street".equals(setupType)) {
 
 			EircRegistryProperties props = (EircRegistryProperties) record.getRegistry().getProperties();
-			ServiceProvider provider = serviceProviderService.read(props.getServiceProviderStub());
-			if (provider == null) {
+			Organization organization = organizationService.readFull(props.getSenderStub());
+			if (organization == null) {
 				addActionError(getText("error.eirc.data_source_not_found"));
 				return SUCCESS;
 			}
-			Stub<DataSourceDescription> sd = provider.getDataSourceDescriptionStub();
+			Stub<DataSourceDescription> sd = organization.sourceDescriptionStub();
 
 			saveCorrection(sd);
 
@@ -55,9 +55,9 @@ public class CorrectStreetAction extends FPActionWithPagerSupport<Street> implem
 		return SUCCESS;
 	}
 
-    protected void saveCorrection(Stub<DataSourceDescription> sd) {
+	protected void saveCorrection(Stub<DataSourceDescription> sd) {
 
-    }
+	}
 
 	/**
 	 * Get default error execution result
@@ -126,8 +126,7 @@ public class CorrectStreetAction extends FPActionWithPagerSupport<Street> implem
 	}
 
 	@Required
-	public void setServiceProviderService(ServiceProviderService serviceProviderService) {
-		this.serviceProviderService = serviceProviderService;
+	public void setOrganizationService(OrganizationService organizationService) {
+		this.organizationService = organizationService;
 	}
-
 }

@@ -2,9 +2,11 @@ package org.flexpay.orgs.service.imp;
 
 import org.apache.commons.lang.StringUtils;
 import org.flexpay.common.dao.paging.Page;
+import org.flexpay.common.dao.DataSourceDescriptionDao;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.persistence.DataSourceDescription;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.persistence.history.ModificationListener;
 import org.flexpay.common.service.internal.SessionUtils;
@@ -32,6 +34,7 @@ public class OrganizationServiceImpl implements OrganizationService {
 	private ModificationListener<Organization> modificationListener;
 
 	private OrganizationDao organizationDao;
+	private DataSourceDescriptionDao dataSourceDescriptionDao;
 
 	/**
 	 * Find organization by its id
@@ -93,6 +96,12 @@ public class OrganizationServiceImpl implements OrganizationService {
 	@NotNull
 	public Organization create(@NotNull Organization organization) throws FlexPayExceptionContainer {
 		validate(organization);
+
+		// create data source description with provider default description text
+		DataSourceDescription sd = new DataSourceDescription();
+		sd.setDescription(organization.defaultDescription());
+		dataSourceDescriptionDao.create(sd);
+		organization.setDataSourceDescription(sd);
 
 		organization.setId(null);
 		organizationDao.create(organization);
@@ -209,5 +218,10 @@ public class OrganizationServiceImpl implements OrganizationService {
 	@Required
 	public void setModificationListener(ModificationListener<Organization> modificationListener) {
 		this.modificationListener = modificationListener;
+	}
+
+	@Required
+	public void setDataSourceDescriptionDao(DataSourceDescriptionDao dataSourceDescriptionDao) {
+		this.dataSourceDescriptionDao = dataSourceDescriptionDao;
 	}
 }

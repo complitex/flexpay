@@ -20,7 +20,7 @@ import org.flexpay.eirc.service.ConsumerService;
 import org.flexpay.eirc.service.EircAccountService;
 import org.flexpay.eirc.service.importexport.RawConsumerData;
 import org.flexpay.eirc.util.config.ApplicationConfig;
-import org.flexpay.orgs.persistence.ServiceProvider;
+import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.payments.persistence.EircRegistryProperties;
 import org.flexpay.payments.persistence.Service;
 import org.jetbrains.annotations.NotNull;
@@ -62,7 +62,7 @@ public class OpenAccountOperation extends AbstractChangePersonalAccountOperation
 		update.doUpdate();
 //		container.addUpdate(update);
 
-		EircAccount account = getEircAccount(record, info, container);
+		EircAccount account = getEircAccount(record, info);
 
 		EircRegistryRecordProperties props = (EircRegistryRecordProperties) record.getProperties();
 		Consumer consumer = new Consumer();
@@ -110,8 +110,8 @@ public class OpenAccountOperation extends AbstractChangePersonalAccountOperation
 		// add short consumer correction
 		EircRegistryProperties props = (EircRegistryProperties) registry.getProperties();
 		RawConsumerData data = RawConsumersDataUtil.convert(registry, record);
-		ServiceProvider provider = factory.getServiceProviderService().read(props.getServiceProviderStub());
-		Stub<DataSourceDescription> sd = provider.getDataSourceDescriptionStub();
+		Organization sender = factory.getOrganizationService().readFull(props.getSenderStub());
+		Stub<DataSourceDescription> sd = sender.sourceDescriptionStub();
 
 		container.addUpdate(new DelayedUpdateCorrection(correctionsService, consumer, data.getShortConsumerId(), sd));
 
@@ -123,10 +123,9 @@ public class OpenAccountOperation extends AbstractChangePersonalAccountOperation
 
 		ConsumerService consumerService = factory.getConsumerService();
 		EircRegistryProperties props = (EircRegistryProperties) registry.getProperties();
-		ServiceProvider provider = factory.getServiceProviderService().read(props.getServiceProviderStub());
-		Service service = consumerService.findService(new Stub<ServiceProvider>(provider), record.getServiceCode());
+		Service service = consumerService.findService(props.getServiceProviderStub(), record.getServiceCode());
 		if (service == null) {
-			throw new FlexPayException("Cannot find service for provider " + provider +
+			throw new FlexPayException("Cannot find service for provider " + props.getServiceProviderStub() +
 									   " and code: " + record.getServiceCode());
 		}
 
@@ -138,11 +137,10 @@ public class OpenAccountOperation extends AbstractChangePersonalAccountOperation
 	 *
 	 * @param record	RegistryRecord
 	 * @param info	  ConsumerInfo
-	 * @param container Updates container
 	 * @return EircAccount instance
 	 * @throws FlexPayException if failure occurs
 	 */
-	private EircAccount getEircAccount(RegistryRecord record, ConsumerInfo info, DelayedUpdatesContainer container)
+	private EircAccount getEircAccount(RegistryRecord record, ConsumerInfo info)
 			throws FlexPayException, FlexPayExceptionContainer {
 
 		EircAccountService accountService = factory.getAccountService();

@@ -30,13 +30,6 @@
 				<comment>Organization reference</comment>
 			</column>
 		</many-to-one>
-		<many-to-one name="dataSourceDescription"
-					 foreign-key="FK_orgs_service_provider_data_source_description"
-					 class="org.flexpay.common.persistence.DataSourceDescription">
-			<column name="data_source_description_id" not-null="true">
-				<comment>Data source description reference</comment>
-			</column>
-		</many-to-one>
 		<set name="descriptions" inverse="true" cascade="all-delete-orphan">
 			<key column="service_provider_id" not-null="true"/>
 			<one-to-many class="org.flexpay.orgs.persistence.ServiceProviderDescription"/>
