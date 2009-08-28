@@ -21,6 +21,7 @@ import org.springframework.beans.factory.annotation.Required;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 public class RegistriesListAction extends FPActionWithPagerSupport {
 
@@ -127,8 +128,8 @@ public class RegistriesListAction extends FPActionWithPagerSupport {
 		return organizationService.readFull(props.getRecipientStub());
 	}
 
-    public FPFile getRegistryFileInMBFormat(Registry registry) {
-        return registry.getFiles().get(registryFPFileTypeService.findByCode(RegistryFPFileType.MB_FORMAT));
+    public FPFile getRegistryFileInMBFormat(Map<RegistryFPFileType, FPFile> files) {
+        return files.get(registryFPFileTypeService.findByCode(RegistryFPFileType.MB_FORMAT));
     }
 
     public FPFile getRegistryFileInFPFormat(Registry registry) {
