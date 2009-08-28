@@ -67,11 +67,11 @@
                   name="common.view"/></a>
         </td>
         <td class="col">
-          <a href="<s:url value='/download/' includeParams="none"/><s:property value="getRegistryFileInMBFormat(registry).id"/>.registry"><s:property
+          <a href="<s:url value='/download/' includeParams="none"/><s:property value="getRegistryFileInMBFormat(files).id"/>.registry"><s:property
                   value="getRegistryFileInMBFormat(registry).originalName"/></a>
         </td>
         <td class="col">
-          <a href="<s:url value='/download/' includeParams="none"/><s:property value="getRegistryFileInFPFormat(registry).id"/>.registry"><s:property
+          <a href="<s:url value='/download/' includeParams="none"/><s:property value="getRegistryFileInFPFormat(files).id"/>.registry"><s:property
                   value="getRegistryFileInFPFormat(registry).originalName"/></a>
         </td>
       </tr>
