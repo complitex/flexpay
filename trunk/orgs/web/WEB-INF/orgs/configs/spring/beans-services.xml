@@ -34,7 +34,8 @@
 		  class="org.flexpay.orgs.service.imp.OrganizationServiceImpl"
 		  p:sessionUtils-ref="sessionUtils"
 		  p:modificationListener-ref="organizationHistoryChangesListener"
-		  p:organizationDao-ref="organizationDao" />
+		  p:organizationDao-ref="organizationDao"
+		  p:dataSourceDescriptionDao-ref="dataSourceDescriptionDao" />
 
 	<bean id="subdivisionReferencesHistoryGenerator"
 		  class="org.flexpay.orgs.service.history.SubdivisionReferencesHistoryGenerator"
@@ -132,8 +133,7 @@
 		  p:serviceProviderDao-ref="serviceProviderDao"
 		  p:serviceProviderDaoExt-ref="serviceProviderDaoExt"
 		  p:sessionUtils-ref="sessionUtils"
-		  p:modificationListener-ref="serviceProviderHistoryChangesListener"
-		  p:dataSourceDescriptionDao-ref="dataSourceDescriptionDao" />
+		  p:modificationListener-ref="serviceProviderHistoryChangesListener" />
 
 	<bean id="classToTypeRegistryOrgs"
 		  autowire-candidate="false"

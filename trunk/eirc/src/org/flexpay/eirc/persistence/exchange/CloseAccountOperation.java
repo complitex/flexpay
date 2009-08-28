@@ -5,15 +5,17 @@ import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.persistence.Stub;
-import org.flexpay.payments.persistence.EircRegistryProperties;
-import org.flexpay.common.persistence.registry.RegistryRecord;
 import org.flexpay.common.persistence.registry.Registry;
+import org.flexpay.common.persistence.registry.RegistryRecord;
 import org.flexpay.common.service.importexport.CorrectionsService;
 import org.flexpay.eirc.dao.importexport.RawConsumersDataUtil;
-import org.flexpay.eirc.persistence.*;
+import org.flexpay.eirc.persistence.Consumer;
+import org.flexpay.eirc.persistence.EircAccount;
+import org.flexpay.eirc.persistence.EircRegistryRecordProperties;
 import org.flexpay.eirc.persistence.exchange.delayed.DelayedUpdateNope;
 import org.flexpay.eirc.service.importexport.RawConsumerData;
-import org.flexpay.orgs.persistence.ServiceProvider;
+import org.flexpay.orgs.persistence.Organization;
+import org.flexpay.payments.persistence.EircRegistryProperties;
 import org.flexpay.payments.persistence.Service;
 import org.jetbrains.annotations.NotNull;
 
@@ -36,7 +38,7 @@ public class CloseAccountOperation extends AbstractChangePersonalAccountOperatio
 	/**
 	 * Process operation
 	 *
-	 * @param context ProcessingContext 
+	 * @param context ProcessingContext
 	 * @throws org.flexpay.common.exception.FlexPayException
 	 *          if failure occurs
 	 */
@@ -59,8 +61,8 @@ public class CloseAccountOperation extends AbstractChangePersonalAccountOperatio
 
 		// remove corrections to consumer
 		EircRegistryProperties registryProperties = (EircRegistryProperties) registry.getProperties();
-		ServiceProvider provider = factory.getServiceProviderService().read(registryProperties.getServiceProviderStub());
-		Stub<DataSourceDescription> sd = provider.getDataSourceDescriptionStub();
+		Organization sender = factory.getOrganizationService().readFull(registryProperties.getSenderStub());
+		Stub<DataSourceDescription> sd = sender.sourceDescriptionStub();
 
 		removeCorrections(consumer, record, sd);
 

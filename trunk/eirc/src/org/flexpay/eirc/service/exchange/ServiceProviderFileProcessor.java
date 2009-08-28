@@ -6,7 +6,6 @@ import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.persistence.ImportError;
-import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.persistence.registry.Registry;
@@ -32,8 +31,8 @@ import org.flexpay.eirc.persistence.exchange.ProcessingContext;
 import org.flexpay.eirc.persistence.exchange.ServiceOperationsFactory;
 import org.flexpay.eirc.service.importexport.EircImportService;
 import org.flexpay.eirc.service.importexport.RawConsumerData;
-import org.flexpay.orgs.persistence.ServiceProvider;
-import org.flexpay.orgs.service.ServiceProviderService;
+import org.flexpay.orgs.persistence.Organization;
+import org.flexpay.orgs.service.OrganizationService;
 import org.flexpay.payments.persistence.EircRegistryProperties;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
@@ -65,7 +64,7 @@ public class ServiceProviderFileProcessor implements RegistryProcessor {
 	private RegistryRecordWorkflowManager recordWorkflowManager;
 	private ClassToTypeRegistry classToTypeRegistry;
 
-	private ServiceProviderService serviceProviderService;
+	private OrganizationService organizationService;
 	private ServiceProviderFileProcessorTx processorTx;
 
 	/**
@@ -173,11 +172,13 @@ public class ServiceProviderFileProcessor implements RegistryProcessor {
 		ImportError error = new ImportError();
 		error.setErrorId(code);
 		EircRegistryProperties props = (EircRegistryProperties) context.getRegistry().getProperties();
-		ServiceProvider provider = serviceProviderService.read(props.getServiceProviderStub());
-		DataSourceDescription sd = provider.getDataSourceDescription();
+		Organization sender = organizationService.readFull(props.getSenderStub());
+		if (sender == null) {
+			throw new IllegalStateException("Cannot find sender organization: #" + props.getSenderStub().getId());
+		}
+		DataSourceDescription sd = sender.getDataSourceDescription();
 		error.setSourceDescription(sd);
 
-		// todo remove hardcoded value
 		error.setDataSourceBean("consumersDataSource");
 
 		error.setSourceObjectId(String.valueOf(context.getCurrentRecord().getId()));
@@ -300,12 +301,11 @@ public class ServiceProviderFileProcessor implements RegistryProcessor {
 			throws Exception {
 
 		EircRegistryProperties props = (EircRegistryProperties) registry.getProperties();
-		ServiceProvider provider = serviceProviderService.read(props.getServiceProviderStub());
-		if (provider == null) {
-			throw new IllegalStateException("Expected service provider #" + props.getServiceProviderStub().getId());
+		Organization sender = organizationService.readFull(props.getSenderStub());
+		if (sender == null) {
+			throw new IllegalStateException("Cannot find sender organization: #" + props.getSenderStub().getId());
 		}
-		Stub<DataSourceDescription> sd = provider.getDataSourceDescriptionStub();
-		importService.importConsumers(sd, rawConsumersDataSource);
+		importService.importConsumers(sender.sourceDescriptionStub(), rawConsumersDataSource);
 	}
 
 	@Required
@@ -364,8 +364,7 @@ public class ServiceProviderFileProcessor implements RegistryProcessor {
 	}
 
 	@Required
-	public void setServiceProviderService(ServiceProviderService serviceProviderService) {
-		this.serviceProviderService = serviceProviderService;
+	public void setOrganizationService(OrganizationService organizationService) {
+		this.organizationService = organizationService;
 	}
-
 }

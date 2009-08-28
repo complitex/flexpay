@@ -61,7 +61,6 @@ public class TestObjectsServices extends PaymentsSpringBeanAwareTestCase {
 		ServiceProvider org = new ServiceProvider();
 		org.setOrganization(organization);
 		org.setDescription(new ServiceProviderDescription("TEST", lang()));
-		org.setDataSourceDescription(new DataSourceDescription("TEST-PROVIDER-SOURCE"));
 		return serviceProviderService.create(org);
 	}
 

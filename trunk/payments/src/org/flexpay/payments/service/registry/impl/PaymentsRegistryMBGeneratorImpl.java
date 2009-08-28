@@ -158,7 +158,7 @@ public class PaymentsRegistryMBGeneratorImpl implements PaymentsRegistryMBGenera
 					for (RegistryRecord registryRecord : registryRecords) {
 						String[] infoLine = createInfoLine(registryRecord);
 						rg.writeLine(infoLine);
-						log.info("Writed line " + String.valueOf(++i));
+						log.info("Wrote line " + String.valueOf(++i));
 						if (++k >= FLASH_FILE) {
 							rg.flush();
 							k = 0;
@@ -275,16 +275,17 @@ public class PaymentsRegistryMBGeneratorImpl implements PaymentsRegistryMBGenera
 		infoLine.add(createCellData(record.getApartmentNum(), tableHeader[7].length(), ' '));
 
 		// услуга
+		// TODO: WTF
 		String serviceCode = record.getServiceCode();
 		if (serviceCode == null) {
-			throw new FlexPayException("Registry record`s service code is null. Regisry record Id: " + record.getId());
+			throw new FlexPayException("Registry record`s service code is null. Registry record Id: " + record.getId());
 		}
 		if (serviceCode.startsWith("#")) {
 			int innerServiceCode = Integer.parseInt(serviceCode.substring(1));
 			ServiceType serviceType = serviceTypeService.getServiceType(innerServiceCode);
 			serviceCode = serviceTypesMapper.getMegabankCode(Stub.stub(serviceType));
 			if (serviceCode == null) {
-				throw new FlexPayException("Can not find MB service code. Service code: " + serviceCode + ", registry record Id: " + record.getId());
+				throw new FlexPayException("Can not find MB service code. Service : " + serviceCode + ", registry record Id: " + record.getId());
 			}
 		}
 		while (serviceCode.length() < 2) {

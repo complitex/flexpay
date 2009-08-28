@@ -83,6 +83,8 @@
 		  p:conditionsFactory-ref="conditionsFactory"
 		  p:importErrorService-ref="importErrorService"
 		  p:correctionsService-ref="correctionsService"
+		  p:classToTypeRegistry-ref="classToTypeRegistry"
+		  p:masterIndexService-ref="masterIndexService"
 		  p:spService-ref="spService"
 		  p:spFileService-ref="registryFileService"
 		  p:quittanceService-ref="quittanceService"
@@ -221,7 +223,7 @@
 		  p:classToTypeRegistry-ref="classToTypeRegistry"
 		  p:recordWorkflowManager-ref="registryRecordWorkflowManager"
 		  p:registryWorkflowManager-ref="registryWorkflowManager"
-		  p:serviceProviderService-ref="serviceProviderService" />
+		  p:organizationService-ref="organizationService" />
 
 	<bean id="processManagerEirc" parent="processManager" autowire-candidate="false">
 		<property name="definitionPaths">

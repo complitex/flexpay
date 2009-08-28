@@ -7,10 +7,10 @@ import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.registry.RegistryRecord;
 import org.flexpay.common.service.RegistryRecordService;
 import org.flexpay.common.service.importexport.CorrectionsService;
-import org.flexpay.orgs.persistence.ServiceProvider;
-import org.flexpay.orgs.service.ServiceProviderService;
-import org.flexpay.payments.persistence.EircRegistryProperties;
+import org.flexpay.orgs.persistence.Organization;
+import org.flexpay.orgs.service.OrganizationService;
 import org.flexpay.payments.actions.interceptor.CashboxAware;
+import org.flexpay.payments.persistence.EircRegistryProperties;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
@@ -23,13 +23,12 @@ public class CorrectPersonAction extends PersonsListAction implements CashboxAwa
 
 	protected CorrectionsService correctionsService;
 	protected RegistryRecordService recordService;
-	protected ServiceProviderService serviceProviderService;
+	protected OrganizationService organizationService;
 
 	/**
 	 * Perform action execution.
 	 * <p/>
-	 * If return code starts with a {@link #PREFIX_REDIRECT} all error messages are stored in
-	 * a session
+	 * If return code starts with a {@link #PREFIX_REDIRECT} all error messages are stored in a session
 	 *
 	 * @return execution result code
 	 * @throws Exception if failure occurs
@@ -42,14 +41,14 @@ public class CorrectPersonAction extends PersonsListAction implements CashboxAwa
 		if ("person".equals(setupType)) {
 
 			EircRegistryProperties props = (EircRegistryProperties) record.getRegistry().getProperties();
-			ServiceProvider provider = serviceProviderService.read(props.getServiceProviderStub());
-			if (provider == null) {
+			Organization organization = organizationService.readFull(props.getSenderStub());
+			if (organization == null) {
 				addActionError(getText("error.eirc.data_source_not_found"));
-				return super.doExecute();
+				return SUCCESS;
 			}
-			Stub<DataSourceDescription> sd = provider.getDataSourceDescriptionStub();
+			Stub<DataSourceDescription> sd = organization.sourceDescriptionStub();
 
-            saveCorrection(sd);
+			saveCorrection(sd);
 
 			record = recordService.removeError(record);
 			return "complete";
@@ -57,14 +56,13 @@ public class CorrectPersonAction extends PersonsListAction implements CashboxAwa
 		return super.doExecute();
 	}
 
-    protected void saveCorrection(Stub<DataSourceDescription> sd) {
-    }
+	protected void saveCorrection(Stub<DataSourceDescription> sd) {
+	}
 
-    /**
+	/**
 	 * Get default error execution result
 	 * <p/>
-	 * If return code starts with a {@link #PREFIX_REDIRECT} all error messages are stored in
-	 * a session
+	 * If return code starts with a {@link #PREFIX_REDIRECT} all error messages are stored in a session
 	 *
 	 * @return {@link #ERROR} by default
 	 */
@@ -119,8 +117,7 @@ public class CorrectPersonAction extends PersonsListAction implements CashboxAwa
 	}
 
 	@Required
-	public void setServiceProviderService(ServiceProviderService serviceProviderService) {
-		this.serviceProviderService = serviceProviderService;
+	public void setOrganizationService(OrganizationService organizationService) {
+		this.organizationService = organizationService;
 	}
-
 }

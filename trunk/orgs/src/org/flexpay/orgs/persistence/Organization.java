@@ -5,6 +5,8 @@ import org.apache.commons.lang.builder.ToStringStyle;
 import org.flexpay.common.persistence.DomainObjectWithStatus;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.Language;
+import org.flexpay.common.persistence.DataSourceDescription;
+import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.util.TranslationUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -32,6 +34,8 @@ public class Organization extends DomainObjectWithStatus {
 	private Set<BankAccount> accounts = Collections.emptySet();
 	private Set<Subdivision> childSubdivisions = Collections.emptySet();
 	private Set<Subdivision> dependentSubdivisions = Collections.emptySet();
+
+	private DataSourceDescription dataSourceDescription;
 
 	public Organization() {
 	}
@@ -168,6 +172,18 @@ public class Organization extends DomainObjectWithStatus {
 		this.paymentsCollectors = paymentsCollectors;
 	}
 
+	public DataSourceDescription getDataSourceDescription() {
+		return dataSourceDescription;
+	}
+
+	public void setDataSourceDescription(DataSourceDescription dataSourceDescription) {
+		this.dataSourceDescription = dataSourceDescription;
+	}
+
+	public Stub<DataSourceDescription> sourceDescriptionStub() {
+		return stub(dataSourceDescription);
+	}
+
 	/**
 	 * Get name translation in a specified language
 	 *
@@ -216,4 +232,8 @@ public class Organization extends DomainObjectWithStatus {
 				toString();
 	}
 
+	public String defaultDescription() {
+		OrganizationDescription desc = TranslationUtil.getTranslation(getDescriptions());
+		return desc != null ? desc.getName() : "";
+	}
 }
