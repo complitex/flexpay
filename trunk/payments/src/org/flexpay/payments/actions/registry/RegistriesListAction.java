@@ -129,11 +129,17 @@ public class RegistriesListAction extends FPActionWithPagerSupport {
 	}
 
     public FPFile getRegistryFileInMBFormat(Map<RegistryFPFileType, FPFile> files) {
-        return files.get(registryFPFileTypeService.findByCode(RegistryFPFileType.MB_FORMAT));
+        log.debug("get registry file in MB format, size={}", files.size());
+        FPFile file = files.get(registryFPFileTypeService.findByCode(RegistryFPFileType.MB_FORMAT));
+        log.debug("return file: {}", file);
+        return file;
     }
 
-    public FPFile getRegistryFileInFPFormat(Registry registry) {
-        return registry.getFiles().get(registryFPFileTypeService.findByCode(RegistryFPFileType.FP_FORMAT));
+    public FPFile getRegistryFileInFPFormat(Map<RegistryFPFileType, FPFile> files) {
+        log.debug("get registry file in FP format, size={}", files.size());
+        FPFile file = files.get(registryFPFileTypeService.findByCode(RegistryFPFileType.FP_FORMAT));
+        log.debug("return file: {}", file);
+        return file;
     }
 
 	@Required
