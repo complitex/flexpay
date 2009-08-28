@@ -39,7 +39,7 @@ public class EircRegistryDaoExtImpl extends HibernateDaoSupport implements EircR
 
 		final List<Object> params = new ArrayList();
 		final StringBuilder hql = new StringBuilder("select distinct r from Registry r ")
-				.append("left join fetch r.spFile ")
+				.append("left join fetch r.files ")
 				.append("left join fetch r.properties rps ")
 				.append("left join fetch r.registryType rt ")
 				.append("left join fetch r.registryStatus rs ")
