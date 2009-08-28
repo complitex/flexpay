@@ -68,11 +68,11 @@
         </td>
         <td class="col">
           <a href="<s:url value='/download/' includeParams="none"/><s:property value="getRegistryFileInMBFormat(files).id"/>.registry"><s:property
-                  value="getRegistryFileInMBFormat(registry).originalName"/></a>
+                  value="getRegistryFileInMBFormat(files).originalName"/></a>
         </td>
         <td class="col">
           <a href="<s:url value='/download/' includeParams="none"/><s:property value="getRegistryFileInFPFormat(files).id"/>.registry"><s:property
-                  value="getRegistryFileInFPFormat(registry).originalName"/></a>
+                  value="getRegistryFileInFPFormat(files).originalName"/></a>
         </td>
       </tr>
     </s:iterator>
