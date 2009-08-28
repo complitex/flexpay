@@ -34,18 +34,22 @@ alter table common_registry_fpfiles_tbl
     references common_registries_tbl (id);
 
 INSERT INTO common_registry_fpfile_types_tbl (version, code) VALUES (0, 0);
-INSERT INTO common_registry_fpfiles_tbl (registry_id, fpfile_id, registry_fpfile_type_id) 
-        (select r.id, r.file_id, last_insert_id() from common_registries_tbl r
+select @type_0:=last_insert_id();
+INSERT INTO common_registry_fpfiles_tbl (registry_id, fpfile_id, registry_fpfile_type_id)
+        (select r.id, r.file_id, @type_0 from common_registries_tbl r
                 inner join common_registry_types_tbl rt on r.registry_type_id=rt.id
-                where rt.code=12);
+                where rt.code=12 and r.file_id is not null);
 
 INSERT INTO common_registry_fpfile_types_tbl (version, code) VALUES (0, 1);
+select @type_1:=last_insert_id();
 INSERT INTO common_registry_fpfiles_tbl (registry_id, fpfile_id, registry_fpfile_type_id)
-        (select r.id, r.file_id, last_insert_id() from common_registries_tbl r
+        (select r.id, r.file_id, @type_1 from common_registries_tbl r
                 inner join common_registry_types_tbl rt on r.registry_type_id=rt.id
-                where rt.code!=12);
+                where rt.code<>12 and r.file_id is not null);
 
-alter table common_files_tbl drop index FK_common_registries_tbl_file_id;
+alter table common_registries_tbl
+	drop foreign key FK_common_registries_tbl_file_id,
+	drop index FK_common_registries_tbl_file_id;
 alter table common_registries_tbl drop column file_id;
 
 update common_version_tbl set last_modified_date='2009-08-27', date_version=0;
