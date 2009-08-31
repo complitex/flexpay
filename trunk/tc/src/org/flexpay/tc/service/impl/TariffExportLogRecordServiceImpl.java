@@ -20,6 +20,7 @@ public class TariffExportLogRecordServiceImpl implements TariffExportLogRecordSe
 	 * @return tariff export log record
 	 */
 	@Transactional (readOnly = true)
+	@Override
 	public TariffExportLogRecord read(@NotNull Stub<TariffExportLogRecord> tariffExportLogRecordStub) {
 		return tariffExportLogRecordDao.read(tariffExportLogRecordStub.getId());
 	}
@@ -30,6 +31,7 @@ public class TariffExportLogRecordServiceImpl implements TariffExportLogRecordSe
 	 * @param tariffExportLogRecord TariffExportLogRecord
 	 */
 	@Transactional (readOnly = false)
+	@Override
 	public void create(@NotNull TariffExportLogRecord tariffExportLogRecord) {
 		tariffExportLogRecord.setId(null);
 		tariffExportLogRecordDao.create(tariffExportLogRecord);
@@ -41,6 +43,7 @@ public class TariffExportLogRecordServiceImpl implements TariffExportLogRecordSe
 	 * @param tariffExportLogRecord TariffExportLogRecord
 	 */
 	@Transactional (readOnly = false)
+	@Override
 	public void update(@NotNull TariffExportLogRecord tariffExportLogRecord) {
 		tariffExportLogRecordDao.update(tariffExportLogRecord);
 	}
@@ -51,17 +54,14 @@ public class TariffExportLogRecordServiceImpl implements TariffExportLogRecordSe
 	 * @param tariffExportLogRecord tariffExportLogRecord
 	 */
 	@Transactional (readOnly = false)
+	@Override
 	public void delete(@NotNull TariffExportLogRecord tariffExportLogRecord) {
 		tariffExportLogRecordDao.delete(tariffExportLogRecord);
 	}
 
-	/**
-	 * Set tariff export log record dao
-	 *
-	 * @param tariffExportLogRecordDao Tariff export log record dao
-	 */
 	@Required
 	public void setTariffExportLogRecordDao(@NotNull TariffExportLogRecordDao tariffExportLogRecordDao) {
 		this.tariffExportLogRecordDao = tariffExportLogRecordDao;
 	}
+
 }

@@ -27,6 +27,7 @@ public class BuildingAttributesImportAction extends FPFileActionSupport {
 	 * @throws Exception if failure occurs
 	 */
 	@NotNull
+	@Override
 	protected String doExecute() throws Exception {
 
 		if (!isSubmit()) {
@@ -59,6 +60,7 @@ public class BuildingAttributesImportAction extends FPFileActionSupport {
 	 * @return {@link #ERROR} by default
 	 */
 	@NotNull
+	@Override
 	protected String getErrorResult() {
 		return SUCCESS;
 	}

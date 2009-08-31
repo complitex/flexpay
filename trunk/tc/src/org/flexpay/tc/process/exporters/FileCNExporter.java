@@ -30,6 +30,7 @@ public class FileCNExporter implements Exporter {
 	 *
 	 * @throws FlexPayException throws flexpay exception when filed to begin export process
 	 */
+	@Override
 	public void beginExport() throws FlexPayException {
 		try {
 			File f = File.createTempFile(exportFileNamePrefix, "", ApplicationConfig.getTcDataRoot());
@@ -47,6 +48,7 @@ public class FileCNExporter implements Exporter {
 	 * @param params params to export
 	 * @throws FlexPayException throws flexpay exception when can't export data
 	 */
+	@Override
 	public void export(@NotNull Object[] params) throws FlexPayException {
 
 		if (exportPrintStream == null) {
@@ -79,6 +81,7 @@ public class FileCNExporter implements Exporter {
 	 *
 	 * @throws FlexPayException throws flexpay exception when filed to commit transaction
 	 */
+	@Override
 	public void commit() throws FlexPayException {
 		if (exportPrintStream == null) {
 			throw new FlexPayException("File Exporter is not ready");
@@ -93,6 +96,7 @@ public class FileCNExporter implements Exporter {
 	 * @throws org.flexpay.common.exception.FlexPayException
 	 *          throws FlexPayException when can't rollback transaction
 	 */
+	@Override
 	public void rollback() throws FlexPayException {
 		//do nothing
 	}
@@ -100,6 +104,7 @@ public class FileCNExporter implements Exporter {
 	/**
 	 * End export procedure
 	 */
+	@Override
 	public void endExport() {
 		if (exportPrintStream != null) {
 			exportPrintStream.flush();
@@ -107,33 +112,19 @@ public class FileCNExporter implements Exporter {
 		}
 	}
 
-	/**
-	 * Set TariffCalculationResultService
-	 *
-	 * @param tariffCalculationResultService TariffCalculationResultService
-	 */
 	@Required
 	public void setTariffCalculationResultService(TariffCalculationResultService tariffCalculationResultService) {
 		this.tariffCalculationResultService = tariffCalculationResultService;
 	}
 
-	/**
-	 * Set tariffExportCodeService
-	 *
-	 * @param tariffExportCodeServiceExt tariffExportCodeService
-	 */
 	@Required
 	public void setTariffExportCodeService(TariffExportCodeServiceExt tariffExportCodeServiceExt) {
 		this.tariffExportCodeServiceExt = tariffExportCodeServiceExt;
 	}
 
-	/**
-	 * Set tariffExportLogRecordService
-	 *
-	 * @param tariffExportLogRecordService tariffExportLogRecordService
-	 */
 	@Required
 	public void setTariffExportLogRecordService(TariffExportLogRecordService tariffExportLogRecordService) {
 		this.tariffExportLogRecordService = tariffExportLogRecordService;
 	}
+
 }

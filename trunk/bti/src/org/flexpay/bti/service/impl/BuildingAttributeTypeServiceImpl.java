@@ -11,17 +11,17 @@ import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.persistence.history.ModificationListener;
-import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.service.internal.SessionUtils;
+import org.flexpay.common.util.CollectionUtils;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
-import java.util.Collection;
 
 @Transactional (readOnly = true)
 public class BuildingAttributeTypeServiceImpl implements BuildingAttributeTypeService {
@@ -40,6 +40,7 @@ public class BuildingAttributeTypeServiceImpl implements BuildingAttributeTypeSe
 	 * @param stub Attribute type stub
 	 * @return type if found, or <code>null</code> otherwise
 	 */
+	@Override
 	public BuildingAttributeType readFull(@NotNull Stub<BuildingAttributeType> stub) {
 		return attributeTypeDaoExt.readFull(stub.getId());
 	}
@@ -49,8 +50,8 @@ public class BuildingAttributeTypeServiceImpl implements BuildingAttributeTypeSe
 	 *
 	 * @param ids Attribute type identifiers
 	 */
-	@Override
 	@Transactional (readOnly = false)
+	@Override
 	public void disable(Collection<Long> ids) {
 		for (Long id : ids) {
 			BuildingAttributeType type = readFull(new Stub<BuildingAttributeType>(id));
@@ -71,6 +72,7 @@ public class BuildingAttributeTypeServiceImpl implements BuildingAttributeTypeSe
 	 * @throws FlexPayExceptionContainer if validation fails
 	 */
 	@Transactional (readOnly = false)
+	@Override
 	public BuildingAttributeType create(@NotNull BuildingAttributeType type) throws FlexPayExceptionContainer {
 		validate(type);
 
@@ -89,6 +91,7 @@ public class BuildingAttributeTypeServiceImpl implements BuildingAttributeTypeSe
 	 */
 	@SuppressWarnings ({"ThrowableInstanceNeverThrown"})
 	@Transactional (readOnly = false)
+	@Override
 	public BuildingAttributeType update(@NotNull BuildingAttributeType type) throws FlexPayExceptionContainer {
 		validate(type);
 
@@ -173,10 +176,15 @@ public class BuildingAttributeTypeServiceImpl implements BuildingAttributeTypeSe
 	 * @param pager Page
 	 * @return list of building attributes
 	 */
+	@Override
 	public List<BuildingAttributeType> listTypes(@NotNull Page<BuildingAttributeType> pager) {
-		return attributeTypeDao.findTypes(pager);
+		log.debug("Before: pager = {}", pager);
+		List<BuildingAttributeType> tt = attributeTypeDao.findTypes(pager);
+		log.debug("After: pager = {}", pager);
+		return tt;
 	}
 
+	@Override
     public List<BuildingAttributeType> listTypes() {
         return attributeTypeDao.findAllTypes();
     }
@@ -187,17 +195,15 @@ public class BuildingAttributeTypeServiceImpl implements BuildingAttributeTypeSe
 	 * @param typeName Type name to look up
 	 * @return type if found, or <code>null</code> otherwise
 	 */
+	@Override
 	public BuildingAttributeType findTypeByName(String typeName) {
 		List<BuildingAttributeType> types = attributeTypeDao.findTypesByName(typeName, typeName);
-		if (types.isEmpty()) {
-			return null;
-		}
 		if (types.size() > 1) {
-			log.error("Internal error, several attribute types found for name '{}'", typeName);
+			log.error("Internal error, several attribute types found for name \"{}\"", typeName);
 			throw new IllegalStateException("Internal error, several attribute types found for name " + typeName);
 		}
 
-		return types.get(0);
+		return types.isEmpty() ? null : types.get(0);
 	}
 
 	@Required
@@ -219,4 +225,5 @@ public class BuildingAttributeTypeServiceImpl implements BuildingAttributeTypeSe
 	public void setModificationListener(ModificationListener<BuildingAttributeType> modificationListener) {
 		this.modificationListener = modificationListener;
 	}
+
 }

@@ -46,6 +46,7 @@ public class JDBCCNExporter implements Exporter {
 	 *
 	 * @throws FlexPayException throws flexpay exception when filed to begin export process
 	 */
+	@Override
 	public void beginExport() throws FlexPayException {
 		try {
 			Class.forName(jdbcDriverClassName);
@@ -68,6 +69,7 @@ public class JDBCCNExporter implements Exporter {
 	 * @param params params to export
 	 * @throws FlexPayException throws flexpay exception when can't export data
 	 */
+	@Override
 	public void export(@NotNull Object[] params) throws FlexPayException {
 		Logger plog = ProcessLogger.getLogger(getClass());
 		try {
@@ -157,6 +159,7 @@ public class JDBCCNExporter implements Exporter {
 	 *
 	 * @throws FlexPayException throws flexpay exception when filed to commit transaction
 	 */
+	@Override
 	public void commit() throws FlexPayException {
 		try {
 			conn.commit();
@@ -173,6 +176,7 @@ public class JDBCCNExporter implements Exporter {
 	 * @throws org.flexpay.common.exception.FlexPayException
 	 *          throws FlexPayException when can't rollback transaction
 	 */
+	@Override
 	public void rollback() throws FlexPayException {
 		try {
 			conn.rollback();
@@ -186,6 +190,7 @@ public class JDBCCNExporter implements Exporter {
 	/**
 	 * End export procedure
 	 */
+	@Override
 	public void endExport() {
 		JDBCUtils.closeQuitly(conn);
 	}
@@ -249,4 +254,5 @@ public class JDBCCNExporter implements Exporter {
 	public void setTariffExportLogRecordService(TariffExportLogRecordService tariffExportLogRecordService) {
 		this.tariffExportLogRecordService = tariffExportLogRecordService;
 	}
+
 }

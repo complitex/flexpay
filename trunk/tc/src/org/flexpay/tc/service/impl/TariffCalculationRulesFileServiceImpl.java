@@ -1,6 +1,7 @@
 package org.flexpay.tc.service.impl;
 
 import org.flexpay.common.dao.paging.Page;
+import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.util.FPFileUtil;
 import org.flexpay.tc.dao.TariffCalculationRulesFileDao;
@@ -14,6 +15,7 @@ import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.File;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -26,12 +28,14 @@ public class TariffCalculationRulesFileServiceImpl implements TariffCalculationR
 	private TariffCalculationRulesFileDao tariffCalculationRulesFileDao;
 
 	@Transactional (readOnly = false)
+	@Override
 	public void create(@NotNull TariffCalculationRulesFile tariffCalculationRulesFile) {
 		tariffCalculationRulesFile.setId(null);
 		tariffCalculationRulesFileDao.create(tariffCalculationRulesFile);
 	}
 
 	@Transactional (readOnly = false)
+	@Override
 	public void update(@NotNull TariffCalculationRulesFile tariffCalculationRulesFile) {
 		tariffCalculationRulesFileDao.update(tariffCalculationRulesFile);
 	}
@@ -41,6 +45,7 @@ public class TariffCalculationRulesFileServiceImpl implements TariffCalculationR
 	}
 
 	@Transactional (readOnly = false)
+	@Override
 	public void disable(@NotNull Set<Long> objectIds) {
 		for (Long id : objectIds) {
 			TariffCalculationRulesFile tariffCalculationRulesFile = tariffCalculationRulesFileDao.read(id);
@@ -52,12 +57,14 @@ public class TariffCalculationRulesFileServiceImpl implements TariffCalculationR
 	}
 
 	@Transactional (readOnly = false)
+	@Override
 	public void delete(TariffCalculationRulesFile file) {
 		tariffCalculationRulesFileDao.delete(file);
 	}
 
 	@SuppressWarnings ({"ResultOfMethodCallIgnored"})
 	@Transactional (readOnly = false)
+	@Override
 	public void delete(@NotNull Stub<TariffCalculationRulesFile> fileStub) {
 		TariffCalculationRulesFile rulesFile = tariffCalculationRulesFileDao.read(fileStub.getId());
 
@@ -73,6 +80,21 @@ public class TariffCalculationRulesFileServiceImpl implements TariffCalculationR
 		tariffCalculationRulesFileDao.delete(rulesFile);
 	}
 
+	@Transactional (readOnly = false)
+	@Override
+	public void disableByIds(@NotNull Collection<Long> objectIds) throws FlexPayExceptionContainer {
+		for (Long id : objectIds) {
+			TariffCalculationRulesFile rulesFile = tariffCalculationRulesFileDao.read(id);
+			if (rulesFile != null) {
+				rulesFile.disable();
+				tariffCalculationRulesFileDao.update(rulesFile);
+
+				log.debug("Disabled: {}", rulesFile);
+			}
+		}
+	}
+
+	@Override
 	public List<TariffCalculationRulesFile> listTariffCalculationRulesFiles(Page<TariffCalculationRulesFile> pager) {
 		return tariffCalculationRulesFileDao.findTariffCalculationRulesFiles(pager);
 	}

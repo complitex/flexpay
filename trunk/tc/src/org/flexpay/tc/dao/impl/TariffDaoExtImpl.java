@@ -15,6 +15,7 @@ public class TariffDaoExtImpl extends HibernateDaoSupport implements TariffDaoEx
 	 * @param code tariff code
 	 * @return tariff
 	 */
+	@Override
 	public Tariff getTariffByCode(@NotNull String code) {
 		List<?> tariffs = (List<?>) getHibernateTemplate().findByNamedQuery("Tariff.getByCode", code);
 		return tariffs.isEmpty() ? null : (Tariff) tariffs.get(0);

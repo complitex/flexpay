@@ -42,9 +42,11 @@ public class BuildingTCResultsListAction extends FPActionSupport {
 	private BuildingService buildingService;
 
 	@NotNull
+	@Override
 	protected String doExecute() throws Exception {
 
 		loadTariffCalculationResults();
+
 		return INPUT;
 	}
 
@@ -68,6 +70,7 @@ public class BuildingTCResultsListAction extends FPActionSupport {
 	}
 
 	@NotNull
+	@Override
 	protected String getErrorResult() {
 		return REDIRECT_SUCCESS;
 	}
@@ -95,19 +98,16 @@ public class BuildingTCResultsListAction extends FPActionSupport {
 	}
 
 	public boolean hasPrimaryStatus(Long id) {
-
 		BuildingAddress building = buildingService.readFull(new Stub<BuildingAddress>(id));
 		return building.getPrimaryStatus();
 	}
 
 	public String getTariffTranslation(Long tariffId) {
-
 		Tariff tariff = tariffService.readFull(new Stub<Tariff>(tariffId));
 		return getTranslation(tariff.getTranslations()).getName();
 	}
 
 	public String getTariffCalculationExportCode(Long tariffCalculationId) {
-
 		TariffCalculationResult tariffCalculationResult = tariffCalculationResultService.read(new Stub<TariffCalculationResult>(tariffCalculationId));
 		return tariffCalculationResult == null ? "" : tariffCalculationResult.getLastTariffExportLogRecord().getTariffExportCode().getI18nName();
 	}
@@ -144,7 +144,6 @@ public class BuildingTCResultsListAction extends FPActionSupport {
 		return tcResultsMap.get(calcDate);
 	}
 
-	// get/set form data
 	public List<String> getTariffCalculationDates() {
 		return tariffCalculationDates;
 	}
@@ -157,7 +156,6 @@ public class BuildingTCResultsListAction extends FPActionSupport {
 		this.buildingId = buildingId;
 	}
 
-	// required services
 	@Required
 	public void setTariffCalculationResultService(TariffCalculationResultService tariffCalculationResultService) {
 		this.tariffCalculationResultService = tariffCalculationResultService;
@@ -177,4 +175,5 @@ public class BuildingTCResultsListAction extends FPActionSupport {
 	public void setBuildingService(BuildingService buildingService) {
 		this.buildingService = buildingService;
 	}
+
 }

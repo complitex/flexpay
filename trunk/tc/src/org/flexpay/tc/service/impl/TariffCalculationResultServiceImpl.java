@@ -28,12 +28,14 @@ public class TariffCalculationResultServiceImpl implements TariffCalculationResu
 	 * @param tariffCalculationResult calculated result
 	 */
 	@Transactional (readOnly = false)
+	@Override
 	public void add(@NotNull TariffCalculationResult tariffCalculationResult) {
 		tariffCalculationResult.setId(null);
 		tariffCalculationResultDao.create(tariffCalculationResult);
 	}
 
 	@Transactional (readOnly = false)
+	@Override
 	public void add(@NotNull Set<TariffCalculationResult> tariffCalculationResults) {
 		for (TariffCalculationResult tcr : tariffCalculationResults) {
 			tariffCalculationResultDao.create(tcr);
@@ -50,6 +52,7 @@ public class TariffCalculationResultServiceImpl implements TariffCalculationResu
 	 * @param tariff		  tariff
 	 */
 	@Transactional (readOnly = false)
+	@Override
 	public void add(@NotNull BigDecimal value, Date creationDate, Date calculationDate,
 				 @NotNull Building building, @NotNull Tariff tariff) {
 		TariffCalculationResult tariffCalculationResult = new TariffCalculationResult(
@@ -64,6 +67,7 @@ public class TariffCalculationResultServiceImpl implements TariffCalculationResu
 	 * @return updated instance
 	 */
 	@Transactional (readOnly = false)
+	@Override
 	public TariffCalculationResult update(TariffCalculationResult result) {
 		tariffCalculationResultDao.update(result);
 		return result;
@@ -76,11 +80,13 @@ public class TariffCalculationResultServiceImpl implements TariffCalculationResu
 	 * @param buildingStub tariff calculation result building
 	 * @return tariff calculation result list
 	 */
+	@Override
 	public List<TariffCalculationResult> getTariffCalcResultsByCalcDateAndBuilding(
 			@NotNull Date calcDate, @NotNull Stub<Building> buildingStub) {
 		return tariffCalculationResultDao.findByCalcDateAndBuilding(calcDate, buildingStub.getId());
 	}
 
+	@Override
 	public TariffCalculationResult findTariffCalcResults(
 			@NotNull Date calcDate, @NotNull Stub<Tariff> tariffStub, @NotNull Stub<Building> buildingStub)
 			throws FlexPayException {
@@ -95,19 +101,23 @@ public class TariffCalculationResultServiceImpl implements TariffCalculationResu
 		return results.get(0);
 	}
 
+	@Override
 	public TariffCalculationResult read(@NotNull Stub<TariffCalculationResult> stub) {
 		return tariffCalculationResultDao.readFull(stub.getId());
 	}
 
+	@Override
 	public List<TariffCalculationResult> getTariffCalcResultsByCalcDateAndAddressId(
 			@NotNull Date calcDate, @NotNull Stub<BuildingAddress> addressStub) {
 		return tariffCalculationResultDao.findByCalcDateAndAddressId(calcDate, addressStub.getId());
 	}
 
+	@Override
 	public List<Date> getUniqueDates() {
 		return tariffCalculationResultDao.findUniqueDates();
 	}
 
+	@Override
 	public List<Long> getAddressIds(Date calcDate) {
 		return tariffCalculationResultDao.findBuildingAddressIdsByCalcDate(calcDate);
 	}

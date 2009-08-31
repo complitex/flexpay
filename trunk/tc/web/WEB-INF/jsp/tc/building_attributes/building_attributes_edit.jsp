@@ -1,9 +1,8 @@
+<%@include file="/WEB-INF/jsp/common/taglibs.jsp" %>
+<%@include file="/WEB-INF/jsp/common/includes/jquery_ui.jsp"%>
+
 <%@page import="org.flexpay.bti.persistence.building.BuildingAttributeTypeSimple" %>
 <%@page import="org.flexpay.bti.persistence.building.BuildingAttributeTypeEnum" %>
-
-<%@include file="/WEB-INF/jsp/common/taglibs.jsp" %>
-
-<%@include file="/WEB-INF/jsp/common/includes/jquery_ui.jsp"%>
 
 <script type="text/javascript">
     // folding functions
@@ -26,9 +25,11 @@
 
     // attribute date picker configuration
     FP.calendars("buildingAttributesEdit_attributeDate", true);
+
 </script>
 
 <s:actionerror />
+
 <s:form action="buildingAttributesEdit">
     <table cellpadding="3" cellspacing="1" border="0" width="100%">
         <s:hidden name="building.id" value="%{building.id}"/>

@@ -24,7 +24,7 @@
         FF.addListener("country", function(filter) {
             FP.pagerAjax(null, {
                 action:"<s:url action="regionsListAjax" namespace="/dicts" includeParams="none"/>",
-                params:{countryFilter: FF.filters["country"].value.val()}
+                params:{countryFilter: filter.value.val()}
             });
         });
 

@@ -13,21 +13,15 @@
 
 <script type="text/javascript">
 
-    var shadowId = "shadow";
     var resultId = "result";
 
     $(function() {
 
-        FP.createShadow(shadowId);
-
         FF.addListener("street", function(filter) {
-            FP.resizeShadow(shadowId, resultId, {visibility:"visible"});
-            $.post("<s:url action="buildingsListAjax" namespace="/tc" includeParams="none"/>",
-                    {streetId: filter.value.val()},
-                    function(data) {
-                        $("#" + resultId).html(data);
-                        FP.hideShadow(shadowId);
-                    });
+            FP.pagerAjax(null, {
+                action:"<s:url action="buildingsListAjax" namespace="/tc" includeParams="none"/>",
+                params:{streetFilter: filter.value.val()}
+            });
         });
         FF.addEraseFunction("street", function(filter) {
             $("#" + resultId).html("");
@@ -37,7 +31,7 @@
     function pagerAjax(element) {
         FP.pagerAjax(element, {
             action:"<s:url action="buildingsListAjax" namespace="/tc" includeParams="none"/>",
-            params:{streetId: FF.filters["street"].value.val()}
+            params:{streetFilter: FF.filters["street"].value.val()}
         });
     }
 

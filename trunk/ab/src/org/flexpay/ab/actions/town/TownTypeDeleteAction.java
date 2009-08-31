@@ -20,13 +20,13 @@ public class TownTypeDeleteAction extends FPActionSupport {
 
 		townTypeService.disableByIds(objectIds);
 
-		return REDIRECT_SUCCESS;
+		return SUCCESS;
 	}
 
 	@NotNull
 	@Override
 	protected String getErrorResult() {
-		return REDIRECT_SUCCESS;
+		return SUCCESS;
 	}
 
 	public void setObjectIds(Set<Long> objectIds) {

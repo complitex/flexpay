@@ -4,6 +4,7 @@ import org.apache.commons.io.IOUtils;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.process.ProcessManager;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Required;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -12,6 +13,7 @@ import java.io.InputStream;
 public class ProcessDefinitionDeployAction extends FPActionSupport {
 
 	private File upload;
+
 	private ProcessManager processManager;
 
 	/**
@@ -24,6 +26,7 @@ public class ProcessDefinitionDeployAction extends FPActionSupport {
 	 * @throws Exception if failure occurs
 	 */
 	@NotNull
+	@Override
 	protected String doExecute() throws Exception {
 
 		if (isSubmit()) {
@@ -52,6 +55,7 @@ public class ProcessDefinitionDeployAction extends FPActionSupport {
 	 * @return {@link #ERROR} by default
 	 */
 	@NotNull
+	@Override
 	protected String getErrorResult() {
 		return INPUT;
 	}
@@ -64,7 +68,9 @@ public class ProcessDefinitionDeployAction extends FPActionSupport {
 		this.upload = upload;
 	}
 
+	@Required
 	public void setProcessManager(ProcessManager processManager) {
 		this.processManager = processManager;
 	}
+
 }

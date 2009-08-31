@@ -26,20 +26,19 @@ import java.util.Map;
 
 public class BuildingTCResultsEditAction extends FPActionSupport {
 
-	// form data
 	private String buildingId;
 	private String calculationDate;
 
 	private Map<Long, String> tariffMap = CollectionUtils.map();
 	private Map<Long, String> tariffMapDBValues = CollectionUtils.map();
 
-	// required services
 	private AddressService addressService;
 	private BuildingService buildingService;
 	private TariffService tariffService;
 	private TariffCalculationResultService tariffCalculationResultService;
 
 	@NotNull
+	@Override
 	protected String doExecute() throws Exception {
 
 		loadTCResults();
@@ -57,8 +56,8 @@ public class BuildingTCResultsEditAction extends FPActionSupport {
 	}
 
 	@NotNull
+	@Override
 	protected String getErrorResult() {
-
 		return INPUT;
 	}
 
@@ -79,6 +78,7 @@ public class BuildingTCResultsEditAction extends FPActionSupport {
 		for (Long typeId : tariffMapDBValues.keySet()) {
 			tariffMap.put(typeId, tariffMapDBValues.get(typeId));
 		}
+
 	}
 
 	private void updateTCResults() throws FlexPayException {
@@ -127,7 +127,6 @@ public class BuildingTCResultsEditAction extends FPActionSupport {
 
 	// rendering utility methods
 	public String getAddress(@NotNull Long buildingId) throws Exception {
-
 		return addressService.getBuildingsAddress(new Stub<BuildingAddress>(buildingId), getUserPreferences().getLocale());
 	}
 
@@ -148,7 +147,6 @@ public class BuildingTCResultsEditAction extends FPActionSupport {
 	}
 
 	public boolean hasPrimaryStatus(Long id) {
-
 		BuildingAddress building = buildingService.readFull(new Stub<BuildingAddress>(id));
 		return building.getPrimaryStatus();
 	}
@@ -174,7 +172,6 @@ public class BuildingTCResultsEditAction extends FPActionSupport {
 		return total;
 	}
 
-	// get/set form data
 	public String getBuildingId() {
 		return buildingId;
 	}
@@ -199,7 +196,6 @@ public class BuildingTCResultsEditAction extends FPActionSupport {
 		return tariffMap;
 	}
 
-	// required services
 	@Required
 	public void setTariffCalculationResultService(TariffCalculationResultService tariffCalculationResultService) {
 		this.tariffCalculationResultService = tariffCalculationResultService;
@@ -219,4 +215,5 @@ public class BuildingTCResultsEditAction extends FPActionSupport {
 	public void setBuildingService(BuildingService buildingService) {
 		this.buildingService = buildingService;
 	}
+
 }

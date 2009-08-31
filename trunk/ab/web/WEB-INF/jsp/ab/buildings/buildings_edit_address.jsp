@@ -1,27 +1,27 @@
-<%@include file="/WEB-INF/jsp/common/taglibs.jsp" %>
+<%@include file="/WEB-INF/jsp/common/taglibs.jsp"%>
 
 <%@include file="/WEB-INF/jsp/common/includes/jquery_ui.jsp"%>
-<%@include file="/WEB-INF/jsp/ab/includes/flexpay_filter.jsp" %>
+<%@include file="/WEB-INF/jsp/ab/includes/flexpay_filter.jsp"%>
 
 <script type="text/javascript">
 
     $("#formRegistration").ready(function() {
         FF.createFilter("country", {
-            action: "<s:url action="countryFilterAjax" namespace="/dicts" includeParams="none"/>",
-            defaultValue: "<s:text name="%{countryFilter != null ? countryFilter : userPreferences.countryFilter }" />"
+            action: "<s:url action="countryFilterAjax" namespace="/dicts" includeParams="none" />",
+            defaultValue: "<s:text name="%{countryFilter != null ? countryFilter : userPreferences.countryFilter}" />"
         });
         FF.createFilter("region", {
-            action: "<s:url action="regionFilterAjax" namespace="/dicts" includeParams="none"/>",
+            action: "<s:url action="regionFilterAjax" namespace="/dicts" includeParams="none" />",
             parents: ["country"],
             defaultValue: "<s:text name="%{regionFilter != null ? regionFilter : userPreferences.regionFilter}" />"
         });
         FF.createFilter("town", {
-            action: "<s:url action="townFilterAjax" namespace="/dicts" includeParams="none"/>",
+            action: "<s:url action="townFilterAjax" namespace="/dicts" includeParams="none" />",
             parents: ["region"],
             defaultValue: "<s:text name="%{townFilter != null ? townFilter : userPreferences.townFilter}" />"
         });
         FF.createFilter("street", {
-            action: "<s:url action="streetFilterAjax" namespace="/dicts" includeParams="none"/>",
+            action: "<s:url action="streetFilterAjax" namespace="/dicts" includeParams="none" />",
             parents: ["town"],
             defaultValue: "<s:text name="%{streetFilter != null ? streetFilter : userPreferences.streetFilter}" />"
         });        

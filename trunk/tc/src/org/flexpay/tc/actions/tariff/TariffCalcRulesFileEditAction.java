@@ -1,5 +1,6 @@
 package org.flexpay.tc.actions.tariff;
 
+import org.apache.commons.lang.StringUtils;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.persistence.Language;
 import static org.flexpay.common.persistence.Stub.stub;
@@ -29,39 +30,44 @@ public class TariffCalcRulesFileEditAction extends FPActionSupport {
 	private String uploadFileName;
 	private String uploadContentType;
 
+	private String crumbCreateKey;
 	private String moduleName;
 	private TariffCalculationRulesFileService tariffCalculationRulesFileService;
 	private FPFileService fpFileService;
 
 	@NotNull
+	@Override
 	public String doExecute() {
 
-		if (rulesFile.getId() == null) {
-			addActionError(getText("error.no_id"));
-			return REDIRECT_SUCCESS;
-		}
+		rulesFile = rulesFile.isNew() ? rulesFile : tariffCalculationRulesFileService.read(stub(rulesFile));
 
-		TariffCalculationRulesFile file = rulesFile.isNew() ? rulesFile : tariffCalculationRulesFileService.read(stub(rulesFile));
-		if (file == null) {
-			addActionError(getText("error.invalid_id"));
+		if (rulesFile == null) {
+			addActionError(getText("common.object_not_selected"));
 			return REDIRECT_SUCCESS;
 		}
 
 		if (!isSubmit()) {
-			rulesFile = file;
 			initNames();
 			return INPUT;
 		}
 
 		// init translations
 		for (Map.Entry<Long, String> name : names.entrySet()) {
+			Long key = name.getKey();
 			String value = name.getValue();
-			Language lang = getLang(name.getKey());
-			TariffCalculationRulesFileTranslation translation = new TariffCalculationRulesFileTranslation();
-			translation.setLang(lang);
-			translation.setName(value);
-			translation.setDescription(descriptions.get(name.getKey()));
-			file.setTranslation(translation);
+			Language lang = getLang(key);
+			if (lang.isDefault() && StringUtils.isEmpty(value)) {
+				addActionError(getText("tc.error.rules_files.name_is_required"));
+				return INPUT;
+			}
+			TariffCalculationRulesFileTranslation translation = new TariffCalculationRulesFileTranslation(value, lang);
+			translation.setDescription(descriptions.get(key));
+			log.debug("translation: {}", translation);
+			rulesFile.setTranslation(translation);
+		}
+
+		for (TariffCalculationRulesFileTranslation t : rulesFile.getTranslations()) {
+			log.debug("translation: {} - {}", t.getName(), t.getDescription());
 		}
 
 		String userName = SecurityUtil.getUserName();
@@ -80,7 +86,7 @@ public class TariffCalcRulesFileEditAction extends FPActionSupport {
 				return INPUT;
 			}
 
-			file.setType(fileType);
+			rulesFile.setType(fileType);
 			FPFile fileOnServer = new FPFile();
 			fileOnServer.setModule(fpFileService.getModuleByName(moduleName));
 			fileOnServer.setOriginalName(uploadFileName);
@@ -92,18 +98,18 @@ public class TariffCalcRulesFileEditAction extends FPActionSupport {
 				addActionError(getText("tc.error.cant_create_file_on_system"));
 				return INPUT;
 			}
-			file.setFile(fileOnServer);
-			file.setUserName(userName);
+			rulesFile.setFile(fileOnServer);
+			rulesFile.setUserName(userName);
 
 		}
 
-		if (file.isNew()) {
-			tariffCalculationRulesFileService.create(file);
+		if (rulesFile.isNew()) {
+			tariffCalculationRulesFileService.create(rulesFile);
+			log.debug("Tariff calculation rules file created {}", rulesFile);
 		} else {
-			tariffCalculationRulesFileService.update(file);
+			tariffCalculationRulesFileService.update(rulesFile);
+			log.debug("Tariff calculation rules file updated {}", rulesFile);
 		}
-
-		log.info("Tariff calculation rules file created {}", file);
 
 		return REDIRECT_SUCCESS;
 	}
@@ -116,6 +122,9 @@ public class TariffCalcRulesFileEditAction extends FPActionSupport {
 
 		for (Language lang : ApplicationConfig.getLanguages()) {
 			if (names.containsKey(lang.getId())) {
+				if (!descriptions.containsKey(lang.getId())) {
+					descriptions.put(lang.getId(), "");
+				}
 				continue;
 			}
 			names.put(lang.getId(), "");
@@ -124,8 +133,17 @@ public class TariffCalcRulesFileEditAction extends FPActionSupport {
 	}
 
 	@NotNull
+	@Override
 	protected String getErrorResult() {
 		return REDIRECT_SUCCESS;
+	}
+
+	@Override
+	protected void setBreadCrumbs() {
+		if (rulesFile.isNew()) {
+			crumbNameKey = crumbCreateKey;
+		}
+		super.setBreadCrumbs();
 	}
 
 	public TariffCalculationRulesFile getRulesFile() {
@@ -166,6 +184,10 @@ public class TariffCalcRulesFileEditAction extends FPActionSupport {
 
 	public void setUploadContentType(String uploadContentType) {
 		this.uploadContentType = uploadContentType;
+	}
+
+	public void setCrumbCreateKey(String crumbCreateKey) {
+		this.crumbCreateKey = crumbCreateKey;
 	}
 
 	@Required

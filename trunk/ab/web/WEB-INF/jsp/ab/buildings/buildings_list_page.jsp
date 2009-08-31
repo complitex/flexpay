@@ -24,7 +24,7 @@
         FF.addListener("street", function(filter) {
             FP.pagerAjax(null, {
                 action:"<s:url action="buildingsListAjax" namespace="/dicts" includeParams="none"/>",
-                params:{streetFilter: FF.filters["street"].value.val()}
+                params:{streetFilter: filter.value.val()}
             });
         });
 

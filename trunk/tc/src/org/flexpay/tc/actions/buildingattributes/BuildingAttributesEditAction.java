@@ -53,6 +53,7 @@ public class BuildingAttributesEditAction extends FPActionSupport {
 	private BuildingAttributeGroupService buildingAttributeGroupService;
 
 	@NotNull
+	@Override
 	protected String doExecute() throws Exception {
 
 		loadAttributeTypes();
@@ -75,7 +76,6 @@ public class BuildingAttributesEditAction extends FPActionSupport {
 	}
 
 	private void loadAttributeTypes() throws FlexPayException {
-
 		loadBuildingWithAttributes();
 	}
 
@@ -87,8 +87,8 @@ public class BuildingAttributesEditAction extends FPActionSupport {
 	}
 
 	@NotNull
+	@Override
 	protected String getErrorResult() {
-
 		return INPUT;
 	}
 
@@ -128,16 +128,11 @@ public class BuildingAttributesEditAction extends FPActionSupport {
 		}
 
 		// put attribute into proper group
-		Long groupId = group.getId();
-		if (!attributeGroups.contains(groupId)) {
-			attributeGroups.add(groupId);
+		if (!attributeGroups.contains(group.getId())) {
+			attributeGroups.add(group.getId());
 		}
 
-		if (attribute != null) {
-			attributeMapDBValues.put(type.getId(), attribute.getStringValue());
-		} else {
-			attributeMapDBValues.put(type.getId(), "");
-		}
+		attributeMapDBValues.put(type.getId(), attribute != null ? attribute.getStringValue() : "");
 	}
 
 	private void loadAlternativeAddresses() throws FlexPayException {
@@ -249,7 +244,6 @@ public class BuildingAttributesEditAction extends FPActionSupport {
 		return attributeMap.get(type.getId());
 	}
 
-	// set/get form fields
 	public BuildingAddress getBuilding() {
 		return building;
 	}
@@ -286,33 +280,6 @@ public class BuildingAttributesEditAction extends FPActionSupport {
 		this.dateSubmitted = dateSubmitted;
 	}
 
-	// setters for required services
-	@Required
-	public void setAddressService(AddressService addressService) {
-		this.addressService = addressService;
-	}
-
-	@Required
-	public void setBuildingService(BuildingService buildingService) {
-		this.buildingService = buildingService;
-	}
-
-	@Required
-	public void setBtiBuildingService(BtiBuildingService btiBuildingService) {
-		this.btiBuildingService = btiBuildingService;
-	}
-
-	@Required
-	public void setBuildingAttributeTypeService(BuildingAttributeTypeService buildingAttributeTypeService) {
-		this.buildingAttributeTypeService = buildingAttributeTypeService;
-	}
-
-	@Required
-	public void setBuildingAttributeGroupService(BuildingAttributeGroupService buildingAttributeGroupService) {
-		this.buildingAttributeGroupService = buildingAttributeGroupService;
-	}
-
-	// validation
 	public boolean doValidate() {
 
 		BuildingAttributesValidator validator = new BuildingAttributesValidator();
@@ -454,4 +421,30 @@ public class BuildingAttributesEditAction extends FPActionSupport {
 
 		return !hasActionErrors();
 	}
+
+	@Required
+	public void setAddressService(AddressService addressService) {
+		this.addressService = addressService;
+	}
+
+	@Required
+	public void setBuildingService(BuildingService buildingService) {
+		this.buildingService = buildingService;
+	}
+
+	@Required
+	public void setBtiBuildingService(BtiBuildingService btiBuildingService) {
+		this.btiBuildingService = btiBuildingService;
+	}
+
+	@Required
+	public void setBuildingAttributeTypeService(BuildingAttributeTypeService buildingAttributeTypeService) {
+		this.buildingAttributeTypeService = buildingAttributeTypeService;
+	}
+
+	@Required
+	public void setBuildingAttributeGroupService(BuildingAttributeGroupService buildingAttributeGroupService) {
+		this.buildingAttributeGroupService = buildingAttributeGroupService;
+	}
+
 }

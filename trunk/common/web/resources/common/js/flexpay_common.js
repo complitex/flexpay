@@ -167,6 +167,7 @@ var FP = {
             pageSizeChangedName:"pageSizeChanged",
             pageNumberName:"pager.pageNumber",
             pageSizeName:"pager.pageSize",
+            notPagerRequest:false,
             params: {}
         }, opt);
 
@@ -179,17 +180,22 @@ var FP = {
         } else {
             FP.showShadow(shadowId, resultId);
         }
-        if (element != null) {
-            var isSelect = element.name == opt.pageSizeName;
+
+        var notEl = element == null;
+        if (!notEl || (notEl && opt.notPagerRequest)) {
+            var isSelect = !notEl && element.name == opt.pageSizeName;
             params[opt.pageSizeChangedName] = isSelect;
-            params[opt.pageNumberName] = isSelect ? "" : element.value;
-            params[opt.pageSizeName] = isSelect ? element.value : $('select[name="' + opt.pageSizeName + '"]').val();
+            params[opt.pageNumberName] = isSelect ? "" : opt.notPagerRequest ? "1" : element.value;
+            if (!notEl) {
+                params[opt.pageSizeName] = isSelect ? element.value : $('select[name="' + opt.pageSizeName + '"]').val();
+            }
         }
 
         $.post(opt.action, params, function(data) {
                     $("#" + resultId).html(data);
                     FP.hideShadow(shadowId);
                 });
+
     },
 
     switchSorter : function(arg) {

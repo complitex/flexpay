@@ -56,17 +56,30 @@
 
 	<package name="building_attributes" namespace="/tc" extends="common">
 
-		<action name="buildingAttributeTypesList" class="buildingAttributeTypesListAction">
-			<result name="success" type="tiles">bti.buildings.attribute_types.list</result>
+		<action name="buildingAttributeTypesList" class="buildingAttributeTypesListPageAction">
+			<result type="tiles">bti.buildings.attribute_types.list</result>
 		</action>
+
+        <action name="buildingAttributeTypesListAjax" class="buildingAttributeTypesListAction">
+            <result>/WEB-INF/jsp/tc/building_attributes/building_attribute_type_list.jsp</result>
+        </action>
+
+        <action name="buildingAttributeTypeView" class="buildingAttributeTypeViewAction">
+            <result type="tiles">bti.buildings.attribute_type.view</result>
+            <result name="redirectError" type="redirect-action">buildingAttributeTypesList</result>
+        </action>
 
 		<action name="buildingAttributeTypeEdit" class="buildingAttributeTypeEditAction">
 			<result name="input" type="tiles">bti.buildings.attribute_type.edit</result>
-			<result name="redirectSuccess" type="redirect-action">buildingAttributeTypesList</result>
+            <result name="redirectSuccess" type="redirect-action">
+                <param name="actionName">buildingAttributeTypeView</param>
+                <param name="parse">true</param>
+                <param name="attributeType.id">${attributeType.id}</param>
+            </result>
 		</action>
 
 		<action name="buildingAttributesImport" class="buildingAttributesImportAction">
-			<result name="success" type="tiles">bti.buildings.attribute.import</result>
+			<result type="tiles">bti.buildings.attribute.import</result>
 		</action>
 
 	</package>

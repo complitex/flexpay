@@ -46,8 +46,13 @@
 
 	<definition name="tc.rules_files.list" extends="tc.dictionaries">
 		<put-attribute name="title" value="tc.rules_files" />
-		<put-attribute name="body" value="/WEB-INF/jsp/tc/tariffs/tariff_calc_rules_files_list.jsp" />
+		<put-attribute name="body" value="/WEB-INF/jsp/tc/tariffs/tariff_calc_rules_files_list_page.jsp" />
 	</definition>
+
+    <definition name="tc.rules_file.view" extends="tc.dictionaries">
+        <put-attribute name="title" value="tc.rules_files" />
+        <put-attribute name="body" value="/WEB-INF/jsp/tc/tariffs/tariff_calc_rules_file_view.jsp" />
+    </definition>
 
 	<definition name="tc.rules_file.edit" extends="tc.dictionaries">
 		<put-attribute name="title" value="tc.rules_file" />
@@ -56,17 +61,22 @@
 
 	<definition name="bti.buildings.attribute_types.list" extends="tc.dictionaries">
 		<put-attribute name="title" value="bti.building.attribute.types" />
-		<put-attribute name="body" value="/WEB-INF/jsp/bti/buildings/building_attribute_type_list.jsp" />
+		<put-attribute name="body" value="/WEB-INF/jsp/tc/building_attributes/building_attribute_type_list_page.jsp" />
 	</definition>
+
+    <definition name="bti.buildings.attribute_type.view" extends="tc.dictionaries">
+        <put-attribute name="title" value="bti.building_attribute_type.view.title" />
+        <put-attribute name="body" value="/WEB-INF/jsp/tc/building_attributes/building_attribute_type_view.jsp" />
+    </definition>
 
 	<definition name="bti.buildings.attribute_type.edit" extends="tc.dictionaries">
 		<put-attribute name="title" value="bti.building.attribute.type" />
-		<put-attribute name="body" value="/WEB-INF/jsp/bti/buildings/building_attribute_type_edit.jsp" />
+		<put-attribute name="body" value="/WEB-INF/jsp/tc/building_attributes/building_attribute_type_edit.jsp" />
 	</definition>
 
 	<definition name="bti.buildings.attribute.import" extends="tc.importexport">
 		<put-attribute name="title" value="bti.building.attribute.import" />
-		<put-attribute name="body" value="/WEB-INF/jsp/bti/buildings/building_attributes_import.jsp" />
+		<put-attribute name="body" value="/WEB-INF/jsp/tc/building_attributes/building_attributes_import.jsp" />
 	</definition>
 
 	<definition name="tc.calc_results.export" extends="tc.importexport">

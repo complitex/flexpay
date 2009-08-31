@@ -15,23 +15,45 @@
 	<!-- Define struts actions beans -->
 
 	<!-- tariff calculation rules files section -->
-	<bean id="tariffCalcRulesFilesListAction" class="org.flexpay.tc.actions.tariff.TariffCalcRulesFilesListAction"
+	<bean id="tariffCalcRulesFilesListAction"
+          class="org.flexpay.tc.actions.tariff.TariffCalcRulesFilesListAction"
 		  p:tariffCalculationRulesFileService-ref="tariffCalculationRulesFileService"
 		  scope="prototype" />
 
-	<bean id="tariffCalcRulesFileEditAction" class="org.flexpay.tc.actions.tariff.TariffCalcRulesFileEditAction"
+    <bean id="tariffCalcRulesFilesListPageAction" parent="staticPageAction"
+          p:crumbNameKey="tc.crumbs.rules_files_list"
+          scope="prototype" />
+
+    <bean id="tariffCalcRulesFileViewAction"
+          class="org.flexpay.tc.actions.tariff.TariffCalcRulesFileViewAction"
+          p:tariffCalculationRulesFileService-ref="tariffCalculationRulesFileService"
+          p:crumbNameKey="tc.crumbs.rules_file_view"
+          scope="prototype" />
+
+	<bean id="tariffCalcRulesFileEditAction"
+          class="org.flexpay.tc.actions.tariff.TariffCalcRulesFileEditAction"
 		  p:tariffCalculationRulesFileService-ref="tariffCalculationRulesFileService"
 		  p:fpFileService-ref="fpFileService"
 		  p:moduleName="${flexpay.module.name.tc}"
+          p:crumbNameKey="tc.crumbs.rules_file_edit"
+          p:crumbCreateKey="tc.crumbs.rules_file_create"
 		  scope="prototype" />
 
-	<bean id="tariffCalcRulesFileDeleteAction" class="org.flexpay.tc.actions.tariff.TariffCalcRulesFileDeleteAction"
+	<bean id="tariffCalcRulesFileDeleteAction"
+          class="org.flexpay.tc.actions.tariff.TariffCalcRulesFileDeleteAction"
 		  p:tariffCalculationRulesFileService-ref="tariffCalculationRulesFileService"
 		  scope="prototype" />
 
-	<bean id="tariffCalculateAction" class="org.flexpay.tc.actions.tariff.TariffCalculateAction"
+	<bean id="tariffCalculateAction"
+          class="org.flexpay.tc.actions.tariff.TariffCalculateAction"
 		  p:processManager-ref="processManager"
 		  scope="prototype" />
+
+    <bean id="tariffCalcResultExportAction"
+          class="org.flexpay.tc.actions.tariff.TariffCalcResultExportAction"
+          p:tariffCalculationResultService-ref="tariffCalculationResultService"
+          p:processManager-ref="processManager"
+          scope="prototype" />
 
 	<!-- end of tariff calculation rules files section -->
 
@@ -68,11 +90,6 @@
 		  p:processManager-ref="processManager"
 		  scope="prototype" />
 	<!-- end of building tc results section -->
-
-	<bean id="tariffCalcResultExportAction" class="org.flexpay.tc.actions.tariff.TariffCalcResultExportAction"
-		  p:tariffCalculationResultService-ref="tariffCalculationResultService"
-		  p:processManager-ref="processManager"
-		  scope="prototype" />
 
 	<!-- processing -->
 	<bean id="processesListAction" scope="prototype"

@@ -1,29 +1,27 @@
 package org.flexpay.tc.actions.tariff;
 
 import org.flexpay.common.actions.FPActionWithPagerSupport;
-import org.flexpay.common.persistence.Stub;
+import static org.flexpay.common.util.CollectionUtils.set;
 import org.flexpay.tc.persistence.TariffCalculationRulesFile;
 import org.flexpay.tc.service.TariffCalculationRulesFileService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
+import java.util.Set;
+
 public class TariffCalcRulesFileDeleteAction extends FPActionWithPagerSupport<TariffCalculationRulesFile> {
 
-	private Long id;
+	private Set<Long> objectIds = set();
 
 	private TariffCalculationRulesFileService tariffCalculationRulesFileService;
 
 	@NotNull
-	public String doExecute() {
+	@Override
+	public String doExecute() throws Exception {
 
-		if (id == null || id <= 0) {
-			addActionError(getText("tc.error.incorrect_rule_id"));
-			return REDIRECT_SUCCESS;
-		}
+		tariffCalculationRulesFileService.disableByIds(objectIds);
 
-		tariffCalculationRulesFileService.delete(new Stub<TariffCalculationRulesFile>(id));
-
-		return REDIRECT_SUCCESS;
+		return SUCCESS;
 	}
 
 	/**
@@ -34,12 +32,13 @@ public class TariffCalcRulesFileDeleteAction extends FPActionWithPagerSupport<Ta
 	 * @return {@link #ERROR} by default
 	 */
 	@NotNull
+	@Override
 	protected String getErrorResult() {
-		return REDIRECT_SUCCESS;
+		return SUCCESS;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
+	public void setObjectIds(Set<Long> objectIds) {
+		this.objectIds = objectIds;
 	}
 
 	@Required

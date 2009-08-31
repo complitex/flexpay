@@ -5,11 +5,13 @@ import org.flexpay.common.process.Process;
 import org.flexpay.common.process.ProcessManager;
 import org.flexpay.common.util.LogPreviewUtil;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Required;
 
 public class ProcessViewAction extends FPActionSupport {
 
     private String logText;
     private Process process;
+
     private ProcessManager processManager;
 
     /**
@@ -21,6 +23,7 @@ public class ProcessViewAction extends FPActionSupport {
      * @throws Exception if failure occurs
      */
     @NotNull
+	@Override
     protected String doExecute() throws Exception {
 
         process = processManager.getProcessInstanceInfo(process.getId());
@@ -41,20 +44,15 @@ public class ProcessViewAction extends FPActionSupport {
      * @return {@link #ERROR} by default
      */
     @NotNull
+	@Override
     protected String getErrorResult() {
         return SUCCESS;
     }
 
-    /**
-     * @return the process
-     */
     public Process getProcess() {
         return process;
     }
 
-    /**
-     * @param process the process to set
-     */
     public void setProcess(Process process) {
         this.process = process;
     }
@@ -63,7 +61,9 @@ public class ProcessViewAction extends FPActionSupport {
         return logText;
     }
 
+	@Required
     public void setProcessManager(ProcessManager processManager) {
         this.processManager = processManager;
     }
+
 }

@@ -18,6 +18,7 @@ public class TCConfigLoader extends ConfigLoader {
 	 * @return ApplicationConfig
 	 */
 	@NotNull
+	@Override
 	protected ApplicationConfig getNewConfig() {
 		return new ApplicationConfig();
 	}
@@ -27,11 +28,11 @@ public class TCConfigLoader extends ConfigLoader {
 	 *
 	 * @param d Digester
 	 */
+	@Override
 	protected void addRules(Digester d) {
 		super.addRules(d);
 
 		d.addCallMethod("flexpay/tcDataRoot", "setTcDataRoot", 0);
-
 		d.addCallMethod("flexpay/tcMaximumFloors", "setMaximumFloors", 0);
 		d.addCallMethod("flexpay/tcMaximumPorches", "setMaximumPporches", 0);
 		d.addCallMethod("flexpay/tcMaximumApartments", "setMaximumApartments", 0);
