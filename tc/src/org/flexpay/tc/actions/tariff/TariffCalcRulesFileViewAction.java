@@ -1,25 +1,34 @@
 package org.flexpay.tc.actions.tariff;
 
-import org.flexpay.common.actions.FPActionWithPagerSupport;
+import org.flexpay.common.actions.FPActionSupport;
+import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.tc.persistence.TariffCalculationRulesFile;
 import org.flexpay.tc.service.TariffCalculationRulesFileService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
-import java.util.Collections;
-import java.util.List;
+public class TariffCalcRulesFileViewAction extends FPActionSupport {
 
-public class TariffCalcRulesFilesListAction extends FPActionWithPagerSupport<TariffCalculationRulesFile> {
-
-	private List<TariffCalculationRulesFile> rulesFiles = Collections.emptyList();
+	private TariffCalculationRulesFile rulesFile = new TariffCalculationRulesFile();
 
 	private TariffCalculationRulesFileService tariffCalculationRulesFileService;
 
 	@NotNull
 	@Override
-	public String doExecute() {
+	public String doExecute() throws Exception {
 
-		rulesFiles = tariffCalculationRulesFileService.listTariffCalculationRulesFiles(getPager());
+		if (rulesFile.isNew()) {
+			log.error(getText("error.invalid_id"));
+			addActionError(getText("error.invalid_id"));
+			return REDIRECT_ERROR;
+		}
+		rulesFile = tariffCalculationRulesFileService.read(stub(rulesFile));
+
+		if (rulesFile == null) {
+			log.error(getText("common.object_not_selected"));
+			addActionError(getText("common.object_not_selected"));
+			return REDIRECT_ERROR;
+		}
 
 		return SUCCESS;
 	}
@@ -34,11 +43,15 @@ public class TariffCalcRulesFilesListAction extends FPActionWithPagerSupport<Tar
 	@NotNull
 	@Override
 	protected String getErrorResult() {
-		return SUCCESS;
+		return REDIRECT_ERROR;
 	}
 
-	public List<TariffCalculationRulesFile> getRulesFiles() {
-		return rulesFiles;
+	public TariffCalculationRulesFile getRulesFile() {
+		return rulesFile;
+	}
+
+	public void setRulesFile(TariffCalculationRulesFile rulesFile) {
+		this.rulesFile = rulesFile;
 	}
 
 	@Required

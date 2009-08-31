@@ -7,18 +7,33 @@
 		   http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
 		   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
-	<bean id="buildingAttributeTypesListAction" scope="prototype"
+	<bean id="buildingAttributeTypesListAction"
 		  class="org.flexpay.bti.actions.buildings.BuildingAttributeTypesListAction"
-		  p:attributeTypeService-ref="buildingAttributeTypeService" />
+		  p:attributeTypeService-ref="buildingAttributeTypeService"
+          scope="prototype" />
 
-	<bean id="buildingAttributeTypeEditAction" scope="prototype"
+    <bean id="buildingAttributeTypesListPageAction" parent="staticPageAction"
+          p:crumbNameKey="bti.crumbs.building_attribute.list"
+          scope="prototype" />
+
+	<bean id="buildingAttributeTypeEditAction"
 		  class="org.flexpay.bti.actions.buildings.BuildingAttributeTypeEditAction"
 		  p:attributeGroupService-ref="buildingAttributeGroupService"
-		  p:attributeTypeService-ref="buildingAttributeTypeService" />
+		  p:attributeTypeService-ref="buildingAttributeTypeService"
+          p:crumbNameKey="bti.crumbs.building_attribute.edit"
+          p:crumbCreateKey="bti.crumbs.building_attribute.create"
+          scope="prototype" />
 
-	<bean id="buildingAttributesImportAction" scope="prototype"
+	<bean id="buildingAttributesImportAction"
 		  class="org.flexpay.bti.actions.buildings.BuildingAttributesImportAction"
 		  p:fpFileService-ref="fpFileService"
-		  p:processManager-ref="processManager" />
+		  p:processManager-ref="processManager"
+          scope="prototype" />
+
+    <bean id="buildingAttributeTypeViewAction"
+          class="org.flexpay.bti.actions.buildings.BuildingAttributeTypeViewAction"
+          p:attributeTypeService-ref="buildingAttributeTypeService"
+          p:crumbNameKey="bti.crumbs.building_attribute.view"
+          scope="prototype" />
 
 </beans>

@@ -16,6 +16,7 @@ public class BuildingAttributeTypeDaoExtImpl extends HibernateDaoSupport impleme
 	private BuildingAttributeTypeDao attributeTypeDao;
 	private BuildingAttributeTypeEnumDao attributeTypeEnumDao;
 
+	@Override
 	public BuildingAttributeType readFull(Long id) {
 		BuildingAttributeType type = attributeTypeDao.readFull(id);
 
@@ -36,6 +37,7 @@ public class BuildingAttributeTypeDaoExtImpl extends HibernateDaoSupport impleme
 	 * @param typeId Type key
 	 * @return <code>true</code> if this name is unique, or <code>false</code> otherwise
 	 */
+	@Override
 	public boolean isUniqueTypeName(String name, Long typeId) {
 		Object[] params = {name, name, typeId, typeId == null || typeId.equals(0L) ? 1 : 0};
 		List<?> result = getHibernateTemplate().findByNamedQuery("BuildingAttributeType.checkUniqueName", params);

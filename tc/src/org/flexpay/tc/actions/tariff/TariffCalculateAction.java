@@ -21,6 +21,7 @@ public class TariffCalculateAction extends FPActionWithPagerSupport<TariffCalcul
 	private ProcessManager processManager;
 
 	@NotNull
+	@Override
 	public String doExecute() throws Exception {
 
 		if (id == null || id <= 0) {
@@ -46,6 +47,7 @@ public class TariffCalculateAction extends FPActionWithPagerSupport<TariffCalcul
 	 * @return {@link #ERROR} by default
 	 */
 	@NotNull
+	@Override
 	protected String getErrorResult() {
 		return REDIRECT_SUCCESS;
 	}

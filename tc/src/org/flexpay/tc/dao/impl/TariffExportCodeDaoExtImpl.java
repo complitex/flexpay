@@ -14,8 +14,10 @@ public class TariffExportCodeDaoExtImpl extends HibernateDaoSupport implements T
 	 * @param code code to find
 	 * @return TariffExportCode
 	 */
+	@Override
 	public TariffExportCode findByCode(int code) {
 		List<?> tariffs = (List<?>) getHibernateTemplate().findByNamedQuery("TariffExportCode.findByCode", code);
 		return tariffs.isEmpty() ? null : (TariffExportCode) tariffs.get(0);
 	}
+
 }

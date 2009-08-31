@@ -8,7 +8,6 @@ import org.flexpay.common.locking.LockManager;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.process.job.Job;
 import org.flexpay.tc.locking.Resources;
-import org.flexpay.tc.persistence.Tariff;
 import org.flexpay.tc.persistence.TariffCalculationResult;
 import org.flexpay.tc.process.exporters.Exporter;
 import org.flexpay.tc.service.TariffCalculationResultService;
@@ -44,6 +43,7 @@ public class TariffCalcResultExportForBuildingJob extends Job {
 	 */
 	public final static String PERIOD_BEGIN_DATE = "PERIOD_BEGIN_DATE";
 
+	@Override
 	public String execute(Map<Serializable, Serializable> parameters) throws FlexPayException {
 
 		try {
@@ -132,4 +132,5 @@ public class TariffCalcResultExportForBuildingJob extends Job {
 	public void setTariffService(TariffService tariffService) {
 		this.tariffService = tariffService;
 	}
+
 }

@@ -163,4 +163,5 @@ public class BuildingAttributesValidator {
 	public String getErrorMessageCode() {
 		return errorMessageCode;
 	}
+
 }

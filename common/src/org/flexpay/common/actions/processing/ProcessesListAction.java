@@ -11,8 +11,8 @@ import org.flexpay.common.process.filter.ProcessStateFilter;
 import org.flexpay.common.process.filter.ProcessStateObject;
 import org.flexpay.common.process.sorter.*;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.beans.factory.annotation.Required;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Required;
 
 import java.util.Date;
 import java.util.HashSet;
@@ -40,10 +40,8 @@ public class ProcessesListAction extends FPActionWithPagerSupport<Process> imple
 	// process manager
 	private ProcessManager processManager;
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@NotNull
+	@Override
 	protected String doExecute() throws Exception {
 
 		initFilters();
@@ -60,10 +58,8 @@ public class ProcessesListAction extends FPActionWithPagerSupport<Process> imple
 		processNameFilter.loadAllProcessNames();
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@NotNull
+	@Override
 	protected String getErrorResult() {
 		return SUCCESS;
 	}
@@ -91,12 +87,11 @@ public class ProcessesListAction extends FPActionWithPagerSupport<Process> imple
 
 	// rendering utility methods
 	public String getTranslation(ProcessState state) {
-
 		return getText(ProcessStateObject.getByProcessState(state).getName());
 	}
 
 	public boolean resultsAreNotEmpty() {
-		return processList.size() > 0;
+		return !processList.isEmpty();
 	}
 
 	// form data
@@ -142,13 +137,14 @@ public class ProcessesListAction extends FPActionWithPagerSupport<Process> imple
 		return processNameFilter;
 	}
 
-	// process manager
+	@Override
+	public void afterPropertiesSet() throws Exception {
+		processNameFilter.setProcessManager(processManager);
+	}
+
 	@Required
 	public void setProcessManager(ProcessManager processManager) {
 		this.processManager = processManager;
 	}
 
-	public void afterPropertiesSet() throws Exception {
-		processNameFilter.setProcessManager(processManager);
-	}
 }

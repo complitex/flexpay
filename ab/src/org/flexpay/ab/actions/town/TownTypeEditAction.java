@@ -57,17 +57,17 @@ public class TownTypeEditAction extends FPActionSupport {
 					return INPUT;
 				}
 			}
-			TownTypeTranslation translation = new TownTypeTranslation();
-			translation.setLang(lang);
-			translation.setName(value);
+			TownTypeTranslation translation = new TownTypeTranslation(value, lang);
 			translation.setShortName(shortNames.get(name.getKey()));
 			townType.setTranslation(translation);
 		}
 
 		if (townType.isNew()) {
 			townTypeService.create(townType);
+			log.debug("Town type created {}", townType);
 		} else {
 			townTypeService.update(townType);
+			log.debug("Town type updated {}", townType);
 		}
 
 		return REDIRECT_SUCCESS;

@@ -17,6 +17,7 @@ public class TariffExportCodeServiceExtImpl implements TariffExportCodeServiceEx
 	 * @param code code to find
 	 * @return TariffExportCode
 	 */
+	@Override
 	public TariffExportCode findByCode(int code) {
 		return tariffExportCodeDaoExt.findByCode(code);
 	}
@@ -25,4 +26,5 @@ public class TariffExportCodeServiceExtImpl implements TariffExportCodeServiceEx
 	public void setTariffExportCodeDaoExt(TariffExportCodeDaoExt tariffExportCodeDaoExt) {
 		this.tariffExportCodeDaoExt = tariffExportCodeDaoExt;
 	}
+
 }

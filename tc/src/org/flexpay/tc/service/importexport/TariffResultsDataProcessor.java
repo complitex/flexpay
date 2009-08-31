@@ -20,7 +20,6 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Map;
 
-
 @Transactional
 public class TariffResultsDataProcessor implements BuildingAttributeDataProcessor {
 
@@ -38,6 +37,7 @@ public class TariffResultsDataProcessor implements BuildingAttributeDataProcesso
 	 * @param end   Interval end date
 	 * @param data  Attributes data
 	 */
+	@Override
 	public void processData(Date begin, Date end, BuildingAttributeData data) {
 
 		for (Map.Entry<String, String> entry : data.getName2Values().entrySet()) {

@@ -24,7 +24,7 @@
         FF.addListener("building", function(filter) {
             FP.pagerAjax(null, {
                 action:"<s:url action="apartmentsListAjax" namespace="/dicts" includeParams="none"/>",
-                params:{buildingFilter: FF.filters["building"].value.val()}
+                params:{buildingFilter: filter.value.val()}
             });
         });
         FF.addEraseFunction("building", function(filter) {

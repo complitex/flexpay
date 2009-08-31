@@ -40,6 +40,7 @@ public class TariffCalculationJob extends Job {
 	private TariffService tariffService;
 
 	@SuppressWarnings ({"IOResourceOpenedButNotSafelyClosed"})
+	@Override
 	public String execute(Map<Serializable, Serializable> parameters) throws FlexPayException {
 
 		Logger pLogger = ProcessLogger.getLogger(getClass());
@@ -154,4 +155,5 @@ public class TariffCalculationJob extends Job {
 	public void setBuildingAttributeTypeService(BuildingAttributeTypeService buildingAttributeTypeService) {
 		this.buildingAttributeTypeService = buildingAttributeTypeService;
 	}
+
 }

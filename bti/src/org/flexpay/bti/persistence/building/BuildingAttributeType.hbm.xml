@@ -112,17 +112,18 @@
 		select distinct t
 		from BuildingAttributeType t
 			left join fetch t.translations
-			left join fetch t.group 
+			left join fetch t.group g
+            left join fetch g.translations 
 		where t.id=?
 	</query>
 
 	<query name="BuildingAttributeType.findTypes.count">
-		select count(t)
+		select count(*)
 		from BuildingAttributeType t
 	</query>
 
 	<query name="BuildingAttributeType.findTypes">
-		from BuildingAttributeType
+		from BuildingAttributeType t
 	</query>
 
 	<query name="BuildingAttributeType.findAllTypes">

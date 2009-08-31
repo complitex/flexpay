@@ -4,15 +4,15 @@ import org.flexpay.bti.persistence.building.BuildingAttributeType;
 import org.flexpay.bti.service.BuildingAttributeTypeService;
 import org.flexpay.common.actions.FPActionWithPagerSupport;
 import org.flexpay.common.persistence.Stub;
+import static org.flexpay.common.util.CollectionUtils.list;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
-import java.util.Collections;
 import java.util.List;
 
 public class BuildingAttributeTypesListAction extends FPActionWithPagerSupport<BuildingAttributeType> {
 
-	private List<BuildingAttributeType> types = Collections.emptyList();
+	private List<BuildingAttributeType> types = list();
 
 	private BuildingAttributeTypeService attributeTypeService;
 
@@ -25,9 +25,14 @@ public class BuildingAttributeTypesListAction extends FPActionWithPagerSupport<B
 	 * @throws Exception if failure occurs
 	 */
 	@NotNull
+	@Override
 	protected String doExecute() throws Exception {
 
+		log.debug("!!!Before: pager = {}", getPager());
+
 		types = attributeTypeService.listTypes(getPager());
+
+		log.debug("!!!After pager = {}", getPager());
 
 		return SUCCESS;
 	}
@@ -35,7 +40,7 @@ public class BuildingAttributeTypesListAction extends FPActionWithPagerSupport<B
 	public String getName(Long typeId) {
 		BuildingAttributeType type = attributeTypeService.readFull(new Stub<BuildingAttributeType>(typeId));
 		if (type == null) {
-			log.info("No type found #{}", typeId);
+			log.info("No type found with id {}", typeId);
 			return ERROR;
 		}
 
@@ -50,6 +55,7 @@ public class BuildingAttributeTypesListAction extends FPActionWithPagerSupport<B
 	 * @return {@link #ERROR} by default
 	 */
 	@NotNull
+	@Override
 	protected String getErrorResult() {
 		return SUCCESS;
 	}

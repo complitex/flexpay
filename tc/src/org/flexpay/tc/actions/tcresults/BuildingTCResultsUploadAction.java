@@ -21,18 +21,18 @@ public class BuildingTCResultsUploadAction extends FPActionSupport {
 	private ProcessManager processManager;
 
 	@NotNull
+	@Override
 	protected String doExecute() throws Exception {
 
 		if (isNotSubmit()) {
-
 			return INPUT;
 		}
 
 		Map<Serializable, Serializable> contextVariables = CollectionUtils.map();
 
-		log.info("Building id := {}", buildingId);
-		log.info("CalculationDate := {}", calculationDate);
-		log.info("Date := {}", date);
+		log.debug("Building id := {}", buildingId);
+		log.debug("CalculationDate := {}", calculationDate);
+		log.debug("Date := {}", date);
 
 		contextVariables.put(TariffCalcResultExportForBuildingJob.CALCULATION_DATE, DateUtil.parseDate(calculationDate, ApplicationConfig.getFutureInfinite()));
 		contextVariables.put(TariffCalcResultExportForBuildingJob.BUILDING_ID, buildingId);
@@ -46,6 +46,7 @@ public class BuildingTCResultsUploadAction extends FPActionSupport {
 	}
 
 	@NotNull
+	@Override
 	protected String getErrorResult() {
 		return INPUT;
 	}

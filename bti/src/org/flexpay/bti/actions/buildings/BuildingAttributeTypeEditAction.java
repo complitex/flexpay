@@ -27,6 +27,7 @@ public class BuildingAttributeTypeEditAction extends FPActionSupport {
 	private String typeName = TYPE_SIMPLE;
 	private int temporal;
 
+	private String crumbCreateKey;
 	private BuildingAttributeTypeService attributeTypeService;
 	private BuildingAttributeGroupService attributeGroupService;
 
@@ -39,6 +40,7 @@ public class BuildingAttributeTypeEditAction extends FPActionSupport {
 	 * @throws Exception if failure occurs
 	 */
 	@NotNull
+	@Override
 	protected String doExecute() throws Exception {
 
 		if (attributeType.getId() == null) {
@@ -144,8 +146,17 @@ public class BuildingAttributeTypeEditAction extends FPActionSupport {
 	 * @return {@link #ERROR} by default
 	 */
 	@NotNull
+	@Override
 	protected String getErrorResult() {
 		return INPUT;
+	}
+
+	@Override
+	protected void setBreadCrumbs() {
+		if (attributeType.isNew()) {
+			crumbNameKey = crumbCreateKey;
+		}
+		super.setBreadCrumbs();
 	}
 
 	public BuildingAttributeType getAttributeType() {
@@ -194,6 +205,10 @@ public class BuildingAttributeTypeEditAction extends FPActionSupport {
 
 	public void setTemporal(int temporal) {
 		this.temporal = temporal;
+	}
+
+	public void setCrumbCreateKey(String crumbCreateKey) {
+		this.crumbCreateKey = crumbCreateKey;
 	}
 
 	@Required

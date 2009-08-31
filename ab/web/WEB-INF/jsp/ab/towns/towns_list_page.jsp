@@ -24,7 +24,7 @@
         FF.addListener("region", function(filter) {
             FP.pagerAjax(null, {
                 action:"<s:url action="townsListAjax" namespace="/dicts" includeParams="none"/>",
-                params:{regionFilter: FF.filters["region"].value.val()}
+                params:{regionFilter: filter.value.val()}
             });
         });
         FF.addEraseFunction("region", function(filter) {

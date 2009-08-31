@@ -59,8 +59,7 @@
             <td class="col">
                 <s:if test="%{rulesFile.id > 0}">
                     <s:property value="rulesFile.file.originalName"/>
-                </s:if>
-                <s:else>
+                </s:if><s:else>
                     <s:file name="upload" label="File" required="true" size="60" />
                 </s:else>
             </td>
