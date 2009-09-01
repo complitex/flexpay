@@ -28,6 +28,9 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Generate the payments registry in database.
+ */
 public class PaymentsRegistryDBGeneratorImpl implements PaymentsRegistryDBGenerator {
 
 	private final Logger log = LoggerFactory.getLogger(getClass());
@@ -45,6 +48,16 @@ public class PaymentsRegistryDBGeneratorImpl implements PaymentsRegistryDBGenera
 	private MasterIndexService masterIndexService;
 	private OrganizationHistoryGenerator organizationHistoryGenerator;
 
+    /**
+     * Create the new payments registry in database from registered payment documents.<br/>
+     * One document is the one record in registry.
+     *
+     * @param serviceProvider Document was generated for service provider.
+     * @param registerOrganization Registered organization generated document.
+     * @param range Created payments in date range.
+     * @return Payments registry
+     * @throws FlexPayException
+     */
 	@Nullable
 	public Registry createDBRegistry(@NotNull ServiceProvider serviceProvider,
 									 @NotNull Organization registerOrganization,

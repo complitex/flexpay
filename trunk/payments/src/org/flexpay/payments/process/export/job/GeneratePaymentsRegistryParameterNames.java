@@ -28,5 +28,7 @@ public interface GeneratePaymentsRegistryParameterNames {
 
 	String EMAIL = "Email";
 	
-	String PRIVATE_KEY = "PrivateKey";	
+	String PRIVATE_KEY = "PrivateKey";
+
+    String REGISTRIES = "Registries";
 }

@@ -25,6 +25,11 @@ import java.io.Writer;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
+/**
+ * Generate file in FP format.
+ * <br/>
+ * Content basic logic and similar behaviour.
+ */
 public class RegistryFPFileFormat {
 	private Logger log = LoggerFactory.getLogger(getClass());
 
@@ -39,9 +44,20 @@ public class RegistryFPFileFormat {
 
 		log.info("Start generating FPfile for registry #{}", registry.getId());
 
+        RegistryFPFileType fpFileType = registryFPFileTypeService.findByCode(RegistryFPFileType.FP_FORMAT);
+        if (fpFileType == null) {
+            log.error("Did not find registry FP file type");
+            return null;
+        }
+
 		StopWatch watch = new StopWatch();
 		watch.start();
 		FPFile result = export(registry, createFile(registry));
+
+        FPFile fpFile = fpFileService.update(result);
+        registry.getFiles().put(fpFileType, fpFile);
+
+		registryService.update(registry);
 
 		log.info("Finished dumping registry #{}, time spent {}", registry.getId(), watch);
 		return result;
@@ -98,10 +114,6 @@ public class RegistryFPFileFormat {
 			return null;
 		}
 
-		fpFile = fpFileService.update(fpFile);
-        registry.getFiles().put(registryFPFileTypeService.findByCode(RegistryFPFileType.FP_FORMAT), fpFile);
-
-		registryService.update(registry);
 		return fpFile;
 	}
 
@@ -230,4 +242,24 @@ public class RegistryFPFileFormat {
 	public void setModuleName(String moduleName) {
 		this.moduleName = moduleName;
 	}
+
+    @Required
+	public void setFpFileService(FPFileService fpFileService) {
+		this.fpFileService = fpFileService;
+	}
+
+	@Required
+	public void setRegistryService(RegistryService registryService) {
+		this.registryService = registryService;
+	}
+
+	@Required
+	public void setRegistryRecordService(RegistryRecordService registryRecordService) {
+		this.registryRecordService = registryRecordService;
+	}
+
+    @Required
+    public void setRegistryFPFileTypeService(RegistryFPFileTypeService registryFPFileTypeService) {
+        this.registryFPFileTypeService = registryFPFileTypeService;
+    }
 }

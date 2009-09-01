@@ -28,6 +28,7 @@ import org.flexpay.orgs.service.PaymentsCollectorService;
 import org.flexpay.orgs.service.ServiceProviderService;
 import org.flexpay.payments.persistence.*;
 import org.flexpay.payments.process.export.GeneratePaymentsRegistry;
+import org.flexpay.payments.process.export.job.GeneratePaymentsRegistryParameterNames;
 import org.flexpay.payments.service.*;
 import org.flexpay.payments.test.PaymentsSpringBeanAwareTestCase;
 import org.flexpay.ab.persistence.filters.ImportErrorTypeFilter;
@@ -258,32 +259,12 @@ public class TestGeneratePaymentsRegistry extends PaymentsSpringBeanAwareTestCas
 		int code = 3;
 		ServiceType serviceType2;
 		serviceType2 = serviceTypeService.getServiceType(code);
-		if (serviceType2 == null) {
-			serviceType2 = new ServiceType();
-			serviceType2.setCode(code);
-			serviceType2.setStatus(ServiceType.STATUS_ACTIVE);
-			ServiceTypeNameTranslation serviceTypeName = new ServiceTypeNameTranslation();
-			serviceTypeName.setLang(lang);
-			serviceTypeName.setDescription("type name description");
-			serviceTypeName.setName("type name");
-			serviceType2.setTypeName(serviceTypeName);
-			serviceTypeService.create(serviceType2);
-		}
+		assertNotNull("Service Type with code " + code + " does not exist in database", serviceType2);
 
 		code = 4;
 		ServiceType serviceType4;
 		serviceType4 = serviceTypeService.getServiceType(code);
-		if (serviceType4 == null) {
-			serviceType4 = new ServiceType();
-			serviceType4.setCode(code);
-			serviceType4.setStatus(ServiceType.STATUS_ACTIVE);
-			ServiceTypeNameTranslation serviceTypeName = new ServiceTypeNameTranslation();
-			serviceTypeName.setLang(lang);
-			serviceTypeName.setDescription("type name description");
-			serviceTypeName.setName("type name");
-			serviceType4.setTypeName(serviceTypeName);
-			serviceTypeService.create(serviceType4);
-		}
+		assertNotNull("Service Type with code " + code + " does not exist in database", serviceType4);
 
 		ServiceDescription serviceDescription = new ServiceDescription();
 		serviceDescription.setLang(lang);
@@ -293,7 +274,7 @@ public class TestGeneratePaymentsRegistry extends PaymentsSpringBeanAwareTestCas
 		service1.setBeginDate(new Date());
 		service1.setEndDate(new Date(service1.getBeginDate().getTime() + 100000));
 		service1.setServiceType(serviceType2);
-		service1.setExternalCode("1");
+		service1.setExternalCode("3");
 		service1.setDescription(serviceDescription);
 		service1.setServiceProvider(serviceProvider);
 		spService.create(service1);
@@ -386,94 +367,59 @@ public class TestGeneratePaymentsRegistry extends PaymentsSpringBeanAwareTestCas
 		jobScheduler.execute(schedulerContext);
 		log.debug("finish jobScheduler");
 
-        List<Long> registries = (List<Long>)schedulerContext.getMergedJobDataMap().get("Registries");
+        List<Long> registries = (List<Long>)schedulerContext.getMergedJobDataMap().get(GeneratePaymentsRegistryParameterNames.REGISTRIES);
         assertNotNull(registries);
 
-        assertTrue(registries.size() > 0);
+        assertTrue("Parameters map must content 1 registry", registries.size() > 0);
 
         RegistryFPFileType mbFormat = registryFPFileTypeService.findByCode(RegistryFPFileType.MB_FORMAT);
         assertNotNull("Registry file MB format not found", mbFormat);
+
+        RegistryFPFileType fpFormat = registryFPFileTypeService.findByCode(RegistryFPFileType.FP_FORMAT);
+        assertNotNull("Registry file FP format not found", fpFormat);
+
+        Registry registry = null;
         int i = 0;
         for (Long registryId : registries) {
-            Registry registry = registryService.read(new Stub<Registry>(registryId));
-            assertNotNull("Registry with id=" + registryId + " not found", registry);
-            if (registry.getRecipientCode().equals(serviceProvider.getOrganization().getId()) && registry.getSenderCode().equals(registerOrganization.getId())) {
-                FPFile registrySpFile = registry.getFiles().get(mbFormat);
-                assertNotNull("MB file not found for registry id=" + registryId, registrySpFile);
-                registrySpFile = fpFileService.read(Stub.stub(registrySpFile));
-                assertEquals(2, registry.getRecordsNumber().intValue());
-				assertEquals(303, registry.getAmount().intValue());
-                Page<RegistryRecord> page = new Page<RegistryRecord>(20);
-				List<RegistryRecord> records = registryRecordService.listRecords(registry,
-						new ImportErrorTypeFilter(),
-						new RegistryRecordStatusFilter(),
-						page);
-				assertEquals(2, records.size());
-                //assertDigitalSignatureCountLine(registrySpFile, 3);
-                assertDigitalSignature(registrySpFile, "WEB-INF/payments/configs/keys/public.key");
-				//assertTotalCountLine(spFile, 15);
-				assertRecordCountLine(registrySpFile, 2);
-				fpFileService.deleteFromFileSystem(registrySpFile);
+            Registry tmpRegistry = registryService.read(new Stub<Registry>(registryId));
+            assertNotNull("Registry with id=" + registryId + " not found", tmpRegistry);
+            if (tmpRegistry.getRecipientCode().equals(serviceProvider.getOrganization().getId()) && tmpRegistry.getSenderCode().equals(registerOrganization.getId())) {
+                registry = tmpRegistry;
                 i++;
             }
         }
-        assertEquals(1, i);
-		/*
-				Map parameters = schedulerContext.getMergedJobDataMap();
+        assertEquals("Need one tested registry", 1, i);
 
-				//check registry
-				Registry registry = null;
-				if (parameters.containsKey("Registry")) {
-					Object o = parameters.get("Registry");
-					if (o instanceof Registry) {
-						registry = (Registry) o;
-					} else {
-						log.warn("Invalid registry`s instance class");
-					}
-				} else if (parameters.containsKey("RegistryId")) {
-					Long registryId = (Long) parameters.get("RegistryId");
-					registry = registryService.read(new Stub<Registry>(registryId));
-				}
-				assertNotNull(registry);
-				assertEquals(2, registry.getRecordsNumber().intValue());
-				assertEquals(303, registry.getAmount().intValue());
+        // assert registry data
+        assertEquals(2, registry.getRecordsNumber().intValue());
+        assertEquals(303, registry.getAmount().intValue());
+        List<RegistryRecord> records = registryRecordService.listRecords(registry,
+                new ImportErrorTypeFilter(),
+                new RegistryRecordStatusFilter(),
+                new Page<RegistryRecord>(20));
+        assertEquals("Registry does not content 2 records", 2, records.size());
 
-				Page<RegistryRecord> page = new Page<RegistryRecord>(20);
-				List<RegistryRecord> records = registryRecordService.listRecords(registry,
-						new ImportErrorTypeFilter(),
-						new RegistryRecordStatusFilter(),
-						page);
-				assertEquals(2, records.size());
+        // assert count files
+        assertEquals("Registry does not content 2 files", 2, registry.getFiles().size());
 
-				//check last processed date
+        // assert MB File
+        FPFile registryMBFile = registry.getFiles().get(mbFormat);
+        assertNotNull("MB file not found for registry id=" + registry.getId(), registryMBFile);
+        registryMBFile = fpFileService.read(Stub.stub(registryMBFile));
 
-				String newLastProcessedDateSt = (String) parameters.get("lastProcessedDate");
-				assertNotNull(newLastProcessedDateSt);
-				Date newLastProcessedDate = new Date(Long.parseLong(newLastProcessedDateSt));
-				assertEquals(DateUtil.truncateDay(new Date()), newLastProcessedDate);
+        assertDigitalSignature(registryMBFile, "WEB-INF/payments/configs/keys/public.key");
+        assertTotalCountLine(registryMBFile, 14);
+        assertRecordCountLine(registryMBFile, 2);
+        fpFileService.deleteFromFileSystem(registryMBFile);
 
+        // assert FP File
+        FPFile registryFPFile = registry.getFiles().get(fpFormat);
+        assertNotNull("FP file not found for registry id=" + registry.getId(), registryFPFile);
+        registryFPFile = fpFileService.read(Stub.stub(registryFPFile));
+        assertTrue("FP file nullable", registryFPFile.getSize() > 0);
+        fpFileService.deleteFromFileSystem(registryFPFile);
 
-
-				//check MB file
-				FPFile spFile = null;
-				if (parameters.containsKey("File")) {
-					Object o = parameters.get("File");
-					if (o instanceof FPFile && ((FPFile) o).getId() != null) {
-						spFile = (FPFile) o;
-						spFile = fpFileService.read(stub(spFile));
-					} else {
-						log.warn("Invalid file`s instance class");
-					}
-				} else if (parameters.containsKey("FileId")) {
-					Long fileId = (Long) parameters.get("FileId");
-					spFile = fpFileService.read(new Stub<FPFile>(fileId));
-				}
-				assertNotNull(spFile);
-				assertDigitalSignatureCountLine(spFile, 3);
-				//assertTotalCountLine(spFile, 15);
-				assertRecordCountLine(spFile, 2);
-				fpFileService.deleteFromFileSystem(spFile);
-				*/
+//        registryService.delete(registry);
 	}
 
 	private static void assertTotalCountLine(FPFile file, final int n) throws IOException {

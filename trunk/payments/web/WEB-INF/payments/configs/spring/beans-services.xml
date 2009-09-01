@@ -157,12 +157,21 @@
 		  class="org.flexpay.payments.service.impl.ServiceProviderAttributeServiceImpl"
 		  p:serviceProviderAttributeDao-ref="serviceProviderAttributeDao" />
 
-	<bean id="exportBankPaymentsRegistry"
+    <bean id="paymentsRegistryFPFileFormat"
+          class="org.flexpay.payments.util.registries.RegistryFPFileFormat"
+          p:moduleName="${flexpay.module.name.payments}"
+          p:fpFileService-ref="fpFileService"
+          p:registryRecordService-ref="registryRecordService"
+          p:registryFPFileTypeService-ref="registryFPFileTypeService"
+          p:registryService-ref="registryService" />
+
+    <bean id="exportBankPaymentsRegistry"
 		  class="org.flexpay.payments.util.registries.ExportBankPaymentsRegistry"
-		  p:moduleName="${flexpay.module.name.payments}"
-		  p:fpFileService-ref="fpFileService"
-		  p:registryRecordService-ref="registryRecordService"
-		  p:registryService-ref="registryService" />
+		  parent="paymentsRegistryFPFileFormat" />
+
+
+    <bean id="exportPaymentsRegistry"
+          parent="paymentsRegistryFPFileFormat" />
 
 	<bean id="endOperationDayRegistryGenerator"
 		  class="org.flexpay.payments.util.registries.EndOperationDayRegistryGeneratorImpl"
