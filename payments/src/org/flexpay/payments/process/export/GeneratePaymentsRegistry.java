@@ -16,8 +16,8 @@ import org.flexpay.orgs.persistence.ServiceProvider;
 import org.flexpay.orgs.service.PaymentsCollectorService;
 import org.flexpay.orgs.service.ServiceProviderService;
 import org.flexpay.payments.persistence.process.ServiceProviderAttribute;
+import org.flexpay.payments.process.export.job.ExportJobParameterNames;
 import org.flexpay.payments.service.ServiceProviderAttributeService;
-import org.flexpay.payments.process.export.job.GeneratePaymentsRegistryParameterNames;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.slf4j.Logger;
@@ -60,7 +60,6 @@ public class GeneratePaymentsRegistry extends QuartzJobBean {
 			org.flexpay.payments.service.Roles.SERVICE_TYPE_READ,
 			org.flexpay.orgs.service.Roles.PAYMENTS_COLLECTOR_READ
 	);
-	private static final String LAST_PROCESSED_DATE = "lastProcessedDate";
 
     /**
      * Start processes "GeneratePaymentsRegisryProcess" for all existed in database service providers and registred organization.<br/>
@@ -96,19 +95,19 @@ public class GeneratePaymentsRegistry extends QuartzJobBean {
 							Organization organization = serviceProvider.getOrganization();
 							if (organization != null && organization.getId() != null) {
 								Map<Serializable, Serializable> parameters = new HashMap<Serializable, Serializable>();
-								ServiceProviderAttribute lastProcessedDateAttribute = serviceProviderAttributeService.getServiceProviderAttribute(Stub.stub(serviceProvider), LAST_PROCESSED_DATE);
+								ServiceProviderAttribute lastProcessedDateAttribute = serviceProviderAttributeService.getServiceProviderAttribute(Stub.stub(serviceProvider), ExportJobParameterNames.LAST_PROCESSED_DATE);
 
 								if (lastProcessedDateAttribute != null) {
 									parameters.put(lastProcessedDateAttribute.getName(), lastProcessedDateAttribute.getValue());
 								}
 
 								Date finishDate = DateUtil.now();
-								parameters.put(GeneratePaymentsRegistryParameterNames.FINISH_DATE, finishDate);
-								parameters.put(GeneratePaymentsRegistryParameterNames.ORGANIZATION_ID, organization.getId());
-								parameters.put(GeneratePaymentsRegistryParameterNames.SERVICE_PROVIDER_ID, serviceProvider.getId());
-								parameters.put(GeneratePaymentsRegistryParameterNames.REGISTERED_ORGANIZATION_ID, paymentsCollector.getOrganization().getId());
-								//parameters.put("Email", serviceProvider.getEmail());
-								parameters.put(GeneratePaymentsRegistryParameterNames.PRIVATE_KEY, privateKey);
+								parameters.put(ExportJobParameterNames.FINISH_DATE, finishDate);
+								parameters.put(ExportJobParameterNames.ORGANIZATION_ID, organization.getId());
+								parameters.put(ExportJobParameterNames.SERVICE_PROVIDER_ID, serviceProvider.getId());
+								parameters.put(ExportJobParameterNames.REGISTERED_ORGANIZATION_ID, paymentsCollector.getOrganization().getId());
+								//parameters.put(ExportJobParameterNames.EMAIL, serviceProvider.getEmail());
+								parameters.put(ExportJobParameterNames.PRIVATE_KEY, privateKey);
 
 								waitingProcessData.add(parameters);
 
@@ -150,17 +149,17 @@ public class GeneratePaymentsRegistry extends QuartzJobBean {
 
 						Map<Serializable, Serializable> parameters = process.getParameters();
 
-						String lastProcessedDate = (String) parameters.get(LAST_PROCESSED_DATE);
-						Long serviceProviderId = (Long) parameters.get(GeneratePaymentsRegistryParameterNames.SERVICE_PROVIDER_ID);
+						String lastProcessedDate = (String) parameters.get(ExportJobParameterNames.LAST_PROCESSED_DATE);
+						Long serviceProviderId = (Long) parameters.get(ExportJobParameterNames.SERVICE_PROVIDER_ID);
 						ServiceProvider serviceProvider = serviceProviderService.read(new Stub<ServiceProvider>(serviceProviderId));
 
 						if (lastProcessedDate != null && serviceProvider != null) {
-							ServiceProviderAttribute lastProcessedDateAttribute = serviceProviderAttributeService.getServiceProviderAttribute(Stub.stub(serviceProvider), LAST_PROCESSED_DATE);
+							ServiceProviderAttribute lastProcessedDateAttribute = serviceProviderAttributeService.getServiceProviderAttribute(Stub.stub(serviceProvider), ExportJobParameterNames.LAST_PROCESSED_DATE);
 
 							if (lastProcessedDateAttribute == null) {
 								lastProcessedDateAttribute = new ServiceProviderAttribute();
 								lastProcessedDateAttribute.setServiceProvider(serviceProvider);
-								lastProcessedDateAttribute.setName(LAST_PROCESSED_DATE);
+								lastProcessedDateAttribute.setName(ExportJobParameterNames.LAST_PROCESSED_DATE);
 								log.debug("Set last processed date: {}", lastProcessedDate);
 								lastProcessedDateAttribute.setValue(lastProcessedDate);
 
@@ -179,8 +178,8 @@ public class GeneratePaymentsRegistry extends QuartzJobBean {
 
 						}
 
-						if (parameters.containsKey(GeneratePaymentsRegistryParameterNames.REGISTRY_ID)) {
-							Long registryId = (Long) parameters.get(GeneratePaymentsRegistryParameterNames.REGISTRY_ID);
+						if (parameters.containsKey(ExportJobParameterNames.REGISTRY_ID)) {
+							Long registryId = (Long) parameters.get(ExportJobParameterNames.REGISTRY_ID);
 							if (registryId != null) {
 								registries.add(registryId);
 							}
@@ -193,7 +192,7 @@ public class GeneratePaymentsRegistry extends QuartzJobBean {
 				}
 				listProcessInstanesId = tmpListProcessInstanesId;
 			} while (listProcessInstanesId.size() > 0);
-			context.getMergedJobDataMap().put(GeneratePaymentsRegistryParameterNames.REGISTRIES, registries);
+			context.getMergedJobDataMap().put(ExportJobParameterNames.REGISTRIES, registries);
 		} catch (ProcessInstanceException e) {
 			log.error("Failed run process generate payments registry", e);
 			throw new JobExecutionException(e);

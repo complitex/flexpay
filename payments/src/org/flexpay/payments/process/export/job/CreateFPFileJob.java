@@ -5,7 +5,7 @@ import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.process.job.Job;
 import org.flexpay.common.service.FPFileService;
 import org.flexpay.common.util.FPFileUtil;
-import static org.flexpay.payments.process.export.job.GeneratePaymentsRegistryParameterNames.GENERATED_FILE_NAME;
+import static org.flexpay.payments.process.export.job.ExportJobParameterNames.GENERATED_FILE_NAME;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.io.Serializable;
@@ -31,7 +31,7 @@ public class CreateFPFileJob extends Job {
 			FPFileUtil.createEmptyFile(fpFile);
             fpFileService.create(fpFile);
 
-            parameters.put(GeneratePaymentsRegistryParameterNames.FILE_ID, fpFile.getId());
+            parameters.put(ExportJobParameterNames.FILE_ID, fpFile.getId());
 
             log.info("File created {}", fpFile);
         } catch (Exception e) {

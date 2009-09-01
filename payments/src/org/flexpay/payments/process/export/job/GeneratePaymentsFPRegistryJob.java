@@ -7,8 +7,8 @@ import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.service.RegistryService;
 import org.flexpay.payments.util.registries.RegistryFPFileFormat;
-import static org.flexpay.payments.process.export.job.GeneratePaymentsRegistryParameterNames.REGISTRY;
-import static org.flexpay.payments.process.export.job.GeneratePaymentsRegistryParameterNames.REGISTRY_ID;
+import static org.flexpay.payments.process.export.job.ExportJobParameterNames.REGISTRY;
+import static org.flexpay.payments.process.export.job.ExportJobParameterNames.REGISTRY_ID;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.io.Serializable;
@@ -23,8 +23,8 @@ public class GeneratePaymentsFPRegistryJob extends Job {
 
     /**
      * Create new file in FP format from db registry and attach result to it.<br/>
-     * Job parameters map must content {@link GeneratePaymentsRegistryParameterNames#REGISTRY_ID} (type falue is {@link Long}) or
-     * {@link GeneratePaymentsRegistryParameterNames#REGISTRY} (type value is {@link Registry})
+     * Job parameters map must content {@link ExportJobParameterNames#REGISTRY_ID} (type falue is {@link Long}) or
+     * {@link ExportJobParameterNames#REGISTRY} (type value is {@link Registry})
      *
      * @param parameters Job parameters map
      * @return {@link #RESULT_NEXT} if file generated successfully.<br/>{@link #RESULT_ERROR} if registry did not find in job parameters map or generation had errors.
