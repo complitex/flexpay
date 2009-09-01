@@ -18,8 +18,8 @@
         </property>
         <property name="flushingModels">
             <props>
-                <prop key="create">cacheNames=btiFlexpayCache</prop>
-                <prop key="update*">cacheNames=btiFlexpayCache</prop>
+                <prop key="create">cacheNames=btiFlexpayCache;flushBeforeMethodExecution=true</prop>
+                <prop key="update*">cacheNames=btiFlexpayCache;flushBeforeMethodExecution=true</prop>
             </props>
         </property>
         <property name="target" ref="apartmentAttributeTypeServiceTarget" />
@@ -37,8 +37,8 @@
         </property>
         <property name="flushingModels">
             <props>
-                <prop key="create">cacheNames=btiFlexpayCache</prop>
-                <prop key="update">cacheNames=btiFlexpayCache</prop>
+                <prop key="create">cacheNames=btiFlexpayCache;flushBeforeMethodExecution=true</prop>
+                <prop key="update">cacheNames=btiFlexpayCache;flushBeforeMethodExecution=true</prop>
             </props>
         </property>
         <property name="target" ref="apartmentAttributeGroupServiceTarget" />
@@ -56,8 +56,9 @@
 		</property>
 		<property name="flushingModels">
 			<props>
-				<prop key="create">cacheNames=btiFlexpayCache</prop>
-				<prop key="update*">cacheNames=btiFlexpayCache</prop>
+				<prop key="create">cacheNames=btiFlexpayCache;flushBeforeMethodExecution=true</prop>
+				<prop key="update*">cacheNames=btiFlexpayCache;flushBeforeMethodExecution=true</prop>
+                <prop key="disable*">cacheNames=btiFlexpayCache;flushBeforeMethodExecution=true</prop>
 			</props>
 		</property>
 		<property name="target" ref="buildingAttributeTypeServiceTarget" />
@@ -75,8 +76,8 @@
 		</property>
 		<property name="flushingModels">
 			<props>
-				<prop key="create">cacheNames=btiFlexpayCache</prop>
-				<prop key="update">cacheNames=btiFlexpayCache</prop>
+				<prop key="create">cacheNames=btiFlexpayCache;flushBeforeMethodExecution=true</prop>
+				<prop key="update">cacheNames=btiFlexpayCache;flushBeforeMethodExecution=true</prop>
 			</props>
 		</property>
 		<property name="target" ref="buildingAttributeGroupServiceTarget" />

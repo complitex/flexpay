@@ -93,6 +93,7 @@ public class BuildingAttributeTypeServiceImpl implements BuildingAttributeTypeSe
 	@Transactional (readOnly = false)
 	@Override
 	public BuildingAttributeType update(@NotNull BuildingAttributeType type) throws FlexPayExceptionContainer {
+
 		validate(type);
 
 		BuildingAttributeType old = readFull(stub(type));
@@ -104,6 +105,7 @@ public class BuildingAttributeTypeServiceImpl implements BuildingAttributeTypeSe
 		modificationListener.onUpdate(old, type);
 
 		attributeTypeDao.update(type);
+
 		return type;
 	}
 
