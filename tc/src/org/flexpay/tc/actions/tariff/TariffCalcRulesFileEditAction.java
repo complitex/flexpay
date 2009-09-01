@@ -122,9 +122,6 @@ public class TariffCalcRulesFileEditAction extends FPActionSupport {
 
 		for (Language lang : ApplicationConfig.getLanguages()) {
 			if (names.containsKey(lang.getId())) {
-				if (!descriptions.containsKey(lang.getId())) {
-					descriptions.put(lang.getId(), "");
-				}
 				continue;
 			}
 			names.put(lang.getId(), "");

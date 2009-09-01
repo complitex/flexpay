@@ -8,8 +8,6 @@ import static org.flexpay.common.util.CollectionUtils.set;
 import org.flexpay.common.util.config.ApplicationConfig;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -17,8 +15,6 @@ import java.util.Locale;
 import java.util.Set;
 
 public class TranslationUtil {
-
-	private static Logger log = LoggerFactory.getLogger(TranslationUtil.class);
 
 	/**
 	 * Find translation object in collection for specified <code>locale</locale>
@@ -97,26 +93,18 @@ public class TranslationUtil {
 		for (T t : translations) {
 			if (t.isSameLanguage(translation)) {
 				candidate = t;
-				log.debug("0. t.isSameLanguage(translation) = {}", t.isSameLanguage(translation));
 				break;
 			}
 		}
 
-		log.debug("1. translation = {}", translation);
-		log.debug("2. candidate = {}", candidate);
-
 		if (candidate != null) {
 			if (StringUtils.isBlank(translation.getName())) {
-				log.debug("3. StringUtils.isBlank(translation.getName()) = {}", StringUtils.isBlank(translation.getName()));
 				translations.remove(candidate);
 				return translations;
 			}
 			candidate.copyName(translation);
-			log.debug("4. candidate = {}", candidate);
 			return translations;
 		}
-
-		log.debug("5. StringUtils.isBlank(translation.getName()) = {}", StringUtils.isBlank(translation.getName()));
 
 		if (StringUtils.isBlank(translation.getName())) {
 			return translations;
@@ -124,8 +112,6 @@ public class TranslationUtil {
 
 		translation.setTranslatable(translatable);
 		translations.add(translation);
-
-		log.debug("6. translations = {}", translations);
 
 		return translations;
 	}
