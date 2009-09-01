@@ -3,8 +3,10 @@ package org.flexpay.tc.persistence;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
+import org.flexpay.ab.util.config.ApplicationConfig;
 import org.flexpay.common.persistence.Language;
 import org.flexpay.common.persistence.Translation;
+import org.jetbrains.annotations.NotNull;
 
 public class TariffCalculationRulesFileTranslation extends Translation {
 
@@ -13,7 +15,11 @@ public class TariffCalculationRulesFileTranslation extends Translation {
 	public TariffCalculationRulesFileTranslation() {
 	}
 
-	public TariffCalculationRulesFileTranslation(String name, Language lang) {
+	public TariffCalculationRulesFileTranslation(@NotNull String name) {
+		super(name, ApplicationConfig.getDefaultLanguage());
+	}
+
+	public TariffCalculationRulesFileTranslation(@NotNull String name, @NotNull Language lang) {
 		super(name, lang);
 	}
 
@@ -27,6 +33,14 @@ public class TariffCalculationRulesFileTranslation extends Translation {
 
 	public boolean isBlank() {
 		return StringUtils.isBlank(getName()) && StringUtils.isBlank(getDescription());
+	}
+
+	@Override
+	public void copyName(Translation t) {
+		super.copyName(t);
+		if (t instanceof TariffCalculationRulesFileTranslation) {
+			this.description = ((TariffCalculationRulesFileTranslation) t).getDescription();
+		}
 	}
 
 	@Override

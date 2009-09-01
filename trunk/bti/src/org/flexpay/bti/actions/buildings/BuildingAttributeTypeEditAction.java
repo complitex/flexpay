@@ -43,29 +43,23 @@ public class BuildingAttributeTypeEditAction extends FPActionSupport {
 	@Override
 	protected String doExecute() throws Exception {
 
-		if (attributeType.getId() == null) {
-			addActionError(getText("common.object_not_selected"));
-			return REDIRECT_SUCCESS;
-		}
+		attributeType = attributeType.isNew() ? attributeType : attributeTypeService.readFull(stub(attributeType));
 
-		BuildingAttributeType type = attributeType.isNew() ?
-									 attributeType : attributeTypeService.readFull(stub(attributeType));
-		if (type == null) {
-			addActionError(getText("error.invalid_id"));
+		if (attributeType == null) {
+			addActionError(getText("common.object_not_selected"));
 			return REDIRECT_SUCCESS;
 		}
 
 		attributeGroupService.initFilter(buildingAttributeGroupFilter);
 
-		if (!isSubmit()) {
-			attributeType = type;
-			if (type instanceof BuildingAttributeTypeSimple) {
+		if (isNotSubmit()) {
+			if (attributeType instanceof BuildingAttributeTypeSimple) {
 				typeName = TYPE_SIMPLE;
-			} else if (type instanceof BuildingAttributeTypeEnum) {
+			} else if (attributeType instanceof BuildingAttributeTypeEnum) {
 				typeName = TYPE_ENUM;
 			}
-			if (type.isNotNew()) {
-				buildingAttributeGroupFilter.setSelectedId(type.getGroup().getId());
+			if (attributeType.isNotNew()) {
+				buildingAttributeGroupFilter.setSelectedId(attributeType.getGroup().getId());
 			}
 			temporal = attributeType.isTemp() ? 1 : 0;
 			initEnumValues();
@@ -74,63 +68,60 @@ public class BuildingAttributeTypeEditAction extends FPActionSupport {
 		}
 
 		// for a new objects can specify type
-		if (type.isNew()) {
+		if (attributeType.isNew()) {
 			if (TYPE_SIMPLE.equals(typeName)) {
-				type = new BuildingAttributeTypeSimple(0L);
+				attributeType = new BuildingAttributeTypeSimple(0L);
 			} else if (TYPE_ENUM.equals(typeName)){
-				type = new BuildingAttributeTypeEnum(0L);
+				attributeType = new BuildingAttributeTypeEnum(0L);
 			}
 		}
 
 		if (buildingAttributeGroupFilter.needFilter()) {
-			type.setGroup(new BuildingAttributeGroup(buildingAttributeGroupFilter.getSelectedStub()));
+			attributeType.setGroup(new BuildingAttributeGroup(buildingAttributeGroupFilter.getSelectedStub()));
 		}
 
 		// init translations
 		for (Map.Entry<Long, String> name : names.entrySet()) {
 			String value = name.getValue();
 			Language lang = getLang(name.getKey());
-			BuildingAttributeTypeName translation = new BuildingAttributeTypeName();
-			translation.setLang(lang);
-			translation.setName(value);
-			type.setTranslation(translation);
+			attributeType.setTranslation(new BuildingAttributeTypeName(value, lang));
 		}
 
-		if (type instanceof BuildingAttributeTypeEnum) {
-			BuildingAttributeTypeEnum typeEnum = (BuildingAttributeTypeEnum) type;
+		if (attributeType instanceof BuildingAttributeTypeEnum) {
+			BuildingAttributeTypeEnum typeEnum = (BuildingAttributeTypeEnum) attributeType;
 			log.debug("Before setting values: {}", typeEnum.getValues());
 			typeEnum.rawValues(enumValues);
 			log.debug("After setting values: {}", typeEnum.getValues());
 		}
 
-		type.setTemp(temporal != 0);
+		attributeType.setTemp(temporal != 0);
 
-		if (type.isNew()) {
-			attributeTypeService.create(type);
+		if (attributeType.isNew()) {
+			attributeTypeService.create(attributeType);
 		} else {
-			attributeTypeService.update(type);
+			attributeTypeService.update(attributeType);
 		}
 
-		addActionError(getText("bti.building.attribute.type.saved"));
+		addActionMessage(getText("bti.building.attribute.type.saved"));
+
 		return REDIRECT_SUCCESS;
 	}
 
 	private void initTranslations() {
 
-		for (BuildingAttributeTypeName translation : attributeType.getTranslations()) {
-			names.put(translation.getLang().getId(), translation.getName());
+		for (BuildingAttributeTypeName name : attributeType.getTranslations()) {
+			names.put(name.getLang().getId(), name.getName());
 		}
 
-		for (Language language : ApplicationConfig.getLanguages()) {
-			if (!names.containsKey(language.getId())) {
-				names.put(language.getId(), "");
+		for (Language lang : ApplicationConfig.getLanguages()) {
+			if (!names.containsKey(lang.getId())) {
+				names.put(lang.getId(), "");
 			}
 		}
 	}
 
 	private void initEnumValues() {
-
-		if (attributeType instanceof BuildingAttributeTypeEnum) {
+    	if (attributeType instanceof BuildingAttributeTypeEnum) {
 			BuildingAttributeTypeEnum enumType = (BuildingAttributeTypeEnum) attributeType;
 			for (BuildingAttributeTypeEnumValue value : enumType.getValues()) {
 				enumValues.put(value.getOrder(), value.getValue());
