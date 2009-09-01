@@ -47,19 +47,4 @@ public class ExportBankPaymentsRegistry extends RegistryFPFileFormat {
 			   + "_" + paymentPointId + "_" + registry.getId() + "." + RegistryUtil.EXPORT_FILE_EXTENSION;
 
 	}
-
-	@Required
-	final public void setFpFileService(FPFileService fpFileService) {
-		this.fpFileService = fpFileService;
-	}
-
-	@Required
-	final public void setRegistryService(RegistryService registryService) {
-		this.registryService = registryService;
-	}
-
-	@Required
-	final public void setRegistryRecordService(RegistryRecordService registryRecordService) {
-		this.registryRecordService = registryRecordService;
-	}
 }

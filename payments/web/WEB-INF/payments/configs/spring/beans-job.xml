@@ -42,6 +42,12 @@
           p:organizationService-ref="organizationService"
           scope="prototype" />
 
+    <bean id="generatePaymentsFPRegistryJob"
+          class="org.flexpay.payments.process.export.job.GeneratePaymentsFPRegistryJob"
+          p:registryService-ref="registryService"
+          p:exportBankPaymentsRegistry-ref="exportPaymentsRegistry"
+          scope="prototype" />
+
     <bean id="sendRegistryJob"
           class="org.flexpay.payments.process.export.job.SendRegistryJob"
           p:fpFileService-ref="fpFileService"

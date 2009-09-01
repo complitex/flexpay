@@ -17,6 +17,7 @@ import org.flexpay.orgs.service.PaymentsCollectorService;
 import org.flexpay.orgs.service.ServiceProviderService;
 import org.flexpay.payments.persistence.process.ServiceProviderAttribute;
 import org.flexpay.payments.service.ServiceProviderAttributeService;
+import org.flexpay.payments.process.export.job.GeneratePaymentsRegistryParameterNames;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.slf4j.Logger;
@@ -27,6 +28,9 @@ import org.springframework.scheduling.quartz.QuartzJobBean;
 import java.io.Serializable;
 import java.util.*;
 
+/**
+ * Scheduling job generate payments registries for all service providers and registered oraganizations.
+ */
 public class GeneratePaymentsRegistry extends QuartzJobBean {
 
 	private Logger log = LoggerFactory.getLogger(getClass());
@@ -58,6 +62,15 @@ public class GeneratePaymentsRegistry extends QuartzJobBean {
 	);
 	private static final String LAST_PROCESSED_DATE = "lastProcessedDate";
 
+    /**
+     * Start processes "GeneratePaymentsRegisryProcess" for all existed in database service providers and registred organization.<br/>
+     * Job wait while all started processes will finish and add generated registries ids to job execution context.<br/>
+     * Registries ids content in {@link org.quartz.JobExecutionContext#getMergedJobDataMap()}.
+     * Mapping key is "registries" and value`s type is {@link java.util.List}<{@link Long}>
+     *
+     * @param context Job execution context.
+     * @throws JobExecutionException
+     */
 	protected void executeInternal(JobExecutionContext context) throws JobExecutionException {
 
 		log.debug("Starting process generate payments registry at {}", new Date());
@@ -90,12 +103,12 @@ public class GeneratePaymentsRegistry extends QuartzJobBean {
 								}
 
 								Date finishDate = DateUtil.now();
-								parameters.put("finishDate", finishDate);
-								parameters.put("OrganizationId", organization.getId());
-								parameters.put("ServiceProviderId", serviceProvider.getId());
-								parameters.put("RegisteredOrganizationId", paymentsCollector.getOrganization().getId());
+								parameters.put(GeneratePaymentsRegistryParameterNames.FINISH_DATE, finishDate);
+								parameters.put(GeneratePaymentsRegistryParameterNames.ORGANIZATION_ID, organization.getId());
+								parameters.put(GeneratePaymentsRegistryParameterNames.SERVICE_PROVIDER_ID, serviceProvider.getId());
+								parameters.put(GeneratePaymentsRegistryParameterNames.REGISTERED_ORGANIZATION_ID, paymentsCollector.getOrganization().getId());
 								//parameters.put("Email", serviceProvider.getEmail());
-								parameters.put("PrivateKey", privateKey);
+								parameters.put(GeneratePaymentsRegistryParameterNames.PRIVATE_KEY, privateKey);
 
 								waitingProcessData.add(parameters);
 
@@ -138,7 +151,7 @@ public class GeneratePaymentsRegistry extends QuartzJobBean {
 						Map<Serializable, Serializable> parameters = process.getParameters();
 
 						String lastProcessedDate = (String) parameters.get(LAST_PROCESSED_DATE);
-						Long serviceProviderId = (Long) parameters.get("ServiceProviderId");
+						Long serviceProviderId = (Long) parameters.get(GeneratePaymentsRegistryParameterNames.SERVICE_PROVIDER_ID);
 						ServiceProvider serviceProvider = serviceProviderService.read(new Stub<ServiceProvider>(serviceProviderId));
 
 						if (lastProcessedDate != null && serviceProvider != null) {
@@ -166,8 +179,8 @@ public class GeneratePaymentsRegistry extends QuartzJobBean {
 
 						}
 
-						if (parameters.containsKey("RegistryId")) {
-							Long registryId = (Long) parameters.get("RegistryId");
+						if (parameters.containsKey(GeneratePaymentsRegistryParameterNames.REGISTRY_ID)) {
+							Long registryId = (Long) parameters.get(GeneratePaymentsRegistryParameterNames.REGISTRY_ID);
 							if (registryId != null) {
 								registries.add(registryId);
 							}
@@ -180,7 +193,7 @@ public class GeneratePaymentsRegistry extends QuartzJobBean {
 				}
 				listProcessInstanesId = tmpListProcessInstanesId;
 			} while (listProcessInstanesId.size() > 0);
-			context.getMergedJobDataMap().put("Registries", registries);
+			context.getMergedJobDataMap().put(GeneratePaymentsRegistryParameterNames.REGISTRIES, registries);
 		} catch (ProcessInstanceException e) {
 			log.error("Failed run process generate payments registry", e);
 			throw new JobExecutionException(e);

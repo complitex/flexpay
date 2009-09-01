@@ -36,6 +36,9 @@ import java.security.SignatureException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+/**
+ * Generate the payments registry in MB format.
+ */
 public class PaymentsRegistryMBGeneratorImpl implements PaymentsRegistryMBGenerator {
 
 	private final Logger log = LoggerFactory.getLogger(getClass());
@@ -102,6 +105,14 @@ public class PaymentsRegistryMBGeneratorImpl implements PaymentsRegistryMBGenera
 
 	private Signature signature = null;
 
+    /**
+     * Export DB registry to MB registry file.
+     *
+     * @param registry DB registry
+     * @param file MB registry
+     * @param organization Service provider organization
+     * @throws FlexPayException
+     */
 	public void exportToMegaBank(@NotNull Registry registry, @NotNull FPFile file, @NotNull Organization organization) throws FlexPayException {
 		RegistryWriter rg = null;
 		try {
@@ -282,6 +293,7 @@ public class PaymentsRegistryMBGeneratorImpl implements PaymentsRegistryMBGenera
 		}
 		if (serviceCode.startsWith("#")) {
 			int innerServiceCode = Integer.parseInt(serviceCode.substring(1));
+            log.debug("Inner service code {}, service code {}", new Object[]{innerServiceCode, serviceCode});
 			ServiceType serviceType = serviceTypeService.getServiceType(innerServiceCode);
 			serviceCode = serviceTypesMapper.getMegabankCode(Stub.stub(serviceType));
 			if (serviceCode == null) {

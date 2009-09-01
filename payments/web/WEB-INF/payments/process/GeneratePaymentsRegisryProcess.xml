@@ -40,9 +40,15 @@
 
     <task-node name="sendRegistryJob">
 		<task swimlane="worker" blocking="yes" />
-		<transition name="next" to="end" />
-		<transition name="error" to="end" />
+		<transition name="next" to="generatePaymentsFPRegistryJob" />
+		<transition name="error" to="generatePaymentsFPRegistryJob" />
 	</task-node>
+
+    <task-node name="generatePaymentsFPRegistryJob">
+        <task swimlane="worker" blocking="yes" />
+        <transition name="next" to="end" />
+        <transition name="error" to="end" />
+    </task-node>
 
     <task-node name="deleteFPFileJob">
         <task swimlane="worker" blocking="yes" />
