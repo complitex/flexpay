@@ -10,10 +10,10 @@
 	</swimlane>
 
 	<start-state name="start">
-		<transition to="sendRegistryJob" />
+		<transition to="sendPaymentsRegistryJob" />
 	</start-state>
 
-    <task-node name="sendRegistryJob">
+    <task-node name="sendPaymentsRegistryJob">
 		<task swimlane="worker" blocking="yes" />
 		<transition name="next" to="end" />
 		<transition name="error" to="end" />

@@ -34,11 +34,11 @@
 
     <task-node name="generatePaymentsMBRegistryJob">
 		<task swimlane="worker" blocking="yes" />
-		<transition name="next" to="sendRegistryJob" />
+		<transition name="next" to="sendPaymentsRegistryJob" />
 		<transition name="error" to="end" />
 	</task-node>
 
-    <task-node name="sendRegistryJob">
+    <task-node name="sendPaymentsRegistryJob">
 		<task swimlane="worker" blocking="yes" />
 		<transition name="next" to="generatePaymentsFPRegistryJob" />
 		<transition name="error" to="generatePaymentsFPRegistryJob" />

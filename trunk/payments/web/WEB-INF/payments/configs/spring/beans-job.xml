@@ -49,15 +49,20 @@
           scope="prototype" />
 
     <bean id="sendRegistryJob"
-          class="org.flexpay.payments.process.export.job.SendRegistryJob"
+          class="org.flexpay.payments.process.export.job.SendFileJob"
           p:fpFileService-ref="fpFileService"
-          p:providerService-ref="serviceProviderService"
-          p:registryDeliveryHistoryService-ref="registryDeliveryHistoryService"
-          p:registryService-ref="registryService"
           p:emailFrom="${flexpay.email.from}"
           p:emailUserName="${flexpay.email.user_name}"
           p:emailPassword="${flexpay.email.user_pass}"
           p:smtpHost="${flexpay.email.host}"
+          scope="prototype" />
+
+    <bean id="sendPaymentsRegistryJob"
+          class="org.flexpay.payments.process.export.job.SendPaymentsRegistryJob"
+          parent="sendRegistryJob"
+          p:providerService-ref="serviceProviderService"
+          p:registryDeliveryHistoryService-ref="registryDeliveryHistoryService"
+          p:registryService-ref="registryService"
           scope="prototype" />
 
     <bean id="generateEndOperationDayRegistryJob"
