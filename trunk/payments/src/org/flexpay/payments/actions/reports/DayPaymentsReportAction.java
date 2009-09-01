@@ -50,6 +50,15 @@ public abstract class DayPaymentsReportAction extends CashboxCookieActionSupport
 	private CashboxService cashboxService;
 	private PaymentPointService paymentPointService;
 
+	// report parameter names
+	private static final String CASHIER_FIO = "cashierFio";
+	private static final String CREATION_DATE = "creationDate";
+	private static final String BEGIN_DATE = "beginDate";
+	private static final String END_DATE = "endDate";
+	private static final String PAYMENT_POINT_NAME = "paymentPointName";
+	private static final String PAYMENT_POINT_ADDRESS = "paymentPointAddress";
+	private static final String PAYMENT_COLLECTOR_ORG_NAME = "paymentCollectorOrgName";
+
 	@NotNull
 	protected String doExecute() throws Exception {
 
@@ -64,7 +73,7 @@ public abstract class DayPaymentsReportAction extends CashboxCookieActionSupport
 		PaymentsPrintInfoData data = getPaymentsData(beginDate, endDate);
 		data.setCashierFio(getUserPreferences().getFullName());
 		Map<?, ?> params = map(
-				ar("cashierFio", "creationDate", "beginDate", "endDate", "paymentPointName", "paymentPointAddress", "paymentCollectorOrgName"),
+				ar(CASHIER_FIO, CREATION_DATE, BEGIN_DATE, END_DATE, PAYMENT_POINT_NAME, PAYMENT_POINT_ADDRESS, PAYMENT_COLLECTOR_ORG_NAME),
 				ar(data.getCashierFio(), data.getCreationDate(), data.getBeginDate(), data.getEndDate(), data.getPaymentPointName(), data.getPaymentPointAddress(), data.getPaymentCollectorOrgName()));
 		JRDataSource dataSource = new JRBeanCollectionDataSource(data.getOperationDetailses());
 

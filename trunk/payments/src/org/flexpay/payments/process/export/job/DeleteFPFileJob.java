@@ -62,7 +62,7 @@ public class DeleteFPFileJob extends Job {
 
 	private FPFile getFile(Map<Serializable, Serializable> parameters) {
 
-		Long fileId = (Long) parameters.get(GeneratePaymentsRegistryParameterNames.FILE_ID);
+		Long fileId = (Long) parameters.get(ExportJobParameterNames.FILE_ID);
         if (fileId == null) {
             log.error("File was not found as a job parameter");
             return null;

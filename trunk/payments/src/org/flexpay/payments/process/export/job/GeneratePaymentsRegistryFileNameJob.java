@@ -5,8 +5,8 @@ import org.flexpay.common.persistence.registry.RegistryType;
 import org.flexpay.common.process.job.Job;
 import org.flexpay.common.service.RegistryService;
 import org.flexpay.common.util.DateUtil;
-import static org.flexpay.payments.process.export.job.GeneratePaymentsRegistryParameterNames.GENERATED_FILE_NAME;
-import static org.flexpay.payments.process.export.job.GeneratePaymentsRegistryParameterNames.ORGANIZATION_ID;
+import static org.flexpay.payments.process.export.job.ExportJobParameterNames.GENERATED_FILE_NAME;
+import static org.flexpay.payments.process.export.job.ExportJobParameterNames.ORGANIZATION_ID;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.io.Serializable;

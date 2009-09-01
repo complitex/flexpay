@@ -61,6 +61,14 @@ public abstract class AccPaymentsReportAction extends FPActionSupport {
 	private ReportUtil reportUtil;
 	protected PaymentsReporter paymentsReporter;
 
+	// report parameter names
+	private static final String BEGIN_DATE = "beginDate";
+	private static final String END_DATE = "endDate";
+	private static final String CREATION_DATE = "creationDate";
+	private static final String PAYMENT_COLLECTOR_ORG_ADDRESS = "paymentCollectorOrgAddress";
+	private static final String PAYMENT_COLLECTOR_ORG_NAME = "paymentCollectorOrgName";
+	private static final String ACCOUNTANT_FIO = "accountantFio";
+
 	@NotNull
 	@Override
 	protected String doExecute() throws Exception {
@@ -76,7 +84,7 @@ public abstract class AccPaymentsReportAction extends FPActionSupport {
 		data.setAccountantFio(getUserPreferences().getFullName());
 
 		Map<?, ?> params = map(
-				ar("beginDate", "endDate", "creationDate", "paymentCollectorOrgAddress", "paymentCollectorOrgName", "accountantFio"),
+				ar(BEGIN_DATE, END_DATE, CREATION_DATE, PAYMENT_COLLECTOR_ORG_ADDRESS, PAYMENT_COLLECTOR_ORG_NAME, ACCOUNTANT_FIO),
 				ar(data.getBeginDate(), data.getEndDate(), data.getCreationDate(), data.getPaymentCollectorOrgAddress(), data.getPaymentCollectorOrgName(), data.getAccountantFio()));
 		JRDataSource dataSource = new JRBeanCollectionDataSource(data.getDetailses());
 

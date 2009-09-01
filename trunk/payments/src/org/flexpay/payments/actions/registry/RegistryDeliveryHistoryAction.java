@@ -5,6 +5,7 @@ import org.flexpay.payments.actions.registry.data.SentRegistryContainer;
 import org.flexpay.payments.persistence.RegistryDeliveryHistory;
 import org.flexpay.payments.persistence.EircRegistryProperties;
 import org.flexpay.payments.service.RegistryDeliveryHistoryService;
+import org.flexpay.payments.process.export.job.ExportJobParameterNames;
 import org.flexpay.common.util.DateUtil;
 import org.flexpay.common.util.TranslationUtil;
 import org.flexpay.common.persistence.filter.BeginDateFilter;
@@ -61,8 +62,8 @@ public class RegistryDeliveryHistoryAction extends CashboxCookieWithPagerActionS
                 RegistryDeliveryHistory history = registryDeliveryHistoryService.read(new Stub<RegistryDeliveryHistory>(historyId));
                 if (history != null) {
                     Map<Serializable, Serializable> parameters = new HashMap<Serializable, Serializable>();
-                    parameters.put("FileId", history.getSpFile().getId());
-                    parameters.put("RegistryId", history.getRegistry().getId());
+                    parameters.put(ExportJobParameterNames.FILE_ID, history.getSpFile().getId());
+                    parameters.put(ExportJobParameterNames.REGISTRY_ID, history.getRegistry().getId());
                     try {
                         Long processId = processManager.createProcess("SendRegistry", parameters);
                         if (processId != null && processId > 0) {

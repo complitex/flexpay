@@ -18,6 +18,7 @@ import org.flexpay.orgs.persistence.PaymentPoint;
 import org.flexpay.orgs.persistence.PaymentsCollector;
 import org.flexpay.orgs.service.PaymentPointService;
 import org.flexpay.orgs.service.PaymentsCollectorService;
+import org.flexpay.payments.process.export.job.ExportJobParameterNames;
 import org.jbpm.JbpmContext;
 import org.jbpm.graph.exe.ProcessInstance;
 import org.jetbrains.annotations.NotNull;
@@ -141,7 +142,7 @@ public class TradingDay extends QuartzJobBean {
                 Process processInstanceInfo = processManager.getProcessInstanceInfo(processId);
                 log.debug("Process {} state complited {} ", processId, processInstanceInfo.getProcessState().isCompleted());
                 log.debug("Process {} status {} ", processId, processInstanceInfo.getParameters().get("PROCESS_STATUS"));
-                log.debug("Process {} payment point {} ", processId, processInstanceInfo.getParameters().get("paymentPointId"));
+                log.debug("Process {} payment point {} ", processId, processInstanceInfo.getParameters().get(ExportJobParameterNames.PAYMENT_POINT_ID));
                 //long processInstanceId = processInstanceInfo.getProcessInstaceId();
                 //ProcessInstance pi = processManager.getProcessInstance(processInstanceInfo.getProcessInstaceId());
 
@@ -159,18 +160,18 @@ public class TradingDay extends QuartzJobBean {
                 log.error("Payment point with id {} not found", paymentPointId);
             } else {
 
-                parameters.put("paymentPointId", paymentPointId);
+                parameters.put(ExportJobParameterNames.PAYMENT_POINT_ID, paymentPointId);
                 log.debug("Set paymentPointId {}", paymentPointId);
 
 				//fill begin and end date
-                parameters.put("beginDate", DateUtil.truncateDay(new Date()));
+                parameters.put(ExportJobParameterNames.BEGIN_DATE, DateUtil.truncateDay(new Date()));
                 log.debug("Set beginDate {}", DateUtil.truncateDay(new Date()));
 
-                parameters.put("endDate", DateUtil.getEndOfThisDay(new Date()));
+                parameters.put(ExportJobParameterNames.END_DATE, DateUtil.getEndOfThisDay(new Date()));
                 log.debug("Set endDate {}", DateUtil.getEndOfThisDay(new Date()));
 
                 PaymentsCollector paymentsPointCollector = paymentsCollectorService.read(Stub.stub(pp.getCollector()));
-                parameters.put("organizationId", paymentsPointCollector.getOrganization().getId());
+                parameters.put(ExportJobParameterNames.ORGANIZATION_ID, paymentsPointCollector.getOrganization().getId());
                 log.debug("Set organizationId {}", paymentsPointCollector.getOrganization().getId());
 
                 try {

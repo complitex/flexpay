@@ -9,7 +9,7 @@ import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.orgs.persistence.ServiceProvider;
 import org.flexpay.orgs.service.OrganizationService;
 import org.flexpay.orgs.service.ServiceProviderService;
-import static org.flexpay.payments.process.export.job.GeneratePaymentsRegistryParameterNames.*;
+import static org.flexpay.payments.process.export.job.ExportJobParameterNames.*;
 import org.flexpay.payments.service.registry.PaymentsRegistryDBGenerator;
 import org.springframework.beans.factory.annotation.Required;
 

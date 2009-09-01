@@ -24,6 +24,7 @@ import org.flexpay.payments.service.statistics.PaymentsStatisticsService;
 import org.flexpay.payments.service.OperationService;
 import org.flexpay.payments.service.Roles;
 import org.flexpay.payments.process.export.TradingDay;
+import org.flexpay.payments.process.export.job.ExportJobParameterNames;
 import org.flexpay.payments.util.config.PaymentsUserPreferences;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
@@ -143,19 +144,19 @@ public class PaymentPointsListMonitorAction extends FPActionWithPagerSupport<Pay
     private void enableTradingDay(PaymentsCollector paymentsCollector, PaymentPoint paymentPoint) throws JobExecutionException {
         Map<Serializable, Serializable> parameters = new HashMap<Serializable, Serializable>();
 
-        parameters.put("paymentPointId", paymentPoint.getCollector().getOrganization().getId());
+        parameters.put(ExportJobParameterNames.PAYMENT_POINT_ID, paymentPoint.getCollector().getOrganization().getId());
         log.debug("Set paymentPointId {}", paymentPoint.getId());
 
         //fill begin and end date
         Date beginDate = new Date();
-        parameters.put("beginDate", beginDate);
+        parameters.put(ExportJobParameterNames.BEGIN_DATE, beginDate);
         log.debug("Set beginDate {}", beginDate);
 
-        parameters.put("endDate", DateUtil.getEndOfThisDay(new Date()));
+        parameters.put(ExportJobParameterNames.END_DATE, DateUtil.getEndOfThisDay(new Date()));
         log.debug("Set endDate {}", DateUtil.getEndOfThisDay(new Date()));
 
         Long recipientOrganizationId = paymentsCollector.getOrganization().getId();
-        parameters.put("organizationId", recipientOrganizationId);
+        parameters.put(ExportJobParameterNames.ORGANIZATION_ID, recipientOrganizationId);
         log.debug("Set organizationId {}", recipientOrganizationId);
 
         try {

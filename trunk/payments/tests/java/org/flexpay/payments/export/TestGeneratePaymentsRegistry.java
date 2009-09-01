@@ -28,7 +28,7 @@ import org.flexpay.orgs.service.PaymentsCollectorService;
 import org.flexpay.orgs.service.ServiceProviderService;
 import org.flexpay.payments.persistence.*;
 import org.flexpay.payments.process.export.GeneratePaymentsRegistry;
-import org.flexpay.payments.process.export.job.GeneratePaymentsRegistryParameterNames;
+import org.flexpay.payments.process.export.job.ExportJobParameterNames;
 import org.flexpay.payments.service.*;
 import org.flexpay.payments.test.PaymentsSpringBeanAwareTestCase;
 import org.flexpay.ab.persistence.filters.ImportErrorTypeFilter;
@@ -367,7 +367,7 @@ public class TestGeneratePaymentsRegistry extends PaymentsSpringBeanAwareTestCas
 		jobScheduler.execute(schedulerContext);
 		log.debug("finish jobScheduler");
 
-        List<Long> registries = (List<Long>)schedulerContext.getMergedJobDataMap().get(GeneratePaymentsRegistryParameterNames.REGISTRIES);
+        List<Long> registries = (List<Long>)schedulerContext.getMergedJobDataMap().get(ExportJobParameterNames.REGISTRIES);
         assertNotNull(registries);
 
         assertTrue("Parameters map must content 1 registry", registries.size() > 0);
