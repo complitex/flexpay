@@ -1,6 +1,7 @@
-<%@ include file="/WEB-INF/jsp/common/taglibs.jsp" %>
+<%@include file="/WEB-INF/jsp/common/taglibs.jsp"%>
 
 <s:actionerror />
+
 <s:form action="processDefinitionDeploy" enctype="multipart/form-data">
 	<s:text name="common.processing.definition_file" />:&nbsp;
 	<s:file name="upload" /><br />

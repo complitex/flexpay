@@ -182,7 +182,7 @@ var FP = {
         }
 
         var notEl = element == null;
-        if (!notEl || (notEl && opt.notPagerRequest)) {
+        if (!notEl) {
             var isSelect = !notEl && element.name == opt.pageSizeName;
             params[opt.pageSizeChangedName] = isSelect;
             params[opt.pageNumberName] = isSelect ? "" : opt.notPagerRequest ? "1" : element.value;

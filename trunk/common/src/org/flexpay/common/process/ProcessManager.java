@@ -1,10 +1,10 @@
 package org.flexpay.common.process;
 
+import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.process.exception.ProcessDefinitionException;
 import org.flexpay.common.process.exception.ProcessInstanceException;
 import org.flexpay.common.process.sorter.ProcessSorter;
 import org.flexpay.common.service.Roles;
-import org.flexpay.common.dao.paging.Page;
 import org.jbpm.graph.def.ProcessDefinition;
 import org.jbpm.graph.exe.ProcessInstance;
 import org.jbpm.taskmgmt.exe.TaskInstance;
@@ -14,10 +14,10 @@ import org.springframework.security.annotation.Secured;
 
 import java.io.InputStream;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.Date;
 
 public interface ProcessManager {
 
@@ -186,4 +186,5 @@ public interface ProcessManager {
 	 * @return instance of T
 	 */
 	public <T> T execute(@NotNull ContextCallback<T> callback, boolean useExistingContext);
+
 }

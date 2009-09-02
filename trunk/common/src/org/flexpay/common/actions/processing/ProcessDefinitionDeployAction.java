@@ -29,21 +29,22 @@ public class ProcessDefinitionDeployAction extends FPActionSupport {
 	@Override
 	protected String doExecute() throws Exception {
 
-		if (isSubmit()) {
-			InputStream is = null;
-			try {
-				//noinspection IOResourceOpenedButNotSafelyClosed
-				is = new FileInputStream(upload);
-				processManager.deployProcessDefinition(is, true);
-				addActionError(getText("common.processing.deployment_success"));
-				return REDIRECT_SUCCESS;
-			} finally {
-				IOUtils.closeQuietly(is);
-				upload.delete();
-			}
+		if (isNotSubmit()) {
+			return INPUT;
 		}
 
-		return INPUT;
+		InputStream is = null;
+		try {
+			//noinspection IOResourceOpenedButNotSafelyClosed
+			is = new FileInputStream(upload);
+			processManager.deployProcessDefinition(is, true);
+			addActionError(getText("common.processing.deployment_success"));
+		} finally {
+			IOUtils.closeQuietly(is);
+			upload.delete();
+		}
+
+		return REDIRECT_SUCCESS;
 	}
 
 	/**

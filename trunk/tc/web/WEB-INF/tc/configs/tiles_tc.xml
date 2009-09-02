@@ -61,7 +61,7 @@
 
 	<definition name="bti.buildings.attribute_types.list" extends="tc.dictionaries">
 		<put-attribute name="title" value="bti.building.attribute.types" />
-		<put-attribute name="body" value="/WEB-INF/jsp/tc/building_attributes/building_attribute_type_list_page.jsp" />
+		<put-attribute name="body" value="/WEB-INF/jsp/tc/building_attributes/building_attribute_types_list_page.jsp" />
 	</definition>
 
     <definition name="bti.buildings.attribute_type.view" extends="tc.dictionaries">
@@ -111,7 +111,7 @@
 
 	<definition name="tc.process.list" extends="tc.processing">
 		<put-attribute name="title" value="common.processing.process_list" />
-		<put-attribute name="body" value="/WEB-INF/jsp/common/processing/process_list.jsp" />
+		<put-attribute name="body" value="/WEB-INF/jsp/common/processing/processes_list_page.jsp" />
 	</definition>
 
 	<definition name="tc.process.view" extends="tc.processing">

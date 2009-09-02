@@ -11,9 +11,17 @@
 			<result type="tiles">tc.processing</result>
 		</action>
 
-		<action name="processesList" class="processesListAction">
+		<action name="processesList" class="processesListPageAction">
 			<result type="tiles">tc.process.list</result>
 		</action>
+
+        <action name="processesListAjax" class="processesListAction">
+            <result>/WEB-INF/jsp/common/processing/processes_list.jsp</result>
+        </action>
+
+        <action name="processDelete" class="processDeleteAction">
+            <result>/WEB-INF/jsp/ab/simple_response.jsp</result>
+        </action>
 
 		<action name="processView" class="processViewAction">
 			<result type="tiles">tc.process.view</result>
