@@ -14,6 +14,7 @@ public class FileUploadProgressAction extends FPActionSupport {
 	private String rnd;
 	private String stringResult;
 
+	@NotNull
 	public String doExecute() {
 		Object mon_obj = session.get("com.davidjc.ajaxfileupload.multipart.ProgressMonitor");
 		ProgressMonitor monitor = (ProgressMonitor) mon_obj;

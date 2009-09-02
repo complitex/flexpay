@@ -107,16 +107,16 @@ public abstract class FPActionSupport extends ActionSupport implements BreadCrum
 		//noinspection unchecked
 		Map<String, Collection<String>> domainNamesToMessages = (Map) session.remove(sessionAttribute);
 		if (domainNamesToMessages != null && domainNamesToMessages.containsKey(domainName)) {
-			Collection<String> messages = (Collection) domainNamesToMessages.remove(domainName);
+			Collection<String> messages = domainNamesToMessages.remove(domainName);
 			//noinspection unchecked
 			if (isError) {
 				addActionErrors(messages);
-			} else if (isMessage) {
+			} else {
 				addActionMessages(messages);
 			}
 
 			if (log.isDebugEnabled()) {
-				log.debug("Added session {}: {}", (isError ? "errors" : isMessage ? "messages" : "unknown"), messages);
+				log.debug("Added session {}: {}", (isError ? "errors" : "messages"), messages);
 			}
 		}
 

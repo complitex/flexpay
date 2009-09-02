@@ -45,7 +45,6 @@ public class BuildingAttributesEditAction extends FPActionSupport {
 	// date submission button
 	private String dateSubmitted;
 
-	// required services
 	private AddressService addressService;
 	private BuildingService buildingService;
 	private BtiBuildingService btiBuildingService;
@@ -80,7 +79,6 @@ public class BuildingAttributesEditAction extends FPActionSupport {
 	}
 
 	private void loadAttributeValues() {
-
 		for (Long typeId : attributeMapDBValues.keySet()) {
 			attributeMap.put(typeId, attributeMapDBValues.get(typeId));
 		}
@@ -92,8 +90,6 @@ public class BuildingAttributesEditAction extends FPActionSupport {
 		return INPUT;
 	}
 
-
-	// loading building attributes
 	private void loadBuildingWithAttributes() throws FlexPayException {
 
 		Long buildingId = building.getId();
@@ -103,7 +99,6 @@ public class BuildingAttributesEditAction extends FPActionSupport {
 			throw new FlexPayException("No building with id " + buildingId + " can be retrieved");
 		}
 
-		// alternative addresses loading
 		loadAlternativeAddresses();
 
 		// loading bti building and it's attributes
@@ -113,8 +108,8 @@ public class BuildingAttributesEditAction extends FPActionSupport {
 		}
 
 		List<BuildingAttributeType> attributeTypes = buildingAttributeTypeService.listTypes();
-		for (BuildingAttributeType type : attributeTypes) {
 
+		for (BuildingAttributeType type : attributeTypes) {
 			BuildingAttribute attribute = btiBuilding.getAttributeForDate(type, attributeDate);
 			putAttribute(type, attribute);
 		}
@@ -187,26 +182,21 @@ public class BuildingAttributesEditAction extends FPActionSupport {
 		return attributeMap.get(typeId);
 	}
 
-	// rendering utility methods
 	public boolean isTempAttribute(Long typeId) {
 		BuildingAttributeType type = getAttributeTypeById(typeId);
 		return type.isTemp();
 	}
 
 	public boolean isBuildingAttributeTypeSimple(Long typeId) {
-
 		return getAttributeTypeById(typeId) instanceof BuildingAttributeTypeSimple;
 	}
 
 	public boolean isBuildingAttributeTypeEnum(Long typeId) {
-
 		return getAttributeTypeById(typeId) instanceof BuildingAttributeTypeEnum;
 	}
 
 	public SortedSet<BuildingAttributeTypeEnumValue> getTypeValues(Long typeId) {
-
-		BuildingAttributeTypeEnum type = (BuildingAttributeTypeEnum) getAttributeTypeById(typeId);
-		return type.getSortedValues();
+		return ((BuildingAttributeTypeEnum) getAttributeTypeById(typeId)).getSortedValues();
 	}
 
 	public String getAddress(@NotNull Long buildingId) throws Exception {
@@ -227,9 +217,7 @@ public class BuildingAttributesEditAction extends FPActionSupport {
 		return getTranslation(group.getTranslations()).getName();
 	}
 
-	// utility methods
 	private BuildingAttributeType getAttributeTypeById(Long typeId) {
-
 		return buildingAttributeTypeService.readFull(new Stub<BuildingAttributeType>(typeId));
 	}
 
@@ -242,42 +230,6 @@ public class BuildingAttributesEditAction extends FPActionSupport {
 		}
 
 		return attributeMap.get(type.getId());
-	}
-
-	public BuildingAddress getBuilding() {
-		return building;
-	}
-
-	public void setBuilding(BuildingAddress building) {
-		this.building = building;
-	}
-
-	public List<BuildingAddress> getAlternateAddresses() {
-		return alternateAddresses;
-	}
-
-	public String getAttributeDate() {
-		return format(attributeDate);
-	}
-
-	public void setAttributeDate(String attributeDate) {
-		this.attributeDate = DateUtil.parseBeginDate(attributeDate);
-	}
-
-	public Map<Long, String> getAttributeMap() {
-		return attributeMap;
-	}
-
-	public void setAttributeMap(Map<Long, String> attributeMap) {
-		this.attributeMap = attributeMap;
-	}
-
-	public List<Long> getAttributeGroups() {
-		return attributeGroups;
-	}
-
-	public void setDateSubmitted(String dateSubmitted) {
-		this.dateSubmitted = dateSubmitted;
 	}
 
 	public boolean doValidate() {
@@ -420,6 +372,42 @@ public class BuildingAttributesEditAction extends FPActionSupport {
 		}
 
 		return !hasActionErrors();
+	}
+
+	public BuildingAddress getBuilding() {
+		return building;
+	}
+
+	public void setBuilding(BuildingAddress building) {
+		this.building = building;
+	}
+
+	public List<BuildingAddress> getAlternateAddresses() {
+		return alternateAddresses;
+	}
+
+	public String getAttributeDate() {
+		return format(attributeDate);
+	}
+
+	public void setAttributeDate(String attributeDate) {
+		this.attributeDate = DateUtil.parseBeginDate(attributeDate);
+	}
+
+	public Map<Long, String> getAttributeMap() {
+		return attributeMap;
+	}
+
+	public void setAttributeMap(Map<Long, String> attributeMap) {
+		this.attributeMap = attributeMap;
+	}
+
+	public List<Long> getAttributeGroups() {
+		return attributeGroups;
+	}
+
+	public void setDateSubmitted(String dateSubmitted) {
+		this.dateSubmitted = dateSubmitted;
 	}
 
 	@Required
