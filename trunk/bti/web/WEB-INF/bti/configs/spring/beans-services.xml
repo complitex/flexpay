@@ -44,11 +44,11 @@
 
 	<bean id="buildingAttributeTypeServiceTarget"
 		  class="org.flexpay.bti.service.impl.BuildingAttributeTypeServiceImpl"
-		  autowire-candidate="false"
 		  p:attributeTypeDao-ref="buildingAttributeTypeDao"
 		  p:attributeTypeDaoExt-ref="buildingAttributeTypeDaoExt"
 		  p:sessionUtils-ref="sessionUtils"
-		  p:modificationListener-ref="buildingAttributeTypeModificationListener" />
+		  p:modificationListener-ref="buildingAttributeTypeModificationListener"
+          autowire-candidate="false" />
 
 	<bean id="buildingAttributeGroupModificationListener"
 		  parent="historyChangesListenerBase"

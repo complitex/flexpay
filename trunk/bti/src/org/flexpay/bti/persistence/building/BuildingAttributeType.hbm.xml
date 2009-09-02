@@ -123,6 +123,7 @@
 	</query>
 
 	<query name="BuildingAttributeType.findTypes">
+        select distinct t
 		from BuildingAttributeType t
 	</query>
 
@@ -140,6 +141,7 @@
 	</query>
 
 	<query name="BuildingAttributeTypeEnum.findValues">
+        select distinct v
 		from BuildingAttributeTypeEnumValue v
 		where v.typeEnum.id=?
 	</query>

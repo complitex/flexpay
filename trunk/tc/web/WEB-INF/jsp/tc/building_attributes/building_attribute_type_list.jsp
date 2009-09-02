@@ -8,7 +8,7 @@
                 <%@include file="/WEB-INF/jsp/common/filter/pager/pager_ajax.jsp" %>
                 <input type="button" class="btn-exit"
                        onclick="window.location='<s:url action="buildingAttributeTypeEdit"><s:param name="attributeType.id" value="0" /></s:url>'"
-                       value="<s:text name="common.new"/>" />
+                       value="<s:text name="common.new" />" />
             </td>
         </tr>
 		<tr>
@@ -42,7 +42,7 @@
 				<%@include file="/WEB-INF/jsp/common/filter/pager/pager_ajax.jsp" %>
                 <input type="button" class="btn-exit"
                        onclick="window.location='<s:url action="buildingAttributeTypeEdit"><s:param name="attributeType.id" value="0" /></s:url>'"
-                       value="<s:text name="common.new"/>" />
+                       value="<s:text name="common.new" />" />
 			</td>
 		</tr>
 	</table>

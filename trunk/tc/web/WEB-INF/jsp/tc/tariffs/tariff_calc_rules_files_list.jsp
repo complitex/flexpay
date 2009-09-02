@@ -33,7 +33,6 @@
         if (objectIds.length > 1) {
             alert("<s:text name="tc.error.calculate.must_be_one_element_selected" />");
         } else if (objectIds.length == 0) {
-            return;
         } else {
             $("input[name=id]").get(0).value = objectIds.get(0).value;
             $("#dialog").dialog("open");

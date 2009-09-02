@@ -8,27 +8,29 @@
 
 	<bean id="tariffServiceTarget"
 		  class="org.flexpay.tc.service.impl.TariffServiceImpl"
-		  autowire-candidate="false"
 		  p:tariffDao-ref="tariffDao"
-		  p:tariffServiceDaoExt-ref="tariffDaoExt" />
+		  p:tariffServiceDaoExt-ref="tariffDaoExt"
+          autowire-candidate="false" />
+
+    <bean id="tariffCalculationRulesFileServiceTarget"
+          class="org.flexpay.tc.service.impl.TariffCalculationRulesFileServiceImpl"
+          p:tariffCalculationRulesFileDao-ref="tariffCalculationRulesFileDao"
+          autowire-candidate="false" />
+
+    <bean id="tariffCalculationResultService"
+          class="org.flexpay.tc.service.impl.TariffCalculationResultServiceImpl"
+          p:tariffCalculationResultDao-ref="tariffCalculationResultDao"
+            />
 
 	<bean id="tariffExportCodeServiceExt"
 		  class="org.flexpay.tc.service.impl.TariffExportCodeServiceExtImpl"
-		  autowire-candidate="false"
-		  p:tariffExportCodeDaoExt-ref="tariffExportCodeDaoExt" />
+		  p:tariffExportCodeDaoExt-ref="tariffExportCodeDaoExt"
+          autowire-candidate="false" />
 
     <bean id="tariffExportLogService"
         class="org.flexpay.tc.service.impl.TariffExportLogRecordServiceImpl"
-        autowire-candidate="false"
         p:tariffExportLogRecordDao-ref="tariffExportLogRecordDao"
-    />
-	<bean id="tariffCalculationResultService"
-		  class="org.flexpay.tc.service.impl.TariffCalculationResultServiceImpl"
-		  p:tariffCalculationResultDao-ref="tariffCalculationResultDao" />
-
-	<bean id="tariffCalculationRulesFileService"
-		  class="org.flexpay.tc.service.impl.TariffCalculationRulesFileServiceImpl"
-		  p:tariffCalculationRulesFileDao-ref="tariffCalculationRulesFileDao" />
+        autowire-candidate="false" />
 
 	<bean id="processManagerTc" parent="processManager" autowire-candidate="false">
 		<property name="definitionPaths">
