@@ -47,9 +47,13 @@ public class EndOperationDayRegistryGeneratorImpl implements EndOperationDayRegi
 		log.info("Start generating end operation day registry...");
 
 		List<Operation> operations = operationService.listReceivedPayments(stub(paymentPoint), beginDate, endDate);
-		if (log.isDebugEnabled()) {
-			log.debug("Found {} operations", operations.size());
-		}
+
+        if (operations.size() == 0) {
+            log.debug("Not found operations for payment point {}. Registry did not create.", paymentPoint.getId());
+            return null;
+        }
+
+        log.debug("Found {} operations", operations.size());
 
 		Registry registry = new Registry();
 
@@ -136,7 +140,12 @@ public class EndOperationDayRegistryGeneratorImpl implements EndOperationDayRegi
 
 		if (recordsNum == 0) {
 			log.info("Finish generating end operation day registry...");
-			log.info("0 records created. No Registry created.");
+			log.info("0 records created. Try delete registry.");
+            try {
+                registryService.delete(registry);
+            } catch (Throwable th) {
+                log.error("Registry {} did not delete", String.valueOf(registry.getId()), th);
+            }
 			return null;
 		} else {
 			registry.setFromDate(minDate == null ? new Date() : minDate);
