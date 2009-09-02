@@ -18,10 +18,7 @@
     $(function() {
 
         FF.addListener("street", function(filter) {
-            FP.pagerAjax(null, {
-                action:"<s:url action="buildingsListAjax" namespace="/tc" includeParams="none"/>",
-                params:{streetFilter: filter.value.val()}
-            });
+            pagerAjax(null);
         });
         FF.addEraseFunction("street", function(filter) {
             $("#" + resultId).html("");

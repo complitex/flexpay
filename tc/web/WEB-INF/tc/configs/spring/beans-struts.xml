@@ -131,10 +131,20 @@
 	<!-- end of building tc results section -->
 
 	<!-- processing -->
+    <bean id="processesListPageAction"
+          class="org.flexpay.common.actions.processing.ProcessesListPageAction"
+          p:crumbNameKey="tc.crumbs.processes.list"
+          p:processManager-ref="processManager"
+          scope="prototype" />
+
 	<bean id="processesListAction"
 		  class="org.flexpay.common.actions.processing.ProcessesListAction"
-          p:crumbNameKey="tc.crumbs.processes.list"
 		  p:processManager-ref="processManager"
+          scope="prototype" />
+
+    <bean id="processDeleteAction"
+          class="org.flexpay.common.actions.processing.ProcessDeleteAction"
+          p:processManager-ref="processManager"
           scope="prototype" />
 
 	<bean id="processViewAction"

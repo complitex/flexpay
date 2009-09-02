@@ -9,10 +9,7 @@
 <script type="text/javascript">
 
     $(function() {
-        FP.pagerAjax(null, {
-            action:"<s:url action="rulesFilesListAjax" includeParams="none" />",
-            notPagerRequest:true
-        });
+        pagerAjax(null);
     });
 
     function pagerAjax(element) {

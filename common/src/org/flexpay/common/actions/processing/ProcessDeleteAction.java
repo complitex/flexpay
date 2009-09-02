@@ -1,24 +1,24 @@
-package org.flexpay.tc.actions.tariff;
+package org.flexpay.common.actions.processing;
 
 import org.flexpay.common.actions.FPActionSupport;
 import static org.flexpay.common.util.CollectionUtils.set;
-import org.flexpay.tc.service.TariffCalculationRulesFileService;
+import org.flexpay.common.process.ProcessManager;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.util.Set;
 
-public class TariffCalcRulesFileDeleteAction extends FPActionSupport {
+public class ProcessDeleteAction extends FPActionSupport {
 
 	private Set<Long> objectIds = set();
 
-	private TariffCalculationRulesFileService tariffCalculationRulesFileService;
+	private ProcessManager processManager;
 
 	@NotNull
 	@Override
 	public String doExecute() throws Exception {
 
-		tariffCalculationRulesFileService.disableByIds(objectIds);
+		processManager.deleteProcessInstances(objectIds);
 
 		return SUCCESS;
 	}
@@ -41,8 +41,8 @@ public class TariffCalcRulesFileDeleteAction extends FPActionSupport {
 	}
 
 	@Required
-	public void setTariffCalculationRulesFileService(TariffCalculationRulesFileService tariffCalculationRulesFileService) {
-		this.tariffCalculationRulesFileService = tariffCalculationRulesFileService;
+	public void setProcessManager(ProcessManager processManager) {
+		this.processManager = processManager;
 	}
 
 }

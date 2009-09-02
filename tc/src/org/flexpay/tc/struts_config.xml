@@ -61,7 +61,7 @@
 		</action>
 
         <action name="buildingAttributeTypesListAjax" class="buildingAttributeTypesListAction">
-            <result>/WEB-INF/jsp/tc/building_attributes/building_attribute_type_list.jsp</result>
+            <result>/WEB-INF/jsp/tc/building_attributes/building_attribute_types_list.jsp</result>
         </action>
 
         <action name="buildingAttributeTypeView" class="buildingAttributeTypeViewAction">

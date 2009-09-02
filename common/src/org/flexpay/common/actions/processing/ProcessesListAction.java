@@ -10,52 +10,39 @@ import org.flexpay.common.process.filter.ProcessNameFilter;
 import org.flexpay.common.process.filter.ProcessStateFilter;
 import org.flexpay.common.process.filter.ProcessStateObject;
 import org.flexpay.common.process.sorter.*;
+import org.flexpay.common.util.CollectionUtils;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 public class ProcessesListAction extends FPActionWithPagerSupport<Process> implements InitializingBean {
 
-	// form data
-	private List<Process> processList;
-	private Set<Long> objectIds = new HashSet<Long>();
+	private List<Process> processes = CollectionUtils.list();
 
-	// sorters
 	private ProcessSorterByName processSorterByName = new ProcessSorterByName();
 	private ProcessSorterByStartDate processSorterByStartDate = new ProcessSorterByStartDate();
 	private ProcessSorterByEndDate processSorterByEndDate = new ProcessSorterByEndDate();
 	private ProcessSorterByState processSorterByState = new ProcessSorterByState();
 
-	// filters
 	private BeginDateFilter beginDateFilter = new BeginDateFilter();
 	private EndDateFilter endDateFilter = new EndDateFilter();
 	private ProcessStateFilter processStateFilter = new ProcessStateFilter();
 	private ProcessNameFilter processNameFilter = new ProcessNameFilter();
 
-	// process manager
 	private ProcessManager processManager;
 
 	@NotNull
 	@Override
 	protected String doExecute() throws Exception {
 
-		initFilters();
-
-		if (objectIds != null && objectIds.size() > 0) {
-			processManager.deleteProcessInstances(objectIds);
-		}
-
-		processList = getProcessListMethod();
-		return SUCCESS;
-	}
-
-	private void initFilters() {
 		processNameFilter.loadAllProcessNames();
+
+		processes = getProcessListMethod();
+
+		return SUCCESS;
 	}
 
 	@NotNull
@@ -85,56 +72,60 @@ public class ProcessesListAction extends FPActionWithPagerSupport<Process> imple
 		return null;
 	}
 
-	// rendering utility methods
 	public String getTranslation(ProcessState state) {
 		return getText(ProcessStateObject.getByProcessState(state).getName());
 	}
 
-	public boolean resultsAreNotEmpty() {
-		return !processList.isEmpty();
+	public List<Process> getProcesses() {
+		return processes;
 	}
 
-	// form data
-	public List<Process> getProcessList() {
-		return processList;
-	}
-
-	public void setObjectIds(Set<Long> objectIds) {
-		this.objectIds = objectIds;
-	}
-
-	// sorters
 	public ProcessSorterByName getProcessSorterByName() {
 		return processSorterByName;
+	}
+
+	public void setProcessSorterByName(ProcessSorterByName processSorterByName) {
+		this.processSorterByName = processSorterByName;
 	}
 
 	public ProcessSorterByStartDate getProcessSorterByStartDate() {
 		return processSorterByStartDate;
 	}
 
+	public void setProcessSorterByStartDate(ProcessSorterByStartDate processSorterByStartDate) {
+		this.processSorterByStartDate = processSorterByStartDate;
+	}
+
 	public ProcessSorterByEndDate getProcessSorterByEndDate() {
 		return processSorterByEndDate;
+	}
+
+	public void setProcessSorterByEndDate(ProcessSorterByEndDate processSorterByEndDate) {
+		this.processSorterByEndDate = processSorterByEndDate;
 	}
 
 	public ProcessSorterByState getProcessSorterByState() {
 		return processSorterByState;
 	}
 
-	// filters
-	public BeginDateFilter getBeginDateFilter() {
-		return beginDateFilter;
+	public void setProcessSorterByState(ProcessSorterByState processSorterByState) {
+		this.processSorterByState = processSorterByState;
 	}
 
-	public EndDateFilter getEndDateFilter() {
-		return endDateFilter;
+	public void setBeginDateFilter(BeginDateFilter beginDateFilter) {
+		this.beginDateFilter = beginDateFilter;
 	}
 
-	public ProcessStateFilter getProcessStateFilter() {
-		return processStateFilter;
+	public void setEndDateFilter(EndDateFilter endDateFilter) {
+		this.endDateFilter = endDateFilter;
 	}
 
-	public ProcessNameFilter getProcessNameFilter() {
-		return processNameFilter;
+	public void setProcessStateFilter(ProcessStateFilter processStateFilter) {
+		this.processStateFilter = processStateFilter;
+	}
+
+	public void setProcessNameFilter(ProcessNameFilter processNameFilter) {
+		this.processNameFilter = processNameFilter;
 	}
 
 	@Override

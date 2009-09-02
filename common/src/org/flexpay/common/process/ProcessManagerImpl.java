@@ -2,6 +2,7 @@ package org.flexpay.common.process;
 
 import org.apache.commons.io.IOUtils;
 import org.flexpay.common.dao.ProcessDao;
+import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.process.exception.ProcessDefinitionException;
 import org.flexpay.common.process.exception.ProcessInstanceException;
@@ -10,7 +11,6 @@ import org.flexpay.common.process.job.JobManager;
 import org.flexpay.common.process.sorter.ProcessSorter;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.config.ApplicationConfig;
-import org.flexpay.common.dao.paging.Page;
 import org.jbpm.JbpmConfiguration;
 import org.jbpm.JbpmContext;
 import org.jbpm.context.exe.ContextInstance;
@@ -35,9 +35,6 @@ import java.util.*;
  */
 public class ProcessManagerImpl implements ProcessManager, Runnable {
 
-	/**
-	 * Loggger
-	 */
 	private static final Logger log = LoggerFactory.getLogger(ProcessManagerImpl.class);
 
 	/**
@@ -87,7 +84,6 @@ public class ProcessManagerImpl implements ProcessManager, Runnable {
 	}
 
 	public static ProcessManagerImpl getInstance() {
-
 		return instance;
 	}
 
@@ -137,6 +133,7 @@ public class ProcessManagerImpl implements ProcessManager, Runnable {
 	 * @return ID of process definition
 	 * @throws ProcessDefinitionException when can't deplot process definition to jbpm
 	 */
+	@Override
 	public long deployProcessDefinition(String name, boolean replace) throws ProcessDefinitionException {
 
 		log.debug("Requested definition deployment: {}", name);
@@ -168,6 +165,7 @@ public class ProcessManagerImpl implements ProcessManager, Runnable {
 	 * @return ID of process definition
 	 * @throws ProcessDefinitionException when can't deploy process definition to jbpm
 	 */
+	@Override
 	public long deployProcessDefinition(InputStream in, boolean replace) throws ProcessDefinitionException {
 		ProcessDefinition processDefinition = null;
 		try {
@@ -191,9 +189,11 @@ public class ProcessManagerImpl implements ProcessManager, Runnable {
 	 * @param replace		   replace replace if true old process definition should be removed with new one
 	 * @return ID of process definition
 	 */
+	@Override
 	public long deployProcessDefinition(final ProcessDefinition processDefinition, final boolean replace) {
 
 		return execute(new ContextCallback<Long>() {
+			@Override
 			public Long doInContext(@NotNull JbpmContext context) {
 
 				GraphSession graphSession = context.getGraphSession();
@@ -227,6 +227,7 @@ public class ProcessManagerImpl implements ProcessManager, Runnable {
 	 * main loop
 	 */
 	@SuppressWarnings ({"ConstantConditions"})
+	@Override
 	public void run() {
 		log.debug("Starting process manager...");
 		while (!isStopped()) {
@@ -236,6 +237,7 @@ public class ProcessManagerImpl implements ProcessManager, Runnable {
 
 				//find not runningTasks task instances and run
 				execute(new ContextCallback<Void>() {
+					@Override
 					public Void doInContext(@NotNull JbpmContext context) {
 						for (Object o : context.getTaskMgmtSession().findTaskInstances(JobManagerAssignmentHandler.JOB_MANAGER_ACTOR_NAME)) {
 							// are there any not runningTasks taskInstances?
@@ -295,8 +297,7 @@ public class ProcessManagerImpl implements ProcessManager, Runnable {
 	 * @throws ProcessDefinitionException when process definition has an error
 	 * @throws ProcessInstanceException   when jbpm can't instanciate process from process definition
 	 */
-	private Long initProcess(String definitionName)
-			throws ProcessDefinitionException, ProcessInstanceException {
+	private Long initProcess(String definitionName) throws ProcessDefinitionException, ProcessInstanceException {
 
 		ProcessDefinition processDefinition;
 		JbpmContext jbpmContext = jbpmConfiguration.createJbpmContext();
@@ -347,6 +348,7 @@ public class ProcessManagerImpl implements ProcessManager, Runnable {
 	 * @throws ProcessInstanceException   when can't instantiate process instance
 	 * @throws ProcessDefinitionException when process definition not found
 	 */
+	@Override
 	public long createProcess(String definitionName, Map<Serializable, Serializable> parameters)
 			throws ProcessInstanceException, ProcessDefinitionException {
 
@@ -361,6 +363,7 @@ public class ProcessManagerImpl implements ProcessManager, Runnable {
 		params.put(PARAM_SECURITY_CONTEXT, SecurityContextHolder.getContext().getAuthentication());
 
 		return execute(new ContextCallback<Long>() {
+			@Override
 			public Long doInContext(@NotNull JbpmContext context) {
 
 				//starting process
@@ -395,7 +398,7 @@ public class ProcessManagerImpl implements ProcessManager, Runnable {
 
 		if (runCounter > taskRepeatLimit) {
 			log.info("Exceded limit ({}) for task '{}' ({}, pid - {}). Process ended.",
-					new Object[]{taskRepeatLimit, task.getName(), task.getId(), processInstance.getId()});
+					new Object[] {taskRepeatLimit, task.getName(), task.getId(), processInstance.getId()});
 			completeTask(task);
 			return false;
 		}
@@ -404,7 +407,7 @@ public class ProcessManagerImpl implements ProcessManager, Runnable {
 		switch (vote) {
 			case CANCEL:
 				log.info("Task '{}' ({}, pid - {}). Cancelled by voters.",
-						new Object[]{task.getName(), task.getId(), processInstance.getId()});
+						new Object[] {task.getName(), task.getId(), processInstance.getId()});
 				completeTask(task);
 				return false;
 			case POSTPONE:
@@ -415,13 +418,13 @@ public class ProcessManagerImpl implements ProcessManager, Runnable {
 		}
 
 		log.info("Starting task '{}' ({}, pid - {})",
-				new Object[]{task.getName(), task.getId(), processInstance.getId()});
+				new Object[] {task.getName(), task.getId(), processInstance.getId()});
 
 		if (task.getStart() == null) {
 			task.start();
 		} else {
 			log.info("Task '{}' ({}, pid={}) restarted. Recovering from failure.",
-					new Object[]{task.getName(), task.getId(), processInstance.getId()});
+					new Object[] {task.getName(), task.getId(), processInstance.getId()});
 		}
 
 		try {
@@ -453,12 +456,8 @@ public class ProcessManagerImpl implements ProcessManager, Runnable {
 		ProcessInstance processInstance = task.getProcessInstance();
 		ContextInstance contextInstance = processInstance.getContextInstance();
 		Integer runCounter = (Integer) contextInstance.getVariable("StartTaskCounter", task.getToken());
+		runCounter = runCounter == null ? 1 : runCounter + 1;
 
-		if (runCounter == null) {
-			runCounter = 1;
-		} else {
-			runCounter = runCounter + 1;
-		}
 		contextInstance.setVariable("StartTaskCounter", runCounter, task.getToken());
 		return runCounter;
 	}
@@ -490,6 +489,7 @@ public class ProcessManagerImpl implements ProcessManager, Runnable {
 	 * @param parameters Task context parameters
 	 * @param transition transition name
 	 */
+	@Override
 	public void taskCompleted(final Long taskId, final Map<Serializable, Serializable> parameters, final String transition) {
 		// this method called by Job to report finish
 		log.debug("finished task #: {}", taskId);
@@ -499,6 +499,7 @@ public class ProcessManagerImpl implements ProcessManager, Runnable {
 		while (!proceed) {
 			try {
 				TaskInstance task = execute(new ContextCallback<TaskInstance>() {
+					@Override
 					public TaskInstance doInContext(@NotNull JbpmContext context) {
 						TaskMgmtSession taskMgmtSession = context.getTaskMgmtSession();
 						TaskInstance task = taskMgmtSession.loadTaskInstance(taskId);
@@ -566,6 +567,7 @@ public class ProcessManagerImpl implements ProcessManager, Runnable {
 	public void removeProcess(final Long processID) throws ProcessInstanceException {
 		try {
 			execute(new ContextCallback<Void>() {
+				@Override
 				public Void doInContext(@NotNull JbpmContext context) {
 					GraphSession graphSession = context.getGraphSession();
 					ProcessInstance processInstance = graphSession.loadProcessInstance(processID);
@@ -575,7 +577,7 @@ public class ProcessManagerImpl implements ProcessManager, Runnable {
 						graphSession.deleteProcessInstance(processID);
 						long processDefinitionID = processDefinition.getId();
 						if (processDefinitionID != latestProcessDefinition.getId()) {
-							List processInstances = graphSession.findProcessInstances(processDefinitionID);
+							List<?> processInstances = graphSession.findProcessInstances(processDefinitionID);
 							if (processInstances.size() == 0) {
 								graphSession.deleteProcessDefinition(processDefinitionID);
 							}
@@ -593,10 +595,11 @@ public class ProcessManagerImpl implements ProcessManager, Runnable {
 		}
 	}
 
+	@Override
 	public List<TaskInstance> getRunningTasks() {
 
 		return execute(new ContextCallback<List<TaskInstance>>() {
-
+			@Override
 			public List<TaskInstance> doInContext(@NotNull JbpmContext context) {
 				List<Long> taskIds = CollectionUtils.list(runningTaskIds);
 				if (taskIds.isEmpty()) {
@@ -616,34 +619,24 @@ public class ProcessManagerImpl implements ProcessManager, Runnable {
 		}, true);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
+	@Override
 	public List<Process> getProcesses() {
-
 		return getProcesses(null);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
+	@Override
 	public List<Process> getProcesses(Page<Process> pager) {
-
 		return getProcesses(null, pager, null, null, null, null);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
+	@Override
 	public List<Process> getProcesses(ProcessSorter processSorter, Page<Process> pager, Date startFrom, Date endBefore,
 									  ProcessState state, String name) {
 
 		return processDao.findProcesses(processSorter, pager, startFrom, endBefore, state, name);
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
+	@Override
 	public List<String> getAllProcessNames() {
 		return processDao.findAllProcessNames();
 	}
@@ -655,9 +648,11 @@ public class ProcessManagerImpl implements ProcessManager, Runnable {
 	 * @return Process info
 	 */
 	@Nullable
+	@Override
 	public Process getProcessInstanceInfo(@NotNull final Long processId) {
 
 		return execute(new ContextCallback<Process>() {
+			@Override
 			public Process doInContext(@NotNull JbpmContext context) {
 				ProcessInstance processInstance = context.getProcessInstance(processId);
 				if (processInstance == null){
@@ -708,6 +703,7 @@ public class ProcessManagerImpl implements ProcessManager, Runnable {
 	 * @param processId ProcessInstance id
 	 * @throws InterruptedException if waiting thread is interrupted
 	 */
+	@Override
 	public void join(long processId) throws InterruptedException {
 		while (true) {
 			// wait untill there is any 
@@ -732,10 +728,11 @@ public class ProcessManagerImpl implements ProcessManager, Runnable {
 	 *
 	 * @param process Process to delete
 	 */
+	@Override
 	public void deleteProcessInstance(final Process process) {
 
 		execute(new ContextCallback<Void>() {
-
+			@Override
 			public Void doInContext(@NotNull JbpmContext context) {
 				context.getGraphSession().deleteProcessInstance(process.getId());
 				return null;
@@ -748,6 +745,7 @@ public class ProcessManagerImpl implements ProcessManager, Runnable {
 	 *
 	 * @param processes Processes to delete
 	 */
+	@Override
 	public void deleteProcessInstances(List<Process> processes) {
 		Set<Long> processIds = CollectionUtils.set();
 		for (Process process : processes) {
@@ -762,10 +760,11 @@ public class ProcessManagerImpl implements ProcessManager, Runnable {
 	 *
 	 * @param processIds Process instances identifiers to delete
 	 */
+	@Override
 	public void deleteProcessInstances(final Set<Long> processIds) {
 
 		execute(new ContextCallback<Void>() {
-
+			@Override
 			public Void doInContext(@NotNull JbpmContext context) {
 				for (Long processId : processIds) {
 					context.getGraphSession().deleteProcessInstance(processId);
@@ -781,8 +780,10 @@ public class ProcessManagerImpl implements ProcessManager, Runnable {
 	 * @param processInstanceId ProcessInstance id
 	 * @return Process info
 	 */	
+	@Override
 	public ProcessInstance getProcessInstance(@NotNull final Long processInstanceId) {
 		return execute(new ContextCallback<ProcessInstance>(){
+			@Override
 			public ProcessInstance doInContext(@NotNull JbpmContext context) {
 				return context.getProcessInstance(processInstanceId);
 			}
@@ -796,6 +797,7 @@ public class ProcessManagerImpl implements ProcessManager, Runnable {
 	 * @param <T>      Return value type
 	 * @return instance of T
 	 */
+	@Override
 	public <T> T execute(@NotNull ContextCallback<T> callback) {
 		return execute(callback, false);
 	}
@@ -806,29 +808,32 @@ public class ProcessManagerImpl implements ProcessManager, Runnable {
 	 * @param callback		   ContextCallback to execute
 	 * @param useExistingContext Whether to use existing context or not
 	 * @param <T>                Return value type
+	 *
 	 * @return instance of T
 	 */
-	synchronized
+	@Override
 	public <T> T execute(@NotNull ContextCallback<T> callback, boolean useExistingContext) {
+		synchronized (this) {
 
-		JbpmContext context = null;
-		boolean needClose = true;
-		try {
-			context = useExistingContext ? jbpmConfiguration.getCurrentJbpmContext() : jbpmConfiguration.createJbpmContext();
-			if (useExistingContext) {
-				needClose = false;
-				if (context == null) {
-					log.warn("Required existing context, but not exists");
-					context = jbpmConfiguration.createJbpmContext();
-					needClose = true;
+			JbpmContext context = null;
+			boolean needClose = true;
+			try {
+				context = useExistingContext ? jbpmConfiguration.getCurrentJbpmContext() : jbpmConfiguration.createJbpmContext();
+				if (useExistingContext) {
+					needClose = false;
+					if (context == null) {
+						log.warn("Required existing context, but not exists");
+						context = jbpmConfiguration.createJbpmContext();
+						needClose = true;
+					}
 				}
-			}
-			return callback.doInContext(context);
-		} finally {
-			if (needClose) {
-				closeQuietly(context);
-			}
+				return callback.doInContext(context);
+			} finally {
+				if (needClose) {
+					closeQuietly(context);
+				}
 
+			}
 		}
 	}
 
@@ -841,6 +846,7 @@ public class ProcessManagerImpl implements ProcessManager, Runnable {
 		this.jbpmConfiguration = jbpmConfiguration;
 	}
 
+	@Override
 	public void setDefinitionPaths(List<String> definitionPaths) {
 		this.definitionPaths.clear();
 		this.definitionPaths.addAll(definitionPaths);
@@ -859,6 +865,7 @@ public class ProcessManagerImpl implements ProcessManager, Runnable {
 	 *
 	 * @param lyfecycleVoters Voters to set
 	 */
+	@Override
 	public void setLyfecycleVoters(List<LyfecycleVoter> lyfecycleVoters) {
 		this.lyfecycleVoters.addAll(lyfecycleVoters);
 	}
@@ -867,4 +874,5 @@ public class ProcessManagerImpl implements ProcessManager, Runnable {
 	public void setProcessDao(ProcessDao processDao) {
 		this.processDao = processDao;
 	}
+
 }
