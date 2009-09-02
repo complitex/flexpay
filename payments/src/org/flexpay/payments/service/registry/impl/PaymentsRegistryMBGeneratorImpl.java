@@ -176,7 +176,7 @@ public class PaymentsRegistryMBGeneratorImpl implements PaymentsRegistryMBGenera
 						}
 					}
 				} catch (Exception e) {
-					registry.setRegistryStatus(registryStatusService.findByCode(RegistryStatus.PROCESSING_WITH_ERROR));
+					registry.setRegistryStatus(registryStatusService.findByCode(RegistryStatus.PROCESSED_WITH_ERROR));
 					registryService.update(registry);
 					throw new FlexPayException(e);
 				}
