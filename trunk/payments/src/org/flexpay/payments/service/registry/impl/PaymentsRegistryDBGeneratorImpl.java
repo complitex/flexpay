@@ -2,18 +2,17 @@ package org.flexpay.payments.service.registry.impl;
 
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.DateRange;
+import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.persistence.registry.*;
 import org.flexpay.common.service.*;
 import org.flexpay.common.service.importexport.ClassToTypeRegistry;
 import org.flexpay.common.service.importexport.MasterIndexService;
 import org.flexpay.orgs.persistence.Organization;
+import org.flexpay.orgs.persistence.PaymentPoint;
 import org.flexpay.orgs.persistence.ServiceProvider;
 import org.flexpay.orgs.service.history.OrganizationHistoryGenerator;
-import org.flexpay.payments.persistence.Document;
-import org.flexpay.payments.persistence.DocumentAddition;
-import org.flexpay.payments.persistence.DocumentAdditionType;
-import org.flexpay.payments.persistence.EircRegistryProperties;
+import org.flexpay.payments.persistence.*;
 import org.flexpay.payments.service.DocumentAdditionTypeService;
 import org.flexpay.payments.service.DocumentService;
 import org.flexpay.payments.service.registry.PaymentsRegistryDBGenerator;
@@ -25,6 +24,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -76,7 +76,7 @@ public class PaymentsRegistryDBGeneratorImpl implements PaymentsRegistryDBGenera
 		log.info("{} documents found", documents.size());
 
 		Registry registry = new Registry();
-		fillRegistryData(serviceProvider, registerOrganization, range, registry);
+		fillRegistryData(serviceProvider, registerOrganization, range, documents, registry);
 		registryService.create(registry);
 
 		BigDecimal totalSumm = new BigDecimal(0);
@@ -113,8 +113,8 @@ public class PaymentsRegistryDBGeneratorImpl implements PaymentsRegistryDBGenera
 		registry.setErrorsNumber(errorsNumber.intValue());
 	}
 
-	private void fillRegistryData(ServiceProvider serviceProvider, Organization registerOrganization,
-								  DateRange range, Registry registry) {
+	private void fillRegistryData(@NotNull ServiceProvider serviceProvider, @NotNull Organization registerOrganization,
+								  @NotNull DateRange range, @NotNull List<Document> paymentDocuments, @NotNull Registry registry) {
 
 		registry.setRecipientCode(serviceProvider.getOrganization().getId());
 		registry.setSenderCode(registerOrganization.getId());
@@ -152,6 +152,34 @@ public class PaymentsRegistryDBGeneratorImpl implements PaymentsRegistryDBGenera
 				":" + masterIndexService.getMasterIndex(serviceProvider.getOrganization()) +
 				":1"
 		));
+
+        // add identifiers sync containers of using payment points
+        List<PaymentPoint> paymentPoints = getUsingPaymentPoints(paymentDocuments);
+        log.debug("Payment points is using {} time", paymentPoints.size());
+        for (PaymentPoint paymentPoint : paymentPoints) {
+            registry.addContainer(new RegistryContainer(
+                    "502" +
+                    ":" + typeRegistry.getType(PaymentPoint.class) +
+                    ":" + paymentPoint.getId() +
+                    ":" +
+                    ":" + masterIndexService.getMasterIndex(paymentPoint) +
+                    ":1"
+		    ));
+        }
+
+        // add identifiers sync containers of using services
+        List<Service> services = getUsingServices(paymentDocuments);
+        log.debug("Services is using {} time", services.size());
+        for (Service service : services) {
+            registry.addContainer(new RegistryContainer(
+                    "502" +
+                    ":" + typeRegistry.getType(Service.class) +
+                    ":" + service.getId() +
+                    ":" +
+                    ":" + masterIndexService.getMasterIndex(service) +
+                    ":1"
+		    ));
+        }
 	}
 
 	private RegistryRecord buildRecord(Registry registry, Document document) throws FlexPayException {
@@ -240,6 +268,38 @@ public class PaymentsRegistryDBGeneratorImpl implements PaymentsRegistryDBGenera
 		return documentService.listRegisteredPaymentDocuments(
 				stub(serviceProvider), stub(registeredOrganization), range);
 	}
+
+    @NotNull
+    private List<PaymentPoint> getUsingPaymentPoints(List<Document> documents) {
+        // Result list
+        List<PaymentPoint> paymentPoints = new ArrayList<PaymentPoint>();
+        // Using for compare
+        List<Stub<PaymentPoint>> paymentPointsStubs = new ArrayList<Stub<PaymentPoint>>();
+
+        for (Document document : documents) {
+            PaymentPoint paymentPoint = document.getOperation().getPaymentPoint();
+            if (paymentPoint != null) {
+                Stub<PaymentPoint> paymentPointStub = Stub.stub(paymentPoint);
+                if (!paymentPointsStubs.contains(paymentPointStub)) {
+                    paymentPointsStubs.add(paymentPointStub);
+                    paymentPoints.add(paymentPoint);
+                }
+            }
+        }
+        return paymentPoints;
+    }
+
+    @NotNull
+    private List<Service> getUsingServices(List<Document> documents) {
+        List<Service> services = new ArrayList<Service>();
+        for (Document document : documents) {
+            Service service = document.getService();
+            if (service != null && !services.contains(service)) {
+                services.add(service);
+            }
+        }
+        return services;
+    }
 
 	@Required
 	public void setRegistryService(RegistryService registryService) {
