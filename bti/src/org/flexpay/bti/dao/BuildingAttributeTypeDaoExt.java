@@ -2,9 +2,13 @@ package org.flexpay.bti.dao;
 
 import org.flexpay.bti.persistence.building.BuildingAttributeType;
 
+import java.util.List;
+
 public interface BuildingAttributeTypeDaoExt {
 
 	BuildingAttributeType readFull(Long id);
+
+	List<BuildingAttributeType> readFullAll();
 
 	/**
 	 * Check if there is only

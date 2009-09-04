@@ -7,9 +7,8 @@ import org.flexpay.common.persistence.Stub;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
-import java.util.Set;
 import java.util.Collection;
+import java.util.List;
 
 public interface BuildingAttributeTypeService {
 
@@ -21,6 +20,13 @@ public interface BuildingAttributeTypeService {
 	 */
 	@Nullable
 	BuildingAttributeType readFull(@NotNull Stub<BuildingAttributeType> stub);
+
+	/**
+	 * Read full all types info with enum values
+	 *
+	 * @return list of types
+	 */
+	List<BuildingAttributeType> readFullAll();
 
 	/**
 	 * Create a new attribute type

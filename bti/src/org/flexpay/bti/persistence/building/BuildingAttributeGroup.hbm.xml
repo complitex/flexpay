@@ -62,27 +62,36 @@
 	</class>
 
 	<query name="BuildingAttributeGroup.readFull">
-		from BuildingAttributeGroup t
-			left join fetch t.translations
-		where t.status=0 and t.id=?
+        select distinct g
+		from BuildingAttributeGroup g
+			left join fetch g.translations
+		where g.status=0 and g.id=?
 	</query>
 
+    <query name="BuildingAttributeGroup.readFullCollection">
+        select distinct g
+        from BuildingAttributeGroup g
+            left join fetch g.translations
+        WHERE g.id in (:ids) and g.status=0
+    </query>
+
 	<query name="BuildingAttributeGroup.findAllGroups">
-		select distinct t
-		from BuildingAttributeGroup t
-			left join fetch t.translations
-		where t.status=0
+		select distinct g
+		from BuildingAttributeGroup g
+			left join fetch g.translations
+		where g.status=0
 	</query>
 
 	<query name="BuildingAttributeGroup.findGroups.count">
-		select count(t)
-		from BuildingAttributeGroup t
-		where t.status=0
+		select count(*)
+		from BuildingAttributeGroup g
+		where g.status=0
 	</query>
 
 	<query name="BuildingAttributeGroup.findGroups">
-		from BuildingAttributeGroup t
-		where t.status=0
+        select distinct g
+		from BuildingAttributeGroup g
+		where g.status=0
 	</query>
 
 </hibernate-mapping>

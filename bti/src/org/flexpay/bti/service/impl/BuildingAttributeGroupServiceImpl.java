@@ -25,6 +25,7 @@ import java.util.List;
 public class BuildingAttributeGroupServiceImpl implements BuildingAttributeGroupService {
 
 	private Logger log = LoggerFactory.getLogger(getClass());
+
 	private BuildingAttributeGroupDao groupDao;
 	private SessionUtils sessionUtils;
 	private ModificationListener<BuildingAttributeGroup> modificationListener;
@@ -35,9 +36,15 @@ public class BuildingAttributeGroupServiceImpl implements BuildingAttributeGroup
 	 * @param stub group stub
 	 * @return group if found, or <code>null</code> if not found
 	 */
+	@Override
 	public BuildingAttributeGroup readFull(@NotNull Stub<BuildingAttributeGroup> stub) {
 		log.debug("Reading group {}", stub);
 		return groupDao.readFull(stub.getId());
+	}
+
+	@Override
+	public List<BuildingAttributeGroup> readFullGroups(@NotNull Collection<Long> ids) {
+		return groupDao.readFullCollection(ids, false);
 	}
 
 	/**
@@ -46,6 +53,7 @@ public class BuildingAttributeGroupServiceImpl implements BuildingAttributeGroup
 	 * @param pager Group pager
 	 * @return List of all available
 	 */
+	@Override
 	public List<BuildingAttributeGroup> listGroups(Page<BuildingAttributeGroup> pager) {
 		return groupDao.findGroups(pager);
 	}
@@ -55,6 +63,7 @@ public class BuildingAttributeGroupServiceImpl implements BuildingAttributeGroup
 	 *
 	 * @return List of all available
 	 */
+	@Override
 	public List<BuildingAttributeGroup> listGroups() {
 		return groupDao.findAllGroups();
 	}
@@ -66,6 +75,7 @@ public class BuildingAttributeGroupServiceImpl implements BuildingAttributeGroup
 	 * @return filter back
 	 */
 	@NotNull
+	@Override
 	public BuildingAttributeGroupFilter initFilter(@NotNull BuildingAttributeGroupFilter filter) {
 		filter.setGroups(listGroups());
 		return filter;
@@ -100,9 +110,9 @@ public class BuildingAttributeGroupServiceImpl implements BuildingAttributeGroup
 	 *          if validation fails
 	 */
 	@NotNull
-	@Override
 	@SuppressWarnings ({"ThrowableInstanceNeverThrown"})
 	@Transactional (readOnly = false)
+	@Override
 	public BuildingAttributeGroup update(@NotNull BuildingAttributeGroup group) throws FlexPayExceptionContainer {
 
 		validate(group);
@@ -152,8 +162,8 @@ public class BuildingAttributeGroupServiceImpl implements BuildingAttributeGroup
 	 * @throws org.flexpay.common.exception.FlexPayExceptionContainer
 	 *          if validation fails
 	 */
-	@Override
 	@Transactional (readOnly = false)
+	@Override
 	public void disable(@NotNull Collection<Long> ids) throws FlexPayExceptionContainer {
 		for (Long id : ids) {
 			if (id == null || id <= 0) {
@@ -184,4 +194,5 @@ public class BuildingAttributeGroupServiceImpl implements BuildingAttributeGroup
 	public void setModificationListener(ModificationListener<BuildingAttributeGroup> modificationListener) {
 		this.modificationListener = modificationListener;
 	}
+
 }

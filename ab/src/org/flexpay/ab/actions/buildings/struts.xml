@@ -41,7 +41,7 @@
 		</action>
 
 		<action name="buildingDelete" class="buildingDeleteAction">
-            <result>/WEB-INF/jsp/ab/simple_response.jsp</result>
+            <result>/WEB-INF/jsp/common/responses/simple_response.jsp</result>
 			<result name="redirectInput" type="redirect-action">
 				<param name="actionName">buildingView</param>
 				<param name="parse">true</param>

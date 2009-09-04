@@ -4,8 +4,8 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 
 import java.io.Serializable;
-import java.util.Map;
 import java.util.HashMap;
+import java.util.Map;
 
 public class Crumb implements Serializable {
 
@@ -13,7 +13,7 @@ public class Crumb implements Serializable {
 	private String nameSpace;
 	// this is the "*" portion of the mapping myAction_*
 	private String wildPortionOfName;
-	private Map requestParams;
+	private Map<Object, Object> requestParams;
 
 	public Crumb() {
 	}
@@ -52,12 +52,12 @@ public class Crumb implements Serializable {
 		this.action = action;
 	}
 
-	public Map getRequestParams() {
+	public Map<?, ?> getRequestParams() {
 		return requestParams;
 	}
 
-	public void setRequestParams(Map requestParams) {
-		this.requestParams = new HashMap(requestParams);
+	public void setRequestParams(Map<?, ?> requestParams) {
+		this.requestParams = new HashMap<Object, Object>(requestParams);
 	}
 
 	public String getUrl() {

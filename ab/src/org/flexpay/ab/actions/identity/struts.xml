@@ -30,7 +30,7 @@
         </action>
 
 		<action name="identityTypeDelete" class="identityTypeDeleteAction">
-            <result>/WEB-INF/jsp/ab/simple_response.jsp</result>
+            <result>/WEB-INF/jsp/common/responses/simple_response.jsp</result>
 		</action>
 
 	</package>

@@ -131,6 +131,8 @@
 		select distinct t
 		from BuildingAttributeType t
 			left join fetch t.translations
+            left join fetch t.group g
+            left join fetch g.translations
 	</query>
 
 	<query name="BuildingAttributeType.findTypesByName">

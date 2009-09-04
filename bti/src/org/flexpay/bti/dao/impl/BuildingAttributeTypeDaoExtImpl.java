@@ -20,14 +20,33 @@ public class BuildingAttributeTypeDaoExtImpl extends HibernateDaoSupport impleme
 	public BuildingAttributeType readFull(Long id) {
 		BuildingAttributeType type = attributeTypeDao.readFull(id);
 
-		// fetch necessary values for enum
+		readValuesForEnum(type);
+
+		return type;
+	}
+
+	@Override
+	public List<BuildingAttributeType> readFullAll() {
+		List<BuildingAttributeType> types = attributeTypeDao.findAllTypes();
+
+		for (BuildingAttributeType type : types) {
+			readValuesForEnum(type);
+		}
+
+		return types;
+	}
+
+	/**
+	 * Fetch necessary values for enum
+	 *
+	 * @param type type
+	 */
+	private void readValuesForEnum(BuildingAttributeType type ) {
 		if (type instanceof BuildingAttributeTypeEnum) {
 			List<BuildingAttributeTypeEnumValue> values = attributeTypeEnumDao.findValues(type.getId());
 			BuildingAttributeTypeEnum enumType = (BuildingAttributeTypeEnum) type;
 			enumType.getValues().addAll(values);
 		}
-
-		return type;
 	}
 
 	/**

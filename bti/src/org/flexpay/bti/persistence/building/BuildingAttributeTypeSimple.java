@@ -9,9 +9,6 @@ import org.jetbrains.annotations.NotNull;
  */
 public class BuildingAttributeTypeSimple extends BuildingAttributeType {
 
-	/**
-	 * Constructs a new DomainObject.
-	 */
 	public BuildingAttributeTypeSimple() {
 	}
 
@@ -30,6 +27,7 @@ public class BuildingAttributeTypeSimple extends BuildingAttributeType {
 	 * @throws org.flexpay.common.exception.FlexPayException
 	 *          if validation fails
 	 */
+	@Override
 	public void validate(String value) throws FlexPayException {
 		// do nothing, every value is OK
 	}
@@ -39,7 +37,9 @@ public class BuildingAttributeTypeSimple extends BuildingAttributeType {
 	 *
 	 * @return type name code
 	 */
+	@Override
 	public String getI18nTitle() {
 		return "bti.building.attribute.type.simple";
 	}
+
 }
