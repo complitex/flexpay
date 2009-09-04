@@ -62,7 +62,7 @@ public interface DocumentService {
 	 * @return list of operation documents which suits search criterias
 	 */
 	@Secured (Roles.DOCUMENT_READ)
-	List<Document> searchDocuments(@NotNull Operation operation, Long serviceTypeId, BigDecimal minimalSumm, BigDecimal maximalSumm);
+	List<Document> searchDocuments(@NotNull Stub<Operation> operation, Long serviceTypeId, BigDecimal minimalSumm, BigDecimal maximalSumm);
 
 	/**
 	 * Returns list of documents with state REGISTERED and type CASH_PAYMENT which were created in time period

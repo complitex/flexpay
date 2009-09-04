@@ -49,6 +49,7 @@ public class PaymentsSpringBeanAwareTestCase extends SpringBeanAwareTestCase {
 				PAYMENT_POINT_READ,
 				OPERATION_READ,
 				DOCUMENT_READ,
+				DOCUMENT_DELETE,
 				DOCUMENT_TYPE_READ,
 				DOCUMENT_TYPE_DELETE,
 				ORGANIZATION_ADD,

@@ -2,6 +2,7 @@ package org.flexpay.payments.dao;
 
 import org.flexpay.payments.persistence.Document;
 import org.flexpay.payments.persistence.Operation;
+import org.flexpay.common.persistence.Stub;
 import org.jetbrains.annotations.NotNull;
 
 import java.math.BigDecimal;
@@ -18,6 +19,6 @@ public interface DocumentDaoExt {
 	 * @param maximalSumm   maximal document summ
 	 * @return list of operation documents which suits search criterias
 	 */
-	List<Document> searchDocuments(@NotNull Operation operation, Long serviceTypeId, BigDecimal minimalSumm, BigDecimal maximalSumm);
+	List<Document> searchDocuments(@NotNull Stub<Operation> operation, Long serviceTypeId, BigDecimal minimalSumm, BigDecimal maximalSumm);
 
 }

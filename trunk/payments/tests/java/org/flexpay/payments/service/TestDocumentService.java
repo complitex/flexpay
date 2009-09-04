@@ -1,9 +1,12 @@
 package org.flexpay.payments.service;
 
 import org.flexpay.common.persistence.DateRange;
+import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.util.DateUtil;
 import org.flexpay.orgs.persistence.TestData;
 import org.flexpay.payments.persistence.Document;
+import org.flexpay.payments.persistence.Service;
+import org.flexpay.payments.persistence.OperationStatus;
 import org.flexpay.payments.test.PaymentsSpringBeanAwareTestCase;
 import static org.junit.Assert.assertFalse;
 import org.junit.Test;
@@ -11,11 +14,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.text.ParseException;
 import java.util.List;
+import java.math.BigDecimal;
+import static org.junit.Assert.*;
 
 public class TestDocumentService extends PaymentsSpringBeanAwareTestCase {
 
 	@Autowired
 	private DocumentService documentService;
+
+	@Autowired
+	private SPService spService;
 
 	@Test (expected = Exception.class)
 	public void testCreateDocument() {
@@ -23,11 +31,124 @@ public class TestDocumentService extends PaymentsSpringBeanAwareTestCase {
 	}
 
 	@Test
-	public void testListRegisteredDocuments() throws ParseException {
+	public void testSearchDocuments() {
 
-		List<Document> docs = documentService.listRegisteredPaymentDocuments(
-				TestData.SRV_PROVIDER_CN, TestData.ORG_TSZH,
-				new DateRange(DateUtil.parseDate("1900-01-01"), DateUtil.parseDate("2100-12-31")));
-		assertFalse("", docs.isEmpty());
+		List<Document> result = null;
+		result = documentService.searchDocuments(org.flexpay.payments.persistence.TestData.OPERATION, 99L, new BigDecimal("10.00"), new BigDecimal("20.00") );
+		assertNotNull("Result should not be null", result);
+		assertTrue("Result must be be empty on test data", result.size() == 0);
+
+		BigDecimal criteriaSumm = new BigDecimal("1235.00");
+		Long criteriaOperationId = 1L;
+		Long criteriaServiceTypeId = 1L;
+		result = documentService.searchDocuments(org.flexpay.payments.persistence.TestData.OPERATION, 1L, criteriaSumm, criteriaSumm);
+		assertNotNull("Result should not be null", result);
+		assertTrue("Result must not be empty on test data", result.size() != 0);
+
+		for (Document doc : result) {
+			Service serv = spService.readFull(doc.getServiceStub());
+			if (!doc.getOperation().getId().equals(criteriaOperationId) ||
+				!serv.getServiceType().getId().equals(criteriaServiceTypeId) ||
+				doc.getSumm().compareTo(criteriaSumm) != 0) {
+				fail("Result contains documents which does not correspond criterias");
+			}
+		}
 	}
+
+	@Test
+	public void testListRegisteredPaymentDocuments() throws ParseException {
+
+		List<Document> result = null;
+		result = documentService.listRegisteredPaymentDocuments(DateUtil.parseDate("2009-04-15"), DateUtil.parseDate("2009-04-16"));
+		assertNotNull("Result should not be null", result);
+		assertTrue("Result must be be empty on test data", result.size() == 0);
+
+		result = documentService.listRegisteredPaymentDocuments(DateUtil.parseDate("2009-04-10"), DateUtil.parseDate("2009-04-20"));
+		assertNotNull("Result should not be null", result);
+		assertTrue("Result must not be empty on test data", result.size() != 0);
+
+		result = documentService.listRegisteredPaymentDocuments( TestData.SRV_PROVIDER_CN, TestData.ORG_TSZH,
+									new DateRange(DateUtil.parseDate("1900-01-01"), DateUtil.parseDate("2100-12-31")));
+		assertNotNull("Result should not be null", result);
+		assertTrue("Result must not be empty on test data", result.size() != 0);
+	}
+
+
+	@Test
+	public void testGetCashboxServiceSumm() throws ParseException {
+
+		BigDecimal zeroSumm = documentService.getCashboxServiceSumm(TestData.CASHBOX_1, OperationStatus.REGISTERED, 1,
+												DateUtil.parseDate("2009-04-10"), DateUtil.parseDate("2009-04-20"));
+		assertNotNull("Summ must not be null", zeroSumm);
+		assertTrue("Summ must be zero", zeroSumm.compareTo(BigDecimal.ZERO) == 0);
+
+		BigDecimal actualSumm = documentService.getCashboxServiceSumm(TestData.CASHBOX_1, OperationStatus.CREATED, 1,
+											DateUtil.parseDate("2009-04-10"), DateUtil.parseDate("2009-04-20"));
+		assertNotNull("Summ must not be null", actualSumm);
+		assertTrue("Summ is bad", actualSumm.compareTo(new BigDecimal("1235.00")) == 0);
+	}
+
+	@Test
+	public void testGetCashboxTotalSumm() throws ParseException {
+
+		BigDecimal zeroSumm = documentService.getCashboxTotalSumm(TestData.CASHBOX_2, OperationStatus.RETURNED,
+											DateUtil.parseDate("2009-04-10"), DateUtil.parseDate("2009-04-20"));
+		assertNotNull("Summ must not be null", zeroSumm);
+		assertTrue("Summ must be zero", zeroSumm.compareTo(BigDecimal.ZERO) == 0);
+
+		BigDecimal actualSumm = documentService.getCashboxTotalSumm(TestData.CASHBOX_1, OperationStatus.REGISTERED,
+											DateUtil.parseDate("2009-04-10"), DateUtil.parseDate("2009-04-20"));
+		assertNotNull("Summ must not be null", actualSumm);
+		assertTrue("Summ is bad", actualSumm.compareTo(new BigDecimal("333.00")) == 0);
+	}
+
+	@Test
+	public void testGetPaymentPointServiceSumm() throws ParseException {
+
+		BigDecimal zeroSumm = documentService.getPaymentPointServiceSumm(TestData.PAYMENT_POINT_1, OperationStatus.REGISTERED, 2,
+											DateUtil.parseDate("2009-04-10"), DateUtil.parseDate("2009-04-20"));
+		assertNotNull("Summ must not be null", zeroSumm);
+		assertTrue("Summ must be zero", zeroSumm.compareTo(BigDecimal.ZERO) == 0);
+
+		BigDecimal actualSumm = documentService.getPaymentPointServiceSumm(TestData.PAYMENT_POINT_1, OperationStatus.CREATED, 1,
+											DateUtil.parseDate("2009-04-10"), DateUtil.parseDate("2009-04-20"));
+		assertNotNull("Summ must not be null", actualSumm);
+		assertTrue("Summ is bad", actualSumm.compareTo(new BigDecimal("1235.00")) == 0);
+	}
+
+	@Test
+	public void testGetPaymentPointTotalSumm()  throws ParseException {
+
+		BigDecimal zeroSumm = documentService.getPaymentPointServiceSumm(TestData.PAYMENT_POINT_2, OperationStatus.REGISTERED, 2,
+											DateUtil.parseDate("2009-04-10"), DateUtil.parseDate("2009-04-20"));
+		assertNotNull("Summ must not be null", zeroSumm);
+		assertTrue("Summ must be zero", zeroSumm.compareTo(BigDecimal.ZERO) == 0);
+
+		BigDecimal actualSumm1 = documentService.getPaymentPointTotalSumm(TestData.PAYMENT_POINT_1, OperationStatus.REGISTERED, DateUtil.parseDate("2009-04-10"), DateUtil.parseDate("2009-04-20"));
+		assertNotNull("Summ must not be null", actualSumm1);
+		assertTrue("Summ is bad", actualSumm1.compareTo(new BigDecimal("220.00")) == 0);
+
+		BigDecimal actualSumm2 = documentService.getPaymentPointTotalSumm(TestData.PAYMENT_POINT_1, OperationStatus.CREATED, DateUtil.parseDate("2009-04-10"), DateUtil.parseDate("2009-04-20"));
+		assertNotNull("Summ must not be null", actualSumm2);
+		assertTrue("Summ is bad", actualSumm2.compareTo(new BigDecimal("1395.00")) == 0);
+	}
+
+	@Test
+	public void testGetOperationServiceSumm() {
+
+		BigDecimal zeroSumm = documentService.getOperationServiceSumm(org.flexpay.payments.persistence.TestData.OPERATION, 9);
+		assertNotNull("Summ must not be null", zeroSumm);
+		assertTrue("Summ must be zero", zeroSumm.compareTo(BigDecimal.ZERO) == 0);
+
+		BigDecimal actualSumm = documentService.getOperationServiceSumm(org.flexpay.payments.persistence.TestData.OPERATION, 1);
+		assertNotNull("Summ must not be null", actualSumm);
+		assertTrue("Summ is bad", actualSumm.compareTo(new BigDecimal("1235.00")) == 0);
+	}
+
+	@Test
+	public void testDelete() {
+		// attempt to delete document with non existent id must be ok
+		documentService.delete(new Stub<Document>(9999L));
+	}
+
 }
