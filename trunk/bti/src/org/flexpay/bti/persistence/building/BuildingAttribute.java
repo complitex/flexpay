@@ -38,13 +38,6 @@ public class BuildingAttribute extends TemporalValueObject implements Comparable
 		return getBegin().compareTo(o.getBegin());
 	}
 
-	@Override
-	protected ToStringBuilder buildToString(ToStringBuilder builder) {
-		return super.buildToString(builder)
-				.append("type-id", attributeType == null ? null : attributeType.getId())
-				.append("building-id", building == null ? null : building.getId());
-	}
-
 	public BuildingAttribute copy() {
 
 		BuildingAttribute attribute = new BuildingAttribute();
@@ -71,4 +64,13 @@ public class BuildingAttribute extends TemporalValueObject implements Comparable
 
 		return attribute;
 	}
+
+	@Override
+	protected ToStringBuilder buildToString(ToStringBuilder builder) {
+		return super.buildToString(builder)
+				.append("isTemporal", isTemporal)
+				.append("type.id", attributeType == null ? null : attributeType.getId())
+				.append("building.id", building == null ? null : building.getId());
+	}
+
 }

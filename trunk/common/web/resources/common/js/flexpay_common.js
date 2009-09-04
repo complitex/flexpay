@@ -108,7 +108,7 @@ var FP = {
 		return e.keyCode != 13;
 	},
 
-    pagerSubmitForm : function (element) {
+    pagerSubmitForm : function(element) {
         if (element.name != "pager.pageSize") {
             $("#pageNumber").val(element.value);
             element.form.submit();
@@ -124,11 +124,11 @@ var FP = {
         element.form.submit();
     },
 
-    createShadow : function(id) {
+    createShadow : function(id){
         $("body").append('<div id="' + id + '" class="shadow"><img src="' + this.base + '/resources/common/img/indicator_big.gif" width="32" height="32" />' + this.messages.loading + '</div>');
     },
 
-    resizeShadow : function (shadowId, elementId, params) {
+    resizeShadow : function(shadowId, elementId, params) {
         var s = $("#" + shadowId);
         if (s.length == 0) {
             FP.createShadow(shadowId);
@@ -145,11 +145,11 @@ var FP = {
         s.css(params);
     },
 
-    showShadowText : function (shadowId, elementId) {
+    showShadowText : function(shadowId, elementId) {
         FP.resizeShadow(shadowId, elementId, {visibility: "visible", "background-color":""});
     },
 
-    showShadow : function (shadowId, elementId) {
+    showShadow : function(shadowId, elementId) {
         FP.resizeShadow(shadowId, elementId, {visibility:"visible"});
     },
 
@@ -157,7 +157,7 @@ var FP = {
         FP.resizeShadow(shadowId, null, {visibility:"hidden"});
     },
 
-    pagerAjax : function(element, opt) {
+    pagerAjax : function (element, opt) {
         opt = opt || {};
 
         opt = $.extend({

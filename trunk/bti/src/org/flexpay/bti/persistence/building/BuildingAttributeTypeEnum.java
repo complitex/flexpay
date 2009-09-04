@@ -15,9 +15,6 @@ public class BuildingAttributeTypeEnum extends BuildingAttributeType {
 
 	private Set<BuildingAttributeTypeEnumValue> values = Collections.emptySet();
 
-	/**
-	 * Constructs a new DomainObject.
-	 */
 	public BuildingAttributeTypeEnum() {
 	}
 
@@ -58,6 +55,7 @@ public class BuildingAttributeTypeEnum extends BuildingAttributeType {
 	 * @throws org.flexpay.common.exception.FlexPayException
 	 *          if validation fails
 	 */
+	@Override
 	public void validate(String value) throws FlexPayException {
 
 		if (StringUtils.isBlank(value)) {
@@ -78,6 +76,7 @@ public class BuildingAttributeTypeEnum extends BuildingAttributeType {
 	 *
 	 * @return type name code
 	 */
+	@Override
 	public String getI18nTitle() {
 		return "bti.building.attribute.type.enum";
 	}
@@ -130,4 +129,5 @@ public class BuildingAttributeTypeEnum extends BuildingAttributeType {
 
 		return result;
 	}
+
 }

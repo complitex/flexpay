@@ -13,7 +13,6 @@ import java.util.Collection;
 
 public interface BuildingAttributeGroupService {
 
-
 	/**
 	 * Read full group info
 	 *
@@ -22,6 +21,14 @@ public interface BuildingAttributeGroupService {
 	 */
 	@Nullable
 	BuildingAttributeGroup readFull(@NotNull Stub<BuildingAttributeGroup> stub);
+
+	/**
+	 * Read full group info with ids in collection of ids
+	 *
+	 * @param ids collection group ids wich want to find
+	 * @return list of groups
+	 */
+	List<BuildingAttributeGroup> readFullGroups(@NotNull Collection<Long> ids);
 
 	/**
 	 * List groups

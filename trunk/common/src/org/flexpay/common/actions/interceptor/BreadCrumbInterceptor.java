@@ -19,6 +19,7 @@ public class BreadCrumbInterceptor extends AbstractInterceptor {
 
 	private String WILDCARD_SEPARATOR = "!";
 
+	@Override
 	public String intercept(ActionInvocation actionInvocation) throws Exception {
 
 		log.debug("Bread crumbs interceptor");
@@ -37,9 +38,9 @@ public class BreadCrumbInterceptor extends AbstractInterceptor {
 
 			return actionInvocation.invoke();
 
-		} catch (Exception ex) {
-			log.error("Failure", ex);
-			throw ex;
+		} catch (Exception e) {
+			log.error("Failure", e);
+			throw e;
 		} catch (Throwable t) {
 			log.error("Failure", t);
 			throw new RuntimeException(t);

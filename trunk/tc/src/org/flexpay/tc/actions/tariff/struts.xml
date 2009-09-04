@@ -15,7 +15,7 @@
         </action>
 
         <action name="rulesFileDelete" class="tariffCalcRulesFileDeleteAction">
-            <result>/WEB-INF/jsp/ab/simple_response.jsp</result>
+            <result>/WEB-INF/jsp/common/responses/simple_response.jsp</result>
         </action>
 
 		<action name="rulesFileEdit" class="tariffCalcRulesFileEditAction">

@@ -46,6 +46,16 @@ public class BuildingAttributeTypeServiceImpl implements BuildingAttributeTypeSe
 	}
 
 	/**
+	 * Read full all types info with enum values
+	 *
+	 * @return list of types
+	 */
+	@Override
+	public List<BuildingAttributeType> readFullAll() {
+		return attributeTypeDaoExt.readFullAll();
+	}
+
+	/**
 	 * Disable attribute types
 	 *
 	 * @param ids Attribute type identifiers
