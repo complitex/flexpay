@@ -3,6 +3,7 @@ package org.flexpay.payments.dao.impl;
 import org.flexpay.payments.dao.DocumentDaoExt;
 import org.flexpay.payments.persistence.Document;
 import org.flexpay.payments.persistence.Operation;
+import org.flexpay.common.persistence.Stub;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -20,7 +21,7 @@ public class DocumentDaoExtImpl extends HibernateDaoSupport implements DocumentD
 	 * {@inheritDoc}
 	 */
 	@SuppressWarnings ({"unchecked"})
-	public List<Document> searchDocuments(@NotNull Operation operation, Long serviceTypeId, BigDecimal minimalSumm, BigDecimal maximalSumm) {
+	public List<Document> searchDocuments(@NotNull Stub<Operation> operation, Long serviceTypeId, BigDecimal minimalSumm, BigDecimal maximalSumm) {
 
 		final StringBuilder hql = new StringBuilder("SELECT DISTINCT doc FROM Document doc ");
 		hql.append(getFilterHql(operation, serviceTypeId, minimalSumm, maximalSumm));
@@ -34,7 +35,7 @@ public class DocumentDaoExtImpl extends HibernateDaoSupport implements DocumentD
 		});
 	}
 
-	private StringBuilder getFilterHql(@NotNull Operation operation, Long serviceTypeId, BigDecimal minimalSumm, BigDecimal maximalSumm) {
+	private StringBuilder getFilterHql(@NotNull Stub<Operation> operation, Long serviceTypeId, BigDecimal minimalSumm, BigDecimal maximalSumm) {
 
 		StringBuilder filterHql = new StringBuilder(" WHERE doc.operation.id = ");
 		filterHql.append(operation.getId());

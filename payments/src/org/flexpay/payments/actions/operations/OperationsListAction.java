@@ -208,7 +208,7 @@ public class OperationsListAction extends CashboxCookieWithPagerActionSupport<Op
 
 		List<Long> result = CollectionUtils.list();
 		for (Operation operation : operations) {
-			List<Document> docs = documentService.searchDocuments(operation, serviceTypeId, minimalSumm, maximalSumm);
+			List<Document> docs = documentService.searchDocuments(new Stub<Operation>(operation.getId()), serviceTypeId, minimalSumm, maximalSumm);
 			for (Document doc : docs) {
 				result.add(doc.getId());
 			}
