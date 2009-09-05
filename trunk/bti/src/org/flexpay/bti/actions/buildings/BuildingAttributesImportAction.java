@@ -30,11 +30,11 @@ public class BuildingAttributesImportAction extends FPFileActionSupport {
 	@Override
 	protected String doExecute() throws Exception {
 
-		if (!isSubmit()) {
+		if (isNotSubmit()) {
 			return SUCCESS;
 		}
 
-		if (fpFile.isNew()) {
+		if (getUpload() == null || fpFile.isNew()) {
 			addActionError(getText("bti.error.building.attribute.import.no_file"));
 			return SUCCESS;
 		}
@@ -48,7 +48,7 @@ public class BuildingAttributesImportAction extends FPFileActionSupport {
 		params.put(BuildingAttributesImportJob.PARAM_IMPORT_DATE, beginDateFilter.getDate());
 
 		processManager.createProcess("BuildingAttributesImport", params);
-		addActionError(getText("bti.building.attribute.import.started"));
+		addActionMessage(getText("bti.building.attribute.import.started"));
 		return SUCCESS;
 	}
 

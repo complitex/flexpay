@@ -1,7 +1,7 @@
 package org.flexpay.common.actions;
 
-import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.persistence.FPModule;
+import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.service.FPFileService;
 import org.flexpay.common.util.FPFileUtil;
 import org.flexpay.common.util.SecurityUtil;
@@ -29,7 +29,7 @@ public abstract class FPFileActionSupport extends FPActionSupport {
 		try {
 
 			log.debug("Preparing file action, params: FileName - {}, ContentType - {}, ModuleName - {}",
-					new String[]{uploadFileName, uploadContentType, moduleName});
+					new Object[] {uploadFileName, uploadContentType, moduleName});
 
 			FPModule module = fpFileService.getModuleByName(moduleName);
 			if (module == null) {
