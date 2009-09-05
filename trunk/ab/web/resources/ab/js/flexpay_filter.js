@@ -239,6 +239,9 @@ var FF = {
             }
             $.post(filter.action, {filterValue:filter.value.val(), preRequest:true},
                 function(data) {
+                    if (data == null || !data) {
+                        return null;
+                    }
                     var r = data.split("|");
                     filter.string.val(r[0]);
                     if (filter.justText) {
@@ -386,7 +389,7 @@ var FF = {
     },
 
     parseAutocompleterData : function(data) {
-        if (!data) {
+        if (data == null || !data) {
             return null;
         }
         var parsed = [];
