@@ -176,9 +176,11 @@
 		  class="org.flexpay.common.actions.processing.ProcessViewAction"
 		  p:processManager-ref="processManager" />
 
-	<bean id="processDefinitionDeployAction" scope="prototype"
+	<bean id="processDefinitionDeployAction"
 		  class="org.flexpay.common.actions.processing.ProcessDefinitionDeployAction"
-		  p:processManager-ref="processManager" />
+          p:fpFileService-ref="fpFileService"
+		  p:processManager-ref="processManager"
+          scope="prototype" />
 
 	<bean id="eircAccountsListAction" scope="prototype"
 		  class="org.flexpay.eirc.actions.eirc_account.EircAccountsListAction"

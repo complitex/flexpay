@@ -6,7 +6,7 @@
     function validateForm() {
         var fileVal = $("input[name=upload]").val();
         if (fileVal == null || fileVal == "") {
-            alert("<s:text name="tc.error.rules_file_field_cant_be_null" />");
+            alert("<s:text name="common.error.no_file" />");
             return false;
         }
         return true;

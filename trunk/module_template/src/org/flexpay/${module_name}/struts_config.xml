@@ -6,7 +6,7 @@
 
 	<constant name="struts.custom.i18n.resources"
 			  value="
-			  	org/flexpay/common/i18n/common-messages,
+			  	org/flexpay/common/i18n/common-messages,org/flexpay/common/i18n/common-errors,
 			  	org/flexpay/${module_name}/i18n/errors,
 			  	org/flexpay/${module_name}/i18n/messages" />
 

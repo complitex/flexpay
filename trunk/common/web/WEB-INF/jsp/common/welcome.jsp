@@ -1,5 +1,4 @@
-
-<%@ include file="/WEB-INF/jsp/common/taglibs.jsp" %>
+<%@include file="/WEB-INF/jsp/common/taglibs.jsp"%>
 
 <s:i18n name="/i18n/common-messages">
 

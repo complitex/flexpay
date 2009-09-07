@@ -34,7 +34,7 @@ public class BuildingAttributesImportAction extends FPFileActionSupport {
 			return SUCCESS;
 		}
 
-		if (getUpload() == null || fpFile.isNew()) {
+		if (fpFile.isNew()) {
 			addActionError(getText("bti.error.building.attribute.import.no_file"));
 			return SUCCESS;
 		}
