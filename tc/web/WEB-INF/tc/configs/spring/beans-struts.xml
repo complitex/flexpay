@@ -166,7 +166,9 @@
 	<bean id="processDefinitionDeployAction"
 		  class="org.flexpay.common.actions.processing.ProcessDefinitionDeployAction"
           p:crumbNameKey="tc.crumbs.process.definition_deploy"
+          p:fpFileService-ref="fpFileService"
 		  p:processManager-ref="processManager"
+          p:moduleName="${flexpay.module.name.tc}"
           scope="prototype" />
 
 </beans>

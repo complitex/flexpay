@@ -1,5 +1,6 @@
 package org.flexpay.common.actions;
 
+import org.apache.commons.lang.StringUtils;
 import org.flexpay.common.persistence.FPModule;
 import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.service.FPFileService;
@@ -14,8 +15,6 @@ import java.io.File;
  */
 public abstract class FPFileActionSupport extends FPActionSupport {
 
-	private FPFileService fpFileService;
-
 	protected FPFile fpFile = new FPFile();
 	private File upload;
 	private String uploadFileName;
@@ -23,7 +22,15 @@ public abstract class FPFileActionSupport extends FPActionSupport {
 
 	private String moduleName;
 
+	private FPFileService fpFileService;
+
+	@Override
 	public String execute() throws Exception {
+
+		if (isSubmit() && StringUtils.isEmpty(uploadFileName)) {
+			addActionError(getText("common.error.no_file"));
+			return getErrorResult();
+		}
 
 		String userName = SecurityUtil.getUserName();
 		try {
@@ -73,16 +80,16 @@ public abstract class FPFileActionSupport extends FPActionSupport {
 		return moduleName;
 	}
 
-	public void setModuleName(String moduleName) {
-		this.moduleName = moduleName;
-	}
-
 	public String getUploadContentType() {
 		return uploadContentType;
 	}
 
 	public FPFile getFpFile() {
 		return fpFile;
+	}
+
+	public void setModuleName(String moduleName) {
+		this.moduleName = moduleName;
 	}
 
 	@Required

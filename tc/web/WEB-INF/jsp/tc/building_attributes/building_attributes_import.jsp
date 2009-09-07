@@ -3,9 +3,9 @@
 <script type="text/javascript">
 
     function validateForm() {
-        var fileVal = $("input[name=upload]").val();
+        var fileVal = $("#inputForm input[name=upload]").val();
         if (fileVal == null || fileVal == "") {
-            alert("<s:text name="tc.error.rules_file_field_cant_be_null" />");
+            alert("<s:text name="common.error.no_file" />");
             return false;
         }
         return true;
@@ -22,7 +22,7 @@
 <s:actionerror />
 <s:actionmessage />
 
-<s:form id="inputForm" enctype="multipart/form-data">
+<s:form id="inputForm" enctype="multipart/form-data" method="POST">
 
 	<table cellpadding="3" cellspacing="1" border="0" width="100%">
 		<tr>
