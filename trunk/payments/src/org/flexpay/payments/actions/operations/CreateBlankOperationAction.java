@@ -33,9 +33,7 @@ public class CreateBlankOperationAction extends CashboxCookieActionSupport {
 
 		// creating blank operation
 		try {
-			Cashbox cashbox = getCashbox();
-			Organization organization = cashbox.getPaymentPoint().getCollector().getOrganization();
-			Operation newOperationBlank = operationService.createBlankOperation(BigDecimal.valueOf(0), SecurityUtil.getUserName(), organization, cashbox.getPaymentPoint(), cashbox);
+			Operation newOperationBlank = operationService.createBlankOperation(SecurityUtil.getUserName(), getCashboxStub());
 			operationId = newOperationBlank.getId();
 			status = STATUS_OK;
 		} catch (Throwable t) {
@@ -57,6 +55,10 @@ public class CreateBlankOperationAction extends CashboxCookieActionSupport {
 		}
 
 		return cashbox;
+	}
+
+	private Stub<Cashbox> getCashboxStub() {
+		return new Stub<Cashbox>(cashboxId);
 	}
 
 	@NotNull

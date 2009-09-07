@@ -185,8 +185,11 @@ public interface OperationService {
 	/**
 	 * Creates new operation with no data and BLANK state
 	 *
+	 * @param creator name of user who created operation
+	 * @param cashboxStub cashbox
 	 * @return new operation instance
+	 * @throws FlexPayException if creation failed
 	 */
 	@Secured (Roles.OPERATION_ADD)
-	Operation createBlankOperation(BigDecimal operationSumm, String creator, Organization creatorOrganization, PaymentPoint paymentPoint, Cashbox cashBox) throws FlexPayException;
+	Operation createBlankOperation(String creator, Stub<Cashbox> cashboxStub) throws FlexPayException;
 }
