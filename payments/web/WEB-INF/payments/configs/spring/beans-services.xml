@@ -86,6 +86,7 @@
 		  p:operationLevelService-ref="operationLevelService"
 		  p:operationStatusService-ref="operationStatusService"
 		  p:operationTypeService-ref="operationTypeService"
+		  p:cashboxService-ref="cashboxService"
 		  p:operationDao-ref="operationDao"
 		  p:operationDaoExt-ref="operationDaoExt" />
 

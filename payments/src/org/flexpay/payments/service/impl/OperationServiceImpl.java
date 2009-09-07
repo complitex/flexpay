@@ -6,6 +6,7 @@ import org.flexpay.common.persistence.Stub;
 import org.flexpay.orgs.persistence.Cashbox;
 import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.orgs.persistence.PaymentPoint;
+import org.flexpay.orgs.service.CashboxService;
 import org.flexpay.payments.dao.OperationDao;
 import org.flexpay.payments.dao.OperationDaoExt;
 import org.flexpay.payments.persistence.Operation;
@@ -35,6 +36,7 @@ public class OperationServiceImpl implements OperationService {
 	private OperationStatusService operationStatusService;
 	private OperationLevelService operationLevelService;
 	private OperationTypeService operationTypeService;
+	private CashboxService cashboxService;
 
 	private OperationDao operationDao;
 	private OperationDaoExt operationDaoExt;
@@ -140,17 +142,27 @@ public class OperationServiceImpl implements OperationService {
 	 *
 	 * @return new operation instance
 	 */
-	public Operation createBlankOperation(BigDecimal operationSumm, String creator, Organization creatorOrganization, PaymentPoint paymentPoint, Cashbox cashBox) throws FlexPayException {
+	public Operation createBlankOperation(String creator, Stub<Cashbox> cashboxStub) throws FlexPayException {
+
+		Cashbox cashbox = cashboxService.read(cashboxStub);
+		if (cashbox == null) {
+			throw new FlexPayException("Invalid cashbox id: " + cashboxStub.getId());
+		}
+
+		PaymentPoint paymentPoint = cashbox.getPaymentPoint();
+		Organization creatorOrganization = cashbox.getPaymentPoint().getCollector().getOrganization();
+
 		Operation operation = new Operation();
 		operation.setOperationStatus(operationStatusService.read(OperationStatus.BLANK));
 		operation.setOperationType(operationTypeService.read(OperationType.SERVICE_CASH_PAYMENT));
 		operation.setOperationLevel(operationLevelService.read(OperationLevel.AVERAGE));
 		operation.setCreationDate(new Date());
-		operation.setOperationSumm(operationSumm);
+		operation.setOperationSumm(new BigDecimal("0.00"));
 		operation.setCreatorUserName(creator);
 		operation.setCreatorOrganization(creatorOrganization);
 		operation.setPaymentPoint(paymentPoint);
-		operation.setCashbox(cashBox);
+		operation.setCashbox(cashbox);
+
 		operationDao.create(operation);
 
 		return operation;
@@ -179,5 +191,10 @@ public class OperationServiceImpl implements OperationService {
 	@Required
 	public void setOperationTypeService(OperationTypeService operationTypeService) {
 		this.operationTypeService = operationTypeService;
+	}
+
+	@Required
+	public void setCashboxService(CashboxService cashboxService) {
+		this.cashboxService = cashboxService;
 	}
 }
