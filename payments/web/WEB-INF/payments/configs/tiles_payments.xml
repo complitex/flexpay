@@ -189,12 +189,17 @@
 	<!-- Cashboxes -->
 	<definition name="payments.cashbox.list" extends="ab.layout.standart">
 		<put-attribute name="title" value="payments.cashbox.list" />
-		<put-attribute name="body" value="/WEB-INF/jsp/orgs/cashbox/cashboxes_list.jsp" />
+		<put-attribute name="body" value="/WEB-INF/jsp/orgs/cashboxes/cashboxes_list_page.jsp" />
 	</definition>
 
 	<definition name="payments.cashbox.edit" extends="ab.layout.standart">
 		<put-attribute name="title" value="payments.cashbox" />
-		<put-attribute name="body" value="/WEB-INF/jsp/orgs/cashbox/cashbox_edit.jsp" />
+		<put-attribute name="body" value="/WEB-INF/jsp/orgs/cashboxes/cashbox_edit.jsp" />
 	</definition>
+
+    <definition name="payments.cashbox.view" extends="ab.layout.standart">
+        <put-attribute name="title" value="payments.cashbox" />
+        <put-attribute name="body" value="/WEB-INF/jsp/orgs/cashboxes/cashbox_view.jsp" />
+    </definition>
 
 </tiles-definitions>

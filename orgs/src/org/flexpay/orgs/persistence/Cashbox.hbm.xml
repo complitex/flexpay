@@ -73,6 +73,7 @@
         from Cashbox o
             inner join fetch o.paymentPoint p
             left join fetch o.names
+            left join fetch p.names
             inner join fetch p.collector c
             inner join fetch c.organization
         where o.id=?

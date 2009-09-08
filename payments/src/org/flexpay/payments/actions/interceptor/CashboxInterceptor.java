@@ -2,13 +2,13 @@ package org.flexpay.payments.actions.interceptor;
 
 import com.opensymphony.xwork2.ActionInvocation;
 import com.opensymphony.xwork2.interceptor.AbstractInterceptor;
+import org.flexpay.common.actions.FPActionSupport;
+import org.flexpay.common.persistence.Stub;
+import org.flexpay.orgs.persistence.Cashbox;
+import org.flexpay.orgs.service.CashboxService;
+import org.flexpay.payments.util.config.PaymentsUserPreferences;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.flexpay.orgs.service.CashboxService;
-import org.flexpay.orgs.persistence.Cashbox;
-import org.flexpay.common.persistence.Stub;
-import org.flexpay.common.actions.FPActionSupport;
-import org.flexpay.payments.util.config.PaymentsUserPreferences;
 import org.springframework.beans.factory.annotation.Required;
 
 public class CashboxInterceptor extends AbstractInterceptor {
@@ -19,6 +19,7 @@ public class CashboxInterceptor extends AbstractInterceptor {
 
 	private CashboxService cashboxService;
 
+	@Override
 	public String intercept(ActionInvocation actionInvocation) throws Exception {
 
 		try {
@@ -40,17 +41,21 @@ public class CashboxInterceptor extends AbstractInterceptor {
 
 				Long cashboxPaymentPointId = cashbox.getPaymentPoint().getId();
 
-				FPActionSupport fpAction = (FPActionSupport) action;
-				PaymentsUserPreferences userPreferences = (PaymentsUserPreferences) fpAction.getUserPreferences();
-				Long userPaymentPointId = userPreferences.getPaymentPointId();
+				if (action instanceof FPActionSupport) {
+					FPActionSupport fpAction = (FPActionSupport) action;
+					PaymentsUserPreferences userPreferences = (PaymentsUserPreferences) fpAction.getUserPreferences();
+					Long userPaymentPointId = userPreferences.getPaymentPointId();
 
-				if (!cashboxPaymentPointId.equals(userPaymentPointId)) {
-					log.info("Payment point identifier from user preferences ({}) does not correspond cashbox payment point identifier ({}). Access denied.",
-							new Object[] {userPaymentPointId, cashboxPaymentPointId});
-					return CASHBOX_AUTHENTICATION_REQUIRED;
+					if (!cashboxPaymentPointId.equals(userPaymentPointId)) {
+						log.info("Payment point identifier from user preferences ({}) does not correspond cashbox payment point identifier ({}). Access denied.",
+								new Object[] {userPaymentPointId, cashboxPaymentPointId});
+						return CASHBOX_AUTHENTICATION_REQUIRED;
+					}
+					log.info("Cashbox authentication ok.");
+				} else {
+					log.info("Action not instance of FPActionSupport");
 				}
 
-				log.info("Cashbox authentication ok.");
 			}
 
 			return actionInvocation.invoke();
@@ -69,4 +74,5 @@ public class CashboxInterceptor extends AbstractInterceptor {
 	public void setCashboxService(CashboxService cashboxService) {
 		this.cashboxService = cashboxService;
 	}
+
 }

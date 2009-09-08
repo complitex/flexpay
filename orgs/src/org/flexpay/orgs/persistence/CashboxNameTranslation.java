@@ -12,4 +12,5 @@ public class CashboxNameTranslation extends Translation {
 	public CashboxNameTranslation(@NotNull String name, @NotNull Language lang) {
 		super(name, lang);
 	}
+
 }

@@ -1,39 +1,32 @@
 package org.flexpay.orgs.actions.cashbox;
 
 import org.flexpay.common.actions.FPActionSupport;
+import static org.flexpay.common.util.CollectionUtils.set;
 import org.flexpay.orgs.service.CashboxService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
-import java.util.HashSet;
 import java.util.Set;
 
 public class CashboxDeleteAction extends FPActionSupport {
 
-	private Set<Long> objectIds = new HashSet<Long>();
+	private Set<Long> objectIds = set();
 
 	private CashboxService cashboxService;
 
 	@NotNull
+	@Override
 	protected String doExecute() throws Exception {
 
 		cashboxService.disable(objectIds);
 
-		return REDIRECT_SUCCESS;
+		return SUCCESS;
 	}
 
 	@NotNull
-	protected String getErrorResult() {
-		return REDIRECT_SUCCESS;
-	}
-
 	@Override
-	protected void setBreadCrumbs() {
-
-	}
-
-	public Set<Long> getObjectIds() {
-		return objectIds;
+	protected String getErrorResult() {
+		return SUCCESS;
 	}
 
 	public void setObjectIds(Set<Long> objectIds) {

@@ -1,17 +1,14 @@
 package org.flexpay.payments.actions.operations;
 
+import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.util.SecurityUtil;
+import org.flexpay.orgs.persistence.Cashbox;
+import org.flexpay.orgs.service.CashboxService;
 import org.flexpay.payments.actions.CashboxCookieActionSupport;
 import org.flexpay.payments.persistence.Operation;
 import org.flexpay.payments.service.OperationService;
-import org.flexpay.orgs.persistence.Cashbox;
-import org.flexpay.orgs.persistence.Organization;
-import org.flexpay.orgs.service.CashboxService;
-import org.flexpay.common.util.SecurityUtil;
-import org.flexpay.common.persistence.Stub;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
-
-import java.math.BigDecimal;
 
 public class CreateBlankOperationAction extends CashboxCookieActionSupport {
 
@@ -19,11 +16,9 @@ public class CreateBlankOperationAction extends CashboxCookieActionSupport {
 	private static final int STATUS_OK = 0;
 	private static final int STATUS_ERROR = 1;
 
-	// data
 	private int status;
 	private Long operationId;
 
-	// required services
 	private OperationService operationService;
 	private CashboxService cashboxService;
 
@@ -67,7 +62,6 @@ public class CreateBlankOperationAction extends CashboxCookieActionSupport {
 		return SUCCESS;
 	}
 
-	// data
 	public int getStatus() {
 		return status;
 	}
@@ -76,7 +70,6 @@ public class CreateBlankOperationAction extends CashboxCookieActionSupport {
 		return operationId;
 	}
 
-	// required services
 	@Required
 	public void setOperationService(OperationService operationService) {
 		this.operationService = operationService;
@@ -86,4 +79,5 @@ public class CreateBlankOperationAction extends CashboxCookieActionSupport {
 	public void setCashboxService(CashboxService cashboxService) {
 		this.cashboxService = cashboxService;
 	}
+
 }

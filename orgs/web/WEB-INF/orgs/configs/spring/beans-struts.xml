@@ -136,6 +136,12 @@
 		  p:subdivisionService-ref="subdivisionService" />
 
 	<!-- cashboxes actions -->
+    <bean id="cashboxViewAction"
+          class="org.flexpay.orgs.actions.cashbox.CashboxViewAction"
+          p:cashboxService-ref="cashboxService"
+          p:crumbNameKey="orgs.crumbs.cashbox_view"
+          scope="prototype" />
+
 	<bean id="cashboxDeleteAction"
 		  class="org.flexpay.orgs.actions.cashbox.CashboxDeleteAction"
 		  p:cashboxService-ref="cashboxService"
@@ -145,14 +151,17 @@
 		  class="org.flexpay.orgs.actions.cashbox.CashboxEditAction"
 		  p:cashboxService-ref="cashboxService"
 		  p:paymentPointService-ref="paymentPointService"
-		  p:crumbNameKey="payments.crumbs.cashbox_edit"
-		  p:crumbCreateKey="payments.crumbs.cashbox_create"
+		  p:crumbNameKey="orgs.crumbs.cashbox_edit"
+		  p:crumbCreateKey="orgs.crumbs.cashbox_create"
 		  scope="prototype" />
 
 	<bean id="cashboxesListAction"
 		  class="org.flexpay.orgs.actions.cashbox.CashboxesListAction"
 		  p:cashboxService-ref="cashboxService"
-		  p:crumbNameKey="payments.crumbs.cashboxes_list"
 		  scope="prototype" />
+
+    <bean id="cashboxesListPageAction" parent="staticPageAction"
+          p:crumbNameKey="orgs.crumbs.cashboxes_list"
+          scope="prototype" />
 
 </beans>
