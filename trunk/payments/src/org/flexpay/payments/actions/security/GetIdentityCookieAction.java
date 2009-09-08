@@ -23,6 +23,7 @@ public class GetIdentityCookieAction extends FPActionSupport implements ServletR
 	private CashboxService cashboxService;
 
 	@NotNull
+	@Override
 	protected String doExecute() throws Exception {
 
 		if (isSubmit()) {
@@ -38,6 +39,7 @@ public class GetIdentityCookieAction extends FPActionSupport implements ServletR
 	}
 
 	@NotNull
+	@Override
 	protected String getErrorResult() {
 		return SUCCESS;
 	}
@@ -56,6 +58,7 @@ public class GetIdentityCookieAction extends FPActionSupport implements ServletR
 		return !hasActionErrors();
 	}
 
+	@Override
 	public void setServletResponse(HttpServletResponse httpServletResponse) {
 		this.response = httpServletResponse;
 	}

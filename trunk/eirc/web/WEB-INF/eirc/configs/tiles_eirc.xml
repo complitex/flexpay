@@ -301,12 +301,12 @@
 	<!-- Cashboxes -->
 	<definition name="eirc.cashbox.list" extends="eirc.dictionaries">
 		<put-attribute name="title" value="eirc.cashbox.list" />
-		<put-attribute name="body" value="/WEB-INF/jsp/orgs/cashbox/cashboxes_list.jsp" />
+		<put-attribute name="body" value="/WEB-INF/jsp/orgs/cashboxes/cashboxes_list_page.jsp" />
 	</definition>
 
 	<definition name="eirc.cashbox.edit" extends="eirc.dictionaries">
 		<put-attribute name="title" value="eirc.cashbox" />
-		<put-attribute name="body" value="/WEB-INF/jsp/orgs/cashbox/cashbox_edit.jsp" />
+		<put-attribute name="body" value="/WEB-INF/jsp/orgs/cashboxes/cashbox_edit.jsp" />
 	</definition>
     
 </tiles-definitions>

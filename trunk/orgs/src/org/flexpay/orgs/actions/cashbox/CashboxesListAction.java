@@ -16,19 +16,16 @@ public class CashboxesListAction extends FPActionWithPagerSupport<Cashbox> {
 	protected CashboxService cashboxService;
 
 	@NotNull
+	@Override
 	protected String doExecute() throws Exception {
 
-		loadCashboxes();
+		cashboxes = cashboxService.findObjects(getPager());
 
 		return SUCCESS;
 	}
 
-	protected void loadCashboxes() {
-
-		cashboxes = cashboxService.findObjects(getPager());
-	}
-
 	@NotNull
+	@Override
 	protected String getErrorResult() {
 		return SUCCESS;
 	}

@@ -74,4 +74,5 @@ public class CashboxHistoryHandler extends HistoryHandlerBase<Cashbox> {
 	public void setCashboxService(CashboxService cashboxService) {
 		this.cashboxService = cashboxService;
 	}
+
 }

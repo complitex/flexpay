@@ -542,7 +542,6 @@ public class OperationsListAction extends CashboxCookieWithPagerActionSupport<Op
 		this.cashboxIdFilter = cashboxIdFilter;
 	}
 
-	// required services
 	@Required
 	public void setOperationService(OperationService operationService) {
 		this.operationService = operationService;
@@ -592,4 +591,5 @@ public class OperationsListAction extends CashboxCookieWithPagerActionSupport<Op
 	public void setProcessManager(ProcessManager processManager) {
 		this.processManager = processManager;
 	}
+
 }

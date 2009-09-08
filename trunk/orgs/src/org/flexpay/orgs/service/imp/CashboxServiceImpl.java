@@ -1,7 +1,7 @@
 package org.flexpay.orgs.service.imp;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.commons.collections.ArrayStack;
+import org.apache.commons.lang.StringUtils;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
@@ -36,6 +36,7 @@ public class CashboxServiceImpl implements CashboxService {
 	private ModificationListener<Cashbox> modificationListener;
 
 	@NotNull
+	@Override
 	@Transactional (readOnly = false)
 	public Cashbox create(@NotNull Cashbox cashbox) throws FlexPayExceptionContainer {
 		validate(cashbox);
@@ -49,6 +50,7 @@ public class CashboxServiceImpl implements CashboxService {
 
 	@SuppressWarnings ({"ThrowableInstanceNeverThrown"})
 	@NotNull
+	@Override
 	@Transactional (readOnly = false)
 	public Cashbox update(@NotNull Cashbox cashbox) throws FlexPayExceptionContainer {
 		validate(cashbox);
@@ -71,7 +73,7 @@ public class CashboxServiceImpl implements CashboxService {
 	}
 
 	@SuppressWarnings ({"ThrowableInstanceNeverThrown"})
-	public void validate(Cashbox cashbox) throws FlexPayExceptionContainer {
+	private void validate(Cashbox cashbox) throws FlexPayExceptionContainer {
 
 		FlexPayExceptionContainer ex = new FlexPayExceptionContainer();
 
@@ -98,15 +100,18 @@ public class CashboxServiceImpl implements CashboxService {
 		}
 	}
 
+	@Override
 	public Cashbox read(@NotNull Stub<Cashbox> stub) {
 		return cashboxDao.readFull(stub.getId());
 	}
 
+	@Override
 	@Transactional (readOnly = false)
 	public void delete(@NotNull Cashbox cashbox) {
 		cashboxDao.delete(cashbox);
 	}
 
+	@Override
 	@Transactional (readOnly = false)
 	public void disable(Set<Long> objectIds) {
 		for (Long id : objectIds) {
@@ -116,7 +121,7 @@ public class CashboxServiceImpl implements CashboxService {
 				cashboxDao.update(cashbox);
 
 				modificationListener.onDelete(cashbox);
-				log.debug("Disabled object: {}", cashbox);
+				log.debug("Disabled: {}", cashbox);
 			}
 		}
 	}
@@ -124,14 +129,12 @@ public class CashboxServiceImpl implements CashboxService {
 	@NotNull
 	@Override
 	public CashboxFilter initFilter(@NotNull CashboxFilter cashboxFilter) {
-
 		return initFilter(CollectionUtils.arrayStack(), cashboxFilter);
 	}
 
 	@NotNull
 	@Override
 	public CashboxFilter initFilter(@NotNull ArrayStack filters, @NotNull CashboxFilter cashboxFilter) {
-
 		List<Cashbox> cashboxes = listCashboxes(filters);
 		cashboxFilter.setCashboxes(cashboxes);
 		return cashboxFilter;
@@ -154,10 +157,12 @@ public class CashboxServiceImpl implements CashboxService {
 	}
 
 	@NotNull
+	@Override
 	public List<Cashbox> findObjects(Page<Cashbox> pager) {
 		return cashboxDao.findCashboxes(pager);
 	}
 
+	@Override
 	public List<Cashbox> findCashboxesForPaymentPoint(Long paymentPointId) {
 		return cashboxDao.findCashboxesForPaymentPoint(paymentPointId);
 	}
@@ -176,4 +181,5 @@ public class CashboxServiceImpl implements CashboxService {
 	public void setModificationListener(ModificationListener<Cashbox> modificationListener) {
 		this.modificationListener = modificationListener;
 	}
+
 }

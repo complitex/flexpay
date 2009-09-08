@@ -31,23 +31,19 @@ public class CashboxEditAction extends FPActionSupport {
 	}
 
 	@NotNull
+	@Override
 	protected String doExecute() throws Exception {
 
-		if (cashbox.getId() == null) {
-			addActionError(getText("error.no_id"));
-			return REDIRECT_SUCCESS;
-		}
+		cashbox = cashbox.isNew() ? cashbox : cashboxService.read(stub(cashbox));
 
-		Cashbox oldCashbox = cashbox.isNotNew() ? cashboxService.read(stub(cashbox)) : cashbox;
-		if (oldCashbox == null) {
-			addActionError(getText("error.invalid_id"));
+		if (cashbox == null) {
+			addActionError(getText("common.object_not_selected"));
 			return REDIRECT_SUCCESS;
 		}
 
 		paymentPointService.initFilter(paymentPointsFilter);
 
-		if (!isSubmit()) {
-			cashbox = oldCashbox;
+		if (isNotSubmit()) {
 			initNames();
 			if (cashbox.isNotNew()) {
 				paymentPointsFilter.setSelectedId(cashbox.getPaymentPoint().getId());
@@ -63,29 +59,24 @@ public class CashboxEditAction extends FPActionSupport {
 		for (Map.Entry<Long, String> name : names.entrySet()) {
 			String value = name.getValue();
 			Language lang = getLang(name.getKey());
-			CashboxNameTranslation nameTranslation = new CashboxNameTranslation();
-			nameTranslation.setLang(lang);
-			nameTranslation.setName(value);
-
-			log.debug("Setting cashbox name: {}", nameTranslation);
-
-			oldCashbox.setName(nameTranslation);
+			cashbox.setName(new CashboxNameTranslation(value, lang));
 		}
 
-		oldCashbox.setPaymentPoint(paymentPointService.read(paymentPointsFilter.getSelectedStub()));
+		cashbox.setPaymentPoint(paymentPointService.read(paymentPointsFilter.getSelectedStub()));
 
-		if (oldCashbox.isNew()) {
-			cashboxService.create(oldCashbox);
+		if (cashbox.isNew()) {
+			cashboxService.create(cashbox);
 		} else {
-			cashboxService.update(oldCashbox);
+			cashboxService.update(cashbox);
 		}
 
 		return REDIRECT_SUCCESS;
 	}
 
 	@NotNull
+	@Override
 	protected String getErrorResult() {
-		return REDIRECT_SUCCESS;
+		return INPUT;
 	}
 
 	@Override
