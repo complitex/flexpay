@@ -207,17 +207,17 @@
 	<!-- Payment Points -->
 	<definition name="eirc.organization.payment_points.list" extends="eirc.dictionaries">
 		<put-attribute name="title" value="eirc.payment_points" />
-		<put-attribute name="body" value="/WEB-INF/jsp/orgs/organizations/list_payment_points.jsp" />
+		<put-attribute name="body" value="/WEB-INF/jsp/orgs/payment_points/payment_points_list.jsp" />
 	</definition>
 
 	<definition name="eirc.organization.payment_point.edit" extends="eirc.dictionaries">
 		<put-attribute name="title" value="eirc.payment_point" />
-		<put-attribute name="body" value="/WEB-INF/jsp/orgs/organizations/edit_payment_point.jsp" />
+		<put-attribute name="body" value="/WEB-INF/jsp/orgs/payment_points/payment_point_edit.jsp" />
 	</definition>
 
 	<definition name="eirc.organization.payment_point.details" extends="eirc.dictionaries">
 		<put-attribute name="title" value="eirc.payment_point" />
-		<put-attribute name="body" value="/WEB-INF/jsp/orgs/organizations/payment_point_details.jsp" />
+		<put-attribute name="body" value="/WEB-INF/jsp/orgs/payment_points/payment_point_details.jsp" />
 	</definition>
 
     <!-- Service organizations -->

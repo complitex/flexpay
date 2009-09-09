@@ -259,6 +259,15 @@
     <security-role>
         <role-name>ROLE_ORGS_PAYMENT_POINT_READ</role-name>
     </security-role>
+    <security-role>
+        <role-name>ROLE_ORGS_PAYMENT_POINT_CHANGE</role-name>
+    </security-role>
+    <security-role>
+        <role-name>ROLE_ORGS_PAYMENT_POINT_ADD</role-name>
+    </security-role>
+    <security-role>
+        <role-name>ROLE_ORGS_PAYMENT_POINT_DELETE</role-name>
+    </security-role>
 
     <!-- Payments collectors -->
     <security-role>

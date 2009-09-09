@@ -9,4 +9,9 @@ public class PaymentsCollectorFilter
 	public PaymentsCollectorFilter() {
 		super(-1L);
 	}
+
+	public PaymentsCollectorFilter(Long selectedId) {
+		super(selectedId);
+	}
+
 }

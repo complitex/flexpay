@@ -1,13 +1,11 @@
-package org.flexpay.orgs.actions.organization;
+package org.flexpay.orgs.actions.paymentpoint;
 
 import org.flexpay.common.actions.FPActionSupport;
-import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.persistence.Language;
+import static org.flexpay.common.persistence.Stub.stub;
 import static org.flexpay.common.util.CollectionUtils.map;
 import org.flexpay.common.util.config.ApplicationConfig;
-import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.orgs.persistence.PaymentPoint;
-import org.flexpay.orgs.persistence.PaymentsCollector;
 import org.flexpay.orgs.persistence.PaymentPointName;
 import org.flexpay.orgs.persistence.filters.PaymentsCollectorFilter;
 import org.flexpay.orgs.service.PaymentPointService;
@@ -23,7 +21,7 @@ public class PaymentPointEditAction extends FPActionSupport {
 	private PaymentPoint point = new PaymentPoint();
 	private Map<Long, String> names = map();
 
-	private OrganizationHelper organizationHelper;
+	private String crumbCreateKey;
 	private PaymentsCollectorService paymentsCollectorService;
 	private PaymentPointService paymentPointService;
 
@@ -41,65 +39,78 @@ public class PaymentPointEditAction extends FPActionSupport {
 	 * @throws Exception if failure occurs
 	 */
 	@NotNull
+	@Override
 	protected String doExecute() throws Exception {
 
-		if (point.getId() == null) {
-			addActionError(getText("error.no_id"));
+		String address = "";
+		if (point.isNotNew()) {
+			address = "" + point.getAddress();
+		}
+		point = point.isNew() ? point : paymentPointService.read(stub(point));
+		if (point == null) {
+			addActionError(getText("common.object_not_selected"));
 			return REDIRECT_SUCCESS;
 		}
 
-		PaymentPoint pnt = point.isNew() ? point : paymentPointService.read(stub(point));
-		if (pnt == null) {
-			addActionError(getText("error.invalid_id"));
-			return REDIRECT_SUCCESS;
+		if (point.isNotNew() && isSubmit()) {
+			point.setAddress(address);
 		}
 
 		paymentsCollectorService.initFilter(paymentsCollectorFilter);
 
-		// prepare initial setup
-		if (!isSubmit()) {
-			point = pnt;
+		if (isNotSubmit()) {
 			initNames();
-			if (pnt.isNotNew()) {
-				paymentsCollectorFilter.setSelectedId(pnt.getCollector().getId());
+			if (point.isNotNew()) {
+				paymentsCollectorFilter.setSelectedId(point.getCollector().getId());
 				paymentsCollectorFilter.setReadOnly(true);
 			}
 
 			return INPUT;
 		}
 
-		if (pnt.isNew()) {
-			pnt.setCollector(paymentsCollectorService.read(paymentsCollectorFilter.getSelectedStub()));
+		if (!paymentsCollectorFilter.needFilter()) {
+			addActionError(getText("eirc.error.payment_point.no_collector"));
+			return INPUT;
 		}
-		pnt.setAddress(point.getAddress());
+
+		if (point.isNew()) {
+			point.setCollector(paymentsCollectorService.read(paymentsCollectorFilter.getSelectedStub()));
+		}
 
 		for (Map.Entry<Long, String> name : names.entrySet()) {
 			String value = name.getValue();
 			Language lang = getLang(name.getKey());
-			PaymentPointName nameTranslation = new PaymentPointName();
-			nameTranslation.setLang(lang);
-			nameTranslation.setName(value);
-
-			log.debug("Setting payment point name: {}", nameTranslation);
-
-			pnt.setName(nameTranslation);
+			point.setName(new PaymentPointName(value, lang));
 		}
 
-		if (pnt.isNew()) {
-			paymentPointService.create(pnt);
+		if (point.isNew()) {
+			paymentPointService.create(point);
 		} else {
-			paymentPointService.update(pnt);
+			paymentPointService.update(point);
 		}
 
 		return REDIRECT_SUCCESS;
 	}
 
-	public String getCollectorName(@NotNull PaymentsCollector collectorStub) {
-		return organizationHelper.getName(collectorStub, getUserPreferences().getLocale());
+	/**
+	 * Get default error execution result
+	 * <p/>
+	 * If return code starts with a {@link #PREFIX_REDIRECT} all error messages are stored in a session
+	 *
+	 * @return {@link #ERROR} by default
+	 */
+	@NotNull
+	@Override
+	protected String getErrorResult() {
+		return INPUT;
 	}
 
-	public String getCollectorName(@NotNull Organization organizationStub) {
-		return organizationHelper.getName(organizationStub, getUserPreferences().getLocale());
+	@Override
+	protected void setBreadCrumbs() {
+		if (point.isNew()) {
+			crumbNameKey = crumbCreateKey;
+		}
+		super.setBreadCrumbs();
 	}
 
 	private void initNames() {
@@ -113,18 +124,6 @@ public class PaymentPointEditAction extends FPActionSupport {
 			}
 			names.put(lang.getId(), "");
 		}
-	}
-
-	/**
-	 * Get default error execution result
-	 * <p/>
-	 * If return code starts with a {@link #PREFIX_REDIRECT} all error messages are stored in a session
-	 *
-	 * @return {@link #ERROR} by default
-	 */
-	@NotNull
-	protected String getErrorResult() {
-		return INPUT;
 	}
 
 	public PaymentsCollectorFilter getPaymentsCollectorFilter() {
@@ -151,6 +150,10 @@ public class PaymentPointEditAction extends FPActionSupport {
 		this.point = point;
 	}
 
+	public void setCrumbCreateKey(String crumbCreateKey) {
+		this.crumbCreateKey = crumbCreateKey;
+	}
+
 	@Required
 	public void setPaymentPointService(PaymentPointService paymentPointService) {
 		this.paymentPointService = paymentPointService;
@@ -159,11 +162,6 @@ public class PaymentPointEditAction extends FPActionSupport {
 	@Required
 	public void setPaymentsCollectorService(PaymentsCollectorService paymentsCollectorService) {
 		this.paymentsCollectorService = paymentsCollectorService;
-	}
-
-	@Required
-	public void setOrganizationHelper(OrganizationHelper organizationHelper) {
-		this.organizationHelper = organizationHelper;
 	}
 
 }

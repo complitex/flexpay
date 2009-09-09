@@ -7,7 +7,7 @@ import org.flexpay.common.persistence.filter.BeginDateFilter;
 import org.flexpay.common.persistence.filter.CloseDateFilter;
 import org.flexpay.common.persistence.filter.CreateDateFilter;
 import org.flexpay.common.util.DateUtil;
-import org.flexpay.orgs.actions.organization.PaymentPointHelper;
+import org.flexpay.orgs.actions.paymentpoint.PaymentPointHelper;
 import org.flexpay.orgs.persistence.PaymentPoint;
 import org.flexpay.orgs.persistence.filters.PaymentPointsFilter;
 import org.flexpay.orgs.service.PaymentPointService;

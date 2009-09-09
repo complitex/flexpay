@@ -1,24 +1,26 @@
-package org.flexpay.orgs.actions.organization;
+package org.flexpay.orgs.actions.paymentpoint;
 
 import org.flexpay.common.actions.FPActionSupport;
+import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.orgs.service.PaymentPointService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
-import java.util.HashSet;
 import java.util.Set;
 
-public class PaymentPointsDeleteAction extends FPActionSupport {
+public class PaymentPointDeleteAction extends FPActionSupport {
 
-	private Set<Long> objectIds = new HashSet<Long>();
+	private Set<Long> objectIds = CollectionUtils.set();
 
 	private PaymentPointService paymentPointService;
 
 	@NotNull
+	@Override
 	public String doExecute() throws Exception {
+
 		paymentPointService.disable(objectIds);
 
-		return REDIRECT_SUCCESS;
+		return SUCCESS;
 	}
 
 	/**
@@ -29,12 +31,9 @@ public class PaymentPointsDeleteAction extends FPActionSupport {
 	 * @return {@link #ERROR} by default
 	 */
 	@NotNull
+	@Override
 	protected String getErrorResult() {
-		return REDIRECT_SUCCESS;
-	}
-
-	public Set<Long> getObjectIds() {
-		return objectIds;
+		return SUCCESS;
 	}
 
 	public void setObjectIds(Set<Long> objectIds) {

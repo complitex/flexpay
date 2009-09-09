@@ -1,4 +1,4 @@
-package org.flexpay.orgs.actions.organization;
+package org.flexpay.orgs.actions.paymentpoint;
 
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.orgs.actions.cashbox.CashboxesListAction;
@@ -21,6 +21,7 @@ public class PaymentPointDetailsAction extends CashboxesListAction {
 	private PaymentPointService paymentPointService;
 
 	@NotNull
+	@Override
 	protected String doExecute() throws Exception {
 
 		initFilters();

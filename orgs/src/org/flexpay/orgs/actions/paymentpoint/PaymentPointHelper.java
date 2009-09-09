@@ -1,4 +1,4 @@
-package org.flexpay.orgs.actions.organization;
+package org.flexpay.orgs.actions.paymentpoint;
 
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.orgs.persistence.PaymentPoint;
