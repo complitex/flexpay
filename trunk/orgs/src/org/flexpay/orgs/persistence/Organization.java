@@ -2,10 +2,10 @@ package org.flexpay.orgs.persistence;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
-import org.flexpay.common.persistence.DomainObjectWithStatus;
-import org.flexpay.common.persistence.Stub;
-import org.flexpay.common.persistence.Language;
 import org.flexpay.common.persistence.DataSourceDescription;
+import org.flexpay.common.persistence.DomainObjectWithStatus;
+import org.flexpay.common.persistence.Language;
+import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.util.TranslationUtil;
 import org.jetbrains.annotations.NotNull;
@@ -220,6 +220,11 @@ public class Organization extends DomainObjectWithStatus {
 		return null;
 	}
 
+	public String defaultDescription() {
+		OrganizationDescription desc = TranslationUtil.getTranslation(getDescriptions());
+		return desc != null ? desc.getName() : "";
+	}
+
 	@Override
 	public String toString() {
 		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
@@ -232,8 +237,4 @@ public class Organization extends DomainObjectWithStatus {
 				toString();
 	}
 
-	public String defaultDescription() {
-		OrganizationDescription desc = TranslationUtil.getTranslation(getDescriptions());
-		return desc != null ? desc.getName() : "";
-	}
 }

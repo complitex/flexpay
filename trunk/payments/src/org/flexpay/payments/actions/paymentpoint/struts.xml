@@ -6,7 +6,6 @@
 
 	<package name="payment_points" namespace="/payments" extends="common">
 
-		<!-- payment points -->
         <action name="paymentPointView" class="paymentPointViewAction">
             <result type="tiles">payments.organization.payment_point.view</result>
             <result name="redirectError" type="redirect-action">paymentPointsList</result>
@@ -34,33 +33,6 @@
         </action>
 
 		<action name="paymentPointDelete" class="paymentPointDeleteAction">
-            <result>/WEB-INF/jsp/common/responses/simple_response.jsp</result>
-		</action>
-
-		<!-- cashboxes -->
-        <action name="cashboxView" class="cashboxViewAction">
-            <result type="tiles">payments.cashbox.view</result>
-            <result name="redirectError" type="redirect-action">cashboxesList</result>
-        </action>
-
-		<action name="cashboxEdit" class="cashboxEditAction">
-            <result name="input" type="tiles">payments.cashbox.edit</result>
-            <result name="redirectSuccess" type="redirect-action">
-                <param name="actionName">cashboxView</param>
-                <param name="parse">true</param>
-                <param name="cashbox.id">${cashbox.id}</param>
-            </result>
-		</action>
-
-        <action name="cashboxesList" class="cashboxesListPageAction">
-            <result type="tiles">payments.cashbox.list</result>
-        </action>
-
-        <action name="cashboxesListAjax" class="cashboxesListAction">
-            <result>/WEB-INF/jsp/orgs/cashboxes/cashboxes_list.jsp</result>
-        </action>
-
-		<action name="cashboxDelete" class="cashboxDeleteAction">
             <result>/WEB-INF/jsp/common/responses/simple_response.jsp</result>
 		</action>
 

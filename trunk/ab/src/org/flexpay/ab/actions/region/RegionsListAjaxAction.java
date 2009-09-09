@@ -9,7 +9,6 @@ import org.flexpay.common.actions.FPActionWithPagerSupport;
 import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.common.persistence.sorter.ObjectSorter;
 import org.flexpay.common.util.CollectionUtils;
-import static org.flexpay.common.util.CollectionUtils.list;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
@@ -18,7 +17,7 @@ import java.util.List;
 public class RegionsListAjaxAction extends FPActionWithPagerSupport<Region> {
 
 	private Long countryFilter;
-	private List<Region> regions = list();
+	private List<Region> regions = CollectionUtils.list();
 
 	private RegionSorter regionSorter = new RegionSorter();
 	private RegionService regionService;

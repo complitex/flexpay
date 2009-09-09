@@ -104,7 +104,7 @@ public class GenerateAllObjectsHistory extends PaymentsSpringBeanAwareTestCase {
 		generateServiceProviders();
 		generateBanks();
 		generatePaymentsCollectors();
-		generatePaimentPoints();
+		generatePaymentPoints();
 		generateCashboxes();
 		generateServiceTypes();
 		generateServices();
@@ -167,7 +167,7 @@ public class GenerateAllObjectsHistory extends PaymentsSpringBeanAwareTestCase {
 		}
 	}
 
-	private void generatePaimentPoints() {
+	private void generatePaymentPoints() {
 		List<PaymentPoint> paymentPoints = paymentPointService.findAll();
 		for (PaymentPoint point : paymentPoints) {
 			paymentPointHistoryGenerator.generateFor(point);

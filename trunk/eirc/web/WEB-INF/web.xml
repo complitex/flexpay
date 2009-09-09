@@ -715,7 +715,7 @@
         <role-name>ROLE_MENU_EIRC_DICTS_SERVICE_PROVIDERS</role-name>
     </security-role>
     <security-role>
-        <role-name>ROLE_MENU_EIRC_DICTS_PAYMENT_COLLECTORS</role-name>
+        <role-name>ROLE_MENU_EIRC_DICTS_PAYMENTS_COLLECTORS</role-name>
     </security-role>
     <security-role>
         <role-name>ROLE_MENU_EIRC_DICTS_PAYMENT_POINTS</role-name>

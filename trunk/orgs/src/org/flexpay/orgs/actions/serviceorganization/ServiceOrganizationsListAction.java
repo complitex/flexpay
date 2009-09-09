@@ -1,4 +1,4 @@
-package org.flexpay.orgs.actions.organization;
+package org.flexpay.orgs.actions.serviceorganization;
 
 import org.flexpay.common.actions.FPActionWithPagerSupport;
 import org.flexpay.orgs.persistence.ServiceOrganization;

@@ -116,10 +116,17 @@
 	<query name="Bank.readFull">
 		select distinct b
 		from Bank b
-		left outer join fetch b.descriptions
-		inner join fetch b.organization
+            left outer join fetch b.descriptions
+            inner join fetch b.organization o
+            left join fetch o.names
 		where b.id=?
 	</query>
+
+    <query name="Bank.findInstances.count">
+        select count(*)
+        from Bank b
+        where b.status=0
+    </query>
 
 	<query name="Bank.findInstances">
 		select distinct b
@@ -137,9 +144,9 @@
 	<query name="Bank.findInstancelessOrganizations">
 		select distinct o
 		from Organization o
-		left join fetch o.names
-		left join fetch o.descriptions
-		left join o.banks b
+            left join fetch o.names
+            left join fetch o.descriptions
+            left join o.banks b
 		where o.status = 0 and o.id not in (select b1.organization.id from Bank b1 where b1.status = 0) or b.id = ?
 	</query>
 

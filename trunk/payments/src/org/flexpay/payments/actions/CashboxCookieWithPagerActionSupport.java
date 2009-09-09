@@ -7,10 +7,12 @@ public abstract class CashboxCookieWithPagerActionSupport<T> extends FPActionWit
 
 	protected Long cashboxId;
 
+	@Override
 	public Long getCashboxId() {
 		return cashboxId;
 	}
 
+	@Override
 	public void setCashboxId(Long cashboxId) {
 		this.cashboxId = cashboxId;
 	}

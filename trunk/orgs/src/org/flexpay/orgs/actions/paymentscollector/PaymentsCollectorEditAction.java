@@ -1,4 +1,4 @@
-package org.flexpay.orgs.actions.organization;
+package org.flexpay.orgs.actions.paymentscollector;
 
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.persistence.Language;
@@ -18,37 +18,37 @@ import java.util.Map;
 
 public class PaymentsCollectorEditAction extends FPActionSupport {
 
-	private PaymentsCollector instance = new PaymentsCollector();
+	private PaymentsCollector collector = new PaymentsCollector();
 	private OrganizationFilter organizationFilter = new OrganizationFilter();
 	private Map<Long, String> descriptions = map();
 	private String email;
 
-	private PaymentsCollectorService instanceService;
+	private String crumbCreateKey;
+	private PaymentsCollectorService collectorService;
 	private OrganizationService organizationService;
 
+	public PaymentsCollectorEditAction() {
+		organizationFilter.setAllowEmpty(false);
+	}
+
 	@NotNull
+	@Override
 	public String doExecute() throws Exception {
 
-		if (instance.getId() == null) {
-			addActionError(getText("error.no_id"));
+		PaymentsCollector oldCollector = collector.isNew() ? collector : collectorService.read(stub(collector));
+		if (oldCollector == null) {
+			addActionError(getText("common.object_not_selected"));
 			return REDIRECT_SUCCESS;
 		}
 
-		PaymentsCollector oldInstance = instance.isNotNew() ? instanceService.read(stub(instance)) : instance;
-		if (oldInstance == null) {
-			addActionError(getText("error.invalid_id"));
-			return REDIRECT_SUCCESS;
-		}
+		collectorService.initInstancelessFilter(organizationFilter, oldCollector);
 
-		instanceService.initInstancelessFilter(organizationFilter, oldInstance);
-
-		// prepare initial setup
-		if (!isSubmit()) {
-			if (oldInstance.isNotNew()) {
-				organizationFilter.setSelectedId(oldInstance.getOrganizationStub().getId());
-				email = oldInstance.getEmail();
+		if (isNotSubmit()) {
+			if (oldCollector.isNotNew()) {
+				organizationFilter.setSelectedId(oldCollector.getOrganizationStub().getId());
+				email = oldCollector.getEmail();
 			}
-			instance = oldInstance;
+			collector = oldCollector;
 			initDescriptions();
 			return INPUT;
 		}
@@ -63,28 +63,23 @@ public class PaymentsCollectorEditAction extends FPActionSupport {
 			return INPUT;
 		}
 
-		log.debug("Descriptions: {}", descriptions);
-
-		oldInstance.setOrganization(juridicalPerson);
+		oldCollector.setOrganization(juridicalPerson);
 
 		for (Map.Entry<Long, String> name : descriptions.entrySet()) {
 			String value = name.getValue();
 			Language lang = getLang(name.getKey());
-			PaymentsCollectorDescription description = new PaymentsCollectorDescription();
-			description.setLang(lang);
-			description.setName(value);
-			oldInstance.setDescription(description);
+			oldCollector.setDescription(new PaymentsCollectorDescription(value, lang));
 		}
 
-		oldInstance.setEmail(email);
+		oldCollector.setEmail(email);
 
-		if (oldInstance.isNew()) {
-			instanceService.create(oldInstance);
+		if (oldCollector.isNew()) {
+			collectorService.create(oldCollector);
 		} else {
-			instanceService.update(oldInstance);
+			collectorService.update(oldCollector);
 		}
 
-		addActionError(getText("orgs.payments_collector.saved"));
+		addActionMessage(getText("orgs.payments_collector.saved"));
 
 		return REDIRECT_SUCCESS;
 	}
@@ -97,12 +92,21 @@ public class PaymentsCollectorEditAction extends FPActionSupport {
 	 * @return {@link #ERROR} by default
 	 */
 	@NotNull
+	@Override
 	protected String getErrorResult() {
 		return INPUT;
 	}
 
+	@Override
+	protected void setBreadCrumbs() {
+		if (collector.isNew()) {
+			crumbNameKey = crumbCreateKey;
+		}
+		super.setBreadCrumbs();
+	}
+
 	private void initDescriptions() {
-		for (PaymentsCollectorDescription description : instance.getDescriptions()) {
+		for (PaymentsCollectorDescription description : collector.getDescriptions()) {
 			descriptions.put(description.getLang().getId(), description.getName());
 		}
 
@@ -114,12 +118,12 @@ public class PaymentsCollectorEditAction extends FPActionSupport {
 		}
 	}
 
-	public PaymentsCollector getInstance() {
-		return instance;
+	public PaymentsCollector getCollector() {
+		return collector;
 	}
 
-	public void setInstance(PaymentsCollector instance) {
-		this.instance = instance;
+	public void setCollector(PaymentsCollector collector) {
+		this.collector = collector;
 	}
 
 	public Map<Long, String> getDescriptions() {
@@ -146,13 +150,18 @@ public class PaymentsCollectorEditAction extends FPActionSupport {
 		this.email = email;
 	}
 
+	public void setCrumbCreateKey(String crumbCreateKey) {
+		this.crumbCreateKey = crumbCreateKey;
+	}
+
 	@Required
 	public void setOrganizationService(OrganizationService organizationService) {
 		this.organizationService = organizationService;
 	}
 
 	@Required
-	public void setInstanceService(PaymentsCollectorService instanceService) {
-		this.instanceService = instanceService;
+	public void setCollectorService(PaymentsCollectorService collectorService) {
+		this.collectorService = collectorService;
 	}
+
 }

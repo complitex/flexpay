@@ -1,4 +1,4 @@
-package org.flexpay.orgs.actions.organization;
+package org.flexpay.orgs.actions.subdivision;
 
 import org.flexpay.common.actions.FPActionSupport;
 import static org.flexpay.common.util.CollectionUtils.set;

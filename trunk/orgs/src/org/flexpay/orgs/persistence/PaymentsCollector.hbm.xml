@@ -68,27 +68,28 @@
 	</class>
 
 	<query name="PaymentsCollector.readFull">
-		select distinct i
-		from PaymentsCollector i
-		    left outer join fetch i.descriptions
-		    inner join fetch i.organization
-		    left join fetch i.paymentPoints
-		where i.id=?
+		select distinct pc
+		from PaymentsCollector pc
+		    left outer join fetch pc.descriptions
+		    inner join fetch pc.organization o
+            left join fetch o.names
+		    left join fetch pc.paymentPoints
+		where pc.id=?
 	</query>
 
 	<query name="PaymentsCollector.findInstances">
-		select distinct i
-		from PaymentsCollector i
-    		left outer join fetch i.descriptions
-	    	inner join fetch i.organization o
+		select distinct pc
+		from PaymentsCollector pc
+    		left outer join fetch pc.descriptions
+	    	inner join fetch pc.organization o
             left join fetch o.names
-		where i.status=0
+		where pc.status=0
 	</query>
 
 	<query name="PaymentsCollector.findInstances.count">
-		select count(i)
-		from PaymentsCollector i    		
-		where i.status=0
+		select count(*)
+		from PaymentsCollector pc
+		where pc.status=0
 	</query>
 
 	<query name="PaymentsCollector.findOrganizationInstances">
@@ -99,10 +100,10 @@
 	<query name="PaymentsCollector.findInstancelessOrganizations">
 		select distinct o
 		from Organization o
-		left join fetch o.names
-		left join fetch o.descriptions
-		left join o.paymentsCollectors i
-		where o.status = 0 and o.id not in (select i1.organization.id from PaymentsCollector i1 where i1.status = 0) or i.id = ?
+            left join fetch o.names
+            left join fetch o.descriptions
+            left join o.paymentsCollectors pc
+		where o.status = 0 and o.id not in (select pc1.organization.id from PaymentsCollector pc1 where pc1.status = 0) or pc.id = ?
 	</query>
 
 </hibernate-mapping>

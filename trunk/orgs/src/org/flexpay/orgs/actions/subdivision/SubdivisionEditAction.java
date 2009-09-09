@@ -1,4 +1,4 @@
-package org.flexpay.orgs.actions.organization;
+package org.flexpay.orgs.actions.subdivision;
 
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.persistence.Language;

@@ -1,24 +1,26 @@
-package org.flexpay.orgs.actions.organization;
+package org.flexpay.orgs.actions.bank;
 
 import org.flexpay.common.actions.FPActionSupport;
-import org.flexpay.common.util.CollectionUtils;
-import org.flexpay.orgs.service.PaymentsCollectorService;
+import static org.flexpay.common.util.CollectionUtils.set;
+import org.flexpay.orgs.service.BankService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.util.Set;
 
-public class PaymentsCollectorsDeleteAction extends FPActionSupport {
+public class BankDeleteAction extends FPActionSupport {
 
-	private Set<Long> objectIds = CollectionUtils.set();
+	private Set<Long> objectIds = set();
 
-	private PaymentsCollectorService collectorService;
+	private BankService bankService;
 
 	@NotNull
+	@Override
 	public String doExecute() throws Exception {
-		collectorService.disable(objectIds);
 
-		return REDIRECT_SUCCESS;
+		bankService.disable(objectIds);
+
+		return SUCCESS;
 	}
 
 	/**
@@ -29,12 +31,9 @@ public class PaymentsCollectorsDeleteAction extends FPActionSupport {
 	 * @return {@link #ERROR} by default
 	 */
 	@NotNull
+	@Override
 	protected String getErrorResult() {
-		return REDIRECT_SUCCESS;
-	}
-
-	public Set<Long> getObjectIds() {
-		return objectIds;
+		return SUCCESS;
 	}
 
 	public void setObjectIds(Set<Long> objectIds) {
@@ -42,8 +41,8 @@ public class PaymentsCollectorsDeleteAction extends FPActionSupport {
 	}
 
 	@Required
-	public void setCollectorService(PaymentsCollectorService collectorService) {
-		this.collectorService = collectorService;
+	public void setBankService(BankService bankService) {
+		this.bankService = bankService;
 	}
 
 }
