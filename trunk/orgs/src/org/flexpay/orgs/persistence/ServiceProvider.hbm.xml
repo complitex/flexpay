@@ -66,6 +66,39 @@
 		</properties>
 	</class>
 
+	<class name="org.flexpay.orgs.persistence.ServiceProviderAttribute" table="payments_service_provider_attribute_tbl" optimistic-lock="version">
+		<comment>ServiceProviderAttribute</comment>
+		<id name="id">
+			<column name="id">
+				<comment>Primary key</comment>
+			</column>
+			<generator class="native" />
+		</id>
+        <version name="version" access="field">
+			<column name="version">
+				<comment>Optimistic lock version</comment>
+			</column>
+		</version>
+		<properties name="service_provider_name_attribute_type_pair" unique="true">
+			<property name="name">
+				<column name="name" not-null="true" length="50">
+					<comment>Attribute name</comment>
+				</column>
+			</property>
+			<many-to-one name="serviceProvider" class="org.flexpay.orgs.persistence.ServiceProvider"
+						 foreign-key="FK_payments_service_provider_attribute_tbl_service_provider_id">
+				<column name="service_provider_id" not-null="true">
+					<comment>Service provider reference</comment>
+				</column>
+			</many-to-one>
+		</properties>
+		<property name="value">
+			<column name="value" not-null="false" length="255">
+				<comment>Attribute value</comment>
+			</column>
+		</property>
+	</class>
+
 	<query name="ServiceProvider.findByOrganizationId">
 		from ServiceProvider where organization.id=?
 	</query>
@@ -102,5 +135,16 @@
 		 	left join fetch org.names 
 		where o.status=0
 	</query>
+
+	<query name="ServiceProviderAttribute.listServiceProviderAttributes">
+		FROM ServiceProviderAttribute o
+		WHERE o.serviceProvider.id=?
+	</query>
+
+    <query name="ServiceProviderAttribute.findServiceProviderAttribute">
+        FROM ServiceProviderAttribute o
+        left outer join fetch o.serviceProvider
+        WHERE o.serviceProvider.id = ? and o.name = ?
+    </query>
 
 </hibernate-mapping>

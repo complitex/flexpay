@@ -155,7 +155,7 @@
 
 	<bean id="serviceProviderServiceAttributeTarget"
 		  autowire-candidate="false"
-		  class="org.flexpay.payments.service.impl.ServiceProviderAttributeServiceImpl"
+		  class="org.flexpay.orgs.service.imp.ServiceProviderAttributeServiceImpl"
 		  p:serviceProviderAttributeDao-ref="serviceProviderAttributeDao" />
 
     <bean id="paymentsRegistryFPFileFormat"

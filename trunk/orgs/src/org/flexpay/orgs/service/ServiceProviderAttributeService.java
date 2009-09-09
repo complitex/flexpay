@@ -1,8 +1,8 @@
-package org.flexpay.payments.service;
+package org.flexpay.orgs.service;
 
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.orgs.persistence.ServiceProvider;
-import org.flexpay.payments.persistence.process.ServiceProviderAttribute;
+import org.flexpay.orgs.persistence.ServiceProviderAttribute;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
