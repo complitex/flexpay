@@ -1,8 +1,9 @@
-package org.flexpay.orgs.actions.organization;
+package org.flexpay.orgs.actions.paymentscollector;
 
 import org.apache.commons.collections.ArrayStack;
 import org.flexpay.common.actions.FPActionWithPagerSupport;
 import org.flexpay.common.util.CollectionUtils;
+import org.flexpay.orgs.actions.organization.OrganizationHelper;
 import org.flexpay.orgs.persistence.PaymentPoint;
 import org.flexpay.orgs.persistence.PaymentsCollector;
 import org.flexpay.orgs.persistence.filters.PaymentsCollectorFilter;
@@ -11,13 +12,12 @@ import org.flexpay.orgs.service.PaymentsCollectorService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
-import java.util.Collections;
 import java.util.List;
 
 public class PaymentsCollectorDetailsAction extends FPActionWithPagerSupport<PaymentPoint> {
 
 	protected PaymentsCollectorFilter paymentsCollectorFilter = new PaymentsCollectorFilter();
-	protected List<PaymentPoint> points = Collections.emptyList();
+	protected List<PaymentPoint> points = CollectionUtils.list();
 
 	private PaymentsCollector paymentsCollector;
 
@@ -29,7 +29,7 @@ public class PaymentsCollectorDetailsAction extends FPActionWithPagerSupport<Pay
 	@Override
 	protected String doExecute() throws Exception {
 
-		loadPaymentsCollector();
+		paymentsCollector = paymentsCollectorFilter.needFilter() ? collectorService.read(paymentsCollectorFilter.getSelectedStub()) : null;
 
 		collectorService.initFilter(paymentsCollectorFilter);
 		ArrayStack filters = CollectionUtils.arrayStack(paymentsCollectorFilter);
@@ -51,21 +51,11 @@ public class PaymentsCollectorDetailsAction extends FPActionWithPagerSupport<Pay
 		return SUCCESS;
 	}
 
-	private void loadPaymentsCollector() {
-		if (paymentsCollectorFilter.needFilter()) {
-			paymentsCollector = collectorService.read(paymentsCollectorFilter.getSelectedStub());
-		} else {
-			paymentsCollector = null;
-		}
-	}
-
-	// rendering utility methods
-	public boolean isPaymentCollectorLoaded() {
+	public boolean isPaymentsCollectorLoaded() {
 		return paymentsCollector != null;
 	}
 
 	public String getPaymentsCollectorDescription() {
-
 		return getTranslation(paymentsCollector.getDescriptions()).getName();
 	}
 
@@ -75,6 +65,18 @@ public class PaymentsCollectorDetailsAction extends FPActionWithPagerSupport<Pay
 
 	public PaymentsCollector getPaymentsCollector() {
 		return paymentsCollector;
+	}
+
+	public PaymentsCollectorFilter getPaymentsCollectorFilter() {
+		return paymentsCollectorFilter;
+	}
+
+	public void setPaymentsCollectorFilter(PaymentsCollectorFilter paymentsCollectorFilter) {
+		this.paymentsCollectorFilter = paymentsCollectorFilter;
+	}
+
+	public List<PaymentPoint> getPoints() {
+		return points;
 	}
 
 	@Required

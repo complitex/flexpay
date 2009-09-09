@@ -1,22 +1,22 @@
-package org.flexpay.orgs.actions.organization;
+package org.flexpay.orgs.actions.serviceorganization;
 
 import org.flexpay.common.actions.FPActionSupport;
-import org.flexpay.orgs.service.BankService;
+import org.flexpay.orgs.service.ServiceOrganizationService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.util.HashSet;
 import java.util.Set;
 
-public class BankDeleteAction extends FPActionSupport {
+public class ServiceOrganizationDeleteAction extends FPActionSupport {
 
 	private Set<Long> objectIds = new HashSet<Long>();
 
-	private BankService bankService;
+	private ServiceOrganizationService serviceOrganizationService;
 
 	@NotNull
 	public String doExecute() throws Exception {
-		bankService.disable(objectIds);
+        serviceOrganizationService.disable(objectIds);
 
 		return REDIRECT_SUCCESS;
 	}
@@ -42,8 +42,8 @@ public class BankDeleteAction extends FPActionSupport {
 	}
 
 	@Required
-	public void setBankService(BankService bankService) {
-		this.bankService = bankService;
-	}
+    public void setServiceOrganizationService(ServiceOrganizationService serviceOrganizationService) {
+        this.serviceOrganizationService = serviceOrganizationService;
+    }
 
 }

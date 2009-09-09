@@ -1,5 +1,4 @@
-
-<%@ include file="/WEB-INF/jsp/common/taglibs.jsp" %>
+<%@include file="/WEB-INF/jsp/common/taglibs.jsp"%>
 
 <s:if test="%{organizationFilter.isReadOnly()}">
 	<s:hidden name="organizationFilter.selectedId" />

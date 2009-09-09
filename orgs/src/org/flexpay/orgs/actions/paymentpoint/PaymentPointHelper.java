@@ -17,7 +17,6 @@ public class PaymentPointHelper {
 	private PaymentPointService paymentPointService;
 
 	public String getDescription(@NotNull PaymentPoint point, @NotNull Locale locale) {
-
 		return point.getAddress();
 	}
 
@@ -36,4 +35,5 @@ public class PaymentPointHelper {
 	public void setPaymentPointService(PaymentPointService paymentPointService) {
 		this.paymentPointService = paymentPointService;
 	}
+
 }

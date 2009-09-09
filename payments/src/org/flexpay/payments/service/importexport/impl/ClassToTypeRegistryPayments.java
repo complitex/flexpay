@@ -1,4 +1,4 @@
-package org.flexpay.payments.service.importexport.imp;
+package org.flexpay.payments.service.importexport.impl;
 
 import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.common.service.importexport.ClassToTypeRegistry;
@@ -20,4 +20,5 @@ public class ClassToTypeRegistryPayments implements ClassToTypeRegistry {
 
 		throw new IllegalArgumentException("Class " + clazz + " has no assigned type");
 	}
+
 }

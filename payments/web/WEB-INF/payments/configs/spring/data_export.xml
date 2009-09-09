@@ -8,7 +8,7 @@
 
     <bean id="classToTypeRegistryPayments"
 		  autowire-candidate="false"
-		  class="org.flexpay.payments.service.importexport.imp.ClassToTypeRegistryPayments" />
+		  class="org.flexpay.payments.service.importexport.impl.ClassToTypeRegistryPayments" />
 
 	<bean id="classToTypeRegistryFactoryPayments"
 		  depends-on="classToTypeRegistryFactoryAb,classToTypeRegistryFactoryOrgs"

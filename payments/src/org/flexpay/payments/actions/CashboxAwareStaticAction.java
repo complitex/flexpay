@@ -13,8 +13,8 @@ public class CashboxAwareStaticAction extends StaticPageAction implements Cashbo
 	// print previously created operation
 	private Operation operation = new Operation();
 
-	@Override
 	@NotNull
+	@Override
 	protected String doExecute() throws Exception {
 		getUserPreferences().getCrumbs().removeAllElements();
 		return SUCCESS;

@@ -1,8 +1,9 @@
-package org.flexpay.orgs.actions.organization;
+package org.flexpay.orgs.actions.paymentscollector;
 
 import org.flexpay.common.actions.FPActionWithPagerSupport;
 import org.flexpay.common.exception.FlexPayException;
 import static org.flexpay.common.persistence.Stub.stub;
+import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.orgs.persistence.PaymentsCollector;
 import org.flexpay.orgs.service.OrganizationService;
@@ -11,20 +12,20 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Required;
 
-import java.util.Collections;
 import java.util.List;
 
 public class PaymentsCollectorsListAction extends FPActionWithPagerSupport<PaymentsCollector> {
 
-	private List<PaymentsCollector> instances = Collections.emptyList();
+	private List<PaymentsCollector> collectors = CollectionUtils.list();
 
 	private OrganizationService organizationService;
 	private PaymentsCollectorService collectorService;
 
 	@NotNull
+	@Override
 	public String doExecute() throws Exception {
 
-		instances = collectorService.listInstances(getPager());
+		collectors = collectorService.listInstances(getPager());
 
 		return SUCCESS;
 	}
@@ -37,6 +38,7 @@ public class PaymentsCollectorsListAction extends FPActionWithPagerSupport<Payme
 	 * @return {@link #ERROR} by default
 	 */
 	@NotNull
+	@Override
 	protected String getErrorResult() {
 		return SUCCESS;
 	}
@@ -52,9 +54,9 @@ public class PaymentsCollectorsListAction extends FPActionWithPagerSupport<Payme
 		}
 		return getTranslation(persistent.getNames()).getName();
 	}
-	
-	public List<PaymentsCollector> getInstances() {
-		return instances;
+
+	public List<PaymentsCollector> getCollectors() {
+		return collectors;
 	}
 
 	@Required

@@ -1,52 +1,57 @@
-package org.flexpay.orgs.actions.organization;
+package org.flexpay.orgs.actions.serviceorganization;
 
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.persistence.Language;
 import static org.flexpay.common.persistence.Stub.stub;
 import static org.flexpay.common.util.CollectionUtils.map;
 import org.flexpay.common.util.config.ApplicationConfig;
-import org.flexpay.orgs.persistence.Bank;
-import org.flexpay.orgs.persistence.BankDescription;
+import org.flexpay.orgs.persistence.ServiceOrganization;
 import org.flexpay.orgs.persistence.Organization;
+import org.flexpay.orgs.persistence.ServiceOrganizationDescription;
 import org.flexpay.orgs.persistence.filters.OrganizationFilter;
-import org.flexpay.orgs.service.BankService;
 import org.flexpay.orgs.service.OrganizationService;
+import org.flexpay.orgs.service.ServiceOrganizationService;
+import org.flexpay.orgs.service.OrgsObjectsFactory;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.util.Map;
 
-public class BankEditAction extends FPActionSupport {
+public class ServiceOrganizationEditAction extends FPActionSupport {
 
-	private Bank bank = new Bank();
 	private OrganizationFilter organizationFilter = new OrganizationFilter();
+	private ServiceOrganization serviceOrganization = ServiceOrganization.newInstance();
 	private Map<Long, String> descriptions = map();
 
-	private BankService bankService;
+	private ServiceOrganizationService serviceOrganizationService;
 	private OrganizationService organizationService;
+	private OrgsObjectsFactory objectsFactory;
 
 	@NotNull
 	public String doExecute() throws Exception {
 
-		if (bank.getId() == null) {
+		if (serviceOrganization.getId() == null) {
 			addActionError(getText("error.no_id"));
 			return REDIRECT_SUCCESS;
 		}
 
-		Bank oldBank = bank.isNotNew() ? bankService.read(stub(bank)) : bank;
-		if (oldBank == null) {
+		ServiceOrganization old = serviceOrganization.isNew()
+								  ? objectsFactory.newServiceOrganization()
+								  : serviceOrganizationService.read(stub(serviceOrganization));
+		if (old == null) {
 			addActionError(getText("error.invalid_id"));
 			return REDIRECT_SUCCESS;
 		}
 
-		bankService.initInstancelessFilter(organizationFilter, oldBank);
+		old.setId(serviceOrganization.getId());
+		serviceOrganizationService.initInstancelessFilter(organizationFilter, old);
 
 		// prepare initial setup
 		if (!isSubmit()) {
-			if (oldBank.isNotNew()) {
-				organizationFilter.setSelectedId(oldBank.getOrganizationStub().getId());
+			if (old.isNotNew()) {
+				organizationFilter.setSelectedId(old.getOrganizationStub().getId());
 			}
-			bank = oldBank;
+			serviceOrganization = old;
 			initDescriptions();
 			return INPUT;
 		}
@@ -61,28 +66,26 @@ public class BankEditAction extends FPActionSupport {
 			return INPUT;
 		}
 
-		log.debug("Bank descriptions: {}", descriptions);
+		log.debug("Service organization descriptions: {}", descriptions);
 
-		oldBank.setOrganization(juridicalPerson);
-		oldBank.setBankIdentifierCode(bank.getBankIdentifierCode());
-		oldBank.setCorrespondingAccount(bank.getCorrespondingAccount());
+		old.setOrganization(juridicalPerson);
 
 		for (Map.Entry<Long, String> name : descriptions.entrySet()) {
 			String value = name.getValue();
 			Language lang = getLang(name.getKey());
-			BankDescription description = new BankDescription();
+			ServiceOrganizationDescription description = new ServiceOrganizationDescription();
 			description.setLang(lang);
 			description.setName(value);
-			oldBank.setDescription(description);
+			old.setDescription(description);
 		}
 
-		if (oldBank.isNew()) {
-			bankService.create(oldBank);
+		if (old.isNew()) {
+			serviceOrganizationService.create(old);
 		} else {
-			bankService.update(oldBank);
+			serviceOrganizationService.update(old);
 		}
 
-		addActionError(getText("orgs.bank.saved"));
+		addActionError(getText("orgs.service_organization.saved"));
 
 		return REDIRECT_SUCCESS;
 	}
@@ -100,7 +103,7 @@ public class BankEditAction extends FPActionSupport {
 	}
 
 	private void initDescriptions() {
-		for (BankDescription description : bank.getDescriptions()) {
+		for (ServiceOrganizationDescription description : serviceOrganization.getDescriptions()) {
 			descriptions.put(description.getLang().getId(), description.getName());
 		}
 
@@ -112,12 +115,12 @@ public class BankEditAction extends FPActionSupport {
 		}
 	}
 
-	public Bank getBank() {
-		return bank;
+	public ServiceOrganization getServiceOrganization() {
+		return serviceOrganization;
 	}
 
-	public void setBank(Bank bank) {
-		this.bank = bank;
+	public void setServiceOrganization(ServiceOrganization serviceOrganization) {
+		this.serviceOrganization = serviceOrganization;
 	}
 
 	public Map<Long, String> getDescriptions() {
@@ -137,8 +140,8 @@ public class BankEditAction extends FPActionSupport {
 	}
 
 	@Required
-	public void setBankService(BankService bankService) {
-		this.bankService = bankService;
+	public void setServiceOrganizationService(ServiceOrganizationService serviceOrganizationService) {
+		this.serviceOrganizationService = serviceOrganizationService;
 	}
 
 	@Required
@@ -146,4 +149,8 @@ public class BankEditAction extends FPActionSupport {
 		this.organizationService = organizationService;
 	}
 
+	@Required
+	public void setObjectsFactory(OrgsObjectsFactory objectsFactory) {
+		this.objectsFactory = objectsFactory;
+	}
 }

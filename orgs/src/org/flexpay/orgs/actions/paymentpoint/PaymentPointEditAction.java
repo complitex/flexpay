@@ -43,7 +43,7 @@ public class PaymentPointEditAction extends FPActionSupport {
 	protected String doExecute() throws Exception {
 
 		String address = "";
-		if (point.isNotNew()) {
+		if (point.isNotNew() && isSubmit()) {
 			address = "" + point.getAddress();
 		}
 		point = point.isNew() ? point : paymentPointService.read(stub(point));

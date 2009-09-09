@@ -1,21 +1,22 @@
-package org.flexpay.orgs.actions.organization;
+package org.flexpay.orgs.actions.bank;
 
 import org.flexpay.common.actions.FPActionWithPagerSupport;
+import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.orgs.persistence.Bank;
 import org.flexpay.orgs.service.BankService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
-import java.util.Collections;
 import java.util.List;
 
 public class BanksListAction extends FPActionWithPagerSupport<Bank> {
 
-	private List<Bank> banks = Collections.emptyList();
+	private List<Bank> banks = CollectionUtils.list();
 
 	private BankService bankService;
 
 	@NotNull
+	@Override
 	public String doExecute() throws Exception {
 
 		banks = bankService.listInstances(getPager());
@@ -31,6 +32,7 @@ public class BanksListAction extends FPActionWithPagerSupport<Bank> {
 	 * @return {@link #ERROR} by default
 	 */
 	@NotNull
+	@Override
 	protected String getErrorResult() {
 		return SUCCESS;
 	}

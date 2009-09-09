@@ -790,7 +790,7 @@
 		<group-name>FULL_ACCESS</group-name>
 	</security-role-mapping>
 	<security-role-mapping>
-		<role-name>ROLE_MENU_EIRC_DICTS_PAYMENT_COLLECTORS</role-name>
+		<role-name>ROLE_MENU_EIRC_DICTS_PAYMENTS_COLLECTORS</role-name>
 		<group-name>FULL_ACCESS</group-name>
 	</security-role-mapping>
 	<security-role-mapping>

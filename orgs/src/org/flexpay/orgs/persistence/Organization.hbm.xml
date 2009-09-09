@@ -160,8 +160,8 @@
 		select distinct o
 		from Organization o
 		left join fetch o.names
-		left join fetch o.paymentsCollectors paymentCollector
-		where o.status = 0 and paymentCollector.status = 0
+		left join fetch o.paymentsCollectors paymentsCollector
+		where o.status = 0 and paymentsCollector.status = 0
 	</query>
 
 </hibernate-mapping>
