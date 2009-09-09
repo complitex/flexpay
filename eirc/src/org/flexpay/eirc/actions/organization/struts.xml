@@ -81,7 +81,7 @@
 			<result type="tiles">eirc.organization.payment_points.list</result>
 		</action>
 
-		<action name="paymentPointsDelete" class="paymentPointsDeleteAction">
+		<action name="paymentPointsDelete" class="paymentPointDeleteAction">
 			<result name="redirectSuccess" type="redirect-action">paymentPointsList</result>
 		</action>
 
