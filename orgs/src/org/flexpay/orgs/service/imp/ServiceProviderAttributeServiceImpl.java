@@ -1,10 +1,10 @@
-package org.flexpay.payments.service.impl;
+package org.flexpay.orgs.service.imp;
 
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.orgs.persistence.ServiceProvider;
-import org.flexpay.payments.dao.ServiceProviderAttributeDao;
-import org.flexpay.payments.persistence.process.ServiceProviderAttribute;
-import org.flexpay.payments.service.ServiceProviderAttributeService;
+import org.flexpay.orgs.persistence.ServiceProviderAttribute;
+import org.flexpay.orgs.dao.ServiceProviderAttributeDao;
+import org.flexpay.orgs.service.ServiceProviderAttributeService;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Required;

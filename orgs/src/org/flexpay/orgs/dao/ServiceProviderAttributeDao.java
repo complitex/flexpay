@@ -1,7 +1,7 @@
-package org.flexpay.payments.dao;
+package org.flexpay.orgs.dao;
 
 import org.flexpay.common.dao.GenericDao;
-import org.flexpay.payments.persistence.process.ServiceProviderAttribute;
+import org.flexpay.orgs.persistence.ServiceProviderAttribute;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
