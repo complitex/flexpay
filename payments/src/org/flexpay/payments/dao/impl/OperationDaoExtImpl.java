@@ -1,6 +1,7 @@
 package org.flexpay.payments.dao.impl;
 
 import org.flexpay.common.dao.paging.Page;
+import org.flexpay.common.persistence.Stub;
 import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.orgs.persistence.Cashbox;
 import org.flexpay.payments.dao.OperationDaoExt;
@@ -23,7 +24,7 @@ public class OperationDaoExtImpl extends HibernateDaoSupport implements Operatio
 	private Logger log = LoggerFactory.getLogger(getClass());
 
     @SuppressWarnings ({"unchecked"})
-	public List<Operation> searchDocuments(Cashbox cashbox, final Long serviceTypeId, final Date begin, final Date end, final BigDecimal minimalSumm, final BigDecimal maximalSumm, final Page<Operation> pager) {
+	public List<Operation> searchDocuments(Stub<Cashbox> cashbox, final Long serviceTypeId, final Date begin, final Date end, final BigDecimal minimalSumm, final BigDecimal maximalSumm, final Page<Operation> pager) {
 
 		final StringBuilder hql = new StringBuilder("SELECT DISTINCT o FROM Operation o LEFT JOIN o.documents doc ");
 		final StringBuilder cntHql = new StringBuilder("SELECT COUNT(o) FROM Operation o LEFT JOIN o.documents doc ");
@@ -116,7 +117,7 @@ public class OperationDaoExtImpl extends HibernateDaoSupport implements Operatio
 	 * {@inheritDoc}
 	 */
     @SuppressWarnings ({"unchecked"})
-    public List<Operation> searchOperations(Cashbox cashbox, final Date begin, final Date end, final BigDecimal minimalSumm,
+    public List<Operation> searchOperations(Stub<Cashbox> cashbox, final Date begin, final Date end, final BigDecimal minimalSumm,
                                      final BigDecimal maximalSumm, final Page<Operation> pager) {
         final StringBuilder hql = new StringBuilder("SELECT DISTINCT o FROM Operation o LEFT JOIN o.documents doc ");
 		final StringBuilder cntHql = new StringBuilder("SELECT COUNT(o) FROM Operation o LEFT JOIN o.documents doc ");

@@ -18,7 +18,9 @@ public abstract class TestData {
 
 	public static final Stub<PaymentPoint> PAYMENT_POINT_1 = new Stub<PaymentPoint>(1L);
 	public static final Stub<PaymentPoint> PAYMENT_POINT_2 = new Stub<PaymentPoint>(2L);
+	public static final Stub<PaymentPoint> PAYMENT_POINT_3 = new Stub<PaymentPoint>(3L);
 
 	public static final Stub<Cashbox> CASHBOX_1 = new Stub<Cashbox>(1L);
 	public static final Stub<Cashbox> CASHBOX_2 = new Stub<Cashbox>(2L);
+	public static final Stub<Cashbox> CASHBOX_3 = new Stub<Cashbox>(2L);
 }

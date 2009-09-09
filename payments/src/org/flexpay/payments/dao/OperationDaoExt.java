@@ -1,6 +1,7 @@
 package org.flexpay.payments.dao;
 
 import org.flexpay.common.dao.paging.Page;
+import org.flexpay.common.persistence.Stub;
 import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.orgs.persistence.Cashbox;
 import org.flexpay.payments.persistence.Operation;
@@ -26,7 +27,7 @@ public interface OperationDaoExt {
 	 * @return list of operations which contains documents suitable to search criterias
 	 */
 	@Secured (Roles.OPERATION_READ)
-	List<Operation> searchDocuments(Cashbox cashbox, Long serviceTypeId, Date begin, Date end,
+	List<Operation> searchDocuments(Stub<Cashbox> cashbox, Long serviceTypeId, Date begin, Date end,
 									BigDecimal minimalSumm, BigDecimal maximalSumm, Page<Operation> pager);
 
     /**
@@ -41,6 +42,6 @@ public interface OperationDaoExt {
      * @return list of operations suitable to search criterias
      */
     @Secured(Roles.OPERATION_READ)
-    List<Operation> searchOperations(Cashbox cashbox, Date begin, Date end, BigDecimal minimalSumm,
+    List<Operation> searchOperations(Stub<Cashbox> cashbox, Date begin, Date end, BigDecimal minimalSumm,
                                      BigDecimal maximalSumm, Page<Operation> pager);
 }

@@ -15,7 +15,6 @@ import org.flexpay.orgs.persistence.Cashbox;
 import org.flexpay.orgs.service.PaymentPointService;
 import org.flexpay.orgs.service.PaymentsCollectorService;
 import org.flexpay.orgs.service.CashboxService;
-import org.flexpay.payments.actions.CashboxCookieWithPagerActionSupport;
 import org.flexpay.payments.actions.monitor.data.PaymentPointMonitorContainer;
 import org.flexpay.payments.persistence.OperationType;
 import org.flexpay.payments.persistence.Operation;
@@ -106,7 +105,7 @@ public class PaymentPointsListMonitorAction extends FPActionWithPagerSupport<Pay
                 }
             }
             List<OperationTypeStatistics> statistics = paymentsStatisticsService.operationTypePaymentPointStatistics(Stub.stub(paymentPoint), startDate, finishDate);
-            List<Operation> operations = operationService.listLastPaymentOperations(paymentPoint, startDate, finishDate);
+            List<Operation> operations = operationService.listLastPaymentOperationsForPaymentPoint(Stub.stub(paymentPoint), startDate, finishDate);
 
             container.setId(String.valueOf(paymentPoint.getId()));
             container.setName(paymentPoint.getName(getLocale()));

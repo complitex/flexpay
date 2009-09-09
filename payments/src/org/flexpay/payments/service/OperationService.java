@@ -95,7 +95,7 @@ public interface OperationService {
 	 * @return list of operations
 	 */
 	@Secured (Roles.OPERATION_READ)
-	List<Operation> listLastPaymentOperations(PaymentPoint paymentPoint, Date beginDate, Date endDate);
+	List<Operation> listLastPaymentOperationsForPaymentPoint(Stub<PaymentPoint> paymentPoint, Date beginDate, Date endDate);
 
 	/**
 	 * List last operations which have been created between <code>beginDate</code> and <code>endDate</code> NOTE:
@@ -107,7 +107,7 @@ public interface OperationService {
 	 * @return list of operations
 	 */
 	@Secured (Roles.OPERATION_READ)
-	List<Operation> listLastPaymentOperations(Cashbox cashbox, Date beginDate, Date endDate);
+	List<Operation> listLastPaymentOperationsForCashbox(Stub<Cashbox> cashbox, Date beginDate, Date endDate);
 
 	/**
 	 * List of all payment operations which has status REGISTERED inside time interval and organization
@@ -118,7 +118,7 @@ public interface OperationService {
 	 * @return list of payment operations
 	 */
 	@Secured (Roles.OPERATION_READ)
-	List<Operation> listReceivedPayments(Cashbox cashbox, Date beginDate, Date endDate);
+	List<Operation> listReceivedPaymentsForCashbox(Stub<Cashbox> cashbox, Date beginDate, Date endDate);
 
 	/**
 	 * List of all payment operations which has status REGISTERED inside time interval and organization
@@ -129,7 +129,7 @@ public interface OperationService {
 	 * @return list of payment operations
 	 */
 	@Secured (Roles.OPERATION_READ)
-	List<Operation> listReceivedPayments(Stub<PaymentPoint> stub, Date beginDate, Date endDate);
+	List<Operation> listReceivedPaymentsForPaymentPoint(Stub<PaymentPoint> stub, Date beginDate, Date endDate);
 
 	/**
 	 * List of all payment operations which has status REGISTERED inside time interval and organization
@@ -140,7 +140,7 @@ public interface OperationService {
 	 * @return list of payment operations
 	 */
 	@Secured (Roles.OPERATION_READ)
-	List<Operation> listReceivedPayments(Organization organization, Date beginDate, Date endDate);
+	List<Operation> listReceivedPaymentsForOrganization(Stub<Organization> organization, Date beginDate, Date endDate);
 
 	/**
 	 * List of all payment operations which has status RETURNED inside time interval and cashbox
@@ -151,7 +151,7 @@ public interface OperationService {
 	 * @return list of payment operations
 	 */
 	@Secured (Roles.OPERATION_READ)
-	List<Operation> listReturnedPayments(Cashbox cashbox, Date beginDate, Date endDate);
+	List<Operation> listReturnedPayments(Stub<Cashbox> cashbox, Date beginDate, Date endDate);
 
 	/**
 	 * Returns list of operations which contains documents suitable to search criterias
@@ -166,7 +166,8 @@ public interface OperationService {
 	 * @return list of operations which contains documents suitable to search criterias
 	 */
 	@Secured (Roles.OPERATION_READ)
-	List<Operation> searchDocuments(Cashbox cashbox, Long serviceTypeId, Date begin, Date end, BigDecimal minimalSumm, BigDecimal maximalSumm, Page<Operation> pager);
+	List<Operation> searchDocuments(Stub<Cashbox> cashbox, Long serviceTypeId, Date begin, Date end,
+									BigDecimal minimalSumm, BigDecimal maximalSumm, Page<Operation> pager);
 
 	/**
 	 * Returns list of operations suitable to search criterias
@@ -180,7 +181,8 @@ public interface OperationService {
 	 * @return list of operations suitable to search criterias
 	 */
 	@Secured (Roles.OPERATION_READ)
-	List<Operation> searchOperations(Cashbox cashbox, Date begin, Date end, BigDecimal minimalSumm, BigDecimal maximalSumm, Page<Operation> pager);
+	List<Operation> searchOperations(Stub<Cashbox> cashbox, Date begin, Date end,
+									 BigDecimal minimalSumm, BigDecimal maximalSumm, Page<Operation> pager);
 
 	/**
 	 * Creates new operation with no data and BLANK state
