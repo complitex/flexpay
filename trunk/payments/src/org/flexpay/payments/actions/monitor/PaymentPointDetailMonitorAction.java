@@ -108,7 +108,7 @@ public class PaymentPointDetailMonitorAction extends FPActionSupport {
         if (cbs != null) {
             for (Cashbox cashbox : cbs) {
                 statistics = paymentsStatisticsService.operationTypeCashboxStatistics(Stub.stub(cashbox), startDate, finishDate);
-                List<Operation> operations = operationService.listLastPaymentOperations(cashbox, startDate, finishDate);
+                List<Operation> operations = operationService.listLastPaymentOperationsForCashbox(Stub.stub(cashbox), startDate, finishDate);
                 String lastPayment = operations != null && operations.size() > 0? formatTime.format(operations.get(0).getCreationDate()): null;
 				String cashierFio = operations != null && operations.size() > 0 ? operations.get(0).getCashierFio() : null;
 

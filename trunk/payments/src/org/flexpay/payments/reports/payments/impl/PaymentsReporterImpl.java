@@ -205,11 +205,11 @@ public class PaymentsReporterImpl implements PaymentsReporter {
 	}
 
 	private List<Operation> getReceivedPayments(Date begin, Date end, Cashbox cashbox) {
-		return operationService.listReceivedPayments(cashbox, begin, end);
+		return operationService.listReceivedPaymentsForCashbox(Stub.stub(cashbox), begin, end);
 	}
 
 	private List<Operation> getReturnedPayments(Date begin, Date end, Cashbox cashbox) {
-		return operationService.listReturnedPayments(cashbox, begin, end);
+		return operationService.listReturnedPayments(Stub.stub(cashbox), begin, end);
 	}
 
 	private PaymentPoint getPaymentPoint(Cashbox cashbox) {
@@ -383,15 +383,14 @@ public class PaymentsReporterImpl implements PaymentsReporter {
 	private List<AccPaymentReportData.PaymentDetails> getCashboxPayments(Long cashboxId, int status, Date beginDate, Date endDate, Locale locale) {
 
 		List<AccPaymentReportData.PaymentDetails> operationDetailses = CollectionUtils.list();
-		Cashbox cashbox = cashboxService.read(new Stub<Cashbox>(cashboxId));
 
 		List<Operation> operations;
 		switch (status) {
 			case OperationStatus.REGISTERED:
-				operations = operationService.listReceivedPayments(cashbox, beginDate, endDate);
+				operations = operationService.listReceivedPaymentsForCashbox(new Stub<Cashbox>(cashboxId), beginDate, endDate);
 				break;
 			case OperationStatus.RETURNED:
-				operations = operationService.listReturnedPayments(cashbox, beginDate, endDate);
+				operations = operationService.listReturnedPayments(new Stub<Cashbox>(cashboxId), beginDate, endDate);
 				break;
 			default:
 				operations = CollectionUtils.list();

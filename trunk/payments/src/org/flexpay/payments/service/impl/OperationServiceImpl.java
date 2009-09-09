@@ -102,36 +102,36 @@ public class OperationServiceImpl implements OperationService {
 		return operationDao.listLastPaymentOperations(beginDate, endDate);
 	}
 
-	public List<Operation> listLastPaymentOperations(PaymentPoint paymentPoint, Date beginDate, Date endDate) {
+	public List<Operation> listLastPaymentOperationsForPaymentPoint(Stub<PaymentPoint> paymentPoint, Date beginDate, Date endDate) {
 		return operationDao.listLastPaymentPointPaymentOperations(paymentPoint.getId(), beginDate, endDate);
 	}
 
-	public List<Operation> listLastPaymentOperations(Cashbox cashbox, Date beginDate, Date endDate) {
+	public List<Operation> listLastPaymentOperationsForCashbox(Stub<Cashbox> cashbox, Date beginDate, Date endDate) {
 		return operationDao.listLastCashboxPaymentOperations(cashbox.getId(), beginDate, endDate);
 	}
 
-	public List<Operation> listReceivedPayments(Cashbox cashbox, Date beginDate, Date endDate) {
+	public List<Operation> listReceivedPaymentsForCashbox(Stub<Cashbox> cashbox, Date beginDate, Date endDate) {
 		return operationDao.listPayments(cashbox.getId(), beginDate, endDate, OperationStatus.REGISTERED);
 	}
 
-	public List<Operation> listReceivedPayments(Stub<PaymentPoint> stub, Date beginDate, Date endDate) {
+	public List<Operation> listReceivedPaymentsForPaymentPoint(Stub<PaymentPoint> stub, Date beginDate, Date endDate) {
 		return operationDao.listPaymentsByPaymentPoint(stub.getId(), beginDate, endDate, OperationStatus.REGISTERED);
 	}
 
-	public List<Operation> listReceivedPayments(Organization organization, Date beginDate, Date endDate) {
+	public List<Operation> listReceivedPaymentsForOrganization(Stub<Organization> organization, Date beginDate, Date endDate) {
 		return operationDao.listPaymentsByOrganization(organization.getId(), beginDate, endDate, OperationStatus.REGISTERED);
 	}
 
-	public List<Operation> listReturnedPayments(Cashbox cashbox, Date beginDate, Date endDate) {
+	public List<Operation> listReturnedPayments(Stub<Cashbox> cashbox, Date beginDate, Date endDate) {
 		return operationDao.listPayments(cashbox.getId(), beginDate, endDate, OperationStatus.RETURNED);
 	}
 
-	public List<Operation> searchDocuments(Cashbox cashbox, Long serviceTypeId, Date begin,
+	public List<Operation> searchDocuments(Stub<Cashbox> cashbox, Long serviceTypeId, Date begin,
 										   Date end, BigDecimal minimalSumm, BigDecimal maximalSumm, Page<Operation> pager) {
 		return operationDaoExt.searchDocuments(cashbox, serviceTypeId, begin, end, minimalSumm, maximalSumm, pager);
 	}
 
-	public List<Operation> searchOperations(Cashbox cashbox, Date begin, Date end, BigDecimal minimalSumm,
+	public List<Operation> searchOperations(Stub<Cashbox> cashbox, Date begin, Date end, BigDecimal minimalSumm,
 											BigDecimal maximalSumm, Page<Operation> pager) {
 		return operationDaoExt.searchOperations(cashbox, begin, end, minimalSumm, maximalSumm, pager);
 	}

@@ -216,13 +216,9 @@ public class OperationsListAction extends CashboxCookieWithPagerActionSupport<Op
 		return result;
 	}
 
-	private Cashbox getCashboxFilter() {
+	private Stub<Cashbox> getCashboxFilter() {
 		Long cID = Long.parseLong(cashboxIdFilter);
-		Cashbox cashbox = cashboxService.read(new Stub<Cashbox>(cID));
-		if (cashbox == null) {
-			throw new IllegalArgumentException("Invalid filter cashbox id: " + cashboxIdFilter);
-		}
-		return cashbox;
+		return new Stub<Cashbox>(cID);		
 	}
 
 	private Organization getSelfOrganization() {
