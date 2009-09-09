@@ -14,6 +14,7 @@ import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.orgs.dao.PaymentPointDao;
 import org.flexpay.orgs.persistence.PaymentPoint;
 import org.flexpay.orgs.persistence.PaymentsCollector;
+import org.flexpay.orgs.persistence.PaymentPointName;
 import org.flexpay.orgs.persistence.filters.PaymentPointsFilter;
 import org.flexpay.orgs.persistence.filters.PaymentsCollectorFilter;
 import org.flexpay.orgs.service.PaymentPointService;
@@ -205,6 +206,19 @@ public class PaymentPointServiceImpl implements PaymentPointService {
 
 		if (StringUtils.isBlank(point.getAddress())) {
 			ex.addException(new FlexPayException("No address", "eirc.error.payment_point.no_address"));
+		}
+
+		boolean defaultNameFound = false;
+		for (PaymentPointName translation : point.getNames()) {
+			log.debug("Validating translation: {}", translation);
+			boolean nameBlank = StringUtils.isBlank(translation.getName());
+			if (translation.getLang().isDefault() && !nameBlank) {
+				defaultNameFound = true;
+			}
+		}
+		if (!defaultNameFound) {
+			ex.addException(new FlexPayException(
+					"No default lang desc", "payments.error.cashbox.no_default_lang_name"));
 		}
 
 		if (ex.isNotEmpty()) {

@@ -15,12 +15,12 @@
 
     function pagerAjax(element) {
         FP.pagerAjax(element, {
-            action:"<s:url action="cashboxesListAjax" namespace="/payments" includeParams="none"/>"
+            action:"<s:url action="cashboxesListAjax" includeParams="none"/>"
         });
     }
 
     function deleteAjax() {
-        FP.deleteElements("<s:url action="cashboxDelete" namespace="/payments" includeParams="none" />", "objectIds", pagerAjax);
+        FP.deleteElements("<s:url action="cashboxDelete" includeParams="none" />", "objectIds", pagerAjax);
     }
 
 </script>

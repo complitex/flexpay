@@ -7,21 +7,34 @@
 	<package name="payment_points" namespace="/payments" extends="common">
 
 		<!-- payment points -->
-		<action name="paymentPointsList" class="paymentPointsListAction">
-			<result type="tiles">payments.organization.payment_points.list</result>
-		</action>
-
-		<action name="paymentPointsDelete" class="paymentPointsDeleteAction">
-			<result name="redirectSuccess" type="redirect-action">paymentPointsList</result>
-		</action>
+        <action name="paymentPointView" class="paymentPointViewAction">
+            <result type="tiles">payments.organization.payment_point.view</result>
+            <result name="redirectError" type="redirect-action">paymentPointsList</result>
+        </action>
 
 		<action name="paymentPointEdit" class="paymentPointEditAction">
 			<result name="input" type="tiles">payments.organization.payment_point.edit</result>
-			<result name="redirectSuccess" type="redirect-action">paymentPointsList</result>
+            <result name="redirectSuccess" type="redirect-action">
+                <param name="actionName">paymentPointView</param>
+                <param name="parse">true</param>
+                <param name="point.id">${point.id}</param>
+            </result>
 		</action>
 
 		<action name="paymentPointDetails" class="paymentPointDetailsAction">
 			<result type="tiles">payments.organization.payment_point.details</result>
+		</action>
+
+        <action name="paymentPointsList" class="paymentPointsListPageAction">
+            <result type="tiles">payments.organization.payment_points.list</result>
+        </action>
+
+        <action name="paymentPointsListAjax" class="paymentPointsListAction">
+            <result>/WEB-INF/jsp/orgs/payment_points/payment_points_list.jsp</result>
+        </action>
+
+		<action name="paymentPointDelete" class="paymentPointDeleteAction">
+            <result>/WEB-INF/jsp/common/responses/simple_response.jsp</result>
 		</action>
 
 		<!-- cashboxes -->

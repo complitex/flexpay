@@ -69,7 +69,7 @@
 			<td colspan="7">
 				<%@include file="/WEB-INF/jsp/common/filter/pager/pager.jsp" %>
 				<input type="submit" value="<s:text name="common.delete_selected" />" class="btn-exit"
-					   onclick="$('#fobjects').attr('action', '<s:url action="paymentPointsDelete" includeParams="none" />');"/>
+					   onclick="$('#fobjects').attr('action', '<s:url action="paymentPointDelete" includeParams="none" />');"/>
 				<input type="button" class="btn-exit"
 					   onclick="window.location='<s:url action="paymentPointEdit"><s:param name="point.id" value="0"/></s:url>';"
 					   value="<s:text name="common.new"/>"/>

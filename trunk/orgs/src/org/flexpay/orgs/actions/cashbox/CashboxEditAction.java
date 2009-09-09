@@ -27,6 +27,7 @@ public class CashboxEditAction extends FPActionSupport {
 	private PaymentPointService paymentPointService;
 
 	public CashboxEditAction() {
+		paymentPointsFilter.setAllowEmpty(false);
 		paymentPointsFilter.setNeedAutoChange(false);
 	}
 
@@ -35,7 +36,6 @@ public class CashboxEditAction extends FPActionSupport {
 	protected String doExecute() throws Exception {
 
 		cashbox = cashbox.isNew() ? cashbox : cashboxService.read(stub(cashbox));
-
 		if (cashbox == null) {
 			addActionError(getText("common.object_not_selected"));
 			return REDIRECT_SUCCESS;

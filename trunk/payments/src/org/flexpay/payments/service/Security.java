@@ -1,19 +1,20 @@
 package org.flexpay.payments.service;
 
 import org.flexpay.common.util.CollectionUtils;
+import static org.flexpay.payments.service.Roles.*;
 
 public abstract class Security extends org.flexpay.common.service.Security {
 
 	static {
 		USER_HISTORY_SYNCER_AUTHORITIES.addAll(CollectionUtils.list(
-				Roles.SERVICE_READ,
-				Roles.SERVICE_TYPE_READ,
-				Roles.SERVICE_ADD,
-				Roles.SERVICE_CHANGE,
-				Roles.SERVICE_DELETE,
-				Roles.SERVICE_TYPE_ADD,
-				Roles.SERVICE_TYPE_CHANGE,
-				Roles.SERVICE_TYPE_DELETE				
+				SERVICE_READ,
+				SERVICE_TYPE_READ,
+				SERVICE_ADD,
+				SERVICE_CHANGE,
+				SERVICE_DELETE,
+				SERVICE_TYPE_ADD,
+				SERVICE_TYPE_CHANGE,
+				SERVICE_TYPE_DELETE
 		));
 	}
 
