@@ -1,9 +1,12 @@
 package org.flexpay.eirc.persistence.exchange;
 
 import org.flexpay.common.exception.FlexPayException;
+import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.eirc.persistence.exchange.delayed.DelayedUpdateNope;
+import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.orgs.persistence.PaymentPoint;
+import org.flexpay.orgs.persistence.ServiceProvider;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -37,7 +40,7 @@ public class PaymentPointSetupOperation extends ContainerOperation {
 	@Override
 	public DelayedUpdate process(@NotNull ProcessingContext context) throws FlexPayException {
 
-		final PaymentPoint point = factory.getPaymentPointService().read(new Stub<PaymentPoint>(paymentPointId));
+		final PaymentPoint point = getPaymentPoint(context);
 		if (point == null) {
 			throw new FlexPayException("Cannot find payment point by id: " + paymentPointId);
 		}
@@ -53,4 +56,20 @@ public class PaymentPointSetupOperation extends ContainerOperation {
 
 		return DelayedUpdateNope.INSTANCE;
 	}
+
+    private PaymentPoint getPaymentPoint(@NotNull ProcessingContext context) {
+        ServiceProvider serviceProvider = factory.getServiceProviderService().getProvider(new Stub<Organization>(context.getRegistry().getRecipientCode()));
+        if (serviceProvider != null) {
+            return factory.getPaymentPointService().read(new Stub<PaymentPoint>(paymentPointId));
+        }
+        Organization senderOrganization = factory.getOrganizationService().readFull(new Stub<Organization>(context.getRegistry().getSenderCode()));
+        if (senderOrganization != null) {
+            DataSourceDescription dsDescription = senderOrganization.getDataSourceDescription();
+            Stub<PaymentPoint> paymentPointStub = factory.getCorrectionsService().findCorrection(String.valueOf(paymentPointId), PaymentPoint.class, Stub.stub(dsDescription));
+            if (paymentPointStub != null) {
+                return factory.getPaymentPointService().read(paymentPointStub);
+            }
+        }
+        return null;
+    }
 }
