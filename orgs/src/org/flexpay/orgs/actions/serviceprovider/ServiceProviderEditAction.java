@@ -22,29 +22,31 @@ public class ServiceProviderEditAction extends FPActionSupport {
 	private ServiceProvider provider = new ServiceProvider();
 	private Map<Long, String> descriptions = CollectionUtils.map();
 
+	private String crumbCreateKey;
 	private ServiceProviderService providerService;
 	private OrganizationService organizationService;
 
-	@NotNull
-	public String doExecute() throws Exception {
+	public ServiceProviderEditAction() {
+		organizationFilter.setAllowEmpty(false);
+	}
 
-		if (provider.getId() == null) {
-			addActionError("No object was selected");
-			return REDIRECT_SUCCESS;
-		}
+	@NotNull
+	@Override
+	public String doExecute() throws Exception {
 
 		ServiceProvider serviceProvider = provider.isNew() ? provider : providerService.read(stub(provider));
 		if (serviceProvider == null) {
-			addActionError(getText("error.invalid_id"));
+			addActionError(getText("common.object_not_selected"));
 			return REDIRECT_SUCCESS;
 		}
+
 		organizationFilter = providerService.initInstancelessFilter(organizationFilter, serviceProvider);
 		if (organizationFilter.getOrganizations().isEmpty()) {
 			addActionError(getText("eirc.error.service_provider.no_providerless_organization"));
 			return INPUT;
 		}
 
-		if (!isSubmit()) {
+		if (isNotSubmit()) {
 			provider = serviceProvider;
 			initDescriptions();
 			return INPUT;
@@ -60,21 +62,11 @@ public class ServiceProviderEditAction extends FPActionSupport {
 			return INPUT;
 		}
 
-		log.info("Service provider descriptions: {}", descriptions);
-
 		for (Map.Entry<Long, String> name : descriptions.entrySet()) {
 			String value = name.getValue();
 			Language lang = getLang(name.getKey());
-			ServiceProviderDescription description = new ServiceProviderDescription();
-			description.setLang(lang);
-			description.setName(value);
-
-			log.info("Setting description: {}", description);
-
-			serviceProvider.setDescription(description);
+			serviceProvider.setDescription(new ServiceProviderDescription(value, lang));
 		}
-
-		log.info("New Service provider descriptions: {}", serviceProvider.getDescriptions());
 
 		serviceProvider.setOrganization(juridicalPerson);
         if (serviceProvider.isNew()) {
@@ -95,8 +87,17 @@ public class ServiceProviderEditAction extends FPActionSupport {
 	 * @return {@link #ERROR} by default
 	 */
 	@NotNull
+	@Override
 	protected String getErrorResult() {
 		return INPUT;
+	}
+
+	@Override
+	protected void setBreadCrumbs() {
+		if (provider.isNew()) {
+			crumbNameKey = crumbCreateKey;
+		}
+		super.setBreadCrumbs();
 	}
 
 	private void initDescriptions() {
@@ -134,6 +135,10 @@ public class ServiceProviderEditAction extends FPActionSupport {
 
 	public void setOrganizationFilter(OrganizationFilter organizationFilter) {
 		this.organizationFilter = organizationFilter;
+	}
+
+	public void setCrumbCreateKey(String crumbCreateKey) {
+		this.crumbCreateKey = crumbCreateKey;
 	}
 
 	@Required

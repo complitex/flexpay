@@ -5,13 +5,13 @@ import org.flexpay.common.persistence.Language;
 import static org.flexpay.common.persistence.Stub.stub;
 import static org.flexpay.common.util.CollectionUtils.map;
 import org.flexpay.common.util.config.ApplicationConfig;
-import org.flexpay.orgs.persistence.ServiceOrganization;
 import org.flexpay.orgs.persistence.Organization;
+import org.flexpay.orgs.persistence.ServiceOrganization;
 import org.flexpay.orgs.persistence.ServiceOrganizationDescription;
 import org.flexpay.orgs.persistence.filters.OrganizationFilter;
 import org.flexpay.orgs.service.OrganizationService;
-import org.flexpay.orgs.service.ServiceOrganizationService;
 import org.flexpay.orgs.service.OrgsObjectsFactory;
+import org.flexpay.orgs.service.ServiceOrganizationService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
@@ -23,35 +23,33 @@ public class ServiceOrganizationEditAction extends FPActionSupport {
 	private ServiceOrganization serviceOrganization = ServiceOrganization.newInstance();
 	private Map<Long, String> descriptions = map();
 
+	private String crumbCreateKey;
 	private ServiceOrganizationService serviceOrganizationService;
 	private OrganizationService organizationService;
 	private OrgsObjectsFactory objectsFactory;
 
+	public ServiceOrganizationEditAction() {
+		organizationFilter.setAllowEmpty(false);
+	}
+
 	@NotNull
+	@Override
 	public String doExecute() throws Exception {
 
-		if (serviceOrganization.getId() == null) {
-			addActionError(getText("error.no_id"));
-			return REDIRECT_SUCCESS;
-		}
-
-		ServiceOrganization old = serviceOrganization.isNew()
+		serviceOrganization = serviceOrganization.isNew()
 								  ? objectsFactory.newServiceOrganization()
 								  : serviceOrganizationService.read(stub(serviceOrganization));
-		if (old == null) {
-			addActionError(getText("error.invalid_id"));
+		if (serviceOrganization == null) {
+			addActionError(getText("common.object_not_selected"));
 			return REDIRECT_SUCCESS;
 		}
 
-		old.setId(serviceOrganization.getId());
-		serviceOrganizationService.initInstancelessFilter(organizationFilter, old);
+		serviceOrganizationService.initInstancelessFilter(organizationFilter, serviceOrganization);
 
-		// prepare initial setup
-		if (!isSubmit()) {
-			if (old.isNotNew()) {
-				organizationFilter.setSelectedId(old.getOrganizationStub().getId());
+		if (isNotSubmit()) {
+			if (serviceOrganization.isNotNew()) {
+				organizationFilter.setSelectedId(serviceOrganization.getOrganizationStub().getId());
 			}
-			serviceOrganization = old;
 			initDescriptions();
 			return INPUT;
 		}
@@ -66,26 +64,21 @@ public class ServiceOrganizationEditAction extends FPActionSupport {
 			return INPUT;
 		}
 
-		log.debug("Service organization descriptions: {}", descriptions);
-
-		old.setOrganization(juridicalPerson);
+		serviceOrganization.setOrganization(juridicalPerson);
 
 		for (Map.Entry<Long, String> name : descriptions.entrySet()) {
 			String value = name.getValue();
 			Language lang = getLang(name.getKey());
-			ServiceOrganizationDescription description = new ServiceOrganizationDescription();
-			description.setLang(lang);
-			description.setName(value);
-			old.setDescription(description);
+			serviceOrganization.setDescription(new ServiceOrganizationDescription(value, lang));
 		}
 
-		if (old.isNew()) {
-			serviceOrganizationService.create(old);
+		if (serviceOrganization.isNew()) {
+			serviceOrganizationService.create(serviceOrganization);
 		} else {
-			serviceOrganizationService.update(old);
+			serviceOrganizationService.update(serviceOrganization);
 		}
 
-		addActionError(getText("orgs.service_organization.saved"));
+		addActionMessage(getText("orgs.service_organization.saved"));
 
 		return REDIRECT_SUCCESS;
 	}
@@ -98,8 +91,17 @@ public class ServiceOrganizationEditAction extends FPActionSupport {
 	 * @return {@link #ERROR} by default
 	 */
 	@NotNull
+	@Override
 	protected String getErrorResult() {
 		return INPUT;
+	}
+
+	@Override
+	protected void setBreadCrumbs() {
+		if (serviceOrganization.isNew()) {
+			crumbNameKey = crumbCreateKey;
+		}
+		super.setBreadCrumbs();
 	}
 
 	private void initDescriptions() {
@@ -137,6 +139,10 @@ public class ServiceOrganizationEditAction extends FPActionSupport {
 
 	public void setOrganizationFilter(OrganizationFilter organizationFilter) {
 		this.organizationFilter = organizationFilter;
+	}
+
+	public void setCrumbCreateKey(String crumbCreateKey) {
+		this.crumbCreateKey = crumbCreateKey;
 	}
 
 	@Required

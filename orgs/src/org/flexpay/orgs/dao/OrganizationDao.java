@@ -36,4 +36,5 @@ public interface OrganizationDao extends GenericDao<Organization, Long> {
 	 * @return list of organizations
 	 */
 	List<Organization> findOrganizationsWithCollectors();
+
 }

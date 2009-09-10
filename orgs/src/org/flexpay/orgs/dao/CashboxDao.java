@@ -10,6 +10,7 @@ import java.util.List;
 public interface CashboxDao extends GenericDao<Cashbox, Long> {
 
 	List<Cashbox> findCashboxes(Page<Cashbox> pager);
+
     List<Cashbox> findCashboxesForPaymentPoint(@NotNull Long paymentPointId);
 
 }

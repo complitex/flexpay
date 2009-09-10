@@ -44,4 +44,5 @@ public abstract class Security extends org.flexpay.common.service.Security {
 	public static void touch() {
 		// do nothing
 	}
+
 }

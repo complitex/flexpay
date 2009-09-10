@@ -1,20 +1,21 @@
 package org.flexpay.orgs.actions.serviceprovider;
 
 import org.flexpay.common.actions.FPActionSupport;
+import static org.flexpay.common.util.CollectionUtils.set;
 import org.flexpay.orgs.service.ServiceProviderService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
-import java.util.HashSet;
 import java.util.Set;
 
 public class ServiceProviderDeleteAction extends FPActionSupport {
 
-	private Set<Long> objectIds = new HashSet<Long>();
+	private Set<Long> objectIds = set();
 
 	private ServiceProviderService providerService;
 
 	@NotNull
+	@Override
 	public String doExecute() throws Exception {
 
 		providerService.disable(objectIds);
@@ -30,12 +31,9 @@ public class ServiceProviderDeleteAction extends FPActionSupport {
 	 * @return {@link #ERROR} by default
 	 */
 	@NotNull
+	@Override
 	protected String getErrorResult() {
 		return SUCCESS;
-	}
-
-	public Set<Long> getObjectIds() {
-		return objectIds;
 	}
 
 	public void setObjectIds(Set<Long> objectIds) {
@@ -46,4 +44,5 @@ public class ServiceProviderDeleteAction extends FPActionSupport {
 	public void setProviderService(ServiceProviderService providerService) {
 		this.providerService = providerService;
 	}
+
 }

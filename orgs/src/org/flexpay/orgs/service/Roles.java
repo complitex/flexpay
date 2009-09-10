@@ -43,4 +43,5 @@ public abstract class Roles {
 	public static final String CASHBOX_CHANGE = PREFIX + "CASHBOX_CHANGE";
 	public static final String CASHBOX_ADD = PREFIX + "CASHBOX_ADD";
 	public static final String CASHBOX_DELETE = PREFIX + "CASHBOX_DELETE";	
+
 }

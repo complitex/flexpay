@@ -17,6 +17,7 @@ public class ConfigLoader extends org.flexpay.common.util.config.ConfigLoader {
 	 * @return ApplicationConfig
 	 */
 	@NotNull
+	@Override
 	protected ApplicationConfig getNewConfig() {
 		return new ApplicationConfig();
 	}
@@ -26,7 +27,9 @@ public class ConfigLoader extends org.flexpay.common.util.config.ConfigLoader {
 	 *
 	 * @param d Digester
 	 */
+	@Override
 	protected void addRules(Digester d) {
 		super.addRules(d);
 	}
+
 }

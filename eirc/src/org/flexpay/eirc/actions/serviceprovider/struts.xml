@@ -7,17 +7,30 @@
 	<package name="eirc-service-providers" namespace="/eirc" extends="common">
 
 		<!-- Service Providers -->
-		<action name="serviceProvidersList" class="serviceProvidersListAction">
+        <action name="serviceProviderView" class="serviceProviderViewAction">
+            <result type="tiles">eirc.service_provider.view</result>
+            <result name="redirectError" type="redirect-action">serviceProvidersList</result>
+        </action>
+
+        <action name="serviceProviderEdit" class="serviceProviderEditAction">
+            <result name="input" type="tiles">eirc.service_provider.edit</result>
+            <result name="redirectSuccess" type="redirect-action">
+                <param name="actionName">serviceProviderView</param>
+                <param name="parse">true</param>
+                <param name="provider.id">${provider.id}</param>
+            </result>
+        </action>
+
+		<action name="serviceProvidersList" class="serviceProvidersListPageAction">
 			<result type="tiles">eirc.service_providers.list</result>
 		</action>
 
-		<action name="serviceProviderDelete" class="serviceProviderDeleteAction">
-			<result type="redirect-action">serviceProvidersList</result>
-		</action>
+        <action name="serviceProvidersListAjax" class="serviceProvidersListAction">
+            <result>/WEB-INF/jsp/orgs/service_providers/service_providers_list.jsp</result>
+        </action>
 
-		<action name="serviceProviderEdit" class="serviceProviderEditAction">
-			<result name="input" type="tiles">eirc.service_provider.edit</result>
-			<result name="redirectSuccess" type="redirect-action">serviceProvidersList</result>
+		<action name="serviceProviderDelete" class="serviceProviderDeleteAction">
+            <result>/WEB-INF/jsp/common/responses/simple_response.jsp</result>
 		</action>
 
 	</package>

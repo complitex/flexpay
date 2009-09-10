@@ -7,6 +7,16 @@
 		   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
 	<!-- Organisation actions -->
+    <bean id="organizationViewAction"
+          class="org.flexpay.orgs.actions.organization.OrganizationViewAction"
+          p:organizationService-ref="organizationService"
+          p:crumbNameKey="orgs.crumbs.organization_view"
+          scope="prototype" />
+
+    <bean id="organizationsListPageAction" parent="staticPageAction"
+          p:crumbNameKey="orgs.crumbs.organizations_list"
+          scope="prototype" />
+
 	<bean id="organizationsListAction"
 		  class="org.flexpay.orgs.actions.organization.OrganizationsListAction"
 		  p:organizationService-ref="organizationService"
@@ -20,6 +30,8 @@
 	<bean id="organizationEditAction"
 		  class="org.flexpay.orgs.actions.organization.OrganizationEditAction"
 		  p:organizationService-ref="organizationService"
+          p:crumbNameKey="orgs.crumbs.organization_edit"
+          p:crumbCreateKey="orgs.crumbs.organization_create"
           scope="prototype" />
 
 	<bean id="organizationHelper"
@@ -100,6 +112,16 @@
           scope="prototype" />
 
 	<!-- Service organization actions -->
+    <bean id="serviceOrganizationViewAction"
+          class="org.flexpay.orgs.actions.serviceorganization.ServiceOrganizationViewAction"
+          p:serviceOrganizationService-ref="serviceOrganizationService"
+          p:crumbNameKey="orgs.crumbs.service_organization_view"
+          scope="prototype" />
+
+    <bean id="serviceOrganizationsListPageAction" parent="staticPageAction"
+          p:crumbNameKey="orgs.crumbs.service_organizations_list"
+          scope="prototype" />
+
 	<bean id="serviceOrganizationsListAction"
 		  class="org.flexpay.orgs.actions.serviceorganization.ServiceOrganizationsListAction"
 		  p:serviceOrganizationService-ref="serviceOrganizationService"
@@ -115,9 +137,21 @@
 		  p:organizationService-ref="organizationService"
 		  p:serviceOrganizationService-ref="serviceOrganizationService"
 		  p:objectsFactory-ref="orgsObjectsFactory"
+          p:crumbCreateKey="orgs.crumbs.service_organization_create"
+          p:crumbNameKey="orgs.crumbs.service_organization_edit"
           scope="prototype" />
 
 	<!-- Service provider actions -->
+    <bean id="serviceProviderViewAction"
+          class="org.flexpay.orgs.actions.serviceprovider.ServiceProviderViewAction"
+          p:providerService-ref="serviceProviderService"
+          p:crumbNameKey="orgs.crumbs.service_provider_view"
+          scope="prototype" />
+
+    <bean id="serviceProvidersListPageAction" parent="staticPageAction"
+          p:crumbNameKey="orgs.crumbs.service_providers_list"
+          scope="prototype" />
+
 	<bean id="serviceProvidersListAction"
 		  class="org.flexpay.orgs.actions.serviceprovider.ServiceProvidersListAction"
 		  p:providerService-ref="serviceProviderService"
@@ -132,6 +166,8 @@
 		  class="org.flexpay.orgs.actions.serviceprovider.ServiceProviderEditAction"
 		  p:organizationService-ref="organizationService"
 		  p:providerService-ref="serviceProviderService"
+          p:crumbCreateKey="orgs.crumbs.service_provider_create"
+          p:crumbNameKey="orgs.crumbs.service_provider_edit"
           scope="prototype" />
 
 	<!-- Subdivision actions -->

@@ -24,4 +24,5 @@ public class ServiceProvider extends OrganizationInstance<ServiceProviderDescrip
 	public void setEmail(String email) {
 		this.email = email;
 	}
+
 }

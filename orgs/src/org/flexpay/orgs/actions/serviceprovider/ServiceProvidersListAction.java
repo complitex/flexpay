@@ -1,21 +1,22 @@
 package org.flexpay.orgs.actions.serviceprovider;
 
 import org.flexpay.common.actions.FPActionWithPagerSupport;
+import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.orgs.persistence.ServiceProvider;
 import org.flexpay.orgs.service.ServiceProviderService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
-import java.util.Collections;
 import java.util.List;
 
 public class ServiceProvidersListAction extends FPActionWithPagerSupport<ServiceProvider> {
 
-	private List<ServiceProvider> providers = Collections.emptyList();
+	private List<ServiceProvider> providers = CollectionUtils.list();
 
 	private ServiceProviderService providerService;
 
 	@NotNull
+	@Override
 	public String doExecute() throws Exception {
 
 		providers = providerService.listInstances(getPager());
@@ -31,6 +32,7 @@ public class ServiceProvidersListAction extends FPActionWithPagerSupport<Service
 	 * @return {@link #ERROR} by default
 	 */
 	@NotNull
+	@Override
 	protected String getErrorResult() {
 		return SUCCESS;
 	}

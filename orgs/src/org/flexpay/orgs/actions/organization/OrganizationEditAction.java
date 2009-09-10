@@ -20,6 +20,7 @@ public class OrganizationEditAction extends FPActionSupport {
 	private Map<Long, String> names = map();
 	private Map<Long, String> descriptions = map();
 
+	private String crumbCreateKey;
 	private transient OrganizationService organizationService;
 
 	@NotNull
@@ -32,15 +33,12 @@ public class OrganizationEditAction extends FPActionSupport {
 			return REDIRECT_SUCCESS;
 		}
 
-		if (!isSubmit()) {
+		if (isNotSubmit()) {
 			organization = org;
 			initNames();
 			initDescriptions();
 			return INPUT;
 		}
-
-		log.info("Organization names: {}", names);
-		log.info("Organization descriptions: {}", descriptions);
 
 		org.setKpp(organization.getKpp());
 		org.setIndividualTaxNumber(organization.getIndividualTaxNumber());
@@ -50,19 +48,14 @@ public class OrganizationEditAction extends FPActionSupport {
 		for (Map.Entry<Long, String> name : names.entrySet()) {
 			String value = name.getValue();
 			Language lang = getLang(name.getKey());
-			OrganizationName organizationName = new OrganizationName();
-			organizationName.setLang(lang);
-			organizationName.setName(value);
-			org.setName(organizationName);
+			org.setName(new OrganizationName(value, lang));
 		}
 
 		for (Map.Entry<Long, String> name : descriptions.entrySet()) {
 			String value = name.getValue();
 			Language lang = getLang(name.getKey());
 			OrganizationDescription organizationDescription = new OrganizationDescription();
-			organizationDescription.setLang(lang);
-			organizationDescription.setName(value);
-			org.setDescription(organizationDescription);
+			org.setDescription(new OrganizationDescription(value, lang));
 		}
 
 		if (org.isNew()) {
@@ -71,7 +64,7 @@ public class OrganizationEditAction extends FPActionSupport {
 			organizationService.update(org);
 		}
 
-		addActionError(getText("orgs.saved"));
+		addActionMessage(getText("orgs.saved"));
 
 		return REDIRECT_SUCCESS;
 	}
@@ -86,6 +79,14 @@ public class OrganizationEditAction extends FPActionSupport {
 	@NotNull
 	protected String getErrorResult() {
 		return INPUT;
+	}
+
+	@Override
+	protected void setBreadCrumbs() {
+		if (organization.isNew()) {
+			crumbNameKey = crumbCreateKey;
+		}
+		super.setBreadCrumbs();
 	}
 
 	private void initNames() {
@@ -136,6 +137,10 @@ public class OrganizationEditAction extends FPActionSupport {
 
 	public void setDescriptions(Map<Long, String> descriptions) {
 		this.descriptions = descriptions;
+	}
+
+	public void setCrumbCreateKey(String crumbCreateKey) {
+		this.crumbCreateKey = crumbCreateKey;
 	}
 
 	@Required

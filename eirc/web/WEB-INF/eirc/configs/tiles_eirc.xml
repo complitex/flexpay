@@ -152,14 +152,18 @@
 	<!-- Organizations -->
 	<definition name="eirc.organizations.list" extends="eirc.dictionaries">
 		<put-attribute name="title" value="eirc.organizations" />
-		<put-attribute name="body" value="/WEB-INF/jsp/orgs/organizations/list_organizations.jsp" />
+		<put-attribute name="body" value="/WEB-INF/jsp/orgs/organizations/organizations_list_page.jsp" />
 	</definition>
 
 	<definition name="eirc.organization.edit" extends="eirc.dictionaries">
 		<put-attribute name="title" value="eirc.organization" />
-		<put-attribute name="body" value="/WEB-INF/jsp/orgs/organizations/edit_organization.jsp" />
+		<put-attribute name="body" value="/WEB-INF/jsp/orgs/organizations/organization_edit.jsp" />
 	</definition>
 
+    <definition name="eirc.organization.view" extends="eirc.dictionaries">
+        <put-attribute name="title" value="eirc.organizations" />
+        <put-attribute name="body" value="/WEB-INF/jsp/orgs/organizations/organization_view.jsp" />
+    </definition>
 
 	<!-- Subdivisions -->
     <definition name="eirc.dictionaries" extends="ab.layout.standart">
@@ -168,12 +172,12 @@
 
 	<definition name="eirc.organization.subdivisions.list" extends="eirc.dictionaries">
 		<put-attribute name="title" value="eirc.subdivisions" />
-		<put-attribute name="body" value="/WEB-INF/jsp/orgs/organizations/list_subdivisions.jsp" />
+		<put-attribute name="body" value="/WEB-INF/jsp/orgs/subdivisions/list_subdivisions.jsp" />
 	</definition>
 
 	<definition name="eirc.organization.subdivision.edit" extends="eirc.dictionaries">
 		<put-attribute name="title" value="eirc.subdivision" />
-		<put-attribute name="body" value="/WEB-INF/jsp/orgs/organizations/edit_subdivision.jsp" />
+		<put-attribute name="body" value="/WEB-INF/jsp/orgs/subdivisions/edit_subdivision.jsp" />
 	</definition>
 
 	<!-- Banks -->
@@ -230,14 +234,19 @@
 	</definition>
 
     <!-- Service organizations -->
+    <definition name="eirc.organization.service_organization.view" extends="eirc.dictionaries">
+        <put-attribute name="title" value="eirc.service_organizations" />
+        <put-attribute name="body" value="/WEB-INF/jsp/orgs/service_organizations/service_organization_view.jsp" />
+    </definition>
+
     <definition name="eirc.organization.service_organizations.list" extends="eirc.dictionaries">
         <put-attribute name="title" value="eirc.service_organizations" />
-        <put-attribute name="body" value="/WEB-INF/jsp/orgs/organizations/service_organizations_list.jsp" />
+        <put-attribute name="body" value="/WEB-INF/jsp/orgs/service_organizations/service_organizations_list_page.jsp" />
     </definition>
 
     <definition name="eirc.organization.service_organization.edit" extends="eirc.dictionaries">
         <put-attribute name="title" value="eirc.service_organization" />
-        <put-attribute name="body" value="/WEB-INF/jsp/orgs/organizations/service_organization_edit.jsp" />
+        <put-attribute name="body" value="/WEB-INF/jsp/orgs/service_organizations/service_organization_edit.jsp" />
     </definition>
 
     <definition name="eirc.organization.service_organization.list_served_buildings" extends="eirc.dictionaries">
@@ -251,14 +260,19 @@
     </definition>
 
 	<!-- Service Providers -->
+    <definition name="eirc.service_provider.view" extends="eirc.dictionaries">
+        <put-attribute name="title" value="eirc.service_providers" />
+        <put-attribute name="body" value="/WEB-INF/jsp/orgs/service_providers/service_provider_view.jsp" />
+    </definition>
+
 	<definition name="eirc.service_providers.list" extends="eirc.dictionaries">
 		<put-attribute name="title" value="eirc.service_providers" />
-		<put-attribute name="body" value="/WEB-INF/jsp/orgs/service_providers/list_service_providers.jsp" />
+		<put-attribute name="body" value="/WEB-INF/jsp/orgs/service_providers/service_providers_list_page.jsp" />
 	</definition>
 
 	<definition name="eirc.service_provider.edit" extends="eirc.dictionaries">
 		<put-attribute name="title" value="eirc.service_provider" />
-		<put-attribute name="body" value="/WEB-INF/jsp/orgs/service_providers/edit_service_provider.jsp" />
+		<put-attribute name="body" value="/WEB-INF/jsp/orgs/service_providers/service_provider_edit.jsp" />
 	</definition>
 
 
