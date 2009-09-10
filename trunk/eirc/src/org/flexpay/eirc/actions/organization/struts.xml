@@ -7,17 +7,30 @@
 	<package name="organizations" namespace="/eirc" extends="common">
 
 		<!-- Organizations -->
-		<action name="organizationsList" class="organizationsListAction">
+        <action name="organizationView" class="organizationViewAction">
+            <result type="tiles">eirc.organization.view</result>
+            <result name="redirectError" type="redirect-action">organizationsList</result>
+        </action>
+
+        <action name="organizationEdit" class="organizationEditAction">
+            <result name="input" type="tiles">eirc.organization.edit</result>
+            <result name="redirectSuccess" type="redirect-action">
+                <param name="actionName">organizationView</param>
+                <param name="parse">true</param>
+                <param name="organization.id">${organization.id}</param>
+            </result>
+        </action>
+
+		<action name="organizationsList" class="organizationsListPageAction">
 			<result type="tiles">eirc.organizations.list</result>
 		</action>
 
-		<action name="organizationDelete" class="organizationDeleteAction">
-			<result name="redirectSuccess" type="redirect-action">organizationsList</result>
-		</action>
+        <action name="organizationsListAjax" class="organizationsListAction">
+            <result>/WEB-INF/jsp/orgs/organizations/organizations_list.jsp</result>
+        </action>
 
-		<action name="organizationEdit" class="organizationEditAction">
-			<result name="input" type="tiles">eirc.organization.edit</result>
-			<result name="redirectSuccess" type="redirect-action">organizationsList</result>
+		<action name="organizationDelete" class="organizationDeleteAction">
+            <result>/WEB-INF/jsp/common/responses/simple_response.jsp</result>
 		</action>
 
 		<!-- Subdivisions -->
@@ -134,17 +147,30 @@
 		</action>
 
         <!-- Service organizations -->
-        <action name="serviceOrganizationsList" class="serviceOrganizationsListAction">
-            <result type="tiles">eirc.organization.service_organizations.list</result>
-        </action>
-
-        <action name="serviceOrganizationDelete" class="serviceOrganizationDeleteAction">
-            <result name="redirectSuccess" type="redirect-action">serviceOrganizationsList</result>
+        <action name="serviceOrganizationView" class="serviceOrganizationViewAction">
+            <result type="tiles">eirc.organization.service_organization.view</result>
+            <result name="redirectError" type="redirect-action">serviceOrganizationsList</result>
         </action>
 
         <action name="serviceOrganizationEdit" class="serviceOrganizationEditAction">
             <result name="input" type="tiles">eirc.organization.service_organization.edit</result>
-            <result name="redirectSuccess" type="redirect-action">serviceOrganizationsList</result>
+            <result name="redirectSuccess" type="redirect-action">
+                <param name="actionName">serviceOrganizationView</param>
+                <param name="parse">true</param>
+                <param name="serviceOrganization.id">${serviceOrganization.id}</param>
+            </result>
+        </action>
+
+        <action name="serviceOrganizationsList" class="serviceOrganizationsListPageAction">
+            <result type="tiles">eirc.organization.service_organizations.list</result>
+        </action>
+
+        <action name="serviceOrganizationsListAjax" class="serviceOrganizationsListAction">
+            <result>/WEB-INF/jsp/orgs/service_organizations/service_organizations_list.jsp</result>
+        </action>
+
+        <action name="serviceOrganizationDelete" class="serviceOrganizationDeleteAction">
+            <result>/WEB-INF/jsp/common/responses/simple_response.jsp</result>
         </action>
 
         <action name="serviceOrganizationListServedBuildings" class="serviceOrganizationListServedBuildingsAction">

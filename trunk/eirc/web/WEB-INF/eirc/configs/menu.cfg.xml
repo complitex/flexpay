@@ -86,10 +86,10 @@
 	<bean name="eirc_dicts_payments_collectors" parent="eirc_dicts"
           p:name="eirc.payments_collectors"
           p:title="eirc.payments_collectors"
-          p:action="paymentsCollectorsList"
+          p:action="mainCashboxesDicts"
           p:parent-ref="eirc_dicts">
         <property name="userRole">
-            <util:constant static-field="org.flexpay.eirc.service.Roles.ROLE_MENU_EIRC_DICTS_PAYMENTS_COLLECTORS" />
+            <util:constant static-field="org.flexpay.eirc.service.Roles.ROLE_MENU_EIRC_CASHBOXES_DICTS" />
         </property>
     </bean>
 

@@ -40,4 +40,5 @@ public interface ServiceOrganizationDao extends GenericDao<ServiceOrganization, 
      * @return List of organizations that are not service organizations
      */
     List<Organization> findServiceOrganizationlessOrganizations(Long includedServiceOrganizationId);
+
 }

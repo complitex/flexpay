@@ -36,4 +36,5 @@ public interface OrganisationInstanceDao<
 	 * @return List of organizations that are not instances of type T
 	 */
 	List<Organization> findInstancelessOrganizations(Long includedId);
+
 }

@@ -17,4 +17,5 @@ public interface SubdivisionDao extends GenericDao<Subdivision, Long> {
 	 */
 	@NotNull
 	List<Subdivision> findSubdivisions(@NotNull Long headId, @NotNull Long juridicalId);
+
 }

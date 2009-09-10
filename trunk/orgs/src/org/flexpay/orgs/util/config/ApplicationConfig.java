@@ -8,4 +8,5 @@ public class ApplicationConfig extends org.flexpay.common.util.config.Applicatio
 		// ensure Security fields are initialised
 		Security.touch();
 	}
+
 }

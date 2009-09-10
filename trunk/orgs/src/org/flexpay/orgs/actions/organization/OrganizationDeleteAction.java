@@ -15,10 +15,12 @@ public class OrganizationDeleteAction extends FPActionSupport {
 	private OrganizationService organizationService;
 
 	@NotNull
+	@Override
 	public String doExecute() throws Exception {
+
 		organizationService.disable(objectIds);
 
-		return REDIRECT_SUCCESS;
+		return SUCCESS;
 	}
 
 	/**
@@ -29,12 +31,9 @@ public class OrganizationDeleteAction extends FPActionSupport {
 	 * @return {@link #ERROR} by default
 	 */
 	@NotNull
+	@Override
 	protected String getErrorResult() {
-		return REDIRECT_SUCCESS;
-	}
-
-	public Set<Long> getObjectIds() {
-		return objectIds;
+		return SUCCESS;
 	}
 
 	public void setObjectIds(Set<Long> objectIds) {

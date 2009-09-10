@@ -14,6 +14,7 @@ public class ServiceProviderDaoExtImpl extends HibernateDaoSupport implements Se
 	 * @param id Organization key
 	 * @return ServiceProvider instance
 	 */
+	@Override
 	public ServiceProvider findByNumber(Long id) {
 		try {
 			getHibernateTemplate().setMaxResults(1);
@@ -24,4 +25,5 @@ public class ServiceProviderDaoExtImpl extends HibernateDaoSupport implements Se
 			getHibernateTemplate().setMaxResults(0);
 		}
 	}
+
 }

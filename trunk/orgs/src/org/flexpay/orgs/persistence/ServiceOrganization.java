@@ -5,9 +5,6 @@ package org.flexpay.orgs.persistence;
  */
 public class ServiceOrganization extends OrganizationInstance<ServiceOrganizationDescription, ServiceOrganization> {
 
-	/**
-	 * Constructs a new DomainObject.
-	 */
 	protected ServiceOrganization() {
 	}
 
@@ -18,4 +15,5 @@ public class ServiceOrganization extends OrganizationInstance<ServiceOrganizatio
 	public static ServiceOrganization newInstance() {
 		return new ServiceOrganization();
 	}
+
 }
