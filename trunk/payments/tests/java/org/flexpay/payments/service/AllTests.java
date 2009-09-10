@@ -15,7 +15,6 @@ import org.junit.runners.Suite;
 		TestOperationService.class,
 		TestOperationStatusService.class,
 		TestOperationTypeService.class,
-		TestServiceDao.class,
 		TestObjectsServices.class
 })
 public class AllTests {
