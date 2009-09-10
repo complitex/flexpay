@@ -135,6 +135,12 @@ public class PaymentsRegistryDBGeneratorImpl implements PaymentsRegistryDBGenera
 		organizationHistoryGenerator.generateFor(registerOrganization);
 		organizationHistoryGenerator.generateFor(serviceProvider.getOrganization());
 
+        // add number instance application
+        registry.addContainer(new RegistryContainer(
+                "503" +
+                ":" + ApplicationConfig.getInstanceId()
+        ));
+
 		// add identifiers sync containers
 		registry.addContainer(new RegistryContainer(
 				"502" +

@@ -19,6 +19,8 @@ public class ProcessingContext {
 
 	private RegistryRecord currentRecord;
 
+    private String numberInstanceId;
+
 	/**
 	 * Do cleanup of all delayed updates
 	 */
@@ -62,7 +64,15 @@ public class ProcessingContext {
 		return operationRecords;
 	}
 
-	public void doUpdate() throws FlexPayExceptionContainer, FlexPayException {
+    public void setNumberInstanceId(String numberInstanceId) {
+        this.numberInstanceId = numberInstanceId;
+    }
+
+    public String getNumberInstanceId() {
+        return numberInstanceId;
+    }
+
+    public void doUpdate() throws FlexPayExceptionContainer, FlexPayException {
 		for (DelayedUpdate update : operationUpdates) {
 			update.doUpdate();
 		}

@@ -1,44 +1,42 @@
 package org.flexpay.eirc.persistence.exchange;
 
+import org.flexpay.eirc.util.config.ApplicationConfig;
+import org.flexpay.eirc.persistence.exchange.delayed.DelayedUpdateNope;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.jetbrains.annotations.NotNull;
 
+import java.math.BigDecimal;
 import java.util.List;
 
-public class SimplePaymentOperation extends ContainerOperation {
+public class SimplePaymentOperation extends PaymentOperation {
+    public SimplePaymentOperation(ServiceOperationsFactory factory, List<String> datum) throws InvalidContainerException {
+        super(factory, datum);
+    }
 
-	private ServiceOperationsFactory factory;
+    @Override
+    public DelayedUpdate process(@NotNull ProcessingContext context) throws FlexPayException, FlexPayExceptionContainer {
+        return validate(context)? super.process(context): DelayedUpdateNope.INSTANCE;
+    }
 
-	private Long organizationId;
+    Long getOperationId(ProcessingContext context) {
+        return context.getCurrentRecord().getUniqueOperationNumber();
+    }
 
-	public SimplePaymentOperation(ServiceOperationsFactory factory, List<String> datum) throws InvalidContainerException {
-		super(Integer.valueOf(datum.get(0)));
-		if (datum.size() < 2) {
-			throw new InvalidContainerException("Invalid change personal account operation data");
-		}
+    BigDecimal getOperationSum(ProcessingContext context) {
+        return context.getCurrentRecord().getAmount();
+    }
 
-		try {
-			organizationId = Long.valueOf(datum.get(1));
-		} catch (NumberFormatException e) {
-			throw new InvalidContainerException("Cannot parse organization id: " + datum.get(1), e);
-		}
-		this.factory = factory;
-	}
-
-	/**
-	 * Process operation
-	 *
-	 * @param context ProcessingContext 
-	 * @return DelayedUpdate object
-	 * @throws org.flexpay.common.exception.FlexPayException
-	 *          if failure occurs
-	 * @throws org.flexpay.common.exception.FlexPayExceptionContainer
-	 *          if failure occurs
-	 */
-	@Override
-	public DelayedUpdate process(@NotNull ProcessingContext context) throws FlexPayException, FlexPayExceptionContainer {
-
-		throw new IllegalStateException("Not implemented ");
-	}
+    private boolean validate(ProcessingContext context) {
+        if (context.getNumberInstanceId() == null) {
+            log.error("Can not create simple payment for organization {} in registry {}. Number instance id is not defined",
+                    new Object[]{organizationId, context.getRegistry().getId()});
+            return false;
+        }
+        if (context.getNumberInstanceId().equals(ApplicationConfig.getInstanceId())) {
+            log.error("Can not create simple payment on same database. Destination number instance id is {}", context.getNumberInstanceId());
+            return false;
+        }
+        return true;
+    }
 }

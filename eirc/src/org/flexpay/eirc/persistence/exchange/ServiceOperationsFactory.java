@@ -186,6 +186,8 @@ public class ServiceOperationsFactory {
 				return new PaymentPointSetupOperation(this, datum);
 			case 502:
 				return new ObjectIdentifierSyncOperation(this, datum);
+            case 503:
+                return new NumberInstanceIdOperation(this, datum);
 		}
 
 		throw new InvalidContainerException("Unknown container type: " +
