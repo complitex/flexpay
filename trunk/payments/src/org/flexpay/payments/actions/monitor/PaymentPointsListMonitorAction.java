@@ -71,6 +71,11 @@ public class PaymentPointsListMonitorAction extends FPActionWithPagerSupport<Pay
 
 		paymentPoints = new ArrayList<PaymentPointMonitorContainer>();
 		Long paymentCollectorId = ((PaymentsUserPreferences) getUserPreferences()).getPaymentCollectorId();
+        if (paymentCollectorId == null) {
+            log.error("PaymentCollectorId is not defined in preferences of User {}(id={})", 
+                    new Object[]{getUserPreferences().getUsername(), getUserPreferences().getId()});
+            return ERROR;
+        }
 		PaymentsCollector paymentsCollector = paymentsCollectorService.read(new Stub<PaymentsCollector>(paymentCollectorId));
 		if (paymentsCollector == null) {
 			log.error("No payment collector found with id {}", paymentCollectorId);
