@@ -9,4 +9,6 @@ public class TestData {
 
 	public static final Stub<Service> SERVICE_KVARPLATA = new Stub<Service>(1L);
 	public static final Stub<Service> SERVICE_TERRITORY_CLEANUP = new Stub<Service>(2L);
+
+	public static final Stub<ServiceType> SERVICE_TYPE_KVARTPLATA = new Stub<ServiceType>(1L);
 }
