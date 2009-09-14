@@ -242,10 +242,10 @@ public class PaymentsRegistryMBGeneratorImpl implements PaymentsRegistryMBGenera
 		String eircCount = null;
 		List<RegistryRecordContainer> containers = registryRecordService.getRecordContainers(record);
 		for (RegistryRecordContainer container : containers) {
-			if (container.getData() != null && container.getData().startsWith("53:")) {
+			if (container.getData() != null && container.getData().startsWith("15:")) {
 				String[] contenerFields = container.getData().split(":");
-				if (contenerFields.length >= 2) {
-					eircCount = contenerFields[1];
+				if (contenerFields.length >= 3) {
+					eircCount = contenerFields[2];
 					break;
 				}
 			}
