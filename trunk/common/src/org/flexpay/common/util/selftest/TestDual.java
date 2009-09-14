@@ -11,7 +11,7 @@ public class TestDual {
 		int count = DataAccessUtils.intResult(hibernateTemplate.findByNamedQuery("Dual.count"));
 
 		if (count != 1) {
-			throw new Exception("Dual table should contain only one record.");
+			throw new Exception("Dual table should contain only one record, found: " + count);
 		}
 	}
 

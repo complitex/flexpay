@@ -5,6 +5,7 @@
 
 <script type="text/javascript" src="<s:url value="/resources/common/js/jquery/jquery-1.3.2.min.js" includeParams="none" />"></script>
 <script type="text/javascript" src="<s:url value="/resources/common/js/jquery/jquery.protify-0.2.min.js" includeParams="none" />"></script>
+<script type="text/javascript" src="<s:url value="/resources/common/js/jquery/jquery.dump.js" includeParams="none" />"></script>
 <script type="text/javascript" src="<s:url value="/resources/common/js/jquery/validate/jquery.validate.min.js" includeParams="none" />"></script>
 <script type="text/javascript" src="<s:url value="/resources/common/js/jquery/jquery-ui/development-bundle/external/bgiframe/jquery.bgiframe.yui.js" includeParams="none" />"></script>
 <script type="text/javascript" src="<s:url value="/resources/common/js/jquery/jquery-ui/jquery-ui-1.7.1.custom.min.js" includeParams="none" />"></script>
