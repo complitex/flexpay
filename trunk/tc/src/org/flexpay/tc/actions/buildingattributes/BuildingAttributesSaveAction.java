@@ -61,6 +61,8 @@ public class BuildingAttributesSaveAction extends FPActionSupport {
 
 		btiBuildingService.updateAttributes(btiBuilding);
 
+		addActionMessage(getText("common.changes_saved"));
+
 		return SUCCESS;
 	}
 
@@ -175,10 +177,10 @@ public class BuildingAttributesSaveAction extends FPActionSupport {
 					addActionError(getText("tc.errors.building_attributes.validation.invalid_near_house_total_square_bad_summ"));
 				}
 			} catch (NumberFormatException nfe) {
-				log.info("Not all near house squares are valid. Total summ check is skipped.");
+				log.debug("Not all near house squares are valid. Total summ check is skipped.");
 			}
 		} else {
-			log.info("Not all near house squares are present. Total summ check is skipped.");
+			log.debug("Not all near house squares are present. Total summ check is skipped.");
 		}
 
 		return !hasActionErrors();
