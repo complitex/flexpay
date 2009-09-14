@@ -78,8 +78,14 @@ public abstract class AccPaymentsReportAction extends FPActionSupport {
 			return SUCCESS;
 		}
 
-		AccPaymentsReportRequest request = buildReportRequest();
 		Long paymentsCollectorId = ((PaymentsUserPreferences) getUserPreferences()).getPaymentCollectorId();
+		if (null == paymentsCollectorId) {
+			log.error("No payment collector id found in user preferences");
+			addActionError("payments.error.payment_collector_not_found");
+			return SUCCESS;
+		}
+
+		AccPaymentsReportRequest request = buildReportRequest();
 		AccPaymentReportData data = paymentsReporter.getAccPaymentsReportData(request, new Stub<PaymentsCollector>(paymentsCollectorId));
 		data.setAccountantFio(getUserPreferences().getFullName());
 
