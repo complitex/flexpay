@@ -9,14 +9,15 @@
     function saveAttributes() {
 
         var params = {
-            <s:iterator value="groups"><s:set name="types" value="typesMap[id]" /><s:iterator value="types" id="type">"values[<s:property value="#type.id" />]": "",</s:iterator></s:iterator>
+            <s:iterator value="groups"><s:set name="types" value="typesMap[id]" /><s:iterator value="types" id="type">"values[<s:property value="#type.id" />]":"",</s:iterator></s:iterator>
             "building.id":<s:property value="building.id" />,
             attributeDate:"<s:property value="attributeDate" />"
         };
+
         $("#values :selected").each(function() {
             params[$(this).parent().get(0).name] = this.value;
         });
-        $("#values input[id^=values], #values :selected").each(function() {
+        $("#values input[id^=values]").each(function() {
             params[this.name] = this.value;
         });
 
