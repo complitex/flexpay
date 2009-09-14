@@ -23,6 +23,13 @@
 	}
 
 	function printReport() {
+
+		var paymentCollectorId = "<s:property value="userPreferences.paymentCollectorId"/>";
+		if (paymentCollectorId == '') {
+			alert('<s:text name="payments.error.payment_collector_not_found"/>');
+			return;
+		}
+
 		var url = '<s:url action="accReturnedPaymentsReport" includeParams="none" />';
 		url += '?beginDateFilter.stringDate=' + $('#beginDateFilter').val() +
 			   '&beginTimeFilter.stringDate=' + $('#beginTimeFilter').val() +
@@ -44,6 +51,9 @@
 		window.open(url, "_blank");
 	}
 </script>
+
+<s:actionerror/>
+<s:actionmessage/>
 
 <form action="<s:url action="accReturnedPaymentsReport"/>">
 	<table>
