@@ -8,4 +8,5 @@ public abstract class Security extends org.flexpay.common.service.Security {
 	public static void touch() {
 		org.flexpay.eirc.service.Security.touch();
 	}
+
 }

@@ -3,6 +3,7 @@ package org.flexpay.orgs.actions.subdivision;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.exception.FlexPayException;
 import static org.flexpay.common.persistence.Stub.stub;
+import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.orgs.persistence.Subdivision;
 import org.flexpay.orgs.service.OrganizationService;
@@ -11,23 +12,24 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Required;
 
-import java.util.Collections;
 import java.util.List;
 
 public class SubdivisionsListAction extends FPActionSupport {
 
 	private Organization organization = new Organization();
-	private List<Subdivision> subdivisions = Collections.emptyList();
+	private List<Subdivision> subdivisions = CollectionUtils.list();
 
 	private SubdivisionService subdivisionService;
 	private OrganizationService organizationService;
 
 	@NotNull
+	@Override
 	public String doExecute() throws Exception {
 
 		if (organization.isNew()) {
-			addActionError(getText("error.no_id"));
-			return REDIRECT_SUCCESS;
+			log.error(getText("error.invalid_id"));
+			addActionError(getText("error.invalid_id"));
+			return SUCCESS;
 		}
 		subdivisions = subdivisionService.getOrganizationSubdivisions(stub(organization));
 
@@ -42,8 +44,9 @@ public class SubdivisionsListAction extends FPActionSupport {
 	 * @return {@link #ERROR} by default
 	 */
 	@NotNull
+	@Override
 	protected String getErrorResult() {
-		return REDIRECT_SUCCESS;
+		return SUCCESS;
 	}
 
 	public String getOrganizationName(@Nullable Organization org) throws FlexPayException {
@@ -80,10 +83,6 @@ public class SubdivisionsListAction extends FPActionSupport {
 
 	public List<Subdivision> getSubdivisions() {
 		return subdivisions;
-	}
-
-	public void setSubdivisions(List<Subdivision> subdivisions) {
-		this.subdivisions = subdivisions;
 	}
 
 	@Required

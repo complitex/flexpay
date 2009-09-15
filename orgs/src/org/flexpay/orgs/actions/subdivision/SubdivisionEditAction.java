@@ -21,37 +21,31 @@ import java.util.Map;
 public class SubdivisionEditAction extends FPActionSupport {
 
 	private Subdivision subdivision = new Subdivision();
-	private Organization headOrganization = new Organization();
+	private Organization organization = new Organization();
 	private OrganizationFilter organizationFilter = new OrganizationFilter();
 	private SubdivisionFilter subdivisionFilter = new SubdivisionFilter();
 	private Map<Long, String> descriptions = map();
 	private Map<Long, String> names = map();
 
+	private String crumbCreateKey;
 	private SubdivisionService subdivisionService;
 	private OrganizationService organizationService;
 
 	@NotNull
+	@Override
 	public String doExecute() throws Exception {
-
-		if (subdivision.getId() == null || headOrganization.getId() == null) {
-			addActionError(getText("error.no_id"));
-			return REDIRECT_SUCCESS;
-		}
 
 		Subdivision oldSubdivision = subdivision.isNew() ? new Subdivision(0L) :
 									 subdivisionService.read(stub(subdivision));
 		if (oldSubdivision == null) {
-			addActionError(getText("error.invalid_id"));
+			addActionError(getText("common.object_not_selected"));
 			return REDIRECT_SUCCESS;
 		}
 
 		organizationService.initFilter(organizationFilter);
-		organizationFilter.setAllowEmpty(true);
-		subdivisionService.initFilter(subdivisionFilter, stub(headOrganization));
-		subdivisionFilter.setAllowEmpty(true);
+		subdivisionService.initFilter(subdivisionFilter, stub(organization));
 
-		// prepare initial setup
-		if (!isSubmit()) {
+		if (isNotSubmit()) {
 			if (oldSubdivision.isNotNew()) {
 				Organization juridicalPerson = oldSubdivision.getJuridicalPerson();
 				if (juridicalPerson != null) {
@@ -76,24 +70,18 @@ public class SubdivisionEditAction extends FPActionSupport {
 							 new Subdivision(subdivisionFilter.getSelectedStub()) : null;
 		oldSubdivision.setParentSubdivision(parent);
 
-		oldSubdivision.setHeadOrganization(headOrganization);
+		oldSubdivision.setHeadOrganization(organization);
 		oldSubdivision.setRealAddress(subdivision.getRealAddress());
 
 		for (Map.Entry<Long, String> entry : descriptions.entrySet()) {
 			String value = entry.getValue();
 			Language lang = getLang(entry.getKey());
-			SubdivisionDescription description = new SubdivisionDescription();
-			description.setLang(lang);
-			description.setName(value);
-			oldSubdivision.setDescription(description);
+			oldSubdivision.setDescription(new SubdivisionDescription(value, lang));
 		}
 		for (Map.Entry<Long, String> entry : names.entrySet()) {
 			String value = entry.getValue();
 			Language lang = getLang(entry.getKey());
-			SubdivisionName name = new SubdivisionName();
-			name.setLang(lang);
-			name.setName(value);
-			oldSubdivision.setName(name);
+			oldSubdivision.setName(new SubdivisionName(value, lang));
 		}
 
 		if (oldSubdivision.isNew()) {
@@ -101,6 +89,8 @@ public class SubdivisionEditAction extends FPActionSupport {
 		} else {
 			subdivisionService.update(oldSubdivision);
 		}
+
+		subdivision = oldSubdivision;
 
 		return REDIRECT_SUCCESS;
 	}
@@ -113,8 +103,17 @@ public class SubdivisionEditAction extends FPActionSupport {
 	 * @return {@link #ERROR} by default
 	 */
 	@NotNull
+	@Override
 	protected String getErrorResult() {
 		return INPUT;
+	}
+
+	@Override
+	protected void setBreadCrumbs() {
+		if (subdivision.isNew()) {
+			crumbNameKey = crumbCreateKey;
+		}
+		super.setBreadCrumbs();
 	}
 
 	private void initNames() {
@@ -151,12 +150,12 @@ public class SubdivisionEditAction extends FPActionSupport {
 		this.subdivision = subdivision;
 	}
 
-	public Organization getHeadOrganization() {
-		return headOrganization;
+	public Organization getOrganization() {
+		return organization;
 	}
 
-	public void setHeadOrganization(Organization headOrganization) {
-		this.headOrganization = headOrganization;
+	public void setOrganization(Organization organization) {
+		this.organization = organization;
 	}
 
 	public OrganizationFilter getOrganizationFilter() {
@@ -189,6 +188,10 @@ public class SubdivisionEditAction extends FPActionSupport {
 
 	public void setNames(Map<Long, String> names) {
 		this.names = names;
+	}
+
+	public void setCrumbCreateKey(String crumbCreateKey) {
+		this.crumbCreateKey = crumbCreateKey;
 	}
 
 	@Required

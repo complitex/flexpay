@@ -1,12 +1,12 @@
-<%@include file="/WEB-INF/jsp/common/taglibs.jsp"%>
+<%@include file="/WEB-INF/jsp/common/taglibs.jsp" %>
 
 <table cellpadding="3" cellspacing="1" border="0" width="100%">
     <tr>
         <td class="th" width="1%">&nbsp;</td>
-        <td class="th"><s:text name="ab.language" /></td>
-        <td class="th"><s:text name="eirc.organization.name" /></td>
+        <td class="th"><s:text name="ab.language"/></td>
+        <td class="th"><s:text name="eirc.subdivision.name"/></td>
     </tr>
-    <s:iterator value="organization.names" status="rowstatus">
+    <s:iterator value="subdivision.names" status="rowstatus">
         <tr valign="middle" class="cols_1">
             <td class="col_1s">
                 <s:property value="#rowstatus.index + 1" />
@@ -27,10 +27,10 @@
     </tr>
     <tr>
         <td class="th" width="1%">&nbsp;</td>
-        <td class="th"><s:text name="ab.language" /></td>
-        <td class="th"><s:text name="eirc.organization.comment" /></td>
+        <td class="th"><s:text name="ab.language"/></td>
+        <td class="th"><s:text name="eirc.subdivision.description"/></td>
     </tr>
-    <s:iterator value="organization.descriptions" status="rowstatus">
+    <s:iterator value="subdivision.descriptions" status="rowstatus">
         <tr valign="middle" class="cols_1">
             <td class="col_1s">
                 <s:property value="#rowstatus.index + 1" />
@@ -50,33 +50,39 @@
         <td colspan="3" height="3" bgcolor="#4a4f4f"/>
     </tr>
     <tr class="cols_1">
-        <td class="col_1s"><s:text name="eirc.organization.kpp" />:</td>
+        <td class="col_1s"><s:text name="eirc.subdivision.real_address" />:</td>
         <td class="col" colspan="2">
-            <s:property value="organization.kpp"/>
+            <s:property value="subdivision.realAddress"/>
         </td>
     </tr>
     <tr class="cols_1">
-        <td class="col_1s"><s:text name="eirc.organization.inn" />:</td>
+        <td class="col_1s"><s:text name="eirc.subdivision.head_organization" />:</td>
         <td class="col" colspan="2">
-            <s:property value="organization.individualTaxNumber"/>
+            <s:if test="subdivision.headOrganization != null">
+                <s:property value="getTranslationName(subdivision.headOrganization.names)"/>
+            </s:if><s:else>
+                ----
+            </s:else>
         </td>
     </tr>
     <tr class="cols_1">
-        <td class="col_1s"><s:text name="eirc.organization.juridical_address" />:</td>
+        <td class="col_1s"><s:text name="eirc.subdivision.juridical_person" />:</td>
         <td class="col" colspan="2">
-            <s:property value="organization.juridicalAddress"/>
+            <s:if test="subdivision.juridicalPerson != null">
+                <s:property value="getTranslationName(subdivision.juridicalPerson.names)"/>
+            </s:if><s:else>
+                ----
+            </s:else>
         </td>
     </tr>
     <tr class="cols_1">
-        <td class="col_1s"><s:text name="eirc.organization.postal_address" />:</td>
+        <td class="col_1s"><s:text name="eirc.subdivision.parent_subdivision" />:</td>
         <td class="col" colspan="2">
-            <s:property value="organization.postalAddress"/>
-        </td>
-    </tr>
-    <tr class="cols_1">
-        <td class="col_1s"><s:text name="eirc.subdivisions" />:</td>
-        <td class="col" colspan="2">
-            <a href="<s:url action="subdivisionsList"><s:param name="organization.id" value="organization.id" /></s:url>"><s:text name="eirc.subdivisions" /></a>
+            <s:if test="subdivision.parentSubdivision != null">
+                <s:property value="getTranslationName(subdivision.parentSubdivision.names)"/>
+            </s:if><s:else>
+                ----
+            </s:else>
         </td>
     </tr>
     <tr>
@@ -85,7 +91,7 @@
     <tr>
         <td colspan="3">
             <input type="button" class="btn-exit"
-                   onclick="window.location='<s:url action="organizationEdit"><s:param name="organization.id" value="%{organization.id}" /></s:url>';"
+                   onclick="window.location='<s:url action="subdivisionEdit"><s:param name="organization.id" value="%{subdivision.headOrganization.id}" /><s:param name="subdivision.id" value="%{subdivision.id}" /></s:url>';"
                    value="<s:text name="common.edit" />" />
         </td>
     </tr>

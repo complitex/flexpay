@@ -1,8 +1,5 @@
 <%@include file="/WEB-INF/jsp/common/taglibs.jsp"%>
 
-<a href="<s:url action="subdivisionsList"><s:param name="organization.id" value="organization.id" /></s:url>"><s:text name="eirc.subdivisions" /></a>
-<br />
-
 <s:actionerror />
 <s:actionmessage />
 

@@ -171,6 +171,11 @@
           scope="prototype" />
 
 	<!-- Subdivision actions -->
+    <bean id="subdivisionsListPageAction"
+          class="org.flexpay.orgs.actions.subdivision.SubdivisionsListPageAction"
+          p:crumbNameKey="orgs.crumbs.subdivisions_list"
+          scope="prototype" />
+
 	<bean id="subdivisionsListAction"
 		  class="org.flexpay.orgs.actions.subdivision.SubdivisionsListAction"
 		  p:organizationService-ref="organizationService"
@@ -186,6 +191,14 @@
 		  class="org.flexpay.orgs.actions.subdivision.SubdivisionEditAction"
 		  p:organizationService-ref="organizationService"
 		  p:subdivisionService-ref="subdivisionService"
+          p:crumbCreateKey="orgs.crumbs.subdivision_create"
+          p:crumbNameKey="orgs.crumbs.subdivision_edit"
+          scope="prototype" />
+
+    <bean id="subdivisionViewAction"
+          class="org.flexpay.orgs.actions.subdivision.SubdivisionViewAction"
+          p:subdivisionService-ref="subdivisionService"
+          p:crumbNameKey="orgs.crumbs.subdivision_view"
           scope="prototype" />
 
     <!-- Payment points actions -->

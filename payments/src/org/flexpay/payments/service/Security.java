@@ -25,4 +25,5 @@ public abstract class Security extends org.flexpay.common.service.Security {
 		org.flexpay.ab.service.Security.touch();
 		org.flexpay.orgs.service.Security.touch();
 	}
+
 }

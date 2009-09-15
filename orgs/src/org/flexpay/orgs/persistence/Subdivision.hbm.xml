@@ -123,13 +123,17 @@
 	</class>
 
 	<query name="Subdivision.readFull">
-		select distinct o
-		from Subdivision o
-			left outer join fetch o.names
-			left outer join fetch o.descriptions
-			left join fetch o.headOrganization
-			left join fetch o.juridicalPerson
-		where o.id=?
+		select distinct s
+		from Subdivision s
+			left outer join fetch s.names
+			left outer join fetch s.descriptions
+			left join fetch s.headOrganization h
+            left join fetch h.names
+			left join fetch s.juridicalPerson j
+            left join fetch j.names
+            left join fetch s.parentSubdivision ps
+            left join fetch ps.names
+		where s.id=?
 	</query>
 
 	<query name="Subdivision.findSubdivisions">

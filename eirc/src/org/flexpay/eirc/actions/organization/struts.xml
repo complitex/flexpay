@@ -34,27 +34,30 @@
 		</action>
 
 		<!-- Subdivisions -->
-		<action name="subdivisionsList" class="subdivisionsListAction">
+        <action name="subdivisionView" class="subdivisionViewAction">
+            <result type="tiles">eirc.organization.subdivision.view</result>
+            <result name="redirectError" type="redirect-action">subdivisionsList</result>
+        </action>
+
+        <action name="subdivisionEdit" class="subdivisionEditAction">
+            <result name="input" type="tiles">eirc.organization.subdivision.edit</result>
+            <result name="redirectSuccess" type="redirect-action">
+                <param name="actionName">subdivisionView</param>
+                <param name="parse">true</param>
+                <param name="subdivision.id">${subdivision.id}</param>
+            </result>
+        </action>
+
+		<action name="subdivisionsList" class="subdivisionsListPageAction">
 			<result type="tiles">eirc.organization.subdivisions.list</result>
-			<result name="redirectSuccess" type="redirect-action">organizationsList</result>
 		</action>
+
+        <action name="subdivisionsListAjax" class="subdivisionsListAction">
+            <result>/WEB-INF/jsp/orgs/subdivisions/subdivisions_list.jsp</result>
+        </action>
 
 		<action name="subdivisionDelete" class="subdivisionDeleteAction">
-			<result name="redirectSuccess" type="redirect-action">
-				<param name="actionName">subdivisionsList</param>
-				<param name="parse">true</param>
-				<param name="organization.id">${organization.id}</param>
-			</result>
-			<result name="redirectError" type="redirect-action">organizationsList</result>
-		</action>
-
-		<action name="subdivisionEdit" class="subdivisionEditAction">
-			<result name="input" type="tiles">eirc.organization.subdivision.edit</result>
-			<result name="redirectSuccess" type="redirect-action">
-				<param name="actionName">subdivisionsList</param>
-				<param name="parse">true</param>
-				<param name="organization.id">${headOrganization.id}</param>
-			</result>
+            <result>/WEB-INF/jsp/common/responses/simple_response.jsp</result>
 		</action>
 
 		<!-- Banks -->
