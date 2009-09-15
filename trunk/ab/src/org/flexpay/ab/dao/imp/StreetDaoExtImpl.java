@@ -80,9 +80,8 @@ public class StreetDaoExtImpl extends HibernateDaoSupport implements StreetDaoEx
 		final StringBuilder hql = new StringBuilder();
 
 		cnthql.append("select count(s) from Street s ").
-				append(" left join fetch s.nameTemporals t").
-				append(" left join fetch t.value v").
-				append(" left join fetch v.translations tr");
+				append(" left join s.nameTemporals t").
+				append(" left join t.value.translations tr");
 		hql.append("select distinct s from Street s ").
 				append(" left join fetch s.nameTemporals t").
 				append(" left join fetch t.value v").
