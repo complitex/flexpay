@@ -1,9 +1,11 @@
 package org.flexpay.orgs.persistence;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
 import org.flexpay.common.persistence.DomainObjectWithStatus;
-import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.Language;
+import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.util.TranslationUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -26,9 +28,6 @@ public class Subdivision extends DomainObjectWithStatus {
 	// tree path is a parents path devided with dots, like .1.35.24
 	private String treePath = "";
 
-	/**
-	 * Constructs a new DomainObject.
-	 */
 	public Subdivision() {
 	}
 
@@ -188,6 +187,17 @@ public class Subdivision extends DomainObjectWithStatus {
 		}
 
 		return null;
+	}
+
+	@Override
+	public String toString() {
+		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
+				append("id", getId()).
+				append("status", getStatus()).
+				append("level", getLevel()).
+				append("realAddress", realAddress).
+				append("treePath", treePath).
+				toString();
 	}
 
 }

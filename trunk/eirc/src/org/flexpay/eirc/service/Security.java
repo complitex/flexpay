@@ -1,11 +1,13 @@
 package org.flexpay.eirc.service;
 
+import static org.flexpay.ab.service.Roles.APARTMENT_READ;
+import static org.flexpay.ab.service.Roles.PERSON_READ;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.SecurityUtil;
-import static org.flexpay.ab.service.Roles.*;
-import static org.flexpay.orgs.service.Roles.*;
-import static org.flexpay.payments.service.Roles.*;
 import static org.flexpay.eirc.service.Roles.*;
+import static org.flexpay.orgs.service.Roles.*;
+import static org.flexpay.payments.service.Roles.SERVICE_READ;
+import static org.flexpay.payments.service.Roles.SERVICE_TYPE_READ;
 
 import java.util.List;
 
@@ -44,4 +46,5 @@ public abstract class Security extends org.flexpay.common.service.Security {
 		org.flexpay.bti.service.Security.touch();
 		org.flexpay.payments.service.Security.touch();
 	}
+
 }

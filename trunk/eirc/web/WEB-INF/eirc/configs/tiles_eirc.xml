@@ -172,12 +172,17 @@
 
 	<definition name="eirc.organization.subdivisions.list" extends="eirc.dictionaries">
 		<put-attribute name="title" value="eirc.subdivisions" />
-		<put-attribute name="body" value="/WEB-INF/jsp/orgs/subdivisions/list_subdivisions.jsp" />
+		<put-attribute name="body" value="/WEB-INF/jsp/orgs/subdivisions/subdivisions_list_page.jsp" />
 	</definition>
 
-	<definition name="eirc.organization.subdivision.edit" extends="eirc.dictionaries">
+    <definition name="eirc.organization.subdivision.edit" extends="eirc.dictionaries">
+        <put-attribute name="title" value="eirc.subdivision" />
+        <put-attribute name="body" value="/WEB-INF/jsp/orgs/subdivisions/subdivision_edit.jsp" />
+    </definition>
+
+	<definition name="eirc.organization.subdivision.view" extends="eirc.dictionaries">
 		<put-attribute name="title" value="eirc.subdivision" />
-		<put-attribute name="body" value="/WEB-INF/jsp/orgs/subdivisions/edit_subdivision.jsp" />
+		<put-attribute name="body" value="/WEB-INF/jsp/orgs/subdivisions/subdivision_view.jsp" />
 	</definition>
 
 	<!-- Banks -->
