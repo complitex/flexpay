@@ -133,7 +133,7 @@ public class RegistryWorkflowManagerImpl implements RegistryWorkflowManager {
 	 */
 	private Integer code(Registry registry) {
 		int code = registry.getRegistryStatus().getCode();
-		if (0 < code || transitions.size() <= code) {
+		if (code < 0 || transitions.size() <= code) {
 			throw new IllegalStateException("Invalid registry status code: " + code + ", Transitions size: " + transitions.size());
 		}
 		return code;
