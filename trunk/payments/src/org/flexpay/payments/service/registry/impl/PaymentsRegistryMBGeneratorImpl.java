@@ -31,6 +31,7 @@ import java.io.BufferedInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.security.Signature;
 import java.security.SignatureException;
 import java.text.SimpleDateFormat;
@@ -105,7 +106,9 @@ public class PaymentsRegistryMBGeneratorImpl implements PaymentsRegistryMBGenera
 
 	private Signature signature = null;
 
-    /**
+	private static final int SUMM_SCALE = 2;
+
+	/**
      * Export DB registry to MB registry file.
      *
      * @param registry DB registry
@@ -245,7 +248,7 @@ public class PaymentsRegistryMBGeneratorImpl implements PaymentsRegistryMBGenera
 			if (container.getData() != null && container.getData().startsWith("15:")) {
 				String[] contenerFields = container.getData().split(":");
 				if (contenerFields.length >= 3) {
-					eircCount = contenerFields[2];
+					eircCount = contenerFields[SUMM_SCALE];
 					break;
 				}
 			}
@@ -253,7 +256,7 @@ public class PaymentsRegistryMBGeneratorImpl implements PaymentsRegistryMBGenera
 		infoLine.add(createCellData(eircCount, tableHeader[1].length(), ' '));
 
 		// лиц. счет поставщика услуг
-		infoLine.add(createCellData(record.getPersonalAccountExt(), tableHeader[2].length(), ' '));
+		infoLine.add(createCellData(record.getPersonalAccountExt(), tableHeader[SUMM_SCALE].length(), ' '));
 
 		// ФИО
 		String fio = record.getLastName();
@@ -268,7 +271,7 @@ public class PaymentsRegistryMBGeneratorImpl implements PaymentsRegistryMBGenera
 		// тип улицы
 		String streetType = record.getStreetType();
 		if (streetType != null && streetType.length() > 3) {
-			streetType = streetType.substring(0, 2);
+			streetType = streetType.substring(0, SUMM_SCALE);
 		}
 		infoLine.add(createCellData(streetType, tableHeader[4].length(), ' '));
 
@@ -300,7 +303,7 @@ public class PaymentsRegistryMBGeneratorImpl implements PaymentsRegistryMBGenera
 				throw new FlexPayException("Can not find MB service code. Service : " + serviceType + ", registry record Id: " + record.getId());
 			}
 		}
-		while (serviceCode.length() < 2) {
+		while (serviceCode.length() < SUMM_SCALE) {
 			serviceCode = "0" + serviceCode;
 		}
 		String service = serviceCode + "." + serviceNames.get(serviceCode) + " " + "*";
@@ -334,8 +337,9 @@ public class PaymentsRegistryMBGeneratorImpl implements PaymentsRegistryMBGenera
 		// по какой месяц оплачена услуга
 		infoLine.add(createCellData(paymentMounth, tableHeader[14].length(), ' '));
 
-		// сумма
-		infoLine.add(createCellData(String.valueOf(record.getAmount().intValue()), null, ' '));
+		// сумма (значение суммы изначально передаётся в копейках, но должно быть записано в рублях)\
+		BigDecimal summ = new BigDecimal(record.getAmount().intValue()).divide(new BigDecimal("100"), SUMM_SCALE, RoundingMode.UNNECESSARY);
+		infoLine.add(createCellData(summ.toString(), null, ' '));
 
 		return infoLine.toArray(new String[infoLine.size()]);
 	}
