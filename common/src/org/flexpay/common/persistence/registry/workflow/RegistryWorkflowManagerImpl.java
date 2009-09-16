@@ -31,12 +31,12 @@ public class RegistryWorkflowManagerImpl implements RegistryWorkflowManager {
 
 	// allowed transitions from source status code to target codes
 	// first status in lists is the successfull one, the second is transition with some processing error
-	private Map<Integer, List<Integer>> transitions = CollectionUtils.map();
+	private static final Map<Integer, List<Integer>> transitions = CollectionUtils.map();
 
-	private Set<Integer> processingStates = CollectionUtils.set();
-	private Set<Integer> transitionsToProcessing = CollectionUtils.set();
+	private static final Set<Integer> processingStates = CollectionUtils.set();
+	private static final Set<Integer> transitionsToProcessing = CollectionUtils.set();
 
-	{
+	static {
 		List<Integer> targets = CollectionUtils.list(LOADED, LOADED_WITH_ERROR);
 		transitions.put(LOADING, targets);
 		transitionsToProcessing.add(LOADED);
@@ -134,7 +134,7 @@ public class RegistryWorkflowManagerImpl implements RegistryWorkflowManager {
 	private Integer code(Registry registry) {
 		int code = registry.getRegistryStatus().getCode();
 		if (0 < code || transitions.size() <= code) {
-			throw new IllegalStateException("Invalid registry status code: " + code);
+			throw new IllegalStateException("Invalid registry status code: " + code + ", Transitions size: " + transitions.size());
 		}
 		return code;
 	}
