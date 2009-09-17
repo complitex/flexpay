@@ -23,7 +23,7 @@ public class ClassToTypeRegistryOrgs implements ClassToTypeRegistry {
 		if (ServiceOrganization.class.isAssignableFrom(clazz)) {
 			return MODULE_BASE + 0x004;
 		}
-		if (PaymentsCollector.class.isAssignableFrom(clazz)) {
+		if (PaymentCollector.class.isAssignableFrom(clazz)) {
 			return MODULE_BASE + 0x005;
 		}
 		if (PaymentPoint.class.isAssignableFrom(clazz)) {

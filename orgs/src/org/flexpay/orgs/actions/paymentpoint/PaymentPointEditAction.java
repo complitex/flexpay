@@ -7,9 +7,9 @@ import static org.flexpay.common.util.CollectionUtils.map;
 import org.flexpay.common.util.config.ApplicationConfig;
 import org.flexpay.orgs.persistence.PaymentPoint;
 import org.flexpay.orgs.persistence.PaymentPointName;
-import org.flexpay.orgs.persistence.filters.PaymentsCollectorFilter;
+import org.flexpay.orgs.persistence.filters.PaymentCollectorFilter;
 import org.flexpay.orgs.service.PaymentPointService;
-import org.flexpay.orgs.service.PaymentsCollectorService;
+import org.flexpay.orgs.service.PaymentCollectorService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
@@ -17,17 +17,17 @@ import java.util.Map;
 
 public class PaymentPointEditAction extends FPActionSupport {
 
-	private PaymentsCollectorFilter paymentsCollectorFilter = new PaymentsCollectorFilter();
+	private PaymentCollectorFilter paymentCollectorFilter = new PaymentCollectorFilter();
 	private PaymentPoint point = new PaymentPoint();
 	private Map<Long, String> names = map();
 
 	private String crumbCreateKey;
-	private PaymentsCollectorService paymentsCollectorService;
+	private PaymentCollectorService paymentCollectorService;
 	private PaymentPointService paymentPointService;
 
 	public PaymentPointEditAction() {
-		paymentsCollectorFilter.setAllowEmpty(false);
-		paymentsCollectorFilter.setNeedAutoChange(false);
+		paymentCollectorFilter.setAllowEmpty(false);
+		paymentCollectorFilter.setNeedAutoChange(false);
 	}
 
 	/**
@@ -56,25 +56,25 @@ public class PaymentPointEditAction extends FPActionSupport {
 			point.setAddress(address);
 		}
 
-		paymentsCollectorService.initFilter(paymentsCollectorFilter);
+		paymentCollectorService.initFilter(paymentCollectorFilter);
 
 		if (isNotSubmit()) {
 			initNames();
 			if (point.isNotNew()) {
-				paymentsCollectorFilter.setSelectedId(point.getCollector().getId());
-				paymentsCollectorFilter.setReadOnly(true);
+				paymentCollectorFilter.setSelectedId(point.getCollector().getId());
+				paymentCollectorFilter.setReadOnly(true);
 			}
 
 			return INPUT;
 		}
 
-		if (!paymentsCollectorFilter.needFilter()) {
+		if (!paymentCollectorFilter.needFilter()) {
 			addActionError(getText("eirc.error.payment_point.no_collector"));
 			return INPUT;
 		}
 
 		if (point.isNew()) {
-			point.setCollector(paymentsCollectorService.read(paymentsCollectorFilter.getSelectedStub()));
+			point.setCollector(paymentCollectorService.read(paymentCollectorFilter.getSelectedStub()));
 		}
 
 		for (Map.Entry<Long, String> name : names.entrySet()) {
@@ -126,12 +126,12 @@ public class PaymentPointEditAction extends FPActionSupport {
 		}
 	}
 
-	public PaymentsCollectorFilter getPaymentsCollectorFilter() {
-		return paymentsCollectorFilter;
+	public PaymentCollectorFilter getPaymentCollectorFilter() {
+		return paymentCollectorFilter;
 	}
 
-	public void setPaymentsCollectorFilter(PaymentsCollectorFilter paymentsCollectorFilter) {
-		this.paymentsCollectorFilter = paymentsCollectorFilter;
+	public void setPaymentCollectorFilter(PaymentCollectorFilter paymentCollectorFilter) {
+		this.paymentCollectorFilter = paymentCollectorFilter;
 	}
 
 	public Map<Long, String> getNames() {
@@ -160,8 +160,8 @@ public class PaymentPointEditAction extends FPActionSupport {
 	}
 
 	@Required
-	public void setPaymentsCollectorService(PaymentsCollectorService paymentsCollectorService) {
-		this.paymentsCollectorService = paymentsCollectorService;
+	public void setPaymentCollectorService(PaymentCollectorService paymentCollectorService) {
+		this.paymentCollectorService = paymentCollectorService;
 	}
 
 }

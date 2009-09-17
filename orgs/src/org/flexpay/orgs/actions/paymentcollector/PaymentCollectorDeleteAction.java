@@ -1,18 +1,18 @@
-package org.flexpay.orgs.actions.paymentscollector;
+package org.flexpay.orgs.actions.paymentcollector;
 
 import org.flexpay.common.actions.FPActionSupport;
 import static org.flexpay.common.util.CollectionUtils.set;
-import org.flexpay.orgs.service.PaymentsCollectorService;
+import org.flexpay.orgs.service.PaymentCollectorService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.util.Set;
 
-public class PaymentsCollectorDeleteAction extends FPActionSupport {
+public class PaymentCollectorDeleteAction extends FPActionSupport {
 
 	private Set<Long> objectIds = set();
 
-	private PaymentsCollectorService collectorService;
+	private PaymentCollectorService collectorService;
 
 	@NotNull
 	@Override
@@ -41,7 +41,7 @@ public class PaymentsCollectorDeleteAction extends FPActionSupport {
 	}
 
 	@Required
-	public void setCollectorService(PaymentsCollectorService collectorService) {
+	public void setCollectorService(PaymentCollectorService collectorService) {
 		this.collectorService = collectorService;
 	}
 

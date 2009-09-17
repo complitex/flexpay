@@ -1,16 +1,16 @@
 package org.flexpay.orgs.actions.paymentpoint;
 
 import org.flexpay.common.actions.FPActionSupport;
-import org.flexpay.orgs.persistence.filters.PaymentsCollectorFilter;
-import org.flexpay.orgs.service.PaymentsCollectorService;
+import org.flexpay.orgs.persistence.filters.PaymentCollectorFilter;
+import org.flexpay.orgs.service.PaymentCollectorService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
 public class PaymentPointsListPageAction extends FPActionSupport {
 
-	protected PaymentsCollectorFilter paymentsCollectorFilter = new PaymentsCollectorFilter();
+	protected PaymentCollectorFilter paymentCollectorFilter = new PaymentCollectorFilter();
 
-	protected PaymentsCollectorService collectorService;
+	protected PaymentCollectorService collectorService;
 
 	/**
 	 * Perform action execution.
@@ -23,7 +23,7 @@ public class PaymentPointsListPageAction extends FPActionSupport {
 	@NotNull
 	protected String doExecute() throws Exception {
 
-		collectorService.initFilter(paymentsCollectorFilter);
+		collectorService.initFilter(paymentCollectorFilter);
 
 		return SUCCESS;
 	}
@@ -40,12 +40,12 @@ public class PaymentPointsListPageAction extends FPActionSupport {
 		return SUCCESS;
 	}
 
-	public PaymentsCollectorFilter getPaymentsCollectorFilter() {
-		return paymentsCollectorFilter;
+	public PaymentCollectorFilter getPaymentCollectorFilter() {
+		return paymentCollectorFilter;
 	}
 
 	@Required
-	public void setCollectorService(PaymentsCollectorService collectorService) {
+	public void setCollectorService(PaymentCollectorService collectorService) {
 		this.collectorService = collectorService;
 	}
 

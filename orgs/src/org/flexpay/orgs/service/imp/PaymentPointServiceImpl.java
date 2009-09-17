@@ -13,10 +13,10 @@ import org.flexpay.common.service.internal.SessionUtils;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.orgs.dao.PaymentPointDao;
 import org.flexpay.orgs.persistence.PaymentPoint;
-import org.flexpay.orgs.persistence.PaymentsCollector;
+import org.flexpay.orgs.persistence.PaymentCollector;
 import org.flexpay.orgs.persistence.PaymentPointName;
 import org.flexpay.orgs.persistence.filters.PaymentPointsFilter;
-import org.flexpay.orgs.persistence.filters.PaymentsCollectorFilter;
+import org.flexpay.orgs.persistence.filters.PaymentCollectorFilter;
 import org.flexpay.orgs.service.PaymentPointService;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -57,8 +57,8 @@ public class PaymentPointServiceImpl implements PaymentPointService {
 
 		// check if payments collector filter is there
 		ObjectFilter filter = (ObjectFilter) filters.peek();
-		if (filter.needFilter() && filter instanceof PaymentsCollectorFilter) {
-			PaymentsCollectorFilter collectorFilter = (PaymentsCollectorFilter) filter;
+		if (filter.needFilter() && filter instanceof PaymentCollectorFilter) {
+			PaymentCollectorFilter collectorFilter = (PaymentCollectorFilter) filter;
 			return paymentPointDao.listCollectorPoints(collectorFilter.getSelectedId(), pager);
 		}
 
@@ -77,8 +77,8 @@ public class PaymentPointServiceImpl implements PaymentPointService {
 		
 		// check if payments collector filter is there
 		ObjectFilter filter = (ObjectFilter) filters.peek();
-		if (filter.needFilter() && filter instanceof PaymentsCollectorFilter) {
-			PaymentsCollectorFilter collectorFilter = (PaymentsCollectorFilter) filter;
+		if (filter.needFilter() && filter instanceof PaymentCollectorFilter) {
+			PaymentCollectorFilter collectorFilter = (PaymentCollectorFilter) filter;
 			return paymentPointDao.listCollectorPoints(collectorFilter.getSelectedId(), pager);
 		}
 
@@ -199,7 +199,7 @@ public class PaymentPointServiceImpl implements PaymentPointService {
 
 		FlexPayExceptionContainer ex = new FlexPayExceptionContainer();
 
-		PaymentsCollector collector = point.getCollector();
+		PaymentCollector collector = point.getCollector();
 		if (collector == null || collector.isNew()) {
 			ex.addException(new FlexPayException("Invalid collector", "eirc.error.payment_point.no_collector"));
 		}

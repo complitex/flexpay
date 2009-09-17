@@ -5,7 +5,7 @@
 
 <hibernate-mapping package="org.flexpay.orgs.persistence">
 
-	<class name="PaymentsCollector" table="orgs_payments_collectors_tbl" optimistic-lock="version">
+	<class name="org.flexpay.orgs.persistence.PaymentCollector" table="orgs_payment_collectors_tbl" optimistic-lock="version">
 		<comment>Payment collectors</comment>
 		<id name="id" column="id">
 			<generator class="native" />
@@ -26,14 +26,14 @@
 			</column>
 		</property>
 		<many-to-one name="organization" class="org.flexpay.orgs.persistence.Organization"
-					 foreign-key="FK_orgs_payments_collectors_tbl_organization_id">
+					 foreign-key="FK_orgs_payment_collectors_tbl_organization_id">
 			<column name="organization_id" not-null="true">
 				<comment>Organization reference</comment>
 			</column>
 		</many-to-one>
 		<set name="descriptions" inverse="true" cascade="all-delete-orphan">
 			<key column="collector_id" not-null="true" />
-			<one-to-many class="org.flexpay.orgs.persistence.PaymentsCollectorDescription" />
+			<one-to-many class="org.flexpay.orgs.persistence.PaymentCollectorDescription" />
 		</set>
 		<set name="paymentPoints" inverse="true" cascade="all-delete-orphan">
 			<key column="collector_id" not-null="true" />
@@ -41,7 +41,7 @@
 		</set>
 	</class>
 
-	<class name="PaymentsCollectorDescription" table="orgs_payments_collectors_descriptions_tbl">
+	<class name="org.flexpay.orgs.persistence.PaymentCollectorDescription" table="orgs_payment_collectors_descriptions_tbl">
 		<comment>Payment collector desriptions</comment>
 		<id name="id" column="id">
 			<generator class="native" />
@@ -52,14 +52,14 @@
 			</column>
 		</property>
 		<properties name="lang_service_provider_pair" unique="true">
-			<many-to-one name="lang" foreign-key="FK_orgs_payments_collector_descriptions_tbl_language_id"
+			<many-to-one name="lang" foreign-key="FK_orgs_payment_collector_descriptions_tbl_language_id"
 						 class="org.flexpay.common.persistence.Language">
 				<column name="language_id" not-null="true">
 					<comment>Language reference</comment>
 				</column>
 			</many-to-one>
-			<many-to-one name="translatable" class="org.flexpay.orgs.persistence.PaymentsCollector"
-						 foreign-key="FK_orgs_payments_collector_descriptions_tbl_collector_id">
+			<many-to-one name="translatable" class="org.flexpay.orgs.persistence.PaymentCollector"
+						 foreign-key="FK_orgs_payment_collector_descriptions_tbl_collector_id">
 				<column name="collector_id" not-null="true">
 					<comment>Payment collector reference</comment>
 				</column>
@@ -67,9 +67,9 @@
 		</properties>
 	</class>
 
-	<query name="PaymentsCollector.readFull">
+	<query name="PaymentCollector.readFull">
 		select distinct pc
-		from PaymentsCollector pc
+		from PaymentCollector pc
 		    left outer join fetch pc.descriptions
 		    inner join fetch pc.organization o
             left join fetch o.names
@@ -77,33 +77,34 @@
 		where pc.id=?
 	</query>
 
-	<query name="PaymentsCollector.findInstances">
+	<query name="PaymentCollector.findInstances">
 		select distinct pc
-		from PaymentsCollector pc
+		from PaymentCollector pc
     		left outer join fetch pc.descriptions
 	    	inner join fetch pc.organization o
             left join fetch o.names
 		where pc.status=0
 	</query>
 
-	<query name="PaymentsCollector.findInstances.count">
+	<query name="PaymentCollector.findInstances.count">
 		select count(*)
-		from PaymentsCollector pc
+		from PaymentCollector pc
 		where pc.status=0
 	</query>
 
-	<query name="PaymentsCollector.findOrganizationInstances">
-		from PaymentsCollector
+	<query name="PaymentCollector.findOrganizationInstances">
+		from PaymentCollector
 		where status=0 and organization.id=?
 	</query>
 
-	<query name="PaymentsCollector.findInstancelessOrganizations">
+	<query name="PaymentCollector.findInstancelessOrganizations">
 		select distinct o
 		from Organization o
-            left join fetch o.names
-            left join fetch o.descriptions
-            left join o.paymentsCollectors pc
-		where o.status = 0 and o.id not in (select pc1.organization.id from PaymentsCollector pc1 where pc1.status = 0) or pc.id = ?
+		left join fetch o.names
+		left join fetch o.descriptions
+		left join o.paymentCollectors pc
+		where o.status = 0 and o.id not in (select pc1.organization.id from PaymentCollector pc1 where pc1.status = 0)
+		or pc.id = ?
 	</query>
 
 </hibernate-mapping>

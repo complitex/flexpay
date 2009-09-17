@@ -1,25 +1,25 @@
-package org.flexpay.orgs.actions.paymentscollector;
+package org.flexpay.orgs.actions.paymentcollector;
 
 import org.flexpay.common.actions.FPActionWithPagerSupport;
 import org.flexpay.common.exception.FlexPayException;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.orgs.persistence.Organization;
-import org.flexpay.orgs.persistence.PaymentsCollector;
+import org.flexpay.orgs.persistence.PaymentCollector;
 import org.flexpay.orgs.service.OrganizationService;
-import org.flexpay.orgs.service.PaymentsCollectorService;
+import org.flexpay.orgs.service.PaymentCollectorService;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.util.List;
 
-public class PaymentsCollectorsListAction extends FPActionWithPagerSupport<PaymentsCollector> {
+public class PaymentCollectorsListAction extends FPActionWithPagerSupport<PaymentCollector> {
 
-	private List<PaymentsCollector> collectors = CollectionUtils.list();
+	private List<PaymentCollector> collectors = CollectionUtils.list();
 
 	private OrganizationService organizationService;
-	private PaymentsCollectorService collectorService;
+	private PaymentCollectorService collectorService;
 
 	@NotNull
 	@Override
@@ -55,12 +55,12 @@ public class PaymentsCollectorsListAction extends FPActionWithPagerSupport<Payme
 		return getTranslation(persistent.getNames()).getName();
 	}
 
-	public List<PaymentsCollector> getCollectors() {
+	public List<PaymentCollector> getCollectors() {
 		return collectors;
 	}
 
 	@Required
-	public void setCollectorService(PaymentsCollectorService collectorService) {
+	public void setCollectorService(PaymentCollectorService collectorService) {
 		this.collectorService = collectorService;
 	}
 

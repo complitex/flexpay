@@ -61,7 +61,7 @@
 		<property name="target" ref="bankServiceTarget" />
 	</bean>
 
-	<bean id="paymentsCollectorService"
+	<bean id="paymentCollectorService"
 		  class="org.springmodules.cache.interceptor.proxy.CacheProxyFactoryBean">
 		<property name="cacheProviderFacade" ref="cacheProviderFacade" />
 		<property name="cachingModels">
@@ -76,7 +76,7 @@
 				<prop key="disable">cacheNames=orgsFlexpayCache;flushBeforeMethodExecution=true</prop>
 			</props>
 		</property>
-		<property name="target" ref="paymentsCollectorServiceTarget" />
+		<property name="target" ref="paymentCollectorServiceTarget" />
 	</bean>
 
 	<bean id="paymentPointService"

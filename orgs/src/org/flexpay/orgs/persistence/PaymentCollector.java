@@ -6,7 +6,7 @@ import org.flexpay.common.persistence.Stub;
 import java.util.Collections;
 import java.util.Set;
 
-public class PaymentsCollector extends OrganizationInstance<PaymentsCollectorDescription, PaymentsCollector> {
+public class PaymentCollector extends OrganizationInstance<PaymentCollectorDescription, PaymentCollector> {
 
 	private String email;
 	private Set<PaymentPoint> paymentPoints = Collections.emptySet();
@@ -14,14 +14,14 @@ public class PaymentsCollector extends OrganizationInstance<PaymentsCollectorDes
 	/**
 	 * Constructs a new DomainObject.
 	 */
-	public PaymentsCollector() {
+	public PaymentCollector() {
 	}
 
-	public PaymentsCollector(@NotNull Long id) {
+	public PaymentCollector(@NotNull Long id) {
 		super(id);
 	}
 
-	public PaymentsCollector(@NotNull Stub<PaymentsCollector> stub) {
+	public PaymentCollector(@NotNull Stub<PaymentCollector> stub) {
 		super(stub.getId());
 	}
 

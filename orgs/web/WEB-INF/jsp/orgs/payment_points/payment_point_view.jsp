@@ -26,7 +26,7 @@
         <td colspan="4" height="3" bgcolor="#4a4f4f"></td>
     </tr>
     <tr class="cols_1">
-        <td class="col_1s"><s:text name="eirc.payments_collector" />:</td>
+        <td class="col_1s"><s:text name="eirc.payment_collector" />:</td>
         <td class="col" colspan="2">
             <s:property value="getTranslationName(point.collector.organization.names)"/>
         </td>

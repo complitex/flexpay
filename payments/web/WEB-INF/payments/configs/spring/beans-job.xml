@@ -71,7 +71,7 @@
           p:paymentPointService-ref="paymentPointService"
           p:organizationService-ref="organizationService"
           p:registryGenerator-ref="endOperationDayRegistryGenerator"
-          p:paymentsCollectorService-ref="paymentsCollectorServiceTarget"
+          p:paymentCollectorService-ref="paymentCollectorServiceTarget"
           p:registryFPFileTypeService-ref="registryFPFileTypeService"
           scope="prototype" />
 

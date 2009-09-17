@@ -19,7 +19,7 @@
             <input type="checkbox" onchange="FP.setCheckboxes(this.checked, 'objectIds');" />
         </td>
         <td class="th"><s:text name="eirc.payment_point.name" /></td>
-        <td class="th"><s:text name="eirc.payments_collector" /></td>
+        <td class="th"><s:text name="eirc.payment_collector" /></td>
         <td class="th"><s:text name="ab.address" /></td>
         <td class="th">&nbsp;</td>
     </tr>
@@ -32,7 +32,7 @@
                 <input type="checkbox" name="objectIds" value="<s:property value="%{id}"/>" />
             </td>
             <td class="col">
-                <a href="<s:url action="paymentPointDetails"><s:param name="paymentsCollectorFilter.selectedId" value="%{getPaymentsCollectorId(id)}" />
+                <a href="<s:url action="paymentPointDetails"><s:param name="paymentCollectorFilter.selectedId" value="%{getPaymentCollectorId(id)}" />
                             <s:param name="paymentPointsFilter.selectedId" value="%{id}" /></s:url>">
                     <s:property value="getTranslation(names).name" />
                 </a>

@@ -2,14 +2,14 @@ package org.flexpay.orgs.service.history;
 
 import org.flexpay.common.persistence.history.ReferencesHistoryGenerator;
 import org.flexpay.orgs.persistence.PaymentPoint;
-import org.flexpay.orgs.persistence.PaymentsCollector;
-import org.flexpay.orgs.persistence.PaymentsCollectorDescription;
+import org.flexpay.orgs.persistence.PaymentCollector;
+import org.flexpay.orgs.persistence.PaymentCollectorDescription;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
 public class PaymentPointReferencesHistoryGenerator implements ReferencesHistoryGenerator<PaymentPoint> {
 
-	private OrganizationInstanceHistoryGenerator<PaymentsCollectorDescription, PaymentsCollector> collectorHistoryGenerator;
+	private OrganizationInstanceHistoryGenerator<PaymentCollectorDescription, PaymentCollector> collectorHistoryGenerator;
 
 	@Override
 	public void generateReferencesHistory(@NotNull PaymentPoint obj) {
@@ -18,7 +18,7 @@ public class PaymentPointReferencesHistoryGenerator implements ReferencesHistory
 
 	@Required
 	public void setCollectorHistoryGenerator(
-			OrganizationInstanceHistoryGenerator<PaymentsCollectorDescription, PaymentsCollector> collectorHistoryGenerator) {
+			OrganizationInstanceHistoryGenerator<PaymentCollectorDescription, PaymentCollector> collectorHistoryGenerator) {
 		this.collectorHistoryGenerator = collectorHistoryGenerator;
 	}
 }

@@ -48,12 +48,12 @@
 		</property>
 	</bean>
 
-	<bean id="paymentsCollectorDao" parent="abstractDao">
+	<bean id="paymentCollectorDao" parent="abstractDao">
 		<property name="proxyInterfaces"
-				  value="org.flexpay.orgs.dao.PaymentsCollectorDao" />
+				  value="org.flexpay.orgs.dao.PaymentCollectorDao" />
 		<property name="target">
 			<bean parent="abstractDaoTarget">
-				<constructor-arg value="org.flexpay.orgs.persistence.PaymentsCollector" />
+				<constructor-arg value="org.flexpay.orgs.persistence.PaymentCollector" />
 			</bean>
 		</property>
 	</bean>

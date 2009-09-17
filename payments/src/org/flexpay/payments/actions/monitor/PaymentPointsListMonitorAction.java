@@ -10,10 +10,10 @@ import org.flexpay.common.util.DateUtil;
 import org.flexpay.common.actions.FPActionWithPagerSupport;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.orgs.persistence.PaymentPoint;
-import org.flexpay.orgs.persistence.PaymentsCollector;
+import org.flexpay.orgs.persistence.PaymentCollector;
 import org.flexpay.orgs.persistence.Cashbox;
 import org.flexpay.orgs.service.PaymentPointService;
-import org.flexpay.orgs.service.PaymentsCollectorService;
+import org.flexpay.orgs.service.PaymentCollectorService;
 import org.flexpay.orgs.service.CashboxService;
 import org.flexpay.payments.actions.monitor.data.PaymentPointMonitorContainer;
 import org.flexpay.payments.persistence.OperationType;
@@ -56,9 +56,9 @@ public class PaymentPointsListMonitorAction extends FPActionWithPagerSupport<Pay
     private PaymentPointService paymentPointService;
     private OperationService operationService;
     private CashboxService cashboxService;
-    private PaymentsCollectorService paymentsCollectorService;
+    private PaymentCollectorService paymentCollectorService;
 
-    /**
+	/**
      * {@inheritDoc}
      */
     @NotNull
@@ -76,13 +76,13 @@ public class PaymentPointsListMonitorAction extends FPActionWithPagerSupport<Pay
                     new Object[]{getUserPreferences().getUsername(), getUserPreferences().getId()});
             return ERROR;
         }
-		PaymentsCollector paymentsCollector = paymentsCollectorService.read(new Stub<PaymentsCollector>(paymentCollectorId));
-		if (paymentsCollector == null) {
+		PaymentCollector paymentCollector = paymentCollectorService.read(new Stub<PaymentCollector>(paymentCollectorId));
+		if (paymentCollector == null) {
 			log.error("No payment collector found with id {}", paymentCollectorId);
 			return ERROR;
 		}
 
-        Set<PaymentPoint> lPaymentPoints = paymentsCollector.getPaymentPoints();
+        Set<PaymentPoint> lPaymentPoints = paymentCollector.getPaymentPoints();
 //        List<PaymentPoint> lPaymentPoints = paymentPointService.listPoints(CollectionUtils.arrayStack(), page);
 //        for (Process process : processes) {
         for (PaymentPoint paymentPoint : lPaymentPoints) {
@@ -93,7 +93,7 @@ public class PaymentPointsListMonitorAction extends FPActionWithPagerSupport<Pay
                 if (getText(DISABLE).equals(action) && paymentPoint.getTradingDayProcessInstanceId() != null) {
                     disableTradingDay(paymentPoint);
                 } if (getText(ENABLE).equals(action) && paymentPoint.getTradingDayProcessInstanceId() == null) {
-                    enableTradingDay(paymentsCollector, paymentPoint);
+                    enableTradingDay(paymentCollector, paymentPoint);
                 }
             }
 
@@ -145,7 +145,7 @@ public class PaymentPointsListMonitorAction extends FPActionWithPagerSupport<Pay
     }
 
     @Secured (Roles.TRADING_DAY_ADMIN_ACTION)
-    private void enableTradingDay(PaymentsCollector paymentsCollector, PaymentPoint paymentPoint) throws JobExecutionException {
+    private void enableTradingDay(PaymentCollector paymentCollector, PaymentPoint paymentPoint) throws JobExecutionException {
         Map<Serializable, Serializable> parameters = new HashMap<Serializable, Serializable>();
 
         parameters.put(ExportJobParameterNames.PAYMENT_POINT_ID, paymentPoint.getCollector().getOrganization().getId());
@@ -159,7 +159,7 @@ public class PaymentPointsListMonitorAction extends FPActionWithPagerSupport<Pay
         parameters.put(ExportJobParameterNames.END_DATE, DateUtil.getEndOfThisDay(new Date()));
         log.debug("Set endDate {}", DateUtil.getEndOfThisDay(new Date()));
 
-        Long recipientOrganizationId = paymentsCollector.getOrganization().getId();
+        Long recipientOrganizationId = paymentCollector.getOrganization().getId();
         parameters.put(ExportJobParameterNames.ORGANIZATION_ID, recipientOrganizationId);
         log.debug("Set organizationId {}", recipientOrganizationId);
 
@@ -286,8 +286,8 @@ public class PaymentPointsListMonitorAction extends FPActionWithPagerSupport<Pay
     }
 
     @Required
-    public void setPaymentsCollectorService(PaymentsCollectorService paymentsCollectorService) {
-        this.paymentsCollectorService = paymentsCollectorService;
+    public void setPaymentCollectorService(PaymentCollectorService paymentCollectorService) {
+        this.paymentCollectorService = paymentCollectorService;
     }
 
     public long getPaymentsCount(List<OperationTypeStatistics> typeStatisticses) {

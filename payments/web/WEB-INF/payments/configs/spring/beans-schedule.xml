@@ -30,7 +30,7 @@
                 <entry key="processManager" value-ref="processManagerPayments" />
                 <entry key="providerService" value-ref="serviceProviderService" />
                 <entry key="serviceProviderAttributeService" value-ref="serviceProviderServiceAttribute" />
-                <entry key="paymentsCollectorService" value-ref="paymentsCollectorService"/>
+                <entry key="paymentCollectorService" value-ref="paymentCollectorService"/>
                 <entry key="privateKey" value="WEB-INF/payments/configs/keys/secret.key" />
             </map>
         </property>
@@ -42,7 +42,7 @@
             <map>
                 <entry key="processManager" value-ref="processManagerPayments" />
                 <entry key="paymentPointService" value-ref="paymentPointService" />
-                <entry key="paymentsCollectorService" value-ref="paymentsCollectorService" />
+                <entry key="paymentCollectorService" value-ref="paymentCollectorService" />
             </map>
         </property>
     </bean>

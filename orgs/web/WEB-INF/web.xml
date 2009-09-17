@@ -192,16 +192,16 @@
 	</security-role>
 
 	<security-role>
-		<role-name>ROLE_ORGS_PAYMENTS_COLLECTOR_READ</role-name>
+		<role-name>ROLE_ORGS_PAYMENT_COLLECTOR_READ</role-name>
 	</security-role>
 	<security-role>
-		<role-name>ROLE_ORGS_PAYMENTS_COLLECTOR_CHANGE</role-name>
+		<role-name>ROLE_ORGS_PAYMENT_COLLECTOR_CHANGE</role-name>
 	</security-role>
 	<security-role>
-		<role-name>ROLE_ORGS_PAYMENTS_COLLECTOR_ADD</role-name>
+		<role-name>ROLE_ORGS_PAYMENT_COLLECTOR_ADD</role-name>
 	</security-role>
 	<security-role>
-		<role-name>ROLE_ORGS_PAYMENTS_COLLECTOR_DELETE</role-name>
+		<role-name>ROLE_ORGS_PAYMENT_COLLECTOR_DELETE</role-name>
 	</security-role>
 
 	<security-role>

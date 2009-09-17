@@ -82,21 +82,21 @@
 		  p:modificationListener-ref="cashboxHistoryChangesListener"
 		  p:cashboxDao-ref="cashboxDao" />
 
-	<bean id="paymentsCollectorHistoryChangesListener"
+	<bean id="paymentCollectorHistoryChangesListener"
 		  parent="historyChangesListenerBase"
-		  p:historyBuilder-ref="paymentsCollectorHistoryBuilder"
+		  p:historyBuilder-ref="paymentCollectorHistoryBuilder"
 		  p:referencesHistoryGenerator-ref="organizationInstanceReferencesHistoryGenerator" />
 
-	<bean id="paymentsCollectorServiceTarget"
+	<bean id="paymentCollectorServiceTarget"
 		  autowire-candidate="false"
-		  class="org.flexpay.orgs.service.imp.PaymentsCollectorServiceImpl"
+		  class="org.flexpay.orgs.service.imp.PaymentCollectorServiceImpl"
 		  parent="organisationInstanceService"
-		  p:modificationListener-ref="paymentsCollectorHistoryChangesListener"
-		  p:instanceDao-ref="paymentsCollectorDao" />
+		  p:modificationListener-ref="paymentCollectorHistoryChangesListener"
+		  p:instanceDao-ref="paymentCollectorDao" />
 
 	<bean id="paymentPointReferencesHistoryGenerator"
 		  class="org.flexpay.orgs.service.history.PaymentPointReferencesHistoryGenerator"
-		  p:collectorHistoryGenerator-ref="paymentsCollectorHistoryGenerator" />
+		  p:collectorHistoryGenerator-ref="paymentCollectorHistoryGenerator" />
 
 	<bean id="paymentPointHistoryChangesListener"
 		  parent="historyChangesListenerBase"
@@ -162,7 +162,7 @@
 	<bean id="paymentPointHistoryBuilder"
 		  parent="historyBuilderBase"
 		  class="org.flexpay.orgs.service.history.PaymentPointHistoryBuilder"
-		  p:collectorService-ref="paymentsCollectorService" />
+		  p:collectorService-ref="paymentCollectorService" />
 
 	<bean id="bankHistoryBuilder"
 		  parent="historyBuilderBase"
@@ -191,9 +191,9 @@
 		  class="org.flexpay.orgs.service.history.ServiceProviderHistoryBuilder"
 		  p:organizationService-ref="organizationService" />
 
-	<bean id="paymentsCollectorHistoryBuilder"
+	<bean id="paymentCollectorHistoryBuilder"
 		  parent="historyBuilderBase"
-		  class="org.flexpay.orgs.service.history.PaymentsCollectorHistoryBuilder"
+		  class="org.flexpay.orgs.service.history.PaymentCollectorHistoryBuilder"
 		  p:organizationService-ref="organizationService" />
 
 	<!-- History generators -->
@@ -242,10 +242,10 @@
 		  p:instanceService-ref="serviceProviderService"
 		  p:historyBuilder-ref="serviceProviderHistoryBuilder" />
 
-	<bean id="paymentsCollectorHistoryGenerator"
+	<bean id="paymentCollectorHistoryGenerator"
 		  parent="organizationInstanceHistoryGenerator"
-		  p:instanceService-ref="paymentsCollectorService"
-		  p:historyBuilder-ref="paymentsCollectorHistoryBuilder" />
+		  p:instanceService-ref="paymentCollectorService"
+		  p:historyBuilder-ref="paymentCollectorHistoryBuilder" />
 
 	<bean id="paymentPointHistoryGenerator"
 		  class="org.flexpay.orgs.service.history.PaymentPointHistoryGenerator"
@@ -273,11 +273,11 @@
 		  p:subdivisionService-ref="subdivisionService"
 		  p:historyBuilder-ref="subdivisionHistoryBuilder" />
 
-	<bean id="paymentsCollectorHistoryHandler"
+	<bean id="paymentCollectorHistoryHandler"
 		  parent="historyHandlerBase"
-		  p:instanceService-ref="paymentsCollectorService"
-		  p:historyBuilder-ref="paymentsCollectorHistoryBuilder"
-		  class="org.flexpay.orgs.service.history.PaymentsCollectorHistoryHandler" />
+		  p:instanceService-ref="paymentCollectorService"
+		  p:historyBuilder-ref="paymentCollectorHistoryBuilder"
+		  class="org.flexpay.orgs.service.history.PaymentCollectorHistoryHandler" />
 
 	<bean id="serviceOrganizationHistoryHandler"
 		  parent="historyHandlerBase"
@@ -308,7 +308,7 @@
 		<property name="handlers">
 			<list merge="true">
 				<ref bean="paymentPointHistoryHandler" />
-				<ref bean="paymentsCollectorHistoryHandler" />
+				<ref bean="paymentCollectorHistoryHandler" />
 				<ref bean="serviceOrganizationHistoryHandler" />
 				<ref bean="serviceProviderHistoryHandler" />
 				<ref bean="bankHistoryHandler" />

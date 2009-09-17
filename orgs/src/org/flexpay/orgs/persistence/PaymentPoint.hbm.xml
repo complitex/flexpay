@@ -37,7 +37,7 @@
 			<!--</column>-->
         <!--</many-to-one>-->
 		<many-to-one name="collector" foreign-key="FK_orgs_payment_points_tbl_collector_id"
-					 class="PaymentsCollector">
+					 class="org.flexpay.orgs.persistence.PaymentCollector">
 			<column name="collector_id" not-null="true">
 				<comment>Payments collector reference</comment>
 			</column>

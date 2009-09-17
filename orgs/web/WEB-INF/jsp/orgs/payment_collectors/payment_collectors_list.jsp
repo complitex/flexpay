@@ -9,7 +9,7 @@
             <%@include file="/WEB-INF/jsp/common/filter/pager/pager_ajax.jsp"%>
             <input type="button" class="btn-exit" value="<s:text name="common.delete_selected" />" onclick="deleteAjax();" />
             <input type="button" class="btn-exit"
-                   onclick="window.location='<s:url action="paymentsCollectorEdit"><s:param name="collector.id" value="0" /></s:url>';"
+                   onclick="window.location='<s:url action="paymentCollectorEdit"><s:param name="collector.id" value="0" /></s:url>';"
                    value="<s:text name="common.new" />" />
         </td>
     </tr>
@@ -32,15 +32,15 @@
                 <input type="checkbox" name="objectIds" value="<s:property value="%{id}" />" />
             </td>
             <td class="col">
-                <a href="<s:url action="paymentsCollectorDetails"><s:param name="paymentsCollectorFilter.selectedId" value="%{id}" /></s:url>">
+                <a href="<s:url action="paymentCollectorDetails"><s:param name="paymentCollectorFilter.selectedId" value="%{id}" /></s:url>">
                     <s:property value="getOrganizationName(organization)"/>
                 </a>
             </td>
             <td class="col"><s:property value="getTranslation(descriptions).name" /></td>
             <td class="col"><s:property value="email" /></td>
             <td class="col">
-                <a href="<s:url action="paymentsCollectorView"><s:param name="collector.id" value="%{id}" /></s:url>"><s:text name="common.view" /></a>&nbsp;
-                <a href="<s:url action="paymentsCollectorEdit"><s:param name="collector.id" value="%{id}" /></s:url>"><s:text name="common.edit" /></a>
+                <a href="<s:url action="paymentCollectorView"><s:param name="collector.id" value="%{id}" /></s:url>"><s:text name="common.view" /></a>&nbsp;
+                <a href="<s:url action="paymentCollectorEdit"><s:param name="collector.id" value="%{id}" /></s:url>"><s:text name="common.edit" /></a>
             </td>
         </tr>
     </s:iterator>
@@ -49,7 +49,7 @@
             <%@include file="/WEB-INF/jsp/common/filter/pager/pager_ajax.jsp"%>
             <input type="button" class="btn-exit" value="<s:text name="common.delete_selected" />" onclick="deleteAjax();" />
             <input type="button" class="btn-exit"
-                   onclick="window.location='<s:url action="paymentsCollectorEdit"><s:param name="collector.id" value="0" /></s:url>';"
+                   onclick="window.location='<s:url action="paymentCollectorEdit"><s:param name="collector.id" value="0" /></s:url>';"
                    value="<s:text name="common.new" />" />
         </td>
     </tr>

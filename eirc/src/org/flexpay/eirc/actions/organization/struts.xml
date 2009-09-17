@@ -88,33 +88,33 @@
 		</action>
 
 		<!-- Payments Collectors -->
-        <action name="paymentsCollectorView" class="paymentsCollectorViewAction">
-            <result type="tiles">eirc.organization.payments_collector.view</result>
-            <result name="redirectError" type="redirect-action">paymentsCollectorsList</result>
+        <action name="paymentCollectorView" class="paymentCollectorViewAction">
+            <result type="tiles">eirc.organization.payment_collector.view</result>
+            <result name="redirectError" type="redirect-action">paymentCollectorsList</result>
         </action>
 
-        <action name="paymentsCollectorEdit" class="paymentsCollectorEditAction">
-            <result name="input" type="tiles">eirc.organization.payments_collector.edit</result>
+        <action name="paymentCollectorEdit" class="paymentCollectorEditAction">
+            <result name="input" type="tiles">eirc.organization.payment_collector.edit</result>
             <result name="redirectSuccess" type="redirect-action">
-                <param name="actionName">paymentsCollectorView</param>
+                <param name="actionName">paymentCollectorView</param>
                 <param name="parse">true</param>
                 <param name="collector.id">${collector.id}</param>
             </result>
         </action>
 
-        <action name="paymentsCollectorDetails" class="paymentsCollectorDetailsAction">
-            <result type="tiles">eirc.organization.payments_collectors.details</result>
+        <action name="paymentCollectorDetails" class="paymentCollectorDetailsAction">
+            <result type="tiles">eirc.organization.payment_collectors.details</result>
         </action>
 
-		<action name="paymentsCollectorsList" class="paymentsCollectorsListPageAction">
-			<result type="tiles">eirc.organization.payments_collectors.list</result>
+		<action name="paymentCollectorsList" class="paymentCollectorsListPageAction">
+			<result type="tiles">eirc.organization.payment_collectors.list</result>
 		</action>
 
-        <action name="paymentsCollectorsListAjax" class="paymentsCollectorsListAction">
-            <result>/WEB-INF/jsp/orgs/payments_collectors/payments_collectors_list.jsp</result>
+        <action name="paymentCollectorsListAjax" class="paymentCollectorsListAction">
+            <result>/WEB-INF/jsp/orgs/payment_collectors/payment_collectors_list.jsp</result>
         </action>
 
-		<action name="paymentsCollectorDelete" class="paymentsCollectorDeleteAction">
+		<action name="paymentCollectorDelete" class="paymentCollectorDeleteAction">
             <result>/WEB-INF/jsp/common/responses/simple_response.jsp</result>
 		</action>
 

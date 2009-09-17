@@ -15,7 +15,7 @@ import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.orgs.persistence.filters.CashboxFilter;
 import org.flexpay.orgs.persistence.filters.PaymentPointsFilter;
 import org.flexpay.orgs.persistence.Cashbox;
-import org.flexpay.orgs.persistence.PaymentsCollector;
+import org.flexpay.orgs.persistence.PaymentCollector;
 import org.flexpay.orgs.service.CashboxService;
 import org.flexpay.orgs.service.PaymentPointService;
 import org.flexpay.payments.reports.payments.PaymentsReporter;
@@ -78,15 +78,15 @@ public abstract class AccPaymentsReportAction extends FPActionSupport {
 			return SUCCESS;
 		}
 
-		Long paymentsCollectorId = ((PaymentsUserPreferences) getUserPreferences()).getPaymentCollectorId();
-		if (null == paymentsCollectorId) {
+		Long paymentCollectorId = ((PaymentsUserPreferences) getUserPreferences()).getPaymentCollectorId();
+		if (null == paymentCollectorId) {
 			log.error("No payment collector id found in user preferences");
 			addActionError("payments.error.payment_collector_not_found");
 			return SUCCESS;
 		}
 
 		AccPaymentsReportRequest request = buildReportRequest();
-		AccPaymentReportData data = paymentsReporter.getAccPaymentsReportData(request, new Stub<PaymentsCollector>(paymentsCollectorId));
+		AccPaymentReportData data = paymentsReporter.getAccPaymentsReportData(request, new Stub<PaymentCollector>(paymentCollectorId));
 		data.setAccountantFio(getUserPreferences().getFullName());
 
 		Map<?, ?> params = map(

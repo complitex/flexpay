@@ -29,7 +29,7 @@ public class Organization extends DomainObjectWithStatus {
 	private Set<ServiceProvider> serviceProviders = Collections.emptySet();
 	private Set<Bank> banks = Collections.emptySet();
     private Set<ServiceOrganization> serviceOrganizations = Collections.emptySet();
-	private Set<PaymentsCollector> paymentsCollectors = Collections.emptySet();
+	private Set<PaymentCollector> paymentCollectors = Collections.emptySet();
 
 	private Set<BankAccount> accounts = Collections.emptySet();
 	private Set<Subdivision> childSubdivisions = Collections.emptySet();
@@ -164,12 +164,12 @@ public class Organization extends DomainObjectWithStatus {
         this.serviceOrganizations = serviceOrganizations;
     }
 
-	public Set<PaymentsCollector> getPaymentsCollectors() {
-		return paymentsCollectors;
+	public Set<PaymentCollector> getPaymentCollectors() {
+		return paymentCollectors;
 	}
 
-	public void setPaymentsCollectors(Set<PaymentsCollector> paymentsCollectors) {
-		this.paymentsCollectors = paymentsCollectors;
+	public void setPaymentCollectors(Set<PaymentCollector> paymentCollectors) {
+		this.paymentCollectors = paymentCollectors;
 	}
 
 	public DataSourceDescription getDataSourceDescription() {

@@ -4,20 +4,20 @@ import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.orgs.actions.cashbox.CashboxesListAction;
 import org.flexpay.orgs.persistence.PaymentPoint;
 import org.flexpay.orgs.persistence.filters.PaymentPointsFilter;
-import org.flexpay.orgs.persistence.filters.PaymentsCollectorFilter;
+import org.flexpay.orgs.persistence.filters.PaymentCollectorFilter;
 import org.flexpay.orgs.service.PaymentPointService;
-import org.flexpay.orgs.service.PaymentsCollectorService;
+import org.flexpay.orgs.service.PaymentCollectorService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
 public class PaymentPointDetailsAction extends CashboxesListAction {
 
 	// filters
-	private PaymentsCollectorFilter paymentsCollectorFilter = new PaymentsCollectorFilter();
+	private PaymentCollectorFilter paymentCollectorFilter = new PaymentCollectorFilter();
 	private PaymentPointsFilter paymentPointsFilter = new PaymentPointsFilter();
 
 	// required services
-	private PaymentsCollectorService paymentsCollectorService;
+	private PaymentCollectorService paymentCollectorService;
 	private PaymentPointService paymentPointService;
 
 	@NotNull
@@ -37,13 +37,13 @@ public class PaymentPointDetailsAction extends CashboxesListAction {
 
 	private void initFilters() {
 
-		paymentsCollectorFilter.setAllowEmpty(false);
+		paymentCollectorFilter.setAllowEmpty(false);
 
-		paymentsCollectorFilter.initFilter(session);
+		paymentCollectorFilter.initFilter(session);
 		paymentPointsFilter.initFilter(session);
 
-		paymentsCollectorService.initFilter(paymentsCollectorFilter);
-		paymentPointService.initFilter(CollectionUtils.arrayStack(paymentsCollectorFilter), paymentPointsFilter);
+		paymentCollectorService.initFilter(paymentCollectorFilter);
+		paymentPointService.initFilter(CollectionUtils.arrayStack(paymentCollectorFilter), paymentPointsFilter);
 	}
 
 	// rendering utility methods
@@ -54,12 +54,12 @@ public class PaymentPointDetailsAction extends CashboxesListAction {
 	}
 
 	// filters
-	public PaymentsCollectorFilter getPaymentsCollectorFilter() {
-		return paymentsCollectorFilter;
+	public PaymentCollectorFilter getPaymentCollectorFilter() {
+		return paymentCollectorFilter;
 	}
 
-	public void setPaymentsCollectorFilter(PaymentsCollectorFilter paymentsCollectorFilter) {
-		this.paymentsCollectorFilter = paymentsCollectorFilter;
+	public void setPaymentCollectorFilter(PaymentCollectorFilter paymentCollectorFilter) {
+		this.paymentCollectorFilter = paymentCollectorFilter;
 	}
 
 	public PaymentPointsFilter getPaymentPointsFilter() {
@@ -72,8 +72,8 @@ public class PaymentPointDetailsAction extends CashboxesListAction {
 
 	// required services
 	@Required
-	public void setPaymentsCollectorService(PaymentsCollectorService paymentsCollectorService) {
-		this.paymentsCollectorService = paymentsCollectorService;
+	public void setPaymentCollectorService(PaymentCollectorService paymentCollectorService) {
+		this.paymentCollectorService = paymentCollectorService;
 	}
 
 	@Required

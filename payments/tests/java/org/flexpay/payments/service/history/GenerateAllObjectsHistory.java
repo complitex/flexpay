@@ -61,11 +61,11 @@ public class GenerateAllObjectsHistory extends PaymentsSpringBeanAwareTestCase {
 			BankDescription, Bank> bankHistoryGenerator;
 
 	@Autowired
-	private PaymentsCollectorService paymentsCollectorService;
+	private PaymentCollectorService paymentCollectorService;
 	@Autowired
-	@Qualifier ("paymentsCollectorHistoryGenerator")
+	@Qualifier ("paymentCollectorHistoryGenerator")
 	private OrganizationInstanceHistoryGenerator<
-			PaymentsCollectorDescription, PaymentsCollector> paymentsCollectorHistoryGenerator;
+			PaymentCollectorDescription, PaymentCollector> paymentCollectorHistoryGenerator;
 
 	@Autowired
 	private PaymentPointService paymentPointService;
@@ -103,7 +103,7 @@ public class GenerateAllObjectsHistory extends PaymentsSpringBeanAwareTestCase {
 		generateServiceOrganizations();
 		generateServiceProviders();
 		generateBanks();
-		generatePaymentsCollectors();
+		generatePaymentCollectors();
 		generatePaymentPoints();
 		generateCashboxes();
 		generateServiceTypes();
@@ -159,11 +159,11 @@ public class GenerateAllObjectsHistory extends PaymentsSpringBeanAwareTestCase {
 		}
 	}
 
-	private void generatePaymentsCollectors() {
+	private void generatePaymentCollectors() {
 
-		List<PaymentsCollector> organizations = paymentsCollectorService.listInstances(new Page<PaymentsCollector>(1000000));
-		for (PaymentsCollector organization : organizations) {
-			paymentsCollectorHistoryGenerator.generateFor(organization);
+		List<PaymentCollector> organizations = paymentCollectorService.listInstances(new Page<PaymentCollector>(1000000));
+		for (PaymentCollector organization : organizations) {
+			paymentCollectorHistoryGenerator.generateFor(organization);
 		}
 	}
 

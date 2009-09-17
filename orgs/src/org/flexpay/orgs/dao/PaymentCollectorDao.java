@@ -1,12 +1,12 @@
 package org.flexpay.orgs.dao;
 
 import org.flexpay.orgs.persistence.Organization;
-import org.flexpay.orgs.persistence.PaymentsCollector;
-import org.flexpay.orgs.persistence.PaymentsCollectorDescription;
+import org.flexpay.orgs.persistence.PaymentCollector;
+import org.flexpay.orgs.persistence.PaymentCollectorDescription;
 
 import java.util.List;
 
-public interface PaymentsCollectorDao extends OrganisationInstanceDao<PaymentsCollectorDescription, PaymentsCollector> {
+public interface PaymentCollectorDao extends OrganisationInstanceDao<PaymentCollectorDescription, PaymentCollector> {
 
 	/**
 	 * Find organizations that are not banks except of that has a bank with specified <code>includedBankId</code>
