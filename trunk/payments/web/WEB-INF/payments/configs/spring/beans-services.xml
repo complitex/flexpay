@@ -167,13 +167,11 @@
           p:registryService-ref="registryService" />
 
     <bean id="exportBankPaymentsRegistry"
-		  autowire-candidate="false"
 		  class="org.flexpay.payments.util.registries.ExportBankPaymentsRegistry"
 		  parent="paymentsRegistryFPFileFormat" />
 
 
     <bean id="exportPaymentsRegistry"
-		  autowire-candidate="false"
           parent="paymentsRegistryFPFileFormat" />
 
 	<bean id="endOperationDayRegistryGenerator"

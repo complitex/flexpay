@@ -42,7 +42,7 @@ public class ProcessingContext {
 		return currentRecord;
 	}
 
-	public void setCurrentRecord(RegistryRecord currentRecord) {
+	public void setCurrentRecord(RegistryRecord currentRecord) throws FlexPayException {
 		this.currentRecord = currentRecord;
 		operationRecords.add(currentRecord);
 		operationUpdates.addAll(currentRecordUpdates);
@@ -81,14 +81,14 @@ public class ProcessingContext {
 		}
 	}
 
-	public void visitCurrentRecordUpdates(DelayedUpdateVisitor visitor) {
+	public void visitCurrentRecordUpdates(DelayedUpdateVisitor visitor) throws FlexPayException {
 
 		for (DelayedUpdate update : currentRecordUpdates) {
 			visitor.apply(update);
 		}
 	}
 
-	public void visitOperationUpdates(DelayedUpdateVisitor visitor) {
+	public void visitOperationUpdates(DelayedUpdateVisitor visitor) throws FlexPayException {
 
 		for (DelayedUpdate update : operationUpdates) {
 			visitor.apply(update);
@@ -110,11 +110,11 @@ public class ProcessingContext {
 		currentRecordUpdates.add(update);
 	}
 
-	public void beforeUpdate() {
+	public void beforeUpdate() throws FlexPayException {
 
 		visitOperationUpdates(new DelayedUpdateVisitor() {
 			@Override
-			public void apply(DelayedUpdate update) {
+			public void apply(DelayedUpdate update) throws FlexPayException {
 				if (update instanceof UpdatesListener) {
 					((UpdatesListener) update).beforeUpdate(ProcessingContext.this);
 				}

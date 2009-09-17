@@ -5,10 +5,14 @@ import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.registry.RegistryRecord;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.eirc.persistence.exchange.*;
+import org.flexpay.eirc.util.config.ApplicationConfig;
 import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.orgs.persistence.PaymentPoint;
 import org.flexpay.payments.persistence.Document;
+import org.flexpay.payments.persistence.DocumentAddition;
+import org.flexpay.payments.persistence.DocumentAdditionType;
 import org.flexpay.payments.persistence.Operation;
+import org.flexpay.payments.service.DocumentAdditionTypeService;
 import org.flexpay.payments.service.OperationService;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
@@ -23,6 +27,7 @@ public class PaymentOperationDelayedUpdate implements
 	private static final Logger log = LoggerFactory.getLogger(PaymentOperationDelayedUpdate.class);
 
 	private OperationService operationService;
+	private DocumentAdditionTypeService additionTypeService;
 
 	private Map<RegistryRecord, Document> record2DocumentMap = CollectionUtils.map();
 	private List<ExternalAccountBeforeUpdateSetter> updates = CollectionUtils.list();
@@ -30,8 +35,9 @@ public class PaymentOperationDelayedUpdate implements
 	private Operation operation = new Operation();
 	private Long operationId = -1L;
 
-	public PaymentOperationDelayedUpdate(OperationService operationService) {
+	public PaymentOperationDelayedUpdate(OperationService operationService, DocumentAdditionTypeService additionTypeService) {
 		this.operationService = operationService;
+		this.additionTypeService = additionTypeService;
 		log.debug("New payment operation update created.");
 	}
 
@@ -96,7 +102,7 @@ public class PaymentOperationDelayedUpdate implements
 	}
 
 	@Override
-	public void beforeUpdate(ProcessingContext context) {
+	public void beforeUpdate(ProcessingContext context) throws FlexPayException {
 
 		for (ExternalAccountBeforeUpdateSetter update : updates) {
 			update.doUpdate();
@@ -115,7 +121,7 @@ public class PaymentOperationDelayedUpdate implements
 			this.org = org;
 		}
 
-		void doUpdate() {
+		void doUpdate() throws FlexPayException {
 
 			Document doc = record2DocumentMap.get(registryRecord);
 			if (doc == null) {
@@ -124,7 +130,12 @@ public class PaymentOperationDelayedUpdate implements
 			}
 
 			// TODO create document addition
+			if (ApplicationConfig.getMbOrganizationStub().sameId(org)) {
+				DocumentAddition addition = new DocumentAddition();
+				addition.setAdditionType(additionTypeService.findTypeByCode(DocumentAdditionType.CODE_ERC_ACCOUNT));
+				addition.setStringValue(accountNumber);
+				doc.addAddition(addition);
+			}
 		}
-
 	}
 }

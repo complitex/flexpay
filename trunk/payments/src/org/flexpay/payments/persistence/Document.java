@@ -180,6 +180,21 @@ public class Document extends DomainObject {
 		this.additions = additions;
 	}
 
+	public void addAddition(DocumentAddition addition) {
+
+		DocumentAddition toDelete = null;
+		for (DocumentAddition old : additions) {
+			if (old.getAdditionType().equals(addition.getAdditionType())) {
+				toDelete = old;
+				break;
+			}
+		}
+		additions.remove(toDelete);
+
+		addition.setDocument(this);
+		additions.add(addition);
+	}
+
 	public Set<Document> getReferencedDocuments() {
 		return referencedDocuments;
 	}

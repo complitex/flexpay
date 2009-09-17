@@ -100,7 +100,7 @@ public abstract class PaymentOperation extends ContainerOperation {
 
 		PaymentOperationDelayedUpdate update = holder[0];
 		if (update == null) {
-			update = new PaymentOperationDelayedUpdate(factory.getOperationService());
+			update = new PaymentOperationDelayedUpdate(factory.getOperationService(), null);
 			update.setOperationId(getOperationId(context));
 			org.flexpay.payments.persistence.Operation operation = update.getOperation();
 			operation.setOperationSumm(getOperationSum(context));

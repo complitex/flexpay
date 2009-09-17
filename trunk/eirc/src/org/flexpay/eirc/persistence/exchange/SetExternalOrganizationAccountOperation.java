@@ -88,7 +88,7 @@ public class SetExternalOrganizationAccountOperation extends AbstractChangePerso
 		return DelayedUpdateNope.INSTANCE;
 	}
 
-	private DelayedUpdate visitUpdates(ProcessingContext context, final Organization org) {
+	private DelayedUpdate visitUpdates(ProcessingContext context, final Organization org) throws FlexPayException {
 
 		context.visitCurrentRecordUpdates(new DelayedUpdateVisitor() {
 			@Override
