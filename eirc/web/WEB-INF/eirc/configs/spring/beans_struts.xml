@@ -168,18 +168,34 @@
           p:classToTypeRegistry-ref="classToTypeRegistry"
           p:serviceTypeService-ref="serviceTypeService" />
 
-	<bean id="processesListAction" scope="prototype"
-		  class="org.flexpay.common.actions.processing.ProcessesListAction"
-		  p:processManager-ref="processManager" />
+    <bean id="processesListPageAction"
+          class="org.flexpay.common.actions.processing.ProcessesListPageAction"
+          p:crumbNameKey="eirc.crumbs.processes.list"
+          p:processManager-ref="processManager"
+          scope="prototype" />
 
-	<bean id="processViewAction" scope="prototype"
+	<bean id="processesListAction"
+		  class="org.flexpay.common.actions.processing.ProcessesListAction"
+		  p:processManager-ref="processManager"
+          scope="prototype" />
+
+    <bean id="processDeleteAction"
+          class="org.flexpay.common.actions.processing.ProcessDeleteAction"
+          p:processManager-ref="processManager"
+          scope="prototype" />
+
+	<bean id="processViewAction"
 		  class="org.flexpay.common.actions.processing.ProcessViewAction"
-		  p:processManager-ref="processManager" />
+          p:crumbNameKey="eirc.crumbs.process.view"
+		  p:processManager-ref="processManager"
+          scope="prototype" />
 
 	<bean id="processDefinitionDeployAction"
 		  class="org.flexpay.common.actions.processing.ProcessDefinitionDeployAction"
+          p:crumbNameKey="eirc.crumbs.process.definition_deploy"
           p:fpFileService-ref="fpFileService"
 		  p:processManager-ref="processManager"
+          p:moduleName="${flexpay.module.name.eirc}"
           scope="prototype" />
 
 	<bean id="eircAccountsListAction" scope="prototype"
