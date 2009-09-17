@@ -36,6 +36,8 @@ public class GeneratePaymentsRegistry extends QuartzJobBean {
 	private Logger log = LoggerFactory.getLogger(getClass());
 
 	private static final String USER_PAYMENTS_REGISTRY_GENERATOR = "payments-registry-generator";
+    private static final String GENERATE_PAYMENTS_REGISRY_PROCESS = "GeneratePaymentsRegisryProcess";
+    
 	// time out 10 sec
 	private static final long TIME_OUT = 10000;
 	private static final Integer PAGE_SIZE = 20;
@@ -91,6 +93,7 @@ public class GeneratePaymentsRegistry extends QuartzJobBean {
 
 					serviceProvidersPage.setPageNumber(0);
 					while ((listServiceProviders = serviceProviderService.listInstances(serviceProvidersPage)).size() > 0) {
+                        log.debug("number service providers page {}, number service providers {}", new Object[]{serviceProvidersPage.getPageNumber(), listServiceProviders.size()});
 						for (ServiceProvider serviceProvider : listServiceProviders) {
 							Organization organization = serviceProvider.getOrganization();
 							if (organization != null && organization.getId() != null) {
@@ -111,7 +114,8 @@ public class GeneratePaymentsRegistry extends QuartzJobBean {
 
 								waitingProcessData.add(parameters);
 
-								long processId = processManager.createProcess("GeneratePaymentsRegisryProcess", parameters);
+                                log.debug("start process {}", parameters);
+								long processId = processManager.createProcess(GENERATE_PAYMENTS_REGISRY_PROCESS, parameters);
 								listProcessInstanesId.add(processId);
 							} else {
 								log.error("Organization did not find for service provider with id {}", serviceProvider.getId());
@@ -126,8 +130,9 @@ public class GeneratePaymentsRegistry extends QuartzJobBean {
 			List<Long> registries = new ArrayList<Long>();
 
 			do {
+                log.debug("Waiting number {} processes: {}", new Object[]{GENERATE_PAYMENTS_REGISRY_PROCESS, waitingProcessData.size()});
 				for (Map<Serializable, Serializable> param : waitingProcessData) {
-					log.debug("Waiting GeneratePaymentsRegisryProcess processes will complete for: {} ...", param);
+					log.debug("Waiting {} processes will complete for: {} ...", new Object[]{GENERATE_PAYMENTS_REGISRY_PROCESS, param});
 				}
 				try {
 					Thread.sleep(TIME_OUT);
