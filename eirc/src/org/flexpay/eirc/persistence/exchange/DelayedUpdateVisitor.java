@@ -1,5 +1,7 @@
 package org.flexpay.eirc.persistence.exchange;
 
+import org.flexpay.common.exception.FlexPayException;
+
 public interface DelayedUpdateVisitor {
 
 	/**
@@ -7,5 +9,5 @@ public interface DelayedUpdateVisitor {
 	 *
 	 * @param update DelayedUpdate  to visit
 	 */
-	void apply(DelayedUpdate update);
+	void apply(DelayedUpdate update) throws FlexPayException;
 }

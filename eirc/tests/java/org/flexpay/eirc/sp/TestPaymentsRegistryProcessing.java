@@ -35,6 +35,7 @@ import java.util.List;
 public class TestPaymentsRegistryProcessing extends EircSpringBeanAwareTestCase {
 
 	@Autowired
+	@Qualifier ("paymentsRegistryFPFileFormat")
 	private RegistryFPFileFormat fileFormat;
 	@Autowired
 	private OrganizationService organizationService;
