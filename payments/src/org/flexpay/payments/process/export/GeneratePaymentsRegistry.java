@@ -91,7 +91,7 @@ public class GeneratePaymentsRegistry extends QuartzJobBean {
 				for (PaymentsCollector paymentsCollector : listPaymentsCollectors) {
 					log.debug("Payment collector (registered) organization {}", paymentsCollector.getOrganization().getId());
 
-					serviceProvidersPage.setPageNumber(0);
+					serviceProvidersPage.setPageNumber(1);
 					while ((listServiceProviders = serviceProviderService.listInstances(serviceProvidersPage)).size() > 0) {
                         log.debug("number service providers page {}, number service providers {}", new Object[]{serviceProvidersPage.getPageNumber(), listServiceProviders.size()});
 						for (ServiceProvider serviceProvider : listServiceProviders) {
