@@ -29,13 +29,13 @@ public class PaymentPointHistoryGenerator implements HistoryGenerator<PaymentPoi
 	public void generateFor(@NotNull PaymentPoint obj) {
 
 		if (diffService.hasDiffs(obj)) {
-			log.debug("PaymentPoint already has history, do nothing {}", obj);
+			log.debug("PaymentPoint already has history, do nothing {}", obj.getId());
 			return;
 		}
 
 		PaymentPoint point = paymentPointService.read(stub(obj));
 		if (point == null) {
-			log.warn("Requested payment point history generation, but not found: {}", obj);
+			log.warn("Requested payment point history generation, but not found: {}", obj.getId());
 			return;
 		}
 

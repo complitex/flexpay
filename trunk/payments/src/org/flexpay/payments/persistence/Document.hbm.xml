@@ -445,6 +445,29 @@
 		and doc.documentType.code = ? and doc.documentStatus.code = ?
 	]]></query>
 
+    <query name="Document.listPaymentsServicesByServiceProvider"><![CDATA[
+		select distinct serv
+		from Document doc
+			left join doc.operation op
+			left join doc.service serv
+		where serv.serviceProvider.id = ?
+		and op.registerOrganization.id = ?
+		and op.creationDate >= ? and op.creationDate <= ?
+		and doc.documentType.code = ? and doc.documentStatus.code = ?
+	]]></query>
+
+    <query name="Document.listPaymentsPointsByServiceProvider"><![CDATA[
+		select distinct pp
+		from Document doc
+			left join doc.operation op
+			left join op.paymentPoint pp
+			left join doc.service serv
+		where serv.serviceProvider.id = ?
+		and op.registerOrganization.id = ?
+		and op.creationDate >= ? and op.creationDate <= ?
+		and doc.documentType.code = ? and doc.documentStatus.code = ?
+	]]></query>
+
 	<query name="DocumentAdditionType.findTypeByCode">
 		select distinct type
 		from DocumentAdditionType type

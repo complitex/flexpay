@@ -1,5 +1,6 @@
 package org.flexpay.eirc.service.exchange;
 
+import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.persistence.registry.RegistryRecord;
 import org.flexpay.common.persistence.registry.workflow.RegistryRecordWorkflowManager;
 import org.flexpay.eirc.persistence.exchange.DelayedUpdate;
@@ -26,12 +27,32 @@ public class ServiceProviderFileProcessorTxImpl implements ServiceProviderFilePr
 	private RegistryRecordWorkflowManager recordWorkflowManager;
 
 	/**
+	 * Process header
+	 *
+	 * @param context Processing context
+	 * @throws Exception if failure occurs
+	 */
+	@Transactional (readOnly = false)
+	@Override
+	public void processHeader(@NotNull ProcessingContext context) throws Exception {
+
+		Registry registry = context.getRegistry();
+		log.debug("Header to process: {}", registry);
+
+		Operation op = serviceOperationsFactory.getContainerOperation(registry);
+		DelayedUpdate update = op.process(context);
+		context.addUpdate(update);
+		doUpdate(context);
+	}
+
+	/**
 	 * Prepare delayed updates for single registry record
 	 *
 	 * @param context Processing context
 	 * @throws Exception if failure occurs
 	 */
 	@Transactional (readOnly = false)
+	@Override
 	public void prepareRecordUpdates(@NotNull ProcessingContext context) throws Exception {
 
 		RegistryRecord record = context.getCurrentRecord();

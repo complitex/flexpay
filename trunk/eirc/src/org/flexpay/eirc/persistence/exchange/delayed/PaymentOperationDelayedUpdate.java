@@ -5,8 +5,8 @@ import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.registry.RegistryRecord;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.eirc.persistence.exchange.*;
-import org.flexpay.orgs.persistence.PaymentPoint;
 import org.flexpay.orgs.persistence.Organization;
+import org.flexpay.orgs.persistence.PaymentPoint;
 import org.flexpay.payments.persistence.Document;
 import org.flexpay.payments.persistence.Operation;
 import org.flexpay.payments.service.OperationService;
@@ -14,9 +14,8 @@ import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.math.BigDecimal;
-import java.util.Map;
 import java.util.List;
+import java.util.Map;
 
 public class PaymentOperationDelayedUpdate implements
 		DelayedUpdate, UpdatesListener, PaymentPointAwareUpdate, ExternalOrganizationAccountAwareUpdate {
@@ -77,11 +76,7 @@ public class PaymentOperationDelayedUpdate implements
 	@Override
 	public void doUpdate() throws FlexPayException, FlexPayExceptionContainer {
 
-		BigDecimal summ = operation.documentsSumm();
-		if (!operation.getOperationSumm().equals(summ)) {
-			throw new FlexPayException("Summ mismatch, expected " + operation.getOperationSumm() +
-									   ", but found " + summ);
-		}
+		operation.setOperationSumm(operation.documentsSumm());
 		log.debug("Adding payment operation {}", operation);
 		operationService.create(operation);
 	}

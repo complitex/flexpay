@@ -6,6 +6,7 @@ import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.DataCorrection;
 import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.common.persistence.Stub;
+import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.service.importexport.ClassToTypeRegistry;
 import org.flexpay.common.service.importexport.CorrectionsService;
 import org.flexpay.common.service.importexport.MasterIndexService;
@@ -38,8 +39,8 @@ public class ObjectIdentifierSyncOperation extends ContainerOperation {
 		super(Integer.parseInt(datum.get(0)));
 		this.factory = factory;
 
-		if (datum.size() != 5) {
-			throw new InvalidContainerException("Expected 5 fields in ");
+		if (datum.size() != 6) {
+			throw new InvalidContainerException("Expected 6 fields in Objects Sync container");
 		}
 
 		try {
@@ -84,7 +85,7 @@ public class ObjectIdentifierSyncOperation extends ContainerOperation {
 		CorrectionsService correctionsService = factory.getCorrectionsService();
 		MasterIndexService indexService = factory.getMasterIndexService();
 		EircRegistryProperties props = (EircRegistryProperties) context.getRegistry().getProperties();
-		Organization org = props.getSender();
+		Organization org = factory.getOrganizationService().readFull(stub(props.getSender()));
 
 		// build correction by master index
 		if (StringUtils.isNotBlank(globalIdentifier) && globalIdentifierType == GLOBAL_IDENTIFIER_TYPE_MASTER_INDEX) {
@@ -92,7 +93,8 @@ public class ObjectIdentifierSyncOperation extends ContainerOperation {
 			Stub<?> stub = correctionsService.findCorrection(
 					globalIdentifier, clazz, indexService.getMasterSourceDescriptionStub());
 			if (stub == null) {
-				throw new FlexPayException("Cannot find master correction: " + globalIdentifier);
+				throw new FlexPayException("Cannot find master correction: " + globalIdentifier +
+										   " for class " + clazz);
 			}
 
 			DomainObject obj = instance(clazz);

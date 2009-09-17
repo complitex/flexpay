@@ -55,6 +55,12 @@
                           class="org.flexpay.common.persistence.file.FPFile"
                           foreign-key="FK_common_registry_fpfiles_tbl_fpfile_id"/>
         </map>
+		<many-to-one name="importError" foreign-key="FK_common_registries_tbl_import_error_id"
+					 class="org.flexpay.common.persistence.ImportError" cascade="all">
+			<column name="import_error_id" not-null="false">
+				<comment>Import error reference</comment>
+			</column>
+		</many-to-one>
 	</class>
 
 	<class name="RegistryContainer" table="common_registry_containers_tbl">
@@ -242,11 +248,10 @@
 	<query name="Registry.listRegistryWithContainers">
 		select distinct r
 		from Registry r
-		inner join fetch r.registryType
-		inner join fetch r.registryStatus
-		inner join fetch r.properties
-		left join fetch r.containers
-		left join fetch r.files
+			left join fetch r.registryType
+			left join fetch r.registryStatus
+			left join fetch r.properties p
+			left join fetch r.containers
 		where r.id=?
 	</query>
 
@@ -295,9 +300,9 @@
 	<query name="Registry.readFull">
 		select distinct r
 		from Registry r
-		inner join fetch r.registryType
-		inner join fetch r.registryStatus
-		inner join fetch r.properties
+		left join fetch r.registryType
+		left join fetch r.registryStatus
+		left join fetch r.properties
 		left join fetch r.files 
 		where r.id=?
 	</query>

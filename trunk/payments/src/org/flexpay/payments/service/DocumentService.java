@@ -8,6 +8,7 @@ import org.flexpay.orgs.persistence.PaymentPoint;
 import org.flexpay.orgs.persistence.ServiceProvider;
 import org.flexpay.payments.persistence.Document;
 import org.flexpay.payments.persistence.Operation;
+import org.flexpay.payments.persistence.Service;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.security.annotation.Secured;
@@ -80,12 +81,37 @@ public interface DocumentService {
 	 *
 	 * @param providerStub Service provider stub
 	 * @param orgStub	  Organization stub
-	 * @param range		DateRange  @return list of documents with state REGISTERED and type CASH_PAYMENT which were
-	 *                     created in time period
+	 * @param range		DateRange
+	 * @return list of documents with state REGISTERED and type CASH_PAYMENT which were created in time period
 	 */
 	@Secured (Roles.DOCUMENT_READ)
 	List<Document> listRegisteredPaymentDocuments(@NotNull Stub<ServiceProvider> providerStub,
 												  @NotNull Stub<Organization> orgStub, @NotNull DateRange range);
+
+	/**
+	 * Returns list of services for documents with state REGISTERED and type CASH_PAYMENT that was created in a time period
+	 * for service provider
+	 *
+	 * @param providerStub Service provider stub
+	 * @param orgStub	  Organization stub
+	 * @param range		DateRange
+	 * @return Services list
+	 */
+	@Secured (Roles.SERVICE_READ)
+	List<Service> listPaymentsServices(@NotNull Stub<ServiceProvider> providerStub,
+									   @NotNull Stub<Organization> orgStub, @NotNull DateRange range);
+	/**
+	 * Returns list of payment points for documents with state REGISTERED and type CASH_PAYMENT that was created in a time period
+	 * for service provider
+	 *
+	 * @param providerStub Service provider stub
+	 * @param orgStub	  Organization stub
+	 * @param range		DateRange
+	 * @return payment points list
+	 */
+	@Secured (Roles.SERVICE_READ)
+	List<PaymentPoint> listPaymentsPoints(@NotNull Stub<ServiceProvider> providerStub,
+									   @NotNull Stub<Organization> orgStub, @NotNull DateRange range);
 
 	/**
 	 * Returns summ of payments for service in the cashbox for the period

@@ -13,6 +13,14 @@ import org.springframework.transaction.annotation.Transactional;
 public interface ServiceProviderFileProcessorTx {
 
 	/**
+	 * Process header
+	 *
+	 * @param context Processing context
+	 * @throws Exception if failure occurs
+	 */
+	void processHeader(@NotNull ProcessingContext context) throws Exception;
+
+	/**
 	 * Prepare delayed updates for single registry record
 	 *
 	 * @param context Processing context

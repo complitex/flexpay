@@ -5,11 +5,16 @@ import org.flexpay.eirc.persistence.exchange.delayed.DelayedUpdateNope;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
 import java.util.List;
 
 public class SimplePaymentOperation extends PaymentOperation {
+
+	private static final Logger log = LoggerFactory.getLogger(SimplePaymentOperation.class);
+
     public SimplePaymentOperation(ServiceOperationsFactory factory, List<String> datum) throws InvalidContainerException {
         super(factory, datum);
     }
@@ -28,13 +33,9 @@ public class SimplePaymentOperation extends PaymentOperation {
     }
 
     private boolean validate(ProcessingContext context) {
-        if (context.getNumberInstanceId() == null) {
-            log.error("Can not create simple payment for organization {} in registry {}. Number instance id is not defined",
-                    new Object[]{organizationId, context.getRegistry().getId()});
-            return false;
-        }
-        if (context.getNumberInstanceId().equals(ApplicationConfig.getInstanceId())) {
-            log.error("Can not create simple payment on same database. Destination number instance id is {}", context.getNumberInstanceId());
+
+        if (ApplicationConfig.getInstanceId().equals(context.getSourceInstanceId())) {
+            log.error("Can not create simple payment on same database. Source instance id is {}", context.getSourceInstanceId());
             return false;
         }
         return true;

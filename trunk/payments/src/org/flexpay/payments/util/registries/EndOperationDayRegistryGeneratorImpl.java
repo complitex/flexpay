@@ -5,7 +5,8 @@ import org.flexpay.common.exception.FlexPayException;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.persistence.registry.*;
 import org.flexpay.common.service.*;
-import org.flexpay.common.util.RegistryUtil;
+import static org.flexpay.common.util.RegistryUtil.BANK_PAYMENT_CONTAINER_CODE;
+import static org.flexpay.common.util.RegistryUtil.CONTAINER_BODY_SEPARATOR;
 import org.flexpay.common.util.StringUtil;
 import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.orgs.persistence.PaymentPoint;
@@ -48,12 +49,12 @@ public class EndOperationDayRegistryGeneratorImpl implements EndOperationDayRegi
 
 		List<Operation> operations = operationService.listReceivedPaymentsForPaymentPoint(stub(paymentPoint), beginDate, endDate);
 
-        if (operations.size() == 0) {
-            log.debug("Not found operations for payment point {}. Registry did not create.", paymentPoint.getId());
-            return null;
-        }
+		if (operations.size() == 0) {
+			log.debug("Not found operations for payment point {}. Registry did not create.", paymentPoint.getId());
+			return null;
+		}
 
-        log.debug("Found {} operations", operations.size());
+		log.debug("Found {} operations", operations.size());
 
 		Registry registry = new Registry();
 
@@ -120,9 +121,9 @@ public class EndOperationDayRegistryGeneratorImpl implements EndOperationDayRegi
 				record.setAmount(summ);
 
 				totalSumm = totalSumm.add(summ);
-				container.setData(RegistryUtil.BANK_PAYMENT_CONTAINER_CODE + RegistryUtil.CONTAINER_BODY_SEPARATOR +
-								  StringUtil.getString(paymentPoint.getId()) + RegistryUtil.CONTAINER_BODY_SEPARATOR +
-								  StringUtil.getString(operation.getId()) + RegistryUtil.CONTAINER_BODY_SEPARATOR +
+				container.setData(BANK_PAYMENT_CONTAINER_CODE + CONTAINER_BODY_SEPARATOR +
+								  StringUtil.getString(paymentPoint.getId()) + CONTAINER_BODY_SEPARATOR +
+								  StringUtil.getString(operation.getId()) + CONTAINER_BODY_SEPARATOR +
 								  StringUtil.getString(operation.getOperationSumm()));
 				record.addContainer(container);
 
@@ -141,11 +142,11 @@ public class EndOperationDayRegistryGeneratorImpl implements EndOperationDayRegi
 		if (recordsNum == 0) {
 			log.info("Finish generating end operation day registry...");
 			log.info("0 records created. Try delete registry.");
-            try {
-                registryService.delete(registry);
-            } catch (Throwable th) {
-                log.error("Registry {} did not delete", String.valueOf(registry.getId()), th);
-            }
+			try {
+				registryService.delete(registry);
+			} catch (Throwable th) {
+				log.error("Registry {} did not delete", String.valueOf(registry.getId()), th);
+			}
 			return null;
 		} else {
 			registry.setFromDate(minDate == null ? new Date() : minDate);

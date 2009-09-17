@@ -232,6 +232,7 @@
         registry_type_id bigint not null comment 'Registry type reference',
         registry_status_id bigint not null comment 'Registry status reference',
         archive_status_id bigint not null comment 'Registry archive status reference',
+        import_error_id bigint comment 'Import error reference',
         primary key (id)
     );
 
@@ -532,6 +533,16 @@
         primary key (id)
     ) comment='Organization subdivisions';
 
+    create table payments_service_provider_attribute_tbl (
+        id bigint not null auto_increment comment 'Primary key',
+        version integer not null comment 'Optimistic lock version',
+        name varchar(50) not null comment 'Attribute name',
+        service_provider_id bigint not null comment 'Service provider reference',
+        value varchar(255) comment 'Attribute value',
+        primary key (id),
+        unique (name, service_provider_id)
+    ) comment='ServiceProviderAttribute';
+
     alter table common_currency_names_tbl 
         add index FK_common_currency_names_tbl_currency_info_id (currency_info_id), 
         add constraint FK_common_currency_names_tbl_currency_info_id 
@@ -669,6 +680,12 @@
         add constraint FK_common_registries_tbl_registry_type_id 
         foreign key (registry_type_id) 
         references common_registry_types_tbl (id);
+
+    alter table common_registries_tbl 
+        add index FK_common_registries_tbl_import_error_id (import_error_id), 
+        add constraint FK_common_registries_tbl_import_error_id 
+        foreign key (import_error_id) 
+        references common_import_errors_tbl (id);
 
     alter table common_registry_containers_tbl 
         add index FK_common_registry_containers_tbl_registry_id (registry_id), 
@@ -923,3 +940,9 @@
         add constraint FK_eirc_subdivisions_tbl_juridical_person_id 
         foreign key (juridical_person_id) 
         references orgs_organizations_tbl (id);
+
+    alter table payments_service_provider_attribute_tbl 
+        add index FK_payments_service_provider_attribute_tbl_service_provider_id (service_provider_id), 
+        add constraint FK_payments_service_provider_attribute_tbl_service_provider_id 
+        foreign key (service_provider_id) 
+        references orgs_service_providers_tbl (id);

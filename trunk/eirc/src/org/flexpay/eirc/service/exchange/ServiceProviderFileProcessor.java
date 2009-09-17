@@ -1,6 +1,7 @@
 package org.flexpay.eirc.service.exchange;
 
 import org.apache.commons.lang.time.StopWatch;
+import org.apache.commons.lang.StringUtils;
 import org.flexpay.common.dao.paging.FetchRange;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
@@ -129,45 +130,63 @@ public class ServiceProviderFileProcessor implements RegistryProcessor {
 		watch.start();
 		Logger plog = ProcessLogger.getLogger(getClass());
 
-		plog.info("Starting processing records");
-		FetchRange range = new FetchRange(50);
-		ReadHintsHolder.setHints(new ReadHints());
-		Long operationId = null;
-		do {
-			plog.info("Fetching next page {}. Time spent {}", range, watch);
-			List<RegistryRecord> records = registryFileService.getRecordsForProcessing(
-					stub(context.getRegistry()), range);
-			for (RegistryRecord record : records) {
-				try {
-
-					if (operationId == null || operationId.equals(record.getUniqueOperationNumber())) {
-						operationId = record.getUniqueOperationNumber();
-						processorTx.doUpdate(context);
-					}
-
-					context.setCurrentRecord(record);
-					processorTx.prepareRecordUpdates(context);
-				} catch (Throwable t) {
-					handleError(t, context);
-				}
+		try {
+			plog.debug("Starting processing registry header");
+			startRegistryProcessing(context.getRegistry());
+			try {
+				processorTx.processHeader(context);
+			} catch (Throwable t) {
+				handleError(t, context);
+				return;
 			}
-			range.nextPage();
-		} while (range.hasMore());
-		processorTx.doUpdate(context);
-		plog.info("No more records to process");
+
+			plog.info("Starting processing records");
+			FetchRange range = new FetchRange(50);
+			ReadHintsHolder.setHints(new ReadHints());
+			Long operationId = null;
+			do {
+				plog.info("Fetching next page {}. Time spent {}", range, watch);
+				List<RegistryRecord> records = registryFileService.getRecordsForProcessing(
+						stub(context.getRegistry()), range);
+				for (RegistryRecord record : records) {
+					try {
+
+						if (operationId == null || operationId.equals(record.getUniqueOperationNumber())) {
+							operationId = record.getUniqueOperationNumber();
+							processorTx.doUpdate(context);
+						}
+
+						context.setCurrentRecord(record);
+						processorTx.prepareRecordUpdates(context);
+					} catch (Throwable t) {
+						handleError(t, context);
+					}
+				}
+				range.nextPage();
+			} while (range.hasMore());
+			processorTx.doUpdate(context);
+			plog.info("No more records to process");
+		} finally {
+			endRegistryProcessing(context.getRegistry());
+		}
 
 		watch.stop();
 		plog.info("Import finished. Time spent {}", watch);
 	}
 
+	@SuppressWarnings ({"ThrowableResultOfMethodCallIgnored"})
 	private void handleError(Throwable t, ProcessingContext context) throws Exception {
 		String code = "eirc.error_code.unknown_error";
 		if (t instanceof FlexPayExceptionContainer) {
-			t = ((FlexPayExceptionContainer) t).getExceptions().iterator().next();
-			code = "eirc.error_code.error_with_processing_container";
+			t = ((FlexPayExceptionContainer) t).getFirstException();
+		}
+		if (t instanceof FlexPayException) {
+			FlexPayException ex = (FlexPayException) t;
+			code = StringUtils.isNotEmpty(ex.getErrorKey()) ?
+				   ex.getErrorKey() : "eirc.error_code.error_with_processing_container";
 		}
 
-		log.warn("Failed processing registry record", t);
+		log.warn("Failed processing registry", t);
 
 		ImportError error = new ImportError();
 		error.setErrorId(code);
@@ -181,7 +200,11 @@ public class ServiceProviderFileProcessor implements RegistryProcessor {
 
 		error.setDataSourceBean("consumersDataSource");
 
-		error.setSourceObjectId(String.valueOf(context.getCurrentRecord().getId()));
+		if (context.getCurrentRecord() == null) {
+			error.setSourceObjectId(String.valueOf(context.getRegistry().getId()));
+		} else {
+			error.setSourceObjectId(String.valueOf(context.getCurrentRecord().getId()));
+		}
 		error.setObjectType(classToTypeRegistry.getType(Consumer.class));
 
 		// also set error for operation records update
@@ -189,6 +212,11 @@ public class ServiceProviderFileProcessor implements RegistryProcessor {
 			if (record != context.getCurrentRecord()) {
 				recordWorkflowManager.setNextErrorStatus(record, error);
 			}
+		}
+
+		// mark registry having error if processing header
+		if (context.getOperationRecords().isEmpty()) {
+			registryWorkflowManager.setNextErrorStatus(context.getRegistry(), error);
 		}
 	}
 

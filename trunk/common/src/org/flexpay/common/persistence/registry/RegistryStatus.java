@@ -1,13 +1,13 @@
 package org.flexpay.common.persistence.registry;
 
 import org.flexpay.common.persistence.DomainObject;
+import org.flexpay.common.util.CollectionUtils;
 
-import java.util.HashMap;
 import java.util.Map;
 
 public class RegistryStatus extends DomainObject {
 
-	private static final Map<Integer, String> typeToName = new HashMap<Integer, String>();
+	private static final Map<Integer, String> typeToName = CollectionUtils.map();
 
 	public static final int LOADING = 0;
 	public static final int LOADED = 1;

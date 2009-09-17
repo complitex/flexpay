@@ -1,7 +1,9 @@
 package org.flexpay.common.persistence.registry.workflow;
 
+import org.flexpay.common.dao.ImportErrorDao;
 import org.flexpay.common.dao.registry.RegistryDao;
 import org.flexpay.common.dao.registry.RegistryDaoExt;
+import org.flexpay.common.persistence.ImportError;
 import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.persistence.registry.RegistryStatus;
 import static org.flexpay.common.persistence.registry.RegistryStatus.*;
@@ -9,8 +11,8 @@ import org.flexpay.common.service.RegistryStatusService;
 import org.flexpay.common.util.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
 import java.util.List;
@@ -26,17 +28,18 @@ public class RegistryWorkflowManagerImpl implements RegistryWorkflowManager {
 	private Logger log = LoggerFactory.getLogger(getClass());
 
 	private RegistryStatusService statusService;
+	private ImportErrorDao errorDao;
 	private RegistryDao registryDao;
 	private RegistryDaoExt registryDaoExt;
 
 	// allowed transitions from source status code to target codes
 	// first status in lists is the successfull one, the second is transition with some processing error
-	private static final Map<Integer, List<Integer>> transitions = CollectionUtils.map();
+	private Map<Integer, List<Integer>> transitions = CollectionUtils.map();
 
-	private static final Set<Integer> processingStates = CollectionUtils.set();
-	private static final Set<Integer> transitionsToProcessing = CollectionUtils.set();
+	private Set<Integer> processingStates = CollectionUtils.set();
+	private Set<Integer> transitionsToProcessing = CollectionUtils.set();
 
-	static {
+	{
 		List<Integer> targets = CollectionUtils.list(LOADED, LOADED_WITH_ERROR);
 		transitions.put(LOADING, targets);
 		transitionsToProcessing.add(LOADED);
@@ -88,7 +91,8 @@ public class RegistryWorkflowManagerImpl implements RegistryWorkflowManager {
 
 	/**
 	 * Check if registry can be processed, i.e. has one of the following statuses: {@link
-	 * org.flexpay.common.persistence.registry.RegistryStatus#LOADED}, {@link org.flexpay.common.persistence.registry.RegistryStatus#ROLLBACKED},
+	 * org.flexpay.common.persistence.registry.RegistryStatus#LOADED}, {@link
+	 * org.flexpay.common.persistence.registry.RegistryStatus#ROLLBACKED},
 	 * {@link org.flexpay.common.persistence.registry.RegistryStatus#PROCESSING_CANCELED} or {@link
 	 * org.flexpay.common.persistence.registry.RegistryStatus#PROCESSED_WITH_ERROR}
 	 *
@@ -104,6 +108,12 @@ public class RegistryWorkflowManagerImpl implements RegistryWorkflowManager {
 		if (!canProcess(registry)) {
 			throw new TransitionNotAllowed("Cannot start registry processing, invalid status: " +
 										   registry.getRegistryStatus().getI18nName());
+		}
+
+		ImportError error = registry.getImportError();
+		registry.setImportError(null);
+		if (error != null) {
+			errorDao.delete(error);
 		}
 
 		setNextSuccessStatus(registry);
@@ -133,8 +143,8 @@ public class RegistryWorkflowManagerImpl implements RegistryWorkflowManager {
 	 */
 	private Integer code(Registry registry) {
 		int code = registry.getRegistryStatus().getCode();
-		if (code < 0 || transitions.size() <= code) {
-			throw new IllegalStateException("Invalid registry status code: " + code + ", Transitions size: " + transitions.size());
+		if (code < 0 || code >= transitions.size()) {
+			throw new IllegalStateException("Invalid registry status code: " + code);
 		}
 		return code;
 	}
@@ -143,25 +153,43 @@ public class RegistryWorkflowManagerImpl implements RegistryWorkflowManager {
 	 * Set next error registry status
 	 *
 	 * @param registry Registry to update
-	 * @throws TransitionNotAllowed
-	 *          if error transition is not allowed
+	 * @throws TransitionNotAllowed if error transition is not allowed
 	 */
 	@Transactional (readOnly = false, rollbackFor = Exception.class)
 	public void setNextErrorStatus(Registry registry) throws TransitionNotAllowed {
 		List<Integer> allowedCodes = transitions.get(code(registry));
 		if (allowedCodes.size() < 2) {
-			throw new TransitionNotAllowed("No error transition");
+			throw new TransitionNotAllowed("No error transition from " + code(registry));
 		}
 
 		setNextStatus(registry, allowedCodes.get(1));
 	}
 
 	/**
+	 * Set next error registry status and setup error
+	 *
+	 * @param registry Registry to update
+	 * @param error	ImportError
+	 * @throws TransitionNotAllowed if error transition is not allowed
+	 */
+	@Transactional (readOnly = false)
+	public void setNextErrorStatus(Registry registry, ImportError error) throws TransitionNotAllowed {
+		List<Integer> allowedCodes = transitions.get(code(registry));
+		if (allowedCodes.size() < 2) {
+			throw new TransitionNotAllowed("No error transition from " + code(registry));
+		}
+
+		errorDao.create(error);
+		registry.setImportError(error);
+		setNextStatus(registry, allowedCodes.get(1));
+	}
+
+
+	/**
 	 * Set next success registry status
 	 *
 	 * @param registry Registry to update
-	 * @throws TransitionNotAllowed
-	 *          if success transition is not allowed
+	 * @throws TransitionNotAllowed if success transition is not allowed
 	 */
 	@Transactional (readOnly = false, rollbackFor = Exception.class)
 	public void setNextSuccessStatus(Registry registry) throws TransitionNotAllowed {
@@ -179,8 +207,7 @@ public class RegistryWorkflowManagerImpl implements RegistryWorkflowManager {
 	 *
 	 * @param registry Registry to update
 	 * @return SpRegistry back
-	 * @throws TransitionNotAllowed
-	 *          if registry already has a status
+	 * @throws TransitionNotAllowed if registry already has a status
 	 */
 	@Transactional (readOnly = false, rollbackFor = Exception.class)
 	public Registry setInitialStatus(Registry registry) throws TransitionNotAllowed {
@@ -201,8 +228,7 @@ public class RegistryWorkflowManagerImpl implements RegistryWorkflowManager {
 	 *
 	 * @param registry Registry to update
 	 * @param code	 Next status code to set
-	 * @throws TransitionNotAllowed
-	 *          if transition from old to a new status is not allowed
+	 * @throws TransitionNotAllowed if transition from old to a new status is not allowed
 	 */
 	private void setNextStatus(Registry registry, Integer code) throws TransitionNotAllowed {
 		RegistryStatus status = statusService.findByCode(code);
@@ -214,8 +240,7 @@ public class RegistryWorkflowManagerImpl implements RegistryWorkflowManager {
 	 *
 	 * @param registry Registry to update
 	 * @param status   Next status to set
-	 * @throws TransitionNotAllowed
-	 *          if transition from old to a new status is not allowed
+	 * @throws TransitionNotAllowed if transition from old to a new status is not allowed
 	 */
 	@Transactional (readOnly = false, rollbackFor = Exception.class)
 	public void setNextStatus(Registry registry, RegistryStatus status) throws TransitionNotAllowed {
@@ -231,9 +256,8 @@ public class RegistryWorkflowManagerImpl implements RegistryWorkflowManager {
 	 * Set registry processing status to {@link org.flexpay.common.persistence.registry.RegistryStatus#PROCESSING_WITH_ERROR}
 	 *
 	 * @param registry Registry to update
-	 * @throws TransitionNotAllowed
-	 *          if registry status is not {@link org.flexpay.common.persistence.registry.RegistryStatus#PROCESSING} or
-	 *          {@link org.flexpay.common.persistence.registry.RegistryStatus#PROCESSING_WITH_ERROR}
+	 * @throws TransitionNotAllowed if registry status is not {@link org.flexpay.common.persistence.registry.RegistryStatus#PROCESSING}
+	 *                              or {@link org.flexpay.common.persistence.registry.RegistryStatus#PROCESSING_WITH_ERROR}
 	 */
 	@Transactional (readOnly = false, rollbackFor = Exception.class)
 	public void markProcessingHasError(Registry registry) throws TransitionNotAllowed {
@@ -267,4 +291,8 @@ public class RegistryWorkflowManagerImpl implements RegistryWorkflowManager {
 		this.registryDaoExt = registryDaoExt;
 	}
 
+	@Required
+	public void setErrorDao(ImportErrorDao errorDao) {
+		this.errorDao = errorDao;
+	}
 }

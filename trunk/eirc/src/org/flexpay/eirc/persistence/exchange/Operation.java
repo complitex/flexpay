@@ -2,15 +2,9 @@ package org.flexpay.eirc.persistence.exchange;
 
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
-import org.flexpay.common.persistence.registry.RegistryRecord;
-import org.flexpay.common.persistence.registry.Registry;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.jetbrains.annotations.NotNull;
 
 public abstract class Operation {
-
-	protected Logger log = LoggerFactory.getLogger(getClass());
 
 	/**
 	 * Symbol used escape special symbols
@@ -52,6 +46,7 @@ public abstract class Operation {
 	 * @throws org.flexpay.common.exception.FlexPayExceptionContainer
 	 *          if failure occurs
 	 */
-	abstract public DelayedUpdate process(@NotNull ProcessingContext context) throws FlexPayException, FlexPayExceptionContainer;
+	abstract public DelayedUpdate process(@NotNull ProcessingContext context)
+			throws FlexPayException, FlexPayExceptionContainer;
 
 }
