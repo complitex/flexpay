@@ -20,7 +20,7 @@ public class TestObjectsServices extends PaymentsSpringBeanAwareTestCase {
 	@Autowired
 	private ServiceProviderService serviceProviderService;
 	@Autowired
-	private PaymentsCollectorService paymentsCollectorService;
+	private PaymentCollectorService paymentCollectorService;
 	@Autowired
 	private PaymentPointService paymentPointService;
 	@Autowired
@@ -64,21 +64,21 @@ public class TestObjectsServices extends PaymentsSpringBeanAwareTestCase {
 		return serviceProviderService.create(org);
 	}
 
-	private PaymentsCollector createCollector(Organization organization) throws FlexPayExceptionContainer {
+	private PaymentCollector createCollector(Organization organization) throws FlexPayExceptionContainer {
 
-		PaymentsCollector org = new PaymentsCollector();
+		PaymentCollector org = new PaymentCollector();
 		org.setOrganization(organization);
-		org.setDescription(new PaymentsCollectorDescription("TEST", lang()));
-		return paymentsCollectorService.create(org);
+		org.setDescription(new PaymentCollectorDescription("TEST", lang()));
+		return paymentCollectorService.create(org);
 	}
 
 	private void delete(PaymentPoint point) {
 
-		PaymentsCollector collector = point.getCollector();
+		PaymentCollector collector = point.getCollector();
 		paymentPointService.delete(point);
 
 		Stub<Organization> organizationStub = collector.getOrganizationStub();
-		paymentsCollectorService.delete(collector);
+		paymentCollectorService.delete(collector);
 
 		organizationService.delete(organizationStub);
 	}

@@ -114,7 +114,7 @@ public class TestGeneratePaymentsRegistry extends PaymentsSpringBeanAwareTestCas
 	@Autowired
 	private PaymentPointService paymentPointService;
 	@Autowired
-	private PaymentsCollectorService paymentsCollectorService;
+	private PaymentCollectorService paymentCollectorService;
 	@Autowired
 	private RegistryRecordStatusService registryRecordStatusService;
 	@Autowired
@@ -214,16 +214,16 @@ public class TestGeneratePaymentsRegistry extends PaymentsSpringBeanAwareTestCas
 
 		paymentPoint.setName(paymentPointName);
 
-		PaymentsCollector paymentsCollector = new PaymentsCollector();
-		paymentsCollector.setOrganization(registerOrganization);
+		PaymentCollector paymentCollector = new PaymentCollector();
+		paymentCollector.setOrganization(registerOrganization);
 
-		PaymentsCollectorDescription paymentsCollectorDescription = new PaymentsCollectorDescription();
-		paymentsCollectorDescription.setLang(lang);
-		paymentsCollectorDescription.setName("payments collector description");
-		paymentsCollector.setDescription(paymentsCollectorDescription);
+		PaymentCollectorDescription paymentCollectorDescription = new PaymentCollectorDescription();
+		paymentCollectorDescription.setLang(lang);
+		paymentCollectorDescription.setName("payments collector description");
+		paymentCollector.setDescription(paymentCollectorDescription);
 
-		paymentsCollectorService.create(paymentsCollector);
-		paymentPoint.setCollector(paymentsCollector);
+		paymentCollectorService.create(paymentCollector);
+		paymentPoint.setCollector(paymentCollector);
 		paymentPointService.create(paymentPoint);
 
 		//create operation

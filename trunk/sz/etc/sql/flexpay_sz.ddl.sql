@@ -1088,6 +1088,24 @@
         primary key (id)
     );
 
+    create table orgs_payment_collectors_descriptions_tbl (
+        id bigint not null auto_increment,
+        name varchar(255) not null comment 'Description value',
+        language_id bigint not null comment 'Language reference',
+        collector_id bigint not null comment 'Payment collector reference',
+        primary key (id),
+        unique (language_id, collector_id)
+    ) comment='Payment collector desriptions';
+
+    create table orgs_payment_collectors_tbl (
+        id bigint not null auto_increment,
+        version integer not null comment 'Optimistic lock version',
+        status integer not null comment 'Enabled/Disabled status',
+        email varchar(255) comment 'Collector email address',
+        organization_id bigint not null comment 'Organization reference',
+        primary key (id)
+    ) comment='Payment collectors';
+
     create table orgs_payment_point_names_tbl (
         id bigint not null auto_increment,
         name varchar(255) not null comment 'Name value',
@@ -1106,24 +1124,6 @@
         collector_id bigint not null comment 'Payments collector reference',
         primary key (id)
     ) comment='Payment points';
-
-    create table orgs_payments_collectors_descriptions_tbl (
-        id bigint not null auto_increment,
-        name varchar(255) not null comment 'Description value',
-        language_id bigint not null comment 'Language reference',
-        collector_id bigint not null comment 'Payment collector reference',
-        primary key (id),
-        unique (language_id, collector_id)
-    ) comment='Payment collector desriptions';
-
-    create table orgs_payments_collectors_tbl (
-        id bigint not null auto_increment,
-        version integer not null comment 'Optimistic lock version',
-        status integer not null comment 'Enabled/Disabled status',
-        email varchar(255) comment 'Collector email address',
-        organization_id bigint not null comment 'Organization reference',
-        primary key (id)
-    ) comment='Payment collectors';
 
     create table orgs_service_organization_descriptions_tbl (
         id bigint not null auto_increment,
@@ -2537,6 +2537,24 @@
         foreign key (data_source_description_id) 
         references common_data_source_descriptions_tbl (id);
 
+    alter table orgs_payment_collectors_descriptions_tbl 
+        add index FK_orgs_payment_collector_descriptions_tbl_collector_id (collector_id), 
+        add constraint FK_orgs_payment_collector_descriptions_tbl_collector_id 
+        foreign key (collector_id) 
+        references orgs_payment_collectors_tbl (id);
+
+    alter table orgs_payment_collectors_descriptions_tbl 
+        add index FK_orgs_payment_collector_descriptions_tbl_language_id (language_id), 
+        add constraint FK_orgs_payment_collector_descriptions_tbl_language_id 
+        foreign key (language_id) 
+        references common_languages_tbl (id);
+
+    alter table orgs_payment_collectors_tbl 
+        add index FK_orgs_payment_collectors_tbl_organization_id (organization_id), 
+        add constraint FK_orgs_payment_collectors_tbl_organization_id 
+        foreign key (organization_id) 
+        references orgs_organizations_tbl (id);
+
     alter table orgs_payment_point_names_tbl 
         add index FK_orgs_payment_point_names_tbl_point (payment_point_id), 
         add constraint FK_orgs_payment_point_names_tbl_point 
@@ -2553,25 +2571,7 @@
         add index FK_orgs_payment_points_tbl_collector_id (collector_id), 
         add constraint FK_orgs_payment_points_tbl_collector_id 
         foreign key (collector_id) 
-        references orgs_payments_collectors_tbl (id);
-
-    alter table orgs_payments_collectors_descriptions_tbl 
-        add index FK_orgs_payments_collector_descriptions_tbl_collector_id (collector_id), 
-        add constraint FK_orgs_payments_collector_descriptions_tbl_collector_id 
-        foreign key (collector_id) 
-        references orgs_payments_collectors_tbl (id);
-
-    alter table orgs_payments_collectors_descriptions_tbl 
-        add index FK_orgs_payments_collector_descriptions_tbl_language_id (language_id), 
-        add constraint FK_orgs_payments_collector_descriptions_tbl_language_id 
-        foreign key (language_id) 
-        references common_languages_tbl (id);
-
-    alter table orgs_payments_collectors_tbl 
-        add index FK_orgs_payments_collectors_tbl_organization_id (organization_id), 
-        add constraint FK_orgs_payments_collectors_tbl_organization_id 
-        foreign key (organization_id) 
-        references orgs_organizations_tbl (id);
+        references orgs_payment_collectors_tbl (id);
 
     alter table orgs_service_organization_descriptions_tbl 
         add index FK_orgs_service_organization_description_service_organization (service_organization_id), 

@@ -4,7 +4,7 @@ import org.apache.commons.collections.ArrayStack;
 import org.flexpay.common.actions.FPActionWithPagerSupport;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.orgs.persistence.PaymentPoint;
-import org.flexpay.orgs.persistence.filters.PaymentsCollectorFilter;
+import org.flexpay.orgs.persistence.filters.PaymentCollectorFilter;
 import org.flexpay.orgs.service.PaymentPointService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
@@ -13,7 +13,7 @@ import java.util.List;
 
 public class PaymentPointsListAction extends FPActionWithPagerSupport<PaymentPoint> {
 
-	protected Long paymentsCollectorFilter;
+	protected Long paymentCollectorFilter;
 	protected List<PaymentPoint> points = CollectionUtils.list();
 
 	protected PaymentPointService paymentPointService;
@@ -30,7 +30,7 @@ public class PaymentPointsListAction extends FPActionWithPagerSupport<PaymentPoi
 	@Override
 	protected String doExecute() throws Exception {
 
-		ArrayStack filters = CollectionUtils.arrayStack(new PaymentsCollectorFilter(paymentsCollectorFilter));
+		ArrayStack filters = CollectionUtils.arrayStack(new PaymentCollectorFilter(paymentCollectorFilter));
 		points = paymentPointService.listPoints(filters, getPager());
 
 		return SUCCESS;
@@ -49,8 +49,8 @@ public class PaymentPointsListAction extends FPActionWithPagerSupport<PaymentPoi
 		return SUCCESS;
 	}
 
-	public void setPaymentsCollectorFilter(Long paymentsCollectorFilter) {
-		this.paymentsCollectorFilter = paymentsCollectorFilter;
+	public void setPaymentCollectorFilter(Long paymentCollectorFilter) {
+		this.paymentCollectorFilter = paymentCollectorFilter;
 	}
 
 	public List<PaymentPoint> getPoints() {

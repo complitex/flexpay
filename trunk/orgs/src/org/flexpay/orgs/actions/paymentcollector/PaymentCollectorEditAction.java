@@ -1,4 +1,4 @@
-package org.flexpay.orgs.actions.paymentscollector;
+package org.flexpay.orgs.actions.paymentcollector;
 
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.persistence.Language;
@@ -6,28 +6,28 @@ import static org.flexpay.common.persistence.Stub.stub;
 import static org.flexpay.common.util.CollectionUtils.map;
 import org.flexpay.common.util.config.ApplicationConfig;
 import org.flexpay.orgs.persistence.Organization;
-import org.flexpay.orgs.persistence.PaymentsCollector;
-import org.flexpay.orgs.persistence.PaymentsCollectorDescription;
+import org.flexpay.orgs.persistence.PaymentCollector;
+import org.flexpay.orgs.persistence.PaymentCollectorDescription;
 import org.flexpay.orgs.persistence.filters.OrganizationFilter;
 import org.flexpay.orgs.service.OrganizationService;
-import org.flexpay.orgs.service.PaymentsCollectorService;
+import org.flexpay.orgs.service.PaymentCollectorService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.util.Map;
 
-public class PaymentsCollectorEditAction extends FPActionSupport {
+public class PaymentCollectorEditAction extends FPActionSupport {
 
-	private PaymentsCollector collector = new PaymentsCollector();
+	private PaymentCollector collector = new PaymentCollector();
 	private OrganizationFilter organizationFilter = new OrganizationFilter();
 	private Map<Long, String> descriptions = map();
 	private String email;
 
 	private String crumbCreateKey;
-	private PaymentsCollectorService collectorService;
+	private PaymentCollectorService collectorService;
 	private OrganizationService organizationService;
 
-	public PaymentsCollectorEditAction() {
+	public PaymentCollectorEditAction() {
 		organizationFilter.setAllowEmpty(false);
 	}
 
@@ -35,7 +35,7 @@ public class PaymentsCollectorEditAction extends FPActionSupport {
 	@Override
 	public String doExecute() throws Exception {
 
-		PaymentsCollector oldCollector = collector.isNew() ? collector : collectorService.read(stub(collector));
+		PaymentCollector oldCollector = collector.isNew() ? collector : collectorService.read(stub(collector));
 		if (oldCollector == null) {
 			addActionError(getText("common.object_not_selected"));
 			return REDIRECT_SUCCESS;
@@ -68,7 +68,7 @@ public class PaymentsCollectorEditAction extends FPActionSupport {
 		for (Map.Entry<Long, String> name : descriptions.entrySet()) {
 			String value = name.getValue();
 			Language lang = getLang(name.getKey());
-			oldCollector.setDescription(new PaymentsCollectorDescription(value, lang));
+			oldCollector.setDescription(new PaymentCollectorDescription(value, lang));
 		}
 
 		oldCollector.setEmail(email);
@@ -79,7 +79,7 @@ public class PaymentsCollectorEditAction extends FPActionSupport {
 			collectorService.update(oldCollector);
 		}
 
-		addActionMessage(getText("orgs.payments_collector.saved"));
+		addActionMessage(getText("orgs.payment_collector.saved"));
 
 		return REDIRECT_SUCCESS;
 	}
@@ -106,7 +106,7 @@ public class PaymentsCollectorEditAction extends FPActionSupport {
 	}
 
 	private void initDescriptions() {
-		for (PaymentsCollectorDescription description : collector.getDescriptions()) {
+		for (PaymentCollectorDescription description : collector.getDescriptions()) {
 			descriptions.put(description.getLang().getId(), description.getName());
 		}
 
@@ -118,11 +118,11 @@ public class PaymentsCollectorEditAction extends FPActionSupport {
 		}
 	}
 
-	public PaymentsCollector getCollector() {
+	public PaymentCollector getCollector() {
 		return collector;
 	}
 
-	public void setCollector(PaymentsCollector collector) {
+	public void setCollector(PaymentCollector collector) {
 		this.collector = collector;
 	}
 
@@ -160,7 +160,7 @@ public class PaymentsCollectorEditAction extends FPActionSupport {
 	}
 
 	@Required
-	public void setCollectorService(PaymentsCollectorService collectorService) {
+	public void setCollectorService(PaymentCollectorService collectorService) {
 		this.collectorService = collectorService;
 	}
 

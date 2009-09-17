@@ -24,7 +24,7 @@ public class PaymentPoint extends DomainObjectWithStatus {
 //    private org.jbpm.graph.exe.ProcessInstance tradingDayProcessInstance;
     private Long tradingDayProcessInstanceId;
 
-	private PaymentsCollector collector;
+	private PaymentCollector collector;
 	private Set<PaymentPointName> names = Collections.emptySet();
 
     public PaymentPoint() {
@@ -38,11 +38,11 @@ public class PaymentPoint extends DomainObjectWithStatus {
 		super(stub.getId());
 	}
 
-	public PaymentsCollector getCollector() {
+	public PaymentCollector getCollector() {
 		return collector;
 	}
 
-	public void setCollector(PaymentsCollector collector) {
+	public void setCollector(PaymentCollector collector) {
 		this.collector = collector;
 	}
 
@@ -118,7 +118,7 @@ public class PaymentPoint extends DomainObjectWithStatus {
 				toString();
 	}
 
-	public Stub<PaymentsCollector> collectorStub() {
+	public Stub<PaymentCollector> collectorStub() {
 		return stub(collector);
 	}
 }

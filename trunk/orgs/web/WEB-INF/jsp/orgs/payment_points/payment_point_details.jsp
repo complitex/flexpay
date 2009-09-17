@@ -6,8 +6,8 @@
     <table cellpadding="3" cellspacing="1" border="0" width="100%">
 		<tr>
             <td colspan="5">
-				<s:text name="eirc.payments_collector"/>:
-				<%@include file="../filters/payments_collector_filter.jsp"%>
+				<s:text name="eirc.payment_collector"/>:
+				<%@include file="../filters/payment_collector_filter.jsp"%>
 			</td>
 		</tr>
 		<tr>

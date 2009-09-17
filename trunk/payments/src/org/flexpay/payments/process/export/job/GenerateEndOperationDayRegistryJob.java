@@ -8,10 +8,10 @@ import org.flexpay.common.process.job.Job;
 import org.flexpay.common.service.RegistryFPFileTypeService;
 import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.orgs.persistence.PaymentPoint;
-import org.flexpay.orgs.persistence.PaymentsCollector;
+import org.flexpay.orgs.persistence.PaymentCollector;
 import org.flexpay.orgs.service.OrganizationService;
 import org.flexpay.orgs.service.PaymentPointService;
-import org.flexpay.orgs.service.PaymentsCollectorService;
+import org.flexpay.orgs.service.PaymentCollectorService;
 import static org.flexpay.payments.process.export.job.ExportJobParameterNames.*;
 import org.flexpay.payments.util.registries.EndOperationDayRegistryGenerator;
 import org.flexpay.payments.util.registries.ExportBankPaymentsRegistry;
@@ -27,14 +27,14 @@ public class GenerateEndOperationDayRegistryJob extends Job {
 
 	// required services
 	private OrganizationService organizationService;
-	private PaymentsCollectorService paymentsCollectorService;
+	private PaymentCollectorService paymentCollectorService;
 	private PaymentPointService paymentPointService;
 
 
 	private EndOperationDayRegistryGenerator registryGenerator;
 	private ExportBankPaymentsRegistry exportBankPaymentsRegistry;
     private RegistryFPFileTypeService registryFPFileTypeService;
-    
+
 	@Override
 	public String execute(Map<Serializable, Serializable> parameters) throws FlexPayException {
 
@@ -67,9 +67,9 @@ public class GenerateEndOperationDayRegistryJob extends Job {
 		FPFile file = exportBankPaymentsRegistry.generateAndAttachFile(registry);
 		parameters.put(FILE_ID, file.getId());
 
-		PaymentsCollector paymentsCollector = getPaymentsCollector(paymentPoint);
-		if (paymentsCollector != null) {
-			parameters.put(EMAIL, paymentsCollector.getEmail());
+		PaymentCollector paymentCollector = getPaymentCollector(paymentPoint);
+		if (paymentCollector != null) {
+			parameters.put(EMAIL, paymentCollector.getEmail());
 		}
 
 		log.info("Process end operation day registry and save it to file finished...");
@@ -77,9 +77,9 @@ public class GenerateEndOperationDayRegistryJob extends Job {
 		return RESULT_NEXT;
 	}
 
-	private PaymentsCollector getPaymentsCollector(PaymentPoint paymentPoint) {
+	private PaymentCollector getPaymentCollector(PaymentPoint paymentPoint) {
 
-		return paymentsCollectorService.read(paymentPoint.collectorStub());
+		return paymentCollectorService.read(paymentPoint.collectorStub());
 	}
 
 	private PaymentPoint getPaymentPoint(Map<Serializable, Serializable> parameters) {
@@ -115,8 +115,8 @@ public class GenerateEndOperationDayRegistryJob extends Job {
 	}
 
 	@Required
-	public void setPaymentsCollectorService(PaymentsCollectorService paymentsCollectorService) {
-		this.paymentsCollectorService = paymentsCollectorService;
+	public void setPaymentCollectorService(PaymentCollectorService paymentCollectorService) {
+		this.paymentCollectorService = paymentCollectorService;
 	}
 
     @Required

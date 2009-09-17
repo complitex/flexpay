@@ -202,24 +202,24 @@
     </definition>
 
 	<!-- Payments Collectors -->
-	<definition name="eirc.organization.payments_collectors.list" extends="eirc.dictionaries">
-		<put-attribute name="title" value="eirc.payments_collectors" />
-		<put-attribute name="body" value="/WEB-INF/jsp/orgs/payments_collectors/payments_collectors_list_page.jsp" />
+	<definition name="eirc.organization.payment_collectors.list" extends="eirc.dictionaries">
+		<put-attribute name="title" value="eirc.payment_collectors" />
+		<put-attribute name="body" value="/WEB-INF/jsp/orgs/payment_collectors/payment_collectors_list_page.jsp" />
 	</definition>
 
-	<definition name="eirc.organization.payments_collector.edit" extends="eirc.dictionaries">
-		<put-attribute name="title" value="eirc.payments_collector" />
-		<put-attribute name="body" value="/WEB-INF/jsp/orgs/payments_collectors/payments_collector_edit.jsp" />
+	<definition name="eirc.organization.payment_collector.edit" extends="eirc.dictionaries">
+		<put-attribute name="title" value="eirc.payment_collector" />
+		<put-attribute name="body" value="/WEB-INF/jsp/orgs/payment_collectors/payment_collector_edit.jsp" />
 	</definition>
 
-    <definition name="eirc.organization.payments_collector.view" extends="eirc.dictionaries">
-        <put-attribute name="title" value="eirc.payments_collector" />
-        <put-attribute name="body" value="/WEB-INF/jsp/orgs/payments_collectors/payments_collector_view.jsp" />
+    <definition name="eirc.organization.payment_collector.view" extends="eirc.dictionaries">
+        <put-attribute name="title" value="eirc.payment_collector" />
+        <put-attribute name="body" value="/WEB-INF/jsp/orgs/payment_collectors/payment_collector_view.jsp" />
     </definition>
 
-	<definition name="eirc.organization.payments_collectors.details" extends="eirc.dictionaries">
-		<put-attribute name="title" value="eirc.payments_collector" />
-		<put-attribute name="body" value="/WEB-INF/jsp/orgs/payments_collectors/payments_collector_details.jsp" />
+	<definition name="eirc.organization.payment_collectors.details" extends="eirc.dictionaries">
+		<put-attribute name="title" value="eirc.payment_collector" />
+		<put-attribute name="body" value="/WEB-INF/jsp/orgs/payment_collectors/payment_collector_details.jsp" />
 	</definition>
 
 	<!-- Payment Points -->

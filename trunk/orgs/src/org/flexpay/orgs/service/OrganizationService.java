@@ -42,7 +42,7 @@ public interface OrganizationService {
 	List<Organization> listOrganizations(Page<Organization> pager);
 
 	/**
-	 * List registered organizations which have any {@link org.flexpay.orgs.persistence.PaymentsCollector}s
+	 * List registered organizations which have any {@link org.flexpay.orgs.persistence.PaymentCollector}s
 	 *
 	 * @return list of organiztions which has collectors
 	 */

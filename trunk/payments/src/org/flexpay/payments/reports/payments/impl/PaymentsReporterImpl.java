@@ -42,7 +42,7 @@ public class PaymentsReporterImpl implements PaymentsReporter {
 	// required services
 	private DocumentService documentService;
 	private OrganizationService organizationService;
-	private PaymentsCollectorService paymentsCollectorService;
+	private PaymentCollectorService paymentCollectorService;
 	private PaymentPointService paymentPointService;
 	private CashboxService cashboxService;
 	private SPService spService;
@@ -235,11 +235,11 @@ public class PaymentsReporterImpl implements PaymentsReporter {
 	}
 
 	@Override
-	public AccPaymentReportData getAccPaymentsReportData(AccPaymentsReportRequest reportRequest, Stub<PaymentsCollector> paymentsCollectorStub) {
+	public AccPaymentReportData getAccPaymentsReportData(AccPaymentsReportRequest reportRequest, Stub<PaymentCollector> paymentCollectorStub) {
 
 		AccPaymentReportData result = new AccPaymentReportData();
-		PaymentsCollector paymentsCollector = paymentsCollectorService.read(paymentsCollectorStub);
-		Organization collectorOrganization = organizationService.readFull(paymentsCollector.getOrganizationStub());
+		PaymentCollector paymentCollector = paymentCollectorService.read(paymentCollectorStub);
+		Organization collectorOrganization = organizationService.readFull(paymentCollector.getOrganizationStub());
 
 		result.setCreationDate(new Date());
 		result.setBeginDate(reportRequest.getBeginDate());
@@ -522,7 +522,7 @@ public class PaymentsReporterImpl implements PaymentsReporter {
 	}
 
 	@Required
-	public void setPaymentsCollectorService(PaymentsCollectorService paymentsCollectorService) {
-		this.paymentsCollectorService = paymentsCollectorService;
+	public void setPaymentCollectorService(PaymentCollectorService paymentCollectorService) {
+		this.paymentCollectorService = paymentCollectorService;
 	}
 }

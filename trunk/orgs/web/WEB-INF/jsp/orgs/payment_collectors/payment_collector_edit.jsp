@@ -3,7 +3,7 @@
 <s:actionerror />
 <s:actionmessage />
 
-<s:form action="paymentsCollectorEdit">
+<s:form action="paymentCollectorEdit">
 
 	<s:hidden name="collector.id" />
 
@@ -21,7 +21,7 @@
 			</td>
 		</tr>
 		<tr valign="middle" class="cols_1">
-			<td class="col"><s:text name="eirc.payments_collector.email" />:</td>
+			<td class="col"><s:text name="eirc.payment_collector.email"/>:</td>
 			<td class="col"><s:textfield name="email" /></td>
 		</tr>
 		<tr valign="middle">

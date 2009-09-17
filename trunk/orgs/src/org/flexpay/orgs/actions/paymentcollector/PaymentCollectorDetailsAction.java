@@ -1,38 +1,38 @@
-package org.flexpay.orgs.actions.paymentscollector;
+package org.flexpay.orgs.actions.paymentcollector;
 
 import org.apache.commons.collections.ArrayStack;
 import org.flexpay.common.actions.FPActionWithPagerSupport;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.orgs.actions.organization.OrganizationHelper;
 import org.flexpay.orgs.persistence.PaymentPoint;
-import org.flexpay.orgs.persistence.PaymentsCollector;
-import org.flexpay.orgs.persistence.filters.PaymentsCollectorFilter;
+import org.flexpay.orgs.persistence.PaymentCollector;
+import org.flexpay.orgs.persistence.filters.PaymentCollectorFilter;
 import org.flexpay.orgs.service.PaymentPointService;
-import org.flexpay.orgs.service.PaymentsCollectorService;
+import org.flexpay.orgs.service.PaymentCollectorService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.util.List;
 
-public class PaymentsCollectorDetailsAction extends FPActionWithPagerSupport<PaymentPoint> {
+public class PaymentCollectorDetailsAction extends FPActionWithPagerSupport<PaymentPoint> {
 
-	protected PaymentsCollectorFilter paymentsCollectorFilter = new PaymentsCollectorFilter();
+	protected PaymentCollectorFilter paymentCollectorFilter = new PaymentCollectorFilter();
 	protected List<PaymentPoint> points = CollectionUtils.list();
 
-	private PaymentsCollector paymentsCollector;
+	private PaymentCollector paymentCollector;
 
 	protected OrganizationHelper organizationHelper;
 	protected PaymentPointService paymentPointService;
-	protected PaymentsCollectorService collectorService;
+	protected PaymentCollectorService collectorService;
 
 	@NotNull
 	@Override
 	protected String doExecute() throws Exception {
 
-		paymentsCollector = paymentsCollectorFilter.needFilter() ? collectorService.read(paymentsCollectorFilter.getSelectedStub()) : null;
+		paymentCollector = paymentCollectorFilter.needFilter() ? collectorService.read(paymentCollectorFilter.getSelectedStub()) : null;
 
-		collectorService.initFilter(paymentsCollectorFilter);
-		ArrayStack filters = CollectionUtils.arrayStack(paymentsCollectorFilter);
+		collectorService.initFilter(paymentCollectorFilter);
+		ArrayStack filters = CollectionUtils.arrayStack(paymentCollectorFilter);
 		points = paymentPointService.listPoints(filters, getPager());
 
 		return SUCCESS;
@@ -51,28 +51,28 @@ public class PaymentsCollectorDetailsAction extends FPActionWithPagerSupport<Pay
 		return SUCCESS;
 	}
 
-	public boolean isPaymentsCollectorLoaded() {
-		return paymentsCollector != null;
+	public boolean isPaymentCollectorLoaded() {
+		return paymentCollector != null;
 	}
 
-	public String getPaymentsCollectorDescription() {
-		return getTranslation(paymentsCollector.getDescriptions()).getName();
+	public String getPaymentCollectorDescription() {
+		return getTranslation(paymentCollector.getDescriptions()).getName();
 	}
 
 	public String getOrganizationName() {
-		return organizationHelper.getName(paymentsCollector.getOrganization(), getUserPreferences().getLocale());
+		return organizationHelper.getName(paymentCollector.getOrganization(), getUserPreferences().getLocale());
 	}
 
-	public PaymentsCollector getPaymentsCollector() {
-		return paymentsCollector;
+	public PaymentCollector getPaymentCollector() {
+		return paymentCollector;
 	}
 
-	public PaymentsCollectorFilter getPaymentsCollectorFilter() {
-		return paymentsCollectorFilter;
+	public PaymentCollectorFilter getPaymentCollectorFilter() {
+		return paymentCollectorFilter;
 	}
 
-	public void setPaymentsCollectorFilter(PaymentsCollectorFilter paymentsCollectorFilter) {
-		this.paymentsCollectorFilter = paymentsCollectorFilter;
+	public void setPaymentCollectorFilter(PaymentCollectorFilter paymentCollectorFilter) {
+		this.paymentCollectorFilter = paymentCollectorFilter;
 	}
 
 	public List<PaymentPoint> getPoints() {
@@ -90,7 +90,7 @@ public class PaymentsCollectorDetailsAction extends FPActionWithPagerSupport<Pay
 	}
 
 	@Required
-	public void setCollectorService(PaymentsCollectorService collectorService) {
+	public void setCollectorService(PaymentCollectorService collectorService) {
 		this.collectorService = collectorService;
 	}
 

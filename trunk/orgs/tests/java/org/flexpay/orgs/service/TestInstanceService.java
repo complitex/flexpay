@@ -21,7 +21,7 @@ public class TestInstanceService extends OrgsSpringBeanAwareTestCase {
 	@Autowired
 	private ServiceProviderService serviceProviderService;
 	@Autowired
-	private PaymentsCollectorService paymentsCollectorService;
+	private PaymentCollectorService paymentCollectorService;
 	@Autowired
 	private PaymentPointService paymentPointService;
 
@@ -75,24 +75,24 @@ public class TestInstanceService extends OrgsSpringBeanAwareTestCase {
 	}
 
 	@Test
-	public void testEditPaymentsCollector() throws Exception {
-		PaymentsCollector org = new PaymentsCollector();
+	public void testEditPaymentCollector() throws Exception {
+		PaymentCollector org = new PaymentCollector();
 		org.setOrganization(organization);
-		org.setDescription(new PaymentsCollectorDescription("TEST", lang()));
-		paymentsCollectorService.create(org);
+		org.setDescription(new PaymentCollectorDescription("TEST", lang()));
+		paymentCollectorService.create(org);
 
-		org.setDescription(new PaymentsCollectorDescription("TEST-UPDATE", lang()));
-		paymentsCollectorService.update(org);
+		org.setDescription(new PaymentCollectorDescription("TEST-UPDATE", lang()));
+		paymentCollectorService.update(org);
 
-		paymentsCollectorService.delete(org);
+		paymentCollectorService.delete(org);
 	}
 
 	@Test
 	public void testEditPaymentPoint() throws Exception {
-		PaymentsCollector org = new PaymentsCollector();
+		PaymentCollector org = new PaymentCollector();
 		org.setOrganization(organization);
-		org.setDescription(new PaymentsCollectorDescription("TEST", lang()));
-		paymentsCollectorService.create(org);
+		org.setDescription(new PaymentCollectorDescription("TEST", lang()));
+		paymentCollectorService.create(org);
 
 		PaymentPoint point = new PaymentPoint();
 		point.setCollector(org);
@@ -105,7 +105,7 @@ public class TestInstanceService extends OrgsSpringBeanAwareTestCase {
 		paymentPointService.update(point);
 
 		paymentPointService.delete(point);
-		paymentsCollectorService.delete(org);
+		paymentCollectorService.delete(org);
 	}
 
 	@Before

@@ -91,7 +91,7 @@
           p:paymentPointService-ref="paymentPointService"
           p:operationService-ref="operationService"
           p:cashboxService-ref="cashboxService"
-          p:paymentsCollectorService-ref="paymentsCollectorService"
+          p:paymentCollectorService-ref="paymentCollectorService"
 		  scope="prototype" />
 
     <bean id="paymentPointDetailMonitorAction"

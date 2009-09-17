@@ -88,19 +88,19 @@
 
 	<!-- Payments collectors -->
 	<security-role-mapping>
-		<role-name>ROLE_ORGS_PAYMENTS_COLLECTOR_READ</role-name>
+		<role-name>ROLE_ORGS_PAYMENT_COLLECTOR_READ</role-name>
 		<group-name>ORGS_FULL_ACCESS</group-name>
 	</security-role-mapping>
 	<security-role-mapping>
-		<role-name>ROLE_ORGS_PAYMENTS_COLLECTOR_CHANGE</role-name>
+		<role-name>ROLE_ORGS_PAYMENT_COLLECTOR_CHANGE</role-name>
 		<group-name>ORGS_FULL_ACCESS</group-name>
 	</security-role-mapping>
 	<security-role-mapping>
-		<role-name>ROLE_ORGS_PAYMENTS_COLLECTOR_ADD</role-name>
+		<role-name>ROLE_ORGS_PAYMENT_COLLECTOR_ADD</role-name>
 		<group-name>ORGS_FULL_ACCESS</group-name>
 	</security-role-mapping>
 	<security-role-mapping>
-		<role-name>ROLE_ORGS_PAYMENTS_COLLECTOR_DELETE</role-name>
+		<role-name>ROLE_ORGS_PAYMENT_COLLECTOR_DELETE</role-name>
 		<group-name>ORGS_FULL_ACCESS</group-name>
 	</security-role-mapping>
 

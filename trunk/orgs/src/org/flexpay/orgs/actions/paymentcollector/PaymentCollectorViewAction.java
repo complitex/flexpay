@@ -1,17 +1,17 @@
-package org.flexpay.orgs.actions.paymentscollector;
+package org.flexpay.orgs.actions.paymentcollector;
 
 import org.flexpay.common.actions.FPActionSupport;
 import static org.flexpay.common.persistence.Stub.stub;
-import org.flexpay.orgs.persistence.PaymentsCollector;
-import org.flexpay.orgs.service.PaymentsCollectorService;
+import org.flexpay.orgs.persistence.PaymentCollector;
+import org.flexpay.orgs.service.PaymentCollectorService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
-public class PaymentsCollectorViewAction extends FPActionSupport {
+public class PaymentCollectorViewAction extends FPActionSupport {
 
-	private PaymentsCollector collector = new PaymentsCollector();
+	private PaymentCollector collector = new PaymentCollector();
 
-	private PaymentsCollectorService collectorService;
+	private PaymentCollectorService collectorService;
 
 	@NotNull
 	@Override
@@ -39,16 +39,16 @@ public class PaymentsCollectorViewAction extends FPActionSupport {
 		return REDIRECT_ERROR;
 	}
 
-	public PaymentsCollector getCollector() {
+	public PaymentCollector getCollector() {
 		return collector;
 	}
 
-	public void setCollector(PaymentsCollector collector) {
+	public void setCollector(PaymentCollector collector) {
 		this.collector = collector;
 	}
 
 	@Required
-	public void setCollectorService(PaymentsCollectorService collectorService) {
+	public void setCollectorService(PaymentCollectorService collectorService) {
 		this.collectorService = collectorService;
 	}
 

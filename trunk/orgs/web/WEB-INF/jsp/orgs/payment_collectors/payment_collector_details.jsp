@@ -8,22 +8,22 @@
 	<table cellpadding="3" cellspacing="1" border="0" width="100%">
 		<tr>
 			<td colspan="6">
-				<s:text name="eirc.payments_collector" />:&nbsp;
-				<%@include file="../filters/payments_collector_filter.jsp"%>
+				<s:text name="eirc.payment_collector" />:&nbsp;
+				<%@include file="../filters/payment_collector_filter.jsp"%>
 			</td>
 		</tr>
-		<s:if test="%{isPaymentsCollectorLoaded()}">
+		<s:if test="%{isPaymentCollectorLoaded()}">
             <tr>
                 <td colspan="6">
-                    <s:text name="eirc.payments_collector.organization_name" />:&nbsp;
+                    <s:text name="eirc.payment_collector.organization_name" />:&nbsp;
                     <s:property value="%{getOrganizationName()}" />
                 </td>
             </tr>
             <tr>
                 <td colspan="6">
                     <fieldset class="fieldset">
-                        <legend class="legend"><s:text name="eirc.payments_collector.description" /></legend>
-                        <s:property value="%{getPaymentsCollectorDescription()}" />
+                        <legend class="legend"><s:text name="eirc.payment_collector.description" /></legend>
+                        <s:property value="%{getPaymentCollectorDescription()}" />
                     </fieldset>
                     <br/>
                 </td>
@@ -40,7 +40,7 @@
                 </td>
                 <td class="th"><s:text name="eirc.payment_point.id" /></td>
                 <td class="th"><s:text name="eirc.payment_point.name" /></td>
-                <td class="th"><s:text name="eirc.payments_collector" /></td>
+                <td class="th"><s:text name="eirc.payment_collector" /></td>
                 <td class="th"><s:text name="ab.address" /></td>
                 <td class="th">&nbsp;</td>
             </tr>
@@ -54,7 +54,7 @@
                     </td>
                     <td class="col"><s:property value="%{id}" /></td>
                     <td class="col">
-                        <a href="<s:url action="paymentPointDetails"><s:param name="paymentsCollectorFilter.selectedId" value="%{paymentsCollector.id}" />
+                        <a href="<s:url action="paymentPointDetails"><s:param name="paymentCollectorFilter.selectedId" value="%{paymentCollector.id}" />
                                 <s:param name="paymentPointsFilter.selectedId" value="%{id}" /></s:url>">
                             <s:property value="getTranslation(names).name" />
                         </a>

@@ -10,14 +10,13 @@ import org.flexpay.common.process.ProcessState;
 import org.flexpay.common.process.exception.ProcessDefinitionException;
 import org.flexpay.common.process.exception.ProcessInstanceException;
 import org.flexpay.common.process.sorter.ProcessSorterByName;
-import org.flexpay.common.service.Roles;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.DateUtil;
 import org.flexpay.common.util.SecurityUtil;
 import org.flexpay.orgs.persistence.PaymentPoint;
-import org.flexpay.orgs.persistence.PaymentsCollector;
+import org.flexpay.orgs.persistence.PaymentCollector;
 import org.flexpay.orgs.service.PaymentPointService;
-import org.flexpay.orgs.service.PaymentsCollectorService;
+import org.flexpay.orgs.service.PaymentCollectorService;
 import org.flexpay.payments.process.export.job.ExportJobParameterNames;
 import org.jbpm.JbpmContext;
 import org.jbpm.graph.exe.ProcessInstance;
@@ -52,7 +51,7 @@ public class TradingDay extends QuartzJobBean {
 
     private ProcessManager processManager;
     private PaymentPointService paymentPointService;
-    private PaymentsCollectorService paymentsCollectorService;
+    private PaymentCollectorService paymentCollectorService;
 
     /**
      * Set of authorities names for payments registry
@@ -65,7 +64,7 @@ public class TradingDay extends QuartzJobBean {
 			org.flexpay.common.service.Roles.PROCESS_DEFINITION_UPLOAD_NEW,
 			org.flexpay.common.service.Roles.PROCESS_DEFINITION_UPLOAD_NEW,
 
-            org.flexpay.orgs.service.Roles.PAYMENTS_COLLECTOR_READ,
+            org.flexpay.orgs.service.Roles.PAYMENT_COLLECTOR_READ,
             org.flexpay.orgs.service.Roles.PAYMENT_POINT_READ,
 			org.flexpay.orgs.service.Roles.PAYMENT_POINT_CHANGE,
             org.flexpay.orgs.service.Roles.ORGANIZATION_READ,
@@ -170,9 +169,9 @@ public class TradingDay extends QuartzJobBean {
                 parameters.put(ExportJobParameterNames.END_DATE, DateUtil.getEndOfThisDay(new Date()));
                 log.debug("Set endDate {}", DateUtil.getEndOfThisDay(new Date()));
 
-                PaymentsCollector paymentsPointCollector = paymentsCollectorService.read(Stub.stub(pp.getCollector()));
-                parameters.put(ExportJobParameterNames.ORGANIZATION_ID, paymentsPointCollector.getOrganization().getId());
-                log.debug("Set organizationId {}", paymentsPointCollector.getOrganization().getId());
+                PaymentCollector paymentPointCollector = paymentCollectorService.read(Stub.stub(pp.getCollector()));
+                parameters.put(ExportJobParameterNames.ORGANIZATION_ID, paymentPointCollector.getOrganization().getId());
+                log.debug("Set organizationId {}", paymentPointCollector.getOrganization().getId());
 
                 try {
                     pp.setTradingDayProcessInstanceId(processManager.createProcess(PROCESS_DEFINITION_NAME, parameters));
@@ -209,7 +208,7 @@ public class TradingDay extends QuartzJobBean {
     }
 
     @Required
-    public void setPaymentsCollectorService(PaymentsCollectorService paymentsCollectorService) {
-        this.paymentsCollectorService = paymentsCollectorService;
+    public void setPaymentCollectorService(PaymentCollectorService paymentCollectorService) {
+        this.paymentCollectorService = paymentCollectorService;
     }
 }

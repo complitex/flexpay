@@ -18,8 +18,8 @@
             </td>
         </tr>
 		<tr valign="middle" class="cols_1">
-			<td class="col"><s:text name="eirc.payments_collector" />:</td>
-			<td class="col"><%@include file="/WEB-INF/jsp/orgs/filters/payments_collector_filter.jsp"%></td>
+			<td class="col"><s:text name="eirc.payment_collector" />:</td>
+			<td class="col"><%@include file="/WEB-INF/jsp/orgs/filters/payment_collector_filter.jsp"%></td>
 		</tr>
 		<tr valign="middle" class="cols_1">
 			<td class="col"><s:text name="ab.address" />:</td>

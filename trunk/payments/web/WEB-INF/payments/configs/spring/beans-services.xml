@@ -142,7 +142,7 @@
 	<bean id="paymentsReporter"
 		  class="org.flexpay.payments.reports.payments.impl.PaymentsReporterImpl"
 		  p:organizationService-ref="organizationService"
-		  p:paymentsCollectorService-ref="paymentsCollectorService"
+		  p:paymentCollectorService-ref="paymentCollectorService"
 		  p:paymentPointService-ref="paymentPointService"
 		  p:cashboxService-ref="cashboxService"
 		  p:documentService-ref="documentService"
@@ -244,7 +244,7 @@
 				<ref bean="addressAttributeTypeHistoryHandler" />
 				<ref bean="identityTypeHistoryHandler" />
 				<ref bean="paymentPointHistoryHandler" />
-				<ref bean="paymentsCollectorHistoryHandler" />
+				<ref bean="paymentCollectorHistoryHandler" />
 				<ref bean="serviceOrganizationHistoryHandler" />
 				<ref bean="serviceProviderHistoryHandler" />
 				<ref bean="bankHistoryHandler" />

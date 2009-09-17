@@ -10,7 +10,7 @@ import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.util.config.ApplicationConfig;
 import org.flexpay.common.util.EqualsHelper;
 import org.flexpay.orgs.persistence.*;
-import org.flexpay.orgs.service.PaymentsCollectorService;
+import org.flexpay.orgs.service.PaymentCollectorService;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
@@ -29,7 +29,7 @@ public class PaymentPointHistoryBuilder extends HistoryBuilderBase<PaymentPoint>
 	public static final int FIELD_ADDRESS = 3;
 	public static final int FIELD_EMAIL = 4;
 
-	private PaymentsCollectorService collectorService;
+	private PaymentCollectorService collectorService;
 
 	/**
 	 * Build necessary diff records
@@ -102,8 +102,8 @@ public class PaymentPointHistoryBuilder extends HistoryBuilderBase<PaymentPoint>
 	}
 
 	private void buildCollectorRefDiff(PaymentPoint p1, PaymentPoint p2, Diff diff) {
-		PaymentsCollector org1 = p1.getCollector();
-		PaymentsCollector org2 = p2.getCollector();
+		PaymentCollector org1 = p1.getCollector();
+		PaymentCollector org2 = p2.getCollector();
 		boolean noOrganization = (org1 == null || org1.isNew()) && (org2 == null || org2.isNew());
 
 		// no organization found in both objects, nothing to do
@@ -184,12 +184,12 @@ public class PaymentPointHistoryBuilder extends HistoryBuilderBase<PaymentPoint>
 
 		if (record.getNewStringValue() != null) {
 			String externalId = record.getNewStringValue();
-			Stub<PaymentsCollector> stub = correctionsService.findCorrection(
-					externalId, PaymentsCollector.class, masterIndexService.getMasterSourceDescriptionStub());
+			Stub<PaymentCollector> stub = correctionsService.findCorrection(
+					externalId, PaymentCollector.class, masterIndexService.getMasterSourceDescriptionStub());
 			if (stub == null) {
 				throw new IllegalStateException("Cannot find collector by master index: " + externalId);
 			}
-			PaymentsCollector collector = collectorService.read(stub);
+			PaymentCollector collector = collectorService.read(stub);
 			pp.setCollector(collector);
 		}
 
@@ -197,7 +197,7 @@ public class PaymentPointHistoryBuilder extends HistoryBuilderBase<PaymentPoint>
 	}
 
 	@Required
-	public void setCollectorService(PaymentsCollectorService collectorService) {
+	public void setCollectorService(PaymentCollectorService collectorService) {
 		this.collectorService = collectorService;
 	}
 }

@@ -271,7 +271,7 @@
 
     <!-- Payments collectors -->
     <security-role>
-		<role-name>ROLE_ORGS_PAYMENTS_COLLECTOR_READ</role-name>
+		<role-name>ROLE_ORGS_PAYMENT_COLLECTOR_READ</role-name>
 	</security-role>
 	
     <!-- Menu roles -->

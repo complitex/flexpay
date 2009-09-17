@@ -11,10 +11,10 @@ import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.DateUtil;
 import org.flexpay.common.util.SecurityUtil;
 import org.flexpay.orgs.persistence.Organization;
-import org.flexpay.orgs.persistence.PaymentsCollector;
+import org.flexpay.orgs.persistence.PaymentCollector;
 import org.flexpay.orgs.persistence.ServiceProvider;
 import org.flexpay.orgs.persistence.ServiceProviderAttribute;
-import org.flexpay.orgs.service.PaymentsCollectorService;
+import org.flexpay.orgs.service.PaymentCollectorService;
 import org.flexpay.orgs.service.ServiceProviderService;
 import org.flexpay.payments.process.export.job.ExportJobParameterNames;
 import org.flexpay.orgs.service.ServiceProviderAttributeService;
@@ -47,7 +47,7 @@ public class GeneratePaymentsRegistry extends QuartzJobBean {
 	private ProcessManager processManager;
 	private ServiceProviderService serviceProviderService;
 	private ServiceProviderAttributeService serviceProviderAttributeService;
-	private PaymentsCollectorService paymentsCollectorService;
+	private PaymentCollectorService paymentCollectorService;
 
 	/**
 	 * Set of authorities names for payments registry
@@ -60,10 +60,10 @@ public class GeneratePaymentsRegistry extends QuartzJobBean {
 			org.flexpay.orgs.service.Roles.ORGANIZATION_READ,
 			org.flexpay.orgs.service.Roles.SERVICE_PROVIDER_READ,
 			org.flexpay.payments.service.Roles.SERVICE_TYPE_READ,
-			org.flexpay.orgs.service.Roles.PAYMENTS_COLLECTOR_READ
+			org.flexpay.orgs.service.Roles.PAYMENT_COLLECTOR_READ
 	);
 
-    /**
+	/**
      * Start processes "GeneratePaymentsRegisryProcess" for all existed in database service providers and registred organization.<br/>
      * Job wait while all started processes will finish and add generated registries ids to job execution context.<br/>
      * Registries ids content in {@link org.quartz.JobExecutionContext#getMergedJobDataMap()}.
@@ -79,17 +79,17 @@ public class GeneratePaymentsRegistry extends QuartzJobBean {
 		try {
 			authenticatePaymentsRegistryGenerator();
 
-			Page<PaymentsCollector> paymentsCollectorsPage = new Page<PaymentsCollector>(PAGE_SIZE);
-			List<PaymentsCollector> listPaymentsCollectors;
+			Page<PaymentCollector> paymentCollectorPage = new Page<PaymentCollector>(PAGE_SIZE);
+			List<PaymentCollector> listPaymentCollectors;
 
 			Page<ServiceProvider> serviceProvidersPage = new Page<ServiceProvider>(PAGE_SIZE);
 			List<ServiceProvider> listServiceProviders;
 			List<Long> listProcessInstanesId = new ArrayList<Long>();
 			List<Map<Serializable, Serializable>> waitingProcessData = new ArrayList<Map<Serializable, Serializable>>();
 
-			while ((listPaymentsCollectors = paymentsCollectorService.listInstances(paymentsCollectorsPage)).size() > 0) {
-				for (PaymentsCollector paymentsCollector : listPaymentsCollectors) {
-					log.debug("Payment collector (registered) organization {}", paymentsCollector.getOrganization().getId());
+			while ((listPaymentCollectors = paymentCollectorService.listInstances(paymentCollectorPage)).size() > 0) {
+				for (PaymentCollector paymentCollector : listPaymentCollectors) {
+					log.debug("Payment collector (registered) organization {}", paymentCollector.getOrganization().getId());
 
 					serviceProvidersPage.setPageNumber(1);
 					while ((listServiceProviders = serviceProviderService.listInstances(serviceProvidersPage)).size() > 0) {
@@ -108,7 +108,7 @@ public class GeneratePaymentsRegistry extends QuartzJobBean {
 								parameters.put(ExportJobParameterNames.FINISH_DATE, finishDate);
 								parameters.put(ExportJobParameterNames.ORGANIZATION_ID, organization.getId());
 								parameters.put(ExportJobParameterNames.SERVICE_PROVIDER_ID, serviceProvider.getId());
-								parameters.put(ExportJobParameterNames.REGISTERED_ORGANIZATION_ID, paymentsCollector.getOrganization().getId());
+								parameters.put(ExportJobParameterNames.REGISTERED_ORGANIZATION_ID, paymentCollector.getOrganization().getId());
 								//parameters.put(ExportJobParameterNames.EMAIL, serviceProvider.getEmail());
 								parameters.put(ExportJobParameterNames.PRIVATE_KEY, privateKey);
 
@@ -124,7 +124,7 @@ public class GeneratePaymentsRegistry extends QuartzJobBean {
 						serviceProvidersPage.nextPage();
 					}
 				}
-				paymentsCollectorsPage.nextPage();
+				paymentCollectorPage.nextPage();
 			}
 
 			List<Long> registries = new ArrayList<Long>();
@@ -230,8 +230,8 @@ public class GeneratePaymentsRegistry extends QuartzJobBean {
 	}
 
 	@Required
-	public void setPaymentsCollectorService(PaymentsCollectorService paymentsCollectorService) {
-		this.paymentsCollectorService = paymentsCollectorService;
+	public void setPaymentCollectorService(PaymentCollectorService paymentCollectorService) {
+		this.paymentCollectorService = paymentCollectorService;
 	}
 
 	public void setPrivateKey(String privateKey) {

@@ -666,12 +666,12 @@ insert into orgs_organization_names_tbl (name, language_id, organization_id)
 insert into orgs_organization_names_tbl (name, language_id, organization_id)
 	values ('Zolotie vorota', @en_id, @organization_zol_vor);
 
-insert into orgs_payments_collectors_tbl (status, version, organization_id, email)
+insert into orgs_payment_collectors_tbl (status, version, organization_id, email)
 	values (0, 0, @organization_zol_vor, 'collector@zolotievorota.kharkov.ua');
 select @collector_zol_vor:=last_insert_id();
-insert into orgs_payments_collectors_descriptions_tbl (language_id, collector_id, name)
+insert into orgs_payment_collectors_descriptions_tbl (language_id, collector_id, name)
 	values (@ru_id, @collector_zol_vor, 'Сборщик для банка "Золотые ворота"');
-insert into orgs_payments_collectors_descriptions_tbl (language_id, collector_id, name)
+insert into orgs_payment_collectors_descriptions_tbl (language_id, collector_id, name)
 	values (@en_id, @collector_zol_vor, 'Collector for bank "Zolotie vorota"');
 
 insert into orgs_payment_points_tbl (status, version, collector_id, address)
