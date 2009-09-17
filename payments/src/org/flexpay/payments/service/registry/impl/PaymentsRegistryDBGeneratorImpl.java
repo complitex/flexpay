@@ -2,7 +2,6 @@ package org.flexpay.payments.service.registry.impl;
 
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.DateRange;
-import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.persistence.registry.*;
 import org.flexpay.common.service.*;
@@ -12,9 +11,11 @@ import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.orgs.persistence.PaymentPoint;
 import org.flexpay.orgs.persistence.ServiceProvider;
 import org.flexpay.orgs.service.history.OrganizationHistoryGenerator;
+import org.flexpay.orgs.service.history.PaymentPointHistoryGenerator;
 import org.flexpay.payments.persistence.*;
 import org.flexpay.payments.service.DocumentAdditionTypeService;
 import org.flexpay.payments.service.DocumentService;
+import org.flexpay.payments.service.history.ServiceHistoryGenerator;
 import org.flexpay.payments.service.registry.PaymentsRegistryDBGenerator;
 import org.flexpay.payments.util.config.ApplicationConfig;
 import org.jetbrains.annotations.NotNull;
@@ -24,7 +25,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -47,21 +47,23 @@ public class PaymentsRegistryDBGeneratorImpl implements PaymentsRegistryDBGenera
 	private ClassToTypeRegistry typeRegistry;
 	private MasterIndexService masterIndexService;
 	private OrganizationHistoryGenerator organizationHistoryGenerator;
+	private PaymentPointHistoryGenerator paymentPointHistoryGenerator;
+	private ServiceHistoryGenerator serviceHistoryGenerator;
 
-    /**
-     * Create the new payments registry in database from registered payment documents.<br/>
-     * One document is the one record in registry.
-     *
-     * @param serviceProvider Document was generated for service provider.
-     * @param registerOrganization Registered organization generated document.
-     * @param range Created payments in date range.
-     * @return Payments registry
-     * @throws FlexPayException
-     */
+	/**
+	 * Create the new payments registry in database from registered payment documents.<br/> One document is the one record
+	 * in registry.
+	 *
+	 * @param serviceProvider	  Document was generated for service provider.
+	 * @param registerOrganization Registered organization generated document.
+	 * @param range				Created payments in date range.
+	 * @return Payments registry
+	 * @throws FlexPayException
+	 */
 	@Nullable
-	public Registry createDBRegistry(@NotNull ServiceProvider serviceProvider,
-									 @NotNull Organization registerOrganization,
-									 @NotNull DateRange range) throws FlexPayException {
+	public Registry createRegistry(@NotNull ServiceProvider serviceProvider,
+								   @NotNull Organization registerOrganization,
+								   @NotNull DateRange range) throws FlexPayException {
 
 		log.info("Searching documents for service provider {} and registered in organization {}",
 				new Object[]{serviceProvider.getId(), registerOrganization.getId()});
@@ -76,7 +78,7 @@ public class PaymentsRegistryDBGeneratorImpl implements PaymentsRegistryDBGenera
 		log.info("{} documents found", documents.size());
 
 		Registry registry = new Registry();
-		fillRegistryData(serviceProvider, registerOrganization, range, documents, registry);
+		fillRegistryData(serviceProvider, registerOrganization, range, registry);
 		registryService.create(registry);
 
 		BigDecimal totalSumm = new BigDecimal(0);
@@ -104,7 +106,6 @@ public class PaymentsRegistryDBGeneratorImpl implements PaymentsRegistryDBGenera
 				new Object[]{registry.getId(), recordsNumber, totalSumm});
 
 		return registry;
-
 	}
 
 	private void setRegistryTotals(Registry registry, BigDecimal totalSumm, Long recordsNumber, Long errorsNumber) {
@@ -113,11 +114,11 @@ public class PaymentsRegistryDBGeneratorImpl implements PaymentsRegistryDBGenera
 		registry.setErrorsNumber(errorsNumber.intValue());
 	}
 
-	private void fillRegistryData(@NotNull ServiceProvider serviceProvider, @NotNull Organization registerOrganization,
-								  @NotNull DateRange range, @NotNull List<Document> paymentDocuments, @NotNull Registry registry) {
+	private void fillRegistryData(@NotNull ServiceProvider provider, @NotNull Organization registerer,
+								  @NotNull DateRange range, @NotNull Registry registry) {
 
-		registry.setRecipientCode(serviceProvider.getOrganization().getId());
-		registry.setSenderCode(registerOrganization.getId());
+		registry.setRecipientCode(provider.getOrganization().getId());
+		registry.setSenderCode(registerer.getId());
 		registry.setCreationDate(new Date());
 		registry.setRegistryType(registryTypeService.findByCode(RegistryType.TYPE_CASH_PAYMENTS));
 		registry.setArchiveStatus(registryArchiveStatusService.findByCode(RegistryArchiveStatus.NONE));
@@ -126,66 +127,74 @@ public class PaymentsRegistryDBGeneratorImpl implements PaymentsRegistryDBGenera
 		registry.setTillDate(range.getEnd());
 
 		EircRegistryProperties registryProperties = (EircRegistryProperties) propertiesFactory.newRegistryProperties();
-		registryProperties.setRecipient(serviceProvider.getOrganization());
-		registryProperties.setSender(registerOrganization);
-		registryProperties.setServiceProvider(serviceProvider);
+		registryProperties.setRecipient(provider.getOrganization());
+		registryProperties.setSender(registerer);
+		registryProperties.setServiceProvider(provider);
 		registry.setProperties(registryProperties);
 
 		// TODO: remove this dirty hack
-		organizationHistoryGenerator.generateFor(registerOrganization);
-		organizationHistoryGenerator.generateFor(serviceProvider.getOrganization());
+		organizationHistoryGenerator.generateFor(registerer);
+		organizationHistoryGenerator.generateFor(provider.getOrganization());
 
-        // add number instance application
-        registry.addContainer(new RegistryContainer(
-                "503" +
-                ":" + ApplicationConfig.getInstanceId()
-        ));
+		// add instance id
+		registry.addContainer(new RegistryContainer(
+				"503" +
+				":" + ApplicationConfig.getInstanceId()
+		));
 
 		// add identifiers sync containers
 		registry.addContainer(new RegistryContainer(
 				"502" +
 				":" + typeRegistry.getType(Organization.class) +
-				":" + registerOrganization.getId() +
+				":" + registerer.getId() +
 				":" +
-				":" + masterIndexService.getMasterIndex(registerOrganization) +
+				":" + masterIndexService.getMasterIndex(registerer) +
 				":1"
 		));
 		registry.addContainer(new RegistryContainer(
 				"502" +
 				":" + typeRegistry.getType(Organization.class) +
-				":" + serviceProvider.getOrganization().getId() +
+				":" + provider.getOrganization().getId() +
 				":" +
-				":" + masterIndexService.getMasterIndex(serviceProvider.getOrganization()) +
+				":" + masterIndexService.getMasterIndex(provider.getOrganization()) +
 				":1"
 		));
 
-        // add identifiers sync containers of using payment points
-        List<PaymentPoint> paymentPoints = getUsingPaymentPoints(paymentDocuments);
-        log.debug("Payment points is using {} time", paymentPoints.size());
-        for (PaymentPoint paymentPoint : paymentPoints) {
-            registry.addContainer(new RegistryContainer(
-                    "502" +
-                    ":" + typeRegistry.getType(PaymentPoint.class) +
-                    ":" + paymentPoint.getId() +
-                    ":" +
-                    ":" + masterIndexService.getMasterIndex(paymentPoint) +
-                    ":1"
-		    ));
-        }
+		// add identifiers sync containers of used payment points
+		List<PaymentPoint> paymentPoints = documentService.listPaymentsPoints(stub(provider), stub(registerer), range);
+		log.debug("Payment points is using {} time", paymentPoints.size());
+		for (PaymentPoint paymentPoint : paymentPoints) {
 
-        // add identifiers sync containers of using services
-        List<Service> services = getUsingServices(paymentDocuments);
-        log.debug("Services is using {} time", services.size());
-        for (Service service : services) {
-            registry.addContainer(new RegistryContainer(
-                    "502" +
-                    ":" + typeRegistry.getType(Service.class) +
-                    ":" + service.getId() +
-                    ":" +
-                    ":" + masterIndexService.getMasterIndex(service) +
-                    ":1"
-		    ));
-        }
+			// TODO: remove this dirty hack
+			paymentPointHistoryGenerator.generateFor(paymentPoint);
+
+			registry.addContainer(new RegistryContainer(
+					"502" +
+					":" + typeRegistry.getType(PaymentPoint.class) +
+					":" + paymentPoint.getId() +
+					":" +
+					":" + masterIndexService.getMasterIndex(paymentPoint) +
+					":1"
+			));
+		}
+
+		// add identifiers sync containers of used services
+		List<Service> services = documentService.listPaymentsServices(stub(provider), stub(registerer), range);
+		log.debug("Services is used {} time(s)", services.size());
+		for (Service service : services) {
+
+			// TODO: remove this dirty hack
+			serviceHistoryGenerator.generateFor(service);
+
+			registry.addContainer(new RegistryContainer(
+					"502" +
+					":" + typeRegistry.getType(Service.class) +
+					":" + service.getId() +
+					":" +
+					":" + masterIndexService.getMasterIndex(service) +
+					":1"
+			));
+		}
 	}
 
 	private RegistryRecord buildRecord(Registry registry, Document document) throws FlexPayException {
@@ -225,9 +234,7 @@ public class PaymentsRegistryDBGeneratorImpl implements PaymentsRegistryDBGenera
 			throws FlexPayException {
 
 		RegistryRecordContainer container = new RegistryRecordContainer();
-		container.setData("52:" + document.getCreditorOrganization().getId() +
-						  ":" + document.getOperation().getId() +
-						  ":" + document.getOperation().getOperationSumm());
+		container.setData("50:" + document.getCreditorOrganization().getId());
 		record.addContainer(container);
 
 		// add payment point container
@@ -253,9 +260,9 @@ public class PaymentsRegistryDBGeneratorImpl implements PaymentsRegistryDBGenera
 			return null;
 		}
 
-		for (DocumentAddition documentAddition : document.getAdditions()) {
-			if (documentErcType.equals(documentAddition.getAdditionType())) {
-				return documentAddition;
+		for (DocumentAddition addition : document.getAdditions()) {
+			if (documentErcType.equals(addition.getAdditionType())) {
+				return addition;
 			}
 		}
 
@@ -268,44 +275,11 @@ public class PaymentsRegistryDBGeneratorImpl implements PaymentsRegistryDBGenera
 	}
 
 	@NotNull
-	private List<Document> getDocuments(
-			ServiceProvider serviceProvider, Organization registeredOrganization, DateRange range) {
+	private List<Document> getDocuments(ServiceProvider provider, Organization registerer, DateRange range) {
 
 		return documentService.listRegisteredPaymentDocuments(
-				stub(serviceProvider), stub(registeredOrganization), range);
+				stub(provider), stub(registerer), range);
 	}
-
-    @NotNull
-    private List<PaymentPoint> getUsingPaymentPoints(List<Document> documents) {
-        // Result list
-        List<PaymentPoint> paymentPoints = new ArrayList<PaymentPoint>();
-        // Using for compare
-        List<Stub<PaymentPoint>> paymentPointsStubs = new ArrayList<Stub<PaymentPoint>>();
-
-        for (Document document : documents) {
-            PaymentPoint paymentPoint = document.getOperation().getPaymentPoint();
-            if (paymentPoint != null) {
-                Stub<PaymentPoint> paymentPointStub = Stub.stub(paymentPoint);
-                if (!paymentPointsStubs.contains(paymentPointStub)) {
-                    paymentPointsStubs.add(paymentPointStub);
-                    paymentPoints.add(paymentPoint);
-                }
-            }
-        }
-        return paymentPoints;
-    }
-
-    @NotNull
-    private List<Service> getUsingServices(List<Document> documents) {
-        List<Service> services = new ArrayList<Service>();
-        for (Document document : documents) {
-            Service service = document.getService();
-            if (service != null && !services.contains(service)) {
-                services.add(service);
-            }
-        }
-        return services;
-    }
 
 	@Required
 	public void setRegistryService(RegistryService registryService) {
@@ -365,5 +339,15 @@ public class PaymentsRegistryDBGeneratorImpl implements PaymentsRegistryDBGenera
 	@Required
 	public void setOrganizationHistoryGenerator(OrganizationHistoryGenerator organizationHistoryGenerator) {
 		this.organizationHistoryGenerator = organizationHistoryGenerator;
+	}
+
+	@Required
+	public void setPaymentPointHistoryGenerator(PaymentPointHistoryGenerator paymentPointHistoryGenerator) {
+		this.paymentPointHistoryGenerator = paymentPointHistoryGenerator;
+	}
+
+	@Required
+	public void setServiceHistoryGenerator(ServiceHistoryGenerator serviceHistoryGenerator) {
+		this.serviceHistoryGenerator = serviceHistoryGenerator;
 	}
 }

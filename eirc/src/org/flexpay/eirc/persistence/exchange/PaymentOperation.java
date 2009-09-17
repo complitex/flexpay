@@ -91,7 +91,8 @@ public abstract class PaymentOperation extends ContainerOperation {
 			@Override
 			public void apply(DelayedUpdate update) {
                 // TODO check operation Id
-				if (update instanceof PaymentOperationDelayedUpdate && ((PaymentOperationDelayedUpdate)update).getOperationId().equals(getOperationId(context))) {
+				if (update instanceof PaymentOperationDelayedUpdate &&
+					((PaymentOperationDelayedUpdate)update).getOperationId().equals(getOperationId(context))) {
 					holder[0] = (PaymentOperationDelayedUpdate) update;
 				}
 			}
@@ -122,7 +123,8 @@ public abstract class PaymentOperation extends ContainerOperation {
 		return update;
 	}
 
-	private void setOperationType(ProcessingContext context, org.flexpay.payments.persistence.Operation operation) throws FlexPayException {
+	private void setOperationType(ProcessingContext context, org.flexpay.payments.persistence.Operation operation)
+			throws FlexPayException {
 
 		RegistryType type = context.getRegistry().getRegistryType();
 		if (type.isCashPayments()) {

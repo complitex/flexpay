@@ -14,7 +14,7 @@ import java.util.Date;
 public interface PaymentsRegistryDBGenerator {
 
 	@Nullable
-	Registry createDBRegistry(@NotNull ServiceProvider serviceProvider,
+	Registry createRegistry(@NotNull ServiceProvider serviceProvider,
 							  @NotNull Organization registerOrganization, @NotNull DateRange range)
 									 throws FlexPayException;
 }

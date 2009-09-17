@@ -22,6 +22,8 @@ import org.flexpay.eirc.service.importexport.RawConsumerData;
 import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.payments.persistence.EircRegistryProperties;
 import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
@@ -30,6 +32,7 @@ import java.util.List;
  */
 public class SetResponsiblePersonOperation extends AbstractChangePersonalAccountOperation {
 
+	private static final Logger log = LoggerFactory.getLogger(SetResponsiblePersonOperation.class);
 	private ServiceOperationsFactory factory;
 
 	public SetResponsiblePersonOperation(ServiceOperationsFactory factory, List<String> datum)

@@ -3,6 +3,8 @@ package org.flexpay.payments.dao;
 import org.flexpay.common.dao.GenericDao;
 import org.flexpay.common.persistence.DateRange;
 import org.flexpay.payments.persistence.Document;
+import org.flexpay.payments.persistence.Service;
+import org.flexpay.orgs.persistence.PaymentPoint;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Date;
@@ -23,7 +25,8 @@ public interface DocumentDao extends GenericDao<Document, Long> {
 	 * Returns list of documents with state REGISTERED and type CASH_PAYMENT which were created in time period for service
 	 * provider
 	 *
-	 * @param serviceProviderId
+	 * @param serviceProviderId  Provider key
+	 * @param registerOrganizationId Register organization key
 	 * @param range			  Date range
 	 * @param documentTypeCode   document type code
 	 * @param documentStatusCode document status code
@@ -31,6 +34,34 @@ public interface DocumentDao extends GenericDao<Document, Long> {
 	 */
 	List<Document> listPaymentDocumentsByServiceProvider(Long serviceProviderId, Long registerOrganizationId, DateRange range,
 														 int documentTypeCode, int documentStatusCode);
+
+	/**
+	 * Returns list of services for documents with state REGISTERED and type CASH_PAYMENT which were created in time period
+	 * for service provider
+	 *
+	 * @param serviceProviderId  Provider key
+	 * @param registerOrganizationId Register organization key
+	 * @param range			  Date range
+	 * @param documentTypeCode   document type code
+	 * @param documentStatusCode document status code
+	 * @return list of documents with state REGISTERED and type CASH_PAYMENT which were created in time period
+	 */
+	List<Service> listPaymentsServicesByServiceProvider(Long serviceProviderId, Long registerOrganizationId, DateRange range,
+														int documentTypeCode, int documentStatusCode);
+
+	/**
+	 * Returns list of payment points for documents with state REGISTERED and type CASH_PAYMENT which were created in time period
+	 * for service provider
+	 *
+	 * @param serviceProviderId  Provider key
+	 * @param registerOrganizationId Register organization key
+	 * @param range			  Date range
+	 * @param documentTypeCode   document type code
+	 * @param documentStatusCode document status code
+	 * @return list of documents with state REGISTERED and type CASH_PAYMENT which were created in time period
+	 */
+	List<PaymentPoint> listPaymentsPointsByServiceProvider(Long serviceProviderId, Long registerOrganizationId, DateRange range,
+														int documentTypeCode, int documentStatusCode);
 
 	/**
 	 * Returns summ of payments for service in the cashbox for the period

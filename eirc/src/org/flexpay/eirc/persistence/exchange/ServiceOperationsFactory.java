@@ -19,6 +19,7 @@ import org.flexpay.payments.service.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
+import org.apache.commons.lang.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -73,7 +74,7 @@ public class ServiceOperationsFactory {
 		// get a list of operations
 		List<Operation> operations = new ArrayList<Operation>();
 		for (RegistryRecordContainer container : containers) {
-			if (container == null) {
+			if (container == null || StringUtils.isEmpty(container.getData())) {
 				continue;
 			}
 			Operation operation = fromSingleContainerData(registry, container.getData());
@@ -106,14 +107,18 @@ public class ServiceOperationsFactory {
 	public Operation getContainerOperation(Registry registry) throws InvalidContainerException {
 
 		if (registry.getContainers().isEmpty()) {
+			log.debug("No registry containers found");
 			return new NoneOperation();
 		}
 
 		List<RegistryContainer> containers = registry.getContainers();
 		List<Operation> operations = new ArrayList<Operation>();
-		for (RegistryContainer containerData : containers) {
-			Operation container = fromSingleContainerData(registry, containerData.getData());
-			operations.add(container);
+		for (RegistryContainer container : containers) {
+			if (container == null || StringUtils.isEmpty(container.getData())) {
+				continue;
+			}
+			Operation operation = fromSingleContainerData(registry, container.getData());
+			operations.add(operation);
 		}
 
 		return operations.size() > 1 ? new OperationsChain(operations) : operations.get(0);
@@ -121,6 +126,7 @@ public class ServiceOperationsFactory {
 
 	private Operation fromSingleContainerData(Registry registry, String containerData)
 			throws InvalidContainerException {
+
 		List<String> datum = splitEscapableData(containerData, Operation.CONTAINER_DATA_DELIMITER);
 		if (datum.size() < 2) {
 			throw new InvalidContainerException("Invalid container data: " + containerData);
@@ -175,8 +181,7 @@ public class ServiceOperationsFactory {
 				checkContainer(registry, "Simple payment", RegistryType.TYPE_CASH_PAYMENTS);
 				return new SimplePaymentOperation(this, datum);
 			case 52:
-				checkContainer(registry, "Bank payment", RegistryType.TYPE_CASH_PAYMENTS);
-				return new BankPaymentOperation(this, datum);
+				throw new InvalidContainerException("Bank payments container is outgoing, should not be processed");
 
 			// General info
 			case 100:
@@ -187,7 +192,7 @@ public class ServiceOperationsFactory {
 			case 502:
 				return new ObjectIdentifierSyncOperation(this, datum);
             case 503:
-                return new NumberInstanceIdOperation(this, datum);
+                return new InstanceIdOperation(datum);
 		}
 
 		throw new InvalidContainerException("Unknown container type: " +

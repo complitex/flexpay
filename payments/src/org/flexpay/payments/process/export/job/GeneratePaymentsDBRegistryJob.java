@@ -42,7 +42,7 @@ public class GeneratePaymentsDBRegistryJob extends Job {
 		Date lastProcessedDate = getLastProcessedDate(parameters);
 
 		DateRange range = new DateRange(lastProcessedDateOldValue, lastProcessedDate);
-		Registry registry = paymentsRegistryDBGenerator.createDBRegistry(
+		Registry registry = paymentsRegistryDBGenerator.createRegistry(
 				serviceProvider, registeredOrganization, range);
 		parameters.put(LAST_PROCESSED_DATE, String.valueOf(lastProcessedDate.getTime()));
 

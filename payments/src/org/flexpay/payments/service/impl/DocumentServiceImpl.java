@@ -1,17 +1,14 @@
 package org.flexpay.payments.service.impl;
 
-import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.DateRange;
+import org.flexpay.common.persistence.Stub;
 import org.flexpay.orgs.persistence.Cashbox;
 import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.orgs.persistence.PaymentPoint;
 import org.flexpay.orgs.persistence.ServiceProvider;
 import org.flexpay.payments.dao.DocumentDao;
 import org.flexpay.payments.dao.DocumentDaoExt;
-import org.flexpay.payments.persistence.Document;
-import org.flexpay.payments.persistence.Operation;
-import org.flexpay.payments.persistence.DocumentType;
-import org.flexpay.payments.persistence.DocumentStatus;
+import org.flexpay.payments.persistence.*;
 import org.flexpay.payments.service.DocumentService;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -100,7 +97,30 @@ public class DocumentServiceImpl implements DocumentService {
 	 */
 	public List<Document> listRegisteredPaymentDocuments(
 			@NotNull Stub<ServiceProvider> providerStub, @NotNull Stub<Organization> orgStub, @NotNull DateRange range) {
+
 		return documentDao.listPaymentDocumentsByServiceProvider(
+				providerStub.getId(), orgStub.getId(), range, DocumentType.CASH_PAYMENT, DocumentStatus.REGISTERED);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public List<Service> listPaymentsServices(@NotNull Stub<ServiceProvider> providerStub,
+											  @NotNull Stub<Organization> orgStub, @NotNull DateRange range) {
+
+		return documentDao.listPaymentsServicesByServiceProvider(
+				providerStub.getId(), orgStub.getId(), range, DocumentType.CASH_PAYMENT, DocumentStatus.REGISTERED);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public List<PaymentPoint> listPaymentsPoints(@NotNull Stub<ServiceProvider> providerStub,
+											@NotNull Stub<Organization> orgStub, @NotNull DateRange range) {
+
+		return documentDao.listPaymentsPointsByServiceProvider(
 				providerStub.getId(), orgStub.getId(), range, DocumentType.CASH_PAYMENT, DocumentStatus.REGISTERED);
 	}
 

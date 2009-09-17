@@ -2,6 +2,7 @@ package org.flexpay.common.persistence.registry.workflow;
 
 import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.persistence.registry.RegistryStatus;
+import org.flexpay.common.persistence.ImportError;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -43,6 +44,17 @@ public interface RegistryWorkflowManager {
 	 *          if error transition is not allowed
 	 */
 	void setNextErrorStatus(Registry registry) throws TransitionNotAllowed;
+
+
+	/**
+	 * Set next error registry record status and setup error
+	 *
+	 * @param registry Registry to update
+	 * @param error  ImportError
+	 * @throws org.flexpay.common.persistence.registry.workflow.TransitionNotAllowed
+	 *          if error transition is not allowed
+	 */
+	void setNextErrorStatus(Registry registry, ImportError error) throws TransitionNotAllowed;
 
 	/**
 	 * Set next success registry status

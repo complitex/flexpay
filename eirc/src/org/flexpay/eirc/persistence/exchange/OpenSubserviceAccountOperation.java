@@ -24,6 +24,8 @@ import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.payments.persistence.EircRegistryProperties;
 import org.flexpay.payments.persistence.Service;
 import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -37,6 +39,7 @@ import java.util.List;
  */
 public class OpenSubserviceAccountOperation extends ContainerOperation {
 
+	private static final Logger log = LoggerFactory.getLogger(OpenSubserviceAccountOperation.class);
 	private ServiceOperationsFactory factory;
 
 	private Date changeApplyingDate;

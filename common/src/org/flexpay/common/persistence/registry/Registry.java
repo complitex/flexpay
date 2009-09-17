@@ -4,6 +4,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.persistence.ImportError;
 import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.util.CollectionUtils;
 
@@ -30,7 +31,9 @@ public class Registry extends DomainObject {
 	private RegistryProperties properties;
 
 	private List<RegistryContainer> containers = CollectionUtils.list();
-    private Map<RegistryFPFileType, FPFile> files = new HashMap<RegistryFPFileType, FPFile>();
+    private Map<RegistryFPFileType, FPFile> files = CollectionUtils.map();
+
+	private ImportError importError;
 
 	private int errorsNumber;
 
@@ -154,7 +157,15 @@ public class Registry extends DomainObject {
         this.files = files;
     }
 
-    public int getErrorsNumber() {
+	public ImportError getImportError() {
+		return importError;
+	}
+
+	public void setImportError(ImportError importError) {
+		this.importError = importError;
+	}
+
+	public int getErrorsNumber() {
 		return errorsNumber;
 	}
 

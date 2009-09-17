@@ -5,15 +5,10 @@ import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.persistence.registry.RegistryRecord;
 import org.flexpay.common.persistence.registry.RegistryRecordContainer;
-import org.flexpay.common.service.FPFileService;
-import org.flexpay.common.service.RegistryRecordService;
-import org.flexpay.common.service.RegistryService;
-import org.flexpay.common.util.FPFileUtil;
 import org.flexpay.common.util.RegistryUtil;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Required;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

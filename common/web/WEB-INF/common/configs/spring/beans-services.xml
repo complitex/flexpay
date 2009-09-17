@@ -110,6 +110,7 @@
 
 	<bean id="registryWorkflowManager"
 		  class="org.flexpay.common.persistence.registry.workflow.RegistryWorkflowManagerImpl"
+		  p:errorDao-ref="importErrorDao"
 		  p:registryDao-ref="spRegistryDao"
 		  p:registryDaoExt-ref="registryDaoExt"
 		  p:statusService-ref="registryStatusService" />

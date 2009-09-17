@@ -19,7 +19,6 @@ import org.flexpay.payments.test.PaymentsSpringBeanAwareTestCase;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.Date;
 import java.util.List;
 
 public class TestPaymentsRegistryDBGenerator extends PaymentsSpringBeanAwareTestCase {
@@ -42,11 +41,11 @@ public class TestPaymentsRegistryDBGenerator extends PaymentsSpringBeanAwareTest
 		assertNotNull("Service provider not found", serviceProvider);
 
 		DateRange range1 = new DateRange(DateUtil.parseDate("1900-01-01"), DateUtil.parseDate("1920-01-01"));
-		Registry registry = paymentsRegistryDBGenerator.createDBRegistry(serviceProvider, registerOrganization, range1);
+		Registry registry = paymentsRegistryDBGenerator.createRegistry(serviceProvider, registerOrganization, range1);
 		assertNull("Registry generation should do nothing", registry);
 
 		DateRange range2 = new DateRange(DateUtil.parseDate("1900-01-01"), DateUtil.parseDate("2100-12-31"));
-		registry = paymentsRegistryDBGenerator.createDBRegistry(serviceProvider, registerOrganization, range2);
+		registry = paymentsRegistryDBGenerator.createRegistry(serviceProvider, registerOrganization, range2);
 		assertNotNull("Registry generation failed", registry);
 
 		Page<RegistryRecord> page = new Page<RegistryRecord>(20);
