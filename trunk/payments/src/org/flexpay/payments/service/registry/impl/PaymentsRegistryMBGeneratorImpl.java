@@ -1,8 +1,8 @@
 package org.flexpay.payments.service.registry.impl;
 
+import org.apache.commons.lang.StringUtils;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
-import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.persistence.filter.ImportErrorTypeFilter;
 import org.flexpay.common.persistence.filter.RegistryRecordStatusFilter;
@@ -16,8 +16,9 @@ import org.flexpay.common.service.RegistryService;
 import org.flexpay.common.service.RegistryStatusService;
 import org.flexpay.common.util.FPFileUtil;
 import org.flexpay.orgs.persistence.Organization;
-import org.flexpay.payments.persistence.ServiceType;
-import org.flexpay.payments.service.ServiceTypeService;
+import org.flexpay.payments.persistence.EircRegistryProperties;
+import org.flexpay.payments.persistence.Service;
+import org.flexpay.payments.service.SPService;
 import org.flexpay.payments.service.registry.PaymentsRegistryMBGenerator;
 import org.flexpay.payments.service.registry.RegistryWriter;
 import org.flexpay.payments.util.ServiceTypesMapper;
@@ -31,7 +32,6 @@ import java.io.BufferedInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.security.Signature;
 import java.security.SignatureException;
 import java.text.SimpleDateFormat;
@@ -102,19 +102,21 @@ public class PaymentsRegistryMBGeneratorImpl implements PaymentsRegistryMBGenera
 	private RegistryRecordService registryRecordService;
 	private FPFileService fpFileService;
 	private ServiceTypesMapper serviceTypesMapper;
-	private ServiceTypeService serviceTypeService;
+	private SPService spService;
 
 	private Signature signature = null;
 
 	/**
-     * Export DB registry to MB registry file.
-     *
-     * @param registry DB registry
-     * @param file MB registry
-     * @param organization Service provider organization
-     * @throws FlexPayException
-     */
-	public void exportToMegaBank(@NotNull Registry registry, @NotNull FPFile file, @NotNull Organization organization) throws FlexPayException {
+	 * Export DB registry to MB registry file.
+	 *
+	 * @param registry	 DB registry
+	 * @param file		 MB registry
+	 * @param organization Service provider organization
+	 * @throws FlexPayException
+	 */
+	public void exportToMegaBank(@NotNull Registry registry, @NotNull FPFile file, @NotNull Organization organization)
+			throws FlexPayException {
+
 		RegistryWriter rg = null;
 		try {
 			FPFile tmpFile = new FPFile();
@@ -131,7 +133,8 @@ public class PaymentsRegistryMBGeneratorImpl implements PaymentsRegistryMBGenera
 			// заголовочные строки
 			log.info("Write header lines");
 			rg.writeLine("\tРеестр поступивших платежей. Мемориальный ордер №" + registry.getId());
-			rg.writeLine("\tДля \"" + organization.getName(getLocation()) + "\". День распределения платежей " + dateFormat.format(new Date()) + ".");
+			rg.writeLine("\tДля \"" + organization.getName(getLocation()) + "\". День распределения платежей " +
+						 dateFormat.format(new Date()) + ".");
 			rg.writeCharToLine(' ', 128);
 			rg.writeCharToLine(' ', 128);
 			BigDecimal amount = registry.getAmount();
@@ -139,7 +142,8 @@ public class PaymentsRegistryMBGeneratorImpl implements PaymentsRegistryMBGenera
 				amount = new BigDecimal(0);
 			}
 
-			rg.writeLine("\tВсего " + (amount.multiply(new BigDecimal("100")).intValue()) + " коп. Суммы указаны в копейках. Всего строк " + registry.getRecordsNumber());
+			rg.writeLine("\tВсего " + (amount.multiply(new BigDecimal("100")).intValue()) +
+						 " коп. Суммы указаны в копейках. Всего строк " + registry.getRecordsNumber());
 			rg.writeCharToLine(' ', 128);
 
 			// шапка таблицы
@@ -169,7 +173,7 @@ public class PaymentsRegistryMBGeneratorImpl implements PaymentsRegistryMBGenera
 				int k = 0;
 				try {
 					for (RegistryRecord registryRecord : registryRecords) {
-						String[] infoLine = createInfoLine(registryRecord);
+						String[] infoLine = createInfoLine(registry, registryRecord);
 						rg.writeLine(infoLine);
 						log.info("Wrote line " + String.valueOf(++i));
 						if (++k >= FLASH_FILE) {
@@ -232,7 +236,7 @@ public class PaymentsRegistryMBGeneratorImpl implements PaymentsRegistryMBGenera
 	}
 
 	@NotNull
-	private String[] createInfoLine(@NotNull RegistryRecord record) throws FlexPayException {
+	private String[] createInfoLine(Registry registry, @NotNull RegistryRecord record) throws FlexPayException {
 		List<String> infoLine = new ArrayList<String>();
 		//граница таблицы
 		infoLine.add(createCellData("", 0, ' '));
@@ -288,23 +292,19 @@ public class PaymentsRegistryMBGeneratorImpl implements PaymentsRegistryMBGenera
 		infoLine.add(createCellData(record.getApartmentNum(), tableHeader[7].length(), ' '));
 
 		// услуга
-		// TODO: WTF
 		String serviceCode = record.getServiceCode();
 		if (serviceCode == null) {
 			throw new FlexPayException("Registry record`s service code is null. Registry record Id: " + record.getId());
 		}
-		if (serviceCode.startsWith("#")) {
-			int innerServiceCode = Integer.parseInt(serviceCode.substring(1));
-            log.debug("Inner service code {}, service code {}", new Object[]{innerServiceCode, serviceCode});
-			ServiceType serviceType = serviceTypeService.getServiceType(innerServiceCode);
-			serviceCode = serviceTypesMapper.getMegabankCode(Stub.stub(serviceType));
-			if (serviceCode == null) {
-				throw new FlexPayException("Can not find MB service code. Service : " + serviceType + ", registry record Id: " + record.getId());
-			}
+		EircRegistryProperties props = (EircRegistryProperties) registry.getProperties();
+		Service srv = spService.findService(props.getServiceProviderStub(), serviceCode);
+		serviceCode = serviceTypesMapper.getMegabankCode(srv.serviceTypeStub());
+		if (serviceCode == null) {
+			throw new FlexPayException("Can not find MB service code. Service type: " + srv.serviceTypeStub() +
+									   ", registry record Id: " + record.getId());
 		}
-		while (serviceCode.length() < 2) {
-			serviceCode = "0" + serviceCode;
-		}
+		serviceCode = StringUtils.leftPad(serviceCode, 2, '0');
+
 		String service = serviceCode + "." + serviceNames.get(serviceCode) + " " + "*";
 		infoLine.add(createCellData(service, tableHeader[8].length(), ' '));
 
@@ -425,8 +425,7 @@ public class PaymentsRegistryMBGeneratorImpl implements PaymentsRegistryMBGenera
 	}
 
 	@Required
-	public void setServiceTypeService(ServiceTypeService serviceTypeService) {
-		this.serviceTypeService = serviceTypeService;
+	public void setSpService(SPService spService) {
+		this.spService = spService;
 	}
-
 }

@@ -1,26 +1,27 @@
 package org.flexpay.payments.export;
 
 import static junit.framework.Assert.*;
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringUtils;
+import org.flexpay.ab.persistence.filters.ImportErrorTypeFilter;
+import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Language;
 import org.flexpay.common.persistence.ObjectWithStatus;
 import org.flexpay.common.persistence.Stub;
-import org.flexpay.common.persistence.filter.RegistryRecordStatusFilter;
 import org.flexpay.common.persistence.file.FPFile;
+import org.flexpay.common.persistence.filter.RegistryRecordStatusFilter;
 import org.flexpay.common.persistence.registry.PropertiesFactory;
 import org.flexpay.common.persistence.registry.Registry;
-import org.flexpay.common.persistence.registry.RegistryRecord;
 import org.flexpay.common.persistence.registry.RegistryFPFileType;
+import org.flexpay.common.persistence.registry.RegistryRecord;
 import org.flexpay.common.process.ProcessManager;
-import org.flexpay.common.process.exception.ProcessDefinitionException;
-import org.flexpay.common.process.exception.ProcessInstanceException;
 import org.flexpay.common.service.*;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.DateUtil;
 import org.flexpay.common.util.config.ApplicationConfig;
 import org.flexpay.common.util.io.ReaderCallback;
-import org.flexpay.common.dao.paging.Page;
 import org.flexpay.orgs.persistence.*;
 import org.flexpay.orgs.service.*;
 import org.flexpay.payments.persistence.*;
@@ -28,39 +29,44 @@ import org.flexpay.payments.process.export.GeneratePaymentsRegistry;
 import org.flexpay.payments.process.export.job.ExportJobParameterNames;
 import org.flexpay.payments.service.*;
 import org.flexpay.payments.test.PaymentsSpringBeanAwareTestCase;
-import org.flexpay.ab.persistence.filters.ImportErrorTypeFilter;
+import org.jetbrains.annotations.Nullable;
 import org.junit.Before;
 import org.junit.Test;
 import org.quartz.JobExecutionContext;
-import org.quartz.SchedulerException;
 import org.quartz.impl.StdScheduler;
 import org.quartz.impl.calendar.BaseCalendar;
 import org.quartz.spi.TriggerFiredBundle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.scheduling.quartz.CronTriggerBean;
-import org.jetbrains.annotations.Nullable;
 
 import javax.annotation.Resource;
 import java.io.*;
 import java.math.BigDecimal;
-import java.util.*;
-import java.security.*;
-import java.security.spec.InvalidKeySpecException;
+import java.security.KeyFactory;
+import java.security.PublicKey;
+import java.security.Signature;
+import java.security.SignatureException;
 import java.security.spec.X509EncodedKeySpec;
+import java.util.Date;
+import java.util.List;
+import java.util.Set;
 
 public class TestGeneratePaymentsRegistry extends PaymentsSpringBeanAwareTestCase {
 
 	private static final String FILE_ENCODING = "cp866";
-    private static final int BUFFER_SIZE = 1024;
+	private static final int BUFFER_SIZE = 1024;
 
-	//    @Resource(name = "processManager")
+	private static final long N_SERVICE_ROWS = 2;
+	private static final long N_HEAD_ROWS = 8;
+
+	private static final String SERVICE_LINE = StringUtils.repeat("_", 128);
+
 	@Autowired
-	private ProcessManager tProcessManager;
-
-	@Resource (name = "serviceProviderService")
+	private ProcessManager processManager;
+	@Autowired
 	private ServiceProviderService tProviderService;
-	@Resource (name = "serviceProviderServiceAttribute")
+	@Autowired
 	private ServiceProviderAttributeService tProviderAttributeService;
 
 	@Resource (name = "schedulerFactoryBeanRegistry")
@@ -69,13 +75,12 @@ public class TestGeneratePaymentsRegistry extends PaymentsSpringBeanAwareTestCas
 	@Resource (name = "jobTradingDayTrigger")
 	private CronTriggerBean tJobTradingDayTrigger;
 
-	@Resource (name = "languageService")
-	private LanguageService tLanguageService;
+	@Autowired
+	private LanguageService languageService;
 
 	@Autowired
 	private OperationService operationService;
 	@Autowired
-	//@Qualifier("organizationService")
 	private OrganizationService organizationService;
 	@Autowired
 	private OperationTypeService operationTypeService;
@@ -119,21 +124,19 @@ public class TestGeneratePaymentsRegistry extends PaymentsSpringBeanAwareTestCas
 	private RegistryRecordStatusService registryRecordStatusService;
 	@Autowired
 	private PropertiesFactory propertiesFactory;
-    @Autowired
-    @Qualifier("registryFPFileTypeService")
-    private RegistryFPFileTypeService registryFPFileTypeService;
+	@Autowired
+	@Qualifier ("registryFPFileTypeService")
+	private RegistryFPFileTypeService registryFPFileTypeService;
 
 	private ServiceProvider serviceProvider;
 	private Organization registerOrganization;
-
-	private List<Operation> operations = new ArrayList<Operation>();
 
 	private static final String TEST_USER = "test-user";
 
 	@Before
 	public void startUp() throws FlexPayExceptionContainer, FlexPayException {
 
-		List<Language> langList = tLanguageService.getLanguages();
+		List<Language> langList = languageService.getLanguages();
 		assertNotSame(0, langList.size());
 		Language lang = null;
 		for (Language language : langList) {
@@ -246,8 +249,6 @@ public class TestGeneratePaymentsRegistry extends PaymentsSpringBeanAwareTestCas
 		creationDate = DateUtil.previous(creationDate);
 		operation.setCreationDate(creationDate);
 
-		operations.add(operation);
-
 		//get document type
 		DocumentType documentType = documentTypeService.read(DocumentType.CASH_PAYMENT);
 		//get document status
@@ -307,9 +308,7 @@ public class TestGeneratePaymentsRegistry extends PaymentsSpringBeanAwareTestCas
 		document.setBuildingBulk("1234567890");
 		document.setApartmentNumber("1");
 
-		if (documentType != null) {
-			document.setDocumentType(documentType);
-		}
+		document.setDocumentType(documentType);
 		document.setOperation(operation);
 		documentService.create(document);
 
@@ -335,100 +334,114 @@ public class TestGeneratePaymentsRegistry extends PaymentsSpringBeanAwareTestCas
 		document.setBuildingBulk("1234567890");
 		document.setApartmentNumber("1");
 
-		if (documentType != null) {
-			document.setDocumentType(documentType);
-		}
+		document.setDocumentType(documentType);
 		document.setOperation(operation);
 		documentService.create(document);
 		documents.add(document);
 
 		operation.setDocuments(documents);
 		operationService.update(operation);
-
 	}
 
 	@Test
-	public void testStartTradingDay() throws ProcessInstanceException, ProcessDefinitionException, InterruptedException, SchedulerException, IOException, InvalidKeyException, NoSuchAlgorithmException, InvalidKeySpecException {
+	public void testStartTradingDay() throws Exception {
+
 		GeneratePaymentsRegistry jobScheduler = new GeneratePaymentsRegistry();
-		jobScheduler.setProcessManager(tProcessManager);
+		jobScheduler.setProcessManager(processManager);
 		jobScheduler.setProviderService(tProviderService);
 		jobScheduler.setServiceProviderAttributeService(tProviderAttributeService);
 		jobScheduler.setPrivateKey("WEB-INF/payments/configs/keys/secret.key");
 
 		BaseCalendar calendar = new BaseCalendar();
 
-		TriggerFiredBundle fireBundle = new TriggerFiredBundle(tJobTradingDayTrigger.getJobDetail(), tJobTradingDayTrigger, calendar,
+		TriggerFiredBundle fireBundle = new TriggerFiredBundle(
+				tJobTradingDayTrigger.getJobDetail(), tJobTradingDayTrigger, calendar,
 				false, null, null, null, null);
-		JobExecutionContext schedulerContext = new JobExecutionContext(tSchedulerFactoryBeanRegistry, fireBundle, jobScheduler);
+		JobExecutionContext schedulerContext = new JobExecutionContext(
+				tSchedulerFactoryBeanRegistry, fireBundle, jobScheduler);
 		log.debug("start jobScheduler");
 		jobScheduler.execute(schedulerContext);
 		log.debug("finish jobScheduler");
 
-        List<Long> registries = (List<Long>)schedulerContext.getMergedJobDataMap().get(ExportJobParameterNames.REGISTRIES);
-        assertNotNull(registries);
+		@SuppressWarnings ({"unchecked"})
+		List<Long> registries = (List<Long>) schedulerContext
+				.getMergedJobDataMap().get(ExportJobParameterNames.REGISTRIES);
+		assertNotNull(registries);
+		assertFalse("Parameters should contain at least 1 registry", registries.isEmpty());
 
-        assertTrue("Parameters map must content 1 registry", registries.size() > 0);
+		RegistryFPFileType mbFormat = registryFPFileTypeService.findByCode(RegistryFPFileType.MB_FORMAT);
+		assertNotNull("Registry file MB format not found", mbFormat);
 
-        RegistryFPFileType mbFormat = registryFPFileTypeService.findByCode(RegistryFPFileType.MB_FORMAT);
-        assertNotNull("Registry file MB format not found", mbFormat);
+		RegistryFPFileType fpFormat = registryFPFileTypeService.findByCode(RegistryFPFileType.FP_FORMAT);
+		assertNotNull("Registry file FP format not found", fpFormat);
 
-        RegistryFPFileType fpFormat = registryFPFileTypeService.findByCode(RegistryFPFileType.FP_FORMAT);
-        assertNotNull("Registry file FP format not found", fpFormat);
+		Registry registry = null;
+		int i = 0;
+		for (Long registryId : registries) {
+			Registry tmpRegistry = registryService.read(new Stub<Registry>(registryId));
+			assertNotNull("Registry with id=" + registryId + " not found", tmpRegistry);
+			if (tmpRegistry.getRecipientCode().equals(serviceProvider.getOrganization().getId())
+				&& tmpRegistry.getSenderCode().equals(registerOrganization.getId())) {
+				registry = tmpRegistry;
+				i++;
+			}
+		}
+		assertEquals("Need one tested registry", 1, i);
+		assertNotNull("No registry", registry);
 
-        Registry registry = null;
-        int i = 0;
-        for (Long registryId : registries) {
-            Registry tmpRegistry = registryService.read(new Stub<Registry>(registryId));
-            assertNotNull("Registry with id=" + registryId + " not found", tmpRegistry);
-            if (tmpRegistry.getRecipientCode().equals(serviceProvider.getOrganization().getId()) && tmpRegistry.getSenderCode().equals(registerOrganization.getId())) {
-                registry = tmpRegistry;
-                i++;
-            }
-        }
-        assertEquals("Need one tested registry", 1, i);
+		// assert registry data
+		assertEquals(2, registry.getRecordsNumber().intValue());
+		assertEquals(303, registry.getAmount().intValue());
+		List<RegistryRecord> records = registryRecordService.listRecords(registry,
+				new ImportErrorTypeFilter(),
+				new RegistryRecordStatusFilter(),
+				new Page<RegistryRecord>(20));
+		assertEquals("Registry does not contain 2 records", 2, records.size());
 
-        // assert registry data
-        assertEquals(2, registry.getRecordsNumber().intValue());
-        assertEquals(303, registry.getAmount().intValue());
-        List<RegistryRecord> records = registryRecordService.listRecords(registry,
-                new ImportErrorTypeFilter(),
-                new RegistryRecordStatusFilter(),
-                new Page<RegistryRecord>(20));
-        assertEquals("Registry does not content 2 records", 2, records.size());
+		// assert count files
+		assertEquals("Registry does not contain 2 files", 2, registry.getFiles().size());
 
-        // assert count files
-        assertEquals("Registry does not content 2 files", 2, registry.getFiles().size());
+		// assert MB File
+		FPFile registryMBFile = registry.getFiles().get(mbFormat);
+		assertNotNull("MB file not found for registry id=" + registry.getId(), registryMBFile);
+		registryMBFile = fpFileService.read(Stub.stub(registryMBFile));
 
-        // assert MB File
-        FPFile registryMBFile = registry.getFiles().get(mbFormat);
-        assertNotNull("MB file not found for registry id=" + registry.getId(), registryMBFile);
-        registryMBFile = fpFileService.read(Stub.stub(registryMBFile));
+		System.out.println("MBFile: " + registryMBFile);
+		assertDigitalSignature(registryMBFile, "WEB-INF/payments/configs/keys/public.key");
+		assertTotalCountLine(registryMBFile, N_SERVICE_ROWS + N_HEAD_ROWS + registry.getRecordsNumber());
+		assertRecordCountLine(registryMBFile, 2);
+		fpFileService.deleteFromFileSystem(registryMBFile);
 
-        assertDigitalSignature(registryMBFile, "WEB-INF/payments/configs/keys/public.key");
-        assertTotalCountLine(registryMBFile, 14);
-        assertRecordCountLine(registryMBFile, 2);
-        fpFileService.deleteFromFileSystem(registryMBFile);
-
-        // assert FP File
-        FPFile registryFPFile = registry.getFiles().get(fpFormat);
-        assertNotNull("FP file not found for registry id=" + registry.getId(), registryFPFile);
-        registryFPFile = fpFileService.read(Stub.stub(registryFPFile));
-        assertTrue("FP file nullable", registryFPFile.getSize() > 0);
-        fpFileService.deleteFromFileSystem(registryFPFile);
-
-//        registryService.delete(registry);
+		// assert FP File
+		FPFile registryFPFile = registry.getFiles().get(fpFormat);
+		assertNotNull("FP file not found for registry id=" + registry.getId(), registryFPFile);
+		registryFPFile = fpFileService.read(Stub.stub(registryFPFile));
+		assertTrue("FP file nullable", registryFPFile.getSize() > 0);
+		fpFileService.deleteFromFileSystem(registryFPFile);
 	}
 
-	private static void assertTotalCountLine(FPFile file, final int n) throws IOException {
+	private static void assertTotalCountLine(FPFile file, final long n) throws IOException {
 		file.withReader(FILE_ENCODING, new ReaderCallback() {
 			public void read(Reader r) throws IOException {
 				@SuppressWarnings ({"IOResourceOpenedButNotSafelyClosed"})
 				BufferedReader reader = new BufferedReader(r);
-				int i = 0;
+
+				assertEquals("Service line expected", SERVICE_LINE, reader.readLine());
+				String line;
+				boolean secondServiceLineFound = false;
+				while ((line = reader.readLine()) != null) {
+					if (SERVICE_LINE.equals(line)) {
+						secondServiceLineFound = true;
+						break;
+					}
+				}
+				assertTrue("Second service line not found", secondServiceLineFound);
+
+				long i = N_SERVICE_ROWS;
 				while (reader.readLine() != null) {
 					i++;
 				}
-				assertEquals(n, i);
+				assertEquals("Invalid lines number", n, i);
 			}
 		});
 	}
@@ -449,126 +462,70 @@ public class TestGeneratePaymentsRegistry extends PaymentsSpringBeanAwareTestCas
 						i++;
 					}
 				}
-				assertEquals(n, i);
+				assertEquals("Invalid records lines number", n, i);
 			}
 		});
 	}
 
-
-	private static void assertDigitalSignatureCountLine(FPFile file, final int n) throws IOException {
+	private static void assertDigitalSignature(FPFile file, String key) throws Exception {
+		final Signature sign = readPublicSignature(key);
 		file.withReader(FILE_ENCODING, new ReaderCallback() {
 			public void read(Reader r) throws IOException {
 				@SuppressWarnings ({"IOResourceOpenedButNotSafelyClosed"})
 				BufferedReader reader = new BufferedReader(r);
-				int i = 0;
+
+				StringBuilder signature = new StringBuilder();
 				String line;
-				boolean startSignature = false;
+				boolean signatureNotEmpty = false;
 				while ((line = reader.readLine()) != null) {
-					if (line.startsWith("______")) {
-						if (startSignature) {
-							assertEquals(n, i);
-							return;
-						} else {
-							startSignature = true;
-						}
-					} else if (startSignature) {
-						i++;
+					if (SERVICE_LINE.equals(line)) {
+						break;
 					}
+					if (line.length() > 0) {
+						if (signatureNotEmpty) {
+							signature.append("\n");
+						}
+						signature.append(line);
+						signatureNotEmpty = true;
+					}
+				}
+
+				try {
+					while ((line = reader.readLine()) != null) {
+						line = line + "\n";
+						sign.update(line.getBytes(FILE_ENCODING));
+					}
+					assertTrue("Digital signature failed", sign.verify(signature.toString().getBytes(FILE_ENCODING)));
+				} catch (SignatureException ex) {
+					throw new RuntimeException(ex);
 				}
 			}
 		});
 	}
 
-    private static void assertDigitalSignature(FPFile file, String key) throws IOException, InvalidKeyException, InvalidKeySpecException, NoSuchAlgorithmException {
-        final Signature sign = readPublicSignature(key);
-		file.withReader(FILE_ENCODING, new ReaderCallback() {
-			public void read(Reader r) throws IOException {
-				@SuppressWarnings ({"IOResourceOpenedButNotSafelyClosed"})
-				BufferedReader reader = new BufferedReader(r);
+	private static Signature readPublicSignature(String key) throws Exception {
+		KeyFactory keyFactory = KeyFactory.getInstance("RSA");
 
-				String line;
-				int startSignature = -1;
-                String signature = "";
-                int i = 0;
-                int fileSize = 0;
-                try {
-                    while ((line = reader.readLine()) != null) {
-                        System.out.print(++i + ":");
-                        if (line.startsWith("_____") && startSignature <= 0) {
-                            startSignature++;
-                            System.out.println("startSignature=" + startSignature);
-                        } else if (startSignature == 0 && line.length() > 0) {
-                            if (signature.length() > 0) {
-                                line = "\n" + line;
-                            }
-                            signature += line;
-                            System.out.println();
-                        } else if (startSignature > 0) {
-                            line = line + "\n";
-                            fileSize += line.getBytes(FILE_ENCODING).length;
-                            sign.update(line.getBytes(FILE_ENCODING));
-                            System.out.print(line);
-                        }
-                    }
-                    System.out.println("signature:" + signature);
-                    System.out.println("signature length:" + signature.getBytes(FILE_ENCODING).length);
-                    System.out.println("file size:" + fileSize);
-                    assertTrue("Assert verify file", sign.verify(signature.getBytes(FILE_ENCODING)));
-                } catch (SignatureException ex) {
-                    assertTrue(ex.getMessage(), false);
-                }
-			}
-		});
+		byte[] pubKeyBytes = getDataFile(key);
+
+		// decode public key
+		X509EncodedKeySpec pubSpec = new X509EncodedKeySpec(pubKeyBytes);
+		PublicKey pubKey = keyFactory.generatePublic(pubSpec);
+
+		Signature instance = Signature.getInstance("SHA1withRSA");
+		instance.initVerify(pubKey);
+		return instance;
 	}
 
-    private static Signature readPublicSignature(String key) throws NoSuchAlgorithmException, IOException, InvalidKeySpecException, InvalidKeyException {
-        KeyFactory keyFactory = KeyFactory.getInstance("RSA");
+	@Nullable
+	private static byte[] getDataFile(String file) throws IOException {
+		InputStream is = ApplicationConfig.getResourceAsStream(file);
+		if (is == null) {
+			return null;
+		}
 
-        byte[] pubKeyBytes = getDataFile(key);
-
-        // decode public key
-        X509EncodedKeySpec pubSpec = new X509EncodedKeySpec(pubKeyBytes);
-        PublicKey pubKey = keyFactory.generatePublic(pubSpec);
-
-        Signature instance = Signature.getInstance("SHA1withRSA");
-        instance.initVerify(pubKey);
-        return instance;
-    }
-
-    @Nullable
-    private static byte[] getDataFile(String file) throws IOException {
-        InputStream is = ApplicationConfig.getResourceAsStream(file);
-        if (is == null) {
-            return null;
-        }
-        InputStream dis = new DataInputStream(is);
-        byte[] data = new byte[BUFFER_SIZE];
-        int off = 0;
-        int countRead;
-        while ((countRead = dis.read(data, off, BUFFER_SIZE)) > 0) {
-            off += countRead;
-            data = Arrays.copyOf(data, off + BUFFER_SIZE);
-        }
-        dis.close();
-        is.close();
-        return data;
-    }
-
-    private static byte[] getDataFile(InputStream is, int off, int len) throws IOException {
-        DataInputStream dis = new DataInputStream(is);
-        int curLen = BUFFER_SIZE;
-        if (len > 0 && curLen > len) {
-            curLen = len;
-        }
-        byte[] privKeyBytes = new byte[curLen];
-        int countRead;
-        while ((off < len || len < 0) && (countRead = dis.read(privKeyBytes, off, curLen)) > 0) {
-            off += countRead;
-            if (len > 0 && off + BUFFER_SIZE > len) {
-                curLen = len - off;
-            }
-            privKeyBytes = Arrays.copyOf(privKeyBytes, off + curLen);
-        }
-        return privKeyBytes;
-    }
+		ByteArrayOutputStream os = new ByteArrayOutputStream(BUFFER_SIZE);
+		IOUtils.copy(is, os);
+		return os.toByteArray();
+	}
 }

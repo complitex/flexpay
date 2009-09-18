@@ -47,5 +47,4 @@ public class EircRegistryProperties extends RegistryProperties {
 	public Stub<ServiceProvider> getServiceProviderStub() {
 		return stub(getServiceProvider());
 	}
-	
 }

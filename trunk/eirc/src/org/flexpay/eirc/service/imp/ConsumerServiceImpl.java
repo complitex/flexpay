@@ -8,6 +8,7 @@ import org.flexpay.eirc.dao.ConsumerDaoExt;
 import org.flexpay.payments.dao.ServiceDao;
 import org.flexpay.eirc.persistence.Consumer;
 import org.flexpay.payments.persistence.Service;
+import org.flexpay.payments.service.SPService;
 import org.flexpay.eirc.service.ConsumerService;
 import org.flexpay.orgs.persistence.ServiceProvider;
 import org.jetbrains.annotations.NotNull;
@@ -15,6 +16,7 @@ import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.beans.factory.annotation.Required;
 
 import java.util.List;
 
@@ -25,7 +27,7 @@ public class ConsumerServiceImpl implements ConsumerService {
 
 	private ConsumerDao consumerDao;
 	private ConsumerDaoExt consumerDaoExt;
-	private ServiceDao serviceDao;
+	private SPService spService;
 
 	/**
 	 * Try to find persistent consumer by example
@@ -68,23 +70,7 @@ public class ConsumerServiceImpl implements ConsumerService {
 	 * @return Service if found, or <code>null</code> otherwise
 	 */
 	public Service findService(Stub<ServiceProvider> serviceProviderStub, String serviceCode) {
-		List<Service> services;
-		if (serviceCode.startsWith("#")) {
-			services = serviceDao.findServicesByProviderCode(serviceProviderStub.getId(), serviceCode.substring(1));
-		} else {
-			services = serviceDao.findServicesByCode(serviceProviderStub.getId(), Long.valueOf(serviceCode));
-		}
-
-		if (services.isEmpty()) {
-			return null;
-		}
-
-		if (services.size() > 1) {
-			log.error("Internal error, several services found for service code: {}", serviceCode);
-			return null;
-		}
-
-		return services.get(0);
+		return spService.findService(serviceProviderStub, serviceCode);
 	}
 
 	/**
@@ -137,15 +123,18 @@ public class ConsumerServiceImpl implements ConsumerService {
 		return consumers.get(0);
 	}
 
+	@Required
 	public void setConsumerDao(ConsumerDao consumerDao) {
 		this.consumerDao = consumerDao;
 	}
 
+	@Required
 	public void setConsumerDaoExt(ConsumerDaoExt consumerDaoExt) {
 		this.consumerDaoExt = consumerDaoExt;
 	}
 
-	public void setServiceDao(ServiceDao serviceDao) {
-		this.serviceDao = serviceDao;
+	@Required
+	public void setSpService(SPService spService) {
+		this.spService = spService;
 	}
 }

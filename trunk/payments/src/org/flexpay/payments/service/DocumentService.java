@@ -100,18 +100,19 @@ public interface DocumentService {
 	@Secured (Roles.SERVICE_READ)
 	List<Service> listPaymentsServices(@NotNull Stub<ServiceProvider> providerStub,
 									   @NotNull Stub<Organization> orgStub, @NotNull DateRange range);
+
 	/**
-	 * Returns list of payment points for documents with state REGISTERED and type CASH_PAYMENT that was created in a time period
-	 * for service provider
+	 * Returns list of payment points for documents with state REGISTERED and type CASH_PAYMENT that was created in a time
+	 * period for service provider
 	 *
 	 * @param providerStub Service provider stub
 	 * @param orgStub	  Organization stub
 	 * @param range		DateRange
 	 * @return payment points list
 	 */
-	@Secured (Roles.SERVICE_READ)
+	@Secured (org.flexpay.orgs.service.Roles.PAYMENT_POINT_READ)
 	List<PaymentPoint> listPaymentsPoints(@NotNull Stub<ServiceProvider> providerStub,
-									   @NotNull Stub<Organization> orgStub, @NotNull DateRange range);
+										  @NotNull Stub<Organization> orgStub, @NotNull DateRange range);
 
 	/**
 	 * Returns summ of payments for service in the cashbox for the period

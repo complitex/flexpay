@@ -267,6 +267,34 @@ public class SPServiceImpl implements SPService {
 		return serviceDao.findServicesByTypeCodeAndDate(providerStub.getId(), typeStub.getId(), date);
 	}
 
+	/**
+	 * Find Service by service provider and service code
+	 *
+	 * @param serviceProviderStub ServiceProvider stub
+	 * @param serviceCode		 Service code
+	 * @return Service if found, or <code>null</code> otherwise
+	 */
+	@Override
+	public Service findService(Stub<ServiceProvider> serviceProviderStub, String serviceCode) {
+		List<Service> services;
+		if (serviceCode.startsWith("#")) {
+			services = serviceDao.findServicesByProviderCode(serviceProviderStub.getId(), serviceCode.substring(1));
+		} else {
+			services = serviceDao.findServicesByCode(serviceProviderStub.getId(), Long.valueOf(serviceCode));
+		}
+
+		if (services.isEmpty()) {
+			return null;
+		}
+
+		if (services.size() > 1) {
+			log.error("Internal error, several services found for service code: {}", serviceCode);
+			return null;
+		}
+
+		return services.get(0);
+	}
+
 	@Required
 	public void setServiceDaoExt(ServiceDaoExt serviceDaoExt) {
 		this.serviceDaoExt = serviceDaoExt;

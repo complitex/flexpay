@@ -2,6 +2,7 @@ package org.flexpay.payments.process.export;
 
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.persistence.Stub;
+import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.process.Process;
 import org.flexpay.common.process.ProcessManager;
 import org.flexpay.common.process.exception.ProcessDefinitionException;
@@ -40,7 +41,6 @@ public class GeneratePaymentsRegistry extends QuartzJobBean {
     
 	// time out 10 sec
 	private static final long TIME_OUT = 10000;
-	private static final Integer PAGE_SIZE = 20;
 
 	private String privateKey;
 
@@ -60,6 +60,8 @@ public class GeneratePaymentsRegistry extends QuartzJobBean {
 			org.flexpay.orgs.service.Roles.ORGANIZATION_READ,
 			org.flexpay.orgs.service.Roles.SERVICE_PROVIDER_READ,
 			org.flexpay.payments.service.Roles.SERVICE_TYPE_READ,
+			org.flexpay.payments.service.Roles.SERVICE_READ,
+			org.flexpay.orgs.service.Roles.PAYMENT_POINT_READ,
 			org.flexpay.orgs.service.Roles.PAYMENT_COLLECTOR_READ
 	);
 
@@ -79,30 +81,30 @@ public class GeneratePaymentsRegistry extends QuartzJobBean {
 		try {
 			authenticatePaymentsRegistryGenerator();
 
-			Page<PaymentCollector> paymentCollectorPage = new Page<PaymentCollector>(PAGE_SIZE);
+			Page<PaymentCollector> paymentCollectorPage = new Page<PaymentCollector>();
 			List<PaymentCollector> listPaymentCollectors;
 
-			Page<ServiceProvider> serviceProvidersPage = new Page<ServiceProvider>(PAGE_SIZE);
-			List<ServiceProvider> listServiceProviders;
-			List<Long> listProcessInstanesId = new ArrayList<Long>();
-			List<Map<Serializable, Serializable>> waitingProcessData = new ArrayList<Map<Serializable, Serializable>>();
+			List<Long> processInstanceIds = CollectionUtils.list();
+			List<Map<Serializable, Serializable>> waitingProcessData = CollectionUtils.list();
 
 			while ((listPaymentCollectors = paymentCollectorService.listInstances(paymentCollectorPage)).size() > 0) {
 				for (PaymentCollector paymentCollector : listPaymentCollectors) {
 					log.debug("Payment collector (registered) organization {}", paymentCollector.getOrganization().getId());
 
-					serviceProvidersPage.setPageNumber(1);
-					while ((listServiceProviders = serviceProviderService.listInstances(serviceProvidersPage)).size() > 0) {
-                        log.debug("number service providers page {}, number service providers {}", new Object[]{serviceProvidersPage.getPageNumber(), listServiceProviders.size()});
-						for (ServiceProvider serviceProvider : listServiceProviders) {
+					Page<ServiceProvider> providerPage = new Page<ServiceProvider>();
+					List<ServiceProvider> serviceProviders;
+					while ((serviceProviders = serviceProviderService.listInstances(providerPage)).size() > 0) {
+                        log.debug("Provider pager {}, service providers number {}",
+								new Object[]{providerPage.getPageNumber(), serviceProviders.size()});
+						for (ServiceProvider serviceProvider : serviceProviders) {
 							Organization organization = serviceProvider.getOrganization();
-							if (organization != null && organization.getId() != null) {
-								Map<Serializable, Serializable> parameters = new HashMap<Serializable, Serializable>();
-								ServiceProviderAttribute lastProcessedDateAttribute = serviceProviderAttributeService.getServiceProviderAttribute(Stub.stub(serviceProvider), ExportJobParameterNames.LAST_PROCESSED_DATE);
+							Map<Serializable, Serializable> parameters = CollectionUtils.map();
+							ServiceProviderAttribute lastProcessedDateAttribute = serviceProviderAttributeService
+									.getServiceProviderAttribute(stub(serviceProvider), ExportJobParameterNames.LAST_PROCESSED_DATE);
 
-								if (lastProcessedDateAttribute != null) {
-									parameters.put(lastProcessedDateAttribute.getName(), lastProcessedDateAttribute.getValue());
-								}
+							if (lastProcessedDateAttribute != null) {
+								parameters.put(lastProcessedDateAttribute.getName(), lastProcessedDateAttribute.getValue());
+							}
 
 								Date finishDate = DateUtil.now();
 								parameters.put(ExportJobParameterNames.FINISH_DATE, finishDate);
@@ -112,27 +114,25 @@ public class GeneratePaymentsRegistry extends QuartzJobBean {
 								//parameters.put(ExportJobParameterNames.EMAIL, serviceProvider.getEmail());
 								parameters.put(ExportJobParameterNames.PRIVATE_KEY, privateKey);
 
-								waitingProcessData.add(parameters);
+							waitingProcessData.add(parameters);
 
-                                log.debug("start process {}", parameters);
-								long processId = processManager.createProcess(GENERATE_PAYMENTS_REGISRY_PROCESS, parameters);
-								listProcessInstanesId.add(processId);
-							} else {
-								log.error("Organization did not find for service provider with id {}", serviceProvider.getId());
-							}
+							log.debug("start process {}", parameters);
+							long processId = processManager.createProcess("GeneratePaymentsRegisryProcess", parameters);
+							processInstanceIds.add(processId);
 						}
-						serviceProvidersPage.nextPage();
+						providerPage.nextPage();
 					}
 				}
 				paymentCollectorPage.nextPage();
 			}
 
-			List<Long> registries = new ArrayList<Long>();
+			List<Long> registryIds = new ArrayList<Long>();
 
 			do {
                 log.debug("Waiting number {} processes: {}", new Object[]{GENERATE_PAYMENTS_REGISRY_PROCESS, waitingProcessData.size()});
 				for (Map<Serializable, Serializable> param : waitingProcessData) {
-					log.debug("Waiting {} processes will complete for: {} ...", new Object[]{GENERATE_PAYMENTS_REGISRY_PROCESS, param});
+					log.debug("Waiting {} for GeneratePaymentsRegisryProcess to complete: {}",
+							new Object[]{GENERATE_PAYMENTS_REGISRY_PROCESS, param});
 				}
 				try {
 					Thread.sleep(TIME_OUT);
@@ -141,10 +141,10 @@ public class GeneratePaymentsRegistry extends QuartzJobBean {
 					throw new JobExecutionException(e);
 				}
 
-				List<Long> tmpListProcessInstanesId = new ArrayList<Long>(listProcessInstanesId);
-				waitingProcessData = new ArrayList<Map<Serializable, Serializable>>();
+				List<Long> tmpListProcessInstanesId = new ArrayList<Long>(processInstanceIds);
+				waitingProcessData = CollectionUtils.list();
 
-				for (Long processId : listProcessInstanesId) {
+				for (Long processId : processInstanceIds) {
 					Process process;
 
 					process = processManager.getProcessInstanceInfo(processId);
@@ -159,7 +159,8 @@ public class GeneratePaymentsRegistry extends QuartzJobBean {
 						ServiceProvider serviceProvider = serviceProviderService.read(new Stub<ServiceProvider>(serviceProviderId));
 
 						if (lastProcessedDate != null && serviceProvider != null) {
-							ServiceProviderAttribute lastProcessedDateAttribute = serviceProviderAttributeService.getServiceProviderAttribute(Stub.stub(serviceProvider), ExportJobParameterNames.LAST_PROCESSED_DATE);
+							ServiceProviderAttribute lastProcessedDateAttribute = serviceProviderAttributeService
+									.getServiceProviderAttribute(stub(serviceProvider), ExportJobParameterNames.LAST_PROCESSED_DATE);
 
 							if (lastProcessedDateAttribute == null) {
 								lastProcessedDateAttribute = new ServiceProviderAttribute();
@@ -180,13 +181,12 @@ public class GeneratePaymentsRegistry extends QuartzJobBean {
 							} else {
 								log.debug("Last processed date did not changed");
 							}
-
 						}
 
 						if (parameters.containsKey(ExportJobParameterNames.REGISTRY_ID)) {
 							Long registryId = (Long) parameters.get(ExportJobParameterNames.REGISTRY_ID);
 							if (registryId != null) {
-								registries.add(registryId);
+								registryIds.add(registryId);
 							}
 						}
 						tmpListProcessInstanesId.remove(processId);
@@ -195,9 +195,9 @@ public class GeneratePaymentsRegistry extends QuartzJobBean {
 						waitingProcessData.add(process.getParameters());
 					}
 				}
-				listProcessInstanesId = tmpListProcessInstanesId;
-			} while (listProcessInstanesId.size() > 0);
-			context.getMergedJobDataMap().put(ExportJobParameterNames.REGISTRIES, registries);
+				processInstanceIds = tmpListProcessInstanesId;
+			} while (processInstanceIds.size() > 0);
+			context.getMergedJobDataMap().put(ExportJobParameterNames.REGISTRIES, registryIds);
 		} catch (ProcessInstanceException e) {
 			log.error("Failed run process generate payments registry", e);
 			throw new JobExecutionException(e);
