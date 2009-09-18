@@ -194,6 +194,7 @@ public class Person extends DomainObjectWithStatus {
 		beginDate = DateUtil.truncateDay(beginDate);
 		endDate = DateUtil.truncateDay(endDate);
 
+		List<PersonRegistration> toDelete = CollectionUtils.list();
 		List<PersonRegistration> newRegistrations = CollectionUtils.list();
 		for (PersonRegistration reg : personRegistrations) {
 			// if registration intervals are intersecting update old intervals bound
@@ -201,20 +202,20 @@ public class Person extends DomainObjectWithStatus {
 			Date beg = reg.getBeginDate();
 			Date end = reg.getEndDate();
 			if (DateIntervalUtil.areIntersecting(beg, end, beginDate, endDate)) {
-				boolean firstAdded = false;
+				toDelete.add(reg);
 				if (beg.before(beginDate)) {
-					reg.setEndDate(DateUtil.previous(beginDate));
-					firstAdded = true;
+					PersonRegistration reg1 = reg.copy();
+					reg1.setEndDate(DateUtil.previous(beginDate));
+					newRegistrations.add(reg1);
 				}
 				if (end.after(endDate)) {
-					reg = firstAdded ? reg.copy() : reg;
-					reg.setBeginDate(DateUtil.next(endDate));
-					if (firstAdded) {
-						newRegistrations.add(reg);
-					}
+					PersonRegistration reg1 = reg.copy();
+					reg1.setBeginDate(DateUtil.next(endDate));
+					newRegistrations.add(reg1);
 				}
 			}
 		}
+		personRegistrations.removeAll(toDelete);
 		addRegistrations(newRegistrations);
 
 		if (apartment != null) {

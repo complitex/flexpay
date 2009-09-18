@@ -71,6 +71,8 @@ public class PersonRegistration extends DomainObject implements Comparable<Perso
 				append("id", getId()).
 				append("beginDate", beginDate).
 				append("endDate", endDate).
+				append("personId", person == null ? null : person.getId()).
+				append("apartmentId", apartment == null ? null : apartment.getId()).
 				toString();
 	}
 
