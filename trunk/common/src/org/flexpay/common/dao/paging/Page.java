@@ -168,6 +168,14 @@ public class Page<E> implements Serializable {
 		this.pageNumber = pageNumber - 1;
 	}
 
+	public void moveFirstPage() {
+		setPageNumber(1);
+	}
+
+	public void moveLastPage() {
+		setPageNumber(getLastPageNumber());
+	}
+
 	@Override
 	public String toString() {
 		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
