@@ -58,13 +58,17 @@ public class FPFileUtil {
 		return new File(getFileLocalPath(fpFile));
 	}
 
+	private static final Object MKDIR_MONITOR = new Object();
+
 	private static File createFile(@NotNull FPFile fpFile) throws IOException {
 
 		String name = fpFile.getOriginalName();
 		String localPath = getLocalDirPath(fpFile.getModule().getName(), fpFile.getCreationDate());
 		File localDir = new File(localPath);
-		if (!localDir.exists() && !localDir.mkdirs()) {
-			throw new IOException("Failed creating localDir: " + localDir);
+		synchronized (MKDIR_MONITOR) {
+			if (!localDir.exists() && !localDir.mkdirs()) {
+				throw new IOException("Failed creating localDir: " + localDir);
+			}
 		}
 
 		String nameWithoutExt = StringUtil.getFileNameWithoutExtension(name);
