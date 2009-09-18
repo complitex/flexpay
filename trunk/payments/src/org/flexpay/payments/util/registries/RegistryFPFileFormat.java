@@ -7,9 +7,9 @@ import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.persistence.registry.*;
 import org.flexpay.common.service.FPFileService;
+import org.flexpay.common.service.RegistryFPFileTypeService;
 import org.flexpay.common.service.RegistryRecordService;
 import org.flexpay.common.service.RegistryService;
-import org.flexpay.common.service.RegistryFPFileTypeService;
 import org.flexpay.common.util.FPFileUtil;
 import org.flexpay.common.util.RegistryUtil;
 import org.flexpay.common.util.SecurityUtil;
@@ -156,6 +156,10 @@ public class RegistryFPFileFormat {
 				}
 				header.append(container.getData());
 				first = false;
+			}
+		} else {
+			if (registry.getRegistryType().getCode() == RegistryType.TYPE_BANK_PAYMENTS) {
+				header.append(RegistryUtil.FIELD_SEPARATOR);
 			}
 		}
 
