@@ -162,6 +162,9 @@ public class Page<E> implements Serializable {
 	}
 
 	public void setPageNumber(int pageNumber) {
+		if (pageNumber <= 0) {
+			pageNumber = 1;
+		}
 		this.pageNumber = pageNumber - 1;
 	}
 
