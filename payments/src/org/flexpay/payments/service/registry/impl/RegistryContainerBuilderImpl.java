@@ -18,17 +18,17 @@ import org.springframework.beans.factory.annotation.Required;
 public class RegistryContainerBuilderImpl implements RegistryContainerBuilder {
 
 	// delimiter
-	public static final String DELIMITER = ":";
+	private static final String DELIMITER = ":";
 
 	// container types
-	public static final String EXTERNAL_ORG_ACCOUNT_CONTAINER_TYPE = "15";
-	public static final String SIMPLE_PAYMENT_CONTAINER_TYPE = "50";
-	public static final String PAYMENT_POINT_ID_CONTAINER_TYPE = "500";
-	public static final String INSTANCE_ID_CONTAINER_TYPE = "503";
-	public static final String SYNC_ID_CONTAINER_TYPE = "502";
+	private static final String EXTERNAL_ORG_ACCOUNT_CONTAINER_TYPE = "15";
+	private static final String SIMPLE_PAYMENT_CONTAINER_TYPE = "50";
+	private static final String PAYMENT_POINT_ID_CONTAINER_TYPE = "500";
+	private static final String INSTANCE_ID_CONTAINER_TYPE = "503";
+	private static final String SYNC_ID_CONTAINER_TYPE = "502";
 
 	// predefined field values
-	public static final String GLOBAL_FP_ID_TYPE = "1";
+	private static final String GLOBAL_FP_ID_TYPE = "1";
 
 	// required services
 	private ClassToTypeRegistry typeRegistry;
