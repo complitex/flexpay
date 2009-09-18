@@ -57,12 +57,6 @@ public class JobManager implements BeanFactoryAware {
 		return result;
 	}
 
-	public synchronized void reload() {
-		runningJobs = new Hashtable<String, Job>();
-		sleepingJobs = new Hashtable<String, Job>();
-		waitingJobs = new LinkedList<Job>();
-	}
-
 	public synchronized static void unload() {
 		instance = null;
 	}
@@ -70,9 +64,15 @@ public class JobManager implements BeanFactoryAware {
 	private synchronized String start(Job job, Map<Serializable, Serializable> parameters) {
 		if (runningJobs.containsKey(job.getId())) {
 			job.getJobThread().start();
+			//noinspection ThrowableInstanceNeverThrown
+			log.error("AHTUNG, WTF?", new RuntimeException());
+		}
+		runningJobs.put(job.getId(), job);
+		if (log.isDebugEnabled()) {
+			log.debug("Starting job, task-id {}, id {}", job.getTaskId(), job.getId());
+			log.debug("Running jobs: {}", runningJobs.keySet());
 		}
 		job.startThread(parameters);
-		runningJobs.put(job.getId(), job);
 		return job.getId();
 	}
 
@@ -84,8 +84,12 @@ public class JobManager implements BeanFactoryAware {
 		}
 	}
 
+	public void jobFinished(String id, String transition, Map<Serializable, Serializable> parameters) {
 
-	public void jobFinished(String id, String transition, Map<Serializable,Serializable> parameters) {
+		if (log.isDebugEnabled()) {
+			log.debug("Ending job, id {}", id);
+			log.debug("Running jobs: {}", runningJobs.keySet());
+		}
 		Job job = runningJobs.get(id);
 		if (job == null) {
 			job = sleepingJobs.get(id);
@@ -98,11 +102,8 @@ public class JobManager implements BeanFactoryAware {
 		processManager.taskCompleted(job.getTaskId(), parameters, transition);
 
 		jobParameters.remove(id);
-		if (runningJobs.get(id) != null) {
-			runningJobs.remove(id);
-		} else {
-			sleepingJobs.remove(id);
-		}
+		runningJobs.remove(id);
+		sleepingJobs.remove(id);
 		runNextJob();
 	}
 
@@ -140,32 +141,6 @@ public class JobManager implements BeanFactoryAware {
 					"error.common.jm.job_not_found", jobName);
 		}
 		return true;
-	}
-
-	public synchronized void setSleepStateOn(String jobId) {
-		Job job = runningJobs.get(jobId);
-		if (job != null) {
-			sleepingJobs.put(jobId, job);
-			runningJobs.remove(jobId);
-		}
-	}
-
-	public synchronized void setSleepStateOff(String jobId) {
-		Job job = sleepingJobs.get(jobId);
-		if (job != null) {
-			runningJobs.put(jobId, job);
-			sleepingJobs.remove(jobId);
-		}
-	}
-
-	public boolean isRunning(Long taskID) {
-		List<Job> jobs = getJobList();
-		for (Job job : jobs) {
-			if (job.getTaskId().equals(taskID)) {
-				return true;
-			}
-		}
-		return false;
 	}
 
 	/**

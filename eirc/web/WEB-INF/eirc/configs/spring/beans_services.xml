@@ -123,7 +123,7 @@
 	<bean id="consumerServiceTarget"
 		  autowire-candidate="false"
 		  class="org.flexpay.eirc.service.imp.ConsumerServiceImpl"
-		  p:serviceDao-ref="serviceDao"
+		  p:spService-ref="spService"
 		  p:consumerDao-ref="consumerDao"
 		  p:consumerDaoExt-ref="consumerDaoExt" />
 

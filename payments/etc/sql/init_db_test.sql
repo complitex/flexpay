@@ -52,18 +52,18 @@ SELECT @service_t_vodootvedenie:=13;
 INSERT INTO payments_service_type_name_translations_tbl (name, description, language_id, service_type_id)
 	VALUES ('Водоотведение', 'Описание', @ru_id, @service_t_vodootvedenie);
 
-INSERT INTO payments_service_types_tbl (status, code) VALUES (0, 20);
-SELECT @service_cleaning_garbagecollectors:=last_insert_id();
+INSERT INTO payments_service_types_tbl (id, status, code) VALUES (14, 0, 20);
+SELECT @service_cleaning_garbagecollectors:=14;
 INSERT INTO payments_service_type_name_translations_tbl (name, description, language_id, service_type_id)
 	VALUES ('Очистка мусоросборников', 'Описание', @ru_id, @service_cleaning_garbagecollectors);
 
-INSERT INTO payments_service_types_tbl (status, code) VALUES (0, 30);
-SELECT @service_cleaning_ext:=last_insert_id();
+INSERT INTO payments_service_types_tbl (id, status, code) VALUES (15, 0, 30);
+SELECT @service_cleaning_ext:=15;
 INSERT INTO payments_service_type_name_translations_tbl (name, description, language_id, service_type_id)
 	VALUES ('Уборка подвалов, тех.этажей, крыш', 'Описание', @ru_id, @service_cleaning_ext);
 
-INSERT INTO payments_service_types_tbl (status, code) VALUES (0, 40);
-SELECT @service_TBO:=last_insert_id();
+INSERT INTO payments_service_types_tbl (id, status, code) VALUES (16, 0, 40);
+SELECT @service_TBO:=16;
 INSERT INTO payments_service_type_name_translations_tbl (name, description, language_id, service_type_id)
 	VALUES ('Вывоз и утилизация ТБО', 'Описание', @ru_id, @service_TBO);
 
@@ -578,7 +578,7 @@ INSERT INTO payments_documents_tbl (version, operation_id, address, payer_fio, t
 		service_id, summ, creditor_id, debtor_id, creditor_organization_id, debtor_organization_id,
 		reference_document_id, registry_record_id)
 		VALUES (0, @operation_2, 'ул. Иванова, д.27, кв.330', 'Федько М.А.', @doc_type_1, @doc_status_2,
-				@service_40, 113.00, '123123123', '09012345067', @organization_zhko, @organization_tszh,
+				@service_phone, 113.00, '123123123', '09012345067', @organization_zhko, @organization_tszh,
 				null, null);
 SELECT @document_4:=last_insert_id();
 

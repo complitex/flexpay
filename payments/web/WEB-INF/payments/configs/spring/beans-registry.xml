@@ -30,7 +30,7 @@
 		  p:registryRecordService-ref="registryRecordService"
 		  p:registryService-ref="registryService"
 		  p:registryStatusService-ref="registryStatusService"
-		  p:serviceTypeService-ref="serviceTypeService"
+		  p:spService-ref="spService"
 		  p:serviceTypesMapper-ref="mbServiceTypeMapper" />
 
 </beans>
