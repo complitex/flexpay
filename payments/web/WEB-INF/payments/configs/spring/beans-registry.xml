@@ -18,11 +18,10 @@
 		  p:registryRecordStatusService-ref="registryRecordStatusService"
 		  p:propertiesFactory-ref="paymentsPropertiesFactory"
 		  p:documentAdditionTypeService-ref="documentAdditionTypeService"
-		  p:typeRegistry-ref="classToTypeRegistry"
-		  p:masterIndexService-ref="masterIndexService"
 		  p:organizationHistoryGenerator-ref="organizationHistoryGenerator"
 		  p:paymentPointHistoryGenerator-ref="paymentPointHistoryGenerator"
-		  p:serviceHistoryGenerator-ref="serviceHistoryGenerator" />
+		  p:serviceHistoryGenerator-ref="serviceHistoryGenerator"
+		  p:registryContainerBuilder-ref="registryContainerBuilder" />
 
 	<bean id="paymentsRegistryMBGenerator"
 		  class="org.flexpay.payments.service.registry.impl.PaymentsRegistryMBGeneratorImpl"
@@ -32,5 +31,10 @@
 		  p:registryStatusService-ref="registryStatusService"
 		  p:spService-ref="spService"
 		  p:serviceTypesMapper-ref="mbServiceTypeMapper" />
+
+	<bean id="registryContainerBuilder" class="org.flexpay.payments.service.registry.impl.RegistryContainerBuilderImpl"
+		  p:typeRegistry-ref="classToTypeRegistry"
+		  p:masterIndexService-ref="masterIndexService" />
+
 
 </beans>

@@ -1,14 +1,14 @@
 package org.flexpay.payments.process.export.job;
 
-import org.flexpay.common.process.job.Job;
 import org.flexpay.common.exception.FlexPayException;
-import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.file.FPFile;
+import org.flexpay.common.persistence.registry.Registry;
+import org.flexpay.common.process.job.Job;
 import org.flexpay.common.service.RegistryService;
-import org.flexpay.payments.util.registries.RegistryFPFileFormat;
 import static org.flexpay.payments.process.export.job.ExportJobParameterNames.REGISTRY;
 import static org.flexpay.payments.process.export.job.ExportJobParameterNames.REGISTRY_ID;
+import org.flexpay.payments.util.registries.RegistryFPFileFormat;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.io.Serializable;
@@ -18,8 +18,10 @@ import java.util.Map;
  * Job generate payments registry in FP format.
  */
 public class GeneratePaymentsFPRegistryJob extends Job {
-    private RegistryService registryService;
-    private RegistryFPFileFormat exportBankPaymentsRegistry;
+
+	private RegistryService registryService;
+
+	private RegistryFPFileFormat exportBankPaymentsRegistry;
 
     /**
      * Create new file in FP format from db registry and attach result to it.<br/>
@@ -31,17 +33,22 @@ public class GeneratePaymentsFPRegistryJob extends Job {
      * @throws FlexPayException
      */
     public String execute(Map<Serializable, Serializable> parameters) throws FlexPayException {
-        Registry registry = getRegistry(parameters);
+
+		Registry registry = getRegistry(parameters);
         if (registry == null) {
             return RESULT_ERROR;
         }
+
         log.debug("Run generate FP file of registry {}", registry.getId());
+
         FPFile file = exportBankPaymentsRegistry.generateAndAttachFile(registry);
         if (file == null) {
             log.error("FP file does not generate for registry {}", registry.getId());
             return RESULT_ERROR;
         }
+
         log.debug("Success generate FP file of registry {}", registry.getId());
+
         return RESULT_NEXT;
     }
 
