@@ -31,6 +31,11 @@ public class ApartmentRegistrationAction extends FPActionSupport {
 	public String doExecute() throws FlexPayException {
 
 		apartment = apartmentService.readWithPersons(stub(apartment));
+		if (apartment == null) {
+			addActionError(getText("ab.error.apartment_not_found"));
+			return SUCCESS;
+		}
+
 		List<BuildingAddress> buildingses = buildingService.getBuildingBuildings(apartment.getBuildingStub());
 		buildings = buildingService.readFull(stub(buildingses.get(0)));
 		street = streetService.readFull(buildings.getStreetStub());

@@ -1,5 +1,9 @@
 <%@include file="/WEB-INF/jsp/common/taglibs.jsp" %>
 
+<s:actionerror/>
+
+<s:if test="%{apartment != null}">
+
 <table cellpadding="3" cellspacing="1" border="0" width="100%">
 	<tr>
 		<td colspan="5" width="100%">
@@ -51,5 +55,4 @@
 		</td>
 	</tr>
 </table>
-
-
+</s:if>
