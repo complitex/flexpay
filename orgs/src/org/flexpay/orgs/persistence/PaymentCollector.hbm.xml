@@ -92,6 +92,21 @@
 		where pc.status=0
 	</query>
 
+    <query name="PaymentCollector.listInstancesWithIdentities.stats"><![CDATA[
+        select min(p.id), max(p.id), count(p.id)
+        from PaymentCollector p
+		where p.status=0
+    ]]></query>
+
+    <query name="PaymentCollector.listInstancesWithIdentities"><![CDATA[
+        select distinct p
+		from PaymentCollector p
+    		left outer join fetch p.descriptions
+	    	inner join fetch p.organization o
+            left join fetch o.names
+		where p.id between ? and ? and p.status=0
+    ]]></query>
+
 	<query name="PaymentCollector.findOrganizationInstances">
 		from PaymentCollector
 		where status=0 and organization.id=?

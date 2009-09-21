@@ -136,6 +136,21 @@
 		where o.status=0
 	</query>
 
+    <query name="ServiceProvider.listInstancesWithIdentities.stats"><![CDATA[
+        select min(o.id), max(o.id), count(o.id)
+        from ServiceProvider o
+		where o.status=0
+    ]]></query>
+
+    <query name="ServiceProvider.listInstancesWithIdentities"><![CDATA[
+        select distinct o
+		from ServiceProvider o
+		 	left join fetch o.descriptions
+		 	inner join fetch o.organization org
+		 	left join fetch org.names
+		where o.id between ? and ? and o.status=0
+    ]]></query>
+
 	<query name="ServiceProviderAttribute.listServiceProviderAttributes">
 		FROM ServiceProviderAttribute o
 		WHERE o.serviceProvider.id=?

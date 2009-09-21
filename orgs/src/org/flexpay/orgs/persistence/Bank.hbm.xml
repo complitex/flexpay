@@ -136,6 +136,20 @@
 		where b.status=0
 	</query>
 
+    <query name="Bank.listInstancesWithIdentities.stats"><![CDATA[
+        select min(b.id), max(b.id), count(b.id)
+        from Bank b
+        where b.status=0
+    ]]></query>
+
+	<query name="Bank.listInstancesWithIdentities"><![CDATA[
+		select distinct b
+		from Bank b
+			left outer join fetch b.descriptions
+			inner join fetch b.organization
+		where b.id between ? and ? and b.status=0
+	]]></query>
+
 	<query name="Bank.findOrganizationInstances">
 		from Bank
 		where status=0 and organization.id=?

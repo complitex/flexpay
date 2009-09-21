@@ -1,6 +1,6 @@
 package org.flexpay.payments.process.export;
 
-import org.flexpay.common.dao.paging.Page;
+import org.flexpay.common.dao.paging.FetchRange;
 import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.process.Process;
@@ -41,8 +41,8 @@ public class GeneratePaymentsRegistry extends QuartzJobBean {
 	private Logger log = LoggerFactory.getLogger(getClass());
 
 	private static final String USER_PAYMENTS_REGISTRY_GENERATOR = "payments-registry-generator";
-	private static final String GENERATE_PAYMENTS_REGISRY_PROCESS = "GeneratePaymentsRegisryProcess";
-
+    private static final String GENERATE_PAYMENTS_REGISRY_PROCESS = "GeneratePaymentsRegisryProcess";
+    
 	// time out 10 sec
 	private static final long TIME_OUT = 10000;
 
@@ -70,10 +70,10 @@ public class GeneratePaymentsRegistry extends QuartzJobBean {
 	);
 
 	/**
-	 * Start processes "GeneratePaymentsRegisryProcess" for all existed in database service providers and registred
-	 * organization.<br/> Job wait while all started processes will finish and add generated registries ids to job
+	 * Start processes "GeneratePaymentsRegisryProcess" for all existed in database service providers and registered
+	 * organization.<br/> Job wait while all started processes will finish and add generated registeries ids to job
 	 * execution context.<br/> Registries ids content in {@link org.quartz.JobExecutionContext#getMergedJobDataMap()}.
-	 * Mapping key is "registries" and value`s type is {@link java.util.List}<{@link Long}>
+	 * Mapping key is {@link ExportJobParameterNames#REGISTRIES} and value`s type is {@link java.util.List}<{@link Long}>
 	 *
 	 * @param context Job execution context.
 	 * @throws JobExecutionException
@@ -85,126 +85,29 @@ public class GeneratePaymentsRegistry extends QuartzJobBean {
 		try {
 			authenticatePaymentsRegistryGenerator();
 
-			Page<PaymentCollector> paymentCollectorPage = new Page<PaymentCollector>();
-			List<PaymentCollector> listPaymentCollectors;
-
+            FetchRange paymentCollectorRange = new FetchRange();
 			List<Long> processInstanceIds = list();
-			List<Map<Serializable, Serializable>> waitingProcessData = list();
-
-			while ((listPaymentCollectors = paymentCollectorService.listInstances(paymentCollectorPage)).size() > 0) {
-				for (PaymentCollector paymentCollector : listPaymentCollectors) {
-					log.debug("Payment collector (registered) organization {}", paymentCollector.getOrganization().getId());
-
-					Page<ServiceProvider> providerPage = new Page<ServiceProvider>();
-					List<ServiceProvider> serviceProviders;
-					while ((serviceProviders = serviceProviderService.listInstances(providerPage)).size() > 0) {
-						log.debug("Provider pager {}, service providers number {}",
-								new Object[]{providerPage.getPageNumber(), serviceProviders.size()});
-						for (ServiceProvider serviceProvider : serviceProviders) {
-							Organization organization = serviceProvider.getOrganization();
-							Map<Serializable, Serializable> parameters = CollectionUtils.map();
-							ServiceProviderAttribute lastProcessedDateAttribute = serviceProviderAttributeService
-									.getServiceProviderAttribute(stub(serviceProvider), LAST_PROCESSED_DATE);
-
-							if (lastProcessedDateAttribute != null) {
-								parameters.put(lastProcessedDateAttribute.getName(), lastProcessedDateAttribute.getValue());
-							}
-
-							Date finishDate = DateUtil.now();
-							parameters.put(FINISH_DATE, finishDate);
-							parameters.put(ORGANIZATION_ID, organization.getId());
-							parameters.put(SERVICE_PROVIDER_ID, serviceProvider.getId());
-							parameters.put(REGISTERED_ORGANIZATION_ID, paymentCollector.getOrganization().getId());
-							//parameters.put(ExportJobParameterNames.EMAIL, serviceProvider.getEmail());
-							parameters.put(PRIVATE_KEY, privateKey);
-
-							waitingProcessData.add(parameters);
-
-							log.debug("start process {}", parameters);
-							long processId = processManager.createProcess("GeneratePaymentsRegisryProcess", parameters);
-							processInstanceIds.add(processId);
-						}
-						providerPage.nextPage();
-					}
-				}
-				paymentCollectorPage.nextPage();
-			}
-
-			List<Long> registryIds = list();
 
 			do {
-				if (log.isDebugEnabled()) {
-					log.debug("Waiting number {} processes: {}",
-							new Object[]{GENERATE_PAYMENTS_REGISRY_PROCESS, waitingProcessData.size()});
-					for (Map<Serializable, Serializable> param : waitingProcessData) {
-						log.debug("Waiting {} for GeneratePaymentsRegisryProcess to complete: {}",
-								new Object[]{GENERATE_PAYMENTS_REGISRY_PROCESS, param});
-					}
-				}
-				try {
-					Thread.sleep(TIME_OUT);
-				} catch (InterruptedException e) {
-					log.warn("Interrupted", e);
-					throw new JobExecutionException(e);
-				}
+                for (PaymentCollector paymentCollector : paymentCollectorService.listInstances(paymentCollectorRange)) {
+                    Organization paymentCollectorOrganization = paymentCollector.getOrganization();
 
-				List<Long> tmpListProcessInstanesId = list(processInstanceIds);
-				waitingProcessData = list();
+					log.debug("Payment collector (registered) organization {}", paymentCollectorOrganization.getId());
 
-				for (Long processId : processInstanceIds) {
-					Process process;
-
-					process = processManager.getProcessInstanceInfo(processId);
-
-					if (process.getProcessState().isCompleted()) {
-						log.debug("Process {} completed: {} ", processId, process.getParameters());
-
-						Map<Serializable, Serializable> parameters = process.getParameters();
-
-						String lastProcessedDate = (String) parameters.get(LAST_PROCESSED_DATE);
-						Long serviceProviderId = (Long) parameters.get(SERVICE_PROVIDER_ID);
-						ServiceProvider serviceProvider = serviceProviderService.read(new Stub<ServiceProvider>(serviceProviderId));
-
-						if (lastProcessedDate != null && serviceProvider != null) {
-							ServiceProviderAttribute lastProcessedDateAttribute = serviceProviderAttributeService
-									.getServiceProviderAttribute(stub(serviceProvider), LAST_PROCESSED_DATE);
-
-							if (lastProcessedDateAttribute == null) {
-								lastProcessedDateAttribute = new ServiceProviderAttribute();
-								lastProcessedDateAttribute.setServiceProvider(serviceProvider);
-								lastProcessedDateAttribute.setName(LAST_PROCESSED_DATE);
-								log.debug("Set last processed date: {}", lastProcessedDate);
-								lastProcessedDateAttribute.setValue(lastProcessedDate);
-
-								serviceProviderAttributeService.save(lastProcessedDateAttribute);
-								log.debug("Last processed date was null");
-							} else if (!lastProcessedDate.equals(lastProcessedDateAttribute.getValue())) {
-								log.debug("Old last processed date: {}", lastProcessedDateAttribute.getValue());
-								log.debug("New last processed date: {}", lastProcessedDate);
-								lastProcessedDateAttribute.setValue(lastProcessedDate);
-
-								serviceProviderAttributeService.save(lastProcessedDateAttribute);
-								log.debug("Change last processed date");
-							} else {
-								log.debug("Last processed date did not changed");
-							}
+                    FetchRange serviceProviderRange = new FetchRange();
+					do {
+                        for (ServiceProvider serviceProvider : serviceProviderService.listInstances(serviceProviderRange)) {
+                            long processId = createGeneratePaymentRegistryProcess(paymentCollectorOrganization, serviceProvider);
+							processInstanceIds.add(processId);
 						}
-
-						if (parameters.containsKey(ExportJobParameterNames.REGISTRY_ID)) {
-							Long registryId = (Long) parameters.get(ExportJobParameterNames.REGISTRY_ID);
-							if (registryId != null) {
-								registryIds.add(registryId);
-							}
-						}
-						tmpListProcessInstanesId.remove(processId);
-					} else {
-						log.debug("Process {} has status {}", processId, process.getProcessState());
-						waitingProcessData.add(process.getParameters());
-					}
+						serviceProviderRange.nextPage();
+					} while (serviceProviderRange.hasMore());
 				}
-				processInstanceIds = tmpListProcessInstanesId;
-			} while (processInstanceIds.size() > 0);
-			context.getMergedJobDataMap().put(ExportJobParameterNames.REGISTRIES, registryIds);
+				paymentCollectorRange.nextPage();
+			} while (paymentCollectorRange.hasMore());
+
+            List<Long> registryIds = waitCompletionProcesses(processInstanceIds);
+			context.getMergedJobDataMap().put(REGISTRIES, registryIds);
 		} catch (ProcessInstanceException e) {
 			log.error("Failed run process generate payments registry", e);
 			throw new JobExecutionException(e);
@@ -214,7 +117,106 @@ public class GeneratePaymentsRegistry extends QuartzJobBean {
 		}
 	}
 
-	/**
+    private List<Long> waitCompletionProcesses(List<Long> processInstanceIds) throws JobExecutionException {
+        List<Long> registryIds = list();
+
+        do {
+            log.debug("Waiting number {} processes: {}", new Object[]{GENERATE_PAYMENTS_REGISRY_PROCESS, processInstanceIds.size()});
+            try {
+                Thread.sleep(TIME_OUT);
+            } catch (InterruptedException e) {
+                log.warn("Interrupted", e);
+                throw new JobExecutionException(e);
+            }
+
+            List<Long> tmpListProcessInstanesId = list(processInstanceIds);
+
+            for (Long processId : processInstanceIds) {
+                Process process;
+
+                process = processManager.getProcessInstanceInfo(processId);
+
+                if (process != null && process.getProcessState().isCompleted()) {
+                    log.debug("Process {} completed: {} ", processId, process.getParameters());
+
+                    Long registryId = afterComplitedProcess(process);
+
+                    if (registryId != null) {
+                        registryIds.add(registryId);
+                    }
+                    tmpListProcessInstanesId.remove(processId);
+                } else if (process == null) {
+                    log.debug("Process {} did not find", processId);
+                    tmpListProcessInstanesId.remove(processId);
+                } else {
+                    log.debug("Process {} has status {}: ", new Object[]{processId, process.getProcessState(), process.getParameters()});
+                }
+            }
+            processInstanceIds = tmpListProcessInstanesId;
+        } while (processInstanceIds.size() > 0);
+
+        return registryIds;
+    }
+
+    private Long afterComplitedProcess(Process process) {
+        Map<Serializable, Serializable> parameters = process.getParameters();
+
+        String lastProcessedDate = (String) parameters.get(LAST_PROCESSED_DATE);
+        Long serviceProviderId = (Long) parameters.get(SERVICE_PROVIDER_ID);
+        ServiceProvider serviceProvider = serviceProviderService.read(new Stub<ServiceProvider>(serviceProviderId));
+
+        if (lastProcessedDate != null && serviceProvider != null) {
+            ServiceProviderAttribute lastProcessedDateAttribute = serviceProviderAttributeService
+                    .getServiceProviderAttribute(stub(serviceProvider), LAST_PROCESSED_DATE);
+
+            if (lastProcessedDateAttribute == null) {
+                lastProcessedDateAttribute = new ServiceProviderAttribute();
+                lastProcessedDateAttribute.setServiceProvider(serviceProvider);
+                lastProcessedDateAttribute.setName(LAST_PROCESSED_DATE);
+                log.debug("Set last processed date: {}", lastProcessedDate);
+                lastProcessedDateAttribute.setValue(lastProcessedDate);
+
+                serviceProviderAttributeService.save(lastProcessedDateAttribute);
+                log.debug("Last processed date was null");
+            } else if (!lastProcessedDate.equals(lastProcessedDateAttribute.getValue())) {
+                log.debug("Old last processed date: {}", lastProcessedDateAttribute.getValue());
+                log.debug("New last processed date: {}", lastProcessedDate);
+                lastProcessedDateAttribute.setValue(lastProcessedDate);
+
+                serviceProviderAttributeService.save(lastProcessedDateAttribute);
+                log.debug("Change last processed date");
+            } else {
+                log.debug("Last processed date did not changed");
+            }
+        }
+
+        return parameters.containsKey(ExportJobParameterNames.REGISTRY_ID)? (Long) parameters.get(ExportJobParameterNames.REGISTRY_ID) : null;
+    }
+
+    private long createGeneratePaymentRegistryProcess(Organization paymentCollectorOrganization, ServiceProvider serviceProvider) throws ProcessInstanceException, ProcessDefinitionException {
+        Organization serviceProviderOrganization = serviceProvider.getOrganization();
+
+        Map<Serializable, Serializable> parameters = CollectionUtils.map();
+        ServiceProviderAttribute lastProcessedDateAttribute = serviceProviderAttributeService
+                .getServiceProviderAttribute(stub(serviceProvider), LAST_PROCESSED_DATE);
+
+        if (lastProcessedDateAttribute != null) {
+            parameters.put(lastProcessedDateAttribute.getName(), lastProcessedDateAttribute.getValue());
+        }
+
+        Date finishDate = DateUtil.now();
+        parameters.put(FINISH_DATE, finishDate);
+        parameters.put(ORGANIZATION_ID, serviceProviderOrganization.getId());
+        parameters.put(SERVICE_PROVIDER_ID, serviceProvider.getId());
+        parameters.put(REGISTERED_ORGANIZATION_ID, paymentCollectorOrganization.getId());
+        //parameters.put(ExportJobParameterNames.EMAIL, serviceProvider.getEmail());
+        parameters.put(PRIVATE_KEY, privateKey);
+
+        log.debug("start process {}", parameters);
+        return processManager.createProcess(GENERATE_PAYMENTS_REGISRY_PROCESS, parameters);
+    }
+
+    /**
 	 * Do payments registry user authentication
 	 */
 	private static void authenticatePaymentsRegistryGenerator() {
