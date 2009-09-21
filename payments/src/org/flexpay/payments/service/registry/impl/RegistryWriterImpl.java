@@ -8,207 +8,194 @@ import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.*;
+import java.io.BufferedOutputStream;
+import java.io.IOException;
 import java.security.Signature;
 import java.security.SignatureException;
 
 public class RegistryWriterImpl implements RegistryWriter {
-    private final Logger log = LoggerFactory.getLogger(getClass());
 
-    private BufferedOutputStream bos;
+	private final static Logger log = LoggerFactory.getLogger(RegistryWriterImpl.class);
 
-    private FPFile file;
-    private long size;
+	private static final char DEFAULT_ESCAPE_CHARACTER = '"';
+	private static final char DEFAULT_SEPARATOR = ',';
+	private static final char DEFAULT_QUOTE_CHARACTER = '"';
 
-    private char separator;
+	private BufferedOutputStream bos;
+	private long size;
+	private char separator;
+	private char quotechar;
+	private char escapechar;
+	private String lineEnd;
+	private String fileEncoding;
+	private Signature signature;
 
-    private char quotechar;
+	public RegistryWriterImpl(@NotNull FPFile file) throws IOException {
+		this(file, DEFAULT_SEPARATOR, DEFAULT_QUOTE_CHARACTER, DEFAULT_ESCAPE_CHARACTER);
+	}
 
-    private char escapechar;
+	public RegistryWriterImpl(@NotNull FPFile file, char separator, char quotechar) throws IOException {
+		this(file, separator, quotechar, DEFAULT_ESCAPE_CHARACTER);
+	}
 
-    private String lineEnd;
+	public RegistryWriterImpl(@NotNull FPFile file, char separator, char quotechar, char escapechar) throws IOException {
+		this(file, separator, quotechar, escapechar, DEFAULT_LINE_END);
+	}
 
-    private String fileEncoding;
-
-    private static final char DEFAULT_ESCAPE_CHARACTER = '"';
-
-    private static final char DEFAULT_SEPARATOR = ',';
-
-    private static final char DEFAULT_QUOTE_CHARACTER = '"';
-
-    private Signature signature;
-
-
-    public RegistryWriterImpl(@NotNull FPFile file) throws IOException {
-        this(file, DEFAULT_SEPARATOR);
-    }
-
-    public RegistryWriterImpl(@NotNull FPFile file, char separator) throws IOException {
-        this(file, separator, DEFAULT_QUOTE_CHARACTER);
-    }
-
-    public RegistryWriterImpl(@NotNull FPFile file, char separator, char quotechar) throws IOException {
-        this(file, separator, quotechar, DEFAULT_ESCAPE_CHARACTER);
-    }
-
-    public RegistryWriterImpl(@NotNull FPFile file, char separator, char quotechar, char escapechar) throws IOException {
-        this(file, separator, quotechar, escapechar, DEFAULT_LINE_END);
-    }
-
-    public RegistryWriterImpl(@NotNull FPFile file, char separator, char quotechar, @NotNull String lineEnd) throws IOException {
-        this(file, separator, quotechar, DEFAULT_ESCAPE_CHARACTER, lineEnd);
-    }
-
-    public RegistryWriterImpl(@NotNull FPFile file, char separator, char quotechar, char escapechar, @NotNull String lineEnd) throws IOException {
-        this.file = file;
-        this.bos = new BufferedOutputStream(file.getOutputStream());
-        this.separator = separator;
-        this.quotechar = quotechar;
-        this.escapechar = escapechar;
-        this.lineEnd = lineEnd;
-        signature = null;
-        size = 0;
-    }
+	public RegistryWriterImpl(@NotNull FPFile file, char separator, char quotechar, char escapechar, @NotNull String lineEnd) throws IOException {
+		this.bos = new BufferedOutputStream(file.getOutputStream());
+		this.separator = separator;
+		this.quotechar = quotechar;
+		this.escapechar = escapechar;
+		this.lineEnd = lineEnd;
+		signature = null;
+		size = 0;
+	}
 
 	public void writeLine(@Nullable String[] nextLine) throws IOException, SignatureException {
 
-        if (nextLine == null)
-            return;
+		if (nextLine == null) {
+			return;
+		}
 
-        StringBuffer sb = new StringBuffer();
-        for (int i = 0; i < nextLine.length; i++) {
+		StringBuffer sb = new StringBuffer();
+		for (int i = 0; i < nextLine.length; i++) {
 
-            if (i != 0) {
-                sb.append(separator);
-            }
+			if (i != 0) {
+				sb.append(separator);
+			}
 
-            String nextElement = nextLine[i];
-            if (nextElement == null)
-                continue;
-            appendCell(sb, nextElement);
-        }
+			String nextElement = nextLine[i];
+			if (nextElement == null) {
+				continue;
+			}
 
-        sb.append(lineEnd);
+			appendCell(sb, nextElement);
+		}
+		sb.append(lineEnd);
 
-        log.debug("Write line:" + sb.toString());
-        write(sb);
+		log.debug("Write line: {}", sb);
+		write(sb);
+	}
 
-    }
+	public void write(@NotNull byte[] bytes, int off, int len) throws SignatureException, IOException {
 
-    public void write(@NotNull byte[] bytes, int off, int len) throws SignatureException, IOException {
-        if (signature != null) {
-            signature.update(bytes, off, len);
-        }
-        size += len;
-        bos.write(bytes, off, len);
-    }
+		if (signature != null) {
+			signature.update(bytes, off, len);
+		}
 
-    public void write(@NotNull byte[] bytes) throws SignatureException, IOException {
-        if (signature != null) {
-            signature.update(bytes);
-        }
-        size += bytes.length;
-        bos.write(bytes);
-    }
+		size += len;
+		bos.write(bytes, off, len);
+	}
 
-    private void write(StringBuffer sb) throws IOException, SignatureException {
-        byte[] bytes = sb.toString().getBytes(getFileEncoding());
-        write(bytes);
-    }
+	public void write(@NotNull byte[] bytes) throws SignatureException, IOException {
 
-    public void writeLine(@Nullable String nextLine) throws IOException, SignatureException {
+		if (signature != null) {
+			signature.update(bytes);
+		}
 
-        if (nextLine == null)
-            return;
+		size += bytes.length;
+		bos.write(bytes);
+	}
 
-        StringBuffer sb = new StringBuffer();
+	public void write(CharSequence cs) throws IOException, SignatureException {
 
-        appendCell(sb, nextLine);
+		byte[] bytes = cs.toString().getBytes(getFileEncoding());
+		write(bytes);
+	}
 
-        sb.append(lineEnd);
-        log.debug("Write line:" + sb.toString());
-        write(sb);
+	public void writeLine(@Nullable String nextLine) throws IOException, SignatureException {
 
-    }
+		if (nextLine == null) {
+			return;
+		}
 
-    public void writeLine(@Nullable byte[] nextLine) throws IOException, SignatureException {
+		StringBuffer sb = new StringBuffer();
+		appendCell(sb, nextLine);
+		sb.append(lineEnd);
 
-        if (nextLine == null)
-            return;
+		log.debug("Write line: {}", sb);
+		write(sb);
+	}
 
-        log.debug("Write line:{}", nextLine);
-        write(nextLine);
-        byte[] bytesLineEnd = lineEnd.getBytes(getFileEncoding());
-        write(bytesLineEnd);
-    }
+	public void writeLine(@Nullable byte[] nextLine) throws IOException, SignatureException {
 
-    public void writeCharToLine(char ch, int count) throws IOException, SignatureException {
-        StringBuffer sb = new StringBuffer();
-        for (int i = 0; i < count; i++) {
-            sb.append(ch);
-        }
-        if (quotechar != NO_QUOTE_CHARACTER)
-            sb.append(quotechar);
+		if (nextLine == null) {
+			return;
+		}
 
-        sb.append(lineEnd);
-        log.debug("Write line:" + sb.toString());
-        write(sb);
-    }
+		log.debug("Write line: {}", nextLine);
 
-    private void appendCell(@NotNull StringBuffer sb, @NotNull String nextLine) {
-        if (quotechar != NO_QUOTE_CHARACTER)
-            sb.append(quotechar);
-        for (int j = 0; j < nextLine.length(); j++) {
-            char nextChar = nextLine.charAt(j);
-            if (escapechar != NO_ESCAPE_CHARACTER && nextChar == quotechar) {
-                sb.append(escapechar).append(nextChar);
-            } else if (escapechar != NO_ESCAPE_CHARACTER && nextChar == escapechar) {
-                sb.append(escapechar).append(nextChar);
-            } else {
-                sb.append(nextChar);
-            }
-        }
-        if (quotechar != NO_QUOTE_CHARACTER)
-            sb.append(quotechar);
-    }
+		write(nextLine);
+		write(lineEnd);
+	}
 
-    public byte[] getSign() throws SignatureException {
-        return signature != null? signature.sign(): null;
-    }
+	public void writeCharToLine(char ch, int count) throws IOException, SignatureException {
 
-    public void setSignature(Signature signature) {
-        this.signature = signature;
-    }
+		StringBuffer sb = new StringBuffer();
+		for (int i = 0; i < count; i++) {
+			sb.append(ch);
+		}
+		if (quotechar != NO_QUOTE_CHARACTER) {
+			sb.append(quotechar);
+		}
 
-    public long getFileSize() throws FlexPayException {
-        return size;
-    }
+		sb.append(lineEnd);
+		log.debug("Write line: {}", sb);
+		write(sb);
+	}
 
-    public void flush() throws FlexPayException {
-        try {
-            log.info("flush stream");
-            bos.flush();
-        } catch (IOException e) {
-            throw new FlexPayException(e);
-        }
-    }
+	private void appendCell(@NotNull StringBuffer sb, @NotNull String nextLine) {
 
-    public void close() throws FlexPayException {
-        try {
-            log.info("flush and close stream");
-            bos.flush();
-            bos.close();
-        } catch (IOException e) {
-            throw new FlexPayException(e);
-        }
-    }
+		if (quotechar != NO_QUOTE_CHARACTER) {
+			sb.append(quotechar);
+		}
 
-    public void setFileEncoding(@NotNull String fileEncoding) {
-        this.fileEncoding = fileEncoding;
-    }
+		for (int i = 0; i < nextLine.length(); i++) {
 
-    @NotNull
-    public String getFileEncoding() {
-        return fileEncoding != null ? fileEncoding : "Cp866";
-    }
+			char nextChar = nextLine.charAt(i);
+			if (escapechar != NO_ESCAPE_CHARACTER && nextChar == quotechar) {
+				sb.append(escapechar).append(nextChar);
+			} else if (escapechar != NO_ESCAPE_CHARACTER && nextChar == escapechar) {
+				sb.append(escapechar).append(nextChar);
+			} else {
+				sb.append(nextChar);
+			}
+		}
+
+		if (quotechar != NO_QUOTE_CHARACTER) {
+			sb.append(quotechar);
+		}
+	}
+
+	public byte[] getSign() throws SignatureException {
+		return signature != null ? signature.sign() : null;
+	}
+
+	public void setSignature(Signature signature) {
+		this.signature = signature;
+	}
+
+	public long getFileSize() throws FlexPayException {
+		return size;
+	}
+
+	public void close() throws FlexPayException {
+		try {
+			log.info("flush and close stream");
+			bos.flush();
+			bos.close();
+		} catch (IOException e) {
+			throw new FlexPayException(e);
+		}
+	}
+
+	public void setFileEncoding(@NotNull String fileEncoding) {
+		this.fileEncoding = fileEncoding;
+	}
+
+	@NotNull
+	public String getFileEncoding() {
+		return fileEncoding != null ? fileEncoding : "Cp866";
+	}
 }

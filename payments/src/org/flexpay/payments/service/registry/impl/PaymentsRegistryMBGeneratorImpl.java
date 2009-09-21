@@ -31,6 +31,7 @@ import org.springframework.beans.factory.annotation.Required;
 import java.io.BufferedInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.math.BigDecimal;
 import java.security.Signature;
 import java.security.SignatureException;
@@ -44,14 +45,11 @@ public class PaymentsRegistryMBGeneratorImpl implements PaymentsRegistryMBGenera
 
 	private final Logger log = LoggerFactory.getLogger(getClass());
 
-	private static final long FLASH_FILE = 100;
-	private static final Integer PAGE_SIZE = 20;
-
 	private static final SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
 	private static final SimpleDateFormat paymentDateFormat = new SimpleDateFormat("yyyyMMdd");
 	private static final SimpleDateFormat paymentPeriodDateFormat = new SimpleDateFormat("yyyyMM");
 
-	private static final String[] tableHeader = {
+	private static final String[] TABLE_HEADERS = {
 			"код квит",
 			"л.с. ЕРЦ ",
 			"  л.с.    ",
@@ -69,32 +67,32 @@ public class PaymentsRegistryMBGeneratorImpl implements PaymentsRegistryMBGenera
 			"   по ",
 			"Всего  "
 	};
-	private static final Map<String, String> serviceNames = new HashMap<String, String>();
+	private static final Map<String, String> SERVICE_NAMES = new HashMap<String, String>();
 
 	static {
-		serviceNames.put("01", "ЭЛЕКТР  ");
-		serviceNames.put("02", "КВ/ЭКСПЛ"); // точно известно
-		serviceNames.put("03", "ОТОПЛ   ");
-		serviceNames.put("04", "ГОР ВОДА");
-		serviceNames.put("05", "ХОЛ ВОДА");
-		serviceNames.put("06", "КАНАЛИЗ ");
-		serviceNames.put("07", "ГАЗ ВАР ");
-		serviceNames.put("08", "ГАЗ ОТОП");
-		serviceNames.put("09", "РАДИО   ");
-		serviceNames.put("10", "АНТ     "); // точно известно
-		serviceNames.put("11", "ЖИВ     "); // точно известно
-		serviceNames.put("12", "ГАРАЖ   "); // точно известно
-		serviceNames.put("13", "ПОГРЕБ  "); // точно известно
-		serviceNames.put("14", "САРАЙ   "); // точно известно
-		serviceNames.put("15", "КЛАДОВКА"); // точно известно
-		serviceNames.put("16", "ТЕЛЕФОН ");
-		serviceNames.put("19", "АССЕНИЗ ");
-		serviceNames.put("20", "ЛИФТ    ");
-		serviceNames.put("21", "ХОЗ РАСХ"); // точно известно
-		serviceNames.put("22", "НАЛ ЗЕМЛ");
-		serviceNames.put("23", "ПОВ ПОДК");
-		serviceNames.put("24", "ОПЛ АКТ ");
-		serviceNames.put("25", "РЕМ СЧЕТ");
+		SERVICE_NAMES.put("01", "ЭЛЕКТР  ");
+		SERVICE_NAMES.put("02", "КВ/ЭКСПЛ"); // точно известно
+		SERVICE_NAMES.put("03", "ОТОПЛ   ");
+		SERVICE_NAMES.put("04", "ГОР ВОДА");
+		SERVICE_NAMES.put("05", "ХОЛ ВОДА");
+		SERVICE_NAMES.put("06", "КАНАЛИЗ ");
+		SERVICE_NAMES.put("07", "ГАЗ ВАР ");
+		SERVICE_NAMES.put("08", "ГАЗ ОТОП");
+		SERVICE_NAMES.put("09", "РАДИО   ");
+		SERVICE_NAMES.put("10", "АНТ     "); // точно известно
+		SERVICE_NAMES.put("11", "ЖИВ     "); // точно известно
+		SERVICE_NAMES.put("12", "ГАРАЖ   "); // точно известно
+		SERVICE_NAMES.put("13", "ПОГРЕБ  "); // точно известно
+		SERVICE_NAMES.put("14", "САРАЙ   "); // точно известно
+		SERVICE_NAMES.put("15", "КЛАДОВКА"); // точно известно
+		SERVICE_NAMES.put("16", "ТЕЛЕФОН ");
+		SERVICE_NAMES.put("19", "АССЕНИЗ ");
+		SERVICE_NAMES.put("20", "ЛИФТ    ");
+		SERVICE_NAMES.put("21", "ХОЗ РАСХ"); // точно известно
+		SERVICE_NAMES.put("22", "НАЛ ЗЕМЛ");
+		SERVICE_NAMES.put("23", "ПОВ ПОДК");
+		SERVICE_NAMES.put("24", "ОПЛ АКТ ");
+		SERVICE_NAMES.put("25", "РЕМ СЧЕТ");
 	}
 
 	private RegistryService registryService;
@@ -131,7 +129,7 @@ public class PaymentsRegistryMBGeneratorImpl implements PaymentsRegistryMBGenera
 			rg.setSignature(signature);
 
 			// заголовочные строки
-			log.info("Write header lines");
+			log.debug("Writing header lines");
 			rg.writeLine("\tРеестр поступивших платежей. Мемориальный ордер №" + registry.getId());
 			rg.writeLine("\tДля \"" + organization.getName(getLocation()) + "\". День распределения платежей " +
 						 dateFormat.format(new Date()) + ".");
@@ -147,11 +145,11 @@ public class PaymentsRegistryMBGeneratorImpl implements PaymentsRegistryMBGenera
 			rg.writeCharToLine(' ', 128);
 
 			// шапка таблицы
-			log.info("Write table header lines");
-			rg.write("|".getBytes());
-			rg.writeLine(tableHeader);
+			log.debug("Writing table header lines");
+			rg.write("|");
+			rg.writeLine(TABLE_HEADERS);
 			StringBuffer bf = new StringBuffer();
-			for (String s : tableHeader) {
+			for (String s : TABLE_HEADERS) {
 				bf.append('+');
 				for (int i = 0; i < s.length(); i++) {
 					bf.append('-');
@@ -159,27 +157,18 @@ public class PaymentsRegistryMBGeneratorImpl implements PaymentsRegistryMBGenera
 			}
 			rg.writeLine(bf.toString());
 
-			rg.flush();
-
 			// информационные строки
-			log.info("Write info lines");
-			log.info("Total info lines: " + registry.getRecordsNumber());
-			Page<RegistryRecord> page = new Page<RegistryRecord>(PAGE_SIZE);  // TODO change paging to range
+			log.debug("Write info lines");
+			log.debug("Total info lines: {}", registry.getRecordsNumber());
+			Page<RegistryRecord> page = new Page<RegistryRecord>();  // TODO change paging to range
 			List<RegistryRecord> registryRecords;
 			registry.setRegistryStatus(registryStatusService.findByCode(RegistryStatus.PROCESSING));
 			registryService.update(registry);
 			while ((registryRecords = getRegistryRecords(registry, page)).size() > 0) {
-				int i = 0;
-				int k = 0;
 				try {
 					for (RegistryRecord registryRecord : registryRecords) {
 						String[] infoLine = createInfoLine(registry, registryRecord);
 						rg.writeLine(infoLine);
-						log.info("Wrote line " + String.valueOf(++i));
-						if (++k >= FLASH_FILE) {
-							rg.flush();
-							k = 0;
-						}
 					}
 				} catch (Exception e) {
 					registry.setRegistryStatus(registryStatusService.findByCode(RegistryStatus.PROCESSED_WITH_ERROR));
@@ -193,7 +182,7 @@ public class PaymentsRegistryMBGeneratorImpl implements PaymentsRegistryMBGenera
 
 			rg.close();
 			byte[] sign = rg.getSign();
-			log.debug("Registry file size={}", rg.getFileSize());
+			log.debug("Registry file size={}, signature size: {}", rg.getFileSize(), sign.length);
 
 			// служебные строки
 			rg = new RegistryWriterImpl(file, '|', RegistryWriter.NO_QUOTE_CHARACTER, RegistryWriter.NO_ESCAPE_CHARACTER);
@@ -212,6 +201,16 @@ public class PaymentsRegistryMBGeneratorImpl implements PaymentsRegistryMBGenera
 			}
 			is.close();
 			file.setSize(rg.getFileSize());
+
+//			final String encoding = rg.getFileEncoding();
+//			file.withOutputStream(new OutputStreamCallback() {
+//				@Override
+//				public void write(OutputStream os) throws IOException {
+//					byte[] line = StringUtils.repeat("_", 128).getBytes(encoding);
+//					os.write(line);
+//					os.write("\n".getBytes(encoding));
+//				}
+//			});
 
 			fpFileService.deleteFromFileSystem(tmpFile);
 		} catch (FileNotFoundException e) {
@@ -242,7 +241,7 @@ public class PaymentsRegistryMBGeneratorImpl implements PaymentsRegistryMBGenera
 		infoLine.add(createCellData("", 0, ' '));
 
 		// код квитанции
-		infoLine.add(createCellData(String.valueOf(record.getUniqueOperationNumber()), tableHeader[0].length(), ' '));
+		infoLine.add(createCellData(String.valueOf(record.getUniqueOperationNumber()), TABLE_HEADERS[0].length(), ' '));
 
 		// лиц. счет ЕРЦ
 		String eircCount = null;
@@ -256,10 +255,10 @@ public class PaymentsRegistryMBGeneratorImpl implements PaymentsRegistryMBGenera
 				}
 			}
 		}
-		infoLine.add(createCellData(eircCount, tableHeader[1].length(), ' '));
+		infoLine.add(createCellData(eircCount, TABLE_HEADERS[1].length(), ' '));
 
 		// лиц. счет поставщика услуг
-		infoLine.add(createCellData(record.getPersonalAccountExt(), tableHeader[2].length(), ' '));
+		infoLine.add(createCellData(record.getPersonalAccountExt(), TABLE_HEADERS[2].length(), ' '));
 
 		// ФИО
 		String fio = record.getLastName();
@@ -269,27 +268,27 @@ public class PaymentsRegistryMBGeneratorImpl implements PaymentsRegistryMBGenera
 				fio += " " + record.getMiddleName().charAt(0);
 			}
 		}
-		infoLine.add(createCellData(fio, tableHeader[3].length(), ' '));
+		infoLine.add(createCellData(fio, TABLE_HEADERS[3].length(), ' '));
 
 		// тип улицы
 		String streetType = record.getStreetType();
 		if (streetType != null && streetType.length() > 3) {
 			streetType = streetType.substring(0, 2);
 		}
-		infoLine.add(createCellData(streetType, tableHeader[4].length(), ' '));
+		infoLine.add(createCellData(streetType, TABLE_HEADERS[4].length(), ' '));
 
 		// название улицы
-		infoLine.add(createCellData(record.getStreetName(), tableHeader[5].length(), ' '));
+		infoLine.add(createCellData(record.getStreetName(), TABLE_HEADERS[5].length(), ' '));
 
 		// дом
 		String building = record.getBuildingNum();
 		if (building != null && record.getBuildingBulkNum() != null) {
 			building += " " + record.getBuildingBulkNum();
 		}
-		infoLine.add(createCellData(building, tableHeader[6].length(), ' '));
+		infoLine.add(createCellData(building, TABLE_HEADERS[6].length(), ' '));
 
 		// квартира
-		infoLine.add(createCellData(record.getApartmentNum(), tableHeader[7].length(), ' '));
+		infoLine.add(createCellData(record.getApartmentNum(), TABLE_HEADERS[7].length(), ' '));
 
 		// услуга
 		String serviceCode = record.getServiceCode();
@@ -305,22 +304,22 @@ public class PaymentsRegistryMBGeneratorImpl implements PaymentsRegistryMBGenera
 		}
 		serviceCode = StringUtils.leftPad(serviceCode, 2, '0');
 
-		String service = serviceCode + "." + serviceNames.get(serviceCode) + " " + "*";
-		infoLine.add(createCellData(service, tableHeader[8].length(), ' '));
+		String service = serviceCode + "." + SERVICE_NAMES.get(serviceCode) + " " + "*";
+		infoLine.add(createCellData(service, TABLE_HEADERS[8].length(), ' '));
 
 		// начальное показание счетчика
-		infoLine.add(createCellData("0", tableHeader[9].length(), ' '));
+		infoLine.add(createCellData("0", TABLE_HEADERS[9].length(), ' '));
 
 		// конечное показание счетчика
-		infoLine.add(createCellData("0", tableHeader[10].length(), ' '));
+		infoLine.add(createCellData("0", TABLE_HEADERS[10].length(), ' '));
 
 		// разница показаний счетчика
-		infoLine.add(createCellData("0", tableHeader[11].length(), ' '));
+		infoLine.add(createCellData("0", TABLE_HEADERS[11].length(), ' '));
 
 		// дата платежа
 		Date operationDate = record.getOperationDate();
 		String paymentDate = operationDate != null ? paymentDateFormat.format(operationDate) : null;
-		infoLine.add(createCellData(paymentDate, tableHeader[12].length(), ' '));
+		infoLine.add(createCellData(paymentDate, TABLE_HEADERS[12].length(), ' '));
 
 		// с какого месяца оплачена услуга
 		String paymentMounth = null;
@@ -331,10 +330,10 @@ public class PaymentsRegistryMBGeneratorImpl implements PaymentsRegistryMBGenera
 			cal.roll(Calendar.MONTH, -1);
 			paymentMounth = paymentPeriodDateFormat.format(cal.getTime());
 		}
-		infoLine.add(createCellData(paymentMounth, tableHeader[13].length(), ' '));
+		infoLine.add(createCellData(paymentMounth, TABLE_HEADERS[13].length(), ' '));
 
 		// по какой месяц оплачена услуга
-		infoLine.add(createCellData(paymentMounth, tableHeader[14].length(), ' '));
+		infoLine.add(createCellData(paymentMounth, TABLE_HEADERS[14].length(), ' '));
 
 		// сумма (значение суммы изначально передаётся в рублях, но должно быть записано в копейках)\
 		int summ = record.getAmount().multiply(new BigDecimal("100")).intValue();
@@ -365,28 +364,16 @@ public class PaymentsRegistryMBGeneratorImpl implements PaymentsRegistryMBGenera
 	private void writeDigitalSignature(@NotNull RegistryWriter rg, @Nullable byte[] sign) throws IOException, SignatureException {
 		if (sign != null) {
 			rg.writeLine(sign);
-			int m = 0;
-			byte[] lineEnd = RegistryWriter.DEFAULT_LINE_END.getBytes(rg.getFileEncoding());
-			for (int i = 0; i < sign.length; i++) {
-				if (sign[i] == lineEnd[0]) {
-					log.debug("search i={}", i);
-					if ((i + 1) % lineEnd.length == 0 && (i + lineEnd.length) < sign.length) {
-						log.debug("sign length: {}, range: {}.. {}", new Object[]{sign.length, i, i + lineEnd.length});
-						byte[] sub = Arrays.copyOfRange(sign, i, i + lineEnd.length);
-						if (Arrays.equals(sub, lineEnd)) {
-							m++;
-						}
-					}
-				}
-			}
-			while (m < 1) {
+			String str = new String(sign, rg.getFileEncoding());
+			int nLineFeeds = StringUtils.countMatches(str, "\n") + 1; // one added in rg.writeLine(sign);
+			while (nLineFeeds < 2) {
 				rg.writeLine("");
-				m++;
+				++nLineFeeds;
 			}
-			return;
+		} else {
+			rg.writeLine("");
+			rg.writeLine("");
 		}
-		rg.writeLine("");
-		rg.writeLine("");
 	}
 
 	@Override

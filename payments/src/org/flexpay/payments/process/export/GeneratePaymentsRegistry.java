@@ -9,6 +9,7 @@ import org.flexpay.common.process.exception.ProcessDefinitionException;
 import org.flexpay.common.process.exception.ProcessInstanceException;
 import org.flexpay.common.service.Roles;
 import org.flexpay.common.util.CollectionUtils;
+import static org.flexpay.common.util.CollectionUtils.list;
 import org.flexpay.common.util.DateUtil;
 import org.flexpay.common.util.SecurityUtil;
 import org.flexpay.orgs.persistence.Organization;
@@ -16,9 +17,10 @@ import org.flexpay.orgs.persistence.PaymentCollector;
 import org.flexpay.orgs.persistence.ServiceProvider;
 import org.flexpay.orgs.persistence.ServiceProviderAttribute;
 import org.flexpay.orgs.service.PaymentCollectorService;
+import org.flexpay.orgs.service.ServiceProviderAttributeService;
 import org.flexpay.orgs.service.ServiceProviderService;
 import org.flexpay.payments.process.export.job.ExportJobParameterNames;
-import org.flexpay.orgs.service.ServiceProviderAttributeService;
+import static org.flexpay.payments.process.export.job.ExportJobParameterNames.*;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.slf4j.Logger;
@@ -27,18 +29,20 @@ import org.springframework.beans.factory.annotation.Required;
 import org.springframework.scheduling.quartz.QuartzJobBean;
 
 import java.io.Serializable;
-import java.util.*;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 /**
- * Scheduling job generate payments registries for all service providers and registered oraganizations.
+ * Scheduling job generate payments registries for all service providers and registered organizations.
  */
 public class GeneratePaymentsRegistry extends QuartzJobBean {
 
 	private Logger log = LoggerFactory.getLogger(getClass());
 
 	private static final String USER_PAYMENTS_REGISTRY_GENERATOR = "payments-registry-generator";
-    private static final String GENERATE_PAYMENTS_REGISRY_PROCESS = "GeneratePaymentsRegisryProcess";
-    
+	private static final String GENERATE_PAYMENTS_REGISRY_PROCESS = "GeneratePaymentsRegisryProcess";
+
 	// time out 10 sec
 	private static final long TIME_OUT = 10000;
 
@@ -52,7 +56,7 @@ public class GeneratePaymentsRegistry extends QuartzJobBean {
 	/**
 	 * Set of authorities names for payments registry
 	 */
-	protected static final List<String> USER_PAYMENTS_REGISTRY_GENERATOR_AUTHORITIES = CollectionUtils.list(
+	protected static final List<String> USER_PAYMENTS_REGISTRY_GENERATOR_AUTHORITIES = list(
 			Roles.BASIC,
 			Roles.PROCESS_READ,
 			org.flexpay.payments.service.Roles.OPERATION_READ,
@@ -66,14 +70,14 @@ public class GeneratePaymentsRegistry extends QuartzJobBean {
 	);
 
 	/**
-     * Start processes "GeneratePaymentsRegisryProcess" for all existed in database service providers and registred organization.<br/>
-     * Job wait while all started processes will finish and add generated registries ids to job execution context.<br/>
-     * Registries ids content in {@link org.quartz.JobExecutionContext#getMergedJobDataMap()}.
-     * Mapping key is "registries" and value`s type is {@link java.util.List}<{@link Long}>
-     *
-     * @param context Job execution context.
-     * @throws JobExecutionException
-     */
+	 * Start processes "GeneratePaymentsRegisryProcess" for all existed in database service providers and registred
+	 * organization.<br/> Job wait while all started processes will finish and add generated registries ids to job
+	 * execution context.<br/> Registries ids content in {@link org.quartz.JobExecutionContext#getMergedJobDataMap()}.
+	 * Mapping key is "registries" and value`s type is {@link java.util.List}<{@link Long}>
+	 *
+	 * @param context Job execution context.
+	 * @throws JobExecutionException
+	 */
 	protected void executeInternal(JobExecutionContext context) throws JobExecutionException {
 
 		log.debug("Starting process generate payments registry at {}", new Date());
@@ -84,8 +88,8 @@ public class GeneratePaymentsRegistry extends QuartzJobBean {
 			Page<PaymentCollector> paymentCollectorPage = new Page<PaymentCollector>();
 			List<PaymentCollector> listPaymentCollectors;
 
-			List<Long> processInstanceIds = CollectionUtils.list();
-			List<Map<Serializable, Serializable>> waitingProcessData = CollectionUtils.list();
+			List<Long> processInstanceIds = list();
+			List<Map<Serializable, Serializable>> waitingProcessData = list();
 
 			while ((listPaymentCollectors = paymentCollectorService.listInstances(paymentCollectorPage)).size() > 0) {
 				for (PaymentCollector paymentCollector : listPaymentCollectors) {
@@ -94,25 +98,25 @@ public class GeneratePaymentsRegistry extends QuartzJobBean {
 					Page<ServiceProvider> providerPage = new Page<ServiceProvider>();
 					List<ServiceProvider> serviceProviders;
 					while ((serviceProviders = serviceProviderService.listInstances(providerPage)).size() > 0) {
-                        log.debug("Provider pager {}, service providers number {}",
+						log.debug("Provider pager {}, service providers number {}",
 								new Object[]{providerPage.getPageNumber(), serviceProviders.size()});
 						for (ServiceProvider serviceProvider : serviceProviders) {
 							Organization organization = serviceProvider.getOrganization();
 							Map<Serializable, Serializable> parameters = CollectionUtils.map();
 							ServiceProviderAttribute lastProcessedDateAttribute = serviceProviderAttributeService
-									.getServiceProviderAttribute(stub(serviceProvider), ExportJobParameterNames.LAST_PROCESSED_DATE);
+									.getServiceProviderAttribute(stub(serviceProvider), LAST_PROCESSED_DATE);
 
 							if (lastProcessedDateAttribute != null) {
 								parameters.put(lastProcessedDateAttribute.getName(), lastProcessedDateAttribute.getValue());
 							}
 
-								Date finishDate = DateUtil.now();
-								parameters.put(ExportJobParameterNames.FINISH_DATE, finishDate);
-								parameters.put(ExportJobParameterNames.ORGANIZATION_ID, organization.getId());
-								parameters.put(ExportJobParameterNames.SERVICE_PROVIDER_ID, serviceProvider.getId());
-								parameters.put(ExportJobParameterNames.REGISTERED_ORGANIZATION_ID, paymentCollector.getOrganization().getId());
-								//parameters.put(ExportJobParameterNames.EMAIL, serviceProvider.getEmail());
-								parameters.put(ExportJobParameterNames.PRIVATE_KEY, privateKey);
+							Date finishDate = DateUtil.now();
+							parameters.put(FINISH_DATE, finishDate);
+							parameters.put(ORGANIZATION_ID, organization.getId());
+							parameters.put(SERVICE_PROVIDER_ID, serviceProvider.getId());
+							parameters.put(REGISTERED_ORGANIZATION_ID, paymentCollector.getOrganization().getId());
+							//parameters.put(ExportJobParameterNames.EMAIL, serviceProvider.getEmail());
+							parameters.put(PRIVATE_KEY, privateKey);
 
 							waitingProcessData.add(parameters);
 
@@ -126,13 +130,16 @@ public class GeneratePaymentsRegistry extends QuartzJobBean {
 				paymentCollectorPage.nextPage();
 			}
 
-			List<Long> registryIds = new ArrayList<Long>();
+			List<Long> registryIds = list();
 
 			do {
-                log.debug("Waiting number {} processes: {}", new Object[]{GENERATE_PAYMENTS_REGISRY_PROCESS, waitingProcessData.size()});
-				for (Map<Serializable, Serializable> param : waitingProcessData) {
-					log.debug("Waiting {} for GeneratePaymentsRegisryProcess to complete: {}",
-							new Object[]{GENERATE_PAYMENTS_REGISRY_PROCESS, param});
+				if (log.isDebugEnabled()) {
+					log.debug("Waiting number {} processes: {}",
+							new Object[]{GENERATE_PAYMENTS_REGISRY_PROCESS, waitingProcessData.size()});
+					for (Map<Serializable, Serializable> param : waitingProcessData) {
+						log.debug("Waiting {} for GeneratePaymentsRegisryProcess to complete: {}",
+								new Object[]{GENERATE_PAYMENTS_REGISRY_PROCESS, param});
+					}
 				}
 				try {
 					Thread.sleep(TIME_OUT);
@@ -141,8 +148,8 @@ public class GeneratePaymentsRegistry extends QuartzJobBean {
 					throw new JobExecutionException(e);
 				}
 
-				List<Long> tmpListProcessInstanesId = new ArrayList<Long>(processInstanceIds);
-				waitingProcessData = CollectionUtils.list();
+				List<Long> tmpListProcessInstanesId = list(processInstanceIds);
+				waitingProcessData = list();
 
 				for (Long processId : processInstanceIds) {
 					Process process;
@@ -154,18 +161,18 @@ public class GeneratePaymentsRegistry extends QuartzJobBean {
 
 						Map<Serializable, Serializable> parameters = process.getParameters();
 
-						String lastProcessedDate = (String) parameters.get(ExportJobParameterNames.LAST_PROCESSED_DATE);
-						Long serviceProviderId = (Long) parameters.get(ExportJobParameterNames.SERVICE_PROVIDER_ID);
+						String lastProcessedDate = (String) parameters.get(LAST_PROCESSED_DATE);
+						Long serviceProviderId = (Long) parameters.get(SERVICE_PROVIDER_ID);
 						ServiceProvider serviceProvider = serviceProviderService.read(new Stub<ServiceProvider>(serviceProviderId));
 
 						if (lastProcessedDate != null && serviceProvider != null) {
 							ServiceProviderAttribute lastProcessedDateAttribute = serviceProviderAttributeService
-									.getServiceProviderAttribute(stub(serviceProvider), ExportJobParameterNames.LAST_PROCESSED_DATE);
+									.getServiceProviderAttribute(stub(serviceProvider), LAST_PROCESSED_DATE);
 
 							if (lastProcessedDateAttribute == null) {
 								lastProcessedDateAttribute = new ServiceProviderAttribute();
 								lastProcessedDateAttribute.setServiceProvider(serviceProvider);
-								lastProcessedDateAttribute.setName(ExportJobParameterNames.LAST_PROCESSED_DATE);
+								lastProcessedDateAttribute.setName(LAST_PROCESSED_DATE);
 								log.debug("Set last processed date: {}", lastProcessedDate);
 								lastProcessedDateAttribute.setValue(lastProcessedDate);
 

@@ -21,6 +21,7 @@ import org.flexpay.common.service.*;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.DateUtil;
 import org.flexpay.common.util.config.ApplicationConfig;
+import org.flexpay.common.util.io.InputStreamCallback;
 import org.flexpay.common.util.io.ReaderCallback;
 import org.flexpay.orgs.persistence.*;
 import org.flexpay.orgs.service.*;
@@ -89,15 +90,12 @@ public class TestGeneratePaymentsRegistry extends PaymentsSpringBeanAwareTestCas
 	@Autowired
 	private OperationStatusService operationStatusService;
 	@Autowired
-	@Qualifier ("documentTypeService")
 	private DocumentTypeService documentTypeService;
 	@Autowired
-	@Qualifier ("documentStatusService")
 	private DocumentStatusService documentStatusService;
 	@Autowired
 	private DocumentService documentService;
 	@Autowired
-	@Qualifier ("spService")
 	private SPService spService;
 	@Autowired
 	private ServiceTypeService serviceTypeService;
@@ -106,7 +104,6 @@ public class TestGeneratePaymentsRegistry extends PaymentsSpringBeanAwareTestCas
 	private FPFileService fpFileService;
 
 	@Autowired
-	@Qualifier ("registryArchiveStatusService")
 	private RegistryArchiveStatusService registryArchiveStatusService;
 	@Autowired
 	private RegistryRecordService registryRecordService;
@@ -469,41 +466,67 @@ public class TestGeneratePaymentsRegistry extends PaymentsSpringBeanAwareTestCas
 
 	private static void assertDigitalSignature(FPFile file, String key) throws Exception {
 		final Signature sign = readPublicSignature(key);
-		file.withReader(FILE_ENCODING, new ReaderCallback() {
-			public void read(Reader r) throws IOException {
-				@SuppressWarnings ({"IOResourceOpenedButNotSafelyClosed"})
-				BufferedReader reader = new BufferedReader(r);
+		file.withInputStream(new InputStreamCallback() {
+			public void read(InputStream is) throws IOException {
 
-				StringBuilder signature = new StringBuilder();
-				String line;
-				boolean signatureNotEmpty = false;
-				while ((line = reader.readLine()) != null) {
-					if (SERVICE_LINE.equals(line)) {
-						break;
+				byte[] lineFeed = "\n".getBytes(FILE_ENCODING);
+				TestGeneratePaymentsRegistry.read(is, SERVICE_LINE.length() + lineFeed.length);
+				// 128 - is a size of SHA-1 signature
+				byte[] signature = TestGeneratePaymentsRegistry.read(is, 128);
+
+				// skip service lines - up to a 3 new feed lines
+				int nFeedsFound = 0;
+				byte[] ringBuffer = new byte[lineFeed.length];
+				while (nFeedsFound < 3) {
+					ringBuffer[ringBuffer.length-1] = (byte) is.read();
+					if (equals(lineFeed, ringBuffer)) {
+						++nFeedsFound;
+						ringBuffer = new byte[lineFeed.length];
+						continue;
 					}
-					if (line.length() > 0) {
-						if (signatureNotEmpty) {
-							signature.append("\n");
-						}
-						signature.append(line);
-						signatureNotEmpty = true;
-					}
+					shiftLeft(ringBuffer);
 				}
 
 				try {
-					while ((line = reader.readLine()) != null) {
-						line = line + "\n";
-						sign.update(line.getBytes(FILE_ENCODING));
+					byte[] buffer = new byte[1024];
+					int nRead;
+					while ((nRead = is.read(buffer)) != -1) {
+						sign.update(buffer, 0, nRead);
 					}
-					assertTrue("Digital signature failed", sign.verify(signature.toString().getBytes(FILE_ENCODING)));
+					assertTrue("Digital signature failed", sign.verify(signature));
 				} catch (SignatureException ex) {
 					throw new RuntimeException(ex);
 				}
 			}
+
+			private void shiftLeft(byte[] ar) {
+				System.arraycopy(ar, 1, ar, 0, ar.length - 1);
+			}
+
+			private boolean equals(byte[] ar1, byte[] ar2) {
+				if (ar1.length != ar2.length) {
+					return false;
+				}
+				for (int i = 0; i < ar1.length; ++i) {
+					if (ar1[i] != ar2[i]) {
+						return false;
+					}
+				}
+				return true;
+			}
 		});
 	}
 
+	private static byte[] read(InputStream is, int n) throws IOException {
+		byte[] bytes = new byte[n];
+		for (int i = 0; i < n; ++i) {
+			bytes[i] = (byte) is.read();
+		}
+		return bytes;
+	}
+
 	private static Signature readPublicSignature(String key) throws Exception {
+
 		KeyFactory keyFactory = KeyFactory.getInstance("RSA");
 
 		byte[] pubKeyBytes = getDataFile(key);

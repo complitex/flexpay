@@ -20,6 +20,8 @@ public interface RegistryWriter {
 
 	void write(@NotNull byte[] bytes) throws SignatureException, IOException;
 
+	void write(CharSequence cs) throws IOException, SignatureException;
+
 	void writeLine(@Nullable String nextLine) throws IOException, SignatureException;
 
 	void writeLine(@Nullable byte[] nextLine) throws IOException, SignatureException;
@@ -32,11 +34,7 @@ public interface RegistryWriter {
 
 	long getFileSize() throws FlexPayException;
 
-	void flush() throws FlexPayException;
-
 	void close() throws FlexPayException;
-
-	void setFileEncoding(@NotNull String fileEncoding);
 
 	String getFileEncoding();
 }
