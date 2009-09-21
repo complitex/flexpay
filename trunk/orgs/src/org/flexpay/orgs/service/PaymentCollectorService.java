@@ -1,6 +1,7 @@
 package org.flexpay.orgs.service;
 
 import org.flexpay.common.dao.paging.Page;
+import org.flexpay.common.dao.paging.FetchRange;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.orgs.persistence.PaymentCollector;
@@ -26,6 +27,16 @@ public interface PaymentCollectorService
 	@Secured (Roles.PAYMENT_COLLECTOR_READ)
 	@NotNull
 	List<PaymentCollector> listInstances(@NotNull Page<PaymentCollector> pager);
+
+    /**
+	 * List registered instances
+	 *
+	 * @range Range
+	 * @return List of registered instances
+	 */
+	@Secured (Roles.PAYMENT_COLLECTOR_READ)
+	@NotNull
+	List<PaymentCollector> listInstances(@NotNull FetchRange range);
 
 	/**
 	 * Disable instances

@@ -2,6 +2,7 @@ package org.flexpay.orgs.dao;
 
 import org.flexpay.common.dao.GenericDao;
 import org.flexpay.common.dao.paging.Page;
+import org.flexpay.common.dao.paging.FetchRange;
 import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.orgs.persistence.OrganizationInstance;
 import org.flexpay.orgs.persistence.OrganizationInstanceDescription;
@@ -19,6 +20,14 @@ public interface OrganisationInstanceDao<
 	 * @return list instances
 	 */
 	List<T> findInstances(Page<T> pager);
+
+    /**
+	 * Find instances
+	 *
+        * @param range Range
+	 * @return list instances
+	 */
+	List<T> listInstancesWithIdentities(FetchRange range);
 
 	/**
 	 * Find instances for organization

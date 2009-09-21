@@ -1,6 +1,7 @@
 package org.flexpay.orgs.service;
 
 import org.flexpay.common.dao.paging.Page;
+import org.flexpay.common.dao.paging.FetchRange;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.orgs.persistence.Organization;
@@ -37,6 +38,16 @@ public interface ServiceProviderService
 	@NotNull
 	@Secured (Roles.SERVICE_PROVIDER_READ)
 	List<ServiceProvider> listInstances(@NotNull Page<ServiceProvider> pager);
+
+    /**
+	 * List service providers
+	 *
+	 * @param range    Fetch range
+        * @return List of service providers
+	 */
+	@NotNull
+	@Secured (Roles.SERVICE_PROVIDER_READ)
+	List<ServiceProvider> listInstances(@NotNull FetchRange range);
 
 	/**
 	 * Disable service providers

@@ -1,11 +1,9 @@
 package org.flexpay.payments.service.registry.impl;
 
 import org.apache.commons.lang.StringUtils;
-import org.flexpay.common.dao.paging.Page;
+import org.flexpay.common.dao.paging.FetchRange;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.file.FPFile;
-import org.flexpay.common.persistence.filter.ImportErrorTypeFilter;
-import org.flexpay.common.persistence.filter.RegistryRecordStatusFilter;
 import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.persistence.registry.RegistryRecord;
 import org.flexpay.common.persistence.registry.RegistryRecordContainer;
@@ -31,7 +29,6 @@ import org.springframework.beans.factory.annotation.Required;
 import java.io.BufferedInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.math.BigDecimal;
 import java.security.Signature;
 import java.security.SignatureException;
@@ -160,13 +157,14 @@ public class PaymentsRegistryMBGeneratorImpl implements PaymentsRegistryMBGenera
 			// информационные строки
 			log.debug("Write info lines");
 			log.debug("Total info lines: {}", registry.getRecordsNumber());
-			Page<RegistryRecord> page = new Page<RegistryRecord>();  // TODO change paging to range
-			List<RegistryRecord> registryRecords;
-			registry.setRegistryStatus(registryStatusService.findByCode(RegistryStatus.PROCESSING));
-			registryService.update(registry);
-			while ((registryRecords = getRegistryRecords(registry, page)).size() > 0) {
+
+            registry.setRegistryStatus(registryStatusService.findByCode(RegistryStatus.PROCESSING));
+            registryService.update(registry);
+
+            FetchRange range = new FetchRange();
+            do {
 				try {
-					for (RegistryRecord registryRecord : registryRecords) {
+					for (RegistryRecord registryRecord : registryRecordService.listRecordsForExport(registry, range)) {
 						String[] infoLine = createInfoLine(registry, registryRecord);
 						rg.writeLine(infoLine);
 					}
@@ -175,8 +173,8 @@ public class PaymentsRegistryMBGeneratorImpl implements PaymentsRegistryMBGenera
 					registryService.update(registry);
 					throw new FlexPayException(e);
 				}
-				page.nextPage();
-			}
+				range.nextPage();
+			} while (range.hasMore());
 			registry.setRegistryStatus(registryStatusService.findByCode(RegistryStatus.PROCESSED));
 			registryService.update(registry);
 
@@ -227,13 +225,6 @@ public class PaymentsRegistryMBGeneratorImpl implements PaymentsRegistryMBGenera
 		}
 	}
 
-	private List<RegistryRecord> getRegistryRecords(Registry registry, Page<RegistryRecord> page) {
-		return registryRecordService.listRecords(registry,
-				new ImportErrorTypeFilter(),
-				new RegistryRecordStatusFilter(),
-				page);
-	}
-
 	@NotNull
 	private String[] createInfoLine(Registry registry, @NotNull RegistryRecord record) throws FlexPayException {
 		List<String> infoLine = new ArrayList<String>();
@@ -245,8 +236,8 @@ public class PaymentsRegistryMBGeneratorImpl implements PaymentsRegistryMBGenera
 
 		// лиц. счет ЕРЦ
 		String eircCount = null;
-		List<RegistryRecordContainer> containers = registryRecordService.getRecordContainers(record);
-		for (RegistryRecordContainer container : containers) {
+		//List<RegistryRecordContainer> containers = registryRecordService.getRecordContainers(record);
+		for (RegistryRecordContainer container : record.getContainers()) {
 			if (container.getData() != null && container.getData().startsWith("15:")) {
 				String[] contenerFields = container.getData().split(":");
 				if (contenerFields.length >= 3) {

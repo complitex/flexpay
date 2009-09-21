@@ -2,6 +2,7 @@ package org.flexpay.orgs.service.imp;
 
 import org.apache.commons.lang.StringUtils;
 import org.flexpay.common.dao.paging.Page;
+import org.flexpay.common.dao.paging.FetchRange;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Stub;
@@ -45,6 +46,17 @@ public abstract class OrganizationInstanceServiceImpl<
 	@NotNull
 	public List<T> listInstances(@NotNull Page<T> pager) {
 		return instanceDao.findInstances(pager);
+	}
+
+    /**
+	 * List registered instances
+	 *
+        * @param range Fetch range
+        * @return List of registered instances
+	 */
+	@NotNull
+	public List<T> listInstances(@NotNull FetchRange range) {
+		return instanceDao.listInstancesWithIdentities(range);
 	}
 
 	/**
