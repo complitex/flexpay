@@ -171,7 +171,8 @@
 				destdir="${build.dir}/classes"
 				deprecation="on" source="1.5" target="1.5" debug="on" encoding="utf8"
 				classpathref="classpath">
-			<compilerarg value="-Xlint"/>
+			<compilerarg value="-Xlint:-path"/>
+			<compilerarg value="-Xlint:unchecked"/>
 		</javac2>
 	</target>
 
@@ -180,7 +181,8 @@
 				destdir="${build.dir}/classes"
 				debug="on" deprecation="on" source="1.5" target="1.5" encoding="utf8"
 				classpathref="classpath">
-			<compilerarg value="-Xlint"/>
+			<compilerarg value="-Xlint:-path"/>
+			<compilerarg value="-Xlint:unchecked"/>
 		</javac2>
 	</target>
 
