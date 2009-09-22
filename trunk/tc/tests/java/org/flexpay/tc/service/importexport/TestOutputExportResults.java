@@ -4,6 +4,7 @@ import org.apache.commons.io.IOUtils;
 import org.flexpay.ab.persistence.Building;
 import org.flexpay.ab.persistence.BuildingAddress;
 import org.flexpay.ab.persistence.District;
+import org.flexpay.ab.persistence.DistrictName;
 import org.flexpay.ab.service.AddressService;
 import org.flexpay.ab.service.BuildingService;
 import org.flexpay.ab.service.DistrictService;
@@ -22,6 +23,7 @@ import org.flexpay.tc.service.TariffCalculationResultService;
 import org.flexpay.tc.util.config.ApplicationConfig;
 import org.jetbrains.annotations.NotNull;
 import org.junit.Test;
+import static org.junit.Assert.assertNotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
@@ -95,6 +97,7 @@ public class TestOutputExportResults extends SpringBeanAwareTestCase {
 			List<Long> buildingIds = tariffCalculationResultService.getAddressIds(calcDate);
 
 			for (Long buildingId : buildingIds) {
+				@SuppressWarnings ({"unchecked"})
 				List<TariffExportLogRecord> records = (List<TariffExportLogRecord>) hibernateTemplate.find(
 						hql, new Object[]{tariffBeginDate, buildingId});
 				log.info("Found {} log records for date: {} and building #{}",
@@ -113,6 +116,7 @@ public class TestOutputExportResults extends SpringBeanAwareTestCase {
 						continue;
 					}
 
+					@SuppressWarnings ({"unchecked"})
 					List<TariffCalculationResult> results = (List<TariffCalculationResult>) hibernateTemplate.find(
 							hqlGetResult, new Object[]{record.getId()});
 					if (results.size() > 1) {
@@ -156,8 +160,11 @@ public class TestOutputExportResults extends SpringBeanAwareTestCase {
 
 		String value = (result != null) ? result.getValue().toString() : "0";
 
+		assertNotNull("District is null", district);
+		DistrictName name = district.getCurrentName();
+		assertNotNull("Current name is null", name);
 		StringBuilder sb = new StringBuilder()
-				.append("\"").append(district.getCurrentName().getDefaultNameTranslation()).append("\"").append(delimeter)
+				.append("\"").append(name.getDefaultNameTranslation()).append("\"").append(delimeter)
 				.append("\"").append(address).append("\"").append(delimeter)
 				.append(record.getBuilding().getId()).append(delimeter)
 				.append(cnId).append(delimeter)

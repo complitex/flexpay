@@ -24,6 +24,7 @@ public class Diff extends DomainObject {
 	private int processingStatus;
 	private String masterIndex;
 	private String instanceId;
+	private String errorMessage;
 
 	private List<HistoryRecord> historyRecords = Collections.emptyList();
 
@@ -121,6 +122,15 @@ public class Diff extends DomainObject {
 		this.objectTypeName = objectTypeName;
 	}
 
+	public String getErrorMessage() {
+		return errorMessage;
+	}
+
+	public void setErrorMessage(String errorMessage) {
+		this.errorMessage = errorMessage != null ?
+							errorMessage.substring(0, Math.min(250, errorMessage.length())) : null;
+	}
+
 	@Override
 	public String toString() {
 		return new ToStringBuilder(this).
@@ -134,6 +144,7 @@ public class Diff extends DomainObject {
 				append("masterIndex", masterIndex).
 				append("instanceId", instanceId).
 				append("processingStatus", processingStatus).
+				append("errorMessage", errorMessage).
 				toString();
 	}
 

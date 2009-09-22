@@ -35,7 +35,9 @@ public class ObjectsSyncerJob {
 			FetchRange range = new FetchRange();
 			do {
 				List<Diff> diffs = diffService.findNewDiffs(range);
-				syncer.processHistory(diffs);
+				if (!syncer.processHistory(diffs)) {
+					return;
+				}
 				range.nextPage();
 			} while (range.hasMore());
 		} catch (Exception e) {

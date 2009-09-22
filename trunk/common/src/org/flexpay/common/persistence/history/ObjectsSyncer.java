@@ -14,5 +14,5 @@ public interface ObjectsSyncer {
 	 *
 	 * @param diffs History records to process
 	 */
-	void processHistory(@NotNull List<Diff> diffs);
+	boolean processHistory(@NotNull List<Diff> diffs);
 }
