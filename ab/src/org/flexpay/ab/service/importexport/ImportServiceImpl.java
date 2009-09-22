@@ -1,8 +1,6 @@
 package org.flexpay.ab.service.importexport;
 
 import org.apache.commons.collections.ArrayStack;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.flexpay.ab.dao.importexport.*;
 import org.flexpay.ab.persistence.*;
 import org.flexpay.ab.persistence.filters.TownFilter;
@@ -13,10 +11,11 @@ import org.flexpay.common.persistence.*;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.service.importexport.*;
 import org.flexpay.common.util.config.ApplicationConfig;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.beans.factory.annotation.Required;
-import org.jetbrains.annotations.NonNls;
 
 import java.util.*;
 
@@ -78,7 +77,7 @@ public class ImportServiceImpl implements ImportService {
 	/**
 	 * Run flush objects operation, also flushes and clear current session
 	 */
-	@Transactional(readOnly = false, propagation = Propagation.REQUIRED)
+	@Transactional (readOnly = false, propagation = Propagation.REQUIRED)
 	protected void flushStack() {
 
 		log.debug("Starting flushing stack, size: {}", objectsStack.size());
@@ -124,7 +123,7 @@ public class ImportServiceImpl implements ImportService {
 		objectsStack.add(object);
 	}
 
-	@Transactional(readOnly = false)
+	@Transactional (readOnly = false)
 	public void importDistricts(Town town, DataSourceDescription sourceDescription)
 			throws FlexPayException {
 
@@ -194,8 +193,8 @@ public class ImportServiceImpl implements ImportService {
 		}
 	}
 
-	@SuppressWarnings({"unchecked"})
-	@Transactional(readOnly = false)
+	@SuppressWarnings ({"unchecked"})
+	@Transactional (readOnly = false)
 	public void importStreets(Town town, DataSourceDescription sourceDescription)
 			throws FlexPayException {
 
@@ -227,7 +226,7 @@ public class ImportServiceImpl implements ImportService {
 				boolean found = correctionsService.existsCorrection(
 						data.getExternalSourceId(), Street.class, stub(sourceDescription));
 				log.info("{}ound street {}, total time: {} ms",
-						new Object[] {(found ? "F" : "Not f"), data, (System.currentTimeMillis() - tm)});
+						new Object[]{(found ? "F" : "Not f"), data, (System.currentTimeMillis() - tm)});
 
 				// Find object by its name
 				Street nameMatchObj = findObject(nameObjsMap, street);
@@ -282,7 +281,7 @@ public class ImportServiceImpl implements ImportService {
 		}
 	}
 
-	@SuppressWarnings({"unchecked"})
+	@SuppressWarnings ({"unchecked"})
 	private <NTD extends NameTimeDependentChild> NTD findObject(Map<String, List<NTD>> ntdsMap, NTD newObj)
 			throws FlexPayException {
 
@@ -313,9 +312,10 @@ public class ImportServiceImpl implements ImportService {
 	 *
 	 * @param ntds List of objects
 	 * @return mapping
-	 * @throws org.flexpay.common.exception.FlexPayException if language configuration is invalid
+	 * @throws org.flexpay.common.exception.FlexPayException
+	 *          if language configuration is invalid
 	 */
-	@SuppressWarnings({"unchecked"})
+	@SuppressWarnings ({"unchecked"})
 	protected <NTD extends NameTimeDependentChild> Map<String, List<NTD>> initializeNamesToObjectsMap(List<NTD> ntds)
 			throws FlexPayException {
 
@@ -329,7 +329,7 @@ public class ImportServiceImpl implements ImportService {
 			Translation defTranslation = getDefaultLangTranslation(tmpName.getTranslations());
 			String name = defTranslation.getName().toLowerCase();
 			List<NTD> val = stringNTDMap.containsKey(name) ?
-					stringNTDMap.get(name) : new ArrayList<NTD>();
+							stringNTDMap.get(name) : new ArrayList<NTD>();
 			val.add(object);
 			stringNTDMap.put(name, val);
 		}
@@ -337,7 +337,7 @@ public class ImportServiceImpl implements ImportService {
 		return stringNTDMap;
 	}
 
-	@SuppressWarnings({"ParameterAlwaysCastBeforeUse"})
+	@SuppressWarnings ({"ParameterAlwaysCastBeforeUse"})
 	private boolean nonNameAttributesEquals(Object oldObj, Object newObj) {
 		if (oldObj instanceof Street) {
 			Street stOld = (Street) oldObj, stNew = (Street) newObj;
@@ -366,12 +366,12 @@ public class ImportServiceImpl implements ImportService {
 	}
 
 	/**
-	 * Import street types only builds corrections and does not add any new street types to
-	 * the system, use User Interface, or plain SQL to add new types.
+	 * Import street types only builds corrections and does not add any new street types to the system, use User Interface,
+	 * or plain SQL to add new types.
 	 *
 	 * @param sourceDescription Data source description
 	 */
-	@Transactional(readOnly = false)
+	@Transactional (readOnly = false)
 	public void importStreetTypes(DataSourceDescription sourceDescription) {
 		streetTypeDataSource.initialize();
 
@@ -426,7 +426,7 @@ public class ImportServiceImpl implements ImportService {
 		}
 	}
 
-	@Transactional(readOnly = false)
+	@Transactional (readOnly = false)
 	public void importBuildings(DataSourceDescription sourceDescription) throws Exception {
 		buildingsDataSource.initialize();
 
@@ -486,7 +486,7 @@ public class ImportServiceImpl implements ImportService {
 		}
 	}
 
-	@Transactional(readOnly = false, propagation = Propagation.NOT_SUPPORTED)
+	@Transactional (readOnly = false, propagation = Propagation.NOT_SUPPORTED)
 	public void importApartments(DataSourceDescription sourceDescription) throws Exception {
 		apartmentDataSource.initialize();
 
@@ -547,7 +547,7 @@ public class ImportServiceImpl implements ImportService {
 		}
 	}
 
-	@Transactional(readOnly = false, propagation = Propagation.NOT_SUPPORTED)
+	@Transactional (readOnly = false, propagation = Propagation.NOT_SUPPORTED)
 	public void importPersons(Stub<DataSourceDescription> sd) throws Exception {
 		personDataSource.initialize();
 
@@ -592,7 +592,7 @@ public class ImportServiceImpl implements ImportService {
 						log.info("Creating new person: {}", person);
 					} else {
 						addPersonImportError(sd, data);
-						log.warn("Cannot find person: {}",  person);
+						log.warn("Cannot find person: {}", person);
 						continue;
 					}
 				}

@@ -26,13 +26,17 @@ public class ObjectsSyncerImpl implements ObjectsSyncer {
 	 *
 	 * @param diffs History records to process
 	 */
-	public void processHistory(@NotNull List<Diff> diffs) {
+	public boolean processHistory(@NotNull List<Diff> diffs) {
 
 		log.debug("About to process {} diffs", diffs.size());
 
 		for (Diff diff : diffs) {
 
-			log.info("Processing history diff: {}", diff);
+			log.debug("Processing history diff: {}", diff);
+			if (diff.getErrorMessage() != null) {
+				log.info("Diff has error message set, give up: {}", diff);
+				return false;
+			}
 
 			try {
 				boolean processed = true;
@@ -54,14 +58,24 @@ public class ObjectsSyncerImpl implements ObjectsSyncer {
 				diffService.update(diff);
 			} catch (FlexPayExceptionContainer e) {
 				e.error(log, "Sync failed");
+				setErrorMessage(diff, e.getFirstException());
+				return false;
 			} catch (Exception e) {
 				log.error("Failed processing diff " + diff, e);
+				setErrorMessage(diff, e);
+				return false;
 			} finally {
 				SyncContext.setProcessingDiff(null);
 			}
 		}
 
 		log.debug("Ended processing diffs");
+		return true;
+	}
+	
+	private void setErrorMessage(Diff diff, Exception ex) {
+		diff.setErrorMessage(ex.getMessage());
+		diffService.update(diff);
 	}
 
 	@Required

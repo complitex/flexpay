@@ -13,7 +13,7 @@
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
 		<param-value>
-			/WEB-INF/applicationContext.xml
+			/WEB-INF/applicationContextTc.xml
 			/WEB-INF/applicationContext-security.xml
 		</param-value>
 	</context-param>
@@ -35,10 +35,10 @@
 	</context-param>
 
 	<listener>
-		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+		<listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>
 	</listener>
 	<listener>
-		<listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
 	<listener>
 		<listener-class>org.springframework.security.ui.session.HttpSessionEventPublisher</listener-class>

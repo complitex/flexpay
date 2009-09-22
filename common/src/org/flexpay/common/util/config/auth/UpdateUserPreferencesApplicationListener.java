@@ -38,6 +38,10 @@ public class UpdateUserPreferencesApplicationListener implements ApplicationList
 			log.debug("HttpSessionDestroyedEvent");
 			HttpSessionDestroyedEvent event = (HttpSessionDestroyedEvent) appEvent;
 			SecurityContext context = (SecurityContext) event.getSession().getAttribute("SPRING_SECURITY_CONTEXT");
+			if (context == null) {
+				log.warn("Session destroyed, but no SecurityContext found");
+				return;
+			}
 			Authentication auth = context.getAuthentication();
 			UserPreferences preferences = (UserPreferences) auth.getPrincipal();
 			updateUserPreferences(preferences);

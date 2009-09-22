@@ -14,6 +14,11 @@ public class CollectionUtils {
 	}
 
 	@NotNull
+	public static <T> List<T> list() {
+		return new ArrayList<T>();
+	}
+
+	@NotNull
 	public static <T> List<T> list(@NotNull T... ts) {
 		return list(Arrays.asList(ts));
 	}
@@ -31,6 +36,11 @@ public class CollectionUtils {
 		}
 
 		return list;
+	}
+
+	@NotNull
+	public static <T> Set<T> set() {
+		return new HashSet<T>();
 	}
 
 	@NotNull

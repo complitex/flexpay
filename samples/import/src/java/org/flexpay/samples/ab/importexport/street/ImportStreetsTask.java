@@ -16,8 +16,8 @@ public class ImportStreetsTask implements StandaloneTask {
 	 */
 	public void execute() {
 		try {
-			importService.setStreetDataConverter(new RawStreetDataConverter());
-			importService.setStreetDataSource(new RawStreetDataSource());
+//			importService.setStreetDataConverter(new RawStreetDataConverter());
+//			importService.setStreetDataSource(new RawStreetDataSource());
 			importService.importStreets(town, sourceDescription);
 		} catch (Exception e) {
 			throw new RuntimeException("Failed importing streets", e);

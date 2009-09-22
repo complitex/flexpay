@@ -55,6 +55,11 @@
 				<comment>Source application installation identifier</comment>
 			</column>
 		</property>
+		<property name="errorMessage">
+			<column name="error_message" not-null="false">
+				<comment>Processing error message</comment>
+			</column>
+		</property>
 		<list name="historyRecords" cascade="all-delete-orphan" inverse="true">
 			<key column="diff_id" not-null="true" />
 			<index column="operation_order" />
