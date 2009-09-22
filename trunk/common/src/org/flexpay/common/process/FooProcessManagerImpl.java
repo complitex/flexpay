@@ -1,26 +1,26 @@
 package org.flexpay.common.process;
 
+import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.process.exception.ProcessDefinitionException;
 import org.flexpay.common.process.exception.ProcessInstanceException;
 import org.flexpay.common.process.sorter.ProcessSorter;
-import org.flexpay.common.dao.paging.Page;
+import org.jbpm.JbpmConfiguration;
 import org.jbpm.graph.def.ProcessDefinition;
 import org.jbpm.graph.exe.ProcessInstance;
 import org.jbpm.taskmgmt.exe.TaskInstance;
-import org.jbpm.JbpmConfiguration;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.InputStream;
 import java.io.Serializable;
-import java.util.List;
-import java.util.Set;
-import java.util.Map;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
- * Foo process manager who doesn't do anything at all 
+ * Foo process manager who doesn't do anything at all
  */
-public class FooProcessManagerImpl implements ProcessManager{
+public class FooProcessManagerImpl implements ProcessManager {
 
 	private static final FooProcessManagerImpl instance = new FooProcessManagerImpl();
 
@@ -48,7 +48,7 @@ public class FooProcessManagerImpl implements ProcessManager{
 	public void join(long processId) throws InterruptedException {
 	}
 
-	public long createProcess(String definitionName, Map<Serializable, Serializable> parameters) throws ProcessInstanceException, ProcessDefinitionException {
+	public long createProcess(String definitionName, Map<Serializable, Serializable> parameters) {
 		return 0;
 	}
 

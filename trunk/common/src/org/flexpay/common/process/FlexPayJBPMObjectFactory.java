@@ -50,7 +50,7 @@ public class FlexPayJBPMObjectFactory extends JbpmObjectFactory implements Initi
 	 */
 	@Override
 	public Object createObject(final String name) {
-		Object result = null;
+		Object result;
 		try {
 			result = super.createObject(name);
 		} catch (NoSuchBeanDefinitionException e) {
@@ -67,7 +67,7 @@ public class FlexPayJBPMObjectFactory extends JbpmObjectFactory implements Initi
 	 */
 	@Override
 	public boolean hasObject(final String name) {
-		boolean result = false;
+		boolean result;
 		try {
 			result = super.hasObject(name);
 		} catch (NoSuchBeanDefinitionException e) {
