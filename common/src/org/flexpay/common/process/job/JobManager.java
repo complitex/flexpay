@@ -1,6 +1,7 @@
 package org.flexpay.common.process.job;
 
 import org.flexpay.common.process.ProcessManager;
+import org.flexpay.common.process.ProcessManagerImpl;
 import org.flexpay.common.process.exception.JobConfigurationNotFoundException;
 import org.flexpay.common.process.exception.JobInstantiationException;
 import org.flexpay.common.util.CollectionUtils;
@@ -57,90 +58,113 @@ public class JobManager implements BeanFactoryAware {
 		return result;
 	}
 
-	public synchronized static void unload() {
+	public static void unload() {
 		instance = null;
 	}
 
-	private synchronized String start(Job job, Map<Serializable, Serializable> parameters) {
-		if (runningJobs.containsKey(job.getId())) {
-			job.getJobThread().start();
-			//noinspection ThrowableInstanceNeverThrown
-			log.error("AHTUNG, WTF?", new RuntimeException());
+	private String start(Job job, Map<Serializable, Serializable> parameters) {
+		synchronized (ProcessManagerImpl.getInstance()) {
+			synchronized (this) {
+
+				if (runningJobs.containsKey(job.getId())) {
+					job.getJobThread().start();
+					//noinspection ThrowableInstanceNeverThrown
+					log.error("AHTUNG, WTF?", new RuntimeException());
+				}
+				runningJobs.put(job.getId(), job);
+				if (log.isDebugEnabled()) {
+					log.debug("Starting job, task-id {}, id {}", job.getTaskId(), job.getId());
+					log.debug("Running jobs: {}", runningJobs.keySet());
+				}
+				job.startThread(parameters);
+				return job.getId();
+			}
 		}
-		runningJobs.put(job.getId(), job);
-		if (log.isDebugEnabled()) {
-			log.debug("Starting job, task-id {}, id {}", job.getTaskId(), job.getId());
-			log.debug("Running jobs: {}", runningJobs.keySet());
-		}
-		job.startThread(parameters);
-		return job.getId();
 	}
 
-	private synchronized void runNextJob() {
-		if (waitingJobs.size() > 0) {
-			Job nextJob = waitingJobs.getFirst();
-			waitingJobs.remove(nextJob);
-			this.start(nextJob, jobParameters.get(nextJob.getId()));
+	private void runNextJob() {
+
+		synchronized (ProcessManagerImpl.getInstance()) {
+			synchronized (this) {
+				if (waitingJobs.size() > 0) {
+					Job nextJob = waitingJobs.getFirst();
+					waitingJobs.remove(nextJob);
+					this.start(nextJob, jobParameters.get(nextJob.getId()));
+				}
+			}
 		}
 	}
 
 	public void jobFinished(String id, String transition, Map<Serializable, Serializable> parameters) {
 
-		if (log.isDebugEnabled()) {
-			log.debug("Ending job, id {}", id);
-			log.debug("Running jobs: {}", runningJobs.keySet());
-		}
-		Job job = runningJobs.get(id);
-		if (job == null) {
-			job = sleepingJobs.get(id);
-			if (job == null) {
-				log.warn("Know nothing about job #{}", id);
-				throw new RuntimeException("Know nothing about job #" + id);
+		synchronized (ProcessManagerImpl.getInstance()) {
+			synchronized (this) {
+				if (log.isDebugEnabled()) {
+					log.debug("Ending job, id {}", id);
+					log.debug("Running jobs: {}", runningJobs.keySet());
+				}
+				Job job = runningJobs.get(id);
+				if (job == null) {
+					job = sleepingJobs.get(id);
+					if (job == null) {
+						log.warn("Know nothing about job #{}", id);
+						throw new RuntimeException("Know nothing about job #" + id);
+					}
+				}
+
+				processManager.taskCompleted(job.getTaskId(), parameters, transition);
+
+				jobParameters.remove(id);
+				runningJobs.remove(id);
+				sleepingJobs.remove(id);
+				runNextJob();
 			}
 		}
-
-		processManager.taskCompleted(job.getTaskId(), parameters, transition);
-
-		jobParameters.remove(id);
-		runningJobs.remove(id);
-		sleepingJobs.remove(id);
-		runNextJob();
 	}
 
 
-	public synchronized final void addJob(Job job, Map<Serializable, Serializable> param) {
-		if (runningJobs.size() < maximumRunningJobs) {
-			start(job, param);
-		} else {
-			waitingJobs.addLast(job);
+	public final void addJob(Job job, Map<Serializable, Serializable> param) {
+
+		synchronized (ProcessManagerImpl.getInstance()) {
+			synchronized (this) {
+				if (runningJobs.size() < maximumRunningJobs) {
+					start(job, param);
+				} else {
+					waitingJobs.addLast(job);
+				}
+				jobParameters.put(job.getId(), param);
+			}
 		}
-		jobParameters.put(job.getId(), param);
 	}
 
-	public synchronized boolean addJob(long processId, long taskId, String jobName, Map<Serializable, Serializable> parameters)
+	public boolean addJob(long processId, long taskId, String jobName, Map<Serializable, Serializable> parameters)
 			throws JobInstantiationException, JobConfigurationNotFoundException {
 
-		if (beanFactory.containsBean(jobName)) {
-			try {
-				Job job = (Job) beanFactory.getBean(jobName);
-				job.setTaskId(taskId);
-				job.setProcessId(processId);
-				addJob(job, parameters);
-				log.info("Job {} was added. Id = {}", jobName, job.getId());
-			} catch (ClassCastException e) {
-				log.error("Illegal exception when creating instance of " + jobName, e);
-				throw new JobInstantiationException("Illegal exception when creating instance of " + jobName, e,
-						"error.common.jm.job_create_failed", jobName);
-			} catch (BeansException e) {
-				log.error("Illegal exception when creating instance of " + jobName, e);
-				throw new JobInstantiationException("Illegal exception when creating instance of " + jobName, e,
-						"error.common.jm.job_create_failed", jobName);
+		synchronized (ProcessManagerImpl.getInstance()) {
+			synchronized (this) {
+				if (beanFactory.containsBean(jobName)) {
+					try {
+						Job job = (Job) beanFactory.getBean(jobName);
+						job.setTaskId(taskId);
+						job.setProcessId(processId);
+						addJob(job, parameters);
+						log.info("Job {} was added. Id = {}", jobName, job.getId());
+					} catch (ClassCastException e) {
+						log.error("Illegal exception when creating instance of " + jobName, e);
+						throw new JobInstantiationException("Illegal exception when creating instance of " + jobName, e,
+								"error.common.jm.job_create_failed", jobName);
+					} catch (BeansException e) {
+						log.error("Illegal exception when creating instance of " + jobName, e);
+						throw new JobInstantiationException("Illegal exception when creating instance of " + jobName, e,
+								"error.common.jm.job_create_failed", jobName);
+					}
+				} else {
+					throw new JobConfigurationNotFoundException("Job bean is not configured " + jobName,
+							"error.common.jm.job_not_found", jobName);
+				}
+				return true;
 			}
-		} else {
-			throw new JobConfigurationNotFoundException("Job bean is not configured " + jobName,
-					"error.common.jm.job_not_found", jobName);
 		}
-		return true;
 	}
 
 	/**

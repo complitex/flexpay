@@ -92,15 +92,18 @@ public class ProcessManagerImpl implements ProcessManager, Runnable {
 	 */
 	public void start() {
 
+		if (instance.isStarted()) {
+			return;
+		}
+
 		log.debug("Starting ProcessManager thread");
 		synchronized (instance) {
 			if (instance.isStarted()) {
 				return;
 			}
+			thread.start();
 			instance.setStarted(true);
 		}
-
-		thread.start();
 		log.debug("ProcessManager thread started");
 	}
 
@@ -122,7 +125,7 @@ public class ProcessManagerImpl implements ProcessManager, Runnable {
 			log.error("Failed joining thread", e);
 			throw new RuntimeException("Failed joining thread", e);
 		}
-		log.debug("ProcessManager thread stoped");
+		log.debug("ProcessManager thread stopped");
 	}
 
 	/**
@@ -706,7 +709,7 @@ public class ProcessManagerImpl implements ProcessManager, Runnable {
 	@Override
 	public void join(long processId) throws InterruptedException {
 		while (true) {
-			// wait untill there is any 
+			// wait until there is any 
 			synchronized (sleepSemaphore) {
 				Process info = getProcessInstanceInfo(processId);
 				if (info == null || info.getId() != processId) {
@@ -813,8 +816,16 @@ public class ProcessManagerImpl implements ProcessManager, Runnable {
 	 */
 	@Override
 	public <T> T execute(@NotNull ContextCallback<T> callback, boolean useExistingContext) {
-		synchronized (this) {
 
+		while(!isStarted()) {
+			try {
+				Thread.sleep(5L);
+			} catch (InterruptedException e) {
+				throw new RuntimeException("Failed waiting for start up.", e);
+			}
+		}
+
+		synchronized (instance) {
 			JbpmContext context = null;
 			boolean needClose = true;
 			try {
@@ -832,7 +843,6 @@ public class ProcessManagerImpl implements ProcessManager, Runnable {
 				if (needClose) {
 					closeQuietly(context);
 				}
-
 			}
 		}
 	}
