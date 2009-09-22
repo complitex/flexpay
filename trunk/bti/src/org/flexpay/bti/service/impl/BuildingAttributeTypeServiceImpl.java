@@ -190,9 +190,13 @@ public class BuildingAttributeTypeServiceImpl implements BuildingAttributeTypeSe
 	 */
 	@Override
 	public List<BuildingAttributeType> listTypes(@NotNull Page<BuildingAttributeType> pager) {
-		log.debug("Before: pager = {}", pager);
+
+		log.debug("2 Before: pager = {}", pager);
+
 		List<BuildingAttributeType> tt = attributeTypeDao.findTypes(pager);
-		log.debug("After: pager = {}", pager);
+
+		log.debug("2 After: pager = {}", pager);
+		
 		return tt;
 	}
 
