@@ -6,7 +6,7 @@ import org.flexpay.ab.persistence.filters.ApartmentFilter;
 /**
  * Uses StreetNameFilter
  */
-public abstract class ApartmentFilterDependent2Action extends BuildingsFilterDependent2Action {
+public abstract class ApartmentFilterDependent2Action<T> extends BuildingsFilterDependent2Action<T> {
 
 	protected ApartmentFilter apartmentFilter = new ApartmentFilter();
 

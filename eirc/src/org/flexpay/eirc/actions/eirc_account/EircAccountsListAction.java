@@ -16,7 +16,7 @@ import org.springframework.beans.factory.annotation.Required;
 
 import java.util.List;
 
-public class EircAccountsListAction extends ApartmentFilterDependent2Action {
+public class EircAccountsListAction extends ApartmentFilterDependent2Action<EircAccount> {
 
 	protected List<EircAccount> eircAccounts;
 

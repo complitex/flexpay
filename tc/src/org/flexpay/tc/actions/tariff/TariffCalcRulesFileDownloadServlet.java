@@ -49,18 +49,16 @@ public class TariffCalcRulesFileDownloadServlet extends HttpServlet {
 			return;
 		}
 
-		File file = FPFileUtil.getFileOnServer(fpFile);
-
 		response.setContentType("multipart/form-data");
-		response.setContentLength((int) file.length());
+		response.setContentLength(fpFile.getSize().intValue());
 		response.setHeader("Content-Disposition", "attachment; filename=\"" + fpFile.getOriginalName() + "\"");
 
 		InputStream is = null;
 		try {
-			is = new FileInputStream(file);
+			is = fpFile.getInputStream();
 			IOUtils.copyLarge(is, os);
 		} catch (IOException e) {
-			log.error("Error getting file " + file, e);
+			log.error("Error getting file " + fpFile, e);
 		} finally {
 			IOUtils.closeQuietly(is);
 			IOUtils.closeQuietly(os);

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<application xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+			 xmlns="http://www.zeroturnaround.com" xsi:schemaLocation="http://www.zeroturnaround.com/alderaan/rebel-2_0.xsd">
+
+	<classpath>
+		<dir name="/home/mixa/flexpay/_build/production/common" />
+		<dir name="/home/mixa/flexpay/_build/production/ab" />
+		<dir name="/home/mixa/flexpay/_build/production/bti" />
+		<dir name="/home/mixa/flexpay/_build/production/tc" />
+	</classpath>
+
+	<web>
+		<link target="/">
+			<dir name="/home/mixa/flexpay/common/web" />
+			<dir name="/home/mixa/flexpay/ab/web" />
+			<dir name="/home/mixa/flexpay/bti/web" />
+			<dir name="/home/mixa/flexpay/tc/web" />
+		</link>
+	</web>
+
+</application>

@@ -4,10 +4,10 @@ import org.apache.commons.digester.Digester;
 import org.apache.commons.io.IOUtils;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.service.LanguageService;
-import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Required;
 import org.springframework.context.ResourceLoaderAware;
 import org.springframework.core.io.ResourceLoader;
 
@@ -45,7 +45,7 @@ public class ConfigLoader implements ResourceLoaderAware {
 
 		log.info("Starting loading configs");
 		for (URL url : configFiles) {
-			@NonNls InputStreamReader is = null;
+			InputStreamReader is = null;
 			try {
 				Digester digester = new Digester();
 				digester.push(config);
@@ -92,9 +92,9 @@ public class ConfigLoader implements ResourceLoaderAware {
 	 *
 	 * @param d Digester
 	 */
-	protected void addRules(@NonNls Digester d) {
+	protected void addRules(Digester d) {
 
-        d.addCallMethod("flexpay/applicationName", "setApplicationName", 0);
+		d.addCallMethod("flexpay/applicationName", "setApplicationName", 0);
 
 		d.addCallMethod("flexpay/dataRoot", "setDataRoot", 0);
 
@@ -102,8 +102,8 @@ public class ConfigLoader implements ResourceLoaderAware {
 
 		d.addCallMethod("flexpay/instanceId", "setInstanceId", 0);
 
-        d.addCallMethod("flexpay/logPreviewLinesNumber", "setLogPreviewLinesNumber", 0);
-        d.addCallMethod("flexpay/defaultCurrencyCode", "setDefaultCurrencyCode", 0);
+		d.addCallMethod("flexpay/logPreviewLinesNumber", "setLogPreviewLinesNumber", 0);
+		d.addCallMethod("flexpay/defaultCurrencyCode", "setDefaultCurrencyCode", 0);
 
 		d.addCallMethod("flexpay/defaultReportLocale", "setDefaultReportLocale", 0);
 	}
@@ -113,6 +113,7 @@ public class ConfigLoader implements ResourceLoaderAware {
 	 *
 	 * @param languageService Value to set for property 'languageDao'.
 	 */
+	@Required
 	public void setLanguageService(LanguageService languageService) {
 		this.languageService = languageService;
 	}

@@ -47,7 +47,7 @@ public class BuildingAttributesEditBlockAction extends FPActionSupport {
 
 		for (BuildingAttributeType type : attributeTypes) {
 			BuildingAttribute attribute = btiBuilding.getAttributeForDate(type, attributeDate);
-			values.put(type.getId(), attribute != null ? attribute.getStringValue() : "");
+			values.put(type.getId(), attribute != null ? String.valueOf(attribute.value()) : "");
 			Long groupId = stub(type.getGroup()).getId();
 			groupIds.add(groupId);
 			Set<BuildingAttributeType> types = typesMap.get(groupId);
