@@ -5,6 +5,7 @@ import org.flexpay.common.process.Process;
 import org.flexpay.common.process.ProcessManager;
 import org.flexpay.common.process.exception.ProcessDefinitionException;
 import org.flexpay.common.process.exception.ProcessInstanceException;
+import org.flexpay.payments.process.export.TradingDay;
 import org.flexpay.payments.test.PaymentsSpringBeanAwareTestCase;
 import static org.junit.Assert.assertNotNull;
 import org.junit.Test;
@@ -31,6 +32,6 @@ public class TestTradingDay extends PaymentsSpringBeanAwareTestCase {
 		testProcessManager.join(processId);
 		Process process = testProcessManager.getProcessInstanceInfo(processId);
 		assertNotNull("Process not found", process);
-		log.debug("Process work: {}", process.getParameters().get("PROCESS_STATUS"));
+		log.debug("Process work: {}", process.getParameters().get(TradingDay.PROCESS_STATUS));
 	}
 }

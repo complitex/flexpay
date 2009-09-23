@@ -4,12 +4,13 @@ import org.apache.commons.lang.StringUtils;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.process.ProcessManager;
 import org.flexpay.common.process.TaskHelper;
-import org.flexpay.common.util.DateUtil;
-import org.flexpay.common.util.CollectionUtils;
-import org.flexpay.common.util.SecurityUtil;
 import org.flexpay.common.service.Roles;
+import org.flexpay.common.util.CollectionUtils;
+import org.flexpay.common.util.DateUtil;
+import org.flexpay.common.util.SecurityUtil;
 import org.flexpay.orgs.persistence.PaymentPoint;
 import org.flexpay.orgs.service.PaymentPointService;
+import org.flexpay.payments.process.export.TradingDay;
 import org.flexpay.payments.process.handlers.AccounterAssignmentHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,8 +34,7 @@ public class ConfirmationTradingDayServlet extends HttpServlet {
 
     private static final String PARAM_PAYMENT_POINT_ID = "paymentPointId";
     private static final String PARAM_DATE = "data";
-
-    private static final String PROCESS_STATUS = "PROCESS_STATUS";
+    
     private static final String STATUS_APROVE = "Ожидает подтверждения";
     private static final String STATUS_CLOSED = "Завершен";
 
@@ -103,12 +103,12 @@ public class ConfirmationTradingDayServlet extends HttpServlet {
                 return;
             }
             
-            if (process.getProcessStartDate().before(finishDate) && !STATUS_CLOSED.equals(process.getParameters().get(PROCESS_STATUS))) {
-                if (STATUS_APROVE.equals(process.getParameters().get(PROCESS_STATUS))) {
+            if (process.getProcessStartDate().before(finishDate) && !STATUS_CLOSED.equals(process.getParameters().get(TradingDay.PROCESS_STATUS))) {
+                if (STATUS_APROVE.equals(process.getParameters().get(TradingDay.PROCESS_STATUS))) {
                     log.debug("Try close trading day");
                     TaskHelper.getTransitions(processManager, AccounterAssignmentHandler.ACCOUNTER, processId, "Подтвердить закрытие", log);
                     process = processManager.getProcessInstanceInfo(processId);
-                    String currentStatus = (String) process.getParameters().get(PROCESS_STATUS);
+                    String currentStatus = (String) process.getParameters().get(TradingDay.PROCESS_STATUS);
                     if (!STATUS_CLOSED.equals(currentStatus)) {
                         log.error("Day is not closed. Current status '{}'", currentStatus);
                         httpServletResponse.sendError(500, "Internal Server Error");
@@ -116,7 +116,7 @@ public class ConfirmationTradingDayServlet extends HttpServlet {
                     }
                     log.debug("Trading day is closed");
                 } else {
-                    log.error("Missing process status '{}'", process.getParameters().get(PROCESS_STATUS));
+                    log.error("Missing process status '{}'", process.getParameters().get(TradingDay.PROCESS_STATUS));
                     httpServletResponse.sendError(540, "Incorrect Trading day status");
                     return;
                 }

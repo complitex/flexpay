@@ -13,10 +13,10 @@ import org.flexpay.common.process.sorter.ProcessSorterByName;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.DateUtil;
 import org.flexpay.common.util.SecurityUtil;
-import org.flexpay.orgs.persistence.PaymentPoint;
 import org.flexpay.orgs.persistence.PaymentCollector;
-import org.flexpay.orgs.service.PaymentPointService;
+import org.flexpay.orgs.persistence.PaymentPoint;
 import org.flexpay.orgs.service.PaymentCollectorService;
+import org.flexpay.orgs.service.PaymentPointService;
 import org.flexpay.payments.process.export.job.ExportJobParameterNames;
 import org.jbpm.JbpmContext;
 import org.jbpm.graph.exe.ProcessInstance;
@@ -38,6 +38,7 @@ public class TradingDay extends QuartzJobBean {
 
     private Logger log = LoggerFactory.getLogger(getClass());
 
+	// process variable names
 	public final static String CAN_UPDATE_OR_CRETAE_OPERATION = "CAN_UPDATE_OR_CRETAE_OPERATION";
 	public final static String PROCESS_STATUS = "PROCESS_STATUS";
 	public final static String AUTO_MODE = "AUTO_MODE";
@@ -143,7 +144,7 @@ public class TradingDay extends QuartzJobBean {
                 long processId = process.getId();
                 Process processInstanceInfo = processManager.getProcessInstanceInfo(processId);
                 log.debug("Process {} state complited {} ", processId, processInstanceInfo.getProcessState().isCompleted());
-                log.debug("Process {} status {} ", processId, processInstanceInfo.getParameters().get("PROCESS_STATUS"));
+                log.debug("Process {} status {} ", processId, processInstanceInfo.getParameters().get(PROCESS_STATUS));
                 log.debug("Process {} payment point {} ", processId, processInstanceInfo.getParameters().get(ExportJobParameterNames.PAYMENT_POINT_ID));
                 //long processInstanceId = processInstanceInfo.getProcessInstaceId();
                 //ProcessInstance pi = processManager.getProcessInstance(processInstanceInfo.getProcessInstaceId());
