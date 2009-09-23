@@ -561,44 +561,8 @@ public class ProcessManagerImpl implements ProcessManager, Runnable {
 		}
 	}
 
-	/**
-	 * Remove process from execution
-	 *
-	 * @param processID process ID
-	 * @throws ProcessInstanceException when runtime exception
-	 */
-	public void removeProcess(final Long processID) throws ProcessInstanceException {
-		try {
-			execute(new ContextCallback<Void>() {
-				@Override
-				public Void doInContext(@NotNull JbpmContext context) {
-					GraphSession graphSession = context.getGraphSession();
-					ProcessInstance processInstance = graphSession.loadProcessInstance(processID);
-					if (processInstance != null) {
-						ProcessDefinition processDefinition = processInstance.getProcessDefinition();
-						ProcessDefinition latestProcessDefinition = graphSession.findLatestProcessDefinition(processDefinition.getName());
-						graphSession.deleteProcessInstance(processID);
-						long processDefinitionID = processDefinition.getId();
-						if (processDefinitionID != latestProcessDefinition.getId()) {
-							List<?> processInstances = graphSession.findProcessInstances(processDefinitionID);
-							if (processInstances.size() == 0) {
-								graphSession.deleteProcessDefinition(processDefinitionID);
-							}
-							log.debug("Removed process definition {}", processDefinitionID);
-						}
-					}
-
-					return null;
-				}
-			});
-		} catch (RuntimeException e) {
-			log.error("Failed removeProcess", e);
-			throw new ProcessInstanceException("Can't remove ProcessInstance for " + processID, e,
-					"error.common.pm.cant_remove_pi", processID);
-		}
-	}
-
 	@Override
+	@SuppressWarnings ({"unchecked"})
 	public List<TaskInstance> getRunningTasks() {
 
 		return execute(new ContextCallback<List<TaskInstance>>() {
@@ -616,7 +580,6 @@ public class ProcessManagerImpl implements ProcessManager, Runnable {
 					instance.getProcessInstance().getContextInstance().getVariables();
 				}
 
-				//noinspection unchecked
 				return (List<TaskInstance>) instances;
 			}
 		}, true);

@@ -88,27 +88,23 @@ public abstract class FPActionSupport extends ActionSupport implements BreadCrum
 		return result;
 	}
 
+	@SuppressWarnings ({"unchecked"})
 	private void addSessionMessages(String result, String sessionAttribute) {
 
 		boolean isError = false;
-		boolean isMessage = false;
 
 		if (ERRORS_SESSION_ATTRIBUTE.equals(sessionAttribute)) {
 			isError = true;
-		} else if (MESSAGES_SESSION_ATTRIBUTE.equals(sessionAttribute)) {
-			isMessage = true;
-		} else {
+		} else if (!MESSAGES_SESSION_ATTRIBUTE.equals(sessionAttribute)) {
 			return;
 		}
 
 		// extract this domain session messages
 		String domainName = getDomainName();
 
-		//noinspection unchecked
 		Map<String, Collection<String>> domainNamesToMessages = (Map) session.remove(sessionAttribute);
 		if (domainNamesToMessages != null && domainNamesToMessages.containsKey(domainName)) {
 			Collection<String> messages = domainNamesToMessages.remove(domainName);
-			//noinspection unchecked
 			if (isError) {
 				addActionErrors(messages);
 			} else {
@@ -122,15 +118,14 @@ public abstract class FPActionSupport extends ActionSupport implements BreadCrum
 
 		// put all messages to session if redirecting
 		if (result.startsWith(PREFIX_REDIRECT)) {
-			Collection<String> messages = isError ? getActionErrors() : isMessage ? getActionMessages() : CollectionUtils.set();
+			Collection<String> messages = isError ? getActionErrors() : getActionMessages();
 			if (domainNamesToMessages == null) {
 				domainNamesToMessages = CollectionUtils.map();
 			}
 			domainNamesToMessages.put(getDomainName(), messages);
 		}
-		//noinspection unchecked
-		session.put(sessionAttribute, domainNamesToMessages);
 
+		session.put(sessionAttribute, domainNamesToMessages);
 	}
 
 	/**

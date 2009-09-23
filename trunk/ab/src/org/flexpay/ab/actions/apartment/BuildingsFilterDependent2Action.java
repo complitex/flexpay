@@ -14,7 +14,7 @@ import org.springframework.beans.factory.annotation.Required;
 /**
  * Uses StreetNameFilter
  */
-public abstract class BuildingsFilterDependent2Action extends FPActionWithPagerSupport {
+public abstract class BuildingsFilterDependent2Action<T> extends FPActionWithPagerSupport<T> {
 
 	protected CountryFilter countryFilter = new CountryFilter();
 	protected RegionFilter regionFilter = new RegionFilter();
