@@ -24,7 +24,7 @@ public class BuildingAttributesEditBlockAction extends FPActionSupport {
 
 	private Date attributeDate = DateUtil.now();
 
-	private Map<Long, String> values = CollectionUtils.map();
+	private Map<Long, String> attrs = CollectionUtils.map();
 	private Map<Long, Set<BuildingAttributeType>> typesMap = CollectionUtils.map();
 	private Set<BuildingAttributeGroup> groups = CollectionUtils.set();
 
@@ -47,8 +47,11 @@ public class BuildingAttributesEditBlockAction extends FPActionSupport {
 
 		for (BuildingAttributeType type : attributeTypes) {
 			BuildingAttribute attribute = btiBuilding.getAttributeForDate(type, attributeDate);
-			values.put(type.getId(), attribute != null ? String.valueOf(attribute.value()) : "");
-			Long groupId = stub(type.getGroup()).getId();
+			String value = attribute != null ? String.valueOf(attribute.value()) : "";
+			attrs.put(type.getId(), value);
+			log.debug("Added attribute: {}, {}", type.getId(), value);
+
+			Long groupId = type.getGroup().getId();
 			groupIds.add(groupId);
 			Set<BuildingAttributeType> types = typesMap.get(groupId);
 			if (types == null) {
@@ -97,8 +100,8 @@ public class BuildingAttributesEditBlockAction extends FPActionSupport {
 		return groups;
 	}
 
-	public Map<Long, String> getValues() {
-		return values;
+	public Map<Long, String> getAttrs() {
+		return attrs;
 	}
 
 	public Map<Long, Set<BuildingAttributeType>> getTypesMap() {

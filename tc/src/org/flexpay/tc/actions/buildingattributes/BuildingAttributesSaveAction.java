@@ -27,7 +27,7 @@ public class BuildingAttributesSaveAction extends FPActionSupport {
 
 	private BuildingAddress building = new BuildingAddress();
 	private Date attributeDate = DateUtil.now();
-	private Map<String, String> values = CollectionUtils.map();
+	private Map<String, String> attrs = CollectionUtils.map();
 	private Map<String, String> typesMap = CollectionUtils.map();
 
 	private BtiBuildingService btiBuildingService;
@@ -45,7 +45,7 @@ public class BuildingAttributesSaveAction extends FPActionSupport {
 		List<BuildingAttributeType> types = buildingAttributeTypeService.readFullAll();
 
 		for (BuildingAttributeType type : types) {
-			typesMap.put(type.getUniqueCode(), values.get("" + type.getId()));
+			typesMap.put(type.getUniqueCode(), attrs.get("" + type.getId()));
 		}
 
 		if (!doValidate()) {
@@ -55,7 +55,7 @@ public class BuildingAttributesSaveAction extends FPActionSupport {
 		for (BuildingAttributeType type : types) {
 			BuildingAttribute attribute = new BuildingAttribute();
 			attribute.setAttributeType(type);
-			attribute.setStringValue(values.get("" + type.getId()));
+			attribute.setStringValue(attrs.get("" + type.getId()));
 			btiBuilding.setTmpAttributeForDate(attribute, attributeDate);
 		}
 
@@ -194,12 +194,12 @@ public class BuildingAttributesSaveAction extends FPActionSupport {
 		this.attributeDate = DateUtil.parseBeginDate(attributeDate);
 	}
 
-	public void setValues(Map<String, String> values) {
-		this.values = values;
+	public void setAttrs(Map<String, String> attrs) {
+		this.attrs = attrs;
 	}
 
-	public Map<String, String> getValues() {
-		return values;
+	public Map<String, String> getAttrs() {
+		return attrs;
 	}
 
 	@Required
