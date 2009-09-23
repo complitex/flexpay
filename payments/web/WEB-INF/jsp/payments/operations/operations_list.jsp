@@ -215,7 +215,7 @@
                 </s:if>
                 <s:else>
                     <s:iterator value="processButtons" id="button">
-                        <input type="submit" name="activity" class="" value="<s:property value="button"/>"/>
+                        <input type="submit" name="tradingDayCommand" class="" value="<s:property value="button"/>"/>
                     </s:iterator>
                 </s:else>
             </fieldset>
