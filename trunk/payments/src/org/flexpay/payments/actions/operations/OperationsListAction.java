@@ -40,36 +40,31 @@ import java.util.List;
 
 public class OperationsListAction extends CashboxCookieWithPagerActionSupport<Operation> {
 
-	private static final String PROCESS_STATUS = "PROCESS_STATUS";
-
 	// form data
 	private List<ServiceType> serviceTypes = CollectionUtils.list();
 
-	// selected service type id
+	// filtering data
 	private Long serviceTypeId;
-
-	// date/time filters
 	private BeginDateFilter beginDateFilter = new BeginDateFilter();
 	private EndDateFilter endDateFilter = new EndDateFilter();
 	private BeginTimeFilter beginTimeFilter = new BeginTimeFilter();
 	private EndTimeFilter endTimeFilter = new EndTimeFilter();
-
-	// summ filter limits
 	private BigDecimal minimalSumm;
 	private BigDecimal maximalSumm;
 
 	// submit flags
 	private String filterSubmitted;
+
+	// TODO extract separate action 
 	private String registerSubmitted;
 	private String returnSubmitted;
 	private String deleteSubmitted;
-
-	// document search flag
-	private String documentSearchEnabled = "false";
-
 	// status provider operations
 	private String status;
 	private Long selectedOperationId;
+
+	// document search flag
+	private String documentSearchEnabled = "false"; // TODO boolean?
 
 	// search results data
 	private List<Operation> operations = CollectionUtils.list();
@@ -87,69 +82,25 @@ public class OperationsListAction extends CashboxCookieWithPagerActionSupport<Op
 	private ProcessManager processManager;
 	private CurrencyInfoService currencyInfoService;
 
-	private List<String> processButtons;
+	private List<String> processButtons = Collections.emptyList();
 	private String processStatus;
-	private String activity;
+	private String tradingDayCommand;
 	private Long taskInstanceId;
 
 	private String cashboxIdFilter;
-	private boolean canCreateOrUpdateOperations = true;
+	private boolean isTradingDayOpened = true;
 
 	@NotNull
 	protected String doExecute() throws Exception {
 
 		// processing cashbox id filtering parameter
-		if (StringUtils.isBlank(cashboxIdFilter)) {
-			cashboxIdFilter = cashboxId.toString();
-		}
+		PaymentPoint paymentPoint = getPaymentPoint();
+		Long tradingDayProcessInstanceId = paymentPoint.getTradingDayProcessInstanceId();
+		log.debug("tradingDayProcessInstanceId = {}", tradingDayProcessInstanceId);
 
-		Cashbox cashbox = cashboxService.read(new Stub<Cashbox>(Long.valueOf(cashboxIdFilter)));
-		PaymentPoint paymentPoint = cashbox.getPaymentPoint();
-		paymentPoint = paymentPointService.read(new Stub<PaymentPoint>(paymentPoint));
-		//signal if taskInstanceId and activity not null
-		processButtons = Collections.emptyList();
-		Long processInstanceId = paymentPoint.getTradingDayProcessInstanceId();
+		if (tradingDayProcessInstanceId != null && tradingDayProcessInstanceId != 0) {
 
-		log.debug("processInstanceId = {}", processInstanceId);
-
-		if (processInstanceId != null && processInstanceId != 0) {
-			if (activity != null && activity.length() > 0 && taskInstanceId != null) {
-				processManager.execute(new ContextCallback<Void>() {
-					public Void doInContext(@NotNull JbpmContext context) {
-						TaskInstance taskInstance = context.getTaskMgmtSession().getTaskInstance(taskInstanceId);
-						if (taskInstance.isSignalling()) {
-							taskInstance.getProcessInstance().signal(activity);
-						}
-						return null;
-					}
-				});
-			}
-			//fetch Trading day status
-			canCreateOrUpdateOperations = TradingDay.isOpened(processManager, processInstanceId, log);
-			//fetch taskInstance  and transitions
-			final TaskInstance taskInstance = TaskHelper.getTaskInstance(processManager, processInstanceId, PaymentCollectorAssignmentHandler.PAYMENT_COLLECTOR, log);
-
-			if (taskInstance != null) {
-				taskInstanceId = taskInstance.getId();
-				processButtons = processManager.execute(new ContextCallback<List<String>>() {
-					public List<String> doInContext(@NotNull JbpmContext context) {
-						TaskInstance currentTaskInstance = context.getTaskInstance(taskInstance.getId());
-						List<String> currentTarnsitionNameList = new ArrayList<String>();
-						if (currentTaskInstance != null) {
-							for (Object o : currentTaskInstance.getProcessInstance().getRootToken().getAvailableTransitions()) {
-								Transition t = (Transition) o;
-								currentTarnsitionNameList.add(t.getName());
-							}
-						}
-						return currentTarnsitionNameList;
-					}
-				});
-			}
-			Process process = processManager.getProcessInstanceInfo(processInstanceId);
-			if (process != null) {
-				processStatus = (String) process.getParameters().get(PROCESS_STATUS);
-			}
-
+			processTradingDay(tradingDayProcessInstanceId);
 		}
 
 		loadServiceTypes();
@@ -164,21 +115,85 @@ public class OperationsListAction extends CashboxCookieWithPagerActionSupport<Op
 			}
 			return SUCCESS;
 		} else if (isStatusSubmitted()) { // if status change submitted
-			if (canCreateOrUpdateOperations) {
+			if (isTradingDayOpened) {
 				updateOperationStatus();
 			} else {
 				addActionError(getText("payments.quittance.payment.operation_changes_not_alowed_due_closed_trading_day"));
-				log.debug("Trading day process (id = {})is closed for Payment Point = {}", processInstanceId, paymentPoint.getId());
-				log.debug("Operations update canceled;");
-				loadOperations();
-				return SUCCESS;
+				log.warn("Trading day process (id = {})is closed for Payment Point = {}. Operation status update canceled",
+						tradingDayProcessInstanceId, paymentPoint.getId());
 			}
+			
 			loadOperations();
 			return SUCCESS;
 		} else { // nothing is submitted
 			loadOperations();
 			return SUCCESS;
 		}
+	}
+
+	private void processTradingDay(Long tradingDayProcessInstanceId) {
+
+		processTradingDayCommand();
+		isTradingDayOpened = TradingDay.isOpened(processManager, tradingDayProcessInstanceId, log);
+		loadAvailableTradingDayCommands(tradingDayProcessInstanceId);
+		loadTradingDayStatus(tradingDayProcessInstanceId);
+	}
+
+	private void loadTradingDayStatus(Long tradingDayProcessInstanceId) {
+
+		Process process = processManager.getProcessInstanceInfo(tradingDayProcessInstanceId);
+		if (process != null) {
+			processStatus = (String) process.getParameters().get(TradingDay.PROCESS_STATUS);
+		}
+	}
+
+	private void processTradingDayCommand() {
+
+		if (tradingDayCommand != null && tradingDayCommand.length() > 0 && taskInstanceId != null) {
+			processManager.execute(new ContextCallback<Void>() {
+				public Void doInContext(@NotNull JbpmContext context) {
+					TaskInstance taskInstance = context.getTaskMgmtSession().getTaskInstance(taskInstanceId);
+					if (taskInstance.isSignalling()) {
+						taskInstance.getProcessInstance().signal(tradingDayCommand);
+					}
+					return null;
+				}
+			});
+		}
+	}
+
+	private void loadAvailableTradingDayCommands(Long processInstanceId) {
+
+		final TaskInstance taskInstance = TaskHelper.getTaskInstance(processManager, processInstanceId, PaymentCollectorAssignmentHandler.PAYMENT_COLLECTOR, log);
+
+		if (taskInstance != null) {
+			taskInstanceId = taskInstance.getId();
+			processButtons = processManager.execute(new ContextCallback<List<String>>() {
+				public List<String> doInContext(@NotNull JbpmContext context) {
+					TaskInstance currentTaskInstance = context.getTaskInstance(taskInstance.getId());
+					List<String> currentTarnsitionNameList = new ArrayList<String>();
+					if (currentTaskInstance != null) {
+						for (Object o : currentTaskInstance.getProcessInstance().getRootToken().getAvailableTransitions()) {
+							Transition t = (Transition) o;
+							currentTarnsitionNameList.add(t.getName());
+						}
+					}
+					return currentTarnsitionNameList;
+				}
+			});
+		}
+	}
+
+	private PaymentPoint getPaymentPoint() {
+
+		if (StringUtils.isBlank(cashboxIdFilter)) {
+			cashboxIdFilter = cashboxId.toString();
+		}
+
+		Cashbox cashbox = cashboxService.read(new Stub<Cashbox>(Long.valueOf(cashboxIdFilter)));
+		PaymentPoint paymentPoint = cashbox.getPaymentPoint();
+		paymentPoint = paymentPointService.read(new Stub<PaymentPoint>(paymentPoint));
+		return paymentPoint;
 	}
 
 	// load operations according to search criteria
@@ -217,8 +232,8 @@ public class OperationsListAction extends CashboxCookieWithPagerActionSupport<Op
 	}
 
 	private Stub<Cashbox> getCashboxFilter() {
-		Long cID = Long.parseLong(cashboxIdFilter);
-		return new Stub<Cashbox>(cID);		
+		
+		return new Stub<Cashbox>(Long.parseLong(cashboxIdFilter));
 	}
 
 	private Organization getSelfOrganization() {
@@ -317,10 +332,6 @@ public class OperationsListAction extends CashboxCookieWithPagerActionSupport<Op
 
 	public boolean isHighlighted(Document document) {
 		return highlightedDocumentIds.contains(document.getId());
-	}
-
-	public boolean isTradingDayopened() {
-		return canCreateOrUpdateOperations;
 	}
 
 	public int getTotalOperations() {
@@ -498,12 +509,12 @@ public class OperationsListAction extends CashboxCookieWithPagerActionSupport<Op
 		this.documentSearchEnabled = documentSearchEnabled;
 	}
 
-	public String getActivity() {
-		return activity;
+	public String getTradingDayCommand() {
+		return tradingDayCommand;
 	}
 
-	public void setActivity(String activity) {
-		this.activity = activity;
+	public void setTradingDayCommand(String tradingDayCommand) {
+		this.tradingDayCommand = tradingDayCommand;
 	}
 
 	public List<String> getProcessButtons() {
