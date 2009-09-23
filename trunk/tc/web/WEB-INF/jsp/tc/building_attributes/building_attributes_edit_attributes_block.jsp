@@ -9,15 +9,15 @@
     function saveAttributes() {
 
         var params = {
-            <s:iterator value="groups"><s:set name="types" value="typesMap[id]" /><s:iterator value="types" id="type">"values[<s:property value="#type.id" />]":"",</s:iterator></s:iterator>
+            <s:iterator value="groups"><s:set name="types" value="typesMap[id]" /><s:iterator value="types" id="type">"attrs[<s:property value="#type.id" />]":"",</s:iterator></s:iterator>
             "building.id":<s:property value="building.id" />,
             attributeDate:"<s:property value="attributeDate" />"
         };
 
-        $("#values :selected").each(function() {
+        $("#attrs :selected").each(function() {
             params[$(this).parent().get(0).name] = this.value;
         });
-        $("#values input[id^=values]").each(function() {
+        $("#attrs input[id^=attrs]").each(function() {
             params[this.name] = this.value;
         });
 
@@ -41,7 +41,7 @@
 
 <div id="response"></div>
 
-<form id="values">
+<form id="attrs">
 <table cellpadding="3" cellspacing="1" border="0" width="100%">
     <tr>
         <td class="th_s"><s:text name="tc.building_attributes" /></td>
@@ -78,9 +78,9 @@
                                 <td class="col">
                                     <nobr>
                                         <s:if test="isBuildingAttributeTypeSimple(#type)">
-                                            <s:textfield id="values%{#type.id}" name="values[%{#type.id}]" value="%{values[#type.id]}" cssStyle="width:140px;" />
+                                            <s:textfield id="attrs%{#type.id}" name="attrs[%{#type.id}]" value="%{attrs[#type.id]}" cssStyle="width:140px;" />
                                         </s:if><s:elseif test="isBuildingAttributeTypeEnum(#type)">
-                                            <s:select id="values%{#type.id}" name="values[%{#type.id}]" value="%{values[#type.id]}" list="#type.sortedValues" listKey="order" listValue="value" emptyOption="true" cssStyle="width:140px;" />
+                                            <s:select id="attrs%{#type.id}" name="attrs[%{#type.id}]" value="%{attrs[#type.id]}" list="#type.sortedValues" listKey="value" listValue="value" emptyOption="true" cssStyle="width:140px;" />
                                         </s:elseif>
                                         <s:if test="#type.isTemp()"><img src="<s:url value="/resources/common/img/i_clock.gif" includeParams="none" />" alt="<s:text name="tc.temp_attribute" />" style="vertical-align:middle;" /></s:if>
                                     </nobr>
