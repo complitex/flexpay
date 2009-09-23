@@ -5,12 +5,10 @@ import org.flexpay.ab.service.importexport.ImportService;
 import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.service.importexport.RawDataSource;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
 
-@Transactional (readOnly = true)
 public interface EircImportServiceTx extends ImportService {
 
 	public boolean processBatch(long[] counters, boolean inited,
