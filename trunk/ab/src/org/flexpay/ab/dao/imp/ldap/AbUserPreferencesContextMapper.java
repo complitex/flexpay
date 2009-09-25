@@ -1,12 +1,16 @@
 package org.flexpay.ab.dao.imp.ldap;
 
+import org.apache.commons.lang.StringUtils;
+import org.flexpay.ab.util.config.AbUserPreferences;
 import org.flexpay.common.dao.impl.ldap.UserPreferencesContextMapper;
 import org.flexpay.common.util.config.UserPreferences;
-import org.flexpay.ab.util.config.AbUserPreferences;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.ldap.core.DirContextOperations;
-import org.apache.commons.lang.StringUtils;
 
 public class AbUserPreferencesContextMapper implements UserPreferencesContextMapper {
+
+	private Logger log = LoggerFactory.getLogger(getClass());
 
 	/**
 	 * Do mapping of context attributes to preferences properties
@@ -46,7 +50,12 @@ public class AbUserPreferencesContextMapper implements UserPreferencesContextMap
 
 	private Long getFilterValue(String attributeName, Long defaultValue, DirContextOperations ctx) {
 		String filterValue = ctx.getStringAttribute(attributeName);
-		return StringUtils.isNotBlank(filterValue) ? Long.parseLong(filterValue) : defaultValue;
+		try {
+			return StringUtils.isNotBlank(filterValue) ? Long.parseLong(filterValue) : defaultValue;
+		} catch (NumberFormatException ex) {
+			log.warn("Unexpected long value: {}", filterValue);
+			return defaultValue;
+		}
 	}
 
 	/**

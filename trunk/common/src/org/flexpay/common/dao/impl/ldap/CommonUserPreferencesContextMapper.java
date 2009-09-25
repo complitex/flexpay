@@ -2,9 +2,13 @@ package org.flexpay.common.dao.impl.ldap;
 
 import org.apache.commons.lang.StringUtils;
 import org.flexpay.common.util.config.UserPreferences;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.ldap.core.DirContextOperations;
 
 public class CommonUserPreferencesContextMapper implements UserPreferencesContextMapper {
+
+	private Logger log = LoggerFactory.getLogger(getClass());
 
 	public UserPreferences doMapFromContext(DirContextOperations ctx, UserPreferences preferences) {
 
@@ -14,11 +18,20 @@ public class CommonUserPreferencesContextMapper implements UserPreferencesContex
 
 		if (preferences.getObjectClasses().contains("flexpayPerson")) {
 			preferences.setLanguageCode(ctx.getStringAttribute("flexpayPreferedLocale"));
-			String pageSize = ctx.getStringAttribute("flexpayPreferedPagerSize");
-			preferences.setPageSize(StringUtils.isNotBlank(pageSize) ? Integer.parseInt(pageSize) : 20);
+			preferences.setPageSize(getFilterValue("flexpayPreferedPagerSize", 20, ctx));
 		}
 
 		return preferences;
+	}
+
+	private Integer getFilterValue(String attributeName, Integer defaultValue, DirContextOperations ctx) {
+		String filterValue = ctx.getStringAttribute(attributeName);
+		try {
+			return StringUtils.isNotBlank(filterValue) ? Integer.parseInt(filterValue) : defaultValue;
+		} catch (NumberFormatException ex) {
+			log.warn("Unexpected int value: {}", filterValue);
+			return defaultValue;
+		}
 	}
 
 	/**
