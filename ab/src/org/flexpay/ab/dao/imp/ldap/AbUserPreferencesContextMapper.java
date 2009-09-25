@@ -43,9 +43,17 @@ public class AbUserPreferencesContextMapper implements UserPreferencesContextMap
 		}
 
 		AbUserPreferences userPreferences = (AbUserPreferences) preferences;
-		ctx.setAttributeValue("flexpayAbCountryFilter", userPreferences.getCountryFilter());
-		ctx.setAttributeValue("flexpayAbRegionFilter", userPreferences.getRegionFilter());
-		ctx.setAttributeValue("flexpayAbTownFilter", userPreferences.getTownFilter());
+		setSingleAttribute(ctx, preferences, "flexpayAbCountryFilter", userPreferences.getCountryFilter());
+		setSingleAttribute(ctx, preferences, "flexpayAbRegionFilter", userPreferences.getRegionFilter());
+		setSingleAttribute(ctx, preferences, "flexpayAbTownFilter", userPreferences.getTownFilter());
+	}
+
+	private void setSingleAttribute(DirContextOperations ctx, UserPreferences preferences, String name, Long value) {
+		if (preferences.attributes().contains(name)) {
+			ctx.setAttributeValue(name, value);
+		} else {
+			ctx.addAttributeValue(name, value);
+		}
 	}
 
 	private Long getFilterValue(String attributeName, Long defaultValue, DirContextOperations ctx) {

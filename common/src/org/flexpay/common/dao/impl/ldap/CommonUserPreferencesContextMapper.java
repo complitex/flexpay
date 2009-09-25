@@ -47,8 +47,16 @@ public class CommonUserPreferencesContextMapper implements UserPreferencesContex
 			ctx.addAttributeValue("objectclass", "flexpayPerson");
 			preferences.getObjectClasses().add("flexpayPerson");
 		}
-		ctx.setAttributeValue("flexpayPreferedLocale", preferences.getLanguageCode());
-		ctx.setAttributeValue("flexpayPreferedPagerSize", String.valueOf(preferences.getPageSize()));
+		setSingleAttribute(ctx, preferences, "flexpayPreferedLocale", preferences.getLanguageCode());
+		setSingleAttribute(ctx, preferences, "flexpayPreferedPagerSize", String.valueOf(preferences.getPageSize()));
+	}
+
+	private void setSingleAttribute(DirContextOperations ctx, UserPreferences preferences, String name, String value) {
+		if (preferences.attributes().contains(name)) {
+			ctx.setAttributeValue(name, value);
+		} else {
+			ctx.addAttributeValue(name, value);
+		}
 	}
 
 	/**
