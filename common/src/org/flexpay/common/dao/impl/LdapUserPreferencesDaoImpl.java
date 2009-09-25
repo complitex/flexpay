@@ -44,6 +44,7 @@ public class LdapUserPreferencesDaoImpl implements UserPreferencesDao {
 			UserPreferences person = userPreferencesFactory.newInstance();
 			person.setObjectClasses(CollectionUtils.set(ctx.getStringAttributes("objectclass")));
 			person.attributes(attributeIds(ctx));
+			log.debug("\nCollected classes: {}\nAttributes: {}", person.getObjectClasses(), person.attributes());
 			if (mapper.supports(person)) {
 				mapper.doMapFromContext(ctx, person);
 			}

@@ -24,6 +24,8 @@ public abstract class Job implements Runnable {
 	public final static String RESULT_ERROR = "error";
 	public final static String STATUS_ERROR = "ERROR_STATUS";
 
+	public static final int COMPLETE_PERCENT_UNKNOWN = -1;
+
 	private Thread jobThread = null;
 	private String id;
 	private Date start;
@@ -61,6 +63,9 @@ public abstract class Job implements Runnable {
 			Authentication auth = (Authentication) parameters.get(ProcessManager.PARAM_SECURITY_CONTEXT);
 			SecurityContextHolder.getContext().setAuthentication(auth);
 
+			// setup execution context
+			JobExecutionContextHolder.setContext(new JobExecutionContext());
+
 			// execute
 			String transition = execute(parameters);
 
@@ -70,7 +75,6 @@ public abstract class Job implements Runnable {
 				parameters.put(STATUS_ERROR, Boolean.TRUE);
 			}
 
-			SecurityContextHolder.clearContext();
 			jobMgr.jobFinished(id, transition, parameters);
 		} catch (Throwable e) {
 			if (e instanceof FlexPayException) {
@@ -83,8 +87,10 @@ public abstract class Job implements Runnable {
 				plog.error("Job with id = " + getId() + " completed with exception", e);
 			}
 			parameters.put(STATUS_ERROR, Boolean.TRUE);
-			SecurityContextHolder.clearContext();
 			jobMgr.jobFinished(id, RESULT_ERROR, parameters);
+		} finally {
+			SecurityContextHolder.clearContext();
+			JobExecutionContextHolder.setContext(null);
 		}
 		setEnd(new Date());
 	}
@@ -103,6 +109,10 @@ public abstract class Job implements Runnable {
 	}
 
 	public abstract String execute(Map<Serializable, Serializable> parameters) throws FlexPayException;
+
+	public int getCompletePercent() {
+		return COMPLETE_PERCENT_UNKNOWN;
+	}
 
 	public Thread getJobThread() {
 		return jobThread;

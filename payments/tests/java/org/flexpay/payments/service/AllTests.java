@@ -17,7 +17,8 @@ import org.junit.runners.Suite;
 		TestOperationTypeService.class,
 		TestObjectsServices.class,
 		TestServiceTypeService.class,
-		TestSPService.class
+		TestSPService.class,
+		TestUserPreferencesService.class
 })
 public class AllTests {
 

@@ -49,10 +49,15 @@ public class AbUserPreferencesContextMapper implements UserPreferencesContextMap
 	}
 
 	private void setSingleAttribute(DirContextOperations ctx, UserPreferences preferences, String name, Long value) {
+		if (value == null) {
+			value = 0L;
+		}
 		if (preferences.attributes().contains(name)) {
-			ctx.setAttributeValue(name, value);
+			log.debug("Setting attribute {} value: {}", name, value);
+			ctx.setAttributeValue(name, String.valueOf(value));
 		} else {
-			ctx.addAttributeValue(name, value);
+			log.debug("Adding attribute {} value: {}", name, value);
+			ctx.addAttributeValue(name, String.valueOf(value));
 		}
 	}
 
