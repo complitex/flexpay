@@ -45,8 +45,16 @@ public class PaymentsUserPreferencesContextMapper implements UserPreferencesCont
 		}
 
 		PaymentsUserPreferences userPreferences = (PaymentsUserPreferences) preferences;
-		ctx.setAttributeValue("flexpayPaymentsPaymentPointId", userPreferences.getPaymentPointIdStr());
-		ctx.setAttributeValue("flexpayPaymentsPaymentCollectorId", userPreferences.getPaymentCollectorIdStr());
+		setSingleAttribute(ctx, preferences, "flexpayPaymentsPaymentPointId", userPreferences.getPaymentPointIdStr());
+		setSingleAttribute(ctx, preferences, "flexpayPaymentsPaymentCollectorId", userPreferences.getPaymentCollectorIdStr());
+	}
+
+	private void setSingleAttribute(DirContextOperations ctx, UserPreferences preferences, String name, String value) {
+		if (preferences.attributes().contains(name)) {
+			ctx.setAttributeValue(name, value);
+		} else {
+			ctx.addAttributeValue(name, value);
+		}
 	}
 
 	/**

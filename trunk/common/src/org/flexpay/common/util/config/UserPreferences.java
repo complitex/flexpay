@@ -21,6 +21,7 @@ public class UserPreferences extends DomainObject implements Serializable, UserD
 	private UserDetails targetDetails = null;
 	// ldap object classes used to split properties
 	private Set<String> objectClasses = Collections.emptySet();
+	private Set<String> attributes = Collections.emptySet();
 
 	private String usernameStub;
 	private String fullName;
@@ -54,6 +55,14 @@ public class UserPreferences extends DomainObject implements Serializable, UserD
 
 	public void setObjectClasses(Set<String> objectClasses) {
 		this.objectClasses = objectClasses;
+	}
+
+	public Set<String> attributes() {
+		return attributes;
+	}
+
+	public void attributes(Set<String> attributes) {
+		this.attributes = attributes;
 	}
 
 	public Locale getLocale() {
