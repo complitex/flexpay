@@ -5,16 +5,19 @@ import org.flexpay.bti.service.importexport.BuildingAttributeData;
 import org.flexpay.bti.service.importexport.BuildingAttributeDataProcessor;
 import org.flexpay.bti.service.importexport.BuildingAttributesImporter;
 import org.flexpay.common.exception.FlexPayException;
+import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.process.ProcessLogger;
 import org.flexpay.common.process.job.Job;
+import org.flexpay.common.process.job.JobExecutionContext;
+import org.flexpay.common.process.job.JobExecutionContextHolder;
 import org.flexpay.common.service.FPFileService;
 import org.flexpay.common.util.config.ApplicationConfig;
-import org.flexpay.common.persistence.file.FPFile;
-import org.flexpay.common.persistence.Stub;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Required;
 
-import java.io.*;
+import java.io.InputStream;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -30,7 +33,7 @@ public class BuildingAttributesImportJob extends Job {
 
 	public String execute(Map<Serializable, Serializable> parameters) throws FlexPayException {
 
-		File file = fileService.getFileFromFileSystem(new Stub<FPFile>((Long) parameters.get(PARAM_FILE_ID)));
+		FPFile file = fileService.read(new Stub<FPFile>((Long) parameters.get(PARAM_FILE_ID)));
 		Date beginDate = (Date) parameters.get(PARAM_IMPORT_DATE);
 		if (beginDate == null) {
 			log.error("No import date parameter specified");
@@ -42,9 +45,18 @@ public class BuildingAttributesImportJob extends Job {
 
 		String result = RESULT_NEXT;
 		List<BuildingAttributeData> datas = fetchData(file, parameters);
+		JobExecutionContext executionContext = JobExecutionContextHolder.getContext();
+		if (executionContext != null) {
+			executionContext.setTotalSize(datas.size());
+		}
+		long nData = 0;
 		for (BuildingAttributeData data : datas) {
 			try {
 				attributeDataProcessor.processData(beginDate, ApplicationConfig.getFutureInfinite(), data);
+				if (executionContext != null) {
+					++nData;
+					executionContext.setComplete(nData);
+				}
 			} catch (Exception e) {
 				plog.warn("Failed importing building attributes", e);
 				result = RESULT_ERROR;
@@ -55,13 +67,13 @@ public class BuildingAttributesImportJob extends Job {
 		return result;
 	}
 
-	private List<BuildingAttributeData> fetchData(File file, Map<Serializable, Serializable> parameters)
-		throws FlexPayException {
+	private List<BuildingAttributeData> fetchData(FPFile file, Map<Serializable, Serializable> parameters)
+			throws FlexPayException {
 
 		InputStream is = null;
 		try {
 			//noinspection IOResourceOpenedButNotSafelyClosed
-			is = new BufferedInputStream(new FileInputStream(file));
+			is = file.getInputStream();
 			return attributesImporter.readAttributes(is);
 		} catch (Exception e) {
 			throw new FlexPayException("Failed reading source file #" + parameters.get(PARAM_FILE_ID), e);
