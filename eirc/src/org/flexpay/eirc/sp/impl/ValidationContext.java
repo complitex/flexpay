@@ -1,41 +1,41 @@
 package org.flexpay.eirc.sp.impl;
 
-import org.flexpay.orgs.persistence.ServiceProvider;
+import org.flexpay.common.service.importexport.CorrectionsService;
+import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.persistence.Stub;
+import static org.flexpay.common.persistence.Stub.stub;
+import org.flexpay.payments.util.ServiceTypesMapper;
+import org.flexpay.payments.service.SPService;
+import org.springframework.beans.factory.annotation.Required;
 
-import java.util.Date;
+import java.util.Map;
 
 public class ValidationContext {
 
-	private Date from;
-	private Date till;
-	private Long serviceProviderId;
+	private Map<String, Object> param = org.flexpay.common.util.CollectionUtils.treeMap();
+    private ServiceValidationFactory serviceValidationFactory;
 
-	public Long getServiceProviderId() {
-		return serviceProviderId;
-	}
+    public ValidationContext(ServiceValidationFactory serviceValidationFactory) {
+        this.serviceValidationFactory = serviceValidationFactory;
+    }
 
-	public Stub<ServiceProvider> getServiceProviderStub() {
-		return new Stub<ServiceProvider>(serviceProviderId);
-	}
+    public Map<String, Object> getParam() {
+        return param;
+    }
 
-	public void setServiceProviderId(Long serviceProviderId) {
-		this.serviceProviderId = serviceProviderId;
-	}
+    public ServiceTypesMapper getServiceTypesMapper() {
+        return serviceValidationFactory.getServiceTypesMapper();
+    }
 
-	public Date getFrom() {
-		return from;
-	}
+    public SPService getSpService() {
+        return serviceValidationFactory.getSpService();
+    }
 
-	public void setFrom(Date from) {
-		this.from = from;
-	}
+    public CorrectionsService getCorrectionsService() {
+        return serviceValidationFactory.getCorrectionsService();
+    }
 
-	public Date getTill() {
-		return till;
-	}
-
-	public void setTill(Date till) {
-		this.till = till;
-	}
+    public Stub<DataSourceDescription> getMegabankSD() {
+        return stub(serviceValidationFactory.getMegabankSD());
+    }
 }
