@@ -8,12 +8,12 @@ import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.persistence.registry.*;
 import org.flexpay.common.process.ProcessLogger;
-import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.service.RegistryFPFileTypeService;
+import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.eirc.persistence.Consumer;
 import org.flexpay.eirc.persistence.EircRegistryRecordProperties;
 import org.flexpay.eirc.sp.impl.MbFileParser;
-import org.flexpay.eirc.sp.impl.MbFileValidator;
+import org.flexpay.eirc.sp.impl.MbParsingConstants;
 import org.flexpay.eirc.util.config.ApplicationConfig;
 import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.orgs.persistence.ServiceProvider;
@@ -22,9 +22,9 @@ import org.flexpay.payments.persistence.Service;
 import org.flexpay.payments.persistence.ServiceType;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
+import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.beans.factory.annotation.Required;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -53,7 +53,7 @@ public class MbCorrectionsFileParser extends MbFileParser {
 
 		try {
 			//noinspection IOResourceOpenedButNotSafelyClosed
-			reader = new BufferedReader(new InputStreamReader(spFile.getInputStream(), REGISTRY_FILE_ENCODING));
+			reader = new BufferedReader(new InputStreamReader(spFile.getInputStream(), MbParsingConstants.REGISTRY_FILE_ENCODING));
 			initRegistry(spFile, infoRegistry);
 
 			Logger plog = ProcessLogger.getLogger(getClass());
@@ -73,7 +73,7 @@ public class MbCorrectionsFileParser extends MbFileParser {
 					continue;
 				} else if (lineNum == 1) {
 					parseHeader(line, registries);
-				} else if (line.startsWith(FOOTER_MARKER)) {
+				} else if (line.startsWith(MbParsingConstants.LAST_FILE_STRING_BEGIN)) {
 					infoRegistry.setRecordsNumber(recordsNum);
 					log.info("Total {} records created", recordsNum);
 					break;
@@ -153,7 +153,7 @@ public class MbCorrectionsFileParser extends MbFileParser {
 		registry.setRecipientCode(ApplicationConfig.getSelfOrganization().getId());
 
 		try {
-			Date period = new SimpleDateFormat(FILE_CREATION_DATE_FORMAT).parse(fields[2]);
+			Date period = new SimpleDateFormat(MbParsingConstants.FILE_CREATION_DATE_FORMAT).parse(fields[2]);
 			registry.setFromDate(period);
 			registry.setTillDate(period);
 		} catch (ParseException e) {
@@ -199,11 +199,22 @@ public class MbCorrectionsFileParser extends MbFileParser {
 	}
 
 	private void setBuildingAddress(RegistryRecord record, String addr) throws FlexPayException {
-		String[] parts = MbFileValidator.parseBuildingAddress(addr);
+		String[] parts = parseBuildingAddress(addr);
 		record.setBuildingNum(parts[0]);
 		if (parts.length > 1) {
 			record.setBuildingBulkNum(parts[1]);
 		}
+	}
+
+    protected String[] parseBuildingAddress(String mbBuidingAddress) throws FlexPayException {
+		String[] parts = StringUtils.split(mbBuidingAddress, ' ');
+		if (parts.length > 1) {
+			if (!parts[1].startsWith(MbParsingConstants.BUILDING_BULK_PREFIX)) {
+				throw new FlexPayException("Invalid building bulk value: " + parts[1]);
+			}
+			parts[1] = parts[1].substring(MbParsingConstants.BUILDING_BULK_PREFIX.length());
+		}
+		return parts;
 	}
 
 	private String getModificationDate(String field) {

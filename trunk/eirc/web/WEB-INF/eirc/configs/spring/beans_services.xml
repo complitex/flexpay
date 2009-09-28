@@ -26,22 +26,6 @@
           p:registryFPFileTypeService-ref="registryFPFileTypeService" />
 
 
-	<bean id="mbFileValidator"
-		  abstract="true"
-		  class="org.flexpay.eirc.sp.impl.MbFileValidator"
-		  p:serviceTypesMapper-ref="mbServiceTypeMapper"
-		  p:spService-ref="spService"
-		  p:correctionsService-ref="correctionsService"
-		  p:megabankSD-ref="megabankDataSourceDescription" />
-
-	<bean id="mbChargesFileValidator"
-		  parent="mbFileValidator"
-		  class="org.flexpay.eirc.sp.impl.validation.MbChargesFileValidator" />
-
-	<bean id="mbCorrectionsFileValidator"
-		  parent="mbFileValidator"
-		  class="org.flexpay.eirc.sp.impl.validation.MbCorrectionsFileValidator" />
-
 	<bean id="mbFileParser"
 		  abstract="true"
 		  class="org.flexpay.eirc.sp.impl.MbFileParser"
@@ -57,19 +41,20 @@
 		  p:serviceTypesMapper-ref="mbServiceTypeMapper"
 		  p:spService-ref="spService"
 		  p:consumerService-ref="consumerService"
-		  p:megabankSD-ref="megabankDataSourceDescription" />
+		  p:megabankSD-ref="megabankDataSourceDescription"
+          p:serviceValidationFactory-ref="serviceValidationFactory" />
 
 	<bean id="mbChargesFileParser"
 		  parent="mbFileParser"
 		  class="org.flexpay.eirc.sp.impl.parsing.MbChargesFileParser"
-		  p:validator-ref="mbChargesFileValidator"
+          p:fileValidationSchema-ref="mbChargesFileValidationSchema"
           p:registryFPFileTypeService-ref="registryFPFileTypeService" />
 
 	<bean id="mbCorrectionsFileParser"
 		  parent="mbFileParser"
 		  class="org.flexpay.eirc.sp.impl.parsing.MbCorrectionsFileParser"
-          p:registryFPFileTypeService-ref="registryFPFileTypeService"
-		  p:validator-ref="mbCorrectionsFileValidator" />
+          p:fileValidationSchema-ref="mbCorrectionsFileValidationSchema"
+          p:registryFPFileTypeService-ref="registryFPFileTypeService" />
 
 	<bean id="eircAccountService"
 		  class="org.flexpay.eirc.service.imp.EircAccountServiceImpl"
@@ -284,4 +269,23 @@
 	<bean depends-on="btiBuildingReferencesHistoryGeneratorHolder"
 		  class="org.flexpay.ab.service.history.BuildingReferencesHistoryGeneratorHolder"
 		  p:referencesHistoryGenerator-ref="servedBuildingReferencesHistoryGenerator" />
+
+    <bean id="mbCorrectionsFileValidationSchema"
+          class="org.flexpay.eirc.sp.impl.FileValidationSchema"
+          p:headerValidator="org.flexpay.eirc.sp.impl.validation.CorrectionsHeaderValidator"
+          p:footerValidator="org.flexpay.eirc.sp.impl.validation.CorrectionsFooterValidator"
+          p:recordValidator="org.flexpay.eirc.sp.impl.validation.CorrectionsRecordValidator" />
+
+    <bean id="mbChargesFileValidationSchema"
+          class="org.flexpay.eirc.sp.impl.FileValidationSchema"
+          p:headerValidator="org.flexpay.eirc.sp.impl.validation.ChargesHeaderValidator"
+          p:footerValidator="org.flexpay.eirc.sp.impl.validation.ChargesFooterValidator"
+          p:recordValidator="org.flexpay.eirc.sp.impl.validation.ChargesRecordValidator" />
+
+    <bean id="serviceValidationFactory"
+          class="org.flexpay.eirc.sp.impl.ServiceValidationFactory"
+          p:serviceTypesMapper-ref="mbServiceTypeMapper"
+		  p:spService-ref="spService"
+		  p:correctionsService-ref="correctionsService"
+		  p:megabankSD-ref="megabankDataSourceDescription" />
 </beans>

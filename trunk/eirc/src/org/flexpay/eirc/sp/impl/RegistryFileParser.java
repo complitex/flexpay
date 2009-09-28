@@ -79,16 +79,13 @@ public class RegistryFileParser implements FileParser {
 
     private RegistryFPFileTypeService registryFPFileTypeService;
 
-	@SuppressWarnings ({"ConstantConditions"})
+    @SuppressWarnings ({"ConstantConditions"})
 	@Transactional (propagation = Propagation.NOT_SUPPORTED)
-	public List<Registry> parse(FPFile spFile) throws Exception {
-
-		FileSource fileSource = null;
+    public List<Registry> parse(FPFile spFile, Logger processLog) throws Exception {
+        FileSource fileSource = null;
 		InputStream is = null;
 
 		Registry registry = null;
-		Logger processLog = ProcessLogger.getLogger(getClass());
-
 		processLog.info("Starting parsing file: {}", spFile);
 
 		Long[] recordCounter = {0L};
@@ -127,9 +124,15 @@ public class RegistryFileParser implements FileParser {
 		processLog.info("File successfully parsed, total records: {}", recordCounter[0]);
 
 		return CollectionUtils.list(registry);
+    }
+
+	@SuppressWarnings ({"ConstantConditions"})
+	@Transactional (propagation = Propagation.NOT_SUPPORTED)
+	public List<Registry> parse(FPFile spFile) throws Exception {
+		return parse(spFile, log);
 	}
 
-	/**
+    /**
 	 * Open source registry file
 	 *
 	 * @param spFile Registry file

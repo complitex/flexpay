@@ -4,9 +4,11 @@ import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.process.job.Job;
+import org.flexpay.common.process.ProcessLogger;
 import org.flexpay.common.service.FPFileService;
 import org.flexpay.eirc.sp.FileParser;
 import org.springframework.beans.factory.annotation.Required;
+import org.slf4j.Logger;
 
 import java.io.Serializable;
 import java.util.Map;
@@ -29,11 +31,11 @@ public class FileParserJob extends Job {
 		}
 		try {
 			if ("mbCorrections".equals(fileType)) {
-				mbCorrectionsFileParser.parse(spFile);
+				mbCorrectionsFileParser.parse(spFile, ProcessLogger.getLogger(getClass()));
 			} else if ("mbRegistry".equals(fileType)) {
-				mbRegistryFileParser.parse(spFile);
+				mbRegistryFileParser.parse(spFile, ProcessLogger.getLogger(getClass()));
 			} else {
-				registryFileParser.parse(spFile);
+				registryFileParser.parse(spFile, ProcessLogger.getLogger(getClass()));
 			}
 		} catch (Exception e) {
 			log.warn("Parser exception", e);

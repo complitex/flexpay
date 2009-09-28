@@ -8,12 +8,15 @@ import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.process.ProcessManager;
 import org.flexpay.common.service.FPFileService;
 import org.flexpay.common.util.CollectionUtils;
-import org.flexpay.eirc.sp.impl.MbFileValidator;
+import org.flexpay.eirc.sp.impl.MbParsingConstants;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Serializable;
 import java.util.Map;
 
 public class SpFileAction extends FPActionSupport {
@@ -59,13 +62,13 @@ public class SpFileAction extends FPActionSupport {
 
 		FPFile file = fpFileService.read(new Stub<FPFile>(fileId));
 
-		String firstMbFileString = MbFileValidator.FIRST_FILE_STRING;
+		String firstMbFileString = MbParsingConstants.FIRST_FILE_STRING;
 
 		String line;
 		BufferedReader reader = null;
 		try {
 			//noinspection IOResourceOpenedButNotSafelyClosed
-			reader = new BufferedReader(new InputStreamReader(file.getInputStream(), MbFileValidator.REGISTRY_FILE_ENCODING));
+			reader = new BufferedReader(new InputStreamReader(file.getInputStream(), MbParsingConstants.REGISTRY_FILE_ENCODING));
 			line = reader.readLine();
 
 			if (firstMbFileString.equals(line)) {

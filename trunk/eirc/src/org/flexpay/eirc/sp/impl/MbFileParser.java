@@ -10,7 +10,12 @@ import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.persistence.registry.RegistryRecordStatus;
 import org.flexpay.common.service.*;
 import org.flexpay.common.service.importexport.CorrectionsService;
+import static org.flexpay.common.util.CollectionUtils.list;
 import org.flexpay.eirc.sp.FileParser;
+import org.flexpay.eirc.sp.impl.validation.FileValidator;
+import org.flexpay.eirc.sp.impl.messager.CompositMessager;
+import org.flexpay.eirc.sp.impl.messager.WarningMessager;
+import org.flexpay.eirc.sp.impl.messager.ErrorMessager;
 import org.flexpay.eirc.service.ConsumerService;
 import org.flexpay.orgs.service.ServiceProviderService;
 import org.flexpay.payments.service.SPService;
@@ -24,14 +29,15 @@ import org.springframework.transaction.annotation.Transactional;
 import org.apache.commons.lang.time.StopWatch;
 
 import java.util.List;
+import java.util.ArrayList;
 
 public abstract class MbFileParser implements FileParser {
 
 	protected Logger log = LoggerFactory.getLogger(getClass());
 
-	public static final String FOOTER_MARKER = "999999999";
-	public static final String REGISTRY_FILE_ENCODING = "Cp866";
-	public static final String FILE_CREATION_DATE_FORMAT = "ddMMyy";
+//	public static final String FOOTER_MARKER = "999999999";
+//	public static final String REGISTRY_FILE_ENCODING = "Cp866";
+//	public static final String FILE_CREATION_DATE_FORMAT = "ddMMyy";
 
 	protected RegistryRecordStatus statusLoaded;
 
@@ -49,20 +55,18 @@ public abstract class MbFileParser implements FileParser {
 	protected SPService spService;
 	protected ConsumerService consumerService;
 
-	private MbFileValidator validator;
 	private RegistryRecordStatusService registryRecordStatusService;
+    private ServiceValidationFactory serviceValidationFactory;
+    private FileValidationSchema fileValidationSchema;
 
 	@Transactional (propagation = Propagation.NOT_SUPPORTED)
-	public List<Registry> parse(FPFile spFile) throws FlexPayException {
+	public List<Registry> parse(FPFile spFile, Logger logger) throws FlexPayException {
+        FileValidator validator = serviceValidationFactory.createFileValidator(fileValidationSchema, logger);
 
-		if (validator != null) {
-			if (!validator.validate(spFile)) {
-				log.debug("Validation failed");
-				return null;
-			}
-		} else {
-			log.debug("Validator is null. Skipping validation");
-		}
+        if (!validator.validate(spFile)) {
+            log.debug("Validation failed");
+            return null;
+        }
 
 		log.info("Starting parsing file: {}", spFile.getOriginalName());
 
@@ -80,13 +84,14 @@ public abstract class MbFileParser implements FileParser {
 		log.info("Parsing file {} finished in {}", spFile, watch);
 
 		return registries;
+    }
+
+    @Transactional (propagation = Propagation.NOT_SUPPORTED)
+	public List<Registry> parse(FPFile spFile) throws FlexPayException {
+        return parse(spFile, null);
 	}
 
-	protected abstract List<Registry> parseFile(@NotNull FPFile spFile) throws FlexPayException;
-
-	public void setValidator(MbFileValidator validator) {
-		this.validator = validator;
-	}
+    protected abstract List<Registry> parseFile(@NotNull FPFile spFile) throws FlexPayException;
 
 	@Required
 	public void setSpRegistryRecordStatusService(RegistryRecordStatusService registryRecordStatusService) {
@@ -152,4 +157,14 @@ public abstract class MbFileParser implements FileParser {
 	public void setConsumerService(ConsumerService consumerService) {
 		this.consumerService = consumerService;
 	}
+
+    @Required
+    public void setServiceValidationFactory(ServiceValidationFactory serviceValidationFactory) {
+        this.serviceValidationFactory = serviceValidationFactory;
+    }
+
+    @Required
+    public void setFileValidationSchema(FileValidationSchema fileValidationSchema) {
+        this.fileValidationSchema = fileValidationSchema;
+    }
 }

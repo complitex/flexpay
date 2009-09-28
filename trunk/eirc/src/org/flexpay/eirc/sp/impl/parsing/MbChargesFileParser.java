@@ -15,6 +15,7 @@ import org.flexpay.common.service.RegistryFPFileTypeService;
 import org.flexpay.eirc.persistence.EircRegistryRecordProperties;
 import org.flexpay.eirc.sp.impl.MbFileParser;
 import org.flexpay.eirc.sp.impl.ParseContext;
+import org.flexpay.eirc.sp.impl.MbParsingConstants;
 import org.flexpay.eirc.util.config.ApplicationConfig;
 import org.flexpay.orgs.persistence.ServiceProvider;
 import org.flexpay.payments.persistence.EircRegistryProperties;
@@ -52,7 +53,7 @@ public class MbChargesFileParser extends MbFileParser {
 
 		try {
 			//noinspection IOResourceOpenedButNotSafelyClosed
-			reader = new BufferedReader(new InputStreamReader(spFile.getInputStream(), REGISTRY_FILE_ENCODING));
+			reader = new BufferedReader(new InputStreamReader(spFile.getInputStream(), MbParsingConstants.REGISTRY_FILE_ENCODING));
 			registry.setCreationDate(new Date());
 			registry.getFiles().put(registryFPFileTypeService.findByCode(RegistryFPFileType.MB_FORMAT), spFile);
 			registry.setRegistryType(registryTypeService.findByCode(RegistryType.TYPE_QUITTANCE));
@@ -78,7 +79,7 @@ public class MbChargesFileParser extends MbFileParser {
 					continue;
 				} else if (lineNum == 1) {
 					registry = registryService.create(parseHeader(line, registry));
-				} else if (line.startsWith(FOOTER_MARKER)) {
+				} else if (line.startsWith(MbParsingConstants.LAST_FILE_STRING_BEGIN)) {
 					registry.setRecordsNumber(recordsNum);
 					plog.info("Total {} records created", recordsNum);
 					break;
