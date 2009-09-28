@@ -2,6 +2,8 @@ package org.flexpay.eirc.dao.imp;
 
 import org.flexpay.ab.persistence.Town;
 import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.process.job.JobExecutionContext;
+import org.flexpay.common.process.job.JobExecutionContextHolder;
 import static org.flexpay.common.util.CollectionUtils.ar;
 import org.flexpay.eirc.dao.QuittanceDaoExt;
 import org.flexpay.eirc.persistence.EircServiceOrganization;
@@ -26,11 +28,26 @@ public class QuittanceDaoExtImpl extends JdbcDaoSupport implements QuittanceDaoE
 	 */
 	public long createQuittances(Stub<EircServiceOrganization> organizationStub, Stub<Town> townStub, Date dateFrom, Date dateTill) {
 
+		JobExecutionContext executionContext = JobExecutionContextHolder.getContext();
+		if (executionContext != null) {
+			executionContext.setTotalSize(3);
+		}
+		
 		Date now = new Date();
 		long count = generateQuittances(townStub.getId(), organizationStub.getId(), dateFrom, dateTill, now);
+		if (executionContext != null) {
+			executionContext.setComplete(1);
+		}
 
 		long detailsCount = generateDetailsReferences(dateFrom, dateTill, now);
+		if (executionContext != null) {
+			executionContext.setComplete(2);
+		}
+
 		long updatedCount = updateOrderNumbers(dateFrom, dateTill, now);
+		if (executionContext != null) {
+			executionContext.setComplete(3);
+		}
 
 		log.info(String.format("Generated quittances statistics.\n" +
 							   "Total quittances: %d\n" +

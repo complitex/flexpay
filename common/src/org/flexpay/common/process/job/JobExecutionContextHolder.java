@@ -11,4 +11,12 @@ public class JobExecutionContextHolder {
 	public static JobExecutionContext getContext() {
 		return EXECUTION_CONTEXT.get();
 	}
+
+	public static void complete() {
+		JobExecutionContext context = getContext();
+		if (context != null) {
+			context.complete();
+		}
+		EXECUTION_CONTEXT.set(null);
+	}
 }

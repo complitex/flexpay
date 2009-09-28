@@ -4,6 +4,7 @@ import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.process.ProcessLogger;
 import org.flexpay.common.process.ProcessManager;
+import org.flexpay.common.process.job.listeners.JobCompletePercentListener;
 import org.flexpay.common.util.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,8 +24,6 @@ public abstract class Job implements Runnable {
 	public final static String RESULT_NEXT = "next";
 	public final static String RESULT_ERROR = "error";
 	public final static String STATUS_ERROR = "ERROR_STATUS";
-
-	public static final int COMPLETE_PERCENT_UNKNOWN = -1;
 
 	private Thread jobThread = null;
 	private String id;
@@ -64,7 +63,9 @@ public abstract class Job implements Runnable {
 			SecurityContextHolder.getContext().setAuthentication(auth);
 
 			// setup execution context
-			JobExecutionContextHolder.setContext(new JobExecutionContext());
+			JobExecutionContext jobExecutionContext = new JobExecutionContext(taskId);
+			jobExecutionContext.addListener(new JobCompletePercentListener());
+			JobExecutionContextHolder.setContext(jobExecutionContext);
 
 			// execute
 			String transition = execute(parameters);
@@ -90,7 +91,7 @@ public abstract class Job implements Runnable {
 			jobMgr.jobFinished(id, RESULT_ERROR, parameters);
 		} finally {
 			SecurityContextHolder.clearContext();
-			JobExecutionContextHolder.setContext(null);
+			JobExecutionContextHolder.complete();
 		}
 		setEnd(new Date());
 	}
@@ -109,10 +110,6 @@ public abstract class Job implements Runnable {
 	}
 
 	public abstract String execute(Map<Serializable, Serializable> parameters) throws FlexPayException;
-
-	public int getCompletePercent() {
-		return COMPLETE_PERCENT_UNKNOWN;
-	}
 
 	public Thread getJobThread() {
 		return jobThread;

@@ -345,7 +345,7 @@ public class ProcessManagerImpl implements ProcessManager, Runnable {
 	/**
 	 * Create process for process definition name
 	 *
-	 * @param definitionName process definitiona name
+	 * @param definitionName process definition name
 	 * @param parameters	 initial context variables
 	 * @return process instance identifier
 	 * @throws ProcessInstanceException   when can't instantiate process instance
