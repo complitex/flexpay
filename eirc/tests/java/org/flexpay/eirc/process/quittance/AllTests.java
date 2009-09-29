@@ -9,9 +9,8 @@ import org.junit.runners.Suite;
 		TestGenerateQuittanceJob.class,
 		TestGenerateQuittancesJob.class,
 		TestGenerateQuittancesPDFJob.class,
-		TestOpenPattern.class
-//		,
-//		TestRunDuplicateQuittanceJobs.class
+		TestOpenPattern.class,
+		TestRunDuplicateQuittanceJobs.class
 })
 public class AllTests {
 }
