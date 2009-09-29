@@ -672,12 +672,14 @@ public class ProcessManagerImpl implements ProcessManager, Runnable {
 	@Override
 	public void join(long processId) throws InterruptedException {
 		while (true) {
+
+			Process info = getProcessInstanceInfo(processId);
+			if (info == null || info.getId() != processId) {
+				return;
+			}
+
 			// wait until there is any 
 			synchronized (sleepSemaphore) {
-				Process info = getProcessInstanceInfo(processId);
-				if (info == null || info.getId() != processId) {
-					return;
-				}
 
 				ProcessState state = info.getProcessState();
 				if (state.isCompleted()) {
