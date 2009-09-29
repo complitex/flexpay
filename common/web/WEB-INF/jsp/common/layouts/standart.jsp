@@ -5,9 +5,9 @@
 
 <html>
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <tiles:importAttribute ignore="true" name="title" scope="request" />
-    <title><s:text name="%{#attr.title}" /></title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<tiles:importAttribute ignore="true" name="title" scope="request" />
+	<title><s:text name="%{#attr.title}" /></title>
 
 	<%@ include file="scripts.jsp" %>
 
@@ -16,52 +16,52 @@
 
 <tiles:insertAttribute name="header" />
 
-    <table cellpadding="0" cellspacing="0" border="0" width="100%">
-        <tr>
-            <menu:useMenuDisplayer name="fpDisplayer">
-                <menu:displayMenu name="FPMenu" levelBegin="1" levelEnd="1" />
-            </menu:useMenuDisplayer>
+<table cellpadding="0" cellspacing="0" border="0" width="100%">
+	<tr>
+		<menu:useMenuDisplayer name="fpDisplayer">
+			<menu:displayMenu name="FPMenu" levelBegin="1" levelEnd="1" />
+		</menu:useMenuDisplayer>
 
-            <tiles:insertAttribute name="language" />
+		<tiles:insertAttribute name="language" />
 
-            <!--<form name="search">-->
-            <td class="topmenu_form_search" nowrap="1" >&nbsp;
-                <!--<input type="text" class="form-search">&nbsp;<input type="button" value="Найти" class="btn-search" />-->
-            </td>
-            <!--</form>-->
-        </tr>
-    </table>
+		<!--<form name="search">-->
+		<td class="topmenu_form_search" nowrap="1">&nbsp;
+			<!--<input type="text" class="form-search">&nbsp;<input type="button" value="Найти" class="btn-search" />-->
+		</td>
+		<!--</form>-->
+	</tr>
+</table>
 
-    <menu:useMenuDisplayer name="fpDisplayer">
-        <menu:displayMenu name="FPMenu" levelBegin="2" levelEnd="2" />
-    </menu:useMenuDisplayer>
+<menu:useMenuDisplayer name="fpDisplayer">
+	<menu:displayMenu name="FPMenu" levelBegin="2" levelEnd="2" />
+</menu:useMenuDisplayer>
 
 
 <div class="crumbs">
-    <div class="crumbs-padding">
-        <tiles:insertAttribute name="breadCrumbs" />
-    </div>
+	<div class="crumbs-padding">
+		<tiles:insertAttribute name="breadCrumbs" />
+	</div>
 </div>
 
 <div class="columns">
 
-    <menu:useMenuDisplayer name="fpDisplayer">
-        <menu:displayMenu name="FPMenu" levelBegin="3" />
-    </menu:useMenuDisplayer>
+	<menu:useMenuDisplayer name="fpDisplayer">
+		<menu:displayMenu name="FPMenu" levelBegin="3" />
+	</menu:useMenuDisplayer>
 
-    <div class="main">
-        <div class="main-content">
-            <tiles:insertAttribute name="body" ignore="true" />
-        </div>
+	<div class="main">
+		<div class="main-content">
+			<tiles:insertAttribute name="body" ignore="true" />
+		</div>
 
-        <!--
-        <div class="main-tip">
-            <div class="main-tip-padding">
-                <tiles:insertAttribute name="tip" />
-            </div>
-        </div>
-        -->
-    </div>
+		<!--
+				<div class="main-tip">
+					<div class="main-tip-padding">
+						<tiles:insertAttribute name="tip" />
+					</div>
+				</div>
+				-->
+	</div>
 
 </div>
 

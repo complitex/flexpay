@@ -35,11 +35,7 @@ public class ApartmentsListAjaxAction extends FPActionWithPagerSupport<Apartment
 		}
 
 		apartments = apartmentService.getApartments(new Stub<BuildingAddress>(buildingFilter), sorters, getPager());
-		log.debug("Total apartments found: {}", apartments);
 		apartments = apartmentService.readFull(Apartment.collectionIds(apartments));
-		log.debug("Total apartments readFull: {}", apartments);
-
-		log.debug("Found apartments: {}", apartments);
 
 		return SUCCESS;
 	}

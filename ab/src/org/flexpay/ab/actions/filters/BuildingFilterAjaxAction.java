@@ -33,7 +33,6 @@ public class BuildingFilterAjaxAction extends FilterAjaxAction {
 		}
 
 		List<BuildingAddress> addresses = buildingService.getBuildings(new Stub<Street>(streetId));
-		log.debug("Found addresses: {}", addresses);
 
 		foundObjects = new ArrayList<FilterObject>();
 		for (BuildingAddress address : addresses) {
