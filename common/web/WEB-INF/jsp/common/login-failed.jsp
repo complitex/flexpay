@@ -7,7 +7,7 @@
 				window.location = '<s:url value="/" includeParams="none"/>';
 				return;
 			}
-			setTimeout(checkSession, 61 * 1000);
+			setTimeout(checkSession, 5 * 1000);
 		});
 	}
 	checkSession();
