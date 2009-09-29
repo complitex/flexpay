@@ -1,5 +1,18 @@
 <%@ include file="/WEB-INF/jsp/common/taglibs.jsp" %>
 
+<script type="text/javascript">
+	function checkSession() {
+		$.getJSON("<s:url value="/resources/common/jsp/session_ping.jsp" />", {}, function(json) {
+			if (json.result != 'OK') {
+				window.location = '<s:url value="/" includeParams="none"/>';
+				return;
+			}
+			setTimeout(checkSession, 5 * 1000);
+		});
+	}
+	checkSession();
+</script>
+
 <s:i18n name="/i18n/common-messages">
     <form method="POST" action="j_security_check">
         <table border="0" align="center">
@@ -33,7 +46,7 @@
             </tr>
             <tr>
                 <td colspan="2" align="center">
-                    <input type="submit" class="btn-search" value="<s:text name="login.submit" />" />
+                    <input type="submit" class="btn-search" value="<s:text name="login.submit" />" name="j_security_check" />
                 </td>
             </tr>
         </table>

@@ -21,7 +21,7 @@
     };
 
 	$.ajaxSetup({
-		// redirect to the root as 401 status code recieved
+		// redirect to the root as 401 status code received
 		error: function(xhr, status, err) {
 			if (xhr.status == 401) {
 				window.location.href = '<s:url value="/" includeParams="none" />';
