@@ -3,7 +3,7 @@
 <link rel="stylesheet" type="text/css" href="<s:url value="/resources/common/js/jquery/jquery-ui/css/smoothness/jquery-ui-1.7.1.custom.min.css" includeParams="none" />"/>
 <style type="text/css">@import "<s:url value="/resources/common/js/jquery/timeentry/jquery.timeentry.css" includeParams="none"/>";</style>
 
-<script type="text/javascript" src="<s:url value="/resources/common/js/jquery/jquery-1.3.2.min.js" includeParams="none" />"></script>
+<script type="text/javascript" src="<s:url value="/resources/common/js/jquery/jquery-1.3.2.js" includeParams="none" />"></script>
 <script type="text/javascript" src="<s:url value="/resources/common/js/jquery/jquery.protify-0.2.min.js" includeParams="none" />"></script>
 <script type="text/javascript" src="<s:url value="/resources/common/js/jquery/jquery.dump.js" includeParams="none" />"></script>
 <script type="text/javascript" src="<s:url value="/resources/common/js/jquery/validate/jquery.validate.min.js" includeParams="none" />"></script>
@@ -18,5 +18,15 @@
     FP.base = "<s:url value="/" includeParams="none" />";
     FP.messages = {
         loading: "<s:text name="common.loading" />"
-    }
+    };
+
+	$.ajaxSetup({
+		// redirect to the root as 401 status code recieved
+		error: function(xhr, status, err) {
+			if (xhr.status == 401) {
+				window.location.href = '<s:url value="/" includeParams="none" />';
+			}
+		}
+	});
+
 </script>
