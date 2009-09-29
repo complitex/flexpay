@@ -40,8 +40,12 @@ public class LogoutEventBroadcaster implements LogoutHandler, ApplicationContext
 	 * @see org.acegisecurity.ui.logout.LogoutHandler#logout(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse, org.acegisecurity.Authentication)
 	 */
 	public void logout(HttpServletRequest arg0, HttpServletResponse arg1, Authentication auth) {
+		if (auth == null) {
+			log.debug("No authentication on log out, had session ended before log out was issued?");
+			return;
+		}
 		LogoutEvent event = new LogoutEvent(auth);
-		log.debug("publishing logout event: " + event);
+		log.debug("publishing logout event: {}", event);
 		applicationContext.publishEvent(event);
 	}
 
