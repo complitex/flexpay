@@ -38,6 +38,11 @@
 		<put-attribute name="body" value="/WEB-INF/jsp/payments/errors/cashbox_authentication_required.jsp"/>
 	</definition>
 
+    <definition name="payments.error.payment_collector_authentication_required" extends="payments.main">
+		<put-attribute name="title" value="payments.error.payment_collector_not_found"/>
+		<put-attribute name="body" value="/WEB-INF/jsp/payments/errors/payment_collector_authentication_required.jsp"/>
+	</definition>
+
 	<definition name="payments.error.trading_day_closed" extends="payments.main">
 		<put-attribute name="title" value="payments.errors.trading_day_closed"/>
 		<put-attribute name="body" value="/WEB-INF/jsp/payments/errors/trading_day_closed.jsp"/>
