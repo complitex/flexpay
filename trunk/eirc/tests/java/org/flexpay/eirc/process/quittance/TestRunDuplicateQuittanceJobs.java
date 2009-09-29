@@ -4,12 +4,16 @@ import org.flexpay.common.process.Process;
 import org.flexpay.common.process.ProcessManager;
 import org.flexpay.common.process.ProcessState;
 import org.flexpay.common.util.CollectionUtils;
+import org.flexpay.common.util.SecurityUtil;
 import org.flexpay.eirc.test.EircSpringBeanAwareTestCase;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.Authentication;
 
 import java.io.Serializable;
 import java.util.GregorianCalendar;
@@ -34,9 +38,8 @@ public class TestRunDuplicateQuittanceJobs extends EircSpringBeanAwareTestCase {
 		long p1Id = processManager.createProcess("GenerateQuittances", contextVariables);
 		long p2Id = processManager.createProcess("GenerateQuittances", contextVariables);
 
-		ProcessWaiter pw1 = new ProcessWaiter(p1Id);
-//		ProcessWaiter pw2 = new ProcessWaiter(p1Id);
-		ProcessWaiter pw2 = new ProcessWaiter(p2Id);
+		ProcessWaiter pw1 = new ProcessWaiter(p1Id, SecurityUtil.getAuthentication());
+		ProcessWaiter pw2 = new ProcessWaiter(p2Id, SecurityUtil.getAuthentication());
 		Thread thr1 = new Thread(pw1);
 		Thread thr2 = new Thread(pw2);
 		thr1.start();
@@ -61,13 +64,13 @@ public class TestRunDuplicateQuittanceJobs extends EircSpringBeanAwareTestCase {
 
 		long p1Id = processManager.createProcess("GenerateQuittances", contextVariables);
 
-		ProcessWaiter pw1 = new ProcessWaiter(p1Id);
+		ProcessWaiter pw1 = new ProcessWaiter(p1Id, SecurityUtil.getAuthentication());
 		Thread thr1 = new Thread(pw1);
 		thr1.start();
 		thr1.join();
 
 		long p2Id = processManager.createProcess("GenerateQuittances", contextVariables);
-		ProcessWaiter pw2 = new ProcessWaiter(p2Id);
+		ProcessWaiter pw2 = new ProcessWaiter(p2Id, SecurityUtil.getAuthentication());
 		Thread thr2 = new Thread(pw2);
 		thr2.start();
 		thr2.join();
@@ -89,8 +92,8 @@ public class TestRunDuplicateQuittanceJobs extends EircSpringBeanAwareTestCase {
 		long p1Id = processManager.createProcess("GenerateQuittances", contextVariables);
 		long p2Id = processManager.createProcess("GenerateQuittancePDF", contextVariables);
 
-		ProcessWaiter pw1 = new ProcessWaiter(p1Id);
-		ProcessWaiter pw2 = new ProcessWaiter(p2Id);
+		ProcessWaiter pw1 = new ProcessWaiter(p1Id, SecurityUtil.getAuthentication());
+		ProcessWaiter pw2 = new ProcessWaiter(p2Id, SecurityUtil.getAuthentication());
 		Thread thr1 = new Thread(pw1);
 		Thread thr2 = new Thread(pw2);
 		thr1.start();
@@ -108,18 +111,26 @@ public class TestRunDuplicateQuittanceJobs extends EircSpringBeanAwareTestCase {
 
 		private long pid;
 		private Process process;
+		private Authentication authentication;
 
-		private ProcessWaiter(long pid) {
+		private ProcessWaiter(long pid, Authentication authentication) {
 			this.pid = pid;
+			this.authentication = authentication;
 		}
 
 		public void run() {
 			try {
+
+				SecurityUtil.setAuthentication(authentication);
+
 				processManager.join(pid);
 				process = processManager.getProcessInstanceInfo(pid);
 			} catch (Exception ex) {
+				log.error("Failed getting process instance #" + pid, ex);
 				fail(ex.getMessage());
 			}
+
+			assertNotNull("Process not found #" + pid, process);
 		}
 
 		public Process getProcess() {
