@@ -369,5 +369,7 @@
 		<role-name>ROLE_AB_PERSON_READ</role-name>
 		<group-name>VIEW_ONLY</group-name>
 	</security-role-mapping>
-    
+
+	<parameter-encoding default-charset="UTF-8" />
+
 </sun-web-app>
