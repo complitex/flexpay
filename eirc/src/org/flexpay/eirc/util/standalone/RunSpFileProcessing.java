@@ -108,10 +108,10 @@ public class RunSpFileProcessing implements StandaloneTask {
 		long time = System.currentTimeMillis();
 
 		log.debug("Starting registry importing");
-		registryProcessor.startRegistryProcessing(registry);
-
 		ProcessingContext context = new ProcessingContext();
 		context.setRegistry(registry);
+		registryProcessor.startRegistryProcessing(context);
+
 		try {
 			registryProcessor.importConsumers(context);
 		} finally {

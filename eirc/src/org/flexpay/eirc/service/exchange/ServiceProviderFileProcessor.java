@@ -101,12 +101,11 @@ public class ServiceProviderFileProcessor implements RegistryProcessor {
 		for (Registry registry : registries) {
 
 			try {
-				startRegistryProcessing(registry);
-
-				log.info("Starting processing registry #{}", registry.getId());
-
 				ProcessingContext context = new ProcessingContext();
 				context.setRegistry(registry);
+				startRegistryProcessing(context);
+
+				log.info("Starting processing registry #{}", registry.getId());
 
 				importConsumers(context);
 				processRegistry(context);
@@ -132,7 +131,7 @@ public class ServiceProviderFileProcessor implements RegistryProcessor {
 
 		try {
 			plog.debug("Starting processing registry header");
-			startRegistryProcessing(context.getRegistry());
+			startRegistryProcessing(context);
 			try {
 				processorTx.processHeader(context);
 			} catch (Throwable t) {
@@ -229,8 +228,12 @@ public class ServiceProviderFileProcessor implements RegistryProcessor {
 		setupRecordsConsumer(context.getRegistry(), rawConsumersDataSource);
 	}
 
-	public void startRegistryProcessing(Registry registry) throws TransitionNotAllowed {
-		registryWorkflowManager.startProcessing(registry);
+	public void startRegistryProcessing(ProcessingContext context) throws TransitionNotAllowed {
+		if (context.isProcessingStarted()) {
+			return;
+		}
+		registryWorkflowManager.startProcessing(context.getRegistry());
+		context.startProcessing();
 	}
 
 	public void endRegistryProcessing(Registry registry) throws TransitionNotAllowed {
@@ -242,11 +245,10 @@ public class ServiceProviderFileProcessor implements RegistryProcessor {
 	public void processRecords(Registry registry, Set<Long> recordIds) throws Exception {
 
 		try {
-			startRegistryProcessing(registry);
-			setupRecordsConsumers(registry, recordIds);
-
 			ProcessingContext context = new ProcessingContext();
 			context.setRegistry(registry);
+			startRegistryProcessing(context);
+			setupRecordsConsumers(registry, recordIds);
 
 			// refresh records
 			Collection<RegistryRecord> records = registryRecordService.findObjects(registry, recordIds);

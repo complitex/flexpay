@@ -13,6 +13,7 @@ import java.util.List;
 public class ProcessingContext {
 
 	private Registry registry;
+	private boolean processingStarted = false;
 	private List<RegistryRecord> operationRecords = CollectionUtils.list();
 	private List<DelayedUpdate> currentRecordUpdates = CollectionUtils.list();
 	private List<DelayedUpdate> operationUpdates = CollectionUtils.list();
@@ -36,6 +37,14 @@ public class ProcessingContext {
 
 	public void setRegistry(Registry registry) {
 		this.registry = registry;
+	}
+
+	public boolean isProcessingStarted() {
+		return processingStarted;
+	}
+
+	public void startProcessing() {
+		processingStarted = true;
 	}
 
 	public RegistryRecord getCurrentRecord() {
