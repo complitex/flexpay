@@ -34,14 +34,14 @@ public class AuthenticationProvider extends OpenSSOAuthenticationProvider {
 	 * we can continue with authentication only. The user will have no
 	 * GrantedAuthorities.
 	 *
-	 * @param authentication
+	 * @param authentication Authentication
 	 * @return authentication token - possibly with ROLE_*  authorities.
 	 *
 	 * @throws org.springframework.security.AuthenticationException
 	 */
 	public Authentication authenticate(Authentication authentication) throws AuthenticationException {
 
-		log.error("authenticate: " + authentication, new RuntimeException());
+		log.debug("authenticate: {}", authentication);
 
 		OpenSSOSimpleAuthoritiesPopulator populator = new OpenSSOSimpleAuthoritiesPopulator();
 
