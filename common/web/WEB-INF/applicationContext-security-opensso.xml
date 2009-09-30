@@ -13,7 +13,7 @@
 			class="org.springframework.security.util.FilterChainProxy">
 		<security:filter-chain-map path-type="ant">
 			<security:filter-chain pattern="/**"
-								   filters="httpSessionContextIntegrationFilter,logoutFilter,openssoFilter,exceptionTranslationFilter,filterInvocationInterceptor" />
+								   filters="httpSessionContextIntegrationFilter,logoutFilter,openssoFilter,authenticationProcessingFilter,exceptionTranslationFilter,filterInvocationInterceptor" />
 		</security:filter-chain-map>
 	</b:bean>
 
@@ -137,4 +137,12 @@
 		</b:property>
 		<b:property name="allowIfAllAbstainDecisions" value="true" />
 	</b:bean>
+
+	<b:bean id="authenticationProcessingFilter"
+			class="org.flexpay.common.actions.security.FPAuthenticationProcessingFilter">
+		<custom-filter position="AUTHENTICATION_PROCESSING_FILTER" />
+		<b:property name="defaultTargetUrl" value="/" />
+		<b:property name="authenticationManager" ref="authenticationManager" />
+	</b:bean>
+
 </b:beans>
