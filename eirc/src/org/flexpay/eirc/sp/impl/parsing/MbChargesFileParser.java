@@ -122,7 +122,7 @@ public class MbChargesFileParser extends MbFileParser {
 	}
 
 	private Registry parseHeader(String line, Registry registry) throws FlexPayException {
-		String[] fields = line.split("=");
+		String[] fields = lineParser.parse(line);
 		log.debug("Getting service provider with id = {} from DB", fields[1]);
 		Stub<ServiceProvider> providerStub = correctionsService.findCorrection(
 				fields[1], ServiceProvider.class, megabankSD);
@@ -152,7 +152,7 @@ public class MbChargesFileParser extends MbFileParser {
 	}
 
 	private long parseRecord(String line, ParseContext context) throws FlexPayException {
-		String[] fields = line.split("=");
+		String[] fields = lineParser.parse(line);
 
 		Date operationDate = null;
 		try {

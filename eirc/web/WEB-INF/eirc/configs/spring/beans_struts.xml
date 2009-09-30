@@ -33,6 +33,7 @@
 		  class="org.flexpay.eirc.actions.SpFileAction"
           p:fpFileService-ref="fpFileService"
 		  p:processManager-ref="processManager"
+          p:lineParser-ref="mbLineParser"
           scope="prototype" />
 
 	<bean id="quittanceGenerateAction"

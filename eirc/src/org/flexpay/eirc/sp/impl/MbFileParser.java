@@ -58,10 +58,11 @@ public abstract class MbFileParser implements FileParser {
 	private RegistryRecordStatusService registryRecordStatusService;
     private ServiceValidationFactory serviceValidationFactory;
     private FileValidationSchema fileValidationSchema;
+    protected LineParser lineParser;
 
 	@Transactional (propagation = Propagation.NOT_SUPPORTED)
 	public List<Registry> parse(FPFile spFile, Logger logger) throws FlexPayException {
-        FileValidator validator = serviceValidationFactory.createFileValidator(fileValidationSchema, logger);
+        FileValidator validator = serviceValidationFactory.createFileValidator(fileValidationSchema, lineParser, logger);
 
         if (!validator.validate(spFile)) {
             log.debug("Validation failed");
@@ -166,5 +167,10 @@ public abstract class MbFileParser implements FileParser {
     @Required
     public void setFileValidationSchema(FileValidationSchema fileValidationSchema) {
         this.fileValidationSchema = fileValidationSchema;
+    }
+
+    @Required
+    public void setLineParser(LineParser lineParser) {
+        this.lineParser = lineParser;
     }
 }

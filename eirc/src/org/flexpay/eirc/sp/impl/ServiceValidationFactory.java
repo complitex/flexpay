@@ -16,8 +16,11 @@ import org.springframework.beans.factory.annotation.Required;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.lang.reflect.Constructor;
 
 public class ServiceValidationFactory {
+    private Logger log = LoggerFactory.getLogger(getClass());
+
     private ServiceTypesMapper serviceTypesMapper;
     private SPService spService;
     private CorrectionsService correctionsService;
@@ -63,7 +66,7 @@ public class ServiceValidationFactory {
     }
 
     @NotNull
-    public FileValidator createFileValidator(@NotNull FileValidationSchema schema, @Nullable Logger log) {
+    public FileValidator createFileValidator(@NotNull FileValidationSchema schema, @NotNull LineParser lineParser, @Nullable Logger log) {
         List<Messager> listMessagers = new ArrayList<Messager>();
         listMessagers.add(new WarningMessager(LoggerFactory.getLogger(FileValidator.class)));
         if (log != null) {
@@ -71,6 +74,17 @@ public class ServiceValidationFactory {
         }
         CompositMessager messager = new CompositMessager(listMessagers);
 
-        return new FileValidator(messager, this, schema);
+        return new FileValidator(messager, this, schema, lineParser);
+    }
+
+    public MessageValidatorWithContext getNewInstanceValidator(@NotNull Class<MessageValidatorWithContext> cls, @NotNull Messager messager, @NotNull ValidationContext context) {
+        try {
+            Constructor<MessageValidatorWithContext> headerValidatorConstructor = cls.getConstructor(Messager.class, ValidationContext.class);
+            return headerValidatorConstructor.newInstance(messager, context);
+        } catch (Throwable th) {
+            log.error("Missing validator class", th);
+            messager.addMessage("Inner error");
+        }
+        return null;
     }
 }

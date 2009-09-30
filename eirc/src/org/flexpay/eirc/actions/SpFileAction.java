@@ -8,6 +8,7 @@ import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.process.ProcessManager;
 import org.flexpay.common.service.FPFileService;
 import org.flexpay.common.util.CollectionUtils;
+import org.flexpay.eirc.sp.impl.LineParser;
 import org.flexpay.eirc.sp.impl.MbParsingConstants;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
@@ -28,6 +29,8 @@ public class SpFileAction extends FPActionSupport {
 
 	private FPFileService fpFileService;
 	private ProcessManager processManager;
+
+    private LineParser lineParser;
 
 	@NotNull
 	public String doExecute() throws Exception {
@@ -74,7 +77,7 @@ public class SpFileAction extends FPActionSupport {
 			if (firstMbFileString.equals(line)) {
 				line = reader.readLine();
 
-				String[] fields = line.split("=");
+				String[] fields = lineParser.parse(line);
 				if (fields.length == 3) {
 					return "mbCorrections";
 				} else if (fields.length == 4) {
@@ -125,4 +128,8 @@ public class SpFileAction extends FPActionSupport {
 		this.fpFileService = fpFileService;
 	}
 
+    @Required
+    public void setLineParser(LineParser lineParser) {
+        this.lineParser = lineParser;
+    }
 }
