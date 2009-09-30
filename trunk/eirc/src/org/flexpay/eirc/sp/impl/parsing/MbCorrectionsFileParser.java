@@ -127,7 +127,7 @@ public class MbCorrectionsFileParser extends MbFileParser {
 	}
 
 	private void parseHeader(String line, List<Registry> registries) throws FlexPayException {
-		String[] fields = line.split("=");
+		String[] fields = lineParser.parse(line);
 		for (Registry registry : registries) {
 			parseHeader(fields, registry);
 			registryService.create(registry);
@@ -161,12 +161,14 @@ public class MbCorrectionsFileParser extends MbFileParser {
 		}
 	}
 
+    /*
 	private String[] parseRecordLine(String line) {
 		return StringUtils.splitByWholeSeparator(line, "=", 28);
 	}
+	*/
 
 	private long parseRecord(String line, Registry registry, List<RegistryRecord> recordStack) throws FlexPayException {
-		String[] fields = parseRecordLine(line);
+		String[] fields = lineParser.parse(line);
 
 		// remove duplicates in service codes
 		Set<String> serviceCodes = CollectionUtils.set(fields[20].split(";"));

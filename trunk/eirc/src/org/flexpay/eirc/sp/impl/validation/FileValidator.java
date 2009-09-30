@@ -18,28 +18,31 @@ public class FileValidator extends MessageValidator<FPFile> {
     private Messager messager;
     private ServiceValidationFactory serviceValidationFactory;
     private FileValidationSchema schema;
+    private LineParser lineParser;
 
-    public FileValidator(@NotNull Messager mess, @NotNull ServiceValidationFactory serviceValidationFactory, @NotNull FileValidationSchema schema) {
+    public FileValidator(@NotNull Messager mess, @NotNull ServiceValidationFactory serviceValidationFactory, @NotNull FileValidationSchema schema,
+                         @NotNull LineParser lineParser) {
         super(mess);
         this.messager = mess;
         this.serviceValidationFactory = serviceValidationFactory;
         this.schema = schema;
+        this.lineParser = lineParser;
     }
 
     public boolean validate(@NotNull FPFile spFile) {
-        ValidationContext context = new ValidationContext(serviceValidationFactory);
+        ValidationContext context = new ValidationContext(serviceValidationFactory, lineParser);
 
-        MessageValidatorWithContext headerValidator = getNewInstanceValidator(schema.getHeaderValidator(), context);
+        MessageValidatorWithContext headerValidator = serviceValidationFactory.getNewInstanceValidator(schema.getHeaderValidator(), messager, context);
         if (headerValidator == null) {
             return false;
         }
 
-        MessageValidatorWithContext footerValidator = getNewInstanceValidator(schema.getFooterValidator(), context);
+        MessageValidatorWithContext footerValidator = serviceValidationFactory.getNewInstanceValidator(schema.getFooterValidator(), messager, context);
         if (footerValidator == null) {
             return false;
         }
 
-        MessageValidatorWithContext recordValidator = getNewInstanceValidator(schema.getRecordValidator(), context);
+        MessageValidatorWithContext recordValidator = serviceValidationFactory.getNewInstanceValidator(schema.getRecordValidator(), messager, context);
         if (recordValidator == null) {
             return false;
         }
@@ -92,16 +95,5 @@ public class FileValidator extends MessageValidator<FPFile> {
 		}
 
 		return ret;
-    }
-
-    private MessageValidatorWithContext getNewInstanceValidator(@NotNull Class<MessageValidatorWithContext> cls, @NotNull ValidationContext context) {
-        try {
-            Constructor<MessageValidatorWithContext> headerValidatorConstructor = cls.getConstructor(Messager.class, ValidationContext.class);
-            return headerValidatorConstructor.newInstance(messager, context);
-        } catch (Throwable th) {
-            log.error("Missing validator class", th);
-            messager.addMessage("Inner error");
-        }
-        return null;
     }
 }

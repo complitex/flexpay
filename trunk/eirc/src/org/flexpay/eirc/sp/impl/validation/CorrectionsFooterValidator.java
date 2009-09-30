@@ -14,7 +14,7 @@ public class CorrectionsFooterValidator extends MessageValidatorWithContext<Stri
     }
 
     public boolean validate(@NotNull String line) {
-        String[] fields = line.split("=");
+        String[] fields = context.getLineParser().parse(line);
 		if (fields.length != FIELDS_LENGTH) {
 			addErrorMessage("Not {} fields", FIELDS_LENGTH);
             return false;

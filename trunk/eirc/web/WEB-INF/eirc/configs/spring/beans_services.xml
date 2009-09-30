@@ -42,7 +42,8 @@
 		  p:spService-ref="spService"
 		  p:consumerService-ref="consumerService"
 		  p:megabankSD-ref="megabankDataSourceDescription"
-          p:serviceValidationFactory-ref="serviceValidationFactory" />
+          p:serviceValidationFactory-ref="serviceValidationFactory"
+          p:lineParser-ref="mbLineParser"  />
 
 	<bean id="mbChargesFileParser"
 		  parent="mbFileParser"
@@ -288,4 +289,8 @@
 		  p:spService-ref="spService"
 		  p:correctionsService-ref="correctionsService"
 		  p:megabankSD-ref="megabankDataSourceDescription" />
+
+    <bean id="mbLineParser"
+          class="org.flexpay.eirc.sp.impl.parsing.SplitLineRemoveBlank"
+          p:delimiter="=" />
 </beans>
