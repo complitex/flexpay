@@ -83,8 +83,16 @@
 		<b:property name="filterProcessesUrl" value="/logout" />
 	</b:bean>
 
-	<b:bean id="logoutEventBroadcaster" class="org.flexpay.common.actions.security.LogoutEventBroadcaster" />
+	<b:bean id="logoutEventBroadcaster"
+			class="org.flexpay.common.actions.security.LogoutEventBroadcaster" />
 
 	<authentication-manager alias="authenticationManager" />
+
+	<b:bean id="authenticationProcessingFilter"
+			class="org.flexpay.common.actions.security.FPAuthenticationProcessingFilter">
+		<custom-filter position="AUTHENTICATION_PROCESSING_FILTER" />
+		<b:property name="defaultTargetUrl" value="/" />
+		<b:property name="authenticationManager" ref="authenticationManager" />
+	</b:bean>
 
 </b:beans>
