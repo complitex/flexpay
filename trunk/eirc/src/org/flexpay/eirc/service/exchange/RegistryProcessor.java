@@ -22,7 +22,7 @@ public interface RegistryProcessor {
 	/**
 	 * Run processing of a <code>registries</code>
 	 * <p/>
-	 * Handles {@link #startRegistryProcessing(org.flexpay.common.persistence.registry.Registry)} and {@link
+	 * Handles {@link #startRegistryProcessing(org.flexpay.eirc.persistence.exchange.ProcessingContext)} and {@link
 	 * #endRegistryProcessing(org.flexpay.common.persistence.registry.Registry)} internally.
 	 *
 	 * @param registries Registries to process
@@ -33,7 +33,7 @@ public interface RegistryProcessor {
 	/**
 	 * Process a limited number of registry records.
 	 * <p/>
-	 * Handles {@link #startRegistryProcessing(org.flexpay.common.persistence.registry.Registry)} and {@link
+	 * Handles {@link #startRegistryProcessing(org.flexpay.eirc.persistence.exchange.ProcessingContext)} and {@link
 	 * #endRegistryProcessing(org.flexpay.common.persistence.registry.Registry)} internally.
 	 *
 	 * @param registry  Registry that records are to be processed
@@ -45,10 +45,10 @@ public interface RegistryProcessor {
 	/**
 	 * Start registry processing
 	 *
-	 * @param registry Registry to process
+	 * @param context
 	 * @throws TransitionNotAllowed if processing is not allowed
 	 */
-	void startRegistryProcessing(Registry registry) throws TransitionNotAllowed;
+	void startRegistryProcessing(ProcessingContext context) throws TransitionNotAllowed;
 
 	/**
 	 * Finish registry processing

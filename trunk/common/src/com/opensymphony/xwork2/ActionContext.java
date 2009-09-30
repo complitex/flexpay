@@ -221,6 +221,7 @@ public class ActionContext implements Serializable {
 		if (preferences != null) {
 			preferences.setLocale(locale);
 		}
+		put(LOCALE, locale);
     }
 
     /**
