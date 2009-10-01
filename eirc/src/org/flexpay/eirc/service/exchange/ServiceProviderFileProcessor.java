@@ -100,9 +100,9 @@ public class ServiceProviderFileProcessor implements RegistryProcessor {
 		FlexPayExceptionContainer container = new FlexPayExceptionContainer();
 		for (Registry registry : registries) {
 
+			ProcessingContext context = new ProcessingContext();
+			context.setRegistry(registry);
 			try {
-				ProcessingContext context = new ProcessingContext();
-				context.setRegistry(registry);
 				startRegistryProcessing(context);
 
 				log.info("Starting processing registry #{}", registry.getId());
@@ -114,7 +114,7 @@ public class ServiceProviderFileProcessor implements RegistryProcessor {
 				log.error(errMsg, e);
 				container.addException(new FlexPayException(errMsg, e));
 			} finally {
-				endRegistryProcessing(registry);
+				endRegistryProcessing(context);
 			}
 		}
 
@@ -166,11 +166,11 @@ public class ServiceProviderFileProcessor implements RegistryProcessor {
 			processorTx.doUpdate(context);
 			plog.info("No more records to process");
 		} finally {
-			endRegistryProcessing(context.getRegistry());
+			endRegistryProcessing(context);
 		}
 
 		watch.stop();
-		plog.info("Import finished. Time spent {}", watch);
+		plog.info("Processing finished. Time spent {}", watch);
 	}
 
 	@SuppressWarnings ({"ThrowableResultOfMethodCallIgnored"})
@@ -236,17 +236,20 @@ public class ServiceProviderFileProcessor implements RegistryProcessor {
 		context.startProcessing();
 	}
 
-	public void endRegistryProcessing(Registry registry) throws TransitionNotAllowed {
-		registry = registryService.read(stub(registry));
+	public void endRegistryProcessing(ProcessingContext context) throws TransitionNotAllowed {
+		if (!context.isProcessingStarted() || context.isProcessingEnded()) {
+			return;
+		}
+		Registry registry = registryService.read(stub(context.getRegistry()));
 		registryWorkflowManager.setNextSuccessStatus(registry);
 		registryWorkflowManager.endProcessing(registry);
 	}
 
 	public void processRecords(Registry registry, Set<Long> recordIds) throws Exception {
 
+		ProcessingContext context = new ProcessingContext();
+		context.setRegistry(registry);
 		try {
-			ProcessingContext context = new ProcessingContext();
-			context.setRegistry(registry);
 			startRegistryProcessing(context);
 			setupRecordsConsumers(registry, recordIds);
 
@@ -273,7 +276,7 @@ public class ServiceProviderFileProcessor implements RegistryProcessor {
 			log.error(errMsg, t);
 			throw new FlexPayException(errMsg, t);
 		} finally {
-			endRegistryProcessing(registry);
+			endRegistryProcessing(context);
 		}
 	}
 
