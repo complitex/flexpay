@@ -45,7 +45,7 @@ public interface RegistryProcessor {
 	/**
 	 * Start registry processing
 	 *
-	 * @param context
+	 * @param context ProcessingContext 
 	 * @throws TransitionNotAllowed if processing is not allowed
 	 */
 	void startRegistryProcessing(ProcessingContext context) throws TransitionNotAllowed;
@@ -53,10 +53,10 @@ public interface RegistryProcessor {
 	/**
 	 * Finish registry processing
 	 *
-	 * @param registry Registry to process
+	 * @param context ProcessingContext 
 	 * @throws TransitionNotAllowed if processing is not allowed
 	 */
-	void endRegistryProcessing(Registry registry) throws TransitionNotAllowed;
+	void endRegistryProcessing(ProcessingContext context) throws TransitionNotAllowed;
 
 	/**
 	 * Setup consumers for registry records

@@ -115,7 +115,7 @@ public class RunSpFileProcessing implements StandaloneTask {
 		try {
 			registryProcessor.importConsumers(context);
 		} finally {
-			registryProcessor.endRegistryProcessing(registry);
+			registryProcessor.endRegistryProcessing(context);
 		}
 
 		if (log.isDebugEnabled()) {

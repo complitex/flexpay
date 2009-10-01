@@ -14,6 +14,7 @@ public class ProcessingContext {
 
 	private Registry registry;
 	private boolean processingStarted = false;
+	private boolean processingEnded = false;
 	private List<RegistryRecord> operationRecords = CollectionUtils.list();
 	private List<DelayedUpdate> currentRecordUpdates = CollectionUtils.list();
 	private List<DelayedUpdate> operationUpdates = CollectionUtils.list();
@@ -43,8 +44,16 @@ public class ProcessingContext {
 		return processingStarted;
 	}
 
+	public boolean isProcessingEnded() {
+		return processingEnded;
+	}
+
 	public void startProcessing() {
 		processingStarted = true;
+	}
+
+	public void endProcessing() {
+		processingEnded = true;
 	}
 
 	public RegistryRecord getCurrentRecord() {
