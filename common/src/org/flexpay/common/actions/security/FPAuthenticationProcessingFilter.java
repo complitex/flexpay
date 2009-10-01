@@ -25,9 +25,12 @@ public class FPAuthenticationProcessingFilter extends AuthenticationProcessingFi
 		// check if
 		if (!requiresAuthentication(request, response)) {
 			if (request.getSession().getAttribute(I18nInterceptor.DEFAULT_SESSION_ATTRIBUTE) == null) {
-				log.debug("Authenticated, but no locale attribute set, fixing");
-				UserPreferences preferences = (UserPreferences) SecurityUtil.getAuthentication().getPrincipal();
-				request.getSession().setAttribute(I18nInterceptor.DEFAULT_SESSION_ATTRIBUTE, preferences.getLocale());
+				Authentication auth = SecurityUtil.getAuthentication();
+				if (auth != null) {
+					log.debug("Authenticated, but no locale attribute set, fixing");
+					UserPreferences preferences = (UserPreferences) auth.getPrincipal();
+					request.getSession().setAttribute(I18nInterceptor.DEFAULT_SESSION_ATTRIBUTE, preferences.getLocale());
+				}
 			}
 		}
 
