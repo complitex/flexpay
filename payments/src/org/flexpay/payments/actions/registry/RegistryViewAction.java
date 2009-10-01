@@ -1,5 +1,6 @@
 package org.flexpay.payments.actions.registry;
 
+import org.flexpay.common.actions.FPActionWithPagerSupport;
 import org.flexpay.common.exception.FlexPayException;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.persistence.filter.ImportErrorTypeFilter;
@@ -9,8 +10,6 @@ import org.flexpay.common.persistence.registry.RegistryRecord;
 import org.flexpay.common.service.RegistryRecordService;
 import org.flexpay.common.service.RegistryService;
 import org.flexpay.common.service.importexport.ClassToTypeRegistry;
-import org.flexpay.common.actions.FPActionWithPagerSupport;
-import org.flexpay.payments.actions.CashboxCookieWithPagerActionSupport;
 import org.flexpay.payments.persistence.ServiceType;
 import org.flexpay.payments.persistence.ServiceTypeNameTranslation;
 import org.flexpay.payments.service.ServiceTypeService;
@@ -37,7 +36,7 @@ public class RegistryViewAction extends FPActionWithPagerSupport<RegistryRecord>
 	public String doExecute() throws Exception {
 		if (registry.getId() == null) {
 			addActionError("No registryId specified, give up.");
-			return ERROR;
+			return REDIRECT_ERROR;
 		}
 		getImportErrorTypeFilter().init(classToTypeRegistry);
 		registry = registryService.read(stub(registry));
@@ -77,9 +76,9 @@ public class RegistryViewAction extends FPActionWithPagerSupport<RegistryRecord>
 
 	public ImportErrorTypeFilter getImportErrorTypeFilter() {
 		if (importErrorTypeFilter == null) {
-            importErrorTypeFilter = new ImportErrorTypeFilter();
-        }
-        return importErrorTypeFilter;
+			importErrorTypeFilter = new ImportErrorTypeFilter();
+		}
+		return importErrorTypeFilter;
 	}
 
 	public void setImportErrorTypeFilter(ImportErrorTypeFilter importErrorTypeFilter) {
