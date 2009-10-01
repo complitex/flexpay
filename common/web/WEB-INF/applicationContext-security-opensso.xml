@@ -140,7 +140,7 @@
 
 	<b:bean id="authenticationProcessingFilter"
 			class="org.flexpay.common.actions.security.FPAuthenticationProcessingFilter">
-		<custom-filter position="AUTHENTICATION_PROCESSING_FILTER" />
+		<security:custom-filter position="AUTHENTICATION_PROCESSING_FILTER" />
 		<b:property name="defaultTargetUrl" value="/" />
 		<b:property name="authenticationManager" ref="authenticationManager" />
 	</b:bean>
