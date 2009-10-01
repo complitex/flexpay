@@ -243,6 +243,7 @@ public class ServiceProviderFileProcessor implements RegistryProcessor {
 		Registry registry = registryService.read(stub(context.getRegistry()));
 		registryWorkflowManager.setNextSuccessStatus(registry);
 		registryWorkflowManager.endProcessing(registry);
+		context.endProcessing();
 	}
 
 	public void processRecords(Registry registry, Set<Long> recordIds) throws Exception {
