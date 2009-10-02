@@ -10,20 +10,17 @@ import org.slf4j.LoggerFactory;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.lang.reflect.Constructor;
 
 public class FileValidator extends MessageValidator<FPFile> {
     protected Logger log = LoggerFactory.getLogger(getClass());
 
-    private Messager messager;
     private ServiceValidationFactory serviceValidationFactory;
     private FileValidationSchema schema;
     private LineParser lineParser;
 
-    public FileValidator(@NotNull Messager mess, @NotNull ServiceValidationFactory serviceValidationFactory, @NotNull FileValidationSchema schema,
+    public FileValidator(@NotNull Messenger mess, @NotNull ServiceValidationFactory serviceValidationFactory, @NotNull FileValidationSchema schema,
                          @NotNull LineParser lineParser) {
         super(mess);
-        this.messager = mess;
         this.serviceValidationFactory = serviceValidationFactory;
         this.schema = schema;
         this.lineParser = lineParser;
@@ -32,17 +29,17 @@ public class FileValidator extends MessageValidator<FPFile> {
     public boolean validate(@NotNull FPFile spFile) {
         ValidationContext context = new ValidationContext(serviceValidationFactory, lineParser);
 
-        MessageValidatorWithContext headerValidator = serviceValidationFactory.getNewInstanceValidator(schema.getHeaderValidator(), messager, context);
+        MessageValidatorWithContext headerValidator = serviceValidationFactory.getNewInstanceValidator(schema.getHeaderValidator(), messenger, context);
         if (headerValidator == null) {
             return false;
         }
 
-        MessageValidatorWithContext footerValidator = serviceValidationFactory.getNewInstanceValidator(schema.getFooterValidator(), messager, context);
+        MessageValidatorWithContext footerValidator = serviceValidationFactory.getNewInstanceValidator(schema.getFooterValidator(), messenger, context);
         if (footerValidator == null) {
             return false;
         }
 
-        MessageValidatorWithContext recordValidator = serviceValidationFactory.getNewInstanceValidator(schema.getRecordValidator(), messager, context);
+        MessageValidatorWithContext recordValidator = serviceValidationFactory.getNewInstanceValidator(schema.getRecordValidator(), messenger, context);
         if (recordValidator == null) {
             return false;
         }
@@ -78,7 +75,7 @@ public class FileValidator extends MessageValidator<FPFile> {
 					    addErrorMessage("Incorrect footer in file. Line number = {}\nLine = {}", new Object[]{lineNum, line});
 						ret = false;
 					}
-					//TODO log.debug("Validated {} records in file", lineNum - 2);
+					messenger.addMessage("Validated {} records in file", lineNum - 2, MessageLevel.INFO);
 					break;
 				} else {
 					if (!recordValidator.validate(line)) {
@@ -88,7 +85,7 @@ public class FileValidator extends MessageValidator<FPFile> {
 				}
 			}
 		} catch (IOException e) {
-			addErrorMessage("Error with reading file: {}", e);
+			messenger.addMessage("Error with reading file: {}", e, MessageLevel.ERROR);
             ret = false;
 		} finally {
 			IOUtils.closeQuietly(reader);

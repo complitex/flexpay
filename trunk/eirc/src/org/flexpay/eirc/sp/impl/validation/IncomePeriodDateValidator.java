@@ -1,7 +1,7 @@
 package org.flexpay.eirc.sp.impl.validation;
 
 import org.flexpay.eirc.sp.impl.MessageValidator;
-import org.flexpay.eirc.sp.impl.Messager;
+import org.flexpay.eirc.sp.impl.Messenger;
 import org.jetbrains.annotations.NotNull;
 
 import java.text.SimpleDateFormat;
@@ -9,7 +9,7 @@ import java.text.SimpleDateFormat;
 public class IncomePeriodDateValidator extends MessageValidator<String> {
     private final String INCOME_PERIOD_DATE_FORMAT = "MMyy";
 
-    public IncomePeriodDateValidator(@NotNull Messager mess) {
+    public IncomePeriodDateValidator(@NotNull Messenger mess) {
         super(mess);
     }
 

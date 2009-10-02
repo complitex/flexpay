@@ -2,7 +2,7 @@ package org.flexpay.eirc.sp.impl.validation;
 
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.eirc.sp.impl.MessageValidatorWithContext;
-import org.flexpay.eirc.sp.impl.Messager;
+import org.flexpay.eirc.sp.impl.Messenger;
 import org.flexpay.eirc.sp.impl.ValidationContext;
 import org.flexpay.eirc.sp.impl.ValidationConstants;
 import org.flexpay.orgs.persistence.ServiceProvider;
@@ -16,7 +16,7 @@ import java.util.List;
 public class ServiceCodeValidator extends MessageValidatorWithContext<String> {
     private static final String SERVICE_CODES_SEPARATOR = ";";
 
-    public ServiceCodeValidator(@NotNull Messager mess, @NotNull ValidationContext context) {
+    public ServiceCodeValidator(@NotNull Messenger mess, @NotNull ValidationContext context) {
         super(mess, context);
     }
 

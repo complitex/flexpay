@@ -2,9 +2,8 @@ package org.flexpay.eirc.sp.impl;
 
 import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.service.importexport.CorrectionsService;
-import org.flexpay.eirc.sp.impl.messager.CompositMessager;
-import org.flexpay.eirc.sp.impl.messager.ErrorMessager;
-import org.flexpay.eirc.sp.impl.messager.WarningMessager;
+import org.flexpay.eirc.sp.impl.messager.CompositMessenger;
+import org.flexpay.eirc.sp.impl.messager.LevelMessenger;
 import org.flexpay.eirc.sp.impl.validation.FileValidator;
 import org.flexpay.payments.service.SPService;
 import org.flexpay.payments.util.ServiceTypesMapper;
@@ -14,9 +13,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 
+import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.List;
-import java.lang.reflect.Constructor;
 
 public class ServiceValidationFactory {
     private Logger log = LoggerFactory.getLogger(getClass());
@@ -67,23 +66,23 @@ public class ServiceValidationFactory {
 
     @NotNull
     public FileValidator createFileValidator(@NotNull FileValidationSchema schema, @NotNull LineParser lineParser, @Nullable Logger log) {
-        List<Messager> listMessagers = new ArrayList<Messager>();
-        listMessagers.add(new WarningMessager(LoggerFactory.getLogger(FileValidator.class)));
+        List<Messenger> listMessengers = new ArrayList<Messenger>();
+        listMessengers.add(new LevelMessenger(LoggerFactory.getLogger(FileValidator.class), MessageLevel.WARN));
         if (log != null) {
-            listMessagers.add(new ErrorMessager(log));
+            listMessengers.add(new LevelMessenger(log, MessageLevel.ERROR));
         }
-        CompositMessager messager = new CompositMessager(listMessagers);
+        CompositMessenger messager = new CompositMessenger(listMessengers);
 
         return new FileValidator(messager, this, schema, lineParser);
     }
 
-    public MessageValidatorWithContext getNewInstanceValidator(@NotNull Class<MessageValidatorWithContext> cls, @NotNull Messager messager, @NotNull ValidationContext context) {
+    public MessageValidatorWithContext getNewInstanceValidator(@NotNull Class<MessageValidatorWithContext> cls, @NotNull Messenger messenger, @NotNull ValidationContext context) {
         try {
-            Constructor<MessageValidatorWithContext> headerValidatorConstructor = cls.getConstructor(Messager.class, ValidationContext.class);
-            return headerValidatorConstructor.newInstance(messager, context);
+            Constructor<MessageValidatorWithContext> headerValidatorConstructor = cls.getConstructor(Messenger.class, ValidationContext.class);
+            return headerValidatorConstructor.newInstance(messenger, context);
         } catch (Throwable th) {
             log.error("Missing validator class", th);
-            messager.addMessage("Inner error");
+            messenger.addMessage("Inner error", MessageLevel.ERROR);
         }
         return null;
     }

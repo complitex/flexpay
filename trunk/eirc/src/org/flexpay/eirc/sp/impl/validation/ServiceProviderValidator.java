@@ -2,7 +2,7 @@ package org.flexpay.eirc.sp.impl.validation;
 
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.eirc.sp.impl.MessageValidatorWithContext;
-import org.flexpay.eirc.sp.impl.Messager;
+import org.flexpay.eirc.sp.impl.Messenger;
 import org.flexpay.eirc.sp.impl.ValidationContext;
 import org.flexpay.orgs.persistence.ServiceProvider;
 import org.jetbrains.annotations.NotNull;
@@ -10,7 +10,7 @@ import org.jetbrains.annotations.NotNull;
 public class ServiceProviderValidator extends MessageValidatorWithContext<String> {
     public static String SERVICE_PROVIDER_ID = "ServiceProviderId";
 
-    public ServiceProviderValidator(@NotNull Messager mess, @NotNull ValidationContext context) {
+    public ServiceProviderValidator(@NotNull Messenger mess, @NotNull ValidationContext context) {
         super(mess, context);
     }
 

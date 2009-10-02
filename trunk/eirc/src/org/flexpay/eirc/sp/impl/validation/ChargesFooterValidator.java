@@ -9,14 +9,14 @@ public class ChargesFooterValidator extends MessageValidatorWithContext<String> 
     private FieldsValidator fieldsValidator;
     private LongValidator longValidator;
 
-    public ChargesFooterValidator(@NotNull Messager mess, @NotNull ValidationContext context) {
+    public ChargesFooterValidator(@NotNull Messenger mess, @NotNull ValidationContext context) {
         super(mess, context);
         fieldsValidator = new FieldsValidator(mess);
         longValidator = new LongValidator(mess, context);
     }
 
     public boolean validate(@NotNull String line) {
-        String[] fields = context.getLineParser().parse(line);
+        String[] fields = context.getLineParser().parse(line, messenger);
 		if (fields.length != FIELDS_LENGTH) {
 			addErrorMessage("Not {} fields", FIELDS_LENGTH);
 		}

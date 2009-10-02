@@ -1,27 +1,27 @@
 package org.flexpay.eirc.sp.impl;
 
-import org.flexpay.eirc.sp.impl.Messager;
+import org.flexpay.eirc.sp.impl.Messenger;
 import org.jetbrains.annotations.NotNull;
 
 public abstract class MessageValidator<T> implements Validator<T> {
-    private Messager messager;
+    protected Messenger messenger;
 
     private MessageValidator() {
     }
 
-    public MessageValidator(@NotNull Messager mess) {
-        messager = mess;
+    public MessageValidator(@NotNull Messenger mess) {
+        messenger = mess;
     }
 
     protected void addErrorMessage(@NotNull String message) {
-        messager.addMessage(message);
+        messenger.addMessage(message);
     }
 
     protected void addErrorMessage(@NotNull String message, Object o) {
-        messager.addMessage(message, o);
+        messenger.addMessage(message, o);
     }
 
     protected void addErrorMessage(@NotNull String message, @NotNull Object[] o) {
-        messager.addMessage(message, o);
+        messenger.addMessage(message, o);
     }
 }
