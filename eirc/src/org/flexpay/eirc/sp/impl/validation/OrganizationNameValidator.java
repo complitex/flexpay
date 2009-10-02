@@ -1,13 +1,13 @@
 package org.flexpay.eirc.sp.impl.validation;
 
 import org.flexpay.eirc.sp.impl.MessageValidator;
-import org.flexpay.eirc.sp.impl.Messager;
+import org.flexpay.eirc.sp.impl.Messenger;
 import org.jetbrains.annotations.NotNull;
 
 public class OrganizationNameValidator extends MessageValidator<String> {
     private static final long NAME_LENGTH = 20;
 
-    public OrganizationNameValidator(@NotNull Messager mess) {
+    public OrganizationNameValidator(@NotNull Messenger mess) {
         super(mess);
     }
 

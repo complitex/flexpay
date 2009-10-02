@@ -2,7 +2,7 @@ package org.flexpay.eirc.sp.impl.validation;
 
 import org.flexpay.eirc.sp.impl.MessageValidatorWithContext;
 import org.flexpay.eirc.sp.impl.MbParsingConstants;
-import org.flexpay.eirc.sp.impl.Messager;
+import org.flexpay.eirc.sp.impl.Messenger;
 import org.flexpay.eirc.sp.impl.ValidationContext;
 import org.jetbrains.annotations.NotNull;
 
@@ -13,7 +13,7 @@ public class FileCreationDateValidator extends MessageValidatorWithContext<Strin
     public static final String TILL_DATE = "TillDate";
     public static final String FROM_DATE = "FromDate";
 
-    public FileCreationDateValidator(@NotNull Messager mess, @NotNull ValidationContext context) {
+    public FileCreationDateValidator(@NotNull Messenger mess, @NotNull ValidationContext context) {
         super(mess, context);
     }
 

@@ -1,7 +1,7 @@
 package org.flexpay.eirc.sp.impl.validation;
 
 import org.flexpay.eirc.sp.impl.MessageValidatorWithContext;
-import org.flexpay.eirc.sp.impl.Messager;
+import org.flexpay.eirc.sp.impl.Messenger;
 import org.flexpay.eirc.sp.impl.ValidationContext;
 import org.flexpay.eirc.sp.impl.ValidationConstants;
 import org.jetbrains.annotations.NotNull;
@@ -13,7 +13,7 @@ public class ModificationsBeginDateValidator extends MessageValidatorWithContext
 
     private static final String MODIFICATIONS_BEGIN_DATE_FORMAT = "ddMMyy";
 
-    public ModificationsBeginDateValidator(@NotNull Messager mess, @NotNull ValidationContext context) {
+    public ModificationsBeginDateValidator(@NotNull Messenger mess, @NotNull ValidationContext context) {
         super(mess, context);
     }
 

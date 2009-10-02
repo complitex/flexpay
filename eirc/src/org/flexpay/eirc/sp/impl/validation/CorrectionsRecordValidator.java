@@ -1,7 +1,7 @@
 package org.flexpay.eirc.sp.impl.validation;
 
 import org.flexpay.eirc.sp.impl.MessageValidatorWithContext;
-import org.flexpay.eirc.sp.impl.Messager;
+import org.flexpay.eirc.sp.impl.Messenger;
 import org.flexpay.eirc.sp.impl.ValidationContext;
 import org.jetbrains.annotations.NotNull;
 
@@ -15,7 +15,7 @@ public class CorrectionsRecordValidator extends MessageValidatorWithContext<Stri
     private ModificationsBeginDateValidator modificationsBeginDateValidator;
     private ServiceCodeValidator serviceCodeValidator;
 
-    public CorrectionsRecordValidator(@NotNull Messager mess, @NotNull ValidationContext context) {
+    public CorrectionsRecordValidator(@NotNull Messenger mess, @NotNull ValidationContext context) {
         super(mess, context);
 
         fieldsValidator = new FieldsValidator(mess);
@@ -27,7 +27,7 @@ public class CorrectionsRecordValidator extends MessageValidatorWithContext<Stri
     }
 
     public boolean validate(@NotNull String line) {
-        String[] fields = context.getLineParser().parse(line);
+        String[] fields = context.getLineParser().parse(line, messenger);
 		if (fields.length < FIELDS_LENGTH) {
 			addErrorMessage("Found {} fields. expected {}", new Object[]{fields.length, FIELDS_LENGTH});
             return false;

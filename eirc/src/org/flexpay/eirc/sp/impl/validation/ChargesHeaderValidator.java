@@ -1,7 +1,7 @@
 package org.flexpay.eirc.sp.impl.validation;
 
 import org.flexpay.eirc.sp.impl.MessageValidatorWithContext;
-import org.flexpay.eirc.sp.impl.Messager;
+import org.flexpay.eirc.sp.impl.Messenger;
 import org.flexpay.eirc.sp.impl.ValidationContext;
 import org.jetbrains.annotations.NotNull;
 
@@ -14,7 +14,7 @@ public class ChargesHeaderValidator extends MessageValidatorWithContext<String> 
     private FileCreationDateValidator fileCreationDateValidator;
     private OrganizationNameValidator organizationNameValidator;
 
-    public ChargesHeaderValidator(@NotNull Messager mess, @NotNull ValidationContext context) {
+    public ChargesHeaderValidator(@NotNull Messenger mess, @NotNull ValidationContext context) {
         super(mess, context);
         fieldsValidator = new FieldsValidator(mess);
         serviceProviderValidator = new ServiceProviderValidator(mess, context);
@@ -24,7 +24,7 @@ public class ChargesHeaderValidator extends MessageValidatorWithContext<String> 
     }
 
     public boolean validate(@NotNull String line) {
-        String[] fields = context.getLineParser().parse(line);
+        String[] fields = context.getLineParser().parse(line, messenger);
 		if (fields.length != FIELDS_LENGTH) {
 			addErrorMessage("Not {} fields", FIELDS_LENGTH);
             return false;
