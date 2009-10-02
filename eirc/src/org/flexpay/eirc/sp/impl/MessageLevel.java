@@ -7,7 +7,7 @@ public class MessageLevel {
 
     public static final MessageLevel ERROR = new MessageLevel(ERROR_INT);
     public static final MessageLevel WARN = new MessageLevel(WARN_INT);
-    public static final MessageLevel INFO = new MessageLevel(WARN_INT);
+    public static final MessageLevel INFO = new MessageLevel(INFO_INT);
 
     private int level;
 
