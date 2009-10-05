@@ -65,7 +65,8 @@ public abstract class SpringBeanAwareTestCase extends AbstractJUnit4SpringContex
 		GrantedAuthority[] authorities = SecurityUtil.auths(
 				BASIC,
 				PROCESS_DEFINITION_UPLOAD_NEW,
-				PROCESS_READ
+				PROCESS_READ,
+				PROCESS_DELETE
 		);
 		User user = new User("test", "test", true, true, true, true, authorities);
 		UserPreferences preferences = new UserPreferences();

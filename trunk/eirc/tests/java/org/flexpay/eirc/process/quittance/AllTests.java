@@ -7,6 +7,7 @@ import org.junit.runners.Suite;
 @Suite.SuiteClasses ({
 		org.flexpay.eirc.process.quittance.report.AllTests.class,
 		TestGenerateQuittanceJob.class,
+		TestGenerateQuittanceJob2.class,
 		TestGenerateQuittancesJob.class,
 		TestGenerateQuittancesPDFJob.class,
 		TestOpenPattern.class,

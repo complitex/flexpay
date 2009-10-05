@@ -8,7 +8,6 @@ import org.flexpay.common.process.ProcessLogger;
 import org.flexpay.common.service.FPFileService;
 import org.flexpay.eirc.sp.FileParser;
 import org.springframework.beans.factory.annotation.Required;
-import org.slf4j.Logger;
 
 import java.io.Serializable;
 import java.util.Map;
