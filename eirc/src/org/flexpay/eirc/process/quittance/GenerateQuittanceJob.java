@@ -7,6 +7,7 @@ import org.flexpay.common.process.ProcessLogger;
 import org.flexpay.common.process.job.Job;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.DateUtil;
+import org.flexpay.eirc.dao.QuittanceDaoHelper;
 import org.flexpay.eirc.persistence.EircServiceOrganization;
 import org.flexpay.eirc.service.QuittanceService;
 import org.slf4j.Logger;
@@ -26,6 +27,7 @@ public class GenerateQuittanceJob extends Job {
 	public static final String PARAM_DATE_TILL = "dateTill";
 	public static final String PARAM_SERVICE_ORGANIZATION_ID = "serviceOrganizationId";
 	public static final String PARAM_TOWN_ID = "townId";
+	public static final String PARAM_DELETE_EMPTY_QUITTANCES = "deleteEmptyQuittances";
 
 	private QuittanceService quittanceService;
 
@@ -42,6 +44,10 @@ public class GenerateQuittanceJob extends Job {
 		}
 		Long organizationId = (Long) contextVariables.get(PARAM_SERVICE_ORGANIZATION_ID);
 		Long townId = (Long) contextVariables.get(PARAM_TOWN_ID);
+		Boolean deleteEmptyQuittances = (Boolean) contextVariables.get(PARAM_DELETE_EMPTY_QUITTANCES);
+		if (deleteEmptyQuittances == null) {
+			deleteEmptyQuittances = false;
+		}
 
 		Stub<EircServiceOrganization> organizationStub = new Stub<EircServiceOrganization>(organizationId);
 		Stub<Town> townStub = new Stub<Town>(townId);
@@ -50,7 +56,8 @@ public class GenerateQuittanceJob extends Job {
 		StopWatch watch = new StopWatch();
 		watch.start();
 
-		quittanceService.generateForServiceOrganization(organizationStub, townStub, dateFrom, dateTill);
+		quittanceService.generateForServiceOrganization(QuittanceDaoHelper
+				.createOptions(organizationStub, townStub, dateFrom, dateTill, deleteEmptyQuittances));
 
 		watch.stop();
 		plog.info("End generation quittances, organization-id={}, time spent {}", organizationId, watch);

@@ -1,6 +1,7 @@
 package org.flexpay.eirc.process.quittance;
 
 import org.flexpay.ab.persistence.TestData;
+import org.flexpay.ab.util.config.ApplicationConfig;
 import org.flexpay.common.process.job.Job;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.DateUtil;
@@ -15,7 +16,7 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
-public class TestGenerateQuittanceJob extends EircSpringBeanAwareTestCase {
+public class TestGenerateQuittanceJob2 extends EircSpringBeanAwareTestCase {
 
 	@Autowired
 	private GenerateQuittanceJob job;
@@ -23,7 +24,7 @@ public class TestGenerateQuittanceJob extends EircSpringBeanAwareTestCase {
 	private ServiceOrganizationService organizationService;
 
 	@Test
-	public void testExecute() throws Exception {
+	public void testExecuteWithDelete() throws Exception {
 		List<ServiceOrganization> organizations = organizationService.listServiceOrganizations();
 		for (ServiceOrganization org : organizations) {
 
@@ -33,6 +34,7 @@ public class TestGenerateQuittanceJob extends EircSpringBeanAwareTestCase {
 			params.put(GenerateQuittanceJob.PARAM_DATE_TILL, DateUtil.parseEndDate("2008/01/01"));
 			params.put(GenerateQuittanceJob.PARAM_SERVICE_ORGANIZATION_ID, org.getId());
 			params.put(GenerateQuittanceJob.PARAM_TOWN_ID, TestData.TOWN_NSK.getId());
+			params.put(GenerateQuittanceJob.PARAM_DELETE_EMPTY_QUITTANCES, true);
 
 			assertEquals("Failed generating quittances for organization #" + org.getId(),
 					Job.RESULT_NEXT, job.execute(params));

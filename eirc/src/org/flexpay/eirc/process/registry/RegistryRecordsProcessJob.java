@@ -8,6 +8,7 @@ import org.flexpay.common.service.RegistryService;
 import org.flexpay.eirc.service.exchange.RegistryProcessor;
 import org.springframework.beans.factory.annotation.Required;
 
+import java.io.Serializable;
 import java.util.Map;
 import java.util.Set;
 
@@ -17,7 +18,7 @@ public class RegistryRecordsProcessJob extends Job {
 	private RegistryProcessor registryProcessor;
 
 	@SuppressWarnings ({"unchecked"})
-	public String execute(Map parameters) throws FlexPayException {
+	public String execute(Map<Serializable, Serializable> parameters) throws FlexPayException {
 		Set<Long> recordIds = (Set<Long>) parameters.get("recordIds");
 		Stub<Registry> stub = (Stub<Registry>) parameters.get("registryStub");
 

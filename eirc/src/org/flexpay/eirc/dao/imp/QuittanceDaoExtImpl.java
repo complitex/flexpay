@@ -1,12 +1,9 @@
 package org.flexpay.eirc.dao.imp;
 
-import org.flexpay.ab.persistence.Town;
-import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.process.job.JobExecutionContext;
 import org.flexpay.common.process.job.JobExecutionContextHolder;
 import static org.flexpay.common.util.CollectionUtils.ar;
 import org.flexpay.eirc.dao.QuittanceDaoExt;
-import org.flexpay.eirc.persistence.EircServiceOrganization;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
@@ -20,39 +17,53 @@ public class QuittanceDaoExtImpl extends JdbcDaoSupport implements QuittanceDaoE
 	/**
 	 * Generate current snapshot of details and create quittances for the following processing
 	 *
-	 * @param organizationStub ServiceOrganization stub to generate quittances for
-	 * @param townStub		 Town stub to generate quittances in
-	 * @param dateFrom		 Period begin date
-	 * @param dateTill		 Period end date
+	 * @param options Operation options
 	 * @return number of generated quittances
 	 */
-	public long createQuittances(Stub<EircServiceOrganization> organizationStub, Stub<Town> townStub, Date dateFrom, Date dateTill) {
+	public long createQuittances(CreateQuittancesOptions options) {
+
+		log.debug("Creating quittances: {}", options);
 
 		JobExecutionContext executionContext = JobExecutionContextHolder.getContext();
-		if (executionContext != null) {
-			executionContext.setTotalSize(3);
+		long totalSize = 3;
+		if (options.deleteEmptyQuittances) {
+			++totalSize;
 		}
-		
+		if (executionContext != null) {
+			executionContext.setTotalSize(totalSize);
+		}
+
 		Date now = new Date();
-		long count = generateQuittances(townStub.getId(), organizationStub.getId(), dateFrom, dateTill, now);
+		long count = generateQuittances(options.townStub.getId(), options.organizationStub.getId(),
+				options.dateFrom, options.dateTill, now);
+		long nStep = 0;
 		if (executionContext != null) {
-			executionContext.setComplete(1);
+			executionContext.setComplete(++nStep);
 		}
 
-		long detailsCount = generateDetailsReferences(dateFrom, dateTill, now);
+		long detailsCount = generateDetailsReferences(options.dateFrom, options.dateTill, now);
 		if (executionContext != null) {
-			executionContext.setComplete(2);
+			executionContext.setComplete(++nStep);
 		}
 
-		long updatedCount = updateOrderNumbers(dateFrom, dateTill, now);
+		long updatedCount = updateOrderNumbers(options.dateFrom, options.dateTill, now);
 		if (executionContext != null) {
-			executionContext.setComplete(3);
+			executionContext.setComplete(++nStep);
 		}
 
-		log.info(String.format("Generated quittances statistics.\n" +
-							   "Total quittances: %d\n" +
-							   "Total details: %d\n" +
-							   "Total quittance numbers updated: %d", count, detailsCount, updatedCount));
+		long emptyQuittancesDeleted = 0;
+		if (options.deleteEmptyQuittances) {
+			emptyQuittancesDeleted = deleteEmptyQuittances();
+			if (executionContext != null) {
+				executionContext.setComplete(++nStep);
+			}
+		}
+
+		if (log.isInfoEnabled()) {
+			log.info("Generated quittances statistics.\nTotal quittances: {}\nTotal details: {}\n" +
+					 "Total quittance numbers updated: {}\nTotal empty quittances deleted: {}",
+					new Object[] {count, detailsCount, updatedCount, emptyQuittancesDeleted});
+		}
 
 		return count;
 	}
@@ -65,8 +76,7 @@ public class QuittanceDaoExtImpl extends JdbcDaoSupport implements QuittanceDaoE
 						   "	inner join ab_apartments_tbl ap on ap.id=acc.apartment_id " +
 						   "	inner join ab_buildings_tbl b on b.id=ap.building_id " +
 						   "	inner join ab_districts_tbl d on b.district_id=d.id " +
-						   "	inner join ab_towns_tbl t on t.id=d.town_id " +
-						   "where t.id=? and b.eirc_service_organization_id=? and acc.status=0";
+						   "where d.town_id=? and b.eirc_service_organization_id=? and acc.status=0";
 		return getJdbcTemplate().update(insertSql, ar(dateFrom, dateTill, now, townId, organisationId));
 	}
 
@@ -94,8 +104,6 @@ public class QuittanceDaoExtImpl extends JdbcDaoSupport implements QuittanceDaoE
 		String tmpIndex = "alter table tmp_eirc_quittances_tbl add index I_account_id (eirc_account_id)";
 		getJdbcTemplate().update(tmpIndex);
 
-//		getJdbcTemplate().batchUpdate(ar(tmpTable, tmpIndex));
-
 		String sqlTempQuittances = "insert into tmp_eirc_quittances_tbl (order_number, eirc_account_id) " +
 								   "(select max(q.order_number), q.eirc_account_id " +
 								   "from eirc_quittances_tbl q " +
@@ -112,5 +120,13 @@ public class QuittanceDaoExtImpl extends JdbcDaoSupport implements QuittanceDaoE
 		getJdbcTemplate().update("drop table tmp_eirc_quittances_tbl");
 
 		return count;
+	}
+
+	private long deleteEmptyQuittances() {
+		String deleteSQL = "delete q " +
+						   "from eirc_quittances_tbl q " +
+						   "	left outer join eirc_quittance_details_quittances_tbl qd on qd.quittance_id=q.id " +
+						   "where qd.id is null";
+		return (long) getJdbcTemplate().update(deleteSQL);
 	}
 }

@@ -3,11 +3,8 @@ package org.flexpay.payments.process.export.job;
 import org.apache.commons.lang.StringUtils;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
-import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.persistence.registry.Registry;
-import org.flexpay.common.process.job.Job;
-import org.flexpay.common.service.FPFileService;
 import org.flexpay.common.service.RegistryService;
 import org.flexpay.orgs.persistence.ServiceProvider;
 import org.flexpay.orgs.service.ServiceProviderService;
@@ -16,11 +13,7 @@ import org.flexpay.payments.persistence.RegistryDeliveryHistory;
 import static org.flexpay.payments.process.export.job.ExportJobParameterNames.*;
 import org.flexpay.payments.service.RegistryDeliveryHistoryService;
 import org.springframework.beans.factory.annotation.Required;
-import org.springframework.mail.javamail.JavaMailSenderImpl;
-import org.springframework.mail.javamail.MimeMessageHelper;
 
-import javax.mail.MessagingException;
-import javax.mail.internet.MimeMessage;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Map;
@@ -54,7 +47,8 @@ public class SendPaymentsRegistryJob extends SendFileJob {
             return RESULT_ERROR;
         }
         if (StringUtils.isEmpty(serviceProvider.getEmail())) {
-            log.error("Service provider {} of registry {} does not have an e-mail", new Object[]{serviceProvider.getId(), registry.getId()});
+            log.error("Service provider {} of registry {} does not have an e-mail",
+					new Object[]{serviceProvider.getId(), registry.getId()});
             return RESULT_ERROR;
         }
         email = serviceProvider.getEmail();

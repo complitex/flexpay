@@ -1,6 +1,5 @@
 package org.flexpay.eirc.service.imp;
 
-import org.flexpay.ab.persistence.Town;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
@@ -9,7 +8,6 @@ import org.flexpay.eirc.dao.QuittanceDao;
 import org.flexpay.eirc.dao.QuittanceDaoExt;
 import org.flexpay.eirc.dao.QuittanceDetailsDao;
 import org.flexpay.eirc.persistence.EircAccount;
-import org.flexpay.eirc.persistence.EircServiceOrganization;
 import org.flexpay.eirc.persistence.account.Quittance;
 import org.flexpay.eirc.persistence.account.QuittanceDetails;
 import org.flexpay.eirc.process.QuittanceNumberService;
@@ -54,15 +52,14 @@ public class QuittanceServiceImpl implements QuittanceService {
 	}
 
 	@Transactional (readOnly = false)
-	public void generateForServiceOrganization(@NotNull Stub<EircServiceOrganization> organizationStub,
-											   @NotNull Stub<Town> townStub, Date dateFrom, Date dateTill) {
+	public void generateForServiceOrganization(QuittanceDaoExt.CreateQuittancesOptions options) {
 
 		long time = System.currentTimeMillis();
 		if (log.isInfoEnabled()) {
 			log.info("Starting quittances generation at {}", new Date());
 		}
 
-		quittanceDaoExt.createQuittances(organizationStub, townStub, dateFrom, dateTill);
+		quittanceDaoExt.createQuittances(options);
 
 		if (log.isInfoEnabled()) {
 			log.info("Quittances generation finished, time took: {} ms", System.currentTimeMillis() - time);

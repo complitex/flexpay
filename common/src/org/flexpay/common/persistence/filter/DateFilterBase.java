@@ -38,7 +38,7 @@ public abstract class DateFilterBase extends ObjectFilter {
 	}
 
 	/**
-	 * Check if filter should be applyed
+	 * Check if filter should be applied
 	 *
 	 * @return <code>true</code> if applying filter is valid, or <code>false</code> otherwise
 	 */

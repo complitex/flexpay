@@ -28,8 +28,8 @@ public class RegistryRecordDaoExtImpl extends HibernateDaoSupport implements Reg
 	 * List registry records for import operation
 	 *
 	 * @param id	Registry id
-	 * @param minId Minimum registry record id to retrive
-	 * @param maxId Maximum registry record id to retrive
+	 * @param minId Minimum registry record id to retrieve
+	 * @param maxId Maximum registry record id to retrieve
 	 * @return list of records
 	 */
 	@SuppressWarnings ({"unchecked"})

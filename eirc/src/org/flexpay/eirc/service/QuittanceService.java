@@ -1,19 +1,17 @@
 package org.flexpay.eirc.service;
 
-import org.flexpay.ab.persistence.Town;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Stub;
+import org.flexpay.eirc.dao.QuittanceDaoExt;
 import org.flexpay.eirc.persistence.EircAccount;
-import org.flexpay.eirc.persistence.EircServiceOrganization;
 import org.flexpay.eirc.persistence.account.Quittance;
 import org.flexpay.eirc.persistence.account.QuittanceDetails;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.security.annotation.Secured;
 
-import java.util.Date;
 import java.util.List;
 
 public interface QuittanceService {
@@ -29,13 +27,9 @@ public interface QuittanceService {
 	/**
 	 * Create quittances for requested period.
 	 *
-	 * @param organizationStub ServiceOrganization stub to generate quittances for
-	 * @param townStub		 Town stub to generate quittances in
-	 * @param dateFrom		 Period begin date
-	 * @param dateTill		 Period end date
+	 * @param options Quittances generation options
 	 */
-	void generateForServiceOrganization(@NotNull Stub<EircServiceOrganization> organizationStub,
-										@NotNull Stub<Town> townStub, Date dateFrom, Date dateTill);
+	void generateForServiceOrganization(QuittanceDaoExt.CreateQuittancesOptions options);
 
 	/**
 	 * Read full quittance details
