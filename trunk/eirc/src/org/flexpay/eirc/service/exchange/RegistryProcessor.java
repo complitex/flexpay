@@ -23,7 +23,7 @@ public interface RegistryProcessor {
 	 * Run processing of a <code>registries</code>
 	 * <p/>
 	 * Handles {@link #startRegistryProcessing(org.flexpay.eirc.persistence.exchange.ProcessingContext)} and {@link
-	 * #endRegistryProcessing(org.flexpay.common.persistence.registry.Registry)} internally.
+	 * #endRegistryProcessing(ProcessingContext)} internally.
 	 *
 	 * @param registries Registries to process
 	 * @throws Exception if failure occurs
@@ -34,7 +34,7 @@ public interface RegistryProcessor {
 	 * Process a limited number of registry records.
 	 * <p/>
 	 * Handles {@link #startRegistryProcessing(org.flexpay.eirc.persistence.exchange.ProcessingContext)} and {@link
-	 * #endRegistryProcessing(org.flexpay.common.persistence.registry.Registry)} internally.
+	 * #endRegistryProcessing(ProcessingContext)} internally.
 	 *
 	 * @param registry  Registry that records are to be processed
 	 * @param recordIds Record identifiers

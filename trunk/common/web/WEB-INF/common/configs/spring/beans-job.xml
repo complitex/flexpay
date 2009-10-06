@@ -7,8 +7,29 @@
 		   http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
 		   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
-    <bean id="sendEmailToAdministrator" class="org.flexpay.common.process.job.SendEmailToAdministrator" scope="prototype"/>
+	<bean id="sendEmailToAdministrator"
+		  scope="prototype"
+		  class="org.flexpay.common.process.job.SendEmailToAdministrator" />
 
-    <bean id="emptyJob" class="org.flexpay.common.process.job.EmptyJob" scope="prototype"/>
+	<bean id="emptyJob"
+		  scope="prototype"
+		  class="org.flexpay.common.process.job.EmptyJob" />
+
+	<bean id="jobA"
+		  scope="prototype"
+		  class="org.flexpay.common.process.job.impl.JobA" />
+
+	<bean id="jobB"
+		  scope="prototype"
+		  class="org.flexpay.common.process.job.impl.JobA" />
+
+	<bean id="failureJob"
+		  scope="prototype"
+		  class="org.flexpay.common.process.job.impl.FailureJob" />
+
+	<bean id="processesCleanupJob"
+		  scope="prototype"
+		  class="org.flexpay.common.process.jobs.ProcessesCleanupJob"
+		  p:processManager-ref="processManager" />
 
 </beans>

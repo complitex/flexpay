@@ -1,8 +1,9 @@
 package org.flexpay.common.process;
 
 import org.flexpay.common.dao.paging.Page;
+import org.flexpay.common.persistence.DateRange;
 import org.flexpay.common.process.exception.ProcessDefinitionException;
-import org.flexpay.common.process.exception.ProcessInstanceException;
+import org.flexpay.common.process.filter.ProcessNameFilter;
 import org.flexpay.common.process.sorter.ProcessSorter;
 import org.jbpm.JbpmConfiguration;
 import org.jbpm.graph.def.ProcessDefinition;
@@ -45,10 +46,14 @@ public class FooProcessManagerImpl implements ProcessManager {
 	public void deleteProcessInstances(Set<Long> processIds) {
 	}
 
+	@Override
+	public void deleteProcessInstances(DateRange range, ProcessNameFilter nameFilter) {
+	}
+
 	public void join(long processId) throws InterruptedException {
 	}
 
-	public long createProcess(String definitionName, Map<Serializable, Serializable> parameters) {
+	public long createProcess(@NotNull String definitionName, Map<Serializable, Serializable> parameters) {
 		return 0;
 	}
 

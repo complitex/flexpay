@@ -3,6 +3,7 @@ package org.flexpay.common.dao;
 import java.util.List;
 import java.util.Date;
 
+import org.flexpay.common.persistence.DateRange;
 import org.flexpay.common.process.Process;
 import org.flexpay.common.process.ProcessState;
 import org.flexpay.common.process.sorter.ProcessSorter;
@@ -40,4 +41,6 @@ public interface ProcessDao {
 	 * @return process information
 	 */
 	Process getProcessInfoWithVariables(ProcessInstance processInstance);
+
+	void deleteProcessInstances(DateRange range, String name);
 }

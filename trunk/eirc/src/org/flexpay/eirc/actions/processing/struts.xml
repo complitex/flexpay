@@ -27,6 +27,11 @@
 			<result type="tiles">eirc.process.view</result>
 		</action>
 
+		<action name="processesCleanup" class="processesCleanupAction">
+			<result type="tiles">eirc.process.cleanup</result>
+			<result name="redirectSuccess" type="redirect-action">processesList</result>
+		</action>
+
 		<action name="processDefinitionDeploy" class="processDefinitionDeployAction">
 			<result name="redirectSuccess" type="redirect-action">processesList</result>
 			<result name="input" type="tiles">eirc.process.deploy_definition</result>

@@ -4,11 +4,17 @@
     FP.switchSorter(["processSorterByNameButton", "processSorterByStartDateButton", "processSorterByEndDateButton", "processSorterByStateButton"]);
 </script>
 
+<s:actionerror/>
+<s:actionmessage/>
+
+
 <table cellpadding="3" cellspacing="1" border="0" width="100%">
     <tr>
         <td colspan="9">
             <%@include file="../filter/pager/pager_ajax.jsp"%>
             <input type="button" class="btn-exit" value="<s:text name="common.delete_selected" />" onclick="deleteAjax();" />
+            <input type="button" class="btn-exit" value="<s:text name="common.process.cleanup" />"
+				   onclick="window.location='<s:url action="processesCleanup" />';" />
         </td>
     </tr>
     <tr>

@@ -119,6 +119,11 @@
 		<put-attribute name="body" value="/WEB-INF/jsp/common/processing/process_view.jsp" />
 	</definition>
 
+	<definition name="tc.process.view" extends="tc.processing">
+		<put-attribute name="title" value="common.process.cleanup.title" />
+		<put-attribute name="body" value="/WEB-INF/jsp/common/processing/processes_cleanup.jsp" />
+	</definition>
+
 	<definition name="tc.process.deploy_definition" extends="tc.processing">
 		<put-attribute name="title" value="common.processing.deployment" />
 		<put-attribute name="body" value="/WEB-INF/jsp/common/processing/deploy_process_definition.jsp" />

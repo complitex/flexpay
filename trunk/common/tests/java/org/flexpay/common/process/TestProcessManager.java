@@ -9,7 +9,6 @@ import org.jbpm.JbpmConfiguration;
 import org.jbpm.JbpmContext;
 import org.jbpm.graph.def.ProcessDefinition;
 import static org.junit.Assert.assertEquals;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -96,7 +95,6 @@ public class TestProcessManager extends SpringBeanAwareTestCase {
 	private ProcessManager processManager;
 
 	@Test
-	@Ignore
 	public void testProcessManager() throws Exception {
 
 		ProcessDefinition definition = ProcessDefinition.parseXmlString(testProcessDefinition);
@@ -107,14 +105,6 @@ public class TestProcessManager extends SpringBeanAwareTestCase {
 		assertEquals(2, counter);
 		//@TODO why event class was not executed?
 		assertEquals(EVENT_EXECUTED, eventExecuted);
-	}
-
-	public JbpmConfiguration getJbpmConfiguration() {
-		return jbpmConfiguration;
-	}
-
-	public void setJbpmConfiguration(JbpmConfiguration jbpmConfiguration) {
-		this.jbpmConfiguration = jbpmConfiguration;
 	}
 
 	@Test
