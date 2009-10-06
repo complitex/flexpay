@@ -58,7 +58,7 @@
           p:registryFPFileTypeService-ref="registryFPFileTypeService" />
 
 	<bean id="eircAccountService"
-		  class="org.flexpay.eirc.service.imp.EircAccountServiceImpl"
+		  class="org.flexpay.eirc.service.impl.EircAccountServiceImpl"
 		  p:personService-ref="personService"
 		  p:sequenceService-ref="sequenceService"
 		  p:eircAccountDao-ref="eircAccountDao"
@@ -93,10 +93,10 @@
 		  p:apartmentAttributeTypeService-ref="apartmentAttributeTypeService" />
 
 	<bean id="eircObjectsFactory" autowire-candidate="false"
-		  class="org.flexpay.eirc.service.imp.EircObjectsFactory" />
+		  class="org.flexpay.eirc.service.impl.EircObjectsFactory" />
 
 	<bean id="eircOrgsObjectsFactory" autowire-candidate="false"
-		  class="org.flexpay.eirc.service.imp.EircOrgsObjectsFactory" />
+		  class="org.flexpay.eirc.service.impl.EircOrgsObjectsFactory" />
 
 	<bean id="eircObjectsFactoryHolder"
 		  parent="btiObjectsFactoryHolder"
@@ -108,42 +108,42 @@
 
 	<bean id="consumerServiceTarget"
 		  autowire-candidate="false"
-		  class="org.flexpay.eirc.service.imp.ConsumerServiceImpl"
+		  class="org.flexpay.eirc.service.impl.ConsumerServiceImpl"
 		  p:spService-ref="spService"
 		  p:consumerDao-ref="consumerDao"
 		  p:consumerDaoExt-ref="consumerDaoExt" />
 
 	<bean id="consumerInfoService"
-		  class="org.flexpay.eirc.service.imp.ConsumerInfoServiceImpl"
+		  class="org.flexpay.eirc.service.impl.ConsumerInfoServiceImpl"
 		  p:consumerInfoDao-ref="consumerInfoDao" />
 
 	<bean id="consumerAttributeTypeServiceTarget"
 		  autowire-candidate="false"
-		  class="org.flexpay.eirc.service.imp.ConsumerAttributeTypeServiceImpl"
+		  class="org.flexpay.eirc.service.impl.ConsumerAttributeTypeServiceImpl"
 		  p:attributeTypeDao-ref="consumerAttributeTypeDao"
 		  p:attributeTypeDaoExt-ref="consumerAttributeTypeDaoExt"
 		  p:sessionUtils-ref="sessionUtils" />
 
 	<bean id="quittancePaymentStatusServiceTarget"
 		  autowire-candidate="false"
-		  class="org.flexpay.eirc.service.imp.QuittancePaymentStatusServiceImpl"
+		  class="org.flexpay.eirc.service.impl.QuittancePaymentStatusServiceImpl"
 		  p:statusDao-ref="quittancePaymentStatusDao" />
 
 	<bean id="quittanceService"
-		  class="org.flexpay.eirc.service.imp.QuittanceServiceImpl"
+		  class="org.flexpay.eirc.service.impl.QuittanceServiceImpl"
 		  p:quittanceNumberService-ref="quittanceNumberService"
 		  p:quittanceDetailsDao-ref="quittanceDetailsDao"
 		  p:quittanceDaoExt-ref="quittanceDaoExt"
 		  p:quittanceDao-ref="quittanceDao" />
 
 	<bean id="quittancePacketService"
-		  class="org.flexpay.eirc.service.imp.QuittancePacketServiceImpl"
+		  class="org.flexpay.eirc.service.impl.QuittancePacketServiceImpl"
 		  p:quittancePacketDaoExt-ref="quittancePacketDaoExt"
 		  p:quittancePacketDao-ref="quittancePacketDao"
 		  p:quittancePaymentDao-ref="quittancePaymentDao" />
 
 	<bean id="quittancePaymentService"
-		  class="org.flexpay.eirc.service.imp.QuittancePaymentServiceImpl"
+		  class="org.flexpay.eirc.service.impl.QuittancePaymentServiceImpl"
 		  p:organizationService-ref="organizationService"
 		  p:quittancePaymentDao-ref="quittancePaymentDao"
 		  p:documentTypeService-ref="documentTypeService"
@@ -157,21 +157,21 @@
 	<bean id="eircPaymentPointServiceTarget"
 		  parent="paymentPointServiceTarget"
 		  autowire-candidate="false"
-		  class="org.flexpay.eirc.service.imp.PaymentPointServiceImpl"
+		  class="org.flexpay.eirc.service.impl.PaymentPointServiceImpl"
 		  p:paymentPointDao-ref="paymentPointDao" />
 
 	<bean id="eircServiceOrganizationServiceTarget"
 		  parent="serviceOrganizationServiceTarget"
 		  autowire-candidate="false"
-		  class="org.flexpay.eirc.service.imp.ServiceOrganizationServiceImpl"
+		  class="org.flexpay.eirc.service.impl.ServiceOrganizationServiceImpl"
 		  p:servedBuildingDao-ref="servedBuildingDao"
 		  p:buildingService-ref="buildingService" />
 
 	<bean id="quittanceNumberService"
-		  class="org.flexpay.eirc.service.imp.QuittanceNumberServiceImpl" />
+		  class="org.flexpay.eirc.service.impl.QuittanceNumberServiceImpl" />
 
 	<bean id="reportPeriodService"
-		  class="org.flexpay.eirc.service.imp.ReportPeriodServiceImpl" />
+		  class="org.flexpay.eirc.service.impl.ReportPeriodServiceImpl" />
 
 	<bean id="quittanceInfoBuilder"
 		  class="org.flexpay.eirc.service.exchange.QuittanceInfoBuilder"
@@ -234,11 +234,11 @@
 	</bean>
 
 	<bean id="apartmentAttributeReadHintsHandlerFactory"
-		  class="org.flexpay.eirc.service.imp.fetch.ApartmentAttributeReadHintsHandlerFactory"
+		  class="org.flexpay.eirc.service.impl.fetch.ApartmentAttributeReadHintsHandlerFactory"
 		  p:recordPropertiesDao-ref="eircRegistryRecordPropertiesDao" />
 
 	<bean id="consumerReadHintsHandlerFactory"
-		  class="org.flexpay.eirc.service.imp.fetch.ConsumerReadHintsHandlerFactory"
+		  class="org.flexpay.eirc.service.impl.fetch.ConsumerReadHintsHandlerFactory"
 		  p:recordPropertiesDao-ref="eircRegistryRecordPropertiesDao" />
 
 	<bean autowire-candidate="false"

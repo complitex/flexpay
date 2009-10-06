@@ -1,6 +1,6 @@
 package org.flexpay.ab.dao.importexport;
 
-import org.flexpay.ab.dao.importexport.imp.HarkovCenterNachisleniyDataSource;
+import org.flexpay.ab.dao.importexport.impl.HarkovCenterNachisleniyDataSource;
 import org.flexpay.ab.service.importexport.RawStreetTypeData;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.service.importexport.ImportOperationTypeHolder;

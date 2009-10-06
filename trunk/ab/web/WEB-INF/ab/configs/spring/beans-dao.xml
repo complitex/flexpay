@@ -280,31 +280,31 @@
 		</property>
 	</bean>
 
-	<bean id="buildingsDaoExt" class="org.flexpay.ab.dao.imp.BuildingsDaoExtImpl"
+	<bean id="buildingsDaoExt" class="org.flexpay.ab.dao.impl.BuildingsDaoExtImpl"
 		  p:hibernateTemplate-ref="hibernateTemplate"
 		  p:addressAttributeTypeService-ref="addressAttributeTypeService" />
 
 	<bean id="apartmentDaoExt"
-		  class="org.flexpay.ab.dao.imp.ApartmentDaoExtImpl"
+		  class="org.flexpay.ab.dao.impl.ApartmentDaoExtImpl"
 		  p:dataSource-ref="dataSource"
 		  p:hibernateTemplate-ref="hibernateTemplate" />
 
-	<bean id="streetDaoExt" class="org.flexpay.ab.dao.imp.StreetDaoExtImpl"
+	<bean id="streetDaoExt" class="org.flexpay.ab.dao.impl.StreetDaoExtImpl"
 		  p:hibernateTemplate-ref="hibernateTemplate" />
 
-	<bean id="districtDaoExt" class="org.flexpay.ab.dao.imp.DistrictDaoExtImpl"
+	<bean id="districtDaoExt" class="org.flexpay.ab.dao.impl.DistrictDaoExtImpl"
 		  p:hibernateTemplate-ref="hibernateTemplate" />
 
-	<bean id="townDaoExt" class="org.flexpay.ab.dao.imp.TownDaoExtImpl"
+	<bean id="townDaoExt" class="org.flexpay.ab.dao.impl.TownDaoExtImpl"
 		  p:hibernateTemplate-ref="hibernateTemplate" />
 
-	<bean id="regionDaoExt" class="org.flexpay.ab.dao.imp.RegionDaoExtImpl"
+	<bean id="regionDaoExt" class="org.flexpay.ab.dao.impl.RegionDaoExtImpl"
 		  p:hibernateTemplate-ref="hibernateTemplate" />
 
-	<bean id="countryDaoExt" class="org.flexpay.ab.dao.imp.CountryDaoExtImpl"
+	<bean id="countryDaoExt" class="org.flexpay.ab.dao.impl.CountryDaoExtImpl"
 		  p:hibernateTemplate-ref="hibernateTemplate" />
 
-	<bean id="personDaoExt" class="org.flexpay.ab.dao.imp.PersonDaoExtImpl"
+	<bean id="personDaoExt" class="org.flexpay.ab.dao.impl.PersonDaoExtImpl"
 		  p:hibernateTemplate-ref="hibernateTemplate" />
 
 	<!-- Apartments -->

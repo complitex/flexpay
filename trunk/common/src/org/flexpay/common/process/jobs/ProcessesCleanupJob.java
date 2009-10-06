@@ -31,7 +31,7 @@ public class ProcessesCleanupJob extends Job {
 
 		if (definitionName != null) {
 			processNameFilter.setProcessManager(processManager);
-			processNameFilter.loadAllProcessNames();
+			processNameFilter.loadProcessNames();
 			for (ProcessNameObject name : processNameFilter.getProcessNames()) {
 				if (name.getName().equals(definitionName)) {
 					processNameFilter.setSelectedId(name.getId());

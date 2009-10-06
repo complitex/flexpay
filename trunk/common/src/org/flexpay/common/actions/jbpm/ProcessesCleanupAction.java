@@ -36,7 +36,7 @@ public class ProcessesCleanupAction extends FPActionSupport implements Initializ
 	@Override
 	protected String doExecute() throws Exception {
 
-		processNameFilter.loadAllProcessNames();
+		processNameFilter.loadProcessNames();
 
 		if (isSubmit()) {
 			log.debug("Form submit!");

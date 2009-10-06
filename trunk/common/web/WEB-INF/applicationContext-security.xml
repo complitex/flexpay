@@ -64,7 +64,7 @@
 			class="org.springframework.security.providers.preauth.PreAuthenticatedGrantedAuthoritiesUserDetailsService" />
 
 	<b:bean id="userPreferencesAuthenticationService"
-			class="org.flexpay.common.service.imp.UserPreferencesAuthenticationService"
+			class="org.flexpay.common.service.impl.UserPreferencesAuthenticationService"
 			p:detailsService-ref="preAuthenticatedUserDetailsService"
 			p:userPreferencesService-ref="userPreferencesService" />
 

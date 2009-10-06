@@ -6,27 +6,27 @@
 		   http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
 		   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
-	<bean id="townProcessor" class="org.flexpay.ab.service.imp.TownProcessor">
+	<bean id="townProcessor" class="org.flexpay.ab.service.impl.TownProcessor">
 		<property name="townDao" ref="townDao" />
 	</bean>
 
-	<bean id="streetTypeProcessor" class="org.flexpay.ab.service.imp.StreetTypeProcessor">
+	<bean id="streetTypeProcessor" class="org.flexpay.ab.service.impl.StreetTypeProcessor">
 		<property name="streetTypeDao" ref="streetTypeDao" />
 		<property name="streetTypeService" ref="streetTypeService" />
 	</bean>
 
-	<bean id="streetProcessor" class="org.flexpay.ab.service.imp.StreetProcessor">
+	<bean id="streetProcessor" class="org.flexpay.ab.service.impl.StreetProcessor">
 		<property name="streetDao" ref="streetDao" />
 		<property name="streetService" ref="streetService" />
 	</bean>
 
-	<bean id="districtProcessor" class="org.flexpay.ab.service.imp.DistrictProcessor">
+	<bean id="districtProcessor" class="org.flexpay.ab.service.impl.DistrictProcessor">
 		<property name="districtDao" ref="districtDao" />
 		<property name="districtService" ref="districtService" />
 	</bean>
 
 	<bean id="buildingProcessor"
-		  class="org.flexpay.ab.service.imp.BuildingProcessor"
+		  class="org.flexpay.ab.service.impl.BuildingProcessor"
 		  p:streetDao-ref="streetDao"
 		  p:districtDao-ref="districtDao"
 		  p:buildingDao-ref="buildingDao"
@@ -35,19 +35,19 @@
 		  p:factory-ref="objectsFactory" />
 
 	<bean id="apartmentProcessor"
-		  class="org.flexpay.ab.service.imp.ApartmentProcessor"
+		  class="org.flexpay.ab.service.impl.ApartmentProcessor"
 		  p:apartmentDao-ref="apartmentDao"
 		  p:buildingsDao-ref="buildingsDao"
 		  p:apartmentService-ref="apartmentService"
 		  p:factory-ref="objectsFactory" />
 
-	<bean id="personProcessor" class="org.flexpay.ab.service.imp.PersonProcessor">
+	<bean id="personProcessor" class="org.flexpay.ab.service.impl.PersonProcessor">
 		<property name="personService" ref="personService" />
 		<property name="identityTypeService" ref="identityTypeService" />
 	</bean>
 
 
-	<bean id="abSyncService" class="org.flexpay.ab.service.imp.SyncServiceImpl">
+	<bean id="abSyncService" class="org.flexpay.ab.service.impl.SyncServiceImpl">
 		<property name="correctionsService" ref="correctionsService" />
 		<property name="historyDao" ref="historyDaoJdbc" />
 		<property name="townProcessor" ref="townProcessor" />
@@ -65,7 +65,7 @@
 		</property>
 	</bean>
 
-	<bean id="historyDumpService" class="org.flexpay.ab.service.imp.HistoryDumpServiceImpl">
+	<bean id="historyDumpService" class="org.flexpay.ab.service.impl.HistoryDumpServiceImpl">
 		<property name="historyDao" ref="historyDaoJdbc" />
 		<property name="historySourceDao" ref="historySourceDao" />
 		<property name="updateConfigDao" ref="syncConfigDaoJdbc" />

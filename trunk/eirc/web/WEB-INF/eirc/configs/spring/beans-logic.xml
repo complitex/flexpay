@@ -9,7 +9,7 @@
 	<bean id="conditionsFactory"
 		  class="org.flexpay.eirc.persistence.exchange.conditions.ConditionsFactory">
 		<property name="accountPersonChangeCondition">
-			<bean class="org.flexpay.eirc.persistence.exchange.conditions.imp.MainServiceAccountPersonChangeCondition" />
+			<bean class="org.flexpay.eirc.persistence.exchange.conditions.impl.MainServiceAccountPersonChangeCondition" />
 		</property>
 	</bean>
 </beans>

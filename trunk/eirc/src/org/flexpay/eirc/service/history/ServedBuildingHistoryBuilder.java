@@ -8,7 +8,7 @@ import org.flexpay.common.persistence.history.HistoryRecord;
 import org.flexpay.common.persistence.history.builder.ReferenceExtractor;
 import org.flexpay.common.persistence.history.builder.ReferencePatcher;
 import org.flexpay.eirc.persistence.ServedBuilding;
-import org.flexpay.eirc.service.importexport.imp.ClassToTypeRegistryEirc;
+import org.flexpay.eirc.service.importexport.impl.ClassToTypeRegistryEirc;
 import org.flexpay.orgs.persistence.ServiceOrganization;
 import org.flexpay.orgs.service.ServiceOrganizationService;
 import org.jetbrains.annotations.NotNull;

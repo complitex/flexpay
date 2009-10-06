@@ -7,18 +7,18 @@
 	       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
 		   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
-	<bean id="sequenceService" class="org.flexpay.common.service.imp.SequenceServiceImpl"
+	<bean id="sequenceService" class="org.flexpay.common.service.impl.SequenceServiceImpl"
 		  p:sequenceDao-ref="sequenceDao" />
 
 	<bean id="reportPrintHistoryRecordService"
-		  class="org.flexpay.common.service.imp.ReportPrintHistoryRecordServiceImpl"
+		  class="org.flexpay.common.service.impl.ReportPrintHistoryRecordServiceImpl"
 		  p:reportPrintHistoryRecordDao-ref="reportPrintHistoryRecordDao" />
 
 	<bean id="importErrorSupport"
 		  class="org.flexpay.common.service.importexport.ImportErrorsSupport" />
 
 	<bean id="commonServiceFactory"
-		  class="org.flexpay.common.service.imp.ServiceFactory" />
+		  class="org.flexpay.common.service.impl.ServiceFactory" />
 
 	<bean id="diffService"
 		  factory-bean="commonServiceFactory"
@@ -28,17 +28,17 @@
 		  p:registry-ref="classToTypeRegistry" />
 
 	<bean id="importErrorService"
-		  class="org.flexpay.common.service.importexport.imp.ImportErrorServiceImpl"
+		  class="org.flexpay.common.service.importexport.impl.ImportErrorServiceImpl"
 		  p:registry-ref="classToTypeRegistry"
 		  p:errorDao-ref="importErrorDao" />
 
 	<bean id="languageServiceTarget"
-		  class="org.flexpay.common.service.imp.LanguageServiceImpl"
+		  class="org.flexpay.common.service.impl.LanguageServiceImpl"
 		  autowire-candidate="false"
 		  p:languageDao-ref="languageDao" />
 
 	<bean id="currencyInfoServiceTarget"
-		  class="org.flexpay.common.service.imp.CurrencyInfoServiceImpl"
+		  class="org.flexpay.common.service.impl.CurrencyInfoServiceImpl"
 		  autowire-candidate="false"
 		  p:currencyInfoDao-ref="currencyInfoDao" />
 
@@ -46,14 +46,14 @@
 		  class="org.flexpay.common.persistence.morphology.currency.CurrencyToTextConverterImpl" />
 
 	<bean id="historyConsumerService"
-		  class="org.flexpay.common.service.imp.HistoryConsumerServiceImpl"
+		  class="org.flexpay.common.service.impl.HistoryConsumerServiceImpl"
 		  p:consumerDao-ref="historyConsumperDao"
 		  p:consumerDaoExt-ref="historyConsumerDaoExt"
 		  p:consumptionDao-ref="historyConsumptionDao"
 		  p:consumptionGroupDao-ref="historyConsumptionGroupDao" />
 
 	<bean id="fpFileService"
-		  class="org.flexpay.common.service.imp.FPFileServiceImpl"
+		  class="org.flexpay.common.service.impl.FPFileServiceImpl"
 		  p:fpFileDao-ref="fpFileDao"
 		  p:fpFileStatusDao-ref="fpFileStatusDao"
 		  p:fpFileTypeDao-ref="fpFileTypeDao"
@@ -68,17 +68,17 @@
 		  p:referencesHistoryGenerator-ref="nopeReferencesHistoryGenerator" />
 
 	<bean id="measureUnitServiceTarget"
-		  class="org.flexpay.common.service.imp.MeasureUnitServiceImpl"
+		  class="org.flexpay.common.service.impl.MeasureUnitServiceImpl"
 		  autowire-candidate="false"
 		  p:sessionUtils-ref="sessionUtils"
 		  p:modificationListener-ref="measureUnitModificationListener"
 		  p:measureUnitDao-ref="measureUnitDao" />
 
 	<bean id="registryFileServiceFactory"
-		  class="org.flexpay.common.service.imp.RegistryFileServiceFactory" />
+		  class="org.flexpay.common.service.impl.RegistryFileServiceFactory" />
 
 	<bean id="registryFileService"
-		  class="org.flexpay.common.service.imp.RegistryFileServiceImpl"
+		  class="org.flexpay.common.service.impl.RegistryFileServiceImpl"
 		  factory-bean="registryFileServiceFactory"
 		  factory-method="getRegistryFileService"
 		  p:registryDao-ref="spRegistryDao"
@@ -86,26 +86,26 @@
 		  p:registryFileDaoExt-ref="registryFileDaoExt" />
 
 	<bean id="registryTypeService"
-		  class="org.flexpay.common.service.imp.RegistryTypeServiceImpl"
+		  class="org.flexpay.common.service.impl.RegistryTypeServiceImpl"
 		  p:spRegistryTypeDao-ref="spRegistryTypeDao" />
 
 	<bean id="registryStatusServiceTarget"
 		  autowire-candidate="false"
-		  class="org.flexpay.common.service.imp.RegistryStatusServiceImpl"
+		  class="org.flexpay.common.service.impl.RegistryStatusServiceImpl"
 		  p:spRegistryStatusDao-ref="spRegistryStatusDao" />
 
 	<bean id="registryArchiveStatusServiceTarget"
 		  autowire-candidate="false"
-		  class="org.flexpay.common.service.imp.RegistryArchiveStatusServiceImpl"
+		  class="org.flexpay.common.service.impl.RegistryArchiveStatusServiceImpl"
 		  p:registryArchiveStatusDao-ref="registryArchiveStatusDao" />
 
 	<bean id="registryFPFileTypeServiceTarget"
 		  autowire-candidate="false"
-		  class="org.flexpay.common.service.imp.RegistryFPFileTypeServiceImpl"
+		  class="org.flexpay.common.service.impl.RegistryFPFileTypeServiceImpl"
 		  p:fpFileRegistryTypeDao-ref="registryFPFileTypeDao" />
 
 	<bean id="registryRecordStatusService"
-		  class="org.flexpay.common.service.imp.RegistryRecordStatusServiceImpl"
+		  class="org.flexpay.common.service.impl.RegistryRecordStatusServiceImpl"
 		  p:spRegistryRecordStatusDao-ref="registryRecordStatusDao" />
 
 	<bean id="registryWorkflowManager"
@@ -123,14 +123,14 @@
 		  p:registryWorkflowManager-ref="registryWorkflowManager" />
 
 	<bean id="registryRecordService"
-		  class="org.flexpay.common.service.imp.RegistryRecordServiceImpl"
+		  class="org.flexpay.common.service.impl.RegistryRecordServiceImpl"
 		  p:spRegistryRecordDao-ref="spRegistryRecordDao"
 		  p:spRegistryRecordDaoExt-ref="spRegistryRecordDaoExt"
 		  p:recordContainerDao-ref="registryRecordContainerDao"
 		  p:workflowManager-ref="registryRecordWorkflowManager" />
 
 	<bean id="registryService"
-		  class="org.flexpay.common.service.imp.RegistryServiceImpl"
+		  class="org.flexpay.common.service.impl.RegistryServiceImpl"
 		  p:spRegistryDao-ref="spRegistryDao"
 		  p:spRegistryRecordService-ref="registryRecordService"
 		  p:registryContainerDao-ref="registryContainerDao"
@@ -151,18 +151,18 @@
 		  p:processManager-ref="processManager" />
 
 	<bean id="correctionsServiceFactory"
-		  class="org.flexpay.common.service.importexport.imp.CorrectionsServiceFactory" />
+		  class="org.flexpay.common.service.importexport.impl.CorrectionsServiceFactory" />
 
 	<bean id="classToTypeRegistryCommon"
 		  autowire-candidate="false"
-		  class="org.flexpay.common.service.importexport.imp.ClassToTypeRegistryCommon" />
+		  class="org.flexpay.common.service.importexport.impl.ClassToTypeRegistryCommon" />
 
 	<bean id="classToTypeRegistryFactory"
-		  class="org.flexpay.common.service.importexport.imp.ClassToTypeRegistryFactory"
+		  class="org.flexpay.common.service.importexport.impl.ClassToTypeRegistryFactory"
 		  p:registry-ref="classToTypeRegistryCommon" />
 
 	<bean id="classToTypeRegistry"
-		  class="org.flexpay.common.service.importexport.imp.ProxyClassToTypeRegistry"
+		  class="org.flexpay.common.service.importexport.impl.ProxyClassToTypeRegistry"
 		  p:factory-ref="classToTypeRegistryFactory" />
 
 	<bean id="correctionsService"
@@ -173,7 +173,7 @@
 
 	<bean id="masterIndexServiceTarget"
 		  autowire-candidate="false"
-		  class="org.flexpay.common.service.importexport.imp.MasterIndexServiceImpl"
+		  class="org.flexpay.common.service.importexport.impl.MasterIndexServiceImpl"
 		  p:correctionsService-ref="correctionsService"
 		  p:sourceDescriptionDao-ref="dataSourceDescriptionDao" />
 

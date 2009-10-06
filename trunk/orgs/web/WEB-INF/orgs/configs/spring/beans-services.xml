@@ -8,20 +8,20 @@
 		   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
 	<bean id="orgsObjectsFactoryHolder"
-		  class="org.flexpay.orgs.service.imp.OrgsObjectsFactoryHolder"
+		  class="org.flexpay.orgs.service.impl.OrgsObjectsFactoryHolder"
 		  p:factory-ref="orgsObjectsFactoryImpl" />
 
 	<bean id="orgsObjectsFactoryImpl"
 		  autowire-candidate="false"
-		  class="org.flexpay.orgs.service.imp.OrgsObjectsFactoryImpl" />
+		  class="org.flexpay.orgs.service.impl.OrgsObjectsFactoryImpl" />
 
 	<bean id="orgsObjectsFactory"
-		  class="org.flexpay.orgs.service.imp.OrgsObjectsFactoryProxy"
+		  class="org.flexpay.orgs.service.impl.OrgsObjectsFactoryProxy"
 		  p:factoryHolder-ref="orgsObjectsFactoryHolder" />
 
 	<bean id="organisationInstanceService"
 		  abstract="true"
-		  class="org.flexpay.orgs.service.imp.OrganizationInstanceServiceImpl"
+		  class="org.flexpay.orgs.service.impl.OrganizationInstanceServiceImpl"
 		  p:sessionUtils-ref="sessionUtils" />
 
 	<bean id="organizationHistoryChangesListener"
@@ -31,7 +31,7 @@
 
 	<bean id="organizationServiceTarget"
 		  autowire-candidate="false"
-		  class="org.flexpay.orgs.service.imp.OrganizationServiceImpl"
+		  class="org.flexpay.orgs.service.impl.OrganizationServiceImpl"
 		  p:sessionUtils-ref="sessionUtils"
 		  p:modificationListener-ref="organizationHistoryChangesListener"
 		  p:organizationDao-ref="organizationDao"
@@ -48,7 +48,7 @@
 		  p:referencesHistoryGenerator-ref="subdivisionReferencesHistoryGenerator" />
 
 	<bean id="subdivisionService"
-		  class="org.flexpay.orgs.service.imp.SubdivisionServiceImpl"
+		  class="org.flexpay.orgs.service.impl.SubdivisionServiceImpl"
 		  p:sessionUtils-ref="sessionUtils"
 		  p:modificationListener-ref="subdivisionHistoryChangesListener"
 		  p:subdivisionDao-ref="subdivisionDao"
@@ -61,7 +61,7 @@
 
 	<bean id="bankServiceTarget"
 		  autowire-candidate="false"
-		  class="org.flexpay.orgs.service.imp.BankServiceImpl"
+		  class="org.flexpay.orgs.service.impl.BankServiceImpl"
 		  parent="organisationInstanceService"
 		  p:modificationListener-ref="bankHistoryChangesListener"
 		  p:instanceDao-ref="bankDao" />
@@ -77,7 +77,7 @@
 
 	<bean id="cashboxServiceTarget"
 		  autowire-candidate="false"
-		  class="org.flexpay.orgs.service.imp.CashboxServiceImpl"
+		  class="org.flexpay.orgs.service.impl.CashboxServiceImpl"
 		  p:sessionUtils-ref="sessionUtils"
 		  p:modificationListener-ref="cashboxHistoryChangesListener"
 		  p:cashboxDao-ref="cashboxDao" />
@@ -89,7 +89,7 @@
 
 	<bean id="paymentCollectorServiceTarget"
 		  autowire-candidate="false"
-		  class="org.flexpay.orgs.service.imp.PaymentCollectorServiceImpl"
+		  class="org.flexpay.orgs.service.impl.PaymentCollectorServiceImpl"
 		  parent="organisationInstanceService"
 		  p:modificationListener-ref="paymentCollectorHistoryChangesListener"
 		  p:instanceDao-ref="paymentCollectorDao" />
@@ -105,7 +105,7 @@
 
 	<bean id="paymentPointServiceTarget"
 		  autowire-candidate="false"
-		  class="org.flexpay.orgs.service.imp.PaymentPointServiceImpl"
+		  class="org.flexpay.orgs.service.impl.PaymentPointServiceImpl"
 		  p:sessionUtils-ref="sessionUtils"
 		  p:modificationListener-ref="paymentPointHistoryChangesListener"
 		  p:paymentPointDao-ref="paymentPointDao" />
@@ -117,7 +117,7 @@
 
 	<bean id="serviceOrganizationServiceTarget"
 		  autowire-candidate="false"
-		  class="org.flexpay.orgs.service.imp.ServiceOrganizationServiceImpl"
+		  class="org.flexpay.orgs.service.impl.ServiceOrganizationServiceImpl"
 		  p:sessionUtils-ref="sessionUtils"
 		  p:modificationListener-ref="serviceOrganizationHistoryChangesListener"
 		  p:serviceOrganizationDao-ref="serviceOrganizationDao" />
@@ -129,7 +129,7 @@
 
 	<bean id="serviceProviderServiceTarget"
 		  autowire-candidate="false"
-		  class="org.flexpay.orgs.service.imp.ServiceProviderServiceImpl"
+		  class="org.flexpay.orgs.service.impl.ServiceProviderServiceImpl"
 		  p:serviceProviderDao-ref="serviceProviderDao"
 		  p:serviceProviderDaoExt-ref="serviceProviderDaoExt"
 		  p:sessionUtils-ref="sessionUtils"
@@ -141,9 +141,9 @@
 
 	<bean id="classToTypeRegistryFactoryOrgs"
 		  depends-on="classToTypeRegistryFactory"
-		  class="org.flexpay.common.service.importexport.imp.ClassToTypeRegistryFactory">
+		  class="org.flexpay.common.service.importexport.impl.ClassToTypeRegistryFactory">
 		<property name="registry">
-			<bean class="org.flexpay.common.service.importexport.imp.CompositeClassToTypeRegistry">
+			<bean class="org.flexpay.common.service.importexport.impl.CompositeClassToTypeRegistry">
 				<property name="registries">
 					<list>
 						<ref bean="classToTypeRegistryOrgs" />

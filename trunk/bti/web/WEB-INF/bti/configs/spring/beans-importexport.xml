@@ -13,9 +13,9 @@
 
 	<bean id="classToTypeRegistryFactoryBti"
 		  depends-on="classToTypeRegistryFactoryAb"
-		  class="org.flexpay.common.service.importexport.imp.ClassToTypeRegistryFactory">
+		  class="org.flexpay.common.service.importexport.impl.ClassToTypeRegistryFactory">
 		<property name="registry">
-			<bean class="org.flexpay.common.service.importexport.imp.CompositeClassToTypeRegistry">
+			<bean class="org.flexpay.common.service.importexport.impl.CompositeClassToTypeRegistry">
 				<property name="registries">
 					<list>
 						<ref bean="classToTypeRegistryBti" />

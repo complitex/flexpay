@@ -23,11 +23,11 @@
 	<!-- Look up data source via JNDI -->
 	<!--<jee:jndi-lookup id="syncABDataSource" jndi-name="jdbc/FlexPay" resource-ref="false" />-->
 
-	<bean id="historyDaoJdbc" class="org.flexpay.ab.dao.imp.HistoryDaoJdbcImpl">
+	<bean id="historyDaoJdbc" class="org.flexpay.ab.dao.impl.HistoryDaoJdbcImpl">
 		<property name="dataSource" ref="dataSource" />
 	</bean>
 
-	<bean id="historySourceDao" class="org.flexpay.ab.dao.imp.HistorySourceDaoImpl">
+	<bean id="historySourceDao" class="org.flexpay.ab.dao.impl.HistorySourceDaoImpl">
 		<constructor-arg index="0">
 			<props>
 				<prop key="historyTableName">${ab.sync.history.table.name}</prop>
@@ -45,7 +45,7 @@
 		<property name="dataSource" ref="syncABDataSource" />
 	</bean>
 
-	<bean id="syncConfigDaoJdbc" class="org.flexpay.ab.dao.imp.UpdateConfigDaoJdbcImpl">
+	<bean id="syncConfigDaoJdbc" class="org.flexpay.ab.dao.impl.UpdateConfigDaoJdbcImpl">
 		<property name="dataSource" ref="dataSource" />
 	</bean>
 
