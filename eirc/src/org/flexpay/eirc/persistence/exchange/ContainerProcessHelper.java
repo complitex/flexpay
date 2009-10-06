@@ -12,7 +12,7 @@ import org.flexpay.eirc.persistence.Consumer;
 import org.flexpay.eirc.persistence.EircRegistryRecordProperties;
 import org.flexpay.eirc.persistence.exchange.delayed.DelayedUpdateApartmentAttributes;
 import org.flexpay.eirc.persistence.exchange.delayed.DelayedUpdateNope;
-import org.flexpay.eirc.service.imp.fetch.ReadHintsConstants;
+import org.flexpay.eirc.service.impl.fetch.ReadHintsConstants;
 import org.jetbrains.annotations.NotNull;
 
 public class ContainerProcessHelper {

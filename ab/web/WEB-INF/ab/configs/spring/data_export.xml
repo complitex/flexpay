@@ -7,11 +7,11 @@
 		   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
 	<bean id="dataExportDao"
-		  class="org.flexpay.ab.dao.importexport.imp.HarkovCenterNachisleniyDataSource"
+		  class="org.flexpay.ab.dao.importexport.impl.HarkovCenterNachisleniyDataSource"
 		  p:jdbcTemplate-ref="dataExportJdbcTemplate" />
 
 	<bean id="allObjectsDao"
-		  class="org.flexpay.ab.service.importexport.imp.AllObjectsDao"
+		  class="org.flexpay.ab.service.importexport.impl.AllObjectsDao"
 		  p:hibernateTemplate-ref="hibernateTemplate" />
 
 	<!-- Data sources -->
@@ -64,13 +64,13 @@
 
 	<bean id="classToTypeRegistryAb"
 		  autowire-candidate="false"
-		  class="org.flexpay.ab.service.importexport.imp.ClassToTypeRegistryAb" />
+		  class="org.flexpay.ab.service.importexport.impl.ClassToTypeRegistryAb" />
 
 	<bean id="classToTypeRegistryFactoryAb"
 		  depends-on="classToTypeRegistryFactory"
-		  class="org.flexpay.common.service.importexport.imp.ClassToTypeRegistryFactory">
+		  class="org.flexpay.common.service.importexport.impl.ClassToTypeRegistryFactory">
 		<property name="registry">
-			<bean class="org.flexpay.common.service.importexport.imp.CompositeClassToTypeRegistry">
+			<bean class="org.flexpay.common.service.importexport.impl.CompositeClassToTypeRegistry">
 				<property name="registries">
 					<list>
 						<ref bean="classToTypeRegistryAb" />

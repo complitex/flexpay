@@ -5,7 +5,7 @@ import org.flexpay.ab.dao.importexport.*;
 import org.flexpay.ab.persistence.*;
 import org.flexpay.ab.persistence.filters.TownFilter;
 import org.flexpay.ab.service.*;
-import org.flexpay.ab.service.importexport.imp.AllObjectsDao;
+import org.flexpay.ab.service.importexport.impl.AllObjectsDao;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.*;
 import static org.flexpay.common.persistence.Stub.stub;

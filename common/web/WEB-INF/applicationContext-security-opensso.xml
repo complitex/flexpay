@@ -85,7 +85,7 @@
 	</b:bean>
 
 	<b:bean id="authenticatedUserDetailsService"
-			class="org.flexpay.common.service.imp.UserPreferencesAuthenticationService"
+			class="org.flexpay.common.service.impl.UserPreferencesAuthenticationService"
 			p:userPreferencesService-ref="userPreferencesService" />
 
 	<b:bean id="openssoFilter" class="com.sun.identity.provider.springsecurity.OpenSSOProcessingFilter">

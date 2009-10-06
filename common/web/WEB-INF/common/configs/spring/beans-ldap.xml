@@ -55,11 +55,11 @@
 		  p:userPreferencesFactory-ref="userPreferencesFactory" />
 
 	<bean id="userPreferencesServiceFactory"
-		  class="org.flexpay.common.service.imp.UserPreferencesServiceFactory" />
+		  class="org.flexpay.common.service.impl.UserPreferencesServiceFactory" />
 
 	<bean id="userPreferencesDefaultsCommon"
 		  autowire-candidate="false"
-		  class="org.flexpay.common.service.imp.UserPreferencesDefaultsCommon" />
+		  class="org.flexpay.common.service.impl.UserPreferencesDefaultsCommon" />
 
 	<!--<bean id="userPreferencesService"-->
 		  <!--factory-bean="userPreferencesServiceFactory"-->

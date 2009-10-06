@@ -15,13 +15,13 @@
 
 	<bean id="classToTypeRegistryEirc"
 		  autowire-candidate="false"
-		  class="org.flexpay.eirc.service.importexport.imp.ClassToTypeRegistryEirc" />
+		  class="org.flexpay.eirc.service.importexport.impl.ClassToTypeRegistryEirc" />
 
 	<bean id="classToTypeRegistryFactoryEirc"
 		  depends-on="classToTypeRegistryFactoryBti,classToTypeRegistryFactoryPayments"
-		  class="org.flexpay.common.service.importexport.imp.ClassToTypeRegistryFactory">
+		  class="org.flexpay.common.service.importexport.impl.ClassToTypeRegistryFactory">
 		<property name="registry">
-			<bean class="org.flexpay.common.service.importexport.imp.CompositeClassToTypeRegistry">
+			<bean class="org.flexpay.common.service.importexport.impl.CompositeClassToTypeRegistry">
 				<property name="registries">
 					<list>
 						<ref bean="classToTypeRegistryEirc" />

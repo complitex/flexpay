@@ -8,7 +8,7 @@
 		   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
 	<bean id="countryServiceTarget"
-		  class="org.flexpay.ab.service.imp.CountryServiceImpl"
+		  class="org.flexpay.ab.service.impl.CountryServiceImpl"
 		  autowire-candidate="false"
 		  p:countryDao-ref="countryDao"
 		  p:countryDaoExt-ref="countryDaoExt"
@@ -20,7 +20,7 @@
 		  p:referencesHistoryGenerator-ref="nopeReferencesHistoryGenerator" />
 
 	<bean id="regionServiceTarget"
-		  class="org.flexpay.ab.service.imp.RegionServiceImpl"
+		  class="org.flexpay.ab.service.impl.RegionServiceImpl"
 		  autowire-candidate="false"
 		  p:parentService-ref="countryService"
 		  p:townTypeService-ref="townTypeService"
@@ -44,7 +44,7 @@
 
 	<bean id="townServiceTarget"
 		  autowire-candidate="false"
-		  class="org.flexpay.ab.service.imp.TownServiceImpl"
+		  class="org.flexpay.ab.service.impl.TownServiceImpl"
 		  p:parentService-ref="regionService"
 		  p:regionDao-ref="regionDao"
 		  p:townDao-ref="townDao"
@@ -65,7 +65,7 @@
 		  p:referencesHistoryGenerator-ref="districtReferencesHistoryGenerator" />
 
 	<bean id="districtServiceTarget"
-		  class="org.flexpay.ab.service.imp.DistrictServiceImpl"
+		  class="org.flexpay.ab.service.impl.DistrictServiceImpl"
 		  autowire-candidate="false"
 		  p:parentService-ref="townService"
 		  p:townDao-ref="townDao"
@@ -87,7 +87,7 @@
 		  p:referencesHistoryGenerator-ref="streetReferencesHistoryGenerator" />
 
 	<bean id="streetServiceTarget"
-		  class="org.flexpay.ab.service.imp.StreetServiceImpl"
+		  class="org.flexpay.ab.service.impl.StreetServiceImpl"
 		  autowire-candidate="false"
 		  p:parentService-ref="townService"
 		  p:townDao-ref="townDao"
@@ -126,7 +126,7 @@
 		  factory-method="getHolder" />
 
 	<bean id="buildingServiceTarget"
-		  class="org.flexpay.ab.service.imp.BuildingServiceImpl"
+		  class="org.flexpay.ab.service.impl.BuildingServiceImpl"
 		  autowire-candidate="false"
 		  p:buildingDao-ref="buildingDao"
 		  p:buildingsDao-ref="buildingsDao"
@@ -144,27 +144,27 @@
 		  p:referencesHistoryGenerator-ref="nopeReferencesHistoryGenerator" />
 
 	<bean id="addressAttributeTypeServiceTarget"
-		  class="org.flexpay.ab.service.imp.AddressAttributeTypeServiceImpl"
+		  class="org.flexpay.ab.service.impl.AddressAttributeTypeServiceImpl"
 		  autowire-candidate="false"
 		  p:addressAttributeTypeDao-ref="addressAttributeTypeDao"
 		  p:sessionUtils-ref="sessionUtils"
 		  p:modificationListener-ref="addressAttributeTypeHistoryChangesListener" />
 
 	<bean id="addressService"
-		  class="org.flexpay.ab.service.imp.AddressServiceImpl"
+		  class="org.flexpay.ab.service.impl.AddressServiceImpl"
 		  p:apartmentService-ref="apartmentService"
 		  p:buildingService-ref="buildingService"
 		  p:streetService-ref="streetService" />
 
 	<bean id="abObjectsFactory" autowire-candidate="false"
-		  class="org.flexpay.ab.service.imp.AbObjectsFactory" />
+		  class="org.flexpay.ab.service.impl.AbObjectsFactory" />
 
 	<bean id="objectsFactoryHolder"
-		  class="org.flexpay.ab.service.imp.ObjectsFactoryHolder"
+		  class="org.flexpay.ab.service.impl.ObjectsFactoryHolder"
 		  p:factory-ref="abObjectsFactory" />
 
 	<bean id="objectsFactory"
-		  class="org.flexpay.ab.service.imp.ObjectsFactoryProxy"
+		  class="org.flexpay.ab.service.impl.ObjectsFactoryProxy"
 		  p:factoryHolder-ref="objectsFactoryHolder" />
 
 	<bean id="apartmentReferencesHistoryGenerator"
@@ -177,7 +177,7 @@
 		  p:referencesHistoryGenerator-ref="apartmentReferencesHistoryGenerator" />
 
 	<bean id="apartmentService"
-		  class="org.flexpay.ab.service.imp.ApartmentServiceImpl"
+		  class="org.flexpay.ab.service.impl.ApartmentServiceImpl"
 		  p:apartmentDao-ref="apartmentDao"
 		  p:apartmentDaoExt-ref="apartmentDaoExt"
 		  p:sessionUtils-ref="sessionUtils"
@@ -191,7 +191,7 @@
 
 	<bean id="townTypeServiceTarget"
 		  autowire-candidate="false"
-		  class="org.flexpay.ab.service.imp.TownTypeServiceImpl"
+		  class="org.flexpay.ab.service.impl.TownTypeServiceImpl"
 		  p:townTypeDao-ref="townTypeDao"
 		  p:sessionUtils-ref="sessionUtils"
 		  p:modificationListener-ref="townTypeHistoryChangesListener" />
@@ -203,7 +203,7 @@
 
 	<bean id="streetTypeServiceTarget"
 		  autowire-candidate="false"
-		  class="org.flexpay.ab.service.imp.StreetTypeServiceImpl"
+		  class="org.flexpay.ab.service.impl.StreetTypeServiceImpl"
 		  p:streetTypeDao-ref="streetTypeDao"
 		  p:correctionsService-ref="correctionsService"
 		  p:sessionUtils-ref="sessionUtils"
@@ -216,7 +216,7 @@
 
 	<bean id="identityTypeServiceTarget"
 		  autowire-candidate="false"
-		  class="org.flexpay.ab.service.imp.IdentityTypeServiceImpl"
+		  class="org.flexpay.ab.service.impl.IdentityTypeServiceImpl"
 		  p:sessionUtils-ref="sessionUtils"
 		  p:modificationListener-ref="identityTypeHistoryChangesListener"
 		  p:identityTypeDao-ref="identityTypeDao" />
@@ -232,7 +232,7 @@
 		  p:referencesHistoryGenerator-ref="personReferencesHistoryGenerator" />
 
 	<bean id="personService"
-		  class="org.flexpay.ab.service.imp.PersonServiceImpl"
+		  class="org.flexpay.ab.service.impl.PersonServiceImpl"
 		  p:personAttributeDao-ref="personAttributeDao"
 		  p:identityTypeService-ref="identityTypeService"
 		  p:personRegistrationDao-ref="personRegistrationDao"
@@ -477,7 +477,7 @@
 
 	<bean id="abUserPreferencesContextMapper"
 		  autowire-candidate="false"
-		  class="org.flexpay.ab.dao.imp.ldap.AbUserPreferencesContextMapper" />
+		  class="org.flexpay.ab.dao.impl.ldap.AbUserPreferencesContextMapper" />
 
 	<bean autowire-candidate="false"
 		  factory-bean="compositeUserPreferencesContextMapperFactory"
