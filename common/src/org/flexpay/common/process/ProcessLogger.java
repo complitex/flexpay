@@ -115,6 +115,7 @@ public class ProcessLogger {
 		closeLog(processId);
 		File logFile = getLogFile(processId);
 		if (logFile.exists()) {
+			LOG.debug("Removing process log file {}", logFile);
 			logFile.delete();
 		}
 	}

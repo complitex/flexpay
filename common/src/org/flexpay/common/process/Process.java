@@ -1,8 +1,9 @@
 package org.flexpay.common.process;
 
+import static org.flexpay.common.util.CollectionUtils.map;
+
 import java.io.Serializable;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
 
 public class Process {
@@ -21,7 +22,7 @@ public class Process {
 	private long processInstaceId;
 	private long processDefenitionVersion;
 
-	private Map<Serializable, Serializable> parameters = new HashMap<Serializable, Serializable>();
+	private Map<Serializable, Serializable> parameters = map();
 
 	public Process() {
 	}

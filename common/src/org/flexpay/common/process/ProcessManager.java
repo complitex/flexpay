@@ -1,8 +1,10 @@
 package org.flexpay.common.process;
 
 import org.flexpay.common.dao.paging.Page;
+import org.flexpay.common.persistence.DateRange;
 import org.flexpay.common.process.exception.ProcessDefinitionException;
 import org.flexpay.common.process.exception.ProcessInstanceException;
+import org.flexpay.common.process.filter.ProcessNameFilter;
 import org.flexpay.common.process.sorter.ProcessSorter;
 import org.flexpay.common.service.Roles;
 import org.jbpm.graph.def.ProcessDefinition;
@@ -64,7 +66,7 @@ public interface ProcessManager {
 	void deleteProcessInstances(List<Process> processes);
 
 	@Secured (Roles.PROCESS_DELETE)
-	void deleteProcessInstances(final Set<Long> processIds);
+	void deleteProcessInstances(Set<Long> processIds);
 
 	/**
 	 * Wait for process completion
@@ -77,14 +79,14 @@ public interface ProcessManager {
 	/**
 	 * Create process for process definition name
 	 *
-	 * @param definitionName process definitiona name
+	 * @param definitionName process definition name
 	 * @param parameters	 initial context variables
 	 * @return process instance identifier
 	 * @throws org.flexpay.common.process.exception.ProcessInstanceException
 	 *                                    when can't instantiate process instance
 	 * @throws ProcessDefinitionException when process definition not found
 	 */
-	long createProcess(String definitionName, Map<Serializable, Serializable> parameters)
+	long createProcess(@NotNull String definitionName, @Nullable Map<Serializable, Serializable> parameters)
 			throws ProcessInstanceException, ProcessDefinitionException;
 
 	/**
@@ -162,7 +164,7 @@ public interface ProcessManager {
 	 * @param processInstanceId ProcessInstance id
 	 * @return Process info
 	 */
-	public ProcessInstance getProcessInstance(@NotNull final Long processInstanceId);
+	ProcessInstance getProcessInstance(@NotNull Long processInstanceId);
 
 	@Secured (Roles.PROCESS_READ)
 	@Nullable
@@ -173,7 +175,7 @@ public interface ProcessManager {
 	 * @param <T>      Return value type
 	 * @return instance of T
 	 */
-	public  <T> T execute(@NotNull ContextCallback<T> callback);
+	<T> T execute(@NotNull ContextCallback<T> callback);
 
 	@Secured (Roles.PROCESS_READ)
 	@Nullable
@@ -185,6 +187,8 @@ public interface ProcessManager {
 	 * @param <T>                Return value type
 	 * @return instance of T
 	 */
-	public <T> T execute(@NotNull ContextCallback<T> callback, boolean useExistingContext);
+	<T> T execute(@NotNull ContextCallback<T> callback, boolean useExistingContext);
 
+	@Secured (Roles.PROCESS_DELETE)
+	void deleteProcessInstances(DateRange range, ProcessNameFilter nameFilter);
 }

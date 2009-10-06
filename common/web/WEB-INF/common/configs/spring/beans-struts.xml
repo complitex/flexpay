@@ -9,8 +9,8 @@
 	<bean id="staticPageAction" scope="prototype"
 		  class="org.flexpay.common.actions.StaticPageAction" />
 
-    <bean id="menuPageAction" scope="prototype"
-          class="org.flexpay.common.actions.MenuPageAction" />
+	<bean id="menuPageAction" scope="prototype"
+		  class="org.flexpay.common.actions.MenuPageAction" />
 
 	<bean id="printAction" scope="prototype"
 		  class="org.flexpay.common.actions.FilePrintAction" />
@@ -18,5 +18,10 @@
 	<!-- Locale setter bean -->
 	<bean class="org.flexpay.common.util.config.auth.UpdateUserPreferencesApplicationListener"
 		  p:preferencesService-ref="userPreferencesService" />
+
+	<bean id="processesCleanupAction"
+		  scope="prototype"
+		  class="org.flexpay.common.actions.jbpm.ProcessesCleanupAction"
+		  p:processManager-ref="processManager" />
 
 </beans>

@@ -1,13 +1,11 @@
 package org.flexpay.common.process.job;
 
 import org.flexpay.common.test.SpringBeanAwareTestCase;
-import org.flexpay.common.util.CollectionUtils;
+import static org.flexpay.common.util.CollectionUtils.map;
 import static org.junit.Assert.assertEquals;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.Serializable;
-import java.util.HashMap;
 import java.util.Map;
 
 public class TestJob extends SpringBeanAwareTestCase {
@@ -15,13 +13,12 @@ public class TestJob extends SpringBeanAwareTestCase {
 	private final static String TEST_STRING = "test string";
 
 	@Test
-	@Ignore
 	public void testRun() throws Exception {
 
 		Job testJob = new MockJobNext();
 		testJob.setId("1");
 		JobManager jobManager = JobManager.getInstance();
-		HashMap<Serializable, Serializable> parameters = new HashMap<Serializable, Serializable>();
+		Map<Serializable, Serializable> parameters = map();
 		parameters.put(TEST_STRING, TEST_STRING);
 		jobManager.addJob(testJob, parameters);
 
@@ -30,13 +27,12 @@ public class TestJob extends SpringBeanAwareTestCase {
 	}
 
 	@Test
-	@Ignore
 	public void testJobException() throws Exception {
 
 		Job testJob = new MockJobException();
 		testJob.setId("2");
 		JobManager jobManager = JobManager.getInstance();
-		Map<Serializable, Serializable> parameters = CollectionUtils.map();
+		Map<Serializable, Serializable> parameters = map();
 		parameters.put(TEST_STRING, TEST_STRING);
 		jobManager.addJob(testJob, parameters);
 

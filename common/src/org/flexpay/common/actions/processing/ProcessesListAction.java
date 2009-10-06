@@ -40,7 +40,7 @@ public class ProcessesListAction extends FPActionWithPagerSupport<Process> imple
 
 		processNameFilter.loadAllProcessNames();
 
-		processes = getProcessListMethod();
+		processes = processes();
 
 		return SUCCESS;
 	}
@@ -51,7 +51,7 @@ public class ProcessesListAction extends FPActionWithPagerSupport<Process> imple
 		return SUCCESS;
 	}
 
-	private List<Process> getProcessListMethod() {
+	private List<Process> processes() {
 
 		Date startFrom = beginDateFilter.dateIsNotEmpty() ? beginDateFilter.getDate() : null;
 		Date endBefore = endDateFilter.dateIsNotEmpty() ? endDateFilter.getDate() : null;

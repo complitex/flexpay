@@ -1,11 +1,11 @@
-package org.flexpay.common.actions;
+package org.flexpay.common.actions.jbpm;
 
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({
-		org.flexpay.common.actions.jbpm.AllTests.class
+		TestProcessesCleanupAction.class
 })
 public class AllTests {
 

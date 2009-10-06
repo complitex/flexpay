@@ -1,18 +1,24 @@
 package org.flexpay.common.dao.impl;
 
+import org.apache.commons.lang.StringUtils;
 import org.flexpay.common.dao.ProcessDao;
 import org.flexpay.common.dao.paging.Page;
+import org.flexpay.common.persistence.DateRange;
 import org.flexpay.common.process.Process;
 import org.flexpay.common.process.ProcessLogger;
+import org.flexpay.common.process.ProcessManagerImpl;
 import org.flexpay.common.process.ProcessState;
 import org.flexpay.common.process.job.Job;
 import org.flexpay.common.process.sorter.ProcessSorter;
 import org.flexpay.common.util.CollectionUtils;
+import static org.flexpay.common.util.CollectionUtils.set;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.jbpm.graph.exe.ProcessInstance;
 import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.HibernateTemplate;
@@ -27,6 +33,8 @@ import java.util.Map;
  * Hibernate-based implementation of {@link org.flexpay.common.dao.ProcessDao}
  */
 public class ProcessDaoImpl implements ProcessDao {
+
+	protected Logger log = LoggerFactory.getLogger(getClass());
 
 	private HibernateTemplate hibernateTemplate;
 
@@ -247,6 +255,58 @@ public class ProcessDaoImpl implements ProcessDao {
 		}
 
 		return process;
+	}
+
+	@Override
+	public void deleteProcessInstances(final DateRange range, final String name) {
+
+		hibernateTemplate.execute(new HibernateCallback() {
+			@Override
+			public Void doInHibernate(Session session) throws HibernateException {
+				Query instancesCount = session.getNamedQuery("Process.listForDelete.count");
+				Query instancesQuery = session.getNamedQuery("Process.listForDelete");
+
+				int n = 0;
+				instancesCount.setParameter(n, range.getStart());
+				instancesQuery.setParameter(n, range.getStart());
+				++n;
+				instancesCount.setParameter(n, range.getEnd());
+				instancesQuery.setParameter(n, range.getEnd());
+				++n;
+				instancesCount.setParameter(n, name);
+				instancesQuery.setParameter(n, name);
+				++n;
+				int excludeName = StringUtils.isEmpty(name) ? 1 : 0;
+				instancesCount.setParameter(n, excludeName);
+				instancesQuery.setParameter(n, excludeName);
+
+				// remove process logs
+				Long count = (Long) instancesCount.uniqueResult();
+				Page<ProcessInstance> pager = new Page<ProcessInstance>(500);
+				pager.setTotalElements(count.intValue());
+				while (true) {
+					List<Long> instanceIds = nextPage(pager, instancesQuery);
+					if (instanceIds.isEmpty()) {
+						break;
+					}
+					ProcessManagerImpl.getInstance().deleteProcessInstances(set(instanceIds));
+					for (Long instanceId : instanceIds) {
+						ProcessLogger.removeLogFile(instanceId);
+					}
+					pager.nextPage();
+				}
+
+				return null;
+			}
+
+			@SuppressWarnings ({"unchecked"})
+			private List<Long> nextPage(Page<?> pager, Query query) {
+				return (List<Long>) query
+						.setFirstResult(pager.getThisPageFirstElementNumber())
+						.setMaxResults(pager.getPageSize())
+						.list();
+			}
+		});
 	}
 
 	/**

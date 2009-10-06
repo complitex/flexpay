@@ -16,5 +16,19 @@
 		select distinct pd.name
 		from org.jbpm.graph.def.ProcessDefinition pd
 	</query>
-	
+
+	<query name="Process.listForDelete">
+	<![CDATA[
+		select pi.id from org.jbpm.graph.exe.ProcessInstance pi
+		where (pi.start>=? and pi.end<=? and (pi.processDefinition.name=? or 1=?))
+	]]>
+	</query>
+
+	<query name="Process.listForDelete.count">
+	<![CDATA[
+		select count(pi.id) from org.jbpm.graph.exe.ProcessInstance pi
+		where (pi.start>=? and pi.end<=? and (pi.processDefinition.name=? or 1=?))
+	]]>
+	</query>
+
 </hibernate-mapping>

@@ -6,6 +6,8 @@ import org.flexpay.common.process.ProcessLogger;
 import org.flexpay.common.process.ProcessManager;
 import org.flexpay.common.process.job.listeners.JobCompletePercentListener;
 import org.flexpay.common.util.CollectionUtils;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.Authentication;
@@ -165,5 +167,41 @@ public abstract class Job implements Runnable {
 
 	public void setProcessId(Long processId) {
 		this.processId = processId;
+	}
+
+	@NotNull
+	@SuppressWarnings ({"unchecked"})
+	protected static <T> T required(String name, Map<Serializable, Serializable> params)
+			throws FlexPayException {
+
+		return (T)required(name, params, null);
+	}
+
+	@NotNull
+	@SuppressWarnings ({"unchecked"})
+	protected static <T> T required(String name, Map<Serializable, Serializable> params, String i18nErrorKey)
+			throws FlexPayException {
+
+		try {
+			T result = (T) params.get(name);
+			if (result == null) {
+				throw new FlexPayException("No param " + name, i18nErrorKey);
+			}
+			return result;
+		} catch (ClassCastException ex) {
+			throw new FlexPayException(ex);
+		}
+	}
+
+	@Nullable
+	@SuppressWarnings ({"unchecked"})
+	protected static <T> T optional(String name, Map<Serializable, Serializable> params)
+			throws FlexPayException {
+
+		try {
+			return (T) params.get(name);
+		} catch (ClassCastException ex) {
+			throw new FlexPayException(ex);
+		}
 	}
 }

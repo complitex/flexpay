@@ -4,8 +4,10 @@ import org.apache.commons.io.IOUtils;
 import org.flexpay.common.dao.ProcessDao;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
+import org.flexpay.common.persistence.DateRange;
 import org.flexpay.common.process.exception.ProcessDefinitionException;
 import org.flexpay.common.process.exception.ProcessInstanceException;
+import org.flexpay.common.process.filter.ProcessNameFilter;
 import org.flexpay.common.process.job.Job;
 import org.flexpay.common.process.job.JobManager;
 import org.flexpay.common.process.sorter.ProcessSorter;
@@ -31,7 +33,7 @@ import java.io.Serializable;
 import java.util.*;
 
 /**
- * Process manager allows to create and maintain processes lyfecycle
+ * Process manager allows to create and maintain processes life cycle
  */
 public class ProcessManagerImpl implements ProcessManager, Runnable {
 
@@ -111,7 +113,7 @@ public class ProcessManagerImpl implements ProcessManager, Runnable {
 	 * Unload process manager and stop process manager thread
 	 */
 	public void stop() {
-		log.debug("Stoping ProcessManager thread");
+		log.debug("Stopping ProcessManager thread");
 		synchronized (instance) {
 			if (instance.isStopped()) {
 				return;
@@ -352,7 +354,7 @@ public class ProcessManagerImpl implements ProcessManager, Runnable {
 	 * @throws ProcessDefinitionException when process definition not found
 	 */
 	@Override
-	public long createProcess(String definitionName, Map<Serializable, Serializable> parameters)
+	public long createProcess(@NotNull String definitionName, @Nullable Map<Serializable, Serializable> parameters)
 			throws ProcessInstanceException, ProcessDefinitionException {
 
 		final long processId = initProcess(definitionName);
@@ -401,7 +403,7 @@ public class ProcessManagerImpl implements ProcessManager, Runnable {
 
 		if (runCounter > taskRepeatLimit) {
 			log.info("Exceded limit ({}) for task '{}' ({}, pid - {}). Process ended.",
-					new Object[] {taskRepeatLimit, task.getName(), task.getId(), processInstance.getId()});
+					new Object[]{taskRepeatLimit, task.getName(), task.getId(), processInstance.getId()});
 			completeTask(task);
 			return false;
 		}
@@ -410,7 +412,7 @@ public class ProcessManagerImpl implements ProcessManager, Runnable {
 		switch (vote) {
 			case CANCEL:
 				log.info("Task '{}' ({}, pid - {}). Cancelled by voters.",
-						new Object[] {task.getName(), task.getId(), processInstance.getId()});
+						new Object[]{task.getName(), task.getId(), processInstance.getId()});
 				completeTask(task);
 				return false;
 			case POSTPONE:
@@ -421,13 +423,13 @@ public class ProcessManagerImpl implements ProcessManager, Runnable {
 		}
 
 		log.info("Starting task '{}' ({}, pid - {})",
-				new Object[] {task.getName(), task.getId(), processInstance.getId()});
+				new Object[]{task.getName(), task.getId(), processInstance.getId()});
 
 		if (task.getStart() == null) {
 			task.start();
 		} else {
 			log.info("Task '{}' ({}, pid={}) restarted. Recovering from failure.",
-					new Object[] {task.getName(), task.getId(), processInstance.getId()});
+					new Object[]{task.getName(), task.getId(), processInstance.getId()});
 		}
 
 		try {
@@ -621,7 +623,7 @@ public class ProcessManagerImpl implements ProcessManager, Runnable {
 			@Override
 			public Process doInContext(@NotNull JbpmContext context) {
 				ProcessInstance processInstance = context.getProcessInstance(processId);
-				if (processInstance == null){
+				if (processInstance == null) {
 					log.debug("Process with id = {} not found", processId);
 					return null;
 				}
@@ -743,14 +745,20 @@ public class ProcessManagerImpl implements ProcessManager, Runnable {
 		});
 	}
 
+	@Override
+	public void deleteProcessInstances(DateRange range, ProcessNameFilter nameFilter) {
+		processDao.deleteProcessInstances(range, nameFilter.getSelectedName());
+	}
+
 	/**
 	 * Retrieve ProcessInstance
+	 *
 	 * @param processInstanceId ProcessInstance id
 	 * @return Process info
-	 */	
+	 */
 	@Override
 	public ProcessInstance getProcessInstance(@NotNull final Long processInstanceId) {
-		return execute(new ContextCallback<ProcessInstance>(){
+		return execute(new ContextCallback<ProcessInstance>() {
 			@Override
 			public ProcessInstance doInContext(@NotNull JbpmContext context) {
 				return context.getProcessInstance(processInstanceId);
@@ -776,13 +784,12 @@ public class ProcessManagerImpl implements ProcessManager, Runnable {
 	 * @param callback		   ContextCallback to execute
 	 * @param useExistingContext Whether to use existing context or not
 	 * @param <T>                Return value type
-	 *
 	 * @return instance of T
 	 */
 	@Override
 	public <T> T execute(@NotNull ContextCallback<T> callback, boolean useExistingContext) {
 
-		while(!isStarted()) {
+		while (!isStarted()) {
 			try {
 				Thread.sleep(5L);
 			} catch (InterruptedException e) {
