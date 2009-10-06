@@ -170,7 +170,7 @@ public class StreetTypeServiceImpl implements StreetTypeService {
 		streetTypeFilter.setNames(translations);
 
 		if (streetTypeFilter.getSelectedId() == null) {
-			if (translations.size() == 0) {
+			if (translations.isEmpty()) {
 				throw new FlexPayException("No street types", "ab.no_street_types");
 			}
 			streetTypeFilter.setSelectedId(translations.get(0).getId());

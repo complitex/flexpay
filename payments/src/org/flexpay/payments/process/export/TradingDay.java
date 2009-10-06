@@ -132,7 +132,7 @@ public class TradingDay extends QuartzJobBean {
             processes = processManager.getProcesses(processSorterByName, page, null, null, ProcessState.RUNING, PROCESS_DEFINITION_NAME);
             log.debug("Have some processes {}", page.getTotalNumberOfElements());
             try {
-                if (processes.size() > 0) {
+                if (!processes.isEmpty()) {
                     Thread.sleep(TIME_OUT);
                 }
             } catch (InterruptedException e) {
@@ -153,7 +153,7 @@ public class TradingDay extends QuartzJobBean {
                 //processManager.deleteProcessInstance(processInstanceInfo);
 
             }
-        } while (processes.size() > 0);
+        } while (!processes.isEmpty());
         log.debug("All processes finished");
 
         for (PaymentPoint pp : paymentPointService.listPaymentPointsWithTradingDay()) {

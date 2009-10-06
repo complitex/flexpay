@@ -29,7 +29,7 @@ public class TestApartmentAttributeTypeService extends SpringBeanAwareTestCase {
 		ApartmentAttributeType type = attributeTypeService.readFull(new Stub<ApartmentAttributeType>(1L));
 		assertNotNull("Attribute type #5 not found", type);
 		assertTrue("Type #5 has invalid type", type instanceof ApartmentAttributeTypeSimple);
-		assertTrue("type #5 has no translations", type.getTranslations().size() > 0);
+		assertTrue("type #5 has no translations", !type.getTranslations().isEmpty());
 
 	}
 

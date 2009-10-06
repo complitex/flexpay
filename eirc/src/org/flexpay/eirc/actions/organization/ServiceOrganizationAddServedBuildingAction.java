@@ -39,7 +39,7 @@ public class ServiceOrganizationAddServedBuildingAction extends FPActionSupport 
 
 		log.info("Served building ids: {}", objectIds);
 
-		if (objectIds.size() > 0) {
+		if (!objectIds.isEmpty()) {
 
 			List<Building> buildings = buildingService.readFull(objectIds, false);
 			for (Building sb : buildings) {

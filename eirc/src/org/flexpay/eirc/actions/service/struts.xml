@@ -7,27 +7,53 @@
 	<package name="eirc-service" namespace="/eirc" extends="common">
 
 		<!-- Service Types -->
-		<action name="serviceTypesList" class="serviceTypesListAction">
+        <action name="serviceTypeView" class="serviceTypeViewAction">
+            <result type="tiles">eirc.service_type.view</result>
+            <result name="redirectError" type="redirect-action">serviceTypesList</result>
+        </action>
+
+		<action name="serviceTypesList" class="serviceTypesListPageAction">
 			<result type="tiles">eirc.service_types.list</result>
 		</action>
 
+        <action name="serviceTypesListAjax" class="serviceTypesListAction">
+            <result>/WEB-INF/jsp/payments/service_types/service_types_list.jsp</result>
+        </action>
+
 		<action name="serviceTypeDelete" class="serviceTypeDeleteAction">
-			<result name="redirectSuccess" type="redirect-action">serviceTypesList</result>
+            <result>/WEB-INF/jsp/common/responses/simple_response.jsp</result>
 		</action>
 
 		<action name="serviceTypeEdit" class="serviceTypeEditAction">
-			<result name="input" type="tiles">eirc.service_type.edit</result>
-			<result name="redirectSuccess" type="redirect-action">serviceTypesList</result>
+            <result name="input" type="tiles">eirc.service_type.edit</result>
+            <result name="redirectSuccess" type="redirect-action">
+                <param name="actionName">serviceTypeView</param>
+                <param name="parse">true</param>
+                <param name="serviceType.id">${serviceType.id}</param>
+            </result>
 		</action>
 
 		<!-- Services -->
-		<action name="servicesList" class="servicesListAction">
-			<result type="tiles">eirc.services.list</result>
-		</action>
+        <action name="serviceView" class="serviceViewAction">
+            <result type="tiles">eirc.service.view</result>
+            <result name="redirectError" type="redirect-action">servicesList</result>
+        </action>
+
+        <action name="servicesList" class="servicesListPageAction">
+            <result type="tiles">eirc.services.list</result>
+        </action>
+
+        <action name="servicesListAjax" class="servicesListAction">
+            <result>/WEB-INF/jsp/payments/services/services_list.jsp</result>
+        </action>
 
 		<action name="serviceEdit" class="serviceEditAction">
 			<result name="input" type="tiles">eirc.service.edit</result>
-			<result name="redirectSuccess" type="redirect-action">servicesList</result>
+            <result name="redirectSuccess" type="redirect-action">
+                <param name="actionName">serviceView</param>
+                <param name="parse">true</param>
+                <param name="service.id">${service.id}</param>
+            </result>
 		</action>
 
 	</package>

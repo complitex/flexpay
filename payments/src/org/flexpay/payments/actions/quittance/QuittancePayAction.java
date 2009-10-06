@@ -98,7 +98,7 @@ public class QuittancePayAction extends PaymentOperationAction {
 	}
 
 	private boolean isNotEmptyOperation(Operation operation) {
-		return !BigDecimalUtil.isZero(operation.getOperationSumm()) && operation.getDocuments() != null && operation.getDocuments().size() > 0;
+		return !BigDecimalUtil.isZero(operation.getOperationSumm()) && operation.getDocuments() != null && !operation.getDocuments().isEmpty();
 	}
 
 	private boolean isValidOperation(Operation operation) {

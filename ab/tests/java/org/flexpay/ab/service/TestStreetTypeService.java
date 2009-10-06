@@ -31,12 +31,12 @@ public class TestStreetTypeService extends AbSpringBeanAwareTestCase {
 
 		List<StreetType> streetTypes = service.getEntities();
 
-		assertTrue("No street types", streetTypes.size() > 0);
+		assertTrue("No street types", !streetTypes.isEmpty());
 
 		// travel all references
 		for (StreetType type : streetTypes) {
 			Set<StreetTypeTranslation> translations = type.getTranslations();
-			assertTrue("Street type without translations", translations.size() > 0);
+			assertTrue("Street type without translations", !translations.isEmpty());
 			for (StreetTypeTranslation translation : translations) {
 				assertTrue("Empty translation found", StringUtils.isNotBlank(translation.getName()));
 			}

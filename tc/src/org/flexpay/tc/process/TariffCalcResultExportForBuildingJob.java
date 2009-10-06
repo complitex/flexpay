@@ -64,7 +64,9 @@ public class TariffCalcResultExportForBuildingJob extends Job {
 					calculationDate, buildingStub);
 			log.info("{} tariff calculation result(s) founded for building with id := {} on date := {}",
 					new Object[]{tariffCalcResultList.size(), buildingStub.getId(), calculationDate});
-			if (tariffCalcResultList.size() > 0) {
+			if (tariffCalcResultList.isEmpty()) {
+				log.info("No Tariff calculation results found.");
+			} else {
 				exporter.beginExport();
 				for (String subServiceCode : subServiceExportCodes) {
 					TariffCalculationResult tcr = getTariffCalculationResultBySubserviceCode(tariffCalcResultList, subServiceCode);
@@ -77,8 +79,6 @@ public class TariffCalcResultExportForBuildingJob extends Job {
 					}
 					exporter.export(new Object[]{tcr, periodBeginDate});
 				}
-			} else {
-				log.info("No Tariff calculation results found.");
 			}
 			exporter.commit();
 		} catch (Exception e) {

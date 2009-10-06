@@ -50,7 +50,7 @@ public class LockManager {
 			return false;
 		}
 
-		if (list.size() == 0) {
+		if (list.isEmpty()) {
 			// create semaphore
 			SQLQuery semQuery = session.createSQLQuery("insert into common_semaphores_tbl (semaphoreID) values (:semaphoreID)");
 			semQuery.setString("semaphoreID", semaphoreID);

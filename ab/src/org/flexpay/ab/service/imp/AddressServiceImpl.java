@@ -103,10 +103,10 @@ public class AddressServiceImpl implements AddressService {
 			}
 		}
 		if (candidate == null) {
-			if (buildingses.size() > 0) {
-				candidate = buildingses.get(0);
-			} else {
+			if (buildingses.isEmpty()) {
 				throw new IllegalStateException("Building does not have any address: " + stub);
+			} else {
+				candidate = buildingses.get(0);
 			}
 		}
 		return getBuildingsAddress(stub(candidate), locale);

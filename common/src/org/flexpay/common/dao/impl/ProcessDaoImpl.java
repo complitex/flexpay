@@ -227,7 +227,7 @@ public class ProcessDaoImpl implements ProcessDao {
 	private Process getProcessInfo(@NotNull Long processId) {
 
 		List<ProcessInstance> processInstances = (List<ProcessInstance>) hibernateTemplate.findByNamedQuery("Process.readFull", processId);
-		if (processInstances.size() == 0) {
+		if (processInstances.isEmpty()) {
 			return null;
 		}
 

@@ -60,7 +60,7 @@ public class RegistryRecordWorkflowManagerImpl implements RegistryRecordWorkflow
 	}
 
 	public boolean hasSuccessTransition(RegistryRecord record) {
-		return transitions.get(code(record)).size() > 0;
+		return !transitions.get(code(record)).isEmpty();
 	}
 
 	/**

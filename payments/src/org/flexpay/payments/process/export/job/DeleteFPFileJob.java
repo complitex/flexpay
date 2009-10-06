@@ -41,7 +41,7 @@ public class DeleteFPFileJob extends Job {
 	private void unlinkFileFromRegistry(FPFile file) throws FlexPayException {
 
 		List<Registry> registries = registryService.findObjects(new Page<Registry>(1, 1), file.getId());
-		if (registries.size() == 0) {
+		if (registries.isEmpty()) {
 			log.info("No registry found with file id {}", file.getId());
 			return;
 		}

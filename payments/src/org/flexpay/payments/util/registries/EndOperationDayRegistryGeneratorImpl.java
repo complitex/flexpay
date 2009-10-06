@@ -49,7 +49,7 @@ public class EndOperationDayRegistryGeneratorImpl implements EndOperationDayRegi
 
 		List<Operation> operations = operationService.listReceivedPaymentsForPaymentPoint(stub(paymentPoint), beginDate, endDate);
 
-		if (operations.size() == 0) {
+		if (operations.isEmpty()) {
 			log.debug("Not found operations for payment point {}. Registry did not create.", paymentPoint.getId());
 			return null;
 		}

@@ -285,29 +285,33 @@
 		<put-attribute name="body" value="/WEB-INF/jsp/orgs/service_providers/service_provider_edit.jsp" />
 	</definition>
 
-
 	<!-- Service Types -->
 	<definition name="eirc.service_types.list" extends="eirc.dictionaries">
 		<put-attribute name="title" value="eirc.service_types" />
-		<put-attribute name="body" value="/WEB-INF/jsp/payments/service_types/list_service_types.jsp" />
+		<put-attribute name="body" value="/WEB-INF/jsp/payments/service_types/service_types_list_page.jsp" />
 	</definition>
-
 	<definition name="eirc.service_type.edit" extends="eirc.dictionaries">
 		<put-attribute name="title" value="eirc.service_type" />
-		<put-attribute name="body" value="/WEB-INF/jsp/payments/service_types/edit_service_type.jsp" />
+		<put-attribute name="body" value="/WEB-INF/jsp/payments/service_types/service_type_edit.jsp" />
 	</definition>
-
+    <definition name="eirc.service_type.view" extends="eirc.dictionaries">
+        <put-attribute name="title" value="eirc.service_type" />
+        <put-attribute name="body" value="/WEB-INF/jsp/payments/service_types/service_type_view.jsp" />
+    </definition>
 
 	<!-- Services -->
 	<definition name="eirc.services.list" extends="eirc.dictionaries">
 		<put-attribute name="title" value="eirc.services" />
-		<put-attribute name="body" value="/WEB-INF/jsp/payments/services/list_services.jsp" />
+		<put-attribute name="body" value="/WEB-INF/jsp/payments/services/services_list_page.jsp" />
 	</definition>
-
 	<definition name="eirc.service.edit" extends="eirc.dictionaries">
 		<put-attribute name="title" value="eirc.service" />
-		<put-attribute name="body" value="/WEB-INF/jsp/payments/services/edit_service.jsp" />
+		<put-attribute name="body" value="/WEB-INF/jsp/payments/services/service_edit.jsp" />
 	</definition>
+    <definition name="eirc.service.view" extends="eirc.dictionaries">
+        <put-attribute name="title" value="eirc.services" />
+        <put-attribute name="body" value="/WEB-INF/jsp/payments/services/service_view.jsp" />
+    </definition>
 
 	<!-- EIRC Account -->
 	<definition name="eirc.eirc_account.list" extends="eirc.dictionaries">

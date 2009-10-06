@@ -154,14 +154,18 @@
 	</query>
 
 	<query name="Service.readFull">
-		select distinct o
-		from Service o
-			left join fetch o.descriptions
-			inner join fetch o.serviceType t
+		select distinct s
+		from Service s
+			left join fetch s.descriptions
+			inner join fetch s.serviceType t
 			left join fetch t.typeNames
-			left join fetch o.parentService
-			left join fetch o.childServices
-		where o.id=?
+			left join fetch s.parentService ps
+            left join fetch ps.descriptions 
+			left join fetch s.childServices
+			inner join fetch s.serviceProvider p
+			inner join fetch p.organization o 
+			left join fetch o.names
+		where s.id=?
 	</query>
 
 	<query name="Service.findServicesByCode">
@@ -199,4 +203,5 @@
 		where p.id=? and st.id=? and
 			((? <= o.beginDate  and o.beginDate <= ?) or (? <= o.endDate and o.endDate <= ?))
 	]]></query>
+
 </hibernate-mapping>

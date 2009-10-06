@@ -61,7 +61,7 @@ public class ImportUtil {
 			return candidates.get(0);
 		}
 
-		if (candidates.size() > 0) {
+		if (candidates.size() > 1) {
 			log.debug("Too many FIO matches");
 			error.setErrorId("error.eirc.import.person_several_fio_match");
 			return null;

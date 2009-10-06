@@ -41,7 +41,7 @@ public class ServiceOrganizationListServedBuildingsAction extends FPActionWithPa
 
 		buildings = serviceOrganizationService.findServedBuildings(stub(serviceOrganization), getPager());
 
-		if (buildings == null || buildings.size() == 0) {
+		if (buildings == null || buildings.isEmpty()) {
 			return SUCCESS;
 		}
 

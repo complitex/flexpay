@@ -2,8 +2,8 @@ package org.flexpay.payments.persistence;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
-import org.flexpay.common.persistence.Translation;
 import org.flexpay.common.persistence.Language;
+import org.flexpay.common.persistence.Translation;
 import org.jetbrains.annotations.NotNull;
 
 public class ServiceTypeNameTranslation extends Translation {
@@ -11,6 +11,10 @@ public class ServiceTypeNameTranslation extends Translation {
 	private String description;
 
 	public ServiceTypeNameTranslation() {
+	}
+
+	public ServiceTypeNameTranslation(@NotNull String name, @NotNull Language lang) {
+		super(name, lang);
 	}
 
 	public ServiceTypeNameTranslation(@NotNull String name, @NotNull String description, @NotNull Language lang) {

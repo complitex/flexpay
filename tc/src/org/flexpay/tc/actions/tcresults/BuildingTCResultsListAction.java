@@ -62,7 +62,7 @@ public class BuildingTCResultsListAction extends FPActionSupport {
 			List<TariffCalculationResult> calculationResults = tariffCalculationResultService.
 					getTariffCalcResultsByCalcDateAndAddressId(calculationDate, buildingStub);
 
-			if (calculationResults.size() > 0) {
+			if (!calculationResults.isEmpty()) {
 				tariffCalculationDates.add(calcDateString);
 				tcResultsMap.put(calcDateString, calculationResults);
 			}

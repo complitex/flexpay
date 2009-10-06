@@ -156,7 +156,7 @@ public class DocumentServiceImpl implements DocumentService {
 	public BigDecimal getOperationServiceSumm(Stub<Operation> operationStub, int serviceTypeCode) {
 
 		List result = documentDao.findOperationServiceSumm(operationStub.getId(), serviceTypeCode);
-		return (BigDecimal) (result.size() > 0 ? result.get(0) : new BigDecimal("0.00"));
+		return (BigDecimal) (result.isEmpty() ? new BigDecimal("0.00") : result.get(0));
 	}
 
 	@Required

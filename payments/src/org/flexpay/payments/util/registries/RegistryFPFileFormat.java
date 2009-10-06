@@ -102,7 +102,7 @@ public class RegistryFPFileFormat {
 							w.write('\n');
 						}
 						fetchRange.nextPage();
-					} while ((records = registryRecordService.listRecordsForExport(registry, fetchRange)).size() > 0);
+					} while (!(records = registryRecordService.listRecordsForExport(registry, fetchRange)).isEmpty());
 
 					w.write(buildFooter(registry));
 					w.write('\n');

@@ -9,6 +9,7 @@ import org.jetbrains.annotations.Nullable;
  * Parse data.
  */
 public class SplitLineRemoveBlank extends SplitLine {
+
     private String stripChars = null;
 
     /**
@@ -22,6 +23,7 @@ public class SplitLineRemoveBlank extends SplitLine {
      * @return the stripped Strings
      */
     @NotNull
+	@Override
     public String[] parse(@NotNull String line, @Nullable Messenger messenger) {
         String[] fields = super.parse(line, messenger);
         String[] stripFields = StringUtils.stripAll(fields, stripChars);
@@ -43,4 +45,5 @@ public class SplitLineRemoveBlank extends SplitLine {
     public void setStripChars(String stripChars) {
         this.stripChars = stripChars;
     }
+
 }
