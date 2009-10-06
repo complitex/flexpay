@@ -1,8 +1,8 @@
 package org.flexpay.common.service.imp;
 
-import org.flexpay.common.service.RegistryFPFileTypeService;
-import org.flexpay.common.persistence.registry.RegistryFPFileType;
 import org.flexpay.common.dao.registry.RegistryFPFileTypeDao;
+import org.flexpay.common.persistence.registry.RegistryFPFileType;
+import org.flexpay.common.service.RegistryFPFileTypeService;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,6 +11,7 @@ import java.util.List;
 
 @Transactional(readOnly = true)
 public class RegistryFPFileTypeServiceImpl implements RegistryFPFileTypeService {
+
     private RegistryFPFileTypeDao registryFPFileTypeDao;
 
     /**
@@ -20,6 +21,7 @@ public class RegistryFPFileTypeServiceImpl implements RegistryFPFileTypeService 
      * @return RegistryFPFileType object or <code>null</code>
      */
     @Nullable
+	@Override
     public RegistryFPFileType read(Long id) {
         return registryFPFileTypeDao.readFull(id);
     }
@@ -30,16 +32,15 @@ public class RegistryFPFileTypeServiceImpl implements RegistryFPFileTypeService 
      * @param code code of type
      * @return RegistryFPFileType object or <code>null</code>
      */
+	@Override
     public RegistryFPFileType findByCode(int code) {
         List<RegistryFPFileType> findRegistryFPFileTypes = registryFPFileTypeDao.findByCode(code);
-        return findRegistryFPFileTypes.size() > 0? findRegistryFPFileTypes.get(0): null;
+        return findRegistryFPFileTypes.isEmpty() ? null : findRegistryFPFileTypes.get(0);
     }
 
-    /**
-     * @param registryFPFileTypeDao the registryFPFileTypeDao set
-     */
     @Required
     public void setFpFileRegistryTypeDao(RegistryFPFileTypeDao registryFPFileTypeDao) {
         this.registryFPFileTypeDao = registryFPFileTypeDao;
     }
+
 }

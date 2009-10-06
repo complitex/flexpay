@@ -91,7 +91,7 @@ public class QuittanceServiceImpl implements QuittanceService {
 		QuittanceNumberService.QuittanceNumberInfo info = quittanceNumberService.parseInfo(quittanceNumber);
 		List<Quittance> quittances = quittanceDao.findQuittanceByNumber(
 				info.getAccountNumber(), info.getMonth(), info.getNumber());
-		if (quittances.size() == 0) {
+		if (quittances.isEmpty()) {
 			return null;
 		}
 		if (quittances.size() > 1) {

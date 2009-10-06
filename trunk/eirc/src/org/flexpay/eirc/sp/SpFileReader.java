@@ -5,13 +5,14 @@ import java.io.IOException;
 import java.io.InputStream;
 
 public class SpFileReader {
+
 	public static final String DEFAULT_CHARSET = "Cp1251";
-	public static final int MAX_RECORD_LENTH = 10000;
+	public static final int MAX_RECORD_LENGTH = 10000;
 
 	private BufferedInputStream is;
 	private String charset;
 	private int b;
-	private byte[] record = new byte[MAX_RECORD_LENTH];
+	private byte[] record = new byte[MAX_RECORD_LENGTH];
 	private Message message;
 	private long position;
 
@@ -21,6 +22,7 @@ public class SpFileReader {
 	}
 
 	public Message readMessage() throws IOException, RegistryFormatException {
+
 		if (b == -1) {
 			return null;
 		}
@@ -39,16 +41,18 @@ public class SpFileReader {
 					break;
 				}
 			} else if (message != null) {
-				if (ind >= MAX_RECORD_LENTH) {
+				if (ind >= MAX_RECORD_LENGTH) {
 					throw new RegistryFormatException("Message is too long", position);
 				}
 				record[ind] = (byte) b;
 				ind++;
 			}
 		}
+
 		if (message != null) {
 			message.setBody(new String(record, 0, ind, charset).trim());
 		}
+
 		Message result = message;
 		message = new Message();
 		message.setType(b);
@@ -57,15 +61,12 @@ public class SpFileReader {
 		return result;
 	}
 
-	/**
-	 * @param charset
-	 *            the charset to set
-	 */
 	public void setCharset(String charset) {
 		this.charset = charset;
 	}
 
 	public static class Message {
+
 		public static final int MESSAGE_TYPE_HEADER = 0xC;
 		public static final int MESSAGE_TYPE_RECORD = 0x3;
 		public static final int MESSAGE_TYPE_FOOTER = 0xB;

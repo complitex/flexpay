@@ -190,7 +190,7 @@ public class TownTypeServiceImpl implements TownTypeService {
 		townTypeFilter.setNames(translations);
 
 		if (townTypeFilter.getSelectedId() == null) {
-			if (translations.size() == 0) {
+			if (translations.isEmpty()) {
 				throw new FlexPayException("No town types", "ab.no_town_types");
 			}
 			townTypeFilter.setSelectedId(translations.get(0).getId());

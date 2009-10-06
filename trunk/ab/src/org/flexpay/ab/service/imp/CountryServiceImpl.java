@@ -64,7 +64,7 @@ public class CountryServiceImpl implements CountryService {
 				names.add(name);
 			}
 		}
-		if (names.size() == 0) {
+		if (names.isEmpty()) {
 			throw new RuntimeException("No country names specified");
 		}
 
@@ -182,12 +182,12 @@ public class CountryServiceImpl implements CountryService {
 
 	public boolean isNameAvailable(@NotNull String name, @NotNull Language language) {
 		List<CountryNameTranslation> translations = countryNameTranslationDao.findByName(name, language);
-		return translations.size() == 0;
+		return translations.isEmpty();
 	}
 
 	public boolean isShortNameAvailable(@NotNull String shortName, @NotNull Language language) {
 		List<CountryNameTranslation> translations = countryNameTranslationDao.findByShortName(shortName, language);
-		return translations.size() == 0;
+		return translations.isEmpty();
 	}
 
 	@NotNull

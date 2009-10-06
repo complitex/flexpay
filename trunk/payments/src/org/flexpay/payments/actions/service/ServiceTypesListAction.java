@@ -1,22 +1,22 @@
 package org.flexpay.payments.actions.service;
 
-import org.flexpay.payments.actions.CashboxCookieWithPagerActionSupport;
+import org.flexpay.common.actions.FPActionWithPagerSupport;
+import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.payments.persistence.ServiceType;
 import org.flexpay.payments.service.ServiceTypeService;
-import org.flexpay.common.actions.FPActionWithPagerSupport;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
-import java.util.Collections;
 import java.util.List;
 
 public class ServiceTypesListAction extends FPActionWithPagerSupport<ServiceType> {
 
-	private List<ServiceType> serviceTypes = Collections.emptyList();
+	private List<ServiceType> serviceTypes = CollectionUtils.list();
 
 	private ServiceTypeService serviceTypeService;
 
 	@NotNull
+	@Override
 	public String doExecute() throws Exception {
 
 		serviceTypes = serviceTypeService.listServiceTypes(getPager());
@@ -32,6 +32,7 @@ public class ServiceTypesListAction extends FPActionWithPagerSupport<ServiceType
 	 * @return {@link #ERROR} by default
 	 */
 	@NotNull
+	@Override
 	protected String getErrorResult() {
 		return SUCCESS;
 	}

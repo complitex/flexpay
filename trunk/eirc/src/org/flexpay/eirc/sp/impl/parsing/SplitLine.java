@@ -6,14 +6,17 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class SplitLine implements LineParser {
+
     private String delimiter = "=";
 
     @NotNull
+	@Override
     public String[] parse(@NotNull String line) {
         return parse(line, null);
     }
 
     @NotNull
+	@Override
     public String[] parse(@NotNull String line, @Nullable Messenger messenger) {
         return line.split(delimiter);
     }
@@ -21,4 +24,5 @@ public class SplitLine implements LineParser {
     public void setDelimiter(String delimiter) {
         this.delimiter = delimiter;
     }
+
 }

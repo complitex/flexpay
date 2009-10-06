@@ -532,7 +532,7 @@ public class JRPdfExporter extends JRAbstractExporter
 					);
 
 				List pages = jasperPrint.getPages();
-				if (pages != null && pages.size() > 0)
+				if (pages != null && !pages.isEmpty())
 				{
 					if (isModeBatch)
 					{
@@ -688,7 +688,7 @@ public class JRPdfExporter extends JRAbstractExporter
 
 	protected void exportElements(Collection elements) throws DocumentException, IOException, JRException
 	{
-		if (elements != null && elements.size() > 0)
+		if (elements != null && !elements.isEmpty())
 		{
 			for(Iterator it = elements.iterator(); it.hasNext();)
 			{

@@ -3,6 +3,7 @@ package org.flexpay.eirc.sp;
 import org.flexpay.common.exception.FlexPayException;
 
 public class RegistryFormatException extends FlexPayException {
+
 	private Long position;
 
 	public RegistryFormatException(String s) {
@@ -14,18 +15,12 @@ public class RegistryFormatException extends FlexPayException {
 		this.position = position;
 	}
 
-	/**
-	 * @return the position
-	 */
 	public long getPosition() {
 		return position;
 	}
 
-	/**
-	 * @param position
-	 *            the position to set
-	 */
 	public void setPosition(long position) {
 		this.position = position;
 	}
+
 }

@@ -69,7 +69,7 @@ public class PaymentsRegistryDBGeneratorImpl implements PaymentsRegistryDBGenera
 
 		List<Document> documents = getDocuments(serviceProvider, registerOrganization, range);
 
-		if (documents.size() == 0) {
+		if (documents.isEmpty()) {
 			log.info("No documents were found. No registry will be created.");
 			return null;
 		}

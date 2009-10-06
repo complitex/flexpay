@@ -1,5 +1,6 @@
 package org.flexpay.payments.actions.service;
 
+import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.persistence.Language;
 import org.flexpay.common.persistence.MeasureUnit;
 import static org.flexpay.common.persistence.Stub.stub;
@@ -9,11 +10,9 @@ import org.flexpay.common.persistence.filter.MeasureUnitFilter;
 import org.flexpay.common.service.MeasureUnitService;
 import static org.flexpay.common.util.CollectionUtils.map;
 import org.flexpay.common.util.config.ApplicationConfig;
-import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.orgs.persistence.ServiceProvider;
 import org.flexpay.orgs.persistence.filters.ServiceProviderFilter;
 import org.flexpay.orgs.service.ServiceProviderService;
-import org.flexpay.payments.actions.CashboxCookieActionSupport;
 import org.flexpay.payments.persistence.Service;
 import org.flexpay.payments.persistence.ServiceDescription;
 import org.flexpay.payments.persistence.ServiceType;
@@ -28,7 +27,7 @@ import java.util.Map;
 
 public class ServiceEditAction extends FPActionSupport {
 
-	private Service service = new Service(0L);
+	private Service service = new Service();
 
 	private ServiceProviderFilter serviceProviderFilter = new ServiceProviderFilter();
 	private ServiceTypeFilter serviceTypeFilter = new ServiceTypeFilter();
@@ -46,16 +45,12 @@ public class ServiceEditAction extends FPActionSupport {
 	private MeasureUnitService measureUnitService;
 
 	@NotNull
+	@Override
 	public String doExecute() throws Exception {
-
-		if (service.getId() == null) {
-			addActionError(getText("error.no_id"));
-			return REDIRECT_SUCCESS;
-		}
 
 		Service srvc = service.isNew() ? service : spService.readFull(stub(service));
 		if (srvc == null) {
-			addActionError(getText("error.invalid_id"));
+			addActionError(getText("common.object_not_selected"));
 			return REDIRECT_SUCCESS;
 		}
 
@@ -64,12 +59,11 @@ public class ServiceEditAction extends FPActionSupport {
 		parentServiceFilter = spService.initParentServicesFilter(parentServiceFilter);
 		measureUnitFilter = measureUnitService.initFilter(measureUnitFilter);
 
-		if (!isSubmit()) {
+		if (isNotSubmit()) {
 			service = srvc;
 			init();
 			return INPUT;
 		}
-
 		Service parentService = new Service(parentServiceFilter.getSelectedId());
 		if (parentService.isNotNew()) {
 			srvc.setParentService(parentService);
@@ -84,18 +78,19 @@ public class ServiceEditAction extends FPActionSupport {
 		srvc.setExternalCode(service.getExternalCode());
 
 		for (Map.Entry<Long, String> name : descriptions.entrySet()) {
-			ServiceDescription description = new ServiceDescription();
-			description.setLang(getLang(name.getKey()));
-			description.setName(name.getValue());
-
-			log.debug("Setting service description: {}", description);
-
-			srvc.setDescription(description);
+			String value = name.getValue();
+			Language lang = getLang(name.getKey());
+			srvc.setDescription(new ServiceDescription(value, lang));
 		}
 
-		spService.create(srvc);
+		if (srvc.isNew()) {
+			spService.create(srvc);
+		} else {
+			spService.update(srvc);
+		}
 
-		log.debug("Service saved!");
+		addActionMessage(getText("payments.service.saved"));
+
 		return REDIRECT_SUCCESS;
 	}
 
@@ -107,6 +102,7 @@ public class ServiceEditAction extends FPActionSupport {
 	 * @return {@link #ERROR} by default
 	 */
 	@NotNull
+	@Override
 	protected String getErrorResult() {
 		return INPUT;
 	}

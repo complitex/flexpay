@@ -96,7 +96,7 @@ public class SearchQuittanceAction extends CashboxCookieActionSupport {
 				}
 			}
 
-			if (filteredDetails.size() > 0) {
+			if (!filteredDetails.isEmpty()) {
 				info.setDetailses(filteredDetails.toArray(new QuittanceInfo.ServiceDetails[filteredDetails.size()]));
 				info.setTotalToPay(total);
 				filteredInfos.add(info);

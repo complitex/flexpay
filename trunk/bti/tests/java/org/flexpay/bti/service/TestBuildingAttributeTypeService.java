@@ -33,21 +33,21 @@ public class TestBuildingAttributeTypeService extends SpringBeanAwareTestCase {
 
 		BuildingAttributeType type = attributeTypeService.readFull(new Stub<BuildingAttributeType>(4L));
 		assertNotNull("Attribute type #4 not found", type);
-		assertTrue("Type #4 has no translations", type.getTranslations().size() > 0);
+		assertTrue("Type #4 has no translations", !type.getTranslations().isEmpty());
 
 
 		type = attributeTypeService.readFull(new Stub<BuildingAttributeType>(5L));
 		assertNotNull("Attribute type #5 not found", type);
 		assertTrue("Type #5 has invalid type", type instanceof BuildingAttributeTypeSimple);
-		assertTrue("type #5 has no translations", type.getTranslations().size() > 0);
+		assertTrue("type #5 has no translations", !type.getTranslations().isEmpty());
 
 		type = attributeTypeService.readFull(new Stub<BuildingAttributeType>(9L));
 		assertNotNull("Attribute type #9 not found", type);
 		assertTrue("Type #9 has invalid type", type instanceof BuildingAttributeTypeEnum);
-		assertTrue("type #9 no translations", type.getTranslations().size() > 0);
+		assertTrue("type #9 no translations", !type.getTranslations().isEmpty());
 
 		BuildingAttributeTypeEnum enumType = (BuildingAttributeTypeEnum) type;
-		assertTrue("Enum type is empty", enumType.getValues().size() > 0);
+		assertTrue("Enum type is empty", !enumType.getValues().isEmpty());
 	}
 
 	@Test

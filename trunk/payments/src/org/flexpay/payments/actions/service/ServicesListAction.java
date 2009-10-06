@@ -1,13 +1,11 @@
 package org.flexpay.payments.actions.service;
 
+import org.flexpay.common.actions.FPActionWithPagerSupport;
 import org.flexpay.common.persistence.filter.BeginDateFilter;
 import org.flexpay.common.persistence.filter.EndDateFilter;
 import org.flexpay.common.persistence.filter.ObjectFilter;
 import org.flexpay.common.util.CollectionUtils;
-import org.flexpay.common.actions.FPActionWithPagerSupport;
 import org.flexpay.orgs.persistence.filters.ServiceProviderFilter;
-import org.flexpay.orgs.service.ServiceProviderService;
-import org.flexpay.payments.actions.CashboxCookieWithPagerActionSupport;
 import org.flexpay.payments.persistence.Service;
 import org.flexpay.payments.service.SPService;
 import org.jetbrains.annotations.NotNull;
@@ -21,15 +19,13 @@ public class ServicesListAction extends FPActionWithPagerSupport<Service> {
 	private EndDateFilter endDateFilter = new EndDateFilter();
 	private ServiceProviderFilter serviceProviderFilter = new ServiceProviderFilter();
 
-	private List<Service> services;
+	private List<Service> services = CollectionUtils.list();
 
-	private ServiceProviderService providerService;
 	private SPService spService;
 
 	@NotNull
+	@Override
 	public String doExecute() throws Exception {
-
-		serviceProviderFilter = providerService.initServiceProvidersFilter(serviceProviderFilter);
 
 		List<ObjectFilter> filters = CollectionUtils.list(beginDateFilter, endDateFilter, serviceProviderFilter);
 
@@ -46,6 +42,7 @@ public class ServicesListAction extends FPActionWithPagerSupport<Service> {
 	 * @return {@link #ERROR} by default
 	 */
 	@NotNull
+	@Override
 	protected String getErrorResult() {
 		return SUCCESS;
 	}
@@ -81,11 +78,6 @@ public class ServicesListAction extends FPActionWithPagerSupport<Service> {
 	@Required
 	public void setSpService(SPService spService) {
 		this.spService = spService;
-	}
-
-	@Required
-	public void setProviderService(ServiceProviderService providerService) {
-		this.providerService = providerService;
 	}
 
 }

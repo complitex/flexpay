@@ -1,4 +1,4 @@
-package org.flexpay.eirc.sp.impl.messager;
+package org.flexpay.eirc.sp.impl.messenger;
 
 import org.flexpay.eirc.sp.impl.MessageLevel;
 import org.flexpay.eirc.sp.impl.Messenger;
@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class LevelMessenger implements Messenger {
+
     private Logger innerLogger = LoggerFactory.getLogger(LevelMessenger.class);
     private Logger log;
     private MessageLevel defaultLevel;
@@ -16,10 +17,12 @@ public class LevelMessenger implements Messenger {
         this.log = log;
     }
 
+	@Override
     public void addMessage(@NotNull String message) {
         addMessage(message, defaultLevel);
     }
 
+	@Override
     public void addMessage(@NotNull String message, @NotNull MessageLevel level) {
         if (level.equals(MessageLevel.ERROR)) {
             log.error(message);
@@ -33,10 +36,12 @@ public class LevelMessenger implements Messenger {
         }
     }
 
+	@Override
     public void addMessage(@NotNull String message, Object o) {
         addMessage(message, o, defaultLevel);
     }
 
+	@Override
     public void addMessage(@NotNull String message, Object o, @NotNull MessageLevel level) {
         if (level.equals(MessageLevel.ERROR)) {
             log.error(message, o);
@@ -50,10 +55,12 @@ public class LevelMessenger implements Messenger {
         }
     }
 
+	@Override
     public void addMessage(@NotNull String message, Object[] o) {
         addMessage(message, o, defaultLevel);
     }
 
+	@Override
     public void addMessage(@NotNull String message, Object[] o, @NotNull MessageLevel level) {
         if (level.equals(MessageLevel.ERROR)) {
             log.error(message, o);
@@ -66,4 +73,5 @@ public class LevelMessenger implements Messenger {
             log.warn(message, o);
         }
     }
+
 }

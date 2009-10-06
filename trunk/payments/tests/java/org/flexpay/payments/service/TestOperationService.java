@@ -156,13 +156,13 @@ public class TestOperationService extends PaymentsSpringBeanAwareTestCase {
 		List<Operation> result = operationService.searchDocuments(TestData.CASHBOX_1, 99L, beginDate, endDate,
 								new BigDecimal("10.00"), new BigDecimal("20.00"), new Page<Operation>(10));
 		assertNotNull("Result should not be null", result);
-		assertTrue("Result must be be empty on test data", result.size() == 0);
+		assertTrue("Result must be be empty on test data", result.isEmpty());
 
 		BigDecimal criteriaSumm = new BigDecimal("1235.00");
 		result = operationService.searchDocuments(TestData.CASHBOX_1, 1L, beginDate, endDate,
 								criteriaSumm, criteriaSumm, new Page<Operation>(10));
 		assertNotNull("Result should not be null", result);
-		assertTrue("Result must not be empty on test data", result.size() != 0);
+		assertTrue("Result must not be empty on test data", !result.isEmpty());
 	}
 
 	@Test
@@ -174,13 +174,13 @@ public class TestOperationService extends PaymentsSpringBeanAwareTestCase {
 		List<Operation> result = operationService.searchOperations(TestData.CASHBOX_1, beginDate, endDate,
 								new BigDecimal("10.00"), new BigDecimal("20.00"), new Page<Operation>(10));
 		assertNotNull("Result should not be null", result);
-		assertTrue("Result must be be empty on test data", result.size() == 0);
+		assertTrue("Result must be be empty on test data", result.isEmpty());
 
 		BigDecimal criteriaSumm = new BigDecimal("1395.00");
 		result = operationService.searchOperations(TestData.CASHBOX_1, beginDate, endDate,
 								criteriaSumm, criteriaSumm, new Page<Operation>(10));
 		assertNotNull("Result should not be null", result);
-		assertTrue("Result must not be empty on test data", result.size() != 0);
+		assertTrue("Result must not be empty on test data", !result.isEmpty());
 	}
 
 	@Test

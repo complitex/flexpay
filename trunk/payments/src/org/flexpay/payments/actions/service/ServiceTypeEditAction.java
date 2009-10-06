@@ -23,20 +23,16 @@ public class ServiceTypeEditAction extends FPActionSupport {
 	private ServiceTypeService serviceTypeService;
 
 	@NotNull
+	@Override
 	public String doExecute() throws Exception {
-
-		if (serviceType.getId() == null) {
-			addActionError(getText("error.no_id"));
-			return REDIRECT_SUCCESS;
-		}
 
 		ServiceType type = serviceType.isNotNew() ? serviceTypeService.read(stub(serviceType)) : serviceType;
 		if (type == null) {
-			addActionError(getText("error.invalid_id"));
+			addActionError(getText("common.object_not_selected"));
 			return REDIRECT_SUCCESS;
 		}
 
-		if (!isSubmit()) {
+		if (isNotSubmit()) {
 			serviceType = type;
 			initNames();
 			return INPUT;
@@ -47,13 +43,8 @@ public class ServiceTypeEditAction extends FPActionSupport {
 		for (Map.Entry<Long, String> name : names.entrySet()) {
 			String value = name.getValue();
 			Language lang = getLang(name.getKey());
-			ServiceTypeNameTranslation nameTranslation = new ServiceTypeNameTranslation();
-			nameTranslation.setLang(lang);
-			nameTranslation.setName(value);
+			ServiceTypeNameTranslation nameTranslation = new ServiceTypeNameTranslation(value, lang);
 			nameTranslation.setDescription(descriptions.get(name.getKey()));
-
-			log.debug("Setting type name: {}", nameTranslation);
-
 			type.setTypeName(nameTranslation);
 		}
 
@@ -63,7 +54,7 @@ public class ServiceTypeEditAction extends FPActionSupport {
 			serviceTypeService.update(type);
 		}
 
-		addActionError(getText("payments.service_type.saved"));
+		addActionMessage(getText("payments.service_type.saved"));
 
 		return REDIRECT_SUCCESS;
 	}
@@ -76,6 +67,7 @@ public class ServiceTypeEditAction extends FPActionSupport {
 	 * @return {@link #ERROR} by default
 	 */
 	@NotNull
+	@Override
 	protected String getErrorResult() {
 		return INPUT;
 	}

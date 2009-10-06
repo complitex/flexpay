@@ -36,14 +36,14 @@ public class TestDocumentService extends PaymentsSpringBeanAwareTestCase {
 		List<Document> result = null;
 		result = documentService.searchDocuments(org.flexpay.payments.persistence.TestData.OPERATION, 99L, new BigDecimal("10.00"), new BigDecimal("20.00") );
 		assertNotNull("Result should not be null", result);
-		assertTrue("Result must be be empty on test data", result.size() == 0);
+		assertTrue("Result must be be empty on test data", result.isEmpty());
 
 		BigDecimal criteriaSumm = new BigDecimal("1235.00");
 		Long criteriaOperationId = 1L;
 		Long criteriaServiceTypeId = 1L;
 		result = documentService.searchDocuments(org.flexpay.payments.persistence.TestData.OPERATION, 1L, criteriaSumm, criteriaSumm);
 		assertNotNull("Result should not be null", result);
-		assertTrue("Result must not be empty on test data", result.size() != 0);
+		assertTrue("Result must not be empty on test data", !result.isEmpty());
 
 		for (Document doc : result) {
 			Service serv = spService.readFull(doc.getServiceStub());
@@ -61,16 +61,16 @@ public class TestDocumentService extends PaymentsSpringBeanAwareTestCase {
 		List<Document> result = null;
 		result = documentService.listRegisteredPaymentDocuments(DateUtil.parseDate("2009-04-15"), DateUtil.parseDate("2009-04-16"));
 		assertNotNull("Result should not be null", result);
-		assertTrue("Result must be be empty on test data", result.size() == 0);
+		assertTrue("Result must be be empty on test data", result.isEmpty());
 
 		result = documentService.listRegisteredPaymentDocuments(DateUtil.parseDate("2009-04-10"), DateUtil.parseDate("2009-04-20"));
 		assertNotNull("Result should not be null", result);
-		assertTrue("Result must not be empty on test data", result.size() != 0);
+		assertTrue("Result must not be empty on test data", !result.isEmpty());
 
 		result = documentService.listRegisteredPaymentDocuments( TestData.SRV_PROVIDER_CN, TestData.ORG_TSZH,
 									new DateRange(DateUtil.parseDate("1900-01-01"), DateUtil.parseDate("2100-12-31")));
 		assertNotNull("Result should not be null", result);
-		assertTrue("Result must not be empty on test data", result.size() != 0);
+		assertTrue("Result must not be empty on test data", !result.isEmpty());
 	}
 
 

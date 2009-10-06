@@ -124,7 +124,7 @@ public class PaymentPointsListMonitorAction extends FPActionWithPagerSupport<Pay
                 container.setActionName(getText(ENABLE));
             }
 
-            if (operations != null && operations.size() > 0) {
+            if (operations != null && !operations.isEmpty()) {
                 Operation operation = operations.get(0);
                 Cashbox operationCashbox = cashboxService.read(new Stub<Cashbox>(operation.getCashbox()));
                 if (operationCashbox != null) {

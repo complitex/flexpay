@@ -57,7 +57,7 @@ public class RegistryDeliveryHistoryAction extends CashboxCookieWithPagerActionS
             endDateFilter.setDate(endDate);
         }
 
-        if (submitted != null && objectIds != null && objectIds.size() > 0) {
+        if (submitted != null && objectIds != null && !objectIds.isEmpty()) {
             for (Long historyId : objectIds) {
                 RegistryDeliveryHistory history = registryDeliveryHistoryService.read(new Stub<RegistryDeliveryHistory>(historyId));
                 if (history != null) {

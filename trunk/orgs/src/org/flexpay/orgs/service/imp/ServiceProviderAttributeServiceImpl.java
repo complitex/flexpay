@@ -37,7 +37,7 @@ public class ServiceProviderAttributeServiceImpl implements ServiceProviderAttri
     @Nullable
     public ServiceProviderAttribute getServiceProviderAttribute(@NotNull Stub<ServiceProvider> stub, @NotNull String attributeName) {
         List<ServiceProviderAttribute> attributes = serviceProviderAttributeDao.findServiceProviderAttribute(stub.getId(), attributeName);
-        return attributes.size() > 0? attributes.get(0): null;
+        return attributes.isEmpty() ? null : attributes.get(0);
     }
 
     /**
