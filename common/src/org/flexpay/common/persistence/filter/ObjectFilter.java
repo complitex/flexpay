@@ -8,7 +8,7 @@ import java.util.Map;
 /**
  * Base class for all filters
  */
-public class ObjectFilter implements Serializable {
+public class  ObjectFilter implements Serializable {
 
 	private boolean readOnly;
 

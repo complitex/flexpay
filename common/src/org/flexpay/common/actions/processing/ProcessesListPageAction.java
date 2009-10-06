@@ -23,7 +23,7 @@ public class ProcessesListPageAction extends FPActionSupport implements Initiali
 	@Override
 	protected String doExecute() throws Exception {
 
-		processNameFilter.loadAllProcessNames();
+		processNameFilter.loadProcessNames();
 
 		return SUCCESS;
 	}

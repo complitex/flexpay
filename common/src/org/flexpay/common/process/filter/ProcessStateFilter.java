@@ -1,16 +1,17 @@
 package org.flexpay.common.process.filter;
 
-import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
-import org.flexpay.common.util.CollectionUtils;
+import org.flexpay.common.persistence.filter.ObjectFilter;
 import org.flexpay.common.process.ProcessState;
+import org.flexpay.common.util.CollectionUtils;
 
 import java.util.List;
 
 /**
  * Implements process filtering by state
  */
-public class ProcessStateFilter extends PrimaryKeyFilter<ProcessStateObject> {
+public class ProcessStateFilter extends ObjectFilter {
 
+	private Long selectedId;
 	private List<ProcessStateObject> processStates = CollectionUtils.list();
 
 	/**
@@ -28,10 +29,18 @@ public class ProcessStateFilter extends PrimaryKeyFilter<ProcessStateObject> {
 
 	public ProcessState getProcessState() {
 
-		return ProcessStateObject.getProcessState(getSelectedId());
+		return ProcessStateObject.getProcessState(selectedId);
 	}
 
 	public List<ProcessStateObject> getProcessStates() {
 		return processStates;
+	}
+
+	public Long getSelectedId() {
+		return selectedId;
+	}
+
+	public void setSelectedId(Long selectedId) {
+		this.selectedId = selectedId;
 	}
 }
