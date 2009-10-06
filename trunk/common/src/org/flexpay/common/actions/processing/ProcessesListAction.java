@@ -38,7 +38,7 @@ public class ProcessesListAction extends FPActionWithPagerSupport<Process> imple
 	@Override
 	protected String doExecute() throws Exception {
 
-		processNameFilter.loadAllProcessNames();
+		processNameFilter.loadProcessNames();
 
 		processes = processes();
 

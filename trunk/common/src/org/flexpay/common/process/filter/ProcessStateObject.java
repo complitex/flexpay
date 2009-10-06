@@ -1,6 +1,5 @@
 package org.flexpay.common.process.filter;
 
-import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.common.process.ProcessState;
 import org.jetbrains.annotations.NotNull;
 
@@ -8,10 +7,10 @@ import org.jetbrains.annotations.NotNull;
  * Process state wrapper for using in {@link org.flexpay.common.process.filter.ProcessStateFilter}
  * Provides predefined objects for all possible states
  */
-public class ProcessStateObject extends DomainObject {
+public class ProcessStateObject {
 
-	// i18n code for display name
-	private String name;
+	private Long id;
+	private String name; // i18n code for display name
 
 	/**
 	 * Constructor 
@@ -19,7 +18,7 @@ public class ProcessStateObject extends DomainObject {
 	 * @param name i18n code for display name
 	 */
 	private ProcessStateObject(@NotNull Long id, @NotNull String name) {
-		super(id);
+		this.id = id;
 		this.name = name;
 	}
 
@@ -102,5 +101,13 @@ public class ProcessStateObject extends DomainObject {
 	// setters/getters
 	public String getName() {
 		return name;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 }

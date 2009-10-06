@@ -1,6 +1,6 @@
 package org.flexpay.common.process.filter;
 
-import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
+import org.flexpay.common.persistence.filter.ObjectFilter;
 import org.flexpay.common.process.ProcessManager;
 import org.flexpay.common.util.CollectionUtils;
 
@@ -9,8 +9,9 @@ import java.util.List;
 /**
  * Implements process filtering by name
  */
-public class ProcessNameFilter extends PrimaryKeyFilter<ProcessNameObject> {
+public class ProcessNameFilter extends ObjectFilter {
 
+	private Long selectedId;
 	private List<ProcessNameObject> processNames = CollectionUtils.list();
 
 	private ProcessManager processManager;
@@ -18,7 +19,7 @@ public class ProcessNameFilter extends PrimaryKeyFilter<ProcessNameObject> {
 	/**
 	 * Loads all unique names of processes in the system as filter content
 	 */
-	public void loadAllProcessNames() {
+	public void loadProcessNames() {
 
 		List<String> names = processManager.getAllProcessNames();
 
@@ -43,12 +44,20 @@ public class ProcessNameFilter extends PrimaryKeyFilter<ProcessNameObject> {
 	public String getSelectedName() {
 
 		for (ProcessNameObject nameObject : processNames) {
-			if (nameObject.getId().equals(getSelectedId())) {
+			if (nameObject.getId().equals(selectedId)) {
 				return nameObject.getName();
 			}
 		}
 
 		return null;
+	}
+
+	public Long getSelectedId() {
+		return selectedId;
+	}
+
+	public void setSelectedId(Long selectedId) {
+		this.selectedId = selectedId;
 	}
 
 	public void setProcessManager(ProcessManager processManager) {
