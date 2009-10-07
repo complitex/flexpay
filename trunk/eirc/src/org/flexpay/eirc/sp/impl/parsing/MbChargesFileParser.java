@@ -45,6 +45,7 @@ public class MbChargesFileParser extends MbFileParser {
     private RegistryFPFileTypeService registryFPFileTypeService;
 
 	@Transactional (propagation = Propagation.NOT_SUPPORTED, readOnly = false)
+    @Override
 	protected List<Registry> parseFile(@NotNull FPFile spFile) throws FlexPayException {
 
 		Registry registry = new Registry();

@@ -1,6 +1,5 @@
 package org.flexpay.eirc.sp.impl;
 
-import org.flexpay.eirc.sp.impl.Messenger;
 import org.jetbrains.annotations.NotNull;
 
 public abstract class MessageValidator<T> implements Validator<T> {

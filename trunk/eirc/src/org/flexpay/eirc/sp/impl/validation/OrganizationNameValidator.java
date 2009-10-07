@@ -11,6 +11,7 @@ public class OrganizationNameValidator extends MessageValidator<String> {
         super(mess);
     }
 
+    @Override
     public boolean validate(@NotNull String o) {
         if (o.length() > NAME_LENGTH) {
 			addErrorMessage("Organization name length can't be more {} symbols", NAME_LENGTH);

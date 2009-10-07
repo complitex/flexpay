@@ -21,6 +21,7 @@ public class CorrectionsHeaderValidator extends MessageValidatorWithContext<Stri
         organizationNameValidator = new OrganizationNameValidator(mess);
     }
 
+    @Override
     public boolean validate(@NotNull String line) {
         String[] fields = context.getLineParser().parse(line, messenger);
 		if (fields.length != FIELDS_LENGTH) {

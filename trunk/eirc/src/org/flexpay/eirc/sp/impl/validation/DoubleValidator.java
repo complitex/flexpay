@@ -9,6 +9,7 @@ public class DoubleValidator extends MessageValidator<String> {
         super(mess);
     }
 
+    @Override
     public boolean validate(@NotNull String o) {
         try {
 			Double.parseDouble(o);

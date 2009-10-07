@@ -9,6 +9,7 @@ public class FieldsValidator extends MessageValidator<String[]> {
         super(mess);
     }
 
+    @Override
     public boolean validate(@NotNull String[] fields) {
         String errorFields = "";
 		for (int i = 0; i < fields.length; i++) {

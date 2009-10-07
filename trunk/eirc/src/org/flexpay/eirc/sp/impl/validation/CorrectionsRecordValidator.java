@@ -26,6 +26,7 @@ public class CorrectionsRecordValidator extends MessageValidatorWithContext<Stri
         serviceCodeValidator = new ServiceCodeValidator(mess, context);
     }
 
+    @Override
     public boolean validate(@NotNull String line) {
         String[] fields = context.getLineParser().parse(line, messenger);
 		if (fields.length < FIELDS_LENGTH) {

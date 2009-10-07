@@ -13,6 +13,7 @@ public class CorrectionsFooterValidator extends MessageValidatorWithContext<Stri
         fieldsValidator = new FieldsValidator(mess);
     }
 
+    @Override
     public boolean validate(@NotNull String line) {
         String[] fields = context.getLineParser().parse(line, messenger);
 		if (fields.length != FIELDS_LENGTH) {

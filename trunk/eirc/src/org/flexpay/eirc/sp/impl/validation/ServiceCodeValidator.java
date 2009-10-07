@@ -20,6 +20,7 @@ public class ServiceCodeValidator extends MessageValidatorWithContext<String> {
         super(mess, context);
     }
 
+    @Override
     public boolean validate(@NotNull String o) {
         String[] serviceCodes = o.split(SERVICE_CODES_SEPARATOR);
 		for (String code : serviceCodes) {

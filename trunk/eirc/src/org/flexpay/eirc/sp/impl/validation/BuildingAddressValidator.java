@@ -11,6 +11,7 @@ public class BuildingAddressValidator extends MessageValidator<String> {
         super(mess);
     }
 
+    @Override
     public boolean validate(@NotNull String mbBuidingAddress) {
 		String[] parts = StringUtils.split(mbBuidingAddress, ' ');
 		if (parts.length > 1 && !parts[1].startsWith(MbParsingConstants.BUILDING_BULK_PREFIX)) {

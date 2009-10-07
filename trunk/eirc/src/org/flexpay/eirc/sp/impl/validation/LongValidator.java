@@ -12,6 +12,7 @@ public class LongValidator extends MessageValidatorWithContext<String> {
         super(mess, context);
     }
 
+    @Override
     public boolean validate(@NotNull String o) {
         try {
 			Long value = Long.parseLong(o);

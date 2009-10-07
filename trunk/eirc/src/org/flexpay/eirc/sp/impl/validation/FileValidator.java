@@ -26,6 +26,7 @@ public class FileValidator extends MessageValidator<FPFile> {
         this.lineParser = lineParser;
     }
 
+    @Override
     public boolean validate(@NotNull FPFile spFile) {
         ValidationContext context = new ValidationContext(serviceValidationFactory, lineParser);
 
