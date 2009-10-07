@@ -324,23 +324,6 @@
 		where r.id=? and rrs.code NOT IN (2, 4)
 	]]></query>
 
-	<query name="RegistryRecord.getMinMaxRecordsForImporting"><![CDATA[
-		select min(rr.id), max(rr.id)
-		from RegistryRecord rr
-			left join rr.registry r
-			left join rr.recordStatus rrs
-		where r.id=? and rrs.code NOT IN (4)
-	]]></query>
-
-	<query name="RegistryRecord.listRecordsForImport"><![CDATA[
-		select rr
-		from RegistryRecord rr
-			left join fetch rr.properties
-            left join fetch rr.recordStatus rrs
-            left join fetch rr.importError
-		where rr.registry.id=? and rr.id>=? and rr.id<=? and rrs.code NOT IN (4)
-	]]></query>
-
 	<query name="RegistryRecord.listRecordsForProcessing.stats"><![CDATA[
 		select distinct min(rr.id), max(rr.id), count(rr.id)
 		from RegistryRecord rr

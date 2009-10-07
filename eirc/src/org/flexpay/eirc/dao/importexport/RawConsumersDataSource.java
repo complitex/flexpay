@@ -2,13 +2,13 @@ package org.flexpay.eirc.dao.importexport;
 
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.dao.registry.RegistryRecordDao;
-import org.flexpay.common.service.importexport.ImportOperationTypeHolder;
-import org.flexpay.common.persistence.registry.RegistryRecord;
-import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.dao.registry.RegistryRecordDaoExt;
+import org.flexpay.common.persistence.registry.Registry;
+import org.flexpay.common.persistence.registry.RegistryRecord;
+import org.flexpay.common.service.importexport.ImportOperationTypeHolder;
+import static org.flexpay.common.util.CollectionUtils.list;
 import org.flexpay.eirc.service.importexport.RawConsumerData;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -58,8 +58,8 @@ public class RawConsumersDataSource extends RawConsumersDataSourceBase {
 	}
 
 	/**
-	 * Returns <tt>true</tt> if the iteration has more elements. (In other words, returns <tt>true</tt> if <tt>next</tt> would return
-	 * an element rather than throwing an exception.)
+	 * Returns <tt>true</tt> if the iteration has more elements. (In other words, returns <tt>true</tt> if <tt>next</tt>
+	 * would return an element rather than throwing an exception.)
 	 *
 	 * @return <tt>true</tt> if the iterator has more elements.
 	 */
@@ -90,7 +90,7 @@ public class RawConsumersDataSource extends RawConsumersDataSourceBase {
 			return Collections.emptyList();
 		}
 
-		List<RawConsumerData> datum = new ArrayList<RawConsumerData>();
+		List<RawConsumerData> datum = list();
 		while (dataIterator.hasNext()) {
 			datum.add(next(new ImportOperationTypeHolder()));
 		}

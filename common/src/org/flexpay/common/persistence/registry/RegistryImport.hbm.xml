@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+		"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="org.flexpay.common.persistence.registry">
+
+	<query name="RegistryRecord.getMinMaxRecordsForImporting"><![CDATA[
+		select min(rr.id), max(rr.id)
+		from RegistryRecord rr
+			left join rr.registry r
+			left join rr.recordStatus rrs
+		where r.id=? and rrs.code NOT IN (4)
+	]]></query>
+
+	<query name="RegistryRecord.listRecordsForImport"><![CDATA[
+		select rr
+		from RegistryRecord rr
+			left join fetch rr.properties
+            left join fetch rr.recordStatus rrs
+            left join fetch rr.importError
+		where rr.registry.id=? and rr.id>=? and rr.id<=? and rrs.code NOT IN (4)
+	]]></query>
+
+</hibernate-mapping>

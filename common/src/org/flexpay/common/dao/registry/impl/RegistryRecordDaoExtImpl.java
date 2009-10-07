@@ -1,5 +1,6 @@
 package org.flexpay.common.dao.registry.impl;
 
+import org.apache.commons.lang.time.StopWatch;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.dao.registry.RegistryRecordDaoExt;
 import org.flexpay.common.persistence.ImportError;
@@ -35,7 +36,15 @@ public class RegistryRecordDaoExtImpl extends HibernateDaoSupport implements Reg
 	@SuppressWarnings ({"unchecked"})
 	public List<RegistryRecord> listRecordsForImport(Long id, Long minId, Long maxId) {
 		Object[] params = {id, minId, maxId};
-		return getHibernateTemplate().findByNamedQuery("RegistryRecord.listRecordsForImport", params);
+		StopWatch watch = new StopWatch();
+
+		watch.start();
+		List<RegistryRecord> records = getHibernateTemplate()
+				.findByNamedQuery("RegistryRecord.listRecordsForImport", params);
+		watch.stop();
+
+		log.debug("Time spent fetching records for import: {}", watch);
+		return records;
 	}
 
 	/**
@@ -50,13 +59,15 @@ public class RegistryRecordDaoExtImpl extends HibernateDaoSupport implements Reg
 	@SuppressWarnings ({"unchecked"})
 	public List<RegistryRecord> filterRecords(Long registryId, ImportErrorTypeFilter importErrorTypeFilter,
 											  RegistryRecordStatusFilter recordStatusFilter, final Page<RegistryRecord> pager) {
-		final StringBuilder hql = new StringBuilder("select distinct rr from RegistryRecord rr " +
-													"left join fetch rr.recordStatus rs " +
-													"left join fetch rr.importError e where rr.registry.id=? ");
+		final StringBuilder hql = new StringBuilder(
+				"select distinct rr from RegistryRecord rr " +
+				"left join fetch rr.recordStatus rs " +
+				"left join fetch rr.importError e where rr.registry.id=? ");
 
-		final StringBuilder hqlCount = new StringBuilder("select count(*) from RegistryRecord rr " +
-														 "left join rr.recordStatus rs " +
-														 "left join rr.importError e where rr.registry.id=? ");
+		final StringBuilder hqlCount = new StringBuilder(
+				"select count(*) from RegistryRecord rr " +
+				"left join rr.recordStatus rs " +
+				"left join rr.importError e where rr.registry.id=? ");
 
 		final List<Object> params = new ArrayList<Object>();
 		params.add(registryId);
