@@ -14,6 +14,7 @@ public class ServiceProviderValidator extends MessageValidatorWithContext<String
         super(mess, context);
     }
 
+    @Override
     public boolean validate(@NotNull String externalId) {
         Stub<ServiceProvider> providerStub = context.getCorrectionsService().findCorrection(
 				externalId, ServiceProvider.class, context.getMegabankSD());

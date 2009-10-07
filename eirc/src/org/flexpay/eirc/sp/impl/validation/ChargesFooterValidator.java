@@ -15,6 +15,7 @@ public class ChargesFooterValidator extends MessageValidatorWithContext<String> 
         longValidator = new LongValidator(mess, context);
     }
 
+    @Override
     public boolean validate(@NotNull String line) {
         String[] fields = context.getLineParser().parse(line, messenger);
 		if (fields.length != FIELDS_LENGTH) {

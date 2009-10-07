@@ -13,6 +13,7 @@ public class IncomePeriodDateValidator extends MessageValidator<String> {
         super(mess);
     }
 
+    @Override
     public boolean validate(@NotNull String o) {
         try {
 			new SimpleDateFormat(INCOME_PERIOD_DATE_FORMAT).parse(o);
