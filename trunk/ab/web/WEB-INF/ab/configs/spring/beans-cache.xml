@@ -11,15 +11,15 @@
 		<property name="cacheProviderFacade" ref="cacheProviderFacade" />
 		<property name="cachingModels">
 			<props>
-				<prop key="read">cacheName=abBuildingFlexpayCache</prop>
-				<prop key="findTypeByName">cacheName=abBuildingFlexpayCache</prop>
+				<prop key="read">cacheName=abStreetTypeFlexpayCache</prop>
+				<prop key="findTypeByName">cacheName=abStreetTypeFlexpayCache</prop>
 			</props>
 		</property>
 		<property name="flushingModels">
 			<props>
-				<prop key="create">cacheNames=abBuildingFlexpayCache;flushBeforeMethodExecution=true</prop>
-				<prop key="update">cacheNames=abBuildingFlexpayCache;flushBeforeMethodExecution=true</prop>
-				<prop key="disable*">cacheNames=abBuildingFlexpayCache;flushBeforeMethodExecution=true</prop>
+				<prop key="create">cacheNames=abStreetTypeFlexpayCache;flushBeforeMethodExecution=true</prop>
+				<prop key="update">cacheNames=abStreetTypeFlexpayCache;flushBeforeMethodExecution=true</prop>
+				<prop key="disable*">cacheNames=abStreetTypeFlexpayCache;flushBeforeMethodExecution=true</prop>
 			</props>
 		</property>
 		<property name="target" ref="streetTypeServiceTarget" />
@@ -87,14 +87,14 @@
 		<property name="cacheProviderFacade" ref="cacheProviderFacade" />
 		<property name="cachingModels">
 			<props>
-				<prop key="readFull">cacheName=abBuildingFlexpayCache</prop>
+				<prop key="readFull">cacheName=abStreetFlexpayCache</prop>
 			</props>
 		</property>
 		<property name="flushingModels">
 			<props>
-				<prop key="create">cacheNames=abBuildingFlexpayCache;flushBeforeMethodExecution=true</prop>
-				<prop key="update*">cacheNames=abBuildingFlexpayCache;flushBeforeMethodExecution=true</prop>
-				<prop key="disable*">cacheNames=abBuildingFlexpayCache;flushBeforeMethodExecution=true</prop>
+				<prop key="create">cacheNames=abStreetFlexpayCache;flushBeforeMethodExecution=true</prop>
+				<prop key="update*">cacheNames=abStreetFlexpayCache;flushBeforeMethodExecution=true</prop>
+				<prop key="disable*">cacheNames=abStreetFlexpayCache;flushBeforeMethodExecution=true</prop>
 			</props>
 		</property>
 		<property name="target" ref="streetServiceTarget" />
@@ -164,9 +164,9 @@
 		</property>
 		<property name="flushingModels">
 			<props>
-				<prop key="create">cacheNames=abBuildingFlexpayCache;flushBeforeMethodExecution=true</prop>
-				<prop key="update">cacheNames=abBuildingFlexpayCache;flushBeforeMethodExecution=true</prop>
-				<prop key="disable">cacheNames=abBuildingFlexpayCache;flushBeforeMethodExecution=true</prop>
+				<prop key="create">cacheNames=abBuildingFlexpayCache,abAddressAttributeTypeFlexpayCache,abStreetTypeFlexpayCache,abStreetFlexpayCache;flushBeforeMethodExecution=true</prop>
+				<prop key="update">cacheNames=abBuildingFlexpayCache,abAddressAttributeTypeFlexpayCache,abStreetTypeFlexpayCache,abStreetFlexpayCache;flushBeforeMethodExecution=true</prop>
+				<prop key="disable">cacheNames=abBuildingFlexpayCache,abAddressAttributeTypeFlexpayCache,abStreetTypeFlexpayCache,abStreetFlexpayCache;flushBeforeMethodExecution=true</prop>
 			</props>
 		</property>
 		<property name="target" ref="buildingServiceTarget" />
@@ -177,14 +177,14 @@
 		<property name="cacheProviderFacade" ref="cacheProviderFacade" />
 		<property name="cachingModels">
 			<props>
-				<prop key="readFull">cacheName=abBuildingFlexpayCache</prop>
+				<prop key="readFull">cacheName=abAddressAttributeTypeFlexpayCache</prop>
 			</props>
 		</property>
 		<property name="flushingModels">
 			<props>
-				<prop key="create">cacheNames=abBuildingFlexpayCache;flushBeforeMethodExecution=true</prop>
-				<prop key="update">cacheNames=abBuildingFlexpayCache;flushBeforeMethodExecution=true</prop>
-				<prop key="disable">cacheNames=abBuildingFlexpayCache;flushBeforeMethodExecution=true</prop>
+				<prop key="create">cacheNames=abAddressAttributeTypeFlexpayCache;flushBeforeMethodExecution=true</prop>
+				<prop key="update">cacheNames=abAddressAttributeTypeFlexpayCache;flushBeforeMethodExecution=true</prop>
+				<prop key="disable">cacheNames=abAddressAttributeTypeFlexpayCache;flushBeforeMethodExecution=true</prop>
 			</props>
 		</property>
 		<property name="target" ref="addressAttributeTypeServiceTarget" />
