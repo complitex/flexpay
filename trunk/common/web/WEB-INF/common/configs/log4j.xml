@@ -159,6 +159,16 @@
 		<appender-ref ref="flexpay" />
 	</category>
 
+	<category name="org.flexpay.common.dao.registry.impl" additivity="false">
+		<priority value="debug" />
+		<appender-ref ref="flexpay" />
+	</category>
+
+	<!--<category name="org.flexpay.payments.process.export.TradingDay" additivity="false">-->
+		<!--<priority value="info" />-->
+		<!--<appender-ref ref="flexpay" />-->
+	<!--</category>-->
+
 	<category name="org.springframework.ws" additivity="false">
 		<priority value="warn" />
 		<appender-ref ref="flexpay" />
