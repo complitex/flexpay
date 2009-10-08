@@ -73,7 +73,8 @@
 		    left outer join fetch pc.descriptions
 		    inner join fetch pc.organization o
             left join fetch o.names
-		    left join fetch pc.paymentPoints
+		    left join fetch pc.paymentPoints pp
+		    left join fetch pp.names
 		where pc.id=?
 	</query>
 
