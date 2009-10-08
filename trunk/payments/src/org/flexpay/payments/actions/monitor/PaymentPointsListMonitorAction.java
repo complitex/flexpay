@@ -82,11 +82,10 @@ public class PaymentPointsListMonitorAction extends FPActionWithPagerSupport<Pay
 			return ERROR;
 		}
 
-        Set<PaymentPoint> lPaymentPoints = paymentCollector.getPaymentPoints();
 //        List<PaymentPoint> lPaymentPoints = paymentPointService.listPoints(CollectionUtils.arrayStack(), page);
 //        for (Process process : processes) {
-        for (PaymentPoint paymentPoint : lPaymentPoints) {
-            paymentPoint = paymentPointService.read(new Stub<PaymentPoint>(paymentPoint));
+        for (PaymentPoint paymentPoint : paymentCollector.getPaymentPoints()) {
+//            paymentPoint = paymentPointService.read(new Stub<PaymentPoint>(paymentPoint));
             PaymentPointMonitorContainer container = new PaymentPointMonitorContainer();
 
             if (String.valueOf(paymentPoint.getId()).equals(paymentPointId)) {
@@ -165,7 +164,8 @@ public class PaymentPointsListMonitorAction extends FPActionWithPagerSupport<Pay
 
         try {
             paymentPoint.setTradingDayProcessInstanceId(processManager.createProcess(PROCESS_DEFINITION_NAME, parameters));
-            paymentPointService.update(paymentPoint);
+            paymentCollectorService.update(paymentCollector);
+            //paymentPointService.update(paymentPoint);
         } catch (ProcessInstanceException e) {
             log.error("Failed run process trading day", e);
             throw new JobExecutionException(e);
