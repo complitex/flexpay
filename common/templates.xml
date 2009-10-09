@@ -324,8 +324,7 @@
 	</target>
 
 	<target name="template.profile.standalone">
-		<fail unless="netbeans.home">This target can only run inside the NetBeans IDE.
-		</fail>
+		<fail unless="netbeans.home">This target can only run inside the NetBeans IDE.</fail>
 
 		<nbprofiledirect>
 			<classpath refid="classpath" />
@@ -344,7 +343,8 @@
 		</java>
 	</target>
 
-	<property file="${common.dir}/web/WEB-INF/common/configs/spring/data_source.properties" />
+	<property file="${common.dir}/web/WEB-INF/common.properties" />
+
 	<target name="template.mysql.run">
 		<exec executable="mysql" failonerror="true" input="${src.sql}">
 			<arg value="--user=${mysql.username}" />
@@ -354,12 +354,9 @@
 	</target>
 
 	<target name="template.set_db_name">
-		<condition property="prop.target_db" value="${target.db.name}" else="flexpay_db">
-			<isset property="target.db.name" />
-		</condition>
+		<fail unless="target.db.name">Need to specify target.db.name property</fail>
 		<antcall target="template.switch_db">
-			<param name="oldDbName" value="flexpay_db" />
-			<param name="newDbName" value="${prop.target_db}" />
+			<param name="newDbName" value="${target.db.name}" />
 		</antcall>
 	</target>
 
@@ -369,17 +366,16 @@
 			<isset property="target.db.name" />
 		</condition>
 		<antcall target="template.switch_db">
-			<param name="oldDbName" value="flexpay_test_db" />
 			<param name="newDbName" value="${prop.target_db}" />
 		</antcall>
 	</target>
 
 	<target name="template.switch_db">
 		<replaceregexp encoding="UTF-8" flags="g"
-					   match="${oldDbName}" replace="${newDbName}">
+					   match="FLEXPAY_DB_PLACEHOLDER" replace="${newDbName}">
 			<fileset dir="${build.dir}">
 				<include name="sql/init_db.sql" />
-				<include name="web/WEB-INF/common/configs/spring/data_source.properties" />
+				<include name="web/WEB-INF/common.properties" />
 			</fileset>
 		</replaceregexp>
 	</target>

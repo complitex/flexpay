@@ -137,13 +137,6 @@
 	<target name="template.ab_sync.war.production"
 			depends="clean.all,ab_sync.compile.production,ab_sync.prepare.war,init.distr">
 
-		<copy file="${build.dir}/web/WEB-INF/common/configs/ps/${app_server.properties}"
-			  overwrite="true"
-			  tofile="${build.dir}/web/WEB-INF/common/configs/spring/app_server.properties" />
-		<copy file="${build.dir}/web/WEB-INF/common/configs/ps/${data_source.properties}"
-			  overwrite="true"
-			  tofile="${build.dir}/web/WEB-INF/common/configs/spring/data_source.properties" />
-
 		<antcall target="template.update_version" />
 
 		<war destfile="${distr.dir}/${ab_sync.war.name}" needxmlfile="false">
@@ -163,8 +156,6 @@
 			<param name="src.dir" value="${ab_sync.src.production}" />
 			<param name="hibernate.cfg"
 				   value="${ab_sync.dir}/web/WEB-INF/hibernate.cfg.xml" />
-			<param name="hibernate.properties"
-				   value="${common.dir}/web/WEB-INF/common/configs/ps/data_source_mysql5.properties" />
 		</antcall>
 	</target>
 

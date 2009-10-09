@@ -42,7 +42,7 @@
 					   classpath="${build.dir}/classes:${src.dir}">
 
 			<annotationconfiguration configurationfile="${hibernate.cfg}"
-									 propertyfile="${hibernate.properties}" />
+									 propertyfile="${common.dir}/web/WEB-INF/common.properties" />
 
 			<hbm2ddl drop="false" create="true" export="false"
 					 outputfilename="${file_name}" format="true" />

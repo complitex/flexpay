@@ -1,7 +1,7 @@
-drop database if exists flexpay_db;
-create database flexpay_db DEFAULT CHARACTER SET 'utf8' COLLATE 'utf8_general_ci';
-use flexpay_db;
-grant all privileges on flexpay_db.* to flexpay_user identified by 'flexpay';
+drop database if exists FLEXPAY_DB_PLACEHOLDER;
+create database FLEXPAY_DB_PLACEHOLDER DEFAULT CHARACTER SET 'utf8' COLLATE 'utf8_general_ci';
+use FLEXPAY_DB_PLACEHOLDER;
+grant all privileges on FLEXPAY_DB_PLACEHOLDER.* to flexpay_user identified by 'flexpay';
 flush privileges;
 
 drop table if exists common_semaphores_tbl;

@@ -4,12 +4,6 @@
 	   xmlns:p="http://www.springframework.org/schema/p"
 	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
 
-	<bean id="propertyConfigurerMail"
-		  class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"
-		  p:location="/WEB-INF/common/configs/spring/mail.properties"
-          p:fileEncoding="UTF-8"
-		  p:ignoreUnresolvablePlaceholders="true" />
-
 	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl"
 		  p:host="${flexpay.email.host}"
 		  p:username="${flexpay.email.user_name}"
