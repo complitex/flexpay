@@ -150,8 +150,8 @@
 <s:hidden name="status"/>
 <s:hidden name="selectedOperationId"/>
 <s:hidden name="documentSearchEnabled"/>
-<s:hidden name="taskInstanceId"/>
 <s:hidden name="cashboxIdFilter"/>
+<s:hidden name="cashboxId"/>
 
 <%-- filters are temporary hidden! --%>
 <%--<sec:authorize ifAllGranted="ROLE_PAYMENTS_DEVELOPER">--%>
@@ -202,23 +202,10 @@
 
 <table cellpadding="3" cellspacing="1" border="0" width="100%" class="operations">
 
-	<s:if test="processStatus != null">
+	<s:if test="tradingDayControlPanel.processStatus != null">
     <tr>
         <td colspan="11" nowrap="nowrap">
-            <fieldset class="fieldset">
-                <legend class="legend"><s:text name="payments.payment_point.detail.status"/>&nbsp;:&nbsp;<s:property
-                        value="processStatus"/>,&nbsp;<s:text name="payments.payment_point.detail.available_actions"/>:&nbsp;</legend>
-                <s:if test="processButtons.size == 0">
-                    <br/>
-                    <s:text name="payments.payment_point.detail.no_action_available"/>
-                    <br/>
-                </s:if>
-                <s:else>
-                    <s:iterator value="processButtons" id="button">
-                        <input type="submit" name="tradingDayCommand" class="" value="<s:property value="button"/>"/>
-                    </s:iterator>
-                </s:else>
-            </fieldset>
+            <%@include file="/WEB-INF/jsp/payments/trading_day/trading_day_control_panel.jsp" %>
         </td>
     </tr>
 	</s:if>

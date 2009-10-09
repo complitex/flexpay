@@ -7,10 +7,7 @@ import org.flexpay.common.persistence.filter.BeginDateFilter;
 import org.flexpay.common.persistence.filter.BeginTimeFilter;
 import org.flexpay.common.persistence.filter.EndDateFilter;
 import org.flexpay.common.persistence.filter.EndTimeFilter;
-import org.flexpay.common.process.ContextCallback;
-import org.flexpay.common.process.Process;
 import org.flexpay.common.process.ProcessManager;
-import org.flexpay.common.process.TaskHelper;
 import org.flexpay.common.service.CurrencyInfoService;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.DateUtil;
@@ -22,28 +19,25 @@ import org.flexpay.orgs.service.CashboxService;
 import org.flexpay.orgs.service.OrganizationService;
 import org.flexpay.orgs.service.PaymentPointService;
 import org.flexpay.payments.actions.CashboxCookieWithPagerActionSupport;
+import org.flexpay.payments.actions.TradingDayControlPanel;
 import org.flexpay.payments.persistence.*;
-import org.flexpay.payments.process.export.TradingDay;
 import org.flexpay.payments.process.handlers.PaymentCollectorAssignmentHandler;
 import org.flexpay.payments.service.*;
-import org.jbpm.JbpmContext;
-import org.jbpm.graph.def.Transition;
-import org.jbpm.taskmgmt.exe.TaskInstance;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
-public class OperationsListAction extends CashboxCookieWithPagerActionSupport<Operation> {
+public class OperationsListAction extends CashboxCookieWithPagerActionSupport<Operation> implements InitializingBean {
 
 	// form data
 	private List<ServiceType> serviceTypes = CollectionUtils.list();
 
 	// filtering data
+	private String cashboxIdFilter; // cashbox id from url (if it is not present, value from cookie is used)
 	private Long serviceTypeId;
 	private BeginDateFilter beginDateFilter = new BeginDateFilter();
 	private EndDateFilter endDateFilter = new EndDateFilter();
@@ -59,12 +53,13 @@ public class OperationsListAction extends CashboxCookieWithPagerActionSupport<Op
 	private String registerSubmitted;
 	private String returnSubmitted;
 	private String deleteSubmitted;
+
 	// status provider operations
 	private String status;
 	private Long selectedOperationId;
 
 	// document search flag
-	private String documentSearchEnabled = "false"; // TODO boolean?
+	private String documentSearchEnabled = "false";
 
 	// search results data
 	private List<Operation> operations = CollectionUtils.list();
@@ -79,29 +74,18 @@ public class OperationsListAction extends CashboxCookieWithPagerActionSupport<Op
 	private OrganizationService organizationService;
 	private CashboxService cashboxService;
 	private PaymentPointService paymentPointService;
-	private ProcessManager processManager;
 	private CurrencyInfoService currencyInfoService;
+	private ProcessManager processManager;
 
-	private List<String> processButtons = Collections.emptyList();
-	private String processStatus;
-	private String tradingDayCommand;
-	private Long taskInstanceId;
-
-	private String cashboxIdFilter;
-	private boolean isTradingDayOpened = true;
+	// trading day control panel
+	private TradingDayControlPanel tradingDayControlPanel;
 
 	@NotNull
 	protected String doExecute() throws Exception {
 
-		// processing cashbox id filtering parameter
 		PaymentPoint paymentPoint = getPaymentPoint();
-		Long tradingDayProcessInstanceId = paymentPoint.getTradingDayProcessInstanceId();
-		log.debug("tradingDayProcessInstanceId = {}", tradingDayProcessInstanceId);
 
-		if (tradingDayProcessInstanceId != null && tradingDayProcessInstanceId != 0) {
-
-			processTradingDay(tradingDayProcessInstanceId);
-		}
+		processTradingDayControlPanel(paymentPoint);
 
 		loadServiceTypes();
 
@@ -115,12 +99,11 @@ public class OperationsListAction extends CashboxCookieWithPagerActionSupport<Op
 			}
 			return SUCCESS;
 		} else if (isStatusSubmitted()) { // if status change submitted
-			if (isTradingDayOpened) {
+			if (isTradingDayOpened(paymentPoint)) {
 				updateOperationStatus();
 			} else {
 				addActionError(getText("payments.quittance.payment.operation_changes_not_alowed_due_closed_trading_day"));
-				log.warn("Trading day process (id = {})is closed for Payment Point = {}. Operation status update canceled",
-						tradingDayProcessInstanceId, paymentPoint.getId());
+				log.warn("Trading day process is closed for payment point with id {}. Operation status update canceled", paymentPoint.getId());
 			}
 			
 			loadOperations();
@@ -131,69 +114,39 @@ public class OperationsListAction extends CashboxCookieWithPagerActionSupport<Op
 		}
 	}
 
-	private void processTradingDay(Long tradingDayProcessInstanceId) {
-
-		processTradingDayCommand();
-		isTradingDayOpened = TradingDay.isOpened(processManager, tradingDayProcessInstanceId, log);
-		loadAvailableTradingDayCommands(tradingDayProcessInstanceId);
-		loadTradingDayStatus(tradingDayProcessInstanceId);
-	}
-
-	private void loadTradingDayStatus(Long tradingDayProcessInstanceId) {
-
-		Process process = processManager.getProcessInstanceInfo(tradingDayProcessInstanceId);
-		if (process != null) {
-			processStatus = (String) process.getParameters().get(TradingDay.PROCESS_STATUS);
-		}
-	}
-
-	private void processTradingDayCommand() {
-
-		if (tradingDayCommand != null && tradingDayCommand.length() > 0 && taskInstanceId != null) {
-			processManager.execute(new ContextCallback<Void>() {
-				public Void doInContext(@NotNull JbpmContext context) {
-					TaskInstance taskInstance = context.getTaskMgmtSession().getTaskInstance(taskInstanceId);
-					if (taskInstance.isSignalling()) {
-						taskInstance.getProcessInstance().signal(tradingDayCommand);
-					}
-					return null;
-				}
-			});
-		}
-	}
-
-	private void loadAvailableTradingDayCommands(Long processInstanceId) {
-
-		final TaskInstance taskInstance = TaskHelper.getTaskInstance(processManager, processInstanceId, PaymentCollectorAssignmentHandler.PAYMENT_COLLECTOR, log);
-
-		if (taskInstance != null) {
-			taskInstanceId = taskInstance.getId();
-			processButtons = processManager.execute(new ContextCallback<List<String>>() {
-				public List<String> doInContext(@NotNull JbpmContext context) {
-					TaskInstance currentTaskInstance = context.getTaskInstance(taskInstance.getId());
-					List<String> currentTarnsitionNameList = new ArrayList<String>();
-					if (currentTaskInstance != null) {
-						for (Object o : currentTaskInstance.getProcessInstance().getRootToken().getAvailableTransitions()) {
-							Transition t = (Transition) o;
-							currentTarnsitionNameList.add(t.getName());
-						}
-					}
-					return currentTarnsitionNameList;
-				}
-			});
-		}
-	}
-
 	private PaymentPoint getPaymentPoint() {
 
-		if (StringUtils.isBlank(cashboxIdFilter)) {
-			cashboxIdFilter = cashboxId.toString();
-		}
+		Cashbox cashbox = cashboxService.read(getCashboxFilter());
+		return paymentPointService.read(new Stub<PaymentPoint>(cashbox.getPaymentPoint()));
+	}
 
-		Cashbox cashbox = cashboxService.read(new Stub<Cashbox>(Long.valueOf(cashboxIdFilter)));
-		PaymentPoint paymentPoint = cashbox.getPaymentPoint();
-		paymentPoint = paymentPointService.read(new Stub<PaymentPoint>(paymentPoint));
-		return paymentPoint;
+
+	private Stub<Cashbox> getCashboxFilter() {
+
+		return new Stub<Cashbox>(getCashboxFilterLong());
+	}
+
+	private Long getCashboxFilterLong() {
+
+		if (StringUtils.isNotBlank(cashboxIdFilter)) {
+			return Long.parseLong(cashboxIdFilter);
+		} else if (cashboxId != null) {
+			return cashboxId;
+		} else {
+			return null;
+		}		
+	}
+
+	// trading day panel functions
+	protected void processTradingDayControlPanel(PaymentPoint paymentPoint) {
+
+		tradingDayControlPanel.updatePanel(paymentPoint);
+	}
+
+	protected boolean isTradingDayOpened(PaymentPoint paymentPoint) {
+
+		tradingDayControlPanel.updatePanel(paymentPoint);
+		return tradingDayControlPanel.isTradingDayOpened();
 	}
 
 	// load operations according to search criteria
@@ -229,11 +182,6 @@ public class OperationsListAction extends CashboxCookieWithPagerActionSupport<Op
 			}
 		}
 		return result;
-	}
-
-	private Stub<Cashbox> getCashboxFilter() {
-		
-		return new Stub<Cashbox>(Long.parseLong(cashboxIdFilter));
 	}
 
 	private Organization getSelfOrganization() {
@@ -324,10 +272,6 @@ public class OperationsListAction extends CashboxCookieWithPagerActionSupport<Op
 	// rendering utility methods
 	public boolean operationsListIsEmpty() {
 		return operations.isEmpty();
-	}
-
-	public boolean processButtonsIsEmpty() {
-		return processButtons.isEmpty();
 	}
 
 	public boolean isHighlighted(Document document) {
@@ -509,44 +453,16 @@ public class OperationsListAction extends CashboxCookieWithPagerActionSupport<Op
 		this.documentSearchEnabled = documentSearchEnabled;
 	}
 
-	public String getTradingDayCommand() {
-		return tradingDayCommand;
-	}
-
-	public void setTradingDayCommand(String tradingDayCommand) {
-		this.tradingDayCommand = tradingDayCommand;
-	}
-
-	public List<String> getProcessButtons() {
-		return processButtons;
-	}
-
-	public void setProcessButtons(List<String> processButtons) {
-		this.processButtons = processButtons;
-	}
-
-	public Long getTaskInstanceId() {
-		return taskInstanceId;
-	}
-
-	public void setTaskInstanceId(Long taskInstanceId) {
-		this.taskInstanceId = taskInstanceId;
-	}
-
-	public String getProcessStatus() {
-		return processStatus;
-	}
-
-	public void setProcessStatus(String processStatus) {
-		this.processStatus = processStatus;
-	}
-
 	public String getCashboxIdFilter() {
 		return cashboxIdFilter;
 	}
 
 	public void setCashboxIdFilter(String cashboxIdFilter) {
 		this.cashboxIdFilter = cashboxIdFilter;
+	}
+
+	public TradingDayControlPanel getTradingDayControlPanel() {
+		return tradingDayControlPanel;
 	}
 
 	@Required
@@ -599,4 +515,8 @@ public class OperationsListAction extends CashboxCookieWithPagerActionSupport<Op
 		this.processManager = processManager;
 	}
 
+	@Override
+	public void afterPropertiesSet() throws Exception {
+		tradingDayControlPanel = new TradingDayControlPanel(processManager, PaymentCollectorAssignmentHandler.PAYMENT_COLLECTOR, log);
+	}
 }

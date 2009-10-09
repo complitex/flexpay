@@ -2,24 +2,22 @@ package org.flexpay.payments.actions.monitor;
 
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.persistence.Stub;
-import org.flexpay.common.process.Process;
 import org.flexpay.common.process.ProcessManager;
-import org.flexpay.common.process.TaskHelper;
 import org.flexpay.common.util.DateUtil;
 import org.flexpay.orgs.persistence.Cashbox;
 import org.flexpay.orgs.persistence.PaymentPoint;
 import org.flexpay.orgs.service.CashboxService;
 import org.flexpay.orgs.service.PaymentPointService;
+import org.flexpay.payments.actions.TradingDayControlPanel;
 import org.flexpay.payments.actions.monitor.data.CashboxMonitorContainer;
 import org.flexpay.payments.persistence.Operation;
 import org.flexpay.payments.persistence.OperationType;
-import org.flexpay.payments.process.export.TradingDay;
 import org.flexpay.payments.process.handlers.AccounterAssignmentHandler;
 import org.flexpay.payments.service.OperationService;
 import org.flexpay.payments.service.statistics.OperationTypeStatistics;
 import org.flexpay.payments.service.statistics.PaymentsStatisticsService;
-import org.jbpm.graph.def.Transition;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.math.BigDecimal;
@@ -27,24 +25,28 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
-public class PaymentPointDetailMonitorAction extends FPActionSupport {
+public class PaymentPointDetailMonitorAction extends FPActionSupport implements InitializingBean {
     
     private static final SimpleDateFormat formatTime = new SimpleDateFormat("HH:mm");
 
     private String name;
     private String paymentsCount;
     private String totalSum;
-    private String status;
-    private List<String> buttons;
-    private String activity;
     private List<CashboxMonitorContainer> cashboxes;
     private String paymentPointId;
+
+	private String status;
+    private List<String> buttons;
+    private String activity;
+
+	// trading day control panel
+	private TradingDayControlPanel tradingDayControlPanel;
 
     private String update;
     private String updated;
 
+	// required services
     private CashboxService cashboxService;
     private PaymentPointService paymentPointService;
     private ProcessManager processManager;
@@ -53,7 +55,8 @@ public class PaymentPointDetailMonitorAction extends FPActionSupport {
 
     @NotNull
     protected String doExecute() throws Exception {
-        if (paymentPointId == null || paymentPointId.length() == 0) {
+
+		if (paymentPointId == null || paymentPointId.length() == 0) {
             log.error("Payment point does not set");
             return ERROR;
         }
@@ -64,37 +67,8 @@ public class PaymentPointDetailMonitorAction extends FPActionSupport {
             return ERROR;
         }
 
-        buttons = new ArrayList<String>();
-        
-        Long processId = paymentPoint.getTradingDayProcessInstanceId();
+		initTradingDayPanel(paymentPoint);
 
-        log.debug("processInstanceId = {}", processId);
-
-        if (processId != null && processId > 0) {
-            Process process = processManager.getProcessInstanceInfo(processId);
-            if (process == null) {
-                log.error("Process instance with id - {} does not exist", processId);
-                return ERROR;
-            }
-
-            String currentStatus = (String) process.getParameters().get(TradingDay.PROCESS_STATUS);
-
-            final long processInstanceId = process.getId();
-
-            Set transitions = TaskHelper.getTransitions(processManager, AccounterAssignmentHandler.ACCOUNTER, processInstanceId, activity, log);
-            if (status != null && status.equals(currentStatus) && activity != null && activity.length() > 0) {
-         //       do {
-                process = processManager.getProcessInstanceInfo(processId);
-                currentStatus = (String) process.getParameters().get(TradingDay.PROCESS_STATUS);
-           //     } while(status.equals(currentStatus));
-                transitions = TaskHelper.getTransitions(processManager, AccounterAssignmentHandler.ACCOUNTER, processInstanceId, null, log);
-            }
-            status = currentStatus;
-            for (Object o : transitions) {
-                Transition transition = (Transition) o;
-                buttons.add(transition.getName());
-            }
-        }
 //----------------------------------------
         List<Cashbox> cbs = cashboxService.findCashboxesForPaymentPoint(paymentPoint.getId());
         Date startDate = DateUtil.now();
@@ -129,7 +103,12 @@ public class PaymentPointDetailMonitorAction extends FPActionSupport {
         return SUCCESS;
     }
 
-    @NotNull
+	private void initTradingDayPanel(PaymentPoint paymentPoint) {
+
+		tradingDayControlPanel.updatePanel(paymentPoint);
+	}
+
+	@NotNull
     protected String getErrorResult() {
         return SUCCESS;
     }
@@ -214,7 +193,15 @@ public class PaymentPointDetailMonitorAction extends FPActionSupport {
         this.updated = updated;
     }
 
-    @Required
+	public TradingDayControlPanel getTradingDayControlPanel() {
+		return tradingDayControlPanel;
+	}
+
+	public void setTradingDayControlPanel(TradingDayControlPanel tradingDayControlPanel) {
+		this.tradingDayControlPanel = tradingDayControlPanel;
+	}
+
+	@Required
 	public void setPaymentPointService(PaymentPointService paymentPointService) {
         this.paymentPointService = paymentPointService;
 	}
@@ -257,5 +244,10 @@ public class PaymentPointDetailMonitorAction extends FPActionSupport {
 			}
 		}
 		return summ;
+	}
+
+	@Override
+	public void afterPropertiesSet() throws Exception {
+		tradingDayControlPanel = new TradingDayControlPanel(processManager, AccounterAssignmentHandler.ACCOUNTER, log);
 	}
 }

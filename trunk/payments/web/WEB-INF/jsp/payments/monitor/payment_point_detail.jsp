@@ -26,22 +26,7 @@
 
         <tr>
             <td>
-                <fieldset class="fieldset">
-                    <legend class="legend"><s:text name="payments.payment_point.detail.status"/>&nbsp;:&nbsp;<s:property
-                            value="status"/>,&nbsp;<s:text name="payments.payment_point.detail.available_actions"/>:&nbsp;</legend>
-                    <s:if test="buttons.size == 0">
-                        <br/>
-                        <s:text name="payments.payment_point.detail.no_action_available"/>
-                        <br/>
-                    </s:if>
-                    <s:else>
-                        <br/>
-                        <s:iterator value="buttons" id="button">
-                            <input type="submit" name="activity" class="" value="<s:property value="button"/>"/>
-                        </s:iterator>
-                        <br/>
-                    </s:else>
-                </fieldset>
+                <%@include file="/WEB-INF/jsp/payments/trading_day/trading_day_control_panel.jsp" %>
             </td>
         </tr>
         <%--<tr>--%>
