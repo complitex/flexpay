@@ -1,2 +1,1 @@
-<%@taglib prefix="s" uri="/struts-tags"%>
-<s:property value="filterString + '|' + filterValue" />
+<%@taglib prefix="s" uri="/struts-tags"%><s:property value="filterString + '|' + filterValue" />

@@ -169,7 +169,6 @@
 		<put-attribute name="title" value="payments.payment_points.list.title"/>
 		<put-attribute name="body" value="/WEB-INF/jsp/payments/monitor/payment_points_list.jsp"/>
 	</definition>
-
     <definition name="payments.payment_point.detail" extends="ab.layout.standart">
 		<put-attribute name="title" value="payments.payment_point.detail.title"/>
 		<put-attribute name="body" value="/WEB-INF/jsp/payments/monitor/payment_point_detail.jsp"/>
@@ -180,17 +179,10 @@
 		<put-attribute name="title" value="payments.payment_points" />
 		<put-attribute name="body" value="/WEB-INF/jsp/orgs/payment_points/payment_points_list_page.jsp" />
 	</definition>
-
 	<definition name="payments.organization.payment_point.edit" extends="ab.layout.standart">
 		<put-attribute name="title" value="payments.payment_point" />
 		<put-attribute name="body" value="/WEB-INF/jsp/orgs/payment_points/payment_point_edit.jsp" />
 	</definition>
-
-	<definition name="payments.organization.payment_point.details" extends="ab.layout.standart">
-		<put-attribute name="title" value="payments.payment_point" />
-		<put-attribute name="body" value="/WEB-INF/jsp/orgs/payment_points/payment_point_details.jsp" />
-	</definition>
-
     <definition name="payments.organization.payment_point.view" extends="ab.layout.standart">
         <put-attribute name="title" value="payments.payment_point" />
         <put-attribute name="body" value="/WEB-INF/jsp/orgs/payment_points/payment_point_view.jsp" />
@@ -201,12 +193,10 @@
 		<put-attribute name="title" value="payments.cashbox.list" />
 		<put-attribute name="body" value="/WEB-INF/jsp/orgs/cashboxes/cashboxes_list_page.jsp" />
 	</definition>
-
 	<definition name="payments.cashbox.edit" extends="ab.layout.standart">
 		<put-attribute name="title" value="payments.cashbox" />
 		<put-attribute name="body" value="/WEB-INF/jsp/orgs/cashboxes/cashbox_edit.jsp" />
 	</definition>
-
     <definition name="payments.cashbox.view" extends="ab.layout.standart">
         <put-attribute name="title" value="payments.cashbox" />
         <put-attribute name="body" value="/WEB-INF/jsp/orgs/cashboxes/cashbox_view.jsp" />

@@ -34,15 +34,11 @@ public class PrimaryKeyFilter<T extends DomainObject> extends ObjectFilter {
 
 	@SuppressWarnings ({"unchecked", "RawUseOfParameterizedType"})
 	@Override
-	public void initFilter(Map session) {
+	public void initFilter(Map<Object, Object> session) {
 		String filterName = this.getClass().getName();
 		Long inSessionId = (Long) session.get(filterName);
 		if (selectedId == null) {
-			if (inSessionId == null) {
-				selectedId = defaultId;
-			} else {
-				selectedId = inSessionId;
-			}
+			selectedId = inSessionId == null ? defaultId : inSessionId;
 		} else {
 			session.put(filterName, selectedId);
 		}

@@ -30,7 +30,7 @@
                         FP.hideShadow(shadowId);
                     });
         });
-        FF.addEraseFunction("town", function(filter) {
+        FF.addEraser("town", function() {
             $("#" + resultId).html("");
         });
         FF.addListener("street", function(filter) {

@@ -69,36 +69,50 @@
     </class>
 
     <query name="Cashbox.readFull">
-        select distinct o
-        from Cashbox o
-            inner join fetch o.paymentPoint p
-            left join fetch o.names
+        select distinct c
+        from Cashbox c
+            inner join fetch c.paymentPoint p
+            left join fetch c.names
             left join fetch p.names
-            inner join fetch p.collector c
-            inner join fetch c.organization
-        where o.id=?
+            inner join fetch p.collector co
+            inner join fetch co.organization
+        where c.id=?
     </query>
 
     <query name="Cashbox.findCashboxes.count">
         select count(*)
-        from Cashbox o
-        where o.status=0
+        from Cashbox c
+        where c.status=0
     </query>
 
     <query name="Cashbox.findCashboxes">
-        select distinct o
-        from Cashbox o
-            inner join fetch o.paymentPoint
-            left join fetch o.names
-        where o.status=0
+        select distinct c
+        from Cashbox c
+            inner join fetch c.paymentPoint
+            left join fetch c.names
+        where c.status=0
+    </query>
+
+    <query name="Cashbox.listCashboxes.count">
+        select count(*)
+        from Cashbox c
+        where c.status=0 and c.paymentPoint.id=?
+    </query>
+
+    <query name="Cashbox.listCashboxes">
+        select distinct c
+        from Cashbox c
+            inner join fetch c.paymentPoint pp
+            left join fetch c.names
+        where c.status=0 and pp.id=?
     </query>
 
     <query name="Cashbox.findCashboxesForPaymentPoint">
-        select distinct o
-        from Cashbox o
-            inner join fetch o.paymentPoint
-            left join fetch o.names
-        where o.status=0 and o.paymentPoint.id=?
+        select distinct c
+        from Cashbox c
+            inner join fetch c.paymentPoint
+            left join fetch c.names
+        where c.status=0 and c.paymentPoint.id=?
     </query>
 
 </hibernate-mapping>

@@ -156,6 +156,30 @@ public class CashboxServiceImpl implements CashboxService {
 		return cashboxDao.findCashboxes(new Page<Cashbox>(10000, 1));
 	}
 
+	/**
+	 * List available cashboxes
+	 *
+	 * @param filters Filters stack
+	 * @param pager   Pager
+	 * @return List of available cashboxes
+	 */
+	@NotNull
+	@Override
+	public List<Cashbox> listCashboxes(@NotNull ArrayStack filters, @NotNull Page<Cashbox> pager) {
+		if (filters.isEmpty()) {
+			return cashboxDao.findCashboxes(pager);
+		}
+
+		// check if payments collector filter is there
+		ObjectFilter filter = (ObjectFilter) filters.peek();
+		if (filter.needFilter() && filter instanceof PaymentPointsFilter) {
+			PaymentPointsFilter paymentPointsFilter = (PaymentPointsFilter) filter;
+			return cashboxDao.listCashboxes(paymentPointsFilter.getSelectedId(), pager);
+		}
+
+		return cashboxDao.findCashboxes(pager);
+	}
+
 	@NotNull
 	@Override
 	public List<Cashbox> findObjects(Page<Cashbox> pager) {

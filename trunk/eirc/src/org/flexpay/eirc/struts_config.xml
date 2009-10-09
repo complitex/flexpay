@@ -86,7 +86,7 @@
 	</package>
 
     <include file="org/flexpay/eirc/actions/cashbox/struts.xml" />
-	<include file="org/flexpay/eirc/actions/eirc_account/struts.xml" />
+	<include file="org/flexpay/eirc/actions/eircaccount/struts.xml" />
 	<include file="org/flexpay/eirc/actions/organization/struts.xml" />
 	<include file="org/flexpay/eirc/actions/serviceprovider/struts.xml" />
 	<include file="org/flexpay/eirc/actions/service/struts.xml" />

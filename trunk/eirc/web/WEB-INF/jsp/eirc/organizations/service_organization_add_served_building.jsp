@@ -40,7 +40,7 @@
                         FP.hideShadow(shadowId);
                     });
         });
-        FF.addEraseFunction("street", function(filter) {
+        FF.addEraser("street", function() {
             $("#" + resultId).html('<input type="button" class="btn-exit"'
                    + 'onclick="window.location=\'<s:url action="serviceOrganizationListServedBuildings"><s:param name="serviceOrganization.id" value="%{id}" /></s:url>\'"'
                    + 'value="<s:text name="common.cancel"/>"/>');

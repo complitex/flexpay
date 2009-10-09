@@ -7,17 +7,30 @@
 	<package name="cashbox" namespace="/eirc" extends="common">
 
 		<!-- Cashbox -->
-		<action name="cashboxesList" class="cashboxesListAction">
-			<result type="tiles">eirc.cashbox.list</result>
-		</action>
+        <action name="cashboxView" class="cashboxViewAction">
+            <result type="tiles">eirc.cashbox.view</result>
+            <result name="redirectError" type="redirect-action">cashboxesList</result>
+        </action>
 
 		<action name="cashboxEdit" class="cashboxEditAction">
             <result name="input" type="tiles">eirc.cashbox.edit</result>
-            <result name="redirectSuccess" type="redirect-action">cashboxesList</result>
+            <result name="redirectSuccess" type="redirect-action">
+                <param name="actionName">cashboxView</param>
+                <param name="parse">true</param>
+                <param name="cashbox.id">${cashbox.id}</param>
+            </result>
 		</action>
 
+        <action name="cashboxesList" class="cashboxesListPageAction">
+            <result type="tiles">eirc.cashbox.list</result>
+        </action>
+
+        <action name="cashboxesListAjax" class="cashboxesListAction">
+            <result>/WEB-INF/jsp/orgs/cashboxes/cashboxes_list.jsp</result>
+        </action>
+
 		<action name="cashboxDelete" class="cashboxDeleteAction">
-            <result name="redirectSuccess" type="redirect-action">cashboxesList</result>
+            <result>/WEB-INF/jsp/common/responses/simple_response.jsp</result>
 		</action>
 
 	</package>

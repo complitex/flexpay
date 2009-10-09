@@ -114,7 +114,7 @@ var FP = {
             element.form.submit();
             return true;
         }
-        var elms = $('select[name="pager.pageSize"]').each(function(i) {
+        $('select[name="pager.pageSize"]').each(function() {
             if (this != element) {
                 this.name = null;
             }
@@ -183,11 +183,15 @@ var FP = {
 
         var notEl = element == null;
         if (!notEl) {
-            var isSelect = !notEl && element.name == opt.pageSizeName;
+
+            var pageSizeName = opt.pageSizeName;
+            var isSelect = !notEl && element.name == pageSizeName;
+            var elValue = element.value;
+
             params[opt.pageSizeChangedName] = isSelect;
-            params[opt.pageNumberName] = isSelect ? "" : opt.notPagerRequest ? "1" : element.value;
+            params[opt.pageNumberName] = isSelect ? "" : opt.notPagerRequest ? "1" : elValue;
             if (!notEl) {
-                params[opt.pageSizeName] = isSelect ? element.value : $('select[name="' + opt.pageSizeName + '"]').val();
+                params[pageSizeName] = isSelect ? elValue : $('select[name="' + pageSizeName + '"]').val();
             }
         }
 
@@ -246,7 +250,7 @@ var FP = {
         var params = {};
         params[name] = ids;
         $.post(action, params,
-                function(data) {
+                function() {
                     callback(null);
                 });
     }

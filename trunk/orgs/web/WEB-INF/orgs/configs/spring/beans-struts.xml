@@ -103,14 +103,6 @@
           p:crumbCreateKey="orgs.crumbs.payment_collector_create"
           scope="prototype" />
 
-	<bean id="paymentCollectorDetailsAction"
-		  class="org.flexpay.orgs.actions.paymentcollector.PaymentCollectorDetailsAction"
-		  p:organizationHelper-ref="organizationHelper"
-		  p:collectorService-ref="paymentCollectorService"
-		  p:paymentPointService-ref="paymentPointService"
-		  p:crumbNameKey="orgs.crumbs.payment_collector_details"
-          scope="prototype" />
-
 	<!-- Service organization actions -->
     <bean id="serviceOrganizationViewAction"
           class="org.flexpay.orgs.actions.serviceorganization.ServiceOrganizationViewAction"
@@ -232,14 +224,6 @@
           p:crumbNameKey="orgs.crumbs.payment_point_view"
           scope="prototype" />
 
-    <bean id="paymentPointDetailsAction"
-          class="org.flexpay.orgs.actions.paymentpoint.PaymentPointDetailsAction"
-          p:cashboxService-ref="cashboxService"
-          p:paymentCollectorService-ref="paymentCollectorService"
-          p:paymentPointService-ref="paymentPointService"
-          p:crumbNameKey="orgs.crumbs.payment_point_details"
-          scope="prototype" />
-
 	<!-- cashboxes actions -->
     <bean id="cashboxViewAction"
           class="org.flexpay.orgs.actions.cashbox.CashboxViewAction"
@@ -265,8 +249,10 @@
 		  p:cashboxService-ref="cashboxService"
 		  scope="prototype" />
 
-    <bean id="cashboxesListPageAction" parent="staticPageAction"
+    <bean id="cashboxesListPageAction"
+          class="org.flexpay.orgs.actions.cashbox.CashboxesListPageAction"
           p:crumbNameKey="orgs.crumbs.cashboxes_list"
+          p:paymentPointService-ref="paymentPointService"
           scope="prototype" />
 
 </beans>

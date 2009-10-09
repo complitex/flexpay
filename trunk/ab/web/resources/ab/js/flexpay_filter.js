@@ -50,7 +50,7 @@ function Filter(name, options) {
                                   'onchange="FF.onChange2(\'' + name + '\');" />');
 
     this.listeners = [];
-    this.eraseFunctions = [];
+    this.erasers = [];
 
     this.name = options.name;
     this.action = options.action;
@@ -70,7 +70,7 @@ function Filter(name, options) {
             this.requiredParentsCount++;
         }
     }
-    this.haveRequiredParents = this.requiredParentsCount > 0;
+    this.hasRequiredParents = this.requiredParentsCount > 0;
     this.preRequest = options.preRequest;
     this.required = options.required;
 
@@ -88,19 +88,25 @@ function Filter(name, options) {
     displayParents(this);
 
     function displayParents(filter) {
-        if (filter.readonly || filter.justText) {
-            filter.string.attr("readonly", true);
-            if (filter.justText) {
-                filter.string.css({display: "none"});
+
+        var readonly = filter.readonly;
+        var justText = filter.justText;
+        var string = filter.string;
+
+        if (readonly || justText) {
+            string.attr("readonly", true);
+            if (justText) {
+                string.css({display: "none"});
             }
             for (var i in filter.parents) {
-                if (filter.readonly) {
-                    FF.filters[i].readonly = true;
+                var filter2 = FF.filters[i];
+                if (readonly) {
+                    filter2.readonly = true;
                 }
-                if (filter.justText) {
-                    FF.filters[i].justText = true;
+                if (justText) {
+                    filter2.justText = true;
                 }
-                displayParents(FF.filters[i]);
+                displayParents(filter2);
             }
         }
     }
@@ -132,25 +138,22 @@ function Filter(name, options) {
     }
 
     function create(filter) {
-        if (!options.isArray && !this.readonly) {
-            filter.autocompleter = filter.string.autocomplete(options.action,
-                    {
-                        delay:10,
-                        minChars:3,
-                        selectOnly:1,
-                        matchContains:1,
-                        cacheLength:10,
-                        formatItem:formatItem,
-                        onItemSelect:selectItem,
-                        extraParams:options.extraParams
-                    })[0].autocompleter;
-        } else {
-            filter.autocompleter = null;
-        }
+        filter.autocompleter = options.isArray || this.readonly ? null : filter.string.autocomplete(options.action,
+                {
+                    delay:10,
+                    minChars:3,
+                    selectOnly:1,
+                    matchContains:1,
+                    cacheLength:10,
+                    formatItem:formatItem,
+                    onItemSelect:selectItem,
+                    extraParams:options.extraParams
+                })[0].autocompleter;
     }
 
     function saveValues(name) {
-        $.post(FF.filters[name].action, {filterValue:FF.filters[name].value.val(),saveFilterValue:true});
+        var filter = FF.filters[name];
+        $.post(filter.action, {filterValue:filter.value.val(),saveFilterValue:true});
     }
 
     create(this);
@@ -164,26 +167,36 @@ function Filter(name, options) {
     };
 
     this.addListener = function(listener) {
-        for (var i = 0; i < this.listeners.length; i++) {
-            if (this.listeners[i] == listener) {
+        var listeners = this.listeners;
+        for (var i = 0; i < listeners.length; i++) {
+            if (listeners[i] == listener) {
                 return;
             }
         }
-        this.listeners.push(listener);
+        listeners.push(listener);
     };
 
-    this.addEraseFunction = function(func) {
-        for (var i = 0; i < this.eraseFunctions.length; i++) {
-            if (this.eraseFunctions[i] == func) {
+    this.listen = function() {
+        var listeners = this.listeners;
+        for (var i = 0; i < listeners.length; i++) {
+            listeners[i].call(this, this);
+        }
+    };
+
+    this.addEraser = function(eraser) {
+        var erasers = this.erasers;
+        for (var i = 0; i < erasers.length; i++) {
+            if (erasers[i] == eraser) {
                 return;
             }
         }
-        this.eraseFunctions.push(func);
+        erasers.push(eraser);
     };
 
     this.erase = function() {
-        for (var i = 0; i < this.eraseFunctions.length; i++) {
-            this.eraseFunctions[i].call(this, this);
+        var erasers = this.erasers;
+        for (var i = 0; i < erasers.length; i++) {
+            erasers[i].call(this, this);
         }
     };
 
@@ -200,11 +213,13 @@ var FF = {
     filters : [],
 
     getFiltersByParentName : function(parentName) {
+
         var ret = [];
-        for (var i in this.filters) {
-            var filter = this.filters[i];
-            if (filter.parents[parentName]) {
-                ret.push(filter);
+        var filters = this.filters;
+
+        for (var i in filters) {
+            if (filters[i].parents[parentName]) {
+                ret.push(filters[i]);
             }
         }
         return ret;
@@ -222,47 +237,61 @@ var FF = {
     },
 
     createFilter : function (name, options) {
+
         var filter = new Filter(name, options);
-        this.filters[name] = filter;
-        this.filters.splice(this.filters.length - 1, 1);
-        if (filter.preRequest) {
+        var hasReqParents = filter.hasRequiredParents;
+        var reqParentsCount = filter.requiredParentsCount;
+        var parentsCount = filter.parentsCount;
+        var value = filter.value;
+        var string = filter.string;
+        var filters = this.filters;
+
+        filters[name] = filter;
+        filters.splice(filters.length - 1, 1);
+
+        if (filter.preRequest && !(filter.isNumber && value.val() == 0)) {
             var k = 0;
             for (var i in filter.parents) {
-                var f = this.filters[i];
-                var v = f.value.val();
-                if (f.preRequest && ((f.isString && v != "") || (f.isNumber && v != "0"))) {
+
+                var filter2 = filters[i];
+                var value2 = filter2.value.val();
+
+                if (filter2.preRequest && ((filter2.isString && value2 != "") || (filter2.isNumber && value2 != "0"))) {
                     k++;
                 }
             }
-            if ((filter.haveRequiredParents && k < filter.requiredParentsCount) || (filter.parentsCount > 0 && !filter.haveRequiredParents)) {
-                filter.string.attr("readonly", true);
+            if ((hasReqParents && k < reqParentsCount) || (parentsCount > 0 && !hasReqParents)) {
+                string.attr("readonly", true);
             }
-            $.post(filter.action, {filterValue:filter.value.val(), preRequest:true},
+            $.post(filter.action, {filterValue:value.val(), preRequest:true},
                 function(data) {
                     if (data == null || !data) {
                         return null;
                     }
                     var r = data.split("|");
-                    filter.string.val(r[0]);
+                    string.val(r[0]);
                     if (filter.justText) {
                         filter.text.text(r[0]);
                     }
-                    filter.value.val(r[1]);
+                    value.val(r[1]);
                     FF.onSelect(filter.name);
                 });
             pausecomp(100);
         } else {
-            if (filter.haveRequiredParents || filter.requiredParentsCount == filter.parentsCount) {
-                filter.string.attr("readonly", true);
+            if (hasReqParents || reqParentsCount == parentsCount) {
+                string.attr("readonly", true);
             }
         }
     },
 
     updateFilter : function(name, options) {
+
+        var filter = this.filters[name];
+
         if (options.readonly) {
-            this.filters[name].readonly = true;
+            filter.readonly = true;
         }
-        this.filters[name].displayParents(this.filters[name]);
+        filter.displayParents(filter);
     },
 
     onChange : function(name) {
@@ -271,23 +300,31 @@ var FF = {
     },
 
     onChange2 : function(name) {
-        var f = this.filters[name];
-        if (f.isString) {
-            f.value.val("");
-        } else if (f.isNumber) {
-            f.value.val("0");
+
+        var filter = this.filters[name];
+        var value = filter.value;
+
+        if (filter.isString) {
+            value.val("");
+        } else if (filter.isNumber) {
+            value.val("0");
         }
 //        this.onChange(name);
     },
 
     eraseChildFilters : function(name) {
+
         var filters = this.getFiltersByParentName(name);
+
         for (var i in filters) {
+
             var filter = filters[i];
+            var value = filter.value;
+
             if (filter.isString) {
-                filter.value.val("");
+                value.val("");
             } else if (filter.isNumber) {
-                filter.value.val("0");
+                value.val("0");
             }
             filter.string.val("").attr("readonly", true);
             if (filter.autocompleter != null) {
@@ -299,8 +336,10 @@ var FF = {
     },
 
     getParentParams : function (filter) {
+
         var parents = [];
         var i = 0;
+
         for (var k in filter.parents) {
             parents[i] = this.filters[k].value.val();
             i++;
@@ -309,32 +348,40 @@ var FF = {
     },
 
     onSelect : function(filterName) {
+
         var filters = this.getFiltersByParentName(filterName);
         var filter = this.filters[filterName];
-        var v = filter.value.val();
-        if (((v != "" && filter.isString) || (v != "0" && filter.isNumber)) && (!filter.string.attr("readonly") || filter.readonly)) {
-            for (var i = 0; i < filter.listeners.length; i++) {
-                filter.listeners[i].call(filter, filter);
-            }
+        var value = filter.value.val();
+        var string = filter.string;
+
+        if (((value != "" && filter.isString) || (value != "0" && filter.isNumber)) && (!string.attr("readonly") || filter.readonly)) {
+            filter.listen();
         }
         if (filter.justText) {
-            filter.text.val(filter.string.val());
+            filter.text.val(string.val());
         }
         if (this.setFocusByTabIndex(filters)) {
             return;
         }
         for (var i in filters) {
+
             var filter2 = filters[i];
+            var string2 = filter2.string;
+            var readonly = filter2.readOnly;
             var parentsFilled = true;
             var filledParentsCount = 0;
+
             for (var i1 in filter2.parents) {
-                var f = this.filters[i1];
-                var v = f.value.val();
-                var t = f.valueType;
-                if ((v != "" && f.isString) || (v != "0" && f.isNumber)) {
+
+                var filter2Parent = this.filters[i1];
+                var valuefilter2Parent = filter2Parent.value.val();
+                var isString = filter2Parent.isString;
+                var isNumber = filter2Parent.isNumber;
+
+                if ((valuefilter2Parent != "" && isString) || (valuefilter2Parent != "0" && isNumber)) {
                     filledParentsCount++;
                 }
-                if ((v == "" && f.isString) || (v == "0" && f.isNumber) && f.required) {
+                if ((valuefilter2Parent == "" && isString) || (valuefilter2Parent == "0" && isNumber) && filter2Parent.required) {
                     parentsFilled = false;
                 }
             }
@@ -342,9 +389,9 @@ var FF = {
                 parentsFilled = false;
             }
             if (parentsFilled) {
-                filter2.string.focus();
-                if (!filter2.readonly) {
-                    filter2.string.removeAttr("readonly");
+                string2.focus();
+                if (!readonly) {
+                    string2.removeAttr("readonly");
                 }
             }
             if (!filter2.isArray) {
@@ -352,7 +399,7 @@ var FF = {
                     filter2.autocompleter.setExtraParams({parents : this.getParentParams(filter2)});
                 }
             } else {
-                filter2.string.addClass("ac_loading");
+                string2.addClass("ac_loading");
                 var params = this.getParentParams(filter2);
                 var filled = false;
                 for (var n in params) {
@@ -361,11 +408,11 @@ var FF = {
                         break;
                     }
                 }
-                if (filter2.readonly) {
-                    filter2.string.attr("readonly", true);
+                if (readonly) {
+                    string2.attr("readonly", true);
                 }
-                if (filter2.readonly || (!filled && params.length > 0)) {
-                    filter2.string.removeClass("ac_loading");
+                if (readonly || (!filled && params.length > 0)) {
+                    string2.removeClass("ac_loading");
                     return;
                 }
                 $.post(filter2.action, {parents : params},
@@ -380,9 +427,9 @@ var FF = {
                                     onItemSelect:filter2.selectItem
                                 })[0].autocompleter;
                         if (parentsFilled) {
-                            filter2.string.focus();
+                            string2.focus();
                         }
-                        filter2.string.removeClass("ac_loading");
+                        string2.removeClass("ac_loading");
                     });
             }
         }
@@ -404,17 +451,23 @@ var FF = {
     },
 
     addListener : function(filterName, func) {
-        if (this.filters[filterName] == null) {
+
+        var filter = this.filters[filterName];
+
+        if (filter == null) {
             alert("Incorrect filterName!");
         }
-        this.filters[filterName].addListener(func);
+        filter.addListener(func);
     },
 
-    addEraseFunction : function(filterName, func) {
-        if (this.filters[filterName] == null) {
+    addEraser : function(filterName, func) {
+
+        var filter = this.filters[filterName];
+
+        if (filter == null) {
             alert("Incorrect filterName!");
         }
-        this.filters[filterName].addEraseFunction(func);
+        filter.addEraser(func);
     },
 
     removeFilters : function() {

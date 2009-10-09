@@ -1,4 +1,4 @@
-package org.flexpay.eirc.actions.eirc_account;
+package org.flexpay.eirc.actions.eircaccount;
 
 import org.apache.commons.lang.StringUtils;
 import org.flexpay.ab.persistence.Apartment;
@@ -6,17 +6,19 @@ import org.flexpay.ab.persistence.Person;
 import org.flexpay.ab.service.PersonService;
 import org.flexpay.common.actions.FPActionWithPagerSupport;
 import org.flexpay.common.persistence.Stub;
+import static org.flexpay.common.util.CollectionUtils.list;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class EircAccountCreateForm2Action extends FPActionWithPagerSupport<Person> {
 	
+	private static final String REDIRECT_FORM1 = "redirectForm1";
+
 	private String personSearchString;
-	private String apartmentFilter;
-	private List<Person> persons = new ArrayList<Person>();
+	private Long apartmentFilter;
+	private List<Person> persons = list();
 
 	private PersonService personService;
 
@@ -24,25 +26,20 @@ public class EircAccountCreateForm2Action extends FPActionWithPagerSupport<Perso
 	@Override
 	public String doExecute() throws Exception {
 
-		Long apartmentIdLong = null;
-
-		try {
-			apartmentIdLong = Long.parseLong(apartmentFilter);
-		} catch (Exception e) {
-			log.warn("Incorrect apartment id in filter ({})", apartmentFilter);
+		if (apartmentFilter == null || apartmentFilter <= 0) {
 			addActionError(getText("eirc.error.account.create.no_apartment"));
-			return "redirectForm1";
+			return REDIRECT_FORM1;
 		}
 
 		if (StringUtils.isEmpty(personSearchString)) {
-			persons = personService.getPersons(new Stub<Apartment>(apartmentIdLong), getPager());
+			persons = personService.getPersons(new Stub<Apartment>(apartmentFilter), getPager());
 		} else {
 			persons = personService.findByFIO(getPager(), "%" + personSearchString + "%");
 		}
 
-		log.info("Found persons: {}", persons);
+		log.debug("Found persons: {}", persons);
 
-		return "form2";
+		return SUCCESS;
 	}
 
 	/**
@@ -55,23 +52,23 @@ public class EircAccountCreateForm2Action extends FPActionWithPagerSupport<Perso
 	@NotNull
 	@Override
 	protected String getErrorResult() {
-		return "redirectForm1";
+		return REDIRECT_FORM1;
 	}
 
 	public void setPersonSearchString(String personSearchString) {
 		this.personSearchString = personSearchString;
 	}
 
-	public List<Person> getPersons() {
-		return persons;
-	}
-
-	public String getApartmentFilter() {
+	public Long getApartmentFilter() {
 		return apartmentFilter;
 	}
 
-	public void setApartmentFilter(String apartmentFilter) {
+	public void setApartmentFilter(Long apartmentFilter) {
 		this.apartmentFilter = apartmentFilter;
+	}
+
+	public List<Person> getPersons() {
+		return persons;
 	}
 
 	@Required

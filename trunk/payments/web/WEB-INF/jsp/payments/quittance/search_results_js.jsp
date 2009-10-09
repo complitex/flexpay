@@ -392,8 +392,6 @@
 		$('#payments_<s:property value="#serviceIndx"/>').bind('keypress', function(event) {
 			updateCurrentFieldIndex(event);
 
-			console.log('Key code: ' + event.keyCode);
-
 			switch (event.keyCode) {
 				case FP.TAB_KEY_CODE:
 				case FP.ENTER_KEY_CODE:

@@ -32,7 +32,7 @@
                 <input type="checkbox" name="objectIds" value="<s:property value="%{id}"/>" />
             </td>
             <td class="col">
-                <a href="<s:url action="paymentPointDetails"><s:param name="paymentCollectorFilter.selectedId" value="%{getPaymentCollectorId(id)}" />
+                <a href="<s:url action="cashboxesList"><s:param name="paymentCollectorFilter.selectedId" value="%{getPaymentCollectorId(id)}" />
                             <s:param name="paymentPointsFilter.selectedId" value="%{id}" /></s:url>">
                     <s:property value="getTranslation(names).name" />
                 </a>

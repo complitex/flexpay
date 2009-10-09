@@ -2,6 +2,7 @@ package org.flexpay.eirc.service.impl;
 
 import org.apache.commons.collections.ArrayStack;
 import org.flexpay.ab.persistence.Apartment;
+import org.flexpay.ab.persistence.BuildingAddress;
 import org.flexpay.ab.persistence.Person;
 import org.flexpay.ab.persistence.filters.ApartmentFilter;
 import org.flexpay.ab.persistence.filters.PersonSearchFilter;
@@ -45,6 +46,7 @@ public class EircAccountServiceImpl implements EircAccountService {
 	 * @param apartmentStub Apartment reference
 	 * @return EircAccount if found, or <code>null</code> otherwise
 	 */
+	@Override
 	public EircAccount findAccount(@NotNull Stub<Person> personStub, @NotNull Stub<Apartment> apartmentStub) {
 		return eircAccountDaoExt.findAccount(personStub.getId(), apartmentStub.getId());
 	}
@@ -55,6 +57,7 @@ public class EircAccountServiceImpl implements EircAccountService {
 	 * @param account EIRC account to save
 	 */
 	@NotNull
+	@Override
 	@Transactional (readOnly = false)
 	public EircAccount create(@NotNull EircAccount account) throws FlexPayExceptionContainer {
 		validate(account);
@@ -71,6 +74,7 @@ public class EircAccountServiceImpl implements EircAccountService {
 	 * @param account EIRC account to save
 	 */
 	@NotNull
+	@Override
 	@Transactional (readOnly = false)
 	public EircAccount update(@NotNull EircAccount account) throws FlexPayExceptionContainer {
 
@@ -115,6 +119,7 @@ public class EircAccountServiceImpl implements EircAccountService {
 	 * @param pager   Accounts pager
 	 * @return List of EircAccount
 	 */
+	@Override
 	public List<EircAccount> findAccounts(ArrayStack filters, Page<EircAccount> pager) {
 
 		PersonSearchFilter personSearchFilter = null;
@@ -133,7 +138,7 @@ public class EircAccountServiceImpl implements EircAccountService {
 				if (personSearchFilter != null) {
 					filters.push(personSearchFilter);
 				}
-				return eircAccountDao.findByApartment(filter.getSelectedId(), pager);
+				return eircAccountDao.findByApartment(filter.getSelectedId(), "", "", pager);
 			}
 		}
 		if (personSearchFilter != null) {
@@ -144,16 +149,15 @@ public class EircAccountServiceImpl implements EircAccountService {
 	}
 
 	@Override
-	public List<EircAccount> getAccounts(@Nullable Stub<Apartment> stub, String personFio, Page<EircAccount> pager) {
-		if (personFio != null) {
-			String str = "%" + personFio + "%";
-			return eircAccountDao.findByPersonFIO(str, str, pager);
-		}
-		if (stub == null) {
-			return eircAccountDao.findObjects(pager);
-		} else {
-			return eircAccountDao.findByApartment(stub.getId(), pager);
-		}
+	public List<EircAccount> getAccountsInApartment(@NotNull Stub<Apartment> stub, @NotNull String personFio, Page<EircAccount> pager) {
+		String str = "%" + personFio + "%";
+		return eircAccountDao.findByApartment(stub.getId(), str, str, pager);
+	}
+
+	@Override
+	public List<EircAccount> getAccountsInBuilding(@NotNull Stub<BuildingAddress> stub, @NotNull String personFio, Page<EircAccount> pager) {
+		String str = "%" + personFio + "%";
+		return eircAccountDao.findByBuilding(stub.getId(), str, str, pager);
 	}
 
 	/**
@@ -162,6 +166,7 @@ public class EircAccountServiceImpl implements EircAccountService {
 	 * @param accountNumber EircAccount number to lookup
 	 * @return EircAccount if found, or <code>null</code> otherwise
 	 */
+	@Override
 	public EircAccount findAccount(String accountNumber) {
 		List<EircAccount> accounts = eircAccountDao.findByNumber(accountNumber);
 		if (accounts.size() > 1) {
@@ -178,6 +183,7 @@ public class EircAccountServiceImpl implements EircAccountService {
 	 * @return EircAccount if found, or <code>null</code> if stub references no object
 	 */
 	@Nullable
+	@Override
 	public EircAccount readFull(@NotNull Stub<EircAccount> stub) {
 		return eircAccountDao.readFull(stub.getId());
 	}
@@ -188,6 +194,7 @@ public class EircAccountServiceImpl implements EircAccountService {
 	 * @param account EircAccount to get person last-first-middle names for
 	 * @return person last-first-middle names if found, or <code>null</code> otherwise
 	 */
+	@Override
 	public String getPersonFIO(@NotNull EircAccount account) {
 
 		Stub<Person> personStub = account.getPersonStub();
@@ -223,4 +230,5 @@ public class EircAccountServiceImpl implements EircAccountService {
 	public void setPersonService(PersonService personService) {
 		this.personService = personService;
 	}
+
 }

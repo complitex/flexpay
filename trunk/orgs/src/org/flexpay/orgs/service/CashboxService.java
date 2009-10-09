@@ -104,4 +104,15 @@ public interface CashboxService {
 	@NotNull
 	CashboxFilter initFilter(@NotNull ArrayStack filters, @NotNull CashboxFilter filter);
 
+	/**
+	 * List available cashboxes
+	 *
+	 * @param filters Filters stack
+	 * @param pager   Pager
+	 * @return List of available cashboxes
+	 */
+	@Secured (Roles.CASHBOX_READ)
+	@NotNull
+	List<Cashbox> listCashboxes(@NotNull ArrayStack filters, @NotNull Page<Cashbox> pager);
+
 }

@@ -10,8 +10,9 @@ public interface EircAccountDao extends GenericDao<EircAccount, Long> {
 	
 	List<EircAccount> findObjects(Page<EircAccount> pager);
 	
-	List<EircAccount> findByApartment(Long id, Page<EircAccount> pager);
+	List<EircAccount> findByApartment(Long id, String personFio, String consumerFio, Page<EircAccount> pager);
 
+	List<EircAccount> findByBuilding(Long id, String personFio, String consumerFio, Page<EircAccount> pager);
 
 	/**
 	 * Find accounts by person info

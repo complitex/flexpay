@@ -4,14 +4,14 @@ import org.jetbrains.annotations.NotNull;
 
 public class StaticPageAction extends FPActionSupport {
 
-	@Override
 	@NotNull
+	@Override
 	protected String doExecute() throws Exception {
 		return SUCCESS;
 	}
 
-	@Override
 	@NotNull
+	@Override
 	protected String getErrorResult() {
 		return SUCCESS;
 	}

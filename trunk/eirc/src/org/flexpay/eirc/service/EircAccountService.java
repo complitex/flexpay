@@ -2,10 +2,10 @@ package org.flexpay.eirc.service;
 
 import org.apache.commons.collections.ArrayStack;
 import org.flexpay.ab.persistence.Apartment;
+import org.flexpay.ab.persistence.BuildingAddress;
 import org.flexpay.ab.persistence.Person;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
-import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.eirc.persistence.EircAccount;
 import org.jetbrains.annotations.NotNull;
@@ -62,11 +62,25 @@ public interface EircAccountService {
 	 * Find EircAccounts
 	 *
 	 * @param stub Stub of apartment
+	 * @param personFio query for person FIO search
 	 * @param pager   Accounts pager
+	 *
 	 * @return List of EircAccount
 	 */
 	@Secured (Roles.ACCOUNT_READ)
-	List<EircAccount> getAccounts(@Nullable Stub<Apartment> stub, String personFio, Page<EircAccount> pager);
+	List<EircAccount> getAccountsInApartment(@NotNull Stub<Apartment> stub, @NotNull String personFio, Page<EircAccount> pager);
+
+	/**
+	 * Find EircAccounts
+	 *
+	 * @param stub Stub of building
+	 * @param personFio query for person FIO search
+	 * @param pager   Accounts pager
+	 *
+	 * @return List of EircAccount
+	 */
+	@Secured (Roles.ACCOUNT_READ)
+	List<EircAccount> getAccountsInBuilding(@NotNull Stub<BuildingAddress> stub, @NotNull String personFio, Page<EircAccount> pager);
 
 	/**
 	 * Read full account info, includes person and service

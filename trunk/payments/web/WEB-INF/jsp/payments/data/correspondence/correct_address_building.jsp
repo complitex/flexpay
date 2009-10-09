@@ -32,7 +32,7 @@
                         FP.hideShadow(shadowId);
                     });
         });
-        FF.addEraseFunction("street", function(filter) {
+        FF.addEraser("street", function() {
             $("#" + resultId).html("");
         });
     });

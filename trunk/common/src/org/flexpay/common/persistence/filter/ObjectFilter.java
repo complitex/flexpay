@@ -8,7 +8,7 @@ import java.util.Map;
 /**
  * Base class for all filters
  */
-public class  ObjectFilter implements Serializable {
+public class ObjectFilter implements Serializable {
 
 	private boolean readOnly;
 
@@ -29,7 +29,7 @@ public class  ObjectFilter implements Serializable {
 		return false;
 	}
 
-	public void initFilter(Map session) {
+	public void initFilter(Map<Object, Object> session) {
 		
 	}
 
