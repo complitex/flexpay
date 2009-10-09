@@ -27,7 +27,7 @@
                 params:{buildingFilter: filter.value.val()}
             });
         });
-        FF.addEraseFunction("building", function(filter) {
+        FF.addEraser("building", function() {
             $("#" + resultId).html('<input type="button" class="btn-exit" '
                     + 'onclick="window.location=\'<s:url action="apartmentEdit"><s:param name="apartment.id" value="0"/></s:url>\'" '
                     + 'value="<s:text name="common.new"/>" />');

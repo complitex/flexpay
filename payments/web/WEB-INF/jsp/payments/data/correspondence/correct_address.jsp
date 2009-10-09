@@ -32,7 +32,7 @@
                         FP.hideShadow(shadowId);
                     });
         });
-        FF.addEraseFunction("building", function(filter) {
+        FF.addEraser("building", function() {
             $("#" + resultId).html("");
         });
     });

@@ -1,16 +1,16 @@
-package org.flexpay.orgs.actions.paymentpoint;
+package org.flexpay.orgs.actions.cashbox;
 
 import org.flexpay.common.actions.FPActionSupport;
-import org.flexpay.orgs.persistence.filters.PaymentCollectorFilter;
-import org.flexpay.orgs.service.PaymentCollectorService;
+import org.flexpay.orgs.persistence.filters.PaymentPointsFilter;
+import org.flexpay.orgs.service.PaymentPointService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
-public class PaymentPointsListPageAction extends FPActionSupport {
+public class CashboxesListPageAction extends FPActionSupport {
 
-	protected PaymentCollectorFilter paymentCollectorFilter = new PaymentCollectorFilter();
+	protected PaymentPointsFilter paymentPointsFilter = new PaymentPointsFilter();
 
-	protected PaymentCollectorService collectorService;
+	protected PaymentPointService paymentPointService;
 
 	/**
 	 * Perform action execution.
@@ -24,7 +24,9 @@ public class PaymentPointsListPageAction extends FPActionSupport {
 	@Override
 	protected String doExecute() throws Exception {
 
-		collectorService.initFilter(paymentCollectorFilter);
+		paymentPointService.initFilter(paymentPointsFilter);
+
+		paymentPointsFilter.setReadOnly(true);
 
 		return SUCCESS;
 	}
@@ -42,13 +44,17 @@ public class PaymentPointsListPageAction extends FPActionSupport {
 		return SUCCESS;
 	}
 
-	public PaymentCollectorFilter getPaymentCollectorFilter() {
-		return paymentCollectorFilter;
+	public PaymentPointsFilter getPaymentPointsFilter() {
+		return paymentPointsFilter;
+	}
+
+	public void setPaymentPointsFilter(PaymentPointsFilter paymentPointsFilter) {
+		this.paymentPointsFilter = paymentPointsFilter;
 	}
 
 	@Required
-	public void setCollectorService(PaymentCollectorService collectorService) {
-		this.collectorService = collectorService;
+	public void setPaymentPointService(PaymentPointService paymentPointService) {
+		this.paymentPointService = paymentPointService;
 	}
 
 }

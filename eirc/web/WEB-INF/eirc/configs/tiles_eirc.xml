@@ -211,36 +211,23 @@
 		<put-attribute name="title" value="eirc.payment_collectors" />
 		<put-attribute name="body" value="/WEB-INF/jsp/orgs/payment_collectors/payment_collectors_list_page.jsp" />
 	</definition>
-
 	<definition name="eirc.organization.payment_collector.edit" extends="eirc.dictionaries">
 		<put-attribute name="title" value="eirc.payment_collector" />
 		<put-attribute name="body" value="/WEB-INF/jsp/orgs/payment_collectors/payment_collector_edit.jsp" />
 	</definition>
-
     <definition name="eirc.organization.payment_collector.view" extends="eirc.dictionaries">
         <put-attribute name="title" value="eirc.payment_collector" />
         <put-attribute name="body" value="/WEB-INF/jsp/orgs/payment_collectors/payment_collector_view.jsp" />
     </definition>
-
-	<definition name="eirc.organization.payment_collectors.details" extends="eirc.dictionaries">
-		<put-attribute name="title" value="eirc.payment_collector" />
-		<put-attribute name="body" value="/WEB-INF/jsp/orgs/payment_collectors/payment_collector_details.jsp" />
-	</definition>
 
 	<!-- Payment Points -->
 	<definition name="eirc.organization.payment_points.list" extends="eirc.dictionaries">
 		<put-attribute name="title" value="eirc.payment_points" />
 		<put-attribute name="body" value="/WEB-INF/jsp/orgs/payment_points/payment_points_list.jsp" />
 	</definition>
-
 	<definition name="eirc.organization.payment_point.edit" extends="eirc.dictionaries">
 		<put-attribute name="title" value="eirc.payment_point" />
 		<put-attribute name="body" value="/WEB-INF/jsp/orgs/payment_points/payment_point_edit.jsp" />
-	</definition>
-
-	<definition name="eirc.organization.payment_point.details" extends="eirc.dictionaries">
-		<put-attribute name="title" value="eirc.payment_point" />
-		<put-attribute name="body" value="/WEB-INF/jsp/orgs/payment_points/payment_point_details.jsp" />
 	</definition>
 
     <!-- Service organizations -->
@@ -314,25 +301,25 @@
     </definition>
 
 	<!-- EIRC Account -->
-	<definition name="eirc.eirc_account.list" extends="eirc.dictionaries">
+	<definition name="eirc.eirc_accounts.list" extends="eirc.dictionaries">
 		<put-attribute name="title" value="eirc.eirc_account.list" />
-		<put-attribute name="body" value="/WEB-INF/jsp/eirc/eirc_account/eirc_accounts_list.jsp" />
+		<put-attribute name="body" value="/WEB-INF/jsp/eirc/eirc_accounts/eirc_accounts_list.jsp" />
 	</definition>
-    <definition name="eirc.eirc_account.list_page" extends="eirc.dictionaries">
+    <definition name="eirc.eirc_accounts.list_page" extends="eirc.dictionaries">
         <put-attribute name="title" value="eirc.eirc_account.list" />
-        <put-attribute name="body" value="/WEB-INF/jsp/eirc/eirc_account/eirc_accounts_list_page.jsp" />
+        <put-attribute name="body" value="/WEB-INF/jsp/eirc/eirc_accounts/eirc_accounts_list_page.jsp" />
     </definition>
 	<definition name="eirc.eirc_account.view" extends="eirc.dictionaries">
 		<put-attribute name="title" value="eirc.eirc_account.view" />
-		<put-attribute name="body" value="/WEB-INF/jsp/eirc/eirc_account/eirc_account_view.jsp" />
+		<put-attribute name="body" value="/WEB-INF/jsp/eirc/eirc_accounts/eirc_account_view.jsp" />
 	</definition>
 	<definition name="eirc.eirc_account.create.form1" extends="eirc.dictionaries">
 		<put-attribute name="title" value="eirc.eirc_account.create.select_apartment" />
-		<put-attribute name="body" value="/WEB-INF/jsp/eirc/eirc_account/eirc_account_create_form1.jsp" />
+		<put-attribute name="body" value="/WEB-INF/jsp/eirc/eirc_accounts/eirc_account_create_form1.jsp" />
 	</definition>
 	<definition name="eirc.eirc_account.create.form2" extends="eirc.dictionaries">
 		<put-attribute name="title" value="eirc.eirc_account.create.select_apartment" />
-		<put-attribute name="body" value="/WEB-INF/jsp/eirc/eirc_account/eirc_account_create_form2.jsp" />
+		<put-attribute name="body" value="/WEB-INF/jsp/eirc/eirc_accounts/eirc_account_create_form2.jsp" />
 	</definition>
 
 	<!-- Cashboxes -->
@@ -340,10 +327,13 @@
 		<put-attribute name="title" value="eirc.cashbox.list" />
 		<put-attribute name="body" value="/WEB-INF/jsp/orgs/cashboxes/cashboxes_list_page.jsp" />
 	</definition>
-
 	<definition name="eirc.cashbox.edit" extends="eirc.dictionaries">
 		<put-attribute name="title" value="eirc.cashbox" />
 		<put-attribute name="body" value="/WEB-INF/jsp/orgs/cashboxes/cashbox_edit.jsp" />
 	</definition>
-    
+    <definition name="eirc.cashbox.view" extends="eirc.dictionaries">
+        <put-attribute name="title" value="eirc.cashbox" />
+        <put-attribute name="body" value="/WEB-INF/jsp/orgs/cashboxes/cashbox_view.jsp" />
+    </definition>
+
 </tiles-definitions>

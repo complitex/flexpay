@@ -1,10 +1,11 @@
-package org.flexpay.eirc.actions.eirc_account;
+package org.flexpay.eirc.actions.eircaccount;
 
 import org.flexpay.ab.persistence.Apartment;
+import org.flexpay.ab.persistence.BuildingAddress;
 import org.flexpay.ab.persistence.Person;
 import org.flexpay.ab.persistence.PersonIdentity;
-import org.flexpay.ab.service.PersonService;
 import org.flexpay.ab.service.AddressService;
+import org.flexpay.ab.service.PersonService;
 import org.flexpay.common.actions.FPActionWithPagerSupport;
 import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.persistence.Stub.stub;
@@ -16,9 +17,10 @@ import org.springframework.beans.factory.annotation.Required;
 
 import java.util.List;
 
-public class EircAccountsListAjaxAction extends FPActionWithPagerSupport<EircAccount> {
+public class EircAccountsListAction extends FPActionWithPagerSupport<EircAccount> {
 
-	private String apartmentId;
+	private Long apartmentFilter;
+	private Long buildingFilter;
 	private String personFio;
 	private List<EircAccount> accounts = list();
 
@@ -26,22 +28,28 @@ public class EircAccountsListAjaxAction extends FPActionWithPagerSupport<EircAcc
 	private PersonService personService;
 	private AddressService addressService;
 
-	@Override
 	@NotNull
+	@Override
 	public String doExecute() throws Exception {
 
-		Long apartmentIdLong = null;
+		boolean setApartment = apartmentFilter != null && apartmentFilter > 0;
+		boolean setBuilding = buildingFilter != null && buildingFilter > 0;
 
-		try {
-			apartmentIdLong = Long.parseLong(apartmentId);
-		} catch (Exception e) {
-			log.warn("Incorrect apartment id in filter ({})", apartmentId);
+		if (!setApartment && !setBuilding) {
+			if (personFio != null) {
+				return SUCCESS;
+			} else {
+				personFio = "";
+			}
 		}
 
-		accounts = eircAccountService.getAccounts(apartmentIdLong == null ? null : new Stub<Apartment>(apartmentIdLong),
-				personFio, getPager());
+		if (setApartment) {
+			accounts = eircAccountService.getAccountsInApartment(new Stub<Apartment>(apartmentFilter), personFio, getPager());
+		} else if (setBuilding) {
+			accounts = eircAccountService.getAccountsInBuilding(new Stub<BuildingAddress>(buildingFilter), personFio, getPager());
+		}
 
-		log.info("Found eirc accounts: {}", accounts);
+		log.debug("Found eirc accounts: {}", accounts);
 
 		return SUCCESS;
 	}
@@ -53,8 +61,8 @@ public class EircAccountsListAjaxAction extends FPActionWithPagerSupport<EircAcc
 	 *
 	 * @return {@link #ERROR} by default
 	 */
-	@Override
 	@NotNull
+	@Override
 	protected String getErrorResult() {
 		return SUCCESS;
 	}
@@ -70,21 +78,21 @@ public class EircAccountsListAjaxAction extends FPActionWithPagerSupport<EircAcc
 		}
 		PersonIdentity identity = persistent.getDefaultIdentity();
 		if (identity != null) {
-			return identity.getFirstName() + " " + identity.getMiddleName() + " " + identity.getLastName();
+			return identity.getLastName() + " " + identity.getFirstName() + " " + identity.getMiddleName();
 		}
 		throw new RuntimeException("No default identity: " + persistent);
-	}
-
-	public String getPersonFio() {
-		return personFio;
 	}
 
 	public void setPersonFio(String personFio) {
 		this.personFio = personFio;
 	}
 
-	public void setApartmentId(String apartmentId) {
-		this.apartmentId = apartmentId;
+	public void setBuildingFilter(Long buildingFilter) {
+		this.buildingFilter = buildingFilter;
+	}
+
+	public void setApartmentFilter(Long apartmentFilter) {
+		this.apartmentFilter = apartmentFilter;
 	}
 
 	public List<EircAccount> getAccounts() {

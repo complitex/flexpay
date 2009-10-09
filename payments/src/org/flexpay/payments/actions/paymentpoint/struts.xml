@@ -20,10 +20,6 @@
             </result>
 		</action>
 
-		<action name="paymentPointDetails" class="paymentPointDetailsAction">
-			<result type="tiles">payments.organization.payment_point.details</result>
-		</action>
-
         <action name="paymentPointsList" class="paymentPointsListPageAction">
             <result type="tiles">payments.organization.payment_points.list</result>
         </action>

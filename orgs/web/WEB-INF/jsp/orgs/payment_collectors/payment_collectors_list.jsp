@@ -26,13 +26,13 @@
     <s:iterator value="collectors" status="status">
         <tr valign="middle" class="cols_1">
             <td class="col" width="1%">
-                <s:property value="%{#status.index + pager.thisPageFirstElementNumber + 1}" />
+                <s:property value="#status.index + pager.thisPageFirstElementNumber + 1" />
             </td>
             <td class="col" width="1%">
-                <input type="checkbox" name="objectIds" value="<s:property value="%{id}" />" />
+                <input type="checkbox" name="objectIds" value="<s:property value="id" />" />
             </td>
             <td class="col">
-                <a href="<s:url action="paymentCollectorDetails"><s:param name="paymentCollectorFilter.selectedId" value="%{id}" /></s:url>">
+                <a href="<s:url action="paymentPointsList"><s:param name="paymentCollectorFilter.selectedId" value="%{id}" /></s:url>">
                     <s:property value="getOrganizationName(organization)"/>
                 </a>
             </td>

@@ -38,7 +38,7 @@
             });
         });
 
-        FF.addEraseFunction("town", function(filter) {
+        FF.addEraser("town", function() {
             $("#" + resultId).html('<input type="button" class="btn-exit" '
                     + 'onclick="window.location = \'<s:url action="streetEdit"><s:param name="street.id" value="0"/></s:url>\'" '
                     + 'value="<s:text name="common.new"/>"/>');

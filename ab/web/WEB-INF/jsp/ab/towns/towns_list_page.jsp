@@ -27,7 +27,7 @@
                 params:{regionFilter: filter.value.val()}
             });
         });
-        FF.addEraseFunction("region", function(filter) {
+        FF.addEraser("region", function() {
             $("#" + resultId).html('<input type="button" class="btn-exit" '
                     + 'onclick="window.location=\'<s:url action="townEdit" includeParams="none"><s:param name="town.id" value="0" /></s:url>\';" '
                     + 'value="<s:text name="common.new"/>"/>');

@@ -17,10 +17,10 @@
 
     $(function() {
 
-        FF.addListener("street", function(filter) {
+        FF.addListener("street", function() {
             pagerAjax(null);
         });
-        FF.addEraseFunction("street", function(filter) {
+        FF.addEraser("street", function() {
             $("#" + resultId).html("");
         });
     });

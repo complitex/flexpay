@@ -102,10 +102,6 @@
             </result>
         </action>
 
-        <action name="paymentCollectorDetails" class="paymentCollectorDetailsAction">
-            <result type="tiles">eirc.organization.payment_collectors.details</result>
-        </action>
-
 		<action name="paymentCollectorsList" class="paymentCollectorsListPageAction">
 			<result type="tiles">eirc.organization.payment_collectors.list</result>
 		</action>
@@ -131,10 +127,6 @@
                 <param name="parse">true</param>
                 <param name="point.id">${point.id}</param>
             </result>
-		</action>
-
-		<action name="paymentPointDetails" class="paymentPointDetailsAction">
-			<result type="tiles">payments.organization.payment_point.details</result>
 		</action>
 
         <action name="paymentPointsList" class="paymentPointsListPageAction">

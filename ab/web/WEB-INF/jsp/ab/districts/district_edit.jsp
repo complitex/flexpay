@@ -1,12 +1,13 @@
-<%@include file="/WEB-INF/jsp/common/taglibs.jsp" %>
+<%@include file="/WEB-INF/jsp/common/taglibs.jsp"%>
 
 <s:actionerror />
+<s:actionmessage />
 
 <s:form action="districtEdit">
 
     <s:hidden name="district.id" value="%{district.id}" />
 
-	<%@ include file="../filters/groups/country_region_town_ajax.jsp" %>
+	<%@include file="../filters/groups/country_region_town_ajax.jsp"%>
 	<table cellpadding="3" cellspacing="1" border="0" width="100%">
 
 		<tr valign="middle" class="cols_1">
@@ -31,12 +32,11 @@
 		<tr>
 			<td colspan="2" valign="middle">
                 <s:submit cssClass="btn-exit" name="submitted" value="%{getText('common.save')}" />
-				<%--<input type="submit" class="btn-exit" name="submitted" value="<s:text name="common.save"/>" />--%>
 			</td>
 		</tr>
 	</table>
 </s:form>
-<s:if test="%{district.id != 0}">
+<s:if test="district.id != 0">
     <script type="text/javascript">
         $(function() {
             FF.updateFilter("town", {readonly:true});

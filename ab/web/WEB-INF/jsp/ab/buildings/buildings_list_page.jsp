@@ -28,7 +28,7 @@
             });
         });
 
-        FF.addEraseFunction("street", function(filter) {
+        FF.addEraser("street", function() {
             $("#" + resultId).html('<input type="button" class="btn-exit" '
                     + 'onclick="window.location=\'<s:url action="buildingCreate" includeParams="none" />\';" '
                     + 'value="<s:text name="common.new"/>" />');

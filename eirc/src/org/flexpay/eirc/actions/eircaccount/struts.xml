@@ -7,21 +7,16 @@
 	<package name="eirc_account" namespace="/eirc" extends="common">
 
 		<!-- Eirc account -->
-		<action name="eircAccountsList" class="eircAccountsListAction">
-			<result type="tiles">eirc.eirc_account.list</result>
-		</action>
-
-        <action name="eircAccountsListPage" class="eircAccountsListPageAction">
-            <result type="tiles">eirc.eirc_account.list_page</result>
+        <action name="eircAccountsList" class="eircAccountsListPageAction">
+            <result type="tiles">eirc.eirc_accounts.list_page</result>
         </action>
 
-        <action name="eircAccountsListAjax" class="eircAccountsListAjaxAction">
-            <result>/WEB-INF/jsp/eirc/eirc_account/eirc_accounts_list.jsp</result>
-            <result name="prerequestResponse">/WEB-INF/jsp/ab/filters/ajax/prerequest_response.jsp</result>
+        <action name="eircAccountsListAjax" class="eircAccountsListAction">
+            <result>/WEB-INF/jsp/eirc/eirc_accounts/eirc_accounts_list.jsp</result>
         </action>
 
 		<action name="eircAccountView" class="eircAccountViewAction">
-			<result name="success" type="tiles">eirc.eirc_account.view</result>
+			<result type="tiles">eirc.eirc_account.view</result>
 			<result name="redirectError" type="redirect-action">eircAccountsList</result>
 		</action>
 
@@ -30,7 +25,7 @@
 		</action>
 
 		<action name="eircAccountCreateForm2" class="eircAccountCreateForm2Action">
-			<result name="form2" type="tiles">eirc.eirc_account.create.form2</result>
+			<result type="tiles">eirc.eirc_account.create.form2</result>
 			<result name="redirectForm1" type="redirect-action">eircAccountCreateForm1</result>
 		</action>
 
