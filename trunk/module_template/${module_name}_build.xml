@@ -142,13 +142,6 @@
 	<target name="template.${module_name}.war.production"
 			depends="clean.all,${module_name}.compile.production,${module_name}.prepare.war,init.distr">
 
-		<copy file="${build.dir}/web/WEB-INF/common/configs/ps/${app_server.properties}"
-			  overwrite="true"
-			  tofile="${build.dir}/web/WEB-INF/common/configs/spring/app_server.properties" />
-		<copy file="${build.dir}/web/WEB-INF/common/configs/ps/${data_source.properties}"
-			  overwrite="true"
-			  tofile="${build.dir}/web/WEB-INF/common/configs/spring/data_source.properties" />
-
 		<antcall target="template.set_db_name" />
 		<antcall target="template.switch_instance_id" />
 		<antcall target="template.update_version" />
@@ -170,8 +163,6 @@
 			<param name="src.dir" value="${${module_name}.src.production}" />
 			<param name="hibernate.cfg"
 				   value="${${module_name}.dir}/web/WEB-INF/hibernate.cfg.xml" />
-			<param name="hibernate.properties"
-				   value="${common.dir}/web/WEB-INF/common/configs/ps/data_source_mysql5.properties" />
 		</antcall>
 	</target>
 
@@ -216,7 +207,7 @@
 	</target>
 
 	<target name="${module_name}.sql.all-test">
-		<antcall target="common.sql.create-test-db" />
+		<antcall target="common.sql.create-db" />
 		<concat destfile="${build.dir}/sql/init_db.sql" append="true" encoding="UTF-8">
 			<fileset file="${${module_name}.dir}/etc/sql/flexpay_${module_name}.ddl.sql" />
 		</concat>

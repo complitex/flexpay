@@ -120,7 +120,6 @@
 
 	<target name="payments.prepare.test.war">
 		<antcall target="payments.prepare.war.internal" />
-		<antcall target="common.test.war.data-source" />
 		<antcall target="template.copy.classes" />
 	</target>
 
@@ -146,13 +145,6 @@
 	<target name="template.payments.war.production"
 			depends="clean.all,payments.compile.production,payments.prepare.war,init.distr">
 
-		<copy file="${build.dir}/web/WEB-INF/common/configs/ps/${app_server.properties}"
-			  overwrite="true"
-			  tofile="${build.dir}/web/WEB-INF/common/configs/spring/app_server.properties" />
-		<copy file="${build.dir}/web/WEB-INF/common/configs/ps/${data_source.properties}"
-			  overwrite="true"
-			  tofile="${build.dir}/web/WEB-INF/common/configs/spring/data_source.properties" />
-
 		<antcall target="template.set_db_name" />
 		<antcall target="template.switch_instance_id" />
 		<antcall target="template.update_version" />
@@ -174,8 +166,6 @@
 			<param name="src.dir" value="${payments.src.production}" />
 			<param name="hibernate.cfg"
 				   value="${payments.dir}/web/WEB-INF/hibernate.cfg.xml" />
-			<param name="hibernate.properties"
-				   value="${common.dir}/web/WEB-INF/common/configs/ps/data_source_mysql5.properties" />
 		</antcall>
 	</target>
 
@@ -224,7 +214,7 @@
 	</target>
 
 	<target name="payments.sql.all-test">
-		<antcall target="common.sql.create-test-db" />
+		<antcall target="common.sql.create-db" />
 		<concat destfile="${build.dir}/sql/init_db.sql" append="true" encoding="UTF-8">
 			<fileset file="${payments.dir}/etc/sql/flexpay_payments.ddl.sql" />
 		</concat>

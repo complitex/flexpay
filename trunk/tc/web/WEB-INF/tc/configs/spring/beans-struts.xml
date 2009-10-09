@@ -6,12 +6,6 @@
 		   http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
 		   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
-	<bean id="propertyConfigurerTc"
-		  class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"
-		  p:location="/WEB-INF/tc/configs/module.properties"
-		  p:fileEncoding="UTF-8"
-		  p:ignoreUnresolvablePlaceholders="true" />
-
 	<!-- Define struts actions beans -->
 
 	<!-- tariff calculation rules files section -->

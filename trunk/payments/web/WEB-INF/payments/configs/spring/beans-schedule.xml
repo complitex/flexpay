@@ -12,17 +12,6 @@
 		</property>
 	</bean>
 
-    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-		<property name="locations">
-            <list>
-                <value>/WEB-INF/payments/configs/synchronization.properties</value>
-                <value>/WEB-INF/payments/configs/module.properties</value>
-            </list>
-        </property>
-		<property name="ignoreUnresolvablePlaceholders" value="true" />
-        <property name="fileEncoding" value="UTF-8" />
-	</bean>
-
     <bean name="jobGeneratePaymentsRegistry" class="org.springframework.scheduling.quartz.JobDetailBean">
         <property name="jobClass" value="org.flexpay.payments.process.export.GeneratePaymentsRegistry" />
         <property name="jobDataAsMap">

@@ -13,23 +13,7 @@
            http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
            http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-2.5.xsd">
 
-	<bean id="propertyConfigurer"
-		  class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-		<property name="locations">
-			<list>
-				<value>/WEB-INF/common/configs/spring/data_source.properties</value>
-				<value>/WEB-INF/common/configs/spring/hibernate.properties</value>
-				<value>/WEB-INF/common/configs/spring/app_server.properties</value>
-				<value>/WEB-INF/common/configs/spring/managers.properties</value>
-				<value>/WEB-INF/common/configs/spring/ldap.properties</value>
-				<value>/WEB-INF/common/configs/module.properties</value>
-			</list>
-		</property>
-		<property name="ignoreUnresolvablePlaceholders" value="true" />
-		<property name="fileEncoding" value="UTF-8" />
-	</bean>
-
-	<!-- Add hibernate statistics capablities -->
+	<!-- Add hibernate statistics capabilities -->
 	<!--<bean id="hibernateStatistics" class="org.hibernate.jmx.StatisticsService"-->
 	<!--p:sessionFactory-ref="flexpaySessionFactory" />-->
 
