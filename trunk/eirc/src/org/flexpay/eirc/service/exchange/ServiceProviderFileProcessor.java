@@ -266,7 +266,7 @@ public class ServiceProviderFileProcessor implements RegistryProcessor {
 					}
 
 					context.setCurrentRecord(record);
-					processorTx.prepareRecordUpdates(null);
+					processorTx.prepareRecordUpdates(context);
 				} catch (Throwable t) {
 					handleError(t, context);
 				}

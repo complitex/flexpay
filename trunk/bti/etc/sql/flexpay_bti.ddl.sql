@@ -688,6 +688,7 @@
         version integer not null,
         registry_number bigint,
         records_number bigint,
+        errors_number integer default -1 not null comment 'Cached errors number value, -1 is not init',
         creation_date datetime,
         from_date datetime,
         till_date datetime,

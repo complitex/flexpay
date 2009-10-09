@@ -173,6 +173,10 @@ public class Registry extends DomainObject {
 		this.errorsNumber = errorsNumber;
 	}
 
+	public boolean errorsNumberNotInit() {
+		return errorsNumber <= 0;
+	}
+
 	@Override
 	public String toString() {
 		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).

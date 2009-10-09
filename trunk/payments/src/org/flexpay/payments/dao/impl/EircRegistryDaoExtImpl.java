@@ -1,8 +1,10 @@
 package org.flexpay.payments.dao.impl;
 
 import org.flexpay.common.dao.paging.Page;
+import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.common.persistence.filter.RegistryTypeFilter;
 import org.flexpay.common.persistence.registry.Registry;
+import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.orgs.persistence.filters.OrganizationFilter;
 import org.flexpay.payments.dao.EircRegistryDaoExt;
 import org.hibernate.HibernateException;
@@ -13,9 +15,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.sql.SQLException;
+import java.util.*;
 
 public class EircRegistryDaoExtImpl extends HibernateDaoSupport implements EircRegistryDaoExt {
 
@@ -39,7 +40,6 @@ public class EircRegistryDaoExtImpl extends HibernateDaoSupport implements EircR
 
 		final List<Object> params = new ArrayList();
 		final StringBuilder hql = new StringBuilder("select distinct r from Registry r ")
-				.append("left join fetch r.files ")
 				.append("left join fetch r.properties rps ")
 				.append("left join fetch r.registryType rt ")
 				.append("left join fetch r.registryStatus rs ")
@@ -90,7 +90,7 @@ public class EircRegistryDaoExtImpl extends HibernateDaoSupport implements EircR
 		log.debug("Registries list queries: \n{}\n{}", hql, hqlCount);
 
 		// retrieve elements
-		return getHibernateTemplate().executeFind(new HibernateCallback() {
+		List<Registry> result = getHibernateTemplate().executeFind(new HibernateCallback() {
 			public Object doInHibernate(Session session) throws HibernateException {
 				Query qCount = session.createQuery(hqlCount.toString());
 				Query query = session.createQuery(hql.toString());
@@ -106,6 +106,39 @@ public class EircRegistryDaoExtImpl extends HibernateDaoSupport implements EircR
 						.setMaxResults(pager.getPageSize()).list();
 			}
 		});
+
+		setRegistryFiles(result);
+
+		return result;
+	}
+
+	private void setRegistryFiles(List<Registry> registries) {
+
+		if (registries.isEmpty()) {
+			return;
+		}
+
+		final Collection<Long> ids = DomainObject.collectionIds(registries);
+		@SuppressWarnings ({"unchecked"})
+		List<Registry> rFiles = getHibernateTemplate().executeFind(new HibernateCallback() {
+			@Override
+			public Object doInHibernate(Session session) throws HibernateException, SQLException {
+				return session.getNamedQuery("Registry.getRegistriesFiles")
+						.setParameterList("ids", ids)
+						.list();
+			}
+		});
+
+		Map<Long, Registry> id2Registry = CollectionUtils.map(
+				rFiles, DomainObject.<Registry>idExtractor());
+
+		// copy fetched files to registries
+		for (Registry registry : registries) {
+			Registry rFilesHolder = id2Registry.get(registry.getId());
+			if (rFilesHolder != null) {
+				registry.setFiles(rFilesHolder.getFiles());
+			}
+		}
 	}
 
 	public void deleteQuittances(final Long registryId) {

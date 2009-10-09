@@ -69,13 +69,18 @@ public class RegistryServiceImpl implements RegistryService {
 	 * @return SpRegistry object, or <code>null</code> if object not found
 	 */
 	@Nullable
+	@Transactional (readOnly = false)
 	public Registry read(@NotNull Stub<Registry> stub) {
 		Registry registry = registryDao.readFull(stub.getId());
 		if (registry == null) {
 			log.debug("Registry #{} not found", stub);
 			return null;
 		}
-		registry.setErrorsNumber(registryRecordService.getErrorsNumber(registry));
+
+		if (registry.errorsNumberNotInit()) {
+			registry.setErrorsNumber(registryRecordService.getErrorsNumber(registry));
+			registryDao.update(registry);
+		}
 
 		return registry;
 	}
@@ -105,6 +110,9 @@ public class RegistryServiceImpl implements RegistryService {
 	 */
 	@Transactional (readOnly = false)
 	public Registry update(Registry registry) throws FlexPayException {
+
+		registry.setErrorsNumber(registryRecordService.getErrorsNumber(registry));
+
 		registryDao.update(registry);
 
         List<RegistryContainer> removeContainers = new ArrayList<RegistryContainer>();

@@ -54,8 +54,6 @@ public class OrganizationServiceImpl implements OrganizationService {
 	public void initFilter(OrganizationFilter organizationFilter) {
 		List<Organization> organizations = organizationDao.findAllOrganizations();
 		organizationFilter.setOrganizations(organizations);
-
-		log.debug("Init organizations filter: {}", organizations);
 	}
 
 	/**
@@ -63,6 +61,16 @@ public class OrganizationServiceImpl implements OrganizationService {
 	 */
 	public List<Organization> listOrganizations(Page<Organization> pager) {
 		return organizationDao.findOrganizations(pager);
+	}
+
+	/**
+	 * List all organizations
+	 *
+	 * @return List of registered organizations
+	 */
+	@Override
+	public List<Organization> listOrganizations() {
+		return organizationDao.findAllOrganizations();
 	}
 
 	/**

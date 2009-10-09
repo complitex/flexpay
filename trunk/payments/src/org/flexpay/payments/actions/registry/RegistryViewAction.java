@@ -1,5 +1,6 @@
 package org.flexpay.payments.actions.registry;
 
+import org.apache.commons.lang.time.StopWatch;
 import org.flexpay.common.actions.FPActionWithPagerSupport;
 import org.flexpay.common.exception.FlexPayException;
 import static org.flexpay.common.persistence.Stub.stub;
@@ -38,12 +39,28 @@ public class RegistryViewAction extends FPActionWithPagerSupport<RegistryRecord>
 			addActionError("No registryId specified, give up.");
 			return REDIRECT_ERROR;
 		}
+
+		StopWatch watch = new StopWatch();
+		watch.start();
+
 		getImportErrorTypeFilter().init(classToTypeRegistry);
+
+		watch.stop();
+		log.debug("Import error type filter init: {}", watch);
+		watch.reset();
+		watch.start();
+
 		registry = registryService.read(stub(registry));
+
+		watch.stop();
+		log.debug("Prior listing actions took: {}", watch);
+		watch.reset();
+		watch.start();
+
 		records = registryRecordService.listRecords(registry, importErrorTypeFilter, recordStatusFilter, getPager());
 
-		log.info(String.format("pager: size %d, total %d, first %d",
-				getPager().getPageSize(), getPager().getTotalNumberOfElements(), getPager().getThisPageFirstElementNumber()));
+		watch.stop();
+		log.debug("Time spent listing records: {}", watch);
 
 		return SUCCESS;
 	}

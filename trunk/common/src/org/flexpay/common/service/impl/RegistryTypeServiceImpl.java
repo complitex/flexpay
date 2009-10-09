@@ -26,6 +26,7 @@ public class RegistryTypeServiceImpl implements RegistryTypeService {
 	 * @return SpRegistryType object, or <code>null</code> if object not found
 	 */
 	public RegistryType read(Long id) {
+		log.debug("Finding type by id: {}", id);
 		return registryTypeDao.read(id);
 	}
 
@@ -36,6 +37,7 @@ public class RegistryTypeServiceImpl implements RegistryTypeService {
 	 * @return SpRegistryType object, or <code>null</code> if object not found
 	 */
 	public RegistryType findByCode(@NotNull Integer code) {
+		log.debug("Finding type by code: {}", code);
 		List<RegistryType> types = registryTypeDao.findByCode(code);
 		return types.isEmpty() ? null : types.get(0);
 	}
@@ -48,8 +50,6 @@ public class RegistryTypeServiceImpl implements RegistryTypeService {
 	public void initFilter(RegistryTypeFilter registryTypeFilter) {
 		List<RegistryType> types = registryTypeDao.findAll();
 		registryTypeFilter.setRegistryTypes(types);
-
-		log.debug("Registry types: {}" + types);
 	}
 
 	@Required

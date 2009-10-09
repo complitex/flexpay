@@ -117,6 +117,7 @@ public class RegistryRecordServiceImpl implements RegistryRecordService {
 	 * @return number of errors
 	 */
 	public int getErrorsNumber(Registry registry) {
+		log.debug("Getting registry errors number: {}", registry.getId());
 		return registryRecordDaoExt.getErrorsNumber(registry.getId());
 	}
 

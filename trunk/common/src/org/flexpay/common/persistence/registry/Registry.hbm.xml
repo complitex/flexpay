@@ -12,6 +12,11 @@
 		<version name="version" column="version" access="field" />
 		<property name="registryNumber" column="registry_number" />
 		<property name="recordsNumber" column="records_number" />
+		<property name="errorsNumber">
+			<column name="errors_number" not-null="true" default="-1">
+				<comment>Cached errors number value, -1 is not init</comment>
+			</column>
+		</property>
 		<property name="creationDate" column="creation_date" type="timestamp" />
 		<property name="fromDate" column="from_date" type="timestamp" />
 		<property name="tillDate" column="till_date" type="timestamp" />
@@ -316,6 +321,13 @@
 		and registry.creationDate <= ?
 	]]></query>
 
+	<query name="Registry.getRegistriesFiles">
+		select distinct r
+		from Registry r
+			left outer join fetch r.files 
+		where r.id in (:ids)
+	</query>
+
 	<query name="RegistryRecord.getMinMaxRecordsForProcessing"><![CDATA[
 		select min(rr.id), max(rr.id)
 		from RegistryRecord rr
@@ -350,6 +362,14 @@
             left outer join rr.registry r
             left outer join rr.recordStatus rrs
         where r.id=? and rrs.code NOT IN (2)
+    </query>
+
+    <query name="RegistryRecord.listRecordsDetails">
+        select distinct rr
+        from RegistryRecord rr
+            left outer join fetch rr.recordStatus
+            left outer join fetch rr.importError
+        where rr.id in (:ids)
     </query>
 
     <query name="RegistryRecord.listRecordsForExport"><![CDATA[

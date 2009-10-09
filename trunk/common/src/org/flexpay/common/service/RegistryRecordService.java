@@ -62,6 +62,7 @@ public interface RegistryRecordService {
 	 * List registry records
 	 *
 	 * @param registry			  Registry to get records for
+	 * @param range FetchRange
 	 * @return list of filtered registry records
 	 */
 	List<RegistryRecord> listRecordsForExport(Registry registry, FetchRange range);
