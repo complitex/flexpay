@@ -9,14 +9,6 @@ import java.util.List;
 public interface OrganizationDao extends GenericDao<Organization, Long> {
 
 	/**
-	 * Find organization by id
-	 *
-	 * @param id Organization id
-	 * @return List of organizations
-	 */
-	List<Organization> findOrganizationsById(String id);
-
-	/**
 	 * get all organizations
 	 *
 	 * @return List of organizations

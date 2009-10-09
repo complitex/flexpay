@@ -2,9 +2,9 @@ package org.flexpay.common.persistence;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
+import org.flexpay.common.util.CollectionUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.flexpay.common.util.CollectionUtils;
 
 import java.io.Serializable;
 import java.util.Collection;
@@ -15,7 +15,7 @@ import java.util.List;
  */
 public class DomainObject implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
 	@SuppressWarnings ({"UnusedDeclaration"})
 	protected Integer version;
@@ -80,5 +80,18 @@ public class DomainObject implements Serializable {
 		}
 
 		return result;
+	}
+
+	private static final CollectionUtils.KeyExtractor DOMAIN_OBJECT_ID_EXTRACTOR =
+			new CollectionUtils.KeyExtractor() {
+				@Override
+				public Long key(Object o) {
+					return ((DomainObject) o).getId();
+				}
+			};
+
+	@SuppressWarnings ({"unchecked"})
+	public static <T extends DomainObject> CollectionUtils.KeyExtractor<Long, T> idExtractor() {
+		return DOMAIN_OBJECT_ID_EXTRACTOR;
 	}
 }

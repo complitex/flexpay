@@ -1,19 +1,19 @@
 package org.flexpay.payments.actions.registry;
 
 import org.apache.commons.lang.time.DateUtils;
+import org.apache.commons.lang.time.StopWatch;
+import org.flexpay.common.actions.FPActionWithPagerSupport;
+import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.persistence.filter.RegistryTypeFilter;
 import org.flexpay.common.persistence.registry.Registry;
-import org.flexpay.common.persistence.registry.RegistryProperties;
 import org.flexpay.common.persistence.registry.RegistryFPFileType;
-import org.flexpay.common.persistence.file.FPFile;
-import org.flexpay.common.service.RegistryTypeService;
+import org.flexpay.common.persistence.registry.RegistryProperties;
 import org.flexpay.common.service.RegistryFPFileTypeService;
+import org.flexpay.common.service.RegistryTypeService;
 import org.flexpay.common.util.DateUtil;
-import org.flexpay.common.actions.FPActionWithPagerSupport;
 import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.orgs.persistence.filters.OrganizationFilter;
 import org.flexpay.orgs.service.OrganizationService;
-import org.flexpay.payments.actions.CashboxCookieWithPagerActionSupport;
 import org.flexpay.payments.persistence.EircRegistryProperties;
 import org.flexpay.payments.service.EircRegistryService;
 import org.jetbrains.annotations.NotNull;
@@ -36,21 +36,35 @@ public class RegistriesListAction extends FPActionWithPagerSupport {
 	private OrganizationService organizationService;
 	private EircRegistryService eircRegistryService;
 	private RegistryTypeService registryTypeService;
-    private RegistryFPFileTypeService registryFPFileTypeService;
+	private RegistryFPFileTypeService registryFPFileTypeService;
 
 	@NotNull
 	public String doExecute() throws Exception {
 
-		organizationService.initFilter(senderOrganizationFilter);
-		organizationService.initFilter(recipientOrganizationFilter);
+		StopWatch watch = new StopWatch();
+		watch.start();
+		senderOrganizationFilter.setOrganizations(organizationService.listOrganizations());
+		watch.stop();
+		log.debug("Time spent initializing sender filter: {}", watch);
+		watch.reset();
+		watch.start();
+		recipientOrganizationFilter.setOrganizations(organizationService.listOrganizations());
+		watch.stop();
+		log.debug("Time spent initializing recipient filter: {}", watch);
 
 		registryTypeService.initFilter(registryTypeFilter);
 
+		watch.reset();
+		watch.start();
+
 		fromDate = DateUtil.truncateDay(fromDate);
 		tillDate = DateUtil.getEndOfThisDay(tillDate);
-		
+
 		registries = eircRegistryService.findObjects(senderOrganizationFilter, recipientOrganizationFilter,
 				registryTypeFilter, fromDate, tillDate, getPager());
+		watch.stop();
+		log.debug("Time spent listing registries: {}", watch);
+		log.debug("Total registries found: {}", registries.size());
 
 		return SUCCESS;
 	}
@@ -128,19 +142,19 @@ public class RegistriesListAction extends FPActionWithPagerSupport {
 		return organizationService.readFull(props.getRecipientStub());
 	}
 
-    public FPFile getRegistryFileInMBFormat(Map<RegistryFPFileType, FPFile> files) {
-        log.debug("get registry file in MB format, size={}", files.size());
-        FPFile file = files.get(registryFPFileTypeService.findByCode(RegistryFPFileType.MB_FORMAT));
-        log.debug("return file: {}", file);
-        return file;
-    }
+	public FPFile getRegistryFileInMBFormat(Map<RegistryFPFileType, FPFile> files) {
+		log.debug("get registry file in MB format, size={}", files.size());
+		FPFile file = files.get(registryFPFileTypeService.findByCode(RegistryFPFileType.MB_FORMAT));
+		log.debug("return file: {}", file);
+		return file;
+	}
 
-    public FPFile getRegistryFileInFPFormat(Map<RegistryFPFileType, FPFile> files) {
-        log.debug("get registry file in FP format, size={}", files.size());
-        FPFile file = files.get(registryFPFileTypeService.findByCode(RegistryFPFileType.FP_FORMAT));
-        log.debug("return file: {}", file);
-        return file;
-    }
+	public FPFile getRegistryFileInFPFormat(Map<RegistryFPFileType, FPFile> files) {
+		log.debug("get registry file in FP format, size={}", files.size());
+		FPFile file = files.get(registryFPFileTypeService.findByCode(RegistryFPFileType.FP_FORMAT));
+		log.debug("return file: {}", file);
+		return file;
+	}
 
 	@Required
 	public void setEircRegistryService(EircRegistryService eircRegistryService) {
@@ -157,8 +171,8 @@ public class RegistriesListAction extends FPActionWithPagerSupport {
 		this.registryTypeService = registryTypeService;
 	}
 
-    @Required
-    public void setRegistryFPFileTypeService(RegistryFPFileTypeService registryFPFileTypeService) {
-        this.registryFPFileTypeService = registryFPFileTypeService;
-    }
+	@Required
+	public void setRegistryFPFileTypeService(RegistryFPFileTypeService registryFPFileTypeService) {
+		this.registryFPFileTypeService = registryFPFileTypeService;
+	}
 }

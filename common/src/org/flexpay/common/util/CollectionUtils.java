@@ -166,6 +166,26 @@ public class CollectionUtils {
 		return map;
 	}
 
+	/**
+	 * Helper interface that can get key for map by it's value
+	 *
+	 * @param <K> Key type
+	 * @param <V> Value type
+	 */
+	public static interface KeyExtractor<K, V> {
+		K key(V v);
+	}
+
+	@NotNull
+	public static <K, V> Map<K, V> map(Collection<V> values, KeyExtractor<K, V> extractor) {
+		Map<K, V> map = map();
+		for (V v : values) {
+			map.put(extractor.key(v), v);
+		}
+
+		return map;
+	}
+
 	@NotNull
 	public static <T> SortedSet<T> treeSet() {
 		return new TreeSet<T>();

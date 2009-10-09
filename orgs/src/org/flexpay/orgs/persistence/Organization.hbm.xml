@@ -122,15 +122,11 @@
 		</properties>
 	</class>
 
-	<query name="Organization.findOrganizationsById">
-		from Organization where id=?
-	</query>
-
 	<query name="Organization.findAllOrganizations">
 		select distinct o
 		from Organization o
 		left join fetch o.names
-		left join fetch o.descriptions
+<!--		left join fetch o.descriptions -->
 		where o.status=0
 	</query>
 
