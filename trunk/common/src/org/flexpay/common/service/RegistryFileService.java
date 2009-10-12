@@ -1,7 +1,6 @@
 package org.flexpay.common.service;
 
 import org.flexpay.common.dao.paging.FetchRange;
-import org.flexpay.common.service.fetch.ReadHints;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.persistence.registry.Registry;

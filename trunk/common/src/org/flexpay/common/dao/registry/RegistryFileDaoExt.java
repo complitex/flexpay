@@ -11,4 +11,5 @@ public interface RegistryFileDaoExt {
 	 * @return <code>true</code> if file already loaded, or <code>false</code> otherwise
 	 */
 	boolean isLoaded(@NotNull Long fileId);
+
 }

@@ -136,15 +136,6 @@
 		<url-pattern>/szFileDownloadServlet</url-pattern>
 	</servlet-mapping>
 
-	<servlet>
-		<servlet-name>spFileDownloadServlet</servlet-name>
-		<servlet-class>org.flexpay.eirc.actions.SpFileDownloadServlet</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>spFileDownloadServlet</servlet-name>
-		<url-pattern>/spFileDownloadServlet</url-pattern>
-	</servlet-mapping>
-
     <servlet>
         <servlet-name>processLogDownloadServlet</servlet-name>
 		<servlet-class>org.flexpay.common.actions.ProcessLogDownloadServlet</servlet-class>

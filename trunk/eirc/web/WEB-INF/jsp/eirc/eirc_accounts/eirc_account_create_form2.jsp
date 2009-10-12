@@ -44,7 +44,7 @@
 		</s:iterator>
 		<tr>
 			<td colspan="6">
-                <%@include file="/WEB-INF/jsp/common/filter/pager/pager.jsp"%>
+                <%@include file="/WEB-INF/jsp/common/filter/pager/pager_ajax.jsp"%>
 				<input type="submit" class="btn-exit"
 					   onclick="$('#fobjects').attr('action', '<s:url action="eircAccountCreate" includeParams="none" />');"
 					   value="<s:text name="common.create" />" />

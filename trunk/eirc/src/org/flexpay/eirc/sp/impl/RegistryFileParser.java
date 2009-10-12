@@ -8,11 +8,10 @@ import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.persistence.registry.*;
 import org.flexpay.common.persistence.registry.workflow.RegistryRecordWorkflowManager;
 import org.flexpay.common.persistence.registry.workflow.RegistryWorkflowManager;
-import org.flexpay.common.process.ProcessLogger;
 import org.flexpay.common.service.*;
-import org.flexpay.common.service.importexport.MasterIndexService;
-import org.flexpay.common.service.importexport.CorrectionsService;
 import org.flexpay.common.service.importexport.ClassToTypeRegistry;
+import org.flexpay.common.service.importexport.CorrectionsService;
+import org.flexpay.common.service.importexport.MasterIndexService;
 import org.flexpay.common.service.internal.SessionUtils;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.FileSource;
@@ -33,12 +32,12 @@ import org.flexpay.orgs.service.ServiceProviderService;
 import org.flexpay.payments.persistence.EircRegistryProperties;
 import org.flexpay.payments.persistence.Service;
 import org.flexpay.payments.service.EircRegistryService;
+import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.jetbrains.annotations.Nullable;
 
 import java.io.InputStream;
 import java.math.BigDecimal;
@@ -81,7 +80,9 @@ public class RegistryFileParser implements FileParser {
 
     @SuppressWarnings ({"ConstantConditions"})
 	@Transactional (propagation = Propagation.NOT_SUPPORTED)
+	@Override
     public List<Registry> parse(FPFile spFile, Logger processLog) throws Exception {
+
         FileSource fileSource = null;
 		InputStream is = null;
 
@@ -128,6 +129,7 @@ public class RegistryFileParser implements FileParser {
 
 	@SuppressWarnings ({"ConstantConditions"})
 	@Transactional (propagation = Propagation.NOT_SUPPORTED)
+	@Override
 	public List<Registry> parse(FPFile spFile) throws Exception {
 		return parse(spFile, log);
 	}
@@ -147,10 +149,11 @@ public class RegistryFileParser implements FileParser {
 	private Registry processMessage(Message message, FPFile spFile, Registry registry, Long[] recordCounter) throws Exception {
 
 		String messageValue = message.getBody();
-		Integer messageType = message.getType();
 		if (StringUtils.isEmpty(messageValue)) {
 			return registry;
 		}
+
+		Integer messageType = message.getType();
 
 		List<String> messageFieldList = StringUtil.splitEscapable(
 				messageValue, Operation.RECORD_DELIMITER, Operation.ESCAPE_SYMBOL);
@@ -179,7 +182,7 @@ public class RegistryFileParser implements FileParser {
 					+ messageFieldList.size() + ", expected at least 10");
 		}
 
-		log.info("adding header: {}", messageFieldList);
+		log.info("Adding header: {}", messageFieldList);
 
 		DateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
 
@@ -578,4 +581,5 @@ public class RegistryFileParser implements FileParser {
     public void setRegistryFPFileTypeService(RegistryFPFileTypeService registryFPFileTypeService) {
         this.registryFPFileTypeService = registryFPFileTypeService;
     }
+
 }

@@ -1,7 +1,9 @@
 package org.flexpay.common.service;
 
+import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
-import org.flexpay.common.persistence.*;
+import org.flexpay.common.persistence.FPModule;
+import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.persistence.file.FPFileStatus;
 import org.flexpay.common.persistence.file.FPFileType;
@@ -92,9 +94,11 @@ public interface FPFileService {
 	 * Get FPFiles from database by module name,
 	 *
 	 * @param moduleName name of module
+	 * @param pager FPFiles pager
+	 *
 	 * @return list of FPFiles
 	 */
-	List<FPFile> getFilesByModuleName(String moduleName);
+	List<FPFile> getFilesByModuleName(String moduleName, Page<FPFile> pager);
 
 	/**
 	 * Get FPModule from database by name

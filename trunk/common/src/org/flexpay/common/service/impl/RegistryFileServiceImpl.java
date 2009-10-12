@@ -34,6 +34,7 @@ public class RegistryFileServiceImpl implements RegistryFileService {
 	 * @param spFile ServiceProvider obtained file
 	 * @return List of registries in a file
 	 */
+	@Override
 	public List<Registry> getRegistries(FPFile spFile) {
 		return registryDao.listRegistries(spFile.getId());
 	}
@@ -45,6 +46,7 @@ public class RegistryFileServiceImpl implements RegistryFileService {
 	 * @param range	Fetch range
 	 * @return list of records
 	 */
+	@Override
 	public List<RegistryRecord> getRecordsForProcessing(@NotNull Stub<Registry> registry, FetchRange range) {
 
 		List<RegistryRecord> records = registryRecordDao.listRecordsForProcessing(registry.getId(), range);
@@ -69,8 +71,18 @@ public class RegistryFileServiceImpl implements RegistryFileService {
 	 * @param stub File stub
 	 * @return <code>true</code> if file already loaded, or <code>false</code> otherwise
 	 */
+	@Override
 	public boolean isLoaded(@NotNull Stub<FPFile> stub) {
 		return registryFileDaoExt.isLoaded(stub.getId());
+	}
+
+	/**
+	 * Add hints read handler factory
+	 *
+	 * @param factory ProcessingReadHintsHandlerFactory
+	 */
+	public void setReadHintsHandlerFactory(ProcessingReadHintsHandlerFactory factory) {
+		readHintsHandlerFactories.add(factory);
 	}
 
 	@Required
@@ -88,12 +100,4 @@ public class RegistryFileServiceImpl implements RegistryFileService {
 		this.registryFileDaoExt = registryFileDaoExt;
 	}
 
-	/**
-	 * Add hints read handler factory
-	 *
-	 * @param factory ProcessingReadHintsHandlerFactory
-	 */
-	public void setReadHintsHandlerFactory(ProcessingReadHintsHandlerFactory factory) {
-		readHintsHandlerFactories.add(factory);
-	}
 }

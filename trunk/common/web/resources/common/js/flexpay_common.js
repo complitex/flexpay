@@ -255,7 +255,6 @@ var FP = {
                 });
     }
 
-
 };
 
 // Array Remove - By John Resig (MIT Licensed)

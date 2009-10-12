@@ -28,7 +28,7 @@ public abstract class ObjectViewAction<
 
 		object = nameTimeDependentService.readFull(stub(object));
 		if (object == null) {
-			addActionError(getText("error.invalid_id"));
+			addActionError(getText("common.object_not_selected"));
 			return REDIRECT_ERROR;
 		}
 		return SUCCESS;

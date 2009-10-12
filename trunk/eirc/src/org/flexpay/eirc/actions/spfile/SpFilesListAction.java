@@ -1,45 +1,32 @@
-package org.flexpay.eirc.actions;
+package org.flexpay.eirc.actions.spfile;
 
-import org.flexpay.common.actions.FPActionSupport;
+import org.flexpay.common.actions.FPActionWithPagerSupport;
 import org.flexpay.common.exception.FlexPayException;
-import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.service.FPFileService;
 import org.flexpay.common.service.RegistryFileService;
+import static org.flexpay.common.util.CollectionUtils.list;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.util.List;
 
-public class SpFilesListAction extends FPActionSupport {
+public class SpFilesListAction extends FPActionWithPagerSupport<FPFile> {
+
+	private List<FPFile> spFilesList = list();
 
     private String moduleName;
     private RegistryFileService registryFileService;
 	private FPFileService fpFileService;
-	private List<FPFile> spFileList;
 
 	@NotNull
+	@Override
 	public String doExecute() throws FlexPayException {
 
-		spFileList = fpFileService.getFilesByModuleName(moduleName);
+		spFilesList = fpFileService.getFilesByModuleName(moduleName, getPager());
 
 		return SUCCESS;
-	}
-
-	/**
-	 * Check if registry file is loaded to database
-	 *
-	 * @param fileId Registry file id
-	 * @return <code>true</code> if file already loaded, or <code>false</code> otherwise
-	 */
-	public boolean isLoaded(@NotNull Long fileId) {
-		boolean loaded = registryFileService.isLoaded(new Stub<FPFile>(fileId));
-
-		if (log.isDebugEnabled()) {
-			log.debug("File was {} loaded: {}", (loaded ? "" : "not"), fileId);
-		}
-
-		return loaded;
 	}
 
 	/**
@@ -50,12 +37,28 @@ public class SpFilesListAction extends FPActionSupport {
 	 * @return {@link #ERROR} by default
 	 */
 	@NotNull
+	@Override
 	protected String getErrorResult() {
 		return SUCCESS;
 	}
 
-	public List<FPFile> getSpFileList() {
-		return spFileList;
+	/**
+	 * Check if registry file is loaded to database
+	 *
+	 * @param fileId Registry file id
+	 * @return <code>true</code> if file already loaded, or <code>false</code> otherwise
+	 */
+	public boolean isLoaded(@NotNull Long fileId) {
+
+		boolean loaded = registryFileService.isLoaded(new Stub<FPFile>(fileId));
+
+		log.debug("File was {} loaded: {}", (loaded ? "" : "not"), fileId);
+
+		return loaded;
+	}
+
+	public List<FPFile> getSpFilesList() {
+		return spFilesList;
 	}
 
     @Required

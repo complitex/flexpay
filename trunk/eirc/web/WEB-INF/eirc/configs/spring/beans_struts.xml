@@ -6,30 +6,36 @@
 		   http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
 		   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
-	<bean id="spFileCreateAction"
-          class="org.flexpay.eirc.actions.SpFileCreateAction"
+    <!-- SP files -->
+	<bean id="spFileCreateAction" parent="staticPageAction"
+          p:crumbNameKey="eirc.crumbs.sp_file_import"
 		  scope="prototype" />
 
-	<bean id="spFileUploadAjaxAction"
-          class="org.flexpay.eirc.actions.UploadFileAction"
+	<bean id="spFileUploadAction"
+          class="org.flexpay.eirc.actions.spfile.SpFileUploadAction"
 		  p:fpFileService-ref="fpFileService"
 		  p:moduleName="${flexpay.module.name.eirc}"
 		  scope="prototype" />
 
+    <bean id="spFilesListPageAction" parent="staticPageAction"
+          p:crumbNameKey="eirc.crumbs.sp_files_list"
+          scope="prototype" />
+
 	<bean id="spFilesListAction"
-          class="org.flexpay.eirc.actions.SpFilesListAction"
+          class="org.flexpay.eirc.actions.spfile.SpFilesListAction"
 		  p:fpFileService-ref="fpFileService"
 		  p:registryFileService-ref="registryFileService"
 		  p:moduleName="${flexpay.module.name.eirc}"
 		  scope="prototype" />
 
 	<bean id="spFileAction"
-		  class="org.flexpay.eirc.actions.SpFileAction"
+		  class="org.flexpay.eirc.actions.spfile.SpFileAction"
           p:fpFileService-ref="fpFileService"
 		  p:processManager-ref="processManager"
           p:lineParser-ref="mbLineParser"
           scope="prototype" />
 
+    <!-- Quittances -->
 	<bean id="quittanceGenerateAction"
 		  class="org.flexpay.eirc.actions.quittance.QuittanceGenerateAction"
 		  p:serviceOrganizationService-ref="serviceOrganizationService"

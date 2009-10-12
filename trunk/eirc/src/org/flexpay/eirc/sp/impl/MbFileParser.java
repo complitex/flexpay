@@ -1,5 +1,6 @@
 package org.flexpay.eirc.sp.impl;
 
+import org.apache.commons.lang.time.StopWatch;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.persistence.Stub;
@@ -10,10 +11,9 @@ import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.persistence.registry.RegistryRecordStatus;
 import org.flexpay.common.service.*;
 import org.flexpay.common.service.importexport.CorrectionsService;
-import static org.flexpay.common.util.CollectionUtils.list;
+import org.flexpay.eirc.service.ConsumerService;
 import org.flexpay.eirc.sp.FileParser;
 import org.flexpay.eirc.sp.impl.validation.FileValidator;
-import org.flexpay.eirc.service.ConsumerService;
 import org.flexpay.orgs.service.ServiceProviderService;
 import org.flexpay.payments.service.SPService;
 import org.flexpay.payments.util.ServiceTypesMapper;
@@ -23,7 +23,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.apache.commons.lang.time.StopWatch;
 
 import java.util.List;
 
@@ -57,6 +56,7 @@ public abstract class MbFileParser implements FileParser {
     protected LineParser lineParser;
 
 	@Transactional (propagation = Propagation.NOT_SUPPORTED)
+	@Override
 	public List<Registry> parse(FPFile spFile, Logger logger) throws FlexPayException {
         FileValidator validator = serviceValidationFactory.createFileValidator(fileValidationSchema, lineParser, logger);
 
@@ -84,6 +84,7 @@ public abstract class MbFileParser implements FileParser {
     }
 
     @Transactional (propagation = Propagation.NOT_SUPPORTED)
+	@Override
 	public List<Registry> parse(FPFile spFile) throws FlexPayException {
         return parse(spFile, null);
 	}
@@ -169,4 +170,5 @@ public abstract class MbFileParser implements FileParser {
     public void setLineParser(LineParser lineParser) {
         this.lineParser = lineParser;
     }
+
 }

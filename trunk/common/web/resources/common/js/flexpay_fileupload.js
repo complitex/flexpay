@@ -207,21 +207,20 @@ function FPFileUploadForm(formId, options) {
 
 var FPFile = {
 
-    constants : {
-        progressBarUrl : "",
-        statusWaiting : "",
-        statusUploading : "",
-        statusProcessing : "",
-        statusUploaded : "",
-        statusError : "",
-        confirmExit : ""
+    constants: {
+        progressBarUrl: "",
+        statusWaiting: "",
+        statusUploading: "",
+        statusProcessing: "",
+        statusUploaded: "",
+        statusError: "",
+        confirmExit: ""
     },
 
-    fileForms : [],
+    fileForms: [],
 
     createFileUploadForm : function(formId, submitId, options) {
-        var fileForm = new FPFileUploadForm(formId, options);
-        this.fileForms[formId] = fileForm;
+        this.fileForms[formId] = new FPFileUploadForm(formId, options);
         $("#" + submitId).attr("onclick", "FPFile.fileForms[\"" + formId + "\"].submitForm();");
     }
 

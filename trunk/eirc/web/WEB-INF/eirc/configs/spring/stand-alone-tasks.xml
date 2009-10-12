@@ -10,7 +10,7 @@
 		  class="org.flexpay.eirc.util.standalone.RunSpFileProcessing"
 		  p:moduleName="${flexpay.module.name.eirc}"
 		  p:fileAction-ref="spFileAction"
-		  p:spFileUploadAjaxAction-ref="spFileUploadAjaxAction"
+		  p:spFileUploadAction-ref="spFileUploadAction"
 		  p:fileService-ref="registryFileService"
 		  p:spRegistryDao-ref="spRegistryDao"
 		  p:fpFileService-ref="fpFileService"

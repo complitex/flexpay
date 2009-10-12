@@ -145,15 +145,6 @@
 		<url-pattern>/download/*</url-pattern>
 	</servlet-mapping>
 
-	<servlet>
-		<servlet-name>spFileDownloadServlet</servlet-name>
-		<servlet-class>org.flexpay.eirc.actions.SpFileDownloadServlet</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>spFileDownloadServlet</servlet-name>
-		<url-pattern>/spFileDownloadServlet</url-pattern>
-	</servlet-mapping>
-
     <servlet>
         <servlet-name>confirmationTradingDayServlet</servlet-name>
         <servlet-class>org.flexpay.payments.actions.ConfirmationTradingDayServlet</servlet-class>

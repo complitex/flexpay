@@ -65,24 +65,6 @@
             <result type="tiles">eirc.main.quittances_packets</result>
         </action>
 
-        <action name="doSpFileUploadAjax" class="spFileUploadAjaxAction">
-            <result>/WEB-INF/jsp/eirc/import/response.jsp</result>
-            <result name="error">/WEB-INF/jsp/eirc/import/response.jsp</result>
-        </action>
-
-		<action name="spFileCreate" class="spFileCreateAction">
-			<result name="input" type="tiles">eirc.import.file.upload.form</result>
-		</action>
-
-		<action name="spFileList" class="spFilesListAction">
-			<result name="success" type="tiles">eirc.import.file.list</result>
-		</action>
-
-		<action name="spFileAction" class="spFileAction">
-			<result name="redirectSuccess" type="redirect-action">spFileList</result>
-			<result name="redirectError" type="redirect-action">spFileList</result>
-		</action>
-
 	</package>
 
     <include file="org/flexpay/eirc/actions/cashbox/struts.xml" />
@@ -93,5 +75,6 @@
 	<include file="org/flexpay/eirc/actions/processing/struts.xml" />
 	<include file="org/flexpay/eirc/actions/registry/struts.xml" />
 	<include file="org/flexpay/eirc/actions/quittance/struts.xml" />
+    <include file="org/flexpay/eirc/actions/spfile/sruts.xml" />
 
 </struts>
