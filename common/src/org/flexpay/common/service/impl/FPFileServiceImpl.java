@@ -4,19 +4,21 @@ import org.flexpay.common.dao.FPFileDao;
 import org.flexpay.common.dao.FPFileStatusDao;
 import org.flexpay.common.dao.FPFileTypeDao;
 import org.flexpay.common.dao.FPModuleDao;
+import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
-import org.flexpay.common.persistence.*;
+import org.flexpay.common.persistence.FPModule;
+import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.persistence.file.FPFileStatus;
 import org.flexpay.common.persistence.file.FPFileType;
 import org.flexpay.common.service.FPFileService;
 import org.flexpay.common.util.FPFileUtil;
 import org.flexpay.common.util.SecurityUtil;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Transactional;
-import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.util.List;
@@ -53,6 +55,7 @@ public class FPFileServiceImpl implements FPFileService {
 	 */
 	@NotNull
 	@Transactional (readOnly = false)
+	@Override
 	public FPFile create(@NotNull FPFile file) throws FlexPayException {
 		file.setUserName(SecurityUtil.getUserName());
 		file.updateSize();
@@ -72,6 +75,7 @@ public class FPFileServiceImpl implements FPFileService {
 	 */
 	@NotNull
 	@Transactional (readOnly = false)
+	@Override
 	public FPFile update(@NotNull FPFile file) throws FlexPayException {
 		file.updateSize();
 		fpFileDao.update(file);
@@ -88,6 +92,7 @@ public class FPFileServiceImpl implements FPFileService {
 	 */
 	@NotNull
 	@Transactional (readOnly = false)
+	@Override
 	public List<FPFile> update(@NotNull List<FPFile> files) throws FlexPayException {
 		for (FPFile file : files) {
 			update(file);
@@ -102,6 +107,7 @@ public class FPFileServiceImpl implements FPFileService {
 	 * @param file file to delete
 	 */
 	@Transactional (readOnly = false)
+	@Override
 	public void delete(@NotNull FPFile file) {
 		deleteFromFileSystem(file);
 		if (file.isNotNew()) {
@@ -114,6 +120,7 @@ public class FPFileServiceImpl implements FPFileService {
 	 *
 	 * @param file FPFile entity
 	 */
+	@Override
 	public void deleteFromFileSystem(@NotNull FPFile file) {
 		String localPath = FPFileUtil.getFileLocalPath(file);
 		File fileToDelete = new File(localPath);
@@ -128,6 +135,7 @@ public class FPFileServiceImpl implements FPFileService {
 	 * @param stub stub of FPFile entity
 	 * @return Loaded FPFile
 	 */
+	@Override
 	public FPFile read(@NotNull Stub<FPFile> stub) {
 		FPFile file = fpFileDao.readFull(stub.getId());
 		if (file == null) {
@@ -143,6 +151,7 @@ public class FPFileServiceImpl implements FPFileService {
 	 * @return file on file system
 	 * @throws FlexPayException
 	 */
+	@Override
 	public File getFileFromFileSystem(@NotNull Stub<FPFile> stub) throws FlexPayException {
 		return FPFileUtil.getFileOnServer(read(stub));
 	}
@@ -151,10 +160,13 @@ public class FPFileServiceImpl implements FPFileService {
 	 * Get FPFiles from database by module name,
 	 *
 	 * @param moduleName name of module
+	 * @param pager FPFiles pager
+	 * 
 	 * @return list of FPFiles
 	 */
-	public List<FPFile> getFilesByModuleName(String moduleName) {
-		return fpFileDao.listFilesByModuleName(moduleName);
+	@Override
+	public List<FPFile> getFilesByModuleName(String moduleName, Page<FPFile> pager) {
+		return fpFileDao.listFilesByModuleName(moduleName, pager);
 	}
 
 	/**
@@ -163,6 +175,7 @@ public class FPFileServiceImpl implements FPFileService {
 	 * @param name name of module
 	 * @return FPModule
 	 */
+	@Override
 	public FPModule getModuleByName(String name) {
 		List<FPModule> l = fpModuleDao.listModulesByName(name);
 		return l.isEmpty() ? null : l.get(0);
@@ -176,6 +189,7 @@ public class FPFileServiceImpl implements FPFileService {
 	 * @param moduleName name of module
 	 * @return FPFileType
 	 */
+	@Override
 	public FPFileType getTypeByFileName(String fileName, String moduleName) {
 		List<FPFileType> types = fpFileTypeDao.listFileTypesByModuleName(moduleName);
 		for (FPFileType type : types) {
@@ -194,6 +208,7 @@ public class FPFileServiceImpl implements FPFileService {
 	 * @param code code of FPFileType
 	 * @return FPFileType with this unique code
 	 */
+	@Override
 	public FPFileType getTypeByCode(Long code) {
 		List<FPFileType> l = fpFileTypeDao.listTypesByCode(code);
 		return l.isEmpty() ? null : l.get(0);
@@ -205,6 +220,7 @@ public class FPFileServiceImpl implements FPFileService {
 	 * @param code code of FPFileStatus
 	 * @return FPFileStatus with this unique code
 	 */
+	@Override
 	public FPFileStatus getStatusByCode(Long code) {
 		List<FPFileStatus> l = fpFileStatusDao.listStatusesByCode(code);
 		return l.isEmpty() ? null : l.get(0);
@@ -218,6 +234,7 @@ public class FPFileServiceImpl implements FPFileService {
 	 * @param moduleName name of module
 	 * @return FPFileType by unique code and module name
 	 */
+	@Override
 	public FPFileType getTypeByCodeAndModule(Long code, String moduleName) {
 		List<FPFileType> l = fpFileTypeDao.listTypesByCodeAndModule(code, moduleName);
 		return l.isEmpty() ? null : l.get(0);
@@ -231,6 +248,7 @@ public class FPFileServiceImpl implements FPFileService {
 	 * @param moduleName name of module
 	 * @return FPFileStatus by unique code and module name
 	 */
+	@Override
 	public FPFileStatus getStatusByCodeAndModule(Long code, String moduleName) {
 		List<FPFileStatus> l = fpFileStatusDao.listStatusesByCodeAndModule(code, moduleName);
 		return l.isEmpty() ? null : l.get(0);

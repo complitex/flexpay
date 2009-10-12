@@ -1,13 +1,14 @@
-package org.flexpay.eirc.actions;
+package org.flexpay.eirc.actions.spfile;
 
 import org.apache.commons.io.IOUtils;
 import org.flexpay.common.actions.FPActionSupport;
-import org.flexpay.common.exception.FlexPayException;
-import org.flexpay.common.persistence.Stub;
+import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.process.ProcessManager;
 import org.flexpay.common.service.FPFileService;
 import org.flexpay.common.util.CollectionUtils;
+import org.flexpay.eirc.process.registry.FileParserJob;
+import org.flexpay.eirc.sp.FileParser;
 import org.flexpay.eirc.sp.impl.LineParser;
 import org.flexpay.eirc.sp.impl.MbParsingConstants;
 import org.jetbrains.annotations.NonNls;
@@ -22,66 +23,73 @@ import java.util.Map;
 
 public class SpFileAction extends FPActionSupport {
 
-	private Long spFileId;
+	public final static String LOAD_TO_DB_ACTION = "loadToDb";
+	public final static String LOAD_FROM_DB_ACTION = "loadFromDb";
+	public final static String DELETE_FROM_DB_ACTION = "deleteFromDb";
+	public final static String FULL_DELETE_ACTION = "fullDelete";
+
+	private FPFile spFile = new FPFile();
 	private Long processId = null;
 	@NonNls
 	private String action;
 
 	private FPFileService fpFileService;
 	private ProcessManager processManager;
-
     private LineParser lineParser;
 
 	@NotNull
+	@Override
 	public String doExecute() throws Exception {
 
-		if (spFileId == null || spFileId <= 0) {
-			throw new FlexPayException("Invalid registry id: " + spFileId);
+		if (spFile.isNew()) {
+			addActionError(getText("error.no_id"));
+			return REDIRECT_ERROR;
 		}
 
-		if ("loadToDb".equals(action)) {
+		spFile = fpFileService.read(stub(spFile));
+		if (spFile == null) {
+			addActionError(getText("common.object_not_selected"));
+			return REDIRECT_ERROR;
+		}
+
+		if (LOAD_TO_DB_ACTION.equals(action)) {
 			Map<Serializable, Serializable> contextVariables = CollectionUtils.map();
-			contextVariables.put("FileId", spFileId);
-			contextVariables.put("FileType", getFileType(spFileId));
+			contextVariables.put(FileParserJob.PARAM_FILE, spFile);
+			contextVariables.put(FileParserJob.PARAM_FILE_TYPE, getFileType(spFile));
 			processId = processManager.createProcess("ParseRegistryProcess", contextVariables);
 			log.debug("Load to db process id {}", processId);
 			if (processId == null) {
 				throw new Exception("Failed creating process, unknown reason");
 			}
 
-			addActionError(getText("eirc.registry.parse_started"));
-		} else if ("loadFromDb".equals(action)) {
+			addActionMessage(getText("eirc.registry.parse_started"));
+		} else if (LOAD_FROM_DB_ACTION.equals(action)) {
 			// SzFileUtil.loadFromDb(szFile);
-		} else if ("deleteFromDb".equals(action)) {
+		} else if (DELETE_FROM_DB_ACTION.equals(action)) {
 //			 SzFileUtil.deleteRecords(szFile);
-		} else if ("fullDelete".equals(action)) {
+		} else if (FULL_DELETE_ACTION.equals(action)) {
 			// SzFileUtil.delete(szFile);
 		}
 
 		return REDIRECT_SUCCESS;
 	}
 
-	private String getFileType(Long fileId) {
+	private String getFileType(FPFile file) {
 
-		FPFile file = fpFileService.read(new Stub<FPFile>(fileId));
-
-		String firstMbFileString = MbParsingConstants.FIRST_FILE_STRING;
-
-		String line;
 		BufferedReader reader = null;
 		try {
 			//noinspection IOResourceOpenedButNotSafelyClosed
 			reader = new BufferedReader(new InputStreamReader(file.getInputStream(), MbParsingConstants.REGISTRY_FILE_ENCODING));
-			line = reader.readLine();
+			String line = reader.readLine();
 
-			if (firstMbFileString.equals(line)) {
+			if (MbParsingConstants.FIRST_FILE_STRING.equals(line)) {
 				line = reader.readLine();
 
 				String[] fields = lineParser.parse(line);
 				if (fields.length == 3) {
-					return "mbCorrections";
+					return FileParser.MB_CORRECTIONS_FILE_TYPE;
 				} else if (fields.length == 4) {
-					return "mbRegistry";
+					return FileParser.MB_REGISTRY_FILE_TYPE;
 				}
 			}
 
@@ -91,7 +99,7 @@ public class SpFileAction extends FPActionSupport {
 			IOUtils.closeQuietly(reader);
 		}
 
-		return "registry";
+		return FileParser.REGISTRY_FILE_TYPE;
 	}
 
 	/**
@@ -102,12 +110,13 @@ public class SpFileAction extends FPActionSupport {
 	 * @return {@link #ERROR} by default
 	 */
 	@NotNull
+	@Override
 	protected String getErrorResult() {
 		return REDIRECT_ERROR;
 	}
 
-	public void setSpFileId(Long spFileId) {
-		this.spFileId = spFileId;
+	public void setSpFile(FPFile spFile) {
+		this.spFile = spFile;
 	}
 
 	public void setAction(@NonNls String action) {
@@ -132,4 +141,5 @@ public class SpFileAction extends FPActionSupport {
     public void setLineParser(LineParser lineParser) {
         this.lineParser = lineParser;
     }
+
 }

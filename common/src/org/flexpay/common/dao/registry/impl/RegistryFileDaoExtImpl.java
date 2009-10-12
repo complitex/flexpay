@@ -18,14 +18,18 @@ public class RegistryFileDaoExtImpl extends HibernateDaoSupport implements Regis
 	 * @param fileId Registry file id
 	 * @return <code>true</code> if file already loaded, or <code>false</code> otherwise
 	 */
+	@Override
 	public boolean isLoaded(@NotNull final Long fileId) {
 		return (Boolean) getHibernateTemplate().execute(new HibernateCallback() {
+
+			@Override
 			public Object doInHibernate(Session session) throws HibernateException, SQLException {
 				Query qCount = session.getNamedQuery("Registry.listRegistries.count");
 				qCount.setLong(0, fileId);
 				Number count = (Number) qCount.uniqueResult();
 				return count.longValue() > 0;
 			}
+
 		});
 	}
 

@@ -5,6 +5,7 @@ import org.apache.commons.io.IOUtils;
 import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.service.FPFileService;
 import org.flexpay.common.util.StringUtil;
+import org.flexpay.eirc.actions.spfile.SpFileUploadAction;
 import org.flexpay.eirc.test.EircSpringBeanAwareTestCase;
 import org.jetbrains.annotations.NotNull;
 import static org.junit.Assert.assertEquals;
@@ -24,8 +25,8 @@ public class TestSpFileCreateAction extends EircSpringBeanAwareTestCase {
 	@Autowired
 	protected FPFileService FPFileService;
 	@Autowired
-	@Qualifier ("spFileUploadAjaxAction")
-	protected UploadFileAction uploadFileAction;
+	@Qualifier ("spFileUploadAction")
+	protected SpFileUploadAction spFileUploadAction;
 
 	@Test
 	@Ignore
@@ -56,11 +57,11 @@ public class TestSpFileCreateAction extends EircSpringBeanAwareTestCase {
 			IOUtils.closeQuietly(os);
 		}
 
-		uploadFileAction.setUpload(tmpDataFile);
-		uploadFileAction.setUploadFileName(name);
+		spFileUploadAction.setUpload(tmpDataFile);
+		spFileUploadAction.setUploadFileName(name);
 
-		assertEquals("Invalid Struts action result", ActionSupport.SUCCESS, uploadFileAction.execute());
-		return uploadFileAction.getFpFile();
+		assertEquals("Invalid Struts action result", ActionSupport.SUCCESS, spFileUploadAction.execute());
+		return spFileUploadAction.getFpFile();
 	}
 
 	@SuppressWarnings ({"ResultOfMethodCallIgnored"})
@@ -69,7 +70,7 @@ public class TestSpFileCreateAction extends EircSpringBeanAwareTestCase {
 		log.debug("Deleting registry file: {}", file);
 
 		FPFileService.delete(file);
-		uploadFileAction.getUpload().delete();
+		spFileUploadAction.getUpload().delete();
 
 		log.debug("Deleted file!");
 	}

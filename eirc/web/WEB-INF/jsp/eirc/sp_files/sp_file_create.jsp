@@ -1,12 +1,14 @@
-<%@ taglib prefix="s" uri="/struts-tags" %>
+<%@include file="/WEB-INF/jsp/common/taglibs.jsp"%>
+<%@include file="/WEB-INF/jsp/common/includes/flexpay_fileupload.jsp"%>
 
-<%@include file="/WEB-INF/jsp/common/includes/flexpay_fileupload.jsp" %>
+<s:actionerror />
+<s:actionmessage />
 
 <script type="text/javascript">
 
     $(function() {
         FPFile.createFileUploadForm("inputForm", "uploadBtn", {
-            action : "<s:url action="doSpFileUploadAjax" namespace="/eirc" includeParams="none" />",
+            action : "<s:url action="spFileUpload" namespace="/eirc" includeParams="none" />",
             validate : function() {
                 var v = "";
                 $('input[type="file"]').each(function(i, el) {
@@ -20,12 +22,12 @@
                 }
                 return true;
             }
-        })
+        });
     });
 
 </script>
 
-<s:form id="inputForm">
+<form id="inputForm">
     <table cellspacing="2" cellpadding="2" width="80%">
         <tr>
             <td nowrap="nowrap">
@@ -34,6 +36,6 @@
         </tr>
     </table>
     <input id="uploadBtn" type="button" value="<s:text name="common.add_to_upload" />" class="btn-exit" />
-</s:form>
+</form>
 
 <div id="mainBlock"></div>

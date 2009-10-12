@@ -1,9 +1,9 @@
-<%@ include file="/WEB-INF/jsp/common/taglibs.jsp" %>
+<%@include file="/WEB-INF/jsp/common/taglibs.jsp"%>
 
 <script type="text/javascript">
 	function checkSession() {
-		$.getJSON("<s:url value="/resources/common/jsp/session_ping.jsp" />", {}, function(json) {
-			if (json.result != 'OK') {
+		$.getJSON("<s:url value="/resources/common/jsp/session_ping.jsp" includeParams="none" />", {}, function(json) {
+			if (json.result != "OK") {
 				window.location = '<s:url value="/" includeParams="none"/>';
 				return;
 			}

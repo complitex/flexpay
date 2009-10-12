@@ -128,12 +128,8 @@ public class StringUtil {
 	 */
 	public static String getFileNameWithoutExtension(@NotNull String path) {
 		String fName = getFileName(path);
-		String fileNameWithoutExtension = "";
-		int pos = fName.lastIndexOf('.');
-		if (pos > 0) {
-			fileNameWithoutExtension = fName.substring(0, pos);
-		}
-		return fileNameWithoutExtension;
+		int pos = fName.lastIndexOf(".");
+		return pos > 0 ? fName.substring(0, pos) : fName;
 	}
 
 	/**

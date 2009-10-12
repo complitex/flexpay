@@ -7,6 +7,7 @@ import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.process.ProcessManager;
 import org.flexpay.common.service.RegistryFileService;
 import static org.flexpay.common.util.CollectionUtils.ar;
+import org.flexpay.eirc.actions.spfile.SpFileAction;
 import org.jetbrains.annotations.NonNls;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;

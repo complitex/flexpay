@@ -25,6 +25,7 @@ public class FileDownloadServlet extends HttpServlet {
 	private FPFile file = new FPFile();
 	private Long fileId = null;
 
+	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 		isInline = request.getParameter("inline") != null;
