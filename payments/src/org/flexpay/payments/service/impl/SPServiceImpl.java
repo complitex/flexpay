@@ -157,9 +157,16 @@ public class SPServiceImpl implements SPService {
 					"eirc.error.service.need_setup_service_type"));
 		}
 
-		if (service.getParentService() != null && service.getParentService().isNew()) {
+		Service parentService = service.getParentService();
+		if (parentService != null && parentService.isNew()) {
 			container.addException(new FlexPayException("Connot set new parent service",
 					"eirc.error.service.invalid_parent_service"));
+		}
+
+		if (parentService != null && parentService.equals(service)) {
+			container.addException(new FlexPayException("SubService of itself",
+					"eirc.error.service.self_subservice"));
+
 		}
 
 		if (!service.getChildServices().isEmpty() && service.isSubService()) {

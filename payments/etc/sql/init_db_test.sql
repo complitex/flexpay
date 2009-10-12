@@ -508,9 +508,9 @@ SELECT @service_acts_payment:=last_insert_id();
 INSERT INTO payments_service_descriptions_tbl (name, language_id, service_id)
 		VALUES ('Оплата по актам', @ru_id, @service_acts_payment);
 
-INSERT INTO payments_services_tbl (provider_id, external_code, measure_unit_id, type_id, begin_date, end_date, version, status)
-	VALUES (@service_provider_cn, null, null, @service_t_counters_repair, '1900-01-01', '2100-12-31', 0, 0);
-SELECT @service_counters_repair:=last_insert_id();
+INSERT INTO payments_services_tbl (id, provider_id, external_code, measure_unit_id, type_id, begin_date, end_date, version, status)
+	VALUES (1000, @service_provider_cn, null, null, @service_t_counters_repair, '1900-01-01', '2100-12-31', 0, 0);
+SELECT @service_counters_repair:=1000;
 INSERT INTO payments_service_descriptions_tbl (name, language_id, service_id)
 		VALUES ('Ремонт счетчиков', @ru_id, @service_counters_repair);
 

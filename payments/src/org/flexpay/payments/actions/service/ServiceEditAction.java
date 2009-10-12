@@ -10,12 +10,10 @@ import org.flexpay.common.persistence.filter.MeasureUnitFilter;
 import org.flexpay.common.service.MeasureUnitService;
 import static org.flexpay.common.util.CollectionUtils.map;
 import org.flexpay.common.util.config.ApplicationConfig;
-import org.flexpay.orgs.persistence.ServiceProvider;
 import org.flexpay.orgs.persistence.filters.ServiceProviderFilter;
 import org.flexpay.orgs.service.ServiceProviderService;
 import org.flexpay.payments.persistence.Service;
 import org.flexpay.payments.persistence.ServiceDescription;
-import org.flexpay.payments.persistence.ServiceType;
 import org.flexpay.payments.persistence.filters.ServiceFilter;
 import org.flexpay.payments.persistence.filters.ServiceTypeFilter;
 import org.flexpay.payments.service.SPService;
@@ -64,16 +62,17 @@ public class ServiceEditAction extends FPActionSupport {
 			init();
 			return INPUT;
 		}
-		Service parentService = new Service(parentServiceFilter.getSelectedId());
-		if (parentService.isNotNew()) {
-			srvc.setParentService(parentService);
+		if (parentServiceFilter.needFilter()) {
+			srvc.setParentService(spService.readFull(parentServiceFilter.getSelectedStub()));
+		} else {
+			srvc.setParentService(null);
 		}
 		srvc.setBeginDate(beginDateFilter.getDate());
 		srvc.setEndDate(endDateFilter.getDate());
-		srvc.setServiceProvider(new ServiceProvider(serviceProviderFilter.getSelectedId()));
-		srvc.setServiceType(new ServiceType(serviceTypeFilter.getSelectedId()));
+		srvc.setServiceProvider(providerService.read(serviceProviderFilter.getSelectedStub()));
+		srvc.setServiceType(serviceTypeService.read(serviceTypeFilter.getSelectedStub()));
 		MeasureUnit unit = measureUnitFilter.needFilter() ?
-						   new MeasureUnit(measureUnitFilter.getSelectedStub().getId()) : null;
+						   measureUnitService.readFull(measureUnitFilter.getSelectedStub()) : null;
 		srvc.setMeasureUnit(unit);
 		srvc.setExternalCode(service.getExternalCode());
 

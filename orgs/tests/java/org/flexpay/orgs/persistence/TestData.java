@@ -10,6 +10,7 @@ public abstract class TestData {
 	public static final Stub<ServiceOrganization> SRV_ORG_UCHASTOK45 = new Stub<ServiceOrganization>(1L);
 
 	public static final Stub<ServiceProvider> SRV_PROVIDER_CN = new Stub<ServiceProvider>(1L);
+	public static final Stub<ServiceProvider> SRV_PROVIDER_TEST = new Stub<ServiceProvider>(2L);
 
 	public static final Stub<Bank> BANK_CN = new Stub<Bank>(1L);
 	public static final Stub<Bank> BANK_EIRC = new Stub<Bank>(2L);

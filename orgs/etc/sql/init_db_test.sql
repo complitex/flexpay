@@ -110,6 +110,12 @@ SELECT @service_provider_cn:=1;
 INSERT INTO orgs_service_provider_descriptions_tbl (version, name, language_id, service_provider_id)
 	VALUES (0, 'ПУ ЦН', @ru_id, @service_provider_cn);
 
+INSERT INTO orgs_service_providers_tbl(id, status, version, organization_id)
+	VALUES (2, 0, 0, @organization_tszh);
+SELECT @service_provider_test:=2;
+INSERT INTO orgs_service_provider_descriptions_tbl (version, name, language_id, service_provider_id)
+	VALUES (0, 'ПУ ТЕСТ', @ru_id, @service_provider_test);
+
 -- Init service organizations
 INSERT INTO common_data_source_descriptions_tbl (description) VALUES ('EIRC DS');
 select @sd:=last_insert_id();
