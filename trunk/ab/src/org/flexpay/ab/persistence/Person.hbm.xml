@@ -233,10 +233,7 @@
 		select distinct o
 		from Person o
 		left join fetch o.personIdentities pi
-		inner join fetch pi.identityType it
-		inner join fetch it.translations tr		
 		left join fetch pi.personIdentityAttributes
-		left join fetch o.personAttributes pa
 		where o.id=? and pi.status=0
 	</query>
 
