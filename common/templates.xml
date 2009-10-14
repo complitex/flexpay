@@ -160,6 +160,12 @@
 		</fileset>
 	</path>
 
+	<path id="groovy.lib">
+		<fileset dir="${common.dir}/lib">
+			<include name="groovy/*.jar" />
+		</fileset>
+	</path>
+
 	<!-- NotNull instrumentation javac task -->
 	<taskdef name="javac2"
 			 classname="com.intellij.ant.Javac2"
@@ -171,8 +177,8 @@
 				destdir="${build.dir}/classes"
 				deprecation="on" source="1.5" target="1.5" debug="on" encoding="utf8"
 				classpathref="classpath">
-			<compilerarg value="-Xlint:-path"/>
-			<compilerarg value="-Xlint:unchecked"/>
+			<compilerarg value="-Xlint:-path" />
+			<compilerarg value="-Xlint:unchecked" />
 		</javac2>
 	</target>
 
@@ -181,8 +187,8 @@
 				destdir="${build.dir}/classes"
 				debug="on" deprecation="on" source="1.5" target="1.5" encoding="utf8"
 				classpathref="classpath">
-			<compilerarg value="-Xlint:-path"/>
-			<compilerarg value="-Xlint:unchecked"/>
+			<compilerarg value="-Xlint:-path" />
+			<compilerarg value="-Xlint:unchecked" />
 		</javac2>
 	</target>
 
@@ -437,13 +443,13 @@
 		</exec>
 
 		<!--<replaceregexp file="${build.dir}/web/WEB-INF/jsp/common/about.jsp"-->
-					   <!--encoding="UTF-8"-->
-					   <!--match="@@@FILESLIST@@@"-->
-					   <!--replace="${svnstatus}" />-->
+		<!--encoding="UTF-8"-->
+		<!--match="@@@FILESLIST@@@"-->
+		<!--replace="${svnstatus}" />-->
 		<replace file="${build.dir}/web/WEB-INF/jsp/common/about.jsp"
-					   encoding="UTF-8"
-					   token="@@@FILESLIST@@@"
-					   value="${svnstatus}" />
+				 encoding="UTF-8"
+				 token="@@@FILESLIST@@@"
+				 value="${svnstatus}" />
 
 		<exec executable="svn"
 			  dir="${basedir}"
@@ -452,6 +458,22 @@
 		</exec>
 
 		<echo file="${build.dir}/web/WEB-INF/jsp/common/diff.txt" message="${svndiffres}" />
+
+	</target>
+
+
+	<!-- Groovy ant task -->
+	<taskdef name="groovy"
+         classname="org.codehaus.groovy.ant.Groovy"
+         classpathref="groovy.lib"/>
+
+	<target name="template.configure.module" description="Configure module properties"
+			unless="no.configure">
+		<echo message="Running module ${module.name} configuration" />
+
+		<groovy src="${common.dir}/etc/util/groovy/Configurer.groovy">
+			<arg line="${module.name}" />
+		</groovy>
 
 	</target>
 
