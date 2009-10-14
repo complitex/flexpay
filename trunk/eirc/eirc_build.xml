@@ -128,6 +128,9 @@
 	</target>
 
     <target name="eirc.prepare.war.internal" depends="bti.prepare.war.internal,payments.prepare.war.internal">
+		<antcall target="template.configure.module">
+			<param name="module.name" value="eirc" />
+		</antcall>
         <fileset id="eirc.web.resources" dir="${eirc.dir}/web" />
         <antcall target="template.prepare.war">
             <param name="to_dir" value="" />
