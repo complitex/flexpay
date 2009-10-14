@@ -35,28 +35,8 @@
             <result type="tiles">sz.main.import_import</result>
         </action>
 
-        <action name="doSzFileUploadAjax" class="szFileUploadAjaxAction">
-            <result>/WEB-INF/jsp/sz/response.jsp</result>
-            <result name="error">/WEB-INF/jsp/sz/response.jsp</result>
-        </action>
-
-		<action name="doUpload" class="importFileAction">
-			<result name="oszn_absent" type="tiles">sz.import.file.upload.oszn_absent</result>
-            <result name="input" type="tiles">sz.import.file.upload.form</result>
-		</action>
-
-		<action name="importFilesList" class="importFilesListAction">
-			<result name="success" type="tiles">sz.import_file.list</result>
-		</action>
-
-		<action name="szFileOperation" class="szFileOperationAction">
-			<result name="success" type="redirect-action">
-                <param name="actionName">importFilesList.action</param>
-                <param name="parse">true</param>
-                <param name="pager.pageNumber">${pager.pageNumber}</param>
-            </result>
-		</action>
-
 	</package>
+
+    <include file="org/flexpay/sz/actions/szfile/sruts.xml" />
 
 </struts>

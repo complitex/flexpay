@@ -20,9 +20,8 @@ public abstract class FPFileActionSupport extends FPActionSupport {
 	private String uploadFileName;
 	private String uploadContentType;
 
-	private String moduleName;
-
-	private FPFileService fpFileService;
+	protected String moduleName;
+	protected FPFileService fpFileService;
 
 	@Override
 	public String execute() throws Exception {

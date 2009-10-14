@@ -1,6 +1,7 @@
 package org.flexpay.sz.service;
 
 import org.flexpay.sz.persistence.Oszn;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -20,6 +21,7 @@ public interface OsznService {
 	 *
 	 * @return List of Entity
 	 */
+	@NotNull
 	List<Oszn> getEntities();
 
 }

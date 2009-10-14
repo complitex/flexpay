@@ -278,7 +278,7 @@ var FF = {
                 });
             pausecomp(100);
         } else {
-            if (hasReqParents || reqParentsCount == parentsCount) {
+            if (hasReqParents || (reqParentsCount == parentsCount && parentsCount > 0)) {
                 string.attr("readonly", true);
             }
         }

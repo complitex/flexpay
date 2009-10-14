@@ -1,52 +1,60 @@
-package org.flexpay.sz.actions;
+package org.flexpay.sz.actions.szfile;
 
-import org.flexpay.common.actions.FPActionWithPagerSupport;
+import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.persistence.file.FPFileStatus;
 import org.flexpay.common.process.ProcessManager;
 import org.flexpay.common.service.FPFileService;
 import org.flexpay.common.util.CollectionUtils;
+import static org.flexpay.common.util.CollectionUtils.set;
 import org.flexpay.sz.persistence.SzFile;
+import static org.flexpay.sz.process.szfile.SzFileOperationJobParameterNames.FILE_IDS;
 import org.flexpay.sz.service.SzFileService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.io.Serializable;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-public class SzFileOperationAction extends FPActionWithPagerSupport<SzFile> {
+public class SzFileOperationAction extends FPActionSupport {
 
-	private Set<Long> szFileIds = new HashSet<Long>();
+	public final static String OPERATION_LOAD_TO_DB = "loadToDB";
+	public final static String OPERATION_LOAD_FROM_DB = "loadFromDB";
+	public final static String OPERATION_DELETE_FULL = "fullDelete";
+	public final static String OPERATION_DELETE_FROM_DB = "deleteFromDB";
+
+	private Set<Long> objectIds = set();
 	private String action1;
+	private String message = "";
 
-	private ProcessManager processManager;
 	private String moduleName;
+	private ProcessManager processManager;
 	private SzFileService szFileService;
 	private FPFileService fpFileService;
 
 	@NotNull
+	@Override
 	public String doExecute() throws Exception {
 
-		log.debug("Action - {}; SzFileIds - {}", action1, szFileIds);
+		log.debug("action - {}; objectIds - {}", action1, objectIds);
 
-		if (szFileIds == null || szFileIds.isEmpty()) {
+		if (objectIds == null || objectIds.isEmpty()) {
 			return SUCCESS;
 		}
 
 		String processName;
 		Long statusCode;
 
-		if ("loadToDB".equals(action1)) {
+		if (OPERATION_LOAD_TO_DB.equals(action1)) {
 			processName = "SzFileLoadToDbProcess";
 			statusCode = SzFile.PROCESSING_FILE_STATUS;
-		} else if ("fullDelete".equals(action1)) {
+		} else if (OPERATION_DELETE_FULL.equals(action1)) {
 			processName = "SzFileFullDeleteProcess";
 			statusCode = SzFile.DELETING_FILE_STATUS;
-		} else if ("loadFromDB".equals(action1)) {
+		} else if (OPERATION_LOAD_FROM_DB.equals(action1)) {
 			processName = "SzFileLoadFromDbProcess";
 			statusCode = SzFile.PROCESSING_FILE_STATUS;
-		} else if ("deleteFromDB".equals(action1)) {
+		} else if (OPERATION_DELETE_FROM_DB.equals(action1)) {
 			processName = "SzFileDeleteFromDbProcess";
 			statusCode = SzFile.DELETING_FILE_STATUS;
 		} else {
@@ -55,13 +63,13 @@ public class SzFileOperationAction extends FPActionWithPagerSupport<SzFile> {
 		}
 		FPFileStatus status = fpFileService.getStatusByCodeAndModule(statusCode, moduleName);
 
-		szFileService.updateStatus(szFileIds, status);
+		szFileService.updateStatus(objectIds, status);
 
 		Map<Serializable, Serializable> contextVariables = CollectionUtils.map();
-		contextVariables.put("fileIds", (Serializable) szFileIds);
+		contextVariables.put(FILE_IDS, (Serializable) objectIds);
 		processManager.createProcess(processName, contextVariables);
 
-		log.debug("Process for operation \"{}\" and fileIds={} started", action1, szFileIds);
+		log.debug("Process for operation \"{}\" and fileIds={} started", action1, objectIds);
 
 		return SUCCESS;
 	}
@@ -74,6 +82,7 @@ public class SzFileOperationAction extends FPActionWithPagerSupport<SzFile> {
 	 * @return {@link #ERROR} by default
 	 */
 	@NotNull
+	@Override
 	protected String getErrorResult() {
 		return SUCCESS;
 	}
@@ -82,8 +91,12 @@ public class SzFileOperationAction extends FPActionWithPagerSupport<SzFile> {
 		this.action1 = action1;
 	}
 
-	public void setSzFileIds(Set<Long> szFileIds) {
-		this.szFileIds = szFileIds;
+	public void setObjectIds(Set<Long> objectIds) {
+		this.objectIds = objectIds;
+	}
+
+	public String getMessage() {
+		return message;
 	}
 
 	@Required

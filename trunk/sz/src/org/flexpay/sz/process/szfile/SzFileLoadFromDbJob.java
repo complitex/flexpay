@@ -1,11 +1,11 @@
 package org.flexpay.sz.process.szfile;
 
 import org.flexpay.common.exception.FlexPayException;
+import org.flexpay.common.persistence.FPModule;
 import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.persistence.file.FPFileStatus;
-import org.flexpay.common.persistence.FPModule;
-import org.flexpay.common.process.job.Job;
 import org.flexpay.common.process.ProcessLogger;
+import org.flexpay.common.process.job.Job;
 import org.flexpay.common.service.FPFileService;
 import org.flexpay.common.util.FPFileUtil;
 import org.flexpay.sz.convert.NotSupportedOperationException;
@@ -18,15 +18,16 @@ import org.flexpay.sz.persistence.CharacteristicRecord;
 import org.flexpay.sz.persistence.ServiceTypeRecord;
 import org.flexpay.sz.persistence.SubsidyRecord;
 import org.flexpay.sz.persistence.SzFile;
+import static org.flexpay.sz.process.szfile.SzFileOperationJobParameterNames.FILE_IDS;
 import org.flexpay.sz.service.RecordService;
 import org.flexpay.sz.service.SzFileService;
-import org.springframework.beans.factory.annotation.Required;
 import org.slf4j.Logger;
+import org.springframework.beans.factory.annotation.Required;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -39,15 +40,16 @@ public class SzFileLoadFromDbJob extends Job {
 	private FPFileService fpFileService;
 
 	@SuppressWarnings({"unchecked"})
+	@Override
 	public String execute(Map<Serializable, Serializable> parameters) throws FlexPayException {
 
 		Logger pLogger = ProcessLogger.getLogger(getClass());
 
-		Set<Long> fileIds = (Set<Long>) parameters.get("fileIds");
+		Set<Long> fileIds = (Set<Long>) parameters.get(FILE_IDS);
 
 		log.debug("Process szFile load from DB for fileIds = {} started", fileIds);
 
-		Collection<SzFile> szFiles = szFileService.listSzFilesByIds(fileIds);
+		List<SzFile> szFiles = szFileService.listSzFilesByIds(fileIds);
 
 		if (szFiles == null || szFiles.isEmpty()) {
 			log.warn("Invalid File Ids");
@@ -65,6 +67,9 @@ public class SzFileLoadFromDbJob extends Job {
 			try {
 				if (!SzFileUtil.isLoadedToDb(szFile)) {
 					pLogger.error("SzFile with id {} not loaded to DB", szFile.getId());
+					FPFileStatus status = fpFileService.getStatusByCodeAndModule(SzFile.PROCESSED_WITH_ERRORS_FILE_STATUS, szFile.getUploadedFile().getModule().getName());
+					szFile.setStatus(status);
+					szFileService.update(szFile);
 					continue;
 				}
 			} catch (NotSupportedOperationException e) {

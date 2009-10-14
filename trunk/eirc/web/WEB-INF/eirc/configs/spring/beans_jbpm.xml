@@ -12,6 +12,7 @@
 		  p:registryFileParser-ref="registryFileParser"
           p:mbCorrectionsFileParser-ref="mbCorrectionsFileParser"
           p:mbRegistryFileParser-ref="mbChargesFileParser"
+          p:fpFileService-ref="fpFileService"
           scope="prototype" />
 
 	<bean name="registryProcessJob"

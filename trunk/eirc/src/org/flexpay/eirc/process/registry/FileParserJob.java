@@ -1,9 +1,11 @@
 package org.flexpay.eirc.process.registry;
 
 import org.flexpay.common.exception.FlexPayException;
+import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.process.ProcessLogger;
 import org.flexpay.common.process.job.Job;
+import org.flexpay.common.service.FPFileService;
 import org.flexpay.eirc.sp.FileParser;
 import org.springframework.beans.factory.annotation.Required;
 
@@ -12,16 +14,22 @@ import java.util.Map;
 
 public class FileParserJob extends Job {
 
-	public static final String PARAM_FILE = "file";
+	public static final String PARAM_FILE_ID = "fileId";
 	public static final String PARAM_FILE_TYPE = "fileType";
 
 	private FileParser registryFileParser;
 	private FileParser mbCorrectionsFileParser;
 	private FileParser mbRegistryFileParser;
+	private FPFileService fpFileService;
 
 	public String execute(Map<Serializable, Serializable> parameters) throws FlexPayException {
 
-		FPFile spFile = (FPFile) parameters.get(PARAM_FILE);
+		Long spFileId = (Long) parameters.get(PARAM_FILE_ID);
+		FPFile spFile = fpFileService.read(new Stub<FPFile>(spFileId));
+		if (spFile == null) {
+			log.error("Can't get spFile from DB (id = " + spFileId + ")");
+			return RESULT_ERROR;
+		}
 		String fileType = (String) parameters.get(PARAM_FILE_TYPE);
 
 		try {
@@ -55,6 +63,11 @@ public class FileParserJob extends Job {
 	@Required
 	public void setMbRegistryFileParser(FileParser mbRegistryFileParser) {
 		this.mbRegistryFileParser = mbRegistryFileParser;
+	}
+
+	@Required
+	public void setFpFileService(FPFileService fpFileService) {
+		this.fpFileService = fpFileService;
 	}
 
 }

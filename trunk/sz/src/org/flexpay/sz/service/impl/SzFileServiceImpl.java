@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Collection;
 import java.util.List;
 
-@Transactional (readOnly = true, rollbackFor = Exception.class)
+@Transactional(readOnly = true)
 public class SzFileServiceImpl implements SzFileService {
 
 	private Logger log = LoggerFactory.getLogger(getClass());
@@ -30,6 +30,7 @@ public class SzFileServiceImpl implements SzFileService {
 	 * @return created ImportFile object
 	 */
 	@Transactional (readOnly = false)
+	@Override
 	public SzFile create(SzFile importFile) throws FlexPayException {
 		szFileDao.create(importFile);
 		log.debug("Created ImportFile: {}", importFile);
@@ -37,6 +38,7 @@ public class SzFileServiceImpl implements SzFileService {
 	}
 
 	@Transactional (readOnly = false)
+	@Override
 	public void delete(SzFile szFile) {
 		szFileDao.delete(szFile);
 	}
@@ -47,6 +49,7 @@ public class SzFileServiceImpl implements SzFileService {
 	 * @param id SzFile key
 	 * @return SzFile object, or <code>null</code> if object not found
 	 */
+	@Override
 	public SzFile read(Long id) {
 		return szFileDao.read(id);
 	}
@@ -57,6 +60,7 @@ public class SzFileServiceImpl implements SzFileService {
 	 * @param id SzFile key
 	 * @return full SzFile object, or <code>null</code> if object not found
 	 */
+	@Override
 	public SzFile readFull(Long id) {
 		return szFileDao.readFull(id);
 	}
@@ -69,20 +73,24 @@ public class SzFileServiceImpl implements SzFileService {
 	 * @throws FlexPayException if SzFile object is invalid
 	 */
 	@Transactional (readOnly = false)
+	@Override
 	public SzFile update(SzFile importFile) throws FlexPayException {
 		szFileDao.update(importFile);
 		return importFile;
 	}
 
 	@Transactional (readOnly = false)
+	@Override
 	public void updateStatus(Collection<Long> fileIds, FPFileStatus status) throws FlexPayException {
 		szFileDaoExt.updateStatus(fileIds, status);
 	}
 
+	@Override
 	public List<SzFile> listSzFiles(Page<SzFile> pager) {
 		return szFileDao.findSzFiles(pager);
 	}
 
+	@Override
 	public List<SzFile> listSzFilesByIds(Collection<Long> fileIds) {
 		return szFileDao.findSzFilesByIds(fileIds);
 	}

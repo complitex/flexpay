@@ -16,6 +16,7 @@ import org.flexpay.sz.persistence.CharacteristicRecord;
 import org.flexpay.sz.persistence.ServiceTypeRecord;
 import org.flexpay.sz.persistence.SubsidyRecord;
 import org.flexpay.sz.persistence.SzFile;
+import static org.flexpay.sz.process.szfile.SzFileOperationJobParameterNames.FILE_IDS;
 import org.flexpay.sz.service.RecordService;
 import org.flexpay.sz.service.SzFileService;
 import org.slf4j.Logger;
@@ -23,7 +24,7 @@ import org.springframework.beans.factory.annotation.Required;
 
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -36,15 +37,16 @@ public class SzFileLoadToDbJob extends Job {
 	private FPFileService fpFileService;
 
 	@SuppressWarnings ({"unchecked"})
+	@Override
 	public String execute(Map<Serializable, Serializable> parameters) throws FlexPayException {
 
 		Logger pLogger = ProcessLogger.getLogger(getClass());
 
-		Set<Long> fileIds = (Set<Long>) parameters.get("fileIds");
+		Set<Long> fileIds = (Set<Long>) parameters.get(FILE_IDS);
 
 		log.debug("Process szFile load to DB for fileIds = {} started", fileIds);
 
-		Collection<SzFile> szFiles = szFileService.listSzFilesByIds(fileIds);
+		List<SzFile> szFiles = szFileService.listSzFilesByIds(fileIds);
 
 		if (szFiles == null || szFiles.isEmpty()) {
 			log.warn("Invalid File Ids");

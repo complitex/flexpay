@@ -1,5 +1,7 @@
 package org.flexpay.common.persistence.filter;
 
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
 import org.flexpay.common.util.config.ApplicationConfig;
 
 import java.util.Date;
@@ -15,10 +17,12 @@ public class BeginDateFilter extends DateFilterBase {
 		super(date);
 	}
 
+	@Override
 	public Date getDate() {
 		return beginDate;
 	}
 
+	@Override
 	public void setDate(Date date) {
 		if (date == null || date.compareTo(getEmptyDate()) < 0) {
 			beginDate = getEmptyDate();
@@ -26,7 +30,17 @@ public class BeginDateFilter extends DateFilterBase {
 		beginDate = date;
 	}
 
+	@Override
 	protected Date getEmptyDate() {
 		return ApplicationConfig.getFutureInfinite();
 	}
+
+	@Override
+	public String toString() {
+		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
+				append("isReadonly", isReadOnly()).
+				append("beginDate", beginDate).
+				toString();
+	}
+
 }

@@ -90,7 +90,7 @@
                     </a>
                 </td>
                 <td class="col">
-                    <a href="<s:url value="/rulesFileDownloadServlet"><s:param name="rulesFileId" value="%{id}"/></s:url>">
+                    <a href="<s:url value="/download/" includeParams="none" /><s:property value="file.id" />">
                         <s:property value="file.originalName"/>
                     </a>
                 </td>
