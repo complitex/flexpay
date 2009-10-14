@@ -7,7 +7,7 @@
 		   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
     <!-- SP files -->
-	<bean id="spFileCreateAction" parent="staticPageAction"
+	<bean id="spFileCreatePageAction" parent="staticPageAction"
           p:crumbNameKey="eirc.crumbs.sp_file_import"
 		  scope="prototype" />
 

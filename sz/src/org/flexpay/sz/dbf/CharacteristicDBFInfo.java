@@ -11,6 +11,7 @@ public class CharacteristicDBFInfo extends DBFInfo<CharacteristicRecord> {
 		super(originalFile);
 	}
 
+	@Override
 	CharacteristicRecord create(Object[] rowData) throws IOException {
 		CharacteristicRecord characteristic = new CharacteristicRecord();
 		characteristic.setCod((Double) rowData[getInd("cod")]);
@@ -34,6 +35,7 @@ public class CharacteristicDBFInfo extends DBFInfo<CharacteristicRecord> {
 		return characteristic;
 	}
 
+	@Override
 	Object[] getRowData(CharacteristicRecord characteristic) throws IOException {
 		Object[] rowData = new Object[getDBFFields().length];
 		rowData[getInd("cod")] = characteristic.getCod();
@@ -56,4 +58,5 @@ public class CharacteristicDBFInfo extends DBFInfo<CharacteristicRecord> {
 
 		return rowData;
 	}
+
 }

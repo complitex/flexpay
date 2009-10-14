@@ -1,36 +1,38 @@
 package org.flexpay.sz.process.szfile;
 
 import org.flexpay.common.exception.FlexPayException;
-import org.flexpay.common.process.job.Job;
 import org.flexpay.common.process.ProcessLogger;
-import org.flexpay.common.util.FPFileUtil;
+import org.flexpay.common.process.job.Job;
+import org.flexpay.common.service.FPFileService;
 import org.flexpay.sz.convert.NotSupportedOperationException;
 import org.flexpay.sz.convert.SzFileUtil;
 import org.flexpay.sz.persistence.SzFile;
+import static org.flexpay.sz.process.szfile.SzFileOperationJobParameterNames.FILE_IDS;
 import org.flexpay.sz.service.SzFileService;
-import org.springframework.beans.factory.annotation.Required;
 import org.slf4j.Logger;
+import org.springframework.beans.factory.annotation.Required;
 
-import java.io.File;
 import java.io.Serializable;
-import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 public class SzFileFullDeleteJob extends Job {
 
+	private FPFileService fpFileService;
 	private SzFileService szFileService;
 
 	@SuppressWarnings({"unchecked"})
+	@Override
 	public String execute(Map<Serializable, Serializable> parameters) throws FlexPayException {
 
 		Logger pLogger = ProcessLogger.getLogger(getClass());
 
-		Set<Long> fileIds = (Set<Long>) parameters.get("fileIds");
+		Set<Long> fileIds = (Set<Long>) parameters.get(FILE_IDS);
 
 		log.debug("Process szFile full delete for fileIds = {} started", fileIds);
 
-		Collection<SzFile> szFiles = szFileService.listSzFilesByIds(fileIds);
+		List<SzFile> szFiles = szFileService.listSzFilesByIds(fileIds);
 
 		if (szFiles == null || szFiles.isEmpty()) {
 			log.warn("Invalid File Ids");
@@ -48,19 +50,21 @@ public class SzFileFullDeleteJob extends Job {
 			}
 
 			if (szFile.getFileToDownload() != null) {
-				File responseFile = FPFileUtil.getFileOnServer(szFile.getFileToDownload());
-				responseFile.delete();
+				fpFileService.deleteFromFileSystem(szFile.getFileToDownload());
 			}
 
-			File requestFile = FPFileUtil.getFileOnServer(szFile.getUploadedFile());
-			requestFile.delete();
-
+			fpFileService.deleteFromFileSystem(szFile.getUploadedFile());
 			szFileService.delete(szFile);
 
 			pLogger.info("Full deleting szFile with id = {} finished", szFile.getId());
 		}
 
 		return RESULT_NEXT;
+	}
+
+	@Required
+	public void setFpFileService(FPFileService fpFileService) {
+		this.fpFileService = fpFileService;
 	}
 
 	@Required

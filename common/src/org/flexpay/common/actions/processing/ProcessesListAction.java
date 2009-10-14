@@ -53,6 +53,9 @@ public class ProcessesListAction extends FPActionWithPagerSupport<Process> imple
 
 	private List<Process> processes() {
 
+		log.debug("beginDateFilter = {}\nendDateFilter = {}", beginDateFilter, endDateFilter);
+		log.debug("processStateFilter = {}\nprocessNameFilter = {}", processStateFilter, processNameFilter);
+
 		Date startFrom = beginDateFilter.dateIsNotEmpty() ? beginDateFilter.getDate() : null;
 		Date endBefore = endDateFilter.dateIsNotEmpty() ? endDateFilter.getDate() : null;
 

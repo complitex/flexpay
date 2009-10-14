@@ -17,6 +17,7 @@ public class ConfigLoader extends org.flexpay.eirc.util.config.ConfigLoader {
 	 * @return ApplicationConfig
 	 */
 	@NotNull
+	@Override
 	protected ApplicationConfig getNewConfig() {
 		return new ApplicationConfig();
 	}
@@ -26,6 +27,7 @@ public class ConfigLoader extends org.flexpay.eirc.util.config.ConfigLoader {
 	 *
 	 * @param d Digester
 	 */
+	@Override
 	protected void addRules(Digester d) {
 		super.addRules(d);
 
@@ -33,4 +35,5 @@ public class ConfigLoader extends org.flexpay.eirc.util.config.ConfigLoader {
 		d.addCallMethod("flexpay/szDefaultDbfFileEncoding", "setSzDefaultDbfFileEncoding", 0);
 
 	}
+
 }

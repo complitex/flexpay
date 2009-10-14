@@ -118,6 +118,8 @@ public class SzFile extends DomainObject {
 				append("userName", userName).
 				append("uploadedFile", uploadedFile).
 				append("fileToDownload", fileToDownload).
+				append("type", type).
+				append("status", status).
 				toString();
 	}
 

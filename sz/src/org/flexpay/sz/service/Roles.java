@@ -1,9 +1,17 @@
 package org.flexpay.sz.service;
 
+/**
+ * Set of predefined security roles for module
+ */
 public abstract class Roles {
 
+	public static final String PREFIX = "ROLE_SZ_";
+
+	public static final String BASIC = PREFIX + "BASIC";
+
     // sz file related permissions
-    private static final String SZ_FILE_PREFIX = "ROLE_SZ_SZ_FILE_";
+    public static final String SZ_FILE_PREFIX = PREFIX + "SZ_FILE_";
+
 	public static final String SZ_FILE_READ = SZ_FILE_PREFIX + "READ";
 	public static final String SZ_FILE_DELETE = SZ_FILE_PREFIX + "DELETE";
     public static final String SZ_FILE_DOWNLOAD_FILE = SZ_FILE_PREFIX + "DOWNLOAD_FILE";

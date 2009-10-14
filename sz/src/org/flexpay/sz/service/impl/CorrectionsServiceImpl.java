@@ -14,51 +14,18 @@ import org.flexpay.sz.persistence.corrections.BuildingNumberCorrection;
 import org.flexpay.sz.persistence.corrections.DistrictCorrection;
 import org.flexpay.sz.persistence.corrections.StreetCorrection;
 import org.flexpay.sz.service.CorrectionsService;
+import org.springframework.beans.factory.annotation.Required;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+@Transactional(readOnly = true)
 public class CorrectionsServiceImpl implements CorrectionsService {
 
 	private DistrictCorrectionDao districtCorrectionDao;
 	private BuildingCorrectionDao buildingCorrectionDao;
 	private StreetCorrectionDao streetCorrectionDao;
 	private ApartmentCorrectionDao apartmentCorrectionDao;
-
-	/**
-	 * Setter for property 'districtCorrectionDao'.
-	 *
-	 * @param districtCorrectionDao Value to set for property 'districtCorrectionDao'.
-	 */
-	public void setDistrictCorrectionDao(DistrictCorrectionDao districtCorrectionDao) {
-		this.districtCorrectionDao = districtCorrectionDao;
-	}
-
-	/**
-	 * Setter for property 'buildingCorrectionDao'.
-	 *
-	 * @param buildingCorrectionDao Value to set for property 'buildingCorrectionDao'.
-	 */
-	public void setBuildingCorrectionDao(BuildingCorrectionDao buildingCorrectionDao) {
-		this.buildingCorrectionDao = buildingCorrectionDao;
-	}
-
-	/**
-	 * Setter for property 'streetCorrectionDao'.
-	 *
-	 * @param streetCorrectionDao Value to set for property 'streetCorrectionDao'.
-	 */
-	public void setStreetCorrectionDao(StreetCorrectionDao streetCorrectionDao) {
-		this.streetCorrectionDao = streetCorrectionDao;
-	}
-
-	/**
-	 * Setter for property 'apartmentCorrectionDao'.
-	 *
-	 * @param apartmentCorrectionDao Value to set for property 'apartmentCorrectionDao'.
-	 */
-	public void setApartmentCorrectionDao(ApartmentCorrectionDao apartmentCorrectionDao) {
-		this.apartmentCorrectionDao = apartmentCorrectionDao;
-	}
 
 	/**
 	 * Find District correction for external organization
@@ -69,6 +36,7 @@ public class CorrectionsServiceImpl implements CorrectionsService {
 	 * @throws org.flexpay.common.exception.FlexPayException
 	 *          if correction could not be found
 	 */
+	@Override
 	public DistrictCorrection findDistrictCorrection(Oszn oszn, String externalCode)
 			throws FlexPayException {
 
@@ -82,6 +50,7 @@ public class CorrectionsServiceImpl implements CorrectionsService {
 				"error.correction.district", oszn.getDescription(), externalCode);
 	}
 
+	@Override
 	public StreetCorrection findStreetCorrection(Oszn oszn, String externalCode, District district)
 			throws FlexPayException {
 
@@ -95,6 +64,7 @@ public class CorrectionsServiceImpl implements CorrectionsService {
 				"error.correction.street", oszn.getDescription(), externalCode);
 	}
 
+	@Override
 	public BuildingNumberCorrection findBuildingCorrection(Oszn oszn, String externalCode, String bulk, Street street)
 			throws FlexPayException {
 
@@ -108,6 +78,7 @@ public class CorrectionsServiceImpl implements CorrectionsService {
 				"error.correction.building", oszn.getDescription(), externalCode);
 	}
 
+	@Override
 	public ApartmentNumberCorrection findApartmentCorrection(Oszn oszn, String externalCode, Building building)
 			throws FlexPayException {
 
@@ -120,4 +91,25 @@ public class CorrectionsServiceImpl implements CorrectionsService {
 		throw new FlexPayException("Cannot find apartment correction",
 				"error.correction.apartment", oszn.getDescription(), externalCode);
 	}
+
+	@Required
+	public void setDistrictCorrectionDao(DistrictCorrectionDao districtCorrectionDao) {
+		this.districtCorrectionDao = districtCorrectionDao;
+	}
+
+	@Required
+	public void setBuildingCorrectionDao(BuildingCorrectionDao buildingCorrectionDao) {
+		this.buildingCorrectionDao = buildingCorrectionDao;
+	}
+
+	@Required
+	public void setStreetCorrectionDao(StreetCorrectionDao streetCorrectionDao) {
+		this.streetCorrectionDao = streetCorrectionDao;
+	}
+
+	@Required
+	public void setApartmentCorrectionDao(ApartmentCorrectionDao apartmentCorrectionDao) {
+		this.apartmentCorrectionDao = apartmentCorrectionDao;
+	}
+
 }

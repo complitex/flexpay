@@ -12,6 +12,7 @@ public class SubsidyRecordDBFInfo extends DBFInfo<SubsidyRecord> {
 		super(originalFile);
 	}
 
+	@Override
 	SubsidyRecord create(Object[] rowData) throws IOException {
 		SubsidyRecord subsidyRecord = new SubsidyRecord();
 		subsidyRecord.setSurName(((String) rowData[getInd("sur_nam")]).trim());
@@ -59,6 +60,7 @@ public class SubsidyRecordDBFInfo extends DBFInfo<SubsidyRecord> {
 		return subsidyRecord;
 	}
 
+	@Override
 	Object[] getRowData(SubsidyRecord subsidyRecord) throws IOException {
 		Object[] rowData = new Object[getDBFFields().length];
 

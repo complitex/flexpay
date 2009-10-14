@@ -1,22 +1,23 @@
-package org.flexpay.sz.actions;
+package org.flexpay.sz.actions.szfile;
 
 import org.flexpay.common.actions.FPActionWithPagerSupport;
 import org.flexpay.common.exception.FlexPayException;
+import static org.flexpay.common.util.CollectionUtils.list;
 import org.flexpay.sz.persistence.SzFile;
 import org.flexpay.sz.service.SzFileService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
-import java.io.File;
 import java.util.List;
 
-public class ImportFilesListAction extends FPActionWithPagerSupport<SzFile> {
+public class SzFilesListAction extends FPActionWithPagerSupport<SzFile> {
 
-	private List<SzFile> szFiles;
+	private List<SzFile> szFiles = list();
 
 	private SzFileService szFileService;
 
 	@NotNull
+	@Override
 	public String doExecute() throws FlexPayException {
 
 		szFiles = szFileService.listSzFiles(getPager());
@@ -32,12 +33,9 @@ public class ImportFilesListAction extends FPActionWithPagerSupport<SzFile> {
 	 * @return {@link #ERROR} by default
 	 */
 	@NotNull
+	@Override
 	protected String getErrorResult() {
 		return SUCCESS;
-	}
-
-	public String getSeparator() {
-		return File.separator;
 	}
 
 	public List<SzFile> getSzFiles() {

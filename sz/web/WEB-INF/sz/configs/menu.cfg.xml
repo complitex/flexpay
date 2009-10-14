@@ -55,14 +55,14 @@
     <bean  parent="sz_dicts_otherDictionaries"
             p:name="sz.import_files_list"
             p:title="sz.menu34.files"
-            p:action="importFilesList"
+            p:action="szFilesList"
             p:parent-ref="sz_dicts_otherDictionaries"
             p:userRole="ROLE_MENU_SZ_DICTS_IMPORTED_FILES"
             />
     <bean  parent="sz_import_import"
             p:name="sz.upload"
             p:title="sz.menu34.files.upload"
-            p:action="doUpload"
+            p:action="szFileCreate"
             p:parent-ref="sz_import_import"
             p:userRole="ROLE_MENU_SZ_IMPORT_UPLOAD"
             />

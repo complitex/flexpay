@@ -1,25 +1,31 @@
-package org.flexpay.sz.actions;
+package org.flexpay.sz.actions.szfile;
 
 import org.flexpay.common.actions.FPActionSupport;
+import static org.flexpay.common.util.CollectionUtils.list;
+import static org.flexpay.common.util.CollectionUtils.map;
 import org.flexpay.sz.persistence.Oszn;
 import org.flexpay.sz.service.OsznService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.text.DateFormatSymbols;
-import java.util.*;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
-public class ImportFileAction extends FPActionSupport {
+public class SzFileCreatePageAction extends FPActionSupport {
 
 	private Integer curYear;
 	private Integer curMonth;
 
-	private Map<Integer, String> months = new HashMap<Integer, String>();
-	private List<Oszn> osznList;
+	private Map<Integer, String> months = map();
+	private List<Oszn> osznList = list();
 
 	private OsznService osznService;
 
 	@NotNull
+	@Override
 	public String doExecute() {
 
 		String[] ms = new DateFormatSymbols(getLocale()).getMonths();
@@ -35,10 +41,11 @@ public class ImportFileAction extends FPActionSupport {
 
 		osznList = osznService.getEntities();
 		if (osznList.isEmpty()) {
-			return "oszn_absent";
+			addActionError(getText("sz.file_upload.oszn_absent"));
+			return SUCCESS;
 		}
 
-		return INPUT;
+		return SUCCESS;
 	}
 
 	/**
@@ -49,8 +56,9 @@ public class ImportFileAction extends FPActionSupport {
 	 * @return {@link #ERROR} by default
 	 */
 	@NotNull
+	@Override
 	protected String getErrorResult() {
-		return osznList.isEmpty() ? "oszn_absent" : INPUT;
+		return osznList.isEmpty() ? "oszn_absent" : SUCCESS;
 	}
 
 	public Map<Integer, String> getMonths() {

@@ -54,7 +54,7 @@ public class SpFileAction extends FPActionSupport {
 
 		if (LOAD_TO_DB_ACTION.equals(action)) {
 			Map<Serializable, Serializable> contextVariables = CollectionUtils.map();
-			contextVariables.put(FileParserJob.PARAM_FILE, spFile);
+			contextVariables.put(FileParserJob.PARAM_FILE_ID, spFile.getId());
 			contextVariables.put(FileParserJob.PARAM_FILE_TYPE, getFileType(spFile));
 			processId = processManager.createProcess("ParseRegistryProcess", contextVariables);
 			log.debug("Load to db process id {}", processId);

@@ -11,6 +11,7 @@ public class ServiceTypeRecordDBFInfo extends DBFInfo<ServiceTypeRecord> {
 		super(originalFile);
 	}
 
+	@Override
 	ServiceTypeRecord create(Object[] rowData) throws IOException {
 
 		ServiceTypeRecord record = new ServiceTypeRecord();
@@ -76,6 +77,7 @@ public class ServiceTypeRecordDBFInfo extends DBFInfo<ServiceTypeRecord> {
 		return (int) Math.floor(d1);
 	}
 
+	@Override
 	Object[] getRowData(ServiceTypeRecord element) throws IOException {
 
 		Object[] row = new Object[getDBFFields().length];
@@ -105,4 +107,5 @@ public class ServiceTypeRecordDBFInfo extends DBFInfo<ServiceTypeRecord> {
 
 		return row;
 	}
+
 }

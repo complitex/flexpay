@@ -1,8 +1,8 @@
 package org.flexpay.sz.dbf;
 
 import com.linuxense.javadbf.DBFReader;
-import org.flexpay.common.persistence.file.FPFile;
 import org.apache.commons.io.IOUtils;
+import org.flexpay.common.persistence.file.FPFile;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -55,4 +55,5 @@ public class SzDbfReader<E, I extends DBFInfo<E>> {
 	public void close() {
 		IOUtils.closeQuietly(is);
 	}
+
 }

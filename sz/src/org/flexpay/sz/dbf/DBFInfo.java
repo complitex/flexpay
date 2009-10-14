@@ -1,13 +1,13 @@
 package org.flexpay.sz.dbf;
 
-import com.linuxense.javadbf.DBFException;
 import com.linuxense.javadbf.DBFField;
 import com.linuxense.javadbf.DBFReader;
 import org.apache.commons.io.IOUtils;
-import org.flexpay.sz.util.config.ApplicationConfig;
 import org.flexpay.common.persistence.file.FPFile;
+import org.flexpay.sz.util.config.ApplicationConfig;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 

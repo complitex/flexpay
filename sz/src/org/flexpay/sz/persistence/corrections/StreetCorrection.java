@@ -1,5 +1,7 @@
 package org.flexpay.sz.persistence.corrections;
 
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
 import org.flexpay.ab.persistence.Street;
 import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.sz.persistence.Oszn;
@@ -19,63 +21,36 @@ public class StreetCorrection extends DomainObject {
 	// third party organization (OSZN for now)
 	private Oszn oszn;
 
-	/**
-	 * Constructs a new StreetCorrection.
-	 */
-	public StreetCorrection() {
-	}
-
-	/**
-	 * Getter for property 'street'.
-	 *
-	 * @return Value for property 'street'.
-	 */
 	public Street getStreet() {
 		return street;
 	}
 
-	/**
-	 * Setter for property 'street'.
-	 *
-	 * @param street Value to set for property 'street'.
-	 */
 	public void setStreet(Street street) {
 		this.street = street;
 	}
 
-	/**
-	 * Getter for property 'externalId'.
-	 *
-	 * @return Value for property 'externalId'.
-	 */
 	public String getExternalId() {
 		return externalId;
 	}
 
-	/**
-	 * Setter for property 'externalId'.
-	 *
-	 * @param externalId Value to set for property 'externalId'.
-	 */
 	public void setExternalId(String externalId) {
 		this.externalId = externalId;
 	}
 
-	/**
-	 * Getter for property 'oszn'.
-	 *
-	 * @return Value for property 'oszn'.
-	 */
 	public Oszn getOszn() {
 		return oszn;
 	}
 
-	/**
-	 * Setter for property 'oszn'.
-	 *
-	 * @param oszn Value to set for property 'oszn'.
-	 */
 	public void setOszn(Oszn oszn) {
 		this.oszn = oszn;
 	}
+
+	@Override
+	public String toString() {
+		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
+				append("id", getId()).
+				append("externalId", externalId).
+				toString();
+	}
+
 }

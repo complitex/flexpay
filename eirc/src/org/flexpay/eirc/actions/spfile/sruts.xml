@@ -11,7 +11,7 @@
             <result>/WEB-INF/jsp/eirc/sp_files/response.jsp</result>
         </action>
 
-		<action name="spFileCreate" class="spFileCreateAction">
+		<action name="spFileCreate" class="spFileCreatePageAction">
 			<result type="tiles">eirc.spfile.upload.form</result>
 		</action>
 

@@ -28,16 +28,12 @@
         <put-attribute name="title" value="sz.menu2.import" />
     </definition>
 
-    <definition name="sz.import.file.upload.form" extends="sz.import">
-        <put-attribute name="body" value="/WEB-INF/jsp/sz/upload_file.jsp" />
+    <definition name="sz.szfile.upload.form" extends="sz.import">
+        <put-attribute name="body" value="/WEB-INF/jsp/sz/sz_files/sz_file_create.jsp" />
     </definition>
 
-    <definition name="sz.import.file.upload.oszn_absent" extends="sz.import.file.upload.form">
-        <put-attribute name="body" value="/WEB-INF/jsp/sz/upload_file_oszn_absent.jsp" />
-    </definition>
-
-    <definition name="sz.import_file.list" extends="sz.dictionaries">
-        <put-attribute name="body" value="/WEB-INF/jsp/sz/import_file_list.jsp" />
+    <definition name="sz.szfiles.list" extends="sz.dictionaries">
+        <put-attribute name="body" value="/WEB-INF/jsp/sz/sz_files/sz_files_list_page.jsp" />
     </definition>
 
 </tiles-definitions>
