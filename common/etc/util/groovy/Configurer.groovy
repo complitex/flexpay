@@ -40,11 +40,13 @@ def requiredProperties = [
 
 class PropertiesUpdater {
 
-	public PropertiesUpdater(Map requiredProperties) {
+	public PropertiesUpdater(Map requiredProperties, File root) {
 		this.requiredProperties = requiredProperties
+		this.projectRoot = root
 	}
 
 	private Map requiredProperties
+	private File projectRoot
 
 	/**
 	 * Load module properties
@@ -62,7 +64,7 @@ class PropertiesUpdater {
 	}
 
 	public String readProp(String defaultValue, BufferedReader reader) {
-		System.out.print("(Press enter for default) > ")
+		print("(Press enter for default) > ")
 		String input = reader.readLine();
 		if (input.trim() == "") {
 			return defaultValue;
@@ -76,7 +78,7 @@ class PropertiesUpdater {
 		// map module name to its properties
 		def properties = [:]
 		requiredProperties.each {String k, v ->
-			System.out.println("Adding module ${k} properties: ${configFile(k)}");
+			println("Adding module ${k} properties: ${configFile(k)}");
 			properties.put(k, load(k))
 		}
 
@@ -85,13 +87,13 @@ class PropertiesUpdater {
 		requiredProperties.each() {String module, Map props ->
 			Map newProperties = [:]
 			BufferedReader input = System.in.newReader()
-			System.out.println("========================================================\nConfiguring module ${module}")
+			println("========================================================\nConfiguring module ${module}")
 			props.each {String prop, String doc ->
 				String defaultValue = properties[module][prop]
-				System.out.println("${doc} [${defaultValue}]")
+				println("${doc} [${defaultValue}]")
 				String value = readProp(defaultValue, input)
 				if (value != defaultValue) {
-					newProperties.put(prop, value);
+					newProperties.put(prop, value)
 				}
 			}
 			newModulesProperties.put(module, newProperties)
@@ -99,9 +101,9 @@ class PropertiesUpdater {
 
 		// dump properties
 		newModulesProperties.each() {String module, Map props ->
-			System.out.println("++++++++++++++++++++++++++++++++++++++++++++++++++++++++\nNew module ${module} properties:");
+			println("++++++++++++++++++++++++++++++++++++++++++++++++++++++++\nNew module ${module} properties:")
 			props.each() {String propKey, String propValue ->
-				System.out.println("\t${propKey} : ${propValue}");
+				println("\t${propKey} : ${propValue}")
 			}
 		}
 
@@ -129,7 +131,7 @@ class PropertiesUpdater {
 	 * @return module configuration file
 	 */
 	File configFile(String module) {
-		return new File("${module}/web/WEB-INF/${module}.properties");
+		return new File(projectRoot, "${module}/web/WEB-INF/${module}.properties")
 	}
 
 	// ============================================== TESTS =================================================
@@ -140,10 +142,24 @@ class PropertiesUpdater {
 		String escapedKey = propKey.replaceAll(/\./, '\\.')
 		Pattern pattern = Pattern.compile("^${escapedKey}\\s?[=:]\\s?.*\$", Pattern.MULTILINE)
 		String text = configFile.text.replaceAll(pattern, "${propKey}=${propValue}")
-		System.out.println("EscapedKEY: ${escapedKey}, New config:\n${text}")
+		println("EscapedKEY: ${escapedKey}, New config:\n${text}")
+	}
+
+	private static boolean isDir(File parent, String dir) {
+		File file = new File(parent, dir);
+		return file.isDirectory();
+	}
+
+	public static boolean validRoot(File file) {
+		return isDir(file, "common") && isDir(file, "ab") && isDir(file, "bti") \
+			&& isDir(file, "orgs") && isDir(file, "payments") && isDir(file, "eirc") \
+			&& isDir(file, "rent");
 	}
 }
 
+void usage() {
+	println "Project configurer utility, parameters are: [module name]"
+}
 
 assert args.length == 1, "Please, set module name as parameter"
 assert modulesDependencies.containsKey(args[0]), "Know nothing about module ${args[0]}"
@@ -152,7 +168,16 @@ def moduleRequiredProperties = [:]
 modulesDependencies[args[0]].each() {String module ->
 	moduleRequiredProperties.put(module, requiredProperties[module])
 }
-new PropertiesUpdater(moduleRequiredProperties).configure();
+
+
+File root = new File(".").getAbsoluteFile()
+while (root.getParent() != null && !PropertiesUpdater.validRoot(root)) {
+	root = root.parentFile
+}
+
+assert PropertiesUpdater.validRoot(root), "Invalid startup directory ${new File('').absolutePath}, please, run from project directory"
+
+new PropertiesUpdater(moduleRequiredProperties, root).configure();
 
 
 
