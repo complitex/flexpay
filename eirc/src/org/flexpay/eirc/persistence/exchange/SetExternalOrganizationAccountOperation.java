@@ -10,9 +10,9 @@ import org.flexpay.eirc.persistence.consumer.ConsumerAttribute;
 import org.flexpay.eirc.persistence.consumer.ConsumerAttributeTypeBase;
 import org.flexpay.eirc.persistence.exchange.delayed.DelayedUpdateConsumer;
 import org.flexpay.eirc.persistence.exchange.delayed.DelayedUpdateNope;
-import org.flexpay.eirc.util.config.ApplicationConfig;
 import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.payments.persistence.quittance.ConsumerAttributes;
+import static org.flexpay.payments.util.config.ApplicationConfig.getMbOrganizationStub;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -60,7 +60,7 @@ public class SetExternalOrganizationAccountOperation extends AbstractChangePerso
 			return visitUpdates(context, organization);
 		}
 
-		if (ApplicationConfig.getMbOrganizationStub().sameId(organization)) {
+		if (getMbOrganizationStub().sameId(organization)) {
 			return setMbAccountNumber(context.getCurrentRecord());
 		}
 

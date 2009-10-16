@@ -5,16 +5,16 @@ import org.flexpay.ab.dao.StreetDao;
 import org.flexpay.ab.persistence.*;
 import org.flexpay.ab.persistence.filters.TownFilter;
 import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
-import org.flexpay.ab.util.config.ApplicationConfig;
+import static org.flexpay.ab.util.config.ApplicationConfig.getDefaultTown;
 import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.DateUtil;
-import static org.junit.Assert.assertNotNull;
+import static org.flexpay.common.util.config.ApplicationConfig.getDefaultLocale;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 
 import java.util.List;
 
@@ -23,18 +23,16 @@ public class TestStreetService extends AbSpringBeanAwareTestCase {
 	@Autowired
 	private StreetDao streetDao;
 	@Autowired
-	@Qualifier ("streetService")
 	private StreetService streetService;
 	@Autowired
 	private TownService townService;
 	@Autowired
-	@Qualifier ("streetTypeService")
 	private StreetTypeService streetTypeService;
 
 	@Test
 	public void testCreateStreet() throws Throwable {
 
-		Town town = ApplicationConfig.getDefaultTown();
+		Town town = getDefaultTown();
 
 		Street street = new Street();
 		street.setParent(town);
@@ -49,7 +47,7 @@ public class TestStreetService extends AbSpringBeanAwareTestCase {
 		StreetType streetType = streetTypeService.read(TestData.STR_TYPE_VIADUKT);
 		assertNotNull("No street type found", streetType);
 		street.setType(streetType);
-//		street.setTypeForDate(streetType, ApplicationConfig.getPastInfinite());
+//		street.setTypeForDate(streetType, getPastInfinite());
 
 		try {
 			streetService.create(street);
@@ -85,6 +83,6 @@ public class TestStreetService extends AbSpringBeanAwareTestCase {
 		assertFalse("No streets in default town!", streets.isEmpty());
 
 		Street street = streets.iterator().next();
-		streetService.format(stub(street), ApplicationConfig.getDefaultLocale(), true);
+		streetService.format(stub(street), getDefaultLocale(), true);
 	}
 }

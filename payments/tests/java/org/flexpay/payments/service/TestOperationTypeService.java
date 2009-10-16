@@ -6,7 +6,6 @@ import org.flexpay.payments.persistence.OperationType;
 import static org.flexpay.payments.persistence.OperationType.*;
 import org.flexpay.payments.persistence.OperationTypeTranslation;
 import org.flexpay.payments.test.PaymentsSpringBeanAwareTestCase;
-import org.flexpay.payments.util.config.ApplicationConfig;
 import static org.junit.Assert.*;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,9 +17,9 @@ public class TestOperationTypeService extends PaymentsSpringBeanAwareTestCase {
 
 	@Test
 	public void testRead() {
-		int validCodes[] = { SERVICE_CASH_PAYMENT, SERVICE_CASH_RETURN, SERVICE_CASHLESS_PAYMENT, SERVICE_CASHLESS_RETURN,
-							 QUITTANCE_CASH_PAYMENT, QUITTANCE_CASH_RETURN, QUITTANCE_CASHLESS_PAYMENT, QUITTANCE_CASHLESS_RETURN };
-		
+		int validCodes[] = {SERVICE_CASH_PAYMENT, SERVICE_CASH_RETURN, SERVICE_CASHLESS_PAYMENT, SERVICE_CASHLESS_RETURN,
+							QUITTANCE_CASH_PAYMENT, QUITTANCE_CASH_RETURN, QUITTANCE_CASHLESS_PAYMENT, QUITTANCE_CASHLESS_RETURN};
+
 		for (int validCode : validCodes) {
 			OperationType type = null;
 			try {
@@ -30,13 +29,14 @@ public class TestOperationTypeService extends PaymentsSpringBeanAwareTestCase {
 			}
 
 			assertNotNull("Failed reading by code predefined operation type (code " + validCode + ")", type);
-			assertTrue("Read type code " + type.getCode() + " is bad (expected code was " + validCode + ")", validCode == type.getCode());
+			assertTrue("Read type code " + type.getCode() +
+					   " is bad (expected code was " + validCode + ")", validCode == type.getCode());
 
-			OperationTypeTranslation defaultTranslation = TranslationUtil.getTranslation(type.getTranslations(), ApplicationConfig.getDefaultLocale());
+			OperationTypeTranslation defaultTranslation = TranslationUtil.getTranslation(type.getTranslations());
 			assertNotNull("Type has no default translation", defaultTranslation);
 		}
 
-		int invalidCodes[] = { -2, -1, 0, 9, 10, 11 };
+		int invalidCodes[] = {-2, -1, 0, 9, 10, 11};
 		for (int invalidCode : invalidCodes) {
 			try {
 				operationTypeService.read(invalidCode);

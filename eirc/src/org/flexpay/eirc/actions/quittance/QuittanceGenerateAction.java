@@ -1,17 +1,17 @@
 package org.flexpay.eirc.actions.quittance;
 
 import org.apache.commons.lang.time.DateUtils;
+import org.flexpay.ab.persistence.filters.TownFilter;
+import static org.flexpay.ab.util.config.ApplicationConfig.getDefaultTownStub;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.persistence.filter.BeginDateFilter;
 import org.flexpay.common.persistence.filter.EndDateFilter;
 import org.flexpay.common.process.ProcessManager;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.DateUtil;
-import org.flexpay.orgs.persistence.filters.ServiceOrganizationFilter;
 import org.flexpay.eirc.process.quittance.GenerateQuittanceJob;
-import org.flexpay.eirc.util.config.ApplicationConfig;
+import org.flexpay.orgs.persistence.filters.ServiceOrganizationFilter;
 import org.flexpay.orgs.service.ServiceOrganizationService;
-import org.flexpay.ab.persistence.filters.TownFilter;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
@@ -26,7 +26,7 @@ public class QuittanceGenerateAction extends FPActionSupport {
 
 	private BeginDateFilter beginDateFilter = new BeginDateFilter(DateUtils.truncate(new Date(), Calendar.MONTH));
 	private EndDateFilter endDateFilter = new EndDateFilter(DateUtil.now());
-	private TownFilter townFilter = new TownFilter(ApplicationConfig.getDefaultTownStub());
+	private TownFilter townFilter = new TownFilter(getDefaultTownStub());
 
 	private ServiceOrganizationService serviceOrganizationService;
 	private ProcessManager processManager;

@@ -1,7 +1,7 @@
 package org.flexpay.ab.service.history;
 
 import org.flexpay.ab.persistence.*;
-import org.flexpay.ab.util.config.ApplicationConfig;
+import static org.flexpay.ab.util.config.ApplicationConfig.getDefaultRegion;
 import org.flexpay.common.persistence.Language;
 import org.flexpay.common.persistence.Pair;
 import org.flexpay.common.persistence.Stub;
@@ -10,13 +10,14 @@ import static org.flexpay.common.persistence.history.TemporalObjectsHistoryBuild
 import org.flexpay.common.persistence.history.impl.HistoryBuilderBase;
 import org.flexpay.common.util.DateIntervalUtil;
 import org.flexpay.common.util.EqualsHelper;
+import static org.flexpay.common.util.config.ApplicationConfig.getLanguages;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.List;
 import java.util.Date;
+import java.util.List;
 
 public class TownHistoryBuilder extends HistoryBuilderBase<Town> {
 
@@ -63,7 +64,7 @@ public class TownHistoryBuilder extends HistoryBuilderBase<Town> {
 			TownName n1 = tmp1.getValue();
 			TownName n2 = tmp2.getValue();
 
-			List<Language> langs = ApplicationConfig.getLanguages();
+			List<Language> langs = getLanguages();
 			for (Language lang : langs) {
 				TownNameTranslation tr1 = n1 != null ? n1.getTranslation(lang) : null;
 				TownNameTranslation tr2 = n2.getTranslation(lang);
@@ -152,7 +153,7 @@ public class TownHistoryBuilder extends HistoryBuilderBase<Town> {
 
 		// setup default region if not exists
 		if (town.getRegion() == null) {
-			town.setRegion(ApplicationConfig.getDefaultRegion());
+			town.setRegion(getDefaultRegion());
 		}
 
 		for (HistoryRecord record : diff.getHistoryRecords()) {

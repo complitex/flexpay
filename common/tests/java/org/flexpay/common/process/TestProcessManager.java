@@ -9,6 +9,7 @@ import org.jbpm.JbpmConfiguration;
 import org.jbpm.JbpmContext;
 import org.jbpm.graph.def.ProcessDefinition;
 import static org.junit.Assert.assertEquals;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -95,6 +96,7 @@ public class TestProcessManager extends SpringBeanAwareTestCase {
 	private ProcessManager processManager;
 
 	@Test
+	@Ignore
 	public void testProcessManager() throws Exception {
 
 		ProcessDefinition definition = ProcessDefinition.parseXmlString(testProcessDefinition);
@@ -108,6 +110,7 @@ public class TestProcessManager extends SpringBeanAwareTestCase {
 	}
 
 	@Test
+	@Ignore
 	public void testDeploy() {
 		ProcessDefinition processDefinition = ProcessDefinition.parseXmlString(processDefinitionString);
 		processManager.deployProcessDefinition(processDefinition, true);
@@ -120,6 +123,7 @@ public class TestProcessManager extends SpringBeanAwareTestCase {
 	}
 
 	@Test
+	@Ignore
 	public void testCreateProcess() throws ProcessInstanceException, ProcessDefinitionException {
 		ProcessDefinition processDefinition = ProcessDefinition.parseXmlString(processDefinitionString);
 		processManager.deployProcessDefinition(processDefinition, true);

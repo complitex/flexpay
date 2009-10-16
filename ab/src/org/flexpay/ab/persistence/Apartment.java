@@ -1,7 +1,6 @@
 package org.flexpay.ab.persistence;
 
 import org.apache.commons.lang.StringUtils;
-import org.flexpay.ab.util.config.ApplicationConfig;
 import org.flexpay.common.persistence.DomainObjectWithStatus;
 import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.persistence.Stub.stub;
@@ -9,6 +8,8 @@ import org.flexpay.common.util.CollectionUtils;
 import static org.flexpay.common.util.CollectionUtils.*;
 import org.flexpay.common.util.DateIntervalUtil;
 import org.flexpay.common.util.DateUtil;
+import static org.flexpay.common.util.config.ApplicationConfig.getFutureInfinite;
+import static org.flexpay.common.util.config.ApplicationConfig.getPastInfinite;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -226,17 +227,17 @@ public class Apartment extends DomainObjectWithStatus {
 	}
 
 	public void setNumberForDate(String value, Date begin) {
-		setNumberForDates(value, begin, ApplicationConfig.getFutureInfinite());
+		setNumberForDates(value, begin, getFutureInfinite());
 	}
 
 	public void setNumberForDates(String value, Date begin, Date end) {
 
-		if (begin == null || begin.before(ApplicationConfig.getPastInfinite())) {
-			begin = ApplicationConfig.getPastInfinite();
+		if (begin == null || begin.before(getPastInfinite())) {
+			begin = getPastInfinite();
 		}
 		begin = DateUtil.truncateDay(begin);
-		if (end == null || end.after(ApplicationConfig.getFutureInfinite())) {
-			end = ApplicationConfig.getFutureInfinite();
+		if (end == null || end.after(getFutureInfinite())) {
+			end = getFutureInfinite();
 		}
 		end = DateUtil.truncateDay(end);
 

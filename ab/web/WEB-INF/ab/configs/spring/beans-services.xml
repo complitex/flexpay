@@ -7,6 +7,17 @@
 		   http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
 		   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
+	<bean id="abApplicationConfig"
+		  factory-method="getInstance"
+		  class="org.flexpay.ab.util.config.ApplicationConfig"
+		  p:defaultCountryId="${app.config.ab.defaultCountryId}"
+		  p:defaultRegionId="${app.config.ab.defaultRegionId}"
+		  p:defaultTownId="${app.config.ab.defaultTownId}"
+		  p:buildingAttributeTypeNumberId="${app.config.ab.buildingAttributeTypeNumberId}"
+		  p:buildingAttributeTypeBulkId="${app.config.ab.buildingAttributeTypeBulkId}"
+		  p:buildingAttributeTypePartId="${app.config.ab.buildingAttributeTypePartId}"
+		  p:buildingHouseTypeId="${app.config.ab.buildingHouseTypeId}" />
+
 	<bean id="countryServiceTarget"
 		  class="org.flexpay.ab.service.impl.CountryServiceImpl"
 		  autowire-candidate="false"

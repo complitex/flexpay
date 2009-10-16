@@ -5,10 +5,10 @@ import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Language;
 import org.flexpay.common.service.LanguageService;
 import org.flexpay.common.util.CollectionUtils;
+import static org.flexpay.common.util.config.ApplicationConfig.getDefaultLanguage;
 import org.flexpay.payments.persistence.ServiceType;
 import org.flexpay.payments.persistence.ServiceTypeNameTranslation;
 import org.flexpay.payments.test.PaymentsSpringBeanAwareTestCase;
-import org.flexpay.payments.util.config.ApplicationConfig;
 import static org.junit.Assert.*;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,7 +64,8 @@ public class TestServiceTypeService extends PaymentsSpringBeanAwareTestCase {
 		try {
 			serviceTypeService.create(serviceType);
 			fail("Creating type with no code must not be allowed");
-		} catch (FlexPayExceptionContainer e) {}
+		} catch (FlexPayExceptionContainer e) {
+		}
 
 		// check default translation exists
 		serviceType.setCode(9999);
@@ -73,7 +74,8 @@ public class TestServiceTypeService extends PaymentsSpringBeanAwareTestCase {
 		try {
 			serviceTypeService.create(serviceType);
 			fail("Creating type with no default translation must not be allowed");
-		} catch (FlexPayExceptionContainer e) {}
+		} catch (FlexPayExceptionContainer e) {
+		}
 
 		// blank name
 		translation.setLang(getDefaultLanguage());
@@ -81,7 +83,8 @@ public class TestServiceTypeService extends PaymentsSpringBeanAwareTestCase {
 		try {
 			serviceTypeService.create(serviceType);
 			fail("Creating type with blank name must not be allowed");
-		} catch (FlexPayExceptionContainer e) {}
+		} catch (FlexPayExceptionContainer e) {
+		}
 
 		// blank description
 		translation.setName("name");
@@ -89,14 +92,16 @@ public class TestServiceTypeService extends PaymentsSpringBeanAwareTestCase {
 		try {
 			serviceTypeService.create(serviceType);
 			fail("Creating type with blank description must not be allowed");
-		} catch (FlexPayExceptionContainer e) {}
+		} catch (FlexPayExceptionContainer e) {
+		}
 
 		// existent code
 		serviceType.setCode(1);
 		try {
 			serviceTypeService.create(serviceType);
 			fail("Creating type with existent code must not be allowed");
-		} catch (FlexPayExceptionContainer e) {}
+		} catch (FlexPayExceptionContainer e) {
+		}
 	}
 
 	@Test
@@ -108,7 +113,8 @@ public class TestServiceTypeService extends PaymentsSpringBeanAwareTestCase {
 		try {
 			serviceTypeService.getServiceType(9999);
 			fail("Reading service by incorrect code must rise an exception");
-		} catch (IllegalArgumentException e) {}
+		} catch (IllegalArgumentException e) {
+		}
 	}
 
 	private Language getNonDefaultLanguage() {
@@ -121,9 +127,5 @@ public class TestServiceTypeService extends PaymentsSpringBeanAwareTestCase {
 		}
 
 		return null;
-	}
-
-	private Language getDefaultLanguage() {
-		return ApplicationConfig.getDefaultLanguage();
 	}
 }

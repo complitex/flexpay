@@ -30,7 +30,7 @@ public class TestOperationLevelService extends PaymentsSpringBeanAwareTestCase {
 			assertNotNull("Failed reading by code predefined operation level (code " + validCode + ")", level);
 			assertTrue("Read level code " + level.getCode() + " is bad (expected code was " + validCode + ")", validCode == level.getCode());
 
-			OperationLevelTranslation defaultTranslation = TranslationUtil.getTranslation(level.getTranslations(), ApplicationConfig.getDefaultLocale());
+			OperationLevelTranslation defaultTranslation = TranslationUtil.getTranslation(level.getTranslations());
 			assertNotNull("Level has no default translation", defaultTranslation);
 		}
 

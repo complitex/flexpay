@@ -1,7 +1,7 @@
 package org.flexpay.ab.persistence;
 
 import org.flexpay.common.persistence.NameDateInterval;
-import org.flexpay.ab.util.config.ApplicationConfig;
+import static org.flexpay.common.util.config.ApplicationConfig.getFutureInfinite;
 
 import java.util.Date;
 
@@ -18,10 +18,10 @@ public class TownNameTemporal extends NameDateInterval<TownName, TownNameTempora
 	 * Constructs a new RegionNameTemporal.
 	 *
 	 * @param beginDate temporal begin date
-	 * @param townName Town name to setup
+	 * @param townName  Town name to setup
 	 */
 	public TownNameTemporal(Date beginDate, TownName townName) {
-		super(beginDate, ApplicationConfig.getFutureInfinite(), townName);
+		super(beginDate, getFutureInfinite(), townName);
 	}
 
 	/**

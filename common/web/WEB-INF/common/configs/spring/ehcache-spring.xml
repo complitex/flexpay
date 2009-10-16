@@ -75,6 +75,12 @@
            overflowToDisk="true"
            memoryStoreEvictionPolicy="LRU" />
 
+    <cache name="abStreetTypeFlexpayCache"
+           maxElementsInMemory="30"
+           eternal="true"
+           overflowToDisk="true"
+           memoryStoreEvictionPolicy="LRU" />
+
     <cache name="abStreetFlexpayCache"
            maxElementsInMemory="500"
            eternal="true"
@@ -83,6 +89,12 @@
 
     <cache name="abBuildingFlexpayCache"
            maxElementsInMemory="5000"
+           eternal="true"
+           overflowToDisk="true"
+           memoryStoreEvictionPolicy="LRU" />
+
+    <cache name="abAddressAttributeTypeFlexpayCache"
+           maxElementsInMemory="10"
            eternal="true"
            overflowToDisk="true"
            memoryStoreEvictionPolicy="LRU" />

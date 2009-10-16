@@ -7,6 +7,12 @@
 		   http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
 		   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
+
+	<bean id="paymentsApplicationConfig"
+		  factory-method="getInstance"
+		  class="org.flexpay.payments.util.config.ApplicationConfig"
+		  p:mbOrganizationId="${app.config.payments.mbOrganizationId}" />
+
 	<bean id="mbServiceTypeMapper"
 		  init-method="validate"
 		  class="org.flexpay.payments.util.ServiceTypesMapper"
@@ -40,16 +46,16 @@
 		</property>
 	</bean>
 
-    <bean id="paymentsPropertiesFactory" depends-on="propertiesFactory" autowire-candidate="false"
+	<bean id="paymentsPropertiesFactory" depends-on="propertiesFactory" autowire-candidate="false"
 		  factory-bean="propertiesFactoryHolder" factory-method="getFactory">
 		<property name="factory">
 			<bean class="org.flexpay.payments.persistence.PaymentsPropertiesFactory" autowire-candidate="false" />
 		</property>
 	</bean>
 
-    <bean id="registryDeliveryHistoryService"
-          class="org.flexpay.payments.service.impl.RegistryDeliveryHistoryServiceImpl"
-          p:registryDeliveryHistoryDao-ref="registryDeliveryHistoryDao" />
+	<bean id="registryDeliveryHistoryService"
+		  class="org.flexpay.payments.service.impl.RegistryDeliveryHistoryServiceImpl"
+		  p:registryDeliveryHistoryDao-ref="registryDeliveryHistoryDao" />
 
 	<bean id="eircRegistryService"
 		  class="org.flexpay.payments.service.impl.EircRegistryServiceImpl"
@@ -158,21 +164,21 @@
 		  class="org.flexpay.orgs.service.impl.ServiceProviderAttributeServiceImpl"
 		  p:serviceProviderAttributeDao-ref="serviceProviderAttributeDao" />
 
-    <bean id="paymentsRegistryFPFileFormat"
-          class="org.flexpay.payments.util.registries.RegistryFPFileFormat"
-          p:moduleName="${flexpay.module.name.payments}"
-          p:fpFileService-ref="fpFileService"
-          p:registryRecordService-ref="registryRecordService"
-          p:registryFPFileTypeService-ref="registryFPFileTypeService"
-          p:registryService-ref="registryService" />
+	<bean id="paymentsRegistryFPFileFormat"
+		  class="org.flexpay.payments.util.registries.RegistryFPFileFormat"
+		  p:moduleName="${flexpay.module.name.payments}"
+		  p:fpFileService-ref="fpFileService"
+		  p:registryRecordService-ref="registryRecordService"
+		  p:registryFPFileTypeService-ref="registryFPFileTypeService"
+		  p:registryService-ref="registryService" />
 
-    <bean id="exportBankPaymentsRegistry"
+	<bean id="exportBankPaymentsRegistry"
 		  class="org.flexpay.payments.util.registries.ExportBankPaymentsRegistry"
 		  parent="paymentsRegistryFPFileFormat" />
 
 
-    <bean id="exportPaymentsRegistry"
-          parent="paymentsRegistryFPFileFormat" />
+	<bean id="exportPaymentsRegistry"
+		  parent="paymentsRegistryFPFileFormat" />
 
 	<bean id="endOperationDayRegistryGenerator"
 		  class="org.flexpay.payments.util.registries.EndOperationDayRegistryGeneratorImpl"

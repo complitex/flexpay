@@ -2,9 +2,9 @@ package org.flexpay.ab.persistence;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
-import org.flexpay.ab.util.config.ApplicationConfig;
 import org.flexpay.common.persistence.Language;
 import org.flexpay.common.persistence.Translation;
+import static org.flexpay.common.util.config.ApplicationConfig.getDefaultLanguage;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -16,7 +16,7 @@ public class StreetNameTranslation extends Translation {
 	}
 
 	public StreetNameTranslation(@NotNull String name) throws Exception {
-		super(name, ApplicationConfig.getDefaultLanguage());
+		super(name, getDefaultLanguage());
 	}
 
 	public StreetNameTranslation(@NotNull String name, @NotNull Language lang) {

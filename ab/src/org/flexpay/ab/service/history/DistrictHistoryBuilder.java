@@ -1,7 +1,6 @@
 package org.flexpay.ab.service.history;
 
 import org.flexpay.ab.persistence.*;
-import org.flexpay.ab.util.config.ApplicationConfig;
 import org.flexpay.common.persistence.Language;
 import org.flexpay.common.persistence.Pair;
 import org.flexpay.common.persistence.Stub;
@@ -12,6 +11,7 @@ import org.flexpay.common.persistence.history.ProcessingStatus;
 import org.flexpay.common.persistence.history.impl.HistoryBuilderBase;
 import org.flexpay.common.util.DateIntervalUtil;
 import org.flexpay.common.util.EqualsHelper;
+import static org.flexpay.common.util.config.ApplicationConfig.getLanguages;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
@@ -35,7 +35,7 @@ public class DistrictHistoryBuilder extends HistoryBuilderBase<District> {
 	 */
 	protected void doDiff(@Nullable District d1, @NotNull District d2, @NotNull Diff diff) {
 
-		log.debug("creating new districtss diff");
+		log.debug("creating new districts diff");
 
 		if (!d2.isActive()) {
 			diff.setOperationType(HistoryOperationType.TYPE_DELETE);
@@ -93,7 +93,7 @@ public class DistrictHistoryBuilder extends HistoryBuilderBase<District> {
 			DistrictName n1 = tmp1.getValue();
 			DistrictName n2 = tmp2.getValue();
 
-			List<Language> langs = ApplicationConfig.getLanguages();
+			List<Language> langs = getLanguages();
 			for (Language lang : langs) {
 				DistrictNameTranslation tr1 = n1 != null ? n1.getTranslation(lang) : null;
 				DistrictNameTranslation tr2 = n2.getTranslation(lang);

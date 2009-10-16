@@ -65,7 +65,7 @@ public abstract class Job implements Runnable {
 			SecurityContextHolder.getContext().setAuthentication(auth);
 
 			// setup execution context
-			JobExecutionContext jobExecutionContext = new JobExecutionContext(taskId);
+			JobExecutionContext jobExecutionContext = new JobExecutionContext(taskId != null ? taskId : 0L);
 			jobExecutionContext.addListener(new JobCompletePercentListener());
 			JobExecutionContextHolder.setContext(jobExecutionContext);
 

@@ -2,10 +2,10 @@ package org.flexpay.ab.actions.person;
 
 import org.flexpay.ab.persistence.*;
 import org.flexpay.ab.service.*;
-import org.flexpay.ab.util.config.ApplicationConfig;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.util.DateUtil;
+import static org.flexpay.common.util.config.ApplicationConfig.getFutureInfinite;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
@@ -14,7 +14,7 @@ import java.util.Date;
 public class PersonEditRegistrationFormAction extends FPActionSupport {
 
 	private Date beginDate = DateUtil.now();
-	private Date endDate = ApplicationConfig.getFutureInfinite();
+	private Date endDate = getFutureInfinite();
 
 	private Long countryFilter;
 	private Long regionFilter;
@@ -34,8 +34,8 @@ public class PersonEditRegistrationFormAction extends FPActionSupport {
 	public String doExecute() throws Exception {
 
 		if (apartmentFilter != null && apartmentFilter > 0) {
-			Building building = apartmentService.getBuilding(new Stub<Apartment>(apartmentFilter));;
-			BuildingAddress address = buildingService.getFirstBuildings(new Stub<Building>(building.getId()));
+			Building building = apartmentService.getBuilding(new Stub<Apartment>(apartmentFilter));
+			BuildingAddress address = buildingService.getFirstBuildings(new Stub<Building>(building));
 			Street street = streetService.readFull(address.getStreetStub());
 			Town town = townService.readFull(street.getTownStub());
 			Region region = regionService.readFull(town.getRegionStub());

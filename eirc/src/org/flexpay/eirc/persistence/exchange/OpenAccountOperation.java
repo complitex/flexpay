@@ -10,6 +10,7 @@ import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.persistence.registry.RegistryRecord;
 import org.flexpay.common.persistence.registry.RegistryType;
 import org.flexpay.common.service.importexport.CorrectionsService;
+import static org.flexpay.common.util.config.ApplicationConfig.getFutureInfinite;
 import org.flexpay.eirc.dao.importexport.RawConsumersDataUtil;
 import org.flexpay.eirc.persistence.Consumer;
 import org.flexpay.eirc.persistence.ConsumerInfo;
@@ -19,7 +20,6 @@ import org.flexpay.eirc.persistence.exchange.delayed.*;
 import org.flexpay.eirc.service.ConsumerService;
 import org.flexpay.eirc.service.EircAccountService;
 import org.flexpay.eirc.service.importexport.RawConsumerData;
-import org.flexpay.eirc.util.config.ApplicationConfig;
 import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.payments.persistence.EircRegistryProperties;
 import org.flexpay.payments.persistence.Service;
@@ -73,7 +73,7 @@ public class OpenAccountOperation extends AbstractChangePersonalAccountOperation
 		consumer.setResponsiblePerson(props.getPerson());
 		consumer.setExternalAccountNumber(record.getPersonalAccountExt());
 		consumer.setBeginDate(changeApplyingDate);
-		consumer.setEndDate(ApplicationConfig.getFutureInfinite());
+		consumer.setEndDate(getFutureInfinite());
 		consumer.setService(findService(registry, record));
 		consumer.setEircAccount(account);
 		consumer.setConsumerInfo(info);
@@ -138,8 +138,8 @@ public class OpenAccountOperation extends AbstractChangePersonalAccountOperation
 	/**
 	 * Check if EIRC account exists, and create a new one if necessary
 	 *
-	 * @param record	RegistryRecord
-	 * @param info	  ConsumerInfo
+	 * @param record RegistryRecord
+	 * @param info   ConsumerInfo
 	 * @return EircAccount instance
 	 * @throws FlexPayException if failure occurs
 	 */

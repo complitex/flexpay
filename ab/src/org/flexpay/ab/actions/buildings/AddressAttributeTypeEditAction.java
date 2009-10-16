@@ -3,12 +3,12 @@ package org.flexpay.ab.actions.buildings;
 import org.flexpay.ab.persistence.AddressAttributeType;
 import org.flexpay.ab.persistence.AddressAttributeTypeTranslation;
 import org.flexpay.ab.service.AddressAttributeTypeService;
-import org.flexpay.ab.util.config.ApplicationConfig;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.persistence.Language;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.util.CollectionUtils;
 import static org.flexpay.common.util.CollectionUtils.treeMap;
+import static org.flexpay.common.util.config.ApplicationConfig.getLanguages;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
@@ -79,7 +79,7 @@ public class AddressAttributeTypeEditAction extends FPActionSupport {
 			shortNames.put(translation.getLang().getId(), translation.getShortName());
 		}
 
-		for (Language language : ApplicationConfig.getLanguages()) {
+		for (Language language : getLanguages()) {
 			if (!names.containsKey(language.getId())) {
 				names.put(language.getId(), "");
 				shortNames.put(language.getId(), "");

@@ -1,12 +1,14 @@
 package org.flexpay.eirc.util.config;
 
+import static org.flexpay.common.util.config.ApplicationConfig.getDataRoot;
 import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.eirc.service.Security;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Required;
 
 import java.io.File;
 
-public class ApplicationConfig extends org.flexpay.payments.util.config.ApplicationConfig {
+public class ApplicationConfig {
 
 	private Organization selfOrganization;
 	private String eircDataRoot;
@@ -14,23 +16,17 @@ public class ApplicationConfig extends org.flexpay.payments.util.config.Applicat
 
 	private int eircMainServiceCode;
 
+	private static final ApplicationConfig INSTANCE = new ApplicationConfig();
+
 	static {
 		// ensure Security fields are initialised
 		Security.touch();
 	}
 
 
-	/**
-	 * TODO: perform lookup by individual tax number, not id
-	 *
-	 * @param organizationId Organization id
-	 */
-	public void setSelfOrganizationId(String organizationId) {
-		selfOrganization = new Organization(Long.valueOf(organizationId));
-	}
-
-	protected static ApplicationConfig getInstance() {
-		return (ApplicationConfig) org.flexpay.common.util.config.ApplicationConfig.getInstance();
+	@NotNull
+	public static ApplicationConfig getInstance() {
+		return INSTANCE;
 	}
 
 	@NotNull
@@ -46,22 +42,21 @@ public class ApplicationConfig extends org.flexpay.payments.util.config.Applicat
 		return getInstance().eircMainServiceCode;
 	}
 
-	public void setEircMainServiceCode(String eircMainServiceCode) {
-		this.eircMainServiceCode = Integer.valueOf(eircMainServiceCode);
+	@Required
+	public void setEircMainServiceCode(Integer eircMainServiceCode) {
+		this.eircMainServiceCode = eircMainServiceCode;
 	}
 
+	@Required
 	public void setEircId(String eircId) {
 		this.eircId = eircId;
 	}
 
-	public static File getEircDataRoot() {
-		return getInstance().getEircDataRootInternal();
+	public void setSelfOrganizationId(Long organizationId) {
+		selfOrganization = new Organization(organizationId);
 	}
 
-	private File getEircDataRootInternal() {
-		return new File(getDataRootInternal(), eircDataRoot);
-	}
-
+	@Required
 	public void setEircDataRoot(String eircDataRoot) {
 		this.eircDataRoot = eircDataRoot;
 		File eircRoot = getEircDataRootInternal();
@@ -69,5 +64,9 @@ public class ApplicationConfig extends org.flexpay.payments.util.config.Applicat
 			//noinspection ResultOfMethodCallIgnored
 			eircRoot.mkdirs();
 		}
+	}
+
+	private File getEircDataRootInternal() {
+		return new File(getDataRoot(), eircDataRoot);
 	}
 }

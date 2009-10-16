@@ -46,6 +46,7 @@ import java.util.Properties;
  *
  * @version $Revision: 1.2 $ $Date: 2006/07/09 08:08:10 $
  */
+@SuppressWarnings ({"unchecked"})
 public class PropertyMessageResources extends MessageResources {
 
 
@@ -92,21 +93,21 @@ public class PropertyMessageResources extends MessageResources {
     protected HashMap locales = new HashMap();
 
 
-    /**
+	/**
+	 * The cache of messages we have accumulated over time, keyed by the
+	 * value calculated in <code>messageKey()</code>.
+	 */
+	protected final HashMap messages = new HashMap();
+
+
+	/**
      * The <code>Log</code> instance for this class.
      */
     protected static final Log log =
         LogFactory.getLog(PropertyMessageResources.class);
 
 
-    /**
-     * The cache of messages we have accumulated over time, keyed by the
-     * value calculated in <code>messageKey()</code>.
-     */
-    protected HashMap messages = new HashMap();
-
-
-    // --------------------------------------------------------- Public Methods
+	// --------------------------------------------------------- Public Methods
 
 
     /**

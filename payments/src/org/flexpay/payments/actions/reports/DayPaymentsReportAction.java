@@ -1,37 +1,35 @@
 package org.flexpay.payments.actions.reports;
 
-import org.flexpay.payments.actions.CashboxCookieActionSupport;
-import org.flexpay.payments.reports.payments.PaymentsReporter;
-import org.flexpay.payments.reports.payments.PaymentsPrintInfoData;
-import org.flexpay.orgs.service.CashboxService;
-import org.flexpay.orgs.persistence.Cashbox;
-import org.flexpay.payments.util.config.ApplicationConfig;
-import org.flexpay.common.persistence.filter.BeginDateFilter;
-import org.flexpay.common.persistence.file.FPFile;
+import net.sf.jasperreports.engine.JRDataSource;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.persistence.file.FPFile;
+import org.flexpay.common.persistence.filter.BeginDateFilter;
 import org.flexpay.common.service.reporting.ReportUtil;
-import org.flexpay.common.util.DateUtil;
-import static org.flexpay.common.util.CollectionUtils.map;
 import static org.flexpay.common.util.CollectionUtils.ar;
-import org.flexpay.orgs.service.PaymentPointService;
+import static org.flexpay.common.util.CollectionUtils.map;
+import org.flexpay.common.util.DateUtil;
+import static org.flexpay.common.util.config.ApplicationConfig.isResourceAvailable;
+import org.flexpay.orgs.persistence.Cashbox;
 import org.flexpay.orgs.persistence.PaymentPoint;
+import org.flexpay.orgs.service.CashboxService;
+import org.flexpay.orgs.service.PaymentPointService;
+import org.flexpay.payments.actions.CashboxCookieActionSupport;
+import org.flexpay.payments.reports.payments.PaymentsPrintInfoData;
+import org.flexpay.payments.reports.payments.PaymentsReporter;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.util.Date;
 import java.util.Map;
 
-import net.sf.jasperreports.engine.JRDataSource;
-import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
-
 /**
  * Provides functionality for creating report about payments performed in one day
- *
- * To specify what kind of payments should be included {@link DayPaymentsReportAction#getPaymentsData(java.util.Date, java.util.Date)}
- * method should be implemented
- *
- * To specify report JRXML template name {@link DayPaymentsReportAction#getReportName()}
- * method should be implemented
+ * <p/>
+ * To specify what kind of payments should be included {@link DayPaymentsReportAction#getPaymentsData(java.util.Date,
+ * java.util.Date)} method should be implemented
+ * <p/>
+ * To specify report JRXML template name {@link DayPaymentsReportAction#getReportName()} method should be implemented
  */
 public abstract class DayPaymentsReportAction extends CashboxCookieActionSupport {
 
@@ -94,14 +92,16 @@ public abstract class DayPaymentsReportAction extends CashboxCookieActionSupport
 
 	/**
 	 * Returns printable payments report data. To be implemented by concrete classes.
+	 *
 	 * @param beginDate lower bound for payment date
-	 * @param endDate higher bound
+	 * @param endDate   higher bound
 	 * @return printable payments report data
 	 */
 	protected abstract PaymentsPrintInfoData getPaymentsData(Date beginDate, Date endDate);
 
 	/**
 	 * Returns report template name
+	 *
 	 * @return report template name
 	 */
 	protected abstract String getReportBaseName();
@@ -116,7 +116,7 @@ public abstract class DayPaymentsReportAction extends CashboxCookieActionSupport
 		String base = getReportBaseName();
 		String perPointQuittance = base + "_" + paymentPointId;
 		String resName = "WEB-INF/payments/reports/" + perPointQuittance + ReportUtil.EXTENSION_TEMPLATE;
-		if (ApplicationConfig.isResourceAvailable(resName)) {
+		if (isResourceAvailable(resName)) {
 			return perPointQuittance;
 		}
 

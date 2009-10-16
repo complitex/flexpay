@@ -96,7 +96,7 @@ public class TestSpFileAction extends TestSpFileCreateAction {
 	protected FPFile uploadFile(@NonNls String fileName) throws Throwable {
 		FPFile newFile = createSpFile(fileName);
 
-		fileAction.setSpFileId(newFile.getId());
+		fileAction.setSpFile(newFile);
 		fileAction.setAction("loadToDb");
 
 		try {

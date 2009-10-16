@@ -7,6 +7,11 @@
 		   http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
 		   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
+
+	<bean id="applicationConfig"
+		  factory-method="getInstance"
+		  class="org.flexpay.orgs.util.config.ApplicationConfig" />
+
 	<bean id="orgsObjectsFactoryHolder"
 		  class="org.flexpay.orgs.service.impl.OrgsObjectsFactoryHolder"
 		  p:factory-ref="orgsObjectsFactoryImpl" />

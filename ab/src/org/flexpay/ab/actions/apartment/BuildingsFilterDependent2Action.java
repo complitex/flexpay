@@ -24,6 +24,7 @@ public abstract class BuildingsFilterDependent2Action<T> extends FPActionWithPag
 
 	private ParentService<?> parentService;
 
+	@SuppressWarnings ({"unchecked"})
 	protected void initFilters() {
 		try {
 			ArrayStack filterArrayStack = getFilters();

@@ -5,7 +5,6 @@ import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.registry.RegistryRecord;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.eirc.persistence.exchange.*;
-import org.flexpay.eirc.util.config.ApplicationConfig;
 import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.orgs.persistence.PaymentPoint;
 import org.flexpay.payments.persistence.Document;
@@ -14,6 +13,7 @@ import org.flexpay.payments.persistence.DocumentAdditionType;
 import org.flexpay.payments.persistence.Operation;
 import org.flexpay.payments.service.DocumentAdditionTypeService;
 import org.flexpay.payments.service.OperationService;
+import static org.flexpay.payments.util.config.ApplicationConfig.getMbOrganizationStub;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -130,7 +130,7 @@ public class PaymentOperationDelayedUpdate implements
 			}
 
 			// TODO create document addition
-			if (ApplicationConfig.getMbOrganizationStub().sameId(org)) {
+			if (getMbOrganizationStub().sameId(org)) {
 				DocumentAddition addition = new DocumentAddition();
 				addition.setAdditionType(additionTypeService.findTypeByCode(DocumentAdditionType.CODE_ERC_ACCOUNT));
 				addition.setStringValue(accountNumber);

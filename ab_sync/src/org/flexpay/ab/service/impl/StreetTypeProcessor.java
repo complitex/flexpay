@@ -5,7 +5,6 @@ import org.flexpay.ab.persistence.HistoryRec;
 import org.flexpay.ab.persistence.StreetType;
 import org.flexpay.ab.persistence.StreetTypeTranslation;
 import org.flexpay.ab.service.StreetTypeService;
-import org.flexpay.ab.util.config.ApplicationConfig;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.persistence.DomainObject;
@@ -14,6 +13,7 @@ import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.persistence.Translation;
 import org.flexpay.common.service.importexport.CorrectionsService;
 import org.flexpay.common.util.TranslationUtil;
+import static org.flexpay.common.util.config.ApplicationConfig.getDefaultLanguage;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashSet;
@@ -92,7 +92,7 @@ public class StreetTypeProcessor extends AbstractProcessor<StreetType> {
 
 	private void setName(StreetType streetType, String name) throws Exception {
 		StreetTypeTranslation translation = new StreetTypeTranslation();
-		translation.setLang(ApplicationConfig.getDefaultLanguage());
+		translation.setLang(getDefaultLanguage());
 		translation.setName(name);
 		translation.setTranslatable(streetType);
 

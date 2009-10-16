@@ -192,7 +192,7 @@
 		select distinct o
 		from Service o
 		where o.status=0
-		order by o.parentService ASC
+		order by o.parentService.id ASC
 	</query>
 
 	<query name="Service.findServicesByProviderCode">

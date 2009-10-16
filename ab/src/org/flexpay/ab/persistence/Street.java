@@ -1,6 +1,5 @@
 package org.flexpay.ab.persistence;
 
-import org.flexpay.ab.util.config.ApplicationConfig;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.NameTimeDependentChild;
 import org.flexpay.common.persistence.Stub;
@@ -9,6 +8,8 @@ import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.DateIntervalUtil;
 import org.flexpay.common.util.DateUtil;
 import org.flexpay.common.util.TranslationUtil;
+import static org.flexpay.common.util.config.ApplicationConfig.getFutureInfinite;
+import static org.flexpay.common.util.config.ApplicationConfig.getPastInfinite;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -110,7 +111,7 @@ public class Street extends NameTimeDependentChild<StreetName, StreetNameTempora
 	}
 
 	public void setTypeForDate(StreetType type, Date beginDate) {
-		setTypeForDates(type, beginDate, ApplicationConfig.getFutureInfinite());
+		setTypeForDates(type, beginDate, getFutureInfinite());
 	}
 
 	public void setTypeForDates(StreetType type, Date beginDate, Date endDate) {
@@ -229,7 +230,7 @@ public class Street extends NameTimeDependentChild<StreetName, StreetNameTempora
 	}
 
 	public void setNameForDate(StreetName name, Date beginDate) {
-		setNameForDates(name, beginDate, ApplicationConfig.getFutureInfinite());
+		setNameForDates(name, beginDate, getFutureInfinite());
 	}
 
 	public void setNameForDates(StreetName name, Date beginDate, Date endDate) {
@@ -237,11 +238,11 @@ public class Street extends NameTimeDependentChild<StreetName, StreetNameTempora
 			throw new RuntimeException("Invalid begin-end dates: [" + DateUtil.format(beginDate) +
 									   ", " + DateUtil.format(endDate) + "]");
 		}
-		if (beginDate.before(ApplicationConfig.getPastInfinite())) {
-			beginDate = ApplicationConfig.getPastInfinite();
+		if (beginDate.before(getPastInfinite())) {
+			beginDate = getPastInfinite();
 		}
-		if (endDate.after(ApplicationConfig.getFutureInfinite())) {
-			endDate = ApplicationConfig.getFutureInfinite();
+		if (endDate.after(getFutureInfinite())) {
+			endDate = getFutureInfinite();
 		}
 
 		name.setObject(this);

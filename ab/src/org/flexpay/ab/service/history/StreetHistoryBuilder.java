@@ -12,6 +12,7 @@ import org.flexpay.common.persistence.history.impl.HistoryBuilderBase;
 import org.flexpay.common.util.DateIntervalUtil;
 import org.flexpay.common.util.EqualsHelper;
 import org.flexpay.ab.util.config.ApplicationConfig;
+import static org.flexpay.common.util.config.ApplicationConfig.getLanguages;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
@@ -97,7 +98,7 @@ public class StreetHistoryBuilder extends HistoryBuilderBase<Street> {
 			StreetName n1 = tmp1.getValue();
 			StreetName n2 = tmp2.getValue();
 
-			List<Language> langs = ApplicationConfig.getLanguages();
+			List<Language> langs = getLanguages();
 			for (Language lang : langs) {
 				StreetNameTranslation tr1 = n1 != null ? n1.getTranslation(lang) : null;
 				StreetNameTranslation tr2 = n2.getTranslation(lang);

@@ -1,14 +1,18 @@
 package org.flexpay.sz.util.config;
 
+import static org.flexpay.common.util.config.ApplicationConfig.getDataRoot;
 import org.flexpay.sz.service.Security;
+import org.springframework.beans.factory.annotation.Required;
 
 import java.io.File;
 
-public class ApplicationConfig extends org.flexpay.eirc.util.config.ApplicationConfig {
+public class ApplicationConfig {
 
 	private String szDataRoot;
 	private String szDefaultDbfFileEncoding;
 
+	private static final ApplicationConfig INSTANCE = new ApplicationConfig();
+	
 	static {
 		// ensure Security fields are initialised
 		Security.touch();
@@ -16,21 +20,19 @@ public class ApplicationConfig extends org.flexpay.eirc.util.config.ApplicationC
 
 
 	protected static ApplicationConfig getInstance() {
-		return (ApplicationConfig) org.flexpay.common.util.config.ApplicationConfig.getInstance();
-	}
-
-	public static File getSzDataRoot() {
-		return getInstance().getSzDataRootInternal();
+		return INSTANCE;
 	}
 
 	private File getSzDataRootInternal() {
-		return new File(getDataRootInternal(), szDataRoot);
+		return new File(getDataRoot(), szDataRoot);
 	}
 
+	@Required
 	public void setSzDataRoot(String szDataRoot) {
 		this.szDataRoot = szDataRoot;
 		File szRoot = getSzDataRootInternal();
 		if (!szRoot.exists()) {
+			//noinspection ResultOfMethodCallIgnored
 			szRoot.mkdirs();
 		}
 	}
@@ -39,6 +41,7 @@ public class ApplicationConfig extends org.flexpay.eirc.util.config.ApplicationC
 		return getInstance().szDefaultDbfFileEncoding;
 	}
 
+	@Required
 	public void setSzDefaultDbfFileEncoding(String szDefaultDbfFileEncoding) {
 		this.szDefaultDbfFileEncoding = szDefaultDbfFileEncoding;
 	}

@@ -4,7 +4,7 @@ import org.flexpay.ab.persistence.Region;
 import org.flexpay.ab.persistence.RegionName;
 import org.flexpay.ab.persistence.RegionNameTemporal;
 import org.flexpay.ab.persistence.RegionNameTranslation;
-import org.flexpay.ab.util.config.ApplicationConfig;
+import static org.flexpay.ab.util.config.ApplicationConfig.getDefaultCountry;
 import org.flexpay.common.persistence.Language;
 import org.flexpay.common.persistence.Pair;
 import org.flexpay.common.persistence.history.Diff;
@@ -14,6 +14,7 @@ import org.flexpay.common.persistence.history.ProcessingStatus;
 import org.flexpay.common.persistence.history.impl.HistoryBuilderBase;
 import org.flexpay.common.util.DateIntervalUtil;
 import org.flexpay.common.util.EqualsHelper;
+import static org.flexpay.common.util.config.ApplicationConfig.getLanguages;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
@@ -62,7 +63,7 @@ public class RegionHistoryBuilder extends HistoryBuilderBase<Region> {
 			RegionName n1 = tmp1.getValue();
 			RegionName n2 = tmp2.getValue();
 
-			List<Language> langs = ApplicationConfig.getLanguages();
+			List<Language> langs = getLanguages();
 			for (Language lang : langs) {
 				RegionNameTranslation tr1 = n1 != null ? n1.getTranslation(lang) : null;
 				RegionNameTranslation tr2 = n2.getTranslation(lang);
@@ -101,13 +102,13 @@ public class RegionHistoryBuilder extends HistoryBuilderBase<Region> {
 	 * Apply diff to an object
 	 *
 	 * @param region Object to apply diff to
-	 * @param diff Diff to apply
+	 * @param diff   Diff to apply
 	 */
 	public void patch(@NotNull Region region, @NotNull Diff diff) {
 
 		// setup default region if not exists
 		if (region.getCountry() == null) {
-			region.setCountry(ApplicationConfig.getDefaultCountry());
+			region.setCountry(getDefaultCountry());
 		}
 
 		for (HistoryRecord record : diff.getHistoryRecords()) {

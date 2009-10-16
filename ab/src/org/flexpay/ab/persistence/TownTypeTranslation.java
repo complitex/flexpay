@@ -2,23 +2,23 @@ package org.flexpay.ab.persistence;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
-import org.flexpay.ab.util.config.ApplicationConfig;
 import org.flexpay.common.persistence.Language;
 import org.flexpay.common.persistence.Translation;
+import static org.flexpay.common.util.config.ApplicationConfig.getDefaultLanguage;
 import org.jetbrains.annotations.NotNull;
 
 /**
- * TownTypeTranslation is a trnaslation of TownType to particular language
+ * TownTypeTranslation is a translation of TownType to particular language
  */
 public class TownTypeTranslation extends Translation {
-	
+
 	private String shortName;
 
 	public TownTypeTranslation() {
 	}
 
 	public TownTypeTranslation(@NotNull String name) {
-		super(name, ApplicationConfig.getDefaultLanguage());
+		super(name, getDefaultLanguage());
 	}
 
 	public TownTypeTranslation(@NotNull String name, @NotNull Language lang) {

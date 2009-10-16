@@ -16,14 +16,14 @@ import org.flexpay.common.service.importexport.ClassToTypeRegistry;
 import org.flexpay.common.service.importexport.CorrectionsService;
 import org.flexpay.common.test.SpringBeanAwareTestCase;
 import org.flexpay.common.util.CollectionUtils;
+import static org.flexpay.common.util.config.ApplicationConfig.getDefaultLocale;
+import org.flexpay.tc.persistence.TariffCalculationResult;
 import org.flexpay.tc.persistence.TariffExportCode;
 import org.flexpay.tc.persistence.TariffExportLogRecord;
-import org.flexpay.tc.persistence.TariffCalculationResult;
 import org.flexpay.tc.service.TariffCalculationResultService;
-import org.flexpay.tc.util.config.ApplicationConfig;
 import org.jetbrains.annotations.NotNull;
-import org.junit.Test;
 import static org.junit.Assert.assertNotNull;
+import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
@@ -148,7 +148,7 @@ public class TestOutputExportResults extends SpringBeanAwareTestCase {
 		// 1) Адрес дома (улица, номер дома и так далее) 2) код дома в ЦН
 		// 3) название тарифа 4) значение тарифа 5) код тарифа 6) tariff export code
 		Building building = record.getBuilding();
-		String address = addressService.getBuildingAddress(stub(building), ApplicationConfig.getDefaultLocale());
+		String address = addressService.getBuildingAddress(stub(building), getDefaultLocale());
 		building = buildingService.read(stub(building));
 		District district = districtService.readFull(stub(building.getDistrict()));
 		String i18nName = record.getTariffExportCode().getI18nName();
@@ -172,7 +172,7 @@ public class TestOutputExportResults extends SpringBeanAwareTestCase {
 				.append(value).append(delimeter)
 				.append(record.getTariff().getSubServiceCode()).append(delimeter)
 				.append(record.getTariffExportCode().getCode()).append(delimeter)
-				.append("\"").append(ms.getMessage(i18nName, params, ApplicationConfig.getDefaultLocale())).append("\"")
+				.append("\"").append(ms.getMessage(i18nName, params, getDefaultLocale())).append("\"")
 				.append("\n");
 
 		wr.write(sb.toString());

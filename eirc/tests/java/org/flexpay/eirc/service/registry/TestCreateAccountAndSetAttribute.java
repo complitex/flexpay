@@ -13,12 +13,13 @@ import org.flexpay.eirc.service.exchange.ServiceProviderFileProcessor;
 import org.flexpay.eirc.test.EircSpringBeanAwareTestCase;
 import org.flexpay.eirc.util.config.ApplicationConfig;
 import org.flexpay.orgs.persistence.Organization;
+import static org.flexpay.orgs.persistence.TestData.ORG_CN;
 import org.flexpay.orgs.service.OrganizationService;
 import org.flexpay.orgs.service.ServiceProviderService;
-import static org.flexpay.orgs.persistence.TestData.ORG_CN;
 import org.flexpay.payments.persistence.EircRegistryProperties;
 import org.flexpay.payments.service.SPService;
 import static org.flexpay.payments.test.TestData.SRV_KVARPLATA;
+import static org.flexpay.payments.util.config.ApplicationConfig.getMbOrganizationStub;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -60,7 +61,7 @@ public class TestCreateAccountAndSetAttribute extends EircSpringBeanAwareTestCas
 
 		// add create account and change ERC account number containers
 		record.addContainer(new RegistryRecordContainer("1:01062009::"));
-		record.addContainer(new RegistryRecordContainer("15:01062009::ERC0808080:" + getMBOrganizationStub().getId()));
+		record.addContainer(new RegistryRecordContainer("15:01062009::ERC0808080:" + getMbOrganizationStub().getId()));
 		recordService.update(record);
 
 		ProcessingContext context = new ProcessingContext();
@@ -100,10 +101,6 @@ public class TestCreateAccountAndSetAttribute extends EircSpringBeanAwareTestCas
 		record.setImportError(null);
 		recordService.create(record);
 		return record;
-	}
-
-	private Stub<Organization> getMBOrganizationStub() {
-		return ApplicationConfig.getMbOrganizationStub();
 	}
 
 	private Registry createRegistry() throws ParseException, FlexPayException {

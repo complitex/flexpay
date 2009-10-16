@@ -1,8 +1,8 @@
 package org.flexpay.ab.persistence;
 
-import org.flexpay.ab.util.config.ApplicationConfig;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.TypeDateInterval;
+import static org.flexpay.common.util.config.ApplicationConfig.getFutureInfinite;
 
 import java.util.Date;
 
@@ -28,7 +28,7 @@ public class TownTypeTemporal extends TypeDateInterval<TownType, TownTypeTempora
 	}
 
 	public TownTypeTemporal(Date beginDate, TownType townType) {
-		super(beginDate, ApplicationConfig.getFutureInfinite(), townType);
+		super(beginDate, getFutureInfinite(), townType);
 	}
 
 	public TownTypeTemporal(Date beginDate, Stub<TownType> typeStub) {

@@ -5,6 +5,7 @@ import org.drools.RuleBaseFactory;
 import org.drools.WorkingMemory;
 import org.drools.compiler.DroolsParserException;
 import org.drools.compiler.PackageBuilder;
+import static org.flexpay.ab.util.config.ApplicationConfig.getDefaultTownStub;
 import org.flexpay.bti.persistence.building.BtiBuilding;
 import org.flexpay.bti.service.BtiBuildingService;
 import org.flexpay.bti.service.BuildingAttributeTypeService;
@@ -18,7 +19,6 @@ import org.flexpay.tc.persistence.TariffCalculationRulesFile;
 import org.flexpay.tc.service.TariffCalculationResultService;
 import org.flexpay.tc.service.TariffCalculationRulesFileService;
 import org.flexpay.tc.service.TariffService;
-import org.flexpay.tc.util.config.ApplicationConfig;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Required;
 
@@ -69,7 +69,7 @@ public class TariffCalculationJob extends Job {
 					org.drools.rule.Package pkg = builder.getPackage();
 					ruleBase = RuleBaseFactory.newRuleBase();
 					ruleBase.addPackage(pkg);
-					List<BtiBuilding> btiBuildingList = btiBuildingService.findByTown(ApplicationConfig.getDefaultTownStub());
+					List<BtiBuilding> btiBuildingList = btiBuildingService.findByTown(getDefaultTownStub());
 					pLogger.info("Found {} buildings", btiBuildingList.size());
 					int cnt = 0;
 

@@ -3,12 +3,13 @@ package org.flexpay.common.util.config;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.flexpay.common.persistence.Language;
+import org.flexpay.common.service.LanguageService;
 import org.flexpay.common.service.Security;
-import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Required;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
@@ -23,17 +24,16 @@ public class ApplicationConfig {
 	private static final Logger log = LoggerFactory.getLogger(ApplicationConfig.class);
 
 	private static ResourceLoader resourceLoader = new DefaultResourceLoader();
-	private static ApplicationConfig instance;
+	private static ApplicationConfig INSTANCE = new ApplicationConfig();
 
 	private List<Language> languages = new ArrayList<Language>(3);
-	public static final String USER_PREFERENCES_SESSION_ATTRIBUTE = "FLEXPAY_USER_PREFERENCES_SESSION_ATTRIBUTE";
 
 	private static final Date DATE_PAST_INFINITE = new GregorianCalendar(1900, 0, 1).getTime();
 	private static final Date DATE_FUTURE_INFINITE = new GregorianCalendar(2100, 11, 31).getTime();
 
-    private String applicationName;
+	private String applicationName;
 	private String dataRoot;
-    private int logPreviewLinesNumber;
+	private int logPreviewLinesNumber;
 
 	private Locale defaultReportLocale;
 
@@ -65,14 +65,15 @@ public class ApplicationConfig {
 	 *
 	 * @return Value for property 'instance'.
 	 */
-	protected static ApplicationConfig getInstance() {
-		return instance == null ? new ApplicationConfig() : instance;
+	@NotNull
+	public static ApplicationConfig getInstance() {
+		return INSTANCE;
 	}
 
 	/**
 	 * Do not instantiate ApplicationConfig.
 	 */
-	protected ApplicationConfig() {
+	private ApplicationConfig() {
 	}
 
 	/**
@@ -82,24 +83,11 @@ public class ApplicationConfig {
 	 */
 	@NotNull
 	public static List<Language> getLanguages() {
-		return Collections.unmodifiableList(getInstance().languages);
-	}
-
-	public void addLanguage(Language language) {
-		languages.add(language);
+		return getInstance().languages;
 	}
 
 	/**
-	 * Setter for property 'languages'.
-	 *
-	 * @param languages Value to set for property 'languages'.
-	 */
-	public void setLanguages(List<Language> languages) {
-		this.languages = languages;
-	}
-
-	/**
-	 * Get Default Language configuaration option
+	 * Get Default Language configuration option
 	 *
 	 * @return Language
 	 * @throws RuntimeException if Default language is not configured
@@ -124,15 +112,6 @@ public class ApplicationConfig {
 		return getDefaultLanguage().getLocale();
 	}
 
-	/**
-	 * Setter for property 'instance'.
-	 *
-	 * @param config Value to set for property 'instance'.
-	 */
-	static void setInstance(ApplicationConfig config) {
-		instance = config;
-	}
-
 	@Override
 	public String toString() {
 		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE)
@@ -140,26 +119,28 @@ public class ApplicationConfig {
 	}
 
 	public static File getDataRoot() {
-		return getInstance().getDataRootInternal();
+		return getDataRootInternal();
 	}
 
 	public static File getProcessLogDirectory() {
-		File dataRoot = getInstance().getDataRootInternal();
+		File dataRoot = getDataRootInternal();
 		return new File(dataRoot, "logs");
 	}
 
-	protected File getDataRootInternal() {
-		return new File(tmpDir(), dataRoot);
+	private static File getDataRootInternal() {
+		return new File(tmpDir(), getInstance().dataRoot);
 	}
 
 	private static File tmpDir() {
 		return new File(System.getProperty("java.io.tmpdir"));
 	}
 
+	@Required
 	public void setDataRoot(String dataRoot) {
 		this.dataRoot = dataRoot;
 		File root = getDataRootInternal();
 		if (!root.exists()) {
+			//noinspection ResultOfMethodCallIgnored
 			root.mkdirs();
 		}
 	}
@@ -196,35 +177,39 @@ public class ApplicationConfig {
 	}
 
 
-    public static int getLogPreviewLinesNumber() {
-        return getInstance().logPreviewLinesNumber;
-    }
+	public static int getLogPreviewLinesNumber() {
+		return getInstance().logPreviewLinesNumber;
+	}
 
-    public void setLogPreviewLinesNumber(String logPreviewLinesNumber) {
-        this.logPreviewLinesNumber = Integer.valueOf(logPreviewLinesNumber);
-    }
+	@Required
+	public void setLogPreviewLinesNumber(String logPreviewLinesNumber) {
+		this.logPreviewLinesNumber = Integer.valueOf(logPreviewLinesNumber);
+	}
 
 	@NotNull
 	public static String getInstanceId() {
 		return getInstance().instanceId;
 	}
 
+	@Required
 	public void setInstanceId(String instanceId) {
 		this.instanceId = instanceId;
 	}
 
-    public static String getApplicationName() {
-        return getInstance().applicationName;
-    }
+	public static String getApplicationName() {
+		return getInstance().applicationName;
+	}
 
-    public void setApplicationName(String applicationName) {
-        this.applicationName = applicationName;
-    }
+	@Required
+	public void setApplicationName(String applicationName) {
+		this.applicationName = applicationName;
+	}
 
 	public static String getDefaultCurrencyCode() {
 		return getInstance().defaultCurrencyCode;
 	}
 
+	@Required
 	public void setDefaultCurrencyCode(String defaultCurrencyCode) {
 		this.defaultCurrencyCode = defaultCurrencyCode;
 	}
@@ -234,6 +219,7 @@ public class ApplicationConfig {
 		return resource.exists();
 	}
 
+	@Required
 	public void setDefaultReportLocale(String localeName) {
 		this.defaultReportLocale = new Locale(localeName);
 	}
@@ -242,4 +228,8 @@ public class ApplicationConfig {
 		return getInstance().defaultReportLocale;
 	}
 
+	@Required
+	public void setLanguageService(LanguageService languageService) {
+		languages = Collections.unmodifiableList(languageService.getLanguages());
+	}
 }

@@ -27,7 +27,8 @@ public class ServiceValidationFactory {
     private DataSourceDescription megabankSD;
 
     @NotNull
-    public FileValidator createFileValidator(@NotNull FileValidationSchema schema, @NotNull LineParser lineParser, @Nullable Logger log) {
+    public FileValidator createFileValidator(
+			@NotNull FileValidationSchema schema, @NotNull LineParser lineParser, @Nullable Logger log) {
         List<Messenger> listMessengers = CollectionUtils.list();
         listMessengers.add(new LevelMessenger(LoggerFactory.getLogger(FileValidator.class), MessageLevel.WARN));
         if (log != null) {
@@ -38,9 +39,14 @@ public class ServiceValidationFactory {
         return new FileValidator(messenger, this, schema, lineParser);
     }
 
-    public MessageValidatorWithContext getNewInstanceValidator(@NotNull Class<MessageValidatorWithContext> cls, @NotNull Messenger messenger, @NotNull ValidationContext context) {
+    @SuppressWarnings ({"unchecked"})
+	public MessageValidatorWithContext<String> getNewInstanceValidator(
+			@NotNull Class<MessageValidatorWithContext> cls,
+			@NotNull Messenger messenger,
+			@NotNull ValidationContext context) {
         try {
-            Constructor<MessageValidatorWithContext> headerValidatorConstructor = cls.getConstructor(Messenger.class, ValidationContext.class);
+            Constructor<MessageValidatorWithContext> headerValidatorConstructor =
+					cls.getConstructor(Messenger.class, ValidationContext.class);
             return headerValidatorConstructor.newInstance(messenger, context);
         } catch (Throwable th) {
             log.error("Missing validator class", th);

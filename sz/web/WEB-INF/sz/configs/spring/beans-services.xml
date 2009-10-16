@@ -6,6 +6,12 @@
 		   http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
 		   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
+
+	<bean id="szApplicationConfig"
+		  class="org.flexpay.sz.util.config.ApplicationConfig"
+		  p:szDataRoot="${app.config.sz.dataRoot}"
+		  p:szDefaultDbfFileEncoding="${app.config.sz.defaultDbfFileEncoding}" />
+
 	<bean id="szFileService"
 		  class="org.flexpay.sz.service.impl.SzFileServiceImpl"
 		  p:szFileDao-ref="szFileDao"

@@ -180,6 +180,7 @@ public abstract class AccPaymentsReportAction extends FPActionSupport {
 		return request;
 	}
 
+	@SuppressWarnings ({"unchecked"})
 	private void initFilters() {
 
 		paymentPointsFilter.initFilter(session);

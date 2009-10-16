@@ -1,8 +1,8 @@
 package org.flexpay.ab.persistence;
 
-import org.flexpay.ab.util.config.ApplicationConfig;
 import org.flexpay.common.persistence.Language;
 import org.flexpay.common.persistence.Translation;
+import static org.flexpay.common.util.config.ApplicationConfig.getDefaultLanguage;
 
 /**
  * IdentityTypeTranslation is a translation of IdentityType to particular language
@@ -13,7 +13,7 @@ public class IdentityTypeTranslation extends Translation {
 	}
 
 	public IdentityTypeTranslation(String name) {
-		super(name, ApplicationConfig.getDefaultLanguage());
+		super(name, getDefaultLanguage());
 	}
 
 	public IdentityTypeTranslation(String name, Language language) {
