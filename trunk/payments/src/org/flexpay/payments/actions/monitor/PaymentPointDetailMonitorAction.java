@@ -1,9 +1,11 @@
 package org.flexpay.payments.actions.monitor;
 
+import org.apache.commons.lang.StringUtils;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.process.ProcessManager;
 import org.flexpay.common.util.DateUtil;
+import org.flexpay.common.util.StringUtil;
 import org.flexpay.orgs.persistence.Cashbox;
 import org.flexpay.orgs.persistence.PaymentPoint;
 import org.flexpay.orgs.service.CashboxService;
@@ -53,11 +55,12 @@ public class PaymentPointDetailMonitorAction extends FPActionSupport implements 
     private OperationService operationService;
 
     @NotNull
+    @Override
     protected String doExecute() throws Exception {
         Date startDate = DateUtil.now();
         Date finishDate = new Date();
 
-        if (paymentPointId == null || paymentPointId.length() == 0) {
+        if (StringUtils.isEmpty(paymentPointId)) {
             log.error("Payment point does not set");
             addActionError(getText("payments.payment_point.detail.error.pp.does_not_set"));
             return ERROR;
@@ -79,7 +82,32 @@ public class PaymentPointDetailMonitorAction extends FPActionSupport implements 
         updated = formatTime.format(new Date());
 
         return SUCCESS;
-    }
+    }    
+
+    public long getPaymentsCount(List<OperationTypeStatistics> typeStatisticses) {
+		long count = 0;
+		for (OperationTypeStatistics stats : typeStatisticses) {
+			if (OperationType.isPaymentCode(stats.getOperationTypeCode())) {
+				count += stats.getCount();
+			}
+		}
+		return count;
+	}
+
+	public BigDecimal getPaymentsSumm(List<OperationTypeStatistics> typeStatisticses) {
+		BigDecimal summ = BigDecimal.ZERO;
+		for (OperationTypeStatistics stats : typeStatisticses) {
+			if (OperationType.isPaymentCode(stats.getOperationTypeCode())) {
+				summ = summ.add(stats.getSumm());
+			}
+		}
+		return summ;
+	}
+
+	@Override
+	public void afterPropertiesSet() throws Exception {
+		tradingDayControlPanel = new TradingDayControlPanel(processManager, AccounterAssignmentHandler.ACCOUNTER, log);
+	}
 
     private void initPaymentPointInfo(PaymentPoint paymentPoint, Date startDate, Date finishDate) {
         List<OperationTypeStatistics> statistics = paymentsStatisticsService.operationTypePaymentPointStatistics(Stub.stub(paymentPoint), startDate, finishDate);
@@ -118,6 +146,7 @@ public class PaymentPointDetailMonitorAction extends FPActionSupport implements 
 	}
 
 	@NotNull
+    @Override
     protected String getErrorResult() {
         return SUCCESS;
     }
@@ -226,29 +255,4 @@ public class PaymentPointDetailMonitorAction extends FPActionSupport implements 
     public void setOperationService(OperationService operationService) {
         this.operationService = operationService;
     }
-
-    public long getPaymentsCount(List<OperationTypeStatistics> typeStatisticses) {
-		long count = 0;
-		for (OperationTypeStatistics stats : typeStatisticses) {
-			if (OperationType.isPaymentCode(stats.getOperationTypeCode())) {
-				count += stats.getCount();
-			}
-		}
-		return count;
-	}
-
-	public BigDecimal getPaymentsSumm(List<OperationTypeStatistics> typeStatisticses) {
-		BigDecimal summ = BigDecimal.ZERO;
-		for (OperationTypeStatistics stats : typeStatisticses) {
-			if (OperationType.isPaymentCode(stats.getOperationTypeCode())) {
-				summ = summ.add(stats.getSumm());
-			}
-		}
-		return summ;
-	}
-
-	@Override
-	public void afterPropertiesSet() throws Exception {
-		tradingDayControlPanel = new TradingDayControlPanel(processManager, AccounterAssignmentHandler.ACCOUNTER, log);
-	}
 }

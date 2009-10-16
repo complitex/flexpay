@@ -62,6 +62,7 @@ public class PaymentPointsListMonitorAction extends FPActionWithPagerSupport<Pay
      * {@inheritDoc}
      */
     @NotNull
+    @Override
     protected String doExecute() throws Exception {
         Page<PaymentPoint> page = new Page<PaymentPoint>();
         page.setPageSize(getPageSize());
@@ -150,6 +151,27 @@ public class PaymentPointsListMonitorAction extends FPActionWithPagerSupport<Pay
         return SUCCESS;
     }
 
+
+    public long getPaymentsCount(List<OperationTypeStatistics> typeStatisticses) {
+        long count = 0;
+        for (OperationTypeStatistics stats : typeStatisticses) {
+            if (OperationType.isPaymentCode(stats.getOperationTypeCode())) {
+                count += stats.getCount();
+            }
+        }
+        return count;
+    }
+
+    public BigDecimal getPaymentsSumm(List<OperationTypeStatistics> typeStatisticses) {
+        BigDecimal summ = BigDecimal.ZERO;
+        for (OperationTypeStatistics stats : typeStatisticses) {
+            if (OperationType.isPaymentCode(stats.getOperationTypeCode())) {
+                summ = summ.add(stats.getSumm());
+            }
+        }
+        return summ;
+    }
+
     @Secured (Roles.TRADING_DAY_ADMIN_ACTION)
     private void enableTradingDay(PaymentCollector paymentCollector, PaymentPoint paymentPoint) throws JobExecutionException {
         Map<Serializable, Serializable> parameters = new HashMap<Serializable, Serializable>();
@@ -208,6 +230,7 @@ public class PaymentPointsListMonitorAction extends FPActionWithPagerSupport<Pay
      * {@inheritDoc}
      */
     @NotNull
+    @Override
     protected String getErrorResult() {
         return SUCCESS;
     }
@@ -304,25 +327,5 @@ public class PaymentPointsListMonitorAction extends FPActionWithPagerSupport<Pay
     @Required
     public void setPaymentCollectorService(PaymentCollectorService paymentCollectorService) {
         this.paymentCollectorService = paymentCollectorService;
-    }
-
-    public long getPaymentsCount(List<OperationTypeStatistics> typeStatisticses) {
-        long count = 0;
-        for (OperationTypeStatistics stats : typeStatisticses) {
-            if (OperationType.isPaymentCode(stats.getOperationTypeCode())) {
-                count += stats.getCount();
-            }
-        }
-        return count;
-    }
-
-    public BigDecimal getPaymentsSumm(List<OperationTypeStatistics> typeStatisticses) {
-        BigDecimal summ = BigDecimal.ZERO;
-        for (OperationTypeStatistics stats : typeStatisticses) {
-            if (OperationType.isPaymentCode(stats.getOperationTypeCode())) {
-                summ = summ.add(stats.getSumm());
-            }
-        }
-        return summ;
     }
 }
