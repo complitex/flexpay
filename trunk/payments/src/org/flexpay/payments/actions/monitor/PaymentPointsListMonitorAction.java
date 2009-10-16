@@ -70,7 +70,12 @@ public class PaymentPointsListMonitorAction extends FPActionWithPagerSupport<Pay
 //        List<org.flexpay.common.process.Process> processes = processManager.getProcesses(processSorterByName, page, null, null, ProcessState.RUNING, PROCESS_DEFINITION_NAME);
 
 		paymentPoints = new ArrayList<PaymentPointMonitorContainer>();
-		Long paymentCollectorId = ((PaymentsUserPreferences) getUserPreferences()).getPaymentCollectorId();
+        if (!(getUserPreferences() instanceof PaymentsUserPreferences)) {
+            log.error("{} is not instanceof {}", getUserPreferences().getClass(), PaymentsUserPreferences.class);
+            return ERROR;
+        }
+
+        Long paymentCollectorId = ((PaymentsUserPreferences) getUserPreferences()).getPaymentCollectorId();
         if (paymentCollectorId == null) {
             log.error("PaymentCollectorId is not defined in preferences of User {}(id={})", 
                     new Object[]{getUserPreferences().getUsername(), getUserPreferences().getId()});
@@ -91,8 +96,10 @@ public class PaymentPointsListMonitorAction extends FPActionWithPagerSupport<Pay
             if (String.valueOf(paymentPoint.getId()).equals(paymentPointId)) {
                 if (getText(DISABLE).equals(action) && paymentPoint.getTradingDayProcessInstanceId() != null) {
                     disableTradingDay(paymentPoint);
+                    addActionMessage(getText("payments.payment_points.list.disable_trading_day", "Disable trading day for {0} payment point", paymentPoint.getName(getLocale())));
                 } if (getText(ENABLE).equals(action) && paymentPoint.getTradingDayProcessInstanceId() == null) {
                     enableTradingDay(paymentCollector, paymentPoint);
+                    addActionMessage(getText("payments.payment_points.list.enable_trading_day", "Enable trading day for {0} payment point", paymentPoint.getName(getLocale())));
                 }
             }
 
@@ -162,8 +169,10 @@ public class PaymentPointsListMonitorAction extends FPActionWithPagerSupport<Pay
         parameters.put(ExportJobParameterNames.ORGANIZATION_ID, recipientOrganizationId);
         log.debug("Set organizationId {}", recipientOrganizationId);
 
+        Long processInstanceId = null;
         try {
-            paymentPoint.setTradingDayProcessInstanceId(processManager.createProcess(PROCESS_DEFINITION_NAME, parameters));
+            processInstanceId = processManager.createProcess(PROCESS_DEFINITION_NAME, parameters);
+            paymentPoint.setTradingDayProcessInstanceId(processInstanceId);
             paymentCollectorService.update(paymentCollector);
             //paymentPointService.update(paymentPoint);
         } catch (ProcessInstanceException e) {
@@ -172,20 +181,27 @@ public class PaymentPointsListMonitorAction extends FPActionWithPagerSupport<Pay
         } catch (ProcessDefinitionException e) {
             log.error("Process trading day not started", e);
             throw new JobExecutionException(e);
-        } catch (FlexPayExceptionContainer flexPayExceptionContainer) {
-            log.error("Payment point did not save", flexPayExceptionContainer);
-            // TODO Kill the process!!!
+        } catch (Throwable th) {
+            log.error("Payment point did not save", th);
+            if (processInstanceId != null) {
+                deleteProcess(processInstanceId);
+                log.debug("Delete processId={}", processInstanceId);
+            }
         }
     }
 
     @Secured (Roles.TRADING_DAY_ADMIN_ACTION)
     private void disableTradingDay(PaymentPoint paymentPoint) throws FlexPayExceptionContainer {
-        Process process = processManager.getProcessInstanceInfo(paymentPoint.getTradingDayProcessInstanceId());
+        deleteProcess(paymentPoint.getTradingDayProcessInstanceId());
+        paymentPoint.setTradingDayProcessInstanceId(null);
+        paymentPointService.update(paymentPoint);
+    }
+
+    private void deleteProcess(long processInstanceId) {
+        Process process = processManager.getProcessInstanceInfo(processInstanceId);
         if (process != null) {
             processManager.deleteProcessInstance(process);
         }
-        paymentPoint.setTradingDayProcessInstanceId(null);
-        paymentPointService.update(paymentPoint);
     }
 
     /**

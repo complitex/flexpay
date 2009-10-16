@@ -37,7 +37,6 @@ public class PaymentPointDetailMonitorAction extends FPActionSupport implements 
     private String paymentPointId;
 
 	private String status;
-    private List<String> buttons;
     private String activity;
 
 	// trading day control panel
@@ -55,30 +54,44 @@ public class PaymentPointDetailMonitorAction extends FPActionSupport implements 
 
     @NotNull
     protected String doExecute() throws Exception {
+        Date startDate = DateUtil.now();
+        Date finishDate = new Date();
 
-		if (paymentPointId == null || paymentPointId.length() == 0) {
+        if (paymentPointId == null || paymentPointId.length() == 0) {
             log.error("Payment point does not set");
+            addActionError(getText("payments.payment_point.detail.error.pp.does_not_set"));
             return ERROR;
         }
 
         PaymentPoint paymentPoint = paymentPointService.read(new Stub<PaymentPoint>(Long.parseLong(paymentPointId)));
         if (paymentPoint == null) {
             log.error("Payment point with id - {} does not exist", paymentPointId);
+            addActionError(getText("payments.payment_point.detail.error.inner_error"));
             return ERROR;
         }
 
 		initTradingDayPanel(paymentPoint);
 
-//----------------------------------------
-        List<Cashbox> cbs = cashboxService.findCashboxesForPaymentPoint(paymentPoint.getId());
-        Date startDate = DateUtil.now();
-        Date finishDate = new Date();
+        initPaymentPointInfo(paymentPoint, startDate, finishDate);
 
+        initCashboxesInfo(paymentPoint, startDate, finishDate);
+
+        updated = formatTime.format(new Date());
+
+        return SUCCESS;
+    }
+
+    private void initPaymentPointInfo(PaymentPoint paymentPoint, Date startDate, Date finishDate) {
         List<OperationTypeStatistics> statistics = paymentsStatisticsService.operationTypePaymentPointStatistics(Stub.stub(paymentPoint), startDate, finishDate);
         paymentsCount = String.valueOf(getPaymentsCount(statistics));
         totalSum = String.valueOf(getPaymentsSumm(statistics));
         name = paymentPoint.getName(getLocale());
+    }
 
+    private void initCashboxesInfo(@NotNull PaymentPoint paymentPoint, @NotNull Date startDate, @NotNull Date finishDate) {
+        List<Cashbox> cbs = cashboxService.findCashboxesForPaymentPoint(paymentPoint.getId());
+
+        List<OperationTypeStatistics> statistics;
         cashboxes = new ArrayList<CashboxMonitorContainer>();
         if (cbs != null) {
             for (Cashbox cashbox : cbs) {
@@ -97,10 +110,6 @@ public class PaymentPointDetailMonitorAction extends FPActionSupport implements 
                 cashboxes.add(container);
             }
         }
-
-        updated = formatTime.format(new Date());
-
-        return SUCCESS;
     }
 
 	private void initTradingDayPanel(PaymentPoint paymentPoint) {
@@ -143,14 +152,6 @@ public class PaymentPointDetailMonitorAction extends FPActionSupport implements 
 
     public void setStatus(String status) {
         this.status = status;
-    }
-
-    public List<String> getButtons() {
-        return buttons;
-    }
-
-    public void setButtons(List<String> buttons) {
-        this.buttons = buttons;
     }
 
     public String getActivity() {

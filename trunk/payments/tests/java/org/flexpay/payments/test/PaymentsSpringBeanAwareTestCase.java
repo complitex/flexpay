@@ -1,25 +1,36 @@
 package org.flexpay.payments.test;
 
+import static org.flexpay.ab.service.Roles.*;
 import org.flexpay.common.test.SpringBeanAwareTestCase;
 import org.flexpay.common.util.SecurityUtil;
 import org.flexpay.common.util.config.UserPreferences;
-import static org.flexpay.ab.service.Roles.*;
+import org.flexpay.common.util.config.UserPreferencesFactory;
 import static org.flexpay.orgs.service.Roles.*;
 import static org.flexpay.payments.service.Roles.*;
-import org.junit.BeforeClass;
+import org.junit.Before;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.Authentication;
 import org.springframework.security.GrantedAuthority;
 import org.springframework.security.context.SecurityContextHolder;
 import org.springframework.security.providers.anonymous.AnonymousAuthenticationToken;
 import org.springframework.security.userdetails.User;
+import org.springframework.test.context.ContextConfiguration;
 
+import javax.annotation.Resource;
+
+@ContextConfiguration (locations = {
+		"beans.xml"
+})
 public class PaymentsSpringBeanAwareTestCase extends SpringBeanAwareTestCase {
+    @Autowired
+    @Resource(name = "paymentsUserPreferencesFactory")
+    private UserPreferencesFactory userPreferencesFactory;
 
 	/**
 	 * Authenticate test user
 	 */
-	@BeforeClass
-	public static void authenticateTestUser() {
+	@Before
+	public void authenticateTestUser() {
 		GrantedAuthority[] authorities = SecurityUtil.auths(
 				PERSON_READ,
 				APARTMENT_READ,
@@ -68,10 +79,11 @@ public class PaymentsSpringBeanAwareTestCase extends SpringBeanAwareTestCase {
 				CASHBOX_CHANGE,
 				OPERATION_ADD,
 				OPERATION_CHANGE,
-				DOCUMENT_ADD
+				DOCUMENT_ADD,
+                DOCUMENT_CHANGE
 		);
 		User user = new User("test", "test", true, true, true, true, authorities);
-		UserPreferences preferences = new UserPreferences();
+		UserPreferences preferences = userPreferencesFactory.newInstance();
 		preferences.setTargetDetails(user);
 		Authentication auth = new AnonymousAuthenticationToken("key", preferences, authorities);
 		SecurityContextHolder.getContext().setAuthentication(auth);

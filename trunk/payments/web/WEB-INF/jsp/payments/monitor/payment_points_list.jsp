@@ -3,6 +3,7 @@
 <%@include file="/WEB-INF/jsp/payments/include/stylesheet.jsp" %>
 
 <s:actionerror/>
+<s:actionmessage/>
 
 <s:form action="paymentPointsListMonitor">
   <table cellpadding="3" cellspacing="1" border="0" width="100%">

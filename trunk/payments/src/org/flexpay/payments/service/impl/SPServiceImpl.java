@@ -275,6 +275,19 @@ public class SPServiceImpl implements SPService {
 	}
 
 	/**
+	 * Find Service by service provider
+	 *
+	 * @param serviceProviderStub ServiceProvider stub
+	 * @return Service if found, or <code>null</code> otherwise
+	 */
+    @Override
+	@Nullable
+	public List<Service> findServices(@NotNull Stub<ServiceProvider> serviceProviderStub) {
+		log.debug("Finding services provider #{}", serviceProviderStub.getId());
+		return serviceDao.findServices(serviceProviderStub.getId());
+	}
+
+	/**
 	 * Find Service by service provider and service code
 	 *
 	 * @param serviceProviderStub ServiceProvider stub

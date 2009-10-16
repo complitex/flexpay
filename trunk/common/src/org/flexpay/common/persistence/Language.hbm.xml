@@ -37,4 +37,11 @@
 			inner join fetch l.translations 
 		where l.status=0
 	</query>
+
+    <query name="Language.getLanguageByIsoCode">
+		select distinct l
+		from Language l
+			inner join fetch l.translations
+		where l.status=0 and l.langIsoCode=?
+	</query>
 </hibernate-mapping>
