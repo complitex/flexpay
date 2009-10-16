@@ -8,6 +8,7 @@ import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.persistence.Language;
 import static org.flexpay.common.persistence.Stub.stub;
 import static org.flexpay.common.util.CollectionUtils.treeMap;
+import static org.flexpay.common.util.config.ApplicationConfig.getLanguages;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 import org.apache.commons.lang.StringUtils;
@@ -64,7 +65,7 @@ public class IdentityTypeEditAction extends FPActionSupport {
 			names.put(translation.getLang().getId(), translation.getName());
 		}
 
-		for (Language language : ApplicationConfig.getLanguages()) {
+		for (Language language : getLanguages()) {
 			if (!names.containsKey(language.getId())) {
 				names.put(language.getId(), "");
 			}

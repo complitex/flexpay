@@ -7,6 +7,7 @@ import org.flexpay.common.persistence.LangNameTranslation;
 import org.flexpay.common.persistence.Translation;
 import org.flexpay.common.persistence.Language;
 import org.flexpay.ab.util.config.ApplicationConfig;
+import static org.flexpay.common.util.config.ApplicationConfig.getDefaultLanguage;
 import org.jetbrains.annotations.NotNull;
 
 public class CountryNameTranslation extends Translation {
@@ -21,7 +22,7 @@ public class CountryNameTranslation extends Translation {
 	}
 
 	public CountryNameTranslation(@NotNull String name) {
-		super(name, ApplicationConfig.getDefaultLanguage());
+		super(name, getDefaultLanguage());
 	}
 
 	public CountryNameTranslation(@NotNull String name, @NotNull Language lang) {

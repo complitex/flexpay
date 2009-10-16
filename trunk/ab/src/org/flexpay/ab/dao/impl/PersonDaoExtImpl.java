@@ -22,6 +22,7 @@ import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 import java.util.Collections;
 import java.util.List;
 
+@SuppressWarnings ({"unchecked"})
 public class PersonDaoExtImpl extends HibernateDaoSupport implements PersonDaoExt {
 
 	private Logger log = LoggerFactory.getLogger(getClass());
@@ -102,7 +103,6 @@ public class PersonDaoExtImpl extends HibernateDaoSupport implements PersonDaoEx
 		}
 
 		Object[] params = {range.getLowerBound(), range.getUpperBound()};
-		//noinspection unchecked
 		return getHibernateTemplate().findByNamedQuery("Person.listPersonsWithIdentities", params);
 	}
 
@@ -126,7 +126,6 @@ public class PersonDaoExtImpl extends HibernateDaoSupport implements PersonDaoEx
 		}
 
 		Object[] params = {range.getLowerBound(), range.getUpperBound()};
-		//noinspection unchecked
 		return getHibernateTemplate().findByNamedQuery("Person.listPersonsWithRegistrations", params);
 	}
 }

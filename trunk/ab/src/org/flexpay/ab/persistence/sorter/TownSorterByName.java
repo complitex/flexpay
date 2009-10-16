@@ -1,7 +1,7 @@
 package org.flexpay.ab.persistence.sorter;
 
-import org.flexpay.ab.util.config.ApplicationConfig;
 import org.flexpay.common.persistence.Language;
+import static org.flexpay.common.util.config.ApplicationConfig.getDefaultLanguage;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -17,7 +17,7 @@ public class TownSorterByName extends TownSorter {
 	}
 
 	public void setFrom(StringBuilder query) {
-		Language defaultLang = ApplicationConfig.getDefaultLanguage();
+		Language defaultLang = getDefaultLanguage();
 		query
 				.append(" left join ").append(townField).append(".nameTemporals sortNameTemporal ")
 				.append(" left join sortNameTemporal.value sortNameTemporalValue ")

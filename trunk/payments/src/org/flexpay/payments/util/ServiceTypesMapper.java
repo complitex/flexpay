@@ -29,8 +29,8 @@ public class ServiceTypesMapper {
 	 * @param mbCode Megabank service type code
 	 * @return Service type stub
 	 */
+	@SuppressWarnings ({"unchecked"})
 	public Stub<ServiceType> getInternalType(String mbCode) {
-		//noinspection unchecked
 		return (Stub<ServiceType>) mapping.get(mbCode);
 	}
 

@@ -6,6 +6,7 @@ import org.flexpay.ab.persistence.*;
 import org.flexpay.ab.persistence.filters.TownFilter;
 import org.flexpay.ab.service.StreetService;
 import org.flexpay.ab.util.config.ApplicationConfig;
+import static org.flexpay.ab.util.config.ApplicationConfig.getDefaultTown;
 import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.common.persistence.Stub;
@@ -15,6 +16,8 @@ import org.flexpay.common.service.importexport.CorrectionsService;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.DateIntervalUtil;
 import org.flexpay.common.util.TranslationUtil;
+import static org.flexpay.common.util.config.ApplicationConfig.getDefaultLanguage;
+import static org.flexpay.common.util.config.ApplicationConfig.getPastInfinite;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
@@ -35,7 +38,7 @@ public class StreetProcessor extends AbstractProcessor<Street> {
 	protected Street doCreateObject() throws Exception {
 
 		Street street = new Street();
-		street.setParent(ApplicationConfig.getDefaultTown());
+		street.setParent(getDefaultTown());
 
 		return street;
 	}
@@ -54,7 +57,7 @@ public class StreetProcessor extends AbstractProcessor<Street> {
 		StreetName streetName = new StreetName();
 
 		StreetNameTranslation translation = new StreetNameTranslation();
-		translation.setLang(ApplicationConfig.getDefaultLanguage());
+		translation.setLang(getDefaultLanguage());
 		translation.setName(name);
 		translation.setTranslatable(streetName);
 		Set<StreetNameTranslation> translations = new HashSet<StreetNameTranslation>();
@@ -72,7 +75,7 @@ public class StreetProcessor extends AbstractProcessor<Street> {
 		if (timeLine != null) {
 			timeLine = DateIntervalUtil.addInterval(timeLine, nameTemporal);
 		} else {
-			nameTemporal.setBegin(ApplicationConfig.getPastInfinite());
+			nameTemporal.setBegin(getPastInfinite());
 			timeLine = new TimeLine<StreetName, StreetNameTemporal>(nameTemporal);
 		}
 
@@ -100,7 +103,7 @@ public class StreetProcessor extends AbstractProcessor<Street> {
 
 		TimeLine<StreetType, StreetTypeTemporal> timeLine = street.getTypesTimeLine();
 		if (timeLine == null) {
-			temporal.setBegin(ApplicationConfig.getPastInfinite());
+			temporal.setBegin(getPastInfinite());
 			timeLine = new TimeLine<StreetType, StreetTypeTemporal>(temporal);
 		} else {
 			timeLine = DateIntervalUtil.addInterval(timeLine, temporal);

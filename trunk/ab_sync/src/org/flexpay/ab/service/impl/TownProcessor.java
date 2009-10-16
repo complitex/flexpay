@@ -11,6 +11,7 @@ import org.flexpay.common.persistence.TimeLine;
 import org.flexpay.common.service.importexport.CorrectionsService;
 import org.flexpay.common.util.DateIntervalUtil;
 import org.flexpay.common.util.TranslationUtil;
+import static org.flexpay.common.util.config.ApplicationConfig.getPastInfinite;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Calendar;
@@ -55,9 +56,7 @@ public class TownProcessor extends AbstractProcessor<Town> {
 	private void setName(Town town, String name, Date updateDate) throws Exception {
 		TownName townName = new TownName();
 
-		TownNameTranslation translation = new TownNameTranslation();
-		translation.setLang(ApplicationConfig.getDefaultLanguage());
-		translation.setName(name);
+		TownNameTranslation translation = new TownNameTranslation(name);
 		translation.setTranslatable(townName);
 		Set<TownNameTranslation> translations = new HashSet<TownNameTranslation>();
 		translations.add(translation);
@@ -74,7 +73,7 @@ public class TownProcessor extends AbstractProcessor<Town> {
 		if (timeLine != null) {
 			timeLine = DateIntervalUtil.addInterval(timeLine, nameTemporal);
 		} else {
-			nameTemporal.setBegin(ApplicationConfig.getPastInfinite());
+			nameTemporal.setBegin(getPastInfinite());
 			timeLine = new TimeLine<TownName, TownNameTemporal>(nameTemporal);
 		}
 

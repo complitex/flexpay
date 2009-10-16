@@ -1,11 +1,11 @@
 package org.flexpay.ab.persistence;
 
-import org.flexpay.common.persistence.Translation;
-import org.flexpay.common.persistence.Language;
-import org.flexpay.ab.util.config.ApplicationConfig;
-import org.jetbrains.annotations.NotNull;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
+import org.flexpay.common.persistence.Language;
+import org.flexpay.common.persistence.Translation;
+import static org.flexpay.common.util.config.ApplicationConfig.getDefaultLanguage;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * StreetTypeTranslation is a translation of StreetType to particular language
@@ -21,7 +21,7 @@ public class StreetTypeTranslation extends Translation {
 	}
 
 	public StreetTypeTranslation(String name) throws Exception {
-		super(name, ApplicationConfig.getDefaultLanguage());
+		super(name, getDefaultLanguage());
 	}
 
 	public StreetTypeTranslation(String name, Language language) throws Exception {
@@ -29,7 +29,7 @@ public class StreetTypeTranslation extends Translation {
 	}
 
 	public StreetTypeTranslation(String name, String shortName) throws Exception {
-		super(name, ApplicationConfig.getDefaultLanguage());
+		super(name, getDefaultLanguage());
 		this.shortName = shortName;
 	}
 

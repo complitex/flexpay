@@ -1,10 +1,12 @@
 package org.flexpay.tc.util.config;
 
+import static org.flexpay.common.util.config.ApplicationConfig.getDataRoot;
 import org.flexpay.tc.service.Security;
+import org.springframework.beans.factory.annotation.Required;
 
 import java.io.File;
 
-public class ApplicationConfig extends org.flexpay.ab.util.config.ApplicationConfig {
+public class ApplicationConfig {
 
 	private String tcDataRoot;
 
@@ -12,52 +14,59 @@ public class ApplicationConfig extends org.flexpay.ab.util.config.ApplicationCon
 	private int maximumPporches;
 	private int maximumApartments;
 
+	private static final ApplicationConfig INSTANCE = new ApplicationConfig();
+
 	static {
 		// ensure Security fields are initialised
 		Security.touch();
 	}
 
 
-	protected static ApplicationConfig getInstance() {
-		return (ApplicationConfig) org.flexpay.common.util.config.ApplicationConfig.getInstance();
+	public static ApplicationConfig getInstance() {
+		return INSTANCE;
 	}
 
 	public static int getMaximumFloors() {
 		return getInstance().maximumFloors;
 	}
 
-	public void setMaximumFloors(String maximumFloors) {
-		this.maximumFloors = Integer.valueOf(maximumFloors);
+	@Required
+	public void setMaximumFloors(int maximumFloors) {
+		this.maximumFloors = maximumFloors;
 	}
 
 	public static int getMaximumPporches() {
 		return getInstance().maximumPporches;
 	}
 
-	public void setMaximumPporches(String maximumPporches) {
-		this.maximumPporches = Integer.valueOf(maximumPporches);
+	@Required
+	public void setMaximumPporches(int maximumPporches) {
+		this.maximumPporches = maximumPporches;
 	}
 
 	public static int getMaximumApartments() {
 		return getInstance().maximumApartments;
 	}
 
-	public void setMaximumApartments(String maximumApartments) {
-		this.maximumApartments = Integer.valueOf(maximumApartments);
+	@Required
+	public void setMaximumApartments(int maximumApartments) {
+		this.maximumApartments = maximumApartments;
 	}
 
 	public static File getTcDataRoot() {
-		return getInstance().getTcDataRootInternal();
+		return getTcDataRootInternal();
 	}
 
-	private File getTcDataRootInternal() {
-		return new File(getDataRootInternal(), tcDataRoot);
+	private static File getTcDataRootInternal() {
+		return new File(getDataRoot(), getInstance().tcDataRoot);
 	}
 
+	@Required
 	public void setTcDataRoot(String tcDataRoot) {
 		this.tcDataRoot = tcDataRoot;
 		File tcRoot = getTcDataRootInternal();
 		if (!tcRoot.exists()) {
+			//noinspection ResultOfMethodCallIgnored
 			tcRoot.mkdirs();
 		}
 	}

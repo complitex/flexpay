@@ -1,8 +1,8 @@
 package org.flexpay.eirc.persistence.exchange;
 
-import org.flexpay.eirc.persistence.exchange.delayed.DelayedUpdateNope;
-import org.flexpay.eirc.util.config.ApplicationConfig;
 import org.flexpay.common.exception.FlexPayException;
+import static org.flexpay.common.util.config.ApplicationConfig.getInstanceId;
+import org.flexpay.eirc.persistence.exchange.delayed.DelayedUpdateNope;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,7 +42,7 @@ public class InstanceIdOperation extends ContainerOperation {
 		log.debug("Setting source instance id: {}", instanceId);
 		context.setSourceInstanceId(instanceId);
 
-		if (ApplicationConfig.getInstanceId().equals(instanceId)
+		if (getInstanceId().equals(instanceId)
 			&& context.getRegistry().getRegistryType().isPayments()) {
 			throw new FlexPayException("Same instance: " + instanceId,
 					"error.registry.processing.payments.same_instance");

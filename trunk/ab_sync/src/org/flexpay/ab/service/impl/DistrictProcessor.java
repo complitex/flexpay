@@ -6,6 +6,7 @@ import org.flexpay.ab.persistence.*;
 import org.flexpay.ab.persistence.filters.TownFilter;
 import org.flexpay.ab.service.DistrictService;
 import org.flexpay.ab.util.config.ApplicationConfig;
+import static org.flexpay.ab.util.config.ApplicationConfig.getDefaultTown;
 import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.common.persistence.Stub;
@@ -14,6 +15,8 @@ import org.flexpay.common.persistence.TimeLine;
 import org.flexpay.common.service.importexport.CorrectionsService;
 import org.flexpay.common.util.DateIntervalUtil;
 import org.flexpay.common.util.TranslationUtil;
+import static org.flexpay.common.util.config.ApplicationConfig.getDefaultLanguage;
+import static org.flexpay.common.util.config.ApplicationConfig.getPastInfinite;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
@@ -34,7 +37,7 @@ public class DistrictProcessor extends AbstractProcessor<District> {
 	protected District doCreateObject() throws Exception {
 
 		District district = new District();
-		district.setParent(ApplicationConfig.getDefaultTown());
+		district.setParent(getDefaultTown());
 
 		return district;
 	}
@@ -53,7 +56,7 @@ public class DistrictProcessor extends AbstractProcessor<District> {
 		DistrictName districtName = new DistrictName();
 
 		DistrictNameTranslation translation = new DistrictNameTranslation();
-		translation.setLang(ApplicationConfig.getDefaultLanguage());
+		translation.setLang(getDefaultLanguage());
 		translation.setName(name);
 		translation.setTranslatable(districtName);
 		Set<DistrictNameTranslation> translations = new HashSet<DistrictNameTranslation>();
@@ -71,7 +74,7 @@ public class DistrictProcessor extends AbstractProcessor<District> {
 		if (timeLine != null) {
 			timeLine = DateIntervalUtil.addInterval(timeLine, nameTemporal);
 		} else {
-			nameTemporal.setBegin(ApplicationConfig.getPastInfinite());
+			nameTemporal.setBegin(getPastInfinite());
 			timeLine = new TimeLine<DistrictName, DistrictNameTemporal>(nameTemporal);
 		}
 

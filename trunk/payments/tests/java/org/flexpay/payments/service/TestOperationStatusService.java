@@ -6,7 +6,6 @@ import org.flexpay.payments.persistence.OperationStatus;
 import static org.flexpay.payments.persistence.OperationStatus.*;
 import org.flexpay.payments.persistence.OperationStatusTranslation;
 import org.flexpay.payments.test.PaymentsSpringBeanAwareTestCase;
-import org.flexpay.payments.util.config.ApplicationConfig;
 import static org.junit.Assert.*;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +17,7 @@ public class TestOperationStatusService extends PaymentsSpringBeanAwareTestCase 
 
 	@Test
 	public void testRead() {
-		int validCodes[] = { CREATED, REGISTERED, DELETED, RETURNED, ERROR, BLANK };
+		int validCodes[] = {CREATED, REGISTERED, DELETED, RETURNED, ERROR, BLANK};
 		for (int validCode : validCodes) {
 			OperationStatus status = null;
 			try {
@@ -28,13 +27,14 @@ public class TestOperationStatusService extends PaymentsSpringBeanAwareTestCase 
 			}
 
 			assertNotNull("Failed reading by code predefined operation status (code " + validCode + ")", status);
-			assertTrue("Read status code " + status.getCode() + " is bad (expected code was " + validCode + ")", validCode == status.getCode());
+			assertTrue("Read status code " + status.getCode() +
+					   " is bad (expected code was " + validCode + ")", validCode == status.getCode());
 
-			OperationStatusTranslation defaultTranslation = TranslationUtil.getTranslation(status.getTranslations(), ApplicationConfig.getDefaultLocale());
+			OperationStatusTranslation defaultTranslation = TranslationUtil.getTranslation(status.getTranslations());
 			assertNotNull("Status has no default translation", defaultTranslation);
 		}
 
-		int invalidCodes[] = { -2, -1, 0, 7, 8, 9};
+		int invalidCodes[] = {-2, -1, 0, 7, 8, 9};
 		for (int invalidCode : invalidCodes) {
 			try {
 				operationStatusService.read(invalidCode);

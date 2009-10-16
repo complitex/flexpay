@@ -8,8 +8,9 @@ import org.flexpay.ab.service.Security;
 import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Required;
 
-public class ApplicationConfig extends org.flexpay.common.util.config.ApplicationConfig {
+public class ApplicationConfig {
 
 	private Country defaultCountry;
 	private Region defaultRegion;
@@ -19,6 +20,8 @@ public class ApplicationConfig extends org.flexpay.common.util.config.Applicatio
 	private AddressAttributeType addressAttributeTypeNumber;
 	private AddressAttributeType addressAttributeTypeBulk;
 	private AddressAttributeType addressAttributeTypePart;
+
+	private static final ApplicationConfig INSTANCE = new ApplicationConfig();
 
 	static {
 		// ensure Security fields are initialised
@@ -66,51 +69,43 @@ public class ApplicationConfig extends org.flexpay.common.util.config.Applicatio
 		return getInstance().buildingHouseType;
 	}
 
-	/**
-	 * TODO: perform lookup by name, not id
-	 *
-	 * @param townId Town id
-	 */
-	public void setDefaultTownId(String townId) {
-		defaultTown = new Town(Long.valueOf(townId));
+	@Required
+	public void setDefaultTownId(Long townId) {
+		defaultTown = new Town(townId);
 	}
 
-	/**
-	 * TODO: perform lookup by name, not id
-	 *
-	 * @param regionId Region id
-	 */
-	public void setDefaultRegionId(String regionId) {
-		defaultRegion = new Region(Long.valueOf(regionId));
+	@Required
+	public void setDefaultRegionId(Long regionId) {
+		defaultRegion = new Region(regionId);
 	}
 
-	/**
-	 * TODO: perform lookup by name, not id
-	 *
-	 * @param countryId Country id
-	 */
-	public void setDefaultCountryId(String countryId) {
+	@Required
+	public void setDefaultCountryId(Long countryId) {
 		defaultCountry = new Country(Long.valueOf(countryId));
 	}
 
-	public void setBuildingHouseTypeId(String buildingHouseTypeId) {
-		buildingHouseType = new AddressAttributeType(Long.valueOf(buildingHouseTypeId));
+	@Required
+	public void setBuildingHouseTypeId(Long buildingHouseTypeId) {
+		buildingHouseType = new AddressAttributeType(buildingHouseTypeId);
 	}
 
-	public void setBuildingAttributeTypeNumberId(String numberTypeId) {
-		addressAttributeTypeNumber = new AddressAttributeType(Long.valueOf(numberTypeId));
+	@Required
+	public void setBuildingAttributeTypeNumberId(Long numberTypeId) {
+		addressAttributeTypeNumber = new AddressAttributeType(numberTypeId);
 	}
 
-	public void setBuildingAttributeTypeBulkId(String bulkTypeId) {
-		addressAttributeTypeBulk = new AddressAttributeType(Long.valueOf(bulkTypeId));
+	@Required
+	public void setBuildingAttributeTypeBulkId(Long bulkTypeId) {
+		addressAttributeTypeBulk = new AddressAttributeType(bulkTypeId);
 	}
 
-	public void setBuildingAttributeTypePartId(String partTypeId) {
-		addressAttributeTypePart = new AddressAttributeType(Long.valueOf(partTypeId));
+	@Required
+	public void setBuildingAttributeTypePartId(Long partTypeId) {
+		addressAttributeTypePart = new AddressAttributeType(partTypeId);
 	}
 
-	protected static ApplicationConfig getInstance() {
-		return (ApplicationConfig) org.flexpay.common.util.config.ApplicationConfig.getInstance();
+	public static ApplicationConfig getInstance() {
+		return INSTANCE;
 	}
 
 }

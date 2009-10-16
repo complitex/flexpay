@@ -7,6 +7,18 @@
 	       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
 		   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
+	<bean id="commonApplicationConfig"
+		  factory-method="getInstance"
+		  class="org.flexpay.common.util.config.ApplicationConfig"
+		  p:applicationName="${app.config.common.appName}"
+		  p:dataRoot="${app.config.common.dataRoot}"
+		  p:defaultCurrencyCode="${app.config.common.defaultCurrencyCode}"
+		  p:logPreviewLinesNumber="${app.config.common.logPreviewLinesNumber}"
+		  p:instanceId="${app.config.common.instanceId}"
+		  p:defaultReportLocale="${app.config.common.defaultReportLocale}"
+		  p:testProp="${app.config.common.testProp}"
+		  p:languageService-ref="languageService" />
+
 	<bean id="sequenceService" class="org.flexpay.common.service.impl.SequenceServiceImpl"
 		  p:sequenceDao-ref="sequenceDao" />
 

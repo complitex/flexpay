@@ -9,6 +9,7 @@ import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.persistence.Language;
 import static org.flexpay.common.persistence.Stub.stub;
 import static org.flexpay.common.util.CollectionUtils.treeMap;
+import static org.flexpay.common.util.config.ApplicationConfig.getLanguages;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
@@ -113,7 +114,7 @@ public class BuildingAttributeTypeEditAction extends FPActionSupport {
 			names.put(name.getLang().getId(), name.getName());
 		}
 
-		for (Language lang : ApplicationConfig.getLanguages()) {
+		for (Language lang : getLanguages()) {
 			if (!names.containsKey(lang.getId())) {
 				names.put(lang.getId(), "");
 			}

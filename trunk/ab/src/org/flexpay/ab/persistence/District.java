@@ -1,9 +1,10 @@
 package org.flexpay.ab.persistence;
 
-import org.flexpay.ab.util.config.ApplicationConfig;
 import org.flexpay.common.persistence.NameTimeDependentChild;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.util.DateUtil;
+import static org.flexpay.common.util.config.ApplicationConfig.getFutureInfinite;
+import static org.flexpay.common.util.config.ApplicationConfig.getPastInfinite;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
@@ -38,7 +39,7 @@ public class District extends NameTimeDependentChild<DistrictName, DistrictNameT
 	}
 
 	public void setNameForDate(DistrictName name, Date beginDate) {
-		setNameForDates(name, beginDate, ApplicationConfig.getFutureInfinite());
+		setNameForDates(name, beginDate, getFutureInfinite());
 	}
 
 	public void setNameForDates(DistrictName name, Date beginDate, Date endDate) {
@@ -47,11 +48,11 @@ public class District extends NameTimeDependentChild<DistrictName, DistrictNameT
 			throw new RuntimeException("Invalid begin-end dates: [" + DateUtil.format(beginDate) +
 									   ", " + DateUtil.format(endDate) + "]");
 		}
-		if (beginDate.before(ApplicationConfig.getPastInfinite())) {
-			beginDate = ApplicationConfig.getPastInfinite();
+		if (beginDate.before(getPastInfinite())) {
+			beginDate = getPastInfinite();
 		}
-		if (endDate.after(ApplicationConfig.getFutureInfinite())) {
-			endDate = ApplicationConfig.getFutureInfinite();
+		if (endDate.after(getFutureInfinite())) {
+			endDate = getFutureInfinite();
 		}
 
 		name.setObject(this);

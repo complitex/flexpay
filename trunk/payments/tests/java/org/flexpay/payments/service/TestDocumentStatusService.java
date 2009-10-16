@@ -6,7 +6,6 @@ import org.flexpay.payments.persistence.DocumentStatus;
 import static org.flexpay.payments.persistence.DocumentStatus.*;
 import org.flexpay.payments.persistence.DocumentStatusTranslation;
 import org.flexpay.payments.test.PaymentsSpringBeanAwareTestCase;
-import org.flexpay.payments.util.config.ApplicationConfig;
 import static org.junit.Assert.*;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +18,7 @@ public class TestDocumentStatusService extends PaymentsSpringBeanAwareTestCase {
 	@Test
 	public void testRead() {
 
-		int validCodes[] = { CREATED, DELETED, ERROR, REGISTERED, RETURNED };
+		int validCodes[] = {CREATED, DELETED, ERROR, REGISTERED, RETURNED};
 		for (int validCode : validCodes) {
 			DocumentStatus status = null;
 			try {
@@ -31,17 +30,17 @@ public class TestDocumentStatusService extends PaymentsSpringBeanAwareTestCase {
 			assertNotNull("Failed reading by code predefined document status (code " + validCode + ")", status);
 			assertTrue("Read status code " + status.getCode() + " is bad (request code was " + validCode + ")", validCode == status.getCode());
 
-			DocumentStatusTranslation defaultTranslation = TranslationUtil.getTranslation(status.getTranslations(), ApplicationConfig.getDefaultLocale());
+			DocumentStatusTranslation defaultTranslation = TranslationUtil.getTranslation(status.getTranslations());
 			assertNotNull("Status has no default translation", defaultTranslation);
 		}
 
-		int invalidCodes[] = { -2, -1, 0, 6, 7, 8};
+		int invalidCodes[] = {-2, -1, 0, 6, 7, 8};
 		for (int invalidCode : invalidCodes) {
 			try {
 				documentStatusService.read(invalidCode);
 				fail("Successfully read status with invalid code " + invalidCode);
 			} catch (FlexPayException e) {
 			}
-		}		
+		}
 	}
 }

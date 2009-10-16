@@ -8,16 +8,20 @@ import org.flexpay.common.persistence.DomainObjectWithStatus;
 import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.util.CollectionUtils;
-import org.flexpay.common.util.DateUtil;
 import org.flexpay.common.util.DateIntervalUtil;
+import org.flexpay.common.util.DateUtil;
+import static org.flexpay.common.util.config.ApplicationConfig.getFutureInfinite;
+import static org.flexpay.common.util.config.ApplicationConfig.getPastInfinite;
 import org.flexpay.eirc.persistence.consumer.ConsumerAttribute;
 import org.flexpay.eirc.persistence.consumer.ConsumerAttributeTypeBase;
-import org.flexpay.eirc.util.config.ApplicationConfig;
 import org.flexpay.payments.persistence.Service;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.*;
+import java.util.Date;
+import java.util.Map;
+import java.util.Set;
+import java.util.SortedSet;
 
 public class Consumer extends DomainObjectWithStatus {
 
@@ -182,7 +186,7 @@ public class Consumer extends DomainObjectWithStatus {
 		if (attribute.notEmpty()) {
 			attribute.setTemporal(0);
 		}
-		doSetAttributeForDates(attribute, ApplicationConfig.getPastInfinite(), ApplicationConfig.getFutureInfinite());
+		doSetAttributeForDates(attribute, getPastInfinite(), getFutureInfinite());
 	}
 
 	/**
@@ -201,7 +205,7 @@ public class Consumer extends DomainObjectWithStatus {
 	 * @param date	  attribute begin date
 	 */
 	public void setTmpAttributeForDate(@NotNull ConsumerAttribute attribute, Date date) {
-		setTmpAttributeForDates(attribute, date, ApplicationConfig.getFutureInfinite());
+		setTmpAttributeForDates(attribute, date, getFutureInfinite());
 	}
 
 	/**
@@ -220,11 +224,11 @@ public class Consumer extends DomainObjectWithStatus {
 
 	private void doSetAttributeForDates(@NotNull ConsumerAttribute attribute, Date begin, Date end) {
 
-		if (begin.before(ApplicationConfig.getPastInfinite())) {
-			begin = ApplicationConfig.getPastInfinite();
+		if (begin.before(getPastInfinite())) {
+			begin = getPastInfinite();
 		}
-		if (end.after(ApplicationConfig.getFutureInfinite())) {
-			end = ApplicationConfig.getFutureInfinite();
+		if (end.after(getFutureInfinite())) {
+			end = getFutureInfinite();
 		}
 		begin = DateUtil.truncateDay(begin);
 		end = DateUtil.truncateDay(end);
@@ -294,7 +298,7 @@ public class Consumer extends DomainObjectWithStatus {
 		consumer.setApartment(getApartment());
 		consumer.setBeginDate(getBeginDate());
 		consumer.setEndDate(getEndDate());
-		
+
 		return consumer;
 	}
 }

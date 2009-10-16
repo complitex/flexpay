@@ -38,6 +38,7 @@ public class RuNumberToTextConverter implements NumberToTextConverter {
 			" девяносто"
 	};
 
+	@SuppressWarnings ({"unchecked"})
 	private static final List<Map<Gender, String>> numNames = CollectionUtils.list(
 			map(masculine, "", feminine, "", neuter, ""),
 			map(masculine, " один", feminine, " одна", neuter, " одно"),

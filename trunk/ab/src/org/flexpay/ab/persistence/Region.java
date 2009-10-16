@@ -1,15 +1,14 @@
 package org.flexpay.ab.persistence;
 
-import org.apache.commons.lang.builder.ToStringBuilder;
-import org.apache.commons.lang.builder.ToStringStyle;
 import org.flexpay.common.persistence.NameTimeDependentChild;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.util.DateUtil;
-import org.flexpay.ab.util.config.ApplicationConfig;
+import static org.flexpay.common.util.config.ApplicationConfig.getFutureInfinite;
+import static org.flexpay.common.util.config.ApplicationConfig.getPastInfinite;
 
 import java.util.Collections;
-import java.util.Set;
 import java.util.Date;
+import java.util.Set;
 
 /**
  * Region
@@ -43,7 +42,7 @@ public class Region extends NameTimeDependentChild<RegionName, RegionNameTempora
 	}
 
 	public Stub<Country> getCountryStub() {
-		return new Stub<Country>(getParent().getId());
+		return new Stub<Country>(getCountry());
 	}
 
 	public void setCountry(Country country) {
@@ -55,7 +54,7 @@ public class Region extends NameTimeDependentChild<RegionName, RegionNameTempora
 	}
 
 	public void setNameForDate(RegionName name, Date beginDate) {
-		setNameForDates(name, beginDate, ApplicationConfig.getFutureInfinite());
+		setNameForDates(name, beginDate, getFutureInfinite());
 	}
 
 	public void setNameForDates(RegionName name, Date beginDate, Date endDate) {
@@ -63,11 +62,11 @@ public class Region extends NameTimeDependentChild<RegionName, RegionNameTempora
 			throw new RuntimeException("Invalid begin-end dates: [" + DateUtil.format(beginDate) +
 									   ", " + DateUtil.format(endDate) + "]");
 		}
-		if (beginDate.before(ApplicationConfig.getPastInfinite())) {
-			beginDate = ApplicationConfig.getPastInfinite();
+		if (beginDate.before(getPastInfinite())) {
+			beginDate = getPastInfinite();
 		}
-		if (endDate.after(ApplicationConfig.getFutureInfinite())) {
-			endDate = ApplicationConfig.getFutureInfinite();
+		if (endDate.after(getFutureInfinite())) {
+			endDate = getFutureInfinite();
 		}
 
 		name.setObject(this);

@@ -1,13 +1,14 @@
 package org.flexpay.ab.persistence;
 
 import org.apache.commons.lang.builder.EqualsBuilder;
-import org.flexpay.ab.util.config.ApplicationConfig;
 import org.flexpay.common.persistence.NameTimeDependentChild;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.TimeLine;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.DateIntervalUtil;
 import org.flexpay.common.util.DateUtil;
+import static org.flexpay.common.util.config.ApplicationConfig.getFutureInfinite;
+import static org.flexpay.common.util.config.ApplicationConfig.getPastInfinite;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -244,7 +245,7 @@ public class Town extends NameTimeDependentChild<TownName, TownNameTemporal> {
 	}
 
 	public void setNameForDate(TownName name, Date beginDate) {
-		setNameForDates(name, beginDate, ApplicationConfig.getFutureInfinite());
+		setNameForDates(name, beginDate, getFutureInfinite());
 	}
 
 	public void setNameForDates(TownName name, Date beginDate, Date endDate) {
@@ -252,11 +253,11 @@ public class Town extends NameTimeDependentChild<TownName, TownNameTemporal> {
 			throw new RuntimeException("Invalid begin-end dates: [" + DateUtil.format(beginDate) +
 									   ", " + DateUtil.format(endDate) + "]");
 		}
-		if (beginDate.before(ApplicationConfig.getPastInfinite())) {
-			beginDate = ApplicationConfig.getPastInfinite();
+		if (beginDate.before(getPastInfinite())) {
+			beginDate = getPastInfinite();
 		}
-		if (endDate.after(ApplicationConfig.getFutureInfinite())) {
-			endDate = ApplicationConfig.getFutureInfinite();
+		if (endDate.after(getFutureInfinite())) {
+			endDate = getFutureInfinite();
 		}
 
 		name.setObject(this);
@@ -275,7 +276,7 @@ public class Town extends NameTimeDependentChild<TownName, TownNameTemporal> {
 	}
 
 	public void setTypeForDate(TownType type, Date beginDate) {
-		setTypeForDates(type, beginDate, ApplicationConfig.getFutureInfinite());
+		setTypeForDates(type, beginDate, getFutureInfinite());
 	}
 
 	public void setTypeForDates(TownType type, Date beginDate, Date endDate) {

@@ -5,12 +5,12 @@ import org.apache.commons.lang.builder.EqualsBuilder;
 import org.flexpay.ab.persistence.*;
 import org.flexpay.ab.service.IdentityTypeService;
 import org.flexpay.ab.service.PersonService;
-import org.flexpay.ab.util.config.ApplicationConfig;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.service.importexport.CorrectionsService;
+import static org.flexpay.common.util.config.ApplicationConfig.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -42,9 +42,9 @@ public class PersonProcessor extends AbstractProcessor<Person> {
 		PersonIdentity identity = new PersonIdentity();
 		identity.setIdentityType(identityTypeService.getType(IdentityType.TYPE_NAME_PASSPORT));
 		identity.setDefault(true);
-		identity.setBirthDate(ApplicationConfig.getPastInfinite());
-		identity.setBeginDate(ApplicationConfig.getPastInfinite());
-		identity.setEndDate(ApplicationConfig.getFutureInfinite());
+		identity.setBirthDate(getPastInfinite());
+		identity.setBeginDate(getPastInfinite());
+		identity.setEndDate(getFutureInfinite());
 		identity.setSerialNumber("");
 		identity.setDocumentNumber("");
 		identity.setOrganization("");
@@ -192,7 +192,7 @@ public class PersonProcessor extends AbstractProcessor<Person> {
 
 	private void setINN(@NotNull Person person, @Nullable String value) {
 		PersonAttribute inn = new PersonAttribute();
-		inn.setLang(ApplicationConfig.getDefaultLanguage());
+		inn.setLang(getDefaultLanguage());
 		inn.setValue(value == null ? "" : value);
 		inn.setName("ab.person.attribute.inn");
 		inn.setTranslatable(person);

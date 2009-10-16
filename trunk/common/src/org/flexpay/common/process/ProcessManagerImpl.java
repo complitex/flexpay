@@ -506,8 +506,14 @@ public class ProcessManagerImpl implements ProcessManager, Runnable {
 				TaskInstance task = execute(new ContextCallback<TaskInstance>() {
 					@Override
 					public TaskInstance doInContext(@NotNull JbpmContext context) {
+
+						if (taskId == null) {
+							log.error("Task id is null!");
+							return null;
+						}
+
 						TaskMgmtSession taskMgmtSession = context.getTaskMgmtSession();
-						TaskInstance task = taskMgmtSession.loadTaskInstance(taskId);
+						TaskInstance task = taskMgmtSession.getTaskInstance(taskId);
 
 						if (task == null) {
 							log.debug("Can't find Task Instance, id: {}", taskId);
@@ -534,7 +540,9 @@ public class ProcessManagerImpl implements ProcessManager, Runnable {
 					sleepSemaphore.notifyAll();
 				}
 
-				checkProcessCompleted(task.getProcessInstance().getId());
+				if (task != null) {
+					checkProcessCompleted(task.getProcessInstance().getId());
+				}
 
 				log.debug("Task removed from list of running tasks: {}", removed);
 				log.debug("Number of running tasks: {}", runningTaskIds.size());

@@ -8,9 +8,9 @@ import org.flexpay.ab.service.AddressService;
 import org.flexpay.ab.service.ApartmentService;
 import org.flexpay.ab.service.BuildingService;
 import org.flexpay.ab.service.StreetService;
-import org.flexpay.ab.util.config.ApplicationConfig;
 import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.persistence.Stub.stub;
+import static org.flexpay.common.util.config.ApplicationConfig.getDefaultLocale;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Required;
@@ -38,7 +38,7 @@ public class AddressServiceImpl implements AddressService {
 	public String getAddress(@NotNull Stub<Apartment> stub, @Nullable Locale locale) throws Exception {
 
 		if (locale == null) {
-			locale = ApplicationConfig.getDefaultLocale();
+			locale = getDefaultLocale();
 		}
 
 		Apartment apartment = apartmentService.readFull(stub);
@@ -54,7 +54,7 @@ public class AddressServiceImpl implements AddressService {
 	public String getBuildingsAddress(@NotNull Stub<BuildingAddress> stub, @Nullable Locale locale) throws Exception {
 
 		if (locale == null) {
-			locale = ApplicationConfig.getDefaultLocale();
+			locale = getDefaultLocale();
 		}
 
 		BuildingAddress buildingAddress = buildingService.readFull(stub);

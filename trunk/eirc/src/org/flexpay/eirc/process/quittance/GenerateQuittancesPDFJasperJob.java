@@ -8,11 +8,12 @@ import org.flexpay.common.process.ProcessLogger;
 import org.flexpay.common.process.job.Job;
 import org.flexpay.common.service.reporting.ReportUtil;
 import org.flexpay.common.util.CollectionUtils;
+import static org.flexpay.common.util.config.ApplicationConfig.getDefaultReportLocale;
+import static org.flexpay.common.util.config.ApplicationConfig.getResourceAsStream;
 import org.flexpay.eirc.persistence.EircServiceOrganization;
 import org.flexpay.eirc.process.quittance.report.JRQuittanceDataSource;
 import org.flexpay.eirc.reports.quittance.QuittancePrintInfoData;
 import org.flexpay.eirc.reports.quittance.QuittanceReporter;
-import org.flexpay.eirc.util.config.ApplicationConfig;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Required;
 
@@ -59,7 +60,7 @@ public class GenerateQuittancesPDFJasperJob extends Job {
 			jrDataSource.setPrintData(printInfoData, 4);
 
 			plog.info("Running report");
-			FPFile report = reportUtil.exportToPdf("Quittance", null, jrDataSource, ApplicationConfig.getDefaultReportLocale());
+			FPFile report = reportUtil.exportToPdf("Quittance", null, jrDataSource, getDefaultReportLocale());
 
 			contextVariables.put(RESULT_FILE_ID, report.getId());
 
@@ -87,7 +88,7 @@ public class GenerateQuittancesPDFJasperJob extends Job {
 		InputStream is = null;
 		try {
 			String resName = "WEB-INF/eirc/reports/quittance/" + name + ReportUtil.EXTENSION_TEMPLATE;
-			is = ApplicationConfig.getResourceAsStream(resName);
+			is = getResourceAsStream(resName);
 			reportUtil.uploadReportTemplate(is, name);
 		} finally {
 			IOUtils.closeQuietly(is);

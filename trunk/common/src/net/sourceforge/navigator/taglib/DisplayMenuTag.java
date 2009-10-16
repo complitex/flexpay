@@ -151,7 +151,8 @@ public class DisplayMenuTag extends TagSupport {
         }
     }
 
-    protected void setLocation(MenuComponent menu) throws MalformedURLException {
+    @SuppressWarnings ({"unchecked"})
+	protected void setLocation(MenuComponent menu) throws MalformedURLException {
         if (menu.getLocation() == null) {
             HttpServletRequest request = (HttpServletRequest) pageContext.getRequest();
             HttpServletResponse response = (HttpServletResponse) pageContext.getResponse();

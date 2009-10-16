@@ -9,11 +9,11 @@ import org.flexpay.ab.persistence.BuildingAddress;
 import org.flexpay.ab.persistence.HistoryRec;
 import org.flexpay.ab.service.ApartmentService;
 import org.flexpay.ab.service.ObjectsFactory;
-import org.flexpay.ab.util.config.ApplicationConfig;
 import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.service.importexport.CorrectionsService;
+import static org.flexpay.common.util.config.ApplicationConfig.getFutureInfinite;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Required;
@@ -91,7 +91,7 @@ public class ApartmentProcessor extends AbstractProcessor<Apartment> {
 		BuildingAddress buildingAddress = buildingsDao.read(stub.getId());
 		if (buildingAddress == null) {
 			log.error("Correction for buildingAddress #{} DataSourceDescription {} is invalid, no buildingAddress with id {}, cannot set up building reference for apartment",
-					new Object[] {record.getCurrentValue(), sd.getId(), stub.getId()});
+					new Object[]{record.getCurrentValue(), sd.getId(), stub.getId()});
 			return;
 		}
 		apartment.setBuilding(buildingAddress.getBuilding());
@@ -126,7 +126,7 @@ public class ApartmentProcessor extends AbstractProcessor<Apartment> {
 		// Create a new apartment number and setup its properties
 		ApartmentNumber number = new ApartmentNumber();
 		number.setBegin(record.getRecordDate());
-		number.setEnd(ApplicationConfig.getFutureInfinite());
+		number.setEnd(getFutureInfinite());
 		number.setValue(newNumber);
 		number.setApartment(apartment);
 

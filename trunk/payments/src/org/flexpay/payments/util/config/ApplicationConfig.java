@@ -3,27 +3,26 @@ package org.flexpay.payments.util.config;
 import org.flexpay.payments.service.Security;
 import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.common.persistence.Stub;
+import org.springframework.beans.factory.annotation.Required;
 
-public class ApplicationConfig extends org.flexpay.ab.util.config.ApplicationConfig {
+public class ApplicationConfig {
 
 	private Stub<Organization> mbOrganizationStub;
+
+	private static final ApplicationConfig INSTANCE = new ApplicationConfig();
 
 	static {
 		// ensure Security fields are initialised
 		Security.touch();
 	}
 
-	protected static ApplicationConfig getInstance() {
-		return (ApplicationConfig) org.flexpay.common.util.config.ApplicationConfig.getInstance();
+	public static ApplicationConfig getInstance() {
+		return INSTANCE;
 	}
 
-	/**
-	 * TODO: perform lookup by individual tax number, not id
-	 *
-	 * @param organizationId Organization id
-	 */
-	public void setMbOrganizationId(String organizationId) {
-		mbOrganizationStub = new Stub<Organization>(Long.valueOf(organizationId));
+	@Required
+	public void setMbOrganizationId(Long organizationId) {
+		mbOrganizationStub = new Stub<Organization>(organizationId);
 	}
 
 	public static Stub<Organization> getMbOrganizationStub() {

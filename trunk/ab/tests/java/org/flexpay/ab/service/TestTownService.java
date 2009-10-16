@@ -2,10 +2,12 @@ package org.flexpay.ab.service;
 
 import org.flexpay.ab.persistence.*;
 import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
-import org.flexpay.ab.util.config.ApplicationConfig;
+import static org.flexpay.ab.util.config.ApplicationConfig.getDefaultRegion;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.util.DateUtil;
+import static org.flexpay.common.util.config.ApplicationConfig.getFutureInfinite;
+import static org.flexpay.common.util.config.ApplicationConfig.getPastInfinite;
 import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,7 +53,7 @@ public class TestTownService extends AbSpringBeanAwareTestCase {
 	public void testCreateTown() throws Exception {
 
 		Town town = new Town();
-		town.setRegion(ApplicationConfig.getDefaultRegion());
+		town.setRegion(getDefaultRegion());
 
 		// set town type
 		town.setType(new TownType(1L));
@@ -76,7 +78,7 @@ public class TestTownService extends AbSpringBeanAwareTestCase {
 		// set name to 3 for all period
 		townName = new TownName();
 		townName.addNameTranslation(new TownNameTranslation("3"));
-		town.setNameForDates(townName, ApplicationConfig.getPastInfinite(), ApplicationConfig.getFutureInfinite());
+		town.setNameForDates(townName, getPastInfinite(), getFutureInfinite());
 
 		townService.update(town);
 

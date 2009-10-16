@@ -6,6 +6,14 @@
 		   http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
 		   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
+	<bean id="eircApplicationConfig"
+		  factory-method="getInstance"
+		  class="org.flexpay.eirc.util.config.ApplicationConfig"
+		  p:eircDataRoot="${app.config.eirc.dataRoot}"
+		  p:eircId="${app.config.eirc.eircId}"
+		  p:eircMainServiceCode="${app.config.eirc.mainServiceTypeCode}"
+		  p:selfOrganizationId="${app.config.eirc.organizationId}" />
+
 	<bean id="registryFileParser"
 		  class="org.flexpay.eirc.sp.impl.RegistryFileParser"
 		  p:registryService-ref="registryService"
@@ -23,7 +31,7 @@
 		  p:typeRegistry-ref="classToTypeRegistry"
 		  p:correctionsService-ref="correctionsService"
 		  p:masterIndexService-ref="masterIndexService"
-          p:registryFPFileTypeService-ref="registryFPFileTypeService" />
+		  p:registryFPFileTypeService-ref="registryFPFileTypeService" />
 
 
 	<bean id="mbFileParser"
@@ -42,20 +50,20 @@
 		  p:spService-ref="spService"
 		  p:consumerService-ref="consumerService"
 		  p:megabankSD-ref="megabankDataSourceDescription"
-          p:serviceValidationFactory-ref="serviceValidationFactory"
-          p:lineParser-ref="mbLineParser"  />
+		  p:serviceValidationFactory-ref="serviceValidationFactory"
+		  p:lineParser-ref="mbLineParser" />
 
 	<bean id="mbChargesFileParser"
 		  parent="mbFileParser"
 		  class="org.flexpay.eirc.sp.impl.parsing.MbChargesFileParser"
-          p:fileValidationSchema-ref="mbChargesFileValidationSchema"
-          p:registryFPFileTypeService-ref="registryFPFileTypeService" />
+		  p:fileValidationSchema-ref="mbChargesFileValidationSchema"
+		  p:registryFPFileTypeService-ref="registryFPFileTypeService" />
 
 	<bean id="mbCorrectionsFileParser"
 		  parent="mbFileParser"
 		  class="org.flexpay.eirc.sp.impl.parsing.MbCorrectionsFileParser"
-          p:fileValidationSchema-ref="mbCorrectionsFileValidationSchema"
-          p:registryFPFileTypeService-ref="registryFPFileTypeService" />
+		  p:fileValidationSchema-ref="mbCorrectionsFileValidationSchema"
+		  p:registryFPFileTypeService-ref="registryFPFileTypeService" />
 
 	<bean id="eircAccountService"
 		  class="org.flexpay.eirc.service.impl.EircAccountServiceImpl"
@@ -271,26 +279,26 @@
 		  class="org.flexpay.ab.service.history.BuildingReferencesHistoryGeneratorHolder"
 		  p:referencesHistoryGenerator-ref="servedBuildingReferencesHistoryGenerator" />
 
-    <bean id="mbCorrectionsFileValidationSchema"
-          class="org.flexpay.eirc.sp.impl.FileValidationSchema"
-          p:headerValidator="org.flexpay.eirc.sp.impl.validation.CorrectionsHeaderValidator"
-          p:footerValidator="org.flexpay.eirc.sp.impl.validation.CorrectionsFooterValidator"
-          p:recordValidator="org.flexpay.eirc.sp.impl.validation.CorrectionsRecordValidator" />
+	<bean id="mbCorrectionsFileValidationSchema"
+		  class="org.flexpay.eirc.sp.impl.FileValidationSchema"
+		  p:headerValidator="org.flexpay.eirc.sp.impl.validation.CorrectionsHeaderValidator"
+		  p:footerValidator="org.flexpay.eirc.sp.impl.validation.CorrectionsFooterValidator"
+		  p:recordValidator="org.flexpay.eirc.sp.impl.validation.CorrectionsRecordValidator" />
 
-    <bean id="mbChargesFileValidationSchema"
-          class="org.flexpay.eirc.sp.impl.FileValidationSchema"
-          p:headerValidator="org.flexpay.eirc.sp.impl.validation.ChargesHeaderValidator"
-          p:footerValidator="org.flexpay.eirc.sp.impl.validation.ChargesFooterValidator"
-          p:recordValidator="org.flexpay.eirc.sp.impl.validation.ChargesRecordValidator" />
+	<bean id="mbChargesFileValidationSchema"
+		  class="org.flexpay.eirc.sp.impl.FileValidationSchema"
+		  p:headerValidator="org.flexpay.eirc.sp.impl.validation.ChargesHeaderValidator"
+		  p:footerValidator="org.flexpay.eirc.sp.impl.validation.ChargesFooterValidator"
+		  p:recordValidator="org.flexpay.eirc.sp.impl.validation.ChargesRecordValidator" />
 
-    <bean id="serviceValidationFactory"
-          class="org.flexpay.eirc.sp.impl.ServiceValidationFactory"
-          p:serviceTypesMapper-ref="mbServiceTypeMapper"
+	<bean id="serviceValidationFactory"
+		  class="org.flexpay.eirc.sp.impl.ServiceValidationFactory"
+		  p:serviceTypesMapper-ref="mbServiceTypeMapper"
 		  p:spService-ref="spService"
 		  p:correctionsService-ref="correctionsService"
 		  p:megabankSD-ref="megabankDataSourceDescription" />
 
-    <bean id="mbLineParser"
-          class="org.flexpay.eirc.sp.impl.parsing.SplitLineRemoveBlank"
-          p:delimiter="=" />
+	<bean id="mbLineParser"
+		  class="org.flexpay.eirc.sp.impl.parsing.SplitLineRemoveBlank"
+		  p:delimiter="=" />
 </beans>

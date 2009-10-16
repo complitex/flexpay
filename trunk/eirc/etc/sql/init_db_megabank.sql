@@ -3,10 +3,6 @@ select @eirc_base:=0x5000 + 0;
 select @orgs_base:=0x4000 + 0;
 select @payments_base:=0x3000 + 0;
 
-insert into common_data_source_descriptions_tbl (id, description)
-	values (@eirc_base + 1, 'МегаБАНК');
-select @ds_megabank:=@eirc_base + 1;
-
 -- add correction from Megabank's КП "ЖИЛКОМСЕРВИС"=1033
 insert into common_data_corrections_tbl (internal_object_id, external_object_id, object_type, data_source_description_id)
 	values (@orgs_base + 1, '1033', @orgs_base + 0x003, @ds_megabank);

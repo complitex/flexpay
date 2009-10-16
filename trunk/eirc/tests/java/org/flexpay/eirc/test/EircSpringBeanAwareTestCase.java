@@ -1,14 +1,15 @@
 package org.flexpay.eirc.test;
 
 import static org.flexpay.ab.service.Roles.*;
-import static org.flexpay.common.service.Roles.*;
+import static org.flexpay.common.service.Roles.PROCESS_DEFINITION_UPLOAD_NEW;
+import static org.flexpay.common.service.Roles.PROCESS_READ;
 import org.flexpay.common.test.SpringBeanAwareTestCase;
 import org.flexpay.common.util.SecurityUtil;
 import org.flexpay.common.util.config.UserPreferences;
 import static org.flexpay.eirc.service.Roles.*;
 import static org.flexpay.orgs.service.Roles.*;
 import static org.flexpay.payments.service.Roles.*;
-import org.junit.BeforeClass;
+import org.junit.Before;
 import org.springframework.security.Authentication;
 import org.springframework.security.GrantedAuthority;
 import org.springframework.security.context.SecurityContextHolder;
@@ -20,8 +21,8 @@ public class EircSpringBeanAwareTestCase extends SpringBeanAwareTestCase {
 	/**
 	 * Authenticate test user
 	 */
-	@BeforeClass
-	public static void authenticateTestUser() {
+	@Before
+	public void authenticateTestUser() {
 		GrantedAuthority[] authorities = SecurityUtil.auths(
 				QUITTANCE_READ,
 				ACCOUNT_READ,

@@ -6,31 +6,39 @@
 		   http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
 		   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
+	<bean id="tcApplicationConfig"
+		  factory-method="getInstance"
+		  class="org.flexpay.tc.util.config.ApplicationConfig"
+		  p:maximumApartments="${app.config.tc.maximumApartments}"
+		  p:maximumFloors="${app.config.tc.maximumFloors}"
+		  p:maximumPporches="${app.config.tc.maximumPporches}"
+		  p:tcDataRoot="${app.config.tc.tcDataRoot}" />
+
 	<bean id="tariffServiceTarget"
 		  class="org.flexpay.tc.service.impl.TariffServiceImpl"
 		  p:tariffDao-ref="tariffDao"
 		  p:tariffServiceDaoExt-ref="tariffDaoExt"
-          autowire-candidate="false" />
+		  autowire-candidate="false" />
 
-    <bean id="tariffCalculationRulesFileServiceTarget"
-          class="org.flexpay.tc.service.impl.TariffCalculationRulesFileServiceImpl"
-          p:tariffCalculationRulesFileDao-ref="tariffCalculationRulesFileDao"
-          autowire-candidate="false" />
+	<bean id="tariffCalculationRulesFileServiceTarget"
+		  class="org.flexpay.tc.service.impl.TariffCalculationRulesFileServiceImpl"
+		  p:tariffCalculationRulesFileDao-ref="tariffCalculationRulesFileDao"
+		  autowire-candidate="false" />
 
-    <bean id="tariffCalculationResultService"
-          class="org.flexpay.tc.service.impl.TariffCalculationResultServiceImpl"
-          p:tariffCalculationResultDao-ref="tariffCalculationResultDao"
-            />
+	<bean id="tariffCalculationResultService"
+		  class="org.flexpay.tc.service.impl.TariffCalculationResultServiceImpl"
+		  p:tariffCalculationResultDao-ref="tariffCalculationResultDao"
+			/>
 
 	<bean id="tariffExportCodeServiceExt"
 		  class="org.flexpay.tc.service.impl.TariffExportCodeServiceExtImpl"
 		  p:tariffExportCodeDaoExt-ref="tariffExportCodeDaoExt"
-          autowire-candidate="false" />
+		  autowire-candidate="false" />
 
-    <bean id="tariffExportLogService"
-        class="org.flexpay.tc.service.impl.TariffExportLogRecordServiceImpl"
-        p:tariffExportLogRecordDao-ref="tariffExportLogRecordDao"
-        autowire-candidate="false" />
+	<bean id="tariffExportLogService"
+		  class="org.flexpay.tc.service.impl.TariffExportLogRecordServiceImpl"
+		  p:tariffExportLogRecordDao-ref="tariffExportLogRecordDao"
+		  autowire-candidate="false" />
 
 	<bean id="processManagerTc" parent="processManager" autowire-candidate="false">
 		<property name="definitionPaths">

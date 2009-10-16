@@ -5,6 +5,7 @@ import org.flexpay.common.persistence.registry.RegistryContainer;
 import org.flexpay.common.persistence.registry.RegistryRecordContainer;
 import org.flexpay.common.service.importexport.ClassToTypeRegistry;
 import org.flexpay.common.service.importexport.MasterIndexService;
+import static org.flexpay.common.util.config.ApplicationConfig.getInstanceId;
 import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.orgs.persistence.PaymentPoint;
 import org.flexpay.orgs.persistence.ServiceProvider;
@@ -36,7 +37,7 @@ public class RegistryContainerBuilderImpl implements RegistryContainerBuilder {
 
 	public RegistryContainer getInstanceIdContainer() {
 
-		return new RegistryContainer(INSTANCE_ID_CONTAINER_TYPE + DELIMITER + ApplicationConfig.getInstanceId());
+		return new RegistryContainer(INSTANCE_ID_CONTAINER_TYPE + DELIMITER + getInstanceId());
 	}
 
 	public RegistryContainer getServiceSyncContainer(Service service) {
@@ -61,18 +62,22 @@ public class RegistryContainerBuilderImpl implements RegistryContainerBuilder {
 
 	public RegistryContainer buildSyncIdContainer(Class<? extends DomainObject> clazz, DomainObject object, String end) {
 
-		return new RegistryContainer(SYNC_ID_CONTAINER_TYPE + DELIMITER + typeRegistry.getType(clazz) + DELIMITER +
-									 object.getId() + DELIMITER + DELIMITER + masterIndexService.getMasterIndex(object) + DELIMITER + end);
+		return new RegistryContainer(SYNC_ID_CONTAINER_TYPE + DELIMITER + typeRegistry.getType(clazz) +
+									 DELIMITER + object.getId() + DELIMITER +
+									 DELIMITER + masterIndexService.getMasterIndex(object) +
+									 DELIMITER + end);
 	}
 
 	public RegistryRecordContainer getSimplePaymentContainer(Document document) {
 
-		return new RegistryRecordContainer(SIMPLE_PAYMENT_CONTAINER_TYPE + DELIMITER + document.getCreditorOrganization().getId());
+		return new RegistryRecordContainer(SIMPLE_PAYMENT_CONTAINER_TYPE +
+										   DELIMITER + document.getCreditorOrganization().getId());
 	}
 
 	public RegistryRecordContainer getPaymentPointIdContainer(Document document) {
 
-		return new RegistryRecordContainer(PAYMENT_POINT_ID_CONTAINER_TYPE + DELIMITER + document.getOperation().getPaymentPoint().getId());
+		return new RegistryRecordContainer(PAYMENT_POINT_ID_CONTAINER_TYPE +
+										   DELIMITER + document.getOperation().getPaymentPoint().getId());
 	}
 
 	public RegistryRecordContainer getExternalOrganizationAccountContainer(DocumentAddition ercAccountAddition) {

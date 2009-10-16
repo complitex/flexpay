@@ -7,19 +7,17 @@ import org.flexpay.ab.service.PersonService;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.util.CollectionUtils;
+import static org.flexpay.common.util.config.ApplicationConfig.getInstanceId;
 import org.flexpay.orgs.persistence.ServiceProvider;
 import org.flexpay.orgs.service.ServiceProviderService;
-import org.flexpay.orgs.service.CashboxService;
 import org.flexpay.payments.actions.CashboxCookieActionSupport;
 import org.flexpay.payments.persistence.Service;
+import org.flexpay.payments.persistence.quittance.ConsumerAttributes;
 import org.flexpay.payments.persistence.quittance.QuittanceDetailsRequest;
 import org.flexpay.payments.persistence.quittance.QuittanceDetailsResponse;
-import org.flexpay.payments.persistence.quittance.ConsumerAttributes;
 import static org.flexpay.payments.persistence.quittance.QuittanceDetailsResponse.*;
 import org.flexpay.payments.service.QuittanceDetailsFinder;
 import org.flexpay.payments.service.SPService;
-import org.flexpay.payments.service.OperationService;
-import org.flexpay.payments.util.config.ApplicationConfig;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
@@ -39,13 +37,11 @@ public class SearchQuittanceAction extends CashboxCookieActionSupport {
 	private String actionName;
 
 	// required services
-	private OperationService operationService;
 	private ApartmentService apartmentService;
 	private PersonService personService;
 	private QuittanceDetailsFinder quittanceDetailsFinder;
 	private SPService spService;
 	private ServiceProviderService serviceProviderService;
-	private CashboxService cashboxService;
 
 	@NotNull
 	protected String doExecute() throws Exception {
@@ -138,7 +134,7 @@ public class SearchQuittanceAction extends CashboxCookieActionSupport {
 
 	private Long getLocalId(String masterIndex) {
 		// TODO how to properly get service id by index? current implementation is hack
-		return Long.parseLong(masterIndex.substring(ApplicationConfig.getInstanceId().length() + 1)); // +1 is for '-' delimeter
+		return Long.parseLong(masterIndex.substring(getInstanceId().length() + 1)); // +1 is for '-' delimiter
 	}
 
 	private String getErrorMessage(int errorCode) {
@@ -247,7 +243,7 @@ public class SearchQuittanceAction extends CashboxCookieActionSupport {
 	}
 
 	public String getApartmentId() {
-		
+
 		if (SEARCH_TYPE_ADDRESS.equals(searchType)) {
 			return searchCriteria;
 		}
@@ -304,16 +300,6 @@ public class SearchQuittanceAction extends CashboxCookieActionSupport {
 	@Required
 	public void setPersonService(PersonService personService) {
 		this.personService = personService;
-	}
-
-	@Required
-	public void setOperationService(OperationService operationService) {
-		this.operationService = operationService;
-	}
-
-	@Required
-	public void setCashboxService(CashboxService cashboxService) {
-		this.cashboxService = cashboxService;
 	}
 
 	public static class ServiceFullIndexUtil {

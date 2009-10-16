@@ -2,7 +2,8 @@ package org.flexpay.ab.persistence;
 
 import org.flexpay.ab.service.IdentityTypeService;
 import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
-import org.flexpay.ab.util.config.ApplicationConfig;
+import static org.flexpay.common.util.config.ApplicationConfig.getFutureInfinite;
+import static org.flexpay.common.util.config.ApplicationConfig.getPastInfinite;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import org.junit.Test;
@@ -35,9 +36,9 @@ public class TestPerson extends AbSpringBeanAwareTestCase {
 		PersonIdentity identity = new PersonIdentity();
 		identity.setIdentityType(identityTypeService.getType(IdentityType.TYPE_NAME_PASSPORT));
 		identity.setDefault(true);
-		identity.setBirthDate(ApplicationConfig.getPastInfinite());
-		identity.setBeginDate(ApplicationConfig.getPastInfinite());
-		identity.setEndDate(ApplicationConfig.getFutureInfinite());
+		identity.setBirthDate(getPastInfinite());
+		identity.setBeginDate(getPastInfinite());
+		identity.setEndDate(getFutureInfinite());
 		identity.setSerialNumber("");
 		identity.setDocumentNumber("");
 		identity.setOrganization("");

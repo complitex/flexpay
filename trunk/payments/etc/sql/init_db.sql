@@ -214,3 +214,15 @@ insert into payments_operation_type_translations_tbl(name, language_id, type_id)
 	values ('Возврат безналичной оплаты квитанции', @ru_id, @operation_type_8);
 insert into payments_operation_type_translations_tbl(name, language_id, type_id)
 	values ('Quittance cashless payment return', @en_id, @operation_type_8);
+
+select @eirc_base:=0x5000 + 0;
+insert into common_data_source_descriptions_tbl (id, description)
+	values (@eirc_base + 1, 'МегаБАНК');
+select @ds_megabank:=@eirc_base + 1;
+insert into orgs_organizations_tbl (id, version, status, data_source_description_id, individual_tax_number, juridical_address, kpp, postal_address)
+	values (@eirc_base + 1, 0, 0, @ds_megabank, '', '', '', '');
+select @org_megabank:=@eirc_base + 1;
+insert into orgs_organization_names_tbl (name, organization_id, language_id)
+	values ('МегаБАНК', @org_megabank, @ru_id);
+insert into orgs_organization_descriptions_tbl (name, organization_id, language_id)
+	values ('МегаБАНК банк', @org_megabank, @ru_id);

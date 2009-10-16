@@ -15,11 +15,11 @@ import org.flexpay.eirc.persistence.EircRegistryRecordProperties;
 import org.flexpay.eirc.sp.impl.MbFileParser;
 import org.flexpay.eirc.sp.impl.MbParsingConstants;
 import org.flexpay.eirc.util.config.ApplicationConfig;
-import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.orgs.persistence.ServiceProvider;
 import org.flexpay.payments.persistence.EircRegistryProperties;
 import org.flexpay.payments.persistence.Service;
 import org.flexpay.payments.persistence.ServiceType;
+import static org.flexpay.payments.util.config.ApplicationConfig.getMbOrganizationStub;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Required;
@@ -40,10 +40,10 @@ public class MbCorrectionsFileParser extends MbFileParser {
 
 	private final String MODIFICATIONS_START_DATE_FORMAT = "ddMMyy";
 
-    private RegistryFPFileTypeService registryFPFileTypeService;
+	private RegistryFPFileTypeService registryFPFileTypeService;
 
 	@Transactional (propagation = Propagation.NOT_SUPPORTED, readOnly = false)
-    @Override
+	@Override
 	protected List<Registry> parseFile(@NotNull FPFile spFile) throws FlexPayException {
 
 		Registry infoRegistry = new Registry();
@@ -162,7 +162,7 @@ public class MbCorrectionsFileParser extends MbFileParser {
 		}
 	}
 
-    /*
+	/*
 	private String[] parseRecordLine(String line) {
 		return StringUtils.splitByWholeSeparator(line, "=", 28);
 	}
@@ -209,7 +209,7 @@ public class MbCorrectionsFileParser extends MbFileParser {
 		}
 	}
 
-    protected String[] parseBuildingAddress(String mbBuidingAddress) throws FlexPayException {
+	protected String[] parseBuildingAddress(String mbBuidingAddress) throws FlexPayException {
 		String[] parts = StringUtils.split(mbBuidingAddress, ' ');
 		if (parts.length > 1) {
 			if (!parts[1].startsWith(MbParsingConstants.BUILDING_BULK_PREFIX)) {
@@ -240,10 +240,6 @@ public class MbCorrectionsFileParser extends MbFileParser {
 		return 1;
 	}
 
-	private Stub<Organization> getMBOrganizationStub() {
-		return ApplicationConfig.getMbOrganizationStub();
-	}
-
 	private String getErcAccount(String[] fields) {
 		return fields[0];
 	}
@@ -254,7 +250,7 @@ public class MbCorrectionsFileParser extends MbFileParser {
 
 		RegistryRecordContainer container = new RegistryRecordContainer();
 		container.setData("15:" + modificationStartDate + "::" + getErcAccount(fields) +
-						  ":" + getMBOrganizationStub().getId());
+						  ":" + getMbOrganizationStub().getId());
 		record.addContainer(container);
 
 		// ФИО
@@ -359,8 +355,8 @@ public class MbCorrectionsFileParser extends MbFileParser {
 		return services;
 	}
 
-    @Required
-    public void setRegistryFPFileTypeService(RegistryFPFileTypeService registryFPFileTypeService) {
-        this.registryFPFileTypeService = registryFPFileTypeService;
-    }
+	@Required
+	public void setRegistryFPFileTypeService(RegistryFPFileTypeService registryFPFileTypeService) {
+		this.registryFPFileTypeService = registryFPFileTypeService;
+	}
 }

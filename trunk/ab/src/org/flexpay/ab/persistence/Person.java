@@ -1,13 +1,14 @@
 package org.flexpay.ab.persistence;
 
 import org.apache.commons.lang.StringUtils;
-import org.flexpay.ab.util.config.ApplicationConfig;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.DomainObjectWithStatus;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.DateIntervalUtil;
 import org.flexpay.common.util.DateUtil;
+import static org.flexpay.common.util.config.ApplicationConfig.getFutureInfinite;
+import static org.flexpay.common.util.config.ApplicationConfig.getPastInfinite;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -179,16 +180,16 @@ public class Person extends DomainObjectWithStatus {
 	}
 
 	public void setPersonRegistration(Apartment apartment, Date beginDate) {
-		setPersonRegistration(apartment, beginDate, ApplicationConfig.getFutureInfinite());
+		setPersonRegistration(apartment, beginDate, getFutureInfinite());
 	}
 
 	public void setPersonRegistration(@Nullable Apartment apartment, @Nullable Date beginDate, @Nullable Date endDate) {
 
-		if (beginDate == null || beginDate.before(ApplicationConfig.getPastInfinite())) {
-			beginDate = ApplicationConfig.getPastInfinite();
+		if (beginDate == null || beginDate.before(getPastInfinite())) {
+			beginDate = getPastInfinite();
 		}
-		if (endDate == null || endDate.after(ApplicationConfig.getFutureInfinite())) {
-			endDate = ApplicationConfig.getFutureInfinite();
+		if (endDate == null || endDate.after(getFutureInfinite())) {
+			endDate = getFutureInfinite();
 		}
 
 		beginDate = DateUtil.truncateDay(beginDate);
