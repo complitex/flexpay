@@ -60,8 +60,8 @@ public abstract class SpringBeanAwareTestCase extends AbstractJUnit4SpringContex
 	/**
 	 * Authenticate test user
 	 */
-	@BeforeClass
-	public static void authenticateTestUser() {
+	@Before
+	public void authenticateTestUser() {
 		GrantedAuthority[] authorities = SecurityUtil.auths(
 				BASIC,
 				PROCESS_DEFINITION_UPLOAD_NEW,

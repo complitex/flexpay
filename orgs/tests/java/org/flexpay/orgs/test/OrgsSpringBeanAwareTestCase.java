@@ -3,7 +3,7 @@ package org.flexpay.orgs.test;
 import org.flexpay.common.test.SpringBeanAwareTestCase;
 import org.flexpay.common.util.SecurityUtil;
 import static org.flexpay.orgs.service.Roles.*;
-import org.junit.BeforeClass;
+import org.junit.Before;
 import org.springframework.security.Authentication;
 import org.springframework.security.GrantedAuthority;
 import org.springframework.security.context.SecurityContextHolder;
@@ -15,8 +15,8 @@ public class OrgsSpringBeanAwareTestCase extends SpringBeanAwareTestCase {
 	/**
 	 * Authenticate test user
 	 */
-	@BeforeClass
-	public static void authenticateTestUser() {
+	@Before
+	public void authenticateTestUser() {
 		GrantedAuthority[] authorities = SecurityUtil.auths(
 				ORGANIZATION_READ,
 				ORGANIZATION_ADD,

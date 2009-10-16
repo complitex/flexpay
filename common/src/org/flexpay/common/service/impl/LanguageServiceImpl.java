@@ -3,6 +3,7 @@ package org.flexpay.common.service.impl;
 import org.flexpay.common.dao.LanguageDao;
 import org.flexpay.common.persistence.Language;
 import org.flexpay.common.service.LanguageService;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,11 +17,11 @@ public class LanguageServiceImpl implements LanguageService {
 
 	private LanguageDao languageDao;
 
-	/**
-	 * Get a list of system languages
-	 *
-	 * @return list of languages
-	 */
+    /**
+     * {@inheritDoc}
+     */
+    @NotNull
+    @Override
 	public List<Language> getLanguages() {
 		List<Language> langs = languageDao.listLanguages();
 
@@ -29,7 +30,15 @@ public class LanguageServiceImpl implements LanguageService {
 		return langs;
 	}
 
-	/**
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Language getLanguage(@NotNull String langIsoCode) {
+        return languageDao.getLanguageByIsoCode(langIsoCode);
+    }
+
+    /**
 	 * Setter for property 'languageDao'.
 	 *
 	 * @param languageDao Value to set for property 'languageDao'.
