@@ -94,32 +94,18 @@
 		</antcall>
 	</target>
 
-	<target name="ab.war.production.tomcat_mysql5">
-		<antcall target="clean.all" />
-		<antcall target="template.ab.war.production">
-			<param name="app_server.properties" value="app_server_tomcat.properties" />
-			<param name="data_source.properties" value="data_source_mysql5.properties" />
-			<param name="beans-data-source.xml" value="beans-data-source_c3p0.xml.txt" />
-		</antcall>
-	</target>
-
 	<target name="ab.war.production.glassfish_mysql5">
-		<antcall target="template.ab.war.production">
-			<param name="app_server.properties" value="app_server_glassfish.properties" />
-			<param name="data_source.properties" value="data_source_mysql5.properties" />
-			<param name="beans-data-source.xml" value="beans-data-source_c3p0.xml.txt" />
-		</antcall>
+		<antcall target="template.ab.war.production" />
 	</target>
 
 	<target name="ab.exploded.production.glassfish_mysql5">
-		<antcall target="template.ab.exploded.production">
-			<param name="app_server.properties" value="app_server_glassfish.properties" />
-			<param name="data_source.properties" value="data_source_mysql5.properties" />
-			<param name="beans-data-source.xml" value="beans-data-source_jndi.xml.txt" />
-		</antcall>
+		<antcall target="template.ab.exploded.production" />
 	</target>
 
 	<target name="ab.prepare.war">
+		<antcall target="template.configure.module">
+			<param name="module.name" value="ab" />
+		</antcall>
 		<antcall target="ab.prepare.war.internal" />
 		<antcall target="template.switch_log_name">
 			<param name="log_name" value="ab" />

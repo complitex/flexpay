@@ -3,6 +3,7 @@ import java.util.regex.Pattern
 def modulesDependencies = [
 		common: ['common'],
 		ab: ['common', 'ab'],
+		ab_sync: ['common', 'an'],
 		bti: ['common', 'ab', 'bti'],
 		tc: ['common', 'ab', 'bti', 'tc'],
 		orgs: ['common', 'orgs'],
@@ -27,6 +28,7 @@ def requiredProperties = [
 				'jdbc.password': 'Database user password to use for connection'
 		],
 		ab : [:],
+		ab_sync: [:],
 		bti : [:],
 		tc : [:],
 		orgs : [:],
