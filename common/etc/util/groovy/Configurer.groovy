@@ -77,7 +77,7 @@ class PropertiesUpdater {
 	}
 
 	public String readProp(String defaultValue, BufferedReader reader) {
-		print("(Press enter for default) > ")
+		print "(Press enter for default) > "
 		String input = reader.readLine();
 		if (input.trim() == "") {
 			return defaultValue;
@@ -91,7 +91,7 @@ class PropertiesUpdater {
 		// map module name to its properties
 		def properties = [:]
 		requiredProperties.each {String k, v ->
-			println("Adding module ${k} properties: ${configFile(k)}");
+			println "Adding module ${k} properties: ${configFile(k)}"
 			properties.put(k, load(k))
 		}
 
@@ -100,10 +100,10 @@ class PropertiesUpdater {
 		requiredProperties.each() {String module, Map props ->
 			Map newProperties = [:]
 			BufferedReader input = System.in.newReader()
-			println("========================================================\nConfiguring module ${module}")
+			println "========================================================\nConfiguring module ${module}"
 			props.each {String prop, String doc ->
 				String defaultValue = properties[module][prop]
-				println("${doc} [${defaultValue}]")
+				println "${doc} [${defaultValue}]"
 				String value = readProp(defaultValue, input)
 				if (value != defaultValue) {
 					newProperties.put(prop, value)
@@ -114,9 +114,9 @@ class PropertiesUpdater {
 
 		// dump properties
 		newModulesProperties.each() {String module, Map props ->
-			println("++++++++++++++++++++++++++++++++++++++++++++++++++++++++\nNew module ${module} properties:")
+			println "++++++++++++++++++++++++++++++++++++++++++++++++++++++++\nNew module ${module} properties:"
 			props.each() {String propKey, String propValue ->
-				println("\t${propKey} : ${propValue}")
+				println "\t${propKey} : ${propValue}"
 			}
 		}
 
@@ -156,7 +156,7 @@ class PropertiesUpdater {
 		String escapedKey = propKey.replaceAll(/\./, '\\.')
 		Pattern pattern = Pattern.compile("^${escapedKey}\\s?[=:]\\s?.*\$", Pattern.MULTILINE)
 		String text = configFile.text.replaceAll(pattern, "${propKey}=${propValue}")
-		println("EscapedKEY: ${escapedKey}, New config:\n${text}")
+		println "EscapedKEY: ${escapedKey}, New config:\n${text}"
 	}
 
 	private static boolean isDir(File parent, String dir) {

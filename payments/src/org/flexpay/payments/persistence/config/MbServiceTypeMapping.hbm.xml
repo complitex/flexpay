@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+		"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="org.flexpay.payments.persistence.config">
+
+	<class name="MbServiceTypeMapping" table="config_payments_mbservices_tbl" optimistic-lock="version">
+		<comment>Mapping of MegaBank services to internal types</comment>
+		<id name="id">
+			<column name="id">
+				<comment>Primary key</comment>
+			</column>
+			<generator class="native" />
+		</id>
+		<version name="version" access="field">
+			<column name="version">
+				<comment>Optimistic lock version</comment>
+			</column>
+		</version>
+		<property name="mbServiceCode">
+			<column name="mb_service_code" not-null="true" unique="true">
+				<comment>MegaBank service code</comment>
+			</column>
+		</property>
+		<property name="mbServiceName">
+			<column name="mb_service_name" not-null="true" unique="true">
+				<comment>MegaBank service name</comment>
+			</column>
+		</property>
+		<many-to-one name="serviceType" class="org.flexpay.payments.persistence.ServiceType"
+					 foreign-key="FK_config_payments_mbservices_tbl_type_id">
+			<column name="service_type_id" not-null="true" unique="true">
+				<comment>Internal service type reference</comment>
+			</column>
+		</many-to-one>
+	</class>
+
+	<query name="MbServiceTypeMapping.listAll">
+		from MbServiceTypeMapping
+	</query>
+
+</hibernate-mapping>

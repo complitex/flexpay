@@ -3,17 +3,12 @@ package org.flexpay.payments.util;
 import org.apache.commons.collections.BidiMap;
 import org.apache.commons.collections.bidimap.DualHashBidiMap;
 import org.flexpay.common.persistence.Stub;
-import org.flexpay.common.util.CollectionUtils;
-import org.flexpay.common.util.SecurityUtil;
 import org.flexpay.payments.persistence.ServiceType;
-import org.flexpay.payments.service.ServiceTypeService;
-import org.flexpay.payments.service.Security;
+import org.flexpay.payments.persistence.config.MbServiceTypeMapping;
 import org.springframework.beans.factory.annotation.Required;
-import org.springframework.security.Authentication;
+import org.springframework.orm.hibernate3.HibernateTemplate;
 
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 /**
  * Mapper maps Megabank service type codes to internal {@link org.flexpay.payments.persistence.ServiceType}
@@ -21,7 +16,6 @@ import java.util.Set;
 public class ServiceTypesMapper {
 
 	private BidiMap mapping = new DualHashBidiMap();
-	private ServiceTypeService serviceTypeService;
 
 	/**
 	 * Map megabank service type code to internal ServiceType object reference
@@ -44,44 +38,16 @@ public class ServiceTypesMapper {
 		return (String) mapping.getKey(stub);
 	}
 
-	public void validate() {
-
-		Authentication auth = SecurityUtil.getAuthentication();
-		Security.authenticateSyncer();
-		List<Long> invalidTypes = CollectionUtils.list();
-		for (Object mbCode : mapping.keySet()) {
-			@SuppressWarnings ({"unchecked"})
-			Stub<ServiceType> stub = (Stub<ServiceType>) mapping.get(mbCode);
-			if (serviceTypeService.read(stub) == null) {
-				invalidTypes.add(stub.getId());
-			}
-		}
-		SecurityUtil.setAuthentication(auth);
-
-		if (!invalidTypes.isEmpty()) {
-			throw new IllegalArgumentException("Unknown service types: " + invalidTypes);
-		}
-	}
-
 	@Required
-	public void setMapping(Map<String, Long> mapping) {
-		Set<Long> knownTypes = CollectionUtils.set();
-		Set<Long> duplicateTypes = CollectionUtils.set();
-		for (Map.Entry<String, Long> entry : mapping.entrySet()) {
-			Stub<ServiceType> stub = new Stub<ServiceType>(entry.getValue());
-			this.mapping.put(entry.getKey(), stub);
-			if (knownTypes.contains(stub.getId())) {
-				duplicateTypes.add(stub.getId());
-			}
-			knownTypes.add(stub.getId());
+	public void setHibernateTemplate(HibernateTemplate template) {
+		@SuppressWarnings ({"unchecked"})
+		List<MbServiceTypeMapping> mappings = template.findByNamedQuery("MbServiceTypeMapping.listAll");
+		if (mappings.isEmpty()) {
+			throw new IllegalStateException("No MegaBank service mappings found, did you set it?");
 		}
-		if (!duplicateTypes.isEmpty()) {
-			throw new IllegalArgumentException("Duplicate service types: " + duplicateTypes);
-		}
-	}
 
-	@Required
-	public void setServiceTypeService(ServiceTypeService serviceTypeService) {
-		this.serviceTypeService = serviceTypeService;
+		for (MbServiceTypeMapping srvMapping : mappings) {
+			mapping.put(srvMapping.getMbServiceCode(), srvMapping.serviceTypeStub());
+		}
 	}
 }
