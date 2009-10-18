@@ -10,7 +10,7 @@
     <bean id="connectionFactoryFactory" class="org.flexpay.common.util.jms.openmq.MQConnectionFactoryFactory">
         <property name="properties">
             <props>
-                <prop key="imqAddressList">localhost:7676</prop>
+                <prop key="imqAddressList">${app.config.common.jms.address}</prop>
             </props>
         </property>
     </bean>

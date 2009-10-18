@@ -97,7 +97,7 @@ public class TranslationUtil {
 		if (attribute != null) {
 			result.append(attribute.format(locale, shortMode));
 		}
-		
+
 		attribute = buildingAddress.getBulkAttribute();
 		if (attribute != null) {
 			result.append(", ").
@@ -132,11 +132,11 @@ public class TranslationUtil {
 			if (attribute == null) {
 				continue;
 			}
-			if (!ApplicationConfig.getBuildingHouseType().equals(attribute.getBuildingAttributeType())) {
+			if (!ApplicationConfig.getBuildingAttributeTypeNumber().equals(attribute.getBuildingAttributeType())) {
 				AddressAttributeTypeTranslation attributeTypeTranslation =
 						locale == null ? getTranslation(attribute.getBuildingAttributeType().getTranslations()) :
-								getTranslation(attribute.getBuildingAttributeType().getTranslations(), locale);
-				if (attributeTypeTranslation.getShortName() != null) {
+						getTranslation(attribute.getBuildingAttributeType().getTranslations(), locale);
+				if (attributeTypeTranslation != null && attributeTypeTranslation.getShortName() != null) {
 					number.append(attributeTypeTranslation.getShortName()).append(' ');
 				} else {
 					number.append(attributeTypeTranslation.getName()).append(' ');

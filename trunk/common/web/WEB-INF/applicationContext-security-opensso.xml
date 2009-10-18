@@ -4,11 +4,7 @@
 		 xmlns:p="http://www.springframework.org/schema/p"
 		 xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
               http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-2.0.4.xsd">
-	<!--
-		<security:http>
-			<security:intercept-url pattern="/resources/common/jsp/login-failed.jsp" access="IS_AUTHENTICATED_ANONYMOUSLY" />
-		</security:http>
-		-->
+
 	<b:bean id="filterChainProxy"
 			class="org.springframework.security.util.FilterChainProxy">
 		<security:filter-chain-map path-type="ant">
@@ -18,36 +14,6 @@
 	</b:bean>
 
 	<b:alias name="filterChainProxy" alias="springSecurityFilterChain" />
-
-	<!--
-			Positions of filters:
-				httpSessionContextIntegrationFilter,
-				logoutFilter,
-				openssoFilter,
-				exceptionTranslationFilter,
-				filterInvocationInterceptor
-
-			Positions of every filters:
-						  CHANNEL_FILTER
-						  CONCURRENT_SESSION_FILTER
-						  HTTP_SESSION_CONTEXT_FILTER
-						  SESSION_FIXATION_FILTER
-						  LOGOUT_FILTER
-						  X509_FILTER
-						  PRE_AUTH_FILTER
-						  CAS_PROCESSING_FILTER
-						  AUTHENTICATION_PROCESSING_FILTER
-						  OPENID_PROCESSING_FILTER
-						  LOGIN_PAGE_FILTER
-						  BASIC_PROCESSING_FILTER
-						  SERVLET_API_SUPPORT_FILTER
-						  REMEMBER_ME_FILTER
-						  ANONYMOUS_FILTER
-						  EXCEPTION_TRANSLATION_FILTER
-						  NTLM_FILTER
-						  FILTER_SECURITY_INTERCEPTOR
-						  SWITCH_USER_FILTER
-		-->
 
 	<b:bean id="httpSessionContextIntegrationFilter"
 			class="org.springframework.security.context.HttpSessionContextIntegrationFilter">
@@ -97,8 +63,7 @@
 
 	<b:bean id="authenticationEntryPoint"
 			class="com.sun.identity.provider.springsecurity.OpenSSOProcessingFilterEntryPoint">
-		<b:property name="loginUrl" value="http://opensso-dev.flexpay.complitex:8080/opensso/UI/Login" />
-		<!-- <b:property name="gotoUrl" value="http://dev.flexpay.complitex:8080/eirc/j_spring_security_check" /> -->
+		<b:property name="loginUrl" value="${app.config.common.opensso.url}" />
 		<b:property name="filterProcessesUrl" value="/j_spring_security_check" />
 	</b:bean>
 

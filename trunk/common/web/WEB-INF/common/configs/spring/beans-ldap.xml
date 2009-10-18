@@ -61,18 +61,18 @@
 		  autowire-candidate="false"
 		  class="org.flexpay.common.service.impl.UserPreferencesDefaultsCommon" />
 
-	<!--<bean id="userPreferencesService"-->
-		  <!--factory-bean="userPreferencesServiceFactory"-->
-		  <!--factory-method="getInstance"-->
-		  <!--p:userPreferencesDao-ref="ldapUserPreferencesDao"-->
-		  <!--p:userPreferencesFactory-ref="userPreferencesFactory"-->
-		  <!--p:userPreferencesDefaults-ref="userPreferencesDefaultsCommon" />-->
-
 	<bean id="userPreferencesService"
 		  factory-bean="userPreferencesServiceFactory"
 		  factory-method="getInstance"
-		  p:userPreferencesDao-ref="userPreferencesDao"
+		  p:usedDao="${app.config.common.usersStorage}"
 		  p:userPreferencesFactory-ref="userPreferencesFactory"
-		  p:userPreferencesDefaults-ref="userPreferencesDefaultsCommon" />
+		  p:userPreferencesDefaults-ref="userPreferencesDefaultsCommon">
+		<property name="userPreferencesDaos">
+			<map>
+				<entry key="db" value-ref="userPreferencesDao" />
+				<entry key="ldap" value-ref="ldapUserPreferencesDao" />
+			</map>
+		</property>
+	</bean>
 
 </beans>

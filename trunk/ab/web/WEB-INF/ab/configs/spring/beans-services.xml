@@ -15,8 +15,7 @@
 		  p:defaultTownId="${app.config.ab.defaultTownId}"
 		  p:buildingAttributeTypeNumberId="${app.config.ab.buildingAttributeTypeNumberId}"
 		  p:buildingAttributeTypeBulkId="${app.config.ab.buildingAttributeTypeBulkId}"
-		  p:buildingAttributeTypePartId="${app.config.ab.buildingAttributeTypePartId}"
-		  p:buildingHouseTypeId="${app.config.ab.buildingHouseTypeId}" />
+		  p:buildingAttributeTypePartId="${app.config.ab.buildingAttributeTypePartId}" />
 
 	<bean id="countryServiceTarget"
 		  class="org.flexpay.ab.service.impl.CountryServiceImpl"
