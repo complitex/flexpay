@@ -602,3 +602,29 @@ update common_users_tbl set payments_payment_point_id=1
 where id=@user_test;
 update common_users_tbl set payments_payment_point_id=2
 where id=@user_ivanova;
+
+# init mega bank services mapping
+insert into config_payments_mbservices_tbl (mb_service_code, service_type_id, mb_service_name) values
+		('1', @service_t_electricity, 'Электроэнергия'),
+		('2', @service_kvartplata, 'Квартплата (эксплуатационные расходы)'),
+		('3', @service_t_water_cooling, 'Отопление'),
+		('4', @service_hot_water, 'Горячая вода'),
+		('5', @service_cold_water, 'Холодная вода'),
+		('6', @service_t_sewerage, 'Канализация'),
+		('7', @service_t_coocking_gas, 'Газ варочный'),
+		('8', @service_t_heating_gas, 'Газ отопительный'),
+		('9', @service_t_radio, 'Радио'),
+		('10', @service_t_antenna, 'Антенна'),
+		('11', @service_t_dogs, 'Содержание животных'),
+		('12', @service_t_garage, 'Гараж'),
+		('13', @service_type_240, 'Погреб'),
+		('14', @service_t_shed, 'Сарай'),
+		('15', @service_t_larder, 'Кладовка'),
+		('16', @service_t_phone, 'Телефон'),
+		('19', @service_t_cesspool_cleaning, 'Ассенизация'),
+		('20', @service_t_lift, 'Лифт'),
+		('21', @service_t_household_consumptions, 'Хозрасходы'),
+		('22', @service_t_ground_tax, 'Налог на землю'),
+		('23', @service_t_repeat_turn_on, 'Повторное подключение'),
+		('24', @service_t_acts_payment, 'Оплата по актам'),
+		('25', @service_t_counters_repair, 'Ремонт счетчиков');
