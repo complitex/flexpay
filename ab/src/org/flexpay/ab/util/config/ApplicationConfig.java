@@ -16,7 +16,6 @@ public class ApplicationConfig {
 	private Region defaultRegion;
 	private Town defaultTown;
 
-	private AddressAttributeType buildingHouseType;
 	private AddressAttributeType addressAttributeTypeNumber;
 	private AddressAttributeType addressAttributeTypeBulk;
 	private AddressAttributeType addressAttributeTypePart;
@@ -65,10 +64,6 @@ public class ApplicationConfig {
 		return getInstance().addressAttributeTypePart;
 	}
 
-	public static AddressAttributeType getBuildingHouseType() {
-		return getInstance().buildingHouseType;
-	}
-
 	@Required
 	public void setDefaultTownId(Long townId) {
 		defaultTown = new Town(townId);
@@ -82,11 +77,6 @@ public class ApplicationConfig {
 	@Required
 	public void setDefaultCountryId(Long countryId) {
 		defaultCountry = new Country(Long.valueOf(countryId));
-	}
-
-	@Required
-	public void setBuildingHouseTypeId(Long buildingHouseTypeId) {
-		buildingHouseType = new AddressAttributeType(buildingHouseTypeId);
 	}
 
 	@Required

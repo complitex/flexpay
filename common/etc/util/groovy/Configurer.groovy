@@ -13,7 +13,6 @@ def modulesDependencies = [
 		sz: ['common', 'ab', 'bti', 'orgs', 'payments', 'eirc', 'sz']
 ]
 
-
 /**
  * Structure of required properties is a following:
  * Module name : [
@@ -25,18 +24,30 @@ def requiredProperties = [
 				'jdbc.driverClassName': 'Jdbc driver class name',
 				'jdbc.url': 'Jdbc Connection url',
 				'jdbc.username': 'Database user name to use for connection',
-				'jdbc.password': 'Database user password to use for connection'
+				'jdbc.password': 'Database user password to use for connection',
+				'app.config.common.usersStorage': 'Users data storage type, db or ldap',
+				'ldap.url': 'LDAP user storage url',
+				'ldap.userDn': 'LDAP administrator distinguished name',
+				'ldap.password': 'LDAP administrator password',
+				'ldap.base': 'LDAP users directory root',
+				'flexpay.email.host': 'SMTP server host',
+				'flexpay.email.user_name': 'SMTP server login',
+				'flexpay.email.user_pass': 'SMTP server password',
+				'flexpay.email.default_to': 'Default email where to send notifications',
+				'app.config.common.instanceId': 'Application instance unique identifier',
+				'app.config.common.jms.address': 'JMS server host:port'
 		],
-		ab : [:],
+		ab: [:],
 		ab_sync: [:],
-		bti : [:],
-		tc : [:],
-		orgs : [:],
-		payments : [:],
-		rent : [:],
-		sz : [:],
+		bti: [:],
+		tc: [:],
+		orgs: [:],
+		payments: [:],
+		rent: [:],
+		sz: [:],
 		eirc: [
-				'flexpay.module.name.eirc': 'Module name'
+				'app.config.eirc.organizationId': 'Identifier of EIRC organization in database',
+				'app.config.eirc.eircId': 'Global EIRC code, used in quittance numbers generation for example'
 		]
 ]
 
@@ -137,6 +148,7 @@ class PropertiesUpdater {
 	}
 
 	// ============================================== TESTS =================================================
+
 	void testUpdateProperty() {
 		File configFile = configFile('common')
 		String propKey = 'jdbc.username'
@@ -153,9 +165,9 @@ class PropertiesUpdater {
 	}
 
 	public static boolean validRoot(File file) {
-		return isDir(file, "common") && isDir(file, "ab") && isDir(file, "bti") \
-			&& isDir(file, "orgs") && isDir(file, "payments") && isDir(file, "eirc") \
-			&& isDir(file, "rent");
+		return isDir(file, "common") && isDir(file, "ab") && isDir(file, "bti")  \
+			 && isDir(file, "orgs") && isDir(file, "payments") && isDir(file, "eirc")  \
+			 && isDir(file, "rent");
 	}
 }
 
@@ -180,11 +192,5 @@ while (root.getParent() != null && !PropertiesUpdater.validRoot(root)) {
 assert PropertiesUpdater.validRoot(root), "Invalid startup directory ${new File('').absolutePath}, please, run from project directory"
 
 new PropertiesUpdater(moduleRequiredProperties, root).configure();
-
-
-
-
-
-
 
 //new PropertiesUpdater(requiredProperties).testUpdateProperty();

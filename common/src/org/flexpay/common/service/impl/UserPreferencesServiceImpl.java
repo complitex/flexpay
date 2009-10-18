@@ -11,19 +11,26 @@ import org.flexpay.common.util.CollectionUtils;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.dao.DataAccessException;
 import org.springframework.security.userdetails.UsernameNotFoundException;
 
 import java.util.List;
+import java.util.Map;
 
-public class UserPreferencesServiceImpl implements UserPreferencesService {
+public class UserPreferencesServiceImpl implements UserPreferencesService, InitializingBean {
 
 	private final Logger log = LoggerFactory.getLogger(getClass());
 
 	private List<UserPreferencesDefaults> defaultsSetters = CollectionUtils.list();
-	private UserPreferencesDao userPreferencesDao;
+	private String usedDao;
+	private Map<String, UserPreferencesDao> userPreferencesDaos;
 	private UserPreferencesFactory userPreferencesFactory;
+
+	private UserPreferencesDao getUserPreferencesDao() {
+		return userPreferencesDaos.get(usedDao);
+	}
 
 	/**
 	 * Locates the user based on the username. In the actual implementation, the search may possibly be case insensitive,
@@ -44,7 +51,7 @@ public class UserPreferencesServiceImpl implements UserPreferencesService {
 
 		log.debug("Loading user by name {}", username);
 
-		UserPreferences preferences = userPreferencesDao.findByUserName(username);
+		UserPreferences preferences = getUserPreferencesDao().findByUserName(username);
 		if (preferences == null) {
 			preferences = userPreferencesFactory.newInstance();
 		}
@@ -70,7 +77,7 @@ public class UserPreferencesServiceImpl implements UserPreferencesService {
 		validate(preferences);
 
 		log.debug("Updating user preferences {}", preferences);
-		userPreferencesDao.save(preferences);
+		getUserPreferencesDao().save(preferences);
 		return preferences;
 	}
 
@@ -87,9 +94,22 @@ public class UserPreferencesServiceImpl implements UserPreferencesService {
 		}
 	}
 
+	@Override
+	public void afterPropertiesSet() throws Exception {
+		UserPreferencesDao dao = getUserPreferencesDao();
+		if (dao == null) {
+			throw new IllegalArgumentException("Know nothing about used dao " + usedDao);
+		}
+	}
+
 	@Required
-	public void setUserPreferencesDao(UserPreferencesDao userPreferencesDao) {
-		this.userPreferencesDao = userPreferencesDao;
+	public void setUsedDao(String usedDao) {
+		this.usedDao = usedDao;
+	}
+
+	@Required
+	public void setUserPreferencesDaos(Map<String, UserPreferencesDao> userPreferencesDaos) {
+		this.userPreferencesDaos = userPreferencesDaos;
 	}
 
 	@Required
