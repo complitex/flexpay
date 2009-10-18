@@ -41,7 +41,7 @@ public class Operation extends DomainObject {
 	private OperationLevel operationLevel;
 	private OperationStatus operationStatus;
 
-	private Set<Document> documents = Collections.emptySet();
+	private Set<Document> documents = CollectionUtils.set();
 
 	private Operation referenceOperation;
 	private Set<Operation> referencedOperations = Collections.emptySet();
@@ -178,10 +178,6 @@ public class Operation extends DomainObject {
 
 	public void addDocument(Document doc) {
 
-		//noinspection CollectionsFieldAccessReplaceableByMethodCall
-		if (documents == Collections.EMPTY_SET) {
-			documents = CollectionUtils.set();
-		}
 		doc.setOperation(this);
 		documents.add(doc);
 	}

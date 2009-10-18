@@ -137,6 +137,9 @@
 	</target>
 
 	<target name="common.prepare.war">
+		<antcall target="template.configure.module">
+			<param name="module.name" value="common" />
+		</antcall>
 		<antcall target="common.prepare.war.internal" />
 		<antcall target="template.switch_log_name">
 			<param name="log_name" value="common" />

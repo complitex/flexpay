@@ -94,19 +94,9 @@
 		</antcall>
 	</target>
 
-	<target name="sz.war.production.tomcat_mysql5">
-		<antcall target="template.sz.war.production">
-			<param name="app_server.properties" value="app_server_tomcat.properties" />
-			<param name="data_source.properties" value="data_source_mysql5.properties" />
-		</antcall>
-	</target>
-
 	<target name="sz.war.production.glassfish_mysql5">
 		<antcall target="clean.all" />
-		<antcall target="template.sz.war.production">
-			<param name="app_server.properties" value="app_server_glassfish.properties" />
-			<param name="data_source.properties" value="data_source_mysql5.properties" />
-		</antcall>
+		<antcall target="template.sz.war.production" />
 	</target>
 
     <target name="sz.prepare.war.internal" depends="sz.compile.production,eirc.prepare.war.internal">
@@ -146,6 +136,9 @@
 	</target>
 
 	<target name="sz.prepare.war">
+		<antcall target="template.configure.module">
+			<param name="module.name" value="sz" />
+		</antcall>
 		<antcall target="sz.prepare.war.internal" />
 		<antcall target="template.switch_log_name">
 			<param name="log_name" value="sz" />

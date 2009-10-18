@@ -96,18 +96,11 @@
 		</antcall>
 	</target>
 
-	<target name="ab_sync.war.production.tomcat_mysql5">
-		<antcall target="template.ab_sync.war.production">
-			<param name="app_server.properties" value="app_server_tomcat.properties" />
-			<param name="data_source.properties" value="data_source_mysql5.properties" />
-		</antcall>
-	</target>
-
 	<target name="ab_sync.war.production.glassfish_mysql5">
-		<antcall target="template.ab_sync.war.production">
-			<param name="app_server.properties" value="app_server_glassfish.properties" />
-			<param name="data_source.properties" value="data_source_mysql5.properties" />
+		<antcall target="template.configure.module">
+			<param name="module.name" value="ab_sync" />
 		</antcall>
+		<antcall target="template.ab_sync.war.production" />
 	</target>
 
     <target name="ab_sync.prepare.war" depends="ab_sync.compile.test,ab.prepare.war">

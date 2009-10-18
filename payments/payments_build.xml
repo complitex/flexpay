@@ -94,23 +94,15 @@
 		</antcall>
 	</target>
 
-	<target name="payments.war.production.tomcat_mysql5">
-		<antcall target="clean.all" />
-		<antcall target="template.payments.war.production">
-			<param name="app_server.properties" value="app_server_tomcat.properties" />
-			<param name="data_source.properties" value="data_source_mysql5.properties" />
-		</antcall>
-	</target>
-
 	<target name="payments.war.production.glassfish_mysql5">
 		<antcall target="clean.all" />
-		<antcall target="template.payments.war.production">
-			<param name="app_server.properties" value="app_server_glassfish.properties" />
-			<param name="data_source.properties" value="data_source_mysql5.properties" />
-		</antcall>
+		<antcall target="template.payments.war.production" />
 	</target>
 
     <target name="payments.prepare.war">
+		<antcall target="template.configure.module">
+			<param name="module.name" value="payments" />
+		</antcall>
 		<antcall target="payments.prepare.war.internal" />
 		<antcall target="template.switch_log_name">
 			<param name="log_name" value="payments" />
