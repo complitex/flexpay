@@ -1,6 +1,7 @@
 package org.flexpay.payments.test;
 
 import static org.flexpay.ab.service.Roles.*;
+import static org.flexpay.common.service.Roles.*;
 import org.flexpay.common.test.SpringBeanAwareTestCase;
 import org.flexpay.common.util.SecurityUtil;
 import org.flexpay.common.util.config.UserPreferences;
@@ -51,6 +52,7 @@ public class PaymentsSpringBeanAwareTestCase extends SpringBeanAwareTestCase {
 				SERVICE_ORGANIZATION_READ,
 				BANK_READ,
 				PAYMENT_COLLECTOR_READ,
+                PAYMENT_COLLECTOR_CHANGE,
 				SERVICE_TYPE_READ,
 				ORGANIZATION_READ,
 				OPERATION_READ,
@@ -75,12 +77,16 @@ public class PaymentsSpringBeanAwareTestCase extends SpringBeanAwareTestCase {
 				SERVICE_DELETE,
 				PAYMENT_COLLECTOR_ADD,
 				PAYMENT_POINT_ADD,
+                PAYMENT_POINT_CHANGE,
 				CASHBOX_ADD,
 				CASHBOX_CHANGE,
 				OPERATION_ADD,
 				OPERATION_CHANGE,
 				DOCUMENT_ADD,
-                DOCUMENT_CHANGE
+                DOCUMENT_CHANGE,
+                TRADING_DAY_ADMIN_ACTION,
+                PROCESS_DELETE,
+                PROCESS_READ
 		);
 		User user = new User("test", "test", true, true, true, true, authorities);
 		UserPreferences preferences = userPreferencesFactory.newInstance();
