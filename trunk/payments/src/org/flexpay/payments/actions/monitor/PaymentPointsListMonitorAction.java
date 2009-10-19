@@ -36,9 +36,10 @@ import java.text.SimpleDateFormat;
 import java.io.Serializable;
 
 public class PaymentPointsListMonitorAction extends FPActionWithPagerSupport<PaymentPointMonitorContainer> {
+    public static final String DISABLE = "disable";
+    public static final String ENABLE = "enable";
+
     private static final String PROCESS_DEFINITION_NAME = "TradingDay";
-    private static final String DISABLE = "disable";
-    private static final String ENABLE = "enable";
 
     private static final SimpleDateFormat formatTime = new SimpleDateFormat("HH:mm");
 
@@ -98,7 +99,7 @@ public class PaymentPointsListMonitorAction extends FPActionWithPagerSupport<Pay
                 if (getText(DISABLE).equals(action) && paymentPoint.getTradingDayProcessInstanceId() != null) {
                     disableTradingDay(paymentPoint);
                     addActionMessage(getText("payments.payment_points.list.disable_trading_day", "Disable trading day for {0} payment point", paymentPoint.getName(getLocale())));
-                } if (getText(ENABLE).equals(action) && paymentPoint.getTradingDayProcessInstanceId() == null) {
+                } else if (getText(ENABLE).equals(action) && paymentPoint.getTradingDayProcessInstanceId() == null) {
                     enableTradingDay(paymentCollector, paymentPoint);
                     addActionMessage(getText("payments.payment_points.list.enable_trading_day", "Enable trading day for {0} payment point", paymentPoint.getName(getLocale())));
                 }
@@ -174,9 +175,11 @@ public class PaymentPointsListMonitorAction extends FPActionWithPagerSupport<Pay
 
     @Secured (Roles.TRADING_DAY_ADMIN_ACTION)
     private void enableTradingDay(PaymentCollector paymentCollector, PaymentPoint paymentPoint) throws JobExecutionException {
+        log.debug("Try enable trading day for payment point {}", paymentPoint.getId());
+
         Map<Serializable, Serializable> parameters = new HashMap<Serializable, Serializable>();
 
-        parameters.put(ExportJobParameterNames.PAYMENT_POINT_ID, paymentPoint.getCollector().getOrganization().getId());
+        parameters.put(ExportJobParameterNames.PAYMENT_POINT_ID, paymentPoint.getId());
         log.debug("Set paymentPointId {}", paymentPoint.getId());
 
         //fill begin and end date
@@ -214,6 +217,7 @@ public class PaymentPointsListMonitorAction extends FPActionWithPagerSupport<Pay
 
     @Secured (Roles.TRADING_DAY_ADMIN_ACTION)
     private void disableTradingDay(PaymentPoint paymentPoint) throws FlexPayExceptionContainer {
+        log.debug("Try disable trading day for payment point {}", paymentPoint.getId());
         deleteProcess(paymentPoint.getTradingDayProcessInstanceId());
         paymentPoint.setTradingDayProcessInstanceId(null);
         paymentPointService.update(paymentPoint);

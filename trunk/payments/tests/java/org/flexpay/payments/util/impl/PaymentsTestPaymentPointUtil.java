@@ -66,7 +66,7 @@ public class PaymentsTestPaymentPointUtil implements TestPaymentPointUtil {
 
     @Override
     public void delete(@NotNull PaymentPoint paymentPoint) {
-        paymentCollectorUtil.delete(paymentPoint.getCollector());
         paymentPointService.delete(paymentPoint);
+        paymentCollectorUtil.delete(paymentPoint.getCollector());
     }
 }
