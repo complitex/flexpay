@@ -10,6 +10,7 @@ import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.context.ResourceLoaderAware;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
@@ -19,7 +20,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
 
-public class ApplicationConfig {
+public class ApplicationConfig implements ResourceLoaderAware {
 
 	private static final Logger log = LoggerFactory.getLogger(ApplicationConfig.class);
 
@@ -171,8 +172,8 @@ public class ApplicationConfig {
 		}
 	}
 
-	public static void setResourceLoader(ResourceLoader resourceLoader) {
-		log.debug("Setting resource loader");
+	public void setResourceLoader(ResourceLoader resourceLoader) {
+		log.debug("Setting resource loader {}", resourceLoader);
 		ApplicationConfig.resourceLoader = resourceLoader;
 	}
 
