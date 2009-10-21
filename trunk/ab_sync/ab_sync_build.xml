@@ -96,7 +96,7 @@
 		</antcall>
 	</target>
 
-	<target name="ab_sync.war.production.glassfish_mysql5">
+	<target name="ab_sync.war">
 		<antcall target="template.configure.module">
 			<param name="module.name" value="ab_sync" />
 		</antcall>

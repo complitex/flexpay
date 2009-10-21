@@ -3,6 +3,7 @@
 
 	<property name="common.dir" value="${basedir}/common" />
 	<property file="common/common_build.properties" />
+	<property file="common/web/WEB-INF/common.properties" />
 
 	<!-- Define classpath libraries -->
 	<path id="commons.lib">
@@ -163,6 +164,12 @@
 	<path id="groovy.lib">
 		<fileset dir="${common.dir}/lib">
 			<include name="groovy/*.jar" />
+		</fileset>
+	</path>
+
+	<path id="ant.lib">
+		<fileset dir="${common.dir}/lib">
+			<include name="ant/*.jar" />
 		</fileset>
 	</path>
 
@@ -409,11 +416,7 @@
 		</replaceregexp>
 	</target>
 
-	<taskdef resource="net/sf/antcontrib/antcontrib.properties">
-		<classpath>
-			<pathelement location="${common.dir}/lib/ant/ant-contrib-1.0b2.jar" />
-		</classpath>
-	</taskdef>
+	<taskdef resource="net/sf/antcontrib/antcontrib.properties" classpathref="ant.lib" />
 
 	<target name="template.update_version">
 		<exec executable="svn"
@@ -475,6 +478,24 @@
 			<arg line="${module.name}" />
 		</groovy>
 
+	</target>
+
+	<target name="war.security" description="Configure security options of war">
+		<if>
+			<istrue value="${app.config.common.useOpenSSO}" />
+			<then>
+				<replace file="${build.dir}/web/WEB-INF/web.xml"
+						 encoding="UTF-8"
+						 token="@@@SECURITYPLACEHOLDER@@@"
+						 value="security-opensso" />
+			</then>
+			<else>
+				<replace file="${build.dir}/web/WEB-INF/web.xml"
+						 encoding="UTF-8"
+						 token="@@@SECURITYPLACEHOLDER@@@"
+						 value="security" />
+			</else>
+		</if>
 	</target>
 
 </project>

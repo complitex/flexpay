@@ -92,7 +92,7 @@
 		</antcall>
 	</target>
 
-	<target name="orgs.war.production.glassfish_mysql5">
+	<target name="orgs.war">
 		<antcall target="clean.all" />
 		<antcall target="template.orgs.war.production" />
 	</target>
@@ -102,6 +102,7 @@
 			<param name="module.name" value="orgs" />
 		</antcall>
 		<antcall target="orgs.prepare.war.internal" />
+		<antcall target="war.security" />
 		<antcall target="template.switch_log_name">
 			<param name="log_name" value="orgs" />
 		</antcall>
@@ -110,6 +111,7 @@
 
 	<target name="orgs.prepare.test.war">
 		<antcall target="orgs.prepare.war.internal" />
+		<antcall target="war.security" />
 		<antcall target="template.copy.classes" />
 	</target>
 

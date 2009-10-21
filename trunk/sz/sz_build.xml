@@ -94,7 +94,7 @@
 		</antcall>
 	</target>
 
-	<target name="sz.war.production.glassfish_mysql5">
+	<target name="sz.war">
 		<antcall target="clean.all" />
 		<antcall target="template.sz.war.production" />
 	</target>
@@ -140,6 +140,7 @@
 			<param name="module.name" value="sz" />
 		</antcall>
 		<antcall target="sz.prepare.war.internal" />
+		<antcall target="war.security" />
 		<antcall target="template.switch_log_name">
 			<param name="log_name" value="sz" />
 		</antcall>
@@ -148,6 +149,7 @@
 
 	<target name="sz.prepare.test.war">
 		<antcall target="sz.prepare.war.internal" />
+		<antcall target="war.security" />
 		<antcall target="template.copy.classes" />
 	</target>
 
