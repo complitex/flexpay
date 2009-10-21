@@ -3,7 +3,7 @@ import java.util.regex.Pattern
 def modulesDependencies = [
 		common: ['common'],
 		ab: ['common', 'ab'],
-		ab_sync: ['common', 'an'],
+		ab_sync: ['common', 'ab'],
 		bti: ['common', 'ab', 'bti'],
 		tc: ['common', 'ab', 'bti', 'tc'],
 		orgs: ['common', 'orgs'],
@@ -21,21 +21,18 @@ def modulesDependencies = [
  */
 def requiredProperties = [
 		common: [
-				'jdbc.driverClassName': 'Jdbc driver class name',
-				'jdbc.url': 'Jdbc Connection url',
-				'jdbc.username': 'Database user name to use for connection',
-				'jdbc.password': 'Database user password to use for connection',
+//				'jdbc.driverClassName': 'Jdbc driver class name',
+//				'jdbc.url': 'Jdbc Connection url',
+//				'jdbc.username': 'Database user name to use for connection',
+//				'jdbc.password': 'Database user password to use for connection',
+//				'flexpay.email.host': 'SMTP server host',
+//				'flexpay.email.user_name': 'SMTP server login',
+//				'flexpay.email.user_pass': 'SMTP server password',
+//				'flexpay.email.default_to': 'Default email where to send notifications',
+//				'app.config.common.instanceId': 'Application instance unique identifier',
+//				'app.config.common.jms.address': 'JMS server host:port',
 				'app.config.common.usersStorage': 'Users data storage type, db or ldap',
-				'ldap.url': 'LDAP user storage url',
-				'ldap.userDn': 'LDAP administrator distinguished name',
-				'ldap.password': 'LDAP administrator password',
-				'ldap.base': 'LDAP users directory root',
-				'flexpay.email.host': 'SMTP server host',
-				'flexpay.email.user_name': 'SMTP server login',
-				'flexpay.email.user_pass': 'SMTP server password',
-				'flexpay.email.default_to': 'Default email where to send notifications',
-				'app.config.common.instanceId': 'Application instance unique identifier',
-				'app.config.common.jms.address': 'JMS server host:port'
+				'app.config.common.useOpenSSO' : 'Whether to use OpenSSO for users authentication, (true/false)'
 		],
 		ab: [:],
 		ab_sync: [:],
@@ -48,18 +45,59 @@ def requiredProperties = [
 		eirc: [
 				'app.config.eirc.organizationId': 'Identifier of EIRC organization in database',
 				'app.config.eirc.eircId': 'Global EIRC code, used in quittance numbers generation for example'
-		]
+		],
 ]
+
+def dependentProperties = [
+        common : [
+                'app.config.common.useOpenSSO' : [
+                        common : [
+                                'app.config.common.opensso.url' : 'OpenSSO login url'
+                        ],
+						opensso : [
+						        'com.iplanet.services.debug.directory' : 'Output directory where the OpenSSO debug files will be created',
+								'com.iplanet.am.naming.url' : 'OpenSSO naming url',
+								'com.sun.identity.agents.app.username' : 'OpenSSO user name having permissions to read security attributes',
+								'com.iplanet.am.service.password' : 'OpenSSO user password',
+								'com.iplanet.am.server.protocol' : 'OpenSSO server protocol',
+								'com.iplanet.am.server.host' : 'OpenSSO server host',
+								'com.iplanet.am.server.port' : 'OpenSSO server port',
+								'com.iplanet.am.services.deploymentDescriptor' : 'OpenSSO server context path',
+								'com.iplanet.am.cookie.encode' : 'Whether cookie is encoded by OpenSSO server or not'
+						]
+                ],
+				'app.config.common.usersStorage' : [
+				        common : [
+								'ldap.url': 'LDAP user storage url',
+								'ldap.userDn': 'LDAP administrator distinguished name',
+								'ldap.password': 'LDAP administrator password',
+								'ldap.base': 'LDAP users directory root',
+				        ]
+				]
+        ]
+]
+
+def isTrue = { String input ->
+	return 'true' == input
+}
+
+def dependencyChecker = {String key, String value ->
+	if (key == 'app.config.common.usersStorage') {
+		return 'LDAP' == value.toUpperCase()
+	}
+	if (key == 'app.config.common.useOpenSSO') {
+		return isTrue(value)
+	}
+	return false;
+}
 
 class PropertiesUpdater {
 
-	public PropertiesUpdater(Map requiredProperties, File root) {
-		this.requiredProperties = requiredProperties
-		this.projectRoot = root
-	}
-
-	private Map requiredProperties
+	private Map requiredProps
 	private File projectRoot
+	private Closure dependencyChecker
+	private Closure inputChecker
+	private Map dependencies
 
 	/**
 	 * Load module properties
@@ -70,6 +108,7 @@ class PropertiesUpdater {
 	public Properties load(String module) {
 		Properties props = Properties.newInstance()
 		File config = configFile(module)
+		assert config.exists(), "Cannot find config file for module ${module}, expected ${config.getAbsolutePath()}"
 		config.withReader {Reader r ->
 			props.load r
 		}
@@ -86,30 +125,62 @@ class PropertiesUpdater {
 		return input;
 	}
 
+	private void mapModuleProperties(String module, Map props) {
+		println "Adding module ${module} properties: ${configFile(module)}"
+		props.put(module, load(module))
+	}
+
+	private void readNewPropertiesValues(String module, Map props, Map allProps, Map newProps) {
+
+		Map newProperties = newProps[module] as Map ?: [:]
+		BufferedReader input = System.in.newReader()
+		println "========================================================\nConfiguring module ${module}"
+		props.each {String prop, String doc ->
+			String defaultValue = allProps[module][prop] as String
+			println "${doc} [${defaultValue}]"
+			String value = readProp(defaultValue, input)
+			if (value != defaultValue) {
+				newProperties.put(prop, value)
+			}
+		}
+		newProps.put(module, newProperties)
+	}
+
+	/**
+	 * read property value, first find in new properties, than in old
+	 */
+	private String prop(String module, String key, Map allProps, Map newProps) {
+		return newProps[module][key] as String ?: allProps[module][key] as String
+	}
 
 	public void configure() {
 		// map module name to its properties
-		def properties = [:]
-		requiredProperties.each {String k, v ->
-			println "Adding module ${k} properties: ${configFile(k)}"
-			properties.put(k, load(k))
+		def allProperties = [:]
+		requiredProps.each {String k, v ->
+			mapModuleProperties(k, allProperties)
 		}
 
 		// read new properties values to the same structure as requiredProperties [module : [prop1 : val1, prop2 : val2]]
 		def newModulesProperties = [:]
-		requiredProperties.each() {String module, Map props ->
-			Map newProperties = [:]
-			BufferedReader input = System.in.newReader()
-			println "========================================================\nConfiguring module ${module}"
-			props.each {String prop, String doc ->
-				String defaultValue = properties[module][prop]
-				println "${doc} [${defaultValue}]"
-				String value = readProp(defaultValue, input)
-				if (value != defaultValue) {
-					newProperties.put(prop, value)
+		requiredProps.each() {String module, Map props ->
+			readNewPropertiesValues(module, props, allProperties, newModulesProperties)
+		}
+
+		// check dependencies, dependencies is [depModule : *dep2Props* [depProp : *perModuleProps* [ module : [prop : doc] ] ]
+		dependencies.each {String depModule, Map dep2Props ->
+			dep2Props.each {String depProp, Map perModuleProps ->
+				println "\nChecking dependencies: ${depProp}: ${prop(depModule, depProp, allProperties, newModulesProperties)}"
+				if (dependencyChecker(depProp, prop(depModule, depProp, allProperties, newModulesProperties))) {
+					println "Added dependency!"
+					perModuleProps.each { String module, Map reqProps ->
+						// read properties of
+						if (!allProperties.keySet().contains(module)) {
+							mapModuleProperties(module, allProperties)
+						}
+						readNewPropertiesValues(module, reqProps, allProperties, newModulesProperties)
+					}
 				}
 			}
-			newModulesProperties.put(module, newProperties)
 		}
 
 		// dump properties
@@ -144,6 +215,10 @@ class PropertiesUpdater {
 	 * @return module configuration file
 	 */
 	File configFile(String module) {
+		// for opensso config file is AMConfig.properties
+		if (module == 'opensso') {
+			return new File(projectRoot, 'common/etc/AMConfig.properties')
+		}
 		return new File(projectRoot, "${module}/web/WEB-INF/${module}.properties")
 	}
 
@@ -191,6 +266,13 @@ while (root.getParent() != null && !PropertiesUpdater.validRoot(root)) {
 
 assert PropertiesUpdater.validRoot(root), "Invalid startup directory ${new File('').absolutePath}, please, run from project directory"
 
-new PropertiesUpdater(moduleRequiredProperties, root).configure();
+new PropertiesUpdater(
+		requiredProps : moduleRequiredProperties,
+		projectRoot : root,
+		dependencyChecker : dependencyChecker,
+		inputChecker : isTrue,
+		dependencies : dependentProperties
 
-//new PropertiesUpdater(requiredProperties).testUpdateProperty();
+).configure();
+
+//new PropertiesUpdater(requiredProps).testUpdateProperty();
