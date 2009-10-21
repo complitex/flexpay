@@ -1,10 +1,14 @@
 package org.flexpay.ab.service.importexport;
 
+import org.flexpay.ab.persistence.Street;
 import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
+import org.flexpay.common.service.importexport.ClassToTypeRegistry;
+import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.core.RowCallbackHandler;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -43,7 +47,11 @@ public class CreateStreets extends AbSpringBeanAwareTestCase {
 	private static final Long townId = 1L;
 	private static final Long ruId = 1L;
 	private static final Long dataSourceId = 1L;
-	private static final int streetTypeNumber = 0x06;
+
+	@Autowired
+	private ClassToTypeRegistry typeRegistry;
+
+	private int streetTypeNumber;
 
 	@Test
 	@Ignore
@@ -82,6 +90,11 @@ public class CreateStreets extends AbSpringBeanAwareTestCase {
 				}
 			}
 		});
+	}
+
+	@Before
+	public void setStreetTypeNumber() {
+		streetTypeNumber = typeRegistry.getType(Street.class);
 	}
 
 	private static final class StreetInsertCreator implements PreparedStatementCreator {
