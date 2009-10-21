@@ -2,7 +2,7 @@ package org.flexpay.common.process.job;
 
 import org.flexpay.common.test.SpringBeanAwareTestCase;
 import static org.flexpay.common.util.CollectionUtils.map;
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 import org.junit.Test;
 
 import java.io.Serializable;
@@ -22,6 +22,11 @@ public class TestJob extends SpringBeanAwareTestCase {
 		parameters.put(TEST_STRING, TEST_STRING);
 		jobManager.addJob(testJob, parameters);
 
+		Thread jobThread = testJob.getJobThread();
+		assertNotNull("No job thread", jobThread);
+		jobThread.join(5 * 1000L);
+		assertFalse("Job thread is not complete", jobThread.isAlive());
+
 		assertEquals(1, parameters.size());
 		assertEquals(TEST_STRING, parameters.get(TEST_STRING));
 	}
@@ -35,6 +40,11 @@ public class TestJob extends SpringBeanAwareTestCase {
 		Map<Serializable, Serializable> parameters = map();
 		parameters.put(TEST_STRING, TEST_STRING);
 		jobManager.addJob(testJob, parameters);
+
+		Thread jobThread = testJob.getJobThread();
+		assertNotNull("No job thread", jobThread);
+		jobThread.join(5 * 1000L);
+		assertFalse("Job thread is not complete", jobThread.isAlive());
 
 		parameters = testJob.getParameters();
 		assertEquals(2, parameters.size());
