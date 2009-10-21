@@ -21,16 +21,16 @@ def modulesDependencies = [
  */
 def requiredProperties = [
 		common: [
-//				'jdbc.driverClassName': 'Jdbc driver class name',
-//				'jdbc.url': 'Jdbc Connection url',
-//				'jdbc.username': 'Database user name to use for connection',
-//				'jdbc.password': 'Database user password to use for connection',
-//				'flexpay.email.host': 'SMTP server host',
-//				'flexpay.email.user_name': 'SMTP server login',
-//				'flexpay.email.user_pass': 'SMTP server password',
-//				'flexpay.email.default_to': 'Default email where to send notifications',
-//				'app.config.common.instanceId': 'Application instance unique identifier',
-//				'app.config.common.jms.address': 'JMS server host:port',
+				'jdbc.driverClassName': 'Jdbc driver class name',
+				'jdbc.url': 'Jdbc Connection url',
+				'jdbc.username': 'Database user name to use for connection',
+				'jdbc.password': 'Database user password to use for connection',
+				'flexpay.email.host': 'SMTP server host',
+				'flexpay.email.user_name': 'SMTP server login',
+				'flexpay.email.user_pass': 'SMTP server password',
+				'flexpay.email.default_to': 'Default email where to send notifications',
+				'app.config.common.instanceId': 'Application instance unique identifier',
+				'app.config.common.jms.address': 'JMS server host:port',
 				'app.config.common.usersStorage': 'Users data storage type, db or ldap',
 				'app.config.common.useOpenSSO' : 'Whether to use OpenSSO for users authentication, (true/false)'
 		],

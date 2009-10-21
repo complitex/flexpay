@@ -92,7 +92,7 @@
 		</antcall>
 	</target>
 
-	<target name="bti.war.production.glassfish_mysql5">
+	<target name="bti.war">
 		<antcall target="clean.all" />
 		<antcall target="template.bti.war.production" />
 	</target>
@@ -102,6 +102,7 @@
 			<param name="module.name" value="bti" />
 		</antcall>
 		<antcall target="bti.prepare.war.internal" />
+		<antcall target="war.security" />
 		<antcall target="template.switch_log_name">
 			<param name="log_name" value="bti" />
 		</antcall>
@@ -110,6 +111,7 @@
 
 	<target name="bti.prepare.test.war">
 		<antcall target="bti.prepare.war.internal" />
+		<antcall target="war.security" />
 		<antcall target="template.copy.classes" />
 	</target>
 

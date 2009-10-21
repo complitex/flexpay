@@ -55,8 +55,7 @@
 			for example ant -f eirc_build.xml eirc.runtests -Dtest.class.name=org.flexpay.eirc.process.quittance.TestGenerateQuittancesPDFJob
 		eirc.runtests.nobuild - Run all module tests but skip build steps (added to speed up development process)
 			same test.class.name option applies to this target
-		eirc.war.production.tomcat_mysql5 - Build production war for Tomcat and MySQL5
-		eirc.war.production.glassfish_mysql5 - Build production war for Glassfish and MySQL5
+		eirc.war - Build war
 		</echo>
 	</target>
 
@@ -98,7 +97,7 @@
 		</antcall>
 	</target>
 
-	<target name="eirc.war.production.glassfish_mysql5">
+	<target name="eirc.war">
 		<antcall target="clean.all" />
 		<antcall target="template.eirc.war.production" />
 	</target>
@@ -108,6 +107,7 @@
 			<param name="module.name" value="eirc" />
 		</antcall>
 		<antcall target="eirc.prepare.war.internal" />
+		<antcall target="war.security" />
 		<antcall target="template.switch_log_name">
 			<param name="log_name" value="eirc" />
 		</antcall>
@@ -116,6 +116,7 @@
 
     <target name="eirc.prepare.test.war">
 		<antcall target="eirc.prepare.war.internal" />
+		<antcall target="war.security" />
 		<antcall target="template.copy.classes" />
 	</target>
 

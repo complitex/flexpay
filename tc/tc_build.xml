@@ -95,7 +95,7 @@
 		</antcall>
 	</target>
 
-	<target name="tc.war.production.glassfish_mysql5">
+	<target name="tc.war">
 		<antcall target="clean.all" />
 		<antcall target="template.tc.war.production" />
 	</target>
@@ -105,6 +105,7 @@
 			<param name="module.name" value="tc" />
 		</antcall>
 		<antcall target="tc.prepare.war.internal" />
+		<antcall target="war.security" />
 		<antcall target="template.switch_log_name">
 			<param name="log_name" value="tc" />
 		</antcall>
@@ -113,6 +114,7 @@
 
 	<target name="tc.prepare.test.war">
 		<antcall target="tc.prepare.war.internal" />
+		<antcall target="war.security" />
 		<antcall target="template.copy.classes" />
 	</target>
 

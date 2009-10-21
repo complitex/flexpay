@@ -47,8 +47,7 @@
 		${module_name}.exportschema.mysql5 - Generate DDL of module for MySQL5
 		${module_name}.runtests - Run all module tests, possible option for this target is test.class.name that specifies test class name to run
 			for example ant -f eirc_build.xml eirc.runtests -Dtest.class.name=org.flexpay.${module_name}.service.TestBuildingService
-		${module_name}.war.production.tomcat_mysql5 - Build production war for Tomcat and MySQL5
-		${module_name}.war.production.flassfish_mysql5 - Build production war for Glassfish and MySQL5
+		${module_name}.war - Build war
 		</echo>
 	</target>
 
@@ -100,6 +99,7 @@
 			<param name="module.name" value="${module.name}" />
 		</antcall>
 		<antcall target="${module_name}.prepare.war.internal" />
+		<antcall target="war.security" />
 		<antcall target="template.switch_log_name">
 			<param name="log_name" value="${module_name}" />
 		</antcall>
@@ -108,7 +108,7 @@
 
 	<target name="${module_name}.prepare.test.war">
 		<antcall target="${module_name}.prepare.war.internal" />
-		<antcall target="common.test.war.data-source" />
+		<antcall target="war.security" />
 		<antcall target="template.copy.classes" />
 	</target>
 

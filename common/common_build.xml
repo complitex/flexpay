@@ -141,6 +141,7 @@
 			<param name="module.name" value="common" />
 		</antcall>
 		<antcall target="common.prepare.war.internal" />
+		<antcall target="war.security" />
 		<antcall target="template.switch_log_name">
 			<param name="log_name" value="common" />
 		</antcall>
@@ -149,6 +150,7 @@
 
 	<target name="common.prepare.test.war" description="Prepare test war data">
 		<antcall target="common.prepare.war.internal" />
+		<antcall target="war.security" />
 		<antcall target="template.copy.classes" />
 	</target>
 

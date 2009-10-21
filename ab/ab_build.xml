@@ -94,11 +94,11 @@
 		</antcall>
 	</target>
 
-	<target name="ab.war.production.glassfish_mysql5">
+	<target name="ab.war">
 		<antcall target="template.ab.war.production" />
 	</target>
 
-	<target name="ab.exploded.production.glassfish_mysql5">
+	<target name="ab.exploded">
 		<antcall target="template.ab.exploded.production" />
 	</target>
 
@@ -107,6 +107,7 @@
 			<param name="module.name" value="ab" />
 		</antcall>
 		<antcall target="ab.prepare.war.internal" />
+		<antcall target="war.security" />
 		<antcall target="template.switch_log_name">
 			<param name="log_name" value="ab" />
 		</antcall>
@@ -115,6 +116,7 @@
 
 	<target name="ab.prepare.test.war">
 		<antcall target="ab.prepare.war.internal" />
+		<antcall target="war.security" />
 		<antcall target="template.copy.classes" />
 	</target>
 

@@ -10,20 +10,11 @@
 		<param-value>FlexPay EIRC module COMMON_INSTANCE</param-value>
 	</context-param>
 
-	<!-- OpenSSO configuration-->
-	<!--<context-param>-->
-		<!--<param-name>contextConfigLocation</param-name>-->
-		<!--<param-value>-->
-			<!--/WEB-INF/applicationContext.xml-->
-			<!--/WEB-INF/applicationContext-security-opensso.xml-->
-		<!--</param-value>-->
-	<!--</context-param>-->
-
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
 		<param-value>
 			/WEB-INF/applicationContext.xml
-			/WEB-INF/applicationContext-security.xml
+			/WEB-INF/applicationContext-@@@SECURITYPLACEHOLDER@@@.xml
 		</param-value>
 	</context-param>
 
