@@ -172,7 +172,7 @@ public class CollectionUtils {
 		Map<K, V> map = map();
 		int n = 0;
 		for (K k : keys) {
-			V v = values == null || n < values.length ? values[n] : null;
+			V v = values != null && n < values.length ? values[n] : null;
 			map.put(k, v);
 			++n;
 		}
