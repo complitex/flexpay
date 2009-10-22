@@ -21,7 +21,7 @@ public class TownFilterAjaxAction extends FilterAjaxAction {
 	@Override
 	public String doExecute() throws FlexPayException {
 
-		Long regionId = null;
+		Long regionId;
 		AbUserPreferences up = getUserPreferences();
 
 		try {

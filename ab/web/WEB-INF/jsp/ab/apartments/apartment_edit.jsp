@@ -7,6 +7,7 @@
 	<table cellpadding="3" cellspacing="1" border="0" width="100%">
 		<tr>
 			<td colspan="2">
+                <s:set name="readonly" value="%{apartment.id > 0}" />
 				<%@include file="../filters/groups/country_region_town_street_building_ajax.jsp" %>
 			</td>
 		</tr>
@@ -24,6 +25,7 @@
 	</table>
 </s:form>
 
+<%--
 <s:if test="%{apartment.id != 0}">
     <script type="text/javascript">
         $(function() {
@@ -31,3 +33,4 @@
         });
     </script>
 </s:if>
+--%>
