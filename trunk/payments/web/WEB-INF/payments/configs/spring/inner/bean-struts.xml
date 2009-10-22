@@ -6,37 +6,37 @@
 		   http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
 		   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
-    <!-- Corrections -->
+	<!-- Corrections -->
 	<bean id="selectCorrectionTypeAction"
+		  scope="prototype"
 		  class="org.flexpay.payments.actions.registry.corrections.SelectCorrectionTypeAction"
 		  p:registryRecordService-ref="registryRecordService"
-		  p:typeRegistry-ref="classToTypeRegistry"
-          scope="prototype" />
+		  p:typeRegistry-ref="classToTypeRegistry" />
 
 	<bean id="correctAddressAction"
+		  scope="prototype"
 		  class="org.flexpay.payments.actions.registry.corrections.CorrectAddressAction"
 		  p:correctionsService-ref="correctionsService"
 		  p:recordService-ref="registryRecordService"
 		  p:serviceTypeService-ref="serviceTypeService"
 		  p:typeRegistry-ref="classToTypeRegistry"
-		  p:organizationService-ref="organizationService"
-          scope="prototype" />
+		  p:organizationService-ref="organizationService" />
 
 	<bean id="correctBuildingAddressAction"
+		  scope="prototype"
 		  class="org.flexpay.payments.actions.registry.corrections.CorrectBuildingAction"
 		  p:correctionsService-ref="correctionsService"
 		  p:recordService-ref="registryRecordService"
 		  p:serviceTypeService-ref="serviceTypeService"
-		  p:organizationService-ref="organizationService"
-          scope="prototype" />
+		  p:organizationService-ref="organizationService" />
 
 	<bean id="correctStreetAddressAction"
+		  scope="prototype"
 		  class="org.flexpay.payments.actions.registry.corrections.CorrectStreetAction"
 		  p:correctionsService-ref="correctionsService"
 		  p:recordService-ref="registryRecordService"
 		  p:serviceTypeService-ref="serviceTypeService"
-		  p:organizationService-ref="organizationService"
-          scope="prototype" />
+		  p:organizationService-ref="organizationService" />
 
 	<bean id="correctPersonAction"
 		  scope="prototype"
@@ -46,13 +46,14 @@
 		  p:recordService-ref="registryRecordService"
 		  p:organizationService-ref="organizationService" />
 
-    <bean id="registryViewAction"
-          class="org.flexpay.payments.actions.registry.RegistryViewAction"
-          p:crumbNameKey="payments.crumbs.registry_view"
-          p:registryService-ref="registryService"
-          p:registryRecordService-ref="registryRecordService"
-          p:classToTypeRegistry-ref="classToTypeRegistry"
-          p:serviceTypeService-ref="serviceTypeService"
-          scope="prototype" />
+	<bean id="registryViewAction"
+		  scope="prototype"
+		  class="org.flexpay.payments.actions.registry.RegistryViewAction"
+		  p:crumbNameKey="payments.crumbs.registry_view"
+		  p:registryService-ref="registryService"
+		  p:registryRecordService-ref="registryRecordService"
+		  p:classToTypeRegistry-ref="classToTypeRegistry"
+		  p:serviceTypeService-ref="serviceTypeService"
+		  p:recordStatusService-ref="registryRecordStatusService" />
 
 </beans>

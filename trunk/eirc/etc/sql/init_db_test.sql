@@ -23,8 +23,8 @@ select @eirc_registry:=1;
 insert into common_registry_properties_tbl (version, props_type, registry_id) values (0, 'common', @eirc_registry);
 
 -- Init registry records
-INSERT INTO common_registry_records_tbl (id, version, service_code, registry_id, operation_date, personal_account_ext)
-	values (1, 0, '', @eirc_registry, '2008-01-01', '123456');
+INSERT INTO common_registry_records_tbl (id, version, service_code, registry_id, record_status_id, operation_date, personal_account_ext)
+	values (1, 0, '', @eirc_registry, @record_status_loaded, '2008-01-01', '123456');
 select @eirc_registry_rec:=1;
 insert into common_registry_record_properties_tbl (version, props_type, record_id) values (0, 'common', @eirc_registry_rec);
 

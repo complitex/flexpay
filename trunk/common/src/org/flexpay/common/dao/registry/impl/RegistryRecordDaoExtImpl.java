@@ -3,14 +3,13 @@ package org.flexpay.common.dao.registry.impl;
 import org.apache.commons.lang.time.StopWatch;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.dao.registry.RegistryRecordDaoExt;
-import org.flexpay.common.persistence.DomainObject;
-import org.flexpay.common.persistence.ImportError;
 import org.flexpay.common.persistence.filter.ImportErrorTypeFilter;
 import org.flexpay.common.persistence.filter.RegistryRecordStatusFilter;
 import org.flexpay.common.persistence.registry.RegistryRecord;
 import org.flexpay.common.util.CollectionUtils;
 import static org.flexpay.common.util.CollectionUtils.list;
-import static org.flexpay.common.util.CollectionUtils.map;
+import static org.flexpay.common.util.CollectionUtils.transform;
+import org.flexpay.common.util.transform.Number2LongTransformer;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -22,6 +21,7 @@ import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
 import java.sql.SQLException;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 public class RegistryRecordDaoExtImpl extends HibernateDaoSupport implements RegistryRecordDaoExt {
@@ -64,46 +64,43 @@ public class RegistryRecordDaoExtImpl extends HibernateDaoSupport implements Reg
 											  RegistryRecordStatusFilter recordStatusFilter,
 											  final Page<RegistryRecord> pager) {
 
-		StringBuilder fromClause = new StringBuilder("from RegistryRecord rr ");
+		StringBuilder countSql = new StringBuilder("select count(1) ");
+		final StringBuilder selectSql = new StringBuilder("select id ");
+		StringBuilder fromWhereClause = new StringBuilder(
+				"from common_registry_records_tbl use index (I_registry_status, I_registry_errortype) " +
+				"where registry_id=? ");
 
-
-		final StringBuilder hql = new StringBuilder("select distinct rr ");
-
-		StringBuilder whereClause = new StringBuilder("where rr.registry.id=? ");
 
 		final List<Object> params = list();
 		params.add(registryId);
 
 		// filter by record status
 		if (recordStatusFilter.needFilter()) {
-			fromClause.append("left join rr.recordStatus rs ");
-			whereClause.append("and rs.code=? ");
-			params.add(recordStatusFilter.getSelectedStatus());
+			fromWhereClause.append("and record_status_id=? ");
+			params.add(recordStatusFilter.getSelectedId());
 		}
 
 		if (importErrorTypeFilter.needFilter()) {
-			fromClause.append("left join fetch rr.importError e ");
 			if (importErrorTypeFilter.needFilterWithoutErrors()) {
-				whereClause.append("and rr.importError is null ");
+				fromWhereClause.append("and import_error_type is null ");
 			} else {
-				whereClause.append("and e.status=? and e.objectType=? ");
-				params.add(ImportError.STATUS_ACTIVE);
+				fromWhereClause.append("and import_error_type=? ");
 				params.add(importErrorTypeFilter.getSelectedType());
 			}
 		}
 
-		final StringBuilder hqlCount = recordStatusFilter.needFilter() || importErrorTypeFilter.needFilter() ?
-				new StringBuilder("select count(*) ").append(fromClause).append(whereClause) :
-				new StringBuilder("select recordsNumber from Registry where id=?");
-		hql.append(fromClause).append(whereClause);
+		final StringBuilder sqlCount = recordStatusFilter.needFilter() || importErrorTypeFilter.needFilter() ?
+									   countSql.append(fromWhereClause) :
+									   new StringBuilder("select records_number from common_registries_tbl where id=?");
+		selectSql.append(fromWhereClause);
 
-		List<RegistryRecord> records = getHibernateTemplate().executeFind(new HibernateCallback() {
+		final List ids = getHibernateTemplate().executeFind(new HibernateCallback() {
 			public List doInHibernate(Session session) throws HibernateException {
-				log.debug("Filter records hqls: {}\n{}", hqlCount, hql);
+				log.debug("Filter records hqls: {}\n{}", sqlCount, selectSql);
 
 				StopWatch watch = new StopWatch();
 				watch.start();
-				Number count = (Number) setParameters(session.createQuery(hqlCount.toString()), params).uniqueResult();
+				Number count = (Number) setParameters(session.createSQLQuery(sqlCount.toString()), params).uniqueResult();
 				watch.stop();
 				log.debug("Time spent for count query: {}", watch);
 				watch.reset();
@@ -111,7 +108,7 @@ public class RegistryRecordDaoExtImpl extends HibernateDaoSupport implements Reg
 				pager.setTotalElements(count.intValue());
 
 				watch.start();
-				List result = setParameters(session.createQuery(hql.toString()), params)
+				List result = setParameters(session.createSQLQuery(selectSql.toString()), params)
 						.setMaxResults(pager.getPageSize())
 						.setFirstResult(pager.getThisPageFirstElementNumber())
 						.list();
@@ -122,14 +119,17 @@ public class RegistryRecordDaoExtImpl extends HibernateDaoSupport implements Reg
 			}
 		});
 
+		if (ids.isEmpty()) {
+			return Collections.emptyList();
+		}
+
 		StopWatch watch = new StopWatch();
 		watch.start();
-		final Collection<Long> ids = DomainObject.collectionIds(records);
 		List<RegistryRecord> result = getHibernateTemplate().executeFind(new HibernateCallback() {
 			@Override
 			public Object doInHibernate(Session session) throws HibernateException, SQLException {
 				return session.getNamedQuery("RegistryRecord.listRecordsDetails")
-						.setParameterList("ids", ids)
+						.setParameterList("ids", transform(ids, new Number2LongTransformer()))
 						.list();
 			}
 		});

@@ -9,6 +9,7 @@ import org.flexpay.common.persistence.filter.RegistryRecordStatusFilter;
 import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.persistence.registry.RegistryRecord;
 import org.flexpay.common.service.RegistryRecordService;
+import org.flexpay.common.service.RegistryRecordStatusService;
 import org.flexpay.common.service.RegistryService;
 import org.flexpay.common.service.importexport.ClassToTypeRegistry;
 import org.flexpay.payments.persistence.ServiceType;
@@ -31,6 +32,7 @@ public class RegistryViewAction extends FPActionWithPagerSupport<RegistryRecord>
 	private RegistryService registryService;
 	private ServiceTypeService serviceTypeService;
 	private RegistryRecordService registryRecordService;
+	private RegistryRecordStatusService recordStatusService;
 	private ClassToTypeRegistry classToTypeRegistry;
 
 	@NotNull
@@ -43,6 +45,7 @@ public class RegistryViewAction extends FPActionWithPagerSupport<RegistryRecord>
 		StopWatch watch = new StopWatch();
 		watch.start();
 
+		recordStatusFilter.setRecordStatuses(recordStatusService.listAllStatuses());
 		getImportErrorTypeFilter().init(classToTypeRegistry);
 
 		watch.stop();
@@ -138,4 +141,8 @@ public class RegistryViewAction extends FPActionWithPagerSupport<RegistryRecord>
 		this.serviceTypeService = serviceTypeService;
 	}
 
+	@Required
+	public void setRecordStatusService(RegistryRecordStatusService recordStatusService) {
+		this.recordStatusService = recordStatusService;
+	}
 }

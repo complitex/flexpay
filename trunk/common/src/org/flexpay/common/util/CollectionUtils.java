@@ -2,6 +2,8 @@ package org.flexpay.common.util;
 
 import org.apache.commons.collections.ArrayStack;
 import org.apache.commons.lang.builder.EqualsBuilder;
+import org.flexpay.common.persistence.Pair;
+import org.flexpay.common.util.transform.Transformer;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
@@ -89,14 +91,6 @@ public class CollectionUtils {
 	}
 
 	@NotNull
-	public static <K, V> Map<K, V> map(K k1, V v1, K k2, V v2) {
-		Map<K, V> map = new HashMap<K, V>();
-		map.put(k1, v1);
-		map.put(k2, v2);
-		return map;
-	}
-
-	@NotNull
 	public static <K, V> Map<K, V> map(K k1, V v1, K k2, V v2, K k3, V v3) {
 		Map<K, V> map = new HashMap<K, V>();
 		map.put(k1, v1);
@@ -129,7 +123,7 @@ public class CollectionUtils {
 	}
 
 	/**
-	 * Create a instance of TreeMap
+	 * Create an instance of TreeMap
 	 *
 	 * @param <K> key type
 	 * @param <V> value type
@@ -148,6 +142,26 @@ public class CollectionUtils {
 			V v = n < values.length ? values[n] : null;
 			map.put(k, v);
 			++n;
+		}
+
+		return map;
+	}
+
+	@NotNull
+	public static <K, V> SortedMap<K, V> treeMap(@NotNull Pair<K, V>... pairs) {
+		SortedMap<K, V> map = treeMap();
+		for (Pair<K, V> pair : pairs) {
+			map.put(pair.getFirst(), pair.getSecond());
+		}
+
+		return map;
+	}
+
+	@NotNull
+	public static <K, V> Map<K, V> map(@NotNull Pair<K, V>... pairs) {
+		Map<K, V> map = map();
+		for (Pair<K, V> pair : pairs) {
+			map.put(pair.getFirst(), pair.getSecond());
 		}
 
 		return map;
@@ -229,4 +243,15 @@ public class CollectionUtils {
 
 		return stack;
 	}
+
+	public static <S, T> Collection<T> transform(Collection<S> ss, Transformer<S, T> transformer) {
+
+		Collection<T> result = list();
+		for (S s : ss) {
+			result.add(transformer.transform(s));
+		}
+
+		return result;
+	}
+
 }

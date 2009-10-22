@@ -212,13 +212,15 @@
 
 		<many-to-one name="registry" class="Registry"
 					 foreign-key="FK_common_registry_records_tbl_registry_id">
-			<column name="registry_id" not-null="true">
+			<column name="registry_id" not-null="true" index="I_registry_status,I_registry_errortype">
 				<comment>Registry reference</comment>
 			</column>
 		</many-to-one>
+
+		<!-- !!!!!!!! DO NOT CHANGE THE ORDER OF FIELDS WITH INDEX I_registry_status !!!!!!!!!!!! -->
 		<many-to-one name="recordStatus" class="RegistryRecordStatus"
 					 foreign-key="FK_common_registry_records_tbl_record_status_id">
-			<column name="record_status_id" not-null="false">
+			<column name="record_status_id" not-null="true" index="I_registry_status">
 				<comment>Record status reference</comment>
 			</column>
 		</many-to-one>
@@ -231,6 +233,14 @@
 		<one-to-one name="properties" cascade="all" constrained="true"
 					foreign-key="common_registry_records_tbl_properties_id"
 					class="RegistryRecordProperties" fetch="join" property-ref="record" />
+
+		<!-- !!!!!!!! DO NOT CHANGE THE ORDER OF FIELDS WITH INDEX I_registry_errortype !!!!!!!!!!!! -->
+		<property name="importErrorType">
+			<column name="import_error_type" not-null="false" index="I_registry_errortype">
+				<comment>Import error type from import error</comment>
+			</column>
+		</property>
+
 	</class>
 
 	<query name="Registry.listRegistries.count">

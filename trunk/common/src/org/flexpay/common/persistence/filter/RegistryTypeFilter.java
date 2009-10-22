@@ -1,11 +1,10 @@
 package org.flexpay.common.persistence.filter;
 
-import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
 import org.flexpay.common.persistence.registry.RegistryType;
 
 import java.util.List;
 
-public class RegistryTypeFilter extends PrimaryKeyFilter {
+public class RegistryTypeFilter extends PrimaryKeyFilter<RegistryType> {
 
 	private List<RegistryType> registryTypes;
 
