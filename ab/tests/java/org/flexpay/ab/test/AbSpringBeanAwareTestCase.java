@@ -11,7 +11,11 @@ import org.springframework.security.GrantedAuthority;
 import org.springframework.security.context.SecurityContextHolder;
 import org.springframework.security.providers.anonymous.AnonymousAuthenticationToken;
 import org.springframework.security.userdetails.User;
+import org.springframework.test.context.ContextConfiguration;
 
+@ContextConfiguration(locations = {
+		"beans.xml"
+})
 public class AbSpringBeanAwareTestCase extends SpringBeanAwareTestCase {
 
 	/**
@@ -48,7 +52,10 @@ public class AbSpringBeanAwareTestCase extends SpringBeanAwareTestCase {
 				PERSON_CHANGE,
 				COUNTRY_ADD,
 				COUNTRY_CHANGE,
-				PROCESS_READ
+				PROCESS_READ,
+                TOWN_TYPE_ADD,
+                TOWN_TYPE_DELETE,
+                TOWN_TYPE_CHANGE
 		);
 		User user = new User("test", "test", true, true, true, true, authorities);
 		UserPreferences preferences = new UserPreferences();
