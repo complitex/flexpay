@@ -607,7 +607,7 @@ where id=@user_ivanova;
 insert into config_payments_mbservices_tbl (mb_service_code, service_type_id, mb_service_name, version) values
 		('1', @service_t_electricity, 'Электроэнергия', 0),
 		('2', @service_kvartplata, 'Квартплата (эксплуатационные расходы)', 0),
-		('3', @service_t_water_cooling, 'Отопление', 0),
+		('3', @service_t_heating, 'Отопление', 0),
 		('4', @service_hot_water, 'Горячая вода', 0),
 		('5', @service_cold_water, 'Холодная вода', 0),
 		('6', @service_t_sewerage, 'Канализация', 0),
