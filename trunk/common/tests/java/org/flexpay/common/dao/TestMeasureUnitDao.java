@@ -25,6 +25,14 @@ public class TestMeasureUnitDao extends SpringBeanAwareTestCase {
 	}
 
 	@Test
+	public void testCallEmptyCollection() {
+
+		Long[] ids1 = {1L, 2L};
+		List<Long> ids2 = CollectionUtils.list();
+		measureUnitDao.listUnitsTest(1L, new Page(), ids2, 2L, ids1);
+	}
+
+	@Test
 	public void testCallArray() {
 
 		Long[] ids1 = {1L, 2L};
