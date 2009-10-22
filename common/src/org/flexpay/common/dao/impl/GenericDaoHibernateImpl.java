@@ -26,10 +26,7 @@ import org.springframework.orm.hibernate3.HibernateTemplate;
 
 import java.io.Serializable;
 import java.lang.reflect.Method;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Hibernate implementation of GenericDao A type safe implementation of CRUD and finder methods based on Hibernate and
@@ -44,6 +41,9 @@ public class GenericDaoHibernateImpl<T, PK extends Serializable>
 	 * prefix of a named query parameters followed by list number, like list_1, list_2
 	 */
 	public static final String PARAM_LIST_PREFIX = "list_";
+
+	private static final Object[] NULL_ARRAY = {null};
+	private static final List<?> NULL_LIST = Arrays.asList(NULL_ARRAY);
 
 	/**
 	 * Logger
@@ -211,12 +211,18 @@ public class GenericDaoHibernateImpl<T, PK extends Serializable>
 						}
 						// handle collection parameter
 						if (values[i] instanceof Collection) {
-							queryObject.setParameterList(PARAM_LIST_PREFIX + nNamedParam, (Collection<?>) values[i]);
+							Collection<?> value = (Collection<?>) values[i];
+							if (value.isEmpty()) {
+								log.warn("Empty collection parameter {} in query {}",
+										PARAM_LIST_PREFIX + nNamedParam, queryName);
+								value = NULL_LIST;
+							}
+							queryObject.setParameterList(PARAM_LIST_PREFIX + nNamedParam, value);
 							if (queryCount != null) {
-								queryObject.setParameterList(PARAM_LIST_PREFIX + nNamedParam, (Collection<?>) values[i]);
+								queryObject.setParameterList(PARAM_LIST_PREFIX + nNamedParam, value);
 							}
 							if (queryStats != null) {
-								queryStats.setParameterList(PARAM_LIST_PREFIX + nNamedParam, (Collection<?>) values[i]);
+								queryStats.setParameterList(PARAM_LIST_PREFIX + nNamedParam, value);
 							}
 							++fix;
 							++nNamedParam;
@@ -224,12 +230,18 @@ public class GenericDaoHibernateImpl<T, PK extends Serializable>
 						}
 						// handle array parameter
 						if (values[i] instanceof Object[]) {
-							queryObject.setParameterList(PARAM_LIST_PREFIX + nNamedParam, (Object[]) values[i]);
+							Object[] value = (Object[]) values[i];
+							if (value.length == 0) {
+								log.warn("Empty collection parameter {} in query {}",
+										PARAM_LIST_PREFIX + nNamedParam, queryName);
+								value = NULL_ARRAY;
+							}
+							queryObject.setParameterList(PARAM_LIST_PREFIX + nNamedParam, value);
 							if (queryCount != null) {
-								queryObject.setParameterList(PARAM_LIST_PREFIX + nNamedParam, (Object[]) values[i]);
+								queryObject.setParameterList(PARAM_LIST_PREFIX + nNamedParam, value);
 							}
 							if (queryStats != null) {
-								queryStats.setParameterList(PARAM_LIST_PREFIX + nNamedParam, (Object[]) values[i]);
+								queryStats.setParameterList(PARAM_LIST_PREFIX + nNamedParam, value);
 							}
 							++fix;
 							++nNamedParam;
