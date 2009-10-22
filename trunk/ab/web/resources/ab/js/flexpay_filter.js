@@ -46,8 +46,7 @@ function Filter(name, options) {
     }
 
     $("#" + options.rawId).append('<input id="' + options.valueId + '" type="hidden" name="' + name + 'Filter" value="' + options.defaultValue + '" />\n' +
-                                  '<input id="' + options.filterId + '" type="text" tabindex="1" class="form-search" value="' + options.defaultString + '"' +
-                                  'onchange="FF.onChange2(\'' + name + '\');" />');
+                                  '<input id="' + options.filterId + '" type="text" tabindex="1" class="form-search" value="' + options.defaultString + '" />');
 
     this.listeners = [];
     this.erasers = [];
@@ -92,7 +91,6 @@ function Filter(name, options) {
         var readonly = filter.readonly;
         var justText = filter.justText;
         var string = filter.string;
-
         if (readonly || justText) {
             string.attr("readonly", true);
             if (justText) {
@@ -116,9 +114,8 @@ function Filter(name, options) {
             alert("No match!");
             return;
         }
-
-        var sValue = !!li.extra ? li.extra[0] : li.selectValue;
-        $("#" + options.valueId).val(sValue);
+//        var sValue = !!li.extra ? li.extra : li.selectValue;
+        $("#" + options.valueId).val(li.extra);
         if (li.extra) {
             $("#" + options.filterId).val(li.selectValue);
         }
@@ -133,22 +130,30 @@ function Filter(name, options) {
         return row[0].substr(0, i) + "<strong>" + row[0].substr(i, value.length) + "</strong>" + row[0].substr(i + value.length);
     }
 
-    function selectItem(li) {
+    function selectItem(event, data, formatted) {
+        var li = {
+            extra:data[1],
+            selectValue:data[0]
+        };
         findValue(li);
     }
 
     function create(filter) {
-        filter.autocompleter = options.isArray || this.readonly ? null : filter.string.autocomplete(options.action,
+        if (!options.isArray && !filter.readonly) {
+            filter.string.autocomplete(options.action,
                 {
-                    delay:10,
+                    delay:30,
                     minChars:3,
-                    selectOnly:1,
-                    matchContains:1,
+                    matchContains: true,
                     cacheLength:10,
+                    scroll: true,
+                    scrollHeight: 200,
                     formatItem:formatItem,
-                    onItemSelect:selectItem,
                     extraParams:options.extraParams
-                })[0].autocompleter;
+                });
+            filter.string.result(selectItem);
+        }
+
     }
 
     function saveValues(name) {
@@ -162,8 +167,8 @@ function Filter(name, options) {
         return formatItem(row);
     };
 
-    this.selectItem = function(li) {
-        return selectItem(li);
+    this.selectItem = function(event, data, formatted) {
+        return selectItem(event, data, formatted);
     };
 
     this.addListener = function(listener) {
@@ -299,19 +304,6 @@ var FF = {
         this.onSelect(name);
     },
 
-    onChange2 : function(name) {
-
-        var filter = this.filters[name];
-        var value = filter.value;
-
-        if (filter.isString) {
-            value.val("");
-        } else if (filter.isNumber) {
-            value.val("0");
-        }
-//        this.onChange(name);
-    },
-
     eraseChildFilters : function(name) {
 
         var filters = this.getFiltersByParentName(name);
@@ -327,8 +319,8 @@ var FF = {
                 value.val("0");
             }
             filter.string.val("").attr("readonly", true);
-            if (filter.autocompleter != null) {
-                filter.autocompleter.flushCache();
+            if (filter.string.autocomplete != null) {
+                filter.string.flushCache();
             }
             this.eraseChildFilters(filter.name);
             filter.erase();
@@ -367,7 +359,7 @@ var FF = {
 
             var filter2 = filters[i];
             var string2 = filter2.string;
-            var readonly = filter2.readOnly;
+            var readonly = filter2.readonly;
             var parentsFilled = true;
             var filledParentsCount = 0;
 
@@ -395,8 +387,8 @@ var FF = {
                 }
             }
             if (!filter2.isArray) {
-                if (filter2.autocompleter != null) {
-                    filter2.autocompleter.setExtraParams({parents : this.getParentParams(filter2)});
+                if (filter2.string.autocomplete != null) {
+                    filter2.string.setOptions({extraParams: {parents : this.getParentParams(filter2)}});
                 }
             } else {
                 string2.addClass("ac_loading");
@@ -417,15 +409,17 @@ var FF = {
                 }
                 $.post(filter2.action, {parents : params},
                     function(data) {
-                        filter2.autocompleter = filter2.string.autocompleteArray(
-                                FF.parseAutocompleterData(data),
-                                {
-                                    delay:10,
-                                    selectOnly:1,
-                                    cacheLength:10,
-                                    formatItem:filter2.formatItem,
-                                    onItemSelect:filter2.selectItem
-                                })[0].autocompleter;
+                        filter2.string.autocomplete(FF.parseAutocompleterData(data),
+                            {
+                                delay:30,
+                                minChars:0,
+                                matchContains: true,
+                                cacheLength:10,
+                                scroll: true,
+                                scrollHeight: 200
+                            });
+                        filter2.string.result(filter2.selectItem);
+
                         if (parentsFilled) {
                             string2.focus();
                         }

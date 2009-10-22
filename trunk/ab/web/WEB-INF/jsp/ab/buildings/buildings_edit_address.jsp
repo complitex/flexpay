@@ -3,26 +3,32 @@
 <%@include file="/WEB-INF/jsp/common/includes/jquery_ui.jsp"%>
 <%@include file="/WEB-INF/jsp/ab/includes/flexpay_filter.jsp"%>
 
+<s:set name="readonly" value="%{address.id > 0}" />
+
 <script type="text/javascript">
 
     $("#formRegistration").ready(function() {
         FF.createFilter("country", {
             action: "<s:url action="countryFilterAjax" namespace="/dicts" includeParams="none" />",
+            <s:if test="#readonly">display:"input-readonly",</s:if>
             defaultValue: "<s:text name="%{countryFilter != null ? countryFilter : userPreferences.countryFilter}" />"
         });
         FF.createFilter("region", {
             action: "<s:url action="regionFilterAjax" namespace="/dicts" includeParams="none" />",
             parents: ["country"],
+            <s:if test="#readonly">display:"input-readonly",</s:if>
             defaultValue: "<s:text name="%{regionFilter != null ? regionFilter : userPreferences.regionFilter}" />"
         });
         FF.createFilter("town", {
             action: "<s:url action="townFilterAjax" namespace="/dicts" includeParams="none" />",
             parents: ["region"],
+            <s:if test="#readonly">display:"input-readonly",</s:if>
             defaultValue: "<s:text name="%{townFilter != null ? townFilter : userPreferences.townFilter}" />"
         });
         FF.createFilter("street", {
             action: "<s:url action="streetFilterAjax" namespace="/dicts" includeParams="none" />",
             parents: ["town"],
+            <s:if test="#readonly">display:"input-readonly",</s:if>
             defaultValue: "<s:text name="%{streetFilter != null ? streetFilter : userPreferences.streetFilter}" />"
         });        
     });
@@ -69,11 +75,3 @@
 	</table>
 
 </s:form>
-
-<s:if test="%{address.id != 0}">
-    <script type="text/javascript">
-        $(function() {
-            FF.updateFilter("street", {readonly:true});
-        });
-    </script>
-</s:if>

@@ -8,6 +8,7 @@
 	<table cellpadding="3" cellspacing="1" border="0" width="100%">
 		<tr>
 			<td colspan="2">
+                <s:set name="readonly" value="%{town.id > 0}" />
 				<%@include file="../filters/groups/country_region_ajax.jsp" %>
 			</td>
 		</tr>

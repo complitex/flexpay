@@ -2,11 +2,16 @@
 
 <%@include file="/WEB-INF/jsp/ab/includes/flexpay_filter.jsp" %>
 
+<s:if test="#readonly == null">
+    <s:set name="readonly" value="false" />
+</s:if>
+
 <script type="text/javascript">
 
     $(function() {
         FF.createFilter("country", {
             action: "<s:url action="countryFilterAjax" namespace="/dicts" includeParams="none"/>",
+            <s:if test="#readonly">display:"input-readonly",</s:if>
             defaultValue: "<s:text name="%{userPreferences.countryFilter}" />"
         });
     });

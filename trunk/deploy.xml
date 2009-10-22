@@ -6,7 +6,7 @@
 	<import file="ab_sync/ab_sync_build.xml" />
 	<import file="tc/tc_build.xml" />
 
-	<target name="sz.deploy.sjsas" depends="sz.war.production.glassfish_mysql5">
+	<target name="sz.deploy.sjsas" depends="sz.war">
 		<antcall target="sz.deploy.sjsas.nobuild" />
 	</target>
 
@@ -16,7 +16,7 @@
 		</antcall>
 	</target>
 
-	<target name="ab.deploy.sjsas" depends="ab.war.production.glassfish_mysql5">
+	<target name="ab.deploy.sjsas" depends="ab.war">
 		<antcall target="ab.deploy.sjsas.nobuild" />
 	</target>
 
@@ -26,7 +26,7 @@
 		</antcall>
 	</target>
 
-	<target name="ab_sync.deploy.sjsas" depends="ab_sync.war.production.glassfish_mysql5">
+	<target name="ab_sync.deploy.sjsas" depends="ab_sync.war">
 		<antcall target="ab_sync.deploy.sjsas.nobuild" />
 	</target>
 
@@ -36,7 +36,7 @@
 		</antcall>
 	</target>
 
-	<target name="tc.deploy.sjsas" depends="tc.war.production.glassfish_mysql5">
+	<target name="tc.deploy.sjsas" depends="tc.war">
 		<antcall target="tc.deploy.sjsas.nobuild" />
 	</target>
 
@@ -46,7 +46,7 @@
 		</antcall>
 	</target>
 
-	<target name="payments.deploy.sjsas" depends="payments.war.production.glassfish_mysql5">
+	<target name="payments.deploy.sjsas" depends="payments.war">
 		<antcall target="payments.deploy.sjsas.nobuild" />
 	</target>
 
@@ -56,7 +56,7 @@
 		</antcall>
 	</target>
 
-    <target name="rent.deploy.sjsas" depends="rent.war.production.glassfish_mysql5">
+    <target name="rent.deploy.sjsas" depends="rent.war">
         <antcall target="rent.deploy.sjsas.nobuild" />
     </target>
 
@@ -66,7 +66,7 @@
         </antcall>
     </target>
 
-	<target name="eirc.deploy.sjsas" depends="eirc.war.production.glassfish_mysql5">
+	<target name="eirc.deploy.sjsas" depends="eirc.war">
 		<antcall target="eirc.deploy.sjsas.nobuild" />
 	</target>
 
