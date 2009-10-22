@@ -777,10 +777,10 @@
         operation_date datetime not null,
         unique_operation_number bigint,
         amount decimal(19,2),
-        import_error_type integer comment 'Import error type from import error',
         registry_id bigint not null comment 'Registry reference',
         record_status_id bigint not null comment 'Record status reference',
         import_error_id bigint comment 'Import error reference',
+        import_error_type integer comment 'Import error type from import error',
         primary key (id)
     );
 
@@ -1452,7 +1452,9 @@
         foreign key (record_id) 
         references common_registry_records_tbl (id);
 
-    create index I_registry_status_errortype on common_registry_records_tbl (import_error_type, registry_id, record_status_id);
+    create index I_registry_errortype on common_registry_records_tbl (registry_id, import_error_type);
+
+    create index I_registry_status on common_registry_records_tbl (registry_id, record_status_id);
 
     alter table common_registry_records_tbl 
         add index FK_common_registry_records_tbl_registry_id (registry_id), 
