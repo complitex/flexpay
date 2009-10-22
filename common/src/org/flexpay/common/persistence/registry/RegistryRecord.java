@@ -7,14 +7,13 @@ import org.flexpay.common.persistence.ImportError;
 import org.flexpay.common.util.CollectionUtils;
 
 import java.math.BigDecimal;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
 public class RegistryRecord extends DomainObject {
 
 	private String serviceCode;
-    // лиц. счет поставщика услуг
+	// лиц. счет поставщика услуг
 	private String personalAccountExt;
 	private String city;
 	private String streetType;
@@ -36,6 +35,7 @@ public class RegistryRecord extends DomainObject {
 
 	private RegistryRecordProperties properties;
 	private ImportError importError;
+	private Integer importErrorType;
 
 	public Registry getRegistry() {
 		return registry;
@@ -185,6 +185,15 @@ public class RegistryRecord extends DomainObject {
 
 	public void setImportError(ImportError importError) {
 		this.importError = importError;
+		importErrorType = importError != null ? importError.getObjectType() : null;
+	}
+
+	public Integer getImportErrorType() {
+		return importErrorType;
+	}
+
+	public void setImportErrorType(Integer importErrorType) {
+		this.importErrorType = importErrorType;
 	}
 
 	public RegistryRecordProperties getProperties() {

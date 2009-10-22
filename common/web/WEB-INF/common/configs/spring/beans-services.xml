@@ -116,7 +116,8 @@
 		  class="org.flexpay.common.service.impl.RegistryFPFileTypeServiceImpl"
 		  p:fpFileRegistryTypeDao-ref="registryFPFileTypeDao" />
 
-	<bean id="registryRecordStatusService"
+	<bean id="registryRecordStatusServiceTarget"
+		  autowire-candidate="false"
 		  class="org.flexpay.common.service.impl.RegistryRecordStatusServiceImpl"
 		  p:spRegistryRecordStatusDao-ref="registryRecordStatusDao" />
 

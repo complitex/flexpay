@@ -57,6 +57,12 @@
 		   overflowToDisk="true"
 		   memoryStoreEvictionPolicy="LRU" />
 
+	<cache name="commonRegistryRecordStatusCache"
+		   maxElementsInMemory="10"
+		   eternal="true"
+		   overflowToDisk="true"
+		   memoryStoreEvictionPolicy="LRU" />
+
 	<cache name="commonMasterIndexCache"
 		   maxElementsInMemory="1"
 		   eternal="true"

@@ -3,26 +3,42 @@ package org.flexpay.common.service.impl;
 import org.flexpay.common.dao.registry.RegistryRecordStatusDao;
 import org.flexpay.common.persistence.registry.RegistryRecordStatus;
 import org.flexpay.common.service.RegistryRecordStatusService;
+import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
+@Transactional (readOnly = true)
 public class RegistryRecordStatusServiceImpl implements RegistryRecordStatusService {
 
+	private Logger log = LoggerFactory.getLogger(getClass());
 	private RegistryRecordStatusDao registryRecordStatusDao;
-	private Map<Integer, RegistryRecordStatus> code2StatusCache;
 
 	public RegistryRecordStatus findByCode(int code) {
-		if (code2StatusCache == null) {
-			List<RegistryRecordStatus> statuses = registryRecordStatusDao.findAll();
-			code2StatusCache = new HashMap<Integer, RegistryRecordStatus>();
-			for (RegistryRecordStatus status : statuses) {
-				code2StatusCache.put(status.getCode(), status);
+
+		log.debug("Finding status by code: {}", code);
+		List<RegistryRecordStatus> statuses = listAllStatuses();
+		for (RegistryRecordStatus status : statuses) {
+			if (status.getCode() == code) {
+				return status;
 			}
 		}
 
-		return code2StatusCache.get(code);
+		return null;
+	}
+
+	/**
+	 * Find all registry statuses
+	 *
+	 * @return list of statuses
+	 */
+	@NotNull
+	@Override
+	public List<RegistryRecordStatus> listAllStatuses() {
+		log.debug("Finding all statuses");
+		return registryRecordStatusDao.findAll();
 	}
 
 	public void setSpRegistryRecordStatusDao(RegistryRecordStatusDao registryRecordStatusDao) {

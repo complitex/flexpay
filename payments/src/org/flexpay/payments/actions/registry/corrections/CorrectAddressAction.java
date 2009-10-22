@@ -85,9 +85,7 @@ public class CorrectAddressAction extends FPActionWithPagerSupport<Apartment> im
 	public boolean getCanCreateApartment() {
 		ImportError error = record.getImportError();
 		return error != null &&
-			   (typeRegistry.getType(Apartment.class) == error.getObjectType() ||
-				typeRegistry.getType(Apartment.class) == error.getObjectType());
-
+			   typeRegistry.getType(Apartment.class) == error.getObjectType();
 	}
 
 	public boolean getCanCreateBuilding() {

@@ -104,6 +104,18 @@
 		<property name="target" ref="registryStatusServiceTarget" />
 	</bean>
 
+    <bean id="registryRecordStatusService"
+		  class="org.springmodules.cache.interceptor.proxy.CacheProxyFactoryBean">
+		<property name="cacheProviderFacade" ref="cacheProviderFacade" />
+		<property name="cachingModels">
+			<props>
+				<prop key="findByCode">cacheName=commonRegistryRecordStatusCache</prop>
+				<prop key="findAllStatuses">cacheName=commonRegistryRecordStatusCache</prop>
+			</props>
+		</property>
+		<property name="target" ref="registryRecordStatusServiceTarget" />
+	</bean>
+
     <bean id="registryFPFileTypeService"
 		  class="org.springmodules.cache.interceptor.proxy.CacheProxyFactoryBean">
 		<property name="cacheProviderFacade" ref="cacheProviderFacade" />
