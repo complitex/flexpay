@@ -67,7 +67,8 @@ public class RegistryServiceImpl implements RegistryService {
 
 	private void validate(Registry registry) throws FlexPayException {
 		FPModule module = registry.getModule();
-		if (module == null || module.isNew()) {
+		Long moduleId = module == null ? null : module.getId();
+		if (moduleId == null || moduleId <= 0L) {
 			throw new FlexPayException("No module", "error.common.registry.no_module");
 		}
 	}
