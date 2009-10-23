@@ -705,6 +705,15 @@
         primary key (id)
     ) comment='User details';
 
+    create table config_payments_mbservices_tbl (
+        id bigint not null auto_increment comment 'Primary key',
+        version integer not null comment 'Optimistic lock version',
+        mb_service_code varchar(255) not null unique comment 'MegaBank service code',
+        mb_service_name varchar(255) not null unique comment 'MegaBank service name',
+        service_type_id bigint not null unique comment 'Internal service type reference',
+        primary key (id)
+    ) comment='Mapping of MegaBank services to internal types';
+
     create table orgs_bank_accounts_tbl (
         id bigint not null auto_increment,
         version integer not null comment 'Optiomistic lock version',
@@ -1711,6 +1720,12 @@
         add constraint FK_common_registry_records_tbl_record_status_id 
         foreign key (record_status_id) 
         references common_registry_record_statuses_tbl (id);
+
+    alter table config_payments_mbservices_tbl 
+        add index FK_config_payments_mbservices_tbl_type_id (service_type_id), 
+        add constraint FK_config_payments_mbservices_tbl_type_id 
+        foreign key (service_type_id) 
+        references payments_service_types_tbl (id);
 
     alter table orgs_bank_accounts_tbl 
         add index FK_orgs_bank_accounts_tbl_organization_id (organization_id), 
