@@ -30,6 +30,8 @@ public class EndOperationDayRegistryGeneratorImpl implements EndOperationDayRegi
 
 	protected Logger log = LoggerFactory.getLogger(getClass());
 
+	private String moduleName;
+	private FPFileService fileService;
 	private OperationService operationService;
 	private RegistryRecordService registryRecordService;
 	private RegistryRecordStatusService registryRecordStatusService;
@@ -50,7 +52,7 @@ public class EndOperationDayRegistryGeneratorImpl implements EndOperationDayRegi
 		List<Operation> operations = operationService.listReceivedPaymentsForPaymentPoint(stub(paymentPoint), beginDate, endDate);
 
 		if (operations.isEmpty()) {
-			log.debug("Not found operations for payment point {}. Registry did not create.", paymentPoint.getId());
+			log.debug("Not found operations for payment point {}. Registry was not created.", paymentPoint.getId());
 			return null;
 		}
 
@@ -64,6 +66,7 @@ public class EndOperationDayRegistryGeneratorImpl implements EndOperationDayRegi
 		registry.setRegistryType(registryTypeService.findByCode(RegistryType.TYPE_BANK_PAYMENTS));
 		registry.setArchiveStatus(registryArchiveStatusService.findByCode(RegistryArchiveStatus.NONE));
 		registry.setRegistryStatus(registryStatusService.findByCode(RegistryStatus.CREATING));
+		registry.setModule(fileService.getModuleByName(moduleName));
 
 		RegistryProperties registryProperties = propertiesFactory.newRegistryProperties();
 		registryProperties.setRegistry(registry);
@@ -203,4 +206,13 @@ public class EndOperationDayRegistryGeneratorImpl implements EndOperationDayRegi
 		this.propertiesFactory = propertiesFactory;
 	}
 
+	@Required
+	public void setModuleName(String moduleName) {
+		this.moduleName = moduleName;
+	}
+
+	@Required
+	public void setFileService(FPFileService fileService) {
+		this.fileService = fileService;
+	}
 }

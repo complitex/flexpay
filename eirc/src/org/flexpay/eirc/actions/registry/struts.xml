@@ -6,7 +6,7 @@
 
 	<package name="eircRegistry" namespace="/eirc" extends="common">
 
-        <action name="registriesList" class="registriesListAction">
+        <action name="registriesList" class="registriesListActionEirc">
 			<result name="success" type="tiles">eirc.registry.list</result>
 		</action>
 

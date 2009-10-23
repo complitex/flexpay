@@ -6,6 +6,7 @@ import org.flexpay.common.dao.registry.RegistryContainerDao;
 import org.flexpay.common.dao.registry.RegistryDao;
 import org.flexpay.common.dao.registry.RegistryDaoExt;
 import org.flexpay.common.exception.FlexPayException;
+import org.flexpay.common.persistence.FPModule;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.persistence.registry.RegistryContainer;
@@ -32,13 +33,15 @@ public class RegistryServiceImpl implements RegistryService {
 	private RegistryRecordService registryRecordService;
 
 	/**
-	 * Create SpRegistry
+	 * Create Registry
 	 *
-	 * @param registry SpRegistry object
-	 * @return created SpRegistry object
+	 * @param registry Registry object
+	 * @return created Registry object
 	 */
 	@Transactional (readOnly = false)
 	public Registry create(Registry registry) throws FlexPayException {
+
+		validate(registry);
 
 		registryDao.create(registry);
 
@@ -60,6 +63,13 @@ public class RegistryServiceImpl implements RegistryService {
 	@Transactional (readOnly = false)
 	public List<Registry> findObjects(Page<Registry> pager, Long spFileId) {
 		return registryDao.findObjects(pager, spFileId);
+	}
+
+	private void validate(Registry registry) throws FlexPayException {
+		FPModule module = registry.getModule();
+		if (module == null || module.isNew()) {
+			throw new FlexPayException("No module", "error.common.registry.no_module");
+		}
 	}
 
 	/**
@@ -110,6 +120,8 @@ public class RegistryServiceImpl implements RegistryService {
 	 */
 	@Transactional (readOnly = false)
 	public Registry update(Registry registry) throws FlexPayException {
+
+		validate(registry);
 
 		registry.setErrorsNumber(registryRecordService.getErrorsNumber(registry));
 

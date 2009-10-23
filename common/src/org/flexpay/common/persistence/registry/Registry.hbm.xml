@@ -66,6 +66,12 @@
 				<comment>Import error reference</comment>
 			</column>
 		</many-to-one>
+		<many-to-one name="module" foreign-key="FK_common_registries_tbl_module_id"
+					 class="org.flexpay.common.persistence.FPModule">
+			<column name="module_id" not-null="true">
+				<comment>Module reference</comment>
+			</column>
+		</many-to-one>
 	</class>
 
 	<class name="RegistryContainer" table="common_registry_containers_tbl">

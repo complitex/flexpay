@@ -17,8 +17,8 @@ INSERT INTO eirc_eirc_accounts_tbl (id, version, status, apartment_id, person_id
 SELECT @account_id_2:=2;
 
 -- Init registry
-INSERT INTO common_registries_tbl (id, version, registry_type_id, registry_status_id, archive_status_id)
-	values (1, 0, @registry_type_info, @registry_status_loaded, @sp_registry_archive_status_none);
+INSERT INTO common_registries_tbl (id, version, registry_type_id, registry_status_id, archive_status_id, module_id)
+	values (1, 0, @registry_type_info, @registry_status_loaded, @sp_registry_archive_status_none, @module_eirc);
 select @eirc_registry:=1;
 insert into common_registry_properties_tbl (version, props_type, registry_id) values (0, 'common', @eirc_registry);
 

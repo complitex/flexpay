@@ -3,16 +3,21 @@ package org.flexpay.payments.actions.registry;
 import org.apache.commons.lang.time.DateUtils;
 import org.apache.commons.lang.time.StopWatch;
 import org.flexpay.common.actions.FPActionWithPagerSupport;
+import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.persistence.file.FPFile;
-import org.flexpay.common.persistence.filter.RegistryTypeFilter;
+import org.flexpay.common.persistence.filter.*;
 import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.persistence.registry.RegistryFPFileType;
 import org.flexpay.common.persistence.registry.RegistryProperties;
+import org.flexpay.common.service.FPFileService;
 import org.flexpay.common.service.RegistryFPFileTypeService;
 import org.flexpay.common.service.RegistryTypeService;
+import static org.flexpay.common.util.CollectionUtils.list;
 import org.flexpay.common.util.DateUtil;
 import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.orgs.persistence.filters.OrganizationFilter;
+import org.flexpay.orgs.persistence.filters.RecipientOrganizationFilter;
+import org.flexpay.orgs.persistence.filters.SenderOrganizationFilter;
 import org.flexpay.orgs.service.OrganizationService;
 import org.flexpay.payments.persistence.EircRegistryProperties;
 import org.flexpay.payments.service.EircRegistryService;
@@ -25,8 +30,8 @@ import java.util.Map;
 
 public class RegistriesListAction extends FPActionWithPagerSupport {
 
-	private OrganizationFilter senderOrganizationFilter = new OrganizationFilter();
-	private OrganizationFilter recipientOrganizationFilter = new OrganizationFilter();
+	private OrganizationFilter senderOrganizationFilter = new SenderOrganizationFilter();
+	private OrganizationFilter recipientOrganizationFilter = new RecipientOrganizationFilter();
 	private RegistryTypeFilter registryTypeFilter = new RegistryTypeFilter();
 	private Date fromDate = DateUtils.addDays(DateUtil.now(), -2);
 	private Date tillDate = new Date();
@@ -37,6 +42,9 @@ public class RegistriesListAction extends FPActionWithPagerSupport {
 	private EircRegistryService eircRegistryService;
 	private RegistryTypeService registryTypeService;
 	private RegistryFPFileTypeService registryFPFileTypeService;
+
+	private String moduleName;
+	private FPFileService fileService;
 
 	@NotNull
 	public String doExecute() throws Exception {
@@ -60,8 +68,16 @@ public class RegistriesListAction extends FPActionWithPagerSupport {
 		fromDate = DateUtil.truncateDay(fromDate);
 		tillDate = DateUtil.getEndOfThisDay(tillDate);
 
-		registries = eircRegistryService.findObjects(senderOrganizationFilter, recipientOrganizationFilter,
-				registryTypeFilter, fromDate, tillDate, getPager());
+		List<ObjectFilter> filters = list(
+				senderOrganizationFilter,
+				recipientOrganizationFilter,
+				registryTypeFilter,
+				new FPModuleFilter(stub(fileService.getModuleByName(moduleName))),
+				new BeginDateFilter(fromDate),
+				new EndDateFilter(tillDate)
+		);
+
+		registries = eircRegistryService.findObjects(filters, getPager());
 		watch.stop();
 		log.debug("Time spent listing registries: {}", watch);
 		log.debug("Total registries found: {}", registries.size());
@@ -174,5 +190,15 @@ public class RegistriesListAction extends FPActionWithPagerSupport {
 	@Required
 	public void setRegistryFPFileTypeService(RegistryFPFileTypeService registryFPFileTypeService) {
 		this.registryFPFileTypeService = registryFPFileTypeService;
+	}
+
+	@Required
+	public void setModuleName(String moduleName) {
+		this.moduleName = moduleName;
+	}
+
+	@Required
+	public void setFileService(FPFileService fileService) {
+		this.fileService = fileService;
 	}
 }

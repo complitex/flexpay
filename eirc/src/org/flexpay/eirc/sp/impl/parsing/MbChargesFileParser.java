@@ -9,6 +9,7 @@ import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.persistence.registry.*;
 import org.flexpay.common.process.ProcessLogger;
+import org.flexpay.common.service.FPFileService;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.DateUtil;
 import org.flexpay.common.service.RegistryFPFileTypeService;
@@ -42,6 +43,8 @@ public class MbChargesFileParser extends MbFileParser {
 	public static final String OPERATION_DATE_FORMAT = "MMyy";
 	public static final String INCOME_PERIOD_DATE_FORMAT = "MMyy";
 
+	private String moduleName;
+	private FPFileService fileService;
     private RegistryFPFileTypeService registryFPFileTypeService;
 
 	@Transactional (propagation = Propagation.NOT_SUPPORTED, readOnly = false)
@@ -60,6 +63,7 @@ public class MbChargesFileParser extends MbFileParser {
 			registry.setRegistryType(registryTypeService.findByCode(RegistryType.TYPE_QUITTANCE));
 			registry.setArchiveStatus(registryArchiveStatusService.findByCode(RegistryArchiveStatus.NONE));
 			registry.setRegistryStatus(registryStatusService.findByCode(RegistryStatus.LOADING));
+			registry.setModule(fileService.getModuleByName(moduleName));
 
 			Logger plog = ProcessLogger.getLogger(getClass());
 			StopWatch watch = new StopWatch();
@@ -285,4 +289,14 @@ public class MbChargesFileParser extends MbFileParser {
     public void setRegistryFPFileTypeService(RegistryFPFileTypeService registryFPFileTypeService) {
         this.registryFPFileTypeService = registryFPFileTypeService;
     }
+
+	@Required
+	public void setModuleName(String moduleName) {
+		this.moduleName = moduleName;
+	}
+
+	@Required
+	public void setFileService(FPFileService fileService) {
+		this.fileService = fileService;
+	}
 }

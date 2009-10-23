@@ -235,6 +235,7 @@
         registry_status_id bigint not null comment 'Registry status reference',
         archive_status_id bigint not null comment 'Registry archive status reference',
         import_error_id bigint comment 'Import error reference',
+        module_id bigint not null comment 'Module reference',
         primary key (id)
     );
 
@@ -486,6 +487,12 @@
         add constraint FK_common_registries_tbl_archive_status_id 
         foreign key (archive_status_id) 
         references common_registry_archive_statuses_tbl (id);
+
+    alter table common_registries_tbl 
+        add index FK_common_registries_tbl_module_id (module_id), 
+        add constraint FK_common_registries_tbl_module_id 
+        foreign key (module_id) 
+        references common_flexpay_modules_tbl (id);
 
     alter table common_registries_tbl 
         add index FK_common_registries_tbl_status_id (registry_status_id), 

@@ -56,6 +56,7 @@ public class RegistryFileParser implements FileParser {
 
 	private static final int MAX_CONTAINER_SIZE = 2048;
 
+	private String moduleName;
 	private EircRegistryService eircRegistryService;
 	private RegistryService registryService;
 	private RegistryRecordService registryRecordService;
@@ -75,7 +76,7 @@ public class RegistryFileParser implements FileParser {
 	private ClassToTypeRegistry typeRegistry;
 
 	private PropertiesFactory propertiesFactory;
-
+	private FPFileService fileService;
     private RegistryFPFileTypeService registryFPFileTypeService;
 
     @SuppressWarnings ({"ConstantConditions"})
@@ -187,6 +188,7 @@ public class RegistryFileParser implements FileParser {
 		DateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
 
 		Registry newRegistry = new Registry();
+		newRegistry.setModule(fileService.getModuleByName(moduleName));
 		newRegistry.setArchiveStatus(registryArchiveStatusService.findByCode(RegistryArchiveStatus.NONE));
 		registryWorkflowManager.setInitialStatus(newRegistry);
 		newRegistry.getFiles().put(registryFPFileTypeService.findByCode(RegistryFPFileType.MB_FORMAT), spFile);
@@ -582,4 +584,13 @@ public class RegistryFileParser implements FileParser {
         this.registryFPFileTypeService = registryFPFileTypeService;
     }
 
+	@Required
+	public void setModuleName(String moduleName) {
+		this.moduleName = moduleName;
+	}
+
+	@Required
+	public void setFileService(FPFileService fileService) {
+		this.fileService = fileService;
+	}
 }

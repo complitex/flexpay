@@ -8,6 +8,7 @@ import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.persistence.registry.*;
 import org.flexpay.common.process.ProcessLogger;
+import org.flexpay.common.service.FPFileService;
 import org.flexpay.common.service.RegistryFPFileTypeService;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.eirc.persistence.Consumer;
@@ -40,6 +41,8 @@ public class MbCorrectionsFileParser extends MbFileParser {
 
 	private final String MODIFICATIONS_START_DATE_FORMAT = "ddMMyy";
 
+	private String moduleName;
+	private FPFileService fileService;
 	private RegistryFPFileTypeService registryFPFileTypeService;
 
 	@Transactional (propagation = Propagation.NOT_SUPPORTED, readOnly = false)
@@ -120,11 +123,12 @@ public class MbCorrectionsFileParser extends MbFileParser {
 		records.clear();
 	}
 
-	private void initRegistry(FPFile spFile, Registry registry) {
+	private void initRegistry(FPFile spFile, Registry registry) throws FlexPayException {
 		registry.setCreationDate(new Date());
 		registry.getFiles().put(registryFPFileTypeService.findByCode(RegistryFPFileType.MB_FORMAT), spFile);
 		registry.setArchiveStatus(registryArchiveStatusService.findByCode(RegistryArchiveStatus.NONE));
 		registry.setRegistryStatus(registryStatusService.findByCode(RegistryStatus.LOADING));
+		registry.setModule(fileService.getModuleByName(moduleName));
 	}
 
 	private void parseHeader(String line, List<Registry> registries) throws FlexPayException {
@@ -358,5 +362,15 @@ public class MbCorrectionsFileParser extends MbFileParser {
 	@Required
 	public void setRegistryFPFileTypeService(RegistryFPFileTypeService registryFPFileTypeService) {
 		this.registryFPFileTypeService = registryFPFileTypeService;
+	}
+
+	@Required
+	public void setModuleName(String moduleName) {
+		this.moduleName = moduleName;
+	}
+
+	@Required
+	public void setFileService(FPFileService fileService) {
+		this.fileService = fileService;
 	}
 }
