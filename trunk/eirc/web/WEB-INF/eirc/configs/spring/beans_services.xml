@@ -16,6 +16,8 @@
 
 	<bean id="registryFileParser"
 		  class="org.flexpay.eirc.sp.impl.RegistryFileParser"
+		  p:moduleName="${flexpay.module.name.eirc}"
+		  p:fileService-ref="fpFileService"
 		  p:registryService-ref="registryService"
 		  p:consumerService-ref="consumerService"
 		  p:eircRegistryService-ref="eircRegistryService"
@@ -56,12 +58,16 @@
 	<bean id="mbChargesFileParser"
 		  parent="mbFileParser"
 		  class="org.flexpay.eirc.sp.impl.parsing.MbChargesFileParser"
+		  p:moduleName="${flexpay.module.name.eirc}"
+		  p:fileService-ref="fpFileService"
 		  p:fileValidationSchema-ref="mbChargesFileValidationSchema"
 		  p:registryFPFileTypeService-ref="registryFPFileTypeService" />
 
 	<bean id="mbCorrectionsFileParser"
 		  parent="mbFileParser"
 		  class="org.flexpay.eirc.sp.impl.parsing.MbCorrectionsFileParser"
+		  p:moduleName="${flexpay.module.name.eirc}"
+		  p:fileService-ref="fpFileService"
 		  p:fileValidationSchema-ref="mbCorrectionsFileValidationSchema"
 		  p:registryFPFileTypeService-ref="registryFPFileTypeService" />
 

@@ -34,6 +34,8 @@ public class PaymentsRegistryDBGeneratorImpl implements PaymentsRegistryDBGenera
 	private final Logger log = LoggerFactory.getLogger(getClass());
 
 	// required services
+	private String moduleName;
+	private FPFileService fileService;
 	private RegistryService registryService;
 	private RegistryRecordService registryRecordService;
 	private RegistryTypeService registryTypeService;
@@ -137,6 +139,7 @@ public class PaymentsRegistryDBGeneratorImpl implements PaymentsRegistryDBGenera
 		registry.setRegistryType(registryTypeService.findByCode(RegistryType.TYPE_CASH_PAYMENTS));
 		registry.setArchiveStatus(registryArchiveStatusService.findByCode(RegistryArchiveStatus.NONE));
 		registry.setRegistryStatus(registryStatusService.findByCode(RegistryStatus.CREATING));
+		registry.setModule(fileService.getModuleByName(moduleName));
 		registry.setFromDate(dateRange.getStart());
 		registry.setTillDate(dateRange.getEnd());
 
@@ -323,5 +326,15 @@ public class PaymentsRegistryDBGeneratorImpl implements PaymentsRegistryDBGenera
 	@Required
 	public void setRegistryContainerBuilder(RegistryContainerBuilder registryContainerBuilder) {
 		this.registryContainerBuilder = registryContainerBuilder;
+	}
+
+	@Required
+	public void setModuleName(String moduleName) {
+		this.moduleName = moduleName;
+	}
+
+	@Required
+	public void setFileService(FPFileService fileService) {
+		this.fileService = fileService;
 	}
 }

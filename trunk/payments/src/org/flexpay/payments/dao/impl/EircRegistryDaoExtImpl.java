@@ -1,10 +1,13 @@
 package org.flexpay.payments.dao.impl;
 
+import org.flexpay.common.dao.FilterHandler;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.persistence.DomainObject;
+import org.flexpay.common.persistence.filter.ObjectFilter;
 import org.flexpay.common.persistence.filter.RegistryTypeFilter;
 import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.util.CollectionUtils;
+import static org.flexpay.common.util.CollectionUtils.list;
 import org.flexpay.orgs.persistence.filters.OrganizationFilter;
 import org.flexpay.payments.dao.EircRegistryDaoExt;
 import org.hibernate.HibernateException;
@@ -22,23 +25,19 @@ public class EircRegistryDaoExtImpl extends HibernateDaoSupport implements EircR
 
 	private Logger log = LoggerFactory.getLogger(getClass());
 
+	private List<FilterHandler> filterHandlers = FilterHandlers.registryFilterHandlers();
+
 	/**
 	 * Find registries
 	 *
-	 * @param senderFilter	sender organization filter
-	 * @param recipientFilter recipient organization filter
-	 * @param typeFilter	  registry type filter
-	 * @param fromDate		registry generation start date
-	 * @param tillDate		registry generation end date
-	 * @param pager		   Page
+	 * @param filters ObjectFilters
+	 * @param pager   Page
 	 * @return list of registries matching specified criteria
 	 */
-	@SuppressWarnings ({"unchecked"})
-	public List<Registry> findRegistries(
-			OrganizationFilter senderFilter, OrganizationFilter recipientFilter,
-			RegistryTypeFilter typeFilter, Date fromDate, Date tillDate, final Page<?> pager) {
+	@Override
+	public List<Registry> findRegistries(Collection<ObjectFilter> filters, final Page<?> pager) {
 
-		final List<Object> params = new ArrayList();
+		final List<Object> params = list();
 		final StringBuilder hql = new StringBuilder("select distinct r from Registry r ")
 				.append("left join fetch r.properties rps ")
 				.append("left join fetch r.registryType rt ")
@@ -48,7 +47,7 @@ public class EircRegistryDaoExtImpl extends HibernateDaoSupport implements EircR
 				.append("left join rp.sender sender ")
 				.append("left join rp.recipient recipient ")
 				.append("where rps.id=rp.id ");
-		final StringBuilder hqlCount = new StringBuilder("select count(r) from Registry r ")
+		final StringBuilder hqlCount = new StringBuilder("select count(r.id) from Registry r ")
 				.append("left join r.properties rps ")
 				.append("left join r.registryType rt ")
 				.append("left join r.registryStatus rs, ")
@@ -57,39 +56,25 @@ public class EircRegistryDaoExtImpl extends HibernateDaoSupport implements EircR
 				.append("left join rp.recipient recipient ")
 				.append("where rps.id=rp.id ");
 
-		if (senderFilter.needFilter()) {
-			hql.append("and sender.id=? ");
-			hqlCount.append("and sender.id=? ");
-			params.add(senderFilter.getSelectedId());
+		for (ObjectFilter filter : filters) {
+			if (!filter.needFilter()) {
+				continue;
+			}
+			hql.append(" and ");
+			hqlCount.append(" and ");
+			for (FilterHandler handler : filterHandlers) {
+				if (handler.supports(filter)) {
+					List<?> parameters = handler.whereClause(filter, hqlCount);
+					handler.whereClause(filter, hql);
+					params.addAll(parameters);
+				}
+			}
 		}
-		if (recipientFilter.needFilter()) {
-			hql.append("and recipient.id=? ");
-			hqlCount.append("and recipient.id=? ");
-			params.add(recipientFilter.getSelectedId());
-		}
-		if (typeFilter.needFilter()) {
-			hql.append("and rt.id=? ");
-			hqlCount.append("and rt.id=? ");
-			params.add(typeFilter.getSelectedId());
-		}
-		if (fromDate != null) {
-			hql.append("and r.creationDate >= ? ");
-			hqlCount.append("and r.creationDate >= ? ");
-			params.add(fromDate);
-		}
-		if (tillDate != null) {
-			hql.append("and r.creationDate <= ? ");
-			hqlCount.append("and r.creationDate <= ? ");
-			params.add(tillDate);
-		}
-
-		// retrieve total count of elements
-		Number count = (Number) getHibernateTemplate().find(hqlCount.toString(), params.toArray()).get(0);
-		pager.setTotalElements(count.intValue());
 
 		log.debug("Registries list queries: \n{}\n{}", hql, hqlCount);
 
 		// retrieve elements
+		@SuppressWarnings ({"unchecked"})
 		List<Registry> result = getHibernateTemplate().executeFind(new HibernateCallback() {
 			public Object doInHibernate(Session session) throws HibernateException {
 				Query qCount = session.createQuery(hqlCount.toString());
@@ -110,6 +95,25 @@ public class EircRegistryDaoExtImpl extends HibernateDaoSupport implements EircR
 		setRegistryFiles(result);
 
 		return result;
+	}
+
+	/**
+	 * Find registries
+	 *
+	 * @param senderFilter	sender organization filter
+	 * @param recipientFilter recipient organization filter
+	 * @param typeFilter	  registry type filter
+	 * @param fromDate		registry generation start date
+	 * @param tillDate		registry generation end date
+	 * @param pager		   Page
+	 * @return list of registries matching specified criteria
+	 */
+	@SuppressWarnings ({"unchecked"})
+	public List<Registry> findRegistries(
+			OrganizationFilter senderFilter, OrganizationFilter recipientFilter,
+			RegistryTypeFilter typeFilter, Date fromDate, Date tillDate, final Page<?> pager) {
+
+		return null;
 	}
 
 	private void setRegistryFiles(List<Registry> registries) {

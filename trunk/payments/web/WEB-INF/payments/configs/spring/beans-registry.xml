@@ -9,6 +9,8 @@
 
 	<bean id="paymentsRegistryDBGenerator"
 		  class="org.flexpay.payments.service.registry.impl.PaymentsRegistryDBGeneratorImpl"
+		  p:moduleName="${flexpay.module.name.payments}"
+		  p:fileService-ref="fpFileService"
 		  p:documentService-ref="documentService"
 		  p:registryArchiveStatusService-ref="registryArchiveStatusService"
 		  p:registryRecordService-ref="registryRecordService"

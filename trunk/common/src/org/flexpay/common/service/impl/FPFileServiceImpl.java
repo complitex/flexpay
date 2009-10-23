@@ -177,8 +177,11 @@ public class FPFileServiceImpl implements FPFileService {
 	 */
 	@Override
 	public FPModule getModuleByName(String name) {
-		List<FPModule> l = fpModuleDao.listModulesByName(name);
-		return l.isEmpty() ? null : l.get(0);
+		List<FPModule> modules = fpModuleDao.listModulesByName(name);
+		if (modules.isEmpty()) {
+			throw new IllegalArgumentException("Unknown module: " + name);
+		}
+		return modules.get(0);
 	}
 
 	/**

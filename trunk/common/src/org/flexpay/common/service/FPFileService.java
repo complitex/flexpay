@@ -105,8 +105,9 @@ public interface FPFileService {
 	 *
 	 * @param name name of module
 	 * @return FPModule
+	 * @throws IllegalArgumentException if no module could be found
 	 */
-	FPModule getModuleByName(String name);
+	FPModule getModuleByName(String name) throws IllegalArgumentException;
 
 	/**
 	 * Get FPFileType by name and module name.

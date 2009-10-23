@@ -18,10 +18,9 @@ public class FPModule extends DomainObject {
     @Override
     public String toString() {
         return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
-                append("FPModule {").
                 append("id", getId()).
                 append("name", name).
-                append("}").toString();
+                toString();
     }
 
 }

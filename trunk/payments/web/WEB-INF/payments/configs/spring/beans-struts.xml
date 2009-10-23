@@ -238,6 +238,8 @@
           p:organizationService-ref="organizationService"
           p:registryTypeService-ref="registryTypeService"
           p:registryFPFileTypeService-ref="registryFPFileTypeService"
+		  p:moduleName="${flexpay.module.name.payments}"
+		  p:fileService-ref="fpFileService"
           scope="prototype" />
 
     <bean id="registriesProcessAction"

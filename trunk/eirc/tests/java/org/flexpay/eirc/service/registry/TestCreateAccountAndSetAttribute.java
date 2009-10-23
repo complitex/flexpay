@@ -52,6 +52,8 @@ public class TestCreateAccountAndSetAttribute extends EircSpringBeanAwareTestCas
 	private SPService spService;
 	@Autowired
 	private ApartmentService apartmentService;
+	@Autowired
+	private FPFileService fileService;
 
 	@Test
 	public void testProcessing() throws Exception {
@@ -105,6 +107,7 @@ public class TestCreateAccountAndSetAttribute extends EircSpringBeanAwareTestCas
 
 	private Registry createRegistry() throws ParseException, FlexPayException {
 		Registry registry = new Registry();
+		registry.setModule(fileService.getModuleByName("eirc"));
 		registry.setRegistryNumber(10L);
 		registry.setRecordsNumber(1L);
 		registry.setCreationDate(DateUtil.parseDate("2009/07/29"));

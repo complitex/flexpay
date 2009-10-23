@@ -3,6 +3,7 @@ package org.flexpay.common.persistence.registry;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.flexpay.common.persistence.DomainObject;
+import org.flexpay.common.persistence.FPModule;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.ImportError;
 import org.flexpay.common.persistence.file.FPFile;
@@ -29,6 +30,8 @@ public class Registry extends DomainObject {
 	private RegistryStatus registryStatus;
 	private RegistryArchiveStatus archiveStatus;
 	private RegistryProperties properties;
+
+	private FPModule module;
 
 	private List<RegistryContainer> containers = CollectionUtils.list();
     private Map<RegistryFPFileType, FPFile> files = CollectionUtils.map();
@@ -175,6 +178,14 @@ public class Registry extends DomainObject {
 
 	public boolean errorsNumberNotInit() {
 		return errorsNumber <= 0;
+	}
+
+	public FPModule getModule() {
+		return module;
+	}
+
+	public void setModule(FPModule module) {
+		this.module = module;
 	}
 
 	@Override
