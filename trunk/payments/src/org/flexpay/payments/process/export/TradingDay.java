@@ -177,8 +177,10 @@ public class TradingDay extends QuartzJobBean {
                 parameters.put(ExportJobParameterNames.ORGANIZATION_ID, paymentPointCollector.getOrganization().getId());
                 log.debug("Set organizationId {}", paymentPointCollector.getOrganization().getId());
 
+                Long processInstanceId = null;
                 try {
-                    pp.setTradingDayProcessInstanceId(processManager.createProcess(PROCESS_DEFINITION_NAME, parameters));
+                    processInstanceId = processManager.createProcess(PROCESS_DEFINITION_NAME, parameters);
+                    pp.setTradingDayProcessInstanceId(processInstanceId);
                     paymentPointService.update(pp);
                 } catch (ProcessInstanceException e) {
                     log.error("Failed run process trading day", e);
@@ -186,11 +188,21 @@ public class TradingDay extends QuartzJobBean {
                 } catch (ProcessDefinitionException e) {
                     log.error("Process trading day not started", e);
                     throw new JobExecutionException(e);
-                } catch (FlexPayExceptionContainer flexPayExceptionContainer) {
-                    log.error("Payment point did not save", flexPayExceptionContainer);
-                    // TODO Kill the process!!!
+                } catch (Throwable th) {
+                    log.error("Payment point did not save", th);
+                    if (processInstanceId != null) {
+                        deleteProcess(processInstanceId);
+                        log.debug("Delete processId={}", processInstanceId);
+                    }
                 }
             }
+        }
+    }
+
+    private void deleteProcess(long processInstanceId) {
+        Process process = processManager.getProcessInstanceInfo(processInstanceId);
+        if (process != null) {
+            processManager.deleteProcessInstance(process);
         }
     }
 
