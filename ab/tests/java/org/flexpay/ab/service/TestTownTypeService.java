@@ -16,6 +16,7 @@ import org.flexpay.common.util.CollectionUtils;
 import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -23,11 +24,11 @@ import java.util.Locale;
 
 public class TestTownTypeService extends AbSpringBeanAwareTestCase {
     @Autowired
-    @Resource(name="townTypeService")
+    @Qualifier ("townTypeService")
 	private TownTypeService townTypeService;
 
     @Autowired
-    @Resource(name="abTestTownTypeUtil")
+    @Qualifier ("abTestTownTypeUtil")
 	private AbTestTownTypeUtil townTypeUtil;
 
     @Test (expected = FlexPayExceptionContainer.class)

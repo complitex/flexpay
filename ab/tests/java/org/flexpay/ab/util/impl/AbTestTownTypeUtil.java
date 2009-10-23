@@ -13,6 +13,7 @@ import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 
 import javax.annotation.Resource;
 import java.util.Set;
@@ -21,11 +22,11 @@ public class AbTestTownTypeUtil implements TestTownTypeUtil {
     private Logger log = LoggerFactory.getLogger(getClass());
 
     @Autowired
-    @Resource(name="townTypeService")
+    @Qualifier ("townTypeService")
 	private TownTypeService townTypeService;
 
     @Autowired
-    @Resource(name="languageService")
+    @Qualifier ("languageService")
 	private LanguageService languageService;
 
     @Nullable
