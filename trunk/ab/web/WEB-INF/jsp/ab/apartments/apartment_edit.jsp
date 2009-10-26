@@ -24,13 +24,3 @@
 		</tr>
 	</table>
 </s:form>
-
-<%--
-<s:if test="%{apartment.id != 0}">
-    <script type="text/javascript">
-        $(function() {
-            FF.updateFilter("building", {readonly:true});
-        });
-    </script>
-</s:if>
---%>
