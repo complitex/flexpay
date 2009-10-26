@@ -101,6 +101,9 @@ public class RegistryRecordDaoExtImpl extends HibernateDaoSupport implements Reg
 				StopWatch watch = new StopWatch();
 				watch.start();
 				Number count = (Number) setParameters(session.createSQLQuery(sqlCount.toString()), params).uniqueResult();
+				if (count == null) {
+					count = 0;
+				}
 				watch.stop();
 				log.debug("Time spent for count query: {}", watch);
 				watch.reset();
