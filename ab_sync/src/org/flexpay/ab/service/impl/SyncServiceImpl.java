@@ -3,6 +3,7 @@ package org.flexpay.ab.service.impl;
 import org.flexpay.ab.dao.HistoryDao;
 import org.flexpay.ab.persistence.HistoryRec;
 import org.flexpay.ab.persistence.ObjectType;
+import org.flexpay.ab.service.SyncSecurity;
 import org.flexpay.ab.service.SyncService;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.locking.LockManager;
@@ -52,6 +53,8 @@ public class SyncServiceImpl implements SyncService {
 			log.debug("Another process has already requested a lock and is working");
 			return;
 		}
+
+		SyncSecurity.authenticateSyncer();
 
 		long timeStart = System.currentTimeMillis();
 
