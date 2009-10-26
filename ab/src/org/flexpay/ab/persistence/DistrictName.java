@@ -28,18 +28,10 @@ public class DistrictName extends TemporaryName<DistrictName, DistrictNameTransl
 	 * {@inheritDoc}
 	 */
 	@Override
-	public String toString() {
-		return super.toString();
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
 			return true;
-		} else if (!(obj instanceof RegionName)) {
+		} else if (!(obj instanceof DistrictName)) {
 			return false;
 		}
 

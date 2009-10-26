@@ -1,6 +1,5 @@
 package org.flexpay.ab.service.impl;
 
-import org.flexpay.ab.dao.StreetTypeDao;
 import org.flexpay.ab.persistence.HistoryRec;
 import org.flexpay.ab.persistence.StreetType;
 import org.flexpay.ab.persistence.StreetTypeTranslation;
@@ -15,6 +14,7 @@ import org.flexpay.common.service.importexport.CorrectionsService;
 import org.flexpay.common.util.TranslationUtil;
 import static org.flexpay.common.util.config.ApplicationConfig.getDefaultLanguage;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Required;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -24,7 +24,6 @@ import java.util.Set;
  */
 public class StreetTypeProcessor extends AbstractProcessor<StreetType> {
 
-	private StreetTypeDao streetTypeDao;
 	private StreetTypeService streetTypeService;
 
 	public StreetTypeProcessor() {
@@ -49,7 +48,7 @@ public class StreetTypeProcessor extends AbstractProcessor<StreetType> {
 	 * @return DomainObject instance
 	 */
 	protected StreetType readObject(@NotNull Stub<StreetType> stub) {
-		return streetTypeDao.readFull(stub.getId());
+		return streetTypeService.readFull(stub);
 	}
 
 	/**
@@ -151,10 +150,7 @@ public class StreetTypeProcessor extends AbstractProcessor<StreetType> {
 		}
 	}
 
-	public void setStreetTypeDao(StreetTypeDao streetTypeDao) {
-		this.streetTypeDao = streetTypeDao;
-	}
-
+	@Required
 	public void setStreetTypeService(StreetTypeService streetTypeService) {
 		this.streetTypeService = streetTypeService;
 	}

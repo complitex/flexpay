@@ -328,8 +328,15 @@ public class DateIntervalUtil {
 		Iterator<DI> itOld = oldTl.getIntervals().iterator();
 		Iterator<DI> itNew = newTl.getIntervals().iterator();
 
+		if (!itOld.hasNext() || !itNew.hasNext()) {
+			disOld.addAll(oldTl.getIntervals());
+			disNew.addAll(newTl.getIntervals());
+			return PairUtil.pair(new TimeLine<T, DI>(disOld), new TimeLine<T, DI>(disNew));
+		}
+
 		// at the start of the cycle
-		DI diOld = itOld.next(), diNew = itNew.next();
+		DI diOld = itOld.next();
+		DI diNew = itNew.next();
 		for (DI diOldC = copy(diOld), diNewC = copy(diNew); ;) {
 			// old interval end is before the new one's end
 			int cmp = diOldC.getEnd().compareTo(diNewC.getEnd());

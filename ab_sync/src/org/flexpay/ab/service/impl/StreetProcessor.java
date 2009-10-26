@@ -1,30 +1,27 @@
 package org.flexpay.ab.service.impl;
 
-import org.apache.commons.lang.time.DateUtils;
-import org.flexpay.ab.dao.StreetDao;
 import org.flexpay.ab.persistence.*;
 import org.flexpay.ab.persistence.filters.TownFilter;
 import org.flexpay.ab.service.StreetService;
-import org.flexpay.ab.util.config.ApplicationConfig;
+import org.flexpay.ab.service.StreetTypeService;
 import static org.flexpay.ab.util.config.ApplicationConfig.getDefaultTown;
+import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.persistence.Stub.stub;
-import org.flexpay.common.persistence.TimeLine;
 import org.flexpay.common.service.importexport.CorrectionsService;
 import org.flexpay.common.util.CollectionUtils;
-import org.flexpay.common.util.DateIntervalUtil;
 import org.flexpay.common.util.TranslationUtil;
-import static org.flexpay.common.util.config.ApplicationConfig.getDefaultLanguage;
-import static org.flexpay.common.util.config.ApplicationConfig.getPastInfinite;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Required;
 
-import java.util.*;
+import java.util.Date;
+import java.util.List;
 
 public class StreetProcessor extends AbstractProcessor<Street> {
 
-	private StreetDao streetDao;
+	private StreetTypeService streetTypeService;
 	private StreetService streetService;
 
 	public StreetProcessor() {
@@ -50,36 +47,16 @@ public class StreetProcessor extends AbstractProcessor<Street> {
 	 * @return DomainObject instance
 	 */
 	protected Street readObject(@NotNull Stub<Street> stub) {
-		return streetDao.readFull(stub.getId());
+		return streetService.readFull(stub);
 	}
 
 	private void setName(Street street, String name, Date updateDate) throws Exception {
+
 		StreetName streetName = new StreetName();
-
-		StreetNameTranslation translation = new StreetNameTranslation();
-		translation.setLang(getDefaultLanguage());
-		translation.setName(name);
-		translation.setTranslatable(streetName);
-		Set<StreetNameTranslation> translations = new HashSet<StreetNameTranslation>();
-		translations.add(translation);
-
-		streetName.setTranslations(translations);
 		streetName.setObject(street);
+		streetName.setTranslation(new StreetNameTranslation(name));
 
-		StreetNameTemporal nameTemporal = new StreetNameTemporal();
-		nameTemporal.setBegin(DateUtils.truncate(updateDate, Calendar.DAY_OF_MONTH));
-		nameTemporal.setObject(street);
-		nameTemporal.setValue(streetName);
-
-		TimeLine<StreetName, StreetNameTemporal> timeLine = street.getNamesTimeLine();
-		if (timeLine != null) {
-			timeLine = DateIntervalUtil.addInterval(timeLine, nameTemporal);
-		} else {
-			nameTemporal.setBegin(getPastInfinite());
-			timeLine = new TimeLine<StreetName, StreetNameTemporal>(nameTemporal);
-		}
-
-		street.setNamesTimeLine(timeLine);
+		street.setNameForDate(streetName, updateDate);
 	}
 
 	private void setStreetTypeId(Street street, HistoryRec record, Stub<DataSourceDescription> sd, CorrectionsService cs) {
@@ -91,24 +68,12 @@ public class StreetProcessor extends AbstractProcessor<Street> {
 		}
 
 		StreetType persistentType = street.getTypeForDate(record.getRecordDate());
-		if (persistentType != null && stub.getId().equals(persistentType.getId())) {
+		if (persistentType != null && stub.sameId(persistentType)) {
 			// nothing to do
 			return;
 		}
 
-		StreetTypeTemporal temporal = new StreetTypeTemporal();
-		temporal.setBegin(record.getRecordDate());
-		temporal.setValue(new StreetType(stub));
-		temporal.setObject(street);
-
-		TimeLine<StreetType, StreetTypeTemporal> timeLine = street.getTypesTimeLine();
-		if (timeLine == null) {
-			temporal.setBegin(getPastInfinite());
-			timeLine = new TimeLine<StreetType, StreetTypeTemporal>(temporal);
-		} else {
-			timeLine = DateIntervalUtil.addInterval(timeLine, temporal);
-		}
-		street.setTypesTimeLine(timeLine);
+		street.setTypeForDate(streetTypeService.read(stub), record.getRecordDate());
 	}
 
 	/**
@@ -201,22 +166,24 @@ public class StreetProcessor extends AbstractProcessor<Street> {
 	/**
 	 * Save DomainObject
 	 *
-	 * @param object Object to save
+	 * @param object	 Object to save
 	 * @param externalId External object identifier
 	 */
-	protected void doSaveObject(Street object, String externalId) {
+	protected void doSaveObject(Street object, String externalId) throws FlexPayExceptionContainer {
 		if (object.getId() == null) {
-			streetDao.create(object);
+			streetService.create(object);
 		} else {
-			streetDao.update(object);
+			streetService.update(object);
 		}
 	}
 
-	public void setStreetDao(StreetDao streetDao) {
-		this.streetDao = streetDao;
-	}
-
+	@Required
 	public void setStreetService(StreetService streetService) {
 		this.streetService = streetService;
+	}
+
+	@Required
+	public void setStreetTypeService(StreetTypeService streetTypeService) {
+		this.streetTypeService = streetTypeService;
 	}
 }

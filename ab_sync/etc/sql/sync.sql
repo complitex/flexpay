@@ -21,3 +21,9 @@ create table ab_sync_changes_tbl (
 	processed INTEGER NOT NULL DEFAULT 0,
 	order_weight INTEGER NOT NULL DEFAULT 0
 );
+
+alter table ab_sync_changes_tbl
+		add index I_recordid (record_id);
+
+--alter table ab_sync_changes_tbl
+--		add index I_fetch_processed (processed, order_weight, object_id);

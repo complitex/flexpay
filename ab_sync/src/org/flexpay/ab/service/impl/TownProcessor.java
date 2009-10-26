@@ -3,7 +3,9 @@ package org.flexpay.ab.service.impl;
 import org.apache.commons.lang.time.DateUtils;
 import org.flexpay.ab.dao.TownDao;
 import org.flexpay.ab.persistence.*;
+import org.flexpay.ab.service.TownService;
 import org.flexpay.ab.util.config.ApplicationConfig;
+import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.common.persistence.Stub;
@@ -13,6 +15,7 @@ import org.flexpay.common.util.DateIntervalUtil;
 import org.flexpay.common.util.TranslationUtil;
 import static org.flexpay.common.util.config.ApplicationConfig.getPastInfinite;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Required;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -21,7 +24,7 @@ import java.util.Set;
 
 public class TownProcessor extends AbstractProcessor<Town> {
 
-	private TownDao townDao;
+	private TownService townService;
 
 	public TownProcessor() {
 		super(Town.class);
@@ -50,7 +53,7 @@ public class TownProcessor extends AbstractProcessor<Town> {
 	 * @return DomainObject instance
 	 */
 	protected Town readObject(@NotNull Stub<Town> stub) {
-		return townDao.readFull(stub.getId());
+		return townService.readFull(stub);
 	}
 
 	private void setName(Town town, String name, Date updateDate) throws Exception {
@@ -125,15 +128,16 @@ public class TownProcessor extends AbstractProcessor<Town> {
 	 * @param object	 Object to save
 	 * @param externalId External object identifier
 	 */
-	public void doSaveObject(Town object, String externalId) {
+	public void doSaveObject(Town object, String externalId) throws FlexPayExceptionContainer {
 		if (object.getId() == null) {
-			townDao.create(object);
+			townService.create(object);
 		} else {
-			townDao.update(object);
+			townService.update(object);
 		}
 	}
 
-	public void setTownDao(TownDao townDao) {
-		this.townDao = townDao;
+	@Required
+	public void setTownService(TownService townService) {
+		this.townService = townService;
 	}
 }

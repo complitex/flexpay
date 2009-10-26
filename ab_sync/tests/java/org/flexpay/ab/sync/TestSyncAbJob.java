@@ -1,18 +1,16 @@
 package org.flexpay.ab.sync;
 
 import org.flexpay.ab.service.SyncService;
-import org.flexpay.common.test.SpringBeanAwareTestCase;
+import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.annotation.NotTransactional;
 
-public class TestSyncAbJob extends SpringBeanAwareTestCase {
+public class TestSyncAbJob extends AbSpringBeanAwareTestCase {
 
 	@Autowired
 	private SyncService syncService;
 
 	@Test
-	@NotTransactional
 	public void testSyncAb() throws Throwable {
 
 		syncService.syncAB();

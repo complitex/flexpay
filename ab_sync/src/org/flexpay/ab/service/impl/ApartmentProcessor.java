@@ -1,7 +1,6 @@
 package org.flexpay.ab.service.impl;
 
 import org.apache.commons.lang.StringUtils;
-import org.flexpay.ab.dao.ApartmentDao;
 import org.flexpay.ab.dao.BuildingsDao;
 import org.flexpay.ab.persistence.Apartment;
 import org.flexpay.ab.persistence.ApartmentNumber;
@@ -9,6 +8,7 @@ import org.flexpay.ab.persistence.BuildingAddress;
 import org.flexpay.ab.persistence.HistoryRec;
 import org.flexpay.ab.service.ApartmentService;
 import org.flexpay.ab.service.ObjectsFactory;
+import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.common.persistence.Stub;
@@ -23,7 +23,6 @@ import java.util.Set;
 
 public class ApartmentProcessor extends AbstractProcessor<Apartment> {
 
-	private ApartmentDao apartmentDao;
 	private BuildingsDao buildingsDao;
 	private ApartmentService apartmentService;
 	private ObjectsFactory factory;
@@ -51,7 +50,7 @@ public class ApartmentProcessor extends AbstractProcessor<Apartment> {
 	 */
 	@Nullable
 	protected Apartment readObject(@NotNull Stub<Apartment> stub) {
-		return apartmentDao.readFull(stub.getId());
+		return apartmentService.readFull(stub);
 	}
 
 	/**
@@ -63,7 +62,8 @@ public class ApartmentProcessor extends AbstractProcessor<Apartment> {
 	 * @param cs	 CorrectionsService
 	 * @throws Exception if failure occurs
 	 */
-	public void setProperty(@NotNull DomainObject object, @NotNull HistoryRec record, Stub<DataSourceDescription> sd, CorrectionsService cs)
+	public void setProperty(@NotNull DomainObject object, @NotNull HistoryRec record,
+							Stub<DataSourceDescription> sd, CorrectionsService cs)
 			throws Exception {
 		@NotNull Apartment apartment = (Apartment) object;
 		switch (record.getFieldType()) {
@@ -78,19 +78,22 @@ public class ApartmentProcessor extends AbstractProcessor<Apartment> {
 		}
 	}
 
-	private void setBuildingId(@NotNull Apartment apartment, @NotNull HistoryRec record, Stub<DataSourceDescription> sd, CorrectionsService cs)
+	private void setBuildingId(@NotNull Apartment apartment, @NotNull HistoryRec record,
+							   Stub<DataSourceDescription> sd, CorrectionsService cs)
 			throws Exception {
 
 		Stub<BuildingAddress> stub = cs.findCorrection(record.getCurrentValue(), BuildingAddress.class, sd);
 		if (stub == null) {
-			log.error("No correction for buildingAddress #{} DataSourceDescription {}, cannot set up building reference for apartment",
+			log.error("No correction for buildingAddress #{} DataSourceDescription {}, " +
+					  "cannot set up building reference for apartment",
 					record.getCurrentValue(), sd.getId());
 			return;
 		}
 
 		BuildingAddress buildingAddress = buildingsDao.read(stub.getId());
 		if (buildingAddress == null) {
-			log.error("Correction for buildingAddress #{} DataSourceDescription {} is invalid, no buildingAddress with id {}, cannot set up building reference for apartment",
+			log.error("Correction for buildingAddress #{} DataSourceDescription {} is invalid, " +
+					  "no buildingAddress with id {}, cannot set up building reference for apartment",
 					new Object[]{record.getCurrentValue(), sd.getId(), stub.getId()});
 			return;
 		}
@@ -140,15 +143,15 @@ public class ApartmentProcessor extends AbstractProcessor<Apartment> {
 	 * @param object	 Object to save
 	 * @param externalId External object identifier
 	 */
-	public void doSaveObject(Apartment object, String externalId) {
+	public void doSaveObject(Apartment object, String externalId) throws FlexPayExceptionContainer {
 		if (object.hasNoBuilding()) {
 			log.warn("Invalid sync data, no building specified");
 			return;
 		}
 		if (object.getId() == null) {
-			apartmentDao.create(object);
+			apartmentService.create(object);
 		} else {
-			apartmentDao.update(object);
+			apartmentService.update(object);
 		}
 	}
 
@@ -160,7 +163,8 @@ public class ApartmentProcessor extends AbstractProcessor<Apartment> {
 	 * @param cs	 CorrectionsService
 	 * @return Persistent object stub if exists, or <code>null</code> otherwise
 	 */
-	protected Stub<Apartment> findPersistentObject(Apartment object, Stub<DataSourceDescription> sd, CorrectionsService cs) {
+	protected Stub<Apartment> findPersistentObject(Apartment object, Stub<DataSourceDescription> sd,
+												   CorrectionsService cs) {
 		if (object.getApartmentNumbers().isEmpty()) {
 			return null;
 		}
@@ -178,11 +182,6 @@ public class ApartmentProcessor extends AbstractProcessor<Apartment> {
 		}
 
 		return stub;
-	}
-
-	@Required
-	public void setApartmentDao(ApartmentDao apartmentDao) {
-		this.apartmentDao = apartmentDao;
 	}
 
 	@Required
