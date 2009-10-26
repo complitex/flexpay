@@ -16,10 +16,10 @@ import org.junit.runners.Suite;
 		TestI18nQuery.class,
 		TestAddressService.class,
 		TestTownService.class,
-        TestTownTypeService.class,
+		TestTownTypeService.class,
 		TestPersonService.class,
-		TestAddressAttributeTypeService.class
-//		, TestSecurity.class
+		TestAddressAttributeTypeService.class,
+		TestSecurity.class
 })
 public class AllTests {
 

@@ -10,7 +10,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.AccessDeniedException;
 import org.springframework.security.Authentication;
 import org.springframework.security.GrantedAuthority;
@@ -28,10 +27,8 @@ public class TestSecurity extends SpringBeanAwareTestCase {
 	private static final GrantedAuthority[] REGION_AUTHORITIES = {new GrantedAuthorityImpl(Roles.REGION_READ)};
 
 	@Autowired
-	@Qualifier ("countryService")
 	private CountryService countryService;
 	@Autowired
-	@Qualifier ("regionService")
 	private RegionService regionService;
 
 	@Before

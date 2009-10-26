@@ -7,12 +7,11 @@ import org.flexpay.ab.persistence.Town;
 import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
 import org.flexpay.ab.util.config.ApplicationConfig;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
-import org.flexpay.common.util.DateUtil;
 import org.flexpay.common.persistence.Stub;
-import org.junit.Test;
-import org.junit.Ignore;
-import static org.junit.Assert.assertNotNull;
+import org.flexpay.common.util.DateUtil;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class TestDistrictService extends AbSpringBeanAwareTestCase {
@@ -32,7 +31,6 @@ public class TestDistrictService extends AbSpringBeanAwareTestCase {
 	}
 
 	@Test
-	@Ignore
 	public void testCreateDistrict() throws Throwable {
 
 		Town town = ApplicationConfig.getDefaultTown();
