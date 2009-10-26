@@ -1,6 +1,6 @@
 /**
  *  Protify jQuery Plugin
- *  version 0.1
+ *  version 0.3
  *  
  * Copyright (c) 2009 Josh Powell
  * Licensed under the MIT license.
@@ -8,8 +8,8 @@
  *  * Date: 2009-02-04 11:45:50 (Wed, 04 Feb 2009)
  *  
  */
-var $break = { };
 (function ($) {
+  var $break = { };
   var arrayFunc = {
     _each: function(iterator) {
       for (var i = 0, length = this.length; i < length; i++) {
@@ -294,7 +294,7 @@ var $break = { };
   
     uniq: function(sorted) {
       return $.protify(this.inject([], function(array, value, index) {
-        $.protify(array);
+        $.protify(array, true);
         if (0 === index || (sorted ? array.last() != value : !array.include(value))) {
           array.push(value);
         }

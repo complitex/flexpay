@@ -18,7 +18,7 @@ var FP = {
 
     // Set checkboxes group (names starts with prefix) state to checked
     setCheckboxes : function (checked, prefix) {
-        $('input[type=checkbox][name^=' + prefix + ']').each(function() {
+        $("input[type=checkbox][name^=" + prefix + "]").each(function() {
             this.checked = checked;
         });
     },

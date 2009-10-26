@@ -42,10 +42,3 @@
 		</tr>
 	</table>
 </s:form>
-<s:if test="%{street.id != 0}">
-    <script type="text/javascript">
-        $(function() {
-            FF.updateFilter("town", {readonly:true});
-        });
-    </script>
-</s:if>

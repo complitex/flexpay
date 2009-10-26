@@ -15,10 +15,10 @@ jQuery.extend(jQuery.validator.messages, {
 	creditcard:	"Будь ласка, введіть правильний номер кредитної карти.",
 	equalTo: 		"Будь ласка, введіть таке ж значення ще раз.",
 	accept: 		"Будь ласка, виберіть файл з правильним розширенням.",
-	maxlength: 		jQuery.format("Будь ласка, введіть не більше {0} символів."),
-	minlength: 		jQuery.format("Будь ласка, введіть не менше {0} символів."),
-	rangelength: 	jQuery.format("Будь ласка, введіть значення довжиною від {0} до {1} символів."),
-	range: 				jQuery.format("Будь ласка, введіть число від {0} до {1}."),
-	max: 					jQuery.format("Будь ласка, введіть число, менше або рівно {0}."),
-	min: 					jQuery.format("Будь ласка, введіть число, більше або рівно {0}.")
+	maxlength: 		jQuery.validator.format("Будь ласка, введіть не більше {0} символів."),
+	minlength: 		jQuery.validator.format("Будь ласка, введіть не менше {0} символів."),
+	rangelength: 	jQuery.validator.format("Будь ласка, введіть значення довжиною від {0} до {1} символів."),
+	range: 				jQuery.validator.format("Будь ласка, введіть число від {0} до {1}."),
+	max: 					jQuery.validator.format("Будь ласка, введіть число, менше або рівно {0}."),
+	min: 					jQuery.validator.format("Будь ласка, введіть число, більше або рівно {0}.")
 });

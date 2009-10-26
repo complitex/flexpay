@@ -37,10 +37,3 @@
         </tr>
     </table>
 </s:form>
-<s:if test="%{region.id != 0}">
-    <script type="text/javascript">
-        $(function() {
-            FF.updateFilter("country", {readonly:true});
-        });
-    </script>
-</s:if>

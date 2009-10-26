@@ -413,7 +413,6 @@ var FF = {
                             {
                                 delay:30,
                                 minChars:0,
-                                matchContains: true,
                                 cacheLength:10,
                                 scroll: true,
                                 scrollHeight: 200
