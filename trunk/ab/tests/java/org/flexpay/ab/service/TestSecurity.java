@@ -3,7 +3,7 @@ package org.flexpay.ab.service;
 import org.apache.commons.collections.ArrayStack;
 import org.flexpay.ab.persistence.filters.CountryFilter;
 import org.flexpay.ab.persistence.filters.RegionFilter;
-import org.flexpay.common.test.SpringBeanAwareTestCase;
+import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.config.ApplicationConfig;
 import org.junit.After;
@@ -18,7 +18,7 @@ import org.springframework.security.context.SecurityContextHolder;
 import org.springframework.security.providers.anonymous.AnonymousAuthenticationToken;
 import org.springframework.security.userdetails.User;
 
-public class TestSecurity extends SpringBeanAwareTestCase {
+public class TestSecurity extends AbSpringBeanAwareTestCase {
 
 	private Authentication authentication;
 
