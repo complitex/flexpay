@@ -6,24 +6,22 @@
 		   http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
 		   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
-	<bean id="townProcessor" class="org.flexpay.ab.service.impl.TownProcessor">
-		<property name="townDao" ref="townDao" />
-	</bean>
+	<bean id="townProcessor"
+		  class="org.flexpay.ab.service.impl.TownProcessor"
+		  p:townService-ref="townService" />
 
-	<bean id="streetTypeProcessor" class="org.flexpay.ab.service.impl.StreetTypeProcessor">
-		<property name="streetTypeDao" ref="streetTypeDao" />
-		<property name="streetTypeService" ref="streetTypeService" />
-	</bean>
+	<bean id="streetTypeProcessor"
+		  class="org.flexpay.ab.service.impl.StreetTypeProcessor"
+		  p:streetTypeService-ref="streetTypeService" />
 
-	<bean id="streetProcessor" class="org.flexpay.ab.service.impl.StreetProcessor">
-		<property name="streetDao" ref="streetDao" />
-		<property name="streetService" ref="streetService" />
-	</bean>
+	<bean id="streetProcessor"
+		  class="org.flexpay.ab.service.impl.StreetProcessor"
+		  p:streetService-ref="streetService"
+		  p:streetTypeService-ref="streetTypeService" />
 
-	<bean id="districtProcessor" class="org.flexpay.ab.service.impl.DistrictProcessor">
-		<property name="districtDao" ref="districtDao" />
-		<property name="districtService" ref="districtService" />
-	</bean>
+	<bean id="districtProcessor"
+		  class="org.flexpay.ab.service.impl.DistrictProcessor"
+		  p:districtService-ref="districtService" />
 
 	<bean id="buildingProcessor"
 		  class="org.flexpay.ab.service.impl.BuildingProcessor"
@@ -36,7 +34,6 @@
 
 	<bean id="apartmentProcessor"
 		  class="org.flexpay.ab.service.impl.ApartmentProcessor"
-		  p:apartmentDao-ref="apartmentDao"
 		  p:buildingsDao-ref="buildingsDao"
 		  p:apartmentService-ref="apartmentService"
 		  p:factory-ref="objectsFactory" />

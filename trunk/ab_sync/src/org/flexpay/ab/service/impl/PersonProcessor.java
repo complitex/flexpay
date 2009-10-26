@@ -13,6 +13,7 @@ import org.flexpay.common.service.importexport.CorrectionsService;
 import static org.flexpay.common.util.config.ApplicationConfig.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.springframework.beans.factory.annotation.Required;
 
 public class PersonProcessor extends AbstractProcessor<Person> {
 
@@ -253,10 +254,12 @@ public class PersonProcessor extends AbstractProcessor<Person> {
 		}
 	}
 
+	@Required
 	public void setPersonService(PersonService personService) {
 		this.personService = personService;
 	}
 
+	@Required
 	public void setIdentityTypeService(IdentityTypeService identityTypeService) {
 		this.identityTypeService = identityTypeService;
 	}

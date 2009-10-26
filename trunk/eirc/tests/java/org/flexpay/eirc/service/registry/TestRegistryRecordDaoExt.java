@@ -23,7 +23,6 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate3.HibernateCallback;

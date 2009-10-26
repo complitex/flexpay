@@ -44,14 +44,4 @@ public class StreetNameTemporal extends NameDateInterval<StreetName, StreetNameT
 		}
 		return super.equals(obj);
 	}
-
-	/**
-	 * Returns a string representation of the object.
-	 *
-	 * @return a string representation of the object.
-	 */
-	@Override
-	public String toString() {
-		return super.toString();
-	}
 }

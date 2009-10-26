@@ -1,29 +1,27 @@
 package org.flexpay.ab.service.impl;
 
-import org.apache.commons.lang.time.DateUtils;
-import org.flexpay.ab.dao.DistrictDao;
-import org.flexpay.ab.persistence.*;
+import org.flexpay.ab.persistence.District;
+import org.flexpay.ab.persistence.DistrictName;
+import org.flexpay.ab.persistence.DistrictNameTranslation;
+import org.flexpay.ab.persistence.HistoryRec;
 import org.flexpay.ab.persistence.filters.TownFilter;
 import org.flexpay.ab.service.DistrictService;
-import org.flexpay.ab.util.config.ApplicationConfig;
 import static org.flexpay.ab.util.config.ApplicationConfig.getDefaultTown;
+import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.persistence.Stub.stub;
-import org.flexpay.common.persistence.TimeLine;
 import org.flexpay.common.service.importexport.CorrectionsService;
-import org.flexpay.common.util.DateIntervalUtil;
 import org.flexpay.common.util.TranslationUtil;
-import static org.flexpay.common.util.config.ApplicationConfig.getDefaultLanguage;
-import static org.flexpay.common.util.config.ApplicationConfig.getPastInfinite;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Required;
 
-import java.util.*;
+import java.util.Date;
+import java.util.List;
 
 public class DistrictProcessor extends AbstractProcessor<District> {
 
-	private DistrictDao districtDao;
 	private DistrictService districtService;
 
 	public DistrictProcessor() {
@@ -49,36 +47,16 @@ public class DistrictProcessor extends AbstractProcessor<District> {
 	 * @return DomainObject instance
 	 */
 	protected District readObject(@NotNull Stub<District> stub) {
-		return districtDao.readFull(stub.getId());
+		return districtService.readFull(stub);
 	}
 
 	private void setName(District district, String name, Date updateDate) throws Exception {
+
 		DistrictName districtName = new DistrictName();
-
-		DistrictNameTranslation translation = new DistrictNameTranslation();
-		translation.setLang(getDefaultLanguage());
-		translation.setName(name);
-		translation.setTranslatable(districtName);
-		Set<DistrictNameTranslation> translations = new HashSet<DistrictNameTranslation>();
-		translations.add(translation);
-
-		districtName.setTranslations(translations);
+		districtName.setTranslation(new DistrictNameTranslation(name));
 		districtName.setObject(district);
 
-		DistrictNameTemporal nameTemporal = new DistrictNameTemporal();
-		nameTemporal.setBegin(DateUtils.truncate(updateDate, Calendar.DAY_OF_MONTH));
-		nameTemporal.setObject(district);
-		nameTemporal.setValue(districtName);
-
-		TimeLine<DistrictName, DistrictNameTemporal> timeLine = district.getNamesTimeLine();
-		if (timeLine != null) {
-			timeLine = DateIntervalUtil.addInterval(timeLine, nameTemporal);
-		} else {
-			nameTemporal.setBegin(getPastInfinite());
-			timeLine = new TimeLine<DistrictName, DistrictNameTemporal>(nameTemporal);
-		}
-
-		district.setNamesTimeLine(timeLine);
+		district.setNameForDate(districtName, updateDate);
 	}
 
 	/**
@@ -139,18 +117,20 @@ public class DistrictProcessor extends AbstractProcessor<District> {
 	 * @param object	 Object to save
 	 * @param externalId External object identifier
 	 */
-	protected void doSaveObject(District object, String externalId) {
+	protected void doSaveObject(District object, String externalId) throws FlexPayExceptionContainer {
+		if (log.isDebugEnabled()) {
+			for (DistrictName name : object.getNamesTimeLine().getValues()) {
+				log.debug("Name object: {}", name.getObject());
+			}
+		}
 		if (object.getId() == null) {
-			districtDao.create(object);
+			districtService.create(object);
 		} else {
-			districtDao.update(object);
+			districtService.update(object);
 		}
 	}
 
-	public void setDistrictDao(DistrictDao districtDao) {
-		this.districtDao = districtDao;
-	}
-
+	@Required
 	public void setDistrictService(DistrictService districtService) {
 		this.districtService = districtService;
 	}
