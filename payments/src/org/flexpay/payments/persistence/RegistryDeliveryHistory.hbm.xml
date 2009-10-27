@@ -66,4 +66,8 @@
 		where registry.creationDate between ? and ?
     ]]></query>
 
+    <query name="RegistryDeliveryHistory.deleteByRegistry">
+        delete from RegistryDeliveryHistory where registry.id=?
+    </query>
+
 </hibernate-mapping>

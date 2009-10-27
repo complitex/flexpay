@@ -1,6 +1,8 @@
 package org.flexpay.payments.export;
 
 import static junit.framework.Assert.*;
+import static org.flexpay.common.util.CollectionUtils.list;
+
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.flexpay.ab.persistence.filters.ImportErrorTypeFilter;
@@ -9,6 +11,7 @@ import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.file.FPFile;
+import org.flexpay.common.persistence.filter.ObjectFilter;
 import org.flexpay.common.persistence.filter.RegistryRecordStatusFilter;
 import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.persistence.registry.RegistryFPFileType;
@@ -18,6 +21,7 @@ import org.flexpay.common.service.FPFileService;
 import org.flexpay.common.service.RegistryFPFileTypeService;
 import org.flexpay.common.service.RegistryRecordService;
 import org.flexpay.common.service.RegistryService;
+import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.DateUtil;
 import org.flexpay.common.util.config.ApplicationConfig;
 import org.flexpay.common.util.io.InputStreamCallback;
@@ -25,6 +29,8 @@ import org.flexpay.common.util.io.ReaderCallback;
 import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.orgs.persistence.PaymentPoint;
 import org.flexpay.orgs.persistence.ServiceProvider;
+import org.flexpay.orgs.persistence.filters.OrganizationFilter;
+import org.flexpay.orgs.persistence.filters.SenderOrganizationFilter;
 import org.flexpay.orgs.service.ServiceProviderAttributeService;
 import org.flexpay.orgs.service.ServiceProviderService;
 import org.flexpay.payments.persistence.Document;
@@ -33,10 +39,12 @@ import org.flexpay.payments.persistence.Service;
 import org.flexpay.payments.process.export.GeneratePaymentsRegistry;
 import org.flexpay.payments.process.export.job.ExportJobParameterNames;
 import org.flexpay.payments.service.DocumentService;
+import org.flexpay.payments.service.EircRegistryService;
 import org.flexpay.payments.service.OperationService;
 import org.flexpay.payments.test.PaymentsSpringBeanAwareTestCase;
 import org.flexpay.payments.util.impl.*;
 import org.jetbrains.annotations.Nullable;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.quartz.JobExecutionContext;
@@ -91,6 +99,8 @@ public class TestGeneratePaymentsRegistry extends PaymentsSpringBeanAwareTestCas
 
 	@Autowired
 	private RegistryRecordService registryRecordService;
+    @Autowired
+    private EircRegistryService eircRegistryService;
 	@Autowired
 	private RegistryService registryService;
 	@Autowired
@@ -98,24 +108,28 @@ public class TestGeneratePaymentsRegistry extends PaymentsSpringBeanAwareTestCas
 	private RegistryFPFileTypeService registryFPFileTypeService;
 
     @Autowired
-    @Resource(name="paymentsTestPaymentPointUtil")
+    @Qualifier ("paymentsTestPaymentPointUtil")
     private PaymentsTestPaymentPointUtil paymentPointUtil;
 
     @Autowired
-    @Resource(name="paymentsTestOrganizationUtil")
+    @Qualifier ("paymentsTestOrganizationUtil")
     private PaymentsTestOrganizationUtil organizationUtil;
 
     @Autowired
-    @Resource(name="paymentsTestServiceProviderUtil")
+    @Qualifier ("paymentsTestServiceProviderUtil")
     private PaymentsTestServiceProviderUtil serviceProviderUtil;
 
     @Autowired
-    @Resource(name="paymentsTestCashPaymentOperationUtil")
+    @Qualifier ("paymentsTestCashPaymentOperationUtil")
     private PaymentsTestCashPaymentOperationUtil operationUtil;
 
     @Autowired
-    @Resource(name="paymentsTestServiceUtil")
+    @Qualifier ("paymentsTestServiceUtil")
     private PaymentsTestServiceUtil paymentsTestServiceUtil;
+
+    @Autowired
+    @Qualifier ("paymentsTestRegistryUtil")
+    private PaymentsTestRegistryUtil registryUtil;
 
     private ServiceProvider serviceProvider;
     private PaymentPoint paymentPoint;
@@ -173,11 +187,17 @@ public class TestGeneratePaymentsRegistry extends PaymentsSpringBeanAwareTestCas
         documentService.update(document);
 	}
 
-    /*
     @After
     public void tearDown() {
-        //TODO delete registry and registry properties
         authenticateTestUser();
+        //delete generation registry
+        OrganizationFilter senderOrganizationFilter = new SenderOrganizationFilter();
+        senderOrganizationFilter.setOrganizations(CollectionUtils.list(registerOrganization));
+        List<ObjectFilter> filters = CollectionUtils.<ObjectFilter>list(senderOrganizationFilter);
+        for (Registry registry : eircRegistryService.findObjects(filters, new Page<Registry>(1000))) {
+            System.out.println("Delete registry " + registry.getId());
+            registryUtil.delete(registry);
+        }
         //delete operation with own documents
         operationUtil.delete(operation);
         //delete service provider with services
@@ -188,7 +208,6 @@ public class TestGeneratePaymentsRegistry extends PaymentsSpringBeanAwareTestCas
         organizationUtil.delete(registerOrganization);
         organizationUtil.delete(recipientOrganization);
     }
-     */
 
     @Test
 	public void testStartTradingDay() throws Exception {

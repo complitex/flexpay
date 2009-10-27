@@ -14,6 +14,7 @@ import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 
 import javax.annotation.Resource;
 
@@ -21,13 +22,13 @@ public class PaymentsTestPaymentPointUtil implements TestPaymentPointUtil {
     private Logger log = LoggerFactory.getLogger(getClass());
 
     @Autowired
-    @Resource(name="paymentsTestPaymentCollectorUtil")
+    @Qualifier ("paymentsTestPaymentCollectorUtil")
     private PaymentsTestPaymentCollectorUtil paymentCollectorUtil;
     @Autowired
-    @Resource(name="paymentPointService")
+    @Qualifier ("paymentPointService")
     private PaymentPointService paymentPointService;
     @Autowired
-    @Resource(name="languageService")
+    @Qualifier ("languageService")
 	private LanguageService languageService;
 
     @Nullable

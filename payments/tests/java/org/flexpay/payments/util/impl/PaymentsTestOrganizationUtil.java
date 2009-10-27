@@ -14,6 +14,7 @@ import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 
 import javax.annotation.Resource;
 
@@ -21,11 +22,11 @@ public class PaymentsTestOrganizationUtil implements TestOrganizationUtil {
     private Logger log = LoggerFactory.getLogger(getClass());
 
     @Autowired
-    @Resource(name="languageService")
+    @Qualifier ("languageService")
 	private LanguageService languageService;
 
     @Autowired
-    @Resource(name="organizationService")
+    @Qualifier ("organizationService")
 	private OrganizationService organizationService;
 
     @NotNull

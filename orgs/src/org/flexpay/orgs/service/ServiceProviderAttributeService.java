@@ -34,4 +34,11 @@ public interface ServiceProviderAttributeService {
 	 * @param attribute New or persitent object to save
 	 */
 	void save(@NotNull ServiceProviderAttribute attribute);
+
+     /**
+     * Delete service provider attributes
+     *
+     * @param stub service provider
+     */
+    void delete(@NotNull Stub<ServiceProvider> stub);
 }
