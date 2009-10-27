@@ -97,13 +97,22 @@
 	</target>
 
 	<target name="ab_sync.war">
-		<antcall target="template.configure.module">
-			<param name="module.name" value="ab_sync" />
-		</antcall>
 		<antcall target="template.ab_sync.war.production" />
 	</target>
 
-    <target name="ab_sync.prepare.war" depends="ab_sync.compile.test,ab.prepare.war">
+    <target name="ab_sync.prepare.war">
+		<antcall target="template.configure.module">
+			<param name="module.name" value="ab_sync" />
+		</antcall>
+		<antcall target="ab_sync.prepare.war.internal" />
+		<antcall target="war.security" />
+		<antcall target="template.switch_log_name">
+			<param name="log_name" value="ab" />
+		</antcall>
+		<antcall target="template.copy.classes" />
+	</target>
+
+    <target name="ab_sync.prepare.war.internal" depends="ab.prepare.war.internal">
         <fileset id="ab_sync.web.resources" dir="${ab_sync.dir}/web" />
         <antcall target="template.prepare.war">
             <param name="to_dir" value="" />
@@ -119,11 +128,6 @@
             <param name="src.i18n.dir" value="${ab_sync.dir}/${src.dir}" />
             <reference refid="ab_sync.classes.resources" torefid="resources" />
         </antcall>
-
-		<antcall target="template.switch_log_name">
-			<param name="log_name" value="ab_sync" />
-		</antcall>
-
     </target>
 
     <!-- Build production web-archive -->
