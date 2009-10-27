@@ -34,24 +34,24 @@
     });
 </script>
 
-<s:actionerror />
+<%@include file="/WEB-INF/jsp/common/includes/errors_messages.jsp"%>
 
-<s:form action="editBuildingAddress">
+<s:form action="editBuildingAddress" method="POST">
 
-	<s:hidden name="building.id" value="%{building.id}" />
-	<s:hidden name="address.id" value="%{address.id}" />
+	<s:hidden name="building.id" />
+	<s:hidden name="address.id" />
 
 	<table width="100%">
 		<tr>
-			<td class="filter"><s:text name="ab.country"/></td>
+			<td class="filter"><s:text name="ab.country" /></td>
 			<td id="country_raw"></td>
-			<td class="filter"><s:text name="ab.region"/></td>
+			<td class="filter"><s:text name="ab.region" /></td>
 			<td id="region_raw"></td>
-			<td class="filter"><s:text name="ab.town"/></td>
+			<td class="filter"><s:text name="ab.town" /></td>
 			<td id="town_raw"></td>
 		</tr>
 		<tr>
-			<td class="filter"><s:text name="ab.street"/></td>
+			<td class="filter"><s:text name="ab.street" /></td>
 			<td id="street_raw" colspan="5"></td>
 		</tr>
 	</table>
@@ -60,7 +60,7 @@
 		<s:iterator value="attributeMap">
 			<tr valign="middle" class="cols_1">
 				<td class="col">
-					<s:property value="%{getTypeName(key)}" />
+					<s:property value="getTypeName(key)" />
 				</td>
 				<td class="col">
 					<s:textfield name="attributeMap[%{key}]" value="%{value}" />
@@ -69,7 +69,7 @@
 		</s:iterator>
 		<tr>
 			<td colspan="2">
-				<input type="submit" class="btn-exit" name="submitted" value="<s:text name="common.save"/>" />
+                <s:submit cssClass="btn-exit" name="submitted" value="%{getText('common.save')}" />
 			</td>
 		</tr>
 	</table>

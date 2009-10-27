@@ -1,14 +1,14 @@
-<%@include file="/WEB-INF/jsp/common/taglibs.jsp" %>
+<%@include file="/WEB-INF/jsp/common/taglibs.jsp"%>
 
-<s:actionerror />
+<%@include file="/WEB-INF/jsp/common/includes/errors_messages.jsp"%>
 
 <table cellpadding="3" cellspacing="1" border="0" width="100%">
     <tr>
         <td colspan="4">
-            <input type="button" class="btn-exit" value="<s:text name="common.delete_selected"/>" onclick="deleteAjax();" />
+            <input type="button" class="btn-exit" value="<s:text name="common.delete_selected" />" onclick="deleteAjax();" />
             <input type="button" class="btn-exit"
-                   onclick="window.location='<s:url action="townTypeEdit"><s:param name="townType.id" value="0" /></s:url>';"
-                   value="<s:text name="common.new"/>" />
+                   onclick="window.location='<s:url action="townTypeEdit" includeParams="none"><s:param name="townType.id" value="0" /></s:url>';"
+                   value="<s:text name="common.new" />" />
         </td>
     </tr>
     <tr>
@@ -23,15 +23,15 @@
         <tr valign="middle" class="cols_1">
             <td class="col_1s"><s:property value="#rowstatus.index + 1" /></td>
             <td class="col">
-                <input type="checkbox" name="objectIds" value="<s:property value="%{id}" />" />
+                <input type="checkbox" name="objectIds" value="<s:property value="id" />" />
             </td>
             <td class="col">
-                <a href="<s:url action="townTypeView"><s:param name="townType.id" value="%{id}"/></s:url>">
-                    <s:property value="%{getTranslationName(translations)}" />
+                <a href="<s:url action="townTypeView" includeParams="none"><s:param name="townType.id" value="id" /></s:url>">
+                    <s:property value="getTranslationName(translations)" />
                 </a>
             </td>
             <td class="col">
-                <a href="<s:url action="townTypeEdit"><s:param name="townType.id" value="%{id}"/></s:url>">
+                <a href="<s:url action="townTypeEdit" includeParams="none"><s:param name="townType.id" value="id" /></s:url>">
                     <s:text name="common.edit" />
                 </a>
             </td>
@@ -39,10 +39,10 @@
     </s:iterator>
     <tr>
         <td colspan="4">
-            <input type="button" class="btn-exit" value="<s:text name="common.delete_selected"/>" onclick="deleteAjax();" />
+            <input type="button" class="btn-exit" value="<s:text name="common.delete_selected" />" onclick="deleteAjax();" />
             <input type="button" class="btn-exit"
-                   onclick="window.location='<s:url action="townTypeEdit"><s:param name="townType.id" value="0" /></s:url>';"
-                   value="<s:text name="common.new"/>" />
+                   onclick="window.location='<s:url action="townTypeEdit" includeParams="none"><s:param name="townType.id" value="0" /></s:url>';"
+                   value="<s:text name="common.new" />" />
         </td>
     </tr>
 </table>

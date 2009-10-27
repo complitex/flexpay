@@ -4,7 +4,7 @@ import org.flexpay.bti.process.BuildingAttributesImportJob;
 import org.flexpay.common.actions.FPFileActionSupport;
 import org.flexpay.common.persistence.filter.BeginDateFilter;
 import org.flexpay.common.process.ProcessManager;
-import org.flexpay.common.util.CollectionUtils;
+import static org.flexpay.common.util.CollectionUtils.map;
 import org.flexpay.common.util.DateUtil;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
@@ -43,7 +43,7 @@ public class BuildingAttributesImportAction extends FPFileActionSupport {
 			return SUCCESS;
 		}
 
-		Map<Serializable, Serializable> params = CollectionUtils.map();
+		Map<Serializable, Serializable> params = map();
 		params.put(BuildingAttributesImportJob.PARAM_FILE_ID, fpFile.getId());
 		params.put(BuildingAttributesImportJob.PARAM_IMPORT_DATE, beginDateFilter.getDate());
 

@@ -7,19 +7,19 @@ import org.flexpay.ab.service.CountryService;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Language;
-import org.flexpay.common.util.CollectionUtils;
+import static org.flexpay.common.util.CollectionUtils.list;
+import static org.flexpay.common.util.CollectionUtils.treeMap;
 import org.flexpay.common.util.config.ApplicationConfig;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 public class CountryCreateAction extends FPActionSupport {
 
-	private Map<Long, String> names = CollectionUtils.treeMap();
-	private Map<Long, String> shortNames = CollectionUtils.treeMap();
+	private Map<Long, String> names = treeMap();
+	private Map<Long, String> shortNames = treeMap();
 	private Country country = new Country();
 
 	private CountryService countryService;
@@ -33,7 +33,7 @@ public class CountryCreateAction extends FPActionSupport {
 			return INPUT;
 		}
 
-		List<CountryNameTranslation> countryNames = new ArrayList<CountryNameTranslation>();
+		List<CountryNameTranslation> countryNames = list();
 		for (Map.Entry<Long, String> name : names.entrySet()) {
 			String value = name.getValue();
 			Language lang = getLang(name.getKey());

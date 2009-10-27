@@ -8,7 +8,6 @@ import org.flexpay.common.persistence.Stub;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ApartmentFilterAjaxAction extends FilterAjaxAction {
@@ -34,12 +33,8 @@ public class ApartmentFilterAjaxAction extends FilterAjaxAction {
 		List<Apartment> apartments = apartmentService.getApartments(new Stub<BuildingAddress>(addressId));
 		log.debug("Found apartments: {}", apartments);
 
-		foundObjects = new ArrayList<FilterObject>();
 		for (Apartment apartment : apartments) {
-			FilterObject object = new FilterObject();
-			object.setValue(apartment.getId() + "");
-			object.setName(apartment.getNumber());
-			foundObjects.add(object);
+			foundObjects.add(new FilterObject(apartment.getId() + "", apartment.getNumber()));
 		}
 
 		return SUCCESS;

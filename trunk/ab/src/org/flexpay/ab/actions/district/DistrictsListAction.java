@@ -9,13 +9,14 @@ import org.flexpay.common.actions.FPActionWithPagerSupport;
 import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.common.persistence.sorter.ObjectSorter;
 import org.flexpay.common.util.CollectionUtils;
+import static org.flexpay.common.util.CollectionUtils.arrayStack;
 import static org.flexpay.common.util.CollectionUtils.list;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.util.List;
 
-public class DistrictsListAjaxAction extends FPActionWithPagerSupport<District> {
+public class DistrictsListAction extends FPActionWithPagerSupport<District> {
 
 	private Long townFilter;
 	private List<District> districts = list();
@@ -32,7 +33,7 @@ public class DistrictsListAjaxAction extends FPActionWithPagerSupport<District> 
 			return SUCCESS;
 		}
 
-		ArrayStack filters = CollectionUtils.arrayStack(new TownFilter(townFilter));
+		ArrayStack filters = arrayStack(new TownFilter(townFilter));
 		districtSorter.setLang(getLanguage());
 		List<ObjectSorter> sorters = CollectionUtils.<ObjectSorter>list(districtSorter);
 		List<District> districtStubs = districtService.find(filters, sorters, getPager());
@@ -79,4 +80,5 @@ public class DistrictsListAjaxAction extends FPActionWithPagerSupport<District> 
 	public void setDistrictService(DistrictService districtService) {
 		this.districtService = districtService;
 	}
+
 }

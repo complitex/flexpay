@@ -1,14 +1,13 @@
 package org.flexpay.ab.actions.region;
 
 import org.flexpay.ab.persistence.*;
-import org.flexpay.ab.service.CountryService;
 import org.flexpay.ab.service.RegionService;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Language;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.persistence.filter.BeginDateFilter;
-import org.flexpay.common.util.CollectionUtils;
+import static org.flexpay.common.util.CollectionUtils.treeMap;
 import org.flexpay.common.util.DateUtil;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
@@ -18,15 +17,14 @@ import java.util.Map;
 /**
  * Region simple editor
  */
-public class RegionEditSimpleAction extends FPActionSupport {
+public class RegionEditAction extends FPActionSupport {
 
 	private Region region = new Region();
     private Long countryFilter;
     private BeginDateFilter beginDateFilter = new BeginDateFilter();
-    private Map<Long, String> names = CollectionUtils.treeMap();
+    private Map<Long, String> names = treeMap();
 
 	private String crumbCreateKey;
-    private CountryService countryService;
     private RegionService regionService;
 
     @NotNull
@@ -177,10 +175,5 @@ public class RegionEditSimpleAction extends FPActionSupport {
     public void setRegionService(RegionService regionService) {
         this.regionService = regionService;
     }
-
-	@Required
-	public void setCountryService(CountryService countryService) {
-		this.countryService = countryService;
-	}
 
 }

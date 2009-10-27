@@ -13,7 +13,7 @@ import org.springframework.beans.factory.annotation.Required;
 
 import java.util.List;
 
-public class BuildingsListAjaxAction extends FPActionWithPagerSupport<BuildingAddress> {
+public class BuildingsListAction extends FPActionWithPagerSupport<BuildingAddress> {
 
 	private Long streetFilter;
 	private List<BuildingAddress> buildings = list();

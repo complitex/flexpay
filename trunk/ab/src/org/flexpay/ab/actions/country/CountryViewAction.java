@@ -18,14 +18,14 @@ public class CountryViewAction extends FPActionSupport {
 	public String doExecute() throws Exception {
 
 		if (country.isNew()) {
-			log.error(getText("error.invalid_id"));
+			addActionError(getText("error.invalid_id"));
 			return REDIRECT_ERROR;
 		}
 
 		country = countryService.readFull(stub(country));
 
 		if (country == null) {
-			log.error(getText("common.object_not_selected"));
+			addActionError(getText("common.object_not_selected"));
 			return REDIRECT_ERROR;
 		}
 

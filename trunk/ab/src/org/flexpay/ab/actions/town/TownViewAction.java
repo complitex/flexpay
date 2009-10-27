@@ -1,6 +1,6 @@
 package org.flexpay.ab.actions.town;
 
-import org.flexpay.ab.actions.nametimedependent.ObjectViewAction;
+import org.flexpay.ab.actions.ObjectViewAction;
 import org.flexpay.ab.persistence.*;
 import org.flexpay.ab.service.TownTypeService;
 import org.flexpay.common.persistence.Stub;
@@ -23,4 +23,5 @@ public class TownViewAction extends ObjectViewAction<
 	public void setTownTypeService(TownTypeService townTypeService) {
 		this.townTypeService = townTypeService;
 	}
+
 }

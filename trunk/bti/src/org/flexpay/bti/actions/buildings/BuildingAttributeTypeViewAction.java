@@ -1,9 +1,9 @@
 package org.flexpay.bti.actions.buildings;
 
 import org.flexpay.bti.persistence.building.BuildingAttributeType;
-import org.flexpay.bti.persistence.building.BuildingAttributeTypeSimple;
 import org.flexpay.bti.persistence.building.BuildingAttributeTypeEnum;
 import org.flexpay.bti.persistence.building.BuildingAttributeTypeEnumValue;
+import org.flexpay.bti.persistence.building.BuildingAttributeTypeSimple;
 import org.flexpay.bti.service.BuildingAttributeTypeService;
 import org.flexpay.common.actions.FPActionSupport;
 import static org.flexpay.common.persistence.Stub.stub;

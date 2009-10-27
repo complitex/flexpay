@@ -1,6 +1,6 @@
 package org.flexpay.ab.actions.district;
 
-import org.flexpay.ab.actions.nametimedependent.ObjectViewAction;
+import org.flexpay.ab.actions.ObjectViewAction;
 import org.flexpay.ab.persistence.District;
 import org.flexpay.ab.persistence.DistrictName;
 import org.flexpay.ab.persistence.DistrictNameTemporal;

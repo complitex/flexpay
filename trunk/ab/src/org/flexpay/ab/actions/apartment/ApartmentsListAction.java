@@ -14,7 +14,7 @@ import org.springframework.beans.factory.annotation.Required;
 
 import java.util.List;
 
-public class ApartmentsListAjaxAction extends FPActionWithPagerSupport<Apartment> {
+public class ApartmentsListAction extends FPActionWithPagerSupport<Apartment> {
 
 	private Long buildingFilter;
 	private List<Apartment> apartments = list();

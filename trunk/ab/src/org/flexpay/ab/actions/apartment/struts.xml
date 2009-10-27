@@ -11,9 +11,8 @@
 			<result type="tiles">ab.apartment.list</result>
 		</action>
 
-        <action name="apartmentsListAjax" class="apartmentsListAjaxAction">
+        <action name="apartmentsListAjax" class="apartmentsListAction">
             <result>/WEB-INF/jsp/ab/apartments/apartments_list.jsp</result>
-            <result name="prerequestResponse">/WEB-INF/jsp/ab/filters/prerequest_response.jsp</result>
         </action>
 
         <action name="apartmentDelete" class="apartmentDeleteAction">
@@ -29,7 +28,7 @@
 			<result type="tiles">ab.apartment.registrations</result>
 		</action>
 
-		<action name="apartmentRegistrationsHistory" class="apartmentRegistrationAction">
+		<action name="apartmentRegistrationsHistory" class="apartmentRegistrationHistoryAction">
 			<result type="tiles">ab.apartment.registrations_history</result>
 		</action>
 

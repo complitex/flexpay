@@ -1,8 +1,9 @@
 package org.flexpay.ab.actions.filters;
 
+import org.flexpay.ab.util.config.AbUserPreferences;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.exception.FlexPayException;
-import org.flexpay.ab.util.config.AbUserPreferences;
+import static org.flexpay.common.util.CollectionUtils.list;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -40,7 +41,7 @@ public abstract class FilterAjaxAction extends FPActionSupport {
 	protected String filterString;
 	protected Boolean preRequest;
 	protected Boolean saveFilterValue;
-	protected List<FilterObject> foundObjects;
+	protected List<FilterObject> foundObjects = list();
 
 	@Override
 	public String execute() throws Exception {

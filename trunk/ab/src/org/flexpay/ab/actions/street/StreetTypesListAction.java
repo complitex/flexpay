@@ -3,6 +3,7 @@ package org.flexpay.ab.actions.street;
 import org.flexpay.ab.persistence.StreetType;
 import org.flexpay.ab.service.StreetTypeService;
 import org.flexpay.common.actions.FPActionSupport;
+import static org.flexpay.common.util.CollectionUtils.list;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
@@ -10,13 +11,14 @@ import java.util.List;
 
 public class StreetTypesListAction extends FPActionSupport {
 
-	private List<StreetType> streetTypes;
+	private List<StreetType> streetTypes = list();
 
 	private StreetTypeService streetTypeService;
 
 	@NotNull
 	@Override
 	public String doExecute() throws Exception {
+
 		streetTypes = streetTypeService.getEntities();
 
 		return SUCCESS;
@@ -43,4 +45,5 @@ public class StreetTypesListAction extends FPActionSupport {
 	public void setStreetTypeService(StreetTypeService streetTypeService) {
 		this.streetTypeService = streetTypeService;
 	}
+
 }

@@ -2,15 +2,15 @@ package org.flexpay.ab.actions.filters;
 
 import org.flexpay.ab.persistence.Country;
 import org.flexpay.ab.persistence.Region;
+import org.flexpay.ab.persistence.RegionName;
 import org.flexpay.ab.service.RegionService;
-import org.flexpay.ab.util.config.ApplicationConfig;
 import org.flexpay.ab.util.config.AbUserPreferences;
+import org.flexpay.ab.util.config.ApplicationConfig;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class RegionFilterAjaxAction extends FilterAjaxAction {
@@ -47,12 +47,13 @@ public class RegionFilterAjaxAction extends FilterAjaxAction {
 		List<Region> regions = regionService.findByCountryAndQuery(new Stub<Country>(countryId), "%" + q + "%");
 		log.debug("Found regions: {}", regions);
 
-		foundObjects = new ArrayList<FilterObject>();
 		for (Region region : regions) {
-			FilterObject object = new FilterObject();
-			object.setValue(region.getId() + "");
-			object.setName(getTranslation(region.getCurrentName().getTranslations()).getName());
-			foundObjects.add(object);
+			RegionName name = region.getCurrentName();
+			if (name == null) {
+				log.warn("Found incorrect region: {}", region);
+				continue;
+			}
+			foundObjects.add(new FilterObject(region.getId() + "", getTranslationName(name.getTranslations())));
 		}
 
 		return SUCCESS;
@@ -65,7 +66,7 @@ public class RegionFilterAjaxAction extends FilterAjaxAction {
 
 		if (filterValueLong == null) {
 			if (up.getCountryFilter() != null
-					&& !up.getCountryFilter().equals(ApplicationConfig.getDefaultCountryStub().getId() + "")) {
+					&& !up.getCountryFilter().equals(ApplicationConfig.getDefaultCountryStub().getId())) {
 				filterValueLong = 0L;
 			} else {
 				filterValueLong = ApplicationConfig.getDefaultRegionStub().getId();
@@ -76,7 +77,7 @@ public class RegionFilterAjaxAction extends FilterAjaxAction {
 			region = regionService.readFull(new Stub<Region>(filterValueLong));
 		}
 		if (region != null && region.getCurrentName() != null) {
-			filterString = getTranslation(region.getCurrentName().getTranslations()).getName();
+			filterString = getTranslationName(region.getCurrentName().getTranslations());
 		} else {
 			filterString = "";
 		}

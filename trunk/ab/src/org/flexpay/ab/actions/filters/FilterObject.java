@@ -17,6 +17,14 @@ public class FilterObject implements Serializable {
 	private String value;
 	private String name;
 
+	public FilterObject() {
+	}
+
+	public FilterObject(String value, String name) {
+		this.value = value;
+		this.name = name;
+	}
+
 	public String getValue() {
 		return value;
 	}

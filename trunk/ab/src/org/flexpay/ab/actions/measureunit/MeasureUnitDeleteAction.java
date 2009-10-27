@@ -1,14 +1,11 @@
 package org.flexpay.ab.actions.measureunit;
 
 import org.flexpay.common.actions.FPActionSupport;
-import org.flexpay.common.persistence.MeasureUnit;
-import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.service.MeasureUnitService;
 import static org.flexpay.common.util.CollectionUtils.set;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
-import java.util.List;
 import java.util.Set;
 
 public class MeasureUnitDeleteAction extends FPActionSupport {

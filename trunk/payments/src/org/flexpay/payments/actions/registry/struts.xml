@@ -51,19 +51,16 @@
 			</result>
 		</action>
 
-        <action name="apartmentsDialogListAjax" class="apartmentsListAjaxAction">
+        <action name="apartmentsDialogListAjax" class="apartmentsListAction">
             <result>/WEB-INF/jsp/payments/data/correspondence/apartments_list.jsp</result>
-            <result name="prerequestResponse">/WEB-INF/jsp/ab/filters/ajax/prerequest_response.jsp</result>
         </action>
 
-        <action name="streetsDialogListAjax" class="streetsListAjaxAction">
+        <action name="streetsDialogListAjax" class="streetsListAction">
             <result>/WEB-INF/jsp/payments/data/correspondence/streets_list.jsp</result>
-            <result name="prerequestResponse">/WEB-INF/jsp/ab/filters/ajax/prerequest_response.jsp</result>
         </action>
 
-        <action name="buildingsDialogListAjax" class="buildingsListAjaxAction">
+        <action name="buildingsDialogListAjax" class="buildingsListAction">
             <result>/WEB-INF/jsp/payments/data/correspondence/buildings_list.jsp</result>
-            <result name="prerequestResponse">/WEB-INF/jsp/ab/filters/ajax/prerequest_response.jsp</result>
         </action>
 
 		<action name="registryRecordCorrectAddress" class="correctAddressAction">

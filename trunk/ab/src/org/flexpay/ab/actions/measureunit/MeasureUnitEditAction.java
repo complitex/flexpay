@@ -1,23 +1,23 @@
 package org.flexpay.ab.actions.measureunit;
 
+import org.apache.commons.lang.StringUtils;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.persistence.Language;
 import org.flexpay.common.persistence.MeasureUnit;
 import org.flexpay.common.persistence.MeasureUnitName;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.service.MeasureUnitService;
-import org.flexpay.common.util.CollectionUtils;
+import static org.flexpay.common.util.CollectionUtils.treeMap;
 import org.flexpay.common.util.config.ApplicationConfig;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
-import org.apache.commons.lang.StringUtils;
 
 import java.util.Map;
 
 public class MeasureUnitEditAction extends FPActionSupport {
 
 	private MeasureUnit measureUnit = new MeasureUnit();
-	private Map<Long, String> names = CollectionUtils.treeMap();
+	private Map<Long, String> names = treeMap();
 
 	private String crumbCreateKey;
 	private MeasureUnitService measureUnitService;
@@ -42,7 +42,7 @@ public class MeasureUnitEditAction extends FPActionSupport {
 			String value = name.getValue();
 			Language lang = getLang(name.getKey());
 			if (lang.isDefault() && StringUtils.isEmpty(value)) {
-				addActionError(getText("ab.error.identity_type.full_name_is_required"));
+				addActionError(getText("ab.error.measure_unit.name_is_required"));
 				return INPUT;
 			}
 			measureUnit.setName(new MeasureUnitName(value, lang));

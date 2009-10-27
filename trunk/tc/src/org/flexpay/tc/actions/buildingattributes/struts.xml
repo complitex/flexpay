@@ -6,7 +6,7 @@
 
 	<package name="tc-buildingattributes" namespace="/tc" extends="common">
 
-        <action name="buildingsListAjax" class="buildingsListAjaxAction">
+        <action name="buildingsListAjax" class="buildingsListAction">
             <result>/WEB-INF/jsp/tc/building_attributes/buildings_list.jsp</result>
         </action>
 

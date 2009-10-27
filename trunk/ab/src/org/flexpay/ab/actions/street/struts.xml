@@ -11,9 +11,8 @@
 			<result type="tiles">ab.streets.list</result>
 		</action>
 
-        <action name="streetsListAjax" class="streetsListAjaxAction">
+        <action name="streetsListAjax" class="streetsListAction">
             <result>/WEB-INF/jsp/ab/streets/streets_list.jsp</result>
-            <result name="prerequestResponse">/WEB-INF/jsp/ab/filters/prerequest_response.jsp</result>
         </action>
 
         <action name="streetDelete" class="streetDeleteAction">

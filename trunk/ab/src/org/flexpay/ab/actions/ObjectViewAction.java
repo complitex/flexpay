@@ -1,26 +1,30 @@
-package org.flexpay.ab.actions.nametimedependent;
+package org.flexpay.ab.actions;
 
-import org.apache.commons.collections.ArrayStack;
+import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.persistence.NameDateInterval;
 import org.flexpay.common.persistence.NameTimeDependentChild;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.persistence.TemporaryValue;
 import org.flexpay.common.persistence.Translation;
+import org.flexpay.common.service.NameTimeDependentService;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Required;
 
 public abstract class ObjectViewAction<
 		TV extends TemporaryValue<TV>,
 		DI extends NameDateInterval<TV, DI>,
 		NTD extends NameTimeDependentChild<TV, DI>,
-		T extends Translation> extends ActionBase<TV, DI, NTD, T> {
+		T extends Translation> extends FPActionSupport {
 
 	protected NTD object;
+
+	protected NameTimeDependentService<TV, DI, NTD, T> nameTimeDependentService;
 
 	@NotNull
 	@Override
 	public String doExecute() {
 
-		log.info("Object: {}", object);
+		log.debug("Object: {}", object);
 		if (object.isNew()) {
 			addActionError(getText("error.no_id"));
 			return REDIRECT_ERROR;
@@ -55,13 +59,9 @@ public abstract class ObjectViewAction<
 		this.object = object;
 	}
 
-	@Override
-	protected ArrayStack getFilters() {
-		return null;
-	}
-
-	@Override
-	protected void setFilters(ArrayStack filters) {
+	@Required
+	public void setNameTimeDependentService(NameTimeDependentService<TV, DI, NTD, T> nameTimeDependentService) {
+		this.nameTimeDependentService = nameTimeDependentService;
 	}
 
 }

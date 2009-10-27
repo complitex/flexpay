@@ -1,9 +1,9 @@
 package org.flexpay.ab.actions.identity;
 
+import org.apache.commons.lang.StringUtils;
 import org.flexpay.ab.persistence.IdentityType;
 import org.flexpay.ab.persistence.IdentityTypeTranslation;
 import org.flexpay.ab.service.IdentityTypeService;
-import org.flexpay.ab.util.config.ApplicationConfig;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.persistence.Language;
 import static org.flexpay.common.persistence.Stub.stub;
@@ -11,7 +11,6 @@ import static org.flexpay.common.util.CollectionUtils.treeMap;
 import static org.flexpay.common.util.config.ApplicationConfig.getLanguages;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
-import org.apache.commons.lang.StringUtils;
 
 import java.util.Map;
 
