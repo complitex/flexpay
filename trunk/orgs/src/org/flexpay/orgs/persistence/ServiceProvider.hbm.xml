@@ -162,4 +162,8 @@
         WHERE o.serviceProvider.id = ? and o.name = ?
     </query>
 
+    <query name="ServiceProviderAttribute.deleteByServiceProvider">
+        delete from ServiceProviderAttribute where serviceProvider.id=?
+    </query>
+
 </hibernate-mapping>

@@ -23,6 +23,7 @@ public class ServiceProviderAttributeServiceImpl implements ServiceProviderAttri
 	 * @return Service providers list, empty if no service providers found
 	 */
     @NotNull
+    @Override
     public List<ServiceProviderAttribute> listServiceProviderAttributes(@NotNull Stub<ServiceProvider> stub) {
         return serviceProviderAttributeDao.listServiceProviderAttributes(stub.getId());
     }
@@ -35,6 +36,7 @@ public class ServiceProviderAttributeServiceImpl implements ServiceProviderAttri
 	 * @return Service providers list, empty if no service providers found
         */
     @Nullable
+    @Override
     public ServiceProviderAttribute getServiceProviderAttribute(@NotNull Stub<ServiceProvider> stub, @NotNull String attributeName) {
         List<ServiceProviderAttribute> attributes = serviceProviderAttributeDao.findServiceProviderAttribute(stub.getId(), attributeName);
         return attributes.isEmpty() ? null : attributes.get(0);
@@ -43,9 +45,10 @@ public class ServiceProviderAttributeServiceImpl implements ServiceProviderAttri
     /**
 	 * Save service provider attribute
 	 *
-	 * @param attribute New or persitent object to save
+	 * @param attribute New or persistent object to save
 	 */
 	@Transactional (readOnly = false)
+    @Override
 	public void save(@NotNull ServiceProviderAttribute attribute) {
 		if (attribute.isNew()) {
 			attribute.setId(null);
@@ -54,6 +57,15 @@ public class ServiceProviderAttributeServiceImpl implements ServiceProviderAttri
 			serviceProviderAttributeDao.update(attribute);
 		}
 	}
+
+    /**
+     * {@inheritDoc}
+     */
+    @Transactional (readOnly = false)
+    @Override
+    public void delete(@NotNull Stub<ServiceProvider> stub) {
+        serviceProviderAttributeDao.deleteByServiceProvider(stub.getId());
+    }
 
     @Required
     public void setServiceProviderAttributeDao(ServiceProviderAttributeDao serviceProviderAttributeDao) {

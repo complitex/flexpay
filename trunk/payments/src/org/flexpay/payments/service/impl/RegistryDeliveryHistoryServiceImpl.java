@@ -1,5 +1,6 @@
 package org.flexpay.payments.service.impl;
 
+import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.payments.service.RegistryDeliveryHistoryService;
 import org.flexpay.payments.persistence.RegistryDeliveryHistory;
 import org.flexpay.payments.dao.RegistryDeliveryHistoryDao;
@@ -26,6 +27,7 @@ public class RegistryDeliveryHistoryServiceImpl implements RegistryDeliveryHisto
      * @param registryDeliveryHistoryStub registryDeliveryHistory stub
      * @return RegistryDeliveryHistory object
      */
+    @Override
     public RegistryDeliveryHistory read(@NotNull Stub<RegistryDeliveryHistory> registryDeliveryHistoryStub) {
         return registryDeliveryHistoryDao.readFull(registryDeliveryHistoryStub.getId());
     }
@@ -36,6 +38,7 @@ public class RegistryDeliveryHistoryServiceImpl implements RegistryDeliveryHisto
      * @param registryDeliveryHistory RegistryDeliveryHistory object
      */
     @Transactional(readOnly = false)
+    @Override
     public void create(@NotNull RegistryDeliveryHistory registryDeliveryHistory) {
         registryDeliveryHistory.setId(null);
         registryDeliveryHistoryDao.create(registryDeliveryHistory);
@@ -47,23 +50,27 @@ public class RegistryDeliveryHistoryServiceImpl implements RegistryDeliveryHisto
      * @param registryDeliveryHistory  RegistryDeliveryHistory object
      */
     @Transactional (readOnly = false)
+    @Override
     public void update(@NotNull RegistryDeliveryHistory registryDeliveryHistory) {
         registryDeliveryHistoryDao.update(registryDeliveryHistory);
     }
 
     /**
-     * Delete RegistryDeliveryHistory object
-     *
-     * @param registryDeliveryHistoryStub  RegistryDeliveryHistory object
+     * {@inheritDoc}
      */
     @Transactional (readOnly = false)
-    public void delete(@NotNull Stub<RegistryDeliveryHistory> registryDeliveryHistoryStub) {
-        RegistryDeliveryHistory registryDeliveryHistory = registryDeliveryHistoryDao.read(registryDeliveryHistoryStub.getId());
-        if (registryDeliveryHistory == null) {
-            log.debug("Can't find registry delivery history with id {}", registryDeliveryHistoryStub.getId());
-			return;
-        }
+    @Override
+    public void delete(@NotNull RegistryDeliveryHistory registryDeliveryHistory) {
         registryDeliveryHistoryDao.delete(registryDeliveryHistory);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Transactional (readOnly = false)
+    @Override
+    public void delete(@NotNull Stub<Registry> stub) {
+        registryDeliveryHistoryDao.deleteByRegistry(stub.getId());
     }
 
     /**
@@ -74,6 +81,7 @@ public class RegistryDeliveryHistoryServiceImpl implements RegistryDeliveryHisto
      * @return  list
      */
     @NotNull
+    @Override
     public List<RegistryDeliveryHistory> listRegistryDeliveryHistories(@NotNull Page<RegistryDeliveryHistory> pager, @NotNull Date begin, @NotNull Date end) {
         return registryDeliveryHistoryDao.listRegistryDeliveryHistories(pager, begin, end);
     }

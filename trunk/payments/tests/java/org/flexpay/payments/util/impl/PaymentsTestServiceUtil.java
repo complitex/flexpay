@@ -14,6 +14,7 @@ import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 
 import javax.annotation.Resource;
 import java.util.Date;
@@ -22,15 +23,15 @@ public class PaymentsTestServiceUtil implements TestServiceUtil {
     private Logger log = LoggerFactory.getLogger(getClass());
 
     @Autowired
-    @Resource(name="languageService")
+    @Qualifier ("languageService")
 	private LanguageService languageService;
 
     @Autowired
-    @Resource(name="serviceTypeService")
+    @Qualifier ("serviceTypeService")
 	private ServiceTypeService serviceTypeService;
 
     @Autowired
-    @Resource(name="spService")
+    @Qualifier ("spService")
 	private SPService spService;
 
     @Override

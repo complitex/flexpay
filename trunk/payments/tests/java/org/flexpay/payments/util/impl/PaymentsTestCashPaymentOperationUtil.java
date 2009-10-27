@@ -15,6 +15,7 @@ import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
@@ -24,19 +25,18 @@ public class PaymentsTestCashPaymentOperationUtil implements TestOperationUtil {
     private Logger log = LoggerFactory.getLogger(getClass());
 
     @Autowired
-    @Resource(name="operationTypeService")
+    @Qualifier ("operationTypeService")
 	private OperationTypeService operationTypeService;
 	@Autowired
-    @Resource(name="operationLevelService")
+    @Qualifier ("operationLevelService")
 	private OperationLevelService operationLevelService;
 	@Autowired
-    @Resource(name="operationStatusService")
+    @Qualifier ("operationStatusService")
 	private OperationStatusService operationStatusService;
     @Autowired
-    @Resource(name="operationService")
-	private OperationService operationService;
+    private OperationService operationService;
     @Autowired
-    @Resource(name="paymentsTestCashPaymentDocumentUtil")
+    @Qualifier ("paymentsTestCashPaymentDocumentUtil")
     private TestDocumentUtil documentUtil;
 
     @Override

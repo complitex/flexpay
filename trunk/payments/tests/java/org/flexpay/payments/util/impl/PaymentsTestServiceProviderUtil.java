@@ -7,6 +7,7 @@ import org.flexpay.common.service.LanguageService;
 import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.orgs.persistence.ServiceProvider;
 import org.flexpay.orgs.persistence.ServiceProviderDescription;
+import org.flexpay.orgs.service.ServiceProviderAttributeService;
 import org.flexpay.orgs.service.ServiceProviderService;
 import org.flexpay.orgs.util.TestServiceProviderUtil;
 import org.flexpay.payments.persistence.Service;
@@ -15,6 +16,7 @@ import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -23,26 +25,30 @@ public class PaymentsTestServiceProviderUtil implements TestServiceProviderUtil 
     private Logger log = LoggerFactory.getLogger(getClass());
 
     @Autowired
-    @Resource(name="languageService")
+    @Qualifier ("languageService")
 	private LanguageService languageService;
 
     @Autowired
-    @Resource(name="serviceProviderService")
+    @Qualifier ("serviceProviderService")
     private ServiceProviderService tProviderService;
 
     @Autowired
-    @Resource(name="spService")
+    @Qualifier ("spService")
 	private SPService spService;
 
     @Autowired
-    @Resource(name="paymentsTestServiceUtil")
+    @Qualifier ("paymentsTestServiceUtil")
     private PaymentsTestServiceUtil serviceUtil;
+
+    @Autowired
+    @Qualifier ("serviceProviderServiceAttribute")
+    private ServiceProviderAttributeService serviceProviderAttributeService;
 
     @Override
     public ServiceProvider create(@NotNull Organization recipientOrganization) {
         Language lang = languageService.getLanguage("ru");
         if (lang == null) {
-            log.error("Languge did not find");
+            log.error("Language did not find");
             return null;
         }
 
@@ -71,6 +77,7 @@ public class PaymentsTestServiceProviderUtil implements TestServiceProviderUtil 
         for (Service service : services) {
             serviceUtil.delete(service);
         }
+        serviceProviderAttributeService.delete(Stub.stub(serviceProvider));
         tProviderService.delete(serviceProvider);
     }
 }

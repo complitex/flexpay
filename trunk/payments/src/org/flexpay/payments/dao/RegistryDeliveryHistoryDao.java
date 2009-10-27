@@ -19,4 +19,11 @@ public interface RegistryDeliveryHistoryDao extends GenericDao<RegistryDeliveryH
      */
     @NotNull
     List<RegistryDeliveryHistory> listRegistryDeliveryHistories(@NotNull Page<RegistryDeliveryHistory> pager, @NotNull Date begin, @NotNull Date end);
+
+    /**
+     * Delete registry delivery histories by registry id
+     *
+     * @param registryId registry id
+     */
+    void deleteByRegistry(Long registryId);
 }

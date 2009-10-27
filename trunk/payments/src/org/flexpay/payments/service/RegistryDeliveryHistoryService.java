@@ -2,6 +2,7 @@ package org.flexpay.payments.service;
 
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.dao.paging.Page;
+import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.payments.persistence.RegistryDeliveryHistory;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -36,9 +37,16 @@ public interface RegistryDeliveryHistoryService {
     /**
      * Delete RegistryDeliveryHistory object
      *
-     * @param registryDeliveryHistoryStub  RegistryDeliveryHistory object
+     * @param registryDeliveryHistory  RegistryDeliveryHistory object
      */
-	void delete(@NotNull Stub<RegistryDeliveryHistory> registryDeliveryHistoryStub);
+	void delete(@NotNull RegistryDeliveryHistory registryDeliveryHistory);
+
+    /**
+     * Delete RegistryDeliveryHistory objects by registry
+     *
+     * @param stub registry stub
+     */
+    void delete(@NotNull Stub<Registry> stub);
 
 
      /**

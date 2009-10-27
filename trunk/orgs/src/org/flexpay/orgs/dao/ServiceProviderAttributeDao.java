@@ -25,4 +25,10 @@ public interface ServiceProviderAttributeDao extends GenericDao<ServiceProviderA
         */
     List<ServiceProviderAttribute> findServiceProviderAttribute(@NotNull Long serviceProviderId, @NotNull String attributeName);
 
+    /**
+     * Delete all service provider attributes
+     *
+     * @param serviceProviderId Service provider identifier
+     */
+    void deleteByServiceProvider(@NotNull Long serviceProviderId);
 }

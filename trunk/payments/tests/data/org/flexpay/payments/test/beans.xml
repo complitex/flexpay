@@ -27,4 +27,7 @@
 
     <bean id="paymentsTestPaymentCollectorUtil"
           class="org.flexpay.payments.util.impl.PaymentsTestPaymentCollectorUtil"/>
+
+    <bean id="paymentsTestRegistryUtil"
+          class="org.flexpay.payments.util.impl.PaymentsTestRegistryUtil"/>
 </beans>
