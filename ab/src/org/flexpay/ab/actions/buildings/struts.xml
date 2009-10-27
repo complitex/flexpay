@@ -11,9 +11,8 @@
 			<result type="tiles">ab.building.list</result>
 		</action>
 
-        <action name="buildingsListAjax" class="buildingsListAjaxAction">
+        <action name="buildingsListAjax" class="buildingsListAction">
             <result>/WEB-INF/jsp/ab/buildings/buildings_list.jsp</result>
-            <result name="prerequestResponse">/WEB-INF/jsp/ab/filters/prerequest_response.jsp</result>
         </action>
 
 		<action name="buildingCreate" class="buildingCreateAction">

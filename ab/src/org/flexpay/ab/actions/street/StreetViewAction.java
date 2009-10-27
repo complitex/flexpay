@@ -1,6 +1,6 @@
 package org.flexpay.ab.actions.street;
 
-import org.flexpay.ab.actions.nametimedependent.ObjectViewAction;
+import org.flexpay.ab.actions.ObjectViewAction;
 import org.flexpay.ab.persistence.*;
 import org.flexpay.ab.service.StreetService;
 import static org.flexpay.common.persistence.Stub.stub;

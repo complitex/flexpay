@@ -1,6 +1,6 @@
 package org.flexpay.ab.actions.region;
 
-import org.flexpay.ab.actions.nametimedependent.ObjectViewAction;
+import org.flexpay.ab.actions.ObjectViewAction;
 import org.flexpay.ab.persistence.Region;
 import org.flexpay.ab.persistence.RegionName;
 import org.flexpay.ab.persistence.RegionNameTemporal;

@@ -15,10 +15,9 @@ import static org.flexpay.common.util.CollectionUtils.list;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class StreetsListAjaxAction extends FPActionWithPagerSupport<Street> {
+public class StreetsListAction extends FPActionWithPagerSupport<Street> {
 
 	private Long townFilter;
 	private StreetSearchFilter streetFilter = new StreetSearchFilter();
@@ -33,15 +32,15 @@ public class StreetsListAjaxAction extends FPActionWithPagerSupport<Street> {
 	@Override
 	public String doExecute() throws Exception {
 
-		streetSorterByName.setLang(getLanguage());
-		streetSorterByType.setLang(getLanguage());
-
-		List<ObjectSorter> sorters = CollectionUtils.<ObjectSorter>list(streetSorterByName, streetSorterByType);
-
 		if (townFilter == null || townFilter <= 0) {
 			log.warn("Incorrect town id in filter ({})", townFilter);
 			return SUCCESS;
 		}
+
+		streetSorterByName.setLang(getLanguage());
+		streetSorterByType.setLang(getLanguage());
+
+		List<ObjectSorter> sorters = CollectionUtils.<ObjectSorter>list(streetSorterByName, streetSorterByType);
 
 		List<Street> streetsStubs;
 
@@ -54,7 +53,6 @@ public class StreetsListAjaxAction extends FPActionWithPagerSupport<Street> {
 		if (log.isDebugEnabled()) {
 			log.info("Total streets found: {}", streetsStubs.size());
 		}
-		streets = new ArrayList<Street>();
 
 		for (Street street : streetsStubs) {
 			streets.add(streetService.readFull(stub(street)));

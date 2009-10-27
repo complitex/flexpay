@@ -4,13 +4,12 @@ import org.flexpay.ab.persistence.*;
 import org.flexpay.ab.persistence.filters.StreetTypeFilter;
 import org.flexpay.ab.service.StreetService;
 import org.flexpay.ab.service.StreetTypeService;
-import org.flexpay.ab.service.TownService;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Language;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.persistence.filter.BeginDateFilter;
-import org.flexpay.common.util.CollectionUtils;
+import static org.flexpay.common.util.CollectionUtils.treeMap;
 import org.flexpay.common.util.DateUtil;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
@@ -20,16 +19,15 @@ import java.util.Map;
 /**
  * Street simple editor
  */
-public class StreetEditSimpleAction extends FPActionSupport {
+public class StreetEditAction extends FPActionSupport {
 
 	private Street street = new Street();
 	private Long townFilter;
 	private StreetTypeFilter streetTypeFilter = new StreetTypeFilter();
 	private BeginDateFilter beginDateFilter = new BeginDateFilter();
-	private Map<Long, String> names = CollectionUtils.treeMap();
+	private Map<Long, String> names = treeMap();
 
 	private String crumbCreateKey;
-	private TownService townService;
 	private StreetTypeService streetTypeService;
 	private StreetService streetService;
 
@@ -204,11 +202,6 @@ public class StreetEditSimpleAction extends FPActionSupport {
 
 	public void setCrumbCreateKey(String crumbCreateKey) {
 		this.crumbCreateKey = crumbCreateKey;
-	}
-
-	@Required
-	public void setTownService(TownService townService) {
-		this.townService = townService;
 	}
 
 	@Required

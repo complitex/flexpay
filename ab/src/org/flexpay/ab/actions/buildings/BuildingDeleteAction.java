@@ -5,15 +5,15 @@ import org.flexpay.ab.persistence.BuildingAddress;
 import org.flexpay.ab.service.BuildingService;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.persistence.Stub;
+import static org.flexpay.common.util.CollectionUtils.list;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
-import java.util.Collections;
 import java.util.List;
 
 public class BuildingDeleteAction extends FPActionSupport {
 
-	private List<Long> objectIds = Collections.emptyList();
+	private List<Long> objectIds = list();
 	private Long redirectBuildingsId;
 
 	private BuildingService buildingService;
@@ -24,6 +24,7 @@ public class BuildingDeleteAction extends FPActionSupport {
 
 		boolean wasDeleted = false;
 		boolean primaryAddressError = false;
+
 		for (Long id : objectIds) {
 			Stub<BuildingAddress> addressStub = new Stub<BuildingAddress>(id);
 			Building building = buildingService.findBuilding(addressStub);

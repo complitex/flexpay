@@ -1,6 +1,7 @@
 package org.flexpay.ab.actions.filters;
 
 import org.flexpay.ab.persistence.District;
+import org.flexpay.ab.persistence.DistrictName;
 import org.flexpay.ab.persistence.Town;
 import org.flexpay.ab.service.DistrictService;
 import org.flexpay.common.exception.FlexPayException;
@@ -8,7 +9,6 @@ import org.flexpay.common.persistence.Stub;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class DistrictFilterAjaxAction extends FilterAjaxAction {
@@ -34,12 +34,13 @@ public class DistrictFilterAjaxAction extends FilterAjaxAction {
 		List<District> districts = districtService.findByTownAndQuery(new Stub<Town>(townId), "%" + q + "%");
 		log.debug("Found districts: {}", districts);
 
-		foundObjects = new ArrayList<FilterObject>();
 		for (District district : districts) {
-			FilterObject object = new FilterObject();
-			object.setValue(district.getId() + "");
-			object.setName(getTranslation(district.getCurrentName().getTranslations()).getName());
-			foundObjects.add(object);
+			DistrictName name = district.getCurrentName();
+			if (name == null) {
+				log.warn("Found incorrect district: {}", district);
+				continue;
+			}
+			foundObjects.add(new FilterObject(district.getId() + "", getTranslationName(name.getTranslations())));
 		}
 
 		return SUCCESS;
@@ -50,7 +51,7 @@ public class DistrictFilterAjaxAction extends FilterAjaxAction {
 		if (filterValueLong != null && filterValueLong > 0) {
 			District district = districtService.readFull(new Stub<District>(filterValueLong));
 			if (district != null && district.getCurrentName() != null) {
-				filterString = getTranslation(district.getCurrentName().getTranslations()).getName();
+				filterString = getTranslationName(district.getCurrentName().getTranslations());
 			} else {
 				filterString = "";
 			}

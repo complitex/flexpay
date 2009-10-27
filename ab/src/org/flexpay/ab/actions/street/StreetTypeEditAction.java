@@ -7,7 +7,7 @@ import org.flexpay.ab.service.StreetTypeService;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.persistence.Language;
 import static org.flexpay.common.persistence.Stub.stub;
-import org.flexpay.common.util.CollectionUtils;
+import static org.flexpay.common.util.CollectionUtils.treeMap;
 import org.flexpay.common.util.config.ApplicationConfig;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
@@ -17,8 +17,8 @@ import java.util.Map;
 public class StreetTypeEditAction extends FPActionSupport {
 
 	private StreetType streetType = new StreetType();
-	private Map<Long, String> names = CollectionUtils.treeMap();
-	private Map<Long, String> shortNames = CollectionUtils.treeMap();
+	private Map<Long, String> names = treeMap();
+	private Map<Long, String> shortNames = treeMap();
 
 	private String crumbCreateKey;
 	private StreetTypeService streetTypeService;
@@ -42,6 +42,7 @@ public class StreetTypeEditAction extends FPActionSupport {
 		// init translations
 		for (Map.Entry<Long, String> name : names.entrySet()) {
 			String value = name.getValue();
+			String shortName = shortNames.get(name.getKey());
 			Language lang = getLang(name.getKey());
 			if (lang.isDefault()) {
 				boolean error = false;
@@ -49,7 +50,7 @@ public class StreetTypeEditAction extends FPActionSupport {
 					addActionError(getText("ab.error.street_type.full_name_is_required"));
 					error = true;
 				}
-				if (StringUtils.isEmpty(shortNames.get(name.getKey()))) {
+				if (StringUtils.isEmpty(shortName)) {
 					addActionError(getText("ab.error.street_type.short_name_is_required"));
 					error = true;
 				}
@@ -57,11 +58,7 @@ public class StreetTypeEditAction extends FPActionSupport {
 					return INPUT;
 				}
 			}
-			StreetTypeTranslation translation = new StreetTypeTranslation();
-			translation.setLang(lang);
-			translation.setName(value);
-			translation.setShortName(shortNames.get(name.getKey()));
-			streetType.setTranslation(translation);
+			streetType.setTranslation(new StreetTypeTranslation(value, shortName, lang));
 		}
 
 		if (streetType.isNew()) {

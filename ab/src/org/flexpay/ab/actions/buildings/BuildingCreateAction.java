@@ -2,12 +2,14 @@ package org.flexpay.ab.actions.buildings;
 
 import org.apache.commons.lang.StringUtils;
 import org.flexpay.ab.persistence.*;
-import org.flexpay.ab.service.*;
+import org.flexpay.ab.service.AddressAttributeTypeService;
+import org.flexpay.ab.service.BuildingService;
+import org.flexpay.ab.service.ObjectsFactory;
 import org.flexpay.ab.util.config.ApplicationConfig;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
-import org.flexpay.common.util.CollectionUtils;
+import static org.flexpay.common.util.CollectionUtils.treeMap;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
@@ -22,11 +24,9 @@ public class BuildingCreateAction extends FPActionSupport {
 	private Long districtFilter;
 
 	// type id to value mapping
-	private Map<Long, String> attributeMap = CollectionUtils.treeMap();
+	private Map<Long, String> attributeMap = treeMap();
 
 	private BuildingService buildingService;
-	private DistrictService districtService;
-	private StreetService streetService;
 	private ObjectsFactory objectsFactory;
 	private AddressAttributeTypeService addressAttributeTypeService;
 
@@ -160,16 +160,6 @@ public class BuildingCreateAction extends FPActionSupport {
 	@Required
 	public void setAddressAttributeTypeService(AddressAttributeTypeService addressAttributeTypeService) {
 		this.addressAttributeTypeService = addressAttributeTypeService;
-	}
-
-	@Required
-	public void setDistrictService(DistrictService districtService) {
-		this.districtService = districtService;
-	}
-
-	@Required
-	public void setStreetService(StreetService streetService) {
-		this.streetService = streetService;
 	}
 
 }

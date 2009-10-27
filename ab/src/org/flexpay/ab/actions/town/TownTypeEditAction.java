@@ -7,7 +7,7 @@ import org.flexpay.ab.service.TownTypeService;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.persistence.Language;
 import static org.flexpay.common.persistence.Stub.stub;
-import org.flexpay.common.util.CollectionUtils;
+import static org.flexpay.common.util.CollectionUtils.treeMap;
 import org.flexpay.common.util.config.ApplicationConfig;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
@@ -17,8 +17,8 @@ import java.util.Map;
 public class TownTypeEditAction extends FPActionSupport {
 
 	private TownType townType = new TownType();
-	private Map<Long, String> names = CollectionUtils.treeMap();
-	private Map<Long, String> shortNames = CollectionUtils.treeMap();
+	private Map<Long, String> names = treeMap();
+	private Map<Long, String> shortNames = treeMap();
 
 	private String crumbCreateKey;
 	private TownTypeService townTypeService;

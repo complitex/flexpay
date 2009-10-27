@@ -2,29 +2,27 @@ package org.flexpay.ab.actions.district;
 
 import org.flexpay.ab.persistence.*;
 import org.flexpay.ab.service.DistrictService;
-import org.flexpay.ab.service.TownService;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Language;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.persistence.filter.BeginDateFilter;
-import org.flexpay.common.util.CollectionUtils;
+import static org.flexpay.common.util.CollectionUtils.treeMap;
 import org.flexpay.common.util.DateUtil;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.util.Map;
 
-public class DistrictEditSimpleAction extends FPActionSupport {
+public class DistrictEditAction extends FPActionSupport {
 
 	private District district = new District();
 	private Long townFilter;
 	private BeginDateFilter beginDateFilter = new BeginDateFilter();
 
-	private Map<Long, String> names = CollectionUtils.treeMap();
+	private Map<Long, String> names = treeMap();
 
 	private String crumbCreateKey;
-	private TownService townService;
 	private DistrictService districtService;
 
 	@NotNull
@@ -173,11 +171,6 @@ public class DistrictEditSimpleAction extends FPActionSupport {
 
 	public void setCrumbCreateKey(String crumbCreateKey) {
 		this.crumbCreateKey = crumbCreateKey;
-	}
-
-	@Required
-	public void setTownService(TownService townService) {
-		this.townService = townService;
 	}
 
 	@Required

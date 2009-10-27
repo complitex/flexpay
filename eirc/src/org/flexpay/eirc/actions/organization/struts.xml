@@ -172,7 +172,7 @@
             <result type="tiles">eirc.organization.service_organization.list_served_buildings</result>
         </action>
 
-        <action name="serviceOrganizationListServedBuildingsAjax" class="buildingsListAjaxAction">
+        <action name="serviceOrganizationListServedBuildingsAjax" class="buildingsListAction">
             <result>/WEB-INF/jsp/eirc/organizations/buildings_list.jsp</result>
         </action>
 

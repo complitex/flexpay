@@ -2,6 +2,7 @@ package org.flexpay.ab.actions.filters;
 
 import org.flexpay.ab.persistence.Region;
 import org.flexpay.ab.persistence.Town;
+import org.flexpay.ab.persistence.TownName;
 import org.flexpay.ab.service.TownService;
 import org.flexpay.ab.util.config.AbUserPreferences;
 import org.flexpay.ab.util.config.ApplicationConfig;
@@ -10,7 +11,6 @@ import org.flexpay.common.persistence.Stub;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class TownFilterAjaxAction extends FilterAjaxAction {
@@ -47,12 +47,13 @@ public class TownFilterAjaxAction extends FilterAjaxAction {
 		List<Town> towns = townService.findByRegionAndQuery(new Stub<Region>(regionId), "%" + q + "%");
 		log.debug("Found towns: {}", towns);
 
-		foundObjects = new ArrayList<FilterObject>();
 		for (Town town : towns) {
-			FilterObject object = new FilterObject();
-			object.setValue(town.getId() + "");
-			object.setName(getTranslation(town.getCurrentName().getTranslations()).getName());
-			foundObjects.add(object);
+			TownName name = town.getCurrentName();
+			if (name == null) {
+				log.warn("Found incorrect town: {}", town);
+				continue;
+			}
+			foundObjects.add(new FilterObject(town.getId() + "", getTranslationName(name.getTranslations())));
 		}
 
 		return SUCCESS;
@@ -77,7 +78,7 @@ public class TownFilterAjaxAction extends FilterAjaxAction {
 		}
 
 		if (town != null && town.getCurrentName() != null) {
-			filterString = getTranslation(town.getCurrentName().getTranslations()).getName();
+			filterString = getTranslationName(town.getCurrentName().getTranslations());
 		} else {
 			filterString = "";
 		}

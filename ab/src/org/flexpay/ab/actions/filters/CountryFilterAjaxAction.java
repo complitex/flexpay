@@ -8,7 +8,6 @@ import org.flexpay.common.persistence.Stub;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -25,12 +24,8 @@ public class CountryFilterAjaxAction extends FilterAjaxAction {
 		List<Country> countries = countryService.findByQuery("%" + q + "%");
 		log.debug("Found countries: {}", countries);
 
-		foundObjects = new ArrayList<FilterObject>();
 		for (Country country : countries) {
-			FilterObject object = new FilterObject();
-			object.setValue(country.getId() + "");
-			object.setName(getTranslation(country.getCountryNames()).getName());
-			foundObjects.add(object);
+			foundObjects.add(new FilterObject(country.getId() + "", getTranslationName(country.getCountryNames())));
 		}
 
 		return SUCCESS;
@@ -44,7 +39,7 @@ public class CountryFilterAjaxAction extends FilterAjaxAction {
 			filterValue = filterValueLong + "";
 		}
 		country = countryService.readFull(new Stub<Country>(filterValueLong));
-		filterString = getTranslation(country.getCountryNames()).getName();
+		filterString = getTranslationName(country.getCountryNames());
 	}
 
 	@Override

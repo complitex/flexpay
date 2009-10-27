@@ -18,10 +18,6 @@ public class BuildingViewAction extends FPActionSupport {
 
 	private Building building = Building.newInstance();
 
-	{
-		setCrumbNameKey("ab.crumbs.buildings_view");
-	}
-
 	@NotNull
 	@Override
 	public String doExecute() throws FlexPayException {

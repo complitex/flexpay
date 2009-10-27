@@ -1,8 +1,11 @@
-<%@ include file="/WEB-INF/jsp/common/taglibs.jsp" %>
+<%@include file="/WEB-INF/jsp/common/taglibs.jsp"%>
+
+<script type="text/javascript">FP.sorters[FP.sorters.length] = "countrySorterActive";</script>
+
 <s:hidden name="countrySorter.active" id="countrySorterActive" />
 <s:hidden name="countrySorter.order" id="countrySorterOrder" />
-<script type="text/javascript">FP.sorters[FP.sorters.length] = 'countrySorterActive';</script>
-<input type="submit" class="btn-link" onclick="<s:if test="countrySorter.activated">$('#countrySorterOrder').val('<s:property value="%{countrySorter.oppositeOrder}" />');</s:if>FP.activateSorter('countrySorterActive');" value="<s:text name="ab.country"/>"/>
+<input type="button" class="btn-link" id="countrySorterButton"
+       onclick="<s:if test="countrySorter.activated">$('#countrySorterOrder').val('<s:property value="countrySorter.oppositeOrder" />');</s:if>FP.activateSorter('countrySorterActive');" value="<s:text name="ab.country" />" />
 <s:if test="countrySorter.activated">
 	<s:if test="countrySorter.desc"><img
 			src="<s:url value="/resources/common/img/i_arrow_up.gif" includeParams="none" />"

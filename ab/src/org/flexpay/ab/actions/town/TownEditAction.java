@@ -2,7 +2,6 @@ package org.flexpay.ab.actions.town;
 
 import org.flexpay.ab.persistence.*;
 import org.flexpay.ab.persistence.filters.TownTypeFilter;
-import org.flexpay.ab.service.RegionService;
 import org.flexpay.ab.service.TownService;
 import org.flexpay.ab.service.TownTypeService;
 import org.flexpay.common.actions.FPActionSupport;
@@ -10,7 +9,7 @@ import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Language;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.persistence.filter.BeginDateFilter;
-import org.flexpay.common.util.CollectionUtils;
+import static org.flexpay.common.util.CollectionUtils.treeMap;
 import org.flexpay.common.util.DateUtil;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
@@ -20,16 +19,15 @@ import java.util.Map;
 /**
  * Town simple editor
  */
-public class TownEditSimpleAction extends FPActionSupport {
+public class TownEditAction extends FPActionSupport {
 
 	private Town town = new Town();
     private Long regionFilter;
     private TownTypeFilter townTypeFilter = new TownTypeFilter();
     private BeginDateFilter beginDateFilter = new BeginDateFilter();
-    private Map<Long, String> names = CollectionUtils.treeMap();
+    private Map<Long, String> names = treeMap();
 
 	private String crumbCreateKey;
-    private RegionService regionService;
     private TownTypeService townTypeService;
     private TownService townService;
 
@@ -207,11 +205,6 @@ public class TownEditSimpleAction extends FPActionSupport {
 	public void setCrumbCreateKey(String crumbCreateKey) {
 		this.crumbCreateKey = crumbCreateKey;
 	}
-
-	@Required
-    public void setRegionService(RegionService regionService) {
-        this.regionService = regionService;
-    }
 
 	@Required
     public void setTownTypeService(TownTypeService townTypeService) {

@@ -1,9 +1,9 @@
 package org.flexpay.ab.actions.buildings;
 
-import org.flexpay.common.actions.FPActionSupport;
-import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.ab.persistence.AddressAttributeType;
 import org.flexpay.ab.service.AddressAttributeTypeService;
+import org.flexpay.common.actions.FPActionSupport;
+import static org.flexpay.common.persistence.Stub.stub;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 

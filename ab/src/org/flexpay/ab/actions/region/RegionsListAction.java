@@ -9,15 +9,17 @@ import org.flexpay.common.actions.FPActionWithPagerSupport;
 import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.common.persistence.sorter.ObjectSorter;
 import org.flexpay.common.util.CollectionUtils;
+import static org.flexpay.common.util.CollectionUtils.arrayStack;
+import static org.flexpay.common.util.CollectionUtils.list;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.util.List;
 
-public class RegionsListAjaxAction extends FPActionWithPagerSupport<Region> {
+public class RegionsListAction extends FPActionWithPagerSupport<Region> {
 
 	private Long countryFilter;
-	private List<Region> regions = CollectionUtils.list();
+	private List<Region> regions = list();
 
 	private RegionSorter regionSorter = new RegionSorter();
 	private RegionService regionService;
@@ -31,15 +33,15 @@ public class RegionsListAjaxAction extends FPActionWithPagerSupport<Region> {
 			return SUCCESS;
 		}
 
-		ArrayStack filters = CollectionUtils.arrayStack(new CountryFilter(countryFilter));
+		ArrayStack filters = arrayStack(new CountryFilter(countryFilter));
 		List<ObjectSorter> sorters = CollectionUtils.<ObjectSorter>list(regionSorter);
-		List<Region> regionStubs = regionService.find(filters, sorters, getPager());
+		regions = regionService.find(filters, sorters, getPager());
 
 		if (log.isDebugEnabled()) {
-			log.debug("Total regions found: {}", regionStubs.size());
+			log.debug("Total regions found: {}", regions.size());
 		}
 
-		regions = regionService.readFull(DomainObject.collectionIds(regionStubs), true);
+		regions = regionService.readFull(DomainObject.collectionIds(regions), true);
 
 		return SUCCESS;
 	}

@@ -5,17 +5,17 @@ import org.flexpay.ab.persistence.Person;
 import org.flexpay.ab.persistence.filters.PersonSearchFilter;
 import org.flexpay.ab.service.PersonService;
 import org.flexpay.common.actions.FPActionWithPagerSupport;
-import org.flexpay.common.service.ParentService;
 import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.service.ParentService;
+import static org.flexpay.common.util.CollectionUtils.list;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class PersonsListAction extends FPActionWithPagerSupport<Person> {
 
-	private List<Person> persons = new ArrayList<Person>();
+	private List<Person> persons = list();
 	private PersonSearchFilter personSearchFilter = new PersonSearchFilter();
 
 	private ParentService<?> parentService;

@@ -11,9 +11,8 @@
 			<result type="tiles">ab.districts.list</result>
 		</action>
 
-        <action name="districtsListAjax" class="districtsListAjaxAction">
+        <action name="districtsListAjax" class="districtsListAction">
             <result>/WEB-INF/jsp/ab/districts/districts_list.jsp</result>
-            <result name="prerequestResponse">/WEB-INF/jsp/ab/filters/prerequest_response.jsp</result>
         </action>
 
         <action name="districtDelete" class="districtDeleteAction">

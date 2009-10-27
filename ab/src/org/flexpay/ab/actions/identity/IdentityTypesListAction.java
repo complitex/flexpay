@@ -18,6 +18,7 @@ public class IdentityTypesListAction extends FPActionSupport {
 	@NotNull
 	@Override
 	public String doExecute() throws Exception {
+
 		identityTypes = identityTypeService.getEntities();
 
 		return SUCCESS;

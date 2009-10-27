@@ -1,8 +1,8 @@
 package org.flexpay.ab.actions.district;
 
 import org.flexpay.ab.service.DistrictService;
-import static org.flexpay.common.util.CollectionUtils.set;
 import org.flexpay.common.actions.FPActionSupport;
+import static org.flexpay.common.util.CollectionUtils.set;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 

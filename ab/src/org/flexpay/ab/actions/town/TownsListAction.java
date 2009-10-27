@@ -10,13 +10,14 @@ import org.flexpay.common.actions.FPActionWithPagerSupport;
 import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.common.persistence.sorter.ObjectSorter;
 import org.flexpay.common.util.CollectionUtils;
+import static org.flexpay.common.util.CollectionUtils.arrayStack;
 import static org.flexpay.common.util.CollectionUtils.list;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.util.List;
 
-public class TownsListAjaxAction extends FPActionWithPagerSupport<Town> {
+public class TownsListAction extends FPActionWithPagerSupport<Town> {
 
 	private Long regionFilter;
 	private List<Town> towns = list();
@@ -37,12 +38,12 @@ public class TownsListAjaxAction extends FPActionWithPagerSupport<Town> {
 		townSorterByName.setLang(getLanguage());
 		townSorterByType.setLang(getLanguage());
 
-		ArrayStack filters = CollectionUtils.arrayStack(new RegionFilter(regionFilter));
+		ArrayStack filters = arrayStack(new RegionFilter(regionFilter));
 		List<ObjectSorter> sorters = CollectionUtils.<ObjectSorter>list(townSorterByName, townSorterByType);
 		List<Town> townStubs = townService.find(filters, sorters, getPager());
 
 		if (log.isDebugEnabled()) {
-			log.info("Total towns found: {}", townStubs.size());
+			log.debug("Total towns found: {}", townStubs.size());
 		}
 
 		towns = townService.readFull(DomainObject.collectionIds(townStubs), true);

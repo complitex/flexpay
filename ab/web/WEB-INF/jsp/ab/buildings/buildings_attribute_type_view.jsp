@@ -1,11 +1,11 @@
-<%@include file="/WEB-INF/jsp/common/taglibs.jsp" %>
+<%@include file="/WEB-INF/jsp/common/taglibs.jsp"%>
 
 <table cellpadding="3" cellspacing="1" border="0" width="100%">
     <tr>
         <td class="th" width="1%">&nbsp;</td>
-        <td class="th"><s:text name="ab.language"/></td>
-        <td class="th"><s:text name="ab.buildings.attribute_type"/></td>
-        <td class="th"><s:text name="ab.short_name"/></td>
+        <td class="th"><s:text name="ab.language" /></td>
+        <td class="th"><s:text name="ab.buildings.attribute_type" /></td>
+        <td class="th"><s:text name="ab.short_name" /></td>
     </tr>
     <s:iterator value="attributeType.translations" status="rowstatus">
         <tr valign="middle" class="cols_1">
@@ -27,12 +27,12 @@
         </tr>
     </s:iterator>
     <tr>
-        <td colspan="4" height="3" bgcolor="#4a4f4f"/>
+        <td colspan="4" height="3" bgcolor="#4a4f4f"></td>
     </tr>
     <tr>
         <td colspan="4">
             <input type="button" class="btn-exit"
-                   onclick="window.location='<s:url action="addressAttributeTypeEdit"><s:param name="attributeType.id" value="%{attributeType.id}"/></s:url>';"
+                   onclick="window.location='<s:url action="addressAttributeTypeEdit" includeParams="none"><s:param name="attributeType.id" value="attributeType.id" /></s:url>';"
                    value="<s:text name="common.edit" />" />
         </td>
     </tr>

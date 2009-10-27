@@ -18,7 +18,9 @@ public class MeasureUnitsListAction extends FPActionSupport {
 	@NotNull
 	@Override
 	protected String doExecute() throws Exception {
+
 		units = measureUnitService.listUnits();
+
 		return SUCCESS;
 	}
 
