@@ -1,7 +1,6 @@
 package org.flexpay.ab.service.impl;
 
 import org.apache.commons.lang.time.DateUtils;
-import org.flexpay.ab.dao.TownDao;
 import org.flexpay.ab.persistence.*;
 import org.flexpay.ab.service.TownService;
 import org.flexpay.ab.util.config.ApplicationConfig;
@@ -13,7 +12,6 @@ import org.flexpay.common.persistence.TimeLine;
 import org.flexpay.common.service.importexport.CorrectionsService;
 import org.flexpay.common.util.DateIntervalUtil;
 import org.flexpay.common.util.TranslationUtil;
-import static org.flexpay.common.util.config.ApplicationConfig.getPastInfinite;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
@@ -21,6 +19,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
+
+import static org.flexpay.common.util.config.ApplicationConfig.getPastInfinite;
 
 public class TownProcessor extends AbstractProcessor<Town> {
 

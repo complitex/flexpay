@@ -112,6 +112,13 @@
 		<antcall target="template.copy.classes" />
 	</target>
 
+	<target name="ab_sync.prepare.test.war">
+		<antcall target="ab_sync.prepare.war.internal" />
+		<antcall target="war.security" />
+		<antcall target="template.copy.classes" />
+	</target>
+
+
     <target name="ab_sync.prepare.war.internal" depends="ab.prepare.war.internal">
         <fileset id="ab_sync.web.resources" dir="${ab_sync.dir}/web" />
         <antcall target="template.prepare.war">
@@ -156,7 +163,7 @@
 		</antcall>
 	</target>
 
-	<target name="ab_sync.runtests" depends="ab_sync.prepare.war">
+	<target name="ab_sync.runtests" depends="ab_sync.compile.test,ab_sync.prepare.test.war">
 		<condition property="class.name" value="${test.class.name}" else="org.flexpay.ab.sync.AllTests">
 			<isset property="test.class.name" />
 		</condition>
@@ -178,17 +185,34 @@
 		</antcall>
 	</target>
 
-	<target name="ab_sync.sql.init-db">
-		<antcall target="ab.sql.init-db" />
-	</target>
-
 	<target name="ab_sync.sql.all">
 		<antcall target="common.sql.create-db" />
 		<concat destfile="${build.dir}/sql/init_db.sql">
 			<fileset file="${ab_sync.dir}/etc/sql/sync.sql" />
 		</concat>
-		<antcall target="ab_sync.sql.init-db" />
+		<antcall target="ab.sql.init-db" />
 	</target>
 
+	<target name="ab_sync.sql.all-test">
+		<antcall target="common.sql.create-db" />
+		<concat destfile="${build.dir}/sql/init_db.sql" append="true" encoding="UTF-8">
+			<fileset dir="${basedir}">
+				<include name="ab/etc/sql/flexpay_ab.ddl.sql" />
+				<include name="ab_sync/etc/sql/sync.sql" />
+			</fileset>
+		</concat>
+		<antcall target="ab.sql.init-db-test" />
+		<concat destfile="${build.dir}/sql/init_db.sql" append="true" encoding="UTF-8">
+			<fileset file="${ab_sync.dir}/etc/sql/sync_test.sql" />
+		</concat>
+		<antcall target="template.set_test_db_name" />
+	</target>
+
+	<target name="ab_sync.db-test" description="create ab_sync test db">
+		<antcall target="ab_sync.sql.all-test" />
+		<antcall target="template.mysql.run">
+			<param name="src.sql" value="${build.dir}/sql/init_db.sql" />
+		</antcall>
+	</target>
 
 </project>
