@@ -44,20 +44,6 @@ public class FPFileUtil {
 		return getLocalDirPath(file.getModule().getName(), file.getCreationDate()) + file.getNameOnServer();
 	}
 
-	/**
-	 * Returns file
-	 *
-	 * @param fpFile fpFile
-	 * @return file
-	 * @deprecated Hide usage of FS
-	 */
-	public static File getFileOnServer(FPFile fpFile) {
-		if (fpFile == null || fpFile.getNameOnServer() == null) {
-			return null;
-		}
-		return new File(getFileLocalPath(fpFile));
-	}
-
 	private static final Object MKDIR_MONITOR = new Object();
 
 	private static File createFile(@NotNull FPFile fpFile) throws IOException {

@@ -22,4 +22,5 @@ public interface ObjectsFactory {
 	 * @return new building instance
 	 */
 	Building newBuilding();
+
 }

@@ -107,6 +107,7 @@ public abstract class NameTimeDependentServiceImpl<
 	 * @return object, or <code>null</code> if not found
 	 */
 	@Nullable
+	@Override
 	public NTD readFull(@NotNull Stub<NTD> stub) {
 		return getNameTimeDependentDao().readFull(stub.getId());
 	}
@@ -119,16 +120,27 @@ public abstract class NameTimeDependentServiceImpl<
 	 *          if failure occurs
 	 */
 	@Transactional (readOnly = false)
+	@Override
 	public void disable(Collection<NTD> objects) throws FlexPayExceptionContainer {
 
-		log.info("{} objects to disable", objects.size());
+		if (log.isDebugEnabled()) {
+			log.debug("{} objects to disable", objects.size());
+		}
 		FlexPayExceptionContainer container = new FlexPayExceptionContainer();
 
 		for (NTD ntd : objects) {
 			if (!canDisable(ntd, container)) {
 				continue;
 			}
+			if (ntd == null || ntd.isNew()) {
+				log.warn("Incorrect id. Can't get object from DB: {}", ntd);
+				continue;
+			}
 			NTD ntdDB = getNameTimeDependentDao().read(ntd.getId());
+			if (ntdDB == null) {
+				log.warn("Can't get object from DB: {}", ntd);
+				continue;
+			}
 			ntdDB.disable();
 			getNameTimeDependentDao().update(ntdDB);
 
@@ -146,6 +158,7 @@ public abstract class NameTimeDependentServiceImpl<
 	 * @param id key
 	 * @return temporal object name, or <code>null</code> if object not found
 	 */
+	@Override
 	public DI readTemporalName(Long id) {
 		return getNameTemporalDao().readFull(id);
 	}
@@ -158,12 +171,13 @@ public abstract class NameTimeDependentServiceImpl<
 	 * @return List of names
 	 * @throws FlexPayException if failure occurs
 	 */
-	public List<TV> findNames(ArrayStack filters, Page pager)
+	@Override
+	public List<TV> findNames(ArrayStack filters, Page<NTD> pager)
 			throws FlexPayException {
 
 		log.info("Getting list of names: {}", filters);
 
-		PrimaryKeyFilter filter = (PrimaryKeyFilter) filters.peek();
+		PrimaryKeyFilter<?> filter = (PrimaryKeyFilter<?>) filters.peek();
 
 		List<NTD> ntds = getNameTimeDependentDao().findObjects(pager,
 				ObjectWithStatus.STATUS_ACTIVE, filter.getSelectedId());
@@ -175,10 +189,14 @@ public abstract class NameTimeDependentServiceImpl<
 			LinkedList<DI> wrapper = new LinkedList<DI>(temporals);
 			if (wrapper.isEmpty()) {
 				log.info("Found NTD, but no temporals: {}", ntd);
-			} else {
-				DI temporal = wrapper.getLast();
-				names.add(getNameValueDao().readFull(temporal.getValue().getId()));
+				continue;
 			}
+			TV value = wrapper.getLast().getValue();
+			if (value == null || value.isNew()) {
+				log.warn("Incorrect temporal value: {}", value);
+				continue;
+			}
+			names.add(getNameValueDao().readFull(value.getId()));
 		}
 
 		return names;
@@ -191,7 +209,7 @@ public abstract class NameTimeDependentServiceImpl<
 	 * @return List of names
 	 * @throws FlexPayException if failure occurs
 	 */
-	protected List<TV> findNames(PrimaryKeyFilter filter)
+	protected List<TV> findNames(PrimaryKeyFilter<?> filter)
 			throws FlexPayException {
 
 		log.debug("Getting list of names: {}", filter);
@@ -207,14 +225,18 @@ public abstract class NameTimeDependentServiceImpl<
 				log.warn("Object does not have any temporals: {}", ntd);
 				continue;
 			}
-			DI temporal = temporals.getLast();
-			names.add(getNameValueDao().readFull(temporal.getValue().getId()));
+			TV value = temporals.getLast().getValue();
+			if (value == null || value.isNew()) {
+				log.warn("Incorrect temporal value: {}", value);
+				continue;
+			}
+			names.add(getNameValueDao().readFull(value.getId()));
 		}
 
 		return names;
 	}
 
-	protected List<T> getTranslations(PrimaryKeyFilter filter, Locale locale) throws FlexPayException {
+	protected List<T> getTranslations(PrimaryKeyFilter<?> filter, Locale locale) throws FlexPayException {
 		List<TV> names = findNames(filter);
 		List<T> nameTranslations = new ArrayList<T>(names.size());
 		for (TV name : names) {
@@ -225,10 +247,8 @@ public abstract class NameTimeDependentServiceImpl<
 		return nameTranslations;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Transactional (readOnly = false, rollbackFor = Exception.class)
+	@Override
 	public NTD create(NTD object, List<T> nameTranslations, ArrayStack filters, Date date)
 			throws FlexPayExceptionContainer {
 
@@ -295,7 +315,7 @@ public abstract class NameTimeDependentServiceImpl<
 	private DomainObject getParent(
 			ArrayStack filters, FlexPayExceptionContainer container) {
 
-		PrimaryKeyFilter filter = (PrimaryKeyFilter) filters.peek();
+		PrimaryKeyFilter<?> filter = (PrimaryKeyFilter<?>) filters.peek();
 		if (filter.getSelectedId() == null) {
 			container.addException(new FlexPayException("null",
 					getI18nKeyBase() + ".no_parent_selectected"));
@@ -304,7 +324,14 @@ public abstract class NameTimeDependentServiceImpl<
 
 		GenericDao<Parent, Long> parentDao = getParentDao();
 
-		DomainObject domainObject = parentDao.read(filter.getSelectedId());
+		Long selectedId = filter.getSelectedId();
+		if (selectedId == null || selectedId <= 0) {
+			container.addException(new FlexPayException("null",
+					getI18nKeyBase() + ".parent_id_invalid"));
+			log.info("Failed getting parent, because selectedId in filter null or less 1");
+			return null;
+		}
+		DomainObject domainObject = parentDao.read(selectedId);
 		if (domainObject == null) {
 			container.addException(new FlexPayException("null",
 					getI18nKeyBase() + ".parent_id_invalid"));
@@ -325,6 +352,7 @@ public abstract class NameTimeDependentServiceImpl<
 	 * @throws FlexPayExceptionContainer exceptions container
 	 */
 	@Transactional (readOnly = false)
+	@Override
 	public NTD updateNameTranslations(NTD object, Long temporalId, List<T> nameTranslations,
 									  Date date) throws FlexPayExceptionContainer {
 		FlexPayExceptionContainer container = new FlexPayExceptionContainer();
@@ -426,20 +454,16 @@ public abstract class NameTimeDependentServiceImpl<
 		return names;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
+	@Override
 	public List<NTD> find(ArrayStack filters) {
-		PrimaryKeyFilter filter = (PrimaryKeyFilter) filters.peek();
+		PrimaryKeyFilter<?> filter = (PrimaryKeyFilter<?>) filters.peek();
 		return getNameTimeDependentDao().findObjects(
 				ObjectWithStatus.STATUS_ACTIVE, filter.getSelectedId());
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
-	public List<NTD> find(ArrayStack filters, Page pager) {
-		PrimaryKeyFilter filter = (PrimaryKeyFilter) filters.peek();
+	@Override
+	public List<NTD> find(ArrayStack filters, Page<NTD> pager) {
+		PrimaryKeyFilter<?> filter = (PrimaryKeyFilter<?>) filters.peek();
 		return getNameTimeDependentDao().findObjects(
 				pager, ObjectWithStatus.STATUS_ACTIVE, filter.getSelectedId());
 	}
@@ -452,7 +476,8 @@ public abstract class NameTimeDependentServiceImpl<
 	 * @return Object if found, or <code>null</code> otherwise
 	 */
 	@NotNull
-	public List<NTD> findByName(String name, PrimaryKeyFilter filter) {
+	@Override
+	public List<NTD> findByName(String name, PrimaryKeyFilter<NTD> filter) {
 		List<NTD> objs = getNameTimeDependentDao().findObjects(
 				ObjectWithStatus.STATUS_ACTIVE, filter.getSelectedId());
 		List<NTD> result = CollectionUtils.list();
@@ -470,4 +495,5 @@ public abstract class NameTimeDependentServiceImpl<
 
 		return result;
 	}
+
 }

@@ -22,7 +22,9 @@ public class CountryFilterAjaxAction extends FilterAjaxAction {
 	public String doExecute() throws FlexPayException {
 
 		List<Country> countries = countryService.findByQuery("%" + q + "%");
-		log.debug("Found countries: {}", countries);
+		if (log.isDebugEnabled()) {
+			log.debug("Found countries: {}", countries.size());
+		}
 
 		for (Country country : countries) {
 			foundObjects.add(new FilterObject(country.getId() + "", getTranslationName(country.getCountryNames())));

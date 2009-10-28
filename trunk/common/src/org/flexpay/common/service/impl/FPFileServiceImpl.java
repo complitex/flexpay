@@ -145,18 +145,6 @@ public class FPFileServiceImpl implements FPFileService {
 	}
 
 	/**
-	 * Get file from file system by FPFile entity id, which locating to this file
-	 *
-	 * @param stub FPFile entity stub
-	 * @return file on file system
-	 * @throws FlexPayException
-	 */
-	@Override
-	public File getFileFromFileSystem(@NotNull Stub<FPFile> stub) throws FlexPayException {
-		return FPFileUtil.getFileOnServer(read(stub));
-	}
-
-	/**
 	 * Get FPFiles from database by module name,
 	 *
 	 * @param moduleName name of module

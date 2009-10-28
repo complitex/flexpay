@@ -30,7 +30,8 @@ public interface CountryService extends ParentService<CountryFilter> {
 	 * @throws FlexPayException if failure occurs
 	 */
 	@Secured (Roles.COUNTRY_READ)
-	CountryFilter initFilter(CountryFilter parentFilter, PrimaryKeyFilter forefatherFilter, Locale locale)
+	@Override
+	CountryFilter initFilter(CountryFilter parentFilter, PrimaryKeyFilter<?> forefatherFilter, Locale locale)
 			throws FlexPayException;
 
 	/**
@@ -43,6 +44,7 @@ public interface CountryService extends ParentService<CountryFilter> {
 	 * @throws FlexPayException if failure occurs
 	 */
 	@Secured (Roles.COUNTRY_READ)
+	@Override
 	ArrayStack initFilters(ArrayStack filters, Locale locale) throws FlexPayException;
 
 	/**
@@ -119,4 +121,5 @@ public interface CountryService extends ParentService<CountryFilter> {
 	 */
 	@Secured (Roles.COUNTRY_READ)
 	List<Country> find(ArrayStack filters, List<ObjectSorter> sorters, Page<Country> pager);
+
 }

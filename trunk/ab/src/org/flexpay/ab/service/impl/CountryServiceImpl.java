@@ -15,6 +15,8 @@ import org.flexpay.common.persistence.Language;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
 import org.flexpay.common.persistence.sorter.ObjectSorter;
+import static org.flexpay.common.util.CollectionUtils.list;
+import static org.flexpay.common.util.CollectionUtils.set;
 import org.flexpay.common.util.LanguageUtil;
 import org.flexpay.common.util.config.ApplicationConfig;
 import org.jetbrains.annotations.NotNull;
@@ -23,7 +25,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.List;
+import java.util.Locale;
+import java.util.Set;
 
 @Transactional (readOnly = true)
 public class CountryServiceImpl implements CountryService {
@@ -34,6 +39,7 @@ public class CountryServiceImpl implements CountryService {
 	private CountryDaoExt countryDaoExt;
 	private CountryNameTranslationDao countryNameTranslationDao;
 
+	@Override
 	public Country readFull(@NotNull Stub<Country> stub) {
 		return countryDao.readFull(stub.getId());
 	}
@@ -52,12 +58,13 @@ public class CountryServiceImpl implements CountryService {
 	}
 
 	@Transactional (readOnly = false)
+	@Override
 	public Country create(List<CountryNameTranslation> countryNames) {
 		Country country = new Country();
 
 		log.info("Country names to persist: {}", countryNames);
 
-		Set<CountryNameTranslation> names = new HashSet<CountryNameTranslation>();
+		Set<CountryNameTranslation> names = set();
 		for (CountryNameTranslation name : countryNames) {
 			if (!StringUtils.isBlank(name.getName())) {
 				name.setTranslatable(country);
@@ -80,6 +87,7 @@ public class CountryServiceImpl implements CountryService {
 		return country;
 	}
 
+	@Override
 	public List<CountryNameTranslation> getCountries(@NotNull Locale locale) throws FlexPayException {
 		Language language = LanguageUtil.getLanguage(locale);
 		Language defaultLang = ApplicationConfig.getDefaultLanguage();
@@ -87,12 +95,12 @@ public class CountryServiceImpl implements CountryService {
 
 		log.info("Found {} countries", countries.size());
 
-		List<CountryNameTranslation> countryNameList = new ArrayList<CountryNameTranslation>();
+		List<CountryNameTranslation> countryNameList = list();
 
 		for (Country country : countries) {
 			CountryNameTranslation name = getCountryName(country, language, defaultLang);
 			if (name == null) {
-				log.error("No name for country: {} : {}, {}", new Object[]{language.getLangIsoCode(), defaultLang.getLangIsoCode(), country});
+				log.error("No name for country: {} : {}, {}", new Object[] {language.getLangIsoCode(), defaultLang.getLangIsoCode(), country});
 				continue;
 			}
 			name.setLangTranslation(LanguageUtil.getLanguageName(name.getLang(), locale));
@@ -154,6 +162,7 @@ public class CountryServiceImpl implements CountryService {
 	 * @return Initialised filters collection
 	 * @throws FlexPayException if failure occurs
 	 */
+	@Override
 	public ArrayStack initFilters(ArrayStack filters, Locale locale) throws FlexPayException {
 		if (filters == null) {
 			filters = new ArrayStack();
@@ -175,16 +184,19 @@ public class CountryServiceImpl implements CountryService {
 	 * @return Initialised filter
 	 * @throws FlexPayException if failure occurs
 	 */
-	public CountryFilter initFilter(CountryFilter parentFilter, PrimaryKeyFilter foreFatherFilter, Locale locale)
+	@Override
+	public CountryFilter initFilter(CountryFilter parentFilter, PrimaryKeyFilter<?> foreFatherFilter, Locale locale)
 			throws FlexPayException {
 		return initFilter(parentFilter, locale);
 	}
 
+	@Override
 	public boolean isNameAvailable(@NotNull String name, @NotNull Language language) {
 		List<CountryNameTranslation> translations = countryNameTranslationDao.findByName(name, language);
 		return translations.isEmpty();
 	}
 
+	@Override
 	public boolean isShortNameAvailable(@NotNull String shortName, @NotNull Language language) {
 		List<CountryNameTranslation> translations = countryNameTranslationDao.findByShortName(shortName, language);
 		return translations.isEmpty();
@@ -199,6 +211,7 @@ public class CountryServiceImpl implements CountryService {
 	}
 
 	@NotNull
+	@Override
 	public List<Country> findByQuery(@NotNull String query) {
 		return countryDao.findByQuery(query);
 	}

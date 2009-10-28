@@ -32,7 +32,7 @@ import java.util.Locale;
 /**
  * Region service layer implementation
  */
-@Transactional (readOnly = true, rollbackFor = Exception.class)
+@Transactional (readOnly = true)
 public class RegionServiceImpl extends NameTimeDependentServiceImpl<
 		RegionNameTranslation, RegionName, RegionNameTemporal, Region, Country>
 		implements RegionService {
@@ -55,14 +55,17 @@ public class RegionServiceImpl extends NameTimeDependentServiceImpl<
 	 * @param container FlexPayExceptionContainer
 	 * @return <code>true</code>
 	 */
+	@Override
 	protected boolean canDisable(Region region, FlexPayExceptionContainer container) {
 		return true;
 	}
 
+	@Override
 	protected RegionDao getNameTimeDependentDao() {
 		return regionDao;
 	}
 
+	@Override
 	protected RegionNameTemporalDao getNameTemporalDao() {
 		return regionNameTemporalDao;
 	}
@@ -72,6 +75,7 @@ public class RegionServiceImpl extends NameTimeDependentServiceImpl<
 	 *
 	 * @return Localization key base
 	 */
+	@Override
 	protected String getI18nKeyBase() {
 		return "ab.region";
 	}
@@ -81,6 +85,7 @@ public class RegionServiceImpl extends NameTimeDependentServiceImpl<
 	 *
 	 * @return GenericDao implementation
 	 */
+	@Override
 	protected RegionNameDao getNameValueDao() {
 		return regionNameDao;
 	}
@@ -90,27 +95,33 @@ public class RegionServiceImpl extends NameTimeDependentServiceImpl<
 	 *
 	 * @return GenericDao implementation
 	 */
+	@Override
 	protected GenericDao<Country, Long> getParentDao() {
 		return countryDao;
 	}
 
+	@Override
 	protected RegionNameTemporal getNewNameTemporal() {
 		return new RegionNameTemporal();
 	}
 
+	@Override
 	protected Region getNewNameTimeDependent() {
 		return new Region();
 	}
 
+	@Override
 	protected RegionName getEmptyName() {
 		return new RegionName();
 	}
 
+	@Override
 	public RegionNameTranslation getEmptyNameTranslation() {
 		return new RegionNameTranslation();
 	}
 
 	@Transactional (readOnly = false)
+	@Override
 	public Region create(@NotNull Region region) throws FlexPayExceptionContainer {
 
 		validate(region);
@@ -124,6 +135,7 @@ public class RegionServiceImpl extends NameTimeDependentServiceImpl<
 
 	@SuppressWarnings ({"ThrowableInstanceNeverThrown"})
 	@Transactional (readOnly = false)
+	@Override
 	public Region update(@NotNull Region region) throws FlexPayExceptionContainer {
 		validate(region);
 
@@ -203,6 +215,7 @@ public class RegionServiceImpl extends NameTimeDependentServiceImpl<
 	 * @param locale  Locale to get parent names in
 	 * @return Initialised filters collection
 	 */
+	@Override
 	public ArrayStack initFilters(ArrayStack filters, Locale locale)
 			throws FlexPayException {
 		if (filters == null) {
@@ -239,7 +252,8 @@ public class RegionServiceImpl extends NameTimeDependentServiceImpl<
 	 * @return Initialised filter
 	 * @throws FlexPayException if failure occurs
 	 */
-	public RegionFilter initFilter(RegionFilter parentFilter, PrimaryKeyFilter forefatherFilter, Locale locale)
+	@Override
+	public RegionFilter initFilter(RegionFilter parentFilter, PrimaryKeyFilter<?> forefatherFilter, Locale locale)
 			throws FlexPayException {
 		if (parentFilter == null) {
 			parentFilter = new RegionFilter();
@@ -293,6 +307,7 @@ public class RegionServiceImpl extends NameTimeDependentServiceImpl<
 	}
 
 	@NotNull
+	@Override
 	public List<Region> findByCountryAndQuery(@NotNull Stub<Country> stub, @NotNull String query) {
 		return regionDao.findByCountryAndQuery(stub.getId(), query);
 	}
@@ -341,4 +356,5 @@ public class RegionServiceImpl extends NameTimeDependentServiceImpl<
 	public void setRegionDaoExt(RegionDaoExt regionDaoExt) {
 		this.regionDaoExt = regionDaoExt;
 	}
+
 }

@@ -23,6 +23,7 @@
 	<bean id="tariffCalculationRulesFileServiceTarget"
 		  class="org.flexpay.tc.service.impl.TariffCalculationRulesFileServiceImpl"
 		  p:tariffCalculationRulesFileDao-ref="tariffCalculationRulesFileDao"
+          p:fpFileService-ref="fpFileService"
 		  autowire-candidate="false" />
 
 	<bean id="tariffCalculationResultService"

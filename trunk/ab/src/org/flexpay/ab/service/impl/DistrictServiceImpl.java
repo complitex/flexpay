@@ -48,18 +48,22 @@ public class DistrictServiceImpl extends
 	private SessionUtils sessionUtils;
 	private ModificationListener<District> modificationListener;
 
+	@Override
 	protected NameTimeDependentDao<District, Long> getNameTimeDependentDao() {
 		return districtDao;
 	}
 
+	@Override
 	protected GenericDao<DistrictNameTemporal, Long> getNameTemporalDao() {
 		return districtNameTemporalDao;
 	}
 
+	@Override
 	protected GenericDao<DistrictName, Long> getNameValueDao() {
 		return districtNameDao;
 	}
 
+	@Override
 	protected GenericDao<Town, Long> getParentDao() {
 		return townDao;
 	}
@@ -69,6 +73,7 @@ public class DistrictServiceImpl extends
 	 *
 	 * @return Value for property 'newNameTemporal'.
 	 */
+	@Override
 	protected DistrictNameTemporal getNewNameTemporal() {
 		return new DistrictNameTemporal();
 	}
@@ -78,6 +83,7 @@ public class DistrictServiceImpl extends
 	 *
 	 * @return Value for property 'newNameTimeDependent'.
 	 */
+	@Override
 	protected District getNewNameTimeDependent() {
 		return new District();
 	}
@@ -87,6 +93,7 @@ public class DistrictServiceImpl extends
 	 *
 	 * @return Value for property 'emptyName'.
 	 */
+	@Override
 	protected DistrictName getEmptyName() {
 		return new DistrictName();
 	}
@@ -96,6 +103,7 @@ public class DistrictServiceImpl extends
 	 *
 	 * @return name translation
 	 */
+	@Override
 	public DistrictNameTranslation getEmptyNameTranslation() {
 		return new DistrictNameTranslation();
 	}
@@ -107,13 +115,15 @@ public class DistrictServiceImpl extends
 	 * @param container Exceptions container to add exception for
 	 * @return <code>true</code> if operation allowed, or <code>false</otherwise>
 	 */
+	@Override
 	protected boolean canDisable(District district,
 								 FlexPayExceptionContainer container) {
 		return true;
 	}
 
+	@Override
 	public DistrictFilter initFilter(DistrictFilter parentFilter,
-									 PrimaryKeyFilter forefatherFilter, Locale locale)
+									 PrimaryKeyFilter<?> forefatherFilter, Locale locale)
 			throws FlexPayException {
 		if (parentFilter == null) {
 			parentFilter = new DistrictFilter();
@@ -148,6 +158,7 @@ public class DistrictServiceImpl extends
 		return false;
 	}
 
+	@Override
 	public ArrayStack initFilters(ArrayStack filters, Locale locale)
 			throws FlexPayException {
 		if (filters == null) {
@@ -171,6 +182,7 @@ public class DistrictServiceImpl extends
 	 *
 	 * @return Localization key base
 	 */
+	@Override
 	protected String getI18nKeyBase() {
 		return "ab.district";
 	}
@@ -184,6 +196,7 @@ public class DistrictServiceImpl extends
 	 *          if validation fails
 	 */
 	@Transactional (readOnly = false)
+	@Override
 	public District create(@NotNull District district) throws FlexPayExceptionContainer {
 
 		validate(district);
@@ -205,6 +218,7 @@ public class DistrictServiceImpl extends
 	 */
 	@SuppressWarnings ({"ThrowableInstanceNeverThrown"})
 	@Transactional (readOnly = false)
+	@Override
 	public District update(@NotNull District district) throws FlexPayExceptionContainer {
 
 		validate(district);
@@ -374,4 +388,5 @@ public class DistrictServiceImpl extends
 	public void setDistrictDaoExt(DistrictDaoExt districtDaoExt) {
 		this.districtDaoExt = districtDaoExt;
 	}
+
 }

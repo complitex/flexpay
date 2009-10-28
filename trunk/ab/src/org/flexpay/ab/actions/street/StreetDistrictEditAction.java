@@ -10,19 +10,19 @@ import org.flexpay.ab.service.StreetService;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.dao.paging.Page;
 import static org.flexpay.common.persistence.Stub.stub;
+import static org.flexpay.common.util.CollectionUtils.list;
+import static org.flexpay.common.util.CollectionUtils.set;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 public class StreetDistrictEditAction extends FPActionSupport {
 
 	private Street street = new Street();
-	private Set<Long> objectIds = new HashSet<Long>();
-	private List<DistrictName> districtNames = new ArrayList<DistrictName>();
+	private Set<Long> objectIds = set();
+	private List<DistrictName> districtNames = list();
 
 	private StreetService streetService;
 	private DistrictService districtService;
@@ -58,7 +58,7 @@ public class StreetDistrictEditAction extends FPActionSupport {
 		townFilter.setSelectedId(street.getParent().getId());
 		filters.push(townFilter);
 
-		Page<?> pager = new Page(1000, 1);
+		Page<District> pager = new Page<District>(1000, 1);
 		districtNames = districtService.findNames(filters, pager);
         log.info("Found {}", districtNames);
 

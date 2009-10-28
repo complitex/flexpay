@@ -3,7 +3,7 @@ package org.flexpay.tc.service.impl;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Stub;
-import org.flexpay.common.util.FPFileUtil;
+import org.flexpay.common.service.FPFileService;
 import org.flexpay.tc.dao.TariffCalculationRulesFileDao;
 import org.flexpay.tc.persistence.TariffCalculationRulesFile;
 import org.flexpay.tc.service.TariffCalculationRulesFileService;
@@ -14,7 +14,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.File;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
@@ -25,6 +24,7 @@ public class TariffCalculationRulesFileServiceImpl implements TariffCalculationR
 	@NonNls
 	private Logger log = LoggerFactory.getLogger(getClass());
 
+	private FPFileService fpFileService;
 	private TariffCalculationRulesFileDao tariffCalculationRulesFileDao;
 
 	@Transactional (readOnly = false)
@@ -73,10 +73,7 @@ public class TariffCalculationRulesFileServiceImpl implements TariffCalculationR
 			return;
 		}
 
-		File fileOnSystem = FPFileUtil.getFileOnServer(rulesFile.getFile());
-		if (fileOnSystem != null) {
-			fileOnSystem.delete();
-		}
+		fpFileService.deleteFromFileSystem(rulesFile.getFile());
 		tariffCalculationRulesFileDao.delete(rulesFile);
 	}
 
@@ -102,6 +99,11 @@ public class TariffCalculationRulesFileServiceImpl implements TariffCalculationR
 	@Required
 	public void setTariffCalculationRulesFileDao(TariffCalculationRulesFileDao tariffCalculationRulesFileDao) {
 		this.tariffCalculationRulesFileDao = tariffCalculationRulesFileDao;
+	}
+
+	@Required
+	public void setFpFileService(FPFileService fpFileService) {
+		this.fpFileService = fpFileService;
 	}
 
 }

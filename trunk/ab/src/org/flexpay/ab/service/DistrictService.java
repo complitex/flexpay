@@ -55,6 +55,7 @@ public interface DistrictService extends NameTimeDependentService<
 	 *          if operation fails
 	 */
 	@Secured (Roles.DISTRICT_ADD)
+	@Override
 	District create(District object, List<DistrictNameTranslation> nameTranslations, ArrayStack filters, Date from)
 			throws FlexPayExceptionContainer;
 
@@ -65,6 +66,7 @@ public interface DistrictService extends NameTimeDependentService<
 	 * @return object, or <code>null</code> if object not found
 	 */
 	@Secured (Roles.DISTRICT_READ)
+	@Override
 	District readFull(@NotNull Stub<District> stub);
 
 	/**
@@ -85,6 +87,7 @@ public interface DistrictService extends NameTimeDependentService<
 	 * @return object temporal name , or <code>null</code> if not found
 	 */
 	@Secured (Roles.DISTRICT_READ)
+	@Override
 	DistrictNameTemporal readTemporalName(Long id);
 
 	/**
@@ -97,7 +100,8 @@ public interface DistrictService extends NameTimeDependentService<
 	 *          if failure occurs
 	 */
 	@Secured (Roles.DISTRICT_READ)
-	List<DistrictName> findNames(ArrayStack filters, Page pager) throws FlexPayException;
+	@Override
+	List<DistrictName> findNames(ArrayStack filters, Page<District> pager) throws FlexPayException;
 
 	/**
 	 * Get a list of available objects
@@ -106,6 +110,7 @@ public interface DistrictService extends NameTimeDependentService<
 	 * @return List of Objects
 	 */
 	@Secured (Roles.DISTRICT_READ)
+	@Override
 	List<District> find(ArrayStack filters);
 
 	/**
@@ -116,7 +121,8 @@ public interface DistrictService extends NameTimeDependentService<
 	 * @return List of Objects
 	 */
 	@Secured (Roles.DISTRICT_READ)
-	List<District> find(ArrayStack filters, Page pager);
+	@Override
+	List<District> find(ArrayStack filters, Page<District> pager);
 
 	/**
 	 * Disable objects
@@ -126,6 +132,7 @@ public interface DistrictService extends NameTimeDependentService<
 	 *          if failure occurs
 	 */
 	@Secured (Roles.DISTRICT_DELETE)
+	@Override
 	void disable(Collection<District> objects) throws FlexPayExceptionContainer;
 
 	/**
@@ -150,6 +157,7 @@ public interface DistrictService extends NameTimeDependentService<
 	 *          exceptions container
 	 */
 	@Secured (Roles.DISTRICT_CHANGE)
+	@Override
 	District updateNameTranslations(District obj, Long temporalId, List<DistrictNameTranslation> nameTranslations, Date date)
 			throws FlexPayExceptionContainer;
 
@@ -159,6 +167,7 @@ public interface DistrictService extends NameTimeDependentService<
 	 * @return name translation
 	 */
 	@Secured (Roles.DISTRICT_READ)
+	@Override
 	DistrictNameTranslation getEmptyNameTranslation();
 
 	/**
@@ -170,7 +179,8 @@ public interface DistrictService extends NameTimeDependentService<
 	 */
 	@Secured (Roles.DISTRICT_READ)
 	@NotNull
-	List<District> findByName(String name, PrimaryKeyFilter filter);
+	@Override
+	List<District> findByName(String name, PrimaryKeyFilter<District> filter);
 
 	/**
 	 * Initialize parent filter. Possibly taking in account upper level forefather filter
@@ -183,7 +193,8 @@ public interface DistrictService extends NameTimeDependentService<
 	 *          if failure occurs
 	 */
 	@Secured (Roles.DISTRICT_READ)
-	DistrictFilter initFilter(DistrictFilter parentFilter, PrimaryKeyFilter forefatherFilter, Locale locale) throws FlexPayException;
+	@Override
+	DistrictFilter initFilter(DistrictFilter parentFilter, PrimaryKeyFilter<?> forefatherFilter, Locale locale) throws FlexPayException;
 
 	/**
 	 * Initialize filters. <p>Filters are coming from the most significant to less significant ones order, like
@@ -196,6 +207,7 @@ public interface DistrictService extends NameTimeDependentService<
 	 *          if failure occurs
 	 */
 	@Secured (Roles.DISTRICT_READ)
+	@Override
 	ArrayStack initFilters(ArrayStack filters, Locale locale) throws FlexPayException;
 
 
@@ -222,4 +234,5 @@ public interface DistrictService extends NameTimeDependentService<
 	 */
 	@Secured(Roles.DISTRICT_READ)
 	List<District> find(ArrayStack filters, List<ObjectSorter> sorters, Page<District> pager);
+
 }

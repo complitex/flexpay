@@ -32,7 +32,8 @@ public interface BuildingService extends ParentService<BuildingsFilter> {
 	 *          if failure occurs
 	 */
 	@Secured (Roles.BUILDING_READ)
-	BuildingsFilter initFilter(BuildingsFilter parentFilter, PrimaryKeyFilter forefatherFilter, Locale locale)
+	@Override
+	BuildingsFilter initFilter(BuildingsFilter parentFilter, PrimaryKeyFilter<?> forefatherFilter, Locale locale)
 			throws FlexPayException;
 
 	/**
@@ -46,6 +47,7 @@ public interface BuildingService extends ParentService<BuildingsFilter> {
 	 *          if failure occurs
 	 */
 	@Secured (Roles.BUILDING_READ)
+	@Override
 	ArrayStack initFilters(ArrayStack filters, Locale locale) throws FlexPayException;
 
 	@Secured (Roles.BUILDING_READ)
@@ -196,4 +198,5 @@ public interface BuildingService extends ParentService<BuildingsFilter> {
 	 * @return List of buildings
 	 */
 	List<BuildingAddress> readFullAddresses(Collection<Long> addressIds, boolean preserveOrder);
+
 }

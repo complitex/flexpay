@@ -32,7 +32,9 @@ public class DistrictFilterAjaxAction extends FilterAjaxAction {
 		}
 
 		List<District> districts = districtService.findByTownAndQuery(new Stub<Town>(townId), "%" + q + "%");
-		log.debug("Found districts: {}", districts);
+		if (log.isDebugEnabled()) {
+			log.debug("Found districts: {}", districts.size());
+		}
 
 		for (District district : districts) {
 			DistrictName name = district.getCurrentName();

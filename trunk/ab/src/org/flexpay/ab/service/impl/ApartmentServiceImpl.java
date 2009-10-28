@@ -45,6 +45,7 @@ public class ApartmentServiceImpl implements ApartmentService {
 	private ModificationListener<Apartment> modificationListener;
 
 	@NotNull
+	@Override
 	public String getAddress(@NotNull Stub<Apartment> stub) throws FlexPayException {
 		Apartment apartment = apartmentDao.read(stub.getId());
 		if (apartment == null) {
@@ -60,7 +61,7 @@ public class ApartmentServiceImpl implements ApartmentService {
 		Street street = buildingAddress.getStreet();
 		String streetNameStr = getNameTranslation(street);
 		String streetTypeStr = getTypeTranslation(street);
-
+		// TODO: Incorrect address output!
 		return streetTypeStr + " " + streetNameStr + ", д."
 			   + buildingAddress.getNumber() + ", кв." + apartment.getNumber();
 	}
@@ -73,10 +74,12 @@ public class ApartmentServiceImpl implements ApartmentService {
 	 * @return Apartment if found, or <code>null</code> otherwise
 	 */
 	@Nullable
+	@Override
 	public Stub<Apartment> findApartmentStub(@NotNull Building building, String number) {
 		return apartmentDaoExt.findApartmentStub(building, number);
 	}
 
+	@Override
 	public String getApartmentNumber(Stub<Apartment> apartment) throws FlexPayException {
 
 		Apartment persistent = apartmentDao.readFull(apartment.getId());
@@ -92,6 +95,7 @@ public class ApartmentServiceImpl implements ApartmentService {
 	 * @param objectIds Apartments identifiers
 	 */
 	@Transactional (readOnly = false)
+	@Override
 	public void disable(@NotNull Collection<Long> objectIds) {
 		for (Long id : objectIds) {
 			Apartment apartment = apartmentDao.read(id);
@@ -113,6 +117,7 @@ public class ApartmentServiceImpl implements ApartmentService {
 	 */
 	@Transactional (readOnly = false)
 	@NotNull
+	@Override
 	public Apartment create(@NotNull Apartment apartment) throws FlexPayExceptionContainer {
 		validate(apartment);
 		apartment.setId(null);
@@ -133,6 +138,7 @@ public class ApartmentServiceImpl implements ApartmentService {
 	@SuppressWarnings ({"ThrowableInstanceNeverThrown"})
 	@Transactional (readOnly = false)
 	@NotNull
+	@Override
 	public Apartment update(@NotNull Apartment apartment) throws FlexPayExceptionContainer {
 		validate(apartment);
 
@@ -185,6 +191,7 @@ public class ApartmentServiceImpl implements ApartmentService {
 	 * @return Building stub
 	 */
 	@NotNull
+	@Override
 	public Building getBuilding(@NotNull Stub<Apartment> apartment) throws FlexPayException {
 		Apartment persistent = apartmentDao.read(apartment.getId());
 		if (persistent == null) {
@@ -200,6 +207,7 @@ public class ApartmentServiceImpl implements ApartmentService {
 	 * @return Object if found, or <code>null</code> otherwise
 	 */
 	@Nullable
+	@Override
 	public Apartment readWithPersons(@NotNull Stub<Apartment> stub) {
 		List<Apartment> apartments = apartmentDao.findWithPersonsFull(stub.getId());
 		return apartments.isEmpty() ? null : apartments.get(0);
@@ -211,6 +219,7 @@ public class ApartmentServiceImpl implements ApartmentService {
 	 * @param stub Apartment stub
 	 * @return Object if found, or <code>null</code> otherwise
 	 */
+	@Override
 	public Apartment readFull(@NotNull Stub<Apartment> stub) {
 		return apartmentDao.readFull(stub.getId());
 	}
@@ -233,6 +242,7 @@ public class ApartmentServiceImpl implements ApartmentService {
 		return apartments;
 	}
 
+	@Override
 	public void fillFilterIds(@NotNull Stub<Apartment> stub, ArrayStack filters) throws FlexPayException {
 		Apartment apartment = apartmentDao.read(stub.getId());
 		if (apartment == null) {
@@ -277,7 +287,8 @@ public class ApartmentServiceImpl implements ApartmentService {
 	 * @throws org.flexpay.common.exception.FlexPayException
 	 *          if failure occurs
 	 */
-	public ApartmentFilter initFilter(ApartmentFilter parentFilter, PrimaryKeyFilter forefatherFilter, Locale locale)
+	@Override
+	public ApartmentFilter initFilter(ApartmentFilter parentFilter, PrimaryKeyFilter<?> forefatherFilter, Locale locale)
 			throws FlexPayException {
 		if (parentFilter == null) {
 			parentFilter = new ApartmentFilter();
@@ -325,6 +336,7 @@ public class ApartmentServiceImpl implements ApartmentService {
 	 * @throws org.flexpay.common.exception.FlexPayException
 	 *          if failure occurs
 	 */
+	@Override
 	public ArrayStack initFilters(ArrayStack filters, Locale locale) throws FlexPayException {
 		if (filters == null) {
 			filters = new ArrayStack();
@@ -352,10 +364,12 @@ public class ApartmentServiceImpl implements ApartmentService {
 		return filters;
 	}
 
+	@Override
 	public List<Apartment> getApartments(ArrayStack filters, Page<Apartment> pager) {
 		BuildingsFilter filter = (BuildingsFilter) filters.peek();
 		List<Apartment> apartments = apartmentDao.findObjects(filter.getSelectedId(), pager);
 		Collections.sort(apartments, new Comparator<Apartment>() {
+			@Override
 			public int compare(Apartment a1, Apartment a2) {
 				String n1 = a1.getNumber();
 				String n2 = a2.getNumber();
@@ -375,6 +389,7 @@ public class ApartmentServiceImpl implements ApartmentService {
 		return apartments;
 	}
 
+	@Override
 	public List<Apartment> getApartments(@NotNull Stub<BuildingAddress> stub) {
 		return apartmentDao.findObjects(stub.getId());
 	}
@@ -433,6 +448,7 @@ public class ApartmentServiceImpl implements ApartmentService {
 	 * @param stub Building stub
 	 * @return list of apartments in the building
 	 */
+	@Override
 	public List<Apartment> getBuildingApartments(@NotNull Stub<Building> stub) {
 		return apartmentDao.findByBuilding(stub.getId());
 	}
@@ -461,4 +477,5 @@ public class ApartmentServiceImpl implements ApartmentService {
 	public void setBuildingService(BuildingService buildingService) {
 		this.buildingService = buildingService;
 	}
+
 }

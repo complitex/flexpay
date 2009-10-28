@@ -5,9 +5,10 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.common.persistence.FPModule;
+import org.flexpay.common.util.DateUtil;
 import org.flexpay.common.util.FPFileUtil;
-import org.flexpay.common.util.StringUtil;
 import org.flexpay.common.util.FileSource;
+import org.flexpay.common.util.StringUtil;
 import org.flexpay.common.util.io.InputStreamCallback;
 import org.flexpay.common.util.io.OutputStreamCallback;
 import org.flexpay.common.util.io.ReaderCallback;
@@ -25,7 +26,7 @@ public class FPFile extends DomainObject implements DataSource {
 	private String userName;
 	private String description;
 	private Long size = 0L;
-	private Date creationDate = new Date();
+	private Date creationDate = DateUtil.now();
 	private FPModule module;
 
 	public String getNameOnServer() {
@@ -98,8 +99,9 @@ public class FPFile extends DomainObject implements DataSource {
 	 * @return BufferedOutputStream
 	 * @throws IOException if stream open fails
 	 */
+	@Override
 	public OutputStream getOutputStream() throws IOException {
-		return new BufferedOutputStream(new FileOutputStream(FPFileUtil.getFileOnServer(this))) {
+		return new BufferedOutputStream(new FileOutputStream(getFileOnServer())) {
 			@Override
 			public void close() throws IOException {
 				super.close();
@@ -114,8 +116,9 @@ public class FPFile extends DomainObject implements DataSource {
 	 * @return BufferedInputStream
 	 * @throws IOException if stream open fails
 	 */
+	@Override
 	public InputStream getInputStream() throws IOException {
-		return new BufferedInputStream(new FileInputStream(FPFileUtil.getFileOnServer(this)));
+		return new BufferedInputStream(new FileInputStream(getFileOnServer()));
 	}
 
 	@Override
@@ -129,7 +132,7 @@ public class FPFile extends DomainObject implements DataSource {
 	}
 
 	public void updateSize() {
-		size = FPFileUtil.getFileOnServer(this).length();
+		this.size = getFileOnServer().length();
 	}
 
 	public void withInputStream(InputStreamCallback callback) throws IOException {
@@ -176,26 +179,14 @@ public class FPFile extends DomainObject implements DataSource {
 		}
 	}
 
-	@Override
-	public String toString() {
-		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
-				append("id", getId()).
-				append("nameOnServer", nameOnServer).
-				append("originalName", originalName).
-				append("userName", userName).
-				append("size", size).
-				append("creationDate", creationDate).
-				toString();
-	}
-
 	/**
 	 * Create source file from this file
 	 *
 	 * @return FileSource
 	 * @throws Exception if failure occurs
 	 */
-	public FileSource toFileSourece() throws Exception {
-		File file = FPFileUtil.getFileOnServer(this);
+	public FileSource toFileSource() throws Exception {
+		File file = getFileOnServer();
 		if (file == null) {
 			throw new FileNotFoundException("For FPFile(id=" + getId()
 											+ ") not found temp file: " + getNameOnServer());
@@ -209,4 +200,29 @@ public class FPFile extends DomainObject implements DataSource {
 		}
 		return new FileSource(file, type);
 	}
+
+	/**
+	 * Returns file
+	 *
+	 * @return file on file system
+	 */
+	private File getFileOnServer() {
+		if (this.getNameOnServer() == null) {
+			return null;
+		}
+		return new File(FPFileUtil.getFileLocalPath(this));
+	}
+
+	@Override
+	public String toString() {
+		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
+				append("id", getId()).
+				append("nameOnServer", nameOnServer).
+				append("originalName", originalName).
+				append("userName", userName).
+				append("size", size).
+				append("creationDate", creationDate).
+				toString();
+	}
+
 }

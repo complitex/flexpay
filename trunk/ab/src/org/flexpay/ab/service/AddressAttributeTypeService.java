@@ -7,8 +7,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.security.annotation.Secured;
 
-import java.util.List;
 import java.util.Collection;
+import java.util.List;
 
 public interface AddressAttributeTypeService {
 
@@ -61,4 +61,5 @@ public interface AddressAttributeTypeService {
 	 */
 	@Secured (Roles.BUILDING_ATTRIBUTE_TYPE_DELETE)
 	void disable(Collection<AddressAttributeType> entities);
+
 }

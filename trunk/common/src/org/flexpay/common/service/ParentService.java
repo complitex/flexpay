@@ -9,7 +9,7 @@ import java.util.Locale;
 /**
  * Service for parents of objects with time-dependent names
  */
-public interface ParentService<PKF extends PrimaryKeyFilter> {
+public interface ParentService<PKF extends PrimaryKeyFilter<?>> {
 
 	/**
 	 * Initialize parent filter. Possibly taking in account upper level forefather filter
@@ -20,7 +20,7 @@ public interface ParentService<PKF extends PrimaryKeyFilter> {
 	 * @return Initialised filter
 	 * @throws FlexPayException if failure occurs
 	 */
-	PKF initFilter(PKF parentFilter, PrimaryKeyFilter forefatherFilter, Locale locale)
+	PKF initFilter(PKF parentFilter, PrimaryKeyFilter<?> forefatherFilter, Locale locale)
 			throws FlexPayException;
 
 	/**
@@ -33,4 +33,5 @@ public interface ParentService<PKF extends PrimaryKeyFilter> {
 	 * @throws FlexPayException if failure occurs
 	 */
 	ArrayStack initFilters(ArrayStack filters, Locale locale) throws FlexPayException;
+
 }

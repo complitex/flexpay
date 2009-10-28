@@ -18,10 +18,10 @@ import java.util.Date;
 public abstract class DateInterval<T extends TemporaryValue<T>, DI extends DateInterval<T, DI>>
 		extends DomainObject implements Comparable<DI> {
 
-	private Date begin;
-	private Date end;
-	private Date invalidDate;
-	private Date createDate;
+	private Date begin = ApplicationConfig.getPastInfinite();
+	private Date end = ApplicationConfig.getFutureInfinite();
+	private Date invalidDate = ApplicationConfig.getFutureInfinite();
+	private Date createDate = DateUtil.now();
 
 	private T value;
 
@@ -31,10 +31,6 @@ public abstract class DateInterval<T extends TemporaryValue<T>, DI extends DateI
 	 * @param value Temporary values assigned to this interval
 	 */
 	public DateInterval(T value) {
-		begin = ApplicationConfig.getPastInfinite();
-		end = ApplicationConfig.getFutureInfinite();
-		invalidDate = ApplicationConfig.getFutureInfinite();
-		createDate = DateUtil.now();
 		this.value = value;
 	}
 
@@ -48,8 +44,6 @@ public abstract class DateInterval<T extends TemporaryValue<T>, DI extends DateI
 	public DateInterval(Date begin, Date end, T value) {
 		doSetBegin(this, begin);
 		doSetEnd(this, end);
-		invalidDate = ApplicationConfig.getFutureInfinite();
-		createDate = DateUtil.now();
 		this.value = value;
 
 		if (this.begin.compareTo(this.end) > 0) {
@@ -58,21 +52,11 @@ public abstract class DateInterval<T extends TemporaryValue<T>, DI extends DateI
 		}
 	}
 
-	/**
-	 * Getter for property 'begin'.
-	 *
-	 * @return Value for property 'begin'.
-	 */
 	@NotNull
 	public Date getBegin() {
 		return begin;
 	}
 
-	/**
-	 * Setter for property 'begin'.
-	 *
-	 * @param begin Value to set for property 'begin'.
-	 */
 	public void setBegin(Date begin) {
 		doSetBegin(this, begin);
 	}
@@ -87,21 +71,11 @@ public abstract class DateInterval<T extends TemporaryValue<T>, DI extends DateI
 		}
 	}
 
-	/**
-	 * Getter for property 'end'.
-	 *
-	 * @return Value for property 'end'.
-	 */
 	@NotNull
 	public Date getEnd() {
 		return end;
 	}
 
-	/**
-	 * Setter for property 'end'.
-	 *
-	 * @param end Value to set for property 'end'.
-	 */
 	public void setEnd(Date end) {
 		doSetEnd(this, end);
 	}
@@ -117,91 +91,24 @@ public abstract class DateInterval<T extends TemporaryValue<T>, DI extends DateI
 		}
 	}
 
-	/**
-	 * Getter for property 'invalidDate'.
-	 *
-	 * @return Value for property 'invalidDate'.
-	 */
 	public Date getInvalidDate() {
 		return invalidDate;
 	}
 
-	/**
-	 * Setter for property 'invalidDate'.
-	 *
-	 * @param invalidDate Value to set for property 'invalidDate'.
-	 */
 	public void setInvalidDate(Date invalidDate) {
 		this.invalidDate = invalidDate;
 	}
 
-	/**
-	 * Getter for property 'createDate'.
-	 *
-	 * @return Value for property 'createDate'.
-	 */
 	public Date getCreateDate() {
 		return createDate;
 	}
 
-	/**
-	 * Setter for property 'createDate'.
-	 *
-	 * @param createDate Value to set for property 'createDate'.
-	 */
 	public void setCreateDate(Date createDate) {
 		this.createDate = createDate;
 	}
 
 	public void invalidate() {
 		this.invalidDate = DateUtil.now();
-	}
-
-	/**
-	 * Returns a string representation of the object.
-	 *
-	 * @return a string representation of the object.
-	 */
-	@Override
-	public String toString() {
-		return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
-				.append("Id", getId())
-				.append("Begin", DateUtil.format(begin))
-				.append("End", DateUtil.format(end))
-				.append("Created", DateUtil.format(createDate))
-				.append("Invalid", DateUtil.format(invalidDate))
-				.append("Value", value)
-				.toString();
-	}
-
-	@Override
-	public int hashCode() {
-		return new HashCodeBuilder()
-				.append(begin)
-				.append(end)
-				.append(invalidDate)
-				.append(createDate)
-				.append(value)
-				.toHashCode();
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
-		} else if (!(obj instanceof DateInterval)) {
-			return false;
-		}
-
-		@SuppressWarnings ({"unchecked"})
-		DateInterval<T, DI> that = (DateInterval<T, DI>) obj;
-		return new EqualsBuilder()
-				.append(begin, that.getBegin())
-				.append(end, that.getEnd())
-				.append(invalidDate, that.getInvalidDate())
-				.append(createDate, that.getCreateDate())
-				.append(value, that.getValue())
-				.isEquals();
 	}
 
 	/**
@@ -223,20 +130,10 @@ public abstract class DateInterval<T extends TemporaryValue<T>, DI extends DateI
 		return copy;
 	}
 
-	/**
-	 * Getter for property 'value'.
-	 *
-	 * @return Value for property 'value'.
-	 */
 	public T getValue() {
 		return value;
 	}
 
-	/**
-	 * Setter for property 'value'.
-	 *
-	 * @param value Value to set for property 'value'.
-	 */
 	public void setValue(T value) {
 		this.value = value;
 	}
@@ -252,20 +149,17 @@ public abstract class DateInterval<T extends TemporaryValue<T>, DI extends DateI
 			   (value != null && value.equals(di.getValue()));
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	public int compareTo(DI o) {
 
 		if (this == o) {
 			return 0;
 		}
 
-		CompareToBuilder builder = new CompareToBuilder()
-				.append(begin, o.getBegin())
-				.append(end, o.getEnd())
-				.append(createDate, o.getCreateDate())
-				.append(invalidDate, o.getInvalidDate());
+		CompareToBuilder builder = new CompareToBuilder().
+				append(begin, o.getBegin()).
+				append(end, o.getEnd()).
+				append(createDate, o.getCreateDate()).
+				append(invalidDate, o.getInvalidDate());
 
 		if (value == null && o.getValue() == null) {
 			return builder.toComparison();
@@ -280,4 +174,47 @@ public abstract class DateInterval<T extends TemporaryValue<T>, DI extends DateI
 
 		return builder.toComparison();
 	}
+
+	@Override
+	public String toString() {
+		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
+				append("id", getId()).
+				append("begin", DateUtil.format(begin)).
+				append("end", DateUtil.format(end)).
+				append("invalidDate", DateUtil.format(invalidDate)).
+				append("createDate", DateUtil.format(createDate)).
+				append("value", value).
+				toString();
+	}
+
+	@Override
+	public int hashCode() {
+		return new HashCodeBuilder().
+				append(begin).
+				append(end).
+				append(invalidDate).
+				append(createDate).
+				append(value).
+				toHashCode();
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		} else if (!(obj instanceof DateInterval)) {
+			return false;
+		}
+
+		@SuppressWarnings ({"unchecked"})
+		DateInterval<T, DI> that = (DateInterval<T, DI>) obj;
+		return new EqualsBuilder().
+				append(begin, that.getBegin()).
+				append(end, that.getEnd()).
+				append(invalidDate, that.getInvalidDate()).
+				append(createDate, that.getCreateDate()).
+				append(value, that.getValue()).
+				isEquals();
+	}
+
 }

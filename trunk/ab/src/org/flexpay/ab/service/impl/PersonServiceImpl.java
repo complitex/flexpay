@@ -9,8 +9,8 @@ import org.flexpay.ab.dao.PersonRegistrationDao;
 import org.flexpay.ab.persistence.*;
 import org.flexpay.ab.service.IdentityTypeService;
 import org.flexpay.ab.service.PersonService;
-import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.dao.paging.FetchRange;
+import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.DomainObjectWithStatus;
@@ -20,10 +20,10 @@ import org.flexpay.common.persistence.history.ModificationListener;
 import org.flexpay.common.service.internal.SessionUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.beans.factory.annotation.Required;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Required;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Set;
@@ -50,6 +50,7 @@ public class PersonServiceImpl implements PersonService {
 	 * @param pager   Paging filter
 	 * @return List of persons
 	 */
+	@Override
 	public List<Person> findPersons(ArrayStack filters, Page<Person> pager) {
 		return personDao.findObjects(pager, DomainObjectWithStatus.STATUS_ACTIVE);
 	}
@@ -65,6 +66,7 @@ public class PersonServiceImpl implements PersonService {
 	 * @param range FetchRange
 	 * @return List of persons
 	 */
+	@Override
 	public List<Person> listPersonsWithIdentities(FetchRange range) {
 		return personDaoExt.listPersonsWithIdentities(range);
 	}
@@ -75,6 +77,7 @@ public class PersonServiceImpl implements PersonService {
 	 * @param range FetchRange
 	 * @return List of persons
 	 */
+	@Override
 	public List<Person> listPersonsWithRegistrations(FetchRange range) {
 		return personDaoExt.listPersonsWithRegistrations(range);
 	}
@@ -86,9 +89,11 @@ public class PersonServiceImpl implements PersonService {
 	 * @return Person instance, or <code>null</code> if not found
 	 */
 	@Nullable
+	@Override
 	public Person read(@NotNull Stub<Person> stub) {
 
 		Person persistent = personDao.readFull(stub.getId());
+
 		if (persistent != null) {
 			log.debug("READ ATTRIBUTES");
 			List<PersonAttribute> attributes = personAttributeDao.listAttributes(stub.getId());
@@ -118,10 +123,12 @@ public class PersonServiceImpl implements PersonService {
 	 * @return Person stub if persitent person matches specified identity
 	 */
 	@Nullable
+	@Override
 	public Stub<Person> findPersonStub(Person person) {
 		return personDaoExt.findPersonStub(person);
 	}
 
+	@Override
 	public List<Person> findByFIO(Page<Person> pager, String searchString) {
 		return personDao.findByFIO(pager, searchString);
 	}
@@ -133,14 +140,13 @@ public class PersonServiceImpl implements PersonService {
 	 * @throws org.flexpay.common.exception.FlexPayExceptionContainer
 	 *          if validation fails
 	 */
-	//TODO: не работает, мать его!!! :-\
 	@SuppressWarnings ({"ThrowableInstanceNeverThrown"})
 	@Transactional (readOnly = false)
+	@Override
 	public Person update(@NotNull Person person) throws FlexPayExceptionContainer {
 
 		validate(person);
 
-		log.debug("ReadFULL UPDATE");
 		Person old = read(stub(person));
 		if (old == null) {
 			throw new FlexPayExceptionContainer(
@@ -149,10 +155,7 @@ public class PersonServiceImpl implements PersonService {
 		sessionUtils.evict(old);
 		modificationListener.onUpdate(old, person);
 
-		log.debug("UDATING");
 		personDao.update(person);
-
-		log.debug("UDATED");
 
 		return person;
 	}
@@ -163,6 +166,7 @@ public class PersonServiceImpl implements PersonService {
      * @param objectIds Person identifiers
      */
     @Transactional (readOnly = false)
+	@Override
     public void disable(@NotNull Set<Long> objectIds) {
         for (Long id : objectIds) {
 			Person person = personDao.read(id);
@@ -184,6 +188,7 @@ public class PersonServiceImpl implements PersonService {
 	 *          if validation fails
 	 */
 	@Transactional (readOnly = false)
+	@Override
 	public Person create(@NotNull Person person) throws FlexPayExceptionContainer {
 
 		validate(person);
@@ -242,6 +247,7 @@ public class PersonServiceImpl implements PersonService {
 	 * @return Persons list, empty if no persons found
 	 */
 	@NotNull
+	@Override
 	public List<Person> findRegisteredPersons(@NotNull Stub<Apartment> stub) {
 		return personRegistrationDao.listRegistrants(stub.getId());
 	}
@@ -280,4 +286,5 @@ public class PersonServiceImpl implements PersonService {
 	public void setIdentityTypeService(IdentityTypeService identityTypeService) {
 		this.identityTypeService = identityTypeService;
 	}
+
 }

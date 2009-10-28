@@ -31,7 +31,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
-@Transactional (readOnly = true, rollbackFor = Exception.class)
+@Transactional (readOnly = true)
 public class TownServiceImpl extends NameTimeDependentServiceImpl<
 		TownNameTranslation, TownName, TownNameTemporal, Town, Region>
 		implements TownService {
@@ -48,21 +48,12 @@ public class TownServiceImpl extends NameTimeDependentServiceImpl<
 	private SessionUtils sessionUtils;
 	private ModificationListener<Town> modificationListener;
 
-	@Required
-	public void setTownDao(TownDao townDao) {
-		this.townDao = townDao;
-	}
-
-	@Required
-	public void setTownNameDao(TownNameDao townNameDao) {
-		this.townNameDao = townNameDao;
-	}
-
 	/**
 	 * return base for name time-dependent objects in i18n files, like 'region', 'town', etc.
 	 *
 	 * @return Localization key base
 	 */
+	@Override
 	protected String getI18nKeyBase() {
 		return "ab.town";
 	}
@@ -72,6 +63,7 @@ public class TownServiceImpl extends NameTimeDependentServiceImpl<
 	 *
 	 * @return GenericDao implementation
 	 */
+	@Override
 	protected NameTimeDependentDao<Town, Long> getNameTimeDependentDao() {
 		return townDao;
 	}
@@ -81,6 +73,7 @@ public class TownServiceImpl extends NameTimeDependentServiceImpl<
 	 *
 	 * @return GenericDao implementation
 	 */
+	@Override
 	protected GenericDao<TownNameTemporal, Long> getNameTemporalDao() {
 		return townNameTemporalDao;
 	}
@@ -90,6 +83,7 @@ public class TownServiceImpl extends NameTimeDependentServiceImpl<
 	 *
 	 * @return GenericDao implementation
 	 */
+	@Override
 	protected GenericDao<TownName, Long> getNameValueDao() {
 		return townNameDao;
 	}
@@ -99,6 +93,7 @@ public class TownServiceImpl extends NameTimeDependentServiceImpl<
 	 *
 	 * @return GenericDao implementation
 	 */
+	@Override
 	protected GenericDao<Region, Long> getParentDao() {
 		return regionDao;
 	}
@@ -110,6 +105,7 @@ public class TownServiceImpl extends NameTimeDependentServiceImpl<
 	 * @param container Exceptions container to add exception for
 	 * @return <code>true</code> if operation allowed, or <code>false</otherwise>
 	 */
+	@Override
 	protected boolean canDisable(Town town, FlexPayExceptionContainer container) {
 		return true;
 	}
@@ -119,6 +115,7 @@ public class TownServiceImpl extends NameTimeDependentServiceImpl<
 	 *
 	 * @return Value for property 'newNameTemporal'.
 	 */
+	@Override
 	protected TownNameTemporal getNewNameTemporal() {
 		return new TownNameTemporal();
 	}
@@ -128,6 +125,7 @@ public class TownServiceImpl extends NameTimeDependentServiceImpl<
 	 *
 	 * @return Value for property 'newNameTimeDependent'.
 	 */
+	@Override
 	protected Town getNewNameTimeDependent() {
 		return new Town();
 	}
@@ -137,6 +135,7 @@ public class TownServiceImpl extends NameTimeDependentServiceImpl<
 	 *
 	 * @return Value for property 'emptyName'.
 	 */
+	@Override
 	protected TownName getEmptyName() {
 		return new TownName();
 	}
@@ -156,14 +155,13 @@ public class TownServiceImpl extends NameTimeDependentServiceImpl<
 	 *
 	 * @return name translation
 	 */
+	@Override
 	public TownNameTranslation getEmptyNameTranslation() {
 		return new TownNameTranslation();
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
-	public TownFilter initFilter(TownFilter parentFilter, PrimaryKeyFilter forefatherFilter, Locale locale)
+	@Override
+	public TownFilter initFilter(TownFilter parentFilter, PrimaryKeyFilter<?> forefatherFilter, Locale locale)
 			throws FlexPayException {
 
 		if (parentFilter == null) {
@@ -195,9 +193,7 @@ public class TownServiceImpl extends NameTimeDependentServiceImpl<
 		return false;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
+	@Override
 	public ArrayStack initFilters(ArrayStack filters, Locale locale) throws FlexPayException {
 		if (filters == null) {
 			filters = new ArrayStack();
@@ -229,11 +225,8 @@ public class TownServiceImpl extends NameTimeDependentServiceImpl<
 		return filters;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
 	@Transactional (readOnly = false, rollbackFor = Exception.class)
+	@Override
 	public Town create(Town object, List<TownNameTranslation> nameTranslations, ArrayStack filters, Date date) throws FlexPayExceptionContainer {
 
 		TownTypeFilter filter = (TownTypeFilter) filters.pop();
@@ -258,8 +251,8 @@ public class TownServiceImpl extends NameTimeDependentServiceImpl<
 	 * @return The object itself
 	 * @throws FlexPayExceptionContainer if failure occurs
 	 */
-	@Override
 	@Transactional (readOnly = false, rollbackFor = Exception.class)
+	@Override
 	public Town postCreate(Town object) throws FlexPayExceptionContainer {
 		for (TownTypeTemporal typeTemporal : object.getTypeTemporals()) {
 			TownType empty = getEmptyType();
@@ -281,6 +274,7 @@ public class TownServiceImpl extends NameTimeDependentServiceImpl<
 	 *          if validation fails
 	 */
 	@Transactional (readOnly = false)
+	@Override
 	public Town create(@NotNull Town town) throws FlexPayExceptionContainer {
 
 		validate(town);
@@ -300,6 +294,7 @@ public class TownServiceImpl extends NameTimeDependentServiceImpl<
 	 */
 	@SuppressWarnings ({"ThrowableInstanceNeverThrown"})
 	@Transactional (readOnly = false)
+	@Override
 	public Town update(@NotNull Town town) throws FlexPayExceptionContainer {
 		validate(town);
 
@@ -363,6 +358,7 @@ public class TownServiceImpl extends NameTimeDependentServiceImpl<
 	}
 
 	@NotNull
+	@Override
 	public List<Town> findByRegionAndQuery(@NotNull Stub<Region> stub, @NotNull String query) {
 		return townDao.findByRegionAndQuery(stub.getId(), query);
 	}
@@ -478,4 +474,15 @@ public class TownServiceImpl extends NameTimeDependentServiceImpl<
 	public void setTownDaoExt(TownDaoExt townDaoExt) {
 		this.townDaoExt = townDaoExt;
 	}
+
+	@Required
+	public void setTownDao(TownDao townDao) {
+		this.townDao = townDao;
+	}
+
+	@Required
+	public void setTownNameDao(TownNameDao townNameDao) {
+		this.townNameDao = townNameDao;
+	}
+
 }

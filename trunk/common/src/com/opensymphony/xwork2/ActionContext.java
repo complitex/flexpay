@@ -6,17 +6,16 @@ package com.opensymphony.xwork2;
 
 import com.opensymphony.xwork2.util.ValueStack;
 import com.opensymphony.xwork2.util.ValueStackFactory;
+import org.flexpay.common.util.SecurityUtil;
+import org.flexpay.common.util.config.UserPreferences;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.security.Authentication;
 
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.flexpay.common.util.config.UserPreferences;
-import org.flexpay.common.util.SecurityUtil;
-import org.springframework.security.Authentication;
 
 
 /**
@@ -34,7 +33,9 @@ import org.springframework.security.Authentication;
  * @author Patrick Lightbody
  * @author Bill Lynch (docs)
  */
+@SuppressWarnings ({"unchecked"})
 public class ActionContext implements Serializable {
+
     static ThreadLocal actionContext = new ActionContextThreadLocal();
 
 	private final static Logger log = LoggerFactory.getLogger(ActionContext.class);
@@ -336,6 +337,7 @@ public class ActionContext implements Serializable {
 
 
     private static class ActionContextThreadLocal extends InheritableThreadLocal {
+		@Override
         protected Object initialValue() {
             ValueStack vs = ValueStackFactory.getFactory().createValueStack();
 

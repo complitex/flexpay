@@ -26,7 +26,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
 
-@Transactional (readOnly = true, rollbackFor = Exception.class)
+@Transactional (readOnly = true)
 public class StreetTypeServiceImpl implements StreetTypeService {
 
 	private Logger log = LoggerFactory.getLogger(getClass());

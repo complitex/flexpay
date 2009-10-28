@@ -21,17 +21,13 @@ public interface TownTypeService extends MultilangEntityService<TownType, TownTy
 	/**
 	 * Initialize filter
 	 * 
-	 * @param townTypeFilter
-	 *            filter to init
-	 * @param locale
-	 *            Locale to get names in
+	 * @param townTypeFilter filter to init
+	 * @param locale Locale to get names in
 	 * @return initialized filter
-	 * @throws FlexPayException
-	 *             if failure occurs
+	 * @throws FlexPayException if failure occurs
 	 */
 	@Secured (Roles.TOWN_TYPE_READ)
-	TownTypeFilter initFilter(TownTypeFilter townTypeFilter, Locale locale)
-			throws FlexPayException;
+	TownTypeFilter initFilter(TownTypeFilter townTypeFilter, Locale locale) throws FlexPayException;
 
 	/**
 	 * Read Entity object by its unique id

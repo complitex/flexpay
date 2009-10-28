@@ -81,16 +81,6 @@ public interface FPFileService {
 	FPFile read(@NotNull Stub<FPFile> stub);
 
 	/**
-	 * Get file from file system by FPFile entity id,
-	 * which locating to this file
-	 *
-	 * @param stub FPFile entity stub
-	 * @return file on file system
-	 * @throws FlexPayException if failure occurs
-	 */
-	File getFileFromFileSystem(@NotNull Stub<FPFile> stub) throws FlexPayException;
-
-	/**
 	 * Get FPFiles from database by module name,
 	 *
 	 * @param moduleName name of module
