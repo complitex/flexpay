@@ -57,8 +57,14 @@ public class HistoryDaoJdbcImpl extends SimpleJdbcDaoSupport implements HistoryD
 	 */
 	@Transactional (readOnly = false, rollbackFor = Exception.class)
 	public void setProcessed(List<HistoryRec> records) {
+		int n = 0;
 		for (HistoryRec record : records) {
-			getSimpleJdbcTemplate().update(getSetProcessedSql(record), getParams(record));
+			int updated = getSimpleJdbcTemplate().update(getSetProcessedSql(record), getParams(record));
+			n += updated;
+		}
+
+		if (log.isDebugEnabled()) {
+			log.debug("Marked processed {} of {} records", n, records.size());
 		}
 	}
 

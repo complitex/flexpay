@@ -25,10 +25,8 @@
 
 	<bean id="buildingProcessor"
 		  class="org.flexpay.ab.service.impl.BuildingProcessor"
-		  p:streetDao-ref="streetDao"
-		  p:districtDao-ref="districtDao"
-		  p:buildingDao-ref="buildingDao"
-		  p:buildingsDao-ref="buildingsDao"
+		  p:districtService-ref="districtService"
+		  p:streetService-ref="streetService"
 		  p:buildingService-ref="buildingService"
 		  p:factory-ref="objectsFactory" />
 

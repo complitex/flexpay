@@ -1,24 +1,22 @@
 package org.flexpay.ab.service.impl;
 
-import org.flexpay.ab.dao.BuildingDao;
-import org.flexpay.ab.dao.BuildingsDao;
-import org.flexpay.ab.dao.DistrictDao;
-import org.flexpay.ab.dao.StreetDao;
 import org.flexpay.ab.persistence.*;
 import org.flexpay.ab.service.BuildingService;
+import org.flexpay.ab.service.DistrictService;
 import org.flexpay.ab.service.ObjectsFactory;
+import org.flexpay.ab.service.StreetService;
 import org.flexpay.ab.util.config.ApplicationConfig;
 import org.flexpay.common.exception.FlexPayException;
+import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.common.persistence.Stub;
-import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.service.importexport.CorrectionsService;
-import org.flexpay.common.util.CollectionUtils;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Required;
 
-import java.util.Set;
+import static org.flexpay.common.persistence.Stub.stub;
 
 public class BuildingProcessor extends AbstractProcessor<BuildingAddress> {
 
@@ -26,11 +24,9 @@ public class BuildingProcessor extends AbstractProcessor<BuildingAddress> {
 		super(BuildingAddress.class);
 	}
 
-	private BuildingDao buildingDao;
-	private BuildingsDao buildingsDao;
-	private DistrictDao districtDao;
-	private StreetDao streetDao;
 	private BuildingService buildingService;
+	private StreetService streetService;
+	private DistrictService districtService;
 	private ObjectsFactory factory;
 
 	/**
@@ -40,11 +36,8 @@ public class BuildingProcessor extends AbstractProcessor<BuildingAddress> {
 	protected BuildingAddress doCreateObject() throws Exception {
 
 		Building building = factory.newBuilding();
-
 		BuildingAddress buildingAddress = new BuildingAddress();
-		buildingAddress.setBuilding(building);
-
-		building.addAll(CollectionUtils.set(buildingAddress));
+		building.addAddress(buildingAddress);
 
 		return buildingAddress;
 	}
@@ -55,17 +48,18 @@ public class BuildingProcessor extends AbstractProcessor<BuildingAddress> {
 	 * @param stub Object id container
 	 * @return DomainObject instance
 	 */
+	@Nullable
 	protected BuildingAddress readObject(@NotNull Stub<BuildingAddress> stub) {
-		BuildingAddress buildingAddress = buildingsDao.readFull(stub.getId());
-		Set<BuildingAddress> buildingses = CollectionUtils.set(buildingAddress);
 
-		Building building = buildingDao.read(buildingAddress.getBuilding().getId());
-		buildingAddress.setBuilding(building);
-		building.addAll(buildingses);
+		BuildingAddress buildingAddress = buildingService.readFull(stub);
+		if (buildingAddress == null) {
+			return null;
+		}
+		Building building = buildingService.read(buildingAddress.getBuildingStub());
 
 		log.debug("Read building: {}", building);
 
-		return buildingAddress;
+		return building.getAddress(stub);
 	}
 
 	/**
@@ -74,13 +68,13 @@ public class BuildingProcessor extends AbstractProcessor<BuildingAddress> {
 	 * @param object	 Object to save
 	 * @param externalId External object identifier
 	 */
-	protected void doSaveObject(BuildingAddress object, String externalId) {
+	protected void doSaveObject(BuildingAddress object, String externalId) throws FlexPayExceptionContainer {
 		Building building = object.getBuilding();
 		if (object.getId() == null) {
-			buildingDao.create(building);
+			buildingService.create(building);
 			log.debug("Created building: {}", building);
 		} else {
-			buildingDao.update(building);
+			buildingService.update(building);
 		}
 	}
 
@@ -151,14 +145,16 @@ public class BuildingProcessor extends AbstractProcessor<BuildingAddress> {
 			return;
 		}
 
-		if (districtDao.read(stub.getId()) == null) {
+		District district = districtService.readFull(stub);
+		if (district == null) {
 			log.error("Correction for district #{} DataSourceDescription {} is invalid, " +
-					"no district with id {}, cannot set up reference for building",
-					new Object[] {record.getCurrentValue(), sd.getId(), stub.getId()});
+					  "no district with id {}, cannot set up reference for building",
+					new Object[]{record.getCurrentValue(), sd.getId(), stub.getId()});
 			return;
 		}
 
-		building.setDistrict(new District(stub));
+		log.debug("Set district");
+		building.setDistrict(district);
 	}
 
 	private void setStreetId(BuildingAddress building, HistoryRec record,
@@ -170,14 +166,16 @@ public class BuildingProcessor extends AbstractProcessor<BuildingAddress> {
 			return;
 		}
 
-		if (streetDao.read(stub.getId()) == null) {
+		Street street = streetService.readFull(stub);
+		if (street == null) {
 			log.error("Correction for street #{} DataSourceDescription {} is invalid, " +
-					"no street with id {}, cannot set up reference for building",
-					new Object[] {record.getCurrentValue(), sd.getId(), stub.getId()});
+					  "no street with id {}, cannot set up reference for building",
+					new Object[]{record.getCurrentValue(), sd.getId(), stub.getId()});
 			return;
 		}
 
-		building.setStreet(new Street(stub));
+		log.debug("Set street");
+		building.setStreet(street);
 	}
 
 	/**
@@ -189,7 +187,7 @@ public class BuildingProcessor extends AbstractProcessor<BuildingAddress> {
 	 * @return Persistent object stub if exists, or <code>null</code> otherwise
 	 */
 	protected Stub<BuildingAddress> findPersistentObject(BuildingAddress object,
-												   Stub<DataSourceDescription> sd, CorrectionsService cs) throws FlexPayException {
+														 Stub<DataSourceDescription> sd, CorrectionsService cs) throws FlexPayException {
 		String number = object.getNumber();
 		String bulk = object.getBulk();
 		if (number == null) {
@@ -197,28 +195,18 @@ public class BuildingProcessor extends AbstractProcessor<BuildingAddress> {
 		}
 
 		BuildingAddress buildingAddress = buildingService.findBuildings(
-				stub(object.getStreet()), buildingService.attributes(number, bulk));
+				object.getStreetStub(), buildingService.attributes(number, bulk));
 		return buildingAddress != null ? stub(buildingAddress) : null;
 	}
 
 	@Required
-	public void setBuildingDao(BuildingDao buildingDao) {
-		this.buildingDao = buildingDao;
+	public void setStreetService(StreetService streetService) {
+		this.streetService = streetService;
 	}
 
 	@Required
-	public void setBuildingsDao(BuildingsDao buildingsDao) {
-		this.buildingsDao = buildingsDao;
-	}
-
-	@Required
-	public void setDistrictDao(DistrictDao districtDao) {
-		this.districtDao = districtDao;
-	}
-
-	@Required
-	public void setStreetDao(StreetDao streetDao) {
-		this.streetDao = streetDao;
+	public void setDistrictService(DistrictService districtService) {
+		this.districtService = districtService;
 	}
 
 	@Required
@@ -230,5 +218,4 @@ public class BuildingProcessor extends AbstractProcessor<BuildingAddress> {
 	public void setFactory(ObjectsFactory factory) {
 		this.factory = factory;
 	}
-
 }

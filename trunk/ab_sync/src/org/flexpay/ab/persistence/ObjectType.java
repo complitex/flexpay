@@ -29,6 +29,7 @@ public enum ObjectType {
 
 	/**
 	 * Get object order in sync queue
+	 *
 	 * @return relative order weight
 	 */
 	public int getOrderWeight() {
