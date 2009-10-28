@@ -5,10 +5,14 @@ import org.flexpay.ab.service.*;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.exception.FlexPayException;
 import static org.flexpay.common.persistence.Stub.stub;
+import static org.flexpay.common.util.CollectionUtils.list;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Set;
 
 public class ApartmentRegistrationAction extends FPActionSupport {
 
@@ -60,7 +64,7 @@ public class ApartmentRegistrationAction extends FPActionSupport {
 	}
 
 	public List<PersonRegistration> sortPersonRegistrations(Set<PersonRegistration> registrations) {
-		List<PersonRegistration> result = new ArrayList<PersonRegistration>(registrations);
+		List<PersonRegistration> result = list(registrations);
 
 		Collections.sort(result, new Comparator<PersonRegistration>() {
 			public int compare(PersonRegistration o1, PersonRegistration o2) {

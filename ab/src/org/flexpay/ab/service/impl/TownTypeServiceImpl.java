@@ -12,6 +12,7 @@ import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.persistence.history.ModificationListener;
 import org.flexpay.common.service.internal.SessionUtils;
+import static org.flexpay.common.util.CollectionUtils.list;
 import org.flexpay.common.util.TranslationUtil;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
@@ -20,7 +21,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
@@ -41,13 +41,12 @@ public class TownTypeServiceImpl implements TownTypeService {
 	 *
 	 * @param locale Locale to get translations for
 	 * @return List of TownTypes
-	 * @throws FlexPayException if failure occurs
 	 */
-	private List<TownTypeTranslation> getTranslations(Locale locale) throws FlexPayException {
+	private List<TownTypeTranslation> getTranslations(Locale locale) {
 
 		log.debug("Getting list of TownTypes");
 		List<TownType> townTypes = townTypeDao.listTownTypes(TownType.STATUS_ACTIVE);
-		List<TownTypeTranslation> translations = new ArrayList<TownTypeTranslation>();
+		List<TownTypeTranslation> translations = list();
 
 		log.debug("TownTypes: {}", townTypes);
 

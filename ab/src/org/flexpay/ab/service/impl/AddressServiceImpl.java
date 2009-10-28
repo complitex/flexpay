@@ -35,6 +35,7 @@ public class AddressServiceImpl implements AddressService {
 	 * @throws Exception if failure occurs
 	 */
 	@NotNull
+	@Override
 	public String getAddress(@NotNull Stub<Apartment> stub, @Nullable Locale locale) throws Exception {
 
 		if (locale == null) {
@@ -51,6 +52,7 @@ public class AddressServiceImpl implements AddressService {
 	}
 
 	@NotNull
+	@Override
 	public String getBuildingsAddress(@NotNull Stub<BuildingAddress> stub, @Nullable Locale locale) throws Exception {
 
 		if (locale == null) {
@@ -93,6 +95,7 @@ public class AddressServiceImpl implements AddressService {
 	}
 
 	@NotNull
+	@Override
 	public String getBuildingAddress(@NotNull Stub<Building> stub, @Nullable Locale locale) throws Exception {
 
 		List<BuildingAddress> buildingses = buildingService.getBuildingBuildings(stub);

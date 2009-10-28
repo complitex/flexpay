@@ -19,9 +19,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-public interface RegionService extends
-		ParentService<RegionFilter>,
-		NameTimeDependentService<RegionName, RegionNameTemporal, Region, RegionNameTranslation> {
+public interface RegionService extends NameTimeDependentService<
+		RegionName, RegionNameTemporal, Region, RegionNameTranslation>,
+		ParentService<RegionFilter> {
 
 	/**
 	 * Create Region object
@@ -54,7 +54,8 @@ public interface RegionService extends
 	 *          if failure occurs
 	 */
 	@Secured (Roles.REGION_READ)
-	RegionFilter initFilter(RegionFilter parentFilter, PrimaryKeyFilter forefatherFilter, Locale locale)
+	@Override
+	RegionFilter initFilter(RegionFilter parentFilter, PrimaryKeyFilter<?> forefatherFilter, Locale locale)
 			throws FlexPayException;
 
 	/**
@@ -67,6 +68,7 @@ public interface RegionService extends
 	 * @throws FlexPayException if failure occurs
 	 */
 	@Secured (Roles.REGION_READ)
+	@Override
 	ArrayStack initFilters(ArrayStack filters, Locale locale) throws FlexPayException;
 
 	/**
@@ -81,6 +83,7 @@ public interface RegionService extends
 	 *          if operation fails
 	 */
 	@Secured (Roles.REGION_ADD)
+	@Override
 	Region create(Region object, List<RegionNameTranslation> nameTranslations, ArrayStack filters, Date from)
 			throws FlexPayExceptionContainer;
 
@@ -91,6 +94,7 @@ public interface RegionService extends
 	 * @return object, or <code>null</code> if object not found
 	 */
 	@Secured (Roles.REGION_READ)
+	@Override
 	Region readFull(@NotNull Stub<Region> stub);
 
 	/**
@@ -111,6 +115,7 @@ public interface RegionService extends
 	 * @return object temporal name , or <code>null</code> if not found
 	 */
 	@Secured (Roles.REGION_READ)
+	@Override
 	RegionNameTemporal readTemporalName(Long id);
 
 	/**
@@ -123,7 +128,8 @@ public interface RegionService extends
 	 *          if failure occurs
 	 */
 	@Secured (Roles.REGION_READ)
-	List<RegionName> findNames(ArrayStack filters, Page pager) throws FlexPayException;
+	@Override
+	List<RegionName> findNames(ArrayStack filters, Page<Region> pager) throws FlexPayException;
 
 	/**
 	 * Get a list of available objects
@@ -132,6 +138,7 @@ public interface RegionService extends
 	 * @return List of Objects
 	 */
 	@Secured (Roles.REGION_READ)
+	@Override
 	List<Region> find(ArrayStack filters);
 
 	/**
@@ -142,7 +149,8 @@ public interface RegionService extends
 	 * @return List of Objects
 	 */
 	@Secured (Roles.REGION_READ)
-	List<Region> find(ArrayStack filters, Page pager);
+	@Override
+	List<Region> find(ArrayStack filters, Page<Region> pager);
 
 	/**
 	 * Disable objects
@@ -152,6 +160,7 @@ public interface RegionService extends
 	 *          if failure occurs
 	 */
 	@Secured (Roles.REGION_DELETE)
+	@Override
 	void disable(Collection<Region> objects) throws FlexPayExceptionContainer;
 
 	/**
@@ -174,6 +183,7 @@ public interface RegionService extends
 	 *          exceptions container
 	 */
 	@Secured (Roles.REGION_CHANGE)
+	@Override
 	Region updateNameTranslations(Region obj, Long temporalId, List<RegionNameTranslation> nameTranslations, Date date)
 			throws FlexPayExceptionContainer;
 
@@ -182,6 +192,7 @@ public interface RegionService extends
 	 *
 	 * @return name translation
 	 */
+	@Override
 	RegionNameTranslation getEmptyNameTranslation();
 
 	/**
@@ -193,7 +204,8 @@ public interface RegionService extends
 	 */
 	@Secured (Roles.REGION_READ)
 	@NotNull
-	List<Region> findByName(String name, PrimaryKeyFilter filter);
+	@Override
+	List<Region> findByName(String name, PrimaryKeyFilter<Region> filter);
 
 	/**
 	 * Lookup regions by query and country id. Query is a string which may contains in folow string:
@@ -218,4 +230,5 @@ public interface RegionService extends
 	 */
 	@Secured (Roles.REGION_READ)
 	List<Region> find(ArrayStack filters, List<ObjectSorter> sorters, Page<Region> pager);
+
 }

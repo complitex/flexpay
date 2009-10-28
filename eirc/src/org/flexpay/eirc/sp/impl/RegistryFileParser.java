@@ -143,7 +143,7 @@ public class RegistryFileParser implements FileParser {
 	 * @throws Exception if failure occurs
 	 */
 	private FileSource openRegistryFile(FPFile spFile) throws Exception {
-		return spFile.toFileSourece();
+		return spFile.toFileSource();
 	}
 
 	@Transactional (propagation = Propagation.NOT_SUPPORTED)

@@ -1,15 +1,13 @@
 package org.flexpay.ab.service;
 
-import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
-import org.flexpay.common.persistence.Translation;
-import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.DomainObject;
+import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.persistence.Translation;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Locale;
 
 /**
  * Service interface for multilaguage entity related tasks
@@ -56,4 +54,5 @@ public interface MultilangEntityService<Entity extends DomainObject, T extends T
 	 * @throws FlexPayExceptionContainer if validation fails
 	 */
 	Entity update(@NotNull Entity entity) throws FlexPayExceptionContainer;
+
 }

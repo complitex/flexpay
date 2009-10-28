@@ -7,6 +7,4 @@ import org.flexpay.common.persistence.AttributeTranslation;
  */
 public class PersonAttribute extends AttributeTranslation {
 
-	public PersonAttribute() {
-	}
 }

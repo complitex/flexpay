@@ -1,14 +1,14 @@
 package org.flexpay.ab.service;
 
 import org.apache.commons.collections.ArrayStack;
-import org.flexpay.ab.persistence.Person;
 import org.flexpay.ab.persistence.Apartment;
-import org.flexpay.common.dao.paging.Page;
+import org.flexpay.ab.persistence.Person;
 import org.flexpay.common.dao.paging.FetchRange;
+import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Stub;
-import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.security.annotation.Secured;
 
 import java.util.List;
@@ -114,4 +114,5 @@ public interface PersonService {
 	 */
 	@Secured (Roles.PERSON_DELETE)
 	void disable(@NotNull Set<Long> objectIds);
+
 }

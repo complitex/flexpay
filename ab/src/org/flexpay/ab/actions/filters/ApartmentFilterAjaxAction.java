@@ -31,7 +31,9 @@ public class ApartmentFilterAjaxAction extends FilterAjaxAction {
 		}
 
 		List<Apartment> apartments = apartmentService.getApartments(new Stub<BuildingAddress>(addressId));
-		log.debug("Found apartments: {}", apartments);
+		if (log.isDebugEnabled()) {
+			log.debug("Found apartments: {}", apartments.size());
+		}
 
 		for (Apartment apartment : apartments) {
 			foundObjects.add(new FilterObject(apartment.getId() + "", apartment.getNumber()));

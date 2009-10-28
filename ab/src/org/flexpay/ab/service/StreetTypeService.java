@@ -34,6 +34,7 @@ public interface StreetTypeService extends
 	 * @param streetTypeFilter Filter to init
 	 * @param locale		   Locale to get filter translations in
 	 * @throws FlexPayException if failure occurs
+	 * @return initialized filter
 	 */
 	@Secured (Roles.STREET_TYPE_READ)
 	StreetTypeFilter initFilter(StreetTypeFilter streetTypeFilter, Locale locale) throws FlexPayException;
@@ -45,6 +46,7 @@ public interface StreetTypeService extends
 	 * @return Entity object, or <code>null</code> if object not found
 	 */
 	@Secured (Roles.STREET_TYPE_READ)
+	@Override
 	StreetType read(Stub<StreetType> stub);
 
 	/**
@@ -63,6 +65,7 @@ public interface StreetTypeService extends
 	 */
 	@Secured (Roles.STREET_TYPE_READ)
 	@NotNull
+	@Override
 	List<StreetType> getEntities();
 
 	/**
@@ -71,6 +74,7 @@ public interface StreetTypeService extends
 	 * @param entities Entities to disable
 	 */
 	@Secured (Roles.STREET_TYPE_DELETE)
+	@Override
 	void disable(Collection<StreetType> entities);
 
 	/**
@@ -90,6 +94,7 @@ public interface StreetTypeService extends
 	 *          if validation fails
 	 */
 	@Secured (Roles.STREET_TYPE_ADD)
+	@Override
 	StreetType create(@NotNull StreetType streetType) throws FlexPayExceptionContainer;
 
 	/**
@@ -101,5 +106,7 @@ public interface StreetTypeService extends
 	 *          if validation fails
 	 */
 	@Secured (Roles.STREET_TYPE_CHANGE)
+	@Override
 	StreetType update(@NotNull StreetType entity) throws FlexPayExceptionContainer;
+
 }

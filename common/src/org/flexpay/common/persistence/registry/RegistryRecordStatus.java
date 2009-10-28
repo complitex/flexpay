@@ -15,6 +15,7 @@ public class RegistryRecordStatus extends DomainObject {
 	public static final int FIXED = 3;
 	public static final int PROCESSED = 4;
 
+	@SuppressWarnings ({"unchecked"})
 	private static final Map<Integer, String> typeToName = map(
 			pair(LOADED, "common.registry.record.status.LOADED"),
 			pair(PROCESSED_WITH_ERROR, "common.registry.record.status.PROCESSED_WITH_ERROR"),

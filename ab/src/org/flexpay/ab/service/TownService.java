@@ -23,9 +23,9 @@ import java.util.Locale;
 /**
  * Town service
  */
-public interface TownService extends
-		ParentService<TownFilter>,
-		NameTimeDependentService<TownName, TownNameTemporal, Town, TownNameTranslation> {
+public interface TownService extends NameTimeDependentService<
+		TownName, TownNameTemporal, Town, TownNameTranslation>,
+		ParentService<TownFilter> {
 
 	/**
 	 * Create Town object
@@ -58,7 +58,8 @@ public interface TownService extends
 	 *          if failure occurs
 	 */
 	@Secured (Roles.TOWN_READ)
-	TownFilter initFilter(TownFilter parentFilter, PrimaryKeyFilter forefatherFilter, Locale locale) throws FlexPayException;
+	@Override
+	TownFilter initFilter(TownFilter parentFilter, PrimaryKeyFilter<?> forefatherFilter, Locale locale) throws FlexPayException;
 
 	/**
 	 * Initialize filters. <p>Filters are coming from the most significant to less significant ones order, like
@@ -71,6 +72,7 @@ public interface TownService extends
 	 *          if failure occurs
 	 */
 	@Secured (Roles.TOWN_READ)
+	@Override
 	ArrayStack initFilters(ArrayStack filters, Locale locale) throws FlexPayException;
 
 	/**
@@ -85,6 +87,7 @@ public interface TownService extends
 	 *          if operation fails
 	 */
 	@Secured (Roles.TOWN_ADD)
+	@Override
 	Town create(Town object, List<TownNameTranslation> nameTranslations, ArrayStack filters, Date from)
 			throws FlexPayExceptionContainer;
 
@@ -96,6 +99,7 @@ public interface TownService extends
 	 */
 	@Secured (Roles.TOWN_READ)
 	@Nullable
+	@Override
 	Town readFull(@NotNull Stub<Town> stub);
 
 	/**
@@ -116,6 +120,7 @@ public interface TownService extends
 	 * @return object temporal name , or <code>null</code> if not found
 	 */
 	@Secured (Roles.TOWN_READ)
+	@Override
 	TownNameTemporal readTemporalName(Long id);
 
 	/**
@@ -128,7 +133,8 @@ public interface TownService extends
 	 *          if failure occurs
 	 */
 	@Secured (Roles.TOWN_READ)
-	List<TownName> findNames(ArrayStack filters, Page pager) throws FlexPayException;
+	@Override
+	List<TownName> findNames(ArrayStack filters, Page<Town> pager) throws FlexPayException;
 
 	/**
 	 * Get a list of available objects
@@ -137,6 +143,7 @@ public interface TownService extends
 	 * @return List of Objects
 	 */
 	@Secured (Roles.TOWN_READ)
+	@Override
 	List<Town> find(ArrayStack filters);
 
 	/**
@@ -147,7 +154,8 @@ public interface TownService extends
 	 * @return List of Objects
 	 */
 	@Secured (Roles.TOWN_READ)
-	List<Town> find(ArrayStack filters, Page pager);
+	@Override
+	List<Town> find(ArrayStack filters, Page<Town> pager);
 
 	/**
 	 * Lookup streets by query and region id. Query is a string which may contains in folow string:
@@ -170,6 +178,7 @@ public interface TownService extends
 	 *          if failure occurs
 	 */
 	@Secured (Roles.TOWN_DELETE)
+	@Override
 	void disable(Collection<Town> objects) throws FlexPayExceptionContainer;
 
 	/**
@@ -192,6 +201,7 @@ public interface TownService extends
 	 *          exceptions container
 	 */
 	@Secured (Roles.TOWN_CHANGE)
+	@Override
 	Town updateNameTranslations(Town obj, Long temporalId, List<TownNameTranslation> nameTranslations, Date date)
 			throws FlexPayExceptionContainer;
 
@@ -201,6 +211,7 @@ public interface TownService extends
 	 * @return name translation
 	 */
 	@Secured (Roles.TOWN_READ)
+	@Override
 	TownNameTranslation getEmptyNameTranslation();
 
 	/**
@@ -212,7 +223,8 @@ public interface TownService extends
 	 */
 	@Secured (Roles.TOWN_READ)
 	@NotNull
-	List<Town> findByName(String name, PrimaryKeyFilter filter);
+	@Override
+	List<Town> findByName(String name, PrimaryKeyFilter<Town> filter);
 
 	/**
 	 * Get a list of available objects
@@ -224,4 +236,5 @@ public interface TownService extends
 	 */
 	@Secured (Roles.TOWN_READ)
 	List<Town> find(ArrayStack filters, List<ObjectSorter> sorters, Page<Town> pager);
+
 }

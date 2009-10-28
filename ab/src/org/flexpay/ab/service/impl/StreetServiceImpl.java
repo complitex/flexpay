@@ -23,6 +23,7 @@ import org.flexpay.common.service.ParentService;
 import org.flexpay.common.service.impl.NameTimeDependentServiceImpl;
 import org.flexpay.common.service.internal.SessionUtils;
 import org.flexpay.common.util.CollectionUtils;
+import static org.flexpay.common.util.CollectionUtils.set;
 import org.flexpay.common.util.DateUtil;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
@@ -158,7 +159,7 @@ public class StreetServiceImpl extends NameTimeDependentServiceImpl<
 	@Transactional (readOnly = false, rollbackFor = Exception.class)
 	@Override
 	public Street saveDistricts(Street street, Set<Long> objectIds) {
-		Set<District> districts = new HashSet<District>();
+		Set<District> districts = set();
 		for (Long id : objectIds) {
 			District district = new District();
 			district.setId(id);
@@ -170,7 +171,7 @@ public class StreetServiceImpl extends NameTimeDependentServiceImpl<
 	}
 
 	@Override
-	public StreetFilter initFilter(StreetFilter parentFilter, PrimaryKeyFilter forefatherFilter, Locale locale)
+	public StreetFilter initFilter(StreetFilter parentFilter, PrimaryKeyFilter<?> forefatherFilter, Locale locale)
 			throws FlexPayException {
 
 		if (parentFilter == null) {
@@ -389,7 +390,7 @@ public class StreetServiceImpl extends NameTimeDependentServiceImpl<
 	}
 
 	@Override
-	public List<Street> find(ArrayStack filters, Page pager) {
+	public List<Street> find(ArrayStack filters, Page<Street> pager) {
 		ObjectFilter filter = (ObjectFilter) filters.peek();
 
 		// found street name filter, lookup for town filter and search via name
@@ -507,12 +508,13 @@ public class StreetServiceImpl extends NameTimeDependentServiceImpl<
 	 * @return List of districts
 	 */
 	@NotNull
+	@Override
 	public List<District> getStreetDistricts(@NotNull Stub<Street> stub) {
 		return streetDao.findDistricts(stub.getId());
 	}
 
-	@Override
 	@Transactional (readOnly = false)
+	@Override
 	public void delete(Street street) {
 		streetDaoExt.deleteStreet(street.getId());
 	}

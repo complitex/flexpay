@@ -36,7 +36,9 @@ public class StreetFilterAjaxAction extends FilterAjaxAction {
 		}
 
 		List<Street> streets = streetService.findByTownAndQuery(new Stub<Town>(townId), "%" + q + "%");
-		log.debug("Found streets: {}", streets);
+		if (log.isDebugEnabled()) {
+			log.debug("Found streets: {}", streets.size());
+		}
 
 		for (Street street : streets) {
 			StreetType type = street.getCurrentType();

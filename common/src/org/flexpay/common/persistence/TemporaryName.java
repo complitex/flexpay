@@ -20,14 +20,6 @@ public abstract class TemporaryName<TV extends TemporaryValue<TV>, T extends Tra
 	private DomainObject object;
 	private Set<T> translations = Collections.emptySet();
 
-	protected TemporaryName() {
-	}
-
-	/**
-	 * Getter for property 'object'.
-	 *
-	 * @return Value for property 'object'.
-	 */
 	public DomainObject getObject() {
 		return object;
 	}
@@ -36,58 +28,21 @@ public abstract class TemporaryName<TV extends TemporaryValue<TV>, T extends Tra
 		return stub(object);
 	}
 
-	/**
-	 * Setter for property 'object'.
-	 *
-	 * @param object Value to set for property 'object'.
-	 */
 	public void setObject(DomainObject object) {
 		this.object = object;
 	}
 
-	/**
-	 * Getter for property 'translations'.
-	 *
-	 * @return Value for property 'translations'.
-	 */
 	@NotNull
 	public Set<T> getTranslations() {
 		return translations;
 	}
 
-	/**
-	 * Setter for property 'translations'.
-	 *
-	 * @param translations Value to set for property 'translations'.
-	 */
 	public void setTranslations(@NotNull Set<T> translations) {
 		this.translations = translations;
 	}
 
 	public void addNameTranslation(T translation) {
-
 		translations = TranslationUtil.setTranslation(translations, this, translation);
-	}
-
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public String toString() {
-		return new ToStringBuilder(this, ToStringStyle.SIMPLE_STYLE)
-				.append("id", getId())
-				.append("Translations", translations.toArray())
-				.toString();
-	}
-
-	/**
-	 * {@inheritDoc}
-	 */
-	@Override
-	public boolean equals(Object obj) {
-
-		return obj instanceof TemporaryName && super.equals(obj);
 	}
 
 	/**
@@ -136,4 +91,19 @@ public abstract class TemporaryName<TV extends TemporaryValue<TV>, T extends Tra
 		//noinspection CollectionsFieldAccessReplaceableByMethodCall
 		return isNew() && translations == Collections.EMPTY_SET;
 	}
+
+	@Override
+	public String toString() {
+		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
+				append("id", getId()).
+				append("object", object).
+				append("translations", translations).
+				toString();
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		return obj instanceof TemporaryName && super.equals(obj);
+	}
+
 }

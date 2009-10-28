@@ -78,6 +78,7 @@ public class AddressAttributeTypeServiceImpl implements AddressAttributeTypeServ
 	 *          if validation fails
 	 */
 	@NotNull
+	@Override
 	public AddressAttributeType create(@NotNull AddressAttributeType type) throws FlexPayExceptionContainer {
 
 		validate(type);
@@ -100,6 +101,7 @@ public class AddressAttributeTypeServiceImpl implements AddressAttributeTypeServ
 	@SuppressWarnings ({"ThrowableInstanceNeverThrown"})
 	@Transactional (readOnly = false)
 	@NotNull
+	@Override
 	public AddressAttributeType update(@NotNull AddressAttributeType type) throws FlexPayExceptionContainer {
 
 		validate(type);
@@ -122,9 +124,12 @@ public class AddressAttributeTypeServiceImpl implements AddressAttributeTypeServ
 	 *
 	 * @param entities Entities to disable
 	 */
+	@Override
 	public void disable(Collection<AddressAttributeType> entities) {
 
-		log.info("{} types to disable", entities.size());
+		if (log.isDebugEnabled()) {
+			log.debug("{} types to disable", entities.size());
+		}
 		for (AddressAttributeType type : entities) {
 
 			type.setStatus(AddressAttributeType.STATUS_DISABLED);
@@ -143,6 +148,7 @@ public class AddressAttributeTypeServiceImpl implements AddressAttributeTypeServ
 	 * @return Attribute type if found, or <code>null</code> otherwise
 	 */
 	@Nullable
+	@Override
 	public AddressAttributeType read(@NotNull Stub<AddressAttributeType> stub) {
 
 		return addressAttributeTypeDao.readFull(stub.getId());
@@ -153,6 +159,7 @@ public class AddressAttributeTypeServiceImpl implements AddressAttributeTypeServ
 	 *
 	 * @return BuildingAttributeType list
 	 */
+	@Override
 	public List<AddressAttributeType> getAttributeTypes() {
 
 		List<AddressAttributeType> types = addressAttributeTypeDao.findAttributeTypes();
@@ -173,4 +180,5 @@ public class AddressAttributeTypeServiceImpl implements AddressAttributeTypeServ
 	public void setModificationListener(ModificationListener<AddressAttributeType> modificationListener) {
 		this.modificationListener = modificationListener;
 	}
+
 }

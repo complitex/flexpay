@@ -16,8 +16,8 @@ import org.springframework.security.annotation.Secured;
 
 import java.util.*;
 
-public interface StreetService extends
-		NameTimeDependentService<StreetName, StreetNameTemporal, Street, StreetNameTranslation>,
+public interface StreetService extends NameTimeDependentService<
+		StreetName, StreetNameTemporal, Street, StreetNameTranslation>,
 		ParentService<StreetFilter> {
 
 	/**
@@ -124,7 +124,7 @@ public interface StreetService extends
 	 */
 	@Secured (Roles.STREET_READ)
 	@Override
-	List<StreetName> findNames(ArrayStack filters, Page pager) throws FlexPayException;
+	List<StreetName> findNames(ArrayStack filters, Page<Street> pager) throws FlexPayException;
 
 	/**
 	 * Get a list of available objects
@@ -145,7 +145,7 @@ public interface StreetService extends
 	 */
 	@Secured (Roles.STREET_READ)
 	@Override
-	List<Street> find(ArrayStack filters, Page pager);
+	List<Street> find(ArrayStack filters, Page<Street> pager);
 
 	/**
 	 * Get a list of available objects
@@ -250,7 +250,7 @@ public interface StreetService extends
 	@Secured (Roles.STREET_READ)
 	@NotNull
 	@Override
-	List<Street> findByName(String name, PrimaryKeyFilter filter);
+	List<Street> findByName(String name, PrimaryKeyFilter<Street> filter);
 
 	/**
 	 * Initialize parent filter. Possibly taking in account upper level forefather filter
@@ -264,7 +264,7 @@ public interface StreetService extends
 	 */
 	@Secured (Roles.STREET_READ)
 	@Override
-	StreetFilter initFilter(StreetFilter parentFilter, PrimaryKeyFilter forefatherFilter, Locale locale) throws FlexPayException;
+	StreetFilter initFilter(StreetFilter parentFilter, PrimaryKeyFilter<?> forefatherFilter, Locale locale) throws FlexPayException;
 
 	/**
 	 * Initialize filters. <p>Filters are coming from the most significant to less significant ones order, like
@@ -291,4 +291,5 @@ public interface StreetService extends
 	List<District> getStreetDistricts(@NotNull Stub<Street> stub);
 
 	void delete(Street street);
+
 }

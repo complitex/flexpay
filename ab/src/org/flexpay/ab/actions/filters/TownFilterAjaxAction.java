@@ -45,7 +45,9 @@ public class TownFilterAjaxAction extends FilterAjaxAction {
 		}
 
 		List<Town> towns = townService.findByRegionAndQuery(new Stub<Region>(regionId), "%" + q + "%");
-		log.debug("Found towns: {}", towns);
+		if (log.isDebugEnabled()) {
+			log.debug("Found towns: {}", towns.size());
+		}
 
 		for (Town town : towns) {
 			TownName name = town.getCurrentName();

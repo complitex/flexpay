@@ -57,7 +57,7 @@ public interface NameTimeDependentService<
 	 * @return List of names
 	 * @throws FlexPayException if failure occurs
 	 */
-	List<TV> findNames(ArrayStack filters, Page pager) throws FlexPayException;
+	List<TV> findNames(ArrayStack filters, Page<NTD> pager) throws FlexPayException;
 
 	/**
 	 * Get a list of available objects
@@ -74,7 +74,7 @@ public interface NameTimeDependentService<
 	 * @param pager Page
 	 * @return List of Objects
 	 */
-	List<NTD> find(ArrayStack filters, Page pager);
+	List<NTD> find(ArrayStack filters, Page<NTD> pager);
 
 	/**
 	 * Disable objects
@@ -112,5 +112,6 @@ public interface NameTimeDependentService<
 	 * @return Object if found, or <code>null</code> otherwise
 	 */
 	@NotNull
-	List<NTD> findByName(String name, PrimaryKeyFilter filter);
+	List<NTD> findByName(String name, PrimaryKeyFilter<NTD> filter);
+
 }

@@ -1,8 +1,8 @@
 package org.flexpay.ab.service.impl;
 
-import org.flexpay.ab.service.ObjectsFactory;
 import org.flexpay.ab.persistence.Apartment;
 import org.flexpay.ab.persistence.Building;
+import org.flexpay.ab.service.ObjectsFactory;
 
 public class AbObjectsFactory implements ObjectsFactory {
 
@@ -11,6 +11,7 @@ public class AbObjectsFactory implements ObjectsFactory {
 	 *
 	 * @return new apartment instance
 	 */
+	@Override
 	public Apartment newApartment() {
 		return Apartment.newInstance();
 	}
@@ -20,7 +21,9 @@ public class AbObjectsFactory implements ObjectsFactory {
 	 *
 	 * @return new building instance
 	 */
+	@Override
 	public Building newBuilding() {
 		return Building.newInstance();
 	}
+
 }
