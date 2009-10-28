@@ -83,7 +83,7 @@ public class LockManager {
 		try {
 			list = sqlQuery.list();
 		} catch (HibernateException e) {
-			log.error("AcquireLock failed!", e);
+			log.error("AcquireLock failed!");
 			return null;
 		}
 		return list;
