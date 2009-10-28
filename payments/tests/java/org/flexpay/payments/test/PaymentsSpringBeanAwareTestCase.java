@@ -20,7 +20,7 @@ import org.springframework.test.context.ContextConfiguration;
 import javax.annotation.Resource;
 
 @ContextConfiguration (locations = {
-		"beans.xml"
+		"payments-beans.xml"
 })
 public class PaymentsSpringBeanAwareTestCase extends SpringBeanAwareTestCase {
     @Autowired

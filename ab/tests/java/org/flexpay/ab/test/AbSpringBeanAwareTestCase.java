@@ -13,6 +13,9 @@ import org.springframework.security.providers.anonymous.AnonymousAuthenticationT
 import org.springframework.security.userdetails.User;
 import org.springframework.test.context.ContextConfiguration;
 
+@ContextConfiguration(locations = {
+		"ab-beans.xml"
+})
 public class AbSpringBeanAwareTestCase extends SpringBeanAwareTestCase {
 
 	/**
