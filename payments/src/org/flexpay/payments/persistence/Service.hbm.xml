@@ -128,15 +128,15 @@
 
 	<query name="ServiceType.findServiceTypes.count">
 		select count(*)
-		from ServiceType
-		where status=0
+		from ServiceType st
+		where st.status=0
 	</query>
 
 	<query name="ServiceType.findServiceTypes">
-		select distinct o
-		from ServiceType o
-			left join fetch o.typeNames
-		where o.status=0
+		select distinct st
+		from ServiceType st
+			left join fetch st.typeNames
+		where st.status=0
 	</query>
 
 	<query name="ServiceType.findAllServiceTypes">

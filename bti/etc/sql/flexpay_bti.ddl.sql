@@ -379,9 +379,10 @@
     create table bti_apartment_attribute_types_tbl (
         id bigint not null auto_increment,
         discriminator varchar(255) not null comment 'Class hierarchy descriminator',
-        group_id bigint not null comment 'Attribute group reference',
+        status integer not null comment 'Enabled/Disabled status',
         unique_code varchar(255) comment 'Internal unique code',
         is_temporal integer not null comment 'Temporal flag',
+        group_id bigint not null comment 'Attribute group reference',
         primary key (id)
     ) comment='Apartment attribute types';
 
@@ -439,9 +440,10 @@
     create table bti_building_attribute_types_tbl (
         id bigint not null auto_increment,
         discriminator varchar(255) not null comment 'Class hierarchy descriminator',
-        group_id bigint not null comment 'Attribute group reference',
+        status integer not null comment 'Enabled/Disabled status',
         unique_code varchar(255) comment 'Internal unique code',
         is_temporal integer not null comment 'Temporal flag',
+        group_id bigint not null comment 'Attribute group reference',
         primary key (id)
     ) comment='Building attribute types';
 

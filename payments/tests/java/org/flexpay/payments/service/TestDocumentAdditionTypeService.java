@@ -19,7 +19,7 @@ public class TestDocumentAdditionTypeService extends PaymentsSpringBeanAwareTest
 	@Test
 	public void testFindTypeByCode() {
 
-		int validCodes[] = { CODE_ERC_ACCOUNT };
+		int validCodes[] = {CODE_ERC_ACCOUNT};
 		for (int validCode : validCodes) {
 			DocumentAdditionType documentAdditionType = null;
 
@@ -30,7 +30,7 @@ public class TestDocumentAdditionTypeService extends PaymentsSpringBeanAwareTest
 			}
 
 			assertNotNull("Failed reading by code predefined document status (code " + validCode + ")", documentAdditionType);
-			assertTrue("Read status code " + documentAdditionType.getCode() + " is bad (request code was " + validCode + ")", validCode == documentAdditionType.getCode());
+			assertEquals("Read status code " + documentAdditionType.getCode() + " is bad (request code was " + validCode + ")", validCode, documentAdditionType.getCode());
 
 			DocumentAdditionTypeTranslation defaultTranslation = TranslationUtil.getTranslation(documentAdditionType.getTranslations(), ApplicationConfig.getDefaultLocale());
 			assertNotNull("Status has no default translation", defaultTranslation);

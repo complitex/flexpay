@@ -66,7 +66,6 @@
 		<property name="cachingModels">
 			<props>
 				<prop key="read">cacheName=paymentsServiceTypeCache</prop>
-				<prop key="list*">cacheName=paymentsServiceTypeCache</prop>
 				<prop key="get*">cacheName=paymentsServiceTypeCache</prop>
 			</props>
 		</property>

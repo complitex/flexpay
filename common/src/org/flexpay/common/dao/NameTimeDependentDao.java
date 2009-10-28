@@ -16,7 +16,7 @@ public interface NameTimeDependentDao<NTD, PK extends Serializable>
 	 * @param parentId Parent id
 	 * @return List of children
 	 */
-	List<NTD> findObjects(Page pager, int status, PK parentId);
+	List<NTD> findObjects(Page<NTD> pager, int status, PK parentId);
 
 	/**
 	 * Get all children for parent

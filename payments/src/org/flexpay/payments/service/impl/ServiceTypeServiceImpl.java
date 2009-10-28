@@ -64,7 +64,7 @@ public class ServiceTypeServiceImpl implements ServiceTypeService {
 		return serviceTypeDao.findServiceTypes(pager);
 	}
 
-	public List<ServiceType> listAllServiceTypes() {
+	public List<ServiceType> getAllServiceTypes() {
 
 		return serviceTypeDao.findAllServiceTypes();
 	}
@@ -203,7 +203,7 @@ public class ServiceTypeServiceImpl implements ServiceTypeService {
 	 */
 	public ServiceTypeFilter initFilter(ServiceTypeFilter serviceTypeFilter) {
 
-		serviceTypeFilter.setServiceTypes(listAllServiceTypes());
+		serviceTypeFilter.setServiceTypes(getAllServiceTypes());
 
 		return serviceTypeFilter;
 	}

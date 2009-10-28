@@ -51,7 +51,7 @@ public interface ApartmentAttributeTypeService {
 	 *
 	 * @return list of apartment attributes
 	 */
-	List<ApartmentAttributeType> listTypes();
+	List<ApartmentAttributeType> findTypes();
 
 	/**
 	 * Find attribute type by name

@@ -59,7 +59,7 @@ public interface BuildingAttributeTypeService {
 	 *
 	 * @return list of building attributes
 	 */
-	List<BuildingAttributeType> listTypes();
+	List<BuildingAttributeType> findTypes();
 
 	/**
 	 * Find attribute type by name

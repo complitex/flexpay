@@ -81,7 +81,8 @@
 	</query>
 
 	<query name="Town.findObjects.count">
-		select count(*) from Town t
+		select count(*)
+		from Town t
 		where t.status=? and t.parent.id=?
 	</query>
 

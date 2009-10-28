@@ -141,7 +141,7 @@ public class ApartmentAttributeTypeServiceImpl implements ApartmentAttributeType
 		return attributeTypeDao.findTypes(pager);
 	}
 
-    public List<ApartmentAttributeType> listTypes() {
+    public List<ApartmentAttributeType> findTypes() {
         return attributeTypeDao.findAllTypes();
     }
 

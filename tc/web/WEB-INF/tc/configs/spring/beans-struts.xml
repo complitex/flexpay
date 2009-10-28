@@ -58,6 +58,11 @@
           p:crumbNameKey="tc.crumbs.buildings_with_attributes.list"
           scope="prototype" />
 
+    <bean id="buildingAttributeTypesListAction"
+          class="org.flexpay.bti.actions.buildings.BuildingAttributeTypesListAction"
+          p:attributeTypeService-ref="buildingAttributeTypeService"
+          scope="prototype" />
+
 	<bean id="buildingAttributesSaveAction"
 		  class="org.flexpay.tc.actions.buildingattributes.BuildingAttributesSaveAction"
 		  p:btiBuildingService-ref="btiBuildingService"
@@ -76,11 +81,6 @@
           p:addressService-ref="addressService"
           p:buildingService-ref="buildingService"
           p:crumbNameKey="tc.crumbs.building_attributes.edit"
-          scope="prototype" />
-
-    <bean id="buildingAttributeTypesListAction"
-          class="org.flexpay.bti.actions.buildings.BuildingAttributeTypesListAction"
-          p:attributeTypeService-ref="buildingAttributeTypeService"
           scope="prototype" />
 
     <bean id="buildingAttributeTypesListPageAction" parent="staticPageAction"

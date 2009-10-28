@@ -19,7 +19,6 @@ public class TestServiceTypeService extends PaymentsSpringBeanAwareTestCase {
 
 	@Autowired
 	private ServiceTypeService serviceTypeService;
-
 	@Autowired
 	private LanguageService languageService;
 
@@ -42,9 +41,9 @@ public class TestServiceTypeService extends PaymentsSpringBeanAwareTestCase {
 	}
 
 	@Test
-	public void testListAllServiceTypes() {
+	public void testGetAllServiceTypes() {
 
-		List<ServiceType> result = serviceTypeService.listAllServiceTypes();
+		List<ServiceType> result = serviceTypeService.getAllServiceTypes();
 		assertNotNull("Result must no t be null", result);
 		assertFalse("Result must not be empty on test data", result.isEmpty());
 	}
@@ -128,4 +127,5 @@ public class TestServiceTypeService extends PaymentsSpringBeanAwareTestCase {
 
 		return null;
 	}
+
 }
