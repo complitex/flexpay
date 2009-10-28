@@ -28,11 +28,7 @@ public class BuildingAttributeTypesListAction extends FPActionWithPagerSupport<B
 	@Override
 	protected String doExecute() throws Exception {
 
-		log.debug("1 Before: pager = {}", getPager());
-
 		types = attributeTypeService.listTypes(getPager());
-
-		log.debug("1 After pager = {}", getPager());
 
 		return SUCCESS;
 	}

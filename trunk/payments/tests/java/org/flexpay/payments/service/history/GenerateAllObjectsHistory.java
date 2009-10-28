@@ -182,7 +182,7 @@ public class GenerateAllObjectsHistory extends PaymentsSpringBeanAwareTestCase {
 	}
 
 	private void generateServiceTypes() {
-		List<ServiceType> serviceTypes = serviceTypeService.listAllServiceTypes();
+		List<ServiceType> serviceTypes = serviceTypeService.getAllServiceTypes();
 		for (ServiceType type : serviceTypes) {
 			serviceTypeHistoryGenerator.generateFor(type);
 		}

@@ -222,7 +222,7 @@ public class OperationsListAction extends CashboxCookieWithPagerActionSupport<Op
 	}
 
 	private void loadServiceTypes() {
-		serviceTypes = serviceTypeService.listAllServiceTypes();
+		serviceTypes = serviceTypeService.getAllServiceTypes();
 	}
 
 	@NotNull

@@ -86,7 +86,6 @@ public class Apartment extends DomainObjectWithStatus {
 	}
 
 	public void setNumber(@Nullable String number) {
-
 		setNumberForDate(number, DateUtil.now());
 	}
 
@@ -121,16 +120,10 @@ public class Apartment extends DomainObjectWithStatus {
 		return result;
 	}
 
-	/**
-	 * @return the personRegistrations
-	 */
 	public Set<PersonRegistration> getPersonRegistrations() {
 		return personRegistrations;
 	}
 
-	/**
-	 * @param personRegistrations the personRegistrations to set
-	 */
 	public void setPersonRegistrations(Set<PersonRegistration> personRegistrations) {
 		this.personRegistrations = personRegistrations;
 	}

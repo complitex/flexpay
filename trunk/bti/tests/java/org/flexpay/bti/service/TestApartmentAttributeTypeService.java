@@ -19,11 +19,6 @@ public class TestApartmentAttributeTypeService extends SpringBeanAwareTestCase {
 	private ApartmentAttributeTypeDaoExt attributeTypeDaoExt;
 
 	@Test
-	public void testReadTypes() {
-		attributeTypeService.listTypes(new Page<ApartmentAttributeType>());
-	}
-
-	@Test
 	public void testReadType() {
 
 		ApartmentAttributeType type = attributeTypeService.readFull(new Stub<ApartmentAttributeType>(1L));

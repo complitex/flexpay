@@ -14,17 +14,17 @@
 			<generator class="native" />
 		</id>
 
-		<discriminator type="string">
-			<column name="discriminator" not-null="true">
-				<comment>Class hierarchy descriminator</comment>
-			</column>
-		</discriminator>
+        <discriminator type="string">
+            <column name="discriminator" not-null="true">
+                <comment>Class hierarchy descriminator</comment>
+            </column>
+        </discriminator>
 
-		<many-to-one name="group" foreign-key="bti_apartment_attribute_types_tbl" class="ApartmentAttributeGroup">
-			<column name="group_id" not-null="true">
-				<comment>Attribute group reference</comment>
-			</column>
-		</many-to-one>
+        <property name="status">
+            <column name="status" not-null="true">
+                <comment>Enabled/Disabled status</comment>
+            </column>
+        </property>
 
 		<property name="uniqueCode">
 			<column name="unique_code" not-null="false">
@@ -37,6 +37,12 @@
 				<comment>Temporal flag</comment>
 			</column>
 		</property>
+
+        <many-to-one name="group" foreign-key="bti_apartment_attribute_types_tbl" class="ApartmentAttributeGroup">
+            <column name="group_id" not-null="true">
+                <comment>Attribute group reference</comment>
+            </column>
+        </many-to-one>
 
 		<set name="translations" inverse="true" cascade="all-delete-orphan">
 			<key column="attribute_type_id" not-null="true" />
@@ -119,10 +125,12 @@
 	<query name="ApartmentAttributeType.findTypes.count">
 		select count(t)
 		from ApartmentAttributeType t
+        where t.status=0
 	</query>
 
 	<query name="ApartmentAttributeType.findTypes">
-		from ApartmentAttributeType
+		from ApartmentAttributeType t
+        where t.status=0
 	</query>
 
 	<query name="ApartmentAttributeType.findAllTypes">
@@ -135,7 +143,7 @@
 		select distinct t
 		from ApartmentAttributeType t
 			left join t.translations n
-		where n.name=? or t.uniqueCode=?
+		where (n.name=? or t.uniqueCode=?) and t.status=0
 	</query>
 
 	<query name="ApartmentAttributeTypeEnum.findValues">
@@ -148,7 +156,8 @@
 		from Dual
 		where exists(
 			from ApartmentAttributeType t
-				left join t.translations tn where (tn.name=? or t.uniqueCode=?) and (t.id<>? or 1=?))
+				left join t.translations tn
+		    where (tn.name=? or t.uniqueCode=?) and (t.id<>? or 1=?) and t.status=0)
 		]]>
 	</query>
 

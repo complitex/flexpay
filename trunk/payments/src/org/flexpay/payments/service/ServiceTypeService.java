@@ -37,7 +37,7 @@ public interface ServiceTypeService {
 	 * @return list of service types
 	 */
 	@Secured (Roles.SERVICE_TYPE_READ)
-	List<ServiceType> listAllServiceTypes();
+	List<ServiceType> getAllServiceTypes();
 
 	/**
 	 * Read full service type info
