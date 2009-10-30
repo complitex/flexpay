@@ -193,6 +193,7 @@
 			<fileset file="${ab_sync.dir}/etc/sql/sync.sql" />
 		</concat>
 		<antcall target="ab.sql.init-db" />
+		<antcall target="template.set_db_name" />
 	</target>
 
 	<target name="ab_sync.sql.all-test">
