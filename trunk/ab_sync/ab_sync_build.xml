@@ -141,6 +141,8 @@
 	<target name="template.ab_sync.war.production"
 			depends="clean.all,ab_sync.compile.production,ab_sync.prepare.war,init.distr">
 
+		<antcall target="template.set_db_name" />
+		<antcall target="template.switch_instance_id" />
 		<antcall target="template.update_version" />
 
 		<war destfile="${distr.dir}/${ab_sync.war.name}" needxmlfile="false">
