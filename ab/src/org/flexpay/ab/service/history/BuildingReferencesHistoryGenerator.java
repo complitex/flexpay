@@ -1,9 +1,11 @@
 package org.flexpay.ab.service.history;
 
 import org.flexpay.ab.persistence.AddressAttribute;
+import org.flexpay.ab.persistence.AddressAttributeType;
 import org.flexpay.ab.persistence.Building;
 import org.flexpay.ab.persistence.BuildingAddress;
 import org.flexpay.common.persistence.history.ReferencesHistoryGenerator;
+import org.flexpay.common.service.DiffService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
@@ -12,17 +14,26 @@ public class BuildingReferencesHistoryGenerator implements ReferencesHistoryGene
 	private StreetHistoryGenerator streetHistoryGenerator;
 	private DistrictHistoryGenerator districtHistoryGenerator;
 	private AddressAttributeTypeHistoryGenerator attributeTypeHistoryGenerator;
+	private DiffService diffService;
 
 	@Override
 	public void generateReferencesHistory(@NotNull Building obj) {
 
-		districtHistoryGenerator.generateFor(obj.getDistrict());
+		if (!diffService.hasDiffs(obj.getDistrict())) {
+			districtHistoryGenerator.generateFor(obj.getDistrict());
+		}
+
+		boolean allAttributeTypesHaveHistory = diffService.allObjectsHaveDiff(AddressAttributeType.class);
 
 		for (BuildingAddress address : obj.getBuildingses()) {
-			streetHistoryGenerator.generateFor(address.getStreet());
+			if (!diffService.hasDiffs(address.getStreet())) {
+				streetHistoryGenerator.generateFor(address.getStreet());
+			}
 
-			for (AddressAttribute attribute : address.getBuildingAttributes()) {
-				attributeTypeHistoryGenerator.generateFor(attribute.getBuildingAttributeType());
+			if (!allAttributeTypesHaveHistory) {
+				for (AddressAttribute attribute : address.getBuildingAttributes()) {
+					attributeTypeHistoryGenerator.generateFor(attribute.getBuildingAttributeType());
+				}
 			}
 		}
 	}
@@ -40,5 +51,10 @@ public class BuildingReferencesHistoryGenerator implements ReferencesHistoryGene
 	@Required
 	public void setAttributeTypeHistoryGenerator(AddressAttributeTypeHistoryGenerator attributeTypeHistoryGenerator) {
 		this.attributeTypeHistoryGenerator = attributeTypeHistoryGenerator;
+	}
+
+	@Required
+	public void setDiffService(DiffService diffService) {
+		this.diffService = diffService;
 	}
 }

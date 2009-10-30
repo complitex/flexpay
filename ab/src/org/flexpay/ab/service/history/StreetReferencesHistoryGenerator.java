@@ -1,8 +1,10 @@
 package org.flexpay.ab.service.history;
 
 import org.flexpay.ab.persistence.Street;
+import org.flexpay.ab.persistence.StreetType;
 import org.flexpay.ab.persistence.StreetTypeTemporal;
 import org.flexpay.common.persistence.history.ReferencesHistoryGenerator;
+import org.flexpay.common.service.DiffService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
@@ -10,15 +12,20 @@ public class StreetReferencesHistoryGenerator implements ReferencesHistoryGenera
 
 	private StreetTypeHistoryGenerator streetTypeHistoryGenerator;
 	private TownHistoryGenerator townHistoryGenerator;
+	private DiffService diffService;
 
 	@Override
 	public void generateReferencesHistory(@NotNull Street obj) {
 
-		townHistoryGenerator.generateFor(obj.getTown());
+		if (!diffService.hasDiffs(obj.getTown())) {
+			townHistoryGenerator.generateFor(obj.getTown());
+		}
 
-		for (StreetTypeTemporal temporal : obj.getTypeTemporals()) {
-			if (!temporal.isValueEmpty()) {
-				streetTypeHistoryGenerator.generateFor(temporal.getValue());
+		if (!diffService.allObjectsHaveDiff(StreetType.class)) {
+			for (StreetTypeTemporal temporal : obj.getTypeTemporals()) {
+				if (!temporal.isValueEmpty()) {
+					streetTypeHistoryGenerator.generateFor(temporal.getValue());
+				}
 			}
 		}
 	}
@@ -31,5 +38,10 @@ public class StreetReferencesHistoryGenerator implements ReferencesHistoryGenera
 	@Required
 	public void setTownHistoryGenerator(TownHistoryGenerator townHistoryGenerator) {
 		this.townHistoryGenerator = townHistoryGenerator;
+	}
+
+	@Required
+	public void setDiffService(DiffService diffService) {
+		this.diffService = diffService;
 	}
 }

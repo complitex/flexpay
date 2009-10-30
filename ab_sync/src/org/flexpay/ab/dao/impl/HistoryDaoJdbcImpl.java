@@ -8,6 +8,7 @@ import org.flexpay.ab.persistence.SyncAction;
 import org.flexpay.common.dao.paging.Page;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Required;
 import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,6 +23,8 @@ public class HistoryDaoJdbcImpl extends SimpleJdbcDaoSupport implements HistoryD
 
 	private Logger log = LoggerFactory.getLogger(getClass());
 
+	private String sqlGetRecords;
+
 	/**
 	 * List history records
 	 *
@@ -29,7 +32,6 @@ public class HistoryDaoJdbcImpl extends SimpleJdbcDaoSupport implements HistoryD
 	 * @return List of HistoryRecord instances
 	 */
 	public List<HistoryRec> getRecords(Page pager) {
-		String sqlGetRecords = "select * from ab_sync_changes_tbl where processed=0 order by order_weight, object_id, record_date limit ?";
 		return getSimpleJdbcTemplate().query(sqlGetRecords, new ParameterizedRowMapper<HistoryRec>() {
 			public HistoryRec mapRow(ResultSet rs, int i) throws SQLException {
 				HistoryRec record = new HistoryRec();
@@ -122,5 +124,10 @@ public class HistoryDaoJdbcImpl extends SimpleJdbcDaoSupport implements HistoryD
 				record.getRecordId(), record.getRecordDate(), record.getOldValue(), record.getCurrentValue(), record.getObjectType().getId(),
 				record.getObjectId(), record.getFieldType() != null ? record.getFieldType().getId() : null, record.getSyncAction().getCode(),
 				0, record.getObjectType().getOrderWeight());
+	}
+
+	@Required
+	public void setSqlGetRecords(String sqlGetRecords) {
+		this.sqlGetRecords = sqlGetRecords;
 	}
 }

@@ -1,23 +1,22 @@
 package org.flexpay.ab.service.impl;
 
 import org.flexpay.ab.persistence.*;
-import org.flexpay.ab.persistence.filters.TownFilter;
 import org.flexpay.ab.service.StreetService;
 import org.flexpay.ab.service.StreetTypeService;
-import static org.flexpay.ab.util.config.ApplicationConfig.getDefaultTown;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.common.persistence.Stub;
-import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.service.importexport.CorrectionsService;
-import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.TranslationUtil;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.util.Date;
 import java.util.List;
+
+import static org.flexpay.ab.util.config.ApplicationConfig.getDefaultTown;
+import static org.flexpay.common.persistence.Stub.stub;
 
 public class StreetProcessor extends AbstractProcessor<Street> {
 
@@ -122,19 +121,17 @@ public class StreetProcessor extends AbstractProcessor<Street> {
 			log.debug("No current name or type found");
 			return null;
 		}
-		String nameStr = name.getTranslations().iterator().next().getName();
 
-		List<Street> streets = streetService.findByName(nameStr, new TownFilter(object.getParent().getId()));
-
-		log.debug("Looked up for {}, found {}", nameStr, streets.size());
-		if (streets.isEmpty()) {
+		String nameStr = name.getDefaultNameTranslation();
+		if (nameStr == null) {
+			log.debug("No default name translation");
 			return null;
 		}
 
-		streets = filterStreetsByType(streets, type);
+		List<Street> streets = streetService.findByTownAndNameAndType(object.getTownStub(), nameStr, stub(type));
 
+		log.debug("Looked up for {}, found {}", nameStr, streets.size());
 		if (streets.isEmpty()) {
-			log.debug("All candidates filtered by type");
 			return null;
 		}
 
@@ -143,24 +140,6 @@ public class StreetProcessor extends AbstractProcessor<Street> {
 		}
 
 		return stub(streets.get(0));
-	}
-
-	@NotNull
-	private List<Street> filterStreetsByType(@NotNull List<Street> streets, @NotNull StreetType type) {
-		List<Street> result = CollectionUtils.list();
-		for (Street street : streets) {
-			StreetType currentType = street.getCurrentType();
-			if (currentType == null) {
-				log.warn("No type for street: {}", street);
-				continue;
-			}
-
-			if (currentType.equals(type)) {
-				result.add(street);
-			}
-		}
-
-		return result;
 	}
 
 	/**

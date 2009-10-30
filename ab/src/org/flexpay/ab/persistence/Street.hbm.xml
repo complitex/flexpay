@@ -182,14 +182,22 @@
 	<query name="Street.findByTownAndName">
 		SELECT DISTINCT s
 		FROM Street s
-		LEFT JOIN FETCH s.nameTemporals t
-		LEFT JOIN FETCH t.value v
-		LEFT JOIN FETCH v.translations tr
-		LEFT JOIN FETCH tr.lang l
-		LEFT JOIN FETCH s.typeTemporals tt
-		LEFT JOIN FETCH tt.value tv
-		LEFT JOIN FETCH tv.translations ttr
-		WHERE s.parent.id=? AND t.invalidDate='2100-12-31' AND lower(tr.name) like ?
+		LEFT JOIN s.nameTemporals t
+		LEFT JOIN t.value v
+		LEFT JOIN v.translations tr
+		WHERE s.status=0 and s.parent.id=? AND t.invalidDate='2100-12-31' AND upper(tr.name) = ?
+	</query>
+
+	<query name="Street.findByTownAndNameAndType">
+		SELECT DISTINCT s
+		FROM Street s
+		LEFT JOIN s.nameTemporals t
+		LEFT JOIN t.value v
+		LEFT JOIN v.translations tr
+		LEFT JOIN s.typeTemporals tt
+		WHERE s.status=0 and s.parent.id=?
+			AND t.invalidDate='2100-12-31' AND upper(tr.name)=?
+			AND tt.invalidDate='2100-12-31' AND tt.value.id=?
 	</query>
 
     <query name="Street.findByTownAndQuery">

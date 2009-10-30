@@ -19,6 +19,7 @@
 
 	<bean id="historyDaoJdbc" class="org.flexpay.ab.dao.impl.HistoryDaoJdbcImpl">
 		<property name="dataSource" ref="dataSource" />
+		<property name="sqlGetRecords" value="${ab.sync.history.source.sql}" />
 	</bean>
 
 	<bean id="historySourceDao" class="org.flexpay.ab.dao.impl.HistorySourceDaoImpl">

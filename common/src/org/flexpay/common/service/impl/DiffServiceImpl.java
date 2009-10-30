@@ -92,6 +92,18 @@ public class DiffServiceImpl implements DiffService {
 	}
 
 	/**
+	 * Check if there is some history for all objects of a specified class
+	 *
+	 * @param clazz Objects class to check history existence for
+	 * @return <code>true</code> if there is diffs for all objects of that class, or <code>false</code> otherwise
+	 */
+	@Override
+	public <T extends DomainObject> boolean allObjectsHaveDiff(Class<T> clazz) {
+		// TODO: IMPLEMENT ME
+		return false;
+	}
+
+	/**
 	 * Fetch diffs got from last consumer update
 	 *
 	 * @param range Fetch range

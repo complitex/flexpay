@@ -1,9 +1,11 @@
 package org.flexpay.ab.service.history;
 
+import org.flexpay.ab.persistence.IdentityType;
 import org.flexpay.ab.persistence.Person;
 import org.flexpay.ab.persistence.PersonIdentity;
 import org.flexpay.ab.persistence.PersonRegistration;
 import org.flexpay.common.persistence.history.ReferencesHistoryGenerator;
+import org.flexpay.common.service.DiffService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
@@ -11,16 +13,21 @@ public class PersonReferencesHistoryGenerator implements ReferencesHistoryGenera
 
 	private IdentityTypeHistoryGenerator identityTypeHistoryGenerator;
 	private ApartmentHistoryGenerator apartmentHistoryGenerator;
+	private DiffService diffService;
 
 	@Override
 	public void generateReferencesHistory(@NotNull Person obj) {
 
-		for (PersonIdentity identity : obj.getPersonIdentities()) {
-			identityTypeHistoryGenerator.generateFor(identity.getIdentityType());
+		if (!diffService.allObjectsHaveDiff(IdentityType.class)) {
+			for (PersonIdentity identity : obj.getPersonIdentities()) {
+				identityTypeHistoryGenerator.generateFor(identity.getIdentityType());
+			}
 		}
 
 		for (PersonRegistration registration : obj.getPersonRegistrations()) {
-			apartmentHistoryGenerator.generateFor(registration.getApartment());
+			if (!diffService.hasDiffs(registration.getApartment())) {
+				apartmentHistoryGenerator.generateFor(registration.getApartment());
+			}
 		}
 	}
 
@@ -32,5 +39,10 @@ public class PersonReferencesHistoryGenerator implements ReferencesHistoryGenera
 	@Required
 	public void setApartmentHistoryGenerator(ApartmentHistoryGenerator apartmentHistoryGenerator) {
 		this.apartmentHistoryGenerator = apartmentHistoryGenerator;
+	}
+
+	@Required
+	public void setDiffService(DiffService diffService) {
+		this.diffService = diffService;
 	}
 }

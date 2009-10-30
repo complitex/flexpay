@@ -30,6 +30,6 @@ public class TestSyncAbJob extends AbSpringBeanAwareTestCase {
 
 	@After
 	public void cleanup() {
-		jdbcTemplate.update("update ab_sync_changes_tbl set processed=0");
+//		jdbcTemplate.update("update ab_sync_changes_tbl set processed=0");
 	}
 }
