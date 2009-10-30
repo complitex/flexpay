@@ -265,7 +265,7 @@ public interface StreetService extends NameTimeDependentService<
 	@Secured (Roles.STREET_READ)
 	@NotNull
 	@Override
-	List<Street> findByName(String name, PrimaryKeyFilter<Street> filter);
+	List<Street> findByName(String name, PrimaryKeyFilter<?> filter);
 
 	/**
 	 * Initialize parent filter. Possibly taking in account upper level forefather filter

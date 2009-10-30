@@ -205,7 +205,7 @@ public interface RegionService extends NameTimeDependentService<
 	@Secured (Roles.REGION_READ)
 	@NotNull
 	@Override
-	List<Region> findByName(String name, PrimaryKeyFilter<Region> filter);
+	List<Region> findByName(String name, PrimaryKeyFilter<?> filter);
 
 	/**
 	 * Lookup regions by query and country id. Query is a string which may contains in folow string:

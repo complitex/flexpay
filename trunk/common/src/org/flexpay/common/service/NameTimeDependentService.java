@@ -112,6 +112,6 @@ public interface NameTimeDependentService<
 	 * @return Object if found, or <code>null</code> otherwise
 	 */
 	@NotNull
-	List<NTD> findByName(String name, PrimaryKeyFilter<NTD> filter);
+	List<NTD> findByName(String name, PrimaryKeyFilter<?> filter);
 
 }

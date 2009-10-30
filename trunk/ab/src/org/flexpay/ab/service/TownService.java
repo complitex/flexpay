@@ -224,7 +224,7 @@ public interface TownService extends NameTimeDependentService<
 	@Secured (Roles.TOWN_READ)
 	@NotNull
 	@Override
-	List<Town> findByName(String name, PrimaryKeyFilter<Town> filter);
+	List<Town> findByName(String name, PrimaryKeyFilter<?> filter);
 
 	/**
 	 * Get a list of available objects

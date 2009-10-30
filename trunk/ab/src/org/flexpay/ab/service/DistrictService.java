@@ -180,7 +180,7 @@ public interface DistrictService extends NameTimeDependentService<
 	@Secured (Roles.DISTRICT_READ)
 	@NotNull
 	@Override
-	List<District> findByName(String name, PrimaryKeyFilter<District> filter);
+	List<District> findByName(String name, PrimaryKeyFilter<?> filter);
 
 	/**
 	 * Initialize parent filter. Possibly taking in account upper level forefather filter

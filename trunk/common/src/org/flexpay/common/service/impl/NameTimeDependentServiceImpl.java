@@ -477,7 +477,7 @@ public abstract class NameTimeDependentServiceImpl<
 	 */
 	@NotNull
 	@Override
-	public List<NTD> findByName(String name, PrimaryKeyFilter<NTD> filter) {
+	public List<NTD> findByName(String name, PrimaryKeyFilter<?> filter) {
 		List<NTD> objs = getNameTimeDependentDao().findObjects(
 				ObjectWithStatus.STATUS_ACTIVE, filter.getSelectedId());
 		List<NTD> result = CollectionUtils.list();
