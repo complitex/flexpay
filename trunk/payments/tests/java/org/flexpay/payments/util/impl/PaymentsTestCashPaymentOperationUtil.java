@@ -2,6 +2,7 @@ package org.flexpay.payments.util.impl;
 
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
+import org.flexpay.orgs.persistence.Cashbox;
 import org.flexpay.orgs.persistence.PaymentPoint;
 import org.flexpay.payments.persistence.*;
 import org.flexpay.payments.service.OperationLevelService;
@@ -57,7 +58,7 @@ public class PaymentsTestCashPaymentOperationUtil implements TestOperationUtil {
         }
 
         Operation operation = new Operation();
-		operation.setOperationSumm(new BigDecimal(100));
+		operation.setOperationSumm(new BigDecimal(summ));
 		operation.setCreatorUserName("test");
 		operation.setCreationDate(new Date());
 		operation.setOperationType(operationType);
@@ -71,6 +72,17 @@ public class PaymentsTestCashPaymentOperationUtil implements TestOperationUtil {
 
         operationService.create(operation);
 
+        return operation;
+    }
+
+    @Nullable
+    @Override
+    public Operation create(@NotNull Cashbox cashbox, long summ) {
+        Operation operation = create(cashbox.getPaymentPoint(), summ);
+        if (operation != null) {
+            operation.setCashbox(cashbox);
+            operationService.update(operation);
+        }
         return operation;
     }
 

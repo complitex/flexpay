@@ -3,10 +3,8 @@ package org.flexpay.payments.util.impl;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Language;
 import org.flexpay.common.service.LanguageService;
-import org.flexpay.orgs.persistence.Organization;
-import org.flexpay.orgs.persistence.PaymentCollector;
-import org.flexpay.orgs.persistence.PaymentPoint;
-import org.flexpay.orgs.persistence.PaymentPointName;
+import org.flexpay.orgs.persistence.*;
+import org.flexpay.orgs.service.CashboxService;
 import org.flexpay.orgs.service.PaymentPointService;
 import org.flexpay.orgs.util.TestPaymentPointUtil;
 import org.jetbrains.annotations.NotNull;
@@ -17,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 public class PaymentsTestPaymentPointUtil implements TestPaymentPointUtil {
     private Logger log = LoggerFactory.getLogger(getClass());
@@ -30,6 +29,12 @@ public class PaymentsTestPaymentPointUtil implements TestPaymentPointUtil {
     @Autowired
     @Qualifier ("languageService")
 	private LanguageService languageService;
+    @Autowired
+    @Qualifier ("paymentsTestCashboxUtil")
+    private PaymentsTestCashboxUtil cashboxUtil;
+    @Autowired
+    @Qualifier ("cashboxService")
+    private CashboxService cashboxService;
 
     @Nullable
     @Override
@@ -65,8 +70,21 @@ public class PaymentsTestPaymentPointUtil implements TestPaymentPointUtil {
         return null;
     }
 
+    @Nullable
+    @Override
+    public Cashbox addCashBox(@NotNull PaymentPoint paymentPoint, @NotNull String cashboxName) {
+        return cashboxUtil.create(paymentPoint, cashboxName);
+    }
+
     @Override
     public void delete(@NotNull PaymentPoint paymentPoint) {
+        List<Cashbox> cashboxes = cashboxService.findCashboxesForPaymentPoint(paymentPoint.getId());
+        if (cashboxes != null) {
+            for (Cashbox cashbox : cashboxes) {
+                cashboxUtil.delete(cashbox);
+            }
+        }
+
         paymentPointService.delete(paymentPoint);
         paymentCollectorUtil.delete(paymentPoint.getCollector());
     }
