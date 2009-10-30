@@ -60,8 +60,16 @@ public interface DiffService {
 	/**
 	 * Check if there is some history for an object
 	 *
-	 * @param obj Object to check history existance for
+	 * @param obj Object to check history existence for
 	 * @return <code>true</code> if there is diffs, or <code>false</code> otherwise
 	 */
 	<T extends DomainObject> boolean hasDiffs(@NotNull T obj);
+
+	/**
+	 * Check if there is some history for all objects of a specified class
+	 *
+	 * @param clazz Objects class to check history existence for
+	 * @return <code>true</code> if there is diffs for all objects of that class, or <code>false</code> otherwise
+	 */
+	<T extends DomainObject> boolean allObjectsHaveDiff(Class<T> clazz);
 }

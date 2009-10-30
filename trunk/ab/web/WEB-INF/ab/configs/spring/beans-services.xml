@@ -88,6 +88,7 @@
 
 	<bean id="streetReferencesHistoryGenerator"
 		  class="org.flexpay.ab.service.history.StreetReferencesHistoryGenerator"
+		  p:diffService-ref="diffService"
 		  p:streetTypeHistoryGenerator-ref="streetTypeHistoryGenerator"
 		  p:townHistoryGenerator-ref="townHistoryGenerator" />
 
@@ -111,6 +112,7 @@
 	<bean id="abBuildingReferencesHistoryGenerator"
 		  autowire-candidate="false"
 		  class="org.flexpay.ab.service.history.BuildingReferencesHistoryGenerator"
+		  p:diffService-ref="diffService"
 		  p:districtHistoryGenerator-ref="districtHistoryGenerator"
 		  p:streetHistoryGenerator-ref="streetHistoryGenerator"
 		  p:attributeTypeHistoryGenerator-ref="addressAttributeTypeHistoryGenerator" />
@@ -179,6 +181,7 @@
 
 	<bean id="apartmentReferencesHistoryGenerator"
 		  class="org.flexpay.ab.service.history.ApartmentReferencesHistoryGenerator"
+		  p:diffService-ref="diffService"
 		  p:buildingHistoryGenerator-ref="buildingHistoryGenerator" />
 
 	<bean id="apartmentHistoryChangesListener"
@@ -233,6 +236,7 @@
 
 	<bean id="personReferencesHistoryGenerator"
 		  class="org.flexpay.ab.service.history.PersonReferencesHistoryGenerator"
+		  p:diffService-ref="diffService"
 		  p:apartmentHistoryGenerator-ref="apartmentHistoryGenerator"
 		  p:identityTypeHistoryGenerator-ref="identityTypeHistoryGenerator" />
 

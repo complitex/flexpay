@@ -41,6 +41,19 @@ public interface StreetService extends NameTimeDependentService<
 	@NotNull
 	List<Street> findByTownAndName(@NotNull Stub<Town> stub, @NotNull String name);
 
+	/**
+	 * Lookup streets by name
+	 *
+	 * @param stub TownStub
+	 * @param name Street name search string
+	 * @param typeStub Street type stub
+	 * @return List of streets with a specified name
+	 */
+	@Secured (Roles.STREET_READ)
+	@NotNull
+	List<Street> findByTownAndNameAndType(
+			@NotNull Stub<Town> stub, @NotNull String name, @NotNull Stub<StreetType> typeStub);
+
 	@Secured (Roles.STREET_READ)
 	String format(@NotNull Stub<Street> stub, @NotNull Locale locale, boolean shortMode)
 			throws FlexPayException;
@@ -225,6 +238,7 @@ public interface StreetService extends NameTimeDependentService<
 	 * @return updated object instance
 	 * @throws org.flexpay.common.exception.FlexPayExceptionContainer
 	 *          exceptions container
+	 * @deprecated as of {@link #update(org.flexpay.ab.persistence.Street)}
 	 */
 	@Secured (Roles.STREET_CHANGE)
 	@Override
@@ -246,6 +260,7 @@ public interface StreetService extends NameTimeDependentService<
 	 * @param name   Object name to search
 	 * @param filter Parent object filter
 	 * @return Object if found, or <code>null</code> otherwise
+	 * @deprecated as of {@link #findByTownAndName(org.flexpay.common.persistence.Stub, String)}
 	 */
 	@Secured (Roles.STREET_READ)
 	@NotNull

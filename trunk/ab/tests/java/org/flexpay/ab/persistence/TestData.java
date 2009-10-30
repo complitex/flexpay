@@ -18,6 +18,7 @@ public abstract class TestData {
 	public static final Stub<BuildingAddress> ADDR_DEMAKOVA_220D = new Stub<BuildingAddress>(3L);
 	public static final Stub<BuildingAddress> ADDR_ROSSIISKAYA_220R = new Stub<BuildingAddress>(4L);
 
+	public static final Stub<StreetType> STR_TYPE_STREET = new Stub<StreetType>(14L);
 	public static final Stub<StreetType> STR_TYPE_VIADUKT = new Stub<StreetType>(2L);
 
 	// test streets
@@ -30,6 +31,7 @@ public abstract class TestData {
 
 	// test towns
 	public static final Stub<Town> TOWN_NSK = new Stub<Town>(2L);
+	public static final Stub<Town> TOWN_HKV = new Stub<Town>(1L);
 
 	// test regions
 	public static final Stub<Region> REGION_NSK = new Stub<Region>(1000L);

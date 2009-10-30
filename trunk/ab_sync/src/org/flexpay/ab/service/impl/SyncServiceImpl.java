@@ -16,6 +16,7 @@ import org.flexpay.common.util.CollectionUtils;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Required;
 
 import java.util.List;
 
@@ -23,6 +24,7 @@ public class SyncServiceImpl implements SyncService {
 
 	private Logger log = LoggerFactory.getLogger(getClass());
 
+	private int fetchPageSize;
 	private HistoryDao historyDao;
 	private CorrectionsService correctionsService;
 	private Stub<DataSourceDescription> sd;
@@ -71,7 +73,7 @@ public class SyncServiceImpl implements SyncService {
 				try {
 					log.debug("Starting sync for next records");
 					long time = System.currentTimeMillis();
-					List<HistoryRec> records = historyDao.getRecords(new Page(50000, 1));
+					List<HistoryRec> records = historyDao.getRecords(new Page(fetchPageSize, 1));
 					if (log.isErrorEnabled()) {
 						log.error("time spent for fetch: {}", (System.currentTimeMillis() - time));
 					}
@@ -206,5 +208,10 @@ public class SyncServiceImpl implements SyncService {
 
 	public void setSd(DataSourceDescription sd) {
 		this.sd = stub(sd);
+	}
+
+	@Required
+	public void setFetchPageSize(int fetchPageSize) {
+		this.fetchPageSize = fetchPageSize;
 	}
 }

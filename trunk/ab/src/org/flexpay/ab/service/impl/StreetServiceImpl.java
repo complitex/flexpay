@@ -242,7 +242,14 @@ public class StreetServiceImpl extends NameTimeDependentServiceImpl<
 	@NotNull
 	@Override
 	public List<Street> findByTownAndName(@NotNull Stub<Town> stub, @NotNull String name) {
-		return streetDao.findByTownAndName(stub.getId(), name);
+		return streetDao.findByTownAndName(stub.getId(), name.toUpperCase());
+	}
+
+	@NotNull
+	@Override
+	public List<Street> findByTownAndNameAndType(
+			@NotNull Stub<Town> stub, @NotNull String name, @NotNull Stub<StreetType> typeStub) {
+		return streetDao.findByTownAndNameAndType(stub.getId(), name.toUpperCase(), typeStub.getId());
 	}
 
 	@Override

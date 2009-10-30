@@ -58,6 +58,7 @@
 				<constructor-arg index="0" value="${ab.sync.data.source.id}" type="java.lang.Long" />
 			</bean>
 		</property>
+		<property name="fetchPageSize" value="${ab.sync.history.source.fetchSize}" />
 	</bean>
 
 	<bean id="historyDumpService" class="org.flexpay.ab.service.impl.HistoryDumpServiceImpl">
