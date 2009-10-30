@@ -30,4 +30,7 @@
 
     <bean id="paymentsTestRegistryUtil"
           class="org.flexpay.payments.util.impl.PaymentsTestRegistryUtil"/>
+
+    <bean id="paymentsTestCashboxUtil"
+          class="org.flexpay.payments.util.impl.PaymentsTestCashboxUtil"/>
 </beans>

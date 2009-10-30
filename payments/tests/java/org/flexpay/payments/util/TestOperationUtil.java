@@ -1,5 +1,6 @@
 package org.flexpay.payments.util;
 
+import org.flexpay.orgs.persistence.Cashbox;
 import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.orgs.persistence.PaymentPoint;
 import org.flexpay.payments.persistence.Document;
@@ -11,6 +12,9 @@ import org.jetbrains.annotations.Nullable;
 public interface TestOperationUtil {
     @Nullable
     Operation create(@NotNull PaymentPoint paymentPoint, long summ);
+
+    @Nullable
+    Operation create(@NotNull Cashbox cashbox, long summ);
 
     @Nullable
     Document addDocument(@NotNull Operation operation,
