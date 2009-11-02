@@ -48,7 +48,7 @@ public class CorrectionsDaoImpl extends SimpleJdbcDaoSupport implements Correcti
 	 * @return DomainObject
 	 */
 	@Nullable
-	public <T extends DomainObject> Stub<T> findCorrection(@NonNls String externalId, int type,
+	public <T extends DomainObject> Stub<T> findCorrection(String externalId, int type,
 														   final Class<T> cls, Stub<DataSourceDescription> sd) {
 
 		Long id = sd != null ?

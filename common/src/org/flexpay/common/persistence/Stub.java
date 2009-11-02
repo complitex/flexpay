@@ -13,7 +13,6 @@ import java.io.Serializable;
  */
 public class Stub<T extends DomainObject> implements Serializable {
 
-	@NonNls
 	private static final String INVALID_STUB_ID = "Invalid stub id: ";
 
 	// object id
@@ -39,6 +38,10 @@ public class Stub<T extends DomainObject> implements Serializable {
 		return new Stub<T>(o);
 	}
 
+	public boolean sameId(@NotNull T o) {
+		return id.equals(o.getId());
+	}
+
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) {
@@ -51,10 +54,6 @@ public class Stub<T extends DomainObject> implements Serializable {
 		Stub<?> stub = (Stub<?>) o;
 
 		return id.equals(stub.id);
-	}
-
-	public boolean sameId(@NotNull T o) {
-		return id.equals(o.getId());
 	}
 
 	@Override

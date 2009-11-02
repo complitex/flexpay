@@ -6,6 +6,7 @@ import org.flexpay.ab.persistence.PersonIdentity;
 import org.flexpay.ab.service.IdentityTypeService;
 import org.flexpay.ab.service.PersonService;
 import org.flexpay.common.actions.FPActionSupport;
+import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
@@ -28,7 +29,7 @@ public class PersonSaveFIOAction extends FPActionSupport {
 
 		log.debug("FIO identity to save: {}", identity);
 
-		identity.setIdentityType(identityTypeService.getType(IdentityType.TYPE_FIO));
+		identity.setIdentityType(identityTypeService.findTypeById(IdentityType.TYPE_FIO));
 		identity.setBeginDate(null);
 		identity.setEndDate(null);
 		identity.setOrganization("");

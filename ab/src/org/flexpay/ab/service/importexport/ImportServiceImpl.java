@@ -416,14 +416,15 @@ public class ImportServiceImpl implements ImportService {
 
 		Translation tr = getDefaultLangTranslation(extStreetType.getTranslations());
 		String extTypeName = tr.getName().toLowerCase();
-		StreetType type = streetTypeService.findTypeByName(extTypeName);
-		if (type != null) {
-			DataCorrection corr = correctionsService.getStub(data.getExternalSourceId(), type, stub(sd));
-			correctionsService.save(corr);
-			log.info("Creating correction by street type name: {}", tr.getName());
-		} else {
+		Stub<StreetType> stub = streetTypeService.findTypeByName(extTypeName);
+		if (stub == null) {
 			log.error("Cannot map external street type: {}", tr.getName());
+			return;
 		}
+
+		DataCorrection corr = correctionsService.getStub(data.getExternalSourceId(), new StreetType(stub), stub(sd));
+		correctionsService.save(corr);
+		log.info("Creating correction by street type name: {}", tr.getName());
 	}
 
 	@Transactional (readOnly = false)

@@ -18,7 +18,7 @@ public class IdentityTypeDeleteAction extends FPActionSupport {
 	@Override
 	protected String doExecute() throws Exception {
 
-		identityTypeService.disableByIds(objectIds);
+		identityTypeService.disable(objectIds);
 
 		return SUCCESS;
 	}

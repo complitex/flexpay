@@ -56,7 +56,7 @@ public interface CorrectionsService {
 	 * @param dataSourceDescriptionStub dataSourceDescriptionStub
 	 * @return externalId
 	 */
-	String getExternalId(@NonNls Long internalId, int type, Stub<DataSourceDescription> dataSourceDescriptionStub);
+	String getExternalId(Long internalId, int type, Stub<DataSourceDescription> dataSourceDescriptionStub);
 
 	/**
 	 * Find external identifier of internal object

@@ -9,11 +9,8 @@ import java.util.Collection;
 
 public class RawStreetData extends RawData<Street> {
 
-	@NonNls
 	public static final String FIELD_TYPE_ID = "type";
-	@NonNls
 	public static final String FIELD_NAME = "name";
-	@NonNls
 	public static final String FIELD_ID = "id";
 
 	private static final Collection<String> possibleNames = set(FIELD_ID, FIELD_NAME, FIELD_TYPE_ID);

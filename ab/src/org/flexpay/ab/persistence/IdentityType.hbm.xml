@@ -53,18 +53,32 @@
 	</class>
 
 	<query name="IdentityType.listIdentityTypes">
-		select distinct s
-		from IdentityType s
-			left join fetch s.translations 
-		where s.status = ?
+		select distinct it
+		from IdentityType it
+			left join fetch it.translations
+		where it.status=?
 	</query>
 
 	<query name="IdentityType.readFull">
-		from IdentityType o
-		LEFT JOIN FETCH o.translations tr
-		LEFT JOIN FETCH tr.lang l
-		LEFT JOIN FETCH l.translations
-		where o.id = ?
+		from IdentityType it
+            left join fetch it.translations tr
+            left join fetch tr.lang l
+            left join fetch l.translations
+		where it.id=?
 	</query>
+
+    <query name="IdentityType.listIdentityTypesByEnumId">
+        select distinct it
+        from IdentityType it
+        where it.typeId=? and it.status=?
+    </query>
+
+    <query name="IdentityType.findByNameAndLanguage">
+        select distinct it
+        from IdentityType it
+            left join fetch it.translations tr
+            left join fetch tr.lang l
+        where tr.name=? and l.id=? and it.status=?
+    </query>
 
 </hibernate-mapping>

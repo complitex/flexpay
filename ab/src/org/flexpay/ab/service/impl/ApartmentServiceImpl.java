@@ -210,7 +210,7 @@ public class ApartmentServiceImpl implements ApartmentService {
 	@Override
 	public Apartment readWithPersons(@NotNull Stub<Apartment> stub) {
 		List<Apartment> apartments = apartmentDao.findWithPersonsFull(stub.getId());
-		return apartments.isEmpty() ? null : apartments.get(0);
+		return apartments.isEmpty() ? Apartment.newInstance() : apartments.get(0);
 	}
 
 	/**

@@ -58,7 +58,7 @@ public class TestReportUtil extends SpringBeanAwareTestCase {
 	@Test
 	public void testSqlReport() throws Exception {
 		InputStream is = getFileStream("org/flexpay/common/reporting/sample_report_sql.jrxml");
-		@NonNls String reportName = "sample_report_sql";
+		String reportName = "sample_report_sql";
 
 		try {
 			reportUtil.uploadReportTemplate(is, reportName);

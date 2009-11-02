@@ -14,7 +14,6 @@ import javax.servlet.http.HttpServletRequest;
 
 public class MenuInterceptor extends AbstractInterceptor {
 
-	@NonNls
 	protected Logger log = LoggerFactory.getLogger(getClass());
 
 	public String intercept(ActionInvocation actionInvocation) throws Exception {

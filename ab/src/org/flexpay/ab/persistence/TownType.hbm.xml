@@ -42,19 +42,34 @@
 	</class>
 
 	<query name="TownType.listTownTypes">
-		select distinct t
-		from TownType t
-			left join fetch t.translations 
-		where t.status = ?
+		select distinct tt
+		from TownType tt
+			left join fetch tt.translations
+		where tt.status=?
 	</query>
 
 	<query name="TownType.readFull">
-		from TownType t
-		LEFT JOIN FETCH t.translations tr
-		LEFT JOIN FETCH tr.lang l
-		LEFT JOIN FETCH l.translations
-		WHERE t.id = ?
+		from TownType tt
+            left join fetch tt.translations tr
+            left join fetch tr.lang l
+            left join fetch l.translations
+		where tt.id=?
 	</query>
 
+    <query name="TownType.findByNameAndLanguage">
+        select distinct tt
+        from TownType tt
+            left join fetch tt.translations tr
+            left join fetch tr.lang l
+        where tr.name=? and l.id=? and tt.status=?
+    </query>
+
+    <query name="TownType.findByShortNameAndLanguage">
+        select distinct tt
+        from TownType tt
+            left join fetch tt.translations tr
+            left join fetch tr.lang l
+        where tr.shortName=? and l.id=? and tt.status=?
+    </query>
 
 </hibernate-mapping>

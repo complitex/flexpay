@@ -45,6 +45,28 @@ public class DomainObject implements Serializable {
 		return !isNew();
 	}
 
+	public static Collection<Long> collectionIds(@NotNull Collection<? extends DomainObject> objects) {
+		List<Long> result = CollectionUtils.list();
+		for (DomainObject o : objects) {
+			result.add(o.getId());
+		}
+
+		return result;
+	}
+
+	private static final CollectionUtils.KeyExtractor DOMAIN_OBJECT_ID_EXTRACTOR =
+			new CollectionUtils.KeyExtractor() {
+				@Override
+				public Long key(Object o) {
+					return ((DomainObject) o).getId();
+				}
+			};
+
+	@SuppressWarnings ({"unchecked"})
+	public static <T extends DomainObject> CollectionUtils.KeyExtractor<Long, T> idExtractor() {
+		return DOMAIN_OBJECT_ID_EXTRACTOR;
+	}
+
 	@Override
 	public int hashCode() {
 		return id == null ? super.hashCode() : id.hashCode();
@@ -73,25 +95,4 @@ public class DomainObject implements Serializable {
 				.toString();
 	}
 
-	public static Collection<Long> collectionIds(@NotNull Collection<? extends DomainObject> objects) {
-		List<Long> result = CollectionUtils.list();
-		for (DomainObject o : objects) {
-			result.add(o.getId());
-		}
-
-		return result;
-	}
-
-	private static final CollectionUtils.KeyExtractor DOMAIN_OBJECT_ID_EXTRACTOR =
-			new CollectionUtils.KeyExtractor() {
-				@Override
-				public Long key(Object o) {
-					return ((DomainObject) o).getId();
-				}
-			};
-
-	@SuppressWarnings ({"unchecked"})
-	public static <T extends DomainObject> CollectionUtils.KeyExtractor<Long, T> idExtractor() {
-		return DOMAIN_OBJECT_ID_EXTRACTOR;
-	}
 }

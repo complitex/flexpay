@@ -7,6 +7,7 @@ import org.flexpay.ab.persistence.IdentityTypeTranslation;
 import org.flexpay.ab.service.IdentityTypeService;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
+import org.flexpay.common.persistence.Language;
 import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.persistence.history.ModificationListener;
@@ -24,7 +25,7 @@ import java.util.List;
 @Transactional (readOnly = true)
 public class IdentityTypeServiceImpl implements IdentityTypeService {
 
-	private Logger log = LoggerFactory.getLogger(getClass());
+	private final Logger log = LoggerFactory.getLogger(getClass());
 
 	private IdentityTypeDao identityTypeDao;
 
@@ -34,20 +35,19 @@ public class IdentityTypeServiceImpl implements IdentityTypeService {
 	/**
 	 * Read IdentityType object by its unique id
 	 *
-	 * @param stub Entity stub
+	 * @param stub Identity type stub
 	 * @return IdentityType object, or <code>null</code> if object not found
 	 */
 	@Nullable
 	@Override
 	public IdentityType read(@NotNull Stub<IdentityType> stub) {
-
 		return identityTypeDao.readFull(stub.getId());
 	}
 
 	/**
-	 * Get all objects
+	 * Get all identityType objects
 	 *
-	 * @return List of all objects
+	 * @return List of all identityType objects
 	 */
 	@Override
 	public List<IdentityType> getAll() {
@@ -55,46 +55,45 @@ public class IdentityTypeServiceImpl implements IdentityTypeService {
 	}
 
 	/**
-	 * Disable IdentityTypes TODO: check if there are any documents with specified type and reject operation
+	 * Get a list of available identity types
 	 *
-	 * @param identityTypes IdentityTypes to disable
+	 * @return List of IdentityTypes
 	 */
-	@Transactional (readOnly = false)
+	@NotNull
 	@Override
-	public void disable(Collection<IdentityType> identityTypes) {
-		log.info("{} types to disable", identityTypes.size());
-		for (IdentityType type : identityTypes) {
-			type.disable();
-			identityTypeDao.update(type);
-
-			modificationListener.onDelete(type);
-
-			log.info("Disabled: {}", type);
-		}
+	public List<IdentityType> getEntities() {
+		return identityTypeDao.listIdentityTypes(IdentityType.STATUS_ACTIVE);
 	}
 
+	/**
+	 * Disable identity types
+	 *
+	 * @param identityTypeIds IDs of identity types to disable
+	 */
+	//TODO: check if there are any documents with specified type and reject operation
 	@Transactional (readOnly = false)
 	@Override
-	public void disableByIds(@NotNull Collection<Long> objectIds) {
-		for (Long id : objectIds) {
-			IdentityType identityType = identityTypeDao.readFull(id);
-			if (identityType != null) {
-				identityType.disable();
-				identityTypeDao.update(identityType);
-
-				modificationListener.onDelete(identityType);
-				log.debug("Disabled: {}", identityType);
+	public void disable(@NotNull Collection<Long> identityTypeIds) {
+		for (Long id : identityTypeIds) {
+			IdentityType identityType = identityTypeDao.read(id);
+			if (identityType == null) {
+				log.warn("Incorrect identity type id {}", id);
+				continue;
 			}
+			identityType.disable();
+			identityTypeDao.update(identityType);
+
+			modificationListener.onDelete(identityType);
+			log.debug("Identity type disabled: {}", identityType);
 		}
 	}
 
 	/**
-	 * Create Entity
+	 * Create identity type
 	 *
-	 * @param identityType Entity to save
-	 * @return Saved instance
-	 * @throws org.flexpay.common.exception.FlexPayExceptionContainer
-	 *          if validation fails
+	 * @param identityType Identity type to save
+	 * @return Saved instance of identity type
+	 * @throws FlexPayExceptionContainer if validation fails
 	 */
 	@Transactional (readOnly = false)
 	@Override
@@ -110,10 +109,10 @@ public class IdentityTypeServiceImpl implements IdentityTypeService {
 	}
 
 	/**
-	 * Update or create Entity
+	 * Update or create identity type
 	 *
-	 * @param identityType Entity to save
-	 * @return Saved instance
+	 * @param identityType Identity type to save
+	 * @return Saved instance of identity type
 	 * @throws FlexPayExceptionContainer if validation fails
 	 */
 	@SuppressWarnings ({"ThrowableInstanceNeverThrown"})
@@ -126,7 +125,7 @@ public class IdentityTypeServiceImpl implements IdentityTypeService {
 		IdentityType old = read(stub(identityType));
 		if (old == null) {
 			throw new FlexPayExceptionContainer(
-					new FlexPayException("No object found to update " + identityType));
+					new FlexPayException("No identity type found to update " + identityType));
 		}
 		sessionUtils.evict(old);
 		modificationListener.onUpdate(old, identityType);
@@ -137,26 +136,62 @@ public class IdentityTypeServiceImpl implements IdentityTypeService {
 	}
 
 	@SuppressWarnings ({"ThrowableInstanceNeverThrown"})
-	private void validate(IdentityType type) throws FlexPayExceptionContainer {
+	private void validate(@NotNull IdentityType type) throws FlexPayExceptionContainer {
+
 		FlexPayExceptionContainer container = new FlexPayExceptionContainer();
 
-		boolean defaultLangTranslationFound = false;
+		boolean defaultLangNameFound = false;
+
 		for (IdentityTypeTranslation translation : type.getTranslations()) {
-			if (translation.getLang().isDefault() && StringUtils.isNotEmpty(translation.getName())) {
-				defaultLangTranslationFound = true;
+
+			Language lang = translation.getLang();
+			String name = translation.getName();
+			boolean nameNotEmpty = StringUtils.isNotEmpty(name);
+
+			if (lang.isDefault()) {
+				defaultLangNameFound = nameNotEmpty;
 			}
+
+			if (nameNotEmpty) {
+				List<IdentityType> types = identityTypeDao.findByNameAndLanguage(name, lang.getId(), IdentityType.STATUS_ACTIVE);
+				if ((type.isNotNew() && types.size() > 1) || (type.isNew() && !types.isEmpty())) {
+					container.addException(new FlexPayException(
+							"Name \"" + name + "\" is already use", "ab.error.name_is_already_use", name));
+				}
+			}
+
 		}
 
-		if (!defaultLangTranslationFound) {
+		if (!defaultLangNameFound) {
 			container.addException(new FlexPayException(
-					"No default lang translation", "error.no_default_translation"));
+					"No default language translation", "error.no_default_translation"));
 		}
-
-		// todo check if there is already a type with a specified name
 
 		if (container.isNotEmpty()) {
 			throw container;
 		}
+
+	}
+
+	/**
+	 * Find identity type by name
+	 *
+	 * @param typeName Identity type name
+	 * @return IdentityType if found, or <code>null</code> otherwise
+	 */
+	@Nullable
+	@Override
+	public IdentityType findTypeByName(@Nullable String typeName) {
+
+		int typeId = IdentityType.TYPE_PASSPORT;
+
+		if (IdentityType.TYPE_NAME_PASSPORT.equals(typeName)) {
+			typeId = IdentityType.TYPE_PASSPORT;
+		} else if (IdentityType.TYPE_NAME_FOREIGN_PASSPORT.equals(typeName)) {
+			typeId = IdentityType.TYPE_FOREIGN_PASSPORT;
+		}
+
+		return findTypeById(typeId);
 	}
 
 	/**
@@ -167,45 +202,13 @@ public class IdentityTypeServiceImpl implements IdentityTypeService {
 	 */
 	@Nullable
 	@Override
-	public IdentityType getType(int typeId) {
-
-		for (IdentityType type : getEntities()) {
-			if (type.getTypeId() == typeId) {
-				return type;
-			}
+	public IdentityType findTypeById(int typeId) {
+		List<IdentityType> types = identityTypeDao.listIdentityTypesByEnumId(typeId, IdentityType.STATUS_ACTIVE);
+		if (types == null) {
+			log.error("Can't get identity types from DB");
+			return null;
 		}
-
-		return null;
-	}
-
-	/**
-	 * Find identity type by name
-	 *
-	 * @param typeName Type name
-	 * @return IdentityType if found, or <code>null</code> otherwise
-	 */
-	@Override
-	public IdentityType getType(String typeName) {
-		if (IdentityType.TYPE_NAME_PASSPORT.equals(typeName)) {
-			return getType(IdentityType.TYPE_PASSPORT);
-		}
-
-		if (IdentityType.TYPE_NAME_FOREIGN_PASSPORT.equals(typeName)) {
-			return getType(IdentityType.TYPE_FOREIGN_PASSPORT);
-		}
-
-		return getType(IdentityType.TYPE_PASSPORT);
-	}
-
-	/**
-	 * Get a list of available identity types
-	 *
-	 * @return List of IdentityType
-	 */
-	@NotNull
-	@Override
-	public List<IdentityType> getEntities() {
-		return identityTypeDao.listIdentityTypes(IdentityType.STATUS_ACTIVE);
+		return types.isEmpty() ? null : types.get(0);
 	}
 
 	@Required

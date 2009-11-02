@@ -8,6 +8,7 @@ import org.flexpay.ab.persistence.filters.StreetTypeFilter;
 import org.flexpay.ab.service.StreetTypeService;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
+import org.flexpay.common.persistence.Language;
 import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.persistence.history.ModificationListener;
@@ -29,7 +30,7 @@ import java.util.Locale;
 @Transactional (readOnly = true)
 public class StreetTypeServiceImpl implements StreetTypeService {
 
-	private Logger log = LoggerFactory.getLogger(getClass());
+	private final Logger log = LoggerFactory.getLogger(getClass());
 
 	private StreetTypeDao streetTypeDao;
 
@@ -39,59 +40,32 @@ public class StreetTypeServiceImpl implements StreetTypeService {
 	private ModificationListener<StreetType> modificationListener;
 
 	/**
-	 * Get StreetType translations for specified locale, if translation is not found check for translation in default
-	 * locale
-	 *
-	 * @param locale Locale to get translations for
-	 * @return List of StreetTypes
-	 */
-	private List<StreetTypeTranslation> getTranslations(Locale locale) {
-
-		log.debug("Getting list of StreetTypes");
-
-		List<StreetType> streetTypes = getEntities();
-		List<StreetTypeTranslation> translations = list();
-
-		log.debug("StreetTypes: {}", streetTypes);
-
-		for (StreetType type : streetTypes) {
-			StreetTypeTranslation translation = TranslationUtil.getTranslation(type.getTranslations(), locale);
-			if (translation == null) {
-				log.error("No name for street type: {}", type);
-				continue;
-			}
-			translations.add(translation);
-		}
-
-		return translations;
-	}
-
-	/**
 	 * Read StreetType object by its unique id
 	 *
-	 * @param stub Entity stub
+	 * @param stub Street type stub
 	 * @return StreetType object, or <code>null</code> if object not found
 	 */
+	@Nullable
 	@Override
-	public StreetType read(Stub<StreetType> stub) {
+	public StreetType read(@NotNull Stub<StreetType> stub) {
 		return streetTypeDao.readFull(stub.getId());
 	}
 
 	/**
-	 * Read object by its unique id
+	 * Get a list of available street types
 	 *
-	 * @param stub Object stub
-	 * @return object, or <code>null</code> if object not found
+	 * @return List of StreetTypes
 	 */
+	@NotNull
 	@Override
-	public StreetType readFull(@NotNull Stub<StreetType> stub) {
-		return streetTypeDao.readFull(stub.getId());
+	public List<StreetType> getEntities() {
+		return streetTypeDao.listStreetTypes(StreetType.STATUS_ACTIVE);
 	}
 
 	/**
-	 * Get all objects
+	 * Get all streetType objects
 	 *
-	 * @return List of all objects
+	 * @return List of all streetType objects
 	 */
 	@Override
 	public List<StreetType> getAll() {
@@ -99,63 +73,156 @@ public class StreetTypeServiceImpl implements StreetTypeService {
 	}
 
 	/**
-	 * Disable StreetTypes TODO: check if there are any streets with specified type and reject operation
+	 * Disable StreetTypes
 	 *
-	 * @param streetTypes StreetTypes to disable
+	 * @param streetTypeIds IDs of street types to disable
 	 */
+	//TODO: check if there are any streets with specified type and reject operation
 	@Transactional (readOnly = false)
 	@Override
-	public void disable(Collection<StreetType> streetTypes) {
-		log.info("{} types to disable", streetTypes.size());
-		for (StreetType streetType : streetTypes) {
-			streetType.setStatus(StreetType.STATUS_DISABLED);
+	public void disable(@NotNull Collection<Long> streetTypeIds) {
+		for (Long id : streetTypeIds) {
+			StreetType streetType = streetTypeDao.read(id);
+			if (streetType == null) {
+				log.warn("Incorrect street type id {}", id);
+				continue;
+			}
+			streetType.disable();
 			streetTypeDao.update(streetType);
 
 			modificationListener.onDelete(streetType);
-
-			log.info("Disabled: {}", streetType);
+			log.debug("Street type disabled: {}", streetType);
 		}
 	}
 
+	/**
+	 * Create street type
+	 *
+	 * @param streetType Street type to save
+	 * @return Saved instance of street type
+	 * @throws FlexPayExceptionContainer if validation fails
+	 */
 	@Transactional (readOnly = false)
+	@NotNull
 	@Override
-	public void disableByIds(@NotNull Collection<Long> objectIds) {
-		for (Long id : objectIds) {
-			StreetType streetType = streetTypeDao.read(id);
-			if (streetType != null) {
-				streetType.disable();
-				streetTypeDao.update(streetType);
+	public StreetType create(@NotNull StreetType streetType) throws FlexPayExceptionContainer {
 
-				modificationListener.onDelete(streetType);
-				log.debug("Disabled: {}", streetType);
-			}
+		validate(streetType);
+		streetType.setId(null);
+		streetTypeDao.create(streetType);
+
+		modificationListener.onCreate(streetType);
+
+		return streetType;
+	}
+
+	/**
+	 * Update or create street type
+	 *
+	 * @param streetType Street type to save
+	 * @return Saved instance of street type
+	 * @throws FlexPayExceptionContainer if validation fails
+	 */
+	@SuppressWarnings ({"ThrowableInstanceNeverThrown"})
+	@Transactional (readOnly = false)
+	@NotNull
+	@Override
+	public StreetType update(@NotNull StreetType streetType) throws FlexPayExceptionContainer {
+
+		validate(streetType);
+
+		StreetType old = read(stub(streetType));
+		if (old == null) {
+			throw new FlexPayExceptionContainer(
+					new FlexPayException("No street type found to update " + streetType));
 		}
+		sessionUtils.evict(old);
+		modificationListener.onUpdate(old, streetType);
+
+		streetTypeDao.update(streetType);
+
+		return streetType;
+	}
+
+	@SuppressWarnings ({"ThrowableInstanceNeverThrown"})
+	private void validate(@NotNull StreetType type) throws FlexPayExceptionContainer {
+
+		FlexPayExceptionContainer container = new FlexPayExceptionContainer();
+
+		boolean defaultLangNameFound = false;
+		boolean defaultLangShortNameFound = false;
+
+		for (StreetTypeTranslation translation : type.getTranslations()) {
+
+			Language lang = translation.getLang();
+			String name = translation.getName();
+			String shortName = translation.getShortName();
+			boolean nameNotEmpty = StringUtils.isNotEmpty(name);
+			boolean shortNameNotEmpty = StringUtils.isNotEmpty(shortName);
+
+			if (lang.isDefault()) {
+				defaultLangNameFound = nameNotEmpty;
+				defaultLangShortNameFound = shortNameNotEmpty;
+			}
+
+			if (nameNotEmpty) {
+				List<StreetType> types = streetTypeDao.findByNameAndLanguage(name, lang.getId(), StreetType.STATUS_ACTIVE);
+				if ((type.isNotNew() && types.size() > 1) || (type.isNew() && !types.isEmpty())) {
+					container.addException(new FlexPayException(
+							"Name \"" + name + "\" is already use", "ab.error.name_is_already_use", name));
+				}
+			}
+
+			if (shortNameNotEmpty) {
+				List<StreetType> types = streetTypeDao.findByShortNameAndLanguage(shortName, lang.getId(), StreetType.STATUS_ACTIVE);
+				if ((type.isNotNew() && types.size() > 1) || (type.isNew() && !types.isEmpty())) {
+					container.addException(new FlexPayException(
+							"Short name \"" + shortName + "\" is already use", "ab.error.short_name_is_already_use", shortName));
+				}
+			}
+
+		}
+
+		if (!defaultLangNameFound) {
+			container.addException(new FlexPayException(
+					"No default language translation", "error.no_default_translation"));
+		}
+		if (!defaultLangShortNameFound) {
+			container.addException(new FlexPayException(
+					"No default language translation", "error.no_default_translation"));
+		}
+
+		if (container.isNotEmpty()) {
+			throw container;
+		}
+
 	}
 
 	@Nullable
 	@Override
-	public StreetType findTypeByName(@NotNull String typeName) throws FlexPayException {
+	public Stub<StreetType> findTypeByName(@NotNull String typeName) throws FlexPayException {
 		for (StreetType type : getEntities()) {
 			for (StreetTypeTranslation ourType : type.getTranslations()) {
+				if (ourType.getName().equalsIgnoreCase(typeName)
+					|| ourType.getShortName().equalsIgnoreCase(typeName)) {
 
-				String fullName = ourType.getName();
-				String shortName = ourType.getShortName();
-				if (fullName.equalsIgnoreCase(typeName) || shortName.equalsIgnoreCase(typeName)) {
-					return type;
+					return stub(type);
 				}
 			}
 		}
+
+		//todo ������ ����������� ������ 2 �������� � ���������� - ����� ��������� �������� ������� � ����������. �����������!
 
 		// Try to find general correction by type name
 		Stub<StreetType> correction = correctionsService.findCorrection(
 				typeName.toUpperCase(), StreetType.class, null);
 		if (correction != null) {
-			return new StreetType(correction.getId());
+			return new Stub<StreetType>(correction.getId());
 		}
 		correction = correctionsService.findCorrection(
 				typeName.toLowerCase(), StreetType.class, null);
 		if (correction != null) {
-			return new StreetType(correction.getId());
+			return new Stub<StreetType>(correction.getId());
 		}
 
 		return null;
@@ -168,9 +235,9 @@ public class StreetTypeServiceImpl implements StreetTypeService {
 	 * @param locale		   Locale to get filter translations in
 	 * @throws FlexPayException if failure occurs
 	 */
+	@NotNull
 	@Override
-	public StreetTypeFilter initFilter(StreetTypeFilter streetTypeFilter, Locale locale)
-			throws FlexPayException {
+	public StreetTypeFilter initFilter(@Nullable StreetTypeFilter streetTypeFilter, @NotNull Locale locale) throws FlexPayException {
 
 		List<StreetTypeTranslation> translations = getTranslations(locale);
 
@@ -185,90 +252,33 @@ public class StreetTypeServiceImpl implements StreetTypeService {
 			}
 			streetTypeFilter.setSelectedId(translations.get(0).getId());
 		}
+
 		return streetTypeFilter;
-
 	}
 
 	/**
-	 * Create Entity
+	 * Get StreetType translations for specified locale,
+	 * if translation is not found check for translation in default locale
 	 *
-	 * @param streetType Entity to save
-	 * @return Saved instance
-	 * @throws org.flexpay.common.exception.FlexPayExceptionContainer
-	 *          if validation fails
-	 */
-	@Transactional (readOnly = false)
-	@Override
-	public StreetType create(@NotNull StreetType streetType) throws FlexPayExceptionContainer {
-
-		validate(streetType);
-		streetType.setId(null);
-		streetTypeDao.create(streetType);
-
-		modificationListener.onCreate(streetType);
-
-		return streetType;
-	}
-
-	/**
-	 * Update or create Entity
-	 *
-	 * @param streetType Entity to save
-	 * @return Saved instance
-	 * @throws FlexPayExceptionContainer if validation fails
-	 */
-	@SuppressWarnings ({"ThrowableInstanceNeverThrown"})
-	@Transactional (readOnly = false)
-	@Override
-	public StreetType update(@NotNull StreetType streetType) throws FlexPayExceptionContainer {
-
-		validate(streetType);
-
-		StreetType old = readFull(stub(streetType));
-		if (old == null) {
-			throw new FlexPayExceptionContainer(
-					new FlexPayException("No object found to update " + streetType));
-		}
-		sessionUtils.evict(old);
-		modificationListener.onUpdate(old, streetType);
-
-		streetTypeDao.update(streetType);
-
-		return streetType;
-	}
-
-	@SuppressWarnings ({"ThrowableInstanceNeverThrown"})
-	private void validate(StreetType type) throws FlexPayExceptionContainer {
-		FlexPayExceptionContainer container = new FlexPayExceptionContainer();
-
-		boolean defaultLangTranslationFound = false;
-		for (StreetTypeTranslation translation : type.getTranslations()) {
-			if (translation.getLang().isDefault() && StringUtils.isNotEmpty(translation.getName())) {
-				defaultLangTranslationFound = true;
-			}
-		}
-
-		if (!defaultLangTranslationFound) {
-			container.addException(new FlexPayException(
-					"No default lang translation", "error.no_default_translation"));
-		}
-
-		// todo check if there is already a type with a specified name
-
-		if (container.isNotEmpty()) {
-			throw container;
-		}
-	}
-
-	/**
-	 * Get a list of available street types
-	 *
-	 * @return List of StreetType
+	 * @param locale Locale to get translations for
+	 * @return List of name translations for all street types
 	 */
 	@NotNull
-	@Override
-	public List<StreetType> getEntities() {
-		return streetTypeDao.listStreetTypes(StreetType.STATUS_ACTIVE);
+	private List<StreetTypeTranslation> getTranslations(@NotNull Locale locale) {
+
+		List<StreetType> streetTypes = getEntities();
+		List<StreetTypeTranslation> translations = list();
+
+		for (StreetType type : streetTypes) {
+			StreetTypeTranslation translation = TranslationUtil.getTranslation(type.getTranslations(), locale);
+			if (translation == null) {
+				log.error("No name for street type: {}", type);
+				continue;
+			}
+			translations.add(translation);
+		}
+
+		return translations;
 	}
 
 	@Required

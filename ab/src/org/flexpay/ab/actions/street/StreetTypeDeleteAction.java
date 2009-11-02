@@ -18,7 +18,7 @@ public class StreetTypeDeleteAction extends FPActionSupport {
 	@Override
 	protected String doExecute() throws Exception {
 
-		streetTypeService.disableByIds(objectIds);
+		streetTypeService.disable(objectIds);
 
 		return SUCCESS;
 	}

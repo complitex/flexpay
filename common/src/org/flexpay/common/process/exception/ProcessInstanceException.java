@@ -17,7 +17,7 @@ public class ProcessInstanceException extends FlexPayException {
 	 * @param errorKey localization error message key
 	 * @param params   optional localization error message parameters
 	 */
-	public ProcessInstanceException(@NonNls String message, Throwable cause, String errorKey, Object... params) {
+	public ProcessInstanceException(String message, Throwable cause, String errorKey, Object... params) {
 		super(message, cause, errorKey, params);
 	}
 }

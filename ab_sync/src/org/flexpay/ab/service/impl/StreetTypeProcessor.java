@@ -48,7 +48,7 @@ public class StreetTypeProcessor extends AbstractProcessor<StreetType> {
 	 * @return DomainObject instance
 	 */
 	protected StreetType readObject(@NotNull Stub<StreetType> stub) {
-		return streetTypeService.readFull(stub);
+		return streetTypeService.read(stub);
 	}
 
 	/**
@@ -126,8 +126,7 @@ public class StreetTypeProcessor extends AbstractProcessor<StreetType> {
 				return correction;
 			}
 
-			StreetType type = streetTypeService.findTypeByName(translation.getName());
-			return type != null ? stub(type) : null;
+			return streetTypeService.findTypeByName(translation.getName());
 
 		} catch (FlexPayException e) {
 			log.info("Cannot find persistent street type by example", e);

@@ -81,7 +81,14 @@ public class IdentityType extends DomainObjectWithStatus implements Comparable<I
 		return null;
 	}
 
+	@Override
 	public int compareTo(IdentityType o) {
+		if (o == null || o.getId() == null) {
+			return 1;
+		}
+		if (getId() == null) {
+			return -1;
+		}
 		return getId().compareTo(o.getId());
 	}
 

@@ -17,7 +17,7 @@ public class JobInstantiationException extends FlexPayException {
 	 * @param errorKey localization error message key
 	 * @param params   optional localization error message parameters
 	 */
-	public JobInstantiationException(@NonNls String message, Throwable cause, String errorKey, Object... params) {
+	public JobInstantiationException(String message, Throwable cause, String errorKey, Object... params) {
 		super(message, cause, errorKey, params);
 	}
 }
