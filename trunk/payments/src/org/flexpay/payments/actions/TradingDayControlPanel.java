@@ -129,7 +129,7 @@ public class TradingDayControlPanel {
 
 	public boolean isTradingDayOpened() {
 
-		return tradingDayProcessInstanceId == null || TradingDay.isOpened(processManager, tradingDayProcessInstanceId, userLog);
+		return tradingDayProcessInstanceId != null && TradingDay.isOpened(processManager, tradingDayProcessInstanceId, userLog);
 	}
 
 	private TaskInstance getTaskInstance() {
