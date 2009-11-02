@@ -18,7 +18,6 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
-import javax.annotation.Resource;
 import java.util.List;
 import java.util.Locale;
 
@@ -43,7 +42,7 @@ public class TestTownTypeService extends AbSpringBeanAwareTestCase {
         assertNotNull("Town type did not create", newType);
         assertEquals("Status is not active", TownType.STATUS_ACTIVE, newType.getStatus());
 
-        townTypeService.disable(CollectionUtils.list(newType));
+        townTypeService.disable(CollectionUtils.list(newType.getId()));
 
         TownType updatedType = townTypeService.read(Stub.stub(newType));
         assertEquals("Status is not disabled", TownType.STATUS_DISABLED, updatedType.getStatus());
@@ -51,7 +50,7 @@ public class TestTownTypeService extends AbSpringBeanAwareTestCase {
     }
 
     @Test
-    public void testCreateAndDisableByIds() throws Exception {
+    public void testCreateAndDisable() throws Exception {
         TownType newType1 = townTypeUtil.create("town1", "t1");
         assertNotNull("Town type did not create", newType1);
         TownType newType2 = townTypeUtil.create("town2", "t2");
@@ -62,7 +61,7 @@ public class TestTownTypeService extends AbSpringBeanAwareTestCase {
         assertTrue("Did not find town1", types.contains(newType1));
         assertTrue("Did not find town2", types.contains(newType2));
 
-        townTypeService.disableByIds(CollectionUtils.list(newType1.getId(), newType2.getId()));
+        townTypeService.disable(CollectionUtils.list(newType1.getId(), newType2.getId()));
 
         types = townTypeService.getEntities();
         assertFalse("Found town1", types.contains(newType1));

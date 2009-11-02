@@ -31,7 +31,7 @@ public class Translation extends DomainObject {
 		return lang;
 	}
 
-	public void setName(@NotNull @NonNls String name) {
+	public void setName(@NotNull String name) {
 		this.name = name;
 	}
 

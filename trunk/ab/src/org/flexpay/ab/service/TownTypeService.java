@@ -1,12 +1,12 @@
 package org.flexpay.ab.service;
 
 import org.flexpay.ab.persistence.TownType;
-import org.flexpay.ab.persistence.TownTypeTranslation;
 import org.flexpay.ab.persistence.filters.TownTypeFilter;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Stub;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.security.annotation.Secured;
 
 import java.util.Collection;
@@ -16,76 +16,67 @@ import java.util.Locale;
 /**
  * Service interface for TownTypes related tasks
  */
-public interface TownTypeService extends MultilangEntityService<TownType, TownTypeTranslation> {
+public interface TownTypeService {
+
+	/**
+	 * Read TownType object by its unique id
+	 *
+	 * @param stub Town type stub
+	 * @return TownType object, or <code>null</code> if object not found
+	 */
+	@Secured (Roles.TOWN_TYPE_READ)
+	@Nullable
+	TownType read(@NotNull Stub<TownType> stub);
+
+	/**
+	 * Get a list of available town types
+	 *
+	 * @return List of TownTypes
+	 */
+	@Secured (Roles.TOWN_TYPE_READ)
+	@NotNull
+	List<TownType> getEntities();
+
+	/**
+	 * Disable town types
+	 *
+	 * @param townTypeIds IDs of town types to disable
+	 */
+	@Secured (Roles.TOWN_TYPE_DELETE)
+	void disable(@NotNull Collection<Long> townTypeIds);
+
+	/**
+	 * Create town type
+	 *
+	 * @param townType Town type to save
+	 * @return Saved instance of town type
+	 * @throws FlexPayExceptionContainer if validation fails
+	 */
+	@Secured (Roles.TOWN_TYPE_ADD)
+	@NotNull
+	TownType create(@NotNull TownType townType) throws FlexPayExceptionContainer;
+
+	/**
+	 * Update or create town type
+	 *
+	 * @param townType Town type to save
+	 * @return Saved instance of town type
+	 * @throws FlexPayExceptionContainer if validation fails
+	 */
+	@Secured (Roles.TOWN_TYPE_CHANGE)
+	@NotNull
+	TownType update(@NotNull TownType townType) throws FlexPayExceptionContainer;
 
 	/**
 	 * Initialize filter
-	 * 
+	 *
 	 * @param townTypeFilter filter to init
 	 * @param locale Locale to get names in
 	 * @return initialized filter
 	 * @throws FlexPayException if failure occurs
 	 */
 	@Secured (Roles.TOWN_TYPE_READ)
-	TownTypeFilter initFilter(TownTypeFilter townTypeFilter, Locale locale) throws FlexPayException;
-
-	/**
-	 * Read Entity object by its unique id
-	 *
-	 * @param stub Entity stub
-	 * @return Entity object, or <code>null</code> if object not found
-	 */
-	@Secured (Roles.TOWN_TYPE_READ)
-	@Override
-	TownType read(Stub<TownType> stub);
-
-	/**
-	 * Get a list of available street types
-	 *
-	 * @return List of Entity
-	 */
-	@Secured (Roles.TOWN_TYPE_READ)
 	@NotNull
-	@Override
-	List<TownType> getEntities();
-
-	/**
-	 * Disable Entity
-	 *
-	 * @param entity Entity to disable
-	 */
-	@Secured (Roles.TOWN_TYPE_DELETE)
-	@Override
-	void disable(Collection<TownType> entity);
-
-	/**
-	 * Disable objects
-	 *
-	 * @param objectIds IDs of objects to disable
-	 */
-	@Secured (Roles.TOWN_TYPE_DELETE)
-	void disableByIds(@NotNull Collection<Long> objectIds);
-
-	/**
-	 * Create Entity
-	 *
-	 * @param townType Entity to save
-	 * @return Saved instance
-	 * @throws FlexPayExceptionContainer if validation fails
-	 */
-	@Secured (Roles.TOWN_TYPE_ADD)
-	@Override
-	TownType create(@NotNull TownType townType) throws FlexPayExceptionContainer;
-
-	/**
-	 * Update or create Entity
-	 *
-	 * @param entity Entity to save
-	 * @return Saved instance
-	 * @throws FlexPayExceptionContainer if validation fails
-	 */
-	@Secured (Roles.TOWN_TYPE_CHANGE)
-	@Override
-	TownType update(@NotNull TownType entity) throws FlexPayExceptionContainer;
+	TownTypeFilter initFilter(@Nullable TownTypeFilter townTypeFilter, @NotNull Locale locale) throws FlexPayException;
 
 }

@@ -2,7 +2,7 @@
 
 <%@include file="/WEB-INF/jsp/common/includes/errors_messages.jsp"%>
 
-<s:if test="apartment != null">
+<s:if test="apartment != null && apartment.isNotNew()">
 
 <table cellpadding="3" cellspacing="1" border="0" width="100%">
 	<tr>

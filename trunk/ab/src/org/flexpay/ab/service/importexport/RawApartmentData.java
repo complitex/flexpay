@@ -11,11 +11,8 @@ public class RawApartmentData extends RawData<Apartment> {
 
 	private static final Collection<String> possibleNames = new HashSet<String>();
 
-	@NonNls
 	public static final String FIELD_NUMBER = "apartmentNumber";
-	@NonNls
 	public static final String FIELD_BUILDING = "buildingId";
-	@NonNls
 	public static final String FIELD_ID = "id";
 
 	static {

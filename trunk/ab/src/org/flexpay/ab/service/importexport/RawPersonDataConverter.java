@@ -32,7 +32,7 @@ public class RawPersonDataConverter implements DataConverter<Person, RawPersonDa
 
 		String typeName = StringUtils.isEmpty(rawData.getDocumentType()) ?
 						  IdentityType.TYPE_NAME_PASSPORT : rawData.getDocumentType();
-		IdentityType type = identityTypeService.getType(typeName);
+		IdentityType type = identityTypeService.findTypeByName(typeName);
 		if (type == null) {
 			throw new RuntimeException("Cannot get identity type, was DB inited?");
 		}

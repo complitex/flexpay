@@ -15,7 +15,6 @@ import org.flexpay.common.util.CollectionUtils;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
-import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
@@ -48,7 +47,6 @@ public class GenericDaoHibernateImpl<T, PK extends Serializable>
 	/**
 	 * Logger
 	 */
-	@NonNls
 	private final Logger log = LoggerFactory.getLogger(getClass());
 
 	protected HibernateTemplate hibernateTemplate;

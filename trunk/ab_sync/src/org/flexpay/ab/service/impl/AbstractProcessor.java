@@ -11,7 +11,6 @@ import org.slf4j.LoggerFactory;
 
 public abstract class AbstractProcessor<T extends DomainObject> {
 
-	@NonNls
 	protected final Logger log = LoggerFactory.getLogger(getClass());
 
 	private Class<T> type;

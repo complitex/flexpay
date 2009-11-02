@@ -12,4 +12,5 @@ public interface AllObjectsService<T extends DomainObject> {
 	 * @return List of all objects
 	 */
 	List<T> getAll();
+
 }

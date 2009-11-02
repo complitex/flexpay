@@ -23,7 +23,6 @@ import java.util.List;
 
 public class SzFileUtil {
 
-	@NonNls
 	protected static Logger log = LoggerFactory.getLogger(SzFileUtil.class);
 
 	private static RecordService<CharacteristicRecord> characteristicRecordService;

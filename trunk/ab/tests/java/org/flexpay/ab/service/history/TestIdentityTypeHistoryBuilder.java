@@ -23,7 +23,7 @@ public class TestIdentityTypeHistoryBuilder extends AbSpringBeanAwareTestCase {
 	@Test
 	public void testPatchType() {
 
-		IdentityType type = service.getType(IdentityType.TYPE_NAME_FIO);
+		IdentityType type = service.findTypeByName(IdentityType.TYPE_NAME_FIO);
 		assertNotNull("FIO type not found", type);
 
 		Diff diff = historyBuilder.diff(null, type);

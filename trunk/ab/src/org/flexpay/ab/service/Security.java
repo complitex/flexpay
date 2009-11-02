@@ -1,12 +1,12 @@
 package org.flexpay.ab.service;
 
 import static org.flexpay.ab.service.Roles.*;
-import org.flexpay.common.util.CollectionUtils;
+import static org.flexpay.common.util.CollectionUtils.list;
 
 public abstract class Security extends org.flexpay.common.service.Security {
 
 	static {
-		USER_HISTORY_SYNCER_AUTHORITIES.addAll(CollectionUtils.list(
+		USER_HISTORY_SYNCER_AUTHORITIES.addAll(list(
 				PERSON_READ,
 				PERSON_ADD,
 				PERSON_CHANGE,
@@ -51,7 +51,7 @@ public abstract class Security extends org.flexpay.common.service.Security {
 	}
 
 	/**
-	 * touch me to ensure static fields are properly initialised
+	 * Touch me to ensure static fields are properly initialised
 	 */
 	public static void touch() {
 		// do nothing

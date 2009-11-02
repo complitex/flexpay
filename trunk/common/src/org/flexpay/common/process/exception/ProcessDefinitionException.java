@@ -17,7 +17,7 @@ public class ProcessDefinitionException extends FlexPayException {
 	 * @param errorKey localization error message key
 	 * @param params   optional localization error message parameters
 	 */
-	public ProcessDefinitionException(@NonNls String message, Throwable cause, String errorKey, Object... params) {
+	public ProcessDefinitionException(String message, Throwable cause, String errorKey, Object... params) {
 		super(message, cause, errorKey, params);
 	}
 }

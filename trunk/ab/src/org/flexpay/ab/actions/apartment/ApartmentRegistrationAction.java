@@ -39,6 +39,10 @@ public class ApartmentRegistrationAction extends FPActionSupport {
 			addActionError(getText("ab.error.apartment_not_found"));
 			return SUCCESS;
 		}
+		if (apartment.isNew()) {
+			addActionMessage(getText("ab.apartment.hasnt_registered_persons"));
+			return SUCCESS;
+		}
 
 		List<BuildingAddress> buildingses = buildingService.getBuildingBuildings(apartment.getBuildingStub());
 		buildings = buildingService.readFull(stub(buildingses.get(0)));

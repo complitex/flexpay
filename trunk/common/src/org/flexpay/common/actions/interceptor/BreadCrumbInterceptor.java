@@ -14,7 +14,6 @@ import javax.servlet.http.HttpServletRequest;
 
 public class BreadCrumbInterceptor extends AbstractInterceptor {
 
-	@NonNls
 	protected Logger log = LoggerFactory.getLogger(getClass());
 
 	private String WILDCARD_SEPARATOR = "!";

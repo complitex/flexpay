@@ -1,7 +1,6 @@
 package org.flexpay.ab.service;
 
 import org.flexpay.ab.persistence.StreetType;
-import org.flexpay.ab.persistence.StreetTypeTranslation;
 import org.flexpay.ab.persistence.filters.StreetTypeFilter;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
@@ -15,8 +14,56 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
 
-public interface StreetTypeService extends AllObjectsService<StreetType>,
-		MultilangEntityService<StreetType, StreetTypeTranslation> {
+public interface StreetTypeService extends AllObjectsService<StreetType> {
+
+	/**
+	 * Read StreetType object by its unique id
+	 *
+	 * @param stub Street type stub
+	 * @return StreetType object, or <code>null</code> if object not found
+	 */
+	@Secured (Roles.STREET_TYPE_READ)
+	@Nullable
+	StreetType read(@NotNull Stub<StreetType> stub);
+
+	/**
+	 * Get a list of available street types
+	 *
+	 * @return List of street types
+	 */
+	@Secured (Roles.STREET_TYPE_READ)
+	@NotNull
+	List<StreetType> getEntities();
+
+	/**
+	 * Disable street types
+	 *
+	 * @param streetTypeIds IDs of street types to disable
+	 */
+	@Secured (Roles.STREET_TYPE_DELETE)
+	void disable(@NotNull Collection<Long> streetTypeIds);
+
+	/**
+	 * Create street type
+	 *
+	 * @param streetType Street type to save
+	 * @return Saved instance of street type
+	 * @throws FlexPayExceptionContainer if validation fails
+	 */
+	@Secured (Roles.STREET_TYPE_ADD)
+	@NotNull
+	StreetType create(@NotNull StreetType streetType) throws FlexPayExceptionContainer;
+
+	/**
+	 * Update or create street type
+	 *
+	 * @param streetType Street type to save
+	 * @return Saved instance of street type
+	 * @throws FlexPayExceptionContainer if validation fails
+	 */
+	@Secured (Roles.STREET_TYPE_CHANGE)
+	@NotNull
+	StreetType update(@NotNull StreetType streetType) throws FlexPayExceptionContainer;
 
 	/**
 	 * Find street type by name
@@ -27,87 +74,18 @@ public interface StreetTypeService extends AllObjectsService<StreetType>,
 	 */
 	@Secured (Roles.STREET_TYPE_READ)
 	@Nullable
-	StreetType findTypeByName(@NotNull String typeName) throws FlexPayException;
+	Stub<StreetType> findTypeByName(@NotNull String typeName) throws FlexPayException;
 
 	/**
 	 * Initialize street type filter
 	 *
 	 * @param streetTypeFilter Filter to init
 	 * @param locale		   Locale to get filter translations in
-	 * @return initialized filter
 	 * @throws FlexPayException if failure occurs
-	 */
-	@Secured (Roles.STREET_TYPE_READ)
-	StreetTypeFilter initFilter(StreetTypeFilter streetTypeFilter, Locale locale) throws FlexPayException;
-
-	/**
-	 * Read Entity object by its unique id
-	 *
-	 * @param stub Entity stub
-	 * @return Entity object, or <code>null</code> if object not found
-	 */
-	@Secured (Roles.STREET_TYPE_READ)
-	@Override
-	StreetType read(Stub<StreetType> stub);
-
-	/**
-	 * Read object by its unique id
-	 *
-	 * @param stub Object stub
-	 * @return object, or <code>null</code> if object not found
-	 */
-	@Secured (Roles.STREET_TYPE_READ)
-	StreetType readFull(@NotNull Stub<StreetType> stub);
-
-	/**
-	 * Get a list of available street types
-	 *
-	 * @return List of Entity
+	 * @return initialized filter
 	 */
 	@Secured (Roles.STREET_TYPE_READ)
 	@NotNull
-	@Override
-	List<StreetType> getEntities();
-
-	/**
-	 * Disable Entities
-	 *
-	 * @param entities Entities to disable
-	 */
-	@Secured (Roles.STREET_TYPE_DELETE)
-	@Override
-	void disable(Collection<StreetType> entities);
-
-	/**
-	 * Disable objects
-	 *
-	 * @param objectIds IDs of objects to disable
-	 */
-	@Secured (Roles.STREET_TYPE_DELETE)
-	void disableByIds(@NotNull Collection<Long> objectIds);
-
-	/**
-	 * Create Entity
-	 *
-	 * @param streetType Entity to save
-	 * @return Saved instance
-	 * @throws org.flexpay.common.exception.FlexPayExceptionContainer
-	 *          if validation fails
-	 */
-	@Secured (Roles.STREET_TYPE_ADD)
-	@Override
-	StreetType create(@NotNull StreetType streetType) throws FlexPayExceptionContainer;
-
-	/**
-	 * Update or create Entity
-	 *
-	 * @param entity Entity to save
-	 * @return Saved instance
-	 * @throws org.flexpay.common.exception.FlexPayExceptionContainer
-	 *          if validation fails
-	 */
-	@Secured (Roles.STREET_TYPE_CHANGE)
-	@Override
-	StreetType update(@NotNull StreetType entity) throws FlexPayExceptionContainer;
+	StreetTypeFilter initFilter(@Nullable StreetTypeFilter streetTypeFilter, @NotNull Locale locale) throws FlexPayException;
 
 }

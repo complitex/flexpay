@@ -11,6 +11,7 @@ import org.flexpay.common.persistence.registry.RegistryRecord;
 import org.flexpay.common.persistence.registry.workflow.RegistryRecordWorkflowManager;
 import org.flexpay.common.persistence.registry.workflow.TransitionNotAllowed;
 import org.flexpay.common.service.importexport.RawDataSource;
+import static org.flexpay.common.util.CollectionUtils.list;
 import org.flexpay.eirc.persistence.Consumer;
 import org.flexpay.eirc.persistence.EircRegistryRecordProperties;
 import org.flexpay.eirc.service.ConsumerService;
@@ -22,7 +23,6 @@ import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -260,8 +260,8 @@ public class EircImportServiceTxImpl extends ImportServiceImpl implements EircIm
 							  RawConsumerData data,
 							  Stub<DataSourceDescription> sd, RawDataSource<RawConsumerData> dataSource) throws Exception {
 
-		StreetType streetType = findStreetType(data, sd);
-		if (streetType == null) {
+		Stub<StreetType> stub = findStreetType(data, sd);
+		if (stub == null) {
 			log.warn("No street type was found: {}, for street {}", data.getAddressStreetType(), data.getAddressStreet());
 			ImportError error = addImportError(sd, data.getExternalSourceId(), StreetType.class, dataSource);
 			error.setErrorId("error.eirc.import.street_type_not_found");
@@ -281,7 +281,7 @@ public class EircImportServiceTxImpl extends ImportServiceImpl implements EircIm
 
 		log.debug("Street candidates: {}", streets);
 
-		List<Street> filteredStreets = filterStreetsbyType(streets, streetType);
+		List<Street> filteredStreets = filterStreetsbyType(streets, stub);
 		if (filteredStreets.isEmpty()) {
 			log.warn("Cannot find street by type: {}, {}", data.getAddressStreetType(), data.getAddressStreet());
 			ImportError error = addImportError(sd, data.getExternalSourceId(), Street.class, dataSource);
@@ -303,15 +303,15 @@ public class EircImportServiceTxImpl extends ImportServiceImpl implements EircIm
 		return null;
 	}
 
-	private List<Street> filterStreetsbyType(List<Street> streets, StreetType type) {
-		List<Street> filteredStreets = new ArrayList<Street>();
+	private List<Street> filterStreetsbyType(List<Street> streets, Stub<StreetType> stub) {
+		List<Street> filteredStreets = list();
 		for (Street street : streets) {
 			StreetType current = street.getCurrentType();
 			if (current == null) {
 				log.warn("No type for street {}", street);
 				continue;
 			}
-			if (stub(current).getId().equals(type.getId())) {
+			if (stub(current).equals(stub)) {
 				filteredStreets.add(street);
 			}
 		}
@@ -320,16 +320,14 @@ public class EircImportServiceTxImpl extends ImportServiceImpl implements EircIm
 	}
 
 	@Nullable
-	private StreetType findStreetType(RawConsumerData data, Stub<DataSourceDescription> sd) throws Exception {
+	private Stub<StreetType> findStreetType(RawConsumerData data, Stub<DataSourceDescription> sd) throws Exception {
 
-		StreetType type = streetTypeService.findTypeByName(data.getAddressStreetType());
-		if (type != null) {
-			return type;
+		Stub<StreetType> stub = streetTypeService.findTypeByName(data.getAddressStreetType());
+		if (stub != null) {
+			return stub;
 		}
 
-		Stub<StreetType> stub = correctionsService.findCorrection(
-				data.getAddressStreetType(), StreetType.class, sd);
-		return stub != null ? new StreetType(stub.getId()) : null;
+		return correctionsService.findCorrection(data.getAddressStreetType(), StreetType.class, sd);
 	}
 
 	private Apartment findApartment(RawConsumerData data, Street street,

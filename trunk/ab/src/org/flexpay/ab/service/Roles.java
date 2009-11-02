@@ -69,4 +69,36 @@ public abstract class Roles {
 	public static final String PERSON_CHANGE = PREFIX + "PERSON_CHANGE";
 	public static final String PERSON_ADD = PREFIX + "PERSON_ADD";
 	public static final String PERSON_DELETE = PREFIX + "PERSON_DELETE";
+
+	// menu roles
+	public static final String MENU_AB_PREFIX = "ROLE_MENU_AB";
+	public static final String MENU_AB_DICTS_PREFIX = MENU_AB_PREFIX + "_DICTS";
+
+	// level 1
+	public static final String ROLE_MENU_AB = MENU_AB_PREFIX;
+
+	// level 2
+	public static final String ROLE_MENU_AB_DICTS = MENU_AB_PREFIX + "_DICTS";
+
+	// level 3
+	public static final String ROLE_MENU_AB_ADDRESS_DICTS = MENU_AB_PREFIX + "_ADDRESS_DICTS";
+	public static final String ROLE_MENU_AB_PERSON_DICTS = MENU_AB_PREFIX + "_PERSON_DICTS";
+	public static final String ROLE_MENU_AB_TYPE_DICTS = MENU_AB_PREFIX + "_TYPE_DICTS";
+	public static final String ROLE_MENU_AB_OTHER_DICTS = MENU_AB_PREFIX + "_OTHER_DICTS";
+
+	// level 4
+	public static final String ROLE_MENU_AB_DICTS_COUNTRIES = MENU_AB_DICTS_PREFIX + "_COUNTRIES";
+	public static final String ROLE_MENU_AB_DICTS_REGIONS = MENU_AB_DICTS_PREFIX + "_REGIONS";
+	public static final String ROLE_MENU_AB_DICTS_TOWNS = MENU_AB_DICTS_PREFIX + "_TOWNS";
+	public static final String ROLE_MENU_AB_DICTS_DISTRICTS = MENU_AB_DICTS_PREFIX + "_DISTRICTS";
+	public static final String ROLE_MENU_AB_DICTS_STREETS = MENU_AB_DICTS_PREFIX + "_STREETS";
+	public static final String ROLE_MENU_AB_DICTS_BUILDINGS = MENU_AB_DICTS_PREFIX + "_BUILDINGS";
+	public static final String ROLE_MENU_AB_DICTS_APARTMENTS = MENU_AB_DICTS_PREFIX + "_APARTMENTS";
+	public static final String ROLE_MENU_AB_DICTS_PERSONS = MENU_AB_DICTS_PREFIX + "_PERSONS";
+	public static final String ROLE_MENU_AB_DICTS_TOWN_TYPES = MENU_AB_DICTS_PREFIX + "_TOWN_TYPES";
+	public static final String ROLE_MENU_AB_DICTS_STREET_TYPES = MENU_AB_DICTS_PREFIX + "_STREET_TYPES";
+	public static final String ROLE_MENU_AB_DICTS_IDENTITY_TYPES = MENU_AB_DICTS_PREFIX + "_IDENTITY_TYPES";
+	public static final String ROLE_MENU_AB_DICTS_BUILDING_ATTRIBUTE_TYPES = MENU_AB_DICTS_PREFIX + "_BUILDING_ATTRIBUTE_TYPES";
+	public static final String ROLE_MENU_AB_DICTS_MEASURE_UNITS = MENU_AB_DICTS_PREFIX + "_MEASURE_UNITS";
+
 }

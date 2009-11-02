@@ -93,7 +93,7 @@ public class TestSpFileAction extends TestSpFileCreateAction {
 		jdbcTemplate.update(sql, ar(registryId));
 	}
 
-	protected FPFile uploadFile(@NonNls String fileName) throws Throwable {
+	protected FPFile uploadFile(String fileName) throws Throwable {
 		FPFile newFile = createSpFile(fileName);
 
 		fileAction.setSpFile(newFile);

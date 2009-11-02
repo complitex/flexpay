@@ -30,7 +30,6 @@ public class SpFileAction extends FPActionSupport {
 
 	private FPFile spFile = new FPFile();
 	private Long processId = null;
-	@NonNls
 	private String action;
 
 	private FPFileService fpFileService;
@@ -119,7 +118,7 @@ public class SpFileAction extends FPActionSupport {
 		this.spFile = spFile;
 	}
 
-	public void setAction(@NonNls String action) {
+	public void setAction(String action) {
 		this.action = action;
 	}
 

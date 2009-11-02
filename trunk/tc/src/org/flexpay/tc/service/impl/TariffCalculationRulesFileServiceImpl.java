@@ -21,7 +21,6 @@ import java.util.Set;
 @Transactional (readOnly = true, rollbackFor = Exception.class)
 public class TariffCalculationRulesFileServiceImpl implements TariffCalculationRulesFileService {
 
-	@NonNls
 	private Logger log = LoggerFactory.getLogger(getClass());
 
 	private FPFileService fpFileService;

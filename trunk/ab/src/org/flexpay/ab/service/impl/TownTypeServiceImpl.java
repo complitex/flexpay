@@ -8,14 +8,15 @@ import org.flexpay.ab.persistence.filters.TownTypeFilter;
 import org.flexpay.ab.service.TownTypeService;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
+import org.flexpay.common.persistence.Language;
 import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.persistence.history.ModificationListener;
 import org.flexpay.common.service.internal.SessionUtils;
 import static org.flexpay.common.util.CollectionUtils.list;
 import org.flexpay.common.util.TranslationUtil;
-import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
@@ -28,7 +29,6 @@ import java.util.Locale;
 @Transactional (readOnly = true)
 public class TownTypeServiceImpl implements TownTypeService {
 
-	@NonNls
 	private final Logger log = LoggerFactory.getLogger(getClass());
 
 	private TownTypeDao townTypeDao;
@@ -36,42 +36,63 @@ public class TownTypeServiceImpl implements TownTypeService {
 	private SessionUtils sessionUtils;
 	private ModificationListener<TownType> modificationListener;
 
+
 	/**
-	 * Get TownType translations for specified locale, if translation is not found check for translation in default locale
+	 * Read TownType object by its unique id
 	 *
-	 * @param locale Locale to get translations for
-	 * @return List of TownTypes
+	 * @param stub Town type stub
+	 * @return TownType object, or <code>null</code> if object not found
 	 */
-	private List<TownTypeTranslation> getTranslations(Locale locale) {
-
-		log.debug("Getting list of TownTypes");
-		List<TownType> townTypes = townTypeDao.listTownTypes(TownType.STATUS_ACTIVE);
-		List<TownTypeTranslation> translations = list();
-
-		log.debug("TownTypes: {}", townTypes);
-
-		for (TownType townType : townTypes) {
-			TownTypeTranslation translation = TranslationUtil.getTranslation(
-					townType.getTranslations(), locale);
-			if (translation == null) {
-				log.error("No name for town type: {}", townType);
-				continue;
-			}
-			translations.add(translation);
-		}
-
-		return translations;
+	@Nullable
+	@Override
+	public TownType read(@NotNull Stub<TownType> stub) {
+		return townTypeDao.readFull(stub.getId());
 	}
 
 	/**
-	 * Create Entity
+	 * Get a list of available town types
 	 *
-	 * @param townType Entity to save
-	 * @return Saved instance
-	 * @throws org.flexpay.common.exception.FlexPayExceptionContainer
-	 *          if validation fails
+	 * @return List of TownTypes
+	 */
+	@NotNull
+	@Override
+	public List<TownType> getEntities() {
+		return townTypeDao.listTownTypes(TownType.STATUS_ACTIVE);
+	}
+
+	/**
+	 * Disable town types
+	 *
+	 * @param townTypeIds IDs of town types to disable
 	 */
 	@Transactional (readOnly = false)
+	@Override
+	public void disable(@NotNull Collection<Long> townTypeIds) {
+
+		for (Long id : townTypeIds) {
+			TownType townType = townTypeDao.read(id);
+			if (townType == null) {
+				log.warn("Incorrect town type id {}", id);
+				continue;
+			}
+			townType.disable();
+			townTypeDao.update(townType);
+
+			modificationListener.onDelete(townType);
+			log.debug("Town type disabled: {}", townType);
+		}
+
+	}
+
+	/**
+	 * Create town type
+	 *
+	 * @param townType Town type to save
+	 * @return Saved instance of town type
+	 * @throws FlexPayExceptionContainer if validation fails
+	 */
+	@Transactional (readOnly = false)
+	@NotNull
 	@Override
 	public TownType create(@NotNull TownType townType) throws FlexPayExceptionContainer {
 
@@ -85,102 +106,91 @@ public class TownTypeServiceImpl implements TownTypeService {
 	}
 
 	/**
-	 * Update or create Entity
+	 * Update or create town type
 	 *
-	 * @param type Entity to save
-	 * @return Saved instance
+	 * @param townType Town type to save
+	 * @return Saved instance of town type
 	 * @throws FlexPayExceptionContainer if validation fails
 	 */
+	@SuppressWarnings ({"ThrowableInstanceNeverThrown"})
 	@Transactional (readOnly = false)
+	@NotNull
 	@Override
-	public TownType update(@NotNull TownType type) throws FlexPayExceptionContainer {
+	public TownType update(@NotNull TownType townType) throws FlexPayExceptionContainer {
 
-//		validate(type);
+		validate(townType);
 
-		TownType oldType = read(stub(type));
+		TownType oldType = read(stub(townType));
+		if (oldType == null) {
+			throw new FlexPayExceptionContainer(
+					new FlexPayException("No town type found to update " + townType));
+		}
 		sessionUtils.evict(oldType);
-		modificationListener.onUpdate(oldType, type);
+		modificationListener.onUpdate(oldType, townType);
 
-		townTypeDao.update(type);
+		townTypeDao.update(townType);
 
-		return type;
+		return townType;
 	}
 
 	@SuppressWarnings ({"ThrowableInstanceNeverThrown"})
-	private void validate(TownType type) throws FlexPayExceptionContainer {
+	private void validate(@NotNull TownType type) throws FlexPayExceptionContainer {
+
 		FlexPayExceptionContainer container = new FlexPayExceptionContainer();
 
-		boolean defaultLangTranslationFound = false;
+		boolean defaultLangNameFound = false;
+		boolean defaultLangShortNameFound = false;
+
 		for (TownTypeTranslation translation : type.getTranslations()) {
-			if (translation.getLang().isDefault() && StringUtils.isNotEmpty(translation.getName())) {
-				defaultLangTranslationFound = true;
+
+			Language lang = translation.getLang();
+			String name = translation.getName();
+			String shortName = translation.getShortName();
+			boolean nameNotEmpty = StringUtils.isNotEmpty(name);
+			boolean shortNameNotEmpty = StringUtils.isNotEmpty(shortName);
+
+			if (lang.isDefault()) {
+				defaultLangNameFound = nameNotEmpty;
+				defaultLangShortNameFound = shortNameNotEmpty;
 			}
+
+			if (nameNotEmpty) {
+				List<TownType> types = townTypeDao.findByNameAndLanguage(name, lang.getId(), TownType.STATUS_ACTIVE);
+				if ((type.isNotNew() && types.size() > 1) || (type.isNew() && !types.isEmpty())) {
+					container.addException(new FlexPayException(
+							"Name \"" + name + "\" is already use", "ab.error.name_is_already_use", name));
+				}
+			}
+			
+			if (shortNameNotEmpty) {
+				List<TownType> types = townTypeDao.findByShortNameAndLanguage(shortName, lang.getId(), TownType.STATUS_ACTIVE);
+				if ((type.isNotNew() && types.size() > 1) || (type.isNew() && !types.isEmpty())) {
+					container.addException(new FlexPayException(
+							"Short name \"" + shortName + "\" is already use", "ab.error.short_name_is_already_use", shortName));
+				}
+			}
+
 		}
 
-		if (!defaultLangTranslationFound) {
+		if (!defaultLangNameFound) {
 			container.addException(new FlexPayException(
-					"No default translation", "error.no_default_translation"));
+					"No default language translation", "error.no_default_translation"));
 		}
-
-		// todo check if there is already a type with a specified name
+		if (!defaultLangShortNameFound) {
+			container.addException(new FlexPayException(
+					"No default language translation", "error.no_default_translation"));
+		}
 
 		if (container.isNotEmpty()) {
 			throw container;
 		}
+
 	}
 
-	/**
-	 * Read TownType object by its unique id
-	 *
-	 * @param stub Entity stub
-	 * @return TownType object, or <code>null</code> if object not found
-	 */
+	@NotNull
 	@Override
-	public TownType read(Stub<TownType> stub) {
-		return townTypeDao.readFull(stub.getId());
-	}
+	public TownTypeFilter initFilter(@Nullable TownTypeFilter townTypeFilter, @NotNull Locale locale) throws FlexPayException {
 
-	/**
-	 * Disable TownTypes TODO: check if there are any towns with specified type and reject operation
-	 *
-	 * @param townTypes TownTypes to disable
-	 */
-	@Transactional (readOnly = false)
-	@Override
-	public void disable(Collection<TownType> townTypes) {
-
-		if (log.isDebugEnabled()) {
-			log.debug("{} types to disable", townTypes.size());
-		}
-		for (TownType townType : townTypes) {
-
-			townType.setStatus(TownType.STATUS_DISABLED);
-			townTypeDao.update(townType);
-
-			modificationListener.onDelete(townType);
-
-			log.debug("Disabled: {}", townType);
-		}
-	}
-
-	@Transactional (readOnly = false)
-	@Override
-	public void disableByIds(@NotNull Collection<Long> objectIds) {
-		for (Long id : objectIds) {
-			TownType townType = townTypeDao.read(id);
-			if (townType != null) {
-				townType.disable();
-				townTypeDao.update(townType);
-
-				modificationListener.onDelete(townType);
-				log.debug("Disabled: {}", townType);
-			}
-		}
-	}
-
-	@Override
-	public TownTypeFilter initFilter(TownTypeFilter townTypeFilter,
-									 Locale locale) throws FlexPayException {
 		List<TownTypeTranslation> translations = getTranslations(locale);
 
 		if (townTypeFilter == null) {
@@ -197,15 +207,30 @@ public class TownTypeServiceImpl implements TownTypeService {
 		return townTypeFilter;
 	}
 
+
 	/**
-	 * Get a list of available town types
+	 * Get TownType translations for specified locale,
+	 * if translation is not found check for translation in default locale
 	 *
-	 * @return List of TownType
+	 * @param locale Locale to get translations for
+	 * @return List of name translations for all town types
 	 */
 	@NotNull
-	@Override
-	public List<TownType> getEntities() {
-		return townTypeDao.listTownTypes(TownType.STATUS_ACTIVE);
+	private List<TownTypeTranslation> getTranslations(@NotNull Locale locale) {
+
+		List<TownType> townTypes = getEntities();
+		List<TownTypeTranslation> translations = list();
+
+		for (TownType townType : townTypes) {
+			TownTypeTranslation translation = TranslationUtil.getTranslation(townType.getTranslations(), locale);
+			if (translation == null) {
+				log.warn("No name for town type: {}", townType);
+				continue;
+			}
+			translations.add(translation);
+		}
+
+		return translations;
 	}
 
 	@Required

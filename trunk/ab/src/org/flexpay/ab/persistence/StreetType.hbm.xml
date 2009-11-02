@@ -31,18 +31,34 @@
 	</class>
 
 	<query name="StreetType.listStreetTypes">
-		select distinct s
-		from StreetType s
-		 	left join fetch s.translations 
-		where s.status = ?
+		select distinct st
+		from StreetType st
+		 	left join fetch st.translations
+		where st.status=?
 	</query>
 
 	<query name="StreetType.readFull">
-		from StreetType o
-		LEFT JOIN FETCH o.translations tr
-		LEFT JOIN FETCH tr.lang l
-		LEFT JOIN FETCH l.translations
-		where o.id = ?
+		from StreetType st
+		    left join fetch st.translations tr
+            left join fetch tr.lang l
+            left join fetch l.translations
+		where st.id=?
 	</query>
+
+    <query name="StreetType.findByNameAndLanguage">
+        select distinct st
+        from StreetType st
+            left join fetch st.translations tr
+            left join fetch tr.lang l
+        where tr.name=? and l.id=? and st.status=?
+    </query>
+
+    <query name="StreetType.findByShortNameAndLanguage">
+        select distinct st
+        from StreetType st
+            left join fetch st.translations tr
+            left join fetch tr.lang l
+        where tr.shortName=? and l.id=? and st.status=?
+    </query>
 
 </hibernate-mapping>

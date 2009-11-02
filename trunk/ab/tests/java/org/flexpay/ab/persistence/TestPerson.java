@@ -34,7 +34,7 @@ public class TestPerson extends AbSpringBeanAwareTestCase {
 	private PersonIdentity newIdentity(Person person) {
 
 		PersonIdentity identity = new PersonIdentity();
-		identity.setIdentityType(identityTypeService.getType(IdentityType.TYPE_NAME_PASSPORT));
+		identity.setIdentityType(identityTypeService.findTypeByName(IdentityType.TYPE_NAME_PASSPORT));
 		identity.setDefault(true);
 		identity.setBirthDate(getPastInfinite());
 		identity.setBeginDate(getPastInfinite());
