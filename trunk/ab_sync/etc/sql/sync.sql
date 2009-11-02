@@ -10,6 +10,7 @@ create table ab_sync_config_tbl (
 insert into ab_sync_config_tbl (last_update, last_record_id) values ('1900-01-01', -1);
 
 create table ab_sync_changes_tbl (
+	id bigint not null auto_increment,
 	record_id BIGINT NOT NULL,
 	record_date DATETIME NOT NULL,
 	old_value VARCHAR(2000),
@@ -19,7 +20,8 @@ create table ab_sync_changes_tbl (
 	field INTEGER,
 	action_type INTEGER NOT NULL,
 	processed INTEGER NOT NULL DEFAULT 0,
-	order_weight INTEGER NOT NULL DEFAULT 0
+	order_weight INTEGER NOT NULL DEFAULT 0,
+	PRIMARY KEY (id)
 );
 
 alter table ab_sync_changes_tbl

@@ -41,7 +41,7 @@ public class ApartmentHistoryBuilder extends HistoryBuilderBase<Apartment> {
 	 */
 	protected void doDiff(@Nullable Apartment a1, @NotNull Apartment a2, @NotNull Diff diff) {
 
-		log.debug("creating new buildings diff");
+		log.debug("creating new apartments diff");
 
 		Apartment apartmentOld = a1 == null ? factory.newApartment() : a1;
 

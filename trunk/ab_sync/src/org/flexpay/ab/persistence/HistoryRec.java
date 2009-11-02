@@ -9,6 +9,7 @@ import java.util.Date;
 
 public class HistoryRec {
 
+	private Long id;
 	private Long recordId;
 	private Date recordDate;
 	private String oldValue;
@@ -18,6 +19,14 @@ public class HistoryRec {
 	private ObjectType objectType;
 	private SyncAction syncAction;
 	private int processed;
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
 
 	public Long getRecordId() {
 		return recordId;
@@ -99,6 +108,7 @@ public class HistoryRec {
 	 */
 	public String toString() {
 		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE)
+				.append("id", id)
 				.append("RecordId", recordId)
 				.append("Date", recordDate)
 				.append("Old", oldValue)

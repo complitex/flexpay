@@ -4,6 +4,7 @@ import org.flexpay.ab.persistence.IdentityType;
 import org.flexpay.ab.persistence.IdentityTypeTranslation;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.service.AllObjectsService;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.security.annotation.Secured;
@@ -11,7 +12,7 @@ import org.springframework.security.annotation.Secured;
 import java.util.Collection;
 import java.util.List;
 
-public interface IdentityTypeService extends
+public interface IdentityTypeService extends AllObjectsService<IdentityType>,
 		MultilangEntityService<IdentityType, IdentityTypeTranslation> {
 
 	/**

@@ -1,11 +1,15 @@
 package org.flexpay.ab.dao.impl;
 
+import org.apache.commons.lang.StringUtils;
 import org.flexpay.ab.dao.HistoryDao;
 import org.flexpay.ab.persistence.FieldType;
 import org.flexpay.ab.persistence.HistoryRec;
 import org.flexpay.ab.persistence.ObjectType;
 import org.flexpay.ab.persistence.SyncAction;
 import org.flexpay.common.dao.paging.Page;
+import org.flexpay.common.util.CollectionUtils;
+import org.flexpay.common.util.transform.Transformer;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
@@ -16,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 @Transactional (readOnly = true, rollbackFor = Exception.class)
@@ -36,6 +41,7 @@ public class HistoryDaoJdbcImpl extends SimpleJdbcDaoSupport implements HistoryD
 			public HistoryRec mapRow(ResultSet rs, int i) throws SQLException {
 				HistoryRec record = new HistoryRec();
 
+				record.setId(rs.getLong("id"));
 				record.setRecordId(rs.getLong("record_id"));
 				record.setRecordDate(rs.getTimestamp("record_date"));
 				record.setOldValue(rs.getString("old_value"));
@@ -59,14 +65,24 @@ public class HistoryDaoJdbcImpl extends SimpleJdbcDaoSupport implements HistoryD
 	 */
 	@Transactional (readOnly = false, rollbackFor = Exception.class)
 	public void setProcessed(List<HistoryRec> records) {
-		int n = 0;
-		for (HistoryRec record : records) {
-			int updated = getSimpleJdbcTemplate().update(getSetProcessedSql(record), getParams(record));
-			n += updated;
+
+		if (records.isEmpty()) {
+			log.debug("No records to mark processed");
+			return ;
 		}
 
+		Collection<Long> ids = CollectionUtils.transform(records, new Transformer<HistoryRec, Long>() {
+			@NotNull
+			public Long transform(@NotNull HistoryRec historyRec) {
+				return historyRec.getId();
+			}
+		});
+		String idsList = StringUtils.join(ids, ", ");
+		int updated = getSimpleJdbcTemplate().update(
+				"update ab_sync_changes_tbl set processed=1 where id in ("+idsList+")");
+
 		if (log.isDebugEnabled()) {
-			log.debug("Marked processed {} of {} records", n, records.size());
+			log.debug("Marked processed {} of {} records", updated, records.size());
 		}
 	}
 
@@ -98,10 +114,6 @@ public class HistoryDaoJdbcImpl extends SimpleJdbcDaoSupport implements HistoryD
 				.replace("$field", record.getFieldType() == null ? "is null" : "= ?");
 	}
 
-	private String getSetProcessedSql(HistoryRec record) {
-		return "update ab_sync_changes_tbl set processed=1 " + getWhere(record);
-	}
-
 	/**
 	 * Create a new history record
 	 *
@@ -114,7 +126,7 @@ public class HistoryDaoJdbcImpl extends SimpleJdbcDaoSupport implements HistoryD
 		int count = getSimpleJdbcTemplate().queryForInt("select count(1) from ab_sync_changes_tbl " + getWhere(record),
 				getParams(record));
 		if (count > 0) {
-			log.info("Record alread exists: {}", record);
+			log.info("Record already exists: {}", record);
 			return;
 		}
 

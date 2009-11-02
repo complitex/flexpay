@@ -89,6 +89,16 @@ public class StreetTypeServiceImpl implements StreetTypeService {
 	}
 
 	/**
+	 * Get all objects
+	 *
+	 * @return List of all objects
+	 */
+	@Override
+	public List<StreetType> getAll() {
+		return list();
+	}
+
+	/**
 	 * Disable StreetTypes TODO: check if there are any streets with specified type and reject operation
 	 *
 	 * @param streetTypes StreetTypes to disable

@@ -46,11 +46,10 @@
 
 	Available targets are:
 		bti.db - Initialize database
-		bti.exportschema.mysql5 - Generate DDL of module for MySQL5
+		bti.ddl - Generate DDL of module
 		bti.runtests - Run all module tests, possible option for this target is test.class.name that specifies test class name to run
 			for example ant -f eirc_build.xml eirc.runtests -Dtest.class.name=org.flexpay.bti.service.TestBuildingService
-		bti.war.production.tomcat_mysql5 - Build production war for Tomcat and MySQL5
-		bti.war.production.flassfish_mysql5 - Build production war for Glassfish and MySQL5
+		bti.war - Build production war
 		</echo>
 	</target>
 
@@ -151,7 +150,7 @@
 		</antcall>
 	</target>
 
-	<target name="bti.exportschema.mysql5" depends="clean.build,bti.compile.production">
+	<target name="bti.ddl" depends="clean.build,bti.compile.production">
 		<property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5Dialect" />
 		<antcall target="template.schemaexport">
 			<param name="file_name" value="flexpay_bti.ddl.sql" />

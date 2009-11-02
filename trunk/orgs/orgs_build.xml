@@ -46,11 +46,10 @@
 
 	Available targets are:
 		orgs.db - Initialize database
-		orgs.exportschema.mysql5 - Generate DDL of module for MySQL5
+		orgs.ddl - Generate DDL of module
 		orgs.runtests - Run all module tests, possible option for this target is test.class.name that specifies test class name to run
 			for example ant -f eirc_build.xml eirc.runtests -Dtest.class.name=org.flexpay.orgs.service.TestBuildingService
-		orgs.war.production.tomcat_mysql5 - Build production war for Tomcat and MySQL5
-		orgs.war.production.flassfish_mysql5 - Build production war for Glassfish and MySQL5
+		orgs.war - Build production war
 		</echo>
 	</target>
 
@@ -151,8 +150,7 @@
 		</antcall>
 	</target>
 
-	<target name="orgs.exportschema.mysql5" depends="clean.build,orgs.compile.production">
-		<property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5Dialect" />
+	<target name="orgs.ddl" depends="clean.build,orgs.compile.production">
 		<antcall target="template.schemaexport">
 			<param name="file_name" value="flexpay_orgs.ddl.sql" />
 			<param name="src.dir" value="${orgs.src.production}" />

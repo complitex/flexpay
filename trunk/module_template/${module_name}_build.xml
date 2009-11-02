@@ -44,7 +44,7 @@
 
 	Available targets are:
 		${module_name}.db - Initialize database
-		${module_name}.exportschema.mysql5 - Generate DDL of module for MySQL5
+		${module_name}.ddl - Generate DDL of module
 		${module_name}.runtests - Run all module tests, possible option for this target is test.class.name that specifies test class name to run
 			for example ant -f eirc_build.xml eirc.runtests -Dtest.class.name=org.flexpay.${module_name}.service.TestBuildingService
 		${module_name}.war - Build war
@@ -148,8 +148,7 @@
 		</antcall>
 	</target>
 
-	<target name="${module_name}.exportschema.mysql5" depends="clean.build,${module_name}.compile.production">
-		<property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5Dialect" />
+	<target name="${module_name}.ddl" depends="clean.build,${module_name}.compile.production">
 		<antcall target="template.schemaexport">
 			<param name="file_name" value="flexpay_${module_name}.ddl.sql" />
 			<param name="src.dir" value="${${module_name}.src.production}" />

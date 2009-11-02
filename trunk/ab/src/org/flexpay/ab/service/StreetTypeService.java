@@ -6,6 +6,7 @@ import org.flexpay.ab.persistence.filters.StreetTypeFilter;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.service.AllObjectsService;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.security.annotation.Secured;
@@ -14,7 +15,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
 
-public interface StreetTypeService extends
+public interface StreetTypeService extends AllObjectsService<StreetType>,
 		MultilangEntityService<StreetType, StreetTypeTranslation> {
 
 	/**
@@ -33,8 +34,8 @@ public interface StreetTypeService extends
 	 *
 	 * @param streetTypeFilter Filter to init
 	 * @param locale		   Locale to get filter translations in
-	 * @throws FlexPayException if failure occurs
 	 * @return initialized filter
+	 * @throws FlexPayException if failure occurs
 	 */
 	@Secured (Roles.STREET_TYPE_READ)
 	StreetTypeFilter initFilter(StreetTypeFilter streetTypeFilter, Locale locale) throws FlexPayException;

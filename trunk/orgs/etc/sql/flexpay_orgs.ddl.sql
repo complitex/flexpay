@@ -19,14 +19,13 @@
     ) comment='Currency name translation';
 
     create table common_data_corrections_tbl (
-        id bigint not null auto_increment,
-        internal_object_id bigint not null,
-        object_type integer,
-        external_object_id varchar(255) not null,
-        data_source_description_id bigint,
-        primary key (id),
-        unique (object_type, external_object_id, data_source_description_id)
-    );
+        id bigint not null auto_increment comment 'Primary key',
+        internal_object_id bigint not null comment 'Flexpay object id (ref)',
+        object_type integer not null comment 'Object type code',
+        external_object_id varchar(255) not null comment 'External object identifier',
+        data_source_description_id bigint comment 'Optional data source description reference',
+        primary key (id)
+    ) comment='Various data sources objects mapping';
 
     create table common_data_source_descriptions_tbl (
         id bigint not null auto_increment,
@@ -560,10 +559,12 @@
         references common_languages_tbl (id);
 
     alter table common_data_corrections_tbl 
-        add index FKF86BDC935BA789BB (data_source_description_id), 
-        add constraint FKF86BDC935BA789BB 
+        add index common_data_corrections_tbl_dsd_id (data_source_description_id), 
+        add constraint common_data_corrections_tbl_dsd_id 
         foreign key (data_source_description_id) 
         references common_data_source_descriptions_tbl (id);
+
+    create index I_objectid_object_type on common_diffs_tbl (object_type, object_id);
 
     alter table common_external_history_packs_tbl 
         add index FK_common_external_history_packs_tbl (file_id), 

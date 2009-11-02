@@ -7,34 +7,6 @@
 			 classname="org.hibernate.tool.ant.HibernateToolTask"
 			 classpathref="hibernate.lib" />
 
-	<target name="reveng.hbmxml"
-			description="Produces XML mapping files in src directory">
-		<hibernatetool destdir="${build.dir}/src/hbm">
-			<jdbcconfiguration
-					packagename="org.flexpay.ab.persistence"
-					propertyfile="${common.dir}/etc/hibernate.properties"
-					revengfile="${common.dir}/etc/hibernate_reverse.xml" />
-			<hbm2hbmxml />
-			<!-- Export Hibernate XML files -->
-			<hbm2cfgxml />
-			<!-- Export a hibernate.cfg.xml file -->
-		</hibernatetool>
-	</target>
-
-	<target name="reveng.pojos"
-			description="Produces Java classes from XML mappings">
-		<hibernatetool destdir="${build.dir}/src/java">
-			<configuration>
-				<fileset dir="${build.dir}/src/hbm">
-					<include name="**/*.hbm.xml" />
-				</fileset>
-			</configuration>
-			<hbm2java jdk5="true" ejb3="true" />
-			<hbm2cfgxml ejb3="true" />
-			<!-- Generate entity class source -->
-		</hibernatetool>
-	</target>
-
 	<target name="template.schemaexport"
 			description="Exports a generated schema to file">
 		<mkdir dir="${build.dir}/src/sql" />

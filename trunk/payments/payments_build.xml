@@ -48,7 +48,7 @@
 
 	Available targets are:
 		payments.db - Initialize database
-		payments.exportschema.mysql5 - Generate DDL of module for MySQL5
+		payments.ddl - Generate DDL of module
 		payments.runtests - Run all module tests, possible option for this target is test.class.name that specifies test class name to run
 			for example ant -f eirc_build.xml eirc.runtests -Dtest.class.name=org.flexpay.payments.service.TestBuildingService
 		payments.war - Build war
@@ -152,7 +152,7 @@
 		</antcall>
 	</target>
 
-	<target name="payments.exportschema.mysql5" depends="clean.build,payments.compile.production">
+	<target name="payments.ddl" depends="clean.build,payments.compile.production">
 		<property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5Dialect" />
 		<antcall target="template.schemaexport">
 			<param name="file_name" value="flexpay_payments.ddl.sql" />

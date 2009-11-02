@@ -50,7 +50,7 @@
 
 	Available targets are:
 		eirc.db - Initialize database
-		eirc.exportschema.mysql5 - Generate DDL of module for MySQL5
+		eirc.ddl - Generate DDL of module
 		eirc.runtests - Run all module tests, possible option for this target is test.class.name that specifies test class name to run
 			for example ant -f eirc_build.xml eirc.runtests -Dtest.class.name=org.flexpay.eirc.process.quittance.TestGenerateQuittancesPDFJob
 		eirc.runtests.nobuild - Run all module tests but skip build steps (added to speed up development process)
@@ -157,8 +157,7 @@
 		</antcall>
 	</target>
 
-	<target name="eirc.exportschema.mysql5" depends="clean.build,eirc.compile.production">
-		<property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5Dialect" />
+	<target name="eirc.ddl" depends="clean.build,eirc.compile.production">
 		<antcall target="template.schemaexport">
 			<param name="file_name" value="flexpay_eirc.ddl.sql" />
 			<param name="src.dir" value="${eirc.src.production}" />

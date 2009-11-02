@@ -16,7 +16,7 @@
 			</column>
 		</property>
 		<property name="objectType">
-			<column name="object_type" not-null="true">
+			<column name="object_type" not-null="true" index="I_objectid_object_type">
 				<comment>Object type</comment>
 			</column>
 		</property>
@@ -26,7 +26,7 @@
 			</column>
 		</property>
 		<property name="objectId">
-			<column name="object_id" not-null="true">
+			<column name="object_id" not-null="true" index="I_objectid_object_type">
 				<comment>Internal object reference</comment>
 			</column>
 		</property>

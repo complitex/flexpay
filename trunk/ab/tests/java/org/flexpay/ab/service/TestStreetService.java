@@ -33,7 +33,6 @@ public class TestStreetService extends AbSpringBeanAwareTestCase {
 	private StreetTypeService streetTypeService;
 
 	@Test
-	@Ignore
 	public void testCreateStreet() throws Throwable {
 
 		Town town = getDefaultTown();
@@ -78,7 +77,6 @@ public class TestStreetService extends AbSpringBeanAwareTestCase {
 	}
 
 	@Test
-	@Ignore
 	public void testGetStreetName() throws Throwable {
 		Town town = townService.readFull(TestData.TOWN_NSK);
 		assertNotNull("No default town", town);
