@@ -1,5 +1,6 @@
 package org.flexpay.payments.action.monitor;
 
+import static junit.framework.Assert.*;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.util.CollectionUtils;
@@ -8,7 +9,6 @@ import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.orgs.persistence.PaymentPoint;
 import org.flexpay.orgs.service.PaymentCollectorService;
 import org.flexpay.orgs.service.PaymentPointService;
-import org.flexpay.orgs.util.TestCashboxUtil;
 import org.flexpay.orgs.util.TestOrganizationUtil;
 import org.flexpay.orgs.util.TestPaymentPointUtil;
 import org.flexpay.payments.actions.monitor.PaymentPointDetailMonitorAction;
@@ -17,8 +17,9 @@ import org.flexpay.payments.persistence.Operation;
 import org.flexpay.payments.test.PaymentsSpringBeanAwareTestCase;
 import org.flexpay.payments.util.TestOperationUtil;
 import org.flexpay.payments.util.config.PaymentsUserPreferences;
-import org.flexpay.payments.util.impl.PaymentsTestCashPaymentOperationUtil;
 import org.junit.After;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,11 +27,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.context.SecurityContextHolder;
 
 import java.util.Set;
-
-import static junit.framework.Assert.assertNotNull;
-import static junit.framework.Assert.assertTrue;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
 
 public class TestPaymentPointDetailMonitorAction extends PaymentsSpringBeanAwareTestCase {
     @Autowired
@@ -114,7 +110,7 @@ public class TestPaymentPointDetailMonitorAction extends PaymentsSpringBeanAware
         paymentPointDetailMonitorAction.setPaymentPointId(String.valueOf(paymentPoint.getId()));
         assertEquals("Action failed", FPActionSupport.SUCCESS, paymentPointDetailMonitorAction.execute());
         assertNull("Payment point status is not empty", paymentPointDetailMonitorAction.getTradingDayControlPanel().getProcessStatus());
-        assertTrue("Trading day do not open", paymentPointDetailMonitorAction.getTradingDayControlPanel().isTradingDayOpened());
+        assertFalse("Trading day must not be opened if it's process instance id is not present", paymentPointDetailMonitorAction.getTradingDayControlPanel().isTradingDayOpened());
         assertEquals("Cash box list is not empty", 0, paymentPointDetailMonitorAction.getCashboxes().size());
     }
 
