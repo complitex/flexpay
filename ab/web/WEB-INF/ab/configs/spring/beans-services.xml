@@ -168,6 +168,18 @@
 		  p:buildingService-ref="buildingService"
 		  p:streetService-ref="streetService" />
 
+	<bean id="diffServiceAllObjects" parent="diffService" autowire-candidate="false"
+		  factory-bean="commonServiceFactory"
+		  factory-method="getDiffService">
+		<property name="allObjectsService">
+			<map>
+				<entry key="org.flexpay.ab.persistence.AddressAttributeType" value-ref="addressAttributeTypeService" />
+				<entry key="org.flexpay.ab.persistence.StreetType" value-ref="streetTypeService" />
+				<entry key="org.flexpay.ab.persistence.IdentityType" value-ref="identityTypeService" />
+			</map>
+		</property>
+	</bean>
+
 	<bean id="abObjectsFactory" autowire-candidate="false"
 		  class="org.flexpay.ab.service.impl.AbObjectsFactory" />
 

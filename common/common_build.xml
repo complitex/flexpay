@@ -65,7 +65,7 @@
 
 	Available targets are:
 		common.db - Initialize database
-		common.exportschema.mysql5 - Generate DDL of module for MySQL5
+		common.ddl - Generate DDL of module
 		common.runtests - Run all module tests, possible option for this target is test.class.name that specifies test class name to run
 			for example ant -f eirc_build.xml eirc.runtests -Dtest.class.name=org.flexpay.common.test.TestStringUtil
 		common.runtests.nobuild - Run all module tests but skip build steps (added to speed up development process)
@@ -176,14 +176,12 @@
 		</copy>
 	</target>
 
-	<target name="common.exportschema.mysql5" depends="clean.build,common.compile.production">
+	<target name="common.ddl" depends="clean.build,common.compile.production">
 		<antcall target="template.schemaexport">
 			<param name="file_name" value="flexpay_common.ddl.sql" />
 			<param name="src.dir" value="${common.src.production}" />
 			<param name="hibernate.cfg"
 				   value="${common.dir}/web/WEB-INF/hibernate.cfg.xml" />
-			<param name="hibernate.properties"
-				   value="${common.dir}/web/WEB-INF/common/configs/spring/data_source.properties" />
 		</antcall>
 	</target>
 

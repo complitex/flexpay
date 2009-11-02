@@ -1,20 +1,26 @@
 package org.flexpay.common.service.impl;
 
-import org.flexpay.common.service.DiffService;
-import org.flexpay.common.service.importexport.ClassToTypeRegistry;
-import org.flexpay.common.persistence.history.Diff;
-import org.flexpay.common.persistence.Stub;
-import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.common.dao.DiffDao;
 import org.flexpay.common.dao.DiffDaoExt;
 import org.flexpay.common.dao.paging.FetchRange;
+import org.flexpay.common.persistence.DomainObject;
+import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.persistence.history.Diff;
+import org.flexpay.common.service.AllObjectsService;
+import org.flexpay.common.service.DiffService;
+import org.flexpay.common.service.importexport.ClassToTypeRegistry;
+import org.flexpay.common.util.LRUCache;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.beans.factory.annotation.Required;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Required;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+
+import static org.flexpay.common.util.CollectionUtils.map;
 
 @Transactional (readOnly = true)
 public class DiffServiceImpl implements DiffService {
@@ -24,6 +30,11 @@ public class DiffServiceImpl implements DiffService {
 	private ClassToTypeRegistry registry;
 	private DiffDao diffDao;
 	private DiffDaoExt diffDaoExt;
+
+	private Map<Class, AllObjectsService> type2AllObjectsServiceMap = map();
+	private Map<Integer, AllObjectsService> typeId2AllObjectsServiceMap = map();
+
+	private Map<Integer, LRUCache<Long, Boolean>> hasHistoryCaches = map();
 
 	/**
 	 * Persist a new Diff object
@@ -87,8 +98,32 @@ public class DiffServiceImpl implements DiffService {
 	 * @return <code>true</code> if there is diffs, or <code>false</code> otherwise
 	 */
 	public <T extends DomainObject> boolean hasDiffs(@NotNull T obj) {
+
 		int objectType = registry.getType(obj.getClass());
-		return diffDaoExt.hasDiffs(obj.getId(), objectType);
+
+		LRUCache<Long, Boolean> cache = hasHistoryCache(objectType);
+		if (cache.get(obj.getId()) != null) {
+			return true;
+		}
+
+		boolean hasDiffs = diffDaoExt.hasDiffs(obj.getId(), objectType);
+
+		if (hasDiffs) {
+			cache.put(obj.getId(), true);
+		}
+
+		return hasDiffs;
+	}
+
+	private LRUCache<Long, Boolean> hasHistoryCache(int objectType) {
+
+		LRUCache<Long, Boolean> cache = hasHistoryCaches.get(objectType);
+		if (cache == null) {
+			cache = new LRUCache<Long, Boolean>(5000);
+			hasHistoryCaches.put(objectType, cache);
+		}
+
+		return cache;
 	}
 
 	/**
@@ -99,8 +134,26 @@ public class DiffServiceImpl implements DiffService {
 	 */
 	@Override
 	public <T extends DomainObject> boolean allObjectsHaveDiff(Class<T> clazz) {
-		// TODO: IMPLEMENT ME
-		return false;
+
+		if (type2AllObjectsServiceMap != Collections.EMPTY_MAP) {
+			moveAllObjectsServices();
+		}
+
+		int objectsType = registry.getType(clazz);
+		@SuppressWarnings ({"unchecked"})
+		AllObjectsService<T> service = typeId2AllObjectsServiceMap.get(objectsType);
+		if (service == null) {
+			throw new IllegalStateException("Check for all objects " + clazz +
+											" called, but no AllObjectsService set for this class");
+		}
+		List<T> objects = service.getAll();
+		for (T t : objects) {
+			if (!hasDiffs(t)) {
+				return false;
+			}
+		}
+
+		return true;
 	}
 
 	/**
@@ -127,5 +180,18 @@ public class DiffServiceImpl implements DiffService {
 	@Required
 	public void setRegistry(ClassToTypeRegistry registry) {
 		this.registry = registry;
+	}
+
+	public void setAllObjectsService(Map<Class, AllObjectsService> map) {
+		type2AllObjectsServiceMap.putAll(map);
+	}
+
+	@SuppressWarnings ({"unchecked"})
+	private void moveAllObjectsServices() {
+		for (Map.Entry<Class, AllObjectsService> entry : type2AllObjectsServiceMap.entrySet()) {
+			typeId2AllObjectsServiceMap.put(registry.getType(entry.getKey()), entry.getValue());
+		}
+
+		type2AllObjectsServiceMap = Collections.emptyMap();
 	}
 }

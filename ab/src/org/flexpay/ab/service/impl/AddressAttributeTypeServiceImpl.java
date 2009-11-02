@@ -70,6 +70,16 @@ public class AddressAttributeTypeServiceImpl implements AddressAttributeTypeServ
 	}
 
 	/**
+	 * Get all objects
+	 *
+	 * @return List of all objects
+	 */
+	@Override
+	public List<AddressAttributeType> getAll() {
+		return list();
+	}
+
+	/**
 	 * Create building address attribute type
 	 *
 	 * @param type AttributeType to save

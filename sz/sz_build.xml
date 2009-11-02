@@ -48,11 +48,10 @@
 
 	Available targets are:
 		sz.db - Initialize database
-		sz.exportschema.mysql5 - Generate DDL of module for MySQL5
+		sz.ddl - Generate DDL of module
 		sz.runtests - Run all module tests, possible option for this target is test.class.name that specifies test class name to run
 			for example ant -f eirc_build.xml eirc.runtests -Dtest.class.name=org.flexpay.sz.service.TestCorrectionsService
-		sz.war.production.tomcat_mysql5 - Build production war for Tomcat and MySQL5
-		sz.war.production.flassfish_mysql5 - Build production war for Glassfish and MySQL5
+		sz.war - Build production war
 		</echo>
 	</target>
 
@@ -154,8 +153,7 @@
 	</target>
 
 
-	<target name="sz.exportschema.mysql5" depends="clean.build,sz.compile.production">
-		<property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5Dialect" />
+	<target name="sz.ddl" depends="clean.build,sz.compile.production">
 		<antcall target="template.schemaexport">
 			<param name="file_name" value="flexpay_sz.ddl.sql" />
 			<param name="src.dir" value="${sz.src.production}" />

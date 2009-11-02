@@ -45,6 +45,16 @@ public class IdentityTypeServiceImpl implements IdentityTypeService {
 	}
 
 	/**
+	 * Get all objects
+	 *
+	 * @return List of all objects
+	 */
+	@Override
+	public List<IdentityType> getAll() {
+		return getEntities();
+	}
+
+	/**
 	 * Disable IdentityTypes TODO: check if there are any documents with specified type and reject operation
 	 *
 	 * @param identityTypes IdentityTypes to disable

@@ -56,7 +56,7 @@
 		<property name="cacheProviderFacade" ref="cacheProviderFacade" />
 		<property name="cachingModels">
 			<props>
-                <prop key="read*">cacheName=commonMeasureUnitFlexpayCache</prop>
+				<prop key="read*">cacheName=commonMeasureUnitFlexpayCache</prop>
 				<prop key="list*">cacheName=commonMeasureUnitFlexpayCache</prop>
 			</props>
 		</property>
@@ -64,7 +64,7 @@
 			<props>
 				<prop key="create">cacheNames=commonMeasureUnitFlexpayCache;flushBeforeMethodExecution=true</prop>
 				<prop key="update">cacheNames=commonMeasureUnitFlexpayCache;flushBeforeMethodExecution=true</prop>
-                <prop key="disable*">cacheNames=commonMeasureUnitFlexpayCache;flushBeforeMethodExecution=true</prop>
+				<prop key="disable*">cacheNames=commonMeasureUnitFlexpayCache;flushBeforeMethodExecution=true</prop>
 			</props>
 		</property>
 		<property name="target" ref="measureUnitServiceTarget" />
@@ -81,7 +81,7 @@
 		<property name="target" ref="masterIndexServiceTarget" />
 	</bean>
 
-    <bean id="registryArchiveStatusService"
+	<bean id="registryArchiveStatusService"
 		  class="org.springmodules.cache.interceptor.proxy.CacheProxyFactoryBean">
 		<property name="cacheProviderFacade" ref="cacheProviderFacade" />
 		<property name="cachingModels">
@@ -93,7 +93,7 @@
 		<property name="target" ref="registryArchiveStatusServiceTarget" />
 	</bean>
 
-    <bean id="registryStatusService"
+	<bean id="registryStatusService"
 		  class="org.springmodules.cache.interceptor.proxy.CacheProxyFactoryBean">
 		<property name="cacheProviderFacade" ref="cacheProviderFacade" />
 		<property name="cachingModels">
@@ -104,7 +104,7 @@
 		<property name="target" ref="registryStatusServiceTarget" />
 	</bean>
 
-    <bean id="registryRecordStatusService"
+	<bean id="registryRecordStatusService"
 		  class="org.springmodules.cache.interceptor.proxy.CacheProxyFactoryBean">
 		<property name="cacheProviderFacade" ref="cacheProviderFacade" />
 		<property name="cachingModels">
@@ -116,7 +116,7 @@
 		<property name="target" ref="registryRecordStatusServiceTarget" />
 	</bean>
 
-    <bean id="registryFPFileTypeService"
+	<bean id="registryFPFileTypeService"
 		  class="org.springmodules.cache.interceptor.proxy.CacheProxyFactoryBean">
 		<property name="cacheProviderFacade" ref="cacheProviderFacade" />
 		<property name="cachingModels">

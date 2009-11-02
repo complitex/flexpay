@@ -3,6 +3,7 @@ package org.flexpay.ab.service;
 import org.flexpay.ab.persistence.AddressAttributeType;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.service.AllObjectsService;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.security.annotation.Secured;
@@ -10,7 +11,7 @@ import org.springframework.security.annotation.Secured;
 import java.util.Collection;
 import java.util.List;
 
-public interface AddressAttributeTypeService {
+public interface AddressAttributeTypeService extends AllObjectsService<AddressAttributeType> {
 
 	/**
 	 * Get building attribute type

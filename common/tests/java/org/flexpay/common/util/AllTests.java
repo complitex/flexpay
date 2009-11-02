@@ -14,7 +14,8 @@ import org.junit.runners.Suite;
 		TestIntegerUtil.class,
 		TestFPFileUtil.class,
 		TestValidationUtil.class,
-		TestCollectionUtils.class
+		TestCollectionUtils.class,
+		TestLRUCache.class
 })
 public class AllTests {
 

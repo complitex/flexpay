@@ -12,6 +12,8 @@
 		<property name="cachingModels">
 			<props>
 				<prop key="read">cacheName=abStreetTypeFlexpayCache</prop>
+				<prop key="getAll">cacheName=abStreetTypeFlexpayCache</prop>
+				<prop key="list">cacheName=abStreetTypeFlexpayCache</prop>
 				<prop key="findTypeByName">cacheName=abStreetTypeFlexpayCache</prop>
 			</props>
 		</property>
@@ -178,6 +180,8 @@
 		<property name="cachingModels">
 			<props>
 				<prop key="readFull">cacheName=abAddressAttributeTypeFlexpayCache</prop>
+				<prop key="getAll">cacheName=abAddressAttributeTypeFlexpayCache</prop>
+				<prop key="list">cacheName=abAddressAttributeTypeFlexpayCache</prop>
 			</props>
 		</property>
 		<property name="flushingModels">

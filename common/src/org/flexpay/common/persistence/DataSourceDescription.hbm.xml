@@ -13,16 +13,34 @@
 	</class>
 
 	<class name="DataCorrection" table="common_data_corrections_tbl">
-		<id name="id" column="id">
+		<comment>Various data sources objects mapping</comment>
+		<id name="id">
+			<column name="id">
+				<comment>Primary key</comment>
+			</column>
 			<generator class="native" />
 		</id>
-		<property name="internalObjectId" column="internal_object_id" not-null="true" />
-		<properties name="externalid_datasource_objecttype" unique="true">
-			<property name="objectType" column="object_type" />
-			<property name="externalId" column="external_object_id" not-null="true" />
-			<many-to-one name="dataSourceDescription" class="DataSourceDescription"
-						 column="data_source_description_id" />
-		</properties>
+		<property name="internalObjectId">
+			<column name="internal_object_id" not-null="true">
+				<comment>Flexpay object id (ref)</comment>
+			</column>
+		</property>
+		<property name="objectType">
+			<column name="object_type" not-null="true">
+				<comment>Object type code</comment>
+			</column>
+		</property>
+		<property name="externalId">
+			<column name="external_object_id" not-null="true">
+				<comment>External object identifier</comment>
+			</column>
+		</property>
+		<many-to-one name="dataSourceDescription" class="DataSourceDescription"
+					 foreign-key="common_data_corrections_tbl_dsd_id">
+			<column name="data_source_description_id" not-null="false">
+				<comment>Optional data source description reference</comment>
+			</column>
+		</many-to-one>
 	</class>
 
 	<query name="DataSourceDescription.readFull">
@@ -38,7 +56,7 @@
 	<query name="DataCorrection.getInternalId" read-only="true" cache-mode="ignore" cacheable="false">
 		select new java.lang.Long(c.internalObjectId)
 		from DataCorrection c
-		where c.externalId=? AND c.objectType=? AND c.dataSourceDescription.id=? 
+		where c.externalId=? AND c.objectType=? AND c.dataSourceDescription.id=?
 	</query>
 
 </hibernate-mapping>
