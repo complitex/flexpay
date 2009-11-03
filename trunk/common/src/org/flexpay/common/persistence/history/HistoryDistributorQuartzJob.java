@@ -7,6 +7,7 @@ import org.quartz.JobExecutionException;
 
 public class HistoryDistributorQuartzJob extends QuartzJobBean {
 
+	private boolean enabled;
 	private HistoryConsumptionGroupsDistributor distributor;
 
 	/**
@@ -17,11 +18,21 @@ public class HistoryDistributorQuartzJob extends QuartzJobBean {
 	 */
 	@Override
 	protected void executeInternal(JobExecutionContext context) throws JobExecutionException {
+
+		if (!enabled) {
+			return;
+		}
+
 		distributor.distribute();
 	}
 
 	@Required
 	public void setDistributor(HistoryConsumptionGroupsDistributor distributor) {
 		this.distributor = distributor;
+	}
+
+	@Required
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
 	}
 }

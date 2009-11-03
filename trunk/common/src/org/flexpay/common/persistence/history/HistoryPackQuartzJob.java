@@ -22,6 +22,7 @@ public class HistoryPackQuartzJob extends QuartzJobBean {
 
 	public static final String LOCK_NAME = HistoryPackQuartzJob.class.getName() + ".LOCK";
 
+	private boolean enabled;
 	private LockManager lockManager;
 	private HistoryPacker historyPacker;
 	private HistoryConsumerService historyConsumerService;
@@ -33,6 +34,10 @@ public class HistoryPackQuartzJob extends QuartzJobBean {
 	 * @see #execute
 	 */
 	protected void executeInternal(JobExecutionContext context) throws JobExecutionException {
+
+		if (!enabled) {
+			return;
+		}
 
 		boolean locked = lockManager.lock(LOCK_NAME);
 		if (!locked) {
@@ -73,5 +78,10 @@ public class HistoryPackQuartzJob extends QuartzJobBean {
 	@Required
 	public void setHistoryConsumerService(HistoryConsumerService historyConsumerService) {
 		this.historyConsumerService = historyConsumerService;
+	}
+
+	@Required
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
 	}
 }

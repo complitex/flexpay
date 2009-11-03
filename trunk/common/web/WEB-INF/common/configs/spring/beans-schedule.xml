@@ -9,6 +9,7 @@
 		<property name="jobDataAsMap">
 			<map>
 				<entry key="syncerJob" value-ref="objectsSyncerJob" />
+				<entry key="enabled" value="${app.config.common.history.sync.enabled}" />
 			</map>
 		</property>
 	</bean>
@@ -19,7 +20,8 @@
 			<map>
 				<entry key="lockManager" value-ref="lockManager" />
 				<entry key="historyPacker" value-ref="xmlHistoryPacker" />
-				<entry key="historyConsumerService" value-ref="historyConsumerService" /> 
+				<entry key="historyConsumerService" value-ref="historyConsumerService" />
+				<entry key="enabled" value="${app.config.common.history.pack.enabled}" />
 			</map>
 		</property>
 	</bean>
@@ -29,6 +31,7 @@
 		<property name="jobDataAsMap">
 			<map>
 				<entry key="distributor" value-ref="historyConsumptionGroupsDistributor" />
+				<entry key="enabled" value="${app.config.common.history.distribute.enabled}" />
 			</map>
 		</property>
 	</bean>
@@ -40,6 +43,7 @@
 				<entry key="lockManager" value-ref="lockManager" />
 				<entry key="historyUnPacker" value-ref="xmlHistoryUnPacker" />
 				<entry key="unpackManager" value-ref="historyUnpackManager" />
+				<entry key="enabled" value="${app.config.common.history.unpack.enabled}" />
 			</map>
 		</property>
 	</bean>
