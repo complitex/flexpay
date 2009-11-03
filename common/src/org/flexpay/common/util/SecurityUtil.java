@@ -1,5 +1,6 @@
 package org.flexpay.common.util;
 
+import org.jetbrains.annotations.NotNull;
 import org.springframework.security.Authentication;
 import org.springframework.security.GrantedAuthority;
 import org.springframework.security.GrantedAuthorityImpl;
@@ -60,5 +61,31 @@ public abstract class SecurityUtil {
 		}
 
 		return authorities.toArray(new GrantedAuthority[authorities.size()]);
+	}
+
+	/**
+	 * Check if current authentication has authority with required name
+	 *
+	 * @param authName Authority name to check
+	 * @return <code>true</code> if authority found, or <code>false</code> otherwise
+	 */
+	public static boolean isAuthenticationGranted(@NotNull String authName) {
+		Authentication auth = getAuthentication();
+		if (auth == null) {
+			return false;
+		}
+
+		GrantedAuthority[] authorities = auth.getAuthorities();
+		if (authorities == null) {
+			return false;
+		}
+
+		for (GrantedAuthority authority : authorities) {
+			if (authName.equals(authority.getAuthority())) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 }

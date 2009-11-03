@@ -9,6 +9,9 @@
 	<bean id="staticPageAction" scope="prototype"
 		  class="org.flexpay.common.actions.StaticPageAction" />
 
+	<bean id="staticPageAdminAction" scope="prototype"
+		  class="org.flexpay.common.actions.StaticPageAdminAction" />
+
 	<bean id="menuPageAction" scope="prototype"
 		  class="org.flexpay.common.actions.MenuPageAction" />
 
