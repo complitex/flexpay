@@ -3,9 +3,9 @@
 -- Init service types
 -- kvartplata
 INSERT INTO payments_service_types_tbl (id, status, code) VALUES (1, 0, 1);
-SELECT @service_kvartplata:=1;
+SELECT @service_t_kvartplata:=1;
 INSERT INTO payments_service_type_name_translations_tbl (name, description, language_id, service_type_id)
-	VALUES ('Квартплата', 'Описание', @ru_id, @service_kvartplata);
+	VALUES ('Квартплата', 'Описание', @ru_id, @service_t_kvartplata);
 
 INSERT INTO payments_service_types_tbl (id, status, code) VALUES (2, 0, 2);
 SELECT @service_t_dogs:=2;
@@ -28,14 +28,14 @@ INSERT INTO payments_service_type_name_translations_tbl (name, description, lang
 	VALUES ('Подогрев воды', 'Описание', @ru_id, @service_t_water_cooling);
 
 INSERT INTO payments_service_types_tbl (id, status, code) VALUES (7, 0, 7);
-SELECT @service_cold_water:=7;
+SELECT @service_t_cold_water:=7;
 INSERT INTO payments_service_type_name_translations_tbl (name, description, language_id, service_type_id)
-	VALUES ('Холодная вода', 'Описание', @ru_id, @service_cold_water);
+	VALUES ('Холодная вода', 'Описание', @ru_id, @service_t_cold_water);
 
 INSERT INTO payments_service_types_tbl (id, status, code) VALUES (8, 0, 8);
-SELECT @service_hot_water:=8;
+SELECT @service_t_hot_water:=8;
 INSERT INTO payments_service_type_name_translations_tbl (name, description, language_id, service_type_id)
-	VALUES ('Горячая вода', 'Описание', @ru_id, @service_hot_water);
+	VALUES ('Горячая вода', 'Описание', @ru_id, @service_t_hot_water);
 
 INSERT INTO payments_service_types_tbl (id, status, code) VALUES (10, 0, 10);
 SELECT @service_territory_cleaning:=10;
@@ -147,11 +147,6 @@ SELECT @service_type_220:=last_insert_id();
 INSERT INTO payments_service_type_name_translations_tbl (name, description, language_id, service_type_id)
 	VALUES ('Гараж', 'Описание', @ru_id, @service_type_220);
 
-INSERT INTO payments_service_types_tbl (status, code) VALUES (0, 230);
-SELECT @service_type_230:=last_insert_id();
-INSERT INTO payments_service_type_name_translations_tbl (name, description, language_id, service_type_id)
-	VALUES ('Сарай', 'Описание', @ru_id, @service_type_230);
-
 INSERT INTO payments_service_types_tbl (id, status, code) VALUES (38, 0, 38);
 SELECT @service_type_240:=38;
 INSERT INTO payments_service_type_name_translations_tbl (name, description, language_id, service_type_id)
@@ -167,7 +162,7 @@ SELECT @service_t_electricity:=1002;
 INSERT INTO payments_service_type_name_translations_tbl (name, description, language_id, service_type_id)
 	VALUES ('Электроэнергия', 'Описание', @ru_id, @service_t_electricity);
 
-INSERT INTO payments_service_types_tbl (id, status, code) VALUES (1003, 0, 1003);
+INSERT INTO payments_service_types_tbl (id, status, code) VALUES (1003, 0, 230);
 SELECT @service_t_shed:=1003;
 INSERT INTO payments_service_type_name_translations_tbl (name, description, language_id, service_type_id)
 	VALUES ('Сарай', 'Описание', @ru_id, @service_t_shed);
@@ -244,7 +239,7 @@ INSERT INTO payments_service_type_name_translations_tbl (name, description, lang
 
 -- Init services
 INSERT INTO payments_services_tbl (id, provider_id, external_code, measure_unit_id, type_id, begin_date, end_date, version, status)
-	VALUES (1, @service_provider_cn, '1', @unit_square_meter, @service_kvartplata, '1900-01-01', '2100-12-31', 0, 0);
+	VALUES (1, @service_provider_cn, '1', @unit_square_meter, @service_t_kvartplata, '1900-01-01', '2100-12-31', 0, 0);
 SELECT @service_kvartplata_id:=1;
 INSERT INTO payments_service_descriptions_tbl (name, language_id, service_id)
 	VALUES ('Квартплата', @ru_id, @service_kvartplata_id);
@@ -382,13 +377,13 @@ INSERT INTO payments_service_descriptions_tbl (name, language_id, service_id)
 	VALUES ('Подогрев воды', @ru_id, @service_5);
 
 INSERT INTO payments_services_tbl (provider_id, external_code, measure_unit_id, type_id, begin_date, end_date, version, status)
-	VALUES (@service_provider_cn, '7', null, @service_cold_water, '1900-01-01', '2100-12-31', 0, 0);
+	VALUES (@service_provider_cn, '7', null, @service_t_cold_water, '1900-01-01', '2100-12-31', 0, 0);
 SELECT @service_7:=last_insert_id();
 INSERT INTO payments_service_descriptions_tbl (name, language_id, service_id)
 	VALUES ('Холодная вода', @ru_id, @service_7);
 
 INSERT INTO payments_services_tbl (provider_id, external_code, measure_unit_id, type_id, begin_date, end_date, version, status)
-	VALUES (@service_provider_cn, '8', null, @service_hot_water, '1900-01-01', '2100-12-31', 0, 0);
+	VALUES (@service_provider_cn, '8', null, @service_t_hot_water, '1900-01-01', '2100-12-31', 0, 0);
 SELECT @service_8:=last_insert_id();
 INSERT INTO payments_service_descriptions_tbl (name, language_id, service_id)
 	VALUES ('Горячая вода', @ru_id, @service_8);
@@ -400,7 +395,7 @@ INSERT INTO payments_service_descriptions_tbl (name, language_id, service_id)
 	VALUES ('Гараж', @ru_id, @service_220);
 
 INSERT INTO payments_services_tbl (provider_id, external_code, measure_unit_id, type_id, begin_date, end_date, version, status)
-	VALUES (@service_provider_cn, '230', null, @service_type_230, '1900-01-01', '2100-12-31', 0, 0);
+	VALUES (@service_provider_cn, '230', null, @service_t_shed, '1900-01-01', '2100-12-31', 0, 0);
 SELECT @service_230:=last_insert_id();
 INSERT INTO payments_service_descriptions_tbl (name, language_id, service_id)
 	VALUES ('Сарай', @ru_id, @service_230);
@@ -606,10 +601,10 @@ where id=@user_ivanova;
 # init mega bank services mapping
 insert into config_payments_mbservices_tbl (mb_service_code, service_type_id, mb_service_name, version) values
 		('1', @service_t_electricity, 'Электроэнергия', 0),
-		('2', @service_kvartplata, 'Квартплата (эксплуатационные расходы)', 0),
+		('2', @service_t_kvartplata, 'Квартплата (эксплуатационные расходы)', 0),
 		('3', @service_t_heating, 'Отопление', 0),
-		('4', @service_hot_water, 'Горячая вода', 0),
-		('5', @service_cold_water, 'Холодная вода', 0),
+		('4', @service_t_hot_water, 'Горячая вода', 0),
+		('5', @service_t_cold_water, 'Холодная вода', 0),
 		('6', @service_t_sewerage, 'Канализация', 0),
 		('7', @service_t_coocking_gas, 'Газ варочный', 0),
 		('8', @service_t_heating_gas, 'Газ отопительный', 0),
