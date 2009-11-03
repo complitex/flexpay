@@ -63,7 +63,10 @@ def dependentProperties = [
 								'com.iplanet.am.server.host' : 'OpenSSO server host',
 								'com.iplanet.am.server.port' : 'OpenSSO server port',
 								'com.iplanet.am.services.deploymentDescriptor' : 'OpenSSO server context path',
-								'com.iplanet.am.cookie.encode' : 'Whether cookie is encoded by OpenSSO server or not'
+								'com.iplanet.am.cookie.encode' : 'Whether cookie is encoded by OpenSSO server or not',
+								'com.sun.identity.liberty.interaction.wspRedirectHandler' : 'URL for WSPRedirectHandlerServlet to handle Liberty WSF WSP-resource owner interactions based on user agent redirects. This should be running in the same JVM where Liberty SP is running',
+								'com.sun.identity.loginurl' : 'Login URL for WSS Liberty use cases',
+								'com.sun.identity.liberty.authnsvc.url' : 'Authentication web service URL for WSS Liberty use cases'
 						]
                 ],
 				'app.config.common.usersStorage' : [
