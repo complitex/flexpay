@@ -8,6 +8,7 @@ import org.springframework.scheduling.quartz.QuartzJobBean;
 public class ObjectsSyncQuartzJob extends QuartzJobBean {
 
 	private ObjectsSyncerJob syncerJob;
+	private boolean enabled;
 
 	/**
 	 * Execute the actual job. The job data map will already have been applied as bean property values by execute. The
@@ -16,11 +17,21 @@ public class ObjectsSyncQuartzJob extends QuartzJobBean {
 	 * @see #execute
 	 */
 	protected void executeInternal(JobExecutionContext context) throws JobExecutionException {
+
+		if (!enabled) {
+			return;
+		}
+
 		syncerJob.execute();
 	}
 
 	@Required
 	public void setSyncerJob(ObjectsSyncerJob syncerJob) {
 		this.syncerJob = syncerJob;
+	}
+
+	@Required
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
 	}
 }
