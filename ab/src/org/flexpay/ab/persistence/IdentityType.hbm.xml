@@ -70,15 +70,14 @@
     <query name="IdentityType.listIdentityTypesByEnumId">
         select distinct it
         from IdentityType it
-        where it.typeId=? and it.status=?
+        where it.typeId=?
     </query>
 
     <query name="IdentityType.findByNameAndLanguage">
         select distinct it
         from IdentityType it
-            left join fetch it.translations tr
-            left join fetch tr.lang l
-        where tr.name=? and l.id=? and it.status=?
+            left join it.translations tr
+        where tr.name=? and tr.lang.id=? and it.status=0
     </query>
 
 </hibernate-mapping>

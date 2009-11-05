@@ -26,7 +26,7 @@ public interface TownTypeService {
 	 */
 	@Secured (Roles.TOWN_TYPE_READ)
 	@Nullable
-	TownType read(@NotNull Stub<TownType> stub);
+	TownType readFull(@NotNull Stub<TownType> stub);
 
 	/**
 	 * Get a list of available town types

@@ -23,56 +23,14 @@ public class StreetDaoExtImpl extends HibernateDaoSupport implements StreetDaoEx
 	 *
 	 * @param townId  Town key
 	 * @param sorters Collection of sorters
+	 * @param query query
 	 * @param pager   Pager
 	 * @return List of streets
 	 */
 	@SuppressWarnings ({"unchecked"})
 	@NotNull
 	@Override
-	public List<Street> findStreets(Long townId, Collection<ObjectSorter> sorters, final Page<Street> pager) {
-
-		StreetSorter sorter = findSorter(sorters);
-		sorter.setStreetField("s");
-
-		final StringBuilder cnthql = new StringBuilder();
-		final StringBuilder hql = new StringBuilder();
-
-		cnthql.append("select count(s) from Street s ");
-		hql.append("select distinct s from Street s ");
-		sorter.setFrom(hql);
-
-		StringBuilder whereClause = new StringBuilder();
-		whereClause.append(" where s.parent.id=").append(townId).append(" and s.status=").append(Street.STATUS_ACTIVE);
-		sorter.setWhere(whereClause);
-		hql.append(whereClause);
-		cnthql.append(" where s.parent.id=").append(townId).append(" and s.status=").append(Street.STATUS_ACTIVE);
-
-		StringBuilder orderByClause = new StringBuilder();
-		sorter.setOrderBy(orderByClause);
-		if (orderByClause.length() > 0) {
-			hql.append(" ORDER BY ").append(orderByClause);
-		}
-
-		return getHibernateTemplate().executeFind(new HibernateCallback() {
-			@Override
-			public List<?> doInHibernate(Session session) throws HibernateException {
-				Query cntQuery = session.createQuery(cnthql.toString());
-				Long count = (Long) cntQuery.uniqueResult();
-				pager.setTotalElements(count.intValue());
-
-				return session.createQuery(hql.toString())
-						.setFirstResult(pager.getThisPageFirstElementNumber())
-						.setMaxResults(pager.getPageSize())
-						.list();
-
-			}
-		});
-	}
-
-	@SuppressWarnings ({"unchecked"})
-	@NotNull
-	@Override
-	public List<Street> findByTownAndQuery(Long townId, Collection<ObjectSorter> sorters, String query, final Page<Street> pager) {
+	public List<Street> findByParentAndQuery(Long townId, Collection<ObjectSorter> sorters, String query, final Page<Street> pager) {
 		StreetSorter sorter = findSorter(sorters);
 		sorter.setStreetField("s");
 
@@ -130,23 +88,4 @@ public class StreetDaoExtImpl extends HibernateDaoSupport implements StreetDaoEx
 		return new StreetSorterStub();
 	}
 
-	@Override
-	public void deleteStreet(final Long streetId) {
-		getHibernateTemplate().execute(new HibernateCallback() {
-			@Override
-			public Object doInHibernate(Session session) throws HibernateException {
-				session.getNamedQuery("Street.deleteNameTranslations")
-						.setLong(0, streetId).executeUpdate();
-				session.getNamedQuery("Street.deleteNameTemporals")
-						.setLong(0, streetId).executeUpdate();
-				session.getNamedQuery("Street.deleteNames")
-						.setLong(0, streetId).executeUpdate();
-				session.getNamedQuery("Street.deleteTypeTemporals")
-						.setLong(0, streetId).executeUpdate();
-				session.getNamedQuery("Street.deleteStreet")
-						.setLong(0, streetId).executeUpdate();
-				return null;
-			}
-		});
-	}
 }

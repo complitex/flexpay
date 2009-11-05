@@ -1,18 +1,18 @@
 package org.flexpay.ab.persistence;
 
-import org.apache.commons.lang.builder.ToStringBuilder;
-import org.apache.commons.lang.builder.ToStringStyle;
 import org.flexpay.common.persistence.DomainObjectWithStatus;
+import org.flexpay.common.util.TranslationUtil;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
 import java.util.Set;
 
 /**
- * Country
+ * Country entity class
  */
 public class Country extends DomainObjectWithStatus {
 
-	private Set<CountryNameTranslation> countryNames = Collections.emptySet();
+	private Set<CountryTranslation> translations = Collections.emptySet();
 	private Set<Region> regions = Collections.emptySet();
 
 	public Country() {
@@ -30,12 +30,16 @@ public class Country extends DomainObjectWithStatus {
 		this.regions = regions;
 	}
 
-	public Set<CountryNameTranslation> getCountryNames() {
-		return countryNames;
+	public Set<CountryTranslation> getTranslations() {
+		return translations;
 	}
 
-	public void setCountryNames(Set<CountryNameTranslation> countryNames) {
-		this.countryNames = countryNames;
+	public void setTranslations(Set<CountryTranslation> translations) {
+		this.translations = translations;
+	}
+
+	public void setTranslation(@NotNull CountryTranslation translation) {
+		translations = TranslationUtil.setTranslation(translations, this, translation);
 	}
 
 	@Override
@@ -43,4 +47,5 @@ public class Country extends DomainObjectWithStatus {
 		return this == obj || obj instanceof Country && super.equals(obj);
 
 	}
+
 }

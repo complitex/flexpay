@@ -103,7 +103,7 @@ public class RegistryWorkflowManagerImpl implements RegistryWorkflowManager {
 		return transitionsToProcessing.contains(code(registry));
 	}
 
-	@Transactional (readOnly = false, rollbackFor = Exception.class)
+	@Transactional (readOnly = false)
 	public void startProcessing(Registry registry) throws TransitionNotAllowed {
 		if (!canProcess(registry)) {
 			throw new TransitionNotAllowed("Cannot start registry processing, invalid status: " +
@@ -119,7 +119,7 @@ public class RegistryWorkflowManagerImpl implements RegistryWorkflowManager {
 		setNextSuccessStatus(registry);
 	}
 
-	@Transactional (readOnly = false, rollbackFor = Exception.class)
+	@Transactional (readOnly = false)
 	public void endProcessing(Registry registry) throws TransitionNotAllowed {
 		// all records processed
 		if (code(registry) == PROCESSED) {
@@ -155,7 +155,7 @@ public class RegistryWorkflowManagerImpl implements RegistryWorkflowManager {
 	 * @param registry Registry to update
 	 * @throws TransitionNotAllowed if error transition is not allowed
 	 */
-	@Transactional (readOnly = false, rollbackFor = Exception.class)
+	@Transactional (readOnly = false)
 	public void setNextErrorStatus(Registry registry) throws TransitionNotAllowed {
 		List<Integer> allowedCodes = transitions.get(code(registry));
 		if (allowedCodes.size() < 2) {
@@ -191,7 +191,7 @@ public class RegistryWorkflowManagerImpl implements RegistryWorkflowManager {
 	 * @param registry Registry to update
 	 * @throws TransitionNotAllowed if success transition is not allowed
 	 */
-	@Transactional (readOnly = false, rollbackFor = Exception.class)
+	@Transactional (readOnly = false)
 	public void setNextSuccessStatus(Registry registry) throws TransitionNotAllowed {
 		List<Integer> allowedCodes = transitions.get(code(registry));
 		if (allowedCodes.size() < 1) {
@@ -209,7 +209,7 @@ public class RegistryWorkflowManagerImpl implements RegistryWorkflowManager {
 	 * @return SpRegistry back
 	 * @throws TransitionNotAllowed if registry already has a status
 	 */
-	@Transactional (readOnly = false, rollbackFor = Exception.class)
+	@Transactional (readOnly = false)
 	public Registry setInitialStatus(Registry registry) throws TransitionNotAllowed {
 		if (registry.getRegistryStatus() != null) {
 			if (code(registry) != LOADING) {
@@ -242,7 +242,7 @@ public class RegistryWorkflowManagerImpl implements RegistryWorkflowManager {
 	 * @param status   Next status to set
 	 * @throws TransitionNotAllowed if transition from old to a new status is not allowed
 	 */
-	@Transactional (readOnly = false, rollbackFor = Exception.class)
+	@Transactional (readOnly = false)
 	public void setNextStatus(Registry registry, RegistryStatus status) throws TransitionNotAllowed {
 		if (!canTransit(registry, status)) {
 			throw new TransitionNotAllowed("Invalid transition request, was " + registry.getRegistryStatus() + ", requested " + status);
@@ -259,7 +259,7 @@ public class RegistryWorkflowManagerImpl implements RegistryWorkflowManager {
 	 * @throws TransitionNotAllowed if registry status is not {@link org.flexpay.common.persistence.registry.RegistryStatus#PROCESSING}
 	 *                              or {@link org.flexpay.common.persistence.registry.RegistryStatus#PROCESSING_WITH_ERROR}
 	 */
-	@Transactional (readOnly = false, rollbackFor = Exception.class)
+	@Transactional (readOnly = false)
 	public void markProcessingHasError(Registry registry) throws TransitionNotAllowed {
 		Integer code = code(registry);
 		if (!processingStates.contains(code)) {

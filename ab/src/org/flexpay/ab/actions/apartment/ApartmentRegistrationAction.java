@@ -49,7 +49,7 @@ public class ApartmentRegistrationAction extends FPActionSupport {
 		street = streetService.readFull(buildings.getStreetStub());
 		town = townService.readFull(street.getTownStub());
 		region = regionService.readFull(town.getRegionStub());
-		country = countryService.readFull(region.getCountryStub());
+		country = countryService.read(region.getCountryStub());
 
 		return SUCCESS;
 	}

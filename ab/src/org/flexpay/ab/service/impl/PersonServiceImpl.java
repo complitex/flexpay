@@ -39,155 +39,75 @@ public class PersonServiceImpl implements PersonService {
 	private PersonRegistrationDao personRegistrationDao;
 
 	private IdentityTypeService identityTypeService;
-
 	private SessionUtils sessionUtils;
 	private ModificationListener<Person> modificationListener;
 
 	/**
-	 * List persons
-	 *
-	 * @param filters Stack of filters to apply
-	 * @param pager   Paging filter
-	 * @return List of persons
-	 */
-	@Override
-	public List<Person> findPersons(ArrayStack filters, Page<Person> pager) {
-		return personDao.findObjects(pager, DomainObjectWithStatus.STATUS_ACTIVE);
-	}
-
-	@Override
-	public List<Person> getPersons(Stub<Apartment> stub, Page<Person> pager) {
-		return personDao.findPersonsInApartment(stub.getId(), DomainObjectWithStatus.STATUS_ACTIVE, pager);
-	}
-
-	/**
-	 * List persons with identities
-	 *
-	 * @param range FetchRange
-	 * @return List of persons
-	 */
-	@Override
-	public List<Person> listPersonsWithIdentities(FetchRange range) {
-		return personDaoExt.listPersonsWithIdentities(range);
-	}
-
-	/**
-	 * List persons with registrations
-	 *
-	 * @param range FetchRange
-	 * @return List of persons
-	 */
-	@Override
-	public List<Person> listPersonsWithRegistrations(FetchRange range) {
-		return personDaoExt.listPersonsWithRegistrations(range);
-	}
-
-	/**
 	 * Read person information
 	 *
-	 * @param stub Person stub
+	 * @param personStub Person stub
 	 * @return Person instance, or <code>null</code> if not found
 	 */
 	@Nullable
 	@Override
-	public Person read(@NotNull Stub<Person> stub) {
+	public Person read(@NotNull Stub<Person> personStub) {
 
-		Person persistent = personDao.readFull(stub.getId());
-
-		if (persistent != null) {
-			log.debug("READ ATTRIBUTES");
-			List<PersonAttribute> attributes = personAttributeDao.listAttributes(stub.getId());
-			persistent.setPersonAttributes(attributes);
-			sessionUtils.evict(attributes);
-
-			log.debug("READ REGISTRATIONS");
-			List<PersonRegistration> registrations = personRegistrationDao.listRegistrations(stub.getId());
-			persistent.setPersonRegistrations(registrations);
-			sessionUtils.evict(registrations);
-
-			log.debug("SETTING IDENTITY TYPES");
-			// setup identity types
-			for (PersonIdentity identity : persistent.getPersonIdentities()) {
-				IdentityType type = identityTypeService.read(identity.getIdentityTypeStub());
-				identity.setIdentityType(type);
-			}
+		Person person = personDao.readFull(personStub.getId());
+		if (person == null) {
+			return null;
 		}
 
-		return persistent;
-	}
+		log.debug("Read attributes for person");
+		List<PersonAttribute> attributes = personAttributeDao.listAttributes(personStub.getId());
+		person.setPersonAttributes(attributes);
+		sessionUtils.evict(attributes);
 
-	/**
-	 * Find persistent person by identity
-	 *
-	 * @param person Identity data
-	 * @return Person stub if persitent person matches specified identity
-	 */
-	@Nullable
-	@Override
-	public Stub<Person> findPersonStub(Person person) {
-		return personDaoExt.findPersonStub(person);
-	}
+		log.debug("Read registrations for person");
+		List<PersonRegistration> registrations = personRegistrationDao.listRegistrations(personStub.getId());
+		person.setPersonRegistrations(registrations);
+		sessionUtils.evict(registrations);
 
-	@Override
-	public List<Person> findByFIO(Page<Person> pager, String searchString) {
-		return personDao.findByFIO(pager, searchString);
-	}
-
-	/**
-	 * Create or update person
-	 *
-	 * @param person Person to save
-	 * @throws org.flexpay.common.exception.FlexPayExceptionContainer
-	 *          if validation fails
-	 */
-	@SuppressWarnings ({"ThrowableInstanceNeverThrown"})
-	@Transactional (readOnly = false)
-	@Override
-	public Person update(@NotNull Person person) throws FlexPayExceptionContainer {
-
-		validate(person);
-
-		Person old = read(stub(person));
-		if (old == null) {
-			throw new FlexPayExceptionContainer(
-					new FlexPayException("No object found to update " + person));
+		log.debug("Setting identity types for person");
+		// setup identity types
+		for (PersonIdentity identity : person.getPersonIdentities()) {
+			IdentityType type = identityTypeService.readFull(identity.getIdentityTypeStub());
+			identity.setIdentityType(type);
 		}
-		sessionUtils.evict(old);
-		modificationListener.onUpdate(old, person);
-
-		personDao.update(person);
 
 		return person;
 	}
 
-    /**
-     * Disable persons
-     *
-     * @param objectIds Person identifiers
-     */
-    @Transactional (readOnly = false)
+	/**
+	 * Disable persons
+	 *
+	 * @param personIds IDs of persons to disable
+	 */
+	@Transactional (readOnly = false)
 	@Override
-    public void disable(@NotNull Set<Long> objectIds) {
-        for (Long id : objectIds) {
+	public void disable(@NotNull Set<Long> personIds) {
+		for (Long id : personIds) {
 			Person person = personDao.read(id);
-			if (person != null) {
-				person.disable();
-				personDao.update(person);
-
-				modificationListener.onDelete(person);
+			if (person == null) {
+				log.warn("Can't get person with id {} from DB", id);
+				continue;
 			}
-		}
-    }
+			person.disable();
+			personDao.update(person);
 
-    /**
+			modificationListener.onDelete(person);
+			log.debug("Person disabled: {}", person);
+		}
+	}
+
+	/**
 	 * Create person
 	 *
 	 * @param person Person to save
-	 * @return saved person back
-	 * @throws org.flexpay.common.exception.FlexPayExceptionContainer
-	 *          if validation fails
+	 * @return Saved instance of person
+	 * @throws FlexPayExceptionContainer if validation fails
 	 */
 	@Transactional (readOnly = false)
+	@NotNull
 	@Override
 	public Person create(@NotNull Person person) throws FlexPayExceptionContainer {
 
@@ -201,8 +121,42 @@ public class PersonServiceImpl implements PersonService {
 
 	}
 
+	/**
+	 * Update or create person
+	 *
+	 * @param person Person to update
+	 * @return Saved instance of person
+	 * @throws FlexPayExceptionContainer if validation fails
+	 */
 	@SuppressWarnings ({"ThrowableInstanceNeverThrown"})
-	private void validate(Person person) throws FlexPayExceptionContainer {
+	@Transactional (readOnly = false)
+	@NotNull
+	@Override
+	public Person update(@NotNull Person person) throws FlexPayExceptionContainer {
+
+		validate(person);
+
+		Person old = read(stub(person));
+		if (old == null) {
+			throw new FlexPayExceptionContainer(
+					new FlexPayException("No person found to update " + person));
+		}
+		sessionUtils.evict(old);
+		modificationListener.onUpdate(old, person);
+
+		personDao.update(person);
+
+		return person;
+	}
+
+	/**
+	 * Validate person before save
+	 *
+	 * @param person Person object to validate
+	 * @throws FlexPayExceptionContainer if validation fails
+	 */
+	@SuppressWarnings ({"ThrowableInstanceNeverThrown"})
+	private void validate(@NotNull Person person) throws FlexPayExceptionContainer {
 		FlexPayExceptionContainer container = new FlexPayExceptionContainer();
 
 		if (person.getPersonIdentities().isEmpty()) {
@@ -223,8 +177,14 @@ public class PersonServiceImpl implements PersonService {
 		}
 	}
 
+	/**
+	 * Validate person identity before save
+	 *
+	 * @param identity Person identity object to validate
+	 * @throws FlexPayExceptionContainer if validation fails
+	 */
 	@SuppressWarnings ({"ThrowableInstanceNeverThrown"})
-	private void validate(PersonIdentity identity) throws FlexPayExceptionContainer {
+	private void validate(@NotNull PersonIdentity identity) throws FlexPayExceptionContainer {
 		FlexPayExceptionContainer container = new FlexPayExceptionContainer();
 
 		if (identity.getIdentityType() == null) {
@@ -241,15 +201,77 @@ public class PersonServiceImpl implements PersonService {
 	}
 
 	/**
-	 * Find persons registered in apartment
+	 * List persons
 	 *
-	 * @param stub Apartment
-	 * @return Persons list, empty if no persons found
+	 * @param filters Stack of filters to apply
+	 * @param pager   Paging filter
+	 * @return List of persons
+	 */
+	@Override
+	public List<Person> find(ArrayStack filters, Page<Person> pager) {
+		return personDao.findObjects(DomainObjectWithStatus.STATUS_ACTIVE, pager);
+	}
+
+	/**
+	 * List persons
+	 *
+	 * @param apartmentStub Apartment stub
+	 * @param pager Paging filter
+	 * @return List of persons
 	 */
 	@NotNull
 	@Override
-	public List<Person> findRegisteredPersons(@NotNull Stub<Apartment> stub) {
-		return personRegistrationDao.listRegistrants(stub.getId());
+	public List<Person> find(@NotNull Stub<Apartment> apartmentStub, Page<Person> pager) {
+		return personDao.findPersonsInApartment(apartmentStub.getId(), DomainObjectWithStatus.STATUS_ACTIVE, pager);
+	}
+
+	/**
+	 * List persons
+	 *
+	 * @param searchString searching string
+	 * @param pager Paging filter
+	 * @return List of persons
+	 */
+	@NotNull
+	@Override
+	public List<Person> findByFIO(@NotNull String searchString, Page<Person> pager) {
+		return personDao.findByFIO(searchString, pager);
+	}
+
+	/**
+	 * Find persistent person by identity
+	 *
+	 * @param person Identity data
+	 * @return Person stub if persitent person matches specified identity
+	 */
+	@Nullable
+	@Override
+	public Stub<Person> findPersonStub(@NotNull Person person) {
+		return personDaoExt.findPersonStub(person);
+	}
+
+	/**
+	 * List persons with identities
+	 *
+	 * @param range FetchRange
+	 * @return List of persons
+	 */
+	@NotNull
+	@Override
+	public List<Person> listPersonsWithIdentities(@NotNull FetchRange range) {
+		return personDaoExt.listPersonsWithIdentities(range);
+	}
+
+	/**
+	 * List persons with registrations
+	 *
+	 * @param range FetchRange
+	 * @return List of persons
+	 */
+	@NotNull
+	@Override
+	public List<Person> listPersonsWithRegistrations(@NotNull FetchRange range) {
+		return personDaoExt.listPersonsWithRegistrations(range);
 	}
 
 	@Required

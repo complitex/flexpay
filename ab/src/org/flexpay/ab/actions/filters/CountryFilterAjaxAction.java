@@ -27,7 +27,7 @@ public class CountryFilterAjaxAction extends FilterAjaxAction {
 		}
 
 		for (Country country : countries) {
-			foundObjects.add(new FilterObject(country.getId() + "", getTranslationName(country.getCountryNames())));
+			foundObjects.add(new FilterObject(country.getId() + "", getTranslationName(country.getTranslations())));
 		}
 
 		return SUCCESS;
@@ -40,8 +40,8 @@ public class CountryFilterAjaxAction extends FilterAjaxAction {
 			filterValueLong = ApplicationConfig.getDefaultCountryStub().getId();
 			filterValue = filterValueLong + "";
 		}
-		country = countryService.readFull(new Stub<Country>(filterValueLong));
-		filterString = getTranslationName(country.getCountryNames());
+		country = countryService.read(new Stub<Country>(filterValueLong));
+		filterString = getTranslationName(country.getTranslations());
 	}
 
 	@Override

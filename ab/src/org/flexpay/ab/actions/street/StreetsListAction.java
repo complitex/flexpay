@@ -42,14 +42,11 @@ public class StreetsListAction extends FPActionWithPagerSupport<Street> {
 
 		List<ObjectSorter> sorters = CollectionUtils.<ObjectSorter>list(streetSorterByName, streetSorterByType);
 
-		List<Street> streetsStubs;
+		String searchStr = streetFilter.getSearchString() == null ? "" : streetFilter.getSearchString();
 
-		if (streetFilter.needFilter()) {
-			streetsStubs = streetService.findByTownAndQuery(new Stub<Town>(townFilter), sorters, 
-					"%" + streetFilter.getSearchString() + "%", getPager());
-		} else {
-			streetsStubs = streetService.getStreets(new Stub<Town>(townFilter), sorters, getPager());
-		}
+		List<Street> streetsStubs=streetService.findByParentAndQuery(new Stub<Town>(townFilter), sorters,
+					"%" + searchStr + "%", getPager());
+
 		if (log.isDebugEnabled()) {
 			log.info("Total streets found: {}", streetsStubs.size());
 		}

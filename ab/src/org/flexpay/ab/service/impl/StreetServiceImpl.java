@@ -2,17 +2,19 @@ package org.flexpay.ab.service.impl;
 
 import org.apache.commons.collections.ArrayStack;
 import org.apache.commons.lang.StringUtils;
-import org.flexpay.ab.dao.*;
+import org.flexpay.ab.dao.StreetDao;
+import org.flexpay.ab.dao.StreetDaoExt;
+import org.flexpay.ab.dao.StreetNameDao;
+import org.flexpay.ab.dao.TownDao;
 import org.flexpay.ab.persistence.*;
 import org.flexpay.ab.persistence.filters.StreetFilter;
 import org.flexpay.ab.persistence.filters.StreetNameFilter;
 import org.flexpay.ab.persistence.filters.TownFilter;
 import org.flexpay.ab.service.StreetService;
-import org.flexpay.common.dao.GenericDao;
-import org.flexpay.common.dao.NameTimeDependentDao;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
+import org.flexpay.common.persistence.Language;
 import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.persistence.filter.ObjectFilter;
@@ -22,156 +24,299 @@ import org.flexpay.common.persistence.sorter.ObjectSorter;
 import org.flexpay.common.service.ParentService;
 import org.flexpay.common.service.impl.NameTimeDependentServiceImpl;
 import org.flexpay.common.service.internal.SessionUtils;
-import org.flexpay.common.util.CollectionUtils;
-import static org.flexpay.common.util.CollectionUtils.set;
-import org.flexpay.common.util.DateUtil;
+import static org.flexpay.common.util.CollectionUtils.*;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.List;
+import java.util.Locale;
+import java.util.Set;
 
 @Transactional (readOnly = true)
 public class StreetServiceImpl extends NameTimeDependentServiceImpl<
-		StreetNameTranslation, StreetName, StreetNameTemporal, Street, Town>
-		implements StreetService {
+		StreetNameTranslation, StreetName, StreetNameTemporal, Street>
+		implements StreetService, ParentService<StreetFilter> {
 
 	private StreetDao streetDao;
 	private StreetDaoExt streetDaoExt;
 	private StreetNameDao streetNameDao;
-	private StreetNameTemporalDao streetNameTemporalDao;
 	private TownDao townDao;
 
 	private ParentService<TownFilter> parentService;
-
 	private SessionUtils sessionUtils;
 	private ModificationListener<Street> modificationListener;
 
 	/**
-	 * Get DAO implementation working with Name time-dependent objects
+	 * Read name time-dependent object by its unique id
 	 *
-	 * @return GenericDao implementation
+	 * @param streetStub Object stub
+	 * @return object, or <code>null</code> if not found
 	 */
 	@Override
-	protected NameTimeDependentDao<Street, Long> getNameTimeDependentDao() {
-		return streetDao;
+	public Street readFull(@NotNull Stub<Street> streetStub) {
+
+		Street street = streetDao.readFull(streetStub.getId());
+		if (street == null) {
+			return null;
+		}
+
+		street.setTypeTemporals(treeSet(streetDao.findTypeTemporals(streetStub.getId())));
+		street.getDistricts().addAll(streetDao.findDistricts(streetStub.getId()));
+
+		return street;
 	}
 
 	/**
-	 * Get DAO implementation working with DateIntervals
+	 * Read streets collection by theirs ids
 	 *
-	 * @return GenericDao implementation
+ 	 * @param streetIds Street ids
+	 * @param preserveOrder Whether to preserve order of objects
+	 * @return Found regions
 	 */
+	@NotNull
 	@Override
-	protected GenericDao<StreetNameTemporal, Long> getNameTemporalDao() {
-		return streetNameTemporalDao;
+	public List<Street> readFull(@NotNull Collection<Long> streetIds, boolean preserveOrder) {
+		return streetDao.readFullCollection(streetIds, preserveOrder);
 	}
 
 	/**
-	 * Get DAO implementation working with DateIntervals
+	 * Disable streets
 	 *
-	 * @return GenericDao implementation
+	 * @param streetIds IDs of streets to disable
 	 */
+	@Transactional (readOnly = false)
 	@Override
-	protected GenericDao<StreetName, Long> getNameValueDao() {
-		return streetNameDao;
+	public void disable(@NotNull Collection<Long> streetIds) {
+		for (Long id : streetIds) {
+			Street street = streetDao.read(id);
+			if (street == null) {
+				log.warn("Can't get street with id {} from DB", id);
+				continue;
+			}
+			street.disable();
+			streetDao.update(street);
+
+			modificationListener.onDelete(street);
+			log.debug("Street disabled: {}", street);
+		}
 	}
 
 	/**
-	 * Get DAO implementation working with parent objects
+	 * Create street
 	 *
-	 * @return GenericDao implementation
+	 * @param street Street to save
+	 * @return Saved instance of street
+	 * @throws FlexPayExceptionContainer if validation fails
 	 */
+	@Transactional (readOnly = false)
+	@NotNull
 	@Override
-	protected GenericDao<Town, Long> getParentDao() {
-		return townDao;
+	public Street create(@NotNull Street street) throws FlexPayExceptionContainer {
+
+		validate(street);
+		street.setId(null);
+		streetDao.create(street);
+
+		modificationListener.onCreate(street);
+
+		return street;
 	}
 
 	/**
-	 * Getter for property 'newNameTemporal'.
+	 * Update or create street
 	 *
-	 * @return Value for property 'newNameTemporal'.
+	 * @param street Street to save
+	 * @return Saved instance of street
+	 * @throws FlexPayExceptionContainer if validation fails
 	 */
+	@SuppressWarnings ({"ThrowableInstanceNeverThrown"})
+	@Transactional (readOnly = false)
+	@NotNull
 	@Override
-	protected StreetNameTemporal getNewNameTemporal() {
-		return new StreetNameTemporal();
+	public Street update(@NotNull Street street) throws FlexPayExceptionContainer {
+
+		validate(street);
+
+		Street old = readFull(stub(street));
+		if (old == null) {
+			throw new FlexPayExceptionContainer(
+					new FlexPayException("No street found to update " + street));
+		}
+		sessionUtils.evict(old);
+		modificationListener.onUpdate(old, street);
+
+		streetDao.update(street);
+
+		return street;
 	}
 
 	/**
-	 * Getter for property 'newNameTimeDependent'.
+	 * Validate street before save
 	 *
-	 * @return Value for property 'newNameTimeDependent'.
+	 * @param street Street object to validate
+	 * @throws FlexPayExceptionContainer if validation fails
 	 */
-	@Override
-	protected Street getNewNameTimeDependent() {
-		return new Street();
+	@SuppressWarnings ({"ThrowableInstanceNeverThrown"})
+	private void validate(@NotNull Street street) throws FlexPayExceptionContainer {
+
+		FlexPayExceptionContainer container = new FlexPayExceptionContainer();
+
+		if (street.getParent() == null) {
+			container.addException(new FlexPayException("No town", "error.ab.district.no_town"));
+		}
+
+		StreetNameTemporal nameTmprl = street.getCurrentNameTemporal();
+		if (nameTmprl == null || nameTmprl.getValue() == null) {
+			container.addException(new FlexPayException("No name", "ab.error.no_current_name"));
+		} else {
+
+			boolean defaultLangNameFound = false;
+
+			for (StreetNameTranslation translation : nameTmprl.getValue().getTranslations()) {
+
+				Language lang = translation.getLang();
+				String name = translation.getName();
+				boolean nameNotEmpty = StringUtils.isNotEmpty(name);
+
+				if (lang.isDefault()) {
+					defaultLangNameFound = nameNotEmpty;
+				}
+
+				if (nameNotEmpty) {
+					List<Street> streets = streetDao.findByNameAndTypeAndLanguage(name, street.getCurrentType().getId(), lang.getId());
+					if (!streets.isEmpty() && !streets.get(0).getId().equals(street.getId())) {
+						container.addException(new FlexPayException(
+								"Name \"" + name + "\" is already use", "ab.error.name_is_already_use", name));
+					}
+				}
+
+			}
+
+			if (!defaultLangNameFound) {
+				container.addException(new FlexPayException(
+						"No default language translation", "ab.error.street.full_name_is_required"));
+			}
+
+		}
+
+		if (container.isNotEmpty()) {
+			throw container;
+		}
+
 	}
 
 	/**
-	 * Getter for property 'emptyName'.
+	 * Lookup streets by query and town id.
+	 * Query is a string which may contains in folow string:
+	 * <p/>
+	 * street_type street_name
 	 *
-	 * @return Value for property 'emptyName'.
+	 * @param parentStub Town stub
+	 * @param query searching string
+	 * @return List of found streets
 	 */
+	@NotNull
 	@Override
-	protected StreetName getEmptyName() {
-		return new StreetName();
+	public List<Street> findByParentAndQuery(@NotNull Stub<Town> parentStub, @NotNull String query) {
+		return streetDao.findByParentAndQuery(parentStub.getId(), query);
 	}
 
 	/**
-	 * Check if disable operation on object is allowed
+	 * Lookup streets by query and town id.
+	 * Query is a string which may contains in folow string:
+	 * <p/>
+	 * street_type street_name
 	 *
-	 * @param street	Name time dependent object
-	 * @param container Exceptions container to add exception for
-	 * @return <code>true</code> if operation allowed, or <code>false</otherwise>
+	 * @param parentStub Town stub
+	 * @param query searching string
+	 * @param sorters sorters
+	 * @param pager pager
+	 * @return List of found streets
 	 */
+	@NotNull
 	@Override
-	protected boolean canDisable(Street street, FlexPayExceptionContainer container) {
-		return true;
+	public List<Street> findByParentAndQuery(@NotNull Stub<Town> parentStub, @NotNull List<ObjectSorter> sorters, @NotNull String query, @NotNull Page<Street> pager) {
+		Town town = townDao.read(parentStub.getId());
+		if (town == null) {
+			log.warn("Can't get town with id {} from DB", parentStub.getId());
+			return list();
+		}
+
+		return streetDaoExt.findByParentAndQuery(parentStub.getId(), sorters, query, pager);
 	}
 
 	/**
-	 * return base for name time-dependent objects in i18n files, like 'region', 'town', etc.
+	 * Lookup streets by name, street type and town
 	 *
-	 * @return Localization key base
+	 * @param townStub Town stub
+	 * @param name Street name search string
+	 * @param typeStub Street type stub
+	 * @return List of found streets
 	 */
+	@NotNull
 	@Override
-	protected String getI18nKeyBase() {
-		return "ab.street";
-	}
-
-	/**
-	 * Create empty name translation
-	 *
-	 * @return name translation
-	 */
-	@Override
-	public StreetNameTranslation getEmptyNameTranslation() {
-		return new StreetNameTranslation();
+	public List<Street> findByTownAndNameAndType(@NotNull Stub<Town> townStub, @NotNull String name, @NotNull Stub<StreetType> typeStub) {
+		return streetDao.findByTownAndNameAndType(townStub.getId(), name.toUpperCase(), typeStub.getId());
 	}
 
 	/**
 	 * Save street districts
 	 *
 	 * @param street	Street to save districts for
-	 * @param objectIds List of district ids
+	 * @param districtIds List of district ids
 	 * @return saved street object
 	 */
-	@Transactional (readOnly = false, rollbackFor = Exception.class)
+	@Transactional (readOnly = false)
+	@NotNull
 	@Override
-	public Street saveDistricts(Street street, Set<Long> objectIds) {
+	public Street saveDistricts(@NotNull Street street, @NotNull Set<Long> districtIds) {
 		Set<District> districts = set();
-		for (Long id : objectIds) {
-			District district = new District();
-			district.setId(id);
-			districts.add(district);
+		for (Long id : districtIds) {
+			districts.add(new District(id));
 		}
 		street.setDistricts(districts);
 		streetDao.update(street);
+
 		return street;
 	}
 
+	/**
+	 * List all districts the street lays in
+	 *
+	 * @param streetStub Street stub
+	 * @return List of districts
+	 */
+	@NotNull
 	@Override
-	public StreetFilter initFilter(StreetFilter parentFilter, PrimaryKeyFilter<?> forefatherFilter, Locale locale)
+	public List<District> getStreetDistricts(@NotNull Stub<Street> streetStub) {
+		return streetDao.findDistricts(streetStub.getId());
+	}
+
+	@NotNull
+	@Override
+	public String format(@NotNull Stub<Street> streetStub, @NotNull Locale locale, boolean shortMode) throws FlexPayException {
+		Street street = streetDao.read(streetStub.getId());
+		if (street == null) {
+			throw new FlexPayException("Can't get street from DB", "error.invalid_id");
+		}
+		return street.format(locale, shortMode);
+	}
+
+	/**
+	 * Initialize parent filter. Possibly taking in account upper level forefather filter
+	 *
+	 * @param parentFilter	 Filter to init
+	 * @param forefatherFilter Upper level filter
+	 * @param locale		   Locale to get parent names in
+	 * @return Initialised filter
+	 * @throws FlexPayException if failure occurs
+	 */
+	@NotNull
+	@Override
+	public StreetFilter initFilter(@Nullable StreetFilter parentFilter, @NotNull PrimaryKeyFilter<?> forefatherFilter, @NotNull Locale locale)
 			throws FlexPayException {
 
 		if (parentFilter == null) {
@@ -204,8 +349,18 @@ public class StreetServiceImpl extends NameTimeDependentServiceImpl<
 		return false;
 	}
 
+	/**
+	 * Initialize filters
+	 *
+	 * @param filters Filters to init
+	 * @param locale  Locale to get parent names in
+	 * @return Initialised filters collection
+	 * @throws FlexPayException if failure occurs
+	 */
+	@NotNull
 	@Override
-	public ArrayStack initFilters(ArrayStack filters, Locale locale) throws FlexPayException {
+	public ArrayStack initFilters(@Nullable ArrayStack filters, @NotNull Locale locale) throws FlexPayException {
+
 		if (filters == null) {
 			filters = new ArrayStack();
 		}
@@ -239,291 +394,24 @@ public class StreetServiceImpl extends NameTimeDependentServiceImpl<
 		return filters;
 	}
 
-	@NotNull
+	/**
+	 * Get DAO implementation working with Name time-dependent objects
+	 *
+	 * @return GenericDao implementation
+	 */
 	@Override
-	public List<Street> findByTownAndName(@NotNull Stub<Town> stub, @NotNull String name) {
-		return streetDao.findByTownAndName(stub.getId(), name.toUpperCase());
-	}
-
-	@NotNull
-	@Override
-	public List<Street> findByTownAndNameAndType(
-			@NotNull Stub<Town> stub, @NotNull String name, @NotNull Stub<StreetType> typeStub) {
-		return streetDao.findByTownAndNameAndType(stub.getId(), name.toUpperCase(), typeStub.getId());
-	}
-
-	@Override
-	public String format(@NotNull Stub<Street> stub, @NotNull Locale locale, boolean shortMode) throws FlexPayException {
-		Street street = streetDao.read(stub.getId());
-		if (street == null) {
-			throw new FlexPayException("Invalid id", "error.invalid_id");
-		}
-		return street.format(locale, shortMode);
+	protected StreetDao getNameTimeDependentDao() {
+		return streetDao;
 	}
 
 	/**
-	 * Create object
+	 * Get DAO implementation working with DateIntervals
 	 *
-	 * @param object Object to save
-	 * @return Saved object back
-	 * @throws org.flexpay.common.exception.FlexPayExceptionContainer
-	 *          if validation fails
-	 */
-	@Transactional (readOnly = false)
-	@NotNull
-	@Override
-	public Street create(@NotNull Street object) throws FlexPayExceptionContainer {
-
-		validate(object);
-		object.setId(null);
-		streetDao.create(object);
-
-		modificationListener.onCreate(object);
-
-		return object;
-	}
-
-	/**
-	 * Create object
-	 *
-	 * @param object Object to save
-	 * @return Saved object back
-	 * @throws org.flexpay.common.exception.FlexPayExceptionContainer
-	 *          if validation fails
-	 */
-	@SuppressWarnings ({"ThrowableInstanceNeverThrown"})
-	@Transactional (readOnly = false)
-	@NotNull
-	@Override
-	public Street update(@NotNull Street object) throws FlexPayExceptionContainer {
-
-		validate(object);
-
-		Street old = readFull(stub(object));
-		if (old == null) {
-			throw new FlexPayExceptionContainer(
-					new FlexPayException("No object found to update " + object));
-		}
-		sessionUtils.evict(old);
-		modificationListener.onUpdate(old, object);
-
-		streetDao.update(object);
-		return object;
-	}
-
-	/**
-	 * validate district before save
-	 *
-	 * @param object District object to validate
-	 * @throws FlexPayExceptionContainer if validation fails
-	 */
-	@SuppressWarnings ({"ThrowableInstanceNeverThrown"})
-	private void validate(@NotNull Street object) throws FlexPayExceptionContainer {
-
-		FlexPayExceptionContainer ex = new FlexPayExceptionContainer();
-
-		if (object.getParent() == null) {
-			ex.addException(new FlexPayException("No town", "error.ab.district.no_town"));
-		}
-
-		Collection<StreetNameTemporal> temporals = object.getNameTemporals();
-		if (temporals.isEmpty()) {
-			ex.addException(new FlexPayException("No names", "error.ab.district.no_names"));
-		}
-
-		boolean first = true;
-		for (StreetNameTemporal temporal : temporals) {
-
-			// the second and all next names should have default lang translation
-			if (!first || temporals.size() == 1) {
-				StreetName name = object.getNameForDate(DateUtil.now());
-				if (name == null || StringUtils.isBlank(name.getDefaultNameTranslation())) {
-					FlexPayException e = new FlexPayException("No translation", "error.no_default_translation",
-							temporal.getBegin(), temporal.getEnd());
-					ex.addException(e);
-					log.debug("Period: {} - {} is empty ", temporal.getBegin(), temporal.getEnd());
-					break;
-				}
-			}
-
-			first = false;
-		}
-
-		if (ex.isNotEmpty()) {
-			throw ex;
-		}
-	}
-
-	/**
-	 * Disable NTD
-	 *
-	 * @param objects NTDs to disable
-	 * @throws org.flexpay.common.exception.FlexPayExceptionContainer
-	 *          if failure occurs
-	 */
-	@Transactional (readOnly = false)
-	@Override
-	public void disable(Collection<Street> objects) throws FlexPayExceptionContainer {
-
-		log.info("{} districts to disable", objects.size());
-		for (Street object : objects) {
-			object.setStatus(StreetType.STATUS_DISABLED);
-			streetDao.update(object);
-
-			modificationListener.onDelete(object);
-
-			log.info("Disabled: {}", object);
-		}
-	}
-
-	/**
-	 * Disable streets
-	 *
-	 * @param objectIds Streets identifiers
-	 */
-	@Transactional (readOnly = false)
-	@Override
-	public void disableByIds(@NotNull Collection<Long> objectIds) {
-		for (Long id : objectIds) {
-			Street street = streetDao.read(id);
-			if (street != null) {
-				street.disable();
-				streetDao.update(street);
-
-				modificationListener.onDelete(street);
-				log.debug("Disabled: {}", street);
-			}
-		}
-	}
-
-	@Override
-	public List<Street> find(ArrayStack filters, Page<Street> pager) {
-		ObjectFilter filter = (ObjectFilter) filters.peek();
-
-		// found street name filter, lookup for town filter and search via name
-		if (filter instanceof StreetNameFilter) {
-			if (filter.needFilter()) {
-				StreetNameFilter nameFilter = (StreetNameFilter) filter;
-				Street street = readFull(nameFilter.getSelectedStub());
-				log.debug("Streets search unique result");
-				return street != null ? CollectionUtils.list(street) : Collections.<Street>emptyList();
-			}
-
-			// remove not needed StreetNameFilter
-			log.debug("Removing StreetNameFilter");
-			filters.pop();
-		}
-
-		log.debug("Streets search redirected to super()");
-
-		return super.find(filters, pager);
-	}
-
-	@NotNull
-	@Override
-	public List<Street> find(ArrayStack filters, List<ObjectSorter> sorters, Page<Street> pager) {
-		ObjectFilter filter = (ObjectFilter) filters.peek();
-
-		// found street name filter, lookup for town filter and search via name
-		if (filter instanceof StreetNameFilter) {
-			if (filter.needFilter()) {
-				return find(filters, pager);
-			}
-			// remove name filter as there is nothing to search now
-			filters.pop();
-		}
-
-		log.debug("Finding town streets with sorters");
-		PrimaryKeyFilter<?> townFilter = (PrimaryKeyFilter<?>) filters.peek();
-		return streetDaoExt.findStreets(townFilter.getSelectedId(), sorters, pager);
-	}
-
-	@NotNull
-	@Override
-	public List<Street> getStreets(@NotNull Stub<Town> townStub, List<ObjectSorter> sorters, Page<Street> pager) {
-		log.debug("Finding streets with sorters");
-		Town town = townDao.read(townStub.getId());
-		if (town == null) {
-			log.warn("No town found for id {}", townStub.getId());
-			return Collections.emptyList();
-		}
-
-		return streetDaoExt.findStreets(townStub.getId(), sorters, pager);
-	}
-
-	@NotNull
-	@Override
-	public List<Street> findByTownAndQuery(@NotNull Stub<Town> townStub, List<ObjectSorter> sorters, @NotNull String query, Page<Street> pager) {
-		log.debug("Finding streets with sorters and query");
-		Town town = townDao.read(townStub.getId());
-		if (town == null) {
-			log.warn("No town found for id {}", townStub.getId());
-			return Collections.emptyList();
-		}
-
-		return streetDaoExt.findByTownAndQuery(townStub.getId(), sorters, query, pager);
-	}
-
-	@NotNull
-	@Override
-	public List<Street> findByTownAndQuery(@NotNull Stub<Town> stub, @NotNull String query) {
-		return streetDao.findByTownAndQuery(stub.getId(), query);
-	}
-
-	/**
-	 * Read name time-dependent object by its unique id
-	 *
-	 * @param stub Object stub
-	 * @return object, or <code>null</code> if not found
+	 * @return GenericDao implementation
 	 */
 	@Override
-	public Street readFull(@NotNull Stub<Street> stub) {
-
-		Street street = streetDao.readFull(stub.getId());
-		if (street == null) {
-			return null;
-		}
-
-		street.setTypeTemporals(CollectionUtils.treeSet(streetDao.findTypeTemporals(stub.getId())));
-		street.getDistricts().addAll(streetDao.findDistricts(stub.getId()));
-
-		return street;
-	}
-
-	/**
-	 * Read streets
-	 *
-	 * @param stubs Street keys
-	 * @return Object if found, or <code>null</code> otherwise
-	 */
-	@NotNull
-	@Override
-	public List<Street> readFull(@NotNull Collection<Long> stubs) {
-
-		List<Street> streets = streetDao.readFullCollection(stubs, true);
-		if (log.isDebugEnabled()) {
-			log.debug("Requested {} streets, fetched {}", stubs.size(), streets.size());
-		}
-
-		return streets;
-	}
-
-	/**
-	 * List all districts the street lays in
-	 *
-	 * @param stub Street stub
-	 * @return List of districts
-	 */
-	@NotNull
-	@Override
-	public List<District> getStreetDistricts(@NotNull Stub<Street> stub) {
-		return streetDao.findDistricts(stub.getId());
-	}
-
-	@Transactional (readOnly = false)
-	@Override
-	public void delete(Street street) {
-		streetDaoExt.deleteStreet(street.getId());
+	protected StreetNameDao getNameValueDao() {
+		return streetNameDao;
 	}
 
 	@Required
@@ -539,11 +427,6 @@ public class StreetServiceImpl extends NameTimeDependentServiceImpl<
 	@Required
 	public void setStreetNameDao(StreetNameDao streetNameDao) {
 		this.streetNameDao = streetNameDao;
-	}
-
-	@Required
-	public void setStreetNameTemporalDao(StreetNameTemporalDao streetNameTemporalDao) {
-		this.streetNameTemporalDao = streetNameTemporalDao;
 	}
 
 	@Required

@@ -89,23 +89,7 @@
 		WHERE o.id in (:ids) and t.invalidDate='2100-12-31'
 	</query>
 
-	<query name="DistrictNameTemporal.readFull">
-		SELECT DISTINCT t
-		FROM DistrictNameTemporal t
-		LEFT JOIN FETCH t.value v
-		LEFT JOIN FETCH v.translations tr
-		WHERE t.id=?
-	</query>
-
-	<query name="DistrictName.readFull">
-		SELECT DISTINCT n
-		FROM DistrictName n
-		LEFT JOIN FETCH n.object
-		LEFT JOIN FETCH n.translations tr
-		WHERE n.id=?
-	</query>
-
-    <query name="District.findByTownAndQuery">
+    <query name="District.findByParentAndQuery">
         select distinct d
         from District d
             left join fetch d.nameTemporals t
@@ -116,6 +100,32 @@
               and d.parent.id = ?
               and t.invalidDate='2100-12-31'
               and lower(tr.name) like ?
+    </query>
+
+    <query name="District.findByNameAndLanguage">
+        select distinct d
+        from District d
+            left join d.nameTemporals t
+            left join t.value v
+            left join v.translations tr
+        where d.status=0 and t.invalidDate='2100-12-31'
+            and tr.name=? and tr.lang.id=?
+    </query>
+
+    <query name="DistrictNameTemporal.readFull">
+        SELECT DISTINCT t
+        FROM DistrictNameTemporal t
+        LEFT JOIN FETCH t.value v
+        LEFT JOIN FETCH v.translations tr
+        WHERE t.id=?
+    </query>
+
+    <query name="DistrictName.readFull">
+        SELECT DISTINCT n
+        FROM DistrictName n
+        LEFT JOIN FETCH n.object
+        LEFT JOIN FETCH n.translations tr
+        WHERE n.id=?
     </query>
 
 </hibernate-mapping>

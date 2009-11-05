@@ -22,7 +22,7 @@ public class AddressAttributeTypeViewAction extends FPActionSupport {
 			return REDIRECT_ERROR;
 		}
 
-		attributeType = addressAttributeTypeService.read(stub(attributeType));
+		attributeType = addressAttributeTypeService.readFull(stub(attributeType));
 
 		if (attributeType == null) {
 			log.error(getText("common.object_not_selected"));

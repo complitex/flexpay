@@ -7,7 +7,7 @@
 <table cellpadding="3" cellspacing="1" border="0" width="100%">
 	<tr>
 		<td colspan="5" width="100%">
-			<s:property value="getTranslationName(country.countryNames)" />,
+			<s:property value="getTranslationName(country.translations)" />,
 			<s:property value="getTranslationName(region.currentName.translations)" />,
 			<s:property value="getTranslationName(town.currentName.translations)" />,
 			<s:property value="getTranslation(street.currentType.translations).shortName" />.

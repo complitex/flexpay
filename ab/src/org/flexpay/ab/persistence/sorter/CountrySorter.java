@@ -26,9 +26,9 @@ public class CountrySorter extends I18nObjectSorter {
 	public void setFrom(StringBuilder query) {
 		Language defaultLang = getDefaultLanguage();
 		query
-				.append(" left join ").append(countryField).append(".countryNames ")
+				.append(" left join ").append(countryField).append(".translations ")
 				.append(TRANSLATION_1).append(" with (" + TRANSLATION_1 + ".lang.id=").append(lang.getId()).append(")")
-				.append(" left join ").append(countryField).append(".countryNames ")
+				.append(" left join ").append(countryField).append(".translations ")
 				.append(TRANSLATION_2).append(" with (" + TRANSLATION_2 + ".lang.id=").append(defaultLang.getId()).append(") ");
 	}
 }

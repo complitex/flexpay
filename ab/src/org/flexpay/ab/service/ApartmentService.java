@@ -4,23 +4,19 @@ import org.apache.commons.collections.ArrayStack;
 import org.flexpay.ab.persistence.Apartment;
 import org.flexpay.ab.persistence.Building;
 import org.flexpay.ab.persistence.BuildingAddress;
-import org.flexpay.ab.persistence.filters.ApartmentFilter;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Stub;
-import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
 import org.flexpay.common.persistence.sorter.ObjectSorter;
-import org.flexpay.common.service.ParentService;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.security.annotation.Secured;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Locale;
 
-public interface ApartmentService extends ParentService<ApartmentFilter> {
+public interface ApartmentService {
 
 	@Secured (Roles.APARTMENT_READ)
 	List<Apartment> getApartments(ArrayStack filters, Page<Apartment> pager);
@@ -130,35 +126,6 @@ public interface ApartmentService extends ParentService<ApartmentFilter> {
 	 */
 	@Secured (Roles.APARTMENT_DELETE)
 	void disable(@NotNull Collection<Long> objectIds);
-
-	/**
-	 * Initialize parent filter. Possibly taking in account upper level forefather filter
-	 *
-	 * @param parentFilter	 Filter to init
-	 * @param forefatherFilter Upper level filter
-	 * @param locale		   Locale to get parent names in
-	 * @return Initialised filter
-	 * @throws org.flexpay.common.exception.FlexPayException
-	 *          if failure occurs
-	 */
-	@Secured (Roles.APARTMENT_READ)
-	@Override 
-	ApartmentFilter initFilter(ApartmentFilter parentFilter, PrimaryKeyFilter<?> forefatherFilter, Locale locale)
-			throws FlexPayException;
-
-	/**
-	 * Initialize filters. <p>Filters are coming from the most significant to less significant ones order, like
-	 * CountryFilter, RegionFilter, TownFilter for example</p>
-	 *
-	 * @param filters Filters to init
-	 * @param locale  Locale to get parent names in
-	 * @return Initialised filters stack
-	 * @throws org.flexpay.common.exception.FlexPayException
-	 *          if failure occurs
-	 */
-	@Secured (Roles.APARTMENT_READ)
-	@Override
-	ArrayStack initFilters(ArrayStack filters, Locale locale) throws FlexPayException;
 
 	@Secured (Roles.APARTMENT_READ)
 	List<Apartment> getApartments(@NotNull Stub<BuildingAddress> stub);

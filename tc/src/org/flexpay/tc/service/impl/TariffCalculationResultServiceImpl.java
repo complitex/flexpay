@@ -17,7 +17,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
-@Transactional (readOnly = true, rollbackFor = Exception.class)
+@Transactional (readOnly = true)
 public class TariffCalculationResultServiceImpl implements TariffCalculationResultService {
 
 	private TariffCalculationResultDao tariffCalculationResultDao;

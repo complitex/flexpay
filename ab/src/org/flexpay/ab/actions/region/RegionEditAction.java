@@ -75,7 +75,7 @@ public class RegionEditAction extends FPActionSupport {
 
         // setup region for new object
         if (region.isNew()) {
-            region.setCountry(new Country(countryFilter));
+            region.setParent(new Country(countryFilter));
             regionService.create(region);
         } else {
             regionService.update(region);

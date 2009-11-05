@@ -45,7 +45,7 @@ public class TownTypeServiceImpl implements TownTypeService {
 	 */
 	@Nullable
 	@Override
-	public TownType read(@NotNull Stub<TownType> stub) {
+	public TownType readFull(@NotNull Stub<TownType> stub) {
 		return townTypeDao.readFull(stub.getId());
 	}
 
@@ -120,7 +120,7 @@ public class TownTypeServiceImpl implements TownTypeService {
 
 		validate(townType);
 
-		TownType oldType = read(stub(townType));
+		TownType oldType = readFull(stub(townType));
 		if (oldType == null) {
 			throw new FlexPayExceptionContainer(
 					new FlexPayException("No town type found to update " + townType));
@@ -133,6 +133,12 @@ public class TownTypeServiceImpl implements TownTypeService {
 		return townType;
 	}
 
+	/**
+	 * Validate town type before save
+	 *
+	 * @param type TownType object to validate
+	 * @throws FlexPayExceptionContainer if validation fails
+	 */
 	@SuppressWarnings ({"ThrowableInstanceNeverThrown"})
 	private void validate(@NotNull TownType type) throws FlexPayExceptionContainer {
 
@@ -155,16 +161,16 @@ public class TownTypeServiceImpl implements TownTypeService {
 			}
 
 			if (nameNotEmpty) {
-				List<TownType> types = townTypeDao.findByNameAndLanguage(name, lang.getId(), TownType.STATUS_ACTIVE);
-				if ((type.isNotNew() && types.size() > 1) || (type.isNew() && !types.isEmpty())) {
+				List<TownType> types = townTypeDao.findByNameAndLanguage(name, lang.getId());
+				if (!types.isEmpty() && !types.get(0).getId().equals(type.getId())) {
 					container.addException(new FlexPayException(
 							"Name \"" + name + "\" is already use", "ab.error.name_is_already_use", name));
 				}
 			}
 			
 			if (shortNameNotEmpty) {
-				List<TownType> types = townTypeDao.findByShortNameAndLanguage(shortName, lang.getId(), TownType.STATUS_ACTIVE);
-				if ((type.isNotNew() && types.size() > 1) || (type.isNew() && !types.isEmpty())) {
+				List<TownType> types = townTypeDao.findByShortNameAndLanguage(shortName, lang.getId());
+				if (!types.isEmpty() && !types.get(0).getId().equals(type.getId())) {
 					container.addException(new FlexPayException(
 							"Short name \"" + shortName + "\" is already use", "ab.error.short_name_is_already_use", shortName));
 				}
@@ -174,11 +180,11 @@ public class TownTypeServiceImpl implements TownTypeService {
 
 		if (!defaultLangNameFound) {
 			container.addException(new FlexPayException(
-					"No default language translation", "error.no_default_translation"));
+					"No default language translation", "ab.error.town_type.full_name_is_required"));
 		}
 		if (!defaultLangShortNameFound) {
 			container.addException(new FlexPayException(
-					"No default language translation", "error.no_default_translation"));
+					"No default language translation", "ab.error.town_type.short_name_is_required"));
 		}
 
 		if (container.isNotEmpty()) {
@@ -187,11 +193,22 @@ public class TownTypeServiceImpl implements TownTypeService {
 
 	}
 
+	/**
+	 * Initialize filter
+	 *
+	 * @param townTypeFilter filter to init
+	 * @param locale Locale to get names in
+	 * @return initialized filter
+	 * @throws FlexPayException if failure occurs
+	 */
 	@NotNull
 	@Override
 	public TownTypeFilter initFilter(@Nullable TownTypeFilter townTypeFilter, @NotNull Locale locale) throws FlexPayException {
 
 		List<TownTypeTranslation> translations = getTranslations(locale);
+		if (translations.isEmpty()) {
+			throw new FlexPayException("No town types", "ab.no_town_types");
+		}
 
 		if (townTypeFilter == null) {
 			townTypeFilter = new TownTypeFilter();
@@ -199,9 +216,6 @@ public class TownTypeServiceImpl implements TownTypeService {
 		townTypeFilter.setNames(translations);
 
 		if (townTypeFilter.getSelectedId() == null) {
-			if (translations.isEmpty()) {
-				throw new FlexPayException("No town types", "ab.no_town_types");
-			}
 			townTypeFilter.setSelectedId(translations.get(0).getId());
 		}
 		return townTypeFilter;

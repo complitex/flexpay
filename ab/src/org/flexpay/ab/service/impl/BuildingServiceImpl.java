@@ -40,7 +40,7 @@ import java.util.Locale;
 import java.util.Set;
 
 @Transactional (readOnly = true)
-public class BuildingServiceImpl implements BuildingService {
+public class BuildingServiceImpl implements BuildingService, ParentService<BuildingsFilter> {
 
 	private Logger log = LoggerFactory.getLogger(getClass());
 

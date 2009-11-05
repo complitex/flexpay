@@ -33,7 +33,7 @@ public class AddressAttributeTypeHistoryGenerator implements HistoryGenerator<Ad
 			return;
 		}
 
-		AddressAttributeType type = typeService.read(stub(obj));
+		AddressAttributeType type = typeService.readFull(stub(obj));
 		if (type == null) {
 			log.warn("Address attribute type not found {}", obj);
 			return;

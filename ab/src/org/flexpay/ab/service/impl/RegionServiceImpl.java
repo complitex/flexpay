@@ -2,17 +2,19 @@ package org.flexpay.ab.service.impl;
 
 import org.apache.commons.collections.ArrayStack;
 import org.apache.commons.lang.StringUtils;
-import org.flexpay.ab.dao.*;
+import org.flexpay.ab.dao.RegionDao;
+import org.flexpay.ab.dao.RegionDaoExt;
+import org.flexpay.ab.dao.RegionNameDao;
 import org.flexpay.ab.persistence.*;
 import org.flexpay.ab.persistence.filters.CountryFilter;
 import org.flexpay.ab.persistence.filters.RegionFilter;
 import org.flexpay.ab.persistence.filters.TownTypeFilter;
 import org.flexpay.ab.service.RegionService;
 import org.flexpay.ab.service.TownTypeService;
-import org.flexpay.common.dao.GenericDao;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
+import org.flexpay.common.persistence.Language;
 import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
@@ -22,6 +24,7 @@ import org.flexpay.common.service.ParentService;
 import org.flexpay.common.service.impl.NameTimeDependentServiceImpl;
 import org.flexpay.common.service.internal.SessionUtils;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,14 +37,12 @@ import java.util.Locale;
  */
 @Transactional (readOnly = true)
 public class RegionServiceImpl extends NameTimeDependentServiceImpl<
-		RegionNameTranslation, RegionName, RegionNameTemporal, Region, Country>
-		implements RegionService {
+		RegionNameTranslation, RegionName, RegionNameTemporal, Region>
+		implements RegionService, ParentService<RegionFilter> {
 
 	private RegionDao regionDao;
 	private RegionDaoExt regionDaoExt;
 	private RegionNameDao regionNameDao;
-	private RegionNameTemporalDao regionNameTemporalDao;
-	private CountryDao countryDao;
 
 	private ParentService<CountryFilter> parentService;
 	private TownTypeService townTypeService;
@@ -49,78 +50,49 @@ public class RegionServiceImpl extends NameTimeDependentServiceImpl<
 	private ModificationListener<Region> modificationListener;
 
 	/**
-	 * TODO CHECK if region has any towns
+	 * Read regions collection by theirs ids
 	 *
-	 * @param region	Region to check
-	 * @param container FlexPayExceptionContainer
-	 * @return <code>true</code>
+ 	 * @param regionIds Region ids
+	 * @param preserveOrder Whether to preserve order of objects
+	 * @return Found regions
 	 */
+	@NotNull
 	@Override
-	protected boolean canDisable(Region region, FlexPayExceptionContainer container) {
-		return true;
-	}
-
-	@Override
-	protected RegionDao getNameTimeDependentDao() {
-		return regionDao;
-	}
-
-	@Override
-	protected RegionNameTemporalDao getNameTemporalDao() {
-		return regionNameTemporalDao;
+	public List<Region> readFull(@NotNull Collection<Long> regionIds, boolean preserveOrder) {
+		return regionDao.readFullCollection(regionIds, preserveOrder);
 	}
 
 	/**
-	 * return base for name time-dependent objects in i18n files, like 'region', 'town', etc.
+	 * Disable regions
 	 *
-	 * @return Localization key base
+	 * @param regionIds IDs of regions to disable
 	 */
-	@Override
-	protected String getI18nKeyBase() {
-		return "ab.region";
-	}
-
-	/**
-	 * Get DAO implementation working with DateIntervals
-	 *
-	 * @return GenericDao implementation
-	 */
-	@Override
-	protected RegionNameDao getNameValueDao() {
-		return regionNameDao;
-	}
-
-	/**
-	 * Get DAO implementation working with parent objects
-	 *
-	 * @return GenericDao implementation
-	 */
-	@Override
-	protected GenericDao<Country, Long> getParentDao() {
-		return countryDao;
-	}
-
-	@Override
-	protected RegionNameTemporal getNewNameTemporal() {
-		return new RegionNameTemporal();
-	}
-
-	@Override
-	protected Region getNewNameTimeDependent() {
-		return new Region();
-	}
-
-	@Override
-	protected RegionName getEmptyName() {
-		return new RegionName();
-	}
-
-	@Override
-	public RegionNameTranslation getEmptyNameTranslation() {
-		return new RegionNameTranslation();
-	}
-
 	@Transactional (readOnly = false)
+	@Override
+	public void disable(@NotNull Collection<Long> regionIds) {
+		for (Long id : regionIds) {
+			Region region = regionDao.read(id);
+			if (region == null) {
+				log.warn("Can't get region with id {} from DB", id);
+				continue;
+			}
+			region.disable();
+			regionDao.update(region);
+
+			modificationListener.onDelete(region);
+			log.debug("Region disabled: {}", region);
+		}
+	}
+
+	/**
+	 * Create region
+	 *
+	 * @param region Region to save
+	 * @return Saved instance of region
+	 * @throws FlexPayExceptionContainer if validation fails
+	 */
+	@Transactional (readOnly = false)
+	@NotNull
 	@Override
 	public Region create(@NotNull Region region) throws FlexPayExceptionContainer {
 
@@ -133,16 +105,25 @@ public class RegionServiceImpl extends NameTimeDependentServiceImpl<
 		return region;
 	}
 
+	/**
+	 * Update or create region
+	 *
+	 * @param region Region to save
+	 * @return Saved instance of region
+	 * @throws FlexPayExceptionContainer if validation fails
+	 */
 	@SuppressWarnings ({"ThrowableInstanceNeverThrown"})
 	@Transactional (readOnly = false)
+	@NotNull
 	@Override
 	public Region update(@NotNull Region region) throws FlexPayExceptionContainer {
+
 		validate(region);
 
 		Region old = readFull(stub(region));
 		if (old == null) {
 			throw new FlexPayExceptionContainer(
-					new FlexPayException("No object found to update " + region));
+					new FlexPayException("No region found to update " + region));
 		}
 		sessionUtils.evict(old);
 		modificationListener.onUpdate(old, region);
@@ -152,95 +133,90 @@ public class RegionServiceImpl extends NameTimeDependentServiceImpl<
 		return region;
 	}
 
+	/**
+	 * Validate region before save
+	 *
+	 * @param region Region object to validate
+	 * @throws FlexPayExceptionContainer if validation fails
+	 */
 	@SuppressWarnings ({"ThrowableInstanceNeverThrown"})
 	private void validate(@NotNull Region region) throws FlexPayExceptionContainer {
-		FlexPayExceptionContainer ex = new FlexPayExceptionContainer();
+
+		FlexPayExceptionContainer container = new FlexPayExceptionContainer();
 
 		RegionNameTemporal nameTmprl = region.getCurrentNameTemporal();
 		if (nameTmprl == null || nameTmprl.getValue() == null) {
-			ex.addException(new FlexPayException("No name", "ab.error.no_current_name"));
+			container.addException(new FlexPayException("No name", "ab.error.no_current_name"));
 		} else {
-			validate(nameTmprl.getValue(), ex);
+
+			boolean defaultLangNameFound = false;
+
+			for (RegionNameTranslation translation : nameTmprl.getValue().getTranslations()) {
+
+				Language lang = translation.getLang();
+				String name = translation.getName();
+				boolean nameNotEmpty = StringUtils.isNotEmpty(name);
+
+				if (lang.isDefault()) {
+					defaultLangNameFound = nameNotEmpty;
+				}
+
+				if (nameNotEmpty) {
+					List<Region> regions = regionDao.findByNameAndLanguage(name, lang.getId());
+					if (!regions.isEmpty() && !regions.get(0).getId().equals(region.getId())) {
+						container.addException(new FlexPayException(
+								"Name \"" + name + "\" is already use", "ab.error.name_is_already_use", name));
+					}
+				}
+
+			}
+
+			if (!defaultLangNameFound) {
+				container.addException(new FlexPayException(
+						"No default language translation", "ab.error.region.full_name_is_required"));
+			}
+
 		}
 
 		if (region.getCountry() == null) {
-			ex.addException(new FlexPayException("No country", "ab.error.region.no_country"));
+			container.addException(new FlexPayException("No country", "ab.error.region.no_country"));
 		}
 
-		if (ex.isNotEmpty()) {
-			ex.debug(log);
-			throw ex;
-		}
-	}
-
-	@SuppressWarnings ({"ThrowableInstanceNeverThrown"})
-	private void validate(@NotNull RegionName regionName, @NotNull FlexPayExceptionContainer ex) {
-
-		boolean defaultLangTranslationFound = false;
-		for (RegionNameTranslation translation : regionName.getTranslations()) {
-			if (translation.getLang().isDefault() && StringUtils.isNotEmpty(translation.getName())) {
-				defaultLangTranslationFound = true;
-			}
+		if (container.isNotEmpty()) {
+			throw container;
 		}
 
-		if (!defaultLangTranslationFound) {
-			ex.addException(new FlexPayException("No default translation", "error.no_default_translation"));
-		}
 	}
 
 	/**
-	 * Disable regions
+	 * Lookup regions by query and country id.
+	 * Query is a string which may contains in folow string:
+	 * <p/>
+	 * region_name
 	 *
-	 * @param objectIds Regions identifiers
+	 * @param parentStub  Country stub
+	 * @param query searching string
+	 * @return List of founded regions
 	 */
-	@Transactional (readOnly = false)
+	@NotNull
 	@Override
-	public void disableByIds(@NotNull Collection<Long> objectIds) {
-		for (Long id : objectIds) {
-			Region region = regionDao.read(id);
-			if (region != null) {
-				region.disable();
-				regionDao.update(region);
-
-				modificationListener.onDelete(region);
-				log.debug("Disabled: {}", region);
-			}
-		}
+	public List<Region> findByParentAndQuery(@NotNull Stub<Country> parentStub, @NotNull String query) {
+		return regionDao.findByParentAndQuery(parentStub.getId(), query);
 	}
 
 	/**
-	 * Initialize filters
+	 * Get a list of available regions
 	 *
-	 * @param filters Filters to init
-	 * @param locale  Locale to get parent names in
-	 * @return Initialised filters collection
+	 * @param filters Parent filters
+	 * @param sorters Stack of sorters
+	 * @param pager   Page
+	 * @return List of regions
 	 */
+	@NotNull
 	@Override
-	public ArrayStack initFilters(ArrayStack filters, Locale locale)
-			throws FlexPayException {
-		if (filters == null) {
-			filters = new ArrayStack();
-		}
-
-		TownTypeFilter townTypeFilter = null;
-		if (!filters.isEmpty() && filters.peek() instanceof TownTypeFilter) {
-			townTypeFilter = (TownTypeFilter) filters.pop();
-		}
-
-		RegionFilter parentFilter = filters.isEmpty() ? null : (RegionFilter) filters.pop();
-		filters = parentService.initFilters(filters, locale);
-		CountryFilter forefatherFilter = (CountryFilter) filters.peek();
-
-		// init region filter
-		parentFilter = initFilter(parentFilter, forefatherFilter, locale);
-		filters.push(parentFilter);
-
-		if (townTypeFilter != null) {
-			townTypeFilter = townTypeService.initFilter(townTypeFilter, locale);
-			filters.push(townTypeFilter);
-		}
-
-		return filters;
+	public List<Region> find(@NotNull ArrayStack filters, @NotNull List<ObjectSorter> sorters, @NotNull Page<Region> pager) {
+		PrimaryKeyFilter<?> countryFilter = (PrimaryKeyFilter<?>) filters.peek();
+		return regionDaoExt.findRegions(countryFilter.getSelectedId(), sorters, pager);
 	}
 
 	/**
@@ -252,14 +228,17 @@ public class RegionServiceImpl extends NameTimeDependentServiceImpl<
 	 * @return Initialised filter
 	 * @throws FlexPayException if failure occurs
 	 */
+	@NotNull
 	@Override
-	public RegionFilter initFilter(RegionFilter parentFilter, PrimaryKeyFilter<?> forefatherFilter, Locale locale)
+	public RegionFilter initFilter(@Nullable RegionFilter parentFilter, @NotNull PrimaryKeyFilter<?> forefatherFilter, @NotNull Locale locale)
 			throws FlexPayException {
+
 		if (parentFilter == null) {
 			parentFilter = new RegionFilter();
 		}
 
 		parentFilter.setNames(getTranslations(forefatherFilter, locale));
+
 		Collection<RegionNameTranslation> names = parentFilter.getNames();
 		if (names.isEmpty()) {
 			throw new FlexPayException("No region names", "ab.no_regions");
@@ -274,6 +253,7 @@ public class RegionServiceImpl extends NameTimeDependentServiceImpl<
 	}
 
 	private boolean isFilterValid(RegionFilter filter) {
+
 		for (RegionNameTranslation nameTranslation : filter.getNames()) {
 			RegionName regionName = (RegionName) nameTranslation.getTranslatable();
 			if (filter.getSelectedStub().sameId((Region) regionName.getObject())) {
@@ -284,32 +264,61 @@ public class RegionServiceImpl extends NameTimeDependentServiceImpl<
 		return false;
 	}
 
-	@NotNull
-	@Override
-	public List<Region> find(ArrayStack filters, List<ObjectSorter> sorters, Page<Region> pager) {
-
-		log.debug("Finding regions with sorters");
-		PrimaryKeyFilter<?> countryFilter = (PrimaryKeyFilter<?>) filters.peek();
-		return regionDaoExt.findRegions(countryFilter.getSelectedId(), sorters, pager);
-	}
-
 	/**
-	 * Read regions
+	 * Initialize filters
 	 *
-	 * @param stubs		 Region keys
-	 * @param preserveOrder Whether to preserve order of objects
-	 * @return Objects if found, or <code>null</code> otherwise
+	 * @param filters Filters to init
+	 * @param locale  Locale to get parent names in
+	 * @return Initialised filters collection
+	 * @throws FlexPayException if failure occurs
 	 */
 	@NotNull
 	@Override
-	public List<Region> readFull(@NotNull Collection<Long> stubs, boolean preserveOrder) {
-		return regionDao.readFullCollection(stubs, preserveOrder);
+	public ArrayStack initFilters(@Nullable ArrayStack filters, @NotNull Locale locale) throws FlexPayException {
+
+		if (filters == null) {
+			filters = new ArrayStack();
+		}
+
+		TownTypeFilter townTypeFilter = null;
+		if (!filters.isEmpty() && filters.peek() instanceof TownTypeFilter) {
+			townTypeFilter = (TownTypeFilter) filters.pop();
+		}
+
+		RegionFilter parentFilter = filters.isEmpty() ? null : (RegionFilter) filters.pop();
+		filters = parentService.initFilters(filters, locale);
+		CountryFilter forefatherFilter = (CountryFilter) filters.peek();
+
+		// init country filter
+		parentFilter = initFilter(parentFilter, forefatherFilter, locale);
+		filters.push(parentFilter);
+
+		if (townTypeFilter != null) {
+			townTypeFilter = townTypeService.initFilter(townTypeFilter, locale);
+			filters.push(townTypeFilter);
+		}
+
+		return filters;
 	}
 
-	@NotNull
+	/**
+	 * Get DAO implementation working with Name time-dependent objects
+	 *
+	 * @return GenericDao implementation
+	 */
 	@Override
-	public List<Region> findByCountryAndQuery(@NotNull Stub<Country> stub, @NotNull String query) {
-		return regionDao.findByCountryAndQuery(stub.getId(), query);
+	protected RegionDao getNameTimeDependentDao() {
+		return regionDao;
+	}
+
+	/**
+	 * Get DAO implementation working with DateIntervals
+	 *
+	 * @return GenericDao implementation
+	 */
+	@Override
+	protected RegionNameDao getNameValueDao() {
+		return regionNameDao;
 	}
 
 	@Required
@@ -330,16 +339,6 @@ public class RegionServiceImpl extends NameTimeDependentServiceImpl<
 	@Required
 	public void setRegionNameDao(RegionNameDao regionNameDao) {
 		this.regionNameDao = regionNameDao;
-	}
-
-	@Required
-	public void setCountryDao(CountryDao countryDao) {
-		this.countryDao = countryDao;
-	}
-
-	@Required
-	public void setRegionNameTemporalDao(RegionNameTemporalDao regionNameTemporalDao) {
-		this.regionNameTemporalDao = regionNameTemporalDao;
 	}
 
 	@Required

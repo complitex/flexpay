@@ -18,7 +18,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
-@Transactional (readOnly = true, rollbackFor = Exception.class)
+@Transactional (readOnly = true)
 public class TariffCalculationRulesFileServiceImpl implements TariffCalculationRulesFileService {
 
 	private Logger log = LoggerFactory.getLogger(getClass());

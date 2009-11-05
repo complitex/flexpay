@@ -8,7 +8,6 @@ import org.flexpay.ab.persistence.filters.TownFilter;
 import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.util.DateUtil;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -47,33 +46,27 @@ public class TestStreetService extends AbSpringBeanAwareTestCase {
 		name.addNameTranslation(translation);
 		street.setNameForDate(name, DateUtil.now());
 
-		StreetType streetType = streetTypeService.read(TestData.STR_TYPE_VIADUKT);
+		StreetType streetType = streetTypeService.readFull(TestData.STR_TYPE_VIADUKT);
 		assertNotNull("No street type found", streetType);
 		street.setType(streetType);
 //		street.setTypeForDate(streetType, getPastInfinite());
 
-		try {
-			streetService.create(street);
+		streetService.create(street);
 
-			streetType = streetTypeService.read(new Stub<StreetType>(2L));
-			street.setTypeForDate(streetType, DateUtil.next(DateUtil.now()));
+		streetType = streetTypeService.readFull(new Stub<StreetType>(2L));
+		street.setTypeForDate(streetType, DateUtil.next(DateUtil.now()));
 
-			streetService.update(street);
+		streetService.update(street);
 
-			// TODO! fixme additional name insert creates additional temporal referenced to the same Name object,
-			// TODO! so cascade delete will fail
-			StreetName nameNew = new StreetName();
-			nameNew.setObject(street);
-			StreetNameTranslation translationNew = new StreetNameTranslation("----Test street new----");
-			nameNew.addNameTranslation(translationNew);
-			street.setNameForDate(nameNew, DateUtil.next(DateUtil.now()));
+		// TODO! fixme additional name insert creates additional temporal referenced to the same Name object,
+		// TODO! so cascade delete will fail
+		StreetName nameNew = new StreetName();
+		nameNew.setObject(street);
+		StreetNameTranslation translationNew = new StreetNameTranslation("----Test street new----");
+		nameNew.addNameTranslation(translationNew);
+		street.setNameForDate(nameNew, DateUtil.next(DateUtil.now()));
 
-			streetService.update(street);
-		} finally {
-			if (street.isNotNew()) {
-				streetService.delete(street);
-			}
-		}
+		streetService.update(street);
 	}
 
 	@Test
@@ -92,12 +85,14 @@ public class TestStreetService extends AbSpringBeanAwareTestCase {
 	@Test
 	public void testFindStreetByName() throws Throwable {
 
+/*
 		StopWatch watch = new StopWatch();
 		watch.start();
 
 		List<Street> streets = streetService.findByTownAndName(TestData.TOWN_HKV, "БАГРАТИОНА");
 
 		watch.stop();
+*/
 
 //		System.out.println("Time spent finding street: " + watch);
 	}

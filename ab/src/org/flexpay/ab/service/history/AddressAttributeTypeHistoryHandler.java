@@ -2,11 +2,12 @@ package org.flexpay.ab.service.history;
 
 import org.flexpay.ab.persistence.AddressAttributeType;
 import org.flexpay.ab.service.AddressAttributeTypeService;
+import static org.flexpay.common.persistence.DomainObject.collectionIds;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.history.Diff;
 import org.flexpay.common.persistence.history.HistoryOperationType;
 import org.flexpay.common.persistence.history.impl.HistoryHandlerBase;
-import org.flexpay.common.util.CollectionUtils;
+import static org.flexpay.common.util.CollectionUtils.list;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
@@ -40,7 +41,7 @@ public class AddressAttributeTypeHistoryHandler extends HistoryHandlerBase<Addre
 		if (diff.getOperationType() == HistoryOperationType.TYPE_CREATE) {
 			if (typeStub != null) {
 				log.info("Request for object creation, but it already exists {}", diff);
-				object = typeService.read(typeStub);
+				object = typeService.readFull(typeStub);
 			} else {
 				object = new AddressAttributeType();
 			}
@@ -49,7 +50,7 @@ public class AddressAttributeTypeHistoryHandler extends HistoryHandlerBase<Addre
 				log.warn("Requested for object update/delete, but not found {}", diff);
 				throw new IllegalStateException("Requested for object update/delete, but not found " + masterIndex);
 			}
-			object = typeService.read(typeStub);
+			object = typeService.readFull(typeStub);
 		}
 
 		if (object == null) {
@@ -59,7 +60,7 @@ public class AddressAttributeTypeHistoryHandler extends HistoryHandlerBase<Addre
 		historyBuilder.patch(object, diff);
 
 		if (diff.getOperationType() == HistoryOperationType.TYPE_DELETE) {
-			typeService.disable(CollectionUtils.list(object));
+			typeService.disable(collectionIds(list(object)));
 		} else if (object.isNew()) {
 			typeService.create(object);
 			saveMasterCorrection(object, diff);
@@ -72,4 +73,5 @@ public class AddressAttributeTypeHistoryHandler extends HistoryHandlerBase<Addre
 	public void setTypeService(AddressAttributeTypeService typeService) {
 		this.typeService = typeService;
 	}
+
 }

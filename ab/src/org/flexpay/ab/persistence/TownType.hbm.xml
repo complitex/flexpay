@@ -59,17 +59,15 @@
     <query name="TownType.findByNameAndLanguage">
         select distinct tt
         from TownType tt
-            left join fetch tt.translations tr
-            left join fetch tr.lang l
-        where tr.name=? and l.id=? and tt.status=?
+            left join tt.translations tr
+        where tr.name=? and tr.lang.id=? and tt.status=0
     </query>
 
     <query name="TownType.findByShortNameAndLanguage">
         select distinct tt
         from TownType tt
-            left join fetch tt.translations tr
-            left join fetch tr.lang l
-        where tr.shortName=? and l.id=? and tt.status=?
+            left join tt.translations tr
+        where tr.shortName=? and tr.lang.id=? and tt.status=0
     </query>
 
 </hibernate-mapping>

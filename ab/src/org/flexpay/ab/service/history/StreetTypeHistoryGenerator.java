@@ -33,7 +33,7 @@ public class StreetTypeHistoryGenerator implements HistoryGenerator<StreetType> 
 			return;
 		}
 
-		obj = streetTypeService.read(stub(obj));
+		obj = streetTypeService.readFull(stub(obj));
 
 		Diff diff = historyBuilder.diff(null, obj);
 		diff.setProcessingStatus(ProcessingStatus.STATUS_PROCESSED);

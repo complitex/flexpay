@@ -6,7 +6,7 @@ import org.flexpay.ab.persistence.filters.CountryFilter;
 import org.flexpay.ab.persistence.sorter.RegionSorter;
 import org.flexpay.ab.service.RegionService;
 import org.flexpay.common.actions.FPActionWithPagerSupport;
-import org.flexpay.common.persistence.DomainObject;
+import static org.flexpay.common.persistence.DomainObject.collectionIds;
 import org.flexpay.common.persistence.sorter.ObjectSorter;
 import org.flexpay.common.util.CollectionUtils;
 import static org.flexpay.common.util.CollectionUtils.arrayStack;
@@ -41,7 +41,10 @@ public class RegionsListAction extends FPActionWithPagerSupport<Region> {
 			log.debug("Total regions found: {}", regions.size());
 		}
 
-		regions = regionService.readFull(DomainObject.collectionIds(regions), true);
+		regions = regionService.readFull(collectionIds(regions), true);
+		for (Region region : regions) {
+			log.debug("Total full regions found: {}", region.getCurrentName());
+		}
 
 		return SUCCESS;
 	}

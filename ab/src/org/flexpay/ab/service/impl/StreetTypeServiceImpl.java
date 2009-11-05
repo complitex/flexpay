@@ -42,13 +42,13 @@ public class StreetTypeServiceImpl implements StreetTypeService {
 	/**
 	 * Read StreetType object by its unique id
 	 *
-	 * @param stub Street type stub
+	 * @param streetTypeStub Street type stub
 	 * @return StreetType object, or <code>null</code> if object not found
 	 */
 	@Nullable
 	@Override
-	public StreetType read(@NotNull Stub<StreetType> stub) {
-		return streetTypeDao.readFull(stub.getId());
+	public StreetType readFull(@NotNull Stub<StreetType> streetTypeStub) {
+		return streetTypeDao.readFull(streetTypeStub.getId());
 	}
 
 	/**
@@ -131,7 +131,7 @@ public class StreetTypeServiceImpl implements StreetTypeService {
 
 		validate(streetType);
 
-		StreetType old = read(stub(streetType));
+		StreetType old = readFull(stub(streetType));
 		if (old == null) {
 			throw new FlexPayExceptionContainer(
 					new FlexPayException("No street type found to update " + streetType));
@@ -144,6 +144,12 @@ public class StreetTypeServiceImpl implements StreetTypeService {
 		return streetType;
 	}
 
+	/**
+	 * Validate street type before save
+	 *
+	 * @param type StreetType object to validate
+	 * @throws FlexPayExceptionContainer if validation fails
+	 */
 	@SuppressWarnings ({"ThrowableInstanceNeverThrown"})
 	private void validate(@NotNull StreetType type) throws FlexPayExceptionContainer {
 
@@ -166,16 +172,16 @@ public class StreetTypeServiceImpl implements StreetTypeService {
 			}
 
 			if (nameNotEmpty) {
-				List<StreetType> types = streetTypeDao.findByNameAndLanguage(name, lang.getId(), StreetType.STATUS_ACTIVE);
-				if ((type.isNotNew() && types.size() > 1) || (type.isNew() && !types.isEmpty())) {
+				List<StreetType> types = streetTypeDao.findByNameAndLanguage(name, lang.getId());
+				if (!types.isEmpty() && !types.get(0).getId().equals(type.getId())) {
 					container.addException(new FlexPayException(
 							"Name \"" + name + "\" is already use", "ab.error.name_is_already_use", name));
 				}
 			}
 
 			if (shortNameNotEmpty) {
-				List<StreetType> types = streetTypeDao.findByShortNameAndLanguage(shortName, lang.getId(), StreetType.STATUS_ACTIVE);
-				if ((type.isNotNew() && types.size() > 1) || (type.isNew() && !types.isEmpty())) {
+				List<StreetType> types = streetTypeDao.findByShortNameAndLanguage(shortName, lang.getId());
+				if (!types.isEmpty() && !types.get(0).getId().equals(type.getId())) {
 					container.addException(new FlexPayException(
 							"Short name \"" + shortName + "\" is already use", "ab.error.short_name_is_already_use", shortName));
 				}
@@ -185,11 +191,11 @@ public class StreetTypeServiceImpl implements StreetTypeService {
 
 		if (!defaultLangNameFound) {
 			container.addException(new FlexPayException(
-					"No default language translation", "error.no_default_translation"));
+					"No default language translation", "ab.error.street_type.full_name_is_required"));
 		}
 		if (!defaultLangShortNameFound) {
 			container.addException(new FlexPayException(
-					"No default language translation", "error.no_default_translation"));
+					"No default language translation", "ab.error.street_type.short_name_is_required"));
 		}
 
 		if (container.isNotEmpty()) {

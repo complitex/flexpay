@@ -33,7 +33,7 @@ public class IdentityTypeHistoryGenerator implements HistoryGenerator<IdentityTy
 			return;
 		}
 
-		obj = identityTypeService.read(stub(obj));
+		obj = identityTypeService.readFull(stub(obj));
 
 		Diff diff = historyBuilder.diff(null, obj);
 		diff.setProcessingStatus(ProcessingStatus.STATUS_PROCESSED);

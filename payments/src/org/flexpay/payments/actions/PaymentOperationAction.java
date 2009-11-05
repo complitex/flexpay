@@ -167,8 +167,8 @@ public abstract class PaymentOperationAction extends CashboxCookieActionSupport 
 		Region region = regionService.readFull(town.getRegionStub());
 		document.setRegion(getTranslation(region.getCurrentName().getTranslations()).getName());
 
-		Country country = countryService.readFull(region.getCountryStub());
-		document.setCountry(getTranslation(country.getCountryNames()).getName());
+		Country country = countryService.read(region.getCountryStub());
+		document.setCountry(getTranslation(country.getTranslations()).getName());
 	}
 
 	private void setPayerName(String serviceFullIndex, Document document) {

@@ -7,7 +7,6 @@ import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.history.Diff;
 import org.flexpay.common.persistence.history.HistoryOperationType;
 import org.flexpay.common.persistence.history.impl.HistoryHandlerBase;
-import org.flexpay.common.util.CollectionUtils;
 import static org.flexpay.common.util.CollectionUtils.list;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
@@ -42,7 +41,7 @@ public class IdentityTypeHistoryHandler extends HistoryHandlerBase<IdentityType>
 		if (diff.getOperationType() == HistoryOperationType.TYPE_CREATE) {
 			if (typeStub != null) {
 				log.info("Request for object creation, but it already exists {}", diff);
-				object = identityTypeService.read(typeStub);
+				object = identityTypeService.readFull(typeStub);
 			} else {
 				object = new IdentityType();
 			}
@@ -51,7 +50,7 @@ public class IdentityTypeHistoryHandler extends HistoryHandlerBase<IdentityType>
 				log.warn("Requested for object update/delete, but not found {}", diff);
 				throw new IllegalStateException("Requested for object update/delete, but not found " + masterIndex);
 			}
-			object = identityTypeService.read(typeStub);
+			object = identityTypeService.readFull(typeStub);
 		}
 
 		if (object == null) {

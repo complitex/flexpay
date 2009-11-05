@@ -8,7 +8,6 @@ import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.common.persistence.Stub;
-import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.persistence.Translation;
 import org.flexpay.common.service.importexport.CorrectionsService;
 import org.flexpay.common.util.TranslationUtil;
@@ -48,7 +47,7 @@ public class StreetTypeProcessor extends AbstractProcessor<StreetType> {
 	 * @return DomainObject instance
 	 */
 	protected StreetType readObject(@NotNull Stub<StreetType> stub) {
-		return streetTypeService.read(stub);
+		return streetTypeService.readFull(stub);
 	}
 
 	/**

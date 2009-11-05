@@ -15,15 +15,11 @@ public interface StreetDaoExt {
 	 *
 	 * @param townId  Town key
 	 * @param sorters Collection of sorters
+	 * @param query query
 	 * @param pager   Pager
 	 * @return List of streets
 	 */
 	@NotNull
-	List<Street> findStreets(Long townId, Collection<ObjectSorter> sorters, Page<Street> pager);
-
-	@NotNull
-	List<Street> findByTownAndQuery(Long townId, Collection<ObjectSorter> sorters, String query, Page<Street> pager);
-
-	void deleteStreet(Long streetId);
+	List<Street> findByParentAndQuery(Long townId, Collection<ObjectSorter> sorters, String query, Page<Street> pager);
 
 }

@@ -2,11 +2,12 @@ package org.flexpay.ab.service.history;
 
 import org.flexpay.ab.persistence.Town;
 import org.flexpay.ab.service.TownService;
+import static org.flexpay.common.persistence.DomainObject.collectionIds;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.history.Diff;
 import org.flexpay.common.persistence.history.HistoryOperationType;
 import org.flexpay.common.persistence.history.impl.HistoryHandlerBase;
-import org.flexpay.common.util.CollectionUtils;
+import static org.flexpay.common.util.CollectionUtils.list;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
@@ -59,7 +60,7 @@ public class TownHistoryHandler extends HistoryHandlerBase<Town> {
 		historyBuilder.patch(object, diff);
 
 		if (diff.getOperationType() == HistoryOperationType.TYPE_DELETE) {
-			townService.disable(CollectionUtils.list(object));
+			townService.disable(collectionIds(list(object)));
 		} else if (object.isNew()) {
 			townService.create(object);
 			saveMasterCorrection(object, diff);

@@ -1,5 +1,8 @@
 package org.flexpay.common.persistence;
 
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
+
 /**
  * Object which name is time dependent and having upper level parent
  */
@@ -8,9 +11,6 @@ public abstract class NameTimeDependentChild<T extends TemporaryValue<T>, DI ext
 
 	private DomainObject parent;
 
-	/**
-	 * Constructs a new NameTimeDependentChild.
-	 */
 	public NameTimeDependentChild() {
 	}
 
@@ -18,11 +18,6 @@ public abstract class NameTimeDependentChild<T extends TemporaryValue<T>, DI ext
 		super(id);
 	}
 
-	/**
-	 * Getter for property 'parent'.
-	 *
-	 * @return Value for property 'parent'.
-	 */
 	public DomainObject getParent() {
 		return parent;
 	}
@@ -31,12 +26,8 @@ public abstract class NameTimeDependentChild<T extends TemporaryValue<T>, DI ext
 		return new Stub<DomainObject>(parent);
 	}
 
-	/**
-	 * Setter for property 'parent'.
-	 *
-	 * @param parent Value to set for property 'parent'.
-	 */
 	public void setParent(DomainObject parent) {
 		this.parent = parent;
 	}
+
 }

@@ -40,7 +40,7 @@ public class IdentityTypeServiceImpl implements IdentityTypeService {
 	 */
 	@Nullable
 	@Override
-	public IdentityType read(@NotNull Stub<IdentityType> stub) {
+	public IdentityType readFull(@NotNull Stub<IdentityType> stub) {
 		return identityTypeDao.readFull(stub.getId());
 	}
 
@@ -77,7 +77,7 @@ public class IdentityTypeServiceImpl implements IdentityTypeService {
 		for (Long id : identityTypeIds) {
 			IdentityType identityType = identityTypeDao.read(id);
 			if (identityType == null) {
-				log.warn("Incorrect identity type id {}", id);
+				log.warn("Can't get identity type with id {} from DB", id);
 				continue;
 			}
 			identityType.disable();
@@ -96,6 +96,7 @@ public class IdentityTypeServiceImpl implements IdentityTypeService {
 	 * @throws FlexPayExceptionContainer if validation fails
 	 */
 	@Transactional (readOnly = false)
+	@NotNull
 	@Override
 	public IdentityType create(@NotNull IdentityType identityType) throws FlexPayExceptionContainer {
 
@@ -117,12 +118,13 @@ public class IdentityTypeServiceImpl implements IdentityTypeService {
 	 */
 	@SuppressWarnings ({"ThrowableInstanceNeverThrown"})
 	@Transactional (readOnly = false)
+	@NotNull
 	@Override
 	public IdentityType update(@NotNull IdentityType identityType) throws FlexPayExceptionContainer {
 
 		validate(identityType);
 
-		IdentityType old = read(stub(identityType));
+		IdentityType old = readFull(stub(identityType));
 		if (old == null) {
 			throw new FlexPayExceptionContainer(
 					new FlexPayException("No identity type found to update " + identityType));
@@ -135,6 +137,12 @@ public class IdentityTypeServiceImpl implements IdentityTypeService {
 		return identityType;
 	}
 
+	/**
+	 * Validate identity type before save
+	 *
+	 * @param type IdentityType object to validate
+	 * @throws FlexPayExceptionContainer if validation fails
+	 */
 	@SuppressWarnings ({"ThrowableInstanceNeverThrown"})
 	private void validate(@NotNull IdentityType type) throws FlexPayExceptionContainer {
 
@@ -153,8 +161,8 @@ public class IdentityTypeServiceImpl implements IdentityTypeService {
 			}
 
 			if (nameNotEmpty) {
-				List<IdentityType> types = identityTypeDao.findByNameAndLanguage(name, lang.getId(), IdentityType.STATUS_ACTIVE);
-				if ((type.isNotNew() && types.size() > 1) || (type.isNew() && !types.isEmpty())) {
+				List<IdentityType> types = identityTypeDao.findByNameAndLanguage(name, lang.getId());
+				if (!types.isEmpty() && !types.get(0).getId().equals(type.getId())) {
 					container.addException(new FlexPayException(
 							"Name \"" + name + "\" is already use", "ab.error.name_is_already_use", name));
 				}
@@ -164,7 +172,7 @@ public class IdentityTypeServiceImpl implements IdentityTypeService {
 
 		if (!defaultLangNameFound) {
 			container.addException(new FlexPayException(
-					"No default language translation", "error.no_default_translation"));
+					"No default language translation", "ab.error.identity_type.full_name_is_required"));
 		}
 
 		if (container.isNotEmpty()) {
@@ -203,7 +211,7 @@ public class IdentityTypeServiceImpl implements IdentityTypeService {
 	@Nullable
 	@Override
 	public IdentityType findTypeById(int typeId) {
-		List<IdentityType> types = identityTypeDao.listIdentityTypesByEnumId(typeId, IdentityType.STATUS_ACTIVE);
+		List<IdentityType> types = identityTypeDao.listIdentityTypesByEnumId(typeId);
 		if (types == null) {
 			log.error("Can't get identity types from DB");
 			return null;

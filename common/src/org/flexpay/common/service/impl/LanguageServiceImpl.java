@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-@Transactional (readOnly = true, rollbackFor = Exception.class)
+@Transactional (readOnly = true)
 public class LanguageServiceImpl implements LanguageService {
 
 	private Logger log = LoggerFactory.getLogger(getClass());

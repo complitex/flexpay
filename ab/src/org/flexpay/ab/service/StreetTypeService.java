@@ -19,12 +19,12 @@ public interface StreetTypeService extends AllObjectsService<StreetType> {
 	/**
 	 * Read StreetType object by its unique id
 	 *
-	 * @param stub Street type stub
+	 * @param streetTypeStub Street type stub
 	 * @return StreetType object, or <code>null</code> if object not found
 	 */
 	@Secured (Roles.STREET_TYPE_READ)
 	@Nullable
-	StreetType read(@NotNull Stub<StreetType> stub);
+	StreetType readFull(@NotNull Stub<StreetType> streetTypeStub);
 
 	/**
 	 * Get a list of available street types

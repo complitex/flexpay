@@ -1,6 +1,5 @@
 package org.flexpay.ab.actions.street;
 
-import org.apache.commons.collections.ArrayStack;
 import org.flexpay.ab.persistence.District;
 import org.flexpay.ab.persistence.DistrictName;
 import org.flexpay.ab.persistence.Street;
@@ -8,7 +7,6 @@ import org.flexpay.ab.persistence.filters.TownFilter;
 import org.flexpay.ab.service.DistrictService;
 import org.flexpay.ab.service.StreetService;
 import org.flexpay.common.actions.FPActionSupport;
-import org.flexpay.common.dao.paging.Page;
 import static org.flexpay.common.persistence.Stub.stub;
 import static org.flexpay.common.util.CollectionUtils.list;
 import static org.flexpay.common.util.CollectionUtils.set;
@@ -53,13 +51,7 @@ public class StreetDistrictEditAction extends FPActionSupport {
 			objectIds.add(district.getId());
 		}
 
-		ArrayStack filters = new ArrayStack();
-		TownFilter townFilter = new TownFilter();
-		townFilter.setSelectedId(street.getParent().getId());
-		filters.push(townFilter);
-
-		Page<District> pager = new Page<District>(1000, 1);
-		districtNames = districtService.findNames(filters, pager);
+		districtNames = districtService.findNames(new TownFilter(street.getParent().getId()));
         log.info("Found {}", districtNames);
 
 		return INPUT;

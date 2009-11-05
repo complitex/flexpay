@@ -18,7 +18,7 @@ public class TownDeleteAction extends FPActionSupport {
 	@Override
 	public String doExecute() throws Exception {
 
-		townService.disableByIds(objectIds);
+		townService.disable(objectIds);
 
 		return SUCCESS;
 	}

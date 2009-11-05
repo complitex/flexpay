@@ -52,7 +52,7 @@ public class BuildingCreateAction extends FPActionSupport {
 		address.setPrimaryStatus(true);
 		address.setStreet(new Street(streetFilter));
 		for (Map.Entry<Long, String> attr : attributeMap.entrySet()) {
-			AddressAttributeType type = addressAttributeTypeService.read(new Stub<AddressAttributeType>(attr.getKey()));
+			AddressAttributeType type = addressAttributeTypeService.readFull(new Stub<AddressAttributeType>(attr.getKey()));
 			address.setBuildingAttribute(attr.getValue(), type);
 		}
 		building.addAddress(address);
@@ -112,7 +112,7 @@ public class BuildingCreateAction extends FPActionSupport {
 	}
 
 	public String getTypeName(Long typeId) throws FlexPayException {
-		AddressAttributeType type = addressAttributeTypeService.read(new Stub<AddressAttributeType>(typeId));
+		AddressAttributeType type = addressAttributeTypeService.readFull(new Stub<AddressAttributeType>(typeId));
 		if (type == null) {
 			throw new RuntimeException("Unknown type id: " + typeId);
 		}
