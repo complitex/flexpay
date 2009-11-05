@@ -27,7 +27,7 @@ public class CorrectionsServiceImpl implements CorrectionsService {
 	 *
 	 * @param correction DataCorrection
 	 */
-	@Transactional (readOnly = false, rollbackFor = Exception.class)
+	@Transactional (readOnly = false)
 	public void save(DataCorrection correction) {
 		DataCorrection corr = correctionsDao.findCorrection(
 				correction.getExternalId(), correction.getObjectType(), correction.getDataSourceDescriptionStub());
@@ -48,7 +48,7 @@ public class CorrectionsServiceImpl implements CorrectionsService {
 	 *
 	 * @param correction Data correction to delete
 	 */
-	@Transactional (readOnly = false, rollbackFor = Exception.class)
+	@Transactional (readOnly = false)
 	public void delete(@NotNull DataCorrection correction) {
 		if (correction.isNotNew()) {
 			correctionsDao.delete(correction);

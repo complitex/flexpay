@@ -22,7 +22,7 @@ public class IdentityTypeViewAction extends FPActionSupport {
 			return REDIRECT_ERROR;
 		}
 
-        identityType = identityTypeService.read(stub(identityType));
+        identityType = identityTypeService.readFull(stub(identityType));
 
 		if (identityType == null) {
 			log.error(getText("common.object_not_selected"));

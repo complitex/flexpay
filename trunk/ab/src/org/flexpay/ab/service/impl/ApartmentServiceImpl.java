@@ -21,6 +21,7 @@ import org.flexpay.common.persistence.filter.ObjectFilter;
 import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
 import org.flexpay.common.persistence.history.ModificationListener;
 import org.flexpay.common.persistence.sorter.ObjectSorter;
+import org.flexpay.common.service.ParentService;
 import org.flexpay.common.service.internal.SessionUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -32,7 +33,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.*;
 
 @Transactional (readOnly = true)
-public class ApartmentServiceImpl implements ApartmentService {
+public class ApartmentServiceImpl implements ApartmentService, ParentService<ApartmentFilter> {
 
 	private Logger log = LoggerFactory.getLogger(getClass());
 
@@ -40,7 +41,7 @@ public class ApartmentServiceImpl implements ApartmentService {
 	private ApartmentDaoExt apartmentDaoExt;
 
 	private BuildingService buildingService;
-
+	private ParentService<BuildingsFilter> parentService;
 	private SessionUtils sessionUtils;
 	private ModificationListener<Apartment> modificationListener;
 
@@ -350,7 +351,7 @@ public class ApartmentServiceImpl implements ApartmentService {
 		ApartmentFilter parentFilter = filters.isEmpty() ? null
 														 : (ApartmentFilter) filters.pop();
 
-		filters = buildingService.initFilters(filters, locale);
+		filters = parentService.initFilters(filters, locale);
 		BuildingsFilter forefatherFilter = (BuildingsFilter) filters.peek();
 
 		// init filter
@@ -476,6 +477,11 @@ public class ApartmentServiceImpl implements ApartmentService {
 	@Required
 	public void setBuildingService(BuildingService buildingService) {
 		this.buildingService = buildingService;
+	}
+
+	@Required
+	public void setParentService(ParentService<BuildingsFilter> parentService) {
+		this.parentService = parentService;
 	}
 
 }

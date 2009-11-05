@@ -27,10 +27,10 @@
             <td class="col_1s" align="right"><s:property value="#rowstatus.index + 1" /></td>
             <td class="col">
                 <a href="<s:url action="regionsList" includeParams="none"><s:param name="countryFilter" value="id" /></s:url>">
-                    <s:property value="getTranslationName(countryNames)" /></a>
+                    <s:property value="getTranslationName(translations)" /></a>
             </td>
             <td class="col">
-                <s:property value="getTranslation(countryNames).shortName" />
+                <s:property value="getTranslation(translations).shortName" />
             </td>
             <td class="col">
                 <a href="<s:url action="countryView"><s:param name="country.id" value="id" /></s:url>"><s:text name="common.view" /></a>

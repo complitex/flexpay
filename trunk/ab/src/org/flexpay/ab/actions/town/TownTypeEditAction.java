@@ -1,6 +1,5 @@
 package org.flexpay.ab.actions.town;
 
-import org.apache.commons.lang.StringUtils;
 import org.flexpay.ab.persistence.TownType;
 import org.flexpay.ab.persistence.TownTypeTranslation;
 import org.flexpay.ab.service.TownTypeService;
@@ -27,7 +26,7 @@ public class TownTypeEditAction extends FPActionSupport {
 	@Override
 	public String doExecute() throws Exception {
 
-		townType = townType.isNew() ? townType : townTypeService.read(stub(townType));
+		townType = townType.isNew() ? townType : townTypeService.readFull(stub(townType));
 
 		if (townType == null) {
 			addActionError(getText("common.object_not_selected"));
@@ -43,20 +42,6 @@ public class TownTypeEditAction extends FPActionSupport {
 		for (Map.Entry<Long, String> name : names.entrySet()) {
 			String value = name.getValue();
 			Language lang = getLang(name.getKey());
-			if (lang.isDefault()) {
-				boolean error = false;
-				if (StringUtils.isEmpty(value)) {
-					addActionError(getText("ab.error.town_type.full_name_is_required"));
-					error = true;
-				}
-				if (StringUtils.isEmpty(shortNames.get(name.getKey()))) {
-					addActionError(getText("ab.error.town_type.short_name_is_required"));
-					error = true;
-				}
-				if (error) {
-					return INPUT;
-				}
-			}
 			TownTypeTranslation translation = new TownTypeTranslation(value, lang);
 			translation.setShortName(shortNames.get(name.getKey()));
 			townType.setTranslation(translation);

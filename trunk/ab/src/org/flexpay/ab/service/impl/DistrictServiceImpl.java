@@ -2,16 +2,17 @@ package org.flexpay.ab.service.impl;
 
 import org.apache.commons.collections.ArrayStack;
 import org.apache.commons.lang.StringUtils;
-import org.flexpay.ab.dao.*;
+import org.flexpay.ab.dao.DistrictDao;
+import org.flexpay.ab.dao.DistrictDaoExt;
+import org.flexpay.ab.dao.DistrictNameDao;
 import org.flexpay.ab.persistence.*;
 import org.flexpay.ab.persistence.filters.DistrictFilter;
 import org.flexpay.ab.persistence.filters.TownFilter;
 import org.flexpay.ab.service.DistrictService;
-import org.flexpay.common.dao.GenericDao;
-import org.flexpay.common.dao.NameTimeDependentDao;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
+import org.flexpay.common.persistence.Language;
 import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
@@ -20,8 +21,8 @@ import org.flexpay.common.persistence.sorter.ObjectSorter;
 import org.flexpay.common.service.ParentService;
 import org.flexpay.common.service.impl.NameTimeDependentServiceImpl;
 import org.flexpay.common.service.internal.SessionUtils;
-import org.flexpay.common.util.DateUtil;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,172 +31,65 @@ import java.util.List;
 import java.util.Locale;
 
 /**
- * Class DistrictServiceImpl
+ * District service layer implementation
  */
 @Transactional (readOnly = true)
-public class DistrictServiceImpl extends
-		NameTimeDependentServiceImpl<DistrictNameTranslation, DistrictName, DistrictNameTemporal, District, Town>
-		implements DistrictService {
+public class DistrictServiceImpl extends NameTimeDependentServiceImpl<
+		DistrictNameTranslation, DistrictName, DistrictNameTemporal, District>
+		implements DistrictService, ParentService<DistrictFilter> {
 
 	private DistrictDao districtDao;
 	private DistrictDaoExt districtDaoExt;
 	private DistrictNameDao districtNameDao;
-	private DistrictNameTemporalDao districtNameTemporalDao;
-	private TownDao townDao;
 
 	private ParentService<TownFilter> parentService;
-
 	private SessionUtils sessionUtils;
 	private ModificationListener<District> modificationListener;
 
-	@Override
-	protected NameTimeDependentDao<District, Long> getNameTimeDependentDao() {
-		return districtDao;
-	}
-
-	@Override
-	protected GenericDao<DistrictNameTemporal, Long> getNameTemporalDao() {
-		return districtNameTemporalDao;
-	}
-
-	@Override
-	protected GenericDao<DistrictName, Long> getNameValueDao() {
-		return districtNameDao;
-	}
-
-	@Override
-	protected GenericDao<Town, Long> getParentDao() {
-		return townDao;
-	}
-
 	/**
-	 * Getter for property 'newNameTemporal'.
+	 * Read districts collection by theirs ids
 	 *
-	 * @return Value for property 'newNameTemporal'.
+ 	 * @param districtIds Districts ids
+	 * @param preserveOrder Whether to preserve order of objects
+	 * @return Found districts
 	 */
+	@NotNull
 	@Override
-	protected DistrictNameTemporal getNewNameTemporal() {
-		return new DistrictNameTemporal();
+	public List<District> readFull(@NotNull Collection<Long> districtIds, boolean preserveOrder) {
+		return districtDao.readFullCollection(districtIds, preserveOrder);
 	}
 
 	/**
-	 * Getter for property 'newNameTimeDependent'.
+	 * Disable districts
 	 *
-	 * @return Value for property 'newNameTimeDependent'.
-	 */
-	@Override
-	protected District getNewNameTimeDependent() {
-		return new District();
-	}
-
-	/**
-	 * Getter for property 'emptyName'.
-	 *
-	 * @return Value for property 'emptyName'.
-	 */
-	@Override
-	protected DistrictName getEmptyName() {
-		return new DistrictName();
-	}
-
-	/**
-	 * Create empty name translation
-	 *
-	 * @return name translation
-	 */
-	@Override
-	public DistrictNameTranslation getEmptyNameTranslation() {
-		return new DistrictNameTranslation();
-	}
-
-	/**
-	 * Check if disable operation on object is allowed
-	 *
-	 * @param district  Name time dependent object
-	 * @param container Exceptions container to add exception for
-	 * @return <code>true</code> if operation allowed, or <code>false</otherwise>
-	 */
-	@Override
-	protected boolean canDisable(District district,
-								 FlexPayExceptionContainer container) {
-		return true;
-	}
-
-	@Override
-	public DistrictFilter initFilter(DistrictFilter parentFilter,
-									 PrimaryKeyFilter<?> forefatherFilter, Locale locale)
-			throws FlexPayException {
-		if (parentFilter == null) {
-			parentFilter = new DistrictFilter();
-		}
-
-		parentFilter.setNames(getTranslations(forefatherFilter, locale));
-
-		Collection<DistrictNameTranslation> names = parentFilter.getNames();
-		if (names.isEmpty()) {
-			throw new FlexPayException("No district names", "ab.no_districts");
-		}
-		if (parentFilter.getSelectedId() == null
-			|| !isFilterValid(parentFilter)) {
-			DistrictName firstObject = (DistrictName) names.iterator().next()
-					.getTranslatable();
-			parentFilter.setSelectedId(firstObject.getObject().getId());
-		}
-
-		return parentFilter;
-
-	}
-
-	private boolean isFilterValid(DistrictFilter filter) {
-		for (DistrictNameTranslation nameTranslation : filter.getNames()) {
-			DistrictName name = (DistrictName) nameTranslation
-					.getTranslatable();
-			if (filter.getSelectedStub().sameId((District) name.getObject())) {
-				return true;
-			}
-		}
-
-		return false;
-	}
-
-	@Override
-	public ArrayStack initFilters(ArrayStack filters, Locale locale)
-			throws FlexPayException {
-		if (filters == null) {
-			filters = new ArrayStack();
-		}
-
-		DistrictFilter parentFilter = filters.isEmpty() ? null
-														: (DistrictFilter) filters.pop();
-		filters = parentService.initFilters(filters, locale);
-		TownFilter forefatherFilter = (TownFilter) filters.peek();
-
-		// init filter
-		parentFilter = initFilter(parentFilter, forefatherFilter, locale);
-		filters.push(parentFilter);
-
-		return filters;
-	}
-
-	/**
-	 * return base for name time-dependent objects in i18n files, like 'region', 'town', etc.
-	 *
-	 * @return Localization key base
-	 */
-	@Override
-	protected String getI18nKeyBase() {
-		return "ab.district";
-	}
-
-	/**
-	 * Create District object
-	 *
-	 * @param district District object to save
-	 * @return saved object back
-	 * @throws org.flexpay.common.exception.FlexPayExceptionContainer
-	 *          if validation fails
+	 * @param districtIds IDs of districts to disable
 	 */
 	@Transactional (readOnly = false)
+	@Override
+	public void disable(@NotNull Collection<Long> districtIds) {
+		for (Long id : districtIds) {
+			District district = districtDao.read(id);
+			if (district == null) {
+				log.warn("Can't get district with id {} from DB", id);
+				continue;
+			}
+			district.disable();
+			districtDao.update(district);
+
+			modificationListener.onDelete(district);
+			log.debug("District disabled: {}", district);
+		}
+	}
+
+	/**
+	 * Create district
+	 *
+	 * @param district District to save
+	 * @return Saved instance of district
+	 * @throws FlexPayExceptionContainer if validation fails
+	 */
+	@Transactional (readOnly = false)
+	@NotNull
 	@Override
 	public District create(@NotNull District district) throws FlexPayExceptionContainer {
 
@@ -209,15 +103,15 @@ public class DistrictServiceImpl extends
 	}
 
 	/**
-	 * Create or update Town object
+	 * Update or create district
 	 *
-	 * @param district District object to save
-	 * @return saved object back
-	 * @throws org.flexpay.common.exception.FlexPayExceptionContainer
-	 *          if validation fails
+	 * @param district District to save
+	 * @return Saved instance of district
+	 * @throws FlexPayExceptionContainer if validation fails
 	 */
 	@SuppressWarnings ({"ThrowableInstanceNeverThrown"})
 	@Transactional (readOnly = false)
+	@NotNull
 	@Override
 	public District update(@NotNull District district) throws FlexPayExceptionContainer {
 
@@ -226,127 +120,192 @@ public class DistrictServiceImpl extends
 		District old = readFull(stub(district));
 		if (old == null) {
 			throw new FlexPayExceptionContainer(
-					new FlexPayException("No object found to update " + district));
+					new FlexPayException("No district found to update " + district));
 		}
 		sessionUtils.evict(old);
 		modificationListener.onUpdate(old, district);
 
 		districtDao.update(district);
+
 		return district;
 	}
 
 	/**
-	 * Disable NTD
+	 * Validate district before save
 	 *
-	 * @param objects NTDs to disable
-	 * @throws org.flexpay.common.exception.FlexPayExceptionContainer
-	 *          if failure occurs
-	 */
-	@Transactional (readOnly = false)
-	@Override
-	public void disable(Collection<District> objects) throws FlexPayExceptionContainer {
-
-		log.info("{} districts to disable", objects.size());
-		for (District object : objects) {
-			object.setStatus(District.STATUS_DISABLED);
-			districtDao.update(object);
-
-			modificationListener.onDelete(object);
-
-			log.info("Disabled: {}", object);
-		}
-	}
-
-	/**
-	 * Disable districts
-	 *
-	 * @param objectIds Districts identifiers
-	 */
-	@Transactional (readOnly = false)
-	@Override
-	public void disableByIds(@NotNull Collection<Long> objectIds) {
-		for (Long id : objectIds) {
-			District district = districtDao.read(id);
-			if (district != null) {
-				district.disable();
-				districtDao.update(district);
-
-				modificationListener.onDelete(district);
-				log.debug("Disabled: {}", district);
-			}
-		}
-	}
-
-	/**
-	 * validate district before save
-	 *
-	 * @param object District object to validate
+	 * @param district District object to validate
 	 * @throws FlexPayExceptionContainer if validation fails
 	 */
 	@SuppressWarnings ({"ThrowableInstanceNeverThrown"})
-	private void validate(@NotNull District object) throws FlexPayExceptionContainer {
+	private void validate(@NotNull District district) throws FlexPayExceptionContainer {
 
-		FlexPayExceptionContainer ex = new FlexPayExceptionContainer();
+		FlexPayExceptionContainer container = new FlexPayExceptionContainer();
 
-		if (object.getParent() == null) {
-			ex.addException(new FlexPayException("No town", "error.ab.district.no_town"));
+		if (district.getParent() == null) {
+			container.addException(new FlexPayException("No town", "error.ab.district.no_town"));
 		}
 
-		Collection<DistrictNameTemporal> temporals = object.getNameTemporals();
-		if (temporals.isEmpty()) {
-			ex.addException(new FlexPayException("No names", "error.ab.district.no_names"));
-		}
+		DistrictNameTemporal nameTmprl = district.getCurrentNameTemporal();
+		if (nameTmprl == null || nameTmprl.getValue() == null) {
+			container.addException(new FlexPayException("No name", "ab.error.no_current_name"));
+		} else {
 
-		boolean first = true;
-		for (DistrictNameTemporal temporal : temporals) {
+			boolean defaultLangNameFound = false;
 
-			// the second and all next names should have default lang translation
-			if (!first || temporals.size() == 1) {
-				DistrictName name = object.getNameForDate(DateUtil.now());
-				if (name == null || StringUtils.isBlank(name.getDefaultNameTranslation())) {
-						FlexPayException e = new FlexPayException("No translation", "error.ab.district.no_default_translation",
-								temporal.getBegin(), temporal.getEnd());
-						ex.addException(e);
-						log.debug("Period: {} - {} is empty ", temporal.getBegin(), temporal.getEnd());
-						break;
+			for (DistrictNameTranslation translation : nameTmprl.getValue().getTranslations()) {
+
+				Language lang = translation.getLang();
+				String name = translation.getName();
+				boolean nameNotEmpty = StringUtils.isNotEmpty(name);
+
+				if (lang.isDefault()) {
+					defaultLangNameFound = nameNotEmpty;
 				}
+
+				if (nameNotEmpty) {
+					List<District> districts = districtDao.findByNameAndLanguage(name, lang.getId());
+					if (!districts.isEmpty() && !districts.get(0).getId().equals(district.getId())) {
+						container.addException(new FlexPayException(
+								"Name \"" + name + "\" is already use", "ab.error.name_is_already_use", name));
+					}
+				}
+
 			}
 
-			first = false;
+			if (!defaultLangNameFound) {
+				container.addException(new FlexPayException(
+						"No default language translation", "ab.error.district.full_name_is_required"));
+			}
+
 		}
 
-		if (ex.isNotEmpty()) {
-			ex.info(log);
-			throw ex;
+		if (container.isNotEmpty()) {
+			throw container;
 		}
+
 	}
 
+	/**
+	 * Lookup districts by query and town id.
+	 * Query is a string which may contains in folow string:
+	 * <p/>
+	 * district_name
+	 *
+	 * @param parentStub  Town stub
+	 * @param query searching string
+	 * @return List of founded districts
+	 */
 	@NotNull
 	@Override
-	public List<District> find(ArrayStack filters, List<ObjectSorter> sorters, Page<District> pager) {
+	public List<District> findByParentAndQuery(@NotNull Stub<Town> parentStub, @NotNull String query) {
+		return districtDao.findByParentAndQuery(parentStub.getId(), query);
+	}
 
-		log.debug("Finding town districts with sorters");
+	/**
+	 * Get a list of available districts
+	 *
+	 * @param filters Parent filters
+	 * @param sorters Stack of sorters
+	 * @param pager   Page
+	 * @return List of districts
+	 */
+	@NotNull
+	@Override
+	public List<District> find(@NotNull ArrayStack filters, @NotNull List<ObjectSorter> sorters, @NotNull Page<District> pager) {
 		PrimaryKeyFilter<?> townFilter = (PrimaryKeyFilter<?>) filters.peek();
 		return districtDaoExt.findDistricts(townFilter.getSelectedId(), sorters, pager);
 	}
 
 	/**
-	 * Read districts
+	 * Initialize parent filter. Possibly taking in account upper level forefather filter
 	 *
-	 * @param stubs		 district keys
-	 * @param preserveOrder Whether to preserve order of objects
-	 * @return Objects if found, or <code>null</code> otherwise
+	 * @param parentFilter	 Filter to init
+	 * @param forefatherFilter Upper level filter
+	 * @param locale		   Locale to get parent names in
+	 * @return Initialised filter
+	 * @throws FlexPayException if failure occurs
 	 */
 	@NotNull
 	@Override
-	public List<District> readFull(@NotNull Collection<Long> stubs, boolean preserveOrder) {
-		return districtDao.readFullCollection(stubs, preserveOrder);
+	public DistrictFilter initFilter(@Nullable DistrictFilter parentFilter, @NotNull PrimaryKeyFilter<?> forefatherFilter, @NotNull Locale locale)
+			throws FlexPayException {
+
+		if (parentFilter == null) {
+			parentFilter = new DistrictFilter();
+		}
+
+		parentFilter.setNames(getTranslations(forefatherFilter, locale));
+
+		Collection<DistrictNameTranslation> names = parentFilter.getNames();
+		if (names.isEmpty()) {
+			throw new FlexPayException("No district names", "ab.no_districts");
+		}
+
+		if (parentFilter.getSelectedId() == null || !isFilterValid(parentFilter)) {
+			DistrictName firstObject = (DistrictName) names.iterator().next().getTranslatable();
+			parentFilter.setSelectedId(firstObject.getObject().getId());
+		}
+
+		return parentFilter;
+
 	}
 
+	private boolean isFilterValid(DistrictFilter filter) {
+		for (DistrictNameTranslation nameTranslation : filter.getNames()) {
+			DistrictName name = (DistrictName) nameTranslation.getTranslatable();
+			if (filter.getSelectedStub().sameId((District) name.getObject())) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * Initialize filters
+	 *
+	 * @param filters Filters to init
+	 * @param locale  Locale to get parent names in
+	 * @return Initialised filters collection
+	 * @throws FlexPayException if failure occurs
+	 */
 	@NotNull
 	@Override
-	public List<District> findByTownAndQuery(@NotNull Stub<Town> stub, @NotNull String query) {
-		return districtDao.findByTownAndQuery(stub.getId(), query);
+	public ArrayStack initFilters(@Nullable ArrayStack filters, @NotNull Locale locale) throws FlexPayException {
+
+		if (filters == null) {
+			filters = new ArrayStack();
+		}
+
+		DistrictFilter parentFilter = filters.isEmpty() ? null : (DistrictFilter) filters.pop();
+		filters = parentService.initFilters(filters, locale);
+		TownFilter forefatherFilter = (TownFilter) filters.peek();
+
+		// init town filter
+		parentFilter = initFilter(parentFilter, forefatherFilter, locale);
+		filters.push(parentFilter);
+
+		return filters;
+	}
+
+	/**
+	 * Get DAO implementation working with Name time-dependent objects
+	 *
+	 * @return GenericDao implementation
+	 */
+	@Override
+	protected DistrictDao getNameTimeDependentDao() {
+		return districtDao;
+	}
+
+	/**
+	 * Get DAO implementation working with DateIntervals
+	 *
+	 * @return GenericDao implementation
+	 */
+	@Override
+	protected DistrictNameDao getNameValueDao() {
+		return districtNameDao;
 	}
 
 	@Required
@@ -357,16 +316,6 @@ public class DistrictServiceImpl extends
 	@Required
 	public void setDistrictNameDao(DistrictNameDao districtNameDao) {
 		this.districtNameDao = districtNameDao;
-	}
-
-	@Required
-	public void setDistrictNameTemporalDao(DistrictNameTemporalDao districtNameTemporalDao) {
-		this.districtNameTemporalDao = districtNameTemporalDao;
-	}
-
-	@Required
-	public void setTownDao(TownDao townDao) {
-		this.townDao = townDao;
 	}
 
 	@Required

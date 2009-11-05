@@ -14,53 +14,53 @@ import java.util.List;
 public interface AddressAttributeTypeService extends AllObjectsService<AddressAttributeType> {
 
 	/**
-	 * Get building attribute type
+	 * Read AddressAttributeType object by its unique id
 	 *
-	 * @param stub BuildingAttributeType stub
-	 * @return Attribute type if found, or <code>null</code> otherwise
+	 * @param stub Address attribute type stub
+	 * @return AddressAttributeType object, or <code>null</code> if object not found
 	 */
 	@Secured (Roles.BUILDING_ATTRIBUTE_TYPE_READ)
 	@Nullable
-	AddressAttributeType read(@NotNull Stub<AddressAttributeType> stub);
+	AddressAttributeType readFull(@NotNull Stub<AddressAttributeType> stub);
 
 	/**
-	 * Get building attribute types sorted using AddressAttributeType natural comparator
+	 * Get a list of available address attribute types
+	 * sorted using AddressAttributeType natural comparator
 	 *
-	 * @return BuildingAttributeType list
+	 * @return List of address attribute types
 	 */
 	@Secured (Roles.BUILDING_ATTRIBUTE_TYPE_READ)
+	@NotNull
 	List<AddressAttributeType> getAttributeTypes();
 
 	/**
-	 * Create building address attribute type
+	 * Disable address attribute types
 	 *
-	 * @param type AttributeType to save
-	 * @return persisted object back
-	 * @throws org.flexpay.common.exception.FlexPayExceptionContainer
-	 *          if validation fails
+	 * @param addressAttributeTypeIds IDs of address attribute types to disable
+	 */
+	@Secured (Roles.BUILDING_ATTRIBUTE_TYPE_DELETE)
+	void disable(@NotNull Collection<Long> addressAttributeTypeIds);
+
+	/**
+	 * Create address attribute type
+	 *
+	 * @param type Address attribute type to save
+	 * @return Saved instance of address attribute type
+	 * @throws FlexPayExceptionContainer if validation fails
 	 */
 	@Secured (Roles.BUILDING_ATTRIBUTE_TYPE_ADD)
 	@NotNull
 	AddressAttributeType create(@NotNull AddressAttributeType type) throws FlexPayExceptionContainer;
 
 	/**
-	 * Update building attribute type
+	 * Update or create address attribute type
 	 *
-	 * @param type AttributeType to save
-	 * @return updated object back
-	 * @throws org.flexpay.common.exception.FlexPayExceptionContainer
-	 *          if validation fails
+	 * @param type Address attribute type to save
+	 * @return Saved instance of address attribute type
+	 * @throws FlexPayExceptionContainer if validation fails
 	 */
 	@Secured (Roles.BUILDING_ATTRIBUTE_TYPE_CHANGE)
 	@NotNull
 	AddressAttributeType update(@NotNull AddressAttributeType type) throws FlexPayExceptionContainer;
-
-	/**
-	 * Disable Entities
-	 *
-	 * @param entities Entities to disable
-	 */
-	@Secured (Roles.BUILDING_ATTRIBUTE_TYPE_DELETE)
-	void disable(Collection<AddressAttributeType> entities);
 
 }

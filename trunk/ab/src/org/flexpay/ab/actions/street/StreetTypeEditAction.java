@@ -1,6 +1,5 @@
 package org.flexpay.ab.actions.street;
 
-import org.apache.commons.lang.StringUtils;
 import org.flexpay.ab.persistence.StreetType;
 import org.flexpay.ab.persistence.StreetTypeTranslation;
 import org.flexpay.ab.service.StreetTypeService;
@@ -27,7 +26,7 @@ public class StreetTypeEditAction extends FPActionSupport {
 	@Override
 	public String doExecute() throws Exception {
 
-		streetType = streetType.isNew() ? streetType : streetTypeService.read(stub(streetType));
+		streetType = streetType.isNew() ? streetType : streetTypeService.readFull(stub(streetType));
 
 		if (streetType == null) {
 			addActionError(getText("common.object_not_selected"));
@@ -44,20 +43,6 @@ public class StreetTypeEditAction extends FPActionSupport {
 			String value = name.getValue();
 			String shortName = shortNames.get(name.getKey());
 			Language lang = getLang(name.getKey());
-			if (lang.isDefault()) {
-				boolean error = false;
-				if (StringUtils.isEmpty(value)) {
-					addActionError(getText("ab.error.street_type.full_name_is_required"));
-					error = true;
-				}
-				if (StringUtils.isEmpty(shortName)) {
-					addActionError(getText("ab.error.street_type.short_name_is_required"));
-					error = true;
-				}
-				if (error) {
-					return INPUT;
-				}
-			}
 			streetType.setTranslation(new StreetTypeTranslation(value, shortName, lang));
 		}
 

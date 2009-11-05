@@ -16,7 +16,7 @@ public class TownViewAction extends ObjectViewAction<
 	}
 
 	public TownType type(Long id) {
-		return townTypeService.read(new Stub<TownType>(id));
+		return townTypeService.readFull(new Stub<TownType>(id));
 	}
 
 	@Required

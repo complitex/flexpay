@@ -29,9 +29,9 @@ public class PersonsListAction extends FPActionWithPagerSupport<Person> {
 			ArrayStack filters = parentService == null ? null :
 								 parentService.initFilters(getFilters(), getUserPreferences().getLocale());
 
-			persons = personService.findPersons(filters, getPager());
+			persons = personService.find(filters, getPager());
 		} else {
-			persons = personService.findByFIO(getPager(), "%" + personSearchFilter.getSearchString() + "%");
+			persons = personService.findByFIO("%" + personSearchFilter.getSearchString() + "%", getPager());
 		}
 
 		return SUCCESS;

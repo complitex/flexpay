@@ -1,6 +1,5 @@
 package org.flexpay.ab.actions.identity;
 
-import org.apache.commons.lang.StringUtils;
 import org.flexpay.ab.persistence.IdentityType;
 import org.flexpay.ab.persistence.IdentityTypeTranslation;
 import org.flexpay.ab.service.IdentityTypeService;
@@ -26,7 +25,7 @@ public class IdentityTypeEditAction extends FPActionSupport {
 	@Override
 	public String doExecute() throws Exception {
 
-		identityType = identityType.isNew() ? identityType : identityTypeService.read(stub(identityType));
+		identityType = identityType.isNew() ? identityType : identityTypeService.readFull(stub(identityType));
 
 		if (identityType == null) {
 			addActionError(getText("common.object_not_selected"));
@@ -42,10 +41,6 @@ public class IdentityTypeEditAction extends FPActionSupport {
 		for (Map.Entry<Long, String> name : names.entrySet()) {
 			String value = name.getValue();
 			Language lang = getLang(name.getKey());
-			if (lang.isDefault() && StringUtils.isEmpty(value)) {
-				addActionError(getText("ab.error.identity_type.full_name_is_required"));
-				return INPUT;
-			}
 			identityType.setTranslation(new IdentityTypeTranslation(value, lang));
 		}
 

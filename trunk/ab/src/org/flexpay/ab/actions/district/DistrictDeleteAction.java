@@ -18,7 +18,7 @@ public class DistrictDeleteAction extends FPActionSupport {
 	@Override
 	public String doExecute() throws Exception {
 
-		districtService.disableByIds(objectIds);
+		districtService.disable(objectIds);
 
 		return SUCCESS;
 	}

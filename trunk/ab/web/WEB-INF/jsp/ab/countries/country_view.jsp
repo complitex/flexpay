@@ -7,7 +7,7 @@
         <td class="th"><s:text name="ab.country" /></td>
         <td class="th"><s:text name="ab.short_name" /></td>
     </tr>
-    <s:iterator value="country.countryNames" status="rowstatus">
+    <s:iterator value="country.translations" status="rowstatus">
         <tr valign="middle" class="cols_1">
             <td class="col_1s">
                 <s:property value="#rowstatus.index + 1" />

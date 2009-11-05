@@ -10,9 +10,9 @@
 			<generator class="native" />
 		</id>
 		<property name="status" not-null="true" />
-		<set name="countryNames" inverse="true" cascade="all">
+		<set name="translations" inverse="true" cascade="all">
 			<key column="country_id" not-null="true" />
-			<one-to-many class="CountryNameTranslation" />
+			<one-to-many class="org.flexpay.ab.persistence.CountryTranslation" />
 		</set>
 		<set name="regions" inverse="true">
 			<key column="country_id" not-null="true" />
@@ -20,7 +20,7 @@
 		</set>
 	</class>
 
-	<class name="CountryNameTranslation" table="ab_country_name_translations_tbl"
+	<class name="org.flexpay.ab.persistence.CountryTranslation" table="ab_country_name_translations_tbl"
 		   optimistic-lock="version">
 		<id name="id" column="id">
 			<generator class="native" />
@@ -35,44 +35,49 @@
 	</class>
 
 	<query name="Country.listCountries">
-		FROM Country c
+        select distinct c
+		from Country c
+            left join fetch c.translations
+        where c.status=?
 	</query>
 
 	<query name="Country.readFull">
-		SELECT DISTINCT c
-		FROM Country c
-			LEFT JOIN FETCH c.countryNames tr
-			LEFT JOIN FETCH tr.lang l
-		WHERE c.id=?
+		from Country c
+			left join fetch c.translations tr
+			left join fetch tr.lang l
+            left join fetch l.translations
+		where c.id=?
 	</query>
 
-	<query name="Country.readFullCollection">
-		SELECT DISTINCT c
-		FROM Country c
-			LEFT JOIN FETCH c.countryNames tr
-			LEFT JOIN FETCH tr.lang l
-		WHERE c.id in (:ids)
-	</query>
+    <query name="Country.readFullCollection">
+        from Country c
+            left join fetch c.translations tr
+            left join fetch tr.lang l
+            left join fetch l.translations
+        where c.id in (:ids)
+    </query>
 
     <query name="Country.findByQuery">
         select distinct c
         from Country c
-            left join fetch c.countryNames tr
+            left join fetch c.translations tr
             left join fetch tr.lang l
             left join fetch l.translations
-        where c.status = 0 and lower(tr.name) like ?
+        where c.status=0 and lower(tr.name) like ?
     </query>
 
-    <query name="CountryNameTranslation.findByName">
-        SELECT DISTINCT translation
-        FROM CountryNameTranslation translation
-        WHERE translation.name=? AND translation.lang=?
+    <query name="Country.findByNameAndLanguage">
+        select distinct c
+        from Country c
+            left join c.translations tr
+        where tr.name=? and tr.lang.id=? and c.status=0
     </query>
 
-    <query name="CountryNameTranslation.findByShortName">
-        SELECT DISTINCT translation
-        FROM CountryNameTranslation translation
-        WHERE translation.shortName =? AND translation.lang=?
+    <query name="Country.findByShortNameAndLanguage">
+        select distinct c
+        from Country c
+            left join c.translations tr
+        where tr.shortName=? and tr.lang.id=? and c.status=0
     </query>
 
 </hibernate-mapping>

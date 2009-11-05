@@ -40,7 +40,6 @@ public class DomainObjectWithStatus extends DomainObject implements ObjectWithSt
 		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
 				append("id", getId()).
 				append("status", status).
-				append("version", version).
 				toString();
 	}
 

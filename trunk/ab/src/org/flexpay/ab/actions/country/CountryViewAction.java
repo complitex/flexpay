@@ -22,7 +22,7 @@ public class CountryViewAction extends FPActionSupport {
 			return REDIRECT_ERROR;
 		}
 
-		country = countryService.readFull(stub(country));
+		country = countryService.read(stub(country));
 
 		if (country == null) {
 			addActionError(getText("common.object_not_selected"));

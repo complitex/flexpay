@@ -7,6 +7,8 @@ import java.util.List;
 
 public interface RegionDao extends NameTimeDependentDao<Region, Long> {
 
-	List<Region> findByCountryAndQuery(Long countryId, String query);
+	List<Region> findByParentAndQuery(Long countryId, String query);
+
+	List<Region> findByNameAndLanguage(String name, Long languageId);
 
 }

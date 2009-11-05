@@ -8,7 +8,7 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Transactional;
 
-@Transactional (readOnly = true, rollbackFor = Exception.class)
+@Transactional (readOnly = true)
 public class TariffExportLogRecordServiceImpl implements TariffExportLogRecordService {
 
 	private TariffExportLogRecordDao tariffExportLogRecordDao;

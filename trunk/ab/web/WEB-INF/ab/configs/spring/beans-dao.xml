@@ -18,17 +18,6 @@
 		</property>
 	</bean>
 
-	<bean id="countryNameDao" parent="abstractDao">
-		<property name="proxyInterfaces"
-				  value="org.flexpay.ab.dao.CountryNameTranslationDao" />
-		<property name="target">
-			<bean parent="abstractDaoTarget">
-				<constructor-arg
-						value="org.flexpay.ab.persistence.CountryNameTranslation" />
-			</bean>
-		</property>
-	</bean>
-
 	<bean id="regionDao" parent="abstractDao">
 		<property name="proxyInterfaces"
 				  value="org.flexpay.ab.dao.RegionDao" />

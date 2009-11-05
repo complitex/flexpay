@@ -10,7 +10,7 @@ import org.flexpay.common.util.TranslationUtil;
 import org.flexpay.eirc.persistence.exchange.Operation;
 import org.springframework.transaction.annotation.Transactional;
 
-@Transactional (readOnly = true, rollbackFor = Exception.class)
+@Transactional (readOnly = true)
 public class ExchangeHelperImpl implements ExchangeHelper {
 
 	private ApartmentService apartmentService;

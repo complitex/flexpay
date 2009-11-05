@@ -16,8 +16,8 @@ public class TestSortCountries extends AbSpringBeanAwareTestCase {
 	public void testSortCountriesByName() {
 
 		final String hql = "select distinct o from Country o " +
-						   "	left outer join o.countryNames t1 with (t1.lang.id=?)" +
-						   "	left outer join o.countryNames t2 with (t2.lang.id=?)" +
+						   "	left outer join o.translations t1 with (t1.lang.id=?)" +
+						   "	left outer join o.translations t2 with (t2.lang.id=?)" +
 						   "order by ifnull(t1.name, t2.name) DESC";
 
 		StopWatch watch = new StopWatch();

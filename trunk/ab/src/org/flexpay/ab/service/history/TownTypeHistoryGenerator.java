@@ -33,7 +33,7 @@ public class TownTypeHistoryGenerator implements HistoryGenerator<TownType> {
 			return;
 		}
 
-		obj = townTypeService.read(stub(obj));
+		obj = townTypeService.readFull(stub(obj));
 
 		Diff diff = historyBuilder.diff(null, obj);
 		diff.setProcessingStatus(ProcessingStatus.STATUS_PROCESSED);

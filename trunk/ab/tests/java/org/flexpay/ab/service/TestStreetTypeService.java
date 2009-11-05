@@ -79,7 +79,7 @@ public class TestStreetTypeService extends AbSpringBeanAwareTestCase {
 	@Test
 	public void testUpdate() throws Throwable {
 
-		StreetType type = service.read(new Stub<StreetType>(13L));
+		StreetType type = service.readFull(new Stub<StreetType>(13L));
 		assertNotNull("Type #13 not found", type);
 
 		type.setTranslation(new StreetTypeTranslation("Тестовый тип"));

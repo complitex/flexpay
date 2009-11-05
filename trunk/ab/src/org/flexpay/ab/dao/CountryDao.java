@@ -10,10 +10,15 @@ public interface CountryDao extends GenericDao<Country, Long> {
 	/**
 	 * Load all countries
 	 *
-	 * @return Countries list
+	 * @param status status of desired countries
+	 * @return List of countries
 	 */
-	List<Country> listCountries();
+	List<Country> listCountries(int status);
 
 	List<Country> findByQuery(String query);
+
+	List<Country> findByNameAndLanguage(String name, Long languageId);
+
+	List<Country> findByShortNameAndLanguage(String shortName, Long languageId);
 
 }

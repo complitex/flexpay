@@ -22,7 +22,7 @@ public class StreetTypeViewAction extends FPActionSupport {
 			return REDIRECT_ERROR;
 		}
 
-		streetType = streetTypeService.read(stub(streetType));
+		streetType = streetTypeService.readFull(stub(streetType));
 
 		if (streetType == null) {
 			log.error(getText("common.object_not_selected"));

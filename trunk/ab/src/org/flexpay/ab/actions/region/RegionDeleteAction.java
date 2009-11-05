@@ -18,7 +18,7 @@ public class RegionDeleteAction extends FPActionSupport {
 	@Override
 	public String doExecute() throws Exception {
 
-		regionService.disableByIds(objectIds);
+		regionService.disable(objectIds);
 
 		return SUCCESS;
 	}

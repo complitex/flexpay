@@ -32,9 +32,9 @@ public class EircAccountCreateForm2Action extends FPActionWithPagerSupport<Perso
 		}
 
 		if (StringUtils.isEmpty(personSearchString)) {
-			persons = personService.getPersons(new Stub<Apartment>(apartmentFilter), getPager());
+			persons = personService.find(new Stub<Apartment>(apartmentFilter), getPager());
 		} else {
-			persons = personService.findByFIO(getPager(), "%" + personSearchString + "%");
+			persons = personService.findByFIO("%" + personSearchString + "%", getPager());
 		}
 
 		log.debug("Found persons: {}", persons);

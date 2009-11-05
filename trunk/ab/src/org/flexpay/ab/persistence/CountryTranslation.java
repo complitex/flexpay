@@ -3,29 +3,26 @@ package org.flexpay.ab.persistence;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
-import org.flexpay.common.persistence.LangNameTranslation;
-import org.flexpay.common.persistence.Translation;
 import org.flexpay.common.persistence.Language;
-import org.flexpay.ab.util.config.ApplicationConfig;
+import org.flexpay.common.persistence.Translation;
 import static org.flexpay.common.util.config.ApplicationConfig.getDefaultLanguage;
 import org.jetbrains.annotations.NotNull;
 
-public class CountryNameTranslation extends Translation {
-
-	public static final Integer SHORT_NAME_LENGTH = 5;
+/**
+ * CountryTranslation is a translation of Country to particular language
+ */
+public class CountryTranslation extends Translation {
 
 	private String shortName;
 
-	private transient LangNameTranslation langTranslation;
-
-	public CountryNameTranslation() {
+	public CountryTranslation() {
 	}
 
-	public CountryNameTranslation(@NotNull String name) {
+	public CountryTranslation(@NotNull String name) {
 		super(name, getDefaultLanguage());
 	}
 
-	public CountryNameTranslation(@NotNull String name, @NotNull Language lang) {
+	public CountryTranslation(@NotNull String name, @NotNull Language lang) {
 		super(name, lang);
 	}
 
@@ -37,24 +34,16 @@ public class CountryNameTranslation extends Translation {
 		this.shortName = shortName;
 	}
 
-	public LangNameTranslation getLangTranslation() {
-		return langTranslation;
-	}
-
-	public void setLangTranslation(LangNameTranslation langTranslation) {
-		this.langTranslation = langTranslation;
-	}
-
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj) {
 			return true;
 		}
-		if (!(obj instanceof CountryNameTranslation)) {
+		if (!(obj instanceof CountryTranslation)) {
 			return false;
 		}
 
-		CountryNameTranslation that = (CountryNameTranslation) obj;
+		CountryTranslation that = (CountryTranslation) obj;
 		return new EqualsBuilder()
 				.appendSuper(super.equals(that))
 				.isEquals();

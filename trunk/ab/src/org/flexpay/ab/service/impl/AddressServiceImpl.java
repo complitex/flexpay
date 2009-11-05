@@ -8,6 +8,7 @@ import org.flexpay.ab.service.AddressService;
 import org.flexpay.ab.service.ApartmentService;
 import org.flexpay.ab.service.BuildingService;
 import org.flexpay.ab.service.StreetService;
+import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.persistence.Stub.stub;
 import static org.flexpay.common.util.config.ApplicationConfig.getDefaultLocale;
@@ -27,12 +28,12 @@ public class AddressServiceImpl implements AddressService {
 	private StreetService streetService;
 
 	/**
-	 * Find Apartment address
+	 * Get Apartment address
 	 *
-	 * @param stub   Apartment stub
+	 * @param stub Apartment stub
 	 * @param locale Locale to get address in
 	 * @return Apartment address
-	 * @throws Exception if failure occurs
+	 * @throws FlexPayException if failure occurs
 	 */
 	@NotNull
 	@Override
@@ -44,11 +45,32 @@ public class AddressServiceImpl implements AddressService {
 
 		Apartment apartment = apartmentService.readFull(stub);
 		if (apartment == null) {
-			throw new Exception("Invalid apartment stub: " + stub);
+			throw new Exception("Can't get apartment with id " + stub.getId() + " from DB");
 		}
 
 		return getBuildingAddress(apartment.getBuildingStub(), locale) +
 			   ", " + apartment.format(locale, true);
+	}
+
+	@NotNull
+	@Override
+	public String getBuildingAddress(@NotNull Stub<Building> stub, @Nullable Locale locale) throws Exception {
+
+		List<BuildingAddress> buildingses = buildingService.getBuildingBuildings(stub);
+		BuildingAddress candidate = null;
+		for (BuildingAddress buildingAddress : buildingses) {
+			if (buildingAddress.isPrimary()) {
+				candidate = buildingAddress;
+			}
+		}
+		if (candidate == null) {
+			if (buildingses.isEmpty()) {
+				throw new IllegalStateException("Building does not have any address: " + stub);
+			} else {
+				candidate = buildingses.get(0);
+			}
+		}
+		return getBuildingsAddress(stub(candidate), locale);
 	}
 
 	@NotNull
@@ -61,11 +83,11 @@ public class AddressServiceImpl implements AddressService {
 
 		BuildingAddress buildingAddress = buildingService.readFull(stub);
 		if (buildingAddress == null) {
-			throw new Exception("No buildingses in building: " + stub);
+			throw new Exception("Can't get building address with id " + stub.getId() + " from DB");
 		}
 		Street street = streetService.readFull(buildingAddress.getStreetStub());
 		if (street == null) {
-			throw new Exception("No street found for building: " + stub);
+			throw new Exception("Can't get street with id " + buildingAddress.getStreetStub().getId() + " from DB");
 		}
 
 		return street.format(locale, true) + ", " + buildingAddress.format(locale, true);
@@ -92,27 +114,6 @@ public class AddressServiceImpl implements AddressService {
 		}
 
 		return getBuildingsAddress(stub(address), locale);
-	}
-
-	@NotNull
-	@Override
-	public String getBuildingAddress(@NotNull Stub<Building> stub, @Nullable Locale locale) throws Exception {
-
-		List<BuildingAddress> buildingses = buildingService.getBuildingBuildings(stub);
-		BuildingAddress candidate = null;
-		for (BuildingAddress buildingAddress : buildingses) {
-			if (buildingAddress.isPrimary()) {
-				candidate = buildingAddress;
-			}
-		}
-		if (candidate == null) {
-			if (buildingses.isEmpty()) {
-				throw new IllegalStateException("Building does not have any address: " + stub);
-			} else {
-				candidate = buildingses.get(0);
-			}
-		}
-		return getBuildingsAddress(stub(candidate), locale);
 	}
 
 	@Required

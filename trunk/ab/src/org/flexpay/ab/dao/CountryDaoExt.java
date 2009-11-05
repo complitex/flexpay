@@ -19,4 +19,5 @@ public interface CountryDaoExt {
 	 */
 	@NotNull
 	List<Country> findCountries(Collection<ObjectSorter> sorters, Page<Country> pager);
+
 }

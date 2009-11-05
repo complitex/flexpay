@@ -13,4 +13,9 @@ public interface AddressAttributeTypeDao extends GenericDao<AddressAttributeType
 	 * @return list of building attribute types
 	 */
 	List<AddressAttributeType> findAttributeTypes();
+
+	List<AddressAttributeType> findByNameAndLanguage(String name, Long languageId);
+
+	List<AddressAttributeType> findByShortNameAndLanguage(String shortName, Long languageId);
+
 }

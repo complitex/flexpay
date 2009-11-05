@@ -96,8 +96,6 @@ public abstract class TemporaryName<TV extends TemporaryValue<TV>, T extends Tra
 	public String toString() {
 		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
 				append("id", getId()).
-				append("object", object).
-				append("translations", translations).
 				toString();
 	}
 

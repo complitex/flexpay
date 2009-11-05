@@ -5,6 +5,7 @@ import org.flexpay.ab.persistence.Apartment;
 import org.flexpay.ab.persistence.Person;
 import org.flexpay.ab.persistence.PersonIdentity;
 import org.flexpay.ab.service.PersonService;
+import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.persistence.ImportError;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.util.CollectionUtils;
@@ -34,7 +35,7 @@ public class ImportUtil {
 	@Nullable
 	public Person findPersonByFIO(Stub<Apartment> apartmentStub, String fName, String mName, String lName, ImportError error) {
 
-		List<Person> persons = personService.findRegisteredPersons(apartmentStub);
+		List<Person> persons = personService.find(apartmentStub, new Page<Person>(10000));
 		if (persons.isEmpty()) {
 			log.debug("No registered persons found");
 			error.setErrorId("error.eirc.import.person_no_registrants");

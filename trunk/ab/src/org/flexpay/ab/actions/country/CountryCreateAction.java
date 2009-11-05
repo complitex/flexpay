@@ -1,19 +1,16 @@
 package org.flexpay.ab.actions.country;
 
-import org.apache.commons.lang.StringUtils;
 import org.flexpay.ab.persistence.Country;
-import org.flexpay.ab.persistence.CountryNameTranslation;
+import org.flexpay.ab.persistence.CountryTranslation;
 import org.flexpay.ab.service.CountryService;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Language;
-import static org.flexpay.common.util.CollectionUtils.list;
 import static org.flexpay.common.util.CollectionUtils.treeMap;
 import org.flexpay.common.util.config.ApplicationConfig;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
-import java.util.List;
 import java.util.Map;
 
 public class CountryCreateAction extends FPActionSupport {
@@ -26,42 +23,28 @@ public class CountryCreateAction extends FPActionSupport {
 
 	@NotNull
 	@Override
-	public String doExecute() throws FlexPayException {
+	public String doExecute() throws Exception {
 
 		if (isNotSubmit()) {
 			initData();
 			return INPUT;
 		}
 
-		List<CountryNameTranslation> countryNames = list();
+		if (country == null) {
+			country = new Country();
+		}
+
 		for (Map.Entry<Long, String> name : names.entrySet()) {
 			String value = name.getValue();
 			Language lang = getLang(name.getKey());
-			if (lang.isDefault()) {
-				boolean error = false;
-				if (StringUtils.isEmpty(value)) {
-					addActionError(getText("ab.error.country.full_name_is_required"));
-					error = true;
-				}
-				if (StringUtils.isEmpty(shortNames.get(name.getKey()))) {
-					addActionError(getText("ab.error.country.short_name_is_required"));
-					error = true;
-				}
-				if (error) {
-					return INPUT;
-				}
-			}
-			if (shortNames.get(name.getKey()).length() > CountryNameTranslation.SHORT_NAME_LENGTH) {
-				addActionError(getText("ab.error.country.short_name_is_too_long", new String[] {CountryNameTranslation.SHORT_NAME_LENGTH + ""}));
-				return INPUT;
-			}
-			CountryNameTranslation translation = new CountryNameTranslation(value, lang);
+			CountryTranslation translation = new CountryTranslation(value, lang);
 			translation.setShortName(shortNames.get(name.getKey()));
-			countryNames.add(translation);
+			country.setTranslation(translation);
 		}
 
-		country = countryService.create(countryNames);
+		country = countryService.create(country);
 
+		log.debug("Country created {}", country);
 		addActionError(getText("ab.country.created"));
 		return REDIRECT_SUCCESS;
 

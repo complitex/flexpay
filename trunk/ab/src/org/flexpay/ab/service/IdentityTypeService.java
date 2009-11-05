@@ -21,7 +21,7 @@ public interface IdentityTypeService extends AllObjectsService<IdentityType> {
 	 */
 	@Secured (Roles.IDENTITY_TYPE_READ)
 	@Nullable
-	IdentityType read(@NotNull Stub<IdentityType> stub);
+	IdentityType readFull(@NotNull Stub<IdentityType> stub);
 
 	/**
 	 * Get a list of available identity types
@@ -48,6 +48,7 @@ public interface IdentityTypeService extends AllObjectsService<IdentityType> {
 	 * @throws FlexPayExceptionContainer if validation fails
 	 */
 	@Secured (Roles.IDENTITY_TYPE_ADD)
+	@NotNull
 	IdentityType create(@NotNull IdentityType identityType) throws FlexPayExceptionContainer;
 
 	/**
@@ -58,6 +59,7 @@ public interface IdentityTypeService extends AllObjectsService<IdentityType> {
 	 * @throws FlexPayExceptionContainer if validation fails
 	 */
 	@Secured (Roles.IDENTITY_TYPE_CHANGE)
+	@NotNull
 	IdentityType update(@NotNull IdentityType identityType) throws FlexPayExceptionContainer;
 
 	/**
@@ -79,6 +81,5 @@ public interface IdentityTypeService extends AllObjectsService<IdentityType> {
 	@Secured (Roles.IDENTITY_TYPE_READ)
 	@Nullable
 	IdentityType findTypeById(int typeId);
-
 
 }

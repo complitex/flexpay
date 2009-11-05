@@ -21,8 +21,7 @@
 		  class="org.flexpay.ab.service.impl.CountryServiceImpl"
 		  autowire-candidate="false"
 		  p:countryDao-ref="countryDao"
-		  p:countryDaoExt-ref="countryDaoExt"
-		  p:countryNameDao-ref="countryNameDao" />
+		  p:countryDaoExt-ref="countryDaoExt" />
 
 	<bean id="regionHistoryChangesListener"
 		  parent="historyChangesListenerBase"
@@ -37,8 +36,6 @@
 		  p:regionDao-ref="regionDao"
 		  p:regionDaoExt-ref="regionDaoExt"
 		  p:regionNameDao-ref="regionNameDao"
-		  p:regionNameTemporalDao-ref="regionNameTemporalDao"
-		  p:countryDao-ref="countryDao"
 		  p:sessionUtils-ref="sessionUtils"
 		  p:modificationListener-ref="regionHistoryChangesListener" />
 
@@ -56,12 +53,9 @@
 		  autowire-candidate="false"
 		  class="org.flexpay.ab.service.impl.TownServiceImpl"
 		  p:parentService-ref="regionService"
-		  p:regionDao-ref="regionDao"
 		  p:townDao-ref="townDao"
 		  p:townDaoExt-ref="townDaoExt"
 		  p:townNameDao-ref="townNameDao"
-		  p:townNameTemporalDao-ref="townNameTemporalDao"
-		  p:townTypeService-ref="townTypeService"
 		  p:sessionUtils-ref="sessionUtils"
 		  p:modificationListener-ref="townHistoryChangesListener" />
 
@@ -78,11 +72,9 @@
 		  class="org.flexpay.ab.service.impl.DistrictServiceImpl"
 		  autowire-candidate="false"
 		  p:parentService-ref="townService"
-		  p:townDao-ref="townDao"
 		  p:districtDao-ref="districtDao"
 		  p:districtDaoExt-ref="districtDaoExt"
 		  p:districtNameDao-ref="districtNameDao"
-		  p:districtNameTemporalDao-ref="districtNameTemporalDao"
 		  p:sessionUtils-ref="sessionUtils"
 		  p:modificationListener-ref="districtHistoryChangesListener" />
 
@@ -105,7 +97,6 @@
 		  p:streetDao-ref="streetDao"
 		  p:streetDaoExt-ref="streetDaoExt"
 		  p:streetNameDao-ref="streetNameDao"
-		  p:streetNameTemporalDao-ref="streetNameTemporalDao"
 		  p:sessionUtils-ref="sessionUtils"
 		  p:modificationListener-ref="streetHistoryChangesListener" />
 
@@ -207,6 +198,7 @@
 		  p:apartmentDaoExt-ref="apartmentDaoExt"
 		  p:sessionUtils-ref="sessionUtils"
 		  p:buildingService-ref="buildingService"
+          p:parentService-ref="buildingService"
 		  p:modificationListener-ref="apartmentHistoryChangesListener" />
 
 	<bean id="townTypeHistoryChangesListener"

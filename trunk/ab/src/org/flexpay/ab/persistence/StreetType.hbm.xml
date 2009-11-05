@@ -48,17 +48,15 @@
     <query name="StreetType.findByNameAndLanguage">
         select distinct st
         from StreetType st
-            left join fetch st.translations tr
-            left join fetch tr.lang l
-        where tr.name=? and l.id=? and st.status=?
+            left join st.translations tr
+        where tr.name=? and tr.lang.id=? and st.status=0
     </query>
 
     <query name="StreetType.findByShortNameAndLanguage">
         select distinct st
         from StreetType st
-            left join fetch st.translations tr
-            left join fetch tr.lang l
-        where tr.shortName=? and l.id=? and st.status=?
+            left join st.translations tr
+        where tr.shortName=? and tr.lang.id=? and st.status=0
     </query>
 
 </hibernate-mapping>

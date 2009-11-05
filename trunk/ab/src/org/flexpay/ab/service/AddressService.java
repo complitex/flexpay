@@ -35,6 +35,17 @@ public interface AddressService {
 	String getBuildingAddress(@NotNull Stub<Building> stub, @Nullable Locale locale) throws Exception;
 
 	/**
+	 * Get Buildings address
+	 *
+	 * @param stub Buildings stub
+	 * @param locale Locale to get address in
+	 * @return Buildings address
+	 * @throws Exception if failure occurs
+	 */
+	@NotNull
+	String getBuildingsAddress(@NotNull Stub<BuildingAddress> stub, @Nullable Locale locale) throws Exception;
+
+	/**
 	 * Get Building address on street
 	 *
 	 * @param stub Building stub
@@ -46,16 +57,5 @@ public interface AddressService {
 	@NotNull
 	String getBuildingAddressOnStreet(@NotNull Stub<Building> stub, @NotNull Stub<Street> streetStub,  @Nullable Locale locale)
 			throws Exception;
-
-	/**
-	 * Get Buildings address
-	 *
-	 * @param stub Buildings stub
-	 * @param locale Locale to get address in
-	 * @return Buildings address
-	 * @throws Exception if failure occurs
-	 */
-	@NotNull
-	String getBuildingsAddress(@NotNull Stub<BuildingAddress> stub, @Nullable Locale locale) throws Exception;
 
 }

@@ -375,7 +375,7 @@ public class PersonHistoryBuilder extends HistoryBuilderBase<Person> {
 			if (stub == null) {
 				throw new IllegalStateException("Cannot find identity type by master index: " + context.prevTypeMasterIndex);
 			}
-			IdentityType type = identityTypeService.read(stub);
+			IdentityType type = identityTypeService.readFull(stub);
 			context.lastIdentity.setIdentityType(type);
 		}
 	}
@@ -412,7 +412,7 @@ public class PersonHistoryBuilder extends HistoryBuilderBase<Person> {
 			if (stub == null) {
 				throw new IllegalStateException("Cannot find identity type by master index: " + externalId);
 			}
-			IdentityType type = identityTypeService.read(stub);
+			IdentityType type = identityTypeService.readFull(stub);
 			context.lastIdentity.setIdentityType(type);
 			record.setProcessingStatus(ProcessingStatus.STATUS_PROCESSED);
 			log.debug("Set identity type: {}", type);

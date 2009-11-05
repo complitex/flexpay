@@ -2,53 +2,20 @@ package org.flexpay.ab.service;
 
 import org.apache.commons.collections.ArrayStack;
 import org.flexpay.ab.persistence.*;
-import org.flexpay.ab.persistence.filters.BuildingsFilter;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Stub;
-import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
 import org.flexpay.common.persistence.sorter.ObjectSorter;
-import org.flexpay.common.service.ParentService;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.security.annotation.Secured;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Locale;
 import java.util.Set;
 
-public interface BuildingService extends ParentService<BuildingsFilter> {
-
-	/**
-	 * Initialize parent filter. Possibly taking in account upper level forefather filter
-	 *
-	 * @param parentFilter	 Filter to init
-	 * @param forefatherFilter Upper level filter
-	 * @param locale		   Locale to get parent names in
-	 * @return Initialised filter
-	 * @throws org.flexpay.common.exception.FlexPayException
-	 *          if failure occurs
-	 */
-	@Secured (Roles.BUILDING_READ)
-	@Override
-	BuildingsFilter initFilter(BuildingsFilter parentFilter, PrimaryKeyFilter<?> forefatherFilter, Locale locale)
-			throws FlexPayException;
-
-	/**
-	 * Initialize filters. <p>Filters are coming from the most significant to less significant ones order, like
-	 * CountryFilter, RegionFilter, TownFilter for example</p>
-	 *
-	 * @param filters Filters to init
-	 * @param locale  Locale to get parent names in
-	 * @return Initialised filters stack
-	 * @throws org.flexpay.common.exception.FlexPayException
-	 *          if failure occurs
-	 */
-	@Secured (Roles.BUILDING_READ)
-	@Override
-	ArrayStack initFilters(ArrayStack filters, Locale locale) throws FlexPayException;
+public interface BuildingService {
 
 	@Secured (Roles.BUILDING_READ)
 	List<BuildingAddress> getBuildings(ArrayStack filters, Page<BuildingAddress> pager);

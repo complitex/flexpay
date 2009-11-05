@@ -41,7 +41,7 @@ public class StreetTypeHistoryHandler extends HistoryHandlerBase<StreetType> {
 		if (diff.getOperationType() == HistoryOperationType.TYPE_CREATE) {
 			if (typeStub != null) {
 				log.info("Request for object creation, but it already exists {}", diff);
-				object = streetTypeService.read(typeStub);
+				object = streetTypeService.readFull(typeStub);
 			} else {
 				object = new StreetType();
 			}
@@ -50,7 +50,7 @@ public class StreetTypeHistoryHandler extends HistoryHandlerBase<StreetType> {
 				log.warn("Requested for object update/delete, but not found {}", diff);
 				throw new IllegalStateException("Requested for object update/delete, but not found " + masterIndex);
 			}
-			object = streetTypeService.read(typeStub);
+			object = streetTypeService.readFull(typeStub);
 		}
 
 		if (object == null) {

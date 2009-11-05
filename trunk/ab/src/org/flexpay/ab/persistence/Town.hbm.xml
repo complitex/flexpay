@@ -87,45 +87,51 @@
 	</query>
 
 	<query name="Town.readFull">
-		SELECT DISTINCT t
-		FROM Town t
-			LEFT JOIN FETCH t.nameTemporals nt
-			LEFT JOIN FETCH nt.value nv
-			LEFT JOIN FETCH nv.translations ntr
-			left join fetch t.typeTemporals tt
-			left join fetch tt.value ttt
+        select distinct t
+        from Town t
+			left join fetch t.nameTemporals nt
+			left join fetch nt.value ntv
+			left join fetch ntv.translations
+            left join fetch t.typeTemporals tt
+            left join fetch tt.value ttv
+            left join fetch ttv.translations
 		WHERE t.id=? and nt.invalidDate='2100-12-31' and tt.invalidDate='2100-12-31'
 	</query>
 
 	<query name="Town.readFullCollection">
-		SELECT DISTINCT t
-		FROM Town t
-			LEFT JOIN FETCH t.nameTemporals nt
-			LEFT JOIN FETCH nt.value nv
-			LEFT JOIN FETCH nv.translations ntr
-		WHERE t.id in (:ids) and nt.invalidDate='2100-12-31'
+        select distinct t
+        from Town t
+			left join fetch t.nameTemporals nt
+			left join fetch nt.value ntv
+			left join fetch ntv.translations
+            left join fetch t.typeTemporals tt
+            left join fetch tt.value ttv
+            left join fetch ttv.translations
+		where t.id in (:ids) and nt.invalidDate='2100-12-31' and tt.invalidDate='2100-12-31'
 	</query>
 
-	<query name="Town.findFullTownsWithTypes">
-		SELECT DISTINCT t
-		FROM Town t
-			LEFT JOIN FETCH t.typeTemporals nt
-			LEFT JOIN FETCH nt.value nv
-			LEFT JOIN FETCH nv.translations ntr
-		WHERE t.id in (:list_1) and nt.invalidDate='2100-12-31'
-	</query>
-
-    <query name="Town.findByRegionAndQuery">
+    <query name="Town.findByParentAndQuery">
         select distinct t
         from Town t
             left join fetch t.nameTemporals nt
             left join fetch nt.value v
             left join fetch v.translations tr
             left join fetch tr.lang l
-        where t.status = 0
+        where t.status=0
               and t.parent.id=?
               and nt.invalidDate='2100-12-31'
               and lower(tr.name) like ?
+    </query>
+
+    <query name="Town.findByNameAndLanguage">
+        select distinct t
+        from Town t
+            left join fetch t.nameTemporals nt
+            left join fetch nt.value v
+            left join fetch v.translations tr
+            left join fetch tr.lang l
+        where t.status=0 and nt.invalidDate='2100-12-31'
+            and tr.name=? and l.id=?
     </query>
 
 	<query name="TownNameTemporal.readFull">

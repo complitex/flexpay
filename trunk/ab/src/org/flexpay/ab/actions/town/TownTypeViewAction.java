@@ -22,7 +22,7 @@ public class TownTypeViewAction extends FPActionSupport {
 			addActionError(getText("error.invalid_id"));
 			return REDIRECT_ERROR;
 		}
-		townType = townTypeService.read(stub(townType));
+		townType = townTypeService.readFull(stub(townType));
 
 		if (townType == null) {
 			log.error(getText("common.object_not_selected"));

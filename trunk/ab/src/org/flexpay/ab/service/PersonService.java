@@ -17,6 +17,46 @@ import java.util.Set;
 public interface PersonService {
 
 	/**
+	 * Read person information
+	 *
+	 * @param personStub Person stub
+	 * @return Person instance, or <code>null</code> if not found
+	 */
+	@Secured (Roles.PERSON_READ)
+	@Nullable
+	Person read(@NotNull Stub<Person> personStub);
+
+	/**
+	 * Disable persons
+	 *
+	 * @param personIds IDs of persons to disable
+	 */
+	@Secured (Roles.PERSON_DELETE)
+	void disable(@NotNull Set<Long> personIds);
+
+	/**
+	 * Create person
+	 *
+	 * @param person Person to save
+	 * @return Saved instance of person
+	 * @throws FlexPayExceptionContainer if validation fails
+	 */
+	@Secured (Roles.PERSON_ADD)
+	@NotNull
+	Person create(@NotNull Person person) throws FlexPayExceptionContainer;
+
+	/**
+	 * Update or create person
+	 *
+	 * @param person Person to update
+	 * @return Saved instance of person
+	 * @throws FlexPayExceptionContainer if validation fails
+	 */
+	@Secured (Roles.PERSON_CHANGE)
+	@NotNull
+	Person update(@NotNull Person person) throws FlexPayExceptionContainer;
+
+	/**
 	 * List persons
 	 *
 	 * @param filters Stack of filters to apply
@@ -24,45 +64,29 @@ public interface PersonService {
 	 * @return List of persons
 	 */
 	@Secured (Roles.PERSON_READ)
-	List<Person> findPersons(ArrayStack filters, Page<Person> pager);
+	List<Person> find(ArrayStack filters, Page<Person> pager);
 
 	/**
 	 * List persons
 	 *
-	 * @param stub Apartment stub
+	 * @param apartmentStub Apartment stub
 	 * @param pager Paging filter
 	 * @return List of persons
 	 */
 	@Secured (Roles.PERSON_READ)
-	List<Person> getPersons(Stub<Apartment> stub, Page<Person> pager);
+	@NotNull
+	List<Person> find(@NotNull Stub<Apartment> apartmentStub, Page<Person> pager);
 
 	/**
-	 * List persons with identities
+	 * List persons
 	 *
-	 * @param range FetchRange 
+	 * @param searchString searching string
+	 * @param pager Paging filter
 	 * @return List of persons
 	 */
 	@Secured (Roles.PERSON_READ)
-	List<Person> listPersonsWithIdentities(FetchRange range);
-
-	/**
-	 * List persons with registrations
-	 *
-	 * @param range FetchRange
-	 * @return List of persons
-	 */
-	@Secured (Roles.PERSON_READ)
-	List<Person> listPersonsWithRegistrations(FetchRange range);
-
-	/**
-	 * Read person information
-	 *
-	 * @param stub Person stub
-	 * @return Person instance, or <code>null</code> if not found
-	 */
-	@Secured (Roles.PERSON_READ)
-	@Nullable
-	Person read(@NotNull Stub<Person> stub);
+	@NotNull
+	List<Person> findByFIO(@NotNull String searchString, Page<Person> pager);
 
 	/**
 	 * Find persistent person by identity
@@ -72,47 +96,26 @@ public interface PersonService {
 	 */
 	@Secured (Roles.PERSON_READ)
 	@Nullable
-	Stub<Person> findPersonStub(Person person);
+	Stub<Person> findPersonStub(@NotNull Person person);
 
 	/**
-	 * Find persons registered in apartment
+	 * List persons with identities
 	 *
-	 * @param stub Apartment
-	 * @return Persons list, empty if no persons found
+	 * @param range FetchRange 
+	 * @return List of persons
 	 */
-	@Secured (Roles.PERSON_READ)
 	@NotNull
-	List<Person> findRegisteredPersons(@NotNull Stub<Apartment> stub);
-
 	@Secured (Roles.PERSON_READ)
-	List<Person> findByFIO(Page<Person> pager, String searchString);
+	List<Person> listPersonsWithIdentities(@NotNull FetchRange range);
 
 	/**
-	 * Create person
+	 * List persons with registrations
 	 *
-	 * @param person Person to save
-	 * @return saved person back
-	 * @throws FlexPayExceptionContainer if validation fails
+	 * @param range FetchRange
+	 * @return List of persons
 	 */
-	@Secured (Roles.PERSON_ADD)
-	Person create(@NotNull Person person) throws FlexPayExceptionContainer;
-
-	/**
-	 * Update person
-	 *
-	 * @param person Person to update
-	 * @return Saved person back
-	 * @throws FlexPayExceptionContainer if validation fails
-	 */
-	@Secured (Roles.PERSON_CHANGE)
-	Person update(@NotNull Person person) throws FlexPayExceptionContainer;
-
-    /**
-	 * Disable persons
-	 *
-	 * @param objectIds Person identifiers
-	 */
-	@Secured (Roles.PERSON_DELETE)
-	void disable(@NotNull Set<Long> objectIds);
+	@NotNull
+	@Secured (Roles.PERSON_READ)
+	List<Person> listPersonsWithRegistrations(@NotNull FetchRange range);
 
 }

@@ -16,10 +16,14 @@ public interface PersonDao extends GenericDao<Person, Long>{
 	 * @param status   Object status to retrive
 	 * @return List of children
 	 */
-	List<Person> findObjects(Page pager, int status);
+	@NotNull
+	List<Person> findObjects(int status, Page<Person> pager);
 
 	@NotNull
 	List<Person> findPersonsInApartment(@NotNull Long apartmentId, int status, Page<Person> pager);
 
-	List<Person> findByFIO(Page pager, String searchString);
+	@NotNull
+	List<Person> findByFIO(@NotNull String searchString, Page<Person> pager);
+
 }
+

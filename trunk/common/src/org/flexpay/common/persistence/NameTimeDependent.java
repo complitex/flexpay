@@ -1,6 +1,7 @@
 package org.flexpay.common.persistence;
 
-import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.DateIntervalUtil;
 import org.flexpay.common.util.DateUtil;
@@ -16,8 +17,7 @@ public abstract class NameTimeDependent<T extends TemporaryValue<T>, DI extends 
 		extends DomainObjectWithStatus {
 
 	@SuppressWarnings ({"RawUseOfParameterizedType", "unchecked"})
-	private static final SortedSet EMPTY_SORTED_SET =
-			Collections.unmodifiableSortedSet(new TreeSet());
+	private static final SortedSet EMPTY_SORTED_SET = Collections.unmodifiableSortedSet(new TreeSet());
 
 	@SuppressWarnings ({"unchecked"})
 	private SortedSet<DI> nameTemporals = EMPTY_SORTED_SET;
@@ -176,12 +176,17 @@ public abstract class NameTimeDependent<T extends TemporaryValue<T>, DI extends 
 		return temporal != null ? temporal.getValue() : null;
 	}
 
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public boolean equals(Object obj) {
-
 		return obj instanceof NameTimeDependent<?, ?> && super.equals(obj);
 	}
+
+	@Override
+	public String toString() {
+		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
+				append("id", getId()).
+				append("status", getStatus()).
+				toString();
+	}
+
 }

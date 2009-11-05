@@ -159,35 +159,6 @@
 		WHERE s.id=? and s.status=0 and dt.invalidDate='2100-12-31'
 	</query>
 
-	<query name="StreetNameTemporal.readFull">
-		SELECT DISTINCT t
-		FROM StreetNameTemporal t
-		LEFT JOIN FETCH t.value v
-		LEFT JOIN FETCH v.translations tr
-		LEFT JOIN FETCH tr.lang l
-		LEFT JOIN FETCH l.translations
-		WHERE t.id=?
-	</query>
-
-	<query name="StreetName.readFull">
-		SELECT DISTINCT n
-		FROM StreetName n
-		LEFT JOIN FETCH n.object
-		LEFT JOIN FETCH n.translations tr
-		LEFT JOIN FETCH tr.lang l
-		LEFT JOIN FETCH l.translations
-		WHERE n.id=?
-	</query>
-
-	<query name="Street.findByTownAndName">
-		SELECT DISTINCT s
-		FROM Street s
-		LEFT JOIN s.nameTemporals t
-		LEFT JOIN t.value v
-		LEFT JOIN v.translations tr
-		WHERE s.status=0 and s.parent.id=? AND t.invalidDate='2100-12-31' AND upper(tr.name) = ?
-	</query>
-
 	<query name="Street.findByTownAndNameAndType">
 		SELECT DISTINCT s
 		FROM Street s
@@ -200,13 +171,12 @@
 			AND tt.invalidDate='2100-12-31' AND tt.value.id=?
 	</query>
 
-    <query name="Street.findByTownAndQuery">
+    <query name="Street.findByParentAndQuery">
         select distinct s
         from Street s
             left join fetch s.nameTemporals t
             left join fetch t.value v
             left join fetch v.translations tr
-            left join fetch tr.lang l
             left join fetch s.typeTemporals tt
             left join fetch tt.value tv
             left join fetch tv.translations ttr
@@ -214,6 +184,17 @@
               and s.parent.id = ?
               and t.invalidDate='2100-12-31'
               and lower(tr.name) like ?
+    </query>
+
+    <query name="Street.findByNameAndTypeAndLanguage">
+        select distinct s
+        from Street s
+            left join s.nameTemporals t
+            left join t.value v
+            left join v.translations tr
+            left join s.typeTemporals tt
+        where s.status=0 and t.invalidDate='2100-12-31'
+            and tr.name=? and tt.value.id=? and tr.lang.id=?
     </query>
 
     <query name="Street.deleteStreet">
@@ -236,6 +217,26 @@
         delete from StreetNameTranslation where translatable.id in (
         select id from StreetName n where n.object.id=?
         )
+    </query>
+
+    <query name="StreetNameTemporal.readFull">
+        SELECT DISTINCT t
+        FROM StreetNameTemporal t
+        LEFT JOIN FETCH t.value v
+        LEFT JOIN FETCH v.translations tr
+        LEFT JOIN FETCH tr.lang l
+        LEFT JOIN FETCH l.translations
+        WHERE t.id=?
+    </query>
+
+    <query name="StreetName.readFull">
+        SELECT DISTINCT n
+        FROM StreetName n
+        LEFT JOIN FETCH n.object
+        LEFT JOIN FETCH n.translations tr
+        LEFT JOIN FETCH tr.lang l
+        LEFT JOIN FETCH l.translations
+        WHERE n.id=?
     </query>
 
 </hibernate-mapping>

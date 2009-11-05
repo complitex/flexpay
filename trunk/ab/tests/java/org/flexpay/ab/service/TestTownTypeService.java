@@ -44,7 +44,7 @@ public class TestTownTypeService extends AbSpringBeanAwareTestCase {
 
         townTypeService.disable(CollectionUtils.list(newType.getId()));
 
-        TownType updatedType = townTypeService.read(Stub.stub(newType));
+        TownType updatedType = townTypeService.readFull(Stub.stub(newType));
         assertEquals("Status is not disabled", TownType.STATUS_DISABLED, updatedType.getStatus());
         assertFalse("Found disabled town", townTypeService.getEntities().contains(updatedType));
     }

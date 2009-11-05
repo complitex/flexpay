@@ -72,7 +72,7 @@ public class StreetProcessor extends AbstractProcessor<Street> {
 			return;
 		}
 
-		street.setTypeForDate(streetTypeService.read(stub), record.getRecordDate());
+		street.setTypeForDate(streetTypeService.readFull(stub), record.getRecordDate());
 	}
 
 	/**
