@@ -56,9 +56,9 @@ INSERT INTO orgs_service_provider_descriptions_tbl (version, name, language_id, 
 	VALUES (0, 'ПУ Вода', @ru_id, @sp_voda);
 
 SELECT @service_t_cold_water:=7;
-INSERT INTO payments_services_tbl (provider_id, external_code, measure_unit_id, type_id, begin_date, end_date, version, status)
-	VALUES (@sp_voda, null, null, @service_t_cold_water, '1900-01-01', '2100-12-31', 0, 0);
-SELECT @service_cold_water:=last_insert_id();
+INSERT INTO payments_services_tbl (id, provider_id, external_code, measure_unit_id, type_id, begin_date, end_date, version, status)
+	VALUES (50, @sp_voda, null, null, @service_t_cold_water, '1900-01-01', '2100-12-31', 0, 0);
+SELECT @service_cold_water:=50;
 INSERT INTO payments_service_descriptions_tbl (name, language_id, service_id)
 		VALUES ('Холодная вода', @ru_id, @service_cold_water);
 
@@ -170,9 +170,20 @@ from common_measure_units_tbl m
 		left outer join common_mesuare_unit_names_tbl n on n.measure_unit_id=m.id 
 where n.language_id=@ru_id and n.name='грн/м2';
 
-INSERT INTO payments_services_tbl (id, provider_id, external_code, measure_unit_id, type_id, begin_date, end_date, parent_service_id, version, status)
-	VALUES (2, @sp_gks, '10', @unit_grn_m2, @service_territory_cleaning, '1900-01-01', '2100-12-31', @service_kvartplata_id, 0, 0);
-SELECT @service_10:=2;
+select @unit_square_meter:=m.id
+from common_measure_units_tbl m
+		left outer join common_mesuare_unit_names_tbl n on n.measure_unit_id=m.id
+where n.language_id=@ru_id and n.name='кв.м.';
+
+INSERT INTO payments_services_tbl (provider_id, external_code, measure_unit_id, type_id, begin_date, end_date, version, status)
+	VALUES (@sp_gks, '1', @unit_square_meter, @service_t_kvartplata, '1900-01-01', '2100-12-31', 0, 0);
+SELECT @service_kvartplata_id:=last_insert_id();
+INSERT INTO payments_service_descriptions_tbl (name, language_id, service_id)
+	VALUES ('Квартплата', @ru_id, @service_kvartplata_id);
+
+INSERT INTO payments_services_tbl (provider_id, external_code, measure_unit_id, type_id, begin_date, end_date, parent_service_id, version, status)
+	VALUES (@sp_gks, '10', @unit_grn_m2, @service_territory_cleaning, '1900-01-01', '2100-12-31', @service_kvartplata_id, 0, 0);
+SELECT @service_10:=last_insert_id();
 INSERT INTO payments_service_descriptions_tbl (name, language_id, service_id)
 	VALUES ('Уборка территории', @ru_id, @service_10);
 
