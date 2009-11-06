@@ -131,8 +131,7 @@ if ((gotoURL != null) && (gotoURL.length() != 0)) {
         width="100%" title="">
           <tr>
             <td width="260"><img src="<%= ServiceURI %>/images/dot.gif" width="260" height="245" alt="" /></td>
-            <td width="415" bgcolor="#ffffff" valign="top"><img src="<%= ServiceURI %>/images/dot.gif" width="30" height="1" alt="" /><img name="Login.productLogo" 
-            src="" alt="" border="0" />
+            <td width="415" bgcolor="#ffffff" valign="top"><img src="<%= ServiceURI %>/images/dot.gif" width="30" height="1" alt="" />
               <table border="0" cellspacing="0" cellpadding="0">
                 <tr>
                   <td nowrap="nowrap" colspan="2" align="center">
