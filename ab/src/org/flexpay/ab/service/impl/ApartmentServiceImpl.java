@@ -6,12 +6,10 @@ import org.flexpay.ab.dao.ApartmentDaoExt;
 import org.flexpay.ab.persistence.Apartment;
 import org.flexpay.ab.persistence.Building;
 import org.flexpay.ab.persistence.BuildingAddress;
-import org.flexpay.ab.persistence.Street;
-import org.flexpay.ab.persistence.filters.*;
+import org.flexpay.ab.persistence.filters.ApartmentFilter;
+import org.flexpay.ab.persistence.filters.BuildingsFilter;
 import org.flexpay.ab.service.ApartmentService;
 import org.flexpay.ab.service.BuildingService;
-import static org.flexpay.ab.util.TranslationUtil.getNameTranslation;
-import static org.flexpay.ab.util.TranslationUtil.getTypeTranslation;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
@@ -45,26 +43,146 @@ public class ApartmentServiceImpl implements ApartmentService, ParentService<Apa
 	private SessionUtils sessionUtils;
 	private ModificationListener<Apartment> modificationListener;
 
+	/**
+	 * Read apartment
+	 *
+	 * @param apartmentStub Apartment stub
+	 * @return Object if found, or <code>null</code> otherwise
+	 */
+	@Nullable
+	@Override
+	public Apartment readFull(@NotNull Stub<Apartment> apartmentStub) {
+		return apartmentDao.readFull(apartmentStub.getId());
+	}
+
+	/**
+	 * Read apartments collection by theirs ids
+	 *
+ 	 * @param apartmentIds Apartment ids
+	 * @param preserveOrder Whether to preserve order of objects
+	 * @return Found regions
+	 */
 	@NotNull
 	@Override
-	public String getAddress(@NotNull Stub<Apartment> stub) throws FlexPayException {
-		Apartment apartment = apartmentDao.read(stub.getId());
-		if (apartment == null) {
-			throw new FlexPayException("Invalid apartment id: " + stub.getId());
+	public List<Apartment> readFull(@NotNull Collection<Long> apartmentIds, boolean preserveOrder) {
+		return apartmentDao.readFullCollection(apartmentIds, preserveOrder);
+	}
+
+	/**
+	 * Disable apartments
+	 *
+	 * @param apartmentIds IDs of apartments to disable
+	 */
+	@Transactional (readOnly = false)
+	@Override
+	public void disable(@NotNull Collection<Long> apartmentIds) {
+		for (Long id : apartmentIds) {
+			Apartment apartment = apartmentDao.read(id);
+			if (apartment == null) {
+				log.warn("Can't get apartment with id {} from DB", id);
+				continue;
+			}
+			apartment.disable();
+			apartmentDao.update(apartment);
+
+			modificationListener.onDelete(apartment);
+			log.debug("Apartment disabled: {}", apartment);
+		}
+	}
+
+	/**
+	 * Create apartment
+	 *
+	 * @param apartment Apartment to save
+	 * @return Saved instance of apartment
+	 * @throws FlexPayExceptionContainer if validation fails
+	 */
+	@Transactional (readOnly = false)
+	@NotNull
+	@Override
+	public Apartment create(@NotNull Apartment apartment) throws FlexPayExceptionContainer {
+
+		validate(apartment);
+		apartment.setId(null);
+		apartmentDao.create(apartment);
+
+		modificationListener.onCreate(apartment);
+
+		return apartment;
+	}
+
+	/**
+	 * Update or create apartment
+	 *
+	 * @param apartment Apartment to save
+	 * @return Saved instance of apartment
+	 * @throws FlexPayExceptionContainer if validation fails
+	 */
+	@SuppressWarnings ({"ThrowableInstanceNeverThrown"})
+	@Transactional (readOnly = false)
+	@NotNull
+	@Override
+	public Apartment update(@NotNull Apartment apartment) throws FlexPayExceptionContainer {
+
+		validate(apartment);
+
+		Apartment old = readFull(stub(apartment));
+		if (old == null) {
+			throw new FlexPayExceptionContainer(
+					new FlexPayException("No apartment found to update " + apartment));
+		}
+		sessionUtils.evict(old);
+		modificationListener.onUpdate(old, apartment);
+
+		apartmentDao.update(apartment);
+
+		return apartment;
+	}
+
+	/**
+	 * Validate apartment before save
+	 *
+	 * @param apartment Apartment object to validate
+	 * @throws FlexPayExceptionContainer if validation fails
+	 */
+	@SuppressWarnings ({"ThrowableInstanceNeverThrown"})
+	private void validate(@NotNull Apartment apartment) throws FlexPayExceptionContainer {
+
+		FlexPayExceptionContainer container = new FlexPayExceptionContainer();
+
+		if (apartment.hasNoBuilding()) {
+			container.addException(new FlexPayException("No building", "ab.error.apartment.no_building"));
 		}
 
-		Building building = apartment.getBuilding();
-		BuildingAddress buildingAddress = building.getDefaultBuildings();
-		if (buildingAddress == null) {
-			throw new FlexPayException("No building attributes",
-					"error.ab.building.no_attributes", building.getId());
+		if (apartment.hasNoNumber()) {
+			container.addException(new FlexPayException("No number", "ab.error.apartment.no_number"));
 		}
-		Street street = buildingAddress.getStreet();
-		String streetNameStr = getNameTranslation(street);
-		String streetTypeStr = getTypeTranslation(street);
-		// TODO: Incorrect address output!
-		return streetTypeStr + " " + streetNameStr + ", д."
-			   + buildingAddress.getNumber() + ", кв." + apartment.getNumber();
+
+		// check if this number already exists
+		if (apartment.hasBuilding() && apartment.hasNumber()) {
+			Stub<Apartment> stub = apartmentDaoExt.findApartmentStub(apartment.getBuilding(), apartment.getNumber());
+			if (stub != null && !stub.getId().equals(apartment.getId())) {
+				container.addException(new FlexPayException("Number duplicate", "ab.error.apartment.number_duplicate"));
+			}
+		}
+
+		if (container.isNotEmpty()) {
+			throw container;
+		}
+
+	}
+
+	/**
+	 * Read apartment with registered persons
+	 *
+	 * @param apartmentStub Apartment stub
+	 * @return Object if found, or <code>null</code> otherwise
+	 */
+	@NotNull
+	@Override
+	public Apartment readWithPersons(@NotNull Stub<Apartment> apartmentStub) {
+		List<Apartment> apartments = apartmentDao.findWithPersonsFull(apartmentStub.getId());
+		return apartments.isEmpty() ? Apartment.newInstance() : apartments.get(0);
 	}
 
 	/**
@@ -76,206 +194,123 @@ public class ApartmentServiceImpl implements ApartmentService, ParentService<Apa
 	 */
 	@Nullable
 	@Override
-	public Stub<Apartment> findApartmentStub(@NotNull Building building, String number) {
+	public Stub<Apartment> findApartmentStub(@NotNull Building building, @NotNull String number) {
 		return apartmentDaoExt.findApartmentStub(building, number);
 	}
 
-	@Override
-	public String getApartmentNumber(Stub<Apartment> apartment) throws FlexPayException {
-
-		Apartment persistent = apartmentDao.readFull(apartment.getId());
-		if (persistent == null) {
-			throw new FlexPayException("error.invalid_id");
-		}
-		return persistent.getNumber();
-	}
-
 	/**
-	 * Disable apartments
+	 * Get a list of available apartments
 	 *
-	 * @param objectIds Apartments identifiers
+	 * @param filters Parent filters
+	 * @param sorters Stack of sorters
+	 * @param pager   Page
+	 * @return List of Objects
 	 */
-	@Transactional (readOnly = false)
-	@Override
-	public void disable(@NotNull Collection<Long> objectIds) {
-		for (Long id : objectIds) {
-			Apartment apartment = apartmentDao.read(id);
-			if (apartment != null) {
-				apartment.disable();
-				apartmentDao.update(apartment);
-
-				modificationListener.onDelete(apartment);
-			}
-		}
-	}
-
-	/**
-	 * Create new apartment
-	 *
-	 * @param apartment Apartment to save
-	 * @return persisted object back
-	 * @throws FlexPayExceptionContainer if validation fails
-	 */
-	@Transactional (readOnly = false)
 	@NotNull
 	@Override
-	public Apartment create(@NotNull Apartment apartment) throws FlexPayExceptionContainer {
-		validate(apartment);
-		apartment.setId(null);
-		apartmentDao.create(apartment);
+	public List<Apartment> find(@NotNull ArrayStack filters, @NotNull List<? extends ObjectSorter> sorters, @NotNull Page<Apartment> pager) {
 
-		modificationListener.onCreate(apartment);
+		ObjectFilter filter = (ObjectFilter) filters.peek();
 
-		return apartment;
+		// found apartment filter
+		if (filter instanceof ApartmentFilter) {
+			if (filter.needFilter()) {
+				return find(filters, pager);
+			}
+			// remove apartment filter as there is nothing to search now
+			filters.pop();
+		}
+
+		log.debug("Finding building apartments with sorters");
+		BuildingsFilter buildingFilter = (BuildingsFilter) filters.peek();
+		if (!buildingFilter.needFilter()) {
+			return Collections.emptyList();
+		}
+		Building building = buildingService.findBuilding(buildingFilter.getSelectedStub());
+		if (building == null) {
+			log.info("No building found for filter {}", buildingFilter);
+			return Collections.emptyList();
+		}
+		return apartmentDaoExt.findApartments(building.getId(), sorters, pager);
 	}
 
 	/**
-	 * Update apartment
+	 * Get a list of available apartments
 	 *
-	 * @param apartment Apartment to update
-	 * @return updated object back
-	 * @throws FlexPayExceptionContainer if validation fails
+	 * @param filters Parent filters
+	 * @param pager   Page
+	 * @return List of Objects
 	 */
-	@SuppressWarnings ({"ThrowableInstanceNeverThrown"})
-	@Transactional (readOnly = false)
 	@NotNull
 	@Override
-	public Apartment update(@NotNull Apartment apartment) throws FlexPayExceptionContainer {
-		validate(apartment);
+	public List<Apartment> find(@NotNull ArrayStack filters, Page<Apartment> pager) {
+		BuildingsFilter filter = (BuildingsFilter) filters.peek();
+		List<Apartment> apartments = apartmentDao.findObjects(filter.getSelectedId(), pager);
+		Collections.sort(apartments, new Comparator<Apartment>() {
+			@Override
+			public int compare(Apartment a1, Apartment a2) {
+				String n1 = a1.getNumber();
+				String n2 = a2.getNumber();
+				if (n1 == null && n2 == null) {
+					return 0;
+				}
+				if (n1 == null) {
+					return -1;
+				}
+				if (n2 == null) {
+					return 1;
+				}
+				return n1.compareTo(n2);
+			}
+		});
 
-		Apartment old = readFull(stub(apartment));
-		if (old == null) {
-			throw new FlexPayExceptionContainer(
-					new FlexPayException("No object found to update " + apartment));
-		}
-		sessionUtils.evict(old);
-		modificationListener.onUpdate(old, apartment);
-
-		apartmentDao.update(apartment);
-
-		return apartment;
+		return apartments;
 	}
 
-	@SuppressWarnings ({"ThrowableInstanceNeverThrown"})
-	private void validate(@NotNull Apartment apartment) throws FlexPayExceptionContainer {
-		FlexPayExceptionContainer container = new FlexPayExceptionContainer();
+	/**
+	 * Lookup apartments by building address id.
+	 *
+	 * @param addressStub  Building address stub
+	 * @return List of found apartments
+	 */
+	@NotNull
+	@Override
+	public List<Apartment> findByParent(@NotNull Stub<BuildingAddress> addressStub) {
+		return apartmentDao.findObjects(addressStub.getId());
+	}
 
-		if (apartment.hasNoBuilding()) {
-			container.addException(new FlexPayException(
-					"No building", "ab.error.apartment.no_building"));
-		}
+	/**
+	 * Get apartment number
+	 *
+	 * @param apartmentStub Apartment stub
+	 * @return Apartment number
+	 * @throws FlexPayException if apartment specified is invalid
+	 */
 
-		if (apartment.hasNoNumber()) {
-			container.addException(new FlexPayException(
-					"No number", "ab.error.apartment.no_number"));
+	@Nullable
+	@Override
+	public String getApartmentNumber(@NotNull Stub<Apartment> apartmentStub) throws FlexPayException {
+		Apartment apartment = apartmentDao.readFull(apartmentStub.getId());
+		if (apartment == null) {
+			throw new FlexPayException("Invalid id", "error.invalid_id");
 		}
-
-		// check if this number already exists
-		if (apartment.hasBuilding() && apartment.hasNumber()) {
-			Stub<Apartment> stub = apartmentDaoExt.findApartmentStub(
-					apartment.getBuilding(), apartment.getNumber());
-			if (stub != null && !stub.getId().equals(apartment.getId())) {
-				container.addException(new FlexPayException(
-						"Number duplicate", "ab.error.apartment.number_duplicate"));
-			}
-		}
-
-		if (container.isNotEmpty()) {
-			throw container;
-		}
+		return apartment.getNumber();
 	}
 
 	/**
 	 * Get building apartment belongs to
 	 *
-	 * @param apartment Apartment stub
+	 * @param apartmentStub Apartment stub
 	 * @return Building stub
 	 */
 	@NotNull
 	@Override
-	public Building getBuilding(@NotNull Stub<Apartment> apartment) throws FlexPayException {
-		Apartment persistent = apartmentDao.read(apartment.getId());
-		if (persistent == null) {
+	public Building getBuilding(@NotNull Stub<Apartment> apartmentStub) throws FlexPayException {
+		Apartment apartment = apartmentDao.read(apartmentStub.getId());
+		if (apartment == null) {
 			throw new FlexPayException("Invalid id", "error.invalid_id");
 		}
-		return persistent.getBuilding();
-	}
-
-	/**
-	 * Read apartment with registered persons
-	 *
-	 * @param stub Apartment stub
-	 * @return Object if found, or <code>null</code> otherwise
-	 */
-	@Nullable
-	@Override
-	public Apartment readWithPersons(@NotNull Stub<Apartment> stub) {
-		List<Apartment> apartments = apartmentDao.findWithPersonsFull(stub.getId());
-		return apartments.isEmpty() ? Apartment.newInstance() : apartments.get(0);
-	}
-
-	/**
-	 * Read apartment
-	 *
-	 * @param stub Apartment stub
-	 * @return Object if found, or <code>null</code> otherwise
-	 */
-	@Override
-	public Apartment readFull(@NotNull Stub<Apartment> stub) {
-		return apartmentDao.readFull(stub.getId());
-	}
-
-	/**
-	 * Read apartment
-	 *
-	 * @param stubs Apartment keys
-	 * @return Object if found, or <code>null</code> otherwise
-	 */
-	@NotNull
-	@Override
-	public List<Apartment> readFull(@NotNull Collection<Long> stubs) {
-
-		List<Apartment> apartments = apartmentDao.readFullCollection(stubs, true);
-		if (log.isDebugEnabled()) {
-			log.debug("Requested {} apartments, fetched {}", stubs.size(), apartments.size());
-		}
-
-		return apartments;
-	}
-
-	@Override
-	public void fillFilterIds(@NotNull Stub<Apartment> stub, ArrayStack filters) throws FlexPayException {
-		Apartment apartment = apartmentDao.read(stub.getId());
-		if (apartment == null) {
-			throw new FlexPayException("Invalid apartment id: " + stub.getId());
-		}
-		for (int n = 0; n < filters.size(); ++n) {
-			ObjectFilter filter = (ObjectFilter) filters.peek(n);
-			if (filter instanceof ApartmentFilter) {
-				ApartmentFilter apartmentFilter = (ApartmentFilter) filter;
-				apartmentFilter.setSelectedId(apartment.getId());
-			} else if (filter instanceof BuildingsFilter) {
-				BuildingsFilter buildingsFilter = (BuildingsFilter) filter;
-				buildingsFilter.setSelectedId(apartment.getDefaultBuildings().getId());
-			} else if (filter instanceof StreetFilter) {
-				StreetFilter streetFilter = (StreetFilter) filter;
-				streetFilter.setSelectedId(apartment.getDefaultStreet().getId());
-			} else if (filter instanceof DistrictFilter) {
-				DistrictFilter districtFilter = (DistrictFilter) filter;
-				districtFilter.setSelectedId(apartment.getDistrict().getId());
-			} else if (filter instanceof TownFilter) {
-				TownFilter townFilter = (TownFilter) filter;
-				townFilter.setSelectedId(apartment.getTown().getId());
-			} else if (filter instanceof RegionFilter) {
-				RegionFilter regionFilter = (RegionFilter) filter;
-				regionFilter.setSelectedId(apartment.getRegion().getId());
-			} else if (filter instanceof CountryFilter) {
-				CountryFilter countryFilter = (CountryFilter) filter;
-				countryFilter.setSelectedId(apartment.getCountry().getId());
-			} else {
-				log.debug("Unsupported filter: {}", filter);
-			}
-		}
+		return apartment.getBuilding();
 	}
 
 	/**
@@ -285,22 +320,20 @@ public class ApartmentServiceImpl implements ApartmentService, ParentService<Apa
 	 * @param forefatherFilter Upper level filter
 	 * @param locale		   Locale to get parent names in
 	 * @return Initialised filter
-	 * @throws org.flexpay.common.exception.FlexPayException
-	 *          if failure occurs
+	 * @throws FlexPayException if failure occurs
 	 */
+	@NotNull
 	@Override
-	public ApartmentFilter initFilter(ApartmentFilter parentFilter, PrimaryKeyFilter<?> forefatherFilter, Locale locale)
+	public ApartmentFilter initFilter(@Nullable ApartmentFilter parentFilter, @NotNull PrimaryKeyFilter<?> forefatherFilter, @NotNull Locale locale)
 			throws FlexPayException {
+
 		if (parentFilter == null) {
 			parentFilter = new ApartmentFilter();
 		}
 
-		log.info("Getting list buildings, forefather filter: {}", forefatherFilter);
-
 		ArrayStack filters = new ArrayStack();
 		filters.push(forefatherFilter);
-		Page<Apartment> pager = new Page<Apartment>(100000, 1);
-		parentFilter.setApartments(getApartments(filters, pager));
+		parentFilter.setApartments(find(filters, new Page<Apartment>(100000, 1)));
 
 		List<Apartment> apartments = parentFilter.getApartments();
 		if (apartments.isEmpty()) {
@@ -314,7 +347,7 @@ public class ApartmentServiceImpl implements ApartmentService, ParentService<Apa
 		return parentFilter;
 	}
 
-	private boolean isFilterValid(ApartmentFilter filter) {
+	private boolean isFilterValid(@NotNull ApartmentFilter filter) {
 		if (!filter.needFilter()) {
 			return true;
 		}
@@ -334,11 +367,11 @@ public class ApartmentServiceImpl implements ApartmentService, ParentService<Apa
 	 * @param filters Filters to init
 	 * @param locale  Locale to get parent names in
 	 * @return Initialised filters stack
-	 * @throws org.flexpay.common.exception.FlexPayException
-	 *          if failure occurs
+	 * @throws FlexPayException if failure occurs
 	 */
+	@NotNull
 	@Override
-	public ArrayStack initFilters(ArrayStack filters, Locale locale) throws FlexPayException {
+	public ArrayStack initFilters(@Nullable ArrayStack filters, @NotNull Locale locale) throws FlexPayException {
 		if (filters == null) {
 			filters = new ArrayStack();
 		}
@@ -363,95 +396,6 @@ public class ApartmentServiceImpl implements ApartmentService, ParentService<Apa
 		}
 
 		return filters;
-	}
-
-	@Override
-	public List<Apartment> getApartments(ArrayStack filters, Page<Apartment> pager) {
-		BuildingsFilter filter = (BuildingsFilter) filters.peek();
-		List<Apartment> apartments = apartmentDao.findObjects(filter.getSelectedId(), pager);
-		Collections.sort(apartments, new Comparator<Apartment>() {
-			@Override
-			public int compare(Apartment a1, Apartment a2) {
-				String n1 = a1.getNumber();
-				String n2 = a2.getNumber();
-				if (n1 == null && n2 == null) {
-					return 0;
-				}
-				if (n1 == null) {
-					return -1;
-				}
-				if (n2 == null) {
-					return 1;
-				}
-				return n1.compareTo(n2);
-			}
-		});
-
-		return apartments;
-	}
-
-	@Override
-	public List<Apartment> getApartments(@NotNull Stub<BuildingAddress> stub) {
-		return apartmentDao.findObjects(stub.getId());
-	}
-
-	/**
-	 * Get a list of available objects
-	 *
-	 * @param filters Parent filters
-	 * @param sorters Stack of sorters
-	 * @param pager   Page
-	 * @return List of Objects
-	 */
-	@NotNull
-	@Override
-	public List<Apartment> find(ArrayStack filters, List<ObjectSorter> sorters, Page<Apartment> pager) {
-		ObjectFilter filter = (ObjectFilter) filters.peek();
-
-		// found apartment filter
-		if (filter instanceof ApartmentFilter) {
-			if (filter.needFilter()) {
-				return getApartments(filters, pager);
-			}
-			// remove apartment filter as there is nothing to search now
-			filters.pop();
-		}
-
-		log.debug("Finding building apartments with sorters");
-		BuildingsFilter buildingFilter = (BuildingsFilter) filters.peek();
-		if (!buildingFilter.needFilter()) {
-			return Collections.emptyList();
-		}
-		Building building = buildingService.findBuilding(buildingFilter.getSelectedStub());
-		if (building == null) {
-			log.info("No building found for filter {}", buildingFilter);
-			return Collections.emptyList();
-		}
-		return apartmentDaoExt.findApartments(building.getId(), sorters, pager);
-	}
-
-	@NotNull
-	@Override
-	public List<Apartment> getApartments(@NotNull Stub<BuildingAddress> addressStub, List<ObjectSorter> sorters, Page<Apartment> pager) {
-		log.debug("Finding building apartments with sorters");
-		Building building = buildingService.findBuilding(addressStub);
-		if (building == null) {
-			log.info("No building found for id {}", addressStub.getId());
-			return Collections.emptyList();
-		}
-
-		return apartmentDaoExt.findApartments(building.getId(), sorters, pager);
-	}
-
-	/**
-	 * Find all apartments in the building
-	 *
-	 * @param stub Building stub
-	 * @return list of apartments in the building
-	 */
-	@Override
-	public List<Apartment> getBuildingApartments(@NotNull Stub<Building> stub) {
-		return apartmentDao.findByBuilding(stub.getId());
 	}
 
 	@Required

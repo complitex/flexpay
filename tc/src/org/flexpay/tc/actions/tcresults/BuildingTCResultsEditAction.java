@@ -135,11 +135,11 @@ public class BuildingTCResultsEditAction extends FPActionSupport {
 		List<BuildingAddress> alternateAddresses = CollectionUtils.list();
 
 		Long id = Long.parseLong(buildingId);
-		BuildingAddress building = buildingService.readFull(new Stub<BuildingAddress>(id));
+		BuildingAddress building = buildingService.readFullAddress(new Stub<BuildingAddress>(id));
 
-		for (BuildingAddress address : buildingService.getBuildingBuildings(building.getBuildingStub())) {
+		for (BuildingAddress address : buildingService.findAddresesByBuilding(building.getBuildingStub())) {
 			if (!building.equals(address)) {
-				alternateAddresses.add(buildingService.readFull(stub(address)));
+				alternateAddresses.add(buildingService.readFullAddress(stub(address)));
 			}
 		}
 
@@ -147,7 +147,7 @@ public class BuildingTCResultsEditAction extends FPActionSupport {
 	}
 
 	public boolean hasPrimaryStatus(Long id) {
-		BuildingAddress building = buildingService.readFull(new Stub<BuildingAddress>(id));
+		BuildingAddress building = buildingService.readFullAddress(new Stub<BuildingAddress>(id));
 		return building.getPrimaryStatus();
 	}
 

@@ -58,7 +58,7 @@ public class TestSortApartments extends AbSpringBeanAwareTestCase {
 
 		StopWatch watch = new StopWatch();
 		watch.start();
-		List<Apartment> fullApartments = apartmentService.readFull(DomainObject.collectionIds(apartments));
+		List<Apartment> fullApartments = apartmentService.readFull(DomainObject.collectionIds(apartments), true);
 		assertFalse("No apartments found 2", fullApartments.isEmpty());
 		watch.stop();
 	}

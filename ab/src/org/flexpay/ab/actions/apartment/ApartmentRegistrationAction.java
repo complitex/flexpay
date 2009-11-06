@@ -44,12 +44,12 @@ public class ApartmentRegistrationAction extends FPActionSupport {
 			return SUCCESS;
 		}
 
-		List<BuildingAddress> buildingses = buildingService.getBuildingBuildings(apartment.getBuildingStub());
-		buildings = buildingService.readFull(stub(buildingses.get(0)));
+		List<BuildingAddress> buildingses = buildingService.findAddresesByBuilding(apartment.getBuildingStub());
+		buildings = buildingService.readFullAddress(stub(buildingses.get(0)));
 		street = streetService.readFull(buildings.getStreetStub());
 		town = townService.readFull(street.getTownStub());
 		region = regionService.readFull(town.getRegionStub());
-		country = countryService.read(region.getCountryStub());
+		country = countryService.readFull(region.getCountryStub());
 
 		return SUCCESS;
 	}

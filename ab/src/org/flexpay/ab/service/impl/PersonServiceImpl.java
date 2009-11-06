@@ -43,14 +43,14 @@ public class PersonServiceImpl implements PersonService {
 	private ModificationListener<Person> modificationListener;
 
 	/**
-	 * Read person information
+	 * Read person
 	 *
 	 * @param personStub Person stub
-	 * @return Person instance, or <code>null</code> if not found
+	 * @return Object if found, or <code>null</code> otherwise
 	 */
 	@Nullable
 	@Override
-	public Person read(@NotNull Stub<Person> personStub) {
+	public Person readFull(@NotNull Stub<Person> personStub) {
 
 		Person person = personDao.readFull(personStub.getId());
 		if (person == null) {
@@ -136,7 +136,7 @@ public class PersonServiceImpl implements PersonService {
 
 		validate(person);
 
-		Person old = read(stub(person));
+		Person old = readFull(stub(person));
 		if (old == null) {
 			throw new FlexPayExceptionContainer(
 					new FlexPayException("No person found to update " + person));
@@ -207,8 +207,9 @@ public class PersonServiceImpl implements PersonService {
 	 * @param pager   Paging filter
 	 * @return List of persons
 	 */
+	@NotNull
 	@Override
-	public List<Person> find(ArrayStack filters, Page<Person> pager) {
+	public List<Person> find(@Nullable ArrayStack filters, Page<Person> pager) {
 		return personDao.findObjects(DomainObjectWithStatus.STATUS_ACTIVE, pager);
 	}
 

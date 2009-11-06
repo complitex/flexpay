@@ -149,7 +149,7 @@ public class TestOutputExportResults extends SpringBeanAwareTestCase {
 		// 3) название тарифа 4) значение тарифа 5) код тарифа 6) tariff export code
 		Building building = record.getBuilding();
 		String address = addressService.getBuildingAddress(stub(building), getDefaultLocale());
-		building = buildingService.read(stub(building));
+		building = buildingService.readFull(stub(building));
 		District district = districtService.readFull(stub(building.getDistrict()));
 		String i18nName = record.getTariffExportCode().getI18nName();
 		Object[] params = {};
@@ -181,7 +181,7 @@ public class TestOutputExportResults extends SpringBeanAwareTestCase {
 	private String getExternalId(@NotNull Stub<Building> buildingStub) throws FlexPayException {
 
 		Stub<DataSourceDescription> dataSourceDescriptionStub = new Stub<DataSourceDescription>(dataSourceDescriptionId);
-		List<BuildingAddress> buildingAddressList = buildingService.getBuildingBuildings(buildingStub);
+		List<BuildingAddress> buildingAddressList = buildingService.findAddresesByBuilding(buildingStub);
 
 		for (BuildingAddress buildingAddress : buildingAddressList) {
 			String externalId = correctionsService.getExternalId(buildingAddress.getId(),

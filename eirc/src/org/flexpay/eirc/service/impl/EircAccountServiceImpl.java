@@ -202,7 +202,7 @@ public class EircAccountServiceImpl implements EircAccountService {
 			return account.getConsumerInfo().getFIO();
 		}
 
-		Person person = personService.read(personStub);
+		Person person = personService.readFull(personStub);
 		if (person == null) {
 			log.error("No person found {}", personStub);
 			return null;

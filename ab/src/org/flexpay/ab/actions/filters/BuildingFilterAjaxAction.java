@@ -31,7 +31,7 @@ public class BuildingFilterAjaxAction extends FilterAjaxAction {
 			return SUCCESS;
 		}
 
-		List<BuildingAddress> addresses = buildingService.getBuildings(new Stub<Street>(streetId));
+		List<BuildingAddress> addresses = buildingService.findAddressesByParent(new Stub<Street>(streetId));
 		if (log.isDebugEnabled()) {
 			log.debug("Found addresses: {}", addresses.size());
 		}
@@ -49,7 +49,7 @@ public class BuildingFilterAjaxAction extends FilterAjaxAction {
 	@Override
 	public void readFilterString() throws FlexPayException {
 		if (filterValueLong != null && filterValueLong > 0) {
-			BuildingAddress address = buildingService.readFull(new Stub<BuildingAddress>(filterValueLong));
+			BuildingAddress address = buildingService.readFullAddress(new Stub<BuildingAddress>(filterValueLong));
 			if (address != null) {
 				filterString = getBuildingNumberWithoutHouseType(address.getBuildingAttributes(), getUserPreferences().getLocale());
 			} else {

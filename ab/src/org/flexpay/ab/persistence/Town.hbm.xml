@@ -126,12 +126,11 @@
     <query name="Town.findByNameAndLanguage">
         select distinct t
         from Town t
-            left join fetch t.nameTemporals nt
-            left join fetch nt.value v
-            left join fetch v.translations tr
-            left join fetch tr.lang l
+            left join t.nameTemporals nt
+            left join nt.value v
+            left join v.translations tr
         where t.status=0 and nt.invalidDate='2100-12-31'
-            and tr.name=? and l.id=?
+            and tr.name=? and tr.lang.id=?
     </query>
 
 	<query name="TownNameTemporal.readFull">

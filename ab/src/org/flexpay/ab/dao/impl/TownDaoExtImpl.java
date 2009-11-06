@@ -29,7 +29,7 @@ public class TownDaoExtImpl extends HibernateDaoSupport implements TownDaoExt {
 	@SuppressWarnings ({"unchecked"})
 	@NotNull
 	@Override
-	public List<Town> findTowns(Long regionId, Collection<ObjectSorter> sorters, final Page<Town> pager) {
+	public List<Town> findTowns(Long regionId, Collection<? extends ObjectSorter> sorters, final Page<Town> pager) {
 		TownSorter sorter = findSorter(sorters);
 		sorter.setTownField("o");
 
@@ -68,7 +68,7 @@ public class TownDaoExtImpl extends HibernateDaoSupport implements TownDaoExt {
 	}
 
 	@NotNull
-	private TownSorter findSorter(Collection<ObjectSorter> sorters) {
+	private TownSorter findSorter(Collection<? extends ObjectSorter> sorters) {
 
 		for (ObjectSorter sorter : sorters) {
 			if (sorter.isActivated() && sorter instanceof TownSorter) {

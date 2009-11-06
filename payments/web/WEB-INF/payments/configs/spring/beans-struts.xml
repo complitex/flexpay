@@ -29,7 +29,7 @@
 		  p:quittanceDetailsFinder-ref="jmsQuittanceDetailsFinder"
 		  p:spService-ref="spService"
 		  p:serviceProviderService-ref="serviceProviderService"
-		  p:apartmentService-ref="apartmentService"
+		  p:addressService-ref="addressService"
 		  p:personService-ref="personService"
 		  p:crumbNameKey="payments.crumbs.search_quittances"
 		  scope="prototype" />

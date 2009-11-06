@@ -5,7 +5,7 @@ import org.flexpay.ab.persistence.filters.StreetFilter;
 import org.flexpay.ab.persistence.sorter.BuildingsSorter;
 import org.flexpay.ab.service.BuildingService;
 import org.flexpay.common.actions.FPActionWithPagerSupport;
-import org.flexpay.common.persistence.DomainObject;
+import static org.flexpay.common.persistence.DomainObject.collectionIds;
 import static org.flexpay.common.util.CollectionUtils.arrayStack;
 import static org.flexpay.common.util.CollectionUtils.list;
 import org.jetbrains.annotations.NotNull;
@@ -30,14 +30,15 @@ public class BuildingsListAction extends FPActionWithPagerSupport<BuildingAddres
 			return SUCCESS;
 		}
 
-		List<BuildingAddress> addresses = buildingService.getBuildings(
-				arrayStack(new StreetFilter(streetFilter)), list(buildingsSorter), getPager());
-
+		buildings = buildingService.findAddresses(arrayStack(new StreetFilter(streetFilter)), list(buildingsSorter), getPager());
 		if (log.isDebugEnabled()) {
 			log.debug("Total buildings found: {}", buildings.size());
 		}
 
-		buildings = buildingService.readFullAddresses(DomainObject.collectionIds(addresses), true);
+		buildings = buildingService.readFullAddresses(collectionIds(buildings), true);
+		if (log.isDebugEnabled()) {
+			log.debug("Total full buildings found: {}", buildings.size());
+		}
 
 		return SUCCESS;
 	}

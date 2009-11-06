@@ -1,14 +1,11 @@
 package org.flexpay.ab.actions.district;
 
-import org.apache.commons.collections.ArrayStack;
 import org.flexpay.ab.persistence.District;
 import org.flexpay.ab.persistence.filters.TownFilter;
 import org.flexpay.ab.persistence.sorter.DistrictSorter;
 import org.flexpay.ab.service.DistrictService;
 import org.flexpay.common.actions.FPActionWithPagerSupport;
-import org.flexpay.common.persistence.DomainObject;
-import org.flexpay.common.persistence.sorter.ObjectSorter;
-import org.flexpay.common.util.CollectionUtils;
+import static org.flexpay.common.persistence.DomainObject.collectionIds;
 import static org.flexpay.common.util.CollectionUtils.arrayStack;
 import static org.flexpay.common.util.CollectionUtils.list;
 import org.jetbrains.annotations.NotNull;
@@ -33,16 +30,16 @@ public class DistrictsListAction extends FPActionWithPagerSupport<District> {
 			return SUCCESS;
 		}
 
-		ArrayStack filters = arrayStack(new TownFilter(townFilter));
 		districtSorter.setLang(getLanguage());
-		List<ObjectSorter> sorters = CollectionUtils.<ObjectSorter>list(districtSorter);
-		List<District> districtStubs = districtService.find(filters, sorters, getPager());
-
+		districts = districtService.find(arrayStack(new TownFilter(townFilter)), list(districtSorter), getPager());
 		if (log.isDebugEnabled()) {
-			log.debug("Total districts found: {}", districtStubs.size());
+			log.debug("Total districts found: {}", districts.size());
 		}
 
-		districts = districtService.readFull(DomainObject.collectionIds(districtStubs), true);
+		districts = districtService.readFull(collectionIds(districts), true);
+		if (log.isDebugEnabled()) {
+			log.debug("Total full districts found: {}", districts.size());
+		}
 
 		return SUCCESS;
 	}

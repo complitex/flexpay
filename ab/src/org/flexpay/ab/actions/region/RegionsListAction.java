@@ -1,14 +1,11 @@
 package org.flexpay.ab.actions.region;
 
-import org.apache.commons.collections.ArrayStack;
 import org.flexpay.ab.persistence.Region;
 import org.flexpay.ab.persistence.filters.CountryFilter;
 import org.flexpay.ab.persistence.sorter.RegionSorter;
 import org.flexpay.ab.service.RegionService;
 import org.flexpay.common.actions.FPActionWithPagerSupport;
 import static org.flexpay.common.persistence.DomainObject.collectionIds;
-import org.flexpay.common.persistence.sorter.ObjectSorter;
-import org.flexpay.common.util.CollectionUtils;
 import static org.flexpay.common.util.CollectionUtils.arrayStack;
 import static org.flexpay.common.util.CollectionUtils.list;
 import org.jetbrains.annotations.NotNull;
@@ -33,17 +30,14 @@ public class RegionsListAction extends FPActionWithPagerSupport<Region> {
 			return SUCCESS;
 		}
 
-		ArrayStack filters = arrayStack(new CountryFilter(countryFilter));
-		List<ObjectSorter> sorters = CollectionUtils.<ObjectSorter>list(regionSorter);
-		regions = regionService.find(filters, sorters, getPager());
-
+		regions = regionService.find(arrayStack(new CountryFilter(countryFilter)), list(regionSorter), getPager());
 		if (log.isDebugEnabled()) {
 			log.debug("Total regions found: {}", regions.size());
 		}
 
 		regions = regionService.readFull(collectionIds(regions), true);
-		for (Region region : regions) {
-			log.debug("Total full regions found: {}", region.getCurrentName());
+		if (log.isDebugEnabled()) {
+			log.debug("Total full regions found: {}", regions.size());
 		}
 
 		return SUCCESS;

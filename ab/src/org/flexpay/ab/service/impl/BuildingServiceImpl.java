@@ -57,8 +57,249 @@ public class BuildingServiceImpl implements BuildingService, ParentService<Build
 	private SessionUtils sessionUtils;
 	private ModificationListener<Building> modificationListener;
 
+	/**
+	 * Read building
+	 *
+	 * @param buildingStub Building stub
+	 * @return Object if found, or <code>null</code> otherwise
+	 */
+	@Nullable
 	@Override
-	public List<BuildingAddress> getBuildings(ArrayStack filters, Page<BuildingAddress> pager) {
+	public Building readFull(@NotNull Stub<Building> buildingStub) {
+		Building building = buildingDao.readFull(buildingStub.getId());
+		if (building == null) {
+			return null;
+		}
+
+		for (PropertiesInitializer<Building> initializer : propertiesInitializerHolder.getInitializers()) {
+			initializer.init(building);
+		}
+		return building;
+	}
+
+	/**
+	 * Read buildings collection by theirs ids
+	 *
+ 	 * @param buildingIds Building ids
+	 * @param preserveOrder Whether to preserve order of objects
+	 * @return Found buildings
+	 */
+	@NotNull
+	@Override
+	public List<Building> readFull(@NotNull Collection<Long> buildingIds, boolean preserveOrder) {
+		List<Building> buildings = buildingDao.readFullCollection(buildingIds, preserveOrder);
+		for (PropertiesInitializer<Building> initializer : propertiesInitializerHolder.getInitializers()) {
+			initializer.init(buildings);
+		}
+
+		return buildings;
+	}
+
+	/**
+	 * Disable buildings
+	 *
+	 * @param buildingIds IDs of buildings to disable
+	 */
+	@Transactional (readOnly = false)
+	@Override
+	public void disable(@NotNull Collection<Long> buildingIds) {
+		for (Long id : buildingIds) {
+			Building building = buildingDao.read(id);
+			if (building == null) {
+				log.warn("Can't get building with id {} from DB", id);
+				continue;
+			}
+			building.disable();
+			for (BuildingAddress address : building.getBuildingses()) {
+				address.disable();
+			}
+			buildingDao.update(building);
+
+			modificationListener.onDelete(building);
+
+			log.debug("Building disabled: {}", building);
+		}
+	}
+
+	/**
+	 * Create building
+	 *
+	 * @param building Building to save
+	 * @return Saved instance of building
+	 * @throws FlexPayExceptionContainer if validation fails
+	 */
+	@NotNull
+	@Transactional (readOnly = false)
+	@Override
+	public Building create(@NotNull Building building) throws FlexPayExceptionContainer {
+
+		validate(building);
+		building.setId(null);
+		buildingDao.create(building);
+
+		modificationListener.onCreate(building);
+
+		return building;
+	}
+
+	/**
+	 * Update or create building
+	 *
+	 * @param building Building to save
+	 * @return Saved instance of building
+	 * @throws FlexPayExceptionContainer if validation fails
+	 */
+	@SuppressWarnings ({"ThrowableInstanceNeverThrown"})
+	@Transactional (readOnly = false)
+	@NotNull
+	@Override
+	public Building update(@NotNull Building building) throws FlexPayExceptionContainer {
+
+		validate(building);
+
+		Building old = readFull(stub(building));
+		if (old == null) {
+			throw new FlexPayExceptionContainer(
+					new FlexPayException("No building found to update " + building));
+		}
+		sessionUtils.evict(old);
+		modificationListener.onUpdate(old, building);
+
+		building = buildingDao.merge(building);
+
+		return building;
+	}
+
+	/**
+	 * Validate building before save
+	 *
+	 * @param building Building object to validate
+	 * @throws FlexPayExceptionContainer if validation fails
+	 */
+	@SuppressWarnings ({"ThrowableInstanceNeverThrown"})
+	private void validate(Building building) throws FlexPayExceptionContainer {
+
+		FlexPayExceptionContainer ex = new FlexPayExceptionContainer();
+
+		if (building.getBuildingses().isEmpty()) {
+			ex.addException(new FlexPayException("No address", "error.ab.buildings.no_number"));
+		}
+
+		if (building.getDistrict() == null) {
+			ex.addException(new FlexPayException("No district", "error.ab.building.no_district"));
+		}
+
+		if (building.isNotNew()) {
+			Building old = readFull(stub(building));
+			sessionUtils.evict(old);
+			if (!old.getDistrictStub().equals(building.getDistrictStub())) {
+				ex.addException(new FlexPayException("District changed", "error.ab.building.district_changed"));
+			}
+		}
+
+		// check that building has only one address on any streets
+		do {
+			Set<Stub<Street>> streetStubs = CollectionUtils.set();
+			for (BuildingAddress address : building.getBuildingses()) {
+				if (streetStubs.contains(address.getStreetStub())) {
+					ex.addException(new FlexPayException("Two street address", "error.ab.building.street_address_duplicate"));
+					break;
+				}
+				streetStubs.add(address.getStreetStub());
+			}
+		} while (false);
+
+		// check no other buildings has the same address
+		for (BuildingAddress address : building.getBuildingses()) {
+			String number = address.getNumber();
+			if (number == null) {
+				log.warn("Incorrect building address. Address number is null. Address: {}", address);
+				continue;
+			}
+			List<BuildingAddress> candidates = buildingsDaoExt.findBuildings(
+					address.getStreetStub().getId(), number);
+			candidates = filter(candidates, address.getBuildingAttributes());
+			if (!candidates.isEmpty() && (candidates.size() > 1 || !candidates.get(0).equals(address))) {
+				String addressStr = "";
+				try {
+					addressStr = addressService.getBuildingsAddress(stub(candidates.get(0)), null);
+				} catch (Exception e) {
+					// do nothing
+				}
+
+				ex.addException(new FlexPayException("Address already exists", "error.ab.address_alredy_exist", addressStr));
+			}
+		}
+
+		if (ex.isNotEmpty()) {
+			ex.info(log);
+			throw ex;
+		}
+	}
+
+	/**
+	 * Find building by building address stub
+	 *
+	 * @param addressStub BuildingAddress stub
+	 * @return Building instance if found, or <code>null</code> otherwise
+	 */
+	@Nullable
+	@Override
+	public Building findBuilding(@NotNull Stub<BuildingAddress> addressStub) {
+		Building building = buildingsDaoExt.findBuilding(addressStub.getId());
+		sessionUtils.evict(building);
+		return building != null ? readFull(stub(building)) : null;
+	}
+
+	/**
+	 * Read building address
+	 *
+	 * @param addressStub BuildingAddress stub
+	 * @return Object if found, or <code>null</code> otherwise
+	 */
+	@Nullable
+	@Override
+	public BuildingAddress readFullAddress(@NotNull Stub<BuildingAddress> addressStub) {
+		return buildingsDao.readFull(addressStub.getId());
+	}
+
+	/**
+	 * Read building addresses collection by theirs ids
+	 *
+ 	 * @param addressIds BuildingAddress ids
+	 * @param preserveOrder Whether to preserve order of objects
+	 * @return Found building addresses
+	 */
+	@NotNull
+	@Override
+	public List<BuildingAddress> readFullAddresses(@NotNull Collection<Long> addressIds, boolean preserveOrder) {
+		return buildingsDao.readFullCollection(addressIds, preserveOrder);
+	}
+
+	/**
+	 * Get a list of available building addresses
+	 *
+	 * @param filters Parent filters
+	 * @param sorters Stack of sorters
+	 * @param pager   Page
+	 * @return List of Objects
+	 */
+	@NotNull
+	@Override
+	public List<BuildingAddress> findAddresses(@NotNull ArrayStack filters, @NotNull List<? extends ObjectSorter> sorters, @NotNull Page<BuildingAddress> pager) {
+		return buildingsDaoExt.findBuildingAddresses(filters, sorters, pager);
+	}
+
+	/**
+	 * Get a list of available building addresses
+	 *
+	 * @param filters Parent filters
+	 * @param pager   Page
+	 * @return List of Objects
+	 */
+	@NotNull
+	@Override
+	public List<BuildingAddress> findAddresses(@NotNull ArrayStack filters, Page<BuildingAddress> pager) {
 		PrimaryKeyFilter<?> streetFilter = (PrimaryKeyFilter<?>) filters.peek();
 		if (filters.size() > 1 && filters.peek(1) instanceof DistrictFilter) {
 			DistrictFilter districtFilter = (DistrictFilter) filters.peek(1);
@@ -72,26 +313,155 @@ public class BuildingServiceImpl implements BuildingService, ParentService<Build
 		return buildingsDao.findBuildings(streetFilter.getSelectedId(), pager);
 	}
 
+	/**
+	 * Lookup building address by street id.
+	 *
+	 * @param streetStub  Street stub
+	 * @return List of found building addresses
+	 */
 	@NotNull
 	@Override
-	public List<BuildingAddress> getBuildings(ArrayStack filters, List<? extends ObjectSorter> sorters, Page<BuildingAddress> pager) {
-		return buildingsDaoExt.findBuildingAddresses(filters, sorters, pager);
+	public List<BuildingAddress> findAddressesByParent(@NotNull Stub<Street> streetStub) {
+		return buildingsDao.findBuildings(streetStub.getId());
 	}
 
+	/**
+	 * Find building addresses for building
+	 *
+	 * @param buildingStub Building stub
+	 * @return List of building addresses
+	 * @throws FlexPayException if building does not have any buildingses
+	 */
+	@NotNull
 	@Override
-	public List<BuildingAddress> getBuildings(@NotNull Stub<Street> stub, Page<BuildingAddress> pager) {
-		log.debug("Getting street buildings");
-		return buildingsDao.findBuildings(stub.getId(), pager);
+	public List<BuildingAddress> findAddresesByBuilding(@NotNull Stub<Building> buildingStub) throws FlexPayException {
+		return buildingsDao.findBuildingBuildings(buildingStub.getId());
 	}
 
+	/**
+	 * Find building addresses by street and attributes
+	 *
+	 * @param streetStub Building street stub
+	 * @param attributes Building attributes
+	 * @return BuildingAddress instance, or <code>null</null> if not found
+	 * @throws FlexPayException if failure occurs
+	 */
+	@Nullable
 	@Override
-	public List<BuildingAddress> getBuildings(@NotNull Stub<Street> stub) {
-		return buildingsDao.findBuildings(stub.getId());
+	public BuildingAddress findAddresses(@NotNull Stub<Street> streetStub, @NotNull Set<AddressAttribute> attributes) throws FlexPayException {
+		return findAddresses(streetStub, null, attributes);
 	}
 
+	/**
+	 * Find building addresses by street, district and attributes
+	 *
+	 * @param streetStub Building street stub
+	 * @param districtStub Building district stub
+	 * @param attributes Building attributes
+	 * @return BuildingAddress instance, or <code>null</null> if not found
+	 * @throws FlexPayException if failure occurs
+	 */
+	@Nullable
 	@Override
-	public BuildingsFilter initFilter(BuildingsFilter parentFilter,
-									  PrimaryKeyFilter<?> forefatherFilter, Locale locale)
+	public BuildingAddress findAddresses(@NotNull Stub<Street> streetStub, @Nullable Stub<District> districtStub,
+										 @NotNull Set<AddressAttribute> attributes) throws FlexPayException {
+
+		List<BuildingAddress> buildingses =
+				districtStub == null ?
+				buildingsDaoExt.findBuildings(streetStub.getId(), findNumber(attributes)) :
+				buildingsDaoExt.findBuildings(streetStub.getId(), districtStub.getId(), findNumber(attributes));
+		buildingses = filter(buildingses, attributes);
+		if (buildingses.isEmpty()) {
+			return null;
+		}
+		if (buildingses.size() > 1) {
+			throw new FlexPayException("Address duplicates",
+					"error.ab.address_duplicates", streetStub.getId(), findNumber(attributes));
+		}
+
+		return buildingses.get(0);
+	}
+
+	@NotNull
+	private String findNumber(@NotNull Set<AddressAttribute> attributes) throws FlexPayException {
+		for (AddressAttribute attr : attributes) {
+			if (attr.getBuildingAttributeType().isBuildingNumber()) {
+				return attr.getValue();
+			}
+		}
+
+		throw new FlexPayException("No number attribute", "error.ab.buildings.no_number");
+	}
+
+	@NotNull
+	private List<BuildingAddress> filter(@NotNull List<BuildingAddress> buildingses, @NotNull Set<AddressAttribute> attrs) {
+		List<BuildingAddress> result = list();
+		for (BuildingAddress buildingAddress : buildingses) {
+			if (buildingAddress.hasSameAttributes(attrs)) {
+				result.add(buildingAddress);
+			}
+		}
+
+		return result;
+	}
+
+	/**
+	 * Find single Building relation for building stub
+	 *
+	 * @param buildingStub Building stub
+	 * @return BuildingAddress instance
+	 * @throws FlexPayException if building does not have any addresses
+	 */
+	@NotNull
+	@Override
+	public BuildingAddress findFirstAddress(@NotNull Stub<Building> buildingStub) throws FlexPayException {
+
+		List<BuildingAddress> addresses = buildingsDao.findBuildingBuildings(buildingStub.getId());
+		if (addresses.isEmpty()) {
+			throw new FlexPayException("Building #" + buildingStub.getId() + " doesn't have any addresses");
+		}
+		return addresses.get(0);
+	}
+
+	/**
+	 * Convert string values to AddressAttribute-instances
+	 *
+	 * @param number number attribute value
+	 * @param bulk bulk attribute value
+	 * @return Set of AddressAttributes
+	 */
+	@NotNull
+	@Override
+	public Set<AddressAttribute> attributes(@NotNull String number, @Nullable String bulk) {
+		Set<AddressAttribute> result = set();
+
+		AddressAttribute numberAttr = new AddressAttribute();
+		numberAttr.setValue(number);
+		numberAttr.setBuildingAttributeType(ApplicationConfig.getBuildingAttributeTypeNumber());
+		result.add(numberAttr);
+
+		if (StringUtils.isNotEmpty(bulk)) {
+			AddressAttribute bulkAttr = new AddressAttribute();
+			bulkAttr.setValue(bulk);
+			bulkAttr.setBuildingAttributeType(ApplicationConfig.getBuildingAttributeTypeBulk());
+			result.add(bulkAttr);
+		}
+
+		return result;
+	}
+
+	/**
+	 * Initialize parent filter. Possibly taking in account upper level forefather filter
+	 *
+	 * @param parentFilter	 Filter to init
+	 * @param forefatherFilter Upper level filter
+	 * @param locale		   Locale to get parent names in
+	 * @return Initialised filter
+	 * @throws FlexPayException if failure occurs
+	 */
+	@NotNull
+	@Override
+	public BuildingsFilter initFilter(@Nullable BuildingsFilter parentFilter, @NotNull PrimaryKeyFilter<?> forefatherFilter, @NotNull Locale locale)
 			throws FlexPayException {
 
 		if (parentFilter == null) {
@@ -102,8 +472,7 @@ public class BuildingServiceImpl implements BuildingService, ParentService<Build
 
 		ArrayStack filters = new ArrayStack();
 		filters.push(forefatherFilter);
-		Page<BuildingAddress> pager = new Page<BuildingAddress>(100000, 1);
-		parentFilter.setBuildingses(getBuildings(filters, pager));
+		parentFilter.setBuildingses(findAddresses(filters, new Page<BuildingAddress>(100000, 1)));
 
 		List<BuildingAddress> names = parentFilter.getBuildingses();
 		if (names.isEmpty()) {
@@ -119,7 +488,7 @@ public class BuildingServiceImpl implements BuildingService, ParentService<Build
 		return parentFilter;
 	}
 
-	private boolean isFilterValid(BuildingsFilter filter) {
+	private boolean isFilterValid(@NotNull BuildingsFilter filter) {
 		if (!filter.needFilter()) {
 			return true;
 		}
@@ -132,15 +501,24 @@ public class BuildingServiceImpl implements BuildingService, ParentService<Build
 		return false;
 	}
 
+	/**
+	 * Initialize filters. <p>Filters are coming from the most significant to less significant ones order, like
+	 * CountryFilter, RegionFilter, TownFilter for example</p>
+	 *
+	 * @param filters Filters to init
+	 * @param locale  Locale to get parent names in
+	 * @return Initialised filters stack
+	 * @throws FlexPayException if failure occurs
+	 */
+	@NotNull
 	@Override
-	public ArrayStack initFilters(ArrayStack filters, Locale locale)
-			throws FlexPayException {
+	public ArrayStack initFilters(@Nullable ArrayStack filters, @NotNull Locale locale) throws FlexPayException {
+
 		if (filters == null) {
 			filters = new ArrayStack();
 		}
 
-		BuildingsFilter parentFilter = filters.isEmpty() ? null
-														 : (BuildingsFilter) filters.pop();
+		BuildingsFilter parentFilter = filters.isEmpty() ? null : (BuildingsFilter) filters.pop();
 
 		// check if a districts filter present
 		if (filters.size() > 1 && filters.peek(1) instanceof DistrictFilter) {
@@ -172,9 +550,9 @@ public class BuildingServiceImpl implements BuildingService, ParentService<Build
 		return filters;
 	}
 
-	private BuildingsFilter initFilter(BuildingsFilter buildingFilter,
-									   PrimaryKeyFilter<?> streetFilter, DistrictFilter districtFilter)
-			throws FlexPayException {
+	@NotNull
+	private BuildingsFilter initFilter(@Nullable BuildingsFilter buildingFilter,
+									   @NotNull PrimaryKeyFilter<?> streetFilter, @NotNull DistrictFilter districtFilter) throws FlexPayException {
 
 		if (buildingFilter == null) {
 			buildingFilter = new BuildingsFilter();
@@ -185,347 +563,18 @@ public class BuildingServiceImpl implements BuildingService, ParentService<Build
 		ArrayStack filters = new ArrayStack();
 		filters.push(districtFilter);
 		filters.push(streetFilter);
-		Page<BuildingAddress> pager = new Page<BuildingAddress>(100000, 1);
-		buildingFilter.setBuildingses(getBuildings(filters, pager));
+		buildingFilter.setBuildingses(findAddresses(filters, new Page<BuildingAddress>(100000, 1)));
 
 		List<BuildingAddress> names = buildingFilter.getBuildingses();
 		if (names.isEmpty()) {
 			throw new FlexPayException("No buildings", "ab.no_buildings");
 		}
-		if (buildingFilter.getSelectedId() == null
-			|| !isFilterValid(buildingFilter)) {
+		if (buildingFilter.getSelectedId() == null || !isFilterValid(buildingFilter)) {
 			BuildingAddress firstObject = names.iterator().next();
 			buildingFilter.setSelectedId(firstObject.getId());
 		}
 
 		return buildingFilter;
-	}
-
-	/**
-	 * Find buildings by street and attributes
-	 *
-	 * @param street	 Building street stub
-	 * @param attributes Building attributes
-	 * @return Buildings instance, or <code>null</null> if not found
-	 * @throws org.flexpay.common.exception.FlexPayException
-	 *          if failure occurs
-	 */
-	@Override
-	public BuildingAddress findBuildings(@NotNull Stub<Street> street, @NotNull Set<AddressAttribute> attributes) throws FlexPayException {
-		return findBuildings(street, null, attributes);
-	}
-
-	/**
-	 * Find buildings by street, district and attributes
-	 *
-	 * @param street	 Building street stub
-	 * @param district   Building district stub
-	 * @param attributes Building attributes
-	 * @return Buildings instance, or <code>null</null> if not found
-	 * @throws FlexPayException if failure occurs
-	 */
-	@Override
-	public BuildingAddress findBuildings(@NotNull Stub<Street> street, @Nullable Stub<District> district,
-										 @NotNull Set<AddressAttribute> attributes)
-			throws FlexPayException {
-
-		List<BuildingAddress> buildingses =
-				district == null ?
-				buildingsDaoExt.findBuildings(street.getId(), findNumber(attributes)) :
-				buildingsDaoExt.findBuildings(street.getId(), district.getId(), findNumber(attributes));
-		buildingses = filter(buildingses, attributes);
-		if (buildingses.isEmpty()) {
-			return null;
-		}
-		if (buildingses.size() > 1) {
-			throw new FlexPayException("Address duplicates",
-					"error.ab.address_duplicates", street.getId(), findNumber(attributes));
-		}
-
-		return buildingses.get(0);
-	}
-
-	/**
-	 * Find all buildings on a specified street
-	 *
-	 * @param stub Street stub
-	 * @return List of buildings on a street
-	 */
-	@NotNull
-	@Override
-	public List<Building> findStreetBuildings(Stub<Street> stub) {
-		return buildingDao.findStreetBuildings(stub.getId());
-	}
-
-	/**
-	 * Find building by buildings stub
-	 *
-	 * @param stub Buildings stub
-	 * @return Building instance
-	 */
-	@Nullable
-	@Override
-	public Building findBuilding(@NotNull Stub<BuildingAddress> stub) {
-		Building building = buildingsDaoExt.findBuilding(stub.getId());
-		sessionUtils.evict(building);
-		return building != null ? read(stub(building)) : null;
-	}
-
-	@Override
-	public Set<AddressAttribute> attributes(@NotNull String number, @Nullable String bulk) {
-		Set<AddressAttribute> result = set();
-
-		AddressAttribute numberAttr = new AddressAttribute();
-		numberAttr.setValue(number);
-		numberAttr.setBuildingAttributeType(ApplicationConfig.getBuildingAttributeTypeNumber());
-		result.add(numberAttr);
-
-		if (StringUtils.isNotEmpty(bulk)) {
-			AddressAttribute bulkAttr = new AddressAttribute();
-			bulkAttr.setValue(bulk);
-			bulkAttr.setBuildingAttributeType(ApplicationConfig.getBuildingAttributeTypeBulk());
-			result.add(bulkAttr);
-		}
-
-		return result;
-	}
-
-	/**
-	 * Find single Building relation for building stub
-	 *
-	 * @param stub Building stub
-	 * @return Buildings instance
-	 * @throws FlexPayException if building does not have any buildingses
-	 */
-	@Override
-	public BuildingAddress getFirstBuildings(Stub<Building> stub) throws FlexPayException {
-
-		List<BuildingAddress> buildingses = buildingsDao.findBuildingBuildings(stub.getId());
-		if (buildingses.isEmpty()) {
-			throw new FlexPayException("Building #" + stub.getId()
-									   + " does not have any buildings");
-		}
-		return buildingses.get(0);
-	}
-
-	@NotNull
-	private List<BuildingAddress> filter(@NotNull List<BuildingAddress> buildingses, @NotNull Set<AddressAttribute> attrs) {
-		List<BuildingAddress> result = list();
-		for (BuildingAddress buildingAddress : buildingses) {
-			if (buildingAddress.hasSameAttributes(attrs)) {
-				result.add(buildingAddress);
-			}
-		}
-
-		return result;
-	}
-
-	@NotNull
-	private String findNumber(@NotNull Set<AddressAttribute> attributes) throws FlexPayException {
-		for (AddressAttribute attr : attributes) {
-			if (attr.getBuildingAttributeType().isBuildingNumber()) {
-				return attr.getValue();
-			}
-		}
-
-		throw new FlexPayException("No number attribute", "error.ab.buildings.no_number");
-	}
-
-	@Nullable
-	@Override
-	public BuildingAddress readFull(@NotNull Stub<BuildingAddress> stub) {
-		return buildingsDao.readFull(stub.getId());
-	}
-
-	/**
-	 * Read full buildings info
-	 *
-	 * @param ids		   Buildings keys
-	 * @param preserveOrder Whether to preserve order of buildings
-	 * @return Buildings found
-	 */
-	@NotNull
-	@Override
-	public List<Building> readFull(Collection<Long> ids, boolean preserveOrder) {
-		List<Building> buildings = buildingDao.readFullCollection(ids, preserveOrder);
-		for (PropertiesInitializer<Building> initializer : propertiesInitializerHolder.getInitializers()) {
-			initializer.init(buildings);
-		}
-
-		return buildings;
-	}
-
-	/**
-	 * Disable buildings
-	 *
-	 * @param buildings Buildings to disable
-	 */
-	@Transactional (readOnly = false)
-	@Override
-	public void disable(Collection<Building> buildings) {
-		log.info("{} districts to disable", buildings.size());
-		for (Building object : buildings) {
-			object.disable();
-			for (BuildingAddress address : object.getBuildingses()) {
-				address.disable();
-			}
-			buildingDao.update(object);
-
-			modificationListener.onDelete(object);
-
-			log.info("Disabled: {}", object);
-		}
-	}
-
-	/**
-	 * Read full address info by their ids
-	 *
-	 * @param addressIds	Address ids
-	 * @param preserveOrder Whether to preserve elements order
-	 * @return List of buildings
-	 */
-	@Override
-	public List<BuildingAddress> readFullAddresses(Collection<Long> addressIds, boolean preserveOrder) {
-		return buildingsDao.readFullCollection(addressIds, preserveOrder);
-	}
-
-	/**
-	 * Create building
-	 *
-	 * @param building Building to create
-	 * @return persisted building back
-	 * @throws org.flexpay.common.exception.FlexPayExceptionContainer
-	 *          if validation fails
-	 */
-	@NotNull
-	@Transactional (readOnly = false)
-	@Override
-	public Building create(@NotNull Building building) throws FlexPayExceptionContainer {
-
-		validate(building);
-		building.setId(null);
-		buildingDao.create(building);
-
-		modificationListener.onCreate(building);
-
-		return building;
-	}
-
-	/**
-	 * Update building
-	 *
-	 * @param building Building to update
-	 * @return updated building back
-	 * @throws org.flexpay.common.exception.FlexPayExceptionContainer
-	 *          if validation fails
-	 */
-	@SuppressWarnings ({"ThrowableInstanceNeverThrown"})
-	@NotNull
-	@Transactional (readOnly = false)
-	@Override
-	public Building update(@NotNull Building building) throws FlexPayExceptionContainer {
-
-		validate(building);
-
-		Building old = read(stub(building));
-		if (old == null) {
-			throw new FlexPayExceptionContainer(
-					new FlexPayException("No object found to update " + building));
-		}
-		sessionUtils.evict(old);
-		modificationListener.onUpdate(old, building);
-
-		building = buildingDao.merge(building);
-
-		return building;
-	}
-
-	@SuppressWarnings ({"ThrowableInstanceNeverThrown"})
-	private void validate(Building building) throws FlexPayExceptionContainer {
-
-		FlexPayExceptionContainer ex = new FlexPayExceptionContainer();
-
-		if (building.getBuildingses().isEmpty()) {
-			ex.addException(new FlexPayException("No address", "error.ab.buildings.no_number"));
-		}
-
-		if (building.getDistrict() == null) {
-			ex.addException(new FlexPayException("No district", "error.ab.building.no_district"));
-		}
-
-		if (building.isNotNew()) {
-			Building old = read(stub(building));
-			sessionUtils.evict(old);
-			if (!old.getDistrictStub().equals(building.getDistrictStub())) {
-				ex.addException(new FlexPayException("District changed", "error.ab.building.district_changed"));
-			}
-		}
-
-		// check that building has only one address on any streets
-		do {
-			Set<Stub<Street>> streetStubs = CollectionUtils.set();
-			for (BuildingAddress address : building.getBuildingses()) {
-				if (streetStubs.contains(address.getStreetStub())) {
-					ex.addException(new FlexPayException("Two street address", "error.ab.building.street_address_duplicate"));
-					break;
-				}
-				streetStubs.add(address.getStreetStub());
-			}
-		} while (false);
-
-		// check no other buildings has the same address
-		for (BuildingAddress address : building.getBuildingses()) {
-			String number = address.getNumber();
-			if (number == null) {
-				log.warn("Incorrect building address. Address number is null. Address: {}", address);
-				continue;
-			}
-			List<BuildingAddress> candidates = buildingsDaoExt.findBuildings(
-					address.getStreetStub().getId(), number);
-			candidates = filter(candidates, address.getBuildingAttributes());
-			if (!candidates.isEmpty() && (candidates.size() > 1 || !candidates.get(0).equals(address))) {
-				ex.addException(new FlexPayException("Address already exists", "error.ab.address_alredy_exist",
-						getBuildingsAddress(candidates.get(0))));
-			}
-		}
-
-		if (ex.isNotEmpty()) {
-			ex.info(log);
-			throw ex;
-		}
-	}
-
-	private String getBuildingsAddress(BuildingAddress address) {
-		try {
-			return addressService.getBuildingsAddress(stub(address), null);
-		} catch (Exception ex) {
-			return "";
-		}
-	}
-
-	/**
-	 * Find all Buildings relation for building stub
-	 *
-	 * @param stub Building stub
-	 * @return List of Buildings
-	 * @throws FlexPayException if building does not have any buildingses
-	 */
-	@Override
-	public List<BuildingAddress> getBuildingBuildings(Stub<Building> stub) throws FlexPayException {
-		return buildingsDao.findBuildingBuildings(stub.getId());
-	}
-
-	@Override
-	public Building read(@NotNull Stub<Building> stub) {
-		Building building = buildingDao.readFull(stub.getId());
-		if (building == null) {
-			return null;
-		}
-
-		for (PropertiesInitializer<Building> initializer : propertiesInitializerHolder.getInitializers()) {
-			initializer.init(building);
-		}
-		return building;
 	}
 
 	@Required

@@ -51,11 +51,11 @@ public class BuildingProcessor extends AbstractProcessor<BuildingAddress> {
 	@Nullable
 	protected BuildingAddress readObject(@NotNull Stub<BuildingAddress> stub) {
 
-		BuildingAddress buildingAddress = buildingService.readFull(stub);
+		BuildingAddress buildingAddress = buildingService.readFullAddress(stub);
 		if (buildingAddress == null) {
 			return null;
 		}
-		Building building = buildingService.read(buildingAddress.getBuildingStub());
+		Building building = buildingService.readFull(buildingAddress.getBuildingStub());
 
 		log.debug("Read building: {}", building);
 
@@ -194,7 +194,7 @@ public class BuildingProcessor extends AbstractProcessor<BuildingAddress> {
 			return null;
 		}
 
-		BuildingAddress buildingAddress = buildingService.findBuildings(
+		BuildingAddress buildingAddress = buildingService.findAddresses(
 				object.getStreetStub(), buildingService.attributes(number, bulk));
 		return buildingAddress != null ? stub(buildingAddress) : null;
 	}

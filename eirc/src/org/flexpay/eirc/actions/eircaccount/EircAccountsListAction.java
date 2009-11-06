@@ -72,7 +72,7 @@ public class EircAccountsListAction extends FPActionWithPagerSupport<EircAccount
 	}
 
 	public String getFIO(@NotNull Person person) {
-		Person persistent = personService.read(stub(person));
+		Person persistent = personService.readFull(stub(person));
 		if (persistent == null) {
 			throw new RuntimeException("Invalid person: " + person);
 		}

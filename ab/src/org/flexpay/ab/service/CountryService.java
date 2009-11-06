@@ -23,7 +23,7 @@ public interface CountryService {
 	 */
 	@Secured (Roles.COUNTRY_READ)
 	@Nullable
-	Country read(@NotNull Stub<Country> countryStub);
+	Country readFull(@NotNull Stub<Country> countryStub);
 
 	/**
 	 * Read countries collection by theirs ids
@@ -34,7 +34,7 @@ public interface CountryService {
 	 */
 	@Secured ({Roles.COUNTRY_READ})
 	@NotNull
-	List<Country> read(@NotNull Collection<Long> countryIds, boolean preserveOrder);
+	List<Country> readFull(@NotNull Collection<Long> countryIds, boolean preserveOrder);
 
 	/**
 	 * Create country
@@ -56,7 +56,7 @@ public interface CountryService {
 	 * @return List of Objects
 	 */
 	@Secured (Roles.COUNTRY_READ)
-	List<Country> find(@NotNull ArrayStack filters, @NotNull List<ObjectSorter> sorters, @NotNull Page<Country> pager);
+	List<Country> find(@NotNull ArrayStack filters, @NotNull List<? extends ObjectSorter> sorters, @NotNull Page<Country> pager);
 
 	/**
 	 * Lookup countries by query. Query is a string which may contains in country name:

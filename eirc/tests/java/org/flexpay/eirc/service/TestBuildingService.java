@@ -19,7 +19,7 @@ public class TestBuildingService extends EircSpringBeanAwareTestCase {
 	@Test
 	public void testUpdateServedBuilding() throws FlexPayExceptionContainer {
 
-		ServedBuilding building = (ServedBuilding) buildingService.read(IVANOVA_27);
+		ServedBuilding building = (ServedBuilding) buildingService.readFull(IVANOVA_27);
 		assertNotNull("Building IVANOVA_27 not found", building);
 
 		buildingService.update(building);

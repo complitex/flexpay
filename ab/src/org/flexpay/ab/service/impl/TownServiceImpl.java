@@ -214,7 +214,7 @@ public class TownServiceImpl extends NameTimeDependentServiceImpl<
 	 */
 	@NotNull
 	@Override
-	public List<Town> find(@NotNull ArrayStack filters, @NotNull List<ObjectSorter> sorters, @NotNull Page<Town> pager) {
+	public List<Town> find(@NotNull ArrayStack filters, @NotNull List<? extends ObjectSorter> sorters, @NotNull Page<Town> pager) {
 		PrimaryKeyFilter<?> regionFilter = (PrimaryKeyFilter<?>) filters.peek();
 		return townDaoExt.findTowns(regionFilter.getSelectedId(), sorters, pager);
 	}
@@ -252,7 +252,10 @@ public class TownServiceImpl extends NameTimeDependentServiceImpl<
 		return parentFilter;
 	}
 
-	private boolean isFilterValid(TownFilter filter) {
+	private boolean isFilterValid(@NotNull TownFilter filter) {
+		if (!filter.needFilter()) {
+			return true;
+		}
 		for (TownNameTranslation nameTranslation : filter.getNames()) {
 			TownName name = (TownName) nameTranslation.getTranslatable();
 			if (filter.getSelectedStub().sameId((Town) name.getObject())) {

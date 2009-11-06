@@ -45,7 +45,7 @@ public class EditBuildingAddressAction extends FPActionSupport {
 			return REDIRECT_ERROR;
 		}
 
-		building = buildingService.read(stub(building));
+		building = buildingService.readFull(stub(building));
 		address = address.isNew() ? address : building.getAddress(stub(address));
 		if (address == null) {
 			log.warn("Building address mismatch: {}, {}", building, address);

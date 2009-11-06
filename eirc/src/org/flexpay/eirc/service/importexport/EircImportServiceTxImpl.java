@@ -231,7 +231,7 @@ public class EircImportServiceTxImpl extends ImportServiceImpl implements EircIm
 				data.getBuildingId(), BuildingAddress.class, sd);
 		if (buildingsById != null) {
 			log.info("Found buildingAddress correction: {}", data.getBuildingId());
-			BuildingAddress buildingAddress = buildingService.readFull(buildingsById);
+			BuildingAddress buildingAddress = buildingService.readFullAddress(buildingsById);
 			return findApartment(data, buildingAddress, sd, dataSource);
 		}
 
@@ -334,7 +334,7 @@ public class EircImportServiceTxImpl extends ImportServiceImpl implements EircIm
 									Stub<DataSourceDescription> sd, RawDataSource<RawConsumerData> dataSource)
 			throws Exception {
 
-		BuildingAddress buildingAddress = buildingService.findBuildings(stub(street), buildingService.attributes(data.getAddressHouse(), data.getAddressBulk()));
+		BuildingAddress buildingAddress = buildingService.findAddresses(stub(street), buildingService.attributes(data.getAddressHouse(), data.getAddressBulk()));
 		if (buildingAddress == null) {
 			log.warn("Failed getting building for consumer, Street({}, {}), Building({}, {}) ",
 					new Object[]{street.getId(), data.getAddressStreet(), data.getAddressHouse(), data.getAddressBulk()});

@@ -84,7 +84,7 @@ public class TestPersonService extends AbSpringBeanAwareTestCase {
 	@Test
 	public void testUpdatePersonRegistration() throws Exception {
 
-		Person person = personService.read(new Stub<Person>(1L));
+		Person person = personService.readFull(new Stub<Person>(1L));
 		assertNotNull("No person found", person);
 
 		Apartment ap = apartmentService.readFull(new Stub<Apartment>(1L));

@@ -83,6 +83,6 @@ public interface RegionService extends NameTimeDependentService<RegionName, Regi
 	 */
 	@Secured (Roles.REGION_READ)
 	@NotNull
-	List<Region> find(@NotNull ArrayStack filters, @NotNull List<ObjectSorter> sorters, @NotNull Page<Region> pager);
+	List<Region> find(@NotNull ArrayStack filters, @NotNull List<? extends ObjectSorter> sorters, @NotNull Page<Region> pager);
 
 }

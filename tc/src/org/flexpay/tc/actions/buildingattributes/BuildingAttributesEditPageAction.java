@@ -32,14 +32,14 @@ public class BuildingAttributesEditPageAction extends FPActionSupport {
 
 		Stub<BuildingAddress> stub = stub(building);
 
-		building = buildingService.readFull(stub);
+		building = buildingService.readFullAddress(stub);
 		if (building == null) {
 			throw new FlexPayException("No building with id " + stub.getId() + " can be retrieved");
 		}
 
 		Set<Long> ids = CollectionUtils.set();
 
-		for (BuildingAddress address : buildingService.getBuildingBuildings(building.getBuildingStub())) {
+		for (BuildingAddress address : buildingService.findAddresesByBuilding(building.getBuildingStub())) {
 			if (!building.equals(address)) {
 				ids.add(address.getId());
 			}

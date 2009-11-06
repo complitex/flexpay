@@ -20,6 +20,6 @@ public interface StreetDaoExt {
 	 * @return List of streets
 	 */
 	@NotNull
-	List<Street> findByParentAndQuery(Long townId, Collection<ObjectSorter> sorters, String query, Page<Street> pager);
+	List<Street> findByParentAndQuery(Long townId, Collection<? extends ObjectSorter> sorters, String query, Page<Street> pager);
 
 }

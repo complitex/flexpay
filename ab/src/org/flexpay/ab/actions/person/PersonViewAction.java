@@ -2,7 +2,7 @@ package org.flexpay.ab.actions.person;
 
 import org.flexpay.ab.persistence.Apartment;
 import org.flexpay.ab.persistence.Person;
-import org.flexpay.ab.service.ApartmentService;
+import org.flexpay.ab.service.AddressService;
 import org.flexpay.ab.service.PersonService;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.exception.FlexPayException;
@@ -15,7 +15,7 @@ public class PersonViewAction extends FPActionSupport {
 	private Person person = new Person();
 
 	private PersonService personService;
-	private ApartmentService apartmentService;
+	private AddressService addressService;
 
 	@NotNull
 	@Override
@@ -26,7 +26,7 @@ public class PersonViewAction extends FPActionSupport {
 			return SUCCESS;
 		}
 
-		person = personService.read(stub(person));
+		person = personService.readFull(stub(person));
 		if (person == null) {
 			addActionError(getText("error.invalid_id"));
 		}
@@ -55,13 +55,16 @@ public class PersonViewAction extends FPActionSupport {
 		try {
 			Apartment registration = person.getRegistrationApartment();
 			if (registration != null) {
-				return apartmentService.getAddress(stub(registration));
+				return addressService.getAddress(stub(registration), getLocale());
 			}
 
 			log.warn("No registration for person: {}", person);
 			return "";
 		} catch (FlexPayException e) {
 			return getErrorMessage(e);
+		} catch (Exception e) {
+			log.error("Error", e);
+			return "";
 		}
 	}
 
@@ -71,8 +74,8 @@ public class PersonViewAction extends FPActionSupport {
 	}
 
 	@Required
-	public void setApartmentService(ApartmentService apartmentService) {
-		this.apartmentService = apartmentService;
+	public void setAddressService(AddressService addressService) {
+		this.addressService = addressService;
 	}
 
 }

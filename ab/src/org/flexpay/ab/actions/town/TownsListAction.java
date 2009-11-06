@@ -1,15 +1,12 @@
 package org.flexpay.ab.actions.town;
 
-import org.apache.commons.collections.ArrayStack;
 import org.flexpay.ab.persistence.Town;
 import org.flexpay.ab.persistence.filters.RegionFilter;
 import org.flexpay.ab.persistence.sorter.TownSorterByName;
 import org.flexpay.ab.persistence.sorter.TownSorterByType;
 import org.flexpay.ab.service.TownService;
 import org.flexpay.common.actions.FPActionWithPagerSupport;
-import org.flexpay.common.persistence.DomainObject;
-import org.flexpay.common.persistence.sorter.ObjectSorter;
-import org.flexpay.common.util.CollectionUtils;
+import static org.flexpay.common.persistence.DomainObject.collectionIds;
 import static org.flexpay.common.util.CollectionUtils.arrayStack;
 import static org.flexpay.common.util.CollectionUtils.list;
 import org.jetbrains.annotations.NotNull;
@@ -38,16 +35,15 @@ public class TownsListAction extends FPActionWithPagerSupport<Town> {
 		townSorterByName.setLang(getLanguage());
 		townSorterByType.setLang(getLanguage());
 
-		ArrayStack filters = arrayStack(new RegionFilter(regionFilter));
-		List<ObjectSorter> sorters = CollectionUtils.<ObjectSorter>list(townSorterByName, townSorterByType);
-		List<Town> townStubs = townService.find(filters, sorters, getPager());
-
+		towns = townService.find(arrayStack(new RegionFilter(regionFilter)), list(townSorterByName, townSorterByType), getPager());
 		if (log.isDebugEnabled()) {
-			log.debug("Total towns found: {}", townStubs.size());
+			log.debug("Total towns found: {}", towns.size());
 		}
 
-		towns = townService.readFull(DomainObject.collectionIds(townStubs), true);
-
+		towns = townService.readFull(collectionIds(towns), true);
+		if (log.isDebugEnabled()) {
+			log.debug("Total full towns found: {}", towns.size());
+		}
 
 		return SUCCESS;
 	}

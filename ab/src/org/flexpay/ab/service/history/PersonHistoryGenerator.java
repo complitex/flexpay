@@ -32,7 +32,7 @@ public class PersonHistoryGenerator implements HistoryGenerator<Person> {
 		log.debug("starting generating history for person #{}", obj.getId());
 
 		// create apartment history
-		Person person = personService.read(stub(obj));
+		Person person = personService.readFull(stub(obj));
 		if (person == null) {
 			log.warn("Person not found", obj);
 			return;

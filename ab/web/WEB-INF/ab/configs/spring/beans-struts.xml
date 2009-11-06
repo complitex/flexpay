@@ -427,7 +427,7 @@
 	<bean id="personViewAction"
 		  class="org.flexpay.ab.actions.person.PersonViewAction"
 		  p:personService-ref="personService"
-		  p:apartmentService-ref="apartmentService"
+          p:addressService-ref="addressService"
 		  p:crumbNameKey="ab.crumbs.person_view"
 		  scope="prototype" />
 

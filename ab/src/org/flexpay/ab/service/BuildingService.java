@@ -17,132 +17,40 @@ import java.util.Set;
 
 public interface BuildingService {
 
-	@Secured (Roles.BUILDING_READ)
-	List<BuildingAddress> getBuildings(ArrayStack filters, Page<BuildingAddress> pager);
-
-	@Secured (Roles.BUILDING_READ)
-	@NotNull
-	List<BuildingAddress> getBuildings(ArrayStack filters, List<? extends ObjectSorter> sorters, Page<BuildingAddress> pager);
-
-	@Secured (Roles.BUILDING_READ)
-	List<BuildingAddress> getBuildings(@NotNull Stub<Street> stub, Page<BuildingAddress> pager);
-
-	@Secured (Roles.BUILDING_READ)
-	List<BuildingAddress> getBuildings(@NotNull Stub<Street> stub);
-
 	/**
-	 * Find buildings by street and attributes
+	 * Read building
 	 *
-	 * @param street	 Building street stub
-	 * @param attributes Building attributes
-	 * @return Buildings instance, or <code>null</null> if not found
-	 * @throws org.flexpay.common.exception.FlexPayException
-	 *          if failure occurs
-	 */
-	BuildingAddress findBuildings(@NotNull Stub<Street> street, @NotNull Set<AddressAttribute> attributes) throws FlexPayException;
-
-	Set<AddressAttribute> attributes(@NotNull String number, @Nullable String bulk);
-
-	/**
-	 * Find buildings by street, district and attributes
-	 *
-	 * @param street	 Building street stub
-	 * @param district   Building district stub
-	 * @param attributes Building attributes
-	 * @return Buildings instance, or <code>null</null> if not found
-	 * @throws FlexPayException if failure occurs
+	 * @param buildingStub Building stub
+	 * @return Object if found, or <code>null</code> otherwise
 	 */
 	@Secured (Roles.BUILDING_READ)
 	@Nullable
-	BuildingAddress findBuildings(@NotNull Stub<Street> street, @Nullable Stub<District> district,
-								  @NotNull Set<AddressAttribute> attributes)
-			throws FlexPayException;
+	Building readFull(@NotNull Stub<Building> buildingStub);
 
 	/**
-	 * Find building by buildings stub
+	 * Read buildings collection by theirs ids
 	 *
-	 * @param stub Buildings stub
-	 * @return Building instance if buildings found, or <code>null</code> otherwise
-	 */
-	@Secured (Roles.BUILDING_READ)
-	@Nullable
-	Building findBuilding(@NotNull Stub<BuildingAddress> stub);
-
-	/**
-	 * Find single Building relation for building stub
-	 *
-	 * @param stub Building stub
-	 * @return Buildings instance
-	 * @throws FlexPayException if building does not have any buildingses
-	 */
-	@Secured (Roles.BUILDING_READ)
-	BuildingAddress getFirstBuildings(Stub<Building> stub) throws FlexPayException;
-
-	/**
-	 * Read full buildings info
-	 *
-	 * @param stub Buildings stub
-	 * @return Buildings if found, or <code>null</code> otherwise
-	 */
-	@Secured (Roles.BUILDING_READ)
-	@Nullable
-	BuildingAddress readFull(@NotNull Stub<BuildingAddress> stub);
-
-	/**
-	 * Read full buildings info
-	 *
-	 * @param ids Buildings keys
-	 * @param preserveOrder Whether to preserve order of buildings
-	 * @return Buildings found
+ 	 * @param buildingIds Building ids
+	 * @param preserveOrder Whether to preserve order of objects
+	 * @return Found buildings
 	 */
 	@Secured (Roles.BUILDING_READ)
 	@NotNull
-	List<Building> readFull(Collection<Long> ids, boolean preserveOrder);
+	List<Building> readFull(@NotNull Collection<Long> buildingIds, boolean preserveOrder);
 
 	/**
-	 * Find all Buildings relation for building stub
+	 * Disable buildings
 	 *
-	 * @param stub Building stub
-	 * @return List of Buildings
-	 * @throws FlexPayException if building does not have any buildingses
+	 * @param buildingIds IDs of buildings to disable
 	 */
-	@Secured (Roles.BUILDING_READ)
-	List<BuildingAddress> getBuildingBuildings(Stub<Building> stub) throws FlexPayException;
-
-	/**
-	 * Find all buildings on a specified street
-	 *
-	 * @param stub Street stub
-	 * @return List of buildings on a street
-	 */
-	@NotNull
-	List<Building> findStreetBuildings(Stub<Street> stub);
-
-	/**
-	 * Read building info
-	 *
-	 * @param stub Building stub
-	 * @return Building if found
-	 */
-	@Secured (Roles.BUILDING_READ)
-	Building read(@NotNull Stub<Building> stub);
-
-	/**
-	 * Update building
-	 *
-	 * @param building Building to update
-	 * @return updated building back
-	 * @throws FlexPayExceptionContainer if validation fails
-	 */
-	@Secured (Roles.BUILDING_CHANGE)
-	@NotNull
-	Building update(@NotNull Building building) throws FlexPayExceptionContainer;
+	@Secured (Roles.BUILDING_DELETE)
+	void disable(@NotNull Collection<Long> buildingIds);
 
 	/**
 	 * Create building
 	 *
-	 * @param building Building to create
-	 * @return persisted building back
+	 * @param building Building to save
+	 * @return Saved instance of building
 	 * @throws FlexPayExceptionContainer if validation fails
 	 */
 	@Secured (Roles.BUILDING_ADD)
@@ -150,20 +58,136 @@ public interface BuildingService {
 	Building create(@NotNull Building building) throws FlexPayExceptionContainer;
 
 	/**
-	 * Disable buildings
+	 * Update or create building
 	 *
-	 * @param buildings Buildings to disable
+	 * @param building Building to save
+	 * @return Saved instance of building
+	 * @throws FlexPayExceptionContainer if validation fails
 	 */
-	@Secured (Roles.BUILDING_DELETE)
-	void disable(Collection<Building> buildings);
+	@Secured (Roles.BUILDING_CHANGE)
+	@NotNull
+	Building update(@NotNull Building building) throws FlexPayExceptionContainer;
 
 	/**
-	 * Read full address info by their ids
+	 * Find building by building address stub
 	 *
-	 * @param addressIds Address ids
-	 * @param preserveOrder Whether to preserve elements order
-	 * @return List of buildings
+	 * @param addressStub BuildingAddress stub
+	 * @return Building instance if found, or <code>null</code> otherwise
 	 */
+	@Secured (Roles.BUILDING_READ)
+	@Nullable
+	Building findBuilding(@NotNull Stub<BuildingAddress> addressStub);
+
+	/**
+	 * Read building address
+	 *
+	 * @param addressStub BuildingAddress stub
+	 * @return Object if found, or <code>null</code> otherwise
+	 */
+	@Secured (Roles.BUILDING_READ)
+	@Nullable
+	BuildingAddress readFullAddress(@NotNull Stub<BuildingAddress> addressStub);
+
+	/**
+	 * Read building addresses collection by theirs ids
+	 *
+ 	 * @param addressIds BuildingAddress ids
+	 * @param preserveOrder Whether to preserve order of objects
+	 * @return Found building addresses
+	 */
+	@Secured (Roles.BUILDING_READ)
+	@NotNull
 	List<BuildingAddress> readFullAddresses(Collection<Long> addressIds, boolean preserveOrder);
+
+	/**
+	 * Get a list of available building addresses
+	 *
+	 * @param filters Parent filters
+	 * @param sorters Stack of sorters
+	 * @param pager   Page
+	 * @return List of Objects
+	 */
+	@Secured (Roles.BUILDING_READ)
+	@NotNull
+	List<BuildingAddress> findAddresses(@NotNull ArrayStack filters, @NotNull List<? extends ObjectSorter> sorters, @NotNull Page<BuildingAddress> pager);
+
+	/**
+	 * Get a list of available building addresses
+	 *
+	 * @param filters Parent filters
+	 * @param pager   Page
+	 * @return List of Objects
+	 */
+	@Secured (Roles.BUILDING_READ)
+	@NotNull
+	List<BuildingAddress> findAddresses(@NotNull ArrayStack filters, Page<BuildingAddress> pager);
+
+	/**
+	 * Lookup building address by street id.
+	 *
+	 * @param streetStub  Street stub
+	 * @return List of found building addresses
+	 */
+	@Secured (Roles.BUILDING_READ)
+	@NotNull
+	List<BuildingAddress> findAddressesByParent(@NotNull Stub<Street> streetStub);
+
+	/**
+	 * Find building addresses for building
+	 *
+	 * @param buildingStub Building stub
+	 * @return List of building addresses
+	 * @throws FlexPayException if building does not have any buildingses
+	 */
+	@Secured (Roles.BUILDING_READ)
+	@NotNull
+	List<BuildingAddress> findAddresesByBuilding(Stub<Building> buildingStub) throws FlexPayException;
+
+	/**
+	 * Find building addresses by street and attributes
+	 *
+	 * @param streetStub Building street stub
+	 * @param attributes Building attributes
+	 * @return BuildingAddress instance, or <code>null</null> if not found
+	 * @throws FlexPayException if failure occurs
+	 */
+	@Secured (Roles.BUILDING_READ)
+	@Nullable
+	BuildingAddress findAddresses(@NotNull Stub<Street> streetStub, @NotNull Set<AddressAttribute> attributes) throws FlexPayException;
+
+	/**
+	 * Find building addresses by street, district and attributes
+	 *
+	 * @param streetStub Building street stub
+	 * @param districtStub Building district stub
+	 * @param attributes Building attributes
+	 * @return BuildingAddress instance, or <code>null</null> if not found
+	 * @throws FlexPayException if failure occurs
+	 */
+	@Secured (Roles.BUILDING_READ)
+	@Nullable
+	BuildingAddress findAddresses(@NotNull Stub<Street> streetStub, @Nullable Stub<District> districtStub,
+								  @NotNull Set<AddressAttribute> attributes) throws FlexPayException;
+
+	/**
+	 * Find single Building relation for building stub
+	 *
+	 * @param buildingStub Building stub
+	 * @return BuildingAddress instance
+	 * @throws FlexPayException if building does not have any addresses
+	 */
+	@Secured (Roles.BUILDING_READ)
+	@NotNull
+	BuildingAddress findFirstAddress(@NotNull Stub<Building> buildingStub) throws FlexPayException;
+
+	/**
+	 * Convert string values to AddressAttribute-instances
+	 *
+	 * @param number number attribute value
+	 * @param bulk bulk attribute value
+	 * @return Set of AddressAttributes
+	 */
+	@NotNull
+	Set<AddressAttribute> attributes(@NotNull String number, @Nullable String bulk);
 
 }

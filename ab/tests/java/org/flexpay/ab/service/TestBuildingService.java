@@ -132,7 +132,7 @@ public class TestBuildingService extends AbSpringBeanAwareTestCase {
 		// See init_db script
 		AddressAttribute number = BuildingAddress.numberAttribute("31");
 		AddressAttribute bulk = BuildingAddress.bulkAttribute("2");
-		BuildingAddress buildingAddress = buildingService.findBuildings(TestData.IVANOVA, TestData.DISTRICT_SOVETSKII, set(number, bulk));
+		BuildingAddress buildingAddress = buildingService.findAddresses(TestData.IVANOVA, TestData.DISTRICT_SOVETSKII, set(number, bulk));
 
 		assertNotNull("Building find with bulk number faild", buildingAddress);
 		assertEquals("Invalid number", "31", buildingAddress.getNumber());
@@ -145,7 +145,7 @@ public class TestBuildingService extends AbSpringBeanAwareTestCase {
 
 		// See init_db script
 		AddressAttribute number = BuildingAddress.numberAttribute("31");
-		BuildingAddress buildingAddress = buildingService.findBuildings(TestData.IVANOVA, TestData.DISTRICT_SOVETSKII, set(number));
+		BuildingAddress buildingAddress = buildingService.findAddresses(TestData.IVANOVA, TestData.DISTRICT_SOVETSKII, set(number));
 
 		assertNotNull("Building find faild", buildingAddress);
 		assertEquals("Invalid building number", "31", buildingAddress.getNumber());

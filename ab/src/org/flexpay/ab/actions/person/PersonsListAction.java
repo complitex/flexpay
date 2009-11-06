@@ -68,7 +68,7 @@ public class PersonsListAction extends FPActionWithPagerSupport<Person> {
 	}
 
 	public Person getPerson(Long id) {
-		return personService.read(new Stub<Person>(id));
+		return personService.readFull(new Stub<Person>(id));
 	}
 
 	public void setParentService(ParentService<?> parentService) {

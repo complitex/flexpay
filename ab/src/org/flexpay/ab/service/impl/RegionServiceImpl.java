@@ -214,7 +214,7 @@ public class RegionServiceImpl extends NameTimeDependentServiceImpl<
 	 */
 	@NotNull
 	@Override
-	public List<Region> find(@NotNull ArrayStack filters, @NotNull List<ObjectSorter> sorters, @NotNull Page<Region> pager) {
+	public List<Region> find(@NotNull ArrayStack filters, @NotNull List<? extends ObjectSorter> sorters, @NotNull Page<Region> pager) {
 		PrimaryKeyFilter<?> countryFilter = (PrimaryKeyFilter<?>) filters.peek();
 		return regionDaoExt.findRegions(countryFilter.getSelectedId(), sorters, pager);
 	}
@@ -252,8 +252,10 @@ public class RegionServiceImpl extends NameTimeDependentServiceImpl<
 		return parentFilter;
 	}
 
-	private boolean isFilterValid(RegionFilter filter) {
-
+	private boolean isFilterValid(@NotNull RegionFilter filter) {
+		if (!filter.needFilter()) {
+			return true;
+		}
 		for (RegionNameTranslation nameTranslation : filter.getNames()) {
 			RegionName regionName = (RegionName) nameTranslation.getTranslatable();
 			if (filter.getSelectedStub().sameId((Region) regionName.getObject())) {

@@ -29,7 +29,7 @@ public class DistrictDaoExtImpl extends HibernateDaoSupport implements DistrictD
 	@SuppressWarnings ({"unchecked"})
 	@NotNull
 	@Override
-	public List<District> findDistricts(Long townId, Collection<ObjectSorter> sorters, final Page<District> pager) {
+	public List<District> findDistricts(Long townId, Collection<? extends ObjectSorter> sorters, final Page<District> pager) {
 		DistrictSorter sorter = findSorter(sorters);
 		sorter.setDistrictField("d");
 
@@ -68,7 +68,7 @@ public class DistrictDaoExtImpl extends HibernateDaoSupport implements DistrictD
 	}
 
 	@NotNull
-	private DistrictSorter findSorter(Collection<ObjectSorter> sorters) {
+	private DistrictSorter findSorter(Collection<? extends ObjectSorter> sorters) {
 
 		for (ObjectSorter sorter : sorters) {
 			if (sorter.isActivated() && sorter instanceof DistrictSorter) {

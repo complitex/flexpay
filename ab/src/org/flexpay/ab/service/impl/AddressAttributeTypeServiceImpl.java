@@ -187,11 +187,11 @@ public class AddressAttributeTypeServiceImpl implements AddressAttributeTypeServ
 
 		if (!defaultLangNameFound) {
 			container.addException(new FlexPayException(
-					"No default language translation", "error.no_default_translation"));
+					"No default language translation", "ab.error.address_attribute_type.full_name_is_required"));
 		}
 		if (!defaultLangShortNameFound) {
 			container.addException(new FlexPayException(
-					"No default language translation", "error.no_default_translation"));
+					"No default language translation", "ab.error.address_attribute_type.short_name_is_required"));
 		}
 
 		if (container.isNotEmpty()) {

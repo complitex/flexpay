@@ -453,7 +453,7 @@ public class ImportServiceImpl implements ImportService {
 					BuildingAddress buildingAddress = buildingsDataConverter.fromRawData(
 							data, sourceDescription, correctionsService);
 
-					BuildingAddress persistent = buildingService.findBuildings(
+					BuildingAddress persistent = buildingService.findAddresses(
 							buildingAddress.getStreetStub(), buildingAddress.getDistrictStub(),
 							buildingAddress.getBuildingAttributes());
 					if (persistent == null) {

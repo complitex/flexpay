@@ -30,7 +30,7 @@ public class BuildingHistoryGenerator implements HistoryGenerator<Building> {
 		log.debug("starting generating history for building #{}", obj.getId());
 
 		// create building history
-		Building building = buildingService.read(stub(obj));
+		Building building = buildingService.readFull(stub(obj));
 		if (building == null) {
 			log.warn("Building not found {}", building);
 			return;

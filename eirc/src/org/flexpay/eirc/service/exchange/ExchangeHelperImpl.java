@@ -29,7 +29,7 @@ public class ExchangeHelperImpl implements ExchangeHelper {
 	public String getAddressGroup(Apartment apartment) throws FlexPayException {
 		String apartmentNumber = apartmentService.getApartmentNumber(stub(apartment));
 
-		BuildingAddress buildingAddress = buildingService.getFirstBuildings(apartment.getBuildingStub());
+		BuildingAddress buildingAddress = buildingService.findFirstAddress(apartment.getBuildingStub());
 		String buildingNumber = buildingAddress.getNumber();
 		String bulkNumber = buildingAddress.getBulk();
 
@@ -65,7 +65,7 @@ public class ExchangeHelperImpl implements ExchangeHelper {
 	 * @return FIO group
 	 */
 	public String getFIOGroup(Stub<Person> personStub) {
-		Person persistent = personService.read(personStub);
+		Person persistent = personService.readFull(personStub);
 		PersonIdentity identity = persistent.getDefaultIdentity();
 		String firstName = identity.getFirstName();
 		String middleName = identity.getMiddleName();

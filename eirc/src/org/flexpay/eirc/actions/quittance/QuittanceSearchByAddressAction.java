@@ -112,7 +112,7 @@ public class QuittanceSearchByAddressAction extends ApartmentFilterDependent2Act
 	}
 
 	public String getFIO(@NotNull Person person) {
-		Person persistent = personService.read(stub(person));
+		Person persistent = personService.readFull(stub(person));
 		if (persistent == null) {
 			throw new RuntimeException("Invalid person: " + person);
 		}

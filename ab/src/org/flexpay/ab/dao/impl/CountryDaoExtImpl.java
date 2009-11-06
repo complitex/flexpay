@@ -29,7 +29,7 @@ public class CountryDaoExtImpl extends HibernateDaoSupport implements CountryDao
 	@SuppressWarnings ({"unchecked"})
 	@NotNull
 	@Override
-	public List<Country> findCountries(Collection<ObjectSorter> sorters, final Page<Country> pager) {
+	public List<Country> findCountries(Collection<? extends ObjectSorter> sorters, final Page<Country> pager) {
 		CountrySorter sorter = findSorter(sorters);
 		sorter.setCountryField("o");
 
@@ -69,7 +69,7 @@ public class CountryDaoExtImpl extends HibernateDaoSupport implements CountryDao
 	}
 
 	@NotNull
-	private CountrySorter findSorter(Collection<ObjectSorter> sorters) {
+	private CountrySorter findSorter(Collection<? extends ObjectSorter> sorters) {
 
 		for (ObjectSorter sorter : sorters) {
 			if (sorter.isActivated() && sorter instanceof CountrySorter) {

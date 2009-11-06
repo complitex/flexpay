@@ -27,7 +27,7 @@ public class BuildingViewAction extends FPActionSupport {
 			return REDIRECT_SUCCESS;
 		}
 
-		building = buildingService.read(stub(building));
+		building = buildingService.readFull(stub(building));
 		if (building == null) {
 			addActionError(getText("error.invalid_id"));
 			return REDIRECT_SUCCESS;

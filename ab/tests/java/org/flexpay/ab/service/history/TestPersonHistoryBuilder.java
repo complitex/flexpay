@@ -49,7 +49,7 @@ public class TestPersonHistoryBuilder extends AbSpringBeanAwareTestCase {
 	@Ignore
 	public void testBuildPersonDiff() {
 
-		Person person = personService.read(PERSON);
+		Person person = personService.readFull(PERSON);
 		assertNotNull("Person not found: " + PERSON, person);
 
 		@SuppressWarnings ({"ConstantConditions"})
@@ -61,7 +61,7 @@ public class TestPersonHistoryBuilder extends AbSpringBeanAwareTestCase {
 	@Ignore
 	public void testPatchPerson() {
 
-		Person person = personService.read(PERSON);
+		Person person = personService.readFull(PERSON);
 		assertNotNull("Person not found: " + PERSON, person);
 
 		Diff diff = historyBuilder.diff(null, person);
@@ -83,7 +83,7 @@ public class TestPersonHistoryBuilder extends AbSpringBeanAwareTestCase {
 	@Test
 	public void testPatchPerson2() {
 
-		Person person = personService.read(PERSON);
+		Person person = personService.readFull(PERSON);
 		assertNotNull("Person not found: " + PERSON, person);
 
 		Diff diff = historyBuilder.diff(null, person);
