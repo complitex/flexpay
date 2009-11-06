@@ -19,5 +19,5 @@ public interface DistrictDaoExt {
 	 * @return List of districts
 	 */
 	@NotNull
-	List<District> findDistricts(Long townId, Collection<ObjectSorter> sorters, Page<District> pager);
+	List<District> findDistricts(Long townId, Collection<? extends ObjectSorter> sorters, Page<District> pager);
 }

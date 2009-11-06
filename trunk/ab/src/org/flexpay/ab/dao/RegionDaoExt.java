@@ -19,6 +19,6 @@ public interface RegionDaoExt {
 	 * @return List of regions
 	 */
 	@NotNull
-	List<Region> findRegions(Long countryId, Collection<ObjectSorter> sorters, Page<Region> pager);
+	List<Region> findRegions(Long countryId, Collection<? extends ObjectSorter> sorters, Page<Region> pager);
 
 }

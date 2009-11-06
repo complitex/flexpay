@@ -40,7 +40,7 @@ public class CountryFilterAjaxAction extends FilterAjaxAction {
 			filterValueLong = ApplicationConfig.getDefaultCountryStub().getId();
 			filterValue = filterValueLong + "";
 		}
-		country = countryService.read(new Stub<Country>(filterValueLong));
+		country = countryService.readFull(new Stub<Country>(filterValueLong));
 		filterString = getTranslationName(country.getTranslations());
 	}
 

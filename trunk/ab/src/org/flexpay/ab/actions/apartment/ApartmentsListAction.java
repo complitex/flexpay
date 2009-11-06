@@ -1,13 +1,12 @@
 package org.flexpay.ab.actions.apartment;
 
 import org.flexpay.ab.persistence.Apartment;
-import org.flexpay.ab.persistence.BuildingAddress;
+import org.flexpay.ab.persistence.filters.BuildingsFilter;
 import org.flexpay.ab.persistence.sorter.ApartmentSorter;
 import org.flexpay.ab.service.ApartmentService;
 import org.flexpay.common.actions.FPActionWithPagerSupport;
-import org.flexpay.common.persistence.Stub;
-import org.flexpay.common.persistence.sorter.ObjectSorter;
-import org.flexpay.common.util.CollectionUtils;
+import static org.flexpay.common.persistence.DomainObject.collectionIds;
+import static org.flexpay.common.util.CollectionUtils.arrayStack;
 import static org.flexpay.common.util.CollectionUtils.list;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
@@ -27,15 +26,20 @@ public class ApartmentsListAction extends FPActionWithPagerSupport<Apartment> {
 	@Override
 	public String doExecute() throws Exception {
 
-		List<ObjectSorter> sorters = CollectionUtils.<ObjectSorter>list(apartmentSorter);
-
 		if (buildingFilter == null || buildingFilter <= 0) {
 			log.warn("Incorrect building id in filter ({})", buildingFilter);
 			return SUCCESS;
 		}
 
-		apartments = apartmentService.getApartments(new Stub<BuildingAddress>(buildingFilter), sorters, getPager());
-		apartments = apartmentService.readFull(Apartment.collectionIds(apartments));
+		apartments = apartmentService.find(arrayStack(new BuildingsFilter(buildingFilter)), list(apartmentSorter), getPager());
+		if (log.isDebugEnabled()) {
+			log.debug("Total apartments found: {}", apartments.size());
+		}
+
+		apartments = apartmentService.readFull(collectionIds(apartments), true);
+		if (log.isDebugEnabled()) {
+			log.debug("Total full apartments found: {}", apartments.size());
+		}
 
 		return SUCCESS;
 	}

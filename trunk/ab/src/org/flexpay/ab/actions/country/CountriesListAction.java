@@ -6,8 +6,6 @@ import org.flexpay.ab.service.CountryService;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.dao.paging.Page;
 import static org.flexpay.common.persistence.DomainObject.collectionIds;
-import org.flexpay.common.persistence.sorter.ObjectSorter;
-import org.flexpay.common.util.CollectionUtils;
 import static org.flexpay.common.util.CollectionUtils.arrayStack;
 import static org.flexpay.common.util.CollectionUtils.list;
 import org.jetbrains.annotations.NotNull;
@@ -27,13 +25,15 @@ public class CountriesListAction extends FPActionSupport {
 	public String doExecute() throws Exception {
 
 		countrySorter.setLang(getLanguage());
-		List<ObjectSorter> sorters = CollectionUtils.<ObjectSorter>list(countrySorter);
-		countries = countryService.find(arrayStack(), sorters, new Page<Country>());
+		countries = countryService.find(arrayStack(), list(countrySorter), new Page<Country>());
+		if (log.isDebugEnabled()) {
+			log.debug("Total countries found: {}", countries.size());
+		}
 
-		log.debug("Total countries found: ", countries);
-		log.debug("Country sorter: {}", countrySorter);
-
-		countries = countryService.read(collectionIds(countries), true);
+		countries = countryService.readFull(collectionIds(countries), true);
+		if (log.isDebugEnabled()) {
+			log.debug("Total full countries found: {}", countries.size());
+		}
 
 		return SUCCESS;
 	}

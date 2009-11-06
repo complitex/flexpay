@@ -143,7 +143,7 @@ public class JDBCCNExporter implements Exporter {
 
 		Stub<DataSourceDescription> dataSourceDescriptionStub = new Stub<DataSourceDescription>(dataSourceDescriptionId);
 
-		List<BuildingAddress> buildingAddressList = buildingService.getBuildingBuildings(buildingStub);
+		List<BuildingAddress> buildingAddressList = buildingService.findAddresesByBuilding(buildingStub);
 		for (BuildingAddress buildingAddress : buildingAddressList) {
 			String externalId = correctionsService.getExternalId(buildingAddress.getId(),
 					classToTypeRegistry.getType(BuildingAddress.class), dataSourceDescriptionStub);

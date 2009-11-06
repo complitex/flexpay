@@ -45,7 +45,7 @@ public class CountryServiceImpl implements CountryService, ParentService<Country
 	 */
 	@Nullable
 	@Override
-	public Country read(@NotNull Stub<Country> countryStub) {
+	public Country readFull(@NotNull Stub<Country> countryStub) {
 		return countryDao.readFull(countryStub.getId());
 	}
 
@@ -58,7 +58,7 @@ public class CountryServiceImpl implements CountryService, ParentService<Country
 	 */
 	@NotNull
 	@Override
-	public List<Country> read(@NotNull Collection<Long> countryIds, boolean preserveOrder) {
+	public List<Country> readFull(@NotNull Collection<Long> countryIds, boolean preserveOrder) {
 		return countryDao.readFullCollection(countryIds, preserveOrder);
 	}
 
@@ -152,7 +152,7 @@ public class CountryServiceImpl implements CountryService, ParentService<Country
 	 */
 	@NotNull
 	@Override
-	public List<Country> find(@NotNull ArrayStack filters, @NotNull List<ObjectSorter> sorters, @NotNull Page<Country> pager) {
+	public List<Country> find(@NotNull ArrayStack filters, @NotNull List<? extends ObjectSorter> sorters, @NotNull Page<Country> pager) {
 		return countryDaoExt.findCountries(sorters, pager);
 	}
 

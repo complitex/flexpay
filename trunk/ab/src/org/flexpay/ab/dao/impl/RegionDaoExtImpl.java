@@ -29,7 +29,7 @@ public class RegionDaoExtImpl extends HibernateDaoSupport implements RegionDaoEx
 	@SuppressWarnings ({"unchecked"})
 	@NotNull
 	@Override
-	public List<Region> findRegions(Long countryId, Collection<ObjectSorter> sorters, final Page<Region> pager) {
+	public List<Region> findRegions(Long countryId, Collection<? extends ObjectSorter> sorters, final Page<Region> pager) {
 		RegionSorter sorter = findSorter(sorters);
 		sorter.setRegionField("o");
 
@@ -68,7 +68,7 @@ public class RegionDaoExtImpl extends HibernateDaoSupport implements RegionDaoEx
 	}
 
 	@NotNull
-	private RegionSorter findSorter(Collection<ObjectSorter> sorters) {
+	private RegionSorter findSorter(Collection<? extends ObjectSorter> sorters) {
 
 		for (ObjectSorter sorter : sorters) {
 			if (sorter.isActivated() && sorter instanceof RegionSorter) {

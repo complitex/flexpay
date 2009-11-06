@@ -31,7 +31,7 @@ public class TestHQLSortBuildings extends AbSpringBeanAwareTestCase {
 		ArrayStack filters = CollectionUtils.arrayStack(new StreetFilter(TestData.IVANOVA));
 		List<ObjectSorter> sorters = CollectionUtils.list(new BuildingsSorter().activate());
 		Page<BuildingAddress> pager = new Page<BuildingAddress>();
-		List<BuildingAddress> buildings = buildingService.getBuildings(filters, sorters, pager);
+		List<BuildingAddress> buildings = buildingService.findAddresses(filters, sorters, pager);
 
 		assertFalse("No buildings found", buildings.isEmpty());
 

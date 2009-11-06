@@ -30,7 +30,7 @@ public class ApartmentFilterAjaxAction extends FilterAjaxAction {
 			return SUCCESS;
 		}
 
-		List<Apartment> apartments = apartmentService.getApartments(new Stub<BuildingAddress>(addressId));
+		List<Apartment> apartments = apartmentService.findByParent(new Stub<BuildingAddress>(addressId));
 		if (log.isDebugEnabled()) {
 			log.debug("Found apartments: {}", apartments.size());
 		}

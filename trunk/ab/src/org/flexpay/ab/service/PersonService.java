@@ -17,14 +17,14 @@ import java.util.Set;
 public interface PersonService {
 
 	/**
-	 * Read person information
+	 * Read person
 	 *
 	 * @param personStub Person stub
-	 * @return Person instance, or <code>null</code> if not found
+	 * @return Object if found, or <code>null</code> otherwise
 	 */
 	@Secured (Roles.PERSON_READ)
 	@Nullable
-	Person read(@NotNull Stub<Person> personStub);
+	Person readFull(@NotNull Stub<Person> personStub);
 
 	/**
 	 * Disable persons
@@ -64,7 +64,8 @@ public interface PersonService {
 	 * @return List of persons
 	 */
 	@Secured (Roles.PERSON_READ)
-	List<Person> find(ArrayStack filters, Page<Person> pager);
+	@NotNull
+	List<Person> find(@Nullable ArrayStack filters, Page<Person> pager);
 
 	/**
 	 * List persons
@@ -104,8 +105,8 @@ public interface PersonService {
 	 * @param range FetchRange 
 	 * @return List of persons
 	 */
-	@NotNull
 	@Secured (Roles.PERSON_READ)
+	@NotNull
 	List<Person> listPersonsWithIdentities(@NotNull FetchRange range);
 
 	/**
@@ -114,8 +115,8 @@ public interface PersonService {
 	 * @param range FetchRange
 	 * @return List of persons
 	 */
-	@NotNull
 	@Secured (Roles.PERSON_READ)
+	@NotNull
 	List<Person> listPersonsWithRegistrations(@NotNull FetchRange range);
 
 }

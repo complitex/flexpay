@@ -18,6 +18,6 @@ public interface CountryDaoExt {
 	 * @return List of countries
 	 */
 	@NotNull
-	List<Country> findCountries(Collection<ObjectSorter> sorters, Page<Country> pager);
+	List<Country> findCountries(Collection<? extends ObjectSorter> sorters, Page<Country> pager);
 
 }

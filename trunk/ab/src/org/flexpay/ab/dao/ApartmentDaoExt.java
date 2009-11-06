@@ -31,5 +31,5 @@ public interface ApartmentDaoExt {
 	 * @return List of apartments
 	 */
 	@NotNull
-	List<Apartment> findApartments(Long buildingId, Collection<ObjectSorter> sorters, Page<Apartment> pager);
+	List<Apartment> findApartments(Long buildingId, Collection<? extends ObjectSorter> sorters, Page<Apartment> pager);
 }

@@ -40,7 +40,7 @@ public class TestBuildingHistoryBuilder extends AbSpringBeanAwareTestCase {
 	@Test
 	public void testBuildDiff4() {
 
-		Building building = buildingService.read(TestData.IVANOVA_27);
+		Building building = buildingService.readFull(TestData.IVANOVA_27);
 		if (building == null) {
 			throw new IllegalStateException("No building ivanova-2 found");
 		}
@@ -52,7 +52,7 @@ public class TestBuildingHistoryBuilder extends AbSpringBeanAwareTestCase {
 	@Test
 	public void testPatch() {
 
-		Building building = buildingService.read(TestData.IVANOVA_2);
+		Building building = buildingService.readFull(TestData.IVANOVA_2);
 		if (building == null) {
 			throw new IllegalStateException("No building ivanova-2 found");
 		}

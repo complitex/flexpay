@@ -41,7 +41,7 @@ public class TestBtiBuildingHistoryBuilder extends BtiSpringBeanAwareTestCase {
 
 	@Test
 	public void testPatchAttributes() throws ParseException {
-		BtiBuilding building = (BtiBuilding) buildingService.read(TestData.IVANOVA_27);
+		BtiBuilding building = (BtiBuilding) buildingService.readFull(TestData.IVANOVA_27);
 		assertNotNull("IVANOVA_27 not found", building);
 
 		referencesHistoryGenerator.generateReferencesHistory(building);

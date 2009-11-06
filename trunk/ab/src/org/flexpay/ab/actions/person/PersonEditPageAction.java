@@ -26,7 +26,7 @@ public class PersonEditPageAction extends FPActionSupport {
 		}
 
 		if (person.isNotNew()) {
-			person = personService.read(stub(person));
+			person = personService.readFull(stub(person));
 			if (person == null) {
 				addActionError(getText("error.ab.person.invalid_id"));
 				return REDIRECT_ERROR;

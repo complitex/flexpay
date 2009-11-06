@@ -22,7 +22,7 @@ public interface StreetService extends NameTimeDependentService<StreetName, Stre
 	 *
  	 * @param streetIds Street ids
 	 * @param preserveOrder Whether to preserve order of objects
-	 * @return Found regions
+	 * @return Found streets
 	 */
 	@Secured ({Roles.STREET_READ})
 	@NotNull
@@ -86,7 +86,7 @@ public interface StreetService extends NameTimeDependentService<StreetName, Stre
 	 */
 	@Secured (Roles.STREET_READ)
 	@NotNull
-	List<Street> findByParentAndQuery(@NotNull Stub<Town> parentStub, @NotNull List<ObjectSorter> sorters, @NotNull String query, @NotNull Page<Street> pager);
+	List<Street> findByParentAndQuery(@NotNull Stub<Town> parentStub, @NotNull List<? extends ObjectSorter> sorters, @NotNull String query, @NotNull Page<Street> pager);
 
 	/**
 	 * Lookup streets by name, street type and town

@@ -211,7 +211,7 @@ public class DistrictServiceImpl extends NameTimeDependentServiceImpl<
 	 */
 	@NotNull
 	@Override
-	public List<District> find(@NotNull ArrayStack filters, @NotNull List<ObjectSorter> sorters, @NotNull Page<District> pager) {
+	public List<District> find(@NotNull ArrayStack filters, @NotNull List<? extends ObjectSorter> sorters, @NotNull Page<District> pager) {
 		PrimaryKeyFilter<?> townFilter = (PrimaryKeyFilter<?>) filters.peek();
 		return districtDaoExt.findDistricts(townFilter.getSelectedId(), sorters, pager);
 	}
@@ -250,7 +250,10 @@ public class DistrictServiceImpl extends NameTimeDependentServiceImpl<
 
 	}
 
-	private boolean isFilterValid(DistrictFilter filter) {
+	private boolean isFilterValid(@NotNull DistrictFilter filter) {
+		if (!filter.needFilter()) {
+			return true;
+		}
 		for (DistrictNameTranslation nameTranslation : filter.getNames()) {
 			DistrictName name = (DistrictName) nameTranslation.getTranslatable();
 			if (filter.getSelectedStub().sameId((District) name.getObject())) {

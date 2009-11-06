@@ -152,8 +152,8 @@ public abstract class PaymentOperationAction extends CashboxCookieActionSupport 
 		Apartment apartment = apartmentService.readFull(new Stub<Apartment>(apartmentId));
 		document.setApartmentNumber(apartment.getNumber());
 
-		Building building = buildingService.read(apartment.getBuildingStub());
-		BuildingAddress buildingAddress = buildingService.readFull(stub(building.getDefaultBuildings()));
+		Building building = buildingService.readFull(apartment.getBuildingStub());
+		BuildingAddress buildingAddress = buildingService.readFullAddress(stub(building.getDefaultBuildings()));
 		document.setBuildingBulk(buildingAddress.getBulk());
 		document.setBuildingNumber(buildingAddress.getNumber());
 
@@ -167,7 +167,7 @@ public abstract class PaymentOperationAction extends CashboxCookieActionSupport 
 		Region region = regionService.readFull(town.getRegionStub());
 		document.setRegion(getTranslation(region.getCurrentName().getTranslations()).getName());
 
-		Country country = countryService.read(region.getCountryStub());
+		Country country = countryService.readFull(region.getCountryStub());
 		document.setCountry(getTranslation(country.getTranslations()).getName());
 	}
 

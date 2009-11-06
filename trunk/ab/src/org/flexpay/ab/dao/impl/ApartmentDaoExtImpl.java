@@ -56,7 +56,7 @@ public class ApartmentDaoExtImpl extends SimpleJdbcDaoSupport implements Apartme
 	@SuppressWarnings ({"unchecked"})
 	@NotNull
 	@Override
-	public List<Apartment> findApartments(Long buildingId, Collection<ObjectSorter> sorters, final Page<Apartment> pager) {
+	public List<Apartment> findApartments(Long buildingId, Collection<? extends ObjectSorter> sorters, final Page<Apartment> pager) {
 		ApartmentSorter sorter = findSorter(sorters);
 		sorter.setApartmentField("a");
 
@@ -95,7 +95,7 @@ public class ApartmentDaoExtImpl extends SimpleJdbcDaoSupport implements Apartme
 	}
 
 	@NotNull
-	private ApartmentSorter findSorter(Collection<ObjectSorter> sorters) {
+	private ApartmentSorter findSorter(Collection<? extends ObjectSorter> sorters) {
 
 		for (ObjectSorter sorter : sorters) {
 			if (sorter.isActivated() && sorter instanceof ApartmentSorter) {

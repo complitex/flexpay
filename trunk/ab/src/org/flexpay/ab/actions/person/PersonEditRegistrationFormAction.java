@@ -35,7 +35,7 @@ public class PersonEditRegistrationFormAction extends FPActionSupport {
 
 		if (apartmentFilter != null && apartmentFilter > 0) {
 			Building building = apartmentService.getBuilding(new Stub<Apartment>(apartmentFilter));
-			BuildingAddress address = buildingService.getFirstBuildings(new Stub<Building>(building));
+			BuildingAddress address = buildingService.findFirstAddress(new Stub<Building>(building));
 			Street street = streetService.readFull(address.getStreetStub());
 			Town town = townService.readFull(street.getTownStub());
 			Region region = regionService.readFull(town.getRegionStub());

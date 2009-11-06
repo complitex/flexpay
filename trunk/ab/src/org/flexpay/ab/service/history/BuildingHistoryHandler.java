@@ -3,11 +3,12 @@ package org.flexpay.ab.service.history;
 import org.flexpay.ab.persistence.Building;
 import org.flexpay.ab.service.BuildingService;
 import org.flexpay.ab.service.ObjectsFactory;
+import static org.flexpay.common.persistence.DomainObject.collectionIds;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.history.Diff;
 import org.flexpay.common.persistence.history.HistoryOperationType;
 import org.flexpay.common.persistence.history.impl.HistoryHandlerBase;
-import org.flexpay.common.util.CollectionUtils;
+import static org.flexpay.common.util.CollectionUtils.list;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
@@ -42,7 +43,7 @@ public class BuildingHistoryHandler extends HistoryHandlerBase<Building> {
 		if (diff.getOperationType() == HistoryOperationType.TYPE_CREATE) {
 			if (stub != null) {
 				log.info("Request for object creation, but it already exists {}", diff);
-				object = buildingService.read(stub);
+				object = buildingService.readFull(stub);
 			} else {
 				object = factory.newBuilding();
 			}
@@ -51,7 +52,7 @@ public class BuildingHistoryHandler extends HistoryHandlerBase<Building> {
 				log.warn("Requested for object update/delete, but not found {}", diff);
 				throw new IllegalStateException("Requested for object update/delete, but not found " + masterIndex);
 			}
-			object = buildingService.read(stub);
+			object = buildingService.readFull(stub);
 		}
 
 		if (object == null) {
@@ -61,7 +62,7 @@ public class BuildingHistoryHandler extends HistoryHandlerBase<Building> {
 		historyBuilder.patch(object, diff);
 
 		if (diff.getOperationType() == HistoryOperationType.TYPE_DELETE) {
-			buildingService.disable(CollectionUtils.list(object));
+			buildingService.disable(collectionIds(list(object)));
 		} else if (object.isNew()) {
 			buildingService.create(object);
 			saveMasterCorrection(object, diff);

@@ -34,7 +34,7 @@ public class TestServedBuildingHistoryBuilder extends EircSpringBeanAwareTestCas
 	@Test
 	public void testPatchServiceOrganization() throws FlexPayExceptionContainer {
 
-		ServedBuilding building = (ServedBuilding) buildingService.read(IVANOVA_2);
+		ServedBuilding building = (ServedBuilding) buildingService.readFull(IVANOVA_2);
 		assertNotNull("Building IVANOVA_2 not found", building);
 
 		Diff diff = historyBuilder.diff(null, building);
@@ -51,7 +51,7 @@ public class TestServedBuildingHistoryBuilder extends EircSpringBeanAwareTestCas
 		building.setServiceOrganization(organization);
 		serviceOrganizationService.updateServedBuilding(building);
 
-		building = (ServedBuilding) buildingService.read(IVANOVA_2);
+		building = (ServedBuilding) buildingService.readFull(IVANOVA_2);
 		assertNotNull("Building IVANOVA_2 not found after update", building);
 
 		diff = historyBuilder.diff(copy, building);
@@ -60,7 +60,7 @@ public class TestServedBuildingHistoryBuilder extends EircSpringBeanAwareTestCas
 				building.getServiceOrganizationStub(), copy.getServiceOrganizationStub());
 
 		serviceOrganizationService.removeServedBuildings(set(building.getId()));
-		building = (ServedBuilding) buildingService.read(IVANOVA_2);
+		building = (ServedBuilding) buildingService.readFull(IVANOVA_2);
 		assertNotNull("Building IVANOVA_2 not found after second update", building);
 
 		diff = historyBuilder.diff(copy, building);

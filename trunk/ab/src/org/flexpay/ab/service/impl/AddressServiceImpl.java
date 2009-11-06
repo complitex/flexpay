@@ -56,7 +56,7 @@ public class AddressServiceImpl implements AddressService {
 	@Override
 	public String getBuildingAddress(@NotNull Stub<Building> stub, @Nullable Locale locale) throws Exception {
 
-		List<BuildingAddress> buildingses = buildingService.getBuildingBuildings(stub);
+		List<BuildingAddress> buildingses = buildingService.findAddresesByBuilding(stub);
 		BuildingAddress candidate = null;
 		for (BuildingAddress buildingAddress : buildingses) {
 			if (buildingAddress.isPrimary()) {
@@ -81,7 +81,7 @@ public class AddressServiceImpl implements AddressService {
 			locale = getDefaultLocale();
 		}
 
-		BuildingAddress buildingAddress = buildingService.readFull(stub);
+		BuildingAddress buildingAddress = buildingService.readFullAddress(stub);
 		if (buildingAddress == null) {
 			throw new Exception("Can't get building address with id " + stub.getId() + " from DB");
 		}
@@ -106,7 +106,7 @@ public class AddressServiceImpl implements AddressService {
 	@Override
 	public String getBuildingAddressOnStreet(@NotNull Stub<Building> stub, @NotNull Stub<Street> streetStub,
 											 @Nullable Locale locale) throws Exception {
-		Building building = buildingService.read(stub);
+		Building building = buildingService.readFull(stub);
 		BuildingAddress address = building.getAddressOnStreet(streetStub);
 		if (address == null) {
 			throw new IllegalStateException("Building #" + stub.getId() +

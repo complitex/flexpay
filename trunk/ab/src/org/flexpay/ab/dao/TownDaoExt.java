@@ -19,5 +19,5 @@ public interface TownDaoExt {
 	 * @return List of towns
 	 */
 	@NotNull
-	List<Town> findTowns(Long regionId, Collection<ObjectSorter> sorters, Page<Town> pager);
+	List<Town> findTowns(Long regionId, Collection<? extends ObjectSorter> sorters, Page<Town> pager);
 }

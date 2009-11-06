@@ -2,7 +2,7 @@ package org.flexpay.payments.actions.quittance;
 
 import org.flexpay.ab.persistence.Apartment;
 import org.flexpay.ab.persistence.Person;
-import org.flexpay.ab.service.ApartmentService;
+import org.flexpay.ab.service.AddressService;
 import org.flexpay.ab.service.PersonService;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
@@ -37,7 +37,7 @@ public class SearchQuittanceAction extends CashboxCookieActionSupport {
 	private String actionName;
 
 	// required services
-	private ApartmentService apartmentService;
+	private AddressService addressService;
 	private PersonService personService;
 	private QuittanceDetailsFinder quittanceDetailsFinder;
 	private SPService spService;
@@ -204,7 +204,7 @@ public class SearchQuittanceAction extends CashboxCookieActionSupport {
 		String personMasterIndex = quittanceInfo.getPersonMasterIndex();
 		if (personMasterIndex != null) {
 			Long personId = getLocalId(personMasterIndex);
-			Person person = personService.read(new Stub<Person>(personId));
+			Person person = personService.readFull(new Stub<Person>(personId));
 			return person.getFIO();
 		} else {
 			return quittanceInfo.getPersonFio();
@@ -215,12 +215,12 @@ public class SearchQuittanceAction extends CashboxCookieActionSupport {
 		return quittanceInfo.getAccountNumber();
 	}
 
-	public String getApartmentAddress(QuittanceInfo quittanceInfo) throws FlexPayException {
+	public String getApartmentAddress(QuittanceInfo quittanceInfo) throws Exception {
 
 		String apartmentMasterIndex = quittanceInfo.getApartmentMasterIndex();
 		if (apartmentMasterIndex != null) {
 			Long apartmentId = getLocalId(apartmentMasterIndex);
-			return apartmentService.getAddress(new Stub<Apartment>(apartmentId));
+			return addressService.getAddress(new Stub<Apartment>(apartmentId), getLocale());
 		} else {
 			return quittanceInfo.getAddress();
 		}
@@ -276,7 +276,6 @@ public class SearchQuittanceAction extends CashboxCookieActionSupport {
 		this.actionName = actionName;
 	}
 
-	// required services
 	@Required
 	public void setQuittanceDetailsFinder(QuittanceDetailsFinder quittanceDetailsFinder) {
 		this.quittanceDetailsFinder = quittanceDetailsFinder;
@@ -293,8 +292,8 @@ public class SearchQuittanceAction extends CashboxCookieActionSupport {
 	}
 
 	@Required
-	public void setApartmentService(ApartmentService apartmentService) {
-		this.apartmentService = apartmentService;
+	public void setAddressService(AddressService addressService) {
+		this.addressService = addressService;
 	}
 
 	@Required
@@ -307,12 +306,10 @@ public class SearchQuittanceAction extends CashboxCookieActionSupport {
 		private static final String DELIMITER = "z";
 
 		public static String getServiceIdFromIndex(String serviceFullIndex) {
-
 			return serviceFullIndex.substring(serviceFullIndex.indexOf(DELIMITER) + 1);
 		}
 
 		public static String getServiceFullIndex(String quittanceId, String serviceId) {
-
 			return quittanceId + DELIMITER + serviceId;
 		}
 	}

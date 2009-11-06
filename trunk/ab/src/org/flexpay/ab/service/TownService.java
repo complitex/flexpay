@@ -23,7 +23,7 @@ public interface TownService extends NameTimeDependentService<TownName, TownName
 	 *
  	 * @param townIds Town ids
 	 * @param preserveOrder Whether to preserve order of objects
-	 * @return Found regions
+	 * @return Found towns
 	 */
 	@Secured ({Roles.TOWN_READ})
 	@NotNull
@@ -83,6 +83,6 @@ public interface TownService extends NameTimeDependentService<TownName, TownName
 	 */
 	@Secured (Roles.TOWN_READ)
 	@NotNull
-	List<Town> find(@NotNull ArrayStack filters, @NotNull List<ObjectSorter> sorters, @NotNull Page<Town> pager);
+	List<Town> find(@NotNull ArrayStack filters, @NotNull List<? extends ObjectSorter> sorters, @NotNull Page<Town> pager);
 
 }

@@ -30,7 +30,7 @@ public class PersonSaveRegistrationAction extends FPActionSupport {
 			return SUCCESS;
 		}
 
-		person = personService.read(stub(person));
+		person = personService.readFull(stub(person));
 		person.setPersonRegistration(new Apartment(apartmentFilter), beginDate, endDate);
 
 		if (person.isNew()) {

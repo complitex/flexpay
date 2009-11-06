@@ -74,7 +74,7 @@ public class StreetServiceImpl extends NameTimeDependentServiceImpl<
 	 *
  	 * @param streetIds Street ids
 	 * @param preserveOrder Whether to preserve order of objects
-	 * @return Found regions
+	 * @return Found streets
 	 */
 	@NotNull
 	@Override
@@ -238,7 +238,7 @@ public class StreetServiceImpl extends NameTimeDependentServiceImpl<
 	 */
 	@NotNull
 	@Override
-	public List<Street> findByParentAndQuery(@NotNull Stub<Town> parentStub, @NotNull List<ObjectSorter> sorters, @NotNull String query, @NotNull Page<Street> pager) {
+	public List<Street> findByParentAndQuery(@NotNull Stub<Town> parentStub, @NotNull List<? extends ObjectSorter> sorters, @NotNull String query, @NotNull Page<Street> pager) {
 		Town town = townDao.read(parentStub.getId());
 		if (town == null) {
 			log.warn("Can't get town with id {} from DB", parentStub.getId());
@@ -337,8 +337,10 @@ public class StreetServiceImpl extends NameTimeDependentServiceImpl<
 		return parentFilter;
 	}
 
-	private boolean isFilterValid(StreetFilter filter) {
-
+	private boolean isFilterValid(@NotNull StreetFilter filter) {
+		if (!filter.needFilter()) {
+			return true;
+		}
 		for (StreetNameTranslation nameTranslation : filter.getNames()) {
 			StreetName name = (StreetName) nameTranslation.getTranslatable();
 			if (name.getStub().getId().equals(filter.getSelectedId())) {

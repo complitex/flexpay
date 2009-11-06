@@ -71,7 +71,7 @@ public class PersonProcessor extends AbstractProcessor<Person> {
 	 */
 	@Nullable
 	protected Person readObject(@NotNull Stub<Person> stub) {
-		return personService.read(stub);
+		return personService.readFull(stub);
 	}
 
 	/**

@@ -9,8 +9,6 @@ import org.flexpay.ab.service.StreetService;
 import org.flexpay.common.actions.FPActionWithPagerSupport;
 import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.persistence.Stub.stub;
-import org.flexpay.common.persistence.sorter.ObjectSorter;
-import org.flexpay.common.util.CollectionUtils;
 import static org.flexpay.common.util.CollectionUtils.list;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
@@ -40,12 +38,10 @@ public class StreetsListAction extends FPActionWithPagerSupport<Street> {
 		streetSorterByName.setLang(getLanguage());
 		streetSorterByType.setLang(getLanguage());
 
-		List<ObjectSorter> sorters = CollectionUtils.<ObjectSorter>list(streetSorterByName, streetSorterByType);
-
 		String searchStr = streetFilter.getSearchString() == null ? "" : streetFilter.getSearchString();
 
-		List<Street> streetsStubs=streetService.findByParentAndQuery(new Stub<Town>(townFilter), sorters,
-					"%" + searchStr + "%", getPager());
+		List<Street> streetsStubs = streetService.findByParentAndQuery(new Stub<Town>(townFilter),
+				list(streetSorterByName, streetSorterByType), "%" + searchStr + "%", getPager());
 
 		if (log.isDebugEnabled()) {
 			log.info("Total streets found: {}", streetsStubs.size());

@@ -83,6 +83,6 @@ public interface DistrictService extends NameTimeDependentService<DistrictName, 
 	 */
 	@Secured(Roles.DISTRICT_READ)
 	@NotNull
-	List<District> find(@NotNull ArrayStack filters, @NotNull List<ObjectSorter> sorters, @NotNull Page<District> pager);
+	List<District> find(@NotNull ArrayStack filters, @NotNull List<? extends ObjectSorter> sorters, @NotNull Page<District> pager);
 
 }

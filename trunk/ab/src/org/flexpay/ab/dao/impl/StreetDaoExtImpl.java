@@ -30,7 +30,7 @@ public class StreetDaoExtImpl extends HibernateDaoSupport implements StreetDaoEx
 	@SuppressWarnings ({"unchecked"})
 	@NotNull
 	@Override
-	public List<Street> findByParentAndQuery(Long townId, Collection<ObjectSorter> sorters, String query, final Page<Street> pager) {
+	public List<Street> findByParentAndQuery(Long townId, Collection<? extends ObjectSorter> sorters, String query, final Page<Street> pager) {
 		StreetSorter sorter = findSorter(sorters);
 		sorter.setStreetField("s");
 
@@ -77,7 +77,7 @@ public class StreetDaoExtImpl extends HibernateDaoSupport implements StreetDaoEx
 	}
 
 	@NotNull
-	private StreetSorter findSorter(Collection<ObjectSorter> sorters) {
+	private StreetSorter findSorter(Collection<? extends ObjectSorter> sorters) {
 
 		for (ObjectSorter sorter : sorters) {
 			if (sorter.isActivated() && sorter instanceof StreetSorter) {

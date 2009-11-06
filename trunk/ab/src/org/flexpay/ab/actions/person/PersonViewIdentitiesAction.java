@@ -19,7 +19,7 @@ public class PersonViewIdentitiesAction extends FPActionSupport {
 	public String doExecute() throws Exception {
 
 		if (person.isNotNew()) {
-			person = personService.read(stub(person));
+			person = personService.readFull(stub(person));
 		}
 
 		return SUCCESS;
