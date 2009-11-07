@@ -1,7 +1,7 @@
 package org.flexpay.ab.persistence;
 
-import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
 import org.flexpay.ab.service.ObjectsFactory;
+import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import org.junit.Test;

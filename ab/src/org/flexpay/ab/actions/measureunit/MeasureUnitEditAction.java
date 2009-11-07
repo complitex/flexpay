@@ -1,6 +1,5 @@
 package org.flexpay.ab.actions.measureunit;
 
-import org.apache.commons.lang.StringUtils;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.persistence.Language;
 import org.flexpay.common.persistence.MeasureUnit;
@@ -8,7 +7,7 @@ import org.flexpay.common.persistence.MeasureUnitName;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.service.MeasureUnitService;
 import static org.flexpay.common.util.CollectionUtils.treeMap;
-import org.flexpay.common.util.config.ApplicationConfig;
+import static org.flexpay.common.util.config.ApplicationConfig.getLanguages;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
@@ -34,17 +33,13 @@ public class MeasureUnitEditAction extends FPActionSupport {
 		}
 
 		if (isNotSubmit()) {
-			initNames();
+			initTranslations();
 			return INPUT;
 		}
 
 		for (Map.Entry<Long, String> name : names.entrySet()) {
 			String value = name.getValue();
 			Language lang = getLang(name.getKey());
-			if (lang.isDefault() && StringUtils.isEmpty(value)) {
-				addActionError(getText("ab.error.measure_unit.name_is_required"));
-				return INPUT;
-			}
 			measureUnit.setName(new MeasureUnitName(value, lang));
 		}
 
@@ -55,6 +50,19 @@ public class MeasureUnitEditAction extends FPActionSupport {
 		}
 
 		return REDIRECT_SUCCESS;
+	}
+
+	private void initTranslations() {
+
+		for (MeasureUnitName name : measureUnit.getUnitNames()) {
+			names.put(name.getLang().getId(), name.getName());
+		}
+
+		for (Language lang : getLanguages()) {
+			if (!names.containsKey(lang.getId())) {
+				names.put(lang.getId(), "");
+			}
+		}
 	}
 
 	/**
@@ -76,18 +84,6 @@ public class MeasureUnitEditAction extends FPActionSupport {
 			crumbNameKey = crumbCreateKey;
 		}
 		super.setBreadCrumbs();
-	}
-
-	private void initNames() {
-		for (MeasureUnitName name : measureUnit.getUnitNames()) {
-			names.put(name.getLang().getId(), name.getName());
-		}
-
-		for (Language lang : ApplicationConfig.getLanguages()) {
-			if (!names.containsKey(lang.getId())) {
-				names.put(lang.getId(), "");
-			}
-		}
 	}
 
 	public MeasureUnit getMeasureUnit() {

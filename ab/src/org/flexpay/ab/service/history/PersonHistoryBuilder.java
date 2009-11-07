@@ -2,8 +2,8 @@ package org.flexpay.ab.service.history;
 
 import org.apache.commons.lang.StringUtils;
 import org.flexpay.ab.persistence.*;
-import org.flexpay.ab.service.IdentityTypeService;
 import org.flexpay.ab.service.ApartmentService;
+import org.flexpay.ab.service.IdentityTypeService;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.history.Diff;
 import org.flexpay.common.persistence.history.HistoryRecord;
@@ -11,10 +11,9 @@ import org.flexpay.common.persistence.history.ProcessingStatus;
 import org.flexpay.common.persistence.history.TemporalObjectsHistoryBuildHelper;
 import org.flexpay.common.persistence.history.TemporalObjectsHistoryBuildHelper.TemporalDataExtractor;
 import org.flexpay.common.persistence.history.impl.HistoryBuilderBase;
-import org.flexpay.common.util.CollectionUtils;
+import static org.flexpay.common.util.CollectionUtils.*;
 import org.flexpay.common.util.DateUtil;
 import org.flexpay.common.util.config.ApplicationConfig;
-import static org.flexpay.common.util.CollectionUtils.list;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
@@ -114,7 +113,7 @@ public class PersonHistoryBuilder extends HistoryBuilderBase<Person> {
 		SortedMap<IdentityType, List<PersonIdentity>> idents2 = prepareIdentities(a2);
 
 		// build set of all unique types
-		Set<IdentityType> types = CollectionUtils.set(idents1.keySet());
+		Set<IdentityType> types = set(idents1.keySet());
 		types.addAll(idents2.keySet());
 		log.debug("Unique types count: {}", types.size());
 
@@ -298,14 +297,14 @@ public class PersonHistoryBuilder extends HistoryBuilderBase<Person> {
 	private SortedMap<IdentityType, List<PersonIdentity>> prepareIdentities(Person person) {
 
 		Set<PersonIdentity> identities = person.getPersonIdentities();
-		SortedMap<IdentityType, List<PersonIdentity>> result = CollectionUtils.treeMap();
+		SortedMap<IdentityType, List<PersonIdentity>> result = treeMap();
 
 		// split identities by type
 		for (PersonIdentity identity : identities) {
 			IdentityType type = identity.getIdentityType();
 			List<PersonIdentity> idents = result.get(type);
 			if (idents == null) {
-				idents = CollectionUtils.list();
+				idents = list();
 				result.put(type, idents);
 			}
 			idents.add(identity);

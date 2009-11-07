@@ -4,7 +4,6 @@ import org.apache.commons.lang.StringUtils;
 import org.flexpay.common.persistence.DomainObjectWithStatus;
 import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.persistence.Stub.stub;
-import org.flexpay.common.util.CollectionUtils;
 import static org.flexpay.common.util.CollectionUtils.*;
 import org.flexpay.common.util.DateIntervalUtil;
 import org.flexpay.common.util.DateUtil;
@@ -110,7 +109,7 @@ public class Apartment extends DomainObjectWithStatus {
 	}
 
 	public Set<PersonRegistration> getValidPersonRegistrations(Date date) {
-		Set<PersonRegistration> result = CollectionUtils.set();
+		Set<PersonRegistration> result = set();
 		for (PersonRegistration reg : personRegistrations) {
 			if (reg.isValid(date)) {
 				result.add(reg);

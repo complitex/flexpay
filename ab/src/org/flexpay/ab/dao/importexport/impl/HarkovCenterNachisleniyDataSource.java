@@ -1,11 +1,11 @@
 package org.flexpay.ab.dao.importexport.impl;
 
+import org.apache.commons.lang.StringUtils;
 import org.flexpay.ab.service.importexport.*;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.util.config.ApplicationConfig;
 import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
-import org.apache.commons.lang.StringUtils;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

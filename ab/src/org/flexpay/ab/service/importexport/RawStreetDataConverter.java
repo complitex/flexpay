@@ -8,7 +8,7 @@ import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.persistence.TimeLine;
 import org.flexpay.common.service.importexport.CorrectionsService;
 import org.flexpay.common.service.importexport.DataConverter;
-import org.flexpay.common.util.CollectionUtils;
+import static org.flexpay.common.util.CollectionUtils.set;
 import org.flexpay.common.util.config.ApplicationConfig;
 
 import java.util.Set;
@@ -38,7 +38,7 @@ public class RawStreetDataConverter implements DataConverter<Street, RawStreetDa
 		nameTranslation.setTranslatable(streetName);
 		nameTranslation.setName(streetRawData.getName());
 
-		Set<StreetNameTranslation> translations = CollectionUtils.set();
+		Set<StreetNameTranslation> translations = set();
 		translations.add(nameTranslation);
 		streetName.setTranslations(translations);
 

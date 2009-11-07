@@ -1,13 +1,13 @@
 package org.flexpay.ab.persistence.filters;
 
-import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
-import org.flexpay.common.persistence.Stub;
 import org.flexpay.ab.persistence.BuildingAddress;
-import org.jetbrains.annotations.Nullable;
+import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
 import java.util.Collections;
+import java.util.List;
 
 public class BuildingsFilter extends PrimaryKeyFilter<BuildingAddress> {
 

@@ -1,12 +1,12 @@
 package org.flexpay.ab.service;
 
-import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
 import org.flexpay.ab.persistence.AddressAttributeType;
+import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
 import org.flexpay.ab.util.config.ApplicationConfig;
-import org.springframework.beans.factory.annotation.Autowired;
-import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 

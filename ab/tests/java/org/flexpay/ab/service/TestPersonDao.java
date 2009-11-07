@@ -2,7 +2,6 @@ package org.flexpay.ab.service;
 
 import org.flexpay.ab.dao.PersonDaoExt;
 import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
-import static org.junit.Assert.assertNull;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 

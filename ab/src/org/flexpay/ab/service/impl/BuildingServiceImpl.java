@@ -24,7 +24,6 @@ import org.flexpay.common.service.ParentService;
 import org.flexpay.common.service.PropertiesInitializer;
 import org.flexpay.common.service.PropertiesInitializerHolder;
 import org.flexpay.common.service.internal.SessionUtils;
-import org.flexpay.common.util.CollectionUtils;
 import static org.flexpay.common.util.CollectionUtils.list;
 import static org.flexpay.common.util.CollectionUtils.set;
 import org.jetbrains.annotations.NotNull;
@@ -199,7 +198,7 @@ public class BuildingServiceImpl implements BuildingService, ParentService<Build
 
 		// check that building has only one address on any streets
 		do {
-			Set<Stub<Street>> streetStubs = CollectionUtils.set();
+			Set<Stub<Street>> streetStubs = set();
 			for (BuildingAddress address : building.getBuildingses()) {
 				if (streetStubs.contains(address.getStreetStub())) {
 					container.addException(new FlexPayException("Two street address", "error.ab.building.street_address_duplicate"));

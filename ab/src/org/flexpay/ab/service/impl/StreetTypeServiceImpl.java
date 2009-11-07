@@ -84,7 +84,7 @@ public class StreetTypeServiceImpl implements StreetTypeService {
 		for (Long id : streetTypeIds) {
 			StreetType streetType = streetTypeDao.read(id);
 			if (streetType == null) {
-				log.warn("Incorrect street type id {}", id);
+				log.warn("Can't get street type with id {} from DB", id);
 				continue;
 			}
 			streetType.disable();

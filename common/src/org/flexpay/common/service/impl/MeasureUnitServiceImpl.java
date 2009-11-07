@@ -4,6 +4,7 @@ import org.apache.commons.lang.StringUtils;
 import org.flexpay.common.dao.MeasureUnitDao;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
+import org.flexpay.common.persistence.Language;
 import org.flexpay.common.persistence.MeasureUnit;
 import org.flexpay.common.persistence.MeasureUnitName;
 import org.flexpay.common.persistence.Stub;
@@ -33,80 +34,45 @@ public class MeasureUnitServiceImpl implements MeasureUnitService {
 	private ModificationListener<MeasureUnit> modificationListener;
 
 	/**
-	 * Read full unit info
+	 * Read measure unit
 	 *
-	 * @param stub MeasureUnit stub to read
-	 * @return MeasureUnit if available
+	 * @param unitStub MeasureUnit stub
+	 * @return Object if found, or <code>null</code> otherwise
 	 */
 	@Nullable
-	public MeasureUnit readFull(@NotNull Stub<? extends MeasureUnit> stub) {
-		return measureUnitDao.readFull(stub.getId());
+	@Override
+	public MeasureUnit readFull(@NotNull Stub<? extends MeasureUnit> unitStub) {
+		return measureUnitDao.readFull(unitStub.getId());
 	}
 
 	/**
-	 * Get a list of available measure units
+	 * Disable measure units
 	 *
-	 * @return List of Measure units
+	 * @param unitIds IDs of measure units to disable
 	 */
-	@NotNull
-	@Override
-	public List<MeasureUnit> listUnits() {
-		return measureUnitDao.listUnits();
-	}
-
-	@NotNull
-	@Override
-	public MeasureUnit newInstance() {
-		return new MeasureUnit();
-	}
-
-	@Override
-	public Class<? extends MeasureUnit> getType() {
-		return MeasureUnit.class;
-	}
-
 	@Transactional (readOnly = false)
 	@Override
-	public void disable(@NotNull Collection<Long> ids) {
-
-		log.debug("Disabling service types");
-		for (Long id : ids) {
+	public void disable(@NotNull Collection<Long> unitIds) {
+		for (Long id : unitIds) {
 			MeasureUnit unit = measureUnitDao.read(id);
-			if (unit != null) {
-				unit.disable();
-				measureUnitDao.update(unit);
-
-				modificationListener.onDelete(unit);
-				log.debug("Disabled unit: {}", unit);
+			if (unit == null) {
+				log.warn("Can't get measure unit with id {} from DB", id);
+				continue;
 			}
+			unit.disable();
+			measureUnitDao.update(unit);
+
+			modificationListener.onDelete(unit);
+			log.debug("Measure unit disabled: {}", unit);
 		}
 	}
 
 	/**
-	 * Initialize filter
-	 *
-	 * @param filter MeasureUnitFilter to init
-	 * @return Filter back, or a new instance if filter is <code>null</code>
-	 */
-	@NotNull
-	@Override
-	public MeasureUnitFilter initFilter(@Nullable MeasureUnitFilter filter) {
-
-		if (filter == null) {
-			filter = new MeasureUnitFilter();
-		}
-
-		filter.setMeasureUnits(listUnits());
-
-		return filter;
-	}
-
-	/**
-	 * Create or update measure unit
+	 * Create measure unit
 	 *
 	 * @param unit MeasureUnit to save
-	 * @throws org.flexpay.common.exception.FlexPayExceptionContainer
-	 *          if validation fails
+	 * @return Saved instance of measure unit
+	 * @throws FlexPayExceptionContainer if validation fails
 	 */
 	@Transactional (readOnly = false)
 	@NotNull
@@ -123,31 +89,103 @@ public class MeasureUnitServiceImpl implements MeasureUnitService {
 	}
 
 	/**
-	 * Update measure unit
+	 * Update or create measure unit
 	 *
-	 * @param obj Unit to update
-	 * @return updatyed object back
-	 * @throws org.flexpay.common.exception.FlexPayExceptionContainer
-	 *          if validation fails
+	 * @param unit MeasureUnit to save
+	 * @return Saved instance of measure unit
+	 * @throws FlexPayExceptionContainer if validation fails
 	 */
 	@SuppressWarnings ({"ThrowableInstanceNeverThrown"})
+	@Transactional (readOnly = false)
 	@NotNull
 	@Override
-	@Transactional (readOnly = false)
-	public MeasureUnit update(@NotNull MeasureUnit obj) throws FlexPayExceptionContainer {
+	public MeasureUnit update(@NotNull MeasureUnit unit) throws FlexPayExceptionContainer {
 
-		validate(obj);
+		validate(unit);
 
-		MeasureUnit old = readFull(stub(obj));
+		MeasureUnit old = readFull(stub(unit));
 		if (old == null) {
-			throw new FlexPayExceptionContainer(new FlexPayException("No object found to update " + obj));
+			throw new FlexPayExceptionContainer(new FlexPayException("No measure unit found to update " + unit));
 		}
 		sessionUtils.evict(old);
-		modificationListener.onUpdate(old, obj);
+		modificationListener.onUpdate(old, unit);
 
-		measureUnitDao.update(obj);
+		measureUnitDao.update(unit);
 
-		return obj;
+		return unit;
+	}
+
+	/**
+	 * Validate measure unit before save
+	 *
+	 * @param unit MeasureUnit object to validate
+	 * @throws FlexPayExceptionContainer if validation fails
+	 */
+	@SuppressWarnings ({"ThrowableInstanceNeverThrown"})
+	private void validate(@NotNull MeasureUnit unit) throws FlexPayExceptionContainer {
+
+		FlexPayExceptionContainer container = new FlexPayExceptionContainer();
+
+		boolean defaultLangNameFound = false;
+
+		for (MeasureUnitName translation : unit.getUnitNames()) {
+
+			Language lang = translation.getLang();
+			String name = translation.getName();
+			boolean nameNotEmpty = StringUtils.isNotEmpty(name);
+
+			if (lang.isDefault()) {
+				defaultLangNameFound = nameNotEmpty;
+			}
+
+			if (nameNotEmpty) {
+				List<MeasureUnit> units = measureUnitDao.findByNameAndLanguage(name, lang.getId());
+				if (!units.isEmpty() && !units.get(0).getId().equals(unit.getId())) {
+					container.addException(new FlexPayException(
+							"Name \"" + name + "\" is already use", "ab.error.name_is_already_use", name));
+				}
+			}
+
+		}
+
+		if (!defaultLangNameFound) {
+			container.addException(new FlexPayException(
+					"No default language translation", "common.error.measure_unit.name_is_required"));
+		}
+
+		if (container.isNotEmpty()) {
+			throw container;
+		}
+	}
+
+	/**
+	 * Get a list of available measure units
+	 *
+	 * @return List of Measure units
+	 */
+	@NotNull
+	@Override
+	public List<MeasureUnit> find() {
+		return measureUnitDao.listUnits();
+	}
+
+	/**
+	 * Initialize filter
+	 *
+	 * @param measureUnitFilter filter to init
+	 * @return Filter back, or a new instance if filter is <code>null</code>
+	 */
+	@NotNull
+	@Override
+	public MeasureUnitFilter initFilter(@Nullable MeasureUnitFilter measureUnitFilter) {
+
+		if (measureUnitFilter == null) {
+			measureUnitFilter = new MeasureUnitFilter();
+		}
+
+		measureUnitFilter.setMeasureUnits(find());
+
+		return measureUnitFilter;
 	}
 
 	@Transactional (readOnly = false)
@@ -156,25 +194,15 @@ public class MeasureUnitServiceImpl implements MeasureUnitService {
 		measureUnitDao.delete(unit);
 	}
 
-	@SuppressWarnings ({"ThrowableInstanceNeverThrown"})
-	private void validate(@NotNull MeasureUnit unit) throws FlexPayExceptionContainer {
+	@NotNull
+	@Override
+	public MeasureUnit newInstance() {
+		return new MeasureUnit();
+	}
 
-		FlexPayExceptionContainer ex = new FlexPayExceptionContainer();
-
-		boolean defaultNameFound = false;
-		for (MeasureUnitName name : unit.getUnitNames()) {
-			if (name.getLang().isDefault() && StringUtils.isNotBlank(name.getName())) {
-				defaultNameFound = true;
-			}
-		}
-		if (!defaultNameFound) {
-			ex.addException(new FlexPayException(
-					"No default lang name", "common.error.no_default_lang_name"));
-		}
-
-		if (ex.isNotEmpty()) {
-			throw ex;
-		}
+	@Override
+	public Class<? extends MeasureUnit> getType() {
+		return MeasureUnit.class;
 	}
 
 	@Required

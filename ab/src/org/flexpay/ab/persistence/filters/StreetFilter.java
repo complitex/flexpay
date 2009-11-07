@@ -2,8 +2,8 @@ package org.flexpay.ab.persistence.filters;
 
 import org.flexpay.ab.persistence.Street;
 import org.flexpay.ab.persistence.StreetNameTranslation;
-import org.flexpay.common.persistence.filter.NameFilter;
 import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.persistence.filter.NameFilter;
 import org.jetbrains.annotations.NotNull;
 
 public class StreetFilter extends NameFilter<Street, StreetNameTranslation> {

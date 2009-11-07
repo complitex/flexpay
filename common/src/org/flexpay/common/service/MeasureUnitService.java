@@ -7,23 +7,53 @@ import org.flexpay.common.persistence.filter.MeasureUnitFilter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
 import java.util.Collection;
+import java.util.List;
 
 /**
- * Service helping working with MeasureUnit-s
+ * Service interface for MeasureUnits related tasks
  */
 public interface MeasureUnitService extends DomainObjectService<MeasureUnit> {
 
 	/**
-	 * Read full unit info
+	 * Read measure unit
 	 *
-	 * @param stub MeasureUnit stub to read
-	 * @return MeasureUnit if available
+	 * @param unitStub MeasureUnit stub
+	 * @return Object if found, or <code>null</code> otherwise
 	 */
 	@Nullable
 	@Override
-	MeasureUnit readFull(@NotNull Stub<? extends MeasureUnit> stub);
+	MeasureUnit readFull(@NotNull Stub<? extends MeasureUnit> unitStub);
+
+	/**
+	 * Disable measure units
+	 *
+	 * @param unitIds IDs of measure units to disable
+	 */
+	@Override
+	void disable(@NotNull Collection<Long> unitIds);
+
+	/**
+	 * Create measure unit
+	 *
+	 * @param unit MeasureUnit to save
+	 * @return Saved instance of measure unit
+	 * @throws FlexPayExceptionContainer if validation fails
+	 */
+	@NotNull
+	@Override
+	MeasureUnit create(@NotNull MeasureUnit unit) throws FlexPayExceptionContainer;
+
+	/**
+	 * Update or create measure unit
+	 *
+	 * @param unit MeasureUnit to save
+	 * @return Saved instance of measure unit
+	 * @throws FlexPayExceptionContainer if validation fails
+	 */
+	@NotNull
+	@Override
+	MeasureUnit update(@NotNull MeasureUnit unit) throws FlexPayExceptionContainer;
 
 	/**
 	 * Get a list of available measure units
@@ -31,43 +61,17 @@ public interface MeasureUnitService extends DomainObjectService<MeasureUnit> {
 	 * @return List of Measure units
 	 */
 	@NotNull
-	List<MeasureUnit> listUnits();
+	List<MeasureUnit> find();
 
 	/**
 	 * Initialize filter
 	 *
-	 * @param filter MeasureUnitFilter to init
+	 * @param measureUnitFilter filter to init
 	 * @return Filter back, or a new instance if filter is <code>null</code>
 	 */
 	@NotNull
-	MeasureUnitFilter initFilter(@Nullable MeasureUnitFilter filter);
-
-	/**
-	 * Create measure unit
-	 *
-	 * @param unit MeasureUnit to save
-	 * @return Persisted object back
-	 * @throws FlexPayExceptionContainer if validation fails
-	 */
-	@NotNull
-	@Override
-	MeasureUnit create(@NotNull MeasureUnit unit) throws FlexPayExceptionContainer;
-
-	@Override
-	void disable(@NotNull Collection<Long> ids);
-
-	/**
-	 * Update measure unit
-	 *
-	 * @param obj Unit to update
-	 * @return updatyed object back
-	 * @throws FlexPayExceptionContainer if validation fails
-	 */
-	@NotNull
-	@Override
-	MeasureUnit update(@NotNull MeasureUnit obj) throws FlexPayExceptionContainer;
+	MeasureUnitFilter initFilter(@Nullable MeasureUnitFilter measureUnitFilter);
 
 	void delete(@NotNull MeasureUnit unit);
-
 
 }

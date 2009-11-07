@@ -100,4 +100,11 @@
 	]]>
 	</query>
 
+    <query name="MeasureUnit.findByNameAndLanguage">
+        select distinct mu
+        from MeasureUnit mu
+            left join mu.unitNames un
+        where un.name=? and un.lang.id=? and mu.status=0
+    </query>
+
 </hibernate-mapping>

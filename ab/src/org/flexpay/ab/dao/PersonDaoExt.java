@@ -1,8 +1,8 @@
 package org.flexpay.ab.dao;
 
 import org.flexpay.ab.persistence.Person;
-import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.dao.paging.FetchRange;
+import org.flexpay.common.persistence.Stub;
 
 import java.util.List;
 

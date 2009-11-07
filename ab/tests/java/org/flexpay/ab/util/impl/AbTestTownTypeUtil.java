@@ -5,9 +5,10 @@ import org.flexpay.ab.persistence.TownTypeTranslation;
 import org.flexpay.ab.service.TownTypeService;
 import org.flexpay.ab.util.TestTownTypeUtil;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
+import static org.flexpay.common.persistence.DomainObject.collectionIds;
 import org.flexpay.common.persistence.Language;
 import org.flexpay.common.service.LanguageService;
-import org.flexpay.common.util.CollectionUtils;
+import static org.flexpay.common.util.CollectionUtils.list;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
@@ -15,7 +16,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
-import javax.annotation.Resource;
 import java.util.Set;
 
 public class AbTestTownTypeUtil implements TestTownTypeUtil {
@@ -80,6 +80,7 @@ public class AbTestTownTypeUtil implements TestTownTypeUtil {
 
     @Override
     public void delete(@NotNull TownType townType) {
-        townTypeService.disable(CollectionUtils.list(townType));
+        townTypeService.disable(collectionIds(list(townType)));
     }
+
 }

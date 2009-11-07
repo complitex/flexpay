@@ -1,11 +1,11 @@
 package org.flexpay.ab.service.history;
 
-import org.flexpay.common.persistence.history.HistoryBuilder;
-import org.flexpay.common.persistence.history.Diff;
 import org.flexpay.ab.persistence.Building;
-import org.springframework.beans.factory.annotation.Required;
+import org.flexpay.common.persistence.history.Diff;
+import org.flexpay.common.persistence.history.HistoryBuilder;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.springframework.beans.factory.annotation.Required;
 
 public class BuildingHistoryBuilderProxy implements HistoryBuilder<Building> {
 

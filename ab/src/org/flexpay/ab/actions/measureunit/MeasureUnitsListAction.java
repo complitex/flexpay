@@ -19,7 +19,7 @@ public class MeasureUnitsListAction extends FPActionSupport {
 	@Override
 	protected String doExecute() throws Exception {
 
-		units = measureUnitService.listUnits();
+		units = measureUnitService.find();
 
 		return SUCCESS;
 	}

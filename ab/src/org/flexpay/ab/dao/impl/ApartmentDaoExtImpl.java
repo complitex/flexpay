@@ -5,23 +5,23 @@ import org.flexpay.ab.persistence.Apartment;
 import org.flexpay.ab.persistence.Building;
 import org.flexpay.ab.persistence.sorter.ApartmentSorter;
 import org.flexpay.ab.persistence.sorter.ApartmentSorterStub;
-import org.flexpay.common.util.DateUtil;
+import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.sorter.ObjectSorter;
-import org.flexpay.common.dao.paging.Page;
+import org.flexpay.common.util.DateUtil;
+import org.hibernate.HibernateException;
+import org.hibernate.Query;
+import org.hibernate.Session;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import org.springframework.beans.factory.annotation.Required;
 import org.springframework.jdbc.core.SingleColumnRowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
 import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.HibernateTemplate;
-import org.springframework.beans.factory.annotation.Required;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-import org.hibernate.Session;
-import org.hibernate.HibernateException;
-import org.hibernate.Query;
 
-import java.util.List;
 import java.util.Collection;
+import java.util.List;
 
 public class ApartmentDaoExtImpl extends SimpleJdbcDaoSupport implements ApartmentDaoExt {
 

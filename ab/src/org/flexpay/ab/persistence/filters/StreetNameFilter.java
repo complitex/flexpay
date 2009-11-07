@@ -5,8 +5,6 @@ import org.apache.commons.lang.builder.ToStringStyle;
 import org.flexpay.ab.persistence.Street;
 import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
 
-import java.util.Map;
-
 public class StreetNameFilter extends PrimaryKeyFilter<Street> {
 
 	private boolean showSearchString;

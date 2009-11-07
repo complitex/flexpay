@@ -6,7 +6,8 @@ import org.apache.commons.lang.builder.ToStringStyle;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.DomainObjectWithStatus;
 import org.flexpay.common.persistence.Stub;
-import org.flexpay.common.util.CollectionUtils;
+import static org.flexpay.common.util.CollectionUtils.list;
+import static org.flexpay.common.util.CollectionUtils.set;
 import org.flexpay.common.util.DateIntervalUtil;
 import org.flexpay.common.util.DateUtil;
 import static org.flexpay.common.util.config.ApplicationConfig.getFutureInfinite;
@@ -56,7 +57,7 @@ public class Person extends DomainObjectWithStatus {
 
 
 	public void setPersonAttributes(@NotNull List<PersonAttribute> personAttributes) {
-		this.personAttributes = CollectionUtils.set(personAttributes);
+		this.personAttributes = set(personAttributes);
 	}
 
 	/**
@@ -99,7 +100,7 @@ public class Person extends DomainObjectWithStatus {
 			personAttributes.remove(attribute);
 		} else {
 			if (Collections.emptySet().equals(personAttributes)) {
-				personAttributes = CollectionUtils.set();
+				personAttributes = set();
 			}
 
 			personAttributes.add(attribute);
@@ -135,7 +136,7 @@ public class Person extends DomainObjectWithStatus {
 	public void addIdentity(PersonIdentity identity) {
 		//noinspection CollectionsFieldAccessReplaceableByMethodCall
 		if (personIdentities == Collections.EMPTY_SET) {
-			personIdentities = CollectionUtils.set();
+			personIdentities = set();
 		}
 
 		identity.setPerson(this);
@@ -197,8 +198,8 @@ public class Person extends DomainObjectWithStatus {
 		beginDate = DateUtil.truncateDay(beginDate);
 		endDate = DateUtil.truncateDay(endDate);
 
-		List<PersonRegistration> toDelete = CollectionUtils.list();
-		List<PersonRegistration> newRegistrations = CollectionUtils.list();
+		List<PersonRegistration> toDelete = list();
+		List<PersonRegistration> newRegistrations = list();
 		for (PersonRegistration reg : personRegistrations) {
 			// if registration intervals are intersecting update old intervals bound
 			// possibly adds one new interval if new interval is inside the old
@@ -235,7 +236,7 @@ public class Person extends DomainObjectWithStatus {
 
 		//noinspection CollectionsFieldAccessReplaceableByMethodCall
 		if (personRegistrations == Collections.EMPTY_SET) {
-			personRegistrations = CollectionUtils.set();
+			personRegistrations = set();
 		}
 
 		personRegistrations.add(registration);
@@ -245,7 +246,7 @@ public class Person extends DomainObjectWithStatus {
 
 		//noinspection CollectionsFieldAccessReplaceableByMethodCall
 		if (personRegistrations == Collections.EMPTY_SET) {
-			personRegistrations = CollectionUtils.set();
+			personRegistrations = set();
 		}
 
 		personRegistrations.addAll(registrations);
@@ -260,7 +261,7 @@ public class Person extends DomainObjectWithStatus {
 	}
 
 	public void setPersonRegistrations(@NotNull List<PersonRegistration> personRegistrations) {
-		this.personRegistrations = CollectionUtils.set(personRegistrations);
+		this.personRegistrations = set(personRegistrations);
 	}
 
 	public PersonIdentity getPassportIdentity() {
@@ -335,7 +336,7 @@ public class Person extends DomainObjectWithStatus {
 		}
 
 		if (Collections.emptySet().equals(personIdentities)) {
-			personIdentities = CollectionUtils.set();
+			personIdentities = set();
 		}
 
 		personIdentities.add(identity);

@@ -1,14 +1,14 @@
 package org.flexpay.ab.service.history;
 
-import org.flexpay.ab.service.PersonService;
 import org.flexpay.ab.persistence.Person;
+import org.flexpay.ab.service.PersonService;
 import org.flexpay.common.dao.paging.FetchRange;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 
-import java.util.List;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * Generator of history of all persons

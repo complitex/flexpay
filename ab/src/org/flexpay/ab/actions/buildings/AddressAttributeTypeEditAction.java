@@ -6,7 +6,7 @@ import org.flexpay.ab.service.AddressAttributeTypeService;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.persistence.Language;
 import static org.flexpay.common.persistence.Stub.stub;
-import org.flexpay.common.util.CollectionUtils;
+import static org.flexpay.common.util.CollectionUtils.set;
 import static org.flexpay.common.util.CollectionUtils.treeMap;
 import static org.flexpay.common.util.config.ApplicationConfig.getLanguages;
 import org.jetbrains.annotations.NotNull;
@@ -48,7 +48,7 @@ public class AddressAttributeTypeEditAction extends FPActionSupport {
 		}
 
 		// init translations
-		Set<AddressAttributeTypeTranslation> newTranslations = CollectionUtils.set();
+		Set<AddressAttributeTypeTranslation> newTranslations = set();
 		for (Long languageId : names.keySet()) {
 			Language lang = getLang(languageId);
 			String name = names.get(languageId);

@@ -25,8 +25,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 @Transactional (readOnly = true)
 public class PersonServiceImpl implements PersonService {
@@ -84,7 +84,7 @@ public class PersonServiceImpl implements PersonService {
 	 */
 	@Transactional (readOnly = false)
 	@Override
-	public void disable(@NotNull Set<Long> personIds) {
+	public void disable(@NotNull Collection<Long> personIds) {
 		for (Long id : personIds) {
 			Person person = personDao.read(id);
 			if (person == null) {

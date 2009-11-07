@@ -1,9 +1,9 @@
 package org.flexpay.ab.util.config;
 
+import org.flexpay.ab.persistence.AddressAttributeType;
 import org.flexpay.ab.persistence.Country;
 import org.flexpay.ab.persistence.Region;
 import org.flexpay.ab.persistence.Town;
-import org.flexpay.ab.persistence.AddressAttributeType;
 import org.flexpay.ab.service.Security;
 import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.persistence.Stub.stub;
