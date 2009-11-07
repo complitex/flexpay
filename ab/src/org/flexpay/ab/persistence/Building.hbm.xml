@@ -224,7 +224,7 @@
 		from BuildingAddress b
             inner join fetch b.buildingAttributes a
             inner join fetch a.buildingAttributeType t
-		where b.building.district.id=? and b.street.id=? and exists (
+		where b.building.district.id=? and b.status=0 and b.street.id=? and exists (
 		    from AddressAttribute ba
 		    where ba.buildings.id=b.id and
 		        ba.buildingAttributeType.id=? and ba.value=?
@@ -236,7 +236,7 @@
 		from BuildingAddress b
             inner join fetch b.buildingAttributes a
             inner join fetch a.buildingAttributeType t
-		where b.street.id=? and exists (
+		where b.street.id=? and b.status=0 and exists (
 		    from AddressAttribute ba
 		    where ba.buildings.id=b.id and
 		        ba.buildingAttributeType.id=? and ba.value=?

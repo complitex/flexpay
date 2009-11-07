@@ -1,20 +1,18 @@
 package org.flexpay.ab.actions.buildings;
 
-import org.flexpay.ab.persistence.Building;
 import org.flexpay.ab.persistence.BuildingAddress;
 import org.flexpay.ab.service.BuildingService;
 import org.flexpay.common.actions.FPActionSupport;
-import org.flexpay.common.persistence.Stub;
-import static org.flexpay.common.util.CollectionUtils.list;
+import static org.flexpay.common.util.CollectionUtils.set;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.util.List;
+import java.util.Set;
 
 public class BuildingDeleteAction extends FPActionSupport {
 
-	private List<Long> objectIds = list();
-	private Long redirectBuildingsId;
+	private Set<Long> objectIds = set();
 
 	private BuildingService buildingService;
 
@@ -22,42 +20,16 @@ public class BuildingDeleteAction extends FPActionSupport {
 	@Override
 	public String doExecute() throws Exception {
 
-		boolean wasDeleted = false;
-		boolean primaryAddressError = false;
+		List<BuildingAddress> addresses = buildingService.readFullAddresses(objectIds, true);
+		Set<Long> buildingIds = set();
 
-		for (Long id : objectIds) {
-			Stub<BuildingAddress> addressStub = new Stub<BuildingAddress>(id);
-			Building building = buildingService.findBuilding(addressStub);
-			if (building == null) {
-				continue;
-			}
-			BuildingAddress address = building.getAddress(addressStub);
-			if (address == null) {
-				continue;
-			}
-
-			if (address.isPrimary()) {
-				primaryAddressError = true;
-				continue;
-			}
-
-			address.setStatus(BuildingAddress.STATUS_DISABLED);
-			buildingService.update(building);
-			log.debug("Disabling address {}", address);
-			wasDeleted = true;
+		for (BuildingAddress address : addresses) {
+			buildingIds.add(address.getBuilding().getId());
 		}
 
-		if (wasDeleted) {
-			addActionError(getText("ab.building.address_deleted"));
-		} else {
-			addActionError(getText("ab.building.no_address_deleted"));
-		}
+		buildingService.disable(buildingIds);
 
-		if (primaryAddressError) {
-			addActionError(getText("ab.building.primary_address_cannot_be_deleted"));
-		}
-
-		return redirectBuildingsId == null ? SUCCESS : REDIRECT_INPUT;
+		return SUCCESS;
 	}
 
 	/**
@@ -73,16 +45,8 @@ public class BuildingDeleteAction extends FPActionSupport {
 		return SUCCESS;
 	}
 
-	public void setObjectIds(List<Long> objectIds) {
+	public void setObjectIds(Set<Long> objectIds) {
 		this.objectIds = objectIds;
-	}
-
-	public Long getRedirectBuildingsId() {
-		return redirectBuildingsId;
-	}
-
-	public void setRedirectBuildingsId(Long redirectBuildingsId) {
-		this.redirectBuildingsId = redirectBuildingsId;
 	}
 
 	@Required

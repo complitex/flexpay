@@ -7,12 +7,21 @@
 
 	<package name="buildings" namespace="/dicts" extends="common">
 
+        <action name="buildingDelete" class="buildingDeleteAction">
+            <result>/WEB-INF/jsp/common/responses/simple_response.jsp</result>
+        </action>
+
 		<action name="buildingsList" class="buildingsListPageAction">
 			<result type="tiles">ab.building.list</result>
 		</action>
 
         <action name="buildingsListAjax" class="buildingsListAction">
             <result>/WEB-INF/jsp/ab/buildings/buildings_list.jsp</result>
+        </action>
+
+        <action name="buildingView" class="buildingViewAction">
+            <result type="tiles">ab.building.view</result>
+            <result name="redirectSuccess" type="redirect-action">buildingsList</result>
         </action>
 
 		<action name="buildingCreate" class="buildingCreateAction">
@@ -24,7 +33,7 @@
 			</result>
 		</action>
 
-		<action name="editBuildingAddress" class="editBuildingAddressAction">
+		<action name="buildingAddressEdit" class="buildingAddressEditAction">
 			<result name="input" type="tiles">ab.buildings.edit_address</result>
 			<result name="redirectError" type="redirect-action">buildingsList</result>
 			<result name="redirectSuccess" type="redirect-action">
@@ -34,27 +43,17 @@
 			</result>
 		</action>
 
-		<action name="buildingView" class="buildingViewAction">
-			<result type="tiles">ab.building.view</result>
-			<result name="redirectSuccess" type="redirect-action">buildingsList</result>
-		</action>
+        <action name="buildingAddressesListAjax" class="buildingAddressesListAction">
+            <result>/WEB-INF/jsp/ab/buildings/building_addresses_list.jsp</result>
+        </action>
 
-		<action name="buildingDelete" class="buildingDeleteAction">
+        <action name="buildingAddressDelete" class="buildingAddressDeleteAction">
             <result>/WEB-INF/jsp/common/responses/simple_response.jsp</result>
-			<result name="redirectInput" type="redirect-action">
-				<param name="actionName">buildingView</param>
-				<param name="parse">true</param>
-				<param name="building.id">${redirectBuildingsId}</param>
-			</result>
-		</action>
+        </action>
 
-		<action name="buildingSetPrimaryStatus" class="buildingSetPrimaryStatusAction">
-			<result name="redirectSuccess" type="redirect-action">
-				<param name="actionName">buildingView</param>
-				<param name="parse">true</param>
-				<param name="building.id">${redirectBuildingsId != null ? redirectBuildingsId : buildings.id}</param>
-			</result>
-		</action>
+        <action name="buildingAddressSetPrimaryStatus" class="buildingAddressSetPrimaryStatusAction">
+            <result>/WEB-INF/jsp/common/responses/simple_response.jsp</result>
+        </action>
 
 		<action name="addressAttributeTypesListAjax" class="addressAttributeTypesListAction">
 			<result>/WEB-INF/jsp/ab/buildings/buildings_attribute_types_list.jsp</result>

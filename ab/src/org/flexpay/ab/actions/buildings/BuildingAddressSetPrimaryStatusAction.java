@@ -9,10 +9,9 @@ import static org.flexpay.common.persistence.Stub.stub;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
-public class BuildingSetPrimaryStatusAction extends FPActionSupport {
+public class BuildingAddressSetPrimaryStatusAction extends FPActionSupport {
 
-	private BuildingAddress buildings = new BuildingAddress();
-	private Long redirectBuildingsId;
+	private BuildingAddress address = new BuildingAddress();
 
 	private BuildingService buildingService;
 
@@ -20,17 +19,18 @@ public class BuildingSetPrimaryStatusAction extends FPActionSupport {
 	@Override
 	public String doExecute() throws Exception {
 
-		Stub<BuildingAddress> addressStub = stub(buildings);
+		Stub<BuildingAddress> addressStub = stub(address);
 		Building building = buildingService.findBuilding(addressStub);
 		if (building == null) {
-			return REDIRECT_SUCCESS;
+			log.warn("Can't find building for address with id {}", addressStub.getId());
+			return SUCCESS;
 		}
 		building.setPrimaryAddress(addressStub);
 		buildingService.update(building);
 
-		addActionError(getText("ab.building.primary_address_set"));
+		addActionMessage(getText("ab.building.primary_address_set"));
 
-		return REDIRECT_SUCCESS;
+		return SUCCESS;
 	}
 
 	/**
@@ -43,23 +43,11 @@ public class BuildingSetPrimaryStatusAction extends FPActionSupport {
 	@NotNull
 	@Override
 	protected String getErrorResult() {
-		return REDIRECT_SUCCESS;
+		return SUCCESS;
 	}
 
-	public BuildingAddress getBuildings() {
-		return buildings;
-	}
-
-	public void setBuildings(BuildingAddress buildingAddress) {
-		this.buildings = buildingAddress;
-	}
-
-	public Long getRedirectBuildingsId() {
-		return redirectBuildingsId;
-	}
-
-	public void setRedirectBuildingsId(Long redirectBuildingsId) {
-		this.redirectBuildingsId = redirectBuildingsId;
+	public void setAddress(BuildingAddress address) {
+		this.address = address;
 	}
 
 	@Required
