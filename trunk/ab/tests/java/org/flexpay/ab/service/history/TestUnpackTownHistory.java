@@ -2,8 +2,8 @@ package org.flexpay.ab.service.history;
 
 import org.flexpay.ab.persistence.Town;
 import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
-import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.persistence.history.Diff;
 import org.flexpay.common.persistence.history.HistoryConsumer;
 import org.flexpay.common.persistence.history.HistoryPacker;

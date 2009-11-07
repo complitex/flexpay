@@ -3,8 +3,8 @@ package org.flexpay.ab.persistence;
 import org.flexpay.common.persistence.TemporaryName;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Set;
 import java.util.Collections;
+import java.util.Set;
 
 /**
  * StreetName

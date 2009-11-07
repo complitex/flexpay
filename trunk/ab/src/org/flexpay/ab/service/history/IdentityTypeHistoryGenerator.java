@@ -2,10 +2,10 @@ package org.flexpay.ab.service.history;
 
 import org.flexpay.ab.persistence.IdentityType;
 import org.flexpay.ab.service.IdentityTypeService;
+import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.persistence.history.Diff;
 import org.flexpay.common.persistence.history.HistoryGenerator;
 import org.flexpay.common.persistence.history.ProcessingStatus;
-import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.service.DiffService;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;

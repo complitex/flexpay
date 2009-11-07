@@ -72,7 +72,7 @@ public class TownTypeServiceImpl implements TownTypeService {
 		for (Long id : townTypeIds) {
 			TownType townType = townTypeDao.read(id);
 			if (townType == null) {
-				log.warn("Incorrect town type id {}", id);
+				log.warn("Can't get town type with id {} from DB", id);
 				continue;
 			}
 			townType.disable();

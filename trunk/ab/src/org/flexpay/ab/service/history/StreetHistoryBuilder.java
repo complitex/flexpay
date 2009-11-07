@@ -11,7 +11,6 @@ import org.flexpay.common.persistence.history.ProcessingStatus;
 import org.flexpay.common.persistence.history.impl.HistoryBuilderBase;
 import org.flexpay.common.util.DateIntervalUtil;
 import org.flexpay.common.util.EqualsHelper;
-import org.flexpay.ab.util.config.ApplicationConfig;
 import static org.flexpay.common.util.config.ApplicationConfig.getLanguages;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

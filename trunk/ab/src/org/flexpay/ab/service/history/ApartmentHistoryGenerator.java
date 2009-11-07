@@ -1,12 +1,11 @@
 package org.flexpay.ab.service.history;
 
 import org.flexpay.ab.persistence.Apartment;
-import org.flexpay.ab.persistence.Building;
 import org.flexpay.ab.service.ApartmentService;
+import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.persistence.history.Diff;
 import org.flexpay.common.persistence.history.HistoryGenerator;
 import org.flexpay.common.persistence.history.ProcessingStatus;
-import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.service.DiffService;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;

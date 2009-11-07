@@ -3,7 +3,7 @@ package org.flexpay.ab.persistence;
 import org.flexpay.common.persistence.DomainObjectWithStatus;
 import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.persistence.Stub.stub;
-import org.flexpay.common.util.CollectionUtils;
+import static org.flexpay.common.util.CollectionUtils.set;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -79,7 +79,7 @@ public class Building extends DomainObjectWithStatus {
 	public void addAddress(@NotNull BuildingAddress buildingAddress) {
 		//noinspection CollectionsFieldAccessReplaceableByMethodCall
 		if (buildingses == Collections.EMPTY_SET) {
-			buildingses = CollectionUtils.set();
+			buildingses = set();
 		}
 
 		buildingAddress.setBuilding(this);
@@ -100,7 +100,7 @@ public class Building extends DomainObjectWithStatus {
 	@SuppressWarnings ({"CollectionsFieldAccessReplaceableByMethodCall"})
 	public void addAll(Collection<BuildingAddress> buildingses) {
 		if (this.buildingses == Collections.EMPTY_SET) {
-			this.buildingses = CollectionUtils.set();
+			this.buildingses = set();
 		}
 
 		this.buildingses.addAll(buildingses);
@@ -114,7 +114,7 @@ public class Building extends DomainObjectWithStatus {
 	@NotNull
 	public Set<Street> getStreets() {
 
-		Set<Street> streets = CollectionUtils.set();
+		Set<Street> streets = set();
 		for (BuildingAddress address : buildingses) {
 			streets.add(address.getStreet());
 		}

@@ -121,7 +121,7 @@ public class GenerateAllObjectsHistory extends PaymentsSpringBeanAwareTestCase {
 
 	private void generateMeasureUnits() {
 
-		List<MeasureUnit> units = measureUnitService.listUnits();
+		List<MeasureUnit> units = measureUnitService.find();
 		for (MeasureUnit unit : units) {
 			measureUnitHistoryGenerator.generateFor(unit);
 		}

@@ -9,7 +9,7 @@ import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.DomainObjectWithStatus;
 import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.persistence.Stub.stub;
-import org.flexpay.common.util.CollectionUtils;
+import static org.flexpay.common.util.CollectionUtils.set;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -24,7 +24,7 @@ public class BuildingAddress extends DomainObjectWithStatus {
 
 	private Street street;
 	private Building building;
-	private Set<AddressAttribute> addressAttributes = CollectionUtils.set();
+	private Set<AddressAttribute> addressAttributes = set();
 	private boolean primaryStatus;
 
 	public BuildingAddress() {
@@ -174,7 +174,7 @@ public class BuildingAddress extends DomainObjectWithStatus {
 			attribute.setBuildings(this);
 			//noinspection CollectionsFieldAccessReplaceableByMethodCall
 			if (addressAttributes == Collections.EMPTY_SET) {
-				addressAttributes = CollectionUtils.set();
+				addressAttributes = set();
 			}
 			addressAttributes.add(attribute);
 		}

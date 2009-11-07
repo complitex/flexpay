@@ -1,11 +1,11 @@
 package org.flexpay.ab.util.standalone;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.flexpay.ab.persistence.Street;
 import org.flexpay.ab.service.StreetService;
-import org.flexpay.common.util.standalone.StandaloneTask;
 import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.util.standalone.StandaloneTask;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class RetriveStreetTask implements StandaloneTask {
 

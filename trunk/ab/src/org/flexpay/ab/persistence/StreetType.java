@@ -2,9 +2,8 @@ package org.flexpay.ab.persistence;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
-import org.flexpay.common.persistence.TemporaryType;
 import org.flexpay.common.persistence.Stub;
-import org.flexpay.common.util.TranslationUtil;
+import org.flexpay.common.persistence.TemporaryType;
 
 /**
  * StreetType entity class holds a general representation of various types of streets.

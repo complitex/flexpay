@@ -11,8 +11,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.security.annotation.Secured;
 
+import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 public interface PersonService {
 
@@ -32,7 +32,7 @@ public interface PersonService {
 	 * @param personIds IDs of persons to disable
 	 */
 	@Secured (Roles.PERSON_DELETE)
-	void disable(@NotNull Set<Long> personIds);
+	void disable(@NotNull Collection<Long> personIds);
 
 	/**
 	 * Create person

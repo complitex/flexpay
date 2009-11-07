@@ -1,10 +1,8 @@
 package org.flexpay.ab.sort;
 
 import org.apache.commons.lang.time.StopWatch;
-import org.flexpay.ab.persistence.Town;
 import org.flexpay.ab.persistence.TestData;
 import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
-import org.flexpay.common.persistence.Stub;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import static org.junit.Assert.assertNotSame;

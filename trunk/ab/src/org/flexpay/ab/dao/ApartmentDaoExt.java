@@ -1,14 +1,15 @@
 package org.flexpay.ab.dao;
 
-import org.flexpay.ab.persistence.*;
+import org.flexpay.ab.persistence.Apartment;
+import org.flexpay.ab.persistence.Building;
+import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.sorter.ObjectSorter;
-import org.flexpay.common.dao.paging.Page;
-import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
 import java.util.Collection;
+import java.util.List;
 
 public interface ApartmentDaoExt {
 

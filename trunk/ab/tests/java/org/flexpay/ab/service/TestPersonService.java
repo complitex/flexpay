@@ -1,18 +1,18 @@
 package org.flexpay.ab.service;
 
-import org.flexpay.ab.persistence.Person;
 import org.flexpay.ab.persistence.Apartment;
+import org.flexpay.ab.persistence.Person;
 import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Stub;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 public class TestPersonService extends AbSpringBeanAwareTestCase {
 

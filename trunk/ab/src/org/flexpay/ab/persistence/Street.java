@@ -4,7 +4,7 @@ import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.NameTimeDependentChild;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.TimeLine;
-import org.flexpay.common.util.CollectionUtils;
+import static org.flexpay.common.util.CollectionUtils.treeSet;
 import org.flexpay.common.util.DateIntervalUtil;
 import org.flexpay.common.util.DateUtil;
 import org.flexpay.common.util.TranslationUtil;
@@ -90,7 +90,7 @@ public class Street extends NameTimeDependentChild<StreetName, StreetNameTempora
 		}
 
 		if (typeTemporals == EMPTY_SORTED_SET) {
-			typeTemporals = CollectionUtils.treeSet();
+			typeTemporals = treeSet();
 		}
 
 		// add all new intervals
@@ -128,7 +128,7 @@ public class Street extends NameTimeDependentChild<StreetName, StreetNameTempora
 		this.typesTimeLine = typesTimeLine;
 
 		if (typeTemporals == EMPTY_SORTED_SET) {
-			typeTemporals = CollectionUtils.treeSet();
+			typeTemporals = treeSet();
 		}
 		typeTemporals.addAll(typesTimeLine.getIntervals());
 	}

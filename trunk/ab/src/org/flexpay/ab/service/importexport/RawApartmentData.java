@@ -2,7 +2,6 @@ package org.flexpay.ab.service.importexport;
 
 import org.flexpay.ab.persistence.Apartment;
 import org.flexpay.common.service.importexport.RawData;
-import org.jetbrains.annotations.NonNls;
 
 import java.util.Collection;
 import java.util.HashSet;

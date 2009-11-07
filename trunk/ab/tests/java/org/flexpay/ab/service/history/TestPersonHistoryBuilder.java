@@ -10,8 +10,8 @@ import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.history.Diff;
 import static org.junit.Assert.*;
 import org.junit.Before;
-import org.junit.Test;
 import org.junit.Ignore;
+import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;

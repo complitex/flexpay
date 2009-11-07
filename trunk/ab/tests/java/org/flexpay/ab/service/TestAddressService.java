@@ -1,11 +1,7 @@
 package org.flexpay.ab.service;
 
-import org.flexpay.ab.persistence.Apartment;
-import org.flexpay.ab.persistence.Building;
-import org.flexpay.ab.persistence.BuildingAddress;
 import org.flexpay.ab.persistence.TestData;
 import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
-import org.flexpay.common.persistence.Stub;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 

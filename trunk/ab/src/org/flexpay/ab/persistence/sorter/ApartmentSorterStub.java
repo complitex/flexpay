@@ -1,7 +1,5 @@
 package org.flexpay.ab.persistence.sorter;
 
-import org.flexpay.common.persistence.sorter.ObjectSorter;
-
 /**
  * Sorter that does nothing
  */

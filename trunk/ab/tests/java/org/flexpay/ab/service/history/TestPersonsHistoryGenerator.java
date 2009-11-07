@@ -1,8 +1,8 @@
 package org.flexpay.ab.service.history;
 
 import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class TestPersonsHistoryGenerator extends AbSpringBeanAwareTestCase {
 

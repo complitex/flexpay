@@ -2,11 +2,11 @@ package org.flexpay.ab.persistence.sorter;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
-import org.flexpay.common.persistence.sorter.ObjectSorter;
 import org.flexpay.ab.persistence.AddressAttributeType;
+import org.flexpay.common.persistence.sorter.ObjectSorter;
 
-import java.util.List;
 import java.util.Collections;
+import java.util.List;
 
 public class BuildingsSorter extends ObjectSorter {
 
