@@ -179,21 +179,21 @@ public class BuildingServiceImpl implements BuildingService, ParentService<Build
 	@SuppressWarnings ({"ThrowableInstanceNeverThrown"})
 	private void validate(Building building) throws FlexPayExceptionContainer {
 
-		FlexPayExceptionContainer ex = new FlexPayExceptionContainer();
+		FlexPayExceptionContainer container = new FlexPayExceptionContainer();
 
 		if (building.getBuildingses().isEmpty()) {
-			ex.addException(new FlexPayException("No address", "error.ab.buildings.no_number"));
+			container.addException(new FlexPayException("No address", "error.ab.buildings.no_number"));
 		}
 
 		if (building.getDistrict() == null) {
-			ex.addException(new FlexPayException("No district", "error.ab.building.no_district"));
+			container.addException(new FlexPayException("No district", "error.ab.building.no_district"));
 		}
 
 		if (building.isNotNew()) {
 			Building old = readFull(stub(building));
 			sessionUtils.evict(old);
 			if (!old.getDistrictStub().equals(building.getDistrictStub())) {
-				ex.addException(new FlexPayException("District changed", "error.ab.building.district_changed"));
+				container.addException(new FlexPayException("District changed", "error.ab.building.district_changed"));
 			}
 		}
 
@@ -202,7 +202,7 @@ public class BuildingServiceImpl implements BuildingService, ParentService<Build
 			Set<Stub<Street>> streetStubs = CollectionUtils.set();
 			for (BuildingAddress address : building.getBuildingses()) {
 				if (streetStubs.contains(address.getStreetStub())) {
-					ex.addException(new FlexPayException("Two street address", "error.ab.building.street_address_duplicate"));
+					container.addException(new FlexPayException("Two street address", "error.ab.building.street_address_duplicate"));
 					break;
 				}
 				streetStubs.add(address.getStreetStub());
@@ -216,8 +216,7 @@ public class BuildingServiceImpl implements BuildingService, ParentService<Build
 				log.warn("Incorrect building address. Address number is null. Address: {}", address);
 				continue;
 			}
-			List<BuildingAddress> candidates = buildingsDaoExt.findBuildings(
-					address.getStreetStub().getId(), number);
+			List<BuildingAddress> candidates = buildingsDaoExt.findBuildings(address.getStreetStub().getId(), number);
 			candidates = filter(candidates, address.getBuildingAttributes());
 			if (!candidates.isEmpty() && (candidates.size() > 1 || !candidates.get(0).equals(address))) {
 				String addressStr = "";
@@ -227,13 +226,12 @@ public class BuildingServiceImpl implements BuildingService, ParentService<Build
 					// do nothing
 				}
 
-				ex.addException(new FlexPayException("Address already exists", "error.ab.address_alredy_exist", addressStr));
+				container.addException(new FlexPayException("Address already exists", "error.ab.address_alredy_exist", addressStr));
 			}
 		}
 
-		if (ex.isNotEmpty()) {
-			ex.info(log);
-			throw ex;
+		if (container.isNotEmpty()) {
+			throw container;
 		}
 	}
 
@@ -274,6 +272,46 @@ public class BuildingServiceImpl implements BuildingService, ParentService<Build
 	@Override
 	public List<BuildingAddress> readFullAddresses(@NotNull Collection<Long> addressIds, boolean preserveOrder) {
 		return buildingsDao.readFullCollection(addressIds, preserveOrder);
+	}
+
+	/**
+	 * Disable building addresses
+	 *
+	 * @param addressIds IDs of building addresses to disable
+	 * @param buildingStub Addresses building stub
+	 */
+	@Transactional (readOnly = false)
+	@Override
+	public void disableAddresses(@NotNull Collection<Long> addressIds, @NotNull Stub<Building> buildingStub) {
+
+		Building building = buildingDao.readFull(buildingStub.getId());
+		if (building == null) {
+			log.warn("Can't get building with id {} from DB", buildingStub.getId());
+			return;
+		}
+		sessionUtils.evict(building);
+
+		for (Long id : addressIds) {
+			BuildingAddress address = building.getAddress(new Stub<BuildingAddress>(id));
+			if (address == null) {
+				log.warn("Can't get building address with id {}", id);
+				continue;
+			}
+			if (address.getPrimaryStatus()) {
+				log.warn("Can't disable building address with id {}, because its primary address for building with id {}", id, buildingStub.getId());
+				continue;
+			}
+			address.disable();
+
+			log.debug("Building address disabled: {}", address);
+		}
+
+		try {
+			update(building);
+		} catch (FlexPayExceptionContainer flexPayExceptionContainer) {
+			// do nothing
+		}
+
 	}
 
 	/**

@@ -100,6 +100,15 @@ public interface BuildingService {
 	List<BuildingAddress> readFullAddresses(Collection<Long> addressIds, boolean preserveOrder);
 
 	/**
+	 * Disable building addresses
+	 *
+	 * @param addressIds IDs of building addresses to disable
+	 * @param buildingStub Addresses building stub
+	 */
+	@Secured (Roles.BUILDING_DELETE)
+	void disableAddresses(@NotNull Collection<Long> addressIds, @NotNull Stub<Building> buildingStub);
+
+	/**
 	 * Get a list of available building addresses
 	 *
 	 * @param filters Parent filters

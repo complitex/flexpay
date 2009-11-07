@@ -181,7 +181,7 @@ var FP = {
             FP.showShadow(shadowId, resultId);
         }
 
-        var notEl = element == null;
+        var notEl = element == null || element == undefined;
         if (!notEl) {
 
             var pageSizeName = opt.pageSizeName;
@@ -235,8 +235,9 @@ var FP = {
 
         opt = $.extend({
             shadowId: "shadow",
-            resultId: "result"
-        });
+            resultId: "result",
+            params: {}
+        }, opt);
 
         FP.showShadow(opt.shadowId, opt.resultId);
         var ids = [];
@@ -247,7 +248,7 @@ var FP = {
             FP.hideShadow(opt.shadowId, opt.resultId);
             return;
         }
-        var params = {};
+        var params = opt.params;
         params[name] = ids;
         $.post(action, params,
                 function() {

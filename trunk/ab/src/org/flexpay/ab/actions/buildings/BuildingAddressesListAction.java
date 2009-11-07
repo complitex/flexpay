@@ -1,35 +1,52 @@
 package org.flexpay.ab.actions.buildings;
 
 import org.flexpay.ab.persistence.Building;
+import org.flexpay.ab.persistence.BuildingAddress;
+import org.flexpay.ab.service.AddressService;
 import org.flexpay.ab.service.BuildingService;
 import org.flexpay.common.actions.FPActionSupport;
-import org.flexpay.common.exception.FlexPayException;
+import static org.flexpay.common.persistence.DomainObject.collectionIds;
+import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.persistence.Stub.stub;
+import static org.flexpay.common.util.CollectionUtils.list;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
-public class BuildingViewAction extends FPActionSupport {
+import java.util.List;
+
+public class BuildingAddressesListAction extends FPActionSupport {
 
 	private Building building = Building.newInstance();
+	private List<BuildingAddress> addresses = list();
 
 	private BuildingService buildingService;
+	private AddressService addressService;
 
 	@NotNull
 	@Override
-	public String doExecute() throws FlexPayException {
+	public String doExecute() throws Exception {
 
 		if (building.isNew()) {
 			addActionError(getText("error.no_id"));
-			return REDIRECT_SUCCESS;
+			return SUCCESS;
 		}
 
 		building = buildingService.readFull(stub(building));
 		if (building == null) {
-			addActionError(getText("error.invalid_id"));
-			return REDIRECT_SUCCESS;
+			log.error(getText("common.object_not_selected"));
+			return SUCCESS;
+		}
+		addresses = buildingService.readFullAddresses(collectionIds(building.getBuildingses()), true);
+		if (log.isDebugEnabled()) {
+			log.debug("Total building addresses found: {}", addresses.size());
 		}
 
 		return SUCCESS;
+	}
+
+	@NotNull
+	public String getAddress(@NotNull Long addressId) throws Exception {
+		return addressService.getBuildingsAddress(new Stub<BuildingAddress>(addressId), getLocale());
 	}
 
 	/**
@@ -42,7 +59,7 @@ public class BuildingViewAction extends FPActionSupport {
 	@NotNull
 	@Override
 	protected String getErrorResult() {
-		return REDIRECT_SUCCESS;
+		return SUCCESS;
 	}
 
 	public Building getBuilding() {
@@ -53,9 +70,18 @@ public class BuildingViewAction extends FPActionSupport {
 		this.building = building;
 	}
 
+	public List<BuildingAddress> getAddresses() {
+		return addresses;
+	}
+
 	@Required
 	public void setBuildingService(BuildingService buildingService) {
 		this.buildingService = buildingService;
+	}
+
+	@Required
+	public void setAddressService(AddressService addressService) {
+		this.addressService = addressService;
 	}
 
 }

@@ -36,7 +36,7 @@
 
 <%@include file="/WEB-INF/jsp/common/includes/errors_messages.jsp"%>
 
-<s:form action="editBuildingAddress" method="POST">
+<s:form action="buildingAddressEdit" method="POST">
 
 	<s:hidden name="building.id" />
 	<s:hidden name="address.id" />
@@ -57,13 +57,13 @@
 	</table>
 
 	<table cellpadding="3" cellspacing="1" border="0" width="100%">
-		<s:iterator value="attributeMap">
+		<s:iterator value="attributesMap">
 			<tr valign="middle" class="cols_1">
 				<td class="col">
 					<s:property value="getTypeName(key)" />
 				</td>
 				<td class="col">
-					<s:textfield name="attributeMap[%{key}]" value="%{value}" />
+					<s:textfield name="attributesMap[%{key}]" value="%{value}" />
 				</td>
 			</tr>
 		</s:iterator>

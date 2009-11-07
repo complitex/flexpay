@@ -3,31 +3,29 @@ package org.flexpay.ab.actions.buildings;
 import org.flexpay.ab.persistence.Building;
 import org.flexpay.ab.service.BuildingService;
 import org.flexpay.common.actions.FPActionSupport;
-import org.flexpay.common.exception.FlexPayException;
 import static org.flexpay.common.persistence.Stub.stub;
+import static org.flexpay.common.util.CollectionUtils.set;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
-public class BuildingViewAction extends FPActionSupport {
+import java.util.Set;
 
+public class BuildingAddressDeleteAction extends FPActionSupport {
+
+	private Set<Long> objectIds = set();
 	private Building building = Building.newInstance();
 
 	private BuildingService buildingService;
 
 	@NotNull
 	@Override
-	public String doExecute() throws FlexPayException {
+	public String doExecute() throws Exception {
 
 		if (building.isNew()) {
-			addActionError(getText("error.no_id"));
-			return REDIRECT_SUCCESS;
+			return SUCCESS;
 		}
 
-		building = buildingService.readFull(stub(building));
-		if (building == null) {
-			addActionError(getText("error.invalid_id"));
-			return REDIRECT_SUCCESS;
-		}
+		buildingService.disableAddresses(objectIds, stub(building));
 
 		return SUCCESS;
 	}
@@ -42,11 +40,11 @@ public class BuildingViewAction extends FPActionSupport {
 	@NotNull
 	@Override
 	protected String getErrorResult() {
-		return REDIRECT_SUCCESS;
+		return SUCCESS;
 	}
 
-	public Building getBuilding() {
-		return building;
+	public void setObjectIds(Set<Long> objectIds) {
+		this.objectIds = objectIds;
 	}
 
 	public void setBuilding(Building building) {

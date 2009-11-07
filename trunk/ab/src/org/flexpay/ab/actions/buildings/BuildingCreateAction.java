@@ -23,8 +23,7 @@ public class BuildingCreateAction extends FPActionSupport {
 	private Long streetFilter;
 	private Long districtFilter;
 
-	// type id to value mapping
-	private Map<Long, String> attributeMap = treeMap();
+	private Map<Long, String> attributesMap = treeMap();
 
 	private BuildingService buildingService;
 	private ObjectsFactory objectsFactory;
@@ -51,16 +50,15 @@ public class BuildingCreateAction extends FPActionSupport {
 		BuildingAddress address = new BuildingAddress();
 		address.setPrimaryStatus(true);
 		address.setStreet(new Street(streetFilter));
-		for (Map.Entry<Long, String> attr : attributeMap.entrySet()) {
+		for (Map.Entry<Long, String> attr : attributesMap.entrySet()) {
 			AddressAttributeType type = addressAttributeTypeService.readFull(new Stub<AddressAttributeType>(attr.getKey()));
 			address.setBuildingAttribute(attr.getValue(), type);
 		}
 		building.addAddress(address);
 
-		log.debug("About to save new building");
 		buildingService.create(building);
 
-		addActionError(getText("ab.building.saved"));
+		addActionMessage(getText("ab.building.saved"));
 
 		return REDIRECT_SUCCESS;
 	}
@@ -70,7 +68,7 @@ public class BuildingCreateAction extends FPActionSupport {
 		boolean valid = true;
 
 		Long buildingNumberAttributeId = ApplicationConfig.getBuildingAttributeTypeNumber().getId();		
-		if (StringUtils.isEmpty(attributeMap.get(buildingNumberAttributeId))) {
+		if (StringUtils.isEmpty(attributesMap.get(buildingNumberAttributeId))) {
 			addActionError(getText("ab.buildings.create.building_number_required"));
 			valid = false;
 		}
@@ -91,10 +89,10 @@ public class BuildingCreateAction extends FPActionSupport {
 
 	private void setupAttributes() {
 
-		log.debug("Attributes: {}", attributeMap);
+		log.debug("Attributes: {}", attributesMap);
 
 		for (AddressAttributeType type : addressAttributeTypeService.getAttributeTypes()) {
-			attributeMap.put(type.getId(), "");
+			attributesMap.put(type.getId(), "");
 		}
 	}
 
@@ -135,12 +133,12 @@ public class BuildingCreateAction extends FPActionSupport {
 		this.districtFilter = districtFilter;
 	}
 
-	public Map<Long, String> getAttributeMap() {
-		return attributeMap;
+	public Map<Long, String> getAttributesMap() {
+		return attributesMap;
 	}
 
-	public void setAttributeMap(Map<Long, String> attributeMap) {
-		this.attributeMap = attributeMap;
+	public void setAttributesMap(Map<Long, String> attributesMap) {
+		this.attributesMap = attributesMap;
 	}
 
 	public Building getBuilding() {
