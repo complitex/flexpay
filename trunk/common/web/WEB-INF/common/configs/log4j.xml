@@ -7,6 +7,7 @@
 		<!-- Ensure that logs always have the dateFormat set-->
 		<param name="StaticLogFileName" value="false" />
 		<param name="File" value="${java.io.tmpdir}/logs/flexpay_log_COMMON_INSTANCE_LOG_NAME" />
+		<param name="Encoding" value="UTF-8" />
 		<param name="Append" value="false" />
 		<!-- Change the direction so newer files have bigger numbers -->
 		<!-- So log.1 is written then log.2 etc This prevents a lot of file renames at log rollover -->
@@ -34,6 +35,7 @@
 		<!-- Ensure that logs always have the dateFormat set-->
 		<param name="StaticLogFileName" value="false" />
 		<param name="File" value="${java.io.tmpdir}/logs/security_LOG_NAME" />
+		<param name="Encoding" value="UTF-8" />
 		<param name="Append" value="false" />
 		<!-- Change the direction so newer files have bigger numbers -->
 		<!-- So log.1 is written then log.2 etc This prevents a lot of file renames at log rollover -->
@@ -61,6 +63,7 @@
 		<!-- Ensure that logs always have the dateFormat set-->
 		<param name="StaticLogFileName" value="false" />
 		<param name="File" value="${java.io.tmpdir}/logs/flexpay_log_history_COMMON_INSTANCE_LOG_NAME" />
+		<param name="Encoding" value="UTF-8" />
 		<param name="Append" value="false" />
 		<!-- Change the direction so newer files have bigger numbers -->
 		<!-- So log.1 is written then log.2 etc This prevents a lot of file renames at log rollover -->

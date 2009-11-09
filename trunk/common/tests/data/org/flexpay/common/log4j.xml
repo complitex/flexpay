@@ -4,9 +4,10 @@
 <log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
 
 	<appender name="flexpay" class="org.apache.log4j.QpidCompositeRollingAppender">
-		<!-- Ensure that logs allways have the dateFormat set-->
+		<!-- Ensure that logs always have the dateFormat set-->
 		<param name="StaticLogFileName" value="false" />
 		<param name="File" value="${java.io.tmpdir}/logs/flexpay_log_test" />
+		<param name="Encoding" value="UTF-8" />
 		<param name="Append" value="false" />
 		<!-- Change the direction so newer files have bigger numbers -->
 		<!-- So log.1 is written then log.2 etc This prevents a lot of file renames at log rollover -->
