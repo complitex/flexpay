@@ -262,7 +262,7 @@ public class RegistryFileParser implements FileParser {
 		Organization recipient;
 		if (registry.getRecipientCode() == 0) {
 			log.debug("Recipient is EIRC, code=0");
-			recipient = ApplicationConfig.getSelfOrganization();
+			recipient = organizationService.readFull(ApplicationConfig.getSelfOrganizationStub());
 		} else {
 			log.debug("Fetching recipient via code={}", registry.getRecipientCode());
 			recipient = findOrgByRegistryCorrections(registry, registry.getRecipientCode());

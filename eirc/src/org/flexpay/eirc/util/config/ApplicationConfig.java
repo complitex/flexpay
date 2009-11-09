@@ -1,6 +1,8 @@
 package org.flexpay.eirc.util.config;
 
 import static org.flexpay.common.util.config.ApplicationConfig.getDataRoot;
+
+import org.flexpay.common.persistence.Stub;
 import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.eirc.service.Security;
 import org.jetbrains.annotations.NotNull;
@@ -32,6 +34,11 @@ public class ApplicationConfig {
 	@NotNull
 	public static Organization getSelfOrganization() {
 		return getInstance().selfOrganization;
+	}
+
+	@NotNull
+	public static Stub<Organization> getSelfOrganizationStub() {
+		return Stub.stub(getSelfOrganization());
 	}
 
 	public static String getEircId() {
