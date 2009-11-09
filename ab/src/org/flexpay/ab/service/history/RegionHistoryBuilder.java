@@ -35,6 +35,7 @@ public class RegionHistoryBuilder extends HistoryBuilderBase<Region> {
 	 * @param r2   Second object
 	 * @param diff Diff object
 	 */
+	@Override
 	protected void doDiff(@Nullable Region r1, @NotNull Region r2, @NotNull Diff diff) {
 
 		log.debug("Creating new regions diff");
@@ -104,6 +105,7 @@ public class RegionHistoryBuilder extends HistoryBuilderBase<Region> {
 	 * @param region Object to apply diff to
 	 * @param diff   Diff to apply
 	 */
+	@Override
 	public void patch(@NotNull Region region, @NotNull Diff diff) {
 
 		// setup default region if not exists

@@ -4,6 +4,7 @@ import org.apache.commons.collections.ArrayStack;
 import org.flexpay.ab.persistence.*;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
+import org.flexpay.common.persistence.Language;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.sorter.ObjectSorter;
 import org.flexpay.common.service.NameTimeDependentService;
@@ -67,11 +68,12 @@ public interface DistrictService extends NameTimeDependentService<DistrictName, 
 	 *
 	 * @param parentStub  Town stub
 	 * @param query searching string
+	 * @param language language for search
 	 * @return List of found districts
 	 */
 	@Secured (Roles.DISTRICT_READ)
 	@NotNull
-	List<District> findByParentAndQuery(@NotNull Stub<Town> parentStub, @NotNull String query);
+	List<District> findByParentAndQuery(@NotNull Stub<Town> parentStub, @NotNull String query, @NotNull Language language);
 
 	/**
 	 * Get a list of available districts

@@ -34,6 +34,7 @@ public class StreetHistoryBuilder extends HistoryBuilderBase<Street> {
 	 * @param s2   Second object
 	 * @param diff Diff object
 	 */
+	@Override
 	protected void doDiff(@Nullable Street s1, @NotNull Street s2, @NotNull Diff diff) {
 
 		log.debug("creating new streets diff");
@@ -159,6 +160,7 @@ public class StreetHistoryBuilder extends HistoryBuilderBase<Street> {
 	 * @param street Object to apply diff to
 	 * @param diff Diff to apply
 	 */
+	@Override
 	public void patch(@NotNull Street street, @NotNull Diff diff) {
 
 		for (HistoryRecord record : diff.getHistoryRecords()) {

@@ -21,6 +21,7 @@ public class StreetHistoryHandler extends HistoryHandlerBase<Street> {
 	 * @param diff Diff that is to be handled
 	 * @return <code>
 	 */
+	@Override
 	public boolean supports(@NotNull Diff diff) {
 		return typeRegistry.getType(Street.class) == diff.getObjectType();
 	}
@@ -30,6 +31,7 @@ public class StreetHistoryHandler extends HistoryHandlerBase<Street> {
 	 *
 	 * @param diff Diff
 	 */
+	@Override
 	public void process(@NotNull Diff diff) throws Exception {
 		String masterIndex = diff.getMasterIndex();
 		Street object;

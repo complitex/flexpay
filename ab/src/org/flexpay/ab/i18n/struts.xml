@@ -5,8 +5,10 @@
 <struts>
 
 	<constant name="struts.custom.i18n.resources"
-			  value="org/flexpay/common/i18n/common-messages,org/flexpay/common/i18n/common-errors,
-			  org/flexpay/ab/i18n/errors,org/flexpay/ab/i18n/messages" />
+			  value="org/flexpay/common/i18n/common-messages,
+                     org/flexpay/common/i18n/common-errors,
+                     org/flexpay/ab/i18n/errors,
+                     org/flexpay/ab/i18n/messages" />
 
 
 </struts>

@@ -160,12 +160,13 @@ public class CountryServiceImpl implements CountryService, ParentService<Country
 	 * Lookup countries by query. Query is a string which may contains in country name:
 	 *
 	 * @param query searching string
+	 * @param language language for search
 	 * @return List of founded countries
 	 */
 	@NotNull
 	@Override
-	public List<Country> findByQuery(@NotNull String query) {
-		return countryDao.findByQuery(query);
+	public List<Country> findByQuery(@NotNull String query, @NotNull Language language) {
+		return countryDao.findByQuery(query.toUpperCase(), language.getId());
 	}
 
 	/**

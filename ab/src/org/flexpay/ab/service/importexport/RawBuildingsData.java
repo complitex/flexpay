@@ -2,13 +2,13 @@ package org.flexpay.ab.service.importexport;
 
 import org.flexpay.ab.persistence.BuildingAddress;
 import org.flexpay.common.service.importexport.RawData;
+import static org.flexpay.common.util.CollectionUtils.set;
 
 import java.util.Collection;
-import java.util.HashSet;
 
 public class RawBuildingsData extends RawData<BuildingAddress> {
 
-	private static final Collection<String> possibleNames = new HashSet<String>();
+	private static final Collection<String> possibleNames = set();
 
 	public static final String FIELD_STREET = "streetId";
 	public static final String FIELD_DISTRICT = "districtId";
@@ -29,6 +29,7 @@ public class RawBuildingsData extends RawData<BuildingAddress> {
 	 *
 	 * @return Set of attribute names;
 	 */
+	@Override
 	public Collection<String> getPossibleNames() {
 		return possibleNames;
 	}
@@ -52,4 +53,5 @@ public class RawBuildingsData extends RawData<BuildingAddress> {
 		Object obj = getNameToValuesMap().get(FIELD_NUMBER_BULK);
 		return obj == null ? null : obj.toString();
 	}
+
 }

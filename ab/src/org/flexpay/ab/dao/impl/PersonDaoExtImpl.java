@@ -33,10 +33,12 @@ public class PersonDaoExtImpl extends HibernateDaoSupport implements PersonDaoEx
 	 * @param person Identity data
 	 * @return Person stub if persistent person matches specified identity
 	 */
+	@Override
 	public Stub<Person> findPersonStub(final Person person) {
 
 		final PersonIdentity identity = person.getDefaultIdentity();
 		List<?> identities = getHibernateTemplate().executeFind(new HibernateCallback() {
+			@Override
 			public Object doInHibernate(Session session) throws HibernateException {
 				Criteria crit = session.createCriteria(PersonIdentity.class)
 						.setMaxResults(2)
@@ -83,6 +85,7 @@ public class PersonDaoExtImpl extends HibernateDaoSupport implements PersonDaoEx
 		return stub(res.getPerson());
 	}
 
+	@Override
 	public List<Person> listPersonsWithIdentities(FetchRange range) {
 
 		if (!range.wasInitialized()) {
@@ -106,6 +109,7 @@ public class PersonDaoExtImpl extends HibernateDaoSupport implements PersonDaoEx
 		return getHibernateTemplate().findByNamedQuery("Person.listPersonsWithIdentities", params);
 	}
 
+	@Override
 	public List<Person> listPersonsWithRegistrations(FetchRange range) {
 
 		if (!range.wasInitialized()) {
@@ -128,4 +132,5 @@ public class PersonDaoExtImpl extends HibernateDaoSupport implements PersonDaoEx
 		Object[] params = {range.getLowerBound(), range.getUpperBound()};
 		return getHibernateTemplate().findByNamedQuery("Person.listPersonsWithRegistrations", params);
 	}
+
 }

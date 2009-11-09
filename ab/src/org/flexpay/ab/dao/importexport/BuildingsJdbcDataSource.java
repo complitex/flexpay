@@ -5,6 +5,7 @@ import org.flexpay.ab.service.importexport.RawBuildingsData;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.service.importexport.ImportOperationTypeHolder;
 import org.flexpay.common.service.importexport.RawDataSource;
+import org.springframework.beans.factory.annotation.Required;
 
 import java.util.Iterator;
 import java.util.List;
@@ -15,10 +16,12 @@ public class BuildingsJdbcDataSource implements RawDataSource<RawBuildingsData> 
 	private Page<RawBuildingsData> pager;
 	private Iterator<RawBuildingsData> dataIterator;
 
+	@Override
 	public boolean trusted() {
 		return true;
 	}
 
+	@Override
 	public RawBuildingsData getById(String objId) {
 		throw new UnsupportedOperationException("Not implemented");
 	}
@@ -26,6 +29,7 @@ public class BuildingsJdbcDataSource implements RawDataSource<RawBuildingsData> 
 	/**
 	 * Initialize data source
 	 */
+	@Override
 	public void initialize() {
 		pager = new Page<RawBuildingsData>(100, 1);
 		List<RawBuildingsData> districtDatas = source.getBuildingsData(pager);
@@ -35,6 +39,7 @@ public class BuildingsJdbcDataSource implements RawDataSource<RawBuildingsData> 
 	/**
 	 * Release all resources taken
 	 */
+	@Override
 	public void close() {
 	}
 
@@ -44,6 +49,7 @@ public class BuildingsJdbcDataSource implements RawDataSource<RawBuildingsData> 
 	 *
 	 * @return <tt>true</tt> if the iterator has more elements.
 	 */
+	@Override
 	public boolean hasNext() {
 		if (dataIterator.hasNext()) {
 			return true;
@@ -65,6 +71,7 @@ public class BuildingsJdbcDataSource implements RawDataSource<RawBuildingsData> 
 	 * @throws java.util.NoSuchElementException
 	 *          iteration has no more elements.
 	 */
+	@Override
 	public RawBuildingsData next(ImportOperationTypeHolder holder) {
 		return dataIterator.next();
 	}
@@ -74,16 +81,14 @@ public class BuildingsJdbcDataSource implements RawDataSource<RawBuildingsData> 
 	 *
 	 * @return List of raw data, when the list is empty hasNext() should return <code>false</code>
 	 */
+	@Override
 	public List<RawBuildingsData> nextPage() {
 		throw new RuntimeException("Not implemented");
 	}
 
-	/**
-	 * Setter for property 'source'.
-	 *
-	 * @param source Value to set for property 'source'.
-	 */
+	@Required
 	public void setSource(HarkovCenterNachisleniyDataSource source) {
 		this.source = source;
 	}
+
 }

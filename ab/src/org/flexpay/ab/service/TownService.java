@@ -4,6 +4,7 @@ import org.apache.commons.collections.ArrayStack;
 import org.flexpay.ab.persistence.*;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
+import org.flexpay.common.persistence.Language;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.sorter.ObjectSorter;
 import org.flexpay.common.service.NameTimeDependentService;
@@ -67,11 +68,12 @@ public interface TownService extends NameTimeDependentService<TownName, TownName
 	 *
 	 * @param parentStub  Region stub
 	 * @param query searching string
+	 * @param language language for search
 	 * @return List of found regions
 	 */
 	@Secured (Roles.TOWN_READ)
 	@NotNull
-	List<Town> findByParentAndQuery(@NotNull Stub<Region> parentStub, @NotNull String query);
+	List<Town> findByParentAndQuery(@NotNull Stub<Region> parentStub, @NotNull String query, @NotNull Language language);
 
 	/**
 	 * Get a list of available towns

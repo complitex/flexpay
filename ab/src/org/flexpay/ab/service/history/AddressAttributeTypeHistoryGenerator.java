@@ -26,6 +26,7 @@ public class AddressAttributeTypeHistoryGenerator implements HistoryGenerator<Ad
 	 *
 	 * @param obj Object to generate history for
 	 */
+	@Override
 	public void generateFor(@NotNull AddressAttributeType obj) {
 
 		if (diffService.hasDiffs(obj)) {

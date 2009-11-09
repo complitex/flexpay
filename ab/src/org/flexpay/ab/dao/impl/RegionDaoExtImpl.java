@@ -78,4 +78,5 @@ public class RegionDaoExtImpl extends HibernateDaoSupport implements RegionDaoEx
 
 		return new RegionSorterStub();
 	}
+
 }

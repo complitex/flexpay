@@ -5,8 +5,9 @@ import org.flexpay.ab.service.importexport.RawPersonData;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.service.importexport.ImportOperationTypeHolder;
 import org.flexpay.common.service.importexport.RawDataSource;
+import static org.flexpay.common.util.CollectionUtils.set;
+import org.springframework.beans.factory.annotation.Required;
 
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -17,16 +18,18 @@ public class PersonJdbcDataSource implements RawDataSource<RawPersonData> {
 	private Page<RawPersonData> pager;
 	private Iterator<RawPersonData> dataIterator;
 
-	private Set<String> forbiddenPersons = new HashSet<String>();
+	private Set<String> forbiddenPersons = set();
 
 	{
 		forbiddenPersons.add("ЛИЦЕВОЙ ЗАКРЫТ");
 	}
 
+	@Override
 	public boolean trusted() {
 		return true;
 	}
 
+	@Override
 	public RawPersonData getById(String objId) {
 		throw new UnsupportedOperationException("Not implemented");
 	}
@@ -34,6 +37,7 @@ public class PersonJdbcDataSource implements RawDataSource<RawPersonData> {
 	/**
 	 * Initialize data source
 	 */
+	@Override
 	public void initialize() {
 		pager = new Page<RawPersonData>(10000, 1);
 		List<RawPersonData> datas = source.getPersonalAccountData(pager);
@@ -43,6 +47,7 @@ public class PersonJdbcDataSource implements RawDataSource<RawPersonData> {
 	/**
 	 * Release all resources taken
 	 */
+	@Override
 	public void close() {
 	}
 
@@ -52,6 +57,7 @@ public class PersonJdbcDataSource implements RawDataSource<RawPersonData> {
 	 *
 	 * @return <tt>true</tt> if the iterator has more elements.
 	 */
+	@Override
 	public boolean hasNext() {
 		if (dataIterator.hasNext()) {
 			return true;
@@ -73,6 +79,7 @@ public class PersonJdbcDataSource implements RawDataSource<RawPersonData> {
 	 * @throws java.util.NoSuchElementException
 	 *          iteration has no more elements.
 	 */
+	@Override
 	public RawPersonData next(ImportOperationTypeHolder holder) {
 		RawPersonData data = dataIterator.next();
 		if (forbiddenPersons.contains(data.getLastName())) {
@@ -87,20 +94,18 @@ public class PersonJdbcDataSource implements RawDataSource<RawPersonData> {
 	 *
 	 * @return List of raw data, when the list is empty hasNext() should return <code>false</code>
 	 */
+	@Override
 	public List<RawPersonData> nextPage() {
 		throw new RuntimeException("Not implemented");
-	}
-
-	/**
-	 * Setter for property 'source'.
-	 *
-	 * @param source Value to set for property 'source'.
-	 */
-	public void setSource(HarkovCenterNachisleniyDataSource source) {
-		this.source = source;
 	}
 
 	public Set<String> getForbiddenPersons() {
 		return forbiddenPersons;
 	}
+
+	@Required
+	public void setSource(HarkovCenterNachisleniyDataSource source) {
+		this.source = source;
+	}
+
 }

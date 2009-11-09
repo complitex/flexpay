@@ -51,6 +51,7 @@ public class PersonHistoryBuilder extends HistoryBuilderBase<Person> {
 	 * @param a2   Second object
 	 * @param diff Diff object
 	 */
+	@Override
 	protected void doDiff(@Nullable Person a1, @NotNull Person a2, @NotNull Diff diff) {
 
 		log.debug("creating new persons diff");
@@ -70,14 +71,17 @@ public class PersonHistoryBuilder extends HistoryBuilderBase<Person> {
 
 		TemporalObjectsHistoryBuildHelper.buildDiff(new TemporalDataExtractor<PersonRegistration>() {
 
+			@Override
 			public Date getBeginDate(PersonRegistration obj) {
 				return obj.getBeginDate();
 			}
 
+			@Override
 			public Date getEndDate(PersonRegistration obj) {
 				return obj.getEndDate();
 			}
 
+			@Override
 			public void buildDiff(Date begin, Date end, PersonRegistration t1, PersonRegistration t2, Diff df) {
 				addRegistrationDiff(begin, end, t1, t2, df);
 			}
@@ -134,14 +138,17 @@ public class PersonHistoryBuilder extends HistoryBuilderBase<Person> {
 	private void buildTypeDiff(List<PersonIdentity> idents1, List<PersonIdentity> idents2, Diff diff) {
 
 		TemporalObjectsHistoryBuildHelper.buildDiff(new TemporalDataExtractor<PersonIdentity>() {
+			@Override
 			public Date getBeginDate(PersonIdentity obj) {
 				return obj.getBeginDate();
 			}
 
+			@Override
 			public Date getEndDate(PersonIdentity obj) {
 				return obj.getEndDate();
 			}
 
+			@Override
 			public void buildDiff(Date begin, Date end, PersonIdentity t1, PersonIdentity t2, Diff df) {
 				addIdentityDiff(begin, end, t1, t2, df);
 			}
@@ -317,6 +324,7 @@ public class PersonHistoryBuilder extends HistoryBuilderBase<Person> {
 		return result;
 	}
 
+	@Override
 	public void patch(@NotNull Person person, @NotNull Diff diff) {
 
 		IdentityPatchContext context = new IdentityPatchContext();

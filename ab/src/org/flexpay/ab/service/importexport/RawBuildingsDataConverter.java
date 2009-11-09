@@ -27,6 +27,7 @@ public class RawBuildingsDataConverter implements DataConverter<BuildingAddress,
 	 * @return DomainObject
 	 * @throws FlexPayException if failure occurs
 	 */
+	@Override
 	public BuildingAddress fromRawData(RawBuildingsData rawData,
 								 DataSourceDescription dataSourceDescription,
 								 CorrectionsService correctionsService) throws FlexPayException {
@@ -63,4 +64,5 @@ public class RawBuildingsDataConverter implements DataConverter<BuildingAddress,
 	public void setFactory(ObjectsFactory factory) {
 		this.factory = factory;
 	}
+
 }

@@ -23,6 +23,7 @@ public class ApartmentHistoryHandler extends HistoryHandlerBase<Apartment> {
 	 * @param diff Diff that is to be handled
 	 * @return <code>
 	 */
+	@Override
 	public boolean supports(@NotNull Diff diff) {
 		return typeRegistry.getType(Apartment.class) == diff.getObjectType();
 	}
@@ -32,6 +33,7 @@ public class ApartmentHistoryHandler extends HistoryHandlerBase<Apartment> {
 	 *
 	 * @param diff Diff
 	 */
+	@Override
 	public void process(@NotNull Diff diff) throws Exception {
 		String masterIndex = diff.getMasterIndex();
 		Apartment object;

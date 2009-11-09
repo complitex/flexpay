@@ -196,12 +196,13 @@ public class RegionServiceImpl extends NameTimeDependentServiceImpl<
 	 *
 	 * @param parentStub  Country stub
 	 * @param query searching string
+	 * @param language language for search
 	 * @return List of founded regions
 	 */
 	@NotNull
 	@Override
-	public List<Region> findByParentAndQuery(@NotNull Stub<Country> parentStub, @NotNull String query) {
-		return regionDao.findByParentAndQuery(parentStub.getId(), query);
+	public List<Region> findByParentAndQuery(@NotNull Stub<Country> parentStub, @NotNull String query, @NotNull Language language) {
+		return regionDao.findByParentAndQuery(parentStub.getId(), query.toUpperCase(), language.getId());
 	}
 
 	/**

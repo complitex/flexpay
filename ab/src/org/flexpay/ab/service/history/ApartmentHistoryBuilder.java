@@ -39,6 +39,7 @@ public class ApartmentHistoryBuilder extends HistoryBuilderBase<Apartment> {
 	 * @param a2   Second object
 	 * @param diff Diff object
 	 */
+	@Override
 	protected void doDiff(@Nullable Apartment a1, @NotNull Apartment a2, @NotNull Diff diff) {
 
 		log.debug("creating new apartments diff");
@@ -59,14 +60,17 @@ public class ApartmentHistoryBuilder extends HistoryBuilderBase<Apartment> {
 		Collections.sort(addresses2);
 
 		TemporalObjectsHistoryBuildHelper.buildDiff(new TemporalDataExtractor<ApartmentNumber>() {
+			@Override
 			public Date getBeginDate(ApartmentNumber obj) {
 				return obj.getBegin();
 			}
 
+			@Override
 			public Date getEndDate(ApartmentNumber obj) {
 				return obj.getEnd();
 			}
 
+			@Override
 			public void buildDiff(Date begin, Date end, ApartmentNumber t1, ApartmentNumber t2, Diff df) {
 				addAddressDiff(begin, end, t1, t2, df);
 			}
@@ -135,6 +139,7 @@ public class ApartmentHistoryBuilder extends HistoryBuilderBase<Apartment> {
 	 * @param apartment Object to apply diff to
 	 * @param diff	  Diff to apply
 	 */
+	@Override
 	public void patch(@NotNull Apartment apartment, @NotNull Diff diff) {
 		for (HistoryRecord record : diff.getHistoryRecords()) {
 
@@ -182,4 +187,5 @@ public class ApartmentHistoryBuilder extends HistoryBuilderBase<Apartment> {
 	public void setFactory(ObjectsFactory factory) {
 		this.factory = factory;
 	}
+
 }

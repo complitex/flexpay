@@ -15,7 +15,7 @@ public interface ApartmentDao extends GenericDao<Apartment, Long> {
 	 * @param pager	  Page instance
 	 * @return list of apartments in the building
 	 */
-	List<Apartment> findObjects(Long buildingsId, Page pager);
+	List<Apartment> findObjects(Long buildingsId, Page<Apartment> pager);
 	
 	/**
 	 * Find apartments in the building

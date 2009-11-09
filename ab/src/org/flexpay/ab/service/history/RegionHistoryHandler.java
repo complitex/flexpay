@@ -21,6 +21,7 @@ public class RegionHistoryHandler extends HistoryHandlerBase<Region> {
 	 * @param diff Diff that is to be handled
 	 * @return <code>
 	 */
+	@Override
 	public boolean supports(@NotNull Diff diff) {
 		return typeRegistry.getType(Region.class) == diff.getObjectType();
 	}
@@ -30,6 +31,7 @@ public class RegionHistoryHandler extends HistoryHandlerBase<Region> {
 	 *
 	 * @param diff Diff
 	 */
+	@Override
 	public void process(@NotNull Diff diff) throws Exception {
 		String masterIndex = diff.getMasterIndex();
 		Region object;

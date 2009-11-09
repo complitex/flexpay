@@ -10,6 +10,7 @@ import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.*;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.service.importexport.*;
+import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.config.ApplicationConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -124,6 +125,7 @@ public class ImportServiceImpl implements ImportService {
 	}
 
 	@Transactional (readOnly = false)
+	@Override
 	public void importDistricts(Town town, DataSourceDescription sourceDescription)
 			throws FlexPayException {
 
@@ -195,6 +197,7 @@ public class ImportServiceImpl implements ImportService {
 
 	@SuppressWarnings ({"unchecked"})
 	@Transactional (readOnly = false)
+	@Override
 	public void importStreets(Town town, DataSourceDescription sourceDescription)
 			throws FlexPayException {
 
@@ -329,7 +332,7 @@ public class ImportServiceImpl implements ImportService {
 			Translation defTranslation = getDefaultLangTranslation(tmpName.getTranslations());
 			String name = defTranslation.getName().toLowerCase();
 			List<NTD> val = stringNTDMap.containsKey(name) ?
-							stringNTDMap.get(name) : new ArrayList<NTD>();
+							stringNTDMap.get(name) : CollectionUtils.<NTD>list();
 			val.add(object);
 			stringNTDMap.put(name, val);
 		}
@@ -372,6 +375,7 @@ public class ImportServiceImpl implements ImportService {
 	 * @param sourceDescription Data source description
 	 */
 	@Transactional (readOnly = false)
+	@Override
 	public void importStreetTypes(DataSourceDescription sourceDescription) {
 		streetTypeDataSource.initialize();
 
@@ -428,6 +432,7 @@ public class ImportServiceImpl implements ImportService {
 	}
 
 	@Transactional (readOnly = false)
+	@Override
 	public void importBuildings(DataSourceDescription sourceDescription) throws Exception {
 		buildingsDataSource.initialize();
 
@@ -488,6 +493,7 @@ public class ImportServiceImpl implements ImportService {
 	}
 
 	@Transactional (readOnly = false, propagation = Propagation.NOT_SUPPORTED)
+	@Override
 	public void importApartments(DataSourceDescription sourceDescription) throws Exception {
 		apartmentDataSource.initialize();
 
@@ -549,6 +555,7 @@ public class ImportServiceImpl implements ImportService {
 	}
 
 	@Transactional (readOnly = false, propagation = Propagation.NOT_SUPPORTED)
+	@Override
 	public void importPersons(Stub<DataSourceDescription> sd) throws Exception {
 		personDataSource.initialize();
 

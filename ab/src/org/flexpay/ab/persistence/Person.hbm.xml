@@ -195,6 +195,105 @@
 		</many-to-one>
 	</class>
 
+    <query name="Person.findPersonsInApartment"><![CDATA[
+        select distinct p
+        from Person p
+            left join fetch p.personIdentities pi
+            inner join fetch pi.identityType
+            inner join p.personRegistrations r
+        where r.apartment.id=? and r.beginDate <= current_date()
+            and current_date() <= r.endDate and p.status=?
+    ]]></query>
+
+    <query name="Person.findPersonsInApartment.count"><![CDATA[
+        select count(*)
+        from Person p
+            inner join p.personRegistrations r
+        where r.apartment.id=? and r.beginDate <= current_date()
+            and current_date() <= r.endDate and p.status=?
+    ]]></query>
+
+	<query name="Person.findObjects">
+		from Person p
+		where p.status=?
+	</query>
+
+	<query name="Person.findObjects.count">
+		select count(*)
+        from Person p
+        where p.status=?
+	</query>
+
+	<query name="Person.readFull">
+		select distinct p
+		from Person p
+            left join fetch p.personIdentities pi
+            left join fetch pi.personIdentityAttributes
+		where p.id=? and pi.status=0
+	</query>
+
+	<query name="Person.findByFIO">
+        select distinct p
+        from Person p
+            left join fetch p.personIdentities pi
+            left join fetch pi.identityType it
+            left join fetch it.translations ittr
+            left join fetch p.personRegistrations
+		where p.status=0 and pi.lastName || ' ' || pi.firstName || ' ' || pi.middleName like ?
+	</query>
+
+	<query name="Person.findByFIO.count">
+		select count(*)
+        from Person p
+		    left join p.personIdentities pi
+		where p.status=0 and pi.lastName || ' ' || pi.firstName || ' ' || pi.middleName like ?
+	</query>
+
+	<query name="Person.listPersonsWithIdentities.stats"><![CDATA[
+		select min(p.id), max(p.id), count(p.id)
+		from Person p
+		where p.status=0
+	]]></query>
+
+	<query name="Person.listPersonsWithIdentities"><![CDATA[
+		select distinct p
+		from Person p
+			left join fetch p.personIdentities pi
+			left join fetch pi.identityType 
+		where p.id between ? and ? and p.status=0
+	]]></query>
+
+	<query name="Person.listPersonsWithRegistrations.stats"><![CDATA[
+		select min(p.id), max(p.id), count(p.id)
+		from Person p
+		where p.status=0
+	]]></query>
+
+	<query name="Person.listPersonsWithRegistrations"><![CDATA[
+		select distinct p
+		from Person p
+			left join fetch p.personRegistrations pr
+			left join fetch pr.apartment 
+		where p.id between ? and ? and p.status=0
+	]]></query>
+
+    <query name="PersonAttribute.listAttributes">
+        from PersonAttribute pa
+        where pa.translatable.id=?
+    </query>
+
+    <query name="PersonRegistration.listRegistrations"><![CDATA[
+        select distinct pr
+        from PersonRegistration pr
+            left join fetch pr.apartment
+        where pr.person.id=?
+    ]]></query>
+
+    <query name="PersonRegistration.listRegistrationHistory">
+        from PersonRegistration pr
+        where pr.person.id=?
+    </query>
+
     <query name="PersonRegistration.listRegistrants"><![CDATA[
         select distinct p
         from Person p
@@ -203,100 +302,5 @@
             inner join p.personRegistrations r
         where r.apartment.id=? and r.beginDate <= current_date() and current_date() <= r.endDate
     ]]></query>
-
-    <query name="Person.findPersonsInApartment"><![CDATA[
-        select distinct p
-        from Person p
-            left join fetch p.personIdentities pi
-            inner join fetch pi.identityType
-            inner join p.personRegistrations r
-        where r.apartment.id=? and r.beginDate <= current_date() and current_date() <= r.endDate and p.status=?
-    ]]></query>
-
-    <query name="Person.findPersonsInApartment.count"><![CDATA[
-        select count(*)
-        from Person p
-            inner join p.personRegistrations r
-        where r.apartment.id=? and r.beginDate <= current_date() and current_date() <= r.endDate and p.status=?
-    ]]></query>
-
-	<query name="Person.findObjects">
-		FROM Person o
-		WHERE o.status=?
-	</query>
-
-	<query name="Person.findObjects.count">
-		select count(*) from Person o where o.status=?
-	</query>
-
-	<query name="Person.readFull">
-		select distinct o
-		from Person o
-		left join fetch o.personIdentities pi
-		left join fetch pi.personIdentityAttributes
-		where o.id=? and pi.status=0
-	</query>
-
-	<query name="Person.findByFIO">
-		SELECT DISTINCT o
-		FROM Person o
-		LEFT JOIN FETCH o.personIdentities pi
-		LEFT JOIN FETCH pi.identityType it
-		LEFT JOIN FETCH it.translations ittr
-		LEFT JOIN FETCH o.personRegistrations r
-		WHERE o.status=0 and pi.lastName || ' ' || pi.firstName || ' ' || pi.middleName like ?
-	</query>
-
-	<query name="Person.findByFIO.count">
-		SELECT count(*)
-		FROM Person o
-		LEFT JOIN o.personIdentities pi
-		WHERE o.status=0 and pi.lastName || ' ' || pi.firstName || ' ' || pi.middleName like ?
-	</query>
-
-	<query name="PersonAttribute.listAttributes">
-		FROM PersonAttribute o
-		WHERE o.translatable.id=?
-	</query>
-
-	<query name="PersonRegistration.listRegistrations"><![CDATA[
-		select distinct o
-		FROM PersonRegistration o
-			left join fetch o.apartment 
-		WHERE o.person.id=? 
-	]]></query>
-
-	<query name="PersonRegistration.listRegistrationHistory">
-		FROM PersonRegistration o
-		WHERE o.person.id=?
-	</query>
-
-	<query name="Person.listPersonsWithIdentities.stats"><![CDATA[
-		select min(d.id), max(d.id), count(d.id)
-		from Person d
-		where d.status=0
-	]]></query>
-
-	<query name="Person.listPersonsWithIdentities"><![CDATA[
-		select distinct d
-		from Person d
-			left join fetch d.personIdentities pi
-			left join fetch pi.identityType 
-		where d.id between ? and ? and d.status=0
-	]]></query>
-
-	<query name="Person.listPersonsWithRegistrations.stats"><![CDATA[
-		select min(d.id), max(d.id), count(d.id)
-		from Person d
-		where d.status=0
-	]]></query>
-
-	<query name="Person.listPersonsWithRegistrations"><![CDATA[
-		select distinct d
-		from Person d
-			left join fetch d.personRegistrations pr
-			left join fetch pr.apartment 
-		where d.id between ? and ? and d.status=0
-	]]></query>
 
 </hibernate-mapping>

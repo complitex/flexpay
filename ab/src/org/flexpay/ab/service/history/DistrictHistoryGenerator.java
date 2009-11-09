@@ -27,6 +27,7 @@ public class DistrictHistoryGenerator implements HistoryGenerator<District> {
 	 *
 	 * @param obj Object to generate history for
 	 */
+	@Override
 	public void generateFor(@NotNull District obj) {
 
 		log.debug("starting generating history for district #{}", obj.getId());

@@ -41,7 +41,7 @@ public class StreetsListAction extends FPActionWithPagerSupport<Street> {
 		String searchStr = streetFilter.getSearchString() == null ? "" : streetFilter.getSearchString();
 
 		List<Street> streetsStubs = streetService.findByParentAndQuery(new Stub<Town>(townFilter),
-				list(streetSorterByName, streetSorterByType), "%" + searchStr + "%", getPager());
+				list(streetSorterByName, streetSorterByType), "%" + searchStr + "%", getLanguage(), getPager());
 
 		if (log.isDebugEnabled()) {
 			log.info("Total streets found: {}", streetsStubs.size());

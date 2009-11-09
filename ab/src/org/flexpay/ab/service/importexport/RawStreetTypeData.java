@@ -18,6 +18,7 @@ public class RawStreetTypeData extends RawData<StreetType> {
 	 *
 	 * @return Set of attribute names;
 	 */
+	@Override
 	public Collection<String> getPossibleNames() {
 		return possibleNames;
 	}
@@ -26,4 +27,5 @@ public class RawStreetTypeData extends RawData<StreetType> {
 		Object obj = getNameToValuesMap().get(FIELD_NAME);
 		return obj == null ? null : obj.toString();
 	}
+
 }

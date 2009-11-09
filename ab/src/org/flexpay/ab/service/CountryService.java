@@ -4,6 +4,7 @@ import org.apache.commons.collections.ArrayStack;
 import org.flexpay.ab.persistence.Country;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
+import org.flexpay.common.persistence.Language;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.sorter.ObjectSorter;
 import org.jetbrains.annotations.NotNull;
@@ -62,10 +63,11 @@ public interface CountryService {
 	 * Lookup countries by query. Query is a string which may contains in country name:
 	 *
 	 * @param query searching string
+	 * @param language language for search
 	 * @return List of founded countries
 	 */
 	@Secured (Roles.COUNTRY_READ)
 	@NotNull
-	List<Country> findByQuery(@NotNull String query);
+	List<Country> findByQuery(@NotNull String query, @NotNull Language language);
 
 }

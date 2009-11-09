@@ -19,6 +19,7 @@ public class RawStreetData extends RawData<Street> {
 	 *
 	 * @return Set of attribute names;
 	 */
+	@Override
 	public Collection<String> getPossibleNames() {
 		return possibleNames;
 	}
@@ -32,4 +33,5 @@ public class RawStreetData extends RawData<Street> {
 		Object obj = getNameToValuesMap().get(FIELD_TYPE_ID);
 		return obj == null ? null : obj.toString();
 	}
+
 }

@@ -23,6 +23,7 @@ public class RawStreetTypeDataConverter implements DataConverter<StreetType, Raw
 	 * @throws org.flexpay.common.exception.FlexPayException
 	 *          if failure occurs
 	 */
+	@Override
 	public StreetType fromRawData(RawStreetTypeData rawStreetTypeData,
 								  DataSourceDescription dataSourceDescription,
 								  CorrectionsService correctionsService)
@@ -41,4 +42,5 @@ public class RawStreetTypeDataConverter implements DataConverter<StreetType, Raw
 
 		return streetType;
 	}
+
 }

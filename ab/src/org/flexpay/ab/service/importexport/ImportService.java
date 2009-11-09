@@ -7,11 +7,9 @@ import org.flexpay.common.persistence.Stub;
 
 public interface ImportService {
 
-	public void importDistricts(Town town, DataSourceDescription sourceDescription)
-			throws FlexPayException;
+	void importDistricts(Town town, DataSourceDescription sourceDescription) throws FlexPayException;
 
-	public void importStreets(Town town, DataSourceDescription sourceDescription)
-			throws FlexPayException;
+	void importStreets(Town town, DataSourceDescription sourceDescription) throws FlexPayException;
 
 	/**
 	 * Import street types only builds corrections and does not add any new street types to the system, use User Interface,
@@ -26,4 +24,5 @@ public interface ImportService {
 	void importApartments(DataSourceDescription sourceDescription) throws Exception;
 
 	void importPersons(Stub<DataSourceDescription> sd) throws Exception;
+
 }

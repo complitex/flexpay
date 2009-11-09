@@ -27,6 +27,7 @@ public class StreetHistoryGenerator implements HistoryGenerator<Street> {
 	 *
 	 * @param obj Object to generate history for
 	 */
+	@Override
 	public void generateFor(@NotNull Street obj) {
 
 		log.debug("starting generating history for street #{}", obj.getId());

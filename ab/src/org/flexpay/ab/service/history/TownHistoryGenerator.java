@@ -27,6 +27,7 @@ public class TownHistoryGenerator implements HistoryGenerator<Town> {
 	 *
 	 * @param obj Object to generate history for
 	 */
+	@Override
 	public void generateFor(@NotNull Town obj) {
 
 		log.debug("starting generating history for town #{}", obj.getId());

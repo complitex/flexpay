@@ -40,6 +40,7 @@ public class BuildingsDaoExtImpl extends HibernateDaoSupport implements Building
 	 */
 	@SuppressWarnings ({"unchecked"})
 	@NotNull
+	@Override
 	public List<BuildingAddress> findBuildings(@NotNull Long streetId, @NotNull Long districtId, @NotNull String number) {
 		Object[] params = {districtId, streetId,
 						   ApplicationConfig.getBuildingAttributeTypeNumber().getId(), number};
@@ -55,6 +56,7 @@ public class BuildingsDaoExtImpl extends HibernateDaoSupport implements Building
 	 */
 	@SuppressWarnings ({"unchecked"})
 	@NotNull
+	@Override
 	public List<BuildingAddress> findBuildings(@NotNull Long streetId, @NotNull String number) {
 		Object[] params = {streetId,
 						   ApplicationConfig.getBuildingAttributeTypeNumber().getId(), number};
@@ -69,6 +71,7 @@ public class BuildingsDaoExtImpl extends HibernateDaoSupport implements Building
 	 */
 	@SuppressWarnings ({"unchecked"})
 	@Nullable
+	@Override
 	public Building findBuilding(@NotNull Long buildingsId) {
 		List<Building> buildings = getHibernateTemplate().findByNamedQuery("BuildingAddress.findBuilding", buildingsId);
 		if (buildings.isEmpty()) {
@@ -129,6 +132,7 @@ public class BuildingsDaoExtImpl extends HibernateDaoSupport implements Building
 		}
 
 		return getHibernateTemplate().executeFind(new HibernateCallback() {
+			@Override
 			public List<?> doInHibernate(Session session) throws HibernateException {
 				Query cntQuery = session.createQuery(cntHql.toString());
 				Long count = (Long) cntQuery.uniqueResult();
@@ -159,4 +163,5 @@ public class BuildingsDaoExtImpl extends HibernateDaoSupport implements Building
 	public void setAddressAttributeTypeService(AddressAttributeTypeService addressAttributeTypeService) {
 		this.addressAttributeTypeService = addressAttributeTypeService;
 	}
+
 }
