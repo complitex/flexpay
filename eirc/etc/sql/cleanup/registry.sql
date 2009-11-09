@@ -51,6 +51,11 @@ delete p
 		left join common_registry_properties_tbl p on r.id=p.registry_id
 	where r.id=@id;
 
+-- delete registry files references
+delete r
+	from common_registry_fpfiles_tbl r
+	where r.registry_id=@id;
+
 -- delete registry
 delete r
 	from common_registries_tbl r
