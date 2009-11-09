@@ -21,6 +21,7 @@ public class TownTypeHistoryHandler extends HistoryHandlerBase<TownType> {
 	 * @param diff Diff that is to be handled
 	 * @return <code>
 	 */
+	@Override
 	public boolean supports(@NotNull Diff diff) {
 		return typeRegistry.getType(TownType.class) == diff.getObjectType();
 	}
@@ -30,6 +31,7 @@ public class TownTypeHistoryHandler extends HistoryHandlerBase<TownType> {
 	 *
 	 * @param diff Diff
 	 */
+	@Override
 	public void process(@NotNull Diff diff) throws Exception {
 		String masterIndex = diff.getMasterIndex();
 		TownType object;

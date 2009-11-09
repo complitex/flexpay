@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface StreetDao extends NameTimeDependentDao<Street, Long> {
 
-	List<Street> findByParentAndQuery(Long townId, String query);
+	List<Street> findByParentAndQuery(Long townId, String query, Long languageId);
 
 	List<Street> findByNameAndTypeAndLanguage(String name, Long typeId, Long languageId);
 

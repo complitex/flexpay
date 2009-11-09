@@ -18,19 +18,22 @@ import java.util.List;
 
 public class StreetDaoExtImpl extends HibernateDaoSupport implements StreetDaoExt {
 
+	private static final String QUERY_ALL = "%%";
+
 	/**
 	 * Find and sort streets
 	 *
 	 * @param townId  Town key
 	 * @param sorters Collection of sorters
 	 * @param query query
+	 * @param languageId language id for search
 	 * @param pager   Pager
 	 * @return List of streets
 	 */
 	@SuppressWarnings ({"unchecked"})
 	@NotNull
 	@Override
-	public List<Street> findByParentAndQuery(Long townId, Collection<? extends ObjectSorter> sorters, String query, final Page<Street> pager) {
+	public List<Street> findByParentAndQuery(Long townId, Collection<? extends ObjectSorter> sorters, String query, Long languageId, final Page<Street> pager) {
 		StreetSorter sorter = findSorter(sorters);
 		sorter.setStreetField("s");
 
@@ -47,12 +50,16 @@ public class StreetDaoExtImpl extends HibernateDaoSupport implements StreetDaoEx
 		sorter.setFrom(hql);
 
 		StringBuilder whereClause = new StringBuilder();
-		whereClause.append(" where s.parent.id=").append(townId).append(" and s.status=").append(Street.STATUS_ACTIVE).
-				append(" and lower(tr.name) like '").append(query).append("'");
+		whereClause.append(" where s.parent.id=").append(townId).append(" and s.status=").append(Street.STATUS_ACTIVE);
+		if (!QUERY_ALL.equals(query)) {
+			whereClause.append(" and upper(tr.name) like '").append(query).append("'").append(" and tr.lang.id=").append(languageId);
+		}
 		sorter.setWhere(whereClause);
 		hql.append(whereClause);
-		cnthql.append(" where s.parent.id=").append(townId).append(" and s.status=").append(Street.STATUS_ACTIVE).
-				append(" and lower(tr.name) like '").append(query).append("'");
+		cnthql.append(" where s.parent.id=").append(townId).append(" and s.status=").append(Street.STATUS_ACTIVE);
+		if (!QUERY_ALL.equals(query)) {
+			cnthql.append(" and upper(tr.name) like '").append(query).append("'").append(" and tr.lang.id=").append(languageId);
+		}
 
 		StringBuilder orderByClause = new StringBuilder();
 		sorter.setOrderBy(orderByClause);

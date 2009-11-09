@@ -5,6 +5,7 @@ import org.flexpay.ab.service.importexport.RawStreetTypeData;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.service.importexport.ImportOperationTypeHolder;
 import org.flexpay.common.service.importexport.RawDataSource;
+import org.springframework.beans.factory.annotation.Required;
 
 import java.util.Iterator;
 import java.util.List;
@@ -15,10 +16,12 @@ public class StreetTypeJdbcDataSource implements RawDataSource<RawStreetTypeData
 	private Page<RawStreetTypeData> pager;
 	private Iterator<RawStreetTypeData> dataIterator;
 
+	@Override
 	public boolean trusted() {
 		return true;
 	}
 
+	@Override
 	public RawStreetTypeData getById(String objId) {
 		throw new UnsupportedOperationException("Not implemented");
 	}
@@ -26,6 +29,7 @@ public class StreetTypeJdbcDataSource implements RawDataSource<RawStreetTypeData
 	/**
 	 * Initialize data source
 	 */
+	@Override
 	public void initialize() {
 		pager = new Page<RawStreetTypeData>();
 		List<RawStreetTypeData> districtDatas = source.getStreetTypesData(pager);
@@ -35,6 +39,7 @@ public class StreetTypeJdbcDataSource implements RawDataSource<RawStreetTypeData
 	/**
 	 * Release all resources taken
 	 */
+	@Override
 	public void close() {
 	}
 
@@ -44,6 +49,7 @@ public class StreetTypeJdbcDataSource implements RawDataSource<RawStreetTypeData
 	 *
 	 * @return <tt>true</tt> if the iterator has more elements.
 	 */
+	@Override
 	public boolean hasNext() {
 		if (dataIterator.hasNext()) {
 			return true;
@@ -65,6 +71,7 @@ public class StreetTypeJdbcDataSource implements RawDataSource<RawStreetTypeData
 	 * @throws java.util.NoSuchElementException
 	 *          iteration has no more elements.
 	 */
+	@Override
 	public RawStreetTypeData next(ImportOperationTypeHolder holder) {
 		return dataIterator.next();
 	}
@@ -74,6 +81,7 @@ public class StreetTypeJdbcDataSource implements RawDataSource<RawStreetTypeData
 	 *
 	 * @return List of raw data, when the list is empty hasNext() should return <code>false</code>
 	 */
+	@Override
 	public List<RawStreetTypeData> nextPage() {
 		throw new RuntimeException("Not implemented");
 	}
@@ -83,7 +91,9 @@ public class StreetTypeJdbcDataSource implements RawDataSource<RawStreetTypeData
 	 *
 	 * @param source Value to set for property 'source'.
 	 */
+	@Required
 	public void setSource(HarkovCenterNachisleniyDataSource source) {
 		this.source = source;
 	}
+
 }

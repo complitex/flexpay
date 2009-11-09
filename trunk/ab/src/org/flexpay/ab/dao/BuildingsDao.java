@@ -24,7 +24,7 @@ public interface BuildingsDao extends GenericDao<BuildingAddress, Long> {
 	 * @param pager Page instance
 	 * @return list of buildings for the street
 	 */
-	List<BuildingAddress> findBuildings(Long streetId, Page pager);
+	List<BuildingAddress> findBuildings(Long streetId, Page<BuildingAddress> pager);
 
 	/**
 	 * Find buildings in the street and district
@@ -34,7 +34,7 @@ public interface BuildingsDao extends GenericDao<BuildingAddress, Long> {
 	 * @param pager Page instance
 	 * @return list of buildings for the street
 	 */
-	List<BuildingAddress> findStreetDistrictBuildings(Long streetId, Long districtId, Page pager);
+	List<BuildingAddress> findStreetDistrictBuildings(Long streetId, Long districtId, Page<BuildingAddress> pager);
 
 	/**
 	 * Find buildings relations for building

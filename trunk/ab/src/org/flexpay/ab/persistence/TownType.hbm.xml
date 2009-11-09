@@ -50,9 +50,7 @@
 
 	<query name="TownType.readFull">
 		from TownType tt
-            left join fetch tt.translations tr
-            left join fetch tr.lang l
-            left join fetch l.translations
+            left join fetch tt.translations
 		where tt.id=?
 	</query>
 

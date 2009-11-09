@@ -26,6 +26,7 @@ public class RegionHistoryGenerator implements HistoryGenerator<Region> {
 	 *
 	 * @param obj Object to generate history for
 	 */
+	@Override
 	public void generateFor(@NotNull Region obj) {
 
 		log.debug("starting generating history for region #{}", obj.getId());

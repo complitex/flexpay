@@ -24,6 +24,7 @@ public class RawStreetDataConverter implements DataConverter<Street, RawStreetDa
 	 * @return DomainObject
 	 * @throws FlexPayException if failure occurs
 	 */
+	@Override
 	public Street fromRawData(RawStreetData streetRawData,
 							  DataSourceDescription dataSourceDescription,
 							  CorrectionsService correctionsService)
@@ -61,4 +62,5 @@ public class RawStreetDataConverter implements DataConverter<Street, RawStreetDa
 
 		return street;
 	}
+
 }

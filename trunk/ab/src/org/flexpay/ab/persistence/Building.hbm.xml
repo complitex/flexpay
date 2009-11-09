@@ -162,116 +162,110 @@
 	</query>
 
 	<query name="BuildingAddress.readFull">
-		select distinct o
-		from BuildingAddress o
-            inner join fetch o.street street
-            left join fetch o.buildingAttributes attrs
+		select distinct ba
+		from BuildingAddress ba
+            inner join fetch ba.street
+            left join fetch ba.buildingAttributes attrs
             left join fetch attrs.buildingAttributeType attrType
-            left join fetch attrType.translations attrTypeTr
-		where o.id=? and o.status=0
+            left join fetch attrType.translations
+		where ba.id=?
 	</query>
 
 	<query name="BuildingAddress.readFullCollection">
-		select distinct o
-		from BuildingAddress o
-			left join fetch o.buildingAttributes attrs
+		select distinct ba
+		from BuildingAddress ba
+			left join fetch ba.buildingAttributes attrs
 			left join fetch attrs.buildingAttributeType attrType
-			left join fetch attrType.translations attrTypeTr
-		where o.id in (:ids) and o.status=0
+			left join fetch attrType.translations
+		where ba.id in (:ids)
 	</query>
 
 	<query name="BuildingAddress.findBuildings.count">
 		select count(*)
-		from BuildingAddress o
-		where o.status=0 and o.street.id=?
+		from BuildingAddress ba
+		where ba.status=0 and ba.street.id=?
 	</query>
 
 	<query name="BuildingAddress.findBuildings">
-        select distinct o
-		from BuildingAddress o
-            left join fetch o.buildingAttributes attrs
+        select distinct ba
+		from BuildingAddress ba
+            left join fetch ba.buildingAttributes attrs
             left join fetch attrs.buildingAttributeType attrType
             left join fetch attrType.translations attrTypeTr
-            left join fetch attrTypeTr.lang langAttr
-            left join fetch langAttr.translations
-		where o.status = 0 and o.street.id = ?
+		where ba.status=0 and ba.street.id=?
         order by attrTypeTr.shortName, attrs.value
 	</query>
 
 	<query name="BuildingAddress.findBuilding">
-		select o.building
-		from BuildingAddress o
-		where o.id=?
+		select ba.building
+		from BuildingAddress ba
+		where ba.id=?
 	</query>
 
 	<query name="BuildingAddress.findStreetDistrictBuildings.count">
 		select count(*)
-		from BuildingAddress o
-		where o.status=0 and o.street.id=? and o.building.district.id=?
+		from BuildingAddress ba
+		where ba.status=0 and ba.street.id=? and ba.building.district.id=?
 	</query>
 
 	<query name="BuildingAddress.findStreetDistrictBuildings">
-		select distinct o
-		from BuildingAddress o
-            left join fetch o.buildingAttributes attrs
+		select distinct ba
+		from BuildingAddress ba
+            left join fetch ba.buildingAttributes attrs
             inner join fetch attrs.buildingAttributeType attrType
             left join fetch attrType.translations
-		where o.status = 0 and o.street.id=? and o.building.district.id=?
+		where ba.status=0 and ba.street.id=? and ba.building.district.id=?
 	</query>
 
 	<query name="BuildingAddress.findByNumberWithDistrict">
-		select distinct b
-		from BuildingAddress b
-            inner join fetch b.buildingAttributes a
-            inner join fetch a.buildingAttributeType t
-		where b.building.district.id=? and b.status=0 and b.street.id=? and exists (
-		    from AddressAttribute ba
-		    where ba.buildings.id=b.id and
-		        ba.buildingAttributeType.id=? and ba.value=?
+		select distinct ba
+		from BuildingAddress ba
+            inner join fetch ba.buildingAttributes a
+            inner join fetch a.buildingAttributeType
+		where ba.building.district.id=? and ba.status=0 and ba.street.id=? and exists (
+		    from AddressAttribute aa
+		    where aa.buildings.id=ba.id and
+		        aa.buildingAttributeType.id=? and aa.value=?
             )
 	</query>
 
 	<query name="BuildingAddress.findByNumber">
-		select distinct b
-		from BuildingAddress b
-            inner join fetch b.buildingAttributes a
-            inner join fetch a.buildingAttributeType t
-		where b.street.id=? and b.status=0 and exists (
-		    from AddressAttribute ba
-		    where ba.buildings.id=b.id and
-		        ba.buildingAttributeType.id=? and ba.value=?
+		select distinct ba
+		from BuildingAddress ba
+            inner join fetch ba.buildingAttributes a
+            inner join fetch a.buildingAttributeType
+		where ba.street.id=? and ba.status=0 and exists (
+		    from AddressAttribute aa
+		    where aa.buildings.id=ba.id and
+		        aa.buildingAttributeType.id=? and aa.value=?
             )
 	</query>
 
 	<query name="BuildingAddress.findBuildingBuildings.count">
-		select count(b)
-		from BuildingAddress b
-		where b.building.id=? and b.status=0
+		select count(ba)
+		from BuildingAddress ba
+		where ba.building.id=? and ba.status=0
 	</query>
 
 	<query name="BuildingAddress.findBuildingBuildings">
-		select distinct b
-		from BuildingAddress b
-			left join fetch b.buildingAttributes a
-			left join fetch a.buildingAttributeType t
-		where b.building.id=? and b.status=0
+		select distinct ba
+		from BuildingAddress ba
+			left join fetch ba.buildingAttributes a
+			left join fetch a.buildingAttributeType
+		where ba.building.id=? and ba.status=0
 	</query>
 
     <query name="AddressAttributeType.readFull">
         select distinct aat
         from AddressAttributeType aat
-            left join fetch aat.translations tr
-            left join fetch tr.lang l
-            left join fetch l.translations
+            left join fetch aat.translations
         where aat.id=?
     </query>
 
     <query name="AddressAttributeType.findAttributeTypes">
         select distinct aat
         from AddressAttributeType aat
-            left join fetch aat.translations tr
-            left join fetch tr.lang l
-            left join fetch l.translations
+            left join fetch aat.translations
     </query>
 
     <query name="AddressAttributeType.findByNameAndLanguage">

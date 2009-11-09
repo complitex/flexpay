@@ -31,7 +31,7 @@ public class DistrictFilterAjaxAction extends FilterAjaxAction {
 			return SUCCESS;
 		}
 
-		List<District> districts = districtService.findByParentAndQuery(new Stub<Town>(townId), "%" + q + "%");
+		List<District> districts = districtService.findByParentAndQuery(new Stub<Town>(townId), "%" + q + "%", getLanguage());
 		if (log.isDebugEnabled()) {
 			log.debug("Found districts: {}", districts.size());
 		}

@@ -216,12 +216,13 @@ public class StreetServiceImpl extends NameTimeDependentServiceImpl<
 	 *
 	 * @param parentStub Town stub
 	 * @param query searching string
+	 * @param language language for search
 	 * @return List of found streets
 	 */
 	@NotNull
 	@Override
-	public List<Street> findByParentAndQuery(@NotNull Stub<Town> parentStub, @NotNull String query) {
-		return streetDao.findByParentAndQuery(parentStub.getId(), query);
+	public List<Street> findByParentAndQuery(@NotNull Stub<Town> parentStub, @NotNull String query, @NotNull Language language) {
+		return streetDao.findByParentAndQuery(parentStub.getId(), query, language.getId());
 	}
 
 	/**
@@ -233,19 +234,21 @@ public class StreetServiceImpl extends NameTimeDependentServiceImpl<
 	 * @param parentStub Town stub
 	 * @param query searching string
 	 * @param sorters sorters
+	 * @param language language for search
 	 * @param pager pager
 	 * @return List of found streets
 	 */
 	@NotNull
 	@Override
-	public List<Street> findByParentAndQuery(@NotNull Stub<Town> parentStub, @NotNull List<? extends ObjectSorter> sorters, @NotNull String query, @NotNull Page<Street> pager) {
+	public List<Street> findByParentAndQuery(@NotNull Stub<Town> parentStub, @NotNull List<? extends ObjectSorter> sorters,
+										  @NotNull String query, @NotNull Language language, @NotNull Page<Street> pager) {
 		Town town = townDao.read(parentStub.getId());
 		if (town == null) {
 			log.warn("Can't get town with id {} from DB", parentStub.getId());
 			return list();
 		}
 
-		return streetDaoExt.findByParentAndQuery(parentStub.getId(), sorters, query, pager);
+		return streetDaoExt.findByParentAndQuery(parentStub.getId(), sorters, query, language.getId(), pager);
 	}
 
 	/**

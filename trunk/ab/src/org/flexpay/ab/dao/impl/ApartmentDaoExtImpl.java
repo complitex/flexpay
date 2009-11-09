@@ -35,6 +35,7 @@ public class ApartmentDaoExtImpl extends SimpleJdbcDaoSupport implements Apartme
 	 * @return Apartment instance, or <code>null</null> if not found
 	 */
 	@Nullable
+	@Override
 	public Stub<Apartment> findApartmentStub(@NotNull Building building, final String number) {
 		String sql = "SELECT id FROM ab_apartments_tbl a WHERE a.building_id=? AND EXISTS " +
 					 "(SELECT 1 FROM ab_apartment_numbers_tbl n WHERE n.apartment_id=a.id AND n.value=? AND n.end_date>?)";
@@ -80,6 +81,7 @@ public class ApartmentDaoExtImpl extends SimpleJdbcDaoSupport implements Apartme
 		}
 
 		return hibernateTemplate.executeFind(new HibernateCallback() {
+			@Override
 			public List<?> doInHibernate(Session session) throws HibernateException {
 				Query cntQuery = session.createQuery(cntHql.toString());
 				Long count = (Long) cntQuery.uniqueResult();
@@ -110,4 +112,5 @@ public class ApartmentDaoExtImpl extends SimpleJdbcDaoSupport implements Apartme
 	public void setHibernateTemplate(HibernateTemplate hibernateTemplate) {
 		this.hibernateTemplate = hibernateTemplate;
 	}
+
 }

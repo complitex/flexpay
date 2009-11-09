@@ -34,6 +34,7 @@ public class EircImportServiceTxImpl extends ImportServiceImpl implements EircIm
 	private RegistryRecordWorkflowManager recordWorkflowManager;
 
 	@Transactional (readOnly = false)
+	@Override
 	public boolean processBatch(long[] counters, boolean inited,
 								Stub<DataSourceDescription> sd, RawDataSource<RawConsumerData> dataSource,
 								Map<String, List<Street>> nameObjsMap) {
@@ -387,4 +388,5 @@ public class EircImportServiceTxImpl extends ImportServiceImpl implements EircIm
 	public void setImportUtil(ImportUtil importUtil) {
 		this.importUtil = importUtil;
 	}
+
 }

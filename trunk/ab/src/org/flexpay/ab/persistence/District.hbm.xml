@@ -61,32 +61,34 @@
 	</class>
 
 	<query name="District.findObjects">
-		FROM District o
-		WHERE o.status=? and o.parent.id=?
+		from District d
+		where d.status=? and d.parent.id=?
 	</query>
 
 	<query name="District.findObjects.count">
-		select count(*) from District o where o.status=? and o.parent.id=?
+		select count(*)
+		from District d
+		where d.status=? and d.parent.id=?
 	</query>
 
 	<query name="District.readFull">
-		SELECT DISTINCT o
-		FROM District o
-			join fetch o.parent 
-			LEFT JOIN FETCH o.nameTemporals t
-			LEFT JOIN FETCH t.value v
-			LEFT JOIN FETCH v.translations tr
-		WHERE o.id=? and t.invalidDate='2100-12-31'
+		select distinct d
+		from District d
+			join fetch d.parent
+			left join fetch d.nameTemporals t
+			left join fetch t.value v
+			left join fetch v.translations
+		where d.id=? and t.invalidDate='2100-12-31'
 	</query>
 
 	<query name="District.readFullCollection">
-		SELECT DISTINCT o
-		FROM District o
-			join fetch o.parent
-			LEFT JOIN FETCH o.nameTemporals t
-			LEFT JOIN FETCH t.value v
-			LEFT JOIN FETCH v.translations tr
-		WHERE o.id in (:ids) and t.invalidDate='2100-12-31'
+		select distinct d
+		from District d
+			join fetch d.parent
+			left join fetch d.nameTemporals t
+			left join fetch t.value v
+			left join fetch v.translations
+		where d.id in (:ids) and t.invalidDate='2100-12-31'
 	</query>
 
     <query name="District.findByParentAndQuery">
@@ -95,11 +97,9 @@
             left join fetch d.nameTemporals t
             left join fetch t.value v
             left join fetch v.translations tr
-            left join fetch tr.lang l
-        where d.status = 0
-              and d.parent.id = ?
-              and t.invalidDate='2100-12-31'
-              and lower(tr.name) like ?
+        where d.status=0 and t.invalidDate='2100-12-31'
+            and d.parent.id=? and upper(tr.name) like ?
+            and tr.lang.id=?
     </query>
 
     <query name="District.findByNameAndLanguage">
@@ -112,20 +112,12 @@
             and tr.name=? and tr.lang.id=?
     </query>
 
-    <query name="DistrictNameTemporal.readFull">
-        SELECT DISTINCT t
-        FROM DistrictNameTemporal t
-        LEFT JOIN FETCH t.value v
-        LEFT JOIN FETCH v.translations tr
-        WHERE t.id=?
-    </query>
-
     <query name="DistrictName.readFull">
-        SELECT DISTINCT n
-        FROM DistrictName n
-        LEFT JOIN FETCH n.object
-        LEFT JOIN FETCH n.translations tr
-        WHERE n.id=?
+        select distinct n
+        from DistrictName n
+            left join fetch n.object
+            left join fetch n.translations
+        where n.id=?
     </query>
 
 </hibernate-mapping>

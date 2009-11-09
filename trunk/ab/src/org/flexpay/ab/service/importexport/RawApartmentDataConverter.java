@@ -12,11 +12,11 @@ import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.service.importexport.CorrectionsService;
 import org.flexpay.common.service.importexport.DataConverter;
+import static org.flexpay.common.util.CollectionUtils.set;
 import org.flexpay.common.util.DateUtil;
 import org.flexpay.common.util.config.ApplicationConfig;
 import org.springframework.beans.factory.annotation.Required;
 
-import java.util.HashSet;
 import java.util.Set;
 
 public class RawApartmentDataConverter implements DataConverter<Apartment, RawApartmentData> {
@@ -34,6 +34,7 @@ public class RawApartmentDataConverter implements DataConverter<Apartment, RawAp
 	 * @throws org.flexpay.common.exception.FlexPayException
 	 *          if failure occurs
 	 */
+	@Override
 	public Apartment fromRawData(RawApartmentData rawData,
 								 DataSourceDescription dataSourceDescription,
 								 CorrectionsService correctionsService)
@@ -59,7 +60,7 @@ public class RawApartmentDataConverter implements DataConverter<Apartment, RawAp
 		number.setBegin(DateUtil.now());
 		number.setEnd(ApplicationConfig.getFutureInfinite());
 
-		Set<ApartmentNumber> numbers = new HashSet<ApartmentNumber>();
+		Set<ApartmentNumber> numbers = set();
 		numbers.add(number);
 		apartment.setApartmentNumbers(numbers);
 
@@ -75,4 +76,5 @@ public class RawApartmentDataConverter implements DataConverter<Apartment, RawAp
 	public void setFactory(ObjectsFactory factory) {
 		this.factory = factory;
 	}
+
 }

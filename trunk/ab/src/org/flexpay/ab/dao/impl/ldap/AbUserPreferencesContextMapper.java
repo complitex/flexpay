@@ -10,7 +10,7 @@ import org.springframework.ldap.core.DirContextOperations;
 
 public class AbUserPreferencesContextMapper implements UserPreferencesContextMapper {
 
-	private Logger log = LoggerFactory.getLogger(getClass());
+	private final Logger log = LoggerFactory.getLogger(getClass());
 
 	/**
 	 * Do mapping of context attributes to preferences properties

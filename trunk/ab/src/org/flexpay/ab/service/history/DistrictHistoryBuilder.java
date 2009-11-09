@@ -33,6 +33,7 @@ public class DistrictHistoryBuilder extends HistoryBuilderBase<District> {
 	 * @param d2   Second object
 	 * @param diff Diff object
 	 */
+	@Override
 	protected void doDiff(@Nullable District d1, @NotNull District d2, @NotNull Diff diff) {
 
 		log.debug("creating new districts diff");

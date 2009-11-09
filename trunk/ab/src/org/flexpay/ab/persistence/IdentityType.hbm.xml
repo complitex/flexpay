@@ -61,9 +61,7 @@
 
 	<query name="IdentityType.readFull">
 		from IdentityType it
-            left join fetch it.translations tr
-            left join fetch tr.lang l
-            left join fetch l.translations
+            left join fetch it.translations
 		where it.id=?
 	</query>
 

@@ -5,6 +5,7 @@ import org.flexpay.ab.service.importexport.RawDistrictData;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.service.importexport.ImportOperationTypeHolder;
 import org.flexpay.common.service.importexport.RawDataSource;
+import org.springframework.beans.factory.annotation.Required;
 
 import java.util.Iterator;
 import java.util.List;
@@ -15,10 +16,12 @@ public class DistrictJdbcDataSource implements RawDataSource<RawDistrictData> {
 	private Page<RawDistrictData> pager;
 	private Iterator<RawDistrictData> dataIterator;
 
+	@Override
 	public boolean trusted() {
 		return true;
 	}
 
+	@Override
 	public RawDistrictData getById(String objId) {
 		throw new UnsupportedOperationException("Not implemented");
 	}
@@ -26,6 +29,7 @@ public class DistrictJdbcDataSource implements RawDataSource<RawDistrictData> {
 	/**
 	 * Initialize data source
 	 */
+	@Override
 	public void initialize() {
 		pager = new Page<RawDistrictData>();
 		List<RawDistrictData> districtDatas = source.getDistrictsData(pager);
@@ -35,6 +39,7 @@ public class DistrictJdbcDataSource implements RawDataSource<RawDistrictData> {
 	/**
 	 * Release all resources taken
 	 */
+	@Override
 	public void close() {
 	}
 
@@ -44,6 +49,7 @@ public class DistrictJdbcDataSource implements RawDataSource<RawDistrictData> {
 	 *
 	 * @return <tt>true</tt> if the iterator has more elements.
 	 */
+	@Override
 	public boolean hasNext() {
 		if (dataIterator.hasNext()) {
 			return true;
@@ -65,6 +71,7 @@ public class DistrictJdbcDataSource implements RawDataSource<RawDistrictData> {
 	 * @throws java.util.NoSuchElementException
 	 *          iteration has no more elements.
 	 */
+	@Override
 	public RawDistrictData next(ImportOperationTypeHolder holder) {
 		return dataIterator.next();
 	}
@@ -74,16 +81,14 @@ public class DistrictJdbcDataSource implements RawDataSource<RawDistrictData> {
 	 *
 	 * @return List of raw data, when the list is empty hasNext() should return <code>false</code>
 	 */
+	@Override
 	public List<RawDistrictData> nextPage() {
 		throw new RuntimeException("Not implemented");
 	}
 
-	/**
-	 * Setter for property 'source'.
-	 *
-	 * @param source Value to set for property 'source'.
-	 */
+	@Required
 	public void setSource(HarkovCenterNachisleniyDataSource source) {
 		this.source = source;
 	}
+
 }

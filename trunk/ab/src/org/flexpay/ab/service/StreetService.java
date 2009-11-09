@@ -4,6 +4,7 @@ import org.flexpay.ab.persistence.*;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
+import org.flexpay.common.persistence.Language;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.sorter.ObjectSorter;
 import org.flexpay.common.service.NameTimeDependentService;
@@ -66,11 +67,12 @@ public interface StreetService extends NameTimeDependentService<StreetName, Stre
 	 *
 	 * @param parentStub Town stub
 	 * @param query searching string
+	 * @param language language for search
 	 * @return List of found streets
 	 */
 	@Secured (Roles.STREET_READ)
 	@NotNull
-	List<Street> findByParentAndQuery(@NotNull Stub<Town> parentStub, @NotNull String query);
+	List<Street> findByParentAndQuery(@NotNull Stub<Town> parentStub, @NotNull String query, @NotNull Language language);
 
 	/**
 	 * Lookup streets by query and town id.
@@ -81,12 +83,14 @@ public interface StreetService extends NameTimeDependentService<StreetName, Stre
 	 * @param parentStub Town stub
 	 * @param query searching string
 	 * @param sorters sorters
+	 * @param language language for search
 	 * @param pager pager
 	 * @return List of found streets
 	 */
 	@Secured (Roles.STREET_READ)
 	@NotNull
-	List<Street> findByParentAndQuery(@NotNull Stub<Town> parentStub, @NotNull List<? extends ObjectSorter> sorters, @NotNull String query, @NotNull Page<Street> pager);
+	List<Street> findByParentAndQuery(@NotNull Stub<Town> parentStub, @NotNull List<? extends ObjectSorter> sorters,
+									  @NotNull String query, @NotNull Language language, @NotNull Page<Street> pager);
 
 	/**
 	 * Lookup streets by name, street type and town

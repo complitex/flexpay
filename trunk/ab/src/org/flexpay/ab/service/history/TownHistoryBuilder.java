@@ -33,6 +33,7 @@ public class TownHistoryBuilder extends HistoryBuilderBase<Town> {
 	 * @param t2   Second object
 	 * @param diff Diff object
 	 */
+	@Override
 	protected void doDiff(@Nullable Town t1, @NotNull Town t2, @NotNull Diff diff) {
 
 		log.debug("creating new towns diff");
@@ -109,14 +110,17 @@ public class TownHistoryBuilder extends HistoryBuilderBase<Town> {
 		log.debug("Town types sizes: {}, {}", types1.size(), types2.size());
 
 		TemporalObjectsHistoryBuildHelper.buildDiff(new TemporalDataExtractor<TownTypeTemporal>() {
+			@Override
 			public Date getBeginDate(TownTypeTemporal obj) {
 				return obj.getBegin();
 			}
 
+			@Override
 			public Date getEndDate(TownTypeTemporal obj) {
 				return obj.getEnd();
 			}
 
+			@Override
 			public void buildDiff(Date begin, Date end, TownTypeTemporal tmp1, TownTypeTemporal tmp2, Diff dff) {
 
 				if ((tmp1 == null || tmp1.isValueEmpty()) && (tmp2 == null || tmp2.isValueEmpty())) {
@@ -149,6 +153,7 @@ public class TownHistoryBuilder extends HistoryBuilderBase<Town> {
 	 * @param town Object to apply diff to
 	 * @param diff Diff to apply
 	 */
+	@Override
 	public void patch(@NotNull Town town, @NotNull Diff diff) {
 
 		// setup default region if not exists

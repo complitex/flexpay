@@ -31,6 +31,7 @@ public class AddressAttributeTypeHistoryBuilder extends HistoryBuilderBase<Addre
 	 * @param t2   Second object
 	 * @param diff Diff object
 	 */
+	@Override
 	protected void doDiff(@Nullable AddressAttributeType t1, @NotNull AddressAttributeType t2, @NotNull Diff diff) {
 
 		if (!t2.isActive()) {
@@ -86,6 +87,7 @@ public class AddressAttributeTypeHistoryBuilder extends HistoryBuilderBase<Addre
 	 * @param t	Object to apply diff to
 	 * @param diff Diff to apply
 	 */
+	@Override
 	public void patch(@NotNull AddressAttributeType t, @NotNull Diff diff) {
 
 		for (HistoryRecord record : diff.getHistoryRecords()) {
@@ -121,4 +123,5 @@ public class AddressAttributeTypeHistoryBuilder extends HistoryBuilderBase<Addre
 			record.setProcessingStatus(ProcessingStatus.STATUS_PROCESSED);
 		}
 	}
+
 }

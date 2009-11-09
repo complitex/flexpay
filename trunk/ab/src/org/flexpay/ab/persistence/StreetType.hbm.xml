@@ -39,9 +39,7 @@
 
 	<query name="StreetType.readFull">
 		from StreetType st
-		    left join fetch st.translations tr
-            left join fetch tr.lang l
-            left join fetch l.translations
+		    left join fetch st.translations
 		where st.id=?
 	</query>
 

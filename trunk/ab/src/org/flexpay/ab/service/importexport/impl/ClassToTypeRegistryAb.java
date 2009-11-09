@@ -52,4 +52,5 @@ public class ClassToTypeRegistryAb implements ClassToTypeRegistry {
 
 		throw new IllegalArgumentException("Class " + clazz + " has no assigned type");
 	}
+
 }

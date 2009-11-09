@@ -12,6 +12,7 @@ import org.flexpay.common.service.importexport.DataConverter;
 import static org.flexpay.common.util.CollectionUtils.set;
 import org.flexpay.common.util.DateUtil;
 import org.flexpay.common.util.config.ApplicationConfig;
+import org.springframework.beans.factory.annotation.Required;
 
 public class RawPersonDataConverter implements DataConverter<Person, RawPersonData> {
 
@@ -26,6 +27,7 @@ public class RawPersonDataConverter implements DataConverter<Person, RawPersonDa
 	 * @return DomainObject
 	 * @throws FlexPayException if failure occurs
 	 */
+	@Override
 	public Person fromRawData(
 			RawPersonData rawData, DataSourceDescription dataSourceDescription,
 			CorrectionsService correctionsService) throws FlexPayException {
@@ -67,7 +69,9 @@ public class RawPersonDataConverter implements DataConverter<Person, RawPersonDa
 		return person;
 	}
 
+	@Required
 	public void setIdentityTypeService(IdentityTypeService identityTypeService) {
 		this.identityTypeService = identityTypeService;
 	}
+
 }

@@ -26,6 +26,7 @@ public class StreetTypeHistoryGenerator implements HistoryGenerator<StreetType> 
 	 *
 	 * @param obj Object to generate history for
 	 */
+	@Override
 	public void generateFor(@NotNull StreetType obj) {
 
 		if (diffService.hasDiffs(obj)) {

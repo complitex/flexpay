@@ -62,8 +62,7 @@
 		from Region r
             left join fetch r.nameTemporals t
             left join fetch t.value v
-            left join fetch v.translations tr
-            left join fetch tr.lang l
+            left join fetch v.translations
 		where r.status=? and r.parent.id=?
 		    and t.invalidDate='2100-12-31'
 	</query>
@@ -79,8 +78,7 @@
         from Region r
             left join fetch r.nameTemporals t
             left join fetch t.value v
-            left join fetch v.translations tr
-            left join fetch tr.lang l
+            left join fetch v.translations
 		where r.id=? and t.invalidDate='2100-12-31'
 	</query>
 
@@ -89,8 +87,7 @@
 		from Region r
 			left join fetch r.nameTemporals t
 			left join fetch t.value v
-			left join fetch v.translations tr
-			left join fetch tr.lang l
+			left join fetch v.translations
 		where r.id in (:ids) and t.invalidDate='2100-12-31'
 	</query>
 
@@ -100,9 +97,9 @@
             left join fetch r.nameTemporals t
             left join fetch t.value v
             left join fetch v.translations tr
-            left join fetch tr.lang l
         where r.status=0 and t.invalidDate = '2100-12-31'
-            and r.parent.id=? and lower(tr.name) like ?
+            and r.parent.id=? and upper(tr.name) like ?
+            and tr.lang.id=?
     </query>
 
     <query name="Region.findByNameAndLanguage">
@@ -115,24 +112,12 @@
             and tr.name=? and tr.lang.id=?
     </query>
 
-	<query name="RegionNameTemporal.readFull">
-        select distinct t
-		FROM RegionNameTemporal t
-			LEFT JOIN FETCH t.value v
-			LEFT JOIN FETCH v.translations tr
-			LEFT JOIN FETCH tr.lang l
-			LEFT JOIN FETCH l.translations
-		WHERE t.id=?
-	</query>
-
 	<query name="RegionName.readFull">
-		SELECT DISTINCT n
-		FROM RegionName n
-			LEFT JOIN FETCH n.object
-			LEFT JOIN FETCH n.translations tr
-			LEFT JOIN FETCH tr.lang l
-			LEFT JOIN FETCH l.translations
-		WHERE n.id=?
+		select distinct n
+		from RegionName n
+			left join fetch n.object
+			left join fetch n.translations
+		where n.id=?
 	</query>
 
 </hibernate-mapping>

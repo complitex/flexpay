@@ -31,6 +31,7 @@ public class IdentityTypeHistoryBuilder extends HistoryBuilderBase<IdentityType>
 	 * @param t2   Second object
 	 * @param diff Diff object
 	 */
+	@Override
 	protected void doDiff(@Nullable IdentityType t1, @NotNull IdentityType t2, @NotNull Diff diff) {
 
 		if (!t2.isActive()) {
@@ -91,6 +92,7 @@ public class IdentityTypeHistoryBuilder extends HistoryBuilderBase<IdentityType>
 	 * @param t	Object to apply diff to
 	 * @param diff Diff to apply
 	 */
+	@Override
 	public void patch(@NotNull IdentityType t, @NotNull Diff diff) {
 
 		for (HistoryRecord record : diff.getHistoryRecords()) {

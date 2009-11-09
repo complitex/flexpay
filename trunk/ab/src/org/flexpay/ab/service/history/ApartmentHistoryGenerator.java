@@ -27,6 +27,7 @@ public class ApartmentHistoryGenerator implements HistoryGenerator<Apartment> {
 	 *
 	 * @param obj Object to generate history for
 	 */
+	@Override
 	public void generateFor(@NotNull Apartment obj) {
 
 		log.debug("starting generating history for apartment #{}", obj.getId());

@@ -31,6 +31,7 @@ public class StreetTypeHistoryBuilder extends HistoryBuilderBase<StreetType> {
 	 * @param t2   Second object
 	 * @param diff Diff object
 	 */
+	@Override
 	protected void doDiff(@Nullable StreetType t1, @NotNull StreetType t2, @NotNull Diff diff) {
 
 		if (!t2.isActive()) {
@@ -86,6 +87,7 @@ public class StreetTypeHistoryBuilder extends HistoryBuilderBase<StreetType> {
 	 * @param t	Object to apply diff to
 	 * @param diff Diff to apply
 	 */
+	@Override
 	public void patch(@NotNull StreetType t, @NotNull Diff diff) {
 
 		for (HistoryRecord record : diff.getHistoryRecords()) {

@@ -193,12 +193,13 @@ public class DistrictServiceImpl extends NameTimeDependentServiceImpl<
 	 *
 	 * @param parentStub  Town stub
 	 * @param query searching string
+	 * @param language language for search
 	 * @return List of founded districts
 	 */
 	@NotNull
 	@Override
-	public List<District> findByParentAndQuery(@NotNull Stub<Town> parentStub, @NotNull String query) {
-		return districtDao.findByParentAndQuery(parentStub.getId(), query);
+	public List<District> findByParentAndQuery(@NotNull Stub<Town> parentStub, @NotNull String query, @NotNull Language language) {
+		return districtDao.findByParentAndQuery(parentStub.getId(), query, language.getId());
 	}
 
 	/**

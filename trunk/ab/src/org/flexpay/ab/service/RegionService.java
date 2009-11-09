@@ -4,6 +4,7 @@ import org.apache.commons.collections.ArrayStack;
 import org.flexpay.ab.persistence.*;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
+import org.flexpay.common.persistence.Language;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.sorter.ObjectSorter;
 import org.flexpay.common.service.NameTimeDependentService;
@@ -67,11 +68,12 @@ public interface RegionService extends NameTimeDependentService<RegionName, Regi
 	 *
 	 * @param parentStub  Country stub
 	 * @param query searching string
+	 * @param language language for search
 	 * @return List of found regions
 	 */
 	@Secured (Roles.REGION_READ)
 	@NotNull
-	List<Region> findByParentAndQuery(@NotNull Stub<Country> parentStub, @NotNull String query);
+	List<Region> findByParentAndQuery(@NotNull Stub<Country> parentStub, @NotNull String query, @NotNull Language language);
 
 	/**
 	 * Get a list of available regions

@@ -25,6 +25,7 @@ public class BuildingHistoryGenerator implements HistoryGenerator<Building> {
 	 *
 	 * @param obj Object to generate history for
 	 */
+	@Override
 	public void generateFor(@NotNull Building obj) {
 
 		log.debug("starting generating history for building #{}", obj.getId());

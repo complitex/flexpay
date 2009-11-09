@@ -43,17 +43,13 @@
 
 	<query name="Country.readFull">
 		from Country c
-			left join fetch c.translations tr
-			left join fetch tr.lang l
-            left join fetch l.translations
+			left join fetch c.translations
 		where c.id=?
 	</query>
 
     <query name="Country.readFullCollection">
         from Country c
-            left join fetch c.translations tr
-            left join fetch tr.lang l
-            left join fetch l.translations
+            left join fetch c.translations
         where c.id in (:ids)
     </query>
 
@@ -61,9 +57,8 @@
         select distinct c
         from Country c
             left join fetch c.translations tr
-            left join fetch tr.lang l
-            left join fetch l.translations
-        where c.status=0 and lower(tr.name) like ?
+        where upper(tr.name) like ? and tr.lang.id=?
+            and c.status=0
     </query>
 
     <query name="Country.findByNameAndLanguage">

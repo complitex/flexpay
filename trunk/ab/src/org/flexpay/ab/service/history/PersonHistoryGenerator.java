@@ -27,6 +27,7 @@ public class PersonHistoryGenerator implements HistoryGenerator<Person> {
 	 *
 	 * @param obj Object to generate history for
 	 */
+	@Override
 	public void generateFor(@NotNull Person obj) {
 
 		log.debug("starting generating history for person #{}", obj.getId());

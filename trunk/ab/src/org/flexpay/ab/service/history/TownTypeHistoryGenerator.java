@@ -26,6 +26,7 @@ public class TownTypeHistoryGenerator implements HistoryGenerator<TownType> {
 	 *
 	 * @param obj Object to generate history for
 	 */
+	@Override
 	public void generateFor(@NotNull TownType obj) {
 
 		if (diffService.hasDiffs(obj)) {

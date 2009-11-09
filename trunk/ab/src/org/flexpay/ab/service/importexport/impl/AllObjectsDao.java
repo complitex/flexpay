@@ -3,6 +3,7 @@ package org.flexpay.ab.service.importexport.impl;
 import org.flexpay.common.persistence.DomainObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Required;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 
 public class AllObjectsDao {
@@ -34,7 +35,9 @@ public class AllObjectsDao {
 		counter = 0;
 	}
 
+	@Required
 	public void setHibernateTemplate(HibernateTemplate hibernateTemplate) {
 		this.hibernateTemplate = hibernateTemplate;
 	}
+
 }

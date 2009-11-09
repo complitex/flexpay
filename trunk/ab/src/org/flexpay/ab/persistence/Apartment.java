@@ -94,7 +94,7 @@ public class Apartment extends DomainObjectWithStatus {
 	}
 
 	public Set<Person> getPersons(Date date) {
-		Set<Person> persons = new HashSet<Person>();
+		Set<Person> persons = set();
 		for (PersonRegistration reg : personRegistrations) {
 			if (reg.isValid(date)) {
 				persons.add(reg.getPerson());

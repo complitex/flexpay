@@ -79,4 +79,5 @@ public class CountryDaoExtImpl extends HibernateDaoSupport implements CountryDao
 
 		return new CountrySorterStub();
 	}
+
 }

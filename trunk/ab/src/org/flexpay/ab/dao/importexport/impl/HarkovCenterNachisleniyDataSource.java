@@ -11,12 +11,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-	public class HarkovCenterNachisleniyDataSource extends SimpleJdbcDaoSupport {
+public class HarkovCenterNachisleniyDataSource extends SimpleJdbcDaoSupport {
 
 	private static String DISTRICTS_QUERY = "SELECT id, District FROM districts LIMIT ?,?";
 
 	public List<RawDistrictData> getDistrictsData(Page<RawDistrictData> pager) {
 		return getSimpleJdbcTemplate().query(DISTRICTS_QUERY, new ParameterizedRowMapper<RawDistrictData>() {
+			@Override
 			public RawDistrictData mapRow(ResultSet rs, int i) throws SQLException {
 				RawDistrictData data = new RawDistrictData();
 				data.setExternalSourceId(rs.getString(1));
@@ -30,6 +31,7 @@ import java.util.List;
 
 	public List<RawStreetData> getStreetsData(Page<RawStreetData> pager) {
 		return getSimpleJdbcTemplate().query(STREETS_QUERY, new ParameterizedRowMapper<RawStreetData>() {
+			@Override
 			public RawStreetData mapRow(ResultSet rs, int i) throws SQLException {
 				RawStreetData data = new RawStreetData();
 				data.setExternalSourceId(rs.getString(1));
@@ -44,6 +46,7 @@ import java.util.List;
 
 	public List<RawStreetTypeData> getStreetTypesData(Page<RawStreetTypeData> pager) {
 		return getSimpleJdbcTemplate().query(STREET_TYPES_QUERY, new ParameterizedRowMapper<RawStreetTypeData>() {
+			@Override
 			public RawStreetTypeData mapRow(ResultSet rs, int i) throws SQLException {
 				RawStreetTypeData data = new RawStreetTypeData();
 				data.setExternalSourceId(rs.getString(1));
@@ -57,6 +60,7 @@ import java.util.List;
 
 	public List<RawBuildingsData> getBuildingsData(Page<RawBuildingsData> pager) {
 		return getSimpleJdbcTemplate().query(BUILDINGS_QUERY, new ParameterizedRowMapper<RawBuildingsData>() {
+			@Override
 			public RawBuildingsData mapRow(ResultSet rs, int i) throws SQLException {
 				RawBuildingsData data = new RawBuildingsData();
 				data.setExternalSourceId(rs.getString(1));
@@ -73,6 +77,7 @@ import java.util.List;
 
 	public List<RawApartmentData> getApartmentsData(Page<RawApartmentData> pager) {
 		return getSimpleJdbcTemplate().query(APARTMENTS_QUERY, new ParameterizedRowMapper<RawApartmentData>() {
+			@Override
 			public RawApartmentData mapRow(ResultSet rs, int i) throws SQLException {
 				RawApartmentData data = new RawApartmentData();
 				data.setExternalSourceId(rs.getString(1));
@@ -87,6 +92,7 @@ import java.util.List;
 
 	public List<RawPersonData> getPersonalAccountData(Page<RawPersonData> pager) {
 		return getSimpleJdbcTemplate().query(PERSONAL_ACCOUNTS_QUERY, new ParameterizedRowMapper<RawPersonData>() {
+			@Override
 			public RawPersonData mapRow(ResultSet rs, int i) throws SQLException {
 				RawPersonData data = new RawPersonData();
 				data.addNameValuePair(RawPersonData.FIELD_FIRST_NAME, rs.getString("Name"));
@@ -107,4 +113,5 @@ import java.util.List;
 			}
 		}, pager.getThisPageFirstElementNumber(), pager.getPageSize());
 	}
+
 }

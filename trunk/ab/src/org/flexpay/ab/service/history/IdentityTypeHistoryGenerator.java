@@ -26,6 +26,7 @@ public class IdentityTypeHistoryGenerator implements HistoryGenerator<IdentityTy
 	 *
 	 * @param obj Object to generate history for
 	 */
+	@Override
 	public void generateFor(@NotNull IdentityType obj) {
 
 		if (diffService.hasDiffs(obj)) {

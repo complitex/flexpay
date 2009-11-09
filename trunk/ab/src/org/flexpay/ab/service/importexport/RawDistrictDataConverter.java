@@ -23,6 +23,7 @@ public class RawDistrictDataConverter implements DataConverter<District, RawDist
 	 * @return DomainObject
 	 * @throws FlexPayException if failure occurs
 	 */
+	@Override
 	public District fromRawData(RawDistrictData rawDistrictData,
 								DataSourceDescription dataSourceDescription,
 								CorrectionsService correctionsService)
@@ -46,4 +47,5 @@ public class RawDistrictDataConverter implements DataConverter<District, RawDist
 
 		return district;
 	}
+
 }

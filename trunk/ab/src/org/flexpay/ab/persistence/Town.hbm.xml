@@ -68,16 +68,16 @@
 	</class>
 
 	<query name="Town.findObjects">
-		SELECT DISTINCT o
-		FROM Town o
-            LEFT JOIN FETCH o.nameTemporals t
-            LEFT JOIN FETCH t.value v
-            LEFT JOIN FETCH v.translations tr
-            LEFT JOIN FETCH o.typeTemporals tt
-            LEFT JOIN FETCH tt.value tv
-            LEFT JOIN FETCH tv.translations ttr
-		WHERE t.invalidDate='2100-12-31' and (tt is null or tt.invalidDate ='2100-12-31')
-		    and o.status=? and o.parent.id=?
+        select distinct t
+        from Town t
+            left join fetch t.nameTemporals nt
+            left join fetch nt.value v
+            left join fetch v.translations tr
+            left join fetch t.typeTemporals tt
+            left join fetch tt.value tv
+            left join fetch tv.translations
+		where nt.invalidDate='2100-12-31' and (tt is null or tt.invalidDate ='2100-12-31')
+		    and t.status=? and t.parent.id=?
 	</query>
 
 	<query name="Town.findObjects.count">
@@ -95,7 +95,7 @@
             left join fetch t.typeTemporals tt
             left join fetch tt.value ttv
             left join fetch ttv.translations
-		WHERE t.id=? and nt.invalidDate='2100-12-31' and tt.invalidDate='2100-12-31'
+		where t.id=? and nt.invalidDate='2100-12-31' and tt.invalidDate='2100-12-31'
 	</query>
 
 	<query name="Town.readFullCollection">
@@ -116,11 +116,9 @@
             left join fetch t.nameTemporals nt
             left join fetch nt.value v
             left join fetch v.translations tr
-            left join fetch tr.lang l
-        where t.status=0
-              and t.parent.id=?
-              and nt.invalidDate='2100-12-31'
-              and lower(tr.name) like ?
+        where t.status=0 and nt.invalidDate='2100-12-31'
+              and t.parent.id=? and upper(tr.name) like ?
+              and tr.lang.id=?
     </query>
 
     <query name="Town.findByNameAndLanguage">
@@ -133,24 +131,12 @@
             and tr.name=? and tr.lang.id=?
     </query>
 
-	<query name="TownNameTemporal.readFull">
-		SELECT DISTINCT t
-		FROM TownNameTemporal t
-			LEFT JOIN FETCH t.value v
-			LEFT JOIN FETCH v.translations tr
-			LEFT JOIN FETCH tr.lang l
-			LEFT JOIN FETCH l.translations
-		WHERE t.id=?
-	</query>
-
 	<query name="TownName.readFull">
-		SELECT DISTINCT n
-		FROM TownName n
-			LEFT JOIN FETCH n.object
-			LEFT JOIN FETCH n.translations tr
-			LEFT JOIN FETCH tr.lang l
-			LEFT JOIN FETCH l.translations
-		WHERE n.id=?
+		select distinct n
+		from TownName n
+			left join fetch n.object
+			left join fetch n.translations
+		where n.id=?
 	</query>
 
 </hibernate-mapping>

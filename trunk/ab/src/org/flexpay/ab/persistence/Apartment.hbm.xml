@@ -25,75 +25,80 @@
 	</class>
 
 	<query name="Apartment.findObjects.count">
-		SELECT count(o)
-		FROM Apartment o
+		select count(o)
+		from Apartment o
 			inner join o.building b
 			left join b.buildingses bs
-		WHERE o.status=0 and bs.id=?
+		where o.status=0 and bs.id=?
 	</query>
 
 	<query name="Apartment.findObjects"><![CDATA[
-		select distinct o
-		FROM Apartment o
-			inner join fetch o.building b
+		select distinct a
+		from Apartment a
+			inner join fetch a.building b
 			left join b.buildingses bs
-			LEFT JOIN FETCH o.apartmentNumbers n
-		WHERE o.status=0 and bs.id=? and n.begin <= current_date() and current_date() <= n.end
+			left join fetch a.apartmentNumbers n
+		where a.status=0 and bs.id=?
+		    and n.begin <= current_date()
+		    and current_date() <= n.end
 		order by n.value
 	]]></query>
 
 	<query name="Apartment.findByBuilding.count">
-		SELECT count(o)
-		FROM Apartment o
-			inner join o.building b
-		WHERE o.status=0 and b.id=?
+		select count(a)
+		from Apartment a
+			inner join a.building b
+		where a.status=0 and b.id=?
 	</query>
 
 	<query name="Apartment.findByBuilding"><![CDATA[
-		select distinct o
-		from Apartment o
-			inner join fetch o.building b
-			left join fetch o.apartmentNumbers n
-		where o.status=0 and b.id=?
+		select distinct a
+		from Apartment a
+			inner join fetch a.building b
+			left join fetch a.apartmentNumbers n
+		where a.status=0 and b.id=?
 	]]></query>
 
 	<query name="Apartment.readFull">
-		SELECT DISTINCT a
-		FROM Apartment a
-			LEFT JOIN FETCH a.apartmentNumbers
-		WHERE a.id=?
+        select distinct a
+		from Apartment a
+			left join fetch a.apartmentNumbers
+		where a.id=?
 	</query>
 
 	<query name="Apartment.readFullCollection">
-		SELECT DISTINCT a
-		FROM Apartment a
-			LEFT JOIN FETCH a.apartmentNumbers
-		WHERE a.id in (:ids)
+        select distinct a
+		from Apartment a
+            left join fetch a.apartmentNumbers
+		where a.id in (:ids)
 	</query>
 
 	<query name="Apartment.findByNumber">
-		FROM Apartment a
-			LEFT JOIN FETCH a.apartmentNumbers
-		WHERE a.building.id=? AND
-			EXISTS (FROM ApartmentNumber n WHERE n.apartment.id=a.id AND n.value=? and n.end>? )
+		from Apartment a
+            left join fetch a.apartmentNumbers
+		where a.building.id=? and
+		    exists (
+		        from ApartmentNumber n
+		        where n.apartment.id=a.id and n.value=? and n.end>?
+            )
 	</query>
 	
 	<query name="Apartment.findWithPersonsFull">
-		SELECT DISTINCT a
-		FROM Apartment a
+        select distinct a
+		from Apartment a
 			inner join fetch a.building 
-			LEFT JOIN FETCH a.apartmentNumbers
-			LEFT JOIN FETCH a.personRegistrations r
-			LEFT JOIN FETCH r.person p
-			LEFT JOIN FETCH p.personAttributes pa
-			LEFT JOIN FETCH pa.lang pal
-			LEFT JOIN FETCH pal.translations tr
-			LEFT JOIN FETCH p.personIdentities pi
-			LEFT JOIN FETCH pi.identityType it
-			LEFT JOIN FETCH it.translations ittr
-			LEFT JOIN FETCH ittr.lang lang
-			LEFT JOIN FETCH lang.translations
-		WHERE a.id = ? and p.status = 0 and pi.status = 0
+			left join fetch a.apartmentNumbers
+			left join fetch a.personRegistrations r
+			left join fetch r.person p
+			left join fetch p.personAttributes pa
+			left join fetch pa.lang pal
+			left join fetch pal.translations tr
+			left join fetch p.personIdentities pi
+			left join fetch pi.identityType it
+			left join fetch it.translations ittr
+			left join fetch ittr.lang lang
+			left join fetch lang.translations
+		where a.id=? and p.status=0 and pi.status=0
 	</query>
 
 </hibernate-mapping>

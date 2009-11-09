@@ -31,6 +31,7 @@ public class TownTypeHistoryBuilder extends HistoryBuilderBase<TownType> {
 	 * @param t2   Second object
 	 * @param diff Diff object
 	 */
+	@Override
 	protected void doDiff(@Nullable TownType t1, @NotNull TownType t2, @NotNull Diff diff) {
 
 		if (!t2.isActive()) {
@@ -86,6 +87,7 @@ public class TownTypeHistoryBuilder extends HistoryBuilderBase<TownType> {
 	 * @param t	Object to apply diff to
 	 * @param diff Diff to apply
 	 */
+	@Override
 	public void patch(@NotNull TownType t, @NotNull Diff diff) {
 
 		for (HistoryRecord record : diff.getHistoryRecords()) {

@@ -40,6 +40,7 @@ public class BuildingHistoryBuilder extends HistoryBuilderBase<Building> {
 	 * @param b2   Second object
 	 * @param diff Diff object
 	 */
+	@Override
 	protected void doDiff(@Nullable Building b1, @NotNull Building b2, @NotNull Diff diff) {
 
 		log.debug("creating new buildings diff");
@@ -160,10 +161,12 @@ public class BuildingHistoryBuilder extends HistoryBuilderBase<Building> {
 
 		builderHelper.buildReferenceDiff(b1, b2, diff, new ReferenceExtractor<District, Building>() {
 
+			@Override
 			public District getReference(Building obj) {
 				return obj.getDistrict();
 			}
 
+			@Override
 			public int getReferenceField() {
 				return FIELD_DISTRICT_ID;
 			}
@@ -176,6 +179,7 @@ public class BuildingHistoryBuilder extends HistoryBuilderBase<Building> {
 	 * @param building Object to apply diff to
 	 * @param diff	 Diff to apply
 	 */
+	@Override
 	public void patch(@NotNull Building building, @NotNull Diff diff) {
 
 		for (HistoryRecord record : diff.getHistoryRecords()) {
@@ -308,10 +312,12 @@ public class BuildingHistoryBuilder extends HistoryBuilderBase<Building> {
 		log.debug("Patching district reference {}", record);
 
 		builderHelper.patchReference(building, record, new ReferencePatcher<District, Building>() {
+			@Override
 			public Class<District> getType() {
 				return District.class;
 			}
 
+			@Override
 			public void setReference(Building obj, Stub<District> ref) {
 				obj.setDistrict(new District(ref));
 			}
