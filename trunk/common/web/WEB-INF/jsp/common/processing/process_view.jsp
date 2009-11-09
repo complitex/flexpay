@@ -13,6 +13,12 @@
         toggleElements($("#processVariables"), "#toggle_variables_button");
     }
 
+	function scrollTextArea() {
+		var t = $('#logText').get(0);
+		t.scrollTop = t.scrollHeight;
+	}
+	$(document).ready(scrollTextArea);
+
 </script>
 
 <s:actionerror/>
@@ -71,7 +77,7 @@
             </tr>
             <tr>
                 <td class="cols_1" colspan="2">
-                    <textarea rows="10" cols="100" wrap="off"><s:property value="logText"/></textarea>
+                    <textarea rows="10" cols="100" wrap="off" id="logText"><s:property value="logText"/></textarea>
                 </td>
             </tr>
         </s:if>
