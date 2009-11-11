@@ -44,7 +44,7 @@ public class CountryCreateAction extends FPActionSupport {
 
 		country = countryService.create(country);
 
-		addActionMessage(getText("ab.country.created"));
+		addActionMessage(getText("ab.country.saved"));
 
 		return REDIRECT_SUCCESS;
 

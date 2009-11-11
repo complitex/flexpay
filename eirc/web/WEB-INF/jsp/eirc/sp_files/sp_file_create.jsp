@@ -11,9 +11,9 @@
             action : "<s:url action="spFileUpload" namespace="/eirc" includeParams="none" />",
             validate : function() {
                 var v = "";
-                $('input[type="file"]').each(function(i, el) {
-                    if (el.form.id == "inputForm") {
-                        v = el.value;
+                $('input[type="file"]').each(function() {
+                    if (this.form.id == "inputForm") {
+                        v = this.value;
                     }
                 });
                 if (v == null || v == "") {

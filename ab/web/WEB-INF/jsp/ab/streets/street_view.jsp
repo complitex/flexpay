@@ -3,8 +3,8 @@
 <table cellpadding="3" cellspacing="1" border="0" width="100%">
 	<tr>
 		<td class="th">&nbsp;</td>
-		<td class="th"><s:text name="ab.from" /></td>
-		<td class="th"><s:text name="ab.till" /></td>
+		<td class="th"><s:text name="common.from" /></td>
+		<td class="th"><s:text name="common.till" /></td>
         <td class="th"><s:text name="common.language" /></td>
 		<td class="th"><s:text name="ab.street" /></td>
 	</tr>
@@ -39,8 +39,8 @@
 	</s:iterator>
 	<tr>
 		<td class="th">&nbsp;</td>
-		<td class="th"><s:text name="ab.from" /></td>
-		<td class="th"><s:text name="ab.till" /></td>
+		<td class="th"><s:text name="common.from" /></td>
+		<td class="th"><s:text name="common.till" /></td>
         <td class="th"><s:text name="common.language" /></td>
 		<td class="th"><s:text name="ab.street.type" /></td>
 	</tr>
@@ -89,12 +89,12 @@
 	</s:iterator>
 	<tr>
 		<td colspan="5">
-			<input type="button" class="btn-exit" title="<s:text name="ab.street.add_street_name" />"
+			<input type="button" class="btn-exit"
 				   onclick="window.location='<s:url action="streetEdit" includeParams="none"><s:param name="street.id" value="object.id" /></s:url>';"
 				   value="<s:text name="common.edit" />" />
-			<input type="button" class="btn-exit" title="<s:text name="ab.street.manage.districts" />"
+			<input type="button" class="btn-exit"
 				   onclick="window.location='<s:url action="streetDistrictEdit" includeParams="none"><s:param name="street.id" value="object.id" /></s:url>';"
-				   value="<s:text name="ab.street.manage.districts" />" />
+				   value="<s:text name="ab.street.manage_districts" />" />
 		</td>
 	</tr>
 </table>

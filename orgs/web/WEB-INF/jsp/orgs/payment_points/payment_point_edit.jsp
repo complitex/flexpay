@@ -22,7 +22,7 @@
 			<td class="col"><%@include file="/WEB-INF/jsp/orgs/filters/payment_collector_filter.jsp"%></td>
 		</tr>
 		<tr valign="middle" class="cols_1">
-			<td class="col"><s:text name="ab.address" />:</td>
+			<td class="col"><s:text name="orgs.address" />:</td>
 			<td class="col">
 				<s:textfield name="point.address" />
 			</td>

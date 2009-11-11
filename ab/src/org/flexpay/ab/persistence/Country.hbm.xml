@@ -57,8 +57,7 @@
         select distinct c
         from Country c
             left join fetch c.translations tr
-        where upper(tr.name) like ? and tr.lang.id=?
-            and c.status=0
+        where upper(tr.name) like ? and c.status=0
     </query>
 
     <query name="Country.findByNameAndLanguage">

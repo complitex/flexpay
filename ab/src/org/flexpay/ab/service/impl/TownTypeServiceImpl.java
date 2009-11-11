@@ -207,7 +207,7 @@ public class TownTypeServiceImpl implements TownTypeService {
 
 		List<TownTypeTranslation> translations = getTranslations(locale);
 		if (translations.isEmpty()) {
-			throw new FlexPayException("No town types", "ab.no_town_types");
+			throw new FlexPayException("No town types", "ab.error.town_type.no_town_types");
 		}
 
 		if (townTypeFilter == null) {

@@ -188,7 +188,7 @@
 		  p:buildingService-ref="buildingService"
 		  p:addressAttributeTypeService-ref="addressAttributeTypeService"
 		  p:objectsFactory-ref="objectsFactory"
-		  p:crumbNameKey="ab.crumbs.buildings_create"
+		  p:crumbNameKey="ab.crumbs.building_create"
 		  scope="prototype" />
 
 	<bean id="buildingAddressEditAction"
@@ -217,7 +217,7 @@
 	<bean id="buildingViewAction"
 		  class="org.flexpay.ab.actions.buildings.BuildingViewAction"
 		  p:buildingService-ref="buildingService"
-          p:crumbNameKey="ab.crumbs.buildings_view"
+          p:crumbNameKey="ab.crumbs.building_view"
 		  scope="prototype" />
 
 	<bean id="buildingDeleteAction"

@@ -52,6 +52,8 @@ public class StreetTypeEditAction extends FPActionSupport {
 			streetTypeService.update(streetType);
 		}
 
+		addActionMessage(getText("ab.street_type.saved"));
+
 		return REDIRECT_SUCCESS;
 	}
 

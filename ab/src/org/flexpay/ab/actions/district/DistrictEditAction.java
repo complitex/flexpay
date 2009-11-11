@@ -37,6 +37,8 @@ public class DistrictEditAction extends FPActionSupport {
 			}
 			updateDistrict();
 
+			addActionMessage(getText("ab.district.saved"));
+
 			return REDIRECT_SUCCESS;
 		}
 

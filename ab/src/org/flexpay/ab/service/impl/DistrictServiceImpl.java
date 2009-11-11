@@ -193,13 +193,12 @@ public class DistrictServiceImpl extends NameTimeDependentServiceImpl<
 	 *
 	 * @param parentStub  Town stub
 	 * @param query searching string
-	 * @param language language for search
 	 * @return List of founded districts
 	 */
 	@NotNull
 	@Override
-	public List<District> findByParentAndQuery(@NotNull Stub<Town> parentStub, @NotNull String query, @NotNull Language language) {
-		return districtDao.findByParentAndQuery(parentStub.getId(), query, language.getId());
+	public List<District> findByParentAndQuery(@NotNull Stub<Town> parentStub, @NotNull String query) {
+		return districtDao.findByParentAndQuery(parentStub.getId(), query);
 	}
 
 	/**
@@ -239,7 +238,7 @@ public class DistrictServiceImpl extends NameTimeDependentServiceImpl<
 
 		Collection<DistrictNameTranslation> names = parentFilter.getNames();
 		if (names.isEmpty()) {
-			throw new FlexPayException("No district names", "ab.no_districts");
+			throw new FlexPayException("No district names", "ab.error.district.no_districts");
 		}
 
 		if (parentFilter.getSelectedId() == null || !isFilterValid(parentFilter)) {

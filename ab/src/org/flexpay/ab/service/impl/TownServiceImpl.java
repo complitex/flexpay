@@ -196,13 +196,12 @@ public class TownServiceImpl extends NameTimeDependentServiceImpl<
 	 *
 	 * @param regionStub  Region stub
 	 * @param query searching string
-	 * @param language language for search
 	 * @return List of founded regions
 	 */
 	@NotNull
 	@Override
-	public List<Town> findByParentAndQuery(@NotNull Stub<Region> regionStub, @NotNull String query, @NotNull Language language) {
-		return townDao.findByParentAndQuery(regionStub.getId(), query, language.getId());
+	public List<Town> findByParentAndQuery(@NotNull Stub<Region> regionStub, @NotNull String query) {
+		return townDao.findByParentAndQuery(regionStub.getId(), query);
 	}
 
 	/**
@@ -242,7 +241,7 @@ public class TownServiceImpl extends NameTimeDependentServiceImpl<
 
 		Collection<TownNameTranslation> names = parentFilter.getNames();
 		if (names.isEmpty()) {
-			throw new FlexPayException("No town names", "ab.no_towns");
+			throw new FlexPayException("No town names", "ab.error.town.no_towns");
 		}
 
 		if (parentFilter.getSelectedId() == null || !isFilterValid(parentFilter)) {

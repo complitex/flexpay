@@ -44,7 +44,7 @@ public class RegionFilterAjaxAction extends FilterAjaxAction {
 			return SUCCESS;
 		}
 
-		List<Region> regions = regionService.findByParentAndQuery(new Stub<Country>(countryId), "%" + q + "%", getLanguage());
+		List<Region> regions = regionService.findByParentAndQuery(new Stub<Country>(countryId), "%" + q + "%");
 		if (log.isDebugEnabled()) {
 			log.debug("Found regions: {}", regions.size());
 		}

@@ -15,7 +15,7 @@
     });
 
     function sorterAjax() {
-        pagerAjax(null);
+        pagerAjax();
     }
 
     function pagerAjax(element) {

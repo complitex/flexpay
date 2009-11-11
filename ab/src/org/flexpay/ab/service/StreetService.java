@@ -67,12 +67,11 @@ public interface StreetService extends NameTimeDependentService<StreetName, Stre
 	 *
 	 * @param parentStub Town stub
 	 * @param query searching string
-	 * @param language language for search
 	 * @return List of found streets
 	 */
 	@Secured (Roles.STREET_READ)
 	@NotNull
-	List<Street> findByParentAndQuery(@NotNull Stub<Town> parentStub, @NotNull String query, @NotNull Language language);
+	List<Street> findByParentAndQuery(@NotNull Stub<Town> parentStub, @NotNull String query);
 
 	/**
 	 * Lookup streets by query and town id.

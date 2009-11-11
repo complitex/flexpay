@@ -70,7 +70,7 @@
 		</tr>
 		<tr>
 			<td class="col">
-				<s:text name="ab.from" />
+				<s:text name="common.from" />
 				<%@include file="/WEB-INF/jsp/common/filter/begin_date_filter.jsp" %>
 			</td>
 		</tr>
@@ -79,7 +79,7 @@
 		</tr>
 		<tr>
 			<td class="col">
-				<s:text name="ab.till" />
+				<s:text name="common.till" />
                 <%@include file="/WEB-INF/jsp/common/filter/end_date_filter.jsp" %>
 			</td>
 		</tr>

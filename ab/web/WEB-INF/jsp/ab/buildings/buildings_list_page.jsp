@@ -47,7 +47,7 @@
     }
 
     function sorterAjax() {
-        pagerAjax(null);
+        pagerAjax();
     }
 
     function deleteAjax() {

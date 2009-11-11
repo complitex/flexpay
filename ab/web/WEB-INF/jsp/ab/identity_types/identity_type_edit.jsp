@@ -7,8 +7,11 @@
 	<s:hidden name="identityType.id" />
 
 	<table cellpadding="3" cellspacing="1" border="0" width="100%">
+        <tr valign="top" class="cols_1">
+            <td class="col" colspan="2"><s:text name="ab.identity_type" /></td>
+        </tr>
 		<tr valign="top" class="cols_1">
-			<td class="col"><s:text name="ab.identity_type" />:</td>
+			<td class="col"><s:text name="ab.identity_type.name" />:</td>
 			<td class="col">
 				<s:iterator value="names">
                     <s:set name="l" value="%{getLang(key)}" />

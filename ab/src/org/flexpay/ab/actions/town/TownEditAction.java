@@ -52,6 +52,8 @@ public class TownEditAction extends FPActionSupport {
             }
             updateTown();
 
+			addActionMessage(getText("ab.town.saved"));
+
             return REDIRECT_SUCCESS;
         }
 

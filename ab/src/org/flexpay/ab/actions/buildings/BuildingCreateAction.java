@@ -69,18 +69,18 @@ public class BuildingCreateAction extends FPActionSupport {
 
 		Long buildingNumberAttributeId = ApplicationConfig.getBuildingAttributeTypeNumber().getId();		
 		if (StringUtils.isEmpty(attributesMap.get(buildingNumberAttributeId))) {
-			addActionError(getText("ab.buildings.create.building_number_required"));
+			addActionError(getText("ab.error.building_address.create.building_number_required"));
 			valid = false;
 		}
 
 		if (districtFilter == null || districtFilter <= 0) {
 			log.warn("Incorrect district id in filter ({})", districtFilter);
-			addActionError(getText("ab.buildings.create.district_required"));
+			addActionError(getText("ab.error.building_address.create.district_required"));
 			valid = false;
 		}
 		if (streetFilter == null || streetFilter <= 0) {
 			log.warn("Incorrect street id in filter ({})", streetFilter);
-			addActionError(getText("ab.buildings.create.street_required"));
+			addActionError(getText("ab.error.building_address.create.street_required"));
 			valid = false;
 		}
 
@@ -114,7 +114,7 @@ public class BuildingCreateAction extends FPActionSupport {
 		if (type == null) {
 			throw new RuntimeException("Unknown type id: " + typeId);
 		}
-		return getTranslation(type.getTranslations()).getName();
+		return getTranslationName(type.getTranslations());
 	}
 
 	public Long getStreetFilter() {

@@ -10,7 +10,7 @@
     </tr>
     <tr>
         <td class="th" width="1%">&nbsp;</td>
-        <td class="th"><s:text name="ab.language"/></td>
+        <td class="th"><s:text name="common.language"/></td>
         <td class="th"><s:text name="bti.building.attribute.type.name"/></td>
     </tr>
     <s:iterator value="attributeType.translations" status="rowstatus">

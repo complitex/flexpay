@@ -8,7 +8,7 @@
         <td class="th" width="1%">
             <input type="checkbox" onchange="FP.setCheckboxes(this.checked, 'objectIds');" />
         </td>
-        <td class="th" width="58%"><s:text name="ab.buildings.addresses" /></td>
+        <td class="th" width="58%"><s:text name="ab.building.addresses" /></td>
         <td class="th" width="40%">&nbsp;</td>
     </tr>
     <s:iterator value="building.buildingses">
@@ -23,7 +23,7 @@
             </td>
             <td class="col">
                 <s:property value="getAddress(id)" />
-                <s:if test="primaryStatus">(<s:text name="ab.buildings.primary_status" />)</s:if>
+                <s:if test="primaryStatus">(<s:text name="ab.building_address.primary_status" />)</s:if>
             </td>
             <td class="col">
                 <a href="<s:url action="buildingAddressEdit" includeParams="none"><s:param name="building.id" value="building.id" /><s:param name="address.id" value="id" /></s:url>">
@@ -32,7 +32,7 @@
                 <s:if test="!primaryStatus">
                     &nbsp;
                     <a href="#" onclick="setPrimaryStatus(<s:property value="id" />);">
-                       <s:text name="ab.buildings.set_primary_status" />
+                       <s:text name="ab.building.set_primary_status" />
                     </a>
                 </s:if>
             </td>

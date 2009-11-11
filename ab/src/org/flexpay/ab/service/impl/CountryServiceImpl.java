@@ -160,13 +160,12 @@ public class CountryServiceImpl implements CountryService, ParentService<Country
 	 * Lookup countries by query. Query is a string which may contains in country name:
 	 *
 	 * @param query searching string
-	 * @param language language for search
 	 * @return List of founded countries
 	 */
 	@NotNull
 	@Override
-	public List<Country> findByQuery(@NotNull String query, @NotNull Language language) {
-		return countryDao.findByQuery(query.toUpperCase(), language.getId());
+	public List<Country> findByQuery(@NotNull String query) {
+		return countryDao.findByQuery(query.toUpperCase());
 	}
 
 	/**
@@ -218,7 +217,7 @@ public class CountryServiceImpl implements CountryService, ParentService<Country
 
 		List<CountryTranslation> translations = getTranslations(locale);
 		if (translations.isEmpty()) {
-			throw new FlexPayException("No country names", "ab.no_countries");
+			throw new FlexPayException("No country names", "ab.error.country.no_countries");
 		}
 
 		if (countryFilter == null) {

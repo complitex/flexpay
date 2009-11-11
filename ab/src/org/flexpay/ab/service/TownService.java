@@ -68,12 +68,11 @@ public interface TownService extends NameTimeDependentService<TownName, TownName
 	 *
 	 * @param parentStub  Region stub
 	 * @param query searching string
-	 * @param language language for search
 	 * @return List of found regions
 	 */
 	@Secured (Roles.TOWN_READ)
 	@NotNull
-	List<Town> findByParentAndQuery(@NotNull Stub<Region> parentStub, @NotNull String query, @NotNull Language language);
+	List<Town> findByParentAndQuery(@NotNull Stub<Region> parentStub, @NotNull String query);
 
 	/**
 	 * Get a list of available towns

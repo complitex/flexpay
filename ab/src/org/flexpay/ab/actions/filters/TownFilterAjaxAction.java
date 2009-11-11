@@ -44,7 +44,7 @@ public class TownFilterAjaxAction extends FilterAjaxAction {
 			return SUCCESS;
 		}
 
-		List<Town> towns = townService.findByParentAndQuery(new Stub<Region>(regionId), "%" + q + "%", getLanguage());
+		List<Town> towns = townService.findByParentAndQuery(new Stub<Region>(regionId), "%" + q + "%");
 		if (log.isDebugEnabled()) {
 			log.debug("Found towns: {}", towns.size());
 		}
