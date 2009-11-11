@@ -394,8 +394,9 @@
 	</target>
 
 	<target name="template.switch_instance_id">
+		<property file="${common.dir}/web/WEB-INF/common.properties" prefix="conf" />
 		<replaceregexp encoding="UTF-8" flags="g"
-					   match="COMMON_INSTANCE" replace="${app.config.common.instanceId}">
+					   match="COMMON_INSTANCE" replace="${conf.app.config.common.instanceId}">
 			<fileset dir="${build.dir}">
 				<include name="web/WEB-INF/web.xml" />
 				<include name="web/WEB-INF/common/configs/log4j.xml" />
@@ -463,11 +464,10 @@
 
 	<!-- Groovy ant task -->
 	<taskdef name="groovy"
-         classname="org.codehaus.groovy.ant.Groovy"
-         classpathref="groovy.lib"/>
+			 classname="org.codehaus.groovy.ant.Groovy"
+			 classpathref="groovy.lib" />
 
-	<target name="template.configure.module" description="Configure module properties"
-			unless="no.configure">
+	<target name="template.configure.module" description="Configure module properties" unless="no.configure">
 		<echo message="Running module ${module.name} configuration" />
 
 		<groovy src="${common.dir}/etc/util/groovy/Configurer.groovy">
@@ -477,8 +477,9 @@
 	</target>
 
 	<target name="war.security" description="Configure security options of war">
+		<property file="${common.dir}/web/WEB-INF/common.properties" prefix="conf" />
 		<if>
-			<istrue value="${app.config.common.useOpenSSO}" />
+			<istrue value="${conf.app.config.common.useOpenSSO}" />
 			<then>
 				<echo>Using OpenSSO</echo>
 				<replace file="${build.dir}/web/WEB-INF/web.xml"
@@ -486,11 +487,11 @@
 						 token="@@@SECURITYPLACEHOLDER@@@"
 						 value="security-opensso" />
 				<xslt in="${build.dir}/web/WEB-INF/web.xml"
-						out="${build.dir}/web/WEB-INF/web.xml-tmp"
-						style="${common.dir}/etc/util/opensso/WebXml.xsl" />
+					  out="${build.dir}/web/WEB-INF/web.xml-tmp"
+					  style="${common.dir}/etc/util/opensso/WebXml.xsl" />
 				<xslt in="${build.dir}/web/WEB-INF/sun-web.xml"
-						out="${build.dir}/web/WEB-INF/sun-web.xml-tmp"
-						style="${common.dir}/etc/util/opensso/SunWebXml.xsl" />
+					  out="${build.dir}/web/WEB-INF/sun-web.xml-tmp"
+					  style="${common.dir}/etc/util/opensso/SunWebXml.xsl" />
 				<move file="${build.dir}/web/WEB-INF/web.xml-tmp"
 					  tofile="${build.dir}/web/WEB-INF/web.xml"
 					  overwrite="true" />
