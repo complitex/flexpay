@@ -181,7 +181,6 @@
             left join fetch tv.translations ttr
         where s.status=0 and t.invalidDate='2100-12-31'
               and s.parent.id=? and upper(tr.name) like ?
-              and tr.lang.id=?
     </query>
 
     <query name="Street.findByNameAndTypeAndLanguage">

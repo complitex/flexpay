@@ -7,8 +7,11 @@
 	<s:hidden name="townType.id" />
 
 	<table cellpadding="3" cellspacing="1" border="0" width="100%">
+        <tr valign="top" class="cols_1">
+            <td class="col" colspan="2"><s:text name="ab.town_type" /></td>
+        </tr>
 		<tr valign="top" class="cols_1">
-			<td class="col"><s:text name="ab.town_type" />:</td>
+			<td class="col"><s:text name="ab.town_type.name" />:</td>
 			<td class="col">
 				<s:iterator value="names">
                     <s:set name="l" value="%{getLang(key)}" />
@@ -17,7 +20,7 @@
 			</td>
 		</tr>
 		<tr valign="top" class="cols_1">
-			<td class="col"><s:text name="ab.short_name" />:</td>
+			<td class="col"><s:text name="ab.town_type.short_name" />:</td>
 			<td class="col">
 				<s:iterator value="shortNames">
                     <s:set name="l" value="%{getLang(key)}" />

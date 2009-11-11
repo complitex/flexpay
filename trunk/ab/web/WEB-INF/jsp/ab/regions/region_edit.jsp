@@ -22,7 +22,7 @@
             </td>
         </tr>
         <tr valign="top" class="cols_1">
-            <td class="col"><s:text name="ab.name" />:</td>
+            <td class="col"><s:text name="ab.region.name" />:</td>
             <td class="col">
                 <s:iterator value="names">
                     <s:set name="l" value="%{getLang(key)}" />

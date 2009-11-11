@@ -3,7 +3,7 @@
 <table cellpadding="3" cellspacing="1" border="0" width="100%">
     <tr>
         <td class="th" width="1%">&nbsp;</td>
-        <td class="th"><s:text name="ab.language" /></td>
+        <td class="th"><s:text name="common.language" /></td>
         <td class="th"><s:text name="eirc.payment_point.name" /></td>
     </tr>
     <s:iterator value="point.names" status="rowstatus">
@@ -32,7 +32,7 @@
         </td>
     </tr>
     <tr class="cols_1">
-        <td class="col"><s:text name="ab.address" />:</td>
+        <td class="col"><s:text name="orgs.address" />:</td>
         <td class="col" colspan="2">
             <s:property value="point.address" />
         </td>

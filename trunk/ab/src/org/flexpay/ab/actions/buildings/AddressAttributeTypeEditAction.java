@@ -69,6 +69,8 @@ public class AddressAttributeTypeEditAction extends FPActionSupport {
 			addressAttributeTypeService.update(type);
 		}
 
+		addActionMessage(getText("ab.buildings_attribute_type.saved"));
+
 		return REDIRECT_SUCCESS;
 	}
 

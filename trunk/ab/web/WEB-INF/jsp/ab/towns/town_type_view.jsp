@@ -3,9 +3,9 @@
 <table cellpadding="3" cellspacing="1" border="0" width="100%">
     <tr>
         <td class="th" width="1%">&nbsp;</td>
-        <td class="th"><s:text name="ab.language" /></td>
-        <td class="th"><s:text name="ab.town_type" /></td>
-        <td class="th"><s:text name="ab.short_name" /></td>
+        <td class="th"><s:text name="common.language" /></td>
+        <td class="th"><s:text name="ab.town_type.name" /></td>
+        <td class="th"><s:text name="ab.town_type.short_name" /></td>
     </tr>
     <s:iterator value="townType.translations" status="rowstatus">
         <tr valign="middle" class="cols_1">

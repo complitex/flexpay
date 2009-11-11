@@ -39,6 +39,8 @@ public class RegionEditAction extends FPActionSupport {
             }
             updateRegion();
 
+			addActionMessage(getText("ab.region.saved"));
+
             return REDIRECT_SUCCESS;
         }
 

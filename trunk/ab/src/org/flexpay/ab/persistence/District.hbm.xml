@@ -99,7 +99,6 @@
             left join fetch v.translations tr
         where d.status=0 and t.invalidDate='2100-12-31'
             and d.parent.id=? and upper(tr.name) like ?
-            and tr.lang.id=?
     </query>
 
     <query name="District.findByNameAndLanguage">

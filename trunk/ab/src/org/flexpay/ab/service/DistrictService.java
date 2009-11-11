@@ -68,12 +68,11 @@ public interface DistrictService extends NameTimeDependentService<DistrictName, 
 	 *
 	 * @param parentStub  Town stub
 	 * @param query searching string
-	 * @param language language for search
 	 * @return List of found districts
 	 */
 	@Secured (Roles.DISTRICT_READ)
 	@NotNull
-	List<District> findByParentAndQuery(@NotNull Stub<Town> parentStub, @NotNull String query, @NotNull Language language);
+	List<District> findByParentAndQuery(@NotNull Stub<Town> parentStub, @NotNull String query);
 
 	/**
 	 * Get a list of available districts

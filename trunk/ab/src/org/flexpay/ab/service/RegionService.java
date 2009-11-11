@@ -68,12 +68,11 @@ public interface RegionService extends NameTimeDependentService<RegionName, Regi
 	 *
 	 * @param parentStub  Country stub
 	 * @param query searching string
-	 * @param language language for search
 	 * @return List of found regions
 	 */
 	@Secured (Roles.REGION_READ)
 	@NotNull
-	List<Region> findByParentAndQuery(@NotNull Stub<Country> parentStub, @NotNull String query, @NotNull Language language);
+	List<Region> findByParentAndQuery(@NotNull Stub<Country> parentStub, @NotNull String query);
 
 	/**
 	 * Get a list of available regions

@@ -60,11 +60,11 @@
 		</action>
 
         <action name="addressAttributeTypesList" class="addressAttributeTypesListPageAction">
-            <result type="tiles">ab.buildings.attribute_types.list</result>
+            <result type="tiles">ab.buildings_attribute_types.list</result>
         </action>
 
 		<action name="addressAttributeTypeEdit" class="addressAttributeTypeEditAction">
-			<result name="input" type="tiles">ab.buildings.attribute_type.edit</result>
+			<result name="input" type="tiles">ab.buildings_attribute_type.edit</result>
             <result name="redirectSuccess" type="redirect-action">
                 <param name="actionName">addressAttributeTypeView</param>
                 <param name="parse">true</param>
@@ -73,7 +73,7 @@
 		</action>
 
         <action name="addressAttributeTypeView" class="addressAttributeTypeViewAction">
-            <result type="tiles">ab.buildings.attribute_type.view</result>
+            <result type="tiles">ab.buildings_attribute_type.view</result>
             <result name="redirectError" type="redirect-action">addressAttributeTypesList</result>
         </action>
 

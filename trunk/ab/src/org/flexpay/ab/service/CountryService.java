@@ -63,11 +63,10 @@ public interface CountryService {
 	 * Lookup countries by query. Query is a string which may contains in country name:
 	 *
 	 * @param query searching string
-	 * @param language language for search
 	 * @return List of founded countries
 	 */
 	@Secured (Roles.COUNTRY_READ)
 	@NotNull
-	List<Country> findByQuery(@NotNull String query, @NotNull Language language);
+	List<Country> findByQuery(@NotNull String query);
 
 }

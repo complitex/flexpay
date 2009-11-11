@@ -49,11 +49,11 @@ public class TownTypeEditAction extends FPActionSupport {
 
 		if (townType.isNew()) {
 			townTypeService.create(townType);
-			log.debug("Town type created {}", townType);
 		} else {
 			townTypeService.update(townType);
-			log.debug("Town type updated {}", townType);
 		}
+
+		addActionMessage(getText("ab.town_type.saved"));
 
 		return REDIRECT_SUCCESS;
 	}

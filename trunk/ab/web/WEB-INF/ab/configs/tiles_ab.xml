@@ -115,7 +115,7 @@
 	</definition>
 
 	<definition name="ab.street.edit.districts" extends="ab.layout.standart">
-		<put-attribute name="title" value="ab.street.edit.districts.title" />
+		<put-attribute name="title" value="ab.street.manage_districts" />
 		<put-attribute name="body" value="/WEB-INF/jsp/ab/streets/street_edit_districts_list.jsp" />
 	</definition>
 
@@ -168,7 +168,7 @@
 
 	<!-- Persons -->
 	<definition name="ab.person.list" extends="ab.layout.standart">
-		<put-attribute name="title" value="ab.persons.list.title" />
+		<put-attribute name="title" value="ab.person.list.title" />
 		<put-attribute name="body" value="/WEB-INF/jsp/ab/persons/persons_list_page.jsp" />
 	</definition>
 	<definition name="ab.person.view" extends="ab.layout.standart">
@@ -182,7 +182,7 @@
 
 	<!-- Buildings -->
 	<definition name="ab.building.list" extends="ab.layout.standart">
-		<put-attribute name="title" value="ab.buildings.list.title" />
+		<put-attribute name="title" value="ab.building.addresses_list.title" />
 		<put-attribute name="body" value="/WEB-INF/jsp/ab/buildings/buildings_list_page.jsp" />
 	</definition>
 	<definition name="ab.building.view" extends="ab.layout.standart">
@@ -190,31 +190,31 @@
 		<put-attribute name="body" value="/WEB-INF/jsp/ab/buildings/building_view.jsp" />
 	</definition>
 	<definition name="ab.buildings.edit_address" extends="ab.layout.standart">
-		<put-attribute name="title" value="ab.buildings.edit.title" />
+		<put-attribute name="title" value="ab.building.edit_building_address.title" />
 		<put-attribute name="body" value="/WEB-INF/jsp/ab/buildings/building_address_edit.jsp" />
 	</definition>
 	<definition name="ab.buildings.create" extends="ab.layout.standart">
-		<put-attribute name="title" value="ab.buildings.create.title" />
+		<put-attribute name="title" value="ab.building.create.title" />
 		<put-attribute name="body" value="/WEB-INF/jsp/ab/buildings/building_create.jsp" />
 	</definition>
 
 	<!-- BuildingAttributeTypes -->
 	<definition name="ab.buildings.attribute_types.list" extends="ab.layout.standart">
-		<put-attribute name="title" value="ab.buildings.attribute_types.list" />
+		<put-attribute name="title" value="ab.buildings_attribute_type.list.title" />
 		<put-attribute name="body" value="/WEB-INF/jsp/ab/buildings/buildings_attribute_types_list_page.jsp" />
 	</definition>
-	<definition name="ab.buildings.attribute_type.edit" extends="ab.layout.standart">
-		<put-attribute name="title" value="ab.buildings.attribute_type.edit" />
+	<definition name="ab.buildings_attribute_type.edit" extends="ab.layout.standart">
+		<put-attribute name="title" value="ab.buildings_attribute_type.edit.title" />
 		<put-attribute name="body" value="/WEB-INF/jsp/ab/buildings/buildings_attribute_type_edit.jsp" />
 	</definition>
-    <definition name="ab.buildings.attribute_type.view" extends="ab.layout.standart">
-        <put-attribute name="title" value="ab.buildings.attribute_type.view" />
+    <definition name="ab.buildings_attribute_type.view" extends="ab.layout.standart">
+        <put-attribute name="title" value="ab.buildings_attribute_type.view.title" />
         <put-attribute name="body" value="/WEB-INF/jsp/ab/buildings/buildings_attribute_type_view.jsp" />
     </definition>
 
 	<!-- Apartments -->
 	<definition name="ab.apartment.list" extends="ab.layout.standart">
-		<put-attribute name="title" value="ab.apartments.list.title" />
+		<put-attribute name="title" value="ab.apartment.list.title" />
 		<put-attribute name="body" value="/WEB-INF/jsp/ab/apartments/apartments_list_page.jsp" />
 	</definition>
 	<definition name="ab.apartment.edit" extends="ab.layout.standart">

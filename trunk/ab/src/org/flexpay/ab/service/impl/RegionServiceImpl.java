@@ -196,13 +196,12 @@ public class RegionServiceImpl extends NameTimeDependentServiceImpl<
 	 *
 	 * @param parentStub  Country stub
 	 * @param query searching string
-	 * @param language language for search
 	 * @return List of founded regions
 	 */
 	@NotNull
 	@Override
-	public List<Region> findByParentAndQuery(@NotNull Stub<Country> parentStub, @NotNull String query, @NotNull Language language) {
-		return regionDao.findByParentAndQuery(parentStub.getId(), query.toUpperCase(), language.getId());
+	public List<Region> findByParentAndQuery(@NotNull Stub<Country> parentStub, @NotNull String query) {
+		return regionDao.findByParentAndQuery(parentStub.getId(), query.toUpperCase());
 	}
 
 	/**
@@ -242,7 +241,7 @@ public class RegionServiceImpl extends NameTimeDependentServiceImpl<
 
 		Collection<RegionNameTranslation> names = parentFilter.getNames();
 		if (names.isEmpty()) {
-			throw new FlexPayException("No region names", "ab.no_regions");
+			throw new FlexPayException("No region names", "ab.error.region.no_regions");
 		}
 
 		if (parentFilter.getSelectedId() == null || !isFilterValid(parentFilter)) {

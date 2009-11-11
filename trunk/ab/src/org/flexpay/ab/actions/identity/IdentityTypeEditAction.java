@@ -50,6 +50,8 @@ public class IdentityTypeEditAction extends FPActionSupport {
 			identityTypeService.update(identityType);
 		}
 
+		addActionMessage(getText("ab.identity_type.saved"));
+
 		return REDIRECT_SUCCESS;
 	}
 

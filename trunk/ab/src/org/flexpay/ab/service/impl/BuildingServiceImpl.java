@@ -513,7 +513,7 @@ public class BuildingServiceImpl implements BuildingService, ParentService<Build
 
 		List<BuildingAddress> names = parentFilter.getBuildingses();
 		if (names.isEmpty()) {
-			throw new FlexPayException("No buildings", "ab.no_buildings");
+			throw new FlexPayException("No buildings", "ab.error.building.no_buildings");
 		}
 		if (!isFilterValid(parentFilter)) {
 			BuildingAddress firstObject = names.iterator().next();
@@ -604,7 +604,7 @@ public class BuildingServiceImpl implements BuildingService, ParentService<Build
 
 		List<BuildingAddress> names = buildingFilter.getBuildingses();
 		if (names.isEmpty()) {
-			throw new FlexPayException("No buildings", "ab.no_buildings");
+			throw new FlexPayException("No buildings", "ab.error.building.no_buildings");
 		}
 		if (buildingFilter.getSelectedId() == null || !isFilterValid(buildingFilter)) {
 			BuildingAddress firstObject = names.iterator().next();

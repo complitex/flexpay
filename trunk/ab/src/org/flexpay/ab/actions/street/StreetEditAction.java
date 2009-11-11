@@ -44,6 +44,8 @@ public class StreetEditAction extends FPActionSupport {
 			}
 			updateStreet();
 
+			addActionMessage(getText("ab.street.saved"));
+
 			return REDIRECT_SUCCESS;
 		}
 

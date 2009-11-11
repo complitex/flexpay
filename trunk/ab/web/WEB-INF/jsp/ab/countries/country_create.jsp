@@ -5,7 +5,7 @@
 <s:form action="countryCreate" method="POST">
     <table cellpadding="3" cellspacing="1" border="0" width="100%">
         <tr valign="top" class="cols_1">
-            <td class="col"><s:text name="ab.country_name" /></td>
+            <td class="col"><s:text name="ab.country.name" /></td>
             <td class="col">
                 <s:iterator value="names">
                     <s:set name="l" value="%{getLang(key)}" />
@@ -14,7 +14,7 @@
             </td>
         </tr>
         <tr valign="top" class="cols_1">
-            <td class="col"><s:text name="ab.country_shortname" /></td>
+            <td class="col"><s:text name="ab.country.short_name" /></td>
             <td class="col">
                 <s:iterator value="shortNames">
                     <s:set name="l" value="%{getLang(key)}" />

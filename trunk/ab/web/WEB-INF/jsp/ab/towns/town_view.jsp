@@ -3,8 +3,8 @@
 <table cellpadding="3" cellspacing="1" border="0" width="100%">
 	<tr>
 		<td class="th" width="1%">&nbsp;</td>
-		<td class="th"><s:text name="ab.from" /></td>
-		<td class="th"><s:text name="ab.till" /></td>
+		<td class="th"><s:text name="common.from" /></td>
+		<td class="th"><s:text name="common.till" /></td>
 		<td class="th"><s:text name="common.language" /></td>
 		<td class="th"><s:text name="ab.town" /></td>
 	</tr>
@@ -39,8 +39,8 @@
 	</s:iterator>
 	<tr>
 		<td class="th">&nbsp;</td>
-		<td class="th"><s:text name="ab.from" /></td>
-		<td class="th"><s:text name="ab.till" /></td>
+		<td class="th"><s:text name="common.from" /></td>
+		<td class="th"><s:text name="common.till" /></td>
         <td class="th"><s:text name="common.language" /></td>
 		<td class="th"><s:text name="ab.town_type" /></td>
 	</tr>

@@ -33,6 +33,8 @@ public class ApartmentEditAction extends FPActionSupport {
 			}
 			updateApartment();
 
+			addActionMessage(getText("ab.apartment.saved"));
+
 			return REDIRECT_SUCCESS;
 		}
 

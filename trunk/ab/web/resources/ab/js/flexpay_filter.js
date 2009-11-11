@@ -115,12 +115,15 @@ function Filter(name, options) {
             return;
         }
 //        var sValue = !!li.extra ? li.extra : li.selectValue;
-        $("#" + options.valueId).val(li.extra);
+        var filter = FF.filters[options.name];
+        filter.value.val(li.extra);
         if (li.extra) {
-            $("#" + options.filterId).val(li.selectValue);
+            $.post(filter.action, {filterValue:li.extra,saveFilterValue:true,preRequest:true},
+                    function(data) {
+                        filter.string.val(filter.formatPrerequestResponse(data)[0]);
+                        FF.onChange(options.name);
+                    });
         }
-        FF.onChange(options.name);
-        saveValues(options.name);
     }
 
     function formatItem(row) {
@@ -130,7 +133,7 @@ function Filter(name, options) {
         return row[0].substr(0, i) + "<strong>" + row[0].substr(i, value.length) + "</strong>" + row[0].substr(i + value.length);
     }
 
-    function selectItem(event, data, formatted) {
+    function selectItem(event, data) {
         var li = {
             extra:data[1],
             selectValue:data[0]
@@ -156,12 +159,11 @@ function Filter(name, options) {
 
     }
 
-    function saveValues(name) {
-        var filter = FF.filters[name];
-        $.post(filter.action, {filterValue:filter.value.val(),saveFilterValue:true});
-    }
-
     create(this);
+
+    this.formatPrerequestResponse = function(data) {
+        return data == null || !data ? null : data.split("|");
+    };
 
     this.formatItem = function(row) {
         return formatItem(row);
@@ -270,10 +272,7 @@ var FF = {
             }
             $.post(filter.action, {filterValue:value.val(), preRequest:true},
                 function(data) {
-                    if (data == null || !data) {
-                        return null;
-                    }
-                    var r = data.split("|");
+                    var r = filter.formatPrerequestResponse(data);
                     string.val(r[0]);
                     if (filter.justText) {
                         filter.text.text(r[0]);

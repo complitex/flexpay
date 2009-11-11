@@ -216,13 +216,12 @@ public class StreetServiceImpl extends NameTimeDependentServiceImpl<
 	 *
 	 * @param parentStub Town stub
 	 * @param query searching string
-	 * @param language language for search
 	 * @return List of found streets
 	 */
 	@NotNull
 	@Override
-	public List<Street> findByParentAndQuery(@NotNull Stub<Town> parentStub, @NotNull String query, @NotNull Language language) {
-		return streetDao.findByParentAndQuery(parentStub.getId(), query, language.getId());
+	public List<Street> findByParentAndQuery(@NotNull Stub<Town> parentStub, @NotNull String query) {
+		return streetDao.findByParentAndQuery(parentStub.getId(), query);
 	}
 
 	/**
@@ -330,7 +329,7 @@ public class StreetServiceImpl extends NameTimeDependentServiceImpl<
 
 		Collection<StreetNameTranslation> names = parentFilter.getNames();
 		if (names.isEmpty()) {
-			throw new FlexPayException("No street names", "ab.no_streets");
+			throw new FlexPayException("No street names", "ab.error.street.no_streets");
 		}
 		if (parentFilter.getSelectedId() == null || !isFilterValid(parentFilter)) {
 			StreetName firstObject = (StreetName) names.iterator().next().getTranslatable();

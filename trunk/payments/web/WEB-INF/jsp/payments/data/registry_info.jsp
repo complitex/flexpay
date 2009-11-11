@@ -19,8 +19,8 @@
 	</tr>
 	<tr class="cols_1">
 		<td class="col">
-            <strong><s:text name="ab.from" />:</strong> <s:date name="registry.fromDate" format="yyyy/MM/dd" />
-			<strong><s:text name="ab.till" />:</strong> <s:date name="registry.tillDate" format="yyyy/MM/dd" />
+            <strong><s:text name="common.from" />:</strong> <s:date name="registry.fromDate" format="yyyy/MM/dd" />
+			<strong><s:text name="common.till" />:</strong> <s:date name="registry.tillDate" format="yyyy/MM/dd" />
         </td>
 		<td class="col">
             <strong><s:text name="eirc.records_number" />:</strong> <s:property value="%{registry.recordsNumber}" />

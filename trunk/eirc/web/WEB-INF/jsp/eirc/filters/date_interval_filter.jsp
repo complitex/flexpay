@@ -7,8 +7,8 @@
     FP.calendars("dateIntervalEnd", true);
 </script>
 
-<s:text name="ab.from"/>
+<s:text name="common.from"/>
 <input type="text" name="fromDate" id="dateIntervalBegin" value="<s:property value="fromDate"/>" readonly="readonly" />
 &nbsp;&nbsp;
-<s:text name="ab.till"/>
+<s:text name="common.till"/>
 <input type="text" name="tillDate" id="dateIntervalEnd" value="<s:property value="tillDate" />" readonly="readonly" />

@@ -20,7 +20,7 @@
         </td>
         <td class="th"><s:text name="eirc.payment_point.name" /></td>
         <td class="th"><s:text name="eirc.payment_collector" /></td>
-        <td class="th"><s:text name="ab.address" /></td>
+        <td class="th"><s:text name="orgs.address" /></td>
         <td class="th">&nbsp;</td>
     </tr>
     <s:iterator value="points" status="status">

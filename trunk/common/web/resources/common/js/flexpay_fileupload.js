@@ -21,73 +21,83 @@ function FPFileUploadForm(formId, options) {
 
     this.options = options;
 
-    responseId = options.responseId;
-    uploadFormId = options.uploadFormId;
-    uploadFrameId = options.uploadFrameId;
-    successResponse = options.successResponse;
-    errorResponse = options.errorResponse;
+    this.responseId = options.responseId;
+    this.uploadFormId = options.uploadFormId;
+    this.uploadFrameId = options.uploadFrameId;
+    this.successResponse = options.successResponse;
+    this.errorResponse = options.errorResponse;
 
-    mainBlock = $("#" + options.mainBlockId);
+    this.mainBlock = $("#" + options.mainBlockId);
 
-    file = null;
+    this.stack = new Array();
+    this.unsuccess = 0;
+    this.success = 0;
+    this.total = 0;
+    this.uploaded = true;
+    this.uploadingId = -1;
+    this.started = false;
+    this.wait = false;
+    this.uploadingFilename = "";
+    this.curRetry = 0;
 
-    stack = new Array();
-    unsuccess = 0;
-    success = 0;
-    total = 0;
-    uploaded = true;
-    uploadingId = -1;
-    started = false;
-    wait = false;
-    uploadingFilename = "";
-    curRetry = 0;
+    this.uploadForms = [];
+    this.responses = [];
+    this.uploadFrames = [];
 
-    uploadForms = [];
-    responses = [];
-    uploadFrames = [];
+    var test = "";
+    var test1 = null;
 
-    fileId = "";
-
-    $('input[type="file"]').each(function(i, el) {
-        if (el.form.id == options.formId && fileId == "") {
-            el.setAttribute("onchange", "FPFile.fileForms[\"" + formId + "\"].setFile(this);")
-            fileId = el.name;
-            file = $(this);
+    $('input[type="file"]').each(function() {
+        if (this.form.id == options.formId && test == "") {
+            if ($.browser.msie) {
+                this.onchange = function() {
+                    FPFile.fileForms[options.formId].setFile(this);
+                };
+            } else {
+                this.setAttribute("onchange", "FPFile.fileForms[\"" + options.formId + "\"].setFile(this);");
+            }
+            test = this.name;
+            test1 = $(this);
         }
     });
 
-    function setFile(obj) {
-        file = $(obj);
+    this.file = test1;
+    this.fileId = test;
+
+    function setFile(form, obj) {
+        form.file = $(obj);
     }
 
-    function addNewBlock(index) {
+    function addNewBlock(form) {
 
-        uploadForms[index] = $('<form id="' + uploadFormId + index + '" action="' + options.action + '"'
-                         + 'method="post" enctype="multipart/form-data" target="' + uploadFrameId + index + '"></form>').css({display : "none"});
+        var index = form.total;
+
+        form.uploadForms[index] = $('<form id="' + form.uploadFormId + index + '" action="' + options.action + '"'
+                         + 'method="post" enctype="multipart/form-data" target="' + form.uploadFrameId + index + '"></form>').css({display : "none"});
 
         $(":input:not(:button):not(:reset):not(:image):not(:file):not(:submit):not(:disabled)").each(function(i, el) {
             if (el.form.id == options.formId) {
-                uploadForms[index].append($('<input type="hidden" name="' + el.name + '" />').val(el.value));
+                form.uploadForms[index].append($('<input type="hidden" name="' + el.name + '" />').val(el.value));
             }
         });
-        var fileBlock = file.parent();
-        uploadForms[index].append(file);
+        var fileBlock = form.file.parent();
+        form.uploadForms[index].append(form.file);
 
-        var fileNew = file.clone();
+        var fileNew = form.file.clone();
         fileBlock.append(fileNew);
-        file.attr("id", fileId + index);
-        file = fileNew;
+        form.file.attr("id", form.fileId + index);
+        form.file = fileNew;
 
-        responses[index] = $('<div id="' + responseId + index + '"></div>').css({color : "#ff0000"});
-        uploadFrames[index] = $('<iframe id="' + uploadFrameId + index + '" name="' + uploadFrameId + index + '"></iframe>').css({display: "none"})
+        form.responses[index] = $('<div id="' + form.responseId + index + '"></div>').css({color : "#ff0000"});
+        form.uploadFrames[index] = $('<iframe id="' + form.uploadFrameId + index + '" name="' + form.uploadFrameId + index + '"></iframe>').css({display: "none"})
 
-        mainBlock.append(uploadForms[index]).append(responses[index]).append(uploadFrames[index]);
+        form.mainBlock.append(form.uploadForms[index]).append(form.responses[index]).append(form.uploadFrames[index]);
 
     }
 
     this.setFile = function(obj) {
-        return setFile(obj);
-    }
+        return setFile(this, obj);
+    };
 
     this.submitForm = function() {
 
@@ -95,49 +105,51 @@ function FPFileUploadForm(formId, options) {
             return false;
         }
 
-        stack.push(total);
-        addNewBlock(total);
-        eraseForm();
+        this.stack.push(this.total);
+        addNewBlock(this);
+        eraseForm(this);
 
-        if (!uploaded || (uploaded && wait)) {
-            var fileValue = $("#" + fileId + total).val();
+        if (!this.uploaded || (this.uploaded && this.wait)) {
+            var fileValue = $("#" + this.fileId + this.total).val();
             var index = fileValue.lastIndexOf("\\") + ($.browser.msie ? 1 : 0);
-            $("#" + responseId + total).text(FP.formatI18nMessage(FPFile.constants.statusWaiting, [fileValue.substring(index)]));
+            $("#" + this.responseId + this.total).text(FP.formatI18nMessage(FPFile.constants.statusWaiting, [fileValue.substring(index)]));
         }
-        total++;
+        this.total++;
 
-        f();
+        f(this);
 
-    }
+    };
 
-    function eraseForm() {
-        file.val("");
+    function eraseForm(form) {
+        form.file.val("");
     }
 
     function upload() {
-        if (uploaded && !wait) {
-            uploaded = false;
-            uploadingId = stack[0];
-            var fileValue = $("#" + fileId + uploadingId).val();
+        var form = FPFile.fileForms[options.formId];
+        if (form.uploaded && !form.wait) {
+            form.uploaded = false;
+            form.uploadingId = form.stack[0];
+            var fileValue = $("#" + form.fileId + form.uploadingId).val();
             var index = fileValue.lastIndexOf("\\") + ($.browser.msie ? 1 : 0);
-            uploadingFilename = fileValue.substring(index);
-            Array.remove(stack, 0);
-            $("#" + uploadFormId + uploadingId).submit();
+            form.uploadingFilename = fileValue.substring(index);
+            Array.remove(form.stack, 0);
+            $("#" + form.uploadFormId + form.uploadingId).submit();
             setTimeout(getProgress, 1000);
         }
     }
 
     function getProgress() {
+        var form = FPFile.fileForms[options.formId];
         $.post(FPFile.constants.progressBarUrl, {},
                 function (data, textStatus) {
-                    if (textStatus == successResponse && data != null && data != "") {
-                        var ajaxResponse = $("#" + responseId + uploadingId).
-                                text(FP.formatI18nMessage(FPFile.constants.statusUploading, [uploadingFilename, data]));
+                    if (textStatus == form.successResponse && data != null && data != "") {
+                        var ajaxResponse = $("#" + form.responseId + form.uploadingId).
+                                text(FP.formatI18nMessage(FPFile.constants.statusUploading, [form.uploadingFilename, data]));
                         if (data == "100") {
-                            uploaded = true;
-                            wait = true;
-                            ajaxResponse.text(FP.formatI18nMessage(FPFile.constants.statusProcessing, [uploadingFilename]));
-                            curRetry = 0;
+                            form.uploaded = true;
+                            form.wait = true;
+                            ajaxResponse.text(FP.formatI18nMessage(FPFile.constants.statusProcessing, [form.uploadingFilename]));
+                            form.curRetry = 0;
                             setTimeout(uploadWait, 100);;
                             return true;
                         }
@@ -148,59 +160,62 @@ function FPFileUploadForm(formId, options) {
     }
 
     function waitFunction() {
-        if (!wait) {
+        var form = FPFile.fileForms[options.formId];
+        if (!form.wait) {
             return;
         }
-        curRetry++;
-        var frame = window.frames[uploadFrameId + uploadingId];
+        form.curRetry++;
+        var frame = window.frames[form.uploadFrameId + form.uploadingId];
         if (frame != null) {
             var bodyFrame = frame.document.body;
-            var ajaxResponse = $("#" + responseId + uploadingId);
-            if (curRetry <= options.retries) {
+            var ajaxResponse = $("#" + form.responseId + form.uploadingId);
+            if (form.curRetry <= options.retries) {
                 if (bodyFrame != null && bodyFrame.innerHTML != null && bodyFrame.innerHTML != "") {
-                    if (bodyFrame.innerHTML == successResponse) {
-                        ajaxResponse.css({color: "#008000"}).text(FP.formatI18nMessage(FPFile.constants.statusUploaded, [uploadingFilename]));
-                        success++;
-                        wait = false;
+                    if (bodyFrame.innerHTML == form.successResponse) {
+                        ajaxResponse.css({color: "#008000"}).text(FP.formatI18nMessage(FPFile.constants.statusUploaded, [form.uploadingFilename]));
+                        form.success++;
+                        form.wait = false;
                     } else {
-                        ajaxResponse.text(FP.formatI18nMessage(FPFile.constants.statusError, [uploadingFilename]));
-                        wait = false;
-                        unsuccess++;
+                        ajaxResponse.text(FP.formatI18nMessage(FPFile.constants.statusError, [form.uploadingFilename]));
+                        form.wait = false;
+                        form.unsuccess++;
                     }
                 }
             }
         }
-        if (stack.length == 0 && !wait) {
-            started = false;
+        if (form.stack.length == 0 && !form.wait) {
+            form.started = false;
             window.onbeforeunload = "";
         }
         uploadWait();
     }
 
     function uploadWait() {
-        if (stack.length > 0) {
-            if (wait) {
+        var form = FPFile.fileForms[options.formId];
+        if (form.stack.length > 0) {
+            if (form.wait) {
                 setTimeout(waitFunction, 1500);
             } else {
                 upload();
             }
         } else {
-            if (wait) {
+            if (form.wait) {
                 setTimeout(waitFunction, 1500);
             }
         }
     }
 
-    function f() {
-        if (!started) {
-            started = true;
-            window.onbeforeunload = closeIt;
+    function f(form) {
+        if (!form.started) {
+            form.started = true;
+            window.onbeforeunload = closeIt(form);
             upload();
         }
     }
 
     function closeIt() {
-        return FP.formatI18nMessage(FPFile.constants.confirmExit, [success, unsuccess, total - success - unsuccess - 1]);
+        var form = FPFile.fileForms[options.formId];
+        return FP.formatI18nMessage(FPFile.constants.confirmExit, [form.success, form.unsuccess, form.total - form.success - form.unsuccess - 1]);
     }
 
 }
@@ -221,7 +236,13 @@ var FPFile = {
 
     createFileUploadForm : function(formId, submitId, options) {
         this.fileForms[formId] = new FPFileUploadForm(formId, options);
-        $("#" + submitId).attr("onclick", "FPFile.fileForms[\"" + formId + "\"].submitForm();");
+        if ($.browser.msie) {
+            $("#" + submitId).get(0).onclick = function() {
+                FPFile.fileForms[formId].submitForm();
+            };
+        } else {
+            $("#" + submitId).attr("onclick", "FPFile.fileForms[\"" + formId + "\"].submitForm();");
+        }
     }
 
 };

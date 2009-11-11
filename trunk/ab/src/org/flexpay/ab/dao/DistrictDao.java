@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface DistrictDao extends NameTimeDependentDao<District, Long> {
 
-	List<District> findByParentAndQuery(Long townId, String query, Long languageId);
+	List<District> findByParentAndQuery(Long townId, String query);
 
 	List<District> findByNameAndLanguage(String name, Long languageId);
 

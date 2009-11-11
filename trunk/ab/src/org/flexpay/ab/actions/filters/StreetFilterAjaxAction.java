@@ -35,7 +35,7 @@ public class StreetFilterAjaxAction extends FilterAjaxAction {
 			return SUCCESS;
 		}
 
-		List<Street> streets = streetService.findByParentAndQuery(new Stub<Town>(townId), "%" + q + "%", getLanguage());
+		List<Street> streets = streetService.findByParentAndQuery(new Stub<Town>(townId), "%" + q + "%");
 		if (log.isDebugEnabled()) {
 			log.debug("Found streets: {}", streets.size());
 		}
