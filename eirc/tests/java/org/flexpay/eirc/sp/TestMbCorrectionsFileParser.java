@@ -40,4 +40,15 @@ public class TestMbCorrectionsFileParser extends TestSpFileCreateAction {
 		registryProcessor.registriesProcess(registries);
 	}
 
+    @Test
+	public void testParseZipFile() throws Throwable {
+
+		FPFile newFile = createSpFile("org/flexpay/eirc/sp/20090605m_10.ls.zip");
+
+		List<Registry> registries = parser.parse(newFile);
+		assertNotNull("Registry parse failed", registries);
+
+		registryProcessor.registriesProcess(registries);
+	}
+
 }
