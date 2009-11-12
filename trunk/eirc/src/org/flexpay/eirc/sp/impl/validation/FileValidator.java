@@ -54,7 +54,7 @@ public class FileValidator extends MessageValidator<FPFile> {
 		try {
 			//noinspection IOResourceOpenedButNotSafelyClosed
 			reader = new BufferedReader(new InputStreamReader(
-					spFile.getInputStream(), MbParsingConstants.REGISTRY_FILE_ENCODING));
+					spFile.toFileSource().openStream(), MbParsingConstants.REGISTRY_FILE_ENCODING));
 
 			for (int lineNum = 0; ; lineNum++) {
 				String line = reader.readLine();
