@@ -36,7 +36,7 @@ public class ApartmentRegistrationAction extends FPActionSupport {
 
 		apartment = apartmentService.readWithPersons(stub(apartment));
 		if (apartment == null) {
-			addActionError(getText("ab.error.apartment_not_found"));
+			addActionError(getText("ab.error.apartment.not_found"));
 			return SUCCESS;
 		}
 		if (apartment.isNew()) {

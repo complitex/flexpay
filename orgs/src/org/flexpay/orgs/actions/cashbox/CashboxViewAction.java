@@ -18,8 +18,8 @@ public class CashboxViewAction extends FPActionSupport {
 	protected String doExecute() throws Exception {
 
 		if (cashbox.isNew()) {
-			log.error(getText("error.invalid_id"));
-			addActionError(getText("error.invalid_id"));
+			log.error(getText("common.error.invalid_id"));
+			addActionError(getText("common.error.invalid_id"));
 			return REDIRECT_ERROR;
 		}
 		cashbox = cashboxService.read(stub(cashbox));

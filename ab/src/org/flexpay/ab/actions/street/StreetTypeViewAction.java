@@ -18,7 +18,7 @@ public class StreetTypeViewAction extends FPActionSupport {
 	public String doExecute() throws Exception {
 
 		if (streetType.isNew()) {
-			log.error(getText("error.invalid_id"));
+			log.error(getText("common.error.invalid_id"));
 			return REDIRECT_ERROR;
 		}
 

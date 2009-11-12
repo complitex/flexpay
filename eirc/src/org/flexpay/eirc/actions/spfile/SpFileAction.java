@@ -41,7 +41,7 @@ public class SpFileAction extends FPActionSupport {
 	public String doExecute() throws Exception {
 
 		if (spFile.isNew()) {
-			addActionError(getText("error.no_id"));
+			addActionError(getText("common.error.invalid_id"));
 			return REDIRECT_ERROR;
 		}
 

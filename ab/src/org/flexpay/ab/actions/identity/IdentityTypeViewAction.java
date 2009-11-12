@@ -18,7 +18,7 @@ public class IdentityTypeViewAction extends FPActionSupport {
     public String doExecute() throws Exception {
 
 		if (identityType.isNew()) {
-			log.error(getText("error.invalid_id"));
+			log.error(getText("common.error.invalid_id"));
 			return REDIRECT_ERROR;
 		}
 

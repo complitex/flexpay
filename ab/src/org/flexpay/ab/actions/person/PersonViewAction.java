@@ -22,13 +22,13 @@ public class PersonViewAction extends FPActionSupport {
 	public String doExecute() throws Exception {
 
         if (person.isNew()) {
-			addActionError(getText("error.no_id"));
+			addActionError(getText("common.error.invalid_id"));
 			return SUCCESS;
 		}
 
 		person = personService.readFull(stub(person));
 		if (person == null) {
-			addActionError(getText("error.invalid_id"));
+			addActionError(getText("common.error.invalid_id"));
 		}
 
 		return SUCCESS;

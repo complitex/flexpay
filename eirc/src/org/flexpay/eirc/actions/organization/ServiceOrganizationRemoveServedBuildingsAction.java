@@ -22,13 +22,13 @@ public class ServiceOrganizationRemoveServedBuildingsAction extends FPActionSupp
 	public String doExecute() throws Exception {
 
 		if (serviceOrganization.getId() == null) {
-			addActionError(getText("error.no_id"));
+			addActionError(getText("common.error.invalid_id"));
 			return REDIRECT_SUCCESS;
 		}
 
 		serviceOrganization = serviceOrganizationService.read(stub(serviceOrganization));
 		if (serviceOrganization == null) {
-			addActionError(getText("error.invalid_id"));
+			addActionError(getText("common.error.invalid_id"));
 			return REDIRECT_SUCCESS;
 		}
 

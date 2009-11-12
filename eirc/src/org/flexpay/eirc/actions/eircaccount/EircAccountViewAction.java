@@ -21,7 +21,7 @@ public class EircAccountViewAction extends FPActionSupport {
 	public String doExecute() {
 		
 		if (eircAccount.isNew()) {
-			addActionError(getText("error.invalid_id"));
+			addActionError(getText("common.error.invalid_id"));
 			return REDIRECT_ERROR;
 		}
 

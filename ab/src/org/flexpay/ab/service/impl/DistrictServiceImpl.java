@@ -142,7 +142,7 @@ public class DistrictServiceImpl extends NameTimeDependentServiceImpl<
 		FlexPayExceptionContainer container = new FlexPayExceptionContainer();
 
 		if (district.getParent() == null) {
-			container.addException(new FlexPayException("No town", "error.ab.district.no_town"));
+			container.addException(new FlexPayException("No town", "ab.error.district.no_town"));
 		}
 
 		DistrictNameTemporal nameTmprl = district.getCurrentNameTemporal();

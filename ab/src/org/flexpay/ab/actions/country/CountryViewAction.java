@@ -18,7 +18,7 @@ public class CountryViewAction extends FPActionSupport {
 	public String doExecute() throws Exception {
 
 		if (country.isNew()) {
-			addActionError(getText("error.invalid_id"));
+			addActionError(getText("common.error.invalid_id"));
 			return REDIRECT_ERROR;
 		}
 

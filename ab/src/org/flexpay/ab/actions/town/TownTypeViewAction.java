@@ -18,8 +18,8 @@ public class TownTypeViewAction extends FPActionSupport {
 	public String doExecute() throws Exception {
 
 		if (townType.isNew()) {
-			log.error(getText("error.invalid_id"));
-			addActionError(getText("error.invalid_id"));
+			log.error(getText("common.error.invalid_id"));
+			addActionError(getText("common.error.invalid_id"));
 			return REDIRECT_ERROR;
 		}
 		townType = townTypeService.readFull(stub(townType));

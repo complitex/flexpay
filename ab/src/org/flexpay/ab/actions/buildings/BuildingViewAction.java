@@ -19,13 +19,13 @@ public class BuildingViewAction extends FPActionSupport {
 	public String doExecute() throws FlexPayException {
 
 		if (building.isNew()) {
-			addActionError(getText("error.no_id"));
+			addActionError(getText("common.error.invalid_id"));
 			return REDIRECT_SUCCESS;
 		}
 
 		building = buildingService.readFull(stub(building));
 		if (building == null) {
-			addActionError(getText("error.invalid_id"));
+			addActionError(getText("common.error.invalid_id"));
 			return REDIRECT_SUCCESS;
 		}
 

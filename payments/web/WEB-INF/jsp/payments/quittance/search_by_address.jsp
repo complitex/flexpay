@@ -28,22 +28,22 @@
 	function validateAdress() {
 		//validate town
 		if (FF.filters["town"].value.val().length == 0) {
-			alert("<s:text name="error.town_is_not_selected" />");
+			alert("<s:text name="payments.error.town_is_not_selected" />");
 			return false;
 		}
 		//validate street
 		if (FF.filters["street"].value.val().length == 0) {
-			alert("<s:text name="error.street_is_not_selected" />");
+			alert("<s:text name="payments.error.street_is_not_selected" />");
 			return false;
 		}
 		//validate house
 		if (FF.filters["building"].value.val().length == 0) {
-			alert("<s:text name="error.building_is_not_selected" />");
+			alert("<s:text name="payments.error.building_is_not_selected" />");
 			return false;
 		}
 		//validate apartment
 		if (FF.filters["apartment"].value.val().length == 0) {
-			alert("<s:text name="error.apartment_is_not_selected" />");
+			alert("<s:text name="payments.error.apartment_is_not_selected" />");
 			return false;
 		}
 		return true;

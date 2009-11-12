@@ -181,11 +181,11 @@ public class BuildingServiceImpl implements BuildingService, ParentService<Build
 		FlexPayExceptionContainer container = new FlexPayExceptionContainer();
 
 		if (building.getBuildingses().isEmpty()) {
-			container.addException(new FlexPayException("No address", "error.ab.buildings.no_number"));
+			container.addException(new FlexPayException("No address", "ab.error.building.no_number"));
 		}
 
 		if (building.getDistrict() == null) {
-			container.addException(new FlexPayException("No district", "error.ab.building.no_district"));
+			container.addException(new FlexPayException("No district", "ab.error.building.no_district"));
 		}
 
 		if (building.isNotNew()) {
@@ -201,7 +201,7 @@ public class BuildingServiceImpl implements BuildingService, ParentService<Build
 			Set<Stub<Street>> streetStubs = set();
 			for (BuildingAddress address : building.getBuildingses()) {
 				if (streetStubs.contains(address.getStreetStub())) {
-					container.addException(new FlexPayException("Two street address", "error.ab.building.street_address_duplicate"));
+					container.addException(new FlexPayException("Two street address", "ab.error.building.street_address_duplicate"));
 					break;
 				}
 				streetStubs.add(address.getStreetStub());
@@ -225,7 +225,7 @@ public class BuildingServiceImpl implements BuildingService, ParentService<Build
 					// do nothing
 				}
 
-				container.addException(new FlexPayException("Address already exists", "error.ab.address_alredy_exist", addressStr));
+				container.addException(new FlexPayException("Address already exists", "ab.error.building.address_already_exists", addressStr));
 			}
 		}
 
@@ -427,7 +427,7 @@ public class BuildingServiceImpl implements BuildingService, ParentService<Build
 			}
 		}
 
-		throw new FlexPayException("No number attribute", "error.ab.buildings.no_number");
+		throw new FlexPayException("No number attribute", "ab.error.building.no_number");
 	}
 
 	@NotNull

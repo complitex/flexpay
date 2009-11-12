@@ -38,8 +38,8 @@ public class BuildingAddressEditAction extends FPActionSupport {
 	@Override
 	public String doExecute() throws Exception {
 
-		if (building.getId() == null) {
-			addActionError(getText("error.no_id"));
+		if (building.isNew()) {
+			addActionError(getText("common.error.invalid_id"));
 			return REDIRECT_ERROR;
 		}
 
@@ -89,13 +89,13 @@ public class BuildingAddressEditAction extends FPActionSupport {
 
 		Long buildingNumberAttributeId = ApplicationConfig.getBuildingAttributeTypeNumber().getId();
 		if (StringUtils.isEmpty(attributesMap.get(buildingNumberAttributeId))) {
-			addActionError(getText("ab.error.building_address.create.building_number_required"));
+			addActionError(getText("ab.error.building_address.building_number_required"));
 			valid = false;
 		}
 
 		if (streetFilter == null || streetFilter <= 0) {
 			log.warn("Incorrect street id in filter ({})", streetFilter);
-			addActionError(getText("ab.error.building_address.create.street_required"));
+			addActionError(getText("ab.error.building_address.street_required"));
 			valid = false;
 		}
 

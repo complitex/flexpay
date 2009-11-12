@@ -26,7 +26,7 @@ public class PersonSaveRegistrationAction extends FPActionSupport {
 	public String doExecute() throws Exception {
 
 		if (apartmentFilter == null || apartmentFilter <= 0) {
-			addActionError(getText("error.invalid_id"));
+			addActionError(getText("common.error.invalid_id"));
 			return SUCCESS;
 		}
 

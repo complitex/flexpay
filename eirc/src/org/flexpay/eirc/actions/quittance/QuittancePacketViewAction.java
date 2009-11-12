@@ -35,13 +35,13 @@ public class QuittancePacketViewAction extends FPActionWithPagerSupport<Quittanc
 	protected String doExecute() throws Exception {
 
 		if (packet.isNew()) {
-			addActionError(getText("error.no_id"));
+			addActionError(getText("common.error.invalid_id"));
 			return REDIRECT_ERROR;
 		}
 
 		packet = quittancePacketService.read(stub(packet));
 		if (packet == null) {
-			addActionError(getText("error.invalid_id"));
+			addActionError(getText("common.error.invalid_id"));
 			return REDIRECT_ERROR;
 		}
 

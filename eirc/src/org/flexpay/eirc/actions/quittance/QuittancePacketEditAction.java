@@ -47,13 +47,13 @@ public class QuittancePacketEditAction extends FPActionSupport {
 	protected String doExecute() throws Exception {
 
 		if (packet.getId() == null) {
-			addActionError(getText("error.no_id"));
+			addActionError(getText("common.error.invalid_id"));
 			return REDIRECT_SUCCESS;
 		}
 
 		QuittancePacket pckt = packet.isNew() ? packet : quittancePacketService.read(stub(packet));
 		if (pckt == null) {
-			addActionError(getText("error.invalid_id"));
+			addActionError(getText("common.error.invalid_id"));
 			return REDIRECT_SUCCESS;
 		}
 

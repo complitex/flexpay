@@ -51,7 +51,7 @@ public class PaymentOperationReportAction extends PaymentOperationAction {
 		PaymentPrintForm form;
 
 		if (operationId == null) {
-			addActionError(getText("error.no_id"));
+			addActionError(getText("common.error.invalid_id"));
 			return SUCCESS;
 		}
 
@@ -62,7 +62,7 @@ public class PaymentOperationReportAction extends PaymentOperationAction {
 		form = paymentsReporter.getPaymentPrintFormData(op);
 
 		if (form == null) {
-			addActionError(getText("error.no_id"));
+			addActionError(getText("common.error.invalid_id"));
 			return SUCCESS;
 		}
 
