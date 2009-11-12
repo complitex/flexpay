@@ -1,11 +1,14 @@
 package org.flexpay.ab.service;
 
 import org.apache.commons.collections.ArrayStack;
-import org.flexpay.ab.persistence.filters.CountryFilter;
-import org.flexpay.ab.persistence.filters.RegionFilter;
+import org.flexpay.ab.persistence.Country;
+import org.flexpay.ab.persistence.Region;
+import org.flexpay.ab.persistence.sorter.CountrySorter;
+import org.flexpay.ab.persistence.sorter.RegionSorter;
 import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
+import org.flexpay.common.dao.paging.Page;
+import org.flexpay.common.persistence.sorter.ObjectSorter;
 import org.flexpay.common.util.CollectionUtils;
-import org.flexpay.common.util.config.ApplicationConfig;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -17,6 +20,8 @@ import org.springframework.security.GrantedAuthorityImpl;
 import org.springframework.security.context.SecurityContextHolder;
 import org.springframework.security.providers.anonymous.AnonymousAuthenticationToken;
 import org.springframework.security.userdetails.User;
+
+import java.util.List;
 
 public class TestSecurity extends AbSpringBeanAwareTestCase {
 
@@ -48,7 +53,10 @@ public class TestSecurity extends AbSpringBeanAwareTestCase {
 		Authentication auth = new AnonymousAuthenticationToken("key", user, BASIC_AUTHORITIES);
 		SecurityContextHolder.getContext().setAuthentication(auth);
 
-		countryService.getCountries(ApplicationConfig.getDefaultLocale());
+        ArrayStack filters = CollectionUtils.arrayStack();
+		List<ObjectSorter> sorters = CollectionUtils.list(new CountrySorter().activate());
+		Page<Country> pager = new Page<Country>();
+		countryService.find(filters, sorters, pager);
 	}
 
 	@Test
@@ -58,7 +66,10 @@ public class TestSecurity extends AbSpringBeanAwareTestCase {
 		Authentication auth = new AnonymousAuthenticationToken("key", user, COUNTRY_AUTHORITIES);
 		SecurityContextHolder.getContext().setAuthentication(auth);
 
-		countryService.getCountries(ApplicationConfig.getDefaultLocale());
+		ArrayStack filters = CollectionUtils.arrayStack();
+		List<ObjectSorter> sorters = CollectionUtils.list(new CountrySorter().activate());
+		Page<Country> pager = new Page<Country>();
+		countryService.find(filters, sorters, pager);
 	}
 
 	@Test (expected = AccessDeniedException.class)
@@ -68,9 +79,9 @@ public class TestSecurity extends AbSpringBeanAwareTestCase {
 		Authentication auth = new AnonymousAuthenticationToken("key", user, REGION_AUTHORITIES);
 		SecurityContextHolder.getContext().setAuthentication(auth);
 
-		ArrayStack filters = CollectionUtils.arrayStack(
-				new CountryFilter(),
-				new RegionFilter());
-		regionService.initFilters(filters, ApplicationConfig.getDefaultLocale());
+		ArrayStack filters = CollectionUtils.arrayStack();
+		List<ObjectSorter> sorters = CollectionUtils.list(new RegionSorter().activate());
+		Page<Region> pager = new Page<Region>();
+		regionService.find(filters, sorters, pager);
 	}
 }
