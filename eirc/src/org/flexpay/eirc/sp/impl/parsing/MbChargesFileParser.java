@@ -57,7 +57,7 @@ public class MbChargesFileParser extends MbFileParser {
 
 		try {
 			//noinspection IOResourceOpenedButNotSafelyClosed
-			reader = new BufferedReader(new InputStreamReader(spFile.getInputStream(), MbParsingConstants.REGISTRY_FILE_ENCODING));
+			reader = new BufferedReader(new InputStreamReader(spFile.toFileSource().openStream(), MbParsingConstants.REGISTRY_FILE_ENCODING));
 			registry.setCreationDate(new Date());
 			registry.getFiles().put(registryFPFileTypeService.findByCode(RegistryFPFileType.MB_FORMAT), spFile);
 			registry.setRegistryType(registryTypeService.findByCode(RegistryType.TYPE_QUITTANCE));

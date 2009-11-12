@@ -183,9 +183,9 @@ public class FPFile extends DomainObject implements DataSource {
 	 * Create source file from this file
 	 *
 	 * @return FileSource
-	 * @throws Exception if failure occurs
+	 * @throws IOException if failure occurs
 	 */
-	public FileSource toFileSource() throws Exception {
+	public FileSource toFileSource() throws IOException {
 		File file = getFileOnServer();
 		if (file == null) {
 			throw new FileNotFoundException("For FPFile(id=" + getId()

@@ -1,9 +1,6 @@
 package org.flexpay.common.util;
 
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
+import java.io.*;
 import java.util.Enumeration;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.ZipEntry;
@@ -19,7 +16,7 @@ public class FileSource {
 	private ZipFile zipFile = null;
 	private boolean isGzip = false;
 
-	public FileSource(File file, String type) throws Exception {
+	public FileSource(File file, String type) throws IOException {
 		if ("zip".equalsIgnoreCase(type)) {
 			zipFile = new ZipFile(file);
 		} else {
@@ -30,7 +27,7 @@ public class FileSource {
 		}
 	}
 
-	public InputStream openStream() throws Exception {
+	public InputStream openStream() throws IOException {
 		if (file != null) {
 			InputStream is = new BufferedInputStream(new FileInputStream(file));
 			if (isGzip) {
@@ -56,11 +53,11 @@ public class FileSource {
 		}
 	}
 
-	public void close() throws Exception {
+	public void close() throws IOException {
 		closeZipFile();
 	}
 
-	private void closeZipFile() throws Exception {
+	private void closeZipFile() throws IOException {
 		if (zipFile != null) {
 			zipFile.close();
 			zipFile = null;
