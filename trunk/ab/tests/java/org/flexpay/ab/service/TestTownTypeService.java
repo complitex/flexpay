@@ -1,6 +1,5 @@
 package org.flexpay.ab.service;
 
-import static junit.framework.Assert.*;
 import org.flexpay.ab.persistence.TownType;
 import org.flexpay.ab.persistence.TownTypeTranslation;
 import org.flexpay.ab.persistence.filters.TownTypeFilter;
@@ -11,13 +10,15 @@ import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Language;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.util.CollectionUtils;
-import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
 import java.util.List;
 import java.util.Locale;
+
+import static junit.framework.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class TestTownTypeService extends AbSpringBeanAwareTestCase {
     @Autowired
@@ -48,7 +49,7 @@ public class TestTownTypeService extends AbSpringBeanAwareTestCase {
     }
 
     @Test
-    public void testCreateAndDisable() throws Exception {
+    public void testCreateAndDisable2() throws Exception {
         TownType newType1 = townTypeUtil.create("town1", "t1");
         assertNotNull("Town type did not create", newType1);
         TownType newType2 = townTypeUtil.create("town2", "t2");
