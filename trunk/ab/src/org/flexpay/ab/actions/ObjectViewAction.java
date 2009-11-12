@@ -24,9 +24,8 @@ public abstract class ObjectViewAction<
 	@Override
 	public String doExecute() {
 
-		log.debug("Object: {}", object);
 		if (object.isNew()) {
-			addActionError(getText("error.no_id"));
+			addActionError(getText("common.error.invalid_id"));
 			return REDIRECT_ERROR;
 		}
 

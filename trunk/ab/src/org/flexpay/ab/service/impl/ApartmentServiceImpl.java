@@ -292,7 +292,7 @@ public class ApartmentServiceImpl implements ApartmentService, ParentService<Apa
 	public String getApartmentNumber(@NotNull Stub<Apartment> apartmentStub) throws FlexPayException {
 		Apartment apartment = apartmentDao.readFull(apartmentStub.getId());
 		if (apartment == null) {
-			throw new FlexPayException("Invalid id", "error.invalid_id");
+			throw new FlexPayException("Invalid id", "common.error.invalid_id");
 		}
 		return apartment.getNumber();
 	}
@@ -308,7 +308,7 @@ public class ApartmentServiceImpl implements ApartmentService, ParentService<Apa
 	public Building getBuilding(@NotNull Stub<Apartment> apartmentStub) throws FlexPayException {
 		Apartment apartment = apartmentDao.read(apartmentStub.getId());
 		if (apartment == null) {
-			throw new FlexPayException("Invalid id", "error.invalid_id");
+			throw new FlexPayException("Invalid id", "common.error.invalid_id");
 		}
 		return apartment.getBuilding();
 	}

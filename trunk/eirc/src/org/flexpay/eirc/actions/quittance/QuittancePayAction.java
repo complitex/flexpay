@@ -46,7 +46,7 @@ public class QuittancePayAction extends FPActionSupport {
 	protected String doExecute() throws Exception {
 
 		if (quittance.getId() == null && StringUtils.isBlank(quittanceNumber)) {
-			addActionError(getText("error.no_id"));
+			addActionError(getText("common.error.invalid_id"));
 			return doRedirect();
 		}
 

@@ -21,14 +21,14 @@ public class PersonEditPageAction extends FPActionSupport {
 
 		if (person.getId() == null) {
 			log.info("No person id specified");
-			addActionError(getText("error.ab.person.id_not_specified"));
+			addActionError(getText("ab.error.person.id_not_specified"));
 			return REDIRECT_ERROR;
 		}
 
 		if (person.isNotNew()) {
 			person = personService.readFull(stub(person));
 			if (person == null) {
-				addActionError(getText("error.ab.person.invalid_id"));
+				addActionError(getText("ab.error.person.invalid_id"));
 				return REDIRECT_ERROR;
 			}
 		}

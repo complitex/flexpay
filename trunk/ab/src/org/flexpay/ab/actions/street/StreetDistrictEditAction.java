@@ -30,13 +30,13 @@ public class StreetDistrictEditAction extends FPActionSupport {
 	public String doExecute() throws Exception {
 
 		if (street.getId() == null) {
-			addActionError(getText("error.no_id"));
+			addActionError(getText("common.error.invalid_id"));
 			return INPUT;
 		}
 
 		street = streetService.readFull(stub(street));
 		if (street == null) {
-			addActionError(getText("error.street_invalid_id"));
+			addActionError(getText("ab.error.street.invalid_street_id"));
 			return INPUT;
 		}
 		log.info("Street loaded: {}", street.getCurrentName());

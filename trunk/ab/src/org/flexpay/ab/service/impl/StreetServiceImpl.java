@@ -165,7 +165,7 @@ public class StreetServiceImpl extends NameTimeDependentServiceImpl<
 		FlexPayExceptionContainer container = new FlexPayExceptionContainer();
 
 		if (street.getParent() == null) {
-			container.addException(new FlexPayException("No town", "error.ab.district.no_town"));
+			container.addException(new FlexPayException("No town", "ab.error.district.no_town"));
 		}
 
 		StreetNameTemporal nameTmprl = street.getCurrentNameTemporal();
@@ -302,7 +302,7 @@ public class StreetServiceImpl extends NameTimeDependentServiceImpl<
 	public String format(@NotNull Stub<Street> streetStub, @NotNull Locale locale, boolean shortMode) throws FlexPayException {
 		Street street = streetDao.read(streetStub.getId());
 		if (street == null) {
-			throw new FlexPayException("Can't get street from DB", "error.invalid_id");
+			throw new FlexPayException("Can't get street from DB", "common.error.invalid_id");
 		}
 		return street.format(locale, shortMode);
 	}

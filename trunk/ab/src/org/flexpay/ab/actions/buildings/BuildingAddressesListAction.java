@@ -27,7 +27,7 @@ public class BuildingAddressesListAction extends FPActionSupport {
 	public String doExecute() throws Exception {
 
 		if (building.isNew()) {
-			addActionError(getText("error.no_id"));
+			addActionError(getText("common.error.invalid_id"));
 			return SUCCESS;
 		}
 

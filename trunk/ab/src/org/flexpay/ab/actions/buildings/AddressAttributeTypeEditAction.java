@@ -37,7 +37,7 @@ public class AddressAttributeTypeEditAction extends FPActionSupport {
 									attributeType :
 									addressAttributeTypeService.readFull(stub(attributeType));
 		if (type == null) {
-			addActionError(getText("error.invalid_id"));
+			addActionError(getText("common.error.invalid_id"));
 			return REDIRECT_SUCCESS;
 		}
 

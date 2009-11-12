@@ -57,7 +57,7 @@ public class DistrictEditAction extends FPActionSupport {
 
 		if (townFilter == null || townFilter <= 0) {
 			log.warn("Incorrect town id in filter ({})", townFilter);
-			addActionError(getText("error.ab.district.no_town"));
+			addActionError(getText("ab.error.district.no_town"));
 		}
 
 		if (!beginDateFilter.needFilter()) {

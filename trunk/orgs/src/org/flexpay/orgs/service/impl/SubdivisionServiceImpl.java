@@ -65,7 +65,7 @@ public class SubdivisionServiceImpl implements SubdivisionService {
 	public List<Subdivision> getOrganizationSubdivisions(@NotNull Stub<Organization> stub) throws FlexPayException {
 		Organization org = organizationService.readFull(stub);
 		if (org == null) {
-			throw new FlexPayException("Invalid id", "error.invalid_id");
+			throw new FlexPayException("Invalid id", "common.error.invalid_id");
 		}
 
 		return subdivisionDao.findSubdivisions(stub.getId(), stub.getId());
