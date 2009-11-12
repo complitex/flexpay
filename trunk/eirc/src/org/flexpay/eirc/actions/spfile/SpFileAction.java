@@ -9,6 +9,7 @@ import org.flexpay.common.service.FPFileService;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.eirc.process.registry.FileParserJob;
 import org.flexpay.eirc.sp.FileParser;
+import org.flexpay.eirc.sp.SpFileReader;
 import org.flexpay.eirc.sp.impl.LineParser;
 import org.flexpay.eirc.sp.impl.MbParsingConstants;
 import org.jetbrains.annotations.NonNls;
@@ -78,7 +79,7 @@ public class SpFileAction extends FPActionSupport {
 		BufferedReader reader = null;
 		try {
 			//noinspection IOResourceOpenedButNotSafelyClosed
-			reader = new BufferedReader(new InputStreamReader(file.getInputStream(), MbParsingConstants.REGISTRY_FILE_ENCODING));
+			reader = new BufferedReader(new InputStreamReader(file.toFileSource().openStream(), MbParsingConstants.REGISTRY_FILE_ENCODING));
 			String line = reader.readLine();
 
 			if (MbParsingConstants.FIRST_FILE_STRING.equals(line)) {
