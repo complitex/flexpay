@@ -29,7 +29,7 @@ public class StreetDistrictEditAction extends FPActionSupport {
 	@Override
 	public String doExecute() throws Exception {
 
-		if (street.getId() == null) {
+		if (street.isNew()) {
 			addActionError(getText("common.error.invalid_id"));
 			return INPUT;
 		}
@@ -39,7 +39,7 @@ public class StreetDistrictEditAction extends FPActionSupport {
 			addActionError(getText("ab.error.street.invalid_street_id"));
 			return INPUT;
 		}
-		log.info("Street loaded: {}", street.getCurrentName());
+		log.debug("Street loaded: {}", street.getCurrentName());
 
 		// save street districts
 		if (isSubmit()) {
@@ -52,7 +52,7 @@ public class StreetDistrictEditAction extends FPActionSupport {
 		}
 
 		districtNames = districtService.findNames(new TownFilter(street.getParent().getId()));
-        log.info("Found {}", districtNames);
+        log.debug("Found district names: {}, for town with id {}", districtNames, street.getParent().getId());
 
 		return INPUT;
 	}

@@ -1,11 +1,11 @@
 package net.sourceforge.navigator.menu;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
-import org.apache.commons.lang.StringUtils;
-import org.springframework.security.GrantedAuthorityImpl;
-import org.springframework.beans.factory.annotation.Required;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Required;
+import org.springframework.security.GrantedAuthorityImpl;
 
 import java.io.Serializable;
 import java.util.ArrayList;

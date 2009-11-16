@@ -36,10 +36,6 @@ public class RegionDeleteAction extends FPActionSupport {
 		return SUCCESS;
 	}
 
-	public Set<Long> getObjectIds() {
-		return objectIds;
-	}
-
 	public void setObjectIds(Set<Long> objectIds) {
 		this.objectIds = objectIds;
 	}

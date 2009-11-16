@@ -270,17 +270,18 @@ public class StreetServiceImpl extends NameTimeDependentServiceImpl<
 	 * @param street	Street to save districts for
 	 * @param districtIds List of district ids
 	 * @return saved street object
+	 * @throws FlexPayExceptionContainer if street validation fails
 	 */
 	@Transactional (readOnly = false)
 	@NotNull
 	@Override
-	public Street saveDistricts(@NotNull Street street, @NotNull Set<Long> districtIds) {
+	public Street saveDistricts(@NotNull Street street, @NotNull Set<Long> districtIds) throws FlexPayExceptionContainer {
 		Set<District> districts = set();
 		for (Long id : districtIds) {
 			districts.add(new District(id));
 		}
 		street.setDistricts(districts);
-		streetDao.update(street);
+		update(street);
 
 		return street;
 	}

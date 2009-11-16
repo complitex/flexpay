@@ -12,7 +12,7 @@
     </tr>
     <tr>
         <td class="th" width="1%">&nbsp;</td>
-        <td class="th"><s:text name="ab.buildings_attribute_type" /></td>
+        <td class="th"><s:text name="ab.buildings_attribute_type1" /></td>
         <td class="th">&nbsp;</td>
     </tr>
     <s:iterator value="types" status="status">

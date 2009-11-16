@@ -109,10 +109,11 @@ public interface StreetService extends NameTimeDependentService<StreetName, Stre
 	 * @param street	Street to save districts for
 	 * @param districtIds List of district ids
 	 * @return saved street object
+	 * @throws FlexPayExceptionContainer if street validation fails
 	 */
 	@Secured (Roles.STREET_CHANGE)
 	@NotNull
-	Street saveDistricts(@NotNull Street street, @NotNull Set<Long> districtIds);
+	Street saveDistricts(@NotNull Street street, @NotNull Set<Long> districtIds) throws FlexPayExceptionContainer;
 
 	/**
 	 * List all districts the street lays in

@@ -1,7 +1,6 @@
 package org.flexpay.ab.actions.person;
 
 import org.flexpay.ab.persistence.Person;
-import org.flexpay.ab.persistence.PersonIdentity;
 import org.flexpay.ab.service.PersonService;
 import org.flexpay.common.actions.FPActionSupport;
 import static org.flexpay.common.persistence.Stub.stub;
@@ -19,18 +18,11 @@ public class PersonEditPageAction extends FPActionSupport {
 	@Override
 	public String doExecute() throws Exception {
 
-		if (person.getId() == null) {
-			log.info("No person id specified");
-			addActionError(getText("ab.error.person.id_not_specified"));
-			return REDIRECT_ERROR;
-		}
+		person = person.isNew() ? person : personService.readFull(stub(person));
 
-		if (person.isNotNew()) {
-			person = personService.readFull(stub(person));
-			if (person == null) {
-				addActionError(getText("ab.error.person.invalid_id"));
-				return REDIRECT_ERROR;
-			}
+		if (person == null) {
+			addActionError(getText("ab.error.person.invalid_id"));
+			return REDIRECT_ERROR;
 		}
 
 		return INPUT;
@@ -47,11 +39,6 @@ public class PersonEditPageAction extends FPActionSupport {
 	@Override
 	protected String getErrorResult() {
 		return REDIRECT_ERROR;
-	}
-
-	public PersonIdentity getFIOIdentity() {
-		PersonIdentity fio = person.getFIOIdentity();
-		return fio != null ? fio : new PersonIdentity();
 	}
 
 	@Override

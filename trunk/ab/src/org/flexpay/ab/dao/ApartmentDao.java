@@ -33,20 +33,4 @@ public interface ApartmentDao extends GenericDao<Apartment, Long> {
 	 */
 	List<Apartment> findWithPersonsFull(Long apartmentId);
 
-	/**
-	 * Find all apartments in the building
-	 *
-	 * @param buildingId Building identifier
-	 * @return list of apartments in the building
-	 */
-	List<Apartment> findByBuilding(Long buildingId);
-
-	/**
-	 * Find apartments in the building
-	 *
-	 * @param buildingId Building identifier
-	 * @param pager	  Page instance
-	 * @return list of apartments in the building
-	 */
-	List<Apartment> findByBuilding(Long buildingId, Page<Apartment> pager);
 }

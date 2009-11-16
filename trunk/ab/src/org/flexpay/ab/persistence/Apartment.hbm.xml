@@ -44,21 +44,6 @@
 		order by n.value
 	]]></query>
 
-	<query name="Apartment.findByBuilding.count">
-		select count(a)
-		from Apartment a
-			inner join a.building b
-		where a.status=0 and b.id=?
-	</query>
-
-	<query name="Apartment.findByBuilding"><![CDATA[
-		select distinct a
-		from Apartment a
-			inner join fetch a.building b
-			left join fetch a.apartmentNumbers n
-		where a.status=0 and b.id=?
-	]]></query>
-
 	<query name="Apartment.readFull">
         select distinct a
 		from Apartment a
