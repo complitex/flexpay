@@ -1,6 +1,8 @@
 <%@include file="/WEB-INF/jsp/common/taglibs.jsp"%>
 
-<%@include file="/WEB-INF/jsp/common/includes/errors_messages.jsp"%>
+<div id="response">
+    <%@include file="/WEB-INF/jsp/common/includes/errors_messages.jsp"%>
+</div>
 
 <script type="text/javascript">
     FP.switchSorter("districtSorterButton");

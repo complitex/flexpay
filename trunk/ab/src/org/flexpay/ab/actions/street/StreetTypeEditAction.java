@@ -26,6 +26,11 @@ public class StreetTypeEditAction extends FPActionSupport {
 	@Override
 	public String doExecute() throws Exception {
 
+		if (streetType.getId() == null) {
+			addActionError(getText("common.object_not_selected"));
+			return REDIRECT_SUCCESS;
+		}
+
 		streetType = streetType.isNew() ? streetType : streetTypeService.readFull(stub(streetType));
 
 		if (streetType == null) {

@@ -31,6 +31,11 @@ public class RegionEditAction extends FPActionSupport {
 	@Override
     protected String doExecute() throws Exception {
 
+		if (region.getId() == null) {
+			addActionError(getText("common.object_not_selected"));
+			return REDIRECT_SUCCESS;
+		}
+
         region = region.isNew() ? region : regionService.readFull(stub(region));
 
         if (isSubmit()) {

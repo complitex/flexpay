@@ -29,6 +29,11 @@ public class DistrictEditAction extends FPActionSupport {
 	@Override
 	protected String doExecute() throws Exception {
 
+		if (district.getId() == null) {
+			addActionError(getText("common.object_not_selected"));
+			return REDIRECT_SUCCESS;
+		}
+
 		district = district.isNew() ? district : districtService.readFull(stub(district));
 
 		if (isSubmit()) {

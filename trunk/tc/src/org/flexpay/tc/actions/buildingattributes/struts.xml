@@ -15,7 +15,7 @@
         </action>
 
 		<action name="buildingAttributesSave" class="buildingAttributesSaveAction">
-            <result>/WEB-INF/jsp/common/responses/response.jsp</result>
+            <result>/WEB-INF/jsp/common/responses/simple_response.jsp</result>
 		</action>
 
         <action name="buildingAttributesEditBlock" class="buildingAttributesEditBlockAction">

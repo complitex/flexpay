@@ -1,5 +1,9 @@
 <%@include file="/WEB-INF/jsp/common/taglibs.jsp"%>
 
+<div id="response">
+    <%@include file="/WEB-INF/jsp/common/includes/errors_messages.jsp"%>
+</div>
+
 <table cellpadding="3" cellspacing="1" border="0" width="100%">
 	<tr>
 		<td class="th">&nbsp;</td>

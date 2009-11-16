@@ -34,7 +34,9 @@
     });
 </script>
 
-<%@include file="/WEB-INF/jsp/common/includes/errors_messages.jsp"%>
+<div id="response">
+    <%@include file="/WEB-INF/jsp/common/includes/errors_messages.jsp"%>
+</div>
 
 <s:form action="buildingAddressEdit" method="POST">
 

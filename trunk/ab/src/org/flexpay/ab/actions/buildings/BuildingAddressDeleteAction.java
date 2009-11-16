@@ -22,6 +22,7 @@ public class BuildingAddressDeleteAction extends FPActionSupport {
 	public String doExecute() throws Exception {
 
 		if (building.isNew()) {
+			addActionError("ab.error.invalid_building_id");
 			return SUCCESS;
 		}
 
