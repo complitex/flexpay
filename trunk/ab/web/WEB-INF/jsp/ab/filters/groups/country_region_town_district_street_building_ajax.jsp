@@ -31,7 +31,7 @@
         });
         FF.createFilter("building", {
             action: "<s:url action="buildingFilterAjax" namespace="/dicts" includeParams="none" />",
-            parents: ["street"],
+            parents: ["district", "street"],
             isArray: true,
             defaultValue: "<s:text name="%{userPreferences.buildingFilter}" />"
         });
