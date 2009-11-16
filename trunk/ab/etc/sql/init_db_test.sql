@@ -1879,11 +1879,11 @@ SELECT @buildings_id:=4;
 INSERT INTO ab_building_address_attributes_tbl (value, status, attribute_type_id, buildings_id)
 	VALUES ('220R', 0, @attr_type_home_number_id, @buildings_id);
 
-INSERT INTO ab_buildings_tbl (status, building_type,  district_id) VALUES (0, 'ab', @district_id_nsk_sovetskiy);
-SELECT @building_id:=last_insert_id();
-INSERT INTO ab_building_addresses_tbl (status, primary_status, street_id, building_id)
-	VALUES (0, b'1', @street_id_ivanova, @building_id);
-SELECT @buildings_id:=last_insert_id();
+INSERT INTO ab_buildings_tbl (id, status, building_type,  district_id) VALUES (3, 0, 'ab', @district_id_nsk_sovetskiy);
+SELECT @building_id:=3;
+INSERT INTO ab_building_addresses_tbl (id, status, primary_status, street_id, building_id)
+	VALUES (1003, 0, b'1', @street_id_ivanova, @building_id);
+SELECT @buildings_id:=1003;
 INSERT INTO ab_building_address_attributes_tbl (value, status, attribute_type_id, buildings_id)
 	VALUES ('3', 0, @attr_type_home_number_id, @buildings_id);
 
