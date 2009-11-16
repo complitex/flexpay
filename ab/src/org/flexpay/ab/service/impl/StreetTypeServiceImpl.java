@@ -156,7 +156,7 @@ public class StreetTypeServiceImpl implements StreetTypeService {
 		FlexPayExceptionContainer container = new FlexPayExceptionContainer();
 
 		boolean defaultLangNameFound = false;
-		boolean defaultLangShortNameFound = false;
+//		boolean defaultLangShortNameFound = false;
 
 		for (StreetTypeTranslation translation : type.getTranslations()) {
 
@@ -168,7 +168,7 @@ public class StreetTypeServiceImpl implements StreetTypeService {
 
 			if (lang.isDefault()) {
 				defaultLangNameFound = nameNotEmpty;
-				defaultLangShortNameFound = shortNameNotEmpty;
+//				defaultLangShortNameFound = shortNameNotEmpty;
 			}
 
 			if (nameNotEmpty) {
@@ -193,10 +193,10 @@ public class StreetTypeServiceImpl implements StreetTypeService {
 			container.addException(new FlexPayException(
 					"No default language translation", "ab.error.street_type.full_name_is_required"));
 		}
-		if (!defaultLangShortNameFound) {
-			container.addException(new FlexPayException(
-					"No default language translation", "ab.error.street_type.short_name_is_required"));
-		}
+//		if (!defaultLangShortNameFound) {
+//			container.addException(new FlexPayException(
+//					"No default language translation", "ab.error.street_type.short_name_is_required"));
+//		}
 
 		if (container.isNotEmpty()) {
 			throw container;
@@ -216,8 +216,6 @@ public class StreetTypeServiceImpl implements StreetTypeService {
 				}
 			}
 		}
-
-		//todo ������ ����������� ������ 2 �������� � ���������� - ����� ��������� �������� ������� � ����������. �����������!
 
 		// Try to find general correction by type name
 		Stub<StreetType> correction = correctionsService.findCorrection(

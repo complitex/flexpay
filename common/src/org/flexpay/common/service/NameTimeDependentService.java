@@ -1,7 +1,6 @@
 package org.flexpay.common.service;
 
 import org.apache.commons.collections.ArrayStack;
-import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.*;
 import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
@@ -45,9 +44,10 @@ public interface NameTimeDependentService<
 	/**
 	 * Find existing object by name
 	 *
-	 * @param name	 Object name to search
+	 * @param name   Object name to search
 	 * @param filter Parent object filter
 	 * @return Object if found, or <code>null</code> otherwise
+	 * @deprecated use filters version instead
 	 */
 	@NotNull
 	List<NTD> findByName(String name, PrimaryKeyFilter<?> filter);

@@ -101,8 +101,10 @@ public class DistrictProcessor extends AbstractProcessor<District> {
 			return null;
 		}
 		String nameStr = name.getTranslations().iterator().next().getName();
-		List<District> districts = districtService.findByName(nameStr.toLowerCase(), new TownFilter(object.getParent().getId()));
+		log.debug("Looking for district {}", nameStr);
+		List<District> districts = districtService.findByName(nameStr.toLowerCase(), new TownFilter(object.getTownStub()));
 		if (districts.isEmpty()) {
+			log.debug("Not found");
 			return null;
 		}
 		if (districts.size() > 1) {
