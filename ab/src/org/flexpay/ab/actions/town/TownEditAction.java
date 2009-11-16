@@ -43,6 +43,11 @@ public class TownEditAction extends FPActionSupport {
 	@Override
     protected String doExecute() throws Exception {
 
+		if (town.getId() == null) {
+			addActionError(getText("common.object_not_selected"));
+			return REDIRECT_SUCCESS;
+		}
+
         town = town.isNew() ? town : townService.readFull(stub(town));
         initFilters();
 

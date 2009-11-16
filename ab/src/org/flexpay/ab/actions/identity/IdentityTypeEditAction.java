@@ -25,6 +25,11 @@ public class IdentityTypeEditAction extends FPActionSupport {
 	@Override
 	public String doExecute() throws Exception {
 
+		if (identityType.getId() == null) {
+			addActionError(getText("common.object_not_selected"));
+			return REDIRECT_SUCCESS;
+		}
+
 		identityType = identityType.isNew() ? identityType : identityTypeService.readFull(stub(identityType));
 
 		if (identityType == null) {

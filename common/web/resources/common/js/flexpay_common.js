@@ -251,7 +251,8 @@ var FP = {
         var params = opt.params;
         params[name] = ids;
         $.post(action, params,
-                function() {
+                function(data) {
+                    $("#messagesBlock").html(data);
                     callback(null);
                 });
     }

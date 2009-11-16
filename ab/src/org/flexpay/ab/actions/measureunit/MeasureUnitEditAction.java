@@ -25,6 +25,11 @@ public class MeasureUnitEditAction extends FPActionSupport {
 	@Override
 	protected String doExecute() throws Exception {
 
+		if (measureUnit.getId() == null) {
+			addActionError(getText("common.object_not_selected"));
+			return REDIRECT_SUCCESS;
+		}
+
 		measureUnit = measureUnit.isNew() ? measureUnit : measureUnitService.readFull(stub(measureUnit));
 
 		if (measureUnit == null) {

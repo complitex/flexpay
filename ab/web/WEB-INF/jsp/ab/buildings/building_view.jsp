@@ -1,5 +1,9 @@
 <%@include file="/WEB-INF/jsp/common/taglibs.jsp"%>
 
+<div id="response">
+    <%@include file="/WEB-INF/jsp/common/includes/errors_messages.jsp"%>
+</div>
+
 <table cellpadding="3" cellspacing="1" border="0" width="100%">
     <tr>
         <td id="result"></td>
@@ -39,7 +43,8 @@
                 {
                     "address.id":id
                 },
-                function() {
+                function(data) {
+                    $("#response").html(data);
                     pagerAjax();
                 });
     }

@@ -26,6 +26,11 @@ public class TownTypeEditAction extends FPActionSupport {
 	@Override
 	public String doExecute() throws Exception {
 
+		if (townType.getId() == null) {
+			addActionError(getText("common.object_not_selected"));
+			return REDIRECT_SUCCESS;
+		}
+
 		townType = townType.isNew() ? townType : townTypeService.readFull(stub(townType));
 
 		if (townType == null) {

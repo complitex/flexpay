@@ -49,6 +49,11 @@ public class BuildingAddressEditAction extends FPActionSupport {
 			return REDIRECT_ERROR;
 		}
 
+		if (address.getId() == null) {
+			addActionError(getText("common.object_not_selected"));
+			return REDIRECT_ERROR;
+		}
+
 		address = address.isNew() ? address : building.getAddress(stub(address));
 		if (address == null) {
 			log.warn("Building address mismatch: {}, {}", building, address);

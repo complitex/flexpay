@@ -1,6 +1,8 @@
 <%@include file="/WEB-INF/jsp/common/taglibs.jsp"%>
 
-<%@include file="/WEB-INF/jsp/common/includes/errors_messages.jsp"%>
+<div id="response">
+    <%@include file="/WEB-INF/jsp/common/includes/errors_messages.jsp"%>
+</div>
 
 <s:form action="countryCreate" method="POST">
     <table cellpadding="3" cellspacing="1" border="0" width="100%">
