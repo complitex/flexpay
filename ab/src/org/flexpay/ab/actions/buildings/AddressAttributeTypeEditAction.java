@@ -28,11 +28,6 @@ public class AddressAttributeTypeEditAction extends FPActionSupport {
 	@Override
 	public String doExecute() throws Exception {
 
-		if (attributeType.getId() == null) {
-			addActionError(getText("common.object_not_selected"));
-			return REDIRECT_SUCCESS;
-		}
-
 		AddressAttributeType type = attributeType.isNew() ?
 									attributeType :
 									addressAttributeTypeService.readFull(stub(attributeType));

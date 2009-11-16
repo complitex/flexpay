@@ -1,8 +1,5 @@
 package org.flexpay.common.persistence;
 
-import org.apache.commons.lang.builder.ToStringBuilder;
-import org.apache.commons.lang.builder.ToStringStyle;
-
 /**
  * Object which name is time dependent and having upper level parent
  */

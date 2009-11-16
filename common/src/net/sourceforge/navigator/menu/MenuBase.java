@@ -1,8 +1,5 @@
 package net.sourceforge.navigator.menu;
 
-import org.springframework.beans.factory.annotation.Required;
-import org.springframework.web.context.support.SpringBeanAutowiringSupport;
-
 public abstract class MenuBase {
 
 	protected String namespace;

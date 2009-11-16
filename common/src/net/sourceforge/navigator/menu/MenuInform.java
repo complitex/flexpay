@@ -1,7 +1,5 @@
 package net.sourceforge.navigator.menu;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.flexpay.common.exception.FlexPayException;
 
 import java.util.HashSet;

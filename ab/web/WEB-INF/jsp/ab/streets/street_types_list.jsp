@@ -16,7 +16,8 @@
         <td class="th" width="1%">
             <input type="checkbox" onchange="FP.setCheckboxes(this.checked, 'objectIds');" />
         </td>
-        <td class="th"><s:text name="ab.street_type" /></td>
+        <td class="th"><s:text name="ab.street_type1" /></td>
+        <td class="th"><s:text name="ab.street_type.short_name" /></td>
         <td class="th">&nbsp;</td>
     </tr>
     <s:iterator value="streetTypes" status="rowstatus">
@@ -29,6 +30,9 @@
                 <a href="<s:url action="streetTypeView" includeParams="none"><s:param name="streetType.id" value="id" /></s:url>">
                     <s:property value="getTranslationName(translations)" />
                 </a>
+            </td>
+            <td class="col">
+                <s:property value="getTranslation(translations).shortName" />
             </td>
             <td class="col">
                 <a href="<s:url action="streetTypeEdit" includeParams="none"><s:param name="streetType.id" value="id" /></s:url>">

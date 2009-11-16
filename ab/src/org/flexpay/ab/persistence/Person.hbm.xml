@@ -289,18 +289,4 @@
         where pr.person.id=?
     ]]></query>
 
-    <query name="PersonRegistration.listRegistrationHistory">
-        from PersonRegistration pr
-        where pr.person.id=?
-    </query>
-
-    <query name="PersonRegistration.listRegistrants"><![CDATA[
-        select distinct p
-        from Person p
-            left join fetch p.personIdentities pi
-            inner join fetch pi.identityType
-            inner join p.personRegistrations r
-        where r.apartment.id=? and r.beginDate <= current_date() and current_date() <= r.endDate
-    ]]></query>
-
 </hibernate-mapping>
