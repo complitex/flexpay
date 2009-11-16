@@ -14,6 +14,7 @@ import org.flexpay.eirc.sp.impl.LineParser;
 import org.flexpay.eirc.sp.impl.MbParsingConstants;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.io.BufferedReader;
@@ -53,9 +54,15 @@ public class SpFileAction extends FPActionSupport {
 		}
 
 		if (LOAD_TO_DB_ACTION.equals(action)) {
+            String fileType = getFileType(spFile);
+            if (fileType == null) {
+                addActionError(getText("common.error.file.unknown_type"));
+                return REDIRECT_ERROR;
+            }
+
 			Map<Serializable, Serializable> contextVariables = CollectionUtils.map();
 			contextVariables.put(FileParserJob.PARAM_FILE_ID, spFile.getId());
-			contextVariables.put(FileParserJob.PARAM_FILE_TYPE, getFileType(spFile));
+			contextVariables.put(FileParserJob.PARAM_FILE_TYPE, fileType);
 			processId = processManager.createProcess("ParseRegistryProcess", contextVariables);
 			log.debug("Load to db process id {}", processId);
 			if (processId == null) {
@@ -74,6 +81,7 @@ public class SpFileAction extends FPActionSupport {
 		return REDIRECT_SUCCESS;
 	}
 
+    @Nullable
 	private String getFileType(FPFile file) {
 
 		BufferedReader reader = null;
@@ -91,7 +99,9 @@ public class SpFileAction extends FPActionSupport {
 				} else if (fields.length == 4) {
 					return FileParser.MB_REGISTRY_FILE_TYPE;
 				}
-			}
+			} else if (line.length() > 0 && line.codePointAt(0) == SpFileReader.Message.MESSAGE_TYPE_HEADER) {
+                return FileParser.REGISTRY_FILE_TYPE;
+            }
 
 		} catch (IOException e) {
 			log.error("Failed getting file type: " + file, e);
@@ -99,7 +109,7 @@ public class SpFileAction extends FPActionSupport {
 			IOUtils.closeQuietly(reader);
 		}
 
-		return FileParser.REGISTRY_FILE_TYPE;
+		return null;
 	}
 
 	/**
