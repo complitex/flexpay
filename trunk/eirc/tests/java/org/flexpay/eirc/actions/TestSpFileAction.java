@@ -1,15 +1,21 @@
 package org.flexpay.eirc.actions;
 
+import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.dao.registry.RegistryDao;
+
+import static junit.framework.Assert.assertNull;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.process.ProcessManager;
 import org.flexpay.common.service.RegistryFileService;
 import static org.flexpay.common.util.CollectionUtils.ar;
+
+import org.flexpay.common.util.impl.CommonTestRegistryUtil;
 import org.flexpay.eirc.actions.spfile.SpFileAction;
 import org.jetbrains.annotations.NonNls;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +27,7 @@ public class TestSpFileAction extends TestSpFileCreateAction {
 	@Autowired
 	protected SpFileAction fileAction;
 	@Autowired
-	protected RegistryDao registryDao;
+	protected CommonTestRegistryUtil registryUtil;
 
 	@Autowired
 	@Qualifier ("processManager")
@@ -37,6 +43,12 @@ public class TestSpFileAction extends TestSpFileCreateAction {
 		// do clean up
 		deleteRecords(newFile);
 		deleteFile(newFile);
+	}
+
+	@Test
+	@NotTransactional
+	public void testUploadFailedFile() throws Throwable {
+		uploadFileWithError("org/flexpay/eirc/actions/sp/ree_failed.txt");
 	}
 
 	@Test
@@ -61,34 +73,26 @@ public class TestSpFileAction extends TestSpFileCreateAction {
 
 	protected void deleteRecords(FPFile file) {
 
-		log.debug("Deleting registries of file: {}", file);
+		log.debug("Deleting registries of file: {}. Registries: {}", new Object[]{file, registryFileService.getRegistries(file)});
 
 		for (Registry registry : registryFileService.getRegistries(file)) {
 			deleteQuittances(registry.getId());
-			deleteContainers(registry.getId());
-			registryDao.deleteRegistryContainers(registry.getId());
-			registryDao.deleteRecordProperties(registry.getId());
-			registryDao.deleteRecords(registry.getId());
-			registryDao.delete(registry);
+			registryUtil.delete(registry);
 		}
 
 		log.debug("Deleted!");
 	}
 
-	private void deleteQuittances(Long registryId) {
+    @Override
+    protected void deleteFile(FPFile file) {
+        FPFileService.deleteFromFileSystem(file);
+    }
+
+    private void deleteQuittances(Long registryId) {
 		String sql = "delete q " +
 					 "from common_registries_tbl r " +
 					 "left join common_registry_records_tbl rr on r.id=rr.registry_id " +
 					 "left join eirc_quittance_details_tbl q on rr.id=q.registry_record_id " +
-					 "where r.id=?";
-		jdbcTemplate.update(sql, ar(registryId));
-	}
-
-	private void deleteContainers(Long registryId) {
-		String sql = "delete c " +
-					 "from common_registries_tbl r " +
-					 "left join common_registry_records_tbl rr on r.id=rr.registry_id " +
-					 "left join common_registry_record_containers_tbl c on rr.id=c.record_id " +
 					 "where r.id=?";
 		jdbcTemplate.update(sql, ar(registryId));
 	}
@@ -101,7 +105,7 @@ public class TestSpFileAction extends TestSpFileCreateAction {
 
 		try {
 			log.debug("Starting upload file: {}", newFile);
-			assertEquals("Invalid Struts action result", "redirectSuccess", fileAction.execute());
+			assertEquals("Invalid Struts action result", FPActionSupport.REDIRECT_SUCCESS, fileAction.execute());
 
 			processManager.join(fileAction.getProcessId());
 
@@ -114,5 +118,27 @@ public class TestSpFileAction extends TestSpFileCreateAction {
 		}
 
 		return newFile;
+	}
+
+    protected void uploadFileWithError(String fileName) throws Throwable {
+		FPFile newFile = createSpFile(fileName);
+
+		fileAction.setSpFile(newFile);
+		fileAction.setAction("loadToDb");
+
+		try {
+			log.debug("Starting upload file: {}", newFile);
+			assertEquals("Invalid Struts action result", FPActionSupport.REDIRECT_ERROR, fileAction.execute());
+
+			assertNull("ProcessId is not null", fileAction.getProcessId());
+
+			assertFalse("File is loaded", registryFileService.isLoaded(stub(newFile)));
+		} catch (Throwable e) {
+			deleteRecords(newFile);
+			deleteFile(newFile);
+			throw e;
+		}
+
+		super.deleteFile(newFile);
 	}
 }
