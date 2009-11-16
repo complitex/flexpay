@@ -11,8 +11,7 @@ public interface StreetDao extends NameTimeDependentDao<Street, Long> {
 
 	List<Street> findByParentAndQuery(Long townId, String query);
 
-	@Deprecated
-	List<Street> findByNameAndTypeAndLanguage(String name, Long typeId, Long languageId);
+	List<Street> findByTownAndNameAndTypeAndLanguage(Long townId, String name, Long typeId, Long languageId);
 
 	List<Street> findByTownAndNameAndType(Long townId, String name, Long typeId);
 

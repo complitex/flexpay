@@ -185,14 +185,14 @@ public class StreetServiceImpl extends NameTimeDependentServiceImpl<
 					defaultLangNameFound = nameNotEmpty;
 				}
 
-				// TODO: WTF? no same named districts in different towns??
-//				if (nameNotEmpty) {
-//					List<Street> streets = streetDao.findByNameAndTypeAndLanguage(name, street.getCurrentType().getId(), lang.getId());
-//					if (!streets.isEmpty() && !streets.get(0).getId().equals(street.getId())) {
-//						container.addException(new FlexPayException(
-//								"Name \"" + name + "\" is already use", "ab.error.name_is_already_use", name));
-//					}
-//				}
+				if (nameNotEmpty) {
+					List<Street> streets = streetDao.findByTownAndNameAndTypeAndLanguage(street.getParentStub().getId(),
+							name, street.getCurrentType().getId(), lang.getId());
+					if (!streets.isEmpty() && !streets.get(0).getId().equals(street.getId())) {
+						container.addException(new FlexPayException(
+								"Name \"" + name + "\" is already use", "ab.error.name_is_already_use", name));
+					}
+				}
 			}
 
 			if (!defaultLangNameFound) {

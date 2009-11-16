@@ -101,14 +101,14 @@
             and r.parent.id=? and upper(tr.name) like ?
     </query>
 
-    <query name="Region.findByNameAndLanguage">
+    <query name="Region.findByCountryAndNameAndLanguage">
         select distinct r
         from Region r
             left join r.nameTemporals t
             left join t.value v
             left join v.translations tr
         where r.status=0 and t.invalidDate='2100-12-31'
-            and tr.name=? and tr.lang.id=?
+            and r.parent.id=? and tr.name=? and tr.lang.id=?
     </query>
 
 	<query name="RegionName.readFull">

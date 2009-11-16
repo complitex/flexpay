@@ -162,14 +162,13 @@ public class DistrictServiceImpl extends NameTimeDependentServiceImpl<
 					defaultLangNameFound = nameNotEmpty;
 				}
 
-				// TODO: WTF? no same named districts in different towns??
-//				if (nameNotEmpty) {
-//					List<District> districts = districtDao.findByNameAndLanguage(name, lang.getId());
-//					if (!districts.isEmpty() && !districts.get(0).getId().equals(district.getId())) {
-//						container.addException(new FlexPayException(
-//								"Name '" + name + "' is already use", "ab.error.name_is_already_use", name));
-//					}
-//				}
+				if (nameNotEmpty) {
+					List<District> districts = districtDao.findByTownAndNameAndLanguage(district.getParentStub().getId(), name, lang.getId());
+					if (!districts.isEmpty() && !districts.get(0).getId().equals(district.getId())) {
+						container.addException(new FlexPayException(
+								"Name '" + name + "' is already use", "ab.error.name_is_already_use", name));
+					}
+				}
 
 			}
 
@@ -215,6 +214,19 @@ public class DistrictServiceImpl extends NameTimeDependentServiceImpl<
 	public List<District> find(@NotNull ArrayStack filters, @NotNull List<? extends ObjectSorter> sorters, @NotNull Page<District> pager) {
 		PrimaryKeyFilter<?> townFilter = (PrimaryKeyFilter<?>) filters.peek();
 		return districtDaoExt.findDistricts(townFilter.getSelectedId(), sorters, pager);
+	}
+
+	/**
+	 * Lookup districts by name and town
+	 *
+	 * @param townStub Town stub
+	 * @param name District name search string
+	 * @return List of found districts
+	 */
+	@NotNull
+	@Override
+	public List<District> findByTownAndName(@NotNull Stub<Town> townStub, @NotNull String name) {
+		return districtDao.findByTownAndName(townStub.getId(), name);
 	}
 
 	/**

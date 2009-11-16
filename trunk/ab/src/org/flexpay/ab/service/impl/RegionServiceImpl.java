@@ -162,7 +162,7 @@ public class RegionServiceImpl extends NameTimeDependentServiceImpl<
 				}
 
 				if (nameNotEmpty) {
-					List<Region> regions = regionDao.findByNameAndLanguage(name, lang.getId());
+					List<Region> regions = regionDao.findByCountryAndNameAndLanguage(region.getParentStub().getId(), name, lang.getId());
 					if (!regions.isEmpty() && !regions.get(0).getId().equals(region.getId())) {
 						container.addException(new FlexPayException(
 								"Name \"" + name + "\" is already use", "ab.error.name_is_already_use", name));
