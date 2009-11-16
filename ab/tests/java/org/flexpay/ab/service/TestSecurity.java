@@ -74,8 +74,8 @@ public class TestSecurity extends AbSpringBeanAwareTestCase {
 		countryService.find(filters, sorters, pager);
 	}
 
-	@Test (expected = AccessDeniedException.class)
-	public void testInvalidRegionAuthorities() throws Exception {
+	@Test
+	public void testRegionAuthorities() throws Exception {
 
 		User user = new User("test", "test", true, true, true, true, REGION_AUTHORITIES);
 		Authentication auth = new AnonymousAuthenticationToken("key", user, REGION_AUTHORITIES);
