@@ -162,13 +162,14 @@ public class DistrictServiceImpl extends NameTimeDependentServiceImpl<
 					defaultLangNameFound = nameNotEmpty;
 				}
 
-				if (nameNotEmpty) {
-					List<District> districts = districtDao.findByNameAndLanguage(name, lang.getId());
-					if (!districts.isEmpty() && !districts.get(0).getId().equals(district.getId())) {
-						container.addException(new FlexPayException(
-								"Name \"" + name + "\" is already use", "ab.error.name_is_already_use", name));
-					}
-				}
+				// TODO: WTF? no same named districts in different towns??
+//				if (nameNotEmpty) {
+//					List<District> districts = districtDao.findByNameAndLanguage(name, lang.getId());
+//					if (!districts.isEmpty() && !districts.get(0).getId().equals(district.getId())) {
+//						container.addException(new FlexPayException(
+//								"Name '" + name + "' is already use", "ab.error.name_is_already_use", name));
+//					}
+//				}
 
 			}
 
