@@ -3,7 +3,6 @@ package org.flexpay.common.service.impl;
 import org.apache.commons.collections.ArrayStack;
 import org.flexpay.common.dao.GenericDao;
 import org.flexpay.common.dao.NameTimeDependentDao;
-import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.*;
 import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
@@ -16,7 +15,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Locale;
 
 /**
  * Base service implementation for objects with time-dependent name
@@ -135,5 +137,4 @@ public abstract class NameTimeDependentServiceImpl<
 
 		return result;
 	}
-
 }
