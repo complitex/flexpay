@@ -117,7 +117,10 @@ public class GenericDaoHibernateImpl<T, PK extends Serializable>
 			result = CollectionUtils.list();
 			for (Object id : ids) {
 				//noinspection SuspiciousMethodCalls
-				result.add((T) map.get(id));
+				T obj = (T) map.get(id);
+				if (obj != null) {
+					result.add(obj);
+				}
 			}
 		}
 

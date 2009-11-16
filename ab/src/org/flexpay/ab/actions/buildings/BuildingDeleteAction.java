@@ -20,7 +20,7 @@ public class BuildingDeleteAction extends FPActionSupport {
 	@Override
 	public String doExecute() throws Exception {
 
-		List<BuildingAddress> addresses = buildingService.readFullAddresses(objectIds, true);
+		List<BuildingAddress> addresses = buildingService.readFullAddresses(objectIds, false);
 		Set<Long> buildingIds = set();
 
 		for (BuildingAddress address : addresses) {
