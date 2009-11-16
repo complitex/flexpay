@@ -8,7 +8,7 @@
 
     <%@include file="../registry_record_info.jsp" %>
 
-    <%@ include file="/WEB-INF/jsp/ab/filters/groups/country_region_town_district_street_building_ajax.jsp" %>
+    <%@ include file="/WEB-INF/jsp/ab/filters/groups/country_region_town_street_building_ajax.jsp" %>
     <span id="result"></span>
     <s:hidden name="record.id" value="%{record.id}" />
 
