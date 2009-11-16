@@ -26,7 +26,7 @@
         FF.addListener("building", function(filter) {
             FP.resizeShadow(shadowId, resultId, {visibility:"visible"});
             $.post("<s:url action="apartmentsDialogListAjax" namespace="/payments" includeParams="none"/>",
-                    {buildingId: filter.value.val()},
+                    {buildingFilter: filter.value.val()},
                     function(data) {
                         $("#" + resultId).html(data);
                         FP.hideShadow(shadowId);
@@ -41,7 +41,7 @@
         FP.pagerAjax(element, {
             action:"<s:url action="apartmentsDialogListAjax" namespace="/payments" includeParams="none"/>",
             params:{
-                buildingId: FF.filters["building"].value.val()
+                buildingFilter: FF.filters["building"].value.val()
             }
         });
     }
