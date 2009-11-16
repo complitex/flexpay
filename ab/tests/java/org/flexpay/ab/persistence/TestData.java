@@ -18,6 +18,8 @@ public abstract class TestData {
 	public static final Stub<BuildingAddress> ADDR_DEMAKOVA_220D = new Stub<BuildingAddress>(3L);
 	public static final Stub<BuildingAddress> ADDR_ROSSIISKAYA_220R = new Stub<BuildingAddress>(4L);
 
+	public static final Stub<BuildingAddress> ADDR_IVANOVA_3 = new Stub<BuildingAddress>(1003L);
+
 	public static final Stub<StreetType> STR_TYPE_STREET = new Stub<StreetType>(14L);
 	public static final Stub<StreetType> STR_TYPE_VIADUKT = new Stub<StreetType>(2L);
 
