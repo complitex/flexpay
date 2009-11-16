@@ -17,6 +17,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.NotTransactional;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.Set;
+
 public class TestBuildingService extends AbSpringBeanAwareTestCase {
 
 	@Autowired
@@ -49,7 +52,6 @@ public class TestBuildingService extends AbSpringBeanAwareTestCase {
 		return buildingAddress;
 	}
 
-	@NotTransactional
 	@Test
 	public void testDeleteAttributeNotTx() throws Throwable {
 
@@ -76,7 +78,6 @@ public class TestBuildingService extends AbSpringBeanAwareTestCase {
 		}
 	}
 
-	@Transactional
 	@Test
 	@Ignore
 	public void testDeleteAttributeTx() throws Throwable {
@@ -103,7 +104,6 @@ public class TestBuildingService extends AbSpringBeanAwareTestCase {
 	}
 
 	@Test
-	@NotTransactional
 	public void testCreateBuilding() throws Throwable {
 
 		Building building = newBuilding();
@@ -126,7 +126,6 @@ public class TestBuildingService extends AbSpringBeanAwareTestCase {
 	}
 
 	@Test
-	@NotTransactional
 	public void testFindBulkBuildings() throws Throwable {
 
 		// See init_db script
@@ -140,7 +139,6 @@ public class TestBuildingService extends AbSpringBeanAwareTestCase {
 	}
 
 	@Test
-	@NotTransactional
 	public void testFindBuildings() throws Throwable {
 
 		// See init_db script
@@ -158,6 +156,16 @@ public class TestBuildingService extends AbSpringBeanAwareTestCase {
 				stub(ApplicationConfig.getBuildingAttributeTypeNumber()));
 		assertNotNull("Bulk attribute type not found",
 				stub(ApplicationConfig.getBuildingAttributeTypeBulk()));
+	}
+
+	@Test
+	public void testReadFullAddresses() {
+
+		Set<Long> objectIds = set(-1L);
+		List<BuildingAddress> addresses = buildingService.readFullAddresses(objectIds, true);
+		for (BuildingAddress address : addresses) {
+			assertNotNull("No nulls expected", address);
+		}
 	}
 
 	@Before

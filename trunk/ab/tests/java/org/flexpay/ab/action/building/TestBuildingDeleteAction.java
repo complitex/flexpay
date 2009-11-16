@@ -1,7 +1,9 @@
 package org.flexpay.ab.action.building;
 
 import org.flexpay.ab.actions.buildings.BuildingDeleteAction;
+import org.flexpay.ab.persistence.TestData;
 import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
+import org.junit.After;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -16,9 +18,13 @@ public class TestBuildingDeleteAction extends AbSpringBeanAwareTestCase {
 	@Test
 	public void testDeleteBuildings() throws Exception {
 
-		action.setObjectIds(set(2L));
+		action.setObjectIds(set(TestData.ADDR_IVANOVA_2.getId()));
 
 		assertEquals("Invalid action result", BuildingDeleteAction.SUCCESS, action.execute());
 	}
 
+	@After
+	public void enableBuildings() {
+		hibernateTemplate.bulkUpdate("update Building set status=0 where id=?", TestData.ADDR_IVANOVA_2.getId());
+	}
 }
