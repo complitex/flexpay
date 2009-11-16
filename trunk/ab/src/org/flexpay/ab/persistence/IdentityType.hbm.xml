@@ -68,6 +68,7 @@
     <query name="IdentityType.listIdentityTypesByEnumId">
         select distinct it
         from IdentityType it
+        	left join fetch it.translations
         where it.typeId=?
     </query>
 
