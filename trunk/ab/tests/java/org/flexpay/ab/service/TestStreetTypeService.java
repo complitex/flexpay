@@ -92,8 +92,8 @@ public class TestStreetTypeService extends AbSpringBeanAwareTestCase {
 
 		try {
 			StreetType type = new StreetType();
-			type.setTranslation(new StreetTypeTranslation("Тестовый тип"));
-			type.setTranslation(new StreetTypeTranslation("Test type", new Language(2L)));
+			type.setTranslation(new StreetTypeTranslation("Тестовый тип 2"));
+			type.setTranslation(new StreetTypeTranslation("Test type 2", new Language(2L)));
 			service.create(type);
 
 			assertTrue("Type was not saved", type.isNotNew());
