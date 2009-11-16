@@ -101,14 +101,24 @@
             and d.parent.id=? and upper(tr.name) like ?
     </query>
 
-    <query name="District.findByNameAndLanguage">
+    <query name="District.findByTownAndName">
         select distinct d
         from District d
             left join d.nameTemporals t
             left join t.value v
             left join v.translations tr
         where d.status=0 and t.invalidDate='2100-12-31'
-            and tr.name=? and tr.lang.id=?
+            and d.parent.id=? and tr.name=?
+    </query>
+
+    <query name="District.findByTownAndNameAndLanguage">
+        select distinct d
+        from District d
+            left join d.nameTemporals t
+            left join t.value v
+            left join v.translations tr
+        where d.status=0 and t.invalidDate='2100-12-31'
+            and d.parent.id=? and tr.name=? and tr.lang.id=?
     </query>
 
     <query name="DistrictName.readFull">

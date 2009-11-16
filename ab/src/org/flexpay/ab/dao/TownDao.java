@@ -9,6 +9,6 @@ public interface TownDao extends NameTimeDependentDao<Town, Long> {
 
 	List<Town> findByParentAndQuery(Long regionId, String query);
 
-	List<Town> findByNameAndLanguage(String name, Long languageId);
+	List<Town> findByRegionAndNameAndLanguage(Long regionId, String name, Long languageId);
 
 }

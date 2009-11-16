@@ -98,17 +98,24 @@ public class DistrictProcessor extends AbstractProcessor<District> {
 	protected Stub<District> findPersistentObject(District object, Stub<DataSourceDescription> sd, CorrectionsService cs) {
 		DistrictName name = object.getCurrentName();
 		if (name == null || name.getTranslations().isEmpty()) {
+			log.debug("No current name found");
 			return null;
 		}
-		String nameStr = name.getTranslations().iterator().next().getName();
-		log.debug("Looking for district {}", nameStr);
-		List<District> districts = districtService.findByName(nameStr.toLowerCase(), new TownFilter(object.getTownStub()));
+		String nameStr = name.getDefaultNameTranslation();
+		if (nameStr == null) {
+			log.debug("No default name translation");
+			return null;
+		}
+
+		List<District> districts = districtService.findByTownAndName(object.getTownStub(), nameStr);
+
+		log.debug("Looked up for {}, found {}", nameStr, districts.size());
 		if (districts.isEmpty()) {
-			log.debug("Not found");
 			return null;
 		}
+
 		if (districts.size() > 1) {
-			log.error("More than 1 district found by name: {}", districts);
+			log.warn("Found several similar districts: {}", districts);
 		}
 		return stub(districts.get(0));
 	}

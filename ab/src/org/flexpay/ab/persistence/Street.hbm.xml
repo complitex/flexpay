@@ -183,7 +183,7 @@
               and s.parent.id=? and upper(tr.name) like ?
     </query>
 
-    <query name="Street.findByNameAndTypeAndLanguage">
+    <query name="Street.findByTownAndNameAndTypeAndLanguage">
         select distinct s
         from Street s
             left join s.nameTemporals t
@@ -191,7 +191,8 @@
             left join v.translations tr
             left join s.typeTemporals tt
         where s.status=0 and t.invalidDate='2100-12-31'
-            and tr.name=? and tt.value.id=? and tr.lang.id=?
+            and s.parent.id=? and tr.name=?
+            and tt.value.id=? and tr.lang.id=?
     </query>
 
     <query name="Street.deleteStreet">

@@ -41,15 +41,4 @@ public interface NameTimeDependentService<
 	 */
 	List<NTD> find(ArrayStack filters);
 
-	/**
-	 * Find existing object by name
-	 *
-	 * @param name   Object name to search
-	 * @param filter Parent object filter
-	 * @return Object if found, or <code>null</code> otherwise
-	 * @deprecated use filters version instead
-	 */
-	@NotNull
-	List<NTD> findByName(String name, PrimaryKeyFilter<?> filter);
-
 }

@@ -85,4 +85,15 @@ public interface DistrictService extends NameTimeDependentService<DistrictName, 
 	@NotNull
 	List<District> find(@NotNull ArrayStack filters, @NotNull List<? extends ObjectSorter> sorters, @NotNull Page<District> pager);
 
+	/**
+	 * Lookup districts by name and town
+	 *
+	 * @param townStub Town stub
+	 * @param name District name search string
+	 * @return List of found districts
+	 */
+	@Secured (Roles.DISTRICT_READ)
+	@NotNull
+	List<District> findByTownAndName(@NotNull Stub<Town> townStub, @NotNull String name);
+
 }

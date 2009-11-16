@@ -9,7 +9,8 @@ public interface DistrictDao extends NameTimeDependentDao<District, Long> {
 
 	List<District> findByParentAndQuery(Long townId, String query);
 
-	@Deprecated
-	List<District> findByNameAndLanguage(String name, Long languageId);
+	List<District> findByTownAndName(Long townId, String name);
+
+	List<District> findByTownAndNameAndLanguage(Long townId, String name, Long languageId);
 
 }

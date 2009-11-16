@@ -9,6 +9,6 @@ public interface RegionDao extends NameTimeDependentDao<Region, Long> {
 
 	List<Region> findByParentAndQuery(Long countryId, String query);
 
-	List<Region> findByNameAndLanguage(String name, Long languageId);
+	List<Region> findByCountryAndNameAndLanguage(Long countryId, String name, Long languageId);
 
 }

@@ -166,7 +166,7 @@ public class TownServiceImpl extends NameTimeDependentServiceImpl<
 				}
 
 				if (nameNotEmpty) {
-					List<Town> towns = townDao.findByNameAndLanguage(name, lang.getId());
+					List<Town> towns = townDao.findByRegionAndNameAndLanguage(town.getParentStub().getId(), name, lang.getId());
 					if (!towns.isEmpty() && !towns.get(0).getId().equals(town.getId())) {
 						container.addException(new FlexPayException(
 								"Name \"" + name + "\" is already use", "ab.error.name_is_already_use", name));
