@@ -100,7 +100,7 @@ public class CreateStreets extends AbSpringBeanAwareTestCase {
 	private static final class StreetInsertCreator implements PreparedStatementCreator {
 
 		public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
-			PreparedStatement ps = con.prepareStatement(sqlInsertStreet);
+			PreparedStatement ps = con.prepareStatement(sqlInsertStreet, PreparedStatement.RETURN_GENERATED_KEYS);
 			ps.setLong(1, townId);
 			return ps;
 		}
@@ -115,7 +115,7 @@ public class CreateStreets extends AbSpringBeanAwareTestCase {
 		}
 
 		public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
-			PreparedStatement ps = con.prepareStatement(sqlInsertStreetName);
+			PreparedStatement ps = con.prepareStatement(sqlInsertStreetName, PreparedStatement.RETURN_GENERATED_KEYS);
 			ps.setLong(1, streetId);
 			return ps;
 		}
