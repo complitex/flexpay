@@ -23,7 +23,7 @@
 
         FP.createShadow(shadowId);
 
-        FF.addListener("", function(filter) {
+        FF.addListener("building", function(filter) {
             FP.resizeShadow(shadowId, resultId, {visibility:"visible"});
             $.post("<s:url action="buildingDialogAjax" namespace="/payments" includeParams="none"/>",
                     {buildingFilter: filter.value.val()},
