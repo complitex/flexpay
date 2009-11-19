@@ -55,12 +55,12 @@
             <result>/WEB-INF/jsp/payments/data/correspondence/apartments_list.jsp</result>
         </action>
 
-        <action name="streetsDialogListAjax" class="streetsListAction">
-            <result>/WEB-INF/jsp/payments/data/correspondence/streets_list.jsp</result>
+        <action name="streetDialogAjax" class="streetAction">
+            <result>/WEB-INF/jsp/payments/data/correspondence/street_submit_correction.jsp</result>
         </action>
 
-        <action name="buildingsDialogListAjax" class="buildingsListAction">
-            <result>/WEB-INF/jsp/payments/data/correspondence/buildings_list.jsp</result>
+        <action name="buildingDialogAjax" class="buildingAction">
+            <result>/WEB-INF/jsp/payments/data/correspondence/building_submit_correction.jsp</result>
         </action>
 
 		<action name="registryRecordCorrectAddress" class="correctAddressAction">

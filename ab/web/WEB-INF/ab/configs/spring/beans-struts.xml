@@ -177,6 +177,11 @@
 		  p:streetService-ref="streetService"
 		  scope="prototype" />
 
+	<bean id="streetAction"
+		  class="org.flexpay.ab.actions.street.StreetAction"
+		  p:streetService-ref="streetService"
+		  scope="prototype" />
+
 	<bean id="streetsListPageAction"
 		  class="org.flexpay.ab.actions.street.StreetsListPageAction"
 		  p:crumbNameKey="ab.crumbs.streets_list"
@@ -237,6 +242,11 @@
 
 	<bean id="buildingsListAction"
 		  class="org.flexpay.ab.actions.buildings.BuildingsListAction"
+		  p:buildingService-ref="buildingService"
+		  scope="prototype" />
+
+    <bean id="buildingAction"
+		  class="org.flexpay.ab.actions.buildings.BuildingAction"
 		  p:buildingService-ref="buildingService"
 		  scope="prototype" />
 
