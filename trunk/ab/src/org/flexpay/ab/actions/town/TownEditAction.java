@@ -43,12 +43,18 @@ public class TownEditAction extends FPActionSupport {
 	@Override
     protected String doExecute() throws Exception {
 
-		if (town.getId() == null) {
+		if (town == null || town.getId() == null) {
+			log.debug("Town id not set");
 			addActionError(getText("common.object_not_selected"));
 			return REDIRECT_SUCCESS;
 		}
 
         town = town.isNew() ? town : townService.readFull(stub(town));
+		if (town == null) {
+			log.debug("Town is null");
+			addActionError(getText("common.object_not_selected"));
+			return INPUT;
+		}
         initFilters();
 
         if (isSubmit()) {
@@ -68,21 +74,18 @@ public class TownEditAction extends FPActionSupport {
 
     private boolean doValidate() {
 
-        if (town == null) {
-			addActionError(getText("common.object_not_selected"));
-            return false;
-        }
-
 		if (regionFilter == null || regionFilter <= 0) {
-			log.warn("Incorrect region id in filter ({})", regionFilter);
+			log.debug("Incorrect region id in filter ({})", regionFilter);
 			addActionError(getText("ab.error.town.no_region"));
 		}
 
         if (!townTypeFilter.needFilter()) {
+			log.debug("Incorrect townTypeFilter value ({})", townTypeFilter.getSelectedId());
             addActionError(getText("ab.error.town.no_type"));
         }
 
-        if (!beginDateFilter.needFilter()) {
+        if (beginDateFilter == null || !beginDateFilter.needFilter()) {
+			log.debug("Incorrect beginDateFilter value");
             addActionError(getText("ab.error.town.no_begin_date"));
         }
 
@@ -119,25 +122,12 @@ public class TownEditAction extends FPActionSupport {
         return townName;
     }
 
-    /**
-     * Get default error execution result
-     * <p/>
-     * If return code starts with a {@link #PREFIX_REDIRECT} all error messages are stored in a session
-     *
-     * @return {@link #ERROR} by default
-     */
-    @NotNull
-	@Override
-    protected String getErrorResult() {
-        return INPUT;
-    }
+	private void initFilters() throws Exception {
+		townTypeFilter = townTypeService.initFilter(townTypeFilter, getUserPreferences().getLocale());
+	}
 
-    private void initFilters() throws Exception {
-        townTypeFilter = townTypeService.initFilter(townTypeFilter, getUserPreferences().getLocale());
-    }
-
-    private void initData() {
-        TownNameTemporal temporal = town.getCurrentNameTemporal();
+	private void initData() {
+		TownNameTemporal temporal = town.getCurrentNameTemporal();
 		beginDateFilter.setDate(temporal != null ? temporal.getBegin() : DateUtil.now());
 
 		TownTypeTemporal tmprlType = town.getCurrentTypeTemporal();
@@ -159,11 +149,24 @@ public class TownEditAction extends FPActionSupport {
 			names.put(lang.getId(), "");
 		}
 
+	}
+
+    /**
+     * Get default error execution result
+     * <p/>
+     * If return code starts with a {@link #PREFIX_REDIRECT} all error messages are stored in a session
+     *
+     * @return {@link #ERROR} by default
+     */
+    @NotNull
+	@Override
+    protected String getErrorResult() {
+        return INPUT;
     }
 
 	@Override
 	protected void setBreadCrumbs() {
-		if (town.isNew()) {
+		if (town != null && town.isNew()) {
 			crumbNameKey = crumbCreateKey;
 		}
 		super.setBreadCrumbs();

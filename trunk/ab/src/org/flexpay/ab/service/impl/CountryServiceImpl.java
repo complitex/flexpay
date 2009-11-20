@@ -50,6 +50,27 @@ public class CountryServiceImpl implements CountryService, ParentService<Country
 	}
 
 	/**
+	 * Disable countries
+	 *
+	 * @param countryIds IDs of countries to disable
+	 */
+	@Transactional (readOnly = false)
+	@Override
+	public void disable(@NotNull Collection<Long> countryIds) {
+		for (Long id : countryIds) {
+			Country country = countryDao.read(id);
+			if (country == null) {
+				log.warn("Can't get country with id {} from DB", id);
+				continue;
+			}
+			country.disable();
+			countryDao.update(country);
+
+			log.debug("Country disabled: {}", country);
+		}
+	}
+
+	/**
 	 * Read countries collection by theirs ids
 	 *
  	 * @param countryIds Country ids

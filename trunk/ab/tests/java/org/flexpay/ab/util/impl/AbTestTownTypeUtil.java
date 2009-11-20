@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import java.util.Set;
 
 public class AbTestTownTypeUtil implements TestTownTypeUtil {
+
     private Logger log = LoggerFactory.getLogger(getClass());
 
     @Autowired

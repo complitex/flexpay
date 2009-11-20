@@ -37,6 +37,14 @@ public interface CountryService {
 	List<Country> readFull(@NotNull Collection<Long> countryIds, boolean preserveOrder);
 
 	/**
+	 * Disable countries
+	 *
+	 * @param countryIds IDs of countries to disable
+	 */
+	@Secured (Roles.COUNTRY_DELETE)
+	void disable(@NotNull Collection<Long> countryIds);
+
+	/**
 	 * Create country
 	 *
 	 * @param country Country to save

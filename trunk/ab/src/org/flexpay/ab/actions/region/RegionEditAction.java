@@ -9,6 +9,7 @@ import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.persistence.filter.BeginDateFilter;
 import static org.flexpay.common.util.CollectionUtils.treeMap;
 import org.flexpay.common.util.DateUtil;
+import org.flexpay.common.util.config.ApplicationConfig;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
@@ -32,11 +33,17 @@ public class RegionEditAction extends FPActionSupport {
     protected String doExecute() throws Exception {
 
 		if (region.getId() == null) {
+			log.debug("Region id not set");
 			addActionError(getText("common.object_not_selected"));
 			return REDIRECT_SUCCESS;
 		}
 
         region = region.isNew() ? region : regionService.readFull(stub(region));
+		if (region == null) {
+			log.debug("Region is null");
+			addActionError(getText("common.object_not_selected"));
+			return INPUT;
+		}
 
         if (isSubmit()) {
             if (!doValidate()) {
@@ -55,17 +62,13 @@ public class RegionEditAction extends FPActionSupport {
 
     private boolean doValidate() {
 
-        if (region == null) {
-            addActionError(getText("common.object_not_selected"));
-            return false;
-        }
-
 		if (countryFilter == null || countryFilter <= 0) {
-			log.warn("Incorrect country id in filter ({})", countryFilter);
+			log.debug("Incorrect country id in filter ({})", countryFilter);
 			addActionError(getText("ab.error.region.no_country"));
 		}
 
-        if (!beginDateFilter.needFilter()) {
+        if (beginDateFilter == null || !beginDateFilter.needFilter()) {
+			log.debug("Incorrect BeginDateFilter value");
             addActionError(getText("ab.error.region.no_begin_date"));
         }
 
@@ -77,7 +80,13 @@ public class RegionEditAction extends FPActionSupport {
     */
     private void updateRegion() throws FlexPayExceptionContainer {
 
-        RegionName regionName = getRegionName();
+		RegionName regionName = new RegionName();
+		for (Map.Entry<Long, String> name : names.entrySet()) {
+			String value = name.getValue();
+			Language lang = getLang(name.getKey());
+			regionName.setTranslation(new RegionNameTranslation(value, lang));
+		}
+
         region.setNameForDate(regionName, beginDateFilter.getDate());
 
         // setup region for new object
@@ -89,17 +98,25 @@ public class RegionEditAction extends FPActionSupport {
         }
     }
 
-    private RegionName getRegionName() {
+	private void initData() {
+		RegionNameTemporal temporal = region.getCurrentNameTemporal();
+		beginDateFilter.setDate(temporal != null ? temporal.getBegin() : DateUtil.now());
 
-        RegionName regionName = new RegionName();
-        for (Map.Entry<Long, String> name : names.entrySet()) {
-            String value = name.getValue();
-            Language lang = getLang(name.getKey());
-            regionName.setTranslation(new RegionNameTranslation(value, lang));
-        }
+		RegionName regionName = temporal != null ? temporal.getValue() : null;
+		if (regionName != null) {
+			for (RegionNameTranslation name : regionName.getTranslations()) {
+				names.put(name.getLang().getId(), name.getName());
+			}
+		}
 
-        return regionName;
-    }
+		for (Language lang : ApplicationConfig.getLanguages()) {
+			if (names.containsKey(lang.getId())) {
+				continue;
+			}
+			names.put(lang.getId(), "");
+		}
+
+	}
 
     /**
      * Get default error execution result
@@ -114,29 +131,9 @@ public class RegionEditAction extends FPActionSupport {
         return INPUT;
     }
 
-    private void initData() {
-        RegionNameTemporal temporal = region.getCurrentNameTemporal();
-		beginDateFilter.setDate(temporal != null ? temporal.getBegin() : DateUtil.now());
-
-		RegionName regionName = temporal != null ? temporal.getValue() : null;
-		if (regionName != null) {
-			for (RegionNameTranslation name : regionName.getTranslations()) {
-				names.put(name.getLang().getId(), name.getName());
-			}
-		}
-
-		for (Language lang : org.flexpay.common.util.config.ApplicationConfig.getLanguages()) {
-			if (names.containsKey(lang.getId())) {
-				continue;
-			}
-			names.put(lang.getId(), "");
-		}
-
-    }
-
 	@Override
 	protected void setBreadCrumbs() {
-		if (region.isNew()) {
+		if (region != null && region.isNew()) {
 			crumbNameKey = crumbCreateKey;
 		}
 		super.setBreadCrumbs();

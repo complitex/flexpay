@@ -27,9 +27,8 @@ public class TownsListAction extends FPActionWithPagerSupport<Town> {
 	@Override
 	public String doExecute() throws Exception {
 
-		if (regionFilter == null || regionFilter <= 0) {
-			log.warn("Incorrect region id in filter ({})", regionFilter);
-			return SUCCESS;
+		if (!doValidate()) {
+			return ERROR;
 		}
 
 		townSorterByName.setLang(getLanguage());
@@ -48,6 +47,26 @@ public class TownsListAction extends FPActionWithPagerSupport<Town> {
 		return SUCCESS;
 	}
 
+	private boolean doValidate() {
+
+		boolean valid = true;
+
+		if (regionFilter == null || regionFilter <= 0) {
+			log.warn("Incorrect region id in filter ({})", regionFilter);
+			valid = false;
+		}
+		if (townSorterByName == null) {
+			log.warn("TownSorterByName is null");
+			valid = false;
+		}
+		if (townSorterByType == null) {
+			log.warn("TownSorterByType is null");
+			valid = false;
+		}
+
+		return valid;
+	}
+
 	/**
 	 * Get default error execution result
 	 * <p/>
@@ -58,7 +77,7 @@ public class TownsListAction extends FPActionWithPagerSupport<Town> {
 	@NotNull
 	@Override
 	protected String getErrorResult() {
-		return SUCCESS;
+		return ERROR;
 	}
 
 	public void setRegionFilter(Long regionFilter) {

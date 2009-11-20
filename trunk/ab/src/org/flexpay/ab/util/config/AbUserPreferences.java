@@ -12,7 +12,7 @@ public class AbUserPreferences extends UserPreferences {
 	private Long buildingFilter = 0L;
 	private Long apartmentFilter = 0L;
 
-	protected AbUserPreferences() {
+	public AbUserPreferences() {
 
 	}
 

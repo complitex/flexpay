@@ -50,6 +50,13 @@ public class CountryCreateAction extends FPActionSupport {
 
 	}
 
+	private void initData() {
+		for (Language lang : ApplicationConfig.getLanguages()) {
+			names.put(lang.getId(), "");
+			shortNames.put(lang.getId(), "");
+		}
+	}
+
     /**
 	 * Get default error execution result
 	 * <p/>
@@ -61,13 +68,6 @@ public class CountryCreateAction extends FPActionSupport {
 	@Override
 	protected String getErrorResult() {
 		return INPUT;
-	}
-
-	private void initData() throws FlexPayException {
-		for (Language lang : ApplicationConfig.getLanguages()) {
-			names.put(lang.getId(), "");
-			shortNames.put(lang.getId(), "");
-		}
 	}
 
 	public Country getCountry() {
