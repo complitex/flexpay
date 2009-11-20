@@ -13,6 +13,7 @@
 
         <action name="townsListAjax" class="townsListAction">
             <result>/WEB-INF/jsp/ab/towns/towns_list.jsp</result>
+            <result name="error">/WEB-INF/jsp/ab/towns/towns_list.jsp</result>
         </action>
 
         <action name="townDelete" class="townDeleteAction">

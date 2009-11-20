@@ -141,7 +141,7 @@ public abstract class FPActionSupport extends ActionSupport implements BreadCrum
 
 	protected void setBreadCrumbs() {
 		if (getUserPreferences() == null || crumb == null) {
-			log.warn("No user preferences found or crumb. Action execution terminated.");
+			log.debug("No user preferences found or crumb. Action execution terminated.");
 			return;
 		}
 

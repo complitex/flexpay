@@ -37,7 +37,10 @@ public abstract class TestData {
 
 	// test regions
 	public static final Stub<Region> REGION_NSK = new Stub<Region>(1000L);
+	public static final Stub<Region> REGION_TSK = new Stub<Region>(1069L);
 
 	// test countries
 	public static final Stub<Country> COUNTRY_RUS = new Stub<Country>(1L);
+	public static final Stub<Country> COUNTRY_USA = new Stub<Country>(2L);
+
 }

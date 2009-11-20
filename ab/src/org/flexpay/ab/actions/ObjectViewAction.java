@@ -1,11 +1,8 @@
 package org.flexpay.ab.actions;
 
 import org.flexpay.common.actions.FPActionSupport;
-import org.flexpay.common.persistence.NameDateInterval;
-import org.flexpay.common.persistence.NameTimeDependentChild;
+import org.flexpay.common.persistence.*;
 import static org.flexpay.common.persistence.Stub.stub;
-import org.flexpay.common.persistence.TemporaryValue;
-import org.flexpay.common.persistence.Translation;
 import org.flexpay.common.service.NameTimeDependentService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
@@ -24,13 +21,17 @@ public abstract class ObjectViewAction<
 	@Override
 	public String doExecute() {
 
-		if (object.isNew()) {
+		if (object == null || object.isNew()) {
+			log.debug("Incorrect object id");
 			addActionError(getText("common.error.invalid_id"));
 			return REDIRECT_ERROR;
 		}
 
-		object = nameTimeDependentService.readFull(stub(object));
+		Stub<NTD> stub = stub(object);
+
+		object = nameTimeDependentService.readFull(stub);
 		if (object == null) {
+			log.debug("Can't get object with id {} from DB", stub.getId());
 			addActionError(getText("common.object_not_selected"));
 			return REDIRECT_ERROR;
 		}

@@ -9,7 +9,7 @@ public abstract class Roles {
 
 	public static final String BASIC = PREFIX + "BASIC";
 
-	//	<!-- Region roles -->
+	//	<!-- Country roles -->
 	public static final String COUNTRY_READ = PREFIX + "COUNTRY_READ";
 	public static final String COUNTRY_ADD = PREFIX + "COUNTRY_ADD";
 	public static final String COUNTRY_CHANGE = PREFIX + "COUNTRY_CHANGE";
@@ -44,16 +44,16 @@ public abstract class Roles {
 	public static final String STREET_TYPE_CHANGE = PREFIX + "STREET_TYPE_CHANGE";
 	public static final String STREET_TYPE_ADD = PREFIX + "STREET_TYPE_ADD";
 	public static final String STREET_TYPE_DELETE = PREFIX + "STREET_TYPE_DELETE";
-//	<!-- Building attribute type roles -->
-	public static final String BUILDING_ATTRIBUTE_TYPE_READ = PREFIX + "BUILDING_ATTRIBUTE_TYPE_READ";
-	public static final String BUILDING_ATTRIBUTE_TYPE_CHANGE = PREFIX + "BUILDING_ATTRIBUTE_TYPE_CHANGE";
-	public static final String BUILDING_ATTRIBUTE_TYPE_ADD = PREFIX + "BUILDING_ATTRIBUTE_TYPE_ADD";
-	public static final String BUILDING_ATTRIBUTE_TYPE_DELETE = PREFIX + "BUILDING_ATTRIBUTE_TYPE_DELETE";
 //	<!-- Building roles -->
 	public static final String BUILDING_READ = PREFIX + "BUILDING_READ";
 	public static final String BUILDING_CHANGE = PREFIX + "BUILDING_CHANGE";
 	public static final String BUILDING_ADD = PREFIX + "BUILDING_ADD";
 	public static final String BUILDING_DELETE = PREFIX + "BUILDING_DELETE";
+//	<!-- Building attribute type roles -->
+public static final String BUILDING_ATTRIBUTE_TYPE_READ = PREFIX + "BUILDING_ATTRIBUTE_TYPE_READ";
+public static final String BUILDING_ATTRIBUTE_TYPE_CHANGE = PREFIX + "BUILDING_ATTRIBUTE_TYPE_CHANGE";
+public static final String BUILDING_ATTRIBUTE_TYPE_ADD = PREFIX + "BUILDING_ATTRIBUTE_TYPE_ADD";
+public static final String BUILDING_ATTRIBUTE_TYPE_DELETE = PREFIX + "BUILDING_ATTRIBUTE_TYPE_DELETE";
 //	<!-- Apartment roles -->
 	public static final String APARTMENT_READ = PREFIX + "APARTMENT_READ";
 	public static final String APARTMENT_CHANGE = PREFIX + "APARTMENT_CHANGE";

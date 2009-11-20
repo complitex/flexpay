@@ -16,16 +16,21 @@ import java.util.List;
 public class CountriesListAction extends FPActionSupport {
 
 	private List<Country> countries = list();
-
 	private CountrySorter countrySorter = new CountrySorter();
+
 	private CountryService countryService;
 
 	@NotNull
 	@Override
 	public String doExecute() throws Exception {
 
+		if (!doValidate()) {
+			return ERROR;
+		}
+
 		countrySorter.setLang(getLanguage());
-		countries = countryService.find(arrayStack(), list(countrySorter), new Page<Country>());
+
+		countries = countryService.find(arrayStack(), list(countrySorter), new Page<Country>(1000));
 		if (log.isDebugEnabled()) {
 			log.debug("Total countries found: {}", countries.size());
 		}
@@ -36,6 +41,18 @@ public class CountriesListAction extends FPActionSupport {
 		}
 
 		return SUCCESS;
+	}
+
+	private boolean doValidate() {
+
+		boolean valid = true;
+
+		if (countrySorter == null) {
+			log.warn("CountrySorter is null");
+			valid = false;
+		}
+
+		return valid;
 	}
 
 	/**

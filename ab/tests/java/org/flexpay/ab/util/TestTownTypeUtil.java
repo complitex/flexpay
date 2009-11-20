@@ -6,6 +6,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public interface TestTownTypeUtil {
+
     @Nullable
     TownType create(@NotNull String name, @NotNull String shortName);
 
@@ -13,4 +14,5 @@ public interface TestTownTypeUtil {
     TownTypeTranslation addTranslation(@NotNull TownType townType, @NotNull String name, @NotNull String shortName, @NotNull String langIsoCode);
 
     void delete(@NotNull TownType townType);
+
 }

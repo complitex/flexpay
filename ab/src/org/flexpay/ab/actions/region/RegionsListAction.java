@@ -17,18 +17,19 @@ public class RegionsListAction extends FPActionWithPagerSupport<Region> {
 
 	private Long countryFilter;
 	private List<Region> regions = list();
-
 	private RegionSorter regionSorter = new RegionSorter();
+
 	private RegionService regionService;
 
 	@NotNull
 	@Override
 	public String doExecute() throws Exception {
 
-		if (countryFilter == null || countryFilter <= 0) {
-			log.warn("Incorrect country id in filter ({})", countryFilter);
-			return SUCCESS;
+		if (!doValidate()) {
+			return ERROR;
 		}
+
+		regionSorter.setLang(getLanguage());
 
 		regions = regionService.find(arrayStack(new CountryFilter(countryFilter)), list(regionSorter), getPager());
 		if (log.isDebugEnabled()) {
@@ -43,6 +44,22 @@ public class RegionsListAction extends FPActionWithPagerSupport<Region> {
 		return SUCCESS;
 	}
 
+	private boolean doValidate() {
+
+		boolean valid = true;
+
+		if (countryFilter == null || countryFilter <= 0) {
+			log.warn("Incorrect country id in filter ({})", countryFilter);
+			valid = false;
+		}
+		if (regionSorter == null) {
+			log.warn("RegionSorter is null");
+			valid = false;
+		}
+
+		return valid;
+	}
+
 	/**
 	 * Get default error execution result
 	 * <p/>
@@ -53,7 +70,7 @@ public class RegionsListAction extends FPActionWithPagerSupport<Region> {
 	@NotNull
 	@Override
 	protected String getErrorResult() {
-		return SUCCESS;
+		return ERROR;
 	}
 
 	public void setCountryFilter(Long countryFilter) {
