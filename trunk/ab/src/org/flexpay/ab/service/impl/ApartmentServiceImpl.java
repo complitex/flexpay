@@ -186,6 +186,19 @@ public class ApartmentServiceImpl implements ApartmentService, ParentService<Apa
 	}
 
 	/**
+	 * Read apartment with its full hierarchical structure:
+	 * country-region-street-building
+	 *
+	 * @param apartmentStub Apartment stub
+	 * @return Object if found, or <code>null</code> otherwise
+	 */
+	@Override
+	public Apartment readWithHierarchy(@NotNull Stub<Apartment> apartmentStub) {
+		List<Apartment> apartments = apartmentDao.findWithFullHierarchy(apartmentStub.getId());
+		return apartments.isEmpty() ? Apartment.newInstance() : apartments.get(0);
+	}
+
+	/**
 	 * Try to find apartment by building and number
 	 *
 	 * @param building Building

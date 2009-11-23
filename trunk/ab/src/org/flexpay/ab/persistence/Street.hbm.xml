@@ -224,6 +224,19 @@
               )
     </query>
 
+    <query name="Street.findWithFullHierarchy">
+        select distinct s
+        from Street s
+            inner join fetch s.parent t
+            left join fetch t.parent r
+            left join fetch r.parent
+            left join fetch s.nameTemporals nt
+            left join fetch nt.value v
+            left join fetch v.translations tr
+            left join fetch s.districts
+        where s.id=? and s.status=0 and nt.invalidDate='2100-12-31'
+    </query>
+
     <query name="StreetName.readFull">
         select distinct n
         from StreetName n

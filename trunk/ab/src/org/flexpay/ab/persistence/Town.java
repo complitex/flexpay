@@ -240,6 +240,10 @@ public class Town extends NameTimeDependentChild<TownName, TownNameTemporal> {
 		return (Region) getParent();
 	}
 
+	public Country getCountry() {
+		return getRegion().getCountry();
+	}
+
 	public void setName(TownName name) {
 		setNameForDate(name, DateUtil.now());
 	}

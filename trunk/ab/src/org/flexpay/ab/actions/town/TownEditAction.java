@@ -22,6 +22,7 @@ import java.util.Map;
 public class TownEditAction extends FPActionSupport {
 
 	private Town town = new Town();
+	private Long countryFilter;
     private Long regionFilter;
     private TownTypeFilter townTypeFilter = new TownTypeFilter();
     private BeginDateFilter beginDateFilter = new BeginDateFilter();
@@ -49,7 +50,7 @@ public class TownEditAction extends FPActionSupport {
 			return REDIRECT_SUCCESS;
 		}
 
-        town = town.isNew() ? town : townService.readFull(stub(town));
+        town = town.isNew() ? town : townService.readWithHierarchy(stub(town));
 		if (town == null) {
 			log.debug("Town is null");
 			addActionError(getText("common.object_not_selected"));
@@ -69,6 +70,12 @@ public class TownEditAction extends FPActionSupport {
         }
 
         initData();
+
+		if (town.isNotNew()) {
+			regionFilter = town.getRegion().getId();
+			countryFilter = town.getCountry().getId();
+		}
+
         return INPUT;
     }
 
@@ -170,6 +177,10 @@ public class TownEditAction extends FPActionSupport {
 			crumbNameKey = crumbCreateKey;
 		}
 		super.setBreadCrumbs();
+	}
+
+	public Long getCountryFilter() {
+		return countryFilter;
 	}
 
 	public Long getRegionFilter() {

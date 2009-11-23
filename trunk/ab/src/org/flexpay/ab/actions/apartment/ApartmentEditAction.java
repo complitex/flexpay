@@ -14,6 +14,10 @@ import org.springframework.beans.factory.annotation.Required;
 public class ApartmentEditAction extends FPActionSupport {
 
 	private Apartment apartment = Apartment.newInstance();
+	private Long countryFilter;
+	private Long regionFilter;
+	private Long townFilter;
+	private Long streetFilter;
 	private Long buildingFilter;
 	private String apartmentNumber;
 
@@ -30,7 +34,7 @@ public class ApartmentEditAction extends FPActionSupport {
 			return REDIRECT_SUCCESS;
 		}
 
-		apartment = apartment.isNew() ? apartment : apartmentService.readFull(stub(apartment));
+		apartment = apartment.isNew() ? apartment : apartmentService.readWithHierarchy(stub(apartment));
 
 		if (isSubmit()) {
 			if (!doValidate()) {
@@ -44,6 +48,14 @@ public class ApartmentEditAction extends FPActionSupport {
 		}
 
 		apartmentNumber = apartment.getNumber();
+
+		if (apartment.isNotNew()) {
+			buildingFilter = apartment.getDefaultBuildings().getId();
+			streetFilter = apartment.getDefaultStreet().getId();
+			townFilter = apartment.getTown().getId();
+			regionFilter = apartment.getRegion().getId();
+			countryFilter = apartment.getCountry().getId();
+		}
 
 		return INPUT;
 
@@ -94,6 +106,22 @@ public class ApartmentEditAction extends FPActionSupport {
 	@Override
 	protected String getErrorResult() {
 		return INPUT;
+	}
+
+	public Long getCountryFilter() {
+		return countryFilter;
+	}
+
+	public Long getRegionFilter() {
+		return regionFilter;
+	}
+
+	public Long getTownFilter() {
+		return townFilter;
+	}
+
+	public Long getStreetFilter() {
+		return streetFilter;
 	}
 
 	public Long getBuildingFilter() {

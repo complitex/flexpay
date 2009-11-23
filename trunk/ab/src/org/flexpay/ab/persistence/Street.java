@@ -225,6 +225,16 @@ public class Street extends NameTimeDependentChild<StreetName, StreetNameTempora
 		return new Stub<Town>(getTown());
 	}
 
+	@NotNull
+	public Region getRegion() {
+		return getTown().getRegion();
+	}
+
+	@NotNull
+	public Country getCountry() {
+		return getTown().getCountry();
+	}
+
 	public void setName(StreetName name) {
 		setNameForDate(name, DateUtil.now());
 	}

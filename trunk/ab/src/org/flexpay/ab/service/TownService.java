@@ -8,6 +8,7 @@ import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.sorter.ObjectSorter;
 import org.flexpay.common.service.NameTimeDependentService;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.security.annotation.Secured;
 
 import java.util.Collection;
@@ -58,6 +59,17 @@ public interface TownService extends NameTimeDependentService<TownName, TownName
 	@Secured (Roles.TOWN_CHANGE)
 	@NotNull
 	Town update(@NotNull Town town) throws FlexPayExceptionContainer;
+
+	/**
+	 * Read town with its full hierarchical structure:
+	 * country-region
+	 *
+	 * @param townStub Town stub
+	 * @return Object if found, or <code>null</code> otherwise
+	 */
+	@Secured ({Roles.TOWN_READ})
+	@Nullable
+	Town readWithHierarchy(@NotNull Stub<Town> townStub);
 
 	/**
 	 * Lookup towns by query and region id.

@@ -207,6 +207,30 @@ public class StreetServiceImpl extends NameTimeDependentServiceImpl<
 	}
 
 	/**
+	 * Read street with its full hierarchical structure:
+	 * country-region-town
+	 *
+	 * @param streetStub Street stub
+	 * @return Object if found, or <code>null</code> otherwise
+	 */
+	@Nullable
+	@Override
+	public Street readWithHierarchy(@NotNull Stub<Street> streetStub) {
+		List<Street> streets = streetDao.findWithFullHierarchy(streetStub.getId());
+
+		if (streets.isEmpty()) {
+			return null;
+		}
+
+		Street street = streets.get(0);
+
+		street.setTypeTemporals(treeSet(streetDao.findTypeTemporals(streetStub.getId())));
+		street.getDistricts().addAll(streetDao.findDistricts(streetStub.getId()));
+
+		return street;
+	}
+
+	/**
 	 * Lookup streets by query and town id.
 	 * Query is a string which may contains in folow string:
 	 * <p/>

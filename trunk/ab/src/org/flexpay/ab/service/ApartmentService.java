@@ -80,6 +80,17 @@ public interface ApartmentService {
 	Apartment readWithPersons(@NotNull Stub<Apartment> stub);
 
 	/**
+	 * Read apartment with its full hierarchical structure:
+	 * country-region-street-building
+	 *
+	 * @param apartmentStub Apartment stub
+	 * @return Object if found, or <code>null</code> otherwise
+	 */
+	@Secured ({Roles.APARTMENT_READ})
+	@Nullable
+	Apartment readWithHierarchy(@NotNull Stub<Apartment> apartmentStub);
+
+	/**
 	 * Try to find apartment by building and number
 	 *
 	 * @param building Building

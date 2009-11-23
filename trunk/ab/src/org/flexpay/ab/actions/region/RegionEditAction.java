@@ -57,6 +57,7 @@ public class RegionEditAction extends FPActionSupport {
         }
 
         initData();
+
         return INPUT;
     }
 
@@ -114,6 +115,10 @@ public class RegionEditAction extends FPActionSupport {
 				continue;
 			}
 			names.put(lang.getId(), "");
+		}
+
+		if (region.isNotNew()) {
+			countryFilter = region.getParentStub().getId();
 		}
 
 	}
