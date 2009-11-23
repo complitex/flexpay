@@ -5,6 +5,7 @@ import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.orgs.persistence.Cashbox;
 import org.flexpay.orgs.service.CashboxService;
+import org.flexpay.payments.util.config.PaymentsUserPreferences;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
@@ -27,7 +28,7 @@ public class GetIdentityCookieAction extends FPActionSupport implements ServletR
 	protected String doExecute() throws Exception {
 
 		if (isSubmit()) {
-			if (validatePaymentPointId()) {
+			if (validateCashboxId()) {
 				Cookie cookie = new Cookie(CASHBOX_ID, cashboxId);
 				cookie.setMaxAge(SIX_YEARS_IN_SECONDS);
 				response.addCookie(cookie);
@@ -44,13 +45,28 @@ public class GetIdentityCookieAction extends FPActionSupport implements ServletR
 		return SUCCESS;
 	}
 
-	public boolean validatePaymentPointId() {
+	public boolean validateCashboxId() {
 
 		try {
 			Cashbox cashbox = cashboxService.read(new Stub<Cashbox>(Long.parseLong(cashboxId)));
 			if (cashbox == null) {
-				addActionError(getText("payments.errors.cashbox_id_is_bad", cashboxId));
+				addActionError(getText("payments.errors.cashbox_id_is_bad"));
+				return false;
 			}
+
+			// validating payment point correspondance
+			Long userPaymentPointId = ((PaymentsUserPreferences) getUserPreferences()).getPaymentPointId();
+			if (userPaymentPointId == null) {
+				addActionError(getText("payments.errors.user_payment_point_is_not_set"));
+				return false;
+			}
+
+			Long cashboxPaymentPointId = cashbox.getPaymentPoint().getId();
+			if (!cashboxPaymentPointId.equals(userPaymentPointId)) {
+				addActionError(getText("payments.errors.casbox_id_is_bad_payment_point"));
+				return false;
+			}
+
 		} catch (NumberFormatException nfe) {
 			addActionError(getText("payments.errors.cashbox_id_must_be_a_number"));
 		}
