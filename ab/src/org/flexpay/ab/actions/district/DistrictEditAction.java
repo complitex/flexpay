@@ -17,6 +17,8 @@ import java.util.Map;
 public class DistrictEditAction extends FPActionSupport {
 
 	private District district = new District();
+	private Long countryFilter;
+	private Long regionFilter;
 	private Long townFilter;
 	private BeginDateFilter beginDateFilter = new BeginDateFilter();
 
@@ -34,7 +36,7 @@ public class DistrictEditAction extends FPActionSupport {
 			return REDIRECT_SUCCESS;
 		}
 
-		district = district.isNew() ? district : districtService.readFull(stub(district));
+		district = district.isNew() ? district : districtService.readWithHierarchy(stub(district));
 
 		if (isSubmit()) {
 			if (!doValidate()) {
@@ -48,6 +50,12 @@ public class DistrictEditAction extends FPActionSupport {
 		}
 
 		initData();
+
+		if (district.isNotNew()) {
+			townFilter = district.getTown().getId();
+			regionFilter = district.getRegion().getId();
+			countryFilter = district.getCountry().getId();
+		}
 
 		return INPUT;
 
@@ -150,6 +158,14 @@ public class DistrictEditAction extends FPActionSupport {
 
 	public void setDistrict(District district) {
 		this.district = district;
+	}
+
+	public Long getCountryFilter() {
+		return countryFilter;
+	}
+
+	public Long getRegionFilter() {
+		return regionFilter;
 	}
 
 	public Long getTownFilter() {

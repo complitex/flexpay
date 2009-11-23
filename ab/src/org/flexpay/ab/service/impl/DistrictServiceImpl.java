@@ -186,6 +186,20 @@ public class DistrictServiceImpl extends NameTimeDependentServiceImpl<
 	}
 
 	/**
+	 * Read district with its full hierarchical structure:
+	 * country-region-town
+	 *
+	 * @param districtStub District stub
+	 * @return Object if found, or <code>null</code> otherwise
+	 */
+	@Nullable
+	@Override
+	public District readWithHierarchy(@NotNull Stub<District> districtStub) {
+		List<District> districts = districtDao.findWithFullHierarchy(districtStub.getId());
+		return districts.isEmpty() ? null : districts.get(0);
+	}
+
+	/**
 	 * Lookup districts by query and town id.
 	 * Query is a string which may contains in folow string:
 	 * <p/>

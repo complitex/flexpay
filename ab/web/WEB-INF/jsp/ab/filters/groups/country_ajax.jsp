@@ -12,7 +12,7 @@
         FF.createFilter("country", {
             action: "<s:url action="countryFilterAjax" namespace="/dicts" includeParams="none" />",
             <s:if test="#readonly">display:"input-readonly",</s:if>
-            defaultValue: "<s:text name="%{userPreferences.countryFilter}" />"
+            defaultValue: "<s:property value="countryFilter != null ? countryFilter : userPreferences.countryFilter" />"
         });
     });
 

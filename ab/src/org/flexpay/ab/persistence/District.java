@@ -76,6 +76,16 @@ public class District extends NameTimeDependentChild<DistrictName, DistrictNameT
 		return new Stub<Town>(getTown());
 	}
 
+	@NotNull
+	public Region getRegion() {
+		return getTown().getRegion();
+	}
+
+	@NotNull
+	public Country getCountry() {
+		return getTown().getCountry();
+	}
+
 	@Override
 	public boolean equals(Object obj) {
 		return this == obj || obj instanceof District && super.equals(obj);

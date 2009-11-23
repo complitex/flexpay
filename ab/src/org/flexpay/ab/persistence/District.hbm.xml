@@ -121,6 +121,18 @@
             and d.parent.id=? and tr.name=? and tr.lang.id=?
     </query>
 
+    <query name="District.findWithFullHierarchy">
+        select distinct d
+        from District d
+            inner join fetch d.parent t
+            left join fetch t.parent r
+            left join fetch r.parent
+            left join fetch d.nameTemporals nt
+            left join fetch nt.value v
+            left join fetch v.translations
+        where d.id=? and nt.invalidDate='2100-12-31'
+    </query>
+
     <query name="DistrictName.readFull">
         select distinct n
         from DistrictName n

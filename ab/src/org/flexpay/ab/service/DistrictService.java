@@ -8,6 +8,7 @@ import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.sorter.ObjectSorter;
 import org.flexpay.common.service.NameTimeDependentService;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.springframework.security.annotation.Secured;
 
 import java.util.Collection;
@@ -58,6 +59,17 @@ public interface DistrictService extends NameTimeDependentService<DistrictName, 
 	@Secured (Roles.DISTRICT_CHANGE)
 	@NotNull
 	District update(@NotNull District district) throws FlexPayExceptionContainer;
+
+	/**
+	 * Read district with its full hierarchical structure:
+	 * country-region-town
+	 *
+	 * @param districtStub District stub
+	 * @return Object if found, or <code>null</code> otherwise
+	 */
+	@Secured ({Roles.DISTRICT_READ})
+	@Nullable
+	District readWithHierarchy(@NotNull Stub<District> districtStub);
 
 	/**
 	 * Lookup districts by query and town id.

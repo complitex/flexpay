@@ -33,4 +33,6 @@ public interface ApartmentDao extends GenericDao<Apartment, Long> {
 	 */
 	List<Apartment> findWithPersonsFull(Long apartmentId);
 
+	List<Apartment> findWithFullHierarchy(Long apartmentId);
+
 }

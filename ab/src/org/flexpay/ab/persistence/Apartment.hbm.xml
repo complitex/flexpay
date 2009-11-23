@@ -86,4 +86,18 @@
 		where a.id=? and p.status=0 and pi.status=0
 	</query>
 
+    <query name="Apartment.findWithFullHierarchy">
+        select distinct a
+        from Apartment a
+            left join fetch a.apartmentNumbers
+            inner join fetch a.building b
+            inner join fetch b.district
+            left join fetch b.buildingses bs
+            left join fetch bs.street s
+            left join fetch s.parent t
+            left join fetch t.parent r
+            left join fetch r.parent 
+        where a.id=?
+    </query>
+
 </hibernate-mapping>

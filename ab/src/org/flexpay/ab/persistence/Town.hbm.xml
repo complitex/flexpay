@@ -130,6 +130,20 @@
             and t.parent.id=? and tr.name=? and tr.lang.id=?
     </query>
 
+    <query name="Town.findWithFullHierarchy">
+        select distinct t
+        from Town t
+            inner join fetch t.parent r
+            left join fetch r.parent
+            left join fetch t.nameTemporals nt
+            left join fetch nt.value ntv
+            left join fetch ntv.translations
+            left join fetch t.typeTemporals tt
+            left join fetch tt.value ttv
+            left join fetch ttv.translations
+        where t.id=? and nt.invalidDate='2100-12-31' and tt.invalidDate='2100-12-31'
+    </query>
+
 	<query name="TownName.readFull">
 		select distinct n
 		from TownName n

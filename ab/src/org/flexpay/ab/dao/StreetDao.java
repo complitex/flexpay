@@ -15,6 +15,8 @@ public interface StreetDao extends NameTimeDependentDao<Street, Long> {
 
 	List<Street> findByTownAndNameAndType(Long townId, String name, Long typeId);
 
+	List<Street> findWithFullHierarchy(Long streetId);
+
 	List<StreetTypeTemporal> findTypeTemporals(Long streetId);
 
 	List<District> findDistricts(Long streetId);

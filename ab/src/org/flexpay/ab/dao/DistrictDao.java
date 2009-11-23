@@ -13,4 +13,6 @@ public interface DistrictDao extends NameTimeDependentDao<District, Long> {
 
 	List<District> findByTownAndNameAndLanguage(Long townId, String name, Long languageId);
 
+	List<District> findWithFullHierarchy(Long districtId);
+
 }

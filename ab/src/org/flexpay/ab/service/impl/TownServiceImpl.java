@@ -189,6 +189,20 @@ public class TownServiceImpl extends NameTimeDependentServiceImpl<
 	}
 
 	/**
+	 * Read town with its full hierarchical structure:
+	 * country-region
+	 *
+	 * @param townStub Town stub
+	 * @return Object if found, or <code>null</code> otherwise
+	 */
+	@Nullable
+	@Override
+	public Town readWithHierarchy(@NotNull Stub<Town> townStub) {
+		List<Town> towns = townDao.findWithFullHierarchy(townStub.getId());
+		return towns.isEmpty() ? null : towns.get(0);
+	}
+
+	/**
 	 * Lookup towns by query and region id.
 	 * Query is a string which may contains in folow string:
 	 * <p/>

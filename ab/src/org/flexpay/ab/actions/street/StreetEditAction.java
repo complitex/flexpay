@@ -22,6 +22,8 @@ import java.util.Map;
 public class StreetEditAction extends FPActionSupport {
 
 	private Street street = new Street();
+	private Long countryFilter;
+	private Long regionFilter;
 	private Long townFilter;
 	private StreetTypeFilter streetTypeFilter = new StreetTypeFilter();
 	private BeginDateFilter beginDateFilter = new BeginDateFilter();
@@ -55,6 +57,13 @@ public class StreetEditAction extends FPActionSupport {
 		}
 
 		initData();
+
+		if (street.isNotNew()) {
+			townFilter = street.getTown().getId();
+			regionFilter = street.getRegion().getId();
+			countryFilter = street.getCountry().getId();
+		}
+
 		return INPUT;
 
 	}
@@ -173,6 +182,14 @@ public class StreetEditAction extends FPActionSupport {
 
 	public void setStreet(Street street) {
 		this.street = street;
+	}
+
+	public Long getCountryFilter() {
+		return countryFilter;
+	}
+
+	public Long getRegionFilter() {
+		return regionFilter;
 	}
 
 	public Long getTownFilter() {
