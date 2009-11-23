@@ -6,8 +6,9 @@ import org.flexpay.ab.service.AddressService;
 import org.flexpay.ab.service.PersonService;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.service.importexport.CorrectionsService;
+import org.flexpay.common.service.importexport.MasterIndexService;
 import org.flexpay.common.util.CollectionUtils;
-import static org.flexpay.common.util.config.ApplicationConfig.getInstanceId;
 import org.flexpay.orgs.persistence.ServiceProvider;
 import org.flexpay.orgs.service.ServiceProviderService;
 import org.flexpay.payments.actions.CashboxCookieActionSupport;
@@ -15,7 +16,6 @@ import org.flexpay.payments.persistence.Service;
 import org.flexpay.payments.persistence.quittance.ConsumerAttributes;
 import org.flexpay.payments.persistence.quittance.QuittanceDetailsRequest;
 import org.flexpay.payments.persistence.quittance.QuittanceDetailsResponse;
-import static org.flexpay.payments.persistence.quittance.QuittanceDetailsResponse.*;
 import org.flexpay.payments.service.QuittanceDetailsFinder;
 import org.flexpay.payments.service.SPService;
 import org.jetbrains.annotations.NotNull;
@@ -23,6 +23,8 @@ import org.springframework.beans.factory.annotation.Required;
 
 import java.math.BigDecimal;
 import java.util.List;
+
+import static org.flexpay.payments.persistence.quittance.QuittanceDetailsResponse.*;
 
 public class SearchQuittanceAction extends CashboxCookieActionSupport {
 
@@ -42,6 +44,8 @@ public class SearchQuittanceAction extends CashboxCookieActionSupport {
 	private QuittanceDetailsFinder quittanceDetailsFinder;
 	private SPService spService;
 	private ServiceProviderService serviceProviderService;
+	private MasterIndexService masterIndexService;
+	private CorrectionsService correctionsService;
 
 	@NotNull
 	protected String doExecute() throws Exception {
@@ -70,7 +74,7 @@ public class SearchQuittanceAction extends CashboxCookieActionSupport {
 			return QuittanceDetailsRequest.apartmentNumberRequest(searchCriteria);
 		} else {
 			throw new FlexPayException("Bad search request: type must be one of: " + SEARCH_TYPE_ADDRESS + ", "
-									   + SEARCH_TYPE_EIRC_ACCOUNT + ", " + SEARCH_TYPE_QUITTANCE_NUMBER);
+					+ SEARCH_TYPE_EIRC_ACCOUNT + ", " + SEARCH_TYPE_QUITTANCE_NUMBER);
 		}
 	}
 
@@ -132,11 +136,6 @@ public class SearchQuittanceAction extends CashboxCookieActionSupport {
 		return service.isNotSubservice();
 	}
 
-	private Long getLocalId(String masterIndex) {
-		// TODO how to properly get service id by index? current implementation is hack
-		return Long.parseLong(masterIndex.substring(getInstanceId().length() + 1)); // +1 is for '-' delimiter
-	}
-
 	private String getErrorMessage(int errorCode) {
 		switch (errorCode) {
 			case CODE_ERROR_ACCOUNT_NOT_FOUND:
@@ -196,15 +195,18 @@ public class SearchQuittanceAction extends CashboxCookieActionSupport {
 	}
 
 	public Long getServiceId(String serviceMasterIndex) {
-		return getLocalId(serviceMasterIndex);
+		Stub<Service> stub = correctionsService.findCorrection(serviceMasterIndex,
+				Service.class, masterIndexService.getMasterSourceDescriptionStub());
+		return stub != null ? stub.getId() : null;
 	}
 
 	public String getPersonFio(QuittanceInfo quittanceInfo) {
 
 		String personMasterIndex = quittanceInfo.getPersonMasterIndex();
 		if (personMasterIndex != null) {
-			Long personId = getLocalId(personMasterIndex);
-			Person person = personService.readFull(new Stub<Person>(personId));
+			Stub<Person> stub = correctionsService.findCorrection(personMasterIndex,
+					Person.class, masterIndexService.getMasterSourceDescriptionStub());
+			Person person = personService.readFull(stub);
 			return person.getFIO();
 		} else {
 			return quittanceInfo.getPersonFio();
@@ -219,8 +221,9 @@ public class SearchQuittanceAction extends CashboxCookieActionSupport {
 
 		String apartmentMasterIndex = quittanceInfo.getApartmentMasterIndex();
 		if (apartmentMasterIndex != null) {
-			Long apartmentId = getLocalId(apartmentMasterIndex);
-			return addressService.getAddress(new Stub<Apartment>(apartmentId), getLocale());
+			Stub<Apartment> stub = correctionsService.findCorrection(apartmentMasterIndex,
+					Apartment.class, masterIndexService.getMasterSourceDescriptionStub());
+			return addressService.getAddress(stub, getLocale());
 		} else {
 			return quittanceInfo.getAddress();
 		}
@@ -299,6 +302,16 @@ public class SearchQuittanceAction extends CashboxCookieActionSupport {
 	@Required
 	public void setPersonService(PersonService personService) {
 		this.personService = personService;
+	}
+
+	@Required
+	public void setMasterIndexService(MasterIndexService masterIndexService) {
+		this.masterIndexService = masterIndexService;
+	}
+
+	@Required
+	public void setCorrectionsService(CorrectionsService correctionsService) {
+		this.correctionsService = correctionsService;
 	}
 
 	public static class ServiceFullIndexUtil {

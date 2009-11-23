@@ -31,6 +31,8 @@
 		  p:serviceProviderService-ref="serviceProviderService"
 		  p:addressService-ref="addressService"
 		  p:personService-ref="personService"
+		  p:masterIndexService-ref="masterIndexService"
+		  p:correctionsService-ref="correctionsService"
 		  p:crumbNameKey="payments.crumbs.search_quittances"
 		  scope="prototype" />
 
