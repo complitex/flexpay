@@ -79,7 +79,7 @@ public class QuittanceDetailsFinderImpl implements QuittanceDetailsFinder {
 		if (stub == null) {
 			// todo remove this hack
 			Long stubId = Long.parseLong(apartmentMasterIndex, 10);
-			if (apartmentMasterIndex.equals(stubId.toString())) {
+			if (apartmentMasterIndex.equals(stubId.toString()) && stubId > 0) {
 				stub = new Stub<Apartment>(stubId);
 			}
 		}

@@ -3,6 +3,7 @@ package org.flexpay.payments.actions.quittance;
 import org.flexpay.ab.persistence.Apartment;
 import org.flexpay.ab.persistence.Person;
 import org.flexpay.ab.service.AddressService;
+import org.flexpay.ab.service.ApartmentService;
 import org.flexpay.ab.service.PersonService;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
@@ -40,6 +41,7 @@ public class SearchQuittanceAction extends CashboxCookieActionSupport {
 
 	// required services
 	private AddressService addressService;
+	private ApartmentService apartmentService;
 	private PersonService personService;
 	private QuittanceDetailsFinder quittanceDetailsFinder;
 	private SPService spService;
@@ -71,14 +73,17 @@ public class SearchQuittanceAction extends CashboxCookieActionSupport {
 		} else if (SEARCH_TYPE_QUITTANCE_NUMBER.equals(searchType)) {
 			return QuittanceDetailsRequest.quittanceNumberRequest(searchCriteria);
 		} else if (SEARCH_TYPE_ADDRESS.equals(searchType)) {
-			return QuittanceDetailsRequest.apartmentNumberRequest(searchCriteria);
+			Apartment apartment = apartmentService.readFull(
+					new Stub<Apartment>(Long.parseLong(searchCriteria)));
+			String indx =masterIndexService.getMasterIndex(apartment);
+			return QuittanceDetailsRequest.apartmentNumberRequest(indx);
 		} else {
 			throw new FlexPayException("Bad search request: type must be one of: " + SEARCH_TYPE_ADDRESS + ", "
 					+ SEARCH_TYPE_EIRC_ACCOUNT + ", " + SEARCH_TYPE_QUITTANCE_NUMBER);
 		}
 	}
 
-	// eliminates services with non-positive outgiong balances
+	// eliminates services with non-positive outgoing balances
 	private void filterNegativeSumms() {
 
 		List<QuittanceInfo> filteredInfos = CollectionUtils.list();
@@ -312,6 +317,11 @@ public class SearchQuittanceAction extends CashboxCookieActionSupport {
 	@Required
 	public void setCorrectionsService(CorrectionsService correctionsService) {
 		this.correctionsService = correctionsService;
+	}
+
+	@Required
+	public void setApartmentService(ApartmentService apartmentService) {
+		this.apartmentService = apartmentService;
 	}
 
 	public static class ServiceFullIndexUtil {
