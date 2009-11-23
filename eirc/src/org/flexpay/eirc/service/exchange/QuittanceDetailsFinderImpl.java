@@ -78,9 +78,13 @@ public class QuittanceDetailsFinderImpl implements QuittanceDetailsFinder {
 				apartmentMasterIndex, Apartment.class, masterIndexService.getMasterSourceDescriptionStub());
 		if (stub == null) {
 			// todo remove this hack
-			stub = new Stub<Apartment>(Long.parseLong(apartmentMasterIndex));
+			Long stubId = Long.parseLong(apartmentMasterIndex, 10);
+			if (apartmentMasterIndex.equals(stubId.toString())) {
+				stub = new Stub<Apartment>(stubId);
+			}
 		}
 		if (stub == null) {
+			log.debug("No apartment found by master index {}", apartmentMasterIndex);
 			return getError(CODE_ERROR_APARTMENT_NOT_FOUND);
 		}
 
