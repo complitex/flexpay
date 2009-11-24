@@ -1,7 +1,7 @@
 package org.flexpay.ab.actions.person;
 
-import org.flexpay.ab.persistence.*;
-import org.flexpay.ab.service.*;
+import org.flexpay.ab.persistence.Apartment;
+import org.flexpay.ab.service.ApartmentService;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.util.DateUtil;
@@ -23,28 +23,42 @@ public class PersonEditRegistrationFormAction extends FPActionSupport {
 	private Long buildingFilter;
 	private Long apartmentFilter;
 
-	private RegionService regionService;
-	private TownService townService;
-	private StreetService streetService;
-	private BuildingService buildingService;
 	private ApartmentService apartmentService;
 
 	@NotNull
 	@Override
 	public String doExecute() throws Exception {
 
-		if (apartmentFilter != null && apartmentFilter > 0) {
-			Building building = apartmentService.getBuilding(new Stub<Apartment>(apartmentFilter));
-			BuildingAddress address = buildingService.findFirstAddress(new Stub<Building>(building));
-			Street street = streetService.readFull(address.getStreetStub());
-			Town town = townService.readFull(street.getTownStub());
-			Region region = regionService.readFull(town.getRegionStub());
-			buildingFilter = address.getId();
-			streetFilter = address.getStreetStub().getId();
-			townFilter = town.getId();
-			regionFilter = region.getId();
-			countryFilter = region.getCountryStub().getId();
+		if (apartmentFilter == null || apartmentFilter <= 0) {
+			log.debug("Incorrect apartment id");
+			return SUCCESS;
 		}
+
+		if (beginDate == null) {
+			log.debug("BeginDate parameter is null");
+			beginDate = DateUtil.now();
+		}
+		if (endDate == null) {
+			log.debug("EndDate parameter is null");
+			endDate = getFutureInfinite();
+		}
+
+		Stub<Apartment> stub = new Stub<Apartment>(apartmentFilter);
+		Apartment apartment = apartmentService.readWithHierarchy(stub);
+
+		if (apartment == null) {
+			log.debug("Can't get apartment with id {} from DB", stub.getId());
+			return SUCCESS;
+		} else if (apartment.isNotActive()) {
+			log.debug("Apartment with id {} is disabled", stub.getId());
+			return SUCCESS;
+		}
+
+		buildingFilter = apartment.getBuildingStub().getId();
+		streetFilter = apartment.getDefaultStreet().getId();
+		townFilter = apartment.getTown().getId();
+		regionFilter = apartment.getRegion().getId();
+		countryFilter = apartment.getCountry().getId();
 
 		return SUCCESS;
 	}
@@ -109,26 +123,6 @@ public class PersonEditRegistrationFormAction extends FPActionSupport {
 	@Required
 	public void setApartmentService(ApartmentService apartmentService) {
 		this.apartmentService = apartmentService;
-	}
-
-	@Required
-	public void setRegionService(RegionService regionService) {
-		this.regionService = regionService;
-	}
-
-	@Required
-	public void setTownService(TownService townService) {
-		this.townService = townService;
-	}
-
-	@Required
-	public void setStreetService(StreetService streetService) {
-		this.streetService = streetService;
-	}
-
-	@Required
-	public void setBuildingService(BuildingService buildingService) {
-		this.buildingService = buildingService;
 	}
 
 }

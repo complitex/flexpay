@@ -31,6 +31,10 @@ public class CountryViewAction extends FPActionSupport {
 			log.debug("Can't get country with id {} from DB", stub.getId());
 			addActionError(getText("common.object_not_selected"));
 			return REDIRECT_ERROR;
+		} else if (country.isNotActive()) {
+			log.debug("Country with id {} is disabled", stub.getId());
+			addActionError(getText("common.object_not_selected"));
+			return REDIRECT_ERROR;
 		}
 
 		return SUCCESS;

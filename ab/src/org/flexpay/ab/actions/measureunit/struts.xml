@@ -13,6 +13,7 @@
         </action>
 
         <action name="measureUnitEdit" class="measureUnitEditAction">
+            <result name="redirectError" type="redirect-action">measureUnitsList</result>
             <result name="redirectSuccess" type="redirect-action">
                 <param name="actionName">measureUnitView</param>
                 <param name="parse">true</param>

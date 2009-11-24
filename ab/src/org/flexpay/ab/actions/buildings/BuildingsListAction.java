@@ -16,17 +16,21 @@ import java.util.List;
 public class BuildingsListAction extends FPActionWithPagerSupport<BuildingAddress> {
 
 	private Long streetFilter;
+	private BuildingsSorter buildingsSorter = new BuildingsSorter();
 	private List<BuildingAddress> buildings = list();
 
-	private BuildingsSorter buildingsSorter = new BuildingsSorter();
 	private BuildingService buildingService;
 
 	@NotNull
 	@Override
 	public String doExecute() throws Exception {
 
-		if (streetFilter == null || streetFilter <= 0) {
-			log.warn("Incorrect street id in filter ({})", streetFilter);
+		if (buildingsSorter == null) {
+			log.debug("BuildingsSorter is null");
+			buildingsSorter = new BuildingsSorter();
+		}
+
+		if (!doValidate()) {
 			return SUCCESS;
 		}
 
@@ -41,6 +45,18 @@ public class BuildingsListAction extends FPActionWithPagerSupport<BuildingAddres
 		}
 
 		return SUCCESS;
+	}
+
+	private boolean doValidate() {
+
+		boolean valid = true;
+
+		if (streetFilter == null || streetFilter <= 0) {
+			log.warn("Incorrect street id in filter ({})", streetFilter);
+			valid = false;
+		}
+
+		return valid;
 	}
 
 	/**

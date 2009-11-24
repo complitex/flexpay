@@ -18,6 +18,12 @@ public class MeasureUnitDeleteAction extends FPActionSupport {
 	@Override
 	protected String doExecute() throws Exception {
 
+		if (objectIds == null) {
+			log.debug("Incorrect object ids");
+			addActionError(getText("common.error.invalid_id"));
+			return SUCCESS;
+		}
+
 		measureUnitService.disable(objectIds);
 
 		return SUCCESS;

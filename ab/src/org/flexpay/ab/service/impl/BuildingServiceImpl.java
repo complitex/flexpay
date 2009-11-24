@@ -261,6 +261,20 @@ public class BuildingServiceImpl implements BuildingService, ParentService<Build
 	}
 
 	/**
+	 * Read building address with its full hierarchical structure:
+	 * country-region-town-street
+	 *
+	 * @param addressStub Building address stub
+	 * @return Object if found, or <code>null</code> otherwise
+	 */
+	@Nullable
+	@Override
+	public BuildingAddress readWithHierarchy(@NotNull Stub<BuildingAddress> addressStub) {
+		List<BuildingAddress> addresses = buildingsDao.findWithFullHierarchy(addressStub.getId());
+		return addresses.isEmpty() ? null : addresses.get(0);
+	}
+
+	/**
 	 * Read building addresses collection by theirs ids
 	 *
  	 * @param addressIds BuildingAddress ids

@@ -21,7 +21,7 @@
 
         <action name="buildingView" class="buildingViewAction">
             <result type="tiles">ab.building.view</result>
-            <result name="redirectSuccess" type="redirect-action">buildingsList</result>
+            <result name="redirectError" type="redirect-action">buildingsList</result>
         </action>
 
 		<action name="buildingCreate" class="buildingCreateAction">
@@ -64,6 +64,7 @@
         </action>
 
 		<action name="addressAttributeTypeEdit" class="addressAttributeTypeEditAction">
+            <result name="redirectError" type="redirect-action">addressAttributeTypesList</result>
 			<result name="input" type="tiles">ab.buildings_attribute_type.edit</result>
             <result name="redirectSuccess" type="redirect-action">
                 <param name="actionName">addressAttributeTypeView</param>

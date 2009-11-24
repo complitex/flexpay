@@ -9,13 +9,12 @@
 
 		<action name="personView" class="personViewAction">
 			<result type="tiles">ab.person.view</result>
+            <result name="redirectError" type="redirect-action">personsList</result>
 		</action>
 
 		<action name="personEdit" class="personEditAction">
 			<result name="input" type="tiles">ab.person.edit</result>
-			<result name="redirectError" type="redirect-action">
-				<param name="actionName">personsList</param>
-			</result>
+            <result name="redirectError" type="redirect-action">personsList</result>
 		</action>
 
         <action name="personsList" class="personsListPageAction">

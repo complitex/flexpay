@@ -5,6 +5,7 @@ import org.flexpay.ab.service.RegionService;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Language;
+import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.persistence.filter.BeginDateFilter;
 import static org.flexpay.common.util.CollectionUtils.treeMap;
@@ -32,17 +33,31 @@ public class RegionEditAction extends FPActionSupport {
 	@Override
     protected String doExecute() throws Exception {
 
-		if (region.getId() == null) {
-			log.debug("Region id not set");
+		if (region == null || region.getId() == null) {
+			log.debug("Incorrect region id");
 			addActionError(getText("common.object_not_selected"));
-			return REDIRECT_SUCCESS;
+			return REDIRECT_ERROR;
 		}
 
-        region = region.isNew() ? region : regionService.readFull(stub(region));
-		if (region == null) {
-			log.debug("Region is null");
-			addActionError(getText("common.object_not_selected"));
-			return INPUT;
+		if (region.isNotNew()) {
+			Stub<Region> stub = stub(region);
+			region = regionService.readFull(stub);
+
+			if (region == null) {
+				log.debug("Can't get region with id {} from DB", stub.getId());
+				addActionError(getText("common.object_not_selected"));
+				return REDIRECT_ERROR;
+			} else if (region.isNotActive()) {
+				log.debug("Region with id {} is disabled", stub.getId());
+				addActionError(getText("common.object_not_selected"));
+				return REDIRECT_ERROR;
+			}
+
+		}
+
+		if (names == null) {
+			log.debug("Incorrect \"names\" parameter");
+			names = treeMap();
 		}
 
         if (isSubmit()) {
@@ -100,6 +115,7 @@ public class RegionEditAction extends FPActionSupport {
     }
 
 	private void initData() {
+
 		RegionNameTemporal temporal = region.getCurrentNameTemporal();
 		beginDateFilter.setDate(temporal != null ? temporal.getBegin() : DateUtil.now());
 

@@ -3,6 +3,7 @@ package org.flexpay.ab.actions.identity;
 import org.flexpay.ab.persistence.IdentityType;
 import org.flexpay.ab.service.IdentityTypeService;
 import org.flexpay.common.actions.FPActionSupport;
+import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
@@ -17,15 +18,22 @@ public class IdentityTypeViewAction extends FPActionSupport {
 	@Override
     public String doExecute() throws Exception {
 
-		if (identityType.isNew()) {
-			log.error(getText("common.error.invalid_id"));
+		if (identityType == null || identityType.isNew()) {
+			log.debug("Incorrect identity type id");
+			addActionError(getText("common.error.invalid_id"));
 			return REDIRECT_ERROR;
 		}
 
-        identityType = identityTypeService.readFull(stub(identityType));
+		Stub<IdentityType> stub = stub(identityType);
+        identityType = identityTypeService.readFull(stub);
 
 		if (identityType == null) {
-			log.error(getText("common.object_not_selected"));
+			log.debug("Can't get identity type with id {} from DB", stub.getId());
+			addActionError(getText("common.object_not_selected"));
+			return REDIRECT_ERROR;
+		} else if (identityType.isNotActive()) {
+			log.debug("Identity type with id {} is disabled", stub.getId());
+			addActionError(getText("common.object_not_selected"));
 			return REDIRECT_ERROR;
 		}
 

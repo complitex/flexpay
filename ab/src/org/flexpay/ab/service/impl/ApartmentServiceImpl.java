@@ -192,10 +192,11 @@ public class ApartmentServiceImpl implements ApartmentService, ParentService<Apa
 	 * @param apartmentStub Apartment stub
 	 * @return Object if found, or <code>null</code> otherwise
 	 */
+	@Nullable
 	@Override
 	public Apartment readWithHierarchy(@NotNull Stub<Apartment> apartmentStub) {
 		List<Apartment> apartments = apartmentDao.findWithFullHierarchy(apartmentStub.getId());
-		return apartments.isEmpty() ? Apartment.newInstance() : apartments.get(0);
+		return apartments.isEmpty() ? null : apartments.get(0);
 	}
 
 	/**

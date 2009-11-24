@@ -24,8 +24,9 @@ public class CountriesListAction extends FPActionSupport {
 	@Override
 	public String doExecute() throws Exception {
 
-		if (!doValidate()) {
-			return ERROR;
+		if (countrySorter == null) {
+			log.debug("CountrySorter is null");
+			countrySorter = new CountrySorter();
 		}
 
 		countrySorter.setLang(getLanguage());
@@ -41,18 +42,6 @@ public class CountriesListAction extends FPActionSupport {
 		}
 
 		return SUCCESS;
-	}
-
-	private boolean doValidate() {
-
-		boolean valid = true;
-
-		if (countrySorter == null) {
-			log.warn("CountrySorter is null");
-			valid = false;
-		}
-
-		return valid;
 	}
 
 	/**

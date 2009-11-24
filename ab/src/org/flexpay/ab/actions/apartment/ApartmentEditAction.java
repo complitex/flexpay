@@ -29,12 +29,27 @@ public class ApartmentEditAction extends FPActionSupport {
 	@Override
 	public String doExecute() throws Exception {
 
-		if (apartment.getId() == null) {
+		if (apartment == null || apartment.getId() == null) {
+			log.debug("Incorrect apartment id");
 			addActionError(getText("common.object_not_selected"));
-			return REDIRECT_SUCCESS;
+			return REDIRECT_ERROR;
 		}
 
-		apartment = apartment.isNew() ? apartment : apartmentService.readWithHierarchy(stub(apartment));
+		if (apartment.isNotNew()) {
+			Stub<Apartment> stub = stub(apartment);
+			apartment = apartmentService.readWithHierarchy(stub);
+
+			if (apartment == null) {
+				log.debug("Can't get apartment with id {} from DB", stub.getId());
+				addActionError(getText("common.object_not_selected"));
+				return REDIRECT_ERROR;
+			} else if (apartment.isNotActive()) {
+				log.debug("Apartment with id {} is disabled", stub.getId());
+				addActionError(getText("common.object_not_selected"));
+				return REDIRECT_ERROR;
+			}
+
+		}
 
 		if (isSubmit()) {
 			if (!doValidate()) {
@@ -89,7 +104,7 @@ public class ApartmentEditAction extends FPActionSupport {
 
 	@Override
 	protected void setBreadCrumbs() {
-		if (apartment.isNew()) {
+		if (apartment != null && apartment.isNew()) {
 			crumbNameKey = crumbCreateKey;
 		}
 		super.setBreadCrumbs();

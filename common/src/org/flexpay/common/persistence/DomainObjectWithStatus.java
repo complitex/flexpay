@@ -35,6 +35,10 @@ public class DomainObjectWithStatus extends DomainObject implements ObjectWithSt
 		return status == STATUS_ACTIVE;
 	}
 
+	public boolean isNotActive() {
+		return status == STATUS_DISABLED;
+	}
+
 	@Override
 	public String toString() {
 		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).

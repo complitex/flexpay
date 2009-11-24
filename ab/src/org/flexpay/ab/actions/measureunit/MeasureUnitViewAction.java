@@ -2,6 +2,7 @@ package org.flexpay.ab.actions.measureunit;
 
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.persistence.MeasureUnit;
+import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.service.MeasureUnitService;
 import org.jetbrains.annotations.NotNull;
@@ -17,15 +18,22 @@ public class MeasureUnitViewAction extends FPActionSupport {
 	@Override
 	public String doExecute() throws Exception {
 
-		if (measureUnit.isNew()) {
-			log.error(getText("common.error.invalid_id"));
+		if (measureUnit == null || measureUnit.isNew()) {
+			log.debug("Incorrect measure unit id");
+			addActionError(getText("common.error.invalid_id"));
 			return REDIRECT_ERROR;
 		}
 
-		measureUnit = measureUnitService.readFull(stub(measureUnit));
+		Stub<MeasureUnit> stub = stub(measureUnit);
+		measureUnit = measureUnitService.readFull(stub);
 
 		if (measureUnit == null) {
-			log.error(getText("common.object_not_selected"));
+			log.debug("Can't get measure unit with id {} from DB", stub.getId());
+			addActionError(getText("common.object_not_selected"));
+			return REDIRECT_ERROR;
+		} else if (measureUnit.isNotActive()) {
+			log.debug("Measure unit with id {} is disabled", stub.getId());
+			addActionError(getText("common.object_not_selected"));
 			return REDIRECT_ERROR;
 		}
 

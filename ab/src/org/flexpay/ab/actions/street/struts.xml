@@ -25,6 +25,7 @@
 		</action>
 
 		<action name="streetEdit" class="streetEditAction">
+            <result name="redirectError" type="redirect-action">streetsList</result>
             <result name="redirectSuccess" type="redirect-action">
                 <param name="actionName">streetView</param>
                 <param name="parse">true</param>
@@ -52,6 +53,7 @@
 		</action>
 
 		<action name="streetTypeEdit" class="streetTypeEditAction">
+            <result name="redirectError" type="redirect-action">streetTypesList</result>
             <result name="redirectSuccess" type="redirect-action">
                 <param name="actionName">streetTypeView</param>
                 <param name="parse">true</param>

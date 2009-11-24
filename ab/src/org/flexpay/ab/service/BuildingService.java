@@ -89,6 +89,17 @@ public interface BuildingService {
 	BuildingAddress readFullAddress(@NotNull Stub<BuildingAddress> addressStub);
 
 	/**
+	 * Read building address with its full hierarchical structure:
+	 * country-region-town-street
+	 *
+	 * @param addressStub Building address stub
+	 * @return Object if found, or <code>null</code> otherwise
+	 */
+	@Secured ({Roles.BUILDING_READ})
+	@Nullable
+	BuildingAddress readWithHierarchy(@NotNull Stub<BuildingAddress> addressStub);
+
+	/**
 	 * Read building addresses collection by theirs ids
 	 *
  	 * @param addressIds BuildingAddress ids

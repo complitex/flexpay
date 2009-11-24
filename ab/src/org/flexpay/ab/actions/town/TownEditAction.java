@@ -7,6 +7,7 @@ import org.flexpay.ab.service.TownTypeService;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Language;
+import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.persistence.filter.BeginDateFilter;
 import static org.flexpay.common.util.CollectionUtils.treeMap;
@@ -45,17 +46,32 @@ public class TownEditAction extends FPActionSupport {
     protected String doExecute() throws Exception {
 
 		if (town == null || town.getId() == null) {
-			log.debug("Town id not set");
+			log.debug("Incorrect town id");
 			addActionError(getText("common.object_not_selected"));
-			return REDIRECT_SUCCESS;
+			return REDIRECT_ERROR;
 		}
 
-        town = town.isNew() ? town : townService.readWithHierarchy(stub(town));
-		if (town == null) {
-			log.debug("Town is null");
-			addActionError(getText("common.object_not_selected"));
-			return INPUT;
+		if (town.isNotNew()) {
+			Stub<Town> stub = stub(town);
+			town = townService.readWithHierarchy(stub);
+
+			if (town == null) {
+				log.debug("Can't get town with id {} from DB", stub.getId());
+				addActionError(getText("common.object_not_selected"));
+				return REDIRECT_ERROR;
+			} else if (town.isNotActive()) {
+				log.debug("Town with id {} is disabled", stub.getId());
+				addActionError(getText("common.object_not_selected"));
+				return REDIRECT_ERROR;
+			}
+
 		}
+
+		if (names == null) {
+			log.debug("Incorrect \"names\" parameter");
+			names = treeMap();
+		}
+
         initFilters();
 
         if (isSubmit()) {
@@ -86,8 +102,8 @@ public class TownEditAction extends FPActionSupport {
 			addActionError(getText("ab.error.town.no_region"));
 		}
 
-        if (!townTypeFilter.needFilter()) {
-			log.debug("Incorrect townTypeFilter value ({})", townTypeFilter.getSelectedId());
+        if (townTypeFilter == null || !townTypeFilter.needFilter()) {
+			log.debug("Incorrect townTypeFilter value");
             addActionError(getText("ab.error.town.no_type"));
         }
 

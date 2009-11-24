@@ -1,8 +1,10 @@
 package org.flexpay.ab.actions.person;
 
 import org.flexpay.ab.persistence.Person;
+import org.flexpay.ab.persistence.PersonIdentity;
 import org.flexpay.ab.service.PersonService;
 import org.flexpay.common.actions.FPActionSupport;
+import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
@@ -18,11 +20,26 @@ public class PersonEditPageAction extends FPActionSupport {
 	@Override
 	public String doExecute() throws Exception {
 
-		person = person.isNew() ? person : personService.readFull(stub(person));
-
-		if (person == null) {
-			addActionError(getText("ab.error.person.invalid_id"));
+		if (person == null || person.getId() == null) {
+			log.debug("Incorrect person id");
+			addActionError(getText("common.error.invalid_id"));
 			return REDIRECT_ERROR;
+		}
+
+		if (person.isNotNew()) {
+			Stub<Person> stub = stub(person);
+			person = personService.readFull(stub);
+
+			if (person == null) {
+				log.debug("Can't get person with id {} from DB", stub.getId());
+				addActionError(getText("common.object_not_selected"));
+				return REDIRECT_ERROR;
+			} else if (person.isNotActive()) {
+				log.debug("Person with id {} is disabled", stub.getId());
+				addActionError(getText("common.object_not_selected"));
+				return REDIRECT_ERROR;
+			}
+
 		}
 
 		return INPUT;
@@ -43,10 +60,15 @@ public class PersonEditPageAction extends FPActionSupport {
 
 	@Override
 	protected void setBreadCrumbs() {
-		if (person.isNew()) {
+		if (person != null && person.isNew()) {
 			crumbNameKey = crumbCreateKey;
 		}
 		super.setBreadCrumbs();
+	}
+
+	public PersonIdentity getFIOIdentity() {
+		PersonIdentity fio = person.getFIOIdentity();
+		return fio != null ? fio : new PersonIdentity();
 	}
 
 	public Person getPerson() {

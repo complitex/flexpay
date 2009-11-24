@@ -4,7 +4,6 @@ import org.flexpay.ab.persistence.Country;
 import org.flexpay.ab.persistence.CountryTranslation;
 import org.flexpay.ab.service.CountryService;
 import org.flexpay.common.actions.FPActionSupport;
-import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Language;
 import static org.flexpay.common.util.CollectionUtils.treeMap;
 import org.flexpay.common.util.config.ApplicationConfig;
@@ -24,6 +23,15 @@ public class CountryCreateAction extends FPActionSupport {
 	@NotNull
 	@Override
 	public String doExecute() throws Exception {
+
+		if (names == null) {
+			log.debug("Incorrect \"names\" parameter");
+			names = treeMap();
+		}
+		if (shortNames == null) {
+			log.debug("Incorrect \"shortNames\" parameter");
+			shortNames = treeMap();
+		}
 
 		if (isNotSubmit()) {
 			initData();

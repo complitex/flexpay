@@ -23,6 +23,10 @@ public class StreetFilterAjaxAction extends FilterAjaxAction {
 	@Override
 	public String doExecute() throws FlexPayException {
 
+		if (parents == null) {
+			return SUCCESS;
+		}
+
 		Long townId;
 
 		try {

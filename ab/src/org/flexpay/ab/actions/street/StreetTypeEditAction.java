@@ -5,6 +5,7 @@ import org.flexpay.ab.persistence.StreetTypeTranslation;
 import org.flexpay.ab.service.StreetTypeService;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.persistence.Language;
+import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.persistence.Stub.stub;
 import static org.flexpay.common.util.CollectionUtils.treeMap;
 import org.flexpay.common.util.config.ApplicationConfig;
@@ -26,16 +27,35 @@ public class StreetTypeEditAction extends FPActionSupport {
 	@Override
 	public String doExecute() throws Exception {
 
-		if (streetType.getId() == null) {
-			addActionError(getText("common.object_not_selected"));
-			return REDIRECT_SUCCESS;
+		if (streetType == null || streetType.getId() == null) {
+			log.debug("Incorrect street type id");
+			addActionError(getText("common.error.invalid_id"));
+			return REDIRECT_ERROR;
 		}
 
-		streetType = streetType.isNew() ? streetType : streetTypeService.readFull(stub(streetType));
+		if (streetType.isNotNew()) {
+			Stub<StreetType> stub = stub(streetType);
+			streetType = streetTypeService.readFull(stub);
 
-		if (streetType == null) {
-			addActionError(getText("common.object_not_selected"));
-			return REDIRECT_SUCCESS;
+			if (streetType == null) {
+				log.debug("Can't get street type with id {} from DB", stub.getId());
+				addActionError(getText("common.object_not_selected"));
+				return REDIRECT_ERROR;
+			} else if (streetType.isNotActive()) {
+				log.debug("Street type with id {} is disabled", stub.getId());
+				addActionError(getText("common.object_not_selected"));
+				return REDIRECT_ERROR;
+			}
+
+		}
+
+		if (names == null) {
+			log.debug("Incorrect \"names\" parameter");
+			names = treeMap();
+		}
+		if (shortNames == null) {
+			log.debug("Incorrect \"shortNames\" parameter");
+			shortNames = treeMap();
 		}
 
 		if (isNotSubmit()) {
@@ -92,7 +112,7 @@ public class StreetTypeEditAction extends FPActionSupport {
 
 	@Override
 	protected void setBreadCrumbs() {
-		if (streetType.isNew()) {
+		if (streetType != null && streetType.isNew()) {
 			crumbNameKey = crumbCreateKey;
 		}
 		super.setBreadCrumbs();

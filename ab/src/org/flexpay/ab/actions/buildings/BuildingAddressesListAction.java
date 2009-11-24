@@ -26,16 +26,25 @@ public class BuildingAddressesListAction extends FPActionSupport {
 	@Override
 	public String doExecute() throws Exception {
 
-		if (building.isNew()) {
+		if (building == null || building.isNew()) {
+			log.debug("Incorrect building id");
 			addActionError(getText("common.error.invalid_id"));
 			return SUCCESS;
 		}
 
-		building = buildingService.readFull(stub(building));
+		Stub<Building> buildingStub = stub(building);
+		building = buildingService.readFull(buildingStub);
+
 		if (building == null) {
-			log.error(getText("common.object_not_selected"));
+			log.debug("Can't get building with id {} from DB", buildingStub.getId());
+			addActionError(getText("common.object_not_selected"));
+			return SUCCESS;
+		} else if (building.isNotActive()) {
+			log.debug("Building with id {} is disabled", buildingStub.getId());
+			addActionError(getText("common.object_not_selected"));
 			return SUCCESS;
 		}
+
 		addresses = buildingService.readFullAddresses(collectionIds(building.getBuildingses()), true);
 		if (log.isDebugEnabled()) {
 			log.debug("Total building addresses found: {}", addresses.size());
