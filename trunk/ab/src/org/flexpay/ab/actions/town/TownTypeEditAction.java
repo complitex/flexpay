@@ -5,6 +5,7 @@ import org.flexpay.ab.persistence.TownTypeTranslation;
 import org.flexpay.ab.service.TownTypeService;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.persistence.Language;
+import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.persistence.Stub.stub;
 import static org.flexpay.common.util.CollectionUtils.treeMap;
 import org.flexpay.common.util.config.ApplicationConfig;
@@ -26,16 +27,35 @@ public class TownTypeEditAction extends FPActionSupport {
 	@Override
 	public String doExecute() throws Exception {
 
-		if (townType.getId() == null) {
-			addActionError(getText("common.object_not_selected"));
-			return REDIRECT_SUCCESS;
+		if (townType == null || townType.getId() == null) {
+			log.debug("Incorrect town type id");
+			addActionError(getText("common.error.invalid_id"));
+			return REDIRECT_ERROR;
 		}
 
-		townType = townType.isNew() ? townType : townTypeService.readFull(stub(townType));
+		if (townType.isNotNew()) {
+			Stub<TownType> stub = stub(townType);
+			townType = townTypeService.readFull(stub);
 
-		if (townType == null) {
-			addActionError(getText("common.object_not_selected"));
-			return REDIRECT_SUCCESS;
+			if (townType == null) {
+				log.debug("Can't get town type with id {} from DB", stub.getId());
+				addActionError(getText("common.object_not_selected"));
+				return REDIRECT_ERROR;
+			} else if (townType.isNotActive()) {
+				log.debug("Town type with id {} is disabled", stub.getId());
+				addActionError(getText("common.object_not_selected"));
+				return REDIRECT_ERROR;
+			}
+
+		}
+
+		if (names == null) {
+			log.debug("Incorrect \"names\" parameter");
+			names = treeMap();
+		}
+		if (shortNames == null) {
+			log.debug("Incorrect \"shortNames\" parameter");
+			shortNames = treeMap();
 		}
 
 		if (isNotSubmit()) {
@@ -93,7 +113,7 @@ public class TownTypeEditAction extends FPActionSupport {
 
 	@Override
 	protected void setBreadCrumbs() {
-		if (townType.isNew()) {
+		if (townType != null && townType.isNew()) {
 			crumbNameKey = crumbCreateKey;
 		}
 		super.setBreadCrumbs();

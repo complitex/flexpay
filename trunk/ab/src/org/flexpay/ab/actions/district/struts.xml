@@ -25,6 +25,7 @@
 		</action>
 
 		<action name="districtEdit" class="districtEditAction">
+            <result name="redirectError" type="redirect-action">districtsList</result>
             <result name="redirectSuccess" type="redirect-action">
                 <param name="actionName">districtView</param>
                 <param name="parse">true</param>

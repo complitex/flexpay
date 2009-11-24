@@ -4,6 +4,7 @@ import org.flexpay.ab.persistence.*;
 import org.flexpay.ab.service.*;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.exception.FlexPayException;
+import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.persistence.Stub.stub;
 import static org.flexpay.common.util.CollectionUtils.list;
 import org.jetbrains.annotations.NotNull;
@@ -34,12 +35,17 @@ public class ApartmentRegistrationAction extends FPActionSupport {
 	@Override
 	public String doExecute() throws FlexPayException {
 
-		apartment = apartmentService.readWithPersons(stub(apartment));
-		if (apartment == null) {
-			addActionError(getText("ab.error.apartment.not_found"));
+		if (apartment == null || apartment.getId() == null) {
+			log.debug("Incorrect apartment id");
+			addActionError(getText("common.object_not_selected"));
 			return SUCCESS;
 		}
-		if (apartment.isNew()) {
+
+		Stub<Apartment> stub = stub(apartment);
+		apartment = apartmentService.readWithPersons(stub);
+
+		if (apartment.getPersonRegistrations().isEmpty()) {
+			log.debug("In apartment with id {} no registered persons", stub.getId());
 			addActionMessage(getText("ab.apartment.hasnt_registered_persons"));
 			return SUCCESS;
 		}

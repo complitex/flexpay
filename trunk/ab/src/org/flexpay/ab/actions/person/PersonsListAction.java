@@ -25,6 +25,11 @@ public class PersonsListAction extends FPActionWithPagerSupport<Person> {
 	@Override
 	protected String doExecute() throws Exception {
 
+		if (personSearchFilter == null) {
+			log.debug("PersonSearchFilter parameter is null");
+			personSearchFilter = new PersonSearchFilter();
+		}
+
 		if (!personSearchFilter.needFilter()) {
 			ArrayStack filters = parentService == null ? null :
 								 parentService.initFilters(getFilters(), getUserPreferences().getLocale());

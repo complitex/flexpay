@@ -16,21 +16,26 @@ import java.util.List;
 public class DistrictsListAction extends FPActionWithPagerSupport<District> {
 
 	private Long townFilter;
+	private DistrictSorter districtSorter = new DistrictSorter();
 	private List<District> districts = list();
 
-	private DistrictSorter districtSorter = new DistrictSorter();
 	private DistrictService districtService;
 
 	@NotNull
 	@Override
 	public String doExecute() throws Exception {
 
-		if (townFilter == null || townFilter <= 0) {
-			log.warn("Incorrect town id in filter ({})", townFilter);
+		if (districtSorter == null) {
+			log.debug("DistrictSorter is null");
+			districtSorter = new DistrictSorter();
+		}
+
+		if (!doValidate()) {
 			return SUCCESS;
 		}
 
 		districtSorter.setLang(getLanguage());
+
 		districts = districtService.find(arrayStack(new TownFilter(townFilter)), list(districtSorter), getPager());
 		if (log.isDebugEnabled()) {
 			log.debug("Total districts found: {}", districts.size());
@@ -42,6 +47,18 @@ public class DistrictsListAction extends FPActionWithPagerSupport<District> {
 		}
 
 		return SUCCESS;
+	}
+
+	private boolean doValidate() {
+
+		boolean valid = true;
+
+		if (townFilter == null || townFilter <= 0) {
+			log.warn("Incorrect town id in filter ({})", townFilter);
+			valid = false;
+		}
+
+		return valid;
 	}
 
 	/**

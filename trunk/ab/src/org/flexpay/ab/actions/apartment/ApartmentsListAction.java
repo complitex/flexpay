@@ -26,8 +26,12 @@ public class ApartmentsListAction extends FPActionWithPagerSupport<Apartment> {
 	@Override
 	public String doExecute() throws Exception {
 
-		if (buildingFilter == null || buildingFilter <= 0) {
-			log.warn("Incorrect building id in filter ({})", buildingFilter);
+		if (apartmentSorter == null) {
+			log.debug("ApartmentSorter is null");
+			apartmentSorter = new ApartmentSorter();
+		}
+
+		if (!doValidate()) {
 			return SUCCESS;
 		}
 
@@ -42,6 +46,18 @@ public class ApartmentsListAction extends FPActionWithPagerSupport<Apartment> {
 		}
 
 		return SUCCESS;
+	}
+
+	private boolean doValidate() {
+
+		boolean valid = true;
+
+		if (buildingFilter == null || buildingFilter <= 0) {
+			log.debug("Incorrect building id in filter ({})", buildingFilter);
+			valid = false;
+		}
+
+		return valid;
 	}
 
 	/**

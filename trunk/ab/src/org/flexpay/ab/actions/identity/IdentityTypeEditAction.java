@@ -5,6 +5,7 @@ import org.flexpay.ab.persistence.IdentityTypeTranslation;
 import org.flexpay.ab.service.IdentityTypeService;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.persistence.Language;
+import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.persistence.Stub.stub;
 import static org.flexpay.common.util.CollectionUtils.treeMap;
 import static org.flexpay.common.util.config.ApplicationConfig.getLanguages;
@@ -25,16 +26,31 @@ public class IdentityTypeEditAction extends FPActionSupport {
 	@Override
 	public String doExecute() throws Exception {
 
-		if (identityType.getId() == null) {
-			addActionError(getText("common.object_not_selected"));
-			return REDIRECT_SUCCESS;
+		if (identityType == null || identityType.getId() == null) {
+			log.debug("Identity type id not set");
+			addActionError(getText("common.error.invalid_id"));
+			return REDIRECT_ERROR;
 		}
 
-		identityType = identityType.isNew() ? identityType : identityTypeService.readFull(stub(identityType));
+		if (identityType.isNotNew()) {
+			Stub<IdentityType> stub = stub(identityType);
+			identityType = identityTypeService.readFull(stub);
 
-		if (identityType == null) {
-			addActionError(getText("common.object_not_selected"));
-			return REDIRECT_SUCCESS;
+			if (identityType == null) {
+				log.debug("Can't get identity type with id {} from DB", stub.getId());
+				addActionError(getText("common.object_not_selected"));
+				return REDIRECT_ERROR;
+			} else if (identityType.isNotActive()) {
+				log.debug("Identity type with id {} is disabled", stub.getId());
+				addActionError(getText("common.object_not_selected"));
+				return REDIRECT_ERROR;
+			}
+
+		}
+
+		if (names == null) {
+			log.debug("Incorrect \"names\" parameter");
+			names = treeMap();
 		}
 
 		if (isNotSubmit()) {
@@ -42,7 +58,6 @@ public class IdentityTypeEditAction extends FPActionSupport {
 			return INPUT;
 		}
 
-		// init translations
 		for (Map.Entry<Long, String> name : names.entrySet()) {
 			String value = name.getValue();
 			Language lang = getLang(name.getKey());
@@ -88,7 +103,7 @@ public class IdentityTypeEditAction extends FPActionSupport {
 
 	@Override
 	protected void setBreadCrumbs() {
-		if (identityType.isNew()) {
+		if (identityType != null && identityType.isNew()) {
 			crumbNameKey = crumbCreateKey;
 		}
 		super.setBreadCrumbs();

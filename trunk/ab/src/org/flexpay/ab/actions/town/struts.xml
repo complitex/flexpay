@@ -13,7 +13,6 @@
 
         <action name="townsListAjax" class="townsListAction">
             <result>/WEB-INF/jsp/ab/towns/towns_list.jsp</result>
-            <result name="error">/WEB-INF/jsp/ab/towns/towns_list.jsp</result>
         </action>
 
         <action name="townDelete" class="townDeleteAction">
@@ -26,6 +25,7 @@
 		</action>
 
 		<action name="townEdit" class="townEditAction">
+            <result name="redirectError" type="redirect-action">townsList</result>
 			<result name="redirectSuccess" type="redirect-action">
 				<param name="actionName">townView</param>
 				<param name="parse">true</param>
@@ -44,6 +44,7 @@
 		</action>
 
 		<action name="townTypeEdit" class="townTypeEditAction">
+            <result name="redirectError" type="redirect-action">townTypesList</result>
             <result name="redirectSuccess" type="redirect-action">
                 <param name="actionName">townTypeView</param>
                 <param name="parse">true</param>

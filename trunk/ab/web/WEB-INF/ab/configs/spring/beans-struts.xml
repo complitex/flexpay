@@ -200,9 +200,6 @@
 		  class="org.flexpay.ab.actions.buildings.BuildingAddressEditAction"
 		  p:buildingService-ref="buildingService"
 		  p:addressAttributeTypeService-ref="addressAttributeTypeService"
-		  p:streetService-ref="streetService"
-		  p:townService-ref="townService"
-		  p:regionService-ref="regionService"
 		  p:districtService-ref="districtService"
 		  p:crumbNameKey="ab.crumbs.building_address_create"
 		  p:crumbCreateKey="ab.crumbs.building_address_edit"
@@ -481,10 +478,6 @@
 
     <bean id="personEditRegistrationFormAction"
           class="org.flexpay.ab.actions.person.PersonEditRegistrationFormAction"
-          p:regionService-ref="regionService"
-          p:townService-ref="townService"
-          p:streetService-ref="streetService"
-          p:buildingService-ref="buildingService"
           p:apartmentService-ref="apartmentService"
           scope="prototype" />
 

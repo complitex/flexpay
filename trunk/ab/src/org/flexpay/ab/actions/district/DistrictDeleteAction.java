@@ -18,6 +18,12 @@ public class DistrictDeleteAction extends FPActionSupport {
 	@Override
 	public String doExecute() throws Exception {
 
+		if (objectIds == null) {
+			log.debug("Incorrect object ids");
+			addActionError(getText("common.error.invalid_id"));
+			return SUCCESS;
+		}
+
 		districtService.disable(objectIds);
 
 		return SUCCESS;

@@ -4,6 +4,7 @@ import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.persistence.Language;
 import org.flexpay.common.persistence.MeasureUnit;
 import org.flexpay.common.persistence.MeasureUnitName;
+import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.service.MeasureUnitService;
 import static org.flexpay.common.util.CollectionUtils.treeMap;
@@ -25,16 +26,31 @@ public class MeasureUnitEditAction extends FPActionSupport {
 	@Override
 	protected String doExecute() throws Exception {
 
-		if (measureUnit.getId() == null) {
-			addActionError(getText("common.object_not_selected"));
-			return REDIRECT_SUCCESS;
+		if (measureUnit == null || measureUnit.getId() == null) {
+			log.debug("Incorrect measure unit id");
+			addActionError(getText("common.error.invalid_id"));
+			return REDIRECT_ERROR;
 		}
 
-		measureUnit = measureUnit.isNew() ? measureUnit : measureUnitService.readFull(stub(measureUnit));
+		if (measureUnit.isNotNew()) {
+			Stub<MeasureUnit> stub = stub(measureUnit);
+			measureUnit = measureUnitService.readFull(stub);
 
-		if (measureUnit == null) {
-			addActionError(getText("common.object_not_selected"));
-			return REDIRECT_SUCCESS;
+			if (measureUnit == null) {
+				log.debug("Can't get measure unit with id {} from DB", stub.getId());
+				addActionError(getText("common.object_not_selected"));
+				return REDIRECT_ERROR;
+			} else if (measureUnit.isNotActive()) {
+				log.debug("Measure unit with id {} is disabled", stub.getId());
+				addActionError(getText("common.object_not_selected"));
+				return REDIRECT_ERROR;
+			}
+
+		}
+
+		if (names == null) {
+			log.debug("Incorrect \"names\" parameter");
+			names = treeMap();
 		}
 
 		if (isNotSubmit()) {
@@ -53,6 +69,8 @@ public class MeasureUnitEditAction extends FPActionSupport {
 		} else {
 			measureUnitService.update(measureUnit);
 		}
+
+		addActionMessage(getText("common.measure_unit.saved"));
 
 		return REDIRECT_SUCCESS;
 	}
@@ -85,7 +103,7 @@ public class MeasureUnitEditAction extends FPActionSupport {
 
 	@Override
 	protected void setBreadCrumbs() {
-		if (measureUnit.isNew()) {
+		if (measureUnit != null && measureUnit.isNew()) {
 			crumbNameKey = crumbCreateKey;
 		}
 		super.setBreadCrumbs();

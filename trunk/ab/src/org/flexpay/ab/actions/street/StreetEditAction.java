@@ -7,6 +7,7 @@ import org.flexpay.ab.service.StreetTypeService;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Language;
+import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.persistence.filter.BeginDateFilter;
 import static org.flexpay.common.util.CollectionUtils.treeMap;
@@ -37,12 +38,33 @@ public class StreetEditAction extends FPActionSupport {
 	@Override
 	protected String doExecute() throws Exception {
 
-		if (street.getId() == null) {
+		if (street == null || street.getId() == null) {
+			log.debug("Incorrect street id");
 			addActionError(getText("common.object_not_selected"));
-			return REDIRECT_SUCCESS;
+			return REDIRECT_ERROR;
 		}
 
-		street = street.isNew() ? street : streetService.readFull(stub(street));
+		if (street.isNotNew()) {
+			Stub<Street> stub = stub(street);
+			street = streetService.readWithHierarchy(stub);
+
+			if (street == null) {
+				log.debug("Can't get street with id {} from DB", stub.getId());
+				addActionError(getText("common.object_not_selected"));
+				return REDIRECT_ERROR;
+			} else if (street.isNotActive()) {
+				log.debug("Street with id {} is disabled", stub.getId());
+				addActionError(getText("common.object_not_selected"));
+				return REDIRECT_ERROR;
+			}
+
+		}
+
+		if (names == null) {
+			log.debug("Incorrect \"names\" parameter");
+			names = treeMap();
+		}
+
 		initFilters();
 
 		if (isSubmit()) {
@@ -110,11 +132,11 @@ public class StreetEditAction extends FPActionSupport {
 			addActionError(getText("ab.error.street.no_town"));
 		}
 
-		if (!streetTypeFilter.needFilter()) {
+		if (streetTypeFilter == null || !streetTypeFilter.needFilter()) {
 			addActionError(getText("ab.error.street.no_type"));
 		}
 
-		if (!beginDateFilter.needFilter()) {
+		if (beginDateFilter == null || !beginDateFilter.needFilter()) {
 			addActionError(getText("ab.error.street.no_begin_date"));
 		}
 
@@ -128,17 +150,14 @@ public class StreetEditAction extends FPActionSupport {
 
 	private void initData() {
 
-		// init begin date filter
 		StreetNameTemporal temporal = street.getCurrentNameTemporal();
 		beginDateFilter.setDate(temporal != null ? temporal.getBegin() : DateUtil.now());
 
-		// init type filter
 		StreetType type = street.getCurrentType();
 		if (type != null) {
 			streetTypeFilter.setSelectedId(type.getId());
 		}
 
-		// init translations
 		StreetName streetName = temporal != null ? temporal.getValue() : null;
 		if (streetName != null) {
 			for (StreetNameTranslation name : streetName.getTranslations()) {
@@ -170,7 +189,7 @@ public class StreetEditAction extends FPActionSupport {
 
 	@Override
 	protected void setBreadCrumbs() {
-		if (street.isNew()) {
+		if (street != null && street.isNew()) {
 			crumbNameKey = crumbCreateKey;
 		}
 		super.setBreadCrumbs();

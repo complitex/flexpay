@@ -6,6 +6,7 @@ import org.flexpay.ab.service.AddressService;
 import org.flexpay.ab.service.PersonService;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.exception.FlexPayException;
+import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
@@ -21,14 +22,23 @@ public class PersonViewAction extends FPActionSupport {
 	@Override
 	public String doExecute() throws Exception {
 
-        if (person.isNew()) {
+        if (person == null || person.isNew()) {
+			log.debug("Incorrect person id");
 			addActionError(getText("common.error.invalid_id"));
-			return SUCCESS;
+			return REDIRECT_ERROR;
 		}
 
-		person = personService.readFull(stub(person));
+		Stub<Person> stub = stub(person);
+		person = personService.readFull(stub);
+
 		if (person == null) {
-			addActionError(getText("common.error.invalid_id"));
+			log.debug("Can't get person with id {} from DB", stub.getId());
+			addActionError(getText("common.object_not_selected"));
+			return REDIRECT_ERROR;
+		} else if (person.isNotActive()) {
+			log.debug("Person with id {} is disabled", stub.getId());
+			addActionError(getText("common.object_not_selected"));
+			return REDIRECT_ERROR;
 		}
 
 		return SUCCESS;

@@ -5,6 +5,7 @@ import org.flexpay.ab.service.DistrictService;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Language;
+import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.persistence.filter.BeginDateFilter;
 import static org.flexpay.common.util.CollectionUtils.treeMap;
@@ -31,12 +32,32 @@ public class DistrictEditAction extends FPActionSupport {
 	@Override
 	protected String doExecute() throws Exception {
 
-		if (district.getId() == null) {
+		if (district == null || district.getId() == null) {
+			log.debug("Incorrect district id");
 			addActionError(getText("common.object_not_selected"));
-			return REDIRECT_SUCCESS;
+			return REDIRECT_ERROR;
 		}
 
-		district = district.isNew() ? district : districtService.readWithHierarchy(stub(district));
+		if (district.isNotNew()) {
+			Stub<District> stub = stub(district);
+			district = districtService.readWithHierarchy(stub);
+
+			if (district == null) {
+				log.debug("Can't get district with id {} from DB", stub.getId());
+				addActionError(getText("common.object_not_selected"));
+				return REDIRECT_ERROR;
+			} else if (district.isNotActive()) {
+				log.debug("District with id {} is disabled", stub.getId());
+				addActionError(getText("common.object_not_selected"));
+				return REDIRECT_ERROR;
+			}
+
+		}
+
+		if (names == null) {
+			log.debug("Incorrect \"names\" parameter");
+			names = treeMap();
+		}
 
 		if (isSubmit()) {
 			if (!doValidate()) {
@@ -73,7 +94,7 @@ public class DistrictEditAction extends FPActionSupport {
 			addActionError(getText("ab.error.district.no_town"));
 		}
 
-		if (!beginDateFilter.needFilter()) {
+		if (beginDateFilter != null && !beginDateFilter.needFilter()) {
 			addActionError(getText("ab.error.district.no_begin_date"));
 		}
 
@@ -146,7 +167,7 @@ public class DistrictEditAction extends FPActionSupport {
 
 	@Override
 	protected void setBreadCrumbs() {
-		if (district.isNew()) {
+		if (district != null && district.isNew()) {
 			crumbNameKey = crumbCreateKey;
 		}
 		super.setBreadCrumbs();

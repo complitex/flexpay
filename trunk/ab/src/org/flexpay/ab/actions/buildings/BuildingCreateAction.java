@@ -24,16 +24,20 @@ public class BuildingCreateAction extends FPActionSupport {
 	private Long districtFilter;
 
 	private Map<Long, String> attributesMap = treeMap();
+	private Building building;
 
 	private BuildingService buildingService;
 	private ObjectsFactory objectsFactory;
 	private AddressAttributeTypeService addressAttributeTypeService;
 
-	private Building building;
-
 	@NotNull
 	@Override
 	public String doExecute() throws Exception {
+
+		if (attributesMap == null) {
+			log.debug("Incorrect attributesMap parameter (null)");
+			attributesMap = treeMap();
+		}
 
 		if (isNotSubmit()) {
 			setupAttributes();
@@ -67,12 +71,6 @@ public class BuildingCreateAction extends FPActionSupport {
 
 		boolean valid = true;
 
-		Long buildingNumberAttributeId = ApplicationConfig.getBuildingAttributeTypeNumber().getId();		
-		if (StringUtils.isEmpty(attributesMap.get(buildingNumberAttributeId))) {
-			addActionError(getText("ab.error.building_address.building_number_required"));
-			valid = false;
-		}
-
 		if (districtFilter == null || districtFilter <= 0) {
 			log.warn("Incorrect district id in filter ({})", districtFilter);
 			addActionError(getText("ab.error.building_address.district_required"));
@@ -84,13 +82,17 @@ public class BuildingCreateAction extends FPActionSupport {
 			valid = false;
 		}
 
+		Long buildingNumberAttributeId = ApplicationConfig.getBuildingAttributeTypeNumber().getId();
+		if (StringUtils.isEmpty(attributesMap.get(buildingNumberAttributeId))) {
+			log.warn("Required building attribute not set");
+			addActionError(getText("ab.error.building_address.building_number_required"));
+			valid = false;
+		}
+
 		return valid;
 	}
 
 	private void setupAttributes() {
-
-		log.debug("Attributes: {}", attributesMap);
-
 		for (AddressAttributeType type : addressAttributeTypeService.getAttributeTypes()) {
 			attributesMap.put(type.getId(), "");
 		}

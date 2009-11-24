@@ -30,8 +30,17 @@ public class StreetsListAction extends FPActionWithPagerSupport<Street> {
 	@Override
 	public String doExecute() throws Exception {
 
-		if (townFilter == null || townFilter <= 0) {
-			log.warn("Incorrect town id in filter ({})", townFilter);
+		if (streetSorterByName == null) {
+			log.debug("StreetSorterByName is null");
+			streetSorterByName = new StreetSorterByName();
+		}
+
+		if (streetSorterByType == null) {
+			log.debug("StreetSorterByType is null");
+			streetSorterByType = new StreetSorterByType();
+		}
+
+		if (!doValidate()) {
 			return SUCCESS;
 		}
 
@@ -52,6 +61,18 @@ public class StreetsListAction extends FPActionWithPagerSupport<Street> {
 		}
 
 		return SUCCESS;
+	}
+
+	private boolean doValidate() {
+
+		boolean valid = true;
+
+		if (townFilter == null || townFilter <= 0) {
+			log.warn("Incorrect town id in filter ({})", townFilter);
+			valid = false;
+		}
+
+		return valid;
 	}
 
 	/**

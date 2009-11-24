@@ -28,13 +28,18 @@ public abstract class ObjectViewAction<
 		}
 
 		Stub<NTD> stub = stub(object);
-
 		object = nameTimeDependentService.readFull(stub);
+
 		if (object == null) {
 			log.debug("Can't get object with id {} from DB", stub.getId());
 			addActionError(getText("common.object_not_selected"));
 			return REDIRECT_ERROR;
+		} else if (object.isNotActive()) {
+			log.debug("Object with id {} is disabled", stub.getId());
+			addActionError(getText("common.object_not_selected"));
+			return REDIRECT_ERROR;
 		}
+
 		return SUCCESS;
 	}
 

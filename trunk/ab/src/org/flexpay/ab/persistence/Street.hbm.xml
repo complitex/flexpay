@@ -126,7 +126,7 @@
 			left join fetch t.value v
 			left join fetch v.translations tr
 			left join fetch s.districts
-		where s.id=? and s.status=0 and t.invalidDate='2100-12-31'
+		where s.id=? and t.invalidDate='2100-12-31'
 	</query>
 
     <query name="Street.readFullCollection">
@@ -234,7 +234,7 @@
             left join fetch nt.value v
             left join fetch v.translations tr
             left join fetch s.districts
-        where s.id=? and s.status=0 and nt.invalidDate='2100-12-31'
+        where s.id=? and nt.invalidDate='2100-12-31'
     </query>
 
     <query name="StreetName.readFull">

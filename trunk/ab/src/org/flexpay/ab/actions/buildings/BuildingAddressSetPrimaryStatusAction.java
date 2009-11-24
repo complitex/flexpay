@@ -19,12 +19,25 @@ public class BuildingAddressSetPrimaryStatusAction extends FPActionSupport {
 	@Override
 	public String doExecute() throws Exception {
 
-		Stub<BuildingAddress> addressStub = stub(address);
-		Building building = buildingService.findBuilding(addressStub);
-		if (building == null) {
-			log.warn("Can't find building for address with id {}", addressStub.getId());
+		if (address == null || address.getId() == null) {
+			log.debug("Incorrect building address id");
+			addActionError(getText("common.object_not_selected"));
 			return SUCCESS;
 		}
+
+		Stub<BuildingAddress> addressStub = stub(address);
+		Building building = buildingService.findBuilding(addressStub);
+
+		if (building == null) {
+			log.debug("Can't get building for address with id {} from DB", addressStub.getId());
+			addActionError(getText("common.object_not_selected"));
+			return SUCCESS;
+		} else if (building.isNotActive()) {
+			log.debug("Building with id {} is disabled", building.getId());
+			addActionError(getText("common.object_not_selected"));
+			return SUCCESS;
+		}
+
 		building.setPrimaryAddress(addressStub);
 		buildingService.update(building);
 

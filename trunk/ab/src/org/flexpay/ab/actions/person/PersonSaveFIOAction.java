@@ -6,6 +6,7 @@ import org.flexpay.ab.persistence.PersonIdentity;
 import org.flexpay.ab.service.IdentityTypeService;
 import org.flexpay.ab.service.PersonService;
 import org.flexpay.common.actions.FPActionSupport;
+import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
@@ -22,8 +23,31 @@ public class PersonSaveFIOAction extends FPActionSupport {
 	@Override
 	public String doExecute() throws Exception {
 
+		if (person == null) {
+			log.debug("Incorrect person");
+			addActionError(getText("common.error.invalid_id"));
+			return SUCCESS;
+		}
+
 		if (person.isNotNew()) {
-			person = personService.readFull(stub(person));
+			Stub<Person> stub = stub(person);
+			person = personService.readFull(stub);
+
+			if (person == null) {
+				log.debug("Can't get person with id {} from DB", stub.getId());
+				addActionError(getText("common.object_not_selected"));
+				return SUCCESS;
+			} else if (person.isNotActive()) {
+				log.debug("Person with id {} is disabled", stub.getId());
+				addActionError(getText("common.object_not_selected"));
+				return SUCCESS;
+			}
+
+		}
+
+		if (identity == null) {
+			log.debug("Identity parameter is null");
+			identity = new PersonIdentity();
 		}
 
 		log.debug("FIO identity to save: {}", identity);

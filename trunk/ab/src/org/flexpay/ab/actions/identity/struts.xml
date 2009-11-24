@@ -13,6 +13,7 @@
 		</action>
 
 		<action name="identityTypeEdit" class="identityTypeEditAction">
+            <result name="redirectError" type="redirect-action">identityTypesList</result>
             <result name="redirectSuccess" type="redirect-action">
                 <param name="actionName">identityTypeView</param>
                 <param name="parse">true</param>

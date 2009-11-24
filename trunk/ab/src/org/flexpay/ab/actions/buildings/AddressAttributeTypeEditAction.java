@@ -5,6 +5,7 @@ import org.flexpay.ab.persistence.AddressAttributeTypeTranslation;
 import org.flexpay.ab.service.AddressAttributeTypeService;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.persistence.Language;
+import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.persistence.Stub.stub;
 import static org.flexpay.common.util.CollectionUtils.set;
 import static org.flexpay.common.util.CollectionUtils.treeMap;
@@ -28,17 +29,40 @@ public class AddressAttributeTypeEditAction extends FPActionSupport {
 	@Override
 	public String doExecute() throws Exception {
 
-		if (attributeType.getId() == null) {
+		if (attributeType == null || attributeType.getId() == null) {
+			log.debug("Incorrect attribute type id");
 			addActionError(getText("common.object_not_selected"));
-			return REDIRECT_SUCCESS;
+			return REDIRECT_ERROR;
 		}
 
-		AddressAttributeType type = attributeType.isNew() ?
-									attributeType :
-									addressAttributeTypeService.readFull(stub(attributeType));
-		if (type == null) {
-			addActionError(getText("common.error.invalid_id"));
-			return REDIRECT_SUCCESS;
+		AddressAttributeType type = attributeType;
+
+		if (attributeType.isNotNew()) {
+			Stub<AddressAttributeType> stub = stub(attributeType);
+			attributeType = addressAttributeTypeService.readFull(stub);
+
+			if (attributeType == null) {
+				log.debug("Can't get address attribute type with id {} from DB", stub.getId());
+				addActionError(getText("common.object_not_selected"));
+				return REDIRECT_ERROR;
+			} else if (attributeType.isNotActive()) {
+				log.debug("Attribute type with id {} is disabled", stub.getId());
+				addActionError(getText("common.object_not_selected"));
+				return REDIRECT_ERROR;
+			}
+
+			type = attributeType;
+
+		}
+
+		if (names == null) {
+			log.debug("Incorrect \"names\" parameter");
+			names = treeMap();
+		}
+
+		if (shortNames == null) {
+			log.debug("Incorrect \"shortNames\" parameter");
+			shortNames = treeMap();
 		}
 
 		if (isNotSubmit()) {
@@ -104,7 +128,7 @@ public class AddressAttributeTypeEditAction extends FPActionSupport {
 
 	@Override
 	protected void setBreadCrumbs() {
-		if (attributeType.isNew()) {
+		if (attributeType != null && attributeType.isNew()) {
 			crumbNameKey = crumbCreateKey;
 		}
 		super.setBreadCrumbs();

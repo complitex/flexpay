@@ -43,4 +43,7 @@ public interface BuildingsDao extends GenericDao<BuildingAddress, Long> {
 	 * @return list of buildings for the building
 	 */
 	List<BuildingAddress> findBuildingBuildings(@NotNull Long buildingId);
+
+	List<BuildingAddress> findWithFullHierarchy(Long addressId);
+
 }

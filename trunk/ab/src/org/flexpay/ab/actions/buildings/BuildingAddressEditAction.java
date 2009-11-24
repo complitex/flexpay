@@ -2,7 +2,9 @@ package org.flexpay.ab.actions.buildings;
 
 import org.apache.commons.lang.StringUtils;
 import org.flexpay.ab.persistence.*;
-import org.flexpay.ab.service.*;
+import org.flexpay.ab.service.AddressAttributeTypeService;
+import org.flexpay.ab.service.BuildingService;
+import org.flexpay.ab.service.DistrictService;
 import org.flexpay.ab.util.config.ApplicationConfig;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.exception.FlexPayException;
@@ -28,9 +30,6 @@ public class BuildingAddressEditAction extends FPActionSupport {
 
 	private String crumbCreateKey;
 	private BuildingService buildingService;
-	private StreetService streetService;
-	private TownService townService;
-	private RegionService regionService;
 	private DistrictService districtService;
 	private AddressAttributeTypeService addressAttributeTypeService;
 
@@ -38,34 +37,71 @@ public class BuildingAddressEditAction extends FPActionSupport {
 	@Override
 	public String doExecute() throws Exception {
 
-		if (building.isNew()) {
+		if (building == null || building.getId() == null) {
+			log.debug("Incorrect building id");
 			addActionError(getText("common.error.invalid_id"));
 			return REDIRECT_ERROR;
 		}
 
-		building = buildingService.readFull(stub(building));
-		if (building == null) {
-			log.error(getText("common.object_not_selected"));
-			return REDIRECT_ERROR;
+		if (building.isNotNew()) {
+			Stub<Building> stub = stub(building);
+			building = buildingService.readFull(stub);
+
+			if (building == null) {
+				log.debug("Can't get building with id {} from DB", stub.getId());
+				addActionError(getText("common.object_not_selected"));
+				return REDIRECT_ERROR;
+			} else if (building.isNotActive()) {
+				log.debug("Building with id {} is disabled", stub.getId());
+				addActionError(getText("common.object_not_selected"));
+				return REDIRECT_ERROR;
+			}
+
 		}
 
-		if (address.getId() == null) {
+		if (address == null || address.getId() == null) {
+			log.debug("Incorrect building address id");
 			addActionError(getText("common.object_not_selected"));
 			return REDIRECT_ERROR;
 		}
 
-		address = address.isNew() ? address : building.getAddress(stub(address));
-		if (address == null) {
-			log.warn("Building address mismatch: {}, {}", building, address);
-			addActionError(getText("error.ab.internal.address_building_mismatch"));
-			return REDIRECT_ERROR;
+		if (address.isNotNew()) {
+			Stub<BuildingAddress> stub = stub(address);
+			address = building.getAddress(stub);
+
+			if (address == null) {
+				log.debug("Building address mismatch: {}, {}", building, address);
+				addActionError(getText("common.object_not_selected"));
+				return REDIRECT_ERROR;
+			} else if (address.isNotActive()) {
+				log.debug("Building address with id {} is disabled", stub.getId());
+				addActionError(getText("common.object_not_selected"));
+				return REDIRECT_ERROR;
+			}
+
 		}
 
-		if (address.isNotNew()) {
-			setupFilters();
+		if (attributesMap == null) {
+			log.debug("AttributesMap parameter is null");
+			attributesMap = treeMap();
 		}
 
 		if (isNotSubmit()) {
+
+			if (address.isNotNew()) {
+				Stub<BuildingAddress> stub = stub(address);
+				address = buildingService.readWithHierarchy(stub);
+				if (address == null) {
+					log.debug("Can't get building address with id {} from DB", stub.getId());
+					addActionError(getText("common.object_not_selected"));
+					return REDIRECT_ERROR;
+				}
+				streetFilter = address.getStreet().getId();
+				townFilter = address.getTown().getId();
+				regionFilter = address.getRegion().getId();
+				countryFilter = address.getCountry().getId();
+			}
+
 			setupAttributes();
 			return INPUT;
 		}
@@ -107,30 +143,6 @@ public class BuildingAddressEditAction extends FPActionSupport {
 		return valid;
 	}
 
-	private void setupFilters() {
-
-		Street street = streetService.readFull(address.getStreetStub());
-		if (street == null) {
-			log.warn("Can't get street with id {} from DB", address.getStreetStub().getId());
-			return;
-		}
-		Town town = townService.readFull(street.getTownStub());
-		if (town == null) {
-			log.warn("Can't get town with id {} from DB", street.getTownStub().getId());
-			return;
-		}
-		Region region = regionService.readFull(town.getRegionStub());
-		if (region == null) {
-			log.warn("Can't get region with id {} from DB", town.getRegionStub().getId());
-			return;
-		}
-
-		streetFilter = address.getStreetStub().getId();
-		townFilter = town.getId();
-		regionFilter = region.getId();
-		countryFilter = region.getCountryStub().getId();
-	}
-
 	private void setupAttributes() {
 
 		for (AddressAttributeType type : addressAttributeTypeService.getAttributeTypes()) {
@@ -158,7 +170,7 @@ public class BuildingAddressEditAction extends FPActionSupport {
 
 	@Override
 	protected void setBreadCrumbs() {
-		if (address.isNew()) {
+		if (address != null && address.isNew()) {
 			crumbNameKey = crumbCreateKey;
 		}
 		super.setBreadCrumbs();
@@ -223,21 +235,6 @@ public class BuildingAddressEditAction extends FPActionSupport {
 	@Required
 	public void setBuildingService(BuildingService buildingService) {
 		this.buildingService = buildingService;
-	}
-
-	@Required
-	public void setTownService(TownService townService) {
-		this.townService = townService;
-	}
-
-	@Required
-	public void setRegionService(RegionService regionService) {
-		this.regionService = regionService;
-	}
-
-	@Required
-	public void setStreetService(StreetService streetService) {
-		this.streetService = streetService;
 	}
 
 	@Required

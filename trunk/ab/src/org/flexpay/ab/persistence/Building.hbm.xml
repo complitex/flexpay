@@ -248,6 +248,19 @@
 		where ba.building.id=? and ba.status=0
 	</query>
 
+    <query name="BuildingAddress.findWithFullHierarchy">
+        select distinct ba
+        from BuildingAddress ba
+            left join fetch ba.buildingAttributes a
+            left join fetch a.buildingAttributeType
+            inner join fetch ba.building b
+            inner join fetch ba.street s
+            left join fetch s.parent t
+            left join fetch t.parent r
+            left join fetch r.parent
+        where ba.id=?
+    </query>
+
     <query name="AddressAttributeType.readFull">
         select distinct aat
         from AddressAttributeType aat

@@ -4,6 +4,7 @@ import org.flexpay.ab.persistence.Apartment;
 import org.flexpay.ab.persistence.Person;
 import org.flexpay.ab.service.PersonService;
 import org.flexpay.common.actions.FPActionSupport;
+import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.util.DateUtil;
 import static org.flexpay.common.util.config.ApplicationConfig.getFutureInfinite;
@@ -26,16 +27,32 @@ public class PersonSaveRegistrationAction extends FPActionSupport {
 	public String doExecute() throws Exception {
 
 		if (apartmentFilter == null || apartmentFilter <= 0) {
+			log.debug("Incorrect apartment id");
 			addActionError(getText("common.error.invalid_id"));
 			return SUCCESS;
 		}
 
-		person = personService.readFull(stub(person));
-		person.setPersonRegistration(new Apartment(apartmentFilter), beginDate, endDate);
-
-		if (person.isNew()) {
+		if (person == null || person.isNew()) {
+			log.debug("Incorrect person id");
+			addActionError(getText("common.error.invalid_id"));
 			return SUCCESS;
 		}
+
+		Stub<Person> stub = stub(person);
+		person = personService.readFull(stub);
+
+		if (person == null) {
+			log.debug("Can't get person with id {} from DB", stub.getId());
+			addActionError(getText("common.object_not_selected"));
+			return SUCCESS;
+		} else if (person.isNotActive()) {
+			log.debug("Person with id {} is disabled", stub.getId());
+			addActionError(getText("common.object_not_selected"));
+			return SUCCESS;
+		}
+
+		person.setPersonRegistration(new Apartment(apartmentFilter), beginDate, endDate);
+
 		personService.update(person);
 
 		addActionMessage(getText("ab.person.registration.saved"));

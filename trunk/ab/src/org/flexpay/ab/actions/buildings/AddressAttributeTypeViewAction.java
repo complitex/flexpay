@@ -3,6 +3,7 @@ package org.flexpay.ab.actions.buildings;
 import org.flexpay.ab.persistence.AddressAttributeType;
 import org.flexpay.ab.service.AddressAttributeTypeService;
 import org.flexpay.common.actions.FPActionSupport;
+import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
@@ -17,15 +18,22 @@ public class AddressAttributeTypeViewAction extends FPActionSupport {
 	@Override
 	public String doExecute() throws Exception {
 
-		if (attributeType.isNew()) {
-			log.error(getText("common.error.invalid_id"));
+		if (attributeType == null || attributeType.isNew()) {
+			log.debug("Incorrect attribute type id");
+			addActionError(getText("common.error.invalid_id"));
 			return REDIRECT_ERROR;
 		}
 
-		attributeType = addressAttributeTypeService.readFull(stub(attributeType));
+		Stub<AddressAttributeType> stub = stub(attributeType);
+		attributeType = addressAttributeTypeService.readFull(stub);
 
 		if (attributeType == null) {
-			log.error(getText("common.object_not_selected"));
+			log.debug("Can't get attribute type with id {} from DB", stub.getId());
+			addActionError(getText("common.object_not_selected"));
+			return REDIRECT_ERROR;
+		} else if (attributeType.isNotActive()) {
+			log.debug("Attribute type with id {} is disabled", stub.getId());
+			addActionError(getText("common.object_not_selected"));
 			return REDIRECT_ERROR;
 		}
 

@@ -261,6 +261,21 @@ public class BuildingAddress extends DomainObjectWithStatus {
 	}
 
 	@NotNull
+	public Town getTown() {
+		return getStreet().getTown();
+	}
+
+	@NotNull
+	public Region getRegion() {
+		return getTown().getRegion();
+	}
+
+	@NotNull
+	public Country getCountry() {
+		return getRegion().getCountry();
+	}
+
+	@NotNull
 	public District getDistrict() {
 		return getBuilding().getDistrict();
 	}

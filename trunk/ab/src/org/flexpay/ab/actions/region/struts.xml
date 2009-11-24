@@ -13,7 +13,6 @@
 
         <action name="regionsListAjax" class="regionsListAction">
             <result>/WEB-INF/jsp/ab/regions/regions_list.jsp</result>
-            <result name="error">/WEB-INF/jsp/ab/regions/regions_list.jsp</result>
         </action>
 
         <action name="regionDelete" class="regionDeleteAction">
@@ -26,6 +25,7 @@
         </action>
 
         <action name="regionEdit" class="regionEditAction">
+            <result name="redirectError" type="redirect-action">regionsList</result>
             <result name="redirectSuccess" type="redirect-action">
                 <param name="actionName">regionView</param>
                 <param name="parse">true</param>

@@ -59,6 +59,10 @@ public abstract class TemporaryType<TV extends TemporaryValue<TV>, T extends Tra
 		return status == STATUS_ACTIVE;
 	}
 
+	public boolean isNotActive() {
+		return status == STATUS_DISABLED;
+	}
+
 	/**
 	 * Set translation for object
 	 *
