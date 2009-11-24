@@ -138,7 +138,7 @@ public class EircAccountServiceImpl implements EircAccountService {
 				if (personSearchFilter != null) {
 					filters.push(personSearchFilter);
 				}
-				return eircAccountDao.findByApartment(filter.getSelectedId(), "", "", pager);
+				return eircAccountDao.findByApartment(filter.getSelectedId(), pager);
 			}
 		}
 		if (personSearchFilter != null) {
@@ -151,13 +151,13 @@ public class EircAccountServiceImpl implements EircAccountService {
 	@Override
 	public List<EircAccount> getAccountsInApartment(@NotNull Stub<Apartment> stub, @NotNull String personFio, Page<EircAccount> pager) {
 		String str = "%" + personFio + "%";
-		return eircAccountDao.findByApartment(stub.getId(), str, str, pager);
+		return eircAccountDao.findByApartmentAndFIO(stub.getId(), str, str, pager);
 	}
 
 	@Override
 	public List<EircAccount> getAccountsInBuilding(@NotNull Stub<BuildingAddress> stub, @NotNull String personFio, Page<EircAccount> pager) {
 		String str = "%" + personFio + "%";
-		return eircAccountDao.findByBuilding(stub.getId(), str, str, pager);
+		return eircAccountDao.findByBuildingAndFIO(stub.getId(), str, str, pager);
 	}
 
 	/**
