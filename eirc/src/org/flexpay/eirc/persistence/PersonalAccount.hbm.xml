@@ -260,9 +260,6 @@
         select distinct a
         from EircAccount a
             left join fetch a.apartment aa
-            left join fetch a.consumerInfo
-            left join a.person p
-            inner join p.personIdentities
         where a.status=0 and aa.id=?
     </query>
 
