@@ -137,7 +137,6 @@
             },
             close: function(event, ui) {
                 $('#pageNumber').val($('#currentPage')[0].value);
-                $('#setupCompleted').val('true');
                 $('#frecords').submit();
             }
         });
