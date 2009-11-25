@@ -412,6 +412,20 @@
 					break;
 			}
 		});
+
+		$('#payments_<s:property value="#serviceIndx"/>_copy').bind('click', function(event) {
+			try {
+				var content = '"<s:property value="%{getErcAccount(attributes)}"/>";' +
+							  '"<s:property value="%{serviceProviderAccount}"/>";' +
+							  '"<s:property value="%{getApartmentAddress(#qi)}"/>";' +
+							  '"<s:property value="%{getPersonFio(#qi)}"/>";' +
+							  '"<s:property value="%{getPersonFio(#qi)}"/>";' +
+							  '"<s:property value="%{getMBServiceCode(serviceMasterIndex)}"/>";';
+				FP.copyToClipboard(content);
+			} catch(ex) {
+				alert('<s:text name="payments.errors.clipboard_access_denied"/>');
+			}
+		});
 		</s:iterator>
 		</s:iterator>
 
