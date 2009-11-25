@@ -11,6 +11,7 @@ import org.flexpay.common.persistence.filter.BeginDateFilter;
 import static org.flexpay.common.util.CollectionUtils.treeMap;
 import org.flexpay.common.util.DateUtil;
 import org.flexpay.common.util.config.ApplicationConfig;
+import static org.flexpay.common.util.config.ApplicationConfig.getLanguages;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
@@ -34,7 +35,7 @@ public class RegionEditAction extends FPActionSupport {
     protected String doExecute() throws Exception {
 
 		if (region == null || region.getId() == null) {
-			log.debug("Incorrect region id");
+			log.warn("Incorrect region id");
 			addActionError(getText("common.object_not_selected"));
 			return REDIRECT_ERROR;
 		}
@@ -44,11 +45,11 @@ public class RegionEditAction extends FPActionSupport {
 			region = regionService.readFull(stub);
 
 			if (region == null) {
-				log.debug("Can't get region with id {} from DB", stub.getId());
+				log.warn("Can't get region with id {} from DB", stub.getId());
 				addActionError(getText("common.object_not_selected"));
 				return REDIRECT_ERROR;
 			} else if (region.isNotActive()) {
-				log.debug("Region with id {} is disabled", stub.getId());
+				log.warn("Region with id {} is disabled", stub.getId());
 				addActionError(getText("common.object_not_selected"));
 				return REDIRECT_ERROR;
 			}
@@ -56,8 +57,13 @@ public class RegionEditAction extends FPActionSupport {
 		}
 
 		if (names == null) {
-			log.debug("Incorrect \"names\" parameter");
+			log.debug("Names parameter is null");
 			names = treeMap();
+		}
+
+		if (beginDateFilter == null) {
+			log.debug("BeginDateFilter parameter is null");
+			beginDateFilter = new BeginDateFilter();
 		}
 
         if (isSubmit()) {
@@ -71,7 +77,7 @@ public class RegionEditAction extends FPActionSupport {
             return REDIRECT_SUCCESS;
         }
 
-        initData();
+		initData();
 
         return INPUT;
     }
@@ -79,21 +85,24 @@ public class RegionEditAction extends FPActionSupport {
     private boolean doValidate() {
 
 		if (countryFilter == null || countryFilter <= 0) {
-			log.debug("Incorrect country id in filter ({})", countryFilter);
+			log.warn("Incorrect country id in filter ({})", countryFilter);
 			addActionError(getText("ab.error.region.no_country"));
 		}
 
-        if (beginDateFilter == null || !beginDateFilter.needFilter()) {
-			log.debug("Incorrect BeginDateFilter value");
+        if (!beginDateFilter.needFilter()) {
+			log.warn("Incorrect begin date in filter ({})", beginDateFilter);
             addActionError(getText("ab.error.region.no_begin_date"));
         }
 
         return !hasActionErrors();
     }
 
-    /*
-    * Creates new region if it is a new one (haven't been yet persisted) or updates persistent one
-    */
+    /**
+     * Creates new region if it is a new one
+	 * (haven't been yet persisted) or updates persistent one
+	 *
+	 * @throws FlexPayExceptionContainer if some errors
+     */
     private void updateRegion() throws FlexPayExceptionContainer {
 
 		RegionName regionName = new RegionName();
@@ -105,7 +114,6 @@ public class RegionEditAction extends FPActionSupport {
 
         region.setNameForDate(regionName, beginDateFilter.getDate());
 
-        // setup region for new object
         if (region.isNew()) {
             region.setParent(new Country(countryFilter));
             regionService.create(region);
@@ -126,11 +134,10 @@ public class RegionEditAction extends FPActionSupport {
 			}
 		}
 
-		for (Language lang : ApplicationConfig.getLanguages()) {
-			if (names.containsKey(lang.getId())) {
-				continue;
+		for (Language lang : getLanguages()) {
+			if (!names.containsKey(lang.getId())) {
+				names.put(lang.getId(), "");
 			}
-			names.put(lang.getId(), "");
 		}
 
 		if (region.isNotNew()) {

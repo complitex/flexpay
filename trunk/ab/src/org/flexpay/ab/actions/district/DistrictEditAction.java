@@ -10,6 +10,8 @@ import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.persistence.filter.BeginDateFilter;
 import static org.flexpay.common.util.CollectionUtils.treeMap;
 import org.flexpay.common.util.DateUtil;
+import org.flexpay.common.util.config.ApplicationConfig;
+import static org.flexpay.common.util.config.ApplicationConfig.getLanguages;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
@@ -33,7 +35,7 @@ public class DistrictEditAction extends FPActionSupport {
 	protected String doExecute() throws Exception {
 
 		if (district == null || district.getId() == null) {
-			log.debug("Incorrect district id");
+			log.warn("Incorrect district id");
 			addActionError(getText("common.object_not_selected"));
 			return REDIRECT_ERROR;
 		}
@@ -43,11 +45,11 @@ public class DistrictEditAction extends FPActionSupport {
 			district = districtService.readWithHierarchy(stub);
 
 			if (district == null) {
-				log.debug("Can't get district with id {} from DB", stub.getId());
+				log.warn("Can't get district with id {} from DB", stub.getId());
 				addActionError(getText("common.object_not_selected"));
 				return REDIRECT_ERROR;
 			} else if (district.isNotActive()) {
-				log.debug("District with id {} is disabled", stub.getId());
+				log.warn("District with id {} is disabled", stub.getId());
 				addActionError(getText("common.object_not_selected"));
 				return REDIRECT_ERROR;
 			}
@@ -55,8 +57,13 @@ public class DistrictEditAction extends FPActionSupport {
 		}
 
 		if (names == null) {
-			log.debug("Incorrect \"names\" parameter");
+			log.debug("Names parameter is null");
 			names = treeMap();
+		}
+
+		if (beginDateFilter == null) {
+			log.debug("BeginDateFilter parameter is null");
+			beginDateFilter = new BeginDateFilter();
 		}
 
 		if (isSubmit()) {
@@ -84,29 +91,34 @@ public class DistrictEditAction extends FPActionSupport {
 
 	private boolean doValidate() {
 
-		if (district == null) {
-			addActionError(getText("common.object_not_selected"));
-			return false;
-		}
-
 		if (townFilter == null || townFilter <= 0) {
 			log.warn("Incorrect town id in filter ({})", townFilter);
 			addActionError(getText("ab.error.district.no_town"));
 		}
 
-		if (beginDateFilter != null && !beginDateFilter.needFilter()) {
+		if (!beginDateFilter.needFilter()) {
+			log.warn("Incorrect begin date in filter ({})", beginDateFilter);
 			addActionError(getText("ab.error.district.no_begin_date"));
 		}
 
 		return !hasActionErrors();
 	}
 
-	/*
-	* Creates new district if it is a new one (haven't been yet persisted) or updates persistent one
-	*/
+	/**
+	 * Creates new district if it is a new one
+	 * (haven't been yet persisted) or updates persistent one
+	 *
+	 * @throws FlexPayExceptionContainer if some errors
+	 */
 	private void updateDistrict() throws FlexPayExceptionContainer {
 
-		DistrictName districtName = getDistrictName();
+		DistrictName districtName = new DistrictName();
+		for (Map.Entry<Long, String> name : names.entrySet()) {
+			String value = name.getValue();
+			Language lang = getLang(name.getKey());
+			districtName.setTranslation(new DistrictNameTranslation(value, lang));
+		}
+
 		district.setNameForDate(districtName, beginDateFilter.getDate());
 
 		if (district.isNew()) {
@@ -116,18 +128,6 @@ public class DistrictEditAction extends FPActionSupport {
 			districtService.update(district);
 		}
 
-	}
-
-	private DistrictName getDistrictName() {
-
-		DistrictName districtName = new DistrictName();
-		for (Map.Entry<Long, String> name : names.entrySet()) {
-			String value = name.getValue();
-			Language lang = getLang(name.getKey());
-			districtName.setTranslation(new DistrictNameTranslation(value, lang));
-		}
-
-		return districtName;
 	}
 
 	private void initData() {
@@ -144,11 +144,10 @@ public class DistrictEditAction extends FPActionSupport {
 			}
 		}
 
-		for (Language lang : org.flexpay.common.util.config.ApplicationConfig.getLanguages()) {
-			if (names.containsKey(lang.getId())) {
-				continue;
+		for (Language lang : getLanguages()) {
+			if (!names.containsKey(lang.getId())) {
+				names.put(lang.getId(), "");
 			}
-			names.put(lang.getId(), "");
 		}
 	}
 

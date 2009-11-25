@@ -25,13 +25,13 @@ public class BuildingsListAction extends FPActionWithPagerSupport<BuildingAddres
 	@Override
 	public String doExecute() throws Exception {
 
+		if (!doValidate()) {
+			return SUCCESS;
+		}
+
 		if (buildingsSorter == null) {
 			log.debug("BuildingsSorter is null");
 			buildingsSorter = new BuildingsSorter();
-		}
-
-		if (!doValidate()) {
-			return SUCCESS;
 		}
 
 		buildings = buildingService.findAddresses(arrayStack(new StreetFilter(streetFilter)), list(buildingsSorter), getPager());

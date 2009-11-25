@@ -11,7 +11,7 @@ public class StreetsListPageAction extends FPActionSupport {
 	@NotNull
 	@Override
 	protected String doExecute() throws Exception {
-		if (townFilter != null) {
+		if (townFilter != null && townFilter > 0) {
 			AbUserPreferences up = (AbUserPreferences) getUserPreferences();
 			up.setTownFilter(townFilter);
 			up.setDistrictFilter(0L);

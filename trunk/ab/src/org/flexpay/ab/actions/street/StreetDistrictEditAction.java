@@ -7,6 +7,7 @@ import org.flexpay.ab.persistence.filters.TownFilter;
 import org.flexpay.ab.service.DistrictService;
 import org.flexpay.ab.service.StreetService;
 import org.flexpay.common.actions.FPActionSupport;
+import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.persistence.Stub.stub;
 import static org.flexpay.common.util.CollectionUtils.list;
 import static org.flexpay.common.util.CollectionUtils.set;
@@ -29,17 +30,31 @@ public class StreetDistrictEditAction extends FPActionSupport {
 	@Override
 	public String doExecute() throws Exception {
 
-		if (street.isNew()) {
-			addActionError(getText("common.error.invalid_id"));
-			return INPUT;
-		}
-
-		street = streetService.readFull(stub(street));
-		if (street == null) {
+		if (street == null || street.isNew()) {
+			log.warn("Incorrect street id");
 			addActionError(getText("ab.error.street.invalid_street_id"));
 			return INPUT;
 		}
+
+		Stub<Street> stub = stub(street);
+		street = streetService.readFull(stub);
+
+		if (street == null) {
+			log.warn("Can't get street with id {} from DB", stub.getId());
+			addActionError(getText("common.object_not_selected"));
+			return INPUT;
+		} else if (street.isNotActive()) {
+			log.warn("Street with id {} is disabled", stub.getId());
+			addActionError(getText("common.object_not_selected"));
+			return INPUT;
+		}
+
 		log.debug("Street loaded: {}", street.getCurrentName());
+
+		if (objectIds == null) {
+			log.debug("ObjectIds parameter is null");
+			objectIds = set();
+		}
 
 		// save street districts
 		if (isSubmit()) {

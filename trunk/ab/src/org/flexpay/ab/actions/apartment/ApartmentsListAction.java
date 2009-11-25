@@ -26,13 +26,13 @@ public class ApartmentsListAction extends FPActionWithPagerSupport<Apartment> {
 	@Override
 	public String doExecute() throws Exception {
 
+		if (!doValidate()) {
+			return SUCCESS;
+		}
+
 		if (apartmentSorter == null) {
 			log.debug("ApartmentSorter is null");
 			apartmentSorter = new ApartmentSorter();
-		}
-
-		if (!doValidate()) {
-			return SUCCESS;
 		}
 
 		apartments = apartmentService.find(arrayStack(new BuildingsFilter(buildingFilter)), list(apartmentSorter), getPager());

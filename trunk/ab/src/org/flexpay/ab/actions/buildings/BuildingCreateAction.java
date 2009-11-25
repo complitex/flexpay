@@ -35,7 +35,7 @@ public class BuildingCreateAction extends FPActionSupport {
 	public String doExecute() throws Exception {
 
 		if (attributesMap == null) {
-			log.debug("Incorrect attributesMap parameter (null)");
+			log.debug("AttributesMap parameter is null");
 			attributesMap = treeMap();
 		}
 
@@ -69,27 +69,22 @@ public class BuildingCreateAction extends FPActionSupport {
 
 	private boolean doValidate() {
 
-		boolean valid = true;
-
 		if (districtFilter == null || districtFilter <= 0) {
 			log.warn("Incorrect district id in filter ({})", districtFilter);
 			addActionError(getText("ab.error.building_address.district_required"));
-			valid = false;
 		}
 		if (streetFilter == null || streetFilter <= 0) {
 			log.warn("Incorrect street id in filter ({})", streetFilter);
 			addActionError(getText("ab.error.building_address.street_required"));
-			valid = false;
 		}
 
 		Long buildingNumberAttributeId = ApplicationConfig.getBuildingAttributeTypeNumber().getId();
 		if (StringUtils.isEmpty(attributesMap.get(buildingNumberAttributeId))) {
 			log.warn("Required building attribute not set");
 			addActionError(getText("ab.error.building_address.building_number_required"));
-			valid = false;
 		}
 
-		return valid;
+		return !hasActionErrors();
 	}
 
 	private void setupAttributes() {

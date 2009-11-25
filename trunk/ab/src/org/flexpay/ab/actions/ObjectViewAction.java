@@ -22,7 +22,7 @@ public abstract class ObjectViewAction<
 	public String doExecute() {
 
 		if (object == null || object.isNew()) {
-			log.debug("Incorrect object id");
+			log.warn("Incorrect object id");
 			addActionError(getText("common.error.invalid_id"));
 			return REDIRECT_ERROR;
 		}
@@ -31,11 +31,11 @@ public abstract class ObjectViewAction<
 		object = nameTimeDependentService.readFull(stub);
 
 		if (object == null) {
-			log.debug("Can't get object with id {} from DB", stub.getId());
+			log.warn("Can't get object with id {} from DB", stub.getId());
 			addActionError(getText("common.object_not_selected"));
 			return REDIRECT_ERROR;
 		} else if (object.isNotActive()) {
-			log.debug("Object with id {} is disabled", stub.getId());
+			log.warn("Object with id {} is disabled", stub.getId());
 			addActionError(getText("common.object_not_selected"));
 			return REDIRECT_ERROR;
 		}

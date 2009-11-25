@@ -12,6 +12,8 @@ import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.persistence.filter.BeginDateFilter;
 import static org.flexpay.common.util.CollectionUtils.treeMap;
 import org.flexpay.common.util.DateUtil;
+import org.flexpay.common.util.config.ApplicationConfig;
+import static org.flexpay.common.util.config.ApplicationConfig.getLanguages;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
@@ -39,7 +41,7 @@ public class StreetEditAction extends FPActionSupport {
 	protected String doExecute() throws Exception {
 
 		if (street == null || street.getId() == null) {
-			log.debug("Incorrect street id");
+			log.warn("Incorrect street id");
 			addActionError(getText("common.object_not_selected"));
 			return REDIRECT_ERROR;
 		}
@@ -49,11 +51,11 @@ public class StreetEditAction extends FPActionSupport {
 			street = streetService.readWithHierarchy(stub);
 
 			if (street == null) {
-				log.debug("Can't get street with id {} from DB", stub.getId());
+				log.warn("Can't get street with id {} from DB", stub.getId());
 				addActionError(getText("common.object_not_selected"));
 				return REDIRECT_ERROR;
 			} else if (street.isNotActive()) {
-				log.debug("Street with id {} is disabled", stub.getId());
+				log.warn("Street with id {} is disabled", stub.getId());
 				addActionError(getText("common.object_not_selected"));
 				return REDIRECT_ERROR;
 			}
@@ -61,8 +63,13 @@ public class StreetEditAction extends FPActionSupport {
 		}
 
 		if (names == null) {
-			log.debug("Incorrect \"names\" parameter");
+			log.debug("Names parameter is null");
 			names = treeMap();
+		}
+
+		if (beginDateFilter == null) {
+			log.debug("BeginDateFilter parameter is null");
+			beginDateFilter = new BeginDateFilter();
 		}
 
 		initFilters();
@@ -90,12 +97,21 @@ public class StreetEditAction extends FPActionSupport {
 
 	}
 
-	/*
-	* Creates new street if it is a new one (haven't been yet persisted) or updates persistent one
-	*/
+	/**
+	 * Creates new street if it is a new one
+	 * (haven't been yet persisted) or updates persistent one
+	 *
+	 * @throws FlexPayExceptionContainer if some errors
+	 */
 	private void updateStreet() throws FlexPayExceptionContainer {
 
-		StreetName streetName = getStreetName();
+		StreetName streetName = new StreetName();
+		for (Map.Entry<Long, String> name : names.entrySet()) {
+			String value = name.getValue();
+			Language lang = getLang(name.getKey());
+			streetName.setTranslation(new StreetNameTranslation(value, lang));
+		}
+
 		street.setNameForDate(streetName, beginDateFilter.getDate());
 		street.setTypeForDate(new StreetType(streetTypeFilter.getSelectedStub()), beginDateFilter.getDate());
 
@@ -108,35 +124,20 @@ public class StreetEditAction extends FPActionSupport {
 
 	}
 
-	private StreetName getStreetName() {
-
-		StreetName streetName = new StreetName();
-		for (Map.Entry<Long, String> name : names.entrySet()) {
-			String value = name.getValue();
-			Language lang = getLang(name.getKey());
-			streetName.setTranslation(new StreetNameTranslation(value, lang));
-		}
-
-		return streetName;
-	}
-
 	private boolean doValidate() {
-
-		if (street == null) {
-			addActionError(getText("common.object_not_selected"));
-			return false;
-		}
 
 		if (townFilter == null || townFilter <= 0) {
 			log.warn("Incorrect town id in filter ({})", townFilter);
 			addActionError(getText("ab.error.street.no_town"));
 		}
 
-		if (streetTypeFilter == null || !streetTypeFilter.needFilter()) {
+		if (!streetTypeFilter.needFilter()) {
+			log.warn("Incorrect street type id in filter ({})", streetTypeFilter);
 			addActionError(getText("ab.error.street.no_type"));
 		}
 
-		if (beginDateFilter == null || !beginDateFilter.needFilter()) {
+		if (!beginDateFilter.needFilter()) {
+			log.warn("Incorrect begin date in filter ({})", beginDateFilter);
 			addActionError(getText("ab.error.street.no_begin_date"));
 		}
 
@@ -165,11 +166,10 @@ public class StreetEditAction extends FPActionSupport {
 			}
 		}
 
-		for (Language lang : org.flexpay.common.util.config.ApplicationConfig.getLanguages()) {
-			if (names.containsKey(lang.getId())) {
-				continue;
+		for (Language lang : getLanguages()) {
+			if (!names.containsKey(lang.getId())) {
+				names.put(lang.getId(), "");
 			}
-			names.put(lang.getId(), "");
 		}
 
 	}

@@ -30,7 +30,7 @@ public class AddressAttributeTypeEditAction extends FPActionSupport {
 	public String doExecute() throws Exception {
 
 		if (attributeType == null || attributeType.getId() == null) {
-			log.debug("Incorrect attribute type id");
+			log.warn("Incorrect attribute type id");
 			addActionError(getText("common.object_not_selected"));
 			return REDIRECT_ERROR;
 		}
@@ -42,11 +42,11 @@ public class AddressAttributeTypeEditAction extends FPActionSupport {
 			attributeType = addressAttributeTypeService.readFull(stub);
 
 			if (attributeType == null) {
-				log.debug("Can't get address attribute type with id {} from DB", stub.getId());
+				log.warn("Can't get address attribute type with id {} from DB", stub.getId());
 				addActionError(getText("common.object_not_selected"));
 				return REDIRECT_ERROR;
 			} else if (attributeType.isNotActive()) {
-				log.debug("Attribute type with id {} is disabled", stub.getId());
+				log.warn("Attribute type with id {} is disabled", stub.getId());
 				addActionError(getText("common.object_not_selected"));
 				return REDIRECT_ERROR;
 			}
@@ -56,18 +56,18 @@ public class AddressAttributeTypeEditAction extends FPActionSupport {
 		}
 
 		if (names == null) {
-			log.debug("Incorrect \"names\" parameter");
+			log.debug("Names parameter is null");
 			names = treeMap();
 		}
 
 		if (shortNames == null) {
-			log.debug("Incorrect \"shortNames\" parameter");
+			log.debug("ShortNames parameter is null");
 			shortNames = treeMap();
 		}
 
 		if (isNotSubmit()) {
 			attributeType = type;
-			initTranslations();
+			initData();
 			return INPUT;
 		}
 
@@ -98,7 +98,7 @@ public class AddressAttributeTypeEditAction extends FPActionSupport {
 		return REDIRECT_SUCCESS;
 	}
 
-	private void initTranslations() {
+	private void initData() {
 
 		for (AddressAttributeTypeTranslation translation : attributeType.getTranslations()) {
 			names.put(translation.getLang().getId(), translation.getName());

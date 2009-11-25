@@ -24,8 +24,8 @@ public class PersonSaveFIOAction extends FPActionSupport {
 	public String doExecute() throws Exception {
 
 		if (person == null) {
-			log.debug("Incorrect person");
-			addActionError(getText("common.error.invalid_id"));
+			log.warn("Person parameter is null");
+			addActionError(getText("ab.error.person.invalid_id"));
 			return SUCCESS;
 		}
 
@@ -34,11 +34,11 @@ public class PersonSaveFIOAction extends FPActionSupport {
 			person = personService.readFull(stub);
 
 			if (person == null) {
-				log.debug("Can't get person with id {} from DB", stub.getId());
+				log.warn("Can't get person with id {} from DB", stub.getId());
 				addActionError(getText("common.object_not_selected"));
 				return SUCCESS;
 			} else if (person.isNotActive()) {
-				log.debug("Person with id {} is disabled", stub.getId());
+				log.warn("Person with id {} is disabled", stub.getId());
 				addActionError(getText("common.object_not_selected"));
 				return SUCCESS;
 			}

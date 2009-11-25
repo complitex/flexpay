@@ -11,7 +11,7 @@ public class TownsListPageAction extends FPActionSupport {
 	@NotNull
 	@Override
 	protected String doExecute() throws Exception {
-		if (regionFilter != null) {
+		if (regionFilter != null && regionFilter > 0) {
 			AbUserPreferences up = (AbUserPreferences) getUserPreferences();
 			up.setRegionFilter(regionFilter);
 			up.setTownFilter(0L);

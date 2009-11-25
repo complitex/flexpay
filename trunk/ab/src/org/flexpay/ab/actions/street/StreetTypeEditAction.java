@@ -9,6 +9,7 @@ import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.persistence.Stub.stub;
 import static org.flexpay.common.util.CollectionUtils.treeMap;
 import org.flexpay.common.util.config.ApplicationConfig;
+import static org.flexpay.common.util.config.ApplicationConfig.getLanguages;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
@@ -28,7 +29,7 @@ public class StreetTypeEditAction extends FPActionSupport {
 	public String doExecute() throws Exception {
 
 		if (streetType == null || streetType.getId() == null) {
-			log.debug("Incorrect street type id");
+			log.warn("Incorrect street type id");
 			addActionError(getText("common.error.invalid_id"));
 			return REDIRECT_ERROR;
 		}
@@ -38,11 +39,11 @@ public class StreetTypeEditAction extends FPActionSupport {
 			streetType = streetTypeService.readFull(stub);
 
 			if (streetType == null) {
-				log.debug("Can't get street type with id {} from DB", stub.getId());
+				log.warn("Can't get street type with id {} from DB", stub.getId());
 				addActionError(getText("common.object_not_selected"));
 				return REDIRECT_ERROR;
 			} else if (streetType.isNotActive()) {
-				log.debug("Street type with id {} is disabled", stub.getId());
+				log.warn("Street type with id {} is disabled", stub.getId());
 				addActionError(getText("common.object_not_selected"));
 				return REDIRECT_ERROR;
 			}
@@ -50,16 +51,16 @@ public class StreetTypeEditAction extends FPActionSupport {
 		}
 
 		if (names == null) {
-			log.debug("Incorrect \"names\" parameter");
+			log.debug("Names parameter is null");
 			names = treeMap();
 		}
 		if (shortNames == null) {
-			log.debug("Incorrect \"shortNames\" parameter");
+			log.debug("ShortNames parameter is null");
 			shortNames = treeMap();
 		}
 
 		if (isNotSubmit()) {
-			initNames();
+			initData();
 			return INPUT;
 		}
 
@@ -95,18 +96,17 @@ public class StreetTypeEditAction extends FPActionSupport {
 		return INPUT;
 	}
 
-	private void initNames() {
+	private void initData() {
 		for (StreetTypeTranslation name : streetType.getTranslations()) {
 			names.put(name.getLang().getId(), name.getName());
 			shortNames.put(name.getLang().getId(), name.getShortName());
 		}
 
-		for (Language lang : ApplicationConfig.getLanguages()) {
-			if (names.containsKey(lang.getId())) {
-				continue;
+		for (Language lang : getLanguages()) {
+			if (!names.containsKey(lang.getId())) {
+				names.put(lang.getId(), "");
+				shortNames.put(lang.getId(), "");
 			}
-			names.put(lang.getId(), "");
-			shortNames.put(lang.getId(), "");
 		}
 	}
 

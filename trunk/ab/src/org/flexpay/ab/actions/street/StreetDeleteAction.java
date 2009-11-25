@@ -19,8 +19,7 @@ public class StreetDeleteAction extends FPActionSupport {
 	public String doExecute() throws Exception {
 
 		if (objectIds == null) {
-			log.debug("Incorrect object ids");
-			addActionError(getText("common.error.invalid_id"));
+			log.debug("ObjectIds parameter is null");
 			return SUCCESS;
 		}
 

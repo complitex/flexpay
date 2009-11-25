@@ -27,14 +27,14 @@ public class PersonSaveRegistrationAction extends FPActionSupport {
 	public String doExecute() throws Exception {
 
 		if (apartmentFilter == null || apartmentFilter <= 0) {
-			log.debug("Incorrect apartment id");
-			addActionError(getText("common.error.invalid_id"));
+			log.warn("Incorrect apartment id");
+			addActionError(getText("ab.error.person.no_apartment"));
 			return SUCCESS;
 		}
 
 		if (person == null || person.isNew()) {
-			log.debug("Incorrect person id");
-			addActionError(getText("common.error.invalid_id"));
+			log.warn("Incorrect person id");
+			addActionError(getText("ab.error.person.invalid_id"));
 			return SUCCESS;
 		}
 
@@ -42,11 +42,11 @@ public class PersonSaveRegistrationAction extends FPActionSupport {
 		person = personService.readFull(stub);
 
 		if (person == null) {
-			log.debug("Can't get person with id {} from DB", stub.getId());
+			log.warn("Can't get person with id {} from DB", stub.getId());
 			addActionError(getText("common.object_not_selected"));
 			return SUCCESS;
 		} else if (person.isNotActive()) {
-			log.debug("Person with id {} is disabled", stub.getId());
+			log.warn("Person with id {} is disabled", stub.getId());
 			addActionError(getText("common.object_not_selected"));
 			return SUCCESS;
 		}
