@@ -124,9 +124,10 @@
         $("#dialog").dialog({
             bgiframe: true,
             modal: true,
-            width: 800,
-            height: 400,
-            resizable: true,
+            width: 900,
+            height: 350,
+            minWidth: 800,
+            minHeight: 350,
             closeOnEscape: true,
             title: "<s:text name="eirc.registry.view.dialog_title" />",
             autoOpen: false,
