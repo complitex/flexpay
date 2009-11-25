@@ -27,7 +27,7 @@ public class TestRegionEditAction extends AbSpringBeanAwareTestCase {
 	@Test
 	public void testIncorrectId() throws Exception {
 
-		assertEquals("Invalid action result", FPActionSupport.REDIRECT_SUCCESS, action.execute());
+		assertEquals("Invalid action result", FPActionSupport.REDIRECT_ERROR, action.execute());
 
 	}
 
@@ -89,7 +89,7 @@ public class TestRegionEditAction extends AbSpringBeanAwareTestCase {
 		action.setRegion(new Region(121212L));
 		action.setNames(initNames("123"));
 		action.setCountryFilter(TestData.COUNTRY_RUS.getId());
-		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
+		assertEquals("Invalid action result", FPActionSupport.REDIRECT_ERROR, action.execute());
 
 	}
 

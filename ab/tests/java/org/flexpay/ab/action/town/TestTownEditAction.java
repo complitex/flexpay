@@ -25,7 +25,7 @@ public class TestTownEditAction extends AbSpringBeanAwareTestCase {
 	@Test
 	public void testIncorrectId() throws Exception {
 
-		assertEquals("Invalid action result", FPActionSupport.REDIRECT_SUCCESS, action.execute());
+		assertEquals("Invalid action result", FPActionSupport.REDIRECT_ERROR, action.execute());
 
 	}
 
@@ -102,7 +102,7 @@ public class TestTownEditAction extends AbSpringBeanAwareTestCase {
 		action.setTown(new Town(121212L));
 		action.setNames(initNames("123"));
 		action.setRegionFilter(TestData.REGION_NSK.getId());
-		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
+		assertEquals("Invalid action result", FPActionSupport.REDIRECT_ERROR, action.execute());
 	}
 
 	@Test
@@ -134,14 +134,14 @@ public class TestTownEditAction extends AbSpringBeanAwareTestCase {
 		townDao.create(town);
 
 		action.setTown(town);
-		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
+		assertEquals("Invalid action result", FPActionSupport.REDIRECT_ERROR, action.execute());
 
 		action.setSubmitted("");
 		action.setRegionFilter(TestData.REGION_NSK.getId());
 		action.setBeginDateFilter(new BeginDateFilter(DateUtil.next(DateUtil.now())));
 		action.setNames(initNames("123"));
 
-		assertEquals("Invalid action result", FPActionSupport.REDIRECT_SUCCESS, action.execute());
+		assertEquals("Invalid action result", FPActionSupport.REDIRECT_ERROR, action.execute());
 
 		townDao.delete(town);
 	}
