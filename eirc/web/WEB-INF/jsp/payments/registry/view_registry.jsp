@@ -3,7 +3,10 @@
 
 <s:actionerror />
 
+<s:actionmessage />
+
 <s:form id="frecords">
+  <s:hidden id="currentPage" value="%{pager.pageNumber}" />
 	<table cellpadding="3" cellspacing="1" border="0" width="100%">
 		<tr>
 			<td colspan="11">
@@ -84,7 +87,7 @@
 					</s:if>
 				<td class="col"><s:date name="operationDate" format="yyyy/MM/dd"/></td>
 				<td class="col"><s:property value="%{amount}"/></td>
-					<%--<td class="col"><s:property value="%{containers}" /></td>--%>
+					<%--<td class="col"><s:p  roperty value="%{containers}" /></td>--%>
 				<td class="col">N/A</td>
 				<!-- TODO uncomment as fix for LocalizedTextUtil NPE available (see https://xwork.dev.java.net/issues/show_bug.cgi?id=6)-->
 				<%--<td class="col"><s:text name="%{importError.errorId}"/></td>--%>
@@ -121,8 +124,9 @@
         $("#dialog").dialog({
             bgiframe: true,
             modal: true,
-            width: 640,
+            width: 800,
             height: 400,
+            resizable: true,
             closeOnEscape: true,
             title: "<s:text name="eirc.registry.view.dialog_title" />",
             autoOpen: false,
@@ -130,6 +134,11 @@
                 '<s:text name="common.cancel" />' : function() {
                     $(this).dialog("close");
                 }
+            },
+            close: function(event, ui) {
+                $('#pageNumber').val($('#currentPage')[0].value);
+                $('#setupCompleted').val('true');
+                $('#frecords').submit();
             }
         });
 

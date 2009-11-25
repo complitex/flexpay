@@ -1,13 +1,6 @@
 
 <%@ include file="/WEB-INF/jsp/common/taglibs.jsp" %>
 
-<div align="center" width="100%">
-
-	<s:text name="eirc.address_setup_completed" />
-
-	<br /><br />
-	<input type="button" value="<s:text name="common.close" />"
-		   onclick="parent.$('#dialog').dialog('close');"
-		   class="btn-exit" />
-
-</div>
+<script type="text/javascript">
+  parent.$('#dialog').dialog('close');
+</script>
