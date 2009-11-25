@@ -255,8 +255,16 @@ var FP = {
                     $("#messagesBlock").html(data);
                     callback(null);
                 });
-    }
+    },
 
+	/*
+	 * Clipboard function
+	 */
+	copyToClipboard : function(content) {
+		netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
+		const gClipboardHelper = Components.classes["@mozilla.org/widget/clipboardhelper;1"].getService(Components.interfaces.nsIClipboardHelper);
+		gClipboardHelper.copyString(content);
+	}
 };
 
 // Array Remove - By John Resig (MIT Licensed)

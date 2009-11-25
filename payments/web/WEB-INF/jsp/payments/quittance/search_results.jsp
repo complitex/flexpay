@@ -15,6 +15,7 @@
 				<td class="th" nowrap="nowrap"><s:text name="payments.quittances.quittance_pay.service_supplier"/></td>
 				<td class="th" nowrap="nowrap"><s:text name="payments.quittances.quittance_pay.debt"/></td>
 				<td class="th" nowrap="nowrap" style="width: 80px;"><s:text name="payments.quittances.quittance_pay.pay"/></td>
+				<td class="th" nowrap="nowrap"></td>
 			</tr>
 
 			<s:iterator value="quittanceInfos" id="qi" status="nQI">
@@ -30,7 +31,7 @@
 					<s:hidden name="ercAccounts['%{#serviceIndx}']" value="%{getErcAccount(attributes)}"/>
 
 					<tr class="cols_1_error" style="display:none;">
-						<td colspan="6" />
+						<td colspan="7"></td>
 					</tr>
 
 					<tr class="cols_1 service_payment">
@@ -39,17 +40,22 @@
 						<td class="col" nowrap="nowrap"><s:property value="%{getServiceName(serviceMasterIndex)}"/></td>
 						<td class="col"><s:property value="%{getProviderName(serviceMasterIndex)}"/></td>
 						<td class="col"><s:property value="outgoingBalance"/></td>
-						<td class="col"><s:textfield name="payments['%{#serviceIndx}']"
-													 id="payments_%{#serviceIndx}"
-													 value="%{outgoingBalance}"
-													 onchange="onChangePaymentHandler('payments_%{#serviceIndx}');"													 
-													 cssStyle="width:100%;text-align:right;"/></td>
+						<td class="col">
+							<s:textfield name="payments['%{#serviceIndx}']"
+										 id="payments_%{#serviceIndx}"
+										 value="%{outgoingBalance}"
+										 onchange="onChangePaymentHandler('payments_%{#serviceIndx}');"
+										 cssStyle="width:100%;text-align:right;"/>
+						</td>
+						<td>
+							<img id="payments_<s:property value="%{#serviceIndx}"/>_copy" src="<s:url value="/resources/common/img/i_copy.gif"/>" alt="TODO"/>											
+						</td>
 					</tr>
 				</s:iterator>
 			</s:iterator>
 
 			<tr class="cols_1_error" style="display:none;">
-				<td colspan="6" />
+				<td colspan="7"></td>
 			</tr>
 			<tr class="cols_1">
 				<td class="col" colspan="5" style="text-align:right;font-weight:bold;">
@@ -57,21 +63,23 @@
 				</td>
 				<td class="col">
 					<s:textfield name="totalToPay" readonly="true" value="%{getTotalToPay()}"
-											 cssStyle="width:100%;text-align:right;"/>
+								 cssStyle="width:100%;text-align:right;"/>
 				</td>
+				<td class="col"></td>
 			</tr>
 
 			<tr class="cols_1_error" style="display:none;">
-				<td colspan="6"/>
+				<td colspan="7"></td>
 			</tr>
 			<tr class="cols_1">
 				<td colspan="5" style="font-weight:bold;text-align:right;">
 					<s:text name="payments.quittance.payment.input"/>
 				</td>
 				<td>
-					<s:textfield name="inputSumm" cssStyle="width:100%;text-align:right;"value="%{getTotalToPay()}"
-							onchange="onChangeInputHandler();"/>
+					<s:textfield name="inputSumm" cssStyle="width:100%;text-align:right;" value="%{getTotalToPay()}"
+								 onchange="onChangeInputHandler();"/>
 				</td>
+				<td class="col"></td>
 			</tr>
 
 			<tr class="cols_1">
@@ -79,14 +87,17 @@
 					<s:text name="payments.quittance.payment.change"/>
 				</td>
 				<td>
-					<s:textfield name="changeSumm" cssStyle="width:100%;text-align:right;" value="0.00" readonly="true"/>
+					<s:textfield name="changeSumm" cssStyle="width:100%;text-align:right;" value="0.00"
+								 readonly="true"/>
 				</td>
+				<td class="col"></td>
 			</tr>
 
 			<tr>
 				<td colspan="5" style="text-align:right;">
 					<span style="display: none;">&nbsp;</span>
-					<img id="indicator" src="<s:url value="/resources/common/img/indicator.gif"/>" style="display: none;"/>
+					<img id="indicator" src="<s:url value="/resources/common/img/indicator.gif"/>"
+						 style="display: none;"/>
 					<input type="button" id="printQuittanceButton" class="btn-exit" style="width: 80px;"
 						   value="<s:text name="payments.quittances.quittance_pay.print_quittance"/>"/>
 				</td>
@@ -94,9 +105,10 @@
 					<input type="button" id="payQuittanceButton" class="btn-exit" style="width: 80px;"
 						   value="<s:text name="payments.quittances.quittance_pay.pay"/>"/>
 				</td>
+				<td class="col"></td>
 				<s:hidden name="actionName" value="%{actionName}"/>
 				<s:hidden name="apartmentId" value="%{apartmentId}"/>
-                <s:hidden name="submitted" value="true" />
+				<s:hidden name="submitted" value="true"/>
 				<s:hidden name="operationId" id="operationId" value=""/>
 			</tr>
 
