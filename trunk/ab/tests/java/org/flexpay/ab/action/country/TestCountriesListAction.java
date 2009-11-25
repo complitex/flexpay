@@ -24,7 +24,7 @@ public class TestCountriesListAction extends AbSpringBeanAwareTestCase {
 
 		action.setCountrySorter(null);
 
-		assertEquals("Invalid action result", FPActionSupport.ERROR, action.execute());
+		assertEquals("Invalid action result", FPActionSupport.SUCCESS, action.execute());
 
 	}
 

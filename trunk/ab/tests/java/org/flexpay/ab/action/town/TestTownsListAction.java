@@ -25,7 +25,7 @@ public class TestTownsListAction extends AbSpringBeanAwareTestCase {
 	@Test
 	public void testIncorrectRegionFilter1() throws Exception {
 
-		assertEquals("Invalid action result", FPActionSupport.ERROR, action.execute());
+		assertEquals("Invalid action result", FPActionSupport.SUCCESS, action.execute());
 
 	}
 
@@ -34,7 +34,7 @@ public class TestTownsListAction extends AbSpringBeanAwareTestCase {
 
 		action.setRegionFilter(-10L);
 
-		assertEquals("Invalid action result", FPActionSupport.ERROR, action.execute());
+		assertEquals("Invalid action result", FPActionSupport.SUCCESS, action.execute());
 
 	}
 
@@ -44,7 +44,7 @@ public class TestTownsListAction extends AbSpringBeanAwareTestCase {
 		action.setRegionFilter(TestData.REGION_NSK.getId());
 		action.setTownSorterByName(null);
 
-		assertEquals("Invalid action result", FPActionSupport.ERROR, action.execute());
+		assertEquals("Invalid action result", FPActionSupport.SUCCESS, action.execute());
 
 	}
 
@@ -54,7 +54,7 @@ public class TestTownsListAction extends AbSpringBeanAwareTestCase {
 		action.setRegionFilter(TestData.REGION_NSK.getId());
 		action.setTownSorterByType(null);
 
-		assertEquals("Invalid action result", FPActionSupport.ERROR, action.execute());
+		assertEquals("Invalid action result", FPActionSupport.SUCCESS, action.execute());
 
 	}
 
