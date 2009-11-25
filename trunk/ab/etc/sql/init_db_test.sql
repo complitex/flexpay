@@ -1817,20 +1817,6 @@ INSERT INTO ab_person_identity_attributes_tbl (name, value, language_id, person_
 	VALUES ('Атрибут', 'Значение', @ru_id, @person_identity_id);
 
 -- Init Buildings attribute types
-INSERT INTO ab_building_address_attribute_types_tbl (id, status) VALUES (1, 0);
-SELECT @attr_type_home_number_id:=1;
-INSERT INTO ab_building_address_attribute_type_translations_tbl (name, short_name, attribute_type_id, language_id)
-	VALUES ('Номер дома', 'д', @attr_type_home_number_id, @ru_id);
-INSERT INTO ab_building_address_attribute_type_translations_tbl (name, short_name, attribute_type_id, language_id)
-	VALUES ('Home number', '', @attr_type_home_number_id, @en_id);
-
-INSERT INTO ab_building_address_attribute_types_tbl (id, status) VALUES (2, 0);
-SELECT @attr_type_bulk_id:=2;
-INSERT INTO ab_building_address_attribute_type_translations_tbl (name, short_name, attribute_type_id, language_id)
-	VALUES ('Корпус', 'к', @attr_type_bulk_id, @ru_id);
-INSERT INTO ab_building_address_attribute_type_translations_tbl (name, short_name, attribute_type_id, language_id)
-	VALUES ('Bulk', '', @attr_type_bulk_id, @en_id);
-
 INSERT INTO ab_building_address_attribute_types_tbl (id, status) VALUES (3, 0);
 SELECT @attr_type_part_id:=3;
 INSERT INTO ab_building_address_attribute_type_translations_tbl (name, short_name, attribute_type_id, language_id)
