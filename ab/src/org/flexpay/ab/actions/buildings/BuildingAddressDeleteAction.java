@@ -22,14 +22,13 @@ public class BuildingAddressDeleteAction extends FPActionSupport {
 	public String doExecute() throws Exception {
 
 		if (building == null || building.isNew()) {
-			log.debug("Incorrect building id");
+			log.warn("Incorrect building id");
 			addActionError("ab.error.invalid_building_id");
 			return SUCCESS;
 		}
 
 		if (objectIds == null) {
-			log.debug("Incorrect object ids");
-			addActionError(getText("common.error.invalid_id"));
+			log.debug("ObjectIds parameter is null");
 			return SUCCESS;
 		}
 

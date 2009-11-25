@@ -11,7 +11,7 @@ public class BuildingsListPageAction extends FPActionSupport {
 	@NotNull
 	@Override
 	protected String doExecute() throws Exception {
-		if (streetFilter != null) {
+		if (streetFilter != null && streetFilter > 0) {
 			AbUserPreferences up = (AbUserPreferences) getUserPreferences();
 			up.setStreetFilter(streetFilter);
 			up.setBuildingFilter(0L);

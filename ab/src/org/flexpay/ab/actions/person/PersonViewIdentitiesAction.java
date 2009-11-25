@@ -19,7 +19,7 @@ public class PersonViewIdentitiesAction extends FPActionSupport {
 	public String doExecute() throws Exception {
 
 		if (person == null || person.isNew()) {
-			log.debug("Incorrect person id");
+			log.warn("Incorrect person id");
 			return SUCCESS;
 		}
 
@@ -27,9 +27,9 @@ public class PersonViewIdentitiesAction extends FPActionSupport {
 		person = personService.readFull(stub);
 
 		if (person == null) {
-			log.debug("Can't get person with id {} from DB", stub.getId());
+			log.warn("Can't get person with id {} from DB", stub.getId());
 		} else if (person.isNotActive()) {
-			log.debug("Person with id {} is disabled", stub.getId());
+			log.warn("Person with id {} is disabled", stub.getId());
 		}
 
 		return SUCCESS;

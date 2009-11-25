@@ -30,7 +30,7 @@ public class ApartmentEditAction extends FPActionSupport {
 	public String doExecute() throws Exception {
 
 		if (apartment == null || apartment.getId() == null) {
-			log.debug("Incorrect apartment id");
+			log.warn("Incorrect apartment id");
 			addActionError(getText("common.object_not_selected"));
 			return REDIRECT_ERROR;
 		}
@@ -40,11 +40,11 @@ public class ApartmentEditAction extends FPActionSupport {
 			apartment = apartmentService.readWithHierarchy(stub);
 
 			if (apartment == null) {
-				log.debug("Can't get apartment with id {} from DB", stub.getId());
+				log.warn("Can't get apartment with id {} from DB", stub.getId());
 				addActionError(getText("common.object_not_selected"));
 				return REDIRECT_ERROR;
 			} else if (apartment.isNotActive()) {
-				log.debug("Apartment with id {} is disabled", stub.getId());
+				log.warn("Apartment with id {} is disabled", stub.getId());
 				addActionError(getText("common.object_not_selected"));
 				return REDIRECT_ERROR;
 			}
@@ -88,11 +88,6 @@ public class ApartmentEditAction extends FPActionSupport {
 	}
 
 	private boolean doValidate() {
-
-		if (apartment == null) {
-			addActionError(getText("common.object_not_selected"));
-			return false;
-		}
 
 		if (buildingFilter == null || buildingFilter <= 0) {
 			log.warn("Incorrect building address id in filter ({})", buildingFilter);

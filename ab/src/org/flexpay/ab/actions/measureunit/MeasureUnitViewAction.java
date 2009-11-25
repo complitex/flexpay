@@ -19,7 +19,7 @@ public class MeasureUnitViewAction extends FPActionSupport {
 	public String doExecute() throws Exception {
 
 		if (measureUnit == null || measureUnit.isNew()) {
-			log.debug("Incorrect measure unit id");
+			log.warn("Incorrect measure unit id");
 			addActionError(getText("common.error.invalid_id"));
 			return REDIRECT_ERROR;
 		}
@@ -28,11 +28,11 @@ public class MeasureUnitViewAction extends FPActionSupport {
 		measureUnit = measureUnitService.readFull(stub);
 
 		if (measureUnit == null) {
-			log.debug("Can't get measure unit with id {} from DB", stub.getId());
+			log.warn("Can't get measure unit with id {} from DB", stub.getId());
 			addActionError(getText("common.object_not_selected"));
 			return REDIRECT_ERROR;
 		} else if (measureUnit.isNotActive()) {
-			log.debug("Measure unit with id {} is disabled", stub.getId());
+			log.warn("Measure unit with id {} is disabled", stub.getId());
 			addActionError(getText("common.object_not_selected"));
 			return REDIRECT_ERROR;
 		}

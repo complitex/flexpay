@@ -27,7 +27,7 @@ public class MeasureUnitEditAction extends FPActionSupport {
 	protected String doExecute() throws Exception {
 
 		if (measureUnit == null || measureUnit.getId() == null) {
-			log.debug("Incorrect measure unit id");
+			log.warn("Incorrect measure unit id");
 			addActionError(getText("common.error.invalid_id"));
 			return REDIRECT_ERROR;
 		}
@@ -37,11 +37,11 @@ public class MeasureUnitEditAction extends FPActionSupport {
 			measureUnit = measureUnitService.readFull(stub);
 
 			if (measureUnit == null) {
-				log.debug("Can't get measure unit with id {} from DB", stub.getId());
+				log.warn("Can't get measure unit with id {} from DB", stub.getId());
 				addActionError(getText("common.object_not_selected"));
 				return REDIRECT_ERROR;
 			} else if (measureUnit.isNotActive()) {
-				log.debug("Measure unit with id {} is disabled", stub.getId());
+				log.warn("Measure unit with id {} is disabled", stub.getId());
 				addActionError(getText("common.object_not_selected"));
 				return REDIRECT_ERROR;
 			}
@@ -49,12 +49,12 @@ public class MeasureUnitEditAction extends FPActionSupport {
 		}
 
 		if (names == null) {
-			log.debug("Incorrect \"names\" parameter");
+			log.debug("Names parameter is null");
 			names = treeMap();
 		}
 
 		if (isNotSubmit()) {
-			initTranslations();
+			initData();
 			return INPUT;
 		}
 
@@ -75,7 +75,7 @@ public class MeasureUnitEditAction extends FPActionSupport {
 		return REDIRECT_SUCCESS;
 	}
 
-	private void initTranslations() {
+	private void initData() {
 
 		for (MeasureUnitName name : measureUnit.getUnitNames()) {
 			names.put(name.getLang().getId(), name.getName());

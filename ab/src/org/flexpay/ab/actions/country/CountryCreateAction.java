@@ -7,6 +7,7 @@ import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.persistence.Language;
 import static org.flexpay.common.util.CollectionUtils.treeMap;
 import org.flexpay.common.util.config.ApplicationConfig;
+import static org.flexpay.common.util.config.ApplicationConfig.getLanguages;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
@@ -25,11 +26,11 @@ public class CountryCreateAction extends FPActionSupport {
 	public String doExecute() throws Exception {
 
 		if (names == null) {
-			log.debug("Incorrect \"names\" parameter");
+			log.debug("Names parameter is null");
 			names = treeMap();
 		}
 		if (shortNames == null) {
-			log.debug("Incorrect \"shortNames\" parameter");
+			log.debug("ShortNames parameter is null");
 			shortNames = treeMap();
 		}
 
@@ -39,6 +40,7 @@ public class CountryCreateAction extends FPActionSupport {
 		}
 
 		if (country == null) {
+			log.debug("Country parameter is null");
 			country = new Country();
 		}
 
@@ -59,7 +61,7 @@ public class CountryCreateAction extends FPActionSupport {
 	}
 
 	private void initData() {
-		for (Language lang : ApplicationConfig.getLanguages()) {
+		for (Language lang : getLanguages()) {
 			names.put(lang.getId(), "");
 			shortNames.put(lang.getId(), "");
 		}

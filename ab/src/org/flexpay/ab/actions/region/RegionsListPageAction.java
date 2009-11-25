@@ -11,7 +11,7 @@ public class RegionsListPageAction extends FPActionSupport {
 	@NotNull
 	@Override
 	protected String doExecute() throws Exception {
-		if (countryFilter != null) {
+		if (countryFilter != null && countryFilter > 0) {
 			AbUserPreferences up = (AbUserPreferences) getUserPreferences();
 			up.setCountryFilter(countryFilter);
 			up.setRegionFilter(0L);

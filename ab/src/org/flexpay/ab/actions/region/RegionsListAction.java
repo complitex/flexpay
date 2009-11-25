@@ -25,13 +25,13 @@ public class RegionsListAction extends FPActionWithPagerSupport<Region> {
 	@Override
 	public String doExecute() throws Exception {
 
+		if (!doValidate()) {
+			return SUCCESS;
+		}
+
 		if (regionSorter == null) {
 			log.debug("RegionSorter is null");
 			regionSorter = new RegionSorter();
-		}
-
-		if (!doValidate()) {
-			return SUCCESS;
 		}
 
 		regionSorter.setLang(getLanguage());
@@ -54,7 +54,7 @@ public class RegionsListAction extends FPActionWithPagerSupport<Region> {
 		boolean valid = true;
 
 		if (countryFilter == null || countryFilter <= 0) {
-			log.debug("Incorrect country id in filter ({})", countryFilter);
+			log.warn("Incorrect country id in filter ({})", countryFilter);
 			valid = false;
 		}
 

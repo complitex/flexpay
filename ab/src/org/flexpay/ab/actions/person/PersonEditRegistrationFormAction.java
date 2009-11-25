@@ -30,7 +30,8 @@ public class PersonEditRegistrationFormAction extends FPActionSupport {
 	public String doExecute() throws Exception {
 
 		if (apartmentFilter == null || apartmentFilter <= 0) {
-			log.debug("Incorrect apartment id");
+			log.warn("Incorrect apartment id");
+			addActionError(getText("ab.error.apartment.no_building"));
 			return SUCCESS;
 		}
 

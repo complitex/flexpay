@@ -19,7 +19,7 @@ public class StreetTypeViewAction extends FPActionSupport {
 	public String doExecute() throws Exception {
 
 		if (streetType == null || streetType.isNew()) {
-			log.debug("Incorrect street type id");
+			log.warn("Incorrect street type id");
 			addActionError(getText("common.error.invalid_id"));
 			return REDIRECT_ERROR;
 		}
@@ -28,11 +28,11 @@ public class StreetTypeViewAction extends FPActionSupport {
 		streetType = streetTypeService.readFull(stub);
 
 		if (streetType == null) {
-			log.debug("Can't get street type with id {} from DB", stub.getId());
+			log.warn("Can't get street type with id {} from DB", stub.getId());
 			addActionError(getText("common.object_not_selected"));
 			return REDIRECT_ERROR;
 		} else if (streetType.isNotActive()) {
-			log.debug("Street type with id {} is disabled", stub.getId());
+			log.warn("Street type with id {} is disabled", stub.getId());
 			addActionError(getText("common.object_not_selected"));
 			return REDIRECT_ERROR;
 		}

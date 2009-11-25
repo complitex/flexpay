@@ -25,13 +25,13 @@ public class DistrictsListAction extends FPActionWithPagerSupport<District> {
 	@Override
 	public String doExecute() throws Exception {
 
+		if (!doValidate()) {
+			return SUCCESS;
+		}
+
 		if (districtSorter == null) {
 			log.debug("DistrictSorter is null");
 			districtSorter = new DistrictSorter();
-		}
-
-		if (!doValidate()) {
-			return SUCCESS;
 		}
 
 		districtSorter.setLang(getLanguage());

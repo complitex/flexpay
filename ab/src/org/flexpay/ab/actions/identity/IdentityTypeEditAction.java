@@ -27,7 +27,7 @@ public class IdentityTypeEditAction extends FPActionSupport {
 	public String doExecute() throws Exception {
 
 		if (identityType == null || identityType.getId() == null) {
-			log.debug("Identity type id not set");
+			log.warn("Identity type id not set");
 			addActionError(getText("common.error.invalid_id"));
 			return REDIRECT_ERROR;
 		}
@@ -37,11 +37,11 @@ public class IdentityTypeEditAction extends FPActionSupport {
 			identityType = identityTypeService.readFull(stub);
 
 			if (identityType == null) {
-				log.debug("Can't get identity type with id {} from DB", stub.getId());
+				log.warn("Can't get identity type with id {} from DB", stub.getId());
 				addActionError(getText("common.object_not_selected"));
 				return REDIRECT_ERROR;
 			} else if (identityType.isNotActive()) {
-				log.debug("Identity type with id {} is disabled", stub.getId());
+				log.warn("Identity type with id {} is disabled", stub.getId());
 				addActionError(getText("common.object_not_selected"));
 				return REDIRECT_ERROR;
 			}
@@ -49,12 +49,12 @@ public class IdentityTypeEditAction extends FPActionSupport {
 		}
 
 		if (names == null) {
-			log.debug("Incorrect \"names\" parameter");
+			log.debug("Names parameter is null");
 			names = treeMap();
 		}
 
 		if (isNotSubmit()) {
-			initTranslations();
+			initData();
 			return INPUT;
 		}
 
@@ -75,7 +75,7 @@ public class IdentityTypeEditAction extends FPActionSupport {
 		return REDIRECT_SUCCESS;
 	}
 
-	private void initTranslations() {
+	private void initData() {
 
 		for (IdentityTypeTranslation translation : identityType.getTranslations()) {
 			names.put(translation.getLang().getId(), translation.getName());

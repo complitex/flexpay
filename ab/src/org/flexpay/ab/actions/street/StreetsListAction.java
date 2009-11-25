@@ -30,6 +30,10 @@ public class StreetsListAction extends FPActionWithPagerSupport<Street> {
 	@Override
 	public String doExecute() throws Exception {
 
+		if (!doValidate()) {
+			return SUCCESS;
+		}
+
 		if (streetSorterByName == null) {
 			log.debug("StreetSorterByName is null");
 			streetSorterByName = new StreetSorterByName();
@@ -40,12 +44,13 @@ public class StreetsListAction extends FPActionWithPagerSupport<Street> {
 			streetSorterByType = new StreetSorterByType();
 		}
 
-		if (!doValidate()) {
-			return SUCCESS;
-		}
-
 		streetSorterByName.setLang(getLanguage());
 		streetSorterByType.setLang(getLanguage());
+
+		if (streetFilter == null) {
+			log.debug("StreetFilter is null");
+			streetFilter = new StreetSearchFilter();
+		}
 
 		String searchStr = streetFilter.getSearchString() == null ? "" : streetFilter.getSearchString();
 

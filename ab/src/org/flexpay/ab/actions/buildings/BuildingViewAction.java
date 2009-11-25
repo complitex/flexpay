@@ -20,7 +20,7 @@ public class BuildingViewAction extends FPActionSupport {
 	public String doExecute() throws FlexPayException {
 
 		if (building == null || building.isNew()) {
-			log.debug("Incorrect building id");
+			log.warn("Incorrect building id");
 			addActionError(getText("common.error.invalid_id"));
 			return REDIRECT_ERROR;
 		}
@@ -29,11 +29,11 @@ public class BuildingViewAction extends FPActionSupport {
 		building = buildingService.readFull(stub);
 
 		if (building == null) {
-			log.debug("Can't get building with id {} from DB", stub.getId());
+			log.warn("Can't get building with id {} from DB", stub.getId());
 			addActionError(getText("common.error.invalid_id"));
 			return REDIRECT_ERROR;
 		} else if (building.isNotActive()) {
-			log.debug("Country with id {} is disabled", stub.getId());
+			log.warn("Country with id {} is disabled", stub.getId());
 			addActionError(getText("common.object_not_selected"));
 			return REDIRECT_ERROR;
 		}

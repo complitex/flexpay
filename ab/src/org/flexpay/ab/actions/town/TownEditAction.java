@@ -12,6 +12,8 @@ import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.persistence.filter.BeginDateFilter;
 import static org.flexpay.common.util.CollectionUtils.treeMap;
 import org.flexpay.common.util.DateUtil;
+import org.flexpay.common.util.config.ApplicationConfig;
+import static org.flexpay.common.util.config.ApplicationConfig.getLanguages;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
@@ -46,7 +48,7 @@ public class TownEditAction extends FPActionSupport {
     protected String doExecute() throws Exception {
 
 		if (town == null || town.getId() == null) {
-			log.debug("Incorrect town id");
+			log.warn("Incorrect town id");
 			addActionError(getText("common.object_not_selected"));
 			return REDIRECT_ERROR;
 		}
@@ -56,11 +58,11 @@ public class TownEditAction extends FPActionSupport {
 			town = townService.readWithHierarchy(stub);
 
 			if (town == null) {
-				log.debug("Can't get town with id {} from DB", stub.getId());
+				log.warn("Can't get town with id {} from DB", stub.getId());
 				addActionError(getText("common.object_not_selected"));
 				return REDIRECT_ERROR;
 			} else if (town.isNotActive()) {
-				log.debug("Town with id {} is disabled", stub.getId());
+				log.warn("Town with id {} is disabled", stub.getId());
 				addActionError(getText("common.object_not_selected"));
 				return REDIRECT_ERROR;
 			}
@@ -68,11 +70,16 @@ public class TownEditAction extends FPActionSupport {
 		}
 
 		if (names == null) {
-			log.debug("Incorrect \"names\" parameter");
+			log.debug("Names parameter is null");
 			names = treeMap();
 		}
 
-        initFilters();
+		if (beginDateFilter == null) {
+			log.debug("BeginDateFilter parameter is null");
+			beginDateFilter = new BeginDateFilter();
+		}
+
+		initFilters();
 
         if (isSubmit()) {
             if (!doValidate()) {
@@ -85,7 +92,7 @@ public class TownEditAction extends FPActionSupport {
             return REDIRECT_SUCCESS;
         }
 
-        initData();
+		initData();
 
 		if (town.isNotNew()) {
 			regionFilter = town.getRegion().getId();
@@ -98,29 +105,38 @@ public class TownEditAction extends FPActionSupport {
     private boolean doValidate() {
 
 		if (regionFilter == null || regionFilter <= 0) {
-			log.debug("Incorrect region id in filter ({})", regionFilter);
+			log.warn("Incorrect region id in filter ({})", regionFilter);
 			addActionError(getText("ab.error.town.no_region"));
 		}
 
-        if (townTypeFilter == null || !townTypeFilter.needFilter()) {
-			log.debug("Incorrect townTypeFilter value");
+        if (!townTypeFilter.needFilter()) {
+			log.warn("Incorrect townTypeFilter value");
             addActionError(getText("ab.error.town.no_type"));
         }
 
-        if (beginDateFilter == null || !beginDateFilter.needFilter()) {
-			log.debug("Incorrect beginDateFilter value");
+        if (!beginDateFilter.needFilter()) {
+			log.warn("Incorrect beginDateFilter value");
             addActionError(getText("ab.error.town.no_begin_date"));
         }
 
         return !hasActionErrors();
     }
 
-    /*
-    * Creates new town if it is a new one (haven't been yet persisted) or updates persistent one
-    */
+    /**
+     * Creates new town if it is a new one
+	 * (haven't been yet persisted) or updates persistent one
+	 *
+	 * @throws FlexPayExceptionContainer if some errors
+     */
     private void updateTown() throws FlexPayExceptionContainer {
 
-        TownName townName = getTownName();
+		TownName townName = new TownName();
+		for (Map.Entry<Long, String> name : names.entrySet()) {
+			String value = name.getValue();
+			Language lang = getLang(name.getKey());
+			townName.setTranslation(new TownNameTranslation(value, lang));
+		}
+
         town.setNameForDate(townName, beginDateFilter.getDate());
         town.setTypeForDate(new TownType(townTypeFilter.getSelectedId()), beginDateFilter.getDate());
 
@@ -131,18 +147,6 @@ public class TownEditAction extends FPActionSupport {
         } else {
             townService.update(town);
         }
-    }
-
-    private TownName getTownName() {
-
-        TownName townName = new TownName();
-        for (Map.Entry<Long, String> name : names.entrySet()) {
-            String value = name.getValue();
-            Language lang = getLang(name.getKey());
-            townName.setTranslation(new TownNameTranslation(value, lang));
-        }
-
-        return townName;
     }
 
 	private void initFilters() throws Exception {
@@ -165,11 +169,10 @@ public class TownEditAction extends FPActionSupport {
 			}
 		}
 
-		for (Language lang : org.flexpay.common.util.config.ApplicationConfig.getLanguages()) {
-			if (names.containsKey(lang.getId())) {
-				continue;
+		for (Language lang : getLanguages()) {
+			if (!names.containsKey(lang.getId())) {
+				names.put(lang.getId(), "");
 			}
-			names.put(lang.getId(), "");
 		}
 
 	}

@@ -36,7 +36,7 @@ public class ApartmentRegistrationAction extends FPActionSupport {
 	public String doExecute() throws FlexPayException {
 
 		if (apartment == null || apartment.getId() == null) {
-			log.debug("Incorrect apartment id");
+			log.warn("Incorrect apartment id");
 			addActionError(getText("common.object_not_selected"));
 			return SUCCESS;
 		}

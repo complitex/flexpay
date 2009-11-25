@@ -18,14 +18,18 @@ public class TownsListAction extends FPActionWithPagerSupport<Town> {
 
 	private Long regionFilter;
 	private List<Town> towns = list();
-
 	private TownSorterByName townSorterByName = new TownSorterByName();
 	private TownSorterByType townSorterByType = new TownSorterByType();
+
 	private TownService townService;
 
 	@NotNull
 	@Override
 	public String doExecute() throws Exception {
+
+		if (!doValidate()) {
+			return SUCCESS;
+		}
 
 		if (townSorterByName == null) {
 			log.debug("TownSorterByName is null");
@@ -34,10 +38,6 @@ public class TownsListAction extends FPActionWithPagerSupport<Town> {
 		if (townSorterByType == null) {
 			log.debug("TownSorterByType is null");
 			townSorterByType = new TownSorterByType();
-		}
-
-		if (!doValidate()) {
-			return SUCCESS;
 		}
 
 		townSorterByName.setLang(getLanguage());

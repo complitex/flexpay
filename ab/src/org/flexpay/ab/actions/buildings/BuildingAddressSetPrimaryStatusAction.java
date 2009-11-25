@@ -20,7 +20,7 @@ public class BuildingAddressSetPrimaryStatusAction extends FPActionSupport {
 	public String doExecute() throws Exception {
 
 		if (address == null || address.getId() == null) {
-			log.debug("Incorrect building address id");
+			log.warn("Incorrect building address id");
 			addActionError(getText("common.object_not_selected"));
 			return SUCCESS;
 		}
@@ -29,11 +29,11 @@ public class BuildingAddressSetPrimaryStatusAction extends FPActionSupport {
 		Building building = buildingService.findBuilding(addressStub);
 
 		if (building == null) {
-			log.debug("Can't get building for address with id {} from DB", addressStub.getId());
+			log.warn("Can't get building for address with id {} from DB", addressStub.getId());
 			addActionError(getText("common.object_not_selected"));
 			return SUCCESS;
 		} else if (building.isNotActive()) {
-			log.debug("Building with id {} is disabled", building.getId());
+			log.warn("Building with id {} is disabled", building.getId());
 			addActionError(getText("common.object_not_selected"));
 			return SUCCESS;
 		}

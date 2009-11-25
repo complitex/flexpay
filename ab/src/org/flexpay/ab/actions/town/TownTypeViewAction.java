@@ -19,7 +19,7 @@ public class TownTypeViewAction extends FPActionSupport {
 	public String doExecute() throws Exception {
 
 		if (townType == null || townType.isNew()) {
-			log.debug("Incorrect town type id");
+			log.warn("Incorrect town type id");
 			addActionError(getText("common.error.invalid_id"));
 			return REDIRECT_ERROR;
 		}
@@ -28,11 +28,11 @@ public class TownTypeViewAction extends FPActionSupport {
 		townType = townTypeService.readFull(stub);
 
 		if (townType == null) {
-			log.debug("Can't get town type with id {} from DB", stub.getId());
+			log.warn("Can't get town type with id {} from DB", stub.getId());
 			addActionError(getText("common.object_not_selected"));
 			return REDIRECT_ERROR;
 		} else if (townType.isNotActive()) {
-			log.debug("Town type with id {} is disabled", stub.getId());
+			log.warn("Town type with id {} is disabled", stub.getId());
 			addActionError(getText("common.object_not_selected"));
 			return REDIRECT_ERROR;
 		}

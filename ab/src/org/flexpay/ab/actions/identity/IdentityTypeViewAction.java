@@ -19,7 +19,7 @@ public class IdentityTypeViewAction extends FPActionSupport {
     public String doExecute() throws Exception {
 
 		if (identityType == null || identityType.isNew()) {
-			log.debug("Incorrect identity type id");
+			log.warn("Incorrect identity type id");
 			addActionError(getText("common.error.invalid_id"));
 			return REDIRECT_ERROR;
 		}
@@ -28,11 +28,11 @@ public class IdentityTypeViewAction extends FPActionSupport {
         identityType = identityTypeService.readFull(stub);
 
 		if (identityType == null) {
-			log.debug("Can't get identity type with id {} from DB", stub.getId());
+			log.warn("Can't get identity type with id {} from DB", stub.getId());
 			addActionError(getText("common.object_not_selected"));
 			return REDIRECT_ERROR;
 		} else if (identityType.isNotActive()) {
-			log.debug("Identity type with id {} is disabled", stub.getId());
+			log.warn("Identity type with id {} is disabled", stub.getId());
 			addActionError(getText("common.object_not_selected"));
 			return REDIRECT_ERROR;
 		}

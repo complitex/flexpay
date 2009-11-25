@@ -19,6 +19,7 @@ public class ApartmentFilterAjaxAction extends FilterAjaxAction {
 	public String doExecute() throws FlexPayException {
 
 		if (parents == null) {
+			log.warn("Parent parameter is null");
 			return SUCCESS;
 		}
 
