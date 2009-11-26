@@ -14,11 +14,9 @@ import org.flexpay.orgs.persistence.ServiceProvider;
 import org.flexpay.orgs.service.ServiceProviderService;
 import org.flexpay.payments.actions.CashboxCookieActionSupport;
 import org.flexpay.payments.persistence.Service;
-import org.flexpay.payments.persistence.ServiceType;
 import org.flexpay.payments.persistence.quittance.ConsumerAttributes;
 import org.flexpay.payments.persistence.quittance.QuittanceDetailsRequest;
 import org.flexpay.payments.persistence.quittance.QuittanceDetailsResponse;
-import static org.flexpay.payments.persistence.quittance.QuittanceDetailsResponse.*;
 import org.flexpay.payments.service.QuittanceDetailsFinder;
 import org.flexpay.payments.service.SPService;
 import org.flexpay.payments.util.ServiceTypesMapper;
@@ -27,6 +25,8 @@ import org.springframework.beans.factory.annotation.Required;
 
 import java.math.BigDecimal;
 import java.util.List;
+
+import static org.flexpay.payments.persistence.quittance.QuittanceDetailsResponse.*;
 
 public class SearchQuittanceAction extends CashboxCookieActionSupport {
 
@@ -85,7 +85,7 @@ public class SearchQuittanceAction extends CashboxCookieActionSupport {
 			return QuittanceDetailsRequest.apartmentNumberRequest(indx);
 		} else {
 			throw new FlexPayException("Bad search request: type must be one of: " + SEARCH_TYPE_ADDRESS + ", "
-					+ SEARCH_TYPE_EIRC_ACCOUNT + ", " + SEARCH_TYPE_QUITTANCE_NUMBER);
+									   + SEARCH_TYPE_EIRC_ACCOUNT + ", " + SEARCH_TYPE_QUITTANCE_NUMBER);
 		}
 	}
 
@@ -275,11 +275,11 @@ public class SearchQuittanceAction extends CashboxCookieActionSupport {
 
 		Service service = spService.readFull(new Stub<Service>(serviceId));
 		if (service == null) {
-			log.warn("Cannot find service with id {} (master index {})", new Object[] { serviceId, serviceMasterIndex});
+			log.warn("Cannot find service with id {} (master index {})", serviceId, serviceMasterIndex);
+			return null;
 		}
 
-		Stub<ServiceType> serviceTypeStub = new Stub<ServiceType>(service.getServiceType().getId());
-		return serviceTypesMapper.getMegabankCode(serviceTypeStub);
+		return serviceTypesMapper.getMegabankCode(service.serviceTypeStub());
 	}
 
 	// form data
