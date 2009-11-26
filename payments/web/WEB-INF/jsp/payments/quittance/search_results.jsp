@@ -48,7 +48,9 @@
 										 cssStyle="width:100%;text-align:right;"/>
 						</td>
 						<td>
-							<img id="payments_<s:property value="%{#serviceIndx}"/>_copy" src="<s:url value="/resources/common/img/i_copy.gif"/>" alt="TODO"/>											
+							<img id="payments_<s:property value="%{#serviceIndx}"/>_copy"
+								 src="<s:url value="/resources/common/img/i_copy.gif"/>"
+								 alt="<s:text name="payments.quittances.quittance_pay.copy"/>"/>											
 						</td>
 					</tr>
 				</s:iterator>
