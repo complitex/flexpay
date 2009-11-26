@@ -7,7 +7,6 @@ import org.flexpay.ab.persistence.filters.ApartmentFilter;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
-import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.service.importexport.CorrectionsService;
 import org.flexpay.common.service.importexport.MasterIndexService;
 import org.flexpay.common.util.CollectionUtils;
@@ -17,9 +16,7 @@ import org.flexpay.eirc.service.EircAccountService;
 import org.flexpay.eirc.service.QuittanceService;
 import org.flexpay.eirc.service.Security;
 import org.flexpay.payments.persistence.quittance.QuittanceDetailsRequest;
-import static org.flexpay.payments.persistence.quittance.QuittanceDetailsRequest.*;
 import org.flexpay.payments.persistence.quittance.QuittanceDetailsResponse;
-import static org.flexpay.payments.persistence.quittance.QuittanceDetailsResponse.*;
 import org.flexpay.payments.service.QuittanceDetailsFinder;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
@@ -27,6 +24,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.util.List;
+
+import static org.flexpay.common.persistence.Stub.stub;
+import static org.flexpay.payments.persistence.quittance.QuittanceDetailsRequest.*;
+import static org.flexpay.payments.persistence.quittance.QuittanceDetailsResponse.*;
 
 public class QuittanceDetailsFinderImpl implements QuittanceDetailsFinder {
 
@@ -78,9 +79,13 @@ public class QuittanceDetailsFinderImpl implements QuittanceDetailsFinder {
 				apartmentMasterIndex, Apartment.class, masterIndexService.getMasterSourceDescriptionStub());
 		if (stub == null) {
 			// todo remove this hack
-			Long stubId = Long.parseLong(apartmentMasterIndex, 10);
-			if (apartmentMasterIndex.equals(stubId.toString()) && stubId > 0) {
-				stub = new Stub<Apartment>(stubId);
+			try {
+				Long stubId = Long.parseLong(apartmentMasterIndex, 10);
+				if (apartmentMasterIndex.equals(stubId.toString()) && stubId > 0) {
+					stub = new Stub<Apartment>(stubId);
+				}
+			} catch (NumberFormatException ex) {
+				log.debug("Master index is looking like a real master index, but not found");
 			}
 		}
 		if (stub == null) {
