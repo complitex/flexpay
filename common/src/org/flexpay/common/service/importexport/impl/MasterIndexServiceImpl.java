@@ -23,7 +23,6 @@ public class MasterIndexServiceImpl implements MasterIndexService {
 
 	private Logger log = LoggerFactory.getLogger(getClass());
 
-	private boolean useSelfInstanceIfNotFound = true;
 	private CorrectionsService correctionsService;
 	private DataSourceDescriptionDao sourceDescriptionDao;
 
@@ -61,13 +60,8 @@ public class MasterIndexServiceImpl implements MasterIndexService {
 	public <T extends DomainObject> String getMasterIndex(@NotNull T obj) {
 
 		assertNotNew(obj);
-		String index = correctionsService.getExternalId(obj, getMasterSourceDescriptionStub());
 
-		if (index == null && useSelfInstanceIfNotFound) {
-			index = getNewMasterIndex(obj);
-		}
-
-		return index;
+		return correctionsService.getExternalId(obj, getMasterSourceDescriptionStub());
 	}
 
 	/**
@@ -100,10 +94,5 @@ public class MasterIndexServiceImpl implements MasterIndexService {
 	@Required
 	public void setCorrectionsService(CorrectionsService correctionsService) {
 		this.correctionsService = correctionsService;
-	}
-
-	// TODO: remove this dirty hack when sync is properly configured
-	public void setUseSelfInstanceIfNotFound(boolean useSelfInstanceIfNotFound) {
-		this.useSelfInstanceIfNotFound = useSelfInstanceIfNotFound;
 	}
 }
