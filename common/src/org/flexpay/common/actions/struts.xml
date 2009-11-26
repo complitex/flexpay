@@ -58,6 +58,10 @@
 			<result>/WEB-INF/jsp/common/about.jsp</result>
 		</action>
 
+		<action name="user" class="staticPageAction">
+			<result>/WEB-INF/jsp/common/user.jsp</result>
+		</action>
+
 		<action name="diff" class="staticPageAdminAction">
 			<result>/WEB-INF/jsp/common/diff.txt</result>
 		</action>
