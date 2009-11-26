@@ -15,7 +15,7 @@
 				<td class="th" nowrap="nowrap"><s:text name="payments.quittances.quittance_pay.service_supplier"/></td>
 				<td class="th" nowrap="nowrap"><s:text name="payments.quittances.quittance_pay.debt"/></td>
 				<td class="th" nowrap="nowrap" style="width: 80px;"><s:text name="payments.quittances.quittance_pay.pay"/></td>
-				<td class="th" nowrap="nowrap"></td>
+				<td class="th" nowrap="nowrap">&nbsp;</td>
 			</tr>
 
 			<s:iterator value="quittanceInfos" id="qi" status="nQI">
@@ -47,7 +47,7 @@
 										 onchange="onChangePaymentHandler('payments_%{#serviceIndx}');"
 										 cssStyle="width:100%;text-align:right;"/>
 						</td>
-						<td>
+						<td class="col">
 							<img id="payments_<s:property value="%{#serviceIndx}"/>_copy"
 								 src="<s:url value="/resources/common/img/i_copy.gif"/>"
 								 alt="<s:text name="payments.quittances.quittance_pay.copy"/>"/>											
