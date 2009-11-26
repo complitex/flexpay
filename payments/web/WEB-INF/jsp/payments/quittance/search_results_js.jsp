@@ -422,7 +422,11 @@
 							  '"<s:property value="%{getMBServiceCode(serviceMasterIndex)}"/>"';
 				FP.copyToClipboard(content);
 			} catch(ex) {
-				alert('<s:text name="payments.errors.clipboard_access_denied"/>');
+				if ($.browser.mozilla) {
+					alert('<s:text name="payments.errors.clipboard_access_denied"/>');
+				} else if ($.browser.msie) {
+					alert('<s:text name="payments.errors.clipboard_copy_error"/>');
+				}
 			}
 		});
 		</s:iterator>

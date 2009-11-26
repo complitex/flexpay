@@ -261,9 +261,13 @@ var FP = {
 	 * Clipboard function
 	 */
 	copyToClipboard : function(content) {
-		netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
-		const gClipboardHelper = Components.classes["@mozilla.org/widget/clipboardhelper;1"].getService(Components.interfaces.nsIClipboardHelper);
-		gClipboardHelper.copyString(content);
+		if ($.browser.mozilla) {
+			netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
+			var gClipboardHelper = Components.classes["@mozilla.org/widget/clipboardhelper;1"].getService(Components.interfaces.nsIClipboardHelper);
+			gClipboardHelper.copyString(content);
+		} else if ($.browser.msie) {
+			window.clipboardData.setData("Text", content);			
+		}
 	}
 };
 
