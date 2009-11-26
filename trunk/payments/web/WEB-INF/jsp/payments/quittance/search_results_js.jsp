@@ -419,8 +419,7 @@
 							  '"<s:property value="%{serviceProviderAccount}"/>";' +
 							  '"<s:property value="%{getApartmentAddress(#qi)}"/>";' +
 							  '"<s:property value="%{getPersonFio(#qi)}"/>";' +
-							  '"<s:property value="%{getPersonFio(#qi)}"/>";' +
-							  '"<s:property value="%{getMBServiceCode(serviceMasterIndex)}"/>";';
+							  '"<s:property value="%{getMBServiceCode(serviceMasterIndex)}"/>"';
 				FP.copyToClipboard(content);
 			} catch(ex) {
 				alert('<s:text name="payments.errors.clipboard_access_denied"/>');
