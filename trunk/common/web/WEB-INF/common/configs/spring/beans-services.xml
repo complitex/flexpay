@@ -270,7 +270,9 @@
 		  p:diffService-ref="diffService" />
 
 	<bean id="nopeHistoryChangesListener"
-		  class="org.flexpay.common.persistence.history.impl.NopeModificationListener" />
+		  class="org.flexpay.common.persistence.history.impl.NopeModificationListener"
+		  p:masterIndexService-ref="masterIndexService"
+		  p:correctionsService-ref="correctionsService" />
 
 	<bean id="historyBuilderBase"
 		  abstract="true"
@@ -312,14 +314,12 @@
 	<bean id="cnDataSourceDescription"
 		  autowire-candidate="false"
 		  class="org.flexpay.common.persistence.DataSourceDescription">
-		<!-- TODO Here put the CN data source ID -->
 		<constructor-arg index="0" value="${cn.data.source.description.id}" type="java.lang.Long" />
 	</bean>
 
 	<bean id="megabankDataSourceDescription"
 		  autowire-candidate="false"
 		  class="org.flexpay.common.persistence.DataSourceDescription">
-		<!-- TODO Here put the megabank data source ID -->
 		<constructor-arg index="0" value="${megabank.data.source.description.id}" type="java.lang.Long" />
 	</bean>
 

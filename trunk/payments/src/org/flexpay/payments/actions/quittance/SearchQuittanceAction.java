@@ -78,7 +78,10 @@ public class SearchQuittanceAction extends CashboxCookieActionSupport {
 		} else if (SEARCH_TYPE_ADDRESS.equals(searchType)) {
 			Apartment apartment = apartmentService.readFull(
 					new Stub<Apartment>(Long.parseLong(searchCriteria)));
-			String indx =masterIndexService.getMasterIndex(apartment);
+			String indx = masterIndexService.getMasterIndex(apartment);
+			if (indx == null) {
+				throw new FlexPayException("No master index for apartment #" + searchCriteria);
+			}
 			return QuittanceDetailsRequest.apartmentNumberRequest(indx);
 		} else {
 			throw new FlexPayException("Bad search request: type must be one of: " + SEARCH_TYPE_ADDRESS + ", "

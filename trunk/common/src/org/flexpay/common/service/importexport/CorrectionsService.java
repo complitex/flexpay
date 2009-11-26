@@ -45,9 +45,11 @@ public interface CorrectionsService {
 	 * @param obj DomainObject
 	 * @param sourceDescription Data source description
 	 * @return stub for a new DataCorrection
+	 * @throws IllegalArgumentException if <code>obj</code> class is not supported
 	 */
 	@NotNull
-	DataCorrection getStub(String externalId, DomainObject obj, Stub<DataSourceDescription> sourceDescription);
+	DataCorrection getStub(String externalId, DomainObject obj, Stub<DataSourceDescription> sourceDescription)
+			throws IllegalArgumentException;
 
 	/**
 	 *
