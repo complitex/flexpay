@@ -78,11 +78,9 @@
 	</table>
 </s:form>
 
-<APPLET CODE=org.flexpay.barcode.BarcodeReaderApplet ARCHIVE=<s:url value="/resources/barcode/flexpay_barcode.jar"/> WIDTH=0 HEIGHT=0>
+<%--<APPLET CODE=org.flexpay.barcode.BarcodeReaderApplet ARCHIVE=<s:url value="/resources/barcode/flexpay_barcode.jar"/> WIDTH=0 HEIGHT=0>
 	<PARAM NAME="url" value="<s:url action="searchByQuittanceNumber" forceAddSchemeHostAndPort="true"/>"/>
-</APPLET>
-
-
+</APPLET>--%>
 
 <%@ include file="print.jsp" %>
 
