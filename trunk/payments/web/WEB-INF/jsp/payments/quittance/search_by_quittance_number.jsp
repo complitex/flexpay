@@ -38,17 +38,29 @@
 		if (validateQuittanceNumber()) {
 			$("#searchBtn").attr("disabled", true);
 			var quittanceNumber = $('#quittanceNumber').val().trim();
-			$('#searchResultsDiv').load('<s:url action="searchResults"/>', {
+
+			var shadowId = 'searchResultsDivShadow';
+			var resultId = 'searchResultsDiv';
+
+			FP.createShadow(shadowId);
+			FP.resizeShadow(shadowId, resultId, {visibility:"visible"});
+
+			$('#searchResultsDiv').load('<s:url action="searchResults"/>',
+			{
 				'searchType' : 'QUITTANCE_NUMBER',
 				'searchCriteria': quittanceNumber,
-				'actionName': 'searchByQuittanceNumber' }, function (responseText, textStatus, XMLHttpRequest) {
-					if (responseText.indexOf('j_security_check') > 0) {
-						$(this).html('');
-						window.location = '<s:url action="searchByQuittanceNumber"/>';
-					}
-					enableSearchBtn();
+				'actionName': 'searchByQuittanceNumber'
+			},
+			function (responseText, textStatus, XMLHttpRequest) {
+
+				if (responseText.indexOf('j_security_check') > 0) {
+					$(this).html('');
+					window.location = '<s:url action="searchByQuittanceNumber"/>';
+				}
+
+				enableSearchBtn();
+				FP.hideShadow(shadowId);
 			});
-			$('#searchResultsDiv').show();
 		}
 	}
 
@@ -84,6 +96,6 @@
 
 <%@ include file="print.jsp" %>
 
-<div id="searchResultsDiv" style="display: none;" />
+<div id="searchResultsDiv"></div>
 	
 

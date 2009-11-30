@@ -6,18 +6,29 @@
 	function doSearch() {
 		if (validateAdress()) {
 			$("#searchBtn").attr("disabled", true);
-			$("#searchResultsDiv").load("<s:url action="searchResults"/>", {
+
+			var shadowId = 'searchResultsDivShadow';
+			var resultId = 'searchResultsDiv';
+
+			FP.createShadow(shadowId);
+			FP.resizeShadow(shadowId, resultId, {visibility:"visible"});
+
+			$("#searchResultsDiv").load("<s:url action="searchResults"/>",
+			{
 				"searchType" : "ADDRESS",
 				"searchCriteria": FF.filters["apartment"].value.val(),
 				"actionName": "searchByAddress"
-            }, function (responseText, textStatus, XMLHttpRequest) {
-					if (responseText.indexOf('j_security_check') > 0) {
-						$(this).html('');
-						window.location = "<s:url action="searchByAddress" includeParams="none" />";
-					}
-					enableSearchBtn();
+            },
+			function (responseText, textStatus, XMLHttpRequest) {
+
+				if (responseText.indexOf('j_security_check') > 0) {
+					$(this).html('');
+					window.location = "<s:url action="searchByAddress" includeParams="none" />";
+				}
+
+				enableSearchBtn();
+				FP.hideShadow(shadowId);
 			});
-			$("#searchResultsDiv").show();
 		}
 	}
 
