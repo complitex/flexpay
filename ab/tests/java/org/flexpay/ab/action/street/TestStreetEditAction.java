@@ -1,11 +1,11 @@
-package org.flexpay.ab.action.district;
+package org.flexpay.ab.action.street;
 
-import org.flexpay.ab.actions.district.DistrictEditAction;
-import org.flexpay.ab.dao.DistrictDao;
-import org.flexpay.ab.persistence.District;
+import org.flexpay.ab.actions.street.StreetEditAction;
+import org.flexpay.ab.dao.StreetDao;
+import org.flexpay.ab.persistence.Street;
 import org.flexpay.ab.persistence.TestData;
 import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
-import static org.flexpay.ab.util.TestNTDUtils.createSimpleDistrict;
+import static org.flexpay.ab.util.TestNTDUtils.createSimpleStreet;
 import static org.flexpay.ab.util.TestNTDUtils.initNames;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.persistence.DomainObjectWithStatus;
@@ -17,24 +17,24 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public class TestDistrictEditAction extends AbSpringBeanAwareTestCase {
+public class TestStreetEditAction extends AbSpringBeanAwareTestCase {
 
 	@Autowired
-	private DistrictEditAction action;
+	private StreetEditAction action;
 	@Autowired
-	private DistrictDao districtDao;
+	private StreetDao streetDao;
 
 	@Test
-	public void testNullDistrict() throws Exception {
+	public void testNullStreet() throws Exception {
 
-		action.setDistrict(null);
+		action.setStreet(null);
 
 		assertEquals("Invalid action result", FPActionSupport.REDIRECT_ERROR, action.execute());
 
 	}
 
 	@Test
-	public void testNullDistrictId() throws Exception {
+	public void testNullStreetId() throws Exception {
 
 		assertEquals("Invalid action result", FPActionSupport.REDIRECT_ERROR, action.execute());
 
@@ -43,7 +43,7 @@ public class TestDistrictEditAction extends AbSpringBeanAwareTestCase {
 	@Test
 	public void testNullNames() throws Exception {
 
-		action.setDistrict(new District(0L));
+		action.setStreet(new Street(0L));
 		action.setNames(null);
 
 		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
@@ -55,7 +55,7 @@ public class TestDistrictEditAction extends AbSpringBeanAwareTestCase {
 	@Test
 	public void testNullBeginDateFilter() throws Exception {
 
-		action.setDistrict(new District(0L));
+		action.setStreet(new Street(0L));
 		action.setBeginDateFilter(null);
 
 		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
@@ -67,7 +67,7 @@ public class TestDistrictEditAction extends AbSpringBeanAwareTestCase {
 	@Test
 	public void testCreateNotSubmit() throws Exception {
 
-		action.setDistrict(new District(0L));
+		action.setStreet(new Street(0L));
 
 		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
 		assertEquals("Invalid beginDateFilter value", DateUtil.now(), action.getBeginDateFilter().getDate());
@@ -78,10 +78,10 @@ public class TestDistrictEditAction extends AbSpringBeanAwareTestCase {
 	@Test
 	public void testEditNotSubmit() throws Exception {
 
-		action.setDistrict(new District(TestData.DISTRICT_SOVETSKII.getId()));
+		action.setStreet(new Street(TestData.IVANOVA.getId()));
 
 		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
-		assertEquals("Invalid beginDateFilter value", action.getDistrict().getCurrentNameTemporal().getBegin(), action.getBeginDateFilter().getDate());
+		assertEquals("Invalid beginDateFilter value", action.getStreet().getCurrentNameTemporal().getBegin(), action.getBeginDateFilter().getDate());
 		assertEquals("Invalid names size for different languages", ApplicationConfig.getLanguages().size(), action.getNames().size());
 
 	}
@@ -89,7 +89,7 @@ public class TestDistrictEditAction extends AbSpringBeanAwareTestCase {
 	@Test
 	public void testIncorrectData1() throws Exception {
 
-		action.setDistrict(new District(0L));
+		action.setStreet(new Street(0L));
 		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
 
 		action.setSubmitted("");
@@ -101,7 +101,7 @@ public class TestDistrictEditAction extends AbSpringBeanAwareTestCase {
 	@Test
 	public void testIncorrectData2() throws Exception {
 
-		action.setDistrict(new District(0L));
+		action.setStreet(new Street(0L));
 		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
 
 		action.setSubmitted("");
@@ -115,7 +115,7 @@ public class TestDistrictEditAction extends AbSpringBeanAwareTestCase {
 	@Test
 	public void testIncorrectData3() throws Exception {
 
-		action.setDistrict(new District(0L));
+		action.setStreet(new Street(0L));
 		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
 
 		action.setSubmitted("");
@@ -126,32 +126,32 @@ public class TestDistrictEditAction extends AbSpringBeanAwareTestCase {
 	}
 
 	@Test
-	public void testEditDefunctDistrict() throws Exception {
+	public void testEditDefunctStreet() throws Exception {
 
-		action.setDistrict(new District(121212L));
+		action.setStreet(new Street(121212L));
 		assertEquals("Invalid action result", FPActionSupport.REDIRECT_ERROR, action.execute());
 
 	}
 
 	@Test
-	public void testEditDisabledDistrict() throws Exception {
+	public void testEditDisabledStreet() throws Exception {
 
-		District district = createSimpleDistrict("testName");
-		district.setStatus(DomainObjectWithStatus.STATUS_DISABLED);
+		Street street = createSimpleStreet("testName");
+		street.setStatus(DomainObjectWithStatus.STATUS_DISABLED);
 
-		districtDao.create(district);
+		streetDao.create(street);
 
-		action.setDistrict(district);
+		action.setStreet(street);
 		assertEquals("Invalid action result", FPActionSupport.REDIRECT_ERROR, action.execute());
 
-		districtDao.delete(district);
+		streetDao.delete(street);
 
 	}
 
 	@Test
 	public void testCreateSubmit() throws Exception {
 
-		action.setDistrict(new District(0L));
+		action.setStreet(new Street(0L));
 		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
 
 		action.setSubmitted("");
@@ -159,19 +159,19 @@ public class TestDistrictEditAction extends AbSpringBeanAwareTestCase {
 		action.setNames(initNames("123"));
 
 		assertEquals("Invalid action result", FPActionSupport.REDIRECT_SUCCESS, action.execute());
-		assertTrue("Invalid district id", action.getDistrict().getId() > 0);
+		assertTrue("Invalid street id", action.getStreet().getId() > 0);
 
-		districtDao.delete(action.getDistrict());
+		streetDao.delete(action.getStreet());
 	}
 
 	@Test
 	public void testEditSubmit() throws Exception {
 
-		District district = createSimpleDistrict("testName");
+		Street street = createSimpleStreet("testName");
 
-		districtDao.create(district);
+		streetDao.create(street);
 
-		action.setDistrict(district);
+		action.setStreet(street);
 		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
 
 		action.setSubmitted("");
@@ -181,10 +181,10 @@ public class TestDistrictEditAction extends AbSpringBeanAwareTestCase {
 
 		assertEquals("Invalid action result", FPActionSupport.REDIRECT_SUCCESS, action.execute());
 
-		String name = action.getDistrict().getNameForDate(DateUtil.next(DateUtil.now())).getDefaultNameTranslation();
-		assertEquals("Invalid district name value", "123", name);
+		String name = action.getStreet().getNameForDate(DateUtil.next(DateUtil.now())).getDefaultNameTranslation();
+		assertEquals("Invalid street name value", "123", name);
 
-		districtDao.delete(action.getDistrict());
+		streetDao.delete(action.getStreet());
 	}
 
 }

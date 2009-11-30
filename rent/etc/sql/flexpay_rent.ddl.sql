@@ -310,12 +310,12 @@
     );
 
     create table ab_town_type_translations_tbl (
-        ID bigint not null auto_increment,
+        id bigint not null auto_increment,
         name varchar(255),
         short_name varchar(255),
         language_id bigint,
         town_type_id bigint,
-        primary key (ID),
+        primary key (id),
         unique (language_id, town_type_id)
     );
 

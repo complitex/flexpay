@@ -71,7 +71,7 @@ public class RegionsListAction extends FPActionWithPagerSupport<Region> {
 	@NotNull
 	@Override
 	protected String getErrorResult() {
-		return ERROR;
+		return SUCCESS;
 	}
 
 	public void setCountryFilter(Long countryFilter) {
