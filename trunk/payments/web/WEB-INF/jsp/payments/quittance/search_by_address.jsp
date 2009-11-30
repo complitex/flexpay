@@ -58,6 +58,9 @@
 		return true;
 	}
 
+	function clearResults() {
+		$('#searchResultsDiv').html('');
+	}
 </script>
 
 <s:actionerror />
@@ -69,6 +72,8 @@
 	<script type="text/javascript">
 
 		$(function() {
+
+			// creating filters
 			FF.createFilter("town", {
 				action: "<s:url action="townFilterAjax" namespace="/dicts" includeParams="none"/>",
                 defaultValue: "<s:property value="userPreferences.townFilter" />"
@@ -92,6 +97,23 @@
 				parents: ["building"],
 				preRequest:false,
                 defaultValue: "<s:property value="userPreferences.apartmentFilter" />"
+			});
+
+			// initializing listeners
+			FF.addListener('town', function() {	
+				clearResults();
+			});
+
+			FF.addListener('street', function() {
+				clearResults();
+			});
+
+			FF.addListener('building', function() {
+				clearResults();
+			});
+
+			FF.addListener('apartment', function() {
+				clearResults();
 			});
 		});
 
