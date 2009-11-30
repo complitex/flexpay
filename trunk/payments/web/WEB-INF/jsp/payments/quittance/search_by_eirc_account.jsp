@@ -10,9 +10,7 @@
 
 			var shadowId = 'searchResultsDivShadow';
 			var resultId = 'searchResultsDiv';
-
-			FP.createShadow(shadowId);
-			FP.resizeShadow(shadowId, resultId, {visibility:"visible"});
+			FP.showShadow(shadowId, resultId);
 
 			$('#searchResultsDiv').load('<s:url action="searchResults"/>',
 				{
