@@ -23,6 +23,8 @@ public abstract class TestData {
 	public static final Stub<StreetType> STR_TYPE_STREET = new Stub<StreetType>(14L);
 	public static final Stub<StreetType> STR_TYPE_VIADUKT = new Stub<StreetType>(2L);
 
+	public static final Stub<TownType> TOWN_TYPE_CITY = new Stub<TownType>(1L);
+
 	// test streets
 	public static final Stub<Street> DEMAKOVA = new Stub<Street>(1L);
 	public static final Stub<Street> IVANOVA = new Stub<Street>(2L);

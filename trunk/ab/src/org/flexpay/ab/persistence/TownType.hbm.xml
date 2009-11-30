@@ -17,7 +17,7 @@
 	</class>
 
 	<class name="TownTypeTranslation" table="ab_town_type_translations_tbl">
-		<id name="id" column="ID">
+		<id name="id" column="id">
 			<generator class="native" />
 		</id>
 		<property name="name" />

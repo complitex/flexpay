@@ -39,11 +39,6 @@ public class CountryCreateAction extends FPActionSupport {
 			return INPUT;
 		}
 
-		if (country == null) {
-			log.debug("Country parameter is null");
-			country = new Country();
-		}
-
 		for (Map.Entry<Long, String> name : names.entrySet()) {
 			String value = name.getValue();
 			Language lang = getLang(name.getKey());

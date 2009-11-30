@@ -3,6 +3,7 @@ package org.flexpay.ab.action.country;
 import org.flexpay.ab.actions.country.CountryCreateAction;
 import org.flexpay.ab.dao.CountryDao;
 import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
+import static org.flexpay.ab.util.TestNTDUtils.initNames;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.persistence.Language;
 import static org.flexpay.common.util.CollectionUtils.treeMap;
@@ -28,20 +29,29 @@ public class TestCountryCreateAction extends AbSpringBeanAwareTestCase {
 	}
 
 	@Test
+	public void testNullNames() throws Exception {
+
+		action.setNames(null);
+
+		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
+
+	}
+
+	@Test
+	public void testNullShortNames() throws Exception {
+
+		action.setShortNames(null);
+
+		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
+
+	}
+
+	@Test
 	public void testSubmit() throws Exception {
 
 		action.setSubmitted("");
-
-		Map<Long, String> names = treeMap();
-		Map<Long, String> shortNames = treeMap();
-
-		for (Language lang : ApplicationConfig.getLanguages()) {
-			names.put(lang.getId(), "123");
-			shortNames.put(lang.getId(), "321");
-		}
-
-		action.setNames(names);
-		action.setShortNames(shortNames);
+		action.setNames(initNames("123"));
+		action.setShortNames(initNames("321"));
 
 		assertEquals("Invalid action result", FPActionSupport.REDIRECT_SUCCESS, action.execute());
 

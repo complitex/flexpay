@@ -1,28 +1,28 @@
-package org.flexpay.ab.action.town;
+package org.flexpay.ab.action.street;
 
-import org.flexpay.ab.actions.town.TownViewAction;
-import org.flexpay.ab.dao.TownDao;
+import org.flexpay.ab.actions.street.StreetViewAction;
+import org.flexpay.ab.dao.StreetDao;
+import org.flexpay.ab.persistence.Street;
 import org.flexpay.ab.persistence.TestData;
-import org.flexpay.ab.persistence.Town;
 import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
-import static org.flexpay.ab.util.TestNTDUtils.createSimpleTown;
+import static org.flexpay.ab.util.TestNTDUtils.createSimpleStreet;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.persistence.DomainObjectWithStatus;
 import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public class TestTownViewAction extends AbSpringBeanAwareTestCase {
+public class TestStreetViewAction extends AbSpringBeanAwareTestCase {
 
 	@Autowired
-	private TownViewAction action;
+	private StreetViewAction action;
 	@Autowired
-	private TownDao townDao;
+	private StreetDao streetDao;
 
 	@Test
 	public void testCorrectData() throws Exception {
 
-		action.setObject(new Town(TestData.TOWN_NSK.getId()));
+		action.setObject(new Street(TestData.IVANOVA.getId()));
 
 		assertEquals("Invalid action result", FPActionSupport.SUCCESS, action.execute());
 
@@ -31,7 +31,7 @@ public class TestTownViewAction extends AbSpringBeanAwareTestCase {
 	@Test
 	public void testIncorrectId1() throws Exception {
 
-		action.setObject(new Town(-10L));
+		action.setObject(new Street(-10L));
 
 		assertEquals("Invalid action result", FPActionSupport.REDIRECT_ERROR, action.execute());
 
@@ -40,14 +40,14 @@ public class TestTownViewAction extends AbSpringBeanAwareTestCase {
 	@Test
 	public void testIncorrectId2() throws Exception {
 
-		action.setObject(new Town(0L));
+		action.setObject(new Street(0L));
 
 		assertEquals("Invalid action result", FPActionSupport.REDIRECT_ERROR, action.execute());
 
 	}
 
 	@Test
-	public void testNullTown() throws Exception {
+	public void testNullStreet() throws Exception {
 
 		action.setObject(null);
 
@@ -56,28 +56,30 @@ public class TestTownViewAction extends AbSpringBeanAwareTestCase {
 	}
 
 	@Test
-	public void testDefunctTown() throws Exception {
+	public void testDefunctStreet() throws Exception {
 
-		action.setObject(new Town(1090772L));
+		action.setObject(new Street(1090772L));
 
 		assertEquals("Invalid action result", FPActionSupport.REDIRECT_ERROR, action.execute());
 
 	}
 
+/*
 	@Test
-	public void testDisabledTown() throws Exception {
+	public void testDisabledStreet() throws Exception {
 
-		Town town = createSimpleTown("testName");
-		town.setStatus(DomainObjectWithStatus.STATUS_DISABLED);
+		Street street = createSimpleStreet("testName");
+		street.setStatus(DomainObjectWithStatus.STATUS_DISABLED);
 
-		townDao.create(town);
+		streetDao.create(street);
 
-		action.setObject(town);
+		action.setObject(street);
 
 		assertEquals("Invalid action result", FPActionSupport.REDIRECT_ERROR, action.execute());
 
-		townDao.delete(action.getObject());
+		streetDao.delete(action.getObject());
 
 	}
+*/
 
 }

@@ -1,10 +1,14 @@
 package org.flexpay.ab.action.country;
 
 import org.flexpay.ab.actions.country.CountryViewAction;
+import org.flexpay.ab.dao.CountryDao;
 import org.flexpay.ab.persistence.Country;
 import org.flexpay.ab.persistence.TestData;
+import org.flexpay.ab.service.CountryService;
 import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
+import static org.flexpay.ab.util.TestNTDUtils.createSimpleCountry;
 import org.flexpay.common.actions.FPActionSupport;
+import org.flexpay.common.persistence.DomainObjectWithStatus;
 import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +17,8 @@ public class TestCountryViewAction extends AbSpringBeanAwareTestCase {
 
 	@Autowired
 	private CountryViewAction action;
+	@Autowired
+	private CountryDao countryDao;
 
 	@Test
 	public void testCorrectData() throws Exception {
@@ -42,6 +48,15 @@ public class TestCountryViewAction extends AbSpringBeanAwareTestCase {
 	}
 
 	@Test
+	public void testIncorrectId3() throws Exception {
+
+		action.setCountry(new Country());
+
+		assertEquals("Invalid action result", FPActionSupport.REDIRECT_ERROR, action.execute());
+
+	}
+
+	@Test
 	public void testNullCountry() throws Exception {
 
 		action.setCountry(null);
@@ -56,6 +71,22 @@ public class TestCountryViewAction extends AbSpringBeanAwareTestCase {
 		action.setCountry(new Country(10902L));
 
 		assertEquals("Invalid action result", FPActionSupport.REDIRECT_ERROR, action.execute());
+
+	}
+
+	@Test
+	public void testDisabledCountry() throws Exception {
+
+		Country country = createSimpleCountry("123");
+		country.setStatus(DomainObjectWithStatus.STATUS_DISABLED);
+
+		countryDao.create(country);
+
+		action.setCountry(country);
+
+		assertEquals("Invalid action result", FPActionSupport.REDIRECT_ERROR, action.execute());
+
+		countryDao.delete(action.getCountry());
 
 	}
 

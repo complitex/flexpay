@@ -27,6 +27,14 @@ public class StreetTypeTemporal extends TypeDateInterval<StreetType, StreetTypeT
 		return new StreetTypeTemporal(di);
 	}
 
+	public Street getStreet() {
+		return (Street) getObject();
+	}
+
+	public void setStreet(Street street) {
+		setObject(street);
+	}
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -50,7 +58,4 @@ public class StreetTypeTemporal extends TypeDateInterval<StreetType, StreetTypeT
 		return super.toString();
 	}
 
-	public void setStreet(Street street) {
-		setObject(street);
-	}
 }
