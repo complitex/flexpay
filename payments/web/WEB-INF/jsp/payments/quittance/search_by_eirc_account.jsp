@@ -7,17 +7,30 @@
 		if (validateAccountNumber()) {
 			$("#searchBtn").attr("disabled", true);
 			var accountNumber = $('#accountNumber').val().trim();
-			$('#searchResultsDiv').load('<s:url action="searchResults"/>', {
-				'searchType' : 'EIRC_ACCOUNT',
-				'searchCriteria': accountNumber,
-				'actionName': 'searchByEircAccount' }, function (responseText, textStatus, XMLHttpRequest) {
-				if (responseText.indexOf('j_security_check') > 0) {
-					$(this).html('');
-					window.location = '<s:url action="searchByEircAccount"/>';
+
+			var shadowId = 'searchResultsDivShadow';
+			var resultId = 'searchResultsDiv';
+
+			FP.createShadow(shadowId);
+			FP.resizeShadow(shadowId, resultId, {visibility:"visible"});
+
+			$('#searchResultsDiv').load('<s:url action="searchResults"/>',
+				{
+					'searchType' : 'EIRC_ACCOUNT',
+					'searchCriteria': accountNumber,
+					'actionName': 'searchByEircAccount'
+				},
+				function (responseText, textStatus, XMLHttpRequest) {
+
+					if (responseText.indexOf('j_security_check') > 0) {
+						$(this).html('');
+						window.location = '<s:url action="searchByEircAccount"/>';
+					}
+					
+					enableSearchBtn();
+					FP.hideShadow(shadowId);
 				}
-				enableSearchBtn();
-			});
-			$('#searchResultsDiv').show();
+			);
 		}
 	}
 
@@ -71,4 +84,4 @@
 
 <%@ include file="print.jsp" %>
 
-<div id="searchResultsDiv" style="display: none;"/>
+<div id="searchResultsDiv"></div>
