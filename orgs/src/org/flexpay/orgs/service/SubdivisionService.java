@@ -9,6 +9,7 @@ import org.flexpay.orgs.persistence.filters.SubdivisionFilter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -35,7 +36,7 @@ public interface SubdivisionService {
 	 * Read full Subdivision info
 	 *
 	 * @param stub Subdivision stub
-	 * @return Bank
+	 * @return Subdivision if found, or <code>null</code> otherwise
 	 */
 	@Nullable
 	Subdivision read(@NotNull Stub<Subdivision> stub);
@@ -63,4 +64,13 @@ public interface SubdivisionService {
 	 * @param stub			  Organization that departments to put to filter
 	 */
 	void initFilter(@NotNull SubdivisionFilter subdivisionFilter, @NotNull Stub<Organization> stub);
+
+	/**
+	 * Read full subdivisions info by their unique ids
+	 *
+	 * @param ids Subdivision ids
+	 * @param preserveOrder Whether to preserve order of objects
+	 * @return Subdivision objects found
+	 */
+	List<Subdivision> readFull(Collection<Long> ids, boolean preserveOrder);
 }

@@ -1,5 +1,6 @@
 package org.flexpay.common.persistence;
 
+import org.apache.commons.collections.comparators.ComparableComparator;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.flexpay.common.util.CollectionUtils;
@@ -8,6 +9,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -54,6 +56,7 @@ public class DomainObject implements Serializable {
 		return result;
 	}
 
+	@SuppressWarnings ({"RawUseOfParameterizedType"})
 	private static final CollectionUtils.KeyExtractor DOMAIN_OBJECT_ID_EXTRACTOR =
 			new CollectionUtils.KeyExtractor() {
 				@Override
@@ -65,6 +68,15 @@ public class DomainObject implements Serializable {
 	@SuppressWarnings ({"unchecked"})
 	public static <T extends DomainObject> CollectionUtils.KeyExtractor<Long, T> idExtractor() {
 		return DOMAIN_OBJECT_ID_EXTRACTOR;
+	}
+
+	public static <T extends DomainObject> Comparator<T> comparator() {
+		return new Comparator<T>() {
+			@Override
+			public int compare(T o1, T o2) {
+				return o1.getId().compareTo(o2.getId());
+			}
+		};
 	}
 
 	@Override

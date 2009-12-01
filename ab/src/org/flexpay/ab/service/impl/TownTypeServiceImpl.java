@@ -247,6 +247,16 @@ public class TownTypeServiceImpl implements TownTypeService {
 		return translations;
 	}
 
+	/**
+	 * Get all objects
+	 *
+	 * @return List of all objects
+	 */
+	@Override
+	public List<TownType> getAll() {
+		return getEntities();
+	}
+
 	@Required
 	public void setTownTypeDao(TownTypeDao townTypeDao) {
 		this.townTypeDao = townTypeDao;

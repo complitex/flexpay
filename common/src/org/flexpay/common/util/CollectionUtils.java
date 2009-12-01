@@ -210,6 +210,13 @@ public class CollectionUtils {
 		return new TreeSet<T>(values);
 	}
 
+	@NotNull
+	public static <T> SortedSet<T> treeSet(@NotNull Collection<T> values, Comparator<T> comparator) {
+		SortedSet<T> result = new TreeSet<T>(comparator);
+		result.addAll(values);
+		return result;
+	}
+
 	/**
 	 * Check if maps values are equals by a specified set of keys
 	 *
@@ -254,4 +261,20 @@ public class CollectionUtils {
 		return result;
 	}
 
+	public static <T> void copyAttributes(Collection<T> fromTs, Collection<T> toTs, AttributeCopier<T> ac) {
+
+		Iterator<T> fromIt = fromTs.iterator();
+		Iterator<T> toIt = toTs.iterator();
+		T fromObj = null;
+		while (toIt.hasNext()) {
+			T toObj = toIt.next();
+			if (fromObj == null) {
+				fromObj = fromIt.hasNext() ? fromIt.next() : null;
+			}
+			if (toObj.equals(fromObj)) {
+				ac.copy(fromObj, toObj);
+				fromObj = null;
+			}
+		}
+	}
 }

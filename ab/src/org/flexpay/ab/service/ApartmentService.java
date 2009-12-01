@@ -4,6 +4,8 @@ import org.apache.commons.collections.ArrayStack;
 import org.flexpay.ab.persistence.Apartment;
 import org.flexpay.ab.persistence.Building;
 import org.flexpay.ab.persistence.BuildingAddress;
+import org.flexpay.ab.persistence.Town;
+import org.flexpay.common.dao.paging.FetchRange;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
@@ -151,9 +153,18 @@ public interface ApartmentService {
 	 * @param apartmentStub Apartment stub
 	 * @return Building stub
 	 * @throws FlexPayException if stub references invalid object
+	 * @deprecated use {@link org.flexpay.ab.persistence.Apartment#getBuilding()} instead
 	 */
 	@Secured (Roles.APARTMENT_READ)
 	@NotNull
 	Building getBuilding(@NotNull Stub<Apartment> apartmentStub) throws FlexPayException;
 
+	/**
+	 * Find apartments ids for town in range
+	 *
+	 * @param townStub Town to get apartments for
+	 * @param range FetchRange
+	 * @return List of apartments in range
+	 */
+	List<Apartment> findSimpleByTown(Stub<Town> townStub, FetchRange range);
 }

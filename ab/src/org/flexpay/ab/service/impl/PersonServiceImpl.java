@@ -18,6 +18,8 @@ import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.persistence.history.ModificationListener;
 import org.flexpay.common.service.internal.SessionUtils;
+import org.flexpay.common.util.AttributeCopier;
+import org.flexpay.common.util.CollectionUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
@@ -75,6 +77,33 @@ public class PersonServiceImpl implements PersonService {
 		}
 
 		return person;
+	}
+
+	@NotNull
+	@Override
+	public List<Person> readFull(@NotNull Collection<Long> personIds, boolean preserveOrder) {
+
+		List<Person> persons = personDao.readFullCollection(personIds, preserveOrder);
+
+		// set person attributes
+		List<Person> personAttributes = personDao.findPersonsWithAttributes(personIds);
+		CollectionUtils.copyAttributes(personAttributes, persons, new AttributeCopier<Person>() {
+			@Override
+			public void copy(Person from, Person to) {
+				to.setPersonAttributes(from.getPersonAttributes());
+			}
+		});
+
+		// set person registrations
+		List<Person> personRegistrations = personDao.findPersonsWithRegistrations(personIds);
+		CollectionUtils.copyAttributes(personRegistrations, persons, new AttributeCopier<Person>() {
+			@Override
+			public void copy(Person from, Person to) {
+				to.setPersonRegistrations(from.getPersonRegistrations());
+			}
+		});
+
+		return persons;
 	}
 
 	/**
@@ -273,6 +302,12 @@ public class PersonServiceImpl implements PersonService {
 	@Override
 	public List<Person> listPersonsWithRegistrations(@NotNull FetchRange range) {
 		return personDaoExt.listPersonsWithRegistrations(range);
+	}
+
+	@NotNull
+	@Override
+	public List<Person> findSimple(FetchRange range) {
+		return personDao.findSimple(range);
 	}
 
 	@Required

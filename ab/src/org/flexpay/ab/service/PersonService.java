@@ -3,6 +3,7 @@ package org.flexpay.ab.service;
 import org.apache.commons.collections.ArrayStack;
 import org.flexpay.ab.persistence.Apartment;
 import org.flexpay.ab.persistence.Person;
+import org.flexpay.ab.persistence.Street;
 import org.flexpay.common.dao.paging.FetchRange;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
@@ -25,6 +26,18 @@ public interface PersonService {
 	@Secured (Roles.PERSON_READ)
 	@Nullable
 	Person readFull(@NotNull Stub<Person> personStub);
+
+	/**
+	 * Read persons collection by theirs ids
+	 *
+ 	 * @param personIds Person ids
+	 * @param preserveOrder Whether to preserve order of objects
+	 * @return Found persons
+	 */
+	@Secured ({Roles.PERSON_READ})
+	@NotNull
+	List<Person> readFull(@NotNull Collection<Long> personIds, boolean preserveOrder);
+
 
 	/**
 	 * Disable persons
@@ -119,4 +132,13 @@ public interface PersonService {
 	@NotNull
 	List<Person> listPersonsWithRegistrations(@NotNull FetchRange range);
 
+	/**
+	 * Find persons ids in range
+	 *
+	 * @param range Fetch range
+	 * @return List of persons
+	 */
+	@Secured (Roles.PERSON_READ)
+	@NotNull
+	List<Person> findSimple(FetchRange range);
 }

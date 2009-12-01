@@ -3,6 +3,8 @@ package org.flexpay.ab.service.history;
 import org.flexpay.ab.persistence.Apartment;
 import org.flexpay.ab.service.ApartmentService;
 import static org.flexpay.common.persistence.Stub.stub;
+
+import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.common.persistence.history.Diff;
 import org.flexpay.common.persistence.history.HistoryGenerator;
 import org.flexpay.common.persistence.history.ProcessingStatus;
@@ -11,6 +13,9 @@ import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
+
+import java.util.Collection;
+import java.util.List;
 
 public class ApartmentHistoryGenerator implements HistoryGenerator<Apartment> {
 
@@ -38,6 +43,10 @@ public class ApartmentHistoryGenerator implements HistoryGenerator<Apartment> {
 			return;
 		}
 
+		generateForSingle(apartment);
+	}
+
+	private void generateForSingle(Apartment apartment) {
 		referencesHistoryGenerator.generateReferencesHistory(apartment);
 
 		if (!diffService.hasDiffs(apartment)) {
@@ -45,6 +54,15 @@ public class ApartmentHistoryGenerator implements HistoryGenerator<Apartment> {
 			Diff diff = historyBuilder.diff(null, apartment);
 			diff.setProcessingStatus(ProcessingStatus.STATUS_PROCESSED);
 			diffService.create(diff);
+		}
+	}
+
+	@Override
+	public void generateFor(@NotNull Collection<Apartment> objs) {
+		List<Apartment> apartments = apartmentService.readFull(DomainObject.collectionIds(objs), false);
+		for (Apartment apartment : apartments) {
+			log.debug("starting generating history for apartment #{}", apartment.getId());
+			generateForSingle(apartment);
 		}
 	}
 

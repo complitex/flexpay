@@ -52,6 +52,17 @@ public interface SPService extends DomainObjectService<Service> {
 	Service readFull(@NotNull Stub<? extends Service> stub);
 
 	/**
+	 * Read full services info
+	 *
+	 * @param ids		   service identifiers
+	 * @param preserveOrder Whether to preserve result order
+	 * @return Services found
+	 */
+	@Secured (Roles.SERVICE_READ)
+	@NotNull
+	List<Service> readFull(Collection<Long> ids, boolean preserveOrder);
+
+	/**
 	 * Create service
 	 *
 	 * @param service Service to save
@@ -113,7 +124,7 @@ public interface SPService extends DomainObjectService<Service> {
 	 * Find Service by service provider and service code
 	 *
 	 * @param serviceProviderStub ServiceProvider stub
-	 * @param serviceCode	   Service code
+	 * @param serviceCode		 Service code
 	 * @return Service if found, or <code>null</code> otherwise
 	 */
 	Service findService(Stub<ServiceProvider> serviceProviderStub, String serviceCode);

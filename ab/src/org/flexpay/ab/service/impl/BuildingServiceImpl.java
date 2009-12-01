@@ -12,6 +12,7 @@ import org.flexpay.ab.persistence.filters.StreetFilter;
 import org.flexpay.ab.service.AddressService;
 import org.flexpay.ab.service.BuildingService;
 import org.flexpay.ab.util.config.ApplicationConfig;
+import org.flexpay.common.dao.paging.FetchRange;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
@@ -86,7 +87,9 @@ public class BuildingServiceImpl implements BuildingService, ParentService<Build
 	@NotNull
 	@Override
 	public List<Building> readFull(@NotNull Collection<Long> buildingIds, boolean preserveOrder) {
+
 		List<Building> buildings = buildingDao.readFullCollection(buildingIds, preserveOrder);
+
 		for (PropertiesInitializer<Building> initializer : propertiesInitializerHolder.getInitializers()) {
 			initializer.init(buildings);
 		}
@@ -499,6 +502,12 @@ public class BuildingServiceImpl implements BuildingService, ParentService<Build
 		}
 
 		return result;
+	}
+
+	@NotNull
+	@Override
+	public List<Building> findSimpleByTown(Stub<Town> townStub, FetchRange range) {
+		return buildingDao.findSimpleByTown(townStub.getId(), range);
 	}
 
 	/**

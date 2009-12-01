@@ -2,13 +2,18 @@ package org.flexpay.ab.service.history;
 
 import org.flexpay.ab.persistence.Building;
 import org.flexpay.ab.service.BuildingService;
-import static org.flexpay.common.persistence.Stub.stub;
+import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.common.persistence.history.*;
 import org.flexpay.common.service.DiffService;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
+
+import java.util.Collection;
+import java.util.List;
+
+import static org.flexpay.common.persistence.Stub.stub;
 
 public class BuildingHistoryGenerator implements HistoryGenerator<Building> {
 
@@ -33,10 +38,24 @@ public class BuildingHistoryGenerator implements HistoryGenerator<Building> {
 		// create building history
 		Building building = buildingService.readFull(stub(obj));
 		if (building == null) {
-			log.warn("Building not found {}", building);
+			log.warn("Building not found #{}", obj.getId());
 			return;
 		}
 
+		generateForSingle(building);
+	}
+
+	@Override
+	public void generateFor(@NotNull Collection<Building> objs) {
+
+		List<Building> buildings = buildingService.readFull(DomainObject.collectionIds(objs), false);
+		for (Building building : buildings) {
+			log.debug("starting generating history for building #{}", building.getId());
+			generateForSingle(building);
+		}
+	}
+
+	private void generateForSingle(Building building) {
 		referencesHistoryGenerator.generateReferencesHistory(building);
 
 		if (!diffService.hasDiffs(building)) {

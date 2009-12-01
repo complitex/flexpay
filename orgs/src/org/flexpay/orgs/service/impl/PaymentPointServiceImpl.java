@@ -25,6 +25,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -114,6 +115,19 @@ public class PaymentPointServiceImpl implements PaymentPointService {
 	@Nullable
 	public PaymentPoint read(@NotNull Stub<PaymentPoint> stub) {
 		return paymentPointDao.readFull(stub.getId());
+	}
+
+	/**
+	 * Read full payment points info
+	 *
+	 * @param ids		   payment point identifiers
+	 * @param preserveOrder Whether to preserve result order
+	 * @return Payment points found
+	 */
+	@NotNull
+	@Override
+	public List<PaymentPoint> readFull(Collection<Long> ids, boolean preserveOrder) {
+		return paymentPointDao.readFullCollection(ids, preserveOrder);
 	}
 
 	/**

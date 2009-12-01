@@ -3,6 +3,8 @@ package org.flexpay.ab.service.history;
 import org.flexpay.ab.persistence.Person;
 import org.flexpay.ab.service.PersonService;
 import static org.flexpay.common.persistence.Stub.stub;
+
+import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.common.persistence.history.Diff;
 import org.flexpay.common.persistence.history.HistoryGenerator;
 import org.flexpay.common.persistence.history.ProcessingStatus;
@@ -11,6 +13,9 @@ import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
+
+import java.util.Collection;
+import java.util.List;
 
 public class PersonHistoryGenerator implements HistoryGenerator<Person> {
 
@@ -32,13 +37,27 @@ public class PersonHistoryGenerator implements HistoryGenerator<Person> {
 
 		log.debug("starting generating history for person #{}", obj.getId());
 
-		// create apartment history
+		// create person history
 		Person person = personService.readFull(stub(obj));
 		if (person == null) {
-			log.warn("Person not found", obj);
+			log.warn("Person not found #{}", obj.getId());
 			return;
 		}
 
+		generateForSingle(person);
+	}
+
+	@Override
+	public void generateFor(@NotNull Collection<Person> objs) {
+
+		List<Person> persons = personService.readFull(DomainObject.collectionIds(objs), false);
+		for (Person person : persons) {
+			log.debug("starting generating history for person #{}", person.getId());
+			generateForSingle(person);
+		}
+	}
+
+	private void generateForSingle(Person person) {
 		referencesHistoryGenerator.generateReferencesHistory(person);
 
 		if (!diffService.hasDiffs(person)) {

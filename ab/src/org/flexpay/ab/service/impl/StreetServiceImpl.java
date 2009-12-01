@@ -11,6 +11,7 @@ import org.flexpay.ab.persistence.filters.StreetFilter;
 import org.flexpay.ab.persistence.filters.StreetNameFilter;
 import org.flexpay.ab.persistence.filters.TownFilter;
 import org.flexpay.ab.service.StreetService;
+import org.flexpay.common.dao.paging.FetchRange;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
@@ -25,6 +26,9 @@ import org.flexpay.common.service.ParentService;
 import org.flexpay.common.service.impl.NameTimeDependentServiceImpl;
 import org.flexpay.common.service.internal.SessionUtils;
 import static org.flexpay.common.util.CollectionUtils.*;
+
+import org.flexpay.common.util.AttributeCopier;
+import org.flexpay.common.util.CollectionUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Required;
@@ -79,7 +83,20 @@ public class StreetServiceImpl extends NameTimeDependentServiceImpl<
 	@NotNull
 	@Override
 	public List<Street> readFull(@NotNull Collection<Long> streetIds, boolean preserveOrder) {
-		return streetDao.readFullCollection(streetIds, preserveOrder);
+
+		List<Street> streets = streetDao.readFullCollection(streetIds, preserveOrder);
+		Set<Street> orderedStreets = CollectionUtils.treeSet(streets, Street.<Street>comparator());
+
+		// initialize types
+		List<Street> streetTypes = streetDao.findWithTypes(streetIds);
+		CollectionUtils.copyAttributes(orderedStreets, streetTypes, new AttributeCopier<Street>() {
+			@Override
+			public void copy(Street from, Street to) {
+				to.setTypeTemporals(from.getTypeTemporals());
+			}
+		});
+
+		return streets;
 	}
 
 	/**
@@ -328,6 +345,12 @@ public class StreetServiceImpl extends NameTimeDependentServiceImpl<
 			throw new FlexPayException("Can't get street from DB", "common.error.invalid_id");
 		}
 		return street.format(locale, shortMode);
+	}
+
+	@NotNull
+	@Override
+	public List<Street> findSimpleByTown(Stub<Town> townStub, FetchRange range) {
+		return streetDao.findSimpleByTown(townStub.getId(), range);
 	}
 
 	/**

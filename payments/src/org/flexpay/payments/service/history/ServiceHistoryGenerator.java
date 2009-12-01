@@ -1,6 +1,8 @@
 package org.flexpay.payments.service.history;
 
 import static org.flexpay.common.persistence.Stub.stub;
+
+import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.common.persistence.history.Diff;
 import org.flexpay.common.persistence.history.HistoryGenerator;
 import org.flexpay.common.persistence.history.ProcessingStatus;
@@ -11,6 +13,9 @@ import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
+
+import java.util.Collection;
+import java.util.List;
 
 public class ServiceHistoryGenerator implements HistoryGenerator<Service> {
 
@@ -28,23 +33,31 @@ public class ServiceHistoryGenerator implements HistoryGenerator<Service> {
 	 */
 	public void generateFor(@NotNull Service obj) {
 
-		if (diffService.hasDiffs(obj)) {
-			log.debug("Cashbox already has history, do nothing {}", obj);
-			return;
-		}
-
 		Service service = spService.readFull(stub(obj));
 		if (service == null) {
 			log.warn("Requested service history generation, but not found: {}", obj);
 			return;
 		}
 
+		generateForSingle(service);
+	}
+
+	private void generateForSingle(Service service) {
 		referencesHistoryGenerator.generateReferencesHistory(service);
 
 		if (!diffService.hasDiffs(service)) {
 			Diff diff = historyBuilder.diff(null, service);
 			diff.setProcessingStatus(ProcessingStatus.STATUS_PROCESSED);
 			diffService.create(diff);
+		}
+	}
+
+	@Override
+	public void generateFor(@NotNull Collection<Service> objs) {
+
+		List<Service> services = spService.readFull(DomainObject.collectionIds(objs), false);
+		for (Service service : services) {
+			generateForSingle(service);
 		}
 	}
 

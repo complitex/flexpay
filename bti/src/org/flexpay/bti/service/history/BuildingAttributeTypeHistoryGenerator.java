@@ -12,6 +12,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 
+import java.util.Collection;
+
 public class BuildingAttributeTypeHistoryGenerator implements HistoryGenerator<BuildingAttributeType> {
 
 	protected Logger log = LoggerFactory.getLogger(getClass());
@@ -45,6 +47,13 @@ public class BuildingAttributeTypeHistoryGenerator implements HistoryGenerator<B
 			Diff diff = historyBuilder.diff(null, group);
 			diff.setProcessingStatus(ProcessingStatus.STATUS_PROCESSED);
 			diffService.create(diff);
+		}
+	}
+
+	@Override
+	public void generateFor(@NotNull Collection<BuildingAttributeType> objs) {
+		for (BuildingAttributeType type : objs) {
+			generateFor(type);
 		}
 	}
 

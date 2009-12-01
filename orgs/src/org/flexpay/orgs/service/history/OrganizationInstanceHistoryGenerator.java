@@ -13,6 +13,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 
+import java.util.Collection;
+
 public class OrganizationInstanceHistoryGenerator<
 		D extends OrganizationInstanceDescription,
 		T extends OrganizationInstance<D, T>> implements HistoryGenerator<T> {
@@ -47,6 +49,13 @@ public class OrganizationInstanceHistoryGenerator<
 		Diff diff = historyBuilder.diff(null, org);
 		diff.setProcessingStatus(ProcessingStatus.STATUS_PROCESSED);
 		diffService.create(diff);
+	}
+
+	@Override
+	public void generateFor(@NotNull Collection<T> objs) {
+		for (T t : objs) {
+			generateFor(t);
+		}
 	}
 
 	@Required

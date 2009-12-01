@@ -40,6 +40,8 @@ public class EircSpringBeanAwareTestCase extends SpringBeanAwareTestCase {
 				STREET_TYPE_READ,
 				SERVICE_READ,
 				SERVICE_TYPE_READ,
+				IDENTITY_TYPE_READ,
+				CASHBOX_READ,
 				SERVICE_ORGANIZATION_READ,
 				SERVICE_PROVIDER_READ,
 				PAYMENT_POINT_READ,

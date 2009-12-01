@@ -12,6 +12,8 @@ import org.slf4j.LoggerFactory;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
+import java.util.Collection;
+
 public class OrganizationHistoryGenerator implements HistoryGenerator<Organization> {
 
 	protected Logger log = LoggerFactory.getLogger(getClass());
@@ -41,6 +43,13 @@ public class OrganizationHistoryGenerator implements HistoryGenerator<Organizati
 		Diff diff = historyBuilder.diff(null, org);
 		diff.setProcessingStatus(ProcessingStatus.STATUS_PROCESSED);
 		diffService.create(diff);
+	}
+
+	@Override
+	public void generateFor(@NotNull Collection<Organization> objs) {
+		for (Organization organization : objs) {
+			generateFor(organization);
+		}
 	}
 
 	@Required

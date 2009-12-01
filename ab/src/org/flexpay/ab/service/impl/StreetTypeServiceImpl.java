@@ -69,7 +69,7 @@ public class StreetTypeServiceImpl implements StreetTypeService {
 	 */
 	@Override
 	public List<StreetType> getAll() {
-		return list();
+		return getEntities();
 	}
 
 	/**

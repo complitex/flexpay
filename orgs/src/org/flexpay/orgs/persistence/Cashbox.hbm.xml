@@ -79,6 +79,13 @@
         where c.id=?
     </query>
 
+    <query name="Cashbox.readFullCollection">
+        select distinct c
+        from Cashbox c
+            left join fetch c.names
+        where c.id in (:ids)
+    </query>
+
     <query name="Cashbox.findCashboxes.count">
         select count(*)
         from Cashbox c

@@ -43,7 +43,10 @@ public class DiffDaoExtImpl extends HibernateDaoSupport implements DiffDaoExt {
 
 	public boolean hasDiffs(Long objectId, int objectType) {
 
-		log.debug("Checking for history existence, type #{}, id: {}", objectType, objectId);
+		if (log.isDebugEnabled()) {
+			log.debug("Checking for history existence, type 0x{}, id: {}",
+					Integer.toHexString(objectType), objectId);
+		}
 
 		Object[] params = {objectId, objectType};
 		List<?> result = getHibernateTemplate().findByNamedQuery("Diff.hasHistory", params);

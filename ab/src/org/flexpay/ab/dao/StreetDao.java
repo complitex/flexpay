@@ -4,7 +4,9 @@ import org.flexpay.ab.persistence.District;
 import org.flexpay.ab.persistence.Street;
 import org.flexpay.ab.persistence.StreetTypeTemporal;
 import org.flexpay.common.dao.NameTimeDependentDao;
+import org.flexpay.common.dao.paging.FetchRange;
 
+import java.util.Collection;
 import java.util.List;
 
 public interface StreetDao extends NameTimeDependentDao<Street, Long> {
@@ -21,4 +23,7 @@ public interface StreetDao extends NameTimeDependentDao<Street, Long> {
 
 	List<District> findDistricts(Long streetId);
 
+	List<Street> findSimpleByTown(Long townId, FetchRange range);
+
+	List<Street> findWithTypes(Collection<Long> streetIds);
 }

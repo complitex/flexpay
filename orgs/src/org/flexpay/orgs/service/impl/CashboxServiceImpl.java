@@ -22,6 +22,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -103,6 +104,12 @@ public class CashboxServiceImpl implements CashboxService {
 	@Override
 	public Cashbox read(@NotNull Stub<Cashbox> stub) {
 		return cashboxDao.readFull(stub.getId());
+	}
+
+	@NotNull
+	@Override
+	public List<Cashbox> readFull(Collection<Long> ids, boolean preserveOrder) {
+		return cashboxDao.readFullCollection(ids, preserveOrder);
 	}
 
 	@Override

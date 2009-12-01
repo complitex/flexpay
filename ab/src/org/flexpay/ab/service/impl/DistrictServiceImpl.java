@@ -9,6 +9,7 @@ import org.flexpay.ab.persistence.*;
 import org.flexpay.ab.persistence.filters.DistrictFilter;
 import org.flexpay.ab.persistence.filters.TownFilter;
 import org.flexpay.ab.service.DistrictService;
+import org.flexpay.common.dao.paging.FetchRange;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
@@ -241,6 +242,12 @@ public class DistrictServiceImpl extends NameTimeDependentServiceImpl<
 	@Override
 	public List<District> findByTownAndName(@NotNull Stub<Town> townStub, @NotNull String name) {
 		return districtDao.findByTownAndName(townStub.getId(), name);
+	}
+
+	@NotNull
+	@Override
+	public List<District> findSimpleByTown(Stub<Town> townStub, FetchRange range) {
+		return districtDao.findSimpleByTown(townStub.getId(), range);
 	}
 
 	/**

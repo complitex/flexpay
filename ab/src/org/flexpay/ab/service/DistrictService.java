@@ -2,6 +2,7 @@ package org.flexpay.ab.service;
 
 import org.apache.commons.collections.ArrayStack;
 import org.flexpay.ab.persistence.*;
+import org.flexpay.common.dao.paging.FetchRange;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Stub;
@@ -108,4 +109,14 @@ public interface DistrictService extends NameTimeDependentService<DistrictName, 
 	@NotNull
 	List<District> findByTownAndName(@NotNull Stub<Town> townStub, @NotNull String name);
 
+	/**
+	 * Find district ids for town in range
+	 *
+	 * @param townStub Town to get districts for
+	 * @param range FetchRange
+	 * @return List of districts in range
+	 */
+	@Secured (Roles.DISTRICT_READ)
+	@NotNull
+	List<District> findSimpleByTown(Stub<Town> townStub, FetchRange range);
 }

@@ -244,6 +244,19 @@ public class SPServiceImpl implements SPService {
 	}
 
 	/**
+	 * Read full services info
+	 *
+	 * @param ids		   service identifiers
+	 * @param preserveOrder Whether to preserve result order
+	 * @return Services found
+	 */
+	@NotNull
+	@Override
+	public List<Service> readFull(Collection<Long> ids, boolean preserveOrder) {
+		return serviceDao.readFullCollection(ids, preserveOrder);
+	}
+
+	/**
 	 * Initalize service filter with a list of parent services
 	 *
 	 * @param filter Filter to initialize

@@ -100,4 +100,20 @@
         where a.id=?
     </query>
 
+	<query name="Apartment.findSimpleByTown.stats">
+		select min(a.id), max(a.id), count(a.id)
+		from Apartment a
+			left join a.building b
+			left join b.district d
+		where a.status=0 and d.parent.id=?
+	</query>
+
+	<query name="Apartment.findSimpleByTown">
+		select new Apartment(a.id)
+		from Apartment a
+			left join a.building b
+			left join b.district d
+		where a.status=0 and d.parent.id=? and a.id between ? and ?
+	</query>
+
 </hibernate-mapping>

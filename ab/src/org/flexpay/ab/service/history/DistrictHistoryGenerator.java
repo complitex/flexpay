@@ -3,6 +3,8 @@ package org.flexpay.ab.service.history;
 import org.flexpay.ab.persistence.District;
 import org.flexpay.ab.service.DistrictService;
 import static org.flexpay.common.persistence.Stub.stub;
+
+import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.common.persistence.history.Diff;
 import org.flexpay.common.persistence.history.HistoryGenerator;
 import org.flexpay.common.persistence.history.ProcessingStatus;
@@ -11,6 +13,9 @@ import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
+
+import java.util.Collection;
+import java.util.List;
 
 public class DistrictHistoryGenerator implements HistoryGenerator<District> {
 
@@ -38,6 +43,21 @@ public class DistrictHistoryGenerator implements HistoryGenerator<District> {
 			log.warn("District not found {}", district);
 			return;
 		}
+
+		generateForSingle(district);
+	}
+
+	@Override
+	public void generateFor(@NotNull Collection<District> objs) {
+
+		List<District> districts = districtService.readFull(DomainObject.collectionIds(objs), false);
+		for (District district : districts) {
+			log.debug("starting generating history for district #{}", district.getId());
+			generateForSingle(district);
+		}
+	}
+
+	private void generateForSingle(District district) {
 
 		referencesHistoryGenerator.generateReferencesHistory(district);
 

@@ -12,6 +12,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 
+import java.util.Collection;
+
 public class StreetTypeHistoryGenerator implements HistoryGenerator<StreetType> {
 
 	protected Logger log = LoggerFactory.getLogger(getClass());
@@ -39,6 +41,13 @@ public class StreetTypeHistoryGenerator implements HistoryGenerator<StreetType> 
 		Diff diff = historyBuilder.diff(null, obj);
 		diff.setProcessingStatus(ProcessingStatus.STATUS_PROCESSED);
 		diffService.create(diff);
+	}
+
+	@Override
+	public void generateFor(@NotNull Collection<StreetType> objs) {
+		for (StreetType streetType : objs) {
+			generateFor(streetType);
+		}
 	}
 
 	@Required

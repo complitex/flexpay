@@ -2,9 +2,11 @@ package org.flexpay.ab.dao;
 
 import org.flexpay.ab.persistence.Person;
 import org.flexpay.common.dao.GenericDao;
+import org.flexpay.common.dao.paging.FetchRange;
 import org.flexpay.common.dao.paging.Page;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Collection;
 import java.util.List;
 
 public interface PersonDao extends GenericDao<Person, Long>{
@@ -25,5 +27,10 @@ public interface PersonDao extends GenericDao<Person, Long>{
 	@NotNull
 	List<Person> findByFIO(@NotNull String searchString, Page<Person> pager);
 
+	List<Person> findPersonsWithAttributes(Collection<Long> personIds);
+
+	List<Person> findPersonsWithRegistrations(Collection<Long> personIds);
+
+	List<Person> findSimple(FetchRange range);
 }
 
