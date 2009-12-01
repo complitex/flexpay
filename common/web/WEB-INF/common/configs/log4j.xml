@@ -34,7 +34,7 @@
 	<appender name="security" class="org.apache.log4j.QpidCompositeRollingAppender">
 		<!-- Ensure that logs always have the dateFormat set-->
 		<param name="StaticLogFileName" value="false" />
-		<param name="File" value="${java.io.tmpdir}/logs/security_LOG_NAME" />
+		<param name="File" value="${java.io.tmpdir}/logs/security_COMMON_INSTANCE_LOG_NAME" />
 		<param name="Encoding" value="UTF-8" />
 		<param name="Append" value="false" />
 		<!-- Change the direction so newer files have bigger numbers -->
