@@ -5,9 +5,8 @@ import org.flexpay.ab.dao.RegionDao;
 import org.flexpay.ab.persistence.Region;
 import org.flexpay.ab.persistence.TestData;
 import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
-import static org.flexpay.ab.util.TestNTDUtils.createSimpleRegion;
+import static org.flexpay.ab.util.TestUtils.createSimpleRegion;
 import org.flexpay.common.actions.FPActionSupport;
-import org.flexpay.common.persistence.DomainObjectWithStatus;
 import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,7 +67,7 @@ public class TestRegionViewAction extends AbSpringBeanAwareTestCase {
 	public void testDisabledRegion() throws Exception {
 
 		Region region = createSimpleRegion("testName");
-		region.setStatus(DomainObjectWithStatus.STATUS_DISABLED);
+		region.disable();
 
 		regionDao.create(region);
 

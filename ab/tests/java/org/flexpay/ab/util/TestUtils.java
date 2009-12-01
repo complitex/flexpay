@@ -2,13 +2,14 @@ package org.flexpay.ab.util;
 
 import org.flexpay.ab.persistence.*;
 import org.flexpay.common.persistence.Language;
+import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.util.CollectionUtils.treeMap;
 import org.flexpay.common.util.DateUtil;
 import org.flexpay.common.util.config.ApplicationConfig;
 
 import java.util.Map;
 
-public class TestNTDUtils {
+public class TestUtils {
 
 	public static Map<Long, String> initNames(String value) {
 		Map<Long, String> names = treeMap();
@@ -85,6 +86,40 @@ public class TestNTDUtils {
 		street.setParent(new Town(TestData.TOWN_NSK.getId()));
 
 		return street;
+	}
+
+	public static Building createSimpleBuilding(String buildingNumber) {
+
+		Building building = Building.newInstance();
+
+		building.setDistrict(new District(TestData.DISTRICT_SOVETSKII));
+
+		BuildingAddress address1 = new BuildingAddress();
+		address1.setPrimaryStatus(true);
+		address1.setStreet(new Street(TestData.IVANOVA));
+		address1.setBuildingAttribute(buildingNumber, org.flexpay.ab.util.config.ApplicationConfig.getBuildingAttributeTypeNumber());
+		address1.setPrimaryStatus(true);
+
+		building.addAddress(address1);
+
+		BuildingAddress address2 = new BuildingAddress();
+		address2.setPrimaryStatus(true);
+		address2.setStreet(new Street(TestData.DEMAKOVA));
+		address2.setBuildingAttribute(buildingNumber + "22", org.flexpay.ab.util.config.ApplicationConfig.getBuildingAttributeTypeNumber());
+		address2.setPrimaryStatus(false);
+
+		building.addAddress(address2);
+
+		return building;
+	}
+
+	public static Apartment createSimpleApartment(String apartmentNumber) {
+
+		Apartment apartment = Apartment.newInstance();
+		apartment.setNumber(apartmentNumber);
+		apartment.setBuilding(new Building(TestData.IVANOVA_27.getId()));
+
+		return apartment;
 	}
 
 }

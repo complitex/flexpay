@@ -1,27 +1,28 @@
-package org.flexpay.ab.action.town;
+package org.flexpay.ab.action.building;
 
-import org.flexpay.ab.actions.town.TownViewAction;
-import org.flexpay.ab.dao.TownDao;
+import org.flexpay.ab.actions.buildings.BuildingViewAction;
+import org.flexpay.ab.dao.BuildingDao;
+import org.flexpay.ab.persistence.Building;
+import org.flexpay.ab.persistence.BuildingAddress;
 import org.flexpay.ab.persistence.TestData;
-import org.flexpay.ab.persistence.Town;
 import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
-import static org.flexpay.ab.util.TestUtils.createSimpleTown;
+import static org.flexpay.ab.util.TestUtils.createSimpleBuilding;
 import org.flexpay.common.actions.FPActionSupport;
 import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public class TestTownViewAction extends AbSpringBeanAwareTestCase {
+public class TestBuildingViewAction extends AbSpringBeanAwareTestCase {
 
 	@Autowired
-	private TownViewAction action;
+	private BuildingViewAction action;
 	@Autowired
-	private TownDao townDao;
+	private BuildingDao buildingDao;
 
 	@Test
 	public void testCorrectData() throws Exception {
 
-		action.setObject(new Town(TestData.TOWN_NSK.getId()));
+		action.setBuilding(new Building(TestData.IVANOVA_27.getId()));
 
 		assertEquals("Invalid action result", FPActionSupport.SUCCESS, action.execute());
 
@@ -30,7 +31,7 @@ public class TestTownViewAction extends AbSpringBeanAwareTestCase {
 	@Test
 	public void testIncorrectId1() throws Exception {
 
-		action.setObject(new Town(-10L));
+		action.setBuilding(new Building(-10L));
 
 		assertEquals("Invalid action result", FPActionSupport.REDIRECT_ERROR, action.execute());
 
@@ -39,43 +40,46 @@ public class TestTownViewAction extends AbSpringBeanAwareTestCase {
 	@Test
 	public void testIncorrectId2() throws Exception {
 
-		action.setObject(new Town(0L));
+		action.setBuilding(new Building(0L));
 
 		assertEquals("Invalid action result", FPActionSupport.REDIRECT_ERROR, action.execute());
 
 	}
 
 	@Test
-	public void testNullTown() throws Exception {
+	public void testNullBuilding() throws Exception {
 
-		action.setObject(null);
-
-		assertEquals("Invalid action result", FPActionSupport.REDIRECT_ERROR, action.execute());
-
-	}
-
-	@Test
-	public void testDefunctTown() throws Exception {
-
-		action.setObject(new Town(1090772L));
+		action.setBuilding(null);
 
 		assertEquals("Invalid action result", FPActionSupport.REDIRECT_ERROR, action.execute());
 
 	}
 
 	@Test
-	public void testDisabledTown() throws Exception {
+	public void testDefunctBuilding() throws Exception {
 
-		Town town = createSimpleTown("testName");
-		town.disable();
-
-		townDao.create(town);
-
-		action.setObject(town);
+		action.setBuilding(new Building(1090772L));
 
 		assertEquals("Invalid action result", FPActionSupport.REDIRECT_ERROR, action.execute());
 
-		townDao.delete(action.getObject());
+	}
+
+	@Test
+	public void testDisabledBuilding() throws Exception {
+
+		Building building = createSimpleBuilding("2222");
+		building.disable();
+		for (BuildingAddress address : building.getBuildingses()) {
+			address.disable();
+		}
+
+		buildingDao.create(building);
+
+		action.setBuilding(building);
+
+		assertEquals("Invalid action result", FPActionSupport.REDIRECT_ERROR, action.execute());
+
+		buildingDao.delete(action.getBuilding());
 
 	}
 

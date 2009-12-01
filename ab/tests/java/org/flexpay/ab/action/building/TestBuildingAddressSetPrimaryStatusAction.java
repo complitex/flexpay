@@ -6,7 +6,7 @@ import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public class TestBuildingSetPrimaryStatusAction extends AbSpringBeanAwareTestCase {
+public class TestBuildingAddressSetPrimaryStatusAction extends AbSpringBeanAwareTestCase {
 
 	@Autowired
 	private BuildingAddressSetPrimaryStatusAction action;

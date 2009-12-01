@@ -35,7 +35,7 @@ public class ApartmentRegistrationAction extends FPActionSupport {
 	@Override
 	public String doExecute() throws FlexPayException {
 
-		if (apartment == null || apartment.getId() == null) {
+		if (apartment == null || apartment.getId() == null || apartment.getId() <= 0) {
 			log.warn("Incorrect apartment id");
 			addActionError(getText("common.object_not_selected"));
 			return SUCCESS;
@@ -50,12 +50,11 @@ public class ApartmentRegistrationAction extends FPActionSupport {
 			return SUCCESS;
 		}
 
-		List<BuildingAddress> buildingses = buildingService.findAddresesByBuilding(apartment.getBuildingStub());
-		buildings = buildingService.readFullAddress(stub(buildingses.get(0)));
-		street = streetService.readFull(buildings.getStreetStub());
-		town = townService.readFull(street.getTownStub());
-		region = regionService.readFull(town.getRegionStub());
-		country = countryService.readFull(region.getCountryStub());
+		buildings = buildingService.readFullAddress(stub(apartment.getDefaultBuildings()));
+		street = streetService.readFull(stub(apartment.getDefaultStreet()));
+		town = townService.readFull(stub(apartment.getTown()));
+		region = regionService.readFull(stub(apartment.getRegion()));
+		country = countryService.readFull(stub(apartment.getCountry()));
 
 		return SUCCESS;
 	}
@@ -77,6 +76,7 @@ public class ApartmentRegistrationAction extends FPActionSupport {
 		List<PersonRegistration> result = list(registrations);
 
 		Collections.sort(result, new Comparator<PersonRegistration>() {
+			@Override
 			public int compare(PersonRegistration o1, PersonRegistration o2) {
 				return o1.getBeginDate().compareTo(o2.getBeginDate());
 			}

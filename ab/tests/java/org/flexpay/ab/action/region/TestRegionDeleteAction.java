@@ -2,16 +2,13 @@ package org.flexpay.ab.action.region;
 
 import org.flexpay.ab.actions.region.RegionDeleteAction;
 import org.flexpay.ab.dao.RegionDao;
-import org.flexpay.ab.persistence.*;
+import org.flexpay.ab.persistence.Region;
 import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
-import static org.flexpay.ab.util.TestNTDUtils.createSimpleRegion;
+import static org.flexpay.ab.util.TestUtils.createSimpleRegion;
 import org.flexpay.common.actions.FPActionSupport;
-import org.flexpay.common.persistence.Language;
 import static org.flexpay.common.util.CollectionUtils.set;
-import org.flexpay.common.util.DateUtil;
-import org.flexpay.common.util.config.ApplicationConfig;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -42,7 +39,7 @@ public class TestRegionDeleteAction extends AbSpringBeanAwareTestCase {
 		assertEquals("Invalid action result", FPActionSupport.SUCCESS, action.execute());
 
 		region = regionDao.read(region.getId());
-		assertFalse("Invalid status for region. Must be disabled", region.isActive());
+		assertTrue("Invalid status for region. Must be disabled", region.isNotActive());
 
 		regionDao.delete(region);
 	}

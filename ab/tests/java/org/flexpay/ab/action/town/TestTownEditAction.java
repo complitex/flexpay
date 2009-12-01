@@ -6,10 +6,9 @@ import org.flexpay.ab.persistence.TestData;
 import org.flexpay.ab.persistence.Town;
 import org.flexpay.ab.persistence.filters.TownTypeFilter;
 import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
-import static org.flexpay.ab.util.TestNTDUtils.createSimpleTown;
-import static org.flexpay.ab.util.TestNTDUtils.initNames;
+import static org.flexpay.ab.util.TestUtils.createSimpleTown;
+import static org.flexpay.ab.util.TestUtils.initNames;
 import org.flexpay.common.actions.FPActionSupport;
-import org.flexpay.common.persistence.DomainObjectWithStatus;
 import org.flexpay.common.persistence.filter.BeginDateFilter;
 import org.flexpay.common.util.DateUtil;
 import org.flexpay.common.util.config.ApplicationConfig;
@@ -84,6 +83,8 @@ public class TestTownEditAction extends AbSpringBeanAwareTestCase {
 		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
 		assertEquals("Invalid beginDateFilter value", action.getTown().getCurrentNameTemporal().getBegin(), action.getBeginDateFilter().getDate());
 		assertEquals("Invalid names size for different languages", ApplicationConfig.getLanguages().size(), action.getNames().size());
+		assertEquals("Invalid region filter", TestData.REGION_NSK.getId(), action.getRegionFilter());
+		assertEquals("Invalid country filter", TestData.COUNTRY_RUS.getId(), action.getCountryFilter());
 
 	}
 
@@ -153,7 +154,7 @@ public class TestTownEditAction extends AbSpringBeanAwareTestCase {
 	public void testEditDisabledTown() throws Exception {
 
 		Town town = createSimpleTown("testName");
-		town.setStatus(DomainObjectWithStatus.STATUS_DISABLED);
+		town.disable();
 
 		townDao.create(town);
 

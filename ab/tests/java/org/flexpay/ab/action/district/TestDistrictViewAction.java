@@ -5,9 +5,8 @@ import org.flexpay.ab.dao.DistrictDao;
 import org.flexpay.ab.persistence.District;
 import org.flexpay.ab.persistence.TestData;
 import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
-import static org.flexpay.ab.util.TestNTDUtils.createSimpleDistrict;
+import static org.flexpay.ab.util.TestUtils.createSimpleDistrict;
 import org.flexpay.common.actions.FPActionSupport;
-import org.flexpay.common.persistence.DomainObjectWithStatus;
 import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,7 +67,7 @@ public class TestDistrictViewAction extends AbSpringBeanAwareTestCase {
 	public void testDisabledDistrict() throws Exception {
 
 		District district = createSimpleDistrict("testName");
-		district.setStatus(DomainObjectWithStatus.STATUS_DISABLED);
+		district.disable();
 
 		districtDao.create(district);
 

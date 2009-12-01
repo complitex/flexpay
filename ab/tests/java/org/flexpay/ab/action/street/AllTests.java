@@ -9,7 +9,8 @@ import org.junit.runners.Suite;
 		TestStreetsListAction.class,
 		TestStreetsListPageAction.class,
 		TestStreetViewAction.class,
-		TestStreetDeleteAction.class
+		TestStreetDeleteAction.class,
+		TestStreetDistrictEditAction.class
 })
 public class AllTests {
 

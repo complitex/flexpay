@@ -5,10 +5,9 @@ import org.flexpay.ab.dao.StreetDao;
 import org.flexpay.ab.persistence.Street;
 import org.flexpay.ab.persistence.TestData;
 import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
-import static org.flexpay.ab.util.TestNTDUtils.createSimpleStreet;
-import static org.flexpay.ab.util.TestNTDUtils.initNames;
+import static org.flexpay.ab.util.TestUtils.createSimpleStreet;
+import static org.flexpay.ab.util.TestUtils.initNames;
 import org.flexpay.common.actions.FPActionSupport;
-import org.flexpay.common.persistence.DomainObjectWithStatus;
 import org.flexpay.common.persistence.filter.BeginDateFilter;
 import org.flexpay.common.util.DateUtil;
 import org.flexpay.common.util.config.ApplicationConfig;
@@ -83,6 +82,9 @@ public class TestStreetEditAction extends AbSpringBeanAwareTestCase {
 		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
 		assertEquals("Invalid beginDateFilter value", action.getStreet().getCurrentNameTemporal().getBegin(), action.getBeginDateFilter().getDate());
 		assertEquals("Invalid names size for different languages", ApplicationConfig.getLanguages().size(), action.getNames().size());
+		assertEquals("Invalid town filter", TestData.TOWN_NSK.getId(), action.getTownFilter());
+		assertEquals("Invalid region filter", TestData.REGION_NSK.getId(), action.getRegionFilter());
+		assertEquals("Invalid country filter", TestData.COUNTRY_RUS.getId(), action.getCountryFilter());
 
 	}
 
@@ -137,7 +139,7 @@ public class TestStreetEditAction extends AbSpringBeanAwareTestCase {
 	public void testEditDisabledStreet() throws Exception {
 
 		Street street = createSimpleStreet("testName");
-		street.setStatus(DomainObjectWithStatus.STATUS_DISABLED);
+		street.disable();
 
 		streetDao.create(street);
 
