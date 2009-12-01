@@ -78,7 +78,7 @@ public class TestTownEditAction extends AbSpringBeanAwareTestCase {
 	@Test
 	public void testEditNotSubmit() throws Exception {
 
-		action.setTown(new Town(TestData.TOWN_NSK.getId()));
+		action.setTown(new Town(TestData.TOWN_NSK));
 
 		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
 		assertEquals("Invalid beginDateFilter value", action.getTown().getCurrentNameTemporal().getBegin(), action.getBeginDateFilter().getDate());

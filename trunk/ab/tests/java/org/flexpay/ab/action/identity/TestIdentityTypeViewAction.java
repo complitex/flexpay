@@ -1,27 +1,27 @@
-package org.flexpay.ab.action.country;
+package org.flexpay.ab.action.identity;
 
-import org.flexpay.ab.actions.country.CountryViewAction;
-import org.flexpay.ab.dao.CountryDao;
-import org.flexpay.ab.persistence.Country;
+import org.flexpay.ab.actions.identity.IdentityTypeViewAction;
+import org.flexpay.ab.dao.IdentityTypeDao;
+import org.flexpay.ab.persistence.IdentityType;
 import org.flexpay.ab.persistence.TestData;
 import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
-import static org.flexpay.ab.util.TestUtils.createSimpleCountry;
+import static org.flexpay.ab.util.TestUtils.createSimpleIdentityType;
 import org.flexpay.common.actions.FPActionSupport;
 import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public class TestCountryViewAction extends AbSpringBeanAwareTestCase {
+public class TestIdentityTypeViewAction extends AbSpringBeanAwareTestCase {
 
 	@Autowired
-	private CountryViewAction action;
+	private IdentityTypeViewAction action;
 	@Autowired
-	private CountryDao countryDao;
+	private IdentityTypeDao identityTypeDao;
 
 	@Test
-	public void testCorrectData() throws Exception {
+	public void testAction() throws Exception {
 
-		action.setCountry(new Country(TestData.COUNTRY_RUS));
+		action.setIdentityType(new IdentityType(TestData.IDENTITY_TYPE_FIO));
 
 		assertEquals("Invalid action result", FPActionSupport.SUCCESS, action.execute());
 
@@ -30,7 +30,7 @@ public class TestCountryViewAction extends AbSpringBeanAwareTestCase {
 	@Test
 	public void testIncorrectId1() throws Exception {
 
-		action.setCountry(new Country(-10L));
+		action.setIdentityType(new IdentityType(-10L));
 
 		assertEquals("Invalid action result", FPActionSupport.REDIRECT_ERROR, action.execute());
 
@@ -39,7 +39,7 @@ public class TestCountryViewAction extends AbSpringBeanAwareTestCase {
 	@Test
 	public void testIncorrectId2() throws Exception {
 
-		action.setCountry(new Country(0L));
+		action.setIdentityType(new IdentityType(0L));
 
 		assertEquals("Invalid action result", FPActionSupport.REDIRECT_ERROR, action.execute());
 
@@ -53,36 +53,35 @@ public class TestCountryViewAction extends AbSpringBeanAwareTestCase {
 	}
 
 	@Test
-	public void testNullCountry() throws Exception {
+	public void testNullIdentityType() throws Exception {
 
-		action.setCountry(null);
-
-		assertEquals("Invalid action result", FPActionSupport.REDIRECT_ERROR, action.execute());
-
-	}
-
-	@Test
-	public void testDefunctCountry() throws Exception {
-
-		action.setCountry(new Country(10902L));
+		action.setIdentityType(null);
 
 		assertEquals("Invalid action result", FPActionSupport.REDIRECT_ERROR, action.execute());
 
 	}
 
 	@Test
-	public void testDisabledCountry() throws Exception {
+	public void testDefunctIdentityType() throws Exception {
 
-		Country country = createSimpleCountry("123");
-		country.disable();
-
-		countryDao.create(country);
-
-		action.setCountry(country);
+		action.setIdentityType(new IdentityType(10902L));
 
 		assertEquals("Invalid action result", FPActionSupport.REDIRECT_ERROR, action.execute());
 
-		countryDao.delete(action.getCountry());
+	}
+
+	@Test
+	public void testDisabledIdentityType() throws Exception {
+
+		IdentityType identityType = createSimpleIdentityType("3456");
+		identityType.disable();
+		identityTypeDao.create(identityType);
+
+		action.setIdentityType(identityType);
+
+		assertEquals("Invalid action result", FPActionSupport.REDIRECT_ERROR, action.execute());
+
+		identityTypeDao.delete(identityType);
 
 	}
 

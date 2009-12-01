@@ -78,7 +78,7 @@ public class TestStreetDistrictEditAction extends AbSpringBeanAwareTestCase {
 	@Test
 	public void testNotSubmit() throws Exception {
 
-		action.setStreet(new Street(TestData.IVANOVA.getId()));
+		action.setStreet(new Street(TestData.IVANOVA));
 
 		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
 		assertTrue("DistrictNames parameter must not be empty", !action.getDistrictNames().isEmpty());
@@ -88,7 +88,7 @@ public class TestStreetDistrictEditAction extends AbSpringBeanAwareTestCase {
 	@Test
 	public void testSubmitNullObjectIds() throws Exception {
 
-		action.setStreet(new Street(TestData.IVANOVA.getId()));
+		action.setStreet(new Street(TestData.IVANOVA));
 		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
 
 		action.setSubmitted("");

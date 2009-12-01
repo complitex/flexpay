@@ -1,6 +1,7 @@
 package org.flexpay.ab.persistence;
 
 import org.flexpay.common.persistence.DomainObjectWithStatus;
+import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.util.TranslationUtil;
 import org.jetbrains.annotations.NotNull;
 
@@ -20,6 +21,10 @@ public class Country extends DomainObjectWithStatus {
 
 	public Country(Long id) {
 		super(id);
+	}
+
+	public Country(@NotNull Stub<Country> stub) {
+		super(stub.getId());
 	}
 
 	public Set<Region> getRegions() {

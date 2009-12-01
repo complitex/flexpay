@@ -4,6 +4,7 @@ import org.flexpay.common.persistence.DomainObjectWithStatus;
 import org.flexpay.common.persistence.Language;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.util.TranslationUtil;
+import org.flexpay.common.util.config.ApplicationConfig;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -79,6 +80,16 @@ public class IdentityType extends DomainObjectWithStatus implements Comparable<I
 		}
 
 		return null;
+	}
+
+	/**
+	 * Get type translation in a default language
+	 *
+	 * @return translation if found, or <code>null</code> otherwise
+	 */
+	@Nullable
+	public IdentityTypeTranslation getDefaultTranslation() {
+		return getTranslation(ApplicationConfig.getDefaultLanguage());
 	}
 
 	@Override

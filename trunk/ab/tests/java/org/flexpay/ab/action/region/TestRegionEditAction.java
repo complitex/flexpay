@@ -77,7 +77,7 @@ public class TestRegionEditAction extends AbSpringBeanAwareTestCase {
 	@Test
 	public void testEditNotSubmit() throws Exception {
 
-		action.setRegion(new Region(TestData.REGION_NSK.getId()));
+		action.setRegion(new Region(TestData.REGION_NSK));
 
 		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
 		assertEquals("Invalid beginDateFilter value", action.getRegion().getCurrentNameTemporal().getBegin(), action.getBeginDateFilter().getDate());

@@ -77,7 +77,7 @@ public class TestStreetEditAction extends AbSpringBeanAwareTestCase {
 	@Test
 	public void testEditNotSubmit() throws Exception {
 
-		action.setStreet(new Street(TestData.IVANOVA.getId()));
+		action.setStreet(new Street(TestData.IVANOVA));
 
 		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
 		assertEquals("Invalid beginDateFilter value", action.getStreet().getCurrentNameTemporal().getBegin(), action.getBeginDateFilter().getDate());

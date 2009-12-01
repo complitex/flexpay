@@ -2,7 +2,6 @@ package org.flexpay.ab.util;
 
 import org.flexpay.ab.persistence.*;
 import org.flexpay.common.persistence.Language;
-import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.util.CollectionUtils.treeMap;
 import org.flexpay.common.util.DateUtil;
 import org.flexpay.common.util.config.ApplicationConfig;
@@ -40,7 +39,7 @@ public class TestUtils {
 			regionName.setTranslation(new RegionNameTranslation(name, lang));
 		}
 		region.setNameForDate(regionName, DateUtil.now());
-		region.setParent(new Country(TestData.COUNTRY_RUS.getId()));
+		region.setParent(new Country(TestData.COUNTRY_RUS));
 
 		return region;
 	}
@@ -54,7 +53,7 @@ public class TestUtils {
 		}
 		town.setNameForDate(townName, DateUtil.now());
 		town.setTypeForDate(new TownType(TestData.TOWN_TYPE_CITY), DateUtil.now());
-		town.setParent(new Region(TestData.REGION_NSK.getId()));
+		town.setParent(new Region(TestData.REGION_NSK));
 
 		return town;
 	}
@@ -68,7 +67,7 @@ public class TestUtils {
 		}
 
 		district.setNameForDate(districtName, DateUtil.now());
-		district.setParent(new Town(TestData.TOWN_NSK.getId()));
+		district.setParent(new Town(TestData.TOWN_NSK));
 
 		return district;
 	}
@@ -83,7 +82,7 @@ public class TestUtils {
 
 		street.setNameForDate(streetName, DateUtil.now());
 		street.setTypeForDate(new StreetType(TestData.STR_TYPE_STREET), DateUtil.now());
-		street.setParent(new Town(TestData.TOWN_NSK.getId()));
+		street.setParent(new Town(TestData.TOWN_NSK));
 
 		return street;
 	}
@@ -117,9 +116,47 @@ public class TestUtils {
 
 		Apartment apartment = Apartment.newInstance();
 		apartment.setNumber(apartmentNumber);
-		apartment.setBuilding(new Building(TestData.IVANOVA_27.getId()));
+		apartment.setBuilding(new Building(TestData.IVANOVA_27));
 
 		return apartment;
+	}
+
+	public static TownType createSimpleTownType(String name) {
+
+		TownType townType = new TownType();
+		for (Language lang : ApplicationConfig.getLanguages()) {
+			TownTypeTranslation translation = new TownTypeTranslation(name, lang);
+			translation.setShortName("srt" + name);
+			townType.setTranslation(translation);
+		}
+
+		return townType;
+	}
+
+	public static StreetType createSimpleStreetType(String name) {
+
+		StreetType streetType = new StreetType();
+
+		try {
+			for (Language lang : ApplicationConfig.getLanguages()) {
+				streetType.setTranslation(new StreetTypeTranslation(name, "srt" + name, lang));
+			}
+		} catch (Exception e) {
+			// do nothing
+		}
+
+		return streetType;
+	}
+
+	public static IdentityType createSimpleIdentityType(String name) {
+
+		IdentityType identityType = new IdentityType();
+		for (Language lang : ApplicationConfig.getLanguages()) {
+			IdentityTypeTranslation translation = new IdentityTypeTranslation(name, lang);
+			identityType.setTranslation(translation);
+		}
+
+		return identityType;
 	}
 
 }
