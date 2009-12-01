@@ -2,6 +2,8 @@ package org.flexpay.ab.util;
 
 import org.flexpay.ab.persistence.*;
 import org.flexpay.common.persistence.Language;
+import org.flexpay.common.persistence.MeasureUnit;
+import org.flexpay.common.persistence.MeasureUnitName;
 import static org.flexpay.common.util.CollectionUtils.treeMap;
 import org.flexpay.common.util.DateUtil;
 import org.flexpay.common.util.config.ApplicationConfig;
@@ -157,6 +159,17 @@ public class TestUtils {
 		}
 
 		return identityType;
+	}
+
+	public static MeasureUnit createSimpleMeasureUnit(String name) {
+
+		MeasureUnit measureUnit = new MeasureUnit();
+		for (Language lang : ApplicationConfig.getLanguages()) {
+			MeasureUnitName translation = new MeasureUnitName(name, lang);
+			measureUnit.setName(translation);
+		}
+
+		return measureUnit;
 	}
 
 }

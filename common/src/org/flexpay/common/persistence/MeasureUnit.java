@@ -1,6 +1,7 @@
 package org.flexpay.common.persistence;
 
 import org.flexpay.common.util.TranslationUtil;
+import org.flexpay.common.util.config.ApplicationConfig;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -58,6 +59,16 @@ public class MeasureUnit extends DomainObjectWithStatus {
 		}
 
 		return null;
+	}
+
+	/**
+	 * Get unit translation in a default language
+	 *
+	 * @return translation if found, or <code>null</code> otherwise
+	 */
+	@Nullable
+	public MeasureUnitName getDefaultTranslation() {
+		return getTranslation(ApplicationConfig.getDefaultLanguage());
 	}
 
 }

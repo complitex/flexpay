@@ -1,5 +1,6 @@
 package org.flexpay.ab.persistence;
 
+import org.flexpay.common.persistence.MeasureUnit;
 import org.flexpay.common.persistence.Stub;
 
 public abstract class TestData {
@@ -45,7 +46,8 @@ public abstract class TestData {
 	public static final Stub<Country> COUNTRY_RUS = new Stub<Country>(1L);
 	public static final Stub<Country> COUNTRY_USA = new Stub<Country>(2L);
 
-	// test identity types
 	public static final Stub<IdentityType> IDENTITY_TYPE_FIO = new Stub<IdentityType>(1L);
+
+	public static final Stub<MeasureUnit> MEASURE_UNIT_KBM = new Stub<MeasureUnit>(1L);
 
 }

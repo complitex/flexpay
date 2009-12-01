@@ -1,6 +1,6 @@
-package org.flexpay.ab.action.identity;
+package org.flexpay.ab.action.measureunit;
 
-import org.flexpay.ab.actions.identity.IdentityTypesListAction;
+import org.flexpay.ab.actions.measureunit.MeasureUnitsListAction;
 import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
 import org.flexpay.common.actions.FPActionSupport;
 import static org.junit.Assert.assertEquals;
@@ -8,16 +8,16 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public class TestIdentityTypesListAction extends AbSpringBeanAwareTestCase {
+public class TestMeasureUnitsListAction extends AbSpringBeanAwareTestCase {
 
 	@Autowired
-	private IdentityTypesListAction action;
+	private MeasureUnitsListAction action;
 
 	@Test
 	public void testAction() throws Exception {
 
 		assertEquals("Invalid action result", FPActionSupport.SUCCESS, action.execute());
-		assertTrue("Invalid identity types list size", action.getIdentityTypes().size() > 0);
+		assertTrue("Invalid town types list size", action.getUnits().size() > 0);
 
 	}
 
