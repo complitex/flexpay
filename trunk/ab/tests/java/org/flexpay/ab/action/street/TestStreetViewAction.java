@@ -5,9 +5,8 @@ import org.flexpay.ab.dao.StreetDao;
 import org.flexpay.ab.persistence.Street;
 import org.flexpay.ab.persistence.TestData;
 import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
-import static org.flexpay.ab.util.TestNTDUtils.createSimpleStreet;
+import static org.flexpay.ab.util.TestUtils.createSimpleStreet;
 import org.flexpay.common.actions.FPActionSupport;
-import org.flexpay.common.persistence.DomainObjectWithStatus;
 import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,12 +63,11 @@ public class TestStreetViewAction extends AbSpringBeanAwareTestCase {
 
 	}
 
-/*
 	@Test
 	public void testDisabledStreet() throws Exception {
 
-		Street street = createSimpleStreet("testName");
-		street.setStatus(DomainObjectWithStatus.STATUS_DISABLED);
+		Street street = createSimpleStreet("testName111");
+		street.disable();
 
 		streetDao.create(street);
 
@@ -80,6 +78,5 @@ public class TestStreetViewAction extends AbSpringBeanAwareTestCase {
 		streetDao.delete(action.getObject());
 
 	}
-*/
 
 }

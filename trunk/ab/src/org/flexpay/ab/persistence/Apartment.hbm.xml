@@ -71,8 +71,14 @@
 	<query name="Apartment.findWithPersonsFull">
         select distinct a
 		from Apartment a
-			inner join fetch a.building 
 			left join fetch a.apartmentNumbers
+            inner join fetch a.building b
+            inner join fetch b.district
+            left join fetch b.buildingses bs
+            left join fetch bs.street s
+            left join fetch s.parent t
+            left join fetch t.parent r
+            left join fetch r.parent
 			left join fetch a.personRegistrations r
 			left join fetch r.person p
 			left join fetch p.personAttributes pa

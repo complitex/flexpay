@@ -181,18 +181,15 @@ var FP = {
             FP.showShadow(shadowId, resultId);
         }
 
-        var notEl = element == null || element == undefined;
-        if (!notEl) {
+        if (element != null && element != undefined) {
 
             var pageSizeName = opt.pageSizeName;
-            var isSelect = !notEl && element.name == pageSizeName;
+            var isSelect = element.name == pageSizeName;
             var elValue = element.value;
 
             params[opt.pageSizeChangedName] = isSelect;
             params[opt.pageNumberName] = isSelect ? "" : opt.notPagerRequest ? "1" : elValue;
-            if (!notEl) {
-                params[pageSizeName] = isSelect ? elValue : $('select[name="' + pageSizeName + '"]').val();
-            }
+            params[pageSizeName] = isSelect ? elValue : $('select[name="' + pageSizeName + '"]').val();
         }
 
         $.post(opt.action, params, function(data) {

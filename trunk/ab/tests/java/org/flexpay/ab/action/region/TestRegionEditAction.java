@@ -5,10 +5,9 @@ import org.flexpay.ab.dao.RegionDao;
 import org.flexpay.ab.persistence.Region;
 import org.flexpay.ab.persistence.TestData;
 import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
-import static org.flexpay.ab.util.TestNTDUtils.createSimpleRegion;
-import static org.flexpay.ab.util.TestNTDUtils.initNames;
+import static org.flexpay.ab.util.TestUtils.createSimpleRegion;
+import static org.flexpay.ab.util.TestUtils.initNames;
 import org.flexpay.common.actions.FPActionSupport;
-import org.flexpay.common.persistence.DomainObjectWithStatus;
 import org.flexpay.common.persistence.filter.BeginDateFilter;
 import org.flexpay.common.util.DateUtil;
 import org.flexpay.common.util.config.ApplicationConfig;
@@ -83,6 +82,7 @@ public class TestRegionEditAction extends AbSpringBeanAwareTestCase {
 		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
 		assertEquals("Invalid beginDateFilter value", action.getRegion().getCurrentNameTemporal().getBegin(), action.getBeginDateFilter().getDate());
 		assertEquals("Invalid names size for different languages", ApplicationConfig.getLanguages().size(), action.getNames().size());
+		assertEquals("Invalid country filter", TestData.COUNTRY_RUS.getId(), action.getCountryFilter());
 
 	}
 
@@ -137,7 +137,7 @@ public class TestRegionEditAction extends AbSpringBeanAwareTestCase {
 	public void testEditDisabledRegion() throws Exception {
 
 		Region region = createSimpleRegion("testName");
-		region.setStatus(DomainObjectWithStatus.STATUS_DISABLED);
+		region.disable();
 
 		regionDao.create(region);
 

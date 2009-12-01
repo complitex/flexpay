@@ -179,7 +179,7 @@ public class BuildingServiceImpl implements BuildingService, ParentService<Build
 	 * @throws FlexPayExceptionContainer if validation fails
 	 */
 	@SuppressWarnings ({"ThrowableInstanceNeverThrown"})
-	private void validate(Building building) throws FlexPayExceptionContainer {
+	private void validate(@NotNull Building building) throws FlexPayExceptionContainer {
 
 		FlexPayExceptionContainer container = new FlexPayExceptionContainer();
 
@@ -324,8 +324,8 @@ public class BuildingServiceImpl implements BuildingService, ParentService<Build
 
 		try {
 			update(building);
-		} catch (FlexPayExceptionContainer flexPayExceptionContainer) {
-			// do nothing
+		} catch (FlexPayExceptionContainer e) {
+ 			// do nothing
 		}
 
 	}

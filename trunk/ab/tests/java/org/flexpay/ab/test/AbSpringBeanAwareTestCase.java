@@ -52,6 +52,8 @@ public class AbSpringBeanAwareTestCase extends SpringBeanAwareTestCase {
 				BUILDING_DELETE,
 				APARTMENT_READ,
 				APARTMENT_ADD,
+				APARTMENT_CHANGE,
+				APARTMENT_DELETE,
 				BUILDING_ATTRIBUTE_TYPE_READ,
 				STREET_TYPE_READ,
 				STREET_TYPE_ADD,

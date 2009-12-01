@@ -4,11 +4,11 @@ import org.flexpay.ab.actions.district.DistrictDeleteAction;
 import org.flexpay.ab.dao.DistrictDao;
 import org.flexpay.ab.persistence.District;
 import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
-import static org.flexpay.ab.util.TestNTDUtils.createSimpleDistrict;
+import static org.flexpay.ab.util.TestUtils.createSimpleDistrict;
 import org.flexpay.common.actions.FPActionSupport;
 import static org.flexpay.common.util.CollectionUtils.set;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -39,7 +39,7 @@ public class TestDistrictDeleteAction extends AbSpringBeanAwareTestCase {
 		assertEquals("Invalid action result", FPActionSupport.SUCCESS, action.execute());
 
 		district = districtDao.read(district.getId());
-		assertFalse("Invalid status for town. Must be disabled", district.isActive());
+		assertTrue("Invalid status for district. Must be disabled", district.isNotActive());
 
 		districtDao.delete(district);
 
