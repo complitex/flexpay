@@ -88,13 +88,18 @@ public class StreetServiceImpl extends NameTimeDependentServiceImpl<
 		Set<Street> orderedStreets = CollectionUtils.treeSet(streets, Street.<Street>comparator());
 
 		// initialize types
+		final long[] counter = { 0L };
 		List<Street> streetTypes = streetDao.findWithTypes(streetIds);
 		CollectionUtils.copyAttributes(orderedStreets, streetTypes, new AttributeCopier<Street>() {
 			@Override
 			public void copy(Street from, Street to) {
+				log.debug("Copying type from street #{}, to street #{} ", from.getId(), to.getId());
 				to.setTypeTemporals(from.getTypeTemporals());
+				++counter[0];
 			}
 		});
+
+		log.debug("Set type for {} streets of total {}", counter[0], streets.size());
 
 		return streets;
 	}
