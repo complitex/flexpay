@@ -104,8 +104,10 @@
 						   value="<s:text name="payments.quittances.quittance_pay.print_quittance"/>"/>
 				</td>
 				<td style="text-align:right;">
-					<input type="button" id="payQuittanceButton" class="btn-exit" style="width: 80px;"
+					<sec:authorize ifAllGranted="ROLE_PAYMENTS_OPERATION_ADD">
+						<input type="button" id="payQuittanceButton" class="btn-exit" style="width: 80px;"
 						   value="<s:text name="payments.quittances.quittance_pay.pay"/>"/>
+					</sec:authorize>
 				</td>
 				<td class="col"></td>
 				<s:hidden name="actionName" value="%{actionName}"/>
