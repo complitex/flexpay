@@ -139,6 +139,15 @@
         where s.id in (:ids) and s.status=0 and t.invalidDate='2100-12-31'
     </query>
 
+    <query name="Street.findWithTypes">
+        select distinct s
+        from Street s
+            left join fetch s.typeTemporals t
+            left join fetch t.value v
+            left join fetch v.translations tr
+        where s.id in (:list_1) and s.status=0 and t.invalidDate='2100-12-31'
+    </query>
+
 	<query name="Street.findTypeTemporals">
 		select distinct stt
 		from StreetTypeTemporal stt
@@ -156,6 +165,18 @@
 			left join fetch dt.value dv
 			left join fetch dv.translations
 		where s.id=? and s.status=0 and dt.invalidDate='2100-12-31'
+	</query>
+
+	<query name="Street.findSimpleByTown.stats">
+		select min(id), max(id), count(id)
+		from Street
+		where status=0 and parent.id=?
+	</query>
+
+	<query name="Street.findSimpleByTown">
+		select new Street(id)
+		from Street
+		where status=0 and parent.id=? and id between ? and ?
 	</query>
 
 	<query name="Street.findByTownAndNameAndType">

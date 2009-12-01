@@ -10,6 +10,7 @@ import org.jetbrains.annotations.Nullable;
 import org.springframework.security.annotation.Secured;
 import org.apache.commons.collections.ArrayStack;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -38,7 +39,7 @@ public interface CashboxService {
 	Cashbox update(@NotNull Cashbox cashbox) throws FlexPayExceptionContainer;
 
 	/**
-	 * Read SpCashbox object by its unique id
+	 * Read Cashbox object by its unique id
 	 *
 	 * @param stub Cashbox stub
 	 * @return Cashbox object, or <code>null</code> if object not found
@@ -46,6 +47,17 @@ public interface CashboxService {
 	@Secured (Roles.CASHBOX_READ)
 	@Nullable
 	Cashbox read(@NotNull Stub<Cashbox> stub);
+
+	/**
+	 * Read Cashbox objects by its unique ids
+	 *
+	 * @param ids Cachbox ids
+	 * @param preserveOrder Whether to preserve order of objects
+	 * @return Cashbox objects found
+	 */
+	@Secured (Roles.CASHBOX_READ)
+	@NotNull
+	List<Cashbox> readFull(Collection<Long> ids, boolean preserveOrder);
 
 	/**
 	 * Delete cashbox

@@ -168,6 +168,13 @@
 		where s.id=?
 	</query>
 
+	<query name="Service.readFullCollection">
+		select distinct s
+		from Service s
+			left join fetch s.descriptions
+		where s.id in (:ids)
+	</query>
+
 	<query name="Service.findServicesByCode">
 		select distinct o
 		from Service o

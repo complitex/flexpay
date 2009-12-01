@@ -154,6 +154,41 @@
 		</many-to-one>
 	</class>
 
+	<query name="Building.readFull">
+		select distinct b
+		from Building b
+			left join fetch b.district
+			left join fetch b.buildingses bs
+			left join fetch bs.street
+			left join fetch bs.buildingAttributes ba
+			left join fetch ba.buildingAttributeType
+		where b.id=?
+	</query>
+
+	<query name="Building.readFullCollection">
+		select distinct b
+		from Building b
+			left join fetch b.buildingses bs
+			left join fetch bs.street
+			left join fetch bs.buildingAttributes ba
+			left join fetch ba.buildingAttributeType
+		where b.id in (:ids)
+	</query>
+
+	<query name="Building.findSimpleByTown.stats">
+		select min(b.id), max(b.id), count(b.id)
+		from Building b
+			left join b.district d
+		where b.status=0 and d.parent.id=?
+	</query>
+
+	<query name="Building.findSimpleByTown">
+		select new Building(b.id)
+		from Building b
+			left join b.district d
+		where b.status=0 and d.parent.id=? and b.id between ? and ?
+	</query>
+
 	<query name="BuildingAddress.readFull">
 		select distinct ba
 		from BuildingAddress ba

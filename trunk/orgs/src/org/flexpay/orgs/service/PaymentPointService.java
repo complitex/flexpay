@@ -10,6 +10,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.security.annotation.Secured;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -61,6 +62,17 @@ public interface PaymentPointService {
 	@Secured(Roles.PAYMENT_POINT_READ)
 	@Nullable
 	PaymentPoint read(@NotNull Stub<PaymentPoint> stub);
+
+	/**
+	 * Read full payment points info
+	 *
+	 * @param ids payment point identifiers
+	 * @param preserveOrder Whether to preserve result order
+	 * @return Payment points found
+	 */
+	@Secured(Roles.PAYMENT_POINT_READ)
+	@NotNull
+	List<PaymentPoint> readFull(Collection<Long> ids, boolean preserveOrder);
 
 	/**
 	 * Disable payment points
@@ -117,4 +129,5 @@ public interface PaymentPointService {
 	List<PaymentPoint> findAll();
 
 	void delete(@NotNull PaymentPoint point);
+
 }

@@ -12,6 +12,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 
+import java.util.Collection;
+
 public class ServiceTypeHistoryGenerator implements HistoryGenerator<ServiceType> {
 
 	protected Logger log = LoggerFactory.getLogger(getClass());
@@ -41,7 +43,18 @@ public class ServiceTypeHistoryGenerator implements HistoryGenerator<ServiceType
 		Diff diff = historyBuilder.diff(null, type);
 		diff.setProcessingStatus(ProcessingStatus.STATUS_PROCESSED);
 		diffService.create(diff);
+	}
 
+	/**
+	 * Do generation of history for several objects
+	 *
+	 * @param objs Objects to generate history for
+	 */
+	@Override
+	public void generateFor(@NotNull Collection<ServiceType> objs) {
+		for (ServiceType serviceType : objs) {
+			generateFor(serviceType);
+		}
 	}
 
 	@Required

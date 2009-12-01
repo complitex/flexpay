@@ -2,6 +2,7 @@ package org.flexpay.ab.dao;
 
 import org.flexpay.ab.persistence.District;
 import org.flexpay.common.dao.NameTimeDependentDao;
+import org.flexpay.common.dao.paging.FetchRange;
 
 import java.util.List;
 
@@ -15,4 +16,5 @@ public interface DistrictDao extends NameTimeDependentDao<District, Long> {
 
 	List<District> findWithFullHierarchy(Long districtId);
 
+	List<District> findSimpleByTown(Long townId, FetchRange range);
 }

@@ -4,6 +4,8 @@ import org.flexpay.common.persistence.history.HistoryGenerator;
 import org.flexpay.common.persistence.DomainObject;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Collection;
+
 public class NopeHistoryGenerator <T extends DomainObject> implements HistoryGenerator<T> {
 
 	/**
@@ -12,6 +14,11 @@ public class NopeHistoryGenerator <T extends DomainObject> implements HistoryGen
 	 * @param obj Object to generate history for
 	 */
 	public void generateFor(@NotNull T obj) {
+		// do nothing
+	}
+
+	@Override
+	public void generateFor(@NotNull Collection<T> objs) {
 		// do nothing
 	}
 }

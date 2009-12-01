@@ -12,6 +12,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 
+import java.util.Collection;
+
 public class MeasureUnitHistoryGenerator implements HistoryGenerator<MeasureUnit> {
 
 	protected Logger log = LoggerFactory.getLogger(getClass());
@@ -41,6 +43,13 @@ public class MeasureUnitHistoryGenerator implements HistoryGenerator<MeasureUnit
 		Diff diff = historyBuilder.diff(null, type);
 		diff.setProcessingStatus(ProcessingStatus.STATUS_PROCESSED);
 		diffService.create(diff);
+	}
+
+	@Override
+	public void generateFor(@NotNull Collection<MeasureUnit> objs) {
+		for (MeasureUnit unit : objs) {
+			generateFor(unit);
+		}
 	}
 
 	@Required

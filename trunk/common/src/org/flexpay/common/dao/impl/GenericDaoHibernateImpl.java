@@ -280,6 +280,19 @@ public class GenericDaoHibernateImpl<T, PK extends Serializable>
 						range.setCount(((Long) stats[2]).intValue());
 						range.setLowerBound(range.getMinId());
 						range.setUpperBound(range.getLowerBound() != null ? range.getLowerBound() + range.getPageSize() : null);
+						// validate stats query
+						if (stats[0] != null && stats[1] != null && stats[2] != null) {
+							if (range.getMinId() > range.getMaxId()) {
+								throw new IllegalStateException("minId > maxId, did you specified " +
+																"select min(id), max(id), count(id) in query '" +
+																getStatsQueryName(queryName) + "' ?");
+							}
+							if (range.getMaxId() - range.getMinId() + 1 < range.getCount()) {
+								throw new IllegalStateException("maxId - minId < count, did you specified " +
+																"select min(id), max(id), count(id) in query '" +
+																getStatsQueryName(queryName) + "' ?");
+							}
+						}
 					}
 
 					if (!range.wasInitialized()) {

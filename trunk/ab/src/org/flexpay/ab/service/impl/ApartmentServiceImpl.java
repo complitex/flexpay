@@ -6,10 +6,12 @@ import org.flexpay.ab.dao.ApartmentDaoExt;
 import org.flexpay.ab.persistence.Apartment;
 import org.flexpay.ab.persistence.Building;
 import org.flexpay.ab.persistence.BuildingAddress;
+import org.flexpay.ab.persistence.Town;
 import org.flexpay.ab.persistence.filters.ApartmentFilter;
 import org.flexpay.ab.persistence.filters.BuildingsFilter;
 import org.flexpay.ab.service.ApartmentService;
 import org.flexpay.ab.service.BuildingService;
+import org.flexpay.common.dao.paging.FetchRange;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
@@ -372,6 +374,12 @@ public class ApartmentServiceImpl implements ApartmentService, ParentService<Apa
 		}
 
 		return false;
+	}
+
+	@NotNull
+	@Override
+	public List<Apartment> findSimpleByTown(Stub<Town> townStub, FetchRange range) {
+		return apartmentDao.findSimpleByTown(townStub.getId(), range);
 	}
 
 	/**

@@ -21,6 +21,7 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.Required;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -79,6 +80,18 @@ public class SubdivisionServiceImpl implements SubdivisionService {
 	 */
 	public Subdivision read(@NotNull Stub<Subdivision> stub) {
 		return subdivisionDao.readFull(stub.getId());
+	}
+
+	/**
+	 * Read full subdivisions info by their unique ids
+	 *
+	 * @param ids		   Subdivision ids
+	 * @param preserveOrder Whether to preserve order of objects
+	 * @return Subdivision objects found
+	 */
+	@Override
+	public List<Subdivision> readFull(Collection<Long> ids, boolean preserveOrder) {
+		return subdivisionDao.readFullCollection(ids, preserveOrder);
 	}
 
 	/**

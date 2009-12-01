@@ -232,6 +232,14 @@
 		where p.id=? and pi.status=0
 	</query>
 
+	<query name="Person.readFullCollection">
+		select distinct p
+		from Person p
+            left join fetch p.personIdentities pi
+            left join fetch pi.identityType 
+		where p.id in (:ids) and pi.status=0
+	</query>
+
 	<query name="Person.findByFIO">
         select distinct p
         from Person p
@@ -288,5 +296,31 @@
             left join fetch pr.apartment
         where pr.person.id=?
     ]]></query>
+
+	<query name="Person.findSimple.stats">
+		select min(id), max(id), count(id)
+		from Person
+		where status=0
+	</query>
+
+	<query name="Person.findSimple">
+		select new Person(id)
+		from Person
+		where status=0 and id between ? and ?
+	</query>
+
+	<query name="Person.findPersonsWithAttributes">
+		select distinct p
+		from Person p
+			left join fetch p.personAttributes a
+		where p.status=0 and p.id in (:list_1)
+	</query>
+
+	<query name="Person.findPersonsWithRegistrations">
+		select distinct p
+		from Person p
+			left join fetch p.personRegistrations r
+		where p.status=0 and p.id in (:list_1)
+	</query>
 
 </hibernate-mapping>

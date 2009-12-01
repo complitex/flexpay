@@ -3,6 +3,8 @@ package org.flexpay.ab.service.history;
 import org.flexpay.ab.persistence.Town;
 import org.flexpay.ab.service.TownService;
 import static org.flexpay.common.persistence.Stub.stub;
+
+import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.common.persistence.history.Diff;
 import org.flexpay.common.persistence.history.HistoryGenerator;
 import org.flexpay.common.persistence.history.ProcessingStatus;
@@ -11,6 +13,9 @@ import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
+
+import java.util.Collection;
+import java.util.List;
 
 public class TownHistoryGenerator implements HistoryGenerator<Town> {
 
@@ -39,6 +44,11 @@ public class TownHistoryGenerator implements HistoryGenerator<Town> {
 			return;
 		}
 
+		generateForSingle(town);
+	}
+
+	private void generateForSingle(Town town) {
+
 		referencesHistoryGenerator.generateReferencesHistory(town);
 
 		if (!diffService.hasDiffs(town)) {
@@ -51,6 +61,16 @@ public class TownHistoryGenerator implements HistoryGenerator<Town> {
 			log.debug("Ended generating history for town {}", town);
 		} else {
 			log.info("Town already has history, do nothing {}", town);
+		}
+	}
+
+	@Override
+	public void generateFor(@NotNull Collection<Town> objs) {
+
+		List<Town> towns = townService.readFull(DomainObject.collectionIds(objs), false);
+		for (Town town : towns) {
+			log.debug("starting generating history for town #{}", town.getId());
+			generateForSingle(town);
 		}
 	}
 

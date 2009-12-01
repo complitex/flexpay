@@ -1,6 +1,7 @@
 package org.flexpay.ab.service;
 
 import org.flexpay.ab.persistence.*;
+import org.flexpay.common.dao.paging.FetchRange;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
@@ -141,4 +142,14 @@ public interface StreetService extends NameTimeDependentService<StreetName, Stre
 	@NotNull
 	String format(@NotNull Stub<Street> streetStub, @NotNull Locale locale, boolean shortMode) throws FlexPayException;
 
+	/**
+	 * Find street ids for town in range
+	 *
+	 * @param townStub Town to get streets for
+	 * @param range FetchRange
+	 * @return List of streets in range
+	 */
+	@Secured (Roles.STREET_READ)
+	@NotNull
+	List<Street> findSimpleByTown(Stub<Town> townStub, FetchRange range);
 }

@@ -1,6 +1,8 @@
 package org.flexpay.orgs.service.history;
 
 import static org.flexpay.common.persistence.Stub.stub;
+
+import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.common.persistence.history.Diff;
 import org.flexpay.common.persistence.history.HistoryGenerator;
 import org.flexpay.common.persistence.history.ProcessingStatus;
@@ -11,6 +13,9 @@ import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
+
+import java.util.Collection;
+import java.util.List;
 
 public class CashboxHistoryGenerator implements HistoryGenerator<Cashbox> {
 
@@ -28,16 +33,16 @@ public class CashboxHistoryGenerator implements HistoryGenerator<Cashbox> {
 	 */
 	public void generateFor(@NotNull Cashbox obj) {
 
-		if (diffService.hasDiffs(obj)) {
-			log.debug("Cashbox already has history, do nothing {}", obj);
+		Cashbox cashbox = cashboxService.read(stub(obj));
+		if (cashbox == null) {
+			log.warn("Requested cashbox history generation, but not found: #{}", obj.getId());
 			return;
 		}
 
-		Cashbox cashbox = cashboxService.read(stub(obj));
-		if (cashbox == null) {
-			log.warn("Requested cashbox history generation, but not found: {}", obj);
-			return;
-		}
+		generateForSingle(cashbox);
+	}
+
+	private void generateForSingle(Cashbox cashbox) {
 
 		referencesHistoryGenerator.generateReferencesHistory(cashbox);
 
@@ -45,6 +50,14 @@ public class CashboxHistoryGenerator implements HistoryGenerator<Cashbox> {
 			Diff diff = historyBuilder.diff(null, cashbox);
 			diff.setProcessingStatus(ProcessingStatus.STATUS_PROCESSED);
 			diffService.create(diff);
+		}
+	}
+
+	@Override
+	public void generateFor(@NotNull Collection<Cashbox> objs) {
+		List<Cashbox> cashboxes = cashboxService.readFull(DomainObject.collectionIds(objs), false);
+		for (Cashbox cashbox : cashboxes) {
+			generateForSingle(cashbox);
 		}
 	}
 

@@ -5,6 +5,7 @@ import org.flexpay.ab.persistence.filters.TownTypeFilter;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.service.AllObjectsService;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.security.annotation.Secured;
@@ -16,7 +17,7 @@ import java.util.Locale;
 /**
  * Service interface for TownTypes related tasks
  */
-public interface TownTypeService {
+public interface TownTypeService extends AllObjectsService<TownType> {
 
 	/**
 	 * Read TownType object by its unique id

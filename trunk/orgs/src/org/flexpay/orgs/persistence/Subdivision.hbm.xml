@@ -136,6 +136,15 @@
 		where s.id=?
 	</query>
 
+	<query name="Subdivision.readFullCollection">
+		<!-- TODO replace with a two subsequent reads -->
+		select distinct s
+		from Subdivision s
+			left outer join fetch s.names
+			left outer join fetch s.descriptions
+		where s.id=?
+	</query>
+
 	<query name="Subdivision.findSubdivisions">
 		select distinct o
 		from Subdivision o

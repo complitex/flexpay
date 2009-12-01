@@ -91,6 +91,18 @@
 		where d.id in (:ids) and t.invalidDate='2100-12-31'
 	</query>
 
+	<query name="District.findSimpleByTown.stats">
+		select min(id), max(id), count(id)
+		from District
+		where status=0 and parent.id=?
+	</query>
+
+	<query name="District.findSimpleByTown">
+		select new District(id)
+		from District
+		where status=0 and parent.id=? and id between ? and ?
+	</query>
+
     <query name="District.findByParentAndQuery">
         select distinct d
         from District d

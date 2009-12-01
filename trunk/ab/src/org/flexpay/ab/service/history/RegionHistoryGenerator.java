@@ -12,6 +12,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 
+import java.util.Collection;
+
 public class RegionHistoryGenerator implements HistoryGenerator<Region> {
 
 	protected Logger log = LoggerFactory.getLogger(getClass());
@@ -44,6 +46,13 @@ public class RegionHistoryGenerator implements HistoryGenerator<Region> {
 			diffService.create(diff);
 		} else {
 			log.info("Region already has history, do nothing {}", region);
+		}
+	}
+
+	@Override
+	public void generateFor(@NotNull Collection<Region> objs) {
+		for (Region region : objs) {
+			generateFor(region);
 		}
 	}
 

@@ -5,7 +5,8 @@ import org.junit.runners.Suite;
 
 @RunWith (Suite.class)
 @Suite.SuiteClasses ({
-		TestServedBuildingHistoryBuilder.class
+		TestServedBuildingHistoryBuilder.class,
+		GenerateAllObjectsHistory.class
 })
 public class AllTests {
 

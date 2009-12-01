@@ -2,6 +2,7 @@ package org.flexpay.ab.service;
 
 import org.apache.commons.collections.ArrayStack;
 import org.flexpay.ab.persistence.*;
+import org.flexpay.common.dao.paging.FetchRange;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
@@ -210,4 +211,14 @@ public interface BuildingService {
 	@NotNull
 	Set<AddressAttribute> attributes(@NotNull String number, @Nullable String bulk);
 
+	/**
+	 * Find buildings ids for town in range
+	 *
+	 * @param townStub Town to get buildings for
+	 * @param range FetchRange
+	 * @return List of buildings in range
+	 */
+	@Secured (Roles.BUILDING_READ)
+	@NotNull
+	List<Building> findSimpleByTown(Stub<Town> townStub, FetchRange range);
 }

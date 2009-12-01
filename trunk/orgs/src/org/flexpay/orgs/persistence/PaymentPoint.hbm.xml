@@ -111,6 +111,13 @@
 		where p.id=?
 	</query>
 
+	<query name="PaymentPoint.readFullCollection">
+		select distinct p
+		from PaymentPoint p
+            left join fetch p.names
+		where p.id in (:ids)
+	</query>
+
     <query name="PaymentPoint.listPaymentPointsWithTradingDay">
         select distinct o
 		from PaymentPoint o
