@@ -13,6 +13,7 @@ import org.junit.runners.Suite;
 		org.flexpay.ab.action.building.AllTests.class,
 		org.flexpay.ab.action.apartment.AllTests.class,
 		org.flexpay.ab.action.identity.AllTests.class,
+		org.flexpay.ab.action.measureunit.AllTests.class,
 		org.flexpay.ab.action.person.AllTests.class
 })
 public class AllTests {
