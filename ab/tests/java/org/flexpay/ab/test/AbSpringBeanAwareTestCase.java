@@ -5,7 +5,6 @@ import org.flexpay.ab.util.config.AbUserPreferences;
 import static org.flexpay.common.service.Roles.PROCESS_READ;
 import org.flexpay.common.test.SpringBeanAwareTestCase;
 import org.flexpay.common.util.SecurityUtil;
-import org.flexpay.common.util.config.UserPreferences;
 import org.junit.Before;
 import org.springframework.security.Authentication;
 import org.springframework.security.GrantedAuthority;
@@ -54,19 +53,23 @@ public class AbSpringBeanAwareTestCase extends SpringBeanAwareTestCase {
 				APARTMENT_ADD,
 				APARTMENT_CHANGE,
 				APARTMENT_DELETE,
-				BUILDING_ATTRIBUTE_TYPE_READ,
+				TOWN_TYPE_READ,
+                TOWN_TYPE_ADD,
+				TOWN_TYPE_CHANGE,
+                TOWN_TYPE_DELETE,
 				STREET_TYPE_READ,
 				STREET_TYPE_ADD,
 				STREET_TYPE_CHANGE,
+				STREET_TYPE_DELETE,
 				IDENTITY_TYPE_READ,
+				IDENTITY_TYPE_ADD,
+				IDENTITY_TYPE_CHANGE,
+				IDENTITY_TYPE_DELETE,
+				BUILDING_ATTRIBUTE_TYPE_READ,
 				PERSON_READ,
 				PERSON_ADD,
 				PERSON_CHANGE,
-				PROCESS_READ,
-				TOWN_TYPE_READ,
-                TOWN_TYPE_ADD,
-                TOWN_TYPE_DELETE,
-                TOWN_TYPE_CHANGE
+				PROCESS_READ
 		);
 		User user = new User("test", "test", true, true, true, true, authorities);
 		AbUserPreferences preferences = new AbUserPreferences();

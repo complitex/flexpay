@@ -21,7 +21,7 @@ public class TestRegionViewAction extends AbSpringBeanAwareTestCase {
 	@Test
 	public void testCorrectData() throws Exception {
 
-		action.setObject(new Region(TestData.REGION_NSK.getId()));
+		action.setObject(new Region(TestData.REGION_NSK));
 
 		assertEquals("Invalid action result", FPActionSupport.SUCCESS, action.execute());
 

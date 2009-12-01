@@ -22,7 +22,7 @@ public class TestBuildingViewAction extends AbSpringBeanAwareTestCase {
 	@Test
 	public void testCorrectData() throws Exception {
 
-		action.setBuilding(new Building(TestData.IVANOVA_27.getId()));
+		action.setBuilding(new Building(TestData.IVANOVA_27));
 
 		assertEquals("Invalid action result", FPActionSupport.SUCCESS, action.execute());
 

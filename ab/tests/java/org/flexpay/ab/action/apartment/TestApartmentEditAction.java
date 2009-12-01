@@ -47,7 +47,7 @@ public class TestApartmentEditAction extends AbSpringBeanAwareTestCase {
 	@Test
 	public void testEditNotSubmit() throws Exception {
 
-		action.setApartment(new Apartment(TestData.IVANOVA_27_330.getId()));
+		action.setApartment(new Apartment(TestData.IVANOVA_27_330));
 
 		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
 		assertEquals("Invalid building filter", TestData.ADDR_IVANOVA_27.getId(), action.getBuildingFilter());

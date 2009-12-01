@@ -77,7 +77,7 @@ public class TestApartmentRegistrationAction extends AbSpringBeanAwareTestCase {
 	@Test
 	public void testAction() throws Exception {
 
-		action.setApartment(new Apartment(TestData.IVANOVA_27_330.getId()));
+		action.setApartment(new Apartment(TestData.IVANOVA_27_330));
 
 		assertEquals("Invalid action result", FPActionSupport.SUCCESS, action.execute());
 

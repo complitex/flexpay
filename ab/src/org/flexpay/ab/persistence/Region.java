@@ -5,6 +5,7 @@ import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.util.DateUtil;
 import static org.flexpay.common.util.config.ApplicationConfig.getFutureInfinite;
 import static org.flexpay.common.util.config.ApplicationConfig.getPastInfinite;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
 import java.util.Date;
@@ -22,6 +23,10 @@ public class Region extends NameTimeDependentChild<RegionName, RegionNameTempora
 
 	public Region(Long id) {
 		super(id);
+	}
+
+	public Region(@NotNull Stub<Region> stub) {
+		super(stub.getId());
 	}
 
 	/**

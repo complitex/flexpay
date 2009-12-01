@@ -21,7 +21,7 @@ public class TestStreetViewAction extends AbSpringBeanAwareTestCase {
 	@Test
 	public void testCorrectData() throws Exception {
 
-		action.setObject(new Street(TestData.IVANOVA.getId()));
+		action.setObject(new Street(TestData.IVANOVA));
 
 		assertEquals("Invalid action result", FPActionSupport.SUCCESS, action.execute());
 
