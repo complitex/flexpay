@@ -279,7 +279,7 @@ public class GenericDaoHibernateImpl<T, PK extends Serializable>
 						range.setMaxId((Long) stats[1]);
 						range.setCount(((Long) stats[2]).intValue());
 						range.setLowerBound(range.getMinId());
-						range.setUpperBound(range.getLowerBound() != null ? range.getLowerBound() + range.getPageSize() : null);
+						range.setUpperBound(range.getLowerBound() != null ? range.getLowerBound() + range.getPageSize() - 1 : null);
 						// validate stats query
 						if (stats[0] != null && stats[1] != null && stats[2] != null) {
 							if (range.getMinId() > range.getMaxId()) {
