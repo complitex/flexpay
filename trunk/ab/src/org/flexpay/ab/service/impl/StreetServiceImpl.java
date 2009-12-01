@@ -15,6 +15,7 @@ import org.flexpay.common.dao.paging.FetchRange;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
+import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.common.persistence.Language;
 import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.persistence.Stub.stub;
@@ -88,7 +89,7 @@ public class StreetServiceImpl extends NameTimeDependentServiceImpl<
 		Set<Street> orderedStreets = CollectionUtils.treeSet(streets, Street.<Street>comparator());
 
 		// initialize types
-		final long[] counter = { 0L };
+		final int[] counter = { 0 };
 		List<Street> streetTypes = streetDao.findWithTypes(streetIds);
 		CollectionUtils.copyAttributes(orderedStreets, streetTypes, new AttributeCopier<Street>() {
 			@Override
@@ -99,7 +100,14 @@ public class StreetServiceImpl extends NameTimeDependentServiceImpl<
 			}
 		});
 
-		log.debug("Set type for {} streets of total {}", counter[0], streets.size());
+		if (log.isDebugEnabled()) {
+			log.debug("Set type for {} streets of total {}", counter[0], streets.size());
+			if (counter[0] != streets.size()) {
+				log.error("Street ids: \n{}\nStreet with types ids: {}",
+						DomainObject.collectionIds(orderedStreets),
+						DomainObject.collectionIds(streetTypes));
+			}
+		}
 
 		return streets;
 	}
