@@ -33,7 +33,7 @@ public class StreetDistrictEditAction extends FPActionSupport {
 		if (street == null || street.isNew()) {
 			log.warn("Incorrect street id");
 			addActionError(getText("ab.error.street.invalid_street_id"));
-			return SUCCESS;
+			return REDIRECT_SUCCESS;
 		}
 
 		Stub<Street> stub = stub(street);
@@ -42,11 +42,11 @@ public class StreetDistrictEditAction extends FPActionSupport {
 		if (street == null) {
 			log.warn("Can't get street with id {} from DB", stub.getId());
 			addActionError(getText("common.object_not_selected"));
-			return SUCCESS;
+			return REDIRECT_SUCCESS;
 		} else if (street.isNotActive()) {
 			log.warn("Street with id {} is disabled", stub.getId());
 			addActionError(getText("common.object_not_selected"));
-			return SUCCESS;
+			return REDIRECT_SUCCESS;
 		}
 
 		log.debug("Street loaded: {}", street.getCurrentName());
@@ -59,7 +59,7 @@ public class StreetDistrictEditAction extends FPActionSupport {
 		// save street districts
 		if (isSubmit()) {
 			street = streetService.saveDistricts(street, objectIds);
-			return SUCCESS;
+			return REDIRECT_SUCCESS;
 		}
 
 		for (District district : street.getDistricts()) {
