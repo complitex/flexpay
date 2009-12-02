@@ -30,6 +30,7 @@ def requiredProperties = [
 				'flexpay.email.user_pass': 'SMTP server password',
 				'flexpay.email.default_to': 'Default email where to send notifications',
 				'app.config.common.instanceId': 'Application instance unique identifier',
+				'app.config.common.disableSelfValidation': 'Whether to disable self validation of application (true/false)',
 				'app.config.common.jms.address': 'JMS server host:port',
 				'app.config.common.usersStorage': 'Users data storage type, db or ldap',
 				'app.config.common.useOpenSSO' : 'Whether to use OpenSSO for users authentication, (true/false)'

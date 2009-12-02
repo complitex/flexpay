@@ -38,6 +38,8 @@ public class ApplicationConfig implements ResourceLoaderAware {
 
 	private Locale defaultReportLocale;
 
+	private boolean disableSelfValidation = false;
+
 	static {
 		// ensure Security fields are initialised
 		Security.touch();
@@ -232,5 +234,14 @@ public class ApplicationConfig implements ResourceLoaderAware {
 	@Required
 	public void setLanguageService(LanguageService languageService) {
 		languages = Collections.unmodifiableList(languageService.getLanguages());
+	}
+
+	public static boolean disableSelfValidation() {
+		return getInstance().disableSelfValidation;
+	}
+
+	@Required
+	public void setDisableSelfValidation(boolean disableSelfValidation) {
+		this.disableSelfValidation = disableSelfValidation;
 	}
 }

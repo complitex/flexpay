@@ -3,6 +3,7 @@ package org.flexpay.payments.util;
 import org.apache.commons.collections.BidiMap;
 import org.apache.commons.collections.bidimap.DualHashBidiMap;
 import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.util.config.ApplicationConfig;
 import org.flexpay.payments.persistence.ServiceType;
 import org.flexpay.payments.persistence.config.MbServiceTypeMapping;
 import org.springframework.beans.factory.annotation.Required;
@@ -15,6 +16,7 @@ import java.util.List;
  */
 public class ServiceTypesMapper {
 
+	private HibernateTemplate hibernateTemplate;
 	private BidiMap mapping = new DualHashBidiMap();
 
 	/**
@@ -25,6 +27,7 @@ public class ServiceTypesMapper {
 	 */
 	@SuppressWarnings ({"unchecked"})
 	public Stub<ServiceType> getInternalType(String mbCode) {
+		initializeMapping();
 		return (Stub<ServiceType>) mapping.get(mbCode);
 	}
 
@@ -35,19 +38,29 @@ public class ServiceTypesMapper {
 	 * @return Megabank service type code
 	 */
 	public String getMegabankCode(Stub<ServiceType> stub) {
+		initializeMapping();
 		return (String) mapping.getKey(stub);
 	}
 
-	@Required
-	public void setHibernateTemplate(HibernateTemplate template) {
+	private void initializeMapping() {
+
+		if (!mapping.isEmpty()) {
+			return;
+		}
+
 		@SuppressWarnings ({"unchecked"})
-		List<MbServiceTypeMapping> mappings = template.findByNamedQuery("MbServiceTypeMapping.listAll");
-		if (mappings.isEmpty()) {
+		List<MbServiceTypeMapping> mappings = hibernateTemplate.findByNamedQuery("MbServiceTypeMapping.listAll");
+		if (mappings.isEmpty() && !ApplicationConfig.disableSelfValidation()) {
 			throw new IllegalStateException("No MegaBank service mappings found, did you set it?");
 		}
 
 		for (MbServiceTypeMapping srvMapping : mappings) {
 			mapping.put(srvMapping.getMbServiceCode(), srvMapping.serviceTypeStub());
 		}
+	}
+
+	@Required
+	public void setHibernateTemplate(HibernateTemplate template) {
+		this.hibernateTemplate = template;
 	}
 }
