@@ -20,7 +20,7 @@
 			<key column="street_id" not-null="true" />
 			<one-to-many class="StreetTypeTemporal" />
 		</set>
-		<set name="districts" table="ab_streets_districts_tbl">
+		<set name="districts" table="ab_streets_districts_tbl" cascade="all-delete-orphan">
 			<key column="street_id" />
 			<many-to-many class="District" column="district_id" />
 		</set>

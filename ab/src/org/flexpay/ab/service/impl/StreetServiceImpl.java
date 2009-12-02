@@ -10,6 +10,7 @@ import org.flexpay.ab.persistence.*;
 import org.flexpay.ab.persistence.filters.StreetFilter;
 import org.flexpay.ab.persistence.filters.StreetNameFilter;
 import org.flexpay.ab.persistence.filters.TownFilter;
+import org.flexpay.ab.service.DistrictService;
 import org.flexpay.ab.service.StreetService;
 import org.flexpay.common.dao.paging.FetchRange;
 import org.flexpay.common.dao.paging.Page;
@@ -50,6 +51,7 @@ public class StreetServiceImpl extends NameTimeDependentServiceImpl<
 	private StreetNameDao streetNameDao;
 	private TownDao townDao;
 
+	private DistrictService districtService;
 	private ParentService<TownFilter> parentService;
 	private SessionUtils sessionUtils;
 	private ModificationListener<Street> modificationListener;
@@ -328,11 +330,8 @@ public class StreetServiceImpl extends NameTimeDependentServiceImpl<
 	@NotNull
 	@Override
 	public Street saveDistricts(@NotNull Street street, @NotNull Set<Long> districtIds) throws FlexPayExceptionContainer {
-		Set<District> districts = set();
-		for (Long id : districtIds) {
-			districts.add(new District(id));
-		}
-		street.setDistricts(districts);
+
+		street.setDistricts(set(districtService.readFull(districtIds, true)));
 		update(street);
 
 		return street;
@@ -500,6 +499,11 @@ public class StreetServiceImpl extends NameTimeDependentServiceImpl<
 	@Required
 	public void setParentService(ParentService<TownFilter> parentService) {
 		this.parentService = parentService;
+	}
+
+	@Required
+	public void setDistrictService(DistrictService districtService) {
+		this.districtService = districtService;
 	}
 
 	@Required

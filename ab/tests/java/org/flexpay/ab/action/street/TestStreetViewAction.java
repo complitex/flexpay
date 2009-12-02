@@ -2,6 +2,7 @@ package org.flexpay.ab.action.street;
 
 import org.flexpay.ab.actions.street.StreetViewAction;
 import org.flexpay.ab.dao.StreetDao;
+import org.flexpay.ab.dao.StreetDaoExt;
 import org.flexpay.ab.persistence.Street;
 import org.flexpay.ab.persistence.TestData;
 import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
@@ -17,6 +18,8 @@ public class TestStreetViewAction extends AbSpringBeanAwareTestCase {
 	private StreetViewAction action;
 	@Autowired
 	private StreetDao streetDao;
+	@Autowired
+	private StreetDaoExt streetDaoExt;
 
 	@Test
 	public void testCorrectData() throws Exception {
@@ -75,7 +78,7 @@ public class TestStreetViewAction extends AbSpringBeanAwareTestCase {
 
 		assertEquals("Invalid action result", FPActionSupport.REDIRECT_ERROR, action.execute());
 
-		streetDao.delete(action.getObject());
+		streetDaoExt.deleteStreet(action.getObject());
 
 	}
 

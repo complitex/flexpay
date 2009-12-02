@@ -23,4 +23,6 @@ public interface StreetDaoExt {
 	@NotNull
 	List<Street> findByParentAndQuery(Long townId, Collection<? extends ObjectSorter> sorters, String query, Long languageId, Page<Street> pager);
 
+	void deleteStreet(Street street);
+
 }

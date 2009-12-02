@@ -2,6 +2,7 @@ package org.flexpay.ab.action.street;
 
 import org.flexpay.ab.actions.street.StreetDeleteAction;
 import org.flexpay.ab.dao.StreetDao;
+import org.flexpay.ab.dao.StreetDaoExt;
 import org.flexpay.ab.persistence.Street;
 import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
 import static org.flexpay.ab.util.TestUtils.createSimpleStreet;
@@ -18,6 +19,8 @@ public class TestStreetDeleteAction extends AbSpringBeanAwareTestCase {
 	private StreetDeleteAction action;
 	@Autowired
 	private StreetDao streetDao;
+	@Autowired
+	private StreetDaoExt streetDaoExt;
 
 	@Test
 	public void testNullObjectIds() throws Exception {
@@ -32,7 +35,6 @@ public class TestStreetDeleteAction extends AbSpringBeanAwareTestCase {
 	public void testDeleteStreets() throws Exception {
 
 		Street street = createSimpleStreet("testName");
-
 		streetDao.create(street);
 
 		action.setObjectIds(set(street.getId()));
@@ -41,7 +43,7 @@ public class TestStreetDeleteAction extends AbSpringBeanAwareTestCase {
 		street = streetDao.read(street.getId());
 		assertTrue("Invalid status for street. Must be disabled", street.isNotActive());
 
-		streetDao.delete(street);
+		streetDaoExt.deleteStreet(street);
 
 	}
 
