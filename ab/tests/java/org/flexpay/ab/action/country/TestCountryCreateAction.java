@@ -6,6 +6,7 @@ import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
 import static org.flexpay.ab.util.TestUtils.initNames;
 import org.flexpay.common.actions.FPActionSupport;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -49,6 +50,7 @@ public class TestCountryCreateAction extends AbSpringBeanAwareTestCase {
 		action.setShortNames(initNames("321"));
 
 		assertEquals("Invalid action result", FPActionSupport.REDIRECT_SUCCESS, action.execute());
+		assertTrue("Invalid country id", action.getCountry().getId() > 0);
 
 		countryDao.delete(action.getCountry());
 

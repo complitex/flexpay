@@ -151,6 +151,8 @@ public class TestTownTypeEditAction extends AbSpringBeanAwareTestCase {
 
 		String name = action.getTownType().getDefaultTranslation().getName();
 		assertEquals("Invalid town type name value", "999", name);
+		String shortName = action.getTownType().getDefaultTranslation().getShortName();
+		assertEquals("Invalid town type short name value", "000", shortName);
 
 		townTypeDao.delete(action.getTownType());
 	}

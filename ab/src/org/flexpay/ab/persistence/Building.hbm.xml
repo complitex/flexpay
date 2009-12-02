@@ -103,7 +103,7 @@
 			</column>
 		</property>
 		<property name="shortName">
-			<column name="short_name" not-null="false">
+			<column name="short_name">
 				<comment>Optional short translation</comment>
 			</column>
 		</property>

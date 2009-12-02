@@ -7,14 +7,12 @@ import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.persistence.Language;
 import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.persistence.Stub.stub;
-import static org.flexpay.common.util.CollectionUtils.set;
 import static org.flexpay.common.util.CollectionUtils.treeMap;
 import static org.flexpay.common.util.config.ApplicationConfig.getLanguages;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.util.Map;
-import java.util.Set;
 
 public class AddressAttributeTypeEditAction extends FPActionSupport {
 
@@ -35,8 +33,6 @@ public class AddressAttributeTypeEditAction extends FPActionSupport {
 			return REDIRECT_ERROR;
 		}
 
-		AddressAttributeType type = attributeType;
-
 		if (attributeType.isNotNew()) {
 			Stub<AddressAttributeType> stub = stub(attributeType);
 			attributeType = addressAttributeTypeService.readFull(stub);
@@ -51,9 +47,9 @@ public class AddressAttributeTypeEditAction extends FPActionSupport {
 				return REDIRECT_ERROR;
 			}
 
-			type = attributeType;
-
 		}
+
+//		AddressAttributeType type = attributeType;
 
 		if (names == null) {
 			log.debug("Names parameter is null");
@@ -66,31 +62,23 @@ public class AddressAttributeTypeEditAction extends FPActionSupport {
 		}
 
 		if (isNotSubmit()) {
-			attributeType = type;
 			initData();
 			return INPUT;
 		}
 
 		// init translations
-		Set<AddressAttributeTypeTranslation> newTranslations = set();
-		for (Long languageId : names.keySet()) {
-			Language lang = getLang(languageId);
-			String name = names.get(languageId);
-			String shortName = shortNames.get(languageId);
-			AddressAttributeTypeTranslation translation = type.getTranslation(lang);
-			if (translation != null) {
-				translation.setName(name);
-				translation.setShortName(shortName);
-			} else {
-				translation = new AddressAttributeTypeTranslation(name, shortName, lang);
-				type.setTranslation(translation);
-			}
+		for (Map.Entry<Long, String> name : names.entrySet()) {
+			String value = name.getValue();
+			Language lang = getLang(name.getKey());
+			String shortName = shortNames.get(name.getKey());
+			AddressAttributeTypeTranslation translation = new AddressAttributeTypeTranslation(value, shortName, lang);
+			attributeType.setTranslation(translation);
 		}
 
-		if (type.isNew()) {
-			addressAttributeTypeService.create(type);
+		if (attributeType.isNew()) {
+			addressAttributeTypeService.create(attributeType);
 		} else {
-			addressAttributeTypeService.update(type);
+			addressAttributeTypeService.update(attributeType);
 		}
 
 		addActionMessage(getText("ab.buildings_attribute_type.saved"));

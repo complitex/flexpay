@@ -84,20 +84,8 @@ public class TownTypeEditAction extends FPActionSupport {
 		return REDIRECT_SUCCESS;
 	}
 
-	/**
-	 * Get default error execution result
-	 * <p/>
-	 * If return code starts with a {@link #PREFIX_REDIRECT} all error messages are stored in a session
-	 *
-	 * @return {@link #ERROR} by default
-	 */
-	@NotNull
-	@Override
-	protected String getErrorResult() {
-		return INPUT;
-	}
-
 	private void initData() {
+
 		for (TownTypeTranslation name : townType.getTranslations()) {
 			names.put(name.getLang().getId(), name.getName());
 			shortNames.put(name.getLang().getId(), name.getShortName());
@@ -109,6 +97,19 @@ public class TownTypeEditAction extends FPActionSupport {
 				shortNames.put(lang.getId(), "");
 			}
 		}
+	}
+
+	/**
+	 * Get default error execution result
+	 * <p/>
+	 * If return code starts with a {@link #PREFIX_REDIRECT} all error messages are stored in a session
+	 *
+	 * @return {@link #ERROR} by default
+	 */
+	@NotNull
+	@Override
+	protected String getErrorResult() {
+		return INPUT;
 	}
 
 	@Override

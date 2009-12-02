@@ -172,4 +172,15 @@ public class TestUtils {
 		return measureUnit;
 	}
 
+	public static AddressAttributeType createSimpleAddressAttributeType(String name) {
+
+		AddressAttributeType attributeType = new AddressAttributeType();
+		for (Language lang : ApplicationConfig.getLanguages()) {
+			AddressAttributeTypeTranslation translation = new AddressAttributeTypeTranslation(name, name + "shrt", lang);
+			attributeType.setTranslation(translation);
+		}
+
+		return attributeType;
+	}
+
 }
