@@ -111,7 +111,7 @@ public class TestMeasureUnitEditAction extends AbSpringBeanAwareTestCase {
 		action.setNames(initNames("555"));
 
 		assertEquals("Invalid action result", FPActionSupport.REDIRECT_SUCCESS, action.execute());
-		assertTrue("Invalid town type id", action.getMeasureUnit().getId() > 0);
+		assertTrue("Invalid measure unit id", action.getMeasureUnit().getId() > 0);
 
 		measureUnitDao.delete(action.getMeasureUnit());
 	}
@@ -119,10 +119,10 @@ public class TestMeasureUnitEditAction extends AbSpringBeanAwareTestCase {
 	@Test
 	public void testEditSubmit() throws Exception {
 
-		MeasureUnit town = createSimpleMeasureUnit("type1");
-		measureUnitDao.create(town);
+		MeasureUnit measureUnit = createSimpleMeasureUnit("type1");
+		measureUnitDao.create(measureUnit);
 
-		action.setMeasureUnit(town);
+		action.setMeasureUnit(measureUnit);
 		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
 
 		action.setSubmitted("");
@@ -131,7 +131,7 @@ public class TestMeasureUnitEditAction extends AbSpringBeanAwareTestCase {
 		assertEquals("Invalid action result", FPActionSupport.REDIRECT_SUCCESS, action.execute());
 
 		String name = action.getMeasureUnit().getDefaultTranslation().getName();
-		assertEquals("Invalid town type name value", "999", name);
+		assertEquals("Invalid measure unit name value", "999", name);
 
 		measureUnitDao.delete(action.getMeasureUnit());
 	}

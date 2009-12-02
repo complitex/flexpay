@@ -139,6 +139,8 @@ public class TestStreetTypeEditAction extends AbSpringBeanAwareTestCase {
 
 		String name = action.getStreetType().getDefaultTranslation().getName();
 		assertEquals("Invalid street type name value", "999", name);
+		String shortName = action.getStreetType().getDefaultTranslation().getShortName();
+		assertEquals("Invalid street type short name value", "000", shortName);
 
 		streetTypeDao.delete(action.getStreetType());
 	}

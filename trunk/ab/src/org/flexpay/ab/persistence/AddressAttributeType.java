@@ -90,6 +90,16 @@ public class AddressAttributeType extends DomainObjectWithStatus implements Comp
 		return null;
 	}
 
+	/**
+	 * Get type translation in a default language
+	 *
+	 * @return translation if found, or <code>null</code> otherwise
+	 */
+	@Nullable
+	public AddressAttributeTypeTranslation getDefaultTranslation() {
+		return getTranslation(org.flexpay.common.util.config.ApplicationConfig.getDefaultLanguage());
+	}
+
 	@Override
 	public String toString() {
 		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).

@@ -38,7 +38,7 @@ public class TestIdentityTypeEditAction extends AbSpringBeanAwareTestCase {
 	}
 
 	@Test
-	public void testNullNamesAndShortNames() throws Exception {
+	public void testNullNames() throws Exception {
 
 		action.setIdentityType(new IdentityType(0L));
 		action.setNames(null);
