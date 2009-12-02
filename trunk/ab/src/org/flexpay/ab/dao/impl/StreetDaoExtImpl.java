@@ -95,4 +95,31 @@ public class StreetDaoExtImpl extends HibernateDaoSupport implements StreetDaoEx
 		return new StreetSorterStub();
 	}
 
+	@Override
+	public void deleteStreet(final Street street) {
+		getHibernateTemplate().execute(new HibernateCallback() {
+			@Override
+			public Object doInHibernate(Session session) throws HibernateException {
+				Long streetId = street.getId();
+				if (streetId == null || streetId <= 0) {
+					return null;
+				}
+				session.getNamedQuery("Street.deleteNameTranslations")
+						.setLong(0, streetId).executeUpdate();
+				session.getNamedQuery("Street.deleteNameTemporals")
+						.setLong(0, streetId).executeUpdate();
+				session.getNamedQuery("Street.deleteNames")
+						.setLong(0, streetId).executeUpdate();
+				session.getNamedQuery("Street.deleteTypeTemporals")
+						.setLong(0, streetId).executeUpdate();
+				session.getNamedQuery("Street.deleteStreet")
+						.setLong(0, streetId).executeUpdate();
+				return null;
+			}
+		});
+		
+		getSession().delete(street);
+
+	}
+
 }

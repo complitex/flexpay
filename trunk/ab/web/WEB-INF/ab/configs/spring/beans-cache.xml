@@ -97,6 +97,7 @@
 				<prop key="create">cacheNames=abStreetFlexpayCache;flushBeforeMethodExecution=true</prop>
 				<prop key="update">cacheNames=abStreetFlexpayCache;flushBeforeMethodExecution=true</prop>
 				<prop key="disable">cacheNames=abStreetFlexpayCache;flushBeforeMethodExecution=true</prop>
+                <prop key="saveDistricts">cacheNames=abStreetFlexpayCache;flushBeforeMethodExecution=true</prop>
 			</props>
 		</property>
 		<property name="target" ref="streetServiceTarget" />

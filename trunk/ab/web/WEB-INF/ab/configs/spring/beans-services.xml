@@ -93,6 +93,7 @@
 		  class="org.flexpay.ab.service.impl.StreetServiceImpl"
 		  autowire-candidate="false"
 		  p:parentService-ref="townService"
+          p:districtService-ref="districtService"
 		  p:townDao-ref="townDao"
 		  p:streetDao-ref="streetDao"
 		  p:streetDaoExt-ref="streetDaoExt"

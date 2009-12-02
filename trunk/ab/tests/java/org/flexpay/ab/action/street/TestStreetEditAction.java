@@ -2,6 +2,7 @@ package org.flexpay.ab.action.street;
 
 import org.flexpay.ab.actions.street.StreetEditAction;
 import org.flexpay.ab.dao.StreetDao;
+import org.flexpay.ab.dao.StreetDaoExt;
 import org.flexpay.ab.persistence.Street;
 import org.flexpay.ab.persistence.TestData;
 import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
@@ -22,6 +23,8 @@ public class TestStreetEditAction extends AbSpringBeanAwareTestCase {
 	private StreetEditAction action;
 	@Autowired
 	private StreetDao streetDao;
+	@Autowired
+	private StreetDaoExt streetDaoExt;
 
 	@Test
 	public void testNullStreet() throws Exception {
@@ -146,7 +149,7 @@ public class TestStreetEditAction extends AbSpringBeanAwareTestCase {
 		action.setStreet(street);
 		assertEquals("Invalid action result", FPActionSupport.REDIRECT_ERROR, action.execute());
 
-		streetDao.delete(street);
+		streetDaoExt.deleteStreet(street);
 
 	}
 
@@ -163,7 +166,7 @@ public class TestStreetEditAction extends AbSpringBeanAwareTestCase {
 		assertEquals("Invalid action result", FPActionSupport.REDIRECT_SUCCESS, action.execute());
 		assertTrue("Invalid street id", action.getStreet().getId() > 0);
 
-		streetDao.delete(action.getStreet());
+		streetDaoExt.deleteStreet(action.getStreet());
 	}
 
 	@Test
@@ -186,7 +189,7 @@ public class TestStreetEditAction extends AbSpringBeanAwareTestCase {
 		String name = action.getStreet().getNameForDate(DateUtil.next(DateUtil.now())).getDefaultNameTranslation();
 		assertEquals("Invalid street name value", "123", name);
 
-		streetDao.delete(action.getStreet());
+		streetDaoExt.deleteStreet(action.getStreet());
 	}
 
 }
