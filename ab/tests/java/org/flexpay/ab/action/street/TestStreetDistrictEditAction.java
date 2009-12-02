@@ -28,7 +28,7 @@ public class TestStreetDistrictEditAction extends AbSpringBeanAwareTestCase {
 
 		action.setStreet(new Street(-10L));
 
-		assertEquals("Invalid action result", FPActionSupport.SUCCESS, action.execute());
+		assertEquals("Invalid action result", FPActionSupport.REDIRECT_SUCCESS, action.execute());
 		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
 
 	}
@@ -38,7 +38,7 @@ public class TestStreetDistrictEditAction extends AbSpringBeanAwareTestCase {
 
 		action.setStreet(new Street(0L));
 
-		assertEquals("Invalid action result", FPActionSupport.SUCCESS, action.execute());
+		assertEquals("Invalid action result", FPActionSupport.REDIRECT_SUCCESS, action.execute());
 		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
 
 	}
@@ -48,7 +48,7 @@ public class TestStreetDistrictEditAction extends AbSpringBeanAwareTestCase {
 
 		action.setStreet(null);
 
-		assertEquals("Invalid action result", FPActionSupport.SUCCESS, action.execute());
+		assertEquals("Invalid action result", FPActionSupport.REDIRECT_SUCCESS, action.execute());
 		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
 
 	}
@@ -58,7 +58,7 @@ public class TestStreetDistrictEditAction extends AbSpringBeanAwareTestCase {
 
 		action.setStreet(new Street(1090772L));
 
-		assertEquals("Invalid action result", FPActionSupport.SUCCESS, action.execute());
+		assertEquals("Invalid action result", FPActionSupport.REDIRECT_SUCCESS, action.execute());
 		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
 
 	}
@@ -72,7 +72,7 @@ public class TestStreetDistrictEditAction extends AbSpringBeanAwareTestCase {
 
 		action.setStreet(street);
 
-		assertEquals("Invalid action result", FPActionSupport.SUCCESS, action.execute());
+		assertEquals("Invalid action result", FPActionSupport.REDIRECT_SUCCESS, action.execute());
 
 		streetDaoExt.deleteStreet(action.getStreet());
 
@@ -96,7 +96,7 @@ public class TestStreetDistrictEditAction extends AbSpringBeanAwareTestCase {
 
 		action.setSubmitted("");
 		action.setObjectIds(null);
-		assertEquals("Invalid action result", FPActionSupport.SUCCESS, action.execute());
+		assertEquals("Invalid action result", FPActionSupport.REDIRECT_SUCCESS, action.execute());
 
 	}
 
@@ -111,7 +111,7 @@ public class TestStreetDistrictEditAction extends AbSpringBeanAwareTestCase {
 
 		action.setSubmitted("");
 		action.setObjectIds(set(1L, 2L, 3L));
-		assertEquals("Invalid action result", FPActionSupport.SUCCESS, action.execute());
+		assertEquals("Invalid action result", FPActionSupport.REDIRECT_SUCCESS, action.execute());
 		assertTrue("Street districts set must not be empty", !action.getStreet().getDistricts().isEmpty());
 
 		streetDaoExt.deleteStreet(action.getStreet());

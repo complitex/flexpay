@@ -39,6 +39,14 @@ public class AddressAttributeTypeTranslation extends Translation {
 	}
 
 	@Override
+	public void copyName(Translation t) {
+		super.copyName(t);
+		if (t instanceof AddressAttributeTypeTranslation) {
+			this.shortName = ((AddressAttributeTypeTranslation) t).getShortName();
+		}
+	}
+
+	@Override
 	public boolean equals(Object o) {
 		return o instanceof AddressAttributeTypeTranslation && super.equals(o);
 	}

@@ -36,7 +36,7 @@
 
 		<action name="streetDistrictEdit" class="streetDistrictEditAction">
 			<result name="input" type="tiles">ab.street.edit.districts</result>
-			<result type="redirect-action">
+			<result name="redirectSuccess" type="redirect-action">
 				<param name="actionName">streetView</param>
 				<param name="parse">true</param>
 				<param name="object.id">${street.id}</param>

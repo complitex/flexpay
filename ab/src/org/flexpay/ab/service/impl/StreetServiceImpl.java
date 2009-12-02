@@ -331,7 +331,8 @@ public class StreetServiceImpl extends NameTimeDependentServiceImpl<
 	@Override
 	public Street saveDistricts(@NotNull Street street, @NotNull Set<Long> districtIds) throws FlexPayExceptionContainer {
 
-		street.setDistricts(set(districtService.readFull(districtIds, true)));
+		street.getDistricts().clear();
+		street.getDistricts().addAll(districtService.readFull(districtIds, false));
 		update(street);
 
 		return street;
