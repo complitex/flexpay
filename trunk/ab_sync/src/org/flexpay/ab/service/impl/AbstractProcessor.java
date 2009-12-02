@@ -3,7 +3,6 @@ package org.flexpay.ab.service.impl;
 import org.flexpay.ab.persistence.HistoryRec;
 import org.flexpay.common.persistence.*;
 import org.flexpay.common.service.importexport.CorrectionsService;
-import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
@@ -143,7 +142,7 @@ public abstract class AbstractProcessor<T extends DomainObject> {
 	 * @throws Exception if failure occurs
 	 */
 	public void saveObject(DomainObject object, String externalId, Stub<DataSourceDescription> sd, CorrectionsService cs)
-		throws Exception {
+			throws Exception {
 
 		log.debug("Saving object: {}, externalID: {}", object.getId(), externalId);
 
@@ -189,8 +188,8 @@ public abstract class AbstractProcessor<T extends DomainObject> {
 	 * Try to find persistent object by set properties
 	 *
 	 * @param object DomainObject
-	 * @param sd DataSourceDescription
-	 * @param cs CorrectionsService
+	 * @param sd	 DataSourceDescription
+	 * @param cs	 CorrectionsService
 	 * @return Persistent object stub if exists, or <code>null</code> otherwise
 	 * @throws Exception if failure occurs
 	 */
@@ -201,7 +200,7 @@ public abstract class AbstractProcessor<T extends DomainObject> {
 	/**
 	 * Save DomainObject
 	 *
-	 * @param object Object to save
+	 * @param object	 Object to save
 	 * @param externalId External object identifier
 	 * @throws Exception if failure occurs
 	 */

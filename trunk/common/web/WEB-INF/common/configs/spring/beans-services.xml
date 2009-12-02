@@ -16,6 +16,7 @@
 		  p:logPreviewLinesNumber="${app.config.common.logPreviewLinesNumber}"
 		  p:instanceId="${app.config.common.instanceId}"
 		  p:defaultReportLocale="${app.config.common.defaultReportLocale}"
+		  p:disableSelfValidation="${app.config.common.disableSelfValidation}"
 		  p:testProp="${app.config.common.testProp}"
 		  p:languageService-ref="languageService" />
 
