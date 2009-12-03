@@ -36,16 +36,16 @@
 
 	<!-- Build DLL schemas -->
 	<target name="build.ddls">
-		<antcall target="sz.exportschema.mysql5" />
-		<antcall target="common.exportschema.mysql5" />
-		<antcall target="ab.exportschema.mysql5" />
-		<antcall target="ab_sync.exportschema.mysql5" />
-		<antcall target="bti.exportschema.mysql5" />
-		<antcall target="tc.exportschema.mysql5" />
-		<antcall target="orgs.exportschema.mysql5" />
-		<antcall target="rent.exportschema.mysql5" />
-		<antcall target="payments.exportschema.mysql5" />
-		<antcall target="eirc.exportschema.mysql5" />
+		<antcall target="sz.ddl" />
+		<antcall target="common.ddl" />
+		<antcall target="ab.ddl" />
+		<antcall target="ab_sync.ddl" />
+		<antcall target="bti.ddl" />
+		<antcall target="tc.ddl" />
+		<antcall target="orgs.ddl" />
+		<antcall target="rent.ddl" />
+		<antcall target="payments.ddl" />
+		<antcall target="eirc.ddl" />
 	</target>
 
 	<!-- Run tests -->

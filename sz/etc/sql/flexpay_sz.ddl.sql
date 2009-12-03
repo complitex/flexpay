@@ -522,7 +522,8 @@
 
     create table common_external_history_packs_tbl (
         id bigint not null auto_increment,
-        receive_date datetime not null comment 'Packet recieve time',
+        receive_date datetime not null comment 'Packet receive time',
+        unpuck_tries integer not null comment 'Number of attempts to unpack the pack',
         source_instance_id varchar(255) not null comment 'Source instance id',
         consumption_group_id bigint not null comment 'Consumption group id',
         file_id bigint not null comment 'File containing records reference',
