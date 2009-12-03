@@ -97,8 +97,7 @@ public abstract class HistoryPackerBase implements HistoryPacker {
 
 				if (currentGroupSize >= groupSize) {
 					// close last stream
-					IOUtils.closeQuietly(os);
-					os = null;
+					closeCurrentStream(os);
 
 					// open stream and write header if needed
 					FPFile file = getNewFile(consumer, context);
@@ -184,6 +183,10 @@ public abstract class HistoryPackerBase implements HistoryPacker {
 		if (log.isDebugEnabled()) {
 			log.debug("Begining pack, number of new diffs: {}", context.getRange().getCount());
 		}
+	}
+
+	protected void closeCurrentStream(OutputStream os) throws Exception {
+		IOUtils.closeQuietly(os);
 	}
 
 	/**

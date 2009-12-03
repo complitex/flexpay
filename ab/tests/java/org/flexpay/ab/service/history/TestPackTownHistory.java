@@ -31,12 +31,12 @@ public class TestPackTownHistory extends AbSpringBeanAwareTestCase {
 
 		Stub<HistoryConsumer> consumer = new Stub<HistoryConsumer>(1L);
 
-		// second, clean up all previously generated packes
+		// second, clean up all previously generated packs
 		historyConsumerService.deleteConsumptions(consumer);
 
 		// finally, dump history to the files
-//		historyPacker.setGroupSize(5);
-//		historyPacker.setPagingSize(5);
+		historyPacker.setGroupSize(50);
+		historyPacker.setPagingSize(50);
 		List<FPFile> history = historyPacker.packHistory(consumer);
 		assertFalse("history packing failed", history.isEmpty());
 
