@@ -78,8 +78,8 @@ public class DiffDaoExtImpl extends HibernateDaoSupport implements DiffDaoExt {
 			@Override
 			public Object doInHibernate(Session session) throws HibernateException {
 				session.getNamedQuery("Diff.updateStatus")
-						.setInteger(1, statusNew) // set clause
-						.setInteger(2, statusOld) // where clause
+						.setInteger(0, statusNew) // set clause
+						.setInteger(1, statusOld) // where clause
 						.executeUpdate();
 				return null;
 			}
