@@ -43,6 +43,12 @@ public class XmlHistoryPacker extends HistoryPackerBase {
 //		wr.flush();
 	}
 
+	@Override
+	protected void closeCurrentStream(OutputStream os) throws Exception {
+		IOUtils.closeQuietly(oos);
+		super.closeCurrentStream(os);
+	}
+
 	/**
 	 * Do optional packing preparations
 	 *
