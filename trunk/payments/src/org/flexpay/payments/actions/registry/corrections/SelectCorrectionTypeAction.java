@@ -36,13 +36,13 @@ public class SelectCorrectionTypeAction extends CashboxCookieActionSupport {
 		if (importError != null) {
 			int objectType = importError.getObjectType();
 			if (checkStreetType(objectType)) {
-				return "street";
+				return "redirectStreet";
 			} else if (checkBuildingType(objectType)) {
-				return "building";
+				return "redirectBuilding";
 			} else if (checkApartmentType(objectType)) {
-				return "apartment";
+				return "redirectApartment";
 			} else if (checkPersonType(objectType)) {
-				return "person";
+				return "redirectPerson";
 			}
 
 			addActionError(getText("error.registry.record.unsupported_error_type"));

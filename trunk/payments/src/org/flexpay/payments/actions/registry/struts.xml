@@ -29,22 +29,22 @@
 		<action name="selectCorrectionType" class="selectCorrectionTypeAction">
 			<result name="input" type="tiles">payments.select_correction_type</result>
 			<result name="error" type="tiles">payments.correction_type_error</result>
-			<result name="apartment" type="redirect-action">
+			<result name="redirectApartment" type="redirect-action">
 				<param name="actionName">registryRecordCorrectAddress</param>
 				<param name="parse">true</param>
 				<param name="record.id">${record.id}</param>
 			</result>
-			<result name="building" type="redirect-action">
+			<result name="redirectBuilding" type="redirect-action">
 				<param name="actionName">registryRecordCorrectAddressBuilding</param>
 				<param name="parse">true</param>
 				<param name="record.id">${record.id}</param>
 			</result>
-			<result name="street" type="redirect-action">
+			<result name="redirectStreet" type="redirect-action">
 				<param name="actionName">registryRecordCorrectAddressStreet</param>
 				<param name="parse">true</param>
 				<param name="record.id">${record.id}</param>
 			</result>
-			<result name="person" type="redirect-action">
+			<result name="redirectPerson" type="redirect-action">
 				<param name="actionName">registryRecordCorrectPerson</param>
 				<param name="parse">true</param>
 				<param name="record.id">${record.id}</param>
