@@ -7,6 +7,7 @@ import org.flexpay.common.persistence.history.Diff;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Collection;
 import java.util.List;
 
 public interface DiffService {
@@ -19,6 +20,15 @@ public interface DiffService {
 	 */
 	@NotNull
 	Diff create(@NotNull Diff diff);
+
+	/**
+	 * Persist a batch of new Diff objects
+	 *
+	 * @param diffs Diff objects to persist
+	 * @return Persisted Diffs back
+	 */
+	@NotNull
+	Collection<Diff> create(@NotNull Collection<Diff> diffs);
 
 	/**
 	 * Update existing diff
@@ -72,4 +82,15 @@ public interface DiffService {
 	 * @return <code>true</code> if there is diffs for all objects of that class, or <code>false</code> otherwise
 	 */
 	<T extends DomainObject> boolean allObjectsHaveDiff(Class<T> clazz);
+
+	/**
+	 * Remove all persisted loaded diffs, in case of failure for example
+	 */
+	void removeLoadedDiffs();
+
+	/**
+	 * Update loaded diffs state, make their status
+	 * {@link org.flexpay.common.persistence.history.ProcessingStatus#STATUS_NEW}
+	 */
+	void moveLoadedDiffsToNewState();
 }

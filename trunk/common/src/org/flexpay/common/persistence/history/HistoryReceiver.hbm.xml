@@ -12,7 +12,12 @@
 		</id>
 		<property name="receiveDate" type="timestamp">
 			<column name="receive_date" not-null="true">
-				<comment>Packet recieve time</comment>
+				<comment>Packet receive time</comment>
+			</column>
+		</property>
+		<property name="unPackTries">
+			<column name="unpuck_tries" not-null="true">
+				<comment>Number of attempts to unpack the pack</comment>
 			</column>
 		</property>
 		<properties name="source_instance_consumption_group" unique="true">

@@ -47,17 +47,24 @@ public class HistoryUnpackQuartzJob extends QuartzJobBean {
 			Security.authenticateSyncer();
 			List<ExternalHistoryPack> packs = unpackManager.getNextPacks();
 			for (ExternalHistoryPack pack : packs) {
-				historyUnPacker.unpackHistory(pack.getFile());
-				unpackManager.setLastUnpacked(pack);
+				if (pack.getUnPackTries() >= 5) {
+					log.warn("Pack {} already has 5 attempts to unpack, give up", pack);
+					return;
+				}
+				try {
+					historyUnPacker.unpackHistory(pack.getFile());
+					unpackManager.setLastUnpacked(pack);
+				} catch (Exception ex) {
+					pack.incrementUnpackTries();
+					unpackManager.update(pack);
+					throw new JobExecutionException("Failed history unpack", ex);
+				}
 				++count;
 			}
-		} catch (Exception ex) {
-			throw new JobExecutionException("Failed history unpack", ex);
 		} finally {
+			log.debug("Ended history unpack, unpacked {} packets", count);
 			lockManager.releaseLock(LOCK_NAME);
 		}
-
-		log.debug("Ended history unpack, unpacked {} packets", count);
 	}
 
 	@Required

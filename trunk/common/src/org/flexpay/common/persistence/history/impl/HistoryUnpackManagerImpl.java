@@ -38,6 +38,22 @@ public class HistoryUnpackManagerImpl implements HistoryUnpackManager {
 	}
 
 	/**
+	 * update history pack details
+	 *
+	 * @param pack History records pack
+	 * @return Updated pack back
+	 */
+	@NotNull
+	@Override
+	public ExternalHistoryPack update(@NotNull ExternalHistoryPack pack) {
+		historyPackDao.update(pack);
+
+		log.debug("Updated history pack: {}", pack);
+
+		return pack;
+	}
+
+	/**
 	 * Get next history packs that is to be unpacked
 	 *
 	 * @return History packs

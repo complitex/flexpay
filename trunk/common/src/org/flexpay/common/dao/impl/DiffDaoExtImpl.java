@@ -3,10 +3,13 @@ package org.flexpay.common.dao.impl;
 import org.flexpay.common.dao.DiffDaoExt;
 import org.flexpay.common.dao.paging.FetchRange;
 import org.flexpay.common.persistence.history.Diff;
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.support.DataAccessUtils;
+import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
 import java.util.Collections;
@@ -51,5 +54,35 @@ public class DiffDaoExtImpl extends HibernateDaoSupport implements DiffDaoExt {
 		Object[] params = {objectId, objectType};
 		List<?> result = getHibernateTemplate().findByNamedQuery("Diff.hasHistory", params);
 		return !result.isEmpty();
+	}
+
+	@Override
+	public void removeDiffs(final int processingStatus) {
+		getHibernateTemplate().execute(new HibernateCallback() {
+			@Override
+			public Object doInHibernate(Session session) throws HibernateException {
+				session.getNamedQuery("Diff.deleteRecordsByDiffStatus")
+						.setInteger(1, processingStatus)
+						.executeUpdate();
+				session.getNamedQuery("Diff.deleteByDiffStatus")
+						.setInteger(1, processingStatus)
+						.executeUpdate();
+				return null;
+			}
+		});
+	}
+
+	@Override
+	public void updateDiffsProcessingStatus(final int statusOld, final int statusNew) {
+		getHibernateTemplate().execute(new HibernateCallback() {
+			@Override
+			public Object doInHibernate(Session session) throws HibernateException {
+				session.getNamedQuery("Diff.updateStatus")
+						.setInteger(1, statusNew) // set clause
+						.setInteger(2, statusOld) // where clause
+						.executeUpdate();
+				return null;
+			}
+		});
 	}
 }

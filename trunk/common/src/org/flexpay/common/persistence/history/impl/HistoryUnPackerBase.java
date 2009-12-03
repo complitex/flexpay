@@ -4,6 +4,7 @@ import org.apache.commons.io.IOUtils;
 import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.persistence.history.Diff;
 import org.flexpay.common.persistence.history.HistoryUnPacker;
+import org.flexpay.common.persistence.history.ProcessingStatus;
 import org.flexpay.common.service.DiffService;
 import org.flexpay.common.util.SecurityUtil;
 import org.jetbrains.annotations.NotNull;
@@ -41,12 +42,18 @@ public abstract class HistoryUnPackerBase implements HistoryUnPacker {
 				for (Diff diff : diffs) {
 					context.addDiff();
 					diff.setUserName(SecurityUtil.getUserName());
-					diffService.create(diff);
+					diff.setProcessingStatus(ProcessingStatus.STATUS_LOADED);
 				}
+				diffService.create(diffs);
 				diffs = unpackBatch(is, context);
 			}
 
 			endUnpacking(is, context);
+			diffService.moveLoadedDiffsToNewState();
+		} catch (Exception ex) {
+			log.error("Failed unpacking history file: " + file, ex);
+			diffService.removeLoadedDiffs();
+			throw ex;
 		} finally {
 			IOUtils.closeQuietly(is);
 		}
