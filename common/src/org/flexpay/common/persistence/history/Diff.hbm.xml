@@ -224,4 +224,17 @@
 		where exists (from Diff d where d.objectId=? and d.objectType=?)
 	</query>
 
+	<query name="Diff.deleteRecordsByDiffStatus">
+		delete HistoryRecord
+		where diff in (from Diff d where d.processingStatus=?)
+	</query>
+
+	<query name="Diff.deleteByDiffStatus">
+		delete Diff d where d.processingStatus=?
+	</query>
+
+	<query name="Diff.updateStatus">
+		update Diff set processingStatus=? where processingStatus=?
+	</query>
+
 </hibernate-mapping>

@@ -21,7 +21,7 @@ public class Diff extends DomainObject {
 	private Long objectId;
 	private int operationType;
 	private String userName;
-	private int processingStatus;
+	private int processingStatus = ProcessingStatus.STATUS_NEW;
 	private String masterIndex;
 	private String instanceId;
 	private String errorMessage;

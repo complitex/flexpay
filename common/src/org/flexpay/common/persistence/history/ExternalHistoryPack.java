@@ -7,11 +7,9 @@ import org.flexpay.common.persistence.file.FPFile;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Date;
-import java.util.Collections;
-import java.util.Set;
 
 /**
- * Chunk of a history records recieved from external source.
+ * Chunk of a history records received from external source.
  */
 public class ExternalHistoryPack extends DomainObject {
 
@@ -19,6 +17,7 @@ public class ExternalHistoryPack extends DomainObject {
 	private String sourceInstanceId;
 	private Long consumptionGroupId;
 	private FPFile file;
+	private int unPackTries = 0;
 
 	public ExternalHistoryPack() {
 	}
@@ -63,6 +62,18 @@ public class ExternalHistoryPack extends DomainObject {
 		this.file = file;
 	}
 
+	public int getUnPackTries() {
+		return unPackTries;
+	}
+
+	public void setUnPackTries(int unPackTries) {
+		this.unPackTries = unPackTries;
+	}
+
+	public void incrementUnpackTries() {
+		++unPackTries;
+	}
+
 	@Override
 	public String toString() {
 		return new ToStringBuilder(this).
@@ -70,6 +81,7 @@ public class ExternalHistoryPack extends DomainObject {
 				append("sourceInstanceId", sourceInstanceId).
 				append("consumptionGroupId", consumptionGroupId).
 				append("file-id", file.getId()).
+				append("upPackTries", unPackTries).
 				toString();
 	}
 }

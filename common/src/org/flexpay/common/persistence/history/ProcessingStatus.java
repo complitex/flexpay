@@ -8,4 +8,5 @@ public abstract class ProcessingStatus {
 	public static final int STATUS_NEW = 0;
 	public static final int STATUS_PROCESSED = 1;
 	public static final int STATUS_IGNORED = 2;
+	public static final int STATUS_LOADED = 3;
 }

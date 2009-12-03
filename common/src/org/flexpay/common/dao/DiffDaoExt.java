@@ -12,4 +12,8 @@ public interface DiffDaoExt {
 	List<Diff> findNewHistoryRecords(FetchRange range);
 
 	boolean hasDiffs(Long objectId, int objectType);
+
+	void removeDiffs(int processingStatus);
+
+	void updateDiffsProcessingStatus(int statusOld, int statusNew);
 }

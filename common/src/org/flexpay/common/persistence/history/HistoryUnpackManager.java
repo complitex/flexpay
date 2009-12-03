@@ -19,6 +19,15 @@ public interface HistoryUnpackManager {
 	ExternalHistoryPack create(@NotNull ExternalHistoryPack pack);
 
 	/**
+	 * update history pack details
+	 *
+	 * @param pack History records pack
+	 * @return Updated pack back
+	 */
+	@NotNull
+	ExternalHistoryPack update(@NotNull ExternalHistoryPack pack);
+
+	/**
 	 * Get next history packs that is to be unpacked
 	 *
 	 * @return History packs

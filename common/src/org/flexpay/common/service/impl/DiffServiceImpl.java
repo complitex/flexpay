@@ -6,6 +6,7 @@ import org.flexpay.common.dao.paging.FetchRange;
 import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.history.Diff;
+import org.flexpay.common.persistence.history.ProcessingStatus;
 import org.flexpay.common.service.AllObjectsService;
 import org.flexpay.common.service.DiffService;
 import org.flexpay.common.service.importexport.ClassToTypeRegistry;
@@ -16,12 +17,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
 import static org.flexpay.common.util.CollectionUtils.map;
 
+@SuppressWarnings ({"RawUseOfParameterizedType"})
 @Transactional (readOnly = true)
 public class DiffServiceImpl implements DiffService {
 
@@ -50,6 +53,24 @@ public class DiffServiceImpl implements DiffService {
 
 		diffDao.create(diff);
 		return diff;
+	}
+
+	/**
+	 * Persist a batch of new Diff objects
+	 *
+	 * @param diffs Diff objects to persist
+	 * @return Persisted Diffs back
+	 */
+	@NotNull
+	@Override
+	public Collection<Diff> create(@NotNull Collection<Diff> diffs) {
+
+		for (Diff diff : diffs) {
+			log.debug("Creating a new diff {}", diff);
+			diffDao.create(diff);
+		}
+
+		return diffs;
 	}
 
 	/**
@@ -135,6 +156,7 @@ public class DiffServiceImpl implements DiffService {
 	@Override
 	public <T extends DomainObject> boolean allObjectsHaveDiff(Class<T> clazz) {
 
+		//noinspection CollectionsFieldAccessReplaceableByMethodCall
 		if (type2AllObjectsServiceMap != Collections.EMPTY_MAP) {
 			moveAllObjectsServices();
 		}
@@ -154,6 +176,23 @@ public class DiffServiceImpl implements DiffService {
 		}
 
 		return true;
+	}
+
+	/**
+	 * Remove all persisted loaded diffs, in case of failure for example
+	 */
+	@Override
+	public void removeLoadedDiffs() {
+		diffDaoExt.removeDiffs(ProcessingStatus.STATUS_LOADED);
+	}
+
+	/**
+	 * Update loaded diffs state, make their status {@link org.flexpay.common.persistence.history.ProcessingStatus#STATUS_NEW}
+	 */
+	@Override
+	public void moveLoadedDiffsToNewState() {
+		diffDaoExt.updateDiffsProcessingStatus(
+				ProcessingStatus.STATUS_LOADED, ProcessingStatus.STATUS_NEW);
 	}
 
 	/**

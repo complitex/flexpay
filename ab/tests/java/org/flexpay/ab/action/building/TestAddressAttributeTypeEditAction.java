@@ -1,24 +1,18 @@
 package org.flexpay.ab.action.building;
 
 import org.flexpay.ab.actions.buildings.AddressAttributeTypeEditAction;
-import org.flexpay.ab.actions.buildings.BuildingAddressEditAction;
 import org.flexpay.ab.dao.AddressAttributeTypeDao;
-import org.flexpay.ab.dao.BuildingDao;
 import org.flexpay.ab.persistence.AddressAttributeType;
-import org.flexpay.ab.persistence.Building;
-import org.flexpay.ab.persistence.BuildingAddress;
-import org.flexpay.ab.persistence.TestData;
-import org.flexpay.ab.service.AddressAttributeTypeService;
 import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
-import static org.flexpay.ab.util.TestUtils.createSimpleAddressAttributeType;
-import static org.flexpay.ab.util.TestUtils.createSimpleBuilding;
-import static org.flexpay.ab.util.TestUtils.initNames;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.util.config.ApplicationConfig;
-import static org.junit.Assert.*;
-import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import static org.flexpay.ab.util.TestUtils.createSimpleAddressAttributeType;
+import static org.flexpay.ab.util.TestUtils.initNames;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 public class TestAddressAttributeTypeEditAction extends AbSpringBeanAwareTestCase {
 
@@ -161,6 +155,8 @@ public class TestAddressAttributeTypeEditAction extends AbSpringBeanAwareTestCas
 
 		assertEquals("Invalid action result", FPActionSupport.REDIRECT_SUCCESS, action.execute());
 		assertNotNull("Address attribute type must not be null", action.getAttributeType());
+
+		System.out.println("Attribute translations: " + action.getAttributeType().getTranslations());
 
 		String name = action.getAttributeType().getDefaultTranslation().getName();
 		assertEquals("Invalid address attribute type name value", "456", name);
