@@ -61,6 +61,7 @@ public class DiffServiceImpl implements DiffService {
 	 * @param diffs Diff objects to persist
 	 * @return Persisted Diffs back
 	 */
+	@Transactional (readOnly = false)
 	@NotNull
 	@Override
 	public Collection<Diff> create(@NotNull Collection<Diff> diffs) {
@@ -181,6 +182,7 @@ public class DiffServiceImpl implements DiffService {
 	/**
 	 * Remove all persisted loaded diffs, in case of failure for example
 	 */
+	@Transactional (readOnly = false)
 	@Override
 	public void removeLoadedDiffs() {
 		diffDaoExt.removeDiffs(ProcessingStatus.STATUS_LOADED);
@@ -189,6 +191,7 @@ public class DiffServiceImpl implements DiffService {
 	/**
 	 * Update loaded diffs state, make their status {@link org.flexpay.common.persistence.history.ProcessingStatus#STATUS_NEW}
 	 */
+	@Transactional (readOnly = false)
 	@Override
 	public void moveLoadedDiffsToNewState() {
 		diffDaoExt.updateDiffsProcessingStatus(
