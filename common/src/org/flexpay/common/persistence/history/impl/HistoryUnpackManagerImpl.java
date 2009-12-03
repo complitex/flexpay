@@ -45,6 +45,7 @@ public class HistoryUnpackManagerImpl implements HistoryUnpackManager {
 	 */
 	@NotNull
 	@Override
+	@Transactional (readOnly = false)
 	public ExternalHistoryPack update(@NotNull ExternalHistoryPack pack) {
 		historyPackDao.update(pack);
 
