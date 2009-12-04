@@ -107,6 +107,8 @@ public class TestStreetDistrictEditAction extends AbSpringBeanAwareTestCase {
 	@Test
 	public void testSubmit() throws Exception {
 
+//		streetDaoExt.deleteStreet(new Street(45L));
+
 		Street street = createSimpleStreet("testNameS");
 		Set<StreetDistrictRelation> streetDistricts = set();
 		streetDistricts.add(new StreetDistrictRelation(street, new District(TestData.DISTRICT_SOVETSKIY)));
@@ -118,7 +120,7 @@ public class TestStreetDistrictEditAction extends AbSpringBeanAwareTestCase {
 		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
 
 		action.setSubmitted("");
-		action.setObjectIds(set(2L, 3L));
+		action.setObjectIds(set(TestData.DISTRICT_ZAELCOVSKIY.getId(), TestData.DISTRICT_DZERGINSKIY.getId()));
 		assertEquals("Invalid action result", FPActionSupport.REDIRECT_SUCCESS, action.execute());
 		assertTrue("Street districts set must not be empty", !action.getStreet().getStreetDistricts().isEmpty());
 

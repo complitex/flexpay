@@ -96,6 +96,23 @@ public class StreetDaoExtImpl extends HibernateDaoSupport implements StreetDaoEx
 	}
 
 	@Override
+	public void deleteStreetDistricts(final Street street) {
+		getHibernateTemplate().execute(new HibernateCallback() {
+			@Override
+			public Object doInHibernate(Session session) throws HibernateException {
+				Long streetId = street.getId();
+				if (streetId == null || streetId <= 0) {
+					return null;
+				}
+				session.getNamedQuery("Street.deleteStreetDistricts")
+						.setLong(0, streetId).executeUpdate();
+				return null;
+			}
+		});
+
+	}
+
+	@Override
 	public void deleteStreet(final Street street) {
 		getHibernateTemplate().execute(new HibernateCallback() {
 			@Override
