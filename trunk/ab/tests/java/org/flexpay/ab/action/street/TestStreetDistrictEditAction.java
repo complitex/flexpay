@@ -3,7 +3,9 @@ package org.flexpay.ab.action.street;
 import org.flexpay.ab.actions.street.StreetDistrictEditAction;
 import org.flexpay.ab.dao.StreetDao;
 import org.flexpay.ab.dao.StreetDaoExt;
+import org.flexpay.ab.persistence.District;
 import org.flexpay.ab.persistence.Street;
+import org.flexpay.ab.persistence.StreetDistrictRelation;
 import org.flexpay.ab.persistence.TestData;
 import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
 import static org.flexpay.ab.util.TestUtils.createSimpleStreet;
@@ -13,6 +15,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.Set;
 
 public class TestStreetDistrictEditAction extends AbSpringBeanAwareTestCase {
 
@@ -104,15 +108,19 @@ public class TestStreetDistrictEditAction extends AbSpringBeanAwareTestCase {
 	public void testSubmit() throws Exception {
 
 		Street street = createSimpleStreet("testNameS");
+		Set<StreetDistrictRelation> streetDistricts = set();
+		streetDistricts.add(new StreetDistrictRelation(street, new District(TestData.DISTRICT_SOVETSKIY)));
+		streetDistricts.add(new StreetDistrictRelation(street, new District(TestData.DISTRICT_ZAELCOVSKIY)));
+		street.setStreetDistricts(streetDistricts);
 		streetDao.create(street);
 
 		action.setStreet(street);
 		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
 
 		action.setSubmitted("");
-		action.setObjectIds(set(1L, 2L, 3L));
+		action.setObjectIds(set(2L, 3L));
 		assertEquals("Invalid action result", FPActionSupport.REDIRECT_SUCCESS, action.execute());
-		assertTrue("Street districts set must not be empty", !action.getStreet().getDistricts().isEmpty());
+		assertTrue("Street districts set must not be empty", !action.getStreet().getStreetDistricts().isEmpty());
 
 		streetDaoExt.deleteStreet(action.getStreet());
 

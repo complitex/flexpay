@@ -112,6 +112,8 @@ public class StreetDaoExtImpl extends HibernateDaoSupport implements StreetDaoEx
 						.setLong(0, streetId).executeUpdate();
 				session.getNamedQuery("Street.deleteTypeTemporals")
 						.setLong(0, streetId).executeUpdate();
+				session.getNamedQuery("Street.deleteStreetDistricts")
+						.setLong(0, streetId).executeUpdate();
 				session.getNamedQuery("Street.deleteStreet")
 						.setLong(0, streetId).executeUpdate();
 				return null;

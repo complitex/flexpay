@@ -32,7 +32,9 @@ public abstract class TestData {
 	public static final Stub<Street> ROSSIISKAYA = new Stub<Street>(3L);
 
 	// test districts
-	public static final Stub<District> DISTRICT_SOVETSKII = new Stub<District>(1L);
+	public static final Stub<District> DISTRICT_SOVETSKIY = new Stub<District>(1L);
+	public static final Stub<District> DISTRICT_ZAELCOVSKIY = new Stub<District>(2L);
+	public static final Stub<District> DISTRICT_DZERGINSKIY = new Stub<District>(3L);
 
 	// test towns
 	public static final Stub<Town> TOWN_NSK = new Stub<Town>(2L);

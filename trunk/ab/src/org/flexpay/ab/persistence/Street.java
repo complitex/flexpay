@@ -23,7 +23,7 @@ public class Street extends NameTimeDependentChild<StreetName, StreetNameTempora
 	private static final SortedSet<StreetTypeTemporal> EMPTY_SORTED_SET =
 			Collections.unmodifiableSortedSet(new TreeSet<StreetTypeTemporal>());
 
-	private Set<District> districts = Collections.emptySet();
+	private Set<StreetDistrictRelation> streetDistricts = Collections.emptySet();
 	private SortedSet<StreetTypeTemporal> typeTemporals = EMPTY_SORTED_SET;
 	private TimeLine<StreetType, StreetTypeTemporal> typesTimeLine;
 	private Set<BuildingAddress> buildingses = Collections.emptySet();
@@ -48,12 +48,12 @@ public class Street extends NameTimeDependentChild<StreetName, StreetNameTempora
 		return new StreetNameTemporal(this);
 	}
 
-	public Set<District> getDistricts() {
-		return districts;
+	public Set<StreetDistrictRelation> getStreetDistricts() {
+		return streetDistricts;
 	}
 
-	public void setDistricts(Set<District> districts) {
-		this.districts = districts;
+	public void setStreetDistricts(Set<StreetDistrictRelation> streetDistricts) {
+		this.streetDistricts = streetDistricts;
 	}
 
 	public Set<BuildingAddress> getBuildingses() {

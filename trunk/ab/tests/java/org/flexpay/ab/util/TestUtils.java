@@ -93,7 +93,7 @@ public class TestUtils {
 
 		Building building = Building.newInstance();
 
-		building.setDistrict(new District(TestData.DISTRICT_SOVETSKII));
+		building.setDistrict(new District(TestData.DISTRICT_SOVETSKIY));
 
 		BuildingAddress address1 = new BuildingAddress();
 		address1.setPrimaryStatus(true);

@@ -21,7 +21,7 @@ public class TestDistrictViewAction extends AbSpringBeanAwareTestCase {
 	@Test
 	public void testCorrectData() throws Exception {
 
-		action.setObject(new District(TestData.DISTRICT_SOVETSKII));
+		action.setObject(new District(TestData.DISTRICT_SOVETSKIY));
 
 		assertEquals("Invalid action result", FPActionSupport.SUCCESS, action.execute());
 
