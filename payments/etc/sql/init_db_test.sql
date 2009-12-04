@@ -180,62 +180,62 @@ INSERT INTO payments_service_type_name_translations_tbl (name, description, lang
 INSERT INTO payments_service_types_tbl (id, status, code) VALUES (1006, 0, 1006);
 SELECT @service_t_sewerage:=1006;
 INSERT INTO payments_service_type_name_translations_tbl (name, description, language_id, service_type_id)
-	VALUES ('Канализация', '', @ru_id, @service_t_sewerage);
+	VALUES ('Канализация', 'Канализация', @ru_id, @service_t_sewerage);
 
 INSERT INTO payments_service_types_tbl (id, status, code) VALUES (1007, 0, 1007);
 SELECT @service_t_coocking_gas:=1007;
 INSERT INTO payments_service_type_name_translations_tbl (name, description, language_id, service_type_id)
-	VALUES ('Газ варочный', '', @ru_id, @service_t_coocking_gas);
+	VALUES ('Газ варочный', 'Газ варочный', @ru_id, @service_t_coocking_gas);
 
 INSERT INTO payments_service_types_tbl (id, status, code) VALUES (1008, 0, 1008);
 SELECT @service_t_heating_gas:=1008;
 INSERT INTO payments_service_type_name_translations_tbl (name, description, language_id, service_type_id)
-	VALUES ('Газ отопительный', '', @ru_id, @service_t_heating_gas);
+	VALUES ('Газ отопительный', 'Газ отопительный', @ru_id, @service_t_heating_gas);
 
 INSERT INTO payments_service_types_tbl (id, status, code) VALUES (1009, 0, 1009);
 SELECT @service_t_radio:=1009;
 INSERT INTO payments_service_type_name_translations_tbl (name, description, language_id, service_type_id)
-	VALUES ('Радио', '', @ru_id, @service_t_radio);
+	VALUES ('Радио', 'Радио', @ru_id, @service_t_radio);
 
 INSERT INTO payments_service_types_tbl (id, status, code) VALUES (1010, 0, 1010);
 SELECT @service_t_antenna:=1010;
 INSERT INTO payments_service_type_name_translations_tbl (name, description, language_id, service_type_id)
-	VALUES ('Антенна', '', @ru_id, @service_t_antenna);
+	VALUES ('Антенна', 'Антенна', @ru_id, @service_t_antenna);
 
 INSERT INTO payments_service_types_tbl (id, status, code) VALUES (1011, 0, 1011);
 SELECT @service_t_phone:=1011;
 INSERT INTO payments_service_type_name_translations_tbl (name, description, language_id, service_type_id)
-	VALUES ('Телефон', '', @ru_id, @service_t_phone);
+	VALUES ('Телефон', 'Телефон', @ru_id, @service_t_phone);
 
 INSERT INTO payments_service_types_tbl (id, status, code) VALUES (1012, 0, 1012);
 SELECT @service_t_cesspool_cleaning:=1012;
 INSERT INTO payments_service_type_name_translations_tbl (name, description, language_id, service_type_id)
-	VALUES ('Ассенизация', '', @ru_id, @service_t_cesspool_cleaning);
+	VALUES ('Ассенизация', 'Ассенизация', @ru_id, @service_t_cesspool_cleaning);
 
 INSERT INTO payments_service_types_tbl (id, status, code) VALUES (1013, 0, 1013);
 SELECT @service_t_lift:=1013;
 INSERT INTO payments_service_type_name_translations_tbl (name, description, language_id, service_type_id)
-	VALUES ('Лифт', '', @ru_id, @service_t_lift);
+	VALUES ('Лифт', 'Лифт', @ru_id, @service_t_lift);
 
 INSERT INTO payments_service_types_tbl (id, status, code) VALUES (1014, 0, 1014);
 SELECT @service_t_ground_tax:=1014;
 INSERT INTO payments_service_type_name_translations_tbl (name, description, language_id, service_type_id)
-	VALUES ('Налог на землю', '', @ru_id, @service_t_ground_tax);
+	VALUES ('Налог на землю', 'Налог на землю', @ru_id, @service_t_ground_tax);
 
 INSERT INTO payments_service_types_tbl (id, status, code) VALUES (1015, 0, 1015);
 SELECT @service_t_repeat_turn_on:=1015;
 INSERT INTO payments_service_type_name_translations_tbl (name, description, language_id, service_type_id)
-	VALUES ('Повторное подключение', '', @ru_id, @service_t_repeat_turn_on);
+	VALUES ('Повторное подключение', 'Повторное подключение', @ru_id, @service_t_repeat_turn_on);
 
 INSERT INTO payments_service_types_tbl (id, status, code) VALUES (1016, 0, 1016);
 SELECT @service_t_acts_payment:=1016;
 INSERT INTO payments_service_type_name_translations_tbl (name, description, language_id, service_type_id)
-	VALUES ('Оплата по актам', '', @ru_id, @service_t_acts_payment);
+	VALUES ('Оплата по актам', 'Оплата по актам', @ru_id, @service_t_acts_payment);
 
 INSERT INTO payments_service_types_tbl (id, status, code) VALUES (1017, 0, 1017);
 SELECT @service_t_counters_repair:=1017;
 INSERT INTO payments_service_type_name_translations_tbl (name, description, language_id, service_type_id)
-	VALUES ('Ремонт счетчиков', '', @ru_id, @service_t_counters_repair);
+	VALUES ('Ремонт счетчиков', 'Ремонт счетчиков', @ru_id, @service_t_counters_repair);
 
 -- Init services
 INSERT INTO payments_services_tbl (id, provider_id, external_code, measure_unit_id, type_id, begin_date, end_date, version, status)
