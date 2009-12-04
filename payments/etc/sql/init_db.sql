@@ -71,7 +71,7 @@ insert into payments_document_status_translations_tbl(name, language_id, status_
 -- init document addition types
 insert into payments_document_addition_types_tbl (id, version, code)
 		values (1, 0, 1);
-insert into payments_document_addition_type_translations_tbl (name, languag1006e_id, type_id)
+insert into payments_document_addition_type_translations_tbl (name, language_id, type_id)
 		values ('ЕРЦ счёт', @ru_id, 1);
 insert into payments_document_addition_type_translations_tbl (name, language_id, type_id)
 		values ('ERC account', @en_id, 1);
