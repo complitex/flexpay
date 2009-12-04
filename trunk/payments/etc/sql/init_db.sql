@@ -71,7 +71,7 @@ insert into payments_document_status_translations_tbl(name, language_id, status_
 -- init document addition types
 insert into payments_document_addition_types_tbl (id, version, code)
 		values (1, 0, 1);
-insert into payments_document_addition_type_translations_tbl (name, language_id, type_id)
+insert into payments_document_addition_type_translations_tbl (name, languag1006e_id, type_id)
 		values ('ЕРЦ счёт', @ru_id, 1);
 insert into payments_document_addition_type_translations_tbl (name, language_id, type_id)
 		values ('ERC account', @en_id, 1);
@@ -220,7 +220,7 @@ insert into common_data_source_descriptions_tbl (id, description)
 	values (@eirc_base + 1, 'МегаБАНК');
 select @ds_megabank:=@eirc_base + 1;
 insert into orgs_organizations_tbl (id, version, status, data_source_description_id, individual_tax_number, juridical_address, kpp, postal_address)
-	values (@eirc_base + 1, 0, 0, @ds_megabank, '', '', '', '');
+	values (@eirc_base + 1, 0, 0, @ds_megabank, 'МБ-0', 'Харьков', '123', 'Харьков');
 select @org_megabank:=@eirc_base + 1;
 insert into orgs_organization_names_tbl (name, organization_id, language_id)
 	values ('МегаБАНК', @org_megabank, @ru_id);
