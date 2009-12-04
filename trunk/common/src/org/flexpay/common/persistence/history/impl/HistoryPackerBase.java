@@ -69,8 +69,7 @@ public abstract class HistoryPackerBase implements HistoryPacker {
 			return Collections.emptyList();
 		}
 
-		FetchRange range = new FetchRange();
-		range.setPageSize(pagingSize);
+		FetchRange range = new FetchRange(pagingSize);
 		List<Diff> diffs = consumerService.findNewDiffs(stub, range);
 		log.debug("Having diffs to pack: {}", diffs.size());
 
