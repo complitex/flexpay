@@ -335,8 +335,8 @@ public class StreetServiceImpl extends NameTimeDependentServiceImpl<
 			streetDistricts.add(new StreetDistrictRelation(street, district));
 		}
 
-		street.getStreetDistricts().clear();
-		street.getStreetDistricts().addAll(streetDistricts);
+		streetDaoExt.deleteStreetDistricts(street);
+		street.setStreetDistricts(streetDistricts);
 		update(street);
 
 		return street;
