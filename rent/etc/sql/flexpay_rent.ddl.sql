@@ -271,9 +271,11 @@
     ) comment='Street type temporals';
 
     create table ab_streets_districts_tbl (
-        district_id bigint not null,
+        id bigint not null auto_increment,
         street_id bigint not null,
-        primary key (street_id, district_id)
+        district_id bigint not null,
+        primary key (id),
+        unique (street_id, district_id)
     );
 
     create table ab_streets_tbl (
@@ -1412,14 +1414,14 @@
         references ab_street_types_tbl (id);
 
     alter table ab_streets_districts_tbl 
-        add index FK93093857311847ED (street_id), 
-        add constraint FK93093857311847ED 
+        add index FK_ab_streets_districts_tbl_street_id (street_id), 
+        add constraint FK_ab_streets_districts_tbl_street_id 
         foreign key (street_id) 
         references ab_streets_tbl (id);
 
     alter table ab_streets_districts_tbl 
-        add index FK930938571AE9F4D (district_id), 
-        add constraint FK930938571AE9F4D 
+        add index FK_ab_streets_districts_tbl_district_id (district_id), 
+        add constraint FK_ab_streets_districts_tbl_district_id 
         foreign key (district_id) 
         references ab_districts_tbl (id);
 

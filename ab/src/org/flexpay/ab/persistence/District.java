@@ -13,7 +13,7 @@ import java.util.Set;
 
 public class District extends NameTimeDependentChild<DistrictName, DistrictNameTemporal> {
 
-	private Set<Street> streets = Collections.emptySet();
+	private Set<StreetDistrictRelation> streetDistricts = Collections.emptySet();
 
 	public District() {
 	}
@@ -30,12 +30,12 @@ public class District extends NameTimeDependentChild<DistrictName, DistrictNameT
 		return new DistrictNameTemporal(this);
 	}
 
-	public Set<Street> getStreets() {
-		return streets;
+	public Set<StreetDistrictRelation> getStreetDistricts() {
+		return streetDistricts;
 	}
 
-	public void setStreets(Set<Street> streets) {
-		this.streets = streets;
+	public void setStreetDistricts(Set<StreetDistrictRelation> streetDistricts) {
+		this.streetDistricts = streetDistricts;
 	}
 
 	public void setNameForDate(DistrictName name, Date beginDate) {

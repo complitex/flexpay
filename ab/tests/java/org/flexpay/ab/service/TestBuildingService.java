@@ -14,8 +14,6 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.annotation.NotTransactional;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Set;
@@ -40,7 +38,7 @@ public class TestBuildingService extends AbSpringBeanAwareTestCase {
 	private Building newBuilding() {
 
 		Building building = factory.newBuilding();
-		building.setDistrict(new District(TestData.DISTRICT_SOVETSKII));
+		building.setDistrict(new District(TestData.DISTRICT_SOVETSKIY));
 		return building;
 	}
 
@@ -131,7 +129,7 @@ public class TestBuildingService extends AbSpringBeanAwareTestCase {
 		// See init_db script
 		AddressAttribute number = BuildingAddress.numberAttribute("31");
 		AddressAttribute bulk = BuildingAddress.bulkAttribute("2");
-		BuildingAddress buildingAddress = buildingService.findAddresses(TestData.IVANOVA, TestData.DISTRICT_SOVETSKII, set(number, bulk));
+		BuildingAddress buildingAddress = buildingService.findAddresses(TestData.IVANOVA, TestData.DISTRICT_SOVETSKIY, set(number, bulk));
 
 		assertNotNull("Building find with bulk number faild", buildingAddress);
 		assertEquals("Invalid number", "31", buildingAddress.getNumber());
@@ -143,7 +141,7 @@ public class TestBuildingService extends AbSpringBeanAwareTestCase {
 
 		// See init_db script
 		AddressAttribute number = BuildingAddress.numberAttribute("31");
-		BuildingAddress buildingAddress = buildingService.findAddresses(TestData.IVANOVA, TestData.DISTRICT_SOVETSKII, set(number));
+		BuildingAddress buildingAddress = buildingService.findAddresses(TestData.IVANOVA, TestData.DISTRICT_SOVETSKIY, set(number));
 
 		assertNotNull("Building find faild", buildingAddress);
 		assertEquals("Invalid building number", "31", buildingAddress.getNumber());

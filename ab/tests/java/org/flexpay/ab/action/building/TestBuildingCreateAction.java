@@ -38,7 +38,7 @@ public class TestBuildingCreateAction extends AbSpringBeanAwareTestCase {
 		action.getAttributesMap().put(org.flexpay.ab.util.config.ApplicationConfig.getBuildingAttributeTypeNumber().getId(), "1");
 		action.setSubmitted("");
 		action.setStreetFilter(null);
-		action.setDistrictFilter(TestData.DISTRICT_SOVETSKII.getId());
+		action.setDistrictFilter(TestData.DISTRICT_SOVETSKIY.getId());
 
 		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
 		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
@@ -53,7 +53,7 @@ public class TestBuildingCreateAction extends AbSpringBeanAwareTestCase {
 		action.getAttributesMap().put(org.flexpay.ab.util.config.ApplicationConfig.getBuildingAttributeTypeNumber().getId(), "1");
 		action.setSubmitted("");
 		action.setStreetFilter(-10L);
-		action.setDistrictFilter(TestData.DISTRICT_SOVETSKII.getId());
+		action.setDistrictFilter(TestData.DISTRICT_SOVETSKIY.getId());
 
 		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
 		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
@@ -68,7 +68,7 @@ public class TestBuildingCreateAction extends AbSpringBeanAwareTestCase {
 		action.getAttributesMap().put(org.flexpay.ab.util.config.ApplicationConfig.getBuildingAttributeTypeNumber().getId(), "1");
 		action.setSubmitted("");
 		action.setStreetFilter(0L);
-		action.setDistrictFilter(TestData.DISTRICT_SOVETSKII.getId());
+		action.setDistrictFilter(TestData.DISTRICT_SOVETSKIY.getId());
 
 		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
 		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
@@ -128,7 +128,7 @@ public class TestBuildingCreateAction extends AbSpringBeanAwareTestCase {
 		action.getAttributesMap().put(org.flexpay.ab.util.config.ApplicationConfig.getBuildingAttributeTypeNumber().getId(), "");
 		action.setSubmitted("");
 		action.setStreetFilter(TestData.IVANOVA.getId());
-		action.setDistrictFilter(TestData.DISTRICT_SOVETSKII.getId());
+		action.setDistrictFilter(TestData.DISTRICT_SOVETSKIY.getId());
 
 		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
 		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
@@ -143,7 +143,7 @@ public class TestBuildingCreateAction extends AbSpringBeanAwareTestCase {
 		action.getAttributesMap().put(org.flexpay.ab.util.config.ApplicationConfig.getBuildingAttributeTypeNumber().getId(), "1111");
 		action.setSubmitted("");
 		action.setStreetFilter(TestData.IVANOVA.getId());
-		action.setDistrictFilter(TestData.DISTRICT_SOVETSKII.getId());
+		action.setDistrictFilter(TestData.DISTRICT_SOVETSKIY.getId());
 
 		assertEquals("Invalid action result", FPActionSupport.REDIRECT_SUCCESS, action.execute());
 		assertTrue("Invalid building id", action.getBuilding().getId() > 0);

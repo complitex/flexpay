@@ -71,7 +71,6 @@ public class StreetServiceImpl extends NameTimeDependentServiceImpl<
 		}
 
 		street.setTypeTemporals(treeSet(streetDao.findTypeTemporals(streetStub.getId())));
-		street.getDistricts().addAll(streetDao.findDistricts(streetStub.getId()));
 
 		return street;
 	}
@@ -257,7 +256,6 @@ public class StreetServiceImpl extends NameTimeDependentServiceImpl<
 		Street street = streets.get(0);
 
 		street.setTypeTemporals(treeSet(streetDao.findTypeTemporals(streetStub.getId())));
-		street.getDistricts().addAll(streetDao.findDistricts(streetStub.getId()));
 
 		return street;
 	}
@@ -331,8 +329,14 @@ public class StreetServiceImpl extends NameTimeDependentServiceImpl<
 	@Override
 	public Street saveDistricts(@NotNull Street street, @NotNull Set<Long> districtIds) throws FlexPayExceptionContainer {
 
-		street.getDistricts().clear();
-		street.getDistricts().addAll(districtService.readFull(districtIds, false));
+		List<District> districts = districtService.readFull(districtIds, false);
+		Set<StreetDistrictRelation> streetDistricts = set();
+		for (District district : districts) {
+			streetDistricts.add(new StreetDistrictRelation(street, district));
+		}
+
+		street.getStreetDistricts().clear();
+		street.getStreetDistricts().addAll(streetDistricts);
 		update(street);
 
 		return street;

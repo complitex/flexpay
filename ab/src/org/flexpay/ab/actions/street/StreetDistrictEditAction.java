@@ -3,6 +3,7 @@ package org.flexpay.ab.actions.street;
 import org.flexpay.ab.persistence.District;
 import org.flexpay.ab.persistence.DistrictName;
 import org.flexpay.ab.persistence.Street;
+import org.flexpay.ab.persistence.StreetDistrictRelation;
 import org.flexpay.ab.persistence.filters.TownFilter;
 import org.flexpay.ab.service.DistrictService;
 import org.flexpay.ab.service.StreetService;
@@ -62,8 +63,8 @@ public class StreetDistrictEditAction extends FPActionSupport {
 			return REDIRECT_SUCCESS;
 		}
 
-		for (District district : street.getDistricts()) {
-			objectIds.add(district.getId());
+		for (StreetDistrictRelation streetDistrict : street.getStreetDistricts()) {
+			objectIds.add(streetDistrict.getDistrict().getId());
 		}
 
 		districtNames = districtService.findNames(new TownFilter(street.getParent().getId()));

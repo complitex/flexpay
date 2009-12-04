@@ -16,10 +16,10 @@
 			<key column="district_id" not-null="true" />
 			<one-to-many class="DistrictNameTemporal" />
 		</set>
-		<set name="streets" table="ab_streets_districts_tbl" cascade="all-delete-orphan">
-			<key column="district_id" />
-			<many-to-many class="Street" column="street_id" />
-		</set>
+        <set name="streetDistricts" cascade="all,delete-orphan" lazy="true" inverse="true">
+            <key column="district_id" not-null="true" foreign-key="FK_ab_streets_districts_tbl_district_id" />
+            <one-to-many class="StreetDistrictRelation" />
+        </set>
 	</class>
 
 	<class name="DistrictNameTemporal" table="ab_district_names_temporal_tbl">
