@@ -29,7 +29,7 @@ public class TestStreetTypeDeleteAction extends AbSpringBeanAwareTestCase {
 	}
 
 	@Test
-	public void testDeleteRegions() throws Exception {
+	public void testDeleteStreetTypes() throws Exception {
 
 		StreetType streetType = createSimpleStreetType("3456");
 		streetTypeDao.create(streetType);

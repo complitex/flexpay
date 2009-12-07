@@ -19,7 +19,7 @@ public class TestRegionsListAction extends AbSpringBeanAwareTestCase {
 		action.setCountryFilter(TestData.COUNTRY_RUS.getId());
 
 		assertEquals("Invalid action result", FPActionSupport.SUCCESS, action.execute());
-		assertTrue("Invalid regions list size", action.getRegions().size() > 0);
+		assertFalse("Invalid regions list size", action.getRegions().isEmpty());
 
 	}
 
@@ -27,7 +27,7 @@ public class TestRegionsListAction extends AbSpringBeanAwareTestCase {
 	public void testIncorrectCountryFilter1() throws Exception {
 
 		assertEquals("Invalid action result", FPActionSupport.SUCCESS, action.execute());
-		assertFalse("Regions list size must be 0", action.getRegions().size() > 0);
+		assertTrue("Regions list size must be 0", action.getRegions().isEmpty());
 
 	}
 
@@ -37,7 +37,7 @@ public class TestRegionsListAction extends AbSpringBeanAwareTestCase {
 		action.setCountryFilter(-10L);
 
 		assertEquals("Invalid action result", FPActionSupport.SUCCESS, action.execute());
-		assertFalse("Regions list size must be 0", action.getRegions().size() > 0);
+		assertTrue("Regions list size must be 0", action.getRegions().isEmpty());
 
 	}
 
@@ -48,7 +48,7 @@ public class TestRegionsListAction extends AbSpringBeanAwareTestCase {
 		action.setRegionSorter(null);
 
 		assertEquals("Invalid action result", FPActionSupport.SUCCESS, action.execute());
-		assertTrue("Invalid regions list size", action.getRegions().size() > 0);
+		assertFalse("Invalid regions list size", action.getRegions().isEmpty());
 
 	}
 

@@ -18,7 +18,6 @@ public class PersonsListAction extends FPActionWithPagerSupport<Person> {
 	private List<Person> persons = list();
 	private PersonSearchFilter personSearchFilter = new PersonSearchFilter();
 
-	private ParentService<?> parentService;
 	private PersonService personService;
 
 	@NotNull
@@ -30,14 +29,9 @@ public class PersonsListAction extends FPActionWithPagerSupport<Person> {
 			personSearchFilter = new PersonSearchFilter();
 		}
 
-		if (!personSearchFilter.needFilter()) {
-			ArrayStack filters = parentService == null ? null :
-								 parentService.initFilters(getFilters(), getUserPreferences().getLocale());
+		String searchStr = personSearchFilter.getSearchString() == null ? "" : personSearchFilter.getSearchString();
 
-			persons = personService.find(filters, getPager());
-		} else {
-			persons = personService.findByFIO("%" + personSearchFilter.getSearchString() + "%", getPager());
-		}
+		persons = personService.findByFIO("%" + searchStr + "%", getPager());
 
 		return SUCCESS;
 	}
@@ -74,10 +68,6 @@ public class PersonsListAction extends FPActionWithPagerSupport<Person> {
 
 	public Person getPerson(Long id) {
 		return personService.readFull(new Stub<Person>(id));
-	}
-
-	public void setParentService(ParentService<?> parentService) {
-		this.parentService = parentService;
 	}
 
 	@Required

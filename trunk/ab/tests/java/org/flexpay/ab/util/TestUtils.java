@@ -183,4 +183,18 @@ public class TestUtils {
 		return attributeType;
 	}
 
+	public static Person createSimplePerson(String lastName) {
+
+		Person person = new Person();
+		PersonIdentity identity = new PersonIdentity();
+
+		identity.setIdentityType(new IdentityType(TestData.IDENTITY_TYPE_FIO));
+		identity.setLastName(lastName);
+		identity.setDefault(true);
+
+		person.setFIOIdentity(identity);
+
+		return person;
+	}
+
 }

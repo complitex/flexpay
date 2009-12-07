@@ -72,6 +72,7 @@ public class AbSpringBeanAwareTestCase extends SpringBeanAwareTestCase {
 				PERSON_READ,
 				PERSON_ADD,
 				PERSON_CHANGE,
+				PERSON_DELETE,
 				PROCESS_READ
 		);
 		User user = new User("test", "test", true, true, true, true, authorities);

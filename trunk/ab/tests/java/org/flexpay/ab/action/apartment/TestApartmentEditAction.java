@@ -94,7 +94,6 @@ public class TestApartmentEditAction extends AbSpringBeanAwareTestCase {
 
 		Apartment apartment = createSimpleApartment("222222");
 		apartment.disable();
-
 		apartmentDao.create(apartment);
 
 		action.setApartment(apartment);

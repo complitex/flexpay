@@ -29,7 +29,7 @@ public class TestTownTypeDeleteAction extends AbSpringBeanAwareTestCase {
 	}
 
 	@Test
-	public void testDeleteRegions() throws Exception {
+	public void testDeleteTownTypes() throws Exception {
 
 		TownType townType = createSimpleTownType("3456");
 		townTypeDao.create(townType);

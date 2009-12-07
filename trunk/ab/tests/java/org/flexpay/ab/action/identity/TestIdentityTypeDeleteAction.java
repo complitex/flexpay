@@ -29,7 +29,7 @@ public class TestIdentityTypeDeleteAction extends AbSpringBeanAwareTestCase {
 	}
 
 	@Test
-	public void testDeleteRegions() throws Exception {
+	public void testDeleteIdentityTypes() throws Exception {
 
 		IdentityType identityType = createSimpleIdentityType("3456");
 		identityTypeDao.create(identityType);

@@ -29,7 +29,7 @@ public class TestMeasureUnitDeleteAction extends AbSpringBeanAwareTestCase {
 	}
 
 	@Test
-	public void testDeleteRegions() throws Exception {
+	public void testDeleteMeasureUnits() throws Exception {
 
 		MeasureUnit measureUnit = createSimpleMeasureUnit("3456");
 		measureUnitDao.create(measureUnit);

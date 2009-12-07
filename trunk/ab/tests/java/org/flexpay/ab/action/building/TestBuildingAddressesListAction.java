@@ -2,6 +2,7 @@ package org.flexpay.ab.action.building;
 
 import org.flexpay.ab.actions.buildings.BuildingAddressesListAction;
 import org.flexpay.ab.dao.BuildingDao;
+import org.flexpay.ab.dao.BuildingDaoExt;
 import org.flexpay.ab.persistence.Building;
 import org.flexpay.ab.persistence.BuildingAddress;
 import org.flexpay.ab.persistence.TestData;
@@ -9,6 +10,7 @@ import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
 import static org.flexpay.ab.util.TestUtils.createSimpleBuilding;
 import org.flexpay.common.actions.FPActionSupport;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,8 @@ public class TestBuildingAddressesListAction extends AbSpringBeanAwareTestCase {
 	private BuildingAddressesListAction action;
 	@Autowired
 	private BuildingDao buildingDao;
+	@Autowired
+	private BuildingDaoExt buildingDaoExt;
 
 	@Test
 	public void testAction() throws Exception {
@@ -26,7 +30,7 @@ public class TestBuildingAddressesListAction extends AbSpringBeanAwareTestCase {
 		action.setBuilding(new Building(TestData.IVANOVA_27));
 
 		assertEquals("Invalid action result", FPActionSupport.SUCCESS, action.execute());
-		assertTrue("Invalid building addresses list size", action.getAddresses().size() > 0);
+		assertFalse("Invalid building addresses list size", action.getAddresses().isEmpty());
 
 	}
 
@@ -74,7 +78,7 @@ public class TestBuildingAddressesListAction extends AbSpringBeanAwareTestCase {
 		assertEquals("Invalid action result", FPActionSupport.SUCCESS, action.execute());
 		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
 
-		buildingDao.delete(action.getBuilding());
+		buildingDaoExt.deleteBuilding(action.getBuilding());
 
 	}
 
