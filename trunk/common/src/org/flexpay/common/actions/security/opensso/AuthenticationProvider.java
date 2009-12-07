@@ -1,17 +1,19 @@
 package org.flexpay.common.actions.security.opensso;
 
-import org.springframework.security.userdetails.UserDetails;
-import org.springframework.security.userdetails.User;
-import org.springframework.security.userdetails.AuthenticationUserDetailsService;
+import com.iplanet.sso.SSOException;
+import com.iplanet.sso.SSOToken;
+import com.sun.identity.idm.IdRepoException;
+import com.sun.identity.provider.springsecurity.OpenSSOAuthenticationProvider;
+import com.sun.identity.provider.springsecurity.OpenSSOSimpleAuthoritiesPopulator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.Authentication;
 import org.springframework.security.AuthenticationException;
 import org.springframework.security.GrantedAuthority;
 import org.springframework.security.providers.UsernamePasswordAuthenticationToken;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import com.sun.identity.provider.springsecurity.OpenSSOSimpleAuthoritiesPopulator;
-import com.sun.identity.provider.springsecurity.OpenSSOAuthenticationProvider;
-import com.iplanet.sso.SSOToken;
+import org.springframework.security.userdetails.AuthenticationUserDetailsService;
+import org.springframework.security.userdetails.User;
+import org.springframework.security.userdetails.UserDetails;
 
 public class AuthenticationProvider extends OpenSSOAuthenticationProvider {
 
@@ -41,7 +43,7 @@ public class AuthenticationProvider extends OpenSSOAuthenticationProvider {
 	 */
 	public Authentication authenticate(Authentication authentication) throws AuthenticationException {
 
-		log.debug("authenticate: {}", authentication);
+		log.debug("Authentication object: {}", authentication);
 
 		OpenSSOSimpleAuthoritiesPopulator populator = new OpenSSOSimpleAuthoritiesPopulator();
 
@@ -61,13 +63,10 @@ public class AuthenticationProvider extends OpenSSOAuthenticationProvider {
 
 			u = authenticationUserDetailsService.loadUserDetails(authentication);
 			authentication = new UsernamePasswordAuthenticationToken(u, "secret", ga);
-		} catch (Exception ex) {
-			 //throw new AuthenticationServiceException("Exception trying to get AMIdentity", ex);
-			// Note: We eat the exception
-			// The authentication can still succeed - but there will be no
-			// granted authorities (i.e. no roles granted).
-			// This is arguably the right thing to do here
-			log.error("Exception Trying to get AMIdentity", ex);
+		} catch (IdRepoException ex) {
+			log.error("Authentication error: " + ex.getMessage(), ex);
+		} catch (SSOException ex) {
+			log.error("Authentication error: " + ex.getMessage(), ex);
 		}
 
 		return authentication;
