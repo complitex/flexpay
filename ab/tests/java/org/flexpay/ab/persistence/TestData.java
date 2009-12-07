@@ -54,4 +54,6 @@ public abstract class TestData {
 
 	public static final Stub<AddressAttributeType> ATTRIBUTE_TYPE_NUMBER = new Stub<AddressAttributeType>(1L);
 
+	public static final Stub<Person> PERSON_1 = new Stub<Person>(1L);
+
 }

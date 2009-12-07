@@ -20,6 +20,7 @@ public class PersonViewIdentitiesAction extends FPActionSupport {
 
 		if (person == null || person.isNew()) {
 			log.warn("Incorrect person id");
+			addActionError(getText("ab.error.person.invalid_id"));
 			return SUCCESS;
 		}
 
@@ -28,8 +29,10 @@ public class PersonViewIdentitiesAction extends FPActionSupport {
 
 		if (person == null) {
 			log.warn("Can't get person with id {} from DB", stub.getId());
+			addActionError(getText("common.object_not_selected"));
 		} else if (person.isNotActive()) {
 			log.warn("Person with id {} is disabled", stub.getId());
+			addActionError(getText("common.object_not_selected"));
 		}
 
 		return SUCCESS;

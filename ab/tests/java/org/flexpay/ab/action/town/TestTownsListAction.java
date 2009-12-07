@@ -19,7 +19,7 @@ public class TestTownsListAction extends AbSpringBeanAwareTestCase {
 		action.setRegionFilter(TestData.REGION_NSK.getId());
 
 		assertEquals("Invalid action result", FPActionSupport.SUCCESS, action.execute());
-		assertTrue("Invalid towns list size", action.getTowns().size() > 0);
+		assertFalse("Invalid towns list size", action.getTowns().isEmpty());
 
 	}
 
@@ -27,7 +27,7 @@ public class TestTownsListAction extends AbSpringBeanAwareTestCase {
 	public void testIncorrectRegionFilter1() throws Exception {
 
 		assertEquals("Invalid action result", FPActionSupport.SUCCESS, action.execute());
-		assertFalse("Towns list size must be 0", action.getTowns().size() > 0);
+		assertTrue("Towns list size must be 0", action.getTowns().isEmpty());
 
 	}
 
@@ -37,7 +37,7 @@ public class TestTownsListAction extends AbSpringBeanAwareTestCase {
 		action.setRegionFilter(-10L);
 
 		assertEquals("Invalid action result", FPActionSupport.SUCCESS, action.execute());
-		assertFalse("Towns list size must be 0", action.getTowns().size() > 0);
+		assertTrue("Towns list size must be 0", action.getTowns().isEmpty());
 
 	}
 
@@ -48,7 +48,7 @@ public class TestTownsListAction extends AbSpringBeanAwareTestCase {
 		action.setTownSorterByName(null);
 
 		assertEquals("Invalid action result", FPActionSupport.SUCCESS, action.execute());
-		assertTrue("Invalid towns list size", action.getTowns().size() > 0);
+		assertFalse("Invalid towns list size", action.getTowns().isEmpty());
 
 	}
 
@@ -59,7 +59,7 @@ public class TestTownsListAction extends AbSpringBeanAwareTestCase {
 		action.setTownSorterByType(null);
 
 		assertEquals("Invalid action result", FPActionSupport.SUCCESS, action.execute());
-		assertTrue("Invalid towns list size", action.getTowns().size() > 0);
+		assertFalse("Invalid towns list size", action.getTowns().isEmpty());
 
 	}
 

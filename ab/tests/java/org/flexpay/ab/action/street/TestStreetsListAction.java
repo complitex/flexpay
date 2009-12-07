@@ -19,7 +19,7 @@ public class TestStreetsListAction extends AbSpringBeanAwareTestCase {
 		action.setTownFilter(TestData.TOWN_NSK.getId());
 
 		assertEquals("Invalid action result", FPActionSupport.SUCCESS, action.execute());
-		assertTrue("Invalid streets list size", action.getStreets().size() > 0);
+		assertFalse("Invalid streets list size", action.getStreets().isEmpty());
 
 	}
 
@@ -27,7 +27,7 @@ public class TestStreetsListAction extends AbSpringBeanAwareTestCase {
 	public void testIncorrectTownFilter1() throws Exception {
 
 		assertEquals("Invalid action result", FPActionSupport.SUCCESS, action.execute());
-		assertFalse("Streets list size must be 0", action.getStreets().size() > 0);
+		assertTrue("Streets list size must be 0", action.getStreets().isEmpty());
 
 	}
 
@@ -37,7 +37,7 @@ public class TestStreetsListAction extends AbSpringBeanAwareTestCase {
 		action.setTownFilter(-10L);
 
 		assertEquals("Invalid action result", FPActionSupport.SUCCESS, action.execute());
-		assertFalse("Streets list size must be 0", action.getStreets().size() > 0);
+		assertTrue("Streets list size must be 0", action.getStreets().isEmpty());
 
 	}
 
@@ -48,7 +48,7 @@ public class TestStreetsListAction extends AbSpringBeanAwareTestCase {
 		action.setStreetSorterByName(null);
 
 		assertEquals("Invalid action result", FPActionSupport.SUCCESS, action.execute());
-		assertTrue("Invalid streets list size", action.getStreets().size() > 0);
+		assertFalse("Invalid streets list size", action.getStreets().isEmpty());
 
 	}
 
@@ -59,7 +59,7 @@ public class TestStreetsListAction extends AbSpringBeanAwareTestCase {
 		action.setStreetSorterByType(null);
 
 		assertEquals("Invalid action result", FPActionSupport.SUCCESS, action.execute());
-		assertTrue("Invalid streets list size", action.getStreets().size() > 0);
+		assertFalse("Invalid streets list size", action.getStreets().isEmpty());
 
 	}
 

@@ -19,7 +19,7 @@ public class TestApartmentsListAction extends AbSpringBeanAwareTestCase {
 		action.setBuildingFilter(TestData.ADDR_IVANOVA_27.getId());
 
 		assertEquals("Invalid action result", FPActionSupport.SUCCESS, action.execute());
-		assertTrue("Invalid apartments list size", action.getApartments().size() > 0);
+		assertFalse("Invalid apartments list size", action.getApartments().isEmpty());
 
 	}
 
@@ -27,7 +27,7 @@ public class TestApartmentsListAction extends AbSpringBeanAwareTestCase {
 	public void testIncorrectBuildingFilter1() throws Exception {
 
 		assertEquals("Invalid action result", FPActionSupport.SUCCESS, action.execute());
-		assertFalse("Apartments list size must be 0", action.getApartments().size() > 0);
+		assertTrue("Apartments list size must be 0", action.getApartments().isEmpty());
 
 	}
 
@@ -37,7 +37,7 @@ public class TestApartmentsListAction extends AbSpringBeanAwareTestCase {
 		action.setBuildingFilter(-10L);
 
 		assertEquals("Invalid action result", FPActionSupport.SUCCESS, action.execute());
-		assertFalse("Apartments list size must be 0", action.getApartments().size() > 0);
+		assertTrue("Apartments list size must be 0", action.getApartments().isEmpty());
 
 	}
 
@@ -48,7 +48,7 @@ public class TestApartmentsListAction extends AbSpringBeanAwareTestCase {
 		action.setApartmentSorter(null);
 
 		assertEquals("Invalid action result", FPActionSupport.SUCCESS, action.execute());
-		assertTrue("Invalid apartments list size", action.getApartments().size() > 0);
+		assertFalse("Invalid apartments list size", action.getApartments().isEmpty());
 
 	}
 

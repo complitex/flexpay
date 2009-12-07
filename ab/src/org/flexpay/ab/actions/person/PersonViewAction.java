@@ -54,7 +54,7 @@ public class PersonViewAction extends FPActionSupport {
 	@NotNull
 	@Override
 	protected String getErrorResult() {
-		return SUCCESS;
+		return REDIRECT_ERROR;
 	}
 
 	public Person getPerson() {
@@ -76,6 +76,10 @@ public class PersonViewAction extends FPActionSupport {
 			log.error("Error", e);
 			return "";
 		}
+	}
+
+	public void setPerson(Person person) {
+		this.person = person;
 	}
 
 	@Required

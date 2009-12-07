@@ -86,7 +86,7 @@ public class JobManager implements BeanFactoryAware {
 
 		synchronized (ProcessManagerImpl.getInstance()) {
 			synchronized (this) {
-				if (waitingJobs.size() > 0) {
+				if (!waitingJobs.isEmpty()) {
 					Job nextJob = waitingJobs.getFirst();
 					waitingJobs.remove(nextJob);
 					this.start(nextJob, jobParameters.get(nextJob.getId()));

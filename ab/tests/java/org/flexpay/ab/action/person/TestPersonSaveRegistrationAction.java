@@ -1,41 +1,176 @@
 package org.flexpay.ab.action.person;
 
 import org.flexpay.ab.actions.person.PersonSaveRegistrationAction;
+import org.flexpay.ab.dao.ApartmentDao;
+import org.flexpay.ab.dao.PersonDao;
 import org.flexpay.ab.persistence.Apartment;
 import org.flexpay.ab.persistence.Person;
+import org.flexpay.ab.persistence.TestData;
 import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.flexpay.ab.util.TestUtils.createSimplePerson;
+import org.flexpay.common.actions.FPActionSupport;
+import static org.junit.Assert.*;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.annotation.Repeat;
 
 public class TestPersonSaveRegistrationAction extends AbSpringBeanAwareTestCase {
 
 	@Autowired
 	private PersonSaveRegistrationAction action;
+	@Autowired
+	private ApartmentDao apartmentDao;
+	@Autowired
+	private PersonDao personDao;
 
 	@Test
-	@Repeat (5)
+	public void testNullApartmentFilter() throws Exception {
+
+		assertEquals("Invalid action result", FPActionSupport.SUCCESS, action.execute());
+		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
+
+	}
+
+	@Test
+	public void testIncorrectApartmentFilter1() throws Exception {
+
+		action.setApartmentFilter(-10L);
+
+		assertEquals("Invalid action result", FPActionSupport.SUCCESS, action.execute());
+		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
+
+	}
+
+	@Test
+	public void testIncorrectApartmentFilter2() throws Exception {
+
+		action.setApartmentFilter(0L);
+
+		assertEquals("Invalid action result", FPActionSupport.SUCCESS, action.execute());
+		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
+
+	}
+
+/*
+	@Test
+	public void testDefunctApartmentFilter() throws Exception {
+
+		action.setApartmentFilter(1212120L);
+
+		assertEquals("Invalid action result", FPActionSupport.SUCCESS, action.execute());
+		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
+
+	}
+
+	@Test
+	public void testDisabledApartmentFilter() throws Exception {
+
+		Apartment apartment = createSimpleApartment("222222");
+		apartment.disable();
+		apartmentDao.create(apartment);
+
+		action.setApartmentFilter(apartment.getId());
+
+		assertEquals("Invalid action result", FPActionSupport.SUCCESS, action.execute());
+		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
+
+		apartmentDao.delete(apartment);
+
+	}
+*/
+
+	@Test
+	public void testNullPerson() throws Exception {
+
+		action.setApartmentFilter(TestData.IVANOVA_27_330.getId());
+		action.setPerson(null);
+
+		assertEquals("Invalid action result", FPActionSupport.SUCCESS, action.execute());
+		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
+
+	}
+
+	@Test
+	public void testNullPersonId() throws Exception {
+
+		action.setApartmentFilter(TestData.IVANOVA_27_330.getId());
+
+		assertEquals("Invalid action result", FPActionSupport.SUCCESS, action.execute());
+		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
+
+	}
+
+	@Test
+	public void testNewPersonAction() throws Exception {
+
+		action.setApartmentFilter(TestData.IVANOVA_27_330.getId());
+		action.setPerson(new Person(0L));
+
+		assertEquals("Invalid action result", FPActionSupport.SUCCESS, action.execute());
+		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
+
+	}
+
+	@Test
+	public void testIncorrectData1() throws Exception {
+
+		action.setApartmentFilter(TestData.IVANOVA_27_330.getId());
+		action.setPerson(new Person(-10L));
+
+		assertEquals("Invalid action result", FPActionSupport.SUCCESS, action.execute());
+		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
+
+	}
+
+	@Test
+	public void testDefunctPerson() throws Exception {
+
+		action.setApartmentFilter(TestData.IVANOVA_27_330.getId());
+		action.setPerson(new Person(101010L));
+
+		assertEquals("Invalid action result", FPActionSupport.SUCCESS, action.execute());
+		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
+
+	}
+
+	//TODO
+	@Test
+	public void testDisabledPerson() throws Exception {
+
+		action.setApartmentFilter(TestData.IVANOVA_27_330.getId());
+		action.setPerson(new Person(101010L));
+
+		assertEquals("Invalid action result", FPActionSupport.SUCCESS, action.execute());
+		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
+
+	}
+
+	@Test
 	public void testSaveRegistration() throws Exception {
 
-		Person person = new Person(1L);
+		Person person = createSimplePerson("testPerson");
+		personDao.create(person);
+
 		action.setPerson(person);
-		action.setApartmentFilter(1L);
+		action.setApartmentFilter(TestData.IVANOVA_27_1.getId());
 		action.setBeginDate("2009/01/12");
 		action.setEndDate("2019/03/25");
 
-		assertEquals("Invalid action result", PersonSaveRegistrationAction.SUCCESS, action.execute());
+		assertEquals("Invalid action result", FPActionSupport.SUCCESS, action.execute());
+
 		Apartment apartment = action.getPerson().getRegistrationApartment();
 		assertNotNull("No registration set", apartment);
-		assertEquals("Incorrect set apartment id", Long.valueOf(1L), apartment.getId());
+		assertEquals("Incorrect apartment id", TestData.IVANOVA_27_1.getId(), apartment.getId());
 
-		action.setApartmentFilter(3L);
+		action.setApartmentFilter(TestData.IVANOVA_27_330.getId());
 
-		assertEquals("Invalid action result", PersonSaveRegistrationAction.SUCCESS, action.execute());
+		assertEquals("Invalid action result", FPActionSupport.SUCCESS, action.execute());
+
 		apartment = action.getPerson().getRegistrationApartment();
 		assertNotNull("No registration set 2", apartment);
+		assertEquals("Incorrect update apartment id", TestData.IVANOVA_27_330.getId(), apartment.getId());
 
-		assertEquals("Incorrect update apartment id", Long.valueOf(3), apartment.getId());
+		personDao.delete(action.getPerson());
+
 	}
+
 }

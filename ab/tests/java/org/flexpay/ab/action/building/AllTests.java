@@ -5,9 +5,11 @@ import org.junit.runners.Suite;
 
 @RunWith (Suite.class)
 @Suite.SuiteClasses ({
+/*
 		TestAddressAttributeTypeEditAction.class,
 		TestAddressAttributeTypesListAction.class,
 		TestAddressAttributeTypeViewAction.class,
+*/
 		TestBuildingCreateAction.class,
 		TestBuildingsListAction.class,
 		TestBuildingsListPageAction.class,

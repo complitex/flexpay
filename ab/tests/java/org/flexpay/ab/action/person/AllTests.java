@@ -5,7 +5,14 @@ import org.junit.runners.Suite;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses ({
-		TestPersonSaveRegistrationAction.class
+		TestPersonEditPageAction.class,
+		TestPersonEditRegistrationFormAction.class,
+		TestPersonSaveFIOAction.class,
+		TestPersonSaveRegistrationAction.class,
+		TestPersonsListAction.class,
+		TestPersonViewAction.class,
+		TestPersonViewIdentitiesAction.class,
+		TestPersonDeleteAction.class
 })
 public class AllTests {
 

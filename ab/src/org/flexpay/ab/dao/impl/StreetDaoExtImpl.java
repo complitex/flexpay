@@ -136,9 +136,6 @@ public class StreetDaoExtImpl extends HibernateDaoSupport implements StreetDaoEx
 				return null;
 			}
 		});
-		
-		getSession().delete(street);
-
 	}
 
 }

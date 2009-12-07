@@ -153,7 +153,7 @@ public class GeneratePaymentsRegistry extends QuartzJobBean {
                 }
             }
             processInstanceIds = tmpListProcessInstanesId;
-        } while (processInstanceIds.size() > 0);
+        } while (!processInstanceIds.isEmpty());
 
         return registryIds;
     }

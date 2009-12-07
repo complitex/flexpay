@@ -35,23 +35,16 @@ public class PersonEditRegistrationFormAction extends FPActionSupport {
 			return SUCCESS;
 		}
 
-		if (beginDate == null) {
-			log.debug("BeginDate parameter is null");
-			beginDate = DateUtil.now();
-		}
-		if (endDate == null) {
-			log.debug("EndDate parameter is null");
-			endDate = getFutureInfinite();
-		}
-
 		Stub<Apartment> stub = new Stub<Apartment>(apartmentFilter);
 		Apartment apartment = apartmentService.readWithHierarchy(stub);
 
 		if (apartment == null) {
 			log.debug("Can't get apartment with id {} from DB", stub.getId());
+			addActionError(getText("common.object_not_selected"));
 			return SUCCESS;
 		} else if (apartment.isNotActive()) {
 			log.debug("Apartment with id {} is disabled", stub.getId());
+			addActionError(getText("common.object_not_selected"));
 			return SUCCESS;
 		}
 
