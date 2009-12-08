@@ -2,6 +2,7 @@ package org.flexpay.ab.action.person;
 
 import org.flexpay.ab.actions.person.PersonDeleteAction;
 import org.flexpay.ab.dao.PersonDao;
+import org.flexpay.ab.dao.PersonDaoExt;
 import org.flexpay.ab.persistence.Person;
 import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
 import static org.flexpay.ab.util.TestUtils.createSimplePerson;
@@ -18,6 +19,8 @@ public class TestPersonDeleteAction extends AbSpringBeanAwareTestCase {
 	private PersonDeleteAction action;
 	@Autowired
 	private PersonDao personDao;
+	@Autowired
+	private PersonDaoExt personDaoExt;
 
 	@Test
 	public void testNullObjectIds() throws Exception {
@@ -40,7 +43,7 @@ public class TestPersonDeleteAction extends AbSpringBeanAwareTestCase {
 		person = personDao.read(person.getId());
 		assertTrue("Invalid status for town type. Must be disabled", person.isNotActive());
 
-		personDao.delete(person);
+		personDaoExt.deletePerson(person);
 	}
 
 }

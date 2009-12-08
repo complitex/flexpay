@@ -19,4 +19,7 @@ public interface PersonDaoExt {
 	List<Person> listPersonsWithIdentities(FetchRange range);
 
 	List<Person> listPersonsWithRegistrations(FetchRange range);
+
+	void deletePerson(Person person);
+
 }

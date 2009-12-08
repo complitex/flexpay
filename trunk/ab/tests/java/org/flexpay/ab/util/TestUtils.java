@@ -183,13 +183,21 @@ public class TestUtils {
 		return attributeType;
 	}
 
-	public static Person createSimplePerson(String lastName) {
+	public static Person createSimplePerson(String name) {
 
 		Person person = new Person();
 		PersonIdentity identity = new PersonIdentity();
 
 		identity.setIdentityType(new IdentityType(TestData.IDENTITY_TYPE_FIO));
-		identity.setLastName(lastName);
+		identity.setFirstName(name + "first");
+		identity.setMiddleName(name + "middle");
+		identity.setLastName(name + "last");
+		identity.setBirthDate(null);
+		identity.setBeginDate(null);
+		identity.setEndDate(null);
+		identity.setOrganization("");
+		identity.setSerialNumber("");
+		identity.setDocumentNumber("");
 		identity.setDefault(true);
 
 		person.setFIOIdentity(identity);

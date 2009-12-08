@@ -7,8 +7,6 @@ import org.flexpay.ab.persistence.TestData;
 import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
 import static org.flexpay.ab.util.TestUtils.createSimpleApartment;
 import org.flexpay.common.actions.FPActionSupport;
-import org.flexpay.common.util.DateUtil;
-import static org.flexpay.common.util.config.ApplicationConfig.getFutureInfinite;
 import static org.junit.Assert.*;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -85,6 +83,7 @@ public class TestPersonEditRegistrationFormAction extends AbSpringBeanAwareTestC
 		assertNotNull("Invalid town filter value", action.getTownFilter());
 		assertNotNull("Invalid street filter value", action.getStreetFilter());
 		assertNotNull("Invalid building filter value", action.getBuildingFilter());
+		assertFalse("Invalid action execute: has action errors.", action.hasActionErrors());
 
 	}
 
