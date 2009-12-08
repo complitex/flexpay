@@ -3,6 +3,7 @@ package org.flexpay.ab.actions.filters;
 import org.flexpay.ab.persistence.Apartment;
 import org.flexpay.ab.persistence.BuildingAddress;
 import org.flexpay.ab.service.ApartmentService;
+import org.flexpay.ab.util.config.AbUserPreferences;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
 import org.jetbrains.annotations.NotNull;
@@ -20,6 +21,7 @@ public class ApartmentFilterAjaxAction extends FilterAjaxAction {
 
 		if (parents == null) {
 			log.warn("Parent parameter is null");
+			addActionError(getText("common.error.invalid_id"));
 			return SUCCESS;
 		}
 
@@ -29,6 +31,7 @@ public class ApartmentFilterAjaxAction extends FilterAjaxAction {
 			addressId = Long.parseLong(parents[0]);
 		} catch (Exception e) {
 			log.warn("Incorrect building address id in filter ({})", parents[0]);
+			addActionError(getText("common.object_not_selected"));
 			return SUCCESS;
 		}
 		if (addressId == 0) {
@@ -49,20 +52,40 @@ public class ApartmentFilterAjaxAction extends FilterAjaxAction {
 
 	@Override
 	public void readFilterString() {
-		if (filterValueLong != null && filterValueLong > 0) {
-			try {
-				filterString = apartmentService.getApartmentNumber(new Stub<Apartment>(filterValueLong));
-			} catch (Exception e) {
-				log.debug("Can't get number for apartment with id = {}", filterValueLong);
-				filterString = "";
-			}
-		} else {
-			filterString = "";
+
+		filterString = "";
+
+		if (filterValueLong == null || filterValueLong <= 0) {
+			return;
+		}
+
+		try {
+			filterString = apartmentService.getApartmentNumber(new Stub<Apartment>(filterValueLong));
+		} catch (Exception e) {
+			log.warn("Can't get number for apartment with id = {}", filterValueLong);
+			addActionError(getText("common.object_not_selected"));
 		}
 	}
 
 	@Override
 	public void saveFilterValue() {
+
+		if (filterString == null) {
+
+			if (filterValueLong == null || filterValueLong <= 0) {
+				log.warn("Incorrect filter value {}", filterValue);
+				addActionError(getText("common.error.invalid_id"));
+				return;
+			}
+
+			Apartment apartment = apartmentService.readFull(new Stub<Apartment>(filterValueLong));
+			if (apartment == null) {
+				log.warn("Can't get apartment with id {} from DB", filterValueLong);
+				addActionError(getText("common.object_not_selected"));
+				return;
+			}
+		}
+
 		getUserPreferences().setApartmentFilter(filterValueLong);
 	}
 

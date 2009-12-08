@@ -2,9 +2,13 @@ package org.flexpay.ab.test;
 
 import static org.flexpay.ab.service.Roles.*;
 import org.flexpay.ab.util.config.AbUserPreferences;
+import static org.flexpay.ab.util.config.ApplicationConfig.getDefaultCountryStub;
+import static org.flexpay.ab.util.config.ApplicationConfig.getDefaultRegionStub;
+import static org.flexpay.ab.util.config.ApplicationConfig.getDefaultTownStub;
 import static org.flexpay.common.service.Roles.PROCESS_READ;
 import org.flexpay.common.test.SpringBeanAwareTestCase;
 import org.flexpay.common.util.SecurityUtil;
+import static org.flexpay.common.util.config.ApplicationConfig.getDefaultLocale;
 import org.junit.Before;
 import org.springframework.security.Authentication;
 import org.springframework.security.GrantedAuthority;
@@ -78,6 +82,11 @@ public class AbSpringBeanAwareTestCase extends SpringBeanAwareTestCase {
 		User user = new User("test", "test", true, true, true, true, authorities);
 		AbUserPreferences preferences = new AbUserPreferences();
 		preferences.setTargetDetails(user);
+		preferences.setLanguageCode("ru");
+		preferences.setLocale(getDefaultLocale());
+		preferences.setCountryFilter(getDefaultCountryStub().getId());
+		preferences.setRegionFilter(getDefaultRegionStub().getId());
+		preferences.setTownFilter(getDefaultTownStub().getId());
 		Authentication auth = new AnonymousAuthenticationToken("key", preferences, authorities);
 		SecurityContextHolder.getContext().setAuthentication(auth);
 	}

@@ -4,6 +4,7 @@ import org.flexpay.ab.persistence.District;
 import org.flexpay.ab.persistence.DistrictName;
 import org.flexpay.ab.persistence.Town;
 import org.flexpay.ab.service.DistrictService;
+import org.flexpay.ab.util.config.AbUserPreferences;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
 import org.jetbrains.annotations.NotNull;
@@ -11,6 +12,9 @@ import org.springframework.beans.factory.annotation.Required;
 
 import java.util.List;
 
+/**
+ * Search districts by name
+ */
 public class DistrictFilterAjaxAction extends FilterAjaxAction {
 
 	private DistrictService districtService;
@@ -21,6 +25,7 @@ public class DistrictFilterAjaxAction extends FilterAjaxAction {
 
 		if (parents == null) {
 			log.warn("Parent parameter is null");
+			addActionError(getText("common.error.invalid_id"));
 			return SUCCESS;
 		}
 
@@ -30,10 +35,15 @@ public class DistrictFilterAjaxAction extends FilterAjaxAction {
 			townId = Long.parseLong(parents[0]);
 		} catch (Exception e) {
 			log.warn("Incorrect town id in filter ({})", parents[0]);
+			addActionError(getText("common.object_not_selected"));
 			return SUCCESS;
 		}
-		if (townId == 0) {
+		if (townId.equals(0L)) {
 			return SUCCESS;
+		}
+
+		if (q == null) {
+			q = "";
 		}
 
 		List<District> districts = districtService.findByParentAndQuery(new Stub<Town>(townId), "%" + q + "%");
@@ -55,23 +65,45 @@ public class DistrictFilterAjaxAction extends FilterAjaxAction {
 
 	@Override
 	public void readFilterString() {
+
+		filterString = "";
+
 		if (filterValueLong != null && filterValueLong > 0) {
 			District district = districtService.readFull(new Stub<District>(filterValueLong));
-			if (district != null && district.getCurrentName() != null) {
-				filterString = getTranslationName(district.getCurrentName().getTranslations());
-			} else {
-				filterString = "";
+			if (district == null) {
+				log.warn("Can't get district with id {} from DB", filterValueLong);
+				addActionError(getText("common.object_not_selected"));
+				return;
 			}
-		} else {
-			filterString = "";
+			if (district.getCurrentName() != null) {
+				filterString = getTranslationName(district.getCurrentName().getTranslations());
+			}
 		}
 	}
 
 	@Override
 	public void saveFilterValue() {
-		getUserPreferences().setDistrictFilter(filterValueLong);
-		getUserPreferences().setBuildingFilter(0L);
-		getUserPreferences().setApartmentFilter(0L);
+
+		if (filterString == null) {
+
+			if (filterValueLong == null || filterValueLong <= 0) {
+				log.warn("Incorrect filter value {}", filterValue);
+				addActionError(getText("common.error.invalid_id"));
+				return;
+			}
+
+			District district = districtService.readFull(new Stub<District>(filterValueLong));
+			if (district == null) {
+				log.warn("Can't get district with id {} from DB", filterValueLong);
+				addActionError(getText("common.object_not_selected"));
+				return;
+			}
+		}
+
+		AbUserPreferences up = getUserPreferences();
+		up.setDistrictFilter(filterValueLong);
+		up.setBuildingFilter(0L);
+		up.setApartmentFilter(0L);
 	}
 
 	@Required

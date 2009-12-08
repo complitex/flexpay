@@ -4,6 +4,7 @@ import org.flexpay.ab.actions.district.DistrictsListPageAction;
 import org.flexpay.ab.persistence.TestData;
 import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
 import org.flexpay.ab.util.config.AbUserPreferences;
+import static org.flexpay.ab.util.config.ApplicationConfig.getDefaultTownStub;
 import org.flexpay.common.actions.FPActionSupport;
 import static org.junit.Assert.assertEquals;
 import org.junit.Test;
@@ -20,19 +21,19 @@ public class TestDistrictsListPageAction extends AbSpringBeanAwareTestCase {
 		assertEquals("Invalid action result", FPActionSupport.SUCCESS, action.execute());
 
 		AbUserPreferences up = (AbUserPreferences) action.getUserPreferences();
-		assertEquals("Invalid value of townFilter in user preferences", new Long(0), up.getTownFilter());
+		assertEquals("Invalid value of townFilter in user preferences", getDefaultTownStub().getId(), up.getTownFilter());
 
 	}
 
 	@Test
 	public void testAction2() throws Exception {
 
-		action.setTownFilter(TestData.TOWN_NSK.getId());
+		action.setTownFilter(TestData.TOWN_BERDSK.getId());
 
 		assertEquals("Invalid action result", FPActionSupport.SUCCESS, action.execute());
 
 		AbUserPreferences up = (AbUserPreferences) action.getUserPreferences();
-		assertEquals("Invalid value of townFilter in user preferences", TestData.TOWN_NSK.getId(), up.getTownFilter());
+		assertEquals("Invalid value of townFilter in user preferences", TestData.TOWN_BERDSK.getId(), up.getTownFilter());
 
 	}
 
@@ -44,7 +45,7 @@ public class TestDistrictsListPageAction extends AbSpringBeanAwareTestCase {
 		assertEquals("Invalid action result", FPActionSupport.SUCCESS, action.execute());
 
 		AbUserPreferences up = (AbUserPreferences) action.getUserPreferences();
-		assertEquals("Invalid value of townFilter in user preferences", new Long(0), up.getTownFilter());
+		assertEquals("Invalid value of townFilter in user preferences", getDefaultTownStub().getId(), up.getTownFilter());
 
 	}
 

@@ -4,6 +4,7 @@ import org.flexpay.ab.persistence.BuildingAddress;
 import org.flexpay.ab.persistence.Street;
 import org.flexpay.ab.service.BuildingService;
 import static org.flexpay.ab.util.TranslationUtil.getBuildingNumberWithoutHouseType;
+import org.flexpay.ab.util.config.AbUserPreferences;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
 import org.jetbrains.annotations.NotNull;
@@ -21,6 +22,7 @@ public class BuildingFilterAjaxAction extends FilterAjaxAction {
 
 		if (parents == null) {
 			log.warn("Parent parameter is null");
+			addActionError(getText("common.error.invalid_id"));
 			return SUCCESS;
 		}
 
@@ -30,9 +32,10 @@ public class BuildingFilterAjaxAction extends FilterAjaxAction {
 			streetId = Long.parseLong(parents[0]);
 		} catch (Exception e) {
 			log.warn("Incorrect street id in filter ({})", parents[0]);
+			addActionError(getText("common.object_not_selected"));
 			return SUCCESS;
 		}
-		if (streetId == 0) {
+		if (streetId.equals(0L)) {
 			return SUCCESS;
 		}
 
@@ -53,22 +56,45 @@ public class BuildingFilterAjaxAction extends FilterAjaxAction {
 
 	@Override
 	public void readFilterString() throws FlexPayException {
-		if (filterValueLong != null && filterValueLong > 0) {
-			BuildingAddress address = buildingService.readFullAddress(new Stub<BuildingAddress>(filterValueLong));
-			if (address != null) {
-				filterString = getBuildingNumberWithoutHouseType(address.getBuildingAttributes(), getUserPreferences().getLocale());
-			} else {
-				filterString = "";
-			}
-		} else {
-			filterString = "";
+
+		filterString = "";
+
+		if (filterValueLong == null || filterValueLong <= 0) {
+			return;
 		}
+
+		BuildingAddress address = buildingService.readFullAddress(new Stub<BuildingAddress>(filterValueLong));
+		if (address == null) {
+			log.warn("Can't get building address with id {} from DB", filterValueLong);
+			addActionError(getText("common.object_not_selected"));
+			return;
+		}
+
+		filterString = getBuildingNumberWithoutHouseType(address.getBuildingAttributes(), getUserPreferences().getLocale());
 	}
 
 	@Override
 	public void saveFilterValue() {
-		getUserPreferences().setBuildingFilter(filterValueLong);
-		getUserPreferences().setApartmentFilter(0L);
+
+		if (filterString == null) {
+
+			if (filterValueLong == null || filterValueLong <= 0) {
+				log.warn("Incorrect filter value {}", filterValue);
+				addActionError(getText("common.error.invalid_id"));
+				return;
+			}
+
+			BuildingAddress address = buildingService.readFullAddress(new Stub<BuildingAddress>(filterValueLong));
+			if (address == null) {
+				log.warn("Can't get building address with id {} from DB", filterValueLong);
+				addActionError(getText("common.object_not_selected"));
+				return;
+			}
+		}
+
+		AbUserPreferences up = getUserPreferences();
+		up.setBuildingFilter(filterValueLong);
+		up.setApartmentFilter(0L);
 	}
 
 	@Required
