@@ -323,4 +323,19 @@
 		where p.status=0 and p.id in (:list_1)
 	</query>
 
+    <query name="Person.deletePerson">
+        delete from Person
+        where id=?
+    </query>
+
+    <query name="Person.deleteRegistration">
+        delete from PersonRegistration
+        where person.id=?
+    </query>
+
+    <query name="Person.deleteIdentity">
+        delete from PersonIdentity 
+        where person.id=?
+    </query>
+
 </hibernate-mapping>

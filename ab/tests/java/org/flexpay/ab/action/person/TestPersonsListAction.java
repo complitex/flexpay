@@ -29,6 +29,7 @@ public class TestPersonsListAction extends AbSpringBeanAwareTestCase {
 
 		assertEquals("Invalid action result", FPActionSupport.SUCCESS, action.execute());
 		assertFalse("Invalid persons list size", action.getPersons().isEmpty());
+		assertFalse("Invalid action execute: has action errors.", action.hasActionErrors());
 
 	}
 
@@ -39,6 +40,7 @@ public class TestPersonsListAction extends AbSpringBeanAwareTestCase {
 
 		assertEquals("Invalid action result", FPActionSupport.SUCCESS, action.execute());
 		assertFalse("Invalid persons list size", action.getPersons().isEmpty());
+		assertFalse("Invalid action execute: has action errors.", action.hasActionErrors());
 
 	}
 
@@ -49,6 +51,7 @@ public class TestPersonsListAction extends AbSpringBeanAwareTestCase {
 
 		assertEquals("Invalid action result", FPActionSupport.SUCCESS, action.execute());
 		assertTrue("Invalid persons list size. Must be 0", action.getPersons().isEmpty());
+		assertFalse("Invalid action execute: has action errors.", action.hasActionErrors());
 
 	}
 
@@ -59,6 +62,7 @@ public class TestPersonsListAction extends AbSpringBeanAwareTestCase {
 
 		assertEquals("Invalid action result", FPActionSupport.SUCCESS, action.execute());
 		assertFalse("Invalid persons list size", action.getPersons().isEmpty());
+		assertFalse("Invalid action execute: has action errors.", action.hasActionErrors());
 
 	}
 

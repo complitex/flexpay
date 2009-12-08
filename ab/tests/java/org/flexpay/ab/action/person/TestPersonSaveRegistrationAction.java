@@ -3,6 +3,7 @@ package org.flexpay.ab.action.person;
 import org.flexpay.ab.actions.person.PersonSaveRegistrationAction;
 import org.flexpay.ab.dao.ApartmentDao;
 import org.flexpay.ab.dao.PersonDao;
+import org.flexpay.ab.dao.PersonDaoExt;
 import org.flexpay.ab.persistence.Apartment;
 import org.flexpay.ab.persistence.Person;
 import org.flexpay.ab.persistence.TestData;
@@ -21,6 +22,8 @@ public class TestPersonSaveRegistrationAction extends AbSpringBeanAwareTestCase 
 	private ApartmentDao apartmentDao;
 	@Autowired
 	private PersonDao personDao;
+	@Autowired
+	private PersonDaoExt personDaoExt;
 
 	@Test
 	public void testNullApartmentFilter() throws Exception {
@@ -100,7 +103,7 @@ public class TestPersonSaveRegistrationAction extends AbSpringBeanAwareTestCase 
 	}
 
 	@Test
-	public void testNewPersonAction() throws Exception {
+	public void testNewPerson() throws Exception {
 
 		action.setApartmentFilter(TestData.IVANOVA_27_330.getId());
 		action.setPerson(new Person(0L));
@@ -111,7 +114,7 @@ public class TestPersonSaveRegistrationAction extends AbSpringBeanAwareTestCase 
 	}
 
 	@Test
-	public void testIncorrectData1() throws Exception {
+	public void testIncorrectPersonId() throws Exception {
 
 		action.setApartmentFilter(TestData.IVANOVA_27_330.getId());
 		action.setPerson(new Person(-10L));
@@ -132,15 +135,20 @@ public class TestPersonSaveRegistrationAction extends AbSpringBeanAwareTestCase 
 
 	}
 
-	//TODO
 	@Test
 	public void testDisabledPerson() throws Exception {
 
+		Person person = createSimplePerson("simplePerson");
+		person.disable();
+		personDao.create(person);
+
+		action.setPerson(person);
 		action.setApartmentFilter(TestData.IVANOVA_27_330.getId());
-		action.setPerson(new Person(101010L));
 
 		assertEquals("Invalid action result", FPActionSupport.SUCCESS, action.execute());
 		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
+
+		personDaoExt.deletePerson(person);
 
 	}
 
@@ -169,7 +177,7 @@ public class TestPersonSaveRegistrationAction extends AbSpringBeanAwareTestCase 
 		assertNotNull("No registration set 2", apartment);
 		assertEquals("Incorrect update apartment id", TestData.IVANOVA_27_330.getId(), apartment.getId());
 
-		personDao.delete(action.getPerson());
+		personDaoExt.deletePerson(action.getPerson());
 
 	}
 

@@ -133,4 +133,24 @@ public class PersonDaoExtImpl extends HibernateDaoSupport implements PersonDaoEx
 		return getHibernateTemplate().findByNamedQuery("Person.listPersonsWithRegistrations", params);
 	}
 
+	@Override
+	public void deletePerson(final Person person) {
+		getHibernateTemplate().execute(new HibernateCallback() {
+			@Override
+			public Object doInHibernate(Session session) throws HibernateException {
+				Long personId = person.getId();
+				if (personId == null || personId <= 0) {
+					return null;
+				}
+				session.getNamedQuery("Person.deleteRegistration")
+						.setLong(0, personId).executeUpdate();
+				session.getNamedQuery("Person.deleteIdentity")
+						.setLong(0, personId).executeUpdate();
+				session.getNamedQuery("Person.deletePerson")
+						.setLong(0, personId).executeUpdate();
+				return null;
+			}
+		});
+	}
+
 }

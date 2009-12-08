@@ -2,13 +2,13 @@ package org.flexpay.ab.action.person;
 
 import org.flexpay.ab.actions.person.PersonViewAction;
 import org.flexpay.ab.dao.PersonDao;
+import org.flexpay.ab.dao.PersonDaoExt;
 import org.flexpay.ab.persistence.Person;
 import org.flexpay.ab.persistence.TestData;
 import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
+import static org.flexpay.ab.util.TestUtils.createSimplePerson;
 import org.flexpay.common.actions.FPActionSupport;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -18,6 +18,8 @@ public class TestPersonViewAction extends AbSpringBeanAwareTestCase {
 	private PersonViewAction action;
 	@Autowired
 	private PersonDao personDao;
+	@Autowired
+	private PersonDaoExt personDaoExt;
 
 	@Test
 	public void testNullPerson() throws Exception {
@@ -65,13 +67,18 @@ public class TestPersonViewAction extends AbSpringBeanAwareTestCase {
 
 	}
 
-	//TODO
 	@Test
 	public void testDisabledPerson() throws Exception {
 
-		action.setPerson(new Person(101010L));
+		Person person = createSimplePerson("simple");
+		person.disable();
+		personDao.create(person);
+
+		action.setPerson(person);
 		assertEquals("Invalid action result", FPActionSupport.REDIRECT_ERROR, action.execute());
 		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
+
+		personDaoExt.deletePerson(person);
 
 	}
 
