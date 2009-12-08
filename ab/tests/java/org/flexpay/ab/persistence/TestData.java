@@ -38,6 +38,7 @@ public abstract class TestData {
 
 	// test towns
 	public static final Stub<Town> TOWN_NSK = new Stub<Town>(2L);
+	public static final Stub<Town> TOWN_BERDSK = new Stub<Town>(28L);
 	public static final Stub<Town> TOWN_HKV = new Stub<Town>(1L);
 
 	// test regions

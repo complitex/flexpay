@@ -5,6 +5,7 @@ import org.flexpay.ab.persistence.StreetName;
 import org.flexpay.ab.persistence.StreetType;
 import org.flexpay.ab.persistence.Town;
 import org.flexpay.ab.service.StreetService;
+import org.flexpay.ab.util.config.AbUserPreferences;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
 import org.jetbrains.annotations.NotNull;
@@ -25,6 +26,7 @@ public class StreetFilterAjaxAction extends FilterAjaxAction {
 
 		if (parents == null) {
 			log.warn("Parent parameter is null");
+			addActionError(getText("common.error.invalid_id"));
 			return SUCCESS;
 		}
 
@@ -34,10 +36,15 @@ public class StreetFilterAjaxAction extends FilterAjaxAction {
 			townId = Long.parseLong(parents[0]);
 		} catch (Exception e) {
 			log.warn("Incorrect town id in filter ({})", parents[0]);
+			addActionError(getText("common.object_not_selected"));
 			return SUCCESS;
 		}
-		if (townId == 0) {
+		if (townId.equals(0L)) {
 			return SUCCESS;
+		}
+
+		if (q == null) {
+			q = "";
 		}
 
 		List<Street> streets = streetService.findByParentAndQuery(new Stub<Town>(townId), "%" + q + "%");
@@ -63,24 +70,47 @@ public class StreetFilterAjaxAction extends FilterAjaxAction {
 
 	@Override
 	public void readFilterString() {
-		if (filterValueLong != null && filterValueLong > 0) {
-			Street street = streetService.readFull(new Stub<Street>(filterValueLong));
-			if (street != null && street.getCurrentName() != null && street.getCurrentType() != null) {
-				filterString = getTranslation(street.getCurrentType().getTranslations()).getShortName()
-								  + " " + getTranslationName(street.getCurrentName().getTranslations());
-			} else {
-				filterString = "";
-			}
-		} else {
-			filterString = "";
+
+		filterString = "";
+
+		if (filterValueLong == null || filterValueLong <= 0) {
+			return;
+		}
+
+		Street street = streetService.readFull(new Stub<Street>(filterValueLong));
+		if (street == null) {
+			log.warn("Can't get street with id {} from DB", filterValueLong);
+			addActionError(getText("common.object_not_selected"));
+			return;
+		}
+		if (street.getCurrentName() != null && street.getCurrentType() != null) {
+			filterString = getTranslation(street.getCurrentType().getTranslations()).getShortName()
+							  + " " + getTranslationName(street.getCurrentName().getTranslations());
 		}
 	}
 
 	@Override
 	public void saveFilterValue() {
-		getUserPreferences().setStreetFilter(filterValueLong);
-		getUserPreferences().setBuildingFilter(0L);
-		getUserPreferences().setApartmentFilter(0L);
+		if (filterString == null) {
+
+			if (filterValueLong == null || filterValueLong <= 0) {
+				log.warn("Incorrect filter value {}", filterValue);
+				addActionError(getText("common.error.invalid_id"));
+				return;
+			}
+
+			Street street = streetService.readFull(new Stub<Street>(filterValueLong));
+			if (street == null) {
+				log.warn("Can't get street with id {} from DB", filterValueLong);
+				addActionError(getText("common.object_not_selected"));
+				return;
+			}
+		}
+
+		AbUserPreferences up = getUserPreferences();
+		up.setStreetFilter(filterValueLong);
+		up.setBuildingFilter(0L);
+		up.setApartmentFilter(0L);
 	}
 
 	@Required

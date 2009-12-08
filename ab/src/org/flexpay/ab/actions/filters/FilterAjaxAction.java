@@ -32,7 +32,7 @@ import java.util.List;
  */
 public abstract class FilterAjaxAction extends FPActionSupport {
 
-	protected final static String PREREQUEST_RESPONSE = "prerequestResponse";
+	public final static String PREREQUEST_RESPONSE = "prerequestResponse";
 
 	protected String[] parents;
 	protected String q;
@@ -54,7 +54,9 @@ public abstract class FilterAjaxAction extends FPActionSupport {
 
 		if (preRequest != null && preRequest) {
 			readFilterString();
-			saveFilterValue();
+			if (!hasActionErrors()) {
+				saveFilterValue();
+			}
 			return PREREQUEST_RESPONSE;
 		} else if (saveFilterValue != null && saveFilterValue) {
 			saveFilterValue();

@@ -4,6 +4,7 @@ import org.flexpay.ab.actions.town.TownsListPageAction;
 import org.flexpay.ab.persistence.TestData;
 import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
 import org.flexpay.ab.util.config.AbUserPreferences;
+import static org.flexpay.ab.util.config.ApplicationConfig.getDefaultRegionStub;
 import org.flexpay.common.actions.FPActionSupport;
 import static org.junit.Assert.assertEquals;
 import org.junit.Test;
@@ -20,19 +21,19 @@ public class TestTownsListPageAction extends AbSpringBeanAwareTestCase {
 		assertEquals("Invalid action result", FPActionSupport.SUCCESS, action.execute());
 
 		AbUserPreferences up = (AbUserPreferences) action.getUserPreferences();
-		assertEquals("Invalid value of regionFilter in user preferences", new Long(0), up.getRegionFilter());
+		assertEquals("Invalid value of regionFilter in user preferences", getDefaultRegionStub().getId(), up.getRegionFilter());
 
 	}
 
 	@Test
 	public void testAction2() throws Exception {
 
-		action.setRegionFilter(TestData.REGION_NSK.getId());
+		action.setRegionFilter(TestData.REGION_TSK.getId());
 
 		assertEquals("Invalid action result", FPActionSupport.SUCCESS, action.execute());
 
 		AbUserPreferences up = (AbUserPreferences) action.getUserPreferences();
-		assertEquals("Invalid value of regionFilter in user preferences", TestData.REGION_NSK.getId(), up.getRegionFilter());
+		assertEquals("Invalid value of regionFilter in user preferences", TestData.REGION_TSK.getId(), up.getRegionFilter());
 
 	}
 
@@ -44,7 +45,7 @@ public class TestTownsListPageAction extends AbSpringBeanAwareTestCase {
 		assertEquals("Invalid action result", FPActionSupport.SUCCESS, action.execute());
 
 		AbUserPreferences up = (AbUserPreferences) action.getUserPreferences();
-		assertEquals("Invalid value of regionFilter in user preferences", new Long(0), up.getRegionFilter());
+		assertEquals("Invalid value of regionFilter in user preferences", getDefaultRegionStub().getId(), up.getRegionFilter());
 
 	}
 
