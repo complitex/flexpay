@@ -5,6 +5,7 @@ import org.flexpay.ab.persistence.*;
 import org.flexpay.ab.service.AddressAttributeTypeService;
 import org.flexpay.ab.service.BuildingService;
 import org.flexpay.ab.service.DistrictService;
+import org.flexpay.ab.service.StreetService;
 import org.flexpay.ab.util.config.ApplicationConfig;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.exception.FlexPayException;
@@ -30,6 +31,7 @@ public class BuildingAddressEditAction extends FPActionSupport {
 
 	private String crumbCreateKey;
 	private BuildingService buildingService;
+	private StreetService streetService;
 	private DistrictService districtService;
 	private AddressAttributeTypeService addressAttributeTypeService;
 
@@ -81,10 +83,7 @@ public class BuildingAddressEditAction extends FPActionSupport {
 
 		}
 
-		if (attributesMap == null) {
-			log.debug("AttributesMap parameter is null");
-			attributesMap = treeMap();
-		}
+		correctAttributes();
 
 		if (isNotSubmit()) {
 
@@ -102,7 +101,6 @@ public class BuildingAddressEditAction extends FPActionSupport {
 				countryFilter = address.getCountry().getId();
 			}
 
-			setupAttributes();
 			return INPUT;
 		}
 
@@ -135,21 +133,35 @@ public class BuildingAddressEditAction extends FPActionSupport {
 		if (streetFilter == null || streetFilter <= 0) {
 			log.warn("Incorrect street id in filter ({})", streetFilter);
 			addActionError(getText("ab.error.building_address.street_required"));
+		} else {
+			Stub<Street> stub = new Stub<Street>(streetFilter);
+			Street street = streetService.readFull(stub);
+			if (street == null) {
+				log.warn("Can't get street with id {} from DB", stub.getId());
+				addActionError(getText("common.object_not_selected"));
+			} else if (street.isNotActive()) {
+				log.warn("Street with id {} is disabled", stub.getId());
+				addActionError(getText("common.object_not_selected"));
+			}
 		}
 
 		return !hasActionErrors();
 	}
 
-	private void setupAttributes() {
-
-		for (AddressAttributeType type : addressAttributeTypeService.getAttributeTypes()) {
-			AddressAttribute attribute = address.getAttribute(type);
-			attributesMap.put(type.getId(), attribute != null ? attribute.getValue() : "");
+	private void correctAttributes() {
+		if (attributesMap == null) {
+			log.debug("AttributesMap parameter is null");
+			attributesMap = treeMap();
 		}
-		log.debug("Address attributes: {}", attributesMap);
+		Map<Long, String> newAttributesMap = treeMap();
+		for (AddressAttributeType type : addressAttributeTypeService.getAttributeTypes()) {
+			newAttributesMap.put(type.getId(), attributesMap.containsKey(type.getId()) ? attributesMap.get(type.getId()) : "");
+		}
+		attributesMap = newAttributesMap;
 
 		District district = districtService.readFull(building.getDistrictStub());
 		assert district != null;
+
 	}
 
 	/**
@@ -244,4 +256,8 @@ public class BuildingAddressEditAction extends FPActionSupport {
 		this.districtService = districtService;
 	}
 
+	@Required
+	public void setStreetService(StreetService streetService) {
+		this.streetService = streetService;
+	}
 }

@@ -1,11 +1,14 @@
 package org.flexpay.ab.actions.apartment;
 
 import org.flexpay.ab.persistence.Apartment;
+import org.flexpay.ab.persistence.Building;
 import org.flexpay.ab.persistence.filters.BuildingsFilter;
 import org.flexpay.ab.persistence.sorter.ApartmentSorter;
 import org.flexpay.ab.service.ApartmentService;
+import org.flexpay.ab.service.BuildingService;
 import org.flexpay.common.actions.FPActionWithPagerSupport;
 import static org.flexpay.common.persistence.DomainObject.collectionIds;
+import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.util.CollectionUtils.arrayStack;
 import static org.flexpay.common.util.CollectionUtils.list;
 import org.jetbrains.annotations.NotNull;
@@ -21,6 +24,7 @@ public class ApartmentsListAction extends FPActionWithPagerSupport<Apartment> {
 	protected ApartmentSorter apartmentSorter = new ApartmentSorter();
 
 	private ApartmentService apartmentService;
+	private BuildingService buildingService;
 
 	@NotNull
 	@Override
@@ -50,14 +54,24 @@ public class ApartmentsListAction extends FPActionWithPagerSupport<Apartment> {
 
 	private boolean doValidate() {
 
-		boolean valid = true;
-
 		if (buildingFilter == null || buildingFilter <= 0) {
-			log.debug("Incorrect building id in filter ({})", buildingFilter);
-			valid = false;
+			log.warn("Incorrect building id in filter ({})", buildingFilter);
+			addActionError(getText("ab.error.building.no_building"));
+		} else {
+			Stub<Building> stub = new Stub<Building>(buildingFilter);
+			Building building = buildingService.readFull(stub);
+			if (building == null) {
+				log.warn("Can't get building with id {} from DB", stub.getId());
+				addActionError(getText("common.object_not_selected"));
+				buildingFilter = null;
+			} else if (building.isNotActive()) {
+				log.warn("Building with id {} is disabled", stub.getId());
+				addActionError(getText("common.object_not_selected"));
+				buildingFilter = null;
+			}
 		}
 
-		return valid;
+		return !hasActionErrors();
 	}
 
 	/**
@@ -94,4 +108,8 @@ public class ApartmentsListAction extends FPActionWithPagerSupport<Apartment> {
 		this.apartmentService = apartmentService;
 	}
 
+	@Required
+	public void setBuildingService(BuildingService buildingService) {
+		this.buildingService = buildingService;
+	}
 }

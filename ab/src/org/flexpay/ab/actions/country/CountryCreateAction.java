@@ -6,7 +6,6 @@ import org.flexpay.ab.service.CountryService;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.persistence.Language;
 import static org.flexpay.common.util.CollectionUtils.treeMap;
-import org.flexpay.common.util.config.ApplicationConfig;
 import static org.flexpay.common.util.config.ApplicationConfig.getLanguages;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
@@ -25,17 +24,9 @@ public class CountryCreateAction extends FPActionSupport {
 	@Override
 	public String doExecute() throws Exception {
 
-		if (names == null) {
-			log.debug("Names parameter is null");
-			names = treeMap();
-		}
-		if (shortNames == null) {
-			log.debug("ShortNames parameter is null");
-			shortNames = treeMap();
-		}
+		correctNames();
 
 		if (isNotSubmit()) {
-			initData();
 			return INPUT;
 		}
 
@@ -55,11 +46,23 @@ public class CountryCreateAction extends FPActionSupport {
 
 	}
 
-	private void initData() {
-		for (Language lang : getLanguages()) {
-			names.put(lang.getId(), "");
-			shortNames.put(lang.getId(), "");
+	private void correctNames() {
+		if (names == null) {
+			log.debug("Names parameter is null");
+			names = treeMap();
 		}
+		if (shortNames == null) {
+			log.debug("Short names parameter is null");
+			shortNames = treeMap();
+		}
+		Map<Long, String> newNames = treeMap();
+		Map<Long, String> newShortNames = treeMap();
+		for (Language lang : getLanguages()) {
+			newNames.put(lang.getId(), names.containsKey(lang.getId()) ? names.get(lang.getId()) : "");
+			newShortNames.put(lang.getId(), shortNames.containsKey(lang.getId()) ? shortNames.get(lang.getId()) : "");
+		}
+		names = newNames;
+		shortNames = newShortNames;
 	}
 
     /**

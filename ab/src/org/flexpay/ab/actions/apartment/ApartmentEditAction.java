@@ -1,6 +1,7 @@
 package org.flexpay.ab.actions.apartment;
 
 import org.flexpay.ab.persistence.Apartment;
+import org.flexpay.ab.persistence.Building;
 import org.flexpay.ab.persistence.BuildingAddress;
 import org.flexpay.ab.service.ApartmentService;
 import org.flexpay.ab.service.BuildingService;
@@ -92,6 +93,16 @@ public class ApartmentEditAction extends FPActionSupport {
 		if (buildingFilter == null || buildingFilter <= 0) {
 			log.warn("Incorrect building address id in filter ({})", buildingFilter);
 			addActionError(getText("ab.error.apartment.no_building"));
+		} else if (apartment.isNew()) {
+			Stub<BuildingAddress> stub = new Stub<BuildingAddress>(buildingFilter);
+			BuildingAddress address = buildingService.readFullAddress(stub);
+			if (address == null) {
+				log.warn("Can't get building address with id {} from DB", stub.getId());
+				addActionError(getText("common.object_not_selected"));
+			} else if (address.isNotActive()) {
+				log.warn("Building address with id {} is disabled", stub.getId());
+				addActionError(getText("common.object_not_selected"));
+			}
 		}
 
 		return !hasActionErrors();

@@ -1,11 +1,14 @@
 package org.flexpay.ab.actions.region;
 
+import org.flexpay.ab.persistence.Country;
 import org.flexpay.ab.persistence.Region;
 import org.flexpay.ab.persistence.filters.CountryFilter;
 import org.flexpay.ab.persistence.sorter.RegionSorter;
+import org.flexpay.ab.service.CountryService;
 import org.flexpay.ab.service.RegionService;
 import org.flexpay.common.actions.FPActionWithPagerSupport;
 import static org.flexpay.common.persistence.DomainObject.collectionIds;
+import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.util.CollectionUtils.arrayStack;
 import static org.flexpay.common.util.CollectionUtils.list;
 import org.jetbrains.annotations.NotNull;
@@ -20,6 +23,7 @@ public class RegionsListAction extends FPActionWithPagerSupport<Region> {
 	private RegionSorter regionSorter = new RegionSorter();
 
 	private RegionService regionService;
+	private CountryService countryService;
 
 	@NotNull
 	@Override
@@ -51,14 +55,24 @@ public class RegionsListAction extends FPActionWithPagerSupport<Region> {
 
 	private boolean doValidate() {
 
-		boolean valid = true;
-
 		if (countryFilter == null || countryFilter <= 0) {
 			log.warn("Incorrect country id in filter ({})", countryFilter);
-			valid = false;
+			addActionError(getText("ab.error.region.no_country"));
+		} else {
+			Stub<Country> stub = new Stub<Country>(countryFilter);
+			Country country = countryService.readFull(stub);
+			if (country == null) {
+				log.warn("Can't get country with id {} from DB", stub.getId());
+				addActionError(getText("common.object_not_selected"));
+				countryFilter = null;
+			} else if (country.isNotActive()) {
+				log.warn("Country with id {} is disabled", stub.getId());
+				addActionError(getText("common.object_not_selected"));
+				countryFilter = null;
+			}
 		}
 
-		return valid;
+		return !hasActionErrors();
 	}
 
 	/**
@@ -95,4 +109,8 @@ public class RegionsListAction extends FPActionWithPagerSupport<Region> {
 		this.regionService = regionService;
 	}
 
+	@Required
+	public void setCountryService(CountryService countryService) {
+		this.countryService = countryService;
+	}
 }

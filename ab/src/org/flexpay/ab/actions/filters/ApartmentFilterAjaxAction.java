@@ -70,20 +70,21 @@ public class ApartmentFilterAjaxAction extends FilterAjaxAction {
 	@Override
 	public void saveFilterValue() {
 
-		if (filterString == null) {
+		if (filterValueLong == null || filterValueLong <= 0) {
+			log.warn("Incorrect filter value {}", filterValue);
+			addActionError(getText("common.error.invalid_id"));
+			return;
+		}
 
-			if (filterValueLong == null || filterValueLong <= 0) {
-				log.warn("Incorrect filter value {}", filterValue);
-				addActionError(getText("common.error.invalid_id"));
-				return;
-			}
-
-			Apartment apartment = apartmentService.readFull(new Stub<Apartment>(filterValueLong));
-			if (apartment == null) {
-				log.warn("Can't get apartment with id {} from DB", filterValueLong);
-				addActionError(getText("common.object_not_selected"));
-				return;
-			}
+		Apartment apartment = apartmentService.readFull(new Stub<Apartment>(filterValueLong));
+		if (apartment == null) {
+			log.warn("Can't get apartment with id {} from DB", filterValueLong);
+			addActionError(getText("common.object_not_selected"));
+			return;
+		} else if (apartment.isNotActive()) {
+			log.warn("Apartment address with id {} is disabled", filterValueLong);
+			addActionError(getText("common.object_not_selected"));
+			return;
 		}
 
 		getUserPreferences().setApartmentFilter(filterValueLong);

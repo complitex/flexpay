@@ -50,14 +50,7 @@ public class StreetTypeEditAction extends FPActionSupport {
 
 		}
 
-		if (names == null) {
-			log.debug("Names parameter is null");
-			names = treeMap();
-		}
-		if (shortNames == null) {
-			log.debug("ShortNames parameter is null");
-			shortNames = treeMap();
-		}
+		correctNames();
 
 		if (isNotSubmit()) {
 			initData();
@@ -83,17 +76,15 @@ public class StreetTypeEditAction extends FPActionSupport {
 		return REDIRECT_SUCCESS;
 	}
 
-	/**
-	 * Get default error execution result
-	 * <p/>
-	 * If return code starts with a {@link #PREFIX_REDIRECT} all error messages are stored in a session
-	 *
-	 * @return {@link #ERROR} by default
-	 */
-	@NotNull
-	@Override
-	protected String getErrorResult() {
-		return INPUT;
+	private void correctNames() {
+		Map<Long, String> newNames = treeMap();
+		Map<Long, String> newShortNames = treeMap();
+		for (Language lang : getLanguages()) {
+			newNames.put(lang.getId(), names != null && names.containsKey(lang.getId()) ? names.get(lang.getId()) : "");
+			newShortNames.put(lang.getId(), shortNames != null && shortNames.containsKey(lang.getId()) ? shortNames.get(lang.getId()) : "");
+		}
+		names = newNames;
+		shortNames = newShortNames;
 	}
 
 	private void initData() {
@@ -108,6 +99,19 @@ public class StreetTypeEditAction extends FPActionSupport {
 				shortNames.put(lang.getId(), "");
 			}
 		}
+	}
+
+	/**
+	 * Get default error execution result
+	 * <p/>
+	 * If return code starts with a {@link #PREFIX_REDIRECT} all error messages are stored in a session
+	 *
+	 * @return {@link #ERROR} by default
+	 */
+	@NotNull
+	@Override
+	protected String getErrorResult() {
+		return INPUT;
 	}
 
 	@Override

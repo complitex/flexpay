@@ -1,11 +1,14 @@
 package org.flexpay.ab.actions.buildings;
 
 import org.flexpay.ab.persistence.BuildingAddress;
+import org.flexpay.ab.persistence.Street;
 import org.flexpay.ab.persistence.filters.StreetFilter;
 import org.flexpay.ab.persistence.sorter.BuildingsSorter;
 import org.flexpay.ab.service.BuildingService;
+import org.flexpay.ab.service.StreetService;
 import org.flexpay.common.actions.FPActionWithPagerSupport;
 import static org.flexpay.common.persistence.DomainObject.collectionIds;
+import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.util.CollectionUtils.arrayStack;
 import static org.flexpay.common.util.CollectionUtils.list;
 import org.jetbrains.annotations.NotNull;
@@ -20,6 +23,7 @@ public class BuildingsListAction extends FPActionWithPagerSupport<BuildingAddres
 	private List<BuildingAddress> buildings = list();
 
 	private BuildingService buildingService;
+	private StreetService streetService;
 
 	@NotNull
 	@Override
@@ -49,14 +53,24 @@ public class BuildingsListAction extends FPActionWithPagerSupport<BuildingAddres
 
 	private boolean doValidate() {
 
-		boolean valid = true;
-
 		if (streetFilter == null || streetFilter <= 0) {
 			log.warn("Incorrect street id in filter ({})", streetFilter);
-			valid = false;
+			addActionError(getText("ab.error.street.no_street"));
+		} else {
+			Stub<Street> stub = new Stub<Street>(streetFilter);
+			Street street = streetService.readFull(stub);
+			if (street == null) {
+				log.warn("Can't get street with id {} from DB", stub.getId());
+				addActionError(getText("common.object_not_selected"));
+				streetFilter = null;
+			} else if (street.isNotActive()) {
+				log.warn("Street with id {} is disabled", stub.getId());
+				addActionError(getText("common.object_not_selected"));
+				streetFilter = null;
+			}
 		}
 
-		return valid;
+		return !hasActionErrors();
 	}
 
 	/**
@@ -91,6 +105,11 @@ public class BuildingsListAction extends FPActionWithPagerSupport<BuildingAddres
 	@Required
 	public void setBuildingService(BuildingService buildingService) {
 		this.buildingService = buildingService;
+	}
+
+	@Required
+	public void setStreetService(StreetService streetService) {
+		this.streetService = streetService;
 	}
 
 }

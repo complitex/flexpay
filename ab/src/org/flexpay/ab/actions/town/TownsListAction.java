@@ -1,12 +1,15 @@
 package org.flexpay.ab.actions.town;
 
+import org.flexpay.ab.persistence.Region;
 import org.flexpay.ab.persistence.Town;
 import org.flexpay.ab.persistence.filters.RegionFilter;
 import org.flexpay.ab.persistence.sorter.TownSorterByName;
 import org.flexpay.ab.persistence.sorter.TownSorterByType;
+import org.flexpay.ab.service.RegionService;
 import org.flexpay.ab.service.TownService;
 import org.flexpay.common.actions.FPActionWithPagerSupport;
 import static org.flexpay.common.persistence.DomainObject.collectionIds;
+import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.util.CollectionUtils.arrayStack;
 import static org.flexpay.common.util.CollectionUtils.list;
 import org.jetbrains.annotations.NotNull;
@@ -22,6 +25,7 @@ public class TownsListAction extends FPActionWithPagerSupport<Town> {
 	private TownSorterByType townSorterByType = new TownSorterByType();
 
 	private TownService townService;
+	private RegionService regionService;
 
 	@NotNull
 	@Override
@@ -58,14 +62,24 @@ public class TownsListAction extends FPActionWithPagerSupport<Town> {
 
 	private boolean doValidate() {
 
-		boolean valid = true;
-
 		if (regionFilter == null || regionFilter <= 0) {
-			log.debug("Incorrect region id in filter ({})", regionFilter);
-			valid = false;
+			log.warn("Incorrect region id in filter ({})", regionFilter);
+			addActionError(getText("ab.error.street.no_region"));
+		} else {
+			Stub<Region> stub = new Stub<Region>(regionFilter);
+			Region region = regionService.readFull(stub);
+			if (region == null) {
+				log.warn("Can't get region with id {} from DB", stub.getId());
+				addActionError(getText("common.object_not_selected"));
+				regionFilter = null;
+			} else if (region.isNotActive()) {
+				log.warn("Region with id {} is disabled", stub.getId());
+				addActionError(getText("common.object_not_selected"));
+				regionFilter = null;
+			}
 		}
 
-		return valid;
+		return !hasActionErrors();
 	}
 
 	/**
@@ -110,4 +124,8 @@ public class TownsListAction extends FPActionWithPagerSupport<Town> {
 		this.townService = townService;
 	}
 
+	@Required
+	public void setRegionService(RegionService regionService) {
+		this.regionService = regionService;
+	}
 }

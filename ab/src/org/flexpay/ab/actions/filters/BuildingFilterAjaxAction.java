@@ -76,20 +76,21 @@ public class BuildingFilterAjaxAction extends FilterAjaxAction {
 	@Override
 	public void saveFilterValue() {
 
-		if (filterString == null) {
+		if (filterValueLong == null || filterValueLong <= 0) {
+			log.warn("Incorrect filter value {}", filterValue);
+			addActionError(getText("common.error.invalid_id"));
+			return;
+		}
 
-			if (filterValueLong == null || filterValueLong <= 0) {
-				log.warn("Incorrect filter value {}", filterValue);
-				addActionError(getText("common.error.invalid_id"));
-				return;
-			}
-
-			BuildingAddress address = buildingService.readFullAddress(new Stub<BuildingAddress>(filterValueLong));
-			if (address == null) {
-				log.warn("Can't get building address with id {} from DB", filterValueLong);
-				addActionError(getText("common.object_not_selected"));
-				return;
-			}
+		BuildingAddress address = buildingService.readFullAddress(new Stub<BuildingAddress>(filterValueLong));
+		if (address == null) {
+			log.warn("Can't get building address with id {} from DB", filterValueLong);
+			addActionError(getText("common.object_not_selected"));
+			return;
+		} else if (address.isNotActive()) {
+			log.warn("Building address with id {} is disabled", filterValueLong);
+			addActionError(getText("common.object_not_selected"));
+			return;
 		}
 
 		AbUserPreferences up = getUserPreferences();

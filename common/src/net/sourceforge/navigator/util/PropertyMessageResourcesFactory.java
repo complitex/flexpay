@@ -17,6 +17,7 @@ public class PropertyMessageResourcesFactory extends MessageResourcesFactory {
      *
      * @param config Configuration parameter(s) for the requested bundle
      */
+	@Override
     public MessageResources createResources(String config) {
         return new PropertyMessageResources(this, config, this.returnNull);
     }

@@ -2,6 +2,7 @@ package org.flexpay.ab.actions.person;
 
 import org.flexpay.ab.persistence.Apartment;
 import org.flexpay.ab.persistence.Person;
+import org.flexpay.ab.service.ApartmentService;
 import org.flexpay.ab.service.PersonService;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.persistence.Stub;
@@ -21,6 +22,7 @@ public class PersonSaveRegistrationAction extends FPActionSupport {
 	private Long apartmentFilter;
 
 	private PersonService personService;
+	private ApartmentService apartmentService;
 
 	@NotNull
 	@Override
@@ -29,6 +31,17 @@ public class PersonSaveRegistrationAction extends FPActionSupport {
 		if (apartmentFilter == null || apartmentFilter <= 0) {
 			log.warn("Incorrect apartment id");
 			addActionError(getText("ab.error.person.no_apartment"));
+			return SUCCESS;
+		}
+
+		Apartment apartment = apartmentService.readFull(new Stub<Apartment>(apartmentFilter));
+		if (apartment == null) {
+			log.warn("Can't get apartment with id {} from DB", apartmentFilter);
+			addActionError(getText("common.object_not_selected"));
+			return SUCCESS;
+		} else if (apartment.isNotActive()) {
+			log.warn("Apartment with id {} is disabled", apartmentFilter);
+			addActionError(getText("common.object_not_selected"));
 			return SUCCESS;
 		}
 
@@ -106,4 +119,8 @@ public class PersonSaveRegistrationAction extends FPActionSupport {
 		this.personService = personService;
 	}
 
+	@Required
+	public void setApartmentService(ApartmentService apartmentService) {
+		this.apartmentService = apartmentService;
+	}
 }

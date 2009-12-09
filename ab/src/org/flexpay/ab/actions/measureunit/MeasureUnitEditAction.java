@@ -48,10 +48,7 @@ public class MeasureUnitEditAction extends FPActionSupport {
 
 		}
 
-		if (names == null) {
-			log.debug("Names parameter is null");
-			names = treeMap();
-		}
+		correctNames();
 
 		if (isNotSubmit()) {
 			initData();
@@ -73,6 +70,18 @@ public class MeasureUnitEditAction extends FPActionSupport {
 		addActionMessage(getText("common.measure_unit.saved"));
 
 		return REDIRECT_SUCCESS;
+	}
+
+	private void correctNames() {
+		if (names == null) {
+			log.debug("Names parameter is null");
+			names = treeMap();
+		}
+		Map<Long, String> newNames = treeMap();
+		for (Language lang : getLanguages()) {
+			newNames.put(lang.getId(), names.containsKey(lang.getId()) ? names.get(lang.getId()) : "");
+		}
+		names = newNames;
 	}
 
 	private void initData() {

@@ -13,6 +13,7 @@ public class FPMenuDisplayer extends AbstractMenuDisplayer {
 
 	private Map<Integer, MenuComponent> levelComponents = new HashMap<Integer, MenuComponent>();
 
+	@Override
     public void display(MenuComponent menu) throws JspException, IOException {
 
 		if (menu.getMenuComponents().length == 0) {

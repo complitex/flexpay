@@ -16,6 +16,8 @@ import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.TagSupport;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class DisplayMenuTag extends TagSupport {
 
@@ -42,6 +44,7 @@ public class DisplayMenuTag extends TagSupport {
 		this.levelEnd = levelEnd;
 	}
 
+	@Override
 	public int doStartTag() throws JspException {
 
         MenuDisplayer displayer = (MenuDisplayer) pageContext.getAttribute(UseMenuDisplayerTag.DISPLAYER_KEY);
@@ -158,10 +161,15 @@ public class DisplayMenuTag extends TagSupport {
             HttpServletResponse response = (HttpServletResponse) pageContext.getResponse();
             if (menu.getAction() != null) {
 				String menuParam = request.getParameter("menu");
+
 				if (menuParam == null || !menuParam.equals(menu.getName())) {
 					request.getParameterMap().put("menu", menu.getName());
 				}
-                menu.setLocation(UrlHelper.buildUrl(menu.getNamespace() + "/" + menu.getAction(), request, response, request.getParameterMap()));
+
+				Map<String, Object> params = new HashMap<String, Object>();
+				params.put("menu", request.getParameter("menu"));
+
+                menu.setLocation(UrlHelper.buildUrl(menu.getNamespace() + "/" + menu.getAction(), request, response, params));
             }
         }
     }
@@ -191,6 +199,7 @@ public class DisplayMenuTag extends TagSupport {
         return sb.append(str);
     }
 
+	@Override
     public void release() {
         name = null;
         target = null;
