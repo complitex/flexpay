@@ -68,30 +68,36 @@ public class BuildingCreateAction extends FPActionSupport {
 		if (districtFilter == null || districtFilter <= 0) {
 			log.warn("Incorrect district id in filter ({})", districtFilter);
 			addActionError(getText("ab.error.building_address.district_required"));
+			districtFilter = 0L;
 		} else {
 			Stub<District> stub = new Stub<District>(districtFilter);
 			District district = districtService.readFull(stub);
 			if (district == null) {
 				log.warn("Can't get district with id {} from DB", stub.getId());
 				addActionError(getText("common.object_not_selected"));
+				districtFilter = 0L;
 			} else if (district.isNotActive()) {
 				log.warn("District with id {} is disabled", stub.getId());
 				addActionError(getText("common.object_not_selected"));
+				districtFilter = 0L;
 			}
 		}
 
 		if (streetFilter == null || streetFilter <= 0) {
 			log.warn("Incorrect street id in filter ({})", streetFilter);
 			addActionError(getText("ab.error.building_address.street_required"));
+			streetFilter = 0L;
 		} else {
 			Stub<Street> stub = new Stub<Street>(streetFilter);
 			Street street = streetService.readFull(stub);
 			if (street == null) {
 				log.warn("Can't get street with id {} from DB", stub.getId());
 				addActionError(getText("common.object_not_selected"));
+				streetFilter = 0L;
 			} else if (street.isNotActive()) {
 				log.warn("Street with id {} is disabled", stub.getId());
 				addActionError(getText("common.object_not_selected"));
+				streetFilter = 0L;
 			}
 		}
 

@@ -133,15 +133,18 @@ public class BuildingAddressEditAction extends FPActionSupport {
 		if (streetFilter == null || streetFilter <= 0) {
 			log.warn("Incorrect street id in filter ({})", streetFilter);
 			addActionError(getText("ab.error.building_address.street_required"));
+			streetFilter = 0L;
 		} else {
 			Stub<Street> stub = new Stub<Street>(streetFilter);
 			Street street = streetService.readFull(stub);
 			if (street == null) {
 				log.warn("Can't get street with id {} from DB", stub.getId());
 				addActionError(getText("common.object_not_selected"));
+				streetFilter = 0L;
 			} else if (street.isNotActive()) {
 				log.warn("Street with id {} is disabled", stub.getId());
 				addActionError(getText("common.object_not_selected"));
+				streetFilter = 0L;
 			}
 		}
 
