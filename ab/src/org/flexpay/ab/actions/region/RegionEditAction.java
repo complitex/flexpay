@@ -82,15 +82,18 @@ public class RegionEditAction extends FPActionSupport {
 		if (countryFilter == null || countryFilter <= 0) {
 			log.warn("Incorrect country id in filter ({})", countryFilter);
 			addActionError(getText("ab.error.region.no_country"));
+			countryFilter = 0L;
 		} else if (region.isNew()) {
 			Stub<Country> stub = new Stub<Country>(countryFilter);
 			Country country = countryService.readFull(stub);
 			if (country == null) {
 				log.warn("Can't get country with id {} from DB", stub.getId());
 				addActionError(getText("common.object_not_selected"));
+				countryFilter = 0L;
 			} else if (country.isNotActive()) {
 				log.warn("Country with id {} is disabled", stub.getId());
 				addActionError(getText("common.object_not_selected"));
+				countryFilter = 0L;
 			}
 		}
 

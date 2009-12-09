@@ -122,15 +122,18 @@ public class StreetEditAction extends FPActionSupport {
 		if (townFilter == null || townFilter <= 0) {
 			log.warn("Incorrect town id in filter ({})", townFilter);
 			addActionError(getText("ab.error.street.no_town"));
+			townFilter = 0L;
 		} else if (street.isNew()) {
 			Stub<Town> stub = new Stub<Town>(townFilter);
 			Town town = townService.readFull(stub);
 			if (town == null) {
 				log.warn("Can't get town with id {} from DB", stub.getId());
 				addActionError(getText("common.object_not_selected"));
+				townFilter = 0L;
 			} else if (town.isNotActive()) {
 				log.warn("Town with id {} is disabled", stub.getId());
 				addActionError(getText("common.object_not_selected"));
+				townFilter = 0L;
 			}
 		}
 
