@@ -48,7 +48,7 @@ public class PersonEditRegistrationFormAction extends FPActionSupport {
 			return SUCCESS;
 		}
 
-		buildingFilter = apartment.getBuildingStub().getId();
+		buildingFilter = apartment.getDefaultBuildings().getId();
 		streetFilter = apartment.getDefaultStreet().getId();
 		townFilter = apartment.getTown().getId();
 		regionFilter = apartment.getRegion().getId();

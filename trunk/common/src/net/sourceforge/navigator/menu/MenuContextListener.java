@@ -13,6 +13,7 @@ public class MenuContextListener implements ServletContextListener {
 
 	private Logger log = LoggerFactory.getLogger(getClass());
 
+	@Override
     public void contextInitialized(ServletContextEvent sce) {
         ServletContext sc = sce.getServletContext();
 
@@ -25,6 +26,7 @@ public class MenuContextListener implements ServletContextListener {
         log.debug("Struts-menu initialization successfull");
     }
 
+	@Override
     public void contextDestroyed(ServletContextEvent sce) {
 		log.debug("destroying struts-menu...");
         sce.getServletContext().removeAttribute(MenuRepository.MENU_REPOSITORY_KEY);

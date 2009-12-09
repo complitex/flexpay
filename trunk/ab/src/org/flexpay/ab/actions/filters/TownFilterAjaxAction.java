@@ -100,20 +100,21 @@ public class TownFilterAjaxAction extends FilterAjaxAction {
 	@Override
 	public void saveFilterValue() {
 
-		if (filterString == null) {
+		if (filterValueLong == null || filterValueLong <= 0) {
+			log.warn("Incorrect filter value {}", filterValue);
+			addActionError(getText("common.error.invalid_id"));
+			return;
+		}
 
-			if (filterValueLong == null || filterValueLong <= 0) {
-				log.warn("Incorrect filter value {}", filterValue);
-				addActionError(getText("common.error.invalid_id"));
-				return;
-			}
-
-			Town town = townService.readFull(new Stub<Town>(filterValueLong));
-			if (town == null) {
-				log.warn("Can't get town with id {} from DB", filterValueLong);
-				addActionError(getText("common.object_not_selected"));
-				return;
-			}
+		Town town = townService.readFull(new Stub<Town>(filterValueLong));
+		if (town == null) {
+			log.warn("Can't get town with id {} from DB", filterValueLong);
+			addActionError(getText("common.object_not_selected"));
+			return;
+		} else if (town.isNotActive()) {
+			log.warn("Town with id {} is disabled", filterValueLong);
+			addActionError(getText("common.object_not_selected"));
+			return;
 		}
 
 		AbUserPreferences up = getUserPreferences();

@@ -6,6 +6,7 @@ import org.flexpay.ab.persistence.filters.StreetSearchFilter;
 import org.flexpay.ab.persistence.sorter.StreetSorterByName;
 import org.flexpay.ab.persistence.sorter.StreetSorterByType;
 import org.flexpay.ab.service.StreetService;
+import org.flexpay.ab.service.TownService;
 import org.flexpay.common.actions.FPActionWithPagerSupport;
 import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.persistence.Stub.stub;
@@ -25,6 +26,7 @@ public class StreetsListAction extends FPActionWithPagerSupport<Street> {
 	private StreetSorterByType streetSorterByType = new StreetSorterByType();
 
 	private StreetService streetService;
+	private TownService townService;
 
 	@NotNull
 	@Override
@@ -70,14 +72,24 @@ public class StreetsListAction extends FPActionWithPagerSupport<Street> {
 
 	private boolean doValidate() {
 
-		boolean valid = true;
-
 		if (townFilter == null || townFilter <= 0) {
 			log.warn("Incorrect town id in filter ({})", townFilter);
-			valid = false;
+			addActionError(getText("ab.error.street.no_town"));
+		} else {
+			Stub<Town> stub = new Stub<Town>(townFilter);
+			Town town = townService.readFull(stub);
+			if (town == null) {
+				log.warn("Can't get town with id {} from DB", stub.getId());
+				addActionError(getText("common.object_not_selected"));
+				townFilter = null;
+			} else if (town.isNotActive()) {
+				log.warn("Town with id {} is disabled", stub.getId());
+				addActionError(getText("common.object_not_selected"));
+				townFilter = null;
+			}
 		}
 
-		return valid;
+		return !hasActionErrors();
 	}
 
 	/**
@@ -124,6 +136,11 @@ public class StreetsListAction extends FPActionWithPagerSupport<Street> {
 	@Required
 	public void setStreetService(StreetService streetService) {
 		this.streetService = streetService;
+	}
+
+	@Required
+	public void setTownService(TownService townService) {
+		this.townService = townService;
 	}
 
 }

@@ -91,20 +91,22 @@ public class StreetFilterAjaxAction extends FilterAjaxAction {
 
 	@Override
 	public void saveFilterValue() {
-		if (filterString == null) {
 
-			if (filterValueLong == null || filterValueLong <= 0) {
-				log.warn("Incorrect filter value {}", filterValue);
-				addActionError(getText("common.error.invalid_id"));
-				return;
-			}
+		if (filterValueLong == null || filterValueLong <= 0) {
+			log.warn("Incorrect filter value {}", filterValue);
+			addActionError(getText("common.error.invalid_id"));
+			return;
+		}
 
-			Street street = streetService.readFull(new Stub<Street>(filterValueLong));
-			if (street == null) {
-				log.warn("Can't get street with id {} from DB", filterValueLong);
-				addActionError(getText("common.object_not_selected"));
-				return;
-			}
+		Street street = streetService.readFull(new Stub<Street>(filterValueLong));
+		if (street == null) {
+			log.warn("Can't get street with id {} from DB", filterValueLong);
+			addActionError(getText("common.object_not_selected"));
+			return;
+		} else if (street.isNotActive()) {
+			log.warn("Street with id {} is disabled", filterValueLong);
+			addActionError(getText("common.object_not_selected"));
+			return;
 		}
 
 		AbUserPreferences up = getUserPreferences();

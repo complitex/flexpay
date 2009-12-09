@@ -1,6 +1,7 @@
 package org.flexpay.ab.actions.region;
 
 import org.flexpay.ab.persistence.*;
+import org.flexpay.ab.service.CountryService;
 import org.flexpay.ab.service.RegionService;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
@@ -29,6 +30,7 @@ public class RegionEditAction extends FPActionSupport {
 
 	private String crumbCreateKey;
     private RegionService regionService;
+	private CountryService countryService;
 
     @NotNull
 	@Override
@@ -56,15 +58,8 @@ public class RegionEditAction extends FPActionSupport {
 
 		}
 
-		if (names == null) {
-			log.debug("Names parameter is null");
-			names = treeMap();
-		}
-
-		if (beginDateFilter == null) {
-			log.debug("BeginDateFilter parameter is null");
-			beginDateFilter = new BeginDateFilter();
-		}
+		correctNames();
+		initFilters();
 
         if (isSubmit()) {
             if (!doValidate()) {
@@ -87,6 +82,16 @@ public class RegionEditAction extends FPActionSupport {
 		if (countryFilter == null || countryFilter <= 0) {
 			log.warn("Incorrect country id in filter ({})", countryFilter);
 			addActionError(getText("ab.error.region.no_country"));
+		} else if (region.isNew()) {
+			Stub<Country> stub = new Stub<Country>(countryFilter);
+			Country country = countryService.readFull(stub);
+			if (country == null) {
+				log.warn("Can't get country with id {} from DB", stub.getId());
+				addActionError(getText("common.object_not_selected"));
+			} else if (country.isNotActive()) {
+				log.warn("Country with id {} is disabled", stub.getId());
+				addActionError(getText("common.object_not_selected"));
+			}
 		}
 
         if (!beginDateFilter.needFilter()) {
@@ -122,6 +127,14 @@ public class RegionEditAction extends FPActionSupport {
         }
     }
 
+	private void initFilters() throws Exception {
+
+		if (beginDateFilter == null) {
+			log.debug("BeginDateFilter parameter is null");
+			beginDateFilter = new BeginDateFilter();
+		}
+	}
+
 	private void initData() {
 
 		RegionNameTemporal temporal = region.getCurrentNameTemporal();
@@ -144,6 +157,18 @@ public class RegionEditAction extends FPActionSupport {
 			countryFilter = region.getParentStub().getId();
 		}
 
+	}
+
+	private void correctNames() {
+		if (names == null) {
+			log.debug("Names parameter is null");
+			names = treeMap();
+		}
+		Map<Long, String> newNames = treeMap();
+		for (Language lang : getLanguages()) {
+			newNames.put(lang.getId(), names.containsKey(lang.getId()) ? names.get(lang.getId()) : "");
+		}
+		names = newNames;
 	}
 
     /**
@@ -207,5 +232,10 @@ public class RegionEditAction extends FPActionSupport {
     public void setRegionService(RegionService regionService) {
         this.regionService = regionService;
     }
+
+	@Required
+	public void setCountryService(CountryService countryService) {
+		this.countryService = countryService;
+	}
 
 }

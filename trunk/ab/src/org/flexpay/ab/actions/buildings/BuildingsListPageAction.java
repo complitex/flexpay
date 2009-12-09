@@ -1,24 +1,50 @@
 package org.flexpay.ab.actions.buildings;
 
+import org.flexpay.ab.persistence.Street;
+import org.flexpay.ab.service.StreetService;
 import org.flexpay.ab.util.config.AbUserPreferences;
 import org.flexpay.common.actions.FPActionSupport;
+import org.flexpay.common.persistence.Stub;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Required;
 
 public class BuildingsListPageAction extends FPActionSupport {
 
 	private Long streetFilter;
 
+	private StreetService streetService;
+
 	@NotNull
 	@Override
 	protected String doExecute() throws Exception {
-		if (streetFilter != null && streetFilter > 0) {
-			AbUserPreferences up = (AbUserPreferences) getUserPreferences();
-			up.setStreetFilter(streetFilter);
-			up.setBuildingFilter(0L);
-			up.setApartmentFilter(0L);
+
+		if (streetFilter == null || streetFilter < 0) {
+			log.warn("Incorrect filter value {}", streetFilter);
+			addActionError(getText("common.error.invalid_id"));
+		} else if (streetFilter > 0) {
+			Street street = streetService.readFull(new Stub<Street>(streetFilter));
+			if (street == null) {
+				log.warn("Can't get street with id {} from DB", streetFilter);
+				addActionError(getText("common.object_not_selected"));
+				streetFilter = null;
+			} else if (street.isNotActive()) {
+				log.warn("Street with id {} is disabled", streetFilter);
+				addActionError(getText("common.object_not_selected"));
+				streetFilter = null;
+			}
 		}
 
+		if (hasActionErrors()) {
+			return SUCCESS;
+		}
+
+		AbUserPreferences up = (AbUserPreferences) getUserPreferences();
+		up.setStreetFilter(streetFilter);
+		up.setBuildingFilter(0L);
+		up.setApartmentFilter(0L);
+
 		return SUCCESS;
+
 	}
 
 	@NotNull
@@ -31,4 +57,8 @@ public class BuildingsListPageAction extends FPActionSupport {
 		this.streetFilter = streetFilter;
 	}
 
+	@Required
+	public void setStreetService(StreetService streetService) {
+		this.streetService = streetService;
+	}
 }

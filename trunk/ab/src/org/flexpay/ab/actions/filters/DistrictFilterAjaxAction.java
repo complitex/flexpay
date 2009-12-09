@@ -84,20 +84,21 @@ public class DistrictFilterAjaxAction extends FilterAjaxAction {
 	@Override
 	public void saveFilterValue() {
 
-		if (filterString == null) {
+		if (filterValueLong == null || filterValueLong <= 0) {
+			log.warn("Incorrect filter value {}", filterValue);
+			addActionError(getText("common.error.invalid_id"));
+			return;
+		}
 
-			if (filterValueLong == null || filterValueLong <= 0) {
-				log.warn("Incorrect filter value {}", filterValue);
-				addActionError(getText("common.error.invalid_id"));
-				return;
-			}
-
-			District district = districtService.readFull(new Stub<District>(filterValueLong));
-			if (district == null) {
-				log.warn("Can't get district with id {} from DB", filterValueLong);
-				addActionError(getText("common.object_not_selected"));
-				return;
-			}
+		District district = districtService.readFull(new Stub<District>(filterValueLong));
+		if (district == null) {
+			log.warn("Can't get district with id {} from DB", filterValueLong);
+			addActionError(getText("common.object_not_selected"));
+			return;
+		} else if (district.isNotActive()) {
+			log.warn("District with id {} is disabled", filterValueLong);
+			addActionError(getText("common.object_not_selected"));
+			return;
 		}
 
 		AbUserPreferences up = getUserPreferences();

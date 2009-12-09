@@ -1,23 +1,49 @@
 package org.flexpay.ab.actions.apartment;
 
+import org.flexpay.ab.persistence.BuildingAddress;
+import org.flexpay.ab.service.BuildingService;
 import org.flexpay.ab.util.config.AbUserPreferences;
 import org.flexpay.common.actions.FPActionSupport;
+import org.flexpay.common.persistence.Stub;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Required;
 
 public class ApartmentsListPageAction extends FPActionSupport {
 
 	private Long buildingFilter;
 
+	private BuildingService buildingService;
+
 	@NotNull
 	@Override
 	protected String doExecute() throws Exception {
-		if (buildingFilter != null && buildingFilter > 0) {
-			AbUserPreferences up = (AbUserPreferences) getUserPreferences();
-			up.setBuildingFilter(buildingFilter);
-			up.setApartmentFilter(0L);
+
+		if (buildingFilter == null || buildingFilter < 0) {
+			log.warn("Incorrect filter value {}", buildingFilter);
+			addActionError(getText("common.error.invalid_id"));
+		} else if (buildingFilter > 0) {
+			BuildingAddress address = buildingService.readFullAddress(new Stub<BuildingAddress>(buildingFilter));
+			if (address == null) {
+				log.warn("Can't get building address with id {} from DB", buildingFilter);
+				addActionError(getText("common.object_not_selected"));
+				buildingFilter = null;
+			} else if (address.isNotActive()) {
+				log.warn("Building address with id {} is disabled", buildingFilter);
+				addActionError(getText("common.object_not_selected"));
+				buildingFilter = null;
+			}
 		}
 
+		if (hasActionErrors()) {
+			return SUCCESS;
+		}
+
+		AbUserPreferences up = (AbUserPreferences) getUserPreferences();
+		up.setBuildingFilter(buildingFilter);
+		up.setApartmentFilter(0L);
+
 		return SUCCESS;
+
 	}
 
 	@NotNull
@@ -30,4 +56,8 @@ public class ApartmentsListPageAction extends FPActionSupport {
 		this.buildingFilter = buildingFilter;
 	}
 
+	@Required
+	public void setBuildingService(BuildingService buildingService) {
+		this.buildingService = buildingService;
+	}
 }

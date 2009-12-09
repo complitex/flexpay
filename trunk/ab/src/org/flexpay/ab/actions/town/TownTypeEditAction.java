@@ -50,14 +50,7 @@ public class TownTypeEditAction extends FPActionSupport {
 
 		}
 
-		if (names == null) {
-			log.debug("Names parameter is null");
-			names = treeMap();
-		}
-		if (shortNames == null) {
-			log.debug("ShortNames parameter is null");
-			shortNames = treeMap();
-		}
+		correctNames();
 
 		if (isNotSubmit()) {
 			initData();
@@ -82,6 +75,17 @@ public class TownTypeEditAction extends FPActionSupport {
 		addActionMessage(getText("ab.town_type.saved"));
 
 		return REDIRECT_SUCCESS;
+	}
+
+	private void correctNames() {
+		Map<Long, String> newNames = treeMap();
+		Map<Long, String> newShortNames = treeMap();
+		for (Language lang : getLanguages()) {
+			newNames.put(lang.getId(), names != null && names.containsKey(lang.getId()) ? names.get(lang.getId()) : "");
+			newShortNames.put(lang.getId(), shortNames != null && shortNames.containsKey(lang.getId()) ? shortNames.get(lang.getId()) : "");
+		}
+		names = newNames;
+		shortNames = newShortNames;
 	}
 
 	private void initData() {

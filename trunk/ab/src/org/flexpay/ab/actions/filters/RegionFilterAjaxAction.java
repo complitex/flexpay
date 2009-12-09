@@ -102,20 +102,21 @@ public class RegionFilterAjaxAction extends FilterAjaxAction {
 	@Override
 	public void saveFilterValue() {
 
-		if (filterString == null) {
+		if (filterValueLong == null || filterValueLong <= 0) {
+			log.warn("Incorrect filter value {}", filterValue);
+			addActionError(getText("common.error.invalid_id"));
+			return;
+		}
 
-			if (filterValueLong == null || filterValueLong <= 0) {
-				log.warn("Incorrect filter value {}", filterValue);
-				addActionError(getText("common.error.invalid_id"));
-				return;
-			}
-
-			Region region = regionService.readFull(new Stub<Region>(filterValueLong));
-			if (region == null) {
-				log.warn("Can't get region with id {} from DB", filterValueLong);
-				addActionError(getText("common.object_not_selected"));
-				return;
-			}
+		Region region = regionService.readFull(new Stub<Region>(filterValueLong));
+		if (region == null) {
+			log.warn("Can't get region with id {} from DB", filterValueLong);
+			addActionError(getText("common.object_not_selected"));
+			return;
+		} else if (region.isNotActive()) {
+			log.warn("Region with id {} is disabled", filterValueLong);
+			addActionError(getText("common.object_not_selected"));
+			return;
 		}
 
 		AbUserPreferences up = getUserPreferences();

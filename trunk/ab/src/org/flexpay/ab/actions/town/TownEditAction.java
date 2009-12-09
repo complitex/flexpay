@@ -2,6 +2,7 @@ package org.flexpay.ab.actions.town;
 
 import org.flexpay.ab.persistence.*;
 import org.flexpay.ab.persistence.filters.TownTypeFilter;
+import org.flexpay.ab.service.RegionService;
 import org.flexpay.ab.service.TownService;
 import org.flexpay.ab.service.TownTypeService;
 import org.flexpay.common.actions.FPActionSupport;
@@ -34,6 +35,7 @@ public class TownEditAction extends FPActionSupport {
 	private String crumbCreateKey;
     private TownTypeService townTypeService;
     private TownService townService;
+	private RegionService regionService;
 
     /**
      * Perform action execution.
@@ -69,16 +71,7 @@ public class TownEditAction extends FPActionSupport {
 
 		}
 
-		if (names == null) {
-			log.debug("Names parameter is null");
-			names = treeMap();
-		}
-
-		if (beginDateFilter == null) {
-			log.debug("BeginDateFilter parameter is null");
-			beginDateFilter = new BeginDateFilter();
-		}
-
+		correctNames();
 		initFilters();
 
         if (isSubmit()) {
@@ -107,6 +100,16 @@ public class TownEditAction extends FPActionSupport {
 		if (regionFilter == null || regionFilter <= 0) {
 			log.warn("Incorrect region id in filter ({})", regionFilter);
 			addActionError(getText("ab.error.town.no_region"));
+		} else if (town.isNew()) {
+			Stub<Region> stub = new Stub<Region>(regionFilter);
+			Region region = regionService.readFull(stub);
+			if (region == null) {
+				log.warn("Can't get region with id {} from DB", stub.getId());
+				addActionError(getText("common.object_not_selected"));
+			} else if (region.isNotActive()) {
+				log.warn("Region with id {} is disabled", stub.getId());
+				addActionError(getText("common.object_not_selected"));
+			}
 		}
 
         if (!townTypeFilter.needFilter()) {
@@ -150,6 +153,12 @@ public class TownEditAction extends FPActionSupport {
     }
 
 	private void initFilters() throws Exception {
+
+		if (beginDateFilter == null) {
+			log.debug("BeginDateFilter parameter is null");
+			beginDateFilter = new BeginDateFilter();
+		}
+
 		townTypeFilter = townTypeService.initFilter(townTypeFilter, getUserPreferences().getLocale());
 	}
 
@@ -175,6 +184,18 @@ public class TownEditAction extends FPActionSupport {
 			}
 		}
 
+	}
+
+	private void correctNames() {
+		if (names == null) {
+			log.debug("Names parameter is null");
+			names = treeMap();
+		}
+		Map<Long, String> newNames = treeMap();
+		for (Language lang : getLanguages()) {
+			newNames.put(lang.getId(), names.containsKey(lang.getId()) ? names.get(lang.getId()) : "");
+		}
+		names = newNames;
 	}
 
     /**
@@ -255,5 +276,10 @@ public class TownEditAction extends FPActionSupport {
     public void setTownService(TownService townService) {
         this.townService = townService;
     }
+
+	@Required
+	public void setRegionService(RegionService regionService) {
+		this.regionService = regionService;
+	}
 
 }

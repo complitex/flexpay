@@ -49,17 +49,7 @@ public class AddressAttributeTypeEditAction extends FPActionSupport {
 
 		}
 
-//		AddressAttributeType type = attributeType;
-
-		if (names == null) {
-			log.debug("Names parameter is null");
-			names = treeMap();
-		}
-
-		if (shortNames == null) {
-			log.debug("ShortNames parameter is null");
-			shortNames = treeMap();
-		}
+		correctNames();
 
 		if (isNotSubmit()) {
 			initData();
@@ -86,6 +76,25 @@ public class AddressAttributeTypeEditAction extends FPActionSupport {
 		return REDIRECT_SUCCESS;
 	}
 
+	private void correctNames() {
+		if (names == null) {
+			log.debug("Names parameter is null");
+			names = treeMap();
+		}
+		if (shortNames == null) {
+			log.debug("Short names parameter is null");
+			shortNames = treeMap();
+		}
+		Map<Long, String> newNames = treeMap();
+		Map<Long, String> newShortNames = treeMap();
+		for (Language lang : getLanguages()) {
+			newNames.put(lang.getId(), names.containsKey(lang.getId()) ? names.get(lang.getId()) : "");
+			newShortNames.put(lang.getId(), shortNames.containsKey(lang.getId()) ? shortNames.get(lang.getId()) : "");
+		}
+		names = newNames;
+		shortNames = newShortNames;
+	}
+	
 	private void initData() {
 
 		for (AddressAttributeTypeTranslation translation : attributeType.getTranslations()) {

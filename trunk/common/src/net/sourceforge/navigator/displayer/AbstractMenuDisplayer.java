@@ -31,39 +31,48 @@ public abstract class AbstractMenuDisplayer implements MenuDisplayer {
 	protected UserPreferences userPreferences;
 	protected Collection<?> rolesGranted;
 
+	@Override
 	public Collection<?> getRolesGranted() {
 		return rolesGranted;
 	}
 
+	@Override
 	public void setRolesGranted(Collection<?> rolesGranted) {
 		this.rolesGranted = rolesGranted;
 	}
 
+	@Override
 	public UserPreferences getUserPreferences() {
 		return userPreferences;
 	}
 
+	@Override
 	public void setUserPreferences(UserPreferences userPreferences) {
 		this.userPreferences = userPreferences;
 	}
 
+	@Override
 	public MenuComponent getActiveMenu() {
 		return activeMenu;
 	}
 
+	@Override
 	public void setActiveMenu(MenuComponent activeMenu) {
 		this.activeMenu = activeMenu;
 		setActiveMenuBranch(activeMenu);
 	}
 
+	@Override
     public Set<String> getActiveMenuBranch() {
         return activeMenuBranch;
     }
 
+	@Override
     public void addToActiveMenuBranch(MenuComponent activeMenu) {
         activeMenuBranch.add(activeMenu.getName());
     }
 
+	@Override
     public void setActiveMenuBranch(MenuComponent activeMenu) {
         activeMenuBranch.add(activeMenu.getName());
         if (activeMenu.getParent() != null) {
@@ -71,14 +80,17 @@ public abstract class AbstractMenuDisplayer implements MenuDisplayer {
         }
     }
 
+	@Override
     public String getName() {
         return name;
     }
 
+	@Override
     public void setName(String name) {
         this.name = name;
     }
 
+	@Override
     public String getTarget() {
         return target;
     }
@@ -97,14 +109,17 @@ public abstract class AbstractMenuDisplayer implements MenuDisplayer {
         return theTarget;
     }
 
+	@Override
     public void setTarget(String target) {
         this.target = target;
     }
 
+	@Override
 	public void setLevelBegin(Integer levelBegin) {
 		this.levelBegin = levelBegin;
 	}
 
+	@Override
 	public void setLevelEnd(Integer levelEnd) {
 		this.levelEnd = levelEnd;
 	}
@@ -125,13 +140,16 @@ public abstract class AbstractMenuDisplayer implements MenuDisplayer {
 		return LocalizedTextUtil.findDefaultText(key, userPreferences.getLocale());
 	}
 
+	@Override
     public void init(PageContext pageContext, MenuDisplayerMapping mapping) {
         this.out = pageContext.getOut();
         this.mapping = mapping;
     }
 
+	@Override
     public abstract void display(MenuComponent menu) throws JspException, IOException;
 
+	@Override
     public void end(PageContext pageContext) {
 
     }

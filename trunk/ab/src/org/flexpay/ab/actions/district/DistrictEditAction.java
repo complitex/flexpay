@@ -2,6 +2,7 @@ package org.flexpay.ab.actions.district;
 
 import org.flexpay.ab.persistence.*;
 import org.flexpay.ab.service.DistrictService;
+import org.flexpay.ab.service.TownService;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Language;
@@ -10,7 +11,6 @@ import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.persistence.filter.BeginDateFilter;
 import static org.flexpay.common.util.CollectionUtils.treeMap;
 import org.flexpay.common.util.DateUtil;
-import org.flexpay.common.util.config.ApplicationConfig;
 import static org.flexpay.common.util.config.ApplicationConfig.getLanguages;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
@@ -29,6 +29,7 @@ public class DistrictEditAction extends FPActionSupport {
 
 	private String crumbCreateKey;
 	private DistrictService districtService;
+	private TownService townService;
 
 	@NotNull
 	@Override
@@ -56,15 +57,8 @@ public class DistrictEditAction extends FPActionSupport {
 
 		}
 
-		if (names == null) {
-			log.debug("Names parameter is null");
-			names = treeMap();
-		}
-
-		if (beginDateFilter == null) {
-			log.debug("BeginDateFilter parameter is null");
-			beginDateFilter = new BeginDateFilter();
-		}
+		correctNames();
+		initFilters();
 
 		if (isSubmit()) {
 			if (!doValidate()) {
@@ -94,6 +88,18 @@ public class DistrictEditAction extends FPActionSupport {
 		if (townFilter == null || townFilter <= 0) {
 			log.warn("Incorrect town id in filter ({})", townFilter);
 			addActionError(getText("ab.error.district.no_town"));
+		} else if (district.isNew()) {
+			Stub<Town> stub = new Stub<Town>(townFilter);
+			Town town = townService.readFull(stub);
+			if (town == null) {
+				log.warn("Can't get town with id {} from DB", stub.getId());
+				addActionError(getText("common.object_not_selected"));
+				townFilter = null;
+			} else if (town.isNotActive()) {
+				log.warn("Town with id {} is disabled", stub.getId());
+				addActionError(getText("common.object_not_selected"));
+				townFilter = null;
+			}
 		}
 
 		if (!beginDateFilter.needFilter()) {
@@ -130,6 +136,14 @@ public class DistrictEditAction extends FPActionSupport {
 
 	}
 
+	private void initFilters() throws Exception {
+
+		if (beginDateFilter == null) {
+			log.debug("BeginDateFilter parameter is null");
+			beginDateFilter = new BeginDateFilter();
+		}
+	}
+
 	private void initData() {
 
 		// init begin date filter
@@ -149,6 +163,18 @@ public class DistrictEditAction extends FPActionSupport {
 				names.put(lang.getId(), "");
 			}
 		}
+	}
+
+	private void correctNames() {
+		if (names == null) {
+			log.debug("Names parameter is null");
+			names = treeMap();
+		}
+		Map<Long, String> newNames = treeMap();
+		for (Language lang : getLanguages()) {
+			newNames.put(lang.getId(), names.containsKey(lang.getId()) ? names.get(lang.getId()) : "");
+		}
+		names = newNames;
 	}
 
 	/**
@@ -219,6 +245,11 @@ public class DistrictEditAction extends FPActionSupport {
 	@Required
 	public void setDistrictService(DistrictService districtService) {
 		this.districtService = districtService;
+	}
+
+	@Required
+	public void setTownService(TownService townService) {
+		this.townService = townService;
 	}
 
 }

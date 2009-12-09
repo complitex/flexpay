@@ -4,6 +4,7 @@ import org.flexpay.ab.persistence.*;
 import org.flexpay.ab.persistence.filters.StreetTypeFilter;
 import org.flexpay.ab.service.StreetService;
 import org.flexpay.ab.service.StreetTypeService;
+import org.flexpay.ab.service.TownService;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Language;
@@ -35,6 +36,7 @@ public class StreetEditAction extends FPActionSupport {
 	private String crumbCreateKey;
 	private StreetTypeService streetTypeService;
 	private StreetService streetService;
+	private TownService townService;
 
 	@NotNull
 	@Override
@@ -62,16 +64,7 @@ public class StreetEditAction extends FPActionSupport {
 
 		}
 
-		if (names == null) {
-			log.debug("Names parameter is null");
-			names = treeMap();
-		}
-
-		if (beginDateFilter == null) {
-			log.debug("BeginDateFilter parameter is null");
-			beginDateFilter = new BeginDateFilter();
-		}
-
+		correctNames();
 		initFilters();
 
 		if (isSubmit()) {
@@ -129,6 +122,16 @@ public class StreetEditAction extends FPActionSupport {
 		if (townFilter == null || townFilter <= 0) {
 			log.warn("Incorrect town id in filter ({})", townFilter);
 			addActionError(getText("ab.error.street.no_town"));
+		} else if (street.isNew()) {
+			Stub<Town> stub = new Stub<Town>(townFilter);
+			Town town = townService.readFull(stub);
+			if (town == null) {
+				log.warn("Can't get town with id {} from DB", stub.getId());
+				addActionError(getText("common.object_not_selected"));
+			} else if (town.isNotActive()) {
+				log.warn("Town with id {} is disabled", stub.getId());
+				addActionError(getText("common.object_not_selected"));
+			}
 		}
 
 		if (!streetTypeFilter.needFilter()) {
@@ -146,7 +149,25 @@ public class StreetEditAction extends FPActionSupport {
 
 
 	private void initFilters() throws Exception {
+
+		if (beginDateFilter == null) {
+			log.debug("BeginDateFilter parameter is null");
+			beginDateFilter = new BeginDateFilter();
+		}
+
 		streetTypeFilter = streetTypeService.initFilter(streetTypeFilter, getUserPreferences().getLocale());
+	}
+
+	private void correctNames() {
+		if (names == null) {
+			log.debug("Names parameter is null");
+			names = treeMap();
+		}
+		Map<Long, String> newNames = treeMap();
+		for (Language lang : getLanguages()) {
+			newNames.put(lang.getId(), names.containsKey(lang.getId()) ? names.get(lang.getId()) : "");
+		}
+		names = newNames;
 	}
 
 	private void initData() {
@@ -255,6 +276,11 @@ public class StreetEditAction extends FPActionSupport {
 	@Required
 	public void setStreetTypeService(StreetTypeService streetTypeService) {
 		this.streetTypeService = streetTypeService;
+	}
+
+	@Required
+	public void setTownService(TownService townService) {
+		this.townService = townService;
 	}
 
 }
