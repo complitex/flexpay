@@ -28,7 +28,7 @@ public class IdentityTypeEditAction extends FPActionSupport {
 
 		if (identityType == null || identityType.getId() == null) {
 			log.warn("Identity type id not set");
-			addActionError(getText("common.error.invalid_id"));
+			addActionError(getText("ab.error.identity_type.incorrect_identity_type_id"));
 			return REDIRECT_ERROR;
 		}
 
@@ -38,11 +38,11 @@ public class IdentityTypeEditAction extends FPActionSupport {
 
 			if (identityType == null) {
 				log.warn("Can't get identity type with id {} from DB", stub.getId());
-				addActionError(getText("common.object_not_selected"));
+				addActionError(getText("ab.error.identity_type.cant_get_identity_type"));
 				return REDIRECT_ERROR;
 			} else if (identityType.isNotActive()) {
 				log.warn("Identity type with id {} is disabled", stub.getId());
-				addActionError(getText("common.object_not_selected"));
+				addActionError(getText("ab.error.identity_type.cant_get_identity_type"));
 				return REDIRECT_ERROR;
 			}
 

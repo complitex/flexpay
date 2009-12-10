@@ -20,16 +20,16 @@ public class TownsListPageAction extends FPActionSupport {
 
 		if (regionFilter == null || regionFilter < 0) {
 			log.warn("Incorrect filter value {}", regionFilter);
-			addActionError(getText("common.error.invalid_id"));
+			addActionError(getText("ab.error.region.incorrect_region_id"));
 		} else if (regionFilter > 0) {
 			Region region = regionService.readFull(new Stub<Region>(regionFilter));
 			if (region == null) {
 				log.warn("Can't get region with id {} from DB", regionFilter);
-				addActionError(getText("common.object_not_selected"));
+				addActionError(getText("ab.error.region.cant_get_region"));
 				regionFilter = null;
 			} else if (region.isNotActive()) {
 				log.warn("Region with id {} is disabled", regionFilter);
-				addActionError(getText("common.object_not_selected"));
+				addActionError(getText("ab.error.region.cant_get_region"));
 				regionFilter = null;
 			}
 		}

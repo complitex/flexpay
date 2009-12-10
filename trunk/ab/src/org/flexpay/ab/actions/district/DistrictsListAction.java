@@ -57,16 +57,18 @@ public class DistrictsListAction extends FPActionWithPagerSupport<District> {
 
 		if (townFilter == null || townFilter <= 0) {
 			log.warn("Incorrect town id in filter ({})", townFilter);
-			addActionError(getText("ab.error.district.no_town"));
+			addActionError(getText("ab.error.town.incorrect_town_id"));
+			townFilter = 0L;
 		} else {
-			Stub<Town> stub = new Stub<Town>(townFilter);
-			Town town = townService.readFull(stub);
+			Town town = townService.readFull(new Stub<Town>(townFilter));
 			if (town == null) {
-				log.warn("Can't get town with id {} from DB", stub.getId());
-				addActionError(getText("common.object_not_selected"));
+				log.warn("Can't get town with id {} from DB", townFilter);
+				addActionError(getText("ab.error.town.cant_get_town"));
+				townFilter = 0L;
 			} else if (town.isNotActive()) {
-				log.warn("Town with id {} is disabled", stub.getId());
-				addActionError(getText("common.object_not_selected"));
+				log.warn("Town with id {} is disabled", townFilter);
+				addActionError(getText("ab.error.town.cant_get_town"));
+				townFilter = 0L;
 			}
 		}
 

@@ -44,21 +44,21 @@ public class StreetEditAction extends FPActionSupport {
 
 		if (street == null || street.getId() == null) {
 			log.warn("Incorrect street id");
-			addActionError(getText("common.object_not_selected"));
+			addActionError(getText("ab.error.street.incorrect_street_id"));
 			return REDIRECT_ERROR;
 		}
 
 		if (street.isNotNew()) {
 			Stub<Street> stub = stub(street);
-			street = streetService.readWithHierarchy(stub);
+			street = streetService.readWithHierarchy(stub(street));
 
 			if (street == null) {
 				log.warn("Can't get street with id {} from DB", stub.getId());
-				addActionError(getText("common.object_not_selected"));
+				addActionError(getText("ab.error.street.cant_get_street"));
 				return REDIRECT_ERROR;
 			} else if (street.isNotActive()) {
 				log.warn("Street with id {} is disabled", stub.getId());
-				addActionError(getText("common.object_not_selected"));
+				addActionError(getText("ab.error.street.cant_get_street"));
 				return REDIRECT_ERROR;
 			}
 
@@ -121,18 +121,17 @@ public class StreetEditAction extends FPActionSupport {
 
 		if (townFilter == null || townFilter <= 0) {
 			log.warn("Incorrect town id in filter ({})", townFilter);
-			addActionError(getText("ab.error.street.no_town"));
+			addActionError(getText("ab.error.town.incorrect_town_id"));
 			townFilter = 0L;
 		} else if (street.isNew()) {
-			Stub<Town> stub = new Stub<Town>(townFilter);
-			Town town = townService.readFull(stub);
+			Town town = townService.readFull(new Stub<Town>(townFilter));
 			if (town == null) {
-				log.warn("Can't get town with id {} from DB", stub.getId());
-				addActionError(getText("common.object_not_selected"));
+				log.warn("Can't get town with id {} from DB", townFilter);
+				addActionError(getText("ab.error.town.cant_get_town"));
 				townFilter = 0L;
 			} else if (town.isNotActive()) {
-				log.warn("Town with id {} is disabled", stub.getId());
-				addActionError(getText("common.object_not_selected"));
+				log.warn("Town with id {} is disabled", townFilter);
+				addActionError(getText("ab.error.town.cant_get_town"));
 				townFilter = 0L;
 			}
 		}

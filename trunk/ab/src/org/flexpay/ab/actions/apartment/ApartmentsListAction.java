@@ -2,6 +2,7 @@ package org.flexpay.ab.actions.apartment;
 
 import org.flexpay.ab.persistence.Apartment;
 import org.flexpay.ab.persistence.Building;
+import org.flexpay.ab.persistence.BuildingAddress;
 import org.flexpay.ab.persistence.filters.BuildingsFilter;
 import org.flexpay.ab.persistence.sorter.ApartmentSorter;
 import org.flexpay.ab.service.ApartmentService;
@@ -56,18 +57,18 @@ public class ApartmentsListAction extends FPActionWithPagerSupport<Apartment> {
 
 		if (buildingFilter == null || buildingFilter <= 0) {
 			log.warn("Incorrect building id in filter ({})", buildingFilter);
-			addActionError(getText("ab.error.building.no_building"));
+			addActionError(getText("ab.error.building_address.incorrect_address_id"));
+			buildingFilter = 0L;
 		} else {
-			Stub<Building> stub = new Stub<Building>(buildingFilter);
-			Building building = buildingService.readFull(stub);
-			if (building == null) {
-				log.warn("Can't get building with id {} from DB", stub.getId());
-				addActionError(getText("common.object_not_selected"));
-				buildingFilter = null;
-			} else if (building.isNotActive()) {
-				log.warn("Building with id {} is disabled", stub.getId());
-				addActionError(getText("common.object_not_selected"));
-				buildingFilter = null;
+			BuildingAddress address = buildingService.readFullAddress(new Stub<BuildingAddress>(buildingFilter));
+			if (address == null) {
+				log.warn("Can't get building address with id {} from DB", buildingFilter);
+				addActionError(getText("ab.error.building_address.cant_get_address"));
+				buildingFilter = 0L;
+			} else if (address.isNotActive()) {
+				log.warn("Building address with id {} is disabled", buildingFilter);
+				addActionError(getText("ab.error.building_address.cant_get_address"));
+				buildingFilter = 0L;
 			}
 		}
 

@@ -30,24 +30,24 @@ public class PersonSaveRegistrationAction extends FPActionSupport {
 
 		if (apartmentFilter == null || apartmentFilter <= 0) {
 			log.warn("Incorrect apartment id");
-			addActionError(getText("ab.error.person.no_apartment"));
+			addActionError(getText("ab.error.apartment.incorrect_apartment_id"));
 			return SUCCESS;
 		}
 
 		Apartment apartment = apartmentService.readFull(new Stub<Apartment>(apartmentFilter));
 		if (apartment == null) {
 			log.warn("Can't get apartment with id {} from DB", apartmentFilter);
-			addActionError(getText("common.object_not_selected"));
+			addActionError(getText("ab.error.apartment.cant_get_apartment"));
 			return SUCCESS;
 		} else if (apartment.isNotActive()) {
 			log.warn("Apartment with id {} is disabled", apartmentFilter);
-			addActionError(getText("common.object_not_selected"));
+			addActionError(getText("ab.error.apartment.cant_get_apartment"));
 			return SUCCESS;
 		}
 
 		if (person == null || person.isNew()) {
 			log.warn("Incorrect person id");
-			addActionError(getText("ab.error.person.invalid_id"));
+			addActionError(getText("ab.error.person.incorrect_person_id"));
 			return SUCCESS;
 		}
 
@@ -56,11 +56,11 @@ public class PersonSaveRegistrationAction extends FPActionSupport {
 
 		if (person == null) {
 			log.warn("Can't get person with id {} from DB", stub.getId());
-			addActionError(getText("common.object_not_selected"));
+			addActionError(getText("ab.error.person.cant_get_person"));
 			return SUCCESS;
 		} else if (person.isNotActive()) {
 			log.warn("Person with id {} is disabled", stub.getId());
-			addActionError(getText("common.object_not_selected"));
+			addActionError(getText("ab.error.person.cant_get_person"));
 			return SUCCESS;
 		}
 

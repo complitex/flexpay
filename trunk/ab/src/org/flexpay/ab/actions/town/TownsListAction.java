@@ -64,18 +64,18 @@ public class TownsListAction extends FPActionWithPagerSupport<Town> {
 
 		if (regionFilter == null || regionFilter <= 0) {
 			log.warn("Incorrect region id in filter ({})", regionFilter);
-			addActionError(getText("ab.error.street.no_region"));
+			addActionError(getText("ab.error.region.incorrect_region_id"));
+			regionFilter = 0L;
 		} else {
-			Stub<Region> stub = new Stub<Region>(regionFilter);
-			Region region = regionService.readFull(stub);
+			Region region = regionService.readFull(new Stub<Region>(regionFilter));
 			if (region == null) {
-				log.warn("Can't get region with id {} from DB", stub.getId());
-				addActionError(getText("common.object_not_selected"));
-				regionFilter = null;
+				log.warn("Can't get region with id {} from DB", regionFilter);
+				addActionError(getText("ab.error.region.cant_get_region"));
+				regionFilter = 0L;
 			} else if (region.isNotActive()) {
-				log.warn("Region with id {} is disabled", stub.getId());
-				addActionError(getText("common.object_not_selected"));
-				regionFilter = null;
+				log.warn("Region with id {} is disabled", regionFilter);
+				addActionError(getText("ab.error.region.cant_get_region"));
+				regionFilter = 0L;
 			}
 		}
 

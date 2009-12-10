@@ -32,7 +32,7 @@ public class BuildingFilterAjaxAction extends FilterAjaxAction {
 			streetId = Long.parseLong(parents[0]);
 		} catch (Exception e) {
 			log.warn("Incorrect street id in filter ({})", parents[0]);
-			addActionError(getText("common.object_not_selected"));
+			addActionError(getText("ab.error.street.incorrect_street_id"));
 			return SUCCESS;
 		}
 		if (streetId.equals(0L)) {
@@ -66,7 +66,7 @@ public class BuildingFilterAjaxAction extends FilterAjaxAction {
 		BuildingAddress address = buildingService.readFullAddress(new Stub<BuildingAddress>(filterValueLong));
 		if (address == null) {
 			log.warn("Can't get building address with id {} from DB", filterValueLong);
-			addActionError(getText("common.object_not_selected"));
+			addActionError(getText("ab.error.building_address.cant_get_address"));
 			return;
 		}
 
@@ -78,18 +78,18 @@ public class BuildingFilterAjaxAction extends FilterAjaxAction {
 
 		if (filterValueLong == null || filterValueLong <= 0) {
 			log.warn("Incorrect filter value {}", filterValue);
-			addActionError(getText("common.error.invalid_id"));
+			addActionError(getText("ab.error.building_address.incorrect_address_id"));
 			return;
 		}
 
 		BuildingAddress address = buildingService.readFullAddress(new Stub<BuildingAddress>(filterValueLong));
 		if (address == null) {
 			log.warn("Can't get building address with id {} from DB", filterValueLong);
-			addActionError(getText("common.object_not_selected"));
+			addActionError(getText("ab.error.building_address.cant_get_address"));
 			return;
 		} else if (address.isNotActive()) {
 			log.warn("Building address with id {} is disabled", filterValueLong);
-			addActionError(getText("common.object_not_selected"));
+			addActionError(getText("ab.error.building_address.cant_get_address"));
 			return;
 		}
 

@@ -36,7 +36,7 @@ public class StreetFilterAjaxAction extends FilterAjaxAction {
 			townId = Long.parseLong(parents[0]);
 		} catch (Exception e) {
 			log.warn("Incorrect town id in filter ({})", parents[0]);
-			addActionError(getText("common.object_not_selected"));
+			addActionError(getText("ab.error.town.incorrect_town_id"));
 			return SUCCESS;
 		}
 		if (townId.equals(0L)) {
@@ -80,7 +80,7 @@ public class StreetFilterAjaxAction extends FilterAjaxAction {
 		Street street = streetService.readFull(new Stub<Street>(filterValueLong));
 		if (street == null) {
 			log.warn("Can't get street with id {} from DB", filterValueLong);
-			addActionError(getText("common.object_not_selected"));
+			addActionError(getText("ab.error.street.cant_get_street"));
 			return;
 		}
 		if (street.getCurrentName() != null && street.getCurrentType() != null) {
@@ -94,18 +94,18 @@ public class StreetFilterAjaxAction extends FilterAjaxAction {
 
 		if (filterValueLong == null || filterValueLong <= 0) {
 			log.warn("Incorrect filter value {}", filterValue);
-			addActionError(getText("common.error.invalid_id"));
+			addActionError(getText("ab.error.street.incorrect_street_id"));
 			return;
 		}
 
 		Street street = streetService.readFull(new Stub<Street>(filterValueLong));
 		if (street == null) {
 			log.warn("Can't get street with id {} from DB", filterValueLong);
-			addActionError(getText("common.object_not_selected"));
+			addActionError(getText("ab.error.street.cant_get_street"));
 			return;
 		} else if (street.isNotActive()) {
 			log.warn("Street with id {} is disabled", filterValueLong);
-			addActionError(getText("common.object_not_selected"));
+			addActionError(getText("ab.error.street.cant_get_street"));
 			return;
 		}
 

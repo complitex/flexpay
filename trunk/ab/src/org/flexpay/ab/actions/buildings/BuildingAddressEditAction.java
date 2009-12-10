@@ -41,7 +41,7 @@ public class BuildingAddressEditAction extends FPActionSupport {
 
 		if (building == null || building.getId() == null) {
 			log.warn("Incorrect building id");
-			addActionError(getText("common.error.invalid_id"));
+			addActionError(getText("ab.error.building.incorrect_building_id"));
 			return REDIRECT_ERROR;
 		}
 
@@ -51,11 +51,11 @@ public class BuildingAddressEditAction extends FPActionSupport {
 
 			if (building == null) {
 				log.warn("Can't get building with id {} from DB", stub.getId());
-				addActionError(getText("common.object_not_selected"));
+				addActionError(getText("ab.error.building.cant_get_building"));
 				return REDIRECT_ERROR;
 			} else if (building.isNotActive()) {
 				log.warn("Building with id {} is disabled", stub.getId());
-				addActionError(getText("common.object_not_selected"));
+				addActionError(getText("ab.error.building.cant_get_building"));
 				return REDIRECT_ERROR;
 			}
 
@@ -63,7 +63,7 @@ public class BuildingAddressEditAction extends FPActionSupport {
 
 		if (address == null || address.getId() == null) {
 			log.warn("Incorrect building address id");
-			addActionError(getText("common.object_not_selected"));
+			addActionError(getText("ab.error.building_address.incorrect_address_id"));
 			return REDIRECT_ERROR;
 		}
 
@@ -73,11 +73,11 @@ public class BuildingAddressEditAction extends FPActionSupport {
 
 			if (address == null) {
 				log.warn("Building address mismatch: {}, {}", building, address);
-				addActionError(getText("common.object_not_selected"));
+				addActionError(getText("ab.error.building_address.cant_get_address"));
 				return REDIRECT_ERROR;
 			} else if (address.isNotActive()) {
 				log.warn("Building address with id {} is disabled", stub.getId());
-				addActionError(getText("common.object_not_selected"));
+				addActionError(getText("ab.error.building_address.cant_get_address"));
 				return REDIRECT_ERROR;
 			}
 
@@ -92,7 +92,7 @@ public class BuildingAddressEditAction extends FPActionSupport {
 				address = buildingService.readWithHierarchy(stub);
 				if (address == null) {
 					log.warn("Can't get building address with id {} from DB", stub.getId());
-					addActionError(getText("common.object_not_selected"));
+					addActionError(getText("ab.error.building_address.cant_get_address"));
 					return REDIRECT_ERROR;
 				}
 				streetFilter = address.getStreet().getId();
@@ -132,18 +132,17 @@ public class BuildingAddressEditAction extends FPActionSupport {
 
 		if (streetFilter == null || streetFilter <= 0) {
 			log.warn("Incorrect street id in filter ({})", streetFilter);
-			addActionError(getText("ab.error.building_address.street_required"));
+			addActionError(getText("ab.error.street.incorrect_street_id"));
 			streetFilter = 0L;
 		} else {
-			Stub<Street> stub = new Stub<Street>(streetFilter);
-			Street street = streetService.readFull(stub);
+			Street street = streetService.readFull(new Stub<Street>(streetFilter));
 			if (street == null) {
-				log.warn("Can't get street with id {} from DB", stub.getId());
-				addActionError(getText("common.object_not_selected"));
+				log.warn("Can't get street with id {} from DB", streetFilter);
+				addActionError(getText("ab.error.street.cant_get_street"));
 				streetFilter = 0L;
 			} else if (street.isNotActive()) {
-				log.warn("Street with id {} is disabled", stub.getId());
-				addActionError(getText("common.object_not_selected"));
+				log.warn("Street with id {} is disabled", streetFilter);
+				addActionError(getText("ab.error.street.cant_get_street"));
 				streetFilter = 0L;
 			}
 		}

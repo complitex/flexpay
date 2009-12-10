@@ -32,7 +32,7 @@ public class ApartmentEditAction extends FPActionSupport {
 
 		if (apartment == null || apartment.getId() == null) {
 			log.warn("Incorrect apartment id");
-			addActionError(getText("common.object_not_selected"));
+			addActionError(getText("ab.error.apartment.incorrect_apartment_id"));
 			return REDIRECT_ERROR;
 		}
 
@@ -42,11 +42,11 @@ public class ApartmentEditAction extends FPActionSupport {
 
 			if (apartment == null) {
 				log.warn("Can't get apartment with id {} from DB", stub.getId());
-				addActionError(getText("common.object_not_selected"));
+				addActionError(getText("ab.error.apartment.cant_get_apartment"));
 				return REDIRECT_ERROR;
 			} else if (apartment.isNotActive()) {
 				log.warn("Apartment with id {} is disabled", stub.getId());
-				addActionError(getText("common.object_not_selected"));
+				addActionError(getText("ab.error.apartment.cant_get_apartment"));
 				return REDIRECT_ERROR;
 			}
 
@@ -92,18 +92,17 @@ public class ApartmentEditAction extends FPActionSupport {
 
 		if (buildingFilter == null || buildingFilter <= 0) {
 			log.warn("Incorrect building address id in filter ({})", buildingFilter);
-			addActionError(getText("ab.error.apartment.no_building"));
+			addActionError(getText("ab.error.building_address.incorrect_address_id"));
 			buildingFilter = 0L;
 		} else if (apartment.isNew()) {
-			Stub<BuildingAddress> stub = new Stub<BuildingAddress>(buildingFilter);
-			BuildingAddress address = buildingService.readFullAddress(stub);
+			BuildingAddress address = buildingService.readFullAddress(new Stub<BuildingAddress>(buildingFilter));
 			if (address == null) {
-				log.warn("Can't get building address with id {} from DB", stub.getId());
-				addActionError(getText("common.object_not_selected"));
+				log.warn("Can't get building address with id {} from DB", buildingFilter);
+				addActionError(getText("ab.error.building_address.cant_get_address"));
 				buildingFilter = 0L;
 			} else if (address.isNotActive()) {
-				log.warn("Building address with id {} is disabled", stub.getId());
-				addActionError(getText("common.object_not_selected"));
+				log.warn("Building address with id {} is disabled", buildingFilter);
+				addActionError(getText("ab.error.building_address.cant_get_address"));
 				buildingFilter = 0L;
 			}
 		}

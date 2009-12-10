@@ -57,18 +57,18 @@ public class RegionsListAction extends FPActionWithPagerSupport<Region> {
 
 		if (countryFilter == null || countryFilter <= 0) {
 			log.warn("Incorrect country id in filter ({})", countryFilter);
-			addActionError(getText("ab.error.region.no_country"));
+			addActionError(getText("ab.error.country.incorrect_country_id"));
+			countryFilter = 0L;
 		} else {
-			Stub<Country> stub = new Stub<Country>(countryFilter);
-			Country country = countryService.readFull(stub);
+			Country country = countryService.readFull(new Stub<Country>(countryFilter));
 			if (country == null) {
-				log.warn("Can't get country with id {} from DB", stub.getId());
-				addActionError(getText("common.object_not_selected"));
-				countryFilter = null;
+				log.warn("Can't get country with id {} from DB", countryFilter);
+				addActionError(getText("ab.error.country.cant_get_country"));
+				countryFilter = 0L;
 			} else if (country.isNotActive()) {
-				log.warn("Country with id {} is disabled", stub.getId());
-				addActionError(getText("common.object_not_selected"));
-				countryFilter = null;
+				log.warn("Country with id {} is disabled", countryFilter);
+				addActionError(getText("ab.error.country.cant_get_country"));
+				countryFilter = 0L;
 			}
 		}
 

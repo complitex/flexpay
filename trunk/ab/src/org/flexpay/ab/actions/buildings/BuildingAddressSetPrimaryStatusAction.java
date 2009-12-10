@@ -21,7 +21,7 @@ public class BuildingAddressSetPrimaryStatusAction extends FPActionSupport {
 
 		if (address == null || address.getId() == null) {
 			log.warn("Incorrect building address id");
-			addActionError(getText("common.object_not_selected"));
+			addActionError(getText("ab.error.building_address.incorrect_address_id"));
 			return SUCCESS;
 		}
 
@@ -30,11 +30,11 @@ public class BuildingAddressSetPrimaryStatusAction extends FPActionSupport {
 
 		if (building == null) {
 			log.warn("Can't get building for address with id {} from DB", addressStub.getId());
-			addActionError(getText("common.object_not_selected"));
+			addActionError(getText("ab.error.building.cant_get_building"));
 			return SUCCESS;
 		} else if (building.isNotActive()) {
 			log.warn("Building with id {} is disabled", building.getId());
-			addActionError(getText("common.object_not_selected"));
+			addActionError(getText("ab.error.building.cant_get_building"));
 			return SUCCESS;
 		}
 

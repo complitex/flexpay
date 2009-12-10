@@ -51,21 +51,20 @@ public class TownEditAction extends FPActionSupport {
 
 		if (town == null || town.getId() == null) {
 			log.warn("Incorrect town id");
-			addActionError(getText("common.object_not_selected"));
+			addActionError(getText("ab.error.town.incorrect_town_id"));
 			return REDIRECT_ERROR;
 		}
 
 		if (town.isNotNew()) {
 			Stub<Town> stub = stub(town);
 			town = townService.readWithHierarchy(stub);
-
 			if (town == null) {
 				log.warn("Can't get town with id {} from DB", stub.getId());
-				addActionError(getText("common.object_not_selected"));
+				addActionError(getText("ab.error.town.cant_get_town"));
 				return REDIRECT_ERROR;
 			} else if (town.isNotActive()) {
 				log.warn("Town with id {} is disabled", stub.getId());
-				addActionError(getText("common.object_not_selected"));
+				addActionError(getText("ab.error.town.cant_get_town"));
 				return REDIRECT_ERROR;
 			}
 
@@ -99,18 +98,17 @@ public class TownEditAction extends FPActionSupport {
 
 		if (regionFilter == null || regionFilter <= 0) {
 			log.warn("Incorrect region id in filter ({})", regionFilter);
-			addActionError(getText("ab.error.town.no_region"));
+			addActionError(getText("ab.error.region.incorrect_region_id"));
 			regionFilter = 0L;
 		} else if (town.isNew()) {
-			Stub<Region> stub = new Stub<Region>(regionFilter);
-			Region region = regionService.readFull(stub);
+			Region region = regionService.readFull(new Stub<Region>(regionFilter));
 			if (region == null) {
-				log.warn("Can't get region with id {} from DB", stub.getId());
-				addActionError(getText("common.object_not_selected"));
+				log.warn("Can't get region with id {} from DB", regionFilter);
+				addActionError(getText("ab.error.region.cant_get_region"));
 				regionFilter = 0L;
 			} else if (region.isNotActive()) {
-				log.warn("Region with id {} is disabled", stub.getId());
-				addActionError(getText("common.object_not_selected"));
+				log.warn("Region with id {} is disabled", regionFilter);
+				addActionError(getText("ab.error.region.cant_get_region"));
 				regionFilter = 0L;
 			}
 		}

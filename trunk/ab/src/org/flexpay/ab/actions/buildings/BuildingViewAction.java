@@ -21,7 +21,7 @@ public class BuildingViewAction extends FPActionSupport {
 
 		if (building == null || building.isNew()) {
 			log.warn("Incorrect building id");
-			addActionError(getText("common.error.invalid_id"));
+			addActionError(getText("ab.error.building.incorrect_building_id"));
 			return REDIRECT_ERROR;
 		}
 
@@ -30,11 +30,11 @@ public class BuildingViewAction extends FPActionSupport {
 
 		if (building == null) {
 			log.warn("Can't get building with id {} from DB", stub.getId());
-			addActionError(getText("common.error.invalid_id"));
+			addActionError(getText("ab.error.building.cant_get_building"));
 			return REDIRECT_ERROR;
 		} else if (building.isNotActive()) {
 			log.warn("Country with id {} is disabled", stub.getId());
-			addActionError(getText("common.object_not_selected"));
+			addActionError(getText("ab.error.building.cant_get_building"));
 			return REDIRECT_ERROR;
 		}
 

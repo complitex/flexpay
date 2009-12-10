@@ -20,17 +20,18 @@ public class ApartmentsListPageAction extends FPActionSupport {
 
 		if (buildingFilter == null || buildingFilter < 0) {
 			log.warn("Incorrect filter value {}", buildingFilter);
-			addActionError(getText("common.error.invalid_id"));
+			addActionError(getText("ab.error.building_address.incorrect_address_id"));
+			buildingFilter = 0L;
 		} else if (buildingFilter > 0) {
 			BuildingAddress address = buildingService.readFullAddress(new Stub<BuildingAddress>(buildingFilter));
 			if (address == null) {
 				log.warn("Can't get building address with id {} from DB", buildingFilter);
-				addActionError(getText("common.object_not_selected"));
-				buildingFilter = null;
+				addActionError(getText("ab.error.building_address.cant_get_address"));
+				buildingFilter = 0L;
 			} else if (address.isNotActive()) {
 				log.warn("Building address with id {} is disabled", buildingFilter);
-				addActionError(getText("common.object_not_selected"));
-				buildingFilter = null;
+				addActionError(getText("ab.error.building_address.cant_get_address"));
+				buildingFilter = 0L;
 			}
 		}
 

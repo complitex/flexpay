@@ -39,7 +39,7 @@ public class TownFilterAjaxAction extends FilterAjaxAction {
 			}
 		} catch (Exception e) {
 			log.warn("Incorrect region id in filter ({})", parents[0]);
-			addActionError(getText("common.object_not_selected"));
+			addActionError(getText("ab.error.region.incorrect_region_id"));
 			return SUCCESS;
 		}
 
@@ -86,7 +86,7 @@ public class TownFilterAjaxAction extends FilterAjaxAction {
 			town = townService.readFull(new Stub<Town>(filterValueLong));
 			if (town == null) {
 				log.warn("Can't get town with id {} from DB", filterValueLong);
-				addActionError(getText("common.object_not_selected"));
+				addActionError(getText("ab.error.town.cant_get_town"));
 			}
 		}
 
@@ -102,18 +102,18 @@ public class TownFilterAjaxAction extends FilterAjaxAction {
 
 		if (filterValueLong == null || filterValueLong <= 0) {
 			log.warn("Incorrect filter value {}", filterValue);
-			addActionError(getText("common.error.invalid_id"));
+			addActionError(getText("ab.error.town.incorrect_town_id"));
 			return;
 		}
 
 		Town town = townService.readFull(new Stub<Town>(filterValueLong));
 		if (town == null) {
 			log.warn("Can't get town with id {} from DB", filterValueLong);
-			addActionError(getText("common.object_not_selected"));
+			addActionError(getText("ab.error.town.cant_get_town"));
 			return;
 		} else if (town.isNotActive()) {
 			log.warn("Town with id {} is disabled", filterValueLong);
-			addActionError(getText("common.object_not_selected"));
+			addActionError(getText("ab.error.town.cant_get_town"));
 			return;
 		}
 

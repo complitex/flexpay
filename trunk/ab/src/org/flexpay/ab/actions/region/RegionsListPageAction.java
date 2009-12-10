@@ -20,16 +20,16 @@ public class RegionsListPageAction extends FPActionSupport {
 
 		if (countryFilter == null || countryFilter < 0) {
 			log.warn("Incorrect filter value {}", countryFilter);
-			addActionError(getText("common.error.invalid_id"));
+			addActionError(getText("ab.error.country.incorrect_country_id"));
 		} else if (countryFilter > 0) {
 			Country country = countryService.readFull(new Stub<Country>(countryFilter));
 			if (country == null) {
 				log.warn("Can't get country with id {} from DB", countryFilter);
-				addActionError(getText("common.object_not_selected"));
+				addActionError(getText("ab.error.country.cant_get_country"));
 				countryFilter = null;
 			} else if (country.isNotActive()) {
 				log.warn("Country with id {} is disabled", countryFilter);
-				addActionError(getText("common.object_not_selected"));
+				addActionError(getText("ab.error.country.cant_get_country"));
 				countryFilter = null;
 			}
 		}
