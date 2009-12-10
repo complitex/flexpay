@@ -5,6 +5,9 @@
 		 xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
               http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-2.0.4.xsd">
 
+	<security:authentication-manager alias="authenticationManager" />
+    <security:global-method-security secured-annotations="enabled" jsr250-annotations="enabled" />
+
 	<b:bean id="filterChainProxy"
 			class="org.springframework.security.util.FilterChainProxy">
 		<security:filter-chain-map path-type="ant">
@@ -40,15 +43,9 @@
 		</b:property>
 	</b:bean>
 
-	<b:bean id="authenticationManager"
-			class="org.springframework.security.providers.ProviderManager">
-		<b:property name="providers">
-			<b:list>
-				<b:bean class="org.flexpay.common.actions.security.opensso.AuthenticationProvider">
-					<b:property name="authenticationUserDetailsService" ref="authenticatedUserDetailsService" />
-				</b:bean>
-			</b:list>
-		</b:property>
+	<b:bean class="org.flexpay.common.actions.security.opensso.AuthenticationProvider">
+		<security:custom-authentication-provider />
+		<b:property name="authenticationUserDetailsService" ref="authenticatedUserDetailsService" />
 	</b:bean>
 
 	<b:bean id="authenticatedUserDetailsService"
