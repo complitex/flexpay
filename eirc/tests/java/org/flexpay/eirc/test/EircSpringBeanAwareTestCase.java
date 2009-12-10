@@ -15,7 +15,11 @@ import org.springframework.security.GrantedAuthority;
 import org.springframework.security.context.SecurityContextHolder;
 import org.springframework.security.providers.anonymous.AnonymousAuthenticationToken;
 import org.springframework.security.userdetails.User;
+import org.springframework.test.context.ContextConfiguration;
 
+@ContextConfiguration(locations = {
+		"eirc-beans.xml"
+})
 public class EircSpringBeanAwareTestCase extends SpringBeanAwareTestCase {
 
 	/**
@@ -55,7 +59,8 @@ public class EircSpringBeanAwareTestCase extends SpringBeanAwareTestCase {
 				PROCESS_DEFINITION_UPLOAD_NEW,
 				DOCUMENT_READ,
 				DOCUMENT_TYPE_READ,
-				PROCESS_READ
+				PROCESS_READ,
+                PROCESS_DEFINITION_UPLOAD_NEW
 		);
 		User user = new User("test", "test", true, true, true, true, authorities);
 		UserPreferences preferences = new UserPreferences();
