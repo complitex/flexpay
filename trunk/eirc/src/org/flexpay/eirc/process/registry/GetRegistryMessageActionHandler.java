@@ -40,7 +40,7 @@ public class GetRegistryMessageActionHandler extends FlexPayActionHandler {
         Long spFileId = (Long) parameters.get(PARAM_FILE_ID);
 		FPFile spFile = fpFileService.read(new Stub<FPFile>(spFileId));
 		if (spFile == null) {
-			log.error("Can't get spFile from DB (id = " + spFileId + ")");
+			processLog.error("Can't get spFile from DB (id = " + spFileId + ")");
 			return RESULT_ERROR;
 		}
 
@@ -58,11 +58,11 @@ public class GetRegistryMessageActionHandler extends FlexPayActionHandler {
 			Long startPoint = reader.getPosition();
 			SpFileReader.Message message;
 
-			log2.debug("start position={}", startPoint);
+			log.debug("start position={}", startPoint);
 			do {
 				message = reader.readMessage();
 				listMessage.add(message);
-				log2.debug("position={}", reader.getPosition());
+				log.debug("position={}", reader.getPosition());
 			} while (message != null && (reader.getPosition() - startPoint) < minReadChars);
 			reader.setInputStream(null);
 
@@ -71,7 +71,7 @@ public class GetRegistryMessageActionHandler extends FlexPayActionHandler {
 
             return RESULT_NEXT;
         } catch (IOException e) {
-            log.error("Failed open stream", e);
+            processLog.error("Failed open stream", e);
         }
 
         return RESULT_ERROR;

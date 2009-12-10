@@ -7,17 +7,18 @@ import java.util.List;
 import java.util.Map;
 
 public class ProcessFooterActionHandler extends FlexPayActionHandler {
+	@SuppressWarnings ({"unchecked"})
 	@Override
 	public String execute2(Map<String, Object> parameters) throws FlexPayException {
-		log2.debug("start action");
+		log.debug("start action");
 		
 		List<String> messageFieldList = (List<String>)parameters.get(ProcessRegistryMessageActionHandler.PARAM_MESSAGE_FIELDS);
 		if (messageFieldList == null) {
-			log.error("Can`t get {} from parameters", ProcessRegistryMessageActionHandler.PARAM_MESSAGE_FIELDS);
+			processLog.error("Can`t get {} from parameters", ProcessRegistryMessageActionHandler.PARAM_MESSAGE_FIELDS);
 			return RESULT_ERROR;
 		}
 		if (messageFieldList.size() < 2) {
-			log.error("Message footer error, invalid number of fields");
+			processLog.error("Message footer error, invalid number of fields");
 			return RESULT_ERROR;
 		}
 		return RESULT_NEXT;

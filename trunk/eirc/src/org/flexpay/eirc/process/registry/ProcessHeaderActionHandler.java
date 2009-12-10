@@ -13,7 +13,6 @@ import org.flexpay.common.service.importexport.ClassToTypeRegistry;
 import org.flexpay.common.service.importexport.CorrectionsService;
 import org.flexpay.common.service.importexport.MasterIndexService;
 import org.flexpay.common.util.StringUtil;
-import org.flexpay.eirc.persistence.EircRegistryRecordProperties;
 import org.flexpay.eirc.persistence.exchange.Operation;
 import org.flexpay.eirc.util.config.ApplicationConfig;
 import org.flexpay.orgs.persistence.Organization;
@@ -24,7 +23,6 @@ import org.flexpay.payments.persistence.EircRegistryProperties;
 import org.flexpay.payments.service.EircRegistryService;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Required;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
@@ -59,19 +57,20 @@ public class ProcessHeaderActionHandler extends FlexPayActionHandler {
 
 	private String moduleName;
 
+	@SuppressWarnings ({"unchecked"})
 	@Override
 	public String execute2(Map<String, Object> parameters) throws FlexPayException {
-		log2.debug("start action");
+		log.debug("start action");
 		
 		Long spFileId = (Long) parameters.get(GetRegistryMessageActionHandler.PARAM_FILE_ID);
 		FPFile spFile = fileService.read(new Stub<FPFile>(spFileId));
 		if (spFile == null) {
-			log.error("Can't get spFile from DB (id = " + spFileId + ")");
+			processLog.error("Can't get spFile from DB (id = " + spFileId + ")");
 			return RESULT_ERROR;
 		}
 		List<String> messageFieldList = (List<String>)parameters.get(ProcessRegistryMessageActionHandler.PARAM_MESSAGE_FIELDS);
 		if (messageFieldList == null) {
-			log.error("Can`t get {} from parameters", ProcessRegistryMessageActionHandler.PARAM_MESSAGE_FIELDS);
+			processLog.error("Can`t get {} from parameters", ProcessRegistryMessageActionHandler.PARAM_MESSAGE_FIELDS);
 			return RESULT_ERROR;
 		}
 		Registry registry = processHeader(spFile, messageFieldList);
@@ -80,18 +79,18 @@ public class ProcessHeaderActionHandler extends FlexPayActionHandler {
 		}
 		parameters.put(PARAM_REGISTRY_ID, registry.getId());
 		parameters.put(PARAM_SERVICE_PROVIDER_ID, ((EircRegistryProperties)registry.getProperties()).getServiceProvider().getId());
-		log.debug("Create registry {}. Add it to process parameters", registry.getId());
+		processLog.debug("Create registry {}. Add it to process parameters", registry.getId());
 		return RESULT_NEXT;
 	}
 
 	@Transactional(readOnly = false)
 	private Registry processHeader(FPFile spFile, List<String> messageFieldList) {
 		if (messageFieldList.size() < 10) {
-			log.error("Message header error, invalid number of fields: {}, expected at least 10", messageFieldList.size());
+			processLog.error("Message header error, invalid number of fields: {}, expected at least 10", messageFieldList.size());
 			return null;
 		}
 
-		log.info("Adding header: {}", messageFieldList);
+		processLog.info("Adding header: {}", messageFieldList);
 
 		DateFormat dateFormat = new SimpleDateFormat(ParseRegistryConstants.DATE_FORMAT);
 
@@ -106,7 +105,7 @@ public class ProcessHeaderActionHandler extends FlexPayActionHandler {
 			String value = messageFieldList.get(++n);
 			RegistryType registryType = registryTypeService.read(Long.valueOf(value));
 			if (registryType == null) {
-				log.error("Unknown registry type field: {}", value);
+				processLog.error("Unknown registry type field: {}", value);
 				return null;
 			}
 			newRegistry.setRegistryType(registryType);
@@ -126,29 +125,29 @@ public class ProcessHeaderActionHandler extends FlexPayActionHandler {
 				}
 			}
 
-			log.info("Creating new registry: {}", newRegistry);
+			processLog.info("Creating new registry: {}", newRegistry);
 
 			EircRegistryProperties props = (EircRegistryProperties) propertiesFactory.newRegistryProperties();
 			newRegistry.setProperties(props);
 
 			Organization recipient = setRecipient(newRegistry, props);
 			if (recipient == null) {
-				log.error("Failed processing registry header, recipient not found: #{}", newRegistry.getRecipientCode());
+				processLog.error("Failed processing registry header, recipient not found: #{}", newRegistry.getRecipientCode());
 				return null;
 			}
 			Organization sender = setSender(newRegistry, props);
 			if (sender == null) {
-				log.error("Failed processing registry header, sender not found: #{}", newRegistry.getSenderCode());
+				processLog.error("Failed processing registry header, sender not found: #{}", newRegistry.getSenderCode());
 				return null;
 			}
-			log.info("Recipient: {}\n sender: {}", recipient, sender);
+			processLog.info("Recipient: {}\n sender: {}", recipient, sender);
 
 			if (!validateProvider(newRegistry)) {
 				return null;
 			}
 			ServiceProvider provider = getProvider(newRegistry);
 			if (provider == null) {
-				log.error("Failed processing registry header, provider not found: #{}", newRegistry.getSenderCode());
+				processLog.error("Failed processing registry header, provider not found: #{}", newRegistry.getSenderCode());
 				return null;
 			}
 			props.setServiceProvider(provider);
@@ -159,13 +158,13 @@ public class ProcessHeaderActionHandler extends FlexPayActionHandler {
 
 			return registryService.create(newRegistry);
 		} catch (NumberFormatException e) {
-			log.error("Header parse error", e);
+			processLog.error("Header parse error", e);
 		} catch (ParseException e) {
-			log.error("Header parse error", e);
+			processLog.error("Header parse error", e);
 		} catch (TransitionNotAllowed e) {
-			log.error("Header parse error", e);
+			processLog.error("Header parse error", e);
 		} catch (FlexPayException e) {
-			log.error("Header parse error", e);
+			processLog.error("Header parse error", e);
 		}
 		return null;
 	}
@@ -174,7 +173,7 @@ public class ProcessHeaderActionHandler extends FlexPayActionHandler {
 		if (registry.getRegistryType().isPayments()) {
 			Stub<Organization> recipient = new Stub<Organization>(registry.getRecipientCode());
 			if (recipient.sameId(ApplicationConfig.getSelfOrganization())) {
-				log.error("Expected service provider recipient, but recieved eirc code");
+				processLog.error("Expected service provider recipient, but recieved eirc code");
 				return false;
 			}
 		}
@@ -191,7 +190,7 @@ public class ProcessHeaderActionHandler extends FlexPayActionHandler {
 
 	private Organization setSender(Registry registry, EircRegistryProperties props) {
 
-		log.debug("Fetching sender via code={}", registry.getSenderCode());
+		processLog.debug("Fetching sender via code={}", registry.getSenderCode());
 		Organization sender = findOrgByRegistryCorrections(registry, registry.getSenderCode());
 		if (sender == null) {
 			sender = organizationService.readFull(props.getSenderStub());
@@ -203,10 +202,10 @@ public class ProcessHeaderActionHandler extends FlexPayActionHandler {
 	private Organization setRecipient(Registry registry, EircRegistryProperties props) {
 		Organization recipient;
 		if (registry.getRecipientCode() == 0) {
-			log.debug("Recipient is EIRC, code=0");
+			processLog.debug("Recipient is EIRC, code=0");
 			recipient = organizationService.readFull(ApplicationConfig.getSelfOrganizationStub());
 		} else {
-			log.debug("Fetching recipient via code={}", registry.getRecipientCode());
+			processLog.debug("Fetching recipient via code={}", registry.getRecipientCode());
 			recipient = findOrgByRegistryCorrections(registry, registry.getRecipientCode());
 			if (recipient == null) {
 				recipient = organizationService.readFull(props.getRecipientStub());
@@ -221,7 +220,7 @@ public class ProcessHeaderActionHandler extends FlexPayActionHandler {
 
 		for (RegistryContainer container : registry.getContainers()) {
 			String data = container.getData();
-			log.debug("Candidate: {}", data);
+			processLog.debug("Candidate: {}", data);
 			if (data.startsWith("502"+Operation.CONTAINER_DATA_DELIMITER)) {
 				List<String> datum = StringUtil.splitEscapable(
 								data, Operation.CONTAINER_DATA_DELIMITER, Operation.ESCAPE_SYMBOL);
@@ -241,7 +240,7 @@ public class ProcessHeaderActionHandler extends FlexPayActionHandler {
 						throw new IllegalStateException("Expected master correction for organization, " +
 														"but not found: " + data);
 					}
-					log.debug("Found organization by master correction: {}", datum.get(4));
+					processLog.debug("Found organization by master correction: {}", datum.get(4));
 					Organization org = organizationService.readFull(stub);
 					if (org == null) {
 						throw new IllegalStateException("Existing master correction for organization " +
@@ -264,7 +263,7 @@ public class ProcessHeaderActionHandler extends FlexPayActionHandler {
 				continue;
 			}
 			if (data.length() > ParseRegistryConstants.MAX_CONTAINER_SIZE) {
-				log.error("Too long container found: {}", data);
+				processLog.error("Too long container found: {}", data);
 				return false;
 			}
 			registry.addContainer(new RegistryContainer(data));

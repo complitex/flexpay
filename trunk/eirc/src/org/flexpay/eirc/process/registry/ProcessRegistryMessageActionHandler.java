@@ -36,9 +36,10 @@ public class ProcessRegistryMessageActionHandler extends FlexPayActionHandler {
 	private RegistryWorkflowManager registryWorkflowManager;
 	private Long flushNumberRegistryRecords;
 
+	@SuppressWarnings ({"unchecked"})
     @Override
     public String execute2(Map<String, Object> parameters) throws FlexPayException {
-		log2.debug("start action");
+		log.debug("start action");
 
 		List<SpFileReader.Message> listMessage = (List<SpFileReader.Message>)parameters.get(GetRegistryMessageActionHandler.PARAM_MESSAGES);
 		if (listMessage == null || listMessage.size() <= 0) {
@@ -64,7 +65,7 @@ public class ProcessRegistryMessageActionHandler extends FlexPayActionHandler {
 
         parameters.put(PARAM_MESSAGE_FIELDS, messageFieldList);
 
-		log.debug("Message fields: {}", messageFieldList);
+		processLog.debug("Message fields: {}", messageFieldList);
 
 		if (messageType.equals(SpFileReader.Message.MESSAGE_TYPE_HEADER)) {
 			return RESULT_HEADER;
@@ -82,9 +83,10 @@ public class ProcessRegistryMessageActionHandler extends FlexPayActionHandler {
 		return flushRecordStack(parameters, null, false);
 	}
 
+	@SuppressWarnings ({"unchecked"})
 	@Transactional(readOnly = false)
 	private boolean flushRecordStack(Map<String, Object> parameters, Registry registry, boolean finalize) {
-		log2.debug("Flush data");
+		log.debug("Flush data");
 		List<RegistryRecord> records = (List<RegistryRecord>)parameters.get(PARAM_REGISTRY_RECORDS);
 		if (records != null && (records.size() >= flushNumberRegistryRecords || finalize)) {
 			if (registry == null) {
@@ -107,13 +109,13 @@ public class ProcessRegistryMessageActionHandler extends FlexPayActionHandler {
 					registryRecordService.create(record);
 				}
 			} catch (FlexPayException e) {
-				log.error("Registry record did not save to database");
-				log2.error("Can`t flush records", e);
+				processLog.error("Registry record did not save to database");
+				log.error("Can`t flush records", e);
 				return false;
 			}
 
 			records.clear();
-			log2.debug("Flushing data");
+			log.debug("Flushing data");
 		}
 		return true;
 	}
@@ -128,12 +130,12 @@ public class ProcessRegistryMessageActionHandler extends FlexPayActionHandler {
 			return false;
 		}
 
-		log.debug("Finalize registry");
+		processLog.debug("Finalize registry");
 
 		Long recordCounter = (Long)parameters.get(PARAM_NUMBER_PROCESSED_REGISTRY_RECORDS);
 
 		if (!registry.getRecordsNumber().equals(recordCounter)) {
-			log.error("Registry records number error, expected: " +
+			processLog.error("Registry records number error, expected: " +
 											  registry.getRecordsNumber() + ", found: " + recordCounter);
 			return false;
 		}
@@ -142,7 +144,7 @@ public class ProcessRegistryMessageActionHandler extends FlexPayActionHandler {
 			registryWorkflowManager.setNextSuccessStatus(registry);
 			return true;
 		} catch (TransitionNotAllowed transitionNotAllowed) {
-			log.error("Does not finalize registry", transitionNotAllowed);
+			processLog.error("Does not finalize registry", transitionNotAllowed);
 		}
 		return false;
 	}
@@ -151,8 +153,8 @@ public class ProcessRegistryMessageActionHandler extends FlexPayActionHandler {
 	private Registry getRegistry(Map<String, Object> parameters) {
 		Long registryId = (Long)parameters.get(ProcessHeaderActionHandler.PARAM_REGISTRY_ID);
 		if (registryId == null) {
+			processLog.error("Can`t get {} from parameters", ProcessHeaderActionHandler.PARAM_REGISTRY_ID);
 			log.error("Can`t get {} from parameters", ProcessHeaderActionHandler.PARAM_REGISTRY_ID);
-			log2.error("Can`t get {} from parameters", ProcessHeaderActionHandler.PARAM_REGISTRY_ID);
 			return null;
 		}
 		return registryService.read(new Stub<Registry>(registryId));
