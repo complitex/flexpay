@@ -3,8 +3,9 @@ package org.flexpay.eirc.sp;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Serializable;
 
-public class SpFileReader {
+public class SpFileReader implements Serializable {
 
 	public static final String DEFAULT_CHARSET = "Cp1251";
 	public static final int MAX_RECORD_LENGTH = 10000;
@@ -19,6 +20,13 @@ public class SpFileReader {
 	public SpFileReader(InputStream is) {
 		this.is = new BufferedInputStream(is);
 		this.charset = DEFAULT_CHARSET;
+		this.position = 0;
+	}
+
+	public SpFileReader(InputStream is, long position) throws IOException {
+		this.is = new BufferedInputStream(is);
+		this.charset = DEFAULT_CHARSET;
+		this.is.skip(position);
 	}
 
 	public Message readMessage() throws IOException, RegistryFormatException {
@@ -61,11 +69,28 @@ public class SpFileReader {
 		return result;
 	}
 
+    public void setInputStream(InputStream is) throws IOException {
+		if (is == null) {
+			this.is = null;
+		} else {
+			this.is = new BufferedInputStream(is);
+			this.is.skip(position);
+		}
+    }
+
+	public long getPosition() {
+		return position;
+	}
+
+	public void close() throws IOException {
+        is.close();
+    }
+
 	public void setCharset(String charset) {
 		this.charset = charset;
 	}
 
-	public static class Message {
+	public static class Message implements Serializable {
 
 		public static final int MESSAGE_TYPE_HEADER = 0xC;
 		public static final int MESSAGE_TYPE_RECORD = 0x3;
