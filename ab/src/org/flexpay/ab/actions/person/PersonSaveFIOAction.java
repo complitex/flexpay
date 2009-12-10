@@ -25,7 +25,7 @@ public class PersonSaveFIOAction extends FPActionSupport {
 
 		if (person == null) {
 			log.warn("Person parameter is null");
-			addActionError(getText("ab.error.person.invalid_id"));
+			addActionError(getText("ab.error.person.incorrect_person_id"));
 			return SUCCESS;
 		}
 
@@ -35,11 +35,11 @@ public class PersonSaveFIOAction extends FPActionSupport {
 
 			if (person == null) {
 				log.warn("Can't get person with id {} from DB", stub.getId());
-				addActionError(getText("common.object_not_selected"));
+				addActionError(getText("ab.error.person.cant_get_person"));
 				return SUCCESS;
 			} else if (person.isNotActive()) {
 				log.warn("Person with id {} is disabled", stub.getId());
-				addActionError(getText("common.object_not_selected"));
+				addActionError(getText("ab.error.person.cant_get_person"));
 				return SUCCESS;
 			}
 

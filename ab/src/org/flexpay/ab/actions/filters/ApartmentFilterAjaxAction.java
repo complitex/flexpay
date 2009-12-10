@@ -31,7 +31,7 @@ public class ApartmentFilterAjaxAction extends FilterAjaxAction {
 			addressId = Long.parseLong(parents[0]);
 		} catch (Exception e) {
 			log.warn("Incorrect building address id in filter ({})", parents[0]);
-			addActionError(getText("common.object_not_selected"));
+			addActionError(getText("ab.error.building_address.incorrect_address_id"));
 			return SUCCESS;
 		}
 		if (addressId == 0) {
@@ -63,7 +63,7 @@ public class ApartmentFilterAjaxAction extends FilterAjaxAction {
 			filterString = apartmentService.getApartmentNumber(new Stub<Apartment>(filterValueLong));
 		} catch (Exception e) {
 			log.warn("Can't get number for apartment with id = {}", filterValueLong);
-			addActionError(getText("common.object_not_selected"));
+			addActionError(getText("ab.error.apartment.cant_get_apartment"));
 		}
 	}
 
@@ -72,18 +72,18 @@ public class ApartmentFilterAjaxAction extends FilterAjaxAction {
 
 		if (filterValueLong == null || filterValueLong <= 0) {
 			log.warn("Incorrect filter value {}", filterValue);
-			addActionError(getText("common.error.invalid_id"));
+			addActionError(getText("ab.error.apartment.incorrect_apartment_id"));
 			return;
 		}
 
 		Apartment apartment = apartmentService.readFull(new Stub<Apartment>(filterValueLong));
 		if (apartment == null) {
 			log.warn("Can't get apartment with id {} from DB", filterValueLong);
-			addActionError(getText("common.object_not_selected"));
+			addActionError(getText("ab.error.apartment.cant_get_apartment"));
 			return;
 		} else if (apartment.isNotActive()) {
 			log.warn("Apartment address with id {} is disabled", filterValueLong);
-			addActionError(getText("common.object_not_selected"));
+			addActionError(getText("ab.error.apartment.cant_get_apartment"));
 			return;
 		}
 

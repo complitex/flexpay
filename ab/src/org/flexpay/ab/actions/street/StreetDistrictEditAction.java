@@ -1,6 +1,5 @@
 package org.flexpay.ab.actions.street;
 
-import org.flexpay.ab.persistence.District;
 import org.flexpay.ab.persistence.DistrictName;
 import org.flexpay.ab.persistence.Street;
 import org.flexpay.ab.persistence.StreetDistrictRelation;
@@ -33,7 +32,7 @@ public class StreetDistrictEditAction extends FPActionSupport {
 
 		if (street == null || street.isNew()) {
 			log.warn("Incorrect street id");
-			addActionError(getText("ab.error.street.invalid_street_id"));
+			addActionError(getText("ab.error.street.incorrect_street_id"));
 			return REDIRECT_SUCCESS;
 		}
 
@@ -42,11 +41,11 @@ public class StreetDistrictEditAction extends FPActionSupport {
 
 		if (street == null) {
 			log.warn("Can't get street with id {} from DB", stub.getId());
-			addActionError(getText("common.object_not_selected"));
+			addActionError(getText("ab.error.street.cant_get_street"));
 			return REDIRECT_SUCCESS;
 		} else if (street.isNotActive()) {
 			log.warn("Street with id {} is disabled", stub.getId());
-			addActionError(getText("common.object_not_selected"));
+			addActionError(getText("ab.error.street.cant_get_street"));
 			return REDIRECT_SUCCESS;
 		}
 

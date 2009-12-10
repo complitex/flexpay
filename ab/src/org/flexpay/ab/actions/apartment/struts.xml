@@ -26,6 +26,7 @@
 		</action>
 
 		<action name="apartmentRegistration" class="apartmentRegistrationAction">
+            <result name="redirectError" type="redirect-action">apartmentsList</result>
 			<result type="tiles">ab.apartment.registrations</result>
 		</action>
 

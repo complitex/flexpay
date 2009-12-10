@@ -29,7 +29,7 @@ public class AddressAttributeTypeEditAction extends FPActionSupport {
 
 		if (attributeType == null || attributeType.getId() == null) {
 			log.warn("Incorrect attribute type id");
-			addActionError(getText("common.object_not_selected"));
+			addActionError(getText("ab.error.building_attribute_type.incorrect_attribute_type_id"));
 			return REDIRECT_ERROR;
 		}
 
@@ -39,11 +39,11 @@ public class AddressAttributeTypeEditAction extends FPActionSupport {
 
 			if (attributeType == null) {
 				log.warn("Can't get address attribute type with id {} from DB", stub.getId());
-				addActionError(getText("common.object_not_selected"));
+				addActionError(getText("ab.error.building_attribute_type.cant_get_attribute_type"));
 				return REDIRECT_ERROR;
 			} else if (attributeType.isNotActive()) {
 				log.warn("Attribute type with id {} is disabled", stub.getId());
-				addActionError(getText("common.object_not_selected"));
+				addActionError(getText("ab.error.building_attribute_type.cant_get_attribute_type"));
 				return REDIRECT_ERROR;
 			}
 

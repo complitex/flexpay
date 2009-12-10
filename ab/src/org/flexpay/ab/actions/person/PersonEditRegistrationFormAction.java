@@ -31,20 +31,18 @@ public class PersonEditRegistrationFormAction extends FPActionSupport {
 
 		if (apartmentFilter == null || apartmentFilter <= 0) {
 			log.warn("Incorrect apartment id");
-			addActionError(getText("ab.error.apartment.no_building"));
+			addActionError(getText("ab.error.apartment.incorrect_apartment_id"));
 			return SUCCESS;
 		}
 
-		Stub<Apartment> stub = new Stub<Apartment>(apartmentFilter);
-		Apartment apartment = apartmentService.readWithHierarchy(stub);
-
+		Apartment apartment = apartmentService.readWithHierarchy(new Stub<Apartment>(apartmentFilter));
 		if (apartment == null) {
-			log.debug("Can't get apartment with id {} from DB", stub.getId());
-			addActionError(getText("common.object_not_selected"));
+			log.debug("Can't get apartment with id {} from DB", apartmentFilter);
+			addActionError(getText("ab.error.apartment.cant_get_apartment"));
 			return SUCCESS;
 		} else if (apartment.isNotActive()) {
-			log.debug("Apartment with id {} is disabled", stub.getId());
-			addActionError(getText("common.object_not_selected"));
+			log.debug("Apartment with id {} is disabled", apartmentFilter);
+			addActionError(getText("ab.error.apartment.cant_get_apartment"));
 			return SUCCESS;
 		}
 

@@ -28,7 +28,7 @@ public class MeasureUnitEditAction extends FPActionSupport {
 
 		if (measureUnit == null || measureUnit.getId() == null) {
 			log.warn("Incorrect measure unit id");
-			addActionError(getText("common.error.invalid_id"));
+			addActionError(getText("common.error.measure_unit.incorrect_measure_unit_id"));
 			return REDIRECT_ERROR;
 		}
 
@@ -38,11 +38,11 @@ public class MeasureUnitEditAction extends FPActionSupport {
 
 			if (measureUnit == null) {
 				log.warn("Can't get measure unit with id {} from DB", stub.getId());
-				addActionError(getText("common.object_not_selected"));
+				addActionError(getText("common.error.measure_unit.cant_get_measure_unit"));
 				return REDIRECT_ERROR;
 			} else if (measureUnit.isNotActive()) {
 				log.warn("Measure unit with id {} is disabled", stub.getId());
-				addActionError(getText("common.object_not_selected"));
+				addActionError(getText("common.error.measure_unit.cant_get_measure_unit"));
 				return REDIRECT_ERROR;
 			}
 

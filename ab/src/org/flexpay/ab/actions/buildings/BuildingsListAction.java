@@ -55,18 +55,18 @@ public class BuildingsListAction extends FPActionWithPagerSupport<BuildingAddres
 
 		if (streetFilter == null || streetFilter <= 0) {
 			log.warn("Incorrect street id in filter ({})", streetFilter);
-			addActionError(getText("ab.error.street.no_street"));
+			addActionError(getText("ab.error.street.incorrect_street_id"));
+			streetFilter = 0L;
 		} else {
-			Stub<Street> stub = new Stub<Street>(streetFilter);
-			Street street = streetService.readFull(stub);
+			Street street = streetService.readFull(new Stub<Street>(streetFilter));
 			if (street == null) {
-				log.warn("Can't get street with id {} from DB", stub.getId());
-				addActionError(getText("common.object_not_selected"));
-				streetFilter = null;
+				log.warn("Can't get street with id {} from DB", streetFilter);
+				addActionError(getText("ab.error.street.cant_get_street"));
+				streetFilter = 0L;
 			} else if (street.isNotActive()) {
-				log.warn("Street with id {} is disabled", stub.getId());
-				addActionError(getText("common.object_not_selected"));
-				streetFilter = null;
+				log.warn("Street with id {} is disabled", streetFilter);
+				addActionError(getText("ab.error.street.cant_get_street"));
+				streetFilter = 0L;
 			}
 		}
 

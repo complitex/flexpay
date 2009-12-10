@@ -20,17 +20,18 @@ public class DistrictsListPageAction extends FPActionSupport {
 
 		if (townFilter == null || townFilter < 0) {
 			log.warn("Incorrect filter value {}", townFilter);
-			addActionError(getText("common.error.invalid_id"));
+			addActionError(getText("ab.error.town.incorrect_town_id"));
+			townFilter = 0L;
 		} else if (townFilter > 0) {
 			Town town = townService.readFull(new Stub<Town>(townFilter));
 			if (town == null) {
 				log.warn("Can't get town with id {} from DB", townFilter);
-				addActionError(getText("common.object_not_selected"));
-				townFilter = null;
+				addActionError(getText("ab.error.town.cant_get_town"));
+				townFilter = 0L;
 			} else if (town.isNotActive()) {
 				log.warn("Town with id {} is disabled", townFilter);
-				addActionError(getText("common.object_not_selected"));
-				townFilter = null;
+				addActionError(getText("ab.error.town.cant_get_town"));
+				townFilter = 0L;
 			}
 		}
 

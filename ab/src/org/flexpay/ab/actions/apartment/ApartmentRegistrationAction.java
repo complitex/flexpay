@@ -35,16 +35,19 @@ public class ApartmentRegistrationAction extends FPActionSupport {
 	@Override
 	public String doExecute() throws FlexPayException {
 
-		if (apartment == null || apartment.getId() == null || apartment.getId() <= 0) {
+		if (apartment == null || apartment.isNew()) {
 			log.warn("Incorrect apartment id");
-			addActionError(getText("common.object_not_selected"));
+			addActionError(getText("ab.error.apartment.incorrect_apartment_id"));
 			return SUCCESS;
 		}
 
 		Stub<Apartment> stub = stub(apartment);
 		apartment = apartmentService.readWithPersons(stub);
-
-		if (apartment.getPersonRegistrations().isEmpty()) {
+		if (apartment.isNotActive()) {
+			log.warn("Apartment with id {} is disabled", stub.getId());
+			addActionError(getText("ab.error.apartment.cant_get_apartment"));
+			return REDIRECT_ERROR;
+		} else if (apartment.getPersonRegistrations().isEmpty()) {
 			log.debug("In apartment with id {} no registered persons", stub.getId());
 			addActionMessage(getText("ab.apartment.hasnt_registered_persons"));
 			return SUCCESS;

@@ -30,7 +30,7 @@ public class TownTypeEditAction extends FPActionSupport {
 
 		if (townType == null || townType.getId() == null) {
 			log.warn("Incorrect town type id");
-			addActionError(getText("common.error.invalid_id"));
+			addActionError(getText("ab.error.town_type.incorrect_town_type_id"));
 			return REDIRECT_ERROR;
 		}
 
@@ -40,11 +40,11 @@ public class TownTypeEditAction extends FPActionSupport {
 
 			if (townType == null) {
 				log.warn("Can't get town type with id {} from DB", stub.getId());
-				addActionError(getText("common.object_not_selected"));
+				addActionError(getText("ab.error.town_type.cant_get_town_type"));
 				return REDIRECT_ERROR;
 			} else if (townType.isNotActive()) {
 				log.warn("Town type with id {} is disabled", stub.getId());
-				addActionError(getText("common.object_not_selected"));
+				addActionError(getText("ab.error.town_type.cant_get_town_type"));
 				return REDIRECT_ERROR;
 			}
 

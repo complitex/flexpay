@@ -35,7 +35,7 @@ public class DistrictFilterAjaxAction extends FilterAjaxAction {
 			townId = Long.parseLong(parents[0]);
 		} catch (Exception e) {
 			log.warn("Incorrect town id in filter ({})", parents[0]);
-			addActionError(getText("common.object_not_selected"));
+			addActionError(getText("ab.error.town.incorrect_town_id"));
 			return SUCCESS;
 		}
 		if (townId.equals(0L)) {
@@ -72,7 +72,7 @@ public class DistrictFilterAjaxAction extends FilterAjaxAction {
 			District district = districtService.readFull(new Stub<District>(filterValueLong));
 			if (district == null) {
 				log.warn("Can't get district with id {} from DB", filterValueLong);
-				addActionError(getText("common.object_not_selected"));
+				addActionError(getText("ab.error.district.cant_get_district"));
 				return;
 			}
 			if (district.getCurrentName() != null) {
@@ -86,18 +86,18 @@ public class DistrictFilterAjaxAction extends FilterAjaxAction {
 
 		if (filterValueLong == null || filterValueLong <= 0) {
 			log.warn("Incorrect filter value {}", filterValue);
-			addActionError(getText("common.error.invalid_id"));
+			addActionError(getText("ab.error.district.incorrect_district_id"));
 			return;
 		}
 
 		District district = districtService.readFull(new Stub<District>(filterValueLong));
 		if (district == null) {
 			log.warn("Can't get district with id {} from DB", filterValueLong);
-			addActionError(getText("common.object_not_selected"));
+			addActionError(getText("ab.error.district.cant_get_district"));
 			return;
 		} else if (district.isNotActive()) {
 			log.warn("District with id {} is disabled", filterValueLong);
-			addActionError(getText("common.object_not_selected"));
+			addActionError(getText("ab.error.district.cant_get_district"));
 			return;
 		}
 

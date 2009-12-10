@@ -23,7 +23,7 @@ public class BuildingAddressDeleteAction extends FPActionSupport {
 
 		if (building == null || building.isNew()) {
 			log.warn("Incorrect building id");
-			addActionError("ab.error.invalid_building_id");
+			addActionError("ab.error.building.incorrect_building_id");
 			return SUCCESS;
 		}
 

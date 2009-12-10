@@ -20,7 +20,7 @@ public class CountryViewAction extends FPActionSupport {
 
 		if (country == null || country.isNew()) {
 			log.warn("Incorrect country id");
-			addActionError(getText("common.error.invalid_id"));
+			addActionError(getText("ab.error.country.incorrect_country_id"));
 			return REDIRECT_ERROR;
 		}
 
@@ -29,11 +29,11 @@ public class CountryViewAction extends FPActionSupport {
 
 		if (country == null) {
 			log.warn("Can't get country with id {} from DB", stub.getId());
-			addActionError(getText("common.object_not_selected"));
+			addActionError(getText("ab.error.country.cant_get_country"));
 			return REDIRECT_ERROR;
 		} else if (country.isNotActive()) {
 			log.warn("Country with id {} is disabled", stub.getId());
-			addActionError(getText("common.object_not_selected"));
+			addActionError(getText("ab.error.country.cant_get_country"));
 			return REDIRECT_ERROR;
 		}
 

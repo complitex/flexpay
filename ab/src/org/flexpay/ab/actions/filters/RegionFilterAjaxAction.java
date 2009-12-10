@@ -39,7 +39,7 @@ public class RegionFilterAjaxAction extends FilterAjaxAction {
 			}
 		} catch (Exception e) {
 			log.warn("Incorrect country id in filter ({})", parents[0]);
-			addActionError(getText("common.object_not_selected"));
+			addActionError(getText("ab.error.country.incorrect_country_id"));
 			return SUCCESS;
 		}
 
@@ -89,7 +89,7 @@ public class RegionFilterAjaxAction extends FilterAjaxAction {
 			region = regionService.readFull(new Stub<Region>(filterValueLong));
 			if (region == null) {
 				log.warn("Can't get region with id {} from DB", filterValueLong);
-				addActionError(getText("common.object_not_selected"));
+				addActionError(getText("ab.error.region.cant_get_region"));
 			}
 		}
 		if (region != null && region.getCurrentName() != null) {
@@ -104,18 +104,18 @@ public class RegionFilterAjaxAction extends FilterAjaxAction {
 
 		if (filterValueLong == null || filterValueLong <= 0) {
 			log.warn("Incorrect filter value {}", filterValue);
-			addActionError(getText("common.error.invalid_id"));
+			addActionError(getText("ab.error.region.incorrect_region_id"));
 			return;
 		}
 
 		Region region = regionService.readFull(new Stub<Region>(filterValueLong));
 		if (region == null) {
 			log.warn("Can't get region with id {} from DB", filterValueLong);
-			addActionError(getText("common.object_not_selected"));
+			addActionError(getText("ab.error.region.cant_get_region"));
 			return;
 		} else if (region.isNotActive()) {
 			log.warn("Region with id {} is disabled", filterValueLong);
-			addActionError(getText("common.object_not_selected"));
+			addActionError(getText("ab.error.region.cant_get_region"));
 			return;
 		}
 

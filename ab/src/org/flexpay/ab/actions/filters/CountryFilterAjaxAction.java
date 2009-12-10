@@ -53,7 +53,7 @@ public class CountryFilterAjaxAction extends FilterAjaxAction {
 		Country country = countryService.readFull(new Stub<Country>(filterValueLong));
 		if (country == null) {
 			log.warn("Can't get country with id {} from DB", filterValue);
-			addActionError(getText("common.object_not_selected"));
+			addActionError(getText("ab.error.country.cant_get_country"));
 			filterString = "";
 		} else {
 			filterString = getTranslationName(country.getTranslations());
@@ -65,18 +65,18 @@ public class CountryFilterAjaxAction extends FilterAjaxAction {
 
 		if (filterValueLong == null || filterValueLong <= 0) {
 			log.warn("Incorrect filter value {}", filterValue);
-			addActionError(getText("common.error.invalid_id"));
+			addActionError(getText("ab.error.country.incorrect_country_id"));
 			return;
 		}
 
 		Country country = countryService.readFull(new Stub<Country>(filterValueLong));
 		if (country == null) {
 			log.warn("Can't get country with id {} from DB", filterValueLong);
-			addActionError(getText("common.object_not_selected"));
+			addActionError(getText("ab.error.country.cant_get_country"));
 			return;
 		} else if (country.isNotActive()) {
 			log.warn("Country with id {} is disabled", filterValueLong);
-			addActionError(getText("common.object_not_selected"));
+			addActionError(getText("ab.error.country.cant_get_country"));
 			return;
 		}
 

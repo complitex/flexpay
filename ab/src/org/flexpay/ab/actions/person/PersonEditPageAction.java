@@ -22,7 +22,7 @@ public class PersonEditPageAction extends FPActionSupport {
 
 		if (person == null || person.getId() == null) {
 			log.warn("Incorrect person id");
-			addActionError(getText("ab.error.person.invalid_id"));
+			addActionError(getText("ab.error.person.incorrect_person_id"));
 			return REDIRECT_ERROR;
 		}
 
@@ -32,11 +32,11 @@ public class PersonEditPageAction extends FPActionSupport {
 
 			if (person == null) {
 				log.warn("Can't get person with id {} from DB", stub.getId());
-				addActionError(getText("common.object_not_selected"));
+				addActionError(getText("ab.error.person.cant_get_person"));
 				return REDIRECT_ERROR;
 			} else if (person.isNotActive()) {
 				log.warn("Person with id {} is disabled", stub.getId());
-				addActionError(getText("common.object_not_selected"));
+				addActionError(getText("ab.error.person.cant_get_person"));
 				return REDIRECT_ERROR;
 			}
 

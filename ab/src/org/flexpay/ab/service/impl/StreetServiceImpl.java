@@ -196,7 +196,7 @@ public class StreetServiceImpl extends NameTimeDependentServiceImpl<
 		FlexPayExceptionContainer container = new FlexPayExceptionContainer();
 
 		if (street.getParent() == null) {
-			container.addException(new FlexPayException("No town", "ab.error.district.no_town"));
+			container.addException(new FlexPayException("No town", "ab.error.street.no_town"));
 		}
 
 		StreetNameTemporal nameTmprl = street.getCurrentNameTemporal();

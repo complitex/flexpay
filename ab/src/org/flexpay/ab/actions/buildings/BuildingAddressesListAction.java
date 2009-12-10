@@ -28,7 +28,7 @@ public class BuildingAddressesListAction extends FPActionSupport {
 
 		if (building == null || building.isNew()) {
 			log.warn("Incorrect building id");
-			addActionError(getText("common.error.invalid_id"));
+			addActionError(getText("ab.error.building.incorrect_building_id"));
 			return SUCCESS;
 		}
 
@@ -37,11 +37,11 @@ public class BuildingAddressesListAction extends FPActionSupport {
 
 		if (building == null) {
 			log.warn("Can't get building with id {} from DB", buildingStub.getId());
-			addActionError(getText("common.object_not_selected"));
+			addActionError(getText("ab.error.building.cant_get_building"));
 			return SUCCESS;
 		} else if (building.isNotActive()) {
 			log.warn("Building with id {} is disabled", buildingStub.getId());
-			addActionError(getText("common.object_not_selected"));
+			addActionError(getText("ab.error.building.cant_get_building"));
 			return SUCCESS;
 		}
 

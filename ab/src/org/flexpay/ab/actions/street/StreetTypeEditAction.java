@@ -30,7 +30,7 @@ public class StreetTypeEditAction extends FPActionSupport {
 
 		if (streetType == null || streetType.getId() == null) {
 			log.warn("Incorrect street type id");
-			addActionError(getText("common.error.invalid_id"));
+			addActionError(getText("ab.error.street_type.incorrect_street_type_id"));
 			return REDIRECT_ERROR;
 		}
 
@@ -40,11 +40,11 @@ public class StreetTypeEditAction extends FPActionSupport {
 
 			if (streetType == null) {
 				log.warn("Can't get street type with id {} from DB", stub.getId());
-				addActionError(getText("common.object_not_selected"));
+				addActionError(getText("ab.error.street_type.cant_get_street_type"));
 				return REDIRECT_ERROR;
 			} else if (streetType.isNotActive()) {
 				log.warn("Street type with id {} is disabled", stub.getId());
-				addActionError(getText("common.object_not_selected"));
+				addActionError(getText("ab.error.street_type.cant_get_street_type"));
 				return REDIRECT_ERROR;
 			}
 
