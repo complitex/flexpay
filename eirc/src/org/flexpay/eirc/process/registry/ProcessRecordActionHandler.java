@@ -4,7 +4,6 @@ import org.apache.commons.lang.StringUtils;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.registry.PropertiesFactory;
-import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.persistence.registry.RegistryRecord;
 import org.flexpay.common.persistence.registry.RegistryRecordContainer;
 import org.flexpay.common.persistence.registry.workflow.RegistryRecordWorkflowManager;
@@ -17,11 +16,8 @@ import org.flexpay.eirc.service.ConsumerService;
 import org.flexpay.eirc.sp.RegistryFormatException;
 import org.flexpay.eirc.sp.RegistryUtil;
 import org.flexpay.orgs.persistence.ServiceProvider;
-import org.flexpay.payments.persistence.EircRegistryProperties;
 import org.flexpay.payments.persistence.Service;
 import org.springframework.beans.factory.annotation.Required;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.text.DateFormat;
@@ -30,7 +26,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Stack;
 
 public class ProcessRecordActionHandler extends FlexPayActionHandler {
 	private PropertiesFactory propertiesFactory;
@@ -38,22 +33,23 @@ public class ProcessRecordActionHandler extends FlexPayActionHandler {
 
 	private RegistryRecordWorkflowManager recordWorkflowManager;
 
+	@SuppressWarnings ({"unchecked"})
 	@Override
 	public String execute2(Map<String, Object> parameters) throws FlexPayException {
-		log2.debug("start action");
+		log.debug("start action");
 		List<String> messageFieldList = (List<String>)parameters.get(ProcessRegistryMessageActionHandler.PARAM_MESSAGE_FIELDS);
 		if (messageFieldList == null) {
-			log.error("Can`t get {} from parameters", ProcessRegistryMessageActionHandler.PARAM_MESSAGE_FIELDS);
+			processLog.error("Can`t get {} from parameters", ProcessRegistryMessageActionHandler.PARAM_MESSAGE_FIELDS);
 			return RESULT_ERROR;
 		}
 		Long registryId = (Long)parameters.get(ProcessHeaderActionHandler.PARAM_REGISTRY_ID);
 		if (registryId == null) {
-			log.error("Can`t get {} from parameters", ProcessHeaderActionHandler.PARAM_REGISTRY_ID);
+			processLog.error("Can`t get {} from parameters", ProcessHeaderActionHandler.PARAM_REGISTRY_ID);
 			return RESULT_ERROR;
 		}
 		Long serviceProviderId = (Long)parameters.get(ProcessHeaderActionHandler.PARAM_SERVICE_PROVIDER_ID);
 		if (serviceProviderId == null) {
-			log.error("Can`t get {} from parameters", ProcessHeaderActionHandler.PARAM_SERVICE_PROVIDER_ID);
+			processLog.error("Can`t get {} from parameters", ProcessHeaderActionHandler.PARAM_SERVICE_PROVIDER_ID);
 			return RESULT_ERROR;
 		}
 
@@ -76,14 +72,14 @@ public class ProcessRecordActionHandler extends FlexPayActionHandler {
 
 	private RegistryRecord processRecord(List<String> messageFieldList, Stub<ServiceProvider> serviceProviderStub) {
 		if (messageFieldList.size() < 10) {
-			log.error("Message record error, invalid number of fields: {}", messageFieldList.size());
+			processLog.error("Message record error, invalid number of fields: {}", messageFieldList.size());
 			return null;
 		}
 
 		RegistryRecord record = new RegistryRecord();
 		record.setProperties(propertiesFactory.newRecordProperties());
 		try {
-			log.info("adding record: '{}'", StringUtils.join(messageFieldList, '-'));
+			processLog.info("adding record: '{}'", StringUtils.join(messageFieldList, '-'));
 			int n = 1;
 			record.setServiceCode(messageFieldList.get(++n));
 			record.setPersonalAccountExt(messageFieldList.get(++n));
@@ -91,7 +87,7 @@ public class ProcessRecordActionHandler extends FlexPayActionHandler {
 			EircRegistryRecordProperties recordProps = (EircRegistryRecordProperties) record.getProperties();
 			Service service = consumerService.findService(serviceProviderStub, record.getServiceCode());
 			if (service == null) {
-				log.warn("Unknown service code: {}", record.getServiceCode());
+				processLog.warn("Unknown service code: {}", record.getServiceCode());
 			}
 			recordProps.setService(service);
 
@@ -150,15 +146,15 @@ public class ProcessRecordActionHandler extends FlexPayActionHandler {
 
 			return record;
 		} catch (NumberFormatException e) {
-			log.error("Record number parse error", e);
+			processLog.error("Record number parse error", e);
 		} catch (ParseException e) {
-			log.error("Record parse error", e);
+			processLog.error("Record parse error", e);
 		} catch (RegistryFormatException e) {
-			log.error("Record number parse error", e);
+			processLog.error("Record number parse error", e);
 		} catch (TransitionNotAllowed transitionNotAllowed) {
-			log.error("Record number parse error", transitionNotAllowed);
+			processLog.error("Record number parse error", transitionNotAllowed);
 		} catch (FlexPayException e) {
-			log.error("Record number parse error", e);
+			processLog.error("Record number parse error", e);
 		}
 		return null;
 	}

@@ -10,8 +10,8 @@ import org.slf4j.LoggerFactory;
 import java.util.Map;
 
 public abstract class FlexPayActionHandler implements ActionHandler {
-    protected final Logger log = ProcessLogger.getLogger(getClass());
-	protected final Logger log2 = LoggerFactory.getLogger(getClass());
+    protected final Logger processLog = ProcessLogger.getLogger(getClass());
+	protected final Logger log = LoggerFactory.getLogger(getClass());
 
 	public final static String RESULT_NEXT = "next";
 	public final static String RESULT_ERROR = "error";
@@ -23,7 +23,7 @@ public abstract class FlexPayActionHandler implements ActionHandler {
 		String result = execute2(parameters);
 		for (Map.Entry<String, Object> entry : parameters.entrySet()) {
 			executionContext.getContextInstance().setVariable(entry.getKey(), entry.getValue());
-			log2.debug("{}={}", new Object[]{entry.getKey(), entry.getValue()});
+			log.debug("{}={}", new Object[]{entry.getKey(), entry.getValue()});
 		}
 
 		executionContext.leaveNode(result);
