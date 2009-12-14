@@ -1,4 +1,4 @@
--- put here module test initialization data
+-- put here module orgs initialization data
 
 -- Init organizations
 INSERT INTO common_data_source_descriptions_tbl (description) VALUES ('ЖКО DS');
@@ -194,3 +194,25 @@ insert into orgs_cashboxes_tbl (status, version, payment_point_id)
 select @cashbox_3_2:=last_insert_id();
 insert into orgs_cashbox_name_translations_tbl (version, language_id, cashbox_id, name)
 	values (0, @ru_id, @cashbox_3_2, 'Тестовая касса3_3');
+
+-- master index data
+select @ds:=id from common_data_source_descriptions_tbl where description='Master-index';
+select @instId:='090-';
+select @orgs_base:=0x4000 + 0;
+
+insert into common_data_corrections_tbl (internal_object_id, external_object_id, object_type, data_source_description_id)
+	(select id, concat(@instId, id), @orgs_base + 0x001, @ds from orgs_organizations_tbl);
+insert into common_data_corrections_tbl (internal_object_id, external_object_id, object_type, data_source_description_id)
+	(select id, concat(@instId, id), @orgs_base + 0x002, @ds from orgs_banks_tbl);
+insert into common_data_corrections_tbl (internal_object_id, external_object_id, object_type, data_source_description_id)
+	(select id, concat(@instId, id), @orgs_base + 0x003, @ds from orgs_service_providers_tbl);
+insert into common_data_corrections_tbl (internal_object_id, external_object_id, object_type, data_source_description_id)
+	(select id, concat(@instId, id), @orgs_base + 0x004, @ds from orgs_service_organizations_tbl);
+insert into common_data_corrections_tbl (internal_object_id, external_object_id, object_type, data_source_description_id)
+	(select id, concat(@instId, id), @orgs_base + 0x005, @ds from orgs_payment_collectors_tbl);
+insert into common_data_corrections_tbl (internal_object_id, external_object_id, object_type, data_source_description_id)
+	(select id, concat(@instId, id), @orgs_base + 0x006, @ds from orgs_payment_points_tbl);
+insert into common_data_corrections_tbl (internal_object_id, external_object_id, object_type, data_source_description_id)
+	(select id, concat(@instId, id), @orgs_base + 0x007, @ds from orgs_subdivisions_tbl);
+insert into common_data_corrections_tbl (internal_object_id, external_object_id, object_type, data_source_description_id)
+	(select id, concat(@instId, id), @orgs_base + 0x008, @ds from orgs_cashboxes_tbl);

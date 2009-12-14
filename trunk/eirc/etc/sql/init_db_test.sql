@@ -327,3 +327,11 @@ insert into eirc_consumer_attributes_tbl (value_type, string_value, consumer_id,
 	values (4, 'Красный', @consumer_1_1, @cons_attr_type_checkbook_color, '1900-01-01', '2000-12-31', 1);
 insert into eirc_consumer_attributes_tbl (value_type, string_value, consumer_id, type_id, begin_date, end_date, temporal_flag)
 	values (4, 'Синий', @consumer_1_1, @cons_attr_type_checkbook_color, '2001-01-01', '2100-12-31', 1);
+
+-- master index data
+select @ds:=id from common_data_source_descriptions_tbl where description='Master-index';
+select @instId:='090-';
+select @eirc_base:=0x5000 + 0;
+
+insert into common_data_corrections_tbl (internal_object_id, external_object_id, object_type, data_source_description_id)
+	(select id, concat(@instId, id), @eirc_base + 0x0101, @ds from eirc_consumers_tbl);
