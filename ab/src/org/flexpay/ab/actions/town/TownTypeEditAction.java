@@ -8,7 +8,6 @@ import org.flexpay.common.persistence.Language;
 import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.persistence.Stub.stub;
 import static org.flexpay.common.util.CollectionUtils.treeMap;
-import org.flexpay.common.util.config.ApplicationConfig;
 import static org.flexpay.common.util.config.ApplicationConfig.getLanguages;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
@@ -79,11 +78,11 @@ public class TownTypeEditAction extends FPActionSupport {
 
 	private void correctNames() {
 		if (names == null) {
-			log.debug("Names parameter is null");
+			log.warn("Names parameter is null");
 			names = treeMap();
 		}
 		if (shortNames == null) {
-			log.debug("Short names parameter is null");
+			log.warn("Short names parameter is null");
 			shortNames = treeMap();
 		}
 		Map<Long, String> newNames = treeMap();

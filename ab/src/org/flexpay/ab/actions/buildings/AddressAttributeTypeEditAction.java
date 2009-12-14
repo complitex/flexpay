@@ -78,11 +78,11 @@ public class AddressAttributeTypeEditAction extends FPActionSupport {
 
 	private void correctNames() {
 		if (names == null) {
-			log.debug("Names parameter is null");
+			log.warn("Names parameter is null");
 			names = treeMap();
 		}
 		if (shortNames == null) {
-			log.debug("Short names parameter is null");
+			log.warn("Short names parameter is null");
 			shortNames = treeMap();
 		}
 		Map<Long, String> newNames = treeMap();

@@ -37,12 +37,12 @@ public class StreetsListAction extends FPActionWithPagerSupport<Street> {
 		}
 
 		if (streetSorterByName == null) {
-			log.debug("StreetSorterByName is null");
+			log.warn("StreetSorterByName is null");
 			streetSorterByName = new StreetSorterByName();
 		}
 
 		if (streetSorterByType == null) {
-			log.debug("StreetSorterByType is null");
+			log.warn("StreetSorterByType is null");
 			streetSorterByType = new StreetSorterByType();
 		}
 

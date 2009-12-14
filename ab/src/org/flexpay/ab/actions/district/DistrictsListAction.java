@@ -34,7 +34,7 @@ public class DistrictsListAction extends FPActionWithPagerSupport<District> {
 		}
 
 		if (districtSorter == null) {
-			log.debug("DistrictSorter is null");
+			log.warn("DistrictSorter is null");
 			districtSorter = new DistrictSorter();
 		}
 

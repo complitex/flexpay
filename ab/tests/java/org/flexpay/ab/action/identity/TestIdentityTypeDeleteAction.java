@@ -7,8 +7,7 @@ import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
 import static org.flexpay.ab.util.TestUtils.createSimpleIdentityType;
 import org.flexpay.common.actions.FPActionSupport;
 import static org.flexpay.common.util.CollectionUtils.set;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -25,6 +24,7 @@ public class TestIdentityTypeDeleteAction extends AbSpringBeanAwareTestCase {
 		action.setObjectIds(null);
 
 		assertEquals("Invalid action result", FPActionSupport.SUCCESS, action.execute());
+		assertFalse("Invalid action execute: has action errors.", action.hasActionErrors());
 
 	}
 
@@ -34,8 +34,9 @@ public class TestIdentityTypeDeleteAction extends AbSpringBeanAwareTestCase {
 		IdentityType identityType = createSimpleIdentityType("3456");
 		identityTypeDao.create(identityType);
 
-		action.setObjectIds(set(identityType.getId()));
+		action.setObjectIds(set(identityType.getId(), -210L, 23455L, 0L, null));
 		assertEquals("Invalid action result", FPActionSupport.SUCCESS, action.execute());
+		assertFalse("Invalid action execute: has action errors.", action.hasActionErrors());
 
 		identityType = identityTypeDao.read(identityType.getId());
 		assertTrue("Invalid status for identity type. Must be disabled", identityType.isNotActive());

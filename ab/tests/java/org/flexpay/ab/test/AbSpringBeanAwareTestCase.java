@@ -2,9 +2,7 @@ package org.flexpay.ab.test;
 
 import static org.flexpay.ab.service.Roles.*;
 import org.flexpay.ab.util.config.AbUserPreferences;
-import static org.flexpay.ab.util.config.ApplicationConfig.getDefaultCountryStub;
-import static org.flexpay.ab.util.config.ApplicationConfig.getDefaultRegionStub;
-import static org.flexpay.ab.util.config.ApplicationConfig.getDefaultTownStub;
+import static org.flexpay.ab.util.config.ApplicationConfig.*;
 import static org.flexpay.common.service.Roles.PROCESS_READ;
 import org.flexpay.common.test.SpringBeanAwareTestCase;
 import org.flexpay.common.util.SecurityUtil;

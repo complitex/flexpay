@@ -34,7 +34,7 @@ public class RegionsListAction extends FPActionWithPagerSupport<Region> {
 		}
 
 		if (regionSorter == null) {
-			log.debug("RegionSorter is null");
+			log.warn("RegionSorter is null");
 			regionSorter = new RegionSorter();
 		}
 

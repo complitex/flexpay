@@ -9,9 +9,7 @@ import org.flexpay.ab.persistence.TestData;
 import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
 import static org.flexpay.ab.util.TestUtils.createSimpleBuilding;
 import org.flexpay.common.actions.FPActionSupport;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -30,12 +28,13 @@ public class TestBuildingAddressesListAction extends AbSpringBeanAwareTestCase {
 		action.setBuilding(new Building(TestData.IVANOVA_27));
 
 		assertEquals("Invalid action result", FPActionSupport.SUCCESS, action.execute());
+		assertFalse("Invalid action execute: has action errors.", action.hasActionErrors());
 		assertFalse("Invalid building addresses list size", action.getAddresses().isEmpty());
 
 	}
 
 	@Test
-	public void testIncorrectBuildingId() throws Exception {
+	public void testNullBuildingId() throws Exception {
 
 		assertEquals("Invalid action result", FPActionSupport.SUCCESS, action.execute());
 		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
@@ -46,6 +45,26 @@ public class TestBuildingAddressesListAction extends AbSpringBeanAwareTestCase {
 	public void testNullBuilding() throws Exception {
 
 		action.setBuilding(null);
+
+		assertEquals("Invalid action result", FPActionSupport.SUCCESS, action.execute());
+		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
+
+	}
+
+	@Test
+	public void testIncorrectBuildingId1() throws Exception {
+
+		action.setBuilding(new Building(-122L));
+
+		assertEquals("Invalid action result", FPActionSupport.SUCCESS, action.execute());
+		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
+
+	}
+
+	@Test
+	public void testIncorrectBuildingId2() throws Exception {
+
+		action.setBuilding(new Building(0L));
 
 		assertEquals("Invalid action result", FPActionSupport.SUCCESS, action.execute());
 		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());

@@ -7,7 +7,7 @@ import static org.flexpay.ab.util.TestUtils.createSimpleMeasureUnit;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.dao.MeasureUnitDao;
 import org.flexpay.common.persistence.MeasureUnit;
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -24,7 +24,14 @@ public class TestMeasureUnitViewAction extends AbSpringBeanAwareTestCase {
 		action.setMeasureUnit(new MeasureUnit(TestData.MEASURE_UNIT_KBM));
 
 		assertEquals("Invalid action result", FPActionSupport.SUCCESS, action.execute());
+		assertFalse("Invalid action execute: has action errors.", action.hasActionErrors());
+	}
 
+	@Test
+	public void testNullId() throws Exception {
+
+		assertEquals("Invalid action result", FPActionSupport.REDIRECT_ERROR, action.execute());
+		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
 	}
 
 	@Test
@@ -33,7 +40,7 @@ public class TestMeasureUnitViewAction extends AbSpringBeanAwareTestCase {
 		action.setMeasureUnit(new MeasureUnit(-10L));
 
 		assertEquals("Invalid action result", FPActionSupport.REDIRECT_ERROR, action.execute());
-
+		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
 	}
 
 	@Test
@@ -42,14 +49,7 @@ public class TestMeasureUnitViewAction extends AbSpringBeanAwareTestCase {
 		action.setMeasureUnit(new MeasureUnit(0L));
 
 		assertEquals("Invalid action result", FPActionSupport.REDIRECT_ERROR, action.execute());
-
-	}
-
-	@Test
-	public void testNullId() throws Exception {
-
-		assertEquals("Invalid action result", FPActionSupport.REDIRECT_ERROR, action.execute());
-
+		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
 	}
 
 	@Test
@@ -58,7 +58,7 @@ public class TestMeasureUnitViewAction extends AbSpringBeanAwareTestCase {
 		action.setMeasureUnit(null);
 
 		assertEquals("Invalid action result", FPActionSupport.REDIRECT_ERROR, action.execute());
-
+		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
 	}
 
 	@Test
@@ -67,7 +67,7 @@ public class TestMeasureUnitViewAction extends AbSpringBeanAwareTestCase {
 		action.setMeasureUnit(new MeasureUnit(10902L));
 
 		assertEquals("Invalid action result", FPActionSupport.REDIRECT_ERROR, action.execute());
-
+		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
 	}
 
 	@Test
@@ -80,6 +80,7 @@ public class TestMeasureUnitViewAction extends AbSpringBeanAwareTestCase {
 		action.setMeasureUnit(measureUnit);
 
 		assertEquals("Invalid action result", FPActionSupport.REDIRECT_ERROR, action.execute());
+		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
 
 		measureUnitDao.delete(measureUnit);
 

@@ -19,7 +19,7 @@ public class TownTypeDeleteAction extends FPActionSupport {
 	protected String doExecute() throws Exception {
 
 		if (objectIds == null) {
-			log.debug("ObjectIds parameter is null");
+			log.warn("ObjectIds parameter is null");
 			return SUCCESS;
 		}
 

@@ -15,11 +15,8 @@ import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.persistence.filter.BeginDateFilter;
 import static org.flexpay.common.util.CollectionUtils.treeMap;
 import org.flexpay.common.util.DateUtil;
-import org.flexpay.common.util.config.ApplicationConfig;
 import static org.flexpay.common.util.config.ApplicationConfig.getLanguages;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 

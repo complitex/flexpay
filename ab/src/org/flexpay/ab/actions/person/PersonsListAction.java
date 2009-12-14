@@ -6,7 +6,6 @@ import org.flexpay.ab.persistence.filters.PersonSearchFilter;
 import org.flexpay.ab.service.PersonService;
 import org.flexpay.common.actions.FPActionWithPagerSupport;
 import org.flexpay.common.persistence.Stub;
-import org.flexpay.common.service.ParentService;
 import static org.flexpay.common.util.CollectionUtils.list;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
@@ -25,7 +24,7 @@ public class PersonsListAction extends FPActionWithPagerSupport<Person> {
 	protected String doExecute() throws Exception {
 
 		if (personSearchFilter == null) {
-			log.debug("PersonSearchFilter parameter is null");
+			log.warn("PersonSearchFilter parameter is null");
 			personSearchFilter = new PersonSearchFilter();
 		}
 

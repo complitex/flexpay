@@ -2,13 +2,17 @@ package org.flexpay.ab.action.apartment;
 
 import org.flexpay.ab.actions.apartment.ApartmentEditAction;
 import org.flexpay.ab.dao.ApartmentDao;
+import org.flexpay.ab.dao.BuildingDao;
+import org.flexpay.ab.dao.BuildingDaoExt;
 import org.flexpay.ab.persistence.Apartment;
+import org.flexpay.ab.persistence.Building;
+import org.flexpay.ab.persistence.BuildingAddress;
 import org.flexpay.ab.persistence.TestData;
 import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
 import static org.flexpay.ab.util.TestUtils.createSimpleApartment;
+import static org.flexpay.ab.util.TestUtils.createSimpleBuilding;
 import org.flexpay.common.actions.FPActionSupport;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -18,6 +22,10 @@ public class TestApartmentEditAction extends AbSpringBeanAwareTestCase {
 	private ApartmentEditAction action;
 	@Autowired
 	private ApartmentDao apartmentDao;
+	@Autowired
+	private BuildingDao buildingDao;
+	@Autowired
+	private BuildingDaoExt buildingDaoExt;
 
 	@Test
 	public void testNullApartment() throws Exception {
@@ -25,14 +33,7 @@ public class TestApartmentEditAction extends AbSpringBeanAwareTestCase {
 		action.setApartment(null);
 
 		assertEquals("Invalid action result", FPActionSupport.REDIRECT_ERROR, action.execute());
-
-	}
-
-	@Test
-	public void testNullApartmentId() throws Exception {
-
-		assertEquals("Invalid action result", FPActionSupport.REDIRECT_ERROR, action.execute());
-
+		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
 	}
 
 	@Test
@@ -41,7 +42,7 @@ public class TestApartmentEditAction extends AbSpringBeanAwareTestCase {
 		action.setApartment(new Apartment(0L));
 
 		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
-
+		assertFalse("Invalid action execute: has action errors.", action.hasActionErrors());
 	}
 
 	@Test
@@ -50,6 +51,7 @@ public class TestApartmentEditAction extends AbSpringBeanAwareTestCase {
 		action.setApartment(new Apartment(TestData.IVANOVA_27_330));
 
 		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
+		assertFalse("Invalid action execute: has action errors.", action.hasActionErrors());
 		assertEquals("Invalid building filter", TestData.ADDR_IVANOVA_27.getId(), action.getBuildingFilter());
 		assertEquals("Invalid street filter", TestData.IVANOVA.getId(), action.getStreetFilter());
 		assertEquals("Invalid town filter", TestData.TOWN_NSK.getId(), action.getTownFilter());
@@ -59,34 +61,109 @@ public class TestApartmentEditAction extends AbSpringBeanAwareTestCase {
 	}
 
 	@Test
-	public void testIncorrectData1() throws Exception {
+	public void testNullAddressId() throws Exception {
 
 		action.setApartment(new Apartment(0L));
 		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
+		assertFalse("Invalid action execute: has action errors.", action.hasActionErrors());
 
 		action.setSubmitted("");
 		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
+		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
 
 	}
 
 	@Test
-	public void testIncorrectData2() throws Exception {
+	public void testIncorrectAddressId1() throws Exception {
 
 		action.setApartment(new Apartment(0L));
 		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
+		assertFalse("Invalid action execute: has action errors.", action.hasActionErrors());
 
 		action.setSubmitted("");
 		action.setBuildingFilter(-10L);
 		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
+		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
 
 	}
 
 	@Test
-	public void testEditDefunctApartment() throws Exception {
+	public void testIncorrectAddressId2() throws Exception {
+
+		action.setApartment(new Apartment(0L));
+		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
+		assertFalse("Invalid action execute: has action errors.", action.hasActionErrors());
+
+		action.setSubmitted("");
+		action.setBuildingFilter(0L);
+		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
+		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
+
+	}
+
+	@Test
+	public void testDefunctAddress() throws Exception {
+
+		action.setApartment(new Apartment(0L));
+		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
+		assertFalse("Invalid action execute: has action errors.", action.hasActionErrors());
+
+		action.setSubmitted("");
+		action.setApartmentNumber("12333");
+		action.setBuildingFilter(1212330L);
+		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
+		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
+
+	}
+
+	@Test
+	public void testDisabledAddress() throws Exception {
+
+		Building building = createSimpleBuilding("321");
+		building.disable();
+		for (BuildingAddress address : building.getBuildingses()) {
+			address.disable();
+		}
+		buildingDao.create(building);
+
+		action.setApartment(new Apartment(0L));
+		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
+		assertFalse("Invalid action execute: has action errors.", action.hasActionErrors());
+
+		action.setSubmitted("");
+		action.setApartmentNumber("12333");
+		action.setBuildingFilter(building.getDefaultBuildings().getId());
+		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
+		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
+
+		buildingDaoExt.deleteBuilding(building);
+
+	}
+
+	@Test
+	public void testNullApartmentId() throws Exception {
+
+		assertEquals("Invalid action result", FPActionSupport.REDIRECT_ERROR, action.execute());
+		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
+	}
+
+	@Test
+	public void testIncorrectApartmentId() throws Exception {
+
+		action.setApartment(new Apartment(-10L));
+
+		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
+		assertFalse("Invalid action execute: has action errors.", action.hasActionErrors());
+
+	}
+
+	@Test
+	public void testDefunctApartment() throws Exception {
 
 		action.setApartment(new Apartment(121212L));
-		assertEquals("Invalid action result", FPActionSupport.REDIRECT_ERROR, action.execute());
 
+		assertEquals("Invalid action result", FPActionSupport.REDIRECT_ERROR, action.execute());
+		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
 	}
 
 	@Test
@@ -98,6 +175,7 @@ public class TestApartmentEditAction extends AbSpringBeanAwareTestCase {
 
 		action.setApartment(apartment);
 		assertEquals("Invalid action result", FPActionSupport.REDIRECT_ERROR, action.execute());
+		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
 
 		apartmentDao.delete(apartment);
 
@@ -108,12 +186,14 @@ public class TestApartmentEditAction extends AbSpringBeanAwareTestCase {
 
 		action.setApartment(new Apartment(0L));
 		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
+		assertFalse("Invalid action execute: has action errors.", action.hasActionErrors());
 
 		action.setSubmitted("");
 		action.setBuildingFilter(TestData.ADDR_IVANOVA_27.getId());
 		action.setApartmentNumber("456");
 
 		assertEquals("Invalid action result", FPActionSupport.REDIRECT_SUCCESS, action.execute());
+		assertFalse("Invalid action execute: has action errors.", action.hasActionErrors());
 		assertTrue("Invalid apartment id", action.getApartment().getId() > 0);
 
 		apartmentDao.delete(action.getApartment());
@@ -123,17 +203,18 @@ public class TestApartmentEditAction extends AbSpringBeanAwareTestCase {
 	public void testEditSubmit() throws Exception {
 
 		Apartment apartment = createSimpleApartment("987");
-
 		apartmentDao.create(apartment);
 
 		action.setApartment(apartment);
 		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
+		assertFalse("Invalid action execute: has action errors.", action.hasActionErrors());
 
 		action.setSubmitted("");
 		action.setBuildingFilter(TestData.ADDR_IVANOVA_27.getId());
 		action.setApartmentNumber("789");
 
 		assertEquals("Invalid action result", FPActionSupport.REDIRECT_SUCCESS, action.execute());
+		assertFalse("Invalid action execute: has action errors.", action.hasActionErrors());
 
 		String number = action.getApartment().getNumber();
 		assertEquals("Invalid apartment number value", "789", number);

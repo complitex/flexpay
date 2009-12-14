@@ -6,11 +6,8 @@ import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
 import static org.flexpay.ab.util.TestUtils.initNames;
 import org.flexpay.common.actions.FPActionSupport;
 import static org.flexpay.common.util.CollectionUtils.treeMap;
-import org.flexpay.common.util.config.ApplicationConfig;
 import static org.flexpay.common.util.config.ApplicationConfig.getLanguages;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 

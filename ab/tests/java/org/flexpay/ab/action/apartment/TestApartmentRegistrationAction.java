@@ -7,8 +7,7 @@ import org.flexpay.ab.persistence.TestData;
 import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
 import static org.flexpay.ab.util.TestUtils.createSimpleApartment;
 import org.flexpay.common.actions.FPActionSupport;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -26,7 +25,7 @@ public class TestApartmentRegistrationAction extends AbSpringBeanAwareTestCase {
 
 		action.setApartment(null);
 
-		assertEquals("Invalid action result", FPActionSupport.SUCCESS, action.execute());
+		assertEquals("Invalid action result", FPActionSupport.REDIRECT_ERROR, action.execute());
 		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
 
 	}
@@ -34,7 +33,7 @@ public class TestApartmentRegistrationAction extends AbSpringBeanAwareTestCase {
 	@Test
 	public void testNullApartmentId() throws Exception {
 
-		assertEquals("Invalid action result", FPActionSupport.SUCCESS, action.execute());
+		assertEquals("Invalid action result", FPActionSupport.REDIRECT_ERROR, action.execute());
 		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
 
 	}
@@ -44,7 +43,7 @@ public class TestApartmentRegistrationAction extends AbSpringBeanAwareTestCase {
 
 		action.setApartment(new Apartment(-10L));
 
-		assertEquals("Invalid action result", FPActionSupport.SUCCESS, action.execute());
+		assertEquals("Invalid action result", FPActionSupport.REDIRECT_ERROR, action.execute());
 		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
 
 	}
@@ -54,8 +53,33 @@ public class TestApartmentRegistrationAction extends AbSpringBeanAwareTestCase {
 
 		action.setApartment(new Apartment(0L));
 
-		assertEquals("Invalid action result", FPActionSupport.SUCCESS, action.execute());
+		assertEquals("Invalid action result", FPActionSupport.REDIRECT_ERROR, action.execute());
 		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
+
+	}
+
+	@Test
+	public void testDefunctApartment() throws Exception {
+
+		action.setApartment(new Apartment(121210L));
+
+		assertEquals("Invalid action result", FPActionSupport.SUCCESS, action.execute());
+		assertTrue("Invalid action execute: hasn't action messages.", action.hasActionMessages());
+
+	}
+
+	@Test
+	public void testDisabledApartment() throws Exception {
+
+		Apartment apartment = createSimpleApartment("22222211");
+		apartment.disable();
+		apartmentDao.create(apartment);
+
+		action.setApartment(apartment);
+		assertEquals("Invalid action result", FPActionSupport.REDIRECT_ERROR, action.execute());
+		assertTrue("Invalid action execute: hasn't action messages.", action.hasActionMessages());
+
+		apartmentDao.delete(apartment);
 
 	}
 
@@ -63,7 +87,6 @@ public class TestApartmentRegistrationAction extends AbSpringBeanAwareTestCase {
 	public void testApartmentWithoutRegistrations() throws Exception {
 
 		Apartment apartment = createSimpleApartment("222222");
-
 		apartmentDao.create(apartment);
 
 		action.setApartment(apartment);
@@ -80,6 +103,7 @@ public class TestApartmentRegistrationAction extends AbSpringBeanAwareTestCase {
 		action.setApartment(new Apartment(TestData.IVANOVA_27_330));
 
 		assertEquals("Invalid action result", FPActionSupport.SUCCESS, action.execute());
+		assertFalse("Invalid action execute: has action errors.", action.hasActionErrors());
 
 	}
 

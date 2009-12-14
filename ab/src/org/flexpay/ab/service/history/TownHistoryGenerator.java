@@ -2,9 +2,8 @@ package org.flexpay.ab.service.history;
 
 import org.flexpay.ab.persistence.Town;
 import org.flexpay.ab.service.TownService;
-import static org.flexpay.common.persistence.Stub.stub;
-
 import org.flexpay.common.persistence.DomainObject;
+import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.persistence.history.Diff;
 import org.flexpay.common.persistence.history.HistoryGenerator;
 import org.flexpay.common.persistence.history.ProcessingStatus;

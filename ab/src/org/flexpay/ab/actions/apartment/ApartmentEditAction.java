@@ -1,7 +1,6 @@
 package org.flexpay.ab.actions.apartment;
 
 import org.flexpay.ab.persistence.Apartment;
-import org.flexpay.ab.persistence.Building;
 import org.flexpay.ab.persistence.BuildingAddress;
 import org.flexpay.ab.service.ApartmentService;
 import org.flexpay.ab.service.BuildingService;

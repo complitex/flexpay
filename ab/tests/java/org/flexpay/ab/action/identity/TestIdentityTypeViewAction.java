@@ -7,7 +7,7 @@ import org.flexpay.ab.persistence.TestData;
 import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
 import static org.flexpay.ab.util.TestUtils.createSimpleIdentityType;
 import org.flexpay.common.actions.FPActionSupport;
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -24,7 +24,14 @@ public class TestIdentityTypeViewAction extends AbSpringBeanAwareTestCase {
 		action.setIdentityType(new IdentityType(TestData.IDENTITY_TYPE_FIO));
 
 		assertEquals("Invalid action result", FPActionSupport.SUCCESS, action.execute());
+		assertFalse("Invalid action execute: has action errors.", action.hasActionErrors());
+	}
 
+	@Test
+	public void testNullId() throws Exception {
+
+		assertEquals("Invalid action result", FPActionSupport.REDIRECT_ERROR, action.execute());
+		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
 	}
 
 	@Test
@@ -33,7 +40,7 @@ public class TestIdentityTypeViewAction extends AbSpringBeanAwareTestCase {
 		action.setIdentityType(new IdentityType(-10L));
 
 		assertEquals("Invalid action result", FPActionSupport.REDIRECT_ERROR, action.execute());
-
+		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
 	}
 
 	@Test
@@ -42,14 +49,7 @@ public class TestIdentityTypeViewAction extends AbSpringBeanAwareTestCase {
 		action.setIdentityType(new IdentityType(0L));
 
 		assertEquals("Invalid action result", FPActionSupport.REDIRECT_ERROR, action.execute());
-
-	}
-
-	@Test
-	public void testNullId() throws Exception {
-
-		assertEquals("Invalid action result", FPActionSupport.REDIRECT_ERROR, action.execute());
-
+		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
 	}
 
 	@Test
@@ -58,7 +58,7 @@ public class TestIdentityTypeViewAction extends AbSpringBeanAwareTestCase {
 		action.setIdentityType(null);
 
 		assertEquals("Invalid action result", FPActionSupport.REDIRECT_ERROR, action.execute());
-
+		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
 	}
 
 	@Test
@@ -67,7 +67,7 @@ public class TestIdentityTypeViewAction extends AbSpringBeanAwareTestCase {
 		action.setIdentityType(new IdentityType(10902L));
 
 		assertEquals("Invalid action result", FPActionSupport.REDIRECT_ERROR, action.execute());
-
+		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
 	}
 
 	@Test
@@ -80,6 +80,7 @@ public class TestIdentityTypeViewAction extends AbSpringBeanAwareTestCase {
 		action.setIdentityType(identityType);
 
 		assertEquals("Invalid action result", FPActionSupport.REDIRECT_ERROR, action.execute());
+		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
 
 		identityTypeDao.delete(identityType);
 

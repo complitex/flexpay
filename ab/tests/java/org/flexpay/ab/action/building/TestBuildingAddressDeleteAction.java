@@ -2,6 +2,7 @@ package org.flexpay.ab.action.building;
 
 import org.flexpay.ab.actions.buildings.BuildingAddressDeleteAction;
 import org.flexpay.ab.dao.BuildingDao;
+import org.flexpay.ab.dao.BuildingDaoExt;
 import org.flexpay.ab.dao.BuildingsDao;
 import org.flexpay.ab.persistence.Building;
 import org.flexpay.ab.persistence.TestData;
@@ -9,8 +10,7 @@ import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
 import static org.flexpay.ab.util.TestUtils.createSimpleBuilding;
 import org.flexpay.common.actions.FPActionSupport;
 import static org.flexpay.common.util.CollectionUtils.set;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -21,10 +21,32 @@ public class TestBuildingAddressDeleteAction extends AbSpringBeanAwareTestCase {
 	@Autowired
 	private BuildingDao buildingDao;
 	@Autowired
+	private BuildingDaoExt buildingDaoExt;
+	@Autowired
 	private BuildingsDao buildingAddressDao;
 
 	@Test
-	public void testIncorrectBuildingId() throws Exception {
+	public void testIncorrectBuildingId1() throws Exception {
+
+		assertEquals("Invalid action result", FPActionSupport.SUCCESS, action.execute());
+		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
+
+	}
+
+	@Test
+	public void testIncorrectBuildingId2() throws Exception {
+
+		action.setBuilding(new Building(-10L));
+
+		assertEquals("Invalid action result", FPActionSupport.SUCCESS, action.execute());
+		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
+
+	}
+
+	@Test
+	public void testIncorrectBuildingId3() throws Exception {
+
+		action.setBuilding(new Building(0L));
 
 		assertEquals("Invalid action result", FPActionSupport.SUCCESS, action.execute());
 		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
@@ -51,8 +73,9 @@ public class TestBuildingAddressDeleteAction extends AbSpringBeanAwareTestCase {
 		action.setObjectIds(null);
 
 		assertEquals("Invalid action result", FPActionSupport.SUCCESS, action.execute());
+		assertFalse("Invalid action execute: has action errors.", action.hasActionErrors());
 
-		buildingDao.delete(building);
+		buildingDaoExt.deleteBuilding(building);
 
 	}
 
@@ -64,13 +87,13 @@ public class TestBuildingAddressDeleteAction extends AbSpringBeanAwareTestCase {
 
 		action.setBuilding(building);
 		Long addressId = building.getAddressOnStreet(TestData.DEMAKOVA).getId();
-		action.setObjectIds(set(addressId));
+		action.setObjectIds(set(addressId, -210L, 23455L, 0L, null));
 
 		assertEquals("Invalid action result", FPActionSupport.SUCCESS, action.execute());
-
+		assertFalse("Invalid action execute: has action errors.", action.hasActionErrors());
 		assertTrue("Invalid status for building address. Must be disabled", buildingAddressDao.read(addressId).isNotActive());
 
-		buildingDao.delete(building);
+		buildingDaoExt.deleteBuilding(building);
 
 	}
 

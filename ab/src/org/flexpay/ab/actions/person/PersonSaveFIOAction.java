@@ -46,7 +46,7 @@ public class PersonSaveFIOAction extends FPActionSupport {
 		}
 
 		if (identity == null) {
-			log.debug("Identity parameter is null");
+			log.warn("Identity parameter is null");
 			identity = new PersonIdentity();
 		}
 

@@ -52,7 +52,7 @@ public class StreetDistrictEditAction extends FPActionSupport {
 		log.debug("Street loaded: {}", street.getCurrentName());
 
 		if (objectIds == null) {
-			log.debug("ObjectIds parameter is null");
+			log.warn("ObjectIds parameter is null");
 			objectIds = set();
 		}
 

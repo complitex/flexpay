@@ -27,10 +27,9 @@ import org.flexpay.common.persistence.sorter.ObjectSorter;
 import org.flexpay.common.service.ParentService;
 import org.flexpay.common.service.impl.NameTimeDependentServiceImpl;
 import org.flexpay.common.service.internal.SessionUtils;
-import static org.flexpay.common.util.CollectionUtils.*;
-
 import org.flexpay.common.util.AttributeCopier;
 import org.flexpay.common.util.CollectionUtils;
+import static org.flexpay.common.util.CollectionUtils.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Required;
