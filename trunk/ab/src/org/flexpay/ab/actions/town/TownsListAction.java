@@ -36,11 +36,11 @@ public class TownsListAction extends FPActionWithPagerSupport<Town> {
 		}
 
 		if (townSorterByName == null) {
-			log.debug("TownSorterByName is null");
+			log.warn("TownSorterByName is null");
 			townSorterByName = new TownSorterByName();
 		}
 		if (townSorterByType == null) {
-			log.debug("TownSorterByType is null");
+			log.warn("TownSorterByType is null");
 			townSorterByType = new TownSorterByType();
 		}
 

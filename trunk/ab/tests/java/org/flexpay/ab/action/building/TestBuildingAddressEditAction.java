@@ -2,6 +2,7 @@ package org.flexpay.ab.action.building;
 
 import org.flexpay.ab.actions.buildings.BuildingAddressEditAction;
 import org.flexpay.ab.dao.BuildingDao;
+import org.flexpay.ab.dao.BuildingDaoExt;
 import org.flexpay.ab.persistence.Building;
 import org.flexpay.ab.persistence.BuildingAddress;
 import org.flexpay.ab.persistence.TestData;
@@ -9,9 +10,12 @@ import org.flexpay.ab.service.AddressAttributeTypeService;
 import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
 import static org.flexpay.ab.util.TestUtils.createSimpleBuilding;
 import org.flexpay.common.actions.FPActionSupport;
+import static org.flexpay.common.util.CollectionUtils.treeMap;
 import static org.junit.Assert.*;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.Map;
 
 public class TestBuildingAddressEditAction extends AbSpringBeanAwareTestCase {
 
@@ -20,7 +24,17 @@ public class TestBuildingAddressEditAction extends AbSpringBeanAwareTestCase {
 	@Autowired
 	private BuildingDao buildingDao;
 	@Autowired
+	private BuildingDaoExt buildingDaoExt;
+	@Autowired
 	private AddressAttributeTypeService addressAttributeTypeService;
+
+	@Test
+	public void testNullBuildingId() throws Exception {
+
+		assertEquals("Invalid action result", FPActionSupport.REDIRECT_ERROR, action.execute());
+		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
+
+	}
 
 	@Test
 	public void testNullBuilding() throws Exception {
@@ -28,13 +42,27 @@ public class TestBuildingAddressEditAction extends AbSpringBeanAwareTestCase {
 		action.setBuilding(null);
 
 		assertEquals("Invalid action result", FPActionSupport.REDIRECT_ERROR, action.execute());
+		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
 
 	}
 
 	@Test
-	public void testNullBuildingId() throws Exception {
+	public void testIncorrectBuildingId1() throws Exception {
+
+		action.setBuilding(new Building(-10L));
 
 		assertEquals("Invalid action result", FPActionSupport.REDIRECT_ERROR, action.execute());
+		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
+
+	}
+
+	@Test
+	public void testIncorrectBuildingId2() throws Exception {
+
+		action.setBuilding(new Building(0L));
+
+		assertEquals("Invalid action result", FPActionSupport.REDIRECT_ERROR, action.execute());
+		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
 
 	}
 
@@ -44,7 +72,7 @@ public class TestBuildingAddressEditAction extends AbSpringBeanAwareTestCase {
 		action.setBuilding(new Building(121212L));
 
 		assertEquals("Invalid action result", FPActionSupport.REDIRECT_ERROR, action.execute());
-
+		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
 	}
 
 	@Test
@@ -57,9 +85,19 @@ public class TestBuildingAddressEditAction extends AbSpringBeanAwareTestCase {
 		action.setBuilding(building);
 
 		assertEquals("Invalid action result", FPActionSupport.REDIRECT_ERROR, action.execute());
+		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
 
-		buildingDao.delete(building);
+		buildingDaoExt.deleteBuilding(building);
 
+	}
+
+	@Test
+	public void testNullAddressId() throws Exception {
+
+		action.setBuilding(new Building(TestData.IVANOVA_27));
+
+		assertEquals("Invalid action result", FPActionSupport.REDIRECT_ERROR, action.execute());
+		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
 	}
 
 	@Test
@@ -69,15 +107,17 @@ public class TestBuildingAddressEditAction extends AbSpringBeanAwareTestCase {
 		action.setAddress(null);
 
 		assertEquals("Invalid action result", FPActionSupport.REDIRECT_ERROR, action.execute());
-
+		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
 	}
 
 	@Test
-	public void testNullAddressId() throws Exception {
+	public void testIncorrectAddressId1() throws Exception {
 
-		action.setBuilding(buildingDao.read(TestData.IVANOVA_27.getId()));
+		action.setBuilding(new Building(TestData.IVANOVA_27));
+		action.setAddress(new BuildingAddress(-10L));
 
-		assertEquals("Invalid action result", FPActionSupport.REDIRECT_ERROR, action.execute());
+		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
+		assertFalse("Invalid action execute: has action errors.", action.hasActionErrors());
 
 	}
 
@@ -88,7 +128,7 @@ public class TestBuildingAddressEditAction extends AbSpringBeanAwareTestCase {
 		action.setAddress(new BuildingAddress(121212L));
 
 		assertEquals("Invalid action result", FPActionSupport.REDIRECT_ERROR, action.execute());
-
+		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
 	}
 
 	@Test
@@ -105,8 +145,54 @@ public class TestBuildingAddressEditAction extends AbSpringBeanAwareTestCase {
 		action.setAddress(address);
 
 		assertEquals("Invalid action result", FPActionSupport.REDIRECT_ERROR, action.execute());
+		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
 
-		buildingDao.delete(building);
+		buildingDaoExt.deleteBuilding(building);
+
+	}
+
+	@Test
+	public void testNullAttributesMap() throws Exception {
+
+		Building building = createSimpleBuilding("123004");
+		buildingDao.create(building);
+
+		action.setAttributesMap(null);
+		action.setBuilding(building);
+		action.setAddress(building.getAddressOnStreet(TestData.DEMAKOVA));
+
+		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
+		assertEquals("Invalid size of attributesMap", addressAttributeTypeService.getAttributeTypes().size(), action.getAttributesMap().size());
+		assertFalse("Invalid action execute: has action errors.", action.hasActionErrors());
+
+		buildingDaoExt.deleteBuilding(building);
+
+	}
+
+	@Test
+	public void testIncorrectAttributesParameter() throws Exception {
+
+		Building building = createSimpleBuilding("123004");
+		buildingDao.create(building);
+
+		action.setBuilding(building);
+		action.setAddress(building.getAddressOnStreet(TestData.DEMAKOVA));
+
+		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
+		assertFalse("Invalid action execute: has action errors.", action.hasActionErrors());
+
+		Map<Long, String> attributes = treeMap();
+		attributes.put(564L, "test");
+
+		action.setSubmitted("");
+		action.setStreetFilter(TestData.ROSSIISKAYA.getId());
+		action.setAttributesMap(attributes);
+
+		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
+		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
+		assertEquals("Invalid attributes map size", addressAttributeTypeService.getAttributeTypes().size(), action.getAttributesMap().size());
+
+		buildingDaoExt.deleteBuilding(building);
 
 	}
 
@@ -120,9 +206,10 @@ public class TestBuildingAddressEditAction extends AbSpringBeanAwareTestCase {
 		action.setAddress(new BuildingAddress(0L));
 
 		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
+		assertFalse("Invalid action execute: has action errors.", action.hasActionErrors());
 		assertEquals("Invalid size of attributesMap", addressAttributeTypeService.getAttributeTypes().size(), action.getAttributesMap().size());
 
-		buildingDao.delete(building);
+		buildingDaoExt.deleteBuilding(building);
 
 	}
 
@@ -136,13 +223,14 @@ public class TestBuildingAddressEditAction extends AbSpringBeanAwareTestCase {
 		action.setAddress(building.getAddressOnStreet(TestData.DEMAKOVA));
 
 		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
+		assertFalse("Invalid action execute: has action errors.", action.hasActionErrors());
 		assertEquals("Invalid size of attributesMap", addressAttributeTypeService.getAttributeTypes().size(), action.getAttributesMap().size());
 		assertEquals("Invalid street filter", TestData.DEMAKOVA.getId(), action.getStreetFilter());
 		assertEquals("Invalid town filter", TestData.TOWN_NSK.getId(), action.getTownFilter());
 		assertEquals("Invalid region filter", TestData.REGION_NSK.getId(), action.getRegionFilter());
 		assertEquals("Invalid country filter", TestData.COUNTRY_RUS.getId(), action.getCountryFilter());
 
-		buildingDao.delete(building);
+		buildingDaoExt.deleteBuilding(building);
 
 	}
 
@@ -164,7 +252,7 @@ public class TestBuildingAddressEditAction extends AbSpringBeanAwareTestCase {
 		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
 		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
 
-		buildingDao.delete(building);
+		buildingDaoExt.deleteBuilding(building);
 
 	}
 
@@ -186,7 +274,7 @@ public class TestBuildingAddressEditAction extends AbSpringBeanAwareTestCase {
 		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
 		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
 
-		buildingDao.delete(building);
+		buildingDaoExt.deleteBuilding(building);
 
 	}
 
@@ -207,7 +295,7 @@ public class TestBuildingAddressEditAction extends AbSpringBeanAwareTestCase {
 		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
 		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
 
-		buildingDao.delete(building);
+		buildingDaoExt.deleteBuilding(building);
 
 	}
 
@@ -230,7 +318,7 @@ public class TestBuildingAddressEditAction extends AbSpringBeanAwareTestCase {
 		assertEquals("Invalid action result", FPActionSupport.REDIRECT_SUCCESS, action.execute());
 		assertNotNull("Address on Rossiiskaya Street must not be null", action.getBuilding().getAddressOnStreet(TestData.ROSSIISKAYA));
 
-		buildingDao.delete(action.getBuilding());
+		buildingDaoExt.deleteBuilding(action.getBuilding());
 
 	}
 
@@ -253,7 +341,7 @@ public class TestBuildingAddressEditAction extends AbSpringBeanAwareTestCase {
 		assertEquals("Invalid action result", FPActionSupport.REDIRECT_SUCCESS, action.execute());
 		assertEquals("Invalid building address number", "13451", action.getBuilding().getAddressOnStreet(TestData.DEMAKOVA).getNumber());
 
-		buildingDao.delete(action.getBuilding());
+		buildingDaoExt.deleteBuilding(action.getBuilding());
 
 	}
 

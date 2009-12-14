@@ -2,14 +2,12 @@ package org.flexpay.ab.action.filter;
 
 import org.flexpay.ab.actions.filters.FilterAjaxAction;
 import org.flexpay.ab.actions.filters.TownFilterAjaxAction;
-import org.flexpay.ab.persistence.Town;
 import org.flexpay.ab.persistence.TestData;
+import org.flexpay.ab.persistence.Town;
 import org.flexpay.ab.service.TownService;
 import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
 import static org.flexpay.ab.util.config.ApplicationConfig.getDefaultTownStub;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 

@@ -1,7 +1,6 @@
 package org.flexpay.ab.actions.apartment;
 
 import org.flexpay.ab.persistence.Apartment;
-import org.flexpay.ab.persistence.Building;
 import org.flexpay.ab.persistence.BuildingAddress;
 import org.flexpay.ab.persistence.filters.BuildingsFilter;
 import org.flexpay.ab.persistence.sorter.ApartmentSorter;
@@ -36,7 +35,7 @@ public class ApartmentsListAction extends FPActionWithPagerSupport<Apartment> {
 		}
 
 		if (apartmentSorter == null) {
-			log.debug("ApartmentSorter is null");
+			log.warn("ApartmentSorter is null");
 			apartmentSorter = new ApartmentSorter();
 		}
 

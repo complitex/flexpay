@@ -28,7 +28,7 @@ public class BuildingAddressDeleteAction extends FPActionSupport {
 		}
 
 		if (objectIds == null) {
-			log.debug("ObjectIds parameter is null");
+			log.warn("ObjectIds parameter is null");
 			return SUCCESS;
 		}
 

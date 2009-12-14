@@ -7,16 +7,13 @@ import org.flexpay.ab.persistence.District;
 import org.flexpay.ab.persistence.TestData;
 import org.flexpay.ab.persistence.Town;
 import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
-import static org.flexpay.ab.util.TestUtils.createSimpleDistrict;
-import static org.flexpay.ab.util.TestUtils.createSimpleTown;
-import static org.flexpay.ab.util.TestUtils.initNames;
+import static org.flexpay.ab.util.TestUtils.*;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.persistence.filter.BeginDateFilter;
 import static org.flexpay.common.util.CollectionUtils.treeMap;
 import org.flexpay.common.util.DateUtil;
 import static org.flexpay.common.util.config.ApplicationConfig.getLanguages;
 import static org.junit.Assert.*;
-import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 

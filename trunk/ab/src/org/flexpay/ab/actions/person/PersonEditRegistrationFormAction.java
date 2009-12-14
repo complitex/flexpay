@@ -37,11 +37,11 @@ public class PersonEditRegistrationFormAction extends FPActionSupport {
 
 		Apartment apartment = apartmentService.readWithHierarchy(new Stub<Apartment>(apartmentFilter));
 		if (apartment == null) {
-			log.debug("Can't get apartment with id {} from DB", apartmentFilter);
+			log.warn("Can't get apartment with id {} from DB", apartmentFilter);
 			addActionError(getText("ab.error.apartment.cant_get_apartment"));
 			return SUCCESS;
 		} else if (apartment.isNotActive()) {
-			log.debug("Apartment with id {} is disabled", apartmentFilter);
+			log.warn("Apartment with id {} is disabled", apartmentFilter);
 			addActionError(getText("ab.error.apartment.cant_get_apartment"));
 			return SUCCESS;
 		}

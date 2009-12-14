@@ -13,7 +13,6 @@ import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.persistence.filter.BeginDateFilter;
 import static org.flexpay.common.util.CollectionUtils.treeMap;
 import org.flexpay.common.util.DateUtil;
-import org.flexpay.common.util.config.ApplicationConfig;
 import static org.flexpay.common.util.config.ApplicationConfig.getLanguages;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
@@ -169,7 +168,7 @@ public class StreetEditAction extends FPActionSupport {
 	private void initFilters() throws Exception {
 
 		if (beginDateFilter == null) {
-			log.debug("BeginDateFilter parameter is null");
+			log.warn("BeginDateFilter parameter is null");
 			beginDateFilter = new BeginDateFilter();
 		}
 
@@ -178,7 +177,7 @@ public class StreetEditAction extends FPActionSupport {
 
 	private void correctNames() {
 		if (names == null) {
-			log.debug("Names parameter is null");
+			log.warn("Names parameter is null");
 			names = treeMap();
 		}
 		Map<Long, String> newNames = treeMap();

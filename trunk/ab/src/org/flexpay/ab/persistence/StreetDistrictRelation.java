@@ -1,7 +1,6 @@
 package org.flexpay.ab.persistence;
 
 import org.flexpay.common.persistence.DomainObject;
-import org.jetbrains.annotations.NotNull;
 
 public class StreetDistrictRelation extends DomainObject {
 

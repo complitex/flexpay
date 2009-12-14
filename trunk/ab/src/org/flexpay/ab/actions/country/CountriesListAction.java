@@ -25,7 +25,7 @@ public class CountriesListAction extends FPActionSupport {
 	public String doExecute() throws Exception {
 
 		if (countrySorter == null) {
-			log.debug("CountrySorter is null");
+			log.warn("CountrySorter is null");
 			countrySorter = new CountrySorter();
 		}
 

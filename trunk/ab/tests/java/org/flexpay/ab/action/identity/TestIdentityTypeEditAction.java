@@ -8,11 +8,13 @@ import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
 import static org.flexpay.ab.util.TestUtils.createSimpleIdentityType;
 import static org.flexpay.ab.util.TestUtils.initNames;
 import org.flexpay.common.actions.FPActionSupport;
-import org.flexpay.common.util.config.ApplicationConfig;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.flexpay.common.util.CollectionUtils.treeMap;
+import static org.flexpay.common.util.config.ApplicationConfig.getLanguages;
+import static org.junit.Assert.*;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.Map;
 
 public class TestIdentityTypeEditAction extends AbSpringBeanAwareTestCase {
 
@@ -22,29 +24,14 @@ public class TestIdentityTypeEditAction extends AbSpringBeanAwareTestCase {
 	private IdentityTypeDao identityTypeDao;
 
 	@Test
-	public void testNullIdentityType() throws Exception {
-
-		action.setIdentityType(null);
-
-		assertEquals("Invalid action result", FPActionSupport.REDIRECT_ERROR, action.execute());
-
-	}
-
-	@Test
-	public void testNullIdentityTypeId() throws Exception {
-
-		assertEquals("Invalid action result", FPActionSupport.REDIRECT_ERROR, action.execute());
-
-	}
-
-	@Test
 	public void testNullNames() throws Exception {
 
 		action.setIdentityType(new IdentityType(0L));
 		action.setNames(null);
 
 		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
-		assertEquals("Invalid names size for different languages", ApplicationConfig.getLanguages().size(), action.getNames().size());
+		assertEquals("Invalid names size for different languages", getLanguages().size(), action.getNames().size());
+		assertFalse("Invalid action execute: has action errors.", action.hasActionErrors());
 
 	}
 
@@ -54,7 +41,8 @@ public class TestIdentityTypeEditAction extends AbSpringBeanAwareTestCase {
 		action.setIdentityType(new IdentityType(0L));
 
 		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
-		assertEquals("Invalid names size for different languages", ApplicationConfig.getLanguages().size(), action.getNames().size());
+		assertEquals("Invalid names size for different languages", getLanguages().size(), action.getNames().size());
+		assertFalse("Invalid action execute: has action errors.", action.hasActionErrors());
 
 	}
 
@@ -64,7 +52,27 @@ public class TestIdentityTypeEditAction extends AbSpringBeanAwareTestCase {
 		action.setIdentityType(new IdentityType(TestData.IDENTITY_TYPE_FIO));
 
 		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
-		assertEquals("Invalid names size for different languages", ApplicationConfig.getLanguages().size(), action.getNames().size());
+		assertEquals("Invalid names size for different languages", getLanguages().size(), action.getNames().size());
+		assertFalse("Invalid action execute: has action errors.", action.hasActionErrors());
+
+	}
+
+	@Test
+	public void testIncorrectNamesParameters() throws Exception {
+
+		action.setIdentityType(new IdentityType(0L));
+		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
+		assertFalse("Invalid action execute: has action errors.", action.hasActionErrors());
+
+		Map<Long, String> names = treeMap();
+		names.put(564L, "test");
+
+		action.setSubmitted("");
+		action.setNames(names);
+
+		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
+		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
+		assertEquals("Invalid names map size", getLanguages().size(), action.getNames().size());
 
 	}
 
@@ -73,9 +81,36 @@ public class TestIdentityTypeEditAction extends AbSpringBeanAwareTestCase {
 
 		action.setIdentityType(new IdentityType(0L));
 		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
+		assertFalse("Invalid action execute: has action errors.", action.hasActionErrors());
 
 		action.setSubmitted("");
 		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
+		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
+
+	}
+
+	@Test
+	public void testNullIdentityType() throws Exception {
+
+		action.setIdentityType(null);
+
+		assertEquals("Invalid action result", FPActionSupport.REDIRECT_ERROR, action.execute());
+		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
+	}
+
+	@Test
+	public void testNullIdentityTypeId() throws Exception {
+
+		assertEquals("Invalid action result", FPActionSupport.REDIRECT_ERROR, action.execute());
+		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
+	}
+
+	@Test
+	public void testIncorrectIdentityTypeId() throws Exception {
+
+		action.setIdentityType(new IdentityType(-10L));
+		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
+		assertFalse("Invalid action execute: has action errors.", action.hasActionErrors());
 
 	}
 
@@ -84,6 +119,7 @@ public class TestIdentityTypeEditAction extends AbSpringBeanAwareTestCase {
 
 		action.setIdentityType(new IdentityType(121212L));
 		assertEquals("Invalid action result", FPActionSupport.REDIRECT_ERROR, action.execute());
+		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
 
 	}
 
@@ -96,6 +132,7 @@ public class TestIdentityTypeEditAction extends AbSpringBeanAwareTestCase {
 
 		action.setIdentityType(identityType);
 		assertEquals("Invalid action result", FPActionSupport.REDIRECT_ERROR, action.execute());
+		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
 
 		identityTypeDao.delete(identityType);
 
@@ -106,12 +143,14 @@ public class TestIdentityTypeEditAction extends AbSpringBeanAwareTestCase {
 
 		action.setIdentityType(new IdentityType(0L));
 		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
+		assertFalse("Invalid action execute: has action errors.", action.hasActionErrors());
 
 		action.setSubmitted("");
 		action.setNames(initNames("555"));
 
 		assertEquals("Invalid action result", FPActionSupport.REDIRECT_SUCCESS, action.execute());
 		assertTrue("Invalid identity type id", action.getIdentityType().getId() > 0);
+		assertFalse("Invalid action execute: has action errors.", action.hasActionErrors());
 
 		identityTypeDao.delete(action.getIdentityType());
 	}
@@ -124,11 +163,13 @@ public class TestIdentityTypeEditAction extends AbSpringBeanAwareTestCase {
 
 		action.setIdentityType(identity);
 		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
+		assertFalse("Invalid action execute: has action errors.", action.hasActionErrors());
 
 		action.setSubmitted("");
 		action.setNames(initNames("999"));
 
 		assertEquals("Invalid action result", FPActionSupport.REDIRECT_SUCCESS, action.execute());
+		assertFalse("Invalid action execute: has action errors.", action.hasActionErrors());
 
 		String name = action.getIdentityType().getDefaultTranslation().getName();
 		assertEquals("Invalid identity type name value", "999", name);

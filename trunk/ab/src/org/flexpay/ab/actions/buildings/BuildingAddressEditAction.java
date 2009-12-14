@@ -39,26 +39,23 @@ public class BuildingAddressEditAction extends FPActionSupport {
 	@Override
 	public String doExecute() throws Exception {
 
-		if (building == null || building.getId() == null) {
+		if (building == null || building.isNew()) {
 			log.warn("Incorrect building id");
 			addActionError(getText("ab.error.building.incorrect_building_id"));
 			return REDIRECT_ERROR;
 		}
 
-		if (building.isNotNew()) {
-			Stub<Building> stub = stub(building);
-			building = buildingService.readFull(stub);
+		Stub<Building> buildingStub = stub(building);
+		building = buildingService.readFull(buildingStub);
 
-			if (building == null) {
-				log.warn("Can't get building with id {} from DB", stub.getId());
-				addActionError(getText("ab.error.building.cant_get_building"));
-				return REDIRECT_ERROR;
-			} else if (building.isNotActive()) {
-				log.warn("Building with id {} is disabled", stub.getId());
-				addActionError(getText("ab.error.building.cant_get_building"));
-				return REDIRECT_ERROR;
-			}
-
+		if (building == null) {
+			log.warn("Can't get building with id {} from DB", buildingStub.getId());
+			addActionError(getText("ab.error.building.cant_get_building"));
+			return REDIRECT_ERROR;
+		} else if (building.isNotActive()) {
+			log.warn("Building with id {} is disabled", buildingStub.getId());
+			addActionError(getText("ab.error.building.cant_get_building"));
+			return REDIRECT_ERROR;
 		}
 
 		if (address == null || address.getId() == null) {
@@ -152,7 +149,7 @@ public class BuildingAddressEditAction extends FPActionSupport {
 
 	private void correctAttributes() {
 		if (attributesMap == null) {
-			log.debug("AttributesMap parameter is null");
+			log.warn("AttributesMap parameter is null");
 			attributesMap = treeMap();
 		}
 		Map<Long, String> newAttributesMap = treeMap();

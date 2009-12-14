@@ -74,7 +74,7 @@ public class MeasureUnitEditAction extends FPActionSupport {
 
 	private void correctNames() {
 		if (names == null) {
-			log.debug("Names parameter is null");
+			log.warn("Names parameter is null");
 			names = treeMap();
 		}
 		Map<Long, String> newNames = treeMap();

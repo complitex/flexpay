@@ -38,7 +38,7 @@ public class ApartmentRegistrationAction extends FPActionSupport {
 		if (apartment == null || apartment.isNew()) {
 			log.warn("Incorrect apartment id");
 			addActionError(getText("ab.error.apartment.incorrect_apartment_id"));
-			return SUCCESS;
+			return REDIRECT_ERROR;
 		}
 
 		Stub<Apartment> stub = stub(apartment);

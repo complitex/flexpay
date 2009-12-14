@@ -1,11 +1,17 @@
 package org.flexpay.ab.action.apartment;
 
 import org.flexpay.ab.actions.apartment.ApartmentsListPageAction;
+import org.flexpay.ab.dao.BuildingDao;
+import org.flexpay.ab.dao.BuildingDaoExt;
+import org.flexpay.ab.persistence.Building;
+import org.flexpay.ab.persistence.BuildingAddress;
 import org.flexpay.ab.persistence.TestData;
 import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
+import static org.flexpay.ab.util.TestUtils.createSimpleBuilding;
 import org.flexpay.ab.util.config.AbUserPreferences;
 import org.flexpay.common.actions.FPActionSupport;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -13,11 +19,16 @@ public class TestApartmentsListPageAction extends AbSpringBeanAwareTestCase {
 
 	@Autowired
 	private ApartmentsListPageAction action;
+	@Autowired
+	private BuildingDao buildingDao;
+	@Autowired
+	private BuildingDaoExt buildingDaoExt;
 
 	@Test
-	public void testAction1() throws Exception {
+	public void testIncorrectFilterValue1() throws Exception {
 
 		assertEquals("Invalid action result", FPActionSupport.SUCCESS, action.execute());
+		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
 
 		AbUserPreferences up = (AbUserPreferences) action.getUserPreferences();
 		assertEquals("Invalid value of buildingFilter in user preferences", new Long(0), up.getBuildingFilter());
@@ -25,26 +36,63 @@ public class TestApartmentsListPageAction extends AbSpringBeanAwareTestCase {
 	}
 
 	@Test
-	public void testAction2() throws Exception {
-
-		action.setBuildingFilter(TestData.ADDR_IVANOVA_27.getId());
-
-		assertEquals("Invalid action result", FPActionSupport.SUCCESS, action.execute());
-
-		AbUserPreferences up = (AbUserPreferences) action.getUserPreferences();
-		assertEquals("Invalid value of buildingFilter in user preferences", TestData.ADDR_IVANOVA_27.getId(), up.getBuildingFilter());
-
-	}
-
-	@Test
-	public void testAction3() throws Exception {
+	public void testIncorrectFilterValue2() throws Exception {
 
 		action.setBuildingFilter(-100L);
 
 		assertEquals("Invalid action result", FPActionSupport.SUCCESS, action.execute());
+		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
 
 		AbUserPreferences up = (AbUserPreferences) action.getUserPreferences();
 		assertEquals("Invalid value of buildingFilter in user preferences", new Long(0), up.getBuildingFilter());
+
+	}
+
+	@Test
+	public void testDefunctBuilding() throws Exception {
+
+		action.setBuildingFilter(234334L);
+
+		assertEquals("Invalid action result", FPActionSupport.SUCCESS, action.execute());
+		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
+
+		AbUserPreferences up = (AbUserPreferences) action.getUserPreferences();
+		assertEquals("Invalid value of buildingFilter in user preferences", new Long(0), up.getBuildingFilter());
+
+	}
+
+	@Test
+	public void testDisabledBuilding() throws Exception {
+
+		Building building = createSimpleBuilding("123");
+		building.disable();
+		for (BuildingAddress address : building.getBuildingses()) {
+			address.disable();
+		}
+		buildingDao.create(building);
+
+		action.setBuildingFilter(building.getDefaultBuildings().getId());
+
+		assertEquals("Invalid action result", FPActionSupport.SUCCESS, action.execute());
+		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
+
+		AbUserPreferences up = (AbUserPreferences) action.getUserPreferences();
+		assertEquals("Invalid value of buildingFilter in user preferences", new Long(0), up.getBuildingFilter());
+
+		buildingDaoExt.deleteBuilding(building);
+
+	}
+
+	@Test
+	public void testAction() throws Exception {
+
+		action.setBuildingFilter(TestData.ADDR_IVANOVA_27.getId());
+
+		assertEquals("Invalid action result", FPActionSupport.SUCCESS, action.execute());
+		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
+
+		AbUserPreferences up = (AbUserPreferences) action.getUserPreferences();
+		assertEquals("Invalid value of buildingFilter in user preferences", TestData.ADDR_IVANOVA_27.getId(), up.getBuildingFilter());
 
 	}
 

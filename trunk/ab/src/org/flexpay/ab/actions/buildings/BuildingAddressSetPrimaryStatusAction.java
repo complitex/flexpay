@@ -19,7 +19,7 @@ public class BuildingAddressSetPrimaryStatusAction extends FPActionSupport {
 	@Override
 	public String doExecute() throws Exception {
 
-		if (address == null || address.getId() == null) {
+		if (address == null || address.isNew()) {
 			log.warn("Incorrect building address id");
 			addActionError(getText("ab.error.building_address.incorrect_address_id"));
 			return SUCCESS;

@@ -110,7 +110,7 @@ public class BuildingCreateAction extends FPActionSupport {
 
 	private void correctAttributes() {
 		if (attributesMap == null) {
-			log.debug("AttributesMap parameter is null");
+			log.warn("AttributesMap parameter is null");
 			attributesMap = treeMap();
 		}
 		Map<Long, String> newAttributesMap = treeMap();

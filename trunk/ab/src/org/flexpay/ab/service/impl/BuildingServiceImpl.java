@@ -312,8 +312,8 @@ public class BuildingServiceImpl implements BuildingService, ParentService<Build
 		sessionUtils.evict(building);
 
 		for (Long id : addressIds) {
-			if (id == null) {
-				log.warn("Null id in collection of address ids for disable");
+			if (id == null || id <= 0) {
+				log.warn("Incorrect id ({}) in collection of address ids for disable", id);
 				continue;
 			}
 			BuildingAddress address = building.getAddress(new Stub<BuildingAddress>(id));

@@ -2,13 +2,14 @@ package org.flexpay.ab.action.building;
 
 import org.flexpay.ab.actions.buildings.BuildingViewAction;
 import org.flexpay.ab.dao.BuildingDao;
+import org.flexpay.ab.dao.BuildingDaoExt;
 import org.flexpay.ab.persistence.Building;
 import org.flexpay.ab.persistence.BuildingAddress;
 import org.flexpay.ab.persistence.TestData;
 import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
 import static org.flexpay.ab.util.TestUtils.createSimpleBuilding;
 import org.flexpay.common.actions.FPActionSupport;
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -18,6 +19,8 @@ public class TestBuildingViewAction extends AbSpringBeanAwareTestCase {
 	private BuildingViewAction action;
 	@Autowired
 	private BuildingDao buildingDao;
+	@Autowired
+	private BuildingDaoExt buildingDaoExt;
 
 	@Test
 	public void testCorrectData() throws Exception {
@@ -25,7 +28,14 @@ public class TestBuildingViewAction extends AbSpringBeanAwareTestCase {
 		action.setBuilding(new Building(TestData.IVANOVA_27));
 
 		assertEquals("Invalid action result", FPActionSupport.SUCCESS, action.execute());
+		assertFalse("Invalid action execute: has action errors.", action.hasActionErrors());
+	}
 
+	@Test
+	public void testNullId() throws Exception {
+
+		assertEquals("Invalid action result", FPActionSupport.REDIRECT_ERROR, action.execute());
+		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
 	}
 
 	@Test
@@ -34,7 +44,7 @@ public class TestBuildingViewAction extends AbSpringBeanAwareTestCase {
 		action.setBuilding(new Building(-10L));
 
 		assertEquals("Invalid action result", FPActionSupport.REDIRECT_ERROR, action.execute());
-
+		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
 	}
 
 	@Test
@@ -43,7 +53,7 @@ public class TestBuildingViewAction extends AbSpringBeanAwareTestCase {
 		action.setBuilding(new Building(0L));
 
 		assertEquals("Invalid action result", FPActionSupport.REDIRECT_ERROR, action.execute());
-
+		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
 	}
 
 	@Test
@@ -52,7 +62,7 @@ public class TestBuildingViewAction extends AbSpringBeanAwareTestCase {
 		action.setBuilding(null);
 
 		assertEquals("Invalid action result", FPActionSupport.REDIRECT_ERROR, action.execute());
-
+		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
 	}
 
 	@Test
@@ -61,7 +71,7 @@ public class TestBuildingViewAction extends AbSpringBeanAwareTestCase {
 		action.setBuilding(new Building(1090772L));
 
 		assertEquals("Invalid action result", FPActionSupport.REDIRECT_ERROR, action.execute());
-
+		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
 	}
 
 	@Test
@@ -78,8 +88,9 @@ public class TestBuildingViewAction extends AbSpringBeanAwareTestCase {
 		action.setBuilding(building);
 
 		assertEquals("Invalid action result", FPActionSupport.REDIRECT_ERROR, action.execute());
+		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
 
-		buildingDao.delete(action.getBuilding());
+		buildingDaoExt.deleteBuilding(action.getBuilding());
 
 	}
 

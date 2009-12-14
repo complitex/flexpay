@@ -17,7 +17,8 @@ public class TestMeasureUnitsListAction extends AbSpringBeanAwareTestCase {
 	public void testAction() throws Exception {
 
 		assertEquals("Invalid action result", FPActionSupport.SUCCESS, action.execute());
-		assertFalse("Invalid town types list size", action.getUnits().isEmpty());
+		assertFalse("Invalid action execute: has action errors.", action.hasActionErrors());
+		assertFalse("Invalid measure units list size", action.getUnits().isEmpty());
 
 	}
 

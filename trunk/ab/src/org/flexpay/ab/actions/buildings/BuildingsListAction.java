@@ -34,7 +34,7 @@ public class BuildingsListAction extends FPActionWithPagerSupport<BuildingAddres
 		}
 
 		if (buildingsSorter == null) {
-			log.debug("BuildingsSorter is null");
+			log.warn("BuildingsSorter is null");
 			buildingsSorter = new BuildingsSorter();
 		}
 

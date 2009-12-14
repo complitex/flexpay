@@ -166,7 +166,7 @@ public class TownEditAction extends FPActionSupport {
 	private void initFilters() throws Exception {
 
 		if (beginDateFilter == null) {
-			log.debug("BeginDateFilter parameter is null");
+			log.warn("BeginDateFilter parameter is null");
 			beginDateFilter = new BeginDateFilter();
 		}
 
@@ -199,7 +199,7 @@ public class TownEditAction extends FPActionSupport {
 
 	private void correctNames() {
 		if (names == null) {
-			log.debug("Names parameter is null");
+			log.warn("Names parameter is null");
 			names = treeMap();
 		}
 		Map<Long, String> newNames = treeMap();
