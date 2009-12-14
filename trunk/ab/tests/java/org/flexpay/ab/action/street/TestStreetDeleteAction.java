@@ -8,8 +8,7 @@ import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
 import static org.flexpay.ab.util.TestUtils.createSimpleStreet;
 import org.flexpay.common.actions.FPActionSupport;
 import static org.flexpay.common.util.CollectionUtils.set;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -28,7 +27,7 @@ public class TestStreetDeleteAction extends AbSpringBeanAwareTestCase {
 		action.setObjectIds(null);
 
 		assertEquals("Invalid action result", FPActionSupport.SUCCESS, action.execute());
-
+		assertFalse("Invalid action execute: has action errors.", action.hasActionErrors());
 	}
 
 	@Test
@@ -37,8 +36,9 @@ public class TestStreetDeleteAction extends AbSpringBeanAwareTestCase {
 		Street street = createSimpleStreet("testName");
 		streetDao.create(street);
 
-		action.setObjectIds(set(street.getId()));
+		action.setObjectIds(set(street.getId(), -210L, 23455L, 0L, null));
 		assertEquals("Invalid action result", FPActionSupport.SUCCESS, action.execute());
+		assertFalse("Invalid action execute: has action errors.", action.hasActionErrors());
 
 		street = streetDao.read(street.getId());
 		assertTrue("Invalid status for street. Must be disabled", street.isNotActive());

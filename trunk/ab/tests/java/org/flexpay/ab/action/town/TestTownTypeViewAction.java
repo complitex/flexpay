@@ -8,6 +8,8 @@ import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
 import static org.flexpay.ab.util.TestUtils.createSimpleTownType;
 import org.flexpay.common.actions.FPActionSupport;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -24,7 +26,14 @@ public class TestTownTypeViewAction extends AbSpringBeanAwareTestCase {
 		action.setTownType(new TownType(TestData.TOWN_TYPE_CITY));
 
 		assertEquals("Invalid action result", FPActionSupport.SUCCESS, action.execute());
+		assertFalse("Invalid action execute: has action errors.", action.hasActionErrors());
+	}
 
+	@Test
+	public void testNullId() throws Exception {
+
+		assertEquals("Invalid action result", FPActionSupport.REDIRECT_ERROR, action.execute());
+		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
 	}
 
 	@Test
@@ -33,7 +42,7 @@ public class TestTownTypeViewAction extends AbSpringBeanAwareTestCase {
 		action.setTownType(new TownType(-10L));
 
 		assertEquals("Invalid action result", FPActionSupport.REDIRECT_ERROR, action.execute());
-
+		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
 	}
 
 	@Test
@@ -42,14 +51,7 @@ public class TestTownTypeViewAction extends AbSpringBeanAwareTestCase {
 		action.setTownType(new TownType(0L));
 
 		assertEquals("Invalid action result", FPActionSupport.REDIRECT_ERROR, action.execute());
-
-	}
-
-	@Test
-	public void testNullId() throws Exception {
-
-		assertEquals("Invalid action result", FPActionSupport.REDIRECT_ERROR, action.execute());
-
+		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
 	}
 
 	@Test
@@ -58,7 +60,7 @@ public class TestTownTypeViewAction extends AbSpringBeanAwareTestCase {
 		action.setTownType(null);
 
 		assertEquals("Invalid action result", FPActionSupport.REDIRECT_ERROR, action.execute());
-
+		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
 	}
 
 	@Test
@@ -67,7 +69,7 @@ public class TestTownTypeViewAction extends AbSpringBeanAwareTestCase {
 		action.setTownType(new TownType(10902L));
 
 		assertEquals("Invalid action result", FPActionSupport.REDIRECT_ERROR, action.execute());
-
+		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
 	}
 
 	@Test
@@ -80,9 +82,9 @@ public class TestTownTypeViewAction extends AbSpringBeanAwareTestCase {
 		action.setTownType(townType);
 
 		assertEquals("Invalid action result", FPActionSupport.REDIRECT_ERROR, action.execute());
+		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
 
 		townTypeDao.delete(townType);
-
 	}
 
 }

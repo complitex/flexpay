@@ -6,7 +6,7 @@ import org.flexpay.common.persistence.MeasureUnit;
 import org.flexpay.common.persistence.MeasureUnitName;
 import static org.flexpay.common.util.CollectionUtils.treeMap;
 import org.flexpay.common.util.DateUtil;
-import org.flexpay.common.util.config.ApplicationConfig;
+import static org.flexpay.common.util.config.ApplicationConfig.getLanguages;
 
 import java.util.Map;
 
@@ -14,7 +14,7 @@ public class TestUtils {
 
 	public static Map<Long, String> initNames(String value) {
 		Map<Long, String> names = treeMap();
-		for (Language lang : ApplicationConfig.getLanguages()) {
+		for (Language lang : getLanguages()) {
 			names.put(lang.getId(), value);
 		}
 		return names;
@@ -23,7 +23,7 @@ public class TestUtils {
 	public static Country createSimpleCountry(String name) {
 
 		Country country = new Country();
-		for (Language lang : ApplicationConfig.getLanguages()) {
+		for (Language lang : getLanguages()) {
 			CountryTranslation translation = new CountryTranslation(name, lang);
 			translation.setShortName(name.substring(0, 3));
 			country.setTranslation(translation);
@@ -37,7 +37,7 @@ public class TestUtils {
 
 		Region region = new Region();
 		RegionName regionName = new RegionName();
-		for (Language lang : ApplicationConfig.getLanguages()) {
+		for (Language lang : getLanguages()) {
 			regionName.setTranslation(new RegionNameTranslation(name, lang));
 		}
 		region.setNameForDate(regionName, DateUtil.now());
@@ -50,7 +50,7 @@ public class TestUtils {
 
 		Town town = new Town();
 		TownName townName = new TownName();
-		for (Language lang : ApplicationConfig.getLanguages()) {
+		for (Language lang : getLanguages()) {
 			townName.setTranslation(new TownNameTranslation(name, lang));
 		}
 		town.setNameForDate(townName, DateUtil.now());
@@ -64,7 +64,7 @@ public class TestUtils {
 
 		District district = new District();
 		DistrictName districtName = new DistrictName();
-		for (Language lang : ApplicationConfig.getLanguages()) {
+		for (Language lang : getLanguages()) {
 			districtName.setTranslation(new DistrictNameTranslation(name, lang));
 		}
 
@@ -78,7 +78,7 @@ public class TestUtils {
 
 		Street street = new Street();
 		StreetName streetName = new StreetName();
-		for (Language lang : ApplicationConfig.getLanguages()) {
+		for (Language lang : getLanguages()) {
 			streetName.setTranslation(new StreetNameTranslation(name, lang));
 		}
 
@@ -126,7 +126,7 @@ public class TestUtils {
 	public static TownType createSimpleTownType(String name) {
 
 		TownType townType = new TownType();
-		for (Language lang : ApplicationConfig.getLanguages()) {
+		for (Language lang : getLanguages()) {
 			TownTypeTranslation translation = new TownTypeTranslation(name, lang);
 			translation.setShortName("srt" + name);
 			townType.setTranslation(translation);
@@ -140,7 +140,7 @@ public class TestUtils {
 		StreetType streetType = new StreetType();
 
 		try {
-			for (Language lang : ApplicationConfig.getLanguages()) {
+			for (Language lang : getLanguages()) {
 				streetType.setTranslation(new StreetTypeTranslation(name, "srt" + name, lang));
 			}
 		} catch (Exception e) {
@@ -153,7 +153,7 @@ public class TestUtils {
 	public static IdentityType createSimpleIdentityType(String name) {
 
 		IdentityType identityType = new IdentityType();
-		for (Language lang : ApplicationConfig.getLanguages()) {
+		for (Language lang : getLanguages()) {
 			IdentityTypeTranslation translation = new IdentityTypeTranslation(name, lang);
 			identityType.setTranslation(translation);
 		}
@@ -164,7 +164,7 @@ public class TestUtils {
 	public static MeasureUnit createSimpleMeasureUnit(String name) {
 
 		MeasureUnit measureUnit = new MeasureUnit();
-		for (Language lang : ApplicationConfig.getLanguages()) {
+		for (Language lang : getLanguages()) {
 			MeasureUnitName translation = new MeasureUnitName(name, lang);
 			measureUnit.setName(translation);
 		}
@@ -175,7 +175,7 @@ public class TestUtils {
 	public static AddressAttributeType createSimpleAddressAttributeType(String name) {
 
 		AddressAttributeType attributeType = new AddressAttributeType();
-		for (Language lang : ApplicationConfig.getLanguages()) {
+		for (Language lang : getLanguages()) {
 			AddressAttributeTypeTranslation translation = new AddressAttributeTypeTranslation(name, name + "shrt", lang);
 			attributeType.setTranslation(translation);
 		}

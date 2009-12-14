@@ -7,8 +7,7 @@ import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
 import static org.flexpay.ab.util.TestUtils.createSimpleTownType;
 import org.flexpay.common.actions.FPActionSupport;
 import static org.flexpay.common.util.CollectionUtils.set;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -25,7 +24,7 @@ public class TestTownTypeDeleteAction extends AbSpringBeanAwareTestCase {
 		action.setObjectIds(null);
 
 		assertEquals("Invalid action result", FPActionSupport.SUCCESS, action.execute());
-
+		assertFalse("Invalid action execute: has action errors.", action.hasActionErrors());
 	}
 
 	@Test
@@ -34,8 +33,9 @@ public class TestTownTypeDeleteAction extends AbSpringBeanAwareTestCase {
 		TownType townType = createSimpleTownType("3456");
 		townTypeDao.create(townType);
 
-		action.setObjectIds(set(townType.getId()));
+		action.setObjectIds(set(townType.getId(), -210L, 23455L, 0L, null));
 		assertEquals("Invalid action result", FPActionSupport.SUCCESS, action.execute());
+		assertFalse("Invalid action execute: has action errors.", action.hasActionErrors());
 
 		townType = townTypeDao.read(townType.getId());
 		assertTrue("Invalid status for town type. Must be disabled", townType.isNotActive());

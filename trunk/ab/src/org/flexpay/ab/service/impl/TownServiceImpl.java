@@ -71,6 +71,10 @@ public class TownServiceImpl extends NameTimeDependentServiceImpl<
 	@Override
 	public void disable(@NotNull Collection<Long> townIds) {
 		for (Long id : townIds) {
+			if (id == null) {
+				log.warn("Null id in collection of town ids for disable");
+				continue;
+			}
 			Town town = townDao.read(id);
 			if (town == null) {
 				log.warn("Can't get town with id {} from DB", id);

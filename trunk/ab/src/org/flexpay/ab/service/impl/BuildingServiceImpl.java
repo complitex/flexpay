@@ -106,6 +106,10 @@ public class BuildingServiceImpl implements BuildingService, ParentService<Build
 	@Override
 	public void disable(@NotNull Collection<Long> buildingIds) {
 		for (Long id : buildingIds) {
+			if (id == null) {
+				log.warn("Null id in collection of building ids for disable");
+				continue;
+			}
 			Building building = buildingDao.read(id);
 			if (building == null) {
 				log.warn("Can't get building with id {} from DB", id);
@@ -308,6 +312,10 @@ public class BuildingServiceImpl implements BuildingService, ParentService<Build
 		sessionUtils.evict(building);
 
 		for (Long id : addressIds) {
+			if (id == null) {
+				log.warn("Null id in collection of address ids for disable");
+				continue;
+			}
 			BuildingAddress address = building.getAddress(new Stub<BuildingAddress>(id));
 			if (address == null) {
 				log.warn("Can't get building address with id {}", id);

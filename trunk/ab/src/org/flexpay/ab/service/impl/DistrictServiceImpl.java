@@ -69,6 +69,10 @@ public class DistrictServiceImpl extends NameTimeDependentServiceImpl<
 	@Override
 	public void disable(@NotNull Collection<Long> districtIds) {
 		for (Long id : districtIds) {
+			if (id == null) {
+				log.warn("Null id in collection of district ids for disable");
+				continue;
+			}
 			District district = districtDao.read(id);
 			if (district == null) {
 				log.warn("Can't get district with id {} from DB", id);

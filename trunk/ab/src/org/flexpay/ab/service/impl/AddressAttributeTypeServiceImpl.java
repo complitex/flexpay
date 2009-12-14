@@ -78,6 +78,10 @@ public class AddressAttributeTypeServiceImpl implements AddressAttributeTypeServ
 	public void disable(@NotNull Collection<Long> addressAttributeTypeIds) {
 
 		for (Long id : addressAttributeTypeIds) {
+			if (id == null) {
+				log.warn("Null id in collection of address attribute type ids for disable");
+				continue;
+			}
 			AddressAttributeType type = addressAttributeTypeDao.read(id);
 			if (type == null) {
 				log.warn("Can't get address attribute type with id {} from DB", id);

@@ -79,6 +79,10 @@ public class ApartmentServiceImpl implements ApartmentService, ParentService<Apa
 	@Override
 	public void disable(@NotNull Collection<Long> apartmentIds) {
 		for (Long id : apartmentIds) {
+			if (id == null) {
+				log.warn("Null id in collection of apartment ids for disable");
+				continue;
+			}
 			Apartment apartment = apartmentDao.read(id);
 			if (apartment == null) {
 				log.warn("Can't get apartment with id {} from DB", id);

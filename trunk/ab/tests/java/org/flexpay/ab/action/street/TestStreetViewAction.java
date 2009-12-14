@@ -9,6 +9,8 @@ import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
 import static org.flexpay.ab.util.TestUtils.createSimpleStreet;
 import org.flexpay.common.actions.FPActionSupport;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -27,7 +29,14 @@ public class TestStreetViewAction extends AbSpringBeanAwareTestCase {
 		action.setObject(new Street(TestData.IVANOVA));
 
 		assertEquals("Invalid action result", FPActionSupport.SUCCESS, action.execute());
+		assertFalse("Invalid action execute: has action errors.", action.hasActionErrors());
+	}
 
+	@Test
+	public void testNullId() throws Exception {
+
+		assertEquals("Invalid action result", FPActionSupport.REDIRECT_ERROR, action.execute());
+		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
 	}
 
 	@Test
@@ -36,7 +45,7 @@ public class TestStreetViewAction extends AbSpringBeanAwareTestCase {
 		action.setObject(new Street(-10L));
 
 		assertEquals("Invalid action result", FPActionSupport.REDIRECT_ERROR, action.execute());
-
+		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
 	}
 
 	@Test
@@ -45,7 +54,7 @@ public class TestStreetViewAction extends AbSpringBeanAwareTestCase {
 		action.setObject(new Street(0L));
 
 		assertEquals("Invalid action result", FPActionSupport.REDIRECT_ERROR, action.execute());
-
+		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
 	}
 
 	@Test
@@ -54,7 +63,7 @@ public class TestStreetViewAction extends AbSpringBeanAwareTestCase {
 		action.setObject(null);
 
 		assertEquals("Invalid action result", FPActionSupport.REDIRECT_ERROR, action.execute());
-
+		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
 	}
 
 	@Test
@@ -63,7 +72,7 @@ public class TestStreetViewAction extends AbSpringBeanAwareTestCase {
 		action.setObject(new Street(1090772L));
 
 		assertEquals("Invalid action result", FPActionSupport.REDIRECT_ERROR, action.execute());
-
+		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
 	}
 
 	@Test
@@ -71,15 +80,14 @@ public class TestStreetViewAction extends AbSpringBeanAwareTestCase {
 
 		Street street = createSimpleStreet("testName111");
 		street.disable();
-
 		streetDao.create(street);
 
 		action.setObject(street);
 
 		assertEquals("Invalid action result", FPActionSupport.REDIRECT_ERROR, action.execute());
+		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
 
 		streetDaoExt.deleteStreet(action.getObject());
-
 	}
 
 }

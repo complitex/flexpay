@@ -1,20 +1,23 @@
 package org.flexpay.ab.action.region;
 
 import org.flexpay.ab.actions.region.RegionEditAction;
+import org.flexpay.ab.dao.CountryDao;
 import org.flexpay.ab.dao.RegionDao;
+import org.flexpay.ab.persistence.Country;
 import org.flexpay.ab.persistence.Region;
 import org.flexpay.ab.persistence.TestData;
 import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
-import static org.flexpay.ab.util.TestUtils.createSimpleRegion;
-import static org.flexpay.ab.util.TestUtils.initNames;
+import static org.flexpay.ab.util.TestUtils.*;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.persistence.filter.BeginDateFilter;
+import static org.flexpay.common.util.CollectionUtils.treeMap;
 import org.flexpay.common.util.DateUtil;
-import org.flexpay.common.util.config.ApplicationConfig;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.flexpay.common.util.config.ApplicationConfig.getLanguages;
+import static org.junit.Assert.*;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.Map;
 
 public class TestRegionEditAction extends AbSpringBeanAwareTestCase {
 
@@ -22,22 +25,8 @@ public class TestRegionEditAction extends AbSpringBeanAwareTestCase {
 	private RegionEditAction action;
 	@Autowired
 	private RegionDao regionDao;
-
-	@Test
-	public void testNullRegion() throws Exception {
-
-		action.setRegion(null);
-
-		assertEquals("Invalid action result", FPActionSupport.REDIRECT_ERROR, action.execute());
-
-	}
-
-	@Test
-	public void testNullRegionId() throws Exception {
-
-		assertEquals("Invalid action result", FPActionSupport.REDIRECT_ERROR, action.execute());
-
-	}
+	@Autowired
+	private CountryDao countryDao;
 
 	@Test
 	public void testNullNames() throws Exception {
@@ -47,7 +36,8 @@ public class TestRegionEditAction extends AbSpringBeanAwareTestCase {
 
 		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
 		assertEquals("Invalid beginDateFilter value", DateUtil.now(), action.getBeginDateFilter().getDate());
-		assertEquals("Invalid names size for different languages", ApplicationConfig.getLanguages().size(), action.getNames().size());
+		assertEquals("Invalid names size for different languages", getLanguages().size(), action.getNames().size());
+		assertFalse("Invalid action execute: has action errors.", action.hasActionErrors());
 
 	}
 
@@ -59,7 +49,8 @@ public class TestRegionEditAction extends AbSpringBeanAwareTestCase {
 
 		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
 		assertEquals("Invalid beginDateFilter value", DateUtil.now(), action.getBeginDateFilter().getDate());
-		assertEquals("Invalid names size for different languages", ApplicationConfig.getLanguages().size(), action.getNames().size());
+		assertEquals("Invalid names size for different languages", getLanguages().size(), action.getNames().size());
+		assertFalse("Invalid action execute: has action errors.", action.hasActionErrors());
 
 	}
 
@@ -70,7 +61,8 @@ public class TestRegionEditAction extends AbSpringBeanAwareTestCase {
 
 		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
 		assertEquals("Invalid beginDateFilter value", DateUtil.now(), action.getBeginDateFilter().getDate());
-		assertEquals("Invalid names size for different languages", ApplicationConfig.getLanguages().size(), action.getNames().size());
+		assertEquals("Invalid names size for different languages", getLanguages().size(), action.getNames().size());
+		assertFalse("Invalid action execute: has action errors.", action.hasActionErrors());
 
 	}
 
@@ -81,8 +73,29 @@ public class TestRegionEditAction extends AbSpringBeanAwareTestCase {
 
 		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
 		assertEquals("Invalid beginDateFilter value", action.getRegion().getCurrentNameTemporal().getBegin(), action.getBeginDateFilter().getDate());
-		assertEquals("Invalid names size for different languages", ApplicationConfig.getLanguages().size(), action.getNames().size());
+		assertEquals("Invalid names size for different languages", getLanguages().size(), action.getNames().size());
 		assertEquals("Invalid country filter", TestData.COUNTRY_RUS.getId(), action.getCountryFilter());
+		assertFalse("Invalid action execute: has action errors.", action.hasActionErrors());
+
+	}
+
+	@Test
+	public void testIncorrectNamesParameters() throws Exception {
+
+		action.setRegion(new Region(0L));
+		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
+		assertFalse("Invalid action execute: has action errors.", action.hasActionErrors());
+
+		Map<Long, String> names = treeMap();
+		names.put(564L, "test");
+
+		action.setSubmitted("");
+		action.setCountryFilter(TestData.COUNTRY_RUS.getId());
+		action.setNames(names);
+
+		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
+		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
+		assertEquals("Invalid names map size", getLanguages().size(), action.getNames().size());
 
 	}
 
@@ -91,10 +104,12 @@ public class TestRegionEditAction extends AbSpringBeanAwareTestCase {
 
 		action.setRegion(new Region(0L));
 		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
+		assertFalse("Invalid action execute: has action errors.", action.hasActionErrors());
 
 		action.setSubmitted("");
 		action.setNames(initNames("123"));
 		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
+		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
 
 	}
 
@@ -103,25 +118,108 @@ public class TestRegionEditAction extends AbSpringBeanAwareTestCase {
 
 		action.setRegion(new Region(0L));
 		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
+		assertFalse("Invalid action execute: has action errors.", action.hasActionErrors());
 
 		action.setSubmitted("");
 		action.setNames(initNames("123"));
 		action.setCountryFilter(TestData.COUNTRY_RUS.getId());
 		action.setBeginDateFilter(null);
 		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
+		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
 
 	}
 
 	@Test
-	public void testIncorrectData3() throws Exception {
+	public void testIncorrectCountryId1() throws Exception {
 
 		action.setRegion(new Region(0L));
 		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
+		assertFalse("Invalid action execute: has action errors.", action.hasActionErrors());
 
 		action.setSubmitted("");
 		action.setNames(initNames("123"));
 		action.setCountryFilter(-10L);
 		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
+		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
+
+	}
+
+	@Test
+	public void testIncorrectCountryId2() throws Exception {
+
+		action.setRegion(new Region(0L));
+		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
+		assertFalse("Invalid action execute: has action errors.", action.hasActionErrors());
+
+		action.setSubmitted("");
+		action.setNames(initNames("123"));
+		action.setCountryFilter(0L);
+		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
+		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
+
+	}
+
+	@Test
+	public void testDefunctCountry() throws Exception {
+
+		action.setRegion(new Region(0L));
+		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
+		assertFalse("Invalid action execute: has action errors.", action.hasActionErrors());
+
+		action.setSubmitted("");
+		action.setNames(initNames("123"));
+		action.setCountryFilter(12324230L);
+		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
+		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
+
+	}
+
+	@Test
+	public void testDisabledCountry() throws Exception {
+
+		Country country = createSimpleCountry("123");
+		country.disable();
+		countryDao.create(country);
+
+		action.setRegion(new Region(0L));
+		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
+		assertFalse("Invalid action execute: has action errors.", action.hasActionErrors());
+
+		action.setSubmitted("");
+		action.setNames(initNames("123"));
+		action.setCountryFilter(country.getId());
+		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
+		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
+
+		countryDao.delete(country);
+
+	}
+
+	@Test
+	public void testNullRegion() throws Exception {
+
+		action.setRegion(null);
+
+		assertEquals("Invalid action result", FPActionSupport.REDIRECT_ERROR, action.execute());
+		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
+
+	}
+
+	@Test
+	public void testNullRegionId() throws Exception {
+
+		assertEquals("Invalid action result", FPActionSupport.REDIRECT_ERROR, action.execute());
+		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
+
+	}
+
+	@Test
+	public void testIncorrectRegionId() throws Exception {
+
+		action.setRegion(new Region(-10L));
+
+		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
+		assertFalse("Invalid action execute: has action errors.", action.hasActionErrors());
 
 	}
 
@@ -129,7 +227,9 @@ public class TestRegionEditAction extends AbSpringBeanAwareTestCase {
 	public void testEditDefunctRegion() throws Exception {
 
 		action.setRegion(new Region(121212L));
+
 		assertEquals("Invalid action result", FPActionSupport.REDIRECT_ERROR, action.execute());
+		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
 
 	}
 
@@ -138,11 +238,11 @@ public class TestRegionEditAction extends AbSpringBeanAwareTestCase {
 
 		Region region = createSimpleRegion("testName");
 		region.disable();
-
 		regionDao.create(region);
 
 		action.setRegion(region);
 		assertEquals("Invalid action result", FPActionSupport.REDIRECT_ERROR, action.execute());
+		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
 
 		regionDao.delete(region);
 
@@ -153,6 +253,7 @@ public class TestRegionEditAction extends AbSpringBeanAwareTestCase {
 
 		action.setRegion(new Region(0L));
 		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
+		assertFalse("Invalid action execute: has action errors.", action.hasActionErrors());
 
 		action.setSubmitted("");
 		action.setCountryFilter(TestData.COUNTRY_RUS.getId());
@@ -160,6 +261,7 @@ public class TestRegionEditAction extends AbSpringBeanAwareTestCase {
 
 		assertEquals("Invalid action result", FPActionSupport.REDIRECT_SUCCESS, action.execute());
 		assertTrue("Invalid region id", action.getRegion().getId() > 0);
+		assertFalse("Invalid action execute: has action errors.", action.hasActionErrors());
 
 		regionDao.delete(action.getRegion());
 	}
@@ -168,11 +270,11 @@ public class TestRegionEditAction extends AbSpringBeanAwareTestCase {
 	public void testEditSubmit() throws Exception {
 
 		Region region = createSimpleRegion("testName");
-
 		regionDao.create(region);
 
 		action.setRegion(region);
 		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
+		assertFalse("Invalid action execute: has action errors.", action.hasActionErrors());
 
 		action.setSubmitted("");
 		action.setCountryFilter(TestData.COUNTRY_RUS.getId());
@@ -180,6 +282,7 @@ public class TestRegionEditAction extends AbSpringBeanAwareTestCase {
 		action.setNames(initNames("123"));
 
 		assertEquals("Invalid action result", FPActionSupport.REDIRECT_SUCCESS, action.execute());
+		assertFalse("Invalid action execute: has action errors.", action.hasActionErrors());
 
 		String name = action.getRegion().getNameForDate(DateUtil.next(DateUtil.now())).getDefaultNameTranslation();
 		assertEquals("Invalid region name value", "123", name);

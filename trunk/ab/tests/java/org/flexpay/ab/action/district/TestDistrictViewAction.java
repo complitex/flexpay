@@ -7,7 +7,7 @@ import org.flexpay.ab.persistence.TestData;
 import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
 import static org.flexpay.ab.util.TestUtils.createSimpleDistrict;
 import org.flexpay.common.actions.FPActionSupport;
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -24,7 +24,14 @@ public class TestDistrictViewAction extends AbSpringBeanAwareTestCase {
 		action.setObject(new District(TestData.DISTRICT_SOVETSKIY));
 
 		assertEquals("Invalid action result", FPActionSupport.SUCCESS, action.execute());
+		assertFalse("Invalid action execute: has action errors.", action.hasActionErrors());
+	}
 
+	@Test
+	public void testNullId() throws Exception {
+
+		assertEquals("Invalid action result", FPActionSupport.REDIRECT_ERROR, action.execute());
+		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
 	}
 
 	@Test
@@ -33,7 +40,7 @@ public class TestDistrictViewAction extends AbSpringBeanAwareTestCase {
 		action.setObject(new District(-10L));
 
 		assertEquals("Invalid action result", FPActionSupport.REDIRECT_ERROR, action.execute());
-
+		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
 	}
 
 	@Test
@@ -42,7 +49,7 @@ public class TestDistrictViewAction extends AbSpringBeanAwareTestCase {
 		action.setObject(new District(0L));
 
 		assertEquals("Invalid action result", FPActionSupport.REDIRECT_ERROR, action.execute());
-
+		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
 	}
 
 	@Test
@@ -51,7 +58,7 @@ public class TestDistrictViewAction extends AbSpringBeanAwareTestCase {
 		action.setObject(null);
 
 		assertEquals("Invalid action result", FPActionSupport.REDIRECT_ERROR, action.execute());
-
+		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
 	}
 
 	@Test
@@ -60,23 +67,22 @@ public class TestDistrictViewAction extends AbSpringBeanAwareTestCase {
 		action.setObject(new District(1090772L));
 
 		assertEquals("Invalid action result", FPActionSupport.REDIRECT_ERROR, action.execute());
-
+		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
 	}
 
 	@Test
 	public void testDisabledDistrict() throws Exception {
 
-		District district = createSimpleDistrict("testName");
+		District district = createSimpleDistrict("testName111");
 		district.disable();
-
 		districtDao.create(district);
 
 		action.setObject(district);
 
 		assertEquals("Invalid action result", FPActionSupport.REDIRECT_ERROR, action.execute());
+		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
 
 		districtDao.delete(action.getObject());
-
 	}
 
 }

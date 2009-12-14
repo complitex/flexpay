@@ -82,6 +82,10 @@ public class StreetTypeServiceImpl implements StreetTypeService {
 	@Override
 	public void disable(@NotNull Collection<Long> streetTypeIds) {
 		for (Long id : streetTypeIds) {
+			if (id == null) {
+				log.warn("Null id in collection of street type ids for disable");
+				continue;
+			}
 			StreetType streetType = streetTypeDao.read(id);
 			if (streetType == null) {
 				log.warn("Can't get street type with id {} from DB", id);
