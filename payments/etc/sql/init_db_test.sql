@@ -623,3 +623,13 @@ insert into config_payments_mbservices_tbl (mb_service_code, service_type_id, mb
 		('23', @service_t_repeat_turn_on, 'Повторное подключение', 0),
 		('24', @service_t_acts_payment, 'Оплата по актам', 0),
 		('25', @service_t_counters_repair, 'Ремонт счетчиков', 0);
+
+-- master index data
+select @ds:=id from common_data_source_descriptions_tbl where description='Master-index';
+select @instId:='090-';
+select @payments_base:=0x3000 + 0;
+
+insert into common_data_corrections_tbl (internal_object_id, external_object_id, object_type, data_source_description_id)
+	(select id, concat(@instId, id), @payments_base + 0x0201, @ds from payments_services_tbl);
+insert into common_data_corrections_tbl (internal_object_id, external_object_id, object_type, data_source_description_id)
+	(select id, concat(@instId, id), @payments_base + 0x002, @ds from payments_service_types_tbl);

@@ -4080,3 +4080,35 @@ INSERT INTO ab_person_registrations_tbl (begin_date, end_date, person_id, apartm
 update common_users_tbl set
 		ab_country_filter=1, ab_region_filter=1000, ab_town_filter=2
 where id=@user_test;
+
+-- master index data
+select @ds:=id from common_data_source_descriptions_tbl where description='Master-index';
+select @instId:='090-';
+select @ab_base:=0x1000 + 0;
+
+insert into common_data_corrections_tbl (internal_object_id, external_object_id, object_type, data_source_description_id)
+	(select id, concat(@instId, id), @ab_base + 0x09, @ds from ab_persons_tbl);
+insert into common_data_corrections_tbl (internal_object_id, external_object_id, object_type, data_source_description_id)
+	(select id, concat(@instId, id), @ab_base + 0x08, @ds from ab_apartments_tbl);
+insert into common_data_corrections_tbl (internal_object_id, external_object_id, object_type, data_source_description_id)
+	(select id, concat(@instId, id), @ab_base + 0x07, @ds from ab_building_addresses_tbl);
+insert into common_data_corrections_tbl (internal_object_id, external_object_id, object_type, data_source_description_id)
+	(select id, concat(@instId, id), @ab_base + 0x0A, @ds from ab_buildings_tbl);
+insert into common_data_corrections_tbl (internal_object_id, external_object_id, object_type, data_source_description_id)
+	(select id, concat(@instId, id), @ab_base + 0x0B, @ds from ab_building_address_attribute_types_tbl);
+insert into common_data_corrections_tbl (internal_object_id, external_object_id, object_type, data_source_description_id)
+	(select id, concat(@instId, id), @ab_base + 0x06, @ds from ab_streets_tbl);
+insert into common_data_corrections_tbl (internal_object_id, external_object_id, object_type, data_source_description_id)
+	(select id, concat(@instId, id), @ab_base + 0x05, @ds from ab_districts_tbl);
+insert into common_data_corrections_tbl (internal_object_id, external_object_id, object_type, data_source_description_id)
+	(select id, concat(@instId, id), @ab_base + 0x04, @ds from ab_street_types_tbl);
+insert into common_data_corrections_tbl (internal_object_id, external_object_id, object_type, data_source_description_id)
+	(select id, concat(@instId, id), @ab_base + 0x03, @ds from ab_towns_tbl);
+insert into common_data_corrections_tbl (internal_object_id, external_object_id, object_type, data_source_description_id)
+	(select id, concat(@instId, id), @ab_base + 0x10, @ds from ab_town_types_tbl);
+insert into common_data_corrections_tbl (internal_object_id, external_object_id, object_type, data_source_description_id)
+	(select id, concat(@instId, id), @ab_base + 0x02, @ds from ab_regions_tbl);
+insert into common_data_corrections_tbl (internal_object_id, external_object_id, object_type, data_source_description_id)
+	(select id, concat(@instId, id), @ab_base + 0x01, @ds from ab_countries_tbl);
+insert into common_data_corrections_tbl (internal_object_id, external_object_id, object_type, data_source_description_id)
+	(select id, concat(@instId, id), @ab_base + 0x0C, @ds from ab_identity_types_tbl);
