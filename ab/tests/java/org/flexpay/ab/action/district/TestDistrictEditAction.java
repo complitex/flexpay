@@ -2,19 +2,25 @@ package org.flexpay.ab.action.district;
 
 import org.flexpay.ab.actions.district.DistrictEditAction;
 import org.flexpay.ab.dao.DistrictDao;
+import org.flexpay.ab.dao.TownDao;
 import org.flexpay.ab.persistence.District;
 import org.flexpay.ab.persistence.TestData;
+import org.flexpay.ab.persistence.Town;
 import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
 import static org.flexpay.ab.util.TestUtils.createSimpleDistrict;
+import static org.flexpay.ab.util.TestUtils.createSimpleTown;
 import static org.flexpay.ab.util.TestUtils.initNames;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.persistence.filter.BeginDateFilter;
+import static org.flexpay.common.util.CollectionUtils.treeMap;
 import org.flexpay.common.util.DateUtil;
-import org.flexpay.common.util.config.ApplicationConfig;
+import static org.flexpay.common.util.config.ApplicationConfig.getLanguages;
+import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.Map;
 
 public class TestDistrictEditAction extends AbSpringBeanAwareTestCase {
 
@@ -22,22 +28,8 @@ public class TestDistrictEditAction extends AbSpringBeanAwareTestCase {
 	private DistrictEditAction action;
 	@Autowired
 	private DistrictDao districtDao;
-
-	@Test
-	public void testNullDistrict() throws Exception {
-
-		action.setDistrict(null);
-
-		assertEquals("Invalid action result", FPActionSupport.REDIRECT_ERROR, action.execute());
-
-	}
-
-	@Test
-	public void testNullDistrictId() throws Exception {
-
-		assertEquals("Invalid action result", FPActionSupport.REDIRECT_ERROR, action.execute());
-
-	}
+	@Autowired
+	private TownDao townDao;
 
 	@Test
 	public void testNullNames() throws Exception {
@@ -47,7 +39,8 @@ public class TestDistrictEditAction extends AbSpringBeanAwareTestCase {
 
 		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
 		assertEquals("Invalid beginDateFilter value", DateUtil.now(), action.getBeginDateFilter().getDate());
-		assertEquals("Invalid names size for different languages", ApplicationConfig.getLanguages().size(), action.getNames().size());
+		assertEquals("Invalid names size for different languages", getLanguages().size(), action.getNames().size());
+		assertFalse("Invalid action execute: has action errors.", action.hasActionErrors());
 
 	}
 
@@ -59,7 +52,8 @@ public class TestDistrictEditAction extends AbSpringBeanAwareTestCase {
 
 		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
 		assertEquals("Invalid beginDateFilter value", DateUtil.now(), action.getBeginDateFilter().getDate());
-		assertEquals("Invalid names size for different languages", ApplicationConfig.getLanguages().size(), action.getNames().size());
+		assertEquals("Invalid names size for different languages", getLanguages().size(), action.getNames().size());
+		assertFalse("Invalid action execute: has action errors.", action.hasActionErrors());
 
 	}
 
@@ -70,7 +64,8 @@ public class TestDistrictEditAction extends AbSpringBeanAwareTestCase {
 
 		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
 		assertEquals("Invalid beginDateFilter value", DateUtil.now(), action.getBeginDateFilter().getDate());
-		assertEquals("Invalid names size for different languages", ApplicationConfig.getLanguages().size(), action.getNames().size());
+		assertEquals("Invalid names size for different languages", getLanguages().size(), action.getNames().size());
+		assertFalse("Invalid action execute: has action errors.", action.hasActionErrors());
 
 	}
 
@@ -81,10 +76,29 @@ public class TestDistrictEditAction extends AbSpringBeanAwareTestCase {
 
 		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
 		assertEquals("Invalid beginDateFilter value", action.getDistrict().getCurrentNameTemporal().getBegin(), action.getBeginDateFilter().getDate());
-		assertEquals("Invalid names size for different languages", ApplicationConfig.getLanguages().size(), action.getNames().size());
+		assertEquals("Invalid names size for different languages", getLanguages().size(), action.getNames().size());
 		assertEquals("Invalid town filter", TestData.TOWN_NSK.getId(), action.getTownFilter());
-		assertEquals("Invalid region filter", TestData.REGION_NSK.getId(), action.getRegionFilter());
-		assertEquals("Invalid country filter", TestData.COUNTRY_RUS.getId(), action.getCountryFilter());
+		assertFalse("Invalid action execute: has action errors.", action.hasActionErrors());
+
+	}
+
+	@Test
+	public void testIncorrectNamesParameters() throws Exception {
+
+		action.setDistrict(new District(0L));
+		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
+		assertFalse("Invalid action execute: has action errors.", action.hasActionErrors());
+
+		Map<Long, String> names = treeMap();
+		names.put(564L, "test");
+
+		action.setSubmitted("");
+		action.setTownFilter(TestData.TOWN_NSK.getId());
+		action.setNames(names);
+
+		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
+		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
+		assertEquals("Invalid names map size", getLanguages().size(), action.getNames().size());
 
 	}
 
@@ -93,10 +107,12 @@ public class TestDistrictEditAction extends AbSpringBeanAwareTestCase {
 
 		action.setDistrict(new District(0L));
 		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
+		assertFalse("Invalid action execute: has action errors.", action.hasActionErrors());
 
 		action.setSubmitted("");
 		action.setNames(initNames("123"));
 		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
+		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
 
 	}
 
@@ -105,25 +121,108 @@ public class TestDistrictEditAction extends AbSpringBeanAwareTestCase {
 
 		action.setDistrict(new District(0L));
 		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
+		assertFalse("Invalid action execute: has action errors.", action.hasActionErrors());
 
 		action.setSubmitted("");
 		action.setNames(initNames("123"));
 		action.setTownFilter(TestData.TOWN_NSK.getId());
 		action.setBeginDateFilter(null);
 		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
+		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
 
 	}
 
 	@Test
-	public void testIncorrectData3() throws Exception {
+	public void testIncorrectTownId1() throws Exception {
 
 		action.setDistrict(new District(0L));
 		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
+		assertFalse("Invalid action execute: has action errors.", action.hasActionErrors());
 
 		action.setSubmitted("");
 		action.setNames(initNames("123"));
 		action.setTownFilter(-10L);
 		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
+		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
+
+	}
+
+	@Test
+	public void testIncorrectTownId2() throws Exception {
+
+		action.setDistrict(new District(0L));
+		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
+		assertFalse("Invalid action execute: has action errors.", action.hasActionErrors());
+
+		action.setSubmitted("");
+		action.setNames(initNames("123"));
+		action.setTownFilter(0L);
+		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
+		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
+
+	}
+
+	@Test
+	public void testDefunctTown() throws Exception {
+
+		action.setDistrict(new District(0L));
+		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
+		assertFalse("Invalid action execute: has action errors.", action.hasActionErrors());
+
+		action.setSubmitted("");
+		action.setNames(initNames("123"));
+		action.setTownFilter(1212122L);
+		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
+		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
+
+	}
+
+	@Test
+	public void testDisabledTown() throws Exception {
+
+		Town town = createSimpleTown("123");
+		town.disable();
+		townDao.create(town);
+
+		action.setDistrict(new District(0L));
+		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
+		assertFalse("Invalid action execute: has action errors.", action.hasActionErrors());
+
+		action.setSubmitted("");
+		action.setNames(initNames("123"));
+		action.setTownFilter(town.getId());
+		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
+		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
+
+		townDao.delete(town);
+
+	}
+
+	@Test
+	public void testNullDistrict() throws Exception {
+
+		action.setDistrict(null);
+
+		assertEquals("Invalid action result", FPActionSupport.REDIRECT_ERROR, action.execute());
+		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
+
+	}
+
+	@Test
+	public void testNullDistrictId() throws Exception {
+
+		assertEquals("Invalid action result", FPActionSupport.REDIRECT_ERROR, action.execute());
+		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
+
+	}
+
+	@Test
+	public void testIncorrectDistrictId() throws Exception {
+
+		action.setDistrict(new District(-10L));
+
+		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
+		assertFalse("Invalid action execute: has action errors.", action.hasActionErrors());
 
 	}
 
@@ -131,7 +230,9 @@ public class TestDistrictEditAction extends AbSpringBeanAwareTestCase {
 	public void testEditDefunctDistrict() throws Exception {
 
 		action.setDistrict(new District(121212L));
+
 		assertEquals("Invalid action result", FPActionSupport.REDIRECT_ERROR, action.execute());
+		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
 
 	}
 
@@ -140,11 +241,11 @@ public class TestDistrictEditAction extends AbSpringBeanAwareTestCase {
 
 		District district = createSimpleDistrict("testName");
 		district.disable();
-
 		districtDao.create(district);
 
 		action.setDistrict(district);
 		assertEquals("Invalid action result", FPActionSupport.REDIRECT_ERROR, action.execute());
+		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
 
 		districtDao.delete(district);
 
@@ -155,6 +256,7 @@ public class TestDistrictEditAction extends AbSpringBeanAwareTestCase {
 
 		action.setDistrict(new District(0L));
 		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
+		assertFalse("Invalid action execute: has action errors.", action.hasActionErrors());
 
 		action.setSubmitted("");
 		action.setTownFilter(TestData.TOWN_NSK.getId());
@@ -162,6 +264,7 @@ public class TestDistrictEditAction extends AbSpringBeanAwareTestCase {
 
 		assertEquals("Invalid action result", FPActionSupport.REDIRECT_SUCCESS, action.execute());
 		assertTrue("Invalid district id", action.getDistrict().getId() > 0);
+		assertFalse("Invalid action execute: has action errors.", action.hasActionErrors());
 
 		districtDao.delete(action.getDistrict());
 	}
@@ -170,11 +273,11 @@ public class TestDistrictEditAction extends AbSpringBeanAwareTestCase {
 	public void testEditSubmit() throws Exception {
 
 		District district = createSimpleDistrict("testName");
-
 		districtDao.create(district);
 
 		action.setDistrict(district);
 		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
+		assertFalse("Invalid action execute: has action errors.", action.hasActionErrors());
 
 		action.setSubmitted("");
 		action.setTownFilter(TestData.TOWN_NSK.getId());
@@ -182,6 +285,7 @@ public class TestDistrictEditAction extends AbSpringBeanAwareTestCase {
 		action.setNames(initNames("123"));
 
 		assertEquals("Invalid action result", FPActionSupport.REDIRECT_SUCCESS, action.execute());
+		assertFalse("Invalid action execute: has action errors.", action.hasActionErrors());
 
 		String name = action.getDistrict().getNameForDate(DateUtil.next(DateUtil.now())).getDefaultNameTranslation();
 		assertEquals("Invalid district name value", "123", name);

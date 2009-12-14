@@ -75,6 +75,10 @@ public class IdentityTypeServiceImpl implements IdentityTypeService {
 	@Override
 	public void disable(@NotNull Collection<Long> identityTypeIds) {
 		for (Long id : identityTypeIds) {
+			if (id == null) {
+				log.warn("Null id in collection of identity type ids for disable");
+				continue;
+			}
 			IdentityType identityType = identityTypeDao.read(id);
 			if (identityType == null) {
 				log.warn("Can't get identity type with id {} from DB", id);

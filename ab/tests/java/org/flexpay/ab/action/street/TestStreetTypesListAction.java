@@ -18,6 +18,7 @@ public class TestStreetTypesListAction extends AbSpringBeanAwareTestCase {
 	public void testAction() throws Exception {
 
 		assertEquals("Invalid action result", FPActionSupport.SUCCESS, action.execute());
+		assertFalse("Invalid action execute: has action errors.", action.hasActionErrors());
 		assertFalse("Invalid street types list size", action.getStreetTypes().isEmpty());
 
 	}

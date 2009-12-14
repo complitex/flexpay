@@ -122,6 +122,10 @@ public class StreetServiceImpl extends NameTimeDependentServiceImpl<
 	@Override
 	public void disable(@NotNull Collection<Long> streetIds) {
 		for (Long id : streetIds) {
+			if (id == null) {
+				log.warn("Null id in collection of street ids for disable");
+				continue;
+			}
 			Street street = streetDao.read(id);
 			if (street == null) {
 				log.warn("Can't get street with id {} from DB", id);

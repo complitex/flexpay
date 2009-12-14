@@ -71,6 +71,10 @@ public class RegionServiceImpl extends NameTimeDependentServiceImpl<
 	@Override
 	public void disable(@NotNull Collection<Long> regionIds) {
 		for (Long id : regionIds) {
+			if (id == null) {
+				log.warn("Null id in collection of region ids for disable");
+				continue;
+			}
 			Region region = regionDao.read(id);
 			if (region == null) {
 				log.warn("Can't get region with id {} from DB", id);

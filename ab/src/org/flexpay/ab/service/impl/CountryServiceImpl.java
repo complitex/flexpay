@@ -58,6 +58,10 @@ public class CountryServiceImpl implements CountryService, ParentService<Country
 	@Override
 	public void disable(@NotNull Collection<Long> countryIds) {
 		for (Long id : countryIds) {
+			if (id == null) {
+				log.warn("Null id in collection of country ids for disable");
+				continue;
+			}
 			Country country = countryDao.read(id);
 			if (country == null) {
 				log.warn("Can't get country with id {} from DB", id);

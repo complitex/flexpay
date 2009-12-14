@@ -54,6 +54,10 @@ public class MeasureUnitServiceImpl implements MeasureUnitService {
 	@Override
 	public void disable(@NotNull Collection<Long> unitIds) {
 		for (Long id : unitIds) {
+			if (id == null) {
+				log.warn("Null id in collection of measure unit ids for disable");
+				continue;
+			}
 			MeasureUnit unit = measureUnitDao.read(id);
 			if (unit == null) {
 				log.warn("Can't get measure unit with id {} from DB", id);

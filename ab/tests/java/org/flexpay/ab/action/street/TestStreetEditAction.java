@@ -2,20 +2,25 @@ package org.flexpay.ab.action.street;
 
 import org.flexpay.ab.actions.street.StreetEditAction;
 import org.flexpay.ab.dao.StreetDao;
-import org.flexpay.ab.dao.StreetDaoExt;
+import org.flexpay.ab.dao.StreetTypeDao;
+import org.flexpay.ab.dao.TownDao;
 import org.flexpay.ab.persistence.Street;
+import org.flexpay.ab.persistence.StreetType;
 import org.flexpay.ab.persistence.TestData;
+import org.flexpay.ab.persistence.Town;
+import org.flexpay.ab.persistence.filters.StreetTypeFilter;
 import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
-import static org.flexpay.ab.util.TestUtils.createSimpleStreet;
-import static org.flexpay.ab.util.TestUtils.initNames;
+import static org.flexpay.ab.util.TestUtils.*;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.persistence.filter.BeginDateFilter;
+import static org.flexpay.common.util.CollectionUtils.treeMap;
 import org.flexpay.common.util.DateUtil;
-import org.flexpay.common.util.config.ApplicationConfig;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.flexpay.common.util.config.ApplicationConfig.getLanguages;
+import static org.junit.Assert.*;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.Map;
 
 public class TestStreetEditAction extends AbSpringBeanAwareTestCase {
 
@@ -24,23 +29,9 @@ public class TestStreetEditAction extends AbSpringBeanAwareTestCase {
 	@Autowired
 	private StreetDao streetDao;
 	@Autowired
-	private StreetDaoExt streetDaoExt;
-
-	@Test
-	public void testNullStreet() throws Exception {
-
-		action.setStreet(null);
-
-		assertEquals("Invalid action result", FPActionSupport.REDIRECT_ERROR, action.execute());
-
-	}
-
-	@Test
-	public void testNullStreetId() throws Exception {
-
-		assertEquals("Invalid action result", FPActionSupport.REDIRECT_ERROR, action.execute());
-
-	}
+	private TownDao townDao;
+	@Autowired
+	private StreetTypeDao streetTypeDao;
 
 	@Test
 	public void testNullNames() throws Exception {
@@ -50,7 +41,8 @@ public class TestStreetEditAction extends AbSpringBeanAwareTestCase {
 
 		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
 		assertEquals("Invalid beginDateFilter value", DateUtil.now(), action.getBeginDateFilter().getDate());
-		assertEquals("Invalid names size for different languages", ApplicationConfig.getLanguages().size(), action.getNames().size());
+		assertEquals("Invalid names size for different languages", getLanguages().size(), action.getNames().size());
+		assertFalse("Invalid action execute: has action errors.", action.hasActionErrors());
 
 	}
 
@@ -62,7 +54,8 @@ public class TestStreetEditAction extends AbSpringBeanAwareTestCase {
 
 		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
 		assertEquals("Invalid beginDateFilter value", DateUtil.now(), action.getBeginDateFilter().getDate());
-		assertEquals("Invalid names size for different languages", ApplicationConfig.getLanguages().size(), action.getNames().size());
+		assertEquals("Invalid names size for different languages", getLanguages().size(), action.getNames().size());
+		assertFalse("Invalid action execute: has action errors.", action.hasActionErrors());
 
 	}
 
@@ -73,7 +66,8 @@ public class TestStreetEditAction extends AbSpringBeanAwareTestCase {
 
 		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
 		assertEquals("Invalid beginDateFilter value", DateUtil.now(), action.getBeginDateFilter().getDate());
-		assertEquals("Invalid names size for different languages", ApplicationConfig.getLanguages().size(), action.getNames().size());
+		assertEquals("Invalid names size for different languages", getLanguages().size(), action.getNames().size());
+		assertFalse("Invalid action execute: has action errors.", action.hasActionErrors());
 
 	}
 
@@ -84,10 +78,30 @@ public class TestStreetEditAction extends AbSpringBeanAwareTestCase {
 
 		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
 		assertEquals("Invalid beginDateFilter value", action.getStreet().getCurrentNameTemporal().getBegin(), action.getBeginDateFilter().getDate());
-		assertEquals("Invalid names size for different languages", ApplicationConfig.getLanguages().size(), action.getNames().size());
+		assertEquals("Invalid names size for different languages", getLanguages().size(), action.getNames().size());
 		assertEquals("Invalid town filter", TestData.TOWN_NSK.getId(), action.getTownFilter());
-		assertEquals("Invalid region filter", TestData.REGION_NSK.getId(), action.getRegionFilter());
 		assertEquals("Invalid country filter", TestData.COUNTRY_RUS.getId(), action.getCountryFilter());
+		assertFalse("Invalid action execute: has action errors.", action.hasActionErrors());
+
+	}
+
+	@Test
+	public void testIncorrectNamesParameters() throws Exception {
+
+		action.setStreet(new Street(0L));
+		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
+		assertFalse("Invalid action execute: has action errors.", action.hasActionErrors());
+
+		Map<Long, String> names = treeMap();
+		names.put(564L, "test");
+
+		action.setSubmitted("");
+		action.setTownFilter(TestData.TOWN_NSK.getId());
+		action.setNames(names);
+
+		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
+		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
+		assertEquals("Invalid names map size", getLanguages().size(), action.getNames().size());
 
 	}
 
@@ -96,10 +110,12 @@ public class TestStreetEditAction extends AbSpringBeanAwareTestCase {
 
 		action.setStreet(new Street(0L));
 		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
+		assertFalse("Invalid action execute: has action errors.", action.hasActionErrors());
 
 		action.setSubmitted("");
 		action.setNames(initNames("123"));
 		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
+		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
 
 	}
 
@@ -108,25 +124,222 @@ public class TestStreetEditAction extends AbSpringBeanAwareTestCase {
 
 		action.setStreet(new Street(0L));
 		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
+		assertFalse("Invalid action execute: has action errors.", action.hasActionErrors());
 
 		action.setSubmitted("");
 		action.setNames(initNames("123"));
 		action.setTownFilter(TestData.TOWN_NSK.getId());
 		action.setBeginDateFilter(null);
 		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
+		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
 
 	}
 
 	@Test
-	public void testIncorrectData3() throws Exception {
+	public void testIncorrectTownId1() throws Exception {
 
 		action.setStreet(new Street(0L));
 		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
+		assertFalse("Invalid action execute: has action errors.", action.hasActionErrors());
 
 		action.setSubmitted("");
 		action.setNames(initNames("123"));
 		action.setTownFilter(-10L);
 		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
+		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
+
+	}
+
+	@Test
+	public void testIncorrectTownId2() throws Exception {
+
+		action.setStreet(new Street(0L));
+		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
+		assertFalse("Invalid action execute: has action errors.", action.hasActionErrors());
+
+		action.setSubmitted("");
+		action.setNames(initNames("123"));
+		action.setTownFilter(0L);
+		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
+		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
+
+	}
+
+	@Test
+	public void testDefunctTown() throws Exception {
+
+		action.setStreet(new Street(0L));
+		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
+		assertFalse("Invalid action execute: has action errors.", action.hasActionErrors());
+
+		action.setSubmitted("");
+		action.setNames(initNames("123"));
+		action.setTownFilter(1212330L);
+		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
+		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
+
+	}
+
+	@Test
+	public void testDisabledTown() throws Exception {
+
+		Town town = createSimpleTown("321");
+		town.disable();
+		townDao.create(town);
+
+		action.setStreet(new Street(0L));
+		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
+		assertFalse("Invalid action execute: has action errors.", action.hasActionErrors());
+
+		action.setSubmitted("");
+		action.setNames(initNames("123"));
+		action.setTownFilter(town.getId());
+		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
+		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
+
+		townDao.delete(town);
+
+	}
+
+	@Test
+	public void testIncorrectStreetTypeId1() throws Exception {
+
+		action.setStreet(new Street(0L));
+		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
+		assertFalse("Invalid action execute: has action errors.", action.hasActionErrors());
+
+		action.setSubmitted("");
+		action.setNames(initNames("123"));
+		action.setTownFilter(TestData.TOWN_NSK.getId());
+		StreetTypeFilter streetTypeFilter = new StreetTypeFilter();
+		streetTypeFilter.setSelectedId(-10L);
+		action.setStreetTypeFilter(streetTypeFilter);
+		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
+		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
+
+	}
+
+	@Test
+	public void testIncorrectStreetTypeId2() throws Exception {
+
+		action.setStreet(new Street(0L));
+		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
+		assertFalse("Invalid action execute: has action errors.", action.hasActionErrors());
+
+		action.setSubmitted("");
+		action.setNames(initNames("123"));
+		action.setTownFilter(TestData.TOWN_NSK.getId());
+		StreetTypeFilter streetTypeFilter = new StreetTypeFilter();
+		streetTypeFilter.setSelectedId(0L);
+		action.setStreetTypeFilter(streetTypeFilter);
+		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
+		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
+
+	}
+
+	@Test
+	public void testIncorrectStreetTypeId3() throws Exception {
+
+		action.setStreet(new Street(0L));
+		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
+		assertFalse("Invalid action execute: has action errors.", action.hasActionErrors());
+
+		action.setSubmitted("");
+		action.setNames(initNames("123"));
+		action.setTownFilter(TestData.TOWN_NSK.getId());
+		StreetTypeFilter streetTypeFilter = new StreetTypeFilter();
+		streetTypeFilter.setSelectedId(null);
+		action.setStreetTypeFilter(streetTypeFilter);
+		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
+		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
+
+	}
+
+	@Test
+	public void testNullStreetType() throws Exception {
+
+		action.setStreet(new Street(0L));
+		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
+		assertFalse("Invalid action execute: has action errors.", action.hasActionErrors());
+
+		action.setSubmitted("");
+		action.setNames(initNames("11111"));
+		action.setTownFilter(TestData.TOWN_NSK.getId());
+		action.setStreetTypeFilter(null);
+		assertEquals("Invalid action result", FPActionSupport.REDIRECT_SUCCESS, action.execute());
+		assertTrue("Invalid street id", action.getStreet().getId() > 0);
+		assertFalse("Invalid action execute: has action errors.", action.hasActionErrors());
+
+		streetDao.delete(action.getStreet());
+	}
+
+	@Test
+	public void testDefunctStreetType() throws Exception {
+
+		action.setStreet(new Street(0L));
+		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
+		assertFalse("Invalid action execute: has action errors.", action.hasActionErrors());
+
+		action.setSubmitted("");
+		action.setNames(initNames("123"));
+		action.setTownFilter(TestData.TOWN_NSK.getId());
+		StreetTypeFilter streetTypeFilter = new StreetTypeFilter();
+		streetTypeFilter.setSelectedId(121210L);
+		action.setStreetTypeFilter(streetTypeFilter);
+		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
+		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
+
+	}
+
+	@Test
+	public void testDisabledStreetType() throws Exception {
+
+		action.setStreet(new Street(0L));
+		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
+		assertFalse("Invalid action execute: has action errors.", action.hasActionErrors());
+
+		StreetType streetType = createSimpleStreetType("ggg");
+		streetType.disable();
+		streetTypeDao.create(streetType);
+
+		action.setSubmitted("");
+		action.setNames(initNames("123"));
+		action.setTownFilter(TestData.TOWN_NSK.getId());
+		StreetTypeFilter streetTypeFilter = new StreetTypeFilter();
+		streetTypeFilter.setSelectedId(streetType.getId());
+		action.setStreetTypeFilter(streetTypeFilter);
+		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
+		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
+
+		streetTypeDao.delete(streetType);
+
+	}
+
+	@Test
+	public void testNullStreet() throws Exception {
+
+		action.setStreet(null);
+
+		assertEquals("Invalid action result", FPActionSupport.REDIRECT_ERROR, action.execute());
+		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
+
+	}
+
+	@Test
+	public void testNullStreetId() throws Exception {
+
+		assertEquals("Invalid action result", FPActionSupport.REDIRECT_ERROR, action.execute());
+		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
+
+	}
+
+	@Test
+	public void testIncorrectStreetId() throws Exception {
+
+		action.setStreet(new Street(-10L));
+
+		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
+		assertFalse("Invalid action execute: hasn't action errors.", action.hasActionErrors());
 
 	}
 
@@ -135,6 +348,7 @@ public class TestStreetEditAction extends AbSpringBeanAwareTestCase {
 
 		action.setStreet(new Street(121212L));
 		assertEquals("Invalid action result", FPActionSupport.REDIRECT_ERROR, action.execute());
+		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
 
 	}
 
@@ -143,13 +357,13 @@ public class TestStreetEditAction extends AbSpringBeanAwareTestCase {
 
 		Street street = createSimpleStreet("testName");
 		street.disable();
-
 		streetDao.create(street);
 
 		action.setStreet(street);
 		assertEquals("Invalid action result", FPActionSupport.REDIRECT_ERROR, action.execute());
+		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
 
-		streetDaoExt.deleteStreet(street);
+		streetDao.delete(street);
 
 	}
 
@@ -158,26 +372,28 @@ public class TestStreetEditAction extends AbSpringBeanAwareTestCase {
 
 		action.setStreet(new Street(0L));
 		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
+		assertFalse("Invalid action execute: has action errors.", action.hasActionErrors());
 
 		action.setSubmitted("");
 		action.setTownFilter(TestData.TOWN_NSK.getId());
-		action.setNames(initNames("123"));
+		action.setNames(initNames("123222"));
 
 		assertEquals("Invalid action result", FPActionSupport.REDIRECT_SUCCESS, action.execute());
 		assertTrue("Invalid street id", action.getStreet().getId() > 0);
+		assertFalse("Invalid action execute: has action errors.", action.hasActionErrors());
 
-		streetDaoExt.deleteStreet(action.getStreet());
+		streetDao.delete(action.getStreet());
 	}
 
 	@Test
 	public void testEditSubmit() throws Exception {
 
 		Street street = createSimpleStreet("testName");
-
 		streetDao.create(street);
 
 		action.setStreet(street);
 		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
+		assertFalse("Invalid action execute: has action errors.", action.hasActionErrors());
 
 		action.setSubmitted("");
 		action.setTownFilter(TestData.TOWN_NSK.getId());
@@ -185,11 +401,12 @@ public class TestStreetEditAction extends AbSpringBeanAwareTestCase {
 		action.setNames(initNames("123"));
 
 		assertEquals("Invalid action result", FPActionSupport.REDIRECT_SUCCESS, action.execute());
+		assertFalse("Invalid action execute: has action errors.", action.hasActionErrors());
 
 		String name = action.getStreet().getNameForDate(DateUtil.next(DateUtil.now())).getDefaultNameTranslation();
-		assertEquals("Invalid street name value", "123", name);
+		assertEquals("Invalid town name value", "123", name);
 
-		streetDaoExt.deleteStreet(action.getStreet());
+		streetDao.delete(action.getStreet());
 	}
 
 }

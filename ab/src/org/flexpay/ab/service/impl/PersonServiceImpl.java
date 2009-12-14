@@ -115,6 +115,10 @@ public class PersonServiceImpl implements PersonService {
 	@Override
 	public void disable(@NotNull Collection<Long> personIds) {
 		for (Long id : personIds) {
+			if (id == null) {
+				log.warn("Null id in collection of person ids for disable");
+				continue;
+			}
 			Person person = personDao.read(id);
 			if (person == null) {
 				log.warn("Can't get person with id {} from DB", id);

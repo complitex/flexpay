@@ -13,7 +13,6 @@ import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.persistence.filter.BeginDateFilter;
 import static org.flexpay.common.util.CollectionUtils.treeMap;
 import org.flexpay.common.util.DateUtil;
-import org.flexpay.common.util.config.ApplicationConfig;
 import static org.flexpay.common.util.config.ApplicationConfig.getLanguages;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
@@ -94,7 +93,7 @@ public class TownEditAction extends FPActionSupport {
         return INPUT;
     }
 
-    private boolean doValidate() {
+    private boolean doValidate() throws Exception {
 
 		if (regionFilter == null || regionFilter <= 0) {
 			log.warn("Incorrect region id in filter ({})", regionFilter);
@@ -115,8 +114,19 @@ public class TownEditAction extends FPActionSupport {
 
         if (!townTypeFilter.needFilter()) {
 			log.warn("Incorrect townTypeFilter value");
-            addActionError(getText("ab.error.town.no_type"));
-        }
+            addActionError(getText("ab.error.town_type.incorrect_town_type_id"));
+		} else {
+			TownType townType = townTypeService.readFull(new Stub<TownType>(townTypeFilter.getSelectedId()));
+			if (townType == null) {
+				log.warn("Can't get town type with id {} from DB", townTypeFilter.getSelectedId());
+				addActionError(getText("ab.error.town_type.cant_get_town_type"));
+				townTypeFilter.setSelectedId(0L);
+			} else if (townType.isNotActive()) {
+				log.warn("Town type with id {} is disabled", townTypeFilter.getSelectedId());
+				addActionError(getText("ab.error.town_type.cant_get_town_type"));
+				townTypeFilter.setSelectedId(0L);
+			}
+		}
 
         if (!beginDateFilter.needFilter()) {
 			log.warn("Incorrect beginDateFilter value");

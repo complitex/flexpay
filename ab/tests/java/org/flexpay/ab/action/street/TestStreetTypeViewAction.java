@@ -2,12 +2,12 @@ package org.flexpay.ab.action.street;
 
 import org.flexpay.ab.actions.street.StreetTypeViewAction;
 import org.flexpay.ab.dao.StreetTypeDao;
-import org.flexpay.ab.persistence.TestData;
 import org.flexpay.ab.persistence.StreetType;
+import org.flexpay.ab.persistence.TestData;
 import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
 import static org.flexpay.ab.util.TestUtils.createSimpleStreetType;
 import org.flexpay.common.actions.FPActionSupport;
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -24,7 +24,14 @@ public class TestStreetTypeViewAction extends AbSpringBeanAwareTestCase {
 		action.setStreetType(new StreetType(TestData.STR_TYPE_STREET));
 
 		assertEquals("Invalid action result", FPActionSupport.SUCCESS, action.execute());
+		assertFalse("Invalid action execute: has action errors.", action.hasActionErrors());
+	}
 
+	@Test
+	public void testNullId() throws Exception {
+
+		assertEquals("Invalid action result", FPActionSupport.REDIRECT_ERROR, action.execute());
+		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
 	}
 
 	@Test
@@ -33,7 +40,7 @@ public class TestStreetTypeViewAction extends AbSpringBeanAwareTestCase {
 		action.setStreetType(new StreetType(-10L));
 
 		assertEquals("Invalid action result", FPActionSupport.REDIRECT_ERROR, action.execute());
-
+		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
 	}
 
 	@Test
@@ -42,14 +49,7 @@ public class TestStreetTypeViewAction extends AbSpringBeanAwareTestCase {
 		action.setStreetType(new StreetType(0L));
 
 		assertEquals("Invalid action result", FPActionSupport.REDIRECT_ERROR, action.execute());
-
-	}
-
-	@Test
-	public void testNullId() throws Exception {
-
-		assertEquals("Invalid action result", FPActionSupport.REDIRECT_ERROR, action.execute());
-
+		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
 	}
 
 	@Test
@@ -58,7 +58,7 @@ public class TestStreetTypeViewAction extends AbSpringBeanAwareTestCase {
 		action.setStreetType(null);
 
 		assertEquals("Invalid action result", FPActionSupport.REDIRECT_ERROR, action.execute());
-
+		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
 	}
 
 	@Test
@@ -67,7 +67,7 @@ public class TestStreetTypeViewAction extends AbSpringBeanAwareTestCase {
 		action.setStreetType(new StreetType(10902L));
 
 		assertEquals("Invalid action result", FPActionSupport.REDIRECT_ERROR, action.execute());
-
+		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
 	}
 
 	@Test
@@ -80,9 +80,9 @@ public class TestStreetTypeViewAction extends AbSpringBeanAwareTestCase {
 		action.setStreetType(streetType);
 
 		assertEquals("Invalid action result", FPActionSupport.REDIRECT_ERROR, action.execute());
+		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
 
 		streetTypeDao.delete(streetType);
-
 	}
 
 }

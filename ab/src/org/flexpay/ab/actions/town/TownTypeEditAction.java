@@ -78,11 +78,19 @@ public class TownTypeEditAction extends FPActionSupport {
 	}
 
 	private void correctNames() {
+		if (names == null) {
+			log.debug("Names parameter is null");
+			names = treeMap();
+		}
+		if (shortNames == null) {
+			log.debug("Short names parameter is null");
+			shortNames = treeMap();
+		}
 		Map<Long, String> newNames = treeMap();
 		Map<Long, String> newShortNames = treeMap();
 		for (Language lang : getLanguages()) {
-			newNames.put(lang.getId(), names != null && names.containsKey(lang.getId()) ? names.get(lang.getId()) : "");
-			newShortNames.put(lang.getId(), shortNames != null && shortNames.containsKey(lang.getId()) ? shortNames.get(lang.getId()) : "");
+			newNames.put(lang.getId(), names.containsKey(lang.getId()) ? names.get(lang.getId()) : "");
+			newShortNames.put(lang.getId(), shortNames.containsKey(lang.getId()) ? shortNames.get(lang.getId()) : "");
 		}
 		names = newNames;
 		shortNames = newShortNames;

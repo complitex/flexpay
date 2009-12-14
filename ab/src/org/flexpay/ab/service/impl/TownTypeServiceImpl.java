@@ -70,6 +70,10 @@ public class TownTypeServiceImpl implements TownTypeService {
 	public void disable(@NotNull Collection<Long> townTypeIds) {
 
 		for (Long id : townTypeIds) {
+			if (id == null) {
+				log.warn("Null id in collection of town type ids for disable");
+				continue;
+			}
 			TownType townType = townTypeDao.read(id);
 			if (townType == null) {
 				log.warn("Can't get town type with id {} from DB", id);
