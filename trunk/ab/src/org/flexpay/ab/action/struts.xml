@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+		"-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+		"http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+
+	<package name="ab" namespace="/ab" extends="common">
+
+		<action name="main" class="menuPageAction">
+			<result type="tiles">ab.main</result>
+		</action>
+
+        <action name="mainDicts" class="menuPageAction">
+            <result type="tiles">ab.main.dicts</result>
+        </action>
+
+	</package>
+
+    <package name="dicts" namespace="/dicts" extends="common">
+
+        <action name="mainAddressDicts" class="menuPageAction">
+            <result type="tiles">ab.main.address_dicts</result>
+        </action>
+
+        <action name="mainPersonDicts" class="menuPageAction">
+            <result type="tiles">ab.main.person_dicts</result>
+        </action>
+
+        <action name="mainTypeDicts" class="menuPageAction">
+            <result type="tiles">ab.main.type_dicts</result>
+        </action>
+
+        <action name="mainOtherDicts" class="menuPageAction">
+            <result type="tiles">ab.main.other_dicts</result>
+        </action>
+
+    </package>
+
+	<include file="org/flexpay/common/actions/struts.xml" />
+	<include file="org/flexpay/ab/action/person/struts.xml" />
+	<include file="org/flexpay/ab/action/identity/struts.xml" />
+    <include file="org/flexpay/ab/action/country/struts.xml" />
+    <include file="org/flexpay/ab/action/region/struts.xml" />
+	<include file="org/flexpay/ab/action/town/struts.xml" />
+	<include file="org/flexpay/ab/action/street/struts.xml" />
+	<include file="org/flexpay/ab/action/district/struts.xml" />
+	<include file="org/flexpay/ab/action/building/struts.xml" />
+	<include file="org/flexpay/ab/action/apartment/struts.xml" />
+	<include file="org/flexpay/ab/action/measureunit/struts.xml" />
+    <include file="org/flexpay/ab/action/filter/struts.xml" />
+
+</struts>

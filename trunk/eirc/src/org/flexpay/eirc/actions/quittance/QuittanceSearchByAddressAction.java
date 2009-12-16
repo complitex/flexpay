@@ -1,7 +1,7 @@
 package org.flexpay.eirc.actions.quittance;
 
 import org.apache.commons.collections.ArrayStack;
-import org.flexpay.ab.actions.apartment.ApartmentFilterDependent2Action;
+import org.flexpay.ab.action.apartment.ApartmentFilterDependent2Action;
 import org.flexpay.ab.persistence.Apartment;
 import org.flexpay.ab.persistence.Person;
 import org.flexpay.ab.persistence.PersonIdentity;

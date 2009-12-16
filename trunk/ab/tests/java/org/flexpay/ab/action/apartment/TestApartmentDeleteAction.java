@@ -1,6 +1,6 @@
 package org.flexpay.ab.action.apartment;
 
-import org.flexpay.ab.actions.apartment.ApartmentDeleteAction;
+import org.flexpay.ab.action.apartment.ApartmentDeleteAction;
 import org.flexpay.ab.dao.ApartmentDao;
 import org.flexpay.ab.persistence.Apartment;
 import org.flexpay.ab.test.AbSpringBeanAwareTestCase;

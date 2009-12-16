@@ -1,6 +1,6 @@
 package org.flexpay.ab.action.region;
 
-import org.flexpay.ab.actions.region.RegionEditAction;
+import org.flexpay.ab.action.region.RegionEditAction;
 import org.flexpay.ab.dao.CountryDao;
 import org.flexpay.ab.dao.RegionDao;
 import org.flexpay.ab.persistence.Country;

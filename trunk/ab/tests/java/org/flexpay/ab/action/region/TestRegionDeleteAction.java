@@ -1,6 +1,6 @@
 package org.flexpay.ab.action.region;
 
-import org.flexpay.ab.actions.region.RegionDeleteAction;
+import org.flexpay.ab.action.region.RegionDeleteAction;
 import org.flexpay.ab.dao.RegionDao;
 import org.flexpay.ab.persistence.Region;
 import org.flexpay.ab.test.AbSpringBeanAwareTestCase;

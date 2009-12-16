@@ -1,6 +1,6 @@
 package org.flexpay.ab.action.person;
 
-import org.flexpay.ab.actions.person.PersonSaveFIOAction;
+import org.flexpay.ab.action.person.PersonSaveFIOAction;
 import org.flexpay.ab.dao.ApartmentDao;
 import org.flexpay.ab.dao.PersonDao;
 import org.flexpay.ab.dao.PersonDaoExt;

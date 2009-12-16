@@ -1,6 +1,6 @@
 package org.flexpay.ab.action.identity;
 
-import org.flexpay.ab.actions.identity.IdentityTypesListAction;
+import org.flexpay.ab.action.identity.IdentityTypesListAction;
 import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
 import org.flexpay.common.actions.FPActionSupport;
 import static org.junit.Assert.assertEquals;

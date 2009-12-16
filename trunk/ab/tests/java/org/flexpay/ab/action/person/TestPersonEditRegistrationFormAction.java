@@ -1,6 +1,6 @@
 package org.flexpay.ab.action.person;
 
-import org.flexpay.ab.actions.person.PersonEditRegistrationFormAction;
+import org.flexpay.ab.action.person.PersonEditRegistrationFormAction;
 import org.flexpay.ab.dao.ApartmentDao;
 import org.flexpay.ab.persistence.Apartment;
 import org.flexpay.ab.persistence.TestData;

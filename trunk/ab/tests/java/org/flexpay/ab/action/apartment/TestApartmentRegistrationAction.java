@@ -1,6 +1,6 @@
 package org.flexpay.ab.action.apartment;
 
-import org.flexpay.ab.actions.apartment.ApartmentRegistrationAction;
+import org.flexpay.ab.action.apartment.ApartmentRegistrationAction;
 import org.flexpay.ab.dao.ApartmentDao;
 import org.flexpay.ab.dao.PersonDao;
 import org.flexpay.ab.dao.PersonDaoExt;

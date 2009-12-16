@@ -1,6 +1,6 @@
 package org.flexpay.ab.action.street;
 
-import org.flexpay.ab.actions.street.StreetsListPageAction;
+import org.flexpay.ab.action.street.StreetsListPageAction;
 import org.flexpay.ab.dao.TownDao;
 import org.flexpay.ab.persistence.TestData;
 import org.flexpay.ab.persistence.Town;

@@ -1,6 +1,6 @@
 package org.flexpay.ab.action.country;
 
-import org.flexpay.ab.actions.country.CountryViewAction;
+import org.flexpay.ab.action.country.CountryViewAction;
 import org.flexpay.ab.dao.CountryDao;
 import org.flexpay.ab.persistence.Country;
 import org.flexpay.ab.persistence.TestData;

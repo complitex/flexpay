@@ -1,6 +1,6 @@
 package org.flexpay.ab.action.measureunit;
 
-import org.flexpay.ab.actions.measureunit.MeasureUnitDeleteAction;
+import org.flexpay.ab.action.measureunit.MeasureUnitDeleteAction;
 import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
 import static org.flexpay.ab.util.TestUtils.createSimpleMeasureUnit;
 import org.flexpay.common.actions.FPActionSupport;

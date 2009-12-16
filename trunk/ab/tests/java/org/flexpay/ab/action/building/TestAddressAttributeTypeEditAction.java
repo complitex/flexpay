@@ -1,6 +1,6 @@
 package org.flexpay.ab.action.building;
 
-import org.flexpay.ab.actions.buildings.AddressAttributeTypeEditAction;
+import org.flexpay.ab.action.building.AddressAttributeTypeEditAction;
 import org.flexpay.ab.dao.AddressAttributeTypeDao;
 import org.flexpay.ab.persistence.AddressAttributeType;
 import org.flexpay.ab.test.AbSpringBeanAwareTestCase;

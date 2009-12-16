@@ -1,6 +1,6 @@
 package org.flexpay.ab.action.identity;
 
-import org.flexpay.ab.actions.identity.IdentityTypeDeleteAction;
+import org.flexpay.ab.action.identity.IdentityTypeDeleteAction;
 import org.flexpay.ab.dao.IdentityTypeDao;
 import org.flexpay.ab.persistence.IdentityType;
 import org.flexpay.ab.test.AbSpringBeanAwareTestCase;

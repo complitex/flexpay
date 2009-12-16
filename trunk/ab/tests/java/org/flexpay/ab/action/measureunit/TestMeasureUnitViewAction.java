@@ -1,6 +1,6 @@
 package org.flexpay.ab.action.measureunit;
 
-import org.flexpay.ab.actions.measureunit.MeasureUnitViewAction;
+import org.flexpay.ab.action.measureunit.MeasureUnitViewAction;
 import org.flexpay.ab.persistence.TestData;
 import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
 import static org.flexpay.ab.util.TestUtils.createSimpleMeasureUnit;
