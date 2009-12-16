@@ -2,7 +2,6 @@ package org.flexpay.ab.action.apartment;
 
 import org.flexpay.ab.actions.apartment.ApartmentsListPageAction;
 import org.flexpay.ab.dao.BuildingDao;
-import org.flexpay.ab.dao.BuildingDaoExt;
 import org.flexpay.ab.persistence.Building;
 import org.flexpay.ab.persistence.BuildingAddress;
 import org.flexpay.ab.persistence.TestData;
@@ -10,8 +9,7 @@ import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
 import static org.flexpay.ab.util.TestUtils.createSimpleBuilding;
 import org.flexpay.ab.util.config.AbUserPreferences;
 import org.flexpay.common.actions.FPActionSupport;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -21,8 +19,6 @@ public class TestApartmentsListPageAction extends AbSpringBeanAwareTestCase {
 	private ApartmentsListPageAction action;
 	@Autowired
 	private BuildingDao buildingDao;
-	@Autowired
-	private BuildingDaoExt buildingDaoExt;
 
 	@Test
 	public void testIncorrectFilterValue1() throws Exception {
@@ -79,7 +75,7 @@ public class TestApartmentsListPageAction extends AbSpringBeanAwareTestCase {
 		AbUserPreferences up = (AbUserPreferences) action.getUserPreferences();
 		assertEquals("Invalid value of buildingFilter in user preferences", new Long(0), up.getBuildingFilter());
 
-		buildingDaoExt.deleteBuilding(building);
+		buildingDao.delete(building);
 
 	}
 
@@ -89,7 +85,7 @@ public class TestApartmentsListPageAction extends AbSpringBeanAwareTestCase {
 		action.setBuildingFilter(TestData.ADDR_IVANOVA_27.getId());
 
 		assertEquals("Invalid action result", FPActionSupport.SUCCESS, action.execute());
-		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
+		assertFalse("Invalid action execute: has action errors.", action.hasActionErrors());
 
 		AbUserPreferences up = (AbUserPreferences) action.getUserPreferences();
 		assertEquals("Invalid value of buildingFilter in user preferences", TestData.ADDR_IVANOVA_27.getId(), up.getBuildingFilter());

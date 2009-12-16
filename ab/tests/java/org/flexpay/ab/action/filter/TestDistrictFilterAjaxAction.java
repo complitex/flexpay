@@ -23,7 +23,7 @@ public class TestDistrictFilterAjaxAction extends AbSpringBeanAwareTestCase {
 		action.setPreRequest(true);
 
 		assertEquals("Invalid action result", FilterAjaxAction.PREREQUEST_RESPONSE, action.execute());
-		assertFalse("Invalid action execute: has action errors.", action.hasActionErrors());
+		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
 		assertEquals("Invalid filterString parameter", "", action.getFilterString());
 
 	}
@@ -35,7 +35,7 @@ public class TestDistrictFilterAjaxAction extends AbSpringBeanAwareTestCase {
 		action.setFilterValue("ttt");
 
 		assertEquals("Invalid action result", FilterAjaxAction.PREREQUEST_RESPONSE, action.execute());
-		assertFalse("Invalid action execute: has action errors.", action.hasActionErrors());
+		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
 		assertEquals("Invalid filterString parameter", "", action.getFilterString());
 
 	}

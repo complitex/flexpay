@@ -1,7 +1,10 @@
 package org.flexpay.ab.action.building;
 
 import org.flexpay.ab.actions.buildings.BuildingCreateAction;
-import org.flexpay.ab.dao.*;
+import org.flexpay.ab.dao.BuildingDao;
+import org.flexpay.ab.dao.DistrictDao;
+import org.flexpay.ab.dao.StreetDao;
+import org.flexpay.ab.dao.StreetDaoExt;
 import org.flexpay.ab.persistence.District;
 import org.flexpay.ab.persistence.Street;
 import org.flexpay.ab.persistence.TestData;
@@ -24,8 +27,6 @@ public class TestBuildingCreateAction extends AbSpringBeanAwareTestCase {
 	private BuildingCreateAction action;
 	@Autowired
 	private BuildingDao buildingDao;
-	@Autowired
-	private BuildingDaoExt buildingDaoExt;
 	@Autowired
 	private StreetDao streetDao;
 	@Autowired
@@ -277,7 +278,7 @@ public class TestBuildingCreateAction extends AbSpringBeanAwareTestCase {
 		assertTrue("Invalid building id", action.getBuilding().getId() > 0);
 		assertFalse("Invalid action execute: has action errors.", action.hasActionErrors());
 
-		buildingDaoExt.deleteBuilding(action.getBuilding());
+		buildingDao.delete(action.getBuilding());
 	}
 
 }

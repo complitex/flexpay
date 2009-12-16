@@ -68,16 +68,18 @@ public class DistrictFilterAjaxAction extends FilterAjaxAction {
 
 		filterString = "";
 
-		if (filterValueLong != null && filterValueLong > 0) {
-			District district = districtService.readFull(new Stub<District>(filterValueLong));
-			if (district == null) {
-				log.warn("Can't get district with id {} from DB", filterValueLong);
-				addActionError(getText("ab.error.district.cant_get_district"));
-				return;
-			}
-			if (district.getCurrentName() != null) {
-				filterString = getTranslationName(district.getCurrentName().getTranslations());
-			}
+		if (filterValueLong == null || filterValueLong <= 0) {
+			return;
+		}
+
+		District district = districtService.readFull(new Stub<District>(filterValueLong));
+		if (district == null) {
+			log.warn("Can't get district with id {} from DB", filterValueLong);
+			addActionError(getText("ab.error.district.cant_get_district"));
+			return;
+		}
+		if (district.getCurrentName() != null) {
+			filterString = getTranslationName(district.getCurrentName().getTranslations());
 		}
 	}
 

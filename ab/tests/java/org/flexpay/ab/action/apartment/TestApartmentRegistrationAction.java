@@ -2,10 +2,14 @@ package org.flexpay.ab.action.apartment;
 
 import org.flexpay.ab.actions.apartment.ApartmentRegistrationAction;
 import org.flexpay.ab.dao.ApartmentDao;
+import org.flexpay.ab.dao.PersonDao;
+import org.flexpay.ab.dao.PersonDaoExt;
 import org.flexpay.ab.persistence.Apartment;
+import org.flexpay.ab.persistence.Person;
 import org.flexpay.ab.persistence.TestData;
 import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
 import static org.flexpay.ab.util.TestUtils.createSimpleApartment;
+import static org.flexpay.ab.util.TestUtils.createSimplePerson;
 import org.flexpay.common.actions.FPActionSupport;
 import static org.junit.Assert.*;
 import org.junit.Test;
@@ -19,6 +23,10 @@ public class TestApartmentRegistrationAction extends AbSpringBeanAwareTestCase {
 	private ApartmentRegistrationAction action;
 	@Autowired
 	private ApartmentDao apartmentDao;
+	@Autowired
+	private PersonDao personDao;
+	@Autowired
+	private PersonDaoExt personDaoExt;
 
 	@Test
 	public void testNullApartment() throws Exception {
@@ -74,11 +82,15 @@ public class TestApartmentRegistrationAction extends AbSpringBeanAwareTestCase {
 		Apartment apartment = createSimpleApartment("22222211");
 		apartment.disable();
 		apartmentDao.create(apartment);
+		Person person = createSimplePerson("www");
+		person.setRegistrationApartment(apartment);
+		personDao.create(person);
 
 		action.setApartment(apartment);
 		assertEquals("Invalid action result", FPActionSupport.REDIRECT_ERROR, action.execute());
-		assertTrue("Invalid action execute: hasn't action messages.", action.hasActionMessages());
+		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
 
+		personDaoExt.deletePerson(person);
 		apartmentDao.delete(apartment);
 
 	}

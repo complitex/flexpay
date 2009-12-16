@@ -250,8 +250,11 @@ public class TestStreetEditAction extends AbSpringBeanAwareTestCase {
 		StreetTypeFilter streetTypeFilter = new StreetTypeFilter();
 		streetTypeFilter.setSelectedId(null);
 		action.setStreetTypeFilter(streetTypeFilter);
-		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
-		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
+		assertEquals("Invalid action result", FPActionSupport.REDIRECT_SUCCESS, action.execute());
+		assertTrue("Invalid street id", action.getStreet().getId() > 0);
+		assertFalse("Invalid action execute: has action errors.", action.hasActionErrors());
+
+		streetDao.delete(action.getStreet());
 
 	}
 
