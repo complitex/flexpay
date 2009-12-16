@@ -1,6 +1,6 @@
 package org.flexpay.ab.action.country;
 
-import org.flexpay.ab.actions.country.CountriesListAction;
+import org.flexpay.ab.action.country.CountriesListAction;
 import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
 import org.flexpay.common.actions.FPActionSupport;
 import static org.junit.Assert.assertEquals;

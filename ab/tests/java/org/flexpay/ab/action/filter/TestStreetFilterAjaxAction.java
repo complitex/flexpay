@@ -1,7 +1,7 @@
 package org.flexpay.ab.action.filter;
 
-import org.flexpay.ab.actions.filters.FilterAjaxAction;
-import org.flexpay.ab.actions.filters.StreetFilterAjaxAction;
+import org.flexpay.ab.action.filter.FilterAjaxAction;
+import org.flexpay.ab.action.filter.StreetFilterAjaxAction;
 import org.flexpay.ab.persistence.Street;
 import org.flexpay.ab.persistence.TestData;
 import org.flexpay.ab.service.StreetService;

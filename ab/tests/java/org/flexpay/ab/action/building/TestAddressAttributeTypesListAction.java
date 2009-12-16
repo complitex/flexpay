@@ -1,6 +1,6 @@
 package org.flexpay.ab.action.building;
 
-import org.flexpay.ab.actions.buildings.AddressAttributeTypesListAction;
+import org.flexpay.ab.action.building.AddressAttributeTypesListAction;
 import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
 import org.flexpay.common.actions.FPActionSupport;
 import static org.junit.Assert.assertEquals;

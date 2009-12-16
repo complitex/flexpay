@@ -1,6 +1,6 @@
 package org.flexpay.ab.action.street;
 
-import org.flexpay.ab.actions.street.StreetDeleteAction;
+import org.flexpay.ab.action.street.StreetDeleteAction;
 import org.flexpay.ab.dao.StreetDao;
 import org.flexpay.ab.dao.StreetDaoExt;
 import org.flexpay.ab.persistence.Street;

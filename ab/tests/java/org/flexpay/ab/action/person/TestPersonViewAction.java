@@ -1,6 +1,6 @@
 package org.flexpay.ab.action.person;
 
-import org.flexpay.ab.actions.person.PersonViewAction;
+import org.flexpay.ab.action.person.PersonViewAction;
 import org.flexpay.ab.dao.PersonDao;
 import org.flexpay.ab.dao.PersonDaoExt;
 import org.flexpay.ab.persistence.Person;

@@ -1,6 +1,6 @@
 package org.flexpay.ab.action.town;
 
-import org.flexpay.ab.actions.town.TownEditAction;
+import org.flexpay.ab.action.town.TownEditAction;
 import org.flexpay.ab.dao.RegionDao;
 import org.flexpay.ab.dao.TownDao;
 import org.flexpay.ab.dao.TownTypeDao;

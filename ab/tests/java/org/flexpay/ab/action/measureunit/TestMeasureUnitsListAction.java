@@ -1,6 +1,6 @@
 package org.flexpay.ab.action.measureunit;
 
-import org.flexpay.ab.actions.measureunit.MeasureUnitsListAction;
+import org.flexpay.ab.action.measureunit.MeasureUnitsListAction;
 import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
 import org.flexpay.common.actions.FPActionSupport;
 import static org.junit.Assert.assertEquals;

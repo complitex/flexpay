@@ -1,6 +1,6 @@
 package org.flexpay.ab.action.street;
 
-import org.flexpay.ab.actions.street.StreetTypesListAction;
+import org.flexpay.ab.action.street.StreetTypesListAction;
 import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
 import org.flexpay.common.actions.FPActionSupport;
 import static org.junit.Assert.assertEquals;

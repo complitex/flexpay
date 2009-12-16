@@ -1,6 +1,6 @@
 package org.flexpay.payments.actions.registry.corrections;
 
-import org.flexpay.ab.actions.person.PersonsListAction;
+import org.flexpay.ab.action.person.PersonsListAction;
 import org.flexpay.ab.persistence.Person;
 import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.persistence.Stub;

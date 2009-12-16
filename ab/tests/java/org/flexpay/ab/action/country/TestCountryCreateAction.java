@@ -1,6 +1,6 @@
 package org.flexpay.ab.action.country;
 
-import org.flexpay.ab.actions.country.CountryCreateAction;
+import org.flexpay.ab.action.country.CountryCreateAction;
 import org.flexpay.ab.dao.CountryDao;
 import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
 import static org.flexpay.ab.util.TestUtils.initNames;

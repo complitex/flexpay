@@ -1,7 +1,7 @@
 package org.flexpay.ab.action.filter;
 
-import org.flexpay.ab.actions.filters.CountryFilterAjaxAction;
-import org.flexpay.ab.actions.filters.FilterAjaxAction;
+import org.flexpay.ab.action.filter.CountryFilterAjaxAction;
+import org.flexpay.ab.action.filter.FilterAjaxAction;
 import org.flexpay.ab.persistence.TestData;
 import org.flexpay.ab.service.CountryService;
 import org.flexpay.ab.test.AbSpringBeanAwareTestCase;

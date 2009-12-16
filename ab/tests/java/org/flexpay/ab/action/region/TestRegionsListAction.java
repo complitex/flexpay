@@ -1,6 +1,6 @@
 package org.flexpay.ab.action.region;
 
-import org.flexpay.ab.actions.region.RegionsListAction;
+import org.flexpay.ab.action.region.RegionsListAction;
 import org.flexpay.ab.dao.CountryDao;
 import org.flexpay.ab.persistence.Country;
 import org.flexpay.ab.persistence.TestData;

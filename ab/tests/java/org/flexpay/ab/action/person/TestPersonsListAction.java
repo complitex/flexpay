@@ -1,6 +1,6 @@
 package org.flexpay.ab.action.person;
 
-import org.flexpay.ab.actions.person.PersonsListAction;
+import org.flexpay.ab.action.person.PersonsListAction;
 import org.flexpay.ab.persistence.filters.PersonSearchFilter;
 import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
 import org.flexpay.common.actions.FPActionSupport;

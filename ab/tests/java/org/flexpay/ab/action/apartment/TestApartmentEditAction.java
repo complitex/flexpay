@@ -1,6 +1,6 @@
 package org.flexpay.ab.action.apartment;
 
-import org.flexpay.ab.actions.apartment.ApartmentEditAction;
+import org.flexpay.ab.action.apartment.ApartmentEditAction;
 import org.flexpay.ab.dao.ApartmentDao;
 import org.flexpay.ab.dao.BuildingDao;
 import org.flexpay.ab.persistence.Apartment;

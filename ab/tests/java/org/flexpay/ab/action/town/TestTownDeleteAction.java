@@ -1,6 +1,6 @@
 package org.flexpay.ab.action.town;
 
-import org.flexpay.ab.actions.town.TownDeleteAction;
+import org.flexpay.ab.action.town.TownDeleteAction;
 import org.flexpay.ab.dao.TownDao;
 import org.flexpay.ab.persistence.Town;
 import org.flexpay.ab.test.AbSpringBeanAwareTestCase;

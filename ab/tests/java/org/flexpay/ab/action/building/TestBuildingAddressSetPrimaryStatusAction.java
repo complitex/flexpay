@@ -1,6 +1,6 @@
 package org.flexpay.ab.action.building;
 
-import org.flexpay.ab.actions.buildings.BuildingAddressSetPrimaryStatusAction;
+import org.flexpay.ab.action.building.BuildingAddressSetPrimaryStatusAction;
 import org.flexpay.ab.dao.BuildingDao;
 import org.flexpay.ab.persistence.Building;
 import org.flexpay.ab.persistence.BuildingAddress;

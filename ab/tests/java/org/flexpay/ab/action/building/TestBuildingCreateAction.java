@@ -1,6 +1,6 @@
 package org.flexpay.ab.action.building;
 
-import org.flexpay.ab.actions.buildings.BuildingCreateAction;
+import org.flexpay.ab.action.building.BuildingCreateAction;
 import org.flexpay.ab.dao.BuildingDao;
 import org.flexpay.ab.dao.DistrictDao;
 import org.flexpay.ab.dao.StreetDao;

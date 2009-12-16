@@ -1,6 +1,6 @@
 package org.flexpay.ab.action.building;
 
-import org.flexpay.ab.actions.buildings.AddressAttributeTypeViewAction;
+import org.flexpay.ab.action.building.AddressAttributeTypeViewAction;
 import org.flexpay.ab.dao.AddressAttributeTypeDao;
 import org.flexpay.ab.persistence.AddressAttributeType;
 import org.flexpay.ab.persistence.TestData;

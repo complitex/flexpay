@@ -10,7 +10,7 @@
 
 	<!-- Countries -->
 	<bean id="countriesListAction"
-		  class="org.flexpay.ab.actions.country.CountriesListAction"
+		  class="org.flexpay.ab.action.country.CountriesListAction"
 		  p:countryService-ref="countryService"
 		  scope="prototype" />
 
@@ -19,31 +19,31 @@
           scope="prototype" />
 
 	<bean id="countryCreateAction"
-		  class="org.flexpay.ab.actions.country.CountryCreateAction"
+		  class="org.flexpay.ab.action.country.CountryCreateAction"
 		  p:countryService-ref="countryService"
           p:crumbNameKey="ab.crumbs.country_create"
 		  scope="prototype" />
 
     <bean id="countryViewAction"
-          class="org.flexpay.ab.actions.country.CountryViewAction"
+          class="org.flexpay.ab.action.country.CountryViewAction"
           p:countryService-ref="countryService"
           p:crumbNameKey="ab.crumbs.country_view"
           scope="prototype" />
 
 	<bean id="countryFilterAjaxAction"
-		  class="org.flexpay.ab.actions.filters.CountryFilterAjaxAction"
+		  class="org.flexpay.ab.action.filter.CountryFilterAjaxAction"
 		  p:countryService-ref="countryService"
 		  scope="prototype" />
 
 	<!-- Regions -->
 	<bean id="regionViewAction"
-		  class="org.flexpay.ab.actions.region.RegionViewAction"
+		  class="org.flexpay.ab.action.region.RegionViewAction"
 		  p:nameTimeDependentService-ref="regionService"
 		  p:crumbNameKey="ab.crumbs.region_view"
 		  scope="prototype" />
 
 	<bean id="regionEditAction"
-		  class="org.flexpay.ab.actions.region.RegionEditAction"
+		  class="org.flexpay.ab.action.region.RegionEditAction"
 		  p:regionService-ref="regionService"
           p:countryService-ref="countryService"
 		  p:crumbCreateKey="ab.crumbs.region_create"
@@ -51,37 +51,37 @@
 		  scope="prototype" />
 
 	<bean id="regionDeleteAction"
-		  class="org.flexpay.ab.actions.region.RegionDeleteAction"
+		  class="org.flexpay.ab.action.region.RegionDeleteAction"
 		  p:regionService-ref="regionService"
 		  scope="prototype" />
 
 	<bean id="regionFilterAjaxAction"
-		  class="org.flexpay.ab.actions.filters.RegionFilterAjaxAction"
+		  class="org.flexpay.ab.action.filter.RegionFilterAjaxAction"
 		  p:regionService-ref="regionService"
 		  scope="prototype" />
 
 	<bean id="regionsListAction"
-		  class="org.flexpay.ab.actions.region.RegionsListAction"
+		  class="org.flexpay.ab.action.region.RegionsListAction"
 		  p:regionService-ref="regionService"
           p:countryService-ref="countryService"
 		  scope="prototype" />
 
 	<bean id="regionsListPageAction"
-		  class="org.flexpay.ab.actions.region.RegionsListPageAction"
+		  class="org.flexpay.ab.action.region.RegionsListPageAction"
           p:countryService-ref="countryService"
 		  p:crumbNameKey="ab.crumbs.regions_list"
 		  scope="prototype" />
 
 	<!-- Towns -->
 	<bean id="townViewAction"
-		  class="org.flexpay.ab.actions.town.TownViewAction"
+		  class="org.flexpay.ab.action.town.TownViewAction"
 		  p:nameTimeDependentService-ref="townService"
 		  p:crumbNameKey="ab.crumbs.town_view"
 		  p:townTypeService-ref="townTypeService"
           scope="prototype" />
 
 	<bean id="townEditAction"
-		  class="org.flexpay.ab.actions.town.TownEditAction"
+		  class="org.flexpay.ab.action.town.TownEditAction"
 		  p:townTypeService-ref="townTypeService"
 		  p:townService-ref="townService"
           p:regionService-ref="regionService"
@@ -90,36 +90,36 @@
 		  scope="prototype" />
 
 	<bean id="townDeleteAction"
-		  class="org.flexpay.ab.actions.town.TownDeleteAction"
+		  class="org.flexpay.ab.action.town.TownDeleteAction"
 		  p:townService-ref="townService"
 		  scope="prototype" />
 
 	<bean id="townFilterAjaxAction"
-		  class="org.flexpay.ab.actions.filters.TownFilterAjaxAction"
+		  class="org.flexpay.ab.action.filter.TownFilterAjaxAction"
 		  p:townService-ref="townService"
 		  scope="prototype" />
 
 	<bean id="townsListAction"
-		  class="org.flexpay.ab.actions.town.TownsListAction"
+		  class="org.flexpay.ab.action.town.TownsListAction"
 		  p:townService-ref="townService"
           p:regionService-ref="regionService"
 		  scope="prototype" />
 
 	<bean id="townsListPageAction"
-		  class="org.flexpay.ab.actions.town.TownsListPageAction"
+		  class="org.flexpay.ab.action.town.TownsListPageAction"
           p:regionService-ref="regionService"
 		  p:crumbNameKey="ab.crumbs.towns_list"
 		  scope="prototype" />
 
 	<!-- Town districts -->
 	<bean id="districtViewAction"
-		  class="org.flexpay.ab.actions.district.DistrictViewAction"
+		  class="org.flexpay.ab.action.district.DistrictViewAction"
 		  p:nameTimeDependentService-ref="districtService"
 		  p:crumbNameKey="ab.crumbs.district_view"
 		  scope="prototype" />
 
 	<bean id="districtEditAction"
-		  class="org.flexpay.ab.actions.district.DistrictEditAction"
+		  class="org.flexpay.ab.action.district.DistrictEditAction"
 		  p:districtService-ref="districtService"
           p:townService-ref="townService"
 		  p:crumbCreateKey="ab.crumbs.district_create"
@@ -127,37 +127,37 @@
 		  scope="prototype" />
 
 	<bean id="districtDeleteAction"
-		  class="org.flexpay.ab.actions.district.DistrictDeleteAction"
+		  class="org.flexpay.ab.action.district.DistrictDeleteAction"
 		  p:districtService-ref="districtService"
 		  scope="prototype" />
 
 	<bean id="districtFilterAjaxAction"
-		  class="org.flexpay.ab.actions.filters.DistrictFilterAjaxAction"
+		  class="org.flexpay.ab.action.filter.DistrictFilterAjaxAction"
 		  p:districtService-ref="districtService"
 		  scope="prototype" />
 
 	<bean id="districtsListAction"
-		  class="org.flexpay.ab.actions.district.DistrictsListAction"
+		  class="org.flexpay.ab.action.district.DistrictsListAction"
 		  p:districtService-ref="districtService"
           p:townService-ref="townService"
 		  scope="prototype" />
 
 	<bean id="districtsListPageAction"
-		  class="org.flexpay.ab.actions.district.DistrictsListPageAction"
+		  class="org.flexpay.ab.action.district.DistrictsListPageAction"
           p:townService-ref="townService"
 		  p:crumbNameKey="ab.crumbs.districts_list"
 		  scope="prototype" />
 
 	<!-- Strees -->
 	<bean id="streetViewAction"
-		  class="org.flexpay.ab.actions.street.StreetViewAction"
+		  class="org.flexpay.ab.action.street.StreetViewAction"
 		  p:nameTimeDependentService-ref="streetService"
 		  p:streetService-ref="streetService"
 		  p:crumbNameKey="ab.crumbs.street_view"
 		  scope="prototype" />
 
 	<bean id="streetEditAction"
-		  class="org.flexpay.ab.actions.street.StreetEditAction"
+		  class="org.flexpay.ab.action.street.StreetEditAction"
 		  p:streetService-ref="streetService"
 		  p:streetTypeService-ref="streetTypeService"
           p:townService-ref="townService"
@@ -166,42 +166,42 @@
 		  scope="prototype" />
 
 	<bean id="streetDistrictEditAction"
-		  class="org.flexpay.ab.actions.street.StreetDistrictEditAction"
+		  class="org.flexpay.ab.action.street.StreetDistrictEditAction"
 		  p:districtService-ref="districtService"
 		  p:streetService-ref="streetService"
 		  p:crumbNameKey="ab.crumbs.street_district_edit"
 		  scope="prototype" />
 
 	<bean id="streetDeleteAction"
-		  class="org.flexpay.ab.actions.street.StreetDeleteAction"
+		  class="org.flexpay.ab.action.street.StreetDeleteAction"
 		  p:streetService-ref="streetService"
 		  scope="prototype" />
 
 	<bean id="streetFilterAjaxAction"
-		  class="org.flexpay.ab.actions.filters.StreetFilterAjaxAction"
+		  class="org.flexpay.ab.action.filter.StreetFilterAjaxAction"
 		  p:streetService-ref="streetService"
 		  scope="prototype" />
 
 	<bean id="streetsListAction"
-		  class="org.flexpay.ab.actions.street.StreetsListAction"
+		  class="org.flexpay.ab.action.street.StreetsListAction"
 		  p:streetService-ref="streetService"
           p:townService-ref="townService"
 		  scope="prototype" />
 
 	<bean id="streetAction"
-		  class="org.flexpay.ab.actions.street.StreetAction"
+		  class="org.flexpay.ab.action.street.StreetAction"
 		  p:streetService-ref="streetService"
 		  scope="prototype" />
 
 	<bean id="streetsListPageAction"
-		  class="org.flexpay.ab.actions.street.StreetsListPageAction"
+		  class="org.flexpay.ab.action.street.StreetsListPageAction"
           p:townService-ref="townService"
 		  p:crumbNameKey="ab.crumbs.streets_list"
 		  scope="prototype" />
 
 	<!-- Buildings -->
 	<bean id="buildingCreateAction"
-		  class="org.flexpay.ab.actions.buildings.BuildingCreateAction"
+		  class="org.flexpay.ab.action.building.BuildingCreateAction"
           p:objectsFactory-ref="objectsFactory"
           p:addressAttributeTypeService-ref="addressAttributeTypeService"
 		  p:buildingService-ref="buildingService"
@@ -211,7 +211,7 @@
 		  scope="prototype" />
 
 	<bean id="buildingAddressEditAction"
-		  class="org.flexpay.ab.actions.buildings.BuildingAddressEditAction"
+		  class="org.flexpay.ab.action.building.BuildingAddressEditAction"
 		  p:buildingService-ref="buildingService"
 		  p:addressAttributeTypeService-ref="addressAttributeTypeService"
 		  p:districtService-ref="districtService"
@@ -221,57 +221,57 @@
 		  scope="prototype" />
 
     <bean id="buildingAddressDeleteAction"
-          class="org.flexpay.ab.actions.buildings.BuildingAddressDeleteAction"
+          class="org.flexpay.ab.action.building.BuildingAddressDeleteAction"
           p:buildingService-ref="buildingService"
           scope="prototype" />
 
     <bean id="buildingAddressesListAction"
-          class="org.flexpay.ab.actions.buildings.BuildingAddressesListAction"
+          class="org.flexpay.ab.action.building.BuildingAddressesListAction"
           p:buildingService-ref="buildingService"
           p:addressService-ref="addressService"
           scope="prototype" />
 
 	<bean id="buildingViewAction"
-		  class="org.flexpay.ab.actions.buildings.BuildingViewAction"
+		  class="org.flexpay.ab.action.building.BuildingViewAction"
 		  p:buildingService-ref="buildingService"
           p:crumbNameKey="ab.crumbs.building_view"
 		  scope="prototype" />
 
 	<bean id="buildingDeleteAction"
-		  class="org.flexpay.ab.actions.buildings.BuildingDeleteAction"
+		  class="org.flexpay.ab.action.building.BuildingDeleteAction"
 		  p:buildingService-ref="buildingService"
 		  scope="prototype" />
 
 	<bean id="buildingAddressSetPrimaryStatusAction"
-		  class="org.flexpay.ab.actions.buildings.BuildingAddressSetPrimaryStatusAction"
+		  class="org.flexpay.ab.action.building.BuildingAddressSetPrimaryStatusAction"
 		  p:buildingService-ref="buildingService"
 		  scope="prototype" />
 
 	<bean id="buildingFilterAjaxAction"
-		  class="org.flexpay.ab.actions.filters.BuildingFilterAjaxAction"
+		  class="org.flexpay.ab.action.filter.BuildingFilterAjaxAction"
 		  p:buildingService-ref="buildingService"
 		  scope="prototype" />
 
 	<bean id="buildingsListAction"
-		  class="org.flexpay.ab.actions.buildings.BuildingsListAction"
+		  class="org.flexpay.ab.action.building.BuildingsListAction"
 		  p:buildingService-ref="buildingService"
           p:streetService-ref="streetService"
 		  scope="prototype" />
 
     <bean id="buildingAction"
-		  class="org.flexpay.ab.actions.buildings.BuildingAction"
+		  class="org.flexpay.ab.action.building.BuildingAction"
 		  p:buildingService-ref="buildingService"
 		  scope="prototype" />
 
 	<bean id="buildingsListPageAction"
-		  class="org.flexpay.ab.actions.buildings.BuildingsListPageAction"
+		  class="org.flexpay.ab.action.building.BuildingsListPageAction"
           p:streetService-ref="streetService"
 		  p:crumbNameKey="ab.crumbs.buildings_list"
 		  scope="prototype" />
 
 	<!-- BuildingAttributeTypes -->
 	<bean id="addressAttributeTypesListAction"
-		  class="org.flexpay.ab.actions.buildings.AddressAttributeTypesListAction"
+		  class="org.flexpay.ab.action.building.AddressAttributeTypesListAction"
 		  p:buildingAttributeTypeService-ref="addressAttributeTypeService"
 		  scope="prototype" />
 
@@ -280,21 +280,21 @@
           scope="prototype" />
 
 	<bean id="addressAttributeTypeEditAction"
-		  class="org.flexpay.ab.actions.buildings.AddressAttributeTypeEditAction"
+		  class="org.flexpay.ab.action.building.AddressAttributeTypeEditAction"
 		  p:buildingAttributeTypeService-ref="addressAttributeTypeService"
 		  p:crumbNameKey="ab.crumbs.address_attribute_type_edit"
 		  p:crumbCreateKey="ab.crumbs.address_attribute_type_create"
 		  scope="prototype" />
 
     <bean id="addressAttributeTypeViewAction"
-          class="org.flexpay.ab.actions.buildings.AddressAttributeTypeViewAction"
+          class="org.flexpay.ab.action.building.AddressAttributeTypeViewAction"
           p:buildingAttributeTypeService-ref="addressAttributeTypeService"
           p:crumbNameKey="ab.crumbs.address_attribute_type_view"
           scope="prototype" />
 
 	<!-- Apartments -->
 	<bean id="apartmentEditAction"
-		  class="org.flexpay.ab.actions.apartment.ApartmentEditAction"
+		  class="org.flexpay.ab.action.apartment.ApartmentEditAction"
 		  p:apartmentService-ref="apartmentService"
 		  p:buildingService-ref="buildingService"
 		  p:crumbNameKey="ab.crumbs.apartment_edit"
@@ -302,12 +302,12 @@
 		  scope="prototype" />
 
 	<bean id="apartmentDeleteAction"
-		  class="org.flexpay.ab.actions.apartment.ApartmentDeleteAction"
+		  class="org.flexpay.ab.action.apartment.ApartmentDeleteAction"
 		  p:apartmentService-ref="apartmentService"
 		  scope="prototype" />
 
 	<bean id="apartmentRegistrationAction"
-		  class="org.flexpay.ab.actions.apartment.ApartmentRegistrationAction"
+		  class="org.flexpay.ab.action.apartment.ApartmentRegistrationAction"
 		  p:apartmentService-ref="apartmentService"
 		  p:buildingService-ref="buildingService"
 		  p:regionService-ref="regionService"
@@ -322,25 +322,25 @@
           scope="prototype" />
 
 	<bean id="apartmentFilterAjaxAction"
-		  class="org.flexpay.ab.actions.filters.ApartmentFilterAjaxAction"
+		  class="org.flexpay.ab.action.filter.ApartmentFilterAjaxAction"
 		  p:apartmentService-ref="apartmentService"
 		  scope="prototype" />
 
 	<bean id="apartmentsListAction"
-		  class="org.flexpay.ab.actions.apartment.ApartmentsListAction"
+		  class="org.flexpay.ab.action.apartment.ApartmentsListAction"
 		  p:apartmentService-ref="apartmentService"
           p:buildingService-ref="buildingService"
 		  scope="prototype" />
 
 	<bean id="apartmentsListPageAction"
-		  class="org.flexpay.ab.actions.apartment.ApartmentsListPageAction"
+		  class="org.flexpay.ab.action.apartment.ApartmentsListPageAction"
           p:buildingService-ref="buildingService"
 		  p:crumbNameKey="ab.crumbs.apartments_list"
 		  scope="prototype" />
 
 	<!-- Town types -->
 	<bean id="townTypesListAction"
-		  class="org.flexpay.ab.actions.town.TownTypesListAction"
+		  class="org.flexpay.ab.action.town.TownTypesListAction"
 		  p:townTypeService-ref="townTypeService"
 		  scope="prototype" />
 
@@ -349,26 +349,26 @@
           scope="prototype" />
 
 	<bean id="townTypeViewAction"
-		  class="org.flexpay.ab.actions.town.TownTypeViewAction"
+		  class="org.flexpay.ab.action.town.TownTypeViewAction"
 		  p:townTypeService-ref="townTypeService"
 		  p:crumbNameKey="ab.crumbs.town_type_view"
 		  scope="prototype" />
 
 	<bean id="townTypeEditAction"
-		  class="org.flexpay.ab.actions.town.TownTypeEditAction"
+		  class="org.flexpay.ab.action.town.TownTypeEditAction"
 		  p:townTypeService-ref="townTypeService"
 		  p:crumbNameKey="ab.crumbs.town_type_edit"
 		  p:crumbCreateKey="ab.crumbs.town_type_create"
 		  scope="prototype" />
 
 	<bean id="townTypeDeleteAction"
-		  class="org.flexpay.ab.actions.town.TownTypeDeleteAction"
+		  class="org.flexpay.ab.action.town.TownTypeDeleteAction"
 		  p:townTypeService-ref="townTypeService"
 		  scope="prototype" />
 
 	<!-- Street types -->
 	<bean id="streetTypesListAction"
-		  class="org.flexpay.ab.actions.street.StreetTypesListAction"
+		  class="org.flexpay.ab.action.street.StreetTypesListAction"
 		  p:streetTypeService-ref="streetTypeService"
 		  scope="prototype" />
 
@@ -377,26 +377,26 @@
           scope="prototype" />
 
 	<bean id="streetTypeViewAction"
-		  class="org.flexpay.ab.actions.street.StreetTypeViewAction"
+		  class="org.flexpay.ab.action.street.StreetTypeViewAction"
 		  p:streetTypeService-ref="streetTypeService"
 		  p:crumbNameKey="ab.crumbs.street_type_view"
 		  scope="prototype" />
 
 	<bean id="streetTypeEditAction"
-		  class="org.flexpay.ab.actions.street.StreetTypeEditAction"
+		  class="org.flexpay.ab.action.street.StreetTypeEditAction"
 		  p:streetTypeService-ref="streetTypeService"
 		  p:crumbNameKey="ab.crumbs.street_type_edit"
 		  p:crumbCreateKey="ab.crumbs.street_type_create"
 		  scope="prototype" />
 
 	<bean id="streetTypeDeleteAction"
-		  class="org.flexpay.ab.actions.street.StreetTypeDeleteAction"
+		  class="org.flexpay.ab.action.street.StreetTypeDeleteAction"
 		  p:streetTypeService-ref="streetTypeService"
 		  scope="prototype" />
 
 	<!-- Identity types -->
 	<bean id="identityTypesListAction"
-		  class="org.flexpay.ab.actions.identity.IdentityTypesListAction"
+		  class="org.flexpay.ab.action.identity.IdentityTypesListAction"
 		  p:identityTypeService-ref="identityTypeService"
 		  scope="prototype" />
 
@@ -405,32 +405,32 @@
           scope="prototype" />
 
 	<bean id="identityTypeViewAction"
-		  class="org.flexpay.ab.actions.identity.IdentityTypeViewAction"
+		  class="org.flexpay.ab.action.identity.IdentityTypeViewAction"
 		  p:identityTypeService-ref="identityTypeService"
 		  p:crumbNameKey="ab.crumbs.identity_type_view"
 		  scope="prototype" />
 
 	<bean id="identityTypeEditAction"
-		  class="org.flexpay.ab.actions.identity.IdentityTypeEditAction"
+		  class="org.flexpay.ab.action.identity.IdentityTypeEditAction"
 		  p:identityTypeService-ref="identityTypeService"
 		  p:crumbNameKey="ab.crumbs.identity_type_edit"
 		  p:crumbCreateKey="ab.crumbs.identity_type_create"
 		  scope="prototype" />
 
 	<bean id="identityTypeDeleteAction"
-		  class="org.flexpay.ab.actions.identity.IdentityTypeDeleteAction"
+		  class="org.flexpay.ab.action.identity.IdentityTypeDeleteAction"
 		  p:identityTypeService-ref="identityTypeService"
 		  scope="prototype" />
 
 	<!-- Measure units -->
     <bean id="measureUnitViewAction"
-          class="org.flexpay.ab.actions.measureunit.MeasureUnitViewAction"
+          class="org.flexpay.ab.action.measureunit.MeasureUnitViewAction"
           p:measureUnitService-ref="measureUnitService"
           p:crumbNameKey="ab.crumbs.measure_unit_view"
           scope="prototype" />
 
 	<bean id="measureUnitsListAction"
-		  class="org.flexpay.ab.actions.measureunit.MeasureUnitsListAction"
+		  class="org.flexpay.ab.action.measureunit.MeasureUnitsListAction"
 		  p:measureUnitService-ref="measureUnitService"
 		  scope="prototype" />
 
@@ -439,20 +439,20 @@
           scope="prototype" />
 
 	<bean id="measureUnitEditAction"
-		  class="org.flexpay.ab.actions.measureunit.MeasureUnitEditAction"
+		  class="org.flexpay.ab.action.measureunit.MeasureUnitEditAction"
 		  p:measureUnitService-ref="measureUnitService"
 		  p:crumbNameKey="ab.crumbs.measure_unit_edit"
 		  p:crumbCreateKey="ab.crumbs.measure_unit_create"
 		  scope="prototype" />
 
 	<bean id="measureUnitDeleteAction"
-		  class="org.flexpay.ab.actions.measureunit.MeasureUnitDeleteAction"
+		  class="org.flexpay.ab.action.measureunit.MeasureUnitDeleteAction"
 		  p:measureUnitService-ref="measureUnitService"
 		  scope="prototype" />
 
 	<!-- Persons -->
 	<bean id="personsListAction"
-		  class="org.flexpay.ab.actions.person.PersonsListAction"
+		  class="org.flexpay.ab.action.person.PersonsListAction"
 		  p:personService-ref="personService"
 		  scope="prototype" />
 
@@ -461,43 +461,43 @@
           scope="prototype" />
 
 	<bean id="personViewAction"
-		  class="org.flexpay.ab.actions.person.PersonViewAction"
+		  class="org.flexpay.ab.action.person.PersonViewAction"
 		  p:personService-ref="personService"
           p:addressService-ref="addressService"
 		  p:crumbNameKey="ab.crumbs.person_view"
 		  scope="prototype" />
 
 	<bean id="personDeleteAction"
-		  class="org.flexpay.ab.actions.person.PersonDeleteAction"
+		  class="org.flexpay.ab.action.person.PersonDeleteAction"
 		  p:personService-ref="personService"
 		  scope="prototype" />
 
 	<bean id="personEditAction"
-		  class="org.flexpay.ab.actions.person.PersonEditPageAction"
+		  class="org.flexpay.ab.action.person.PersonEditPageAction"
 		  p:personService-ref="personService"
 		  p:crumbNameKey="ab.crumbs.person_edit"
 		  p:crumbCreateKey="ab.crumbs.person_create"
 		  scope="prototype" />
 
     <bean id="personViewIdentitiesAction"
-          class="org.flexpay.ab.actions.person.PersonViewIdentitiesAction"
+          class="org.flexpay.ab.action.person.PersonViewIdentitiesAction"
           p:personService-ref="personService"
           scope="prototype" />
 
 	<bean id="personSaveFIOAction"
-		  class="org.flexpay.ab.actions.person.PersonSaveFIOAction"
+		  class="org.flexpay.ab.action.person.PersonSaveFIOAction"
 		  p:personService-ref="personService"
 		  p:identityTypeService-ref="identityTypeService"
 		  scope="prototype" />
 
     <bean id="personSaveRegistrationAction"
-          class="org.flexpay.ab.actions.person.PersonSaveRegistrationAction"
+          class="org.flexpay.ab.action.person.PersonSaveRegistrationAction"
           p:personService-ref="personService"
           p:apartmentService-ref="apartmentService"
           scope="prototype" />
 
     <bean id="personEditRegistrationFormAction"
-          class="org.flexpay.ab.actions.person.PersonEditRegistrationFormAction"
+          class="org.flexpay.ab.action.person.PersonEditRegistrationFormAction"
           p:apartmentService-ref="apartmentService"
           scope="prototype" />
 

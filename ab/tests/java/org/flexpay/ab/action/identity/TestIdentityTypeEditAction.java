@@ -1,6 +1,6 @@
 package org.flexpay.ab.action.identity;
 
-import org.flexpay.ab.actions.identity.IdentityTypeEditAction;
+import org.flexpay.ab.action.identity.IdentityTypeEditAction;
 import org.flexpay.ab.dao.IdentityTypeDao;
 import org.flexpay.ab.persistence.IdentityType;
 import org.flexpay.ab.persistence.TestData;
