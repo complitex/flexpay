@@ -1,16 +1,17 @@
 package org.flexpay.ab.actions.filters;
 
 import org.flexpay.ab.persistence.Country;
-import org.flexpay.ab.persistence.CountryTranslation;
 import org.flexpay.ab.service.CountryService;
 import org.flexpay.ab.util.config.AbUserPreferences;
 import static org.flexpay.ab.util.config.ApplicationConfig.getDefaultCountryStub;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
+import static org.flexpay.common.util.CollectionUtils.set;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * Search countries by name
@@ -32,10 +33,15 @@ public class CountryFilterAjaxAction extends FilterAjaxAction {
 			log.debug("Found countries: {}", countries.size());
 		}
 
+		Set<Long> countryIds = set();
+
 		for (Country country : countries) {
-			for (CountryTranslation tr : country.getTranslations()) {
-				log.debug("Translations: {}", tr);
-			}
+			countryIds.add(country.getId());
+		}
+
+		countries = countryService.readFull(countryIds, true);
+
+		for (Country country : countries) {
 			foundObjects.add(new FilterObject(country.getId() + "", getTranslationName(country.getTranslations())));
 		}
 

@@ -130,7 +130,7 @@ function Filter(name, options) {
         var filterValue = row[0].toLowerCase();
         var value = $("#" + options.filterId).val().toLowerCase();
         var i = filterValue.indexOf(value);
-        return row[0].substr(0, i) + "<strong>" + row[0].substr(i, value.length) + "</strong>" + row[0].substr(i + value.length);
+        return i < 0 ? row[0] : row[0].substr(0, i) + "<strong>" + row[0].substr(i, value.length) + "</strong>" + row[0].substr(i + value.length);
     }
 
     function selectItem(event, data) {
