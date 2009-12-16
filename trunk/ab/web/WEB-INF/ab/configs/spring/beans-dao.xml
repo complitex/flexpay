@@ -174,9 +174,6 @@
 		  p:dataSource-ref="dataSource"
 		  p:hibernateTemplate-ref="hibernateTemplate" />
 
-    <bean id="buildingDaoExt" class="org.flexpay.ab.dao.impl.BuildingDaoExtImpl"
-          p:hibernateTemplate-ref="hibernateTemplate" />
-
 	<bean id="streetDaoExt" class="org.flexpay.ab.dao.impl.StreetDaoExtImpl"
 		  p:hibernateTemplate-ref="hibernateTemplate" />
 

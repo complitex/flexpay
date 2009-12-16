@@ -2,8 +2,9 @@ package org.flexpay.ab.action.building;
 
 import org.flexpay.ab.actions.buildings.BuildingDeleteAction;
 import org.flexpay.ab.dao.BuildingDao;
-import org.flexpay.ab.dao.BuildingDaoExt;
+import org.flexpay.ab.dao.BuildingsDao;
 import org.flexpay.ab.persistence.Building;
+import org.flexpay.ab.persistence.BuildingAddress;
 import org.flexpay.ab.persistence.TestData;
 import org.flexpay.ab.test.AbSpringBeanAwareTestCase;
 import static org.flexpay.ab.util.TestUtils.createSimpleBuilding;
@@ -13,6 +14,8 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.Set;
+
 public class TestBuildingDeleteAction extends AbSpringBeanAwareTestCase {
 
 	@Autowired
@@ -20,7 +23,7 @@ public class TestBuildingDeleteAction extends AbSpringBeanAwareTestCase {
 	@Autowired
 	private BuildingDao buildingDao;
 	@Autowired
-	private BuildingDaoExt buildingDaoExt;
+	private BuildingsDao buildingsDao;
 
 	@Test
 	public void testNullObjectIds() throws Exception {
@@ -37,6 +40,7 @@ public class TestBuildingDeleteAction extends AbSpringBeanAwareTestCase {
 		Building building = createSimpleBuilding("3333");
 		buildingDao.create(building);
 
+		Set<BuildingAddress> addresses = building.getBuildingses();
 		Long addressId = building.getAddressOnStreet(TestData.DEMAKOVA).getId();
 		action.setObjectIds(set(addressId, -210L, 23455L, 0L, null));
 
@@ -46,7 +50,10 @@ public class TestBuildingDeleteAction extends AbSpringBeanAwareTestCase {
 		building = buildingDao.read(building.getId());
 		assertTrue("Invalid status for building. Must be disabled", building.isNotActive());
 
-		buildingDaoExt.deleteBuilding(building);
+		for (BuildingAddress address : addresses) {
+			buildingsDao.delete(address);
+		}
+		buildingDao.delete(building);
 
 	}
 

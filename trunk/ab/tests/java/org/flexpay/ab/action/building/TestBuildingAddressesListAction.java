@@ -2,7 +2,7 @@ package org.flexpay.ab.action.building;
 
 import org.flexpay.ab.actions.buildings.BuildingAddressesListAction;
 import org.flexpay.ab.dao.BuildingDao;
-import org.flexpay.ab.dao.BuildingDaoExt;
+import org.flexpay.ab.dao.BuildingsDao;
 import org.flexpay.ab.persistence.Building;
 import org.flexpay.ab.persistence.BuildingAddress;
 import org.flexpay.ab.persistence.TestData;
@@ -20,7 +20,7 @@ public class TestBuildingAddressesListAction extends AbSpringBeanAwareTestCase {
 	@Autowired
 	private BuildingDao buildingDao;
 	@Autowired
-	private BuildingDaoExt buildingDaoExt;
+	private BuildingsDao buildingsDao;
 
 	@Test
 	public void testAction() throws Exception {
@@ -97,7 +97,7 @@ public class TestBuildingAddressesListAction extends AbSpringBeanAwareTestCase {
 		assertEquals("Invalid action result", FPActionSupport.SUCCESS, action.execute());
 		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
 
-		buildingDaoExt.deleteBuilding(action.getBuilding());
+		buildingDao.delete(building);
 
 	}
 

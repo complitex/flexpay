@@ -189,21 +189,6 @@
 		where b.status=0 and d.parent.id=? and b.id between ? and ?
 	</query>
 
-    <query name="Building.deleteBuilding">
-        delete from Building
-        where id=?
-    </query>
-
-    <query name="Building.deleteBuildingAddresses">
-        delete from BuildingAddress ba
-        where ba.building.id=?
-    </query>
-
-    <query name="Building.deleteAddressAttributes">
-        delete from AddressAttribute aa
-        where aa.buildings.building.id=?
-    </query>
-
 	<query name="BuildingAddress.readFull">
 		select distinct ba
 		from BuildingAddress ba

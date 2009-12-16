@@ -136,12 +136,7 @@ public class StreetEditAction extends FPActionSupport {
 		}
 
 		if (!streetTypeFilter.needFilter()) {
-			log.warn("Incorrect street type id in filter ({})", streetTypeFilter);
-			addActionError(getText("ab.error.street.no_type"));
-		}
-
-		if (!streetTypeFilter.needFilter()) {
-			log.warn("Incorrect streetTypeFilter value");
+			log.warn("Incorrect streetTypeFilter value {}", streetTypeFilter.getSelectedId());
 			addActionError(getText("ab.error.street_type.incorrect_street_type_id"));
 		} else {
 			StreetType streetType = streetTypeService.readFull(new Stub<StreetType>(streetTypeFilter.getSelectedId()));

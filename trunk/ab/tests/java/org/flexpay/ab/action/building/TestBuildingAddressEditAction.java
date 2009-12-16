@@ -2,7 +2,7 @@ package org.flexpay.ab.action.building;
 
 import org.flexpay.ab.actions.buildings.BuildingAddressEditAction;
 import org.flexpay.ab.dao.BuildingDao;
-import org.flexpay.ab.dao.BuildingDaoExt;
+import org.flexpay.ab.dao.BuildingsDao;
 import org.flexpay.ab.persistence.Building;
 import org.flexpay.ab.persistence.BuildingAddress;
 import org.flexpay.ab.persistence.TestData;
@@ -24,7 +24,7 @@ public class TestBuildingAddressEditAction extends AbSpringBeanAwareTestCase {
 	@Autowired
 	private BuildingDao buildingDao;
 	@Autowired
-	private BuildingDaoExt buildingDaoExt;
+	private BuildingsDao buildingsDao;
 	@Autowired
 	private AddressAttributeTypeService addressAttributeTypeService;
 
@@ -87,7 +87,7 @@ public class TestBuildingAddressEditAction extends AbSpringBeanAwareTestCase {
 		assertEquals("Invalid action result", FPActionSupport.REDIRECT_ERROR, action.execute());
 		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
 
-		buildingDaoExt.deleteBuilding(building);
+		buildingDao.delete(building);
 
 	}
 
@@ -147,7 +147,7 @@ public class TestBuildingAddressEditAction extends AbSpringBeanAwareTestCase {
 		assertEquals("Invalid action result", FPActionSupport.REDIRECT_ERROR, action.execute());
 		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
 
-		buildingDaoExt.deleteBuilding(building);
+		buildingDao.delete(building);
 
 	}
 
@@ -165,7 +165,7 @@ public class TestBuildingAddressEditAction extends AbSpringBeanAwareTestCase {
 		assertEquals("Invalid size of attributesMap", addressAttributeTypeService.getAttributeTypes().size(), action.getAttributesMap().size());
 		assertFalse("Invalid action execute: has action errors.", action.hasActionErrors());
 
-		buildingDaoExt.deleteBuilding(building);
+		buildingDao.delete(building);
 
 	}
 
@@ -192,7 +192,7 @@ public class TestBuildingAddressEditAction extends AbSpringBeanAwareTestCase {
 		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
 		assertEquals("Invalid attributes map size", addressAttributeTypeService.getAttributeTypes().size(), action.getAttributesMap().size());
 
-		buildingDaoExt.deleteBuilding(building);
+		buildingDao.delete(building);
 
 	}
 
@@ -209,7 +209,7 @@ public class TestBuildingAddressEditAction extends AbSpringBeanAwareTestCase {
 		assertFalse("Invalid action execute: has action errors.", action.hasActionErrors());
 		assertEquals("Invalid size of attributesMap", addressAttributeTypeService.getAttributeTypes().size(), action.getAttributesMap().size());
 
-		buildingDaoExt.deleteBuilding(building);
+		buildingDao.delete(building);
 
 	}
 
@@ -230,7 +230,7 @@ public class TestBuildingAddressEditAction extends AbSpringBeanAwareTestCase {
 		assertEquals("Invalid region filter", TestData.REGION_NSK.getId(), action.getRegionFilter());
 		assertEquals("Invalid country filter", TestData.COUNTRY_RUS.getId(), action.getCountryFilter());
 
-		buildingDaoExt.deleteBuilding(building);
+		buildingDao.delete(building);
 
 	}
 
@@ -252,7 +252,7 @@ public class TestBuildingAddressEditAction extends AbSpringBeanAwareTestCase {
 		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
 		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
 
-		buildingDaoExt.deleteBuilding(building);
+		buildingDao.delete(building);
 
 	}
 
@@ -274,7 +274,7 @@ public class TestBuildingAddressEditAction extends AbSpringBeanAwareTestCase {
 		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
 		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
 
-		buildingDaoExt.deleteBuilding(building);
+		buildingDao.delete(building);
 
 	}
 
@@ -295,7 +295,7 @@ public class TestBuildingAddressEditAction extends AbSpringBeanAwareTestCase {
 		assertEquals("Invalid action result", FPActionSupport.INPUT, action.execute());
 		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
 
-		buildingDaoExt.deleteBuilding(building);
+		buildingDao.delete(building);
 
 	}
 
@@ -316,9 +316,11 @@ public class TestBuildingAddressEditAction extends AbSpringBeanAwareTestCase {
 		action.getAttributesMap().put(org.flexpay.ab.util.config.ApplicationConfig.getBuildingAttributeTypeNumber().getId(), "1345777");
 
 		assertEquals("Invalid action result", FPActionSupport.REDIRECT_SUCCESS, action.execute());
-		assertNotNull("Address on Rossiiskaya Street must not be null", action.getBuilding().getAddressOnStreet(TestData.ROSSIISKAYA));
 
-		buildingDaoExt.deleteBuilding(action.getBuilding());
+		building = buildingDao.readFull(building.getId());
+		assertNotNull("Address on Rossiiskaya Street must not be null", building.getAddressOnStreet(TestData.ROSSIISKAYA));
+
+		buildingDao.delete(building);
 
 	}
 
@@ -341,7 +343,7 @@ public class TestBuildingAddressEditAction extends AbSpringBeanAwareTestCase {
 		assertEquals("Invalid action result", FPActionSupport.REDIRECT_SUCCESS, action.execute());
 		assertEquals("Invalid building address number", "13451", action.getBuilding().getAddressOnStreet(TestData.DEMAKOVA).getNumber());
 
-		buildingDaoExt.deleteBuilding(action.getBuilding());
+		buildingDao.delete(action.getBuilding());
 
 	}
 

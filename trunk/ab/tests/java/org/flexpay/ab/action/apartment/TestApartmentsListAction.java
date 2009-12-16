@@ -2,7 +2,6 @@ package org.flexpay.ab.action.apartment;
 
 import org.flexpay.ab.actions.apartment.ApartmentsListAction;
 import org.flexpay.ab.dao.BuildingDao;
-import org.flexpay.ab.dao.BuildingDaoExt;
 import org.flexpay.ab.persistence.Building;
 import org.flexpay.ab.persistence.BuildingAddress;
 import org.flexpay.ab.persistence.TestData;
@@ -19,8 +18,6 @@ public class TestApartmentsListAction extends AbSpringBeanAwareTestCase {
 	private ApartmentsListAction action;
 	@Autowired
 	private BuildingDao buildingDao;
-	@Autowired
-	private BuildingDaoExt buildingDaoExt;
 
 	@Test
 	public void testAction() throws Exception {
@@ -103,7 +100,7 @@ public class TestApartmentsListAction extends AbSpringBeanAwareTestCase {
 		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
 		assertTrue("Apartments list size must be 0", action.getApartments().isEmpty());
 
-		buildingDaoExt.deleteBuilding(building);
+		buildingDao.delete(building);
 
 	}
 

@@ -113,7 +113,7 @@ public class TownEditAction extends FPActionSupport {
 		}
 
         if (!townTypeFilter.needFilter()) {
-			log.warn("Incorrect townTypeFilter value");
+			log.warn("Incorrect townTypeFilter value {}", townTypeFilter.getSelectedId());
             addActionError(getText("ab.error.town_type.incorrect_town_type_id"));
 		} else {
 			TownType townType = townTypeService.readFull(new Stub<TownType>(townTypeFilter.getSelectedId()));

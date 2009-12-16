@@ -2,7 +2,6 @@ package org.flexpay.ab.action.building;
 
 import org.flexpay.ab.actions.buildings.BuildingAddressSetPrimaryStatusAction;
 import org.flexpay.ab.dao.BuildingDao;
-import org.flexpay.ab.dao.BuildingDaoExt;
 import org.flexpay.ab.persistence.Building;
 import org.flexpay.ab.persistence.BuildingAddress;
 import org.flexpay.ab.persistence.TestData;
@@ -19,8 +18,6 @@ public class TestBuildingAddressSetPrimaryStatusAction extends AbSpringBeanAware
 	private BuildingAddressSetPrimaryStatusAction action;
 	@Autowired
 	private BuildingDao buildingDao;
-	@Autowired
-	private BuildingDaoExt buildingDaoExt;
 
 	@Test
 	public void testAction() throws Exception {
@@ -37,7 +34,7 @@ public class TestBuildingAddressSetPrimaryStatusAction extends AbSpringBeanAware
 		building = buildingDao.readFull(building.getId());
 		assertEquals("Invalid primary building address", building.getDefaultBuildings().getStreetStub().getId(), TestData.DEMAKOVA.getId());
 
-		buildingDaoExt.deleteBuilding(building);
+		buildingDao.delete(building);
 
 	}
 
@@ -105,7 +102,7 @@ public class TestBuildingAddressSetPrimaryStatusAction extends AbSpringBeanAware
 		assertEquals("Invalid action result", FPActionSupport.SUCCESS, action.execute());
 		assertTrue("Invalid action execute: hasn't action errors.", action.hasActionErrors());
 
-		buildingDaoExt.deleteBuilding(building);
+		buildingDao.delete(building);
 
 	}
 

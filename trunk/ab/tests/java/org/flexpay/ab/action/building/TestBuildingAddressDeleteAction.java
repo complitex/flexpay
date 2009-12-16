@@ -2,7 +2,6 @@ package org.flexpay.ab.action.building;
 
 import org.flexpay.ab.actions.buildings.BuildingAddressDeleteAction;
 import org.flexpay.ab.dao.BuildingDao;
-import org.flexpay.ab.dao.BuildingDaoExt;
 import org.flexpay.ab.dao.BuildingsDao;
 import org.flexpay.ab.persistence.Building;
 import org.flexpay.ab.persistence.TestData;
@@ -20,8 +19,6 @@ public class TestBuildingAddressDeleteAction extends AbSpringBeanAwareTestCase {
 	private BuildingAddressDeleteAction action;
 	@Autowired
 	private BuildingDao buildingDao;
-	@Autowired
-	private BuildingDaoExt buildingDaoExt;
 	@Autowired
 	private BuildingsDao buildingAddressDao;
 
@@ -75,7 +72,7 @@ public class TestBuildingAddressDeleteAction extends AbSpringBeanAwareTestCase {
 		assertEquals("Invalid action result", FPActionSupport.SUCCESS, action.execute());
 		assertFalse("Invalid action execute: has action errors.", action.hasActionErrors());
 
-		buildingDaoExt.deleteBuilding(building);
+		buildingDao.delete(building);
 
 	}
 
@@ -93,7 +90,7 @@ public class TestBuildingAddressDeleteAction extends AbSpringBeanAwareTestCase {
 		assertFalse("Invalid action execute: has action errors.", action.hasActionErrors());
 		assertTrue("Invalid status for building address. Must be disabled", buildingAddressDao.read(addressId).isNotActive());
 
-		buildingDaoExt.deleteBuilding(building);
+		buildingDao.delete(building);
 
 	}
 
