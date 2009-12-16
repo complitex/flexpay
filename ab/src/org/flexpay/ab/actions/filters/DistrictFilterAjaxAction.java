@@ -7,10 +7,12 @@ import org.flexpay.ab.service.DistrictService;
 import org.flexpay.ab.util.config.AbUserPreferences;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
+import static org.flexpay.common.util.CollectionUtils.set;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * Search districts by name
@@ -50,6 +52,14 @@ public class DistrictFilterAjaxAction extends FilterAjaxAction {
 		if (log.isDebugEnabled()) {
 			log.debug("Found districts: {}", districts.size());
 		}
+
+		Set<Long> districtIds = set();
+
+		for (District district : districts) {
+			districtIds.add(district.getId());
+		}
+
+		districts = districtService.readFull(districtIds, true);
 
 		for (District district : districts) {
 			DistrictName name = district.getCurrentName();

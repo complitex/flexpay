@@ -9,10 +9,12 @@ import static org.flexpay.ab.util.config.ApplicationConfig.getDefaultCountryStub
 import static org.flexpay.ab.util.config.ApplicationConfig.getDefaultRegionStub;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
+import static org.flexpay.common.util.CollectionUtils.set;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * Search regions by name
@@ -55,6 +57,14 @@ public class RegionFilterAjaxAction extends FilterAjaxAction {
 		if (log.isDebugEnabled()) {
 			log.debug("Found regions: {}", regions.size());
 		}
+
+		Set<Long> regionIds = set();
+
+		for (Region region : regions) {
+			regionIds.add(region.getId());
+		}
+
+		regions = regionService.readFull(regionIds, true);
 
 		for (Region region : regions) {
 			RegionName name = region.getCurrentName();

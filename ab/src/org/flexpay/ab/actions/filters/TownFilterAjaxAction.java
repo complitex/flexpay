@@ -9,10 +9,12 @@ import static org.flexpay.ab.util.config.ApplicationConfig.getDefaultRegionStub;
 import static org.flexpay.ab.util.config.ApplicationConfig.getDefaultTownStub;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
+import static org.flexpay.common.util.CollectionUtils.set;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * Search towns by name
@@ -55,6 +57,14 @@ public class TownFilterAjaxAction extends FilterAjaxAction {
 		if (log.isDebugEnabled()) {
 			log.debug("Found towns: {}", towns.size());
 		}
+
+		Set<Long> townIds = set();
+
+		for (Town town : towns) {
+			townIds.add(town.getId());
+		}
+
+		towns = townService.readFull(townIds, true);
 
 		for (Town town : towns) {
 			TownName name = town.getCurrentName();

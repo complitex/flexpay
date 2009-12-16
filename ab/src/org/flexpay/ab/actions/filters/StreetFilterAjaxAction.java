@@ -8,10 +8,12 @@ import org.flexpay.ab.service.StreetService;
 import org.flexpay.ab.util.config.AbUserPreferences;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
+import static org.flexpay.common.util.CollectionUtils.set;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * Search streets by name
@@ -51,6 +53,14 @@ public class StreetFilterAjaxAction extends FilterAjaxAction {
 		if (log.isDebugEnabled()) {
 			log.debug("Found streets: {}", streets.size());
 		}
+
+		Set<Long> streetIds = set();
+
+		for (Street street : streets) {
+			streetIds.add(street.getId());
+		}
+
+		streets = streetService.readFull(streetIds, true);
 
 		for (Street street : streets) {
 			StreetType type = street.getCurrentType();

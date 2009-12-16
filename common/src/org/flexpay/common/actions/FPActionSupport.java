@@ -320,11 +320,7 @@ public abstract class FPActionSupport extends ActionSupport implements BreadCrum
 	}
 
 	public <T extends Translation> String getTranslationName(Set<T> translations) {
-		T translation = getTranslation(translations);
-		if (translation == null) {
-			return null;
-		}
-		return translation.getName();
+		return getTranslation(translations).getName();
 	}
 
 	public String format(Date date) {

@@ -7,10 +7,12 @@ import static org.flexpay.ab.util.TranslationUtil.getBuildingNumberWithoutHouseT
 import org.flexpay.ab.util.config.AbUserPreferences;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
+import static org.flexpay.common.util.CollectionUtils.set;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.util.List;
+import java.util.Set;
 
 public class BuildingFilterAjaxAction extends FilterAjaxAction {
 
@@ -43,6 +45,14 @@ public class BuildingFilterAjaxAction extends FilterAjaxAction {
 		if (log.isDebugEnabled()) {
 			log.debug("Found addresses: {}", addresses.size());
 		}
+
+		Set<Long> addressIds = set();
+
+		for (BuildingAddress address : addresses) {
+			addressIds.add(address.getId());
+		}
+
+		addresses = buildingService.readFullAddresses(addressIds, true);
 
 		for (BuildingAddress address : addresses) {
 			FilterObject object = new FilterObject();
