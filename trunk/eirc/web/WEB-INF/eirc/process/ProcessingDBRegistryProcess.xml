@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<process-definition name="ProcessingDBRegistryProcess"
+					xmlns="http://jbpm.org/3/jpdl"
+					xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+					xsi:schemaLocation="http://jbpm.org/3/jpdl http://jbpm.org/xsd/jpdl-3.0.xsd">
+
+	<start-state name="start">
+		<transition to="StartRegistryProcessing" />
+		<event type="node-leave">
+			<script>
+				<variable mapped-name="range" access="write" name="range" />
+				<expression>
+                    range = new org.flexpay.common.dao.paging.FetchRange(50);
+                </expression>
+			</script>
+		</event>
+	</start-state>
+
+    <state name="StartRegistryProcessing">
+        <transition name="next" to="ProcessRecordsRange" />
+        <transition name="error" to="EndRegistryProcessing" />
+        <event type="node-enter">
+            <action name="task" config-type="bean" class="org.springmodules.workflow.jbpm31.JbpmHandlerProxy">
+                <targetBean>startRegistryProcessingActionHandler</targetBean>
+                <factoryKey>jbpmConfiguration</factoryKey>
+            </action>
+        </event>
+    </state>
+
+	<state name="ProcessRecordsRange">
+        <transition name="next" to="HasMoreRecord" />
+        <transition name="error" to="EndRegistryProcessing" />
+        <event type="node-enter">
+			<action name="task" config-type="bean" class="org.springmodules.workflow.jbpm31.JbpmHandlerProxy">
+                <targetBean>processRecordsRangeActionHandler</targetBean>
+                <factoryKey>jbpmConfiguration</factoryKey>
+            </action>
+        </event>
+    </state>
+
+	<state name="HasMoreRecord">
+        <transition name="continue" to="ProcessRecordsRange" />
+        <transition name="error" to="EndRegistryProcessing" />
+        <transition name="next" to="EndRegistryProcessing" />
+        <event type="node-enter">
+			<action name="task" config-type="bean" class="org.springmodules.workflow.jbpm31.JbpmHandlerProxy">
+                <targetBean>hasMoreRecordActionHandler</targetBean>
+                <factoryKey>jbpmConfiguration</factoryKey>
+            </action>
+        </event>
+    </state>
+
+	<state name="EndRegistryProcessing">
+        <transition name="next" to="end" />
+        <transition name="error" to="end" />
+        <event type="node-enter">
+            <action name="task" config-type="bean" class="org.springmodules.workflow.jbpm31.JbpmHandlerProxy">
+                <targetBean>endRegistryProcessingActionHandler</targetBean>
+                <factoryKey>jbpmConfiguration</factoryKey>
+            </action>
+        </event>
+    </state>
+
+	<end-state name="end" />
+
+</process-definition>

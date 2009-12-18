@@ -307,4 +307,12 @@
 	<bean id="mbLineParser"
 		  class="org.flexpay.eirc.sp.impl.parsing.SplitLineRemoveBlank"
 		  p:delimiter="=" />
+
+	<bean id="registryHandleError"
+		  class="org.flexpay.eirc.process.registry.error.impl.RegistryHandleError"
+		  p:classToTypeRegistry-ref="classToTypeRegistry"
+		  p:recordWorkflowManager-ref="registryRecordWorkflowManager"
+		  p:registryWorkflowManager-ref="registryWorkflowManager"
+		  p:organizationService-ref="organizationService" />
+	
 </beans>

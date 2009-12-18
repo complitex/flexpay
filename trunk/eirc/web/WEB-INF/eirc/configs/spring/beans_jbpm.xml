@@ -85,4 +85,31 @@
 		  class="org.flexpay.eirc.process.registry.RemoveRegistryActionHandler"
 		  scope="prototype" />
 
+	<bean name="hasMoreRecordActionHandler"
+		  class="org.flexpay.eirc.process.registry.HasMoreRecordActionHandler"
+		  scope="prototype" />
+
+	<bean id="startRegistryProcessingActionHandler"
+		  class="org.flexpay.eirc.process.registry.StartRegistryProcessingActionHandler"
+		  p:processorTx-ref="serviceProviderFileProcessorTx"
+		  p:registryService-ref="registryService"
+		  p:handleError-ref="registryHandleError"
+		  p:registryWorkflowManager-ref="registryWorkflowManager"
+		  scope="prototype" />
+
+	<bean id="processRecordsRangeActionHandler"
+		  class="org.flexpay.eirc.process.registry.ProcessRecordsRangeActionHandler"
+		  p:processorTx-ref="serviceProviderFileProcessorTx"
+		  p:registryService-ref="registryService"
+		  p:handleError-ref="registryHandleError"
+		  p:registryFileService-ref="registryFileService"
+		  p:registryRecordService-ref="registryRecordService"
+		  scope="prototype"	/>
+
+	<bean id="endRegistryProcessingActionHandler"
+		  class="org.flexpay.eirc.process.registry.EndRegistryProcessingActionHandler"
+		  p:registryService-ref="registryService"
+		  p:registryWorkflowManager-ref="registryWorkflowManager"
+		  scope="prototype" />
+
 </beans>
