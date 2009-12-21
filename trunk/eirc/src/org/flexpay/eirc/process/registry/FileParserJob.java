@@ -37,8 +37,6 @@ public class FileParserJob extends Job {
 				mbCorrectionsFileParser.parse(spFile, ProcessLogger.getLogger(getClass()));
 			} else if (FileParser.MB_REGISTRY_FILE_TYPE.equals(fileType)) {
 				mbRegistryFileParser.parse(spFile, ProcessLogger.getLogger(getClass()));
-			} else if (FileParser.REGISTRY_FILE_TYPE.equals(fileType)) {
-				registryFileParser.parse(spFile, ProcessLogger.getLogger(getClass()));
 			} else {
 				log.error("Incorrect fileType variable - " + fileType);
 				return RESULT_ERROR;

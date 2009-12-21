@@ -7,9 +7,11 @@ import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.persistence.registry.Registry;
+import org.flexpay.common.process.ProcessManager;
 import org.flexpay.common.service.FPFileService;
 import org.flexpay.common.service.RegistryFileService;
 import org.flexpay.common.service.RegistryService;
+import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.StringUtil;
 import org.flexpay.common.util.standalone.StandaloneTask;
 import org.flexpay.eirc.actions.spfile.SpFileAction;
@@ -21,11 +23,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.util.Assert;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.util.List;
+import java.util.Map;
 
 public class RunSpFileProcessing implements StandaloneTask {
 
@@ -39,6 +39,7 @@ public class RunSpFileProcessing implements StandaloneTask {
 	private RegistryFileService fileService;
 	private RegistryService registryService;
 	private RegistryDao registryDao;
+	private ProcessManager processManager;
 
 	/**
 	 * Execute task
@@ -85,21 +86,24 @@ public class RunSpFileProcessing implements StandaloneTask {
 	private void processRegistry(Long registryId) throws Throwable {
 		Registry registry = registryService.readWithContainers(new Stub<Registry>(registryId));
 		Assert.notNull(registry, "Registry not found #" + registryId);
-		try {
-			log.debug("Starting registry processing");
-			long time = System.currentTimeMillis();
-			ProcessingContext context = new ProcessingContext();
-			context.setRegistry(registry);
-			registryProcessor.processRegistry(context);
+		log.debug("Starting registry processing");
+		long time = System.currentTimeMillis();
 
-			if (log.isDebugEnabled()) {
-				log.debug("Processing took {} ms", System.currentTimeMillis() - time);
-			}
-		} catch (FlexPayExceptionContainer c) {
-			for (Exception e : c.getExceptions()) {
-				log.error("Exception cought", e);
-			}
-			throw c;
+		Map<Serializable, Serializable> contextVariables = CollectionUtils.map();
+		contextVariables.put("registryId", registryId);
+
+		long processId = processManager.createProcess("ProcessingDBRegistryProcess", contextVariables);
+
+		org.flexpay.common.process.Process process;
+		do {
+			process = processManager.getProcessInstanceInfo(processId);
+		} while(process != null && !process.getProcessState().isCompleted());
+		if (process == null) {
+			log.error("Process {} did not find", processId);
+		}
+
+		if (log.isDebugEnabled()) {
+			log.debug("Processing took {} ms", System.currentTimeMillis() - time);
 		}
 	}
 
@@ -238,4 +242,8 @@ public class RunSpFileProcessing implements StandaloneTask {
 		this.registryService = registryService;
 	}
 
+	@Required
+	public void setProcessManager(ProcessManager processManager) {
+		this.processManager = processManager;
+	}
 }

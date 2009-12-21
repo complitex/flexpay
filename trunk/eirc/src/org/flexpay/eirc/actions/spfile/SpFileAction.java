@@ -4,10 +4,12 @@ import org.apache.commons.io.IOUtils;
 import org.flexpay.common.actions.FPActionSupport;
 import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.persistence.file.FPFile;
+import org.flexpay.common.process.ProcessLogger;
 import org.flexpay.common.process.ProcessManager;
 import org.flexpay.common.service.FPFileService;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.eirc.process.registry.FileParserJob;
+import org.flexpay.eirc.process.registry.GetRegistryMessageActionHandler;
 import org.flexpay.eirc.sp.FileParser;
 import org.flexpay.eirc.sp.SpFileReader;
 import org.flexpay.eirc.sp.impl.LineParser;
@@ -61,9 +63,14 @@ public class SpFileAction extends FPActionSupport {
             }
 
 			Map<Serializable, Serializable> contextVariables = CollectionUtils.map();
-			contextVariables.put(FileParserJob.PARAM_FILE_ID, spFile.getId());
-			contextVariables.put(FileParserJob.PARAM_FILE_TYPE, fileType);
-			processId = processManager.createProcess("ParseRegistryProcess", contextVariables);
+			if (FileParser.REGISTRY_FILE_TYPE.equals(fileType)) {
+				contextVariables.put(GetRegistryMessageActionHandler.PARAM_FILE_ID, spFile.getId());
+				processId = processManager.createProcess("ParseFPRegistryProcess", contextVariables);
+			} else {
+				contextVariables.put(FileParserJob.PARAM_FILE_ID, spFile.getId());
+				contextVariables.put(FileParserJob.PARAM_FILE_TYPE, fileType);
+				processId = processManager.createProcess("ParseRegistryProcess", contextVariables);
+			}
 			log.debug("Load to db process id {}", processId);
 			if (processId == null) {
 				throw new Exception("Failed creating process, unknown reason");

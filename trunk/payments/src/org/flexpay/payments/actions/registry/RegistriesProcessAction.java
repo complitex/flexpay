@@ -28,11 +28,13 @@ public class RegistriesProcessAction extends FPActionSupport {
 
 		log.debug("About to execute RegistriesProcessAction");
 
-		Map<Serializable, Serializable> contextVariables = CollectionUtils.map();
-		contextVariables.put("registryIds", (Serializable) objectIds);
+		for (Long registryId : objectIds) {
+			Map<Serializable, Serializable> contextVariables = CollectionUtils.map();
+			contextVariables.put("registryId", registryId);
 
-		processManager.createProcess("ProcessRegistryWorkflow", contextVariables);
-		
+			processManager.createProcess("ProcessingDBRegistryProcess", contextVariables);
+		}
+
 		addActionError(getText("eirc.registry.processing_started"));
 
 		return REDIRECT_SUCCESS;
