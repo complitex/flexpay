@@ -15,7 +15,8 @@
 		  p:spRegistryDao-ref="spRegistryDao"
 		  p:fpFileService-ref="fpFileService"
 		  p:registryService-ref="registryService"
-		  p:registryProcessor-ref="registryProcessor" />
+		  p:registryProcessor-ref="registryProcessor"
+		  p:processManager-ref="processManagerEirc" />
 
 	<bean class="org.flexpay.eirc.util.standalone.RunGenerateQuittancesPDF"
 		  id="runGenerateQuittancesPDF"
