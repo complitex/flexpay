@@ -5,7 +5,6 @@ import org.flexpay.eirc.test.EircSpringBeanAwareTestCase;
 import org.flexpay.orgs.persistence.Cashbox;
 import org.flexpay.orgs.persistence.PaymentCollector;
 import org.flexpay.orgs.persistence.PaymentCollectorDescription;
-import org.flexpay.orgs.persistence.PaymentPoint;
 import org.flexpay.orgs.service.CashboxService;
 import org.flexpay.orgs.service.PaymentCollectorService;
 import org.flexpay.orgs.service.PaymentPointService;
@@ -42,29 +41,16 @@ public class GeneratePaymentOrganizationsHistory extends EircSpringBeanAwareTest
 	@Test
 	public void generatePaymentOrganizationsHistory() {
 
-		generatePaymentCollectors();
-		generatePaymentPoints();
 		generateCashboxes();
 	}
 
-	private void generatePaymentCollectors() {
-
-		List<PaymentCollector> organizations = paymentCollectorService.listInstances(new Page<PaymentCollector>(1000000));
-		for (PaymentCollector organization : organizations) {
-			paymentCollectorHistoryGenerator.generateFor(organization);
-		}
-	}
-
-	private void generatePaymentPoints() {
-		List<PaymentPoint> paymentPoints = paymentPointService.findAll();
-		for (PaymentPoint point : paymentPoints) {
-			paymentPointHistoryGenerator.generateFor(point);
-		}
-	}
 
 	private void generateCashboxes() {
 		List<Cashbox> cashboxes = cashboxService.findObjects(new Page<Cashbox>(1000000));
 		for (Cashbox cashbox : cashboxes) {
+
+			log.error("Generating history for cashbox #{}", cashbox.getId());
+
 			cashboxHistoryGenerator.generateFor(cashbox);
 		}
 	}

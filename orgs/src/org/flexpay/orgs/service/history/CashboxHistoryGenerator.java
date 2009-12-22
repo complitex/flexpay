@@ -1,8 +1,7 @@
 package org.flexpay.orgs.service.history;
 
-import static org.flexpay.common.persistence.Stub.stub;
-
 import org.flexpay.common.persistence.DomainObject;
+import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.persistence.history.Diff;
 import org.flexpay.common.persistence.history.HistoryGenerator;
 import org.flexpay.common.persistence.history.ProcessingStatus;
@@ -47,6 +46,9 @@ public class CashboxHistoryGenerator implements HistoryGenerator<Cashbox> {
 		referencesHistoryGenerator.generateReferencesHistory(cashbox);
 
 		if (!diffService.hasDiffs(cashbox)) {
+
+			log.error("Creating a diff for cahsbox {}", cashbox);
+
 			Diff diff = historyBuilder.diff(null, cashbox);
 			diff.setProcessingStatus(ProcessingStatus.STATUS_PROCESSED);
 			diffService.create(diff);
