@@ -17,7 +17,8 @@
 		</event>
 	</start-state>
 
-    <state name="StartRegistryProcessing">
+    <decision name="StartRegistryProcessing">
+		<handler class="org.flexpay.common.process.handler.FlexPayDecisionHandler" />
         <transition name="next" to="ProcessRecordsRange" />
         <transition name="error" to="EndRegistryProcessing" />
         <event type="node-enter">
@@ -26,9 +27,10 @@
                 <factoryKey>jbpmConfiguration</factoryKey>
             </action>
         </event>
-    </state>
+    </decision>
 
-	<state name="ProcessRecordsRange">
+	<decision name="ProcessRecordsRange">
+		<handler class="org.flexpay.common.process.handler.FlexPayDecisionHandler" />
         <transition name="next" to="HasMoreRecord" />
         <transition name="error" to="EndRegistryProcessing" />
         <event type="node-enter">
@@ -37,9 +39,10 @@
                 <factoryKey>jbpmConfiguration</factoryKey>
             </action>
         </event>
-    </state>
+    </decision>
 
-	<state name="HasMoreRecord">
+	<decision name="HasMoreRecord">
+		<handler class="org.flexpay.common.process.handler.FlexPayDecisionHandler" />
         <transition name="continue" to="ProcessRecordsRange" />
         <transition name="error" to="EndRegistryProcessing" />
         <transition name="next" to="EndRegistryProcessing" />
@@ -49,9 +52,10 @@
                 <factoryKey>jbpmConfiguration</factoryKey>
             </action>
         </event>
-    </state>
+    </decision>
 
-	<state name="EndRegistryProcessing">
+	<decision name="EndRegistryProcessing">
+		<handler class="org.flexpay.common.process.handler.FlexPayDecisionHandler" />
         <transition name="next" to="end" />
         <transition name="error" to="end" />
         <event type="node-enter">
@@ -60,7 +64,7 @@
                 <factoryKey>jbpmConfiguration</factoryKey>
             </action>
         </event>
-    </state>
+    </decision>
 
 	<end-state name="end" />
 
