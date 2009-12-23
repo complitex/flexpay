@@ -80,20 +80,27 @@ var FP = {
         return buffer.join("");
     },
 
-    calendars : function(id, withImg) {
-        $(function() {
-            if (withImg) {
-                $("#" + id).datepicker({
-                    showOn: "both",
-                    dateFormat: "yy/mm/dd",
-                    buttonImage: FP.base + "/resources/common/js/jquery/jquery-ui/images/calendar.gif",
-                    buttonImageOnly: true
-                });
-            } else {
-                $("#" + id).datepicker({
-                    dateFormat: "yy/mm/dd"
-                });
-            }
+    calendars : function(id, withImg, options) {
+
+        options = options || {};
+
+        if (withImg) {
+            options = $.extend({
+                showOn: "both",
+                buttonImage: FP.base + "/resources/common/js/jquery/ui/datepicker/images/calendar.gif",
+                buttonImageOnly: true
+            }, options);
+        }
+
+        options = $.extend({
+            dateFormat: "yy/mm/dd",
+            showButtonPanel: true,
+            changeMonth: true,
+            changeYear: true
+        }, options);
+
+        $("#" + id).ready(function() {
+            $("#" + id).datepicker(options);
         });
     },
 

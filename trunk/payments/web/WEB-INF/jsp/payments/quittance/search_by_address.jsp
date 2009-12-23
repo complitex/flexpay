@@ -1,10 +1,12 @@
-<%@ include file="/WEB-INF/jsp/common/taglibs.jsp" %>
-<%@include file="/WEB-INF/jsp/payments/include/stylesheet.jsp" %>
+<%@include file="/WEB-INF/jsp/common/taglibs.jsp"%>
+<%@include file="/WEB-INF/jsp/payments/include/stylesheet.jsp"%>
+<%@include file="/WEB-INF/jsp/common/includes/jquery_bgiframe.jsp"%>
+<%@include file="/WEB-INF/jsp/ab/includes/flexpay_filter.jsp" %>
 
 <script type="text/javascript">
 
 	function doSearch() {
-		if (validateAdress()) {
+		if (validateAddress()) {
 			$("#searchBtn").attr("disabled", true);
 
 			var shadowId = 'searchResultsDivShadow';
@@ -34,7 +36,7 @@
 		$("#searchBtn").attr("disabled", false);
 	}
 
-	function validateAdress() {
+	function validateAddress() {
 		//validate town
 		if (FF.filters["town"].value.val().length == 0) {
 			alert("<s:text name="payments.error.town_is_not_selected" />");
@@ -66,8 +68,6 @@
 <s:actionerror />
 
 <s:form action="searchByAddress">
-
-	<%@include file="/WEB-INF/jsp/ab/includes/flexpay_filter.jsp" %>
 
 	<script type="text/javascript">
 
@@ -139,6 +139,6 @@
 
 </s:form>
 
-<%@include file="print.jsp" %>
+<%@include file="print.jsp"%>
 
 <div id="searchResultsDiv"></div>

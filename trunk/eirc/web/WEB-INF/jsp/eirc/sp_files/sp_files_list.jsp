@@ -31,7 +31,7 @@
                     </s:if>
 				</s:if>
 				<s:if test="nameOnServer != null">
-                    <a href="<s:url value="/download/" includeParams="none" /><s:property value="id" />"><s:property value="originalName" /></a>
+                    <a href="<s:url value="/download/%{id}" includeParams="none" />"><s:property value="originalName" /></a>
 				</s:if>
 			</td>
 

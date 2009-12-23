@@ -1,6 +1,5 @@
 <%@include file="/WEB-INF/jsp/common/taglibs.jsp"%>
-
-<%@include file="/WEB-INF/jsp/common/includes/jquery_ui.jsp"%>
+<%@include file="/WEB-INF/jsp/common/includes/jquery_bgiframe.jsp"%>
 <%@include file="/WEB-INF/jsp/ab/includes/flexpay_filter.jsp"%>
 
 <s:set name="readonly" value="%{address.id > 0}" />
