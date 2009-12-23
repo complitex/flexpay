@@ -48,9 +48,6 @@ public class GeneratePaymentOrganizationsHistory extends EircSpringBeanAwareTest
 	private void generateCashboxes() {
 		List<Cashbox> cashboxes = cashboxService.findObjects(new Page<Cashbox>(1000000));
 		for (Cashbox cashbox : cashboxes) {
-
-			log.error("Generating history for cashbox #{}", cashbox.getId());
-
 			cashboxHistoryGenerator.generateFor(cashbox);
 		}
 	}

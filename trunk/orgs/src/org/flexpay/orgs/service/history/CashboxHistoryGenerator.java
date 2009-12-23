@@ -46,9 +46,6 @@ public class CashboxHistoryGenerator implements HistoryGenerator<Cashbox> {
 		referencesHistoryGenerator.generateReferencesHistory(cashbox);
 
 		if (!diffService.hasDiffs(cashbox)) {
-
-			log.error("Creating a diff for cahsbox {}", cashbox);
-
 			Diff diff = historyBuilder.diff(null, cashbox);
 			diff.setProcessingStatus(ProcessingStatus.STATUS_PROCESSED);
 			diffService.create(diff);

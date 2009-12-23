@@ -224,6 +224,7 @@
 				<ref bean="identityTypeHistoryHandler" />
 				<ref bean="paymentPointHistoryHandler" />
 				<ref bean="paymentCollectorHistoryHandler" />
+				<ref bean="cashboxHistoryHandler" />
 				<ref bean="serviceOrganizationHistoryHandler" />
 				<ref bean="serviceProviderHistoryHandler" />
 				<ref bean="bankHistoryHandler" />
