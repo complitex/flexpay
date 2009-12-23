@@ -3,6 +3,7 @@ package org.flexpay.common.process.handler;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.process.ProcessLogger;
 import org.jbpm.graph.def.ActionHandler;
+import org.jbpm.graph.def.Transition;
 import org.jbpm.graph.exe.ExecutionContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,7 +27,7 @@ public abstract class FlexPayActionHandler implements ActionHandler {
 			log.debug("{}={}", new Object[]{entry.getKey(), entry.getValue()});
 		}
 
-		executionContext.leaveNode(result);
+		executionContext.getContextInstance().setVariable(FlexPayDecisionHandler.RESULT, result);
 	}
 
 	public abstract String execute2(Map<String, Object> parameters) throws FlexPayException;

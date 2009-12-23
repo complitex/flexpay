@@ -13,7 +13,8 @@
 		<transition to="GetRegistryMessage" />
 	</start-state>
 
-    <state name="GetRegistryMessage">
+    <decision name="GetRegistryMessage">
+		<handler class="org.flexpay.common.process.handler.FlexPayDecisionHandler" />
         <transition name="next" to="ProcessRegistryMessage" />
         <transition name="error" to="RemoveRegistry" />
         <event type="node-enter">
@@ -22,9 +23,10 @@
                 <factoryKey>jbpmConfiguration</factoryKey>
             </action>
         </event>
-    </state>
+    </decision>
 
-    <state name="ProcessRegistryMessage">
+    <decision name="ProcessRegistryMessage">
+		<handler class="org.flexpay.common.process.handler.FlexPayDecisionHandler" />
 		<transition name="next" to="GetRegistryMessage"/>
         <transition name="header" to="ProcessHeader" />
         <transition name="record" to="ProcessRecord" />
@@ -38,9 +40,10 @@
                 <factoryKey>jbpmConfiguration</factoryKey>
             </action>
         </event>
-    </state>
+    </decision>
 
-    <state name="ProcessHeader">
+    <decision name="ProcessHeader">
+		<handler class="org.flexpay.common.process.handler.FlexPayDecisionHandler" />
         <transition name="next" to="ProcessRegistryMessage" />
         <transition name="error" to="end" />
         <event type="node-enter">
@@ -49,9 +52,10 @@
                 <factoryKey>jbpmConfiguration</factoryKey>
             </action>
         </event>
-    </state>
+    </decision>
 
-    <state name="ProcessRecord">
+    <decision name="ProcessRecord">
+		<handler class="org.flexpay.common.process.handler.FlexPayDecisionHandler" />
         <transition name="next" to="ProcessRegistryMessage" />
         <transition name="error" to="RemoveRegistry" />
         <event type="node-enter">
@@ -60,9 +64,10 @@
                 <factoryKey>jbpmConfiguration</factoryKey>
             </action>
         </event>
-    </state>
+    </decision>
 
-    <state name="ProcessFooter">
+    <decision name="ProcessFooter">
+		<handler class="org.flexpay.common.process.handler.FlexPayDecisionHandler" />
         <transition name="next" to="ProcessRegistryMessage" />
         <transition name="error" to="RemoveRegistry" />
         <event type="node-enter">
@@ -71,9 +76,10 @@
                 <factoryKey>jbpmConfiguration</factoryKey>
             </action>
         </event>
-    </state>
+    </decision>
 
-    <state name="RemoveRegistry">
+    <decision name="RemoveRegistry">
+		<handler class="org.flexpay.common.process.handler.FlexPayDecisionHandler" />
         <transition name="next" to="end" />
         <transition name="error" to="end" />
         <event type="node-enter">
@@ -82,7 +88,7 @@
                 <factoryKey>jbpmConfiguration</factoryKey>
             </action>
         </event>
-    </state>
+    </decision>
 
 	<end-state name="end" />
 
