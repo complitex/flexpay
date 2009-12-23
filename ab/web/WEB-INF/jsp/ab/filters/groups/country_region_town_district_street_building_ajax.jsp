@@ -1,5 +1,5 @@
 <%@include file="/WEB-INF/jsp/common/taglibs.jsp"%>
-
+<%@include file="/WEB-INF/jsp/common/includes/jquery_bgiframe.jsp"%>
 <%@include file="/WEB-INF/jsp/ab/includes/flexpay_filter.jsp"%>
 
 <script type="text/javascript">

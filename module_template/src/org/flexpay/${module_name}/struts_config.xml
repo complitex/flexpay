@@ -4,18 +4,7 @@
 		"http://struts.apache.org/dtds/struts-2.0.dtd">
 <struts>
 
-	<constant name="struts.custom.i18n.resources"
-			  value="
-			  	org/flexpay/common/i18n/common-messages,org/flexpay/common/i18n/common-errors,
-			  	org/flexpay/${module_name}/i18n/errors,
-			  	org/flexpay/${module_name}/i18n/messages" />
-
-	<package name="${module_name}" namespace="/${module_name}" extends="common">
-
-		<action name="main" class="menuPageAction">
-			<result type="tiles">${module_name}.main</result>
-		</action>
-
-	</package>
+    <include file="org/flexpay/${module_name}/action/struts.xml" />
+    <include file="org/flexpay/${module_name}/i18n/struts.xml" />
 
 </struts>
