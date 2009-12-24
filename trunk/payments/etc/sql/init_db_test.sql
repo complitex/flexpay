@@ -235,7 +235,7 @@ INSERT INTO payments_service_type_name_translations_tbl (name, description, lang
 INSERT INTO payments_service_types_tbl (id, status, code) VALUES (1017, 0, 1017);
 SELECT @service_t_counters_repair:=1017;
 INSERT INTO payments_service_type_name_translations_tbl (name, description, language_id, service_type_id)
-	VALUES ('Ремонт счетчиков', 'Ремонт счетчиков', @ru_id, @service_t_counters_repair);
+	VALUES ('Ремонт счётчиков', 'Ремонт счётчиков', @ru_id, @service_t_counters_repair);
 
 -- Init services
 INSERT INTO payments_services_tbl (id, provider_id, external_code, measure_unit_id, type_id, begin_date, end_date, version, status)
@@ -507,7 +507,7 @@ INSERT INTO payments_services_tbl (id, provider_id, external_code, measure_unit_
 	VALUES (1000, @service_provider_cn, null, null, @service_t_counters_repair, '1900-01-01', '2100-12-31', 0, 0);
 SELECT @service_counters_repair:=1000;
 INSERT INTO payments_service_descriptions_tbl (name, language_id, service_id)
-		VALUES ('Ремонт счетчиков', @ru_id, @service_counters_repair);
+		VALUES ('Ремонт счётчиков', @ru_id, @service_counters_repair);
 
 
 -- init operations
@@ -622,7 +622,7 @@ insert into config_payments_mbservices_tbl (mb_service_code, service_type_id, mb
 		('22', @service_t_ground_tax, 'Налог на землю', 0),
 		('23', @service_t_repeat_turn_on, 'Повторное подключение', 0),
 		('24', @service_t_acts_payment, 'Оплата по актам', 0),
-		('25', @service_t_counters_repair, 'Ремонт счетчиков', 0);
+		('25', @service_t_counters_repair, 'Ремонт счётчиков', 0);
 
 -- master index data
 select @ds:=id from common_data_source_descriptions_tbl where description='Master-index';

@@ -1,5 +1,6 @@
-<%@ include file="/WEB-INF/jsp/common/taglibs.jsp" %>
-<%@include file="/WEB-INF/jsp/payments/include/stylesheet.jsp" %>
+<%@include file="/WEB-INF/jsp/common/taglibs.jsp"%>
+<%@include file="/WEB-INF/jsp/common/includes/jquery_timeentry.jsp"%>
+<%@include file="/WEB-INF/jsp/payments/include/stylesheet.jsp"%>
 
 <script type="text/javascript">
     $(function() {
@@ -124,12 +125,15 @@
     }
 
     // setting up timepickers
-    $(function() {
-        $('#operationsList_beginTime').timeEntry({
+    $("#operationsList_beginTime").ready(function() {
+        $("#operationsList_beginTime").timeEntry({
             show24Hours: true,
             showSeconds: true
         });
-        $('#operationsList_endTime').timeEntry({
+    });
+
+    $("#operationsList_endTime").ready(function() {
+        $("#operationsList_endTime").timeEntry({
             show24Hours: true,
             showSeconds: true
         });

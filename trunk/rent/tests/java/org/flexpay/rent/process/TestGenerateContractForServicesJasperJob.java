@@ -85,7 +85,7 @@ public class TestGenerateContractForServicesJasperJob extends RentSpringBeanAwar
 		form.setTotalSquare(new BigDecimal("77.13"));
 
 		form.setCentralHeatingSP("ЦЕНТРАЛЬНОЕ ОТОПЛЕНИЕ");
-		form.setCentralHeatingSPAccount("СЧЕТ ЦО");
+		form.setCentralHeatingSPAccount("СЧЁТ ЦО");
 		form.setCentralHeatingHeatedSquare(new BigDecimal("34.56"));
 		form.setCentralHeatingDesignLoad(452);
 		form.setHotWaterSP("ГОРЯЧАЯ ВОДА");
@@ -113,7 +113,7 @@ public class TestGenerateContractForServicesJasperJob extends RentSpringBeanAwar
 		form.setBeginDate(new Date(form.getContractDate().getTime() - 3*24*60*60*1000));
 		form.setRenter("RENTER BUDET");
 		form.setCentralHeatingSP("ЦЕНТРАЛЬНОЕ ОТОПЛЕНИЕ");
-		form.setCentralHeatingSPAccount("СЧЕТ ЦО");
+		form.setCentralHeatingSPAccount("СЧЁТ ЦО");
 		form.setCentralHeatingHeatedSquare(new BigDecimal("34.56"));
 		form.setCentralHeatingDesignLoad(452);
 		form.setHotWaterSP("ГОРЯЧАЯ ВОДА");

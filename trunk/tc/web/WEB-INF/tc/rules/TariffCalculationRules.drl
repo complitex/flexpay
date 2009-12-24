@@ -9,7 +9,7 @@ import org.flexpay.bti.service.BuildingAttributeTypeService;
 import org.flexpay.tc.persistence.TariffCalculationResult;
 import org.flexpay.tc.persistence.TariffConfig;
 import org.flexpay.tc.service.TariffCalculationResultService;
-import org.flexpay.tc.service.TariffServiceExt;
+import org.flexpay.tc.service.TariffService;
 import org.slf4j.Logger;
 
 import java.math.BigDecimal;
@@ -26,7 +26,7 @@ global Date calculationDate;
 
 global BuildingAttributeTypeService buildingAttributeTypeService;
 global TariffCalculationResultService tariffCalculationResultService;
-global TariffServiceExt tariffServiceExt;
+global TariffService tariffService;
 
 function BigDecimal getAttributeValue(BtiBuilding building, String attributeCode, WorkingMemory wm) {
     BuildingAttributeTypeService bats = (BuildingAttributeTypeService) wm.getGlobal("buildingAttributeTypeService");
@@ -59,10 +59,10 @@ rule "TestRule"
 	    BigDecimal AG = getAttributeValue(building, BuildingAttributeConfig.ATTR_FLUES_NUMBER, wm);
 	    BigDecimal AI = getAttributeValue(building, BuildingAttributeConfig.ATTR_LIFTED_APARTMENTS_TOTAL_SQUARE, wm);
 	    BigDecimal AS = getAttributeValue(building, BuildingAttributeConfig.ATTR_ADS_SUITED_APARTMENTS_TOTAL_SQUARE, wm);
-	    BigDecimal CM = getAttributeValue(building, BuildingAttributeConfig.ATTR_COMMON_PLACES_LIGHTENING_TARIF_PART_ELECTRICIANS, wm);
-	    BigDecimal CN = getAttributeValue(building, BuildingAttributeConfig.ATTR_COMMON_PLACES_LIGHTENING_TARIF_PART_OBLENERGO, wm);
-	    BigDecimal CO = getAttributeValue(building, BuildingAttributeConfig.ATTR_BASEMENTS_TECHFLOORS_ROOFS_CLEANUP_TARIF_PART_BASEMENTS, wm);
-	    BigDecimal CP = getAttributeValue(building, BuildingAttributeConfig.ATTR_BASEMENTS_TECHFLOORS_ROOFS_CLEANUP_TARIF_PART_TECHFLOORS_ROOFS, wm);
+	    BigDecimal CM = getAttributeValue(building, BuildingAttributeConfig.ATTR_COMMON_PLACES_LIGHTENING_TARIFF_PART_ELECTRICIANS, wm);
+	    BigDecimal CN = getAttributeValue(building, BuildingAttributeConfig.ATTR_COMMON_PLACES_LIGHTENING_TARIFF_PART_OBLENERGO, wm);
+	    BigDecimal CO = getAttributeValue(building, BuildingAttributeConfig.ATTR_BASEMENTS_TECHFLOORS_ROOFS_CLEANUP_TARIFF_PART_BASEMENTS, wm);
+	    BigDecimal CP = getAttributeValue(building, BuildingAttributeConfig.ATTR_BASEMENTS_TECHFLOORS_ROOFS_CLEANUP_TARIFF_PART_TECHFLOORS_ROOFS, wm);
 	    BigDecimal DU = getAttributeValue(building, BuildingAttributeConfig.ATTR_COST_LIFT_TECHNICAL_SUPPORT_ZHILKOMSERVIS, wm);
 	    BigDecimal DW = getAttributeValue(building, BuildingAttributeConfig.ATTR_COST_DISPETCHIRING_ZHILKOMSERVIS, wm);
 
@@ -139,7 +139,7 @@ rule "TestRule"
 
             value = value.setScale(3, BigDecimal.ROUND_HALF_UP);
 
-            results.add(new TariffCalculationResult(value, creationDate, calculationDate, building, tariffServiceExt.getTariffByCode(code)));
+            results.add(new TariffCalculationResult(value, creationDate, calculationDate, building, tariffService.getTariffByCode(code)));
 
         }
 

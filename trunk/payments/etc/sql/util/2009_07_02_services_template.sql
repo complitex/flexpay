@@ -126,7 +126,7 @@ INSERT INTO payments_services_tbl (provider_id, external_code, measure_unit_id, 
 	VALUES (@service_provider, null, null, @service_t_counters_repair, '1900-01-01', '2100-12-31', 0, 0);
 SELECT @service_counters_repair:=last_insert_id();
 INSERT INTO payments_service_descriptions_tbl (name, language_id, service_id)
-		VALUES ('Ремонт счетчиков', @ru_id, @service_counters_repair);
+		VALUES ('Ремонт счётчиков', @ru_id, @service_counters_repair);
 
 SELECT @service_t_pets:=3;
 INSERT INTO payments_services_tbl (provider_id, external_code, measure_unit_id, type_id, begin_date, end_date, version, status)

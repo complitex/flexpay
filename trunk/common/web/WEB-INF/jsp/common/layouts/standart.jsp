@@ -1,5 +1,5 @@
-<%@ include file="/WEB-INF/jsp/common/taglibs.jsp" %>
-<%@ taglib prefix="menu" uri="http://struts-menu.sourceforge.net/tag" %>
+<%@include file="/WEB-INF/jsp/common/taglibs.jsp"%>
+<%@taglib prefix="menu" uri="http://struts-menu.sourceforge.net/tag"%>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 
@@ -9,7 +9,7 @@
 	<tiles:importAttribute ignore="true" name="title" scope="request" />
 	<title><s:text name="%{#attr.title}" /></title>
 
-	<%@ include file="scripts.jsp" %>
+	<%@include file="scripts.jsp"%>
 
 </head>
 <body>

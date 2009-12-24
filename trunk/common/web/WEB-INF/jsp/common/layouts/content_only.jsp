@@ -7,13 +7,9 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<tiles:importAttribute ignore="true" name="title" scope="request" />
 	<title><s:text name="%{#attr.title}" /></title>
-	<link rel="stylesheet" type="text/css" href="<s:url value="/resources/common/style/fp.css" includeParams="none" />" />
 
-    <script type="text/javascript" src="<s:url value="/resources/common/js/jquery/jquery-1.3.2.min.js" includeParams="none" />"></script>
-    <script type="text/javascript" src="<s:url value="/resources/common/js/jquery/protify/jquery.protify-0.3.min.js" includeParams="none" />"></script>
+    <%@include file="scripts.jsp"%>
 
-    <script type="text/javascript" src="<s:url value="/resources/common/js/flexpay_common.js" includeParams="none" />"></script>
-    <script type="text/javascript">FP.base = "<s:url value="/" includeParams="none" />";</script>
 </head>
 <body>
 

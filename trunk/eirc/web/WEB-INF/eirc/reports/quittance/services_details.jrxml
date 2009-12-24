@@ -253,7 +253,7 @@
 					<textElement textAlignment="Center" verticalAlignment="Top">
 						<font size="5"/>
 					</textElement>
-				<text><![CDATA[расчет]]></text>
+				<text><![CDATA[расчёт]]></text>
 				</staticText>
 				<staticText>
 					<reportElement
