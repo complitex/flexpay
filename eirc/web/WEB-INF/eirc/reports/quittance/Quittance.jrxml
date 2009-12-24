@@ -645,7 +645,7 @@
 					<textElement verticalAlignment="Middle">
 						<font isBold="true"/>
 					</textElement>
-				<text><![CDATA[Расчет за ]]></text>
+				<text><![CDATA[Расчёт за ]]></text>
 				</staticText>
 				<staticText>
 					<reportElement
@@ -925,7 +925,7 @@
 					<textElement verticalAlignment="Middle">
 						<font/>
 					</textElement>
-				<text><![CDATA[РАСЧЕТ ЗА УСЛУГИ]]></text>
+				<text><![CDATA[РАСЧЁТ ЗА УСЛУГИ]]></text>
 				</staticText>
 				<staticText>
 					<reportElement

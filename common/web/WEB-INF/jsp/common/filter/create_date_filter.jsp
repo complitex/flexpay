@@ -7,8 +7,9 @@
     <%@include file="/WEB-INF/jsp/common/includes/jquery_ui_core.jsp"%>
     <%@include file="/WEB-INF/jsp/common/includes/jquery_ui_datepicker.jsp"%>
 
+    <input type="text" name="createDateFilter.stringDate" id="createDateFilter" value="<s:property value="createDateFilter.stringDate" />" readonly="readonly" />
+
     <script type="text/javascript">
         FP.calendars("createDateFilter", true);
     </script>
-    <input type="text" name="createDateFilter.stringDate" id="createDateFilter" value="<s:property value="createDateFilter.stringDate" />" readonly="readonly" />
 </s:else>

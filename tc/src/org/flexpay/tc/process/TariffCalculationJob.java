@@ -83,7 +83,7 @@ public class TariffCalculationJob extends Job {
 						workingMemory.setGlobal("calculationDate", calculationDate);
 						workingMemory.setGlobal("buildingAttributeTypeService", buildingAttributeTypeService);
 						workingMemory.setGlobal("tariffCalculationResultService", tariffCalculationResultService);
-						workingMemory.setGlobal("tariffServiceExt", tariffService);
+						workingMemory.setGlobal("tariffService", tariffService);
 
 						workingMemory.insert(btiBuildingService.readWithAttributes(new Stub<BtiBuilding>(btiBuilding)));
 						workingMemory.fireAllRules();

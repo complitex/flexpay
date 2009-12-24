@@ -177,12 +177,12 @@ INSERT INTO payments_service_descriptions_tbl (name, language_id, service_id)
 INSERT INTO payments_service_types_tbl (id, status, code) VALUES (1017, 0, 1017);
 SELECT @service_t_counters_repair:=1017;
 INSERT INTO payments_service_type_name_translations_tbl (name, description, language_id, service_type_id)
-	VALUES ('Ремонт счетчиков', '', @ru_id, @service_t_counters_repair);
+	VALUES ('Ремонт счётчиков', '', @ru_id, @service_t_counters_repair);
 INSERT INTO payments_services_tbl (provider_id, external_code, measure_unit_id, type_id, begin_date, end_date, version, status)
 	VALUES (@service_provider_cn, null, null, @service_t_counters_repair, '1900-01-01', '2100-12-31', 0, 0);
 SELECT @service_counters_repair:=last_insert_id();
 INSERT INTO payments_service_descriptions_tbl (name, language_id, service_id)
-		VALUES ('Ремонт счетчиков', @ru_id, @service_counters_repair);
+		VALUES ('Ремонт счётчиков', @ru_id, @service_counters_repair);
 
 SELECT @service_t_hot_water:=8;
 INSERT INTO payments_services_tbl (provider_id, external_code, measure_unit_id, type_id, begin_date, end_date, version, status)

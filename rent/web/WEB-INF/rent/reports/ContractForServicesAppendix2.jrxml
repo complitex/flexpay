@@ -238,12 +238,12 @@
 			<textField>
 				<reportElement x="316" y="136" width="94" height="15"/>
 				<textElement/>
-				<textFieldExpression class="java.lang.String"><![CDATA["@р.счет@"]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA["@р.счёт@"]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="316" y="268" width="94" height="15"/>
 				<textElement/>
-				<textFieldExpression class="java.lang.String"><![CDATA["@р.счет@"]]></textFieldExpression>
+				<textFieldExpression class="java.lang.String"><![CDATA["@р.счёт@"]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="412" y="238" width="71" height="30"/>

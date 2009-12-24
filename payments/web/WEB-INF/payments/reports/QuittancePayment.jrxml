@@ -116,7 +116,7 @@
 				<textElement verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
-				<text><![CDATA[Номер счета
+				<text><![CDATA[Номер счёта
 Период]]></text>
 			</staticText>
 			<staticText>
@@ -132,7 +132,7 @@
 					<font isBold="true"/>
 				</textElement>
 				<text><![CDATA[Оплата
-Счетчик]]></text>
+Счётчик]]></text>
 			</staticText>
 			<textField>
 				<reportElement x="1" y="45" width="535" height="15"/>

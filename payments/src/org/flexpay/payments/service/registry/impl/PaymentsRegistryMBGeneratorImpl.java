@@ -89,7 +89,7 @@ public class PaymentsRegistryMBGeneratorImpl implements PaymentsRegistryMBGenera
 		SERVICE_NAMES.put("22", "НАЛ ЗЕМЛ");
 		SERVICE_NAMES.put("23", "ПОВ ПОДК");
 		SERVICE_NAMES.put("24", "ОПЛ АКТ ");
-		SERVICE_NAMES.put("25", "РЕМ СЧЕТ");
+		SERVICE_NAMES.put("25", "РЕМ СЧЁТ");
 	}
 
 	private RegistryService registryService;
@@ -234,7 +234,7 @@ public class PaymentsRegistryMBGeneratorImpl implements PaymentsRegistryMBGenera
 		// код квитанции
 		infoLine.add(createCellData(String.valueOf(record.getUniqueOperationNumber()), TABLE_HEADERS[0].length(), ' '));
 
-		// лиц. счет ЕРЦ
+		// лиц. счёт ЕРЦ
 		String eircCount = null;
 		//List<RegistryRecordContainer> containers = registryRecordService.getRecordContainers(record);
 		for (RegistryRecordContainer container : record.getContainers()) {
@@ -248,7 +248,7 @@ public class PaymentsRegistryMBGeneratorImpl implements PaymentsRegistryMBGenera
 		}
 		infoLine.add(createCellData(eircCount, TABLE_HEADERS[1].length(), ' '));
 
-		// лиц. счет поставщика услуг
+		// лиц. счёт поставщика услуг
 		infoLine.add(createCellData(record.getPersonalAccountExt(), TABLE_HEADERS[2].length(), ' '));
 
 		// ФИО
@@ -298,13 +298,13 @@ public class PaymentsRegistryMBGeneratorImpl implements PaymentsRegistryMBGenera
 		String service = serviceCode + "." + SERVICE_NAMES.get(serviceCode) + " " + "*";
 		infoLine.add(createCellData(service, TABLE_HEADERS[8].length(), ' '));
 
-		// начальное показание счетчика
+		// начальное показание счётчика
 		infoLine.add(createCellData("0", TABLE_HEADERS[9].length(), ' '));
 
-		// конечное показание счетчика
+		// конечное показание счётчика
 		infoLine.add(createCellData("0", TABLE_HEADERS[10].length(), ' '));
 
-		// разница показаний счетчика
+		// разница показаний счётчика
 		infoLine.add(createCellData("0", TABLE_HEADERS[11].length(), ' '));
 
 		// дата платежа

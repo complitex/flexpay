@@ -1,10 +1,11 @@
-<%@ include file="/WEB-INF/jsp/common/taglibs.jsp" %>
+<%@include file="/WEB-INF/jsp/common/taglibs.jsp"%>
+<%@include file="/WEB-INF/jsp/common/includes/jquery_validation.jsp"%>
 
 <s:actionerror />
 
 <script type="text/javascript">
 
-	$(document).ready(function() {
+	$(function() {
 		$.validator.addMethod("datesCheck", function (value, element) {
 			var begin = new Date($("#beginDateFilter").val());
 			var end = new Date($("#endDateFilter").val());
@@ -58,15 +59,15 @@
 <s:form id="qgform" action="quittanceGenerate">
     <table cellpadding="3" cellspacing="1" border="0" width="100%">
 		<tr class="cols_1_error" style="display:none;">
-			<td colspan="4" />
+            <td colspan="4"></td>
 		</tr>
 		<tr valign="middle">
 			<td class="col">
-				<%@include file="/WEB-INF/jsp/orgs/filters/service_organization_filter.jsp" %>
+				<%@include file="/WEB-INF/jsp/orgs/filters/service_organization_filter.jsp"%>
 			</td>
 		</tr>
 		<tr class="cols_1_error" style="display:none;">
-			<td colspan="4" />
+            <td colspan="4"></td>
 		</tr>
 		<tr>
 			<td class="col">
@@ -75,12 +76,12 @@
 			</td>
 		</tr>
 		<tr class="cols_1_error" style="display:none;">
-			<td colspan="4" />
+            <td colspan="4"></td>
 		</tr>
 		<tr>
 			<td class="col">
 				<s:text name="common.till" />
-                <%@include file="/WEB-INF/jsp/common/filter/end_date_filter.jsp" %>
+                <%@include file="/WEB-INF/jsp/common/filter/end_date_filter.jsp"%>
 			</td>
 		</tr>
 		<tr>

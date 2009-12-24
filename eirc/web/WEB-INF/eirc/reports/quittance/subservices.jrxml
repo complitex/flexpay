@@ -144,7 +144,7 @@
 					<textElement textAlignment="Center" verticalAlignment="Top">
 						<font size="5" isBold="true"/>
 					</textElement>
-				<text><![CDATA[ расчет]]></text>
+				<text><![CDATA[ расчёт]]></text>
 				</staticText>
 				<staticText>
 					<reportElement

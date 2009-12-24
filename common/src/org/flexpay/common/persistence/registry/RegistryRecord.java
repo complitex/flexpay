@@ -13,7 +13,7 @@ import java.util.List;
 public class RegistryRecord extends DomainObject {
 
 	private String serviceCode;
-	// лиц. счет поставщика услуг
+	// лиц. счёт поставщика услуг
 	private String personalAccountExt;
 	private String city;
 	private String streetType;
