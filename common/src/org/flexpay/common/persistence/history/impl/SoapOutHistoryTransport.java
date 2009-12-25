@@ -6,14 +6,17 @@ import org.apache.commons.io.output.ByteArrayOutputStream;
 import org.apache.xmlbeans.XmlDateTime;
 import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.service.transport.OutTransport;
-import org.springframework.beans.factory.annotation.Required;
-import org.springframework.ws.client.core.WebServiceTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Required;
+import org.springframework.ws.client.core.WebServiceTemplate;
 
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
-import java.io.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.StringReader;
+import java.io.StringWriter;
 
 public class SoapOutHistoryTransport implements OutTransport {
 
@@ -30,6 +33,8 @@ public class SoapOutHistoryTransport implements OutTransport {
 	 * @throws Exception if failure occurs
 	 */
 	public void send(FPFile file) throws Exception {
+
+		log.debug("Sending file {} to url {}", new Object[] { file.getName(), url});
 
 		StringBuilder xml = new StringBuilder("<SaveHistoryRequest xmlns=\"http://flexpay.org/schemas/history\">\n");
 
@@ -60,6 +65,7 @@ public class SoapOutHistoryTransport implements OutTransport {
 
 		String response = writer.toString();
 		if (!response.contains("OK!")) {
+			log.warn("Error sending file {} to url {}. Response is {}", new Object[] {file.getName(), url, response} );
 			throw new Exception("Failed sending file: " + response);
 		}
 	}
