@@ -1,17 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-<process-definition name="ProcessingDBRegistryProcess"
-					xmlns="http://jbpm.org/3/jpdl"
-					xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-					xsi:schemaLocation="http://jbpm.org/3/jpdl http://jbpm.org/xsd/jpdl-3.0.xsd">
+<process-definition xmlns="urn:jbpm.org:jpdl-3.2" name="ProcessingDBRegistryProcess"
+                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                    xsi:schemaLocation="urn:jbpm.org:jpdl-3.2 http://docs.jboss.org/jbpm/xsd/jpdl-3.2.xsd">
 
 	<start-state name="start">
 		<transition to="StartRegistryProcessing" />
 		<event type="node-leave">
 			<script>
 				<variable mapped-name="range" access="write" name="range" />
+				<variable mapped-name="numberLoop" access="write" name="numberLoop" />
+				<variable name="startTime" mapped-name="startTime" access="write" />
 				<expression>
                     range = new org.flexpay.common.dao.paging.FetchRange(50);
+					numberLoop = 0;
+					startTime = org.flexpay.common.util.DateUtil.now();
                 </expression>
 			</script>
 		</event>
@@ -43,7 +45,7 @@
 
 	<decision name="HasMoreRecord">
 		<handler class="org.flexpay.common.process.handler.FlexPayDecisionHandler" />
-        <transition name="continue" to="ProcessRecordsRange" />
+        <transition name="continue" to="IsFlushStack" />
         <transition name="error" to="EndRegistryProcessing" />
         <transition name="next" to="EndRegistryProcessing" />
         <event type="node-enter">
@@ -53,6 +55,30 @@
             </action>
         </event>
     </decision>
+
+	<decision name="IsFlushStack">
+		<transition name="flush" to="FlushStack">
+			<condition expression="#{numberLoop%10 == 0}"/>
+		</transition>
+		<transition name="continue" to="ProcessRecordsRange">
+			<condition expression="#{numberLoop%10 != 0}"/>
+		</transition>
+		<event type="node-enter">
+			<script>
+				<variable mapped-name="numberLoop" access="read,write" name="numberLoop" />
+				<expression>
+					numberLoop++;
+				</expression>
+			</script>
+		</event>
+	</decision>
+
+	<task-node name="FlushStack">
+		<task name="flush">
+			<timer duedate="#{startTime}" transition="process"/>
+		</task>
+		<transition name="process" to="ProcessRecordsRange" />
+	</task-node>
 
 	<decision name="EndRegistryProcessing">
 		<handler class="org.flexpay.common.process.handler.FlexPayDecisionHandler" />

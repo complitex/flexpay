@@ -29,6 +29,7 @@ public class GetRegistryMessageActionHandler extends FlexPayActionHandler {
 	@SuppressWarnings ({"unchecked"})
 	@Override
     public String execute2(Map<String, Object> parameters) throws FlexPayException {
+		log.debug("start action");
 		List<SpFileReader.Message> listMessage = (List<SpFileReader.Message>)parameters.get(PARAM_MESSAGES);
 		if (listMessage != null && listMessage.size() > 0) {
 			return RESULT_NEXT;
@@ -58,12 +59,11 @@ public class GetRegistryMessageActionHandler extends FlexPayActionHandler {
 			Long startPoint = reader.getPosition();
 			SpFileReader.Message message;
 
-			log.debug("start position={}", startPoint);
 			do {
 				message = reader.readMessage();
 				listMessage.add(message);
-				log.debug("position={}", reader.getPosition());
 			} while (message != null && (reader.getPosition() - startPoint) < minReadChars);
+			log.debug("read {} number record", listMessage.size());
 			reader.setInputStream(null);
 
             parameters.put(PARAM_MESSAGES, listMessage);

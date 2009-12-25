@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-<process-definition name="ParseFPRegistryProcess"
-					xmlns="http://jbpm.org/3/jpdl"
-					xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-					xsi:schemaLocation="http://jbpm.org/3/jpdl http://jbpm.org/xsd/jpdl-3.0.xsd">
+<process-definition xmlns="urn:jbpm.org:jpdl-3.2" name="ParseFPRegistryProcess"
+                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                    xsi:schemaLocation="urn:jbpm.org:jpdl-3.2 http://docs.jboss.org/jbpm/xsd/jpdl-3.2.xsd">
 
 	<swimlane name="worker">
 		<assignment class="org.flexpay.common.process.JobManagerAssignmentHandler" />
@@ -11,11 +9,21 @@
 
 	<start-state name="start">
 		<transition to="GetRegistryMessage" />
+		<event type="node-leave">
+			<script>
+				<variable mapped-name="numberLoop" access="write" name="numberLoop" />
+				<variable name="startTime" mapped-name="startTime" access="write" />
+				<expression>
+					numberLoop = 0;
+					startTime = org.flexpay.common.util.DateUtil.now();
+                </expression>
+			</script>
+		</event>
 	</start-state>
 
     <decision name="GetRegistryMessage">
 		<handler class="org.flexpay.common.process.handler.FlexPayDecisionHandler" />
-        <transition name="next" to="ProcessRegistryMessage" />
+        <transition name="next" to="IsFlushStack" />
         <transition name="error" to="RemoveRegistry" />
         <event type="node-enter">
             <action name="task" config-type="bean" class="org.springmodules.workflow.jbpm31.JbpmHandlerProxy">
@@ -31,7 +39,7 @@
         <transition name="header" to="ProcessHeader" />
         <transition name="record" to="ProcessRecord" />
         <transition name="footer" to="ProcessFooter" />
-        <transition name="empty" to="ProcessRegistryMessage" />
+        <transition name="empty" to="IsFlushStack" />
         <transition name="error" to="RemoveRegistry" />
         <transition name="end" to="end" />
         <event type="node-enter">
@@ -44,7 +52,7 @@
 
     <decision name="ProcessHeader">
 		<handler class="org.flexpay.common.process.handler.FlexPayDecisionHandler" />
-        <transition name="next" to="ProcessRegistryMessage" />
+        <transition name="next" to="IsFlushStack" />
         <transition name="error" to="end" />
         <event type="node-enter">
             <action name="task" config-type="bean" class="org.springmodules.workflow.jbpm31.JbpmHandlerProxy">
@@ -56,7 +64,7 @@
 
     <decision name="ProcessRecord">
 		<handler class="org.flexpay.common.process.handler.FlexPayDecisionHandler" />
-        <transition name="next" to="ProcessRegistryMessage" />
+        <transition name="next" to="IsFlushStack" />
         <transition name="error" to="RemoveRegistry" />
         <event type="node-enter">
             <action name="task" config-type="bean" class="org.springmodules.workflow.jbpm31.JbpmHandlerProxy">
@@ -68,7 +76,7 @@
 
     <decision name="ProcessFooter">
 		<handler class="org.flexpay.common.process.handler.FlexPayDecisionHandler" />
-        <transition name="next" to="ProcessRegistryMessage" />
+        <transition name="next" to="IsFlushStack" />
         <transition name="error" to="RemoveRegistry" />
         <event type="node-enter">
             <action name="task" config-type="bean" class="org.springmodules.workflow.jbpm31.JbpmHandlerProxy">
@@ -77,6 +85,30 @@
             </action>
         </event>
     </decision>
+
+	<decision name="IsFlushStack">
+		<transition name="flush" to="FlushStack">
+			<condition expression="#{numberLoop%10 == 0}"/>
+		</transition>
+		<transition name="continue" to="ProcessRegistryMessage">
+			<condition expression="#{numberLoop%10 != 0}"/>
+		</transition>
+		<event type="node-enter">
+			<script>
+				<variable mapped-name="numberLoop" access="read,write" name="numberLoop" />
+				<expression>
+					numberLoop++;
+				</expression>
+			</script>
+		</event>
+	</decision>
+
+	<task-node name="FlushStack">
+		<task name="flush">
+			<timer duedate="#{startTime}" transition="process"/>
+		</task>
+		<transition name="process" to="ProcessRegistryMessage" />
+	</task-node>
 
     <decision name="RemoveRegistry">
 		<handler class="org.flexpay.common.process.handler.FlexPayDecisionHandler" />
