@@ -2,6 +2,7 @@ package org.flexpay.common.process.handler;
 
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.process.ProcessLogger;
+import org.jbpm.context.exe.ContextInstance;
 import org.jbpm.graph.def.ActionHandler;
 import org.jbpm.graph.def.Transition;
 import org.jbpm.graph.exe.ExecutionContext;
@@ -20,14 +21,15 @@ public abstract class FlexPayActionHandler implements ActionHandler {
 	@SuppressWarnings ({"unchecked"})
 	@Override
 	public void execute(ExecutionContext executionContext) throws Exception {
-		Map<String, Object> parameters = (Map<String,Object>)executionContext.getContextInstance().getVariables();
+		ContextInstance contextInstance = executionContext.getContextInstance();
+		Map<String, Object> parameters = (Map<String,Object>)contextInstance.getVariables();
 		String result = execute2(parameters);
 		for (Map.Entry<String, Object> entry : parameters.entrySet()) {
-			executionContext.getContextInstance().setVariable(entry.getKey(), entry.getValue());
-			log.debug("{}={}", new Object[]{entry.getKey(), entry.getValue()});
+			contextInstance.setVariable(entry.getKey(), entry.getValue());
+			//log.debug("{}={}", new Object[]{entry.getKey(), entry.getValue()});
 		}
 
-		executionContext.getContextInstance().setVariable(FlexPayDecisionHandler.RESULT, result);
+		contextInstance.setVariable(FlexPayDecisionHandler.RESULT, result);
 	}
 
 	public abstract String execute2(Map<String, Object> parameters) throws FlexPayException;
