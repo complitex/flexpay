@@ -509,33 +509,33 @@ objectClass: top
 objectClass: groupofurls
 cn: ORGS_SERVICE_PROVIDER_DELETE
 
-# ORGS_PAYMENTS_COLLECTOR_READ, groups, opensso.java.net
-dn: cn=ORGS_PAYMENTS_COLLECTOR_READ,ou=groups,dc=opensso,dc=java,dc=net
+# ORGS_PAYMENT_COLLECTOR_READ, groups, opensso.java.net
+dn: cn=ORGS_PAYMENT_COLLECTOR_READ,ou=groups,dc=opensso,dc=java,dc=net
 objectClass: groupofuniquenames
 objectClass: top
 objectClass: groupofurls
-cn: ORGS_PAYMENTS_COLLECTOR_READ
+cn: ORGS_PAYMENT_COLLECTOR_READ
 
-# ORGS_PAYMENTS_COLLECTOR_CHANGE, groups, opensso.java.net
-dn: cn=ORGS_PAYMENTS_COLLECTOR_CHANGE,ou=groups,dc=opensso,dc=java,dc=net
+# ORGS_PAYMENT_COLLECTOR_CHANGE, groups, opensso.java.net
+dn: cn=ORGS_PAYMENT_COLLECTOR_CHANGE,ou=groups,dc=opensso,dc=java,dc=net
 objectClass: groupofuniquenames
 objectClass: top
 objectClass: groupofurls
-cn: ORGS_PAYMENTS_COLLECTOR_CHANGE
+cn: ORGS_PAYMENT_COLLECTOR_CHANGE
 
-# ORGS_PAYMENTS_COLLECTOR_ADD, groups, opensso.java.net
-dn: cn=ORGS_PAYMENTS_COLLECTOR_ADD,ou=groups,dc=opensso,dc=java,dc=net
+# ORGS_PAYMENT_COLLECTOR_ADD, groups, opensso.java.net
+dn: cn=ORGS_PAYMENT_COLLECTOR_ADD,ou=groups,dc=opensso,dc=java,dc=net
 objectClass: groupofuniquenames
 objectClass: top
 objectClass: groupofurls
-cn: ORGS_PAYMENTS_COLLECTOR_ADD
+cn: ORGS_PAYMENT_COLLECTOR_ADD
 
-# ORGS_PAYMENTS_COLLECTOR_DELETE, groups, opensso.java.net
-dn: cn=ORGS_PAYMENTS_COLLECTOR_DELETE,ou=groups,dc=opensso,dc=java,dc=net
+# ORGS_PAYMENT_COLLECTOR_DELETE, groups, opensso.java.net
+dn: cn=ORGS_PAYMENT_COLLECTOR_DELETE,ou=groups,dc=opensso,dc=java,dc=net
 objectClass: groupofuniquenames
 objectClass: top
 objectClass: groupofurls
-cn: ORGS_PAYMENTS_COLLECTOR_DELETE
+cn: ORGS_PAYMENT_COLLECTOR_DELETE
 
 # ORGS_PAYMENT_POINT_READ, groups, opensso.java.net
 dn: cn=ORGS_PAYMENT_POINT_READ,ou=groups,dc=opensso,dc=java,dc=net
