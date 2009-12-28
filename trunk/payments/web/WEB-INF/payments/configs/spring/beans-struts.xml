@@ -235,15 +235,20 @@
           scope="prototype" />
 
     <!-- Registries -->
-    <bean id="registriesListAction"
-          class="org.flexpay.payments.actions.registry.RegistriesListAction"
+    <bean id="registriesListPageAction"
+          class="org.flexpay.payments.actions.registry.RegistriesListPageAction"
           p:crumbNameKey="payments.crumbs.registries_list"
-          p:eircRegistryService-ref="eircRegistryService"
           p:organizationService-ref="organizationService"
           p:registryTypeService-ref="registryTypeService"
+          scope="prototype" />
+
+    <bean id="registriesListAction"
+          class="org.flexpay.payments.actions.registry.RegistriesListAction"
+          p:eircRegistryService-ref="eircRegistryService"
+          p:organizationService-ref="organizationService"
           p:registryFPFileTypeService-ref="registryFPFileTypeService"
+          p:fileService-ref="fpFileService"
 		  p:moduleName="${flexpay.module.name.payments}"
-		  p:fileService-ref="fpFileService"
           scope="prototype" />
 
     <bean id="registriesProcessAction"

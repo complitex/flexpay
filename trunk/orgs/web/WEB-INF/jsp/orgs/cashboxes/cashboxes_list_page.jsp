@@ -23,8 +23,8 @@
     function pagerAjax(element) {
         FP.pagerAjax(element, {
             action:"<s:url action="cashboxesListAjax" includeParams="none"/>"
-            <s:if test="paymentPointsFilter != null && paymentPointsFilter.selectedId != null && paymentPointsFilter.selectedId >    0">
-            ,params: {
+            <s:if test="paymentPointsFilter != null && paymentPointsFilter.selectedId != null && paymentPointsFilter.selectedId > 0">
+            , params: {
                 "paymentPointsFilter.selectedId":<s:property value="paymentPointsFilter.selectedId" />
             }
             </s:if>

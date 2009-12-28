@@ -60,10 +60,10 @@ public class EircRegistryDaoExtImpl extends HibernateDaoSupport implements EircR
 			if (!filter.needFilter()) {
 				continue;
 			}
-			hql.append(" and ");
-			hqlCount.append(" and ");
 			for (FilterHandler handler : filterHandlers) {
 				if (handler.supports(filter)) {
+					hql.append(" and ");
+					hqlCount.append(" and ");
 					List<?> parameters = handler.whereClause(filter, hqlCount);
 					handler.whereClause(filter, hql);
 					params.addAll(parameters);
@@ -76,6 +76,7 @@ public class EircRegistryDaoExtImpl extends HibernateDaoSupport implements EircR
 		// retrieve elements
 		@SuppressWarnings ({"unchecked"})
 		List<Registry> result = getHibernateTemplate().executeFind(new HibernateCallback() {
+			@Override
 			public Object doInHibernate(Session session) throws HibernateException {
 				Query qCount = session.createQuery(hqlCount.toString());
 				Query query = session.createQuery(hql.toString());
@@ -145,8 +146,10 @@ public class EircRegistryDaoExtImpl extends HibernateDaoSupport implements EircR
 		}
 	}
 
+	@Override
 	public void deleteQuittances(final Long registryId) {
 		getHibernateTemplate().execute(new HibernateCallback() {
+			@Override
 			public Void doInHibernate(Session session) throws HibernateException {
 				session.getNamedQuery("Registry.deleteQuittances").setLong(1, registryId).executeUpdate();
 				return null;

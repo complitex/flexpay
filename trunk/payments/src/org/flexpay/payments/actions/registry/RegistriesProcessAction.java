@@ -1,43 +1,41 @@
 package org.flexpay.payments.actions.registry;
 
-import org.flexpay.common.process.ProcessManager;
-import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.actions.FPActionSupport;
-import org.flexpay.payments.actions.CashboxCookieActionSupport;
+import org.flexpay.common.process.ProcessManager;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.io.Serializable;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import static org.flexpay.common.util.CollectionUtils.map;
+import static org.flexpay.common.util.CollectionUtils.set;
+
 public class RegistriesProcessAction extends FPActionSupport {
 
-	private Set<Long> objectIds = new HashSet<Long>();
+	private Set<Long> objectIds = set();
 
 	private ProcessManager processManager;
 
 	@NotNull
+	@Override
 	public String doExecute() throws Exception {
 
-		if (objectIds.isEmpty()) {
-			// just redirect, no registries to process
-			return REDIRECT_SUCCESS;
+		if (objectIds == null || objectIds.isEmpty()) {
+			return SUCCESS;
 		}
 
-		log.debug("About to execute RegistriesProcessAction");
-
 		for (Long registryId : objectIds) {
-			Map<Serializable, Serializable> contextVariables = CollectionUtils.map();
+			Map<Serializable, Serializable> contextVariables = map();
 			contextVariables.put("registryId", registryId);
 
 			processManager.createProcess("ProcessingDBRegistryProcess", contextVariables);
 		}
 
-		addActionError(getText("eirc.registry.processing_started"));
+		addActionMessage(getText("eirc.registry.processing_started"));
 
-		return REDIRECT_SUCCESS;
+		return SUCCESS;
 	}
 
 	/**
@@ -48,12 +46,9 @@ public class RegistriesProcessAction extends FPActionSupport {
 	 * @return {@link #ERROR} by default
 	 */
 	@NotNull
+	@Override
 	protected String getErrorResult() {
-		return REDIRECT_SUCCESS;
-	}
-
-	public Set<Long> getObjectIds() {
-		return objectIds;
+		return SUCCESS;
 	}
 
 	public void setObjectIds(Set<Long> objectIds) {

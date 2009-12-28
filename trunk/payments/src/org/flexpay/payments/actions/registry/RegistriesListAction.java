@@ -1,9 +1,6 @@
 package org.flexpay.payments.actions.registry;
 
-import org.apache.commons.lang.time.DateUtils;
-import org.apache.commons.lang.time.StopWatch;
 import org.flexpay.common.actions.FPActionWithPagerSupport;
-import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.persistence.filter.*;
 import org.flexpay.common.persistence.registry.Registry;
@@ -11,11 +8,7 @@ import org.flexpay.common.persistence.registry.RegistryFPFileType;
 import org.flexpay.common.persistence.registry.RegistryProperties;
 import org.flexpay.common.service.FPFileService;
 import org.flexpay.common.service.RegistryFPFileTypeService;
-import org.flexpay.common.service.RegistryTypeService;
-import static org.flexpay.common.util.CollectionUtils.list;
-import org.flexpay.common.util.DateUtil;
 import org.flexpay.orgs.persistence.Organization;
-import org.flexpay.orgs.persistence.filters.OrganizationFilter;
 import org.flexpay.orgs.persistence.filters.RecipientOrganizationFilter;
 import org.flexpay.orgs.persistence.filters.SenderOrganizationFilter;
 import org.flexpay.orgs.service.OrganizationService;
@@ -28,45 +21,29 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-public class RegistriesListAction extends FPActionWithPagerSupport {
+import static org.apache.commons.lang.time.DateUtils.addDays;
+import static org.flexpay.common.persistence.Stub.stub;
+import static org.flexpay.common.util.CollectionUtils.list;
+import static org.flexpay.common.util.DateUtil.*;
 
-	private OrganizationFilter senderOrganizationFilter = new SenderOrganizationFilter();
-	private OrganizationFilter recipientOrganizationFilter = new RecipientOrganizationFilter();
+public class RegistriesListAction extends FPActionWithPagerSupport<Registry> {
+
+	private SenderOrganizationFilter senderOrganizationFilter = new SenderOrganizationFilter();
+	private RecipientOrganizationFilter recipientOrganizationFilter = new RecipientOrganizationFilter();
 	private RegistryTypeFilter registryTypeFilter = new RegistryTypeFilter();
-	private Date fromDate = DateUtils.addDays(DateUtil.now(), -2);
-	private Date tillDate = new Date();
+	private Date fromDate = truncateDay(addDays(now(), -2));
+	private Date tillDate = getEndOfThisDay(now());
 
-	private List<Registry> registries;
+	private List<Registry> registries = list();
 
 	private OrganizationService organizationService;
 	private EircRegistryService eircRegistryService;
-	private RegistryTypeService registryTypeService;
 	private RegistryFPFileTypeService registryFPFileTypeService;
-
 	private String moduleName;
 	private FPFileService fileService;
 
 	@NotNull
 	public String doExecute() throws Exception {
-
-		StopWatch watch = new StopWatch();
-		watch.start();
-		senderOrganizationFilter.setOrganizations(organizationService.listOrganizations());
-		watch.stop();
-		log.debug("Time spent initializing sender filter: {}", watch);
-		watch.reset();
-		watch.start();
-		recipientOrganizationFilter.setOrganizations(organizationService.listOrganizations());
-		watch.stop();
-		log.debug("Time spent initializing recipient filter: {}", watch);
-
-		registryTypeService.initFilter(registryTypeFilter);
-
-		watch.reset();
-		watch.start();
-
-		fromDate = DateUtil.truncateDay(fromDate);
-		tillDate = DateUtil.getEndOfThisDay(tillDate);
 
 		List<ObjectFilter> filters = list(
 				senderOrganizationFilter,
@@ -78,9 +55,10 @@ public class RegistriesListAction extends FPActionWithPagerSupport {
 		);
 
 		registries = eircRegistryService.findObjects(filters, getPager());
-		watch.stop();
-		log.debug("Time spent listing registries: {}", watch);
-		log.debug("Total registries found: {}", registries.size());
+
+		if (log.isDebugEnabled()) {
+			log.debug("Total registries found: {}", registries.size());
+		}
 
 		return SUCCESS;
 	}
@@ -102,49 +80,25 @@ public class RegistriesListAction extends FPActionWithPagerSupport {
 		return registries;
 	}
 
-	public void setRegistries(List<Registry> registries) {
-		this.registries = registries;
-	}
-
-	public OrganizationFilter getSenderOrganizationFilter() {
-		return senderOrganizationFilter;
-	}
-
-	public void setSenderOrganizationFilter(OrganizationFilter senderOrganizationFilter) {
+	public void setSenderOrganizationFilter(SenderOrganizationFilter senderOrganizationFilter) {
 		this.senderOrganizationFilter = senderOrganizationFilter;
 	}
 
-	public OrganizationFilter getRecipientOrganizationFilter() {
-		return recipientOrganizationFilter;
-	}
-
-	public void setRecipientOrganizationFilter(OrganizationFilter recipientOrganizationFilter) {
+	public void setRecipientOrganizationFilter(RecipientOrganizationFilter recipientOrganizationFilter) {
 		this.recipientOrganizationFilter = recipientOrganizationFilter;
-	}
-
-	public RegistryTypeFilter getRegistryTypeFilter() {
-		return registryTypeFilter;
 	}
 
 	public void setRegistryTypeFilter(RegistryTypeFilter registryTypeFilter) {
 		this.registryTypeFilter = registryTypeFilter;
 	}
 
-	public String getFromDate() {
-		return format(fromDate);
-	}
-
 	public void setFromDate(String dt) {
-		fromDate = DateUtil.parseDate(dt, DateUtil.currentMonth());
+		fromDate = truncateDay(parseDate(dt, currentMonth()));
 		log.debug("dt = {}, fromDate = {}", dt, fromDate);
 	}
 
-	public String getTillDate() {
-		return format(tillDate);
-	}
-
 	public void setTillDate(String dt) {
-		tillDate = DateUtil.parseDate(dt, DateUtil.now());
+		tillDate = getEndOfThisDay(parseDate(dt, now()));
 		log.debug("dt = {}, fromDate = {}", dt, tillDate);
 	}
 
@@ -159,16 +113,20 @@ public class RegistriesListAction extends FPActionWithPagerSupport {
 	}
 
 	public FPFile getRegistryFileInMBFormat(Map<RegistryFPFileType, FPFile> files) {
-		log.debug("get registry file in MB format, size={}", files.size());
+		if (log.isDebugEnabled()) {
+			log.debug("Get registry file in MB format, size = {}", files.size());
+		}
 		FPFile file = files.get(registryFPFileTypeService.findByCode(RegistryFPFileType.MB_FORMAT));
-		log.debug("return file: {}", file);
+		log.debug("Return file: {}", file);
 		return file;
 	}
 
 	public FPFile getRegistryFileInFPFormat(Map<RegistryFPFileType, FPFile> files) {
-		log.debug("get registry file in FP format, size={}", files.size());
+		if (log.isDebugEnabled()) {
+			log.debug("Get registry file in FP format, size = {}", files.size());
+		}
 		FPFile file = files.get(registryFPFileTypeService.findByCode(RegistryFPFileType.FP_FORMAT));
-		log.debug("return file: {}", file);
+		log.debug("Return file: {}", file);
 		return file;
 	}
 
@@ -180,11 +138,6 @@ public class RegistriesListAction extends FPActionWithPagerSupport {
 	@Required
 	public void setOrganizationService(OrganizationService organizationService) {
 		this.organizationService = organizationService;
-	}
-
-	@Required
-	public void setRegistryTypeService(RegistryTypeService registryTypeService) {
-		this.registryTypeService = registryTypeService;
 	}
 
 	@Required

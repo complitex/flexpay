@@ -6,10 +6,9 @@
 		   http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
 		   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
-	<bean id="registriesListActionEirc"
-		  scope="prototype"
-		  parent="registriesListAction"
-		  p:moduleName="${flexpay.module.name.eirc}" />
+	<bean id="registriesListActionEirc" parent="registriesListAction"
+		  p:moduleName="${flexpay.module.name.eirc}"
+          scope="prototype" />
 
 	<!-- SP files -->
 	<bean id="spFileCreatePageAction" parent="staticPageAction"
@@ -179,15 +178,21 @@
 		  p:recordService-ref="registryRecordService"
 		  p:organizationService-ref="organizationService" />
 
-	<bean id="registryViewAction"
-		  scope="prototype"
-		  class="org.flexpay.eirc.actions.registry.RegistryViewAction"
-		  p:crumbNameKey="payments.crumbs.registry_view"
-		  p:registryService-ref="registryService"
-		  p:registryRecordService-ref="registryRecordService"
-		  p:classToTypeRegistry-ref="classToTypeRegistry"
-		  p:serviceTypeService-ref="serviceTypeService"
-		  p:recordStatusService-ref="registryRecordStatusService" />
+    <bean id="registryViewAction"
+          class="org.flexpay.eirc.actions.registry.RegistryViewPageAction"
+          p:crumbNameKey="payments.crumbs.registry_view"
+          p:registryService-ref="registryService"
+          p:classToTypeRegistry-ref="classToTypeRegistry"
+          p:serviceTypeService-ref="serviceTypeService"
+          p:recordStatusService-ref="registryRecordStatusService"
+          scope="prototype"  />
+
+    <bean id="registryRecordsListAction"
+          class="org.flexpay.payments.actions.registry.RegistryRecordsListAction"
+          p:classToTypeRegistry-ref="classToTypeRegistry"
+          p:serviceTypeService-ref="serviceTypeService"
+          p:registryRecordService-ref="registryRecordService"
+          scope="prototype"  />
 
 	<bean id="processesListPageAction"
 		  class="org.flexpay.common.actions.processing.ProcessesListPageAction"

@@ -2,13 +2,14 @@ package org.flexpay.payments.dao.impl;
 
 import org.flexpay.common.dao.FilterHandler;
 import org.flexpay.common.persistence.filter.*;
-import static org.flexpay.common.util.CollectionUtils.list;
 import org.flexpay.orgs.persistence.filters.RecipientOrganizationFilter;
 import org.flexpay.orgs.persistence.filters.SenderOrganizationFilter;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Date;
 import java.util.List;
+
+import static org.flexpay.common.util.CollectionUtils.list;
 
 public final class FilterHandlers {
 

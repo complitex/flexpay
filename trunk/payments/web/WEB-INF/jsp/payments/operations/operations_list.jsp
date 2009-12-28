@@ -127,6 +127,7 @@
     // setting up timepickers
     $("#operationsList_beginTime").ready(function() {
         $("#operationsList_beginTime").timeEntry({
+            spinnerImage: FP.base + "/resources/common/js/jquery/timeentry/spinnerDefault.png",
             show24Hours: true,
             showSeconds: true
         });
@@ -134,6 +135,7 @@
 
     $("#operationsList_endTime").ready(function() {
         $("#operationsList_endTime").timeEntry({
+            spinnerImage: FP.base + "/resources/common/js/jquery/timeentry/spinnerDefault.png",
             show24Hours: true,
             showSeconds: true
         });

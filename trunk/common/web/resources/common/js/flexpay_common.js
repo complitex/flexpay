@@ -121,7 +121,7 @@ var FP = {
             element.form.submit();
             return true;
         }
-        $('select[name="pager.pageSize"]').each(function() {
+        $('select[name=pager.pageSize]').each(function() {
             if (this != element) {
                 this.name = null;
             }
@@ -188,15 +188,26 @@ var FP = {
             FP.showShadow(shadowId, resultId);
         }
 
-        if (element != null && element != undefined) {
+        var pageSizeName = opt.pageSizeName;
 
-            var pageSizeName = opt.pageSizeName;
+        if (element == null || element == undefined) {
+            params[opt.pageSizeChangedName] = false;
+            var curPage = $("input[name=curPage]");
+            params[opt.pageNumberName] = curPage.get(0) != null && curPage.get(0) != undefined ? curPage.val() : 1;
+            var pageSize = $("select[name=" + pageSizeName + "]");
+            if (pageSize.get(0) != null && pageSize.get(0) != undefined) {
+                params[pageSizeName] = pageSize.val();
+            }
+        } else {
+
             var isSelect = element.name == pageSizeName;
             var elValue = element.value;
 
             params[opt.pageSizeChangedName] = isSelect;
-            params[opt.pageNumberName] = isSelect ? "" : opt.notPagerRequest ? "1" : elValue;
-            params[pageSizeName] = isSelect ? elValue : $('select[name="' + pageSizeName + '"]').val();
+            if (!isSelect) {
+                params[opt.pageNumberName] = elValue;
+            }
+            params[pageSizeName] = isSelect ? elValue : $("select[name=" + pageSizeName + "]").val();
         }
 
         $.post(opt.action, params, function(data) {
@@ -245,7 +256,7 @@ var FP = {
 
         FP.showShadow(opt.shadowId, opt.resultId);
         var ids = [];
-        $("input[name='" + name + "']:checked").each(function() {
+        $("input[name=" + name + "]:checked").each(function() {
             ids[ids.length] = this.value;
         });
         if (ids.length == 0) {
@@ -266,7 +277,7 @@ var FP = {
 	 */
 	copyToClipboard : function(content) {
 		if ($.browser.mozilla) {
-			netscape.security.PrivilegeManager.enablePrivilege('UniversalXPConnect');
+			netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");
 			var gClipboardHelper = Components.classes["@mozilla.org/widget/clipboardhelper;1"].getService(Components.interfaces.nsIClipboardHelper);
 			gClipboardHelper.copyString(content);
 		} else if ($.browser.msie) {
