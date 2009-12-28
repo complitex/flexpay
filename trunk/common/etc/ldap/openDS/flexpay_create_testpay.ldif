@@ -46,7 +46,7 @@ memberof: cn=ORGS_BANK_READ,ou=groups,dc=opensso,dc=java,dc=net
 memberof: cn=ORGS_CASHBOX_READ,ou=groups,dc=opensso,dc=java,dc=net
 memberof: cn=ORGS_ORGANIZATION_READ,ou=groups,dc=opensso,dc=java,dc=net
 memberof: cn=ORGS_PAYMENT_POINT_READ,ou=groups,dc=opensso,dc=java,dc=net
-memberof: cn=ORGS_PAYMENTS_COLLECTOR_READ,ou=groups,dc=opensso,dc=java,dc=net
+memberof: cn=ORGS_PAYMENT_COLLECTOR_READ,ou=groups,dc=opensso,dc=java,dc=net
 memberof: cn=ORGS_SERVICE_ORGANIZATION_READ,ou=groups,dc=opensso,dc=java,dc=net
 memberof: cn=ORGS_SERVICE_PROVIDER_READ,ou=groups,dc=opensso,dc=java,dc=net
 memberof: cn=PAYMENTS_DOCUMENT_ADD,ou=groups,dc=opensso,dc=java,dc=net

@@ -50,10 +50,10 @@ memberof: cn=ORGS_PAYMENT_POINT_ADD,ou=groups,dc=opensso,dc=java,dc=net
 memberof: cn=ORGS_PAYMENT_POINT_CHANGE,ou=groups,dc=opensso,dc=java,dc=net
 memberof: cn=ORGS_PAYMENT_POINT_DELETE,ou=groups,dc=opensso,dc=java,dc=net
 memberof: cn=ORGS_PAYMENT_POINT_READ,ou=groups,dc=opensso,dc=java,dc=net
-memberof: cn=ORGS_PAYMENTS_COLLECTOR_ADD,ou=groups,dc=opensso,dc=java,dc=net
-memberof: cn=ORGS_PAYMENTS_COLLECTOR_CHANGE,ou=groups,dc=opensso,dc=java,dc=net
-memberof: cn=ORGS_PAYMENTS_COLLECTOR_DELETE,ou=groups,dc=opensso,dc=java,dc=net
-memberof: cn=ORGS_PAYMENTS_COLLECTOR_READ,ou=groups,dc=opensso,dc=java,dc=net
+memberof: cn=ORGS_PAYMENT_COLLECTOR_ADD,ou=groups,dc=opensso,dc=java,dc=net
+memberof: cn=ORGS_PAYMENT_COLLECTOR_CHANGE,ou=groups,dc=opensso,dc=java,dc=net
+memberof: cn=ORGS_PAYMENT_COLLECTOR_DELETE,ou=groups,dc=opensso,dc=java,dc=net
+memberof: cn=ORGS_PAYMENT_COLLECTOR_READ,ou=groups,dc=opensso,dc=java,dc=net
 memberof: cn=ORGS_SERVICE_ORGANIZATION_READ,ou=groups,dc=opensso,dc=java,dc=net
 memberof: cn=ORGS_SERVICE_PROVIDER_READ,ou=groups,dc=opensso,dc=java,dc=net
 memberof: cn=PAYMENTS_DOCUMENT_CHANGE,ou=groups,dc=opensso,dc=java,dc=net
