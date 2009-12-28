@@ -2,7 +2,7 @@ package org.flexpay.payments.action;
 
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.persistence.registry.Registry;
-import org.flexpay.payments.actions.registry.RegistryViewAction;
+import org.flexpay.payments.actions.registry.RegistryViewPageAction;
 import org.flexpay.payments.test.PaymentsSpringBeanAwareTestCase;
 import static org.junit.Assert.assertEquals;
 import org.junit.Test;
@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class TestRegistryViewAction extends PaymentsSpringBeanAwareTestCase {
 
 	@Autowired
-	private RegistryViewAction action;
+	private RegistryViewPageAction action;
 
 	@Test
 	public void testSimple() throws Exception {

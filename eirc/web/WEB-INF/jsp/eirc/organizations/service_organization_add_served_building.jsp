@@ -24,32 +24,26 @@
 
 <script type="text/javascript">
 
-    var shadowId = "shadow";
     var resultId = "result";
 
     $(function() {
 
-        FP.createShadow(shadowId);
-
         FF.addListener("street", function(filter) {
-            FP.resizeShadow(shadowId, resultId, {visibility:"visible"});
-            $.post("<s:url action="serviceOrganizationListServedBuildingsAjax" namespace="/eirc" includeParams="none"/>",
-                    {streetId: filter.value.val()},
-                    function(data) {
-                        $("#" + resultId).html(data);
-                        FP.hideShadow(shadowId);
-                    });
+            FP.pagerAjax(null, {
+                action:"<s:url action="serviceOrganizationListServedBuildingsAjax" namespace="/eirc" includeParams="none" />",
+                params:{streetId: filter.value.val()}
+            });
         });
         FF.addEraser("street", function() {
             $("#" + resultId).html('<input type="button" class="btn-exit"'
-                   + 'onclick="window.location=\'<s:url action="serviceOrganizationListServedBuildings"><s:param name="serviceOrganization.id" value="%{id}" /></s:url>\'"'
+                   + 'onclick="window.location=\'<s:url action="serviceOrganizationListServedBuildings" includeParams="none"><s:param name="serviceOrganization.id" value="%{id}" /></s:url>\'"'
                    + 'value="<s:text name="common.cancel"/>"/>');
         });
     });
 
     function pagerAjax(element) {
         FP.pagerAjax(element, {
-            action:"<s:url action="serviceOrganizationListServedBuildingsAjax" namespace="/eirc" includeParams="none"/>",
+            action:"<s:url action="serviceOrganizationListServedBuildingsAjax" namespace="/eirc" includeParams="none" />",
             params:{streetId: FF.filters["street"].value.val()}
         });
     }

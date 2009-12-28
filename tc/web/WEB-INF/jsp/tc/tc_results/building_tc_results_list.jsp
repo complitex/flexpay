@@ -1,6 +1,6 @@
 <%@include file="/WEB-INF/jsp/common/taglibs.jsp"%>
 
-<%-- TODO: jQuery UI Dialog plug-in was deleted. This code must be work with jQuery Window plug-n (see eirc/web/WEB-INF/jsp/payments/registry/view_registry.jsp) --%>
+<%-- TODO: jQuery UI Dialog plug-in was deleted. This code must be work with jQuery Window plug-n (see eirc/web/WEB-INF/jsp/payments/registry/registry_view.jsp) --%>
 <%--
 <%@include file="/WEB-INF/jsp/common/includes/jquery_ui.jsp"%>
 --%>

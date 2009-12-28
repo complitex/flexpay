@@ -16,21 +16,15 @@
 
 <script type="text/javascript">
 
-    var shadowId = "shadow";
     var resultId = "result";
 
     $(function() {
 
-        FP.createShadow(shadowId);
-
         FF.addListener("building", function(filter) {
-            FP.resizeShadow(shadowId, resultId, {visibility:"visible"});
-            $.post("<s:url action="apartmentsDialogListAjax" namespace="/payments" includeParams="none"/>",
-                    {buildingFilter: filter.value.val()},
-                    function(data) {
-                        $("#" + resultId).html(data);
-                        FP.hideShadow(shadowId);
-                    });
+            FP.pagerAjax(null, {
+                action:"<s:url action="apartmentsDialogListAjax" namespace="/payments" includeParams="none" />",
+                params:{buildingFilter: filter.value.val()}
+            });
         });
         FF.addEraser("building", function() {
             $("#" + resultId).html("");
@@ -39,7 +33,7 @@
 
     function pagerAjax(element) {
         FP.pagerAjax(element, {
-            action:"<s:url action="apartmentsDialogListAjax" namespace="/payments" includeParams="none"/>",
+            action:"<s:url action="apartmentsDialogListAjax" namespace="/payments" includeParams="none" />",
             params:{
                 buildingFilter: FF.filters["building"].value.val()
             }

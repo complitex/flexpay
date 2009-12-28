@@ -1,69 +1,72 @@
 package org.flexpay.payments.actions.registry;
 
 import org.apache.commons.lang.time.StopWatch;
-import org.flexpay.common.actions.FPActionWithPagerSupport;
+import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.exception.FlexPayException;
-import static org.flexpay.common.persistence.Stub.stub;
+import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.filter.ImportErrorTypeFilter;
 import org.flexpay.common.persistence.filter.RegistryRecordStatusFilter;
 import org.flexpay.common.persistence.registry.Registry;
-import org.flexpay.common.persistence.registry.RegistryRecord;
-import org.flexpay.common.service.RegistryRecordService;
 import org.flexpay.common.service.RegistryRecordStatusService;
 import org.flexpay.common.service.RegistryService;
 import org.flexpay.common.service.importexport.ClassToTypeRegistry;
 import org.flexpay.payments.persistence.ServiceType;
-import org.flexpay.payments.persistence.ServiceTypeNameTranslation;
 import org.flexpay.payments.service.ServiceTypeService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
-import java.util.Collections;
-import java.util.List;
+import static org.flexpay.common.persistence.Stub.stub;
 
-public class RegistryViewAction extends FPActionWithPagerSupport<RegistryRecord> {
+public class RegistryViewPageAction extends FPActionSupport {
 
 	private Registry registry = new Registry();
-	private List<RegistryRecord> records = Collections.emptyList();
 
 	protected ImportErrorTypeFilter importErrorTypeFilter = null;
 	private RegistryRecordStatusFilter recordStatusFilter = new RegistryRecordStatusFilter();
 
 	private RegistryService registryService;
 	private ServiceTypeService serviceTypeService;
-	private RegistryRecordService registryRecordService;
 	private RegistryRecordStatusService recordStatusService;
 	private ClassToTypeRegistry classToTypeRegistry;
 
 	@NotNull
+	@Override
 	public String doExecute() throws Exception {
-		if (registry.getId() == null) {
-			addActionError("No registryId specified, give up.");
+
+		if (registry == null || registry.isNew()) {
+			log.warn("Incorrect registry id");
+			addActionError(getText("payments.error.registry.incorrect_registry_id"));
 			return REDIRECT_ERROR;
 		}
 
 		StopWatch watch = new StopWatch();
-		watch.start();
+		if (log.isDebugEnabled()) {
+			watch.start();
+		}
+
+		Stub<Registry> stub = stub(registry);
+		registry = registryService.read(stub);
+
+		if (registry == null) {
+			log.warn("Can't get registry with id {} from DB", stub.getId());
+			addActionError(getText("payments.error.registry.cant_get_registry"));
+			return REDIRECT_ERROR;
+		}
+
+		if (log.isDebugEnabled()) {
+			watch.stop();
+			log.debug("Prior listing actions took: {}", watch);
+			watch.reset();
+			watch.start();
+		}
 
 		recordStatusFilter.setRecordStatuses(recordStatusService.listAllStatuses());
 		getImportErrorTypeFilter().init(classToTypeRegistry);
 
-		watch.stop();
-		log.debug("Import error type filter init: {}", watch);
-		watch.reset();
-		watch.start();
-
-		registry = registryService.read(stub(registry));
-
-		watch.stop();
-		log.debug("Prior listing actions took: {}", watch);
-		watch.reset();
-		watch.start();
-
-		records = registryRecordService.listRecords(registry, importErrorTypeFilter, recordStatusFilter, getPager());
-
-		watch.stop();
-		log.debug("Time spent listing records: {}", watch);
+		if (log.isDebugEnabled()) {
+			watch.stop();
+			log.debug("Import error type filter init: {}", watch);
+		}
 
 		return SUCCESS;
 	}
@@ -76,14 +79,14 @@ public class RegistryViewAction extends FPActionWithPagerSupport<RegistryRecord>
 	 * @return {@link #ERROR} by default
 	 */
 	@NotNull
+	@Override
 	protected String getErrorResult() {
 		return REDIRECT_ERROR;
 	}
 
 	public String getServiceTypeName(ServiceType typeStub) throws FlexPayException {
 		ServiceType type = serviceTypeService.read(stub(typeStub));
-		ServiceTypeNameTranslation name = getTranslation(type.getTypeNames());
-		return name == null ? "Unknown" : name.getName();
+		return getTranslationName(type.getTypeNames());
 	}
 
 	public Registry getRegistry() {
@@ -101,34 +104,13 @@ public class RegistryViewAction extends FPActionWithPagerSupport<RegistryRecord>
 		return importErrorTypeFilter;
 	}
 
-	public void setImportErrorTypeFilter(ImportErrorTypeFilter importErrorTypeFilter) {
-		this.importErrorTypeFilter = importErrorTypeFilter;
-	}
-
 	public RegistryRecordStatusFilter getRecordStatusFilter() {
 		return recordStatusFilter;
-	}
-
-	public void setRecordStatusFilter(RegistryRecordStatusFilter recordStatusFilter) {
-		this.recordStatusFilter = recordStatusFilter;
-	}
-
-	public List<RegistryRecord> getRecords() {
-		return records;
-	}
-
-	public void setRecords(List<RegistryRecord> records) {
-		this.records = records;
 	}
 
 	@Required
 	public void setRegistryService(RegistryService registryService) {
 		this.registryService = registryService;
-	}
-
-	@Required
-	public void setRegistryRecordService(RegistryRecordService registryRecordService) {
-		this.registryRecordService = registryRecordService;
 	}
 
 	@Required

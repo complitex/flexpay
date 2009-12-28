@@ -111,6 +111,9 @@ public class Page<E> implements Serializable {
 	 * @return page first element number
 	 */
 	public int getThisPageFirstElementNumber() {
+		if (!hasNextPage()) {
+			pageNumber = getLastPageNumber() - 1;
+		}
 		return pageNumber * pageSize;
 	}
 

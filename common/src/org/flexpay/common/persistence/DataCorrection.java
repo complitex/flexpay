@@ -3,6 +3,7 @@ package org.flexpay.common.persistence;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.jetbrains.annotations.NotNull;
+
 import static org.flexpay.common.persistence.Stub.stub;
 
 public class DataCorrection extends DomainObject {
@@ -66,7 +67,7 @@ public class DataCorrection extends DomainObject {
 				.append("externalId", externalId)
 				.append("internalObjectId", internalObjectId)
 				.append("objectType", objectType)
-				.append("dataSource", dataSourceDescription.getId())
+				.append("dataSource", dataSourceDescription != null ? dataSourceDescription.getId() : null)
 				.toString();
 	}
 

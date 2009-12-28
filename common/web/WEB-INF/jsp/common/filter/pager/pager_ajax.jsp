@@ -2,6 +2,7 @@
 
 <div>
     <input type="hidden" id="pageSizeChanged" name="pageSizeChanged" value="false" />
+    <input type="hidden" name="curPage" value="<s:property value="pager.pageNumber" />" />
 <s:if test="pager.totalNumberOfElements > 0">
 	<span style="float:right;" class="text-small">
 		&nbsp;<s:text name="common.show_by" />&nbsp;

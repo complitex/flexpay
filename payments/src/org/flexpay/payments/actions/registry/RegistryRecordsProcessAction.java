@@ -1,11 +1,8 @@
 package org.flexpay.payments.actions.registry;
 
-import static org.flexpay.common.persistence.Stub.stub;
+import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.process.ProcessManager;
-import org.flexpay.common.util.CollectionUtils;
-import org.flexpay.common.actions.FPActionSupport;
-import org.flexpay.payments.actions.CashboxCookieActionSupport;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
@@ -13,27 +10,29 @@ import java.io.Serializable;
 import java.util.Map;
 import java.util.Set;
 
+import static org.flexpay.common.util.CollectionUtils.map;
+import static org.flexpay.common.util.CollectionUtils.set;
+
 public class RegistryRecordsProcessAction extends FPActionSupport {
 
-	private Set<Long> objectIds = CollectionUtils.set();
+	private Set<Long> objectIds = set();
 	private Registry registry = new Registry();
 
 	private ProcessManager processManager;
 
 	@NotNull
+	@Override
 	public String doExecute() throws Exception {
 
-		log.debug("About to execute RegistryRecordsProcessAction");
-
-		Map<Serializable, Serializable> contextVariables = CollectionUtils.map();
+		Map<Serializable, Serializable> contextVariables = map();
 		contextVariables.put("recordIds", (Serializable) objectIds);
 		contextVariables.put("registryId", registry.getId());
 
 		processManager.createProcess("ParseFPRegistryProcess", contextVariables);
 
-		addActionError(getText("eirc.registry.records.processing_started"));
+		addActionMessage(getText("eirc.registry.records.processing_started"));
 
-		return REDIRECT_SUCCESS;
+		return SUCCESS;
 	}
 
 	/**
@@ -44,20 +43,13 @@ public class RegistryRecordsProcessAction extends FPActionSupport {
 	 * @return {@link #ERROR} by default
 	 */
 	@NotNull
+	@Override
 	protected String getErrorResult() {
-		return REDIRECT_ERROR;
-	}
-
-	public Set<Long> getObjectIds() {
-		return objectIds;
+		return SUCCESS;
 	}
 
 	public void setObjectIds(Set<Long> objectIds) {
 		this.objectIds = objectIds;
-	}
-
-	public Registry getRegistry() {
-		return registry;
 	}
 
 	public void setRegistry(Registry registry) {

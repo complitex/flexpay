@@ -11,6 +11,7 @@
 	<script type="text/javascript">
         $("#beginTimeFilter").ready(function() {
             $("#beginTimeFilter").timeEntry({
+                spinnerImage: FP.base + "/resources/common/js/jquery/timeentry/spinnerDefault.png",
                 show24Hours: true,
                 showSeconds: true
             });
