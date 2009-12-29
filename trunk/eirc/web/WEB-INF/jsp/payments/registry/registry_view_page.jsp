@@ -22,12 +22,13 @@
     });
 
     function pagerAjax(element) {
+
         FP.pagerAjax(element, {
             action:"<s:url action="registryRecordsListAjax" namespace="/eirc" includeParams="none" />",
             params: {
                 "registry.id":<s:property value="registry.id" />,
-                "importErrorTypeFilter.selectedType":$("select[name=importErrorTypeFilter.selectedType]").get(0).value,
-                "recordStatusFilter.selectedId":$("select[name=recordStatusFilter.selectedId]").get(0).value,
+                "importErrorTypeFilter.selectedType":$("select[name=importErrorTypeFilter.selectedType]").val(),
+                "recordStatusFilter.selectedId":$("select[name=recordStatusFilter.selectedId]").val()
             }
         });
     }
