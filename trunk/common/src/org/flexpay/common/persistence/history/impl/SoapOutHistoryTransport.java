@@ -64,9 +64,9 @@ public class SoapOutHistoryTransport implements OutTransport {
 		log.debug("Sending to {} contents:\n{}", url, xml);
 
 		String response = writer.toString();
-		if (!response.contains("OK!")) {
+		if (!response.contains("OK!")) {			
 			log.warn("Error sending file {} to url {}. Response is {}", new Object[] {file.getName(), url, response} );
-			throw new Exception("Failed sending file: " + response);
+			throw new Exception("Failed sending file to " + url + ": " + response);
 		}
 	}
 
