@@ -23,10 +23,11 @@
         <td class="th"><s:text name="eirc.organization.inn" /></td>
         <td class="th">&nbsp;</td>
     </tr>
+
     <s:iterator value="organizations" status="status">
         <tr valign="middle" class="cols_1">
             <td class="col" width="1%">
-                <s:property value="%{#status.index + pager.thisPageFirstElementNumber + 1}" />
+                <s:property value="#status.index + pager.thisPageFirstElementNumber + 1" />
             </td>
             <td class="col" width="1%">
                 <input type="checkbox" name="objectIds" value="<s:property value="%{id}" />" />
