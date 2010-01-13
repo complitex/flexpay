@@ -1,8 +1,12 @@
 package org.flexpay.eirc.actions.organization;
 
 import org.flexpay.ab.persistence.Building;
+import org.flexpay.ab.persistence.BuildingAddress;
 import org.flexpay.ab.persistence.Street;
+import org.flexpay.ab.persistence.filters.StreetFilter;
+import org.flexpay.ab.persistence.sorter.BuildingsSorter;
 import org.flexpay.ab.service.AddressService;
+import org.flexpay.ab.service.BuildingService;
 import org.flexpay.ab.service.StreetService;
 import org.flexpay.common.actions.FPActionWithPagerSupport;
 import org.flexpay.common.persistence.Stub;
@@ -14,10 +18,12 @@ import org.springframework.beans.factory.annotation.Required;
 
 import java.util.List;
 
+import static org.flexpay.common.persistence.DomainObject.collectionIds;
 import static org.flexpay.common.persistence.Stub.stub;
+import static org.flexpay.common.util.CollectionUtils.arrayStack;
 import static org.flexpay.common.util.CollectionUtils.list;
 
-public class ServiceOrganizationListServedBuildingsAction extends FPActionWithPagerSupport<ServedBuilding> {
+public class ServiceOrganizationBuildingsListAction extends FPActionWithPagerSupport<ServedBuilding> {
 
 	private Long streetFilter;
 	private EircServiceOrganization serviceOrganization = EircServiceOrganization.newInstance();
@@ -36,14 +42,17 @@ public class ServiceOrganizationListServedBuildingsAction extends FPActionWithPa
 			return SUCCESS;
 		}
 
-		buildings = serviceOrganizationService.findServedBuildings(stub(serviceOrganization), getPager());
+		buildings = serviceOrganizationService.findServedBuildingsAddressesForOtherOrgs(arrayStack(new StreetFilter(streetFilter)), stub(serviceOrganization), getPager());
+		if (log.isDebugEnabled()) {
+			log.debug("Total buildings found: {}", buildings.size());
+		}
 
 		if (buildings == null || buildings.isEmpty()) {
 			return SUCCESS;
 		}
 
 		for (Building b : buildings) {
-			addresses.add(addressService.getBuildingAddress(stub(b), getUserPreferences().getLocale()));
+			addresses.add(addressService.getBuildingAddressOnStreet(stub(b), new Stub<Street>(streetFilter), getUserPreferences().getLocale()));
 		}
 
 		return SUCCESS;
@@ -51,7 +60,6 @@ public class ServiceOrganizationListServedBuildingsAction extends FPActionWithPa
 
 	private boolean doValidate() {
 
-/*
 		if (streetFilter == null || streetFilter <= 0) {
 			log.warn("Incorrect street id in filter ({})", streetFilter);
 			addActionError(getText("ab.error.street.incorrect_street_id"));
@@ -68,7 +76,6 @@ public class ServiceOrganizationListServedBuildingsAction extends FPActionWithPa
 				streetFilter = 0L;
 			}
 		}
-*/
 
 		if (serviceOrganization == null || serviceOrganization.isNew()) {
 			log.warn("Incorrect service organization id");
@@ -102,24 +109,20 @@ public class ServiceOrganizationListServedBuildingsAction extends FPActionWithPa
 		return SUCCESS;
 	}
 
-	public List<String> getAddresses() {
-		return addresses;
-	}
-
-	public List<ServedBuilding> getBuildings() {
-		return buildings;
-	}
-
-	public EircServiceOrganization getServiceOrganization() {
-		return serviceOrganization;
+	public void setStreetFilter(Long streetFilter) {
+		this.streetFilter = streetFilter;
 	}
 
 	public void setServiceOrganization(EircServiceOrganization serviceOrganization) {
 		this.serviceOrganization = serviceOrganization;
 	}
 
-	public void setStreetFilter(Long streetFilter) {
-		this.streetFilter = streetFilter;
+	public List<String> getAddresses() {
+		return addresses;
+	}
+
+	public List<ServedBuilding> getBuildings() {
+		return buildings;
 	}
 
 	@Required

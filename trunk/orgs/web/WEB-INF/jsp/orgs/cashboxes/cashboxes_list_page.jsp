@@ -32,7 +32,7 @@
     }
 
     function deleteAjax() {
-        FP.deleteElements("<s:url action="cashboxDelete" includeParams="none" />", "objectIds", pagerAjax);
+        FP.serviceElements("<s:url action="cashboxDelete" includeParams="none" />", "objectIds", pagerAjax);
     }
 
 </script>

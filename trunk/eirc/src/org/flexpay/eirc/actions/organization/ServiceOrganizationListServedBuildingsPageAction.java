@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Required;
 
 import static org.flexpay.common.persistence.Stub.stub;
 
-public class ServiceOrganizationAddServedBuildingPageAction extends FPActionSupport {
+public class ServiceOrganizationListServedBuildingsPageAction extends FPActionSupport {
 
 	private EircServiceOrganization serviceOrganization = EircServiceOrganization.newInstance();
 
@@ -17,7 +17,7 @@ public class ServiceOrganizationAddServedBuildingPageAction extends FPActionSupp
 
 	@NotNull
 	@Override
-	public String doExecute() throws Exception {
+	protected String doExecute() throws Exception {
 
 		if (serviceOrganization == null || serviceOrganization.isNew()) {
 			log.warn("Incorrect service organization id");
@@ -39,15 +39,9 @@ public class ServiceOrganizationAddServedBuildingPageAction extends FPActionSupp
 		}
 
 		return SUCCESS;
+
 	}
 
-	/**
-	 * Get default error execution result
-	 * <p/>
-	 * If return code starts with a {@link #PREFIX_REDIRECT} all error messages are stored in a session
-	 *
-	 * @return {@link #ERROR} by default
-	 */
 	@NotNull
 	@Override
 	protected String getErrorResult() {

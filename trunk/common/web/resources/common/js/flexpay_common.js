@@ -244,7 +244,7 @@ var FP = {
         });
     },
 
-    deleteElements : function(action, name, callback, opt) {
+    serviceElements : function(action, name, callback, opt) {
 
         opt = opt || {};
 

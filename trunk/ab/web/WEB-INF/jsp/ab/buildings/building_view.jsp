@@ -31,7 +31,7 @@
     }
 
     function deleteAjax() {
-        FP.deleteElements("<s:url action="buildingAddressDelete" namespace="/dicts" includeParams="none" />",
+        FP.serviceElements("<s:url action="buildingAddressDelete" namespace="/dicts" includeParams="none" />",
                 "objectIds", pagerAjax, {params:{"building.id":<s:property value="building.id" />}});
     }
 

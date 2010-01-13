@@ -20,7 +20,7 @@
     }
 
     function deleteAjax() {
-        FP.deleteElements("<s:url action="serviceProviderDelete" includeParams="none" />", "objectIds", pagerAjax);
+        FP.serviceElements("<s:url action="serviceProviderDelete" includeParams="none" />", "objectIds", pagerAjax);
     }
 
 </script>

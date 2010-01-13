@@ -18,6 +18,8 @@ public interface ServedBuildingDao extends GenericDao<ServedBuilding, Long> {
      */
     List<ServedBuilding> findServedBuildingsByServiceOrganization(Long serviceOrganizationId, Page<ServedBuilding> page);
 
+	List<ServedBuilding> findServedBuildingsForOtherOrgs(Long streetId, Long serviceOrganizationId, Page<ServedBuilding> page);
+
     List<ServedBuilding> findServedBuildings(Collection<Long> ids);
 
 }

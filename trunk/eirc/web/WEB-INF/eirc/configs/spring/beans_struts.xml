@@ -111,21 +111,30 @@
 		  class="org.flexpay.eirc.actions.organization.ServiceOrganizationListServedBuildingsAction"
 		  p:serviceOrganizationService-ref="eircServiceOrganizationService"
 		  p:addressService-ref="addressService"
+          p:streetService-ref="streetService"
 		  scope="prototype" />
 
-	<bean id="servedBuildingsListAction"
-		  class="org.flexpay.common.actions.StaticPageAction"
-		  p:crumbNameKey="eirc.crumbs.served_buildings_list"
-		  scope="prototype" />
+    <bean id="serviceOrganizationListServedBuildingsPageAction"
+          class="org.flexpay.eirc.actions.organization.ServiceOrganizationListServedBuildingsPageAction"
+          p:serviceOrganizationService-ref="eircServiceOrganizationService"
+          p:crumbNameKey="eirc.crumbs.served_buildings_list"
+          scope="prototype" />
 
-	<bean id="serviceOrganizationAddServedBuildingAction"
-		  class="org.flexpay.eirc.actions.organization.ServiceOrganizationAddServedBuildingAction"
-		  p:serviceOrganizationService-ref="eircServiceOrganizationService"
-		  p:buildingService-ref="buildingService"
-		  scope="prototype" />
+    <bean id="serviceOrganizationAddServedBuildingPageAction"
+          class="org.flexpay.eirc.actions.organization.ServiceOrganizationAddServedBuildingPageAction"
+          p:serviceOrganizationService-ref="eircServiceOrganizationService"
+          p:crumbNameKey="eirc.crumbs.add_served_buildings"
+          scope="prototype" />
 
-	<bean id="serviceOrganizationAddServedBuildingPageAction"
-		  class="org.flexpay.eirc.actions.organization.ServiceOrganizationAddServedBuildingPageAction"
+    <bean id="serviceOrganizationBuildingsListAction"
+          class="org.flexpay.eirc.actions.organization.ServiceOrganizationBuildingsListAction"
+          p:serviceOrganizationService-ref="eircServiceOrganizationService"
+          p:streetService-ref="streetService"
+          p:addressService-ref="addressService"
+          scope="prototype" />
+
+	<bean id="serviceOrganizationAddServedBuildingsAction"
+		  class="org.flexpay.eirc.actions.organization.ServiceOrganizationAddServedBuildingsAction"
 		  p:serviceOrganizationService-ref="eircServiceOrganizationService"
 		  scope="prototype" />
 

@@ -1,4 +1,4 @@
-<%@ include file="/WEB-INF/jsp/common/taglibs.jsp" %>
+<%@include file="/WEB-INF/jsp/common/taglibs.jsp"%>
 
 <s:actionerror />
 <s:actionmessage />
@@ -8,19 +8,19 @@
 		<tr>
 			<td nowrap="nowrap">
 				<s:text name="common.process.complete.begin_date" />
-				<%@include file="/WEB-INF/jsp/common/filter/begin_date_filter.jsp" %>
+				<%@include file="/WEB-INF/jsp/common/filter/begin_date_filter.jsp"%>
 			</td>
 		</tr>
 		<tr>
 			<td nowrap="nowrap">
 				<s:text name="common.process.complete.end_date" />
-				<%@include file="/WEB-INF/jsp/common/filter/end_date_filter.jsp" %>
+				<%@include file="/WEB-INF/jsp/common/filter/end_date_filter.jsp"%>
 			</td>
 		</tr>
 		<tr>
 			<td nowrap="nowrap">
 				<s:text name="common.processing.process.filter.name" />
-				<%@include file="/WEB-INF/jsp/common/processing/filters/process_name_filter.jsp" %>
+				<%@include file="/WEB-INF/jsp/common/processing/filters/process_name_filter.jsp"%>
 			</td>
 		</tr>
 		<tr>

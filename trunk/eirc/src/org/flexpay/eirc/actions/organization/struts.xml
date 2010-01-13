@@ -168,38 +168,34 @@
             <result>/WEB-INF/jsp/common/responses/simple_response.jsp</result>
         </action>
 
-        <action name="serviceOrganizationListServedBuildings" class="serviceOrganizationListServedBuildingsAction">
+        <action name="serviceOrganizationListServedBuildings" class="serviceOrganizationListServedBuildingsPageAction">
             <result type="tiles">eirc.organization.service_organization.list_served_buildings</result>
+            <result name="redirectError" type="redirect-action">serviceOrganizationsList</result>
         </action>
 
-        <action name="serviceOrganizationListServedBuildingsAjax" class="buildingsListAction">
-            <result>/WEB-INF/jsp/eirc/organizations/buildings_list.jsp</result>
+        <action name="serviceOrganizationListServedBuildingsAjax" class="serviceOrganizationListServedBuildingsAction">
+            <result>/WEB-INF/jsp/eirc/organizations/service_organization_list_served_buildings.jsp</result>
         </action>
 
         <action name="serviceOrganizationAddServedBuildingPage" class="serviceOrganizationAddServedBuildingPageAction">
-            <result name="input" type="tiles">eirc.organization.service_organization.add_served_building</result>
-            <result name="redirectSuccess" type="redirect-action">
+            <result type="tiles">eirc.organization.service_organization.add_served_building</result>
+            <result name="redirectError" type="redirect-action">
                 <param name="actionName">serviceOrganizationListServedBuildings</param>
                 <param name="parse">true</param>
                 <param name="serviceOrganization.id">${serviceOrganization.id}</param>
             </result>
         </action>
 
-        <action name="serviceOrganizationAddServedBuilding" class="serviceOrganizationAddServedBuildingAction">
-            <result name="input" type="tiles">eirc.organization.service_organization.add_served_building</result>
-            <result name="redirectSuccess" type="redirect-action">
-                <param name="actionName">serviceOrganizationListServedBuildings</param>
-                <param name="parse">true</param>
-                <param name="serviceOrganization.id">${serviceOrganization.id}</param>
-            </result>
+        <action name="buildingsListAjax" class="serviceOrganizationBuildingsListAction">
+            <result>/WEB-INF/jsp/eirc/organizations/buildings_list.jsp</result>
+        </action>
+
+        <action name="serviceOrganizationAddServedBuildingsAjax" class="serviceOrganizationAddServedBuildingsAction">
+            <result>/WEB-INF/jsp/common/responses/simple_response.jsp</result>
         </action>
 
         <action name="serviceOrganizationRemoveServedBuildings" class="serviceOrganizationRemoveServedBuildingsAction">
-            <result name="redirectSuccess" type="redirect-action">
-                <param name="actionName">serviceOrganizationListServedBuildings</param>
-                <param name="parse">true</param>
-                <param name="serviceOrganization.id">${serviceOrganization.id}</param>
-            </result>
+            <result>/WEB-INF/jsp/common/responses/simple_response.jsp</result>
         </action>
 
 	</package>

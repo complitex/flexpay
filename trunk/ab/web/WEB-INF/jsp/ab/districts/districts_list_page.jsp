@@ -50,7 +50,7 @@
 	}
 
     function deleteAjax() {
-        FP.deleteElements("<s:url action="districtDelete" namespace="/dicts" includeParams="none" />", "objectIds", pagerAjax);
+        FP.serviceElements("<s:url action="districtDelete" namespace="/dicts" includeParams="none" />", "objectIds", pagerAjax);
     }
 
 </script>

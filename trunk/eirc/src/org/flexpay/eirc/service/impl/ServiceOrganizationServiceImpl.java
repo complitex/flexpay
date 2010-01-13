@@ -1,10 +1,12 @@
 package org.flexpay.eirc.service.impl;
 
+import org.apache.commons.collections.ArrayStack;
 import org.flexpay.ab.persistence.Building;
 import org.flexpay.ab.service.BuildingService;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.persistence.filter.PrimaryKeyFilter;
 import org.flexpay.eirc.dao.ServedBuildingDao;
 import org.flexpay.eirc.persistence.ServedBuilding;
 import org.flexpay.eirc.service.ServiceOrganizationService;
@@ -23,19 +25,42 @@ public class ServiceOrganizationServiceImpl extends org.flexpay.orgs.service.imp
 	private BuildingService buildingService;
 	private ServedBuildingDao servedBuildingDao;
 
+	@Override
 	public List<ServedBuilding> findServedBuildings(@NotNull Stub<? extends ServiceOrganization> stub, Page<ServedBuilding> pager) {
 		return servedBuildingDao.findServedBuildingsByServiceOrganization(stub.getId(), pager);
 	}
 
+	@Override
+	public List<ServedBuilding> findServedBuildingsAddressesForOtherOrgs(@NotNull ArrayStack filters, @NotNull Stub<? extends ServiceOrganization> stub, Page<ServedBuilding> pager) {
+		PrimaryKeyFilter<?> streetFilter = (PrimaryKeyFilter<?>) filters.peek();
+		return servedBuildingDao.findServedBuildingsForOtherOrgs(streetFilter.getSelectedId(), stub.getId(), pager);
+	}
+
 	@Transactional (readOnly = false)
+	@Override
 	public void removeServedBuildings(@NotNull Set<Long> objectIds) throws FlexPayExceptionContainer {
 		List<Building> buildings = buildingService.readFull(objectIds, false);
-		for (Building bs : buildings) {
-			ServedBuilding building = (ServedBuilding) bs;
-			if (building != null) {
-				building.setServiceOrganization(null);
-				buildingService.update(building);
+		for (Building sb : buildings) {
+			ServedBuilding building = (ServedBuilding) sb;
+			if (building == null) {
+				continue;
 			}
+			building.setServiceOrganization(null);
+			servedBuildingDao.update(building);
+		}
+	}
+
+	@Transactional (readOnly = false)
+	@Override
+	public void addServedBuildings(@NotNull Set<Long> objectIds, @NotNull ServiceOrganization serviceOrganization) throws FlexPayExceptionContainer {
+		List<Building> buildings = buildingService.readFull(objectIds, false);
+		for (Building sb : buildings) {
+			ServedBuilding building = (ServedBuilding) sb;
+			if (building == null) {
+				continue;
+			}
+			building.setServiceOrganization(serviceOrganization);
+			servedBuildingDao.update(building);
 		}
 	}
 
@@ -46,8 +71,9 @@ public class ServiceOrganizationServiceImpl extends org.flexpay.orgs.service.imp
 	 * @throws FlexPayExceptionContainer if validation fails
 	 */
 	@Transactional (readOnly = false)
+	@Override
 	public void updateServedBuilding(@NotNull ServedBuilding servedBuilding) throws FlexPayExceptionContainer {
-		buildingService.update(servedBuilding);
+		servedBuildingDao.update(servedBuilding);
 	}
 
 	@Required

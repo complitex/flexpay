@@ -65,7 +65,7 @@
     }
 
     function deleteAjax() {
-        FP.deleteElements("<s:url action="streetDelete" namespace="/dicts" includeParams="none" />", "objectIds", pagerAjax);
+        FP.serviceElements("<s:url action="streetDelete" namespace="/dicts" includeParams="none" />", "objectIds", pagerAjax);
     }
 
 </script>

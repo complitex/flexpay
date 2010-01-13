@@ -19,7 +19,7 @@
     }
 
     function deleteAjax() {
-        FP.deleteElements("<s:url action="rulesFileDelete" includeParams="none" />", "objectIds", pagerAjax);
+        FP.serviceElements("<s:url action="rulesFileDelete" includeParams="none" />", "objectIds", pagerAjax);
     }
 
 </script>
