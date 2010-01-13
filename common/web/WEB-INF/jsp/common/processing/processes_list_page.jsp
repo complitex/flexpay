@@ -69,7 +69,7 @@
     }
 
     function deleteAjax() {
-        FP.deleteElements("<s:url action="processDelete" includeParams="none" />", "objectIds", pagerAjax);
+        FP.serviceElements("<s:url action="processDelete" includeParams="none" />", "objectIds", pagerAjax);
     }
 
 </script>

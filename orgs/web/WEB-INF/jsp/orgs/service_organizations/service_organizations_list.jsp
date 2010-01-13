@@ -51,7 +51,7 @@
             <td class="col">
                 <a href="<s:url action="serviceOrganizationEdit"><s:param name="serviceOrganization.id" value="%{id}" /></s:url>"><s:text name="common.edit" /></a>
                 &nbsp;&nbsp;
-                <a href="<s:url action="serviceOrganizationAddServedBuildingPage"><s:param name="serviceOrganization.id" value="%{id}" /></s:url>"><s:text name="eirc.list_served_buildings" /></a>
+                <a href="<s:url action="serviceOrganizationListServedBuildings" includeParams="none"><s:param name="serviceOrganization.id" value="id" /></s:url>"><s:text name="eirc.list_served_buildings" /></a>
             </td>
         </tr>
     </s:iterator>

@@ -1,19 +1,19 @@
-<%@ include file="/WEB-INF/jsp/common/taglibs.jsp" %>
+<%@include file="/WEB-INF/jsp/common/taglibs.jsp"%>
 
-<br clear="all">
+<br clear="all" />
 
-<p>
+<p></p>
 
 <table cellpadding="0" cellspacing="0" border="0" width="100%">
 	<tr>
 		<td align="center">
-			<span class="text-small">&#xA9; 2007-2009 Flexpay project</span>
+			<span class="text-small">&#xA9; 2007-2010 Flexpay project</span>
 		</td>
 	</tr>
 	<sec:authorize ifAllGranted="ROLE_COMMON_DEVELOPER">
 		<tr>
 			<td align="center">
-				<a href="<s:url action="about" namespace="/common" includeParams="none"/>"><s:text name="common.build.about"/></a> 
+				<a href="<s:url action="about" namespace="/common" includeParams="none" />"><s:text name="common.build.about" /></a>
 			</td>
 		</tr>
 	</sec:authorize>

@@ -79,12 +79,10 @@
             <td class="col"><s:property value="amount" /></td>
             <%--<td class="col"><s:property value="containers" /></td>--%>
             <td class="col">N/A</td>
-            <%-- TODO uncomment as fix for LocalizedTextUtil NPE available (see https://xwork.dev.java.net/issues/show_bug.cgi?id=6)--%>
-            <%--<td class="col"><s:text name="%{importError.errorId}" /></td>--%>
             <td class="col"><s:text name="%{importError.errorId}" /></td>
             <td class="col"><s:text name="%{recordStatus.i18nName}"/></td>
             <td class="col">
-                <a href="javascript:createDialog(<s:property value="id" />)"><s:text name="common.edit" /></a>
+                <a href="#" onclick="createDialog(<s:property value="id" />);"><s:text name="common.edit" /></a>
             </td>
         </tr>
     </s:iterator>
@@ -111,8 +109,8 @@
         $.window({
             title: "<s:text name="eirc.registry.view.dialog_title" />",
             url: "<s:url action="selectCorrectionType" namespace="/payments" includeParams="none"/>?record.id=" + recordId,
+            height: 550,
             width: 800,
-            height: 750,
             minHeight:300,
             minWidth:650,
             maxHeight:1000,

@@ -1,55 +1,57 @@
 package org.flexpay.eirc.actions.organization;
 
-import org.flexpay.common.actions.FPActionSupport;
-import static org.flexpay.common.persistence.Stub.stub;
-import static org.flexpay.common.util.CollectionUtils.set;
-import org.flexpay.eirc.persistence.EircServiceOrganization;
-import org.flexpay.eirc.persistence.ServedBuilding;
-import org.flexpay.eirc.service.ServiceOrganizationService;
 import org.flexpay.ab.service.BuildingService;
-import org.flexpay.ab.persistence.Building;
+import org.flexpay.common.actions.FPActionSupport;
+import org.flexpay.common.persistence.Stub;
+import org.flexpay.eirc.persistence.EircServiceOrganization;
+import org.flexpay.eirc.service.ServiceOrganizationService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
-import java.util.List;
 import java.util.Set;
 
-public class ServiceOrganizationAddServedBuildingAction extends FPActionSupport {
+import static org.flexpay.common.persistence.Stub.stub;
+import static org.flexpay.common.util.CollectionUtils.set;
+
+public class ServiceOrganizationAddServedBuildingsAction extends FPActionSupport {
 
 	private EircServiceOrganization serviceOrganization = EircServiceOrganization.newInstance();
 	private Set<Long> objectIds = set();
 
-	private BuildingService buildingService;
 	private ServiceOrganizationService serviceOrganizationService;
 
 	@NotNull
 	@Override
 	public String doExecute() throws Exception {
 
-		if (serviceOrganization.getId() == null) {
-			addActionError(getText("common.error.invalid_id"));
-			return REDIRECT_SUCCESS;
+		if (objectIds == null || objectIds.isEmpty()) {
+			return SUCCESS;
 		}
 
-		serviceOrganization = serviceOrganizationService.read(stub(serviceOrganization));
+		if (serviceOrganization == null || serviceOrganization.isNew()) {
+			log.warn("Incorrect service organization id");
+			addActionError(getText("common.error.invalid_id"));
+			return SUCCESS;
+		}
+
+		Stub<EircServiceOrganization> stub = stub(serviceOrganization);
+		serviceOrganization = serviceOrganizationService.read(stub);
+
 		if (serviceOrganization == null) {
-			addActionError(getText("common.error.invalid_id"));
-			return REDIRECT_SUCCESS;
+			log.warn("Can't get service organization with id {} from DB", stub.getId());
+			addActionError(getText("eirc.error.service_organization.cant_get_service_organization"));
+			return SUCCESS;
+		} else if (serviceOrganization.isNotActive()) {
+			log.warn("Service organization with id {} is disabled", stub.getId());
+			addActionError(getText("eirc.error.service_organization.cant_get_service_organization"));
+			return SUCCESS;
 		}
 
-		log.info("Served building ids: {}", objectIds);
+		serviceOrganizationService.addServedBuildings(objectIds, serviceOrganization);
 
-		if (!objectIds.isEmpty()) {
+		addActionMessage(getText("eirc.service_organization.served_building_added"));
 
-			List<Building> buildings = buildingService.readFull(objectIds, false);
-			for (Building sb : buildings) {
-				ServedBuilding building = (ServedBuilding) sb;
-				building.setServiceOrganization(serviceOrganization);
-				serviceOrganizationService.updateServedBuilding(building);
-			}
-		}
-
-		return REDIRECT_SUCCESS;
+		return SUCCESS;
 	}
 
 	/**
@@ -62,19 +64,11 @@ public class ServiceOrganizationAddServedBuildingAction extends FPActionSupport 
 	@NotNull
 	@Override
 	protected String getErrorResult() {
-		return INPUT;
-	}
-
-	public EircServiceOrganization getServiceOrganization() {
-		return serviceOrganization;
+		return SUCCESS;
 	}
 
 	public void setServiceOrganization(EircServiceOrganization serviceOrganization) {
 		this.serviceOrganization = serviceOrganization;
-	}
-
-	public Set<Long> getObjectIds() {
-		return objectIds;
 	}
 
 	public void setObjectIds(Set<Long> objectIds) {
@@ -86,8 +80,4 @@ public class ServiceOrganizationAddServedBuildingAction extends FPActionSupport 
 		this.serviceOrganizationService = serviceOrganizationService;
 	}
 
-	@Required
-	public void setBuildingService(BuildingService buildingService) {
-		this.buildingService = buildingService;
-	}
 }

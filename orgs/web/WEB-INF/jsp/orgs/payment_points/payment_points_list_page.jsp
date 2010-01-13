@@ -28,7 +28,7 @@
     }
 
     function deleteAjax() {
-        FP.deleteElements("<s:url action="paymentPointDelete" includeParams="none" />", "objectIds", pagerAjax);
+        FP.serviceElements("<s:url action="paymentPointDelete" includeParams="none" />", "objectIds", pagerAjax);
     }
 
 </script>

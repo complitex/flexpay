@@ -19,7 +19,7 @@
     }
 
     function deleteAjax() {
-        FP.deleteElements("<s:url action="identityTypeDelete" namespace="/dicts" includeParams="none" />", "objectIds", pagerAjax);
+        FP.serviceElements("<s:url action="identityTypeDelete" namespace="/dicts" includeParams="none" />", "objectIds", pagerAjax);
     }
 
 </script>

@@ -6,17 +6,35 @@
 <hibernate-mapping package="org.flexpay.eirc.persistence">
 
     <query name="ServedBuilding.findServedBuildingsByServiceOrganization">
-        from ServedBuilding sb where sb.serviceOrganization.id=?
+        from ServedBuilding sb
+        where sb.status=0 and sb.serviceOrganization.id=?
     </query>
 
     <query name="ServedBuilding.findServedBuildingsByServiceOrganization.count">
         select count(*)
         from ServedBuilding sb
-        where sb.serviceOrganization.id=?
+        where sb.status=0 and sb.serviceOrganization.id=?
+    </query>
+
+    <query name="ServedBuilding.findServedBuildingsForOtherOrgs">
+        select distinct sb
+        from ServedBuilding sb
+            left join fetch sb.buildingses bs
+        where sb.status=0 and bs.street.id=?
+            and (sb.serviceOrganization is null or sb.serviceOrganization.id!=?)
+    </query>
+
+    <query name="ServedBuilding.findServedBuildingsForOtherOrgs.count">
+        select count(*)
+        from ServedBuilding sb
+            left join sb.buildingses bs
+        where sb.status=0 and bs.street.id=?
+            and (sb.serviceOrganization is null or sb.serviceOrganization.id!=?)
     </query>
 
     <query name="ServedBuilding.findServedBuildings">
-        from ServedBuilding sb where sb.id in (:list_1)
+        from ServedBuilding sb
+        where sb.id in (:list_1)
     </query>
 
 </hibernate-mapping>

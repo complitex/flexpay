@@ -45,10 +45,10 @@
 	<query name="ServiceOrganization.readFull">
 		select distinct so
 		from org.flexpay.eirc.persistence.EircServiceOrganization so
-		left outer join fetch so.buildings
-		left outer join fetch so.descriptions
-		inner join fetch so.organization o
-		left join fetch o.names
+            left outer join fetch so.buildings
+            left outer join fetch so.descriptions
+            inner join fetch so.organization o
+            left join fetch o.names
 		where so.id=?
 	</query>
 

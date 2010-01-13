@@ -174,12 +174,11 @@
 		  class="org.flexpay.eirc.service.impl.PaymentPointServiceImpl"
 		  p:paymentPointDao-ref="paymentPointDao" />
 
-	<bean id="eircServiceOrganizationServiceTarget"
-		  parent="serviceOrganizationServiceTarget"
-		  autowire-candidate="false"
+	<bean id="eircServiceOrganizationServiceTarget" parent="serviceOrganizationServiceTarget"
 		  class="org.flexpay.eirc.service.impl.ServiceOrganizationServiceImpl"
 		  p:servedBuildingDao-ref="servedBuildingDao"
-		  p:buildingService-ref="buildingService" />
+		  p:buildingService-ref="buildingService"
+          autowire-candidate="false"  />
 
 	<bean id="quittanceNumberService"
 		  class="org.flexpay.eirc.service.impl.QuittanceNumberServiceImpl" />

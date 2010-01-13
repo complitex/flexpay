@@ -9,9 +9,9 @@
 		<td class="th"><s:text name="ab.person.attribute.name" /></td>
 		<td class="th"><s:text name="ab.person.attribute.value" /></td>
 	</tr>
-	<s:iterator value="person.personAttributes" status="rowstatus">
+	<s:iterator value="person.personAttributes" status="status">
 		<tr class="cols_1">
-			<td class="col" align="right"><s:property value="#rowstatus.index + 1" /></td>
+			<td class="col" align="right"><s:property value="#status.index + 1" /></td>
 			<td class="col"><s:property value="name" /></td>
 			<td class="col"><s:property value="value" /></td>
 		</tr>
