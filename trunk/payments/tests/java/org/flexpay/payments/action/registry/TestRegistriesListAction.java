@@ -1,4 +1,4 @@
-package org.flexpay.payments.action;
+package org.flexpay.payments.action.registry;
 
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.payments.actions.registry.RegistriesListAction;
