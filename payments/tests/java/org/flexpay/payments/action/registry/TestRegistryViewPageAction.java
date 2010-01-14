@@ -1,4 +1,4 @@
-package org.flexpay.payments.action;
+package org.flexpay.payments.action.registry;
 
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.persistence.registry.Registry;
@@ -8,7 +8,7 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public class TestRegistryViewAction extends PaymentsSpringBeanAwareTestCase {
+public class TestRegistryViewPageAction extends PaymentsSpringBeanAwareTestCase {
 
 	@Autowired
 	private RegistryViewPageAction action;
@@ -19,8 +19,5 @@ public class TestRegistryViewAction extends PaymentsSpringBeanAwareTestCase {
 		action.setRegistry(new Registry(1L));
 		assertEquals("Action failed", FPActionSupport.SUCCESS, action.execute());
 
-		action.getPager().moveLastPage();
-//		action.getPager().setPageNumber(30);
-		assertEquals("Action failed", FPActionSupport.SUCCESS, action.execute());
 	}
 }
