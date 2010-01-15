@@ -9,8 +9,6 @@ import org.flexpay.payments.persistence.Operation;
 import org.flexpay.payments.service.OperationService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
-import org.springframework.security.Authentication;
-import org.springframework.security.context.SecurityContextHolder;
 
 public class CreateBlankOperationAction extends CashboxCookieActionSupport {
 
@@ -27,15 +25,6 @@ public class CreateBlankOperationAction extends CashboxCookieActionSupport {
 	@NotNull
 	@Override
 	protected String doExecute() throws Exception {
-
-		// TODO remove in production
-		// security information logging
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		log.error("[!!!SECURITY!!!] Auth name {}", auth.getName());
-		log.error("[!!!SECURITY!!!] Auth principal {}", auth.getPrincipal());
-		log.error("[!!!SECURITY!!!] Auth authorities {}", auth.getAuthorities());
-		log.error("[!!!SECURITY!!!] Auth credentials {}", auth.getCredentials());
-		log.error("[!!!SECURITY!!!] Auth details {}", auth.getDetails());
 
 		// creating blank operation
 		try {

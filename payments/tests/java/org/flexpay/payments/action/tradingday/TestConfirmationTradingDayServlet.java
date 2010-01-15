@@ -1,4 +1,4 @@
-package org.flexpay.payments.action;
+package org.flexpay.payments.action.tradingday;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertTrue;

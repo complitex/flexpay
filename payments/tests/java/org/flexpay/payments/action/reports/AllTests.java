@@ -5,6 +5,12 @@ import org.junit.runners.Suite;
 
 @RunWith (Suite.class)
 @Suite.SuiteClasses ({
+		TestAccReceivedPaymentsReportAction.class,
+		TestAccReturnedPaymentsReportAction.class,
+		TestDayReceivedPaymentsReportAction.class,
+		TestDayReturnedPaymentsReportAction.class,
+		TestImportPaymentsReportAction.class,
+		TestPaymentOperationAction.class,
 		TestPaymentOperationReportAction.class,
 		TestReceivedPaymentsReportAction.class
 })

@@ -9,7 +9,6 @@ import org.flexpay.orgs.service.PaymentPointService;
 import org.flexpay.payments.actions.PaymentOperationAction;
 import org.flexpay.payments.persistence.Operation;
 import org.flexpay.payments.process.export.TradingDay;
-import org.flexpay.payments.service.OperationService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
@@ -29,7 +28,16 @@ public class QuittancePayAction extends PaymentOperationAction {
 	@NotNull
 	protected String doExecute() throws Exception {
 
+		if (operationId == null) {
+			addActionError(getText("payments.error.operation_is_incorrect"));
+			return REDIRECT_SUCCESS;
+		}
+
 		Operation operation = operationService.read(new Stub<Operation>(operationId));
+		if (operation == null) {
+			addActionError(getText("payments.error.operation_is_incorrect"));
+			return REDIRECT_SUCCESS;
+		}
 
 		Cashbox cashbox = getCashbox();
 		final Long paymentProcessId = getPaymentProcessId(cashbox);
