@@ -65,7 +65,7 @@ public class SpFileAction extends FPActionSupport {
 			Map<Serializable, Serializable> contextVariables = CollectionUtils.map();
 			if (FileParser.REGISTRY_FILE_TYPE.equals(fileType)) {
 				contextVariables.put(GetRegistryMessageActionHandler.PARAM_FILE_ID, spFile.getId());
-				processId = processManager.createProcess("ParseFPRegistryProcess", contextVariables);
+				processId = processManager.createProcess("ParseFPRegistryProcess2", contextVariables);
 			} else {
 				contextVariables.put(FileParserJob.PARAM_FILE_ID, spFile.getId());
 				contextVariables.put(FileParserJob.PARAM_FILE_TYPE, fileType);
