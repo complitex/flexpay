@@ -103,19 +103,6 @@
 		  p:sessionFactory-ref="flexpaySessionFactory"
 		  p:objectFactory-ref="jbpmObjectFactory" />
 
-	<bean id="jobExecutor" class="org.jbpm.job.executor.JobExecutor" scope="singleton"
-		  p:jbpmConfiguration-ref="jbpmConfiguration"
-		  p:name="FlexPayJobExecutor"
-		  p:nbrOfThreads="1"
-		  p:idleInterval="5000"
-		  p:maxIdleInterval="3600000"
-		  p:historyMaxSize="20"
-		  p:maxLockTime="600000"
-		  p:lockMonitorInterval="60000"
-		  p:lockBufferTime="5000"
-		  init-method="startThread"
-		  destroy-method="stopThread" />
-
 	<bean name="jobManager" class="org.flexpay.common.process.job.JobManager"
 		  factory-method="getInstance" destroy-method="unload"
 		  p:processManager-ref="processManager"

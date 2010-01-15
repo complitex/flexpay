@@ -6,5 +6,6 @@
     <import resource="common/configs/spring/config.xml" />
     <import resource="ab/configs/spring/config.xml" />
     <import resource="ab_sync/configs/spring/config.xml" />
+	<import resource="common/configs/spring/post-config.xml" />
 
 </beans>

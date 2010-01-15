@@ -28,7 +28,7 @@ public class RegistryRecordsProcessAction extends FPActionSupport {
 		contextVariables.put("recordIds", (Serializable) objectIds);
 		contextVariables.put("registryId", registry.getId());
 
-		processManager.createProcess("ParseFPRegistryProcess", contextVariables);
+		processManager.createProcess("ProcessingDBRegistryProcess", contextVariables);
 
 		addActionMessage(getText("eirc.registry.records.processing_started"));
 

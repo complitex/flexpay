@@ -55,15 +55,23 @@ public class TestParseFPRegistryProcess extends EircSpringBeanAwareTestCase {
 
 	@Test
 	public void testRegistryProcess() throws Throwable {
-        testProcessManager.deployProcessDefinition("ParseFPRegistryProcess", true);
+        testProcessManager.deployProcessDefinition("ParseFPRegistryProcess2", true);
 
 		Map<Serializable, Serializable> parameters = new HashMap<Serializable, Serializable>();
 		FPFile fpFile = createSpFile(TEST_FILE);
 		parameters.put(PARAM_FILE_ID, fpFile.getId());
-		long processId = testProcessManager.createProcess("ParseFPRegistryProcess", parameters);
+		long processId = testProcessManager.createProcess("ParseFPRegistryProcess2", parameters);
 		assertTrue("Process can not created", processId > 0);
 		org.flexpay.common.process.Process process = testProcessManager.getProcessInstanceInfo(processId);
 		assertNotNull("Process did not find", process);
+
+		// wait completed process 
+		while(!process.getProcessState().isCompleted()) {
+			Thread.sleep(1000);
+			process = testProcessManager.getProcessInstanceInfo(processId);
+			assertNotNull("Process did not loaded", process);
+		}
+
 		parameters = process.getParameters();
 		Long registryId = (Long)parameters.get(ProcessHeaderActionHandler.PARAM_REGISTRY_ID);
 		assertNotNull("registryId did not find in process parameters", registryId);

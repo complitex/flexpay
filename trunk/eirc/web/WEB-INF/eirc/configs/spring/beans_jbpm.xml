@@ -112,4 +112,26 @@
 		  p:registryWorkflowManager-ref="registryWorkflowManager"
 		  scope="prototype" />
 
+	<bean id="iterateFPRegistryActionHandler"
+		  class="org.flexpay.eirc.process.registry.IterateFPRegistryActionHandler"
+		  p:fpFileService-ref="fpFileService"
+		  p:registryService-ref="registryService"
+		  p:registryRecordService-ref="registryRecordService"
+		  p:moduleName="${flexpay.module.name.eirc}"
+		  p:eircRegistryService-ref="eircRegistryService"
+		  p:registryArchiveStatusService-ref="registryArchiveStatusService"
+		  p:registryTypeService-ref="registryTypeService"
+		  p:organizationService-ref="organizationService"
+		  p:providerService-ref="serviceProviderService"
+		  p:consumerService-ref="consumerService"
+		  p:propertiesFactory-ref="propertiesFactory"
+		  p:typeRegistry-ref="classToTypeRegistry"
+		  p:correctionsService-ref="correctionsService"
+		  p:masterIndexService-ref="masterIndexService"
+		  p:recordWorkflowManager-ref="registryRecordWorkflowManager"
+		  p:registryWorkflowManager-ref="registryWorkflowManager"
+		  p:registryFPFileTypeService-ref="registryFPFileTypeService"
+
+		  scope="prototype" />
+
 </beans>
