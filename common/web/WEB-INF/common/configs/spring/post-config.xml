@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:p="http://www.springframework.org/schema/p"
+	   xmlns:context="http://www.springframework.org/schema/context"
+	   xsi:schemaLocation="
+		   http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+		   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
+
+	<bean id="jobExecutor" class="org.jbpm.job.executor.JobExecutor" scope="singleton"
+		  p:jbpmConfiguration-ref="jbpmConfiguration"
+		  p:name="FlexPayJobExecutor"
+		  p:nbrOfThreads="1"
+		  p:idleInterval="5000"
+		  p:maxIdleInterval="3600000"
+		  p:historyMaxSize="20"
+		  p:maxLockTime="600000"
+		  p:lockMonitorInterval="60000"
+		  p:lockBufferTime="5000"
+		  init-method="startThread"
+		  destroy-method="stopThread" />
+</beans>

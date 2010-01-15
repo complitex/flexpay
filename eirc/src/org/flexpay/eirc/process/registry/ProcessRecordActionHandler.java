@@ -42,11 +42,6 @@ public class ProcessRecordActionHandler extends FlexPayActionHandler {
 			processLog.error("Can`t get {} from parameters", ProcessRegistryMessageActionHandler.PARAM_MESSAGE_FIELDS);
 			return RESULT_ERROR;
 		}
-		Long registryId = (Long)parameters.get(ProcessHeaderActionHandler.PARAM_REGISTRY_ID);
-		if (registryId == null) {
-			processLog.error("Can`t get {} from parameters", ProcessHeaderActionHandler.PARAM_REGISTRY_ID);
-			return RESULT_ERROR;
-		}
 		Long serviceProviderId = (Long)parameters.get(ProcessHeaderActionHandler.PARAM_SERVICE_PROVIDER_ID);
 		if (serviceProviderId == null) {
 			processLog.error("Can`t get {} from parameters", ProcessHeaderActionHandler.PARAM_SERVICE_PROVIDER_ID);

@@ -13,5 +13,6 @@
     <import resource="payments/configs/spring/config.xml" />
     <import resource="eirc/configs/spring/config.xml" />
     <import resource="sz/configs/spring/config.xml" />
+	<import resource="common/configs/spring/post-config.xml" />
 
 </beans>

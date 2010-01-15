@@ -10,5 +10,6 @@
 	<import resource="ab/configs/spring/config.xml" />
 	<import resource="bti/configs/spring/config.xml" />
 	<import resource="tc/configs/spring/config.xml" />
+	<import resource="common/configs/spring/post-config.xml" />
 
 </beans>

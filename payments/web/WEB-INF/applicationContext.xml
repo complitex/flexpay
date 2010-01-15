@@ -8,5 +8,6 @@
     <import resource="orgs/configs/spring/config.xml" />
     <import resource="payments/configs/spring/config.xml" />
     <import resource="payments/configs/spring/inner/config.xml" />
+	<import resource="common/configs/spring/post-config.xml" />
 
 </beans>

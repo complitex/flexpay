@@ -58,10 +58,10 @@
 
 	<decision name="IsFlushStack">
 		<transition name="flush" to="FlushStack">
-			<condition expression="#{numberLoop%10 == 0}"/>
+			<condition expression="#{numberLoop%40 == 0}"/>
 		</transition>
 		<transition name="continue" to="ProcessRecordsRange">
-			<condition expression="#{numberLoop%10 != 0}"/>
+			<condition expression="#{numberLoop%40 != 0}"/>
 		</transition>
 		<event type="node-enter">
 			<script>

@@ -3,12 +3,8 @@
                     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                     xsi:schemaLocation="urn:jbpm.org:jpdl-3.2 http://docs.jboss.org/jbpm/xsd/jpdl-3.2.xsd">
 
-	<swimlane name="worker">
-		<assignment class="org.flexpay.common.process.JobManagerAssignmentHandler" />
-	</swimlane>
-
 	<start-state name="start">
-		<transition to="GetRegistryMessage" />
+		<transition to="StartProcessThread" />
 		<event type="node-leave">
 			<script>
 				<variable mapped-name="numberLoop" access="write" name="numberLoop" />
@@ -20,6 +16,13 @@
 			</script>
 		</event>
 	</start-state>
+
+	<task-node name="StartProcessThread">
+		<task name="startThread">
+			<timer duedate="#{startTime}" transition="process"/>
+		</task>
+		<transition name="process" to="GetRegistryMessage" />
+	</task-node>
 
     <decision name="GetRegistryMessage">
 		<handler class="org.flexpay.common.process.handler.FlexPayDecisionHandler" />
@@ -88,10 +91,10 @@
 
 	<decision name="IsFlushStack">
 		<transition name="flush" to="FlushStack">
-			<condition expression="#{numberLoop%10 == 0}"/>
+			<condition expression="#{numberLoop%40 == 0}"/>
 		</transition>
 		<transition name="continue" to="ProcessRegistryMessage">
-			<condition expression="#{numberLoop%10 != 0}"/>
+			<condition expression="#{numberLoop%40 != 0}"/>
 		</transition>
 		<event type="node-enter">
 			<script>
