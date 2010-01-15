@@ -6,6 +6,8 @@ import org.junit.runners.Suite;
 @RunWith (Suite.class)
 @Suite.SuiteClasses({
 		TestRegistriesListAction.class,
+		TestRegistryAnnotationAction.class,
+		TestRegistryDeliveryHistoryAction.class,
 		TestRegistryViewPageAction.class
 		})
 public class AllTests {

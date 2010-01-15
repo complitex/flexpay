@@ -8,8 +8,10 @@ import org.junit.runners.Suite;
 		org.flexpay.payments.action.reports.AllTests.class,
         org.flexpay.payments.action.monitor.AllTests.class,
 		org.flexpay.payments.action.registry.AllTests.class,
-		TestConfirmationTradingDayServlet.class,
-		TestRecievedPaymentsReportAction.class
+		org.flexpay.payments.action.service.AllTests.class,
+		org.flexpay.payments.action.quittance.AllTests.class,
+		org.flexpay.payments.action.operations.AllTests.class,
+		org.flexpay.payments.action.tradingday.AllTests.class
 		})
 public class AllTests {
 
