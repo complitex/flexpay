@@ -87,10 +87,8 @@ public class IterateFPRegistryActionHandler extends FlexPayActionHandler {
 	@SuppressWarnings ({"unchecked"})
 	@Override
 	public String execute2(Map<String, Object> parameters) throws FlexPayException {
-		List<RegistryRecord> records = (List<RegistryRecord>)parameters.get(PARAM_REGISTRY_RECORDS);
-		if (records == null) {
-			records = new ArrayList<RegistryRecord>();
-		}
+		List<RegistryRecord> records = new ArrayList<RegistryRecord>();
+
 		Long spFileId = (Long) parameters.get(PARAM_FILE_ID);
 		FPFile spFile = fpFileService.read(new Stub<FPFile>(spFileId));
 		if (spFile == null) {
@@ -107,46 +105,47 @@ public class IterateFPRegistryActionHandler extends FlexPayActionHandler {
 		}
 
 		try {
-			List<SpFileReader.Message> listMessage = getMessages(parameters, spFile);
+			List<SpFileReader.Message> listMessage;
+			do {
+				listMessage = getMessages(parameters, spFile);
 
-			int i = 0;
-			for (SpFileReader.Message message : listMessage) {
-				if (message == null) {
-					finalizeRegistry(parameters, records);
-					return RESULT_END;
-				}
-				i++;
-				String messageValue = message.getBody();
-				if (StringUtils.isEmpty(messageValue)) {
-					continue;
-				}
-				List<String> messageFieldList = StringUtil.splitEscapable(
-						messageValue, Operation.RECORD_DELIMITER, Operation.ESCAPE_SYMBOL);
-
-				Integer messageType = message.getType();
-
-				if (messageType.equals(SpFileReader.Message.MESSAGE_TYPE_HEADER)) {
-					Registry registry = processHeader(spFile, messageFieldList);
-					if (registry == null) {
-						return RESULT_ERROR;
+				int i = 0;
+				for (SpFileReader.Message message : listMessage) {
+					if (message == null) {
+						finalizeRegistry(parameters, records);
+						return RESULT_END;
 					}
-					parameters.put(PARAM_REGISTRY_ID, registry.getId());
-					parameters.put(PARAM_SERVICE_PROVIDER_ID, ((EircRegistryProperties)registry.getProperties()).getServiceProvider().getId());
-					log.debug("Create registry {}. Add it to process parameters", registry.getId());
-				} else if (messageType.equals(SpFileReader.Message.MESSAGE_TYPE_RECORD)) {
-					RegistryRecord record = processRecord(parameters, messageFieldList);
-					records.add(record);
-					if (flushRecordStack(parameters, records)) {
-						break;
+					i++;
+					String messageValue = message.getBody();
+					if (StringUtils.isEmpty(messageValue)) {
+						continue;
 					}
-				} else if (messageType.equals(SpFileReader.Message.MESSAGE_TYPE_FOOTER)) {
-					processFooter(messageFieldList);
-				}
-			}
-			parameters.put(PARAM_REGISTRY_RECORDS, records);
-			parameters.put(PARAM_MESSAGES, listMessage.subList(i, listMessage.size()));
+					List<String> messageFieldList = StringUtil.splitEscapable(
+							messageValue, Operation.RECORD_DELIMITER, Operation.ESCAPE_SYMBOL);
 
-			return RESULT_NEXT;
+					Integer messageType = message.getType();
+
+					if (messageType.equals(SpFileReader.Message.MESSAGE_TYPE_HEADER)) {
+						Registry registry = processHeader(spFile, messageFieldList);
+						if (registry == null) {
+							return RESULT_ERROR;
+						}
+						parameters.put(PARAM_REGISTRY_ID, registry.getId());
+						parameters.put(PARAM_SERVICE_PROVIDER_ID, ((EircRegistryProperties)registry.getProperties()).getServiceProvider().getId());
+						log.debug("Create registry {}. Add it to process parameters", registry.getId());
+					} else if (messageType.equals(SpFileReader.Message.MESSAGE_TYPE_RECORD)) {
+						RegistryRecord record = processRecord(parameters, messageFieldList);
+						records.add(record);
+						if (flushRecordStack(parameters, records)) {
+							parameters.put(PARAM_MESSAGES, listMessage.subList(i, listMessage.size()));
+							return RESULT_NEXT;
+						}
+					} else if (messageType.equals(SpFileReader.Message.MESSAGE_TYPE_FOOTER)) {
+						processFooter(messageFieldList);
+					}
+				}
+			} while(listMessage.size() > 0);
+			log.error("Failed registry file");
 		} catch(FlexPayException e) {
 			log.error("Processing error", e);
 			processLog.error("Inner error");
@@ -154,9 +153,16 @@ public class IterateFPRegistryActionHandler extends FlexPayActionHandler {
 		return RESULT_ERROR;
 	}
 
+	@SuppressWarnings ({"unchecked"})
 	private List<SpFileReader.Message> getMessages(Map<String, Object> parameters, FPFile spFile) throws FlexPayException {
-		List<SpFileReader.Message> listMessage = new ArrayList<SpFileReader.Message>();
+		List<SpFileReader.Message> listMessage = (List<SpFileReader.Message>)parameters.get(PARAM_MESSAGES);
 
+		if (listMessage == null) {
+			listMessage = new ArrayList<SpFileReader.Message>();
+		} else if (listMessage.size() > 0) {
+			parameters.remove(PARAM_MESSAGES);
+			return listMessage;
+		}
         try {
             FileSource fileSource = openRegistryFile(spFile);
             InputStream is = fileSource.openStream();
@@ -226,7 +232,7 @@ public class IterateFPRegistryActionHandler extends FlexPayActionHandler {
 			}
 
 			records.clear();
-			log.debug("Flushing data");
+			log.debug("Flushing data. Total count: {}", recordCounter);
 			return true;
 		}
 		return false;
