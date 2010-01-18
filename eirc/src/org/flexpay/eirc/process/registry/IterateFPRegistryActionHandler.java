@@ -139,6 +139,7 @@ public class IterateFPRegistryActionHandler extends FlexPayActionHandler {
 						records.add(record);
 						if (flushRecordStack(parameters, records)) {
 							parameters.put(PARAM_MESSAGES, listMessage.subList(i, listMessage.size()));
+							log.debug("sub list [{}, {}]", new Object[]{i, listMessage.size()});
 							return RESULT_NEXT;
 						}
 					} else if (messageType.equals(SpFileReader.Message.MESSAGE_TYPE_FOOTER)) {
@@ -147,7 +148,7 @@ public class IterateFPRegistryActionHandler extends FlexPayActionHandler {
 				}
 			} while(listMessage.size() > 0);
 			log.error("Failed registry file");
-		} catch(FlexPayException e) {
+		} catch(Exception e) {
 			log.error("Processing error", e);
 			processLog.error("Inner error");
 		}
