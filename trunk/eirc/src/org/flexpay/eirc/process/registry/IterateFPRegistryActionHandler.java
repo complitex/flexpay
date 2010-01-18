@@ -41,6 +41,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -139,8 +140,7 @@ public class IterateFPRegistryActionHandler extends FlexPayActionHandler {
 						records.add(record);
 						if (flushRecordStack(parameters, records)) {
 							List<SpFileReader.Message> outPutMessages = listMessage.subList(i, listMessage.size());
-							parameters.put(PARAM_MESSAGES, outPutMessages);
-							log.debug("sub list: {}", outPutMessages);
+							parameters.put(PARAM_MESSAGES, outPutMessages.toArray());
 							return RESULT_NEXT;
 						}
 					} else if (messageType.equals(SpFileReader.Message.MESSAGE_TYPE_FOOTER)) {
@@ -158,14 +158,12 @@ public class IterateFPRegistryActionHandler extends FlexPayActionHandler {
 
 	@SuppressWarnings ({"unchecked"})
 	private List<SpFileReader.Message> getMessages(Map<String, Object> parameters, FPFile spFile) throws FlexPayException {
-		List<SpFileReader.Message> listMessage = (List<SpFileReader.Message>)parameters.get(PARAM_MESSAGES);
+		SpFileReader.Message messages[] = (SpFileReader.Message[])parameters.get(PARAM_MESSAGES);
 
-		if (listMessage == null) {
-			listMessage = new ArrayList<SpFileReader.Message>();
-		} else if (listMessage.size() > 0) {
-			parameters.remove(PARAM_MESSAGES);
-			return listMessage;
+		if (messages != null && messages.length > 0) {
+			return Arrays.asList(messages);
 		}
+		List<SpFileReader.Message> listMessage = new ArrayList<SpFileReader.Message>();		
         try {
             FileSource fileSource = openRegistryFile(spFile);
             InputStream is = fileSource.openStream();
