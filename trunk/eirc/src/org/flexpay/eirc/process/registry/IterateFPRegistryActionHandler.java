@@ -138,8 +138,9 @@ public class IterateFPRegistryActionHandler extends FlexPayActionHandler {
 						RegistryRecord record = processRecord(parameters, messageFieldList);
 						records.add(record);
 						if (flushRecordStack(parameters, records)) {
-							parameters.put(PARAM_MESSAGES, listMessage.subList(i, listMessage.size()));
-							log.debug("sub list [{}, {}]", new Object[]{i, listMessage.size()});
+							List<SpFileReader.Message> outPutMessages = listMessage.subList(i, listMessage.size());
+							parameters.put(PARAM_MESSAGES, outPutMessages);
+							log.debug("sub list: {}", outPutMessages);
 							return RESULT_NEXT;
 						}
 					} else if (messageType.equals(SpFileReader.Message.MESSAGE_TYPE_FOOTER)) {
