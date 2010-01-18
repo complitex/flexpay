@@ -32,7 +32,7 @@ public abstract class FlexPayActionHandler implements ActionHandler {
 
 		for (Map.Entry<String, Object> entry : parameters.entrySet()) {
 			contextInstance.setVariable(entry.getKey(), entry.getValue());
-			//log.debug("{}={}", new Object[]{entry.getKey(), entry.getValue()});
+			log.debug("{}={}", new Object[]{entry.getKey(), entry.getValue()});
 		}
 
 		contextInstance.setVariable(FlexPayDecisionHandler.RESULT, result);
