@@ -87,6 +87,7 @@ public class IterateFPRegistryActionHandler extends FlexPayActionHandler {
 	@SuppressWarnings ({"unchecked"})
 	@Override
 	public String execute2(Map<String, Object> parameters) throws FlexPayException {
+		log.debug("start action");
 		List<RegistryRecord> records = new ArrayList<RegistryRecord>();
 
 		Long spFileId = (Long) parameters.get(PARAM_FILE_ID);
@@ -279,10 +280,12 @@ public class IterateFPRegistryActionHandler extends FlexPayActionHandler {
 	private Registry processHeader(FPFile spFile, List<String> messageFieldList) {
 		if (messageFieldList.size() < 10) {
 			processLog.error("Message header error, invalid number of fields: {}, expected at least 10", messageFieldList.size());
+			log.error("Message header error, invalid number of fields: {}, expected at least 10", messageFieldList.size());
 			return null;
 		}
 
 		processLog.info("Adding header: {}", messageFieldList);
+		log.info("Adding header: {}", messageFieldList);
 
 		DateFormat dateFormat = new SimpleDateFormat(ParseRegistryConstants.DATE_FORMAT);
 
@@ -298,6 +301,7 @@ public class IterateFPRegistryActionHandler extends FlexPayActionHandler {
 			RegistryType registryType = registryTypeService.read(Long.valueOf(value));
 			if (registryType == null) {
 				processLog.error("Unknown registry type field: {}", value);
+				log.error("Unknown registry type field: {}", value);
 				return null;
 			}
 			newRegistry.setRegistryType(registryType);
@@ -318,6 +322,7 @@ public class IterateFPRegistryActionHandler extends FlexPayActionHandler {
 			}
 
 			processLog.info("Creating new registry: {}", newRegistry);
+			log.info("Creating new registry: {}", newRegistry);
 
 			EircRegistryProperties props = (EircRegistryProperties) propertiesFactory.newRegistryProperties();
 			newRegistry.setProperties(props);
@@ -325,14 +330,17 @@ public class IterateFPRegistryActionHandler extends FlexPayActionHandler {
 			Organization recipient = setRecipient(newRegistry, props);
 			if (recipient == null) {
 				processLog.error("Failed processing registry header, recipient not found: #{}", newRegistry.getRecipientCode());
+				log.error("Failed processing registry header, recipient not found: #{}", newRegistry.getRecipientCode());
 				return null;
 			}
 			Organization sender = setSender(newRegistry, props);
 			if (sender == null) {
 				processLog.error("Failed processing registry header, sender not found: #{}", newRegistry.getSenderCode());
+				log.error("Failed processing registry header, sender not found: #{}", newRegistry.getSenderCode());
 				return null;
 			}
 			processLog.info("Recipient: {}\n sender: {}", recipient, sender);
+			log.info("Recipient: {}\n sender: {}", recipient, sender);
 
 			if (!validateProvider(newRegistry)) {
 				return null;
@@ -340,6 +348,7 @@ public class IterateFPRegistryActionHandler extends FlexPayActionHandler {
 			ServiceProvider provider = getProvider(newRegistry);
 			if (provider == null) {
 				processLog.error("Failed processing registry header, provider not found: #{}", newRegistry.getSenderCode());
+				log.error("Failed processing registry header, provider not found: #{}", newRegistry.getSenderCode());
 				return null;
 			}
 			props.setServiceProvider(provider);
@@ -351,12 +360,16 @@ public class IterateFPRegistryActionHandler extends FlexPayActionHandler {
 			return registryService.create(newRegistry);
 		} catch (NumberFormatException e) {
 			processLog.error("Header parse error", e);
+			log.error("Header parse error", e);
 		} catch (ParseException e) {
 			processLog.error("Header parse error", e);
+			log.error("Header parse error", e);
 		} catch (TransitionNotAllowed e) {
 			processLog.error("Header parse error", e);
+			log.error("Header parse error", e);
 		} catch (FlexPayException e) {
 			processLog.error("Header parse error", e);
+			log.error("Header parse error", e);
 		}
 		return null;
 	}
