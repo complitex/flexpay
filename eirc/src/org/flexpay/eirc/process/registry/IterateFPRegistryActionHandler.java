@@ -13,6 +13,7 @@ import org.flexpay.common.service.*;
 import org.flexpay.common.service.importexport.ClassToTypeRegistry;
 import org.flexpay.common.service.importexport.CorrectionsService;
 import org.flexpay.common.service.importexport.MasterIndexService;
+import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.FileSource;
 import org.flexpay.common.util.StringUtil;
 import org.flexpay.eirc.persistence.EircRegistryRecordProperties;
@@ -41,7 +42,6 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -139,8 +139,8 @@ public class IterateFPRegistryActionHandler extends FlexPayActionHandler {
 						RegistryRecord record = processRecord(parameters, messageFieldList);
 						records.add(record);
 						if (flushRecordStack(parameters, records)) {
-							List<SpFileReader.Message> outPutMessages = listMessage.subList(i, listMessage.size());
-							parameters.put(PARAM_MESSAGES, outPutMessages.toArray());
+							List<SpFileReader.Message> outgoingMessages = listMessage.subList(i, listMessage.size());
+							parameters.put(PARAM_MESSAGES, CollectionUtils.list(outgoingMessages));
 							return RESULT_NEXT;
 						}
 					} else if (messageType.equals(SpFileReader.Message.MESSAGE_TYPE_FOOTER)) {
@@ -158,12 +158,14 @@ public class IterateFPRegistryActionHandler extends FlexPayActionHandler {
 
 	@SuppressWarnings ({"unchecked"})
 	private List<SpFileReader.Message> getMessages(Map<String, Object> parameters, FPFile spFile) throws FlexPayException {
-		SpFileReader.Message messages[] = (SpFileReader.Message[])parameters.get(PARAM_MESSAGES);
+		List<SpFileReader.Message> listMessage = (List<SpFileReader.Message>)parameters.get(PARAM_MESSAGES);
 
-		if (messages != null && messages.length > 0) {
-			return Arrays.asList(messages);
+		if (listMessage == null) {
+			listMessage = new ArrayList<SpFileReader.Message>();
+		} else if (listMessage.size() > 0) {
+			parameters.remove(PARAM_MESSAGES);
+			return listMessage;
 		}
-		List<SpFileReader.Message> listMessage = new ArrayList<SpFileReader.Message>();		
         try {
             FileSource fileSource = openRegistryFile(spFile);
             InputStream is = fileSource.openStream();
