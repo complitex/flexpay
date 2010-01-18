@@ -36,6 +36,7 @@ public abstract class FlexPayActionHandler implements ActionHandler {
 		}
 
 		contextInstance.setVariable(FlexPayDecisionHandler.RESULT, result);
+		log.debug("{}={}", new Object[]{FlexPayDecisionHandler.RESULT, result});
 	}
 
 	public abstract String execute2(Map<String, Object> parameters) throws FlexPayException;
