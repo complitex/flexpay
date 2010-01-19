@@ -23,10 +23,10 @@ public class SpFileReader implements Serializable {
 		this.position = 0;
 	}
 
-	public SpFileReader(InputStream is, long position) throws IOException {
-		this.is = new BufferedInputStream(is);
+	public SpFileReader(InputStream is, int bufferSize) {
+		this.is = new BufferedInputStream(is, bufferSize);
 		this.charset = DEFAULT_CHARSET;
-		this.is.skip(position);
+		this.position = 0;
 	}
 
 	public Message readMessage() throws IOException, RegistryFormatException {
