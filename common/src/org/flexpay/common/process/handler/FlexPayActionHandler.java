@@ -32,11 +32,11 @@ public abstract class FlexPayActionHandler implements ActionHandler {
 
 		for (Map.Entry<String, Object> entry : parameters.entrySet()) {
 			contextInstance.setVariable(entry.getKey(), entry.getValue());
-			log.debug("{}={}", new Object[]{entry.getKey(), entry.getValue()});
+			//log.debug("{}={}", new Object[]{entry.getKey(), entry.getValue()});
 		}
 
 		contextInstance.setVariable(FlexPayDecisionHandler.RESULT, result);
-		log.debug("{}={}", new Object[]{FlexPayDecisionHandler.RESULT, result});
+		//log.debug("{}={}", new Object[]{FlexPayDecisionHandler.RESULT, result});
 	}
 
 	public abstract String execute2(Map<String, Object> parameters) throws FlexPayException;

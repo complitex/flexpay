@@ -51,7 +51,6 @@ public class IterateFPRegistryActionHandler extends FlexPayActionHandler {
 	public static final String PARAM_FILE_ID = "fileId";
 	public static final String PARAM_READER = "reader";
 	public static final String PARAM_MESSAGES = "messages";
-	public static final String PARAM_REGISTRY_RECORDS = "registryRecords";
 	public static final String PARAM_NUMBER_PROCESSED_REGISTRY_RECORDS = "numberProcessedRegistryRecords";
 	public static final String PARAM_REGISTRY_ID = "registryId";
 	public static final String PARAM_SERVICE_PROVIDER_ID = "serviceProviderId";
@@ -137,6 +136,9 @@ public class IterateFPRegistryActionHandler extends FlexPayActionHandler {
 						log.debug("Create registry {}. Add it to process parameters", registry.getId());
 					} else if (messageType.equals(SpFileReader.Message.MESSAGE_TYPE_RECORD)) {
 						RegistryRecord record = processRecord(parameters, messageFieldList);
+						if (record == null) {
+							return RESULT_ERROR;
+						}
 						records.add(record);
 						if (flushRecordStack(parameters, records)) {
 							List<SpFileReader.Message> outgoingMessages = listMessage.subList(i, listMessage.size());
@@ -493,12 +495,14 @@ public class IterateFPRegistryActionHandler extends FlexPayActionHandler {
 
 	private RegistryRecord processRecord(Map<String, Object> parameters, List<String> messageFieldList) {
 		if (messageFieldList.size() < 10) {
+			log.error("Message record error, invalid number of fields: {}", messageFieldList.size());
 			processLog.error("Message record error, invalid number of fields: {}", messageFieldList.size());
 			return null;
 		}
 		Long serviceProviderId = (Long)parameters.get(ProcessHeaderActionHandler.PARAM_SERVICE_PROVIDER_ID);
 		if (serviceProviderId == null) {
-			processLog.error("Can`t get {} from parameters", ProcessHeaderActionHandler.PARAM_SERVICE_PROVIDER_ID);
+			log.error("Can`t get {} from parameters", ProcessHeaderActionHandler.PARAM_SERVICE_PROVIDER_ID);
+			processLog.error("Inner error");
 			return null;
 		}
 		Stub<ServiceProvider> serviceProviderStub = new Stub<ServiceProvider>(serviceProviderId);
@@ -506,7 +510,7 @@ public class IterateFPRegistryActionHandler extends FlexPayActionHandler {
 		RegistryRecord record = new RegistryRecord();
 		record.setProperties(propertiesFactory.newRecordProperties());
 		try {
-			processLog.info("adding record: '{}'", StringUtils.join(messageFieldList, '-'));
+			log.info("adding record: '{}'", StringUtils.join(messageFieldList, '-'));
 			int n = 1;
 			record.setServiceCode(messageFieldList.get(++n));
 			record.setPersonalAccountExt(messageFieldList.get(++n));
@@ -514,6 +518,7 @@ public class IterateFPRegistryActionHandler extends FlexPayActionHandler {
 			EircRegistryRecordProperties recordProps = (EircRegistryRecordProperties) record.getProperties();
 			Service service = consumerService.findService(serviceProviderStub, record.getServiceCode());
 			if (service == null) {
+				log.warn("Unknown service code: {}", record.getServiceCode());
 				processLog.warn("Unknown service code: {}", record.getServiceCode());
 			}
 			recordProps.setService(service);
@@ -573,16 +578,17 @@ public class IterateFPRegistryActionHandler extends FlexPayActionHandler {
 
 			return record;
 		} catch (NumberFormatException e) {
-			processLog.error("Record number parse error", e);
+			log.error("Record number parse error", e);
 		} catch (ParseException e) {
-			processLog.error("Record parse error", e);
+			log.error("Record parse error", e);
 		} catch (RegistryFormatException e) {
-			processLog.error("Record number parse error", e);
+			log.error("Record number parse error", e);
 		} catch (TransitionNotAllowed transitionNotAllowed) {
-			processLog.error("Record number parse error", transitionNotAllowed);
+			log.error("Record number parse error", transitionNotAllowed);
 		} catch (FlexPayException e) {
-			processLog.error("Record number parse error", e);
+			log.error("Record number parse error", e);
 		}
+		processLog.error("Record number parse error");
 		return null;
 	}
 
