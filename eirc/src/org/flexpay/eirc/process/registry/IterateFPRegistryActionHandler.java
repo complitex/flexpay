@@ -1,5 +1,6 @@
 package org.flexpay.eirc.process.registry;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
@@ -97,6 +98,15 @@ public class IterateFPRegistryActionHandler extends FlexPayActionHandler {
 			log.error("Can't get spFile from DB (id = {})", spFileId);
 			return RESULT_ERROR;
 		}
+		InputStream is;
+		try {
+			FileSource fileSource = openRegistryFile(spFile);
+			is = fileSource.openStream();
+		} catch (IOException e) {
+			log.error("Failed open stream", e);
+			processLog.error("Inner error");
+			return RESULT_ERROR;
+		}
 		if (parameters.containsKey(PARAM_MIN_READ_CHARS)) {
 			minReadChars = (Long)parameters.get(PARAM_MIN_READ_CHARS);
 		}
@@ -108,12 +118,13 @@ public class IterateFPRegistryActionHandler extends FlexPayActionHandler {
 		try {
 			List<SpFileReader.Message> listMessage;
 			do {
-				listMessage = getMessages(parameters, spFile);
+				listMessage = getMessages(parameters, is);
 
 				int i = 0;
 				for (SpFileReader.Message message : listMessage) {
 					if (message == null) {
 						finalizeRegistry(parameters, records);
+						IOUtils.closeQuietly(is);
 						return RESULT_END;
 					}
 					i++;
@@ -129,6 +140,7 @@ public class IterateFPRegistryActionHandler extends FlexPayActionHandler {
 					if (messageType.equals(SpFileReader.Message.MESSAGE_TYPE_HEADER)) {
 						Registry registry = processHeader(spFile, messageFieldList);
 						if (registry == null) {
+							IOUtils.closeQuietly(is);
 							return RESULT_ERROR;
 						}
 						parameters.put(PARAM_REGISTRY_ID, registry.getId());
@@ -137,12 +149,14 @@ public class IterateFPRegistryActionHandler extends FlexPayActionHandler {
 					} else if (messageType.equals(SpFileReader.Message.MESSAGE_TYPE_RECORD)) {
 						RegistryRecord record = processRecord(parameters, messageFieldList);
 						if (record == null) {
+							IOUtils.closeQuietly(is);
 							return RESULT_ERROR;
 						}
 						records.add(record);
 						if (flushRecordStack(parameters, records)) {
 							List<SpFileReader.Message> outgoingMessages = listMessage.subList(i, listMessage.size());
 							parameters.put(PARAM_MESSAGES, CollectionUtils.list(outgoingMessages));
+							IOUtils.closeQuietly(is);
 							return RESULT_NEXT;
 						}
 					} else if (messageType.equals(SpFileReader.Message.MESSAGE_TYPE_FOOTER)) {
@@ -155,11 +169,12 @@ public class IterateFPRegistryActionHandler extends FlexPayActionHandler {
 			log.error("Processing error", e);
 			processLog.error("Inner error");
 		}
+		IOUtils.closeQuietly(is);
 		return RESULT_ERROR;
 	}
 
 	@SuppressWarnings ({"unchecked"})
-	private List<SpFileReader.Message> getMessages(Map<String, Object> parameters, FPFile spFile) throws FlexPayException {
+	private List<SpFileReader.Message> getMessages(Map<String, Object> parameters, InputStream is) throws FlexPayException {
 		List<SpFileReader.Message> listMessage = (List<SpFileReader.Message>)parameters.get(PARAM_MESSAGES);
 
 		if (listMessage == null) {
@@ -169,13 +184,9 @@ public class IterateFPRegistryActionHandler extends FlexPayActionHandler {
 			return listMessage;
 		}
         try {
-            FileSource fileSource = openRegistryFile(spFile);
-            InputStream is = fileSource.openStream();
-
-
             SpFileReader reader = (SpFileReader)parameters.get(PARAM_READER);
             if (reader == null) {
-                reader = new SpFileReader(is);
+                reader = new SpFileReader(is, minReadChars.intValue());
             }
 			reader.setInputStream(is);
 
@@ -193,7 +204,7 @@ public class IterateFPRegistryActionHandler extends FlexPayActionHandler {
 
             return listMessage;
         } catch (IOException e) {
-            throw new FlexPayException("Failed open stream", e);
+            throw new FlexPayException("Failed input stream", e);
         }
 	}
 
