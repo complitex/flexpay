@@ -505,6 +505,7 @@ public class IterateFPRegistryActionHandler extends FlexPayActionHandler {
 	}
 
 	private RegistryRecord processRecord(Map<String, Object> parameters, List<String> messageFieldList) {
+		log.info("processing record: '{}'", StringUtils.join(messageFieldList, '-'));
 		if (messageFieldList.size() < 10) {
 			log.error("Message record error, invalid number of fields: {}", messageFieldList.size());
 			processLog.error("Message record error, invalid number of fields: {}", messageFieldList.size());
@@ -521,7 +522,7 @@ public class IterateFPRegistryActionHandler extends FlexPayActionHandler {
 		RegistryRecord record = new RegistryRecord();
 		record.setProperties(propertiesFactory.newRecordProperties());
 		try {
-			log.info("adding record: '{}'", StringUtils.join(messageFieldList, '-'));
+			log.info("add record");
 			int n = 1;
 			record.setServiceCode(messageFieldList.get(++n));
 			record.setPersonalAccountExt(messageFieldList.get(++n));
