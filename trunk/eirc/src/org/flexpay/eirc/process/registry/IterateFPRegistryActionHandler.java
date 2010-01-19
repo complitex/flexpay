@@ -191,6 +191,7 @@ public class IterateFPRegistryActionHandler extends FlexPayActionHandler {
 			reader.setInputStream(is);
 
 			Long startPoint = reader.getPosition();
+			log.debug("start point: {}", startPoint);
 			SpFileReader.Message message;
 
 			do {
