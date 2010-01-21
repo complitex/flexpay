@@ -52,79 +52,108 @@ public class MbChargesFileParser extends MbFileParser {
     @Override
 	protected List<Registry> parseFile(@NotNull FPFile spFile) throws FlexPayException {
 
-		Registry registry = new Registry();
+		Logger plog = ProcessLogger.getLogger(getClass());
 
-		BufferedReader reader = null;
-
+		BufferedReader reader;
 		try {
-			//noinspection IOResourceOpenedButNotSafelyClosed
 			reader = new BufferedReader(new InputStreamReader(spFile.toFileSource().openStream(), MbParsingConstants.REGISTRY_FILE_ENCODING));
-			registry.setCreationDate(new Date());
-			registry.getFiles().put(registryFPFileTypeService.findByCode(RegistryFPFileType.MB_FORMAT), spFile);
-			registry.setRegistryType(registryTypeService.findByCode(RegistryType.TYPE_QUITTANCE));
-			registry.setArchiveStatus(registryArchiveStatusService.findByCode(RegistryArchiveStatus.NONE));
-			registry.setRegistryStatus(registryStatusService.findByCode(RegistryStatus.LOADING));
-			registry.setModule(fileService.getModuleByName(moduleName));
-
-			Logger plog = ProcessLogger.getLogger(getClass());
-			StopWatch watch = new StopWatch();
-			watch.start();
-
-			long recordsNum = 0;
-			int lineNum = 0;
-			ParseContext parseContext = new ParseContext();
-			parseContext.setRegistry(registry);
-			parseContext.setPlog(plog);
-			for (; ; lineNum++) {
-				String line = reader.readLine();
-				if (line == null) {
-					log.debug("End of file, lineNum = {}", lineNum);
-					break;
-				}
-				if (lineNum == 0) {
-					continue;
-				} else if (lineNum == 1) {
-					registry = registryService.create(parseHeader(line, registry));
-				} else if (line.startsWith(MbParsingConstants.LAST_FILE_STRING_BEGIN)) {
-					registry.setRecordsNumber(recordsNum);
-					plog.info("Total {} records created", recordsNum);
-					break;
-				} else {
-					recordsNum += parseRecord(line, parseContext);
-				}
-
-				if (parseContext.getRecords().size() >= 50) {
-					flushRecordStack(parseContext.getRecords());
-				}
-
-				if (lineNum % 100 == 0) {
-					plog.info("Parsed {} records, time spent {}", lineNum, watch);
-				}
-			}
-
-			registry.setRegistryStatus(registryStatusService.findByCode(RegistryStatus.LOADED));
-			registry = registryService.update(registry);
-
-			parseContext.flushLastAccountRecords();
-			flushRecordStack(parseContext.getRecords());
-
-			watch.stop();
-			if (plog.isInfoEnabled()) {
-				plog.info("Registry parse completed, total lines {}, total records {}, total time {}",
-						new Object[]{lineNum, recordsNum, watch});
-			}
 		} catch (IOException e) {
-			log.error("Error with reading file", e);
+			throw new FlexPayException("Error open file " + spFile, e);
+		}
+
+		Registry registry = new Registry();
+		initRegistry(spFile, registry);
+
+		List<Registry> registries = CollectionUtils.list(registry);
+
+		Long totalLineNum = 0L;
+		Long totalRecordsNum = 0L;
+
+		Map<String, Object> parameters = CollectionUtils.map();
+		parameters.put(ParserParameterConstants.PARAM_REGISTRIES, registries);
+		parameters.put(ParserParameterConstants.PARAM_TOTAL_LINE_NUM, totalLineNum);
+		parameters.put(ParserParameterConstants.PARAM_TOTAL_RECORD_NUM, totalRecordsNum);
+		parameters.put(ParserParameterConstants.PARAM_FLUSH_NUMBER_REGISTRY_RECORD, 50L);
+		try {
+			while(iterateParseFile(reader, parameters) > 0);
 		} finally {
 			IOUtils.closeQuietly(reader);
 		}
 
-		return CollectionUtils.list(registry);
+		List<Registry> result = CollectionUtils.list();
+		for (Registry reg : registries) {
+			reg.setRegistryStatus(registryStatusService.findByCode(RegistryStatus.LOADED));
+			registryService.update(reg);
+			result.add(reg);
+		}
+
+		if (plog.isInfoEnabled()) {
+			plog.info("Registry parse completed, total lines {}, total records {}",
+					new Object[]{parameters.get(ParserParameterConstants.PARAM_TOTAL_LINE_NUM),
+								parameters.get(ParserParameterConstants.PARAM_TOTAL_RECORD_NUM)});
+		}
+
+		return registries;
 	}
 
+	@SuppressWarnings ({"unchecked"})
 	@Override
+	@Transactional (propagation = Propagation.NOT_SUPPORTED, readOnly = false)
 	public int iterateParseFile(@NotNull BufferedReader reader, @NotNull Map<String, Object> properties) throws FlexPayException {
-		throw new FlexPayException("Do not implement");
+		List<Registry> registries = (List<Registry>)properties.get(ParserParameterConstants.PARAM_REGISTRIES);
+		Long totalLineNum = (Long)properties.get(ParserParameterConstants.PARAM_TOTAL_LINE_NUM);
+		Long totalRecordNum = (Long)properties.get(ParserParameterConstants.PARAM_TOTAL_RECORD_NUM);
+		Long flushNumberRegistryRecord = (Long)properties.get(ParserParameterConstants.PARAM_FLUSH_NUMBER_REGISTRY_RECORD);
+
+		Registry registry = registries.get(0);
+		ParseContext parseContext = new ParseContext();
+		parseContext.setRegistry(registry);
+
+		int countChar = 0;
+
+		try {
+			do {
+				String line = reader.readLine();
+				//log.debug("totalLineNum={}, line: {}", new Object[]{totalLineNum, line});
+				if (line == null) {
+					log.debug("End of file, lineNum = {}", totalLineNum);
+					countChar = -1;
+					break;
+				}
+				countChar += line.length() + 2;
+				if (totalLineNum == 0) {
+
+				} else if (totalLineNum == 1) {
+					parseHeader(line, registry);
+				} else if (line.startsWith(MbParsingConstants.LAST_FILE_STRING_BEGIN)) {
+					registry.setRecordsNumber(totalRecordNum);
+					log.info("Total {} records created", totalRecordNum);
+					countChar = -1;
+					break;
+				} else {
+					totalRecordNum += parseRecord(line, parseContext);
+				}
+				totalLineNum++;
+			} while(parseContext.getRecords().size() < flushNumberRegistryRecord);
+
+			flushRecordStack(parseContext.getRecords());
+
+		} catch (IOException e) {
+			throw new FlexPayException("Error reading file ", e);
+		}
+
+		properties.put(ParserParameterConstants.PARAM_TOTAL_LINE_NUM, totalLineNum);
+		properties.put(ParserParameterConstants.PARAM_TOTAL_RECORD_NUM, totalRecordNum);
+		return countChar;
+	}
+
+	private void initRegistry(FPFile spFile, Registry registry) {
+		registry.setCreationDate(new Date());
+		registry.getFiles().put(registryFPFileTypeService.findByCode(RegistryFPFileType.MB_FORMAT), spFile);
+		registry.setRegistryType(registryTypeService.findByCode(RegistryType.TYPE_QUITTANCE));
+		registry.setArchiveStatus(registryArchiveStatusService.findByCode(RegistryArchiveStatus.NONE));
+		registry.setRegistryStatus(registryStatusService.findByCode(RegistryStatus.LOADING));
+		registry.setModule(fileService.getModuleByName(moduleName));
 	}
 
 	private void flushRecordStack(List<RegistryRecord> records) {
@@ -159,7 +188,7 @@ public class MbChargesFileParser extends MbFileParser {
 			// do nothing
 		}
 
-		return registry;
+		return registryService.create(registry);
 	}
 
 	private long parseRecord(String line, ParseContext context) throws FlexPayException {
@@ -238,6 +267,12 @@ public class MbChargesFileParser extends MbFileParser {
 		EircRegistryRecordProperties props = (EircRegistryRecordProperties) propertiesFactory.newRecordProperties();
 		record.setProperties(props);
 
+		if (statusLoaded == null) {
+			statusLoaded = registryRecordStatusService.findByCode(RegistryRecordStatus.LOADED);
+			if (statusLoaded == null) {
+				throw new FlexPayException("Can't get registry record status \"loaded\" from database");
+			}
+		}
 		record.setRecordStatus(statusLoaded);
 		BigDecimal charges = charges(fields);
 		BigDecimal outgoingBalance = outgoingBalance(fields);

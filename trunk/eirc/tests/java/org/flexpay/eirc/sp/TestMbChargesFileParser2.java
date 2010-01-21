@@ -25,8 +25,7 @@ import java.util.Map;
 import static junit.framework.Assert.assertTrue;
 import static org.junit.Assert.assertNotNull;
 
-
-public class TestMbCorrectionsFileParser2 extends TestSpFileCreateAction {
+public class TestMbChargesFileParser2 extends TestSpFileCreateAction {
 	@Autowired
 	private ProcessManager testProcessManager;
 	@Autowired
@@ -42,7 +41,7 @@ public class TestMbCorrectionsFileParser2 extends TestSpFileCreateAction {
 	@Test
 	public void testParseFile() throws Throwable {
 
-		FPFile newFile = createSpFile("org/flexpay/eirc/sp/20090605m_10.ls");
+		FPFile newFile = createSpFile("org/flexpay/eirc/sp/20090605m_10.nch");
 
 		List<Registry> registries = parseRegistryFile(newFile);
 
@@ -52,7 +51,7 @@ public class TestMbCorrectionsFileParser2 extends TestSpFileCreateAction {
 	@Test
 	public void testParseZipFile() throws Throwable {
 
-		FPFile newFile = createSpFile("org/flexpay/eirc/sp/20090605m_10.ls.zip");
+		FPFile newFile = createSpFile("org/flexpay/eirc/sp/20090605m_10.nch.zip");
 
 		List<Registry> registries = parseRegistryFile(newFile);
 
@@ -60,11 +59,11 @@ public class TestMbCorrectionsFileParser2 extends TestSpFileCreateAction {
 	}
 
 	private List<Registry> parseRegistryFile(FPFile newFile) throws ProcessDefinitionException, ProcessInstanceException, InterruptedException {
-		testProcessManager.deployProcessDefinition("ParseMBCorrectionsProcess", true);
+		testProcessManager.deployProcessDefinition("ParseMBChargesProcess", true);
 		Map<Serializable, Serializable> parameters = new HashMap<Serializable, Serializable>();
 		parameters.put(IterateMBRegistryActionHandler.PARAM_FILE_ID, newFile.getId());
 
-		long processId = testProcessManager.createProcess("ParseMBCorrectionsProcess", parameters);
+		long processId = testProcessManager.createProcess("ParseMBChargesProcess", parameters);
 		assertTrue("Process can not created", processId > 0);
 		org.flexpay.common.process.Process process = testProcessManager.getProcessInstanceInfo(processId);
 		Assert.assertNotNull("Process did not find", process);

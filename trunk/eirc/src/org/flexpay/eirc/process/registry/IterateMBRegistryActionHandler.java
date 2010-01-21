@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.Map;
 
 @Transactional (readOnly = true)
-public class IterateMBCorrectionsActionHandler extends FlexPayActionHandler {
+public class IterateMBRegistryActionHandler extends FlexPayActionHandler {
 	private static final String RESULT_END = "end";
 
 	public static final String PARAM_FILE_ID = "fileId";
@@ -39,7 +39,7 @@ public class IterateMBCorrectionsActionHandler extends FlexPayActionHandler {
 	protected RegistryArchiveStatusService registryArchiveStatusService;
 	private RegistryFPFileTypeService registryFPFileTypeService;
 
-	private FileParser mbCorrectionsFileParser;
+	private FileParser mbFileParser;
 
 	private String moduleName;
 
@@ -108,7 +108,7 @@ public class IterateMBCorrectionsActionHandler extends FlexPayActionHandler {
 			parserParameters.put(ParserParameterConstants.PARAM_FLUSH_NUMBER_REGISTRY_RECORD, flushNumberRegistryRecords);
 
 			reader.skip(currentCharPoint.longValue());
-			long newCharPoint = (long) mbCorrectionsFileParser.iterateParseFile(reader, parserParameters);
+			long newCharPoint = (long) mbFileParser.iterateParseFile(reader, parserParameters);
 			currentCharPoint += newCharPoint;
 
 			parameters.put(PARAM_REGISTRY_ID, infoRegistry.getId());
@@ -170,8 +170,8 @@ public class IterateMBCorrectionsActionHandler extends FlexPayActionHandler {
 	}
 
 	@Required
-	public void setMbCorrectionsFileParser(FileParser mbCorrectionsFileParser) {
-		this.mbCorrectionsFileParser = mbCorrectionsFileParser;
+	public void setMbFileParser(FileParser mbFileParser) {
+		this.mbFileParser = mbFileParser;
 	}
 
 	@Required
