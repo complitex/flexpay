@@ -50,7 +50,7 @@ public abstract class MbFileParser implements FileParser {
 	protected SPService spService;
 	protected ConsumerService consumerService;
 
-	private RegistryRecordStatusService registryRecordStatusService;
+	protected RegistryRecordStatusService registryRecordStatusService;
     private ServiceValidationFactory serviceValidationFactory;
     private FileValidationSchema fileValidationSchema;
     protected LineParser lineParser;

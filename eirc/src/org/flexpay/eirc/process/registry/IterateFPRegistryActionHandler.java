@@ -271,7 +271,7 @@ public class IterateFPRegistryActionHandler extends FlexPayActionHandler {
 
 	@Nullable
 	private Registry getRegistry(Map<String, Object> parameters) {
-		Long registryId = (Long)parameters.get(ProcessHeaderActionHandler.PARAM_REGISTRY_ID);
+		Long registryId = (Long)parameters.get(PARAM_REGISTRY_ID);
 		if (registryId == null) {
 			processLog.error("Can`t get {} from parameters", ProcessHeaderActionHandler.PARAM_REGISTRY_ID);
 			log.error("Can`t get {} from parameters", ProcessHeaderActionHandler.PARAM_REGISTRY_ID);
