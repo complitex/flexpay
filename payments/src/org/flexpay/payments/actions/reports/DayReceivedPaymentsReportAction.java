@@ -1,6 +1,5 @@
 package org.flexpay.payments.actions.reports;
 
-import static org.flexpay.common.util.CollectionUtils.map;
 import org.flexpay.payments.reports.payments.PaymentsPrintInfoData;
 
 import java.util.Date;
@@ -15,7 +14,7 @@ public class DayReceivedPaymentsReportAction extends DayPaymentsReportAction {
 	 */
 	protected PaymentsPrintInfoData getPaymentsData(Date beginDate, Date endDate) {
 
-		return paymentsReporter.getReceivedPaymentsPrintFormData(beginDate, endDate, getCashbox(), getUserPreferences().getLocale());
+		return paymentsReporter.getReceivedPaymentsPrintFormData(beginDate, endDate, getCashboxStub(), getUserPreferences().getLocale());
 	}
 
 	protected String getReportBaseName() {
