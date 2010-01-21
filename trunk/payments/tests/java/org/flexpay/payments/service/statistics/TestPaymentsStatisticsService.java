@@ -17,13 +17,10 @@ public class TestPaymentsStatisticsService extends PaymentsSpringBeanAwareTestCa
 	@Test
 	public void testGetStatistics() throws Exception {
 
-		Date begin = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse("2009-04-14 00:00:00");
-		Date end = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse("2009-04-14 23:59:59");
+		Date beginDate = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse("2009-04-14 00:00:00");
+		Date endDate = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse("2009-04-14 23:59:59");
 
-		List<ServicePaymentsStatistics> statisticses = statisticsService.servicePaymentStatistics(begin, end);
-
-		System.out.println("Stats: " + statisticses);
-
+		List<ServicePaymentsStatistics> statisticses = statisticsService.servicePaymentStatistics(beginDate, endDate);
 		assertFalse("No stats found", statisticses.isEmpty());
 	}
 }

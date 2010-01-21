@@ -51,7 +51,7 @@ public interface PaymentsReporter {
 	 * @return printable form data
 	 */
 	@Secured(Roles.PAYMENTS_REPORT)
-	PaymentsPrintInfoData getReceivedPaymentsPrintFormData(Date begin, Date end, Cashbox cashbox, Locale locale);
+	PaymentsPrintInfoData getReceivedPaymentsPrintFormData(Date begin, Date end, Stub<Cashbox> cashbox, Locale locale);
 
 	/**
 	 * Get printable information about returned payments in given period for payment point
@@ -63,7 +63,7 @@ public interface PaymentsReporter {
 	 * @return printable form data
 	 */
 	@Secured(Roles.PAYMENTS_REPORT)
-	PaymentsPrintInfoData getReturnedPaymentsPrintFormData(Date begin, Date end, Cashbox cashbox, Locale locale);
+	PaymentsPrintInfoData getReturnedPaymentsPrintFormData(Date begin, Date end, Stub<Cashbox> cashbox, Locale locale);
 
 	@Secured(Roles.PAYMENTS_REPORT)
 	AccPaymentReportData getAccPaymentsReportData(AccPaymentsReportRequest reportRequest, Stub<PaymentCollector> paymentCollectorStub);

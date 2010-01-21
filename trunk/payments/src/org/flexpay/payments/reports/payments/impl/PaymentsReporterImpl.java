@@ -9,8 +9,8 @@ import org.flexpay.common.util.TranslationUtil;
 import org.flexpay.orgs.persistence.*;
 import org.flexpay.orgs.service.*;
 import org.flexpay.payments.persistence.*;
-import static org.flexpay.payments.reports.payments.PaymentsPrintInfoData.OperationPrintInfo;
 import org.flexpay.payments.reports.payments.*;
+import static org.flexpay.payments.reports.payments.PaymentsPrintInfoData.OperationPrintInfo;
 import org.flexpay.payments.service.DocumentService;
 import org.flexpay.payments.service.OperationService;
 import org.flexpay.payments.service.SPService;
@@ -161,7 +161,9 @@ public class PaymentsReporterImpl implements PaymentsReporter {
 	/**
 	 * {@inheritDoc}
 	 */
-	public PaymentsPrintInfoData getReturnedPaymentsPrintFormData(Date begin, Date end, Cashbox cashbox, Locale locale) {
+	public PaymentsPrintInfoData getReturnedPaymentsPrintFormData(Date begin, Date end, Stub<Cashbox> cashboxStub, Locale locale) {
+
+		Cashbox cashbox = cashboxService.read(cashboxStub);
 
 		PaymentsPrintInfoData result = new PaymentsPrintInfoData();
 		PaymentPoint paymentPoint = getPaymentPoint(cashbox);
@@ -180,7 +182,9 @@ public class PaymentsReporterImpl implements PaymentsReporter {
 	/**
 	 * {@inheritDoc}
 	 */
-	public PaymentsPrintInfoData getReceivedPaymentsPrintFormData(Date begin, Date end, Cashbox cashbox, Locale locale) {
+	public PaymentsPrintInfoData getReceivedPaymentsPrintFormData(Date begin, Date end, Stub<Cashbox> cashboxStub, Locale locale) {
+
+		Cashbox cashbox = cashboxService.read(cashboxStub);
 
 		PaymentsPrintInfoData result = new PaymentsPrintInfoData();
 		PaymentPoint paymentPoint = getPaymentPoint(cashbox);

@@ -123,6 +123,10 @@ public abstract class DayPaymentsReportAction extends CashboxCookieActionSupport
 		return base;
 	}
 
+	protected Stub<Cashbox> getCashboxStub() {
+		return new Stub<Cashbox>(cashboxId);
+	}
+
 	protected Cashbox getCashbox() {
 		return cashboxService.read(new Stub<Cashbox>(cashboxId));
 	}

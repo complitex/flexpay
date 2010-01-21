@@ -1,8 +1,7 @@
 package org.flexpay.payments.actions.reports;
 
-import org.flexpay.payments.reports.payments.AccPaymentsReportRequest;
-import org.flexpay.payments.reports.payments.AccPaymentReportData;
 import org.flexpay.payments.persistence.OperationStatus;
+import org.flexpay.payments.reports.payments.AccPaymentsReportRequest;
 
 public class AccReceivedPaymentsReportAction extends AccPaymentsReportAction {
 
