@@ -131,7 +131,18 @@
 		  p:recordWorkflowManager-ref="registryRecordWorkflowManager"
 		  p:registryWorkflowManager-ref="registryWorkflowManager"
 		  p:registryFPFileTypeService-ref="registryFPFileTypeService"
+		  scope="prototype" />
 
+	<bean id="iterateMBCorrectionsActionHandler"
+		  class="org.flexpay.eirc.process.registry.IterateMBCorrectionsActionHandler"
+		  p:fpFileService-ref="fpFileService"
+		  p:registryService-ref="registryService"
+		  p:moduleName="${flexpay.module.name.eirc}"
+		  p:registryArchiveStatusService-ref="registryArchiveStatusService"
+		  p:registryTypeService-ref="registryTypeService"
+		  p:registryFPFileTypeService-ref="registryFPFileTypeService"
+		  p:registryStatusService-ref="registryStatusService"
+		  p:mbCorrectionsFileParser-ref="mbCorrectionsFileParser"
 		  scope="prototype" />
 
 </beans>

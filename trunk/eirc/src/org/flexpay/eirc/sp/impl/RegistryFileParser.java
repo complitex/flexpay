@@ -32,6 +32,7 @@ import org.flexpay.orgs.service.ServiceProviderService;
 import org.flexpay.payments.persistence.EircRegistryProperties;
 import org.flexpay.payments.persistence.Service;
 import org.flexpay.payments.service.EircRegistryService;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,6 +40,7 @@ import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.BufferedReader;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.text.DateFormat;
@@ -46,6 +48,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Transactional (readOnly = true)
 public class RegistryFileParser implements FileParser {
@@ -133,6 +136,11 @@ public class RegistryFileParser implements FileParser {
 	@Override
 	public List<Registry> parse(FPFile spFile) throws Exception {
 		return parse(spFile, log);
+	}
+
+	@Override
+	public int iterateParseFile(@NotNull BufferedReader reader, @NotNull Map<String, Object> properties) throws FlexPayException {
+		throw new FlexPayException("Do not implement");
 	}
 
     /**

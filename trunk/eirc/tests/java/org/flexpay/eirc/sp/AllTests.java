@@ -8,6 +8,7 @@ import org.junit.runners.Suite;
 		TestMbCorrectionsFileValidator.class,
         TestMbChargesFileValidator.class,
 		TestMbCorrectionsFileParser.class,
+		TestMbCorrectionsFileParser2.class,
 		TestMbChargesFileParser.class,
 		TestPaymentsRegistryProcessing.class
 })

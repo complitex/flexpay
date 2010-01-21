@@ -36,6 +36,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @Transactional (readOnly = true)
 public class MbChargesFileParser extends MbFileParser {
@@ -119,6 +120,11 @@ public class MbChargesFileParser extends MbFileParser {
 		}
 
 		return CollectionUtils.list(registry);
+	}
+
+	@Override
+	public int iterateParseFile(@NotNull BufferedReader reader, @NotNull Map<String, Object> properties) throws FlexPayException {
+		throw new FlexPayException("Do not implement");
 	}
 
 	private void flushRecordStack(List<RegistryRecord> records) {
