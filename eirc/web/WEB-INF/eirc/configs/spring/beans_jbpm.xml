@@ -133,8 +133,9 @@
 		  p:registryFPFileTypeService-ref="registryFPFileTypeService"
 		  scope="prototype" />
 
-	<bean id="iterateMBCorrectionsActionHandler"
-		  class="org.flexpay.eirc.process.registry.IterateMBCorrectionsActionHandler"
+	<bean id="iterateMBRegistryActionHandler"
+		  class="org.flexpay.eirc.process.registry.IterateMBRegistryActionHandler"
+		  abstract="true"
 		  p:fpFileService-ref="fpFileService"
 		  p:registryService-ref="registryService"
 		  p:moduleName="${flexpay.module.name.eirc}"
@@ -142,7 +143,34 @@
 		  p:registryTypeService-ref="registryTypeService"
 		  p:registryFPFileTypeService-ref="registryFPFileTypeService"
 		  p:registryStatusService-ref="registryStatusService"
-		  p:mbCorrectionsFileParser-ref="mbCorrectionsFileParser"
+		  scope="prototype" />
+
+	<bean id="iterateMBCorrectionsActionHandler"
+		  parent="iterateMBRegistryActionHandler"
+		  p:mbFileParser-ref="mbCorrectionsFileParser"
+		  scope="prototype" />
+
+	<bean id="iterateMBChargesActionHandler"
+		  parent="iterateMBRegistryActionHandler"
+		  p:mbFileParser-ref="mbChargesFileParser"
+		  scope="prototype" />
+
+	<bean id="validateMBRegistryActionHandler"
+		  class="org.flexpay.eirc.process.registry.ValidationActionHandler"
+		  abstract="true"
+		  p:fpFileService-ref="fpFileService"
+		  p:serviceValidationFactory-ref="serviceValidationFactory"
+		  p:lineParser-ref="mbLineParser"
+		  scope="prototype" />
+
+	<bean id="validateMBChargesActionHandler"
+		  parent="validateMBRegistryActionHandler"
+		  p:fileValidationSchema-ref="mbChargesFileValidationSchema"
+		  scope="prototype" />
+
+	<bean id="validateMBCorrectionsActionHandler"
+		  parent="validateMBRegistryActionHandler"
+		  p:fileValidationSchema-ref="mbCorrectionsFileValidationSchema"
 		  scope="prototype" />
 
 </beans>

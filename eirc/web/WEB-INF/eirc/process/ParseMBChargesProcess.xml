@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<process-definition xmlns="urn:jbpm.org:jpdl-3.2" name="ParseMBCorrectionsProcess"
+<process-definition xmlns="urn:jbpm.org:jpdl-3.2" name="ParseMBChargesProcess"
                     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                     xsi:schemaLocation="urn:jbpm.org:jpdl-3.2 http://docs.jboss.org/jbpm/xsd/jpdl-3.2.xsd">
 	<start-state name="start">
@@ -24,14 +24,14 @@
 			</task>
 			<transition name="process" to="ValidateMBRegistry" />
 		</task-node>
-	
+
 		<decision name="ValidateMBRegistry">
 			<handler class="org.flexpay.common.process.handler.FlexPayDecisionHandler" />
 			<transition name="next" to="IterateMBRegistry" />
 			<transition name="error" to="end" />
 			<event type="node-enter">
 				<action name="task" config-type="bean" class="org.springmodules.workflow.jbpm31.JbpmHandlerProxy">
-					<targetBean>validateMBCorrectionsActionHandler</targetBean>
+					<targetBean>validateMBChargesActionHandler</targetBean>
 					<factoryKey>jbpmConfiguration</factoryKey>
 				</action>
 			</event>
@@ -44,7 +44,7 @@
 			<transition name="end" to="end" />
 			<event type="node-enter">
 				<action name="task" config-type="bean" class="org.springmodules.workflow.jbpm31.JbpmHandlerProxy">
-					<targetBean>iterateMBCorrectionsActionHandler</targetBean>
+					<targetBean>iterateMBChargesActionHandler</targetBean>
 					<factoryKey>jbpmConfiguration</factoryKey>
 				</action>
 			</event>
