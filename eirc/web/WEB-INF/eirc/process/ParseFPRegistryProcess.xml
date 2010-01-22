@@ -22,6 +22,14 @@
 			<timer duedate="#{startTime}" transition="process"/>
 		</task>
 		<transition name="process" to="GetRegistryMessage" />
+		<event type="node-leave">
+			<script>
+				<variable name="ProcessInstanceID" mapped-name="ProcessInstanceID" access="read" />
+				<expression>
+					org.flexpay.common.process.ProcessLogger.setThreadProcessId(java.lang.Long.valueOf(ProcessInstanceID));
+				</expression>
+			</script>
+		</event>
 	</task-node>
 
     <decision name="GetRegistryMessage">
@@ -111,6 +119,14 @@
 			<timer duedate="#{startTime}" transition="process"/>
 		</task>
 		<transition name="process" to="ProcessRegistryMessage" />
+		<event type="node-leave">
+			<script>
+				<variable name="ProcessInstanceID" mapped-name="ProcessInstanceID" access="read" />
+				<expression>
+					org.flexpay.common.process.ProcessLogger.setThreadProcessId(java.lang.Long.valueOf(ProcessInstanceID));
+				</expression>
+			</script>
+		</event>
 	</task-node>
 
     <decision name="RemoveRegistry">

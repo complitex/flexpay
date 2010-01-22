@@ -4,7 +4,7 @@
                     xsi:schemaLocation="urn:jbpm.org:jpdl-3.2 http://docs.jboss.org/jbpm/xsd/jpdl-3.2.xsd">
 
 	<start-state name="start">
-		<transition to="StartRegistryProcessing" />
+		<transition to="StartProcessThread" />
 		<event type="node-leave">
 			<script>
 				<variable mapped-name="range" access="write" name="range" />
@@ -18,6 +18,21 @@
 			</script>
 		</event>
 	</start-state>
+
+	<task-node name="StartProcessThread">
+		<task name="startThread">
+			<timer duedate="#{startTime}" transition="process"/>
+		</task>
+		<transition name="process" to="StartRegistryProcessing" />
+		<event type="node-leave">
+			<script>
+				<variable name="ProcessInstanceID" mapped-name="ProcessInstanceID" access="read" />
+				<expression>
+					org.flexpay.common.process.ProcessLogger.setThreadProcessId(java.lang.Long.valueOf(ProcessInstanceID));
+				</expression>
+			</script>
+		</event>
+	</task-node>
 
     <decision name="StartRegistryProcessing">
 		<handler class="org.flexpay.common.process.handler.FlexPayDecisionHandler" />
@@ -78,6 +93,14 @@
 			<timer duedate="#{startTime}" transition="process"/>
 		</task>
 		<transition name="process" to="ProcessRecordsRange" />
+		<event type="node-leave">
+			<script>
+				<variable name="ProcessInstanceID" mapped-name="ProcessInstanceID" access="read" />
+				<expression>
+					org.flexpay.common.process.ProcessLogger.setThreadProcessId(java.lang.Long.valueOf(ProcessInstanceID));
+				</expression>
+			</script>
+		</event>
 	</task-node>
 
 	<decision name="EndRegistryProcessing">
