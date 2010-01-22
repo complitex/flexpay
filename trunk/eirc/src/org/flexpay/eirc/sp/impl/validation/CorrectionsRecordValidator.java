@@ -1,5 +1,8 @@
 package org.flexpay.eirc.sp.impl.validation;
 
+import org.apache.commons.lang.StringUtils;
+import org.flexpay.common.util.StringUtil;
+import org.flexpay.eirc.sp.impl.MessageLevel;
 import org.flexpay.eirc.sp.impl.MessageValidatorWithContext;
 import org.flexpay.eirc.sp.impl.Messenger;
 import org.flexpay.eirc.sp.impl.ValidationContext;
@@ -54,19 +57,27 @@ public class CorrectionsRecordValidator extends MessageValidatorWithContext<Stri
         if (!buildingAddressValidator.validate(fields[8])) {
             return false;
         }
-		if (!doubleValidator.validate(fields[10])) {
+		if (StringUtils.isEmpty(fields[10])) {
+			addErrorMessage("Full square is empty. Set '0'", MessageLevel.WARN);
+		} else if (!doubleValidator.validate(fields[10])) {
 			addErrorMessage("Can't parse full square {}", fields[10]);
             return false;
 		}
-		if (!doubleValidator.validate(fields[11])) {
+		if (StringUtils.isEmpty(fields[11])) {
+			addErrorMessage("Living space is empty. Set '0'", MessageLevel.WARN);
+		} else if (!doubleValidator.validate(fields[11])) {
 			addErrorMessage("Can't parse living space {}", fields[11]);
             return false;
 		}
-		if (!doubleValidator.validate(fields[12])) {
+		if (StringUtils.isEmpty(fields[12])) {
+			addErrorMessage("Balcony square is empty. Set '0'", MessageLevel.WARN);
+		} else if (!doubleValidator.validate(fields[12])) {
 			addErrorMessage("Can't parse balcony square {}", fields[12]);
             return false;
 		}
-		if (!doubleValidator.validate(fields[13])) {
+		if (StringUtils.isEmpty(fields[13])) {
+			addErrorMessage("Loggia square is empty. Set '0'", MessageLevel.WARN);
+		} else if (!doubleValidator.validate(fields[13])) {
 			addErrorMessage("Can't parse loggia square {}", fields[13]);
             return false;
 		}

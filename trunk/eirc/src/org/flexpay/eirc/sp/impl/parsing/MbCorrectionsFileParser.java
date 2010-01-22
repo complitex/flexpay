@@ -242,10 +242,7 @@ public class MbCorrectionsFileParser extends MbFileParser {
 
 	protected String[] parseBuildingAddress(String mbBuidingAddress) throws FlexPayException {
 		String[] parts = StringUtils.split(mbBuidingAddress, ' ');
-		if (parts.length > 1) {
-			if (!parts[1].startsWith(MbParsingConstants.BUILDING_BULK_PREFIX)) {
-				throw new FlexPayException("Invalid building bulk value: " + parts[1]);
-			}
+		if (parts.length > 1 && parts[1].startsWith(MbParsingConstants.BUILDING_BULK_PREFIX)) {
 			parts[1] = parts[1].substring(MbParsingConstants.BUILDING_BULK_PREFIX.length());
 		}
 		return parts;
@@ -297,14 +294,14 @@ public class MbCorrectionsFileParser extends MbFileParser {
 		}
 
 		// Площадь общая
-		if (!"0.00".equals(fields[10])) {
+		if (!StringUtils.isEmpty(fields[10]) && !"0.00".equals(fields[10])) {
 			container = new RegistryRecordContainer();
 			container.setData("5:" + modificationStartDate + "::" + fields[10]);
 			record.addContainer(container);
 		}
 
 		// Площадь жилая
-		if (!"0.00".equals(fields[11])) {
+		if (!StringUtils.isEmpty(fields[11]) && !"0.00".equals(fields[11])) {
 			container = new RegistryRecordContainer();
 			container.setData("6:" + modificationStartDate + "::" + fields[11]);
 			record.addContainer(container);
