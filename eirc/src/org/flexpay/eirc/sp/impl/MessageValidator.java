@@ -16,11 +16,23 @@ public abstract class MessageValidator<T> implements Validator<T> {
         messenger.addMessage(message);
     }
 
+	protected void addErrorMessage(@NotNull String message, @NotNull MessageLevel level) {
+        messenger.addMessage(message, level);
+    }
+
     protected void addErrorMessage(@NotNull String message, Object o) {
         messenger.addMessage(message, o);
     }
 
+	protected void addErrorMessage(@NotNull String message, Object o, @NotNull MessageLevel level) {
+        messenger.addMessage(message, o, level);
+    }
+
     protected void addErrorMessage(@NotNull String message, @NotNull Object[] o) {
         messenger.addMessage(message, o);
+    }
+
+    protected void addErrorMessage(@NotNull String message, @NotNull Object[] o, @NotNull MessageLevel level) {
+        messenger.addMessage(message, o, level);
     }
 }
