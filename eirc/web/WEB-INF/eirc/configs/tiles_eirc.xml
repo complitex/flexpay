@@ -129,15 +129,15 @@
     <!-- Quittance packets -->
 	<definition name="eirc.quittances.packets_list" extends="eirc.quittances">
 		<put-attribute name="title" value="eirc.quittance.packets" />
-		<put-attribute name="body" value="/WEB-INF/jsp/eirc/quittances/list_quittance_packets.jsp" />
+		<put-attribute name="body" value="/WEB-INF/jsp/eirc/quittances/quittance_packets_list_page.jsp" />
 	</definition>
 	<definition name="eirc.quittances.packet_edit" extends="eirc.quittances">
 		<put-attribute name="title" value="eirc.quittance.packet" />
-		<put-attribute name="body" value="/WEB-INF/jsp/eirc/quittances/edit_quittance_packet.jsp" />
+		<put-attribute name="body" value="/WEB-INF/jsp/eirc/quittances/quittance_packet_edit.jsp" />
 	</definition>
 	<definition name="eirc.quittances.packet_view" extends="eirc.quittances">
 		<put-attribute name="title" value="eirc.quittance.packet" />
-		<put-attribute name="body" value="/WEB-INF/jsp/eirc/quittances/view_quittance_packet.jsp" />
+		<put-attribute name="body" value="/WEB-INF/jsp/eirc/quittances/quittance_packet_view.jsp" />
 	</definition>
 
 	<!-- Organizations -->

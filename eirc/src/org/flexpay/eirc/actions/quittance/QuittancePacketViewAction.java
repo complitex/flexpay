@@ -1,26 +1,18 @@
 package org.flexpay.eirc.actions.quittance;
 
-import org.flexpay.ab.service.AddressService;
-import org.flexpay.common.actions.FPActionWithPagerSupport;
-import static org.flexpay.common.persistence.Stub.stub;
+import org.flexpay.common.actions.FPActionSupport;
+import org.flexpay.common.persistence.Stub;
 import org.flexpay.eirc.persistence.QuittancePacket;
-import org.flexpay.eirc.persistence.QuittancePayment;
-import org.flexpay.eirc.persistence.account.Quittance;
-import org.flexpay.eirc.service.EircAccountService;
 import org.flexpay.eirc.service.QuittancePacketService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
-import java.util.Collections;
-import java.util.List;
+import static org.flexpay.common.persistence.Stub.stub;
 
-public class QuittancePacketViewAction extends FPActionWithPagerSupport<QuittancePayment> {
+public class QuittancePacketViewAction extends FPActionSupport {
 
 	private QuittancePacket packet = new QuittancePacket();
-	private List<QuittancePayment> payments = Collections.emptyList();
 
-	private AddressService addressService;
-	private EircAccountService eircAccountService;
 	private QuittancePacketService quittancePacketService;
 
 	/**
@@ -32,20 +24,21 @@ public class QuittancePacketViewAction extends FPActionWithPagerSupport<Quittanc
 	 * @throws Exception if failure occurs
 	 */
 	@NotNull
+	@Override
 	protected String doExecute() throws Exception {
 
-		if (packet.isNew()) {
-			addActionError(getText("common.error.invalid_id"));
-			return REDIRECT_ERROR;
-		}
+		Stub<QuittancePacket> stub = stub(packet);
+		packet = quittancePacketService.read(stub);
 
-		packet = quittancePacketService.read(stub(packet));
 		if (packet == null) {
-			addActionError(getText("common.error.invalid_id"));
+			log.warn("Can't get quittance packet with id {} from DB", stub.getId());
+			addActionError(getText("eirc.error.quittance_packet.cant_get_quittance_packet"));
+			return REDIRECT_ERROR;
+		} else if (packet.isNotActive()) {
+			log.warn("Quittance packet with id {} is disabled", stub.getId());
+			addActionError(getText("eirc.error.quittance_packet.cant_get_quittance_packet"));
 			return REDIRECT_ERROR;
 		}
-
-		payments = quittancePacketService.listPayments(stub(packet), getPager());
 
 		return SUCCESS;
 	}
@@ -58,17 +51,9 @@ public class QuittancePacketViewAction extends FPActionWithPagerSupport<Quittanc
 	 * @return {@link #ERROR} by default
 	 */
 	@NotNull
+	@Override
 	protected String getErrorResult() {
 		return REDIRECT_ERROR;
-	}
-
-	public String getAddress(@NotNull Quittance quittance) throws Exception {
-		return addressService.getAddress(quittance.getEircAccount().getApartmentStub(), getLocale());
-	}
-
-	public String getPersonFIO(@NotNull Quittance quittance) {
-
-		return eircAccountService.getPersonFIO(quittance.getEircAccount());
 	}
 
 	public QuittancePacket getPacket() {
@@ -77,20 +62,6 @@ public class QuittancePacketViewAction extends FPActionWithPagerSupport<Quittanc
 
 	public void setPacket(QuittancePacket packet) {
 		this.packet = packet;
-	}
-
-	public List<QuittancePayment> getPayments() {
-		return payments;
-	}
-
-	@Required
-	public void setEircAccountService(EircAccountService eircAccountService) {
-		this.eircAccountService = eircAccountService;
-	}
-
-	@Required
-	public void setAddressService(AddressService addressService) {
-		this.addressService = addressService;
 	}
 
 	@Required

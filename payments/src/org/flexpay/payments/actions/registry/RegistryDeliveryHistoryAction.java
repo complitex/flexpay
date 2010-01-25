@@ -1,101 +1,62 @@
 package org.flexpay.payments.actions.registry;
 
-import org.flexpay.payments.actions.CashboxCookieWithPagerActionSupport;
-import org.flexpay.payments.actions.registry.data.SentRegistryContainer;
-import org.flexpay.payments.persistence.RegistryDeliveryHistory;
-import org.flexpay.payments.persistence.EircRegistryProperties;
-import org.flexpay.payments.service.RegistryDeliveryHistoryService;
-import org.flexpay.payments.process.export.job.ExportJobParameterNames;
-import org.flexpay.common.util.DateUtil;
-import org.flexpay.common.util.TranslationUtil;
+import org.flexpay.common.persistence.Translation;
 import org.flexpay.common.persistence.filter.BeginDateFilter;
 import org.flexpay.common.persistence.filter.EndDateFilter;
-import org.flexpay.common.persistence.Stub;
-import org.flexpay.common.process.ProcessManager;
-import org.flexpay.orgs.service.OrganizationService;
-import org.flexpay.orgs.service.ServiceProviderService;
+import org.flexpay.common.util.DateUtil;
+import org.flexpay.common.util.TranslationUtil;
 import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.orgs.persistence.ServiceProvider;
+import org.flexpay.orgs.service.OrganizationService;
+import org.flexpay.orgs.service.ServiceProviderService;
+import org.flexpay.payments.actions.CashboxCookieWithPagerActionSupport;
+import org.flexpay.payments.actions.registry.data.SentRegistryContainer;
+import org.flexpay.payments.persistence.EircRegistryProperties;
+import org.flexpay.payments.persistence.RegistryDeliveryHistory;
+import org.flexpay.payments.service.RegistryDeliveryHistoryService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
-import java.util.*;
-import java.io.Serializable;
 import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+
+import static org.flexpay.common.util.CollectionUtils.list;
+import static org.flexpay.common.util.DateUtil.getEndOfThisDay;
+import static org.flexpay.common.util.DateUtil.truncateDay;
 
 public class RegistryDeliveryHistoryAction extends CashboxCookieWithPagerActionSupport<RegistryDeliveryHistory> {
+
     private static final String TIME_FORMAT = "HH:mm";
 
-    // date filters
 	private BeginDateFilter beginDateFilter = new BeginDateFilter();
 	private EndDateFilter endDateFilter = new EndDateFilter();
-
-    // submit flags
-    private String filterSubmitted;
+	private List<SentRegistryContainer> deliveryHistory;
 
     private RegistryDeliveryHistoryService registryDeliveryHistoryService;
     private OrganizationService organizationService;
     private ServiceProviderService providerService;
 
-    private ProcessManager processManager;
-
-    private Set<Long> objectIds = new HashSet<Long>();
-    private List<SentRegistryContainer> deliveryHistory = new ArrayList<SentRegistryContainer>();
-    private Date beginDate = null;
-    private Date endDate = null;
-
     @NotNull
+	@Override
     protected String doExecute() throws Exception {
-        if (beginDate == null && endDate == null) {
-            initFiltersWithDefaults();
-        } else if (isFilterSubmitted()) {
-			if (!doFilterValidation()) {
-				return ERROR;
-			}
-		} else {
-            beginDateFilter.setDate(beginDate);
-            endDateFilter.setDate(endDate);
-        }
 
-        if (submitted != null && objectIds != null && !objectIds.isEmpty()) {
-            for (Long historyId : objectIds) {
-                RegistryDeliveryHistory history = registryDeliveryHistoryService.read(new Stub<RegistryDeliveryHistory>(historyId));
-                if (history != null) {
-                    Map<Serializable, Serializable> parameters = new HashMap<Serializable, Serializable>();
-                    parameters.put(ExportJobParameterNames.FILE_ID, history.getSpFile().getId());
-                    parameters.put(ExportJobParameterNames.REGISTRY_ID, history.getRegistry().getId());
-                    try {
-                        Long processId = processManager.createProcess("SendRegistry", parameters);
-                        if (processId != null && processId > 0) {
-                            log.debug("Sent e-mail by registry delivery history {} in process {}", new Object[]{historyId, processId});
-                            addActionMessage(getText("payments.registry.delivery_history.mail_sent"));
-                        } else {
-                            log.error("Process \"SendRegistry\" did not start for registry delivery history {}");
-                            addActionError(getText("payments.error.registry.delivery_history.mail_not_sent_inner_error"));
-                        }
-                    } catch (Throwable th) {
-                        log.error("Exception in delivery message", th);
-                        addActionError(getText("payments.error.registry.delivery_history.mail_not_sent_inner_error"));
-                    }
-                } else {
-                    log.error("Registry delivery history {} did not find. Mail did not send.", historyId);
-                    addActionError(getText("payments.error.registry.delivery_history.mail_not_sent_inner_error"));
-                }
-            }
-        }
+        deliveryHistory = list();
 
-        SimpleDateFormat tf = new SimpleDateFormat(TIME_FORMAT);
+		final Date begin = truncateDay(beginDateFilter.getDate());
+		final Date end = getEndOfThisDay(endDateFilter.getDate());
+		log.debug("Getting delivery history in date range: {} - {}", begin, end);
 
-        deliveryHistory.clear();
-        List<RegistryDeliveryHistory> histories = loadRegistryDeliveryHistories();
-        log.debug("count registry delivery history: {}", histories.size());
+        List<RegistryDeliveryHistory> histories = registryDeliveryHistoryService.listRegistryDeliveryHistories(getPager(), begin, end);
+        log.debug("Found {} registry delivery histories", histories.size());
+
         for (RegistryDeliveryHistory history : histories) {
             SentRegistryContainer container = new SentRegistryContainer();
             container.setId(history.getId());
             container.setRegistryId(history.getRegistry().getId());
-            container.setDateFrom(DateUtil.format(history.getRegistry().getFromDate()));
+            container.setDateFrom(format(history.getRegistry().getFromDate()));
             container.setDateTo(DateUtil.format(history.getRegistry().getTillDate()));
-            container.setDateDelivery(DateUtil.format(history.getDeliveryDate()) + " " + tf.format(history.getDeliveryDate()));
+            container.setDateDelivery(DateUtil.format(history.getDeliveryDate()) + " " + new SimpleDateFormat(TIME_FORMAT).format(history.getDeliveryDate()));
             container.setTypeRegistry(getText(history.getRegistry().getRegistryType().getI18nName()));
 
             EircRegistryProperties prop = (EircRegistryProperties)history.getRegistry().getProperties();
@@ -108,11 +69,13 @@ public class RegistryDeliveryHistoryAction extends CashboxCookieWithPagerActionS
                 log.warn("Recipient does not content in registry properties {}", history.getRegistry().getId());
             }
             if (provider != null) {
-                container.setServiceProvider(TranslationUtil.getTranslation(provider.getDescriptions(), getLocale()).getName());
+				Translation translation = TranslationUtil.getTranslation(provider.getDescriptions(), getLocale());
+                container.setServiceProvider(translation != null ? translation.getName() : "Translation not defined");
             } else {
                 log.warn("Service provider does not content in properties {}", history.getRegistry().getId());
             }
-            log.debug("add container with history {}", history.getId());
+
+            log.debug("Addding container with history {}", history.getId());
             deliveryHistory.add(container);
         }
 
@@ -120,80 +83,30 @@ public class RegistryDeliveryHistoryAction extends CashboxCookieWithPagerActionS
     }
 
     @NotNull
+	@Override
     protected String getErrorResult() {
         return SUCCESS;
     }
 
-    private boolean isFilterSubmitted() {
-		return filterSubmitted != null;
-	}
-
-    public void setFilterSubmitted(String filterSubmitted) {
-		this.filterSubmitted = filterSubmitted;
-	}
-
-    // form data
 	public BeginDateFilter getBeginDateFilter() {
 		return beginDateFilter;
 	}
 
-    public EndDateFilter getEndDateFilter() {
+	public void setBeginDateFilter(BeginDateFilter beginDateFilter) {
+		this.beginDateFilter = beginDateFilter;
+	}
+
+	public EndDateFilter getEndDateFilter() {
 		return endDateFilter;
 	}
 
-    public String getBeginDate() {
-        return DateUtil.format(beginDate);
-    }
-
-    public void setBeginDate(String beginDate) {
-        this.beginDate = DateUtil.parseBeginDate(beginDate);
-    }
-
-    public String getEndDate() {
-        return DateUtil.format(endDate);
-    }
-
-    public void setEndDate(String endDate) {
-        this.endDate = DateUtil.parseBeginDate(endDate);
-    }
-
-    public void setObjectIds(Set<Long> objectIds) {
-		this.objectIds = objectIds;
+	public void setEndDateFilter(EndDateFilter endDateFilter) {
+		this.endDateFilter = endDateFilter;
 	}
 
     public List<SentRegistryContainer> getDeliveryHistory() {
         return deliveryHistory;
     }
-
-    // load history according to search criteria
-	private List<RegistryDeliveryHistory> loadRegistryDeliveryHistories() {
-        final Date begin = DateUtil.truncateDay(beginDateFilter.getDate());
-        final Date end = DateUtil.getEndOfThisDay(endDateFilter.getDate());
-        log.debug("get delivery history in date range: {} - {}", new Object[] {begin, end});
-
-        return registryDeliveryHistoryService.listRegistryDeliveryHistories(getPager(), begin, end);
-	}
-
-    private boolean doFilterValidation() {
-
-		// dates validation
-		beginDate = beginDateFilter.getDate();
-		endDate = endDateFilter.getDate();
-
-		if (beginDate.after(endDate)) {
-			addActionError(getText("payments.error.registry.delivery.history.begin_date_must_be_before_end_date"));
-		}
-
-		return !hasActionErrors();
-	}
-
-	private void initFiltersWithDefaults() {
-        endDate = new Date();
-        beginDate = DateUtil.previous(DateUtil.previous(endDate));
-
-		beginDateFilter.setDate(beginDate);
-		endDateFilter.setDate(endDate);
-	}
 
     @Required
     public void setOrganizationService(OrganizationService organizationService) {
@@ -203,11 +116,6 @@ public class RegistryDeliveryHistoryAction extends CashboxCookieWithPagerActionS
     @Required
     public void setProviderService(ServiceProviderService providerService) {
         this.providerService = providerService;
-    }
-
-    @Required
-    public void setProcessManager(ProcessManager processManager) {
-        this.processManager = processManager;
     }
 
     @Required

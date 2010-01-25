@@ -21,6 +21,7 @@ public class QuittancePacketDaoExtImpl extends HibernateDaoSupport implements Qu
 
 	@NotNull
 	@SuppressWarnings ({"unchecked"})
+	@Override
 	public List<QuittancePacket> findPackets(ArrayStack filters, final Page<QuittancePacket> pager) {
 
 		final StringBuilder hql = new StringBuilder();
@@ -30,6 +31,7 @@ public class QuittancePacketDaoExtImpl extends HibernateDaoSupport implements Qu
 		hqlCount.append("select count(*) from QuittancePacket");
 
 		return getHibernateTemplate().executeFind(new HibernateCallback() {
+			@Override
 			public List<?> doInHibernate(Session session) throws HibernateException {
 
 				Long count = (Long) session.createQuery(hqlCount.toString()).uniqueResult();
@@ -44,6 +46,7 @@ public class QuittancePacketDaoExtImpl extends HibernateDaoSupport implements Qu
 	}
 
 	@NotNull
+	@Override
 	public Long nextPacketNumber() {
 		Object[] result = (Object[]) DataAccessUtils.uniqueResult(
 				getHibernateTemplate().findByNamedQuery("QuittancePacket.nextPacketNumber"));

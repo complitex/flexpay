@@ -150,11 +150,12 @@
 		  p:quittanceDaoExt-ref="quittanceDaoExt"
 		  p:quittanceDao-ref="quittanceDao" />
 
-	<bean id="quittancePacketService"
-		  class="org.flexpay.eirc.service.impl.QuittancePacketServiceImpl"
-		  p:quittancePacketDaoExt-ref="quittancePacketDaoExt"
-		  p:quittancePacketDao-ref="quittancePacketDao"
-		  p:quittancePaymentDao-ref="quittancePaymentDao" />
+    <bean id="quittancePacketServiceTarget"
+          autowire-candidate="false"
+          class="org.flexpay.eirc.service.impl.QuittancePacketServiceImpl"
+          p:quittancePacketDaoExt-ref="quittancePacketDaoExt"
+          p:quittancePacketDao-ref="quittancePacketDao"
+          p:quittancePaymentDao-ref="quittancePaymentDao" />
 
 	<bean id="quittancePaymentService"
 		  class="org.flexpay.eirc.service.impl.QuittancePaymentServiceImpl"

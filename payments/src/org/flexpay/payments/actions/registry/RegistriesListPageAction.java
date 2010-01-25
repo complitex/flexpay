@@ -16,9 +16,7 @@ import java.util.Date;
 import java.util.List;
 
 import static org.apache.commons.lang.time.DateUtils.addDays;
-import static org.flexpay.common.util.DateUtil.getEndOfThisDay;
-import static org.flexpay.common.util.DateUtil.now;
-import static org.flexpay.common.util.DateUtil.truncateDay;
+import static org.flexpay.common.util.DateUtil.*;
 
 public class RegistriesListPageAction extends FPActionSupport {
 

@@ -75,23 +75,36 @@
 
 	<!-- Quittance packets -->
 	<bean id="quittancePacketsListAction"
-		  class="org.flexpay.eirc.actions.quittance.QuittancePacketListAction"
+		  class="org.flexpay.eirc.actions.quittance.QuittancePacketsListAction"
 		  p:quittancePacketService-ref="quittancePacketService"
 		  scope="prototype" />
+
+    <bean id="quittancePacketsListPageAction" parent="staticPageAction"
+          p:crumbNameKey="eirc.crumbs.quitance_packets_list"
+          scope="prototype" />
 
 	<bean id="quittancePacketEditAction"
 		  class="org.flexpay.eirc.actions.quittance.QuittancePacketEditAction"
 		  p:paymentPointHelper-ref="paymentPointHelper"
 		  p:paymentPointService-ref="paymentPointService"
 		  p:quittancePacketService-ref="quittancePacketService"
+          p:crumbCreateKey="eirc.crumbs.quitance_packet_create"
+          p:crumbNameKey="eirc.crumbs.quitance_packet_edit"
 		  scope="prototype" />
 
-	<bean id="quittancePacketViewAction"
-		  class="org.flexpay.eirc.actions.quittance.QuittancePacketViewAction"
+	<bean id="quittancePaymentsListAction"
+		  class="org.flexpay.eirc.actions.quittance.QuittancePaymentsListAction"
 		  p:addressService-ref="addressService"
 		  p:eircAccountService-ref="eircAccountService"
 		  p:quittancePacketService-ref="quittancePacketService"
+          p:crumbNameKey="eirc.crumbs.quitance_packet_view"
 		  scope="prototype" />
+
+    <bean id="quittancePacketViewAction"
+          class="org.flexpay.eirc.actions.quittance.QuittancePacketViewAction"
+          p:crumbNameKey="eirc.crumbs.quitance_packet_view"
+          p:quittancePacketService-ref="quittancePacketService"
+          scope="prototype" />
 
 	<bean id="quittancePaySearchAction"
 		  class="org.flexpay.eirc.actions.quittance.QuittancePaySearchAction"

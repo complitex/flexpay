@@ -7,10 +7,6 @@
 	<package name="quittances" namespace="/eirc" extends="common">
 
 		<!-- Quittances -->
-		<action name="quittances" class="staticPageAction">
-			<result type="tiles">eirc.quittances</result>
-		</action>
-
 		<action name="quittanceGenerate" class="quittanceGenerateAction">
 			<result type="tiles">eirc.quittances.generate_quittances</result>
 		</action>
@@ -19,19 +15,28 @@
 			<result type="tiles">eirc.tickets.print_tickets</result>
 		</action>
 
-		<action name="quittancePacketList" class="quittancePacketsListAction">
-			<result name="success" type="tiles">eirc.quittances.packets_list</result>
+        <action name="quittancePacketList" class="quittancePacketsListPageAction">
+            <result type="tiles">eirc.quittances.packets_list</result>
+        </action>
+
+		<action name="quittancePacketsListAjax" class="quittancePacketsListAction">
+			<result>/WEB-INF/jsp/eirc/quittances/quittance_packets_list.jsp</result>
 		</action>
 
 		<action name="quittancePacketEdit" class="quittancePacketEditAction">
+            <result name="redirectError" type="redirect-action">quittancePacketList</result>
 			<result name="input" type="tiles">eirc.quittances.packet_edit</result>
 			<result name="redirectSuccess" type="redirect-action">quittancePacketList</result>
 		</action>
 
-		<action name="quittancePacketView" class="quittancePacketViewAction">
-			<result name="success" type="tiles">eirc.quittances.packet_view</result>
-			<result name="redirectError" type="redirect-action">quittancePacketList</result>
-		</action>
+        <action name="quittancePacketView" class="quittancePacketViewAction">
+            <result type="tiles">eirc.quittances.packet_view</result>
+            <result name="redirectError" type="redirect-action">quittancePacketList</result>
+        </action>
+
+		<action name="quittancePaymentsListAjax" class="quittancePaymentsListAction">
+            <result>/WEB-INF/jsp/eirc/quittances/quittance_payments_list.jsp</result>
+        </action>
 
 		<action name="quittancePaySearch" class="quittancePaySearchAction">
 			<result name="input" type="tiles">eirc.quittances.quittance_pay_search</result>

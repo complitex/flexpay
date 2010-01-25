@@ -1,23 +1,22 @@
 package org.flexpay.eirc.actions.quittance;
 
-import org.apache.commons.collections.ArrayStack;
 import org.flexpay.common.actions.FPActionWithPagerSupport;
 import org.flexpay.common.persistence.filter.BeginDateFilter;
-import org.flexpay.common.util.CollectionUtils;
-import org.flexpay.common.util.DateUtil;
 import org.flexpay.eirc.persistence.QuittancePacket;
 import org.flexpay.eirc.service.QuittancePacketService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
-import java.util.Collections;
 import java.util.List;
 
-public class QuittancePacketListAction extends FPActionWithPagerSupport<QuittancePacket> {
+import static org.flexpay.common.util.CollectionUtils.arrayStack;
+import static org.flexpay.common.util.CollectionUtils.list;
+import static org.flexpay.common.util.DateUtil.currentMonth;
 
-	private BeginDateFilter beginDateFilter = new BeginDateFilter(DateUtil.currentMonth());
+public class QuittancePacketsListAction extends FPActionWithPagerSupport<QuittancePacket> {
 
-	private List<QuittancePacket> packets = Collections.emptyList();
+	private BeginDateFilter beginDateFilter = new BeginDateFilter(currentMonth());
+	private List<QuittancePacket> packets = list();
 
 	private QuittancePacketService quittancePacketService;
 
@@ -30,10 +29,14 @@ public class QuittancePacketListAction extends FPActionWithPagerSupport<Quittanc
 	 * @throws Exception if failure occurs
 	 */
 	@NotNull
+	@Override
 	protected String doExecute() throws Exception {
 
-		ArrayStack filters = CollectionUtils.arrayStack(beginDateFilter, getPager());
-		packets = quittancePacketService.listPackets(filters, getPager());
+		packets = quittancePacketService.listPackets(arrayStack(beginDateFilter), getPager());
+
+		if (log.isDebugEnabled()) {
+			log.debug("Total quitance packet found: {}", packets.size());
+		}
 
 		return SUCCESS;
 	}
@@ -46,12 +49,9 @@ public class QuittancePacketListAction extends FPActionWithPagerSupport<Quittanc
 	 * @return {@link #ERROR} by default
 	 */
 	@NotNull
+	@Override
 	protected String getErrorResult() {
 		return SUCCESS;
-	}
-
-	public BeginDateFilter getBeginDateFilter() {
-		return beginDateFilter;
 	}
 
 	public void setBeginDateFilter(BeginDateFilter beginDateFilter) {

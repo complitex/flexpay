@@ -5,16 +5,15 @@ import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Stub;
-import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.util.DateUtil;
 import org.flexpay.common.util.SecurityUtil;
 import org.flexpay.eirc.dao.QuittancePacketDao;
 import org.flexpay.eirc.dao.QuittancePacketDaoExt;
 import org.flexpay.eirc.dao.QuittancePaymentDao;
-import org.flexpay.orgs.persistence.PaymentPoint;
 import org.flexpay.eirc.persistence.QuittancePacket;
 import org.flexpay.eirc.persistence.QuittancePayment;
 import org.flexpay.eirc.service.QuittancePacketService;
+import org.flexpay.orgs.persistence.PaymentPoint;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,6 +22,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
+
+import static org.flexpay.common.persistence.Stub.stub;
 
 @Transactional (readOnly = true)
 public class QuittancePacketServiceImpl implements QuittancePacketService {
@@ -39,6 +40,7 @@ public class QuittancePacketServiceImpl implements QuittancePacketService {
 	 * @param stub Quittance packet stub
 	 * @return packet if found, or <code>null</code> otherwise
 	 */
+	@Override
 	public QuittancePacket read(@NotNull Stub<QuittancePacket> stub) {
 		return quittancePacketDao.read(stub.getId());
 	}
@@ -51,6 +53,7 @@ public class QuittancePacketServiceImpl implements QuittancePacketService {
 	 * @return packets
 	 */
 	@NotNull
+	@Override
 	public List<QuittancePacket> listPackets(ArrayStack filters, Page<QuittancePacket> pager) {
 		return quittancePacketDaoExt.findPackets(filters, pager);
 	}
@@ -61,6 +64,7 @@ public class QuittancePacketServiceImpl implements QuittancePacketService {
 	 * @return new packet number
 	 */
 	@NotNull
+	@Override
 	public Long suggestPacketNumber() {
 		return quittancePacketDaoExt.nextPacketNumber();
 	}
@@ -73,6 +77,7 @@ public class QuittancePacketServiceImpl implements QuittancePacketService {
 	 * @return list of payments
 	 */
 	@NotNull
+	@Override
 	public List<QuittancePayment> listPayments(@NotNull Stub<QuittancePacket> stub, @NotNull Page<QuittancePayment> pager) {
 		return quittancePaymentDao.findPacketPayments(stub.getId(), pager);
 	}
@@ -87,6 +92,7 @@ public class QuittancePacketServiceImpl implements QuittancePacketService {
 	 */
 	@Transactional (readOnly = false)
 	@NotNull
+	@Override
 	public QuittancePacket create(@NotNull QuittancePacket packet) throws FlexPayExceptionContainer {
 		validate(packet);
 
@@ -108,6 +114,7 @@ public class QuittancePacketServiceImpl implements QuittancePacketService {
 	 */
 	@Transactional (readOnly = false)
 	@NotNull
+	@Override
 	public QuittancePacket update(@NotNull QuittancePacket packet) throws FlexPayExceptionContainer {
 		validate(packet);
 
@@ -126,40 +133,40 @@ public class QuittancePacketServiceImpl implements QuittancePacketService {
 		Date creationDate = packet.getCreationDate();
 		if (creationDate == null) {
 			ex.addException(new FlexPayException(
-					"Invalid creation date", "eirc.error.quittance.packet.invalid_creation_date"));
+					"Invalid creation date", "eirc.error.quittance_packet.invalid_creation_date"));
 		}
 		if (creationDate != null && packet.isNew() && creationDate.before(DateUtil.now())) {
 			ex.addException(new FlexPayException(
-					"Invalid creation date", "eirc.error.quittance.packet.invalid_creation_date"));
+					"Invalid creation date", "eirc.error.quittance_packet.invalid_creation_date"));
 		}
 		if (creationDate != null && packet.isNew() && creationDate.before(DateUtil.now())) {
 			ex.addException(new FlexPayException(
-					"Invalid creation date", "eirc.error.quittance.packet.invalid_creation_date"));
+					"Invalid creation date", "eirc.error.quittance_packet.invalid_creation_date"));
 		}
 		if (creationDate != null && persistent != null && creationDate.before(persistent.getCreationDate())) {
 			ex.addException(new FlexPayException(
-					"Invalid creation date", "eirc.error.quittance.packet.invalid_creation_date"));
+					"Invalid creation date", "eirc.error.quittance_packet.invalid_creation_date"));
 		}
 
 		if (packet.getPacketNumber() == null) {
 			ex.addException(new FlexPayException(
-					"No packet number", "eirc.error.quittance.packet.no_packet_number"));
+					"No packet number", "eirc.error.quittance_packet.no_packet_number"));
 		}
 
 		PaymentPoint point = packet.getPaymentPoint();
 		if (point == null || point.isNew()) {
 			ex.addException(new FlexPayException(
-					"Invalid payment point", "eirc.error.quittance.packet.invalid_payment_point"));
+					"Invalid payment point", "eirc.error.quittance_packet.invalid_payment_point"));
 		}
 
 		if (packet.getControlQuittanciesNumber() == null) {
 			ex.addException(new FlexPayException(
-					"Invalid control number", "eirc.error.quittance.packet.invalid_control_number"));
+					"Invalid control number", "eirc.error.quittance_packet.invalid_control_number"));
 		}
 
 		if (packet.getControlOverallSumm() == null) {
 			ex.addException(new FlexPayException(
-					"Invalid control summ", "eirc.error.quittance.packet.invalid_control_summ"));
+					"Invalid control summ", "eirc.error.quittance_packet.invalid_control_summ"));
 		}
 
 		if (ex.isNotEmpty()) {

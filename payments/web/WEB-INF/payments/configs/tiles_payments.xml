@@ -128,7 +128,7 @@
 
     <definition name="payments.registry.delivery_history" extends="ab.layout.standart">
 		<put-attribute name="title" value="payments.registry.delivery_history.title"/>
-		<put-attribute name="body" value="/WEB-INF/jsp/payments/registry/registry_delivery_history.jsp"/>
+		<put-attribute name="body" value="/WEB-INF/jsp/payments/registry/registry_delivery_history_page.jsp"/>
 	</definition>
 
 	<!-- Registry record corrections -->
