@@ -267,13 +267,22 @@
           p:registryService-ref="registryService"
           scope="prototype" />
 
+    <bean id="registryDeliveryHistorySendAction"
+          class="org.flexpay.payments.actions.registry.RegistryDeliveryHistorySendAction"
+          p:processManager-ref="processManagerPayments"
+          p:registryDeliveryHistoryService-ref="registryDeliveryHistoryService"
+          scope="prototype" />
+
     <bean id="registryDeliveryHistoryAction"
           class="org.flexpay.payments.actions.registry.RegistryDeliveryHistoryAction"
-          p:crumbNameKey="payments.crumbs.registry_delivery_history"
           p:organizationService-ref="organizationService"
-          p:processManager-ref="processManagerPayments"
           p:providerService-ref="serviceProviderService"
           p:registryDeliveryHistoryService-ref="registryDeliveryHistoryService"
+          scope="prototype" />
+
+    <bean id="registryDeliveryHistoryPageAction"
+          class="org.flexpay.payments.actions.registry.RegistryDeliveryHistoryPageAction"
+          p:crumbNameKey="payments.crumbs.registry_delivery_history"
           scope="prototype" />
 
 </beans>

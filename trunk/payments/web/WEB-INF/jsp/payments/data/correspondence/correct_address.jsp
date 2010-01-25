@@ -1,16 +1,15 @@
-<%@ include file="/WEB-INF/jsp/common/taglibs.jsp" %>
-
-<s:actionerror/>
+<%@include file="/WEB-INF/jsp/common/taglibs.jsp"%>
+<%@include file="/WEB-INF/jsp/common/includes/errors_messages.jsp"%>
 
 <form id="fobjects" method="post"
-	  action="<s:url action="registryRecordCorrectAddress" includeParams="none"/>"
+	  action="<s:url action="registryRecordCorrectAddress" includeParams="none" />"
 	  onsubmit="return FP.validateSubmit('<s:text name="eirc.need_select_apartment" />');">
 
-    <%@include file="../registry_record_info.jsp" %>
-
-    <%@ include file="/WEB-INF/jsp/ab/filters/groups/country_region_town_street_building_ajax.jsp" %>
-    <span id="result"></span>
     <s:hidden name="record.id" value="%{record.id}" />
+
+    <%@include file="/WEB-INF/jsp/payments/data/registry_record_info.jsp"%>
+    <%@include file="/WEB-INF/jsp/ab/filters/groups/country_region_town_street_building_ajax.jsp"%>
+    <span id="result"></span>
 
 </form>
 
@@ -34,9 +33,7 @@
     function pagerAjax(element) {
         FP.pagerAjax(element, {
             action:"<s:url action="apartmentsDialogListAjax" namespace="/payments" includeParams="none" />",
-            params:{
-                buildingFilter: FF.filters["building"].value.val()
-            }
+            params:{buildingFilter: FF.filters["building"].value.val()}
         });
     }
 

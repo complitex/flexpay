@@ -99,10 +99,16 @@
             <result>/WEB-INF/jsp/common/responses/simple_response.jsp</result>
 		</action>
 
-        <action name="registryDeliveryHistory" class="registryDeliveryHistoryAction">
+        <action name="registryDeliveryHistorySend" class="registryDeliveryHistorySendAction">
+            <result>/WEB-INF/jsp/common/responses/simple_response.jsp</result>
+		</action>
+
+        <action name="registryDeliveryHistoryAjax" class="registryDeliveryHistoryAction">
+            <result>/WEB-INF/jsp/payments/registry/registry_delivery_history.jsp</result>
+		</action>
+
+        <action name="registryDeliveryHistory" class="registryDeliveryHistoryPageAction">
 			<result type="tiles">payments.registry.delivery_history</result>
-            <result name="success" type="tiles">payments.registry.delivery_history</result>
-            <result name="error" type="tiles">payments.registry.delivery_history</result>
 		</action>
 
 	</package>

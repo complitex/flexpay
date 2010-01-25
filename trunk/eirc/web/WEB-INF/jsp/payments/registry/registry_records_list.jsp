@@ -3,7 +3,6 @@
 <%@include file="/WEB-INF/jsp/common/includes/jquery_window.jsp"%>
 <%@include file="/WEB-INF/jsp/common/includes/errors_messages.jsp"%>
 
-<s:hidden id="currentPage" value="%{pager.pageNumber}" />
 <s:hidden name="registry.id" />
 
 <table cellpadding="3" cellspacing="1" border="0" width="100%">

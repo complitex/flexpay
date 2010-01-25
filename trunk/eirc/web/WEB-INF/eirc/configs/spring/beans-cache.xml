@@ -39,15 +39,14 @@
 		<property name="cacheProviderFacade" ref="cacheProviderFacade" />
 		<property name="cachingModels">
 			<props>
-				<prop key="read">cacheName=eircConsumerAttributeTypesCache</prop>
-				<prop key="readByCode">cacheName=eircConsumerAttributeTypesCache</prop>
+				<prop key="read">cacheName=eircQuittancePacketsCache</prop>
+				<prop key="list">cacheName=eircQuittancePacketsCache</prop>
 			</props>
 		</property>
 		<property name="flushingModels">
 			<props>
-				<prop key="create">cacheNames=eircConsumerAttributeTypesCache;flushBeforeMethodExecution=true</prop>
-				<prop key="update">cacheNames=eircConsumerAttributeTypesCache;flushBeforeMethodExecution=true</prop>
-				<prop key="disable">cacheNames=eircConsumerAttributeTypesCache;flushBeforeMethodExecution=true</prop>
+				<prop key="create">cacheNames=eircQuittancePacketsCache;flushBeforeMethodExecution=true</prop>
+				<prop key="update">cacheNames=eircQuittancePacketsCache;flushBeforeMethodExecution=true</prop>
 			</props>
 		</property>
 		<property name="target" ref="consumerAttributeTypeServiceTarget" />
@@ -63,6 +62,24 @@
 		</property>
 		<property name="target" ref="quittancePaymentStatusServiceTarget" />
 	</bean>
+
+    <bean id="quittancePacketService"
+          class="org.springmodules.cache.interceptor.proxy.CacheProxyFactoryBean">
+        <property name="cacheProviderFacade" ref="cacheProviderFacade" />
+        <property name="cachingModels">
+            <props>
+                <prop key="get*">cacheName=flexpayReadOnlyCache</prop>
+            </props>
+        </property>
+        <property name="flushingModels">
+            <props>
+                <prop key="create">cacheNames=eircConsumerAttributeTypesCache;flushBeforeMethodExecution=true</prop>
+                <prop key="update">cacheNames=eircConsumerAttributeTypesCache;flushBeforeMethodExecution=true</prop>
+                <prop key="disable">cacheNames=eircConsumerAttributeTypesCache;flushBeforeMethodExecution=true</prop>
+            </props>
+        </property>
+        <property name="target" ref="quittancePacketServiceTarget" />
+    </bean>
 
 	<bean id="eircServiceOrganizationService"
 		  autowire-candidate="false"

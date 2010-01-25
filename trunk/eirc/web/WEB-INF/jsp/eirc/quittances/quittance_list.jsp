@@ -32,7 +32,7 @@
 		</s:iterator>
 		<tr>
 			<td colspan="5">
-				<%@include file="/WEB-INF/jsp/common/filter/pager/pager.jsp" %>
+				<%@include file="/WEB-INF/jsp/common/filter/pager/pager_ajax.jsp" %>
 			</td>
 		</tr>
 	</table>
