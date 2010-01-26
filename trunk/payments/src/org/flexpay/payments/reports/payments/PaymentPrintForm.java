@@ -1,10 +1,13 @@
 package org.flexpay.payments.reports.payments;
 
+import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.orgs.persistence.PaymentPoint;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -128,6 +131,47 @@ public class PaymentPrintForm implements Serializable {
 
 	public void setPaymentPointStub(Stub<PaymentPoint> paymentPointStub) {
 		this.paymentPointStub = paymentPointStub;
+	}
+
+	public String getDigestValue() throws FlexPayException {
+
+		MessageDigest digest = null;
+		try {
+			digest = MessageDigest.getInstance("MD5");
+		} catch (NoSuchAlgorithmException e) {
+			throw new FlexPayException("Error creating quittance hash", e);
+		}
+
+		if (operationDate != null) digest.update(operationDate.toString().getBytes());
+		if (organizationName != null) digest.update(organizationName.getBytes());
+		if (quittanceNumber != null) digest.update(quittanceNumber.getBytes());
+		if (cashierFIO != null) digest.update(cashierFIO.getBytes());
+		if (payerFIO != null) digest.update(payerFIO.getBytes());
+		if (paymentPointName != null) digest.update(paymentPointName.getBytes());
+		if (paymentPointAddress != null) digest.update(paymentPointAddress.getBytes());
+		if (total != null) digest.update(total.toString().getBytes());
+		if (inputSumm != null) digest.update(inputSumm.toString().getBytes());
+		if (changeSumm != null) digest.update(changeSumm.toString().getBytes());
+
+		for (PaymentDetails details : detailses) {
+
+			if (details.getAddress() != null) digest.update(details.getAddress().getBytes());
+			if (details.getFio() != null) digest.update(details.getFio().getBytes());
+			if (details.getAccountNumber() != null) digest.update(details.getAccountNumber().getBytes());
+			if (details.getServiceName() != null) digest.update(details.getServiceName().getBytes());
+			if (details.getServiceProviderName() != null) digest.update(details.getServiceProviderName().getBytes());
+			if (details.getPaymentSumm() != null) digest.update(details.getPaymentSumm().toString().getBytes());
+			if (details.getPaymentPeriod() != null) digest.update(details.getPaymentPeriod().getBytes());
+			if (details.getDebt() != null) digest.update(details.getDebt().toString().getBytes());
+		}
+
+		byte[] result = digest.digest();
+		StringBuffer hexString = new StringBuffer();
+		for (int i = 0; i < result.length; i++) {
+			hexString.append(Integer.toHexString(0xFF & result[i]));
+		}
+
+		return hexString.toString();
 	}
 
 	public static class PaymentDetails implements Serializable {

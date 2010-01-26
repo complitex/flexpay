@@ -19,6 +19,7 @@
 	<parameter name="changeSumm" class="java.math.BigDecimal" isForPrompting="false"/>
 	<parameter name="paymentPointAddress" class="java.lang.String" isForPrompting="false"/>
 	<parameter name="paymentPointName" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="digest" class="java.lang.String"/>
 	<field name="address" class="java.lang.String">
 		<fieldDescription><![CDATA[address]]></fieldDescription>
 	</field>
@@ -157,6 +158,11 @@
 				<reportElement x="1" y="30" width="534" height="15"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{paymentPointName}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="347" y="60" width="189" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{digest}]]></textFieldExpression>
 			</textField>
 		</band>
 	</title>

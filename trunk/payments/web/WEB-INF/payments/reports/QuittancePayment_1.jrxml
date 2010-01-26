@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="QuittancePayment" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="QuittancePayment" pageWidth="575" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" whenResourceMissingType="Empty">
 	<property name="ireport.scriptlethandling" value="0"/>
 	<property name="ireport.encoding" value="UTF-8"/>
+	<import value="java.text.SimpleDateFormat"/>
 	<import value="net.sf.jasperreports.engine.*"/>
 	<import value="java.util.*"/>
 	<import value="net.sf.jasperreports.engine.data.*"/>
@@ -11,10 +12,14 @@
 	<parameter name="organizationName" class="java.lang.String" isForPrompting="false"/>
 	<parameter name="quittanceNumber" class="java.lang.String" isForPrompting="false"/>
 	<parameter name="cashierFIO" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="payerFIO" class="java.lang.String" isForPrompting="false"/>
 	<parameter name="total" class="java.math.BigDecimal" isForPrompting="false"/>
 	<parameter name="totalSpelling" class="java.lang.String" isForPrompting="false"/>
 	<parameter name="inputSumm" class="java.math.BigDecimal" isForPrompting="false"/>
 	<parameter name="changeSumm" class="java.math.BigDecimal" isForPrompting="false"/>
+	<parameter name="paymentPointAddress" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="paymentPointName" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="digest" class="java.lang.String"/>
 	<field name="address" class="java.lang.String">
 		<fieldDescription><![CDATA[address]]></fieldDescription>
 	</field>
@@ -39,38 +44,39 @@
 	<field name="counterValue" class="java.lang.String">
 		<fieldDescription><![CDATA[counterValue]]></fieldDescription>
 	</field>
+	<field name="debt" class="java.math.BigDecimal"/>
 	<background>
 		<band/>
 	</background>
 	<title>
-		<band height="89">
+		<band height="105">
 			<staticText>
-				<reportElement x="1" y="9" width="76" height="20"/>
+				<reportElement x="0" y="0" width="76" height="15"/>
 				<textElement verticalAlignment="Middle"/>
-				<text><![CDATA[г. Харьков (Тестовый поставщик)]]></text>
+				<text><![CDATA[г. Харьков]]></text>
 			</staticText>
 			<textField pattern="dd/MM/yyyy">
-				<reportElement x="77" y="9" width="170" height="20"/>
-				<textElement verticalAlignment="Middle"/>
-				<textFieldExpression class="java.util.Date"><![CDATA[$P{operationDate}]]></textFieldExpression>
+				<reportElement x="432" y="0" width="103" height="15"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[(new SimpleDateFormat("MM/dd/yyyy HH:mm:ss")).format($P{operationDate})]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="1" y="29" width="385" height="20"/>
-				<textElement verticalAlignment="Middle"/>
+				<reportElement x="0" y="15" width="534" height="15"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{organizationName}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="1" y="49" width="76" height="20"/>
+				<reportElement x="0" y="60" width="76" height="20"/>
 				<textElement verticalAlignment="Middle"/>
 				<text><![CDATA[Квитанция №]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="77" y="49" width="170" height="20"/>
+				<reportElement x="76" y="60" width="170" height="20"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{quittanceNumber}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement style="LiberationSans-Bold" x="0" y="69" width="168" height="20"/>
+				<reportElement style="LiberationSans-Bold" x="0" y="80" width="168" height="25"/>
 				<box leftPadding="5">
 					<pen lineWidth="0.25" lineStyle="Solid"/>
 					<topPen lineWidth="0.25" lineStyle="Solid"/>
@@ -81,10 +87,11 @@
 				<textElement textAlignment="Justified" verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
-				<text><![CDATA[Адрес / ФИО]]></text>
+				<text><![CDATA[Адрес
+ФИО]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="LiberationSans-Bold" x="168" y="69" width="152" height="20"/>
+				<reportElement style="LiberationSans-Bold" x="168" y="80" width="127" height="25"/>
 				<box leftPadding="5">
 					<pen lineWidth="0.25" lineStyle="Solid"/>
 					<topPen lineWidth="0.25" lineStyle="Solid"/>
@@ -95,10 +102,11 @@
 				<textElement textAlignment="Justified" verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
-				<text><![CDATA[Услуга / Поставщик]]></text>
+				<text><![CDATA[Услуга
+Поставщик]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="LiberationSans-Bold" x="320" y="69" width="112" height="20"/>
+				<reportElement style="LiberationSans-Bold" x="295" y="80" width="89" height="25"/>
 				<box leftPadding="5">
 					<pen lineWidth="0.25" lineStyle="Solid"/>
 					<topPen lineWidth="0.25" lineStyle="Solid"/>
@@ -109,10 +117,11 @@
 				<textElement verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
-				<text><![CDATA[Номер счёта / Период]]></text>
+				<text><![CDATA[Номер счёта
+Период]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="LiberationSans-Bold" x="432" y="69" width="118" height="20"/>
+				<reportElement style="LiberationSans-Bold" x="456" y="80" width="79" height="25"/>
 				<box leftPadding="5">
 					<pen lineWidth="0.25" lineStyle="Solid"/>
 					<topPen lineWidth="0.25" lineStyle="Solid"/>
@@ -123,8 +132,38 @@
 				<textElement textAlignment="Justified" verticalAlignment="Middle">
 					<font isBold="true"/>
 				</textElement>
-				<text><![CDATA[Сумма / Счётчик]]></text>
+				<text><![CDATA[Оплата
+Счётчик]]></text>
 			</staticText>
+			<textField>
+				<reportElement x="1" y="45" width="535" height="15"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{paymentPointAddress}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement style="LiberationSans-Bold" x="384" y="80" width="72" height="25"/>
+				<box leftPadding="5">
+					<pen lineWidth="0.25" lineStyle="Solid"/>
+					<topPen lineWidth="0.25" lineStyle="Solid"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid"/>
+				</box>
+				<textElement textAlignment="Justified" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Задолженность]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="1" y="30" width="534" height="15"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{paymentPointName}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="347" y="60" width="189" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{digest}]]></textFieldExpression>
+			</textField>
 		</band>
 	</title>
 	<pageHeader>
@@ -134,9 +173,9 @@
 		<band/>
 	</columnHeader>
 	<detail>
-		<band height="40">
+		<band height="26">
 			<textField>
-				<reportElement mode="Transparent" x="0" y="0" width="168" height="20"/>
+				<reportElement mode="Transparent" x="0" y="0" width="168" height="13"/>
 				<box leftPadding="5">
 					<pen lineWidth="0.25" lineStyle="Solid"/>
 					<topPen lineWidth="0.25" lineStyle="Solid"/>
@@ -144,11 +183,11 @@
 					<bottomPen lineWidth="0.0" lineStyle="Solid"/>
 					<rightPen lineWidth="0.25" lineStyle="Solid"/>
 				</box>
-				<textElement verticalAlignment="Middle"/>
+				<textElement verticalAlignment="Top"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{address}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="0" y="20" width="168" height="20"/>
+				<reportElement x="0" y="13" width="168" height="13"/>
 				<box leftPadding="5">
 					<pen lineWidth="0.25" lineStyle="Solid"/>
 					<topPen lineWidth="0.0" lineStyle="Solid"/>
@@ -156,11 +195,11 @@
 					<bottomPen lineWidth="0.25" lineStyle="Solid"/>
 					<rightPen lineWidth="0.25" lineStyle="Solid"/>
 				</box>
-				<textElement verticalAlignment="Middle"/>
+				<textElement verticalAlignment="Top"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{fio}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="168" y="0" width="152" height="20"/>
+				<reportElement x="168" y="0" width="127" height="13"/>
 				<box leftPadding="5">
 					<pen lineWidth="0.25" lineStyle="Solid"/>
 					<topPen lineWidth="0.25" lineStyle="Solid"/>
@@ -168,11 +207,11 @@
 					<bottomPen lineWidth="0.0" lineStyle="Solid"/>
 					<rightPen lineWidth="0.25" lineStyle="Solid"/>
 				</box>
-				<textElement verticalAlignment="Middle"/>
+				<textElement verticalAlignment="Top"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{serviceName}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="168" y="20" width="152" height="20"/>
+				<reportElement x="168" y="13" width="127" height="13"/>
 				<box leftPadding="5">
 					<pen lineWidth="0.25" lineStyle="Solid"/>
 					<topPen lineWidth="0.0" lineStyle="Solid"/>
@@ -180,11 +219,11 @@
 					<bottomPen lineWidth="0.25" lineStyle="Solid"/>
 					<rightPen lineWidth="0.25" lineStyle="Solid"/>
 				</box>
-				<textElement verticalAlignment="Middle"/>
+				<textElement verticalAlignment="Top"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{serviceProviderName}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="320" y="0" width="112" height="20"/>
+				<reportElement x="295" y="0" width="89" height="13"/>
 				<box leftPadding="5">
 					<pen lineWidth="0.25" lineStyle="Solid"/>
 					<topPen lineWidth="0.25" lineStyle="Solid"/>
@@ -192,11 +231,11 @@
 					<bottomPen lineWidth="0.0" lineStyle="Solid"/>
 					<rightPen lineWidth="0.25" lineStyle="Solid"/>
 				</box>
-				<textElement verticalAlignment="Middle"/>
+				<textElement verticalAlignment="Top"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{accountNumber}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="320" y="20" width="112" height="20"/>
+				<reportElement x="295" y="13" width="89" height="13"/>
 				<box leftPadding="5">
 					<pen lineWidth="0.25" lineStyle="Solid"/>
 					<topPen lineWidth="0.0" lineStyle="Solid"/>
@@ -204,11 +243,11 @@
 					<bottomPen lineWidth="0.25" lineStyle="Solid"/>
 					<rightPen lineWidth="0.25" lineStyle="Solid"/>
 				</box>
-				<textElement verticalAlignment="Middle"/>
+				<textElement verticalAlignment="Top"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{paymentPeriod}]]></textFieldExpression>
 			</textField>
 			<textField pattern="#,##0.00">
-				<reportElement x="432" y="0" width="118" height="20"/>
+				<reportElement x="456" y="0" width="79" height="13"/>
 				<box leftPadding="5">
 					<pen lineWidth="0.25" lineStyle="Solid"/>
 					<topPen lineWidth="0.25" lineStyle="Solid"/>
@@ -216,11 +255,11 @@
 					<bottomPen lineWidth="0.0" lineStyle="Solid"/>
 					<rightPen lineWidth="0.25" lineStyle="Solid"/>
 				</box>
-				<textElement verticalAlignment="Middle"/>
+				<textElement verticalAlignment="Top"/>
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{paymentSumm}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement x="432" y="20" width="118" height="20"/>
+				<reportElement x="456" y="13" width="79" height="13"/>
 				<box leftPadding="5">
 					<pen lineWidth="0.25" lineStyle="Solid"/>
 					<topPen lineWidth="0.0" lineStyle="Solid"/>
@@ -228,8 +267,20 @@
 					<bottomPen lineWidth="0.25" lineStyle="Solid"/>
 					<rightPen lineWidth="0.25" lineStyle="Solid"/>
 				</box>
-				<textElement verticalAlignment="Middle"/>
+				<textElement verticalAlignment="Top"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$F{counterValue}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="384" y="0" width="72" height="26"/>
+				<box leftPadding="5">
+					<pen lineWidth="0.25" lineStyle="Solid"/>
+					<topPen lineWidth="0.0" lineStyle="Solid"/>
+					<leftPen lineWidth="0.25" lineStyle="Solid"/>
+					<bottomPen lineWidth="0.25" lineStyle="Solid"/>
+					<rightPen lineWidth="0.25" lineStyle="Solid"/>
+				</box>
+				<textElement verticalAlignment="Top"/>
+				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$F{debt}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
@@ -240,27 +291,27 @@
 		<band/>
 	</pageFooter>
 	<summary>
-		<band height="190">
+		<band height="117">
 			<staticText>
 				<reportElement x="0" y="63" width="33" height="20"/>
 				<textElement verticalAlignment="Middle"/>
 				<text><![CDATA[Кассир]]></text>
 			</staticText>
 			<line>
-				<reportElement x="33" y="82" width="157" height="1"/>
+				<reportElement x="33" y="82" width="104" height="1"/>
 			</line>
 			<textField>
-				<reportElement x="201" y="63" width="113" height="20"/>
+				<reportElement x="148" y="63" width="101" height="20"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{cashierFIO}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="190" y="63" width="11" height="20"/>
+				<reportElement x="137" y="63" width="11" height="20"/>
 				<textElement verticalAlignment="Middle"/>
 				<text><![CDATA[/]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="314" y="63" width="11" height="20"/>
+				<reportElement x="249" y="63" width="11" height="20"/>
 				<textElement verticalAlignment="Middle"/>
 				<text><![CDATA[/]]></text>
 			</staticText>
@@ -275,7 +326,7 @@
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$P{total}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="177" y="0" width="373" height="20"/>
+				<reportElement x="177" y="0" width="358" height="20"/>
 				<textElement verticalAlignment="Middle"/>
 				<textFieldExpression class="java.lang.String"><![CDATA[$P{totalSpelling}]]></textFieldExpression>
 			</textField>
@@ -300,10 +351,33 @@
 				<textFieldExpression class="java.math.BigDecimal"><![CDATA[$P{changeSumm}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="54" y="109" width="32" height="20"/>
+				<reportElement x="33" y="97" width="32" height="20"/>
 				<textElement verticalAlignment="Middle"/>
 				<text><![CDATA[М.П.]]></text>
 			</staticText>
+			<staticText>
+				<reportElement x="526" y="63" width="9" height="20"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[/]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="425" y="63" width="101" height="20"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression class="java.lang.String"><![CDATA[$P{payerFIO}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="414" y="63" width="11" height="20"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[/]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="260" y="63" width="50" height="20"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Плательщик]]></text>
+			</staticText>
+			<line>
+				<reportElement x="310" y="82" width="104" height="1"/>
+			</line>
 		</band>
 	</summary>
 </jasperReport>

@@ -4,24 +4,24 @@ import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.apache.commons.io.IOUtils;
 import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.persistence.report.ReportPrintHistoryRecord;
 import org.flexpay.common.persistence.report.ReportType;
-import org.flexpay.common.persistence.file.FPFile;
-import org.flexpay.common.service.reporting.ReportUtil;
 import org.flexpay.common.service.ReportPrintHistoryRecordService;
+import org.flexpay.common.service.reporting.ReportUtil;
 import static org.flexpay.common.util.CollectionUtils.ar;
 import static org.flexpay.common.util.CollectionUtils.map;
 import org.flexpay.common.util.config.ApplicationConfig;
 import org.flexpay.payments.actions.PaymentOperationAction;
-import org.flexpay.payments.persistence.*;
+import org.flexpay.payments.persistence.Operation;
 import org.flexpay.payments.reports.payments.PaymentPrintForm;
 import org.flexpay.payments.reports.payments.PaymentsReporter;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.io.InputStream;
-import java.util.Map;
 import java.util.Date;
+import java.util.Map;
 
 public class PaymentOperationReportAction extends PaymentOperationAction {
 
@@ -76,11 +76,11 @@ public class PaymentOperationReportAction extends PaymentOperationAction {
 				ar("operationDate", "organizationName", "quittanceNumber",
 						"cashierFIO", "payerFIO", "total", "totalSpelling",
 						"inputSumm", "changeSumm", "paymentPointName",
-						"paymentPointAddress", "detailses"),
+						"paymentPointAddress", "detailses", "digest"),
 				ar(form.getOperationDate(), form.getOrganizationName(), form.getQuittanceNumber(),
 						form.getCashierFIO(), form.getPayerFIO(), form.getTotal(), form.getTotalSpelling(),
 						form.getInputSumm(), form.getChangeSumm(), form.getPaymentPointName(),
-						form.getPaymentPointAddress(), form.getDetailses()));
+						form.getPaymentPointAddress(), form.getDetailses(), form.getDigestValue()));
 
 		JRDataSource dataSource = new JRBeanCollectionDataSource(form.getDetailses());
 
