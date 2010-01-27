@@ -29,6 +29,7 @@ public class IterateMBRegistryActionHandler extends FlexPayActionHandler {
 	public static final String PARAM_NUMBER_PROCESSED_REGISTRY_RECORDS = "numberProcessedRegistryRecords";
 	public static final String PARAM_NUMBER_PRECESSED_LINES = "numberProcessedLines";
 	public static final String PARAM_CURRENT_CHAR_POINT = "currentCharPoint";
+	public static final String PARAM_WATCH = "watch";
 
 	public static final String PARAM_FLUSH_NUMBER_REGISTRY_RECORDS = "flushNumberRegistryRecords";
 
@@ -117,10 +118,15 @@ public class IterateMBRegistryActionHandler extends FlexPayActionHandler {
 			parameters.put(PARAM_CURRENT_CHAR_POINT, currentCharPoint);
 
 			if (newCharPoint >= 0) {
+				processLog.info("Parsed {} lines", parameters.get(ParserParameterConstants.PARAM_TOTAL_LINE_NUM));
 				return RESULT_NEXT;
 			}
 			infoRegistry.setRegistryStatus(registryStatusService.findByCode(RegistryStatus.LOADED));
 			registryService.update(infoRegistry);
+
+			processLog.info("Registry parse completed, total lines {}, total records {}",
+					new Object[]{parameters.get(PARAM_NUMBER_PRECESSED_LINES),
+								parameters.get(PARAM_NUMBER_PROCESSED_REGISTRY_RECORDS)});
 
 			return RESULT_END;
 		} catch (Exception e) {

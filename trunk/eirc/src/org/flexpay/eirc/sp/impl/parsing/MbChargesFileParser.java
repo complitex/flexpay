@@ -75,7 +75,9 @@ public class MbChargesFileParser extends MbFileParser {
 		parameters.put(ParserParameterConstants.PARAM_TOTAL_RECORD_NUM, totalRecordsNum);
 		parameters.put(ParserParameterConstants.PARAM_FLUSH_NUMBER_REGISTRY_RECORD, 50L);
 		try {
-			while(iterateParseFile(reader, parameters) > 0);
+			while(iterateParseFile(reader, parameters) > 0) {
+				plog.info("Parsed {} lines", parameters.get(ParserParameterConstants.PARAM_TOTAL_LINE_NUM));
+			}
 		} finally {
 			IOUtils.closeQuietly(reader);
 		}
