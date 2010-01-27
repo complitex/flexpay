@@ -74,7 +74,7 @@ public class ProcessRecordsRangeActionHandler extends FlexPayActionHandler {
 				try {
 					handleError.handleError(t, context);
 				} catch (Exception e) {
-					log.error("Inner error", e);
+					log.error("Inner error. Record Id is: " + record.getId(), e);
 					return RESULT_ERROR;
 				}
 			}

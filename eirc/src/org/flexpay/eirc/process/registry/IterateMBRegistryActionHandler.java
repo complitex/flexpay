@@ -118,7 +118,7 @@ public class IterateMBRegistryActionHandler extends FlexPayActionHandler {
 			parameters.put(PARAM_CURRENT_CHAR_POINT, currentCharPoint);
 
 			if (newCharPoint >= 0) {
-				processLog.info("Parsed {} lines", parameters.get(ParserParameterConstants.PARAM_TOTAL_LINE_NUM));
+				processLog.info("Parsed {} lines", parameters.get(PARAM_NUMBER_PRECESSED_LINES));
 				return RESULT_NEXT;
 			}
 			infoRegistry.setRegistryStatus(registryStatusService.findByCode(RegistryStatus.LOADED));
