@@ -123,7 +123,7 @@ public class RegistryRecordWorkflowManagerImpl implements RegistryRecordWorkflow
 	public void setNextErrorStatus(RegistryRecord record, ImportError error) throws TransitionNotAllowed {
 		List<Integer> allowedCodes = transitions.get(code(record));
 		if (allowedCodes.size() < 2) {
-			throw new TransitionNotAllowed("No error transition");
+			throw new TransitionNotAllowed("No error transition, current is: '" + code(record));
 		}
 
 		markRegistryAsHavingError(record);
