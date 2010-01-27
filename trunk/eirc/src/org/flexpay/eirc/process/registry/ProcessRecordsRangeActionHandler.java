@@ -67,6 +67,7 @@ public class ProcessRecordsRangeActionHandler extends FlexPayActionHandler {
 		ProcessingContext context = new ProcessingContext();
 		context.setRegistry(registry);
 		for (RegistryRecord record : records) {
+			log.debug("Try process record with Id {}", record.getId());
 			try {
 				context.setCurrentRecord(record);
 				processorTx.prepareRecordUpdates(context);
