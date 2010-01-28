@@ -73,6 +73,7 @@ public class ProcessRecordsRangeActionHandler extends FlexPayActionHandler {
 				processorTx.prepareRecordUpdates(context);
 			} catch (Throwable t) {
 				try {
+					log.debug("Try set next status for record with Id {}, current status {}", record.getId(), record.getRecordStatus());
 					handleError.handleError(t, context);
 				} catch (Exception e) {
 					log.error("Inner error. Record Id is: " + record.getId(), e);
