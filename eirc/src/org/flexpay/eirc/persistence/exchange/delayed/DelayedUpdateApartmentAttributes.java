@@ -20,7 +20,7 @@ public class DelayedUpdateApartmentAttributes implements DelayedUpdate {
 	 */
 	@Override
 	public void doUpdate() throws FlexPayExceptionContainer {
-		service.updateAttributes(apartment);
+		service.mergeAttributes(apartment);
 	}
 
 	@Override

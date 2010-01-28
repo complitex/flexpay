@@ -25,4 +25,12 @@ public interface BtiApartmentService {
 	 */
 	BtiApartment updateAttributes(@NotNull BtiApartment apartment);
 
+	/**
+	 * Merge apartment attributes
+	 *
+	 * @param apartment Apartment to update
+	 * @return apartment back
+	 */
+	BtiApartment mergeAttributes(@NotNull BtiApartment apartment);
+
 }
