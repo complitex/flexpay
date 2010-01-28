@@ -39,6 +39,19 @@ public class BtiApartmentServiceImpl implements BtiApartmentService {
 		return apartment;
 	}
 
+	/**
+	 * Merge apartment attributes
+	 *
+	 * @param apartment Apartment to update
+	 * @return apartment back
+	 */
+	@Transactional (readOnly = false)
+	public BtiApartment mergeAttributes(@NotNull BtiApartment apartment) {
+		apartmentDao.merge(apartment);
+
+		return apartment;
+	}
+
 	@Required
 	public void setBtiApartmentDaoExt(BtiApartmentDaoExt btiApartmentDaoExt) {
 		this.btiApartmentDaoExt = btiApartmentDaoExt;
