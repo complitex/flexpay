@@ -1,76 +1,53 @@
-<%@ page import="org.flexpay.payments.service.Roles" %>
-<%@ include file="/WEB-INF/jsp/common/taglibs.jsp" %>
-<%@include file="/WEB-INF/jsp/payments/include/stylesheet.jsp" %>
+<%@page import="org.flexpay.payments.service.Roles"%>
+<%@include file="/WEB-INF/jsp/common/taglibs.jsp"%>
+<%@include file="/WEB-INF/jsp/payments/include/stylesheet.jsp"%>
+<%@include file="/WEB-INF/jsp/common/includes/errors_messages.jsp"%>
 
-<s:actionerror/>
-<s:actionmessage/>
-
-<s:form action="paymentPointsListMonitor">
-  <table cellpadding="3" cellspacing="1" border="0" width="100%">
-    <!--
+<table cellpadding="3" cellspacing="1" border="0" width="100%" class="payment_points_list">
     <tr>
-      <td nowrap="nowrap">
-        <s:text name="payments.payment_points.list.filter"/>
-        <input type="text" name="filter"/>
-        <input type="submit" name="submitFilter" value="<s:text name="payments.payment_points.list.filter.submit"/>"/>
-      </td>
-    </tr>
-    -->
-    <tr>
-      <td nowrap="nowrap"><s:text name="payments.payment_points.list.updated"/>&nbsp;<s:property value="updated"/></td>
-      <td nowrap="nowrap" align="left">
-        <input type="submit" name="update" class="" value="<s:text name="payments.payment_points.list.update"/>"/>
-      </td>
-    </tr>
-    <tr>
-      <td nowrap="nowrap" align="right" colspan="2">
-        <%@include file="/WEB-INF/jsp/common/filter/pager/pager.jsp" %>
-      </td>
-    </tr>
-  </table>
-  <table cellpadding="3" cellspacing="1" border="0" width="100%" class="payment_points_list">
-    <tr>
-      <td class="th"><s:text name="payments.payment_points.list.payment_point"/></td>
-      <td class="th"><s:text name="payments.payment_points.list.payments_count"/></td>
-      <td class="th"><s:text name="payments.payment_points.list.payment_point_status"/></td>
-      <td class="th"><s:text name="payments.payment_points.list.payment_point_sum"/></td>
-      <td class="th"><s:text name="payments.payment_points.list.cash_box"/></td>
-      <td class="th"><s:text name="payments.payment_points.list.FIO_cashier"/></td>
-      <td class="th"><s:text name="payments.payment_points.list.last_payment"/></td>
-      <sec:authorize ifAnyGranted="<%=Roles.TRADING_DAY_ADMIN_ACTION%>">
-        <td class="th"><s:text name="payments.payment_points.list.action"/></td>
-      </sec:authorize>
-    </tr>
-
-    <s:iterator value="paymentPoints" id="paymentPointDetail">
-      <tr>
-        <td nowrap="nowrap">
-          <a href="<s:url action='paymentPointDetailMonitor.action'><s:param name="paymentPointId" value="%{id}"/></s:url>">
-                  <s:property value="name" />
-                </a>
+        <td colspan="9">
+            <%@include file="/WEB-INF/jsp/common/filter/pager/pager_ajax.jsp"%>
         </td>
-        <td nowrap="nowrap"><s:property value="paymentsCount"/></td>
-        <td nowrap="nowrap"><s:property value="status"/></td>
-        <td nowrap="nowrap"><s:property value="totalSum"/></td>
-        <td nowrap="nowrap"><s:property value="cashBox"/></td>
-        <td nowrap="nowrap"><s:property value="cashierFIO"/></td>
-        <td nowrap="nowrap"><s:property value="lastPayment"/></td>
-        <sec:authorize ifAnyGranted="<%=Roles.TRADING_DAY_ADMIN_ACTION%>">
-          <td nowrap="nowrap">
-            <a href="<s:url action='paymentPointsListMonitor.action'><s:param name="paymentPointId" value="%{id}"/>
-                                                              <s:param name="action" value="%{actionName}"/></s:url>">
-              <s:property value="actionName" />
-            </a>
-          </td>
-        </sec:authorize>
-      </tr>
-    </s:iterator>
-  </table>
-  <table cellpadding="3" cellspacing="1" border="0" width="100%">
-    <tr>
-      <td align="right">
-        <%@include file="/WEB-INF/jsp/common/filter/pager/pager.jsp" %>
-      </td>
     </tr>
-  </table>
-</s:form>
+    <tr>
+        <td class="th" width="1%">&nbsp;</td>
+        <td class="th"><s:text name="payments.payment_points.list.payment_point" /></td>
+        <td class="th"><s:text name="payments.payment_points.list.payments_count" /></td>
+        <td class="th"><s:text name="payments.payment_points.list.payment_point_status" /></td>
+        <td class="th"><s:text name="payments.payment_points.list.payment_point_sum" /></td>
+        <td class="th"><s:text name="payments.payment_points.list.cash_box" /></td>
+        <td class="th"><s:text name="payments.payment_points.list.FIO_cashier" /></td>
+        <td class="th"><s:text name="payments.payment_points.list.last_payment" /></td>
+        <sec:authorize ifAnyGranted="<%=Roles.TRADING_DAY_ADMIN_ACTION%>">
+            <td class="th"><s:text name="payments.payment_points.list.action" /></td>
+        </sec:authorize>
+    </tr>
+    <s:iterator value="paymentPoints" status="status">
+        <tr>
+            <td><s:property value="#status.index + pager.thisPageFirstElementNumber + 1" /></td>
+            <td>
+                <a href="<s:url action="paymentPointDetailMonitor" includeParams="none"><s:param name="paymentPoint.id" value="id" /></s:url>">
+                    <s:property value="name" />
+                </a>
+            </td>
+            <td><s:property value="paymentsCount" /></td>
+            <td><s:property value="status" /></td>
+            <td><s:property value="totalSumm" /></td>
+            <td><s:property value="cashBox" /></td>
+            <td><s:property value="cashierFIO" /></td>
+            <td><s:property value="lastPayment" /></td>
+            <sec:authorize ifAnyGranted="<%=Roles.TRADING_DAY_ADMIN_ACTION%>">
+                <td>
+                    <a href="#" onclick="enableDisablePaymentPoint(<s:property value="id" />, '<s:property value="action" />');">
+                        <s:text name="%{action}" />
+                    </a>
+                </td>
+            </sec:authorize>
+        </tr>
+    </s:iterator>
+    <tr>
+        <td colspan="9">
+            <%@include file="/WEB-INF/jsp/common/filter/pager/pager_ajax.jsp"%>
+        </td>
+    </tr>
+</table>

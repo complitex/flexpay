@@ -198,7 +198,7 @@
 
 	<bean parent="eirc_dicts_services"
 		  p:name="eirc.service_types"
-		  p:title="eirc.service_types"
+		  p:title="payments.service_types"
 		  p:action="serviceTypesList"
 		  p:parent-ref="eirc_dicts_services">
         <property name="userRole">

@@ -19,6 +19,7 @@ public class BeginTimeFilter extends TimeFilter {
 		super(calendar);
 	}
 
+	@Override
 	protected void initDefaults() {
 		hours = 0;
 		minutes = 0;

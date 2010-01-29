@@ -1,7 +1,6 @@
 package org.flexpay.payments.actions.service;
 
 import org.flexpay.common.actions.FPActionWithPagerSupport;
-import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.payments.persistence.ServiceType;
 import org.flexpay.payments.service.ServiceTypeService;
 import org.jetbrains.annotations.NotNull;
@@ -9,9 +8,11 @@ import org.springframework.beans.factory.annotation.Required;
 
 import java.util.List;
 
+import static org.flexpay.common.util.CollectionUtils.list;
+
 public class ServiceTypesListAction extends FPActionWithPagerSupport<ServiceType> {
 
-	private List<ServiceType> serviceTypes = CollectionUtils.list();
+	private List<ServiceType> serviceTypes = list();
 
 	private ServiceTypeService serviceTypeService;
 

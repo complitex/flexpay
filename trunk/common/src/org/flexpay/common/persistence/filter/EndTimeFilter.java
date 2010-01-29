@@ -19,6 +19,7 @@ public class EndTimeFilter extends TimeFilter {
 		super(calendar);
 	}
 
+	@Override
 	protected void initDefaults() {
 		hours = 23;
 		minutes = 59;

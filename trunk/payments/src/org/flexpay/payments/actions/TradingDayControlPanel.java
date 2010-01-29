@@ -39,6 +39,9 @@ public class TradingDayControlPanel {
 	// required services
 	private ProcessManager processManager;
 
+	public TradingDayControlPanel() {
+	}
+
 	public TradingDayControlPanel(ProcessManager processManager, String actor, Logger userLog) {
 		this.processManager = processManager;
 		this.userLog = userLog;
@@ -73,6 +76,7 @@ public class TradingDayControlPanel {
 		final Long taskInstanceId = taskInstance.getId();
 
 		processManager.execute(new ContextCallback<Void>() {
+			@Override
 			public Void doInContext(@NotNull JbpmContext context) {
 				TaskInstance taskInstance = context.getTaskMgmtSession().getTaskInstance(taskInstanceId);
 				if (taskInstance.isSignalling()) {
@@ -99,6 +103,7 @@ public class TradingDayControlPanel {
 		}
 
 		availableCommands = processManager.execute(new ContextCallback<List<String>>() {
+			@Override
 			public List<String> doInContext(@NotNull JbpmContext context) {
 				TaskInstance currentTaskInstance = context.getTaskInstance(taskInstance.getId());
 				if (currentTaskInstance == null) {
@@ -128,12 +133,10 @@ public class TradingDayControlPanel {
 	}
 
 	public boolean isTradingDayOpened() {
-
 		return tradingDayProcessInstanceId != null && TradingDay.isOpened(processManager, tradingDayProcessInstanceId, userLog);
 	}
 
 	private TaskInstance getTaskInstance() {
-
 		return TaskHelper.getTaskInstance(processManager, tradingDayProcessInstanceId, actor, userLog);
 	}
 
@@ -149,7 +152,30 @@ public class TradingDayControlPanel {
 		return processStatus;
 	}
 
-	// required services
+	public Long getTradingDayProcessInstanceId() {
+		return tradingDayProcessInstanceId;
+	}
+
+	public void setTradingDayProcessInstanceId(Long tradingDayProcessInstanceId) {
+		this.tradingDayProcessInstanceId = tradingDayProcessInstanceId;
+	}
+
+	public String getActor() {
+		return actor;
+	}
+
+	public void setActor(String actor) {
+		this.actor = actor;
+	}
+
+	public Logger getUserLog() {
+		return userLog;
+	}
+
+	public void setUserLog(Logger userLog) {
+		this.userLog = userLog;
+	}
+
 	@Required
 	public void setProcessManager(ProcessManager processManager) {
 		this.processManager = processManager;

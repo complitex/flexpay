@@ -247,15 +247,15 @@
 
 	<!-- Service Types -->
 	<definition name="eirc.service_types.list" extends="eirc.dictionaries">
-		<put-attribute name="title" value="eirc.service_types" />
+		<put-attribute name="title" value="payments.service_types" />
 		<put-attribute name="body" value="/WEB-INF/jsp/payments/service_types/service_types_list_page.jsp" />
 	</definition>
 	<definition name="eirc.service_type.edit" extends="eirc.dictionaries">
-		<put-attribute name="title" value="eirc.service_type" />
+		<put-attribute name="title" value="payments.service_type" />
 		<put-attribute name="body" value="/WEB-INF/jsp/payments/service_types/service_type_edit.jsp" />
 	</definition>
     <definition name="eirc.service_type.view" extends="eirc.dictionaries">
-        <put-attribute name="title" value="eirc.service_type" />
+        <put-attribute name="title" value="payments.service_type" />
         <put-attribute name="body" value="/WEB-INF/jsp/payments/service_types/service_type_view.jsp" />
     </definition>
 

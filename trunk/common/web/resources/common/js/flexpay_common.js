@@ -255,16 +255,21 @@ var FP = {
         }, opt);
 
         FP.showShadow(opt.shadowId, opt.resultId);
-        var ids = [];
-        $("input[name=" + name + "]:checked").each(function() {
-            ids[ids.length] = this.value;
-        });
-        if (ids.length == 0) {
-            FP.hideShadow(opt.shadowId, opt.resultId);
-            return;
-        }
+
         var params = opt.params;
-        params[name] = ids;
+
+        if (name != null) {
+            var ids = [];
+            $("input[name=" + name + "]:checked").each(function() {
+                ids[ids.length] = this.value;
+            });
+            if (ids.length == 0) {
+                FP.hideShadow(opt.shadowId, opt.resultId);
+                return;
+            }
+            params[name] = ids;
+
+        }
         $.post(action, params,
                 function(data) {
                     $("#messagesBlock").html(data);

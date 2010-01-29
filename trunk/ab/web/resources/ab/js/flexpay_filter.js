@@ -213,7 +213,7 @@ function Filter(name, options) {
 
     return true;
 
-};
+}
 
 var FF = {
 

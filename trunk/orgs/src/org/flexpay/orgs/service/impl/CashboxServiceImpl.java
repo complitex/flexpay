@@ -193,6 +193,7 @@ public class CashboxServiceImpl implements CashboxService {
 		return cashboxDao.findCashboxes(pager);
 	}
 
+	@NotNull
 	@Override
 	public List<Cashbox> findCashboxesForPaymentPoint(Long paymentPointId) {
 		return cashboxDao.findCashboxesForPaymentPoint(paymentPointId);

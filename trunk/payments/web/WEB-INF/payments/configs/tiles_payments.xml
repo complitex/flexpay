@@ -73,7 +73,7 @@
 	<!-- operation-related definitions -->
 	<definition name="payments.operations.list" extends="ab.layout.standart">
 		<put-attribute name="title" value="payments.operations.list.title"/>
-		<put-attribute name="body" value="/WEB-INF/jsp/payments/operations/operations_list.jsp"/>
+		<put-attribute name="body" value="/WEB-INF/jsp/payments/operations/operations_list_page.jsp"/>
 	</definition>
 
 	<!-- reports-related definitions -->
@@ -167,7 +167,7 @@
     <!-- payment point list definitions -->
 	<definition name="payments.payment_points.list" extends="ab.layout.standart">
 		<put-attribute name="title" value="payments.payment_points.list.title"/>
-		<put-attribute name="body" value="/WEB-INF/jsp/payments/monitor/payment_points_list.jsp"/>
+		<put-attribute name="body" value="/WEB-INF/jsp/payments/monitor/payment_points_monitor.jsp"/>
 	</definition>
     <definition name="payments.payment_point.detail" extends="ab.layout.standart">
 		<put-attribute name="title" value="payments.payment_point.detail.title"/>

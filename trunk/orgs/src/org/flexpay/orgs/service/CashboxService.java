@@ -92,7 +92,7 @@ public interface CashboxService {
 	 * @return List of cashbox objects
 	 */
 	@Secured (Roles.CASHBOX_READ)
-	@Nullable
+	@NotNull
 	List<Cashbox> findCashboxesForPaymentPoint(Long paymentPointId);
 
 	/**

@@ -7,8 +7,8 @@
     <tr>
         <td class="th" width="1%">&nbsp;</td>
         <td class="th"><s:text name="common.language" /></td>
-        <td class="th"><s:text name="eirc.service_type.name" /></td>
-        <td class="th"><s:text name="eirc.service_type.description" /></td>
+        <td class="th"><s:text name="payments.service_type.name" /></td>
+        <td class="th"><s:text name="payments.service_type.description" /></td>
     </tr>
     <s:iterator value="serviceType.typeNames" status="rowstatus">
         <tr valign="middle" class="cols_1">
@@ -33,7 +33,7 @@
         <td colspan="4" height="3" bgcolor="#4a4f4f"></td>
     </tr>
     <tr class="cols_1">
-        <td class="col_1s" colspan="2"><s:text name="eirc.service_type.code" />:</td>
+        <td class="col_1s" colspan="2"><s:text name="payments.service_type.code" />:</td>
         <td class="col" colspan="2">
             <s:property value="serviceType.code" />
         </td>
