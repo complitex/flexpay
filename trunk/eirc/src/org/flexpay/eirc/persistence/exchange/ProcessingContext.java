@@ -78,6 +78,10 @@ public class ProcessingContext {
 
 	}
 
+	public void failedRecord(RegistryRecord failedRecord) {
+		operationRecords.remove(failedRecord);
+	}
+
 	public List<RegistryRecord> getOperationRecords() {
 		return operationRecords;
 	}
