@@ -19,7 +19,7 @@ public class ServiceProviderValidator extends MessageValidatorWithContext<String
         Stub<ServiceProvider> providerStub = context.getCorrectionsService().findCorrection(
 				externalId, ServiceProvider.class, context.getMegabankSD());
 		if (providerStub == null) {
-			addErrorMessage("No service provider correction with id ", externalId);
+			addErrorMessage("No service provider correction with id {}", externalId);
             return false;
 		}
         context.getParam().put(SERVICE_PROVIDER_ID, providerStub.getId());
