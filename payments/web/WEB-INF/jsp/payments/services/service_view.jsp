@@ -47,13 +47,13 @@
         </td>
     </tr>
     <tr class="cols_1">
-        <td class="col_1s" colspan="2"><s:text name="eirc.service_type" />:</td>
+        <td class="col_1s" colspan="2"><s:text name="payments.service_type" />:</td>
         <td class="col" colspan="2">
             <s:property value="getTranslationName(service.serviceType.typeNames)" />
         </td>
     </tr>
     <tr class="cols_1">
-        <td class="col_1s" colspan="2"><s:text name="eirc.service_type.code" />:</td>
+        <td class="col_1s" colspan="2"><s:text name="payments.service_type.code" />:</td>
         <td class="col" colspan="2">
             <s:property value="service.serviceType.code" />
         </td>

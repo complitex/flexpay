@@ -21,12 +21,14 @@ public class DocumentDaoExtImpl extends HibernateDaoSupport implements DocumentD
 	 * {@inheritDoc}
 	 */
 	@SuppressWarnings ({"unchecked"})
+	@Override
 	public List<Document> searchDocuments(@NotNull Stub<Operation> operation, Long serviceTypeId, BigDecimal minimalSumm, BigDecimal maximalSumm) {
 
 		final StringBuilder hql = new StringBuilder("SELECT DISTINCT doc FROM Document doc ");
 		hql.append(getFilterHql(operation, serviceTypeId, minimalSumm, maximalSumm));
 
 		return (List<Document>) getHibernateTemplate().executeFind(new HibernateCallback() {
+			@Override
 			public List<Document> doInHibernate(Session session) throws HibernateException, SQLException {
 
 				Query query = session.createQuery(hql.toString());
@@ -40,7 +42,7 @@ public class DocumentDaoExtImpl extends HibernateDaoSupport implements DocumentD
 		StringBuilder filterHql = new StringBuilder(" WHERE doc.operation.id = ");
 		filterHql.append(operation.getId());
 
-		if (serviceTypeId != null) {
+		if (serviceTypeId != null && serviceTypeId > 0) {
 			filterHql.append(" AND doc.service.serviceType.id = ");
 			filterHql.append(serviceTypeId);
 		}

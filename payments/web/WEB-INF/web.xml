@@ -155,6 +155,9 @@
     <security-role>
 		<role-name>ROLE_COMMON_PROCESS_READ</role-name>
 	</security-role>
+    <security-role>
+		<role-name>ROLE_COMMON_PROCESS_DEFINITION_UPLOAD_NEW</role-name>
+	</security-role>
 
 	<!-- ab reading roles (used for filters initialization) -->
 	<security-role>

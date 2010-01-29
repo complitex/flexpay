@@ -29,7 +29,6 @@ public abstract class TimeFilter extends ObjectFilter {
 	}
 
 	public TimeFilter(Calendar calendar) {
-
 		init(calendar);
 	}
 

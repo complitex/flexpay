@@ -1,22 +1,26 @@
 package org.flexpay.payments.actions.monitor.data;
 
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
+
 public class CashboxMonitorContainer {
-    private String id;
+
+    private Long id;
     private String cashbox;
-    private String totalSum;
+    private String totalSumm;
     private String cashierFIO;
     private String lastPayment;
-    private String paymentsCount;
+    private Long paymentsCount;
 
-    public String getId() {
-        return id;
-    }
+	public Long getId() {
+		return id;
+	}
 
-    public void setId(String id) {
-        this.id = id;
-    }
+	public void setId(Long id) {
+		this.id = id;
+	}
 
-    public String getCashbox() {
+	public String getCashbox() {
         return cashbox;
     }
 
@@ -24,12 +28,12 @@ public class CashboxMonitorContainer {
         this.cashbox = cashbox;
     }
 
-    public String getTotalSum() {
-        return totalSum;
+    public String getTotalSumm() {
+        return totalSumm;
     }
 
-    public void setTotalSum(String totalSum) {
-        this.totalSum = totalSum;
+    public void setTotalSumm(String totalSumm) {
+        this.totalSumm = totalSumm;
     }
 
     public String getCashierFIO() {
@@ -48,11 +52,23 @@ public class CashboxMonitorContainer {
         this.lastPayment = lastPayment;
     }
 
-    public String getPaymentsCount() {
-        return paymentsCount;
-    }
+	public Long getPaymentsCount() {
+		return paymentsCount;
+	}
 
-    public void setPaymentsCount(String paymentsCount) {
-        this.paymentsCount = paymentsCount;
-    }
+	public void setPaymentsCount(Long paymentsCount) {
+		this.paymentsCount = paymentsCount;
+	}
+
+	@Override
+	public String toString() {
+		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
+				append("id", id).
+				append("cashbox", cashbox).
+				append("totalSumm", totalSumm).
+				append("cashierFIO", cashierFIO).
+				append("lastPayment", lastPayment).
+				append("paymentsCount", paymentsCount).
+				toString();
+	}
 }

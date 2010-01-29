@@ -9,7 +9,7 @@
 
 	<table cellpadding="3" cellspacing="1" border="0" width="100%">
 		<tr valign="top" class="cols_1">
-			<td class="col"><s:text name="eirc.service_type.name" />:</td>
+			<td class="col"><s:text name="payments.service_type.name" />:</td>
 			<td class="col">
 				<s:iterator value="names">
                     <s:set name="l" value="%{getLang(key)}" />
@@ -18,7 +18,7 @@
 			</td>
 		</tr>
 		<tr valign="top" class="cols_1">
-			<td class="col"><s:text name="eirc.service_type.description" />:</td>
+			<td class="col"><s:text name="payments.service_type.description" />:</td>
 			<td class="col">
 				<s:iterator value="descriptions">
                     <s:set name="l" value="%{getLang(key)}" />
@@ -27,7 +27,7 @@
 			</td>
 		</tr>
 		<tr valign="top" class="cols_1">
-			<td class="col"><s:text name="eirc.service_type.code" />:</td>
+			<td class="col"><s:text name="payments.service_type.code" />:</td>
 			<td class="col">
 				<s:textfield name="serviceType.code" />
 			</td>

@@ -6,9 +6,23 @@
 
 	<package name="operations" namespace="/payments" extends="payments">
 
-		<action name="operationsList" class="operationsListAction">
-			<result type="tiles">payments.operations.list</result>
+        <action name="operationsList" class="operationsListPageAction">
+            <result type="tiles">payments.operations.list</result>
+            <result name="redirectError" type="redirect-action">
+                <param name="actionName">paymentPointDetailMonitor</param>
+                <param name="parse">true</param>
+                <param name="paymentPoint.id">${cashbox.paymentPoint.id}</param>
+            </result>
+        </action>
+
+		<action name="operationsListAjax" class="operationsListAction">
+            <result>/WEB-INF/jsp/payments/operations/operations_list.jsp</result>
+            <result name="error">/WEB-INF/jsp/common/responses/simple_response.jsp</result>
 		</action>
+
+        <action name="operationSetStatus" class="operationSetStatusAction">
+            <result>/WEB-INF/jsp/common/responses/simple_response.jsp</result>
+        </action>
 
 	</package>
 

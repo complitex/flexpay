@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+		"-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+		"http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+
+    <package name="payments" namespace="/payments" extends="common">
+
+        <action name="getIdentityCookie" class="getIdentityCookieAction">
+            <result type="tiles">payments.security.get_identity_cookie</result>
+        </action>
+
+        <action name="processTradingDay" class="processTradingDayControlPanelAction">
+            <result>/WEB-INF/jsp/common/responses/simple_response.jsp</result>
+        </action>
+
+        <action name="main" class="menuPageAction">
+            <result type="tiles">payments.main</result>
+        </action>
+
+        <action name="emptyPage" class="staticPageAction">
+            <result type="tiles">payments.main</result>
+        </action>
+
+    </package>
+
+    <package name="payments_operator" namespace="/payments" extends="common">
+
+        <interceptors>
+            <interceptor name="cashboxInterceptor" class="cashboxInterceptor"/>
+
+            <interceptor-stack name="paymentsDefaultStack">
+                <interceptor-ref name="commonDefaultStack"/>
+                <interceptor-ref name="cookie">
+                    <param name="cookiesName">cashboxId</param>
+                </interceptor-ref>
+                <interceptor-ref name="cashboxInterceptor"/>
+            </interceptor-stack>
+        </interceptors>
+
+        <default-interceptor-ref name="paymentsDefaultStack"/>
+
+        <global-results>
+            <result name="cashboxAuthenticationRequired" type="tiles">payments.error.cashbox_authentication_required</result>
+            <result name="tradingDayClosed" type="tiles">payments.error.trading_day_closed</result>
+        </global-results>
+
+        <action name="main" class="cashboxStaticPageAction">
+            <result type="tiles">payments.quittance.search.address</result>
+        </action>
+
+        <action name="mainByAddressOperations" class="cashboxStaticPageAction">
+            <result type="tiles">payments.main.by_address.operations</result>
+        </action>
+
+        <action name="mainByAddressReports" class="cashboxStaticPageAction">
+            <result type="tiles">payments.main.by_address.reports</result>
+        </action>
+
+        <action name="mainByEircaccountOperations" class="cashboxStaticPageAction">
+            <result type="tiles">payments.main.by_eircaccount.operations</result>
+        </action>
+
+        <action name="mainByEircaccountReports" class="cashboxStaticPageAction">
+            <result type="tiles">payments.main.by_eircaccount.reports</result>
+        </action>
+
+        <action name="mainByQuittanceOperations" class="cashboxStaticPageAction">
+            <result type="tiles">payments.main.by_quittance.operations</result>
+        </action>
+
+        <action name="mainByQuittanceReports" class="cashboxStaticPageAction">
+            <result type="tiles">payments.main.by_quittance.reports</result>
+        </action>
+
+    </package>
+
+	<include file="org/flexpay/payments/actions/cashbox/struts.xml" />
+    <include file="org/flexpay/payments/actions/monitor/struts.xml" />
+    <include file="org/flexpay/payments/actions/operations/struts.xml" />
+    <include file="org/flexpay/payments/actions/paymentpoint/struts.xml" />
+    <include file="org/flexpay/payments/actions/quittance/struts.xml" />
+    <include file="org/flexpay/payments/actions/registry/struts.xml" />
+    <include file="org/flexpay/payments/actions/reports/struts.xml" />
+
+</struts>

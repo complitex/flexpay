@@ -24,6 +24,7 @@ public class OperationDaoExtImpl extends HibernateDaoSupport implements Operatio
 	private Logger log = LoggerFactory.getLogger(getClass());
 
     @SuppressWarnings ({"unchecked"})
+	@Override
 	public List<Operation> searchDocuments(Stub<Cashbox> cashbox, final Long serviceTypeId, final Date begin, final Date end, final BigDecimal minimalSumm, final BigDecimal maximalSumm, final Page<Operation> pager) {
 
 		final StringBuilder hql = new StringBuilder("SELECT DISTINCT o FROM Operation o LEFT JOIN o.documents doc ");
@@ -35,6 +36,7 @@ public class OperationDaoExtImpl extends HibernateDaoSupport implements Operatio
 		cntHql.append(filterHql);
 
 		return (List<Operation>) getHibernateTemplate().executeFind(new HibernateCallback() {
+			@Override
 			public List<Operation> doInHibernate(Session session) throws HibernateException, SQLException {
 
 				Query cntQuery = session.createQuery(cntHql.toString());
@@ -63,7 +65,7 @@ public class OperationDaoExtImpl extends HibernateDaoSupport implements Operatio
 		filterHql.append(" AND o.operationStatus.code <> 3");
 		filterHql.append(" AND doc.documentStatus.code <> 3");
 
-		if (serviceTypeId != null) {
+		if (serviceTypeId != null && serviceTypeId > 0) {
 			filterHql.append(" AND doc.service.serviceType.id = :serviceTypeId");
 		}
 
@@ -92,7 +94,7 @@ public class OperationDaoExtImpl extends HibernateDaoSupport implements Operatio
 			query.setLong("cashboxId", cashboxId);
 		}
 
-		if (serviceTypeId != null) {
+		if (serviceTypeId != null && serviceTypeId > 0) {
 			query.setLong("serviceTypeId", serviceTypeId);
 		}
 
@@ -117,6 +119,7 @@ public class OperationDaoExtImpl extends HibernateDaoSupport implements Operatio
 	 * {@inheritDoc}
 	 */
     @SuppressWarnings ({"unchecked"})
+	@Override
     public List<Operation> searchOperations(Stub<Cashbox> cashbox, final Date begin, final Date end, final BigDecimal minimalSumm,
                                      final BigDecimal maximalSumm, final Page<Operation> pager) {
         final StringBuilder hql = new StringBuilder("SELECT DISTINCT o FROM Operation o LEFT JOIN o.documents doc ");
@@ -128,6 +131,7 @@ public class OperationDaoExtImpl extends HibernateDaoSupport implements Operatio
 		cntHql.append(filterHql);
 
 		return (List<Operation>) getHibernateTemplate().executeFind(new HibernateCallback() {
+			@Override
 			public List<Operation> doInHibernate(Session session) throws HibernateException, SQLException {
 
 				Query cntQuery = session.createQuery(cntHql.toString());
