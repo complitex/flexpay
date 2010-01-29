@@ -102,7 +102,9 @@ public class SpFileAction extends FPActionSupport {
 			reader = new BufferedReader(new InputStreamReader(file.toFileSource().openStream(), MbParsingConstants.REGISTRY_FILE_ENCODING));
 			String line = reader.readLine();
 
-			if (MbParsingConstants.FIRST_FILE_STRING.equals(line)) {
+			if (line.length() > 0 && line.codePointAt(0) == SpFileReader.Message.MESSAGE_TYPE_HEADER) {
+                return FileParser.REGISTRY_FILE_TYPE;
+            } else if (line.length() == MbParsingConstants.FIRST_FILE_STRING_SIZE) {
 				line = reader.readLine();
 
 				String[] fields = lineParser.parse(line);
@@ -111,9 +113,7 @@ public class SpFileAction extends FPActionSupport {
 				} else if (fields.length == 4) {
 					return FileParser.MB_REGISTRY_FILE_TYPE;
 				}
-			} else if (line.length() > 0 && line.codePointAt(0) == SpFileReader.Message.MESSAGE_TYPE_HEADER) {
-                return FileParser.REGISTRY_FILE_TYPE;
-            }
+			}
 
 		} catch (IOException e) {
 			log.error("Failed getting file type: " + file, e);
