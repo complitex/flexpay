@@ -63,8 +63,8 @@ public class FileValidator extends MessageValidator<FPFile> {
 					return false;
 				}
 				if (lineNum == 0) {
-					if (!MbParsingConstants.FIRST_FILE_STRING.equals(line)) {
-						addErrorMessage("First line must be equals 300 spaces");
+					if (line.length() != MbParsingConstants.FIRST_FILE_STRING_SIZE) {
+						addErrorMessage("First line must be equals 300 symbols");
 						return false;
 					}
 				} else if (lineNum == 1) {

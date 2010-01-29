@@ -9,4 +9,5 @@ public abstract class MbParsingConstants {
 			"                                                                                                    "
 			+ "                                                                                                    "
 			+ "                                                                                                    ";
+	public static final long FIRST_FILE_STRING_SIZE = 300;
 }
