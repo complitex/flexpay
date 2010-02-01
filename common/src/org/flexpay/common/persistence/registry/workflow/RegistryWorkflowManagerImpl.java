@@ -263,7 +263,7 @@ public class RegistryWorkflowManagerImpl implements RegistryWorkflowManager {
 	public void markProcessingHasError(Registry registry) throws TransitionNotAllowed {
 		Integer code = code(registry);
 		if (!processingStates.contains(code)) {
-			throw new TransitionNotAllowed("Cannot mark not processing registry as having errors");
+			throw new TransitionNotAllowed("Cannot mark not processing registry as having errors. Current registry code: " + code);
 		}
 
 		log.debug("Setting registry errors: {}", registry);
