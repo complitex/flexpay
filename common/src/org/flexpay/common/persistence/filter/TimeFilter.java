@@ -3,11 +3,11 @@ package org.flexpay.common.persistence.filter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.Date;
-import java.text.SimpleDateFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 
 public abstract class TimeFilter extends ObjectFilter {
 
@@ -16,6 +16,7 @@ public abstract class TimeFilter extends ObjectFilter {
 	protected int hours;
 	protected int minutes;
 	protected int seconds;
+	private static final String TIME_FORMAT = "HH:mm:ss";
 
 	protected TimeFilter() {
 	}
@@ -53,7 +54,7 @@ public abstract class TimeFilter extends ObjectFilter {
 
 	public String getStringDate() {
 		Calendar calendar = new GregorianCalendar(1900, 1, 1, hours, minutes, seconds);
-		return new SimpleDateFormat("HH:mm:ss").format(calendar.getTime());
+		return new SimpleDateFormat(TIME_FORMAT).format(calendar.getTime());
 	}
 
 	public void setStringDate(String date) {
@@ -62,7 +63,7 @@ public abstract class TimeFilter extends ObjectFilter {
 
 		Calendar calendar = new GregorianCalendar();
 		try {
-			Date dt = new SimpleDateFormat("HH:mm:ss").parse(date);
+			Date dt = new SimpleDateFormat(TIME_FORMAT).parse(date);
 			calendar.setTime(dt);
 			init(calendar);
 		} catch (ParseException ex) {
