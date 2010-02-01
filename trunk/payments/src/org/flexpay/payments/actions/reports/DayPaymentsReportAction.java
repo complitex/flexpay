@@ -5,6 +5,8 @@ import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.persistence.filter.BeginDateFilter;
+import org.flexpay.common.persistence.filter.BeginTimeFilter;
+import org.flexpay.common.persistence.filter.EndTimeFilter;
 import org.flexpay.common.service.reporting.ReportUtil;
 import static org.flexpay.common.util.CollectionUtils.ar;
 import static org.flexpay.common.util.CollectionUtils.map;
@@ -35,6 +37,8 @@ public abstract class DayPaymentsReportAction extends CashboxCookieActionSupport
 
 	// form data
 	private BeginDateFilter beginDateFilter = new BeginDateFilter();
+	private BeginTimeFilter beginTimeFilter = new BeginTimeFilter();
+	private EndTimeFilter endTimeFilter = new EndTimeFilter();
 	protected boolean showDetails;
 
 	// report file
@@ -65,8 +69,8 @@ public abstract class DayPaymentsReportAction extends CashboxCookieActionSupport
 			return SUCCESS;
 		}
 
-		Date beginDate = DateUtil.truncateDay(beginDateFilter.getDate());
-		Date endDate = DateUtil.getEndOfThisDay(beginDateFilter.getDate());
+		Date beginDate = beginTimeFilter.setTime(beginDateFilter.getDate());
+		Date endDate = endTimeFilter.setTime(beginDateFilter.getDate());
 
 		PaymentsPrintInfoData data = getPaymentsData(beginDate, endDate);
 		data.setCashierFio(getUserPreferences().getFullName());
@@ -153,6 +157,22 @@ public abstract class DayPaymentsReportAction extends CashboxCookieActionSupport
 
 	public void setBeginDateFilter(BeginDateFilter beginDateFilter) {
 		this.beginDateFilter = beginDateFilter;
+	}
+
+	public BeginTimeFilter getBeginTimeFilter() {
+		return beginTimeFilter;
+	}
+
+	public EndTimeFilter getEndTimeFilter() {
+		return endTimeFilter;
+	}
+
+	public void setBeginTimeFilter(BeginTimeFilter beginTimeFilter) {
+		this.beginTimeFilter = beginTimeFilter;
+	}
+
+	public void setEndTimeFilter(EndTimeFilter endTimeFilter) {
+		this.endTimeFilter = endTimeFilter;
 	}
 
 	public void setShowDetails(boolean showDetails) {
