@@ -57,15 +57,12 @@ public class RegistryHandleError implements HandleError {
 
 		error.setObjectType(classToTypeRegistry.getType(Consumer.class));
 		if (context.getCurrentRecord() == null) {
+			// mark registry having error if processing header
 			error.setSourceObjectId(String.valueOf(context.getRegistry().getId()));
+			registryWorkflowManager.setNextErrorStatus(context.getRegistry(), error);
 		} else {
 			error.setSourceObjectId(String.valueOf(context.getCurrentRecord().getId()));
 			recordWorkflowManager.setNextErrorStatus(context.getCurrentRecord(), error);
-		}
-
-		// mark registry having error if processing header
-		if (context.getOperationRecords().isEmpty()) {
-			registryWorkflowManager.setNextErrorStatus(context.getRegistry(), error);
 		}
 	}
 
