@@ -69,7 +69,7 @@
 		<b:property name="authenticationEntryPoint" ref="authenticationEntryPoint" />
 		<b:property name="accessDeniedHandler">
 			<b:bean class="org.springframework.security.ui.AccessDeniedHandlerImpl">
-				<b:property name="errorPage" value="/resources/common/jsp/forbidden_error.jsp" />
+				<b:property name="errorPage" value="/resources/common/jsp/forbidden.jsp" />
 			</b:bean>
 		</b:property>
 	</b:bean>

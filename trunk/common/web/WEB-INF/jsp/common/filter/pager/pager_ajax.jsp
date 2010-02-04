@@ -7,15 +7,9 @@
 	<span style="float:right;" class="text-small">
 		&nbsp;<s:text name="common.show_by" />&nbsp;
         <select name="pager.pageSize" class="form-select" onchange="pagerAjax(this);">
-            <option value="10"
-                    <s:if test="pager.pageSize == 10">selected</s:if> >10
-            </option>
-            <option value="20"
-                    <s:if test="pager.pageSize == 20">selected</s:if> >20
-            </option>
-            <option value="30"
-                    <s:if test="pager.pageSize == 30">selected</s:if> >30
-            </option>
+            <option value="10"<s:if test="pager.pageSize == 10"> selected</s:if>>10</option>
+            <option value="20"<s:if test="pager.pageSize == 20"> selected</s:if>>20</option>
+            <option value="30"<s:if test="pager.pageSize == 30"> selected</s:if>>30</option>
         </select>&nbsp;
         <input type="hidden" id="pageNumber" name="pager.pageNumber" value="" />
 		<s:text name="common.pages" />:&nbsp;
