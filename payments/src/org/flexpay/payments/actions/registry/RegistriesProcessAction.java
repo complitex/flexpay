@@ -1,7 +1,9 @@
 package org.flexpay.payments.actions.registry;
 
-import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.process.ProcessManager;
+import static org.flexpay.common.util.CollectionUtils.map;
+import static org.flexpay.common.util.CollectionUtils.set;
+import org.flexpay.payments.actions.AccountantAWPActionSupport;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
@@ -9,10 +11,7 @@ import java.io.Serializable;
 import java.util.Map;
 import java.util.Set;
 
-import static org.flexpay.common.util.CollectionUtils.map;
-import static org.flexpay.common.util.CollectionUtils.set;
-
-public class RegistriesProcessAction extends FPActionSupport {
+public class RegistriesProcessAction extends AccountantAWPActionSupport {
 
 	private Set<Long> objectIds = set();
 

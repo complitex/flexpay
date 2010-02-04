@@ -1,4 +1,4 @@
-package org.flexpay.payments.actions;
+package org.flexpay.payments.actions.tradingday;
 
 import org.apache.commons.lang.StringUtils;
 import org.flexpay.common.persistence.Stub;

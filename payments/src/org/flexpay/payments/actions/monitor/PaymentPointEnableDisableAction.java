@@ -3,16 +3,18 @@ package org.flexpay.payments.actions.monitor;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Stub;
+import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.process.Process;
 import org.flexpay.common.process.ProcessManager;
 import org.flexpay.common.process.exception.ProcessDefinitionException;
 import org.flexpay.common.process.exception.ProcessInstanceException;
+import static org.flexpay.common.util.CollectionUtils.map;
 import org.flexpay.common.util.DateUtil;
 import org.flexpay.orgs.persistence.PaymentCollector;
 import org.flexpay.orgs.persistence.PaymentPoint;
 import org.flexpay.orgs.service.PaymentCollectorService;
 import org.flexpay.orgs.service.PaymentPointService;
-import org.flexpay.payments.actions.CashboxCookieActionSupport;
+import org.flexpay.payments.actions.AccountantAWPActionSupport;
 import org.flexpay.payments.process.export.job.ExportJobParameterNames;
 import org.flexpay.payments.service.Roles;
 import org.flexpay.payments.util.config.PaymentsUserPreferences;
@@ -25,10 +27,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.Map;
 
-import static org.flexpay.common.persistence.Stub.stub;
-import static org.flexpay.common.util.CollectionUtils.map;
-
-public class PaymentPointEnableDisableAction extends CashboxCookieActionSupport {
+public class PaymentPointEnableDisableAction extends AccountantAWPActionSupport {
 
 	public static final String ENABLE = "enable";
 	public static final String DISABLE = "disable";

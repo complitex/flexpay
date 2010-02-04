@@ -1,14 +1,17 @@
 package org.flexpay.payments.actions.monitor;
 
 import org.flexpay.common.persistence.Stub;
+import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.process.Process;
 import org.flexpay.common.process.ProcessManager;
+import static org.flexpay.common.util.CollectionUtils.list;
+import static org.flexpay.common.util.DateUtil.now;
 import org.flexpay.orgs.persistence.Cashbox;
 import org.flexpay.orgs.persistence.PaymentCollector;
 import org.flexpay.orgs.persistence.PaymentPoint;
 import org.flexpay.orgs.service.CashboxService;
 import org.flexpay.orgs.service.PaymentCollectorService;
-import org.flexpay.payments.actions.CashboxCookieWithPagerActionSupport;
+import org.flexpay.payments.actions.AccountantAWPWithPagerActionSupport;
 import org.flexpay.payments.actions.monitor.data.PaymentPointMonitorContainer;
 import org.flexpay.payments.persistence.Operation;
 import org.flexpay.payments.persistence.OperationType;
@@ -25,11 +28,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-import static org.flexpay.common.persistence.Stub.stub;
-import static org.flexpay.common.util.CollectionUtils.list;
-import static org.flexpay.common.util.DateUtil.now;
-
-public class PaymentPointsListMonitorAction extends CashboxCookieWithPagerActionSupport<PaymentPointMonitorContainer> {
+public class PaymentPointsListMonitorAction extends AccountantAWPWithPagerActionSupport<PaymentPointMonitorContainer> {
 
     private static final SimpleDateFormat formatTime = new SimpleDateFormat("HH:mm");
 

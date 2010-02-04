@@ -1,23 +1,22 @@
 package org.flexpay.payments.actions.registry;
 
 import org.apache.commons.lang.time.StopWatch;
-import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
+import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.persistence.filter.ImportErrorTypeFilter;
 import org.flexpay.common.persistence.filter.RegistryRecordStatusFilter;
 import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.service.RegistryRecordStatusService;
 import org.flexpay.common.service.RegistryService;
 import org.flexpay.common.service.importexport.ClassToTypeRegistry;
+import org.flexpay.payments.actions.AccountantAWPActionSupport;
 import org.flexpay.payments.persistence.ServiceType;
 import org.flexpay.payments.service.ServiceTypeService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
-import static org.flexpay.common.persistence.Stub.stub;
-
-public class RegistryViewPageAction extends FPActionSupport {
+public class RegistryViewPageAction extends AccountantAWPActionSupport {
 
 	private Registry registry = new Registry();
 

@@ -2,7 +2,9 @@ package org.flexpay.payments.actions.registry;
 
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.process.ProcessManager;
-import org.flexpay.payments.actions.CashboxCookieActionSupport;
+import static org.flexpay.common.util.CollectionUtils.map;
+import static org.flexpay.common.util.CollectionUtils.set;
+import org.flexpay.payments.actions.AccountantAWPActionSupport;
 import org.flexpay.payments.persistence.RegistryDeliveryHistory;
 import org.flexpay.payments.process.export.job.ExportJobParameterNames;
 import org.flexpay.payments.service.RegistryDeliveryHistoryService;
@@ -13,10 +15,7 @@ import java.io.Serializable;
 import java.util.Map;
 import java.util.Set;
 
-import static org.flexpay.common.util.CollectionUtils.map;
-import static org.flexpay.common.util.CollectionUtils.set;
-
-public class RegistryDeliveryHistorySendAction extends CashboxCookieActionSupport {
+public class RegistryDeliveryHistorySendAction extends AccountantAWPActionSupport {
 
 	private Set<Long> objectIds = set();
 

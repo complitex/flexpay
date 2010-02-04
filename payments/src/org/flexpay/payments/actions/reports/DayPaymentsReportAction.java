@@ -16,7 +16,7 @@ import org.flexpay.orgs.persistence.Cashbox;
 import org.flexpay.orgs.persistence.PaymentPoint;
 import org.flexpay.orgs.service.CashboxService;
 import org.flexpay.orgs.service.PaymentPointService;
-import org.flexpay.payments.actions.CashboxCookieActionSupport;
+import org.flexpay.payments.actions.OperatorAWPActionSupport;
 import org.flexpay.payments.reports.payments.PaymentsPrintInfoData;
 import org.flexpay.payments.reports.payments.PaymentsReporter;
 import org.jetbrains.annotations.NotNull;
@@ -33,7 +33,7 @@ import java.util.Map;
  * <p/>
  * To specify report JRXML template name {@link DayPaymentsReportAction#getReportName()} method should be implemented
  */
-public abstract class DayPaymentsReportAction extends CashboxCookieActionSupport {
+public abstract class DayPaymentsReportAction extends OperatorAWPActionSupport {
 
 	// form data
 	private BeginDateFilter beginDateFilter = new BeginDateFilter();

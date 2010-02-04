@@ -12,9 +12,30 @@
 		  p:cashboxService-ref="cashboxService"
 		  scope="prototype"/>
 
+	<!-- Operator AWP parent actions -->
+	<bean id="operatorAWPAction" abstract="true" class="org.flexpay.payments.actions.OperatorAWPActionSupport"
+		  p:cashboxService-ref="cashboxService"
+		  p:paymentPointService-ref="paymentPointService" />
+
+	<bean id="operatorAWPWithPagerAction" abstract="true" class="org.flexpay.payments.actions.OperatorAWPWithPagerActionSupport"
+		  p:cashboxService-ref="cashboxService"
+		  p:paymentPointService-ref="paymentPointService" />
+
+	<bean id="accountantAWPAction" abstract="true" class="org.flexpay.payments.actions.AccountantAWPActionSupport"
+		  p:paymentCollectorService-ref="paymentCollectorService" />
+
+	<bean id="accountantAWPWithPagerAction" abstract="true" class="org.flexpay.payments.actions.AccountantAWPWithPagerActionSupport"
+		  p:paymentCollectorService-ref="paymentCollectorService" />
+
 	<!-- Define module payments struts actions beans -->
-	<bean id="cashboxStaticPageAction"
-          class="org.flexpay.payments.actions.CashboxAwareStaticAction"
+	<bean id="operatorAWPStaticPageAction"
+		  parent="operatorAWPAction"
+          class="org.flexpay.payments.actions.OperatorAWPStaticPageAction"
+		  scope="prototype" />
+
+	<bean id="accountantAWPStaticPageAction"
+		  parent="accountantAWPAction"
+		  class="org.flexpay.payments.actions.AccountantAWPStaticPageAction"
 		  scope="prototype" />
 
 	<!-- get identity cookie action -->
@@ -25,6 +46,7 @@
 
 	<!-- quittance-related actions -->
 	<bean id="searchQuittanceAction"
+		  parent="operatorAWPAction"
 		  class="org.flexpay.payments.actions.quittance.SearchQuittanceAction"
 		  p:quittanceDetailsFinder-ref="jmsQuittanceDetailsFinder"
 		  p:spService-ref="spService"
@@ -40,6 +62,7 @@
 
 	<bean id="paymentsQuittancePayAction"
 		  class="org.flexpay.payments.actions.quittance.QuittancePayAction"
+		  parent="operatorAWPAction"
 		  p:documentStatusService-ref="documentStatusService"
 		  p:documentTypeService-ref="documentTypeService"
 		  p:documentAdditionTypeService-ref="documentAdditionTypeService"
@@ -64,6 +87,7 @@
 
 	<!-- operation-related actions -->
     <bean id="operationsListPageAction"
+		  parent="operatorAWPAction"
           class="org.flexpay.payments.actions.operations.OperationsListPageAction"
           p:cashboxService-ref="cashboxService"
           p:paymentPointService-ref="paymentPointService"
@@ -82,6 +106,7 @@
 		  scope="prototype" />
 
     <bean id="operationSetStatusAction"
+		  parent="operatorAWPAction"
           class="org.flexpay.payments.actions.operations.OperationSetStatusAction"
           p:cashboxService-ref="cashboxService"
           p:operationService-ref="operationService"
@@ -92,13 +117,15 @@
           scope="prototype" />
 
     <bean id="processTradingDayControlPanelAction"
-          class="org.flexpay.payments.actions.ProcessTradingDayControlPanelAction"
+		  parent="operatorAWPAction"
+          class="org.flexpay.payments.actions.tradingday.ProcessTradingDayControlPanelAction"
           p:cashboxService-ref="cashboxService"
           p:paymentPointService-ref="paymentPointService"
           p:processManager-ref="processManager"
           scope="prototype" />
 
 	<bean id="createBlankOperationAction"
+		  parent="operatorAWPAction"
 		  class="org.flexpay.payments.actions.operations.CreateBlankOperationAction"
 		  p:cashboxService-ref="cashboxService"
 		  p:operationService-ref="operationService"
@@ -106,6 +133,7 @@
 
     <!-- payment points monitor actions -->
 	<bean id="paymentPointsListMonitorAction"
+		  parent="accountantAWPWithPagerAction"
 		  class="org.flexpay.payments.actions.monitor.PaymentPointsListMonitorAction"
           p:processManager-ref="processManagerPayments"
           p:paymentsStatisticsService-ref="paymentsStatisticsService"
@@ -115,6 +143,7 @@
 		  scope="prototype" />
 
     <bean id="paymentPointEnableDisableAction"
+		  parent="accountantAWPAction"
           class="org.flexpay.payments.actions.monitor.PaymentPointEnableDisableAction"
           p:processManager-ref="processManagerPayments"
           p:paymentCollectorService-ref="paymentCollectorService"
@@ -128,6 +157,7 @@
           scope="prototype" />
 
     <bean id="paymentPointDetailMonitorAction"
+		  parent="accountantAWPAction"
 		  class="org.flexpay.payments.actions.monitor.PaymentPointDetailMonitorAction"
 		  p:crumbNameKey="payments.crumbs.payment_point_detail"
           p:paymentPointService-ref="paymentPointService"
@@ -135,6 +165,7 @@
 		  scope="prototype" />
 
     <bean id="paymentPointCashboxesListAction"
+		  parent="accountantAWPWithPagerAction"
 		  class="org.flexpay.payments.actions.monitor.PaymentPointCashboxesListAction"
           p:paymentPointService-ref="paymentPointService"
           p:cashboxService-ref="cashboxService"
@@ -145,6 +176,7 @@
 
 	<!-- reports-related actions -->
     <bean id="dayReceivedPaymentsReportAction"
+		  parent="operatorAWPAction"
 		  class="org.flexpay.payments.actions.reports.DayReceivedPaymentsReportAction"
 		  p:reportUtil-ref="reportUtil"
 		  p:paymentsReporter-ref="paymentsReporter"
@@ -154,6 +186,7 @@
 		  scope="prototype" />
 
 	<bean id="dayReturnedPaymentsReportAction"
+		  parent="operatorAWPAction"
 		  class="org.flexpay.payments.actions.reports.DayReturnedPaymentsReportAction"
 		  p:reportUtil-ref="reportUtil"
 		  p:paymentsReporter-ref="paymentsReporter"
@@ -163,6 +196,7 @@
 		  scope="prototype" />
 
 	<bean id="accReceivedPaymentsReportAction"
+		  parent="accountantAWPAction"
 		  class="org.flexpay.payments.actions.reports.AccReceivedPaymentsReportAction"
 		  p:paymentPointService-ref="paymentPointService"
 		  p:cashboxService-ref="cashboxService"
@@ -171,6 +205,7 @@
 		  scope="prototype" />
 
 	<bean id="accReturnedPaymentsReportAction"
+		  parent="accountantAWPAction"
 		  class="org.flexpay.payments.actions.reports.AccReturnedPaymentsReportAction"
 		  p:paymentPointService-ref="paymentPointService"
 		  p:cashboxService-ref="cashboxService"
@@ -186,6 +221,7 @@
 		  scope="prototype" />
 
 	<bean id="paymentOperationReportAction"
+		  parent="operatorAWPAction"
 		  class="org.flexpay.payments.actions.reports.PaymentOperationReportAction"
 		  p:reportUtil-ref="reportUtil"
 		  p:paymentsReporter-ref="paymentsReporter"
@@ -211,6 +247,7 @@
 
 	<!-- registry-related actions -->
 	<bean id="generateRegistryAction"
+		  parent="accountantAWPAction"
 		  class="org.flexpay.payments.actions.registry.GenerateRegistryAction"
 		  p:crumbNameKey="payments.crumbs.generate_registry"
 		  scope="prototype" />
@@ -273,6 +310,7 @@
 
     <!-- Registries -->
     <bean id="registriesListPageAction"
+		  parent="accountantAWPAction"
           class="org.flexpay.payments.actions.registry.RegistriesListPageAction"
           p:crumbNameKey="payments.crumbs.registries_list"
           p:organizationService-ref="organizationService"
@@ -280,6 +318,7 @@
           scope="prototype" />
 
     <bean id="registriesListAction"
+		  parent="accountantAWPWithPagerAction"
           class="org.flexpay.payments.actions.registry.RegistriesListAction"
           p:eircRegistryService-ref="eircRegistryService"
           p:organizationService-ref="organizationService"
@@ -294,23 +333,27 @@
           scope="prototype" />
 
     <bean id="registryRecordsProcessAction"
+		  parent="accountantAWPAction"
           class="org.flexpay.payments.actions.registry.RegistryRecordsProcessAction"
           p:processManager-ref="processManager"
           scope="prototype" />
     
     <bean id="changeAnnotationAction"
+		  parent="accountantAWPAction"
           class="org.flexpay.payments.actions.registry.RegistryAnnotationAction"
           p:crumbNameKey="payments.crumbs.change_annotation"
           p:registryService-ref="registryService"
           scope="prototype" />
 
     <bean id="registryDeliveryHistorySendAction"
+		  parent="accountantAWPAction"
           class="org.flexpay.payments.actions.registry.RegistryDeliveryHistorySendAction"
           p:processManager-ref="processManagerPayments"
           p:registryDeliveryHistoryService-ref="registryDeliveryHistoryService"
           scope="prototype" />
 
     <bean id="registryDeliveryHistoryAction"
+		  parent="accountantAWPWithPagerAction"
           class="org.flexpay.payments.actions.registry.RegistryDeliveryHistoryAction"
           p:organizationService-ref="organizationService"
           p:providerService-ref="serviceProviderService"
@@ -318,8 +361,81 @@
           scope="prototype" />
 
     <bean id="registryDeliveryHistoryPageAction"
+		  parent="accountantAWPAction"
           class="org.flexpay.payments.actions.registry.RegistryDeliveryHistoryPageAction"
           p:crumbNameKey="payments.crumbs.registry_delivery_history"
+          scope="prototype" />
+
+	<!-- Payment points actions -->
+    <bean id="paymentsPaymentPointsListPageAction"
+		  parent="accountantAWPAction"
+          class="org.flexpay.payments.actions.paymentpoint.PaymentPointsListPageAction"
+          p:crumbNameKey="orgs.crumbs.payment_points_list"
+          p:collectorService-ref="paymentCollectorService"
+          scope="prototype" />
+
+    <bean id="paymentsPaymentPointsListAction"
+		  parent="accountantAWPWithPagerAction"
+          class="org.flexpay.payments.actions.paymentpoint.PaymentPointsListAction"
+          p:paymentPointService-ref="paymentPointService"
+          scope="prototype" />
+
+    <bean id="paymentsPaymentPointDeleteAction"
+		  parent="accountantAWPAction"
+          class="org.flexpay.payments.actions.paymentpoint.PaymentPointDeleteAction"
+          p:paymentPointService-ref="paymentPointService"
+          scope="prototype" />
+
+    <bean id="paymentsPaymentPointEditAction"
+		  parent="accountantAWPAction"
+          class="org.flexpay.payments.actions.paymentpoint.PaymentPointEditAction"
+          p:paymentPointService-ref="paymentPointService"
+          p:paymentCollectorService-ref="paymentCollectorService"
+          p:crumbNameKey="orgs.crumbs.payment_point_edit"
+          p:crumbCreateKey="orgs.crumbs.payment_point_create"
+          scope="prototype" />
+
+    <bean id="paymentsPaymentPointViewAction"
+		  parent="accountantAWPAction"
+          class="org.flexpay.payments.actions.paymentpoint.PaymentPointViewAction"
+          p:paymentPointService-ref="paymentPointService"
+          p:crumbNameKey="orgs.crumbs.payment_point_view"
+          scope="prototype" />
+
+	<!-- cashboxes actions -->
+    <bean id="paymentsCashboxViewAction"
+		  parent="accountantAWPAction"
+          class="org.flexpay.payments.actions.cashbox.CashboxViewAction"
+          p:cashboxService-ref="cashboxService"
+          p:crumbNameKey="orgs.crumbs.cashbox_view"
+          scope="prototype" />
+
+	<bean id="paymentsCashboxDeleteAction"
+		  parent="accountantAWPAction"
+		  class="org.flexpay.payments.actions.cashbox.CashboxDeleteAction"
+		  p:cashboxService-ref="cashboxService"
+		  scope="prototype" />
+
+	<bean id="paymentsCashboxEditAction"
+		  parent="accountantAWPAction"
+		  class="org.flexpay.payments.actions.cashbox.CashboxEditAction"
+		  p:cashboxService-ref="cashboxService"
+		  p:paymentPointService-ref="paymentPointService"
+		  p:crumbNameKey="orgs.crumbs.cashbox_edit"
+		  p:crumbCreateKey="orgs.crumbs.cashbox_create"
+		  scope="prototype" />
+
+	<bean id="paymentsCashboxesListAction"
+		  parent="accountantAWPWithPagerAction"
+		  class="org.flexpay.payments.actions.cashbox.CashboxesListAction"
+		  p:cashboxService-ref="cashboxService"
+		  scope="prototype" />
+
+    <bean id="paymentsCashboxesListPageAction"
+		  parent="accountantAWPAction"
+          class="org.flexpay.payments.actions.cashbox.CashboxesListPageAction"
+          p:crumbNameKey="orgs.crumbs.cashboxes_list"
+          p:paymentPointService-ref="paymentPointService"
           scope="prototype" />
 
 </beans>

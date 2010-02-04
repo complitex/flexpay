@@ -1,14 +1,19 @@
 package org.flexpay.payments.actions.monitor;
 
 import org.flexpay.common.persistence.Stub;
+import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.process.ProcessManager;
+import static org.flexpay.common.util.CollectionUtils.list;
+import static org.flexpay.common.util.DateUtil.now;
 import org.flexpay.orgs.persistence.Cashbox;
 import org.flexpay.orgs.persistence.PaymentPoint;
 import org.flexpay.orgs.service.CashboxService;
 import org.flexpay.orgs.service.PaymentPointService;
-import org.flexpay.payments.actions.CashboxCookieWithPagerActionSupport;
-import org.flexpay.payments.actions.TradingDayControlPanel;
+import org.flexpay.payments.actions.AccountantAWPWithPagerActionSupport;
+import static org.flexpay.payments.actions.monitor.PaymentPointDetailMonitorAction.getPaymentsCount;
+import static org.flexpay.payments.actions.monitor.PaymentPointDetailMonitorAction.getPaymentsSumm;
 import org.flexpay.payments.actions.monitor.data.CashboxMonitorContainer;
+import org.flexpay.payments.actions.tradingday.TradingDayControlPanel;
 import org.flexpay.payments.persistence.Operation;
 import org.flexpay.payments.process.handlers.AccounterAssignmentHandler;
 import org.flexpay.payments.service.OperationService;
@@ -22,13 +27,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-import static org.flexpay.common.persistence.Stub.stub;
-import static org.flexpay.common.util.CollectionUtils.list;
-import static org.flexpay.common.util.DateUtil.now;
-import static org.flexpay.payments.actions.monitor.PaymentPointDetailMonitorAction.getPaymentsCount;
-import static org.flexpay.payments.actions.monitor.PaymentPointDetailMonitorAction.getPaymentsSumm;
-
-public class PaymentPointCashboxesListAction extends CashboxCookieWithPagerActionSupport<CashboxMonitorContainer> implements InitializingBean {
+public class PaymentPointCashboxesListAction extends AccountantAWPWithPagerActionSupport<CashboxMonitorContainer> implements InitializingBean {
 
 	private static final SimpleDateFormat formatTime = new SimpleDateFormat("HH:mm");
 

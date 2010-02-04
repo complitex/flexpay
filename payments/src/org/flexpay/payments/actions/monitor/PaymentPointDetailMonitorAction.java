@@ -1,9 +1,11 @@
 package org.flexpay.payments.actions.monitor;
 
 import org.flexpay.common.persistence.Stub;
+import static org.flexpay.common.persistence.Stub.stub;
+import static org.flexpay.common.util.DateUtil.now;
 import org.flexpay.orgs.persistence.PaymentPoint;
 import org.flexpay.orgs.service.PaymentPointService;
-import org.flexpay.payments.actions.CashboxCookieActionSupport;
+import org.flexpay.payments.actions.AccountantAWPActionSupport;
 import org.flexpay.payments.persistence.OperationType;
 import org.flexpay.payments.service.statistics.OperationTypeStatistics;
 import org.flexpay.payments.service.statistics.PaymentsStatisticsService;
@@ -15,10 +17,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-import static org.flexpay.common.persistence.Stub.stub;
-import static org.flexpay.common.util.DateUtil.now;
-
-public class PaymentPointDetailMonitorAction extends CashboxCookieActionSupport {
+public class PaymentPointDetailMonitorAction extends AccountantAWPActionSupport {
     
     public static final SimpleDateFormat formatTime = new SimpleDateFormat("HH:mm");
 

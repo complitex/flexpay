@@ -1,36 +1,35 @@
 package org.flexpay.payments.actions.reports;
 
+import net.sf.jasperreports.engine.JRDataSource;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.persistence.filter.BeginDateFilter;
 import org.flexpay.common.persistence.filter.BeginTimeFilter;
 import org.flexpay.common.persistence.filter.EndDateFilter;
 import org.flexpay.common.persistence.filter.EndTimeFilter;
-import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.service.reporting.ReportUtil;
 import org.flexpay.common.util.CollectionUtils;
 import static org.flexpay.common.util.CollectionUtils.ar;
 import static org.flexpay.common.util.CollectionUtils.map;
 import org.flexpay.common.util.DateUtil;
-import org.flexpay.common.service.reporting.ReportUtil;
-import org.flexpay.common.actions.FPActionSupport;
-import org.flexpay.orgs.persistence.filters.CashboxFilter;
-import org.flexpay.orgs.persistence.filters.PaymentPointsFilter;
 import org.flexpay.orgs.persistence.Cashbox;
 import org.flexpay.orgs.persistence.PaymentCollector;
+import org.flexpay.orgs.persistence.filters.CashboxFilter;
+import org.flexpay.orgs.persistence.filters.PaymentPointsFilter;
 import org.flexpay.orgs.service.CashboxService;
 import org.flexpay.orgs.service.PaymentPointService;
-import org.flexpay.payments.reports.payments.PaymentsReporter;
-import org.flexpay.payments.reports.payments.AccPaymentsReportRequest;
+import org.flexpay.payments.actions.AccountantAWPActionSupport;
 import org.flexpay.payments.reports.payments.AccPaymentReportData;
+import org.flexpay.payments.reports.payments.AccPaymentsReportRequest;
+import org.flexpay.payments.reports.payments.PaymentsReporter;
 import org.flexpay.payments.util.config.PaymentsUserPreferences;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.util.Map;
 
-import net.sf.jasperreports.engine.JRDataSource;
-import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
-
-public abstract class AccPaymentsReportAction extends FPActionSupport {
+public abstract class AccPaymentsReportAction extends AccountantAWPActionSupport {
 
 	// detailing options
 	private static final int DETAILS_OPTION_PAYMENT_POINT = 1;

@@ -1,6 +1,7 @@
 package org.flexpay.payments.actions.registry;
 
-import org.flexpay.common.actions.FPActionWithPagerSupport;
+import static org.apache.commons.lang.time.DateUtils.addDays;
+import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.persistence.filter.*;
 import org.flexpay.common.persistence.registry.Registry;
@@ -8,10 +9,13 @@ import org.flexpay.common.persistence.registry.RegistryFPFileType;
 import org.flexpay.common.persistence.registry.RegistryProperties;
 import org.flexpay.common.service.FPFileService;
 import org.flexpay.common.service.RegistryFPFileTypeService;
+import static org.flexpay.common.util.CollectionUtils.list;
+import static org.flexpay.common.util.DateUtil.*;
 import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.orgs.persistence.filters.RecipientOrganizationFilter;
 import org.flexpay.orgs.persistence.filters.SenderOrganizationFilter;
 import org.flexpay.orgs.service.OrganizationService;
+import org.flexpay.payments.actions.AccountantAWPWithPagerActionSupport;
 import org.flexpay.payments.persistence.EircRegistryProperties;
 import org.flexpay.payments.service.EircRegistryService;
 import org.jetbrains.annotations.NotNull;
@@ -21,12 +25,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import static org.apache.commons.lang.time.DateUtils.addDays;
-import static org.flexpay.common.persistence.Stub.stub;
-import static org.flexpay.common.util.CollectionUtils.list;
-import static org.flexpay.common.util.DateUtil.*;
-
-public class RegistriesListAction extends FPActionWithPagerSupport<Registry> {
+public class RegistriesListAction extends AccountantAWPWithPagerActionSupport<Registry> {
 
 	private SenderOrganizationFilter senderOrganizationFilter = new SenderOrganizationFilter();
 	private RecipientOrganizationFilter recipientOrganizationFilter = new RecipientOrganizationFilter();

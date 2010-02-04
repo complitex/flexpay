@@ -2,7 +2,6 @@ package org.flexpay.payments.actions.reports;
 
 import au.com.bytecode.opencsv.CSVWriter;
 import org.apache.commons.io.IOUtils;
-import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.persistence.FPModule;
 import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.persistence.filter.BeginDateFilter;
@@ -14,6 +13,7 @@ import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.DateUtil;
 import org.flexpay.common.util.FPFileUtil;
 import org.flexpay.common.util.SecurityUtil;
+import org.flexpay.payments.actions.AccountantAWPActionSupport;
 import org.flexpay.payments.reports.payments.PaymentReportData;
 import org.flexpay.payments.reports.payments.PaymentsReporter;
 import org.jetbrains.annotations.NotNull;
@@ -24,7 +24,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-public class ImportPaymentsReportAction extends FPActionSupport {
+public class ImportPaymentsReportAction extends AccountantAWPActionSupport {
 
 	private BeginDateFilter beginDateFilter = new BeginDateFilter(DateUtil.now());
 	private EndDateFilter endDateFilter = new EndDateFilter(DateUtil.now());

@@ -1,13 +1,10 @@
 package org.flexpay.payments.actions;
 
-import org.flexpay.common.actions.StaticPageAction;
-import org.flexpay.payments.actions.interceptor.CashboxAware;
 import org.flexpay.payments.persistence.Operation;
 import org.jetbrains.annotations.NotNull;
 
-public class CashboxAwareStaticAction extends StaticPageAction implements CashboxAware {
+public class OperatorAWPStaticPageAction extends OperatorAWPActionSupport {
 
-	private Long cashboxId;
 	private Long organizationId;
 
 	// print previously created operation
@@ -20,14 +17,10 @@ public class CashboxAwareStaticAction extends StaticPageAction implements Cashbo
 		return SUCCESS;
 	}
 
+	@NotNull
 	@Override
-	public Long getCashboxId() {
-		return cashboxId;
-	}
-
-	@Override
-	public void setCashboxId(Long cashboxId) {
-		this.cashboxId = cashboxId;
+	protected String getErrorResult() {
+		return SUCCESS;
 	}
 
 	public Long getOrganizationId() {

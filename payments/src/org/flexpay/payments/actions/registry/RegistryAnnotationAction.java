@@ -1,20 +1,19 @@
 package org.flexpay.payments.actions.registry;
 
-import org.flexpay.payments.actions.CashboxCookieActionSupport;
-import org.flexpay.common.service.RegistryService;
+import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.lang.StringUtils;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.persistence.registry.RegistryContainer;
+import org.flexpay.common.service.RegistryService;
 import org.flexpay.common.util.StringUtil;
-import org.flexpay.common.actions.FPActionSupport;
+import org.flexpay.payments.actions.AccountantAWPActionSupport;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
-import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.lang.StringUtils;
 
 import java.util.List;
 
-public class RegistryAnnotationAction extends FPActionSupport {
+public class RegistryAnnotationAction extends AccountantAWPActionSupport {
     /**
      * Symbol used escape special symbols
      */
