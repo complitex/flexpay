@@ -2,6 +2,11 @@
 
 <table cellpadding="3" cellspacing="1" border="0" width="100%">
     <tr>
+        <td colspan="3">
+            <%@include file="/WEB-INF/jsp/common/filter/pager/pager_ajax.jsp"%>
+        </td>
+    </tr>
+    <tr>
         <td class="th" width="1%">&nbsp;</td>
         <td class="th" width="1%">&nbsp;</td>
         <td class="th" width="98%"><s:text name="ab.apartment" /></td>
