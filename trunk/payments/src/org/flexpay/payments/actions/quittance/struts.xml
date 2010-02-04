@@ -6,15 +6,15 @@
 
 	<package name="quittance" namespace="/payments" extends="payments_operator">
 
-		<action name="searchByQuittanceNumber" class="cashboxStaticPageAction">
+		<action name="searchByQuittanceNumber" class="operatorAWPStaticPageAction">
 			<result type="tiles">payments.quittance.search.quittance_number</result>
 		</action>
 
-		<action name="searchByEircAccount" class="cashboxStaticPageAction">
+		<action name="searchByEircAccount" class="operatorAWPStaticPageAction">
 			<result type="tiles">payments.quittance.search.eirc_account</result>
 		</action>
 
-		<action name="searchByAddress" class="cashboxStaticPageAction">
+		<action name="searchByAddress" class="operatorAWPStaticPageAction">
 			<result type="tiles">payments.quittance.search.address</result>
 		</action>
 

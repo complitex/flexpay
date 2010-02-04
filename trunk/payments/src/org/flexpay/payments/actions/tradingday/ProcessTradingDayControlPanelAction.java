@@ -1,19 +1,19 @@
-package org.flexpay.payments.actions;
+package org.flexpay.payments.actions.tradingday;
 
 import org.flexpay.common.persistence.Stub;
+import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.process.ProcessManager;
 import org.flexpay.orgs.persistence.Cashbox;
 import org.flexpay.orgs.persistence.PaymentPoint;
 import org.flexpay.orgs.service.CashboxService;
 import org.flexpay.orgs.service.PaymentPointService;
+import org.flexpay.payments.actions.OperatorAWPActionSupport;
+import static org.flexpay.payments.process.handlers.AccounterAssignmentHandler.ACCOUNTER;
+import static org.flexpay.payments.process.handlers.PaymentCollectorAssignmentHandler.PAYMENT_COLLECTOR;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
-import static org.flexpay.common.persistence.Stub.stub;
-import static org.flexpay.payments.process.handlers.PaymentCollectorAssignmentHandler.PAYMENT_COLLECTOR;
-import static org.flexpay.payments.process.handlers.AccounterAssignmentHandler.ACCOUNTER;
-
-public class ProcessTradingDayControlPanelAction extends CashboxCookieActionSupport {
+public class ProcessTradingDayControlPanelAction extends OperatorAWPActionSupport {
 
 	private Cashbox cashbox = new Cashbox();
 	private PaymentPoint paymentPoint = new PaymentPoint();

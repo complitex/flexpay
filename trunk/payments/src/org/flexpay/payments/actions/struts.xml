@@ -10,16 +10,12 @@
             <result type="tiles">payments.security.get_identity_cookie</result>
         </action>
 
-        <action name="processTradingDay" class="processTradingDayControlPanelAction">
-            <result>/WEB-INF/jsp/common/responses/simple_response.jsp</result>
-        </action>
-
         <action name="main" class="menuPageAction">
             <result type="tiles">payments.main</result>
         </action>
 
-        <action name="emptyPage" class="staticPageAction">
-            <result type="tiles">payments.main</result>
+        <action name="accountantAWPStaticPageAction" class="accountantAWPStaticPageAction">
+            <result type="tiles">payments.accountant</result>
         </action>
 
     </package>
@@ -45,31 +41,31 @@
             <result name="tradingDayClosed" type="tiles">payments.error.trading_day_closed</result>
         </global-results>
 
-        <action name="main" class="cashboxStaticPageAction">
+        <action name="main" class="operatorAWPStaticPageAction">
             <result type="tiles">payments.quittance.search.address</result>
         </action>
 
-        <action name="mainByAddressOperations" class="cashboxStaticPageAction">
+        <action name="mainByAddressOperations" class="operatorAWPStaticPageAction">
             <result type="tiles">payments.main.by_address.operations</result>
         </action>
 
-        <action name="mainByAddressReports" class="cashboxStaticPageAction">
+        <action name="mainByAddressReports" class="operatorAWPStaticPageAction">
             <result type="tiles">payments.main.by_address.reports</result>
         </action>
 
-        <action name="mainByEircaccountOperations" class="cashboxStaticPageAction">
+        <action name="mainByEircaccountOperations" class="operatorAWPStaticPageAction">
             <result type="tiles">payments.main.by_eircaccount.operations</result>
         </action>
 
-        <action name="mainByEircaccountReports" class="cashboxStaticPageAction">
+        <action name="mainByEircaccountReports" class="operatorAWPStaticPageAction">
             <result type="tiles">payments.main.by_eircaccount.reports</result>
         </action>
 
-        <action name="mainByQuittanceOperations" class="cashboxStaticPageAction">
+        <action name="mainByQuittanceOperations" class="operatorAWPStaticPageAction">
             <result type="tiles">payments.main.by_quittance.operations</result>
         </action>
 
-        <action name="mainByQuittanceReports" class="cashboxStaticPageAction">
+        <action name="mainByQuittanceReports" class="operatorAWPStaticPageAction">
             <result type="tiles">payments.main.by_quittance.reports</result>
         </action>
 
@@ -82,5 +78,6 @@
     <include file="org/flexpay/payments/actions/quittance/struts.xml" />
     <include file="org/flexpay/payments/actions/registry/struts.xml" />
     <include file="org/flexpay/payments/actions/reports/struts.xml" />
+    <include file="org/flexpay/payments/actions/tradingday/struts.xml" />
 
 </struts>

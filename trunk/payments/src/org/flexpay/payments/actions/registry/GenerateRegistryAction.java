@@ -1,10 +1,9 @@
 package org.flexpay.payments.actions.registry;
 
-import org.flexpay.payments.actions.CashboxCookieActionSupport;
-import org.flexpay.common.actions.FPActionSupport;
+import org.flexpay.payments.actions.AccountantAWPActionSupport;
 import org.jetbrains.annotations.NotNull;
 
-public class GenerateRegistryAction extends FPActionSupport {
+public class GenerateRegistryAction extends AccountantAWPActionSupport {
 
 	private Long organizationId;
 

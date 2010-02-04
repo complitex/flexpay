@@ -9,25 +9,25 @@ import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.util.BigDecimalUtil;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.SecurityUtil;
+import org.flexpay.orgs.persistence.Cashbox;
 import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.orgs.persistence.ServiceProvider;
-import org.flexpay.orgs.persistence.Cashbox;
+import org.flexpay.orgs.service.CashboxService;
 import org.flexpay.orgs.service.OrganizationService;
 import org.flexpay.orgs.service.ServiceProviderService;
-import org.flexpay.orgs.service.CashboxService;
+import org.flexpay.payments.actions.quittance.SearchQuittanceAction;
 import org.flexpay.payments.persistence.*;
 import org.flexpay.payments.persistence.quittance.QuittanceDetailsResponse;
 import org.flexpay.payments.service.*;
-import org.flexpay.payments.actions.quittance.SearchQuittanceAction;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.math.BigDecimal;
-import java.util.Date;
-import java.util.Map;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
-public abstract class PaymentOperationAction extends CashboxCookieActionSupport {
+public abstract class PaymentOperationAction extends OperatorAWPActionSupport {
 
 	private String actionName;
 

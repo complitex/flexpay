@@ -1,14 +1,16 @@
 package org.flexpay.payments.actions.registry;
 
 import org.apache.commons.lang.time.StopWatch;
-import org.flexpay.common.actions.FPActionWithPagerSupport;
 import org.flexpay.common.exception.FlexPayException;
+import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.persistence.filter.ImportErrorTypeFilter;
 import org.flexpay.common.persistence.filter.RegistryRecordStatusFilter;
 import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.persistence.registry.RegistryRecord;
 import org.flexpay.common.service.RegistryRecordService;
 import org.flexpay.common.service.importexport.ClassToTypeRegistry;
+import static org.flexpay.common.util.CollectionUtils.list;
+import org.flexpay.payments.actions.AccountantAWPWithPagerActionSupport;
 import org.flexpay.payments.persistence.ServiceType;
 import org.flexpay.payments.persistence.ServiceTypeNameTranslation;
 import org.flexpay.payments.service.ServiceTypeService;
@@ -17,10 +19,7 @@ import org.springframework.beans.factory.annotation.Required;
 
 import java.util.List;
 
-import static org.flexpay.common.persistence.Stub.stub;
-import static org.flexpay.common.util.CollectionUtils.list;
-
-public class RegistryRecordsListAction extends FPActionWithPagerSupport<RegistryRecord> {
+public class RegistryRecordsListAction extends AccountantAWPWithPagerActionSupport<RegistryRecord> {
 
 	private Registry registry = new Registry();
 	private List<RegistryRecord> records = list();

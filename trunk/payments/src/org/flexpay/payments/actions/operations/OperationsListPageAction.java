@@ -1,24 +1,23 @@
 package org.flexpay.payments.actions.operations;
 
 import org.flexpay.common.persistence.Stub;
+import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.persistence.filter.BeginDateFilter;
 import org.flexpay.common.persistence.filter.BeginTimeFilter;
 import org.flexpay.common.persistence.filter.EndDateFilter;
 import org.flexpay.common.persistence.filter.EndTimeFilter;
+import static org.flexpay.common.util.DateUtil.now;
 import org.flexpay.orgs.persistence.Cashbox;
 import org.flexpay.orgs.persistence.PaymentPoint;
 import org.flexpay.orgs.service.CashboxService;
 import org.flexpay.orgs.service.PaymentPointService;
-import org.flexpay.payments.actions.CashboxCookieActionSupport;
+import org.flexpay.payments.actions.OperatorAWPActionSupport;
 import org.flexpay.payments.persistence.filters.ServiceTypeFilter;
 import org.flexpay.payments.service.ServiceTypeService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
-import static org.flexpay.common.persistence.Stub.stub;
-import static org.flexpay.common.util.DateUtil.now;
-
-public class OperationsListPageAction extends CashboxCookieActionSupport {
+public class OperationsListPageAction extends OperatorAWPActionSupport {
 
 	private Cashbox cashbox = new Cashbox();
 	private BeginDateFilter beginDateFilter = new BeginDateFilter();

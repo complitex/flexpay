@@ -4,13 +4,13 @@ import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.util.SecurityUtil;
 import org.flexpay.orgs.persistence.Cashbox;
 import org.flexpay.orgs.service.CashboxService;
-import org.flexpay.payments.actions.CashboxCookieActionSupport;
+import org.flexpay.payments.actions.OperatorAWPActionSupport;
 import org.flexpay.payments.persistence.Operation;
 import org.flexpay.payments.service.OperationService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
-public class CreateBlankOperationAction extends CashboxCookieActionSupport {
+public class CreateBlankOperationAction extends OperatorAWPActionSupport {
 
 	// status codes
 	private static final int STATUS_OK = 0;

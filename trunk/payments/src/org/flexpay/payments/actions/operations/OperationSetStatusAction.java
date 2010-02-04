@@ -1,15 +1,19 @@
 package org.flexpay.payments.actions.operations;
 
 import org.flexpay.common.persistence.Stub;
+import static org.flexpay.common.persistence.Stub.stub;
+import static org.flexpay.common.util.DateUtil.now;
+import static org.flexpay.common.util.SecurityUtil.getUserName;
 import org.flexpay.orgs.persistence.Cashbox;
 import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.orgs.service.CashboxService;
 import org.flexpay.orgs.service.OrganizationService;
-import org.flexpay.payments.actions.CashboxCookieActionSupport;
+import org.flexpay.payments.actions.OperatorAWPActionSupport;
 import org.flexpay.payments.persistence.Document;
 import org.flexpay.payments.persistence.DocumentStatus;
 import org.flexpay.payments.persistence.Operation;
 import org.flexpay.payments.persistence.OperationStatus;
+import static org.flexpay.payments.persistence.OperationStatus.REGISTERED;
 import org.flexpay.payments.service.DocumentService;
 import org.flexpay.payments.service.DocumentStatusService;
 import org.flexpay.payments.service.OperationService;
@@ -17,12 +21,7 @@ import org.flexpay.payments.service.OperationStatusService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
-import static org.flexpay.common.persistence.Stub.stub;
-import static org.flexpay.common.util.DateUtil.now;
-import static org.flexpay.common.util.SecurityUtil.getUserName;
-import static org.flexpay.payments.persistence.OperationStatus.REGISTERED;
-
-public class OperationSetStatusAction extends CashboxCookieActionSupport {
+public class OperationSetStatusAction extends OperatorAWPActionSupport {
 
 	private Operation operation = new Operation();
 	private Integer status;

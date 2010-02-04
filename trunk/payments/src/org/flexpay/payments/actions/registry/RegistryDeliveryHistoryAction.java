@@ -3,13 +3,16 @@ package org.flexpay.payments.actions.registry;
 import org.flexpay.common.persistence.Translation;
 import org.flexpay.common.persistence.filter.BeginDateFilter;
 import org.flexpay.common.persistence.filter.EndDateFilter;
+import static org.flexpay.common.util.CollectionUtils.list;
 import org.flexpay.common.util.DateUtil;
+import static org.flexpay.common.util.DateUtil.getEndOfThisDay;
+import static org.flexpay.common.util.DateUtil.truncateDay;
 import org.flexpay.common.util.TranslationUtil;
 import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.orgs.persistence.ServiceProvider;
 import org.flexpay.orgs.service.OrganizationService;
 import org.flexpay.orgs.service.ServiceProviderService;
-import org.flexpay.payments.actions.CashboxCookieWithPagerActionSupport;
+import org.flexpay.payments.actions.AccountantAWPWithPagerActionSupport;
 import org.flexpay.payments.actions.registry.data.SentRegistryContainer;
 import org.flexpay.payments.persistence.EircRegistryProperties;
 import org.flexpay.payments.persistence.RegistryDeliveryHistory;
@@ -21,11 +24,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-import static org.flexpay.common.util.CollectionUtils.list;
-import static org.flexpay.common.util.DateUtil.getEndOfThisDay;
-import static org.flexpay.common.util.DateUtil.truncateDay;
-
-public class RegistryDeliveryHistoryAction extends CashboxCookieWithPagerActionSupport<RegistryDeliveryHistory> {
+public class RegistryDeliveryHistoryAction extends AccountantAWPWithPagerActionSupport<RegistryDeliveryHistory> {
 
     private static final String TIME_FORMAT = "HH:mm";
 

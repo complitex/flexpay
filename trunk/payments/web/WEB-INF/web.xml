@@ -117,7 +117,7 @@
 
     <servlet>
         <servlet-name>confirmationTradingDayServlet</servlet-name>
-        <servlet-class>org.flexpay.payments.actions.ConfirmationTradingDayServlet</servlet-class>
+        <servlet-class>org.flexpay.payments.actions.tradingday.ConfirmationTradingDayServlet</servlet-class>
     </servlet>
 
     <servlet-mapping>
