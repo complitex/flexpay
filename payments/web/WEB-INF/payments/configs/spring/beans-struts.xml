@@ -214,6 +214,7 @@
 		  scope="prototype" />
 
 	<bean id="importPaymentsReportAction"
+		  parent="accountantAWPAction"
 		  class="org.flexpay.payments.actions.reports.ImportPaymentsReportAction"
 		  p:fpFileService-ref="fpFileService"
 		  p:paymentsReporter-ref="paymentsReporter"
@@ -328,6 +329,7 @@
           scope="prototype" />
 
     <bean id="registriesProcessAction"
+		  parent="accountantAWPAction"
           class="org.flexpay.payments.actions.registry.RegistriesProcessAction"
           p:processManager-ref="processManager"
           scope="prototype" />
