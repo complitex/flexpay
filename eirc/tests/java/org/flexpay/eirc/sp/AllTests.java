@@ -11,7 +11,8 @@ import org.junit.runners.Suite;
 		TestMbCorrectionsFileParser2.class,
 		TestMbChargesFileParser.class,
 		TestMbChargesFileParser2.class,
-		TestPaymentsRegistryProcessing.class
+		TestPaymentsRegistryProcessing.class,
+		TestPaymentsRegistryProcessing2.class
 })
 public class AllTests {
 

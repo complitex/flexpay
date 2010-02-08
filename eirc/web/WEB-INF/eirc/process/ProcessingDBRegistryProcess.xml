@@ -38,6 +38,7 @@
 		<handler class="org.flexpay.common.process.handler.FlexPayDecisionHandler" />
         <transition name="next" to="ProcessRecordsRange" />
         <transition name="error" to="EndRegistryProcessing" />
+		<transition name="end" to="end" />
         <event type="node-enter">
             <action name="task" config-type="bean" class="org.springmodules.workflow.jbpm31.JbpmHandlerProxy">
                 <targetBean>startRegistryProcessingActionHandler</targetBean>
