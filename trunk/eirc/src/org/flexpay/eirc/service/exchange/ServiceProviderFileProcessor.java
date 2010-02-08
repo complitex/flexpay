@@ -318,8 +318,6 @@ public class ServiceProviderFileProcessor implements RegistryProcessor {
 			update.doUpdate();
 		} catch (Exception e) {
 			log.error("Failed constructing container for registry: " + context.getRegistry(), e);
-			// in processing, notify have error
-			registryWorkflowManager.setNextErrorStatus(context.getRegistry());
 			throw e;
 		}
 	}

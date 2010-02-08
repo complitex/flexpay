@@ -12,7 +12,7 @@
 				<expression>
 					numberLoop = 0;
 					startTime = org.flexpay.common.util.DateUtil.now();
-					flushNumberRegistryRecords = 50L;
+					flushNumberRegistryRecords = 1000L;
 				</expression>
 			</script>
 		</event>
