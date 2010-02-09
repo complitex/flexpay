@@ -1,7 +1,7 @@
 package org.flexpay.payments.service;
 
-import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.exception.FlexPayException;
+import org.flexpay.common.persistence.Stub;
 import org.flexpay.payments.persistence.DocumentType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

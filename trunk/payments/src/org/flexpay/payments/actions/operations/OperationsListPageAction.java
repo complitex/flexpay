@@ -1,21 +1,20 @@
 package org.flexpay.payments.actions.operations;
 
 import org.flexpay.common.persistence.Stub;
-import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.persistence.filter.BeginDateFilter;
 import org.flexpay.common.persistence.filter.BeginTimeFilter;
 import org.flexpay.common.persistence.filter.EndDateFilter;
 import org.flexpay.common.persistence.filter.EndTimeFilter;
-import static org.flexpay.common.util.DateUtil.now;
 import org.flexpay.orgs.persistence.Cashbox;
 import org.flexpay.orgs.persistence.PaymentPoint;
-import org.flexpay.orgs.service.CashboxService;
-import org.flexpay.orgs.service.PaymentPointService;
 import org.flexpay.payments.actions.OperatorAWPActionSupport;
 import org.flexpay.payments.persistence.filters.ServiceTypeFilter;
 import org.flexpay.payments.service.ServiceTypeService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
+
+import static org.flexpay.common.persistence.Stub.stub;
+import static org.flexpay.common.util.DateUtil.now;
 
 public class OperationsListPageAction extends OperatorAWPActionSupport {
 
@@ -26,8 +25,6 @@ public class OperationsListPageAction extends OperatorAWPActionSupport {
 	private EndTimeFilter endTimeFilter = new EndTimeFilter();
 	private ServiceTypeFilter serviceTypeFilter = new ServiceTypeFilter();
 
-	private CashboxService cashboxService;
-	private PaymentPointService paymentPointService;
 	private ServiceTypeService serviceTypeService;
 
 	@NotNull
@@ -105,16 +102,6 @@ public class OperationsListPageAction extends OperatorAWPActionSupport {
 
 	public ServiceTypeFilter getServiceTypeFilter() {
 		return serviceTypeFilter;
-	}
-
-	@Required
-	public void setCashboxService(CashboxService cashboxService) {
-		this.cashboxService = cashboxService;
-	}
-
-	@Required
-	public void setPaymentPointService(PaymentPointService paymentPointService) {
-		this.paymentPointService = paymentPointService;
 	}
 
 	@Required

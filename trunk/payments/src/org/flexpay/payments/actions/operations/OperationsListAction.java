@@ -2,19 +2,14 @@ package org.flexpay.payments.actions.operations;
 
 import org.apache.commons.lang.StringUtils;
 import org.flexpay.common.persistence.Stub;
-import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.persistence.filter.BeginDateFilter;
 import org.flexpay.common.persistence.filter.BeginTimeFilter;
 import org.flexpay.common.persistence.filter.EndDateFilter;
 import org.flexpay.common.persistence.filter.EndTimeFilter;
 import org.flexpay.common.process.ProcessManager;
 import org.flexpay.common.service.CurrencyInfoService;
-import static org.flexpay.common.util.CollectionUtils.list;
-import static org.flexpay.common.util.DateUtil.getEndOfThisDay;
 import org.flexpay.orgs.persistence.Cashbox;
 import org.flexpay.orgs.persistence.PaymentPoint;
-import org.flexpay.orgs.service.CashboxService;
-import org.flexpay.orgs.service.PaymentPointService;
 import org.flexpay.payments.actions.OperatorAWPWithPagerActionSupport;
 import org.flexpay.payments.actions.tradingday.TradingDayControlPanel;
 import org.flexpay.payments.persistence.Document;
@@ -32,6 +27,10 @@ import org.springframework.beans.factory.annotation.Required;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+
+import static org.flexpay.common.persistence.Stub.stub;
+import static org.flexpay.common.util.CollectionUtils.list;
+import static org.flexpay.common.util.DateUtil.getEndOfThisDay;
 
 public class OperationsListAction extends OperatorAWPWithPagerActionSupport<Operation> implements InitializingBean {
 
@@ -51,8 +50,6 @@ public class OperationsListAction extends OperatorAWPWithPagerActionSupport<Oper
 
 	private DocumentService documentService;
 	private OperationService operationService;
-	private CashboxService cashboxService;
-	private PaymentPointService paymentPointService;
 	private CurrencyInfoService currencyInfoService;
 	private ProcessManager processManager;
 
@@ -302,16 +299,6 @@ public class OperationsListAction extends OperatorAWPWithPagerActionSupport<Oper
 	@Required
 	public void setOperationService(OperationService operationService) {
 		this.operationService = operationService;
-	}
-
-	@Required
-	public void setCashboxService(CashboxService cashboxService) {
-		this.cashboxService = cashboxService;
-	}
-
-	@Required
-	public void setPaymentPointService(PaymentPointService paymentPointService) {
-		this.paymentPointService = paymentPointService;
 	}
 
 	@Required

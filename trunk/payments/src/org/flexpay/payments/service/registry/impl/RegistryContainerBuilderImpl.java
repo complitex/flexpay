@@ -5,7 +5,6 @@ import org.flexpay.common.persistence.registry.RegistryContainer;
 import org.flexpay.common.persistence.registry.RegistryRecordContainer;
 import org.flexpay.common.service.importexport.ClassToTypeRegistry;
 import org.flexpay.common.service.importexport.MasterIndexService;
-import static org.flexpay.common.util.config.ApplicationConfig.getInstanceId;
 import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.orgs.persistence.PaymentPoint;
 import org.flexpay.orgs.persistence.ServiceProvider;
@@ -15,6 +14,8 @@ import org.flexpay.payments.persistence.Service;
 import org.flexpay.payments.service.registry.RegistryContainerBuilder;
 import org.flexpay.payments.util.config.ApplicationConfig;
 import org.springframework.beans.factory.annotation.Required;
+
+import static org.flexpay.common.util.config.ApplicationConfig.getInstanceId;
 
 public class RegistryContainerBuilderImpl implements RegistryContainerBuilder {
 

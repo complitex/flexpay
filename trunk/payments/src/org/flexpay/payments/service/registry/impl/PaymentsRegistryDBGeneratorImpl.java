@@ -2,7 +2,6 @@ package org.flexpay.payments.service.registry.impl;
 
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.DateRange;
-import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.persistence.registry.*;
 import org.flexpay.common.service.*;
 import org.flexpay.orgs.persistence.Organization;
@@ -25,6 +24,8 @@ import org.springframework.beans.factory.annotation.Required;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+
+import static org.flexpay.common.persistence.Stub.stub;
 
 /**
  * Generate the payments registry in database.

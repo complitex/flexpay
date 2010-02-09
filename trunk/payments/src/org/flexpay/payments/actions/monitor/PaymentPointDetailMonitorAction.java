@@ -1,8 +1,6 @@
 package org.flexpay.payments.actions.monitor;
 
 import org.flexpay.common.persistence.Stub;
-import static org.flexpay.common.persistence.Stub.stub;
-import static org.flexpay.common.util.DateUtil.now;
 import org.flexpay.orgs.persistence.PaymentPoint;
 import org.flexpay.orgs.service.PaymentPointService;
 import org.flexpay.payments.actions.AccountantAWPActionSupport;
@@ -16,6 +14,9 @@ import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+
+import static org.flexpay.common.persistence.Stub.stub;
+import static org.flexpay.common.util.DateUtil.now;
 
 public class PaymentPointDetailMonitorAction extends AccountantAWPActionSupport {
     

@@ -6,13 +6,14 @@ import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.process.job.Job;
 import org.flexpay.common.service.RegistryService;
-import static org.flexpay.payments.process.export.job.ExportJobParameterNames.REGISTRY;
-import static org.flexpay.payments.process.export.job.ExportJobParameterNames.REGISTRY_ID;
 import org.flexpay.payments.util.registries.RegistryFPFileFormat;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.io.Serializable;
 import java.util.Map;
+
+import static org.flexpay.payments.process.export.job.ExportJobParameterNames.REGISTRY;
+import static org.flexpay.payments.process.export.job.ExportJobParameterNames.REGISTRY_ID;
 
 /**
  * Job generate payments registry in FP format.

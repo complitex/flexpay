@@ -1,10 +1,11 @@
 package org.flexpay.payments.persistence;
 
 import org.flexpay.common.persistence.Stub;
-import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.persistence.registry.RegistryProperties;
 import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.orgs.persistence.ServiceProvider;
+
+import static org.flexpay.common.persistence.Stub.stub;
 
 public class EircRegistryProperties extends RegistryProperties {
 

@@ -7,7 +7,6 @@ import org.flexpay.common.persistence.filter.ObjectFilter;
 import org.flexpay.common.persistence.filter.RegistryTypeFilter;
 import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.util.CollectionUtils;
-import static org.flexpay.common.util.CollectionUtils.list;
 import org.flexpay.orgs.persistence.filters.OrganizationFilter;
 import org.flexpay.payments.dao.EircRegistryDaoExt;
 import org.hibernate.HibernateException;
@@ -19,7 +18,12 @@ import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
 import java.sql.SQLException;
-import java.util.*;
+import java.util.Collection;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+
+import static org.flexpay.common.util.CollectionUtils.list;
 
 public class EircRegistryDaoExtImpl extends HibernateDaoSupport implements EircRegistryDaoExt {
 

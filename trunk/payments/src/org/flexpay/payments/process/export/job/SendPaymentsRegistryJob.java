@@ -10,13 +10,15 @@ import org.flexpay.orgs.persistence.ServiceProvider;
 import org.flexpay.orgs.service.ServiceProviderService;
 import org.flexpay.payments.persistence.EircRegistryProperties;
 import org.flexpay.payments.persistence.RegistryDeliveryHistory;
-import static org.flexpay.payments.process.export.job.ExportJobParameterNames.*;
 import org.flexpay.payments.service.RegistryDeliveryHistoryService;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Map;
+
+import static org.flexpay.payments.process.export.job.ExportJobParameterNames.REGISTRY;
+import static org.flexpay.payments.process.export.job.ExportJobParameterNames.REGISTRY_ID;
 
 public class SendPaymentsRegistryJob extends SendFileJob {
     private String email;

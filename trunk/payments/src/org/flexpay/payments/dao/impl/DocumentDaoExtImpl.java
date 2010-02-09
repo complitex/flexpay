@@ -1,9 +1,9 @@
 package org.flexpay.payments.dao.impl;
 
+import org.flexpay.common.persistence.Stub;
 import org.flexpay.payments.dao.DocumentDaoExt;
 import org.flexpay.payments.persistence.Document;
 import org.flexpay.payments.persistence.Operation;
-import org.flexpay.common.persistence.Stub;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;

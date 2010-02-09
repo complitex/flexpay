@@ -6,10 +6,10 @@ import org.flexpay.payments.dao.OperationStatusDao;
 import org.flexpay.payments.persistence.OperationStatus;
 import org.flexpay.payments.service.OperationStatusService;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.beans.factory.annotation.Required;
-import org.springframework.transaction.annotation.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Required;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 

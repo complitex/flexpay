@@ -1,23 +1,22 @@
 package org.flexpay.payments.process.export.job;
 
-import org.flexpay.common.process.job.Job;
+import org.apache.commons.lang.StringUtils;
 import org.flexpay.common.exception.FlexPayException;
-import org.flexpay.common.persistence.file.FPFile;
-import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.persistence.file.FPFile;
+import org.flexpay.common.process.job.Job;
 import org.flexpay.common.service.FPFileService;
-import static org.flexpay.payments.process.export.job.ExportJobParameterNames.FILE;
-import static org.flexpay.payments.process.export.job.ExportJobParameterNames.FILE_ID;
-import static org.flexpay.payments.process.export.job.ExportJobParameterNames.EMAIL;
+import org.springframework.beans.factory.annotation.Required;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
-import org.springframework.beans.factory.annotation.Required;
-import org.apache.commons.lang.StringUtils;
 
-import javax.mail.internet.MimeMessage;
 import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
 import java.io.Serializable;
 import java.util.Map;
+
+import static org.flexpay.common.persistence.Stub.stub;
+import static org.flexpay.payments.process.export.job.ExportJobParameterNames.*;
 
 public class SendFileJob extends Job {
     private String emailPassword;

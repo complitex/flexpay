@@ -5,11 +5,12 @@ import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.process.job.Job;
 import org.flexpay.common.service.FPFileService;
 import org.flexpay.common.util.FPFileUtil;
-import static org.flexpay.payments.process.export.job.ExportJobParameterNames.GENERATED_FILE_NAME;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.io.Serializable;
 import java.util.Map;
+
+import static org.flexpay.payments.process.export.job.ExportJobParameterNames.GENERATED_FILE_NAME;
 
 public class CreateFPFileJob extends Job {
 

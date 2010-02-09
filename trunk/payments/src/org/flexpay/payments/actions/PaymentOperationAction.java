@@ -5,15 +5,12 @@ import org.flexpay.ab.persistence.*;
 import org.flexpay.ab.service.*;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
-import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.util.BigDecimalUtil;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.SecurityUtil;
 import org.flexpay.orgs.persistence.Cashbox;
 import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.orgs.persistence.ServiceProvider;
-import org.flexpay.orgs.service.CashboxService;
-import org.flexpay.orgs.service.OrganizationService;
 import org.flexpay.orgs.service.ServiceProviderService;
 import org.flexpay.payments.actions.quittance.SearchQuittanceAction;
 import org.flexpay.payments.persistence.*;
@@ -26,6 +23,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+
+import static org.flexpay.common.persistence.Stub.stub;
 
 public abstract class PaymentOperationAction extends OperatorAWPActionSupport {
 
@@ -54,8 +53,6 @@ public abstract class PaymentOperationAction extends OperatorAWPActionSupport {
 	private OperationLevelService operationLevelService;
 	private OperationStatusService operationStatusService;
 	private OperationTypeService operationTypeService;
-	protected CashboxService cashboxService;
-	private OrganizationService organizationService;
 	private SPService spService;
 	private ServiceProviderService serviceProviderService;
 
@@ -323,16 +320,6 @@ public abstract class PaymentOperationAction extends OperatorAWPActionSupport {
 	@Required
 	public void setOperationTypeService(OperationTypeService operationTypeService) {
 		this.operationTypeService = operationTypeService;
-	}
-
-	@Required
-	public void setCashboxService(CashboxService cashboxService) {
-		this.cashboxService = cashboxService;
-	}
-
-	@Required
-	public void setOrganizationService(OrganizationService organizationService) {
-		this.organizationService = organizationService;
 	}
 
 	@Required

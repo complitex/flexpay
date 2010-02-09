@@ -14,8 +14,8 @@ public abstract class OperatorAWPWithPagerActionSupport<T> extends FPActionWithP
 	protected Long cashboxId;
 
 	// required services
-	private CashboxService cashboxService;
-	private PaymentPointService paymentPointService;
+	protected CashboxService cashboxService;
+	protected PaymentPointService paymentPointService;
 
 	public String getCashboxInfoString() {
 

@@ -4,7 +4,6 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.common.persistence.Stub;
-import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.persistence.registry.RegistryRecord;
 import org.flexpay.orgs.persistence.Organization;
 import org.jetbrains.annotations.NotNull;
@@ -12,6 +11,8 @@ import org.jetbrains.annotations.NotNull;
 import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.Set;
+
+import static org.flexpay.common.persistence.Stub.stub;
 
 public class Document extends DomainObject {
 

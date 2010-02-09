@@ -1,9 +1,8 @@
 package org.flexpay.payments.service.history;
 
-import org.flexpay.common.persistence.history.HistoryGenerator;
 import org.flexpay.common.persistence.history.Diff;
+import org.flexpay.common.persistence.history.HistoryGenerator;
 import org.flexpay.common.persistence.history.ProcessingStatus;
-import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.service.DiffService;
 import org.flexpay.payments.persistence.ServiceType;
 import org.flexpay.payments.service.ServiceTypeService;
@@ -13,6 +12,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.util.Collection;
+
+import static org.flexpay.common.persistence.Stub.stub;
 
 public class ServiceTypeHistoryGenerator implements HistoryGenerator<ServiceType> {
 

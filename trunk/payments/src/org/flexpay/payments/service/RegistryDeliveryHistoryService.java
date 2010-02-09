@@ -1,7 +1,7 @@
 package org.flexpay.payments.service;
 
-import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.dao.paging.Page;
+import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.payments.persistence.RegistryDeliveryHistory;
 import org.jetbrains.annotations.NotNull;

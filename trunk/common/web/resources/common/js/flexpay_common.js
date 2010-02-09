@@ -23,6 +23,14 @@ var FP = {
         });
     },
 
+    endis : function (label, endis) {
+        if (endis) {
+            $(label).removeAttr("disable");
+        } else {
+            $(label).attr("disable", true);
+        }
+    },
+
     validateSubmit : function (warnMes) {
         if ($("#setupType").val() == "setupType") {
             return true;

@@ -1,12 +1,12 @@
 package org.flexpay.payments.service.registry;
 
-import org.jetbrains.annotations.Nullable;
-import org.jetbrains.annotations.NotNull;
 import org.flexpay.common.exception.FlexPayException;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
-import java.security.SignatureException;
 import java.security.Signature;
+import java.security.SignatureException;
 
 public interface RegistryWriter {
 

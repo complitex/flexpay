@@ -39,9 +39,10 @@ public class ImportPaymentsReportAction extends AccountantAWPActionSupport {
 	private PaymentsReporter paymentsReporter;
 
 	@NotNull
+	@Override
 	protected String doExecute() throws Exception {
 
-		if (!isSubmit()) {
+		if (isNotSubmit()) {
 			return INPUT;
 		}
 
@@ -104,6 +105,7 @@ public class ImportPaymentsReportAction extends AccountantAWPActionSupport {
 	}
 
 	@NotNull
+	@Override
 	protected String getErrorResult() {
 		return INPUT;
 	}

@@ -9,8 +9,7 @@ import org.springframework.beans.factory.annotation.Required;
 
 public abstract class AccountantAWPActionSupport extends FPActionSupport {
 
-	// required services
-	private PaymentCollectorService paymentCollectorService;
+	protected PaymentCollectorService paymentCollectorService;
 
 	public String getPaymentCollectorInfoString() {
 

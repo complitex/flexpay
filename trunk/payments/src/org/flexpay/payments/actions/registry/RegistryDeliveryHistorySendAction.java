@@ -2,8 +2,6 @@ package org.flexpay.payments.actions.registry;
 
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.process.ProcessManager;
-import static org.flexpay.common.util.CollectionUtils.map;
-import static org.flexpay.common.util.CollectionUtils.set;
 import org.flexpay.payments.actions.AccountantAWPActionSupport;
 import org.flexpay.payments.persistence.RegistryDeliveryHistory;
 import org.flexpay.payments.process.export.job.ExportJobParameterNames;
@@ -14,6 +12,9 @@ import org.springframework.beans.factory.annotation.Required;
 import java.io.Serializable;
 import java.util.Map;
 import java.util.Set;
+
+import static org.flexpay.common.util.CollectionUtils.map;
+import static org.flexpay.common.util.CollectionUtils.set;
 
 public class RegistryDeliveryHistorySendAction extends AccountantAWPActionSupport {
 

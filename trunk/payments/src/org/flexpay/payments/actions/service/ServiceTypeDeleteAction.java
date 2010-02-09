@@ -1,12 +1,13 @@
 package org.flexpay.payments.actions.service;
 
 import org.flexpay.common.actions.FPActionSupport;
-import static org.flexpay.common.util.CollectionUtils.set;
 import org.flexpay.payments.service.ServiceTypeService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.util.Set;
+
+import static org.flexpay.common.util.CollectionUtils.set;
 
 public class ServiceTypeDeleteAction extends FPActionSupport {
 

@@ -9,8 +9,6 @@ import org.flexpay.common.persistence.report.ReportPrintHistoryRecord;
 import org.flexpay.common.persistence.report.ReportType;
 import org.flexpay.common.service.ReportPrintHistoryRecordService;
 import org.flexpay.common.service.reporting.ReportUtil;
-import static org.flexpay.common.util.CollectionUtils.ar;
-import static org.flexpay.common.util.CollectionUtils.map;
 import org.flexpay.common.util.config.ApplicationConfig;
 import org.flexpay.payments.actions.PaymentOperationAction;
 import org.flexpay.payments.persistence.Operation;
@@ -22,6 +20,9 @@ import org.springframework.beans.factory.annotation.Required;
 import java.io.InputStream;
 import java.util.Date;
 import java.util.Map;
+
+import static org.flexpay.common.util.CollectionUtils.ar;
+import static org.flexpay.common.util.CollectionUtils.map;
 
 public class PaymentOperationReportAction extends PaymentOperationAction {
 

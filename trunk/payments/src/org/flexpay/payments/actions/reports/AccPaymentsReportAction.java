@@ -9,9 +9,6 @@ import org.flexpay.common.persistence.filter.BeginTimeFilter;
 import org.flexpay.common.persistence.filter.EndDateFilter;
 import org.flexpay.common.persistence.filter.EndTimeFilter;
 import org.flexpay.common.service.reporting.ReportUtil;
-import org.flexpay.common.util.CollectionUtils;
-import static org.flexpay.common.util.CollectionUtils.ar;
-import static org.flexpay.common.util.CollectionUtils.map;
 import org.flexpay.common.util.DateUtil;
 import org.flexpay.orgs.persistence.Cashbox;
 import org.flexpay.orgs.persistence.PaymentCollector;
@@ -28,6 +25,8 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.util.Map;
+
+import static org.flexpay.common.util.CollectionUtils.*;
 
 public abstract class AccPaymentsReportAction extends AccountantAWPActionSupport {
 
@@ -52,6 +51,7 @@ public abstract class AccPaymentsReportAction extends AccountantAWPActionSupport
 
 	// form data
 	private Integer details;
+	private String format;
 
 	// required services
 	private PaymentPointService paymentPointService;
@@ -78,7 +78,7 @@ public abstract class AccPaymentsReportAction extends AccountantAWPActionSupport
 		}
 
 		Long paymentCollectorId = ((PaymentsUserPreferences) getUserPreferences()).getPaymentCollectorId();
-		if (null == paymentCollectorId) {
+		if (paymentCollectorId == null) {
 			log.error("No payment collector id found in user preferences");
 			addActionError("payments.error.payment_collector_not_found");
 			return SUCCESS;
@@ -94,7 +94,15 @@ public abstract class AccPaymentsReportAction extends AccountantAWPActionSupport
 		JRDataSource dataSource = new JRBeanCollectionDataSource(data.getDetailses());
 
 		String reportName = ensureReportTemplateUploaded(request);
-		report = reportUtil.exportToPdf(reportName, params, dataSource, getUserPreferences().getLocale());
+		if ("pdf".equals(format)) {
+			report = reportUtil.exportToPdf(reportName, params, dataSource, getUserPreferences().getLocale());
+		} else if ("html".equals(format)) {
+			report = reportUtil.exportToHtml(reportName, params, dataSource, getUserPreferences().getLocale());
+		} else if ("csv".equals(format)) {
+			report = reportUtil.exportToCsv(reportName, params, dataSource, getUserPreferences().getLocale());
+		} else {
+			return SUCCESS;
+		}
 
 		return FILE;
 	}
@@ -123,7 +131,7 @@ public abstract class AccPaymentsReportAction extends AccountantAWPActionSupport
 						uploadReport(reportName + PAYMENTS_SUFFIX);
 					} else if (paymentPointId != null && cashboxId == null) {
 						uploadReport(reportName + PAYMENTS_SUFFIX);
-					} else if (paymentPointId != null && cashboxId != null) {
+					} else if (paymentPointId != null) {
 						uploadReport(reportName + PAYMENTS_SUFFIX);
 					}
 					break;
@@ -137,13 +145,12 @@ public abstract class AccPaymentsReportAction extends AccountantAWPActionSupport
 
 
 	private void uploadReport(String reportName) throws Exception {
-
 		reportUtil.uploadReportTemplate("WEB-INF/payments/reports/", reportName);
 	}
 
 	protected Cashbox getCashbox() {
 		//return cashboxService.read(new Stub<Cashbox>(cashboxId));
-		// FIXME
+		// TODO: FIXME
 		return null;
 	}
 
@@ -163,11 +170,11 @@ public abstract class AccPaymentsReportAction extends AccountantAWPActionSupport
 
 		request.setDetailsLevel(details);
 
-		if (paymentPointsFilter.needFilter()) {
+		if (paymentPointsFilter != null && paymentPointsFilter.needFilter()) {
 			request.setPaymentPointId(paymentPointsFilter.getSelectedId());
 		}
 
-		if (cashboxFilter.needFilter()) {
+		if (cashboxFilter != null && cashboxFilter.needFilter()) {
 			request.setCashboxId(cashboxFilter.getSelectedId());
 		}
 
@@ -187,14 +194,13 @@ public abstract class AccPaymentsReportAction extends AccountantAWPActionSupport
 
 		if (paymentPointsFilter.needFilter()) {
 			cashboxFilter.initFilter(session);
-			cashboxService.initFilter(CollectionUtils.arrayStack(paymentPointsFilter), cashboxFilter);
+			cashboxService.initFilter(arrayStack(paymentPointsFilter), cashboxFilter);
 		}
 	}
 
 	@NotNull
 	@Override
 	protected String getErrorResult() {
-
 		return SUCCESS;
 	}
 
@@ -256,12 +262,15 @@ public abstract class AccPaymentsReportAction extends AccountantAWPActionSupport
 		this.details = details;
 	}
 
+	public void setFormat(String format) {
+		this.format = format;
+	}
+
 	// report file
 	public FPFile getReport() {
 		return report;
 	}
 
-	// required services
 	@Required
 	public void setPaymentPointService(PaymentPointService paymentPointService) {
 		this.paymentPointService = paymentPointService;
