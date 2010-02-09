@@ -3,8 +3,9 @@ package org.flexpay.payments.persistence.config;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.common.persistence.Stub;
-import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.payments.persistence.ServiceType;
+
+import static org.flexpay.common.persistence.Stub.stub;
 
 public class MbServiceTypeMapping extends DomainObject {
 

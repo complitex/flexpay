@@ -4,18 +4,19 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.common.persistence.Stub;
-import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.persistence.registry.RegistryRecord;
 import org.flexpay.common.util.CollectionUtils;
+import org.flexpay.orgs.persistence.Cashbox;
 import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.orgs.persistence.PaymentPoint;
-import org.flexpay.orgs.persistence.Cashbox;
 import org.jetbrains.annotations.NotNull;
 
 import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Set;
+
+import static org.flexpay.common.persistence.Stub.stub;
 
 /**
  * Financial operation

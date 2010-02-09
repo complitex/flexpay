@@ -1,17 +1,16 @@
 package org.flexpay.payments.actions.tradingday;
 
 import org.flexpay.common.persistence.Stub;
-import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.process.ProcessManager;
 import org.flexpay.orgs.persistence.Cashbox;
 import org.flexpay.orgs.persistence.PaymentPoint;
-import org.flexpay.orgs.service.CashboxService;
-import org.flexpay.orgs.service.PaymentPointService;
 import org.flexpay.payments.actions.OperatorAWPActionSupport;
-import static org.flexpay.payments.process.handlers.AccounterAssignmentHandler.ACCOUNTER;
-import static org.flexpay.payments.process.handlers.PaymentCollectorAssignmentHandler.PAYMENT_COLLECTOR;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
+
+import static org.flexpay.common.persistence.Stub.stub;
+import static org.flexpay.payments.process.handlers.AccounterAssignmentHandler.ACCOUNTER;
+import static org.flexpay.payments.process.handlers.PaymentCollectorAssignmentHandler.PAYMENT_COLLECTOR;
 
 public class ProcessTradingDayControlPanelAction extends OperatorAWPActionSupport {
 
@@ -19,8 +18,6 @@ public class ProcessTradingDayControlPanelAction extends OperatorAWPActionSuppor
 	private PaymentPoint paymentPoint = new PaymentPoint();
 	private TradingDayControlPanel tradingDayControlPanel = new TradingDayControlPanel();
 
-	private CashboxService cashboxService;
-	private PaymentPointService paymentPointService;
 	private ProcessManager processManager;
 
 	@NotNull
@@ -88,16 +85,6 @@ public class ProcessTradingDayControlPanelAction extends OperatorAWPActionSuppor
 
 	public void setTradingDayControlPanel(TradingDayControlPanel tradingDayControlPanel) {
 		this.tradingDayControlPanel = tradingDayControlPanel;
-	}
-
-	@Required
-	public void setCashboxService(CashboxService cashboxService) {
-		this.cashboxService = cashboxService;
-	}
-
-	@Required
-	public void setPaymentPointService(PaymentPointService paymentPointService) {
-		this.paymentPointService = paymentPointService;
 	}
 
 	@Required

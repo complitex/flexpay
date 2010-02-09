@@ -2,11 +2,8 @@ package org.flexpay.payments.util.registries;
 
 import org.apache.commons.lang.StringUtils;
 import org.flexpay.common.exception.FlexPayException;
-import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.persistence.registry.*;
 import org.flexpay.common.service.*;
-import static org.flexpay.common.util.RegistryUtil.BANK_PAYMENT_CONTAINER_CODE;
-import static org.flexpay.common.util.RegistryUtil.CONTAINER_BODY_SEPARATOR;
 import org.flexpay.common.util.StringUtil;
 import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.orgs.persistence.PaymentPoint;
@@ -24,6 +21,10 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+
+import static org.flexpay.common.persistence.Stub.stub;
+import static org.flexpay.common.util.RegistryUtil.BANK_PAYMENT_CONTAINER_CODE;
+import static org.flexpay.common.util.RegistryUtil.CONTAINER_BODY_SEPARATOR;
 
 @Transactional (readOnly = true)
 public class EndOperationDayRegistryGeneratorImpl implements EndOperationDayRegistryGenerator {

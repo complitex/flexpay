@@ -4,8 +4,8 @@ import org.apache.commons.lang.StringUtils;
 import org.flexpay.common.dao.impl.ldap.UserPreferencesContextMapper;
 import org.flexpay.common.util.config.UserPreferences;
 import org.flexpay.payments.util.config.PaymentsUserPreferences;
-import org.springframework.ldap.core.DirContextOperations;
 import org.jetbrains.annotations.Nullable;
+import org.springframework.ldap.core.DirContextOperations;
 
 public class PaymentsUserPreferencesContextMapper implements UserPreferencesContextMapper {
 

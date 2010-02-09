@@ -1,7 +1,7 @@
 package org.flexpay.payments.persistence;
 
-import org.flexpay.common.persistence.ValueObject;
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.flexpay.common.persistence.ValueObject;
 
 public class OperationAddition extends ValueObject {
 

@@ -10,7 +10,6 @@ import org.flexpay.orgs.persistence.*;
 import org.flexpay.orgs.service.*;
 import org.flexpay.payments.persistence.*;
 import org.flexpay.payments.reports.payments.*;
-import static org.flexpay.payments.reports.payments.PaymentsPrintInfoData.OperationPrintInfo;
 import org.flexpay.payments.service.DocumentService;
 import org.flexpay.payments.service.OperationService;
 import org.flexpay.payments.service.SPService;
@@ -24,6 +23,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+
+import static org.flexpay.payments.reports.payments.PaymentsPrintInfoData.OperationPrintInfo;
 
 public class PaymentsReporterImpl implements PaymentsReporter {
 

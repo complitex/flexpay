@@ -35,7 +35,7 @@
 
 		<action name="fileUploadProgress"
 				class="org.flexpay.common.actions.FileUploadProgressAction">
-			<result name="success" type="rawtext"/>
+			<result type="rawtext"/>
 		</action>
 
 		<action name="welcome">

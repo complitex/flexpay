@@ -5,13 +5,14 @@ import org.flexpay.common.persistence.DomainObjectWithStatus;
 import org.flexpay.common.persistence.Language;
 import org.flexpay.common.persistence.MeasureUnit;
 import org.flexpay.common.persistence.Stub;
-import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.util.TranslationUtil;
 import org.flexpay.orgs.persistence.ServiceProvider;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
+
+import static org.flexpay.common.persistence.Stub.stub;
 
 public class Service extends DomainObjectWithStatus {
 

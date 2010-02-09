@@ -7,12 +7,11 @@ import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.process.job.Job;
 import org.flexpay.common.service.RegistryFPFileTypeService;
 import org.flexpay.orgs.persistence.Organization;
-import org.flexpay.orgs.persistence.PaymentPoint;
 import org.flexpay.orgs.persistence.PaymentCollector;
+import org.flexpay.orgs.persistence.PaymentPoint;
 import org.flexpay.orgs.service.OrganizationService;
-import org.flexpay.orgs.service.PaymentPointService;
 import org.flexpay.orgs.service.PaymentCollectorService;
-import static org.flexpay.payments.process.export.job.ExportJobParameterNames.*;
+import org.flexpay.orgs.service.PaymentPointService;
 import org.flexpay.payments.util.registries.EndOperationDayRegistryGenerator;
 import org.flexpay.payments.util.registries.ExportBankPaymentsRegistry;
 import org.springframework.beans.factory.annotation.Required;
@@ -20,6 +19,8 @@ import org.springframework.beans.factory.annotation.Required;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Map;
+
+import static org.flexpay.payments.process.export.job.ExportJobParameterNames.*;
 
 public class GenerateEndOperationDayRegistryJob extends Job {
 

@@ -8,7 +8,6 @@ import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.persistence.ImportError;
 import org.flexpay.common.persistence.Stub;
-import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.persistence.registry.RegistryRecord;
 import org.flexpay.common.service.RegistryRecordService;
 import org.flexpay.common.service.importexport.ClassToTypeRegistry;
@@ -22,6 +21,8 @@ import org.flexpay.payments.persistence.ServiceTypeNameTranslation;
 import org.flexpay.payments.service.ServiceTypeService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
+
+import static org.flexpay.common.persistence.Stub.stub;
 
 public class CorrectAddressAction extends FPActionWithPagerSupport<Apartment> implements CashboxAware {
 

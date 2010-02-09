@@ -1,11 +1,8 @@
 package org.flexpay.common.actions;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang.StringUtils;
-import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.service.FPFileService;
-import org.flexpay.common.util.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
@@ -16,6 +13,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+
+import static org.apache.commons.lang.StringUtils.isNotBlank;
+import static org.flexpay.common.persistence.Stub.stub;
+import static org.flexpay.common.util.StringUtil.getFileExtension;
+import static org.flexpay.common.util.StringUtil.getFileNameWithoutExtension;
 
 public class FileDownloadServlet extends HttpServlet {
 
@@ -30,13 +32,13 @@ public class FileDownloadServlet extends HttpServlet {
 
 		isInline = request.getParameter("inline") != null;
 
-		String fileIdStr = StringUtil.getFileNameWithoutExtension(request.getRequestURI());
+		String fileIdStr = getFileNameWithoutExtension(request.getRequestURI());
 		log.debug("Request uri: {}", request.getRequestURI());
 		log.debug("Request url: {}", request.getRequestURL());
 		log.debug("QueryString: {}", request.getQueryString());
 		log.debug("FileId: {}", fileIdStr);
 
-		if (StringUtils.isNotBlank(fileIdStr)) {
+		if (isNotBlank(fileIdStr)) {
 			try {
 				file.setId(Long.parseLong(fileIdStr));
 			} catch (NumberFormatException ex) {
@@ -44,8 +46,7 @@ public class FileDownloadServlet extends HttpServlet {
 			}
 		}
 
-		ApplicationContext context = WebApplicationContextUtils
-				.getRequiredWebApplicationContext(getServletContext());
+		ApplicationContext context = WebApplicationContextUtils.getRequiredWebApplicationContext(getServletContext());
 
 		FPFileService fileService = (FPFileService) context.getBean("fpFileService");
 
@@ -101,13 +102,15 @@ public class FileDownloadServlet extends HttpServlet {
 
 	public String getContentType() {
 		String result;
-		String ext = StringUtil.getFileExtension(getFileName());
+		String ext = getFileExtension(getFileName());
 		if (".pdf".equalsIgnoreCase(ext)) {
 			result = "application/pdf";
 		} else if (".csv".equalsIgnoreCase(ext)) {
 			result = "text/csv";
 		} else if (".txt".equalsIgnoreCase(ext)) {
 			result = "text/txt";
+		} else if (".html".equalsIgnoreCase(ext)) {
+			result = "text/html";
 		} else {
 			result = "application/unknown";
 		}

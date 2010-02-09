@@ -1,12 +1,12 @@
 package org.flexpay.payments.dao;
 
-import org.flexpay.payments.persistence.RegistryDeliveryHistory;
 import org.flexpay.common.dao.GenericDao;
 import org.flexpay.common.dao.paging.Page;
+import org.flexpay.payments.persistence.RegistryDeliveryHistory;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.List;
 import java.util.Date;
+import java.util.List;
 
 public interface RegistryDeliveryHistoryDao extends GenericDao<RegistryDeliveryHistory, Long> {
     /**

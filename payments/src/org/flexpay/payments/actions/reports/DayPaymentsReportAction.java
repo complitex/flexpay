@@ -8,14 +8,9 @@ import org.flexpay.common.persistence.filter.BeginDateFilter;
 import org.flexpay.common.persistence.filter.BeginTimeFilter;
 import org.flexpay.common.persistence.filter.EndTimeFilter;
 import org.flexpay.common.service.reporting.ReportUtil;
-import static org.flexpay.common.util.CollectionUtils.ar;
-import static org.flexpay.common.util.CollectionUtils.map;
 import org.flexpay.common.util.DateUtil;
-import static org.flexpay.common.util.config.ApplicationConfig.isResourceAvailable;
 import org.flexpay.orgs.persistence.Cashbox;
 import org.flexpay.orgs.persistence.PaymentPoint;
-import org.flexpay.orgs.service.CashboxService;
-import org.flexpay.orgs.service.PaymentPointService;
 import org.flexpay.payments.actions.OperatorAWPActionSupport;
 import org.flexpay.payments.reports.payments.PaymentsPrintInfoData;
 import org.flexpay.payments.reports.payments.PaymentsReporter;
@@ -24,6 +19,10 @@ import org.springframework.beans.factory.annotation.Required;
 
 import java.util.Date;
 import java.util.Map;
+
+import static org.flexpay.common.util.CollectionUtils.ar;
+import static org.flexpay.common.util.CollectionUtils.map;
+import static org.flexpay.common.util.config.ApplicationConfig.isResourceAvailable;
 
 /**
  * Provides functionality for creating report about payments performed in one day
@@ -35,23 +34,6 @@ import java.util.Map;
  */
 public abstract class DayPaymentsReportAction extends OperatorAWPActionSupport {
 
-	// form data
-	private BeginDateFilter beginDateFilter = new BeginDateFilter();
-	private BeginTimeFilter beginTimeFilter = new BeginTimeFilter();
-	private EndTimeFilter endTimeFilter = new EndTimeFilter();
-	protected boolean showDetails;
-
-	// report file
-	private FPFile report;
-
-	// reporter
-	protected PaymentsReporter paymentsReporter;
-
-	// required services
-	private ReportUtil reportUtil;
-	private CashboxService cashboxService;
-	private PaymentPointService paymentPointService;
-
 	// report parameter names
 	private static final String CASHIER_FIO = "cashierFio";
 	private static final String CREATION_DATE = "creationDate";
@@ -61,7 +43,18 @@ public abstract class DayPaymentsReportAction extends OperatorAWPActionSupport {
 	private static final String PAYMENT_POINT_ADDRESS = "paymentPointAddress";
 	private static final String PAYMENT_COLLECTOR_ORG_NAME = "paymentCollectorOrgName";
 
+	private BeginDateFilter beginDateFilter = new BeginDateFilter();
+	private BeginTimeFilter beginTimeFilter = new BeginTimeFilter();
+	private EndTimeFilter endTimeFilter = new EndTimeFilter();
+	protected boolean showDetails;
+	private String format;
+	private FPFile report;
+
+	protected PaymentsReporter paymentsReporter;
+	private ReportUtil reportUtil;
+
 	@NotNull
+	@Override
 	protected String doExecute() throws Exception {
 
 		if (isNotSubmit()) {
@@ -80,7 +73,15 @@ public abstract class DayPaymentsReportAction extends OperatorAWPActionSupport {
 		JRDataSource dataSource = new JRBeanCollectionDataSource(data.getOperationDetailses());
 
 		String reportName = ensureReportTemplateUploaded();
-		report = reportUtil.exportToPdf(reportName, params, dataSource, getUserPreferences().getLocale());
+		if ("pdf".equals(format)) {
+			report = reportUtil.exportToPdf(reportName, params, dataSource, getUserPreferences().getLocale());
+		} else if ("html".equals(format)) {
+			report = reportUtil.exportToHtml(reportName, params, dataSource, getUserPreferences().getLocale());
+		} else if ("csv".equals(format)) {
+			report = reportUtil.exportToCsv(reportName, params, dataSource, getUserPreferences().getLocale());
+		} else {
+			return SUCCESS;
+		}
 
 		return FILE;
 	}
@@ -110,9 +111,6 @@ public abstract class DayPaymentsReportAction extends OperatorAWPActionSupport {
 	 */
 	protected abstract String getReportBaseName();
 
-	/**
-	 * {@inheritDoc}
-	 */
 	protected String getReportName() {
 
 		Long paymentPointId = getPaymentPoint().getId();
@@ -146,6 +144,7 @@ public abstract class DayPaymentsReportAction extends OperatorAWPActionSupport {
 	}
 
 	@NotNull
+	@Override
 	protected String getErrorResult() {
 		return SUCCESS;
 	}
@@ -187,7 +186,10 @@ public abstract class DayPaymentsReportAction extends OperatorAWPActionSupport {
 		return report;
 	}
 
-	// required services
+	public void setFormat(String format) {
+		this.format = format;
+	}
+
 	@Required
 	public void setReportUtil(ReportUtil reportUtil) {
 		this.reportUtil = reportUtil;
@@ -198,13 +200,4 @@ public abstract class DayPaymentsReportAction extends OperatorAWPActionSupport {
 		this.paymentsReporter = paymentsReporter;
 	}
 
-	@Required
-	public void setCashboxService(CashboxService cashboxService) {
-		this.cashboxService = cashboxService;
-	}
-
-	@Required
-	public void setPaymentPointService(PaymentPointService paymentPointService) {
-		this.paymentPointService = paymentPointService;
-	}
 }

@@ -6,25 +6,30 @@
 		   http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
 		   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
-	<bean id="staticPageAction" scope="prototype"
-		  class="org.flexpay.common.actions.StaticPageAction" />
+	<bean id="staticPageAction"
+		  class="org.flexpay.common.actions.StaticPageAction"
+          scope="prototype" />
 
-	<bean id="staticPageAdminAction" scope="prototype"
-		  class="org.flexpay.common.actions.StaticPageAdminAction" />
+	<bean id="staticPageAdminAction"
+		  class="org.flexpay.common.actions.StaticPageAdminAction"
+          scope="prototype" />
 
-	<bean id="menuPageAction" scope="prototype"
-		  class="org.flexpay.common.actions.MenuPageAction" />
+	<bean id="menuPageAction"
+		  class="org.flexpay.common.actions.MenuPageAction"
+          scope="prototype" />
 
-	<bean id="printAction" scope="prototype"
-		  class="org.flexpay.common.actions.FilePrintAction" />
+	<bean id="printAction"
+		  class="org.flexpay.common.actions.FilePrintAction"
+          p:fpFileService-ref="fpFileService"
+          scope="prototype" />
 
 	<!-- Locale setter bean -->
 	<bean class="org.flexpay.common.util.config.auth.UpdateUserPreferencesApplicationListener"
 		  p:preferencesService-ref="userPreferencesService" />
 
 	<bean id="processesCleanupAction"
-		  scope="prototype"
 		  class="org.flexpay.common.actions.jbpm.ProcessesCleanupAction"
-		  p:processManager-ref="processManager" />
+		  p:processManager-ref="processManager"
+          scope="prototype" />
 
 </beans>

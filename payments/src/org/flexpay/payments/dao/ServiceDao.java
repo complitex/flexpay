@@ -3,8 +3,8 @@ package org.flexpay.payments.dao;
 import org.flexpay.common.dao.GenericDao;
 import org.flexpay.payments.persistence.Service;
 
-import java.util.List;
 import java.util.Date;
+import java.util.List;
 
 public interface ServiceDao extends GenericDao<Service, Long> {
 

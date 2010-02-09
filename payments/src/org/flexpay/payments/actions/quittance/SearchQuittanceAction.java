@@ -17,7 +17,6 @@ import org.flexpay.payments.persistence.Service;
 import org.flexpay.payments.persistence.quittance.ConsumerAttributes;
 import org.flexpay.payments.persistence.quittance.QuittanceDetailsRequest;
 import org.flexpay.payments.persistence.quittance.QuittanceDetailsResponse;
-import static org.flexpay.payments.persistence.quittance.QuittanceDetailsResponse.*;
 import org.flexpay.payments.service.QuittanceDetailsFinder;
 import org.flexpay.payments.service.SPService;
 import org.flexpay.payments.util.ServiceTypesMapper;
@@ -26,6 +25,8 @@ import org.springframework.beans.factory.annotation.Required;
 
 import java.math.BigDecimal;
 import java.util.List;
+
+import static org.flexpay.payments.persistence.quittance.QuittanceDetailsResponse.*;
 
 public class SearchQuittanceAction extends OperatorAWPActionSupport {
 

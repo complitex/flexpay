@@ -2,9 +2,9 @@ package org.flexpay.payments.dao;
 
 import org.flexpay.common.dao.GenericDao;
 import org.flexpay.common.persistence.DateRange;
+import org.flexpay.orgs.persistence.PaymentPoint;
 import org.flexpay.payments.persistence.Document;
 import org.flexpay.payments.persistence.Service;
-import org.flexpay.orgs.persistence.PaymentPoint;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Date;

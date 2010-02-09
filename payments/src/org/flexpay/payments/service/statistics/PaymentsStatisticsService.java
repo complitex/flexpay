@@ -1,9 +1,9 @@
 package org.flexpay.payments.service.statistics;
 
 import org.flexpay.common.persistence.Stub;
+import org.flexpay.orgs.persistence.Cashbox;
 import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.orgs.persistence.PaymentPoint;
-import org.flexpay.orgs.persistence.Cashbox;
 import org.flexpay.payments.service.Roles;
 import org.springframework.security.annotation.Secured;
 

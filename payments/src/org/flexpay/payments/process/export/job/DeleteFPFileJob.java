@@ -1,19 +1,19 @@
 package org.flexpay.payments.process.export.job;
 
+import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.persistence.registry.RegistryFPFileType;
-import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.process.job.Job;
 import org.flexpay.common.service.FPFileService;
 import org.flexpay.common.service.RegistryService;
-import org.flexpay.common.dao.paging.Page;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.io.Serializable;
-import java.util.Map;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Delete file

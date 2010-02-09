@@ -11,6 +11,7 @@ public class AccPaymentsReportRequest {
 
 	private int paymentStatus;
 	private int detailsLevel;
+	private String format;
 	private Date beginDate;
 	private Date endDate;
 	private Long paymentPointId;
@@ -71,5 +72,13 @@ public class AccPaymentsReportRequest {
 
 	public void setLocale(Locale locale) {
 		this.locale = locale;
+	}
+
+	public String getFormat() {
+		return format;
+	}
+
+	public void setFormat(String format) {
+		this.format = format;
 	}
 }

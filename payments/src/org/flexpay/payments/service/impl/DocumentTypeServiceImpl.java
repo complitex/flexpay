@@ -1,7 +1,7 @@
 package org.flexpay.payments.service.impl;
 
-import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.exception.FlexPayException;
+import org.flexpay.common.persistence.Stub;
 import org.flexpay.payments.dao.DocumentTypeDao;
 import org.flexpay.payments.persistence.DocumentType;
 import org.flexpay.payments.service.DocumentTypeService;

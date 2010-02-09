@@ -46,7 +46,7 @@ public class TariffCalcRulesFileEditAction extends FPActionSupport {
 			return REDIRECT_SUCCESS;
 		}
 
-		if (!isSubmit()) {
+		if (isNotSubmit()) {
 			initNames();
 			return INPUT;
 		}

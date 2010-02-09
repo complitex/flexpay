@@ -5,7 +5,6 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.common.persistence.FPModule;
-import org.flexpay.common.util.DateUtil;
 import org.flexpay.common.util.FPFileUtil;
 import org.flexpay.common.util.FileSource;
 import org.flexpay.common.util.StringUtil;
@@ -26,7 +25,7 @@ public class FPFile extends DomainObject implements DataSource {
 	private String userName;
 	private String description;
 	private Long size = 0L;
-	private Date creationDate = DateUtil.now();
+	private Date creationDate = new Date();
 	private FPModule module;
 
 	public String getNameOnServer() {

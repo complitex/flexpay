@@ -7,12 +7,11 @@ import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.persistence.registry.RegistryFPFileType;
 import org.flexpay.common.process.job.Job;
 import org.flexpay.common.service.FPFileService;
-import org.flexpay.common.service.RegistryService;
 import org.flexpay.common.service.RegistryFPFileTypeService;
+import org.flexpay.common.service.RegistryService;
 import org.flexpay.common.util.config.ApplicationConfig;
 import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.orgs.service.OrganizationService;
-import static org.flexpay.payments.process.export.job.ExportJobParameterNames.*;
 import org.flexpay.payments.service.registry.PaymentsRegistryMBGenerator;
 import org.springframework.beans.factory.annotation.Required;
 
@@ -25,6 +24,8 @@ import java.security.Signature;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.util.Arrays;
 import java.util.Map;
+
+import static org.flexpay.payments.process.export.job.ExportJobParameterNames.*;
 
 public class GeneratePaymentsMBRegistryJob extends Job {
 

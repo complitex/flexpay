@@ -42,7 +42,7 @@ public class AccReturnedPaymentsReportAction extends AccPaymentsReportAction {
 					return ACC_RETURNED_ALL_PAYMENT_POINTS_CASHBOXES;
 				} else if (paymentPointId != null && cashboxId == null) {
 					return ACC_RETURNED_PAYMENT_POINT_CASHBOXES;
-				} else if (paymentPointId != null && cashboxId != null) {
+				} else if (paymentPointId != null) {
 					return ACC_RETURNED_CASHBOX;
 				}
 				break;
@@ -51,7 +51,7 @@ public class AccReturnedPaymentsReportAction extends AccPaymentsReportAction {
 					return ACC_RETURNED_ALL_PAYMENT_POINTS_PAYMENTS;
 				} else if (paymentPointId != null && cashboxId == null) {
 					return ACC_RETURNED_PAYMENT_POINT_PAYMENTS;
-				} else if (paymentPointId != null && cashboxId != null) {
+				} else if (paymentPointId != null) {
 					return ACC_RETURNED_CASHBOX_PAYMENTS;
 				}
 				break;

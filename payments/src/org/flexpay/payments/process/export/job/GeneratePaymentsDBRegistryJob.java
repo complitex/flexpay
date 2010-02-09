@@ -9,13 +9,14 @@ import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.orgs.persistence.ServiceProvider;
 import org.flexpay.orgs.service.OrganizationService;
 import org.flexpay.orgs.service.ServiceProviderService;
-import static org.flexpay.payments.process.export.job.ExportJobParameterNames.*;
 import org.flexpay.payments.service.registry.PaymentsRegistryDBGenerator;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Map;
+
+import static org.flexpay.payments.process.export.job.ExportJobParameterNames.*;
 
 public class GeneratePaymentsDBRegistryJob extends Job {
 

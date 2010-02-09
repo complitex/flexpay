@@ -2,11 +2,9 @@ package org.flexpay.payments.actions.monitor;
 
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.orgs.persistence.PaymentCollector;
-import org.flexpay.orgs.service.PaymentCollectorService;
 import org.flexpay.payments.actions.AccountantAWPActionSupport;
 import org.flexpay.payments.util.config.PaymentsUserPreferences;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.beans.factory.annotation.Required;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -16,8 +14,6 @@ public class PaymentPointsListMonitorPageAction extends AccountantAWPActionSuppo
 	private static final SimpleDateFormat formatTime = new SimpleDateFormat("HH:mm");
 
     private String updated;
-
-	private PaymentCollectorService paymentCollectorService;
 
     @NotNull
     @Override
@@ -53,10 +49,5 @@ public class PaymentPointsListMonitorPageAction extends AccountantAWPActionSuppo
     public String getUpdated() {
         return updated;
     }
-
-	@Required
-	public void setPaymentCollectorService(PaymentCollectorService paymentCollectorService) {
-		this.paymentCollectorService = paymentCollectorService;
-	}
 
 }

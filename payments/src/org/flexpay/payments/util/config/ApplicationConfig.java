@@ -1,8 +1,8 @@
 package org.flexpay.payments.util.config;
 
-import org.flexpay.payments.service.Security;
-import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.common.persistence.Stub;
+import org.flexpay.orgs.persistence.Organization;
+import org.flexpay.payments.service.Security;
 import org.springframework.beans.factory.annotation.Required;
 
 public class ApplicationConfig {

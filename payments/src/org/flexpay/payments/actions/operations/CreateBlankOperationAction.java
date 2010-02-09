@@ -3,7 +3,6 @@ package org.flexpay.payments.actions.operations;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.util.SecurityUtil;
 import org.flexpay.orgs.persistence.Cashbox;
-import org.flexpay.orgs.service.CashboxService;
 import org.flexpay.payments.actions.OperatorAWPActionSupport;
 import org.flexpay.payments.persistence.Operation;
 import org.flexpay.payments.service.OperationService;
@@ -20,7 +19,6 @@ public class CreateBlankOperationAction extends OperatorAWPActionSupport {
 	private Long operationId;
 
 	private OperationService operationService;
-	private CashboxService cashboxService;
 
 	@NotNull
 	@Override
@@ -73,11 +71,6 @@ public class CreateBlankOperationAction extends OperatorAWPActionSupport {
 	@Required
 	public void setOperationService(OperationService operationService) {
 		this.operationService = operationService;
-	}
-
-	@Required
-	public void setCashboxService(CashboxService cashboxService) {
-		this.cashboxService = cashboxService;
 	}
 
 }

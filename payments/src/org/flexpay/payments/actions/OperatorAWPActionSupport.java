@@ -14,8 +14,8 @@ public abstract class OperatorAWPActionSupport extends FPActionSupport implement
 	protected Long cashboxId;
 
 	// required services
-	private CashboxService cashboxService;
-	private PaymentPointService paymentPointService;
+	protected CashboxService cashboxService;
+	protected PaymentPointService paymentPointService;
 
 	public String getCashboxInfoString() {
 

@@ -5,7 +5,6 @@ import org.flexpay.common.process.ProcessManager;
 import org.flexpay.common.util.BigDecimalUtil;
 import org.flexpay.orgs.persistence.Cashbox;
 import org.flexpay.orgs.persistence.PaymentPoint;
-import org.flexpay.orgs.service.PaymentPointService;
 import org.flexpay.payments.actions.PaymentOperationAction;
 import org.flexpay.payments.persistence.Operation;
 import org.flexpay.payments.process.export.TradingDay;
@@ -22,8 +21,6 @@ public class QuittancePayAction extends PaymentOperationAction {
 
 	// required services
 	private ProcessManager processManager;
-
-	private PaymentPointService paymentPointService;
 
 	@NotNull
 	protected String doExecute() throws Exception {
@@ -121,11 +118,8 @@ public class QuittancePayAction extends PaymentOperationAction {
 			return false;
 		}
 
-		if (inputSumm.compareTo(summ) != 0) {
-			return false;
-		}
+		return inputSumm.compareTo(summ) == 0;
 
-		return true;
 	}
 
 	@NotNull
@@ -142,8 +136,4 @@ public class QuittancePayAction extends PaymentOperationAction {
 		this.processManager = processManager;
 	}
 
-	@Required
-	public void setPaymentPointService(PaymentPointService paymentPointService) {
-		this.paymentPointService = paymentPointService;
-	}
 }

@@ -1,7 +1,7 @@
 package org.flexpay.payments.service.history;
 
-import org.flexpay.common.persistence.history.impl.HistoryHandlerBase;
 import org.flexpay.common.persistence.history.Diff;
+import org.flexpay.common.persistence.history.impl.HistoryHandlerBase;
 import org.flexpay.payments.persistence.Service;
 import org.flexpay.payments.service.SPService;
 import org.jetbrains.annotations.NotNull;

@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Required;
 public abstract class AccountantAWPWithPagerActionSupport<T> extends FPActionWithPagerSupport<T> {
 
 	// required services
-	private PaymentCollectorService paymentCollectorService;
+	protected PaymentCollectorService paymentCollectorService;
 
 	public String getPaymentCollectorInfoString() {
 

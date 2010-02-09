@@ -1,5 +1,6 @@
 <%@include file="/WEB-INF/jsp/common/taglibs.jsp"%>
 <%@include file="/WEB-INF/jsp/common/includes/jquery_timeentry.jsp"%>
+<%@include file="/WEB-INF/jsp/common/includes/jquery_bbq.jsp"%>
 <%@include file="/WEB-INF/jsp/payments/include/stylesheet.jsp"%>
 
 <%-- filters are temporary hidden! --%>
@@ -69,7 +70,11 @@
     }
 
     function printQuittance(opId) {
-        window.open("<s:url action="paymentOperationReportAction" includeParams="none" />?copy=true&operationId=" + opId, "_blank");
+        var params = {
+            copy: true,
+            operationId: opId
+        };
+        window.open($.param.querystring("<s:url action="paymentOperationReportAction" includeParams="none" />", params), "_blank");
     }
 
     function showButtons(state) {

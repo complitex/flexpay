@@ -1,12 +1,12 @@
 package org.flexpay.payments.reports.payments;
 
-import org.flexpay.common.util.CollectionUtils;
 import org.apache.commons.lang.builder.ToStringBuilder;
+import org.flexpay.common.util.CollectionUtils;
 
-import java.util.List;
-import java.util.Date;
-import java.util.Map;
 import java.math.BigDecimal;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Represents information of received payments report

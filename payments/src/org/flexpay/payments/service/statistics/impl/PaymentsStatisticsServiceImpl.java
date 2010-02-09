@@ -1,15 +1,15 @@
 package org.flexpay.payments.service.statistics.impl;
 
 import org.flexpay.common.persistence.Stub;
+import org.flexpay.orgs.persistence.Cashbox;
 import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.orgs.persistence.PaymentPoint;
 import org.flexpay.payments.dao.PaymentStatisticsDaoExt;
 import org.flexpay.payments.service.statistics.OperationTypeStatistics;
 import org.flexpay.payments.service.statistics.PaymentsStatisticsService;
 import org.flexpay.payments.service.statistics.ServicePaymentsStatistics;
-import org.flexpay.orgs.persistence.Cashbox;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;

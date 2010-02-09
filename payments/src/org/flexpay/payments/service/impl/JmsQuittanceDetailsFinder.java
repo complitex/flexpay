@@ -28,11 +28,13 @@ public class JmsQuittanceDetailsFinder implements QuittanceDetailsFinder {
 	 * @return Details response
 	 */
 	@NotNull
+	@Override
 	public QuittanceDetailsResponse findQuittance(final QuittanceDetailsRequest request) {
 
 		request.setRequestId(ApplicationConfig.getInstanceId() + System.currentTimeMillis());
 
 		jmsTemplate.send(requestQueue, new MessageCreator() {
+			@Override
 			public Message createMessage(Session session) throws JMSException {
 				ObjectMessage msg = session.createObjectMessage(request);
 				msg.setJMSReplyTo(responseQueue);

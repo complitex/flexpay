@@ -2,14 +2,12 @@ package org.flexpay.payments.process.export;
 
 import org.flexpay.common.dao.paging.FetchRange;
 import org.flexpay.common.persistence.Stub;
-import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.process.Process;
 import org.flexpay.common.process.ProcessManager;
 import org.flexpay.common.process.exception.ProcessDefinitionException;
 import org.flexpay.common.process.exception.ProcessInstanceException;
 import org.flexpay.common.service.Roles;
 import org.flexpay.common.util.CollectionUtils;
-import static org.flexpay.common.util.CollectionUtils.list;
 import org.flexpay.common.util.DateUtil;
 import org.flexpay.common.util.SecurityUtil;
 import org.flexpay.orgs.persistence.Organization;
@@ -20,7 +18,6 @@ import org.flexpay.orgs.service.PaymentCollectorService;
 import org.flexpay.orgs.service.ServiceProviderAttributeService;
 import org.flexpay.orgs.service.ServiceProviderService;
 import org.flexpay.payments.process.export.job.ExportJobParameterNames;
-import static org.flexpay.payments.process.export.job.ExportJobParameterNames.*;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.slf4j.Logger;
@@ -32,6 +29,10 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+
+import static org.flexpay.common.persistence.Stub.stub;
+import static org.flexpay.common.util.CollectionUtils.list;
+import static org.flexpay.payments.process.export.job.ExportJobParameterNames.*;
 
 /**
  * Scheduling job generate payments registries for all service providers and registered organizations.

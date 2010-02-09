@@ -1,16 +1,12 @@
 package org.flexpay.payments.actions.monitor;
 
 import org.flexpay.common.persistence.Stub;
-import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.process.Process;
 import org.flexpay.common.process.ProcessManager;
-import static org.flexpay.common.util.CollectionUtils.list;
-import static org.flexpay.common.util.DateUtil.now;
 import org.flexpay.orgs.persistence.Cashbox;
 import org.flexpay.orgs.persistence.PaymentCollector;
 import org.flexpay.orgs.persistence.PaymentPoint;
 import org.flexpay.orgs.service.CashboxService;
-import org.flexpay.orgs.service.PaymentCollectorService;
 import org.flexpay.payments.actions.AccountantAWPWithPagerActionSupport;
 import org.flexpay.payments.actions.monitor.data.PaymentPointMonitorContainer;
 import org.flexpay.payments.persistence.Operation;
@@ -28,6 +24,10 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import static org.flexpay.common.persistence.Stub.stub;
+import static org.flexpay.common.util.CollectionUtils.list;
+import static org.flexpay.common.util.DateUtil.now;
+
 public class PaymentPointsListMonitorAction extends AccountantAWPWithPagerActionSupport<PaymentPointMonitorContainer> {
 
     private static final SimpleDateFormat formatTime = new SimpleDateFormat("HH:mm");
@@ -38,7 +38,6 @@ public class PaymentPointsListMonitorAction extends AccountantAWPWithPagerAction
     private PaymentsStatisticsService paymentsStatisticsService;
     private OperationService operationService;
     private CashboxService cashboxService;
-    private PaymentCollectorService paymentCollectorService;
 
     @NotNull
     @Override
@@ -156,11 +155,6 @@ public class PaymentPointsListMonitorAction extends AccountantAWPWithPagerAction
     @Required
     public void setCashboxService(CashboxService cashboxService) {
         this.cashboxService = cashboxService;
-    }
-
-    @Required
-    public void setPaymentCollectorService(PaymentCollectorService paymentCollectorService) {
-        this.paymentCollectorService = paymentCollectorService;
     }
 
 	@Required

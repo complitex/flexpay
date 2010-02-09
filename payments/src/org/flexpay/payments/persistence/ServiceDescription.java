@@ -1,7 +1,7 @@
 package org.flexpay.payments.persistence;
 
-import org.flexpay.common.persistence.Translation;
 import org.flexpay.common.persistence.Language;
+import org.flexpay.common.persistence.Translation;
 import org.flexpay.common.util.config.ApplicationConfig;
 import org.jetbrains.annotations.NotNull;
 

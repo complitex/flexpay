@@ -3,12 +3,10 @@ package org.flexpay.payments.actions.service;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.persistence.Language;
 import org.flexpay.common.persistence.MeasureUnit;
-import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.persistence.filter.BeginDateFilter;
 import org.flexpay.common.persistence.filter.EndDateFilter;
 import org.flexpay.common.persistence.filter.MeasureUnitFilter;
 import org.flexpay.common.service.MeasureUnitService;
-import static org.flexpay.common.util.CollectionUtils.map;
 import org.flexpay.common.util.config.ApplicationConfig;
 import org.flexpay.orgs.persistence.filters.ServiceProviderFilter;
 import org.flexpay.orgs.service.ServiceProviderService;
@@ -22,6 +20,9 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.util.Map;
+
+import static org.flexpay.common.persistence.Stub.stub;
+import static org.flexpay.common.util.CollectionUtils.map;
 
 public class ServiceEditAction extends FPActionSupport {
 

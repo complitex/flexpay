@@ -1,7 +1,5 @@
 package org.flexpay.payments.actions.registry;
 
-import static org.apache.commons.lang.time.DateUtils.addDays;
-import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.persistence.file.FPFile;
 import org.flexpay.common.persistence.filter.*;
 import org.flexpay.common.persistence.registry.Registry;
@@ -9,8 +7,6 @@ import org.flexpay.common.persistence.registry.RegistryFPFileType;
 import org.flexpay.common.persistence.registry.RegistryProperties;
 import org.flexpay.common.service.FPFileService;
 import org.flexpay.common.service.RegistryFPFileTypeService;
-import static org.flexpay.common.util.CollectionUtils.list;
-import static org.flexpay.common.util.DateUtil.*;
 import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.orgs.persistence.filters.RecipientOrganizationFilter;
 import org.flexpay.orgs.persistence.filters.SenderOrganizationFilter;
@@ -24,6 +20,11 @@ import org.springframework.beans.factory.annotation.Required;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+
+import static org.apache.commons.lang.time.DateUtils.addDays;
+import static org.flexpay.common.persistence.Stub.stub;
+import static org.flexpay.common.util.CollectionUtils.list;
+import static org.flexpay.common.util.DateUtil.*;
 
 public class RegistriesListAction extends AccountantAWPWithPagerActionSupport<Registry> {
 

@@ -1,11 +1,12 @@
 package org.flexpay.payments.actions.service;
 
 import org.flexpay.common.actions.FPActionSupport;
-import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.payments.persistence.Service;
 import org.flexpay.payments.service.SPService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
+
+import static org.flexpay.common.persistence.Stub.stub;
 
 public class ServiceViewAction extends FPActionSupport {
 
