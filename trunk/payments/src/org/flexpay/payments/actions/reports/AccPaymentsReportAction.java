@@ -9,7 +9,9 @@ import org.flexpay.common.persistence.filter.BeginTimeFilter;
 import org.flexpay.common.persistence.filter.EndDateFilter;
 import org.flexpay.common.persistence.filter.EndTimeFilter;
 import org.flexpay.common.service.reporting.ReportUtil;
+import static org.flexpay.common.util.CollectionUtils.*;
 import org.flexpay.common.util.DateUtil;
+import org.flexpay.common.util.config.ApplicationConfig;
 import org.flexpay.orgs.persistence.Cashbox;
 import org.flexpay.orgs.persistence.PaymentCollector;
 import org.flexpay.orgs.persistence.filters.CashboxFilter;
@@ -25,8 +27,6 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.util.Map;
-
-import static org.flexpay.common.util.CollectionUtils.*;
 
 public abstract class AccPaymentsReportAction extends AccountantAWPActionSupport {
 
@@ -95,11 +95,11 @@ public abstract class AccPaymentsReportAction extends AccountantAWPActionSupport
 
 		String reportName = ensureReportTemplateUploaded(request);
 		if ("pdf".equals(format)) {
-			report = reportUtil.exportToPdf(reportName, params, dataSource, getUserPreferences().getLocale());
+			report = reportUtil.exportToPdf(reportName, params, dataSource, ApplicationConfig.getDefaultReportLocale());
 		} else if ("html".equals(format)) {
-			report = reportUtil.exportToHtml(reportName, params, dataSource, getUserPreferences().getLocale());
+			report = reportUtil.exportToHtml(reportName, params, dataSource, ApplicationConfig.getDefaultReportLocale());
 		} else if ("csv".equals(format)) {
-			report = reportUtil.exportToCsv(reportName, params, dataSource, getUserPreferences().getLocale());
+			report = reportUtil.exportToCsv(reportName, params, dataSource, ApplicationConfig.getDefaultReportLocale());
 		} else {
 			return SUCCESS;
 		}
