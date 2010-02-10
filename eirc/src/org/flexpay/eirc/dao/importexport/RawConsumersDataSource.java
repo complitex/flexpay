@@ -39,8 +39,21 @@ public class RawConsumersDataSource extends RawConsumersDataSourceBase {
 		Long[] values = registryRecordDaoExt.getMinMaxIdsForImporting(registry.getId());
 		minMaxIds[0] = values[0];
 		minMaxIds[1] = values[1];
-
 		log.info("Min and max are {}, {}", values[0], values[1]);
+
+		if (minMaxIds[0] == null || minMaxIds[1] == null) {
+			pager.setTotalElements(0);
+			List<RegistryRecord> datum = Collections.emptyList();
+			dataIterator = datum.iterator();
+			log.debug("Inited empty db data source");
+
+			return;
+		} else if (values[1].intValue() == values[0].intValue()) {
+			pager.setTotalElements(1);
+		} else {
+			pager.setTotalElements(values[1].intValue() - values[0].intValue());
+		}
+
 
 		Long minId = minMaxIds[0];
 		Long maxId = minMaxIds[0] + pager.getPageSize();
@@ -64,24 +77,30 @@ public class RawConsumersDataSource extends RawConsumersDataSourceBase {
 	 * @return <tt>true</tt> if the iterator has more elements.
 	 */
 	public boolean hasNext() {
+		if (minMaxIds[0] == null || minMaxIds[1] == null) {
+			return false;
+		}
 		if (dataIterator.hasNext()) {
 			return true;
 		}
+		do {
 
-		if (pager.getThisPageLastElementNumber() >= minMaxIds[1]) {
-			return false;
-		}
+			if (pager.getThisPageLastElementNumber() >= minMaxIds[1]) {
+				return false;
+			}
 
-		// get next page
-		int nextPage = pager.getPageNumber() + 1;
-		pager.setPageNumber(nextPage);
+			// get next page
+			int nextPage = pager.getPageNumber() + 1;
+			pager.setPageNumber(nextPage);
 
-		Long minId = minMaxIds[0] + pager.getThisPageFirstElementNumber();
-		Long maxId = minMaxIds[0] + pager.getThisPageLastElementNumber();
+			Long minId = minMaxIds[0] + pager.getThisPageFirstElementNumber();
+			Long maxId = minMaxIds[0] + pager.getThisPageLastElementNumber();
 
-		List<RegistryRecord> datum = registryRecordDaoExt.listRecordsForImport(registry.getId(), minId, maxId);
-		dataIterator = datum.iterator();
-		return dataIterator.hasNext();
+			List<RegistryRecord> datum = registryRecordDaoExt.listRecordsForImport(registry.getId(), minId, maxId);
+			dataIterator = datum.iterator();
+		} while (!dataIterator.hasNext() && !pager.isLastPage());
+
+		return dataIterator.hasNext() && !pager.isLastPage();
 	}
 
 	public List<RawConsumerData> nextPage() {
@@ -94,7 +113,6 @@ public class RawConsumersDataSource extends RawConsumersDataSourceBase {
 		while (dataIterator.hasNext()) {
 			datum.add(next(new ImportOperationTypeHolder()));
 		}
-
 		return datum;
 	}
 
