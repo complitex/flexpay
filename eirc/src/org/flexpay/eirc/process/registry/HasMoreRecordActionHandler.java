@@ -28,7 +28,6 @@ public class HasMoreRecordActionHandler extends FlexPayActionHandler {
 			log.error("Can not find '{}' in process parameters", RANGE);
 			return RESULT_ERROR;
 		}
-		range.nextPage();
 		return range.hasMore()? RESULT_CONTINUE: RESULT_NEXT;
 	}
 }
