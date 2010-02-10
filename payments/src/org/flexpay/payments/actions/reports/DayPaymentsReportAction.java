@@ -8,7 +8,11 @@ import org.flexpay.common.persistence.filter.BeginDateFilter;
 import org.flexpay.common.persistence.filter.BeginTimeFilter;
 import org.flexpay.common.persistence.filter.EndTimeFilter;
 import org.flexpay.common.service.reporting.ReportUtil;
+import static org.flexpay.common.util.CollectionUtils.ar;
+import static org.flexpay.common.util.CollectionUtils.map;
 import org.flexpay.common.util.DateUtil;
+import org.flexpay.common.util.config.ApplicationConfig;
+import static org.flexpay.common.util.config.ApplicationConfig.isResourceAvailable;
 import org.flexpay.orgs.persistence.Cashbox;
 import org.flexpay.orgs.persistence.PaymentPoint;
 import org.flexpay.payments.actions.OperatorAWPActionSupport;
@@ -19,10 +23,6 @@ import org.springframework.beans.factory.annotation.Required;
 
 import java.util.Date;
 import java.util.Map;
-
-import static org.flexpay.common.util.CollectionUtils.ar;
-import static org.flexpay.common.util.CollectionUtils.map;
-import static org.flexpay.common.util.config.ApplicationConfig.isResourceAvailable;
 
 /**
  * Provides functionality for creating report about payments performed in one day
@@ -74,11 +74,11 @@ public abstract class DayPaymentsReportAction extends OperatorAWPActionSupport {
 
 		String reportName = ensureReportTemplateUploaded();
 		if ("pdf".equals(format)) {
-			report = reportUtil.exportToPdf(reportName, params, dataSource, getUserPreferences().getLocale());
+			report = reportUtil.exportToPdf(reportName, params, dataSource, ApplicationConfig.getDefaultReportLocale());
 		} else if ("html".equals(format)) {
-			report = reportUtil.exportToHtml(reportName, params, dataSource, getUserPreferences().getLocale());
+			report = reportUtil.exportToHtml(reportName, params, dataSource, ApplicationConfig.getDefaultReportLocale());
 		} else if ("csv".equals(format)) {
-			report = reportUtil.exportToCsv(reportName, params, dataSource, getUserPreferences().getLocale());
+			report = reportUtil.exportToCsv(reportName, params, dataSource, ApplicationConfig.getDefaultReportLocale());
 		} else {
 			return SUCCESS;
 		}
