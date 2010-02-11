@@ -490,7 +490,11 @@ public class IterateFPRegistryActionHandler extends FlexPayActionHandler {
 	private boolean validateRegistry(Registry registry) {
 		EircRegistryProperties props = (EircRegistryProperties) registry.getProperties();
 		Registry persistent = eircRegistryService.getRegistryByNumber(registry.getRegistryNumber(), props.getSenderStub());
-		return persistent == null;
+		if (persistent != null) {
+			processLog.error("Registry was already uploaded");
+			return false;
+		}
+		return true;
 	}
 
 	private RegistryRecord processRecord(Map<String, Object> parameters, List<String> messageFieldList) {
