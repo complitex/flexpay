@@ -41,6 +41,8 @@ public interface OperationDao extends GenericDao<Operation, Long> {
 	 */
 	List<Operation> listPayments(Long cashboxId, Date beginDate, Date endDate, int status);
 
+	List<Operation> listPaymentsForOperator(Long cashboxId, Date beginDate, Date endDate, int status, String registerUserName);
+
 	/**
 	 * List of all payment operations which has status REGISTERED inside time interval and payment point
 	 *

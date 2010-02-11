@@ -10,6 +10,7 @@ import org.flexpay.orgs.persistence.*;
 import org.flexpay.orgs.service.*;
 import org.flexpay.payments.persistence.*;
 import org.flexpay.payments.reports.payments.*;
+import static org.flexpay.payments.reports.payments.PaymentsPrintInfoData.OperationPrintInfo;
 import org.flexpay.payments.service.DocumentService;
 import org.flexpay.payments.service.OperationService;
 import org.flexpay.payments.service.SPService;
@@ -23,8 +24,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-
-import static org.flexpay.payments.reports.payments.PaymentsPrintInfoData.OperationPrintInfo;
 
 public class PaymentsReporterImpl implements PaymentsReporter {
 
@@ -165,20 +164,12 @@ public class PaymentsReporterImpl implements PaymentsReporter {
 	public PaymentsPrintInfoData getReturnedPaymentsPrintFormData(Date begin, Date end, Stub<Cashbox> cashboxStub, Locale locale) {
 
 		Cashbox cashbox = cashboxService.read(cashboxStub);
-
-		PaymentsPrintInfoData result = new PaymentsPrintInfoData();
-		PaymentPoint paymentPoint = getPaymentPoint(cashbox);
-
+		PaymentsPrintInfoData result = buildBlankResult(begin, end, locale, cashbox);
 		result.setOperationDetailses(convert(getReturnedPayments(begin, end, cashbox)));
-		result.setCreationDate(new Date());
-		result.setBeginDate(begin);
-		result.setEndDate(end);
-		result.setPaymentPointName(TranslationUtil.getTranslation(paymentPoint.getNames(), locale).getName());
-		result.setPaymentPointAddress(paymentPoint.getAddress());
-		Organization collectorOrganization = organizationService.readFull(paymentPoint.getCollector().getOrganizationStub());
-		result.setPaymentCollectorOrgName(collectorOrganization.getName(locale));
 		return result;
 	}
+
+
 
 	/**
 	 * {@inheritDoc}
@@ -186,11 +177,40 @@ public class PaymentsReporterImpl implements PaymentsReporter {
 	public PaymentsPrintInfoData getReceivedPaymentsPrintFormData(Date begin, Date end, Stub<Cashbox> cashboxStub, Locale locale) {
 
 		Cashbox cashbox = cashboxService.read(cashboxStub);
+		PaymentsPrintInfoData result = buildBlankResult(begin, end, locale, cashbox);
+		result.setOperationDetailses(convert(getReceivedPayments(begin, end, cashbox)));
+		return result;
+	}
 
-		PaymentsPrintInfoData result = new PaymentsPrintInfoData();
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public PaymentsPrintInfoData getReceivedPaymentsPrintFormData(Date begin, Date end, Stub<Cashbox> cashboxStub, String registerUserName, Locale locale) {
+
+		Cashbox cashbox = cashboxService.read(cashboxStub);
+		PaymentsPrintInfoData result = buildBlankResult(begin, end, locale, cashbox);
+		result.setOperationDetailses(convert(getReceivedPaymentsForOperator(begin, end, cashbox, registerUserName)));
+		return result;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public PaymentsPrintInfoData getReturnedPaymentsPrintFormData(Date begin, Date end, Stub<Cashbox> cashboxStub, String registerUserName, Locale locale) {
+
+		Cashbox cashbox = cashboxService.read(cashboxStub);
+		PaymentsPrintInfoData result = buildBlankResult(begin, end, locale, cashbox);
+		result.setOperationDetailses(convert(getReturnedPaymentsForOperator(begin, end, cashbox, registerUserName)));
+		return result;
+	}
+
+	private PaymentsPrintInfoData buildBlankResult(Date begin, Date end, Locale locale, Cashbox cashbox) {
+
 		PaymentPoint paymentPoint = getPaymentPoint(cashbox);
 
-		result.setOperationDetailses(convert(getReceivedPayments(begin, end, cashbox)));
+		PaymentsPrintInfoData result = new PaymentsPrintInfoData();
 		result.setCreationDate(new Date());
 		result.setBeginDate(begin);
 		result.setEndDate(end);
@@ -214,7 +234,15 @@ public class PaymentsReporterImpl implements PaymentsReporter {
 	}
 
 	private List<Operation> getReturnedPayments(Date begin, Date end, Cashbox cashbox) {
-		return operationService.listReturnedPayments(Stub.stub(cashbox), begin, end);
+		return operationService.listReturnedPaymentsForCashbox(Stub.stub(cashbox), begin, end);
+	}
+
+	private List<Operation> getReceivedPaymentsForOperator(Date begin, Date end, Cashbox cashbox, String registerUserName) {
+		return operationService.listReceivedPaymentsForOperator(Stub.stub(cashbox), begin, end, registerUserName);
+	}
+
+	private List<Operation> getReturnedPaymentsForOperator(Date begin, Date end, Cashbox cashbox, String registerUserName) {
+		return operationService.listReturnedPaymentsForOperator(Stub.stub(cashbox), begin, end, registerUserName);
 	}
 
 	private PaymentPoint getPaymentPoint(Cashbox cashbox) {
@@ -395,7 +423,7 @@ public class PaymentsReporterImpl implements PaymentsReporter {
 				operations = operationService.listReceivedPaymentsForCashbox(new Stub<Cashbox>(cashboxId), beginDate, endDate);
 				break;
 			case OperationStatus.RETURNED:
-				operations = operationService.listReturnedPayments(new Stub<Cashbox>(cashboxId), beginDate, endDate);
+				operations = operationService.listReturnedPaymentsForCashbox(new Stub<Cashbox>(cashboxId), beginDate, endDate);
 				break;
 			default:
 				operations = CollectionUtils.list();

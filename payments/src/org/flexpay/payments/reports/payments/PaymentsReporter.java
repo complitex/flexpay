@@ -66,5 +66,12 @@ public interface PaymentsReporter {
 	PaymentsPrintInfoData getReturnedPaymentsPrintFormData(Date begin, Date end, Stub<Cashbox> cashbox, Locale locale);
 
 	@Secured(Roles.PAYMENTS_REPORT)
+	PaymentsPrintInfoData getReceivedPaymentsPrintFormData(Date begin, Date end, Stub<Cashbox> cashbox, String registerUserName, Locale locale);
+
+	@Secured(Roles.PAYMENTS_REPORT)
+	PaymentsPrintInfoData getReturnedPaymentsPrintFormData(Date begin, Date end, Stub<Cashbox> cashbox, String registerUserName, Locale locale);
+
+
+	@Secured(Roles.PAYMENTS_REPORT)
 	AccPaymentReportData getAccPaymentsReportData(AccPaymentsReportRequest reportRequest, Stub<PaymentCollector> paymentCollectorStub);
 }
