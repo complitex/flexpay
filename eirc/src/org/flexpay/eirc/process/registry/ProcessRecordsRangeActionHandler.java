@@ -5,6 +5,7 @@ import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.persistence.registry.RegistryRecord;
+import org.flexpay.common.persistence.registry.RegistryRecordStatus;
 import org.flexpay.common.process.handler.FlexPayActionHandler;
 import org.flexpay.common.service.RegistryFileService;
 import org.flexpay.common.service.RegistryRecordService;
@@ -67,6 +68,9 @@ public class ProcessRecordsRangeActionHandler extends FlexPayActionHandler {
 		ProcessingContext context = new ProcessingContext();
 		context.setRegistry(registry);
 		for (RegistryRecord record : records) {
+			if (record.getRecordStatus().isProcessedWithError() || record.getRecordStatus().getCode() == RegistryRecordStatus.PROCESSED) {
+				continue;
+			}
 			try {
 				context.setCurrentRecord(record);
 				processorTx.prepareRecordUpdates(context);
