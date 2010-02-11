@@ -114,16 +114,28 @@ public class OperationServiceImpl implements OperationService {
 		return operationDao.listPayments(cashbox.getId(), beginDate, endDate, OperationStatus.REGISTERED);
 	}
 
+	public List<Operation> listReturnedPaymentsForCashbox(Stub<Cashbox> cashbox, Date beginDate, Date endDate) {
+		return operationDao.listPayments(cashbox.getId(), beginDate, endDate, OperationStatus.RETURNED);
+	}
+
+	@Override
+	public List<Operation> listReceivedPaymentsForOperator(Stub<Cashbox> cashbox, Date beginDate, Date endDate, String registerUserName) {
+
+		return operationDao.listPaymentsForOperator(cashbox.getId(), beginDate, endDate, OperationStatus.REGISTERED, registerUserName);
+	}
+
+	@Override
+	public List<Operation> listReturnedPaymentsForOperator(Stub<Cashbox> cashbox, Date beginDate, Date endDate, String registerUserName) {
+
+		return operationDao.listPaymentsForOperator(cashbox.getId(), beginDate, endDate, OperationStatus.RETURNED, registerUserName);
+	}
+
 	public List<Operation> listReceivedPaymentsForPaymentPoint(Stub<PaymentPoint> stub, Date beginDate, Date endDate) {
 		return operationDao.listPaymentsByPaymentPoint(stub.getId(), beginDate, endDate, OperationStatus.REGISTERED);
 	}
 
 	public List<Operation> listReceivedPaymentsForOrganization(Stub<Organization> organization, Date beginDate, Date endDate) {
 		return operationDao.listPaymentsByOrganization(organization.getId(), beginDate, endDate, OperationStatus.REGISTERED);
-	}
-
-	public List<Operation> listReturnedPayments(Stub<Cashbox> cashbox, Date beginDate, Date endDate) {
-		return operationDao.listPayments(cashbox.getId(), beginDate, endDate, OperationStatus.RETURNED);
 	}
 
 	public List<Operation> searchDocuments(Stub<Cashbox> cashbox, Long serviceTypeId, Date begin,

@@ -1,21 +1,21 @@
 package org.flexpay.payments.service;
 
+import org.flexpay.common.dao.paging.Page;
+import org.flexpay.common.exception.FlexPayException;
+import org.flexpay.common.persistence.Stub;
 import org.flexpay.orgs.persistence.TestData;
 import org.flexpay.payments.persistence.Operation;
 import org.flexpay.payments.persistence.OperationStatus;
 import org.flexpay.payments.test.PaymentsSpringBeanAwareTestCase;
-import org.flexpay.common.exception.FlexPayException;
-import org.flexpay.common.persistence.Stub;
-import org.flexpay.common.dao.paging.Page;
 import static org.junit.Assert.*;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.math.BigDecimal;
 
 public class TestOperationService extends PaymentsSpringBeanAwareTestCase {
 
@@ -137,13 +137,13 @@ public class TestOperationService extends PaymentsSpringBeanAwareTestCase {
 
 		Date beginDate = dateFormat.parse("2009-04-14 14:22:00");
 		Date endDate = dateFormat.parse("2009-04-14 23:59:59");
-		List<Operation> result = operationService.listReturnedPayments(TestData.CASHBOX_1, beginDate, endDate);
+		List<Operation> result = operationService.listReturnedPaymentsForCashbox(TestData.CASHBOX_1, beginDate, endDate);
 		assertNotNull("Result mustn't be null", result);
 		assertTrue("Result must be empty on test data", result.isEmpty());
 
 		beginDate = dateFormat.parse("2009-04-14 14:20:00");
 		endDate = dateFormat.parse("2009-04-14 14:21:59");
-		result = operationService.listReturnedPayments(TestData.CASHBOX_1, beginDate, endDate);
+		result = operationService.listReturnedPaymentsForCashbox(TestData.CASHBOX_1, beginDate, endDate);
 		assertNotNull("Result mustn't be null", result);
 		assertFalse("Result must not be empty on test data", result.isEmpty());
 	}

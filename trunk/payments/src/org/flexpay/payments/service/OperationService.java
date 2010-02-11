@@ -121,6 +121,23 @@ public interface OperationService {
 	List<Operation> listReceivedPaymentsForCashbox(Stub<Cashbox> cashbox, Date beginDate, Date endDate);
 
 	/**
+	 * List of all payment operations which has status RETURNED inside time interval and cashbox
+	 *
+	 * @param cashbox   cashbox
+	 * @param beginDate lower bound for operation registration date
+	 * @param endDate   higher bound for operation registration date
+	 * @return list of payment operations
+	 */
+	@Secured (Roles.OPERATION_READ)
+	List<Operation> listReturnedPaymentsForCashbox(Stub<Cashbox> cashbox, Date beginDate, Date endDate);
+
+	@Secured (Roles.OPERATION_READ)
+	List<Operation> listReceivedPaymentsForOperator(Stub<Cashbox> cashbox, Date beginDate, Date endDate, String registerUserName);
+
+	@Secured (Roles.OPERATION_READ)
+	List<Operation> listReturnedPaymentsForOperator(Stub<Cashbox> cashbox, Date beginDate, Date endDate, String registerUserName);
+
+	/**
 	 * List of all payment operations which has status REGISTERED inside time interval and organization
 	 *
 	 * @param stub Payment point stub
@@ -141,17 +158,6 @@ public interface OperationService {
 	 */
 	@Secured (Roles.OPERATION_READ)
 	List<Operation> listReceivedPaymentsForOrganization(Stub<Organization> organization, Date beginDate, Date endDate);
-
-	/**
-	 * List of all payment operations which has status RETURNED inside time interval and cashbox
-	 *
-	 * @param cashbox   cashbox
-	 * @param beginDate lower bound for operation registration date
-	 * @param endDate   higher bound for operation registration date
-	 * @return list of payment operations
-	 */
-	@Secured (Roles.OPERATION_READ)
-	List<Operation> listReturnedPayments(Stub<Cashbox> cashbox, Date beginDate, Date endDate);
 
 	/**
 	 * Returns list of operations which contains documents suitable to search criterias
