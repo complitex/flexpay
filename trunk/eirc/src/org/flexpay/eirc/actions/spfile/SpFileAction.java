@@ -66,7 +66,7 @@ public class SpFileAction extends FPActionSupport {
 			if (FileParser.REGISTRY_FILE_TYPE.equals(fileType)) {
 				contextVariables.put(GetRegistryMessageActionHandler.PARAM_FILE_ID, spFile.getId());
 				processId = processManager.createProcess("ParseFPRegistryProcess2", contextVariables);
-			} if (FileParser.MB_CORRECTIONS_FILE_TYPE.equals(fileType)) {
+			} else if (FileParser.MB_CORRECTIONS_FILE_TYPE.equals(fileType)) {
 				contextVariables.put(GetRegistryMessageActionHandler.PARAM_FILE_ID, spFile.getId());
 				processId = processManager.createProcess("ParseMBCorrectionsProcess", contextVariables);
 			} else if (FileParser.MB_REGISTRY_FILE_TYPE.equals(fileType)) {
