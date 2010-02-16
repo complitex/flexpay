@@ -39,8 +39,8 @@
 		  scope="prototype" />
 
 	<!-- get identity cookie action -->
-	<bean id="getIdentityCookieAction"
-          class="org.flexpay.payments.actions.security.GetIdentityCookieAction"
+	<bean id="setCashboxIdAction"
+          class="org.flexpay.payments.actions.security.SetCashboxIdAction"
 		  p:cashboxService-ref="cashboxService"
 		  scope="prototype" />
 
