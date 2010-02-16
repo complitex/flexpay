@@ -15,13 +15,17 @@ import org.flexpay.common.util.RegistryUtil;
 import org.flexpay.common.util.SecurityUtil;
 import org.flexpay.common.util.StringUtil;
 import org.flexpay.common.util.io.WriterCallback;
+import org.flexpay.payments.service.SignatureService;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.io.IOException;
 import java.io.Writer;
+import java.security.Signature;
+import java.security.SignatureException;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
@@ -39,8 +43,13 @@ public class RegistryFPFileFormat {
 	protected RegistryService registryService;
 	protected RegistryRecordService registryRecordService;
     protected RegistryFPFileTypeService registryFPFileTypeService;
+	private SignatureService signatureService;
 
 	public FPFile generateAndAttachFile(@NotNull Registry registry) throws FlexPayException {
+		return generateAndAttachFile(registry, null);
+	}
+
+	public FPFile generateAndAttachFile(@NotNull Registry registry, @Nullable String privateKey) throws FlexPayException {
 
 		log.info("Start generating FPfile for registry #{}", registry.getId());
 
@@ -52,7 +61,7 @@ public class RegistryFPFileFormat {
 
 		StopWatch watch = new StopWatch();
 		watch.start();
-		FPFile result = export(registry, createFile(registry));
+		FPFile result = export(registry, createFile(registry), privateKey);
 
         FPFile fpFile = fpFileService.update(result);
         registry.getFiles().put(fpFileType, fpFile);
@@ -86,6 +95,11 @@ public class RegistryFPFileFormat {
 	}
 
 	protected FPFile export(@NotNull final Registry registry, FPFile fpFile) throws FlexPayException {
+		return export(registry, fpFile, null);
+	}
+
+	protected FPFile export(@NotNull final Registry registry, FPFile fpFile, String privateKey) throws FlexPayException {
+		final Signature privateSignature = getPrivateSignature(privateKey);
 
 		try {
 			fpFile.withWriter(RegistryUtil.EXPORT_FILE_ENCODING, new WriterCallback() {
@@ -93,28 +107,49 @@ public class RegistryFPFileFormat {
 					FetchRange fetchRange = new FetchRange();
 					List<RegistryRecord> records = registryRecordService.listRecordsForExport(registry, fetchRange);
 
-					w.write(buildHeader(registryService.readWithContainers(Stub.stub(registry))));
-					w.write('\n');
+					writeLine(w, buildHeader(registryService.readWithContainers(Stub.stub(registry))));
 
 					do {
 						for (RegistryRecord record : records) {
-							w.write(buildRecord(registry, record));
-							w.write('\n');
+							writeLine(w, buildRecord(registry, record));
 						}
 						fetchRange.nextPage();
 					} while (!(records = registryRecordService.listRecordsForExport(registry, fetchRange)).isEmpty());
 
-					w.write(buildFooter(registry));
+					w.write(buildFooter(registry, privateSignature));
+					w.write('\n');
+				}
+
+				private void writeLine(@NotNull Writer w, @NotNull String line) throws IOException {
+					if (privateSignature != null) {
+						try {
+							privateSignature.update(line.getBytes());
+							privateSignature.update("\n".getBytes());
+						} catch (SignatureException e) {
+							throw new IOException("Can not update signature", e);
+						}
+					}
+					w.write(line);
 					w.write('\n');
 				}
 			});
 
+			return  fpFile;
 		} catch (IOException e) {
 			log.error("Error writing export-file for registry", e);
-			return null;
 		}
+		return null;
+	}
 
-		return fpFile;
+	private Signature getPrivateSignature(String privateKey) throws FlexPayException {
+		if (privateKey != null) {
+			try {
+				return signatureService.readPrivateSignature(privateKey);
+			} catch (Exception e) {
+				throw new FlexPayException("Error read private signature: " + privateKey, e);
+			}
+		}
+		return null;
 	}
 
 	protected String buildHeader(Registry registry) {
@@ -227,15 +262,23 @@ public class RegistryFPFileFormat {
 
 	}
 
-	protected String buildFooter(Registry registry) {
+	protected String buildFooter(Registry registry, Signature privateSignature) throws IOException {
 
 		StringBuilder footer = new StringBuilder();
 
 		log.debug("Building footer for registry = {}", registry);
 
-		footer.append(RegistryUtil.REGISTRY_FOOTER_MESSAGE_TYPE_CHAR).
-				append(RegistryUtil.FIELD_SEPARATOR).
-				append(StringUtil.getString(registry.getId()));
+		try {
+			footer.append(RegistryUtil.REGISTRY_FOOTER_MESSAGE_TYPE_CHAR).
+					append(RegistryUtil.FIELD_SEPARATOR).
+					append(StringUtil.getString(registry.getId())).
+					append(RegistryUtil.FIELD_SEPARATOR);
+			if (privateSignature != null) {
+				footer.append(new String(privateSignature.sign(), RegistryUtil.EXPORT_FILE_ENCODING));
+			}
+		} catch (SignatureException e) {
+			throw new IOException("Can not create digital signature", e);
+		}
 
 		log.debug("File footer = {}", footer.toString());
 
@@ -266,4 +309,9 @@ public class RegistryFPFileFormat {
     public void setRegistryFPFileTypeService(RegistryFPFileTypeService registryFPFileTypeService) {
         this.registryFPFileTypeService = registryFPFileTypeService;
     }
+
+	@Required
+	public void setSignatureService(SignatureService signatureService) {
+		this.signatureService = signatureService;
+	}
 }
