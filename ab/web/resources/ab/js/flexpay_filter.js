@@ -64,8 +64,8 @@ function Filter(name, options) {
     }
     this.parentsCount = options.parents.length;
     this.requiredParentsCount = 0;
-    for (var i in this.parents) {
-        if (FF.filters[i].required) {
+    for (var i1 in this.parents) {
+        if (FF.filters[i1].required) {
             this.requiredParentsCount++;
         }
     }

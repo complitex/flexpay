@@ -89,7 +89,7 @@ function FPFileUploadForm(formId, options) {
         form.file = fileNew;
 
         form.responses[index] = $('<div id="' + form.responseId + index + '"></div>').css({color : "#ff0000"});
-        form.uploadFrames[index] = $('<iframe id="' + form.uploadFrameId + index + '" name="' + form.uploadFrameId + index + '"></iframe>').css({display: "none"})
+        form.uploadFrames[index] = $('<iframe id="' + form.uploadFrameId + index + '" name="' + form.uploadFrameId + index + '"></iframe>').css({display: "none"});
 
         form.mainBlock.append(form.uploadForms[index]).append(form.responses[index]).append(form.uploadFrames[index]);
 
@@ -150,7 +150,7 @@ function FPFileUploadForm(formId, options) {
                             form.wait = true;
                             ajaxResponse.text(FP.formatI18nMessage(FPFile.constants.statusProcessing, [form.uploadingFilename]));
                             form.curRetry = 0;
-                            setTimeout(uploadWait, 100);;
+                            setTimeout(uploadWait, 100);
                             return true;
                         }
                         setTimeout(getProgress, 1000);

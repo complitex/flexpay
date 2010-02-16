@@ -25,9 +25,9 @@ var FP = {
 
     endis : function (label, endis) {
         if (endis) {
-            $(label).removeAttr("disable");
+            return $(label).removeAttr("disabled");
         } else {
-            $(label).attr("disable", true);
+            return $(label).attr("disabled", true);
         }
     },
 
@@ -122,22 +122,6 @@ var FP = {
 	disableEnterKey : function(e) {
 		return e.keyCode != 13;
 	},
-
-    pagerSubmitForm : function(element) {
-        if (element.name != "pager.pageSize") {
-            $("#pageNumber").val(element.value);
-            element.form.submit();
-            return true;
-        }
-        $('select[name=pager.pageSize]').each(function() {
-            if (this != element) {
-                this.name = null;
-            }
-        });
-        element.name = "pager.pageSize";
-        $("#pageSizeChanged").val(true);
-        element.form.submit();
-    },
 
     createShadow : function(id){
         $("body").append('<div id="' + id + '" class="shadow"><img src="' + this.base + '/resources/common/img/indicator_big.gif" width="32" height="32" />' + this.messages.loading + '</div>');
@@ -304,15 +288,6 @@ Array.remove = function(array, from, to) {
   var rest = array.slice((to || from) + 1 || array.length);
   array.length = from < 0 ? array.length + from : from;
   return array.push.apply(array, rest);
-};
-
-// add trim() to strings (http://blog.stevenlevithan.com/archives/faster-trim-javascript)
-String.prototype.trim = function() {
-    var str = this.replace(/^\s\s*/, ''), ws = /\s/, i = this.length;
-    while (ws.test(str.charAt(--i))) {
-
-    }
-    return str.slice(0, i + 1);
 };
 
 Function.prototype.getBody = function() {

@@ -1,9 +1,7 @@
 <%@include file="/WEB-INF/jsp/common/taglibs.jsp"%>
+<%@include file="/WEB-INF/jsp/common/includes/errors_messages.jsp"%>
 
-<s:actionerror />
-<s:actionmessage />
-
-<s:form action="serviceTypeEdit">
+<s:form action="serviceTypeEdit" method="POST">
 
 	<s:hidden name="serviceType.id" />
 
@@ -13,7 +11,7 @@
 			<td class="col">
 				<s:iterator value="names">
                     <s:set name="l" value="%{getLang(key)}" />
-					<s:textfield name="names[%{key}]" value="%{value}" />(<s:if test="%{#l.default}">*</s:if><s:property value="%{getLangName(#l)}" />)<br />
+					<s:textfield name="names[%{key}]" value="%{value}" />(<s:if test="#l.default">*</s:if><s:property value="getLangName(#l)" />)<br />
 				</s:iterator>
 			</td>
 		</tr>
@@ -22,7 +20,7 @@
 			<td class="col">
 				<s:iterator value="descriptions">
                     <s:set name="l" value="%{getLang(key)}" />
-					<s:textfield name="descriptions[%{key}]" value="%{value}" />(<s:if test="%{#l.default}">*</s:if><s:property value="%{getLangName(#l)}" />)<br />
+					<s:textfield name="descriptions[%{key}]" value="%{value}" />(<s:if test="#l.default">*</s:if><s:property value="getLangName(#l)" />)<br />
 				</s:iterator>
 			</td>
 		</tr>

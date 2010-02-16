@@ -1,7 +1,7 @@
 <%@include file="/WEB-INF/jsp/common/taglibs.jsp"%>
 <%@include file="/WEB-INF/jsp/common/includes/jquery_timeentry.jsp"%>
 <%@include file="/WEB-INF/jsp/common/includes/jquery_bbq.jsp"%>
-<%@include file="/WEB-INF/jsp/payments/include/stylesheet.jsp"%>
+<%@include file="/WEB-INF/jsp/payments/includes/stylesheet.jsp"%>
 
 <%-- filters are temporary hidden! --%>
 <%--<sec:authorize ifAllGranted="ROLE_PAYMENTS_DEVELOPER">--%>

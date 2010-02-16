@@ -1,9 +1,7 @@
 package org.flexpay.common.service.reporting;
 
 import net.sf.jasperreports.engine.*;
-import net.sf.jasperreports.engine.export.JRCsvExporter;
-import net.sf.jasperreports.engine.export.JRHtmlExporter;
-import net.sf.jasperreports.engine.export.JRPdfExporter;
+import net.sf.jasperreports.engine.export.*;
 import net.sf.jasperreports.engine.fill.JRAbstractLRUVirtualizer;
 import net.sf.jasperreports.engine.fill.JRSwapFileVirtualizer;
 import net.sf.jasperreports.engine.query.JRHibernateQueryExecuterFactory;
@@ -32,6 +30,10 @@ import java.io.*;
 import java.sql.Connection;
 import java.util.*;
 
+import static org.flexpay.common.util.CollectionUtils.list;
+import static org.flexpay.common.util.CollectionUtils.map;
+import static org.flexpay.common.util.config.ApplicationConfig.getDefaultReportLocale;
+
 public class ReportUtil {
 
 	private Logger log = LoggerFactory.getLogger(getClass());
@@ -41,10 +43,12 @@ public class ReportUtil {
 
 	private static final String EXTENSION_PDF = ".pdf";
 	private static final String EXTENSION_HTML = ".html";
+	private static final String EXTENSION_TXT = ".txt";
 	private static final String EXTENSION_CSV = ".csv";
 
 	public static final String FORMAT_PDF = "pdf";
 	public static final String FORMAT_HTML = "html";
+	public static final String FORMAT_TXT = "txt";
 	public static final String FORMAT_CSV = "csv";
 
 	/**
@@ -187,8 +191,7 @@ public class ReportUtil {
 		}
 
 		// compile report
-		JasperCompileManager.compileReportToFile(
-				getTemplatePath(name), getCompiledTemplatePath(name));
+		JasperCompileManager.compileReportToFile(getTemplatePath(name), getCompiledTemplatePath(name));
 
 		JasperReport report = JasperCompileManager.compileReport(getTemplatePath(name));
 
@@ -218,6 +221,26 @@ public class ReportUtil {
 		JasperPrint print = fillReport(name, params, source, locale);
 		JRPdfExporter exporter = new JRPdfExporter();
 		return exportToFile(exporter, print, name + EXTENSION_PDF, params);
+	}
+
+	/**
+	 * Export filled report to txt format
+	 *
+	 * @param name   Report name
+	 * @param params Report parameters
+	 * @param source optional data source
+	 * @param locale report locale if null default one will be used
+	 * @return Result TXT file
+	 * @throws Exception if failure occurs
+	 */
+	public FPFile exportToTxt(String name, @Nullable Map<?, ?> params,
+							  @Nullable JRDataSource source, @Nullable Locale locale) throws Exception {
+
+		params = params(params);
+
+		JasperPrint print = fillReport(name, params, source, locale);
+		JRTextExporter exporter = new JRTextExporter();
+		return exportToFile(exporter, print, name + EXTENSION_TXT, params);
 	}
 
 	/**
@@ -274,13 +297,16 @@ public class ReportUtil {
 			os = file.getOutputStream();
 			exporter.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
 			exporter.setParameter(JRExporterParameter.OUTPUT_STREAM, os);
+			if (exporter instanceof JRTextExporter) {
+				exporter.setParameter(JRTextExporterParameter.CHARACTER_HEIGHT, new Integer(10));
+				exporter.setParameter(JRTextExporterParameter.CHARACTER_WIDTH, new Integer(5));
+			}
 			exporter.exportReport();
 			fileService.create(file);
 		} catch (IOException e) {
 			fileService.delete(file);
 			throw e;
 		} finally {
-
 			IOUtils.closeQuietly(os);
 			@SuppressWarnings ({"SuspiciousMethodCalls"})
 			JRVirtualizer virtualizer = (JRVirtualizer) params.get(JRParameter.REPORT_VIRTUALIZER);
@@ -306,11 +332,7 @@ public class ReportUtil {
 			throws Exception {
 
 		// setting locale parameter
-		if (locale != null) {
-			parameters.put(PARAM_NAME_REPORT_LOCALE, locale);
-		} else {
-			parameters.put(PARAM_NAME_REPORT_LOCALE, ApplicationConfig.getDefaultReportLocale());
-		}
+		parameters.put(PARAM_NAME_REPORT_LOCALE, locale != null ? locale : getDefaultReportLocale());
 
 		ensureReportCompiled(name);
 		ensureDirsExist();
@@ -348,8 +370,8 @@ public class ReportUtil {
 
 	@NotNull
 	private Map<?, ?> params(@Nullable Map<?, ?> parameters) {
-		if (parameters == null || parameters == Collections.emptyMap()) {
-			parameters = CollectionUtils.map();
+		if (parameters == null || parameters.isEmpty()) {
+			parameters = map();
 		}
 		return parameters;
 	}
@@ -357,7 +379,7 @@ public class ReportUtil {
 	@SuppressWarnings ({"unchecked", "RawUseOfParameterizedType"})
 	private Collection<String> fillParameters(JasperReport report, Map parameters) {
 
-		Collection<String> resourceNames = new ArrayList<String>();
+		Collection<String> resourceNames = list();
 
 		JRQuery query = report.getQuery();
 		if (query != null) {

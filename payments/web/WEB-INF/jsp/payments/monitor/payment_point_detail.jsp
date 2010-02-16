@@ -1,5 +1,5 @@
 <%@include file="/WEB-INF/jsp/common/taglibs.jsp"%>
-<%@include file="/WEB-INF/jsp/payments/include/stylesheet.jsp"%>
+<%@include file="/WEB-INF/jsp/payments/includes/stylesheet.jsp"%>
 <%@include file="/WEB-INF/jsp/common/includes/errors_messages.jsp"%>
 
 <table cellpadding="3" cellspacing="1" border="0" width="100%">
