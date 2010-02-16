@@ -10,7 +10,7 @@
             <frame src="<s:url value="/resources/common/jsp/print.jsp" includeParams="none" />" id="topFrame" name="topFrame" scrolling="no" />
             <frame src="<s:url value="/download/%{file.id}%{file.getExtension()}?inline" includeParams="none" />" id="mainFrame" name="mainFrame" />
         </frameset>
-    </s:if><s:else>
+    </s:if><s:elseif test="file.extension == '.pdf'">
         <body>
             <script type="text/javascript">
                 function printMainFrame() {
@@ -25,7 +25,7 @@
                 </object>
             </div>
         </body>
-    </s:else>
+    </s:elseif>
 <%
 } else {
 %>
