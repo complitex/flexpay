@@ -6,10 +6,6 @@
 
     <package name="payments" namespace="/payments" extends="common">
 
-        <action name="getIdentityCookie" class="getIdentityCookieAction">
-            <result type="tiles">payments.security.get_identity_cookie</result>
-        </action>
-
         <action name="main" class="menuPageAction">
             <result type="tiles">payments.main</result>
         </action>
@@ -79,5 +75,6 @@
     <include file="org/flexpay/payments/actions/registry/struts.xml" />
     <include file="org/flexpay/payments/actions/reports/struts.xml" />
     <include file="org/flexpay/payments/actions/tradingday/struts.xml" />
+	<include file="org/flexpay/payments/actions/workplace/struts.xml" />
 
 </struts>

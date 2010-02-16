@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Required;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 
-public class GetIdentityCookieAction extends FPActionSupport implements ServletResponseAware {
+public class SetCashboxIdAction extends FPActionSupport implements ServletResponseAware {
 
 	private static final String CASHBOX_ID = "cashboxId";
 	private static final int SIX_YEARS_IN_SECONDS = 6 * 31536000;
@@ -27,13 +27,11 @@ public class GetIdentityCookieAction extends FPActionSupport implements ServletR
 	@Override
 	protected String doExecute() throws Exception {
 
-		if (isSubmit()) {
-			if (validateCashboxId()) {
-				Cookie cookie = new Cookie(CASHBOX_ID, cashboxId);
-				cookie.setMaxAge(SIX_YEARS_IN_SECONDS);
-				response.addCookie(cookie);
-				addActionMessage(getText("payments.get_identity_cookie.cookies_successfully_set"));
-			}
+		if (validateCashboxId()) {
+			Cookie cookie = new Cookie(CASHBOX_ID, cashboxId);
+			cookie.setMaxAge(SIX_YEARS_IN_SECONDS);
+			response.addCookie(cookie);
+			addActionMessage(getText("payments.get_identity_cookie.cookies_successfully_set"));
 		}
 
 		return SUCCESS;
