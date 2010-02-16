@@ -41,7 +41,7 @@
                 </td>
                 <td class="col">
                     <a href="<s:url action="rulesFileView"><s:param name="rulesFile.id" value="id" /></s:url>">
-                        <s:property value="getTranslation(translations).name" />
+                        <s:property value="getTranslationName(translations)" />
                     </a>
                 </td>
                 <td class="col">

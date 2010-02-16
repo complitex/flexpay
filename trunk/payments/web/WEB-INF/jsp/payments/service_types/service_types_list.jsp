@@ -1,7 +1,5 @@
 <%@include file="/WEB-INF/jsp/common/taglibs.jsp"%>
-
-<s:actionerror />
-<s:actionmessage />
+<%@include file="/WEB-INF/jsp/common/includes/errors_messages.jsp"%>
 
 <table cellpadding="3" cellspacing="1" border="0" width="100%">
     <tr>
@@ -9,7 +7,7 @@
             <%@include file="/WEB-INF/jsp/common/filter/pager/pager_ajax.jsp"%>
             <input type="button" class="btn-exit" value="<s:text name="common.delete_selected" />" onclick="deleteAjax();" />
             <input type="button" class="btn-exit"
-                   onclick="window.location='<s:url action="serviceTypeEdit"><s:param name="serviceType.id" value="0" /></s:url>';"
+                   onclick="window.location='<s:url action="serviceTypeEdit" includeParams="none"><s:param name="serviceType.id" value="0" /></s:url>';"
                    value="<s:text name="common.new" />" />
         </td>
     </tr>
@@ -25,17 +23,17 @@
     <s:iterator value="serviceTypes" status="status">
         <tr valign="middle" class="cols_1">
             <td class="col" width="1%">
-                <s:property value="%{#status.index + pager.thisPageFirstElementNumber + 1}" />
+                <s:property value="#status.index + pager.thisPageFirstElementNumber + 1" />
             </td>
             <td class="col" width="1%">
-                <input type="checkbox" name="objectIds" value="<s:property value="%{id}" />" />
+                <input type="checkbox" name="objectIds" value="<s:property value="id" />" />
             </td>
             <td class="col">
-                <a href="<s:url action="serviceTypeView"><s:param name="serviceType.id" value="%{id}" /></s:url>"><s:property value="getTranslation(typeNames).name" /></a>
+                <a href="<s:url action="serviceTypeView" includeParams="none"><s:param name="serviceType.id" value="id" /></s:url>"><s:property value="getTranslationName(typeNames)" /></a>
             </td>
             <td class="col"><s:property value="code" /></td>
             <td class="col">
-                <a href="<s:url action="serviceTypeEdit"><s:param name="serviceType.id" value="%{id}" /></s:url>"><s:text name="common.edit" /></a>
+                <a href="<s:url action="serviceTypeEdit" includeParams="none"><s:param name="serviceType.id" value="id" /></s:url>"><s:text name="common.edit" /></a>
             </td>
         </tr>
     </s:iterator>
@@ -44,7 +42,7 @@
             <%@include file="/WEB-INF/jsp/common/filter/pager/pager_ajax.jsp"%>
             <input type="button" class="btn-exit" value="<s:text name="common.delete_selected" />" onclick="deleteAjax();" />
             <input type="button" class="btn-exit"
-                   onclick="window.location='<s:url action="serviceTypeEdit"><s:param name="serviceType.id" value="0" /></s:url>';"
+                   onclick="window.location='<s:url action="serviceTypeEdit" includeParams="none"><s:param name="serviceType.id" value="0" /></s:url>';"
                    value="<s:text name="common.new" />" />
         </td>
     </tr>

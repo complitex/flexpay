@@ -57,7 +57,7 @@
                 <td class="th" colspan="2" style="padding:0;">
                     <table class="attrGroup">
                         <tr>
-                            <td><s:property value="getTranslation(translations).name" /></td>
+                            <td><s:property value="getTranslationName(translations)" /></td>
                             <td style="text-align:right;">
                                 <input type="button" class="btn-exit" id="toggle<s:property value="id" />"
                                        onclick="toggleGroup(<s:property value="id" />);"
@@ -73,7 +73,7 @@
                         <s:iterator value="types" id="type">
                             <tr class="cols_1">
                                 <td class="col" style="width:80%;">
-                                    <s:property value="getTranslation(#type.translations).name" />
+                                    <s:property value="getTranslationName(#type.translations)" />
                                 </td>
                                 <td class="col">
                                     <nobr>

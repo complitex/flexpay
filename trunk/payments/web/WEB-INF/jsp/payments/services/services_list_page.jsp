@@ -6,13 +6,19 @@
             <table width="100%">
                 <tr>
                     <td class="filter"><s:text name="eirc.service.begin_date" /></td>
-                    <td nowrap="nowrap"><%@include file="/WEB-INF/jsp/common/filter/begin_date_filter.jsp"%></td>
-                    <td class="filter"><s:text name="eirc.service.end_date" /></td>
-                    <td nowrap="nowrap"><%@include file="/WEB-INF/jsp/common/filter/end_date_filter.jsp"%></td>
-                    <td class="filter"><s:text name="eirc.service_provider" /></td>
-                    <td><%@include file="/WEB-INF/jsp/payments/filters/service_provider_filter.jsp"%></td>
                     <td>
-                        <input type="submit" value="<s:text name="eirc.filter" />" class="btn-exit" onclick="pagerAjax(null);" />
+                        <%@include file="/WEB-INF/jsp/common/filter/begin_date_filter.jsp"%>
+                    </td>
+                    <td class="filter"><s:text name="eirc.service.end_date" /></td>
+                    <td>
+                        <%@include file="/WEB-INF/jsp/common/filter/end_date_filter.jsp"%>
+                    </td>
+                    <td class="filter"><s:text name="eirc.service_provider" /></td>
+                    <td>
+                        <%@include file="/WEB-INF/jsp/payments/filters/service_provider_filter.jsp"%>
+                    </td>
+                    <td>
+                        <input type="button" value="<s:text name="eirc.filter" />" class="btn-exit" onclick="pagerAjax(null);" />
                     </td>
                 </tr>
             </table>

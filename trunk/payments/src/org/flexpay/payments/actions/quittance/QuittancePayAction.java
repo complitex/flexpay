@@ -23,6 +23,7 @@ public class QuittancePayAction extends PaymentOperationAction {
 	private ProcessManager processManager;
 
 	@NotNull
+	@Override
 	protected String doExecute() throws Exception {
 
 		if (operationId == null) {
@@ -41,50 +42,33 @@ public class QuittancePayAction extends PaymentOperationAction {
 
 		if (paymentProcessId == null || paymentProcessId == 0) {
 			log.debug("TradingDay process id not found for Payment point id = {}", cashbox.getPaymentPoint().getId());
-
-			fillOperation(operation);
-			if (!isValidOperation(operation)) {
-				addActionError(getText("payments.error.operation_is_incorrect"));
-				return REDIRECT_SUCCESS;
-			}
-
-			if (isNotEmptyOperation(operation)) {
-				if (operation.isNew()) {
-					operationService.create(operation);
-				} else {
-					operationService.update(operation);
-				}
-			} else {
-				log.debug("Zero summ for operation or zero documents for operation created. Operation was not created");
-			}
-
-			return REDIRECT_SUCCESS;
-
 		} else {
-			log.debug("Found process id {} for cashbox {}", new Object[]{paymentProcessId, cashboxId});
+			log.debug("Found process id {} for cashbox {}", paymentProcessId, cashboxId);
 
 			if (!TradingDay.isOpened(processManager, paymentProcessId, log)) {
 				return TRADING_DAY_CLOSED;
 			}
+	
+		}
 
-			fillOperation(operation);
-			if (!isValidOperation(operation)) {
-				addActionError(getText("payments.error.operation_is_incorrect"));
-				return REDIRECT_SUCCESS;
-			}
-
-			if (isNotEmptyOperation(operation)) {
-				if (operation.isNew()) {
-					operationService.create(operation);
-				} else {
-					operationService.update(operation);
-				}
-			} else {
-				log.debug("Zero summ for operation or zero documents for operation created. Operation was not created");
-			}
-
+		fillOperation(operation);
+		if (!isValidOperation(operation)) {
+			addActionError(getText("payments.error.operation_is_incorrect"));
 			return REDIRECT_SUCCESS;
 		}
+
+		if (isNotEmptyOperation(operation)) {
+			if (operation.isNew()) {
+				operationService.create(operation);
+			} else {
+				operationService.update(operation);
+			}
+		} else {
+			log.debug("Zero summ for operation or zero documents for operation created. Operation was not created");
+		}
+
+		return REDIRECT_SUCCESS;
+
 	}
 
 	private Long getPaymentProcessId(Cashbox cashbox) {
@@ -123,6 +107,7 @@ public class QuittancePayAction extends PaymentOperationAction {
 	}
 
 	@NotNull
+	@Override
 	protected String getErrorResult() {
 		return REDIRECT_SUCCESS;
 	}

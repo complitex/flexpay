@@ -1,5 +1,5 @@
 <%@include file="/WEB-INF/jsp/common/taglibs.jsp"%>
-<%@include file="/WEB-INF/jsp/payments/include/stylesheet.jsp"%>
+<%@include file="/WEB-INF/jsp/payments/includes/stylesheet.jsp"%>
 <%@include file="/WEB-INF/jsp/common/includes/jquery_bbq.jsp"%>
 <%@include file="/WEB-INF/jsp/common/includes/errors_messages.jsp"%>
 

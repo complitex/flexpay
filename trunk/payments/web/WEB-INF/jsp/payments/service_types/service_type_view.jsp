@@ -1,7 +1,5 @@
 <%@include file="/WEB-INF/jsp/common/taglibs.jsp"%>
-
-<s:actionerror />
-<s:actionmessage />
+<%@include file="/WEB-INF/jsp/common/includes/errors_messages.jsp"%>
 
 <table cellpadding="3" cellspacing="1" border="0" width="100%">
     <tr>
@@ -44,7 +42,7 @@
     <tr>
         <td colspan="4">
             <input type="button" class="btn-exit"
-                   onclick="window.location='<s:url action="serviceTypeEdit"><s:param name="serviceType.id" value="%{serviceType.id}" /></s:url>';"
+                   onclick="window.location='<s:url action="serviceTypeEdit" includeParams="none"><s:param name="serviceType.id" value="serviceType.id" /></s:url>';"
                    value="<s:text name="common.edit" />" />
         </td>
     </tr>

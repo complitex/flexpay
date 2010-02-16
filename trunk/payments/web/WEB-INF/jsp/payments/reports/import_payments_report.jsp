@@ -1,5 +1,5 @@
 <%@include file="/WEB-INF/jsp/common/taglibs.jsp"%>
-<%@include file="/WEB-INF/jsp/payments/include/stylesheet.jsp"%>
+<%@include file="/WEB-INF/jsp/payments/includes/stylesheet.jsp"%>
 <%@include file="/WEB-INF/jsp/common/includes/errors_messages.jsp"%>
 
 <script type="text/javascript">
@@ -15,7 +15,7 @@
 	}
 </script>
 
-<form action="<s:url action="generatePaymentsReport" />" onsubmit="return validateBeginAfterEnd();">
+<s:form action="generatePaymentsReport" onsubmit="return validateBeginAfterEnd();" method="POST">
 	<table>
 		<tr>
 			<td>
@@ -37,7 +37,7 @@
 			</td>
 		</tr>
 	</table>
-</form>
+</s:form>
 
 <s:if test="reportContentIsNotEmpty()">
 	<table cellpadding="3" cellspacing="1" border="0" width="100%" class="operations">

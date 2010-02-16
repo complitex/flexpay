@@ -1,4 +1,10 @@
-<%@ include file="/WEB-INF/jsp/common/taglibs.jsp" %>
+<%@include file="/WEB-INF/jsp/common/taglibs.jsp"%>
+
+<div id="dialog" style="display:none;">
+    <s:text name="payments.reports.choose_print_format_question" /><br />
+    <input type="button" class="btn-exit" onclick="FPP.doPrintQuittance('txt');" value="<s:text name="payments.reports.txt_format" />" />
+    <input type="button" class="btn-exit" onclick="FPP.doPrintQuittance('pdf');" value="<s:text name="payments.reports.pdf_format" />" />
+</div>
 
 <script type="text/javascript">
     function printQuittance() {

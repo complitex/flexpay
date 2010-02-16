@@ -5,12 +5,12 @@
 
     FPFile.constants = {
         progressBarUrl: "<s:url action="fileUploadProgress" namespace="/common" includeParams="none" />",
-        statusWaiting: '<s:text name="common.file_upload.progress_bar.waiting" />',
-        statusUploading: '<s:text name="common.file_upload.progress_bar.uploading" />',
-        statusProcessing: '<s:text name="common.file_upload.progress_bar.processing" />',
-        statusUploaded: '<s:text name="common.file_upload.progress_bar.uploaded" />',
-        statusError: '<s:text name="common.file_upload.progress_bar.error" />',
-        confirmExit: '<s:text name="common.file_upload.confirm_exit" />'
+        statusWaiting: "<s:text name="common.file_upload.progress_bar.waiting" />",
+        statusUploading: "<s:text name="common.file_upload.progress_bar.uploading" />",
+        statusProcessing: "<s:text name="common.file_upload.progress_bar.processing" />",
+        statusUploaded: "<s:text name="common.file_upload.progress_bar.uploaded" />",
+        statusError: "<s:text name="common.file_upload.progress_bar.error" />",
+        confirmExit: "<s:text name="common.file_upload.confirm_exit" />"
     };
 
 </script>

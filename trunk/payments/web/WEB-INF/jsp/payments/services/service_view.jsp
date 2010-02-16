@@ -1,7 +1,5 @@
 <%@include file="/WEB-INF/jsp/common/taglibs.jsp"%>
-
-<s:actionerror />
-<s:actionmessage />
+<%@include file="/WEB-INF/jsp/common/includes/errors_messages.jsp"%>
 
 <table cellpadding="3" cellspacing="1" border="0" width="100%">
     <tr>
@@ -15,10 +13,7 @@
                 <s:property value="#rowstatus.index + 1" />
             </td>
             <td class="col">
-                <s:property value="getLangName(lang)" />
-                <s:if test="lang.default">
-                    (default)
-                </s:if>
+                <s:property value="getLangName(lang)" /><s:if test="lang.default"> (default)</s:if>
             </td>
             <td class="col">
                 <s:property value="name" />
@@ -90,7 +85,7 @@
     <tr>
         <td colspan="4">
             <input type="button" class="btn-exit"
-                   onclick="window.location='<s:url action="serviceEdit"><s:param name="service.id" value="%{service.id}" /></s:url>';"
+                   onclick="window.location='<s:url action="serviceEdit" includeParams="none"><s:param name="service.id" value="service.id" /></s:url>';"
                    value="<s:text name="common.edit" />" />
         </td>
     </tr>

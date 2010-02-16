@@ -10,6 +10,8 @@ import org.flexpay.common.persistence.filter.EndDateFilter;
 import org.flexpay.common.persistence.filter.EndTimeFilter;
 import org.flexpay.common.service.reporting.ReportUtil;
 import static org.flexpay.common.util.CollectionUtils.*;
+import static org.flexpay.common.util.config.ApplicationConfig.getDefaultReportLocale;
+
 import org.flexpay.common.util.DateUtil;
 import org.flexpay.common.util.config.ApplicationConfig;
 import org.flexpay.orgs.persistence.Cashbox;
@@ -94,12 +96,14 @@ public abstract class AccPaymentsReportAction extends AccountantAWPActionSupport
 		JRDataSource dataSource = new JRBeanCollectionDataSource(data.getDetailses());
 
 		String reportName = ensureReportTemplateUploaded(request);
-		if ("pdf".equals(format)) {
-			report = reportUtil.exportToPdf(reportName, params, dataSource, ApplicationConfig.getDefaultReportLocale());
-		} else if ("html".equals(format)) {
-			report = reportUtil.exportToHtml(reportName, params, dataSource, ApplicationConfig.getDefaultReportLocale());
-		} else if ("csv".equals(format)) {
-			report = reportUtil.exportToCsv(reportName, params, dataSource, ApplicationConfig.getDefaultReportLocale());
+		if (ReportUtil.FORMAT_PDF.equals(format)) {
+			report = reportUtil.exportToPdf(reportName, params, dataSource, getDefaultReportLocale());
+		} else if (ReportUtil.FORMAT_HTML.equals(format)) {
+			report = reportUtil.exportToHtml(reportName, params, dataSource, getDefaultReportLocale());
+		} else if (ReportUtil.FORMAT_CSV.equals(format)) {
+			report = reportUtil.exportToCsv(reportName, params, dataSource, getDefaultReportLocale());
+		} else if (ReportUtil.FORMAT_TXT.equals(format)) {
+			report = reportUtil.exportToTxt(reportName, params, dataSource, getDefaultReportLocale());
 		} else {
 			return SUCCESS;
 		}

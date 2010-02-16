@@ -58,7 +58,7 @@
     </tr>
     <tr class="cols_1">
         <td class="col_1s" colspan="2">
-            <s:property value="getTranslation(attributeType.group.translations).name"/>
+            <s:property value="getTranslationName(attributeType.group.translations)"/>
         </td>
     </tr>
     <tr>

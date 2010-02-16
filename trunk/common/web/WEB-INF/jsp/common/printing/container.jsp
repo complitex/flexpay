@@ -5,12 +5,12 @@
 	String browser = request.getHeader("User-Agent").toLowerCase();
 	if (browser.contains("msie")) {
 %>
-    <s:if test="file.extension == '.html'">
+    <s:if test="file.extension == '.html' || file.extension == '.txt' || file.extension == '.csv'">
         <frameset rows="25,*" cols="*" onload="mainFrame.print();">
             <frame src="<s:url value="/resources/common/jsp/print.jsp" includeParams="none" />" id="topFrame" name="topFrame" scrolling="no" />
             <frame src="<s:url value="/download/%{file.id}%{file.getExtension()}?inline" includeParams="none" />" id="mainFrame" name="mainFrame" />
         </frameset>
-    </s:if><s:elseif test="file.extension == '.pdf'">
+    </s:if><s:else>
         <body>
             <script type="text/javascript">
                 function printMainFrame() {
@@ -25,11 +25,11 @@
                 </object>
             </div>
         </body>
-    </s:elseif>
+    </s:else>
 <%
 } else {
 %>
-    <frameset rows="25,*" cols="*"<s:if test="file.extension == '.html'"> onload="mainFrame.print();"</s:if>>
+    <frameset rows="25,*" cols="*"<s:if test="file.extension == '.html' || file.extension == '.txt'"> onload="mainFrame.print();"</s:if>>
         <frame src="<s:url value="/resources/common/jsp/print.jsp" includeParams="none" />" id="topFrame" name="topFrame" scrolling="no" />
         <frame src="<s:url value="/download/%{file.id}%{file.getExtension()}?inline" includeParams="none" />" id="mainFrame" name="mainFrame" />
     </frameset>

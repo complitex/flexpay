@@ -1,9 +1,7 @@
 <%@include file="/WEB-INF/jsp/common/taglibs.jsp"%>
+<%@include file="/WEB-INF/jsp/common/includes/errors_messages.jsp"%>
 
-<s:actionerror />
-<s:actionmessage />
-
-<s:form action="serviceEdit">
+<s:form action="serviceEdit" method="POST">
 
 	<s:hidden name="service.id" />
 
@@ -16,21 +14,21 @@
             <td class="col"><s:text name="eirc.service.name" />:</td>
             <td class="col">
                 <s:iterator value="descriptions"><s:set name="l" value="%{getLang(key)}" />
-                    <s:textfield name="descriptions[%{key}]" value="%{value}"/>(<s:if test="%{#l.default}">*</s:if><s:property value="%{getLangName(#l)}" />)<br />
+                    <s:textfield name="descriptions[%{key}]" value="%{value}"/>(<s:if test="#l.default">*</s:if><s:property value="getLangName(#l)" />)<br />
                 </s:iterator>
             </td>
         </tr>        
         <tr valign="top" class="cols_1">
 			<td class="col"><s:text name="eirc.service_provider" />*:</td>
-			<td class="col"><%@include file="../filters/service_provider_filter.jsp"%></td>
+			<td class="col"><%@include file="/WEB-INF/jsp/payments/filters/service_provider_filter.jsp"%></td>
 		</tr>
 		<tr valign="top" class="cols_1">
 			<td class="col"><s:text name="payments.service_type" />:</td>
-			<td class="col"><%@include file="../filters/service_type_filter.jsp"%></td>
+			<td class="col"><%@include file="/WEB-INF/jsp/payments/filters/service_type_filter.jsp"%></td>
 		</tr>
 		<tr valign="top" class="cols_1">
 			<td class="col"><s:text name="eirc.service.parent_service" />:</td>
-			<td class="col"><%@include file="../filters/parent_service_filter.jsp"%></td>
+			<td class="col"><%@include file="/WEB-INF/jsp/payments/filters/parent_service_filter.jsp"%></td>
 		</tr>
 		<tr valign="top" class="cols_1">
 			<td class="col"><s:text name="common.measure_unit" />:</td>
