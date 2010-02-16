@@ -12,17 +12,12 @@ import org.flexpay.common.service.RegistryService;
 import org.flexpay.common.util.config.ApplicationConfig;
 import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.orgs.service.OrganizationService;
+import org.flexpay.payments.service.SignatureService;
 import org.flexpay.payments.service.registry.PaymentsRegistryMBGenerator;
 import org.springframework.beans.factory.annotation.Required;
 
-import java.io.DataInputStream;
-import java.io.IOException;
 import java.io.Serializable;
-import java.security.KeyFactory;
-import java.security.PrivateKey;
 import java.security.Signature;
-import java.security.spec.PKCS8EncodedKeySpec;
-import java.util.Arrays;
 import java.util.Map;
 
 import static org.flexpay.payments.process.export.job.ExportJobParameterNames.*;
@@ -36,8 +31,7 @@ public class GeneratePaymentsMBRegistryJob extends Job {
 	private OrganizationService organizationService;
 	private RegistryService registryService;
     private RegistryFPFileTypeService registryFPFileTypeService;
-	private static final String RSA_KEY_ALGORITHM = "RSA";
-	private static final String SHA1_WITH_RSA_SIGNATURE_ALGORITHM = "SHA1withRSA";
+	private SignatureService signatureService;
 
 
 	public String execute(Map<Serializable, Serializable> parameters) throws FlexPayException {
@@ -83,40 +77,12 @@ public class GeneratePaymentsMBRegistryJob extends Job {
 	}
 
 	private void addSignature(String privateKey) {
-		DataInputStream dis = null;
 		try {
-			dis = new DataInputStream(ApplicationConfig.getResourceAsStream(privateKey));
-
-			byte[] privKeyBytes = new byte[BUFFER_SIZE];
-			int off = 0;
-			int countRead;
-			while ((countRead = dis.read(privKeyBytes, off, BUFFER_SIZE)) > 0) {
-				off += countRead;
-				privKeyBytes = Arrays.copyOf(privKeyBytes, off + BUFFER_SIZE);
-			}
-			dis.close();
-			dis = null;
-
-			KeyFactory keyFactory = KeyFactory.getInstance(RSA_KEY_ALGORITHM);
-
-			// decode private key
-			PKCS8EncodedKeySpec privSpec = new PKCS8EncodedKeySpec(privKeyBytes);
-			PrivateKey privKey = keyFactory.generatePrivate(privSpec);
-
-			Signature instance = Signature.getInstance(SHA1_WITH_RSA_SIGNATURE_ALGORITHM);
-			instance.initSign(privKey);
+			Signature instance = signatureService.readPrivateSignature(privateKey);
 
 			paymentsRegistryMBGenerator.setSignature(instance);
 		} catch (Exception e) {
 			log.error("Error creating signature '{}': {}", privateKey, e);
-		} finally {			
-			if (dis != null) {
-				try {
-					dis.close();
-				} catch (IOException e) {
-					log.warn("Error closing stream", e);
-				}
-			}
 		}
 	}
 
@@ -210,4 +176,9 @@ public class GeneratePaymentsMBRegistryJob extends Job {
     public void setRegistryFPFileTypeService(RegistryFPFileTypeService registryFPFileTypeService) {
         this.registryFPFileTypeService = registryFPFileTypeService;
     }
+
+	@Required
+	public void setSignatureService(SignatureService signatureService) {
+		this.signatureService = signatureService;
+	}
 }

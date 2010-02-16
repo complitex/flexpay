@@ -40,6 +40,7 @@
           p:registryService-ref="registryService"
           p:registryFPFileTypeService-ref="registryFPFileTypeService"
           p:organizationService-ref="organizationService"
+		  p:signatureService-ref="rsaSignatureService"
           scope="prototype" />
 
     <bean id="generatePaymentsFPRegistryJob"

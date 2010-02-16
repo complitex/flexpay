@@ -41,6 +41,7 @@ import org.flexpay.payments.process.export.job.ExportJobParameterNames;
 import org.flexpay.payments.service.DocumentService;
 import org.flexpay.payments.service.EircRegistryService;
 import org.flexpay.payments.service.OperationService;
+import org.flexpay.payments.service.impl.RSASignatureService;
 import org.flexpay.payments.test.PaymentsSpringBeanAwareTestCase;
 import org.flexpay.payments.util.impl.*;
 import org.jetbrains.annotations.Nullable;
@@ -130,6 +131,9 @@ public class TestGeneratePaymentsRegistry extends PaymentsSpringBeanAwareTestCas
     @Autowired
     @Qualifier ("paymentsTestRegistryUtil")
     private PaymentsTestRegistryUtil registryUtil;
+
+	@Autowired
+	private RSASignatureService signatureService;
 
     private ServiceProvider serviceProvider;
     private PaymentPoint paymentPoint;
@@ -333,8 +337,8 @@ public class TestGeneratePaymentsRegistry extends PaymentsSpringBeanAwareTestCas
 		});
 	}
 
-	private static void assertDigitalSignature(FPFile file, String key) throws Exception {
-		final Signature sign = readPublicSignature(key);
+	private void assertDigitalSignature(FPFile file, String key) throws Exception {
+		final Signature sign = signatureService.readPublicSignature(key);
 		file.withInputStream(new InputStreamCallback() {
 			public void read(InputStream is) throws IOException {
 

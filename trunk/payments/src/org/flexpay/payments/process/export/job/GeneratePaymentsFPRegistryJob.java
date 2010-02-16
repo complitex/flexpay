@@ -12,8 +12,7 @@ import org.springframework.beans.factory.annotation.Required;
 import java.io.Serializable;
 import java.util.Map;
 
-import static org.flexpay.payments.process.export.job.ExportJobParameterNames.REGISTRY;
-import static org.flexpay.payments.process.export.job.ExportJobParameterNames.REGISTRY_ID;
+import static org.flexpay.payments.process.export.job.ExportJobParameterNames.*;
 
 /**
  * Job generate payments registry in FP format.
@@ -42,7 +41,7 @@ public class GeneratePaymentsFPRegistryJob extends Job {
 
         log.debug("Run generate FP file of registry {}", registry.getId());
 
-        FPFile file = exportBankPaymentsRegistry.generateAndAttachFile(registry);
+        FPFile file = exportBankPaymentsRegistry.generateAndAttachFile(registry, getPrivateKey(parameters));
         if (file == null) {
             log.error("FP file does not generate for registry {}", registry.getId());
             return RESULT_ERROR;
@@ -70,6 +69,15 @@ public class GeneratePaymentsFPRegistryJob extends Job {
 		}
 
 		return registry;
+	}
+
+	private String getPrivateKey(Map<Serializable, Serializable> parameters) {
+
+		if (parameters.containsKey(PRIVATE_KEY)) {
+            return (String) parameters.get(PRIVATE_KEY);
+		}
+
+		return null;
 	}
 
     @Required
