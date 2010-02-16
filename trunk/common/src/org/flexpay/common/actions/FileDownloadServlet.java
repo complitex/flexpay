@@ -108,7 +108,7 @@ public class FileDownloadServlet extends HttpServlet {
 		} else if (".csv".equalsIgnoreCase(ext)) {
 			result = "text/csv";
 		} else if (".txt".equalsIgnoreCase(ext)) {
-			result = "text/txt";
+			result = "text/plain";
 		} else if (".html".equalsIgnoreCase(ext)) {
 			result = "text/html";
 		} else {
