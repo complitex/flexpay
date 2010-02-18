@@ -105,10 +105,26 @@ public class IterateFPRegistryActionHandler extends FlexPayActionHandler {
 			flushNumberRegistryRecords = (Long)parameters.get(PARAM_FLUSH_NUMBER_REGISTRY_RECORDS);
 		}
 
+		List<SpFileReader.Message> listMessage = (List<SpFileReader.Message>)parameters.get(PARAM_MESSAGES);
+
+		SpFileReader reader = (SpFileReader)parameters.get(PARAM_READER);
 		try {
-			List<SpFileReader.Message> listMessage;
+			FileSource fileSource = openRegistryFile(spFile);
+			InputStream is = fileSource.openStream();
+			if (reader == null) {
+                reader = new SpFileReader(is);
+            }
+			reader.setInputStream(is);
+		} catch (IOException e) {
+			processLog.error("Inner error");
+			log.error("Failed open stream");
+			return RESULT_ERROR;
+		}
+
+		try {
+			boolean nextIterate;
 			do {
-				listMessage = getMessages(parameters, spFile);
+				listMessage = getMessages(reader, listMessage);
 
 				int i = 0;
 				for (SpFileReader.Message message : listMessage) {
@@ -143,42 +159,41 @@ public class IterateFPRegistryActionHandler extends FlexPayActionHandler {
 						if (flushRecordStack(parameters, records)) {
 							List<SpFileReader.Message> outgoingMessages = listMessage.subList(i, listMessage.size());
 							parameters.put(PARAM_MESSAGES, CollectionUtils.list(outgoingMessages));
+							parameters.put(PARAM_READER, reader);
 							return RESULT_NEXT;
 						}
 					} else if (messageType.equals(SpFileReader.Message.MESSAGE_TYPE_FOOTER)) {
 						processFooter(messageFieldList);
 					}
 				}
-			} while(listMessage.size() > 0);
+				nextIterate = !listMessage.isEmpty();
+				listMessage.clear();
+
+			} while(nextIterate);
 			log.error("Failed registry file");
 		} catch(Exception e) {
 			log.error("Processing error", e);
 			processLog.error("Inner error");
+		} finally {
+			try {
+				reader.close();
+			} catch (IOException e) {
+				log.error("Failed reader", e);
+				processLog.error("Inner error");
+			}
 		}
 		return RESULT_ERROR;
 	}
 
 	@SuppressWarnings ({"unchecked"})
-	private List<SpFileReader.Message> getMessages(Map<String, Object> parameters, FPFile spFile) throws FlexPayException {
-		List<SpFileReader.Message> listMessage = (List<SpFileReader.Message>)parameters.get(PARAM_MESSAGES);
-
+	private List<SpFileReader.Message> getMessages(SpFileReader reader, List<SpFileReader.Message> listMessage) throws FlexPayException {
 		if (listMessage == null) {
 			listMessage = new ArrayList<SpFileReader.Message>();
 		} else if (listMessage.size() > 0) {
-			parameters.remove(PARAM_MESSAGES);
 			return listMessage;
 		}
+
         try {
-            FileSource fileSource = openRegistryFile(spFile);
-            InputStream is = fileSource.openStream();
-
-
-            SpFileReader reader = (SpFileReader)parameters.get(PARAM_READER);
-            if (reader == null) {
-                reader = new SpFileReader(is);
-            }
-			reader.setInputStream(is);
-
 			Long startPoint = reader.getPosition();
 			SpFileReader.Message message;
 
@@ -188,8 +203,6 @@ public class IterateFPRegistryActionHandler extends FlexPayActionHandler {
 			} while (message != null && (reader.getPosition() - startPoint) < minReadChars);
 			log.debug("read {} number record", listMessage.size());
 			reader.setInputStream(null);
-
-			parameters.put(PARAM_READER, reader);
 
             return listMessage;
         } catch (IOException e) {
