@@ -159,6 +159,7 @@ public class IterateFPRegistryActionHandler extends FlexPayActionHandler {
 						if (flushRecordStack(parameters, records)) {
 							List<SpFileReader.Message> outgoingMessages = listMessage.subList(i, listMessage.size());
 							parameters.put(PARAM_MESSAGES, CollectionUtils.list(outgoingMessages));
+							reader.setInputStream(null);
 							parameters.put(PARAM_READER, reader);
 							return RESULT_NEXT;
 						}
@@ -202,7 +203,6 @@ public class IterateFPRegistryActionHandler extends FlexPayActionHandler {
 				listMessage.add(message);
 			} while (message != null && (reader.getPosition() - startPoint) < minReadChars);
 			log.debug("read {} number record", listMessage.size());
-			reader.setInputStream(null);
 
             return listMessage;
         } catch (IOException e) {
