@@ -3,9 +3,11 @@
 	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	   xmlns:p="http://www.springframework.org/schema/p"
 	   xmlns:context="http://www.springframework.org/schema/context"
+	   xmlns:util="http://www.springframework.org/schema/util"
 	   xsi:schemaLocation="
 		   http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
-		   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
+		   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd
+		   http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.5.xsd">
 
 	<bean id="jobExecutor" class="org.jbpm.job.executor.JobExecutor" scope="singleton"
 		  p:jbpmConfiguration-ref="jbpmConfiguration"
@@ -14,9 +16,12 @@
 		  p:idleInterval="5000"
 		  p:maxIdleInterval="3600000"
 		  p:historyMaxSize="20"
-		  p:maxLockTime="600000"
 		  p:lockMonitorInterval="60000"
 		  p:lockBufferTime="5000"
 		  init-method="startThread"
-		  destroy-method="stopThread" />
+		  destroy-method="stopThread" >
+		<property name="maxLockTime">
+			<util:constant static-field="java.lang.Integer.MAX_VALUE" />
+		</property>
+	</bean>
 </beans>
