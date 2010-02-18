@@ -90,6 +90,14 @@ public class SpFileReader implements Serializable {
 		this.charset = charset;
 	}
 
+	@Override
+	public String toString() {
+		return "SpFileReader{" +
+				"position=" + position +
+				", message=" + message +
+				'}';
+	}
+
 	public static class Message implements Serializable {
 
 		public static final int MESSAGE_TYPE_HEADER = 0xC;
@@ -127,6 +135,15 @@ public class SpFileReader implements Serializable {
 			this.position = position;
 		}
 
+
+		@Override
+		public String toString() {
+			return "Message{" +
+					"type=" + type +
+					", body='" + body + '\'' +
+					", position=" + position +
+					'}';
+		}
 	}
 
 }
