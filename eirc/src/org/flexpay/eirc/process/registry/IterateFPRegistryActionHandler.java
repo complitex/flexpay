@@ -108,9 +108,10 @@ public class IterateFPRegistryActionHandler extends FlexPayActionHandler {
 		List<SpFileReader.Message> listMessage = (List<SpFileReader.Message>)parameters.get(PARAM_MESSAGES);
 
 		SpFileReader reader = (SpFileReader)parameters.get(PARAM_READER);
+		InputStream is;
 		try {
 			FileSource fileSource = openRegistryFile(spFile);
-			InputStream is = fileSource.openStream();
+			is = fileSource.openStream();
 			if (reader == null) {
                 reader = new SpFileReader(is);
             }
@@ -177,7 +178,7 @@ public class IterateFPRegistryActionHandler extends FlexPayActionHandler {
 			processLog.error("Inner error");
 		} finally {
 			try {
-				reader.close();
+				is.close();
 			} catch (IOException e) {
 				log.error("Failed reader", e);
 				processLog.error("Inner error");
