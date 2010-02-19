@@ -45,6 +45,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+@Transactional (readOnly = true)
 public class IterateFPRegistryActionHandler extends FlexPayActionHandler {
     private static final String RESULT_END = "end";
 
@@ -257,6 +258,7 @@ public class IterateFPRegistryActionHandler extends FlexPayActionHandler {
 		return false;
 	}
 
+	@Transactional(readOnly = false)
 	private void finalizeRegistry(Map<String, Object> parameters, @Nullable List<RegistryRecord> records) throws FlexPayException {
 		Registry registry = getRegistry(parameters);
 		if (registry == null) {
