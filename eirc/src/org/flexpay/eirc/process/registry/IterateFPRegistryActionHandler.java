@@ -228,7 +228,6 @@ public class IterateFPRegistryActionHandler extends FlexPayActionHandler {
 	}
 
 	@SuppressWarnings ({"unchecked"})
-	@Transactional(readOnly = false)
 	private boolean flushRecordStack(@NotNull Map<String, Object> parameters,
 								  @Nullable List<RegistryRecord> records, @Nullable Registry registry, boolean finalize) throws FlexPayException {
 		if (records != null && (records.size() >= flushNumberRegistryRecords || finalize)) {
@@ -248,8 +247,8 @@ public class IterateFPRegistryActionHandler extends FlexPayActionHandler {
 
 			for (RegistryRecord record : records) {
 				record.setRegistry(registry);
-				registryRecordService.create(record);
 			}
+			registryRecordService.create(records);
 
 			records.clear();
 			log.debug("Flushing data. Total count: {}", recordCounter);
