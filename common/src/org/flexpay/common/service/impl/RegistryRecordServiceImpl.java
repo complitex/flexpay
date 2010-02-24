@@ -1,11 +1,12 @@
 package org.flexpay.common.service.impl;
 
-import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.dao.paging.FetchRange;
+import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.dao.registry.RegistryRecordContainerDao;
 import org.flexpay.common.dao.registry.RegistryRecordDao;
 import org.flexpay.common.dao.registry.RegistryRecordDaoExt;
 import org.flexpay.common.exception.FlexPayException;
+import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.filter.ImportErrorTypeFilter;
 import org.flexpay.common.persistence.filter.RegistryRecordStatusFilter;
 import org.flexpay.common.persistence.registry.Registry;
@@ -13,6 +14,7 @@ import org.flexpay.common.persistence.registry.RegistryRecord;
 import org.flexpay.common.persistence.registry.RegistryRecordContainer;
 import org.flexpay.common.persistence.registry.workflow.RegistryRecordWorkflowManager;
 import org.flexpay.common.service.RegistryRecordService;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,6 +43,7 @@ public class RegistryRecordServiceImpl implements RegistryRecordService {
 	 * @return created SpRegistryRecord object
 	 */
 	@Transactional (readOnly = false)
+	@Override
 	public RegistryRecord create(RegistryRecord record) {
 
 		registryRecordDao.create(record);
@@ -64,12 +67,13 @@ public class RegistryRecordServiceImpl implements RegistryRecordService {
 	/**
 	 * Read RegistryRecord object by its unique id
 	 *
-	 * @param id RegistryRecord key
+	 * @param stub RegistryRecord stub
 	 * @return RegistryRecord object, or <code>null</code> if object not found
 	 */
 	@Nullable
-	public RegistryRecord read(Long id) {
-		return registryRecordDao.readFull(id);
+	@Override
+	public RegistryRecord read(@NotNull Stub<RegistryRecord> stub) {
+		return registryRecordDao.readFull(stub.getId());
 	}
 
 	/**
@@ -81,6 +85,7 @@ public class RegistryRecordServiceImpl implements RegistryRecordService {
 	 *          if SpRegistryRecord object is invalid
 	 */
 	@Transactional (readOnly = false)
+	@Override
 	public RegistryRecord update(RegistryRecord spRegistryRecord) throws FlexPayException {
 		registryRecordDao.update(spRegistryRecord);
 
@@ -88,6 +93,7 @@ public class RegistryRecordServiceImpl implements RegistryRecordService {
 	}
 
 	@Transactional (readOnly = false)
+	@Override
 	public void delete(RegistryRecord spRegistryRecord) {
 		registryRecordDao.delete(spRegistryRecord);
 	}
@@ -101,11 +107,13 @@ public class RegistryRecordServiceImpl implements RegistryRecordService {
 	 * @param pager				 Page
 	 * @return list of filtered registry records
 	 */
+	@Override
 	public List<RegistryRecord> listRecords(Registry registry, ImportErrorTypeFilter importErrorTypeFilter,
 											RegistryRecordStatusFilter recordStatusFilter, Page<RegistryRecord> pager) {
 		return registryRecordDaoExt.filterRecords(registry.getId(), importErrorTypeFilter, recordStatusFilter, pager);
 	}
 
+	@Override
 	public List<RegistryRecord> listRecordsForExport(Registry registry, FetchRange range) {
 		return registryRecordDao.listRecordsForExport(registry.getId(), range);
 	}
@@ -116,6 +124,7 @@ public class RegistryRecordServiceImpl implements RegistryRecordService {
 	 * @param registry Registry to count errors for
 	 * @return number of errors
 	 */
+	@Override
 	public int getErrorsNumber(Registry registry) {
 		log.debug("Getting registry errors number: {}", registry.getId());
 		return registryRecordDaoExt.getErrorsNumber(registry.getId());
@@ -128,6 +137,7 @@ public class RegistryRecordServiceImpl implements RegistryRecordService {
 	 * @return updated record
 	 */
 	@Transactional (readOnly = false)
+	@Override
 	public RegistryRecord removeError(RegistryRecord record) throws Exception {
 		workflowManager.setNextSuccessStatus(record);
 		return record;
@@ -140,6 +150,7 @@ public class RegistryRecordServiceImpl implements RegistryRecordService {
 	 * @param objectIds Set of identifiers
 	 * @return Records
 	 */
+	@Override
 	public Collection<RegistryRecord> findObjects(Registry registry, Set<Long> objectIds) {
 		return registryRecordDaoExt.findRecords(registry.getId(), objectIds);
 	}
@@ -150,6 +161,7 @@ public class RegistryRecordServiceImpl implements RegistryRecordService {
 	 * @param stub Registry record stub
 	 * @return List of containers
 	 */
+	@Override
 	public List<RegistryRecordContainer> getRecordContainers(RegistryRecord stub) {
 		return recordContainerDao.findRecordContainers(stub.getId());
 	}

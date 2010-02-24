@@ -1,52 +1,56 @@
 <%@include file="/WEB-INF/jsp/common/taglibs.jsp"%>
+<%@include file="/WEB-INF/jsp/common/includes/errors_messages.jsp"%>
+<%@include file="/WEB-INF/jsp/payments/data/registry_record_info.jsp"%>
 
-<s:actionerror/>
+<table cellpadding="3" cellspacing="1" border="0" width="100%">
+    <tr>
+        <td>
+            <table width="100%">
+                <tr>
+                    <td class="filter"><s:text name="ab.person.fio" /></td>
+                    <td colspan="5">
+                        <input type="text" name="personSearchFilter.searchString" class="form-textfield"
+                               value="<s:property value="personSearchFilter.searchString" />" />
+                        <input type="button" onclick="pagerAjax();" value="<s:text name="common.search" />" />
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+    <tr>
+        <td id="result"></td>
+    </tr>
+</table>
 
-<form id="fobjects" method="post"
-	  action="<s:url action="registryRecordCorrectPerson" includeParams="none" />"
-      onsubmit="return FP.validateSubmit('<s:text name="eirc.need_select_person" />');">
+<script type="text/javascript">
 
-	<%@include file="/WEB-INF/jsp/payments/data/registry_record_info.jsp"%>
-	<%@include file="/WEB-INF/jsp/ab/filters/groups/person_search.jsp"%>
+    $(function() {
+        pagerAjax();
+    });
 
-	<table cellpadding="3" cellspacing="1" border="0" width="100%">
+    function pagerAjax(element) {
+        FP.pagerAjax(element, {
+            action:"<s:url action="personsListCorrections" includeParams="none" />",
+            params:{
+                "personSearchFilter.searchString": $("input[name='personSearchFilter.searchString']").get(0).value
+            }
+        });
+    }
 
-		<tr>
-			<td class="th" width="1%">&nbsp;</td>
-			<td class="th" width="1%">&nbsp;</td>
-			<td class="th" width="20%"><s:text name="ab.person.last_name" /></td>
-			<td class="th" width="20%"><s:text name="ab.person.first_name" /></td>
-			<td class="th" width="20%"><s:text name="ab.person.middle_name" /></td>
-			<td class="th" width="20%"><s:text name="ab.person.birth_date" /></td>
-			<td class="th" width="18%">&nbsp;</td>
-		</tr>
-		<s:iterator value="persons" status="status">
-			<tr valign="middle" class="cols_1">
-				<td class="col_1s" align="right">
-                    <s:property value="#status.index + pager.thisPageFirstElementNumber + 1" />
-                </td>
-				<td class="col">
-					<input type="radio" value="<s:property value="id" />" name="object.id" />
-				</td>
-				<td class="col"><s:property value="defaultIdentity.lastName" /></td>
-				<td class="col"><s:property value="defaultIdentity.firstName" /></td>
-				<td class="col"><s:property value="defaultIdentity.middleName" /></td>
-				<td class="col"><s:property value="format(defaultIdentity.birthDate)" /></td>
-				<td class="col">
-					<a target="_blank" href="<s:url action="personView" namespace="/dicts" includeParams="none"><s:param name="person.id" value="id" /></s:url>">
-						<s:text name="common.view" />
-                    </a>
-                </td>
-			</tr>
-		</s:iterator>
-		<tr>
-			<td colspan="7">
-				<input type="hidden" id="setupType" name="setupType" value="setupType" />
-				<s:hidden name="record.id" value="record.id" />
-				<input type="submit" onclick="$('#setupType').val('person');" class="btn-exit" value="<s:text name="common.set" />" />
-				<input type="button" value="<s:text name="common.close" />" class="btn-exit" onclick="parent.Windows.closeAll();" />
-			</td>
-		</tr>
+    function set(id) {
+        $.post("<s:url action="setCorrection" includeParams="none" />", {
+                    "record.id":<s:property value="record.id" />,
+                    "object.id":id,
+                    type:"person"
+                }, function(data) {
+                    $("#messagesBlock").html(data);
+                    if ($("#errors").text().length > 0) {
+                        $("#setBut").hide();
+                    } else {
+                        parent.$("#messagesBlock").html(data);
+                        parent.$.modal.close();
+                    }
+                });
+    }
 
-	</table>
-</form>
+</script>

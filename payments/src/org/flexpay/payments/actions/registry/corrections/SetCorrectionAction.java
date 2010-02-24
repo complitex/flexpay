@@ -1,31 +1,26 @@
 package org.flexpay.payments.actions.registry.corrections;
 
-import org.flexpay.ab.persistence.Street;
-import org.flexpay.common.actions.FPActionWithPagerSupport;
-import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.DataSourceDescription;
+import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.registry.RegistryRecord;
 import org.flexpay.common.service.RegistryRecordService;
 import org.flexpay.common.service.importexport.CorrectionsService;
 import org.flexpay.orgs.persistence.Organization;
 import org.flexpay.orgs.service.OrganizationService;
-import org.flexpay.payments.actions.interceptor.CashboxAware;
+import org.flexpay.payments.actions.OperatorAWPActionSupport;
 import org.flexpay.payments.persistence.EircRegistryProperties;
-import org.flexpay.payments.persistence.ServiceType;
-import org.flexpay.payments.persistence.ServiceTypeNameTranslation;
 import org.flexpay.payments.service.ServiceTypeService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
 import static org.flexpay.common.persistence.Stub.stub;
 
-public class CorrectStreetAction extends FPActionWithPagerSupport<Street> implements CashboxAware {
+public class SetCorrectionAction extends OperatorAWPActionSupport {
 
-	protected String setupType;
-	protected Street object = new Street();
+	protected DomainObject object = new DomainObject();
 	protected RegistryRecord record = new RegistryRecord();
-	protected Long cashboxId;
+	protected String type;
 
 	protected CorrectionsService correctionsService;
 	protected RegistryRecordService recordService;
@@ -36,28 +31,43 @@ public class CorrectStreetAction extends FPActionWithPagerSupport<Street> implem
 	@Override
 	public String doExecute() throws Exception {
 
-		record = recordService.read(record.getId());
-
-		if ("street".equals(setupType)) {
-
-			EircRegistryProperties props = (EircRegistryProperties) record.getRegistry().getProperties();
-			Organization organization = organizationService.readFull(props.getSenderStub());
-			if (organization == null) {
-				addActionError(getText("error.eirc.data_source_not_found"));
-				return SUCCESS;
-			}
-			Stub<DataSourceDescription> sd = organization.sourceDescriptionStub();
-
-			saveCorrection(sd);
-
-			record = recordService.removeError(record);
-			return "complete";
+		if (object == null || object.isNew()) {
+			log.warn("Incorrect object id");
+			addActionError(getText("common.error.invalid_id"));
+			return SUCCESS;
 		}
+
+		if (record == null || record.isNew()) {
+			log.warn("Incorrect registry record id");
+			addActionError(getText("error.registry.record.not_specified"));
+			return SUCCESS;
+		}
+
+		Stub<RegistryRecord> stub = stub(record);
+		record = recordService.read(stub);
+		if (record == null) {
+			log.warn("Can't get registry record with id {} from DB", stub.getId());
+			addActionError(getText("error.registry.record.invalid_specified"));
+			return SUCCESS;
+		}
+
+		EircRegistryProperties props = (EircRegistryProperties) record.getRegistry().getProperties();
+		Organization organization = organizationService.readFull(props.getSenderStub());
+		if (organization == null) {
+			log.warn("Can't get organization with id {} from DB", props.getSenderStub().getId());
+			addActionError(getText("error.eirc.data_source_not_found"));
+			return SUCCESS;
+		}
+
+		if (saveCorrection(organization.sourceDescriptionStub()) && record.getImportError() != null) {
+			record = recordService.removeError(record);
+		}
+
 		return SUCCESS;
 	}
 
-	protected void saveCorrection(Stub<DataSourceDescription> sd) {
-
+	protected boolean saveCorrection(Stub<DataSourceDescription> sd) {
+		return true;
 	}
 
 	/**
@@ -70,45 +80,19 @@ public class CorrectStreetAction extends FPActionWithPagerSupport<Street> implem
 	@NotNull
 	@Override
 	protected String getErrorResult() {
-		return "street".equals(setupType) ? "complete" : SUCCESS;
+		return SUCCESS;
 	}
 
-	public String getServiceTypeName(ServiceType typeStub) throws FlexPayException {
-		ServiceType type = serviceTypeService.read(stub(typeStub));
-		ServiceTypeNameTranslation name = getTranslation(type.getTypeNames());
-		return name == null ? "Unknown" : name.getName();
+	public void setType(String type) {
+		this.type = type;
 	}
 
-	public String getSetupType() {
-		return setupType;
-	}
-
-	public void setSetupType(String setupType) {
-		this.setupType = setupType;
-	}
-
-	public Street getObject() {
-		return object;
-	}
-
-	public void setObject(Street object) {
+	public void setObject(DomainObject object) {
 		this.object = object;
-	}
-
-	public RegistryRecord getRecord() {
-		return record;
 	}
 
 	public void setRecord(RegistryRecord record) {
 		this.record = record;
-	}
-
-	public Long getCashboxId() {
-		return cashboxId;
-	}
-
-	public void setCashboxId(Long cashboxId) {
-		this.cashboxId = cashboxId;
 	}
 
 	@Required

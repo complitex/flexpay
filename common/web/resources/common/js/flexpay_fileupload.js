@@ -47,7 +47,7 @@ function FPFileUploadForm(formId, options) {
     var test = "";
     var test1 = null;
 
-    $('input[type="file"]').each(function() {
+    $("input[type=file]").each(function() {
         if (this.form.id == options.formId && test == "") {
             if ($.browser.msie) {
                 this.onchange = function() {
@@ -75,9 +75,9 @@ function FPFileUploadForm(formId, options) {
         form.uploadForms[index] = $('<form id="' + form.uploadFormId + index + '" action="' + options.action + '"'
                          + 'method="post" enctype="multipart/form-data" target="' + form.uploadFrameId + index + '"></form>').css({display : "none"});
 
-        $(":input:not(:button):not(:reset):not(:image):not(:file):not(:submit):not(:disabled)").each(function(i, el) {
-            if (el.form.id == options.formId) {
-                form.uploadForms[index].append($('<input type="hidden" name="' + el.name + '" />').val(el.value));
+        $(":input:not(:button):not(:reset):not(:image):not(:file):not(:submit):not(:disabled)").each(function() {
+            if (this.form.id == options.formId) {
+                form.uploadForms[index].append($('<input type="hidden" name="' + this.name + '" />').val(this.value));
             }
         });
         var fileBlock = form.file.parent();

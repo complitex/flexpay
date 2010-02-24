@@ -1,9 +1,8 @@
 <%@include file="/WEB-INF/jsp/common/taglibs.jsp"%>
 <%@include file="/WEB-INF/jsp/common/includes/jquery_ui_core.jsp"%>
-<%@include file="/WEB-INF/jsp/common/includes/jquery_window.jsp"%>
+<%@include file="/WEB-INF/jsp/common/includes/jquery_bbq.jsp"%>
+<%@include file="/WEB-INF/jsp/common/includes/jquery_simplemodal.jsp"%>
 <%@include file="/WEB-INF/jsp/common/includes/errors_messages.jsp"%>
-
-<s:hidden name="registry.id" />
 
 <table cellpadding="3" cellspacing="1" border="0" width="100%">
     <tr>
@@ -79,7 +78,7 @@
             <%--<td class="col"><s:property value="containers" /></td>--%>
             <td class="col">N/A</td>
             <td class="col"><s:text name="%{importError.errorId}" /></td>
-            <td class="col"><s:text name="%{recordStatus.i18nName}"/></td>
+            <td class="col"><s:text name="%{recordStatus.i18nName}" /></td>
             <td class="col">
                 <a href="#" onclick="createDialog(<s:property value="id" />);"><s:text name="common.edit" /></a>
             </td>
@@ -88,41 +87,29 @@
     <tr>
         <td colspan="12">
             <%@include file="/WEB-INF/jsp/common/filter/pager/pager_ajax.jsp"%>
-            <input type="button" value="<s:text name="eirc.process_selected" />" class="btn-exit" onclick="process();"/>
+            <input type="button" value="<s:text name="eirc.process_selected" />" class="btn-exit" onclick="process();" />
         </td>
     </tr>
 </table>
 
 <script type="text/javascript">
 
-    var isOpen = false;
-
     function createDialog(recordId) {
 
-        if (isOpen) {
-            return;
-        }
-
-        isOpen = true;
-
-        $.window({
-            title: "<s:text name="eirc.registry.view.dialog_title" />",
-            url: "<s:url action="selectCorrectionType" namespace="/payments" includeParams="none"/>?record.id=" + recordId,
-            height: 550,
-            width: 800,
-            minHeight:300,
-            minWidth:650,
-            maxHeight:1000,
-            maxWidth:1000,
-            checkBoundary: true,
-            bookmarkable: false,
-            maximizable: false,
-            minimizable: false,
-            showFooter: false,
-            showRoundCorner: true,
+        var src = $.param.querystring("<s:url action="selectCorrectionType" namespace="/payments" includeParams="none" />", {"record.id":recordId});
+        $.modal('<iframe src="' + src + '" height="550" width="800" style="border:0" />', {
+            containerCss:{
+                backgroundColor:"#fff",
+                borderColor:"#0063dc",
+                height:550,
+                padding:0,
+                width:800
+            },
+            escClose:true,
+            overlayClose:true,
             onClose: function() {
-                isOpen = false;
-                pagerAjax(null);
+                $.modal.close();
+                pagerAjax();
             }
         });
 

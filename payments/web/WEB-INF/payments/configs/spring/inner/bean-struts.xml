@@ -13,36 +13,14 @@
 		  p:typeRegistry-ref="classToTypeRegistry"
           scope="prototype" />
 
-	<bean id="correctAddressAction"
-		  class="org.flexpay.payments.actions.registry.corrections.CorrectAddressAction"
-		  p:correctionsService-ref="correctionsService"
-		  p:recordService-ref="registryRecordService"
-		  p:serviceTypeService-ref="serviceTypeService"
-		  p:typeRegistry-ref="classToTypeRegistry"
-		  p:organizationService-ref="organizationService"
-          scope="prototype" />
-
-	<bean id="correctBuildingAddressAction"
-		  class="org.flexpay.payments.actions.registry.corrections.CorrectBuildingAction"
+	<bean id="setCorrectionAction"
+		  class="org.flexpay.payments.actions.registry.corrections.SetCorrectionAction"
 		  p:correctionsService-ref="correctionsService"
 		  p:recordService-ref="registryRecordService"
 		  p:serviceTypeService-ref="serviceTypeService"
 		  p:organizationService-ref="organizationService"
-          scope="prototype" />
-
-	<bean id="correctStreetAddressAction"
-		  class="org.flexpay.payments.actions.registry.corrections.CorrectStreetAction"
-		  p:correctionsService-ref="correctionsService"
-		  p:recordService-ref="registryRecordService"
-		  p:serviceTypeService-ref="serviceTypeService"
-		  p:organizationService-ref="organizationService"
-          scope="prototype" />
-
-	<bean id="correctPersonAction" parent="personsListAction"
-		  class="org.flexpay.payments.actions.registry.corrections.CorrectPersonAction"
-		  p:correctionsService-ref="correctionsService"
-		  p:recordService-ref="registryRecordService"
-		  p:organizationService-ref="organizationService"
+          p:paymentPointService-ref="paymentPointService"
+          p:cashboxService-ref="cashboxService"
           scope="prototype" />
 
 	<bean id="registryViewAction"

@@ -9,7 +9,7 @@
         <td class="filter"><s:text name="ab.person.fio" /></td>
         <td>
             <input type="text" id="personFio" name="personFio" value="" />
-            <input type="button" class="btn-exit" onclick="pagerAjax(null);" value="<s:text name="common.search" />" />
+            <input type="button" class="btn-exit" onclick="pagerAjax();" value="<s:text name="common.search" />" />
         </td>
     </tr>
     <tr>

@@ -18,7 +18,7 @@
     $(function() {
 
         FF.addListener("street", function() {
-            pagerAjax(null);
+            pagerAjax();
         });
         FF.addEraser("street", function() {
             $("#" + resultId).html("");

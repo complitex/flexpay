@@ -1,8 +1,6 @@
 package org.flexpay.payments.actions.cashbox;
 
 import org.flexpay.common.persistence.Language;
-import static org.flexpay.common.persistence.Stub.stub;
-import static org.flexpay.common.util.CollectionUtils.map;
 import org.flexpay.common.util.config.ApplicationConfig;
 import org.flexpay.orgs.persistence.Cashbox;
 import org.flexpay.orgs.persistence.CashboxNameTranslation;
@@ -14,6 +12,9 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.util.Map;
+
+import static org.flexpay.common.persistence.Stub.stub;
+import static org.flexpay.common.util.CollectionUtils.map;
 
 public class CashboxEditAction extends AccountantAWPActionSupport {
 

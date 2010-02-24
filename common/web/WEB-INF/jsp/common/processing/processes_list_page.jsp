@@ -14,7 +14,7 @@
             <%@include file="/WEB-INF/jsp/common/filter/end_date_filter.jsp"%>
         </td>
         <td>
-            <input type="button" class="btn-exit" value="<s:text name="common.show"/>" onclick="pagerAjax(null);" />
+            <input type="button" class="btn-exit" value="<s:text name="common.show"/>" onclick="pagerAjax();" />
         </td>
     </tr>
     <tr>
@@ -65,7 +65,7 @@
     }
 
     function sorterAjax() {
-        pagerAjax(null);
+        pagerAjax();
     }
 
     function deleteAjax() {

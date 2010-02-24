@@ -221,7 +221,7 @@ public class PersonServiceImpl implements PersonService {
 		FlexPayExceptionContainer container = new FlexPayExceptionContainer();
 
 		if (identity.getIdentityType() == null) {
-			container.addException(new FlexPayException("No type", "error.ab.person.identity.no_type"));
+			container.addException(new FlexPayException("No type", "ab.error.person.identity.no_type"));
 		}
 
 		if (isBlank(identity.getLastName())) {

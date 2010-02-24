@@ -24,7 +24,7 @@
 
     $(function() {
 
-        pagerAjax(null);
+        pagerAjax();
 
 <%--
         FF.addListener("street", function(filter) {
