@@ -149,7 +149,10 @@ var FPP = {
                 event.preventDefault();
             }
         }).click(function() {
-            $("#dialog").modal();
+            $("#dialog").modal({
+                overlayClose:true,
+                escClose:true
+            });
         });
 
         payBut.click(function() {

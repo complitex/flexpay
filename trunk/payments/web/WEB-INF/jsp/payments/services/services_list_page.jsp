@@ -18,7 +18,7 @@
                         <%@include file="/WEB-INF/jsp/payments/filters/service_provider_filter.jsp"%>
                     </td>
                     <td>
-                        <input type="button" value="<s:text name="eirc.filter" />" class="btn-exit" onclick="pagerAjax(null);" />
+                        <input type="button" value="<s:text name="eirc.filter" />" class="btn-exit" onclick="pagerAjax();" />
                     </td>
                 </tr>
             </table>
@@ -33,7 +33,7 @@
 <script type="text/javascript">
 
     $(function() {
-        pagerAjax(null);
+        pagerAjax();
     });
 
     function pagerAjax(element) {

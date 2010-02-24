@@ -1,11 +1,12 @@
 package org.flexpay.payments.actions.cashbox;
 
-import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.orgs.persistence.Cashbox;
 import org.flexpay.orgs.service.CashboxService;
 import org.flexpay.payments.actions.AccountantAWPActionSupport;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
+
+import static org.flexpay.common.persistence.Stub.stub;
 
 public class CashboxViewAction extends AccountantAWPActionSupport {
 

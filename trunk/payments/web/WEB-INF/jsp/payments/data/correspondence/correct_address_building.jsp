@@ -1,40 +1,35 @@
 <%@include file="/WEB-INF/jsp/common/taglibs.jsp"%>
 <%@include file="/WEB-INF/jsp/common/includes/errors_messages.jsp"%>
+<%@include file="/WEB-INF/jsp/payments/data/registry_record_info.jsp"%>
+<%@include file="/WEB-INF/jsp/ab/filters/groups/country_region_town_street_building_ajax.jsp"%>
 
-<form id="fobjects" method="post"
-	  action="<s:url action="registryRecordCorrectAddressBuilding" includeParams="none" />"
-	  onsubmit="return FP.validateSubmit('<s:text name="eirc.need_select_building" />');">
-
-    <s:hidden name="record.id" value="%{record.id}" />
-
-    <%@include file="/WEB-INF/jsp/payments/data/registry_record_info.jsp"%>
-    <%@include file="/WEB-INF/jsp/ab/filters/groups/country_region_town_street_building_ajax.jsp"%>
-    <span id="result"></span>
-
-</form>
+<input id="setBut" type="button" class="btn-exit" onclick="set();" value="<s:text name="common.set" />" style="display:none;" />
 
 <script type="text/javascript">
 
-    var resultId = "result";
-
     $(function() {
-
-        FF.addListener("building", function(filter) {
-            FP.pagerAjax(null, {
-                action:"<s:url action="buildingDialogAjax" namespace="/payments" includeParams="none" />",
-                params:{buildingFilter: filter.value.val()}
-            });
+        FF.addListener("building", function() {
+            $("#setBut").show();
         });
         FF.addEraser("building", function() {
-            $("#" + resultId).html("");
+            $("#setBut").hide();
         });
     });
 
-    function pagerAjax(element) {
-        FP.pagerAjax(element, {
-            action:"<s:url action="buildingDialogAjax" namespace="/payments" includeParams="none" />",
-            params:{buildingFilter: FF.filters["building"].value.val()}
-        });
+    function set() {
+        $.post("<s:url action="setCorrection" includeParams="none" />", {
+                    "record.id":<s:property value="record.id" />,
+                    "object.id":FF.filters["building"].value.val(),
+                    type:"building"
+                }, function(data) {
+                    $("#messagesBlock").html(data);
+                    if ($("#errors").text().length > 0) {
+                        $("#setBut").hide();
+                    } else {
+                        parent.$("#messagesBlock").html(data);
+                        parent.$.modal.close();
+                    }
+                });
     }
 
 </script>

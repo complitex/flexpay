@@ -3,11 +3,13 @@ package org.flexpay.common.service;
 import org.flexpay.common.dao.paging.FetchRange;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
+import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.filter.ImportErrorTypeFilter;
 import org.flexpay.common.persistence.filter.RegistryRecordStatusFilter;
 import org.flexpay.common.persistence.registry.Registry;
 import org.flexpay.common.persistence.registry.RegistryRecord;
 import org.flexpay.common.persistence.registry.RegistryRecordContainer;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
@@ -28,12 +30,12 @@ public interface RegistryRecordService {
 	/**
 	 * Read RegistryRecord object by its unique id
 	 *
-	 * @param id RegistryRecord key
+	 * @param stub RegistryRecord stub
 	 * @return RegistryRecord object, or <code>null</code> if object not
 	 *         found
 	 */
 	@Nullable
-	RegistryRecord read(Long id);
+	RegistryRecord read(@NotNull Stub<RegistryRecord> stub);
 
 	/**
 	 * Update SpRegistryRecord

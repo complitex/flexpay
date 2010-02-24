@@ -6,7 +6,7 @@
         <%@include file="/WEB-INF/jsp/common/filter/begin_date_filter.jsp"%>&nbsp;
         <s:text name="payments.registry.delivery_history.date_till" />&nbsp;
         <%@include file="/WEB-INF/jsp/common/filter/end_date_filter.jsp"%>&nbsp;
-        <input type="button" value="<s:text name="payments.registry.delivery_history.filter" />" class="btn-exit" onclick="pagerAjax(null);" />
+        <input type="button" value="<s:text name="payments.registry.delivery_history.filter" />" class="btn-exit" onclick="pagerAjax();" />
     </tr>
     <tr>
         <td id="result">
@@ -17,7 +17,7 @@
 <script type="text/javascript">
 
     $(function() {
-        pagerAjax(null);
+        pagerAjax();
     });
 
     function pagerAjax(element) {

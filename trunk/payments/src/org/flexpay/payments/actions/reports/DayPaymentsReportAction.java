@@ -8,13 +8,7 @@ import org.flexpay.common.persistence.filter.BeginDateFilter;
 import org.flexpay.common.persistence.filter.BeginTimeFilter;
 import org.flexpay.common.persistence.filter.EndTimeFilter;
 import org.flexpay.common.service.reporting.ReportUtil;
-import static org.flexpay.common.util.CollectionUtils.ar;
-import static org.flexpay.common.util.CollectionUtils.map;
 import org.flexpay.common.util.DateUtil;
-import org.flexpay.common.util.config.ApplicationConfig;
-
-import static org.flexpay.common.util.config.ApplicationConfig.getDefaultReportLocale;
-import static org.flexpay.common.util.config.ApplicationConfig.isResourceAvailable;
 import org.flexpay.orgs.persistence.Cashbox;
 import org.flexpay.orgs.persistence.PaymentPoint;
 import org.flexpay.payments.actions.OperatorAWPActionSupport;
@@ -25,6 +19,11 @@ import org.springframework.beans.factory.annotation.Required;
 
 import java.util.Date;
 import java.util.Map;
+
+import static org.flexpay.common.util.CollectionUtils.ar;
+import static org.flexpay.common.util.CollectionUtils.map;
+import static org.flexpay.common.util.config.ApplicationConfig.getDefaultReportLocale;
+import static org.flexpay.common.util.config.ApplicationConfig.isResourceAvailable;
 
 /**
  * Provides functionality for creating report about payments performed in one day

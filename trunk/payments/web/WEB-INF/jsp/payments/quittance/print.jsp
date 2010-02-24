@@ -1,4 +1,5 @@
 <%@include file="/WEB-INF/jsp/common/taglibs.jsp"%>
+<%@include file="/WEB-INF/jsp/common/includes/jquery_bgiframe.jsp"%>
 
 <div id="dialog" style="display:none;">
     <s:text name="payments.reports.choose_print_format_question" /><br />

@@ -30,7 +30,7 @@
                     "tradingDayControlPanel.command":button.value
                 }, function() {
                     if (pagerAjax != undefined) {
-                        pagerAjax(null);
+                        pagerAjax();
                     }
         });
     }

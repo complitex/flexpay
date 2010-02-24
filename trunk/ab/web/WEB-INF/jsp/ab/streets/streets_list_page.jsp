@@ -10,7 +10,7 @@
                     <td colspan="5">
                         <input type="text" name="streetFilter.searchString" class="form-textfield"
                                value="<s:property value="streetFilter.searchString" />" />
-                        <input type="button" onclick="pagerAjax(null);" value="<s:text name="common.search" />" />
+                        <input type="button" onclick="pagerAjax();" value="<s:text name="common.search" />" />
                     </td>
                 </tr>
             </table>

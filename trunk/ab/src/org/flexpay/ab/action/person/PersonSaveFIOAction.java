@@ -50,8 +50,6 @@ public class PersonSaveFIOAction extends FPActionSupport {
 			identity = new PersonIdentity();
 		}
 
-		log.debug("FIO identity to save: {}", identity);
-
 		identity.setIdentityType(identityTypeService.findTypeById(IdentityType.TYPE_FIO));
 		identity.setBeginDate(null);
 		identity.setEndDate(null);
@@ -59,7 +57,9 @@ public class PersonSaveFIOAction extends FPActionSupport {
 		identity.setSerialNumber("");
 		identity.setDocumentNumber("");
 
-		// set default identity flag to true if person is new 
+		log.debug("FIO identity to save: {}", identity);
+
+		// set default identity flag to true if person is new
 		if (person.isNew()) {
 			identity.setDefault(true);
 		} else {

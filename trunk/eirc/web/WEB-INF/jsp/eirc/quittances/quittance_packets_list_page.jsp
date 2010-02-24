@@ -9,7 +9,7 @@
 <script type="text/javascript">
 
     $(function() {
-        pagerAjax(null);
+        pagerAjax();
     });
 
     function pagerAjax(element) {

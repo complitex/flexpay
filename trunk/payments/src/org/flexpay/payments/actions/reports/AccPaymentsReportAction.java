@@ -9,11 +9,7 @@ import org.flexpay.common.persistence.filter.BeginTimeFilter;
 import org.flexpay.common.persistence.filter.EndDateFilter;
 import org.flexpay.common.persistence.filter.EndTimeFilter;
 import org.flexpay.common.service.reporting.ReportUtil;
-import static org.flexpay.common.util.CollectionUtils.*;
-import static org.flexpay.common.util.config.ApplicationConfig.getDefaultReportLocale;
-
 import org.flexpay.common.util.DateUtil;
-import org.flexpay.common.util.config.ApplicationConfig;
 import org.flexpay.orgs.persistence.Cashbox;
 import org.flexpay.orgs.persistence.PaymentCollector;
 import org.flexpay.orgs.persistence.filters.CashboxFilter;
@@ -29,6 +25,9 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.util.Map;
+
+import static org.flexpay.common.util.CollectionUtils.*;
+import static org.flexpay.common.util.config.ApplicationConfig.getDefaultReportLocale;
 
 public abstract class AccPaymentsReportAction extends AccountantAWPActionSupport {
 

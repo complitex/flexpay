@@ -1,7 +1,5 @@
 package org.flexpay.payments.actions.cashbox;
 
-import org.apache.commons.collections.ArrayStack;
-import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.orgs.persistence.Cashbox;
 import org.flexpay.orgs.persistence.filters.PaymentPointsFilter;
 import org.flexpay.orgs.service.CashboxService;
@@ -11,9 +9,12 @@ import org.springframework.beans.factory.annotation.Required;
 
 import java.util.List;
 
+import static org.flexpay.common.util.CollectionUtils.arrayStack;
+import static org.flexpay.common.util.CollectionUtils.list;
+
 public class CashboxesListAction extends AccountantAWPWithPagerActionSupport<Cashbox> {
 
-	protected List<Cashbox> cashboxes = CollectionUtils.list();
+	protected List<Cashbox> cashboxes = list();
 	protected PaymentPointsFilter paymentPointsFilter = new PaymentPointsFilter();
 
 	protected CashboxService cashboxService;
@@ -23,8 +24,7 @@ public class CashboxesListAction extends AccountantAWPWithPagerActionSupport<Cas
 	protected String doExecute() throws Exception {
 
 		if (paymentPointsFilter != null && paymentPointsFilter.needFilter()) {
-			ArrayStack filters = CollectionUtils.arrayStack(paymentPointsFilter);
-			cashboxes = cashboxService.listCashboxes(filters, getPager());
+			cashboxes = cashboxService.listCashboxes(arrayStack(paymentPointsFilter), getPager());
 		} else {
 			cashboxes = cashboxService.findObjects(getPager());
 		}

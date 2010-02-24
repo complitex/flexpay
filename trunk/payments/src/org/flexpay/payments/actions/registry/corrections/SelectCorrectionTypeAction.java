@@ -1,62 +1,86 @@
 package org.flexpay.payments.actions.registry.corrections;
 
-import org.flexpay.ab.persistence.BuildingAddress;
-import org.flexpay.ab.persistence.Street;
-import org.flexpay.ab.persistence.StreetType;
+import org.flexpay.ab.persistence.*;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.persistence.ImportError;
+import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.registry.RegistryRecord;
 import org.flexpay.common.service.RegistryRecordService;
 import org.flexpay.common.service.importexport.ClassToTypeRegistry;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
+import static org.flexpay.common.persistence.Stub.stub;
+
 public class SelectCorrectionTypeAction extends FPActionSupport {
 
-	private RegistryRecordService registryRecordService;
-	protected ClassToTypeRegistry typeRegistry;
+	public final static String CORRECT_TYPE_STREET = "street";
+	public final static String CORRECT_TYPE_BUILDING = "building";
+	public final static String CORRECT_TYPE_APARTMENT = "apartment";
+	public final static String CORRECT_TYPE_PERSON = "person";
 
+	protected ClassToTypeRegistry typeRegistry;
 	private RegistryRecord record = new RegistryRecord();
+	private String type;
+
+	private RegistryRecordService registryRecordService;
 
 	@NotNull
 	@Override
 	public String doExecute() throws Exception {
-		if (record.getId() == null) {
+
+		if (record == null || record.isNew()) {
+			log.warn("Incorrect registry record id");
 			addActionError(getText("error.registry.record.not_specified"));
-			return ERROR;
+			return INPUT;
 		}
 
-		record = registryRecordService.read(record.getId());
+		Stub<RegistryRecord> stub = stub(record);
+		record = registryRecordService.read(stub);
 		if (record == null) {
+			log.warn("Can't get registry record with id {} from DB", stub.getId());
 			addActionError(getText("error.registry.record.invalid_specified"));
-			return ERROR;
+			return INPUT;
 		}
 
 		ImportError importError = record.getImportError();
 		if (importError != null) {
 			int objectType = importError.getObjectType();
 			if (checkStreetType(objectType)) {
-				return "redirectStreet";
+				return "correctStreet";
 			} else if (checkBuildingType(objectType)) {
-				return "redirectBuilding";
+				return "correctBuilding";
 			} else if (checkApartmentType(objectType)) {
-				return "redirectApartment";
+				return "correctApartment";
 			} else if (checkPersonType(objectType)) {
-				return "redirectPerson";
+				return "correctPerson";
 			}
 
 			addActionError(getText("error.registry.record.unsupported_error_type"));
+		} else if (CORRECT_TYPE_STREET.equals(type)) {
+			return "correctStreet";
+		} else if (CORRECT_TYPE_BUILDING.equals(type)) {
+			return "correctBuilding";
+		} else if (CORRECT_TYPE_APARTMENT.equals(type)) {
+			return "correctApartment";
+		} else if (CORRECT_TYPE_PERSON.equals(type)) {
+			return "correctPerson";
+		} else if (type == null) {
+			return INPUT;
+		} else {
+			log.warn("Incorrect type parameter {}", type);
+			addActionError(getText("payments.error.registry.incorrect_correction_type"));
 		}
 
 		return INPUT;
 	}
 
     protected boolean checkPersonType(int objectType) {
-        return typeRegistry.getType(org.flexpay.ab.persistence.Person.class) == objectType;
+        return typeRegistry.getType(Person.class) == objectType;
     }
 
     protected boolean checkApartmentType(int objectType) {
-        return typeRegistry.getType(org.flexpay.ab.persistence.Apartment.class) == objectType;
+        return typeRegistry.getType(Apartment.class) == objectType;
     }
 
     protected boolean checkBuildingType(int objectType) {
@@ -77,7 +101,7 @@ public class SelectCorrectionTypeAction extends FPActionSupport {
 	@NotNull
 	@Override
 	protected String getErrorResult() {
-		return ERROR;
+		return INPUT;
 	}
 
 	public RegistryRecord getRecord() {
@@ -86,6 +110,10 @@ public class SelectCorrectionTypeAction extends FPActionSupport {
 
 	public void setRecord(RegistryRecord record) {
 		this.record = record;
+	}
+
+	public void setType(String type) {
+		this.type = type;
 	}
 
 	@Required

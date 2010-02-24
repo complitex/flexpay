@@ -163,42 +163,16 @@
 		  p:typeRegistry-ref="classToTypeRegistry"
 		  scope="prototype" />
 
-	<bean id="correctAddressAction"
-		  class="org.flexpay.eirc.actions.registry.corrections.CorrectAddressAction"
+	<bean id="setCorrectionAction"
+		  class="org.flexpay.eirc.actions.registry.corrections.SetCorrectionAction"
 		  p:consumersDataSource-ref="consumersDataSource"
-		  p:correctionsService-ref="correctionsService"
-		  p:recordService-ref="registryRecordService"
-		  p:serviceTypeService-ref="serviceTypeService"
-		  p:typeRegistry-ref="classToTypeRegistry"
-		  p:organizationService-ref="organizationService"
+          p:correctionsService-ref="correctionsService"
+          p:recordService-ref="registryRecordService"
+          p:serviceTypeService-ref="serviceTypeService"
+          p:organizationService-ref="organizationService"
+          p:paymentPointService-ref="paymentPointService"
+          p:cashboxService-ref="cashboxService"
 		  scope="prototype" />
-
-	<bean id="correctBuildingAddressAction"
-		  class="org.flexpay.eirc.actions.registry.corrections.CorrectBuildingAction"
-		  p:consumersDataSource-ref="consumersDataSource"
-		  p:correctionsService-ref="correctionsService"
-		  p:recordService-ref="registryRecordService"
-		  p:serviceTypeService-ref="serviceTypeService"
-		  p:organizationService-ref="organizationService"
-		  scope="prototype" />
-
-	<bean id="correctStreetAddressAction"
-		  class="org.flexpay.eirc.actions.registry.corrections.CorrectStreetAction"
-		  p:consumersDataSource-ref="consumersDataSource"
-		  p:correctionsService-ref="correctionsService"
-		  p:recordService-ref="registryRecordService"
-		  p:serviceTypeService-ref="serviceTypeService"
-		  p:organizationService-ref="organizationService"
-		  scope="prototype" />
-
-	<bean id="correctPersonAction"
-		  scope="prototype"
-		  parent="personsListAction"
-		  class="org.flexpay.eirc.actions.registry.corrections.CorrectPersonAction"
-		  p:consumersDataSource-ref="consumersDataSource"
-		  p:correctionsService-ref="correctionsService"
-		  p:recordService-ref="registryRecordService"
-		  p:organizationService-ref="organizationService" />
 
     <bean id="registryViewAction"
           class="org.flexpay.eirc.actions.registry.RegistryViewPageAction"

@@ -36,59 +36,18 @@
 
 		<action name="selectCorrectionType" class="selectCorrectionTypeAction">
 			<result name="input" type="tiles">payments.select_correction_type</result>
-			<result name="error" type="tiles">payments.correction_type_error</result>
-			<result name="redirectApartment" type="redirect-action">
-				<param name="actionName">registryRecordCorrectAddress</param>
-				<param name="parse">true</param>
-				<param name="record.id">${record.id}</param>
-			</result>
-			<result name="redirectBuilding" type="redirect-action">
-				<param name="actionName">registryRecordCorrectAddressBuilding</param>
-				<param name="parse">true</param>
-				<param name="record.id">${record.id}</param>
-			</result>
-			<result name="redirectStreet" type="redirect-action">
-				<param name="actionName">registryRecordCorrectAddressStreet</param>
-				<param name="parse">true</param>
-				<param name="record.id">${record.id}</param>
-			</result>
-			<result name="redirectPerson" type="redirect-action">
-				<param name="actionName">registryRecordCorrectPerson</param>
-				<param name="parse">true</param>
-				<param name="record.id">${record.id}</param>
-			</result>
+            <result name="correctStreet" type="tiles">payments.registry.record.correct_address_street</result>
+            <result name="correctBuilding" type="tiles">payments.registry.record.correct_address_building</result>
+            <result name="correctApartment" type="tiles">payments.registry.record.correct_address_apartment</result>
+            <result name="correctPerson" type="tiles">payments.registry.record.correct_person</result>
 		</action>
 
-        <action name="apartmentsDialogListAjax" class="apartmentsListAction">
-            <result>/WEB-INF/jsp/payments/data/correspondence/apartments_list.jsp</result>
+        <action name="personsListCorrections" class="personsListAction">
+            <result>/WEB-INF/jsp/payments/data/correspondence/persons_list.jsp</result>
         </action>
 
-        <action name="streetDialogAjax" class="streetAction">
-            <result>/WEB-INF/jsp/payments/data/correspondence/street_submit_correction.jsp</result>
-        </action>
-
-        <action name="buildingDialogAjax" class="buildingAction">
-            <result>/WEB-INF/jsp/payments/data/correspondence/building_submit_correction.jsp</result>
-        </action>
-
-		<action name="registryRecordCorrectAddress" class="correctAddressAction">
-			<result type="tiles">payments.registry.record.correct_address</result>
-			<result name="complete" type="tiles">payments.registry.record.correct_address_complete</result>
-		</action>
-
-		<action name="registryRecordCorrectAddressStreet" class="correctStreetAddressAction">
-			<result type="tiles">payments.registry.record.correct_address_street</result>
-			<result name="complete" type="tiles">payments.registry.record.correct_address_complete</result>
-		</action>
-
-		<action name="registryRecordCorrectAddressBuilding" class="correctBuildingAddressAction">
-			<result type="tiles">payments.registry.record.correct_address_building</result>
-			<result name="complete" type="tiles">payments.registry.record.correct_address_complete</result>
-		</action>
-
-		<action name="registryRecordCorrectPerson" class="correctPersonAction">
-			<result type="tiles">payments.registry.record.correct_person</result>
-			<result name="complete" type="tiles">payments.registry.record.correct_person_complete</result>
+		<action name="setCorrection" class="setCorrectionAction">
+            <result>/WEB-INF/jsp/common/responses/simple_response.jsp</result>
 		</action>
 
 		<action name="registriesProcess" class="registriesProcessAction">

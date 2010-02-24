@@ -33,7 +33,7 @@
         <td><s:text name="payments.operations.list.service_type" /></td>
         <td colspan="2"><%@include file="/WEB-INF/jsp/payments/filters/service_type_filter.jsp"%></td>
         <td>
-            <input type="button" class="btn-exit" value="<s:text name="payments.operations.list.filter" />" onclick="pagerAjax(null);" />
+            <input type="button" class="btn-exit" value="<s:text name="payments.operations.list.filter" />" onclick="pagerAjax();" />
         </td>
     </tr>
 </table>
@@ -44,7 +44,7 @@
 <script type="text/javascript">
 
     $(function() {
-        pagerAjax(null);
+        pagerAjax();
     });
 
     function pagerAjax(element) {

@@ -1,12 +1,13 @@
 package org.flexpay.payments.actions.cashbox;
 
-import static org.flexpay.common.util.CollectionUtils.set;
 import org.flexpay.orgs.service.CashboxService;
 import org.flexpay.payments.actions.AccountantAWPActionSupport;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.util.Set;
+
+import static org.flexpay.common.util.CollectionUtils.set;
 
 public class CashboxDeleteAction extends AccountantAWPActionSupport {
 

@@ -13,7 +13,7 @@
                 <s:text name="eirc.generated" />&nbsp;
                 <%@include file="/WEB-INF/jsp/payments/filters/date_interval_filter.jsp"%>
             </span>
-            <input type="button" value="<s:text name="eirc.filter" />" class="btn-exit" onclick="pagerAjax(null);" />
+            <input type="button" value="<s:text name="eirc.filter" />" class="btn-exit" onclick="pagerAjax();" />
         </td>
     </tr>
     <tr>
@@ -25,7 +25,7 @@
 <script type="text/javascript">
 
     $(function() {
-        pagerAjax(null);
+        pagerAjax();
     });
 
     function pagerAjax(element) {

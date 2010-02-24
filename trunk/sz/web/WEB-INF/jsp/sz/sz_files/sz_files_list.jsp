@@ -16,7 +16,7 @@
             &nbsp;
             <input type="button" class="btn-exit" onclick="doAction('deleteFromDB');" value="<s:text name="sz.file_list.action.delete_from_db" />" />
             &nbsp;
-            <input type="button" class="btn-exit" onclick="pagerAjax(null);" value="<s:text name="sz.file_list.refresh_list" />" />
+            <input type="button" class="btn-exit" onclick="pagerAjax();" value="<s:text name="sz.file_list.refresh_list" />" />
         </td>
     </tr>
     <tr>
@@ -71,7 +71,7 @@
             &nbsp;
             <input type="button" class="btn-exit" onclick="doAction('deleteFromDB');" value="<s:text name="sz.file_list.action.delete_from_db" />" />
             &nbsp;
-            <input type="button" class="btn-exit" onclick="pagerAjax(null);" value="<s:text name="sz.file_list.refresh_list" />" />
+            <input type="button" class="btn-exit" onclick="pagerAjax();" value="<s:text name="sz.file_list.refresh_list" />" />
         </td>
     </tr>
     <tr>

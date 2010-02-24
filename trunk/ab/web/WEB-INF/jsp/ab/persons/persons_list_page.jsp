@@ -9,7 +9,7 @@
                     <td colspan="5">
                         <input type="text" name="personSearchFilter.searchString" class="form-textfield"
                                value="<s:property value="personSearchFilter.searchString" />" />
-                        <input type="button" onclick="pagerAjax(null);" value="<s:text name="common.search" />" />
+                        <input type="button" onclick="pagerAjax();" value="<s:text name="common.search" />" />
                     </td>
                 </tr>
             </table>

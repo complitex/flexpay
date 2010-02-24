@@ -5,7 +5,7 @@
         <td>
             <%@include file="/WEB-INF/jsp/ab/filters/import_error_type_filter.jsp"%>
             <%@include file="/WEB-INF/jsp/payments/filters/registry_record_status_filter.jsp"%>
-            <input type="button" value="<s:text name="eirc.filter" />" class="btn-exit" onclick="pagerAjax(null);" />
+            <input type="button" value="<s:text name="eirc.filter" />" class="btn-exit" onclick="pagerAjax();" />
             <%@include file="/WEB-INF/jsp/payments/data/registry_info.jsp"%>
         </td>
     </tr>
@@ -18,7 +18,7 @@
 <script type="text/javascript">
 
     $(function() {
-        pagerAjax(null);
+        pagerAjax();
     });
 
     function pagerAjax(element) {

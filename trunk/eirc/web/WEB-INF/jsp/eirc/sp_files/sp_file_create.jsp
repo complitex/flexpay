@@ -1,8 +1,6 @@
 <%@include file="/WEB-INF/jsp/common/taglibs.jsp"%>
 <%@include file="/WEB-INF/jsp/common/includes/flexpay_fileupload.jsp"%>
-
-<s:actionerror />
-<s:actionmessage />
+<%@include file="/WEB-INF/jsp/common/includes/errors_messages.jsp"%>
 
 <script type="text/javascript">
 
@@ -11,7 +9,7 @@
             action : "<s:url action="spFileUpload" namespace="/eirc" includeParams="none" />",
             validate : function() {
                 var v = "";
-                $('input[type="file"]').each(function() {
+                $("input[type=file]").each(function() {
                     if (this.form.id == "inputForm") {
                         v = this.value;
                     }
