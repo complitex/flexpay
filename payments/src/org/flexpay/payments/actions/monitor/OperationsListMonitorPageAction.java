@@ -1,4 +1,4 @@
-package org.flexpay.payments.actions.operations;
+package org.flexpay.payments.actions.monitor;
 
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.filter.BeginDateFilter;
@@ -16,7 +16,7 @@ import org.springframework.beans.factory.annotation.Required;
 import static org.flexpay.common.persistence.Stub.stub;
 import static org.flexpay.common.util.DateUtil.now;
 
-public class OperationsListPageAction extends OperatorAWPActionSupport {
+public class OperationsListMonitorPageAction extends OperatorAWPActionSupport {
 
 	private Cashbox cashbox = new Cashbox();
 	private BeginDateFilter beginDateFilter = new BeginDateFilter();
@@ -31,16 +31,20 @@ public class OperationsListPageAction extends OperatorAWPActionSupport {
 	@Override
 	protected String doExecute() throws Exception {
 
-		if (cashboxId == null || cashboxId <= 0) {
-			log.warn("Incorrect cashboxId parameter {}", cashboxId);
+		if (cashbox == null || cashbox.isNew()) {
+			log.warn("Incorrect cashbox id {}", cashbox);
 			addActionError(getText("payments.error.cashbox.incorrect_cashbox_id"));
 			return REDIRECT_ERROR;
 		}
 
-		Stub<Cashbox> stub = new Stub<Cashbox>(cashboxId);
+		Stub<Cashbox> stub = stub(cashbox);
 		cashbox = cashboxService.read(stub);
 		if (cashbox == null) {
 			log.warn("Can't get cashbox with id {} from DB", stub.getId());
+			addActionError(getText("payments.error.cashbox.cant_get_cashbox"));
+			return REDIRECT_ERROR;
+		} else if (cashbox.isNotActive()) {
+			log.warn("Cashbox with id {} is disabled", stub.getId());
 			addActionError(getText("payments.error.cashbox.cant_get_cashbox"));
 			return REDIRECT_ERROR;
 		}

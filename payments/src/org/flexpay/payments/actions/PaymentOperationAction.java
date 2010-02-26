@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Map;
 
 import static org.flexpay.common.persistence.Stub.stub;
+import static org.flexpay.common.util.CollectionUtils.list;
 
 public abstract class PaymentOperationAction extends OperatorAWPActionSupport {
 
@@ -65,7 +66,6 @@ public abstract class PaymentOperationAction extends OperatorAWPActionSupport {
 	private CountryService countryService;
 
 	protected Operation createOperation(Cashbox cashbox) throws FlexPayException {
-
 		Operation op = new Operation();
 		fillOperation(op);
 		return op;
@@ -170,31 +170,30 @@ public abstract class PaymentOperationAction extends OperatorAWPActionSupport {
 
 	private void setPayerName(String serviceFullIndex, Document document) {
 		String[] pieces = payerFios.get(serviceFullIndex).split(" ");
-		List<String> tokens = new ArrayList<String>();
+		List<String> tokens = list();
 		for (String p : pieces) {
 			if (StringUtils.isNotBlank(p)) {
 				tokens.add(p);
 			}
 		}
 
-		if (tokens.size() > 0) {
+		if (!tokens.isEmpty()) {
 			document.setLastName(tokens.get(0));
-		}
-
-		if (tokens.size() > 1) {
-			document.setFirstName(tokens.get(1));
-		}
-
-		if (tokens.size() > 2) {
-			StringBuilder middleNameBuilder = new StringBuilder();
-			for (int i = 2; i < tokens.size(); i++) {
-				middleNameBuilder.append(tokens.get(i));
-				if (i < tokens.size() - 1) {
-					middleNameBuilder.append(" ");
+			if (tokens.size() > 1) {
+				document.setFirstName(tokens.get(1));
+				if (tokens.size() > 2) {
+					StringBuilder middleNameBuilder = new StringBuilder();
+					for (int i = 2; i < tokens.size(); i++) {
+						middleNameBuilder.append(tokens.get(i));
+						if (i < tokens.size() - 1) {
+							middleNameBuilder.append(" ");
+						}
+					}
+					document.setMiddleName(middleNameBuilder.toString());
 				}
 			}
-			document.setMiddleName(middleNameBuilder.toString());
 		}
+
 	}
 
 	public String getActionName() {

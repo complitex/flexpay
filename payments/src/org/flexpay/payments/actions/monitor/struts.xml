@@ -6,6 +6,15 @@
 
 	<package name="monitor" namespace="/payments" extends="payments">
 
+        <action name="operationsListMonitor" class="operationsListMonitorPageAction">
+            <result type="tiles">payments.operations.list</result>
+            <result name="redirectError" type="redirect-action">
+                <param name="actionName">paymentPointDetailMonitor</param>
+                <param name="parse">true</param>
+                <param name="paymentPoint.id">${cashbox.paymentPoint.id}</param>
+            </result>
+        </action>
+
 		<action name="paymentPointsListMonitor" class="paymentPointsListMonitorPageAction">
 			<result type="tiles">payments.payment_points.list</result>
             <result name="error" type="tiles">payments.error.payment_collector_authentication_required</result>

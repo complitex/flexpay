@@ -24,27 +24,12 @@ var FP = {
     },
 
     endis : function (label, endis) {
+        var e = $(label);
         if (endis) {
-            return $(label).removeAttr("disabled");
+            return e.removeAttr("disabled");
         } else {
-            return $(label).attr("disabled", true);
+            return e.attr("disabled", true);
         }
-    },
-
-    validateSubmit : function (warnMes) {
-        if ($("#setupType").val() == "setupType") {
-            return true;
-        }
-
-        var radio = $("input[type=radio][name=object.id]:checked");
-
-        if (!radio) {
-            alert(warnMes);
-            $("#setupType").val("setupType");
-            return false;
-        }
-
-        return true;
     },
 
     sorters : [],
@@ -77,7 +62,7 @@ var FP = {
     formatI18nMessage : function(message, params) {
         var start = 0;
         var end = 0;
-        var buffer = new Array();
+        var buffer = [];
         for (var i = 0; i < params.length; i++) {
             end = message.indexOf("||", start);
             buffer[buffer.length] = message.substring(start, end);
@@ -135,8 +120,12 @@ var FP = {
         }
         if (elementId != null) {
             var el = $("#" + elementId);
-            s.css("height", el.innerHeight()).css("width", el.innerWidth()).
-                    css("left", el.position().left).css("top", el.position().top);
+            s.css({
+                height: el.innerHeight(),
+                width: el.innerWidth(),
+                left: el.position().left,
+                top: el.position().top
+            });
         }
         if (params["background-color"] == null) {
             params["background-color"] = "#eeeded";
@@ -173,8 +162,9 @@ var FP = {
         var params = opt.params;
         var shadowId = opt.shadowId;
         var resultId = opt.resultId;
+        var result = $("#" + resultId);
 
-        if ($("#" + resultId).innerHeight() < 40) {
+        if (result.innerHeight() < 40) {
             FP.showShadowText(shadowId, resultId);
         } else {
             FP.showShadow(shadowId, resultId);
@@ -203,7 +193,7 @@ var FP = {
         }
 
         $.post(opt.action, params, function(data) {
-                    $("#" + resultId).html(data);
+                    result.html(data);
                     FP.hideShadow(shadowId);
                 });
 
@@ -221,7 +211,7 @@ var FP = {
                 ids = arg;
             }
             $.protify(ids).each(function(id) {
-                $('input[id="' + id + '"]').each(function() {
+                $("input[id=" + id + "]").each(function() {
                     if ($.browser.msie) {
                         var f = new Function(this.onclick.getBody());
                         this.onclick = function() {

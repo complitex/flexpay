@@ -28,7 +28,8 @@
                         "paymentPoint.id":<s:property value="paymentPoint.id" />,
                     </s:elseif>
                     "tradingDayControlPanel.command":button.value
-                }, function() {
+                },
+                function() {
                     if (pagerAjax != undefined) {
                         pagerAjax();
                     }
