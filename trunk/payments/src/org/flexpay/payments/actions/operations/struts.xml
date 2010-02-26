@@ -6,15 +6,6 @@
 
 	<package name="operations" namespace="/payments" extends="payments">
 
-        <action name="operationsList" class="operationsListPageAction">
-            <result type="tiles">payments.operations.list</result>
-            <result name="redirectError" type="redirect-action">
-                <param name="actionName">paymentPointDetailMonitor</param>
-                <param name="parse">true</param>
-                <param name="paymentPoint.id">${cashbox.paymentPoint.id}</param>
-            </result>
-        </action>
-
 		<action name="operationsListAjax" class="operationsListAction">
             <result>/WEB-INF/jsp/payments/operations/operations_list.jsp</result>
             <result name="error">/WEB-INF/jsp/common/responses/simple_response.jsp</result>
@@ -28,8 +19,12 @@
 
 	<package name="operations_operator" namespace="/payments" extends="payments_operator">
 
-		<action name="operationsListOperator" class="operationsListAction">
+		<action name="operationsListOperator" class="operationsListPageAction">
 			<result type="tiles">payments.operations.list</result>
+            <result name="redirectError" type="redirect-action">
+                <param name="actionName">error</param>
+                <param name="namespace">/common</param>
+            </result>
 		</action>
 
 		<action name="createBlankOperation" class="createBlankOperationAction">

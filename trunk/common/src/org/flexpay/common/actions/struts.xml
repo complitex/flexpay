@@ -66,6 +66,10 @@
 			<result>/WEB-INF/jsp/common/diff.txt</result>
 		</action>
 
+        <action name="error" class="staticPageAction">
+            <result>/WEB-INF/jsp/common/error.jsp</result>
+        </action>
+
 	</package>
 
 </struts>

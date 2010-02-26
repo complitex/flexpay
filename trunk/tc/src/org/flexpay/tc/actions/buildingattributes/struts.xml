@@ -24,9 +24,7 @@
 
         <action name="buildingAttributesEdit" class="buildingAttributesEditPageAction">
             <result type="tiles">tc.building_attributes.edit</result>
-            <result name="redirectError" type="redirect-action">
-                <param name="actionName">buildingsList</param>
-            </result>
+            <result name="redirectError" type="redirect-action">buildingsList</result>
         </action>
 
 	</package>

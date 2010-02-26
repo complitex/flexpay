@@ -24,7 +24,7 @@
         <tr>
             <td><s:property value="#status.index + pager.thisPageFirstElementNumber + 1" /></td>
             <td>
-                <a href="<s:url action="operationsList" includeParams="none"><s:param name="cashbox.id" value="id" /></s:url>">
+                <a href="<s:url action="operationsListMonitor" includeParams="none"><s:param name="cashbox.id" value="id" /></s:url>">
                     <s:property value="cashbox" />
                 </a>
             </td>

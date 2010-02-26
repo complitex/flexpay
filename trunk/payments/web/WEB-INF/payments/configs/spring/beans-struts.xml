@@ -155,6 +155,15 @@
           p:paymentCollectorService-ref="paymentCollectorService"
           scope="prototype" />
 
+    <bean id="operationsListMonitorPageAction"
+		  parent="operatorAWPAction"
+          class="org.flexpay.payments.actions.monitor.OperationsListMonitorPageAction"
+          p:cashboxService-ref="cashboxService"
+          p:paymentPointService-ref="paymentPointService"
+          p:serviceTypeService-ref="serviceTypeService"
+          p:crumbNameKey="payments.crumbs.operations_list"
+          scope="prototype" />
+
     <bean id="paymentPointDetailMonitorAction"
 		  parent="accountantAWPAction"
 		  class="org.flexpay.payments.actions.monitor.PaymentPointDetailMonitorAction"

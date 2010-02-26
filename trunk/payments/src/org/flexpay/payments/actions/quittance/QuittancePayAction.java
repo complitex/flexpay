@@ -26,7 +26,7 @@ public class QuittancePayAction extends PaymentOperationAction {
 	@Override
 	protected String doExecute() throws Exception {
 
-		if (operationId == null) {
+		if (operationId == null || operationId <= 0) {
 			addActionError(getText("payments.error.operation_is_incorrect"));
 			return REDIRECT_SUCCESS;
 		}

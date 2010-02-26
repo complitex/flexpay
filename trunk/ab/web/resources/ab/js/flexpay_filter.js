@@ -96,8 +96,8 @@ function Filter(name, options) {
             if (justText) {
                 string.css({display: "none"});
             }
-            for (var i in filter.parents) {
-                var filter2 = FF.filters[i];
+            $.each(filter.parents, function (i, v) {
+                var filter2 = FF.filters[v];
                 if (readonly) {
                     filter2.readonly = true;
                 }
@@ -105,7 +105,7 @@ function Filter(name, options) {
                     filter2.justText = true;
                 }
                 displayParents(filter2);
-            }
+            });
         }
     }
 
@@ -118,9 +118,9 @@ function Filter(name, options) {
         var filter = FF.filters[options.name];
         filter.value.val(li.extra);
         if (li.extra) {
-            $.post(filter.action, {filterValue:li.extra,saveFilterValue:true,preRequest:true},
+            $.getJSON(filter.action, {filterValue:li.extra,saveFilterValue:true,preRequest:true},
                     function(data) {
-                        filter.string.val(filter.formatPrerequestResponse(data)[0]);
+                        filter.string.val(data.string);
                         FF.onChange(options.name);
                     });
         }
@@ -161,10 +161,6 @@ function Filter(name, options) {
 
     create(this);
 
-    this.formatPrerequestResponse = function(data) {
-        return data == null || !data ? null : data.split("|");
-    };
-
     this.formatItem = function(row) {
         return formatItem(row);
     };
@@ -175,8 +171,8 @@ function Filter(name, options) {
 
     this.addListener = function(listener) {
         var listeners = this.listeners;
-        for (var i = 0; i < listeners.length; i++) {
-            if (listeners[i] == listener) {
+        for (var l in listeners) {
+            if (l == listener) {
                 return;
             }
         }
@@ -192,8 +188,8 @@ function Filter(name, options) {
 
     this.addEraser = function(eraser) {
         var erasers = this.erasers;
-        for (var i = 0; i < erasers.length; i++) {
-            if (erasers[i] == eraser) {
+        for (var e in erasers) {
+            if (e == eraser) {
                 return;
             }
         }
@@ -234,10 +230,7 @@ var FF = {
 
     setFocusByTabIndex : function(filters) {
         if (filters.length == 0) {
-            var tab = $('a[tabindex="2"],input[tabindex="2"],button[tabindex="2"],textarea[tabindex="2"],select[tabindex="2"]');
-            if (tab != null && tab.size() > 0) {
-                tab.get(0).focus();
-            }
+            $('a[tabindex="2"],input[tabindex="2"],button[tabindex="2"],textarea[tabindex="2"],select[tabindex="2"]').focus();
             return true;
         }
         return false;
@@ -270,14 +263,13 @@ var FF = {
             if ((hasReqParents && k < reqParentsCount) || (parentsCount > 0 && !hasReqParents)) {
                 string.attr("readonly", true);
             }
-            $.post(filter.action, {filterValue:value.val(), preRequest:true},
+            $.getJSON(filter.action, {filterValue:value.val(), preRequest:true},
                 function(data) {
-                    var r = filter.formatPrerequestResponse(data);
-                    string.val(r[0]);
+                    string.val(data.string);
                     if (filter.justText) {
-                        filter.text.text(r[0]);
+                        filter.text.text(data.string);
                     }
-                    value.val(r[1]);
+                    value.val(data.value);
                     FF.onSelect(filter.name);
                 });
             pausecomp(100);
@@ -330,9 +322,8 @@ var FF = {
 
         var parents = [];
         var i = 0;
-
         for (var k in filter.parents) {
-            parents[i] = this.filters[k].value.val();
+            parents[i] = FF.filters[k].value.val();
             i++;
         }
         return parents;
