@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project relativePaths="true" version="4">
+<project version="4">
   <component name="AntConfiguration">
     <defaultAnt bundledAnt="true" />
     <buildFile url="file://$PROJECT_DIR$/../../ab/ab_build.xml">
@@ -9,8 +9,6 @@
       <maximumHeapSize value="128" />
       <maximumStackSize value="32" />
       <properties />
-      <executeOn event="beforeRun" target="ab.war.production.glassfish_mysql5" />
-      <executeOn event="beforeRun" target="ab.war.production.glassfish_mysql5" runConfigurationType="GlassfishConfiguration" runConfigurationName="ab" />
     </buildFile>
     <buildFile url="file://$PROJECT_DIR$/../../eirc/eirc_build.xml">
       <additionalClassPath />
@@ -19,7 +17,6 @@
       <maximumHeapSize value="128" />
       <maximumStackSize value="32" />
       <properties />
-      <executeOn event="beforeRun" target="eirc.war.production.glassfish_mysql5" runConfigurationType="GlassfishConfiguration" runConfigurationName="Eirc" />
     </buildFile>
     <buildFile url="file://$PROJECT_DIR$/../../ab_sync/ab_sync_build.xml">
       <additionalClassPath />
@@ -44,8 +41,6 @@
       <maximumHeapSize value="128" />
       <maximumStackSize value="32" />
       <properties />
-      <executeOn event="beforeRun" target="sz.war.production.glassfish_mysql5" />
-      <executeOn event="beforeRun" target="sz.war.production.glassfish_mysql5" runConfigurationType="GlassfishConfiguration" runConfigurationName="sz" />
     </buildFile>
     <buildFile url="file://$PROJECT_DIR$/../../tc/tc_build.xml">
       <additionalClassPath />
@@ -54,8 +49,6 @@
       <maximumHeapSize value="128" />
       <maximumStackSize value="32" />
       <properties />
-      <executeOn event="beforeRun" target="tc.war.production.glassfish_mysql5" />
-      <executeOn event="beforeRun" target="tc.war.production.glassfish_mysql5" runConfigurationType="GlassfishConfiguration" runConfigurationName="tc" />
     </buildFile>
     <buildFile url="file://$PROJECT_DIR$/../../orgs/orgs_build.xml">
       <additionalClassPath />
@@ -84,15 +77,6 @@
   <component name="CodeStyleSettingsManager">
     <option name="PER_PROJECT_SETTINGS">
       <value>
-        <ADDITIONAL_INDENT_OPTIONS fileType="">
-          <option name="INDENT_SIZE" value="2" />
-          <option name="CONTINUATION_INDENT_SIZE" value="8" />
-          <option name="TAB_SIZE" value="4" />
-          <option name="USE_TAB_CHARACTER" value="false" />
-          <option name="SMART_TABS" value="false" />
-          <option name="LABEL_INDENT_SIZE" value="0" />
-          <option name="LABEL_INDENT_ABSOLUTE" value="false" />
-        </ADDITIONAL_INDENT_OPTIONS>
         <ADDITIONAL_INDENT_OPTIONS fileType="groovy">
           <option name="INDENT_SIZE" value="2" />
           <option name="CONTINUATION_INDENT_SIZE" value="8" />
@@ -158,11 +142,9 @@
         </ADDITIONAL_INDENT_OPTIONS>
       </value>
     </option>
-    <option name="USE_PER_PROJECT_SETTINGS" value="false" />
   </component>
   <component name="CompilerConfiguration">
     <option name="DEFAULT_COMPILER" value="Javac" />
-    <option name="DEPLOY_AFTER_MAKE" value="0" />
     <resourceExtensions>
       <entry name=".+\.(properties|xml|html|dtd|tld)" />
       <entry name=".+\.(gif|png|jpeg|jpg)" />
@@ -178,6 +160,7 @@
       <entry name="?*.dtd" />
       <entry name="?*.tld" />
     </wildcardResourcePatterns>
+    <annotationProcessing enabled="false" useClasspath="true" />
   </component>
   <component name="CopyrightManager" default="">
     <module2copyright />
@@ -356,6 +339,11 @@
               <file url="file://$PROJECT_DIR$/../../sz/web/WEB-INF/web.xml" />
             </files>
           </module>
+          <module name="admin">
+            <files>
+              <file url="file://$PROJECT_DIR$/../../admin/web/WEB-INF/web.xml" />
+            </files>
+          </module>
         </modules>
       </facet-type>
       <facet-type id="hibernate">
@@ -365,15 +353,44 @@
               <file url="file://$PROJECT_DIR$/../../sz/web/WEB-INF/hibernate.cfg.xml" />
             </files>
           </module>
+          <module name="admin">
+            <files>
+              <file url="file://$PROJECT_DIR$/../../admin/web/WEB-INF/hibernate.cfg.xml" />
+            </files>
+          </module>
+        </modules>
+      </facet-type>
+      <facet-type id="Struts2">
+        <modules>
+          <module name="admin">
+            <files>
+              <file url="file://$PROJECT_DIR$/../../admin/src/org/flexpay/admin/action/struts.xml" />
+              <file url="file://$PROJECT_DIR$/../../admin/src/org/flexpay/admin/i18n/struts.xml" />
+            </files>
+          </module>
+        </modules>
+      </facet-type>
+      <facet-type id="Spring">
+        <modules>
+          <module name="admin">
+            <files>
+              <file url="file://$PROJECT_DIR$/../../admin/web/WEB-INF/admin/configs/menu.cfg.xml" />
+              <file url="file://$PROJECT_DIR$/../../admin/web/WEB-INF/admin/configs/spring/beans-cache.xml" />
+              <file url="file://$PROJECT_DIR$/../../admin/web/WEB-INF/admin/configs/spring/beans-dao.xml" />
+              <file url="file://$PROJECT_DIR$/../../admin/web/WEB-INF/admin/configs/spring/beans-services.xml" />
+              <file url="file://$PROJECT_DIR$/../../admin/web/WEB-INF/admin/configs/spring/beans-struts.xml" />
+              <file url="file://$PROJECT_DIR$/../../admin/web/WEB-INF/admin/configs/spring/config.xml" />
+              <file url="file://$PROJECT_DIR$/../../admin/web/WEB-INF/admin/configs/spring/data_export.xml" />
+              <file url="file://$PROJECT_DIR$/../../admin/web/WEB-INF/admin/configs/spring/stand-alone-tasks.xml" />
+              <file url="file://$PROJECT_DIR$/../../admin/web/WEB-INF/applicationContext.xml" />
+            </files>
+          </module>
         </modules>
       </facet-type>
     </autodetection-disabled>
   </component>
   <component name="IdProvider" IDEtalkID="A5B67355FC435C7031E2DD9D051E8BE9" />
   <component name="InspectionProjectProfileManager">
-    <option name="PROJECT_PROFILE" value="FlexPay" />
-    <option name="USE_PROJECT_PROFILE" value="true" />
-    <version value="1.0" />
     <profiles>
       <profile version="1.0" is_locked="false">
         <option name="myName" value="FlexPay" />
@@ -524,6 +541,7 @@
             </value>
           </option>
           <option name="ADD_EJB_TO_ENTRIES" value="true" />
+          <option name="ADD_TESTNG_TO_ENTRIES" value="true" />
           <option name="ADD_JUNIT_TO_ENTRIES" value="true" />
         </inspection_tool>
         <inspection_tool class="UnusedImport" enabled="true" level="WARNING" enabled_by_default="true" />
@@ -969,10 +987,13 @@
         <inspection_tool class="UseOfPropertiesAsHashtable" enabled="true" level="WARNING" enabled_by_default="true" />
       </profile>
     </profiles>
+    <option name="PROJECT_PROFILE" value="FlexPay" />
+    <option name="USE_PROJECT_PROFILE" value="true" />
+    <version value="1.0" />
     <list size="5">
-      <item index="0" class="java.lang.String" itemvalue="MISSPELLED" />
-      <item index="1" class="java.lang.String" itemvalue="SERVER PROBLEM" />
-      <item index="2" class="java.lang.String" itemvalue="INFO" />
+      <item index="0" class="java.lang.String" itemvalue="SERVER PROBLEM" />
+      <item index="1" class="java.lang.String" itemvalue="INFO" />
+      <item index="2" class="java.lang.String" itemvalue="TYPO" />
       <item index="3" class="java.lang.String" itemvalue="WARNING" />
       <item index="4" class="java.lang.String" itemvalue="ERROR" />
     </list>
@@ -1159,7 +1180,6 @@
   <component name="ProjectDetails">
     <option name="projectName" value="FlexPay" />
   </component>
-  <component name="ProjectFileVersion" converted="true" />
   <component name="ProjectKey">
     <option name="state" value="https://flexpay.googlecode.com/svn/trunk/_project/jidea/FlexPay.ipr" />
   </component>
@@ -1167,6 +1187,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/ab.iml" filepath="$PROJECT_DIR$/ab.iml" />
       <module fileurl="file://$PROJECT_DIR$/ab_sync.iml" filepath="$PROJECT_DIR$/ab_sync.iml" />
+      <module fileurl="file://$PROJECT_DIR$/admin.iml" filepath="$PROJECT_DIR$/admin.iml" />
       <module fileurl="file://$PROJECT_DIR$/bti.iml" filepath="$PROJECT_DIR$/bti.iml" />
       <module fileurl="file://$PROJECT_DIR$/common.iml" filepath="$PROJECT_DIR$/common.iml" />
       <module fileurl="file://$PROJECT_DIR$/eirc.iml" filepath="$PROJECT_DIR$/eirc.iml" />
@@ -1221,106 +1242,22 @@
         <entry key="$PROJECT_DIR$">
           <value>
             <SvnBranchConfiguration>
-              <option name="branchUrls">
-                <list>
-                  <option value="https://flexpay.googlecode.com/svn/branches" />
-                  <option value="https://flexpay.googlecode.com/svn/tags" />
-                </list>
+              <option name="branchMap">
+                <map>
+                  <entry key="https://flexpay.googlecode.com/svn/branches">
+                    <value>
+                      <list />
+                    </value>
+                  </entry>
+                  <entry key="https://flexpay.googlecode.com/svn/tags">
+                    <value>
+                      <list />
+                    </value>
+                  </entry>
+                </map>
               </option>
-              <option name="trunkUrl" value="https://flexpay.googlecode.com/svn/trunk" />
-            </SvnBranchConfiguration>
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/flexpay/ab">
-          <value>
-            <SvnBranchConfiguration>
               <option name="branchUrls">
                 <list>
-                  <option value="https://flexpay.googlecode.com/svn/439" />
-                  <option value="https://flexpay.googlecode.com/svn/branches" />
-                  <option value="https://flexpay.googlecode.com/svn/tags" />
-                </list>
-              </option>
-              <option name="trunkUrl" value="https://flexpay.googlecode.com/svn/trunk" />
-            </SvnBranchConfiguration>
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/flexpay/ab_sync">
-          <value>
-            <SvnBranchConfiguration>
-              <option name="branchUrls">
-                <list>
-                  <option value="https://flexpay.googlecode.com/svn/439" />
-                  <option value="https://flexpay.googlecode.com/svn/branches" />
-                  <option value="https://flexpay.googlecode.com/svn/tags" />
-                </list>
-              </option>
-              <option name="trunkUrl" value="https://flexpay.googlecode.com/svn/trunk" />
-            </SvnBranchConfiguration>
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/flexpay/bti">
-          <value>
-            <SvnBranchConfiguration>
-              <option name="branchUrls">
-                <list>
-                  <option value="https://flexpay.googlecode.com/svn/439" />
-                  <option value="https://flexpay.googlecode.com/svn/branches" />
-                  <option value="https://flexpay.googlecode.com/svn/tags" />
-                </list>
-              </option>
-              <option name="trunkUrl" value="https://flexpay.googlecode.com/svn/trunk" />
-            </SvnBranchConfiguration>
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/flexpay/common">
-          <value>
-            <SvnBranchConfiguration>
-              <option name="branchUrls">
-                <list>
-                  <option value="https://flexpay.googlecode.com/svn/439" />
-                  <option value="https://flexpay.googlecode.com/svn/branches" />
-                  <option value="https://flexpay.googlecode.com/svn/tags" />
-                </list>
-              </option>
-              <option name="trunkUrl" value="https://flexpay.googlecode.com/svn/trunk" />
-            </SvnBranchConfiguration>
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/flexpay/eirc">
-          <value>
-            <SvnBranchConfiguration>
-              <option name="branchUrls">
-                <list>
-                  <option value="https://flexpay.googlecode.com/svn/439" />
-                  <option value="https://flexpay.googlecode.com/svn/branches" />
-                  <option value="https://flexpay.googlecode.com/svn/tags" />
-                </list>
-              </option>
-              <option name="trunkUrl" value="https://flexpay.googlecode.com/svn/trunk" />
-            </SvnBranchConfiguration>
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/flexpay/samples">
-          <value>
-            <SvnBranchConfiguration>
-              <option name="branchUrls">
-                <list>
-                  <option value="https://flexpay.googlecode.com/svn/439" />
-                  <option value="https://flexpay.googlecode.com/svn/branches" />
-                  <option value="https://flexpay.googlecode.com/svn/tags" />
-                </list>
-              </option>
-              <option name="trunkUrl" value="https://flexpay.googlecode.com/svn/trunk" />
-            </SvnBranchConfiguration>
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/flexpay/sz">
-          <value>
-            <SvnBranchConfiguration>
-              <option name="branchUrls">
-                <list>
-                  <option value="https://flexpay.googlecode.com/svn/439" />
                   <option value="https://flexpay.googlecode.com/svn/branches" />
                   <option value="https://flexpay.googlecode.com/svn/tags" />
                 </list>
@@ -1332,6 +1269,20 @@
         <entry key="$PROJECT_DIR$/../../ab">
           <value>
             <SvnBranchConfiguration>
+              <option name="branchMap">
+                <map>
+                  <entry key="https://flexpay.googlecode.com/svn/branches">
+                    <value>
+                      <list />
+                    </value>
+                  </entry>
+                  <entry key="https://flexpay.googlecode.com/svn/tags">
+                    <value>
+                      <list />
+                    </value>
+                  </entry>
+                </map>
+              </option>
               <option name="branchUrls">
                 <list>
                   <option value="https://flexpay.googlecode.com/svn/branches" />
@@ -1345,6 +1296,47 @@
         <entry key="$PROJECT_DIR$/../../ab_sync">
           <value>
             <SvnBranchConfiguration>
+              <option name="branchMap">
+                <map>
+                  <entry key="https://flexpay.googlecode.com/svn/branches">
+                    <value>
+                      <list />
+                    </value>
+                  </entry>
+                  <entry key="https://flexpay.googlecode.com/svn/tags">
+                    <value>
+                      <list />
+                    </value>
+                  </entry>
+                </map>
+              </option>
+              <option name="branchUrls">
+                <list>
+                  <option value="https://flexpay.googlecode.com/svn/branches" />
+                  <option value="https://flexpay.googlecode.com/svn/tags" />
+                </list>
+              </option>
+              <option name="trunkUrl" value="https://flexpay.googlecode.com/svn/trunk" />
+            </SvnBranchConfiguration>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../admin">
+          <value>
+            <SvnBranchConfiguration>
+              <option name="branchMap">
+                <map>
+                  <entry key="https://flexpay.googlecode.com/svn/branches">
+                    <value>
+                      <list />
+                    </value>
+                  </entry>
+                  <entry key="https://flexpay.googlecode.com/svn/tags">
+                    <value>
+                      <list />
+                    </value>
+                  </entry>
+                </map>
+              </option>
               <option name="branchUrls">
                 <list>
                   <option value="https://flexpay.googlecode.com/svn/branches" />
@@ -1358,6 +1350,20 @@
         <entry key="$PROJECT_DIR$/../../bti">
           <value>
             <SvnBranchConfiguration>
+              <option name="branchMap">
+                <map>
+                  <entry key="https://flexpay.googlecode.com/svn/branches">
+                    <value>
+                      <list />
+                    </value>
+                  </entry>
+                  <entry key="https://flexpay.googlecode.com/svn/tags">
+                    <value>
+                      <list />
+                    </value>
+                  </entry>
+                </map>
+              </option>
               <option name="branchUrls">
                 <list>
                   <option value="https://flexpay.googlecode.com/svn/branches" />
@@ -1371,6 +1377,25 @@
         <entry key="$PROJECT_DIR$/../../common">
           <value>
             <SvnBranchConfiguration>
+              <option name="branchMap">
+                <map>
+                  <entry key="https://flexpay.googlecode.com/svn/489">
+                    <value>
+                      <list />
+                    </value>
+                  </entry>
+                  <entry key="https://flexpay.googlecode.com/svn/branches">
+                    <value>
+                      <list />
+                    </value>
+                  </entry>
+                  <entry key="https://flexpay.googlecode.com/svn/tags">
+                    <value>
+                      <list />
+                    </value>
+                  </entry>
+                </map>
+              </option>
               <option name="branchUrls">
                 <list>
                   <option value="https://flexpay.googlecode.com/svn/489" />
@@ -1385,6 +1410,20 @@
         <entry key="$PROJECT_DIR$/../../eirc">
           <value>
             <SvnBranchConfiguration>
+              <option name="branchMap">
+                <map>
+                  <entry key="https://flexpay.googlecode.com/svn/branches">
+                    <value>
+                      <list />
+                    </value>
+                  </entry>
+                  <entry key="https://flexpay.googlecode.com/svn/tags">
+                    <value>
+                      <list />
+                    </value>
+                  </entry>
+                </map>
+              </option>
               <option name="branchUrls">
                 <list>
                   <option value="https://flexpay.googlecode.com/svn/branches" />
@@ -1398,6 +1437,20 @@
         <entry key="$PROJECT_DIR$/../../module_template">
           <value>
             <SvnBranchConfiguration>
+              <option name="branchMap">
+                <map>
+                  <entry key="https://flexpay.googlecode.com/svn/branches">
+                    <value>
+                      <list />
+                    </value>
+                  </entry>
+                  <entry key="https://flexpay.googlecode.com/svn/tags">
+                    <value>
+                      <list />
+                    </value>
+                  </entry>
+                </map>
+              </option>
               <option name="branchUrls">
                 <list>
                   <option value="https://flexpay.googlecode.com/svn/branches" />
@@ -1411,6 +1464,20 @@
         <entry key="$PROJECT_DIR$/../../orgs">
           <value>
             <SvnBranchConfiguration>
+              <option name="branchMap">
+                <map>
+                  <entry key="https://flexpay.googlecode.com/svn/branches">
+                    <value>
+                      <list />
+                    </value>
+                  </entry>
+                  <entry key="https://flexpay.googlecode.com/svn/tags">
+                    <value>
+                      <list />
+                    </value>
+                  </entry>
+                </map>
+              </option>
               <option name="branchUrls">
                 <list>
                   <option value="https://flexpay.googlecode.com/svn/branches" />
@@ -1424,6 +1491,20 @@
         <entry key="$PROJECT_DIR$/../../payments">
           <value>
             <SvnBranchConfiguration>
+              <option name="branchMap">
+                <map>
+                  <entry key="https://flexpay.googlecode.com/svn/branches">
+                    <value>
+                      <list />
+                    </value>
+                  </entry>
+                  <entry key="https://flexpay.googlecode.com/svn/tags">
+                    <value>
+                      <list />
+                    </value>
+                  </entry>
+                </map>
+              </option>
               <option name="branchUrls">
                 <list>
                   <option value="https://flexpay.googlecode.com/svn/branches" />
@@ -1437,6 +1518,20 @@
         <entry key="$PROJECT_DIR$/../../samples">
           <value>
             <SvnBranchConfiguration>
+              <option name="branchMap">
+                <map>
+                  <entry key="https://flexpay.googlecode.com/svn/branches">
+                    <value>
+                      <list />
+                    </value>
+                  </entry>
+                  <entry key="https://flexpay.googlecode.com/svn/tags">
+                    <value>
+                      <list />
+                    </value>
+                  </entry>
+                </map>
+              </option>
               <option name="branchUrls">
                 <list>
                   <option value="https://flexpay.googlecode.com/svn/branches" />
@@ -1450,6 +1545,20 @@
         <entry key="$PROJECT_DIR$/../../sz">
           <value>
             <SvnBranchConfiguration>
+              <option name="branchMap">
+                <map>
+                  <entry key="https://flexpay.googlecode.com/svn/branches">
+                    <value>
+                      <list />
+                    </value>
+                  </entry>
+                  <entry key="https://flexpay.googlecode.com/svn/tags">
+                    <value>
+                      <list />
+                    </value>
+                  </entry>
+                </map>
+              </option>
               <option name="branchUrls">
                 <list>
                   <option value="https://flexpay.googlecode.com/svn/branches" />
@@ -1463,6 +1572,20 @@
         <entry key="$PROJECT_DIR$/../../tc">
           <value>
             <SvnBranchConfiguration>
+              <option name="branchMap">
+                <map>
+                  <entry key="https://flexpay.googlecode.com/svn/branches">
+                    <value>
+                      <list />
+                    </value>
+                  </entry>
+                  <entry key="https://flexpay.googlecode.com/svn/tags">
+                    <value>
+                      <list />
+                    </value>
+                  </entry>
+                </map>
+              </option>
               <option name="branchUrls">
                 <list>
                   <option value="https://flexpay.googlecode.com/svn/branches" />
@@ -1735,8 +1858,5 @@
       <SOURCES />
     </library>
   </component>
-  <UsedPathMacros>
-    <macro name="LIB_JAVASOURCES" description="" />
-  </UsedPathMacros>
 </project>
 

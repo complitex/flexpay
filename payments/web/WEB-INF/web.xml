@@ -29,7 +29,7 @@
 	<context-param>
 		<param-name>definitions-config</param-name>
 		<param-value>
-			/WEB-INF/common/configs/tiles_common.xml,/WEB-INF/ab/configs/tiles_ab.xml,/WEB-INF/payments/configs/tiles_payments.xml
+			/WEB-INF/common/configs/tiles_common.xml,/WEB-INF/ab/configs/tiles_ab.xml,/WEB-INF/admin/configs/tiles_admin.xml,/WEB-INF/payments/configs/tiles_payments.xml
 		</param-value>
 	</context-param>
 
@@ -82,7 +82,7 @@
 		<init-param>
 			<param-name>config</param-name>
 			<param-value>
-				struts-default.xml,struts-plugin.xml,org/flexpay/common/struts_config.xml,org/flexpay/ab/struts_config.xml,org/flexpay/payments/struts_config.xml
+				struts-default.xml,struts-plugin.xml,org/flexpay/common/struts_config.xml,org/flexpay/ab/struts_config.xml,org/flexpay/admin/struts_config.xml,org/flexpay/payments/struts_config.xml
 			</param-value>
 		</init-param>
 	</filter>
@@ -345,6 +345,10 @@
 	<security-role>
         <role-name>ROLE_MENU_PAYMENTS_CASHBOXES</role-name>
     </security-role>
+
+	<security-role>
+		<role-name>ROLE_MENU_ADMIN</role-name>
+	</security-role>
 
 	<login-config>
 		<auth-method>FORM</auth-method>

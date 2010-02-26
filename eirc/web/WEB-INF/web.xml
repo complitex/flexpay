@@ -31,6 +31,7 @@
 		<param-value>
 			/WEB-INF/common/configs/tiles_common.xml,
 			/WEB-INF/ab/configs/tiles_ab.xml,
+			/WEB-INF/admin/configs/tiles_admin.xml,
 			/WEB-INF/bti/configs/tiles_bti.xml,
 			/WEB-INF/orgs/configs/tiles_orgs.xml,
 			/WEB-INF/payments/configs/tiles_payments.xml,
@@ -89,6 +90,7 @@
 				struts-default.xml,struts-plugin.xml,
 				org/flexpay/common/struts_config.xml,
 				org/flexpay/ab/struts_config.xml,
+				org/flexpay/admin/struts_config.xml,
 				org/flexpay/bti/struts_config.xml,
 				org/flexpay/orgs/struts_config.xml,
 				org/flexpay/payments/struts_config.xml,
@@ -838,6 +840,10 @@
 	<security-role>
         <role-name>ROLE_MENU_PAYMENTS_PAYMENT_POINTS</role-name>
     </security-role>
+
+	<security-role>
+		<role-name>ROLE_MENU_ADMIN</role-name>
+	</security-role>
 
 	<!--&lt;!&ndash;<login-config>&ndash;&gt;-->
 		<!--&lt;!&ndash;<auth-method>BASIC</auth-method>&ndash;&gt;-->
