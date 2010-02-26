@@ -156,6 +156,7 @@
             <file>file://$MODULE_DIR$/../../ab/src/org/flexpay/ab/actions/filters/struts.xml</file>
             <file>file://$MODULE_DIR$/../../ab/src/org/flexpay/ab/actions/region/struts.xml</file>
             <file>file://$MODULE_DIR$/../../ab/src/org/flexpay/ab/struts_config.xml</file>
+            <file>file://$MODULE_DIR$/../../admin/src/org/flexpay/admin/struts_config.xml</file>
             <file>file://$MODULE_DIR$/../../bti/src/org/flexpay/bti/actions/buildings/struts.xml</file>
             <file>file://$MODULE_DIR$/../../bti/src/org/flexpay/bti/struts_config.xml</file>
             <file>file://$MODULE_DIR$/../../common/src/org/flexpay/common/struts_config.xml</file>
@@ -185,6 +186,7 @@
         <fileset id="web: application context" name="MVC application context" removed="false">
           <file>file://$MODULE_DIR$/../../eirc/web/WEB-INF/applicationContext.xml</file>
           <file>file://$MODULE_DIR$/../../ab/web/WEB-INF/applicationContext.xml</file>
+          <file>file://$MODULE_DIR$/../../admin/web/WEB-INF/applicationContext.xml</file>
           <file>file://$MODULE_DIR$/../../ab/web/WEB-INF/ab/configs/spring/beans-cache.xml</file>
           <file>file://$MODULE_DIR$/../../ab/web/WEB-INF/ab/configs/spring/beans-dao.xml</file>
           <file>file://$MODULE_DIR$/../../ab/web/WEB-INF/ab/configs/spring/beans-services.xml</file>
@@ -192,6 +194,13 @@
           <file>file://$MODULE_DIR$/../../ab/web/WEB-INF/ab/configs/spring/config.xml</file>
           <file>file://$MODULE_DIR$/../../ab/web/WEB-INF/ab/configs/spring/data_export.xml</file>
           <file>file://$MODULE_DIR$/../../ab/web/WEB-INF/ab/configs/spring/stand-alone-tasks.xml</file>
+          <file>file://$MODULE_DIR$/../../admin/web/WEB-INF/admin/configs/spring/beans-cache.xml</file>
+          <file>file://$MODULE_DIR$/../../admin/web/WEB-INF/admin/configs/spring/beans-dao.xml</file>
+          <file>file://$MODULE_DIR$/../../admin/web/WEB-INF/admin/configs/spring/beans-services.xml</file>
+          <file>file://$MODULE_DIR$/../../admin/web/WEB-INF/admin/configs/spring/beans-struts.xml</file>
+          <file>file://$MODULE_DIR$/../../admin/web/WEB-INF/admin/configs/spring/config.xml</file>
+          <file>file://$MODULE_DIR$/../../admin/web/WEB-INF/admin/configs/spring/data_export.xml</file>
+          <file>file://$MODULE_DIR$/../../admin/web/WEB-INF/admin/configs/spring/stand-alone-tasks.xml</file>
           <file>file://$MODULE_DIR$/../../bti/web/WEB-INF/applicationContext.xml</file>
           <file>file://$MODULE_DIR$/../../bti/web/WEB-INF/bti/configs/spring/config.xml</file>
           <file>file://$MODULE_DIR$/../../common/web/WEB-INF/applicationContext.xml</file>
@@ -217,6 +226,7 @@
           <file>file://$MODULE_DIR$/../../eirc/web/WEB-INF/eirc/configs/spring/data_export.xml</file>
           <file>file://$MODULE_DIR$/../../eirc/web/WEB-INF/eirc/configs/spring/stand-alone-tasks.xml</file>
           <file>file://$MODULE_DIR$/../../ab/web/WEB-INF/ab/configs/menu.cfg.xml</file>
+          <file>file://$MODULE_DIR$/../../admin/web/WEB-INF/admin/configs/menu.cfg.xml</file>
           <file>file://$MODULE_DIR$/../../bti/web/WEB-INF/bti/configs/spring/beans-actions.xml</file>
           <file>file://$MODULE_DIR$/../../bti/web/WEB-INF/bti/configs/spring/beans-cache.xml</file>
           <file>file://$MODULE_DIR$/../../bti/web/WEB-INF/bti/configs/spring/beans-dao.xml</file>
@@ -276,6 +286,7 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="Struts2" level="project" />
     <orderEntry type="module" module-name="ab" />
+    <orderEntry type="module" module-name="admin" />
     <orderEntry type="module" module-name="bti" />
     <orderEntry type="module" module-name="common" />
     <orderEntry type="library" name="hibernate3" level="project" />

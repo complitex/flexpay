@@ -260,6 +260,11 @@
         <group-name>PAYMENTS_FULL_ACCESS</group-name>
     </security-role-mapping>
 
+	<security-role-mapping>
+		<role-name>ROLE_MENU_ADMIN</role-name>
+		<group-name>PAYMENTS_FULL_ACCESS</group-name>
+	</security-role-mapping>
+
 	<!-- OPERATOR ROLES SECTION-->
 
 	<security-role-mapping>

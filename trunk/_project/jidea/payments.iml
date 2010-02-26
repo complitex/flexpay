@@ -5,6 +5,7 @@
       <configuration>
         <fileset id="web: application context" name="MVC application context" removed="false">
           <file>file://$MODULE_DIR$/../../ab/web/WEB-INF/applicationContext.xml</file>
+          <file>file://$MODULE_DIR$/../../admin/web/WEB-INF/applicationContext.xml</file>
           <file>file://$MODULE_DIR$/../../payments/web/WEB-INF/applicationContext.xml</file>
           <file>file://$MODULE_DIR$/../../orgs/web/WEB-INF/applicationContext.xml</file>
           <file>file://$MODULE_DIR$/../../ab/web/WEB-INF/ab/configs/spring/beans-cache.xml</file>
@@ -15,6 +16,14 @@
           <file>file://$MODULE_DIR$/../../ab/web/WEB-INF/ab/configs/spring/data_export.xml</file>
           <file>file://$MODULE_DIR$/../../ab/web/WEB-INF/ab/configs/menu.cfg.xml</file>
           <file>file://$MODULE_DIR$/../../ab/web/WEB-INF/ab/configs/spring/stand-alone-tasks.xml</file>
+          <file>file://$MODULE_DIR$/../../admin/web/WEB-INF/admin/configs/spring/beans-cache.xml</file>
+          <file>file://$MODULE_DIR$/../../admin/web/WEB-INF/admin/configs/spring/beans-dao.xml</file>
+          <file>file://$MODULE_DIR$/../../admin/web/WEB-INF/admin/configs/spring/beans-services.xml</file>
+          <file>file://$MODULE_DIR$/../../admin/web/WEB-INF/admin/configs/spring/beans-struts.xml</file>
+          <file>file://$MODULE_DIR$/../../admin/web/WEB-INF/admin/configs/spring/config.xml</file>
+          <file>file://$MODULE_DIR$/../../admin/web/WEB-INF/admin/configs/spring/data_export.xml</file>
+          <file>file://$MODULE_DIR$/../../admin/web/WEB-INF/admin/configs/menu.cfg.xml</file>
+          <file>file://$MODULE_DIR$/../../admin/web/WEB-INF/admin/configs/spring/stand-alone-tasks.xml</file>
           <file>file://$MODULE_DIR$/../../orgs/web/WEB-INF/orgs/configs/spring/beans-cache.xml</file>
           <file>file://$MODULE_DIR$/../../orgs/web/WEB-INF/orgs/configs/spring/beans-dao.xml</file>
           <file>file://$MODULE_DIR$/../../orgs/web/WEB-INF/orgs/configs/spring/beans-services.xml</file>
@@ -126,6 +135,7 @@
             <file>file://$MODULE_DIR$/../../ab/src/org/flexpay/ab/actions/identity/struts.xml</file>
             <file>file://$MODULE_DIR$/../../ab/src/org/flexpay/ab/actions/buildings/struts.xml</file>
             <file>file://$MODULE_DIR$/../../ab/src/org/flexpay/ab/struts_config.xml</file>
+            <file>file://$MODULE_DIR$/../../admin/src/org/flexpay/admin/struts_config.xml</file>
             <file>file://$MODULE_DIR$/../../common/src/org/flexpay/common/struts_config.xml</file>
             <file>file://$MODULE_DIR$/../../orgs/src/org/flexpay/orgs/struts_config.xml</file>
             <file>file://$MODULE_DIR$/../../payments/src/org/flexpay/payments/actions/operations/struts.xml</file>
@@ -168,6 +178,7 @@
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="module" module-name="admin" />
     <orderEntry type="module" module-name="ab" />
     <orderEntry type="library" name="CSVReader" level="project" />
     <orderEntry type="library" name="jasper" level="project" />

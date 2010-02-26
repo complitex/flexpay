@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="flexpay_admin" basedir=".." default="admin.help">
+
+	<import file="../common/common_build.xml" />
+	<import file="../common/hibernate_build.xml" />
+
+	<property file="admin/admin_build.properties" />
+	<property file="common/common_build.properties" />
+
+	<property name="admin.dir" value="${basedir}/admin" />
+
+	<path id="admin.lib">
+		<fileset dir="${admin.dir}/lib">
+			<include name="**/*.jar" />
+		</fileset>
+	</path>
+
+	<fileset id="admin.libraries" dir="${admin.dir}/lib">
+		<include name="**/*" />
+	</fileset>
+
+	<path id="admin.jar" location="${build.dir}/lib/${admin.jar.name}" />
+	<path id="admin.test.jar" location="${build.dir}/lib/${admin.tests.jar.name}" />
+
+	<path id="admin.production.classpath">
+		<path refid="common.production.classpath" />
+		<path refid="admin.lib" />
+	</path>
+
+	<path id="admin.test.classpath">
+		<path refid="common.test.classpath" />
+		<path refid="admin.production.classpath" />
+	</path>
+
+	<path id="admin.runtests.classpath">
+		<path refid="common.runtests.classpath" />
+		<path refid="admin.test.classpath" />
+		<path location="admin/tests/data" />
+	</path>
+
+	<target name="admin.help" description="Print admin module build script options">
+		<echo>
+	Ab module build script
+	Usage:
+	ant -f admin_build.xml [target_name [target_options]]
+
+	Available targets are:
+		admin.db - Initialize database
+		admin.ddl - Generate DDL of module
+		admin.runtests - Run all module tests, possible option for this target is test.class.name that specifies test class name to run
+			for example ant -f eirc_build.xml eirc.runtests -Dtest.class.name=org.flexpay.admin.service.TestStreetService
+		admin.runtests.nobuild - Run all module tests but skip build steps (added to speed up development process)
+			same test.class.name option applies to this target
+		admin.war - Build production war
+		</echo>
+	</target>
+
+	<target name="admin.clean.build">
+		<antcall target="clean.build" />
+	</target>
+
+	<property name="admin.src.production" value="${admin.dir}/${src.dir};${common.src.production}" />
+	<target name="admin.compile.production">
+		<antcall target="template.compile.production">
+			<param name="sources.dir" value="${admin.src.production}" />
+			<reference refid="admin.production.classpath" torefid="classpath" />
+		</antcall>
+	</target>
+
+	<property name="admin.src.test" value="${admin.src.production};${admin.dir}/${tests.src.dir};${common.src.test}" />
+	<target name="admin.compile.test">
+		<antcall target="template.compile.test">
+			<param name="sources.dir" value="${admin.src.test}" />
+			<reference refid="admin.test.classpath" torefid="classpath" />
+		</antcall>
+	</target>
+
+	<target name="admin.jar.production" depends="admin.compile.production">
+		<antcall target="template.jar">
+			<param name="jar.name" value="${admin.jar.name}" />
+		</antcall>
+	</target>
+
+	<!-- Build targets -->
+	<target name="admin.docs" depends="admin.compile.production">
+		<fileset id="admin.docs.resources" dir="${admin.dir}/docs" />
+		<antcall target="template.docs">
+			<param name="sources.dir" value="${admin.src.production}" />
+			<param name="module_name" value="Address Bureau" />
+			<param name="docs.file" value="${admin.docs.name}" />
+			<reference refid="admin.docs.resources" torefid="resources" />
+			<reference refid="admin.production.classpath" torefid="classpath" />
+		</antcall>
+	</target>
+	<!--
+	<target name="admin.war">
+		<antcall target="template.admin.war.production" />
+	</target>
+	    -->
+	<target name="admin.exploded">
+		<antcall target="template.admin.exploded.production" />
+	</target>
+
+	<target name="admin.prepare.war">
+		<antcall target="template.configure.module">
+			<param name="module.name" value="admin" />
+		</antcall>
+		<antcall target="admin.prepare.war.internal" />
+		<antcall target="war.security" />
+		<antcall target="template.switch_log_name">
+			<param name="log_name" value="admin" />
+		</antcall>
+		<antcall target="template.copy.classes" />
+	</target>
+
+	<target name="admin.prepare.test.war">
+		<antcall target="admin.prepare.war.internal" />
+		<antcall target="war.security" />
+		<antcall target="template.copy.classes" />
+	</target>
+
+	<target name="admin.prepare.war.internal" depends="common.prepare.war.internal">
+		<fileset id="admin.web.resources" dir="${admin.dir}/web" />
+		<antcall target="template.prepare.war">
+			<param name="to_dir" value="" />
+			<param name="src.i18n.dir" value="${build.dir}/empty" />
+			<reference refid="admin.web.resources" torefid="resources" />
+		</antcall>
+
+		<fileset dir="${admin.dir}/${src.dir}" id="admin.classes.resources">
+			<patternset refid="resources_pattern" />
+		</fileset>
+
+		<antcall target="template.prepare.war">
+			<param name="to_dir" value="/WEB-INF/classes" />
+			<param name="src.i18n.dir" value="${admin.dir}/${src.dir}" />
+			<reference refid="admin.classes.resources" torefid="resources" />
+		</antcall>
+	</target>
+
+	<!-- Build production web-archive -->
+	<!--
+	<target name="template.admin.war.production"
+			depends="clean.all,admin.compile.production,admin.prepare.war,init.distr">
+
+		<antcall target="template.set_db_name" />
+		<antcall target="template.switch_instance_id" />
+		<antcall target="template.update_version" />
+
+		<war destfile="${distr.dir}/${admin.war.name}" needxmlfile="false">
+			<fileset dir="${build.dir}/web" />
+			<lib refid="admin.libraries" />
+		</war>
+
+		<antcall target="common.war.include.libs">
+			<param name="warfile" value="${distr.dir}/${admin.war.name}" />
+		</antcall>
+
+		<antcall target="template.prepare.war.classes" />
+	</target>
+	   -->
+	<target name="template.admin.exploded.production"
+			depends="clean.all,admin.compile.production,admin.prepare.war">
+
+		<antcall target="template.exploded.include.libs">
+			<reference refid="admin.production.classpath" torefid="libs" />
+		</antcall>
+
+		<antcall target="template.prepare.war.classes" />
+	</target>
+
+	<target name="admin.ddl" depends="clean.build,admin.compile.production">
+		<antcall target="template.schemaexport">
+			<param name="file_name" value="flexpay_admin.ddl.sql" />
+			<param name="src.dir" value="${admin.src.production}" />
+			<param name="hibernate.cfg"
+				   value="${admin.dir}/web/WEB-INF/hibernate.cfg.xml" />
+		</antcall>
+	</target>
+
+	<target name="admin.runtests" depends="admin.compile.test,admin.prepare.test.war">
+		<condition property="class.name" value="${test.class.name}" else="org.flexpay.admin.AllTests">
+			<isset property="test.class.name" />
+		</condition>
+		<antcall target="template.run.tests">
+			<param name="test_name" value="${class.name}" />
+			<reference refid="admin.runtests.classpath" torefid="classpath" />
+		</antcall>
+	</target>
+
+	<target name="admin.run.standalone" depends="admin.prepare.war">
+		<antcall target="template.run.standalone">
+			<reference refid="admin.runtests.classpath" torefid="classpath" />
+		</antcall>
+	</target>
+
+	<target name="admin.profile.standalone" depends="admin.prepare.war">
+		<antcall target="template.profile.standalone">
+			<reference refid="admin.runtests.classpath" torefid="classpath" />
+		</antcall>
+	</target>
+
+	<target name="admin.sql.init-db"
+			depends="common.sql.init-db"
+			unless="admin.sql.init-db.run">
+		<antcall target="common.sql.init-db" />
+		<concat destfile="${build.dir}/sql/init_db.sql" append="true" encoding="UTF-8">
+			<fileset file="${admin.dir}/etc/sql/init_db.sql" />
+		</concat>
+		<property name="admin.sql.init-db.run" value="true" />
+	</target>
+
+	<target name="admin.sql.init-db-test"
+			depends="common.sql.init-db-test"
+			unless="admin.sql.init-db-test.run">
+		<concat destfile="${build.dir}/sql/init_db.sql" append="true" encoding="UTF-8">
+			<fileset file="${admin.dir}/etc/sql/init_db.sql" />
+		</concat>
+		<concat destfile="${build.dir}/sql/init_db.sql" append="true" encoding="UTF-8">
+			<fileset file="${admin.dir}/etc/sql/init_db_test.sql" />
+		</concat>
+		<property name="admin.sql.init-db-test.run" value="true" />
+	</target>
+
+	<target name="admin.sql.all">
+		<antcall target="common.sql.create-db" />
+		<concat destfile="${build.dir}/sql/init_db.sql" append="true" encoding="UTF-8">
+			<fileset file="${admin.dir}/etc/sql/flexpay_admin.ddl.sql" />
+		</concat>
+		<antcall target="admin.sql.init-db" />
+		<antcall target="template.set_db_name" />
+	</target>
+
+	<target name="admin.sql.all-test">
+		<antcall target="common.sql.create-db" />
+		<concat destfile="${build.dir}/sql/init_db.sql" append="true" encoding="UTF-8">
+			<fileset file="${admin.dir}/etc/sql/flexpay_admin.ddl.sql" />
+		</concat>
+		<antcall target="admin.sql.init-db-test" />
+		<antcall target="template.set_test_db_name" />
+	</target>
+
+	<target name="admin.db-test" description="create admin db">
+		<antcall target="admin.sql.all-test" />
+		<antcall target="template.mysql.run">
+			<param name="src.sql" value="${build.dir}/sql/init_db.sql" />
+		</antcall>
+	</target>
+
+</project>

@@ -3,6 +3,7 @@
 
 	<import file="../orgs/orgs_build.xml" />
 	<import file="../ab/ab_build.xml" />
+	<import file="../admin/admin_build.xml" />
 
 	<property file="payments/payments_build.properties" />
 
@@ -24,18 +25,21 @@
 	<path id="payments.production.classpath">
 		<path refid="orgs.production.classpath" />
 		<path refid="ab.production.classpath" />
+		<path refid="admin.production.classpath" />
 		<path refid="payments.lib" />
 	</path>
 
 	<path id="payments.test.classpath">
 		<path refid="orgs.test.classpath" />
 		<path refid="ab.test.classpath" />
+		<path refid="admin.test.classpath" />
 		<path refid="payments.production.classpath" />
 	</path>
 
     <path id="payments.runtests.classpath">
         <path refid="orgs.runtests.classpath" />
         <path refid="ab.runtests.classpath" />
+        <path refid="admin.runtests.classpath" />
         <path refid="payments.test.classpath" />
         <path location="payments/tests/data" />
     </path>
@@ -59,7 +63,7 @@
 		<antcall target="clean.build" />
 	</target>
 
-	<property name="payments.src.production" value="${payments.dir}/${src.dir};${orgs.src.production};${ab.src.production}" />
+	<property name="payments.src.production" value="${payments.dir}/${src.dir};${orgs.src.production};${ab.src.production};${admin.src.production}" />
 	<target name="payments.compile.production">
 		<antcall target="template.compile.production">
 			<param name="sources.dir" value="${payments.src.production}" />
@@ -67,7 +71,7 @@
 		</antcall>
 	</target>
 
-	<property name="payments.src.test" value="${payments.src.production};${payments.dir}/${tests.src.dir};${orgs.src.test};${ab.src.test}" />
+	<property name="payments.src.test" value="${payments.src.production};${payments.dir}/${tests.src.dir};${orgs.src.test};${ab.src.test};${admin.src.test}" />
 	<target name="payments.compile.test">
 		<antcall target="template.compile.test">
 			<param name="sources.dir" value="${payments.src.test}" />
@@ -116,7 +120,7 @@
 		<antcall target="template.copy.classes" />
 	</target>
 
-    <target name="payments.prepare.war.internal" depends="orgs.prepare.war.internal,ab.prepare.war.internal">
+    <target name="payments.prepare.war.internal" depends="orgs.prepare.war.internal,ab.prepare.war.internal,admin.prepare.war.internal">
         <fileset id="payments.web.resources" dir="${payments.dir}/web" />
         <antcall target="template.prepare.war">
             <param name="to_dir" value="" />
@@ -177,7 +181,7 @@
 	</target>
 
 	<target name="payments.sql.init-db"
-			depends="orgs.sql.init-db,ab.sql.init-db"
+			depends="orgs.sql.init-db,ab.sql.init-db,admin.sql.init-db"
 			unless="payments.sql.init-db.run">
 		<concat destfile="${build.dir}/sql/init_db.sql" append="true" encoding="UTF-8">
 			<fileset file="${payments.dir}/etc/sql/init_db.sql" />
@@ -186,7 +190,7 @@
 	</target>
 
 	<target name="payments.sql.init-db-test"
-			depends="orgs.sql.init-db-test,ab.sql.init-db-test"
+			depends="orgs.sql.init-db-test,ab.sql.init-db-test,admin.sql.init-db-test"
 			unless="payments.sql.init-db-test.run">
 		<concat destfile="${build.dir}/sql/init_db.sql" append="true" encoding="UTF-8">
 			<fileset file="${payments.dir}/etc/sql/init_db.sql" />

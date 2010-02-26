@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:p="http://www.springframework.org/schema/p"
+	   xmlns:util="http://www.springframework.org/schema/util"
+	   xmlns:context="http://www.springframework.org/schema/context"
+	   xsi:schemaLocation="
+		   http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+		   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd
+		   http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.5.xsd">
+
+	<!--level1-->
+	<bean name="admin" parent="fpMenu"
+		  p:name="admin"
+		  p:title="admin.menu"
+          p:namespace="/admin"
+		  p:action="main"
+		  p:parent-ref="fpMenu">
+        <property name="userRole">
+            <util:constant static-field="org.flexpay.admin.service.Roles.ROLE_MENU_ADMIN" />
+        </property>
+    </bean>
+
+</beans>

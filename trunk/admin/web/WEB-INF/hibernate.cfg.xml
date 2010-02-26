@@ -1,0 +1,34 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-configuration PUBLIC
+		"-//Hibernate/Hibernate Configuration DTD//EN"
+		"http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+
+	<!-- a SessionFactory instance listed as /jndi/name -->
+	<session-factory name="flexpay">
+
+		<mapping resource="org/flexpay/common/persistence/Language.hbm.xml" />
+		<mapping resource="org/flexpay/common/persistence/DataSourceDescription.hbm.xml" />
+		<mapping resource="org/flexpay/common/persistence/history/Diff.hbm.xml" />
+		<mapping resource="org/flexpay/common/persistence/history/HistoryConsumer.hbm.xml" />
+		<mapping resource="org/flexpay/common/persistence/history/TransportConfig.hbm.xml" />
+		<mapping resource="org/flexpay/common/persistence/history/HistoryReceiver.hbm.xml" />
+		<mapping resource="org/flexpay/common/persistence/Sequence.hbm.xml" />
+		<mapping resource="org/flexpay/common/persistence/ImportError.hbm.xml" />
+		<mapping resource="org/flexpay/common/persistence/Process.hbm.xml" />
+		<mapping resource="org/flexpay/common/persistence/Dual.hbm.xml" />
+		<mapping resource="org/flexpay/common/persistence/MeasureUnit.hbm.xml" />
+        <mapping resource="org/flexpay/common/persistence/FPModule.hbm.xml" />
+		<mapping resource="org/flexpay/common/persistence/file/FPFile.hbm.xml" />
+		<mapping resource="org/flexpay/common/persistence/ValueObject.hbm.xml" />
+		<mapping resource="org/flexpay/common/persistence/registry/Registry.hbm.xml" />
+		<mapping resource="org/flexpay/common/persistence/registry/RegistryImport.hbm.xml" />
+		<mapping resource="org/flexpay/common/persistence/registry/RegistryProperties.hbm.xml" />
+		<mapping resource="org/flexpay/common/persistence/Gender.hbm.xml" />
+		<mapping resource="org/flexpay/common/persistence/Currency.hbm.xml" />
+		<mapping resource="org/flexpay/common/persistence/UserPreferencesSearch.hbm.xml" />
+		<mapping resource="org/flexpay/common/persistence/report/ReportPrintHistoryRecord.hbm.xml" />
+
+	</session-factory>
+
+</hibernate-configuration>

@@ -1,0 +1,23 @@
+<!DOCTYPE tiles-definitions PUBLIC
+		"-//Apache Software Foundation//DTD Tiles Configuration 2.0//EN"
+		"http://struts.apache.org/dtds/tiles-config_2_0.dtd">
+
+<tiles-definitions>
+
+	<definition name="admin.layout.standart" template="/WEB-INF/jsp/common/layouts/standart.jsp">
+		<put-attribute name="title" value="admin.main.title" />
+		<put-attribute name="header" value="/WEB-INF/jsp/common/header.jsp" />
+        <put-attribute name="breadCrumbs" value="/WEB-INF/jsp/common/layouts/bread_crumbs.jsp" />
+        <put-attribute name="language" value="/WEB-INF/jsp/common/layouts/language_switch.jsp" />
+		<put-attribute name="tip" value="/WEB-INF/jsp/common/includes/tip.jsp" />
+		<put-attribute name="footer" value="/WEB-INF/jsp/common/footer.jsp" />
+	</definition>
+
+	<definition name="admin.layout.content" template="/WEB-INF/jsp/common/layouts/content_only.jsp">
+	</definition>
+
+	<definition name="admin.main" extends="admin.layout.standart">
+		<put-attribute name="title" value="admin.main.title" />
+	</definition>
+
+</tiles-definitions>
