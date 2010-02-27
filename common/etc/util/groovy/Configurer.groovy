@@ -10,7 +10,7 @@ def modulesDependencies = [
 		orgs: ['common', 'orgs'],
 		payments: ['common', 'ab', 'admin', 'orgs', 'payments'],
 		rent: ['common', 'ab', 'orgs', 'payments', 'rent'],
-		eirc: ['common', 'ab', 'bti', 'orgs', 'payments', 'eirc'],
+		eirc: ['common', 'ab', 'admin', 'bti', 'orgs', 'payments', 'eirc'],
 		sz: ['common', 'ab', 'bti', 'orgs', 'payments', 'eirc', 'sz']
 ]
 
