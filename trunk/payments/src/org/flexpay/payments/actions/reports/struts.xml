@@ -62,7 +62,10 @@
 		</action>
 
 		<action name="paymentOperationReportAction" class="paymentOperationReportAction">
-			<result type="redirect-action">operationsList</result>
+            <result name="redirectError" type="redirect-action">
+                <param name="actionName">error</param>
+                <param name="namespace">/common</param>
+            </result>
 			<result name="file" type="redirect-action">
 				<param name="actionName">print</param>
 				<param name="namespace">/common</param>

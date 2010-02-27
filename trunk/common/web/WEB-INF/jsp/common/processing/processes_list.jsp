@@ -1,12 +1,9 @@
-<%@include file="/WEB-INF/jsp/common/taglibs.jsp" %>
+<%@include file="/WEB-INF/jsp/common/taglibs.jsp"%>
+<%@include file="/WEB-INF/jsp/common/includes/errors_messages.jsp"%>
 
 <script type="text/javascript">
     FP.switchSorter(["processSorterByNameButton", "processSorterByStartDateButton", "processSorterByEndDateButton", "processSorterByStateButton"]);
 </script>
-
-<s:actionerror/>
-<s:actionmessage/>
-
 
 <table cellpadding="3" cellspacing="1" border="0" width="100%">
     <tr>

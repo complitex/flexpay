@@ -180,10 +180,10 @@ function Filter(name, options) {
     };
 
     this.listen = function() {
-        var listeners = this.listeners;
-        for (var i = 0; i < listeners.length; i++) {
-            listeners[i].call(this, this);
-        }
+        var el = this;
+        $.each(this.listeners, function (i, v) {
+            v.call(el, el);
+        });
     };
 
     this.addEraser = function(eraser) {
@@ -197,10 +197,10 @@ function Filter(name, options) {
     };
 
     this.erase = function() {
-        var erasers = this.erasers;
-        for (var i = 0; i < erasers.length; i++) {
-            erasers[i].call(this, this);
-        }
+        var el = this;
+        $.each(this.erasers, function (i, v) {
+            v.call(el, el);
+        });
     };
 
     this.displayParents = function(filter) {

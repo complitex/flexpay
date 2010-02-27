@@ -52,9 +52,10 @@ public class PaymentOperationReportAction extends PaymentOperationAction {
 	@Override
 	protected String doExecute() throws Exception {
 
-		if (operationId == null) {
+		if (operationId == null || operationId <= 0) {
+			log.warn("Incorrect operation id {}", operationId);
 			addActionError(getText("common.error.invalid_id"));
-			return SUCCESS;
+			return REDIRECT_ERROR;
 		}
 
 		Operation op = operationService.read(new Stub<Operation>(operationId));
@@ -64,8 +65,9 @@ public class PaymentOperationReportAction extends PaymentOperationAction {
 
 		PaymentPrintForm form = paymentsReporter.getPaymentPrintFormData(op);
 		if (form == null) {
+			log.warn("Can't get payment form data from DB for operation {}", op);
 			addActionError(getText("common.error.invalid_id"));
-			return SUCCESS;
+			return REDIRECT_ERROR;
 		}
 
 		if (copy) {
@@ -102,7 +104,8 @@ public class PaymentOperationReportAction extends PaymentOperationAction {
 		} else if (ReportUtil.FORMAT_TXT.equals(format)) {
 			report = reportUtil.exportToTxt(reportName, params, dataSource, getDefaultReportLocale());
 		} else {
-			return SUCCESS;
+			log.warn("Unknown print format {}", format);
+			return REDIRECT_ERROR;
 		}
 
 		return FILE;
