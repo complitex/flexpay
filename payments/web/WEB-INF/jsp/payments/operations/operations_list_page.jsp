@@ -72,7 +72,8 @@
     function printQuittance(opId) {
         var params = {
             copy: true,
-            operationId: opId
+            operationId: opId,
+            format:"pdf"
         };
         window.open($.param.querystring("<s:url action="paymentOperationReportAction" includeParams="none" />", params), "_blank");
     }
@@ -105,8 +106,7 @@
     function buttons() {
         for (var i = 0; i < arguments.length; i++) {
 
-            var but;
-            but = but || {};
+            var but = but || {};
             but = $.extend({
                 disable: true
             }, arguments[i]);
