@@ -132,6 +132,7 @@ public class IterateFPRegistryActionHandler extends FlexPayActionHandler {
 				for (SpFileReader.Message message : listMessage) {
 					if (message == null) {
 						finalizeRegistry(parameters, records);
+						reader.setInputStream(null);
 						return RESULT_END;
 					}
 					i++;
@@ -147,6 +148,7 @@ public class IterateFPRegistryActionHandler extends FlexPayActionHandler {
 					if (messageType.equals(SpFileReader.Message.MESSAGE_TYPE_HEADER)) {
 						Registry registry = processHeader(spFile, messageFieldList);
 						if (registry == null) {
+							reader.setInputStream(null);
 							return RESULT_ERROR;
 						}
 						parameters.put(PARAM_REGISTRY_ID, registry.getId());
@@ -155,6 +157,7 @@ public class IterateFPRegistryActionHandler extends FlexPayActionHandler {
 					} else if (messageType.equals(SpFileReader.Message.MESSAGE_TYPE_RECORD)) {
 						RegistryRecord record = processRecord(parameters, messageFieldList);
 						if (record == null) {
+							reader.setInputStream(null);
 							return RESULT_ERROR;
 						}
 						records.add(record);
@@ -184,6 +187,12 @@ public class IterateFPRegistryActionHandler extends FlexPayActionHandler {
 				log.error("Failed reader", e);
 				processLog.error("Inner error");
 			}
+		}
+		try {
+			reader.setInputStream(null);
+		} catch (IOException e) {
+			log.error("Inner error", e);
+			processLog.error("Inner error");
 		}
 		return RESULT_ERROR;
 	}
