@@ -311,10 +311,12 @@ ul.docs {
     display: inline;
 }
 
+/*
 .columns .main-content {
     width: 66%;
     margin-right: -100%;
 }
+*/
 
 .columns .main-tip {
     width: 33%;

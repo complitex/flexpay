@@ -371,10 +371,10 @@ var FF = {
                 parentsFilled = false;
             }
             if (parentsFilled) {
-                string2.focus();
                 if (!readonly) {
                     string2.removeAttr("readonly");
                 }
+                string2.focus();
             }
             if (!filter2.isArray) {
                 if (filter2.string.autocomplete != null) {
