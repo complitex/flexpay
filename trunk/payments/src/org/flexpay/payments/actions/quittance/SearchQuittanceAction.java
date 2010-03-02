@@ -53,6 +53,7 @@ public class SearchQuittanceAction extends OperatorAWPActionSupport {
 	private ServiceTypesMapper serviceTypesMapper;
 
 	@NotNull
+    @Override
 	protected String doExecute() throws Exception {
 
 		QuittanceDetailsRequest request = buildQuittanceRequest();
@@ -142,6 +143,11 @@ public class SearchQuittanceAction extends OperatorAWPActionSupport {
 	public boolean isNotSubservice(String serviceMasterIndex) {
 
 		Long serviceId = getServiceId(serviceMasterIndex);
+        if (serviceId == null) {
+            log.error("Error! serviceId is null");
+            return false;
+        }
+
 		Service service = spService.readFull(new Stub<Service>(serviceId));
 		assert service != null;
 		return service.isNotSubservice();
@@ -167,6 +173,7 @@ public class SearchQuittanceAction extends OperatorAWPActionSupport {
 	}
 
 	@NotNull
+    @Override
 	protected String getErrorResult() {
 		return SUCCESS;
 	}

@@ -7,7 +7,7 @@
 <table cellpadding="0" cellspacing="0" border="0" width="100%">
 	<tr>
 		<td align="center">
-			<span class="text-small">&#xA9; 2007-2010 Flexpay project</span>
+			<span class="text-small">&#xA9; 2010 Flexpay project</span>
 		</td>
 	</tr>
 	<sec:authorize ifAllGranted="ROLE_COMMON_DEVELOPER">

@@ -1,11 +1,3 @@
-function pausecomp(millis){
-    var date = new Date();
-    var curDate = null;
-
-    do {
-        curDate = new Date();
-    } while (curDate - date < millis);
-}
 
 function Filter(name, options) {
 
@@ -29,6 +21,7 @@ function Filter(name, options) {
         parents: []
     }, options);
 
+    this.ready = false;
     this.options = options;
 
     var dv = options.defaultValue;
@@ -239,22 +232,36 @@ var FF = {
     createFilter : function (name, options) {
 
         var filter = new Filter(name, options);
-        var hasReqParents = filter.hasRequiredParents;
-        var reqParentsCount = filter.requiredParentsCount;
-        var parentsCount = filter.parentsCount;
-        var value = filter.value;
-        var string = filter.string;
         var filters = this.filters;
 
         filters[name] = filter;
         filters.splice(filters.length - 1, 1);
 
+        FF._createFilter(filter);
+
+    },
+
+    _createFilter : function (filter) {
+
+        var hasReqParents = filter.hasRequiredParents;
+        var reqParentsCount = filter.requiredParentsCount;
+        var parentsCount = filter.parentsCount;
+        var value = filter.value;
+        var string = filter.string;
+
         if (filter.preRequest && !(filter.isNumber && value.val() == 0)) {
             var k = 0;
             for (var i in filter.parents) {
 
-                var filter2 = filters[i];
+                var filter2 = FF.filters[i];
                 var value2 = filter2.value.val();
+
+                if (!filter2.ready) {
+                    setTimeout(function() {
+                        FF._createFilter(filter);
+                    }, 100);
+                    return;
+                }
 
                 if (filter2.preRequest && ((filter2.isString && value2 != "") || (filter2.isNumber && value2 != "0"))) {
                     k++;
@@ -271,12 +278,13 @@ var FF = {
                     }
                     value.val(data.value);
                     FF.onSelect(filter.name);
+                    filter.ready = true;
                 });
-            pausecomp(100);
         } else {
             if (hasReqParents || (reqParentsCount == parentsCount && parentsCount > 0)) {
                 string.attr("readonly", true);
             }
+            filter.ready = true;
         }
     },
 
