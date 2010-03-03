@@ -80,7 +80,7 @@
             <td class="col"><s:text name="%{importError.errorId}" /></td>
             <td class="col"><s:text name="%{recordStatus.i18nName}" /></td>
             <td class="col">
-                <a href="#" onclick="createDialog(<s:property value="id" />);"><s:text name="common.edit" /></a>
+                <a href="javascript:void(0);" onclick="createDialog(<s:property value="id" />);"><s:text name="common.edit" /></a>
             </td>
         </tr>
     </s:iterator>
