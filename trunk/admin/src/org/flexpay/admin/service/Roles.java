@@ -12,4 +12,7 @@ public abstract class Roles {
 
 	// level 1
 	public static final String ROLE_MENU_ADMIN = MENU_ADMIN_PREFIX;
+
+	// level 1
+	public static final String ROLE_MENU_ADMIN_USERS = MENU_ADMIN_PREFIX + "_USERS";
 }
