@@ -20,4 +20,15 @@
 		<put-attribute name="title" value="admin.main.title" />
 	</definition>
 
+	<definition name="admin.main.users" extends="admin.layout.standart">
+		<put-attribute name="title" value="admin.menu2.users" />
+	</definition>
+	<definition name="admin.main.users.users" extends="admin.layout.standart">
+		<put-attribute name="title" value="admin.menu2.users" />
+	</definition>
+	<definition name="admin.user.list" extends="admin.main.users">
+		<put-attribute name="title" value="admin.user.list" />
+		<put-attribute name="body" value="/WEB-INF/jsp/admin/user/user_list_page.jsp" />
+	</definition>
+
 </tiles-definitions>
