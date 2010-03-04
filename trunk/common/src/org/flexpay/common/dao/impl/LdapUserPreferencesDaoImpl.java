@@ -2,6 +2,7 @@ package org.flexpay.common.dao.impl;
 
 import org.flexpay.common.dao.UserPreferencesDao;
 import org.flexpay.common.dao.impl.ldap.DnBuilder;
+import org.flexpay.common.dao.impl.ldap.LdapConstants;
 import org.flexpay.common.dao.impl.ldap.UserPreferencesContextMapper;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.config.UserPreferences;
@@ -32,7 +33,8 @@ public class LdapUserPreferencesDaoImpl implements UserPreferencesDao {
 	private Logger log = LoggerFactory.getLogger(getClass());
 
 	private SimpleLdapTemplate ldapTemplate;
-	private DnBuilder dnBuilder;
+	private DnBuilder userNameBuilder;
+	private DnBuilder userGroupBuilder;
 	private UserPreferencesContextMapper mapper;
 	private UserPreferencesFactory userPreferencesFactory;
 
@@ -73,16 +75,27 @@ public class LdapUserPreferencesDaoImpl implements UserPreferencesDao {
 	/*
 	 * @see PersonDao#update(Person)
 	 */
+	@Override
 	public void save(UserPreferences person) {
 		DirContextOperations ctx = ldapTemplate.lookupContext(buildDn(person));
 		mapToContext(person, ctx);
 		ldapTemplate.modifyAttributes(ctx);
 	}
 
+	@Override
+	public void delete(UserPreferences preferences) {
+		ldapTemplate.unbind(preferences.getUsername());
+	}
+
+	@Override
+	public List<UserPreferences> listAllUser() {
+		return ldapTemplate.search("", userGroupBuilder.getNameFilter(LdapConstants.OBJECT_CLASS).encode(), new PersonContextMapper());
+	}
+
 	public UserPreferences findByUserName(String userName) {
 
 		List<UserPreferences> persons = ldapTemplate.search("",
-				dnBuilder.getUserNameFilter(userName).encode(), new PersonContextMapper());
+				userNameBuilder.getNameFilter(userName).encode(), new PersonContextMapper());
 		if (persons.isEmpty()) {
 			return null;
 		}
@@ -93,7 +106,7 @@ public class LdapUserPreferencesDaoImpl implements UserPreferencesDao {
 	}
 
 	private Name buildDn(UserPreferences person) {
-		return dnBuilder.buildDn(person);
+		return userNameBuilder.buildDn(person);
 	}
 
 	private void mapToContext(UserPreferences preferences, DirContextOperations ctx) {
@@ -106,8 +119,13 @@ public class LdapUserPreferencesDaoImpl implements UserPreferencesDao {
 	}
 
 	@Required
-	public void setDnBuilder(DnBuilder dnBuilder) {
-		this.dnBuilder = dnBuilder;
+	public void setUserNameBuilder(DnBuilder userNameBuilder) {
+		this.userNameBuilder = userNameBuilder;
+	}
+
+	@Required
+	public void setUserGroupBuilder(DnBuilder userGroupBuilder) {
+		this.userGroupBuilder = userGroupBuilder;
 	}
 
 	@Required
