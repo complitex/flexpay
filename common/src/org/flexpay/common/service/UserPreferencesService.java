@@ -7,6 +7,8 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.security.userdetails.UserDetailsService;
 import org.springframework.security.userdetails.UsernameNotFoundException;
 
+import java.util.List;
+
 public interface UserPreferencesService extends UserDetailsService {
 
 	/**
@@ -34,4 +36,13 @@ public interface UserPreferencesService extends UserDetailsService {
 	 * @throws FlexPayExceptionContainer if preferences validation fails
 	 */
 	UserPreferences save(@NotNull UserPreferences preferences) throws FlexPayExceptionContainer;
+
+	/**
+	 * Get locates the users
+	 *
+	 * @return users
+	 * @throws DataAccessException
+	 *         if users could not be found for a repository-specific reason
+	 */
+	List<UserPreferences> listAllUser() throws DataAccessException;
 }

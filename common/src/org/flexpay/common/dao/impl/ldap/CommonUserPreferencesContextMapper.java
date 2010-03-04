@@ -16,7 +16,7 @@ public class CommonUserPreferencesContextMapper implements UserPreferencesContex
 		preferences.setLastName(ctx.getStringAttribute("sn"));
 		preferences.setUsername(ctx.getStringAttribute("uid"));
 
-		if (preferences.getObjectClasses().contains("flexpayPerson")) {
+		if (preferences.getObjectClasses().contains(LdapConstants.OBJECT_CLASS)) {
 			preferences.setLanguageCode(ctx.getStringAttribute("flexpayPreferedLocale"));
 			preferences.setPageSize(getFilterValue("flexpayPreferedPagerSize", 20, ctx));
 		}
@@ -43,9 +43,9 @@ public class CommonUserPreferencesContextMapper implements UserPreferencesContex
 	@Override
 	public void doMapToContext(DirContextOperations ctx, UserPreferences preferences) {
 
-		if (!preferences.getObjectClasses().contains("flexpayPerson")) {
-			ctx.addAttributeValue("objectclass", "flexpayPerson");
-			preferences.getObjectClasses().add("flexpayPerson");
+		if (!preferences.getObjectClasses().contains(LdapConstants.OBJECT_CLASS)) {
+			ctx.addAttributeValue("objectclass", LdapConstants.OBJECT_CLASS);
+			preferences.getObjectClasses().add(LdapConstants.OBJECT_CLASS);
 		}
 		setSingleAttribute(ctx, preferences, "flexpayPreferedLocale", preferences.getLanguageCode());
 		setSingleAttribute(ctx, preferences, "flexpayPreferedPagerSize", String.valueOf(preferences.getPageSize()));

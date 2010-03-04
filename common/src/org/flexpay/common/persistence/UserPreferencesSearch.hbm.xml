@@ -6,8 +6,10 @@
 <hibernate-mapping package="org.flexpay.common.persistence">
 
 	<query name="UserPreferences.findByName">
+	<![CDATA[
 		from UserPreferences
 		where username=?
+	]]>
 	</query>
 
 </hibernate-mapping>

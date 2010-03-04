@@ -81,6 +81,21 @@ public class UserPreferencesServiceImpl implements UserPreferencesService, Initi
 		return preferences;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public List<UserPreferences> listAllUser() throws DataAccessException {
+		List<UserPreferences> userPreferences = getUserPreferencesDao().listAllUser();
+		for (UserPreferences userPreference : userPreferences) {
+			// init defaults if needed
+			for (UserPreferencesDefaults setter : defaultsSetters) {
+				setter.setDefaults(userPreference);
+			}
+		}
+		return userPreferences;
+	}
+
 	@SuppressWarnings ({"ThrowableInstanceNeverThrown"})
 	private void validate(UserPreferences preferences) throws FlexPayExceptionContainer {
 		FlexPayExceptionContainer container = new FlexPayExceptionContainer();

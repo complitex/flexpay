@@ -19,10 +19,10 @@ public interface DnBuilder {
 	Name buildDn(UserPreferences preferences);
 
 	/**
-	 * Build Filter from user name
+	 * Build Filter from name
 	 *
-	 * @param userName User name
+	 * @param  name Name
 	 * @return Filter object
 	 */
-	Filter getUserNameFilter(String userName);
+	Filter getNameFilter(String name);
 }

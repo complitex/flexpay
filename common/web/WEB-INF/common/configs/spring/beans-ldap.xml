@@ -45,13 +45,18 @@
 	<bean id="uidLdapDnBuilder"
 		  class="org.flexpay.common.dao.impl.ldap.UidDnBuilder" />
 
+	<bean id="objectClassLdapDnBuilder"
+		  class="org.flexpay.common.dao.impl.ldap.ObjectClassDnBuilder" />
+
 	<bean id="ldapUserPreferencesDao"
 		  autowire-candidate="false"
 		  lazy-init="true"
 		  class="org.flexpay.common.dao.impl.LdapUserPreferencesDaoImpl"
 		  p:ldapTemplate-ref="simpleLdapTemplate"
 		  p:mapper-ref="userPreferencesContextMapper"
-		  p:dnBuilder-ref="uidLdapDnBuilder"
+		  p:userNameBuilder-ref="uidLdapDnBuilder"
+		  p:userGroupBuilder-ref="objectClassLdapDnBuilder"
+		  
 		  p:userPreferencesFactory-ref="userPreferencesFactory" />
 
 	<bean id="userPreferencesServiceFactory"

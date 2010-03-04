@@ -30,7 +30,7 @@ public class UidDnBuilder implements DnBuilder {
 	 * @return Filter object
 	 */
 	@Override
-	public Filter getUserNameFilter(String userName) {
+	public Filter getNameFilter(String userName) {
 		return new EqualsFilter("uid", userName);
 	}
 }
