@@ -28,6 +28,7 @@ import static org.flexpay.common.util.config.ApplicationConfig.getDefaultReportL
 public class PaymentOperationReportAction extends PaymentOperationAction {
 
 	private static final String REPORT_BASE_NAME = "DoubleQuittancePayment";
+    private static final String REPORT_NAME_TXT_SUFFIX = "Txt";
 
 	private Long operationId;
 
@@ -88,20 +89,25 @@ public class PaymentOperationReportAction extends PaymentOperationAction {
 
 		JRDataSource dataSource = new JRBeanCollectionDataSource(form.getDetailses());
 
-		String paymentPointSuffix = getPaymentPointSuffix(form);
-		String reportName = REPORT_BASE_NAME + paymentPointSuffix;
+        String suf = ReportUtil.FORMAT_TXT.equals(format) ? REPORT_NAME_TXT_SUFFIX : "";
+		String paymentPointSuffix = getPaymentPointSuffix(form, suf);
+		String reportName = REPORT_BASE_NAME + suf + paymentPointSuffix;
 
 		if (!reportUtil.templateUploaded(reportName)) {
-			uploadReportTemplates(paymentPointSuffix);
+			uploadReportTemplates(paymentPointSuffix, suf);
 		}
 
 		if (ReportUtil.FORMAT_PDF.equals(format)) {
+            log.debug("Exporting {} report. Format: PDF", reportName);
 			report = reportUtil.exportToPdf(reportName, params, dataSource, getDefaultReportLocale());
 		} else if (ReportUtil.FORMAT_HTML.equals(format)) {
+            log.debug("Exporting {} report. Format: HTML", reportName);
 			report = reportUtil.exportToHtml(reportName, params, dataSource, getDefaultReportLocale());
 		} else if (ReportUtil.FORMAT_CSV.equals(format)) {
+            log.debug("Exporting {} report. Format: CSV", reportName);
 			report = reportUtil.exportToCsv(reportName, params, dataSource, getDefaultReportLocale());
 		} else if (ReportUtil.FORMAT_TXT.equals(format)) {
+            log.debug("Exporting {} report. Format: TXT", reportName);
 			report = reportUtil.exportToTxt(reportName, params, dataSource, getDefaultReportLocale());
 		} else {
 			log.warn("Unknown print format {}", format);
@@ -120,9 +126,9 @@ public class PaymentOperationReportAction extends PaymentOperationAction {
 		return record.getId();
 	}
 
-	private String getPaymentPointSuffix(PaymentPrintForm form) {
+	private String getPaymentPointSuffix(PaymentPrintForm form, String formatSuffix) {
 		
-		String perPointQuittance = REPORT_BASE_NAME + "_" + form.getPaymentPointStub().getId();
+		String perPointQuittance = REPORT_BASE_NAME + formatSuffix + "_" + form.getPaymentPointStub().getId();
 		String resName = "WEB-INF/payments/reports/" + perPointQuittance + ReportUtil.EXTENSION_TEMPLATE;
 		if (ApplicationConfig.isResourceAvailable(resName)) {
 			return "_" + form.getPaymentPointStub().getId();
@@ -131,9 +137,9 @@ public class PaymentOperationReportAction extends PaymentOperationAction {
 		return "";
 	}
 
-	private void uploadReportTemplates(String paymentPointSuffix) throws Exception {
-		uploadReportTemplate("DoubleQuittancePayment" + paymentPointSuffix);
-		uploadReportTemplate("QuittancePayment" + paymentPointSuffix);
+	private void uploadReportTemplates(String paymentPointSuffix, String formatSuffix) throws Exception {
+		uploadReportTemplate("DoubleQuittancePayment" + formatSuffix + paymentPointSuffix);
+		uploadReportTemplate("QuittancePayment" + formatSuffix + paymentPointSuffix);
 	}
 
 	private void uploadReportTemplate(String reportName) throws Exception {
