@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="DoubleQuittancePayment" pageWidth="595" pageHeight="840" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" resourceBundle="org/flexpay/payments/i18n/PaymentOperation">
+	<property name="ireport.scriptlethandling" value="0"/>
+	<property name="ireport.encoding" value="UTF-8"/>
+	<import value="net.sf.jasperreports.engine.data.*"/>
+	<style name="LiberationSans-Regular" isDefault="true" fontName="LiberationSans-Regular" fontSize="8" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false" pdfFontName="fonts/LiberationSans-Regular.ttf" pdfEncoding="Cp1251" isPdfEmbedded="true"/>
+	<parameter name="operationDate" class="java.util.Date" isForPrompting="false"/>
+	<parameter name="organizationName" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="quittanceNumber" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="cashierFIO" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="payerFIO" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="total" class="java.math.BigDecimal" isForPrompting="false"/>
+	<parameter name="totalSpelling" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="inputSumm" class="java.math.BigDecimal" isForPrompting="false"/>
+	<parameter name="changeSumm" class="java.math.BigDecimal" isForPrompting="false"/>
+	<parameter name="paymentPointAddress" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["H:/projects/flexpay/payments/web/WEB-INF/payments/reports/"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="detailses" class="java.util.List" isForPrompting="false"/>
+	<field name="address" class="java.lang.String">
+		<fieldDescription><![CDATA[address]]></fieldDescription>
+	</field>
+	<field name="fio" class="java.lang.String">
+		<fieldDescription><![CDATA[fio]]></fieldDescription>
+	</field>
+	<field name="serviceName" class="java.lang.String">
+		<fieldDescription><![CDATA[serviceName]]></fieldDescription>
+	</field>
+	<field name="serviceProviderName" class="java.lang.String">
+		<fieldDescription><![CDATA[serviceProviderName]]></fieldDescription>
+	</field>
+	<field name="accountNumber" class="java.lang.String">
+		<fieldDescription><![CDATA[accountNumber]]></fieldDescription>
+	</field>
+	<field name="paymentPeriod" class="java.lang.String">
+		<fieldDescription><![CDATA[paymentPeriod]]></fieldDescription>
+	</field>
+	<field name="paymentSumm" class="java.math.BigDecimal">
+		<fieldDescription><![CDATA[paymentSumm]]></fieldDescription>
+	</field>
+	<field name="counterValue" class="java.lang.String">
+		<fieldDescription><![CDATA[counterValue]]></fieldDescription>
+	</field>
+	<background>
+		<band/>
+	</background>
+	<title>
+		<band height="150" splitType="Prevent">
+			<subreport isUsingCache="false" runToBottom="false">
+				<reportElement isPrintRepeatedValues="false" x="0" y="0" width="555" height="150" isPrintInFirstWholeBand="true"/>
+				<parametersMapExpression><![CDATA[new HashMap($P{REPORT_PARAMETERS_MAP})]]></parametersMapExpression>
+				<dataSourceExpression><![CDATA[new JRBeanCollectionDataSource($P{detailses})]]></dataSourceExpression>
+				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "QuittancePaymentTxt_1.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="11">
+			<staticText>
+				<reportElement x="0" y="0" width="555" height="11"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[-----------------------------------Линия отрыва-----------------------------------]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<summary>
+		<band height="150" splitType="Prevent">
+			<subreport isUsingCache="false" runToBottom="false">
+				<reportElement isPrintRepeatedValues="false" x="0" y="0" width="555" height="150" isPrintInFirstWholeBand="true"/>
+				<parametersMapExpression><![CDATA[new HashMap($P{REPORT_PARAMETERS_MAP})]]></parametersMapExpression>
+				<dataSourceExpression><![CDATA[new JRBeanCollectionDataSource($P{detailses})]]></dataSourceExpression>
+				<subreportExpression class="java.lang.String"><![CDATA[$P{SUBREPORT_DIR} + "QuittancePaymentTxt_1.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</summary>
+</jasperReport>
