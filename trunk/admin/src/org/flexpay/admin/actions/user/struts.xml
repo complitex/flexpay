@@ -12,5 +12,11 @@
 		<action name="userListAjax" class="userListAction">
             <result>/WEB-INF/jsp/admin/user/user_list.jsp</result>
         </action>
+
+		<action name="editUser" class="editUserAction">
+			<result name="redirectError" type="redirect-action">userList</result>
+			<result name="input" type="tiles">admin.user.edit</result>
+			<result name="redirectSuccess" type="redirect-action">userList</result>
+		</action>
 	</package>
 </struts>

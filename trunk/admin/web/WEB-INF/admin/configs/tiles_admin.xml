@@ -26,9 +26,15 @@
 	<definition name="admin.main.users.users" extends="admin.layout.standart">
 		<put-attribute name="title" value="admin.menu2.users" />
 	</definition>
+
+	<!-- User -->
 	<definition name="admin.user.list" extends="admin.main.users">
 		<put-attribute name="title" value="admin.user.list" />
 		<put-attribute name="body" value="/WEB-INF/jsp/admin/user/user_list_page.jsp" />
+	</definition>
+	<definition name="admin.user.edit" extends="admin.layout.standart">
+		<put-attribute name="title" value="admin.user.edit" />
+		<put-attribute name="body" value="/WEB-INF/jsp/admin/user/edit_user.jsp" />
 	</definition>
 
 </tiles-definitions>

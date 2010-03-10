@@ -15,4 +15,11 @@
           p:crumbNameKey="admin.crumbs.user_list"
           scope="prototype" />
 
+	<bean id="editUserAction"
+		  class="org.flexpay.admin.actions.user.EditUserAction"
+		  p:preferencesService-ref="userPreferencesService"
+		  p:userPreferencesFactory-ref="userPreferencesFactory"
+		  p:crumbNameKey="admin.crumbs.edit_user"
+		  scope="prototype" />
+
 </beans>
