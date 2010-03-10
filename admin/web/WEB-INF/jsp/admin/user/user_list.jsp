@@ -17,19 +17,19 @@
         <td class="th" width="58%"><s:text name="admin.user.name" /></td>
         <td class="th" width="40%">&nbsp;</td>
     </tr>
-    <s:iterator value="allUserPreferences" status="status">
+    <s:iterator value="allUserPreferences" status="status" id="currentUserPreferences">
         <tr valign="middle" class="cols_1">
             <td class="col_1s" align="right">
                 <s:property value="#status.index + pager.thisPageFirstElementNumber + 1" />
             </td>
             <td class="col">
-                <input type="checkbox" value="<s:property value="id" />" name="objectIds" />
+                <input type="checkbox" value="<s:property value="username" />" name="objectIds" />
             </td>
             <td class="col">
                 <s:property value="username" />
             </td>
             <td class="col">
-                <a href=""><s:text name="common.edit"/></a>
+                <a href="<s:url action="editUser" includeParams="none"><s:param name="userName" value="username" /></s:url>"><s:text name="common.edit"/></a>
             </td>
         </tr>
     </s:iterator>

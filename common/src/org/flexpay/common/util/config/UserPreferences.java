@@ -2,6 +2,7 @@ package org.flexpay.common.util.config;
 
 import net.sourceforge.navigator.menu.MenuComponent;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.builder.ToStringBuilder;
 import org.flexpay.common.actions.breadcrumbs.Crumb;
 import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.common.persistence.Language;
@@ -228,4 +229,8 @@ public class UserPreferences extends DomainObject implements Serializable, UserD
 		return targetDetails.isAccountNonExpired();
 	}
 
+	@Override
+	public String toString() {
+		return ToStringBuilder.reflectionToString(this);
+	}
 }
