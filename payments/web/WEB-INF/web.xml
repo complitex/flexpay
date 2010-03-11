@@ -109,7 +109,6 @@
 		<servlet-class>org.springframework.ws.transport.http.MessageDispatcherServlet</servlet-class>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
-
 	<servlet-mapping>
 		<servlet-name>spring-ws</servlet-name>
 		<url-pattern>/ws/*</url-pattern>
@@ -119,10 +118,18 @@
         <servlet-name>confirmationTradingDayServlet</servlet-name>
         <servlet-class>org.flexpay.payments.actions.tradingday.ConfirmationTradingDayServlet</servlet-class>
     </servlet>
-
     <servlet-mapping>
 		<servlet-name>confirmationTradingDayServlet</servlet-name>
 		<url-pattern>/confirmationTradingDay/*</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>searchQuittanceServlet</servlet-name>
+		<servlet-class>org.flexpay.payments.actions.quittance.SearchQuittanceServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>searchQuittanceServlet</servlet-name>
+		<url-pattern>/search/*</url-pattern>
 	</servlet-mapping>
 
 	<security-constraint>

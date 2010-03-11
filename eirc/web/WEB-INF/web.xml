@@ -147,6 +147,15 @@
 		<url-pattern>/confirmationTradingDay/*</url-pattern>
 	</servlet-mapping>
 
+	<servlet>
+		<servlet-name>searchQuittanceServlet</servlet-name>
+		<servlet-class>org.flexpay.payments.actions.quittance.SearchQuittanceServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>searchQuittanceServlet</servlet-name>
+		<url-pattern>/search/*</url-pattern>
+	</servlet-mapping>
+
 	<security-constraint>
 		<web-resource-collection>
 			<web-resource-name>secure-resource</web-resource-name>
