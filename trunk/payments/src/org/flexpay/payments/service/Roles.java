@@ -69,4 +69,7 @@ public abstract class Roles {
 	public static final String ROLE_MENU_PAYMENTS_REPORTS_ACC_RECEIVED = MENU_PAYMENTS_PREFIX + "_REPORTS_ACC_RECEIVED";
 	public static final String ROLE_MENU_PAYMENTS_REPORTS_ACC_RETURNED = MENU_PAYMENTS_PREFIX + "_REPORTS_ACC_RETURNED";
 	public static final String ROLE_MENU_PAYMENTS_CASHBOXES = MENU_PAYMENTS_PREFIX + "_CASHBOXES";
+
+	// external quittance information finder role
+	public static final String EXTERNAL_QUITTANCE_INFO_FINDER = PREFIX + "_EXTERNAL_FINDER";
 }
