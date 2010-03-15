@@ -35,7 +35,34 @@ public interface UserPreferencesService extends UserDetailsService {
 	 * @return Updated preferences back
 	 * @throws FlexPayExceptionContainer if preferences validation fails
 	 */
-	UserPreferences save(@NotNull UserPreferences preferences) throws FlexPayExceptionContainer;
+	UserPreferences saveFullData(@NotNull UserPreferences preferences) throws FlexPayExceptionContainer;
+	
+	/**
+	 * Update UserPreferences object
+	 *
+	 * @param preferences UserPreferences to update
+	 * @return Updated preferences back
+	 * @throws FlexPayExceptionContainer if preferences validation fails
+	 */
+	UserPreferences saveAdvancedData(@NotNull UserPreferences preferences) throws FlexPayExceptionContainer;
+
+	/**
+	 * Update UserPreferences object
+	 *
+	 * @param preferences UserPreferences to update
+	 * @return Updated preferences back
+	 * @throws FlexPayExceptionContainer if preferences validation fails
+	 */
+	UserPreferences saveGeneralData(@NotNull UserPreferences preferences) throws FlexPayExceptionContainer;
+
+	/**
+	 * Update password
+	 * @param preferences UserPreferences to update
+	 * @param password New password
+	 * @return Updated preferences back
+	 * @throws FlexPayExceptionContainer if preferences validation fails
+	 */
+	UserPreferences updatePassword(@NotNull UserPreferences preferences, String password) throws FlexPayExceptionContainer;
 
 	/**
 	 * Get locates the users

@@ -9,7 +9,13 @@ import java.util.List;
  * Data Access Object interface for the UserPreferences entity.
  */
 public interface UserPreferencesDao {
-	void save(UserPreferences preferences);
+	void saveAllPreferences(UserPreferences preferences);
+
+	void saveUserEditedPreferences(UserPreferences preferences);
+
+	void saveAdminEditedPreferences(UserPreferences preferences);
+
+	void updateUserPassword(UserPreferences preferences, String password);
 
 	void delete(UserPreferences preferences);
 

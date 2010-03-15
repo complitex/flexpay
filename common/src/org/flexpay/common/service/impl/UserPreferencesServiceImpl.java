@@ -28,7 +28,7 @@ public class UserPreferencesServiceImpl implements UserPreferencesService, Initi
 	private Map<String, UserPreferencesDao> userPreferencesDaos;
 	private UserPreferencesFactory userPreferencesFactory;
 
-	private UserPreferencesDao getUserPreferencesDao() {
+	protected UserPreferencesDao getUserPreferencesDao() {
 		return userPreferencesDaos.get(usedDao);
 	}
 
@@ -73,11 +73,46 @@ public class UserPreferencesServiceImpl implements UserPreferencesService, Initi
 	 *          if preferences validation fails
 	 */
 	@Override
-	public UserPreferences save(@NotNull UserPreferences preferences) throws FlexPayExceptionContainer {
+	public UserPreferences saveFullData(@NotNull UserPreferences preferences) throws FlexPayExceptionContainer {
 		validate(preferences);
 
 		log.debug("Updating user preferences {}", preferences);
-		getUserPreferencesDao().save(preferences);
+		getUserPreferencesDao().saveAllPreferences(preferences);
+		return preferences;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public UserPreferences saveAdvancedData(@NotNull UserPreferences preferences) throws FlexPayExceptionContainer {
+		validate(preferences);
+
+		log.debug("Updating user edited own preferences {}", preferences);
+		getUserPreferencesDao().saveUserEditedPreferences(preferences);
+		return preferences;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public UserPreferences saveGeneralData(@NotNull UserPreferences preferences) throws FlexPayExceptionContainer {
+		validate(preferences);
+
+		log.debug("Updating admin edited user preferences {}", preferences);
+		getUserPreferencesDao().saveAdminEditedPreferences(preferences);
+		return preferences;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public UserPreferences updatePassword(@NotNull UserPreferences preferences, String password) throws FlexPayExceptionContainer {
+		log.debug("Updating password user preferences {}", preferences);
+		getUserPreferencesDao().updateUserPassword(preferences, password);
+
 		return preferences;
 	}
 
@@ -97,7 +132,7 @@ public class UserPreferencesServiceImpl implements UserPreferencesService, Initi
 	}
 
 	@SuppressWarnings ({"ThrowableInstanceNeverThrown"})
-	private void validate(UserPreferences preferences) throws FlexPayExceptionContainer {
+	protected void validate(UserPreferences preferences) throws FlexPayExceptionContainer {
 		FlexPayExceptionContainer container = new FlexPayExceptionContainer();
 
 		if (preferences.getLocale() == null) {

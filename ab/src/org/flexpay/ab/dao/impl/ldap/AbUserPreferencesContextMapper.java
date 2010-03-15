@@ -35,7 +35,18 @@ public class AbUserPreferencesContextMapper implements UserPreferencesContextMap
 	 * @param preferences UserPreferences
 	 */
 	@Override
-	public void doMapToContext(DirContextOperations ctx, UserPreferences preferences) {
+	public void doMapToContextAdminEdited(DirContextOperations ctx, UserPreferences preferences) {
+
+	}
+
+	/**
+	 * Do mapping of preferences properties to context attributes
+	 *
+	 * @param ctx		 Context
+	 * @param preferences UserPreferences
+	 */
+	@Override
+	public void doMapToContextUserEdited(DirContextOperations ctx, UserPreferences preferences) {
 
 		if (!preferences.getObjectClasses().contains("flexpayAbPerson")) {
 			ctx.addAttributeValue("objectclass", "flexpayAbPerson");
@@ -46,6 +57,14 @@ public class AbUserPreferencesContextMapper implements UserPreferencesContextMap
 		setSingleAttribute(ctx, preferences, "flexpayAbCountryFilter", userPreferences.getCountryFilter());
 		setSingleAttribute(ctx, preferences, "flexpayAbRegionFilter", userPreferences.getRegionFilter());
 		setSingleAttribute(ctx, preferences, "flexpayAbTownFilter", userPreferences.getTownFilter());
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void doMapToContextPassword(DirContextOperations ctx, UserPreferences preferences, String password) {
+
 	}
 
 	private void setSingleAttribute(DirContextOperations ctx, UserPreferences preferences, String name, Long value) {

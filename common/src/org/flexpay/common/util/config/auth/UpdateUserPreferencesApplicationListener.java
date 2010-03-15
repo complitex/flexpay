@@ -50,7 +50,7 @@ public class UpdateUserPreferencesApplicationListener implements ApplicationList
 
 	private void updateUserPreferences(UserPreferences preferences) {
 		try {
-			preferencesService.save(preferences);
+			preferencesService.saveAdvancedData(preferences);
 		} catch (FlexPayExceptionContainer ex) {
 			ex.error(log, "Failed updating user preferences {}", preferences);
 		} catch (Exception ex) {

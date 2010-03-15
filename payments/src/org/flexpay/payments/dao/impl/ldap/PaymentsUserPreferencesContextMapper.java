@@ -30,6 +30,11 @@ public class PaymentsUserPreferencesContextMapper implements UserPreferencesCont
 		}
 	}
 
+	@Override
+	public void doMapToContextAdminEdited(DirContextOperations ctx, UserPreferences preferences) {
+		//To change body of implemented methods use File | Settings | File Templates.
+	}
+
 	/**
 	 * Do mapping of preferences properties to context attributes
 	 *
@@ -37,7 +42,7 @@ public class PaymentsUserPreferencesContextMapper implements UserPreferencesCont
 	 * @param preferences UserPreferences
 	 */
 	@Override
-	public void doMapToContext(DirContextOperations ctx, UserPreferences preferences) {
+	public void doMapToContextUserEdited(DirContextOperations ctx, UserPreferences preferences) {
 
 		if (!preferences.getObjectClasses().contains("flexpayPaymentsPerson")) {
 			ctx.addAttributeValue("objectclass", "flexpayPaymentsPerson");
@@ -47,6 +52,14 @@ public class PaymentsUserPreferencesContextMapper implements UserPreferencesCont
 		PaymentsUserPreferences userPreferences = (PaymentsUserPreferences) preferences;
 		setSingleAttribute(ctx, preferences, "flexpayPaymentsPaymentPointId", userPreferences.getPaymentPointIdStr());
 		setSingleAttribute(ctx, preferences, "flexpayPaymentsPaymentCollectorId", userPreferences.getPaymentCollectorIdStr());
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void doMapToContextPassword(DirContextOperations ctx, UserPreferences preferences, String password) {
+
 	}
 
 	private void setSingleAttribute(DirContextOperations ctx, UserPreferences preferences, String name, String value) {

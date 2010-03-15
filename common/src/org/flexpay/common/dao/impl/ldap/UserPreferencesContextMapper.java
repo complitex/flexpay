@@ -23,7 +23,24 @@ public interface UserPreferencesContextMapper {
 	 * @param ctx		 Context
 	 * @param preferences UserPreferences
 	 */
-	void doMapToContext(DirContextOperations ctx, UserPreferences preferences);
+	void doMapToContextAdminEdited(DirContextOperations ctx, UserPreferences preferences);
+
+	/**
+	 * Do mapping of admin edited preferences properties to context attributes
+	 *
+	 * @param ctx		 Context
+	 * @param preferences UserPreferences
+	 */
+	void doMapToContextUserEdited(DirContextOperations ctx, UserPreferences preferences);
+
+	/**
+	 * Do mapping of password to context attributes
+	 *
+	 * @param ctx		 Context
+	 * @param preferences UserPreferences
+	 * @param password Password
+	 */
+	void doMapToContextPassword(DirContextOperations ctx, UserPreferences preferences, String password);
 
 	/**
 	 * Check if this mapper supports supplied object

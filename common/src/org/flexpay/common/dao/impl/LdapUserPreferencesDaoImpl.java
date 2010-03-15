@@ -10,14 +10,17 @@ import org.flexpay.common.util.config.UserPreferencesFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.ldap.control.SortControlDirContextProcessor;
 import org.springframework.ldap.core.DirContextAdapter;
 import org.springframework.ldap.core.DirContextOperations;
 import org.springframework.ldap.core.simple.AbstractParameterizedContextMapper;
 import org.springframework.ldap.core.simple.SimpleLdapTemplate;
+import org.springframework.ldap.core.support.AggregateDirContextProcessor;
 
 import javax.naming.Name;
 import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
+import javax.naming.directory.BasicAttribute;
 import java.util.List;
 import java.util.Set;
 
@@ -76,9 +79,31 @@ public class LdapUserPreferencesDaoImpl implements UserPreferencesDao {
 	 * @see PersonDao#update(Person)
 	 */
 	@Override
-	public void save(UserPreferences person) {
+	public void saveAllPreferences(UserPreferences person) {
 		DirContextOperations ctx = ldapTemplate.lookupContext(buildDn(person));
-		mapToContext(person, ctx);
+		mapToContextUserEditedPreferences(person, ctx);
+		mapToContextAdminEditedPreferences(person, ctx);
+		ldapTemplate.modifyAttributes(ctx);
+	}
+
+	@Override
+	public void saveUserEditedPreferences(UserPreferences person) {
+		DirContextOperations ctx = ldapTemplate.lookupContext(buildDn(person));
+		mapToContextUserEditedPreferences(person, ctx);
+		ldapTemplate.modifyAttributes(ctx);
+	}
+
+	@Override
+	public void saveAdminEditedPreferences(UserPreferences person) {
+		DirContextOperations ctx = ldapTemplate.lookupContext(buildDn(person));
+		mapToContextAdminEditedPreferences(person, ctx);
+		ldapTemplate.modifyAttributes(ctx);
+	}
+
+	@Override
+	public void updateUserPassword(UserPreferences person, String password) {
+		DirContextOperations ctx = ldapTemplate.lookupContext(buildDn(person));
+		mapToContextPasswordPreferences(person, password, ctx);
 		ldapTemplate.modifyAttributes(ctx);
 	}
 
@@ -92,6 +117,7 @@ public class LdapUserPreferencesDaoImpl implements UserPreferencesDao {
 		return ldapTemplate.search("", userGroupBuilder.getNameFilter(LdapConstants.OBJECT_CLASS).encode(), new PersonContextMapper());
 	}
 
+	@Override
 	public UserPreferences findByUserName(String userName) {
 
 		List<UserPreferences> persons = ldapTemplate.search("",
@@ -109,8 +135,16 @@ public class LdapUserPreferencesDaoImpl implements UserPreferencesDao {
 		return userNameBuilder.buildDn(person);
 	}
 
-	private void mapToContext(UserPreferences preferences, DirContextOperations ctx) {
-		mapper.doMapToContext(ctx, preferences);
+	private void mapToContextUserEditedPreferences(UserPreferences preferences, DirContextOperations ctx) {
+		mapper.doMapToContextUserEdited(ctx, preferences);
+	}
+
+	private void mapToContextAdminEditedPreferences(UserPreferences preferences, DirContextOperations ctx) {
+		mapper.doMapToContextAdminEdited(ctx, preferences);
+	}
+
+	private void mapToContextPasswordPreferences(UserPreferences preferences, String password, DirContextOperations ctx) {
+		mapper.doMapToContextPassword(ctx, preferences, password);
 	}
 
 	@Required

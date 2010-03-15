@@ -27,6 +27,7 @@ public class UserPreferences extends DomainObject implements Serializable, UserD
 	private String usernameStub;
 	private String fullName;
 	private String lastName;
+	private String firstName;
 
 	private Locale locale;
 
@@ -148,6 +149,14 @@ public class UserPreferences extends DomainObject implements Serializable, UserD
 
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
+	}
+
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
 	}
 
 	/**

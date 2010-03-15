@@ -19,7 +19,7 @@ public class TestUserPreferencesService extends SpringBeanAwareTestCase {
 		assertEquals("Invalid last name", "Тестов", preferences.getLastName());
 
 		preferences.setLanguageCode("en".equals(preferences.getLanguageCode()) ? "ru" : "en");
-		service.save(preferences);
+		service.saveFullData(preferences);
 
 		UserPreferences updatedPreferences = service.loadUserByUsername("test");
 		assertSame("Update failed", preferences.getLanguageCode(), updatedPreferences.getLanguageCode());
