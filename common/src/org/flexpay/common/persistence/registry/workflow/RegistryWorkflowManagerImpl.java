@@ -157,16 +157,12 @@ public class RegistryWorkflowManagerImpl implements RegistryWorkflowManager {
 	 */
 	@Transactional (readOnly = false)
 	public void setNextErrorStatus(Registry registry) throws TransitionNotAllowed {
-		log.debug("Set next error status. Current status is: {}", registry.getRegistryStatus().getCode());
-
 		List<Integer> allowedCodes = transitions.get(code(registry));
 		if (allowedCodes.size() < 2) {
 			throw new TransitionNotAllowed("No error transition from " + code(registry));
 		}
 
 		setNextStatus(registry, allowedCodes.get(1));
-
-		log.debug("Set next error status. New status is: {}", registry.getRegistryStatus().getCode());
 	}
 
 	/**
@@ -178,8 +174,6 @@ public class RegistryWorkflowManagerImpl implements RegistryWorkflowManager {
 	 */
 	@Transactional (readOnly = false)
 	public void setNextErrorStatus(Registry registry, ImportError error) throws TransitionNotAllowed {
-		log.debug("Set next error status. Current status is: {}", registry.getRegistryStatus().getCode());
-
 		List<Integer> allowedCodes = transitions.get(code(registry));
 		if (allowedCodes.size() < 2) {
 			throw new TransitionNotAllowed("No error transition from " + code(registry));
@@ -188,8 +182,6 @@ public class RegistryWorkflowManagerImpl implements RegistryWorkflowManager {
 		errorDao.create(error);
 		registry.setImportError(error);
 		setNextStatus(registry, allowedCodes.get(1));
-
-		log.debug("Set next error status. New status is: {}", registry.getRegistryStatus().getCode());
 	}
 
 
@@ -201,8 +193,6 @@ public class RegistryWorkflowManagerImpl implements RegistryWorkflowManager {
 	 */
 	@Transactional (readOnly = false)
 	public void setNextSuccessStatus(Registry registry) throws TransitionNotAllowed {
-		log.debug("Set next success status. Current status is: {}", registry.getRegistryStatus().getCode());
-		
 		List<Integer> allowedCodes = transitions.get(code(registry));
 		if (allowedCodes.size() < 1) {
 			throw new TransitionNotAllowed("No success transition, current is: " +
@@ -210,8 +200,6 @@ public class RegistryWorkflowManagerImpl implements RegistryWorkflowManager {
 		}
 
 		setNextStatus(registry, allowedCodes.get(0));
-
-		log.debug("Set next success status. New status is: {}", registry.getRegistryStatus().getCode());
 	}
 
 	/**
