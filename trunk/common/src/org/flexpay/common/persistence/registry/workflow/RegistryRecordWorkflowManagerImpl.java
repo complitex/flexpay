@@ -147,8 +147,6 @@ public class RegistryRecordWorkflowManagerImpl implements RegistryRecordWorkflow
 	 */
 	@Transactional (readOnly = false)
 	public void setNextSuccessStatus(RegistryRecord record) throws TransitionNotAllowed {
-		log.debug("Set next success status. Current status is: {}", record.getRecordStatus().getCode());
-
 		List<Integer> allowedCodes = transitions.get(code(record));
 		if (allowedCodes.size() < 1) {
 			throw new TransitionNotAllowed("No success transition");
@@ -159,8 +157,6 @@ public class RegistryRecordWorkflowManagerImpl implements RegistryRecordWorkflow
 		}
 
 		setNextStatus(record, allowedCodes.get(0));
-
-		log.debug("Set next success status. New status is: {}", record.getRecordStatus().getCode());		
 	}
 
 	/**
