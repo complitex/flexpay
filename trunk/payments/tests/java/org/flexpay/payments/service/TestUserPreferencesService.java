@@ -6,7 +6,7 @@ import org.flexpay.payments.test.PaymentsSpringBeanAwareTestCase;
 import org.flexpay.payments.util.config.PaymentsUserPreferences;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
-import org.junit.Ignore;
+
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -25,7 +25,7 @@ public class TestUserPreferencesService extends PaymentsSpringBeanAwareTestCase 
 		preferences.setLanguageCode("en".equals(preferences.getLanguageCode()) ? "ru" : "en");
 		preferences.setPaymentCollectorId(1L);
 		preferences.setPaymentPointId(null);
-		service.save(preferences);
+		service.saveFullData(preferences);
 
 		UserPreferences updatedPreferences = service.loadUserByUsername("test");
 		assertSame("Update failed", preferences.getLanguageCode(), updatedPreferences.getLanguageCode());

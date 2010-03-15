@@ -32,6 +32,13 @@ public class CompositeUserPreferencesContextMapper implements UserPreferencesCon
 		return preferences;
 	}
 
+	@Override
+	public void doMapToContextAdminEdited(DirContextOperations ctx, UserPreferences preferences) {
+		for (UserPreferencesContextMapper mapper : mappers) {
+			mapper.doMapToContextAdminEdited(ctx, preferences);
+		}
+	}
+
 	/**
 	 * Do mapping of preferences properties to context attributes
 	 *
@@ -39,10 +46,20 @@ public class CompositeUserPreferencesContextMapper implements UserPreferencesCon
 	 * @param preferences UserPreferences
 	 */
 	@Override
-	public void doMapToContext(DirContextOperations ctx, UserPreferences preferences) {
+	public void doMapToContextUserEdited(DirContextOperations ctx, UserPreferences preferences) {
 
 		for (UserPreferencesContextMapper mapper : mappers) {
-			mapper.doMapToContext(ctx, preferences);
+			mapper.doMapToContextUserEdited(ctx, preferences);
+		}
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void doMapToContextPassword(DirContextOperations ctx, UserPreferences preferences, String password) {
+		for (UserPreferencesContextMapper mapper : mappers) {
+			mapper.doMapToContextPassword(ctx, preferences, password);
 		}
 	}
 

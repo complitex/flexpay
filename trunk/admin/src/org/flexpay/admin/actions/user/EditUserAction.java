@@ -16,8 +16,9 @@ public class EditUserAction extends FPActionSupport {
 	private UserPreferences currentUserPreferences;
 
 	private String userName;
-	private String fullName;
+	private String firstName;
 	private String lastName;
+	private String password;
 
 	@NotNull
 	@Override
@@ -62,15 +63,19 @@ public class EditUserAction extends FPActionSupport {
 	}
 
 	private void updateUserPreferences() throws FlexPayExceptionContainer {
-		currentUserPreferences.setFullName(fullName);
+		currentUserPreferences.setFirstName(firstName);
 		currentUserPreferences.setLastName(lastName);
-		preferencesService.save(currentUserPreferences);
+		currentUserPreferences.setFullName(createFullName());
+		preferencesService.saveGeneralData(currentUserPreferences);
+		if (StringUtils.isNotEmpty(password)) {
+			preferencesService.updatePassword(currentUserPreferences, password);
+		}
 	}
 
 	private boolean doValidate() {
-		if (StringUtils.isEmpty(fullName)) {
-			log.error("Full name is required parameter");
-			addActionError(getText("admin.error.user.full_name_empty"));
+		if (StringUtils.isEmpty(firstName)) {
+			log.error("First name is required parameter");
+			addActionError(getText("admin.error.user.first_name_empty"));
 		}
 		if (StringUtils.isEmpty(lastName)) {
 			log.error("Last name is required parameter");
@@ -84,16 +89,30 @@ public class EditUserAction extends FPActionSupport {
 		return !hasActionErrors();
 	}
 
+	private String createFullName() {
+		if (StringUtils.isEmpty(firstName)) {
+			return lastName;
+		}
+		if (StringUtils.isEmpty(lastName)) {
+			return firstName;
+		}
+		return firstName + " " + lastName;
+	}
+
 	public void setUserName(String userName) {
 		this.userName = userName;
 	}
 
-	public void setFullName(String fullName) {
-		this.fullName = fullName;
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
 	}
 
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
 	public UserPreferences getCurrentUserPreferences() {

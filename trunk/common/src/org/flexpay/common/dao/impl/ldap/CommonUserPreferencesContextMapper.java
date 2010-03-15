@@ -15,6 +15,7 @@ public class CommonUserPreferencesContextMapper implements UserPreferencesContex
 		preferences.setFullName(ctx.getStringAttribute("cn"));
 		preferences.setLastName(ctx.getStringAttribute("sn"));
 		preferences.setUsername(ctx.getStringAttribute("uid"));
+		preferences.setFirstName(ctx.getStringAttribute("givenName"));
 
 		if (preferences.getObjectClasses().contains(LdapConstants.OBJECT_CLASS)) {
 			preferences.setLanguageCode(ctx.getStringAttribute("flexpayPreferedLocale"));
@@ -41,18 +42,33 @@ public class CommonUserPreferencesContextMapper implements UserPreferencesContex
 	 * @param preferences UserPreferences
 	 */
 	@Override
-	public void doMapToContext(DirContextOperations ctx, UserPreferences preferences) {
+	public void doMapToContextAdminEdited(DirContextOperations ctx, UserPreferences preferences) {
+		setSingleAttribute(ctx, preferences, "cn", preferences.getFullName());
+		setSingleAttribute(ctx, preferences, "sn", preferences.getLastName());
+		setSingleAttribute(ctx, preferences, "givenName", preferences.getFirstName());
+		setSingleAttribute(ctx, preferences, "uid", preferences.getUsername());
+	}
 
+	/**
+	 * Do mapping of preferences properties to context attributes
+	 *
+	 * @param ctx		 Context
+	 * @param preferences UserPreferences
+	 */
+	@Override
+	public void doMapToContextUserEdited(DirContextOperations ctx, UserPreferences preferences) {
 		if (!preferences.getObjectClasses().contains(LdapConstants.OBJECT_CLASS)) {
 			ctx.addAttributeValue("objectclass", LdapConstants.OBJECT_CLASS);
 			preferences.getObjectClasses().add(LdapConstants.OBJECT_CLASS);
 		}
-		setSingleAttribute(ctx, preferences, "cn", preferences.getFullName());
-		setSingleAttribute(ctx, preferences, "sn", preferences.getLastName());
-		setSingleAttribute(ctx, preferences, "uid", preferences.getUsername());
 
 		setSingleAttribute(ctx, preferences, "flexpayPreferedLocale", preferences.getLanguageCode());
 		setSingleAttribute(ctx, preferences, "flexpayPreferedPagerSize", String.valueOf(preferences.getPageSize()));
+	}
+
+	@Override
+	public void doMapToContextPassword(DirContextOperations ctx, UserPreferences preferences, String password) {
+		setSingleAttribute(ctx, preferences, "userPassword", password);
 	}
 
 	private void setSingleAttribute(DirContextOperations ctx, UserPreferences preferences, String name, String value) {

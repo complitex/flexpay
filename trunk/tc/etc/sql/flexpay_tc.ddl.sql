@@ -824,6 +824,7 @@
         discriminator varchar(255) not null comment 'Class hierarchy discriminator',
         full_name varchar(255) not null comment 'Full user name',
         last_name varchar(255) not null comment 'Last user name',
+        first_name varchar(255) comment 'First user name',
         user_name varchar(255) not null unique comment 'User login name',
         language_code varchar(255) not null comment 'Preferred language ISO code',
         page_size integer comment 'Preferred listing page size',

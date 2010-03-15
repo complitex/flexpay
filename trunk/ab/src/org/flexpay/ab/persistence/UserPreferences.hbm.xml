@@ -28,6 +28,11 @@
 				<comment>Last user name</comment>
 			</column>
 		</property>
+		<property name="firstName">
+			<column name="first_name" not-null="false">
+				<comment>First user name</comment>
+			</column>
+		</property>
 		<property name="username">
 			<column name="user_name" not-null="true" unique="true">
 				<comment>User login name</comment>

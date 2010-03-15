@@ -11,7 +11,7 @@ import java.util.List;
 public class UserPreferencesDaoImpl extends HibernateDaoSupport implements UserPreferencesDao {
 
 	@Override
-	public void save(UserPreferences preferences) {
+	public void saveAllPreferences(UserPreferences preferences) {
 
 		if (StringUtils.isEmpty(preferences.getFullName())) {
 			preferences.setFullName(preferences.getUsername());
@@ -26,6 +26,21 @@ public class UserPreferencesDaoImpl extends HibernateDaoSupport implements UserP
 		} else {
 			getHibernateTemplate().update(preferences);
 		}
+	}
+
+	@Override
+	public void saveAdminEditedPreferences(UserPreferences preferences) {
+		saveAllPreferences(preferences);
+	}
+
+	@Override
+	public void saveUserEditedPreferences(UserPreferences preferences) {
+		saveAllPreferences(preferences);
+	}
+
+	@Override
+	public void updateUserPassword(UserPreferences preferences, String password) {
+		saveAllPreferences(preferences);
 	}
 
 	@Override

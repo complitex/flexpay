@@ -27,9 +27,15 @@
 			</td>
 		</tr>
 		<tr>
-			<td class="col"><s:text name="admin.user.fullname" />*:</td>
+			<td class="col"><s:text name="admin.user.firstname" />*:</td>
 			<td class="col">
-				<s:textfield name="fullName" value="%{currentUserPreferences.fullName}" maxlength="255" />
+				<s:textfield name="firstName" value="%{currentUserPreferences.firstName}" maxlength="255" />
+			</td>
+		</tr>
+		<tr>
+			<td class="col"><s:text name="admin.user.password" />:</td>
+			<td class="col">
+				<s:password name="password" maxlength="12" />
 			</td>
 		</tr>
 		<tr>
