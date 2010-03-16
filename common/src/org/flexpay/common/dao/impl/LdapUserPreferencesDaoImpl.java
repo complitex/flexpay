@@ -132,9 +132,11 @@ public class LdapUserPreferencesDaoImpl implements UserPreferencesDao {
 		ctxSource.setPooled(false);
 		try {
 			ctxSource.afterPropertiesSet();
-			ctxSource.getReadWriteContext();
+			DirContext context = ctxSource.getReadWriteContext();
+			context.close();
 			return true;
 		} catch(Exception e) {
+			log.debug("Missing create ldap connection: urls={}, userDn={}, {}", new Object[]{url, dn.encode(), e});
 			return false;
 		}
 		//return ldapTemplate.getLdapOperations().authenticate(DistinguishedName.EMPTY_PATH, filter.encode(), password);
