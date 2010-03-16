@@ -7,6 +7,7 @@
 <s:form action="editUser" method="POST">
 
 	<s:set name="readonly" value="%{currentUserPreferences.username != null && currentUserPreferences.username != ''}" />
+	<s:set name="checkOldPassword" value="%{checkOldPassword}" />
 
 	<table cellpadding="3" cellspacing="1" border="0" width="100%">
 		<tr>
@@ -38,6 +39,14 @@
 				<s:password name="password" maxlength="12" />
 			</td>
 		</tr>
+		<s:if test="#checkOldPassword">
+			<tr>
+				<td class="col"><s:text name="admin.user.old_password" />:</td>
+				<td class="col">
+					<s:password name="oldPassword" maxlength="12" />
+				</td>
+			</tr>
+		</s:if>
 		<tr>
 			<td colspan="2">
                 <s:submit cssClass="btn-exit" name="submitted" value="%{getText('common.save')}" />

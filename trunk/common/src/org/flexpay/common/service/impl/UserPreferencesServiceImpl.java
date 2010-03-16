@@ -117,6 +117,14 @@ public class UserPreferencesServiceImpl implements UserPreferencesService, Initi
 	}
 
 	/**
+	 *  {@inheritDoc}
+	 */
+	@Override
+	public boolean checkPassword(@NotNull UserPreferences preferences, String password) throws FlexPayExceptionContainer {
+		return getUserPreferencesDao().checkUserPassword(preferences, password);
+	}
+
+	/**
 	 * {@inheritDoc}
 	 */
 	@Override

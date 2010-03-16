@@ -65,6 +65,17 @@ public interface UserPreferencesService extends UserDetailsService {
 	UserPreferences updatePassword(@NotNull UserPreferences preferences, String password) throws FlexPayExceptionContainer;
 
 	/**
+	 * Check user password
+	 *
+	 * @param preferences UserPreferences
+	 * @param password User password
+	 * @return <code>true</code> if the password is valid,
+	 * <code>false</code> otherwise.
+	 * @throws FlexPayExceptionContainer if preferences validation fails
+	 */
+	boolean checkPassword(@NotNull UserPreferences preferences, String password) throws FlexPayExceptionContainer;
+
+	/**
 	 * Get locates the users
 	 *
 	 * @return users

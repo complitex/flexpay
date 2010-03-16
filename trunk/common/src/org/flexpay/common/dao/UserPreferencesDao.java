@@ -17,6 +17,8 @@ public interface UserPreferencesDao {
 
 	void updateUserPassword(UserPreferences preferences, String password);
 
+	boolean checkUserPassword(UserPreferences preferences, String password);
+
 	void delete(UserPreferences preferences);
 
 	UserPreferences findByUserName(String uid);
