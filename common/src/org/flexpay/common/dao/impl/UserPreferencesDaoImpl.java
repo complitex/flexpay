@@ -1,5 +1,6 @@
 package org.flexpay.common.dao.impl;
 
+import org.apache.commons.lang.NotImplementedException;
 import org.apache.commons.lang.StringUtils;
 import org.flexpay.common.dao.UserPreferencesDao;
 import org.flexpay.common.util.config.UserPreferences;
@@ -40,7 +41,12 @@ public class UserPreferencesDaoImpl extends HibernateDaoSupport implements UserP
 
 	@Override
 	public void updateUserPassword(UserPreferences preferences, String password) {
-		saveAllPreferences(preferences);
+		throw new NotImplementedException();
+	}
+
+	@Override
+	public boolean checkUserPassword(UserPreferences preferences, String password) {
+		throw new NotImplementedException();
 	}
 
 	@Override

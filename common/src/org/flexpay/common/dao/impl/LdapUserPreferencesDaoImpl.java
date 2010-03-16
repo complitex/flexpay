@@ -13,14 +13,19 @@ import org.springframework.beans.factory.annotation.Required;
 import org.springframework.ldap.control.SortControlDirContextProcessor;
 import org.springframework.ldap.core.DirContextAdapter;
 import org.springframework.ldap.core.DirContextOperations;
+import org.springframework.ldap.core.DistinguishedName;
 import org.springframework.ldap.core.simple.AbstractParameterizedContextMapper;
 import org.springframework.ldap.core.simple.SimpleLdapTemplate;
 import org.springframework.ldap.core.support.AggregateDirContextProcessor;
+import org.springframework.ldap.core.support.LdapContextSource;
+import org.springframework.ldap.filter.AndFilter;
 
 import javax.naming.Name;
 import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
 import javax.naming.directory.BasicAttribute;
+import javax.naming.directory.DirContext;
+import javax.naming.directory.ModificationItem;
 import java.util.List;
 import java.util.Set;
 
@@ -40,6 +45,9 @@ public class LdapUserPreferencesDaoImpl implements UserPreferencesDao {
 	private DnBuilder userGroupBuilder;
 	private UserPreferencesContextMapper mapper;
 	private UserPreferencesFactory userPreferencesFactory;
+
+	private String url;
+	private String base;
 
 	private final class PersonContextMapper extends AbstractParameterizedContextMapper<UserPreferences> {
 
@@ -108,6 +116,31 @@ public class LdapUserPreferencesDaoImpl implements UserPreferencesDao {
 	}
 
 	@Override
+	public boolean checkUserPassword(UserPreferences person, String password) {
+		//AndFilter filter = new AndFilter();
+		//filter.and(userGroupBuilder.getNameFilter(LdapConstants.OBJECT_CLASS)).and(userNameBuilder.getNameFilter(person.getUsername()));
+
+		// Construction du DN
+		DistinguishedName dn = new DistinguishedName(base);
+		dn.append(new DistinguishedName(buildDn(person)));
+
+		// Connexion manuelle
+		LdapContextSource ctxSource = new LdapContextSource();
+		ctxSource.setUrl(url);
+		ctxSource.setUserDn(dn.encode());
+		ctxSource.setPassword(password);
+		ctxSource.setPooled(false);
+		try {
+			ctxSource.afterPropertiesSet();
+			ctxSource.getReadWriteContext();
+			return true;
+		} catch(Exception e) {
+			return false;
+		}
+		//return ldapTemplate.getLdapOperations().authenticate(DistinguishedName.EMPTY_PATH, filter.encode(), password);
+	}
+
+	@Override
 	public void delete(UserPreferences preferences) {
 		ldapTemplate.unbind(preferences.getUsername());
 	}
@@ -170,5 +203,13 @@ public class LdapUserPreferencesDaoImpl implements UserPreferencesDao {
 	@Required
 	public void setUserPreferencesFactory(UserPreferencesFactory userPreferencesFactory) {
 		this.userPreferencesFactory = userPreferencesFactory;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
+
+	public void setBase(String base) {
+		this.base = base;
 	}
 }

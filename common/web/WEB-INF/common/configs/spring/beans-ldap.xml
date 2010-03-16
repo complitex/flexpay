@@ -56,7 +56,8 @@
 		  p:mapper-ref="userPreferencesContextMapper"
 		  p:userNameBuilder-ref="uidLdapDnBuilder"
 		  p:userGroupBuilder-ref="objectClassLdapDnBuilder"
-		  
+		  p:url="${ldap.url}"
+		  p:base="${ldap.base}"
 		  p:userPreferencesFactory-ref="userPreferencesFactory" />
 
 	<bean id="userPreferencesServiceFactory"

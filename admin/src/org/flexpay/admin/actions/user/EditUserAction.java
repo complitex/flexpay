@@ -4,6 +4,7 @@ import org.apache.commons.lang.StringUtils;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.service.UserPreferencesService;
+import org.flexpay.common.util.SecurityUtil;
 import org.flexpay.common.util.config.UserPreferences;
 import org.flexpay.common.util.config.UserPreferencesFactory;
 import org.jetbrains.annotations.NotNull;
@@ -19,6 +20,9 @@ public class EditUserAction extends FPActionSupport {
 	private String firstName;
 	private String lastName;
 	private String password;
+	private String oldPassword;
+
+	private boolean checkOldPassword = false;
 
 	@NotNull
 	@Override
@@ -41,6 +45,10 @@ public class EditUserAction extends FPActionSupport {
 			log.warn("Can not get user preferences with name {}", userName);
 			addActionError(getText("admin.error.user.cant_get_user_preferences"));
 			return REDIRECT_ERROR;
+		}
+
+		if (userName.equals(SecurityUtil.getUserName())) {
+			checkOldPassword = true;
 		}
 
 		if (isSubmit()) {
@@ -85,6 +93,25 @@ public class EditUserAction extends FPActionSupport {
 			log.error("User name is required parameter");
 			addActionError(getText("admin.error.user.user_name_empty"));
 		}
+		if (StringUtils.isEmpty(password) && StringUtils.isNotEmpty(oldPassword)) {
+			log.error("Password was not change. New password is empty");
+			addActionError(getText("admin.error.user.new_password_empty"));
+		}
+		if (userName.equals(SecurityUtil.getUserName()) &&
+				StringUtils.isNotEmpty(password) && StringUtils.isEmpty(oldPassword)) {
+			log.error("Password was not change. Old password is empty");
+			addActionError(getText("admin.error.user.old_password_empty"));
+		}
+		try {
+			if (StringUtils.isNotEmpty(password) && StringUtils.isNotEmpty(oldPassword)
+					&& !preferencesService.checkPassword(currentUserPreferences, oldPassword)) {
+				log.error("Failed old password");
+				addActionError(getText("admin.error.user.failed_old_password"));
+			}
+		} catch (FlexPayExceptionContainer flexPayExceptionContainer) {
+			log.error("Can`t check old password", flexPayExceptionContainer);
+			addActionError(getText("admin.error.inner_error"));
+		}
 
 		return !hasActionErrors();
 	}
@@ -115,12 +142,20 @@ public class EditUserAction extends FPActionSupport {
 		this.password = password;
 	}
 
+	public void setOldPassword(String oldPassword) {
+		this.oldPassword = oldPassword;
+	}
+
 	public UserPreferences getCurrentUserPreferences() {
 		return currentUserPreferences;
 	}
 
 	public void setCurrentUserPreferences(UserPreferences currentUserPreferences) {
 		this.currentUserPreferences = currentUserPreferences;
+	}
+
+	public boolean isCheckOldPassword() {
+		return checkOldPassword;
 	}
 
 	@Required
