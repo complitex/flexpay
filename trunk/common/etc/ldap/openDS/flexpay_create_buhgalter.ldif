@@ -20,6 +20,7 @@ sn: buhgalter
 cn: buhgalter
 inetUserStatus: Active
 userPassword: buhgalter
+flexpayUserRole: buhgalter
 flexpayPreferedPagerSize: 20
 flexpayPreferedLocale: en
 flexpayPaymentsPaymentCollectorId: 1
