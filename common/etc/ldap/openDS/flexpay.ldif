@@ -1,8 +1,9 @@
 dn: cn=schema
 changetype:modify
 add: attributeTypes
+attributeTypes: ( 1.3.6.1.4.1.1466000.2.2.1 NAME 'flexpayGroupRole' DESC 'Prefered role code' EQUALITY caseIgnoreMatch ORDERING caseIgnoreOrderingMatch SUBSTR caseIgnoreSubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 USAGE userApplications )
 attributeTypes: ( 1.3.6.1.4.1.1466000.1.2.1 NAME 'flexpayPreferedLocale' DESC 'Prefered locale ISO code' EQUALITY caseIgnoreMatch ORDERING caseIgnoreOrderingMatch SUBSTR caseIgnoreSubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE USAGE userApplications )
-attributeTypes: ( 1.3.6.1.4.1.1466000.1.2.3 NAME 'flexpayRole' DESC 'Prefered role code' EQUALITY caseIgnoreMatch ORDERING caseIgnoreOrderingMatch SUBSTR caseIgnoreSubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE USAGE userApplications )
+attributeTypes: ( 1.3.6.1.4.1.1466000.1.2.3 NAME 'flexpayUserRole' DESC 'Prefered role code' EQUALITY caseIgnoreMatch ORDERING caseIgnoreOrderingMatch SUBSTR caseIgnoreSubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE USAGE userApplications )
 attributeTypes: ( 1.3.6.1.4.1.1466000.1.2.2 NAME 'flexpayPreferedPagerSize' DESC 'Prefered listing pager size' EQUALITY integerMatch ORDERING integerOrderingMatch SUBSTR caseExactSubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.27 SINGLE-VALUE USAGE userApplications )
 attributeTypes: ( 1.3.6.1.4.1.1466000.4096.2.1 NAME 'flexpayAbCountryFilter' DESC 'Preferred country filter' EQUALITY caseIgnoreMatch ORDERING caseIgnoreOrderingMatch SUBSTR caseIgnoreSubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE USAGE userApplications )
 attributeTypes: ( 1.3.6.1.4.1.1466000.4096.2.3 NAME 'flexpayAbTownFilter' DESC 'Preferred town filter' EQUALITY caseIgnoreMatch ORDERING caseIgnoreOrderingMatch SUBSTR caseIgnoreSubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 SINGLE-VALUE USAGE userApplications )
@@ -11,7 +12,7 @@ attributeTypes: ( 1.3.6.1.4.1.1466000.12288.2.1 NAME 'flexpayPaymentsPaymentPoin
 attributeTypes: ( 1.3.6.1.4.1.1466000.12288.2.2 NAME 'flexpayPaymentsPaymentCollectorId' DESC 'Payments collector identifier' EQUALITY integerMatch ORDERING integerOrderingMatch SUBSTR caseExactSubstringsMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.27 SINGLE-VALUE USAGE userApplications )
 -
 add: objectClasses
-objectClasses: ( 1.3.6.1.4.1.1466000.2 NAME 'flexpayGroup' DESC 'Flexpay application group' SUP top AUXILIARY MAY ( flexpayRole ) )
-objectClasses: ( 1.3.6.1.4.1.1466000.1 NAME 'flexpayPerson' DESC 'Flexpay application user' SUP top AUXILIARY MAY ( flexpayPreferedPagerSize $ flexpayPreferedLocale $ flexpayRole) )
+objectClasses: ( 1.3.6.1.4.1.1466000.2 NAME 'flexpayGroup' DESC 'Flexpay application group' SUP top AUXILIARY MAY ( flexpayGroupRole ) )
+objectClasses: ( 1.3.6.1.4.1.1466000.1 NAME 'flexpayPerson' DESC 'Flexpay application user' SUP top AUXILIARY MAY ( flexpayPreferedPagerSize $ flexpayPreferedLocale $ flexpayUserRole) )
 objectClasses: ( 1.3.6.1.4.1.1466000.4096.1 NAME 'flexpayAbPerson' DESC 'Flexpay ab module user' SUP top AUXILIARY MAY ( flexpayAbTownFilter $ flexpayAbRegionFilter $ flexpayAbCountryFilter ) )
 objectClasses: ( 1.3.6.1.4.1.1466000.12288.1 NAME 'flexpayPaymentsPerson' DESC 'Flexpay payments module user' SUP top AUXILIARY MAY ( flexpayPaymentsPaymentPointId $ flexpayPaymentsPaymentCollectorId ) )

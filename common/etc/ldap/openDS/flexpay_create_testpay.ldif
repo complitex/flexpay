@@ -20,6 +20,7 @@ sn: testpay
 cn: testpay
 inetUserStatus: Active
 userPassword: testpay
+flexpayUserRole: cashier
 flexpayPreferedPagerSize: 20
 flexpayPreferedLocale: en
 flexpayPaymentsPaymentPointId: 2
