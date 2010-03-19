@@ -1,5 +1,6 @@
 package org.flexpay.eirc.sp.impl.validation;
 
+import org.apache.commons.lang.StringUtils;
 import org.flexpay.eirc.sp.impl.MessageValidator;
 import org.flexpay.eirc.sp.impl.Messenger;
 import org.jetbrains.annotations.NotNull;
@@ -12,7 +13,9 @@ public class DoubleValidator extends MessageValidator<String> {
     @Override
     public boolean validate(@NotNull String o) {
         try {
-			Double.parseDouble(o);
+			if (StringUtils.isEmpty(o)) {
+				Double.parseDouble(o);
+			}
 		} catch (Exception e) {
 			addErrorMessage("Can't parse Double {}", o);
             return false;

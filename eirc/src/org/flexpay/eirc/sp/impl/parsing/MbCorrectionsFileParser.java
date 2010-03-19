@@ -290,42 +290,42 @@ public class MbCorrectionsFileParser extends MbFileParser {
 		record.addContainer(container);
 
 		// Количество проживающих
-		if (!"0".equals(fields[15])) {
+		if (StringUtils.isNotEmpty(fields[15]) && !"0".equals(fields[15])) {
 			container = new RegistryRecordContainer();
 			container.setData("4:" + modificationStartDate + "::" + fields[15]);
 			record.addContainer(container);
 		}
 
 		// Площадь общая
-		if (!StringUtils.isEmpty(fields[10]) && !"0.00".equals(fields[10])) {
+		if (StringUtils.isNotEmpty(fields[10]) && !"0.00".equals(fields[10])) {
 			container = new RegistryRecordContainer();
 			container.setData("5:" + modificationStartDate + "::" + fields[10]);
 			record.addContainer(container);
 		}
 
 		// Площадь жилая
-		if (!StringUtils.isEmpty(fields[11]) && !"0.00".equals(fields[11])) {
+		if (StringUtils.isNotEmpty(fields[11]) && !"0.00".equals(fields[11])) {
 			container = new RegistryRecordContainer();
 			container.setData("6:" + modificationStartDate + "::" + fields[11]);
 			record.addContainer(container);
 		}
 
 		// Тип льготы
-		if (!"0".equals(fields[17])) {
+		if (StringUtils.isNotEmpty(fields[17]) && !"0".equals(fields[17])) {
 			container = new RegistryRecordContainer();
 			container.setData("8:" + modificationStartDate + "::" + fields[17]);
 			record.addContainer(container);
 		}
 
 		// ФИО носителя льготы
-		if (!"0".equals(fields[26])) {
+		if (StringUtils.isNotEmpty(fields[26]) && !"0".equals(fields[26])) {
 			container = new RegistryRecordContainer();
 			container.setData("9:" + modificationStartDate + "::" + fields[26]);
 			record.addContainer(container);
 		}
 
 		// Количество пользующихся льготой
-		if (!"0".equals(fields[16])) {
+		if (StringUtils.isNotEmpty(fields[16]) && !"0".equals(fields[16])) {
 			container = new RegistryRecordContainer();
 			container.setData("12:" + modificationStartDate + "::" + fields[16]);
 			record.addContainer(container);
