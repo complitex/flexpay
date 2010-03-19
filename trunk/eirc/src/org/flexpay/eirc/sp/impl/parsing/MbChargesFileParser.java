@@ -245,12 +245,14 @@ public class MbChargesFileParser extends MbFileParser {
 	}
 
 	private BigDecimal charges(String[] fields) {
-		return new BigDecimal(fields[1]).divide(new BigDecimal("100"));
+		return (StringUtils.isNotEmpty(fields[1]))? new BigDecimal(fields[1]).divide(new BigDecimal("100")):
+				new BigDecimal(0).divide(new BigDecimal("100"));
 	}
 
 	private BigDecimal outgoingBalance(String[] fields) {
 		// Doc and protocol mismatch, in doc - incoming balance, actually - outgoing
-		return new BigDecimal(fields[2]).divide(new BigDecimal("100"));
+		return (StringUtils.isNotEmpty(fields[1]))? new BigDecimal(fields[2]).divide(new BigDecimal("100")): 
+				new BigDecimal(0).divide(new BigDecimal("100"));
 	}
 
 	private String mbServiceTypeCode(String[] fields) {

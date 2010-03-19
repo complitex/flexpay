@@ -1,5 +1,6 @@
 package org.flexpay.eirc.sp.impl.validation;
 
+import org.apache.commons.lang.StringUtils;
 import org.flexpay.eirc.sp.impl.MessageValidatorWithContext;
 import org.flexpay.eirc.sp.impl.Messenger;
 import org.flexpay.eirc.sp.impl.ValidationContext;
@@ -15,8 +16,10 @@ public class LongValidator extends MessageValidatorWithContext<String> {
     @Override
     public boolean validate(@NotNull String o) {
         try {
-			Long value = Long.parseLong(o);
-            context.getParam().put(LONG_VALUE, value);
+			if (StringUtils.isNotEmpty(o)) {
+				Long value = Long.parseLong(o);
+				context.getParam().put(LONG_VALUE, value);
+			}
 		} catch (Exception e) {
 			addErrorMessage("Can't parse Long {}", o);
             return false;
