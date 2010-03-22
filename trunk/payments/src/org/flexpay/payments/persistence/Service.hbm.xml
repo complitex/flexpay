@@ -195,6 +195,12 @@
 		where o.serviceProvider.id=? and o.serviceType.id=? and ? between o.beginDate and o.endDate 
 	</query>
 
+	<query name="Service.findServicesByTypeCode">
+		select distinct o
+		from Service o
+		where o.serviceProvider.id=? and o.serviceType.id=? 
+	</query>
+
 	<query name="Service.findAllServices">
 		select distinct o
 		from Service o
