@@ -7,7 +7,7 @@ insert into common_history_consumers_tbl (id, active, name, description, out_tra
 select @history_consumer_1:=1;
 
 insert into common_users_tbl (id, discriminator, user_name, full_name, last_name, first_name, language_code, page_size)
-	values (1, 'common', 'test', 'Тест Т. Тестов', 'Тестов', 'Тест' 'en', 30);
+	values (1, 'common', 'test', 'Тест Т. Тестов', 'Тестов', 'Тест', 'en', 30);
 select @user_test:=1;
 
 insert into common_users_tbl (id, discriminator, user_name, full_name, last_name, first_name, language_code)
