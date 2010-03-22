@@ -38,7 +38,9 @@ import java.util.*;
 @Transactional (readOnly = true)
 public class MbCorrectionsFileParser extends MbFileParser {
 
-	private final String MODIFICATIONS_START_DATE_FORMAT = "ddMMyy";
+	private static final String MODIFICATIONS_START_DATE_FORMAT = "ddMMyy";
+
+	private static final String END_LINE = "\n";
 
 	private String moduleName;
 	private FPFileService fileService;
@@ -118,7 +120,7 @@ public class MbCorrectionsFileParser extends MbFileParser {
 					countChar = -1;
 					break;
 				}
-				countChar += line.length() + 2;
+				countChar += line.length() + END_LINE.length();
 				if (totalLineNum == 0) {
 
 				} else if (totalLineNum == 1) {
@@ -204,6 +206,8 @@ public class MbCorrectionsFileParser extends MbFileParser {
 	*/
 
 	private long parseRecord(String line, Registry registry, List<RegistryRecord> recordStack) throws FlexPayException {
+		log.debug("Parse line: {}", line);
+
 		String[] fields = lineParser.parse(line);
 
 		if (fields.length == CorrectionsRecordValidator.FIELDS_LENGTH_SKIP_RECORD) {
