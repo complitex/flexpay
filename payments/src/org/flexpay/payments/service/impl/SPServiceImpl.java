@@ -283,8 +283,23 @@ public class SPServiceImpl implements SPService {
 	@Nullable
 	public List<Service> findServices(@NotNull Stub<ServiceProvider> providerStub,
 									  @NotNull Stub<ServiceType> typeStub, Date date) {
-		log.debug("Finding services provider #{}, type #{}", providerStub.getId(), typeStub.getId());
+		log.debug("Finding services provider #{}, type #{}, date {}", new Object[]{providerStub.getId(), typeStub.getId(), date});
 		return serviceDao.findServicesByTypeCodeAndDate(providerStub.getId(), typeStub.getId(), date);
+	}
+
+	/**
+	 * Find Service by service provider and subservice code
+	 *
+	 * @param providerStub ServiceProvider stub
+	 * @param typeStub	 Service type stub
+	 * @return Service if found, or <code>null</code> otherwise
+	 */
+	@Override
+	@Nullable
+	public List<Service> findServices(@NotNull Stub<ServiceProvider> providerStub,
+									  @NotNull Stub<ServiceType> typeStub) {
+		log.debug("Finding services provider #{}, type #{}", providerStub.getId(), typeStub.getId());
+		return serviceDao.findServicesByTypeCode(providerStub.getId(), typeStub.getId());
 	}
 
 	/**

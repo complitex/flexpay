@@ -113,6 +113,16 @@ public interface SPService extends DomainObjectService<Service> {
 							   @NotNull Stub<ServiceType> typeStub, Date date);
 
 	/**
+	 * Find Service by service provider and subservice code
+	 *
+	 * @param providerStub ServiceProvider stub
+	 * @param typeStub	 Service type stub
+	 * @return Service if found, or <code>null</code> otherwise
+	 */
+	List<Service> findServices(@NotNull Stub<ServiceProvider> providerStub,
+							   @NotNull Stub<ServiceType> typeStub);
+
+	/**
 	 * Find Service by service provider
 	 *
 	 * @param serviceProviderStub ServiceProvider stub
