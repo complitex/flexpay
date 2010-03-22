@@ -94,8 +94,7 @@
 				org/flexpay/bti/struts_config.xml,
 				org/flexpay/orgs/struts_config.xml,
 				org/flexpay/payments/struts_config.xml,
-				org/flexpay/eirc/struts_config.xml,
-				org/flexpay/sz/struts_config.xml
+				org/flexpay/eirc/struts_config.xml
 			</param-value>
 		</init-param>
 	</filter>
@@ -172,17 +171,17 @@
 		<auth-constraint>
 			<role-name>*</role-name>
 		</auth-constraint>
-
 	</security-constraint>
-
 
 	<security-role>
 		<role-name>ROLE_BASIC</role-name>
 	</security-role>
-
 	<security-role>
 		<role-name>ROLE_COMMON_DEVELOPER</role-name>
 	</security-role>
+
+    <!-- common reading roles -->
+
 	<security-role>
 		<role-name>ROLE_COMMON_PROCESS_READ</role-name>
 	</security-role>

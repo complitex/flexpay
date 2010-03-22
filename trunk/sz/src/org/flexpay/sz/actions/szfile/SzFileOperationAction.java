@@ -5,6 +5,8 @@ import org.flexpay.common.persistence.file.FPFileStatus;
 import org.flexpay.common.process.ProcessManager;
 import org.flexpay.common.service.FPFileService;
 import org.flexpay.common.util.CollectionUtils;
+
+import static org.flexpay.common.util.CollectionUtils.map;
 import static org.flexpay.common.util.CollectionUtils.set;
 import org.flexpay.sz.persistence.SzFile;
 import static org.flexpay.sz.process.szfile.SzFileOperationJobParameterNames.FILE_IDS;
@@ -65,7 +67,7 @@ public class SzFileOperationAction extends FPActionSupport {
 
 		szFileService.updateStatus(objectIds, status);
 
-		Map<Serializable, Serializable> contextVariables = CollectionUtils.map();
+		Map<Serializable, Serializable> contextVariables = map();
 		contextVariables.put(FILE_IDS, (Serializable) objectIds);
 		processManager.createProcess(processName, contextVariables);
 

@@ -1,7 +1,5 @@
 <%@include file="/WEB-INF/jsp/common/taglibs.jsp" %>
-
-<s:actionerror />
-<s:actionmessage />
+<%@include file="/WEB-INF/jsp/common/includes/errors_messages.jsp"%>
 
 <table cellpadding="3" cellspacing="1" border="0" width="100%">
     <tr>

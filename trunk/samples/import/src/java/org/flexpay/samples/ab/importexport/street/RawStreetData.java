@@ -7,13 +7,15 @@ import org.flexpay.common.util.CollectionUtils;
 import java.util.Collection;
 import java.util.HashSet;
 
+import static org.flexpay.common.util.CollectionUtils.set;
+
 public class RawStreetData extends RawData<Street> {
 
 	public static final String FIELD_TYPE = "type";
 	public static final String FIELD_NAME = "name";
 	public static final String FIELD_ID = "id";
 
-	private static Collection<String> possibleNames = CollectionUtils.set(FIELD_ID, FIELD_NAME, FIELD_TYPE);
+	private static Collection<String> possibleNames = set(FIELD_ID, FIELD_NAME, FIELD_TYPE);
 
 	/**
 	 * Get set of valid attribute names

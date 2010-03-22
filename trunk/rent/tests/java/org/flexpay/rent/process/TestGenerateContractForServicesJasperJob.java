@@ -6,6 +6,8 @@ import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.rent.reports.contract.ContractForServicesAppendix1Form;
 import org.flexpay.rent.reports.contract.ContractForServicesForm;
 import org.flexpay.rent.test.RentSpringBeanAwareTestCase;
+
+import static org.flexpay.common.util.CollectionUtils.map;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
 import org.junit.Test;
@@ -24,7 +26,7 @@ public class TestGenerateContractForServicesJasperJob extends RentSpringBeanAwar
 	@Test
 	public void testGenerateContractForServicesPDF() throws Throwable {
 
-		Map<Serializable, Serializable> contextVariables = CollectionUtils.map();
+		Map<Serializable, Serializable> contextVariables = map();
 		contextVariables.put(GenerateContractForServicesJasperJob.PARAM_DATA_FORM, createTestForm());
 		contextVariables.put(GenerateContractForServicesJasperJob.PARAM_DATA_FORM1, createTestForm1());
 		contextVariables.put(GenerateContractForServicesJasperJob.PARAM_GENERATE_FORMAT, ReportUtil.FORMAT_PDF);
@@ -37,7 +39,7 @@ public class TestGenerateContractForServicesJasperJob extends RentSpringBeanAwar
 	@Test
 	public void testGenerateContractForServicesHTML() throws Throwable {
 
-		Map<Serializable, Serializable> contextVariables = CollectionUtils.map();
+		Map<Serializable, Serializable> contextVariables = map();
 		contextVariables.put(GenerateContractForServicesJasperJob.PARAM_DATA_FORM, createTestForm());
 		contextVariables.put(GenerateContractForServicesJasperJob.PARAM_DATA_FORM1, createTestForm1());
 		contextVariables.put(GenerateContractForServicesJasperJob.PARAM_GENERATE_FORMAT, ReportUtil.FORMAT_HTML);
@@ -50,7 +52,7 @@ public class TestGenerateContractForServicesJasperJob extends RentSpringBeanAwar
 	@Test
 	public void testGenerateContractForServicesCSV() throws Throwable {
 
-		Map<Serializable, Serializable> contextVariables = CollectionUtils.map();
+		Map<Serializable, Serializable> contextVariables = map();
 		contextVariables.put(GenerateContractForServicesJasperJob.PARAM_DATA_FORM, createTestForm());
 		contextVariables.put(GenerateContractForServicesJasperJob.PARAM_DATA_FORM1, createTestForm1());
 		contextVariables.put(GenerateContractForServicesJasperJob.PARAM_GENERATE_FORMAT, ReportUtil.FORMAT_CSV);

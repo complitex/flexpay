@@ -147,12 +147,12 @@ public class SPServiceImpl implements SPService {
 	private void validate(Service service) throws FlexPayExceptionContainer {
 		FlexPayExceptionContainer container = new FlexPayExceptionContainer();
 
-		if (service.getServiceProvider().isNew()) {
+		if (service.getServiceProvider() == null || service.getServiceProvider().isNew()) {
 			container.addException(new FlexPayException("Connot set empty service provider",
 					"eirc.error.service.need_setup_service_provider"));
 		}
 
-		if (service.getServiceType().isNew()) {
+		if (service.getServiceType() == null || service.getServiceType().isNew()) {
 			container.addException(new FlexPayException("Connot set empty service type",
 					"eirc.error.service.need_setup_service_type"));
 		}

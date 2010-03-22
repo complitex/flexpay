@@ -13,8 +13,8 @@
         <tr valign="top" class="cols_1">
             <td class="col"><s:text name="eirc.service.name" />:</td>
             <td class="col">
-                <s:iterator value="descriptions"><s:set name="l" value="%{getLang(key)}" />
-                    <s:textfield name="descriptions[%{key}]" value="%{value}"/>(<s:if test="#l.default">*</s:if><s:property value="getLangName(#l)" />)<br />
+                <s:iterator value="names"><s:set name="l" value="%{getLang(key)}" />
+                    <s:textfield name="names[%{key}]" value="%{value}"/>(<s:if test="#l.default">*</s:if><s:property value="getLangName(#l)" />)<br />
                 </s:iterator>
             </td>
         </tr>        
