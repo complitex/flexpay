@@ -29,7 +29,10 @@
 	<context-param>
 		<param-name>definitions-config</param-name>
 		<param-value>
-			/WEB-INF/common/configs/tiles_common.xml,/WEB-INF/ab/configs/tiles_ab.xml,/WEB-INF/admin/configs/tiles_admin.xml,/WEB-INF/payments/configs/tiles_payments.xml
+			/WEB-INF/common/configs/tiles_common.xml,
+            /WEB-INF/ab/configs/tiles_ab.xml,
+            /WEB-INF/admin/configs/tiles_admin.xml,
+            /WEB-INF/payments/configs/tiles_payments.xml
 		</param-value>
 	</context-param>
 
@@ -70,7 +73,6 @@
 		<filter-name>springSecurityFilterChain</filter-name>
 		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
 	</filter>
-
 	<filter-mapping>
 		<filter-name>springSecurityFilterChain</filter-name>
 		<url-pattern>/*</url-pattern>
@@ -82,7 +84,11 @@
 		<init-param>
 			<param-name>config</param-name>
 			<param-value>
-				struts-default.xml,struts-plugin.xml,org/flexpay/common/struts_config.xml,org/flexpay/ab/struts_config.xml,org/flexpay/admin/struts_config.xml,org/flexpay/payments/struts_config.xml
+				struts-default.xml,struts-plugin.xml,
+                org/flexpay/common/struts_config.xml,
+                org/flexpay/ab/struts_config.xml,
+                org/flexpay/admin/struts_config.xml,
+                org/flexpay/payments/struts_config.xml
 			</param-value>
 		</init-param>
 	</filter>
@@ -371,7 +377,7 @@
 	</error-page>
 
     <welcome-file-list>
-            <welcome-file>/resources/payments/jsp/index.jsp</welcome-file>
+        <welcome-file>/resources/payments/jsp/index.jsp</welcome-file>
     </welcome-file-list>
 
     <jsp-config>

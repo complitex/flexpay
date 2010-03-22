@@ -11,6 +11,8 @@ import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.common.persistence.Stub;
 import static org.flexpay.common.persistence.Stub.stub;
+import static org.flexpay.common.util.CollectionUtils.list;
+
 import org.flexpay.common.service.importexport.CorrectionsService;
 import org.flexpay.common.util.CollectionUtils;
 import org.jetbrains.annotations.Nullable;
@@ -44,7 +46,7 @@ public class SyncServiceImpl implements SyncService {
 	@Nullable
 	private DomainObject prevObj = null;
 	private AbstractProcessor<?> processor = null;
-	private List<HistoryRec> recordBuffer = CollectionUtils.list();
+	private List<HistoryRec> recordBuffer = list();
 
 	/**
 	 * Synchronize Address Bureau
@@ -65,7 +67,7 @@ public class SyncServiceImpl implements SyncService {
 			prevType = ObjectType.Unknown;
 			prevObj = null;
 			processor = null;
-			recordBuffer = CollectionUtils.list();
+			recordBuffer = list();
 
 			int count = 0;
 

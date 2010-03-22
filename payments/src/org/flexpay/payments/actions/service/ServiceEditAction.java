@@ -1,8 +1,10 @@
 package org.flexpay.payments.actions.service;
 
 import org.flexpay.common.actions.FPActionSupport;
+import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Language;
 import org.flexpay.common.persistence.MeasureUnit;
+import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.filter.BeginDateFilter;
 import org.flexpay.common.persistence.filter.EndDateFilter;
 import org.flexpay.common.persistence.filter.MeasureUnitFilter;
@@ -23,7 +25,12 @@ import java.util.Map;
 
 import static org.flexpay.common.persistence.Stub.stub;
 import static org.flexpay.common.util.CollectionUtils.map;
+import static org.flexpay.common.util.CollectionUtils.treeMap;
+import static org.flexpay.common.util.config.ApplicationConfig.getLanguages;
 
+/**
+ * Service simple editor
+ */
 public class ServiceEditAction extends FPActionSupport {
 
 	private Service service = new Service();
@@ -35,7 +42,7 @@ public class ServiceEditAction extends FPActionSupport {
 	private BeginDateFilter beginDateFilter = new BeginDateFilter();
 	private EndDateFilter endDateFilter = new EndDateFilter();
 
-	private Map<Long, String> descriptions = map();
+	private Map<Long, String> names = map();
 
 	private String crumbCreateKey;
 	private SPService spService;
@@ -47,52 +54,117 @@ public class ServiceEditAction extends FPActionSupport {
 	@Override
 	public String doExecute() throws Exception {
 
-		Service srvc = service.isNew() ? service : spService.readFull(stub(service));
-		if (srvc == null) {
-			addActionError(getText("common.object_not_selected"));
-			return REDIRECT_SUCCESS;
-		}
+        if (service == null || service.getId() == null) {
+            log.warn("Incorrect service id");
+            addActionError(getText("payments.error.service.incorrect_service_id"));
+            return REDIRECT_ERROR;
+        }
 
-		serviceProviderFilter = providerService.initServiceProvidersFilter(serviceProviderFilter);
-		serviceTypeFilter = serviceTypeService.initFilter(serviceTypeFilter);
-		parentServiceFilter = spService.initParentServicesFilter(parentServiceFilter);
-		measureUnitFilter = measureUnitService.initFilter(measureUnitFilter);
+        if (service.isNotNew()) {
+            Stub<Service> stub = stub(service);
+            service = spService.readFull(stub);
 
-		if (isNotSubmit()) {
-			service = srvc;
-			init();
-			return INPUT;
-		}
-		if (parentServiceFilter.needFilter()) {
-			srvc.setParentService(spService.readFull(parentServiceFilter.getSelectedStub()));
-		} else {
-			srvc.setParentService(null);
-		}
-		srvc.setBeginDate(beginDateFilter.getDate());
-		srvc.setEndDate(endDateFilter.getDate());
-		srvc.setServiceProvider(providerService.read(serviceProviderFilter.getSelectedStub()));
-		srvc.setServiceType(serviceTypeService.read(serviceTypeFilter.getSelectedStub()));
-		MeasureUnit unit = measureUnitFilter.needFilter() ?
-						   measureUnitService.readFull(measureUnitFilter.getSelectedStub()) : null;
-		srvc.setMeasureUnit(unit);
-		srvc.setExternalCode(service.getExternalCode());
+            if (service == null) {
+                log.warn("Can't get service with id {} from DB", stub.getId());
+                addActionError(getText("payments.error.service.cant_get_service"));
+                return REDIRECT_ERROR;
+            } else if (service.isNotActive()) {
+                log.warn("Service with id {} is disabled", stub.getId());
+                addActionError(getText("payments.error.service.cant_get_service"));
+                return REDIRECT_ERROR;
+            }
 
-		for (Map.Entry<Long, String> name : descriptions.entrySet()) {
-			String value = name.getValue();
-			Language lang = getLang(name.getKey());
-			srvc.setDescription(new ServiceDescription(value, lang));
-		}
+        }
 
-		if (srvc.isNew()) {
-			spService.create(srvc);
-		} else {
-			spService.update(srvc);
-		}
+        correctNames();
+        initFilters();
 
-		addActionMessage(getText("payments.service.saved"));
+        if (isSubmit()) {
+            if (!doValidate()) {
+                return INPUT;
+            }
+            updateService();
 
-		return REDIRECT_SUCCESS;
+            addActionMessage(getText("payments.service.saved"));
+
+            return REDIRECT_SUCCESS;
+        }
+
+		initData();
+
+		return INPUT;
 	}
+
+    private boolean doValidate() {
+
+        if (parentServiceFilter == null) {
+            log.warn("ParentServiceFilter is not correct");
+            addActionError(getText("payments.error.service.parent_service_filter_is_not_correct"));
+        }
+        if (serviceProviderFilter == null || !serviceProviderFilter.needFilter()) {
+            log.warn("ServiceProviderFilter is not correct");
+            addActionError(getText("payments.error.service.service_provider_filter_is_not_correct"));
+        }
+        if (serviceTypeFilter == null || !serviceTypeFilter.needFilter()) {
+            log.warn("ServiceProviderFilter is not correct");
+            addActionError(getText("payments.error.service.service_type_filter_is_not_correct"));
+        }
+
+        return !hasActionErrors();
+    }
+
+    private void correctNames() {
+        if (names == null) {
+            log.warn("Names parameter is null");
+            names = treeMap();
+        }
+        Map<Long, String> newNames = treeMap();
+        for (Language lang : getLanguages()) {
+            newNames.put(lang.getId(), names.containsKey(lang.getId()) ? names.get(lang.getId()) : "");
+        }
+        names = newNames;
+    }
+
+    private void initFilters() throws Exception {
+        serviceProviderFilter = providerService.initServiceProvidersFilter(serviceProviderFilter);
+        serviceTypeFilter = serviceTypeService.initFilter(serviceTypeFilter);
+        parentServiceFilter = spService.initParentServicesFilter(parentServiceFilter);
+        measureUnitFilter = measureUnitService.initFilter(measureUnitFilter);
+    }
+
+    /**
+     * Creates new service if it is a new one
+	 * (haven't been yet persisted) or updates persistent one
+	 *
+	 * @throws org.flexpay.common.exception.FlexPayExceptionContainer if some errors
+     */
+    private void updateService() throws FlexPayExceptionContainer {
+
+        for (Map.Entry<Long, String> name : names.entrySet()) {
+            String value = name.getValue();
+            Language lang = getLang(name.getKey());
+            service.setDescription(new ServiceDescription(value, lang));
+        }
+
+        if (parentServiceFilter.needFilter()) {
+            service.setParentService(spService.readFull(parentServiceFilter.getSelectedStub()));
+        } else {
+            service.setParentService(null);
+        }
+        service.setBeginDate(beginDateFilter.getDate());
+        service.setEndDate(endDateFilter.getDate());
+        service.setServiceProvider(providerService.read(serviceProviderFilter.getSelectedStub()));
+        service.setServiceType(serviceTypeService.read(serviceTypeFilter.getSelectedStub()));
+        MeasureUnit unit = measureUnitFilter.needFilter() ?
+                           measureUnitService.readFull(measureUnitFilter.getSelectedStub()) : null;
+        service.setMeasureUnit(unit);
+
+        if (service.isNew()) {
+            spService.create(service);
+        } else {
+            spService.update(service);
+        }
+    }
 
 	/**
 	 * Get default error execution result
@@ -107,17 +179,17 @@ public class ServiceEditAction extends FPActionSupport {
 		return INPUT;
 	}
 
-	private void init() {
-		for (ServiceDescription description : service.getDescriptions()) {
-			descriptions.put(description.getLang().getId(), description.getName());
-		}
+	private void initData() {
 
-		for (Language lang : ApplicationConfig.getLanguages()) {
-			if (descriptions.containsKey(lang.getId())) {
-				continue;
-			}
-			descriptions.put(lang.getId(), "");
-		}
+        for (ServiceDescription name : service.getDescriptions()) {
+            names.put(name.getLang().getId(), name.getName());
+        }
+
+        for (Language lang : getLanguages()) {
+            if (!names.containsKey(lang.getId())) {
+                names.put(lang.getId(), "");
+            }
+        }
 
 		if (service.isNotNew()) {
 			serviceProviderFilter.setSelectedId(service.getServiceProvider().getId());
@@ -200,15 +272,15 @@ public class ServiceEditAction extends FPActionSupport {
 		this.measureUnitFilter = measureUnitFilter;
 	}
 
-	public Map<Long, String> getDescriptions() {
-		return descriptions;
-	}
+    public Map<Long, String> getNames() {
+        return names;
+    }
 
-	public void setDescriptions(Map<Long, String> descriptions) {
-		this.descriptions = descriptions;
-	}
+    public void setNames(Map<Long, String> names) {
+        this.names = names;
+    }
 
-	public void setCrumbCreateKey(String crumbCreateKey) {
+    public void setCrumbCreateKey(String crumbCreateKey) {
 		this.crumbCreateKey = crumbCreateKey;
 	}
 

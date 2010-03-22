@@ -48,6 +48,7 @@
         </action>
 
 		<action name="serviceEdit" class="serviceEditAction">
+            <result name="redirectError" type="redirect-action">servicesList</result>
 			<result name="input" type="tiles">eirc.service.edit</result>
             <result name="redirectSuccess" type="redirect-action">
                 <param name="actionName">serviceView</param>

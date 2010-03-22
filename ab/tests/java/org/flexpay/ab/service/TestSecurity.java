@@ -25,6 +25,9 @@ import org.springframework.security.userdetails.User;
 
 import java.util.List;
 
+import static org.flexpay.common.util.CollectionUtils.arrayStack;
+import static org.flexpay.common.util.CollectionUtils.list;
+
 public class TestSecurity extends AbSpringBeanAwareTestCase {
 
 	private Authentication authentication;
@@ -55,8 +58,8 @@ public class TestSecurity extends AbSpringBeanAwareTestCase {
 		Authentication auth = new AnonymousAuthenticationToken("key", user, BASIC_AUTHORITIES);
 		SecurityContextHolder.getContext().setAuthentication(auth);
 
-        ArrayStack filters = CollectionUtils.arrayStack();
-		List<ObjectSorter> sorters = CollectionUtils.list(new CountrySorter().activate());
+        ArrayStack filters = arrayStack();
+		List<ObjectSorter> sorters = list(new CountrySorter().activate());
 		Page<Country> pager = new Page<Country>();
 		countryService.find(filters, sorters, pager);
 	}
@@ -68,8 +71,8 @@ public class TestSecurity extends AbSpringBeanAwareTestCase {
 		Authentication auth = new AnonymousAuthenticationToken("key", user, COUNTRY_AUTHORITIES);
 		SecurityContextHolder.getContext().setAuthentication(auth);
 
-		ArrayStack filters = CollectionUtils.arrayStack();
-		List<ObjectSorter> sorters = CollectionUtils.list(new CountrySorter().activate());
+		ArrayStack filters = arrayStack();
+		List<ObjectSorter> sorters = list(new CountrySorter().activate());
 		Page<Country> pager = new Page<Country>();
 		countryService.find(filters, sorters, pager);
 	}
@@ -81,8 +84,8 @@ public class TestSecurity extends AbSpringBeanAwareTestCase {
 		Authentication auth = new AnonymousAuthenticationToken("key", user, REGION_AUTHORITIES);
 		SecurityContextHolder.getContext().setAuthentication(auth);
 
-		ArrayStack filters = CollectionUtils.arrayStack(new CountryFilter(ApplicationConfig.getDefaultCountryStub()));
-		List<ObjectSorter> sorters = CollectionUtils.list(new RegionSorter().activate());
+		ArrayStack filters = arrayStack(new CountryFilter(ApplicationConfig.getDefaultCountryStub()));
+		List<ObjectSorter> sorters = list(new RegionSorter().activate());
 		Page<Region> pager = new Page<Region>();
 		regionService.find(filters, sorters, pager);
 	}

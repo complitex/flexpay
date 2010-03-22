@@ -6,6 +6,7 @@ import org.flexpay.eirc.sp.impl.Messenger;
 import org.jetbrains.annotations.NotNull;
 
 public class DoubleValidator extends MessageValidator<String> {
+
     public DoubleValidator(@NotNull Messenger mess) {
         super(mess);
     }

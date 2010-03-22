@@ -38,6 +38,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import static org.flexpay.common.util.CollectionUtils.list;
+import static org.flexpay.common.util.CollectionUtils.map;
+
 @Transactional (readOnly = true)
 public class MbChargesFileParser extends MbFileParser {
 
@@ -58,6 +61,7 @@ public class MbChargesFileParser extends MbFileParser {
 		try {
 			reader = new BufferedReader(new InputStreamReader(spFile.toFileSource().openStream(), MbParsingConstants.REGISTRY_FILE_ENCODING));
 		} catch (IOException e) {
+            log.error("Can't open file {}", spFile);
 			throw new FlexPayException("Error open file " + spFile, e);
 		}
 
@@ -69,7 +73,7 @@ public class MbChargesFileParser extends MbFileParser {
 		Long totalLineNum = 0L;
 		Long totalRecordsNum = 0L;
 
-		Map<String, Object> parameters = CollectionUtils.map();
+		Map<String, Object> parameters = map();
 		parameters.put(ParserParameterConstants.PARAM_REGISTRIES, registries);
 		parameters.put(ParserParameterConstants.PARAM_TOTAL_LINE_NUM, totalLineNum);
 		parameters.put(ParserParameterConstants.PARAM_TOTAL_RECORD_NUM, totalRecordsNum);
@@ -82,7 +86,7 @@ public class MbChargesFileParser extends MbFileParser {
 			IOUtils.closeQuietly(reader);
 		}
 
-		List<Registry> result = CollectionUtils.list();
+		List<Registry> result = list();
 		for (Registry reg : registries) {
 			reg.setRegistryStatus(registryStatusService.findByCode(RegistryStatus.LOADED));
 			registryService.update(reg);
@@ -99,8 +103,8 @@ public class MbChargesFileParser extends MbFileParser {
 	}
 
 	@SuppressWarnings ({"unchecked"})
-	@Override
 	@Transactional (propagation = Propagation.NOT_SUPPORTED, readOnly = false)
+    @Override
 	public int iterateParseFile(@NotNull BufferedReader reader, @NotNull Map<String, Object> properties) throws FlexPayException {
 		List<Registry> registries = (List<Registry>)properties.get(ParserParameterConstants.PARAM_REGISTRIES);
 		Long totalLineNum = (Long)properties.get(ParserParameterConstants.PARAM_TOTAL_LINE_NUM);

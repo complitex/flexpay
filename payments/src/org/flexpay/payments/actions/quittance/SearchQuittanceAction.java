@@ -9,7 +9,6 @@ import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.service.importexport.CorrectionsService;
 import org.flexpay.common.service.importexport.MasterIndexService;
-import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.orgs.persistence.ServiceProvider;
 import org.flexpay.orgs.service.ServiceProviderService;
 import org.flexpay.payments.actions.OperatorAWPActionSupport;
@@ -26,6 +25,7 @@ import org.springframework.beans.factory.annotation.Required;
 import java.math.BigDecimal;
 import java.util.List;
 
+import static org.flexpay.common.util.CollectionUtils.list;
 import static org.flexpay.payments.persistence.quittance.QuittanceDetailsResponse.*;
 
 public class SearchQuittanceAction extends OperatorAWPActionSupport {
@@ -93,11 +93,11 @@ public class SearchQuittanceAction extends OperatorAWPActionSupport {
 	// eliminates services with non-positive outgoing balances
 	private void filterNegativeSumms() {
 
-		List<QuittanceInfo> filteredInfos = CollectionUtils.list();
+		List<QuittanceInfo> filteredInfos = list();
 		for (QuittanceInfo info : quittanceInfos) {
 			BigDecimal total = new BigDecimal("0.00");
 
-			List<QuittanceInfo.ServiceDetails> filteredDetails = CollectionUtils.list();
+			List<QuittanceInfo.ServiceDetails> filteredDetails = list();
 			for (QuittanceInfo.ServiceDetails sd : info.getDetailses()) {
 				if (sd.getOutgoingBalance().compareTo(BigDecimal.ZERO) > 0) {
 					filteredDetails.add(sd);
@@ -122,7 +122,7 @@ public class SearchQuittanceAction extends OperatorAWPActionSupport {
 	private void filterSubservices() {
 
 		for (QuittanceInfo quittanceInfo : quittanceInfos) {
-			List<QuittanceInfo.ServiceDetails> filtered = CollectionUtils.list();
+			List<QuittanceInfo.ServiceDetails> filtered = list();
 			BigDecimal totalToPay = new BigDecimal("0.00");
 
 			for (QuittanceInfo.ServiceDetails details : quittanceInfo.getDetailses()) {

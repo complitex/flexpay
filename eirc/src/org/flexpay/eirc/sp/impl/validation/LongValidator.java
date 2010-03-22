@@ -7,6 +7,7 @@ import org.flexpay.eirc.sp.impl.ValidationContext;
 import org.jetbrains.annotations.NotNull;
 
 public class LongValidator extends MessageValidatorWithContext<String> {
+
     public static final String LONG_VALUE = "LongValue";
 
     public LongValidator(@NotNull Messenger mess, @NotNull ValidationContext context) {

@@ -2,6 +2,8 @@ package org.flexpay.ab.service;
 
 import static org.flexpay.ab.service.Roles.*;
 import static org.flexpay.common.service.Roles.PROCESS_READ;
+import static org.flexpay.common.util.CollectionUtils.list;
+
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.SecurityUtil;
 
@@ -17,7 +19,7 @@ public abstract class SyncSecurity {
 	/**
 	 * Set of authorities names for syncer process user
 	 */
-	protected static final List<String> USER_HISTORY_SYNCER_AUTHORITIES = CollectionUtils.list(
+	protected static final List<String> USER_HISTORY_SYNCER_AUTHORITIES = list(
 			org.flexpay.common.service.Roles.BASIC,
 			PERSON_READ,
 			APARTMENT_READ,

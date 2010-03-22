@@ -86,7 +86,7 @@ public class StreetServiceImpl extends NameTimeDependentServiceImpl<
 	public List<Street> readFull(@NotNull Collection<Long> streetIds, boolean preserveOrder) {
 
 		List<Street> streets = streetDao.readFullCollection(streetIds, preserveOrder);
-		Set<Street> orderedStreets = CollectionUtils.treeSet(streets, Street.<Street>comparator());
+		Set<Street> orderedStreets = treeSet(streets, Street.<Street>comparator());
 
 		// initialize types
 		final int[] counter = { 0 };
