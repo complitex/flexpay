@@ -45,7 +45,7 @@ public class ServiceCodeValidator extends MessageValidatorWithContext<String> {
         Stub<ServiceProvider> providerStub = new Stub<ServiceProvider>(serviceProviderId);
 
 		Stub<ServiceType> typeStub = context.getServiceTypesMapper().getInternalType(mbCode);
-		List<Service> services = context.getSpService().findServices(providerStub, typeStub, date);
+		List<Service> services = context.getSpService().findServices(providerStub, typeStub);
 
         if (services.isEmpty()) {
             addErrorMessage("No service found by internal type {}, mb code={}", new Object[]{typeStub, mbCode});

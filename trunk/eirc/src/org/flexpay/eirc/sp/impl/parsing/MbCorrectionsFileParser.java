@@ -394,8 +394,7 @@ public class MbCorrectionsFileParser extends MbFileParser {
 			throws FlexPayException {
 
 		Stub<ServiceType> typeStub = serviceTypesMapper.getInternalType(mbCode);
-		List<Service> services = spService.findServices(
-				providerStub, typeStub, date);
+		List<Service> services = spService.findServices(providerStub, typeStub);
 		if (services.isEmpty()) {
 			throw new FlexPayException("No service found by internal type " + typeStub + ", mb code=" + mbCode);
 		}
