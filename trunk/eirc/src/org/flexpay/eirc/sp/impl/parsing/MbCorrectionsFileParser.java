@@ -15,6 +15,7 @@ import org.flexpay.eirc.persistence.Consumer;
 import org.flexpay.eirc.persistence.EircRegistryRecordProperties;
 import org.flexpay.eirc.sp.impl.MbFileParser;
 import org.flexpay.eirc.sp.impl.MbParsingConstants;
+import org.flexpay.eirc.sp.impl.validation.CorrectionsRecordValidator;
 import org.flexpay.eirc.util.config.ApplicationConfig;
 import org.flexpay.orgs.persistence.ServiceProvider;
 import org.flexpay.payments.persistence.EircRegistryProperties;
@@ -205,6 +206,11 @@ public class MbCorrectionsFileParser extends MbFileParser {
 	private long parseRecord(String line, Registry registry, List<RegistryRecord> recordStack) throws FlexPayException {
 		String[] fields = lineParser.parse(line);
 
+		if (fields.length == CorrectionsRecordValidator.FIELDS_LENGTH_SKIP_RECORD) {
+			log.debug("Skip record: {}", line);
+			return 0;
+		}
+
 		// remove duplicates in service codes
 		Set<String> serviceCodes = CollectionUtils.set(fields[20].split(";"));
 
@@ -318,7 +324,8 @@ public class MbCorrectionsFileParser extends MbFileParser {
 		}
 
 		// ФИО носителя льготы
-		if (StringUtils.isNotEmpty(fields[26]) && !"0".equals(fields[26])) {
+		if (fields.length != CorrectionsRecordValidator.FIELDS_LENGTH_EMPTY_FOOTER &&
+				StringUtils.isNotEmpty(fields[26]) && !"0".equals(fields[26])) {
 			container = new RegistryRecordContainer();
 			container.setData("9:" + modificationStartDate + "::" + fields[26]);
 			record.addContainer(container);
