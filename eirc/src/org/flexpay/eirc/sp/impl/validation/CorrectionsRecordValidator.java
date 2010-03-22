@@ -1,7 +1,6 @@
 package org.flexpay.eirc.sp.impl.validation;
 
 import org.apache.commons.lang.StringUtils;
-import org.flexpay.common.util.StringUtil;
 import org.flexpay.eirc.sp.impl.MessageLevel;
 import org.flexpay.eirc.sp.impl.MessageValidatorWithContext;
 import org.flexpay.eirc.sp.impl.Messenger;
@@ -9,7 +8,9 @@ import org.flexpay.eirc.sp.impl.ValidationContext;
 import org.jetbrains.annotations.NotNull;
 
 public class CorrectionsRecordValidator extends MessageValidatorWithContext<String> {
-    private static final long FIELDS_LENGTH = 28;
+    public static final long FIELDS_LENGTH = 28;
+	public static final long FIELDS_LENGTH_SKIP_RECORD = 20;
+	public static final long FIELDS_LENGTH_EMPTY_FOOTER = 21;
 
     private FieldsValidator fieldsValidator;
     private BuildingAddressValidator buildingAddressValidator;
@@ -32,8 +33,13 @@ public class CorrectionsRecordValidator extends MessageValidatorWithContext<Stri
     @Override
     public boolean validate(@NotNull String line) {
         String[] fields = context.getLineParser().parse(line, messenger);
-		if (fields.length < FIELDS_LENGTH) {
-			addErrorMessage("Found {} fields. expected {}", new Object[]{fields.length, FIELDS_LENGTH});
+		if (fields.length == FIELDS_LENGTH_SKIP_RECORD) {
+			addErrorMessage("Skip record. Found {} fields. It is closed account", fields.length, MessageLevel.WARN);
+			return true;
+		}
+		if (fields.length < FIELDS_LENGTH && fields.length != FIELDS_LENGTH_EMPTY_FOOTER) {
+			addErrorMessage("Found {} fields. expected {}, {} or {}",
+					new Object[]{fields.length, FIELDS_LENGTH, FIELDS_LENGTH_EMPTY_FOOTER, FIELDS_LENGTH_SKIP_RECORD});
             return false;
 		}
 		//if (fields.length > 28) {
@@ -105,6 +111,11 @@ public class CorrectionsRecordValidator extends MessageValidatorWithContext<Stri
 		if (!serviceCodeValidator.validate(fields[20])) {
             return false;
         }
+
+		if (fields.length == FIELDS_LENGTH_EMPTY_FOOTER) {
+			addErrorMessage("Skip rest data (rooms quantity, etc). Found {} fields.", fields.length, MessageLevel.WARN);
+			return true;
+		}
 
 		if (!fields[21].equals("0") && !fields[21].equals("1")) {
 			addErrorMessage("Invalid sign of lift availability {}", fields[21]);
