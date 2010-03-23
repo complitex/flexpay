@@ -11,6 +11,8 @@
 	<bean id="paymentsApplicationConfig"
 		  factory-method="getInstance"
 		  class="org.flexpay.payments.util.config.ApplicationConfig"
+		  p:keystorePath="${app.config.payments.keystore.path}"
+		  p:keystorePassword="${app.config.payments.keystore.password}"
 		  p:mbOrganizationId="${app.config.payments.mbOrganizationId}" />
 
 	<bean id="mbServiceTypeMapper"

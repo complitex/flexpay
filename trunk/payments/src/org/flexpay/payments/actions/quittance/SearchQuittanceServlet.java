@@ -1,7 +1,9 @@
 package org.flexpay.payments.actions.quittance;
 
+import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.digester.Digester;
 import org.flexpay.common.exception.FlexPayException;
+import org.flexpay.common.util.config.ApplicationConfig;
 import org.flexpay.payments.persistence.quittance.QuittanceDetailsRequest;
 import org.flexpay.payments.persistence.quittance.QuittanceDetailsResponse;
 import org.flexpay.payments.service.QuittanceDetailsFinder;
@@ -9,7 +11,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
-import org.xml.sax.SAXException;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -17,6 +18,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.Writer;
+import java.security.KeyStore;
+import java.security.Signature;
+import java.security.cert.Certificate;
 
 public class SearchQuittanceServlet extends HttpServlet {
 
@@ -29,10 +33,20 @@ public class SearchQuittanceServlet extends HttpServlet {
 		String requestId = null;
 		QuittanceDetailsFinder quittanceDetailsFinder = getFinderFromContext();
 
+		SearchQuittanceExternalRequest request = null;
 		try {
-			SearchQuittanceExternalRequest request = parseRequest(httpServletRequest);
+			request = parseRequest(httpServletRequest);
 			requestId = request.getDebtInfoData().getRequestId();
-
+		} catch (FlexPayException e) {
+			writer.write(buildResponse(requestId, "9", "Unknown request"));
+		}
+		
+		try {
+			if (!authenticate(request)) {
+				writer.write(buildResponse(requestId, "8", "Bad authentication data"));
+				return;
+			}
+			
 			// validating request
 			if (!validateExternalRequest(request)) {
 				writer.write(buildResponse(requestId, "9", "Unknown request"));
@@ -42,18 +56,59 @@ public class SearchQuittanceServlet extends HttpServlet {
 			QuittanceDetailsRequest quittanceDetailsRequest = convertRequest(request);
 			QuittanceDetailsResponse quittanceDetailsResponse = quittanceDetailsFinder.findQuittance(quittanceDetailsRequest);
 			writer.write(buildResponse(quittanceDetailsResponse, requestId, "1", "OK"));
-		} catch (SAXException e) {
-			writer.write(buildResponse(requestId, "9", "Unknown request"));
 		} catch (FlexPayException e) {
 			writer.write(buildResponse(requestId, "14", "Internal search error"));
 		}
 	}
 
-	private SearchQuittanceExternalRequest parseRequest(HttpServletRequest httpServletRequest)  throws IOException, SAXException {
+	private SearchQuittanceExternalRequest parseRequest(HttpServletRequest httpServletRequest)  throws FlexPayException {
 
-		Digester digester = initParser();
-		return (SearchQuittanceExternalRequest) digester.parse(httpServletRequest.getInputStream());
+		try {
+			Digester digester = initParser();
+			return (SearchQuittanceExternalRequest) digester.parse(httpServletRequest.getInputStream());
+		} catch (Exception e) {
+			throw new FlexPayException("Error parsing request", e);	
+		}
 	}
+
+	private boolean authenticate(SearchQuittanceExternalRequest externalRequest) throws FlexPayException {
+
+		Certificate certificate = null;
+		try {
+			KeyStore keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
+			keyStore.load(ApplicationConfig.getResourceAsStream(org.flexpay.payments.util.config.ApplicationConfig.getKeystorePath()), (org.flexpay.payments.util.config.ApplicationConfig.getKeystorePassword()).toCharArray());
+
+			if (!keyStore.isCertificateEntry(externalRequest.getLogin())) {
+				log.error("Can't load security certificate for user {}", externalRequest.getLogin());
+				return false;
+			}
+
+			certificate = keyStore.getCertificate(externalRequest.getLogin());
+			if (certificate == null) {
+				log.error("Can't load security certificate for user {}", externalRequest.getLogin());
+				return false;
+			}
+		} catch (Exception e) {
+			throw new FlexPayException("Error loading certificate from keystore", e);
+		}
+
+		try {
+			Signature signature = Signature.getInstance("SHA1withDSA");
+			signature.initVerify(certificate);
+			signature.update(externalRequest.getDebtInfoData().getRequestId().getBytes());
+			signature.update(externalRequest.getDebtInfoData().getSearchType().getBytes());
+			signature.update(externalRequest.getDebtInfoData().getSearchCriteria().getBytes());
+			if (!signature.verify(Hex.decodeHex(externalRequest.getSignature().toCharArray()))) {
+				log.error("Request digital signature is bad");
+				return false;
+			}
+		} catch (Exception e) {
+			throw new FlexPayException("Error checking request digital signature", e);
+		}
+
+		return true;
+	}
+
 
 	private boolean validateExternalRequest(SearchQuittanceExternalRequest externalRequest) {
 
@@ -69,8 +124,6 @@ public class SearchQuittanceServlet extends HttpServlet {
 		} catch (NumberFormatException e) {
 			return false;
 		}
-
-		// TODO validate login and signature
 
 		return true;
 	}
