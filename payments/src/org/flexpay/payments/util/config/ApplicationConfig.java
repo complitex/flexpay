@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Required;
 public class ApplicationConfig {
 
 	private Stub<Organization> mbOrganizationStub;
+	private String keystorePath;
+	private String keystorePassword;
 
 	private static final ApplicationConfig INSTANCE = new ApplicationConfig();
 
@@ -27,5 +29,23 @@ public class ApplicationConfig {
 
 	public static Stub<Organization> getMbOrganizationStub() {
 		return getInstance().mbOrganizationStub;
+	}
+
+	public static String getKeystorePath() {
+		return getInstance().keystorePath;
+	}
+
+	@Required
+	public void setKeystorePath(String keystorePath) {
+		this.keystorePath = keystorePath;
+	}
+
+	public static String getKeystorePassword() {
+		return getInstance().keystorePassword;
+	}
+
+	@Required
+	public void setKeystorePassword(String keystorePassword) {
+		this.keystorePassword = keystorePassword;
 	}
 }
