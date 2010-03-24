@@ -13,6 +13,8 @@
 		  class="org.flexpay.payments.util.config.ApplicationConfig"
 		  p:keystorePath="${app.config.payments.keystore.path}"
 		  p:keystorePassword="${app.config.payments.keystore.password}"
+		  p:selfKeyAlias="${app.config.payments.keystore.selfkey.alias}"
+		  p:selfKeyPassword="${app.config.payments.keystore.selfkey.password}"
 		  p:mbOrganizationId="${app.config.payments.mbOrganizationId}" />
 
 	<bean id="mbServiceTypeMapper"
