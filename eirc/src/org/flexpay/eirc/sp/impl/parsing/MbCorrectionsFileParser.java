@@ -40,8 +40,6 @@ public class MbCorrectionsFileParser extends MbFileParser {
 
 	private static final String MODIFICATIONS_START_DATE_FORMAT = "ddMMyy";
 
-	private static final String END_LINE = "\n";
-
 	private String moduleName;
 	private FPFileService fileService;
 	private RegistryFPFileTypeService registryFPFileTypeService;
@@ -120,7 +118,7 @@ public class MbCorrectionsFileParser extends MbFileParser {
 					countChar = -1;
 					break;
 				}
-				countChar += line.length() + END_LINE.length();
+				countChar += line.length() + 2;
 				if (totalLineNum == 0) {
 
 				} else if (totalLineNum == 1) {
