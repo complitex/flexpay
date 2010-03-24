@@ -4,12 +4,12 @@ public class SearchQuittanceExternalRequest {
 
 	private String login;
 	private String signature;
-	private GetDebtInfo debtInfoData;// = new GetDebtInfo();
+	private GetDebtInfo debtInfoData;
 
 	public static class GetDebtInfo {
 
 		private String requestId;
-		private String searchType; // TODO int?
+		private String searchType;
 		private String searchCriteria;
 
 		public GetDebtInfo() {

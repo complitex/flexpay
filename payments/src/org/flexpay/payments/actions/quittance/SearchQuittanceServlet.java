@@ -18,13 +18,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.Writer;
-import java.security.KeyStore;
-import java.security.Signature;
+import java.security.*;
 import java.security.cert.Certificate;
+import java.security.cert.CertificateException;
 
 public class SearchQuittanceServlet extends HttpServlet {
 
 	private static final Logger log = LoggerFactory.getLogger(SearchQuittanceServlet.class);
+
+	private KeyStore keyStore;
 
 	@Override
 	protected void doPost(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws ServletException, IOException {
@@ -38,7 +40,11 @@ public class SearchQuittanceServlet extends HttpServlet {
 			request = parseRequest(httpServletRequest);
 			requestId = request.getDebtInfoData().getRequestId();
 		} catch (FlexPayException e) {
-			writer.write(buildResponse(requestId, "9", "Unknown request"));
+			try {
+				writer.write(buildResponse(requestId, "9", "Unknown request"));
+			} catch (FlexPayException e1) {
+				log.error("Error building response", e1);
+			}
 		}
 		
 		try {
@@ -57,7 +63,11 @@ public class SearchQuittanceServlet extends HttpServlet {
 			QuittanceDetailsResponse quittanceDetailsResponse = quittanceDetailsFinder.findQuittance(quittanceDetailsRequest);
 			writer.write(buildResponse(quittanceDetailsResponse, requestId, "1", "OK"));
 		} catch (FlexPayException e) {
-			writer.write(buildResponse(requestId, "14", "Internal search error"));
+			try {
+				writer.write(buildResponse(requestId, "14", "Internal search error"));
+			} catch (FlexPayException e1) {
+				log.error("Error building response", e1);
+			}
 		}
 	}
 
@@ -75,8 +85,7 @@ public class SearchQuittanceServlet extends HttpServlet {
 
 		Certificate certificate = null;
 		try {
-			KeyStore keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
-			keyStore.load(ApplicationConfig.getResourceAsStream(org.flexpay.payments.util.config.ApplicationConfig.getKeystorePath()), (org.flexpay.payments.util.config.ApplicationConfig.getKeystorePassword()).toCharArray());
+			keyStore = getKeyStore();
 
 			if (!keyStore.isCertificateEntry(externalRequest.getLogin())) {
 				log.error("Can't load security certificate for user {}", externalRequest.getLogin());
@@ -84,10 +93,7 @@ public class SearchQuittanceServlet extends HttpServlet {
 			}
 
 			certificate = keyStore.getCertificate(externalRequest.getLogin());
-			if (certificate == null) {
-				log.error("Can't load security certificate for user {}", externalRequest.getLogin());
-				return false;
-			}
+
 		} catch (Exception e) {
 			throw new FlexPayException("Error loading certificate from keystore", e);
 		}
@@ -107,6 +113,16 @@ public class SearchQuittanceServlet extends HttpServlet {
 		}
 
 		return true;
+	}
+
+	private KeyStore getKeyStore() throws KeyStoreException, IOException, NoSuchAlgorithmException, CertificateException {
+
+		if (keyStore == null) {
+			keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
+			keyStore.load(ApplicationConfig.getResourceAsStream(org.flexpay.payments.util.config.ApplicationConfig.getKeystorePath()), (org.flexpay.payments.util.config.ApplicationConfig.getKeystorePassword()).toCharArray());
+		}
+		
+		return keyStore;
 	}
 
 
@@ -146,108 +162,139 @@ public class SearchQuittanceServlet extends HttpServlet {
 		return null;
 	}
 
-	private String buildResponse(QuittanceDetailsResponse quittanceDetailsResponse, String requestId, String statusCode, String statusMessage) {
+	private String buildResponse(QuittanceDetailsResponse quittanceDetailsResponse, String requestId, String statusCode, String statusMessage) throws FlexPayException {
+
+		Signature signature = initSignature();
 
 		StringBuilder response = new StringBuilder();
-
 		response.append("<response>");
 		response.append("<debtInfo>");
-
-		response.append("<requestId>");
-		response.append(requestId);
-		response.append("</requestId>");
+		addNonEmptyField(response, "requestId", requestId, signature);
 
 		if (quittanceDetailsResponse != null) {
 
-			response.append("<statusCode>");
-			response.append(quittanceDetailsResponse.getErrorCode());
-			response.append("</statusCode>");
-
-			response.append("<statusMessage>");
-			response.append(getStatusMessage(quittanceDetailsResponse.getErrorCode()));
-			response.append("</statusMessage>");
+			addNonEmptyField(response, "statusCode", quittanceDetailsResponse.getErrorCode(), signature);
+			addNonEmptyField(response, "statusMessage", getStatusMessage(quittanceDetailsResponse.getErrorCode()), signature);
 
 			if (quittanceDetailsResponse.getInfos() != null) {
 				for (QuittanceDetailsResponse.QuittanceInfo quittanceInfo : quittanceDetailsResponse.getInfos()) {
-					addQuittanceInfo(response, quittanceInfo);
+					addQuittanceInfo(response, quittanceInfo, signature);
 				}
 			}
-
 		} else {
-			response.append("<statusCode>");
-			response.append(statusCode);
-			response.append("</statusCode>");
-
-			response.append("<statusMessage>");
-			response.append(statusMessage);
-			response.append("</statusMessage>");
+			addNonEmptyField(response, "statusCode", statusCode, signature);
+			addNonEmptyField(response, "statusMessage", statusMessage, signature);
 		}
 
 		response.append("</debtInfo>");
-		response.append("<signature>");
-		// TODO add signature for response
-		response.append("</signature>");
+		addSignature(response, signature);
 		response.append("</response>");
 
 		return response.toString();
 	}
 
-	private String buildResponse(String requestId, String statusCode, String statusMessage) {
+	private PrivateKey initKey() throws FlexPayException {
+		PrivateKey key  = null;
+		try {
+			keyStore = getKeyStore();
+
+			if (!keyStore.isKeyEntry(org.flexpay.payments.util.config.ApplicationConfig.getSelfKeyAlias())) {
+				throw new FlexPayException("Unable to load security key for signing response");
+			}
+
+			key = (PrivateKey) keyStore.getKey(org.flexpay.payments.util.config.ApplicationConfig.getSelfKeyAlias(),
+					org.flexpay.payments.util.config.ApplicationConfig.getSelfKeyPassword().toCharArray());
+			if (key == null) {
+				throw new FlexPayException("Unable to load security key for signing response (password is bad)");
+			}
+
+		} catch (Exception e) {
+			throw new FlexPayException("Error loading certificate from keystore", e);
+		}
+		return key;
+	}
+
+	private Signature initSignature() throws FlexPayException {
+
+		PrivateKey key = initKey();
+
+		Signature signature = null;
+		try {
+			signature = Signature.getInstance("SHA1withDSA");
+			signature.initSign(key);
+		} catch (Exception e) {
+			throw new FlexPayException("Error initializing signature");
+		}
+		return signature;
+	}
+
+	private void addSignature(StringBuilder response, Signature signature) throws FlexPayException {
+
+		try {
+			response.append("<signature>");
+			response.append(Hex.encodeHex(signature.sign()));
+			response.append("</signature>");
+		} catch (SignatureException e) {
+			throw new FlexPayException("Error signing response", e);
+		}
+	}
+
+	private String buildResponse(String requestId, String statusCode, String statusMessage) throws FlexPayException {
 
 		return buildResponse(null, requestId ,statusCode, statusMessage);
 	}
 
-	private void addQuittanceInfo(StringBuilder response, QuittanceDetailsResponse.QuittanceInfo quittanceInfo) {
+	private void addQuittanceInfo(StringBuilder response, QuittanceDetailsResponse.QuittanceInfo quittanceInfo, Signature signature) throws FlexPayException {
 
 		response.append("<quittanceInfo>");
-		addNonEmptyField(response, "quittanceNumber", quittanceInfo.getQuittanceNumber());
-		addNonEmptyField(response, "accountNumber", quittanceInfo.getAccountNumber());
-		addNonEmptyField(response, "creationDate", quittanceInfo.getCreationDate());
-		addNonEmptyField(response, "personFirstName", quittanceInfo.getPersonFirstName());
-		addNonEmptyField(response, "personLastName", quittanceInfo.getPersonLastName());
-		addNonEmptyField(response, "personMiddleName", quittanceInfo.getPersonMiddleName());
-		addNonEmptyField(response, "country", quittanceInfo.getCountry());
-		addNonEmptyField(response, "region", quittanceInfo.getRegion());
-		addNonEmptyField(response, "town", quittanceInfo.getTown());
-		addNonEmptyField(response, "streetName", quittanceInfo.getStreetName());
-		addNonEmptyField(response, "streetType", quittanceInfo.getStreetType());
-		addNonEmptyField(response, "buildingNumber", quittanceInfo.getBuildingNumber());
-		addNonEmptyField(response, "buildingBulk", quittanceInfo.getBuildingBulk());
-		addNonEmptyField(response, "apartmentNumber", quittanceInfo.getApartmentNumber());
-		addNonEmptyField(response, "totalToPay", quittanceInfo.getTotalToPay());
-		addNonEmptyField(response, "totalPayed", quittanceInfo.getTotalPayed());
+		addNonEmptyField(response, "quittanceNumber", quittanceInfo.getQuittanceNumber(), signature);
+		addNonEmptyField(response, "accountNumber", quittanceInfo.getAccountNumber(), signature);
+		addNonEmptyField(response, "creationDate", quittanceInfo.getCreationDate(), signature);
+		addNonEmptyField(response, "personFirstName", quittanceInfo.getPersonFirstName(), signature);
+		addNonEmptyField(response, "personLastName", quittanceInfo.getPersonLastName(), signature);
+		addNonEmptyField(response, "personMiddleName", quittanceInfo.getPersonMiddleName(), signature);
+		addNonEmptyField(response, "country", quittanceInfo.getCountry(), signature);
+		addNonEmptyField(response, "region", quittanceInfo.getRegion(), signature);
+		addNonEmptyField(response, "town", quittanceInfo.getTown(), signature);
+		addNonEmptyField(response, "streetName", quittanceInfo.getStreetName(), signature);
+		addNonEmptyField(response, "streetType", quittanceInfo.getStreetType(), signature);
+		addNonEmptyField(response, "buildingNumber", quittanceInfo.getBuildingNumber(), signature);
+		addNonEmptyField(response, "buildingBulk", quittanceInfo.getBuildingBulk(), signature);
+		addNonEmptyField(response, "apartmentNumber", quittanceInfo.getApartmentNumber(), signature);
+		addNonEmptyField(response, "totalToPay", quittanceInfo.getTotalToPay(), signature);
+		addNonEmptyField(response, "totalPayed", quittanceInfo.getTotalPayed(), signature);
 
 		for (QuittanceDetailsResponse.QuittanceInfo.ServiceDetails serviceDetails : quittanceInfo.getDetailses()) {
 			response.append("<serviceDetails>");
 
-			addNonEmptyField(response, "incomingBalance", serviceDetails.getIncomingBalance());
-			addNonEmptyField(response, "outgoingBalance", serviceDetails.getOutgoingBalance());
-			addNonEmptyField(response, "amount", serviceDetails.getAmount());
-			addNonEmptyField(response, "expence", serviceDetails.getExpence());
-			addNonEmptyField(response, "rate", serviceDetails.getRate());
-			addNonEmptyField(response, "recalculation", serviceDetails.getRecalculation());
-			addNonEmptyField(response, "benefit", serviceDetails.getBenifit());
-			addNonEmptyField(response, "subsidy", serviceDetails.getSubsidy());
-			addNonEmptyField(response, "payment", serviceDetails.getPayment());
-			addNonEmptyField(response, "payed", serviceDetails.getPayed());
-			addNonEmptyField(response, "serviceProviderAccount", serviceDetails.getServiceProviderAccount());
-			addNonEmptyField(response, "personFirstName", quittanceInfo.getPersonFirstName());
-			addNonEmptyField(response, "personLastName", quittanceInfo.getPersonLastName());
-			addNonEmptyField(response, "personMiddleName", quittanceInfo.getPersonMiddleName());
-			addNonEmptyField(response, "country", quittanceInfo.getCountry());
-			addNonEmptyField(response, "region", quittanceInfo.getRegion());
-			addNonEmptyField(response, "town", quittanceInfo.getTown());
-			addNonEmptyField(response, "streetName", quittanceInfo.getStreetName());
-			addNonEmptyField(response, "streetType", quittanceInfo.getStreetType());
-			addNonEmptyField(response, "buildingNumber", quittanceInfo.getBuildingNumber());
-			addNonEmptyField(response, "buildingBulk", quittanceInfo.getBuildingBulk());
-			addNonEmptyField(response, "apartmentNumber", quittanceInfo.getApartmentNumber());
+			addNonEmptyField(response, "incomingBalance", serviceDetails.getIncomingBalance(), signature);
+			addNonEmptyField(response, "outgoingBalance", serviceDetails.getOutgoingBalance(), signature);
+			addNonEmptyField(response, "amount", serviceDetails.getAmount(), signature);
+			addNonEmptyField(response, "expence", serviceDetails.getExpence(), signature);
+			addNonEmptyField(response, "rate", serviceDetails.getRate(), signature);
+			addNonEmptyField(response, "recalculation", serviceDetails.getRecalculation(), signature);
+			addNonEmptyField(response, "benefit", serviceDetails.getBenifit(), signature);
+			addNonEmptyField(response, "subsidy", serviceDetails.getSubsidy(), signature);
+			addNonEmptyField(response, "payment", serviceDetails.getPayment(), signature);
+			addNonEmptyField(response, "payed", serviceDetails.getPayed(), signature);
+			addNonEmptyField(response, "serviceProviderAccount", serviceDetails.getServiceProviderAccount(), signature);
+			addNonEmptyField(response, "personFirstName", quittanceInfo.getPersonFirstName(), signature);
+			addNonEmptyField(response, "personLastName", quittanceInfo.getPersonLastName(), signature);
+			addNonEmptyField(response, "personMiddleName", quittanceInfo.getPersonMiddleName(), signature);
+			addNonEmptyField(response, "country", quittanceInfo.getCountry(), signature);
+			addNonEmptyField(response, "region", quittanceInfo.getRegion(), signature);
+			addNonEmptyField(response, "town", quittanceInfo.getTown(), signature);
+			addNonEmptyField(response, "streetName", quittanceInfo.getStreetName(), signature);
+			addNonEmptyField(response, "streetType", quittanceInfo.getStreetType(), signature);
+			addNonEmptyField(response, "buildingNumber", quittanceInfo.getBuildingNumber(), signature);
+			addNonEmptyField(response, "buildingBulk", quittanceInfo.getBuildingBulk(), signature);
+			addNonEmptyField(response, "apartmentNumber", quittanceInfo.getApartmentNumber(), signature);
 
 			if (serviceDetails.getAttributes() != null) {
 				for (QuittanceDetailsResponse.ServiceAttribute serviceAttribute : serviceDetails.getAttributes()) {
 					response.append("<serviceAttribute>");
-					addNonEmptyField(response, "name", serviceAttribute.getName());
-					addNonEmptyField(response, "value", serviceAttribute.getValue());
+					addNonEmptyField(response, "name", serviceAttribute.getName(), signature);
+					addNonEmptyField(response, "value", serviceAttribute.getValue(), signature);
 					response.append("</serviceAttribute>");
 				}
 			}
@@ -257,15 +304,20 @@ public class SearchQuittanceServlet extends HttpServlet {
 		response.append("</quittanceInfo>");
 	}
 
-	private void addNonEmptyField(StringBuilder response, String tagName, Object field) {
+	private void addNonEmptyField(StringBuilder response, String tagName, Object field, Signature signature) throws FlexPayException {
 
 		if (field != null) {
+			String fieldValue = field.toString();
 			response.append("<").append(tagName).append(">");
-			response.append(field);
+			response.append(fieldValue);
 			response.append("</").append(tagName).append(">");
-		}
 
-		
+			try {
+				signature.update(fieldValue.getBytes());
+			} catch (SignatureException e) {
+				throw new FlexPayException("Error updating digital signature with value {}", fieldValue);
+			}
+		}
 	}
 
 	private Digester initParser() {
