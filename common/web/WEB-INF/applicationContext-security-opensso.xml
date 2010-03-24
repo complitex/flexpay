@@ -37,6 +37,7 @@
 						<b:value>/denied*</b:value>
 						<b:value>/resources/*</b:value>
 						<b:value>/confirmationTradingDay*</b:value>
+						<b:value>/search*</b:value>
 					</b:list>
 				</b:property>
 			</b:bean>
