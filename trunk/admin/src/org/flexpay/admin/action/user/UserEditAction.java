@@ -95,6 +95,7 @@ public class UserEditAction extends FPActionSupport {
 			if (userRole == null) {
 				log.warn("Can`t find role with id={}. User role do not change", roleId);
 			} else {
+				currentUserPreferences.setUserRole(userRole);
 				return true;
 			}
 		} else if ((roleId == null || roleId <= 0) && currentUserPreferences.getUserRole() != null) {
