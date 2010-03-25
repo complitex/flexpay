@@ -1,0 +1,1 @@
+insert into JBPM_JOB (CLASS_, VERSION_) values ('P', 1);
