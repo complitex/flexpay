@@ -63,6 +63,7 @@ var FP = {
         var start = 0;
         var end = 0;
         var buffer = [];
+//        console.log("message = " + message);
         for (var i = 0; i < params.length; i++) {
             end = message.indexOf("||", start);
             buffer[buffer.length] = message.substring(start, end);
@@ -70,6 +71,7 @@ var FP = {
             start = end + 2;
         }
         buffer[buffer.length] = message.substring(start);
+//        console.log("buffer.join(\"\") = " + buffer.join(""));
         return buffer.join("");
     },
 
