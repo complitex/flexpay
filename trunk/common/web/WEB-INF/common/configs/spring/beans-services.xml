@@ -350,4 +350,9 @@
 		  class="org.flexpay.common.util.config.UserPreferencesFactoryProxy"
 		  p:holder-ref="userPreferencesFactoryHolder" />
 
+	<bean id="userRoleServiceTarget"
+		  class="org.flexpay.common.service.impl.UserRoleServiceImpl"
+		  autowire-candidate="false"
+		  p:userRoleDao-ref="userRoleDao" />
+
 </beans>

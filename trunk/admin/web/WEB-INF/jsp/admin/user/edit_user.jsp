@@ -34,9 +34,16 @@
 			</td>
 		</tr>
 		<tr>
-			<td class="col"><s:text name="admin.user.password" />:</td>
+			<td class="col"><s:text name="admin.user.role" />:</td>
 			<td class="col">
-				<s:password name="password" maxlength="12" />
+				<select name="roleId" class="form-select">
+						<option value="-1"></option>
+					<s:iterator value="userRoles">
+						<option value="<s:property value="id" />"<s:if test="currentUserPreferences.userRole != null && id == currentUserPreferences.userRole.id"> selected</s:if>>
+							<s:property value="getTranslationName(translations)" />
+						</option>
+					</s:iterator>
+				</select>
 			</td>
 		</tr>
 		<s:if test="#checkOldPassword">
@@ -47,6 +54,18 @@
 				</td>
 			</tr>
 		</s:if>
+		<tr>
+			<td class="col"><s:text name="admin.user.password" />:</td>
+			<td class="col">
+				<s:password name="password" maxlength="12" />
+			</td>
+		</tr>
+		<tr>
+			<td class="col"><s:text name="admin.user.re_enter_password" />:</td>
+			<td class="col">
+				<s:password name="reEnterPassword" maxlength="12" />
+			</td>
+		</tr>
 		<tr>
 			<td colspan="2">
                 <s:submit cssClass="btn-exit" name="submitted" value="%{getText('common.save')}" />

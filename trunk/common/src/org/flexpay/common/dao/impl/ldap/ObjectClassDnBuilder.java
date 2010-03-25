@@ -7,7 +7,7 @@ import org.springframework.ldap.filter.Filter;
 
 import javax.naming.Name;
 
-public class ObjectClassDnBuilder implements DnBuilder {
+public class ObjectClassDnBuilder implements UserPreferencesDnBuilder {
 	/**
 	 * Build relative to base distinguished name that is equals to  ObjectClass
 	 *

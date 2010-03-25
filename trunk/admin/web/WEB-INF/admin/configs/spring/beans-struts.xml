@@ -7,7 +7,7 @@
 		   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
 	<bean id="userListAction"
-		  class="org.flexpay.admin.actions.user.UserListAction"
+		  class="org.flexpay.admin.action.user.UserListAction"
 		  p:preferencesService-ref="userPreferencesService"
 		  scope="prototype" />
 
@@ -16,7 +16,8 @@
           scope="prototype" />
 
 	<bean id="editUserAction"
-		  class="org.flexpay.admin.actions.user.EditUserAction"
+		  class="org.flexpay.admin.action.user.UserEditAction"
+		  p:userRoleService-ref="userRoleService"
 		  p:preferencesService-ref="userPreferencesService"
 		  p:userPreferencesFactory-ref="userPreferencesFactory"
 		  p:crumbNameKey="admin.crumbs.edit_user"

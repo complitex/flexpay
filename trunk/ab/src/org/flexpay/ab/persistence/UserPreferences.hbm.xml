@@ -48,6 +48,12 @@
 				<comment>Preferred listing page size</comment>
 			</column>
 		</property>
+		<many-to-one name="userRole" class="org.flexpay.common.persistence.UserRole"
+					 foreign-key="common_user_role_tbl_user_role_id">
+			<column name="user_role_id">
+				<comment>Optional user role reference</comment>
+			</column>
+		</many-to-one>
 
 		<subclass name="org.flexpay.ab.util.config.AbUserPreferences" discriminator-value="common">
 			<property name="countryFilter">

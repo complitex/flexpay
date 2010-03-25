@@ -63,6 +63,12 @@
 		   overflowToDisk="true"
 		   memoryStoreEvictionPolicy="LRU" />
 
+	<cache name="commonUserRoleFlexpayCache"
+		   maxElementsInMemory="10"
+		   eternal="true"
+		   overflowToDisk="true"
+		   memoryStoreEvictionPolicy="LRU" />
+
 	<cache name="commonMasterIndexCache"
 		   maxElementsInMemory="1"
 		   eternal="true"

@@ -7,7 +7,7 @@ import org.springframework.ldap.filter.EqualsFilter;
 
 import javax.naming.Name;
 
-public class UidDnBuilder implements DnBuilder {
+public class UidDnBuilder implements UserPreferencesDnBuilder {
 
 	/**
 	 * Build relative to base distinguished name that is equals to user uid

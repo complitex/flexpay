@@ -1,6 +1,9 @@
-package org.flexpay.admin.actions.user;
+package org.flexpay.admin.action.user;
 
 import org.apache.commons.lang.StringUtils;
+import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.persistence.UserRole;
+import org.flexpay.common.service.UserRoleService;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.service.UserPreferencesService;
@@ -10,9 +13,13 @@ import org.flexpay.common.util.config.UserPreferencesFactory;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
-public class EditUserAction extends FPActionSupport {
+import java.util.List;
+
+public class UserEditAction extends FPActionSupport {
 	private UserPreferencesService preferencesService;
 	private UserPreferencesFactory userPreferencesFactory;
+
+	private UserRoleService userRoleService;
 
 	private UserPreferences currentUserPreferences;
 
@@ -20,13 +27,19 @@ public class EditUserAction extends FPActionSupport {
 	private String firstName;
 	private String lastName;
 	private String password;
+	private String reEnterPassword;
 	private String oldPassword;
+	private Long roleId;
 
 	private boolean checkOldPassword = false;
+
+	private List<UserRole> userRoles;
 
 	@NotNull
 	@Override
 	protected String doExecute() throws Exception {
+		userRoles = userRoleService.getAllUserRoles();
+
 		if (StringUtils.isEmpty(userName)) {
 			addActionError(getText("admin.error.user.user_name_empty"));
 			return REDIRECT_ERROR;
@@ -53,6 +66,10 @@ public class EditUserAction extends FPActionSupport {
 
 		if (isSubmit()) {
 			if (!doValidate()) {
+				currentUserPreferences.setFirstName(firstName);
+				currentUserPreferences.setLastName(lastName);
+				currentUserPreferences.setFullName(createFullName());
+				setNewUserRole();
 				return INPUT;
 			}
 			try {
@@ -70,6 +87,23 @@ public class EditUserAction extends FPActionSupport {
 		return INPUT;
 	}
 
+	private boolean setNewUserRole() {
+		if (roleId != null && roleId > 0 &&
+			(currentUserPreferences.getUserRole() == null ||
+				!roleId.equals(currentUserPreferences.getUserRole().getId()))) {
+			UserRole userRole = userRoleService.readFull(new Stub<UserRole>(roleId));
+			if (userRole == null) {
+				log.warn("Can`t find role with id={}. User role do not change", roleId);
+			} else {
+				return true;
+			}
+		} else if ((roleId == null || roleId <= 0) && currentUserPreferences.getUserRole() != null) {
+			currentUserPreferences.setUserRole(null);
+			return true;
+		}
+		return false;
+	}
+
 	private void updateUserPreferences() throws FlexPayExceptionContainer {
 		currentUserPreferences.setFirstName(firstName);
 		currentUserPreferences.setLastName(lastName);
@@ -77,6 +111,9 @@ public class EditUserAction extends FPActionSupport {
 		preferencesService.saveGeneralData(currentUserPreferences);
 		if (StringUtils.isNotEmpty(password)) {
 			preferencesService.updatePassword(currentUserPreferences, password);
+		}
+		if (setNewUserRole()) {
+			preferencesService.updateUserRole(currentUserPreferences);
 		}
 	}
 
@@ -92,6 +129,11 @@ public class EditUserAction extends FPActionSupport {
 		if (StringUtils.isEmpty(userName)) {
 			log.error("User name is required parameter");
 			addActionError(getText("admin.error.user.user_name_empty"));
+		}
+		if ((StringUtils.isNotEmpty(password) || StringUtils.isNotEmpty(reEnterPassword)) &&
+				StringUtils.equals(password, reEnterPassword)) {
+			log.error("The passwords you entered do not match");
+			addActionError(getText("admin.error.user.passwords_do_not_match"));
 		}
 		if (StringUtils.isEmpty(password) && StringUtils.isNotEmpty(oldPassword)) {
 			log.error("Password was not change. New password is empty");
@@ -138,8 +180,16 @@ public class EditUserAction extends FPActionSupport {
 		this.lastName = lastName;
 	}
 
+	public void setRoleId(Long roleId) {
+		this.roleId = roleId;
+	}
+
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public void setReEnterPassword(String reEnterPassword) {
+		this.reEnterPassword = reEnterPassword;
 	}
 
 	public void setOldPassword(String oldPassword) {
@@ -156,6 +206,15 @@ public class EditUserAction extends FPActionSupport {
 
 	public boolean isCheckOldPassword() {
 		return checkOldPassword;
+	}
+
+	public List<UserRole> getUserRoles() {
+		return userRoles;
+	}
+
+	@Required
+	public void setUserRoleService(UserRoleService userRoleService) {
+		this.userRoleService = userRoleService;
 	}
 
 	@Required
