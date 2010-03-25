@@ -3,6 +3,8 @@ package org.flexpay.common.dao.impl.ldap;
 import org.flexpay.common.util.config.UserPreferences;
 import org.springframework.ldap.core.DirContextOperations;
 
+import java.util.List;
+
 /**
  * Mapper of LDAP attributes to UserPreferences properties
  */
@@ -41,6 +43,14 @@ public interface UserPreferencesContextMapper {
 	 * @param password Password
 	 */
 	void doMapToContextPassword(DirContextOperations ctx, UserPreferences preferences, String password);
+
+	/**
+	 * Do mapping of password to context attributes
+	 *
+	 * @param ctx		 Context
+	 * @param preferences UserPreferences
+	 */
+	void doMapToContextAccessPermissions(DirContextOperations ctx, UserPreferences preferences, List<String> permissions);
 
 	/**
 	 * Check if this mapper supports supplied object

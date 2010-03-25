@@ -50,6 +50,11 @@ public class UserPreferencesDaoImpl extends HibernateDaoSupport implements UserP
 	}
 
 	@Override
+	public void changeUserRole(UserPreferences preferences) {
+		throw new NotImplementedException();
+	}
+
+	@Override
 	public void delete(UserPreferences preferences) {
 		getHibernateTemplate().delete(preferences);
 	}

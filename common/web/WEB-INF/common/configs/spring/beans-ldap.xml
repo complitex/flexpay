@@ -34,7 +34,8 @@
 
 	<bean id="commonUserPreferencesContextMapper"
 		  autowire-candidate="false"
-		  class="org.flexpay.common.dao.impl.ldap.CommonUserPreferencesContextMapper" />
+		  class="org.flexpay.common.dao.impl.ldap.CommonUserPreferencesContextMapper"
+		  p:userRoleService-ref="userRoleService" />
 
 	<bean id="userPreferencesContextMapper"
 		  factory-bean="compositeUserPreferencesContextMapperFactory"
@@ -48,6 +49,17 @@
 	<bean id="objectClassLdapDnBuilder"
 		  class="org.flexpay.common.dao.impl.ldap.ObjectClassDnBuilder" />
 
+	<bean id="groupRoleDnBuilder"
+		  class="org.flexpay.common.dao.impl.ldap.GroupRoleDnBuilder" />
+
+	<bean id="peopleBaseDnBuilder"
+		  class="org.flexpay.common.dao.impl.ldap.OuDnBuilder"
+		  p:ouDistinguishedName="${ldap.ou.people}" />
+
+	<bean id="groupsBaseDnBuilder"
+		  class="org.flexpay.common.dao.impl.ldap.OuDnBuilder"
+		  p:ouDistinguishedName="${ldap.ou.groups}" />
+
 	<bean id="ldapUserPreferencesDao"
 		  autowire-candidate="false"
 		  lazy-init="true"
@@ -56,6 +68,9 @@
 		  p:mapper-ref="userPreferencesContextMapper"
 		  p:userNameBuilder-ref="uidLdapDnBuilder"
 		  p:userGroupBuilder-ref="objectClassLdapDnBuilder"
+		  p:accessPermissionsBuilder-ref="groupRoleDnBuilder"
+		  p:peopleBuilder-ref="peopleBaseDnBuilder"
+		  p:groupsBuilder-ref="groupsBaseDnBuilder"
 		  p:url="${ldap.url}"
 		  p:base="${ldap.base}"
 		  p:userPreferencesFactory-ref="userPreferencesFactory" />

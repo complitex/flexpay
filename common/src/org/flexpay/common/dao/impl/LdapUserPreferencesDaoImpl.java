@@ -1,31 +1,24 @@
 package org.flexpay.common.dao.impl;
 
 import org.flexpay.common.dao.UserPreferencesDao;
-import org.flexpay.common.dao.impl.ldap.DnBuilder;
-import org.flexpay.common.dao.impl.ldap.LdapConstants;
-import org.flexpay.common.dao.impl.ldap.UserPreferencesContextMapper;
+import org.flexpay.common.dao.impl.ldap.*;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.config.UserPreferences;
 import org.flexpay.common.util.config.UserPreferencesFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
-import org.springframework.ldap.control.SortControlDirContextProcessor;
 import org.springframework.ldap.core.DirContextAdapter;
 import org.springframework.ldap.core.DirContextOperations;
 import org.springframework.ldap.core.DistinguishedName;
 import org.springframework.ldap.core.simple.AbstractParameterizedContextMapper;
 import org.springframework.ldap.core.simple.SimpleLdapTemplate;
-import org.springframework.ldap.core.support.AggregateDirContextProcessor;
 import org.springframework.ldap.core.support.LdapContextSource;
-import org.springframework.ldap.filter.AndFilter;
 
 import javax.naming.Name;
 import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
-import javax.naming.directory.BasicAttribute;
 import javax.naming.directory.DirContext;
-import javax.naming.directory.ModificationItem;
 import java.util.List;
 import java.util.Set;
 
@@ -41,8 +34,14 @@ public class LdapUserPreferencesDaoImpl implements UserPreferencesDao {
 	private Logger log = LoggerFactory.getLogger(getClass());
 
 	private SimpleLdapTemplate ldapTemplate;
-	private DnBuilder userNameBuilder;
-	private DnBuilder userGroupBuilder;
+
+	private UserPreferencesDnBuilder userNameBuilder;
+	private UserPreferencesDnBuilder userGroupBuilder;
+	private UserPreferencesDnBuilder accessPermissionsBuilder;
+
+	private DnBuilder peopleBuilder;
+	private DnBuilder groupsBuilder;
+
 	private UserPreferencesContextMapper mapper;
 	private UserPreferencesFactory userPreferencesFactory;
 
@@ -80,6 +79,15 @@ public class LdapUserPreferencesDaoImpl implements UserPreferencesDao {
 				log.error("Failed getting attribute ids", e);
 				return CollectionUtils.set();
 			}
+		}
+	}
+
+	private final class AccessPermissionsContextMapper extends AbstractParameterizedContextMapper<String> {
+
+		@Override
+		protected String doMapFromContext(DirContextOperations ctx) {
+			log.debug("Access permission dn: {}", ctx.getDn());
+			return "cn=" + ctx.getStringAttribute("cn") +",ou=groups,dc=opensso,dc=java,dc=net";
 		}
 	}
 
@@ -143,19 +151,36 @@ public class LdapUserPreferencesDaoImpl implements UserPreferencesDao {
 	}
 
 	@Override
+	public void changeUserRole(UserPreferences person) {
+		DirContextOperations ctx = ldapTemplate.lookupContext(buildDn(person));
+		List<String> accessPermissions;
+		if (person.getUserRole() != null) {
+			accessPermissions = ldapTemplate.search(groupsBuilder.buildDn(),
+					accessPermissionsBuilder.getNameFilter(person.getUserRole().getExternalId()).encode(), new AccessPermissionsContextMapper());
+			log.debug("Found permissions: {}", accessPermissions);
+		} else {
+			accessPermissions = CollectionUtils.list();
+			log.debug("Remove permissions");
+		}
+
+		mapToContextAccessPermissionsPreferences(person, ctx, accessPermissions);
+		ldapTemplate.modifyAttributes(ctx);
+	}
+
+	@Override
 	public void delete(UserPreferences preferences) {
 		ldapTemplate.unbind(preferences.getUsername());
 	}
 
 	@Override
 	public List<UserPreferences> listAllUser() {
-		return ldapTemplate.search("", userGroupBuilder.getNameFilter(LdapConstants.OBJECT_CLASS).encode(), new PersonContextMapper());
+		return ldapTemplate.search(peopleBuilder.buildDn(), userGroupBuilder.getNameFilter(LdapConstants.OBJECT_CLASS).encode(), new PersonContextMapper());
 	}
 
 	@Override
 	public UserPreferences findByUserName(String userName) {
 
-		List<UserPreferences> persons = ldapTemplate.search("",
+		List<UserPreferences> persons = ldapTemplate.search(peopleBuilder.buildDn(),
 				userNameBuilder.getNameFilter(userName).encode(), new PersonContextMapper());
 		if (persons.isEmpty()) {
 			return null;
@@ -167,7 +192,10 @@ public class LdapUserPreferencesDaoImpl implements UserPreferencesDao {
 	}
 
 	private Name buildDn(UserPreferences person) {
-		return userNameBuilder.buildDn(person);
+		DistinguishedName dn = new DistinguishedName();
+		dn.append(new DistinguishedName(peopleBuilder.buildDn())).
+				append(new DistinguishedName(userNameBuilder.buildDn(person)));
+		return dn;
 	}
 
 	private void mapToContextUserEditedPreferences(UserPreferences preferences, DirContextOperations ctx) {
@@ -182,19 +210,35 @@ public class LdapUserPreferencesDaoImpl implements UserPreferencesDao {
 		mapper.doMapToContextPassword(ctx, preferences, password);
 	}
 
+	private void mapToContextAccessPermissionsPreferences(UserPreferences preferences, DirContextOperations ctx, List<String> permissions) {
+		mapper.doMapToContextAccessPermissions(ctx, preferences, permissions);
+	}
+
 	@Required
 	public void setLdapTemplate(SimpleLdapTemplate ldapTemplate) {
 		this.ldapTemplate = ldapTemplate;
 	}
 
 	@Required
-	public void setUserNameBuilder(DnBuilder userNameBuilder) {
+	public void setUserNameBuilder(UserPreferencesDnBuilder userNameBuilder) {
 		this.userNameBuilder = userNameBuilder;
 	}
 
 	@Required
-	public void setUserGroupBuilder(DnBuilder userGroupBuilder) {
+	public void setUserGroupBuilder(UserPreferencesDnBuilder userGroupBuilder) {
 		this.userGroupBuilder = userGroupBuilder;
+	}
+
+	public void setAccessPermissionsBuilder(UserPreferencesDnBuilder accessPermissionsBuilder) {
+		this.accessPermissionsBuilder = accessPermissionsBuilder;
+	}
+
+	public void setPeopleBuilder(DnBuilder peopleBuilder) {
+		this.peopleBuilder = peopleBuilder;
+	}
+
+	public void setGroupsBuilder(DnBuilder groupsBuilder) {
+		this.groupsBuilder = groupsBuilder;
 	}
 
 	@Required
@@ -207,10 +251,12 @@ public class LdapUserPreferencesDaoImpl implements UserPreferencesDao {
 		this.userPreferencesFactory = userPreferencesFactory;
 	}
 
+	@Required
 	public void setUrl(String url) {
 		this.url = url;
 	}
 
+	@Required
 	public void setBase(String base) {
 		this.base = base;
 	}

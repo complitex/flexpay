@@ -83,4 +83,12 @@ public interface UserPreferencesService extends UserDetailsService {
 	 *         if users could not be found for a repository-specific reason
 	 */
 	List<UserPreferences> listAllUser() throws DataAccessException;
+
+	/**
+	 * Update user role
+	 * @param preferences UserPreferences to update
+	 * @return Updated preferences back
+	 * @throws FlexPayExceptionContainer if preferences validation fails
+	 */
+	UserPreferences updateUserRole(@NotNull UserPreferences preferences) throws FlexPayExceptionContainer;
 }

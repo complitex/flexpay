@@ -304,4 +304,14 @@
 		  class="org.flexpay.common.dao.registry.impl.RegistryDaoExtImpl"
 		  p:hibernateTemplate-ref="hibernateTemplate" />
 
+	<bean id="userRoleDao" parent="abstractDao">
+		<property name="proxyInterfaces"
+				  value="org.flexpay.common.dao.UserRoleDao" />
+		<property name="target">
+			<bean parent="abstractDaoTarget">
+				<constructor-arg value="org.flexpay.common.persistence.UserRole" />
+			</bean>
+		</property>
+	</bean>
+
 </beans>

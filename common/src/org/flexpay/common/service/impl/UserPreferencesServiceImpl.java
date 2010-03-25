@@ -139,6 +139,17 @@ public class UserPreferencesServiceImpl implements UserPreferencesService, Initi
 		return userPreferences;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public UserPreferences updateUserRole(@NotNull UserPreferences preferences) throws FlexPayExceptionContainer {
+		log.debug("Update user role user preferences {}", preferences );
+
+		getUserPreferencesDao().changeUserRole(preferences);
+		return preferences;
+	}
+
 	@SuppressWarnings ({"ThrowableInstanceNeverThrown"})
 	protected void validate(UserPreferences preferences) throws FlexPayExceptionContainer {
 		FlexPayExceptionContainer container = new FlexPayExceptionContainer();

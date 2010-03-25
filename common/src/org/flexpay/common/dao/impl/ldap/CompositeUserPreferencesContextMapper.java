@@ -64,6 +64,16 @@ public class CompositeUserPreferencesContextMapper implements UserPreferencesCon
 	}
 
 	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void doMapToContextAccessPermissions(DirContextOperations ctx, UserPreferences preferences, List<String> permissions) {
+		for (UserPreferencesContextMapper mapper : mappers) {
+			mapper.doMapToContextAccessPermissions(ctx, preferences, permissions);
+		}
+	}
+
+	/**
 	 * Check if this mapper supports supplied object
 	 *
 	 * @param preferences UserPreferences

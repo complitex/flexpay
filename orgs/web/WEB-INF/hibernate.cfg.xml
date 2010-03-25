@@ -28,6 +28,7 @@
 		<mapping resource="org/flexpay/common/persistence/Currency.hbm.xml" />
 		<mapping resource="org/flexpay/common/persistence/UserPreferences.hbm.xml" />
 		<mapping resource="org/flexpay/common/persistence/UserPreferencesSearch.hbm.xml" />
+		<mapping resource="org/flexpay/common/persistence/UserRole.hbm.xml" />
 
 		<mapping resource="org/flexpay/orgs/persistence/Cashbox.hbm.xml" />
 		<mapping resource="org/flexpay/orgs/persistence/Bank.hbm.xml" />

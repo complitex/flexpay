@@ -351,6 +351,22 @@
         primary key (id)
     );
 
+    create table common_user_role_name_translations_tbl (
+        id bigint not null auto_increment,
+        name varchar(255),
+        user_role_id bigint not null,
+        language_id bigint not null,
+        primary key (id),
+        unique (user_role_id, language_id)
+    );
+
+    create table common_user_roles_tbl (
+        id bigint not null auto_increment,
+        status integer not null,
+        external_id varchar(255) not null unique,
+        primary key (id)
+    );
+
     alter table common_currency_names_tbl 
         add index FK_common_currency_names_tbl_currency_info_id (currency_info_id), 
         add constraint FK_common_currency_names_tbl_currency_info_id 
@@ -566,3 +582,15 @@
         add constraint FK_common_registry_records_tbl_record_status_id 
         foreign key (record_status_id) 
         references common_registry_record_statuses_tbl (id);
+
+    alter table common_user_role_name_translations_tbl 
+        add index FKB85A9CACA555113A (user_role_id), 
+        add constraint FKB85A9CACA555113A 
+        foreign key (user_role_id) 
+        references common_user_roles_tbl (id);
+
+    alter table common_user_role_name_translations_tbl 
+        add index FKB85A9CAC61F37403 (language_id), 
+        add constraint FKB85A9CAC61F37403 
+        foreign key (language_id) 
+        references common_languages_tbl (id);

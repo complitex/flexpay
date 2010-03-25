@@ -12,4 +12,5 @@ public abstract class Roles {
 	public static final String PROCESS_DELETE = PREFIX + "PROCESS_DELETE";
 	public static final String PROCESS_DEFINITION_UPLOAD_NEW = PREFIX + "PROCESS_DEFINITION_UPLOAD_NEW";
 
+	public static final String USER_ROLE_READ = PREFIX + "USER_ROLE_READ";
 }

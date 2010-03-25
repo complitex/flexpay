@@ -19,6 +19,8 @@ public interface UserPreferencesDao {
 
 	boolean checkUserPassword(UserPreferences preferences, String password);
 
+	void changeUserRole(UserPreferences preferences);
+
 	void delete(UserPreferences preferences);
 
 	UserPreferences findByUserName(String uid);

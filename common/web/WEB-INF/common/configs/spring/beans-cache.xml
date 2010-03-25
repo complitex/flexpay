@@ -128,4 +128,22 @@
 		<property name="target" ref="registryFPFileTypeServiceTarget" />
 	</bean>
 
+	<bean id="userRoleService"
+		  class="org.springmodules.cache.interceptor.proxy.CacheProxyFactoryBean">
+		<property name="cacheProviderFacade" ref="cacheProviderFacade" />
+		<property name="cachingModels">
+			<props>
+				<prop key="readFull">cacheName=commonUserRoleFlexpayCache</prop>
+			</props>
+		</property>
+		<property name="flushingModels">
+			<props>
+				<prop key="create">cacheNames=commonUserRoleFlexpayCache;flushBeforeMethodExecution=true</prop>
+				<prop key="update">cacheNames=commonUserRoleFlexpayCache;flushBeforeMethodExecution=true</prop>
+				<prop key="disable">cacheNames=commonUserRoleFlexpayCache;flushBeforeMethodExecution=true</prop>
+			</props>
+		</property>
+		<property name="target" ref="userRoleServiceTarget" />
+	</bean>
+
 </beans>

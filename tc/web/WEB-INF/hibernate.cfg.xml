@@ -22,6 +22,7 @@
 		<mapping resource="org/flexpay/common/persistence/file/FPFile.hbm.xml" />
 		<mapping resource="org/flexpay/common/persistence/ValueObject.hbm.xml" />
 		<mapping resource="org/flexpay/common/persistence/registry/Registry.hbm.xml" />
+		<mapping resource="org/flexpay/common/persistence/UserRole.hbm.xml" />
 		
 		<mapping resource="org/flexpay/common/persistence/registry/RegistryProperties.hbm.xml" />
 		<mapping resource="org/flexpay/common/persistence/Gender.hbm.xml" />

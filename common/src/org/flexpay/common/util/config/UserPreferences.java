@@ -6,6 +6,7 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.flexpay.common.actions.breadcrumbs.Crumb;
 import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.common.persistence.Language;
+import org.flexpay.common.persistence.UserRole;
 import org.flexpay.common.util.LanguageUtil;
 import org.flexpay.common.util.SecurityUtil;
 import org.springframework.security.GrantedAuthority;
@@ -30,6 +31,8 @@ public class UserPreferences extends DomainObject implements Serializable, UserD
 	private String firstName;
 
 	private Locale locale;
+
+	private UserRole userRole;
 
 	private Integer pageSize = 20;
 	private String testProp = "setup-me";
@@ -157,6 +160,14 @@ public class UserPreferences extends DomainObject implements Serializable, UserD
 
 	public void setFirstName(String firstName) {
 		this.firstName = firstName;
+	}
+
+	public UserRole getUserRole() {
+		return userRole;
+	}
+
+	public void setUserRole(UserRole userRole) {
+		this.userRole = userRole;
 	}
 
 	/**

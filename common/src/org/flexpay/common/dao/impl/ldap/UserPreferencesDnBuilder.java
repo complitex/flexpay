@@ -1,5 +1,6 @@
 package org.flexpay.common.dao.impl.ldap;
 
+import org.flexpay.common.util.config.UserPreferences;
 import org.springframework.ldap.filter.Filter;
 
 import javax.naming.Name;
@@ -7,18 +8,21 @@ import javax.naming.Name;
 /**
  * Base interface for distinguished names builders
  */
-public interface DnBuilder {
+public interface UserPreferencesDnBuilder {
+
 	/**
 	 * Build relative to base distinguished name
 	 *
+	 * @param preferences UserPreferences
 	 * @return Distinguished name
 	 */
-	Name buildDn();
+	Name buildDn(UserPreferences preferences);
 
 	/**
-	 * Build Filter
+	 * Build Filter from name
 	 *
+	 * @param  name Name
 	 * @return Filter object
 	 */
-	Filter getNameFilter();
+	Filter getNameFilter(String name);
 }

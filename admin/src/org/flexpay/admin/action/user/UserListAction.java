@@ -1,4 +1,4 @@
-package org.flexpay.admin.actions.user;
+package org.flexpay.admin.action.user;
 
 import org.flexpay.common.actions.FPActionWithPagerSupport;
 import org.flexpay.common.service.UserPreferencesService;

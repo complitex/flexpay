@@ -1,0 +1,72 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+		"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="org.flexpay.common.persistence">
+
+	<class name="org.flexpay.common.persistence.UserRole" table="common_user_roles_tbl" optimistic-lock="version">
+		<id name="id" column="id">
+			<generator class="native" />
+		</id>
+		<property name="status" not-null="true" />
+		<property name="externalId" column="external_id" not-null="true" unique="true" />
+		<set name="translations" inverse="true" cascade="all">
+			<key column="user_role_id" not-null="true" />
+			<one-to-many class="org.flexpay.common.persistence.UserRoleTranslation" />
+		</set>
+	</class>
+
+	<class name="org.flexpay.common.persistence.UserRoleTranslation" table="common_user_role_name_translations_tbl"
+		   optimistic-lock="version">
+		<id name="id" column="id">
+			<generator class="native" />
+		</id>
+		<property name="name" />
+		<properties name="lang_user_role_pair" unique="true">
+			<many-to-one name="translatable" class="org.flexpay.common.persistence.UserRole" column="user_role_id"
+						 not-null="true" />
+			<many-to-one name="lang" column="language_id" not-null="true" />
+		</properties>
+	</class>
+
+	<query name="UserRole.listUserRoles">
+        select distinct c
+		from UserRole c
+            left join fetch c.translations
+        where c.status=?
+	</query>
+
+	<query name="UserRole.readFull">
+		from UserRole c
+			left join fetch c.translations
+		where c.id=?
+	</query>
+
+	<query name="UserRole.readFullCollection">
+		from UserRole c
+		left join fetch c.translations
+		where c.id in (:ids)
+	</query>
+
+	<query name="UserRole.findByQuery">
+		select distinct c
+		from UserRole c
+		left join fetch c.translations tr
+		where upper(tr.name) like ? and c.status=0
+	</query>
+
+	<query name="UserRole.findByNameAndLanguage">
+		select distinct c
+		from UserRole c
+		left join c.translations tr
+		where tr.name=? and tr.lang.id=? and c.status=0
+	</query>
+
+	<query name="UserRole.findByExternalId">
+		from UserRole c
+		left join fetch c.translations
+		where c.externalId=?
+	</query>
+
+</hibernate-mapping>

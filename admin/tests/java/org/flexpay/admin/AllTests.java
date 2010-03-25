@@ -9,7 +9,7 @@ import org.junit.runners.Suite;
 
 @RunWith (Suite.class)
 @Suite.SuiteClasses ({
-		org.flexpay.admin.actions.AllTests.class,
+		org.flexpay.admin.action.AllTests.class,
 		org.flexpay.admin.persistence.AllTests.class,
 		org.flexpay.admin.service.AllTests.class
 })
