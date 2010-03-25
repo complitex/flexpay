@@ -49,15 +49,10 @@ function FPFileUploadForm(formId, options) {
 
     $("input[type=file]").each(function() {
         if (this.form.id == options.formId && test == "") {
-            if ($.browser.msie) {
-                this.onchange = function() {
-                    FPFile.fileForms[options.formId].setFile(this);
-                };
-            } else {
-                this.setAttribute("onchange", "FPFile.fileForms[\"" + options.formId + "\"].setFile(this);");
-            }
             test = this.name;
-            test1 = $(this);
+            test1 = $(this).change(function() {
+                FPFile.fileForms[options.formId].setFile(this);
+            });
         }
     });
 
@@ -236,13 +231,9 @@ var FPFile = {
 
     createFileUploadForm : function(formId, submitId, options) {
         this.fileForms[formId] = new FPFileUploadForm(formId, options);
-        if ($.browser.msie) {
-            $("#" + submitId).get(0).onclick = function() {
-                FPFile.fileForms[formId].submitForm();
-            };
-        } else {
-            $("#" + submitId).attr("onclick", "FPFile.fileForms[\"" + formId + "\"].submitForm();");
-        }
+        $("#" + submitId).click(function() {
+            FPFile.fileForms[formId].submitForm();
+        });
     }
 
 };

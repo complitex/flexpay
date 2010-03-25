@@ -12,5 +12,5 @@
         statusError: "<s:text name="common.file_upload.progress_bar.error" />",
         confirmExit: "<s:text name="common.file_upload.confirm_exit" />"
     };
-
+    
 </script>
