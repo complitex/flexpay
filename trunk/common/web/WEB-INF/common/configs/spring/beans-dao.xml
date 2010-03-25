@@ -19,10 +19,20 @@
 		  class="org.flexpay.common.dao.impl.UserPreferencesDaoImpl"
 		  p:hibernateTemplate-ref="hibernateTemplate" />
 
-	<bean id="correctionsDao" class="org.flexpay.common.dao.impl.CorrectionsDaoImpl">
+	<bean id="correctionDaoExt" class="org.flexpay.common.dao.impl.CorrectionDaoExtImpl">
 		<property name="hibernateTemplate" ref="hibernateTemplate" />
 		<property name="dataSource" ref="dataSource" />
 	</bean>
+
+    <bean id="correctionDao" parent="abstractDao">
+        <property name="proxyInterfaces"
+                  value="org.flexpay.common.dao.CorrectionDao" />
+        <property name="target">
+            <bean parent="abstractDaoTarget">
+                <constructor-arg value="org.flexpay.common.persistence.DataCorrection" />
+            </bean>
+        </property>
+    </bean>
 
 	<bean id="sequenceDao" parent="abstractDao">
 		<property name="proxyInterfaces"

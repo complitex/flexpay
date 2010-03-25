@@ -10,6 +10,10 @@
 			<generator class="native" />
 		</id>
 		<property name="description" not-null="true" />
+        <set name="dataCorrections" inverse="true" cascade="all-delete-orphan">
+            <key column="data_source_description_id" not-null="true" />
+            <one-to-many class="DataCorrection" />
+        </set>
 	</class>
 
 	<class name="DataCorrection" table="common_data_corrections_tbl">
@@ -52,6 +56,35 @@
 		from DataSourceDescription d
 		where d.description='Master-Index'
 	</query>
+
+    <query name="DataSourceDescription.find">
+        from DataSourceDescription
+    </query>
+
+    <query name="DataSourceDescription.findAvailableDataSources">
+        from DataSourceDescription dsd
+            left join fetch dsd.dataCorrections dc
+        where dc.internalObjectId=? and dc.objectType=?
+    </query>
+
+    <query name="DataCorrection.readFull">
+        from DataCorrection dc
+            inner join fetch dc.dataSourceDescription
+        where dc.id=?
+    </query>
+
+    <query name="DataCorrection.find">
+        select distinct dc
+        from DataCorrection dc
+            inner join fetch dc.dataSourceDescription
+        where dc.internalObjectId=? and dc.objectType=?
+    </query>
+
+    <query name="DataCorrection.find.count">
+        select count(*)
+        from DataCorrection dc
+        where dc.internalObjectId=? and dc.objectType=?
+    </query>
 
 	<query name="DataCorrection.getInternalId" read-only="true" cache-mode="ignore" cacheable="false">
 		select new java.lang.Long(c.internalObjectId)

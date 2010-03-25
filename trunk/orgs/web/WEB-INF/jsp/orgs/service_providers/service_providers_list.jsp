@@ -24,20 +24,21 @@
     <s:iterator value="providers" status="status">
         <tr valign="middle" class="cols_1">
             <td class="col" width="1%">
-                <s:property value="%{#status.index + pager.thisPageFirstElementNumber + 1}" />
+                <s:property value="#status.index + pager.thisPageFirstElementNumber + 1" />
             </td>
             <td class="col" width="1%">
-                <input type="checkbox" name="objectIds" value="<s:property value="%{id}" />" />
+                <input type="checkbox" name="objectIds" value="<s:property value="id" />" />
             </td>
             <td class="col">
-                <a href="<s:url action="serviceProviderView"><s:param name="provider.id" value="%{id}" /></s:url>">
-                    <s:property value="getTranslation(organization.names).name" />
+                <a href="<s:url action="serviceProviderView"><s:param name="provider.id" value="id" /></s:url>">
+                    <s:property value="getTranslationName(organization.names)" />
                 </a>
             </td>
-            <td class="col"><s:property value="getTranslation(descriptions).name" /></td>
+            <td class="col"><s:property value="getTranslationName(descriptions)" /></td>
             <td class="col"><s:property value="organization.id" /></td>
             <td class="col">
-                <a href="<s:url action="serviceProviderEdit"><s:param name="provider.id" value="%{id}" /></s:url>"><s:text name="common.edit" /></a>
+                <a href="<s:url action="serviceProviderCorrectionsList"><s:param name="provider.id" value="id" /></s:url>"><s:text name="orgs.service_provider.view_corrections" /></a>&nbsp;
+                <a href="<s:url action="serviceProviderEdit"><s:param name="provider.id" value="id" /></s:url>"><s:text name="common.edit" /></a>
             </td>
         </tr>
     </s:iterator>

@@ -9,6 +9,7 @@ import org.flexpay.common.persistence.filter.BeginDateFilter;
 import org.flexpay.common.persistence.filter.EndDateFilter;
 import org.flexpay.common.persistence.filter.MeasureUnitFilter;
 import org.flexpay.common.service.MeasureUnitService;
+import org.flexpay.common.util.DateUtil;
 import org.flexpay.common.util.config.ApplicationConfig;
 import org.flexpay.orgs.persistence.filters.ServiceProviderFilter;
 import org.flexpay.orgs.service.ServiceProviderService;
@@ -26,6 +27,7 @@ import java.util.Map;
 import static org.flexpay.common.persistence.Stub.stub;
 import static org.flexpay.common.util.CollectionUtils.map;
 import static org.flexpay.common.util.CollectionUtils.treeMap;
+import static org.flexpay.common.util.DateUtil.now;
 import static org.flexpay.common.util.config.ApplicationConfig.getLanguages;
 
 /**
@@ -109,6 +111,10 @@ public class ServiceEditAction extends FPActionSupport {
             log.warn("ServiceProviderFilter is not correct");
             addActionError(getText("payments.error.service.service_type_filter_is_not_correct"));
         }
+        if (beginDateFilter == null || !beginDateFilter.needFilter()) {
+            log.warn("BeginDateFilter is not correct");
+            addActionError(getText("payments.error.service.begin_date_filter_is_required"));
+        }
 
         return !hasActionErrors();
     }
@@ -126,6 +132,17 @@ public class ServiceEditAction extends FPActionSupport {
     }
 
     private void initFilters() throws Exception {
+
+        if (beginDateFilter == null) {
+            log.warn("BeginDateFilter parameter is null");
+            beginDateFilter = new BeginDateFilter();
+        }
+
+        if (endDateFilter == null) {
+            log.warn("EndDateFilter parameter is null");
+            endDateFilter = new EndDateFilter();
+        }
+
         serviceProviderFilter = providerService.initServiceProvidersFilter(serviceProviderFilter);
         serviceTypeFilter = serviceTypeService.initFilter(serviceTypeFilter);
         parentServiceFilter = spService.initParentServicesFilter(parentServiceFilter);
@@ -205,7 +222,9 @@ public class ServiceEditAction extends FPActionSupport {
 			if (service.getMeasureUnit() != null) {
 				measureUnitFilter.setSelectedId(service.getMeasureUnit().getId());
 			}
-		}
+		} else {
+            beginDateFilter.setDate(now());
+        }
 	}
 
 	@Override

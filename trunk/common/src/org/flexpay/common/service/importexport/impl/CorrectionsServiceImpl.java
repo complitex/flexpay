@@ -1,6 +1,8 @@
 package org.flexpay.common.service.importexport.impl;
 
-import org.flexpay.common.dao.CorrectionsDao;
+import org.flexpay.common.dao.CorrectionDao;
+import org.flexpay.common.dao.CorrectionDaoExt;
+import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.persistence.DataCorrection;
 import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.persistence.DomainObject;
@@ -14,13 +16,17 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.Set;
+
 @Transactional (readOnly = true)
 public class CorrectionsServiceImpl implements CorrectionsService {
 
 	private Logger log = LoggerFactory.getLogger(getClass());
 
 	private ClassToTypeRegistry typeRegistry;
-	private CorrectionsDao correctionsDao;
+	private CorrectionDaoExt correctionDaoExt;
+    private CorrectionDao correctionDao;
 
 	/**
 	 * Create data correction
@@ -28,8 +34,9 @@ public class CorrectionsServiceImpl implements CorrectionsService {
 	 * @param correction DataCorrection
 	 */
 	@Transactional (readOnly = false)
+    @Override
 	public void save(DataCorrection correction) {
-		DataCorrection corr = correctionsDao.findCorrection(
+		DataCorrection corr = correctionDaoExt.findCorrection(
 				correction.getExternalId(), correction.getObjectType(), correction.getDataSourceDescriptionStub());
 		if (corr != null) {
 			if (corr.getInternalObjectId().equals(correction.getInternalObjectId())) {
@@ -40,22 +47,44 @@ public class CorrectionsServiceImpl implements CorrectionsService {
 			corr.setInternalObjectId(correction.getInternalObjectId());
 			correction = corr;
 		}
-		correctionsDao.save(correction);
+		correctionDaoExt.save(correction);
 	}
 
-	/**
+    @Override
+    public List<DataCorrection> find(Long internalId, int type, @NotNull Page<DataCorrection> pager) {
+        return correctionDao.find(internalId, type, pager);
+    }
+
+    @Override
+    public DataCorrection read(Stub<DataCorrection> stub) {
+        return correctionDao.readFull(stub.getId());
+    }
+
+    /**
 	 * Delete correction
 	 *
 	 * @param correction Data correction to delete
 	 */
 	@Transactional (readOnly = false)
+    @Override
 	public void delete(@NotNull DataCorrection correction) {
 		if (correction.isNotNew()) {
-			correctionsDao.delete(correction);
+			correctionDaoExt.delete(correction);
 		}
 	}
 
-	/**
+    @Transactional (readOnly = false)
+    @Override
+    public void delete(@NotNull Set<Long> objectIds, int type) {
+        for (Long id : objectIds) {
+            DataCorrection correction = correctionDao.read(id);
+            if (correction != null) {
+                correctionDao.delete(correction);
+            }
+        }
+    }
+
+    /**
 	 * Find domain object by its external data source id
 	 *
 	 * @param externalId External id
@@ -64,9 +93,10 @@ public class CorrectionsServiceImpl implements CorrectionsService {
 	 * @return DomainObject
 	 */
 	@Nullable
+    @Override
 	public <T extends DomainObject> Stub<T> findCorrection(String externalId, Class<T> cls, Stub<DataSourceDescription> sd) {
 		int type = typeRegistry.getType(cls);
-		return correctionsDao.findCorrection(externalId, type, cls, sd);
+		return correctionDaoExt.findCorrection(externalId, type, cls, sd);
 	}
 
 	/**
@@ -77,9 +107,10 @@ public class CorrectionsServiceImpl implements CorrectionsService {
 	 * @param sd		 External data source description
 	 * @return DomainObject
 	 */
+    @Override
 	public boolean existsCorrection(String externalId, Class<? extends DomainObject> cls, Stub<DataSourceDescription> sd) {
 		int type = typeRegistry.getType(cls);
-		return correctionsDao.existsCorrection(externalId, type, sd);
+		return correctionDaoExt.existsCorrection(externalId, type, sd);
 	}
 
 	/**
@@ -91,10 +122,11 @@ public class CorrectionsServiceImpl implements CorrectionsService {
 	 * @return stub for a new DataCorrection
 	 */
 	@NotNull
+    @Override
 	public DataCorrection getStub(String externalId, DomainObject obj, Stub<DataSourceDescription> sourceDescription) {
 
 		int type = typeRegistry.getType(obj.getClass());
-		DataCorrection correction = correctionsDao.findCorrection(externalId, type, sourceDescription);
+		DataCorrection correction = correctionDaoExt.findCorrection(externalId, type, sourceDescription);
 		if (correction == null) {
 			correction = new DataCorrection();
 		}
@@ -107,8 +139,9 @@ public class CorrectionsServiceImpl implements CorrectionsService {
 		return correction;
 	}
 
+    @Override
 	public String getExternalId(Long internalId, int type, Stub<DataSourceDescription> dataSourceDescriptionStub) {
-		return correctionsDao.getExternalId(internalId, type, dataSourceDescriptionStub.getId());
+		return correctionDaoExt.getExternalId(internalId, type, dataSourceDescriptionStub.getId());
 	}
 
 	/**
@@ -119,8 +152,9 @@ public class CorrectionsServiceImpl implements CorrectionsService {
 	 * @return External id that if found, or <code>null</code> otherwise
 	 */
 	@Nullable
+    @Override
 	public <T extends DomainObject> String getExternalId(@NotNull T obj, Stub<DataSourceDescription> sd) {
-		return correctionsDao.getExternalId(obj.getId(), typeRegistry.getType(obj.getClass()), sd.getId());
+		return correctionDaoExt.getExternalId(obj.getId(), typeRegistry.getType(obj.getClass()), sd.getId());
 	}
 
 	@Required
@@ -129,8 +163,12 @@ public class CorrectionsServiceImpl implements CorrectionsService {
 	}
 
 	@Required
-	public void setCorrectionsDao(CorrectionsDao correctionsDao) {
-		this.correctionsDao = correctionsDao;
+	public void setCorrectionDaoExt(CorrectionDaoExt correctionDaoExt) {
+		this.correctionDaoExt = correctionDaoExt;
 	}
 
+    @Required
+    public void setCorrectionDao(CorrectionDao correctionDao) {
+        this.correctionDao = correctionDao;
+    }
 }

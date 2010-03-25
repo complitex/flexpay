@@ -23,7 +23,7 @@
         </tr>
     </s:iterator>
     <tr>
-        <td colspan="3" height="3" bgcolor="#4a4f4f"/>
+        <td colspan="3" height="3" bgcolor="#4a4f4f"></td>
     </tr>
     <tr class="cols_1">
         <td class="col_1s"><s:text name="eirc.organization" />:</td>
@@ -38,13 +38,16 @@
         </td>
     </tr>
     <tr>
-        <td colspan="3" height="3" bgcolor="#4a4f4f"/>
+        <td colspan="3" height="3" bgcolor="#4a4f4f"></td>
     </tr>
     <tr>
         <td colspan="3">
             <input type="button" class="btn-exit"
                    onclick="window.location='<s:url action="serviceProviderEdit"><s:param name="provider.id" value="%{provider.id}" /></s:url>';"
                    value="<s:text name="common.edit" />" />
+            <input type="button" class="btn-exit"
+                   onclick="window.location='<s:url action="serviceProviderCorrectionsList"><s:param name="provider.id" value="%{provider.id}" /></s:url>';"
+                   value="<s:text name="orgs.service_provider.view_corrections" />" />
         </td>
     </tr>
 </table>

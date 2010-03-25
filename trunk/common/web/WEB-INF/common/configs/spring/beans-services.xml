@@ -72,6 +72,10 @@
 		  p:fpFileTypeDao-ref="fpFileTypeDao"
 		  p:fpModuleDao-ref="fpModuleDao" />
 
+    <bean id="dataSourceDescriptionService"
+          class="org.flexpay.common.service.impl.DataSourceDescriptionServiceImpl"
+          p:dataSourceDescriptionDao-ref="dataSourceDescriptionDao" />
+
 	<bean id="nopeReferencesHistoryGenerator"
 		  class="org.flexpay.common.persistence.history.impl.NopeReferencesHistoryGenerator" />
 
@@ -183,7 +187,8 @@
 		  factory-bean="correctionsServiceFactory"
 		  factory-method="getInstance"
 		  p:typeRegistry-ref="classToTypeRegistry"
-		  p:correctionsDao-ref="correctionsDao" />
+		  p:correctionDaoExt-ref="correctionDaoExt"
+          p:correctionDao-ref="correctionDao" />
 
 	<bean id="masterIndexServiceTarget"
 		  autowire-candidate="false"
