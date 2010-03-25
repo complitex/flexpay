@@ -1,6 +1,7 @@
 package org.flexpay.eirc.sp.impl.parsing;
 
 import org.apache.commons.lang.StringUtils;
+import org.flexpay.eirc.sp.impl.MessageLevel;
 import org.flexpay.eirc.sp.impl.Messenger;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -30,7 +31,7 @@ public class SplitLineRemoveBlank extends SplitLine {
         if (messenger != null) {
             for (int i = 0; i < fields.length; i++) {
                 if (fields[i].length() != stripFields[i].length()) {
-                    messenger.addMessage("Line: \"{}\"\n content stripped field \"{}\" to \"{}\"", new Object[]{line, fields[i], stripFields[i]});
+                    messenger.addMessage("Line: \"{}\"\n content stripped field \"{}\" to \"{}\"", new Object[]{line, fields[i], stripFields[i]}, MessageLevel.WARN);
                 }
             }
         }
