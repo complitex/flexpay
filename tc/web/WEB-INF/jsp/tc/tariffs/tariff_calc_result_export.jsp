@@ -1,5 +1,5 @@
 <%@include file="/WEB-INF/jsp/common/taglibs.jsp"%>
-
+<%@include file="/WEB-INF/jsp/common/includes/errors_messages.jsp"%>
 <%@include file="/WEB-INF/jsp/common/includes/jquery_bgiframe.jsp"%>
 <%@include file="/WEB-INF/jsp/common/includes/jquery_ui_core.jsp"%>
 <%@include file="/WEB-INF/jsp/common/includes/jquery_ui_datepicker.jsp"%>
@@ -25,8 +25,6 @@
     FP.calendars("tariffBegin", true);
 
 </script>
-
-<s:actionerror />
 
 <s:form id="form" action="calcResultExport">
 

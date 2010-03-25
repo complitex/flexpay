@@ -1,4 +1,5 @@
 <%@include file="/WEB-INF/jsp/common/taglibs.jsp"%>
+<%@include file="/WEB-INF/jsp/common/includes/errors_messages.jsp"%>
 
 <%-- TODO: jQuery UI Dialog plug-in was deleted. This code must be work with jQuery Window plug-n (see eirc/web/WEB-INF/jsp/payments/registry/registry_view.jsp) --%>
 <%--
@@ -56,8 +57,6 @@
     }
 </script>
 
-<s:actionerror/>
-
 <table cellpadding="3" cellspacing="1" border="0" width="100%">
     <tr>
         <td class="th_s" colspan="2">
@@ -81,7 +80,7 @@
 
 <s:if test="!tariffCalculationDatesIsEmpty()">
     <s:iterator value="tariffCalculationDates" id="calcDate">
-        <s:actionerror />
+        <%@include file="/WEB-INF/jsp/common/includes/errors_messages.jsp"%>
         <s:form action="buildingTCResultsEdit">
             <s:hidden name="buildingId" />
             <s:hidden name="calculationDate" value="%{formatDate(#calcDate)}" />

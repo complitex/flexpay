@@ -2,6 +2,7 @@
 <%@include file="/WEB-INF/jsp/common/includes/jquery_bgiframe.jsp"%>
 <%@include file="/WEB-INF/jsp/common/includes/jquery_ui_core.jsp"%>
 <%@include file="/WEB-INF/jsp/common/includes/jquery_ui_datepicker.jsp"%>
+<%@include file="/WEB-INF/jsp/common/includes/errors_messages.jsp"%>
 
 <script type="text/javascript">
     FP.calendars("attributeDate", true);
@@ -20,9 +21,6 @@
     }
 
 </script>
-
-<s:actionerror />
-<s:actionmessage />
 
 <table cellpadding="3" cellspacing="1" border="0" width="100%">
     <s:iterator value="alternateAddresses">

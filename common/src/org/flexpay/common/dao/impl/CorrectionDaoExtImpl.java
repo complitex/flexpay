@@ -1,12 +1,12 @@
 package org.flexpay.common.dao.impl;
 
-import org.flexpay.common.dao.CorrectionsDao;
+import org.flexpay.common.dao.CorrectionDaoExt;
 import org.flexpay.common.persistence.DataCorrection;
 import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.common.persistence.Stub;
-import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.Nullable;
+import org.springframework.beans.factory.annotation.Required;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.SingleColumnRowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcDaoSupport;
@@ -16,7 +16,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-public class CorrectionsDaoImpl extends SimpleJdbcDaoSupport implements CorrectionsDao {
+public class CorrectionDaoExtImpl extends SimpleJdbcDaoSupport implements CorrectionDaoExt {
 
 	private HibernateTemplate hibernateTemplate;
 
@@ -135,6 +135,7 @@ public class CorrectionsDaoImpl extends SimpleJdbcDaoSupport implements Correcti
 		return result.isEmpty() ? null : (Long) result.get(0);
 	}
 
+    @Required
 	public void setHibernateTemplate(HibernateTemplate hibernateTemplate) {
 		this.hibernateTemplate = hibernateTemplate;
 	}

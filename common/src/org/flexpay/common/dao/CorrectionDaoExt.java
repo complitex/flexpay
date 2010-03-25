@@ -7,7 +7,9 @@ import org.flexpay.common.persistence.Stub;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.Nullable;
 
-public interface CorrectionsDao {
+import java.util.List;
+
+public interface CorrectionDaoExt {
 
 	/**
 	 * Create or update data correction

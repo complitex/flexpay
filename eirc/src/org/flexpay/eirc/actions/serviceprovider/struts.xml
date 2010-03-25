@@ -33,6 +33,29 @@
             <result>/WEB-INF/jsp/common/responses/simple_response.jsp</result>
 		</action>
 
+        <action name="serviceProviderCorrectionEdit" class="serviceProviderCorrectionEditAction">
+            <result name="input" type="tiles">eirc.service_provider.edit_correction</result>
+            <result name="redirectSuccess" type="redirect-action">
+                <param name="actionName">serviceProviderCorrectionsList</param>
+                <param name="parse">true</param>
+                <param name="provider.id">${provider.id}</param>
+            </result>
+        </action>
+
+        <action name="serviceProviderCorrectionsListAjax" class="serviceProviderCorrectionsListAction">
+            <result>/WEB-INF/jsp/orgs/service_providers/service_provider_view_corrections_list.jsp</result>
+            <result name="redirectError" type="redirect-action">serviceProvidersList</result>
+        </action>
+
+        <action name="serviceProviderCorrectionsList" class="serviceProviderCorrectionsListPageAction">
+            <result type="tiles">eirc.service_providers.corrections_list</result>
+            <result name="redirectError" type="redirect-action">serviceProvidersList</result>
+        </action>
+
+        <action name="serviceProviderCorrectionDelete" class="serviceProviderCorrectionDeleteAction">
+            <result>/WEB-INF/jsp/common/responses/simple_response.jsp</result>
+        </action>
+
 	</package>
 
 </struts>

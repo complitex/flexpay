@@ -10,6 +10,7 @@ public interface LanguageDao {
 
     @NotNull
 	List<Language> listLanguages();
+
     @Nullable
     Language getLanguageByIsoCode(@NotNull String langIsoCode);
 }

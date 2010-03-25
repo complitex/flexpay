@@ -3,6 +3,8 @@ package org.flexpay.common.persistence;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 
+import java.util.Set;
+
 /**
  * General description of external organizations, data bases, whatever our system needs to
  * be integrated with
@@ -10,6 +12,7 @@ import org.apache.commons.lang.builder.ToStringStyle;
 public class DataSourceDescription extends DomainObject {
 
 	private String description;
+    private Set<DataCorrection> dataCorrections;
 
 	public DataSourceDescription() {
 	}
@@ -34,7 +37,15 @@ public class DataSourceDescription extends DomainObject {
 		this.description = description;
 	}
 
-	@Override
+    public Set<DataCorrection> getDataCorrections() {
+        return dataCorrections;
+    }
+
+    public void setDataCorrections(Set<DataCorrection> dataCorrections) {
+        this.dataCorrections = dataCorrections;
+    }
+
+    @Override
 	public String toString() {
 		return new ToStringBuilder(this, ToStringStyle.DEFAULT_STYLE).
 				append("id", getId()).

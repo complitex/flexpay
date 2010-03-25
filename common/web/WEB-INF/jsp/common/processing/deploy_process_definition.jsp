@@ -1,4 +1,5 @@
 <%@include file="/WEB-INF/jsp/common/taglibs.jsp"%>
+<%@include file="/WEB-INF/jsp/common/includes/errors_messages.jsp"%>
 
 <script type="text/javascript">
 
@@ -18,9 +19,6 @@
     }
 
 </script>
-
-<s:actionerror />
-<s:actionmessage />
 
 <s:form id="inputForm" action="processDefinitionDeploy" enctype="multipart/form-data" method="POST">
     <nobr>

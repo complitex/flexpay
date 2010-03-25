@@ -23,7 +23,7 @@
 			<td class="col"><%@include file="/WEB-INF/jsp/payments/filters/service_provider_filter.jsp"%></td>
 		</tr>
 		<tr valign="top" class="cols_1">
-			<td class="col"><s:text name="payments.service_type" />:</td>
+			<td class="col"><s:text name="payments.service_type" />*:</td>
 			<td class="col"><%@include file="/WEB-INF/jsp/payments/filters/service_type_filter.jsp"%></td>
 		</tr>
 		<tr valign="top" class="cols_1">
@@ -35,7 +35,7 @@
 			<td class="col"><%@include file="/WEB-INF/jsp/common/filter/measure_unit_filter.jsp"%></td>
 		</tr>
 		<tr valign="top" class="cols_1">
-			<td class="col"><s:text name="eirc.service.begin_date" />:</td>
+			<td class="col"><s:text name="eirc.service.begin_date" />*:</td>
 			<td class="col"><%@include file="/WEB-INF/jsp/common/filter/begin_date_filter.jsp"%></td>
 		</tr>
 		<tr valign="top" class="cols_1">

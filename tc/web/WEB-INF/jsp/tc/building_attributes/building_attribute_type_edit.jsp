@@ -1,6 +1,5 @@
-<%@include file="/WEB-INF/jsp/common/taglibs.jsp" %>
-
-<s:actionerror />
+<%@include file="/WEB-INF/jsp/common/taglibs.jsp"%>
+<%@include file="/WEB-INF/jsp/common/includes/errors_messages.jsp"%>
 
 <script type="text/javascript">
 	var FPINT = {

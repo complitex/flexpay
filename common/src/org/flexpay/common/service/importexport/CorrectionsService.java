@@ -1,11 +1,15 @@
 package org.flexpay.common.service.importexport;
 
+import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.persistence.DataCorrection;
 import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.persistence.DomainObject;
 import org.flexpay.common.persistence.Stub;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
+import java.util.Set;
 
 public interface CorrectionsService {
 
@@ -15,6 +19,10 @@ public interface CorrectionsService {
 	 * @param correction DataCorrection
 	 */
 	void save(DataCorrection correction);
+
+    List<DataCorrection> find(Long internalId, int type, @NotNull Page<DataCorrection> pager);
+
+    DataCorrection read(Stub<DataCorrection> stub);
 
 	/**
 	 * Find domain object by its external data source id
@@ -75,4 +83,13 @@ public interface CorrectionsService {
 	 * @param correction Data correction to delete
 	 */
 	void delete(@NotNull DataCorrection correction);
+
+    /**
+     * Delete corrections
+     *
+     * @param objectIds Set of service provider identifiers
+     * @param type corrections type
+     */
+    void delete(@NotNull Set<Long> objectIds, int type);
+
 }
