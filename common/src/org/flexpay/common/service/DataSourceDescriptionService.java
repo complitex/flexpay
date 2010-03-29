@@ -2,6 +2,7 @@ package org.flexpay.common.service;
 
 import org.flexpay.common.persistence.DataSourceDescription;
 import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.persistence.filter.DataSourceFilter;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -26,5 +27,23 @@ public interface DataSourceDescriptionService {
      * @return List of data sources
      */
     List<DataSourceDescription> find(Long internalId, int type);
+
+    /**
+     * Initialize filter
+     *
+     * @param filter DataSourceFilter to initialize
+     * @return DataSourceFilter back
+     */
+    DataSourceFilter initDataSourceFilter(DataSourceFilter filter);
+
+    /**
+     * Initialize filter
+     *
+     * @param internalId internalId
+     * @param type type
+     * @param filter DataSourceFilter to initialize
+     * @return DataSourceFilter back
+     */
+    DataSourceFilter initDataSourceFilter(Long internalId, int type, DataSourceFilter filter);
 
 }

@@ -22,8 +22,4 @@
         });
     }
 
-    function deleteAjax() {
-        FP.serviceElements("<s:url action="serviceProviderCorrectionDelete" includeParams="none" />", "objectIds", pagerAjax);
-    }
-
 </script>

@@ -250,20 +250,22 @@
 	</class>
 
 	<query name="Registry.listRegistries.count">
-		select count(*) from Registry r
-		inner join r.files f
-		where f.id = ?
+		select count(*)
+        from Registry r
+		    inner join r.files f
+		where f.id=?
 	</query>
 
 	<query name="Registry.listRegistries">
 		select distinct r
 		from Registry r
-		inner join fetch r.files f
-		inner join fetch r.registryType
-		inner join fetch r.registryStatus
-		inner join fetch r.properties 
-		left join fetch r.containers
-		where f.id = ?
+            inner join fetch r.files f
+            inner join fetch r.registryType
+            inner join fetch r.registryStatus
+            inner join fetch r.properties
+            left join fetch r.containers
+		where f.id=?
+        order by r.creationDate desc
 	</query>
 
 	<query name="Registry.listRegistryWithContainers">
@@ -274,6 +276,7 @@
 			left join fetch r.properties p
 			left join fetch r.containers
 		where r.id=?
+        order by r.creationDate desc
 	</query>
 
 	<query name="Registry.findRegistriesByNumber">
@@ -282,6 +285,7 @@
 			inner join fetch r.properties
 			left join fetch r.files
 		where r.registryNumber=? and r.senderCode=?
+        order by r.creationDate desc
 	</query>
 
 	<query name="Registry.findObjects">
@@ -289,10 +293,20 @@
 		from Registry r
 		    inner join fetch r.files f
 		where f.id=?
+        order by r.creationDate desc
 	</query>
 
+    <query name="Registry.findObjects.count">
+        select count(*)
+        from Registry r
+            inner join r.files f
+        where f.id=?
+    </query>
+
 	<query name="Registry.deleteRecords">
-		delete from RegistryRecord where registry.id=?
+		delete
+        from RegistryRecord
+        where registry.id=?
 	</query>
 
 	<query name="Registry.deleteRecordContainers">
@@ -308,23 +322,18 @@
 	</query>
 
 	<query name="Registry.deleteRegistryContainers">
-		delete from RegistryContainer where registry.id=?
-	</query>
-
-	<query name="Registry.findObjects.count">
-		select count(*)
-		from Registry r
-		inner join r.files f
-		 where f.id=?
+		delete
+        from RegistryContainer
+        where registry.id=?
 	</query>
 
 	<query name="Registry.readFull">
 		select distinct r
 		from Registry r
-		left join fetch r.registryType
-		left join fetch r.registryStatus
-		left join fetch r.properties
-		left join fetch r.files 
+            left join fetch r.registryType
+            left join fetch r.registryStatus
+            left join fetch r.properties
+            left join fetch r.files
 		where r.id=?
 	</query>
 
@@ -332,9 +341,9 @@
 		select count(registry)
 		from Registry registry
 		where registry.registryType.code = ?
-		and registry.recipientCode = ?
-		and registry.creationDate >= ?
-		and registry.creationDate <= ?
+    		and registry.recipientCode = ?
+	    	and registry.creationDate >= ?
+		    and registry.creationDate <= ?
 	]]></query>
 
 	<query name="Registry.getRegistriesFiles">
@@ -342,6 +351,7 @@
 		from Registry r
 			left outer join fetch r.files 
 		where r.id in (:ids)
+        order by r.creationDate
 	</query>
 
 	<query name="RegistryRecord.getMinMaxRecordsForProcessing"><![CDATA[
@@ -430,18 +440,18 @@
 	<query name="RegistryRecord.readFull">
 		select distinct rr
 		from RegistryRecord rr
-		inner join fetch rr.recordStatus
-		inner join fetch rr.registry r
-		inner join fetch r.properties 
-		left join fetch rr.importError
+            inner join fetch rr.recordStatus
+            inner join fetch rr.registry r
+            inner join fetch r.properties
+            left join fetch rr.importError
 		where rr.id=?
 	</query>
 
 	<query name="RegistryRecord.listRecords">
 		select rr
 		from RegistryRecord rr
-		inner join fetch rr.recordStatus
-		left join fetch rr.importError
+            inner join fetch rr.recordStatus
+            left join fetch rr.importError
 		where rr.registry.id=?
 	</query>
 
@@ -460,7 +470,8 @@
 	</query>
 
 	<query name="RegistryArchiveStatus.findByCode">
-		from RegistryArchiveStatus s where s.code=?
+		from RegistryArchiveStatus s
+        where s.code=?
 	</query>
 
 	<query name="RegistryRecordContainer.findRecordContainers">
@@ -470,7 +481,8 @@
 	</query>
 
     <query name="RegistryFPFileType.findByCode">
-		from RegistryFPFileType t where t.code=?
+		from RegistryFPFileType t
+        where t.code=?
 	</query>
 
 </hibernate-mapping>

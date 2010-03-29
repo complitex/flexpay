@@ -162,14 +162,13 @@
           p:crumbNameKey="orgs.crumbs.service_provider_edit"
           scope="prototype" />
 
-    <bean id="serviceProviderCorrectionEditAction"
-          class="org.flexpay.orgs.actions.serviceprovider.ServiceProviderCorrectionEditAction"
+    <bean id="serviceProviderCorrectionCreateAction"
+          class="org.flexpay.orgs.actions.serviceprovider.ServiceProviderCorrectionCreateAction"
           p:classToTypeRegistryOrgs-ref="classToTypeRegistryOrgs"
           p:providerService-ref="serviceProviderService"
           p:correctionsService-ref="correctionsService"
           p:dataSourceDescriptionService-ref="dataSourceDescriptionService"
-          p:crumbCreateKey="orgs.crumbs.service_provider_create_correction"
-          p:crumbNameKey="orgs.crumbs.service_provider_edit_correction"
+          p:crumbNameKey="orgs.crumbs.service_provider_create_correction"
           scope="prototype" />
 
     <bean id="serviceProviderCorrectionsListAction"
@@ -183,12 +182,6 @@
           class="org.flexpay.orgs.actions.serviceprovider.ServiceProviderCorrectionsListPageAction"
           p:providerService-ref="serviceProviderService"
           p:crumbNameKey="orgs.crumbs.service_provider_corrections_list"
-          scope="prototype" />
-
-    <bean id="serviceProviderCorrectionDeleteAction"
-          class="org.flexpay.orgs.actions.serviceprovider.ServiceProviderCorrectionDeleteAction"
-          p:correctionsService-ref="correctionsService"
-          p:classToTypeRegistryOrgs-ref="classToTypeRegistryOrgs"
           scope="prototype" />
 
 	<!-- Subdivision actions -->
