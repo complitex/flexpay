@@ -8,13 +8,15 @@
 	<query name="Process.readFull">
 		select distinct pi
 		from org.jbpm.graph.exe.ProcessInstance pi
-		left join fetch pi.processDefinition pd
+		    left join fetch pi.processDefinition pd
 		where pi.id=?
+        order by pi.id desc
 	</query>
 
 	<query name="Process.findAllProcessNames">
 		select distinct pd.name
 		from org.jbpm.graph.def.ProcessDefinition pd
+        order by pd.id desc
 	</query>
 
 	<query name="Process.listForDelete">

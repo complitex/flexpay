@@ -248,9 +248,9 @@
         <put-attribute name="title" value="eirc.service_providers" />
         <put-attribute name="body" value="/WEB-INF/jsp/orgs/service_providers/service_provider_view_corrections_list_page.jsp" />
     </definition>
-    <definition name="eirc.service_provider.edit_correction" extends="eirc.dictionaries">
+    <definition name="eirc.service_provider.create_correction" extends="eirc.dictionaries">
         <put-attribute name="title" value="eirc.service_provider" />
-        <put-attribute name="body" value="/WEB-INF/jsp/orgs/service_providers/service_provider_correction_edit.jsp" />
+        <put-attribute name="body" value="/WEB-INF/jsp/orgs/service_providers/service_provider_correction_create.jsp" />
     </definition>
 
 	<!-- Service Types -->

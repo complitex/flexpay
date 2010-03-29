@@ -123,48 +123,50 @@
         select distinct f
         from FPFile f
             left join fetch f.module
-        where f.id = ?
+        where f.id=?
     </query>
 
     <query name="FPFile.listFilesByModuleName.count">
         select count(*)
         from FPFile f
             left outer join f.module
-        where f.module.name = ?
+        where f.module.name=?
+        order by f.creationDate desc
     </query>
 
     <query name="FPFile.listFilesByModuleName">
         select distinct f
         from FPFile f
             left outer join fetch f.module
-        where f.module.name = ?
+        where f.module.name=?
+        order by f.creationDate desc
     </query>
 
     <query name="FPFileType.listFileTypesByModuleName">
         from FPFileType f
-        where f.module.name = ?
+        where f.module.name=?
     </query>
 
     <query name="FPFileType.listTypesByCode">
         from FPFileType f
-        where f.code = ?
+        where f.code=?
     </query>
 
     <query name="FPFileStatus.listStatusesByCode">
         from FPFileStatus f
-        where f.code = ?
+        where f.code=?
     </query>
 
     <query name="FPFileStatus.listStatusesByCodeAndModule">
         from FPFileStatus f
             left outer join fetch f.module
-        where f.code = ? and f.module.name = ?
+        where f.code=? and f.module.name=?
     </query>
 
     <query name="FPFileType.listTypesByCodeAndModule">
         from FPFileType f
             left outer join fetch f.module
-        where f.code = ? and f.module.name = ?
+        where f.code=? and f.module.name=?
     </query>
 
 </hibernate-mapping>

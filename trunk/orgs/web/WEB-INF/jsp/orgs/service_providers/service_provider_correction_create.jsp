@@ -1,7 +1,7 @@
 <%@include file="/WEB-INF/jsp/common/taglibs.jsp"%>
 <%@include file="/WEB-INF/jsp/common/includes/errors_messages.jsp"%>
 
-<s:form action="serviceProviderCorrectionEdit">
+<s:form action="serviceProviderCorrectionCreate">
 
 	<s:hidden name="provider.id" />
     <s:hidden name="dataCorrection.internalObjectId" />
@@ -9,12 +9,7 @@
 	<table cellpadding="3" cellspacing="1" border="0" width="100%">
         <tr valign="top" class="cols_1">
             <td class="col"><s:text name="orgs.service_provider.data_source" />:</td>
-            <td class="col">
-                <select name="dataCorrection.dataSourceDescription.id" class="form-select">
-                    <s:iterator value="dataSources" status="status">
-                    <option value="<s:property value="id" />"<s:if test="id == dataCorrection.dataSourceDescription.id"> selected</s:if>><s:property value="description" /></option></s:iterator>
-                </select>
-            </td>
+            <td class="col"><%@include file="/WEB-INF/jsp/common/filter/data_source_filter.jsp"%></td>
         </tr>
         <tr valign="top" class="cols_1">
 			<td class="col"><s:text name="orgs.service_provider.extrenal_id" />:</td>

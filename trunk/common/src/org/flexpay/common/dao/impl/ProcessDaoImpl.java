@@ -130,14 +130,17 @@ public class ProcessDaoImpl implements ProcessDao {
 
 	private void addSorting(StringBuilder hql, ProcessSorter sorter) {
 
+        hql.append(" order by ");
+
 		if (sorter != null) {
 			StringBuilder orderByClause = new StringBuilder();
 			sorter.setOrderBy(orderByClause);
 
 			if (orderByClause.length() > 0) {
-				hql.append(" order by ").append(orderByClause);
+				hql.append(orderByClause).append(",");
 			}
 		}
+        hql.append("pi.id desc");
 	}
 
 	private void setQueryParameters(Query query, ProcessState state, Date startFrom, Date endBefore, String name) {

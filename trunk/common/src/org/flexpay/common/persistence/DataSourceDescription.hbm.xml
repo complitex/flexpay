@@ -62,9 +62,13 @@
     </query>
 
     <query name="DataSourceDescription.findAvailableDataSources">
+        select distinct dsd
         from DataSourceDescription dsd
-            left join fetch dsd.dataCorrections dc
-        where dc.internalObjectId=? and dc.objectType=?
+        where dsd.id not in
+            (select dsd1.id
+            from DataSourceDescription dsd1
+                left join dsd1.dataCorrections dc
+            where dc.internalObjectId=? and dc.objectType=?)
     </query>
 
     <query name="DataCorrection.readFull">
@@ -89,7 +93,7 @@
 	<query name="DataCorrection.getInternalId" read-only="true" cache-mode="ignore" cacheable="false">
 		select new java.lang.Long(c.internalObjectId)
 		from DataCorrection c
-		where c.externalId=? AND c.objectType=? AND c.dataSourceDescription.id=?
+		where c.externalId=? and c.objectType=? and c.dataSourceDescription.id=?
 	</query>
 
 </hibernate-mapping>
