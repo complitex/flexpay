@@ -164,9 +164,9 @@ insert into common_currency_names_tbl(language_id, currency_info_id, name, short
 	values (@ru_id, @currency_grivna, 'Гривна', 'грн', 'Копейка', 'коп');
 
 -- Init User Roles table
-INSERT INTO admin_user_roles_tbl (id, status, external_id) values (1, 0, 'buhgalter');
+INSERT INTO common_user_roles_tbl (id, status, external_id) values (1, 0, 'buhgalter');
 SELECT @buhgalter_id:=1;
-INSERT INTO admin_user_roles_tbl (id, status, external_id) values (2, 0, 'cashier');
+INSERT INTO common_user_roles_tbl (id, status, external_id) values (2, 0, 'cashier');
 SELECT @cashier_id:=2;
 
 INSERT INTO admin_user_role_name_translations_tbl (name, user_role_id, language_id)
