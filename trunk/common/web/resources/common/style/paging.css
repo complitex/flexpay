@@ -1,0 +1,30 @@
+
+span.paging {
+}
+
+span.paging a {
+    border: 1px solid #fff;
+    text-decoration: underline;
+}
+
+span.paging a:hover{
+    border: 1px solid #003366;
+    color: #000;
+}
+
+span.paging a:active {
+    border: 1px solid #003366;
+    color: #f00;
+}
+
+span.paging span.current {
+    border: 1px solid #fff;
+    font-weight: bold;
+    background-color: #fff;
+    color: #000;
+}
+
+span.paging span.disabled {
+    border: 1px solid #EEE;
+    color: #DDD;
+}
