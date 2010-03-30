@@ -184,9 +184,13 @@ var FP = {
             }
         } else {
 
-            var isSelect = element.name == pageSizeName;
-            var elValue = element.value;
-
+            var isSelect = element.name == pageSizeName; 
+            var elValue = element.value != undefined ? element.value : element.text;
+            var elValueInt = parseInt(elValue);
+            if (elValueInt + "" === "NaN" || elValue != elValueInt || elValueInt <= 0) {
+                FP.hideShadow(shadowId);
+                return;
+            }
             params[opt.pageSizeChangedName] = isSelect;
             if (!isSelect) {
                 params[opt.pageNumberName] = elValue;
