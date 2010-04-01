@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+		"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+		"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="org.flexpay.payments.persistence">
+
+	<class name="Certificate" table="payments_certificates_tbl" optimistic-lock="version">
+		<comment>Security certificate</comment>
+		<id name="id">
+			<column name="id">
+				<comment>Primary key</comment>
+			</column>
+			<generator class="native" />
+		</id>
+		<version name="version" access="field">
+			<column name="version">
+				<comment>Optimistic lock version</comment>
+			</column>
+		</version>
+		<property name="alias">
+			<column name="alias" not-null="true">
+				<comment>Alias</comment>
+			</column>
+		</property>
+		<property name="description">
+			<column name="description" not-null="true">
+				<comment>Description</comment>
+			</column>
+		</property>
+	</class>
+
+	<query name="Certificate.findCertificates">
+		select distinct c
+		from Certificate c		
+	</query>
+
+	<query name="Certificate.findCertificateByAlias">
+		select distinct c
+		from Certificate c
+		where c.alias = ?
+	</query>
+
+	<query name="Certificate.readFull">
+		select distinct c
+		from Certificate c
+		where c.id = ?
+	</query>
+
+</hibernate-mapping>

@@ -76,5 +76,6 @@
     <include file="org/flexpay/payments/actions/reports/struts.xml" />
     <include file="org/flexpay/payments/actions/tradingday/struts.xml" />
 	<include file="org/flexpay/payments/actions/workplace/struts.xml" />
+	<include file="org/flexpay/payments/actions/certificate/struts.xml" />
 
 </struts>

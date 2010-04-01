@@ -633,3 +633,6 @@ insert into common_data_corrections_tbl (internal_object_id, external_object_id,
 	(select id, concat(@instId, id), @payments_base + 0x0201, @ds from payments_services_tbl);
 insert into common_data_corrections_tbl (internal_object_id, external_object_id, object_type, data_source_description_id)
 	(select id, concat(@instId, id), @payments_base + 0x002, @ds from payments_service_types_tbl);
+
+-- certificates
+insert into payments_certificates_tbl (version, alias, description) values (0, 'testlogin', 'Tecтовый логин');

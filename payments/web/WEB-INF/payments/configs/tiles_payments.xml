@@ -206,4 +206,18 @@
 		<put-attribute name="body" value="/WEB-INF/jsp/payments/workplace/cashboxes_list_page.jsp" />
 	</definition>
 
+	<!-- certificates -->
+	<definition name="payments.certificates.list" extends="payments.accountant">
+		<put-attribute name="title" value="payments.certificates.list" />
+		<put-attribute name="body" value="/WEB-INF/jsp/payments/certificate/certificates_list_page.jsp" />
+	</definition>
+	<definition name="payments.certificate.upload" extends="payments.accountant">
+		<put-attribute name="title" value="payments.certificate.upload" />
+		<put-attribute name="body" value="/WEB-INF/jsp/payments/certificate/certificate_upload.jsp" />
+	</definition>
+	<definition name="payments.certificate.edit" extends="payments.accountant">
+		<put-attribute name="title" value="payments.certificate.edit" />
+		<put-attribute name="body" value="/WEB-INF/jsp/payments/certificate/certificate_edit.jsp" />
+	</definition>
+
 </tiles-definitions>

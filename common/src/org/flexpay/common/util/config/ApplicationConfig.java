@@ -174,6 +174,16 @@ public class ApplicationConfig implements ResourceLoaderAware {
 		}
 	}
 
+	public static File getResourceAsFile(@NotNull String name) {
+		try {
+			Resource resource = resourceLoader.getResource(name);
+			return resource.exists() ? resource.getFile() : null;
+		} catch (IOException e) {
+			log.warn("Failed getting resource {}", name, e);
+			return null;
+		}
+	}
+
 	public void setResourceLoader(ResourceLoader resourceLoader) {
 		log.debug("Setting resource loader {}", resourceLoader);
 		ApplicationConfig.resourceLoader = resourceLoader;

@@ -37,6 +37,10 @@
 		  p:registryDaoExt-ref="eircRegistryDaoExt"
 		  p:registryDao-ref="spRegistryDao" />
 
+	<bean id="certificateService"
+		  class="org.flexpay.payments.service.impl.CertificateServiceImpl"
+		  p:certificateDao-ref="certificateDao" />
+
 	<bean id="documentService"
 		  class="org.flexpay.payments.service.impl.DocumentServiceImpl"
 		  p:documentDao-ref="documentDao"
