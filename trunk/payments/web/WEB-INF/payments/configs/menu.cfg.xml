@@ -284,6 +284,17 @@
         </property>
 	</bean>
 
+	<bean name="payments.certificates" parent="payments.acc"
+		  p:name="payments.certificates"
+		  p:title="payments.menu2.certificates"
+		  p:namespace="/payments"
+		  p:action="accountantAWPStaticPageAction"
+		  p:parent-ref="payments.acc">
+		<property name="userRole">
+			<util:constant static-field="org.flexpay.payments.service.Roles.ROLE_MENU_PAYMENTS_CERTIFICATES" />
+		</property>
+	</bean>
+
 	<!--level 3 -->
 	<bean name="payments.dictionaries.dictionaries" parent="payments.dictionaries"
           p:name="payments.dictionaries2"
@@ -324,6 +335,17 @@
 		<property name="userRole">
             <util:constant static-field="org.flexpay.payments.service.Roles.ROLE_MENU_PAYMENTS_DICTIONARIES" />
         </property>
+	</bean>
+
+	<bean name="payments.certificates.certificates" parent="payments.certificates"
+		  p:name="payments.certificates.certificates"
+		  p:title="payments.menu2.certificates"
+		  p:namespace="/payments"
+		  p:action="accountantAWPStaticPageAction"
+		  p:parent-ref="payments.certificates">
+		<property name="userRole">
+			<util:constant static-field="org.flexpay.payments.service.Roles.ROLE_MENU_PAYMENTS_CERTIFICATES" />
+		</property>
 	</bean>
 
 	<!-- level 4 -->
@@ -408,5 +430,27 @@
 		<property name="userRole">
             <util:constant static-field="org.flexpay.payments.service.Roles.ROLE_MENU_PAYMENTS_CASHBOXES" />
         </property>
+	</bean>
+
+	<bean name="payments.certificates.certificates.list" parent="payments.certificates.certificates"
+		  p:name="payments.certificates.certificates.list"
+		  p:title="payments.menu4.certificates.list"
+		  p:namespace="/payments"
+		  p:action="certificatesList"
+		  p:parent-ref="payments.certificates.certificates">
+		<property name="userRole">
+			<util:constant static-field="org.flexpay.payments.service.Roles.ROLE_MENU_PAYMENTS_CERTIFICATES" />
+		</property>
+	</bean>
+
+	<bean name="payments.certificates.certificates.upload" parent="payments.certificates.certificates"
+		  p:name="payments.certificates.certificates.upload"
+		  p:title="payments.menu4.certificates.upload"
+		  p:namespace="/payments"
+		  p:action="certificateUpload"
+		  p:parent-ref="payments.certificates.certificates">
+		<property name="userRole">
+			<util:constant static-field="org.flexpay.payments.service.Roles.ROLE_MENU_PAYMENTS_CERTIFICATES" />
+		</property>
 	</bean>
 </beans>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+		"-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+		"http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>
+
+	<package name="certificates" namespace="/payments" extends="common">
+
+		<action name="certificatesList" class="certificatesListPageAction">
+			<result type="tiles">payments.certificates.list</result>
+		</action>
+
+		<action name="certificatesListAjax" class="certificatesListAction">
+			<result>/WEB-INF/jsp/payments/certificate/certificates_list.jsp</result>
+		</action>
+
+		<action name="certificateUpload" class="certificateUploadAction">
+			<result name="input" type="tiles">payments.certificate.upload</result>
+			<result name="redirectSuccess" type="redirect-action">certificatesList</result>
+		</action>
+
+		<action name="certificateEdit" class="certificateEditAction">
+			<result name="input" type="tiles">payments.certificate.edit</result>
+			<result name="redirectSuccess" type="redirect-action">certificatesList</result>
+		</action>
+
+		<action name="certificateDelete" class="certificateDeleteAction">
+			<result>/WEB-INF/jsp/common/responses/simple_response.jsp</result>
+		</action>
+	</package>
+
+</struts>

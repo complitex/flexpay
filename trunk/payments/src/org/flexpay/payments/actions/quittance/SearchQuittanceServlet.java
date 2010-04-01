@@ -3,10 +3,10 @@ package org.flexpay.payments.actions.quittance;
 import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.digester.Digester;
 import org.flexpay.common.exception.FlexPayException;
-import org.flexpay.common.util.config.ApplicationConfig;
 import org.flexpay.payments.persistence.quittance.QuittanceDetailsRequest;
 import org.flexpay.payments.persistence.quittance.QuittanceDetailsResponse;
 import org.flexpay.payments.service.QuittanceDetailsFinder;
+import org.flexpay.payments.util.KeyStoreUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
@@ -18,9 +18,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.Writer;
-import java.security.*;
+import java.security.KeyStore;
+import java.security.PrivateKey;
+import java.security.Signature;
+import java.security.SignatureException;
 import java.security.cert.Certificate;
-import java.security.cert.CertificateException;
 
 public class SearchQuittanceServlet extends HttpServlet {
 
@@ -85,7 +87,7 @@ public class SearchQuittanceServlet extends HttpServlet {
 
 		Certificate certificate = null;
 		try {
-			keyStore = getKeyStore();
+			keyStore = KeyStoreUtil.loadKeyStore();
 
 			if (!keyStore.isCertificateEntry(externalRequest.getLogin())) {
 				log.error("Can't load security certificate for user {}", externalRequest.getLogin());
@@ -114,17 +116,6 @@ public class SearchQuittanceServlet extends HttpServlet {
 
 		return true;
 	}
-
-	private KeyStore getKeyStore() throws KeyStoreException, IOException, NoSuchAlgorithmException, CertificateException {
-
-		if (keyStore == null) {
-			keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
-			keyStore.load(ApplicationConfig.getResourceAsStream(org.flexpay.payments.util.config.ApplicationConfig.getKeystorePath()), (org.flexpay.payments.util.config.ApplicationConfig.getKeystorePassword()).toCharArray());
-		}
-		
-		return keyStore;
-	}
-
 
 	private boolean validateExternalRequest(SearchQuittanceExternalRequest externalRequest) {
 
@@ -196,7 +187,7 @@ public class SearchQuittanceServlet extends HttpServlet {
 	private PrivateKey initKey() throws FlexPayException {
 		PrivateKey key  = null;
 		try {
-			keyStore = getKeyStore();
+			keyStore = KeyStoreUtil.loadKeyStore();
 
 			if (!keyStore.isKeyEntry(org.flexpay.payments.util.config.ApplicationConfig.getSelfKeyAlias())) {
 				throw new FlexPayException("Unable to load security key for signing response");
