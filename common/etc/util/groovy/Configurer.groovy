@@ -76,8 +76,12 @@ def dependentProperties = [
 				        common : [
 								'ldap.url': 'LDAP user storage url',
 								'ldap.userDn': 'LDAP administrator distinguished name',
+								'ldap.admin': 'LDAP administrator Id',
 								'ldap.password': 'LDAP administrator password',
-								'ldap.base': 'LDAP users directory root',
+								'ldap.base': 'LDAP base users directory root',
+								'ldap.ou.groups': 'LDAP groups sub directory',
+								'ldap.ou.people': 'LDAP users sub directory',
+								'ldap.policy.names' : 'Manage LDAP policy rules in UI (| is delimiter)'
 				        ]
 				]
         ]

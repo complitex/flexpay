@@ -1,7 +1,14 @@
 package org.flexpay.common.dao.impl;
 
+import com.iplanet.sso.SSOException;
+import com.iplanet.sso.SSOToken;
+import com.sun.identity.policy.*;
+import org.flexpay.common.actions.security.opensso.TokenUtils;
 import org.flexpay.common.dao.UserPreferencesDao;
-import org.flexpay.common.dao.impl.ldap.*;
+import org.flexpay.common.dao.impl.ldap.DnBuilder;
+import org.flexpay.common.dao.impl.ldap.LdapConstants;
+import org.flexpay.common.dao.impl.ldap.UserPreferencesContextMapper;
+import org.flexpay.common.dao.impl.ldap.UserPreferencesDnBuilder;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.config.UserPreferences;
 import org.flexpay.common.util.config.UserPreferencesFactory;
@@ -14,6 +21,8 @@ import org.springframework.ldap.core.DistinguishedName;
 import org.springframework.ldap.core.simple.AbstractParameterizedContextMapper;
 import org.springframework.ldap.core.simple.SimpleLdapTemplate;
 import org.springframework.ldap.core.support.LdapContextSource;
+import org.springframework.ldap.filter.AndFilter;
+import org.springframework.ldap.filter.OrFilter;
 
 import javax.naming.Name;
 import javax.naming.NamingEnumeration;
@@ -21,6 +30,7 @@ import javax.naming.NamingException;
 import javax.naming.directory.DirContext;
 import java.util.List;
 import java.util.Set;
+import java.util.StringTokenizer;
 
 /**
  * Spring LDAP implementation of PersonDao. This implementation uses many Spring LDAP features, such as the {@link
@@ -47,6 +57,9 @@ public class LdapUserPreferencesDaoImpl implements UserPreferencesDao {
 
 	private String url;
 	private String base;
+	private String adminUserName;
+	private String adminPassword;
+	private List<String> policyNames;
 
 	private final class PersonContextMapper extends AbstractParameterizedContextMapper<UserPreferences> {
 
@@ -87,7 +100,7 @@ public class LdapUserPreferencesDaoImpl implements UserPreferencesDao {
 		@Override
 		protected String doMapFromContext(DirContextOperations ctx) {
 			log.debug("Access permission dn: {}", ctx.getDn());
-			return "cn=" + ctx.getStringAttribute("cn") +",ou=groups,dc=opensso,dc=java,dc=net";
+			return "cn=" + ctx.getStringAttribute("cn") +",ou=groups," + base;
 		}
 	}
 
@@ -155,7 +168,7 @@ public class LdapUserPreferencesDaoImpl implements UserPreferencesDao {
 		DirContextOperations ctx = ldapTemplate.lookupContext(buildDn(person));
 		List<String> accessPermissions;
 		if (person.getUserRole() != null) {
-			accessPermissions = ldapTemplate.search(groupsBuilder.buildDn(),
+			accessPermissions = ldapTemplate.search(groupsBuilder.buildDn(null),
 					accessPermissionsBuilder.getNameFilter(person.getUserRole().getExternalId()).encode(), new AccessPermissionsContextMapper());
 			log.debug("Found permissions: {}", accessPermissions);
 		} else {
@@ -174,13 +187,31 @@ public class LdapUserPreferencesDaoImpl implements UserPreferencesDao {
 
 	@Override
 	public List<UserPreferences> listAllUser() {
-		return ldapTemplate.search(peopleBuilder.buildDn(), userGroupBuilder.getNameFilter(LdapConstants.OBJECT_CLASS).encode(), new PersonContextMapper());
+		try {
+			List<String> userNames = getUserNames();
+
+			if (userNames.isEmpty()) {
+				log.debug("Empty user list in policy {}", policyNames);
+				return CollectionUtils.list();
+			}
+
+			log.debug("User names in policy {}: {}", policyNames, userNames);
+
+			return ldapTemplate.search(peopleBuilder.buildDn(null), getUserFilter(userNames).encode(), new PersonContextMapper());
+		} catch (SSOException e) {
+			log.error("Failed init policy manager", e);
+		} catch (PolicyException e) {
+			log.error("Failed init policy manager", e);
+		} catch (Exception e) {
+			log.error("Can`t create SSOToken", e);
+		}
+		return CollectionUtils.list();
 	}
 
 	@Override
 	public UserPreferences findByUserName(String userName) {
 
-		List<UserPreferences> persons = ldapTemplate.search(peopleBuilder.buildDn(),
+		List<UserPreferences> persons = ldapTemplate.search(peopleBuilder.buildDn(null),
 				userNameBuilder.getNameFilter(userName).encode(), new PersonContextMapper());
 		if (persons.isEmpty()) {
 			return null;
@@ -193,9 +224,70 @@ public class LdapUserPreferencesDaoImpl implements UserPreferencesDao {
 
 	private Name buildDn(UserPreferences person) {
 		DistinguishedName dn = new DistinguishedName();
-		dn.append(new DistinguishedName(peopleBuilder.buildDn())).
+		dn.append(new DistinguishedName(peopleBuilder.buildDn(null))).
 				append(new DistinguishedName(userNameBuilder.buildDn(person)));
 		return dn;
+	}
+
+	private String getUserId(String userDn) {
+		StringTokenizer stz = new StringTokenizer(userDn, ",");
+		String id = null;
+		boolean isUser = false;
+		while (stz.hasMoreTokens()) {
+			String nameValue = stz.nextToken().trim();
+			int index = nameValue.indexOf("=");
+			if (index == -1) {
+				continue;
+			}
+			String name = nameValue.substring(0, index).trim();
+			String value = nameValue.substring(index + 1).trim();
+			if ("id".equals(name)) {
+				id = value;
+			} else if ("ou".equals(name) && "user".equals(value)) {
+				isUser = true;
+			}
+		}
+		return isUser? id: null;
+	}
+
+	private AndFilter getUserFilter(List<String> userNames) {
+		AndFilter resultFilter = new AndFilter();
+		resultFilter.and(userGroupBuilder.getNameFilter(LdapConstants.OBJECT_CLASS));
+		OrFilter uidFilter = new OrFilter();
+		for (String name : userNames) {
+			uidFilter.or(userNameBuilder.getNameFilter(name));
+		}
+		resultFilter.and(uidFilter);
+		log.debug("List all user filter: {}", resultFilter);
+
+		return resultFilter;
+	}
+
+	@SuppressWarnings ({"unchecked"})
+	private List<String> getUserNames() throws Exception {
+		SSOToken ssoToken = TokenUtils.getToken(base, adminUserName, adminPassword);
+		PolicyManager pm = new PolicyManager(ssoToken);
+		List<String> userNames = CollectionUtils.list();
+		for (String policyName : policyNames) {
+			try {
+				Policy policy = pm.getPolicy(policyName);
+				Set<String> subjectNames = policy.getSubjectNames();
+				for (String subjectName : subjectNames) {
+					for (Object val : policy.getSubject(subjectName).getValues()) {
+						log.debug("Subject value {} ({})", val, val.getClass());
+						String userName = getUserId((String)val);
+						if (userName != null) {
+							userNames.add(userName);
+						}
+					}
+				}
+			} catch (NameNotFoundException e) {
+				log.warn("OpenSSO policy name not found {}", policyName);
+			} catch (InvalidNameException e) {
+				log.warn("Invalid OpenSSO policy name {}", policyName);
+			}
+		}
+		return userNames;
 	}
 
 	private void mapToContextUserEditedPreferences(UserPreferences preferences, DirContextOperations ctx) {
@@ -212,6 +304,16 @@ public class LdapUserPreferencesDaoImpl implements UserPreferencesDao {
 
 	private void mapToContextAccessPermissionsPreferences(UserPreferences preferences, DirContextOperations ctx, List<String> permissions) {
 		mapper.doMapToContextAccessPermissions(ctx, preferences, permissions);
+	}
+
+	@Required
+	public void setPolicyNames(String policyNames) {
+		StringTokenizer stz = new StringTokenizer(policyNames, "|");
+		this.policyNames = CollectionUtils.list();
+		while(stz.hasMoreTokens()) {
+			String token = stz.nextToken().trim();
+			this.policyNames.add(token);
+		}
 	}
 
 	@Required
@@ -259,5 +361,15 @@ public class LdapUserPreferencesDaoImpl implements UserPreferencesDao {
 	@Required
 	public void setBase(String base) {
 		this.base = base;
+	}
+
+	@Required
+	public void setAdminUserName(String adminUserName) {
+		this.adminUserName = adminUserName;
+	}
+
+	@Required
+	public void setAdminPassword(String adminPassword) {
+		this.adminPassword = adminPassword;
 	}
 }

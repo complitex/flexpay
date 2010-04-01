@@ -73,6 +73,9 @@
 		  p:groupsBuilder-ref="groupsBaseDnBuilder"
 		  p:url="${ldap.url}"
 		  p:base="${ldap.base}"
+		  p:adminUserName="${ldap.admin}"
+		  p:adminPassword="${ldap.password}"
+		  p:policyNames="${ldap.policy.names}"
 		  p:userPreferencesFactory-ref="userPreferencesFactory" />
 
 	<bean id="userPreferencesServiceFactory"
