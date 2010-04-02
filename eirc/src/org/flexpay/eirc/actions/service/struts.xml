@@ -33,6 +33,25 @@
             </result>
 		</action>
 
+        <action name="serviceTypeCorrectionCreate" class="serviceTypeCorrectionCreateAction">
+            <result name="input" type="tiles">eirc.service_type.create_correction</result>
+            <result name="redirectSuccess" type="redirect-action">
+                <param name="actionName">serviceTypeCorrectionsList</param>
+                <param name="parse">true</param>
+                <param name="serviceType.id">${serviceType.id}</param>
+            </result>
+        </action>
+
+        <action name="serviceTypeCorrectionsListAjax" class="serviceTypeCorrectionsListAction">
+            <result>/WEB-INF/jsp/payments/service_types/service_type_corrections_list.jsp</result>
+            <result name="redirectError" type="redirect-action">serviceTypesList</result>
+        </action>
+
+        <action name="serviceTypeCorrectionsList" class="serviceTypeCorrectionsListPageAction">
+            <result type="tiles">eirc.service_type.corrections_list</result>
+            <result name="redirectError" type="redirect-action">servicerTypesList</result>
+        </action>
+
 		<!-- Services -->
         <action name="serviceView" class="serviceViewAction">
             <result type="tiles">eirc.service.view</result>

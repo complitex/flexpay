@@ -43,12 +43,12 @@
         </action>
 
         <action name="serviceProviderCorrectionsListAjax" class="serviceProviderCorrectionsListAction">
-            <result>/WEB-INF/jsp/orgs/service_providers/service_provider_view_corrections_list.jsp</result>
+            <result>/WEB-INF/jsp/orgs/service_providers/service_provider_corrections_list.jsp</result>
             <result name="redirectError" type="redirect-action">serviceProvidersList</result>
         </action>
 
         <action name="serviceProviderCorrectionsList" class="serviceProviderCorrectionsListPageAction">
-            <result type="tiles">eirc.service_providers.corrections_list</result>
+            <result type="tiles">eirc.service_provider.corrections_list</result>
             <result name="redirectError" type="redirect-action">serviceProvidersList</result>
         </action>
 

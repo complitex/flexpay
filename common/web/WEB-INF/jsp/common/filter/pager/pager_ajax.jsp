@@ -6,14 +6,19 @@
 <s:if test="pager.totalNumberOfElements > 0">
     <link rel="stylesheet" type="text/css" href="<s:url value="/resources/common/style/paging.css" includeParams="none" />" />
 
-    &nbsp;<s:text name="common.go_to" />&nbsp;
-    <s:textfield id="" size="4" value="" maxLength="6" onkeypress="if(event.keyCode == 13)pagerAjax(this);" cssClass="text" />&nbsp;
+    <s:if test="pager.lastPageNumber > 1">
+        &nbsp;<s:text name="common.go_to" />&nbsp;
+        <s:textfield id="" size="4" value="" maxLength="6" onkeypress="if(event.keyCode == 13)pagerAjax(this);" cssClass="text" />&nbsp;
+    </s:if>
 
     &nbsp;<s:text name="common.show_by" />&nbsp;
     <s:select id="" name="pager.pageSize" list="#{10:10,20:20,30:30}" cssClass="form-select vertical-top" onchange="pagerAjax(this);" />&nbsp;&nbsp;
 
     <s:if test="pager.lastPageNumber > 1">
         <span class="paging">
+            <s:if test="pager.hasPreviousPage()">
+                <a value="<s:property value="pager.previousPageNumber" />"><</a>
+            </s:if>
             <s:if test="!pager.isFirstPage()">
                 <a>1</a>
             </s:if>
@@ -41,6 +46,9 @@
             <s:if test="!pager.isLastPage()">
                 <a><s:property value="pager.lastPageNumber" /></a>
             </s:if>
+            <s:if test="pager.hasNextPage()">
+                <a value="<s:property value="pager.nextPageNumber" />">></a>
+            </s:if>
         </span>
     </s:if>
 </s:if>
@@ -48,8 +56,14 @@
 
 <script type="text/javascript">
     $("span.paging").ready(function() {
-        $("span.paging a").attr("href", "javascript:void(0);").click(function() {
-            pagerAjax(this);
+        $("span.paging a").each(function() {
+            var $this = $(this);
+            var href = $this.attr("href");
+            if (href == undefined || href == null || href == "") {
+                $this.attr("href", "javascript:void(0);").click(function() {
+                    pagerAjax(this);
+                });
+            }
         });
     });
 </script>

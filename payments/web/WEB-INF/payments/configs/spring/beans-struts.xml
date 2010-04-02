@@ -288,6 +288,28 @@
           p:crumbNameKey="payments.crumbs.service_type_view"
           scope="prototype" />
 
+    <bean id="serviceTypeCorrectionCreateAction"
+          class="org.flexpay.payments.actions.service.ServiceTypeCorrectionCreateAction"
+          p:classToTypeRegistryPayments-ref="classToTypeRegistryPayments"
+          p:serviceTypeService-ref="serviceTypeService"
+          p:correctionsService-ref="correctionsService"
+          p:dataSourceDescriptionService-ref="dataSourceDescriptionService"
+          p:crumbNameKey="payments.crumbs.service_type_create_correction"
+          scope="prototype" />
+
+    <bean id="serviceTypeCorrectionsListAction"
+          class="org.flexpay.payments.actions.service.ServiceTypeCorrectionsListAction"
+          p:classToTypeRegistryPayments-ref="classToTypeRegistryPayments"
+          p:serviceTypeService-ref="serviceTypeService"
+          p:correctionsService-ref="correctionsService"
+          scope="prototype" />
+
+    <bean id="serviceTypeCorrectionsListPageAction"
+          class="org.flexpay.payments.actions.service.ServiceTypeCorrectionsListPageAction"
+          p:serviceTypeService-ref="serviceTypeService"
+          p:crumbNameKey="payments.crumbs.service_type_corrections_list"
+          scope="prototype" />
+
     <!-- Services -->
 	<bean id="servicesListAction"
 		  class="org.flexpay.payments.actions.service.ServicesListAction"

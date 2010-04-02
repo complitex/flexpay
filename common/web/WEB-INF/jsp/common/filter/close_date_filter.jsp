@@ -7,7 +7,7 @@
     <%@include file="/WEB-INF/jsp/common/includes/jquery_ui_core.jsp"%>
     <%@include file="/WEB-INF/jsp/common/includes/jquery_ui_datepicker.jsp"%>
 
-    <input type="text" name="closeDateFilter.stringDate" id="closeDateFilter" value="<s:property value="closeDateFilter.stringDate" />" readonly="readonly" />
+    <input type="text" name="closeDateFilter.stringDate" id="closeDateFilter" size="10" value="<s:property value="closeDateFilter.stringDate" />" readonly="readonly" />
 
     <script type="text/javascript">
         FP.calendars("closeDateFilter", true);
