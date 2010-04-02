@@ -14,8 +14,8 @@
                     attributeDate:$("#attributeDate").val(),
                     "building.id":<s:property value="building.id" />
                 },
-                function(data) {
-                    if (data == "") {
+                function(data, status) {
+                    if (data == "" && status == "success") {
                         window.location.href = FP.base;
                     }
                     $("#attributesBlock").html(data);

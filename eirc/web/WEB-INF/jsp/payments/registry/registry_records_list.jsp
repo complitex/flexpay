@@ -128,8 +128,8 @@
                     objectIds:ids,
                     "registry.id":<s:property value="registry.id" />
                 },
-                function(data) {
-                    if (data == "") {
+                function(data, status) {
+                    if (data == "" && status == "success") {
                         window.location.href = FP.base;
                     }
                     $("#messagesBlock").html(data);

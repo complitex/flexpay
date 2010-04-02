@@ -29,8 +29,8 @@
                     </s:elseif>
                     "tradingDayControlPanel.command":button.value
                 },
-                function() {
-                    if (data == "") {
+                function(data, status) {
+                    if (data == "" && status == "success") {
                         window.location.href = FP.base;
                     }
                     if (pagerAjax != undefined) {

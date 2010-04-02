@@ -202,8 +202,8 @@ var FP = {
             params[pageSizeName] = isSelect ? elValue : $("select[name=" + pageSizeName + "]").val();
         }
 
-        $.post(opt.action, params, function(data) {
-                    if (data == "") {
+        $.post(opt.action, params, function(data, status) {
+                    if (data == "" && status == "success") {
                         window.location.href = FP.base;
                     }
                     result.html(data);
@@ -265,8 +265,8 @@ var FP = {
             params[name] = ids;
 
         }
-        $.post(action, params, function(data) {
-                    if (data == "") {
+        $.post(action, params, function(data, status) {
+                    if (data == "" && status == "success") {
                         window.location.href = FP.base;
                     }
                     $("#messagesBlock").html(data);

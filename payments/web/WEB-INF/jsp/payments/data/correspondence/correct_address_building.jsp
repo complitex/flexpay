@@ -21,8 +21,8 @@
                     "record.id":<s:property value="record.id" />,
                     "object.id":FF.filters["building"].value.val(),
                     type:"building"
-                }, function(data) {
-                    if (data == "") {
+                }, function(data, status) {
+                    if (data == "" && status == "success") {
                         window.location.href = FP.base;
                     }
                     $("#messagesBlock").html(data);

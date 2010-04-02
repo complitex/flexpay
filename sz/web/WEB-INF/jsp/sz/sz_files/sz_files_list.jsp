@@ -96,8 +96,8 @@
                     action1:action,
                     objectIds:objectIds
                 },
-                function(data) {
-                    if (data == "") {
+                function(data, status) {
+                    if (data == "" && status == "success") {
                         window.location.href = FP.base;
                     }
                     $("#startProcessResponse").html(data);
