@@ -185,8 +185,12 @@ var FP = {
         } else {
 
             var isSelect = element.name == pageSizeName; 
-            var elValue = element.value != undefined ? element.value : element.text;
+            var elValue = element.value != undefined ? element.value : ($.browser.msie ? element.innerText : element.text);
             var elValueInt = parseInt(elValue);
+            if (elValueInt + "" === "NaN" && (elValue == "<" || elValue == ">")) {
+                elValue = element.getAttribute("value");
+                elValueInt = parseInt(elValue);
+            }
             if (elValueInt + "" === "NaN" || elValue != elValueInt || elValueInt <= 0) {
                 FP.hideShadow(shadowId);
                 return;

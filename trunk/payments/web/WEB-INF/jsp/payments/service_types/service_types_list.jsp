@@ -33,6 +33,7 @@
             </td>
             <td class="col"><s:property value="code" /></td>
             <td class="col">
+                <a href="<s:url action="serviceTypeCorrectionsList" includeParams="none"><s:param name="serviceType.id" value="id" /></s:url>"><s:text name="payments.service_type.view_corrections" /></a>&nbsp;
                 <a href="<s:url action="serviceTypeEdit" includeParams="none"><s:param name="serviceType.id" value="id" /></s:url>"><s:text name="common.edit" /></a>
             </td>
         </tr>

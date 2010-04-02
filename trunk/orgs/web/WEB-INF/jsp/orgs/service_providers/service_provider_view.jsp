@@ -1,4 +1,4 @@
-<%@include file="/WEB-INF/jsp/common/taglibs.jsp" %>
+<%@include file="/WEB-INF/jsp/common/taglibs.jsp"%>
 
 <table cellpadding="3" cellspacing="1" border="0" width="100%">
     <tr>
@@ -43,10 +43,10 @@
     <tr>
         <td colspan="3">
             <input type="button" class="btn-exit"
-                   onclick="window.location='<s:url action="serviceProviderEdit"><s:param name="provider.id" value="%{provider.id}" /></s:url>';"
+                   onclick="window.location='<s:url action="serviceProviderEdit" includeParams="none"><s:param name="provider.id" value="provider.id" /></s:url>';"
                    value="<s:text name="common.edit" />" />
             <input type="button" class="btn-exit"
-                   onclick="window.location='<s:url action="serviceProviderCorrectionsList"><s:param name="provider.id" value="%{provider.id}" /></s:url>';"
+                   onclick="window.location='<s:url action="serviceProviderCorrectionsList" includeParams="none"><s:param name="provider.id" value="provider.id" /></s:url>';"
                    value="<s:text name="orgs.service_provider.view_corrections" />" />
         </td>
     </tr>

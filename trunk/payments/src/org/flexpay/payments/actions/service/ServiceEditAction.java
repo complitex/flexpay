@@ -41,7 +41,7 @@ public class ServiceEditAction extends FPActionSupport {
 	private ServiceTypeFilter serviceTypeFilter = new ServiceTypeFilter();
 	private MeasureUnitFilter measureUnitFilter = new MeasureUnitFilter();
 	private ServiceFilter parentServiceFilter = new ServiceFilter();
-	private BeginDateFilter beginDateFilter = new BeginDateFilter();
+	private BeginDateFilter beginDateFilter = new BeginDateFilter(now());
 	private EndDateFilter endDateFilter = new EndDateFilter();
 
 	private Map<Long, String> names = map();
@@ -135,7 +135,7 @@ public class ServiceEditAction extends FPActionSupport {
 
         if (beginDateFilter == null) {
             log.warn("BeginDateFilter parameter is null");
-            beginDateFilter = new BeginDateFilter();
+            beginDateFilter = new BeginDateFilter(now());
         }
 
         if (endDateFilter == null) {

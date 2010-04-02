@@ -1,7 +1,7 @@
 <%@include file="/WEB-INF/jsp/common/taglibs.jsp"%>
 <%@include file="/WEB-INF/jsp/common/includes/errors_messages.jsp"%>
 
-<s:form action="serviceProviderEdit">
+<s:form action="serviceProviderEdit" method="POST">
 
 	<s:hidden name="provider.id" />
 
@@ -9,7 +9,7 @@
         <tr valign="top" class="cols_1">
             <td class="col"><s:text name="eirc.organization" />:</td>
             <td class="col">
-                <%@include file="../filters/organization_filter.jsp"%>
+                <%@include file="/WEB-INF/jsp/orgs/filters/organization_filter.jsp"%>
             </td>
         </tr>
 		<tr valign="top" class="cols_1">
