@@ -873,7 +873,6 @@
 		<location>/resources/common/jsp/forbidden.jsp</location>
 	</error-page>
 
-
 	<welcome-file-list>
 		<welcome-file>/resources/eirc/jsp/index.jsp</welcome-file>
 	</welcome-file-list>

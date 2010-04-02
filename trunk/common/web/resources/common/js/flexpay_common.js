@@ -203,6 +203,9 @@ var FP = {
         }
 
         $.post(opt.action, params, function(data) {
+                    if (data == "") {
+                        window.location.href = FP.base;
+                    }
                     result.html(data);
                     FP.hideShadow(shadowId);
                 });
@@ -262,8 +265,10 @@ var FP = {
             params[name] = ids;
 
         }
-        $.post(action, params,
-                function(data) {
+        $.post(action, params, function(data) {
+                    if (data == "") {
+                        window.location.href = FP.base;
+                    }
                     $("#messagesBlock").html(data);
                     callback(null);
                 });

@@ -9,7 +9,7 @@
 </script>
 
 <s:text name="common.from" />
-<input type="text" name="dateInterval_begin" id="dateIntervalBegin" value="<s:date name="dateInterval.begin" format="yyyy/MM/dd" />" readonly="readonly" />
+<input type="text" name="dateInterval_begin" id="dateIntervalBegin" size="10" value="<s:date name="dateInterval.begin" format="yyyy/MM/dd" />" readonly="readonly" />
 &nbsp;&nbsp;
 <s:text name="common.till" />
-<input type="text" name="dateInterval_end" id="dateIntervalEnd" value="<s:date name="dateInterval.end" format="yyyy/MM/dd" />" readonly="readonly" />
+<input type="text" name="dateInterval_end" id="dateIntervalEnd" size="10" value="<s:date name="dateInterval.end" format="yyyy/MM/dd" />" readonly="readonly" />

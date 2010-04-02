@@ -76,6 +76,9 @@
         $.post("<s:url action="registriesProcess" includeParams="none" />",
                 {objectIds:ids},
                 function(data) {
+                    if (data == "") {
+                        window.location.href = FP.base;
+                    }
                     $("#messagesBlock").html(data);
                 });
     }

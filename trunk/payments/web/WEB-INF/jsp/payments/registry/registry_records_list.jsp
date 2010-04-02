@@ -108,6 +108,9 @@
                     "registry.id":<s:property value="registry.id" />
                 },
                 function(data) {
+                    if (data == "") {
+                        window.location.href = FP.base;
+                    }
                     $("#messagesBlock").html(data);
                 });
     }

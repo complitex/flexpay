@@ -21,6 +21,9 @@
                         endDate:"<s:property value="format(person.currentRegistration.endDate)" />"
                     },
                     function(data) {
+                        if (data == "") {
+                            window.location.href = FP.base;
+                        }
                         $("#registration").html(data);
                     });
         });
@@ -34,17 +37,26 @@
             params[this.name] = this.value;
         });
         $.post("<s:url action="personSaveFIO" includeParams="none" />", params, function(data) {
+            if (data == "") {
+                window.location.href = FP.base;
+            }
             $("#response").html(data);
             if ($("#errors").html() == "") {
                 personId.value = $("#responseForm input[name='person.id']").get(0).value;
                 if ($("#formRegistration").get(0) == null) {
                     $.post("<s:url action="personEditRegistrationForm" includeParams="none" />", {}, function(data1) {
+                        if (data == "") {
+                            window.location.href = FP.base;
+                        }
                                 $("#registration").html(data1);
                             });
                 }
                 $.post("<s:url action="personViewIdentities" includeParams="none" />",
                         {"person.id":personId.value},
                         function(data1) {
+                            if (data == "") {
+                                window.location.href = FP.base;
+                            }
                             $("#identities").html(data1);
                         });
             }
@@ -60,6 +72,9 @@
                     endDate:$("#endDate").val()
                 },
                 function(data) {
+                    if (data == "") {
+                        window.location.href = FP.base;
+                    }
                     $("#response").html(data);
                 });
     }

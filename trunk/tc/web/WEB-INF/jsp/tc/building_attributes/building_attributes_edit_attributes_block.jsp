@@ -23,6 +23,9 @@
 
         $.post("<s:url action="buildingAttributesSave" includeParams="none" />", params,
                 function(data) {
+                    if (data == "") {
+                        window.location.href = FP.base;
+                    }
                     $("#response").html(data);
                 });
     }

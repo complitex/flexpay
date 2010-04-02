@@ -137,6 +137,9 @@ function FPFileUploadForm(formId, options) {
         var form = FPFile.fileForms[options.formId];
         $.post(FPFile.constants.progressBarUrl, {},
                 function (data, textStatus) {
+                    if (data == "") {
+                        window.location.href = FP.base;
+                    }
                     if (textStatus == form.successResponse && data != null && data != "") {
                         var ajaxResponse = $("#" + form.responseId + form.uploadingId).
                                 text(FP.formatI18nMessage(FPFile.constants.statusUploading, [form.uploadingFilename, data]));

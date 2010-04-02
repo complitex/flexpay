@@ -30,6 +30,9 @@
                     "tradingDayControlPanel.command":button.value
                 },
                 function() {
+                    if (data == "") {
+                        window.location.href = FP.base;
+                    }
                     if (pagerAjax != undefined) {
                         pagerAjax();
                     }
