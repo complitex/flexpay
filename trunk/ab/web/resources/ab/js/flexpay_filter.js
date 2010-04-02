@@ -406,8 +406,8 @@ var FF = {
                     return;
                 }
                 $.post(filter2.action, {parents : params},
-                    function(data) {
-                        if (data == "") {
+                    function(data, status) {
+                        if (data == "" && status == "success") {
                             window.location.href = FP.base;
                         }
                         filter2.string.autocomplete(FF.parseAutocompleterData(data),

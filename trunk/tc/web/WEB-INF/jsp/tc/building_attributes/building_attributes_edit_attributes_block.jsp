@@ -22,8 +22,8 @@
         });
 
         $.post("<s:url action="buildingAttributesSave" includeParams="none" />", params,
-                function(data) {
-                    if (data == "") {
+                function(data, status) {
+                    if (data == "" && status == "success") {
                         window.location.href = FP.base;
                     }
                     $("#response").html(data);

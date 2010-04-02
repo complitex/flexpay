@@ -136,8 +136,8 @@ function FPFileUploadForm(formId, options) {
     function getProgress() {
         var form = FPFile.fileForms[options.formId];
         $.post(FPFile.constants.progressBarUrl, {},
-                function (data, textStatus) {
-                    if (data == "") {
+                function(data, textStatus) {
+                    if (data == "" && textStatus == "success") {
                         window.location.href = FP.base;
                     }
                     if (textStatus == form.successResponse && data != null && data != "") {
