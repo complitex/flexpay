@@ -22,6 +22,9 @@
                     "object.id":FF.filters["street"].value.val(),
                     type:"street"
                 }, function(data) {
+                    if (data == "") {
+                        window.location.href = FP.base;
+                    }
                     $("#messagesBlock").html(data);
                     if ($("#errors").text().length > 0) {
                         $("#setBut").hide();

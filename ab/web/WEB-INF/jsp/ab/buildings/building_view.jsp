@@ -41,6 +41,9 @@
                     "address.id":id
                 },
                 function(data) {
+                    if (data == "") {
+                        window.location.href = FP.base;
+                    }
                     $("#messagesBlock").html(data);
                     pagerAjax();
                 });

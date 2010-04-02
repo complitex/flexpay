@@ -15,6 +15,9 @@
                     "building.id":<s:property value="building.id" />
                 },
                 function(data) {
+                    if (data == "") {
+                        window.location.href = FP.base;
+                    }
                     $("#attributesBlock").html(data);
                     FP.hideShadow("shadow");
                 });

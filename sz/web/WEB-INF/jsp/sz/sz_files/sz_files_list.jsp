@@ -97,6 +97,9 @@
                     objectIds:objectIds
                 },
                 function(data) {
+                    if (data == "") {
+                        window.location.href = FP.base;
+                    }
                     $("#startProcessResponse").html(data);
                 });
     }

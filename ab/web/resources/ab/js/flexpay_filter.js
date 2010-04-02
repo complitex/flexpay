@@ -407,6 +407,9 @@ var FF = {
                 }
                 $.post(filter2.action, {parents : params},
                     function(data) {
+                        if (data == "") {
+                            window.location.href = FP.base;
+                        }
                         filter2.string.autocomplete(FF.parseAutocompleterData(data),
                             {
                                 delay:30,
