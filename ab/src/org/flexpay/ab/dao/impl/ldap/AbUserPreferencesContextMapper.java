@@ -50,9 +50,9 @@ public class AbUserPreferencesContextMapper implements UserPreferencesContextMap
 	@Override
 	public void doMapToContextUserEdited(DirContextOperations ctx, UserPreferences preferences) {
 
-		if (!preferences.getObjectClasses().contains("flexpayAbPerson")) {
-			ctx.addAttributeValue("objectclass", "flexpayAbPerson");
-			preferences.getObjectClasses().add("flexpayAbPerson");
+		if (!preferences.getObjectClasses().contains(LdapConstants.FLEXPAY_PERSON_OBJECT_CLASS)) {
+			ctx.addAttributeValue("objectclass", LdapConstants.FLEXPAY_PERSON_OBJECT_CLASS);
+			preferences.getObjectClasses().add(LdapConstants.FLEXPAY_PERSON_OBJECT_CLASS);
 		}
 
 		AbUserPreferences userPreferences = (AbUserPreferences) preferences;
@@ -75,6 +75,14 @@ public class AbUserPreferencesContextMapper implements UserPreferencesContextMap
 	@Override
 	public void doMapToContextAccessPermissions(DirContextOperations ctx, UserPreferences preferences, List<String> permissions) {
 
+	}
+
+	@Override
+	public void doMapToContextNewUser(DirContextOperations ctx, UserPreferences preferences) {
+		for (String objectClass : LdapConstants.REQUIRED_OBJECT_CLASSES) {
+			ctx.addAttributeValue("objectclass", objectClass);
+			preferences.getObjectClasses().add(objectClass);
+		}
 	}
 
 	private void setSingleAttribute(DirContextOperations ctx, UserPreferences preferences, String name, Long value) {

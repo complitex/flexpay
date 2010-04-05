@@ -36,5 +36,9 @@
 		<put-attribute name="title" value="admin.user.edit" />
 		<put-attribute name="body" value="/WEB-INF/jsp/admin/user/edit_user.jsp" />
 	</definition>
+	<definition name="admin.user.create" extends="admin.layout.standart">
+		<put-attribute name="title" value="admin.user.create" />
+		<put-attribute name="body" value="/WEB-INF/jsp/admin/user/create_user.jsp" />
+	</definition>
 
 </tiles-definitions>

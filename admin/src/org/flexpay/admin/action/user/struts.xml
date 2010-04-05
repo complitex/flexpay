@@ -18,5 +18,15 @@
 			<result name="input" type="tiles">admin.user.edit</result>
 			<result name="redirectSuccess" type="redirect-action">userList</result>
 		</action>
+
+		<action name="createUser" class="createUserAction">
+			<result name="redirectError" type="redirect-action">userList</result>
+			<result name="input" type="tiles">admin.user.create</result>
+			<result name="redirectSuccess" type="redirect-action">userList</result>
+		</action>
+
+		<action name="deleteUser" class="deleteUserAction">
+			<result>/WEB-INF/jsp/common/responses/simple_response.jsp</result>
+		</action>
 	</package>
 </struts>

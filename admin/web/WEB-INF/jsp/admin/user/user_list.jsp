@@ -29,7 +29,7 @@
                 <s:property value="username" />
             </td>
             <td class="col">
-                <a href="<s:url action="editUser" includeParams="none"><s:param name="userName" value="username" /></s:url>"><s:text name="common.edit"/></a>
+                <a href="<s:url action="editUser" includeParams="none"><s:param name="model.userName" value="username" /></s:url>"><s:text name="common.edit"/></a>
             </td>
         </tr>
     </s:iterator>
@@ -37,7 +37,9 @@
         <td colspan="4">
             <%@include file="/WEB-INF/jsp/common/filter/pager/pager_ajax.jsp"%>
             <input type="button" class="btn-exit" value="<s:text name="common.delete_selected" />" onclick="deleteAjax();" />
-            <input type="button" class="btn-exit" value="<s:text name="common.new" />" />
+            <input type="button" class="btn-exit"
+									 onclick="window.location='<s:url action="createUser" includeParams="none"/>'"
+									 value="<s:text name="common.new" />" />
         </td>
     </tr>
 </table>

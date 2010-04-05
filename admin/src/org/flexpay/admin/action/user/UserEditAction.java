@@ -1,6 +1,7 @@
 package org.flexpay.admin.action.user;
 
 import org.apache.commons.lang.StringUtils;
+import org.flexpay.admin.persistence.UserModel;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.persistence.UserRole;
 import org.flexpay.common.service.UserRoleService;
@@ -17,19 +18,12 @@ import java.util.List;
 
 public class UserEditAction extends FPActionSupport {
 	private UserPreferencesService preferencesService;
-	private UserPreferencesFactory userPreferencesFactory;
 
 	private UserRoleService userRoleService;
 
 	private UserPreferences currentUserPreferences;
 
-	private String userName;
-	private String firstName;
-	private String lastName;
-	private String password;
-	private String reEnterPassword;
-	private String oldPassword;
-	private Long roleId;
+	private UserModel model = UserModel.getInstance();
 
 	private boolean checkOldPassword = false;
 
@@ -40,35 +34,35 @@ public class UserEditAction extends FPActionSupport {
 	protected String doExecute() throws Exception {
 		userRoles = userRoleService.getAllUserRoles();
 
-		if (StringUtils.isEmpty(userName)) {
+		if (StringUtils.isEmpty(model.getUserName())) {
 			addActionError(getText("admin.error.user.user_name_empty"));
 			return REDIRECT_ERROR;
 		}
 		try {
-			currentUserPreferences = preferencesService.loadUserByUsername(userName);
+			currentUserPreferences = preferencesService.loadUserByUsername(model.getUserName());
 			log.debug("username: {}, fullname: {}, lastname: {}", new Object[] {
 					currentUserPreferences.getUsername(), currentUserPreferences.getFullName(), currentUserPreferences.getLastName()});
 		} catch (Exception e) {
-			log.warn("Can not get user preferences with name {}", userName);
+			log.warn("Can not get user preferences with name {}", model.getUserName());
 			addActionError(getText("admin.error.inner_error"));
 			return REDIRECT_ERROR;
 		}
 
 		if (StringUtils.isEmpty(currentUserPreferences.getUsername())) {
-			log.warn("Can not get user preferences with name {}", userName);
+			log.warn("Can not get user preferences with name {}", model.getUserName());
 			addActionError(getText("admin.error.user.cant_get_user_preferences"));
 			return REDIRECT_ERROR;
 		}
 
-		if (userName.equals(SecurityUtil.getUserName())) {
+		if (model.getUserName().equals(SecurityUtil.getUserName())) {
 			checkOldPassword = true;
 		}
 
 		if (isSubmit()) {
 			if (!doValidate()) {
-				currentUserPreferences.setFirstName(firstName);
-				currentUserPreferences.setLastName(lastName);
-				currentUserPreferences.setFullName(createFullName());
+				currentUserPreferences.setFirstName(model.getFirstName());
+				currentUserPreferences.setLastName(model.getLastName());
+				currentUserPreferences.setFullName(model.getFullName());
 				setNewUserRole();
 				return INPUT;
 			}
@@ -78,7 +72,7 @@ public class UserEditAction extends FPActionSupport {
 				addActionMessage(getText("admin.user.saved"));
 				return REDIRECT_SUCCESS;
 			} catch (FlexPayExceptionContainer e) {
-				log.warn("Can not update user preferences with name {}", userName);
+				log.warn("Can not update user preferences with name {}", model.getUserName());
 				addActionError(getText("admin.error.user.cant_update_user_preferences"));
 			}
 			return REDIRECT_ERROR;
@@ -88,17 +82,17 @@ public class UserEditAction extends FPActionSupport {
 	}
 
 	private boolean setNewUserRole() {
-		if (roleId != null && roleId > 0 &&
+		if (model.getRoleId() != null && model.getRoleId() > 0 &&
 			(currentUserPreferences.getUserRole() == null ||
-				!roleId.equals(currentUserPreferences.getUserRole().getId()))) {
-			UserRole userRole = userRoleService.readFull(new Stub<UserRole>(roleId));
+				!model.getRoleId().equals(currentUserPreferences.getUserRole().getId()))) {
+			UserRole userRole = userRoleService.readFull(new Stub<UserRole>(model.getRoleId()));
 			if (userRole == null) {
-				log.warn("Can`t find role with id={}. User role do not change", roleId);
+				log.warn("Can`t find role with id={}. User role do not change", model.getRoleId());
 			} else {
 				currentUserPreferences.setUserRole(userRole);
 				return true;
 			}
-		} else if ((roleId == null || roleId <= 0) && currentUserPreferences.getUserRole() != null) {
+		} else if ((model.getRoleId() == null || model.getRoleId() <= 0) && currentUserPreferences.getUserRole() != null) {
 			currentUserPreferences.setUserRole(null);
 			return true;
 		}
@@ -106,12 +100,12 @@ public class UserEditAction extends FPActionSupport {
 	}
 
 	private void updateUserPreferences() throws FlexPayExceptionContainer {
-		currentUserPreferences.setFirstName(firstName);
-		currentUserPreferences.setLastName(lastName);
-		currentUserPreferences.setFullName(createFullName());
+		currentUserPreferences.setFirstName(model.getFirstName());
+		currentUserPreferences.setLastName(model.getLastName());
+		currentUserPreferences.setFullName(model.getFullName());
 		preferencesService.saveGeneralData(currentUserPreferences);
-		if (StringUtils.isNotEmpty(password)) {
-			preferencesService.updatePassword(currentUserPreferences, password);
+		if (StringUtils.isNotEmpty(model.getPassword())) {
+			preferencesService.updatePassword(currentUserPreferences, model.getPassword());
 		}
 		if (setNewUserRole()) {
 			preferencesService.updateUserRole(currentUserPreferences);
@@ -119,35 +113,35 @@ public class UserEditAction extends FPActionSupport {
 	}
 
 	private boolean doValidate() {
-		if (StringUtils.isEmpty(firstName)) {
+		if (StringUtils.isEmpty(model.getFirstName())) {
 			log.error("First name is required parameter");
 			addActionError(getText("admin.error.user.first_name_empty"));
 		}
-		if (StringUtils.isEmpty(lastName)) {
+		if (StringUtils.isEmpty(model.getLastName())) {
 			log.error("Last name is required parameter");
 			addActionError(getText("admin.error.user.last_name_empty"));
 		}
-		if (StringUtils.isEmpty(userName)) {
+		if (StringUtils.isEmpty(model.getUserName())) {
 			log.error("User name is required parameter");
 			addActionError(getText("admin.error.user.user_name_empty"));
 		}
-		if ((StringUtils.isNotEmpty(password) || StringUtils.isNotEmpty(reEnterPassword)) &&
-				StringUtils.equals(password, reEnterPassword)) {
+		if ((StringUtils.isNotEmpty(model.getPassword()) || StringUtils.isNotEmpty(model.getReEnterPassword())) &&
+				StringUtils.equals(model.getPassword(), model.getReEnterPassword())) {
 			log.error("The passwords you entered do not match");
 			addActionError(getText("admin.error.user.passwords_do_not_match"));
 		}
-		if (StringUtils.isEmpty(password) && StringUtils.isNotEmpty(oldPassword)) {
+		if (StringUtils.isEmpty(model.getPassword()) && StringUtils.isNotEmpty(model.getOldPassword())) {
 			log.error("Password was not change. New password is empty");
 			addActionError(getText("admin.error.user.new_password_empty"));
 		}
-		if (userName.equals(SecurityUtil.getUserName()) &&
-				StringUtils.isNotEmpty(password) && StringUtils.isEmpty(oldPassword)) {
+		if (model.getUserName().equals(SecurityUtil.getUserName()) &&
+				StringUtils.isNotEmpty(model.getPassword()) && StringUtils.isEmpty(model.getOldPassword())) {
 			log.error("Password was not change. Old password is empty");
 			addActionError(getText("admin.error.user.old_password_empty"));
 		}
 		try {
-			if (StringUtils.isNotEmpty(password) && StringUtils.isNotEmpty(oldPassword)
-					&& !preferencesService.checkPassword(currentUserPreferences, oldPassword)) {
+			if (StringUtils.isNotEmpty(model.getPassword()) && StringUtils.isNotEmpty(model.getOldPassword())
+					&& !preferencesService.checkPassword(currentUserPreferences, model.getOldPassword())) {
 				log.error("Failed old password");
 				addActionError(getText("admin.error.user.failed_old_password"));
 			}
@@ -157,44 +151,6 @@ public class UserEditAction extends FPActionSupport {
 		}
 
 		return !hasActionErrors();
-	}
-
-	private String createFullName() {
-		if (StringUtils.isEmpty(firstName)) {
-			return lastName;
-		}
-		if (StringUtils.isEmpty(lastName)) {
-			return firstName;
-		}
-		return firstName + " " + lastName;
-	}
-
-	public void setUserName(String userName) {
-		this.userName = userName;
-	}
-
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
-
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
-
-	public void setRoleId(Long roleId) {
-		this.roleId = roleId;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-	public void setReEnterPassword(String reEnterPassword) {
-		this.reEnterPassword = reEnterPassword;
-	}
-
-	public void setOldPassword(String oldPassword) {
-		this.oldPassword = oldPassword;
 	}
 
 	public UserPreferences getCurrentUserPreferences() {
@@ -213,6 +169,18 @@ public class UserEditAction extends FPActionSupport {
 		return userRoles;
 	}
 
+	public UserModel getModel() {
+		return model;
+	}
+
+	public void setModel(UserModel model) {
+		this.model = model;
+	}
+
+	public boolean isPasswordRequired() {
+		return false;
+	}
+
 	@Required
 	public void setUserRoleService(UserRoleService userRoleService) {
 		this.userRoleService = userRoleService;
@@ -221,11 +189,6 @@ public class UserEditAction extends FPActionSupport {
 	@Required
 	public void setPreferencesService(UserPreferencesService preferencesService) {
 		this.preferencesService = preferencesService;
-	}
-
-	@Required
-	public void setUserPreferencesFactory(UserPreferencesFactory userPreferencesFactory) {
-		this.userPreferencesFactory = userPreferencesFactory;
 	}
 
 	@NotNull

@@ -12,15 +12,26 @@
 		  scope="prototype" />
 
 	<bean id="userListPageAction" parent="staticPageAction"
-          p:crumbNameKey="admin.crumbs.user_list"
+          p:crumbNameKey="admin.crumbs.user.list"
           scope="prototype" />
 
 	<bean id="editUserAction"
 		  class="org.flexpay.admin.action.user.UserEditAction"
 		  p:userRoleService-ref="userRoleService"
 		  p:preferencesService-ref="userPreferencesService"
-		  p:userPreferencesFactory-ref="userPreferencesFactory"
-		  p:crumbNameKey="admin.crumbs.edit_user"
+		  p:crumbNameKey="admin.crumbs.user.edit"
+		  scope="prototype" />
+
+	<bean id="createUserAction"
+		  class="org.flexpay.admin.action.user.UserCreateAction"
+		  p:userRoleService-ref="userRoleService"
+		  p:preferencesService-ref="userPreferencesService"
+		  p:crumbNameKey="admin.crumbs.user.create"
+		  scope="prototype" />
+
+	<bean id="deleteUserAction"
+		  class="org.flexpay.admin.action.user.UserDeleteAction"
+		  p:preferencesService-ref="userPreferencesService"
 		  scope="prototype" />
 
 </beans>

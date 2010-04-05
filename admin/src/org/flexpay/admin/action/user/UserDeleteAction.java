@@ -1,18 +1,54 @@
 package org.flexpay.admin.action.user;
 
 import org.flexpay.common.actions.FPActionSupport;
+import org.flexpay.common.service.UserPreferencesService;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Required;
+
+import java.util.Set;
+
+import static org.flexpay.common.util.CollectionUtils.set;
 
 public class UserDeleteAction extends FPActionSupport {
+	private UserPreferencesService preferencesService;
+
+	private Set<String> objectIds = set();
+
 	@NotNull
 	@Override
-	protected String doExecute() throws Exception {
-		return null;  //To change body of implemented methods use File | Settings | File Templates.
+	public String doExecute() throws Exception {
+
+		if (objectIds == null) {
+			log.warn("ObjectIds user is null");
+			return SUCCESS;
+		}
+
+		for (String objectId : objectIds) {
+			preferencesService.deleteUser(objectId);
+		}
+
+		return SUCCESS;
 	}
 
+	/**
+	 * Get default error execution result
+	 * <p/>
+	 * If return code starts with a {@link #PREFIX_REDIRECT} all error messages are stored in a session
+	 *
+	 * @return {@link #ERROR} by default
+	 */
 	@NotNull
 	@Override
 	protected String getErrorResult() {
-		return null;  //To change body of implemented methods use File | Settings | File Templates.
+		return SUCCESS;
+	}
+
+	public void setObjectIds(Set<String> objectIds) {
+		this.objectIds = objectIds;
+	}
+
+	@Required
+	public void setPreferencesService(UserPreferencesService preferencesService) {
+		this.preferencesService = preferencesService;
 	}
 }

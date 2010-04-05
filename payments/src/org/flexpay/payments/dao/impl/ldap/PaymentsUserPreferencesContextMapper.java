@@ -46,9 +46,9 @@ public class PaymentsUserPreferencesContextMapper implements UserPreferencesCont
 	@Override
 	public void doMapToContextUserEdited(DirContextOperations ctx, UserPreferences preferences) {
 
-		if (!preferences.getObjectClasses().contains("flexpayPaymentsPerson")) {
-			ctx.addAttributeValue("objectclass", "flexpayPaymentsPerson");
-			preferences.getObjectClasses().add("flexpayPaymentsPerson");
+		if (!preferences.getObjectClasses().contains(LdapConstants.FLEXPAY_PERSON_OBJECT_CLASS)) {
+			ctx.addAttributeValue("objectclass", LdapConstants.FLEXPAY_PERSON_OBJECT_CLASS);
+			preferences.getObjectClasses().add(LdapConstants.FLEXPAY_PERSON_OBJECT_CLASS);
 		}
 
 		PaymentsUserPreferences userPreferences = (PaymentsUserPreferences) preferences;
@@ -70,6 +70,14 @@ public class PaymentsUserPreferencesContextMapper implements UserPreferencesCont
 	@Override
 	public void doMapToContextAccessPermissions(DirContextOperations ctx, UserPreferences preferences, List<String> permissions) {
 		
+	}
+
+	@Override
+	public void doMapToContextNewUser(DirContextOperations ctx, UserPreferences preferences) {
+		for (String objectClass : LdapConstants.REQUIRED_OBJECT_CLASSES) {
+			ctx.addAttributeValue("objectclass", objectClass);
+			preferences.getObjectClasses().add(objectClass);
+		}
 	}
 
 	private void setSingleAttribute(DirContextOperations ctx, UserPreferences preferences, String name, String value) {
