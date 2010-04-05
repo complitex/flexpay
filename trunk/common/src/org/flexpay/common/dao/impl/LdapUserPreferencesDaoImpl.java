@@ -2,7 +2,9 @@ package org.flexpay.common.dao.impl;
 
 import com.iplanet.sso.SSOException;
 import com.iplanet.sso.SSOToken;
+import com.sun.identity.authentication.AuthContext;
 import com.sun.identity.policy.*;
+import com.sun.identity.policy.interfaces.Subject;
 import org.flexpay.common.actions.security.opensso.TokenUtils;
 import org.flexpay.common.dao.UserPreferencesDao;
 import org.flexpay.common.dao.impl.ldap.DnBuilder;
@@ -40,6 +42,7 @@ import java.util.StringTokenizer;
  * @author Ulrik Sandberg
  */
 public class LdapUserPreferencesDaoImpl implements UserPreferencesDao {
+	private static final String POLICY_SUBJECT = "AMIdentitySubject";
 
 	private Logger log = LoggerFactory.getLogger(getClass());
 
@@ -101,6 +104,29 @@ public class LdapUserPreferencesDaoImpl implements UserPreferencesDao {
 		protected String doMapFromContext(DirContextOperations ctx) {
 			log.debug("Access permission dn: {}", ctx.getDn());
 			return "cn=" + ctx.getStringAttribute("cn") +",ou=groups," + base;
+		}
+	}
+
+	@Override
+	public void createNewUser(UserPreferences person, String password) {
+		Name dn = buildDn(person);
+		DirContextOperations ctx = new DirContextAdapter(dn);
+		mapToContextNewUser(person, ctx);
+		mapToContextAdminEditedPreferences(person, ctx);
+		mapToContextPasswordPreferences(person, password, ctx);
+		ctx.getAttributes();
+		if (person.getUserRole() != null) {
+			List<String> accessPermissions = ldapTemplate.search(groupsBuilder.buildDn(null),
+					accessPermissionsBuilder.getNameFilter(person.getUserRole().getExternalId()).encode(), new AccessPermissionsContextMapper());
+			log.debug("Found permissions: {}", accessPermissions);
+			mapToContextAccessPermissionsPreferences(person, ctx, accessPermissions);
+		}
+		ldapTemplate.bind(dn, ctx, null);
+		try {
+			addUserToPolicy(person);
+		} catch (Exception e) {
+			log.warn("Create user. Can not update policy {}", policyNames);
+			log.warn("Exception: ", e);
 		}
 	}
 
@@ -181,8 +207,10 @@ public class LdapUserPreferencesDaoImpl implements UserPreferencesDao {
 	}
 
 	@Override
-	public void delete(UserPreferences preferences) {
-		ldapTemplate.unbind(preferences.getUsername());
+	public void delete(String userName) {
+		UserPreferences person = userPreferencesFactory.newInstance();
+		person.setUsername(userName);
+		ldapTemplate.unbind(buildDn(person));
 	}
 
 	@Override
@@ -252,7 +280,7 @@ public class LdapUserPreferencesDaoImpl implements UserPreferencesDao {
 
 	private AndFilter getUserFilter(List<String> userNames) {
 		AndFilter resultFilter = new AndFilter();
-		resultFilter.and(userGroupBuilder.getNameFilter(LdapConstants.OBJECT_CLASS));
+		resultFilter.and(userGroupBuilder.getNameFilter(LdapConstants.FLEXPAY_PERSON_OBJECT_CLASS));
 		OrFilter uidFilter = new OrFilter();
 		for (String name : userNames) {
 			uidFilter.or(userNameBuilder.getNameFilter(name));
@@ -265,29 +293,78 @@ public class LdapUserPreferencesDaoImpl implements UserPreferencesDao {
 
 	@SuppressWarnings ({"unchecked"})
 	private List<String> getUserNames() throws Exception {
-		SSOToken ssoToken = TokenUtils.getToken(base, adminUserName, adminPassword);
-		PolicyManager pm = new PolicyManager(ssoToken);
-		List<String> userNames = CollectionUtils.list();
-		for (String policyName : policyNames) {
-			try {
-				Policy policy = pm.getPolicy(policyName);
-				Set<String> subjectNames = policy.getSubjectNames();
-				for (String subjectName : subjectNames) {
-					for (Object val : policy.getSubject(subjectName).getValues()) {
-						log.debug("Subject value {} ({})", val, val.getClass());
-						String userName = getUserId((String)val);
-						if (userName != null) {
-							userNames.add(userName);
+		SSOToken ssoToken = null;
+		try {
+			ssoToken = TokenUtils.getToken(base, adminUserName, adminPassword);
+			PolicyManager pm = new PolicyManager(ssoToken);
+			List<String> userNames = CollectionUtils.list();
+			for (String policyName : policyNames) {
+				try {
+					Policy policy = pm.getPolicy(policyName);
+					Set<String> subjectNames = policy.getSubjectNames();
+					for (String subjectName : subjectNames) {
+						for (Object val : policy.getSubject(subjectName).getValues()) {
+							log.debug("Subject value {} ({})", val, val.getClass());
+							String userName = getUserId((String)val);
+							if (userName != null) {
+								userNames.add(userName);
+							}
 						}
 					}
+				} catch (NameNotFoundException e) {
+					log.warn("OpenSSO policy name not found {}", policyName);
+				} catch (InvalidNameException e) {
+					log.warn("Invalid OpenSSO policy name {}", policyName);
 				}
-			} catch (NameNotFoundException e) {
-				log.warn("OpenSSO policy name not found {}", policyName);
-			} catch (InvalidNameException e) {
-				log.warn("Invalid OpenSSO policy name {}", policyName);
+			}
+			return userNames;
+		} finally {
+			if (ssoToken != null) {
+				AuthContext ac = new AuthContext(ssoToken);
+				ac.logout();
 			}
 		}
-		return userNames;
+	}
+
+	@SuppressWarnings ({"unchecked"})
+	private void addUserToPolicy(UserPreferences person) throws Exception {
+		SSOToken ssoToken = null;
+		try {
+			ssoToken = TokenUtils.getToken(base, adminUserName, adminPassword);
+			PolicyManager pm = new PolicyManager(ssoToken);
+			for (String policyName : policyNames) {
+				log.debug("Edit policy {}", policyName);
+				Policy policy = pm.getPolicy(policyName);
+				Set<String> subjectNames = policy.getSubjectNames();
+				Subject subject;
+				String existSubjectName = null;
+				if (subjectNames.size() > 0) {
+					existSubjectName = subjectNames.iterator().next();
+					subject = policy.getSubject(existSubjectName);
+				} else {
+					subject = pm.getSubjectTypeManager().getSubject(POLICY_SUBJECT);
+				}
+				log.debug("Exist subject name {}", existSubjectName);
+				Set<String> values = subject.getValues();
+				if (values == null) {
+					values = CollectionUtils.set();
+				}
+				values.add("id=" + person.getUsername() + ",ou=user," + base);
+				log.debug("Subject values: {}", values);
+				subject.setValues(values);
+				if (existSubjectName != null) {
+					policy.replaceSubject(existSubjectName, subject, policy.isSubjectExclusive(existSubjectName));
+				} else {
+					policy.addSubject("users", subject, true);
+				}
+				pm.replacePolicy(policy);
+			}
+		} finally {
+			if (ssoToken != null) {
+				AuthContext ac = new AuthContext(ssoToken);
+				ac.logout();
+			}
+		}
 	}
 
 	private void mapToContextUserEditedPreferences(UserPreferences preferences, DirContextOperations ctx) {
@@ -304,6 +381,10 @@ public class LdapUserPreferencesDaoImpl implements UserPreferencesDao {
 
 	private void mapToContextAccessPermissionsPreferences(UserPreferences preferences, DirContextOperations ctx, List<String> permissions) {
 		mapper.doMapToContextAccessPermissions(ctx, preferences, permissions);
+	}
+
+	private void mapToContextNewUser(UserPreferences preferences, DirContextOperations ctx) {
+		mapper.doMapToContextNewUser(ctx, preferences);
 	}
 
 	@Required

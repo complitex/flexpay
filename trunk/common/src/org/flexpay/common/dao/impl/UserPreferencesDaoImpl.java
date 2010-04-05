@@ -55,8 +55,8 @@ public class UserPreferencesDaoImpl extends HibernateDaoSupport implements UserP
 	}
 
 	@Override
-	public void delete(UserPreferences preferences) {
-		getHibernateTemplate().delete(preferences);
+	public void delete(String uid) {
+		getHibernateTemplate().findByNamedQuery("UserPreferences.deleteByName", uid);
 	}
 
 	@Override
@@ -69,5 +69,10 @@ public class UserPreferencesDaoImpl extends HibernateDaoSupport implements UserP
 	@Override
 	public List<UserPreferences> listAllUser() {
 		return getHibernateTemplate().loadAll(UserPreferences.class);
+	}
+
+	@Override
+	public void createNewUser(UserPreferences preferences, String password) {
+		throw new NotImplementedException();
 	}
 }

@@ -45,12 +45,21 @@ public interface UserPreferencesContextMapper {
 	void doMapToContextPassword(DirContextOperations ctx, UserPreferences preferences, String password);
 
 	/**
-	 * Do mapping of password to context attributes
+	 * Do mapping of permissions to context attributes
 	 *
 	 * @param ctx		 Context
 	 * @param preferences UserPreferences
+	 * @param permissions User permissions
 	 */
 	void doMapToContextAccessPermissions(DirContextOperations ctx, UserPreferences preferences, List<String> permissions);
+
+	/**
+	 * Do mapping of new user preferences properties to context attributes
+	 *
+	 * @param ctx  Context
+	 * @param preferences UserPreferences
+	 */
+	void doMapToContextNewUser(DirContextOperations ctx, UserPreferences preferences);
 
 	/**
 	 * Check if this mapper supports supplied object
