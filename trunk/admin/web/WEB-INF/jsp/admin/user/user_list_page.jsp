@@ -26,4 +26,8 @@
         });
     }
 
+		function deleteAjax() {
+        FP.serviceElements("<s:url action="deleteUser" namespace="/admin" includeParams="none" />", "objectIds", pagerAjax);
+    }
+
 </script>
