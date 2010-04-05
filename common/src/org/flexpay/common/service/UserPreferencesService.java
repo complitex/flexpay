@@ -91,4 +91,37 @@ public interface UserPreferencesService extends UserDetailsService {
 	 * @throws FlexPayExceptionContainer if preferences validation fails
 	 */
 	UserPreferences updateUserRole(@NotNull UserPreferences preferences) throws FlexPayExceptionContainer;
+
+	/**
+	 * In the actual implementation, the search may possibly be case insensitive,
+	 * or case insensitive depending on how the implementaion instance is configured.
+	 *
+	 * @param userName username presented to the {@link org.springframework.security.providers.dao.DaoAuthenticationProvider}
+	 * @return <code>true</code> if user found by name, <code>false</code> otherwise
+	 */
+	boolean isUserExist(@NotNull String userName);
+
+	/**
+	 * Create user preferences
+	 *
+	 * @param preferences UserPreferences to create
+	 * @param password User password
+	 * @return Created preferences back
+	 * @throws FlexPayExceptionContainer if preferences validation fails
+	 */
+	UserPreferences createNewUser(@NotNull UserPreferences preferences, String password) throws FlexPayExceptionContainer;
+
+	/**
+	 * Delete user preferences by user name
+	 *
+	 * @param userName User name
+	 */
+	void deleteUser(@NotNull String userName);
+
+	/**
+	 * Create new instance user preference
+	 *
+	 * @return User preferences
+	 */
+	UserPreferences createInstanceUserPreferences();
 }

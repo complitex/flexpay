@@ -9,6 +9,8 @@ import java.util.List;
  * Data Access Object interface for the UserPreferences entity.
  */
 public interface UserPreferencesDao {
+	void createNewUser(UserPreferences preferences, String password);
+
 	void saveAllPreferences(UserPreferences preferences);
 
 	void saveUserEditedPreferences(UserPreferences preferences);
@@ -21,7 +23,7 @@ public interface UserPreferencesDao {
 
 	void changeUserRole(UserPreferences preferences);
 
-	void delete(UserPreferences preferences);
+	void delete(String uid);
 
 	UserPreferences findByUserName(String uid);
 

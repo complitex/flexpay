@@ -98,7 +98,6 @@ public class UserPreferencesServiceImpl implements UserPreferencesService, Initi
 	 */
 	@Override
 	public UserPreferences saveGeneralData(@NotNull UserPreferences preferences) throws FlexPayExceptionContainer {
-		validate(preferences);
 
 		log.debug("Updating admin edited user preferences {}", preferences);
 		getUserPreferencesDao().saveAdminEditedPreferences(preferences);
@@ -150,6 +149,49 @@ public class UserPreferencesServiceImpl implements UserPreferencesService, Initi
 		return preferences;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public boolean isUserExist(@NotNull String userName) {
+		return getUserPreferencesDao().findByUserName(userName) != null;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public UserPreferences createNewUser(@NotNull UserPreferences preferences, String password) throws FlexPayExceptionContainer {
+		validate(preferences);
+
+		log.debug("Create new user preferences {}", preferences);
+		getUserPreferencesDao().createNewUser(preferences, password);
+		return preferences;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void deleteUser(@NotNull String userName) {
+		getUserPreferencesDao().delete(userName);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public UserPreferences createInstanceUserPreferences() {
+		UserPreferences preferences = userPreferencesFactory.newInstance();
+
+		// init defaults if needed
+		for (UserPreferencesDefaults setter : defaultsSetters) {
+			setter.setDefaults(preferences);
+		}
+
+		return preferences;
+	}
+
 	@SuppressWarnings ({"ThrowableInstanceNeverThrown"})
 	protected void validate(UserPreferences preferences) throws FlexPayExceptionContainer {
 		FlexPayExceptionContainer container = new FlexPayExceptionContainer();
@@ -186,7 +228,7 @@ public class UserPreferencesServiceImpl implements UserPreferencesService, Initi
 		this.userPreferencesFactory = userPreferencesFactory;
 	}
 
-	public void setUserPreferencesDefaults(UserPreferencesDefaults defaultsSetter) {
-		defaultsSetters.add(defaultsSetter);
+	public void setUserPreferencesDefaults(List<UserPreferencesDefaults> defaultsSetters) {
+		this.defaultsSetters = defaultsSetters;
 	}
 }

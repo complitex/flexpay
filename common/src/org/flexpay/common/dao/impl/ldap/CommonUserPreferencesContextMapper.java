@@ -3,6 +3,7 @@ package org.flexpay.common.dao.impl.ldap;
 import org.apache.commons.lang.StringUtils;
 import org.flexpay.common.persistence.UserRole;
 import org.flexpay.common.service.UserRoleService;
+import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.config.UserPreferences;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Required;
 import org.springframework.ldap.core.DirContextOperations;
 
 import java.util.List;
+import java.util.Set;
 
 public class CommonUserPreferencesContextMapper implements UserPreferencesContextMapper {
 
@@ -36,7 +38,7 @@ public class CommonUserPreferencesContextMapper implements UserPreferencesContex
 			}
 		}
 
-		if (preferences.getObjectClasses().contains(LdapConstants.OBJECT_CLASS)) {
+		if (preferences.getObjectClasses().contains(LdapConstants.FLEXPAY_PERSON_OBJECT_CLASS)) {
 			preferences.setLanguageCode(ctx.getStringAttribute("flexpayPreferedLocale"));
 			preferences.setPageSize(getFilterValue("flexpayPreferedPagerSize", 20, ctx));
 		}
@@ -76,9 +78,9 @@ public class CommonUserPreferencesContextMapper implements UserPreferencesContex
 	 */
 	@Override
 	public void doMapToContextUserEdited(DirContextOperations ctx, UserPreferences preferences) {
-		if (!preferences.getObjectClasses().contains(LdapConstants.OBJECT_CLASS)) {
-			ctx.addAttributeValue("objectclass", LdapConstants.OBJECT_CLASS);
-			preferences.getObjectClasses().add(LdapConstants.OBJECT_CLASS);
+		if (!preferences.getObjectClasses().contains(LdapConstants.FLEXPAY_PERSON_OBJECT_CLASS)) {
+			ctx.addAttributeValue("objectclass", LdapConstants.FLEXPAY_PERSON_OBJECT_CLASS);
+			preferences.getObjectClasses().add(LdapConstants.FLEXPAY_PERSON_OBJECT_CLASS);
 		}
 
 		setSingleAttribute(ctx, preferences, "flexpayPreferedLocale", preferences.getLanguageCode());
@@ -104,6 +106,18 @@ public class CommonUserPreferencesContextMapper implements UserPreferencesContex
 		} else {
 			setSingleAttribute(ctx, preferences, "flexpayUserRole", "");
 		}
+	}
+
+	@Override
+	public void doMapToContextNewUser(DirContextOperations ctx, UserPreferences preferences) {
+		Set<String> objectClasses = CollectionUtils.set();
+		for (String objectClass : LdapConstants.REQUIRED_OBJECT_CLASSES) {
+			ctx.addAttributeValue("objectclass", objectClass);
+			objectClasses.add(objectClass);
+		}
+		preferences.setObjectClasses(objectClasses);
+		ctx.addAttributeValue("inetUserStatus", "Active");
+		ctx.addAttributeValue("uid", preferences.getUsername());
 	}
 
 	private void setSingleAttribute(DirContextOperations ctx, UserPreferences preferences, String name, String value) {

@@ -74,6 +74,16 @@ public class CompositeUserPreferencesContextMapper implements UserPreferencesCon
 	}
 
 	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void doMapToContextNewUser(DirContextOperations ctx, UserPreferences preferences) {
+		for (UserPreferencesContextMapper mapper : mappers) {
+			mapper.doMapToContextNewUser(ctx, preferences);
+		}
+	}
+
+	/**
 	 * Check if this mapper supports supplied object
 	 *
 	 * @param preferences UserPreferences
