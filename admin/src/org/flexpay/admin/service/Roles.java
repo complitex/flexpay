@@ -15,4 +15,5 @@ public abstract class Roles {
 
 	// level 2
 	public static final String ROLE_MENU_ADMIN_USERS = MENU_ADMIN_PREFIX + "_USERS";
+	public static final String ROLE_MENU_ADMIN_CERTIFICATES = MENU_ADMIN_PREFIX + "_CERTIFICATES";
 }

@@ -8,15 +8,7 @@
 		  p:hibernateTemplate-ref="hibernateTemplate"
 		  class="org.flexpay.payments.dao.impl.EircRegistryDaoExtImpl" />
 
-	<!-- Module payments DAO layer instances -->
-	<bean id="certificateDao" parent="abstractDao">
-		<property name="proxyInterfaces" value="org.flexpay.payments.dao.CertificateDao" />
-		<property name="target">
-			<bean parent="abstractDaoTarget">
-				<constructor-arg value="org.flexpay.payments.persistence.Certificate" />
-			</bean>
-		</property>
-	</bean>
+	<!-- Module payments DAO layer instances -->	
 
 	<bean id="documentDao" parent="abstractDao">
 		<property name="proxyInterfaces" value="org.flexpay.payments.dao.DocumentDao" />

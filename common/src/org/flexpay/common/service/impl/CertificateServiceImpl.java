@@ -1,11 +1,11 @@
-package org.flexpay.payments.service.impl;
+package org.flexpay.common.service.impl;
 
+import org.flexpay.common.dao.CertificateDao;
 import org.flexpay.common.exception.FlexPayException;
+import org.flexpay.common.persistence.Certificate;
 import org.flexpay.common.persistence.Stub;
-import org.flexpay.payments.dao.CertificateDao;
-import org.flexpay.payments.persistence.Certificate;
-import org.flexpay.payments.service.CertificateService;
-import org.flexpay.payments.util.KeyStoreUtil;
+import org.flexpay.common.service.CertificateService;
+import org.flexpay.common.util.KeyStoreUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;

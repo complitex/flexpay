@@ -28,8 +28,8 @@
 		<mapping resource="org/flexpay/common/persistence/Currency.hbm.xml" />
 		<mapping resource="org/flexpay/common/persistence/UserPreferencesSearch.hbm.xml" />
 		<mapping resource="org/flexpay/common/persistence/report/ReportPrintHistoryRecord.hbm.xml" />
-
 		<mapping resource="org/flexpay/common/persistence/UserRole.hbm.xml" />
+		<mapping resource="org/flexpay/common/persistence/Certificate.hbm.xml" />
 
 		<mapping resource="org/flexpay/ab/persistence/Country.hbm.xml" />
 		<mapping resource="org/flexpay/ab/persistence/Region.hbm.xml" />
@@ -56,7 +56,6 @@
 		<mapping resource="org/flexpay/orgs/persistence/Subdivision.hbm.xml" />
 
 		<mapping resource="org/flexpay/payments/persistence/Document.hbm.xml" />
-		<mapping resource="org/flexpay/payments/persistence/Certificate.hbm.xml" />
 		<mapping resource="org/flexpay/payments/persistence/Service.hbm.xml" />
 		<mapping resource="org/flexpay/payments/persistence/Operation.hbm.xml" />
 		<mapping resource="org/flexpay/payments/persistence/UserPreferences.hbm.xml" />        

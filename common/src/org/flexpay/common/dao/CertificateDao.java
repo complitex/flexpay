@@ -1,7 +1,6 @@
-package org.flexpay.payments.dao;
+package org.flexpay.common.dao;
 
-import org.flexpay.common.dao.GenericDao;
-import org.flexpay.payments.persistence.Certificate;
+import org.flexpay.common.persistence.Certificate;
 
 import java.util.List;
 

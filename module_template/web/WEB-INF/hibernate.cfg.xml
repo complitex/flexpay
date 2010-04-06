@@ -28,6 +28,7 @@
 		<mapping resource="org/flexpay/common/persistence/UserPreferences.hbm.xml" />
 		<mapping resource="org/flexpay/common/persistence/UserPreferencesSearch.hbm.xml" />
 		<mapping resource="org/flexpay/common/persistence/report/ReportPrintHistoryRecord.hbm.xml" />
+		<mapping resource="org/flexpay/common/persistence/Certificate.hbm.xml" />
 
 	</session-factory>
 

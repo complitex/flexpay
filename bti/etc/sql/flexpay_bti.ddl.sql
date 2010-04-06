@@ -467,6 +467,14 @@
         primary key (id)
     ) comment='Building attributes';
 
+    create table common_certificates_tbl (
+        id bigint not null auto_increment comment 'Primary key',
+        version integer not null comment 'Optimistic lock version',
+        alias varchar(255) not null comment 'Alias',
+        description varchar(255) not null comment 'Description',
+        primary key (id)
+    ) comment='Security certificate';
+
     create table common_currency_infos_tbl (
         id bigint not null auto_increment comment 'Primary key',
         iso_code varchar(255) not null comment 'ISO 4217 code of a currency',

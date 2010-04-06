@@ -27,5 +27,6 @@
 	</package>
 
 	<include file="org/flexpay/admin/action/user/struts.xml" />
+	<include file="org/flexpay/admin/action/certificate/struts.xml" />	
 
 </struts>

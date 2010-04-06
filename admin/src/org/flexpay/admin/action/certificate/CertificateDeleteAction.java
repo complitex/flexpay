@@ -1,16 +1,18 @@
-package org.flexpay.payments.actions.certificate;
+package org.flexpay.admin.action.certificate;
 
+import com.opensymphony.xwork2.Action;
+import org.flexpay.common.actions.FPActionSupport;
+import org.flexpay.common.persistence.Certificate;
 import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.service.CertificateService;
 import static org.flexpay.common.util.CollectionUtils.set;
 import org.flexpay.payments.actions.AccountantAWPActionSupport;
-import org.flexpay.payments.persistence.Certificate;
-import org.flexpay.payments.service.CertificateService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.util.Set;
 
-public class CertificateDeleteAction extends AccountantAWPActionSupport {
+public class CertificateDeleteAction extends FPActionSupport {
 
 	private Set<Long> objectIds = set();
 
@@ -29,13 +31,13 @@ public class CertificateDeleteAction extends AccountantAWPActionSupport {
 			}
 		}
 		
-		return SUCCESS;
+		return Action.SUCCESS;
 	}
 
 	@NotNull
 	@Override
 	protected String getErrorResult() {
-		return SUCCESS;
+		return Action.SUCCESS;
 	}
 
 	public void setObjectIds(Set<Long> objectIds) {

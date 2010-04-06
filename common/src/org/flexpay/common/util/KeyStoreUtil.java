@@ -1,4 +1,4 @@
-package org.flexpay.payments.util;
+package org.flexpay.common.util;
 
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.util.config.ApplicationConfig;
@@ -16,8 +16,8 @@ public class KeyStoreUtil {
 
 		try {
 			keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
-			InputStream storeInputStream = ApplicationConfig.getResourceAsStream(org.flexpay.payments.util.config.ApplicationConfig.getKeystorePath());
-			char[] storePassword = (org.flexpay.payments.util.config.ApplicationConfig.getKeystorePassword()).toCharArray();
+			InputStream storeInputStream = ApplicationConfig.getResourceAsStream(ApplicationConfig.getKeystorePath());
+			char[] storePassword = (ApplicationConfig.getKeystorePassword()).toCharArray();
 			keyStore.load(storeInputStream, storePassword);
 
 			return keyStore;
@@ -29,8 +29,8 @@ public class KeyStoreUtil {
 	public static void saveKeyStore() throws FlexPayException {
 
 		try {
-			File file = ApplicationConfig.getResourceAsFile(org.flexpay.payments.util.config.ApplicationConfig.getKeystorePath());
-			char[] storePassword = (org.flexpay.payments.util.config.ApplicationConfig.getKeystorePassword()).toCharArray();
+			File file = ApplicationConfig.getResourceAsFile(ApplicationConfig.getKeystorePath());
+			char[] storePassword = (ApplicationConfig.getKeystorePassword()).toCharArray();
 			keyStore.store(new FileOutputStream(file), storePassword);
 		} catch (Exception e) {
 			throw new FlexPayException("Error saving keystore", e);
