@@ -18,6 +18,10 @@
 		  p:defaultReportLocale="${app.config.common.defaultReportLocale}"
 		  p:disableSelfValidation="${app.config.common.disableSelfValidation}"
 		  p:testProp="${app.config.common.testProp}"
+		  p:keystorePath="${app.config.common.keystore.path}"
+		  p:keystorePassword="${app.config.common.keystore.password}"
+		  p:selfKeyAlias="${app.config.payments.common.selfkey.alias}"
+		  p:selfKeyPassword="${app.config.payments.common.selfkey.password}"
 		  p:languageService-ref="languageService" />
 
 	<bean id="sequenceService" class="org.flexpay.common.service.impl.SequenceServiceImpl"

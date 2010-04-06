@@ -21,3 +21,6 @@ select @common_base:=0x6000 + 0;
 
 insert into common_data_corrections_tbl (internal_object_id, external_object_id, object_type, data_source_description_id)
 	(select id, concat(@instId, id), @common_base + 0x09, @ds from common_measure_units_tbl);
+
+-- certificates
+insert into common_certificates_tbl (version, alias, description) values (0, 'testlogin', 'Tecтовый логин');

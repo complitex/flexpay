@@ -345,6 +345,14 @@
         primary key (id)
     );
 
+    create table common_certificates_tbl (
+        id bigint not null auto_increment comment 'Primary key',
+        version integer not null comment 'Optimistic lock version',
+        alias varchar(255) not null comment 'Alias',
+        description varchar(255) not null comment 'Description',
+        primary key (id)
+    ) comment='Security certificate';
+
     create table common_currency_infos_tbl (
         id bigint not null auto_increment comment 'Primary key',
         iso_code varchar(255) not null comment 'ISO 4217 code of a currency',
@@ -691,14 +699,32 @@
         primary key (id)
     );
 
+    create table common_user_role_name_translations_tbl (
+        id bigint not null auto_increment,
+        name varchar(255),
+        user_role_id bigint not null,
+        language_id bigint not null,
+        primary key (id),
+        unique (user_role_id, language_id)
+    );
+
+    create table common_user_roles_tbl (
+        id bigint not null auto_increment,
+        status integer not null,
+        external_id varchar(255) not null unique,
+        primary key (id)
+    );
+
     create table common_users_tbl (
         id bigint not null auto_increment comment 'Primary key',
         discriminator varchar(255) not null comment 'Class hierarchy discriminator',
         full_name varchar(255) not null comment 'Full user name',
         last_name varchar(255) not null comment 'Last user name',
+        first_name varchar(255) comment 'First user name',
         user_name varchar(255) not null unique comment 'User login name',
         language_code varchar(255) not null comment 'Preferred language ISO code',
         page_size integer comment 'Preferred listing page size',
+        user_role_id bigint comment 'Optional user role reference',
         ab_country_filter bigint comment 'Country filter',
         ab_region_filter bigint comment 'Region filter',
         ab_town_filter bigint comment 'Town filter',
@@ -1724,6 +1750,24 @@
         add constraint FK_common_registry_records_tbl_record_status_id 
         foreign key (record_status_id) 
         references common_registry_record_statuses_tbl (id);
+
+    alter table common_user_role_name_translations_tbl 
+        add index FKB85A9CACA555113A (user_role_id), 
+        add constraint FKB85A9CACA555113A 
+        foreign key (user_role_id) 
+        references common_user_roles_tbl (id);
+
+    alter table common_user_role_name_translations_tbl 
+        add index FKB85A9CAC61F37403 (language_id), 
+        add constraint FKB85A9CAC61F37403 
+        foreign key (language_id) 
+        references common_languages_tbl (id);
+
+    alter table common_users_tbl 
+        add index common_user_role_tbl_user_role_id (user_role_id), 
+        add constraint common_user_role_tbl_user_role_id 
+        foreign key (user_role_id) 
+        references common_user_roles_tbl (id);
 
     alter table config_payments_mbservices_tbl 
         add index FK_config_payments_mbservices_tbl_type_id (service_type_id), 

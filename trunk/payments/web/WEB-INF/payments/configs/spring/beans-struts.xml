@@ -468,35 +468,5 @@
           p:crumbNameKey="orgs.crumbs.cashboxes_list"
           p:paymentPointService-ref="paymentPointService"
           scope="prototype" />
-
-	<!-- certificates action -->
-	<bean id="certificatesListAction"
-		  parent="accountantAWPAction"
-		  class="org.flexpay.payments.actions.certificate.CertificatesListAction"
-		  p:certificateService-ref="certificateService"
-		  scope="prototype" />
-
-	<bean id="certificatesListPageAction"
-		  parent="accountantAWPAction"
-		  class="org.flexpay.payments.actions.AccountantAWPStaticPageAction"
-		  scope="prototype" />
-
-	<bean id="certificateUploadAction"
-		  parent="accountantAWPAction"
-		  class="org.flexpay.payments.actions.certificate.CertificateUploadAction"
-		  p:certificateService-ref="certificateService"
-		  scope="prototype" />
-
-	<bean id="certificateEditAction"
-		  parent="accountantAWPAction"
-		  class="org.flexpay.payments.actions.certificate.CertificateEditAction"
-		  p:certificateService-ref="certificateService"
-		  scope="prototype" />
-
-	<bean id="certificateDeleteAction"
-		  parent="accountantAWPAction"
-		  class="org.flexpay.payments.actions.certificate.CertificateDeleteAction"
-		  p:certificateService-ref="certificateService"
-		  scope="prototype" />
 	
 </beans>

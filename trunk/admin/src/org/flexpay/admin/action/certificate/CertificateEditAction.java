@@ -1,13 +1,15 @@
-package org.flexpay.payments.actions.certificate;
+package org.flexpay.admin.action.certificate;
 
+import com.opensymphony.xwork2.Action;
+import org.flexpay.common.actions.FPActionSupport;
+import org.flexpay.common.persistence.Certificate;
 import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.service.CertificateService;
 import org.flexpay.payments.actions.AccountantAWPActionSupport;
-import org.flexpay.payments.persistence.Certificate;
-import org.flexpay.payments.service.CertificateService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
-public class CertificateEditAction extends AccountantAWPActionSupport {
+public class CertificateEditAction extends FPActionSupport {
 
 	private Certificate certificate;
 
@@ -24,19 +26,19 @@ public class CertificateEditAction extends AccountantAWPActionSupport {
 		if (isSubmit()) {
 			certificate.setDescription(description);
 			certificateService.update(certificate);
-			return REDIRECT_SUCCESS;
+			return FPActionSupport.REDIRECT_SUCCESS;
 		} else {
 			alias = certificate.getAlias();
 			description = certificate.getDescription();
 		}
 
-		return INPUT;
+		return Action.INPUT;
 	}
 
 	@NotNull
 	@Override
 	protected String getErrorResult() {
-		return INPUT;
+		return Action.INPUT;
 	}
 
 	public Certificate getCertificate() {

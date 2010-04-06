@@ -3,10 +3,11 @@ package org.flexpay.payments.actions.quittance;
 import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.digester.Digester;
 import org.flexpay.common.exception.FlexPayException;
+import org.flexpay.common.util.KeyStoreUtil;
+import org.flexpay.common.util.config.ApplicationConfig;
 import org.flexpay.payments.persistence.quittance.QuittanceDetailsRequest;
 import org.flexpay.payments.persistence.quittance.QuittanceDetailsResponse;
 import org.flexpay.payments.service.QuittanceDetailsFinder;
-import org.flexpay.payments.util.KeyStoreUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
@@ -189,12 +190,11 @@ public class SearchQuittanceServlet extends HttpServlet {
 		try {
 			keyStore = KeyStoreUtil.loadKeyStore();
 
-			if (!keyStore.isKeyEntry(org.flexpay.payments.util.config.ApplicationConfig.getSelfKeyAlias())) {
+			if (!keyStore.isKeyEntry(ApplicationConfig.getSelfKeyAlias())) {
 				throw new FlexPayException("Unable to load security key for signing response");
 			}
 
-			key = (PrivateKey) keyStore.getKey(org.flexpay.payments.util.config.ApplicationConfig.getSelfKeyAlias(),
-					org.flexpay.payments.util.config.ApplicationConfig.getSelfKeyPassword().toCharArray());
+			key = (PrivateKey) keyStore.getKey(ApplicationConfig.getSelfKeyAlias(), ApplicationConfig.getSelfKeyPassword().toCharArray());
 			if (key == null) {
 				throw new FlexPayException("Unable to load security key for signing response (password is bad)");
 			}

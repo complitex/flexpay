@@ -11,10 +11,6 @@
 	<bean id="paymentsApplicationConfig"
 		  factory-method="getInstance"
 		  class="org.flexpay.payments.util.config.ApplicationConfig"
-		  p:keystorePath="${app.config.payments.keystore.path}"
-		  p:keystorePassword="${app.config.payments.keystore.password}"
-		  p:selfKeyAlias="${app.config.payments.keystore.selfkey.alias}"
-		  p:selfKeyPassword="${app.config.payments.keystore.selfkey.password}"
 		  p:mbOrganizationId="${app.config.payments.mbOrganizationId}" />
 
 	<bean id="mbServiceTypeMapper"
@@ -36,10 +32,6 @@
 		  class="org.flexpay.payments.service.impl.EircRegistryServiceImpl"
 		  p:registryDaoExt-ref="eircRegistryDaoExt"
 		  p:registryDao-ref="spRegistryDao" />
-
-	<bean id="certificateService"
-		  class="org.flexpay.payments.service.impl.CertificateServiceImpl"
-		  p:certificateDao-ref="certificateDao" />
 
 	<bean id="documentService"
 		  class="org.flexpay.payments.service.impl.DocumentServiceImpl"

@@ -36,6 +36,11 @@ public class ApplicationConfig implements ResourceLoaderAware {
 	private String dataRoot;
 	private int logPreviewLinesNumber;
 
+	private String keystorePath;
+	private String keystorePassword;
+	private String selfKeyAlias;
+	private String selfKeyPassword;
+
 	private Locale defaultReportLocale;
 
 	private boolean disableSelfValidation = false;
@@ -253,5 +258,41 @@ public class ApplicationConfig implements ResourceLoaderAware {
 	@Required
 	public void setDisableSelfValidation(boolean disableSelfValidation) {
 		this.disableSelfValidation = disableSelfValidation;
+	}
+
+		public static String getKeystorePath() {
+		return getInstance().keystorePath;
+	}
+
+	@Required
+	public void setKeystorePath(String keystorePath) {
+		this.keystorePath = keystorePath;
+	}
+
+	public static String getKeystorePassword() {
+		return getInstance().keystorePassword;
+	}
+
+	@Required
+	public void setKeystorePassword(String keystorePassword) {
+		this.keystorePassword = keystorePassword;
+	}
+
+	public static String getSelfKeyAlias() {
+		return getInstance().selfKeyAlias;
+	}
+
+	@Required
+	public void setSelfKeyAlias(String selfKeyAlias) {
+		this.selfKeyAlias = selfKeyAlias;
+	}
+
+	public static String getSelfKeyPassword() {
+		return getInstance().selfKeyPassword;
+	}
+
+	@Required
+	public void setSelfKeyPassword(String selfKeyPassword) {
+		this.selfKeyPassword = selfKeyPassword;
 	}
 }

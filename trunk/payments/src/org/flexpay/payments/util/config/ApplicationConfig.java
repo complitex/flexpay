@@ -9,11 +9,6 @@ public class ApplicationConfig {
 
 	private Stub<Organization> mbOrganizationStub;
 
-	private String keystorePath;
-	private String keystorePassword;
-	private String selfKeyAlias;
-	private String selfKeyPassword;
-
 	private static final ApplicationConfig INSTANCE = new ApplicationConfig();
 
 	static {
@@ -32,41 +27,5 @@ public class ApplicationConfig {
 
 	public static Stub<Organization> getMbOrganizationStub() {
 		return getInstance().mbOrganizationStub;
-	}
-
-	public static String getKeystorePath() {
-		return getInstance().keystorePath;
-	}
-
-	@Required
-	public void setKeystorePath(String keystorePath) {
-		this.keystorePath = keystorePath;
-	}
-
-	public static String getKeystorePassword() {
-		return getInstance().keystorePassword;
-	}
-
-	@Required
-	public void setKeystorePassword(String keystorePassword) {
-		this.keystorePassword = keystorePassword;
-	}
-
-	public static String getSelfKeyAlias() {
-		return getInstance().selfKeyAlias;
-	}
-
-	@Required
-	public void setSelfKeyAlias(String selfKeyAlias) {
-		this.selfKeyAlias = selfKeyAlias;
-	}
-
-	public static String getSelfKeyPassword() {
-		return getInstance().selfKeyPassword;
-	}
-
-	@Required
-	public void setSelfKeyPassword(String selfKeyPassword) {
-		this.selfKeyPassword = selfKeyPassword;
 	}
 }

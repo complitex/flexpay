@@ -9,4 +9,8 @@
 		   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd
 		   http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.5.xsd">
 
+	<bean id="certificateService"
+		  class="org.flexpay.common.service.impl.CertificateServiceImpl"
+		  p:certificateDao-ref="certificateDao" />
+
 </beans>

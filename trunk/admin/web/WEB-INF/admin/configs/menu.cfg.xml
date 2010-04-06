@@ -32,6 +32,16 @@
         </property>
     </bean>
 
+	<bean name="admin.certificates" parent="admin"
+		  p:name="admin.certificates"
+		  p:title="admin.menu2.certificates"
+		  p:action="main"
+		  p:parent-ref="admin">
+		<property name="userRole">
+			<util:constant static-field="org.flexpay.admin.service.Roles.ROLE_MENU_ADMIN_CERTIFICATES" />
+		</property>
+	</bean>
+
 	<!--level3-->
 	<bean name="admin_users_users" parent="admin_users"
           p:name="admin.users2"
@@ -43,6 +53,16 @@
         </property>
     </bean>
 
+	<bean name="admin.certificates.certificates" parent="admin.certificates"
+		  p:name="admin.certificates.certificates"
+		  p:title="admin.menu2.certificates"
+		  p:action="main"
+		  p:parent-ref="admin.certificates">
+		<property name="userRole">
+			<util:constant static-field="org.flexpay.admin.service.Roles.ROLE_MENU_ADMIN_CERTIFICATES" />
+		</property>
+	</bean>
+
 	<!--level4-->
 	<bean name="admin_user_list" parent="admin_users_users"
           p:name="admin.user.list"
@@ -53,5 +73,25 @@
             <util:constant static-field="org.flexpay.admin.service.Roles.ROLE_MENU_ADMIN_USERS" />
         </property>
     </bean>
+
+	<bean name="admin.certificates.certificates.list" parent="admin.certificates.certificates"
+		  p:name="admin.certificates.certificates.list"
+		  p:title="admin.menu4.certificates.list"
+		  p:action="certificatesList"
+		  p:parent-ref="admin.certificates.certificates">
+		<property name="userRole">
+			<util:constant static-field="org.flexpay.admin.service.Roles.ROLE_MENU_ADMIN_CERTIFICATES" />
+		</property>
+	</bean>
+
+	<bean name="admin.certificates.certificates.upload" parent="admin.certificates.certificates"
+		  p:name="admin.certificates.certificates.upload"
+		  p:title="admin.menu4.certificates.upload"
+		  p:action="certificateUpload"
+		  p:parent-ref="admin.certificates.certificates">
+		<property name="userRole">
+			<util:constant static-field="org.flexpay.admin.service.Roles.ROLE_MENU_ADMIN_CERTIFICATES" />
+		</property>
+	</bean>
 
 </beans>

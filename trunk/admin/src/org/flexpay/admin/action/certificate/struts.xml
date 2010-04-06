@@ -4,23 +4,23 @@
 		"http://struts.apache.org/dtds/struts-2.0.dtd">
 <struts>
 
-	<package name="certificates" namespace="/payments" extends="common">
+	<package name="certificates" namespace="/admin" extends="common">
 
 		<action name="certificatesList" class="certificatesListPageAction">
-			<result type="tiles">payments.certificates.list</result>
+			<result type="tiles">admin.certificates.list</result>
 		</action>
 
 		<action name="certificatesListAjax" class="certificatesListAction">
-			<result>/WEB-INF/jsp/payments/certificate/certificates_list.jsp</result>
+			<result>/WEB-INF/jsp/admin/certificate/certificates_list.jsp</result>
 		</action>
 
 		<action name="certificateUpload" class="certificateUploadAction">
-			<result name="input" type="tiles">payments.certificate.upload</result>
+			<result name="input" type="tiles">admin.certificate.upload</result>
 			<result name="redirectSuccess" type="redirect-action">certificatesList</result>
 		</action>
 
 		<action name="certificateEdit" class="certificateEditAction">
-			<result name="input" type="tiles">payments.certificate.edit</result>
+			<result name="input" type="tiles">admin.certificate.edit</result>
 			<result name="redirectSuccess" type="redirect-action">certificatesList</result>
 		</action>
 

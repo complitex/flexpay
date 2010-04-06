@@ -1,8 +1,8 @@
-package org.flexpay.payments.service;
+package org.flexpay.common.service;
 
 import org.flexpay.common.exception.FlexPayException;
+import org.flexpay.common.persistence.Certificate;
 import org.flexpay.common.persistence.Stub;
-import org.flexpay.payments.persistence.Certificate;
 
 import java.io.InputStream;
 import java.util.List;

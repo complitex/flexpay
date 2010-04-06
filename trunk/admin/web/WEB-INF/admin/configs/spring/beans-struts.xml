@@ -34,4 +34,28 @@
 		  p:preferencesService-ref="userPreferencesService"
 		  scope="prototype" />
 
+	<!-- certificates action -->
+	<bean id="certificatesListAction"
+		  class="org.flexpay.admin.action.certificate.CertificatesListAction"
+		  p:certificateService-ref="certificateService"
+		  scope="prototype" />
+
+	<bean id="certificatesListPageAction" parent="staticPageAction"
+		  scope="prototype" />
+
+	<bean id="certificateUploadAction"
+		  class="org.flexpay.admin.action.certificate.CertificateUploadAction"
+		  p:certificateService-ref="certificateService"
+		  scope="prototype" />
+
+	<bean id="certificateEditAction"
+		  class="org.flexpay.admin.action.certificate.CertificateEditAction"
+		  p:certificateService-ref="certificateService"
+		  scope="prototype" />
+
+	<bean id="certificateDeleteAction"
+		  class="org.flexpay.admin.action.certificate.CertificateDeleteAction"
+		  p:certificateService-ref="certificateService"
+		  scope="prototype" />
+	
 </beans>

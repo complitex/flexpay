@@ -1,8 +1,7 @@
-package org.flexpay.payments.persistence;
+package org.flexpay.common.persistence;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
-import org.flexpay.common.persistence.DomainObject;
 
 public class Certificate extends DomainObject {
 

@@ -1,15 +1,17 @@
-package org.flexpay.payments.actions.certificate;
+package org.flexpay.admin.action.certificate;
 
+import com.opensymphony.xwork2.Action;
 import org.apache.commons.lang.StringUtils;
+import org.flexpay.common.actions.FPActionSupport;
+import org.flexpay.common.service.CertificateService;
 import org.flexpay.payments.actions.AccountantAWPActionSupport;
-import org.flexpay.payments.service.CertificateService;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.io.File;
 import java.io.FileInputStream;
 
-public class CertificateUploadAction extends AccountantAWPActionSupport {
+public class CertificateUploadAction extends FPActionSupport {
 
 	private String alias;
 	private String description;
@@ -25,15 +27,15 @@ public class CertificateUploadAction extends AccountantAWPActionSupport {
 
 		if (isSubmit()) {
 			if (!doValidate()) {
-				return INPUT;
+				return Action.INPUT;
 			}
 
 			certificateService.addCertificate(alias, description, new FileInputStream(certificateFile));
 
-			return REDIRECT_SUCCESS;
+			return FPActionSupport.REDIRECT_SUCCESS;
 		}
 
-		return INPUT;
+		return Action.INPUT;
 	}
 
 	private boolean doValidate() {
@@ -60,7 +62,7 @@ public class CertificateUploadAction extends AccountantAWPActionSupport {
 	@Override
 	protected String getErrorResult() {
 
-		return INPUT;
+		return Action.INPUT;
 	}
 
 	public String getAlias() {

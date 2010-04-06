@@ -5,7 +5,7 @@
 
 <hibernate-mapping package="org.flexpay.payments.persistence">
 
-	<class name="Certificate" table="payments_certificates_tbl" optimistic-lock="version">
+	<class name="org.flexpay.common.persistence.Certificate" table="common_certificates_tbl" optimistic-lock="version">
 		<comment>Security certificate</comment>
 		<id name="id">
 			<column name="id">

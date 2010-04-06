@@ -7,11 +7,11 @@
 
 	<table cellpadding="3" cellspacing="1" border="0" width="100%">
 		<tr valign="top" class="cols_1">
-			<td class="col"><s:text name="payments.certificate.alias" />:</td>
+			<td class="col"><s:text name="admin.certificate.alias" />:</td>
 			<td class="col"><s:property value="%{alias}" /></td>
 		</tr>
         <tr valign="top" class="cols_1">
-			<td class="col"><s:text name="payments.certificate.description" />:</td>
+			<td class="col"><s:text name="admin.certificate.description" />:</td>
 			<td class="col"><s:textfield name="description" value="%{description}"/></td>
 		</tr>
 		<tr valign="middle" class="cols_1">

@@ -141,6 +141,9 @@
 	<security-role>
 		<role-name>ROLE_MENU_ADMIN</role-name>
 	</security-role>
+	<security-role>
+        <role-name>ROLE_MENU_ADMIN_CERTIFICATES</role-name>
+    </security-role>
 
 	<login-config>
 		<auth-method>FORM</auth-method>
