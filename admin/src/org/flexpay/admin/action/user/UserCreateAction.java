@@ -9,7 +9,6 @@ import org.flexpay.common.persistence.UserRole;
 import org.flexpay.common.service.UserPreferencesService;
 import org.flexpay.common.service.UserRoleService;
 import org.flexpay.common.util.config.UserPreferences;
-import org.flexpay.common.util.config.UserPreferencesFactory;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
