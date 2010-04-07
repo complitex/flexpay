@@ -5,7 +5,6 @@ import org.flexpay.common.actions.FPActionWithPagerSupport;
 import org.flexpay.common.persistence.Certificate;
 import org.flexpay.common.service.CertificateService;
 import org.flexpay.common.util.CollectionUtils;
-import org.flexpay.payments.actions.AccountantAWPWithPagerActionSupport;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 

@@ -4,12 +4,12 @@ import com.opensymphony.xwork2.Action;
 import org.apache.commons.lang.StringUtils;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.service.CertificateService;
-import org.flexpay.payments.actions.AccountantAWPActionSupport;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.security.cert.CertificateFactory;
 
 public class CertificateUploadAction extends FPActionSupport {
 
@@ -41,17 +41,25 @@ public class CertificateUploadAction extends FPActionSupport {
 	private boolean doValidate() {
 
 		if (StringUtils.isEmpty(alias)) {
-			addActionError(getText("payments.error.certificate.alias_is_empty"));
+			addActionError(getText("admin.error.certificate.alias_is_empty"));
 			return false;
 		}
 
 		if (certificateService.aliasExists(alias)) {
-			addActionError(getText("payments.error.certificate.alias_exists"));
+			addActionError(getText("admin.error.certificate.alias_exists"));
 			return false;
 		}
 
 		if (certificateFile == null) {
-			addActionError(getText("payments.error.certificate.file_is_empty"));
+			addActionError(getText("admin.error.certificate.file_is_empty"));
+			return false;
+		}
+
+		try {
+			CertificateFactory certificateFactory = CertificateFactory.getInstance("X.509");
+			certificateFactory.generateCertificate(new FileInputStream(certificateFile));
+		} catch (Exception e) {
+			addActionError(getText("admin.error.certificate.file_is_bad"));
 			return false;
 		}
 

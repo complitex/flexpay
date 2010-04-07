@@ -2,15 +2,14 @@ package org.flexpay.admin.action.user;
 
 import org.apache.commons.lang.StringUtils;
 import org.flexpay.admin.persistence.UserModel;
-import org.flexpay.common.persistence.Stub;
-import org.flexpay.common.persistence.UserRole;
-import org.flexpay.common.service.UserRoleService;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
+import org.flexpay.common.persistence.Stub;
+import org.flexpay.common.persistence.UserRole;
 import org.flexpay.common.service.UserPreferencesService;
+import org.flexpay.common.service.UserRoleService;
 import org.flexpay.common.util.SecurityUtil;
 import org.flexpay.common.util.config.UserPreferences;
-import org.flexpay.common.util.config.UserPreferencesFactory;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 

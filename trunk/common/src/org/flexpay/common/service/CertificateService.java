@@ -9,15 +9,17 @@ import java.util.List;
 
 public interface CertificateService {
 
-	public void addCertificate(String alias, String description, InputStream inputStream) throws FlexPayException;
+	void addCertificate(String alias, String description, InputStream inputStream) throws FlexPayException;
 
-	public List<Certificate> listAllCertificates();
+	void replaceCertificate(String alias, InputStream inputStream) throws FlexPayException;
+
+	List<Certificate> listAllCertificates();
 	
-	public void delete(Certificate certificate) throws FlexPayException;
+	void delete(Certificate certificate) throws FlexPayException;
 
-	public void update(Certificate certificate);
+	void update(Certificate certificate);
 
-	public boolean aliasExists(String alias);
+	boolean aliasExists(String alias);
 
-	public Certificate readFull(Stub<Certificate> certificateStub);
+	Certificate readFull(Stub<Certificate> certificateStub);
 }

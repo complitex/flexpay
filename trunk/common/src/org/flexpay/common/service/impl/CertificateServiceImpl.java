@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Required;
 
 import java.io.InputStream;
 import java.security.KeyStore;
+import java.security.KeyStoreException;
+import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.util.List;
 
@@ -26,6 +28,36 @@ public class CertificateServiceImpl implements CertificateService {
 
 		addCertificateToKeyStore(alias, inputStream);
 		certificateDao.create(new Certificate(alias, description));
+	}
+
+	@Override
+	public void replaceCertificate(String alias, InputStream inputStream) throws FlexPayException {
+
+		if (!aliasExists(alias)) {
+			log.warn("Error replacing certificate: no certificate with alias {} found", alias);
+			return;
+		}
+
+
+		java.security.cert.Certificate javaCertificate = null;
+		try {
+			CertificateFactory certificateFactory = CertificateFactory.getInstance("X.509");
+			javaCertificate = certificateFactory.generateCertificate(inputStream);
+		} catch (CertificateException e) {
+			log.warn("Error replacing certificate: unable to load certificate from given input stream");
+			return;
+		}
+
+		if (javaCertificate != null) {
+			try {
+				KeyStore keyStore = KeyStoreUtil.loadKeyStore();
+				keyStore.deleteEntry(alias);
+				keyStore.setCertificateEntry(alias, javaCertificate);
+				KeyStoreUtil.saveKeyStore();
+			} catch (KeyStoreException e) {
+				throw new FlexPayException("Error replacing certificate in keystore", e);
+			}
+		}
 	}
 
 	@Override

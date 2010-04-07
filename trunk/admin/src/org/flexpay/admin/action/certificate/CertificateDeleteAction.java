@@ -6,7 +6,6 @@ import org.flexpay.common.persistence.Certificate;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.service.CertificateService;
 import static org.flexpay.common.util.CollectionUtils.set;
-import org.flexpay.payments.actions.AccountantAWPActionSupport;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
