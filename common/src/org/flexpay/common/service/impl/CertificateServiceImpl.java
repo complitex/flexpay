@@ -15,6 +15,7 @@ import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
+import java.security.cert.X509Certificate;
 import java.util.List;
 
 public class CertificateServiceImpl implements CertificateService {
@@ -26,8 +27,8 @@ public class CertificateServiceImpl implements CertificateService {
 	@Override
 	public void addCertificate(String alias, String description, InputStream inputStream) throws FlexPayException {
 
-		addCertificateToKeyStore(alias, inputStream);
-		certificateDao.create(new Certificate(alias, description));
+		X509Certificate javaCertificate = (X509Certificate) addCertificateToKeyStore(alias, inputStream);
+		certificateDao.create(new Certificate(alias, description, javaCertificate.getNotBefore(), javaCertificate.getNotAfter()));
 	}
 
 	@Override
@@ -92,13 +93,17 @@ public class CertificateServiceImpl implements CertificateService {
 		return result.size() > 0;
 	}
 
-	private void addCertificateToKeyStore(String alias, InputStream inputStream) throws FlexPayException {
+	private java.security.cert.Certificate addCertificateToKeyStore(String alias, InputStream inputStream) throws FlexPayException {
 
 		try {
-			KeyStore keyStore = KeyStoreUtil.loadKeyStore();
 			CertificateFactory certificateFactory = CertificateFactory.getInstance("X.509");
-			keyStore.setCertificateEntry(alias, certificateFactory.generateCertificate(inputStream));
+			java.security.cert.Certificate javaCertificate = certificateFactory.generateCertificate(inputStream);
+
+			KeyStore keyStore = KeyStoreUtil.loadKeyStore();
+			keyStore.setCertificateEntry(alias, javaCertificate);
 			KeyStoreUtil.saveKeyStore();
+
+			return javaCertificate;
 		} catch (Exception e) {
 			throw new FlexPayException("Error importing certificate to keystore", e);
 		}
