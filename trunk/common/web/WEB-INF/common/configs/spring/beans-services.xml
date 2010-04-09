@@ -20,8 +20,9 @@
 		  p:testProp="${app.config.common.testProp}"
 		  p:keystorePath="${app.config.common.keystore.path}"
 		  p:keystorePassword="${app.config.common.keystore.password}"
-		  p:selfKeyAlias="${app.config.payments.common.selfkey.alias}"
-		  p:selfKeyPassword="${app.config.payments.common.selfkey.password}"
+		  p:selfKeyAlias="${app.config.common.keystore.selfkey.alias}"
+		  p:selfKeyPassword="${app.config.common.keystore.selfkey.password}"
+		  p:certificateExpirationWarningPeriod="${app.config.common.certificateExpirationWarningPeriod}"
 		  p:languageService-ref="languageService" />
 
 	<bean id="sequenceService" class="org.flexpay.common.service.impl.SequenceServiceImpl"

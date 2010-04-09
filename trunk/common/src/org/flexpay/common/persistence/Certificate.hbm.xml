@@ -6,28 +6,46 @@
 <hibernate-mapping package="org.flexpay.payments.persistence">
 
 	<class name="org.flexpay.common.persistence.Certificate" table="common_certificates_tbl" optimistic-lock="version">
+
 		<comment>Security certificate</comment>
+
 		<id name="id">
 			<column name="id">
 				<comment>Primary key</comment>
 			</column>
 			<generator class="native" />
 		</id>
+
 		<version name="version" access="field">
 			<column name="version">
 				<comment>Optimistic lock version</comment>
 			</column>
 		</version>
+
 		<property name="alias">
 			<column name="alias" not-null="true">
 				<comment>Alias</comment>
 			</column>
 		</property>
+
+		<property name="beginDate" not-null="true">
+			<column name="begin_date">
+				<comment>Certificate validity begin date</comment>
+			</column>
+		</property>
+
+		<property name="endDate" not-null="true">
+			<column name="end_date">
+				<comment>Certificate validity end date</comment>
+			</column>
+		</property>
+
 		<property name="description">
 			<column name="description" not-null="true">
 				<comment>Description</comment>
 			</column>
 		</property>
+
 	</class>
 
 	<query name="Certificate.findCertificates">

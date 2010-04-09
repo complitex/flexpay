@@ -40,6 +40,7 @@ public class ApplicationConfig implements ResourceLoaderAware {
 	private String keystorePassword;
 	private String selfKeyAlias;
 	private String selfKeyPassword;
+	private int certificateExpirationWarningPeriod;
 
 	private Locale defaultReportLocale;
 
@@ -294,5 +295,14 @@ public class ApplicationConfig implements ResourceLoaderAware {
 	@Required
 	public void setSelfKeyPassword(String selfKeyPassword) {
 		this.selfKeyPassword = selfKeyPassword;
+	}
+
+	public static int getCertificateExpirationWarningPeriod() {
+		return getInstance().certificateExpirationWarningPeriod;
+	}
+
+	@Required
+	public void setCertificateExpirationWarningPeriod(int certificateExpirationWarningPeriod) {
+		this.certificateExpirationWarningPeriod = certificateExpirationWarningPeriod;
 	}
 }

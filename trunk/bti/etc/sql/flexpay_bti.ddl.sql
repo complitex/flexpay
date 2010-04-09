@@ -471,6 +471,8 @@
         id bigint not null auto_increment comment 'Primary key',
         version integer not null comment 'Optimistic lock version',
         alias varchar(255) not null comment 'Alias',
+        begin_date datetime comment 'Certificate validity begin date',
+        end_date datetime comment 'Certificate validity end date',
         description varchar(255) not null comment 'Description',
         primary key (id)
     ) comment='Security certificate';
