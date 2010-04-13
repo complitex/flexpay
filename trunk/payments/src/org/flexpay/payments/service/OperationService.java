@@ -200,4 +200,10 @@ public interface OperationService {
 	 */
 	@Secured (Roles.OPERATION_ADD)
 	Operation createBlankOperation(String creator, Stub<Cashbox> cashboxStub) throws FlexPayException;
+
+	@Secured (Roles.OPERATION_READ)
+	Long getBlankOperationsCount() throws FlexPayException;
+
+	@Secured (Roles.OPERATION_DELETE)
+	void deleteAllBlankOperations() throws FlexPayException;
 }

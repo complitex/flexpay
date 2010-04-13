@@ -357,6 +357,16 @@
         </property>
     </bean>
 
+	<bean name="payments.reports.reports.acc.blank" parent="payments.reports.reports"
+		  p:name="payments.reports.reports.acc.blank"
+		  p:title="payments.report.blank.operation"
+		  p:action="accBlankOperationReport"
+		  p:parent-ref="payments.reports.reports">
+		<property name="userRole">
+            <util:constant static-field="org.flexpay.payments.service.Roles.ROLE_MENU_PAYMENTS_ACCOUNTANT" />
+        </property>
+	</bean>
+
 	<bean name="payments.dictionaries.dictionaries.payment_points" parent="payments.dictionaries.dictionaries"
           p:name="payments.dictionaries2.payment_points"
           p:title="payments.menu4.payment_points"

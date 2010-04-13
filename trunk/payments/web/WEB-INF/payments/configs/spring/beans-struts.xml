@@ -130,6 +130,12 @@
 		  p:operationService-ref="operationService"
 		  scope="prototype" />
 
+	<bean id="accBlankOperationReportAction"
+		  parent="accountantAWPAction"
+		  class="org.flexpay.payments.actions.reports.AccBlankOperationsReportAction"
+		  p:operationService-ref="operationService"
+		  scope="prototype" />
+
     <!-- payment points monitor actions -->
 	<bean id="paymentPointsListMonitorAction"
 		  parent="accountantAWPWithPagerAction"

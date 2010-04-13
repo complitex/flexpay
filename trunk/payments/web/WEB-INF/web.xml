@@ -214,6 +214,10 @@
 		<role-name>ROLE_PAYMENTS_OPERATION_CHANGE</role-name>
 	</security-role>
 
+	<security-role>
+		<role-name>ROLE_PAYMENTS_OPERATION_DELETE</role-name>
+	</security-role>
+
 	<!-- organization roles -->
 	<security-role>
 		<role-name>ROLE_ORGS_ORGANIZATION_READ</role-name>

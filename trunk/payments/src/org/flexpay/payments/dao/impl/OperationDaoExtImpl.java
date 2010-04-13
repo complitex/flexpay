@@ -10,6 +10,7 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.orm.hibernate3.HibernateCallback;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
@@ -201,4 +202,21 @@ public class OperationDaoExtImpl extends HibernateDaoSupport implements Operatio
 		}
 	}
 
+	@Override
+	public Long getBlankOperationsCount() {
+
+		return DataAccessUtils.longResult(getHibernateTemplate().find("SELECT COUNT(o) FROM Operation o WHERE o.operationStatus.code = 6"));
+	}
+
+	@Override
+	public void deleteAllBlankOperations() {
+		
+		getHibernateTemplate().execute(new HibernateCallback() {
+			@Override
+			public Object doInHibernate(Session session) throws HibernateException, SQLException {
+				session.getNamedQuery("Operation.deleteAllBlankOperations").setLong(0, 6).executeUpdate();
+				return null;
+			}
+		});
+	}
 }

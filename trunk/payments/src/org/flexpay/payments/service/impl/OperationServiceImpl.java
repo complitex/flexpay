@@ -180,6 +180,20 @@ public class OperationServiceImpl implements OperationService {
 		return operation;
 	}
 
+	@Override
+	@Transactional (readOnly = true)
+	public Long getBlankOperationsCount() throws FlexPayException {
+
+		return operationDaoExt.getBlankOperationsCount();
+	}
+
+	@Override
+	@Transactional (readOnly = false)
+	public void deleteAllBlankOperations() throws FlexPayException {
+
+		operationDaoExt.deleteAllBlankOperations();
+	}
+
 	@Required
 	public void setOperationDao(OperationDao operationDao) {
 		this.operationDao = operationDao;

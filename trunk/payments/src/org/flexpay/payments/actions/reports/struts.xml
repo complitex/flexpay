@@ -74,6 +74,10 @@
 			</result>
 		</action>
 
+		<action name="accBlankOperationReport" class="accBlankOperationReportAction">
+			<result type="tiles">payments.report.blank.operation</result>
+		</action>
+
 	</package>
 
 </struts>
