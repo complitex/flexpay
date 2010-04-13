@@ -43,4 +43,8 @@ public interface OperationDaoExt {
     @Secured(Roles.OPERATION_READ)
     List<Operation> searchOperations(Stub<Cashbox> cashbox, Date begin, Date end, BigDecimal minimalSumm,
                                      BigDecimal maximalSumm, Page<Operation> pager);
+
+	Long getBlankOperationsCount();
+
+	void deleteAllBlankOperations();
 }

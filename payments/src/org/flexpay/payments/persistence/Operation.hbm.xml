@@ -500,7 +500,7 @@
 		from Operation o
 		where (o.creationDate >= ? and o.creationDate < ?)
 			and (o.operationType.code in (1, 2, 5, 6))
-			and (o.operationStatus.code <> 3)
+			and (o.operationStatus.code <> 3)			
 	]]></query>
 
 	<query name="Operation.listPayments"><![CDATA[
@@ -647,5 +647,10 @@
 			and (status.code = ?)
 		order by o.creationDate
     ]]></query>
+
+	<query name="Operation.deleteAllBlankOperations">
+		delete from Operation 
+		where operationStatus.code = ?
+	</query>
 
 </hibernate-mapping>

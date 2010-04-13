@@ -114,6 +114,11 @@
 		<put-attribute name="body" value="/WEB-INF/jsp/payments/reports/import_payments_report.jsp"/>
 	</definition>
 
+	<definition name="payments.report.blank.operation" extends="payments.accountant">
+		<put-attribute name="title" value="payments.report.blank.operation"/>
+		<put-attribute name="body" value="/WEB-INF/jsp/payments/reports/acc_blank_operation.jsp"/>
+	</definition>
+
 	<!-- registry-related definitions -->
 	<definition name="payments.registry.generate" extends="payments.accountant">
 		<put-attribute name="title" value="payments.registry.generate.title"/>
