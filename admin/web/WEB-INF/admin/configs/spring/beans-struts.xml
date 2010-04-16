@@ -6,12 +6,12 @@
 		   http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
 		   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
-	<bean id="userListAction"
-		  class="org.flexpay.admin.action.user.UserListAction"
+	<bean id="usersListAction"
+		  class="org.flexpay.admin.action.user.UsersListAction"
 		  p:preferencesService-ref="userPreferencesService"
 		  scope="prototype" />
 
-	<bean id="userListPageAction" parent="staticPageAction"
+	<bean id="usersListPageAction" parent="staticPageAction"
           p:crumbNameKey="admin.crumbs.user.list"
           scope="prototype" />
 

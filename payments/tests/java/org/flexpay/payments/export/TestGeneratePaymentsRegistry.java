@@ -76,70 +76,58 @@ public class TestGeneratePaymentsRegistry extends PaymentsSpringBeanAwareTestCas
 
 	private static final String SERVICE_LINE = StringUtils.repeat("_", 128);
 
-	@Autowired
-	private ProcessManager processManager;
-	@Autowired
-	private ServiceProviderService tProviderService;
-	@Autowired
-	private ServiceProviderAttributeService tProviderAttributeService;
+    private ServiceProvider serviceProvider;
+    private PaymentPoint paymentPoint;
+	private Organization registerOrganization;
+    private Organization recipientOrganization;
+    private Operation operation;
 
 	@Resource (name = "schedulerFactoryBeanRegistry")
 	private StdScheduler tSchedulerFactoryBeanRegistry;
-
 	@Resource (name = "jobTradingDayTrigger")
 	private CronTriggerBean tJobTradingDayTrigger;
 
 	@Autowired
 	private OperationService operationService;
-
     @Autowired
 	private DocumentService documentService;
-
 	@Autowired
 	private FPFileService fpFileService;
-
 	@Autowired
 	private RegistryRecordService registryRecordService;
     @Autowired
     private EircRegistryService eircRegistryService;
 	@Autowired
 	private RegistryService registryService;
+    @Autowired
+    private ProcessManager processManager;
+    @Autowired
+    private ServiceProviderService tProviderService;
+    @Autowired
+    private ServiceProviderAttributeService tProviderAttributeService;
+    @Autowired
+    private RSASignatureService signatureService;
 	@Autowired
 	@Qualifier ("registryFPFileTypeService")
 	private RegistryFPFileTypeService registryFPFileTypeService;
-
     @Autowired
     @Qualifier ("paymentsTestPaymentPointUtil")
     private PaymentsTestPaymentPointUtil paymentPointUtil;
-
     @Autowired
     @Qualifier ("paymentsTestOrganizationUtil")
     private PaymentsTestOrganizationUtil organizationUtil;
-
     @Autowired
     @Qualifier ("paymentsTestServiceProviderUtil")
     private PaymentsTestServiceProviderUtil serviceProviderUtil;
-
     @Autowired
     @Qualifier ("paymentsTestCashPaymentOperationUtil")
     private PaymentsTestCashPaymentOperationUtil operationUtil;
-
     @Autowired
     @Qualifier ("paymentsTestServiceUtil")
     private PaymentsTestServiceUtil paymentsTestServiceUtil;
-
     @Autowired
     @Qualifier ("paymentsTestRegistryUtil")
     private PaymentsTestRegistryUtil registryUtil;
-
-	@Autowired
-	private RSASignatureService signatureService;
-
-    private ServiceProvider serviceProvider;
-    private PaymentPoint paymentPoint;
-	private Organization registerOrganization;
-    private Organization recipientOrganization;
-    private Operation operation;
 
 	@Before
 	public void startUp() throws FlexPayExceptionContainer, FlexPayException {
@@ -280,18 +268,19 @@ public class TestGeneratePaymentsRegistry extends PaymentsSpringBeanAwareTestCas
 		assertDigitalSignature(registryMBFile, "WEB-INF/payments/configs/keys/public.key");
 		assertTotalCountLine(registryMBFile, N_SERVICE_ROWS + N_HEAD_ROWS + registry.getRecordsNumber());
 		assertRecordCountLine(registryMBFile, 2);
-		fpFileService.deleteFromFileSystem(registryMBFile);
+//		fpFileService.deleteFromFileSystem(registryMBFile);
 
 		// assert FP File
 		FPFile registryFPFile = registry.getFiles().get(fpFormat);
 		assertNotNull("FP file not found for registry id=" + registry.getId(), registryFPFile);
 		registryFPFile = fpFileService.read(Stub.stub(registryFPFile));
 		assertTrue("FP file nullable", registryFPFile.getSize() > 0);
-		fpFileService.deleteFromFileSystem(registryFPFile);
+//		fpFileService.deleteFromFileSystem(registryFPFile);
 	}
 
 	private static void assertTotalCountLine(FPFile file, final long n) throws IOException {
 		file.withReader(FILE_ENCODING, new ReaderCallback() {
+            @Override
 			public void read(Reader r) throws IOException {
 				@SuppressWarnings ({"IOResourceOpenedButNotSafelyClosed"})
 				BufferedReader reader = new BufferedReader(r);
@@ -318,6 +307,7 @@ public class TestGeneratePaymentsRegistry extends PaymentsSpringBeanAwareTestCas
 
 	private static void assertRecordCountLine(FPFile file, final int n) throws IOException {
 		file.withReader(FILE_ENCODING, new ReaderCallback() {
+            @Override
 			public void read(Reader r) throws IOException {
 				@SuppressWarnings ({"IOResourceOpenedButNotSafelyClosed"})
 				BufferedReader reader = new BufferedReader(r);
@@ -338,8 +328,11 @@ public class TestGeneratePaymentsRegistry extends PaymentsSpringBeanAwareTestCas
 	}
 
 	private void assertDigitalSignature(FPFile file, String key) throws Exception {
+
 		final Signature sign = signatureService.readPublicSignature(key);
+
 		file.withInputStream(new InputStreamCallback() {
+            @Override
 			public void read(InputStream is) throws IOException {
 
 				byte[] lineFeed = "\n".getBytes(FILE_ENCODING);
@@ -351,7 +344,7 @@ public class TestGeneratePaymentsRegistry extends PaymentsSpringBeanAwareTestCas
 				int nFeedsFound = 0;
 				byte[] ringBuffer = new byte[lineFeed.length];
 				while (nFeedsFound < 3) {
-					ringBuffer[ringBuffer.length-1] = (byte) is.read();
+					ringBuffer[ringBuffer.length - 1] = (byte) is.read();
 					if (equals(lineFeed, ringBuffer)) {
 						++nFeedsFound;
 						ringBuffer = new byte[lineFeed.length];
@@ -391,7 +384,9 @@ public class TestGeneratePaymentsRegistry extends PaymentsSpringBeanAwareTestCas
 	}
 
 	private static byte[] read(InputStream is, int n) throws IOException {
+
 		byte[] bytes = new byte[n];
+
 		for (int i = 0; i < n; ++i) {
 			bytes[i] = (byte) is.read();
 		}

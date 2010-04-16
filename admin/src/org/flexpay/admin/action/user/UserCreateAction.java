@@ -40,14 +40,13 @@ public class UserCreateAction extends FPActionSupport {
 			}
 			try {
 				createUserPreferences();
-
 				addActionMessage(getText("admin.user.saved"));
-				return REDIRECT_SUCCESS;
 			} catch (FlexPayExceptionContainer e) {
 				log.warn("Can not create user preferences with name {}", model.getUserName());
 				addActionError(getText("admin.error.user.cant_update_user_preferences"));
+                return REDIRECT_ERROR;
 			}
-			return REDIRECT_ERROR;
+            return REDIRECT_SUCCESS;
 		}
 		return INPUT;
 	}

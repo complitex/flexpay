@@ -9,8 +9,7 @@
 		<td class="col">
 			<s:if test="#readonly">
 				<s:textfield name="model.userName" value="%{currentUserPreferences.username}" maxlength="255" readonly="true" />
-			</s:if>
-			<s:else>
+			</s:if><s:else>
 				<s:textfield name="model.userName" value="%{currentUserPreferences.username}" maxlength="255" readonly="false" />
 			</s:else>
 		</td>
@@ -68,7 +67,7 @@
 	</tr>
 	<tr>
 		<td colspan="2">
-							<s:submit cssClass="btn-exit" name="submitted" value="%{getText('common.save')}" />
+            <s:submit cssClass="btn-exit" name="submitted" value="%{getText('common.save')}" />
 		</td>
 	</tr>
 </table>

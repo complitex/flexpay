@@ -1,11 +1,10 @@
-package org.flexpay.payments.service.impl;
+package org.flexpay.validatorregistry.service.impl;
 
-import org.flexpay.common.util.config.ApplicationConfig;
-import org.flexpay.payments.service.SignatureService;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import org.flexpay.validatorregistry.service.SignatureService;
 
 import java.io.DataInputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.security.KeyFactory;
 import java.security.PrivateKey;
@@ -21,7 +20,6 @@ public class RSASignatureService implements SignatureService {
 	private static final String RSA_KEY_ALGORITHM = "RSA";
 	private static final String SHA1_WITH_RSA_SIGNATURE_ALGORITHM = "SHA1withRSA";
 
-	@NotNull
 	@Override
 	public Signature readPrivateSignature(String key) throws Exception {
 
@@ -39,7 +37,6 @@ public class RSASignatureService implements SignatureService {
 		return instance;
 	}
 
-	@NotNull
 	@Override
 	public Signature readPublicSignature(String key) throws Exception {
 
@@ -57,11 +54,11 @@ public class RSASignatureService implements SignatureService {
 		return instance;
 	}
 
-	@Nullable
 	private byte[] getDataFromFile(String file) throws IOException {
 		DataInputStream dis = null;
 		try {
-			dis = new DataInputStream(ApplicationConfig.getResourceAsStream(file));
+
+			dis = new DataInputStream(new FileInputStream(new File(file)));
 
 			byte[] data = new byte[BUFFER_SIZE];
 			int off = 0;

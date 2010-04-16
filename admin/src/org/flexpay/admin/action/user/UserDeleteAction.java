@@ -9,9 +9,10 @@ import org.springframework.beans.factory.annotation.Required;
 import java.util.Set;
 
 public class UserDeleteAction extends FPActionSupport {
-	private UserPreferencesService preferencesService;
 
-	private Set<String> objectIds = set();
+    private Set<String> objectIds = set();
+
+	private UserPreferencesService preferencesService;
 
 	@NotNull
 	@Override

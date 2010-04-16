@@ -3,6 +3,7 @@ package org.flexpay.admin.persistence;
 import org.apache.commons.lang.StringUtils;
 
 public class UserModel {
+
 	private String userName;
 	private String firstName;
 	private String lastName;

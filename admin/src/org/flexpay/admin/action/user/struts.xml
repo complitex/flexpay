@@ -4,29 +4,33 @@
 		"http://struts.apache.org/dtds/struts-2.0.dtd">
 
 <struts>
-	<package name="user" namespace="/admin" extends="common">
-		<action name="userList" class="userListPageAction">
+
+    <package name="user" namespace="/admin" extends="common">
+
+		<action name="usersList" class="usersListPageAction">
             <result type="tiles">admin.user.list</result>
         </action>
 
-		<action name="userListAjax" class="userListAction">
-            <result>/WEB-INF/jsp/admin/user/user_list.jsp</result>
+		<action name="usersListAjax" class="usersListAction">
+            <result>/WEB-INF/jsp/admin/user/users_list.jsp</result>
         </action>
 
 		<action name="editUser" class="editUserAction">
-			<result name="redirectError" type="redirect-action">userList</result>
+			<result name="redirectError" type="redirect-action">usersList</result>
 			<result name="input" type="tiles">admin.user.edit</result>
-			<result name="redirectSuccess" type="redirect-action">userList</result>
+			<result name="redirectSuccess" type="redirect-action">usersList</result>
 		</action>
 
 		<action name="createUser" class="createUserAction">
-			<result name="redirectError" type="redirect-action">userList</result>
+			<result name="redirectError" type="redirect-action">usersList</result>
 			<result name="input" type="tiles">admin.user.create</result>
-			<result name="redirectSuccess" type="redirect-action">userList</result>
+			<result name="redirectSuccess" type="redirect-action">usersList</result>
 		</action>
 
 		<action name="deleteUser" class="deleteUserAction">
 			<result>/WEB-INF/jsp/common/responses/simple_response.jsp</result>
 		</action>
+
 	</package>
+
 </struts>

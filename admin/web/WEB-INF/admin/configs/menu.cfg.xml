@@ -67,7 +67,7 @@
 	<bean name="admin_user_list" parent="admin_users_users"
           p:name="admin.user.list"
           p:title="admin.user.list"
-          p:action="userList"
+          p:action="usersList"
           p:parent-ref="admin_users_users">
         <property name="userRole">
             <util:constant static-field="org.flexpay.admin.service.Roles.ROLE_MENU_ADMIN_USERS" />
