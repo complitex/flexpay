@@ -9,14 +9,17 @@ import org.springframework.beans.factory.annotation.Required;
 
 import java.util.List;
 
-public class UserListAction extends FPActionWithPagerSupport<UserPreferences> {
+public class UsersListAction extends FPActionWithPagerSupport<UserPreferences> {
+
 	private UserPreferencesService preferencesService;
 	private List<UserPreferences> allUserPreferences = list();
 
 	@NotNull
 	@Override
 	protected String doExecute() throws Exception {
+
 		allUserPreferences = preferencesService.listAllUser();
+
 		return SUCCESS;
 	}
 

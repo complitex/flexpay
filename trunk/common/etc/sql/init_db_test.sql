@@ -23,4 +23,4 @@ insert into common_data_corrections_tbl (internal_object_id, external_object_id,
 	(select id, concat(@instId, id), @common_base + 0x09, @ds from common_measure_units_tbl);
 
 -- certificates
-insert into common_certificates_tbl (version, alias, begin_date, end_date, description) values (0, 'testlogin', '2010-03-22', '2010-06-20' 'Tecтовый логин');
+insert into common_certificates_tbl (version, alias, begin_date, end_date, description) values (0, 'testlogin', '2010-03-22', '2010-06-20', 'Tecтовый логин');

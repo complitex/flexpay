@@ -30,15 +30,15 @@
 	<!-- User -->
 	<definition name="admin.user.list" extends="admin.main.users">
 		<put-attribute name="title" value="admin.user.list" />
-		<put-attribute name="body" value="/WEB-INF/jsp/admin/user/user_list_page.jsp" />
+		<put-attribute name="body" value="/WEB-INF/jsp/admin/user/users_list_page.jsp" />
 	</definition>
 	<definition name="admin.user.edit" extends="admin.layout.standart">
 		<put-attribute name="title" value="admin.user.edit" />
-		<put-attribute name="body" value="/WEB-INF/jsp/admin/user/edit_user.jsp" />
+		<put-attribute name="body" value="/WEB-INF/jsp/admin/user/user_edit.jsp" />
 	</definition>
 	<definition name="admin.user.create" extends="admin.layout.standart">
 		<put-attribute name="title" value="admin.user.create" />
-		<put-attribute name="body" value="/WEB-INF/jsp/admin/user/create_user.jsp" />
+		<put-attribute name="body" value="/WEB-INF/jsp/admin/user/user_create.jsp" />
 	</definition>
 
 	<!-- certificates -->

@@ -16,21 +16,19 @@ import org.springframework.beans.factory.annotation.Required;
 import java.util.List;
 
 public class UserEditAction extends FPActionSupport {
-	private UserPreferencesService preferencesService;
-
-	private UserRoleService userRoleService;
 
 	private UserPreferences currentUserPreferences;
-
 	private UserModel model = UserModel.getInstance();
-
 	private boolean checkOldPassword = false;
-
 	private List<UserRole> userRoles;
+
+    private UserPreferencesService preferencesService;
+    private UserRoleService userRoleService;
 
 	@NotNull
 	@Override
 	protected String doExecute() throws Exception {
+
 		userRoles = userRoleService.getAllUserRoles();
 
 		if (StringUtils.isEmpty(model.getUserName())) {
@@ -152,6 +150,12 @@ public class UserEditAction extends FPActionSupport {
 		return !hasActionErrors();
 	}
 
+    @NotNull
+    @Override
+    protected String getErrorResult() {
+        return INPUT;
+    }
+
 	public UserPreferences getCurrentUserPreferences() {
 		return currentUserPreferences;
 	}
@@ -190,9 +194,4 @@ public class UserEditAction extends FPActionSupport {
 		this.preferencesService = preferencesService;
 	}
 
-	@NotNull
-	@Override
-	protected String getErrorResult() {
-		return INPUT;
-	}
 }

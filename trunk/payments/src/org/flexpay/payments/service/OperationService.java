@@ -206,4 +206,5 @@ public interface OperationService {
 
 	@Secured (Roles.OPERATION_DELETE)
 	void deleteAllBlankOperations() throws FlexPayException;
+
 }

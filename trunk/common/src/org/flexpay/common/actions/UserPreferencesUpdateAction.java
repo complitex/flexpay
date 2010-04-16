@@ -15,6 +15,7 @@ public class UserPreferencesUpdateAction extends FPActionSupport {
 	 * @throws Exception if failure occurs
 	 */
 	@NotNull
+    @Override
 	protected String doExecute() throws Exception {
 		if (prop != null) {
 			getUserPreferences().setTestProp(prop);
@@ -31,6 +32,7 @@ public class UserPreferencesUpdateAction extends FPActionSupport {
 	 * @return {@link #ERROR} by default
 	 */
 	@NotNull
+    @Override
 	protected String getErrorResult() {
 		return SUCCESS;
 	}

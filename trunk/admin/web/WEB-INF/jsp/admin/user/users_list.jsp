@@ -1,8 +1,5 @@
 <%@include file="/WEB-INF/jsp/common/taglibs.jsp"%>
-
-<div id="response">
-    <%@include file="/WEB-INF/jsp/common/includes/errors_messages.jsp"%>
-</div>
+<%@include file="/WEB-INF/jsp/common/includes/errors_messages.jsp"%>
 
 <script type="text/javascript">
     FP.switchSorter("userSorterButton");
@@ -29,7 +26,7 @@
                 <s:property value="username" />
             </td>
             <td class="col">
-                <a href="<s:url action="editUser" includeParams="none"><s:param name="model.userName" value="username" /></s:url>"><s:text name="common.edit"/></a>
+                <a href="<s:url action="editUser" includeParams="none"><s:param name="model.userName" value="username" /></s:url>"><s:text name="common.edit" /></a>
             </td>
         </tr>
     </s:iterator>

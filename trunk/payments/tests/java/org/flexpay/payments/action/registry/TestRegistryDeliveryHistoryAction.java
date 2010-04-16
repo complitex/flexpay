@@ -17,9 +17,11 @@ public class TestRegistryDeliveryHistoryAction extends PaymentsSpringBeanAwareTe
 	public void testExecute() throws Exception {
 
 		// test wrong dates
+/*
 		action.setFilterSubmitted("submitted");
 		action.setBeginDate("2009/12/12");
 		action.setEndDate("2009/01/01");
+*/
 		action.getBeginDateFilter().setDate(DateUtil.parseDate("2009/12/12"));
 		action.getEndDateFilter().setDate(DateUtil.parseDate("2009/01/01"));
 		assertEquals("Invalid action result", FPActionSupport.ERROR, action.execute());
