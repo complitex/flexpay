@@ -46,6 +46,7 @@ public class Validator extends JDialog {
             /**
              * Invoked when an action occurs.
              */
+            @Override
             public void actionPerformed(ActionEvent e) {
                 JFileChooser fileChooser = new JFileChooser();
                 fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
@@ -67,6 +68,7 @@ public class Validator extends JDialog {
             /**
              * Invoked when an action occurs.
              */
+            @Override
             public void actionPerformed(ActionEvent e) {
                 setEnabledControlElements(false);
                 Thread thread = new Thread(new ValidateThread());
@@ -283,7 +285,7 @@ public class Validator extends JDialog {
         System.out.println("Reading service line...");
         String serviceLine = new String(Validator.read(is, configServiceLine.length()));
         if (!configServiceLine.equals(serviceLine)) {
-            System.out.println("Incorrect service line:\n" + serviceLine);
+            System.err.println("Incorrect service line:\n" + serviceLine);
             return false;
         }
         System.out.println("Read service line OK");
@@ -295,20 +297,23 @@ public class Validator extends JDialog {
         byte[] signature = Validator.read(is, 128);
         System.out.println("Read signature OK");
 
-        // skip service lines - up to a 3 new feed lines
-        System.out.println("Skipping other service lines...");
-        int nFeedsFound = 0;
-        byte[] ringBuffer = new byte[lineFeed.length];
-        while (nFeedsFound < 3) {
-            ringBuffer[ringBuffer.length - 1] = (byte) is.read();
-            if (equals(lineFeed, ringBuffer)) {
-                ++nFeedsFound;
-                ringBuffer = new byte[lineFeed.length];
-                continue;
-            }
-            shiftLeft(ringBuffer);
+        String[] signatureParts = new String(signature).split("\n");
+
+        if (signatureParts.length < 2) {
+            Validator.read(is, lineFeed.length);
         }
-        System.out.println("Skip other service lines OK");
+
+        Validator.read(is, lineFeed.length);
+
+        System.out.println("Reading second service line...");
+        serviceLine = new String(Validator.read(is, configServiceLine.length()));
+        if (!configServiceLine.equals(serviceLine)) {
+            System.err.println("Incorrect second service line:\n" + serviceLine);
+            return false;
+        }
+        System.out.println("Read second service line OK");
+
+        Validator.read(is, lineFeed.length);
 
         System.out.println("Verifing digital signature...");
 
@@ -327,23 +332,6 @@ public class Validator extends JDialog {
         return sign.verify(signature);
 
     }
-
-    private void shiftLeft(byte[] ar) {
-        System.arraycopy(ar, 1, ar, 0, ar.length - 1);
-    }
-
-    private boolean equals(byte[] ar1, byte[] ar2) {
-        if (ar1.length != ar2.length) {
-            return false;
-        }
-        for (int i = 0; i < ar1.length; ++i) {
-            if (ar1[i] != ar2[i]) {
-                return false;
-            }
-        }
-        return true;
-    }
-
 
     public static byte[] read(InputStream is, int n) throws IOException {
 

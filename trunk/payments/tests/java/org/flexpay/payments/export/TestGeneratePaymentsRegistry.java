@@ -1,6 +1,7 @@
 package org.flexpay.payments.export;
 
 import static junit.framework.Assert.*;
+import static junit.framework.Assert.assertEquals;
 import static org.flexpay.common.util.CollectionUtils.list;
 
 import org.apache.commons.io.IOUtils;
@@ -336,22 +337,30 @@ public class TestGeneratePaymentsRegistry extends PaymentsSpringBeanAwareTestCas
 			public void read(InputStream is) throws IOException {
 
 				byte[] lineFeed = "\n".getBytes(FILE_ENCODING);
-				TestGeneratePaymentsRegistry.read(is, SERVICE_LINE.length() + lineFeed.length);
+                TestGeneratePaymentsRegistry.read(is, lineFeed.length);
+                String serviceLine = new String(TestGeneratePaymentsRegistry.read(is, SERVICE_LINE.length()));
+                assertEquals("Incorrect service line", SERVICE_LINE, serviceLine);
 				// 128 - is a size of SHA-1 signature
 				byte[] signature = TestGeneratePaymentsRegistry.read(is, 128);
 
 				// skip service lines - up to a 3 new feed lines
-				int nFeedsFound = 0;
-				byte[] ringBuffer = new byte[lineFeed.length];
-				while (nFeedsFound < 3) {
-					ringBuffer[ringBuffer.length - 1] = (byte) is.read();
-					if (equals(lineFeed, ringBuffer)) {
-						++nFeedsFound;
-						ringBuffer = new byte[lineFeed.length];
-						continue;
-					}
-					shiftLeft(ringBuffer);
-				}
+                TestGeneratePaymentsRegistry.read(is, lineFeed.length);
+                TestGeneratePaymentsRegistry.read(is, lineFeed.length);
+                serviceLine = new String(TestGeneratePaymentsRegistry.read(is, SERVICE_LINE.length()));
+                assertEquals("Incorrect service line", SERVICE_LINE, serviceLine);
+
+                String[] signatureParts = new String(signature).split("\n");
+
+                if (signatureParts.length < 2) {
+                    TestGeneratePaymentsRegistry.read(is, lineFeed.length);
+                }
+
+                TestGeneratePaymentsRegistry.read(is, lineFeed.length);
+
+                serviceLine = new String(TestGeneratePaymentsRegistry.read(is, SERVICE_LINE.length()));
+                assertEquals("Incorrect second service line", SERVICE_LINE, serviceLine);
+
+                TestGeneratePaymentsRegistry.read(is, lineFeed.length);
 
 				try {
 					byte[] buffer = new byte[1024];
@@ -365,21 +374,6 @@ public class TestGeneratePaymentsRegistry extends PaymentsSpringBeanAwareTestCas
 				}
 			}
 
-			private void shiftLeft(byte[] ar) {
-				System.arraycopy(ar, 1, ar, 0, ar.length - 1);
-			}
-
-			private boolean equals(byte[] ar1, byte[] ar2) {
-				if (ar1.length != ar2.length) {
-					return false;
-				}
-				for (int i = 0; i < ar1.length; ++i) {
-					if (ar1[i] != ar2[i]) {
-						return false;
-					}
-				}
-				return true;
-			}
 		});
 	}
 
