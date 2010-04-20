@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="validator_registry" basedir=".." default="validator_registry.help">
+
+	<property name="validator_registry.dir" value="${basedir}/validator_registry" />
+
+    <dirname property="module.common.basedir" file="${ant.file}" />
+    <property name="compiler.debug" value="on" />
+    <property name="compiler.generate.no.warnings" value="off" />
+    <property name="compiler.args" value="" />
+    <property name="compiler.max.memory" value="128m" />
+
+    <path id="library.jb.classpath">
+        <pathelement location="${basedir}/lib/forms_rt.jar" />
+        <pathelement location="${basedir}/lib/javac2.jar" />
+        <pathelement location="${basedir}/lib/annotations.jar" />
+    </path>
+
+    <patternset id="ignored.files">
+        <exclude name="**/CVS/**" />
+        <exclude name="**/SCCS/**" />
+        <exclude name="**/RCS/**" />
+        <exclude name="**/rcs/**" />
+        <exclude name="**/.DS_Store/**" />
+        <exclude name="**/.svn/**" />
+        <exclude name="**/.pyc/**" />
+        <exclude name="**/.pyo/**" />
+        <exclude name="**/.sbas/**" />
+        <exclude name="**/.IJI.*/**" />
+        <exclude name="**/vssver.scc/**" />
+        <exclude name="**/vssver2.scc/**" />
+    </patternset>
+    <patternset id="compiler.resources">
+        <include name="**/?*.properties" />
+        <include name="**/?*.xml" />
+        <include name="**/?*.gif" />
+        <include name="**/?*.png" />
+        <include name="**/?*.jpeg" />
+        <include name="**/?*.jpg" />
+        <include name="**/?*.html" />
+        <include name="**/?*.dtd" />
+        <include name="**/?*.tld" />
+        <include name="**/?*.key" />
+    </patternset>
+
+    <property name="compiler.args.common" value="${compiler.args}" />
+    <property name="common.output.dir" value="${module.common.basedir}/../_build/classes/validator_registry" />
+
+    <path id="common.module.classpath">
+        <path refid="library.jb.classpath" />
+    </path>
+
+    <path id="common.module.bootclasspath">
+        <!-- Paths to be included in compilation bootclasspath -->
+    </path>
+
+    <patternset id="excluded.from.module.common">
+        <patternset refid="ignored.files" />
+    </patternset>
+
+    <patternset id="excluded.from.compilation.common">
+        <patternset refid="excluded.from.module.common" />
+    </patternset>
+
+    <path id="common.module.sourcepath">
+        <dirset dir="${module.common.basedir}">
+            <include name="src" />
+        </dirset>
+    </path>
+
+	<!-- Build properties -->
+	<property file="validator_registry/validator_registry_build.properties" />
+
+	<target name="validator_registry.help" description="Print validator_registry module build script options">
+		<echo>
+	validator_registry module build script
+		</echo>
+	</target>
+
+    <target name="compile.module.common.production" depends="clean" description="Compile module Common; production classes">
+        <mkdir dir="${common.output.dir}" />
+        <javac destdir="${common.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}"
+               memorymaximumsize="${compiler.max.memory}" fork="true">
+            <compilerarg line="${compiler.args.common}" />
+            <bootclasspath refid="common.module.bootclasspath" />
+            <classpath refid="common.module.classpath" />
+            <src refid="common.module.sourcepath" />
+            <patternset refid="excluded.from.compilation.common" />
+        </javac>
+
+        <copy todir="${common.output.dir}">
+            <fileset dir="${module.common.basedir}/src">
+                <patternset refid="compiler.resources" />
+                <type type="file" />
+            </fileset>
+        </copy>
+    </target>
+
+    <target name="clean.module.common" description="cleanup module">
+        <delete dir="${common.output.dir}" />
+    </target>
+
+    <target name="clean" depends="clean.module.common" description="cleanup all" />
+
+</project>
