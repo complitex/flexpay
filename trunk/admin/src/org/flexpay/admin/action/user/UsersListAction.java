@@ -11,8 +11,9 @@ import java.util.List;
 
 public class UsersListAction extends FPActionWithPagerSupport<UserPreferences> {
 
-	private UserPreferencesService preferencesService;
 	private List<UserPreferences> allUserPreferences = list();
+
+    private UserPreferencesService preferencesService;
 
 	@NotNull
 	@Override

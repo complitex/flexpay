@@ -34,7 +34,7 @@
         <event type="node-enter">
             <script>
                 <variable mapped-name="processStatus" access="write" name="PROCESS_STATUS" />
-                <variable mapped-name="canUpdateOrCreateOperation" access="write" name="CAN_UPDATE_OR_CRETAE_OPERATION" />
+                <variable mapped-name="canUpdateOrCreateOperation" access="write" name="CAN_UPDATE_OR_CREATE_OPERATION" />
                 <variable name="START_TIME" mapped-name="startTime" access="write" />
                 <expression>
                     processStatus = "Открыт";
@@ -65,7 +65,7 @@
         <event type="node-enter">
             <script>
                 <variable mapped-name="processStatus" access="write" name="PROCESS_STATUS" />
-                <variable mapped-name="canUpdateOrCreateOperation" access="write" name="CAN_UPDATE_OR_CRETAE_OPERATION" />
+                <variable mapped-name="canUpdateOrCreateOperation" access="write" name="CAN_UPDATE_OR_CREATE_OPERATION" />
                 <expression>
                     processStatus = "Обрабатывается";
                     canUpdateOrCreateOperation = "false";
@@ -158,7 +158,7 @@
         <event type="node-enter">
             <script>
                 <variable mapped-name="processStatus" access="write" name="PROCESS_STATUS" />
-                <variable mapped-name="canUpdateOrCreateOperation" access="write" name="CAN_UPDATE_OR_CRETAE_OPERATION" />
+                <variable mapped-name="canUpdateOrCreateOperation" access="write" name="CAN_UPDATE_OR_CREATE_OPERATION" />
                 <expression>
                     processStatus = "Допущена ошибка, обратитесь к администратору";
                     canUpdateOrCreateOperation = "false";

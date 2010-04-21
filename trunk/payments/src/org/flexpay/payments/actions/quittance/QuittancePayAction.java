@@ -27,12 +27,14 @@ public class QuittancePayAction extends PaymentOperationAction {
 	protected String doExecute() throws Exception {
 
 		if (operationId == null || operationId <= 0) {
+            log.warn("operationId parameter is incorrect");
 			addActionError(getText("payments.error.operation_is_incorrect"));
 			return REDIRECT_SUCCESS;
 		}
 
 		Operation operation = operationService.read(new Stub<Operation>(operationId));
 		if (operation == null) {
+            log.warn("Can't get operation with id {} from DB", operationId);
 			addActionError(getText("payments.error.operation_is_incorrect"));
 			return REDIRECT_SUCCESS;
 		}
@@ -52,7 +54,8 @@ public class QuittancePayAction extends PaymentOperationAction {
 		}
 
 		fillOperation(operation);
-		if (!isValidOperation(operation)) {
+		if (!validateOperation(operation)) {
+            log.warn("Invalid operation with id {}", operationId);
 			addActionError(getText("payments.error.operation_is_incorrect"));
 			return REDIRECT_SUCCESS;
 		}
@@ -90,7 +93,7 @@ public class QuittancePayAction extends PaymentOperationAction {
 		return !BigDecimalUtil.isZero(operation.getOperationSumm()) && operation.getDocuments() != null && !operation.getDocuments().isEmpty();
 	}
 
-	private boolean isValidOperation(Operation operation) {
+	private boolean validateOperation(Operation operation) {
 
 		BigDecimal totalSumm = operation.getOperationSumm();
 		BigDecimal inputSumm = operation.getOperationInputSumm();

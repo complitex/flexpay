@@ -1,7 +1,6 @@
 package org.flexpay.payments.process.export;
 
 import org.flexpay.common.dao.paging.Page;
-import org.flexpay.common.persistence.Stub;
 import org.flexpay.common.process.ContextCallback;
 import org.flexpay.common.process.Process;
 import org.flexpay.common.process.ProcessManager;
@@ -9,8 +8,6 @@ import org.flexpay.common.process.ProcessState;
 import org.flexpay.common.process.exception.ProcessDefinitionException;
 import org.flexpay.common.process.exception.ProcessInstanceException;
 import org.flexpay.common.process.sorter.ProcessSorterByName;
-import org.flexpay.common.util.CollectionUtils;
-import org.flexpay.common.util.DateUtil;
 import org.flexpay.common.util.SecurityUtil;
 import org.flexpay.orgs.persistence.PaymentCollector;
 import org.flexpay.orgs.persistence.PaymentPoint;
@@ -29,16 +26,24 @@ import org.springframework.scheduling.quartz.QuartzJobBean;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static org.flexpay.common.persistence.Stub.stub;
+import static org.flexpay.common.service.Roles.*;
+import static org.flexpay.common.util.CollectionUtils.list;
+import static org.flexpay.common.util.CollectionUtils.map;
+import static org.flexpay.common.util.DateUtil.getEndOfThisDay;
+import static org.flexpay.common.util.DateUtil.now;
+import static org.flexpay.orgs.service.Roles.*;
+import static org.flexpay.payments.service.Roles.*;
 
 public class TradingDay extends QuartzJobBean {
 
     private Logger log = LoggerFactory.getLogger(getClass());
 
 	// process variable names
-	public final static String CAN_UPDATE_OR_CRETAE_OPERATION = "CAN_UPDATE_OR_CRETAE_OPERATION";
+	public final static String CAN_UPDATE_OR_CREATE_OPERATION = "CAN_UPDATE_OR_CREATE_OPERATION";
 	public final static String PROCESS_STATUS = "PROCESS_STATUS";
 	public final static String AUTO_MODE = "AUTO_MODE";
 
@@ -56,25 +61,25 @@ public class TradingDay extends QuartzJobBean {
     /**
      * Set of authorities names for payments registry
      */
-    protected static final List<String> USER_TRADING_DAY_AUTHORITIES = CollectionUtils.list(
-            org.flexpay.common.service.Roles.PROCESS_READ,
-			org.flexpay.common.service.Roles.PROCESS_DELETE,
-			org.flexpay.common.service.Roles.PROCESS_DEFINITION_UPLOAD_NEW,
+    protected static final List<String> USER_TRADING_DAY_AUTHORITIES = list(
+            PROCESS_READ,
+			PROCESS_DELETE,
+			PROCESS_DEFINITION_UPLOAD_NEW,
 
-			org.flexpay.common.service.Roles.PROCESS_DEFINITION_UPLOAD_NEW,
-			org.flexpay.common.service.Roles.PROCESS_DEFINITION_UPLOAD_NEW,
+			PROCESS_DEFINITION_UPLOAD_NEW,
+			PROCESS_DEFINITION_UPLOAD_NEW,
 
-            org.flexpay.orgs.service.Roles.PAYMENT_COLLECTOR_READ,
-            org.flexpay.orgs.service.Roles.PAYMENT_POINT_READ,
-			org.flexpay.orgs.service.Roles.PAYMENT_POINT_CHANGE,
-            org.flexpay.orgs.service.Roles.ORGANIZATION_READ,
-            org.flexpay.orgs.service.Roles.CASHBOX_READ,
+            PAYMENT_COLLECTOR_READ,
+            PAYMENT_POINT_READ,
+			PAYMENT_POINT_CHANGE,
+            ORGANIZATION_READ,
+            CASHBOX_READ,
 
-			org.flexpay.payments.service.Roles.DOCUMENT_READ,
-			org.flexpay.payments.service.Roles.DOCUMENT_CHANGE,
-			org.flexpay.payments.service.Roles.OPERATION_READ,
-			org.flexpay.payments.service.Roles.OPERATION_CHANGE,
-			org.flexpay.payments.service.Roles.SERVICE_READ
+			DOCUMENT_READ,
+			DOCUMENT_CHANGE,
+			OPERATION_READ,
+			OPERATION_CHANGE,
+			SERVICE_READ
 
     );
 
@@ -83,11 +88,13 @@ public class TradingDay extends QuartzJobBean {
 	 *
 	 * @param processManager process manager instance
 	 * @param processInstanceId process instance id
-	 * @return true if Trading day is opened or false if not.
+	 * @param logger logger
+     * @return true if Trading day is opened or false if not.
 	 */
 	public static boolean isOpened(@NotNull final ProcessManager processManager,
 								   @NotNull final Long processInstanceId, @NotNull final Logger logger){
 		return processManager.execute(new ContextCallback<Boolean>(){
+            @Override
 			public Boolean doInContext(@NotNull JbpmContext context) {
 				ProcessInstance processInstance = context.getProcessInstance(processInstanceId);
 				if (processInstance == null || processInstance.hasEnded()){
@@ -95,10 +102,9 @@ public class TradingDay extends QuartzJobBean {
 					return false;
 				}
 				String canCreateOrUpdate = (String)context.getProcessInstance(processInstanceId)
-						.getContextInstance().getVariable(TradingDay.CAN_UPDATE_OR_CRETAE_OPERATION);
-				logger.debug("CAN_UPDATE_OR_CRETAE_OPERATION = {} for process instance id = {}",
-						new Object[]{canCreateOrUpdate, processInstanceId});
-				return new Boolean(canCreateOrUpdate);
+						.getContextInstance().getVariable(CAN_UPDATE_OR_CREATE_OPERATION);
+				logger.debug("CAN_UPDATE_OR_CREATE_OPERATION = {} for process instance id = {}", canCreateOrUpdate, processInstanceId);
+				return Boolean.valueOf(canCreateOrUpdate);
 			}
 		});
 	}
@@ -109,6 +115,7 @@ public class TradingDay extends QuartzJobBean {
 	 * @param context - job execution context
 	 * @throws JobExecutionException when something goes wrong 
 	 */
+    @Override
     protected void executeInternal(JobExecutionContext context) throws JobExecutionException {
 
         log.debug("Starting trading day at {}", new Date());
@@ -125,8 +132,8 @@ public class TradingDay extends QuartzJobBean {
         }
         */
 
-        Page<org.flexpay.common.process.Process> page = new Page<org.flexpay.common.process.Process>();
-        List<org.flexpay.common.process.Process> processes;
+        Page<Process> page = new Page<Process>();
+        List<Process> processes;
         do {
             processes = processManager.getProcesses(processSorterByName, page, null, null, ProcessState.RUNING, PROCESS_DEFINITION_NAME);
             log.debug("Have some processes {}", page.getTotalNumberOfElements());
@@ -157,42 +164,44 @@ public class TradingDay extends QuartzJobBean {
 
         for (PaymentPoint pp : paymentPointService.listPaymentPointsWithTradingDay()) {
             Long paymentPointId = pp.getId();
-            Map<Serializable, Serializable> parameters = new HashMap<Serializable, Serializable>();
+            Map<Serializable, Serializable> parameters = map();
             if (pp == null) {
                 log.error("Payment point with id {} not found", paymentPointId);
-            } else {
+                continue;
+            }
 
-                parameters.put(ExportJobParameterNames.PAYMENT_POINT_ID, paymentPointId);
-                log.debug("Set paymentPointId {}", paymentPointId);
+            parameters.put(ExportJobParameterNames.PAYMENT_POINT_ID, paymentPointId);
+            log.debug("Set paymentPointId {}", paymentPointId);
 
-				//fill begin and end date
-                parameters.put(ExportJobParameterNames.BEGIN_DATE, DateUtil.truncateDay(new Date()));
-                log.debug("Set beginDate {}", DateUtil.truncateDay(new Date()));
+            Date now = now();
 
-                parameters.put(ExportJobParameterNames.END_DATE, DateUtil.getEndOfThisDay(new Date()));
-                log.debug("Set endDate {}", DateUtil.getEndOfThisDay(new Date()));
+            //fill begin and end date
+            parameters.put(ExportJobParameterNames.BEGIN_DATE, now);
+            log.debug("Set beginDate {}", now);
 
-                PaymentCollector paymentPointCollector = paymentCollectorService.read(Stub.stub(pp.getCollector()));
-                parameters.put(ExportJobParameterNames.ORGANIZATION_ID, paymentPointCollector.getOrganization().getId());
-                log.debug("Set organizationId {}", paymentPointCollector.getOrganization().getId());
+            parameters.put(ExportJobParameterNames.END_DATE, getEndOfThisDay(now));
+            log.debug("Set endDate {}", getEndOfThisDay(now));
 
-                Long processInstanceId = null;
-                try {
-                    processInstanceId = processManager.createProcess(PROCESS_DEFINITION_NAME, parameters);
-                    pp.setTradingDayProcessInstanceId(processInstanceId);
-                    paymentPointService.update(pp);
-                } catch (ProcessInstanceException e) {
-                    log.error("Failed run process trading day", e);
-                    throw new JobExecutionException(e);
-                } catch (ProcessDefinitionException e) {
-                    log.error("Process trading day not started", e);
-                    throw new JobExecutionException(e);
-                } catch (Throwable th) {
-                    log.error("Payment point did not save", th);
-                    if (processInstanceId != null) {
-                        deleteProcess(processInstanceId);
-                        log.debug("Delete processId={}", processInstanceId);
-                    }
+            PaymentCollector paymentPointCollector = paymentCollectorService.read(stub(pp.getCollector()));
+            parameters.put(ExportJobParameterNames.ORGANIZATION_ID, paymentPointCollector.getOrganization().getId());
+            log.debug("Set organizationId {}", paymentPointCollector.getOrganization().getId());
+
+            Long processInstanceId = null;
+            try {
+                processInstanceId = processManager.createProcess(PROCESS_DEFINITION_NAME, parameters);
+                pp.setTradingDayProcessInstanceId(processInstanceId);
+                paymentPointService.update(pp);
+            } catch (ProcessInstanceException e) {
+                log.error("Failed run process trading day", e);
+                throw new JobExecutionException(e);
+            } catch (ProcessDefinitionException e) {
+                log.error("Process trading day not started", e);
+                throw new JobExecutionException(e);
+            } catch (Throwable th) {
+                log.error("Payment point did not save", th);
+                if (processInstanceId != null) {
+                    deleteProcess(processInstanceId);
+                    log.debug("Delete with processId={}", processInstanceId);
                 }
             }
         }
