@@ -15,12 +15,13 @@ import org.springframework.beans.factory.annotation.Required;
 import java.util.List;
 
 public class UserCreateAction extends FPActionSupport {
-	private UserPreferencesService preferencesService;
-	private UserRoleService userRoleService;
 
 	private UserModel model = UserModel.getInstance();
 	private UserPreferences currentUserPreferences;
 	private List<UserRole> userRoles;
+
+    private UserPreferencesService preferencesService;
+    private UserRoleService userRoleService;
 
 	@NotNull
 	@Override

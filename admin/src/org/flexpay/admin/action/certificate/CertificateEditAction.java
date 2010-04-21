@@ -1,6 +1,5 @@
 package org.flexpay.admin.action.certificate;
 
-import com.opensymphony.xwork2.Action;
 import org.apache.commons.lang.StringUtils;
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.persistence.Certificate;
@@ -34,7 +33,7 @@ public class CertificateEditAction extends FPActionSupport {
 
 		if (isSubmit()) {
 			if (!doValidate()) {
-				return Action.INPUT;
+				return INPUT;
 			}
 
 			if (certificateFile != null) {
@@ -43,12 +42,12 @@ public class CertificateEditAction extends FPActionSupport {
 
 			certificate.setDescription(description);
 			certificateService.update(certificate);
-			return FPActionSupport.REDIRECT_SUCCESS;
+			return REDIRECT_SUCCESS;
 		} else {			
 			description = certificate.getDescription();
 		}
 
-		return Action.INPUT;
+		return INPUT;
 	}
 
 	private boolean doValidate() {
@@ -69,7 +68,7 @@ public class CertificateEditAction extends FPActionSupport {
 	@NotNull
 	@Override
 	protected String getErrorResult() {
-		return Action.INPUT;
+		return INPUT;
 	}
 
 	public Certificate getCertificate() {

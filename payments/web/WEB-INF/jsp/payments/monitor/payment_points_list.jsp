@@ -22,9 +22,9 @@
             <td class="th"><s:text name="payments.payment_points.list.action" /></td>
         </sec:authorize>
     </tr>
-    <s:iterator value="paymentPoints" status="status">
+    <s:iterator value="paymentPoints" status="iterStatus">
         <tr>
-            <td><s:property value="#status.index + pager.thisPageFirstElementNumber + 1" /></td>
+            <td><s:property value="#iterStatus.index + pager.thisPageFirstElementNumber + 1" /></td>
             <td>
                 <a href="<s:url action="paymentPointDetailMonitor" includeParams="none"><s:param name="paymentPoint.id" value="id" /></s:url>">
                     <s:property value="name" />

@@ -2,6 +2,7 @@ package org.flexpay.common.persistence;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Date;
 
@@ -14,6 +15,10 @@ public class Certificate extends DomainObject {
 
 	public Certificate() {
 	}
+
+    public Certificate(@NotNull Long id) {
+        setId(id);
+    }
 
 	public Certificate(String alias, String description, Date beginDate, Date endDate) {
 		this.alias = alias;

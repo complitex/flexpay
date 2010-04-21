@@ -10,9 +10,10 @@ import java.util.Set;
 import static org.flexpay.common.util.CollectionUtils.set;
 
 public class UserDeleteAction extends FPActionSupport {
-	private UserPreferencesService preferencesService;
 
-	private Set<String> objectIds = set();
+    private Set<String> objectIds = set();
+
+	private UserPreferencesService preferencesService;
 
 	@NotNull
 	@Override

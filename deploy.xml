@@ -76,12 +76,11 @@
 		</antcall>
 	</target>
 
-        <target name="deploy.sjsas">
-                <antcall target="template.deploy.sjsas">
-                        <param name="application_archive" value="${distr.dir}/${war.name}" />
-                </antcall>
-        </target>
-
+    <target name="deploy.sjsas">
+        <antcall target="template.deploy.sjsas">
+            <param name="application_archive" value="${distr.dir}/${war.name}" />
+        </antcall>
+    </target>
 
 	<taskdef name="sun-appserv-deploy"
 			 classname="org.apache.tools.ant.taskdefs.optional.sun.appserv.DeployTask"
