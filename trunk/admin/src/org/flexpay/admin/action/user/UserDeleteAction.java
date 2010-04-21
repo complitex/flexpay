@@ -2,17 +2,17 @@ package org.flexpay.admin.action.user;
 
 import org.flexpay.common.actions.FPActionSupport;
 import org.flexpay.common.service.UserPreferencesService;
-import static org.flexpay.common.util.CollectionUtils.set;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.util.Set;
 
+import static org.flexpay.common.util.CollectionUtils.set;
+
 public class UserDeleteAction extends FPActionSupport {
-
-    private Set<String> objectIds = set();
-
 	private UserPreferencesService preferencesService;
+
+	private Set<String> objectIds = set();
 
 	@NotNull
 	@Override
