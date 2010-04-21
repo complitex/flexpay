@@ -29,6 +29,7 @@
 
 		<action name="deleteUser" class="deleteUserAction">
 			<result>/WEB-INF/jsp/common/responses/simple_response.jsp</result>
+			<result name="error">/WEB-INF/jsp/common/responses/simple_response.jsp</result>
 		</action>
 
 	</package>

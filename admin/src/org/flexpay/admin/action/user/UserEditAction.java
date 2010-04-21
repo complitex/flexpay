@@ -123,7 +123,7 @@ public class UserEditAction extends FPActionSupport {
 			addActionError(getText("admin.error.user.user_name_empty"));
 		}
 		if ((StringUtils.isNotEmpty(model.getPassword()) || StringUtils.isNotEmpty(model.getReEnterPassword())) &&
-				StringUtils.equals(model.getPassword(), model.getReEnterPassword())) {
+				!StringUtils.equals(model.getPassword(), model.getReEnterPassword())) {
 			log.error("The passwords you entered do not match");
 			addActionError(getText("admin.error.user.passwords_do_not_match"));
 		}

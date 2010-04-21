@@ -2,10 +2,10 @@ package org.flexpay.common.dao.impl;
 
 import com.iplanet.sso.SSOException;
 import com.iplanet.sso.SSOToken;
-import com.sun.identity.authentication.AuthContext;
+import com.iplanet.sso.SSOTokenManager;
 import com.sun.identity.policy.*;
 import com.sun.identity.policy.interfaces.Subject;
-import org.flexpay.common.actions.security.opensso.TokenUtils;
+import org.flexpay.common.actions.security.opensso.PolicyUtils;
 import org.flexpay.common.dao.UserPreferencesDao;
 import org.flexpay.common.dao.impl.ldap.DnBuilder;
 import org.flexpay.common.dao.impl.ldap.LdapConstants;
@@ -60,8 +60,6 @@ public class LdapUserPreferencesDaoImpl implements UserPreferencesDao {
 
 	private String url;
 	private String base;
-	private String adminUserName;
-	private String adminPassword;
 	private List<String> policyNames;
 
 	private final class PersonContextMapper extends AbstractParameterizedContextMapper<UserPreferences> {
@@ -295,8 +293,10 @@ public class LdapUserPreferencesDaoImpl implements UserPreferencesDao {
 	private List<String> getUserNames() throws Exception {
 		SSOToken ssoToken = null;
 		try {
-			ssoToken = TokenUtils.getToken(base, adminUserName, adminPassword);
+			ssoToken = PolicyUtils.getToken();
+			log.debug("TokenId: {}", ssoToken.getTokenID());
 			PolicyManager pm = new PolicyManager(ssoToken);
+			
 			List<String> userNames = CollectionUtils.list();
 			for (String policyName : policyNames) {
 				try {
@@ -312,7 +312,7 @@ public class LdapUserPreferencesDaoImpl implements UserPreferencesDao {
 						}
 					}
 				} catch (NameNotFoundException e) {
-					log.warn("OpenSSO policy name not found {}", policyName);
+					log.warn("OpenSSO policy name not found {}: {}", policyName, e);
 				} catch (InvalidNameException e) {
 					log.warn("Invalid OpenSSO policy name {}", policyName);
 				}
@@ -320,8 +320,7 @@ public class LdapUserPreferencesDaoImpl implements UserPreferencesDao {
 			return userNames;
 		} finally {
 			if (ssoToken != null) {
-				AuthContext ac = new AuthContext(ssoToken);
-				ac.logout();
+				SSOTokenManager.getInstance().destroyToken(ssoToken);
 			}
 		}
 	}
@@ -330,8 +329,10 @@ public class LdapUserPreferencesDaoImpl implements UserPreferencesDao {
 	private void addUserToPolicy(UserPreferences person) throws Exception {
 		SSOToken ssoToken = null;
 		try {
-			ssoToken = TokenUtils.getToken(base, adminUserName, adminPassword);
+			ssoToken = PolicyUtils.getToken();
+			log.debug("TokenId: {}", ssoToken.getTokenID());
 			PolicyManager pm = new PolicyManager(ssoToken);
+
 			for (String policyName : policyNames) {
 				log.debug("Edit policy {}", policyName);
 				Policy policy = pm.getPolicy(policyName);
@@ -361,8 +362,7 @@ public class LdapUserPreferencesDaoImpl implements UserPreferencesDao {
 			}
 		} finally {
 			if (ssoToken != null) {
-				AuthContext ac = new AuthContext(ssoToken);
-				ac.logout();
+				SSOTokenManager.getInstance().destroyToken(ssoToken);
 			}
 		}
 	}
@@ -442,15 +442,5 @@ public class LdapUserPreferencesDaoImpl implements UserPreferencesDao {
 	@Required
 	public void setBase(String base) {
 		this.base = base;
-	}
-
-	@Required
-	public void setAdminUserName(String adminUserName) {
-		this.adminUserName = adminUserName;
-	}
-
-	@Required
-	public void setAdminPassword(String adminPassword) {
-		this.adminPassword = adminPassword;
 	}
 }
