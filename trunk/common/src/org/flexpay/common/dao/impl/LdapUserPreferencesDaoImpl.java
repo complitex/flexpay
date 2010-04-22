@@ -5,6 +5,7 @@ import com.iplanet.sso.SSOToken;
 import com.iplanet.sso.SSOTokenManager;
 import com.sun.identity.policy.*;
 import com.sun.identity.policy.interfaces.Subject;
+import org.apache.commons.lang.StringUtils;
 import org.flexpay.common.actions.security.opensso.PolicyUtils;
 import org.flexpay.common.dao.UserPreferencesDao;
 import org.flexpay.common.dao.impl.ldap.DnBuilder;
@@ -14,6 +15,7 @@ import org.flexpay.common.dao.impl.ldap.UserPreferencesDnBuilder;
 import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.common.util.config.UserPreferences;
 import org.flexpay.common.util.config.UserPreferencesFactory;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Required;
@@ -204,8 +206,56 @@ public class LdapUserPreferencesDaoImpl implements UserPreferencesDao {
 		ldapTemplate.modifyAttributes(ctx);
 	}
 
+	@SuppressWarnings ({"unchecked"})
 	@Override
-	public void delete(String userName) {
+	public void delete(@NotNull String userName) {
+		SSOToken ssoToken = null;
+		try {
+			ssoToken = PolicyUtils.getToken();
+			log.debug("TokenId: {}", ssoToken.getTokenID());
+			PolicyManager pm = new PolicyManager(ssoToken);
+			
+			for (String policyName : policyNames) {
+				try {
+					Policy policy = pm.getPolicy(policyName);
+					Set<String> subjectNames = policy.getSubjectNames();
+					for (String subjectName : subjectNames) {
+						Subject subject = policy.getSubject(subjectName);
+						Set<Object> deletedSubjectValues = CollectionUtils.set();
+						for (Object val : subject.getValues()) {
+							if (StringUtils.equals(userName, getUserId((String)val))) {
+								deletedSubjectValues.add(val);
+								log.debug("Subject value '{}' deleted", val);
+							} else {
+								log.debug("Subject value '{}' skip", val);
+							}
+						}
+						if (deletedSubjectValues.size() > 0) {
+							Set<Object> values = subject.getValues();
+							values.removeAll(deletedSubjectValues);
+							subject.setValues(values);
+							log.debug("Replace subject values: {}", subject.getValues());
+							policy.replaceSubject(subjectName, subject, policy.isSubjectExclusive(subjectName));
+							pm.replacePolicy(policy);
+						}
+					}
+				} catch (NameNotFoundException e) {
+					log.warn("OpenSSO policy name not found {}: {}", policyName, e);
+				} catch (InvalidNameException e) {
+					log.warn("Invalid OpenSSO policy name {}", policyName);
+				}
+			}
+		} catch (Exception e) {
+			log.warn("Can not remove user from policy`s subject", e);
+		} finally {
+			if (ssoToken != null) {
+				try {
+					SSOTokenManager.getInstance().destroyToken(ssoToken);
+				} catch (SSOException e) {
+					log.warn("Can not destroy token", e);
+				}
+			}
+		}
 		UserPreferences person = userPreferencesFactory.newInstance();
 		person.setUsername(userName);
 		ldapTemplate.unbind(buildDn(person));
