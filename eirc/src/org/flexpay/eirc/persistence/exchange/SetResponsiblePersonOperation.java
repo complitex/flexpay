@@ -13,6 +13,7 @@ import org.flexpay.eirc.dao.importexport.RawConsumersDataUtil;
 import org.flexpay.eirc.persistence.Consumer;
 import org.flexpay.eirc.persistence.ConsumerInfo;
 import org.flexpay.eirc.persistence.EircAccount;
+import org.flexpay.eirc.persistence.EircRegistryRecordProperties;
 import org.flexpay.eirc.persistence.exchange.conditions.AccountPersonChangeCondition;
 import org.flexpay.eirc.persistence.exchange.delayed.*;
 import org.flexpay.eirc.service.ConsumerService;
@@ -55,6 +56,13 @@ public class SetResponsiblePersonOperation extends AbstractChangePersonalAccount
 
 		RegistryRecord record = context.getCurrentRecord();
 		Consumer consumer = ContainerProcessHelper.getConsumer(record, factory);
+		for (RegistryRecord processedRegistryRecord : context.getOperationRecords()) {
+			Consumer processedConsumer = ((EircRegistryRecordProperties) processedRegistryRecord.getProperties()).getConsumer();
+			if (!processedRegistryRecord.equals(record) && consumer.equals(processedConsumer)) {
+				consumer = processedConsumer;
+				break;
+			}
+		}
 
 		// find consumer and set FIO here
 		ConsumerInfo info = consumer.getConsumerInfo();
