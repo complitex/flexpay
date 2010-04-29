@@ -56,11 +56,21 @@ public class SetResponsiblePersonOperation extends AbstractChangePersonalAccount
 
 		RegistryRecord record = context.getCurrentRecord();
 		Consumer consumer = ContainerProcessHelper.getConsumer(record, factory);
+		boolean consumerWasProcessed = false;
 		for (RegistryRecord processedRegistryRecord : context.getOperationRecords()) {
-			Consumer processedConsumer = ((EircRegistryRecordProperties) processedRegistryRecord.getProperties()).getConsumer();
-			if (!processedRegistryRecord.equals(record) && consumer.equals(processedConsumer)) {
-				consumer = processedConsumer;
-				break;
+			if (processedRegistryRecord.getProperties() != null &&
+					processedRegistryRecord.getProperties() instanceof EircRegistryRecordProperties) {
+
+				EircRegistryRecordProperties registryRecordProperties = (EircRegistryRecordProperties) processedRegistryRecord.getProperties();
+
+				if (!processedRegistryRecord.equals(record) && registryRecordProperties.hasFullConsumer() &&
+						consumer.equals(registryRecordProperties.getConsumer())) {
+					consumer = registryRecordProperties.getConsumer();
+					((EircRegistryRecordProperties) record.getProperties()).setFullConsumer(consumer);
+					consumerWasProcessed = true;
+					log.debug("Get consumer from processed registry");
+					break;
+				}
 			}
 		}
 
@@ -76,7 +86,9 @@ public class SetResponsiblePersonOperation extends AbstractChangePersonalAccount
 		info.setMiddleName(mName);
 		info.setLastName(lName);
 
-		container.addUpdate(new DelayedUpdateConsumerInfo(info, factory.getConsumerInfoService()));
+		if (!consumerWasProcessed) {
+			container.addUpdate(new DelayedUpdateConsumerInfo(info, factory.getConsumerInfoService()));
+		}
 
 		log.debug("Updated consumer info first-middle-last names");
 
