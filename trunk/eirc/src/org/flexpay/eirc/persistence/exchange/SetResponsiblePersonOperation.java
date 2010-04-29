@@ -112,7 +112,9 @@ public class SetResponsiblePersonOperation extends AbstractChangePersonalAccount
 		AccountPersonChangeCondition condition = factory.getConditionsFactory().getAccountPersonChangeCondition();
 		if (condition.needUpdatePerson(eircAccount, consumer)) {
 			eircAccount.setPerson(person);
-			container.addUpdate(new DelayedUpdateEircAccount(eircAccount, factory.getAccountService()));
+			if (!consumerWasProcessed) {
+				container.addUpdate(new DelayedUpdateEircAccount(eircAccount, factory.getAccountService()));
+			}
 		}
 
 		// update corrections
