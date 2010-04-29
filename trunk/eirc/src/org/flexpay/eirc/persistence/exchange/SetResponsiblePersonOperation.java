@@ -102,7 +102,9 @@ public class SetResponsiblePersonOperation extends AbstractChangePersonalAccount
 		// setup consumers responsible person
 		Person person = findResponsiblePerson(record, fName, mName, lName);
 		setupResponsiblePerson(info, person, eircAccount);
-		saveConsumers(eircAccount, info, container);
+		if (!consumerWasProcessed) {
+			saveConsumers(eircAccount, info, container);
+		}
 
 		log.debug("Set responsible person: {}", person);
 
