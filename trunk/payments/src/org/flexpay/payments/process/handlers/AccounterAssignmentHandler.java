@@ -12,10 +12,11 @@ public class AccounterAssignmentHandler implements AssignmentHandler {
 
 	protected Logger log = LoggerFactory.getLogger(getClass());
 
+    public final static String ACCOUNTER = "ACCOUNTER";
+
 	private static final long serialVersionUID = 1L;
 
-	public final static String ACCOUNTER = "ACCOUNTER";
-
+    @Override
 	public void assign(Assignable assignable, ExecutionContext executionContext) {
         String autoMode = (String) executionContext.getVariable(TradingDay.AUTO_MODE);
 		log.debug("AUTO_MODE = {}", autoMode);
@@ -25,4 +26,5 @@ public class AccounterAssignmentHandler implements AssignmentHandler {
             assignable.setActorId(ACCOUNTER);
         }
     }
+
 }

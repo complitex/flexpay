@@ -7,7 +7,9 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.math.BigDecimal;
+import java.util.Collections;
 import java.util.Date;
+import java.util.Set;
 
 public class QuittanceDetails extends DomainObject {
 
@@ -24,6 +26,8 @@ public class QuittanceDetails extends DomainObject {
 	private BigDecimal subsidy;
 	private BigDecimal payment;
 	private Date month;
+
+    private Set<QuittanceDetailsQuittance> quittanceDetailsQuittances = Collections.emptySet();
 
 	public Consumer getConsumer() {
 		return consumer;
@@ -135,5 +139,11 @@ public class QuittanceDetails extends DomainObject {
 		this.month = month;
 	}
 
-	
+    public Set<QuittanceDetailsQuittance> getQuittanceDetailsQuittances() {
+        return quittanceDetailsQuittances;
+    }
+
+    public void setQuittanceDetailsQuittances(Set<QuittanceDetailsQuittance> quittanceDetailsQuittances) {
+        this.quittanceDetailsQuittances = quittanceDetailsQuittances;
+    }
 }

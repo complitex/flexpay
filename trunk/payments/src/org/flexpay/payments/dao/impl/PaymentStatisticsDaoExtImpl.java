@@ -1,6 +1,5 @@
 package org.flexpay.payments.dao.impl;
 
-import org.flexpay.common.util.CollectionUtils;
 import org.flexpay.payments.dao.PaymentStatisticsDaoExt;
 import org.flexpay.payments.service.statistics.OperationTypeStatistics;
 import org.flexpay.payments.service.statistics.ServicePaymentsStatistics;
@@ -9,6 +8,8 @@ import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+
+import static org.flexpay.common.util.CollectionUtils.list;
 
 public class PaymentStatisticsDaoExtImpl extends HibernateDaoSupport implements PaymentStatisticsDaoExt {
 
@@ -20,12 +21,13 @@ public class PaymentStatisticsDaoExtImpl extends HibernateDaoSupport implements 
 	 * @return List of payment statistics
 	 */
 	@SuppressWarnings ({"unchecked"})
+    @Override
 	public List<ServicePaymentsStatistics> getServicePaymentStats(Date begin, Date end) {
 		Date[] params = {begin, end, begin, end};
 		List<?> data = getHibernateTemplate()
 				.findByNamedQuery("ServicePaymentsStatistics.collect", params);
 
-		List<ServicePaymentsStatistics> result = CollectionUtils.list();
+		List<ServicePaymentsStatistics> result = list();
 		for (Object obj : data) {
 			Object[] row = (Object[]) obj;
 			ServicePaymentsStatistics stats = new ServicePaymentsStatistics();
@@ -49,12 +51,13 @@ public class PaymentStatisticsDaoExtImpl extends HibernateDaoSupport implements 
 	 * @param end			Report period end timestamp
 	 * @return List of payment operation statistics
 	 */
+    @Override
 	public List<OperationTypeStatistics> getOperationTypeOrganizationStatistics(Long organizationId, Date begin, Date end) {
 		Object[] params = {organizationId, begin, end};
 		List<?> data = getHibernateTemplate()
 				.findByNamedQuery("OperationTypeOrganizationStatistics.collect", params);
 
-		List<OperationTypeStatistics> result = CollectionUtils.list();
+		List<OperationTypeStatistics> result = list();
 		for (Object obj : data) {
 			Object[] row = (Object[]) obj;
 			OperationTypeStatistics stats = new OperationTypeStatistics();
@@ -75,12 +78,13 @@ public class PaymentStatisticsDaoExtImpl extends HibernateDaoSupport implements 
 	 * @param end			Report period end timestamp
 	 * @return List of payment operation statistics
 	 */
+    @Override
     public List<OperationTypeStatistics> getOperationTypePaymentPointStatistics(Long paymentPointId, Date begin, Date end) {
         Object[] params = {paymentPointId, begin, end};
 		List<?> data = getHibernateTemplate()
 				.findByNamedQuery("OperationTypePaymentPointStatistics.collect", params);
 
-		List<OperationTypeStatistics> result = CollectionUtils.list();
+		List<OperationTypeStatistics> result = list();
 		for (Object obj : data) {
 			Object[] row = (Object[]) obj;
 			OperationTypeStatistics stats = new OperationTypeStatistics();
@@ -93,7 +97,7 @@ public class PaymentStatisticsDaoExtImpl extends HibernateDaoSupport implements 
 		return result;
     }
 
-        /**
+    /**
 	 * Build payment operations statistics
 	 *
 	 * @param cashboxId Cash box
@@ -101,12 +105,13 @@ public class PaymentStatisticsDaoExtImpl extends HibernateDaoSupport implements 
 	 * @param end			Report period end timestamp
 	 * @return List of payment operation statistics
 	 */
+    @Override
     public List<OperationTypeStatistics> getOperationTypeCashboxStatistics(Long cashboxId, Date begin, Date end) {
         Object[] params = {cashboxId, begin, end};
 		List<?> data = getHibernateTemplate()
 				.findByNamedQuery("OperationTypeCashboxStatistics.collect", params);
 
-		List<OperationTypeStatistics> result = CollectionUtils.list();
+		List<OperationTypeStatistics> result = list();
 		for (Object obj : data) {
 			Object[] row = (Object[]) obj;
 			OperationTypeStatistics stats = new OperationTypeStatistics();

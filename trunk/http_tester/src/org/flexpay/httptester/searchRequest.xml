@@ -1,0 +1,11 @@
+<request>	
+    <!--<getDebtInfo>-->
+	<getQuittanceDebtInfo>
+		<requestId>@requestId@</requestId>
+		<searchType>@searchType@</searchType>
+		<searchCriteria>@searchCriteria@</searchCriteria>
+	</getQuittanceDebtInfo>
+    <!--</getDebtInfo>-->
+	<login>@alias@</login>
+	<signature>@signature@</signature>
+</request>

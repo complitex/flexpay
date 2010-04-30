@@ -81,7 +81,7 @@
 
     <task-node name="sendRegistryJob">
         <description>
-            отправляем на указанный в ППП емейл с вложенным файлом сформированного реестра
+            отправляем на указанный в ППП е-мейл с вложенным файлом сформированного реестра
         </description>
         <task swimlane="JobManager" />
         <transition to="AutoModeDecision" name="next" />
@@ -97,7 +97,6 @@
             <condition expression="#{executionContext.getVariable['AUTO_MODE'] == 'true'}" />
         </transition>
     </decision>
-
 
     <task-node name="WaitForApprove">
         <description>
@@ -141,7 +140,7 @@
             <script>
                 <variable mapped-name="processStatus" access="write" name="PROCESS_STATUS" />
                 <expression>
-                    processStatus = "Завершен";
+                    processStatus = "Завершён";
                 </expression>
             </script>
         </event>

@@ -1,0 +1,1 @@
+java -cp .\build\classes;.\libs\commons-codec-1.3.jar;.\libs\httpclient-4.0.1.jar;.\libs\httpcore-4.0.1.jar;.\libs\commons-logging-1.1.1.jar org.flexpay.httptester.Client

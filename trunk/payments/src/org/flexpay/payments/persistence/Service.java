@@ -16,14 +16,16 @@ import static org.flexpay.common.persistence.Stub.stub;
 
 public class Service extends DomainObjectWithStatus {
 
+    private String externalCode;
+    private Date beginDate;
+    private Date endDate;
+
 	private ServiceProvider serviceProvider;
-	private Set<ServiceDescription> descriptions = Collections.emptySet();
 	private ServiceType serviceType;
-	private String externalCode;
-	private Date beginDate;
-	private Date endDate;
 	private MeasureUnit measureUnit;
 	private Service parentService;
+
+    private Set<ServiceDescription> descriptions = Collections.emptySet();
 	private Set<Service> childServices = Collections.emptySet();
 
 	public Service() {

@@ -330,7 +330,7 @@ public class ProcessManagerImpl implements ProcessManager, Runnable {
 		}
 
 		log.info("Initializing  process. Process Definition id = {}, name = {}, version = {}",
-				new Object[]{processDefinition.getId(), processDefinition.getName(), processDefinition.getVersion()});
+				new Object[] {processDefinition.getId(), processDefinition.getName(), processDefinition.getVersion()});
 
 		try {
 			ProcessInstance processInstance = new ProcessInstance(processDefinition);

@@ -1,7 +1,7 @@
 package org.flexpay.payments.service.impl;
 
 import org.flexpay.common.util.config.ApplicationConfig;
-import org.flexpay.payments.persistence.quittance.QuittanceDetailsRequest;
+import org.flexpay.payments.persistence.quittance.InfoRequest;
 import org.flexpay.payments.persistence.quittance.QuittanceDetailsResponse;
 import org.flexpay.payments.service.QuittanceDetailsFinder;
 import org.jetbrains.annotations.NotNull;
@@ -29,7 +29,7 @@ public class JmsQuittanceDetailsFinder implements QuittanceDetailsFinder {
 	 */
 	@NotNull
 	@Override
-	public QuittanceDetailsResponse findQuittance(final QuittanceDetailsRequest request) {
+	public QuittanceDetailsResponse findQuittance(final InfoRequest request) {
 
 		request.setRequestId(ApplicationConfig.getInstanceId() + System.currentTimeMillis());
 
@@ -50,7 +50,7 @@ public class JmsQuittanceDetailsFinder implements QuittanceDetailsFinder {
 
 		if (response == null) {
 			response = new QuittanceDetailsResponse();
-			response.setErrorCode(QuittanceDetailsResponse.CODE_ERROR_RECIEVE_TIMEOUT);
+			response.setStatusCode(QuittanceDetailsResponse.STATUS_RECIEVE_TIMEOUT);
 		}
 
 		return response;

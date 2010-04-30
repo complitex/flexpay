@@ -25,6 +25,7 @@ public class QuittanceNumberServiceImpl implements QuittanceNumberService {
 	 * @param q Quittance to get number for
 	 * @return Quittance number
 	 */
+    @Override
 	public String getNumber(Quittance q) {
 
 		Calendar cal = new GregorianCalendar();
@@ -52,6 +53,7 @@ public class QuittanceNumberServiceImpl implements QuittanceNumberService {
 	 * @throws org.flexpay.common.exception.FlexPayException if quittanceNumber has invalid format
 	 */
 	@NotNull
+    @Override
 	public QuittanceNumberInfo parseInfo(String quittanceNumber) throws FlexPayException {
 
 		String[] parts = StringUtils.split(quittanceNumber, PARTS_SEPARATOR);

@@ -253,7 +253,7 @@ public class Validator extends JDialog {
                 System.out.println("------------------------------------------");
 
             } catch (Exception e) {
-                System.err.println("File with path " + fileFld.getText() + " not found");
+                System.err.println("Error file with path " + fileFld.getText());
                 e.printStackTrace();
             } finally {
                 if (is != null) {

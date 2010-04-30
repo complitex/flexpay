@@ -15,10 +15,12 @@ import java.util.Set;
  */
 public class EircAccount extends DomainObjectWithStatus {
 
+    private String accountNumber;
+
 	private Person person;
 	private Apartment apartment;
-	private String accountNumber;
 	private ConsumerInfo consumerInfo;
+
 	private Set<Consumer> consumers = Collections.emptySet();
 
 	public EircAccount() {

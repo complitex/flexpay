@@ -7,7 +7,6 @@ import org.flexpay.common.process.Process;
 import org.flexpay.common.process.ProcessManager;
 import org.flexpay.common.process.exception.ProcessDefinitionException;
 import org.flexpay.common.process.exception.ProcessInstanceException;
-import org.flexpay.common.util.DateUtil;
 import org.flexpay.orgs.persistence.PaymentCollector;
 import org.flexpay.orgs.persistence.PaymentPoint;
 import org.flexpay.orgs.service.PaymentPointService;
@@ -26,6 +25,7 @@ import java.util.Map;
 
 import static org.flexpay.common.persistence.Stub.stub;
 import static org.flexpay.common.util.CollectionUtils.map;
+import static org.flexpay.common.util.DateUtil.getEndOfThisDay;
 
 public class PaymentPointEnableDisableAction extends AccountantAWPActionSupport {
 
@@ -105,7 +105,7 @@ public class PaymentPointEnableDisableAction extends AccountantAWPActionSupport 
 		parameters.put(ExportJobParameterNames.BEGIN_DATE, beginDate);
 		log.debug("Set beginDate {}", beginDate);
 
-		Date endDate = DateUtil.getEndOfThisDay(new Date());
+		Date endDate = getEndOfThisDay(new Date());
 		parameters.put(ExportJobParameterNames.END_DATE, endDate);
 		log.debug("Set endDate {}", endDate);
 
@@ -117,8 +117,7 @@ public class PaymentPointEnableDisableAction extends AccountantAWPActionSupport 
 		try {
 			processInstanceId = processManager.createProcess(PROCESS_DEFINITION_NAME, parameters);
 			paymentPoint.setTradingDayProcessInstanceId(processInstanceId);
-			paymentCollectorService.update(paymentCollector);
-			//paymentPointService.update(paymentPoint);
+            paymentPointService.update(paymentPoint);
 		} catch (ProcessInstanceException e) {
 			log.error("Failed run process trading day", e);
 			throw new JobExecutionException(e);
@@ -134,7 +133,8 @@ public class PaymentPointEnableDisableAction extends AccountantAWPActionSupport 
 		}
 	}
 
-	@Secured (Roles.TRADING_DAY_ADMIN_ACTION)
+	@SuppressWarnings({"ThrowableInstanceNeverThrown"})
+    @Secured (Roles.TRADING_DAY_ADMIN_ACTION)
 	private void disableTradingDay() throws FlexPayExceptionContainer {
 		log.debug("Try disable trading day for payment point {}", paymentPoint.getId());
 		try {

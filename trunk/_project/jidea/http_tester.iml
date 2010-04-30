@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="JAVA_MODULE" version="4">
+  <component name="NewModuleRootManager" inherit-compiler-output="false">
+    <output url="file://$MODULE_DIR$/../../_build/classes/http_tester" />
+    <exclude-output />
+    <content url="file://$MODULE_DIR$/../../http_tester">
+      <sourceFolder url="file://$MODULE_DIR$/../../http_tester/src" isTestSource="false" />
+      <excludeFolder url="file://$MODULE_DIR$/../../http_tester/build" />
+      <excludeFolder url="file://$MODULE_DIR$/../../http_tester/libs" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="httpClientLibs" level="project" />
+  </component>
+</module>
+

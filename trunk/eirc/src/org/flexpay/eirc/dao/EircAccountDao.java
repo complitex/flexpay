@@ -4,6 +4,7 @@ import org.flexpay.common.dao.GenericDao;
 import org.flexpay.common.dao.paging.Page;
 import org.flexpay.eirc.persistence.EircAccount;
 
+import java.util.Collection;
 import java.util.List;
 
 public interface EircAccountDao extends GenericDao<EircAccount, Long> {
@@ -11,6 +12,8 @@ public interface EircAccountDao extends GenericDao<EircAccount, Long> {
 	List<EircAccount> findObjects(Page<EircAccount> pager);
 	
 	List<EircAccount> findByApartment(Long id, Page<EircAccount> pager);
+
+    List<EircAccount> findByApartments(Collection<Long> apartmentIds);
 
 	List<EircAccount> findByApartmentAndFIO(Long id, String personFio, String consumerFio, Page<EircAccount> pager);
 

@@ -5,6 +5,7 @@ import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Stub;
 import org.flexpay.eirc.dao.QuittanceDaoExt;
+import org.flexpay.eirc.persistence.Consumer;
 import org.flexpay.eirc.persistence.EircAccount;
 import org.flexpay.eirc.persistence.account.Quittance;
 import org.flexpay.eirc.persistence.account.QuittanceDetails;
@@ -62,4 +63,35 @@ public interface QuittanceService {
 	@Secured (Roles.QUITTANCE_READ)
 	@NotNull
 	List<Quittance> getLatestAccountQuittances(@NotNull Stub<EircAccount> stub, Page<Quittance> pager);
+
+    /**
+     * Find quittance by list of consumers
+     *
+     * @param consumers consumers list
+     * @return list of quittance in current open period
+     */
+    @Secured (Roles.QUITTANCE_READ)
+    @NotNull
+    List<Quittance> getQuittancesByEircAccounts(@NotNull List<Consumer> consumers);
+
+    /**
+     * Find quittance by list of consumers
+     *
+     * @param consumers consumers list
+     * @return list of quittance in current open period
+     */
+    @Secured (Roles.QUITTANCE_READ)
+    @NotNull
+    List<Quittance> getQuittancesByApartments(@NotNull List<Consumer> consumers);
+
+    /**
+     * Find list of quittance details by quittance id
+     *
+     * @param stub quittance stub
+     * @return list of quittance detailes for quittance
+     */
+    @Secured (Roles.QUITTANCE_READ)
+    @NotNull
+    List<QuittanceDetails> getQuittanceDetailsByQuittanceId(@NotNull Stub<Quittance> stub);
+
 }

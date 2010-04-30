@@ -10,18 +10,6 @@
 		<id name="id" column="id">
 			<generator class="native" />
 		</id>
-		<many-to-one name="consumer" class="org.flexpay.eirc.persistence.Consumer"
-					 foreign-key="FK_eirc_quittance_details_tbl_consumer_id">
-			<column name="consumer_id" not-null="true">
-				<comment>Consumer reference</comment>
-			</column>
-		</many-to-one>
-		<many-to-one name="registryRecord" class="org.flexpay.common.persistence.registry.RegistryRecord"
-					 foreign-key="FK_eirc_quittance_details_tbl_registry_record_id">
-			<column name="registry_record_id" not-null="true">
-				<comment>Source registry record reference</comment>
-			</column>
-		</many-to-one>
 		<property name="incomingBalance">
 			<column name="incoming_balance" not-null="false">
 				<comment>incoming balance</comment>
@@ -72,6 +60,22 @@
 				<comment>Quittance month</comment>
 			</column>
 		</property>
+        <set name="quittanceDetailsQuittances" inverse="true">
+            <key column="quittance_details_id" not-null="true" />
+            <one-to-many class="QuittanceDetailsQuittance" />
+        </set>
+        <many-to-one name="consumer" class="org.flexpay.eirc.persistence.Consumer"
+                     foreign-key="FK_eirc_quittance_details_tbl_consumer_id">
+            <column name="consumer_id" not-null="true">
+                <comment>Consumer reference</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="registryRecord" class="org.flexpay.common.persistence.registry.RegistryRecord"
+                     foreign-key="FK_eirc_quittance_details_tbl_registry_record_id">
+            <column name="registry_record_id" not-null="true">
+                <comment>Source registry record reference</comment>
+            </column>
+        </many-to-one>
 	</class>
 
 	<class name="Quittance" table="eirc_quittances_tbl">
@@ -79,22 +83,6 @@
 		<id name="id" column="id">
 			<generator class="native" />
 		</id>
-		<set name="quittanceDetailsQuittances" inverse="true" cascade="all">
-			<key column="quittance_id" not-null="true" />
-			<one-to-many class="QuittanceDetailsQuittance" />
-		</set>
-		<many-to-one name="serviceOrganization" foreign-key="FK_eirc_quittances_service_organization"
-					 class="org.flexpay.orgs.persistence.ServiceOrganization">
-			<column name="service_organization_id" not-null="true">
-				<comment>Service organization reference</comment>
-			</column>
-		</many-to-one>
-		<many-to-one name="eircAccount" foreign-key="FK_eirc_quittance_services_eirc_account"
-					 class="org.flexpay.eirc.persistence.EircAccount">
-			<column name="eirc_account_id" not-null="true">
-				<comment>Eirc account reference</comment>
-			</column>
-		</many-to-one>
 		<property name="orderNumber">
 			<column name="order_number" not-null="true">
 				<comment>quittance order number for date till</comment>
@@ -115,6 +103,22 @@
 				<comment>Quittance creation date</comment>
 			</column>
 		</property>
+        <set name="quittanceDetailsQuittances" inverse="true" cascade="all">
+            <key column="quittance_id" not-null="true" />
+            <one-to-many class="QuittanceDetailsQuittance" />
+        </set>
+        <many-to-one name="serviceOrganization" foreign-key="FK_eirc_quittances_service_organization"
+                     class="org.flexpay.orgs.persistence.ServiceOrganization">
+            <column name="service_organization_id" not-null="true">
+                <comment>Service organization reference</comment>
+            </column>
+        </many-to-one>
+        <many-to-one name="eircAccount" foreign-key="FK_eirc_quittance_services_eirc_account"
+                     class="org.flexpay.eirc.persistence.EircAccount">
+            <column name="eirc_account_id" not-null="true">
+                <comment>Eirc account reference</comment>
+            </column>
+        </many-to-one>
 	</class>
 
 	<class name="QuittanceDetailsQuittance" table="eirc_quittance_details_quittances_tbl">
@@ -135,20 +139,39 @@
 	</class>
 
 	<query name="QuittanceDetails.findByEircAccountAndDateTill"><![CDATA[
-		SELECT DISTINCT d
-		FROM QuittanceDetails d
-			LEFT JOIN d.consumer c
-			LEFT JOIN c.eircAccount ea
-		WHERE ea.id=? and d.month >= ? and d.month < ?
+		select distinct d
+		from QuittanceDetails d
+			left join d.consumer c
+			left join c.eircAccount ea
+		where ea.id=? and d.month >= ? and d.month < ?
 	]]></query>
 
+    <query name="QuittanceDetails.findByQuittanceId"><![CDATA[
+        select distinct d
+        from QuittanceDetails d
+			left join fetch d.consumer c
+			left join fetch c.eircAccount ea
+			left join fetch ea.consumerInfo ci
+			left join fetch c.attributes attr
+			left join fetch attr.type
+			left join fetch c.service s
+			left join fetch s.descriptions
+        where d.id in (
+            select qdq.quittanceDetails.id
+            from QuittanceDetailsQuittance qdq
+            where qdq.quittance.id=?
+        )
+    ]]></query>
+
 	<query name="Quittance.findObjectsByEircAccountAndDateTill">
-		FROM Quittance q
-		WHERE q.eircAccount.id=? and q.dateTill=?
+		from Quittance q
+		where q.eircAccount.id=? and q.dateTill=?
 	</query>
 
 	<query name="Quittance.findObjectsByEircAccountAndDateTill.count">
-		select count(*) from Quittance q where q.eircAccount.id=? AND q.dateTill=?
+		select count(*)
+        from Quittance q
+        where q.eircAccount.id=? and q.dateTill=?
 	</query>
 
 	<query name="Quittance.findQuittanceByNumber"><![CDATA[
@@ -173,9 +196,19 @@
 			left join fetch qd.consumer c
 			left join fetch c.attributes attr
 			left join fetch attr.type 
+			left join fetch c.service s
+			left join fetch s.descriptions
 		where q.id=?
 			and (pr is null or (pr.beginDate<=current_date() and pr.endDate>=current_date()))
 	]]></query>
+
+    <query name="Quittance.findAccountQuittances">
+        select distinct q
+        from Quittance q
+        	inner join fetch q.eircAccount a
+        where a.id=?
+        order by q.dateFrom desc, q.orderNumber desc
+    </query>
 
     <query name="Quittance.findAccountQuittances.count">
         select count(q)
@@ -184,11 +217,11 @@
         where a.id=?
     </query>
 
-    <query name="Quittance.findAccountQuittances">
+    <query name="Quittance.findQuittances">
         select distinct q
         from Quittance q
         	inner join fetch q.eircAccount a
-        where a.id=?
+        where a.id in (:list_1)
         order by q.dateFrom desc, q.orderNumber desc
     </query>
 

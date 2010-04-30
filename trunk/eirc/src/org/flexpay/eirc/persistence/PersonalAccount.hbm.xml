@@ -205,6 +205,12 @@
 		where o.status=0 and o.externalAccountNumber=? and o.service.id=?
 	</query>
 
+    <query name="Consumer.findConsumersByAccount">
+        select distinct o
+        from Consumer o
+        where o.status=0 and o.externalAccountNumber=?
+    </query>
+
 	<query name="Consumer.readFull">
 		select distinct o
 		from Consumer o
@@ -248,19 +254,6 @@
         from EircAccount a
             left join fetch a.consumerInfo
         where a.accountNumber=? and a.status=0
-    </query>
-
-    <query name="EircAccount.findByApartment.count">
-        select count(a)
-        from EircAccount a
-        where a.status=0 and a.apartment.id=?
-    </query>
-
-    <query name="EircAccount.findByApartment">
-        select distinct a
-        from EircAccount a
-            left join fetch a.apartment aa
-        where a.status=0 and aa.id=?
     </query>
 
 	<query name="EircAccount.findByApartmentAndFIO.count">
@@ -338,5 +331,25 @@
 			left join fetch s.serviceType st
 		WHERE a.id=? and (c is null or c.status=0)
 	</query>
+
+    <query name="EircAccount.findByApartment">
+        select distinct a
+        from EircAccount a
+            left join fetch a.apartment aa
+        where a.status=0 and aa.id=?
+    </query>
+
+    <query name="EircAccount.findByApartment.count">
+        select count(a)
+        from EircAccount a
+        where a.status=0 and a.apartment.id=?
+    </query>
+
+    <query name="EircAccount.findByApartments">
+        select distinct a
+        from EircAccount a
+            left join fetch a.apartment aa
+        where a.status=0 and aa.id in (:list_1)
+    </query>
 
 </hibernate-mapping>
