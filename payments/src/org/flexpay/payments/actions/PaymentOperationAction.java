@@ -14,32 +14,32 @@ import org.flexpay.orgs.persistence.ServiceProvider;
 import org.flexpay.orgs.service.ServiceProviderService;
 import org.flexpay.payments.actions.quittance.SearchQuittanceAction;
 import org.flexpay.payments.persistence.*;
-import org.flexpay.payments.persistence.quittance.QuittanceDetailsResponse;
+import org.flexpay.payments.persistence.quittance.QuittanceInfo;
 import org.flexpay.payments.service.*;
 import org.springframework.beans.factory.annotation.Required;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 import static org.flexpay.common.persistence.Stub.stub;
 import static org.flexpay.common.util.CollectionUtils.list;
+import static org.flexpay.common.util.CollectionUtils.map;
 
 public abstract class PaymentOperationAction extends OperatorAWPActionSupport {
 
 	private String actionName;
 
 	// form data
-	private QuittanceDetailsResponse.QuittanceInfo quittanceInfo = new QuittanceDetailsResponse.QuittanceInfo();
-	private Map<String, BigDecimal> payments = CollectionUtils.map();
-	private Map<String, String> serviceProviderAccounts = CollectionUtils.map();
-	private Map<String, String> payerFios = CollectionUtils.map();
-	private Map<String, String> addresses = CollectionUtils.map();
-	private Map<String, String> eircAccounts = CollectionUtils.map();
-	private Map<String, BigDecimal> debts = CollectionUtils.map();
-	private Map<String, String> ercAccounts = CollectionUtils.map();
+	private QuittanceInfo quittanceInfo = new QuittanceInfo();
+	private Map<String, BigDecimal> payments = map();
+	private Map<String, String> serviceProviderAccounts = map();
+	private Map<String, String> payerFios = map();
+	private Map<String, String> addresses = map();
+	private Map<String, String> eircAccounts = map();
+	private Map<String, BigDecimal> debts = map();
+	private Map<String, String> ercAccounts = map();
 	private BigDecimal changeSumm;
 	private BigDecimal inputSumm;
 	private BigDecimal totalToPay;
@@ -204,11 +204,11 @@ public abstract class PaymentOperationAction extends OperatorAWPActionSupport {
 		this.actionName = actionName;
 	}
 
-	public QuittanceDetailsResponse.QuittanceInfo getQuittanceInfo() {
+	public QuittanceInfo getQuittanceInfo() {
 		return quittanceInfo;
 	}
 
-	public void setQuittanceInfo(QuittanceDetailsResponse.QuittanceInfo quittanceInfo) {
+	public void setQuittanceInfo(QuittanceInfo quittanceInfo) {
 		this.quittanceInfo = quittanceInfo;
 	}
 

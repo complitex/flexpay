@@ -1,24 +1,25 @@
 package org.flexpay.eirc.service.impl;
 
-import org.flexpay.eirc.service.ConsumerAttributeTypeService;
-import org.flexpay.eirc.persistence.consumer.*;
-import org.flexpay.eirc.dao.ConsumerAttributeTypeDao;
-import org.flexpay.eirc.dao.ConsumerAttributeTypeDaoExt;
-import org.flexpay.common.exception.FlexPayExceptionContainer;
+import org.apache.commons.lang.StringUtils;
 import org.flexpay.common.exception.FlexPayException;
+import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Stub;
-import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.service.internal.SessionUtils;
 import org.flexpay.common.util.CollectionUtils;
+import org.flexpay.eirc.dao.ConsumerAttributeTypeDao;
+import org.flexpay.eirc.dao.ConsumerAttributeTypeDaoExt;
+import org.flexpay.eirc.persistence.consumer.*;
+import org.flexpay.eirc.service.ConsumerAttributeTypeService;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.beans.factory.annotation.Required;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Required;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
 import java.util.Set;
+
+import static org.flexpay.common.persistence.Stub.stub;
 
 @Transactional (readOnly = true)
 public class ConsumerAttributeTypeServiceImpl implements ConsumerAttributeTypeService {

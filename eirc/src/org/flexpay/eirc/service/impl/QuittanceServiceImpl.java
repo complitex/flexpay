@@ -4,9 +4,11 @@ import org.flexpay.common.dao.paging.Page;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Stub;
+import org.flexpay.eirc.dao.EircAccountDao;
 import org.flexpay.eirc.dao.QuittanceDao;
 import org.flexpay.eirc.dao.QuittanceDaoExt;
 import org.flexpay.eirc.dao.QuittanceDetailsDao;
+import org.flexpay.eirc.persistence.Consumer;
 import org.flexpay.eirc.persistence.EircAccount;
 import org.flexpay.eirc.persistence.account.Quittance;
 import org.flexpay.eirc.persistence.account.QuittanceDetails;
@@ -21,17 +23,19 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
+
+import static org.flexpay.common.util.CollectionUtils.set;
 
 @Transactional (readOnly = true)
 public class QuittanceServiceImpl implements QuittanceService {
 
 	private Logger log = LoggerFactory.getLogger(getClass());
 
+    private EircAccountDao eircAccountDao;
 	private QuittanceDetailsDao quittanceDetailsDao;
 	private QuittanceDao quittanceDao;
-
 	private QuittanceDaoExt quittanceDaoExt;
-
 	private QuittanceNumberService quittanceNumberService;
 
 	/**
@@ -42,6 +46,7 @@ public class QuittanceServiceImpl implements QuittanceService {
 	 *          if validation failure occurs
 	 */
 	@Transactional (readOnly = false)
+    @Override
 	public void save(QuittanceDetails details) throws FlexPayExceptionContainer {
 		if (details.isNew()) {
 			details.setId(null);
@@ -52,6 +57,7 @@ public class QuittanceServiceImpl implements QuittanceService {
 	}
 
 	@Transactional (readOnly = false)
+    @Override
 	public void generateForServiceOrganization(QuittanceDaoExt.CreateQuittancesOptions options) {
 
 		long time = System.currentTimeMillis();
@@ -72,8 +78,8 @@ public class QuittanceServiceImpl implements QuittanceService {
 	 * @param stub Quittance stub
 	 * @return Quittance if found, or <code>null</code> otherwise
 	 */
+    @Override
 	public Quittance readFull(@NotNull Stub<Quittance> stub) {
-
 		return quittanceDao.readFull(stub.getId());
 	}
 
@@ -86,6 +92,7 @@ public class QuittanceServiceImpl implements QuittanceService {
 	 *          if <code>quittanceNumber</code> has invalid format
 	 */
 	@Nullable
+    @Override
 	public Quittance findByNumber(@NotNull String quittanceNumber) throws FlexPayException {
 
 		QuittanceNumberService.QuittanceNumberInfo info = quittanceNumberService.parseInfo(quittanceNumber);
@@ -109,11 +116,46 @@ public class QuittanceServiceImpl implements QuittanceService {
 	 * @return list of quittance in current open period
 	 */
 	@NotNull
+    @Override
 	public List<Quittance> getLatestAccountQuittances(@NotNull Stub<EircAccount> stub, Page<Quittance> pager) {
 		return quittanceDao.findAccountQuittances(stub.getId(), pager);
 	}
 
-	@Required
+    @NotNull
+    @Override
+    public List<Quittance> getQuittancesByEircAccounts(@NotNull List<Consumer> consumers) {
+        Set<Long> eircAccountIds = set();
+        for (Consumer consumer : consumers) {
+            eircAccountIds.add(consumer.getEircAccountStub().getId());
+        }
+        return quittanceDao.findQuittances(eircAccountIds);
+    }
+
+    @NotNull
+    @Override
+    public List<Quittance> getQuittancesByApartments(@NotNull List<Consumer> consumers) {
+        Set<Long> apartmentIds = set();
+        for (Consumer consumer : consumers) {
+            apartmentIds.add(consumer.getApartmentStub().getId());
+        }
+        List<EircAccount> accounts = eircAccountDao.findByApartments(apartmentIds);
+        if (log.isDebugEnabled()) {
+            log.debug("Found {} eirc accounts by {} apartmentIds", accounts.size(), apartmentIds.size());
+        }
+        Set<Long> eircAccountIds = set();
+        for (EircAccount account : accounts) {
+            eircAccountIds.add(account.getId());
+        }
+        return quittanceDao.findQuittances(eircAccountIds);
+    }
+
+    @NotNull
+    @Override
+    public List<QuittanceDetails> getQuittanceDetailsByQuittanceId(@NotNull Stub<Quittance> stub) {
+        return quittanceDetailsDao.findByQuittanceId(stub.getId());
+    }
+
+    @Required
 	public void setQuittanceDao(QuittanceDao quittanceDao) {
 		this.quittanceDao = quittanceDao;
 	}
@@ -132,4 +174,9 @@ public class QuittanceServiceImpl implements QuittanceService {
 	public void setQuittanceNumberService(QuittanceNumberService quittanceNumberService) {
 		this.quittanceNumberService = quittanceNumberService;
 	}
+
+    @Required
+    public void setEircAccountDao(EircAccountDao eircAccountDao) {
+        this.eircAccountDao = eircAccountDao;
+    }
 }

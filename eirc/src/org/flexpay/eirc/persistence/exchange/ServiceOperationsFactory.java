@@ -152,7 +152,7 @@ public class ServiceOperationsFactory {
 			case 6:
 				checkContainer(registry, "Set live square", RegistryType.TYPE_INFO);
 				return new SetLiveSquareOperation(this, datum);
-			case 7:
+			case    7:
 				checkContainer(registry, "Set warm square", RegistryType.TYPE_INFO);
 				return new SetWarmSquareOperation(datum);
 			case 8:

@@ -1,8 +1,8 @@
 package org.flexpay.eirc.service.impl;
 
-import org.flexpay.ab.service.ObjectsFactory;
 import org.flexpay.ab.persistence.Apartment;
 import org.flexpay.ab.persistence.Building;
+import org.flexpay.ab.service.ObjectsFactory;
 import org.flexpay.bti.persistence.apartment.BtiApartment;
 import org.flexpay.eirc.persistence.ServedBuilding;
 

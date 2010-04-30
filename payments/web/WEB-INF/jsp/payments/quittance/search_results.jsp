@@ -118,11 +118,11 @@
                     <s:set name="serviceId" value="%{getServiceId(serviceMasterIndex)}" />
                     {
                             index: "<s:property value="getServiceFullIndex(#nQI.index, #serviceId)" />",
-                            content: '"<s:property value="%{getErcAccount(attributes)}" />";' +
-                                          '"<s:property value="%{serviceProviderAccount}" />";' +
-                                          '"<s:property value="%{getApartmentAddress(#qi)}" />";' +
-                                          '"<s:property value="%{getPersonFio(#qi)}" />";' +
-                                          '"<s:property value="%{getMBServiceCode(serviceMasterIndex)}" />"'
+                            content: '"<s:property value="%{getErcAccount(attributes)" />";' +
+                                          '"<s:property value="serviceProviderAccount" />";' +
+                                          '"<s:property value="getApartmentAddress(#qi)" />";' +
+                                          '"<s:property value="getPersonFio(#qi)" />";' +
+                                          '"<s:property value="getMBServiceCode(serviceMasterIndex)" />"'
                     }<s:property value="quittanceInfos.length != #nQI.index && detailses.length != status.index ? ',' : ''" />
                 </s:iterator>
             </s:iterator>
@@ -156,7 +156,6 @@
     }
 </script>
 
-</s:if>
-<s:else>
+</s:if><s:else>
 	<s:text name="payments.quittances.quittance_pay.no_debts_found" />
 </s:else>

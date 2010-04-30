@@ -5,6 +5,7 @@ import org.flexpay.common.dao.paging.Page;
 import org.flexpay.eirc.persistence.account.Quittance;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -24,4 +25,7 @@ public interface QuittanceDao extends GenericDao<Quittance, Long> {
 	List<Quittance> findQuittanceByNumber(String accountNumber, Date month, Integer number);
 
 	List<Quittance> findAccountQuittances(Long accountId, Page<Quittance> pager);
+
+    List<Quittance> findQuittances(Collection<Long> accountIds);
+
 }

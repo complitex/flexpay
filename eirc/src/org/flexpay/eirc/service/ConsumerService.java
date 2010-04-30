@@ -8,6 +8,8 @@ import org.flexpay.orgs.persistence.ServiceProvider;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
+
 public interface ConsumerService {
 
 	/**
@@ -63,4 +65,14 @@ public interface ConsumerService {
 	 */
 	@Nullable
 	Consumer findConsumer(@NotNull String accountNumber, @NotNull Stub<Service> serviceStub);
+
+    /**
+     * Try to find consumers by external account number
+     *
+     * @param accountNumber External account number
+     * @return found Consumers
+     */
+    @NotNull
+    List<Consumer> findConsumers(@NotNull String accountNumber);
+
 }

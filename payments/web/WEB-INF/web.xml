@@ -131,7 +131,7 @@
 
 	<servlet>
 		<servlet-name>searchQuittanceServlet</servlet-name>
-		<servlet-class>org.flexpay.payments.actions.quittance.SearchQuittanceServlet</servlet-class>
+		<servlet-class>org.flexpay.payments.actions.search.SearchQuittanceServlet</servlet-class>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>searchQuittanceServlet</servlet-name>

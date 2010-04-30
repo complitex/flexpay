@@ -3,7 +3,6 @@ package org.flexpay.eirc.service.impl;
 import org.flexpay.common.exception.FlexPayException;
 import org.flexpay.common.exception.FlexPayExceptionContainer;
 import org.flexpay.common.persistence.Stub;
-import static org.flexpay.common.persistence.Stub.stub;
 import org.flexpay.common.util.SecurityUtil;
 import org.flexpay.eirc.dao.QuittancePaymentDao;
 import org.flexpay.eirc.persistence.EircAccount;
@@ -24,6 +23,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+
+import static org.flexpay.common.persistence.Stub.stub;
 
 @Transactional (readOnly = true)
 public class QuittancePaymentServiceImpl implements QuittancePaymentService {

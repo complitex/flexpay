@@ -6,16 +6,16 @@ import org.flexpay.common.persistence.Stub;
 import org.flexpay.eirc.dao.ConsumerDao;
 import org.flexpay.eirc.dao.ConsumerDaoExt;
 import org.flexpay.eirc.persistence.Consumer;
-import org.flexpay.payments.persistence.Service;
-import org.flexpay.payments.service.SPService;
 import org.flexpay.eirc.service.ConsumerService;
 import org.flexpay.orgs.persistence.ServiceProvider;
+import org.flexpay.payments.persistence.Service;
+import org.flexpay.payments.service.SPService;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -107,6 +107,7 @@ public class ConsumerServiceImpl implements ConsumerService {
 	 * @param serviceStub   Service stub
 	 * @return Consumer if found, or <code>null</code> otherwise
 	 */
+    @Nullable
 	@Override
 	public Consumer findConsumer(@NotNull String accountNumber, @NotNull Stub<Service> serviceStub) {
 
@@ -121,6 +122,18 @@ public class ConsumerServiceImpl implements ConsumerService {
 
 		return consumers.get(0);
 	}
+
+    /**
+     * Try to find consumers by external account number
+     *
+     * @param accountNumber External account number
+     * @return found Consumers
+     */
+    @NotNull
+    @Override
+    public List<Consumer> findConsumers(@NotNull String accountNumber) {
+        return consumerDao.findConsumersByAccount(accountNumber);
+    }
 
 	@Required
 	public void setConsumerDao(ConsumerDao consumerDao) {

@@ -5,8 +5,10 @@ import org.flexpay.eirc.persistence.account.Quittance;
 import org.flexpay.eirc.process.QuittanceNumberService;
 import org.flexpay.eirc.service.QuittanceService;
 import org.flexpay.eirc.test.EircSpringBeanAwareTestCase;
-import static org.flexpay.payments.persistence.quittance.QuittanceDetailsRequest.apartmentNumberRequest;
-import static org.flexpay.payments.persistence.quittance.QuittanceDetailsRequest.quittanceNumberRequest;
+import static org.flexpay.payments.persistence.quittance.InfoRequest.apartmentNumberRequest;
+import static org.flexpay.payments.persistence.quittance.InfoRequest.quittanceNumberRequest;
+
+import org.flexpay.payments.actions.search.data.SearchDebtsRequest;
 import org.flexpay.payments.persistence.quittance.QuittanceDetailsResponse;
 import org.flexpay.payments.service.QuittanceDetailsFinder;
 import static org.junit.Assert.assertNotNull;
@@ -59,7 +61,7 @@ public class TestJmsQuittanceDetailsFinder extends EircSpringBeanAwareTestCase {
 		}
 
 		public void run() {
-			response = detailsFinder.findQuittance(quittanceNumberRequest(number));
+			response = detailsFinder.findQuittance(quittanceNumberRequest(number, SearchDebtsRequest.QUITTANCE_DEBT_REQUEST));
 		}
 	}
 
@@ -67,7 +69,7 @@ public class TestJmsQuittanceDetailsFinder extends EircSpringBeanAwareTestCase {
 	public void testGetQuittanceDetailsByApartment() {
 
 		String number = String.valueOf(1L);
-		QuittanceDetailsResponse response = detailsFinder.findQuittance(apartmentNumberRequest(number));
+		QuittanceDetailsResponse response = detailsFinder.findQuittance(apartmentNumberRequest(number, SearchDebtsRequest.QUITTANCE_DEBT_REQUEST));
 
 		log.info("Got response {}", response);
 	}

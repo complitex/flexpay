@@ -35,6 +35,7 @@ import static org.flexpay.common.util.CollectionUtils.list;
 import static org.flexpay.common.util.CollectionUtils.map;
 import static org.flexpay.common.util.DateUtil.getEndOfThisDay;
 import static org.flexpay.common.util.DateUtil.now;
+import static org.flexpay.common.util.DateUtil.truncateDay;
 import static org.flexpay.orgs.service.Roles.*;
 import static org.flexpay.payments.service.Roles.*;
 
@@ -52,7 +53,6 @@ public class TradingDay extends QuartzJobBean {
     // time out 10 sec
     private static final long TIME_OUT = 10000;
     private static final ProcessSorterByName processSorterByName = new ProcessSorterByName();
-
 
     private ProcessManager processManager;
     private PaymentPointService paymentPointService;
@@ -101,10 +101,10 @@ public class TradingDay extends QuartzJobBean {
 					logger.debug("Process Instance {} was not found", processInstanceId);
 					return false;
 				}
-				String canCreateOrUpdate = (String)context.getProcessInstance(processInstanceId)
+				String canCreateOrUpdate = (String) context.getProcessInstance(processInstanceId)
 						.getContextInstance().getVariable(CAN_UPDATE_OR_CREATE_OPERATION);
 				logger.debug("CAN_UPDATE_OR_CREATE_OPERATION = {} for process instance id = {}", canCreateOrUpdate, processInstanceId);
-				return Boolean.valueOf(canCreateOrUpdate);
+				return new Boolean(canCreateOrUpdate);
 			}
 		});
 	}
@@ -163,21 +163,23 @@ public class TradingDay extends QuartzJobBean {
         log.debug("All processes finished");
 
         for (PaymentPoint pp : paymentPointService.listPaymentPointsWithTradingDay()) {
-            Long paymentPointId = pp.getId();
-            Map<Serializable, Serializable> parameters = map();
+
             if (pp == null) {
-                log.error("Payment point with id {} not found", paymentPointId);
+                log.error("Payment point is null. Skipping...");
                 continue;
             }
 
+            Map<Serializable, Serializable> parameters = map();
+
+            Long paymentPointId = pp.getId();
             parameters.put(ExportJobParameterNames.PAYMENT_POINT_ID, paymentPointId);
             log.debug("Set paymentPointId {}", paymentPointId);
 
             Date now = now();
 
             //fill begin and end date
-            parameters.put(ExportJobParameterNames.BEGIN_DATE, now);
-            log.debug("Set beginDate {}", now);
+            parameters.put(ExportJobParameterNames.BEGIN_DATE, truncateDay(now));
+            log.debug("Set beginDate {}", truncateDay(now));
 
             parameters.put(ExportJobParameterNames.END_DATE, getEndOfThisDay(now));
             log.debug("Set endDate {}", getEndOfThisDay(now));
@@ -191,6 +193,7 @@ public class TradingDay extends QuartzJobBean {
                 processInstanceId = processManager.createProcess(PROCESS_DEFINITION_NAME, parameters);
                 pp.setTradingDayProcessInstanceId(processInstanceId);
                 paymentPointService.update(pp);
+                log.info("TradingDay process created. Process instance id = {}, for payment point with id {}", processInstanceId, pp.getId());
             } catch (ProcessInstanceException e) {
                 log.error("Failed run process trading day", e);
                 throw new JobExecutionException(e);

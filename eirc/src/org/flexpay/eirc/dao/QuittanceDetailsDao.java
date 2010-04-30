@@ -10,4 +10,5 @@ public interface QuittanceDetailsDao extends GenericDao<QuittanceDetails, Long> 
 	
 	List<QuittanceDetails> findByEircAccountAndDateTill(Long id, Date dateFrom, Date dateTill);
 
+    List<QuittanceDetails> findByQuittanceId(Long id);
 }

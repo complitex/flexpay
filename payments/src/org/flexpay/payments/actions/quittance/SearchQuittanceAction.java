@@ -12,10 +12,9 @@ import org.flexpay.common.service.importexport.MasterIndexService;
 import org.flexpay.orgs.persistence.ServiceProvider;
 import org.flexpay.orgs.service.ServiceProviderService;
 import org.flexpay.payments.actions.OperatorAWPActionSupport;
+import org.flexpay.payments.actions.search.data.SearchDebtsRequest;
 import org.flexpay.payments.persistence.Service;
-import org.flexpay.payments.persistence.quittance.ConsumerAttributes;
-import org.flexpay.payments.persistence.quittance.QuittanceDetailsRequest;
-import org.flexpay.payments.persistence.quittance.QuittanceDetailsResponse;
+import org.flexpay.payments.persistence.quittance.*;
 import org.flexpay.payments.service.QuittanceDetailsFinder;
 import org.flexpay.payments.service.SPService;
 import org.flexpay.payments.util.ServiceTypesMapper;
@@ -26,7 +25,8 @@ import java.math.BigDecimal;
 import java.util.List;
 
 import static org.flexpay.common.util.CollectionUtils.list;
-import static org.flexpay.payments.persistence.quittance.QuittanceDetailsResponse.*;
+import static org.flexpay.payments.persistence.quittance.DetailsResponse.*;
+import static org.flexpay.payments.persistence.quittance.InfoRequest.*;
 
 public class SearchQuittanceAction extends OperatorAWPActionSupport {
 
@@ -37,7 +37,7 @@ public class SearchQuittanceAction extends OperatorAWPActionSupport {
 	// form data
 	private String searchType;
 	private String searchCriteria;
-	private QuittanceDetailsResponse.QuittanceInfo[] quittanceInfos;
+	private QuittanceInfo[] quittanceInfos;
 	private String actionName;
 
 	// required services
@@ -56,7 +56,7 @@ public class SearchQuittanceAction extends OperatorAWPActionSupport {
     @Override
 	protected String doExecute() throws Exception {
 
-		QuittanceDetailsRequest request = buildQuittanceRequest();
+		InfoRequest request = buildQuittanceRequest();
 		QuittanceDetailsResponse response = quittanceDetailsFinder.findQuittance(request);
 
 		if (response.isSuccess()) {
@@ -64,18 +64,18 @@ public class SearchQuittanceAction extends OperatorAWPActionSupport {
 			filterSubservices();
 			filterNegativeSumms();
 		} else {
-			addActionError(getErrorMessage(response.getErrorCode()));
+			addActionError(getErrorMessage(response.getStatusCode()));
 		}
 
 		return SUCCESS;
 	}
 
-	private QuittanceDetailsRequest buildQuittanceRequest() throws FlexPayException {
+	private InfoRequest buildQuittanceRequest() throws FlexPayException {
 
 		if (SEARCH_TYPE_EIRC_ACCOUNT.equals(searchType)) {
-			return QuittanceDetailsRequest.accountNumberRequest(searchCriteria);
+			return accountNumberRequest(searchCriteria, SearchDebtsRequest.QUITTANCE_DEBT_REQUEST);
 		} else if (SEARCH_TYPE_QUITTANCE_NUMBER.equals(searchType)) {
-			return QuittanceDetailsRequest.quittanceNumberRequest(searchCriteria);
+			return InfoRequest.quittanceNumberRequest(searchCriteria, SearchDebtsRequest.QUITTANCE_DEBT_REQUEST);
 		} else if (SEARCH_TYPE_ADDRESS.equals(searchType)) {
 			Apartment apartment = apartmentService.readFull(
 					new Stub<Apartment>(Long.parseLong(searchCriteria)));
@@ -83,7 +83,7 @@ public class SearchQuittanceAction extends OperatorAWPActionSupport {
 			if (indx == null) {
 				throw new FlexPayException("No master index for apartment #" + searchCriteria);
 			}
-			return QuittanceDetailsRequest.apartmentNumberRequest(indx);
+			return apartmentNumberRequest(indx, SearchDebtsRequest.QUITTANCE_DEBT_REQUEST);
 		} else {
 			throw new FlexPayException("Bad search request: type must be one of: " + SEARCH_TYPE_ADDRESS + ", "
 									   + SEARCH_TYPE_EIRC_ACCOUNT + ", " + SEARCH_TYPE_QUITTANCE_NUMBER);
@@ -97,8 +97,8 @@ public class SearchQuittanceAction extends OperatorAWPActionSupport {
 		for (QuittanceInfo info : quittanceInfos) {
 			BigDecimal total = new BigDecimal("0.00");
 
-			List<QuittanceInfo.ServiceDetails> filteredDetails = list();
-			for (QuittanceInfo.ServiceDetails sd : info.getDetailses()) {
+			List<ServiceDetails> filteredDetails = list();
+			for (ServiceDetails sd : info.getDetailses()) {
 				if (sd.getOutgoingBalance().compareTo(BigDecimal.ZERO) > 0) {
 					filteredDetails.add(sd);
 					total = total.add(sd.getOutgoingBalance());
@@ -109,7 +109,7 @@ public class SearchQuittanceAction extends OperatorAWPActionSupport {
 			}
 
 			if (!filteredDetails.isEmpty()) {
-				info.setDetailses(filteredDetails.toArray(new QuittanceInfo.ServiceDetails[filteredDetails.size()]));
+				info.setDetailses(filteredDetails.toArray(new ServiceDetails[filteredDetails.size()]));
 				info.setTotalToPay(total);
 				filteredInfos.add(info);
 			}
@@ -122,10 +122,10 @@ public class SearchQuittanceAction extends OperatorAWPActionSupport {
 	private void filterSubservices() {
 
 		for (QuittanceInfo quittanceInfo : quittanceInfos) {
-			List<QuittanceInfo.ServiceDetails> filtered = list();
+			List<ServiceDetails> filtered = list();
 			BigDecimal totalToPay = new BigDecimal("0.00");
 
-			for (QuittanceInfo.ServiceDetails details : quittanceInfo.getDetailses()) {
+			for (ServiceDetails details : quittanceInfo.getDetailses()) {
 				if (isNotSubservice(details.getServiceMasterIndex())) {
 					filtered.add(details);
 					totalToPay = totalToPay.add(details.getOutgoingBalance());
@@ -134,7 +134,7 @@ public class SearchQuittanceAction extends OperatorAWPActionSupport {
 				}
 			}
 
-			quittanceInfo.setDetailses(filtered.toArray(new QuittanceInfo.ServiceDetails[filtered.size()]));
+			quittanceInfo.setDetailses(filtered.toArray(new ServiceDetails[filtered.size()]));
 			quittanceInfo.setTotalToPay(totalToPay);
 		}
 
@@ -155,17 +155,17 @@ public class SearchQuittanceAction extends OperatorAWPActionSupport {
 
 	private String getErrorMessage(int errorCode) {
 		switch (errorCode) {
-			case CODE_ERROR_ACCOUNT_NOT_FOUND:
+			case STATUS_ACCOUNT_NOT_FOUND:
 				return getText("payments.errors.search.account_not_found");
-			case CODE_ERROR_APARTMENT_NOT_FOUND:
+			case STATUS_APARTMENT_NOT_FOUND:
 				return getText("payments.errors.search.apartment_not_found");
-			case CODE_ERROR_INTERNAL_ERROR:
+			case STATUS_INTERNAL_ERROR:
 				return getText("payments.errors.search.internal_error");
-			case CODE_ERROR_INVALID_QUITTANCE_NUMBER:
+			case STATUS_INVALID_QUITTANCE_NUMBER:
 				return getText("payments.errors.search.invalid_quittance_number");
-			case CODE_ERROR_QUITTANCE_NOT_FOUND:
+			case STATUS_QUITTANCE_NOT_FOUND:
 				return getText("payments.errors.search.debts_not_found");
-			case CODE_ERROR_UNKNOWN_REQUEST:
+			case STATUS_UNKNOWN_REQUEST:
 				return getText("payments.errors.search.unknown_request");
 			default:
 				return getText("payments.errors.search.unknown_error");
@@ -201,9 +201,9 @@ public class SearchQuittanceAction extends OperatorAWPActionSupport {
 		return serviceProvider.getName();
 	}
 
-	public String getErcAccount(ServiceAttribute[] attributes) {
+	public String getErcAccount(ServiceDetails.ServiceAttribute[] attributes) {
 
-		for (ServiceAttribute attribute : attributes) {
+		for (ServiceDetails.ServiceAttribute attribute : attributes) {
 			if (attribute.getName().equals(ConsumerAttributes.ATTR_ERC_ACCOUNT)) {
 				return attribute.getValue();
 			}
@@ -251,7 +251,7 @@ public class SearchQuittanceAction extends OperatorAWPActionSupport {
 
 		BigDecimal total = new BigDecimal("0.00");
 		for (QuittanceInfo info : quittanceInfos) {
-			for (QuittanceInfo.ServiceDetails details : info.getDetailses()) {
+			for (ServiceDetails details : info.getDetailses()) {
 				total = total.add(details.getOutgoingBalance());
 			}
 		}
