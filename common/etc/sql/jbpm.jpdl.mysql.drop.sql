@@ -85,6 +85,9 @@
 	alter table JBPM_VARIABLEINSTANCE drop foreign key FK_VARINST_PRCINST;
 	alter table JBPM_VARIABLEINSTANCE drop foreign key FK_VAR_TSKINST;
 	alter table JBPM_VARIABLEINSTANCE drop foreign key FK_BYTEINST_ARRAY;
+	alter table JBPM_ID_GROUP drop foreign key FK_ID_GRP_PARENT;
+	alter table JBPM_ID_MEMBERSHIP drop foreign key FK_ID_MEMSHIP_GRP;
+	alter table JBPM_ID_MEMBERSHIP drop foreign key FK_ID_MEMSHIP_USR;
 	drop table if exists JBPM_ACTION;
 	drop table if exists JBPM_BYTEARRAY;
 	drop table if exists JBPM_BYTEBLOCK;
@@ -113,3 +116,7 @@
 	drop table if exists JBPM_TRANSITION;
 	drop table if exists JBPM_VARIABLEACCESS;
 	drop table if exists JBPM_VARIABLEINSTANCE;
+	drop table if exists JBPM_ID_GROUP;
+	drop table if exists JBPM_ID_MEMBERSHIP;
+	drop table if exists JBPM_ID_PERMISSIONS;
+	drop table if exists JBPM_ID_USER;
