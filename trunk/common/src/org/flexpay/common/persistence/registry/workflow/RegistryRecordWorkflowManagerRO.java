@@ -18,13 +18,12 @@ import java.util.*;
  * Helper class for registry records workflow
  */
 @Transactional (readOnly = true)
-public class RegistryRecordWorkflowManagerImpl implements RegistryRecordWorkflowManager {
+public class RegistryRecordWorkflowManagerRO implements RegistryRecordWorkflowManager {
 
 	private Logger log = LoggerFactory.getLogger(getClass());
 	private RegistryWorkflowManager registryWorkflowManager;
 
 	private RegistryRecordStatusService statusService;
-	private RegistryRecordDao recordDao;
 	private ImportErrorDao errorDao;
 
 	private Map<Integer, List<Integer>> transitions = CollectionUtils.map();
@@ -69,7 +68,6 @@ public class RegistryRecordWorkflowManagerImpl implements RegistryRecordWorkflow
 	 * @param record Registry record to start
 	 * @throws TransitionNotAllowed if record processing is not possible
 	 */
-	@Transactional (readOnly = false)
 	public void startProcessing(RegistryRecord record) throws TransitionNotAllowed {
 		if (!hasSuccessTransition(record)) {
 			throw new TransitionNotAllowed("Registry processing not allowed");
@@ -96,7 +94,6 @@ public class RegistryRecordWorkflowManagerImpl implements RegistryRecordWorkflow
 	 * @param record Registry record to update
 	 * @throws TransitionNotAllowed if error transition is not allowed
 	 */
-	@Transactional (readOnly = false)
 	public void setNextErrorStatus(RegistryRecord record) throws TransitionNotAllowed {
 
 		if (code(record) == PROCESSED_WITH_ERROR) {
@@ -119,7 +116,6 @@ public class RegistryRecordWorkflowManagerImpl implements RegistryRecordWorkflow
 	 * @param error  ImportError
 	 * @throws TransitionNotAllowed if error transition is not allowed
 	 */
-	@Transactional (readOnly = false)
 	public void setNextErrorStatus(RegistryRecord record, ImportError error) throws TransitionNotAllowed {
 		List<Integer> allowedCodes = transitions.get(code(record));
 		if (allowedCodes.size() < 2) {
@@ -145,7 +141,6 @@ public class RegistryRecordWorkflowManagerImpl implements RegistryRecordWorkflow
 	 * @param record Registry record to update
 	 * @throws TransitionNotAllowed if success transition is not allowed
 	 */
-	@Transactional (readOnly = false)
 	public void setNextSuccessStatus(RegistryRecord record) throws TransitionNotAllowed {
 		List<Integer> allowedCodes = transitions.get(code(record));
 		if (allowedCodes.size() < 1) {
@@ -167,7 +162,6 @@ public class RegistryRecordWorkflowManagerImpl implements RegistryRecordWorkflow
 	 *          if success transition is not allowed for some of the records
 	 */
 	@Override
-	@Transactional (readOnly = false)
 	public void setNextSuccessStatus(Collection<RegistryRecord> records) throws TransitionNotAllowed {
 
 		for (RegistryRecord record : records) {
@@ -205,7 +199,6 @@ public class RegistryRecordWorkflowManagerImpl implements RegistryRecordWorkflow
 	 * @return SpRegistryRecord back
 	 * @throws TransitionNotAllowed if registry already has a status
 	 */
-	@Transactional (readOnly = false)
 	public RegistryRecord setInitialStatus(RegistryRecord record) throws TransitionNotAllowed {
 		if (record.getRecordStatus() != null) {
 			if (code(record) != LOADED) {
@@ -238,22 +231,16 @@ public class RegistryRecordWorkflowManagerImpl implements RegistryRecordWorkflow
 	 * @param status Next status to set
 	 * @throws TransitionNotAllowed if transition from old to a new status is not allowed
 	 */
-	@Transactional (readOnly = false)
 	public void setNextStatus(RegistryRecord record, RegistryRecordStatus status) throws TransitionNotAllowed {
 		if (!canTransit(record, status)) {
 			throw new TransitionNotAllowed("Invalid transition request, was " + record.getRecordStatus() + ", requested " + status);
 		}
 
 		record.setRecordStatus(status);
-		recordDao.update(record);
 	}
 
 	public void setStatusService(RegistryRecordStatusService statusService) {
 		this.statusService = statusService;
-	}
-
-	public void setRecordDao(RegistryRecordDao recordDao) {
-		this.recordDao = recordDao;
 	}
 
 	public void setErrorDao(ImportErrorDao errorDao) {

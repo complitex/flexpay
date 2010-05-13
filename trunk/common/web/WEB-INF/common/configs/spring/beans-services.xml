@@ -138,19 +138,23 @@
 		  p:registryDaoExt-ref="registryDaoExt"
 		  p:statusService-ref="registryStatusService" />
 
-	<bean id="registryRecordWorkflowManager"
-		  class="org.flexpay.common.persistence.registry.workflow.RegistryRecordWorkflowManagerImpl"
+	<bean id="registryRecordWorkflowManagerRO"
+		  class="org.flexpay.common.persistence.registry.workflow.RegistryRecordWorkflowManagerRO"
 		  p:errorDao-ref="importErrorDao"
-		  p:recordDao-ref="spRegistryRecordDao"
 		  p:statusService-ref="registryRecordStatusService"
 		  p:registryWorkflowManager-ref="registryWorkflowManager" />
+
+	<bean id="registryRecordWorkflowManagerRW"
+		  class="org.flexpay.common.persistence.registry.workflow.RegistryRecordWorkflowManagerRW"
+		  parent="registryRecordWorkflowManagerRO"
+		  p:recordDao-ref="spRegistryRecordDao" />
 
 	<bean id="registryRecordService"
 		  class="org.flexpay.common.service.impl.RegistryRecordServiceImpl"
 		  p:spRegistryRecordDao-ref="spRegistryRecordDao"
 		  p:spRegistryRecordDaoExt-ref="spRegistryRecordDaoExt"
 		  p:recordContainerDao-ref="registryRecordContainerDao"
-		  p:workflowManager-ref="registryRecordWorkflowManager" />
+		  p:workflowManager-ref="registryRecordWorkflowManagerRW" />
 
 	<bean id="registryService"
 		  class="org.flexpay.common.service.impl.RegistryServiceImpl"

@@ -54,7 +54,7 @@ public class ImportServiceImpl implements ImportService {
 	private ClassToTypeRegistry registry;
 
 
-	private static final int STACK_SIZE = 20;
+	private static final int STACK_SIZE = 500;
 
 	private List<DomainObject> objectsStack = new ArrayList<DomainObject>(STACK_SIZE + 5);
 

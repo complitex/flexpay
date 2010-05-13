@@ -11,14 +11,15 @@ import org.springframework.beans.factory.annotation.Required;
 
 import java.util.Map;
 
-public class EndRegistryProcessingActionHandler extends FlexPayActionHandler {
+public class SetNextRegistrySuccessStatusActionHandler extends FlexPayActionHandler {
+
 	private RegistryService registryService;
 	private RegistryWorkflowManager registryWorkflowManager;
 
 	@Override
 	public String execute2(Map<String, Object> parameters) throws FlexPayException {
 		log.debug("start action");
-		
+
 		Long registryId = (Long)parameters.get(StartRegistryProcessingActionHandler.REGISTRY_ID);
 		if (registryId == null) {
 			log.error("Can not find '{}' in process parameters", StartRegistryProcessingActionHandler.REGISTRY_ID);
@@ -33,7 +34,6 @@ public class EndRegistryProcessingActionHandler extends FlexPayActionHandler {
 		}
 		try {
 			registryWorkflowManager.setNextSuccessStatus(registry);
-			registryWorkflowManager.endProcessing(registry);
 			return RESULT_NEXT;
 		} catch (TransitionNotAllowed transitionNotAllowed) {
 			log.error("Inner error", transitionNotAllowed);
